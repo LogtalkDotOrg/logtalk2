@@ -99,4 +99,7 @@ and logtalk_load/1-2 have been updated to take into account this new feature.
 Logtalk version 2.22.2 adds stricter checking for the documenting directives 
 (info/1 and info/2), which can lead to compilation errors on entities which 
 compiled successfully on previous Logtalk versions.
- 
+
+Logtalk version 2.22.5 adds new predicates to all config files (consult the 
+release notes for details). If you are using custom config files, be sure to 
+update them by coping the definition of the new predicates.
