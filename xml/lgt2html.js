@@ -19,7 +19,7 @@ else if (WshSystemEnv.Item("LOGTALKHOME"))
 else if (WshUserEnv.Item("LOGTALKHOME"))
 	logtalk_home = WshUserEnv.Item("LOGTALKHOME")
 else {
-	WScript.Echo("The environment variable LOGTALKHOME must be defined first!");
+	WScript.Echo("Error! The environment variable LOGTALKHOME must be defined first!");
 	usage_help();
 	WScript.Quit(1);
 }
@@ -34,7 +34,7 @@ var format = "xhtml";
 var directory = WshShell.CurrentDirectory;
 
 var index_file = "index.html";
-var title = "Entity documentation index";
+var index_title = "Entity documentation index";
 
 var processor = "xsltproc";
 // var processor = "xalan";
@@ -53,7 +53,7 @@ if (WScript.Arguments.Named.Exists("i"))
 	index_file = WScript.Arguments.Named.Item("i");
 
 if (WScript.Arguments.Named.Exists("t"))
-	title = WScript.Arguments.Named.Item("t");
+	index_title = WScript.Arguments.Named.Item("t");
 
 if (WScript.Arguments.Named.Exists("p"))
 	processor = WScript.Arguments.Named.Item("p");
@@ -63,13 +63,13 @@ if (format = "xhtml")
 else if (format = "html")
 	xslt = html_xslt;
 else {
-	WScript.Echo("unsupported output format: " + format);
+	WScript.Echo("Error! Unsupported output format: " + format);
 	usage_help;
 	WScript.Quit(1);
 }
 
 if (processor != "xsltproc" && processor != "xalan" && processor != "sabcmd") {
-	WScript.Echo("unsupported XSLT processor:" + processor);
+	WScript.Echo("Error! Unsupported XSLT processor:" + processor);
 	WScript.Echo("");
 	WScript.Quit(1);
 }
@@ -109,15 +109,7 @@ WScript.Echo("");
 WScript.Echo("generating index file...");
 
 index_file = directory + "\\" + index_file;
-
-switch (format) {
-	case "xhtml" :
-		xhtml_index_file();
-		break;
-	case "html" :
-		html_index_file();
-		break;
-}
+create_index_file();
 
 WScript.Echo("index file generated");
 WScript.Echo("");
@@ -132,7 +124,8 @@ function usage_help() {
 	WScript.Echo("This script converts all Logtalk XML files documenting files in the");
 	WScript.Echo("current directory to XHTML or HTML files");
 	WScript.Echo("");
-	WScript.Echo("Usage: " + WScript.ScriptName + " [help] [/f:format] [/o:directory] [/i:index] [/t:title] [/p:processor]");
+	WScript.Echo("Usage:");
+	WScript.Echo("  " + WScript.ScriptName + " [help] [/f:format] [/o:directory] [/i:index] [/t:title] [/p:processor]");
 	WScript.Echo("");
 	WScript.Echo("Optional arguments:");
 	WScript.Echo("  f - output file format (either xhtml or html; default is " + format + ")");
@@ -145,21 +138,30 @@ function usage_help() {
 	WScript.Quit(1);
 }
 
-function xhtml_index_file() {
+function create_index_file() {
 
 	var f = fso.CreateTextFile(index_file, true);
 
-	f.WriteLine("<?xml version=\"1.0\"?>");
-	f.WriteLine("<?xml-stylesheet href=\"logtalk.css\" type=\"text/css\"?>");
-	f.WriteLine("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
-	f.WriteLine("<html lang=\"en\" xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">");
+	switch (format) {
+		case "xhtml" :
+			f.WriteLine("<?xml version=\"1.0\"?>");
+			f.WriteLine("<?xml-stylesheet href=\"logtalk.css\" type=\"text/css\"?>");
+			f.WriteLine("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
+			f.WriteLine("<html lang=\"en\" xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">");
+			break;
+		case "html" :
+			f.WriteLine("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">");
+			f.WriteLine("<html>");
+			break;
+	}
+
 	f.WriteLine("<head>");
 	f.WriteLine("    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>");
-	f.WriteLine("    <title>" + title + "</title>");
+	f.WriteLine("    <title>" + index_title + "</title>");
 	f.WriteLine("    <link rel=\"stylesheet\" href=\"logtalk.css\" type=\"text/css\"/>");
 	f.WriteLine("</head>");
 	f.WriteLine("<body>");
-	f.WriteLine("<h1>" + title + "</h1>");
+	f.WriteLine("<h1>" + index_title + "</h1>");
 	f.WriteLine("<ul>");
 
 	var files = new Enumerator(fso.GetFolder(WshShell.CurrentDirectory).Files);
@@ -184,50 +186,17 @@ function xhtml_index_file() {
 	if (day < 10)
         day = "0" + day;
 	strToday = year + "/" + month + "/" + day;
-	f.WriteLine("<p>Generated on " + strToday + "</p>");
-
-	f.WriteLine("</body>");
-	f.WriteLine("</html>");
-
-	f.Close();
-}
-
-function html_index_file() {
-
-	var f = fso.CreateTextFile(index_file, true);
-
-	f.WriteLine("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">");
-	f.WriteLine("<html>");
-	f.WriteLine("<head>");
-	f.WriteLine("    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
-	f.WriteLine("    <title>" + title + "</title>");
-	f.WriteLine("    <link rel=\"stylesheet\" href=\"logtalk.css\" type=\"text/css\">");
-	f.WriteLine("</head>");
-	f.WriteLine("<body>");
-	f.WriteLine("<h1>" + title + "</h1>");
-	f.WriteLine("<ul>");
-
-	for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
-		var file = files.item().name;
-		if (fso.GetExtensionName(file) == "xml") {
-			var html_file = fso.GetBaseName(file) + ".html";
-			WScript.Echo("  indexing " + html_file);
-			f.WriteLine("    <li><a href=\"" + html_file + "\">" + fso.GetBaseName(file) + "</a></li>");
-		}
-	}
-
-	f.WriteLine("</ul>");
-
-	var today = new Date();
-	var year  = today.getFullYear();
-	var month = today.getMonth() + 1;
-	if (month < 10)
-        month = "0" + month;
-	var day   = today.getDate();
-	if (day < 10)
-        day = "0" + day;
-	var strToday = year + "/" + month + "/" + day;
-	f.WriteLine("<p>Generated on " + strToday + "</p>");
+	var hours = today.getHours();
+	if (hours < 10)
+        hours = "0" + hours;
+	var mins = today.getMinutes();
+	if (mins < 10)
+        mins = "0" + mins;
+	var secs = today.getSeconds();
+	if (secs < 10)
+        secs = "0" + secs;
+	strTime = hours + ":" + mins + ":" + secs;
+	f.WriteLine("<p>Generated on " + strToday + " - " + strTime + "</p>");
 
 	f.WriteLine("</body>");
 	f.WriteLine("</html>");

@@ -19,7 +19,7 @@ else if (WshSystemEnv.Item("LOGTALKHOME"))
 else if (WshUserEnv.Item("LOGTALKHOME"))
 	logtalk_home = WshUserEnv.Item("LOGTALKHOME")
 else {
-	WScript.Echo("The environment variable LOGTALKHOME must be defined first!");
+	WScript.Echo("Error! The environment variable LOGTALKHOME must be defined first!");
 	usage_help();
 	WScript.Quit(1);
 }
@@ -53,13 +53,13 @@ if (format = "a4")
 else if (format = "us")
 	xsl = us_xsl;
 else {
-	WScript.Echo("unsupported paper format:" + format);
+	WScript.Echo("Error! Unsupported paper format:" + format);
 	WScript.Echo("");
 	WScript.Quit(1);
 }
 
 if (processor != "fop" && processor != "xep") {
-	WScript.Echo("unsupported XSL-FO processor:" + processor);
+	WScript.Echo("Error! Unsupported XSL-FO processor:" + processor);
 	WScript.Echo("");
 	WScript.Quit(1);
 }
@@ -97,7 +97,8 @@ function usage_help() {
 	WScript.Echo("This script converts all Logtalk XML documenting files in the");
 	WScript.Echo("current directory to PDF files");
 	WScript.Echo("");
-	WScript.Echo("Usage: " + WScript.ScriptName + " [help] [/f:format] [/o:directory] [/p:processor]");
+	WScript.Echo("Usage:");
+	WScript.Echo("  " + WScript.ScriptName + " [help] [/f:format] [/o:directory] [/p:processor]");
 	WScript.Echo("");
 	WScript.Echo("Optional arguments:");
 	WScript.Echo("  f - paper format (either a4 or us; default is " + format + ")");

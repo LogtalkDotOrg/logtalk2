@@ -14,7 +14,7 @@ format=xhtml
 
 directory="."
 
-title="Entity documentation index"
+index_title="Entity documentation index"
 
 index_file="$directory/index.html"
 
@@ -25,16 +25,17 @@ processor=xsltproc
 usage_help()
 {
 	echo 
-	echo This script converts all Logtalk XML files documenting files in the 
-	echo current directory to XHTML or HTML files
+	echo "This script converts all Logtalk XML files documenting files in the"
+	echo "current directory to XHTML or HTML files"
 	echo
-	echo "Usage: $0 -f format -o directory -i index -t title -p processor"
+	echo "Usage:"
+	echo "  $0 -f format -o directory -i index -t title -p processor"
 	echo
 	echo "Optional arguments:"
 	echo "  -f output file format (either xhtml or html; default is $format)"
 	echo "  -o output directory for the generated files (default is $directory)"
 	echo "  -i name of the index file (default is $index_file)"
-	echo "  -t title to be used on the index file (default is $title)"
+	echo "  -t title to be used on the index file (default is $index_title)"
 	echo "  -p XSLT processor (xsltproc, xalan, or sabcmd; default is $processor)"
 	echo "  -h help"
 	echo
@@ -51,11 +52,11 @@ xhtml_index_file()
 	echo "<html lang=\"en\" xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">" >> $index_file
 	echo "<head>" >> $index_file
 	echo "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>" >> $index_file
-	echo "    <title>"$title"</title>" >> $index_file
+	echo "    <title>"$index_title"</title>" >> $index_file
 	echo "    <link rel=\"stylesheet\" href=\"logtalk.css\" type=\"text/css\"/>" >> $index_file
 	echo "</head>" >> $index_file
 	echo "<body>" >> $index_file
-	echo "<h1>"$title"</h1>" >> $index_file
+	echo "<h1>"$index_title"</h1>" >> $index_file
 	echo "<ul>" >> $index_file
 
 	for file in *.xml; do
@@ -81,16 +82,16 @@ html_index_file()
 	echo "<html>" >> $index_file
 	echo "<head>" >> $index_file
 	echo "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" >> $index_file
-	echo "    <title>"$title"</title>" >> $index_file
+	echo "    <title>"$index_title"</title>" >> $index_file
 	echo "    <link rel=\"stylesheet\" href=\"logtalk.css\" type=\"text/css\">" >> $index_file
 	echo "</head>" >> $index_file
 	echo "<body>" >> $index_file
-	echo "<h1>"$title"</h1>" >> $index_file
+	echo "<h1>"$index_title"</h1>" >> $index_file
 	echo "<ul>" >> $index_file
 
 	for file in *.xml; do
 		name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
-		echo "  indexing" $name.html
+		echo "  indexing $name.html"
 		echo "    <li><a href=\""$name.html"\">"$name"</a></li>" >> $index_file
 	done
 
@@ -105,7 +106,7 @@ html_index_file()
 
 if ! [ $LOGTALKHOME ]
 then
-	echo "The environment variable LOGTALKHOME must be defined first!"
+	echo "Error! The environment variable LOGTALKHOME must be defined first!"
 	exit 1
 else
 
@@ -115,7 +116,7 @@ else
 			f) format="$OPTARG";;
 			o) directory="$OPTARG";;
 			i) index_file="$OPTARG";;
-			t) title="$OPTARG";;
+			t) index_title="$OPTARG";;
 			p) processor="$OPTARG";;
 			h) usage_help;;
 			*) usage_help;;
@@ -129,14 +130,14 @@ else
 	then
 		xslt=$html_xslt
 	else
-		echo unsupported output format: $format
+		echo "Error! Unsupported output format: $format"
 		usage_help
 		exit 1
 	fi
 
 	if [[ "$processor" != "xsltproc" && "$processor" != "xalan" && "$processor" != "sabcmd" ]]
 	then
-		echo unsupported XSLT processor: $processor
+		echo Error! Unsupported XSLT processor: $processor
 		usage_help
 		exit 1
 	fi
@@ -146,10 +147,10 @@ else
 	cp $LOGTALKHOME/xml/logtalk.css $directory
 
 	echo
-	echo converting XML files...
+	echo "converting XML files..."
 
 	for file in *.xml; do
-		echo "  converting" $file
+		echo "  converting $file"
 		name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
 		case "$processor" in
 			xsltproc)	eval xsltproc -o $directory/$name.html $xslt $file;;
@@ -158,9 +159,9 @@ else
 		esac
 	done
 
-	echo conversion done
+	echo "conversion done"
 	echo
-	echo generating index file...
+	echo "generating index file..."
 
 	index_file=$directory/$index_file
 
@@ -169,7 +170,7 @@ else
 		html)	html_index_file;;
 	esac
 
-	echo index file generated
+	echo "index file generated"
 	echo
 
 	rm logtalk.dtd

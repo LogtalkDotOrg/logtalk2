@@ -21,10 +21,11 @@ directory="."
 usage_help()
 {
 	echo 
-	echo This script converts all Logtalk XML documenting files in the 
-	echo current directory to PDF files
+	echo "This script converts all Logtalk XML documenting files in the"
+	echo "current directory to PDF files"
 	echo
-	echo "Usage: $0 -f format -o directory -p processor"
+	echo "Usage:"
+	echo "  $0 -f format -o directory -p processor"
 	echo
 	echo "Optional arguments:"
 	echo "  -f paper format (either a4 or us; default is $format)"
@@ -37,7 +38,7 @@ usage_help()
 
 if ! [ $LOGTALKHOME ]
 then
-	echo "The environment variable LOGTALKHOME must be defined first!"
+	echo "Error! The environment variable LOGTALKHOME must be defined first!"
 	exit 1
 else
 
@@ -59,14 +60,14 @@ else
 	then
 		xsl=$us_xsl
 	else
-		echo unsupported paper format: $format
+		echo "Error! Unsupported paper format: $format"
 		usage_help
 		exit 1
 	fi
 
 	if [[ "$processor" != "fop" && "$processor" != "xep" ]]
 	then
-		echo unsupported XSLT processor: $processor
+		echo "Error! Unsupported XSLT processor: $processor"
 		usage_help
 		exit 1
 	fi
@@ -75,16 +76,15 @@ else
 	cp $LOGTALKHOME/xml/logtalk.xsd .
 
 	echo
-	echo converting XML files to PDF...
+	echo "converting XML files to PDF..."
 
 	for file in *.xml; do
-		echo converting $file
+		echo "  converting $file"
 		name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
 		eval $processor -q -xml $file -xsl $xsl -pdf $directory/$name.pdf
 	done
 
-	echo
-	echo conversion done
+	echo "conversion done"
 	echo
 
 	rm logtalk.dtd
