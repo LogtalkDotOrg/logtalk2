@@ -1616,7 +1616,7 @@ current_logtalk_flag(version, version(2, 15, 3)).
 
 % '$lgt_phrase'(+ruleset, ?list)
 %
-% removes duplicated and redeclared predicates 
+% phrase/2 built-in method
 
 '$lgt_phrase'(Obj, Ruleset, Input, Sender, Scope) :-
 	catch(
@@ -1628,7 +1628,7 @@ current_logtalk_flag(version, version(2, 15, 3)).
 
 % '$lgt_phrase'(+ruleset, ?list, ?list)
 %
-% removes duplicated and redeclared predicates 
+% phrase/3 built-in method
 
 '$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
 	var(Ruleset),
@@ -5654,9 +5654,7 @@ user0__def(Pred, _, _, _, Pred, user).
 
 '$lgt_dcg_body'([Terminal| Terminals], CGoal, S0, S) :-
 	!,
-	'$lgt_dcg_terminal'(Terminal, CGoal, S0, S1),
-	'$lgt_dcg_terminals'(Terminals, CGoals, S1, S),
-	'$lgt_dcg_simplify_terminals'(CGoals).
+	'$lgt_dcg_terminals'([Terminal| Terminals], CGoal, S0, S).
 
 '$lgt_dcg_body'(Non_terminal, CGoal, S0, S) :-
 	'$lgt_dcg_goal'(Non_terminal, CGoal, S0, S).
@@ -5678,30 +5676,25 @@ user0__def(Pred, _, _, _, Pred, user).
 
 
 
-% '$lgt_dcg_terminal'(@nonvar, -goal, @var, @var)
-%
-% translate terminal; note that we don't use the traditional 'C'/3 predicate
-
-'$lgt_dcg_terminal'(Terminal, S0=[Terminal| S], S0, S).
-
-
-
 % '$lgt_dcg_terminals'(@list, -goal, @var, @var)
 %
-% translate terminals
+% translate list of terminals
 
-'$lgt_dcg_terminals'([], true, S, S) :-
-	!.
+'$lgt_dcg_terminals'(Terminals, S0=List, S0, S) :-
+	'$lgt_dcg_terminals'(Terminals, S, List).
 
-'$lgt_dcg_terminals'([Terminal| Terminals], (Goal,Goals), S0, S) :-
-	'$lgt_dcg_terminal'(Terminal, Goal, S0, S1),
-	'$lgt_dcg_terminals'(Terminals, Goals, S1, S).
+
+'$lgt_dcg_terminals'([], S, S).
+
+'$lgt_dcg_terminals'([Terminal| Terminals], S, [Terminal| Rest]) :-
+	'$lgt_dcg_terminals'(Terminals, S, Rest).
 
 
 
 % '$lgt_dcg_fold_unifications'(+goal, -goal, @var)
 %
-% folds redundant calls to =/2 by calling the unification goals
+% folds redundant calls to =/2 by calling the unification
+% goals execept for output unifications
 
 '$lgt_dcg_fold_unifications'((Goal1 -> Goal2), (SGoal1 -> SGoal2), S) :-
 	!,
@@ -5728,7 +5721,7 @@ user0__def(Pred, _, _, _, Pred, user).
 	!,
 	S1 = S2.
 
-'$lgt_dcg_fold_unifications'(Body, Body, _).
+'$lgt_dcg_fold_unifications'(Goal, Goal, _).
 
 
 
@@ -5753,19 +5746,6 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_dcg_simplify_and'(Goal2, Goal3).
 
 '$lgt_dcg_simplify_and'(Goal, Goal).
-
-
-
-% '$lgt_dcg_simplify_terminals'(+goal)
-%
-% simplifies code generated for list of terminals by folding the chain of unifications
-
-'$lgt_dcg_simplify_terminals'((S=L,Goals)) :-
-	!,
-	S = L,
-	'$lgt_dcg_simplify_terminals'(Goals).
-
-'$lgt_dcg_simplify_terminals'(_).
 
 
 
