@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	2004 January 25
+" Last Change:	2004 January 30
 
 
 " Quit when a syntax file was already loaded:
@@ -107,8 +107,8 @@ syn keyword	logtalkBuiltIn		abolish_category
 syn keyword	logtalkBuiltIn		extends_object
 syn keyword	logtalkBuiltIn		extends_protocol
 syn keyword	logtalkBuiltIn		implements_protocol
-syn keyword	logtalkBuiltIn		instantiates_object
-syn keyword	logtalkBuiltIn		specializes_object
+syn keyword	logtalkBuiltIn		instantiates_class
+syn keyword	logtalkBuiltIn		specializes_class
 syn keyword	logtalkBuiltIn		imports_category
 
 syn keyword	logtalkBuiltIn		abolish_events

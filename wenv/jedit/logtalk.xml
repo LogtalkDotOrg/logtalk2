@@ -170,8 +170,8 @@
 			<FUNCTION>extends_object</FUNCTION>
 			<FUNCTION>extends_protocol</FUNCTION>
 			<FUNCTION>implements_protocol</FUNCTION>
-			<FUNCTION>instantiates_object</FUNCTION>
-			<FUNCTION>specializes_object</FUNCTION>
+			<FUNCTION>instantiates_class</FUNCTION>
+			<FUNCTION>specializes_class</FUNCTION>
 			<FUNCTION>imports_category</FUNCTION>
 
 			<FUNCTION>abolish_events</FUNCTION>

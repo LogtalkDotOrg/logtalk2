@@ -209,8 +209,8 @@
 				<string>(extends_object)\(</string>
 				<string>(extends_protocol)\(</string>
 				<string>(implements_protocol)\(</string>
-				<string>(instantiates_object)\(</string>
-				<string>(specializes_object)\(</string>
+				<string>(instantiates_class)\(</string>
+				<string>(specializes_class)\(</string>
 				<string>(imports_category)\(</string>
 				<string>(abolish_events)\(</string>
 				<string>(current_event)\(</string>
