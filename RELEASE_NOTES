@@ -12,8 +12,8 @@ RELEASE NOTES
 
 2.14.4 - October ??, 2002
 
-	Updated YAP 4.3.x config file to use the YAP "system" to access the 
-	operating system for time, date, and file properties (needed for smart 
+	Updated YAP 4.3.x config file to use the YAP "system" library to access 
+	the operating system for time, date, and file properties (enabling smart 
 	source code compilation).
 
 	Small change to messages printed on console with smart compilation of 
