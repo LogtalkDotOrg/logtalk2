@@ -17,6 +17,9 @@ RELEASE NOTES
 	you are using Windows, the definition must be edited; see the comments 
 	on the config file itself).
 
+	Changed format of preprocessor and runtime dynamic predicates that deal 
+	with predicate indicators for better performance.
+
 
 2.22.4 - January 12, 2005
 
