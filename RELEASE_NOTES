@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.15.5 - December ??, 2003
+2.15.5 - December 30, 2003
 
 	Make operator ^^/1 right-associative for consistency with remaining 
 	operator declarations.
