@@ -24,6 +24,7 @@ cd /usr/local
 chmod -R go-w,a+r lgt2170
 chmod a+x lgt2170
 chmod a+x lgt2170/misc/*.sh
+chmod a+x lgt2170/xml/*.sh
 ln -sf lgt2170 logtalk
 cd bin
 ln -sf ../lgt2170/misc/cplgtdirs.sh cplgtdirs.sh
