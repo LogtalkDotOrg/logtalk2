@@ -390,8 +390,9 @@ SWI Prolog 3.2.9 & 3.3.x and all later versions
 	No problems expected. Please report any problem found (with a solution 
 	if possible). Don't forget to use the cd/1 predicate to set the working 
 	directory before loading an example. Supports smart compilation of 
-	source files.
-
+	source files. To improve the integration between Logtalk and SWI-Prolog 
+	edit the compiler/logtalk.pl file and add the line ":- system_module." 
+	to the top.
 
 
 Trinc-Prolog R3
