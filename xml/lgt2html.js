@@ -102,8 +102,8 @@ WScript.Echo("generating index file...");
 index_file = directory + "\\" + index_file;
 
 switch (format) {
-	case "xhtml" :	xhtml_index_file();
-	case "html" :	html_index_file();
+	case "xhtml" :	xhtml_index_file(); break;
+	case "html" :	html_index_file(); break;
 }
 
 WScript.Echo("index file generated");
@@ -179,7 +179,7 @@ function xhtml_index_file() {
 
 function html_index_file() {
 
-	var a = fso.CreateTextFile(index_file, true);
+	var f = fso.CreateTextFile(index_file, true);
 
 	f.WriteLine("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">");
 	f.WriteLine("<html>");
