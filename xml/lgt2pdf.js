@@ -73,15 +73,16 @@ fso.CopyFile(logtalk_home + "\\xml\\logtalk.css", directory + "\\logtalk.css");
 WScript.Echo("");
 WScript.Echo("converting XML files to PDF...");
 
-var files = WshShell.CurrentDirectory.Files;
-var file;
+var files = new Enumerator(fso.GetFolder(WshShell.CurrentDirectory).Files);
 
-for (file in files)
-	if (fso.GetExtensionName(file) = "xml") {
-		WScript.Echo("converting " + fso.GetFileName(file));
+for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
+	var file = files.item().name;
+	if (fso.GetExtensionName(file) == "xml") {
+		WScript.Echo("  converting " + file);
 		var pdf_file = directory + "\\" + fso.GetBaseName(file)+ ".pdf";
 		WshShell.Run(processor + " -q -xml " + file + " -xsl " + xsl + " -pdf " + pdf_file, true);
 	}
+}
 
 WScript.Echo("");
 WScript.Echo("conversion done");
