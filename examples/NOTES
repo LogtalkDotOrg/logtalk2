@@ -43,6 +43,9 @@ aliases
 	example of using the alias/3 predicate directive to provide alternative 
 	names to inherited predicates in order to improve readability
 
+assignvars
+	example of using assignable variables in the context of parametric objects
+
 benchmarks
 	simple benchmarks for for helping measuring performance of Logtalk message 
 	seding between Prolog compilers and for comparing message sending with 
