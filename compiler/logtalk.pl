@@ -2237,7 +2237,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	functor(Goal, Functor, Arity),
 	\+ \+ '$lgt_dbg_spying_'(Functor/Arity).
 	
-'$lgt_dbg_spying'(_, Goal, Ctx, 'c') :-
+'$lgt_dbg_spying'(_, Goal, Ctx, '*') :-
 	'$lgt_sender'(Ctx, Sender),
 	'$lgt_this'(Ctx, This),
 	'$lgt_self'(Ctx, Self),
@@ -2347,6 +2347,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_valid_port_option'(h, _, _).
 '$lgt_dbg_valid_port_option'(?, _, _).
 '$lgt_dbg_valid_port_option'(=, _, _).
+'$lgt_dbg_valid_port_option'(*, _, _).
 '$lgt_dbg_valid_port_option'(+, _, ' ').
 '$lgt_dbg_valid_port_option'(-, _, +).
 
@@ -2381,6 +2382,14 @@ current_logtalk_flag(version, version(2, 17, 0)).
 		;
 		functor(Goal, Functor, Arity)),
 	'$lgt_dbg_nospy'(Functor/Arity).
+
+'$lgt_dbg_do_port_option'(*, Goal, _, true) :-
+	functor(Goal, Functor, Arity),
+	functor(CGoal, Functor, Arity),
+	write('    Enter a context spy point term formatted as (Sender, This, Self, Goal): '),
+	read(Spypoint),
+	Spypoint = (Sender, This, Self, CGoal),
+	'$lgt_dbg_spy'(Sender, This, Self, CGoal).
 
 '$lgt_dbg_do_port_option'(@, _, _, _) :-
 	write('    ?- '),
@@ -2428,6 +2437,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	write('        d - display (writes current goal without using operator notation)'), nl,
 	write('        x - context (prints execution context)'), nl,
 	write('        = - debugging (prints debugging information'), nl,
+	write('        * - add (adds a context spy point for current goal)'), nl,
 	write('        + - add (adds a predicate spy point for current goal)'), nl,
 	write('        - - remove (removes a predicate spy point for current goal)'), nl,
 	write('        h - help (prints this list of options)'), nl,
