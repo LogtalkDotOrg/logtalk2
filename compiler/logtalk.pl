@@ -5633,6 +5633,10 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_dcg_body'([], true, S, S) :-
 	!.
 
+'$lgt_dcg_body'(\+ RGoal, CGoal, S0, S) :-
+	!,
+	'$lgt_dcg_body'((RGoal -> {fail};{true}), CGoal, S0, S).
+
 '$lgt_dcg_body'([Terminal| Terminals], Body, S0, S) :-
 	!,
 	'$lgt_dcg_terminal'(Terminal, Goal, S0, S1),
