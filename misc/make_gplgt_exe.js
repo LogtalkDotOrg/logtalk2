@@ -11,8 +11,8 @@ if (WScript.Arguments.Unnamed.Length > 0) {
 }
 
 WScript.Echo('');
-WScript.Echo('Creating a shortcut named "Logtalk - GNU Prolog (precompiled)" for running');
-WScript.Echo('Logtalk with GNU Prolog using a new precompiled top-level...');
+WScript.Echo('Creating a shortcut named "Logtalk - GNU Prolog (precompiled)" for');
+WScript.Echo('running Logtalk with GNU Prolog using a new precompiled top-level...');
 WScript.Echo('');
 
 var WshShell = new ActiveXObject("WScript.Shell");
@@ -56,11 +56,9 @@ f.Close();
 
 WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\logtalkgp.pl", true);
 
-WshShell.CurrentDirectory = prolog_path;
-
-WshShell.Run("cmd /c gplc -o " + logtalk_home + "\\bin\\gplgt.exe" + logtalk_home + "\\bin\\gnu.pl" + " " + logtalk_home + "\\bin\\logtalkgp.pl", true);
-
 FSObject.CopyFile(prolog_path + "\\w32guicons.dll", logtalk_home + "\\bin\\w32guicons.dll");
+
+WshShell.Run("cmd /c gplc --gui-console -o " + logtalk_home + "\\bin\\gplgt.exe" + logtalk_home + "\\bin\\gnu.pl" + " " + logtalk_home + "\\bin\\logtalkgp.pl", true);
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk - GNU Prolog.lnk");
