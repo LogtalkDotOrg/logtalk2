@@ -129,7 +129,7 @@
 :- dynamic('$lgt_referenced_protocol_'/1).		% '$lgt_referenced_protocol_'(Protocol)
 :- dynamic('$lgt_referenced_category_'/1).		% '$lgt_referenced_category_'(Category)
 
-:- dynamic('$lgt_op_table_'/1).					% '$lgt_op_table_'(List)
+:- dynamic('$lgt_global_op_'/3).				% '$lgt_global_op_'(Priority, Specifier, Operator)
 :- dynamic('$lgt_local_op_'/3).					% '$lgt_local_op_'(Priority, Specifier, Operator)
 
 
@@ -2286,7 +2286,8 @@ user0__def(Pred, _, _, _, Pred, user).
 	retractall('$lgt_referenced_object_'(_)),
 	retractall('$lgt_referenced_protocol_'(_)),
 	retractall('$lgt_referenced_category_'(_)),
-	retractall('$lgt_op_table_'(_)).
+	retractall('$lgt_global_op_'(_, _, _)),
+	retractall('$lgt_local_op_'(_, _, _)).
 
 
 
@@ -2338,7 +2339,7 @@ user0__def(Pred, _, _, _, Pred, user).
 	listing('$lgt_referenced_object_'/1),
 	listing('$lgt_referenced_protocol_'/1),
 	listing('$lgt_referenced_category_'/1),
-	listing('$lgt_op_table_'/1),
+	listing('$lgt_global_op_'/3),
 	listing('$lgt_local_op_'/3).
 
 
@@ -2348,12 +2349,9 @@ user0__def(Pred, _, _, _, Pred, user).
 % saves current operator table
 
 '$lgt_save_op_table' :-
-	findall(
-		op(Priority, Specifier, Operator),
+	forall(
 		(current_op(Priority, Specifier, Operator), Operator \= ','),
-		Operators),
-	retractall('$lgt_op_table_'(_)),
-	asserta('$lgt_op_table_'(Operators)).
+		asserta('$lgt_global_op_'(Priority, Specifier, Operator))).
 
 
 
@@ -2365,9 +2363,8 @@ user0__def(Pred, _, _, _, Pred, user).
 	forall(
 		retract('$lgt_local_op_'(_, Specifier, Operator)),
 		op(0, Specifier, Operator)),
-	retract('$lgt_op_table_'(Saved)),
 	forall(
-		'$lgt_member'(op(Priority2, Specifier2, Operator2), Saved),
+		retract('$lgt_global_op_'(Priority2, Specifier2, Operator2)),
 		op(Priority2, Specifier2, Operator2)).
 
 
