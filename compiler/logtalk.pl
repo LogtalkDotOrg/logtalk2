@@ -3560,6 +3560,10 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	\+ callable(Entity),
 	throw(type_error(entity_identifier, Entity)).
 
+'$lgt_tr_directive'(alias, [_, Functor1/Arity1, Functor2/Arity2]) :-
+	Arity1 =\= Arity2,
+	throw(domain_error(arity_mismatch, Functor1/Arity1, Functor2/Arity2)).
+
 '$lgt_tr_directive'(alias, [Entity, PI1, PI2]) :-
 	('$lgt_pp_extended_protocol_'(Entity, _, _, _);
 	 '$lgt_pp_implemented_protocol_'(Entity, _, _, _);
@@ -3575,11 +3579,10 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 
 
-'$lgt_tr_alias_directive'(Entity, PI1, PI2) :-
-	PI1 = Functor1/Arity1,
-	functor(Pred, Functor1, Arity1),
-	PI2 = Functor2/Arity2,
-	functor(Alias, Functor2, Arity2),
+'$lgt_tr_alias_directive'(Entity, Functor1/Arity, Functor2/Arity) :-
+	functor(Pred, Functor1, Arity),
+	Pred =.. [_| Args],
+	Alias =.. [Functor2| Args],
 	assertz('$lgt_pp_alias_'(Entity, Pred, Alias)).
 
 
