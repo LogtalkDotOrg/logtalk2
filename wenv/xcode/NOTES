@@ -20,7 +20,7 @@ the following files:
     logtalk.pblangspec
 
 2. Copy to the directory ~/Library/Application Support/Apple/Developer Tools/File Templates 
-	the following directory:
+the following directory:
 
     Logtalk
 
