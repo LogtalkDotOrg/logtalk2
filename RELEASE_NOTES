@@ -23,6 +23,10 @@ RELEASE NOTES
 	files will use the same encoding. When no encoding/1 directive is present,
 	the XML documenting files will assume UTF-8 encoding.
 
+	Corrected a bug in the implementation of the built-in database methods 
+	asserta/1 and assertz/1 when asserting facts on objects compiled in debug 
+	mode.
+
 	Corrected a bug on the "roots" example in the object "class" which failed 
 	to properly test the validity of new object identifiers.
 

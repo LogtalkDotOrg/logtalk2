@@ -1602,7 +1602,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		(Type = (dynamic) ->
 			((\+ \+ PScope = Scope; Sender = SCtn)  ->
 				('$lgt_debugging_'(Obj) ->
-					'$lgt_assert_pred_call'(Def, DDef, Prefix, GHead, Sender2, This, Self, Call, _),
+					'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 					'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, []),
 					asserta((Call :- '$lgt_dbg_fact'(Head, Ctx)))
 					;
@@ -1690,7 +1690,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 			(Type = (dynamic) ->
 				((\+ \+ PScope = Scope; Sender = SCtn)  ->
 					('$lgt_debugging_'(Obj) ->
-						'$lgt_assert_pred_call'(Def, DDef, Prefix, GHead, Sender2, This, Self, Call, _),
+						'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 						'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, []),
 						assertz((Call :- '$lgt_dbg_fact'(Head, Ctx)))
 						;
