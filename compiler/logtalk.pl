@@ -5534,8 +5534,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	findall(
 		Obj,
 		('$lgt_pp_referenced_object_'(Obj),
-		 \+ ('$lgt_current_object_'(Obj, _, _, _, _, _);
-		     '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _))),
+		 \+ '$lgt_current_object_'(Obj, _, _, _, _, _),
+		 \+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _)),
 		Objs),
 	(Objs \= [] ->
 		write('> WARNING!  references to unknown objects:    '),
@@ -5553,8 +5553,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	findall(
 		Ptc,
 		('$lgt_pp_referenced_protocol_'(Ptc),
-		 \+ ('$lgt_current_protocol_'(Ptc, _, _);
-		     '$lgt_pp_protocol_'(Ptc, _, _, _))),
+		 \+ '$lgt_current_protocol_'(Ptc, _, _),
+		 \+ '$lgt_pp_protocol_'(Ptc, _, _, _)),
 		Ptcs),
 	(Ptcs \= [] ->
 		write('> WARNING!  references to unknown protocols:  '),
@@ -5572,8 +5572,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	findall(
 		Ctg,
 		('$lgt_pp_referenced_category_'(Ctg),
-		 \+ ('$lgt_current_category_'(Ctg, _, _);
-		     '$lgt_pp_category_'(Ctg, _, _, _, _))),
+		 \+ '$lgt_current_category_'(Ctg, _, _),
+		 \+ '$lgt_pp_category_'(Ctg, _, _, _, _)),
 		Ctgs),
 	(Ctgs \= [] ->
 		write('> WARNING!  references to unknown categories: '),

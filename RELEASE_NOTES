@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.22.5 - February 3, 2005
+2.22.5 - February 9, 2005
 
 	Added scripts for easy integration of Logtalk with K-Prolog. Updated the 
 	K-Prolog config file, correcting a showstopper bug and enabling support 
@@ -40,7 +40,7 @@ RELEASE NOTES
 	supported text editors. Updated the syntax coloring file for the TextMate 
 	text editor, adding some missing ISO Prolog predicates.
 
-	Improved printing of lists of unknown referenced entities, misspelt calls, 
+	Improved printing of lists of unknown referenced entities, misspelt calls,
 	and singleton variables when compiling source files.
 
 	Added workaround for Prolog compilers with broken read_term/3 singletons/1
