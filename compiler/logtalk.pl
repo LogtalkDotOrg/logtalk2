@@ -2120,10 +2120,11 @@ current_logtalk_flag(version, version(2, 17, 1)).
 
 
 '$lgt_dbg_pretty_print_spypoint'(Sender, This, Self, Goal) :-
-	(var(Sender) -> write('_, '); '$lgt_pretty_print_vars'(Sender), write(', ')),
-	(var(This) -> write('_, '); '$lgt_pretty_print_vars'(This), write(', ')),
-	(var(Self) -> write('_, '); '$lgt_pretty_print_vars'(Self), write(', ')),
-	(var(Goal) -> write('_'); '$lgt_pretty_print_vars'(Goal)).
+	current_ouput(Output),
+	(var(Sender) -> write('_, '); \+ \+ '$lgt_pretty_print_vars_quoted'(Output, Sender), write(', ')),
+	(var(This) -> write('_, '); \+ \+ '$lgt_pretty_print_vars_quoted'(Output, This), write(', ')),
+	(var(Self) -> write('_, '); \+ \+ '$lgt_pretty_print_vars_quoted'(Output, Self), write(', ')),
+	(var(Goal) -> write('_'); \+ \+ '$lgt_pretty_print_vars_quoted'(Output, Goal)).
 
 
 '$lgt_dbg_spy'(Preds) :-
@@ -7162,10 +7163,18 @@ current_logtalk_flag(version, version(2, 17, 1)).
 		'$lgt_write_xml_cdata_element'(Stream, template, [], Template)
 		;
 		true),
+	(('$lgt_info_'(Functor/Arity, List), '$lgt_member'(exceptions is Terms, List), Terms \= []) ->
+		'$lgt_write_xml_open_tag'(Stream, exceptions, []),
+		forall(
+			'$lgt_member'(Term, Terms),
+		 	'$lgt_write_xml_cdata_element'(Stream, exception, [], Term)),
+		 '$lgt_write_xml_close_tag'(Stream, exceptions)
+		;
+		true),
 	forall(
 		('$lgt_info_'(Functor/Arity, List),
 		 '$lgt_member'(Key is Value, List),
-		 \+ '$lgt_member'(Key, [comment, argnames])),
+		 \+ '$lgt_member'(Key, [comment, argnames, exceptions])),
 		('$lgt_write_xml_open_tag'(Stream, info, []),
 		 '$lgt_write_xml_element'(Stream, key, [], Key),
 		 '$lgt_write_xml_cdata_element'(Stream, value, [], Value),
@@ -7283,7 +7292,7 @@ current_logtalk_flag(version, version(2, 17, 1)).
 	write(Stream, Tag),
 	'$lgt_write_xml_tag_attributes'(Stream, Atts),
 	write(Stream, '><![CDATA['),
-	write(Stream, Text),
+	\+ \+ '$lgt_pretty_print_vars'(Stream, Text),
 	write(Stream, ']]></'),
 	write(Stream, Tag),
 	write(Stream, '>'), nl(Stream).

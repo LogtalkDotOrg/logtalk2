@@ -12,12 +12,20 @@ RELEASE NOTES
 
 2.17.1 - May ??, 2004
 
+	Added custom handling of specification of predicate exceptions in info/2 
+	documenting directives (declared as "exceptions is [Term1, Term2, ...]" 
+	where Termi is the term thrown when an exception occurs) when writing XML 
+	documenting files.
+
 	Changed debugger command "e" to print exception terms instead of exiting 
 	Logtalk session.
 
 	Corrected a possible problem with the redefinition of loaded entities that 
 	define (possibly at runtime) dynamic predicates. All clauses for an entity 
 	dynamic predicates are retracted before loading the new entity definition.
+
+	Corrected a potential bug when pretty printing terms with variables in the 
+	debugger and in the created XML documenting files.
 
 	Added four more DCGs examples ("walker movements", "iterative shell command 
 	parsing", "bill of materials", and "command language").
