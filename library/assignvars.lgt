@@ -4,8 +4,11 @@ This file contains an adaptation to Logtalk of code for logical assignment
 of Prolog terms developed by Nobukuni Kino. For more information, please 
 consult the URL http://www.kprolog.com/en/logical_assignment/
 
-I have added a new operator, =>>/2, described below, not found in the 
-original code.
+As a derivative work, this file is licensed under the Open Software License 
+version 2.1 (http://opensource.org/licenses/osl-2.1.php).
+
+Note: I have added a new enumeration operator, =>>/2, described below, not 
+found in the original code.
 */
 
 
@@ -31,25 +34,25 @@ original code.
 	:- public(assignable/2).
 	:- mode(assignable(-assignvar, @nonvar), one).
 	:- info(assignable/2, [
-		comment is 'Makes Variable an assignable variable and sets its initial value to Value.',
+		comment is 'Makes Variable an assignable variable and sets its initial state to Value.',
 		argnames is ['Variable', 'Value']]).
 
 	:- public((<=)/2).
 	:- mode(<=(?assignvar, @nonvar), one).
 	:- info((<=)/2, [
-		comment is 'Sets the value of assignable variable Variable to Value (initializing the variable if needed).',
+		comment is 'Sets the state of the assignable variable Variable to Value (initializing the variable if needed).',
 		argnames is ['Variable', 'Value']]).
 
 	:- public((=>)/2).
 	:- mode(=>(+assignvar, ?nonvar), zero_or_one).
 	:- info((=>)/2, [
-		comment is 'Unifies Value with the current value of the assignable variable Variable.',
+		comment is 'Unifies Value with the current state of the assignable variable Variable.',
 		argnames is ['Variable', 'Value']]).
 
 	:- public((=>>)/2).
 	:- mode(=>>(+assignvar, ?nonvar), zero_or_more).
 	:- info((=>>)/2, [
-		comment is 'Enumerates, by backtracking, the current and past variable values, starting with the current one.',
+		comment is 'Enumerates, by backtracking, the current and past variable values, starting in reverse chronological order from the current one.',
 		argnames is ['Variable', 'Value']]).
 
 	:-op(100, xfx, <=).
@@ -102,11 +105,11 @@ original code.
 			;
 			Current = Value.
 
-	Assig =>> Element :-
+	Assig =>> Value :-
 		var(Assig),
 		self(Self),
 		sender(Sender),
-		throw(error(instantiation_error, Self::Assig =>> Element, Sender)).
+		throw(error(instantiation_error, Self::Assig =>> Value, Sender)).
 
 	[_| Tail] =>> Value :-
 		enumerate(Tail, Value).
