@@ -5867,16 +5867,50 @@ lgt_iso_def_pred(halt(_)).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-lgt_banner :-
-	lgt_compiler_option(startup_message, on) ->
-		logtalk_version(Major, Minor, Patch),
-		write('Logtalk '), write(Major), write('.'), write(Minor), write('.'), write(Patch), nl,
-		write('Copyright (c) 1998-2002 Paulo Moura'), nl
+lgt_startup_message :-
+	lgt_default_flag(startup_message, on) ->
+		lgt_banner,
+		lgt_default_flags
 		;
 		true.
 
 
-:- initialization(lgt_banner).
+
+lgt_banner :-
+	logtalk_version(Major, Minor, Patch),
+	nl, write('Logtalk '), write(Major), write('.'), write(Minor), write('.'), write(Patch), nl,
+	write('Copyright (c) 1998-2002 Paulo Moura'), nl, nl.
+
+
+
+lgt_default_flags :-
+	write('Default compilation flags:'), nl,
+	lgt_default_flag(iso_initialization_dir, ISO),
+	write('  ISO initialization/1 directive: '), write(ISO), nl,
+	lgt_default_flag(xml, XML),
+	write('  XML documenting files:          '), write(XML), nl,
+	lgt_default_flag(xsl, XSL),
+	write('  XSL stylesheet:                 '), write(XSL), nl,
+	lgt_default_flag(unknown, Unknown),
+	write('  Unknown entities:               '), write(Unknown), nl,
+	lgt_default_flag(misspelt, Misspelt),
+	write('  Misspelt predicates:            '), write(Misspelt), nl,
+	lgt_default_flag(singletons, Singletons),
+	write('  Singletons variables:           '), write(Singletons), nl,
+	lgt_default_flag(lgtredef, Lgtredef),
+	write('  Logtalk built-ins redefinition: '), write(Lgtredef), nl,
+	lgt_default_flag(plredef, Plredef),
+	write('  Prolog built-ins redefinition:  '), write(Plredef), nl,
+	lgt_default_flag(portability, Portability),
+	write('  Non portable calls:             '), write(Portability), nl,
+	lgt_default_flag(report, Report),
+	write('  Compilation report:             '), write(Report), nl,
+	lgt_default_flag(smart_compilation, Smart),
+	write('  Smart compilation:              '), write(Smart), nl, nl.
+
+
+
+:- initialization(lgt_startup_message).
 
 
 
