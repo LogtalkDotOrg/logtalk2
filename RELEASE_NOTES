@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.11.0
+Release 2.12.0
 
 Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -13,6 +13,11 @@ RELEASE NOTES
 2.12.0 - May ??, 2002
 
 	Updated config file for OpenProlog 1.1b5.
+
+	New example of using the built-in database handling methods (dynpred).
+
+	Syntax coloring configuration files for the jEdit 4.0 and VIM 6.1 text 
+	editors providing syntax highlighting for editing Logtalk source files.
 
 
 2.11.0 - April 22, 2002
