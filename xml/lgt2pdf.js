@@ -20,7 +20,7 @@ var xsl;
 var format = "a4";
 // var format = "us";
 
-var WshShell = WScript.CreateObject("WScript.Shell");
+var WshShell = new ActiveXObject("WScript.Shell");
 var directory = WshShell.CurrentDirectory;
 
 var processor = "fop";
@@ -28,19 +28,18 @@ var processor = "fop";
 
 var arguments = WScript.Arguments.Unnamed;
 
-if arguments.Exists("help") {
+if (arguments.Exists("help"))
 	usage_help();
-}
 
 arguments = WScript.Arguments.Named;
 
-if arguments.Exists("f")
+if (arguments.Exists("f"))
 	format = arguments.Item("f");
 
-if arguments.Exists("d")
+if (arguments.Exists("d"))
 	directory = arguments.Item("d");
 
-if arguments.Exists("p")
+if (arguments.Exists("p"))
 	processor = arguments.Item("p");
 
 if (format = "a4")
@@ -59,7 +58,7 @@ if (processor != "fop" && processor != "xep") {
 	WScript.Quit(1);
 }
 
-var fso = WScript.CreateObject("Scripting.FileSystemObject");
+var fso = new ActiveXObject("Scripting.FileSystemObject");
 
 fso.CopyFile(WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory);
 fso.CopyFile(WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory);
