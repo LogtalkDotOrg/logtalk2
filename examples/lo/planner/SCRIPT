@@ -8,7 +8,7 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 
 % start by loading the example:
 
-| ?- logtalk_load(loader).
+| ?- logtalk_load(lo_planner(loader)).
 ...
 
 

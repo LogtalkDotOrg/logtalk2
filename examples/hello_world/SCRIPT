@@ -8,5 +8,5 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 
 % just load the example and check the output message:
 
-| ?- logtalk_load(loader).
+| ?- logtalk_load(hello_world(loader)).
 ...
