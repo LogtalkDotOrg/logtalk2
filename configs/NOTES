@@ -194,7 +194,6 @@ IF/Prolog 5.1
 	of source files. Does not support the "altdirs" compiler option.
 
 
-
 JIProlog 3.0.0-6
 
 	ji.config
@@ -204,6 +203,7 @@ JIProlog 3.0.0-6
 	exists_file/1 built-in predicate prevents Logtalk from compiling source 
 	files. Don't forget to use the chdir/1 predicate to set the working 
 	directory before loading the library or an example.
+	Supports smart compilation of source files.
 
 
 K-Prolog 5.01 Linux/Solaris, 5.02 Windows and later versions
