@@ -206,13 +206,13 @@ JIProlog 3.0.0-6
 	Supports smart compilation of source files.
 
 
-K-Prolog 5.1.2 and later versions
+K-Prolog 5.1.2a and later versions
 
 	k.config
 
-	K-Prolog 5.1.2 supports the ISO Prolog standard. No problems expected. 
-	This config file have been written with the help of Nobukuni Kino. 
-	Don't forget to use the cd/1 predicate to set the working directory 
+	K-Prolog 5.1.2a supports the ISO Prolog standard. No problems expected. 
+	This config file have been written and tested with the help of Nobukuni 
+	Kino. Don't forget to use the cd/1 predicate to set the working directory 
 	before loading the library or an example. Supports smart compilation of 
 	source files.
 
