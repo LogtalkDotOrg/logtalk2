@@ -119,7 +119,7 @@ function usage_help() {
 	WScript.Echo("This script converts all Logtalk XML files documenting files in the");
 	WScript.Echo("current directory to XHTML or HTML files");
 	WScript.Echo("");
-	WScript.Echo("Usage: " + lgt2html.js + " [help] [/f:format] [/o:directory] [/i:index] [/t:title] [/p:processor]");
+	WScript.Echo("Usage: lgt2html.js [help] [/f:format] [/o:directory] [/i:index] [/t:title] [/p:processor]");
 	WScript.Echo("");
 	WScript.Echo("Optional arguments:");
 	WScript.Echo("  f - output file format (either xhtml or html; default is " + format + ")");
