@@ -2228,6 +2228,11 @@ user0__def(Pred, _, _, _, Pred, user).
 	write('ERROR!    '), writeq(Error), nl,
 	write('          in clause: '), write(Clause), nl.
 
+'$lgt_report_compiler_error'(error(Error, dcgrule(Rule))) :-
+	!,
+	write('ERROR!    '), writeq(Error), nl,
+	write('          in grammar rule: '), write((Rule)), nl.
+
 '$lgt_report_compiler_error'(error(Error, Term)) :-
 	!,
 	write('ERROR!    '), writeq(Error), nl,
@@ -5565,16 +5570,28 @@ user0__def(Pred, _, _, _, Pred, user).
 %
 % converts a DCG rule to a normal clause
 
-'$lgt_dcgrule_to_clause'((RHead --> RBody), (CHead :- CBody)) :-
+
+'$lgt_dcgrule_to_clause'(Rule, Clause) :-
+	catch(
+		'$lgt_dcg_rule'(Rule, Clause),
+		Error,
+		throw(error(Error, dcgrule(Rule)))).
+
+
+
+'$lgt_dcg_rule'((RHead --> RBody), (CHead :- CBody)) :-
 	'$lgt_dcg_head'(RHead, CHead, PushBack, S0, S),
 	'$lgt_dcg_body'(RBody, Body, S0, S),
 	'$lgt_dcg_and'(Body, PushBack, CBody).
 
 
 
+'$lgt_dcg_head'((_, Terminals), _, _, _, _) :-
+	\+	'$lgt_proper_list'(Terminals),
+	throw(type_error(list, Terminals)).
+
 '$lgt_dcg_head'((Non_terminal, Terminals), CHead, PushBack, S0, S) :-
 	!,
-	'$lgt_proper_list'(Terminals),
 	'$lgt_dcg_goal'(Non_terminal, CHead, S0, S1),
 	'$lgt_dcg_body'(Terminals, PushBack, S1, S).
 
@@ -5647,8 +5664,11 @@ user0__def(Pred, _, _, _, Pred, user).
 
 
 
+'$lgt_dcg_goal'(RGoal, _, _, _) :-
+	\+ '$lgt_callable'(RGoal),
+	throw(type_error(callable, RGoal)).
+
 '$lgt_dcg_goal'(RGoal, CGoal, S0, S) :-
-	'$lgt_callable'(RGoal),
 	RGoal =.. [Functor| RArgs],
 	'$lgt_append'(RArgs, [S0, S], CArgs),
 	CGoal =.. [Functor| CArgs].
