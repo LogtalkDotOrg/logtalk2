@@ -406,8 +406,8 @@
 			<false/>
 			<key>Regular Expressions</key>
 			<array>
-				<string>'(.+)'</string>
-				<string>"(.+)"</string>
+				<string>("(\\"|[^"])*")</string>
+				<string>('(\\'|[^'])*')</string>
 			</array>
 		</dict>
 
