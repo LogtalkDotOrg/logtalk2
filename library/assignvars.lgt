@@ -103,7 +103,7 @@ consult the URL http://www.kprolog.com/en/logical_assignment/
 		var(Assig),
 		self(Self),
 		sender(Sender),
-		throw(error(instantiation_error, Self::Assig >=> Element, Sender)).
+		throw(error(instantiation_error, Self::Assig =>> Element, Sender)).
 
 	[_| Tail] =>> Value :-
 		enumerate(Tail, Value).
