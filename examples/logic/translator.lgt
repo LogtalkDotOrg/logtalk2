@@ -19,7 +19,6 @@
 		comment is 'Translates a proposition to a list of clauses, printing the result of each translation step.',
 		argnames is ['Propostion', 'Clauses']]).
 
-	:- private(gensym_counter_/1).
 	:- dynamic(gensym_counter_/1).
 
 

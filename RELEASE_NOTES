@@ -27,7 +27,10 @@ RELEASE NOTES
 	Corrected a bug where dynamic directives are not being generated for dynamic 
 	predicates that lack a scope directive or an initial set of clauses.
 
-	Simplfied compilation of dynamic and discontiguous predicate directives.
+	Corrected a bug where local dynamic predicates would need a private scope 
+	directive in order to allow clauses of the predicate to be retracted.
+
+	Simplified compilation of dynamic and discontiguous predicate directives.
 
 	Added new "logic" example implementing a translator from logic propositions 
 	to conjunctive normal form.
