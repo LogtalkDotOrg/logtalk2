@@ -83,6 +83,7 @@
 				<regex>\b(f(ind|or)all)\(</regex>
 				<regex>\b(before)\(</regex>
 				<regex>\b(after)\(</regex>
+				<regex>\b(expand_term)\(</regex>
 				<regex>\b(phrase)\(</regex>
 			</keywords>
 
