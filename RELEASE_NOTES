@@ -15,8 +15,8 @@ RELEASE NOTES
 	Experimental support for DCG rules inside categories and objects. Added 
 	built-in methods phrase/2 and phrase/3.
 
-	Updated GNU Prolog config file to not hide compiled entity predicates to 
-	avoid incompatibilities with dynamic entities.
+	Updated GNU Prolog config file to not hide compiled entity predicates in 
+	order to avoid incompatibilities with dynamic entities.
 
 
 2.15.1 - March 8, 2003
