@@ -2,7 +2,7 @@
 :- protocol(systemp).
 
 	:- info([
-		version is 1.8,
+		version is 1.81,
 		author is 'Portable Operating-System Interface (POSI) initiative',
 		date is 2004/7/20,
 		comment is 'Portable operating system access protocol.']).
@@ -42,7 +42,7 @@
 	:- public(working_directory/1).
 	:- mode(working_directory(?atom), one).
 	:- info(working_directory/1, [
-		comment is 'Current working directory (as an abolute file name).',
+		comment is 'Current working directory (as an absolute file name).',
 		argnames is ['Directory'],
 		exceptions is [
 			'Directory is neither a variable nor a valid file name' - type_error(file_name, 'Directory')]]).
@@ -120,7 +120,7 @@
 	:- public(file_exists/1).
 	:- mode(file_exists(+atom), zero_or_one).
 	:- info(file_exists/1, [
-		comment is 'True if the specified file exists (irrespective of file permissions).',
+		comment is 'True if the specified file exists (irrespective of type and file permissions).',
 		argnames is ['File'],
 		exceptions is [
 			'File is not instantiated' - instantiation_error,
@@ -136,7 +136,7 @@
 			'File is not instantiated' - instantiation_error,
 			'File is neither a variable nor a valid file name' - type_error(file_name, 'File'),
 			'File does not exists' - existence_error(file, 'File'),
-			'No access permission to the file' - permission_error(access, 'File'),
+			'No read permission to the file' - permission_error(read, 'File'),
 			'Property is neither a variable nor a file property' - type_error(file_property, 'Property')]]).
 
 	:- public(current_environment_variable/1).
@@ -194,7 +194,7 @@
 	:- public(utc_time/1).
 	:- mode(utc_time(?time(?integer, ?integer, ?integer, ?integer, ?integer, ?integer, ?integer)), zero_or_one).
 	:- info(utc_time/1, [
-		comment is 'Universal Coordinated Time (UTC) time.',
+		comment is 'Universal Coordinated Time (UTC).',
 		argnames is [time('Year', 'Month', 'Day', 'Hours', 'Mins', 'Secs', 'Microsecs')]]).
 
 	:- public(convert_time/2).
