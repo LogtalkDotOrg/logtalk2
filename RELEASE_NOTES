@@ -12,6 +12,10 @@ RELEASE NOTES
 
 2.15.4 - July ??, 2003
 
+	New config file for XSB 2.6. Updated Logtalk compiler to compile cleanly 
+	under XSB after applying the patch described in configs/NOTES (workaround 
+	for XSB parsing problem with infix operators).
+
 	Updated SWI-Prolog config file to hide compiled entity predicates (requires 
 	SWI-Prolog 5.2.3 or later version). New optional file configs/swihook.pl 
 	contains hook code that allows Logtalk entities to be compiled and loaded 
