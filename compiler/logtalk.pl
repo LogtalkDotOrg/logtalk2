@@ -1963,12 +1963,12 @@ user0__def(Pred, _, _, _, Pred, user).
 	write('WARNING!  redefining object '), write(Entity), nl.
 
 '$lgt_report_redefined_entity'(Entity) :-		% parametric objects
-	atom_codes(Entity, Codes),
-	'$lgt_append'(Codes1, Codes2, Codes),
-	catch(number_codes(Arity, Codes2), _, fail),
-	atom_codes(Functor, Codes1),
-	functor(Loaded, Functor, Arity),
-	'$lgt_current_object_'(Loaded, _, _, _, _, _),
+	atom_codes(Entity, Codes),					% this is a quick and dirty hack
+	'$lgt_compiler_option'(code_prefix, Atom),	% assuming that code_prefix does
+	atom_codes(Atom, Code),						% not change between entity
+	'$lgt_append'(Code, Codes, Codes2),			% compilations
+	'$lgt_append'(Codes2, '_', Prefix),
+	'$lgt_current_object_'(_, Prefix, _, _, _, _),
 	!,
 	write('WARNING!  redefining object '), write(Entity), nl.
 
