@@ -88,10 +88,13 @@ for (file in files)
 		switch (processor) {
 			case "xsltproc" :
 				WshShell.Run(xsltproc + " -o " + directory + "\\" + file.FileName + ".html" + xslt + " "+ file.Name, true);
+				break;
 			case "xalan" :
 				WshShell.Run(xalan + " -o " +  + directory + "\\" + file.FileName + ".html" + " " + xslt, true);
+				break;
 			case "sabcmd" :
 				WshShell.Run(sabcmd + " " + xslt + " " + file + " " + directory + "\\" + file.FileName + ".html", true);
+				break;
 		}
 	}
 
@@ -102,8 +105,12 @@ WScript.Echo("generating index file...");
 index_file = directory + "\\" + index_file;
 
 switch (format) {
-	case "xhtml" :	xhtml_index_file(); break;
-	case "html" :	html_index_file(); break;
+	case "xhtml" :
+		xhtml_index_file();
+		break;
+	case "html" :
+		html_index_file();
+		break;
 }
 
 WScript.Echo("index file generated");
@@ -153,7 +160,7 @@ function xhtml_index_file() {
 	var file;
 
 	for (file in files) 
-		if (file.Extension = ".xml") {
+		if (file.Extension = "xml") {
 			WScript.Echo("  indexing" + file.FileName + ".html");
 			f.WriteLine("    <li><a href=\"" + file.FileName + ".html" + "\">" + file.FileName + "</a></li>");
 		}
