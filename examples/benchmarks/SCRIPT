@@ -38,8 +38,8 @@ yes
 | ?- benchmark(module:mod_length([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], _)).
 
 Number of repetitions: 1000000
-Average time: 1.73e-06
-Calls per second: 578035
+Average time: 1.725e-06
+Calls per second: 579710
 yes
 
 
