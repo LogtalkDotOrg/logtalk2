@@ -25,6 +25,30 @@ Assuming, as we do, that fairy-tale characters either always lie or always tell 
 		comment is 'Thief that stole the jam.',
 		argnames is ['Thief']]).
 
+	:- public(thief/2).
+	:- mode(thief(?atom, -list), zero_or_one).
+	:- info(thief/2, [
+		comment is 'Thief that stole the jam.',
+		argnames is ['Thief', 'Justification']]).
+
+
+	thief(Thief) :-
+		(claim(dormouse, Thief); \+ claim(dormouse, Thief)),
+		(claim(hare, Thief); \+ claim(hare, Thief)),
+		(claim(hatter, Thief); \+ claim(hatter, Thief)),
+		(\+ claim(hare, Thief); \+ claim(dormouse, Thief)).
+
+
+	thief(Thief, [Reason1, Reason2, Reason3]) :-
+		(	claim(dormouse, Thief) -> Reason1 = trusty(dormouse)
+		;	\+ claim(dormouse, Thief) -> Reason1 = liar(dormouse)),
+		(	claim(hare, Thief) -> Reason2 = trusty(hare)
+		;	\+ claim(hare, Thief) -> Reason2 = liar(hare)),
+		(	claim(hatter, Thief) -> Reason3 = trusty(hatter)
+		;	\+ claim(hatter, Thief) -> Reason3 = liar(hatter)),
+		(	\+ claim(hare, Thief)
+		;	\+ claim(dormouse, Thief)).
+
 
 	claim(hare, Thief) :-
 		Thief \= hare.
@@ -35,13 +59,6 @@ Assuming, as we do, that fairy-tale characters either always lie or always tell 
 
 	claim(dormouse, Thief) :-
 		member(Thief, [hare, hatter, dormouse]).
-
-
-	thief(Thief) :-
-		(claim(dormouse, Thief); \+ claim(dormouse, Thief)),
-		(claim(hare, Thief); \+ claim(hare, Thief)),
-		(claim(hatter, Thief); \+ claim(hatter, Thief)),
-		(\+ claim(hare, Thief); \+ claim(dormouse, Thief)).
 
 
 	member(A, [A, _, _]).
