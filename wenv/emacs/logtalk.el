@@ -4,8 +4,8 @@
 
 ;; Author: Paulo Moura
 ;; Creation date: November 15, 2003
-;; Last modification date: November 15, 2003
-;; Version: 0.1
+;; Last modification date: December 13, 2003
+;; Version: 0.2
 
 ;; Installation:
 ;;
@@ -28,7 +28,7 @@
 
 ;; setup 
 
-(defvar logtalk-mode-version "0.1"
+(defvar logtalk-mode-version "0.2"
 	"Logtalk mode version number")
 
 (defvar logtalk-mode-hook nil)
@@ -165,16 +165,16 @@
 		("\\(arg\\|copy_term\\|functor\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("=\\.\\." . 'logtalk-built-in-predicate-face)
 		;;
-		;; term unification:
-		;;
-		("\\\\?=" . 'logtalk-built-in-predicate-face)
-		;;
 		;; arithemtic evaluation:
 		;;
 		("\\<\\is\\>" . 'logtalk-built-in-predicate-face)
 		;;
 		;; arithemtic comparison:
-		("\\<\\=\\(?::=\\|[<\\]\\)\\|>=\\|[<>]\\>" . 'logtalk-built-in-predicate-face)
+		("=:=\\|@\\(?:=<\\|>=\\|[<>]\\)\\|\\\\==" . 'logtalk-built-in-predicate-face)
+		;;
+		;; term unification:
+		;;
+		("\\\\?=" . 'logtalk-built-in-predicate-face)
 		;;
 		;; evaluable functors:
 		;;
@@ -184,6 +184,7 @@
 		;; other arithemtic functors:
 		;;
 		("\\(atan\\|cos\\|exp\\|log\\|s\\(?:in\\|qrt\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\*\\*" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; stream selection and control:
 		;;
