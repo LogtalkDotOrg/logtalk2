@@ -55,7 +55,7 @@
 
 
 	date_time(Year, Month, Day, Hour, Min, Sec) :-
-		{get_time(Time), convert time(Time, Year, Month, Day, Hour, Min, Sec, _)}.
+		{get_time(Time), convert_time(Time, Year, Month, Day, Hour, Min, Sec, _)}.
 
 
 	host(Name) :-
