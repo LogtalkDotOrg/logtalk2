@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.15.4
+%  Release 2.15.5
 %
 %  Copyright (c) 1998-2003 Paulo Moura.  All Rights Reserved.
 %
@@ -1073,7 +1073,7 @@ current_logtalk_flag(Flag, Value) :-
 	\+ '$lgt_flag_'(Flag, _),
 	'$lgt_default_flag'(Flag, Value).
 
-current_logtalk_flag(version, version(2, 15, 4)).
+current_logtalk_flag(version, version(2, 15, 5)).
 
 
 
