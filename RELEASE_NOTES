@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.22.1
+Release 2.22.2
 
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -8,6 +8,12 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.22.2 - December ??, 2004
+
+	Optimized compilation of objects and categories which do not redefine 
+	built-in predicates.
 
 
 2.22.1 - December 6, 2004
