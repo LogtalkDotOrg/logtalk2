@@ -1,0 +1,23 @@
+## template = protocol
+#buffermode ( "logtalk" )
+#prompt ( "Protocol name:" $protocolname )
+#prompt ( "Extended protocols (comma separated):" $protocols )
+#if ( $protocols )
+:- protocol($protocolname,
+	extends($protocols)).
+#else
+:- protocol($protocolname).
+#end
+
+#prompt ( "Author name:" $authorname )
+#prompt ( "Comment:" $comment )
+#today ( $date "yy/MM/dd" )
+	:- info([
+		author is '$authorname',
+		date is $date,
+		comment is '$comment').
+
+
+#caret ()
+
+:- end_protocol.
