@@ -338,15 +338,15 @@ SICStus Prolog 3.5~3.8.x
 	an example.
 
 
-SWI Prolog 3.2.9 & 3.3.x/3.4.x/4.x.x
+SWI Prolog 3.2.9 & 3.3.x and later versions
 
 	swi329.config
 
 	For version 3.2.9 (or older versions).
 
-	swi330.config
+	swi.config
 
-	For all versions 3.3.x/3.4.x/4.x.x.
+	For version 3.3.x and later releases
 
 	No problems expected. Please report any other problem found (with a 
 	solution if possible). Don't forget to use the cd/1 predicate to set 
