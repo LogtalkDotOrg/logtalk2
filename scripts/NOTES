@@ -14,27 +14,28 @@ logtalk.spec
 	it does not support building form the tarball)
 
 cplgtdirs.sh
-	script for copying xml, examples and library directories to the 
-	user home directory (must be runned by the end-user to ensure 
+	shell script for copying xml, examples and library directories to 
+	the user home directory (must be runned by the end-user to ensure 
 	proper permissions on the copied files)
 
 
-The following scripts must be runned by a user with administration 
+The following shell scripts must be runned by a user with administration 
 privileges:
 
 make_gplgt.sh
-	script for making a script named gplgt for running Logtalk with 
-	GNU Prolog
+	makes a script named gplgt for running Logtalk with GNU Prolog
 
 make_qplgt.sh
-	script for making a script named qplgt for running Logtalk with 
-	Qu-Prolog (based on script code contributed by Peter Robinson)
+	makes a script named qplgt for running Logtalk with Qu-Prolog 
+	(based on script code contributed by Peter Robinson)
 
 make_swilgt.sh
-	script for making a script named swilgt for running Logtalk with 
-	SWI-Prolog
+	makes a script named swilgt for running Logtalk with SWI-Prolog
 
 make_yaplgt.sh
-	script for making a script named yaplgt for running Logtalk with 
-	YAP
+	makes a script named yaplgt for running Logtalk with YAP
 
+These scripts require the environment variable LOGTALKHOME (containing the 
+Logtalk installation directory) to be defined. In addition, they accept as 
+an optional argument a prefix for the location of a link to the scripts 
+(default is /usr/local, creating the links in /usr/local/bin).

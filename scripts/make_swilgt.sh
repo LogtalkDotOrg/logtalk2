@@ -1,14 +1,18 @@
 #! /bin/sh
 
 echo
-echo "This script makes a script named swilgt for running Logtalk with SWI-Prolog."
-echo
+echo "Making a script named swilgt for running Logtalk with SWI-Prolog..."
 
 if ! [ $LOGTALKHOME ]
 then
 	echo "The env variable LOGTALKHOME must be defined first!"
 else
 	cd $LOGTALKHOME
+	if [ -z "$1" ]; then
+		prefix=/usr/local
+	else
+		prefix="$1"
+	fi
 	if ! [ -d bin ]
 	then
 		mkdir bin
@@ -23,7 +27,7 @@ else
 	echo "#/bin/sh" > swilgt
 	echo "swipl -f $LOGTALKHOME/bin/logtalkswi.rc" >> swilgt
 	chmod a+x swilgt
-	ln -sf $LOGTALKHOME/bin/swilgt /usr/local/bin/swilgt
-	echo "A link to the script was been created in /usr/local/bin."
+	ln -sf $LOGTALKHOME/bin/swilgt $prefix/bin/swilgt
+	echo "Done. A link to the script was been created in $prefix/bin."
 	echo
 fi
