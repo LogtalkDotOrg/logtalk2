@@ -25,6 +25,8 @@ RELEASE NOTES
 	Changed the library and examples loading instructions to use the notation
 	<library>(<entity>).
 
+	Improved installation instructions and installation scripts.
+
 	Added utility predicates to all configuration files for querying and 
 	changing the current working directory.
 
