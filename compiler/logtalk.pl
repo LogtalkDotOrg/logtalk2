@@ -5638,11 +5638,14 @@ current_logtalk_flag(version, version(2, 23, 1)).
 % save currently defined operators that might be
 % redefined when a list of operators is added
 
-'$lgt_save_operators'(Ops, Saved) :-
-	findall(
-		op(Pr, Spec, Op),
-		('$lgt_member'(op(_, _, Op), Ops), current_op(Pr, Spec, Op)),
-		Saved).
+'$lgt_save_operators'([], []).
+
+'$lgt_save_operators'([op(_, Spec, Op)| Ops], Saved) :-
+	((current_op(Pr, SCSpec, Op), '$lgt_same_op_class'(Spec, SCSpec)) ->
+		Saved = [op(Pr, SCSpec, Op)| Saved2]
+		;
+		Saved = Saved2),
+	'$lgt_save_operators'(Ops, Saved2).
 
 
 
@@ -7842,6 +7845,34 @@ current_logtalk_flag(version, version(2, 23, 1)).
 '$lgt_valid_op_names_aux'([Op| Ops]) :-
 	atom(Op),
 	'$lgt_valid_op_names_aux'(Ops).
+
+
+
+% '$lgt_same_op_class'(?atom, ?atom)
+
+'$lgt_same_op_class'(fx, fx).
+'$lgt_same_op_class'(fx, fy).
+
+'$lgt_same_op_class'(fy, fx).
+'$lgt_same_op_class'(fy, fy).
+
+'$lgt_same_op_class'(xf, xf).
+'$lgt_same_op_class'(xf, yf).
+
+'$lgt_same_op_class'(yf, xf).
+'$lgt_same_op_class'(yf, yf).
+
+'$lgt_same_op_class'(xfx, xfx).
+'$lgt_same_op_class'(xfx, xfy).
+'$lgt_same_op_class'(xfx, yfx).
+
+'$lgt_same_op_class'(xfy, xfx).
+'$lgt_same_op_class'(xfy, xfy).
+'$lgt_same_op_class'(xfy, yfx).
+
+'$lgt_same_op_class'(yfx, xfx).
+'$lgt_same_op_class'(yfx, xfy).
+'$lgt_same_op_class'(yfx, yfx).
 
 
 
