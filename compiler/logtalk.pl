@@ -287,7 +287,7 @@ protocol_property(Ptc, Prop) :-
 % create_object(+object_identifier, +list, +list, +list)
 
 create_object(Obj, Rels, Dirs, Clauses) :-
-	var(Obj),
+	(var(Obj); var(Rels); var(Dirs); var(Clauses)),
 	throw(error(instantiation_error, create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
@@ -307,15 +307,15 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	throw(error(permission_error(replace, protocol, Obj), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
-	(var(Rels); \+ '$lgt_proper_list'(Rels)),
+	\+ '$lgt_proper_list'(Rels),
 	throw(error(type_error(list, Rels), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
-	(var(Dirs); \+ '$lgt_proper_list'(Dirs)),
+	\+ '$lgt_proper_list'(Dirs),
 	throw(error(type_error(list, Dirs), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
-	(var(Clauses); \+ '$lgt_proper_list'(Clauses)),
+	\+ '$lgt_proper_list'(Clauses),
 	throw(error(type_error(list, Clauses), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
@@ -336,7 +336,7 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 % create_category(+category_identifier, +list, +list, +list)
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
-	var(Ctg),
+	(var(Ctg); var(Rels); var(Dirs); var(Clauses)),
 	throw(error(instantiation_error, create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
@@ -356,15 +356,15 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	throw(error(permission_error(replace, protocol, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
-	(var(Rels); \+ '$lgt_proper_list'(Rels)),
+	\+ '$lgt_proper_list'(Rels),
 	throw(error(type_error(list, Rels), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
-	(var(Dirs); \+ '$lgt_proper_list'(Dirs)),
+	\+ '$lgt_proper_list'(Dirs),
 	throw(error(type_error(list, Dirs), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
-	(var(Clauses); \+ '$lgt_proper_list'(Clauses)),
+	\+ '$lgt_proper_list'(Clauses),
 	throw(error(type_error(list, Clauses), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
@@ -385,7 +385,7 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 % create_protocol(+protocol_identifier, +list, +list)
 
 create_protocol(Ptc, Rels, Dirs) :-
-	var(Ptc),
+	(var(Ptc); var(Rels); var(Dirs)),
 	throw(error(instantiation_error, create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
@@ -405,11 +405,11 @@ create_protocol(Ptc, Rels, Dirs) :-
 	throw(error(permission_error(replace, category, Ptc), create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
-	(var(Rels); \+ '$lgt_proper_list'(Rels)),
+	\+ '$lgt_proper_list'(Rels),
 	throw(error(type_error(list, Rels), create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
-	(var(Dirs); \+ '$lgt_proper_list'(Dirs)),
+	\+ '$lgt_proper_list'(Dirs),
 	throw(error(type_error(list, Dirs), create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
