@@ -86,8 +86,8 @@ WScript.Echo("converting XML files...");
 var files = new Enumerator(fso.GetFolder(WshShell.CurrentDirectory).Files);
 
 for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
-	var file = files.item().name;
-	if (fso.GetExtensionName(file) = "xml") {
+	var file = files.item();
+	if (fso.GetExtensionName(file.name) = "xml") {
 		WScript.Echo("  converting" + file);
 		var html_file = directory + "\\" + fso.GetBaseName(file) + ".html";
 		switch (processor) {
