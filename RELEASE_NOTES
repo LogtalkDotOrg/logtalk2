@@ -14,8 +14,9 @@ RELEASE NOTES
 
 	Improved installation instructions for Windows users.
 
-	Added five new sample scripts for converting XML documenting files to PDF, 
-	HTML, and XHTML using several XSL processors.
+	Added four new sample bash shell scripts and Windows JScript scripts for 
+	converting XML documenting files to PDF, HTML, and XHTML using several XSL 
+	processors.
 
 	Added missing namespace to XSL files in order to generated valid (X)HTML 
 	files with recent versions of XSLT processors.
@@ -25,6 +26,9 @@ RELEASE NOTES
 
 	Removed the texml.xsl XSLT file as the TeXMLatte application it depends on 
 	is no longer avaialble.
+
+	Added Windows JScript script for copying the Logtalk examples, library, and 
+	xml directories to the user directory.
 
 	Added missing extension for source metafiles to the SWI-Prolog hook file.
 	
