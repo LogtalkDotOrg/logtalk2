@@ -12,6 +12,8 @@ RELEASE NOTES
 
 2.19.2 - August ??, 2004
 
+	Improved installation instructions for Windows users.
+
 	Added five new sample scripts for converting XML documenting files to PDF, 
 	HTML, and XHTML using several XSL processors.
 
