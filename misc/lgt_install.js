@@ -106,6 +106,10 @@ WScript.Echo('');
 WScript.Echo('Users should run the shell script cplgtdirs in order to copy the');
 WScript.Echo('Logtalk user-modifiable files to their home directories.');
 WScript.Echo('');
+WScript.Echo('The path to the batch script cplgtdirs has been added to the system');
+WScript.Echo('path environment variable. The path to the batch scripts lgt2pdf and');
+WScript.Echo('lgt2html scripts has been added to the user path environment variable.');
+WScript.Echo('');
 
 WScript.Quit(0);
 
