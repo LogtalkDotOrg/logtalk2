@@ -2,9 +2,9 @@
 :- protocol(systemp).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2004/6/3,
+		date is 2004/6/4,
 		comment is 'Operating system access protocol.']).
 
 	:- public(make_directory/1).
@@ -76,21 +76,15 @@
 			'File is neither a variable nor a valid file name' - type_error(file_name, 'File'),
 			'No access permission to the file' - permission_error(access, 'File')]]).
 
-	:- public(file_modtime/2).
-	:- mode(file_modtime(+atom, -nonvar), zero_or_one).
-	:- info(file_modtime/2, [
-		comment is 'File modification time using a system-dependent timestamp.',
+	:- public(file_modification_time/2).
+	:- mode(file_modification_time(+atom, -nonvar), zero_or_one).
+	:- info(file_modification_time/2, [
+		comment is 'File modification time using a system-dependent time stamp.',
 		argnames is ['File', 'Time'],
 		exceptions is [
 			'File is not instantiated' - instantiation_error,
 			'File is neither a variable nor a valid file name' - type_error(file_name, 'File'),
 			'No access permission to the file' - permission_error(access, 'File')]]).
-
-	:- public(file_modtime/7).
-	:- mode(file_modtime(+atom, -integer, -integer, -integer, -integer, -integer, -integer), zero_or_one).
-	:- info(file_modtime/7, [
-		comment is 'File modification time using calendar local date and time.',
-		argnames is ['File', 'Year', 'Month', 'Day', 'Hours', 'Mins', 'Secs']]).
 
 	:- public(file_size/2).
 	:- mode(file_size(+atom, -integer), zero_or_one).
@@ -170,9 +164,9 @@
 			'File is neither a variable nor a valid file name' - type_error(file_name, 'File'),
 			'No access permission to the file' - permission_error(access, 'File')]]).
 
-	:- public(getenv/2).
-	:- mode(getenv(+atom, ?atom), zero_or_one).
-	:- info(getenv/2, [
+	:- public(environment_variable/2).
+	:- mode(environment_variable(+atom, ?atom), zero_or_one).
+	:- info(environment_variable/2, [
 		comment is 'Gets environment variable value.',
 		argnames is ['Variable', 'Value'],
 		exceptions is [
@@ -180,9 +174,9 @@
 			'Variable is neither a variable nor an atom' - type_error(atom, 'Variable'),
 			'Value is neither a variable nor an atom' - type_error(atom, 'Value')]]).
 
-	:- public(setenv/2).
-	:- mode(setenv(+atom, +atom), zero_or_one).
-	:- info(setenv/2, [
+	:- public(set_environment_variable/2).
+	:- mode(set_environment_variable(+atom, +atom), zero_or_one).
+	:- info(set_environment_variable/2, [
 		comment is 'Sets environment variable value.',
 		argnames is ['Variable', 'Value'],
 		exceptions is [
@@ -191,17 +185,26 @@
 			'Variable is neither a variable nor an atom' - type_error(atom, 'Variable'),
 			'Value is neither a variable nor an atom' - type_error(atom, 'Value')]]).
 
-	:- public(date_time/6).
-	:- mode(date_time(?integer, ?integer, ?integer, ?integer, ?integer, ?integer), zero_or_one).
-	:- info(date_time/6, [
-		comment is 'Current calendar date and time.',
-		argnames is ['Year', 'Month', 'Day', 'Hours', 'Mins', 'Secs']]).
+	:- public(time_stamp/1).
+	:- mode(time_stamp(-number), one).
+	:- info(time_stamp/1, [
+		comment is 'Returns the current system-dependent time stamp.',
+		argnames is ['Time']]).
 
-	:- public(convert_time/7).
-	:- mode(convert_time(+number, ?integer, ?integer, ?integer, ?integer, ?integer), zero_or_one).
-	:- info(convert_time/7, [
-		comment is 'Converts system dependent timestamp to calendar local date and time.',
-		argnames is ['Time', 'Year', 'Month', 'Day', 'Hours', 'Mins', 'Secs']]).
+	:- public(date_time/7).
+	:- mode(date_time(?integer, ?integer, ?integer, ?integer, ?integer, ?integer, ?integer), zero_or_one).
+	:- info(date_time/7, [
+		comment is 'Current calendar date and time.',
+		argnames is ['Year', 'Month', 'Day', 'Hours', 'Mins', 'Secs', 'Milisecs']]).
+
+	:- public(convert_time/8).
+	:- mode(convert_time(+number, ?integer, ?integer, ?integer, ?integer, ?integer, ?integer), zero_or_one).
+	:- info(convert_time/8, [
+		comment is 'Converts a system-dependent time stamp to calendar local date and time.',
+		argnames is ['Time', 'Year', 'Month', 'Day', 'Hours', 'Mins', 'Secs', 'Milisecs'],
+		exceptions is [
+			'Time is not instantiated' - instantiation_error,
+			'Time is neither a variable nor a valid time stamp' - type_error(time_stamp, 'Variable')]]).
 
 	:- public(cpu_time/1).
 	:- mode(cpu_time(-number), zero_or_one).
@@ -349,6 +352,10 @@
 	:- mode(file_name_parts(-atom, +list), zero_or_one).
 	:- info(file_name_parts/2, [
 		comment is 'Converts between a file name and its constituent parts (represented as a list of compound terms).',
-		argnames is ['File', 'Parts']]).
+		argnames is ['File', 'Parts'],
+		exceptions is [
+			'None of the arguments are instantiated' - instantiation_error,
+			'File is neither a variable nor a valid file name' - type_error(file_name, 'File'),
+			'Parts is neither a variable nor a list' - type_error(list, 'Host')]]).
 
 :- end_protocol.
