@@ -1729,10 +1729,7 @@ current_logtalk_flag(version, version(2, 21, 1)).
 	throw(error(type_error(callable, Ruleset), Obj::phrase(Ruleset, Input, Rest), Sender)).
 
 '$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
-	var(Input),
-	throw(error(instantiation_error, Obj::phrase(Ruleset, Input, Rest), Sender)).
-
-'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
+	nonvar(Input),
 	\+ '$lgt_proper_list'(Input),
 	throw(error(type_error(list, Input), Obj::phrase(Ruleset, Input, Rest), Sender)).
 
