@@ -26,6 +26,10 @@
 		{working_directory(Directory)}.
 
 
+	directory_exists(Directory) :-
+		{fail}.
+
+
 	directory_files(Directory, Files) :-
 		{directory_files(Directory, Files)}.
 
@@ -54,7 +58,11 @@
 		{date_time(dt(Year, Month, Day, Hour, Min, Sec))}.
 
 
-	host(Name) :-
+	cpu_time(Time) :-
+		{cpu_time(Miliseconds), Time is Miliseconds/1000}.
+
+
+	host_name(Name) :-
 		{host_name(Name)}.
 
 

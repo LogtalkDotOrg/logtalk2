@@ -31,6 +31,10 @@
 		{fail}.
 
 
+	directory_exists(Directory) :-
+		{fail}.
+
+
 	directory_files(Directory, Files) :-
 		{file_members_of_directory(Directory, '*', Files)}.
 
@@ -63,7 +67,11 @@
 		{date(date(Day, Month, Year)), time(time(Hours, Mins, Secs))}.
 
 
-	host(Name) :-
+	cpu_time(Time) :-
+		{statistics(runtime, [Miliseconds| _]), Time is Miliseconds/1000}.
+
+
+	host_name(Name) :-
 		{fail}.
 
 

@@ -29,6 +29,10 @@
 		{getcwd(Directory)}.
 
 
+	directory_exists(Directory) :-
+		{fail}.
+
+
 	directory_files(Directory, Files) :-
 		{fail}.
 
@@ -61,7 +65,11 @@
 		{localtime(time, Year, Month, Day, _, _, Hours, Min, Secs)}.
 
 
-	host(Name) :-
+	cpu_time(Time) :-
+		{Time is cputime}.
+
+
+	host_name(Name) :-
 		{current_host(Name)}.
 
 

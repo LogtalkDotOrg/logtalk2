@@ -45,6 +45,15 @@
 		argnames is ['Directory']]).
 
 
+	:- public(directory_exists/1).
+
+	:- mode(directory_exists(+atom), zero_or_one).
+
+	:- info(directory_exists/1, [
+		comment is 'True if the specified directory exists.',
+		argnames is ['Directory']]).
+
+
 	:- public(directory_files/2).
 
 	:- mode(directory_files(+atom, -list), zero_or_one).
@@ -117,11 +126,20 @@
 		argnames is ['Year', 'Month', 'Day', 'Hour', 'Min', 'Sec']]).
 
 
-	:- public(host/1).
+	:- public(cpu_time/1).
 
-	:- mode(host(-atom), one).
+	:- mode(cpu_time(-number) zero_or_one).
 
-	:- info(host/1, [
+	:- info(cpu_time/1, [
+		comment is 'System cpu time in seconds.',
+		argnames is ['Time']]).
+
+
+	:- public(host_name/1).
+
+	:- mode(host_name(-atom), one).
+
+	:- info(host_name/1, [
 		comment is 'Host name.',
 		argnames is ['Name']]).
 

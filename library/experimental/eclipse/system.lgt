@@ -29,6 +29,10 @@
 		{getcwd(Directory)}.
 
 
+	directory_exists(Directory) :-
+		{fail}.
+
+
 	directory_files(Directory, Files) :-
 		{read_directory(Directory, "*", _, Files)}.
 
@@ -61,7 +65,11 @@
 		{mjd_now(MJD), mjd_to_date(MJD, Day/Month/Year), mjd_to_time(MJD, Hours:Mins:Secs)}.
 
 
-	host(Name) :-
+	cpu_time(Time) :-
+		{cputime(Time)}.
+
+
+	host_name(Name) :-
 		{get_flag(hostname, String), atom_string(Name, String)}.
 
 

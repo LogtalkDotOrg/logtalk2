@@ -26,6 +26,10 @@
 		{fail}.
 
 
+	directory_exists(Directory) :-
+		{fail}.
+
+
 	directory_files(Directory, Files) :-
 		{fail}.
 
@@ -58,7 +62,11 @@
 		{realtime(RT), localtime(RT, LT), LT = local_time(Year, Month, Day, Hour, Min, Sec)}.
 
 
-	host(Name) :-
+	cpu_time(Time) :-
+		{statistics(runtime, [Start,_]), Time is Start/1000}.
+
+
+	host_name(Name) :-
 		{fail}.
 
 

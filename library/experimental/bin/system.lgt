@@ -26,6 +26,10 @@
 		{pwd(Chars), atom_chars(Directory, Chars)}.
 
 
+	directory_exists(Directory) :-
+		{fail}.
+
+
 	directory_files(Directory, Files) :-
 		{fail}.
 
@@ -58,7 +62,11 @@
 		{fail}.
 
 
-	host(Name) :-
+	cpu_time(Time) :-
+		{ctime(Miliseconds), Time is Miliseconds/1000}.
+
+
+	host_name(Name) :-
 		{hostname(Name)}.
 
 

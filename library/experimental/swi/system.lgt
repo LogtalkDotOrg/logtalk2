@@ -26,8 +26,12 @@
 		{working_directory(Directory, Directory)}.
 
 
+	directory_exists(Directory) :-
+		{exists_directory(Directory)}.
+
+
 	directory_files(Directory, Files) :-
-		{directory_files(Directory, Files)}.
+		{fail}.
 
 
 	file_exists(File) :-
@@ -58,7 +62,11 @@
 		{get_time(Time), convert_time(Time, Year, Month, Day, Hour, Min, Sec, _)}.
 
 
-	host(Name) :-
+	cpu_time(Time) :-
+		{Time is cputime}.
+
+
+	host_name(Name) :-
 		{fail}.
 
 

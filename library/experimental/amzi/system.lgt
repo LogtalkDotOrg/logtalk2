@@ -29,6 +29,10 @@
 		{curdir(Directory, Directory)}.
 
 
+	directory_exists(Directory) :-
+		{fail}.
+
+
 	directory_files(Directory, Files) :-
 		{directory_files(Directory, Files)}.
 
@@ -57,7 +61,11 @@
 		{date(Year, Month, Day), time(Hour, Min, Sec)}.
 
 
-	host(Name) :-
+	cpu_time(Time) :-
+		{Time is cputime}.
+
+
+	host_name(Name) :-
 		{current_host(Name)}.
 
 
