@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.14.4
+%  Release 2.14.5
 %
 %  Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 %
@@ -1062,7 +1062,8 @@ current_logtalk_flag(Flag, Value) :-
 	\+ '$lgt_flag_'(Flag, _),
 	'$lgt_default_flag'(Flag, Value).
 
-current_logtalk_flag(version, version(2, 14, 4)).
+current_logtalk_flag(version, version(2, 14, 5)).
+
 
 
 
@@ -1071,6 +1072,16 @@ current_logtalk_flag(version, version(2, 14, 4)).
 %  built-in methods
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+% 
+
+'$lgt_obj_exists'(Obj, Pred, Sender) :-
+	\+ '$lgt_current_object_'(Obj, _, _, _, _),
+	throw(error(existence_error(object, Obj), Obj::Pred, Sender)).
+
+'$lgt_!'(_, _).
 
 
 
@@ -2994,17 +3005,21 @@ user0__def(Pred, _, _, _, Pred, user).
 	!,
 	'$lgt_tr_msg'(Obj, Pred, TPred, Context).
 
-'$lgt_tr_msg'(_, !, !, _) :-
-	!.
+'$lgt_tr_msg'(Obj, !, ('$lgt_obj_exists'(Obj, !, This), !), Context) :-
+	!,
+	'$lgt_this'(Context, This).
 
-'$lgt_tr_msg'(_, true, true, _) :-
-	!.
+'$lgt_tr_msg'(Obj, true, ('$lgt_obj_exists'(Obj, true, This), true), Context) :-
+	!,
+	'$lgt_this'(Context, This).
 
-'$lgt_tr_msg'(_, fail, fail, _) :-
-	!.
+'$lgt_tr_msg'(Obj, fail, ('$lgt_obj_exists'(Obj, fail, This), fail), Context) :-
+	!,
+	'$lgt_this'(Context, This).
 
-'$lgt_tr_msg'(_, repeat, repeat, _) :-
-	!.
+'$lgt_tr_msg'(Obj, repeat, ('$lgt_obj_exists'(Obj, repeat, This), repeat), Context) :-
+	!,
+	'$lgt_this'(Context, This).
 
 '$lgt_tr_msg'(Obj, call(Pred), TPred, Context) :-
 	!,
@@ -3019,8 +3034,9 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_tr_msg'(Obj, Goal, TGoal, Context),
 	'$lgt_tr_msg'(Obj, Recovery, TRecovery, Context).
 
-'$lgt_tr_msg'(_, throw(Error), throw(Error), _) :-
-	!.
+'$lgt_tr_msg'(Obj, throw(Error), ('$lgt_obj_exists'(Obj, throw(Error), This), throw(Error)), Context) :-
+	!,
+	'$lgt_this'(Context, This).
 
 
 % built-in metapredicates
@@ -3330,8 +3346,12 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_simplify_clause'((Head :- true), Head) :-
 	!.
 
-'$lgt_simplify_clause'((Head :- Body), (Head :- SBody)) :-
-	'$lgt_simplify_body'(Body, SBody).
+'$lgt_simplify_clause'((Head :- Body), Clause) :-
+	'$lgt_simplify_body'(Body, SBody),
+	(SBody == true ->
+		Clause = Head
+		;
+		Clause = (Head :- SBody)).
 
 
 
