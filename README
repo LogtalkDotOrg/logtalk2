@@ -81,6 +81,11 @@ distribution archive file for your operating system. You can install
 Logtalk in any directory that you find convenient. See the file INSTALL 
 for further instructions.
 
+See the user manual for a description of the source files organization 
+and for using instructions (to read the user manual open the file 
+manuals/index.html with a web browser). Most files are formatted 
+using four-space tabs.
+
 
 6. DOCUMENTATION
 
