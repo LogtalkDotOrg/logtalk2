@@ -16,7 +16,7 @@ Quick start
 of the main Logtalk concepts.
 
 3. Go back to the index.html file and select the User Manual link and then 
-the Installing and running Logtalk link. This will provide you with a basic 
+the Installing and running Logtalk links. This will provide you with a basic 
 understanding of how to start Logtalk and compile and load Logtalk code.
 
 
@@ -63,12 +63,15 @@ the queries in the file to your Prolog top-level.
 
 Ready to start writing your own programs?
 
-1. Take a look at the wenv sub-directory. There you will find syntax 
+1. Read the User Manual sections on Programming in Logtalk and Running and 
+debugging Logtalk programs.
+
+2. Take a look at the wenv sub-directory. There you will find syntax 
 configuration files for popular text editors that enable syntax coloring 
 when editing Logtalk source files.
 
-2. Create a sub-directory with a suitable name to hold all the files of your 
+3. Create a sub-directory with a suitable name to hold all the files of your 
 application.
 
-3. Copy to this sub-directory a *.loader file from one of the example 
+4. Copy to this sub-directory a *.loader file from one of the example 
 directories and modify it to load your own source files.
