@@ -13,10 +13,10 @@
 	:- uses(loop).
 
 
-	initial_state(start, ((0,0), right, (3,3))).
+	initial_state(start, ((3,3), left, (0,0))).
 
 
-	goal_state(end, ((3,3), left, (0,0))).
+	goal_state(end, ((0,0), right, (3,3))).
 
 
 	print_state(((Me,Ce), B, (Md,Cd))) :-
