@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.22.3 - December 31, 2004
+2.22.3 - December 30, 2004
 
 	Added a configuration file for XSB 2.7.
 
@@ -31,6 +31,10 @@ RELEASE NOTES
 	Corrected a bug in the dynamic creation of objects, protocols, and 
 	categories when the debug flag is on, which resulted in the table of 
 	entities being debugged not being updated.
+
+	Corrected a bug in the handling of exceptions thrown when using the 
+	built-in debugger, which resulted in exceptions always being turned 
+	into failures.
 
 
 2.22.2 - December 24, 2004

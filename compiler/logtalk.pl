@@ -2509,7 +2509,7 @@ current_logtalk_flag(version, version(2, 22, 3)).
 			call(TGoal),
 			Error,
 			('$lgt_dbg_port'(exception, Goal, Error, Ctx, TAction),
-			 (TAction = fail -> fail; TAction = throw -> throw(Error)))),
+			 (TAction = fail -> fail; throw(Error)))),
 		(	'$lgt_dbg_port'(exit, Goal, _, Ctx, EAction),
 			call(EAction)
 			;
