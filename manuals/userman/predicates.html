@@ -111,7 +111,7 @@ Note that most predicates have more than one valid mode implying several mode di
 Some old Prolog compilers supported some sort of mode directives to improve performance. To the best of my knowledge, there is no modern Prolog compiler supporting these kind of directive. The current version of the Logtalk preprocessor just parses and than discards this directive. Nevertheless, the use of mode directives is a good starting point to the documentation of your predicates.
 </p>
 
-<h3>Metapredicate directive<a name="meta" href="index.html#predicates_meta"></a></h3>
+<h3>Metapredicate directive<a name="meta"></a></h3>
 
 <p>
 Some predicates may have arguments that will be called as goals. To ensure that these calls will be executed in the correct scope we need to use the <a title="Consult reference manual" href="../refman/directives/metapredicate1.html"><code>metapredicate/1</code></a> directive. For example:
