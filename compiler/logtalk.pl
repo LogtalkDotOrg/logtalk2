@@ -130,6 +130,7 @@
 :- dynamic('$lgt_referenced_category_'/1).		% '$lgt_referenced_category_'(Category)
 
 :- dynamic('$lgt_op_table_'/1).					% '$lgt_op_table_'(List)
+:- dynamic('$lgt_local_op_'/3).					% '$lgt_local_op_'(Priority, Specifier, Operator)
 
 
 
@@ -2284,7 +2285,8 @@ user0__def(Pred, _, _, _, Pred, user).
 	retractall('$lgt_calls_pred_'(_)),
 	retractall('$lgt_referenced_object_'(_)),
 	retractall('$lgt_referenced_protocol_'(_)),
-	retractall('$lgt_referenced_category_'(_)).
+	retractall('$lgt_referenced_category_'(_)),
+	retractall('$lgt_op_table_'(_)).
 
 
 
@@ -2335,7 +2337,9 @@ user0__def(Pred, _, _, _, Pred, user).
 	listing('$lgt_flag_'/2),
 	listing('$lgt_referenced_object_'/1),
 	listing('$lgt_referenced_protocol_'/1),
-	listing('$lgt_referenced_category_'/1).
+	listing('$lgt_referenced_category_'/1),
+	listing('$lgt_op_table_'/1),
+	listing('$lgt_local_op_'/3).
 
 
 
@@ -2345,8 +2349,8 @@ user0__def(Pred, _, _, _, Pred, user).
 
 '$lgt_save_op_table' :-
 	findall(
-		op(Priority, Type, Operator),
-		current_op(Priority, Type, Operator),
+		op(Priority, Specifier, Operator),
+		(current_op(Priority, Specifier, Operator), Operator \= ','),
 		Operators),
 	retractall('$lgt_op_table_'(_)),
 	asserta('$lgt_op_table_'(Operators)).
@@ -2358,15 +2362,30 @@ user0__def(Pred, _, _, _, Pred, user).
 % restores current operator table
 
 '$lgt_restores_op_table' :-
-	retract('$lgt_op_table_'(Saved)),
-	findall(
-		op(Priority, Type, Operator),
-		(current_op(Priority, Type, Operator),
-		 \+ '$lgt_member'(op(Priority, Type, Operator), Saved)),
-		Operators),
 	forall(
-		'$lgt_member'(op(_, Type2, Operator2), Operators),
-		op(0, Type2, Operator2)).
+		retract('$lgt_local_op_'(_, Specifier, Operator)),
+		op(0, Specifier, Operator)),
+	retract('$lgt_op_table_'(Saved)),
+	forall(
+		'$lgt_member'(op(Priority2, Specifier2, Operator2), Saved),
+		op(Priority2, Specifier2, Operator2)).
+
+
+
+% '$lgt_assert_local_ops'(+integer, +operator_specifier, +atom_or_atom_list)
+%
+% asserts local operators
+
+'$lgt_assert_local_ops'(_, _, []) :-
+	!.
+
+'$lgt_assert_local_ops'(Priority, Specifier, [Operator| Operators]) :-
+	!,
+	asserta('$lgt_local_op_'(Priority, Specifier, Operator)),
+	'$lgt_assert_local_ops'(Priority, Specifier, Operators).
+
+'$lgt_assert_local_ops'(Priority, Specifier, Operator) :-
+	asserta('$lgt_local_op_'(Priority, Specifier, Operator)).
 
 
 
@@ -2518,7 +2537,8 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_valid_op_priority'(Priority) ->
 		('$lgt_valid_op_specifier'(Specifier) ->
 			('$lgt_valid_op_names'(Operators) ->
-				op(Priority, Specifier, Operators)
+				op(Priority, Specifier, Operators),
+				'$lgt_assert_local_ops'(Priority, Specifier, Operators)
 				;
 				throw(type_error(operator_name, Operators)))
 			;
