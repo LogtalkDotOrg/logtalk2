@@ -211,9 +211,7 @@ IF/Prolog 5.1
 
 	IF/Prolog 5.1 supports the ISO Prolog standard. No problems expected.
 	Don't forget to use the cd/1 predicate to set the working directory 
-	before loading an example.
-
-	Supports smart compilation of source files.
+	before loading an example. Supports smart compilation of source files.
 
 
 K-Prolog 4.5, 5.01 Linux/Solaris, 5.02 Windows
@@ -256,7 +254,7 @@ LPA MacProlog32 1.25
 	config file twice. Supports smart compilation of source files.
 
 
-LPA WinProlog32 3.61 & 4.00
+LPA WinProlog32 3.61 & 4.xx
 
 	lpawin36.config
 	lpawin40.config
