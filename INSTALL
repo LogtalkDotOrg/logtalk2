@@ -33,8 +33,8 @@ chosen Prolog compiler) must be user writable as compiling Logtalk source
 files generates intermediate Prolog files, which are written to the same 
 location as the source files. However, making directories world-writable is a 
 security risk. One solution is to copy the Logtalk xml, examples, and library 
-directories to each user home directory (the "misc" sub-directory contains a 
-shell script that may be called by the end-users for making these copies).
+directories to each user home directory (the "misc" sub-directory contains 
+some scripts which may be called by the end-users for making these copies).
 
 
 ENVIRONMENT VARIABLES
@@ -81,7 +81,7 @@ CREATING NEW PROLOG TOP-LEVELS FOR AUTOMATIC LOADING OF LOGTALK
 Most Prolog compilers allows the user to define an initialization file that 
 is automatically consulted at startup. This initialization file may contain 
 directives for loading other files, such as the Logtalk configuration file 
-and the Logtalk compiler. The "misc" sub-directory contains several shell 
-scripts for automating the creation of these initialization files for some 
-popular Prolog compilers. In addition, be sure to read the configs/NOTES file 
-notes on the Prolog compilers that you intend to use. 
+and the Logtalk compiler. The "misc" sub-directory contains several scripts 
+for automating the creation of these initialization files for some Prolog 
+compilers. In addition, be sure to read the configs/NOTES file notes on the 
+Prolog compilers that you intend to use. 

@@ -35,7 +35,7 @@ specification file can be either a local reference or a URI reference. By
 default, all .xml documenting files contain a local reference but that 
 can be changed either in the config files, by setting a Logtalk compiler 
 flag, or by using the doctype/1 compiler option. Choose the option value 
-that works best for your XSLT tools. To choose between the .dtd or .xsd 
+that works best with your XSLT tools. To choose between the .dtd or .xsd 
 specifications use the xmlspec/1 compiler option.
 
 
@@ -116,7 +116,7 @@ lgt2pdf.js
 		* Apache FOP processor (tested with version 0.20.5)
 			http://xml.apache.org/fop 
 		* RenderX XEP processor (tested with version 3.8.1)
-			http://www.renderx.com). Tested with XEP version  
+			http://www.renderx.com/  
 
 	When using the FOP, compile your Logtalk source files using the compiler 
 	option doctype(standalone) in order to workaround a bug on the XALAN 
@@ -215,6 +215,6 @@ pdf.bat
 	reside.
 
 
-Note that you can write other XSLT files for converting the XML files to 
-other formats besides PDF, HTML, or LaTeX. You can also write alternative 
-CSS and XSLT files to change the appearance of the HTML and LaTeX files.
+Note that you can write other XSL files for converting the XML files to other 
+formats besides PDF or (X)HTML. You can also write alternative CSS and XSL 
+files to change the appearance of the (X)HTML and PDF files.
