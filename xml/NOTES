@@ -6,9 +6,9 @@ Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 This folder contains several files that enables .xml documentation files 
-created when compiling objects, categories, or protocols, to be viewed 
-in a web browser that supports the W3C standards XML, XSLT, CSS and HTML 4
-or to be converted to LateX for printing.
+created when compiling objects, categories, or protocols, to be converted 
+to PDF files, to be viewed in a web browser that supports the W3C standards 
+XML, XSLT, CSS and HTML 4, or to be converted to LateX for printing.
 
 You will need to either copy your .xml files to this directory or copy
 these files to the directory where the .xml files reside. The links to 
@@ -35,6 +35,13 @@ lgtxml.xsl
 	(after installing the latest Microsoft XML Parser Release that is needed 
 	for XSL standard compliance). The links in the (internally generated) 
 	HTML files point to related XML files.
+
+
+lgtpdfa4.xsl lgtpdfa4.xsl
+
+	XSLT files to generate PDF files from the .xml files (formatted either 
+	for A4 paper or US Letter paper) using XSL Formatting Objects. Tested 
+	with Apache Fop program.
 
 
 texml.xsl
@@ -70,18 +77,30 @@ logtalk.css
 	in a web browser.
 
 
-script.sh
+html.sh
 
 	Sample unix shell script to batch convert .xml files to .html files.
-	Edit the file to match your environment.
+	Edit the script to match your environment before running it.
 
 
-script.bat
+html.bat
 
-	Sample dos batch script to convert .xml files to .html files.
-	Edit the file to match your environment.
+	Sample DOS batch script to convert .xml files to .html files.
+	Edit the script to match your environment before running it.
+
+
+pdf.sh
+
+	Sample unix shell script to batch convert .xml files to .pdf files.
+	Edit the script to match your environment before running it.
+
+
+pdf.bat
+
+	Sample DOS batch script to convert .xml files to .pdf files.
+	Edit the script to match your environment before running it.
 
 
 Note that you can write other XSLT files for converting the XML files to 
-other formats besides HTML or LaTeX. You can also write alternative CSS 
-and XSLT files to change the appearance of the HTML and LaTeX files.
+other formats besides PDF, HTML, or LaTeX. You can also write alternative 
+CSS and XSLT files to change the appearance of the HTML and LaTeX files.
