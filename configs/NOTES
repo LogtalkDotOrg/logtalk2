@@ -198,7 +198,7 @@ IF/Prolog 5.1
 	of source files. Does not support the "altdirs" compiler flag.
 
 
-JIProlog 3.0.0-8
+JIProlog 3.0.0-10
 
 	ji.config
 
