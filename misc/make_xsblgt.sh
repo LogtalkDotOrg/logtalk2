@@ -39,8 +39,9 @@ else
 	echo "Users should define the environment variables LOGTALKHOME and"
 	echo "LOGTALKUSER in order to use the script."
 	echo
-	echo "In addition, each user will need to change the extension of the files"
-	echo "\$LOGTALKUSER/configs/xsb.config and \$LOGTALKUSER/libpaths/libpaths.pl"
-	echo "to '.P' before using the xsblgt script."
+	echo "Users must change the extension of files \$LOGTALKUSER/configs/xsb.config"
+	echo "and \$LOGTALKUSER/libpaths/libpaths.pl to '.P' before using the xsblgt"
+	echo "script. In addition, users must edit the libpaths.P file to replace all"
+	echo "occurrences of the LOGTALKUSER environment variable by its value."
 	echo
 fi
