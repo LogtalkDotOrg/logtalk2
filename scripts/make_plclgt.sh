@@ -26,7 +26,7 @@ else
 	echo ":- ensure_loaded('\$LOGTALKHOME/compiler/logtalk.pl')." >> logtalk_plc.rc
 	echo ":- ensure_loaded('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_plc.rc
 	echo "#/bin/sh" > plclgt
-	echo "\$PLC/plc -h 512k -l 128k -g 512k -e \"(consult('\$LOGTALKHOME/bin/logtalk_plc.rc'), '\\\$root').\"" >> plclgt
+	echo "\$PLC/plc -h 512k -l 128k -g 512k -e \"(consult('\\\$LOGTALKHOME/bin/logtalk_plc.rc'), '\\\$root').\"" >> plclgt
 	chmod a+x plclgt
 	ln -sf $LOGTALKHOME/bin/plclgt $prefix/bin/plclgt
 	echo "Done. A link to the script was been created in $prefix/bin."
