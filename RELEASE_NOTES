@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.14.3 - Sptember ??, 2002
+2.14.3 - Sptember 16, 2002
 
 	New compiler option, doctype, to set the doctype reference (if any) 
 	in the XML documenting files. Default value is "local" for backward 
