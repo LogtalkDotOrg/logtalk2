@@ -41,8 +41,8 @@ if (!fso.FolderExists(logtalk_home + "\\bin"))
 
 var f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalksicstus.pl", true);
 
-f.WriteLine(":- consult('" + logtalk_home + "\\\\configs\\\\sicstus.config').");
-f.WriteLine(":- consult('" + logtalk_home + "\\\\compiler\\\\logtalk.pl').");
+f.WriteLine(":- consult('$LOGTALKHOME\\\\configs\\\\sicstus.config').");
+f.WriteLine(":- consult('$LOGTALKHOME\\\\compiler\\\\logtalk.pl').");
 f.Close();
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
