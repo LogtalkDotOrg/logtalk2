@@ -118,7 +118,7 @@
 :- dynamic('$lgt_pp_protected_'/1).				% '$lgt_pp_protected_'(Functor/Arity)
 :- dynamic('$lgt_pp_private_'/1).				% '$lgt_pp_private_'(Functor/Arity)
 :- dynamic('$lgt_pp_metapredicate_'/1).			% '$lgt_pp_metapredicate_'(Pred)
-:- dynamic('$lgt_pp_alias_'/3).				% '$lgt_pp_alias_'(Entity, Pred1, Pred2)
+:- dynamic('$lgt_pp_alias_'/3).					% '$lgt_pp_alias_'(Entity, Pred1, Pred2)
 
 :- dynamic('$lgt_pp_object_'/9).				% '$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef)
 :- dynamic('$lgt_pp_category_'/4).				% '$lgt_pp_category_'(Ctg, Prefix, Dcl, Def)
@@ -5478,15 +5478,15 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_pp_extended_protocol_'(Ptc, _, PDcl2, EScope),
 	\+ '$lgt_pp_alias_'(Ptc, _, _),
 	(EScope = (public) ->
-		Body =.. [PDcl2, Pred, Scope, Compilation, Meta, Ctn]
+		Lookup =.. [PDcl2, Pred, Scope, Compilation, Meta, Ctn]
 		;
 		(EScope = protected ->
 			Call =.. [PDcl2, Pred, Scope2, Compilation, Meta, Ctn],
-			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
-			Body =.. [PDcl2, Pred, _, Compilation, Meta, Ctn])),
-	assertz('$lgt_pp_dcl_'((Head:-Body))),
+			Lookup =.. [PDcl2, Pred, _, Compilation, Meta, Ctn])),
+	assertz('$lgt_pp_dcl_'((Head:-Lookup))),
 	fail.
 
 '$lgt_gen_protocol_extend_clauses'.
@@ -5546,15 +5546,15 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_pp_implemented_protocol_'(Ptc, _, PDcl, EScope),
 	\+ '$lgt_pp_alias_'(Ptc, _, _),
 	(EScope = (public) ->
-		Body =.. [PDcl, Pred, Scope, Compilation, Meta, Ctn]
+		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, Ctn]
 		;
 		(EScope = protected ->
 			Call =.. [PDcl, Pred, Scope2, Compilation, Meta, Ctn],
-			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
-			Body =.. [PDcl, Pred, _, Compilation, Meta, Ctn])),
-	assertz('$lgt_pp_dcl_'((Head:-Body))),
+			Lookup =.. [PDcl, Pred, _, Compilation, Meta, Ctn])),
+	assertz('$lgt_pp_dcl_'((Head:-Lookup))),
 	fail.
 
 '$lgt_gen_category_implements_dcl_clauses'.
@@ -5586,15 +5586,15 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_pp_imported_category_'(Ctg, _, ECDcl, _, EScope),
 	\+ '$lgt_pp_alias_'(Ctg, _, _),
 	(EScope = (public) ->
-		Body =.. [ECDcl, Pred, Scope, Compilation, Meta, Ctn]
+		Lookup =.. [ECDcl, Pred, Scope, Compilation, Meta, Ctn]
 		;
 		(EScope = protected ->
 			Call =.. [ECDcl, Pred, Scope2, Compilation, Meta, Ctn],
-			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
-			Body =.. [ECDcl, Pred, _, Compilation, Meta, Ctn])),
-	assertz('$lgt_pp_dcl_'((Head:-Body))),
+			Lookup =.. [ECDcl, Pred, _, Compilation, Meta, Ctn])),
+	assertz('$lgt_pp_dcl_'((Head:-Lookup))),
 	fail.
 
 '$lgt_gen_category_imports_dcl_clauses'.
@@ -5642,8 +5642,8 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_pp_imported_category_'(Ctg2, _, _, Def2, _),
 	\+ '$lgt_pp_alias_'(Ctg2, _, _),
 	Head =.. [Def, Pred, Sender, This, Self, Call, Ctn],
-	Body =.. [Def2, Pred, Sender, This, Self, Call, Ctn],
-	assertz('$lgt_pp_def_'((Head:-Body))),
+	Lookup =.. [Def2, Pred, Sender, This, Self, Call, Ctn],
+	assertz('$lgt_pp_def_'((Head:-Lookup))),
 	fail.
 
 '$lgt_gen_category_imports_def_clauses'.
@@ -5703,15 +5703,15 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_pp_implemented_protocol_'(Ptc, _, PDcl, EScope),
 	\+ '$lgt_pp_alias_'(Ptc, _, _),
 	(EScope = (public) ->
-		Body =.. [PDcl, Pred, Scope, Compilation, Meta, Ctn]
+		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, Ctn]
 		;
 		(EScope = protected ->
 			Call =.. [PDcl, Pred, Scope2, Compilation, Meta, Ctn],
-			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
-			Body =.. [PDcl, Pred, _, Compilation, Meta, Ctn])),
-	assertz('$lgt_pp_dcl_'((Head:-Body))),
+			Lookup =.. [PDcl, Pred, _, Compilation, Meta, Ctn])),
+	assertz('$lgt_pp_dcl_'((Head:-Lookup))),
 	fail.
 
 '$lgt_gen_prototype_implements_dcl_clauses'.
@@ -5743,15 +5743,15 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_pp_imported_category_'(Ctg, _, CDcl, _, EScope),
 	\+ '$lgt_pp_alias_'(Ctg, _, _),
 	(EScope = (public) ->
-		Body =.. [CDcl, Pred, Scope, Compilation, Meta, Ctn]
+		Lookup =.. [CDcl, Pred, Scope, Compilation, Meta, Ctn]
 		;
 		(EScope = protected ->
 			Call =.. [CDcl, Pred, Scope2, Compilation, Meta, Ctn],
-			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
-			Body =.. [CDcl, Pred, _, Compilation, Meta, Ctn])),
-	assertz('$lgt_pp_dcl_'((Head:-Body))),
+			Lookup =.. [CDcl, Pred, _, Compilation, Meta, Ctn])),
+	assertz('$lgt_pp_dcl_'((Head:-Lookup))),
 	fail.
 
 '$lgt_gen_prototype_imports_dcl_clauses'.
@@ -5784,16 +5784,16 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_pp_extended_object_'(Parent, _, PDcl, _, _, _, _, _, _, EScope),
 	\+ '$lgt_pp_alias_'(Parent, _, _),
 	(EScope = (public) ->
-		Body =.. [PDcl, Pred, Scope, Compilation, Meta, SCtn, TCtn]
+		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, SCtn, TCtn]
 		;
 		(EScope = protected ->
 			Call =.. [PDcl, Pred, Scope2, Compilation, Meta, SCtn, TCtn],
-			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
 			Call =.. [PDcl, Pred, Scope2, Compilation, Meta, SCtn2, TCtn],
-			Body = (Call, (Scope2 == p -> SCtn = SCtn2; SCtn = Obj)))),
-	assertz('$lgt_pp_dcl_'((Head:-Body))),
+			Lookup = (Call, (Scope2 == p -> SCtn = SCtn2; SCtn = Obj)))),
+	assertz('$lgt_pp_dcl_'((Head:-Lookup))),
 	fail.
 
 '$lgt_gen_prototype_extends_dcl_clauses'.
@@ -5835,8 +5835,8 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
 	\+ '$lgt_pp_alias_'(Ctg, _, _),
 	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-	Body =.. [CDef, Pred, Sender, Obj, Self, Call, Ctn],
-	assertz('$lgt_pp_def_'((Head:-Body))),	
+	Lookup =.. [CDef, Pred, Sender, Obj, Self, Call, Ctn],
+	assertz('$lgt_pp_def_'((Head:-Lookup))),	
 	fail.
 
 '$lgt_gen_prototype_imports_def_clauses'.
@@ -5859,8 +5859,8 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_pp_extended_object_'(Parent, _, _, PDef, _, _, _, _, _, _),
 	\+ '$lgt_pp_alias_'(Parent, _, _),
 	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-	Body =.. [PDef, Pred, Sender, Parent, Self, Call, Ctn],
-	assertz('$lgt_pp_def_'((Head:-Body))),
+	Lookup =.. [PDef, Pred, Sender, Parent, Self, Call, Ctn],
+	assertz('$lgt_pp_def_'((Head:-Lookup))),
 	fail.
 
 '$lgt_gen_prototype_extends_def_clauses'.
@@ -5894,8 +5894,8 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_pp_extended_object_'(Parent, _, _, PDef, _, _, _, _, _, _),
 	\+ '$lgt_pp_alias_'(Parent, _, _),
 	Head =.. [OSuper, Pred, Sender, Obj, Self, Call, Ctn],
-	Body =.. [PDef, Pred, Sender, Parent, Self, Call, Ctn],
-	assertz('$lgt_pp_def_'((Head:-Body))),
+	Lookup =.. [PDef, Pred, Sender, Parent, Self, Call, Ctn],
+	assertz('$lgt_pp_def_'((Head:-Lookup))),
 	fail.
 
 '$lgt_gen_prototype_super_clauses'.
@@ -5930,16 +5930,16 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	Head =.. [ODcl, Pred, Scope, Compilation, Meta, SCtn, TCtn],
 	'$lgt_pp_instantiated_class_'(_, _, _, _, _, CIDcl, _, _, _, EScope),
 	(EScope = (public) ->
-		Body =.. [CIDcl, Pred, Scope, Compilation, Meta, SCtn, TCtn]
+		Lookup =.. [CIDcl, Pred, Scope, Compilation, Meta, SCtn, TCtn]
 		;
 		(EScope = protected ->
 			Call =.. [CIDcl, Pred, Scope2, Compilation, Meta, SCtn, TCtn],
-			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
 			Call =.. [CIDcl, Pred, Scope2, Compilation, Meta, SCtn2, TCtn],
-			Body = (Call, (Scope2 == p -> SCtn = SCtn2; SCtn = Obj)))),
-	assertz('$lgt_pp_dcl_'((Head:-Body))),
+			Lookup = (Call, (Scope2 == p -> SCtn = SCtn2; SCtn = Obj)))),
+	assertz('$lgt_pp_dcl_'((Head:-Lookup))),
 	fail.
 
 '$lgt_gen_ic_hierarchy_dcl_clauses'.
@@ -5972,15 +5972,15 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	Head =.. [OIDcl, Pred, Scope, Compilation, Meta, Obj, Ctn],
 	'$lgt_pp_implemented_protocol_'(_, _, PDcl, EScope),
 	(EScope = (public) ->
-		Body =.. [PDcl, Pred, Scope, Compilation, Meta, Ctn]
+		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, Ctn]
 		;
 		(EScope = protected ->
 			Call =.. [PDcl, Pred, Scope2, Compilation, Meta, Ctn],
-			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
-			Body =.. [PDcl, Pred, _, Compilation, Meta, Ctn])),
-	assertz('$lgt_pp_dcl_'((Head:-Body))),
+			Lookup =.. [PDcl, Pred, _, Compilation, Meta, Ctn])),
+	assertz('$lgt_pp_dcl_'((Head:-Lookup))),
 	fail.
 
 '$lgt_gen_ic_protocol_idcl_clauses'.
@@ -5992,15 +5992,15 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	Head =.. [OIDcl, Pred, Scope, Compilation, Meta, Obj, Ctn],
 	'$lgt_pp_imported_category_'(_, _, CDcl, _, EScope),
 	(EScope = (public) ->
-		Body =.. [CDcl, Pred, Scope, Compilation, Meta, Ctn]
+		Lookup =.. [CDcl, Pred, Scope, Compilation, Meta, Ctn]
 		;
 		(EScope = protected ->
 			Call =.. [CDcl, Pred, Scope2, Compilation, Meta, Ctn],
-			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
-			Body =.. [CDcl, Pred, _, Compilation, Meta, Ctn])),
-	assertz('$lgt_pp_dcl_'((Head:-Body))),
+			Lookup =.. [CDcl, Pred, _, Compilation, Meta, Ctn])),
+	assertz('$lgt_pp_dcl_'((Head:-Lookup))),
 	fail.
 
 '$lgt_gen_ic_category_idcl_clauses'.
@@ -6012,16 +6012,16 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	Head =.. [CIDcl, Pred, Scope, Compilation, Meta, SCtn, TCtn],
 	'$lgt_pp_specialized_class_'(_, _, _, _, _, SIDcl, _, _, _, EScope),
 	(EScope = (public) ->
-		Body =.. [SIDcl, Pred, Scope, Compilation, Meta, SCtn, TCtn]
+		Lookup =.. [SIDcl, Pred, Scope, Compilation, Meta, SCtn, TCtn]
 		;
 		(EScope = protected ->
 			Call =.. [SIDcl, Pred, Scope2, Compilation, Meta, SCtn, TCtn],
-			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
 			Call =.. [SIDcl, Pred, Scope2, Compilation, Meta, SCtn2, TCtn],
-			Body = (Call, (Scope2 == p -> SCtn = SCtn2; SCtn = Obj)))),
-	assertz('$lgt_pp_dcl_'((Head:-Body))),
+			Lookup = (Call, (Scope2 == p -> SCtn = SCtn2; SCtn = Obj)))),
+	assertz('$lgt_pp_dcl_'((Head:-Lookup))),
 	fail.
 
 '$lgt_gen_ic_hierarchy_idcl_clauses'.
@@ -6063,8 +6063,8 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
 	\+ '$lgt_pp_alias_'(Ctg, _, _),
 	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-	Body =.. [CDef, Pred, Sender, Obj, Self, Call, Ctn],
-	assertz('$lgt_pp_def_'((Head:-Body))),	
+	Lookup =.. [CDef, Pred, Sender, Obj, Self, Call, Ctn],
+	assertz('$lgt_pp_def_'((Head:-Lookup))),	
 	fail.
 
 '$lgt_gen_ic_imports_def_clauses'.
@@ -6087,8 +6087,8 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, _, CIDef, _, _, _),
 	\+ '$lgt_pp_alias_'(Class, _, _),
 	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-	Body =.. [CIDef, Pred, Sender, Class, Self, Call, Ctn],
-	assertz('$lgt_pp_def_'((Head:-Body))),
+	Lookup =.. [CIDef, Pred, Sender, Class, Self, Call, Ctn],
+	assertz('$lgt_pp_def_'((Head:-Lookup))),
 	fail.
 
 '$lgt_gen_ic_hierarchy_def_clauses'.
@@ -6129,8 +6129,8 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
 	\+ '$lgt_pp_alias_'(Ctg, _, _),
 	Head =.. [OIDef, Pred, Sender, Obj, Self, Call, Ctg],
-	Body =.. [CDef, Pred, Sender, Obj, Self, Call],
-	assertz('$lgt_pp_def_'((Head:-Body))),	
+	Lookup =.. [CDef, Pred, Sender, Obj, Self, Call],
+	assertz('$lgt_pp_def_'((Head:-Lookup))),	
 	fail.
 
 '$lgt_gen_ic_category_idef_clauses'.
@@ -6153,8 +6153,8 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_pp_specialized_class_'(Super, _, _, _, _, _, SIDef, _, _, _),
 	\+ '$lgt_pp_alias_'(Super, _, _),
 	Head =.. [CIDef, Pred, Sender, Class, Self, Call, Ctn],
-	Body =.. [SIDef, Pred, Sender, Super, Self, Call, Ctn],
-	assertz('$lgt_pp_def_'((Head:-Body))),
+	Lookup =.. [SIDef, Pred, Sender, Super, Self, Call, Ctn],
+	assertz('$lgt_pp_def_'((Head:-Lookup))),
 	fail.
 
 '$lgt_gen_ic_hierarchy_idef_clauses'.
@@ -6189,8 +6189,8 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, _, CIDef, _, _, _),
 	\+ '$lgt_pp_alias_'(Class, _, _),
 	Head =.. [OSuper, Pred, Sender, Obj, Obj, Call, Ctn],
-	Body =.. [CIDef, Pred, Sender, Class, Obj, Call, Ctn],
-	assertz('$lgt_pp_def_'((Head:-Body))),
+	Lookup =.. [CIDef, Pred, Sender, Class, Obj, Call, Ctn],
+	assertz('$lgt_pp_def_'((Head:-Lookup))),
 	fail.
 
 % ... or/and in subclasses...
@@ -6211,8 +6211,8 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_pp_specialized_class_'(Super, _, _, _, _, _, SIDef, _, _, _),
 	\+ '$lgt_pp_alias_'(Super, _, _),
 	Head =.. [CSuper, Pred, Sender, Class, Self, Call, Ctn],
-	Body =.. [SIDef, Pred, Sender, Super, Self, Call, Ctn],
-	assertz('$lgt_pp_def_'((Head:-Body))),
+	Lookup =.. [SIDef, Pred, Sender, Super, Self, Call, Ctn],
+	assertz('$lgt_pp_def_'((Head:-Lookup))),
 	fail.
 
 '$lgt_gen_ic_super_clauses'.
