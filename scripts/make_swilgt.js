@@ -11,7 +11,6 @@ var WshProcessEnv = WshShell.Environment("PROCESS");
 var WshSystemEnv = WshShell.Environment("SYSTEM");
 var WshUserEnv = WshShell.Environment("USER");
 var logtalk_home;
-WScript.Echo(logtalk_home);
 
 if (WshProcessEnv.Item("LOGTALKHOME"))
 	logtalk_home = WshProcessEnv.Item("LOGTALKHOME");
@@ -24,6 +23,7 @@ else {
 	usage_help();
 	WScript.Quit(1);
 }
+WScript.Echo(logtalk_home);
 
 if (WScript.Arguments.Unnamed.Length > 0) {
 	usage_help();
