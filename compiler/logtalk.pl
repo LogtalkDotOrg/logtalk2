@@ -1314,12 +1314,12 @@ current_logtalk_flag(version, version(2, 18, 0)).
 							functor(Call, CFunctor, CArity),
 							abolish(CFunctor/CArity),
 							Clause2 =.. [DDef, Pred, _, _, _, Call],
-							retractall(Clause2)
+							retractall(Clause2),
+							retractall('$lgt_obj_lookup_cache_'(_, Pred, _, _, _, _)),
+							retractall('$lgt_self_lookup_cache_'(_, Pred, _, _, _, _)),
+							retractall('$lgt_super_lookup_cache_'(_, Pred, _, _, _, _))
 							;
-							true),
-						retractall('$lgt_obj_lookup_cache_'(_, Pred, _, _, _, _)),
-						retractall('$lgt_self_lookup_cache_'(_, Pred, _, _, _, _)),
-						retractall('$lgt_super_lookup_cache_'(_, Pred, _, _, _, _))
+							true)
 						;
 						('$lgt_call'(Dcl, Pred, _, _, _) ->
 							throw(error(permission_error(modify, predicate_declaration, Pred), Obj::abolish(Functor/Arity), Sender))
@@ -1389,10 +1389,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 			('$lgt_debugging_'(Obj) ->
 				asserta((Call :- ('$lgt_nop'(Body), DBody)))
 				;
-				asserta((Call :- ('$lgt_nop'(Body), TBody)))),
-			retractall('$lgt_obj_lookup_cache_'(_, Head, _, _, _, _)),
-			retractall('$lgt_self_lookup_cache_'(_, Head, _, _, _, _)),
-			retractall('$lgt_super_lookup_cache_'(_, Head, _, _, _, _))
+				asserta((Call :- ('$lgt_nop'(Body), TBody))))
 			;
 			(PScope = p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta((Head:-Body)), Sender))
@@ -1421,10 +1418,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 				'$lgt_context'(Ctx, Sender, Obj, Obj, Prefix, []),
 				asserta((Call :- '$lgt_dbg_fact'(Head, Ctx)))
 				;
-				asserta(Call)),
-			retractall('$lgt_obj_lookup_cache_'(_, Head, _, _, _, _)),
-			retractall('$lgt_self_lookup_cache_'(_, Head, _, _, _, _)),
-			retractall('$lgt_super_lookup_cache_'(_, Head, _, _, _, _))
+				asserta(Call))
 			;
 			(PScope = p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta(Head), Sender))
@@ -1485,10 +1479,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 			('$lgt_debugging_'(Obj) ->
 				assertz((Call :- ('$lgt_nop'(Body), DBody)))
 				;
-				assertz((Call :- ('$lgt_nop'(Body), TBody)))),
-			retractall('$lgt_obj_lookup_cache_'(_, Head, _, _, _, _)),
-			retractall('$lgt_self_lookup_cache_'(_, Head, _, _, _, _)),
-			retractall('$lgt_super_lookup_cache_'(_, Head, _, _, _, _))
+				assertz((Call :- ('$lgt_nop'(Body), TBody))))
 			;
 			(PScope = p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::assertz((Head:-Body)), Sender))
@@ -1517,10 +1508,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 				'$lgt_context'(Ctx, Sender, Obj, Obj, Prefix, []),
 				assertz((Call :- '$lgt_dbg_fact'(Head, Ctx)))
 				;
-				assertz(Call)),
-			retractall('$lgt_obj_lookup_cache_'(_, Head, _, _, _, _)),
-			retractall('$lgt_self_lookup_cache_'(_, Head, _, _, _, _)),
-			retractall('$lgt_super_lookup_cache_'(_, Head, _, _, _, _))
+				assertz(Call))
 			;
 			(PScope = p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::assertz(Head), Sender))
@@ -1604,12 +1592,9 @@ current_logtalk_flag(version, version(2, 18, 0)).
 					;
 					('$lgt_call'(DDef, Head, _, _, _, Call) ->
 						retract((Call :- ('$lgt_nop'(Body), _))),
-						'$lgt_update_ddef_table'(DDef, Call)
+						'$lgt_update_ddef_table'(DDef, Head, Call)
 						;
-						fail)),
-				retractall('$lgt_obj_lookup_cache_'(_, Head, _, _, _, _)),
-				retractall('$lgt_self_lookup_cache_'(_, Head, _, _, _, _)),
-				retractall('$lgt_super_lookup_cache_'(_, Head, _, _, _, _))
+						fail))
 				;
 				(PScope = p ->
 					throw(error(permission_error(modify, private_predicate, Head), Obj::retract((Head:-Body)), Sender))
@@ -1619,10 +1604,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 			throw(error(permission_error(modify, static_predicate, Head), Obj::retract((Head:-Body)), Sender)))
 		;
 		('$lgt_call'(DDef, Head, _, _, _, Call) ->	% local dynamic predicate with no scope declaration
-			retract((Call :- ('$lgt_nop'(Body), _))),
-			retractall('$lgt_obj_lookup_cache_'(_, Head, _, _, _, _)),
-			retractall('$lgt_self_lookup_cache_'(_, Head, _, _, _, _)),
-			retractall('$lgt_super_lookup_cache_'(_, Head, _, _, _, _))
+			retract((Call :- ('$lgt_nop'(Body), _)))
 			;
 			throw(error(existence_error(predicate_declaration, Head), Obj::retract((Head:-Body)), Sender)))).
 
@@ -1643,12 +1625,9 @@ current_logtalk_flag(version, version(2, 18, 0)).
 							retract((Call :- '$lgt_dbg_fact'(_, _)))
 							;
 							retract(Call)),
-						'$lgt_update_ddef_table'(DDef, Call)
+						'$lgt_update_ddef_table'(DDef, Head, Call)
 						;
-						fail)),
-				retractall('$lgt_obj_lookup_cache_'(_, Head, _, _, _, _)),
-				retractall('$lgt_self_lookup_cache_'(_, Head, _, _, _, _)),
-				retractall('$lgt_super_lookup_cache_'(_, Head, _, _, _, _))
+						fail))
 				;
 				(PScope = p ->
 					throw(error(permission_error(modify, private_predicate, Head), Obj::retract(Head), Sender))
@@ -1661,10 +1640,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 			('$lgt_debugging_'(Obj) ->
 				retract((Call :- '$lgt_dbg_fact'(_, _)))
 				;
-				retract(Call)),
-			retractall('$lgt_obj_lookup_cache_'(_, Head, _, _, _, _)),
-			retractall('$lgt_self_lookup_cache_'(_, Head, _, _, _, _)),
-			retractall('$lgt_super_lookup_cache_'(_, Head, _, _, _, _))
+				retract(Call))
 			;
 			throw(error(existence_error(predicate_declaration, Head), Obj::retract(Head), Sender)))).
 
@@ -1695,12 +1671,9 @@ current_logtalk_flag(version, version(2, 18, 0)).
 					;
 					('$lgt_call'(DDef, Head, _, _, _, Call) ->
 						retractall(Call),
-						'$lgt_update_ddef_table'(DDef, Call)
+						'$lgt_update_ddef_table'(DDef, Head, Call)
 						;
-						true)),
-				retractall('$lgt_obj_lookup_cache_'(_, Head, _, _, _, _)),
-				retractall('$lgt_self_lookup_cache_'(_, Head, _, _, _, _)),
-				retractall('$lgt_super_lookup_cache_'(_, Head, _, _, _, _))
+						true))
 				;
 				(PScope = p ->
 					throw(error(permission_error(modify, private_predicate, Head), Obj::retractall(Head), Sender))
@@ -1710,10 +1683,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 			throw(error(permission_error(modify, static_predicate, Head), Obj::retractall(Head), Sender)))
 		;
 		('$lgt_call'(DDef, Head, _, _, _, Call) ->	% local dynamic predicate with no scope declaration
-			retractall(Call),
-			retractall('$lgt_obj_lookup_cache_'(_, Head, _, _, _, _)),
-			retractall('$lgt_self_lookup_cache_'(_, Head, _, _, _, _)),
-			retractall('$lgt_super_lookup_cache_'(_, Head, _, _, _, _))
+			retractall(Call)
 			;
 			throw(error(existence_error(predicate_declaration, Head), Obj::retractall(Head), Sender)))).
 
@@ -3390,7 +3360,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	('$lgt_tr_object_relation'(Functor, Args, Obj) ->
 		'$lgt_tr_object_relations'(Clauses, Obj)
 		;
-		throw(type_error(relation_clause, Functor))).
+		throw(domain_error(object_relation, Functor))).
 
 
 
@@ -3428,8 +3398,10 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 '$lgt_tr_protocol_relations'([Clause| Clauses], Obj) :-
 	Clause =.. [Functor| Args],
-	'$lgt_tr_protocol_relation'(Functor, Args, Obj),
-	'$lgt_tr_protocol_relations'(Clauses, Obj).
+	('$lgt_tr_protocol_relation'(Functor, Args, Obj) ->
+		'$lgt_tr_protocol_relations'(Clauses, Obj)
+		;
+		throw(domain_error(protocol_relation, Functor))).
 
 
 
@@ -3438,12 +3410,8 @@ current_logtalk_flag(version, version(2, 18, 0)).
 % translates a relation between a protocol (the last argument) with other entities
 
 '$lgt_tr_protocol_relation'(extends, Ptcs, Ptc) :-
-	!,
 	'$lgt_convert_to_list'(Ptcs, List),
 	'$lgt_tr_extends_protocol'(List, Ptc).
-
-'$lgt_tr_protocol_relation'(Unknown, _, _) :-
-	throw(directive_error(relation_clause, Unknown)).
 
 
 
@@ -3455,8 +3423,10 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 '$lgt_tr_category_relations'([Clause| Clauses], Obj) :-
 	Clause =.. [Functor| Args],
-	'$lgt_tr_category_relation'(Functor, Args, Obj),
-	'$lgt_tr_category_relations'(Clauses, Obj).
+	('$lgt_tr_category_relation'(Functor, Args, Obj) ->
+		'$lgt_tr_category_relations'(Clauses, Obj)
+		;
+		throw(domain_error(category_relation, Functor))).
 
 
 
@@ -3465,12 +3435,8 @@ current_logtalk_flag(version, version(2, 18, 0)).
 % translates a relation between a category (the last argument) with other entities
 
 '$lgt_tr_category_relation'(implements, Ptcs, Ctg) :-
-	!,
 	'$lgt_convert_to_list'(Ptcs, List),
 	'$lgt_tr_implements_protocol'(List, Ctg).
-
-'$lgt_tr_category_relation'(Unknown, _, _) :-
-	throw(directive_error(relation_clause, Unknown)).
 
 
 
@@ -3965,7 +3931,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 		!,
 		'$lgt_this'(Ctx, This)
 		;
-		\+ callable(Pred),									% invalid goal
+		\+ callable(Pred),									% invalid message
 		throw(type_error(callable, Pred)).
 
 
@@ -4110,13 +4076,14 @@ current_logtalk_flag(version, version(2, 18, 0)).
 % translates the sending of a message to self
 
 
-% non-instantiated message: translation performed at runtime
-
 '$lgt_tr_self_msg'(Pred, '$lgt_send_to_self'(Self, Pred, This), Ctx) :-
-	var(Pred),
-	!,
-	'$lgt_this'(Ctx, This),
-	'$lgt_self'(Ctx, Self).
+	var(Pred) ->					% translation performed at runtime
+		!,
+		'$lgt_this'(Ctx, This),
+		'$lgt_self'(Ctx, Self)
+		;
+		(\+ callable(Pred) ->		% invalid message
+			throw(type_error(callable, Pred))).
 
 
 % control constructs
@@ -4277,7 +4244,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 % translates calling of redefined predicates (super calls)
 
 
-% invalid goal (not callavle)
+% invalid goal (not callable)
 
 '$lgt_tr_super_sending'(Pred, _, _) :-
 	nonvar(Pred),
@@ -4831,7 +4798,8 @@ current_logtalk_flag(version, version(2, 18, 0)).
 '$lgt_report_unknown_objects' :-
 	findall(
 		Obj,
-		('$lgt_pp_referenced_object_'(Obj), \+ ('$lgt_current_object_'(Obj, _, _, _, _, _); '$lgt_pp_entity_'(_, Obj, _, _))),
+		('$lgt_pp_referenced_object_'(Obj),
+		 \+ ('$lgt_current_object_'(Obj, _, _, _, _, _); '$lgt_pp_entity_'(_, Obj, _, _))),
 		Objs),
 	(Objs \= [] ->
 		write('> WARNING!  references to unknown objects:    '), writeq(Objs), nl
@@ -4847,7 +4815,8 @@ current_logtalk_flag(version, version(2, 18, 0)).
 '$lgt_report_unknown_protocols' :-
 	findall(
 		Ptc,
-		('$lgt_pp_referenced_protocol_'(Ptc), \+ ('$lgt_current_protocol_'(Ptc, _, _); '$lgt_pp_entity_'(_, Ptc, _, _))),
+		('$lgt_pp_referenced_protocol_'(Ptc),
+		 \+ ('$lgt_current_protocol_'(Ptc, _, _); '$lgt_pp_entity_'(_, Ptc, _, _))),
 		Ptcs),
 	(Ptcs \= [] ->
 		write('> WARNING!  references to unknown protocols:  '), writeq(Ptcs), nl
@@ -4863,7 +4832,8 @@ current_logtalk_flag(version, version(2, 18, 0)).
 '$lgt_report_unknown_categories' :-
 	findall(
 		Ctg,
-		('$lgt_pp_referenced_category_'(Ctg), \+ ('$lgt_current_category_'(Ctg, _, _); '$lgt_pp_entity_'(_, Ctg, _, _))),
+		('$lgt_pp_referenced_category_'(Ctg),
+		 \+ ('$lgt_current_category_'(Ctg, _, _); '$lgt_pp_entity_'(_, Ctg, _, _))),
 		Ctgs),
 	(Ctgs \= [] ->
 		write('> WARNING!  references to unknown categories: '), writeq(Ctgs), nl
@@ -4939,25 +4909,31 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	'$lgt_append'(Args, [Sender, This, Self], TArgs),
 	Call =.. [PPrefix| TArgs],
 	Clause =.. [DDef, Pred, Sender, This, Self, Call],
-	assertz(Clause).
+	assertz(Clause),
+	retractall('$lgt_obj_lookup_cache_'(_, Pred, _, _, _, _)),
+	retractall('$lgt_self_lookup_cache_'(_, Pred, _, _, _, _)),
+	retractall('$lgt_super_lookup_cache_'(_, Pred, _, _, _, _)).
 
 
 
-% '$lgt_update_ddef_table'(+atom, +callable)
+% '$lgt_update_ddef_table'(+atom, +callable, +callable)
 %
 % retracts a dynamic "ddef clause" (used to translate a predicate call)
 % if there are no more clauses for the predicate otherwise does nothing
 %
 % this is needed in order to allow definitions in ancestors to be found
 
-'$lgt_update_ddef_table'(DDef, Call) :-
+'$lgt_update_ddef_table'(DDef, Head, Call) :-
 	functor(Call, Functor, Arity),
-	functor(Call2, Functor, Arity),
-	(clause(Call2, _) ->
+	functor(GCall, Functor, Arity),
+	(clause(GCall, _) ->
 		true
 		;
-		Clause =.. [DDef, _, _, _, _, Call2],
-		retractall(Clause)).
+		Clause =.. [DDef, Head, _, _, _, _],
+		retractall(Clause),
+		retractall('$lgt_obj_lookup_cache_'(_, Head, _, _, _, _)),
+		retractall('$lgt_self_lookup_cache_'(_, Head, _, _, _, _)),
+		retractall('$lgt_super_lookup_cache_'(_, Head, _, _, _, _))).
 
 
 
