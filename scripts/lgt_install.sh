@@ -16,25 +16,25 @@ else
 	prefix="$1"
 fi
 
-rm -rf $prefix/lgt2212
+rm -rf $prefix/lgt2213
 rm -f $prefix/logtalk
 
-mkdir $prefix/lgt2212
+mkdir $prefix/lgt2213
 
 cd ..
-cp -R * $prefix/lgt2212
+cp -R * $prefix/lgt2213
 
 cd $prefix
-chmod -R go-w,a+r lgt2212
-chmod a+x lgt2212
-chmod a+x lgt2212/misc/*.sh
-chmod a+x lgt2212/xml/*.sh
-ln -sf lgt2212 logtalk
+chmod -R go-w,a+r lgt2213
+chmod a+x lgt2213
+chmod a+x lgt2213/misc/*.sh
+chmod a+x lgt2213/xml/*.sh
+ln -sf lgt2213 logtalk
 
 cd bin
-ln -sf ../lgt2212/misc/cplgtdirs.sh cplgtdirs
-ln -sf ../lgt2212/xml/lgt2pdf.sh lgt2pdf
-ln -sf ../lgt2212/xml/lgt2html.sh lgt2html
+ln -sf ../lgt2213/misc/cplgtdirs.sh cplgtdirs
+ln -sf ../lgt2213/xml/lgt2pdf.sh lgt2pdf
+ln -sf ../lgt2213/xml/lgt2html.sh lgt2html
 
 echo "Logtalk installation completed."
 echo
