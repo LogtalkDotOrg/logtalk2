@@ -15,6 +15,9 @@ RELEASE NOTES
 	Operators declared inside an entity are now local to the entity, complying 
 	with the Logtalk language specification.
 
+	Corrected a problem with the syntax coloring of quoted atoms and strings in 
+	the SubEthaEdit text editor.
+
 
 2.15.6 - February 9, 2004
 
