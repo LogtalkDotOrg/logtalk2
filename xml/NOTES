@@ -27,8 +27,9 @@ The .xml documenting files can be either generated as standalone XML files
 or contain a reference to the Logtalk DTD file, logtalk.dtd. The reference 
 to the logtalk.dtd file can be either a local reference or a URI reference.
 By default, all .xml documenting files contain a local reference but that 
-can be changed either in the config files or by using the doctype/1 compiler 
-option. Choose the option value that works best for your XSLT tools.
+can be changed either in the config files, by setting a Logtalk compiler 
+flag, or by using the doctype/1 compiler option. Choose the option value 
+that works best for your XSLT tools.
 
 
 Brief description of each file in this folder:
@@ -50,7 +51,8 @@ lgtxml.xsl
 	HTML files point to related XML files.
 
 
-lgtpdfa4.xsl lgtpdfus.xsl
+lgtpdfa4.xsl
+lgtpdfus.xsl
 
 	XSLT files to generate PDF files from the .xml files (formatted either 
 	for A4 paper or US Letter paper) using XSL Formatting Objects. Tested 
