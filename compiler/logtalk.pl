@@ -3786,7 +3786,7 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_assert_ddcl_clause'(DDcl, Pred, Scope) :-
 	functor(Pred, Functor, Arity),
 	functor(DPred, Functor, Arity),
-	Clause =.. [DDcl, DPred, Scope, (dynamic), no],
+	Clause =.. [DDcl, DPred, Scope],
 	assertz(Clause).
 
 
@@ -3847,7 +3847,7 @@ user0__def(Pred, _, _, _, Pred, user).
 	assertz('$lgt_directive_'(dynamic(Super/6))),
 	assertz('$lgt_directive_'(dynamic(IDcl/6))),
 	assertz('$lgt_directive_'(dynamic(IDef/6))),
-	assertz('$lgt_directive_'(dynamic(DDcl/4))),
+	assertz('$lgt_directive_'(dynamic(DDcl/2))),
 	assertz('$lgt_directive_'(dynamic(DDef/5))),
 	forall(
 		('$lgt_def_'(Clause), Clause \= (_ :- _)),
@@ -3858,7 +3858,7 @@ user0__def(Pred, _, _, _, Pred, user).
 
 '$lgt_gen_static_object_dynamic_directives' :-
 	'$lgt_object_'(_, _, _, Def, _, _, _, DDcl, DDef),
-	assertz('$lgt_directive_'(dynamic(DDcl/4))),
+	assertz('$lgt_directive_'(dynamic(DDcl/2))),
 	assertz('$lgt_directive_'(dynamic(DDef/5))),
 	'$lgt_dynamic_'(Functor/Arity),
 	functor(Pred, Functor, Arity),
@@ -4129,8 +4129,9 @@ user0__def(Pred, _, _, _, Pred, user).
 	Head =.. [Dcl, Pred, Scope, Compilation, Meta, Obj, Obj],
 	Body =.. [Dcl, Pred, Scope, Compilation, Meta],
 	assertz('$lgt_dcl_'((Head:-Body))),
-	Body2 =.. [DDcl, Pred, Scope, Compilation, Meta],
-	assertz('$lgt_dcl_'((Head:-Body2))).
+	Head2 =.. [Dcl, Pred, Scope, (dynamic), no, Obj, Obj],
+	Body2 =.. [DDcl, Pred, Scope],
+	assertz('$lgt_dcl_'((Head2:-Body2))).
 
 
 
@@ -4323,8 +4324,9 @@ user0__def(Pred, _, _, _, Pred, user).
 	Head =.. [IDcl, Pred, Scope, Compilation, Meta, Obj, Obj],
 	Body =.. [Dcl, Pred, Scope, Compilation, Meta],
 	assertz('$lgt_dcl_'((Head:-Body))),
-	Body2 =.. [DDcl, Pred, Scope, Compilation, Meta],
-	assertz('$lgt_dcl_'((Head:-Body2))).
+	Head2 =.. [IDcl, Pred, Scope, (dynamic), no, Obj, Obj],
+	Body2 =.. [DDcl, Pred, Scope],
+	assertz('$lgt_dcl_'((Head2:-Body2))).
 
 
 
