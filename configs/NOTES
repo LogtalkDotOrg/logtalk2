@@ -24,7 +24,7 @@ template config file
 	template.config
 
 	If a config file for your favorite Prolog is not available, use this 
-	file to write one. For each predicate in the file, see if it is builtin 
+	file to write one. For each predicate in the file, see if it is built-in 
 	in your Prolog, available in a library, or if you can write a better 
 	definition.
 
@@ -36,8 +36,8 @@ ALS Prolog 3.1
 	Only a few tests have been done with this compiler. One known problem: an
 	ALS bug in operator handling that make calls like "\+ ::Pred" be 
 	interpreted like "::(\+ Pred)" instead of "\+ (::Pred)". A workaround is 
-	to replace all occurences of "\+ ::Pred" by "\+ (::Pred)" and all 
-	occurences of "\+ Obj::Pred" by "\+ (Obj::Pred)". Please report any other 
+	to replace all occurrences of "\+ ::Pred" by "\+ (::Pred)" and all 
+	occurrences of "\+ Obj::Pred" by "\+ (Obj::Pred)". Please report any other 
 	problems that you might find. Don't forget to use the cd/1 predicate to 
 	set the working directory before loading the library or an example. Consult 
 	the file builtins/comp_d10.pro in the ALS Prolog installation directory in 
@@ -62,7 +62,7 @@ B-Prolog 4.0~5.0, 6.4 and later versions
 	b5.config
 
 	For B-Prolog 4.0 or 5.0.
-	The (Logtalk) predicates lgt_current_date/3 and lgt_current_time/3 
+	The (Logtalk) predicates '$lgt_current_date'/3 and '$lgt_current_time'/3 
 	have dummy definitions. Don't forget to use the chdir/1 predicate to 
 	set the working directory before loading the library or an example.
 
@@ -110,7 +110,7 @@ CIAO Prolog 1.8p2 and later versions
 	that load the ciao_aux.config and the Logtalk compiler/runtime. You 
 	must edit the contents of the file ciao.config to match your operating 
 	system (the include directives arguments are file paths that differ 
-	between operating systems). The definition of the lgt_predicate_property/2 
+	between operating systems). The definition of the '$lgt_predicate_property'/2 
 	in file ciao_aux.config is a bit of a hack, but should enable you to run 
 	the Logtalk companion examples and to try out your own Logtalk programs. 
 	Don't forget to call the cd/1 predicate to set the working directory before 
@@ -208,7 +208,7 @@ LPA MacProlog32 1.25
 	This is my old Prolog development environment. Two known problems: (1) an
 	LPA bug in operator handling that make calls like "\+ ::Pred" be 
 	interpreted like "::(\+ Pred)" instead of "\+ (::Pred)". A workaround is 
-	to replace all occurences of "\+ ::Pred" by "\+ (::Pred)"; (2) If you call 
+	to replace all occurrences of "\+ ::Pred" by "\+ (::Pred)"; (2) If you call 
 	the \+ operator in your code the writeq/1 built-in don't always output a 
 	space after the operator resulting in calls like "\+(...)". Because \+ is 
 	not defined as a predicate this will fail. Don't forget to use the dvol/1 
@@ -272,7 +272,7 @@ Qu-Prolog 6.4
 	qu.config
 
 	Qu-Prolog 6.4 does not support floats. In order to compile the Logtalk 
-	library and the Logtalk examplex you will need to replace all occurrences 
+	library and the Logtalk examples you will need to replace all occurrences 
 	of floats by either integers or (quoted) atoms. In Unix-like systems, you
 	may perform the changes by running the following commands:
 
@@ -321,7 +321,7 @@ SICStus Prolog 3.8~3.11.x
 	sicstus.config
 	
 	For versions 3.8.x~3.11.x. The config file sets the flag language to 
-	iso, but that is only recomended and should not be needed to run Logtalk.
+	iso, but that is only recommended and should not be needed to run Logtalk.
 	No problems expected although not fully tested. Don't forget to use the 
 	SICStus working_directory/2 predicate to set the working directory before 
 	loading the library or an example. Supports smart compilation of source 
@@ -396,7 +396,7 @@ XSB Prolog 2.6
 	operators: just add a space after the infix operator.
 
 	The write_canonical/2 predicates may output code that in some instances 
-	can not be readed back with read_term/3. If you receive a syntax error 
+	can not be read back with read_term/3. If you receive a syntax error 
 	while loading a Logtalk compiled file we will have to fix the problem by 
 	editing the file (the Prolog output, not the Logtalk source). Don't 
 	forget to use the cd/1 predicate to set the working directory before 

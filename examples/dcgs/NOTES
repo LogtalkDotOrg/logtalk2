@@ -26,7 +26,7 @@ objects and categories:
 	url
 		parsing of URLs, decomposing them in components
 	shell
-		parsing of coomand-line shell commands
+		parsing of command-line shell commands
 	faa
 		command language DCG example (see below for original source)
 	walker
