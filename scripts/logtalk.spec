@@ -29,3 +29,4 @@ find /usr/local/share/lgt2170/ -name .DS_Store -print | xargs rm -f
 /usr/local/lib/logtalk
 /usr/local/share/lgt2170
 /usr/local/share/logtalk
+/usr/local/bin/cplgtdirs.sh
