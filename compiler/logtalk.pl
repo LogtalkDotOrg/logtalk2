@@ -2642,6 +2642,11 @@ current_logtalk_flag(version, version(2, 19, 0)).
 	!,
 	close(Input).
 
+'$lgt_copy_metafile_term'(_, Term, _, _, _, _) :-
+	Term =.. [(:-), Directive],
+	'$lgt_closing_entity_directive'(Directive, Type),
+	throw(missing_opening_directive(Type)).
+
 '$lgt_copy_metafile_term'(Input, Term, CacheAcc, Cache, EntityAcc, Entities) :-
 	Term =.. [(:-), Directive],
 	'$lgt_opening_entity_directive'(Directive, Type, Entity),
