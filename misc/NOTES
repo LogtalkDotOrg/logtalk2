@@ -65,7 +65,8 @@ make_gplgt.js
 make_gplgt_exe.js
 	makes a new GNU Prolog top level named gplgt.exe and creates a Windows 
 	shortcut named "Logtalk - GNU Prolog" for running it (needs the developer 
-	tools nasm.exe and cp.exe installed)
+	tools nasm.exe and cp.exe installed; both the developer tools and the GNU 
+	Prolog installation bin directory must be in the system path)
 
 make_qplgt.sh
 	makes a shell script named qplgt for running Logtalk with Qu-Prolog 
