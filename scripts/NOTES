@@ -6,7 +6,12 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-This directory contains miscellaneous files used in Logtalk packaging:
+This directory contains miscellaneous files used in Logtalk packaging
+and installation:
 
 logtalk.spec
 	specification file for building Linux RPMs
+
+copydirs.sh
+	script for copying examples and library directories to the user 
+	home directory
