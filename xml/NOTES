@@ -167,12 +167,13 @@ pdf.bat
 lgt2a4pdf.sh
 lgt2uspdf.sh
 
-	Sample Unix shell scripts to batch convert .xml files to .pdf files. Requires 
-	Apache FOP processor (http://xml.apache.org/fop). Tested with version 0.20.5 
-	(to workaround a bug on the XALAN processor used by FOP, you should use the 
+	Sample Unix shell scripts to batch convert .xml files to .pdf files.
+	Requires either the Apache FOP processor (http://xml.apache.org/fop) or the 
+	RenderX XEP processor (http://www.renderx.com). Edit the script to match your 
+	processor choice. Tested with FOP version 0.20.5 and XEP version 3.7.8 (to 
+	workaround a bug on the XALAN processor used by FOP, you should use the 
 	compiler option doctype(standalone) when compiling your Logtalk source files).
-	These scripts assume that the LOGTALKHOME environment variable is defined and 
-	that the FOP processor is available with the name "fop" in the path.
+	These scripts assume that the LOGTALKHOME environment variable is defined.
 	These scripts should be called from the directory containing the .xml files 
 	you wish to convert. They accept as an optional parameter an output directory 
 	for writing the generated PDF files.
