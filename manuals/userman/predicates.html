@@ -241,7 +241,7 @@ A common use for the <code>alias/3</code> directive is to give an alternative na
     :- end_object.
 </pre>
 <p>
-The directive allows both <code>width/1</code> and <code>side/1</code> to be used as mesages to the object <code>square</code>. Note that the <code>alias/3</code> directive does not rename a predicate, only provides an alternative, addtional name; the original name continues to be available.
+The directive allows both <code>width/1</code> and <code>side/1</code> to be used as mesages to the object <code>square</code>. Thus, using this directive avoids the need to explictly declare and define the "new" predicate <code>side/1</code>. Note that the <code>alias/3</code> directive does not rename a predicate, only provides an alternative, addtional name; the original name continues to be available.
 </p>
 <p>
 Another common use for this directive is to solve conflicts when two inherited predicates have the same functor and arity. We may want to call the predicate which is masked by the Logtalk lookup algorithm (see the <a href="inheritance.html">Inheritance</a> section) or we may need to call both predicates. This is simply accomplished by using the <code>alias/3</code> directive to give alternative names to masked or conflicting predicates. Consider the following example:
