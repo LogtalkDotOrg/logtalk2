@@ -2347,7 +2347,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_valid_port_option'(h, _, _).
 '$lgt_dbg_valid_port_option'(?, _, _).
 '$lgt_dbg_valid_port_option'(=, _, _).
-'$lgt_dbg_valid_port_option'(*, _, _).
+'$lgt_dbg_valid_port_option'(*, _, ' ').
 '$lgt_dbg_valid_port_option'(+, _, ' ').
 '$lgt_dbg_valid_port_option'(-, _, +).
 
