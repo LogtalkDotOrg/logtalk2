@@ -10,13 +10,13 @@ RELEASE NOTES
 =============
 
 
-2.21.2 - October ??, 2004
+2.21.2 - October 18, 2004
 
 	Added support for declaring grammar rule non-terminals as public, protected, 
 	private, dynamic, or discontiguous using the notation Functor//Arity. Added 
 	support for documenting non-terminals using the info/2 and mode/2 directives.
 
-	Added experimental support for a new "alias" predicate property.
+	Added support for a new "alias" predicate property.
 
 	New config file for JIProlog 3.0 (see the configs/NOTES file for details).
 
