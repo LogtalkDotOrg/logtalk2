@@ -3326,7 +3326,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 
 
-% '$lgt_tr_body'(+callable, -callable, +term)
+% '$lgt_tr_body'(+callable, -callable, -callable, +term)
 %
 % translates an entity clause body
 
@@ -3632,7 +3632,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_tr_marg'(*, Arg, _, Arg).
 
 '$lgt_tr_marg'(::, Arg, Ctx, TArg) :-
-	'$lgt_tr_body'(Arg, TArg, Ctx).
+	'$lgt_tr_body'(Arg, TArg, _, Ctx).
 
 
 
