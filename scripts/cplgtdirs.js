@@ -55,7 +55,7 @@ WScript.Quit(0);
 function usage_help() {
 	WScript.Echo("");
 	WScript.Echo("This script copies the Logtalk library, xml, and examples");
-	WScript.Echo("directories to the user home directory (MyDocuments\logtalk).");
+	WScript.Echo("directories to the user home directory (My Documents\\logtalk).");
 	WScript.Echo("");
 	WScript.Echo("Usage:");
 	WScript.Echo("  " + WScript.ScriptName + " help");
