@@ -17,6 +17,9 @@ RELEASE NOTES
 	features and to solve conflicts between implemented, imported, or inherited 
 	predicates.
 
+	Added new example, "aliases", illustrating the use of the new alias/3 
+	predicate directive for improving readability of inherited features.
+
 	Added new example, "diamonds", illustrating problems and solutions for the 
 	"diamond problem" (multi-inheritance conflicts and ambiguities) using the 
 	new alias/3 predicate directive.

@@ -1,0 +1,63 @@
+
+
+:- object(rectangle(_Width, _Height)).
+
+	:- public(width/1).
+	:- public(height/1).
+	:- public(area/1).
+
+	width(Width) :-
+		parameter(1, Width).
+
+	height(Height) :-
+		parameter(2, Height).
+
+	area(Area) :-
+		::width(Width),
+		::height(Height),
+		Area is Width*Height.
+
+:- end_object.
+
+
+:- object(square(Side),
+	extends(rectangle(Side, Side))).
+
+	:- alias(rectangle(_, _), width/1, side/1).
+
+:- end_object.
+
+
+
+
+:- object(ellipse(_RX, _RY)).
+
+	:- uses(math_constants).
+
+	:- public(rx/1).
+	:- public(ry/1).
+	:- public(area/1).
+
+	rx(Rx) :-
+		parameter(1, Rx).
+
+	ry(Ry) :-
+		parameter(2, Ry).
+
+	area(Area) :-
+		::rx(Rx),
+		::ry(Ry),
+		math_constants::pi(Pi),
+		Area is Rx*Ry*Pi.
+
+:- end_object.
+
+
+
+
+:- object(circle(Radius),
+	extends(ellipse(Radius, Radius))).
+
+	:- alias(ellipse(_, _), rx/1, r/1).
+
+:- end_object.
