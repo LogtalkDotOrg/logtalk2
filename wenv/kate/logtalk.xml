@@ -11,7 +11,7 @@
 				<!-- Directives -->
                 <RegExpr String = "^[\s]*:-" attribute="Normal" context="directive" />
 				<!-- Event handlers -->
-                <RegExpr String = "\b(after|before)(?=(?=[(]))" attribute="Built-in" context="#stay" />
+                <RegExpr String = "\b(after|before)(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Method execution context -->
                 <RegExpr String = "\b(parameter|this|self|sender)(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Reflection -->
