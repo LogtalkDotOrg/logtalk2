@@ -3156,14 +3156,14 @@ current_logtalk_flag(version, version(2, 23, 1)).
 '$lgt_load_entity'(Entity, Flags) :-
 	'$lgt_compile_entity'(Entity, Flags),
 	('$lgt_redefined_entity'(Entity, Type, Identifier) ->
+		'$lgt_clean_lookup_caches',
 		'$lgt_clean_redefined_entity'(Type, Identifier),
 		'$lgt_report_redefined_entity'(Type, Identifier)
 		;
 		true),
 	'$lgt_file_name'(prolog, Entity, File),
 	'$lgt_load_prolog_code'(File),
-	'$lgt_report_loaded_entity'(Entity),
-	'$lgt_clean_lookup_caches'.
+	'$lgt_report_loaded_entity'(Entity).
 
 
 
