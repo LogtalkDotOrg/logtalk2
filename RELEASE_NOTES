@@ -12,6 +12,8 @@ RELEASE NOTES
 
 2.22.3 - December 31, 2004
 
+	Added a configuration file for XSB 2.7.
+
 	Corrected a bug where the use of alternative compilation directories 
 	would fail the first time the logtalk_compile/1-2 or logtalk_load/1-2 
 	predicates are used for a given file or library.
