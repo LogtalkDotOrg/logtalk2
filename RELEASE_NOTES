@@ -12,6 +12,10 @@ RELEASE NOTES
 
 2.19.2 - August 16, 2004
 
+	Added support for the uses/2 predicate directive (whose semantics is similar 
+	to C++ using-declarations). Updated the uses/1 entity directive to accept as 
+	argument a single object identifier.
+
 	Improved installation instructions for Windows users.
 
 	Added four new sample bash shell scripts and Windows JScript scripts for 
