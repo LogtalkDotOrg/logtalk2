@@ -10,6 +10,13 @@ RELEASE NOTES
 =============
 
 
+2.22.3 - December 31, 2004
+
+	Corrected a bug where the use of alternative compilation directories 
+	would fail the first time the logtalk_compile/1-2 or logtalk_load/1-2 
+	predicates are used for a given file or library.
+
+
 2.22.2 - December 24, 2004
 
 	Improved performance of dynamic creation and compilation of objects, 

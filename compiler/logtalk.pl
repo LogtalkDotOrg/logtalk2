@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.22.2
+%  Release 2.22.3
 %
 %  Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 %
@@ -903,7 +903,6 @@ logtalk_compile(Entities) :-
 logtalk_compile(Entity, Options) :-
 	(atom(Entity), Entity \= []; compound(Entity), Entity \= [_| _]),
 	!,
-	'$lgt_make_alt_dirs',
 	catch(
 		('$lgt_check_compiler_entity'(Entity),
 		 '$lgt_check_compiler_options'(Options),
@@ -913,7 +912,6 @@ logtalk_compile(Entity, Options) :-
 		throw(error(Error, logtalk_compile(Entity, Options)))).
 
 logtalk_compile(Entities, Options) :-
-	'$lgt_make_alt_dirs',
 	catch(
 		('$lgt_check_compiler_entities'(Entities),
 		 '$lgt_check_compiler_options'(Options),
@@ -1075,7 +1073,6 @@ logtalk_load(Entities) :-
 logtalk_load(Entity, Options) :-
 	(atom(Entity), Entity \= []; compound(Entity), Entity \= [_| _]),
 	!,
-	'$lgt_make_alt_dirs',
 	catch(
 		('$lgt_check_compiler_entity'(Entity),
 		 '$lgt_check_compiler_options'(Options),
@@ -1085,7 +1082,6 @@ logtalk_load(Entity, Options) :-
 		throw(error(Error, logtalk_load(Entity, Options)))).
 
 logtalk_load(Entities, Options) :-
-	'$lgt_make_alt_dirs',
 	catch(
 		('$lgt_check_compiler_entities'(Entities),
 		 '$lgt_check_compiler_options'(Options),
@@ -1160,7 +1156,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 22, 2)).
+current_logtalk_flag(version, version(2, 22, 3)).
 
 
 
@@ -3200,20 +3196,6 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 
 
-% '$lgt_make_alt_dirs'
-%
-% creates the alternative directories
-
-'$lgt_make_alt_dirs' :-
-	'$lgt_compiler_option'(altdirs, on),
-	'$lgt_alt_directory'(_, Directory),
-	'$lgt_make_directory'(Directory),
-	fail.
-	
-'$lgt_make_alt_dirs'.
-
-
-
 % '$lgt_file_name'(+atom, +atom, -atom)
 %
 % constructs a filename given the type of file and the entity name
@@ -3221,6 +3203,7 @@ current_logtalk_flag(version, version(2, 22, 2)).
 '$lgt_file_name'(Type, Entity, File) :-
 	'$lgt_file_extension'(Type, Extension),
 	(('$lgt_compiler_option'(altdirs, on), '$lgt_alt_directory'(Type, Directory)) ->
+		'$lgt_make_directory'(Directory),
 		atom_concat(Entity, Extension, Aux),
 		atom_concat(Directory, Aux, File)
 		;
@@ -5321,7 +5304,7 @@ current_logtalk_flag(version, version(2, 22, 2)).
 % '$lgt_tr_category_id'(+category_identifier, +atom)
 %
 % from the category identifier construct the set of 
-%  functor prefixes used in the compiled code clauses
+% functor prefixes used in the compiled code clauses
 
 '$lgt_tr_category_id'(Ctg, Mode) :-
 	'$lgt_add_referenced_category'(Ctg),
