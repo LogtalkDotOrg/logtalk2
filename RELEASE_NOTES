@@ -18,6 +18,8 @@ RELEASE NOTES
 	Corrected a problem with the syntax coloring of quoted atoms and strings in 
 	the SubEthaEdit text editor.
 
+	New config file for QU-Prolog 6.3.
+
 
 2.15.6 - February 9, 2004
 

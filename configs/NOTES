@@ -329,14 +329,18 @@ PrologII+ 4.5
 	set the working directory before loading an example.
 
 
-QU-Prolog 4.3
+QU-Prolog 4.3, 6.3
 
-	qu.config
+	qu43.config
 
 	Not tested but no problems are expected.
 	The predicates lgt_current_date/3 and lgt_current_time/3 have dummy 
 	definitions. For most users, this will be no problem (some examples 
 	may use lgt_current_date/3 to put a time stamp in new objects).
+
+	qu63.config
+
+	Not tested but no problems are expected.
 
 
 Quintus Prolog 3.3~3.4
