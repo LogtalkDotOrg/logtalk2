@@ -63,8 +63,6 @@ link.WorkingDirectory = logtalk_home;
 link.Save();
 
 WScript.Echo("Done. The Swilgt shortcut was been added to the Start Menu Programs.");
-WScript.Echo("Users should define the environment variable LOGTALKHOME in");
-WScript.Echo("order to use the script.");
 WScript.Echo("");
 
 WScript.Quit(0);

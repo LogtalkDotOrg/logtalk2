@@ -32,7 +32,7 @@ if (WScript.Arguments.Unnamed.Length > 0) {
 }
 
 WScript.Echo("");
-WScript.Echo("Making a shortcut named Eclipselgt for running Logtalk with SWI-Prolog...");
+WScript.Echo("Making a shortcut named Eclipselgt for running Logtalk with ECLiPSe...");
 
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 
@@ -65,8 +65,6 @@ link.WorkingDirectory = logtalk_home;
 link.Save();
 
 WScript.Echo("Done. The Eclipselgt shortcut was been added to the Start Menu Programs.");
-WScript.Echo("Users should define the environment variable LOGTALKHOME in");
-WScript.Echo("order to use the script.");
 WScript.Echo("");
 
 WScript.Quit(0);
