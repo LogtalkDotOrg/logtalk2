@@ -148,7 +148,7 @@
 		;; control constructs:
 		;;
 		("\\(ca\\(?:ll\\|tch\\)\\|throw\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("\\(fail\\|true\\|!\\)" . 'logtalk-built-in-predicate-face)
+		("\\(fail\\|true\\|!\\|->\\|;\\)" . 'logtalk-built-in-predicate-face)
 		;;
 		;; logic and control:
 		;;
@@ -179,6 +179,9 @@
 		;;
 		("\\\\?=" . 'logtalk-built-in-predicate-face)
 		;;
+		;; dcgs
+		("-->" . 'logtalk-built-in-predicate-face)
+		;;
 		;; evaluable functors:
 		;;
 		("\\(abs\\|ceiling\\|flo\\(?:at\\(?:_\\(?:\\(?:fractional\\|integer\\)_part\\)\\)?\\|or\\)\\|mod\\|r\\(?:em\\|ound\\)\\|sign\\|truncate\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
@@ -193,11 +196,12 @@
 		;; stream selection and control:
 		;;
 		("\\(at_end_of_stream\\|c\\(?:lose\\|urrent_\\(?:\\(?:in\\|out\\)put\\)\\)\\|flush_output\\|open\\|s\\(?:et_\\(?:input\\|output\\|stream_position\\)\\|tream_property\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("\\(at_end_of_stream\\)" . 'logtalk-built-in-predicate-face)
+		("\\<\\(at_end_of_stream\\|flush_output\\)\\>" . 'logtalk-built-in-predicate-face)
 		;;
 		;; character input/output:
 		;;
 		("\\(get_c\\(?:har\\|ode\\)\\|nl\\|p\\(?:eek_c\\(?:har\\|ode\\)\\|ut_c\\(?:har\\|ode\\)\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<nl\\>" . 'logtalk-built-in-predicate-face)
 		;;
 		;; byte input/output:
 		;;
