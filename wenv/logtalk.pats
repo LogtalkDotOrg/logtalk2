@@ -1,0 +1,23 @@
+! Syntax highlighting patterns file for Logtalk (http://www.logtalk.org)
+!
+! Author: Paulo Moura (pmoura at logtalk.org)
+!
+! Last changed in: May, 20
+!
+!
+! To install this patterns file:
+!
+! 1. Load this file by starting nedit from the command line:
+!
+! 	% nedit -import logtalk.pats
+!
+! 2. Go to the Preferences menu and verify that the patterns were loaded 
+!    correctly.
+!
+! 3. If everything is correct, choose the option Save Defaults from the 
+!    Preferences menu.
+!
+!
+nedit.fileVersion: 5.2
+
+nedit.languageModes:	Logtalk:.lgt::::4:4:\n\
