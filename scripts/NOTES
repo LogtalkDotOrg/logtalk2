@@ -11,7 +11,8 @@ and installation:
 
 logtalk.spec
 	specification file for building Linux RPMs (in its current version,
-	it does not support building form the tarball)
+	it does not support building from the tarball and assumes an already 
+	existing installation)
 
 cplgtdirs.sh
 	shell script for copying xml, examples and library directories to 
