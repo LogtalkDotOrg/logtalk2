@@ -11,8 +11,8 @@ if (WScript.Arguments.Unnamed.Length > 0) {
 }
 
 WScript.Echo('');
-WScript.Echo('Creating a shortcut named "Logtalk - GNU Prolog" for running Logtalk');
-WScript.Echo('with GNU Prolog...');
+WScript.Echo('Creating a shortcut named "Logtalk - GNU Prolog (precompiled)" for running');
+WScript.Echo('Logtalk with GNU Prolog using a new precompiled top-level...');
 WScript.Echo('');
 
 var WshShell = new ActiveXObject("WScript.Shell");
@@ -68,19 +68,20 @@ link.WindowStyle = 1;
 link.WorkingDirectory = logtalk_home;
 link.Save();
 
-WScript.Echo('Done. The "Logtalk - GNU Prolog" shortcut was been added to the');
-WScript.Echo('Start Menu Programs. Make sure that the LOGTALKHOME environment');
-WScript.Echo('variable is defined for all users wishing to use the shortcut.');
+WScript.Echo('Done. The "Logtalk - GNU Prolog (precompiled)" shortcut was been');
+WScript.Echo('added to the Start Menu Programs. Make sure that the LOGTALKHOME');
+WScript.Echo('environment variable is defined for all users wishing to use the');
+WScript.Echo('shortcut.');
 WScript.Echo('');
 
 WScript.Quit(0);
 
 function usage_help() {
 	WScript.Echo('');
-	WScript.Echo('This script creates a shortcut named "Logtalk - GNU Prolog" for running Logtalk');
-	WScript.Echo('with GNU Prolog. The script must be run by a user with administrative rights.');
-	WScript.Echo('The LOGTALKHOME environment variable must be defined before running this');
-	WScript.Echo('script.');
+	WScript.Echo('This script creates a shortcut named "Logtalk - GNU Prolog (precompiled)"');
+	WScript.Echo('for running Logtalk with GNU Prolog. The script must be run by a user with');
+	WScript.Echo('administrative rights. The LOGTALKHOME environment variable must be defined');
+	WScript.Echo('before running this script.');
 	WScript.Echo('');
 	WScript.Echo('Usage:');
 	WScript.Echo('  ' + WScript.ScriptName + ' help');
