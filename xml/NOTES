@@ -174,7 +174,8 @@ lgt2uspdf.sh
 	These scripts assume that the LOGTALKHOME environment variable is defined and 
 	that the FOP processor is available with the name "fop" in the path.
 	These scripts should be called from the directory containing the .xml files 
-	you wish to convert.
+	you wish to convert. They accept as an optional parameter an output directory 
+	for writing the generated PDF files.
 
 
 lgt2html.sh
@@ -182,13 +183,14 @@ lgt2xhtml.sh
 
 	Sample Unix shell scripts to batch convert .xml files to .html files. These 
 	scripts also generates an index.html file which contains links to all the 
-	converted files. The title of the index.html file can be given as a parameter 
-	to the script. Requires libxslt XSLT processor 1.1.8 or later version 
+	converted files. Requires libxslt XSLT processor 1.1.8 or later version 
 	(http://xmlsoft.org/XSLT/).
 	These scripts assume that the LOGTALKHOME environment variable is defined and 
 	that the libxslt processor is available with the name "xsltproc" in the path.
 	These scripts should be called from the directory containing the .xml files 
-	you wish to convert.
+	you wish to convert. They accept three optional parameters: the title to be 
+	used in the index file, the output directory for the HTML files, and the name 
+	of the index file.
 
 
 Note that you can write other XSLT files for converting the XML files to 
