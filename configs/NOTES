@@ -123,7 +123,7 @@ CIAO Prolog 1.8p2 and later versions
 	use_module(library(system)). Supports smart compilation of source files.
 
 
-ECLiPSe 5.5~5.7
+ECLiPSe 5.5~5.8
 
 	eclipse.config
 	eclipseiso.config
@@ -132,7 +132,7 @@ ECLiPSe 5.5~5.7
 	"eclipse.config", should be used when, for some reason, we don't want 
 	to load the "iso" library. The second file, "eclipseiso.config" contains 
 	a call to load the "iso" library. Both config files may be used with
-	ECLiPSe versions from 5.5 to 5.7
+	ECLiPSe versions from 5.5 to 5.8
 	
 	You should use the eclipseiso.config whenever possible. The alternative 
 	config file may not contain all the needed definitions for ISO Prolog 
