@@ -12,7 +12,9 @@ RELEASE NOTES
 
 2.21.1 - September ??, 2004
 
-	Corrected bug in the expansion of \+/1 in grammar rule bodies.
+	Added preliminary support for a new built-in method, expand_term/2, which 
+	allows access to the Logtalk grammar rule translator. Corrected bug in the 
+	expansion of \+/1 in grammar rule bodies.
 
 	Corrected some wrong links on the XHTML manuals.
 
