@@ -188,7 +188,7 @@ Eclipse 4.2.2~5.1, 5.2~5.3, 5.4
 	files.
 
 
-GNU Prolog 1.1.2 (and later versions, except 1.2.13; 1.2.14 is ok)
+GNU Prolog 1.1.2 (and later versions, except 1.2.13)
 
 	gnu.config
 
@@ -196,7 +196,7 @@ GNU Prolog 1.1.2 (and later versions, except 1.2.13; 1.2.14 is ok)
 	can generate a new Prolog top level that includes the Logtalk config file
 	and pre-processor plus the runtime by doing something like:
 
-	% cd lgt2142
+	% cd lgt2144
 	% cp configs/gnu.config configs/gnu.pl
 
 	Edit the compiler/logtalk.pl file and add the line ":- built_in." to the 
