@@ -2,9 +2,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.14.6
+%  Release 2.14.7
 %
-%  Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
+%  Copyright (c) 1998-2003 Paulo Moura.  All Rights Reserved.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1062,7 +1062,7 @@ current_logtalk_flag(Flag, Value) :-
 	\+ '$lgt_flag_'(Flag, _),
 	'$lgt_default_flag'(Flag, Value).
 
-current_logtalk_flag(version, version(2, 14, 6)).
+current_logtalk_flag(version, version(2, 14, 7)).
 
 
 
@@ -1311,14 +1311,15 @@ current_logtalk_flag(version, version(2, 14, 6)).
 			'$lgt_this'(Context, This),
 			'$lgt_sender'(Context, Sender2),
 			'$lgt_prefix'(Context, Prefix),
-			(nonvar(Meta) ->
+			(compound(Meta) ->
 				Head =.. [_| Args],
 				Meta =.. [_| MArgs],
 				'$lgt_extract_metavars'(Args, MArgs, Metavars)
 				;
 				Metavars = []),
 			'$lgt_metavars'(Context, Metavars),
-			asserta((Call:-'$lgt_tr_body'(Body, TBody, Context), call(TBody)))
+			'$lgt_tr_body'(Body, TBody, Context),
+			asserta((Call:-('$lgt_nop'(Body), TBody)))
 			;
 			(PScope = p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta((Head:-Body)), Sender))
@@ -1397,14 +1398,15 @@ current_logtalk_flag(version, version(2, 14, 6)).
 			'$lgt_this'(Context, This),
 			'$lgt_sender'(Context, Sender2),
 			'$lgt_prefix'(Context, Prefix),
-			(nonvar(Meta) ->
+			(compound(Meta) ->
 				Head =.. [_| Args],
 				Meta =.. [_| MArgs],
 				'$lgt_extract_metavars'(Args, MArgs, Metavars)
 				;
 				Metavars = []),
 			'$lgt_metavars'(Context, Metavars),
-			assertz((Call:-'$lgt_tr_body'(Body, TBody, Context), call(TBody)))
+			'$lgt_tr_body'(Body, TBody, Context),
+			assertz((Call:-('$lgt_nop'(Body), TBody)))
 			;
 			(PScope = p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::assertz((Head:-Body)), Sender))
@@ -1467,7 +1469,7 @@ current_logtalk_flag(version, version(2, 14, 6)).
 			((\+ \+ PScope = Scope; Sender = SContainer) ->
 				once(('$lgt_once'(Def, Head, _, _, _, Call); '$lgt_once'(DDef, Head, _, _, _, Call))),
 				clause(Call, TBody),
-				(TBody = ('$lgt_tr_body'(Body, _, _), _) ->
+				(TBody = ('$lgt_nop'(Body), _) ->
 					true
 					;
 					Body = TBody)
@@ -1509,10 +1511,10 @@ current_logtalk_flag(version, version(2, 14, 6)).
 		(Type = (dynamic) ->
 			((\+ \+ PScope = Scope; Sender = SContainer) ->
 				('$lgt_once'(Def, Head, _, _, _, Call) ->
-					retract((Call:-('$lgt_tr_body'(Body, _, _), _)))
+					retract((Call:-('$lgt_nop'(Body), _)))
 					;
 					('$lgt_once'(DDef, Head, _, _, _, Call) ->
-						retract((Call:-('$lgt_tr_body'(Body, _, _), _))),
+						retract((Call:-('$lgt_nop'(Body), _))),
 						'$lgt_update_ddef_table'(DDef, Call)
 						;
 						fail))
@@ -1589,6 +1591,15 @@ current_logtalk_flag(version, version(2, 14, 6)).
 			throw(error(permission_error(modify, static_predicate, Head), Obj::retractall(Head), Sender)))
 		;
 		throw(error(existence_error(predicate_declaration, Head), Obj::retractall(Head), Sender))).
+
+
+
+% '$lgt_nop'(+goal)
+%
+% used in the implementation of the built-in  
+% method clause/2 to store original clause body
+
+'$lgt_nop'(_).
 
 
 
@@ -2642,12 +2653,27 @@ user0__def(Pred, _, _, _, Pred, user).
 	throw(type_error(callable, Head)).
 
 '$lgt_tr_clause'((Head:-Body), TClause, Context) :-
+	functor(Head, Functor, Arity),
+	'$lgt_dynamic_'(Functor/Arity),
 	!,
 	'$lgt_extract_metavars'(Head, Metavars),
 	'$lgt_metavars'(Context, Metavars),
 	'$lgt_tr_head'(Head, THead, Context),
 	'$lgt_tr_body'(Body, TBody, Context),
-	'$lgt_simplify_clause'((THead:-TBody), TClause).
+	'$lgt_simplify_body'(TBody, SBody),
+	TClause = (THead:-'$lgt_nop'(Body), SBody).
+
+'$lgt_tr_clause'((Head:-Body), TClause, Context) :-
+	!,
+	'$lgt_extract_metavars'(Head, Metavars),
+	'$lgt_metavars'(Context, Metavars),
+	'$lgt_tr_head'(Head, THead, Context),
+	'$lgt_tr_body'(Body, TBody, Context),
+	'$lgt_simplify_body'(TBody, SBody),
+	(SBody == true ->
+		TClause = THead
+		;
+		TClause = (THead:-SBody)).
 
 '$lgt_tr_clause'(Fact, _, _) :-
 	\+ '$lgt_callable'(Fact),
@@ -3339,22 +3365,6 @@ user0__def(Pred, _, _, _, Pred, user).
 
 
 
-% '$lgt_simplify_clause'(+clause, -clause)
-%
-% simplify translated clause by examining clause body
-
-'$lgt_simplify_clause'((Head :- true), Head) :-
-	!.
-
-'$lgt_simplify_clause'((Head :- Body), Clause) :-
-	'$lgt_simplify_body'(Body, SBody),
-	(SBody == true ->
-		Clause = Head
-		;
-		Clause = (Head :- SBody)).
-
-
-
 % '$lgt_simplify_body'(+callable, -callable)
 %
 % remove redundant calls to true/0 from a translated clause body
@@ -4039,7 +4049,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		;
 		(EScope = protected ->
 			Call =.. [PDcl2, Pred, Scope2, Compilation, Meta, Container],
-			Body = (Call, (Scope2 = p -> Scope = p; Scope = p(p)))
+			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
 			Body =.. [PDcl2, Pred, _, Compilation, Meta, Container])),
@@ -4081,7 +4091,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		;
 		(EScope = protected ->
 			Call =.. [PDcl, Pred, Scope2, Compilation, Meta, Container],
-			Body = (Call, (Scope2 = p -> Scope = p; Scope = p(p)))
+			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
 			Body =.. [PDcl, Pred, _, Compilation, Meta, Container])),
@@ -4144,7 +4154,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		;
 		(EScope = protected ->
 			Call =.. [PDcl, Pred, Scope2, Compilation, Meta, Container],
-			Body = (Call, (Scope2 = p -> Scope = p; Scope = p(p)))
+			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
 			Body =.. [PDcl, Pred, _, Compilation, Meta, Container])),
@@ -4164,7 +4174,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		;
 		(EScope = protected ->
 			Call =.. [CDcl, Pred, Scope2, Compilation, Meta, Container],
-			Body = (Call, (Scope2 = p -> Scope = p; Scope = p(p)))
+			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
 			Body =.. [CDcl, Pred, _, Compilation, Meta, Container])),
@@ -4184,11 +4194,11 @@ user0__def(Pred, _, _, _, Pred, user).
 		;
 		(EScope = protected ->
 			Call =.. [PDcl, Pred, Scope2, Compilation, Meta, SContainer, TContainer],
-			Body = (Call, (Scope2 = p -> Scope = p; Scope = p(p)))
+			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
 			Call =.. [PDcl, Pred, Scope2, Compilation, Meta, SContainer2, TContainer],
-			Body = (Call, (Scope2 = p -> SContainer = SContainer2; SContainer = Obj)))),
+			Body = (Call, (Scope2 == p -> SContainer = SContainer2; SContainer = Obj)))),
 	assertz('$lgt_dcl_'((Head:-Body))),
 	fail.
 
@@ -4297,11 +4307,11 @@ user0__def(Pred, _, _, _, Pred, user).
 		;
 		(EScope = protected ->
 			Call =.. [CIDcl, Pred, Scope2, Compilation, Meta, SContainer, TContainer],
-			Body = (Call, (Scope2 = p -> Scope = p; Scope = p(p)))
+			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
 			Call =.. [CIDcl, Pred, Scope2, Compilation, Meta, SContainer2, TContainer],
-			Body = (Call, (Scope2 = p -> SContainer = SContainer2; SContainer = Obj)))),
+			Body = (Call, (Scope2 == p -> SContainer = SContainer2; SContainer = Obj)))),
 	assertz('$lgt_dcl_'((Head:-Body))),
 	fail.
 
@@ -4340,7 +4350,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		;
 		(EScope = protected ->
 			Call =.. [PDcl, Pred, Scope2, Compilation, Meta, Container],
-			Body = (Call, (Scope2 = p -> Scope = p; Scope = p(p)))
+			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
 			Body =.. [PDcl, Pred, _, Compilation, Meta, Container])),
@@ -4360,7 +4370,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		;
 		(EScope = protected ->
 			Call =.. [CDcl, Pred, Scope2, Compilation, Meta, Container],
-			Body = (Call, (Scope2 = p -> Scope = p; Scope = p(p)))
+			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
 			Body =.. [CDcl, Pred, _, Compilation, Meta, Container])),
@@ -4380,11 +4390,11 @@ user0__def(Pred, _, _, _, Pred, user).
 		;
 		(EScope = protected ->
 			Call =.. [SIDcl, Pred, Scope2, Compilation, Meta, SContainer, TContainer],
-			Body = (Call, (Scope2 = p -> Scope = p; Scope = p(p)))
+			Body = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 			;
 			Scope = p,
 			Call =.. [SIDcl, Pred, Scope2, Compilation, Meta, SContainer2, TContainer],
-			Body = (Call, (Scope2 = p -> SContainer = SContainer2; SContainer = Obj)))),
+			Body = (Call, (Scope2 == p -> SContainer = SContainer2; SContainer = Obj)))),
 	assertz('$lgt_dcl_'((Head:-Body))),
 	fail.
 
@@ -5975,7 +5985,7 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_banner' :-
 	current_logtalk_flag(version, version(Major, Minor, Patch)),
 	nl, write('Logtalk '), write(Major), write('.'), write(Minor), write('.'), write(Patch), nl,
-	write('Copyright (c) 1998-2002 Paulo Moura'), nl, nl.
+	write('Copyright (c) 1998-2003 Paulo Moura'), nl, nl.
 
 
 
