@@ -1256,7 +1256,7 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, _) :-
 	nonvar(Prop),
-	\+ '$lgt_member'(Prop, [(public), protected, private, static, (dynamic), declared_in(_), defined_in(_), metapredicate(_), built_in]),
+	\+ '$lgt_pred_property'(Prop),
 	throw(error(domain_error(predicate_property, Prop), Obj::predicate_property(Pred, Prop), Sender)).
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, _) :-
@@ -7472,6 +7472,21 @@ current_logtalk_flag(version, version(2, 22, 2)).
 '$lgt_pred_number_of_solutions'(zero_or_more).
 '$lgt_pred_number_of_solutions'(one_or_more).
 '$lgt_pred_number_of_solutions'(error).
+
+
+
+% '$lgt_pred_property'(@nonvar)
+
+'$lgt_pred_property'((public)).
+'$lgt_pred_property'(protected).
+'$lgt_pred_property'(private).
+'$lgt_pred_property'(static).
+'$lgt_pred_property'((dynamic)).
+'$lgt_pred_property'(declared_in(_)).
+'$lgt_pred_property'(defined_in(_)).
+'$lgt_pred_property'(metapredicate(_)).
+'$lgt_pred_property'(built_in).
+'$lgt_pred_property'(alias(_)).
 
 
 

@@ -29,6 +29,9 @@ RELEASE NOTES
 	Added documentation to the user manual on describing predicate exceptions 
 	using the info/2 directive.
 
+	Corrected a bug in the predicate_property/2 built-in method when called 
+	with the second argument instantiated to the alias/1 property.
+
 
 2.22.1 - December 6, 2004
 
