@@ -68,20 +68,19 @@
 ;; create logtalk font-lock-faces
 
 (make-face 'logtalk-directive-face)
-(set-face-foreground 'logtalk-directive-face "darkmagenta")
+(set-face-foreground 'logtalk-directive-face "brown")
 
 (make-face 'logtalk-built-in-predicate-face)
-(set-face-foreground 'logtalk-built-in-predicate-face "magenta")
+(set-face-foreground 'logtalk-built-in-predicate-face "darkmagenta")
 
 (make-face 'logtalk-built-in-method-face)
-(set-face-foreground 'logtalk-built-in-method-face "magenta")
+(set-face-foreground 'logtalk-built-in-method-face "darkmagenta")
 
-(make-face 'logtalk-operator-face)
-(set-face-foreground 'logtalk-operator-face "blue")
-;; (set-face-bold-p 'logtalk-operator-face t)
+(make-face 'logtalk-message-operator-face)
+(set-face-foreground 'logtalk-message-operator-face "blue")
 
 (make-face 'logtalk-string-face)
-(set-face-foreground 'logtalk-string-face "brown")
+(set-face-foreground 'logtalk-string-face "firebrick")
 
 (make-face 'logtalk-number-face)
 (set-face-foreground 'logtalk-number-face "blue")
@@ -95,11 +94,16 @@
 (setq font-lock-comment-face 'logtalk-comment-face)
 
 
+;; set the font-lock-string-face to the logtalk-string-face
+
+(setq font-lock-string-face 'logtalk-string-face)
+
+
 
 (setq logtalk-font-lock-strings
 	'(
-;;		("\"[^\"]*\"" . logtalk-string-face)
-		("'\\(\\\\'\\|[^'\n]\\)*'" . logtalk-string-face)
+		("\\(\"\\([^\n\"]\\|\\\\\"\\)*\"\\)" . 'logtalk-string-face)
+		("\\(^\\|[^0-9]\\)\\('\\([^\n']\\|\\\\'\\)*'\\)" . 'logtalk-string-face)
 	))
 
 
@@ -154,24 +158,24 @@
 		;;
 		;; term comparison:
 		;;
-		("==\\|@\\(?:=<\\|>=\\|[<>]\\)\\|\\\\==" . 'logtalk-operator-face)
+		("==\\|@\\(?:=<\\|>=\\|[<>]\\)\\|\\\\==" . 'logtalk-built-in-predicate-face)
 		;;
 		;; term creation and decomposition:
 		;;
 		("\\(arg\\|copy_term\\|functor\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("=\\.\\." . 'logtalk-operator-face)
+		("=\\.\\." . 'logtalk-built-in-predicate-face)
 		;;
 		;; arithemtic evaluation:
 		;;
-		("\\<\\is\\>" . 'logtalk-operator-face)
+		("\\<\\is\\>" . 'logtalk-built-in-predicate-face)
 		;;
 		;; arithemtic comparison:
-		("\\<\\=\\(?::=\\|[<\\]\\)\\|>=\\|[<>]\\>" . 'logtalk-operator-face)
+		("\\<\\=\\(?::=\\|[<\\]\\)\\|>=\\|[<>]\\>" . 'logtalk-built-in-predicate-face)
 		;;
 		;; evaluable functors:
 		;;
 		("\\(abs\\|ceiling\\|flo\\(?:at\\(?:_\\(?:\\(?:fractional\\|integer\\)_part\\)\\)?\\|or\\)\\|mod\\|r\\(?:em\\|ound\\)\\|sign\\|truncate\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("//\\|mod\\|rem\\|[*+/-]" . 'logtalk-operator-face)
+		("//\\|mod\\|rem\\|[*+/-]" . 'logtalk-built-in-predicate-face)
 		;;
 		;; other arithemtic functors:
 		;;
@@ -215,7 +219,7 @@
 
 (setq logtalk-font-lock-operators
 	'(
-		("::\\|\\^\\^\\|[{}]" . 'logtalk-operator-face)
+		("::\\|\\^\\^\\|[{}]" . 'logtalk-message-operator-face)
 	))
 
 
