@@ -2540,13 +2540,8 @@ current_logtalk_flag(version, version(2, 19, 0)).
 		 '$lgt_copy_metafile_term'(Stream, Term, Cache, Entities)),
 		Error,
 		'$lgt_compiler_error_handler'(Stream, Error)),
-	('$lgt_compiler_option'(report, on) ->
-		write('> creating loader file...'), nl
-		;
-		true),
 	'$lgt_create_loader_file'(Source, Cache, Entities),
 	('$lgt_compiler_option'(report, on) ->
-		write('> loader file created'), nl,
 		write('>>> metafile '), writeq(Source), write(' split'), nl
 		;
 		true).
@@ -2576,9 +2571,16 @@ current_logtalk_flag(version, version(2, 19, 0)).
 % creates a loader file given a list of entities
 
 '$lgt_create_loader_file'(Source, Cache, Entities) :-	
+	('$lgt_compiler_option'(report, on) ->
+		write('> creating loader file...'), nl
+		;
+		true),
+	'$lgt_file_name'(metafile, Source, Metafile),
 	'$lgt_file_name'(logtalk, Source, Loader),
 	catch(
 		(open(Loader, write, Stream),
+		 write_term(Stream, '% loader file automatically generated from source metafile ', []), 
+		 write_term(Stream, Metafile, []), nl(Stream), nl(Stream),
 		 write_term(Stream, ':- initialization(', []), nl(Stream),
 		 write_term(Stream, '    logtalk_load([', []), nl(Stream),
 		 '$lgt_reverse'(Entities, Entities2),
@@ -2588,7 +2590,11 @@ current_logtalk_flag(version, version(2, 19, 0)).
 		 '$lgt_copy_cached_metafile_terms'(Cache2, Stream)),
 		Error,
 		'$lgt_compiler_error_handler'(Stream, Error)),
-	close(Stream).
+	close(Stream),
+	('$lgt_compiler_option'(report, on) ->
+		write('> loader file created'), nl
+		;
+		true).
 
 
 
@@ -2649,7 +2655,7 @@ current_logtalk_flag(version, version(2, 19, 0)).
 	'$lgt_copy_cached_metafile_terms'(CacheAcc, Output),
 	write_canonical(Output, Term),
 	write_term(Output, '.', []), nl(Output),
-	'$lgt_copy_metafile_entity_terms'(Input, Output),
+	'$lgt_copy_metafile_entity_terms'(Input, Output, Type),
 	('$lgt_compiler_option'(report, on) ->
 		write('> '), writeq(Entity), write(' extracted '), nl
 		;
@@ -2664,21 +2670,24 @@ current_logtalk_flag(version, version(2, 19, 0)).
 
 
 
-% '$lgt_copy_metafile_entity_terms'(+atom, +atom)
+% '$lgt_copy_metafile_entity_terms'(+atom, +atom, +atom)
 %
 % copies entity terms from the source metafile to an entity source file
 
-'$lgt_copy_metafile_entity_terms'(Input, Output) :-
+'$lgt_copy_metafile_entity_terms'(Input, Output, Type) :-
 	read_term(Input, Term, []),
 	(Term = end_of_file ->
 		throw(unexpected_end_of_file)
 		;
 		write_canonical(Output, Term),
 		write_term(Output, '.', []), nl(Output),
-		((Term =.. [(:-), Directive], '$lgt_closing_entity_directive'(Directive)) ->
-			close(Output)
+		((Term =.. [(:-), Directive], '$lgt_closing_entity_directive'(Directive, Type2)) ->
+			(Type = Type2 ->
+				close(Output)
+				;
+				throw(entity_enclosing_directives_mismatch))
 			;
-			'$lgt_copy_metafile_entity_terms'(Input, Output))).
+			'$lgt_copy_metafile_entity_terms'(Input, Output, Type))).
 
 
 
@@ -2693,9 +2702,9 @@ current_logtalk_flag(version, version(2, 19, 0)).
 '$lgt_opening_entity_directive'(category(Entity, _), category, Entity).
 
 
-'$lgt_closing_entity_directive'(end_object).
-'$lgt_closing_entity_directive'(end_protocol).
-'$lgt_closing_entity_directive'(end_category).
+'$lgt_closing_entity_directive'(end_object, object).
+'$lgt_closing_entity_directive'(end_protocol, protocol).
+'$lgt_closing_entity_directive'(end_category, category).
 
 
 
