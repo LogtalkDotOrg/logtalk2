@@ -1862,7 +1862,9 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 '$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
 	'$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Obj, Obj, Call) ->
-		call(Call)
+		\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),
+		call(Call),
+		\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall))
 		;
 		('$lgt_current_object_'(Obj, _, Dcl, Def, _, _) ->
 			('$lgt_call'(Dcl, Pred, Scope, _, _, _, _) ->
