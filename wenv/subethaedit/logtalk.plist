@@ -18,7 +18,24 @@
 
 		<dict>
 			<key>Name</key>
-			<string>Entity Directives</string>
+			<string>Variables</string>
+			<key>Color</key>
+			<array>
+				<real>0.500</real>
+				<real>0.500</real>
+				<real>0.500</real>
+			</array>
+			<key>Multiline</key>
+			<false/>
+			<key>Regular Expressions</key>
+			<array>
+		      	<string>[^[:lower:]]([A-Z_][A-Za-z0-9_]*)[^[:alnum:]]</string>
+			</array>
+		</dict>
+
+		<dict>
+			<key>Name</key>
+			<string>Directives</string>
 			<key>Color</key>
 			<array>
 				<real>0.408</real>
