@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.17.1 - May ??, 2004
+2.17.1 - June ??, 2004
 
 	Added custom handling of specification of predicate exceptions in info/2 
 	documenting directives (declared as "exceptions is [Term1, Term2, ...]" 
@@ -33,6 +33,9 @@ RELEASE NOTES
 	parsing", "bill of materials", and "command language").
 	
 	New "puzzles" and "metainterpreters" examples.
+
+	Added a mode bundle for the SubEthaEdit 2.x (MacOS X) text editor providing 
+	syntax coloring for editing Logtalk source files.
 
 	Removed predicate nth/3 from library entities listp, list, and difflist. 
 	Replaced by the predicates nth0/3 and nth1/3. Added new predicates nth1/4 
