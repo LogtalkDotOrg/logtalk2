@@ -2,8 +2,7 @@
 <!DOCTYPE language SYSTEM "language.dtd">
 <language name="Logtalk" version="1.0" kateversion="2.2" section="Sources" extensions="*.lgt" mimetype="text/x-logtalk">
     <highlighting>
-        <list name="keywordl">
-
+        <list name="directives">
             <item> category </item>
             <item> object </item>
             <item> protocol </item>
@@ -21,63 +20,29 @@
             <item> protected </item>
             <item> private </item>
 
+            <item> initialization </item>
+            <item> info </item>
+            <item> mode </item>
             <item> dynamic </item>
-            <item> static </item>
-
-            <item> parameter </item>
-            <item> this </item>
-            <item> self </item>
-            <item> sender </item>
+            <item> discontiguous </item>
+            <item> metapredicate </item>
+            <item> op </item>
+            <item> calls </item>
+            <item> uses </item>
         </list>
 
-        <list name="keywordu">
-            <item> ABSTRACT </item>
-            <item> ALIGN </item>
-            <item> AS </item>
-            <item> AND </item>
-            <item> CLASS </item>
-            <item> CLAUSES </item>
-            <item> CONSTANTS </item>
-            <item> DATABASE </item>
-            <item> DETERM </item>
-            <item> DOMAINS </item>
-            <item> ELSEDEF </item>
-            <item> ENDCLASS </item>
-            <item> ENDDEF </item>
-            <item> ERRONEOUS </item>
-            <item> FACTS </item>
-            <item> FAILURE </item>
-            <item> GLOBAL </item>
-            <item> GOAL </item>
-            <item> IF </item>
-            <item> IFDEF </item>
-            <item> IFNDEF </item>
-            <item> IMPLEMENT </item>
-            <item> INCLUDE </item>
-            <item> LANGUAGE </item>
-            <item> MULTI </item>
-            <item> NOCOPY </item>
-            <item> NONDETERM </item>
-            <item> OBJECT </item>
-            <item> OR </item>
-            <item> PROCEDURE </item>
-            <item> PROTECTED </item>
-            <item> PREDICATES </item>
-            <item> REFERENCE </item>
-            <item> SINGLE </item>
-            <item> STATIC </item>
-            <item> STRUCT </item>
-            <item> THIS </item>
-        </list>
-
-
-        <list name="special">
+        <list name="builtins">
             <item> abolish </item>
             <item> asserta </item>
             <item> assertz </item>
             <item> clause </item>
             <item> retract </item>
             <item> retractall </item>
+
+            <item> parameter </item>
+            <item> this </item>
+            <item> self </item>
+            <item> sender </item>
 
             <item> call </item>
             <item> catch </item>
@@ -186,23 +151,6 @@
             <item> halt </item>
         </list>
 
-        <list name="compiler">
-            <item> bgidriver </item>
-            <item> bgifont </item>
-            <item> check_determ </item>
-            <item> code </item>
-            <item> config </item>
-            <item> diagnostics </item>
-            <item> error </item>
-            <item> errorlevel </item>
-            <item> heap </item>
-            <item> gstacksize </item>
-            <item> nobreak </item>
-            <item> nowarnings </item>
-            <item> printermenu </item>
-            <item> project </item>
-        </list>
-
         <list name="arith">
             <item> mod </item>
             <item> div </item>
@@ -239,18 +187,11 @@
             <item> ref </item>
         </list>
 
-        <list name="keywords">
-            <item> true </item>
-            <item> false </item>
-        </list>
-
         <contexts>
             <context name="normal" attribute="Symbol" lineEndContext="#stay">
-                <keyword attribute="Keyword" context="#stay"  String="keywordl"/>
-                <keyword attribute="Keyword" context="#stay"  String="keywordu"/>
+                <keyword attribute="Keyword" context="#stay"  String="directives"/>
+                <keyword attribute="Keyword" context="#stay"  String="builtins"/>
                 <keyword attribute="Arithmetic" context="#stay"  String="arith"/>
-                <keyword attribute="Keyword" context="#stay"  String="compiler"/>
-                <keyword attribute="Keyword" context="#stay"  String="special"/>
                 <keyword attribute="Data Type" context="#stay"  String="basetype"/>
                 <RegExpr String = "[A-Z_][A-Za-z0-9_]*" attribute = "Variable" context="#stay"/>
                 <RegExpr String = "[a-z][A-Za-z0-9_]*" attribute = "Identifier" context="#stay"/>
