@@ -217,17 +217,11 @@ syn match	logtalkKeyword		"\<at_end_of_stream\>"
 syn match	logtalkKeyword		"\<set_stream_position\ze("
 
 
-" Character input/output
+" Character and byte input/output
 
-syn match	logtalkKeyword		"\<\(get\|peek\|put\)_char\ze("
-syn match	logtalkKeyword		"\<\(get\|peek\|put\)_code\ze("
+syn match	logtalkKeyword		"\<\(get\|peek\|put\)_\(char\|code\|byte\)\ze("
 syn match	logtalkKeyword		"\<nl\ze("
 syn match	logtalkKeyword		"\<nl\>"
-
-
-" Byte input/output
-
-syn match	logtalkKeyword		"\<\(get\|peek\|put\)_byte\ze("
 
 
 " Term input/output
@@ -289,12 +283,11 @@ syn match	logtalkKeyword		"\<ceiling\ze("
 " Other arithemtic functors
 
 syn match	logtalkOperator		"\*\*"
-syn match	logtalkKeyword		"\<sin\ze("
+syn match	logtalkKeyword		"\<s\(in\|qrt\)\ze("
 syn match	logtalkKeyword		"\<cos\ze("
 syn match	logtalkKeyword		"\<atan\ze("
 syn match	logtalkKeyword		"\<exp\ze("
 syn match	logtalkKeyword		"\<log\ze("
-syn match	logtalkKeyword		"\<sqrt\ze("
 
 
 " Bitwise functors
