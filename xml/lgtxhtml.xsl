@@ -58,6 +58,7 @@
 		<div class="predicates">
 			<xsl:apply-templates select="logtalk/predicates" />
 		</div>
+		<xsl:apply-templates select="logtalk/examples" />
 	</body>
 	</html>
 </xsl:template>
@@ -81,18 +82,6 @@
 	<dl class="properties">
 		<dt class ="key">compilation:</dt>
 			<dd class ="value"><code><xsl:value-of select="compilation" /></code></dd>
-	</dl>
-	<dl class="properties">
-	<xsl:if test="examples">
-	<dt class ="key">examples:</dt>
-		<xsl:for-each select="examples/example">
-		<dd class ="value"><dl class="examples">
-			<dt class="comment"><xsl:value-of select="description" /></dt>
-				<dd class="code"><xsl:value-of select="call" /></dd>
-				<dd class="code"><xsl:value-of select="bindings" /></dd>
-		</dl></dd>
-		</xsl:for-each>
-	</xsl:if>
 	</dl>
 	<xsl:if test="info">
 		<dl class="properties">
@@ -288,6 +277,28 @@
 		</dl>
 	</xsl:if>
 	</div>
+</xsl:template>
+
+<xsl:template match="logtalk/examples">
+	<h2>Examples</h2>
+	<div class="predicate">
+	<xsl:choose>
+		<xsl:when test="example">
+			<xsl:apply-templates select="example" />
+		</xsl:when>
+		<xsl:otherwise>
+			<h3 class="code">(none)</h3>
+		</xsl:otherwise>
+	</xsl:choose>
+	</div>
+</xsl:template>
+
+<xsl:template match="logtalk/examples/example">
+	<dl class="examples">
+		<dt class="comment"><xsl:value-of select="description" /></dt>
+			<dd class="code"><xsl:value-of select="call" /></dd>
+			<dd class="code"><xsl:value-of select="bindings" /></dd>
+	</dl>
 </xsl:template>
 
 
