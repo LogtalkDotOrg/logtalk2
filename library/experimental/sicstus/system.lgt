@@ -77,6 +77,10 @@
 		{rename_file(Old, New)}.
 
 
+	symbolic_link(File, Target) :-
+		{fail}.
+
+
 	getenv(Variable, Value) :-
 		{environ(Variable, Value)}.
 

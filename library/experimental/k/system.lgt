@@ -34,6 +34,18 @@
 		{dir(Directory, Files, _)}.
 
 
+	absolute_file_name(File) :-
+		{fail}.
+
+
+	absolute_file_name(File, Full) :-
+		{fail}.
+
+
+	decompose_file_name(File, Directory, Base, Extension) :-
+		{fail}.
+
+
 	file_exists(File) :-
 		{fail}.
 
@@ -59,11 +71,19 @@
  
 
 	delete_file(File) :-
-		{atom_concat('rm ', File, Command), system(Command)}.
+		{atom_concat('rm ', File, Command),
+		 system(Command)}.
 
 
 	rename_file(Old, New) :-
-		{atom_concat('mv ', Old, Temp), atom_concat(Temp, ' ', Temp2), atom_concat(Temp2, New, Command), system(Command)}.
+		{atom_concat('mv ', Old, Temp),
+		 atom_concat(Temp, ' ', Temp2),
+		 atom_concat(Temp2, New, Command),
+		 system(Command)}.
+
+
+	symbolic_link(File, Target) :-
+		{fail}.
 
 
 	getenv(Variable, Value) :-
@@ -76,6 +96,10 @@
 
 	date_time(Year, Month, Day, Hours, Mins, Secs) :-
 		{time(Secs, Mins, Hours, Day, Month, Year, _, _, _)}.
+
+
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+		{fail}.
 
 
 	cpu_time(Time) :-

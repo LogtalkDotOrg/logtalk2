@@ -34,6 +34,18 @@
 		{fail}.
 
 
+	absolute_file_name(File) :-
+		{fail}.
+
+
+	absolute_file_name(File, Full) :-
+		{fail}.
+
+
+	decompose_file_name(File, Directory, Base, Extension) :-
+		{fail}.
+
+
 	file_exists(File) :-
 		{access(File, 4, 0)}.
 
@@ -66,6 +78,10 @@
 		{concat_atom([mv, Old, New], ' ', Command), os(system(Command))}.
 
 
+	symbolic_link(File, Target) :-
+		{fail}.
+
+
 	getenv(Variable, Value) :-
 		{fail}.
 
@@ -76,6 +92,10 @@
 
 	date_time(Year, Month, Day, Hours, Mins, Secs) :-
 		{realtime(RT), localtime(RT, LT), LT = local_time(Year, Month, Day, Hours, Mins, Secs)}.
+
+
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+		{localtime(Time, LT), LT = local_time(Year, Month, Day, Hours, Mins, Secs)}.
 
 
 	cpu_time(Time) :-

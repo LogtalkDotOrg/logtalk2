@@ -39,6 +39,18 @@
 		{file_members_of_directory(Directory, '*', Files)}.
 
 
+	absolute_file_name(File) :-
+		{absolute_file_name(File, File)}.
+
+
+	absolute_file_name(File, Full) :-
+		{absolute_file_name(File, Full)}.
+
+
+	decompose_file_name(File, Directory, Base, Extension) :-
+		{fail}.
+
+
 	file_exists(File) :-
 		{file_exists(File)}.
 
@@ -81,6 +93,10 @@
 
 	date_time(Year, Month, Day, Hours, Mins, Secs) :-
 		{date(date(Day, Month, Year)), time(time(Hours, Mins, Secs))}.
+
+
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+		{fail}.
 
 
 	cpu_time(Time) :-
