@@ -29,7 +29,7 @@ RELEASE NOTES
 	environment variable, LOGTALKUSER, for defining the location of the copies 
 	of the user-modifiable Logtalk files in a multiple users setup environment.
 
-	Added utility predicates to all configuration files for querying and 
+	Added utility predicates to most configuration files for querying and 
 	changing the current working directory (needed for the <library>(<entity>) 
 	notation to work).
 
