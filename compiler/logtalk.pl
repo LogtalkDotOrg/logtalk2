@@ -2070,11 +2070,11 @@ user0__def(Pred, _, _, _, Pred, user).
 
 '$lgt_filter_false_singletons'([], Result, Result).
 
-'$lgt_filter_false_singletons'([Var| Vars], Sofar, Result) :-
-	sub_atom(Var, 0, 1, _, '_') ->
-		'$lgt_filter_false_singletons'(Vars, Sofar, Result)
+'$lgt_filter_false_singletons'([Atom = Var| List], Sofar, Result) :-
+	sub_atom(Atom, 0, 1, _, '_') ->
+		'$lgt_filter_false_singletons'(List, Sofar, Result)
 		;
-		'$lgt_filter_false_singletons'(Vars, [Var| Sofar], Result).
+		'$lgt_filter_false_singletons'(List, [Atom = Var| Sofar], Result).
 
 
 
