@@ -21,9 +21,9 @@
 			<string>Variables</string>
 			<key>Color</key>
 			<array>
-				<real>0.500</real>
-				<real>0.500</real>
-				<real>0.500</real>
+				<real>0.275</real>
+				<real>0.275</real>
+				<real>0.275</real>
 			</array>
 			<key>Multiline</key>
 			<false/>
