@@ -701,7 +701,7 @@ When calling non-standard Prolog built-in predicates, you may run into portabili
 <h3>Calling Prolog non-standard metapredicates<a name="prolog_meta"></a></h3>
 
 <p>
-Compiling calls to non-standard, Prolog built-in metapredicates can be tricky for two reasons: first, there is no standard way of checking if a built-in predicate is also a metapredicate and finding out which are its meta-arguments; second, in some cases, the meta-arguments of a metapredicate are not directly called as goals but are used instead for constructing goals. The way the goals are constructed is specific to the metapredicate and cannot reliable be inferred by the Logtalk compiler. For metapredicates whose meta-arguments are directly called as goals, the solution is to explicitly declare them in the corresponding Prolog configuration file using the predicate <code>'$lgt_pl_metapredicate'/1</code>. For example:
+Compiling calls to non-standard, Prolog built-in metapredicates can be tricky for two reasons: first, there is no standard way of checking if a built-in predicate is also a metapredicate and finding out which are its meta-arguments; second, in some cases, the meta-arguments of a metapredicate are not directly called as goals but are used instead for constructing goals. The way the goals are constructed is specific to the metapredicate and cannot be reliable inferred by the Logtalk compiler. For metapredicates whose meta-arguments are directly called as goals, the solution is to explicitly declare them in the corresponding Prolog configuration file using the predicate <code>'$lgt_pl_metapredicate'/1</code>. For example:
 </p>
 <pre>
     '$lgt_pl_metapredicate'(call_with_depth_limit(::, *, *)).
