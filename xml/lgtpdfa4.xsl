@@ -43,7 +43,7 @@
 		
 			<fo:static-content flow-name="xsl-region-before">
 				<fo:block>
-					<fo:leader leader-pattern="rule" leader-length="100%"/>
+					<fo:leader leader-pattern="rule" leader-length.optimum="100%"/>
 				</fo:block>
 				<fo:block
 						text-align="end" 
@@ -56,7 +56,7 @@
 
 			<fo:static-content flow-name="xsl-region-after">
 				<fo:block>
-					<fo:leader leader-pattern="rule" leader-length="100%"/>
+					<fo:leader leader-pattern="rule" leader-length.optimum="100%"/>
 				</fo:block>
 				<fo:block
 						text-align="end" 
