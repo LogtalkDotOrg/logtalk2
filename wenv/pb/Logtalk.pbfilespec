@@ -9,5 +9,4 @@
   MIMETypes = ("text/x-logtalk");
   ComputerLanguage = logtalk;
 }
-
 )

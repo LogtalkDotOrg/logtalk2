@@ -18,22 +18,19 @@
         CommentsCanBeNested = YES;
     	SingleLineComment = ("%");
 		String = (
-	   	   	("\"", "\"")
+	   	   	("'", "'")
 		);
 		Character = (
                 ( "'", "'" )
          );
     	EscapeCharacter = "\\";
     	Keywords = (
-      		":- category",
-			":- end_category",
-			":- end_object",
-			":- end_protocol",
-			":- object",
-			":- protocol",
-			":- public",
-			":- protected",
-			":- private"
+      		"category",
+			"end_category",
+			"end_object",
+			"end_protocol",
+			"object",
+			"protocol",
 		);
 		AltKeywords = (
 			"initialization",
@@ -51,9 +48,6 @@
 		);
 		PreprocessorKeywordStart = "";
 		PreprocessorKeywords = (
-			"public",
-			"protected",
-			"private"
 		);
   	};
 }
