@@ -17,3 +17,20 @@ cplgtdirs.sh
 	script for copying xml, examples and library directories to the 
 	user home directory (must be runned by the end-user to ensure 
 	proper permissions on the copied files)
+
+make_gplgt.sh
+	script for making a script named gplgt for running Logtalk with 
+	GNU Prolog
+
+make_qplgt.sh
+	script for making a script named qplgt for running Logtalk with 
+	Qu-Prolog
+
+make_swilgt.sh
+	script for making a script named swilgt for running Logtalk with 
+	SWI-Prolog
+
+make_yaplgt.sh
+	script for making a script named yaplgt for running Logtalk with 
+	YAP
+
