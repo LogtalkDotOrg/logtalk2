@@ -12,6 +12,7 @@ for editing Logtalk source files with the Hydra text editor
 
 
 To install copy the file "logtalk.plist" to the folder 
-"~/Library/Application Support/Hydra/Syntax Definitions/"
+"~/Library/Application Support/Hydra/Syntax Definitions/" or to
+"/Library/Application Support/Hydra/Syntax Definitions/"
 (create the folder if it does not exist).
  
