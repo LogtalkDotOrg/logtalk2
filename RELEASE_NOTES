@@ -23,6 +23,10 @@ RELEASE NOTES
 	illustrating some possible uses of assignable variables in the context 
 	of parametric objects.
 
+	Simplified compilation of op/3 directives: there is no longer need to 
+	repeat the directives both before and inside an entity in order to make 
+	the operators global and also use them in the compilation process.
+
 	Simplified installation instructions.
 
 	Corrected a compiler bug in the code that checks and prints a warning 

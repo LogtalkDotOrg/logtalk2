@@ -56,18 +56,9 @@ version 2.1 (http://opensource.org/licenses/osl-2.1.php).
 		exceptions is [
 			'Variable is not instantiated' - instantiation_error]]).
 
-	:- public((=>>)/2).
-	:- mode(=>>(+assignvar, ?nonvar), zero_or_more).
-	:- info((=>>)/2, [
-		comment is 'Enumerates, by backtracking, the current and past variable values, starting in reverse chronological order from the current one.',
-		argnames is ['Variable', 'Value'],
-		exceptions is [
-			'Variable is not instantiated' - instantiation_error]]).
-
 
 	:-op(100, xfx, <=).
 	:-op(100, xfx, =>).
-	:-op(100, xfx, =>>).
 
 
 	assignable(Assig) :-

@@ -3564,7 +3564,11 @@ current_logtalk_flag(version, version(2, 22, 4)).
 	functor(Dir, Functor, Arity),
 	\+ '$lgt_lgt_opening_directive'(Functor, Arity),
 	!,
-	assertz('$lgt_pp_directive_'(Dir)).		% directive will be copied to the generated Prolog file
+	assertz('$lgt_pp_directive_'(Dir)),		% directive will be copied to the generated Prolog file
+	(Dir = op(Pr, Spec, Ops) ->				% op/3 directives must be used during entity compilation
+		op(Pr, Spec, Ops)
+		;
+		true).
 
 '$lgt_tr_directive'(Dir) :-
 	functor(Dir, Functor, Arity),
