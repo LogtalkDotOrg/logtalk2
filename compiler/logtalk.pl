@@ -87,7 +87,7 @@
 
 
 
-% lookup caches for messages to an object and messages to self
+% lookup caches for messages to an object, messages to self, and super calls
 
 :- dynamic('$lgt_obj_lookup_cache_'/6).			% '$lgt_obj_lookup_cache_'(Obj, Pred, Sender, This, Self, Call)
 :- dynamic('$lgt_self_lookup_cache_'/6).		% '$lgt_self_lookup_cache_'(Obj, Pred, Sender, This, Self, Call)
@@ -98,7 +98,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  pre-processor directives
+%  pre-processor directives (used for entity compilation)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -177,10 +177,7 @@ Obj::Pred :-
 	throw(error(instantiation_error, Obj::Pred, user)).
 
 Obj::Pred :-
-	'$lgt_sender'(Ctx, user),
-	'$lgt_this'(Ctx, user),
-	'$lgt_self'(Ctx, Obj),
-	'$lgt_metavars'(Ctx, []),
+	'$lgt_context'(Ctx, user, user, Obj, _, []),
 	'$lgt_tr_msg'(Obj, Pred, Call, Ctx),
 	(('$lgt_debugging_'(Obj), '$lgt_dbg_debugging_') ->
 		catch(
@@ -1375,17 +1372,13 @@ current_logtalk_flag(version, version(2, 18, 0)).
 				functor(Head, Functor, Arity),
 				'$lgt_assert_ddef_clause'(Functor, Arity, Prefix, DDef, _),
 				'$lgt_once'(DDef, Head, Sender2, This, Self, Call)),
-			'$lgt_self'(Ctx, Self),
-			'$lgt_this'(Ctx, This),
-			'$lgt_sender'(Ctx, Sender2),
-			'$lgt_prefix'(Ctx, Prefix),
 			(compound(Meta) ->
 				Head =.. [_| Args],
 				Meta =.. [_| MArgs],
 				'$lgt_extract_metavars'(Args, MArgs, Metavars)
 				;
 				Metavars = []),
-			'$lgt_metavars'(Ctx, Metavars),
+			'$lgt_context'(Ctx, Sender2, This, Self, Prefix, Metavars),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			('$lgt_debugging_'(Obj) ->
 				asserta((Call :- ('$lgt_nop'(Body), DBody)))
@@ -1419,9 +1412,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 				'$lgt_assert_ddef_clause'(Functor, Arity, Prefix, DDef, _),
 				'$lgt_once'(DDef, Head, _, _, _, Call)),
 			('$lgt_debugging_'(Obj) ->
-				'$lgt_sender'(Ctx, Sender),
-				'$lgt_this'(Ctx, Obj),
-				'$lgt_self'(Ctx, Obj),
+				'$lgt_context'(Ctx, Sender, Obj, Obj, Prefix, []),
 				asserta((Call :- '$lgt_dbg_fact'(Head, Ctx)))
 				;
 				asserta(Call)),
@@ -1477,17 +1468,13 @@ current_logtalk_flag(version, version(2, 18, 0)).
 				functor(Head, Functor, Arity),
 				'$lgt_assert_ddef_clause'(Functor, Arity, Prefix, DDef, _),
 				'$lgt_once'(DDef, Head, Sender2, This, Self, Call)),
-			'$lgt_self'(Ctx, Self),
-			'$lgt_this'(Ctx, This),
-			'$lgt_sender'(Ctx, Sender2),
-			'$lgt_prefix'(Ctx, Prefix),
 			(compound(Meta) ->
 				Head =.. [_| Args],
 				Meta =.. [_| MArgs],
 				'$lgt_extract_metavars'(Args, MArgs, Metavars)
 				;
 				Metavars = []),
-			'$lgt_metavars'(Ctx, Metavars),
+			'$lgt_context'(Ctx, Sender2, This, Self, Prefix, Metavars),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			('$lgt_debugging_'(Obj) ->
 				assertz((Call :- ('$lgt_nop'(Body), DBody)))
@@ -1521,9 +1508,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 				'$lgt_assert_ddef_clause'(Functor, Arity, Prefix, DDef, _),
 				'$lgt_once'(DDef, Head, _, _, _, Call)),
 			('$lgt_debugging_'(Obj) ->
-				'$lgt_sender'(Ctx, Sender),
-				'$lgt_this'(Ctx, Obj),
-				'$lgt_self'(Ctx, Obj),
+				'$lgt_context'(Ctx, Sender, Obj, Obj, Prefix, []),
 				assertz((Call :- '$lgt_dbg_fact'(Head, Ctx)))
 				;
 				assertz(Call)),
@@ -1943,10 +1928,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 			call(Pred)
 			;
 			'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
-			'$lgt_prefix'(Ctx, Prefix),
-			'$lgt_sender'(Ctx, Sender),
-			'$lgt_this'(Ctx, Obj),
-			'$lgt_self'(Ctx, Obj),
+			'$lgt_context'(Ctx, Sender, Obj, Obj, Prefix, _),
 			'$lgt_tr_body'(Pred, Call, _, Ctx),
 			call(Call)).
 
@@ -1957,9 +1939,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 % needed for runtime translation of dynamic clauses
 
 '$lgt_call_built_in'(Pred, Ctx) :-
-	'$lgt_sender'(Ctx, Sender),
-	'$lgt_this'(Ctx, This),
-	'$lgt_self'(Ctx, Self),
+	'$lgt_context'(Ctx, Sender, This, Self, _, _),
 	'$lgt_current_object_'(This, _, _, Def, _, _),
 	('$lgt_call'(Def, Pred, Sender, This, Self, Call) ->
 		call(Call)
@@ -2338,9 +2318,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	\+ \+ '$lgt_dbg_spying_'(Functor/Arity).
 	
 '$lgt_dbg_spying'(_, Goal, Ctx, '*') :-
-	'$lgt_sender'(Ctx, Sender),
-	'$lgt_this'(Ctx, This),
-	'$lgt_self'(Ctx, Self),
+	'$lgt_context'(Ctx, Sender, This, Self, _, _),
 	\+ \+ '$lgt_dbg_spying_'(Sender, This, Self, Goal).
 
 
@@ -2518,9 +2496,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	fail.
 
 '$lgt_dbg_do_port_option'(x, _, _, Ctx, _) :-
-	'$lgt_sender'(Ctx, Sender),
-	'$lgt_this'(Ctx, This),
-	'$lgt_self'(Ctx, Self),
+	'$lgt_context'(Ctx, Sender, This, Self, _, _),
 	write('    Sender: '), writeq(Sender), nl,
 	write('    This:   '), writeq(This), nl,
 	write('    Self:   '), writeq(Self), nl,
@@ -3250,11 +3226,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 '$lgt_tr_directive'(initialization, [Goal]) :-
 	'$lgt_callable'(Goal) ->
 		'$lgt_pp_entity_'(_, Entity, Prefix, _),
-		'$lgt_prefix'(Ctx, Prefix),
-		'$lgt_metavars'(Ctx, []),
-		'$lgt_sender'(Ctx, Entity),
-		'$lgt_this'(Ctx, Entity),
-		'$lgt_self'(Ctx, Entity),
+		'$lgt_context'(Ctx, Entity, Entity, Entity, Prefix, []),
 		'$lgt_tr_body'(Goal, TGoal, _, Ctx),
 		assertz('$lgt_pp_entity_init_'(TGoal))
 		;
@@ -3636,9 +3608,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 		'$lgt_add_ddef_clause'(Functor, Arity, PPrefix, Ctx)
 		;
 		'$lgt_add_def_clause'(Functor, Arity, PPrefix, Ctx)),
-	'$lgt_sender'(Ctx, Sender),
-	'$lgt_this'(Ctx, This),
-	'$lgt_self'(Ctx, Self),
+	'$lgt_context'(Ctx, Sender, This, Self, _, _),
 	'$lgt_append'(Args, [Sender, This, Self], Args2),
 	THead =.. [PPrefix| Args2].
 
@@ -3924,11 +3894,8 @@ current_logtalk_flag(version, version(2, 18, 0)).
 '$lgt_tr_body'(Cond, TCond, '$lgt_dbg_goal'(Cond, TCond, Ctx), Ctx) :-
 	Cond =.. [Functor| Args],
 	functor(Cond, Functor, Arity),
-	'$lgt_prefix'(Ctx, EPrefix),
+	'$lgt_context'(Ctx, Sender, This, Self, EPrefix, _),
 	'$lgt_construct_predicate_functor'(EPrefix, Functor, Arity, PPrefix),
-	'$lgt_sender'(Ctx, Sender),
-	'$lgt_this'(Ctx, This),
-	'$lgt_self'(Ctx, Self),
 	'$lgt_append'(Args, [Sender, This, Self], Args2),
 	TCond =.. [PPrefix| Args2],
 	assertz('$lgt_pp_calls_pred_'(Functor/Arity)).
@@ -3981,13 +3948,13 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 '$lgt_tr_msg'(Obj, _, _, Ctx) :-
 	nonvar(Obj),
-	\+ '$lgt_sender'(Ctx, user),	% not runtime msg translation
+	\+ '$lgt_sender'(Ctx, user),	% not runtime message translation
 	\+ '$lgt_this'(Ctx, user),
 	'$lgt_add_referenced_object'(Obj),
 	fail.
 
 
-% non-instantiated message: traslation performed at runtime
+% non-instantiated message: translation performed at runtime
 
 '$lgt_tr_msg'(Obj, Pred, '$lgt_send_to_object'(Obj, Pred, This), Ctx) :-
 	var(Pred),
@@ -4130,13 +4097,11 @@ current_logtalk_flag(version, version(2, 18, 0)).
 % (meta-)predicate: translation performed at runtime
 
 '$lgt_tr_msg'(Obj, Pred, '$lgt_send_to_object'(Obj, Pred, This), Ctx) :-
-	var(Obj),
-	!,
-	'$lgt_this'(Ctx, This).
-
-'$lgt_tr_msg'(Obj, Pred, '$lgt_send_to_object_nv'(Obj, Pred, This), Ctx) :-
-	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_this'(Ctx, This),
+	(var(Obj) ->
+		TPred = '$lgt_send_to_object'(Obj, Pred, This)
+		;
+		TPred = '$lgt_send_to_object_nv'(Obj, Pred, This)).
 
 
 
@@ -4329,18 +4294,12 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 % translation performed at runtime
 
-'$lgt_tr_super_sending'(Pred, '$lgt_send_to_super'(Self, Pred, This, Sender), Ctx) :-
-	var(Pred),
-	!,
-	'$lgt_self'(Ctx, Self),
-	'$lgt_this'(Ctx, This),
-	'$lgt_sender'(Ctx, Sender).
-
-'$lgt_tr_super_sending'(Pred, '$lgt_send_to_super_nv'(Self, Pred, This, Sender), Ctx) :-
-	'$lgt_self'(Ctx, Self),
-	'$lgt_this'(Ctx, This),
-	'$lgt_sender'(Ctx, Sender).
-
+'$lgt_tr_super_sending'(Pred, TPred, Ctx) :-
+	'$lgt_context'(Ctx, Sender, This, Self, _, _),
+	(var(Pred) ->
+		TPred = '$lgt_send_to_super'(Self, Pred, This, Sender)
+		;
+		TPred = '$lgt_send_to_super_nv'(Self, Pred, This, Sender)).
 
 
 % '$lgt_extract_metavars'(+callable, -list)
@@ -4927,9 +4886,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 '$lgt_add_def_clause'(Functor, Arity, Prefix, Ctx) :-
 	functor(Head, Functor, Arity),
 	Head =.. [_| Args],
-	'$lgt_sender'(Ctx, Sender),
-	'$lgt_this'(Ctx, This),
-	'$lgt_self'(Ctx, Self),
+	'$lgt_context'(Ctx, Sender, This, Self, _, _),
 	'$lgt_append'(Args, [Sender, This, Self], TArgs),
 	THead =.. [Prefix|TArgs],
 	once(
@@ -4958,9 +4915,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 '$lgt_add_ddef_clause'(Functor, Arity, Prefix, Ctx) :-
 	functor(Head, Functor, Arity),
 	Head =.. [_| Args],
-	'$lgt_sender'(Ctx, Sender),
-	'$lgt_this'(Ctx, This),
-	'$lgt_self'(Ctx, Self),
+	'$lgt_context'(Ctx, Sender, This, Self, _, _),
 	'$lgt_append'(Args, [Sender, This, Self], TArgs),
 	THead =.. [Prefix|TArgs],
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, DDef),
@@ -6392,9 +6347,12 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 
 % utility predicates used during compilation of Logtalk 
-% entities to store and access context information
+% entities to store and access context information which
+% is represented by a compound term
 
 '$lgt_context'(context(_, _, _, _, _)).
+
+'$lgt_context'(context(Sender, This, Self, Prefix, Metavars), Sender, This, Self, Prefix, Metavars).
 
 '$lgt_sender'(context(Sender, _, _, _, _), Sender).
 
