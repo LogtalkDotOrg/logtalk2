@@ -51,7 +51,7 @@ fso.CopyFolder(logtalk_home + "\\xml", logtalk_user + "\\xml");
 WScript.Echo("Finished copying Logtalk directories.");
 WScript.Echo("");
 WScript.Echo("You may need to edit the My Documents\\logtalk\\libpaths.pl file to");
-WScript.Echo("match your Prolog compiler and operating-system requirments or to");
+WScript.Echo("match your Prolog compiler and operating-system requirements or to");
 WScript.Echo("add your own library paths.");
 WScript.Echo("");
 

@@ -27,6 +27,6 @@ else
 	echo "Finished copying Logtalk directories."
 	echo
 	echo "You may need to edit the ~/logtalk/libpaths.pl file to match your Prolog"
-	echo "compiler and operating-system requirments or to add your own library paths."
+	echo "compiler and operating-system requirements or to add your own library paths."
 	echo
 fi
