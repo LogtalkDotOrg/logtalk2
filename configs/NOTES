@@ -346,29 +346,44 @@ Qu-Prolog 4.3, 6.4
 	library and the Logtalk examplex you will need to replace all occurrences 
 	of floats by either integers or (quoted) atoms. In Unix-like systems, you
 	may perform the changes by running the following command:
-	
+
 	find lgt2160 -name "*.lgt" -exec perl -pi -e "s/version is (\d)\.(\d)/version is '\1\.\2'/" {} \;
 
 	Not that the above patch will not enable some examples that use floats to 
 	run.
-	
+
 	In order to compile and load both the config file and the Logtalk compiler,
 	the following sequence of steps is advised. First rename the config file:
-		
-		% cd configs; mv qu64.config qu64.ql
-	
+
+		% cd $LOGTALKHOME/configs; mv qu64.config qu64.ql
+
 	Second, start Qu-Prolog using adequate switches. For example:
-	
+
 		% qp -s 2048 -d 1024 -h 2000
-	
+
 	Next, compile and load the config file using:
-	
+
 		| ?- fcompile('qu64.ql', [assemble_only(true)]), load(qu64).
 
 	Finally, compile and load the Logtalk compiler:
 
 		| ?- chdir('../compiler/'), fcompile('logtalk.pl', [assemble_only(true), string_table(256)]), load(logtalk).
-		
+
+	You may want to generate a new Prolog top level that includes the Logtalk 
+	config file and pre-processor plus the runtime. Start by compiling the file
+	qphook.ql:
+
+	% cd $LOGTALKHOME/configs; qc -c qphook.ql
+
+	Next generate the new interpreter by doing:
+
+	% qc -s 2048 -d 1024 -h 2000 -o qplgt qphook.qo qu64.qo ../compiler/logtalk.qo
+
+	This way, every time you want to work with Logtalk you will just need to
+	type:
+
+	% qplgt
+
 	Don't forget to use the chdir/1 predicate to set the working directory 
 	before loading the library or an example.
 
