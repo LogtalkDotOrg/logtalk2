@@ -3721,23 +3721,28 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 '$lgt_tr_directive'(info, [List]) :-
 	!,
-	('$lgt_valid_info_list'(List) ->
+	('$lgt_valid_entity_info_list'(List) ->
 		assertz('$lgt_pp_info_'(List))
 		;
-		throw(type_error(info_list, List))).
+		throw(type_error(entity_info_list, List))).
 
 
 '$lgt_tr_directive'(info, [Pred, List]) :-
-	'$lgt_valid_info_list'(List) ->
-		('$lgt_valid_pred_ind'(Pred) ->
+	'$lgt_valid_pred_ind'(Pred) ->
+		('$lgt_valid_pred_info_list'(List, Pred) ->
 			assertz('$lgt_pp_info_'(Pred, List))
 			;
-			('$lgt_valid_gr_ind'(Pred) ->
+			throw(type_error(pred_info_list, List)))
+		;
+		('$lgt_valid_gr_ind'(Pred) ->
+			('$lgt_valid_pred_info_list'(List, Pred) ->
 				assertz('$lgt_pp_info_'(Pred, List))
 				;
-				throw(type_error(predicate_indicator, Pred))))
+				throw(type_error(pred_info_list, List)))
+			;
+			throw(type_error(predicate_indicator, Pred)))
 		;
-		throw(type_error(info_list, List)).
+		throw(type_error(predicate_indicator, Pred)).
 
 
 
@@ -7287,75 +7292,107 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 
 
-% '$lgt_valid_info_list'(@list)
+% '$lgt_valid_entity_info_list'(@list)
 %
 % true if the argument is a list of key-value pairs
 
-'$lgt_valid_info_list'([]).
+'$lgt_valid_entity_info_list'([]).
 
-'$lgt_valid_info_list'([Head| Tail]) :-
+'$lgt_valid_entity_info_list'([Head| Tail]) :-
 	nonvar(Head),
 	Head = (Key is Value),
 	nonvar(Key),
 	nonvar(Value),
-	('$lgt_valid_info_key_value'(Key, Value) ->
-		'$lgt_valid_info_list'(Tail)
+	('$lgt_valid_entity_info_key_value'(Key, Value) ->
+		'$lgt_valid_entity_info_list'(Tail)
 		;
-		throw(type_error(info_list_item, Key is Value))).
+		throw(type_error(entity_info_list_item, Key is Value))).
 
 
 
-% '$lgt_valid_info_key_value'(+atom, @nonvar)
+% '$lgt_valid_entity_info_key_value'(+atom, @nonvar)
 %
 % true if the argument is a list of key-value pairs
 
-'$lgt_valid_info_key_value'(allocation, Allocation) :-
-	!,
-	once('$lgt_member'(Allocation, [container, descendants, instances, classes, subclasses, any])).
-
-'$lgt_valid_info_key_value'(argnames, List) :-
-	!,
-	'$lgt_proper_list'(List),
-	forall('$lgt_member'(Value, List), atom(Value)).
-
-'$lgt_valid_info_key_value'(author, Author) :-
+'$lgt_valid_entity_info_key_value'(author, Author) :-
 	!,
 	atom(Author).
 
-'$lgt_valid_info_key_value'(comment, Comment) :-
+'$lgt_valid_entity_info_key_value'(comment, Comment) :-
 	!,
 	atom(Comment).
 
-'$lgt_valid_info_key_value'(date, Date) :-
+'$lgt_valid_entity_info_key_value'(date, Date) :-
 	!,
 	Date = Year/Month/Day,
 	integer(Year),
 	integer(Month),
 	integer(Day).
 
-'$lgt_valid_info_key_value'(exceptions, Exceptions) :-
-	!,
-	'$lgt_proper_list'(Exceptions),
-	forall(
-		'$lgt_member'(Exception, Exceptions),
-		(Exception = (Description - Term), atom(Description), nonvar(Term))).
-
-'$lgt_valid_info_key_value'(redefinition, Redefinition) :-
-	!,
-	once('$lgt_member'(Redefinition, [never, free, specialize, call_super_first, call_super_last])).
-
-'$lgt_valid_info_key_value'(version, Version) :-
-	!,
-	atomic(Version).
-
-'$lgt_valid_info_key_value'(parnames, Parnames) :-
+'$lgt_valid_entity_info_key_value'(parnames, Parnames) :-
 	!,
 	'$lgt_proper_list'(Parnames),
 	forall('$lgt_member'(Name, Parnames), atom(Name)),
 	'$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _),
 	\+ \+ Obj =.. [_| Parnames].
 
-'$lgt_valid_info_key_value'(_, _).
+'$lgt_valid_entity_info_key_value'(version, Version) :-
+	!,
+	atomic(Version).
+
+'$lgt_valid_entity_info_key_value'(_, _).
+
+
+
+% '$lgt_valid_pred_info_list'(@list, @predicate_indicator)
+%
+% true if the argument is a list of key-value pairs
+
+'$lgt_valid_pred_info_list'([], _).
+
+'$lgt_valid_pred_info_list'([Head| Tail], Pred) :-
+	nonvar(Head),
+	Head = (Key is Value),
+	nonvar(Key),
+	nonvar(Value),
+	('$lgt_valid_pred_info_key_value'(Key, Value, Pred) ->
+		'$lgt_valid_pred_info_list'(Tail, Pred)
+		;
+		throw(type_error(pred_info_list_item, Key is Value))).
+
+
+
+% '$lgt_valid_pred_info_key_value'(+atom, @nonvar, @predicate_indicator)
+%
+% true if the argument is a list of key-value pairs
+
+'$lgt_valid_pred_info_key_value'(allocation, Allocation, _) :-
+	!,
+	once('$lgt_member'(Allocation, [container, descendants, instances, classes, subclasses, any])).
+
+'$lgt_valid_pred_info_key_value'(argnames, Argnames, Functor/Arity) :-
+	!,
+	'$lgt_proper_list'(Argnames),
+	forall('$lgt_member'(Name, Argnames), atom(Name)),
+	functor(Pred, Functor, Arity),
+	Pred =.. [_| Argnames].
+
+'$lgt_valid_pred_info_key_value'(comment, Comment, _) :-
+	!,
+	atom(Comment).
+
+'$lgt_valid_pred_info_key_value'(exceptions, Exceptions, _) :-
+	!,
+	'$lgt_proper_list'(Exceptions),
+	forall(
+		'$lgt_member'(Exception, Exceptions),
+		(Exception = (Description - Term), atom(Description), nonvar(Term))).
+
+'$lgt_valid_pred_info_key_value'(redefinition, Redefinition, _) :-
+	!,
+	once('$lgt_member'(Redefinition, [never, free, specialize, call_super_first, call_super_last])).
+
+'$lgt_valid_pred_info_key_value'(_, _, _).
 
 
 
