@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.17.1 - June ??, 2004
+2.17.1 - June 7, 2004
 
 	Added custom handling of specification of predicate exceptions in info/2 
 	documenting directives when writing XML documenting files (declared as 
