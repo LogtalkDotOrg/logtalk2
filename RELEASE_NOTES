@@ -24,7 +24,7 @@ RELEASE NOTES
 
 	Updated the lgt2html.* and lgt2pdf.* shell scripts to use the environment 
 	variable LOGTALKUSER instead of LOGTALKHOME for finding support files, thus 
-	allowing for user customization.
+	allowing for user customization of the scripts and their related files.
 
 
 2.22.0 - November 29, 2004
