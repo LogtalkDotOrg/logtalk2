@@ -35,6 +35,24 @@
 
 		<dict>
 			<key>Name</key>
+			<string>Quoted Atoms and Strings</string>
+			<key>Color</key>
+			<array>
+				<real>0.537</real>
+				<real>0.075</real>
+				<real>0.082</real>
+			</array>
+			<key>Multiline</key>
+			<false/>
+			<key>Regular Expressions</key>
+			<array>
+				<string>("(\\"|[^"])*")</string>
+				<string>('(\\'|[^'])*')</string>
+			</array>
+		</dict>
+
+		<dict>
+			<key>Name</key>
 			<string>Directives</string>
 			<key>Color</key>
 			<array>
@@ -390,24 +408,6 @@
 				<string>0o[0-7]+</string>
 				<string>0x[0-9a-fA-F]+</string>
 				<string>0'[0-9a-zA-Z]</string>
-			</array>
-		</dict>
-
-		<dict>
-			<key>Name</key>
-			<string>Quoted Atoms and Strings</string>
-			<key>Color</key>
-			<array>
-				<real>0.537</real>
-				<real>0.075</real>
-				<real>0.082</real>
-			</array>
-			<key>Multiline</key>
-			<false/>
-			<key>Regular Expressions</key>
-			<array>
-				<string>("(\\"|[^"])*")</string>
-				<string>('(\\'|[^'])*')</string>
 			</array>
 		</dict>
 
