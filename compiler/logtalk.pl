@@ -182,13 +182,10 @@
 Obj::Pred :-
 	'$lgt_ctx_ctx'(Ctx, user, user, Obj, '$lgt_po_user0_', []),
 	'$lgt_tr_msg'(Pred, Obj, Call, Ctx),
-	catch(
-		(('$lgt_dbg_debugging_', '$lgt_debugging_'(Obj)) ->
-			'$lgt_dbg_goal'(Obj::Pred, Call, Ctx)
+	(('$lgt_dbg_debugging_', '$lgt_debugging_'(Obj)) ->
+			catch('$lgt_dbg_goal'(Obj::Pred, Call, Ctx), Error, '$lgt_runtime_error_handler'(Error))
 			;
-			call(Call)),
-		Error,
-		'$lgt_runtime_error_handler'(Error)).
+			catch(Call, Error, '$lgt_runtime_error_handler'(Error))).
 
 
 
@@ -1047,8 +1044,10 @@ logtalk_compile(Entities, Flags) :-
 	'$lgt_write_warnings_word'(CCounter), write(')'), nl.
 
 '$lgt_write_warning_numbers'(_, CCounter, LCounter) :-
-	write('('), write(CCounter), write(' compilation '), '$lgt_write_warnings_word'(CCounter), write(' and '),
-	write(LCounter), write(' loading '), '$lgt_write_warnings_word'(LCounter), write(')'), nl.
+	write('('), write(CCounter), write(' compilation '),
+	'$lgt_write_warnings_word'(CCounter), write(' and '),
+	write(LCounter), write(' loading '),
+	'$lgt_write_warnings_word'(LCounter), write(')'), nl.
 
 
 '$lgt_write_warnings_word'(Number) :-

@@ -12,9 +12,11 @@ RELEASE NOTES
 
 2.23.1 - February ??, 2005
 
-	Updated a runtime error handler for top-level ::/2 calls to recognize 
+	Updated the runtime error handler for top-level ::/2 calls to recognize 
 	non-existing predicate exceptions thrown by XSB, SICStus Prolog, CIAO, 
-	B-Prolog, and recent development versions of SWI-Prolog.
+	B-Prolog, and recent development versions of SWI-Prolog. Rewritten the 
+	::/2 predicate in order to minimize the overhead of the catch/3 calls 
+	associated with the runtime error handler, thus improving performance.
 
 	Expanded the benchmarks example to test performance of the built-in 
 	database methods.
