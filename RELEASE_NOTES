@@ -20,6 +20,9 @@ RELEASE NOTES
 	(print only the banner), and "none" (do not print neither the banner or the 
 	flag values). Default value is "flags".
 
+	Updated the "errors" example to illustrate the error messages thrown when 
+	trying to redefine Logtalk built-in control constructs.
+
 
 2.16.1 - March 23, 2004
 
