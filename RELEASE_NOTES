@@ -12,7 +12,7 @@ RELEASE NOTES
 
 2.21.1 - September ??, 2004
 
-	Added preliminary support for a new built-in method, expand_term/2, which 
+	Added experimental support for a new built-in method, expand_term/2, which 
 	allows access to the Logtalk grammar rule translator. Corrected bug in the 
 	expansion of \+/1 in grammar rule bodies.
 

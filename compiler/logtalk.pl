@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.21.0
+%  Release 2.21.1
 %
 %  Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 %
@@ -1557,7 +1557,7 @@ current_logtalk_flag(version, version(2, 21, 0)).
 				;
 				throw(error(permission_error(access, static_predicate, Head), Obj::clause(Head, Body), Sender)))
 			;
-			('$lgt_once'(DDef, Head, _, _, _, Call) ->
+			('$lgt_once'(DDef, Head, _, _, _, Call) ->	% local dynamic predicate with no scope declaration
 				clause(Call, TBody),
 				(TBody = ('$lgt_nop'(Body), _) ->
 					true
@@ -1664,36 +1664,34 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	\+ callable(Head),
 	throw(error(type_error(callable, Head), Obj::retractall(Head), Sender)).
 
-'$lgt_retractall'(Obj, Head, Sender, _) :-
-	\+ '$lgt_current_object_'(Obj, _, _, _, _, _),
-	throw(error(existence_error(object, Obj), Obj::retractall(Head), Sender)).
-
 '$lgt_retractall'(Obj, Head, Sender, Scope) :-
-	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
-	'$lgt_call'(Prefix, Dcl, Def, _, _, _, _, DDef),
-	('$lgt_call'(Dcl, Head, PScope, Type, _, SCtn, _) ->
-		(Type = (dynamic) ->
-			((\+ \+ PScope = Scope; Sender = SCtn) ->
-				('$lgt_call'(Def, Head, _, _, _, Call) ->
-					retractall(Call)
-					;
-					('$lgt_call'(DDef, Head, _, _, _, Call) ->
-						retractall(Call),
-						'$lgt_update_ddef_table'(DDef, Head, Call)
+	'$lgt_current_object_'(Obj, Prefix, _, _, _, _) ->
+		'$lgt_call'(Prefix, Dcl, Def, _, _, _, _, DDef),
+		('$lgt_call'(Dcl, Head, PScope, Type, _, SCtn, _) ->
+			(Type = (dynamic) ->
+				((\+ \+ PScope = Scope; Sender = SCtn) ->
+					('$lgt_call'(Def, Head, _, _, _, Call) ->
+						retractall(Call)
 						;
-						true))
-				;
-				(PScope = p ->
-					throw(error(permission_error(modify, private_predicate, Head), Obj::retractall(Head), Sender))
+						('$lgt_call'(DDef, Head, _, _, _, Call) ->
+							retractall(Call),
+							'$lgt_update_ddef_table'(DDef, Head, Call)
+							;
+							true))
 					;
-					throw(error(permission_error(modify, protected_predicate, Head), Obj::retractall(Head), Sender))))
+					(PScope = p ->
+						throw(error(permission_error(modify, private_predicate, Head), Obj::retractall(Head), Sender))
+						;
+						throw(error(permission_error(modify, protected_predicate, Head), Obj::retractall(Head), Sender))))
+				;
+				throw(error(permission_error(modify, static_predicate, Head), Obj::retractall(Head), Sender)))
 			;
-			throw(error(permission_error(modify, static_predicate, Head), Obj::retractall(Head), Sender)))
+			('$lgt_call'(DDef, Head, _, _, _, Call) ->	% local dynamic predicate with no scope declaration
+				retractall(Call)
+				;
+				throw(error(existence_error(predicate_declaration, Head), Obj::retractall(Head), Sender))))
 		;
-		('$lgt_call'(DDef, Head, _, _, _, Call) ->	% local dynamic predicate with no scope declaration
-			retractall(Call)
-			;
-			throw(error(existence_error(predicate_declaration, Head), Obj::retractall(Head), Sender)))).
+		throw(error(existence_error(object, Obj), Obj::retractall(Head), Sender)).
 
 
 
