@@ -12,7 +12,10 @@ RELEASE NOTES
 
 2.17.1 - May ??, 2004
 
-	Added two more DCGs examples.
+	Changed debugger command "e" to print exception terms instead of exiting 
+	Logtalk session.
+
+	Added two more DCGs examples. New "puzzles" example.
 
 
 2.17.0 - April 26, 2004
