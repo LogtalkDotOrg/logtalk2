@@ -69,29 +69,28 @@
 
 % debugger status and tables
 
-:- dynamic('$lgt_debugging_'/1).				% '$lgt_debugging_'(Entity)
+:- dynamic('$lgt_debugging_'/1).			% '$lgt_debugging_'(Entity)
 
-:- dynamic('$lgt_dbg_debugging_'/0).			% '$lgt_dbg_debugging_'
-:- dynamic('$lgt_dbg_tracing_'/0).				% '$lgt_dbg_tracing_'
-:- dynamic('$lgt_dbg_skipping_'/0).				% '$lgt_dbg_skipping_'
-:- dynamic('$lgt_dbg_spying_'/1).				% '$lgt_dbg_spying_'(Functor/Arity)
-:- dynamic('$lgt_dbg_spying_'/4).				% '$lgt_dbg_spying_'(Sender, This, Self, Goal)
-:- dynamic('$lgt_dbg_leashing_'/1).				% '$lgt_dbg_leashing_'(Port)
+:- dynamic('$lgt_dbg_debugging_'/0).		% '$lgt_dbg_debugging_'
+:- dynamic('$lgt_dbg_tracing_'/0).			% '$lgt_dbg_tracing_'
+:- dynamic('$lgt_dbg_skipping_'/0).			% '$lgt_dbg_skipping_'
+:- dynamic('$lgt_dbg_spying_'/1).			% '$lgt_dbg_spying_'(Functor/Arity)
+:- dynamic('$lgt_dbg_spying_'/4).			% '$lgt_dbg_spying_'(Sender, This, Self, Goal)
+:- dynamic('$lgt_dbg_leashing_'/1).			% '$lgt_dbg_leashing_'(Port)
 
 
 
-% compiler options and flags
+% runtime flags
 
-:- dynamic('$lgt_current_compiler_option_'/2).	% '$lgt_current_compiler_option_'(Option, Value)
-:- dynamic('$lgt_flag_'/2).						% '$lgt_flag_'(Option, Value)
+:- dynamic('$lgt_current_flag_'/2).			% '$lgt_current_flag_'(Option, Value)
 
 
 
 % lookup caches for messages to an object, messages to self, and super calls
 
-:- dynamic('$lgt_obj_lookup_cache_'/6).			% '$lgt_obj_lookup_cache_'(Obj, Pred, Sender, This, Self, Call)
-:- dynamic('$lgt_self_lookup_cache_'/6).		% '$lgt_self_lookup_cache_'(Obj, Pred, Sender, This, Self, Call)
-:- dynamic('$lgt_super_lookup_cache_'/6).		% '$lgt_super_lookup_cache_'(Obj, Pred, Sender, This, Self, Call)
+:- dynamic('$lgt_obj_lookup_cache_'/6).		% '$lgt_obj_lookup_cache_'(Obj, Pred, Sender, This, Self, Call)
+:- dynamic('$lgt_self_lookup_cache_'/6).	% '$lgt_self_lookup_cache_'(Obj, Pred, Sender, This, Self, Call)
+:- dynamic('$lgt_super_lookup_cache_'/6).	% '$lgt_super_lookup_cache_'(Obj, Pred, Sender, This, Self, Call)
 
 
 
@@ -103,6 +102,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+
+:- dynamic('$lgt_pp_compiler_option_'/2).		% '$lgt_pp_compiler_option_'(Option, Value)
 
 :- dynamic('$lgt_pp_dcl_'/1).					% '$lgt_pp_dcl_'(Clause)
 :- dynamic('$lgt_pp_ddcl_'/1).					% '$lgt_pp_ddcl_'(Clause)
@@ -466,9 +467,7 @@ abolish_object(Obj) :-
 			retractall('$lgt_implements_protocol_'(Obj, _, _)),
 			retractall('$lgt_imports_category_'(Obj, _, _)),
 			retractall('$lgt_debugging_'(Obj)),
-			retractall('$lgt_obj_lookup_cache_'(_, _, _, _, _, _)),
-			retractall('$lgt_self_lookup_cache_'(_, _, _, _, _, _)),
-			retractall('$lgt_super_lookup_cache_'(_, _, _, _, _, _))
+			'$lgt_clean_lookup_caches'
 			;
 			throw(error(permission_error(modify, static_object, Obj), abolish_object(Obj))))
 		;
@@ -499,9 +498,7 @@ abolish_category(Ctg) :-
 			abolish(Prefix/2),
 			retractall('$lgt_current_category_'(Ctg, _, _)),
 			retractall('$lgt_implements_protocol_'(Ctg, _, _)),
-			retractall('$lgt_obj_lookup_cache_'(_, _, _, _, _, _)),
-			retractall('$lgt_self_lookup_cache_'(_, _, _, _, _, _)),
-			retractall('$lgt_super_lookup_cache_'(_, _, _, _, _, _))
+			'$lgt_clean_lookup_caches'
 			;
 			throw(error(permission_error(modify, static_category, Ctg), abolish_category(Ctg))))
 		;
@@ -528,9 +525,7 @@ abolish_protocol(Ptc) :-
 			abolish(Prefix/1),
 			retractall('$lgt_current_protocol_'(Ptc, _, _)),
 			retractall('$lgt_extends_protocol_'(Ptc, _, _)),
-			retractall('$lgt_obj_lookup_cache_'(_, _, _, _, _, _)),
-			retractall('$lgt_self_lookup_cache_'(_, _, _, _, _, _)),
-			retractall('$lgt_super_lookup_cache_'(_, _, _, _, _, _))
+			'$lgt_clean_lookup_caches'
 			;
 			throw(error(permission_error(modify, static_protocol, Ptc), abolish_protocol(Ptc))))
 		;
@@ -873,12 +868,12 @@ abolish_events(after, Obj, Msg, Sender, Monitor) :-
 % gets/check the current value of a compiler option
 
 '$lgt_compiler_option'(Option, Value) :-
-	'$lgt_current_compiler_option_'(Option, Value2),
+	'$lgt_pp_compiler_option_'(Option, Value2),
 	!,
 	Value = Value2.
 
 '$lgt_compiler_option'(Option, Value) :-
-	'$lgt_flag_'(Option, Value2),
+	'$lgt_current_flag_'(Option, Value2),
 	!,
 	Value = Value2.
 
@@ -1006,11 +1001,11 @@ logtalk_compile(Entities, Options) :-
 % sets the compiler options
 
 '$lgt_set_compiler_options'(Options) :-
-	retractall('$lgt_current_compiler_option_'(_, _)),
+	retractall('$lgt_pp_compiler_option_'(_, _)),
 	'$lgt_assert_compiler_options'(Options),
-	('$lgt_current_compiler_option_'(debug, on) ->
-		retractall('$lgt_current_compiler_option_'(smart_compilation, _)),
-		asserta('$lgt_current_compiler_option_'(smart_compilation, off))
+	('$lgt_pp_compiler_option_'(debug, on) ->
+		retractall('$lgt_pp_compiler_option_'(smart_compilation, _)),
+		asserta('$lgt_pp_compiler_option_'(smart_compilation, off))
 		;
 		true).
 
@@ -1019,7 +1014,7 @@ logtalk_compile(Entities, Options) :-
 
 '$lgt_assert_compiler_options'([Option| Options]) :-
 	Option =.. [Key, Value],
-	asserta('$lgt_current_compiler_option_'(Key, Value)),
+	asserta('$lgt_pp_compiler_option_'(Key, Value)),
 	'$lgt_assert_compiler_options'(Options).
 
 
@@ -1096,14 +1091,14 @@ set_logtalk_flag(Flag, Value) :-
 
 set_logtalk_flag(debug, on) :-
 	!,
-	retractall('$lgt_flag_'(debug, _)),
-	assertz('$lgt_flag_'(debug, on)),
-	retractall('$lgt_flag_'(smart_compilation, _)),
-	assertz('$lgt_flag_'(smart_compilation, off)).
+	retractall('$lgt_current_flag_'(debug, _)),
+	assertz('$lgt_current_flag_'(debug, on)),
+	retractall('$lgt_current_flag_'(smart_compilation, _)),
+	assertz('$lgt_current_flag_'(smart_compilation, off)).
 
 set_logtalk_flag(Flag, Value) :-
-	retractall('$lgt_flag_'(Flag, _)),
-	assertz('$lgt_flag_'(Flag, Value)).
+	retractall('$lgt_current_flag_'(Flag, _)),
+	assertz('$lgt_current_flag_'(Flag, Value)).
 
 
 
@@ -1122,11 +1117,11 @@ current_logtalk_flag(Flag, Value) :-
 	throw(error(domain_error(valid_flag, Flag), current_logtalk_flag(Flag, Value))).
 
 current_logtalk_flag(Flag, Value) :-
-	'$lgt_flag_'(Flag, Value).
+	'$lgt_current_flag_'(Flag, Value).
 
 current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
-	\+ '$lgt_flag_'(Flag, _).
+	\+ '$lgt_current_flag_'(Flag, _).
 
 current_logtalk_flag(version, version(2, 18, 0)).
 
@@ -1315,9 +1310,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 							abolish(CFunctor/CArity),
 							Clause2 =.. [DDef, Pred, _, _, _, Call],
 							retractall(Clause2),
-							retractall('$lgt_obj_lookup_cache_'(_, Pred, _, _, _, _)),
-							retractall('$lgt_self_lookup_cache_'(_, Pred, _, _, _, _)),
-							retractall('$lgt_super_lookup_cache_'(_, Pred, _, _, _, _))
+							'$lgt_clean_lookup_caches'(Pred)
 							;
 							true)
 						;
@@ -2543,9 +2536,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	'$lgt_file_name'(prolog, Entity, File),
 	'$lgt_load_prolog_code'(File),
 	'$lgt_report_loaded_entity'(Entity),
-	retractall('$lgt_obj_lookup_cache_'(_, _, _, _, _, _)),
-	retractall('$lgt_self_lookup_cache_'(_, _, _, _, _, _)),
-	retractall('$lgt_super_lookup_cache_'(_, _, _, _, _, _)).
+	'$lgt_clean_lookup_caches'.
 
 
 
@@ -2976,67 +2967,25 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 
 
-% dump all dynamic predicates used during entity compilation
-% in the current ouput stream (just a debugging utility)
-%
-% only works on Prolog compilers implementing listing/1
-
-'$lgt_dump_all' :-
-	listing('$lgt_current_compiler_option_'/2),
-	listing('$lgt_flag_'/2),
-	listing('$lgt_pp_object_'/9),
-	listing('$lgt_pp_protocol_'/3),
-	listing('$lgt_pp_category_'/4),
-	listing('$lgt_pp_implemented_protocol_'/4),
-	listing('$lgt_pp_imported_category_'/5),
-	listing('$lgt_pp_extended_object_'/10),
-	listing('$lgt_pp_instantiated_class_'/10),
-	listing('$lgt_pp_specialized_class_'/10),
-	listing('$lgt_pp_extended_protocol_'/4),
-	listing('$lgt_pp_uses_'/1),
-	listing('$lgt_pp_calls_'/1),
-	listing('$lgt_pp_info_'/1),
-	listing('$lgt_pp_info_'/2),
-	listing('$lgt_pp_directive_'/1),
-	listing('$lgt_pp_public_'/1),
-	listing('$lgt_pp_protected_'/1),
-	listing('$lgt_pp_private_'/1),
-	listing('$lgt_pp_dynamic_'/1),
-	listing('$lgt_pp_discontiguous_'/1),
-	listing('$lgt_pp_mode_'/2),
-	listing('$lgt_pp_metapredicate_'/1),
-	listing('$lgt_pp_entity_functors_'/1),
-	listing('$lgt_pp_entity_'/4),
-	listing('$lgt_pp_entity_init_'/1),
-	listing('$lgt_pp_fentity_init_'/1),
-	listing('$lgt_pp_entity_comp_mode_'/1),
-	listing('$lgt_pp_dcl_'/1),
-	listing('$lgt_pp_ddcl_'/1),
-	listing('$lgt_pp_def_'/1),
-	listing('$lgt_pp_ddef_'/1),
-	listing('$lgt_pp_super_'/1),
-	listing('$lgt_pp_rclause_'/1),
-	listing('$lgt_pp_eclause_'/1),
-	listing('$lgt_pp_feclause_'/1),
-	listing('$lgt_pp_redefined_built_in_'/3),
-	listing('$lgt_pp_defs_pred_'/1),
-	listing('$lgt_pp_calls_pred_'/1),
-	listing('$lgt_pp_referenced_object_'/1),
-	listing('$lgt_pp_referenced_protocol_'/1),
-	listing('$lgt_pp_referenced_category_'/1),
-	listing('$lgt_pp_global_op_'/3),
-	listing('$lgt_pp_local_op_'/3).
-
-
-
-% '$lgt_clean_caches'
+% '$lgt_clean_lookup_caches'
 %
 % clean method lookup caches
 
-'$lgt_clean_caches' :-
+'$lgt_clean_lookup_caches' :-
 	retractall('$lgt_obj_lookup_cache_'(_, _, _, _, _, _)),
 	retractall('$lgt_self_lookup_cache_'(_, _, _, _, _, _)),
 	retractall('$lgt_super_lookup_cache_'(_, _, _, _, _, _)).
+
+
+
+% '$lgt_clean_lookup_caches'(+callable)
+%
+% clean method lookup caches for the matching predicate
+
+'$lgt_clean_lookup_caches'(Pred) :-
+	retractall('$lgt_obj_lookup_cache_'(_, Pred, _, _, _, _)),
+	retractall('$lgt_self_lookup_cache_'(_, Pred, _, _, _, _)),
+	retractall('$lgt_super_lookup_cache_'(_, Pred, _, _, _, _)).
 
 
 
@@ -4910,9 +4859,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	Call =.. [PPrefix| TArgs],
 	Clause =.. [DDef, Pred, Sender, This, Self, Call],
 	assertz(Clause),
-	retractall('$lgt_obj_lookup_cache_'(_, Pred, _, _, _, _)),
-	retractall('$lgt_self_lookup_cache_'(_, Pred, _, _, _, _)),
-	retractall('$lgt_super_lookup_cache_'(_, Pred, _, _, _, _)).
+	'$lgt_clean_lookup_caches'(Pred).
 
 
 
@@ -4931,9 +4878,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 		;
 		Clause =.. [DDef, Head, _, _, _, _],
 		retractall(Clause),
-		retractall('$lgt_obj_lookup_cache_'(_, Head, _, _, _, _)),
-		retractall('$lgt_self_lookup_cache_'(_, Head, _, _, _, _)),
-		retractall('$lgt_super_lookup_cache_'(_, Head, _, _, _, _))).
+		'$lgt_clean_lookup_caches'(Head)).
 
 
 
@@ -6291,11 +6236,11 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 % built-in metapredicates
 
-'$lgt_metapredicate'(Meta) :-
+'$lgt_metapredicate'(Meta) :-			% Logtalk built-in metapredicate
 	'$lgt_lgt_metapredicate'(Meta).
 
-'$lgt_metapredicate'(Meta) :-
-	'$lgt_pl_metapredicate'(Meta).		% defined in the config files
+'$lgt_metapredicate'(Meta) :-			% (non ISO Standard) Prolog metapredicate
+	'$lgt_pl_metapredicate'(Meta).		% specified in the config files
 
 
 
@@ -7528,9 +7473,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 
 :- initialization((
-	retractall('$lgt_obj_lookup_cache_'(_, _, _, _, _, _)),
-	retractall('$lgt_self_lookup_cache_'(_, _, _, _, _, _)),
-	retractall('$lgt_super_lookup_cache_'(_, _, _, _, _, _)),
+	'$lgt_clean_lookup_caches',
 	'$lgt_startup_message')).
 
 
