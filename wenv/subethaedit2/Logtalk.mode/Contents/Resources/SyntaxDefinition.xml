@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE syntax SYSTEM "syntax.dtd">
+<syntax>
+
+    <head>
+        <name>Logtalk</name>
+        <charsintokens>
+            <![CDATA[_0987654321abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ]]>
+        </charsintokens> 
+        <charsdelimitingtokens><![CDATA[ -]]></charsdelimitingtokens>
+    </head>
+
+    <states>
+    
+        <default id="Base" color="#000" inverted-color="#fff">
+
+            <keywords id="Variables" color="#464646">
+				<regex>[^[:lower:]]([A-Z_][A-Za-z0-9_]*)[^[:alnum:]]</regex>
+            </keywords>
+
+            <keywords id="Directives" color="#683820">
+				<regex>\:\-[[:space:]](object)\(</regex>			
+				<regex>\:\-[[:space:]](end_object)\.</regex>			
+				<regex>\:\-[[:space:]](protocol)\(</regex>			
+				<regex>\:\-[[:space:]](end_protocol)\.</regex>			
+				<regex>\:\-[[:space:]](category)\(</regex>			
+				<regex>\:\-[[:space:]](end_category)\.</regex>			
+				<regex>\:\-[[:space:]](initialization)\(</regex>			
+				<regex>\:\-[[:space:]](info)\(</regex>			
+				<regex>\:\-[[:space:]](mode)\(</regex>			
+				<regex>\:\-[[:space:]](dynamic)\(</regex>			
+				<regex>\:\-[[:space:]](dynamic)\.</regex>			
+				<regex>\:\-[[:space:]](discontiguous)\(</regex>			
+				<regex>\:\-[[:space:]](public)\(</regex>			
+				<regex>\:\-[[:space:]](protected)\(</regex>			
+				<regex>\:\-[[:space:]](private)\(</regex>			
+				<regex>\:\-[[:space:]](metapredicate)\(</regex>			
+				<regex>\:\-[[:space:]](op)\(</regex>			
+				<regex>\:\-[[:space:]](calls)\(</regex>			
+				<regex>\:\-[[:space:]](uses)\(</regex>			
+            </keywords>
+
+            <keywords id="Entity Relations" color="#683820">
+				<regex>[^A-Za-z0-9_](instantiates)\(</regex>
+				<regex>[^A-Za-z0-9_](specializes)\(</regex>
+				<regex>[^A-Za-z0-9_](extends)\(</regex>
+				<regex>[^A-Za-z0-9_](imports)\(</regex>
+				<regex>[^A-Za-z0-9_](implements)\(</regex>
+            </keywords>
+
+            <keywords id="Message Sending Operators" color="#0000ff">
+				<regex>::</regex>			
+				<regex>\^\^</regex>
+            </keywords>
+
+            <keywords id="External Call" color="#0000ff">
+				<regex>{</regex>			
+				<regex>}</regex>
+            </keywords>
+
+            <keywords id="Control Constructs" color="#760f4b">
+				<regex>[^A-Za-z0-9_](call)\(</regex>
+				<regex>[^A-Za-z0-9_](catch)\(</regex>
+				<regex>[^A-Za-z0-9_](throw)\(</regex>
+            </keywords>
+
+            <keywords id="Built-in Methods" color="#760f4b">
+				<regex>[^A-Za-z0-9_](parameter)\(</regex>
+				<regex>[^A-Za-z0-9_](self)\(</regex>
+				<regex>[^A-Za-z0-9_](sender)\(</regex>
+				<regex>[^A-Za-z0-9_](this)\(</regex>
+				<regex>[^A-Za-z0-9_](current_predicate)\(</regex>
+				<regex>[^A-Za-z0-9_](predicate_property)\(</regex>
+				<regex>[^A-Za-z0-9_](abolish)\(</regex>
+				<regex>[^A-Za-z0-9_](asserta)\(</regex>
+				<regex>[^A-Za-z0-9_](assertz)\(</regex>
+				<regex>[^A-Za-z0-9_](clause)\(</regex>
+				<regex>[^A-Za-z0-9_](retract)\(</regex>
+				<regex>[^A-Za-z0-9_](retractall)\(</regex>
+				<regex>[^A-Za-z0-9_](bagof)\(</regex>
+				<regex>[^A-Za-z0-9_](findall)\(</regex>
+				<regex>[^A-Za-z0-9_](forall)\(</regex>
+				<regex>[^A-Za-z0-9_](setof)\(</regex>
+				<regex>[^A-Za-z0-9_](before)\(</regex>
+				<regex>[^A-Za-z0-9_](after)\(</regex>
+				<regex>[^A-Za-z0-9_](phrase)\(</regex>
+            </keywords>
+
+            <keywords id="Built-in Predicates" color="#760f4b">
+				<regex>[^A-Za-z0-9_](current_object)\(</regex>
+				<regex>[^A-Za-z0-9_](current_protocol)\(</regex>
+				<regex>[^A-Za-z0-9_](current_category)\(</regex>
+				<regex>[^A-Za-z0-9_](create_object)\(</regex>
+				<regex>[^A-Za-z0-9_](create_protocol)\(</regex>
+				<regex>[^A-Za-z0-9_](create_category)\(</regex>
+				<regex>[^A-Za-z0-9_](object_property)\(</regex>
+				<regex>[^A-Za-z0-9_](protocol_property)\(</regex>
+				<regex>[^A-Za-z0-9_](category_property)\(</regex>
+				<regex>[^A-Za-z0-9_](abolish_object)\(</regex>
+				<regex>[^A-Za-z0-9_](abolish_protocol)\(</regex>
+				<regex>[^A-Za-z0-9_](abolish_category)\(</regex>
+				<regex>[^A-Za-z0-9_](extends_object)\(</regex>
+				<regex>[^A-Za-z0-9_](extends_protocol)\(</regex>
+				<regex>[^A-Za-z0-9_](implements_protocol)\(</regex>
+				<regex>[^A-Za-z0-9_](instantiates_class)\(</regex>
+				<regex>[^A-Za-z0-9_](specializes_class)\(</regex>
+				<regex>[^A-Za-z0-9_](imports_category)\(</regex>
+				<regex>[^A-Za-z0-9_](abolish_events)\(</regex>
+				<regex>[^A-Za-z0-9_](current_event)\(</regex>
+				<regex>[^A-Za-z0-9_](define_events)\(</regex>
+				<regex>[^A-Za-z0-9_](current_logtalk_flag)\(</regex>
+				<regex>[^A-Za-z0-9_](set_logtalk_flag)\(</regex>
+				<regex>[^A-Za-z0-9_](logtalk_compile)\(</regex>
+				<regex>[^A-Za-z0-9_](logtalk_load)\(</regex>
+				<regex>[^A-Za-z0-9_](forall)\(</regex>
+				<regex>[^A-Za-z0-9_](retractall)\(</regex>
+            </keywords>
+
+            <keywords id="Other Built-in Predicates" color="#760f4b">
+				<!-- Term unification -->
+				<regex>[[:space:]]+(=)[[:space:]]+</regex>
+				<regex>[[:space:]]+(\\=)[[:space:]]+</regex>
+				<regex>[^A-Za-z0-9_](unify_with_occurs_check)\(</regex>
+				<!-- Term testing -->
+				<regex>[^A-Za-z0-9_](var)\(</regex>
+				<regex>[^A-Za-z0-9_](atom)\(</regex>
+				<regex>[^A-Za-z0-9_](integer)\(</regex>
+				<regex>[^A-Za-z0-9_](float)\(</regex>
+				<regex>[^A-Za-z0-9_](atomic)\(</regex>
+				<regex>[^A-Za-z0-9_](compound)\(</regex>
+				<regex>[^A-Za-z0-9_](nonvar)\(</regex>
+				<regex>[^A-Za-z0-9_](number)\(</regex>
+				<!-- Term comparison -->
+				<regex>[[:space:]]+(==)[[:space:]]+</regex>
+				<regex>[[:space:]]+(\\==)[[:space:]]+</regex>
+				<regex>[[:space:]]+(@=&lt;)[[:space:]]+</regex>
+				<regex>[[:space:]]+(@&lt;)[[:space:]]+</regex>
+				<regex>[[:space:]]+(@&gt;=)[[:space:]]+</regex>
+				<regex>[[:space:]]+(@&gt;)regex+</regex>
+				<!-- Term creation and decomposition -->
+				<regex>[^A-Za-z0-9_](functor)\(</regex>
+				<regex>[^A-Za-z0-9_](arg)\(</regex>
+				<regex>[[:space:]]+(=\.\.)[[:space:]]+</regex>
+				<regex>[^A-Za-z0-9_](copy_term)\(</regex>
+				<!-- Arithemtic evaluation -->
+				<regex>[[:space:]]+(is)[[:space:]]+</regex>
+				<!-- Arithemtic comparison -->
+				<regex>[[:space:]]+(=:=)[[:space:]]+</regex>
+				<regex>[[:space:]]+(=\=)[[:space:]]+</regex>
+				<regex>[[:space:]]+(&lt;)[[:space:]]+</regex>
+				<regex>[[:space:]]+(=&lt;)[[:space:]]+</regex>
+				<regex>[[:space:]]+(&gt;)regex+</regex>
+				<regex>[[:space:]]+(&gt;=)[[:space:]]+</regex>
+				<!-- Evaluable functors -->
+				<regex>[[:space:]]+(\+)[[:space:]]+</regex>
+				<regex>[[:space:]]+(\-)[[:space:]]+</regex>
+				<regex>[[:space:]]+(\*)[[:space:]]+</regex>
+				<regex>[[:space:]]+(//)[[:space:]]+</regex>
+				<regex>[[:space:]]+(/)[[:space:]]+</regex>
+				<regex>[[:space:]]+(rem)[[:space:]]+</regex>
+				<regex>[[:space:]]+(mod)[[:space:]]+</regex>
+				<regex>[^A-Za-z0-9_](rem)\(</regex>
+				<regex>[^A-Za-z0-9_](mod)\(</regex>
+				<regex>[^A-Za-z0-9_](abs)\(</regex>
+				<regex>[^A-Za-z0-9_](sign)\(</regex>
+				<regex>[^A-Za-z0-9_](float_integer_part)\(</regex>
+				<regex>[^A-Za-z0-9_](float_fractional_part)\(</regex>
+				<regex>[^A-Za-z0-9_](float)\(</regex>
+				<regex>[^A-Za-z0-9_](floor)\(</regex>
+				<regex>[^A-Za-z0-9_](truncate)\(</regex>
+				<regex>[^A-Za-z0-9_](round)\(</regex>
+				<regex>[^A-Za-z0-9_](ceiling)\(</regex>
+				<!-- Other arithemtic functors -->
+				<regex>[[:space:]]+(\*\*)[[:space:]]+</regex>
+				<regex>[^A-Za-z0-9_](sin)\(</regex>
+				<regex>[^A-Za-z0-9_](cos)\(</regex>
+				<regex>[^A-Za-z0-9_](atan)\(</regex>
+				<regex>[^A-Za-z0-9_](exp)\(</regex>
+				<regex>[^A-Za-z0-9_](log)\(</regex>
+				<regex>[^A-Za-z0-9_](sqrt)\(</regex>
+				<!-- Bitwise functors -->
+				<regex>[[:space:]]+(&gt;&gt;)[[:space:]]+</regex>
+				<regex>[[:space:]]+(&lt;&lt;)[[:space:]]+</regex>
+				<regex>[[:space:]]+(/\\)[[:space:]]+</regex>
+				<regex>[[:space:]]+(\\/)[[:space:]]+</regex>
+				<regex>[[:space:]]+(\\)[[:space:]]+</regex>
+				<!-- Stream selection and control -->
+				<regex>[^A-Za-z0-9_](current_input)\(</regex>
+				<regex>[^A-Za-z0-9_](current_output)\(</regex>
+				<regex>[^A-Za-z0-9_](set_input)\(</regex>
+				<regex>[^A-Za-z0-9_](set_output)\(</regex>
+				<regex>[^A-Za-z0-9_](open)\(</regex>
+				<regex>[^A-Za-z0-9_](close)\(</regex>
+				<regex>[^A-Za-z0-9_](flush_output)\(</regex>
+				<regex>[^A-Za-z0-9_](stream_property)\(</regex>
+				<regex>[^A-Za-z0-9_](at_end_of_stream)\(</regex>
+				<regex>[^A-Za-z0-9_](set_stream_position)\(</regex>
+				<!-- Character input/output -->
+				<regex>[^A-Za-z0-9_](get_char)\(</regex>
+				<regex>[^A-Za-z0-9_](get_code)\(</regex>
+				<regex>[^A-Za-z0-9_](peek_char)\(</regex>
+				<regex>[^A-Za-z0-9_](peek_code)\(</regex>
+				<regex>[^A-Za-z0-9_](put_char)\(</regex>
+				<regex>[^A-Za-z0-9_](put_code)\(</regex>
+				<regex>[^A-Za-z0-9_](nl)\(</regex>
+				<!-- Byte input/output -->
+				<regex>[^A-Za-z0-9_](get_byte)\(</regex>
+				<regex>[^A-Za-z0-9_](peek_byte)\(</regex>
+				<regex>[^A-Za-z0-9_](put_byte)\(</regex>
+				<!-- Term input/output -->
+				<regex>[^A-Za-z0-9_](read_term)\(</regex>
+				<regex>[^A-Za-z0-9_](read)\(</regex>
+				<regex>[^A-Za-z0-9_](write_term)\(</regex>
+				<regex>[^A-Za-z0-9_](writeq)\(</regex>
+				<regex>[^A-Za-z0-9_](write)\(</regex>
+				<regex>[^A-Za-z0-9_](write_canonical)\(</regex>
+				<regex>[^A-Za-z0-9_](op)\(</regex>
+				<regex>[^A-Za-z0-9_](current_op)\(</regex>
+				<regex>[^A-Za-z0-9_](char_conversion)\(</regex>
+				<regex>[^A-Za-z0-9_](current_char_conversion)\(</regex>
+				<!-- Logic and control -->
+				<regex>(\\\+)[[:space:]]+</regex>
+				<regex>[^A-Za-z0-9_](once)\(</regex>
+				<!-- Atomic term processing -->
+				<regex>[^A-Za-z0-9_](atom_length)\(</regex>
+				<regex>[^A-Za-z0-9_](atom_concat)\(</regex>
+				<regex>[^A-Za-z0-9_](sub_atom)\(</regex>
+				<regex>[^A-Za-z0-9_](atom_chars)\(</regex>
+				<regex>[^A-Za-z0-9_](atom_codes)\(</regex>
+				<regex>[^A-Za-z0-9_](char_code)\(</regex>
+				<regex>[^A-Za-z0-9_](number_chars)\(</regex>
+				<regex>[^A-Za-z0-9_](number_codes)\(</regex>
+				<!-- Implementation defined hooks functions -->
+				<regex>[^A-Za-z0-9_](set_prolog_flag)\(</regex>
+				<regex>[^A-Za-z0-9_](current_prolog_flag)\(</regex>
+				<regex>[^A-Za-z0-9_](halt)\(</regex>
+				<!-- Stream selection and control -->
+				<string>flush_output</string>
+				<string>at_end_of_stream</string>
+				<!-- Character input/output -->
+				<string>nl</string>
+				<!-- Logic and control -->
+				<string>repeat</string>
+				<!-- Implementation defined hooks functions -->
+				<string>halt</string>
+            </keywords>
+
+            <keywords id="Numbers" color="#000067">
+				<regex>[0-9]+((\.[0-9]+)?([eE][-+][0-9]+)?)?</regex>
+				<regex>0b[0-1]+</regex>
+				<regex>0o[0-7]+</regex>
+				<regex>0x[0-9a-fA-F]+</regex>
+				<regex>0'[0-9a-zA-Z]</regex>
+            </keywords>
+
+        </default>
+
+		<state id="Strings" color="#881314">
+			<begin><regex>"</regex></begin>
+			<end><regex>(((?&lt;!\\)(\\\\)*)|^)"</regex></end>
+		</state>
+
+		<state id="Quoted Atoms" color="#881314">
+			<begin><regex>'</regex></begin>
+			<end><regex>(((?&lt;!\\)(\\\\)*)|^)'</regex></end>
+		</state>
+
+        <state id="Comment" color="#226d24" font-style="italic">
+            <begin><regex>/\*</regex></begin>
+            <end><regex>\*/</regex></end>
+        </state>
+        
+        <state id="SingleComment" color="#226d24" font-style="italic">
+            <begin><regex>%</regex></begin>
+            <end><regex>[\n\r]</regex></end>
+        </state>
+
+    </states>
+
+</syntax>
