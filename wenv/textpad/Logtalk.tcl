@@ -315,3 +315,72 @@
 :- end_category.
 
 !
+
+
+!TEXT=Public predicate
+	:- public(Functor/Arity).
+	:- mode(Functor(Arguments), Solutions).
+	:- info(Functor/Arity, [
+		comment is 'Description',
+		arguments is ['Arg'-'Description']]).
+
+	
+
+!
+
+
+!TEXT=Public predicate (with no arguments)
+	:- public(Functor/0).
+	:- mode(Functor, Solutions).
+	:- info(Functor/0, [
+		comment is 'Description']).
+
+	
+
+!
+
+
+!TEXT=Protected predicate
+	:- protected(Functor/Arity).
+	:- mode(Functor(Arguments), Solutions).
+	:- info(Functor/Arity, [
+		comment is 'Description',
+		arguments is ['Arg'-'Description']]).
+
+	
+
+!
+
+
+!TEXT=Protected predicate (with no arguments)
+	:- protected(Functor/0).
+	:- mode(Functor, Solutions).
+	:- info(Functor/0, [
+		comment is 'Description']).
+
+	
+
+!
+
+
+!TEXT=Private predicate
+	:- private(Functor/Arity).
+	:- mode(Functor(Arguments), Solutions).
+	:- info(Functor/Arity, [
+		comment is 'Description',
+		arguments is ['Arg'-'Description']]).
+
+	
+
+!
+
+
+!TEXT=Private predicate (with no arguments)
+	:- private(Functor/0).
+	:- mode(Functor, Solutions).
+	:- info(Functor/0, [
+		comment is 'Description']).
+
+	
+
+!
