@@ -84,10 +84,10 @@ WScript.Echo("");
 WScript.Echo("converting XML files...");
 
 var files = new Enumerator(fso.GetFolder(WshShell.CurrentDirectory).Files);
-var file;
 
-for (; !files.atEnd(); files.moveNext())
-	if (fso.GetExtensionName(files.Item()) = "xml") {
+for (; !files.atEnd(); files.moveNext()) {
+	var file = files.Item();
+	if (fso.GetExtensionName(file) = "xml") {
 		WScript.Echo("  converting" + fso.GetFileName(files.item()));
 		var html_file = directory + "\\" + fso.GetBaseName(files.item()) + ".html";
 		switch (processor) {
@@ -102,6 +102,7 @@ for (; !files.atEnd(); files.moveNext())
 				break;
 		}
 	}
+}
 
 WScript.Echo("conversion done");
 WScript.Echo("");
