@@ -372,12 +372,19 @@ XSB Prolog 2.3~5
 	will not find them!
 
 	You also need to apply the following patchs to the Logtalk pre-processor/
-	runtime: (1) open the file compiler/logtalk.pl, go to the line 1670 and 
-	replace the clause "lgt_current_object_(user, user0_)." by the query
-	":- assertz(lgt_current_object_(user, user0_))."; (2) you may get
-	syntax errors while compiling the Logtalk pre-processor or some of the 
-	examples due to a know bug in the XSB parsing of infix operators: just 
-	add a space after the infix operator.
+	runtime:
+	
+	(1) open the file compiler/logtalk.pl, find the clause that reads: 
+	
+	lgt_current_object_(user, user0_, user0__dcl, user0__def, _).
+	
+	and replace it with the query:
+	
+	:- assertz(lgt_current_object_(user, user0_, user0__dcl, user0__def, _)).
+	
+	(2) you may get syntax errors while compiling the Logtalk pre-processor 
+	or some of the examples due to a know bug in the XSB parsing of infix 
+	operators: just add a space after the infix operator.
 
 	The write() and writeq() predicates output code that in some instances 
 	can not be readed back with read(). If you receive a syntax error while 
