@@ -32,25 +32,25 @@ var processor = "xsltproc";
 
 var arguments = WScript.Arguments.Unnamed;
 
-if arguments.Exists("help") {
+if (arguments.Exists("help")) {
 	usage_help();
 }
 
 arguments = WScript.Arguments.Named;
 
-if arguments.Exists("f")
+if (arguments.Exists("f"))
 	format = arguments.Item("f");
 
-if arguments.Exists("d")
+if (arguments.Exists("d"))
 	directory = arguments.Item("d");
 
-if arguments.Exists("i")
+if (arguments.Exists("i"))
 	index_file = arguments.Item("i");
 
-if arguments.Exists("t")
+if (arguments.Exists("t"))
 	title = arguments.Item("t");
 
-if arguments.Exists("p")
+if (arguments.Exists("p"))
 	processor = arguments.Item("p");
 
 if (format = "xhtml")
