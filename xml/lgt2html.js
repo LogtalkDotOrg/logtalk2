@@ -43,40 +43,63 @@ var processor = "xsltproc";
 if (WScript.Arguments.Unnamed.Length > 0)
 	usage_help();
 
+var f_arg = "";
+var d_arg = "";
+var i_arg = "";
+var t_arg = "";
+var p_arg = "";
+
 if (WScript.Arguments.Named.Exists("f"))
-	format = WScript.Arguments.Named.Item("f");
+	f_arg = WScript.Arguments.Named.Item("f");
 
 if (WScript.Arguments.Named.Exists("d"))
-	directory = WScript.Arguments.Named.Item("d");
+	d_arg = WScript.Arguments.Named.Item("d");
 
 if (WScript.Arguments.Named.Exists("i"))
-	index_file = WScript.Arguments.Named.Item("i");
+	i_arg = WScript.Arguments.Named.Item("i");
 
 if (WScript.Arguments.Named.Exists("t"))
-	index_title = WScript.Arguments.Named.Item("t");
+	t_arg = WScript.Arguments.Named.Item("t");
 
 if (WScript.Arguments.Named.Exists("p"))
-	processor = WScript.Arguments.Named.Item("p");
+	p_arg = WScript.Arguments.Named.Item("p");
 
-if (format == "xhtml")
-	xslt = xhtml_xslt;
-else if (format == "html")
-	xslt = html_xslt;
-else {
-	WScript.Echo("Error! Unsupported output format: " + format);
+if (f_arg != "" && f_arg != "xhtml" && f_arg != "html") {
+	WScript.Echo("Error! Unsupported output format: " + f_arg);
+	WScript.Echo("");
 	usage_help();
-}
+} else if (f_arg != "")
+	format = f_arg;
 
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 
-if (!fso.FolderExists(directory)) {
-	WScript.Echo("Error! directory does not exists: " + directory);
+if (d_arg != "" && !fso.FolderExists(d_arg)) {
+	WScript.Echo("Error! directory does not exists: " + d_arg);
 	WScript.Echo("");
 	usage_help();
-}
+} else if (d_arg != "")
+	directory = d_arg;
 
-if (processor != "xsltproc" && processor != "xalan" && processor != "sabcmd") {
-	WScript.Echo("Error! Unsupported XSLT processor:" + processor);
+if (i_arg != "")
+	index_file=i_arg;
+
+if (t_arg != "")
+	index_title=t_arg;
+
+if (p_arg != "" && p_arg != "xsltproc" && p_arg != "xalan" && p_arg != "sabcmd") {
+	WScript.Echo("Error! Unsupported XSLT processor:" + p_arg);
+	WScript.Echo("");
+	usage_help();
+} else if (p_arg != "")
+	processor = p_arg;
+
+if (format == "xhtml")
+	xslt = xhtml_xslt;
+else
+	xslt = html_xslt;
+
+if (!fso.FolderExists(directory)) {
+	WScript.Echo("Error! directory does not exists: " + directory);
 	WScript.Echo("");
 	usage_help();
 }
