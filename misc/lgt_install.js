@@ -20,6 +20,7 @@ var FSObject = new ActiveXObject("Scripting.FileSystemObject");
 
 WshShell.CurrentDirectory = "..";
 WshSystemEnv.Item("LOGTALKHOME") = WshShell.CurrentDirectory;
+WshSystemEnv.Item("LOGTALKUSER") = WshShell.SpecialFolders("MyDocuments") + "\\logtalk";
 
 if (!FSObject.FolderExists(WshShell.CurrentDirectory + "\\bin"))
 	FSObject.CreateFolder(WshShell.CurrentDirectory + "\\bin");
