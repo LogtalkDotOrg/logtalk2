@@ -203,8 +203,8 @@ GNU Prolog 1.1.2 (and later versions, except 1.2.13)
 	can generate a new Prolog top level that includes the Logtalk config file
 	and pre-processor plus the runtime by doing something like:
 
-	% cd lgt2156
-	% cp configs/gnu.config configs/gnu.pl
+	% cd lgt2160
+	% mv configs/gnu.config configs/gnu.pl
 
 	Edit the compiler/logtalk.pl file and add the line ":- built_in." to the 
 	top. Then:
@@ -436,7 +436,7 @@ SWI Prolog 3.2.9 & 3.3.x and all later versions
 		:- ['drive:\\path to logtalk installation\\configs\\swi config file'].
 		:- ['drive:\\path to logtalk installation\\compiler\\logtalk.pl'].
 
-	 or to your .plrc (on MacOS X and Unix systems):
+	 or to your .plrc (on MacOS X, Unix, and similar systems):
 	
 		:- ['path to logtalk installation/configs/swi config file'].
 		:- ['path to logtalk installation/compiler/logtalk.pl'].
@@ -489,16 +489,12 @@ YAP 4.2.0 & 4.3.x~4.5.x
 
 	yap420.config
 	
-	For version 4.2.0 (or older versions). Supports smart compilation of 
-	source files.
+	For version 4.2.0 (or older versions). Don't forget to use the cd/1 
+	predicate to set the working directory before loading the library or 
+	an example. Supports smart compilation of source files.
 
 	yap430.config
 
-	For all 4.3.x and later versions.
-
-	The predicates lgt_current_date/3 and lgt_current_time/3 have dummy 
-	definitions. For most users, this will be no problem (some examples may 
-	use lgt_current_date/3 only to put a time stamp in new objects). Don't 
-	forget to use the cd/1 predicate to set the working directory before 
-	loading the library or an example. Supports smart compilation of source 
-	files.
+	For all 4.3.x and later versions. Don't forget to use the cd/1 predicate 
+	to set the working directory before loading the library or an example. 
+	Supports smart compilation of source files.
