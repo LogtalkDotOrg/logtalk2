@@ -59,7 +59,7 @@ A category may be defined as a composition of other categories by writing:
     :- end_category.
 </pre>
 <p>
-This feature should only be used when extending a category without breaking its functional cohesion or when a modified version of a category is needed for importing on several unrelated objects. The prefered way of composing several categories is by importing them into an object.
+This feature should only be used when extending a category without breaking its functional cohesion (for example, when a modified version of a category is needed for importing on several unrelated objects). The prefered way of composing several categories is by importing them into an object.
 </p>
 <p>
 Categories cannot inherit from object. In addition, categories cannot contain clauses for dynamic predicates (however, they can declare dynamic predicates). This restriction applies because a category can be imported by several objects and because we cannot use the database handling built-in methods with categories (messages can only be sent to objects).
