@@ -45,7 +45,7 @@ yes
 
 % call the predicate list::length/2 from top-level:
 
-| ?- benchmark(list::length([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], _)).
+| ?- benchmark(object::length([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], _)).
 
 Number of repetitions: 1000000
 Average time per call: 1.4e-07 seconds
@@ -56,7 +56,7 @@ yes
 % compiled call of the predicate list::length/2 (simulates message sending 
 % from a compiled object to another object; thus no top-level overhead):
 
-| ?- benchmark('$lgt_send_to_object_nv'(list, length([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], _), user)).
+| ?- benchmark('$lgt_send_to_object_nv'(object, length([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], _), user)).
 
 Number of repetitions: 1000000
 Average time per call: 1.4e-07 seconds
