@@ -3643,7 +3643,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		('$lgt_save_operators'(Operators, Saved),
 		 '$lgt_add_operators'(Operators),
 		 read(Term),
-		 '$lgt_pop_operators'(Operators)),
+		 '$lgt_remove_operators'(Operators)),
 		Error,
 		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
 
@@ -3658,7 +3658,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		('$lgt_save_operators'(Operators, Saved),
 		 '$lgt_add_operators'(Operators),
 		 write_term(Stream, Term, Options),
-		 '$lgt_pop_operators'(Operators)),
+		 '$lgt_remove_operators'(Operators)),
 		Error,
 		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
 
@@ -3673,7 +3673,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		('$lgt_save_operators'(Operators, Saved),
 		 '$lgt_add_operators'(Operators),
 		 write_term(Term, Options),
-		 '$lgt_pop_operators'(Operators)),
+		 '$lgt_remove_operators'(Operators)),
 		Error,
 		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
 
@@ -3688,7 +3688,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		('$lgt_save_operators'(Operators, Saved),
 		 '$lgt_add_operators'(Operators),
 		 write(Stream, Term),
-		 '$lgt_pop_operators'(Operators)),
+		 '$lgt_remove_operators'(Operators)),
 		Error,
 		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
 
@@ -3703,7 +3703,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		('$lgt_save_operators'(Operators, Saved),
 		 '$lgt_add_operators'(Operators),
 		 write(Term),
-		 '$lgt_pop_operators'(Operators)),
+		 '$lgt_remove_operators'(Operators)),
 		Error,
 		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
 
@@ -3718,7 +3718,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		('$lgt_save_operators'(Operators, Saved),
 		 '$lgt_add_operators'(Operators),
 		 writeq(Stream, Term),
-		 '$lgt_pop_operators'(Operators)),
+		 '$lgt_remove_operators'(Operators)),
 		Error,
 		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
 
@@ -3733,7 +3733,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		('$lgt_save_operators'(Operators, Saved),
 		 '$lgt_add_operators'(Operators),
 		 writeq(Term),
-		 '$lgt_pop_operators'(Operators)),
+		 '$lgt_remove_operators'(Operators)),
 		Error,
 		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
 
