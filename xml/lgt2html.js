@@ -98,12 +98,6 @@ if (format == "xhtml")
 else
 	xslt = html_xslt;
 
-if (!fso.FolderExists(directory)) {
-	WScript.Echo("Error! directory does not exists: " + directory);
-	WScript.Echo("");
-	usage_help();
-}
-
 fso.CopyFile(logtalk_home + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory + "\\logtalk.dtd");
 fso.CopyFile(logtalk_home + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory + "\\logtalk.xsd");
 fso.CopyFile(logtalk_home + "\\xml\\logtalk.css", directory + "\\logtalk.css");
