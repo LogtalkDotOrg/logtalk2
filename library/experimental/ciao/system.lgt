@@ -1,5 +1,6 @@
 
 :- use_module(library(system)).
+:- use_module(library(filenames)).
 
 
 :- object(system,
@@ -38,15 +39,18 @@
 
 
 	absolute_file_name(File) :-
-		{fail}.
+		{absolute_file_name(File, File)}.
 
 
 	absolute_file_name(File, Full) :-
-		{fail}.
+		{absolute_file_name(File, Full)}.
 
 
 	decompose_file_name(File, Directory, Base, Extension) :-
-		{fail}.
+		{no_path_file_name_(File, Name),
+		 absolute_file_name(File, Full),
+		 atom_concat(Directory, Name, Full),
+		 file_name_extension(Name, Base, Extension)}.
 
 
 	file_exists(File) :-
@@ -80,6 +84,10 @@
 
 	rename_file(Old, New) :-
 		{rename_file(Old, New)}.
+
+
+	symbolic_link(File, Target) :-
+		{file_property(File, linkto(Target))}.
 
 
 	getenv(Variable, Value) :-
