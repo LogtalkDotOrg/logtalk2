@@ -1133,7 +1133,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 21, 0)).
+current_logtalk_flag(version, version(2, 21, 1)).
 
 
 
@@ -1716,7 +1716,7 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 
 
-% '$lgt_phrase'(+object_identifier, +ruleset, ?list, ?list, +object_identifier, +scope)
+% '$lgt_phrase'(+object_identifier, +ruleset, +list, ?list, +object_identifier, +scope)
 %
 % phrase/3 built-in method
 
@@ -1729,7 +1729,10 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	throw(error(type_error(callable, Ruleset), Obj::phrase(Ruleset, Input, Rest), Sender)).
 
 '$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
-	nonvar(Input),
+	var(Input),
+	throw(error(instantiation_error, Obj::phrase(Ruleset, Input, Rest), Sender)).
+
+'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
 	\+ '$lgt_proper_list'(Input),
 	throw(error(type_error(list, Input), Obj::phrase(Ruleset, Input, Rest), Sender)).
 
@@ -1750,21 +1753,26 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	Ruleset =.. [Functor| Args],
 	'$lgt_append'(Args, [Input, Rest], Args2),
 	Pred =.. [Functor| Args2],
-	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _),
-	('$lgt_call'(Dcl, Pred, PScope, _, _, SCtn, _) ->
-		((\+ \+ PScope = Scope; Sender = SCtn) ->
-			'$lgt_once'(Def, Pred, Sender, Obj, Obj, Call, _),
-			call(Call)
-			;
-			(PScope = p ->
-				throw(error(permission_error(access, private_predicate, Pred), Obj::phrase(Ruleset, Input, Rest), Sender))
+	('$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _) ->
+		('$lgt_call'(Dcl, Pred, PScope, _, _, SCtn, _) ->
+			((\+ \+ PScope = Scope; Sender = SCtn) ->
+				'$lgt_once'(Def, Pred, Sender, Obj, Obj, Call, _),
+				call(Call)
 				;
-				throw(error(permission_error(access, protected_predicate, Pred), Obj::phrase(Ruleset, Input, Rest), Sender))))
-		;
-		((Obj = Sender, '$lgt_call'(Def, Pred, Obj, Obj, Obj, Call, _)) ->
-			call(Call)
+				(PScope = p ->
+					throw(error(permission_error(access, private_predicate, Pred), Obj::phrase(Ruleset, Input, Rest), Sender))
+					;
+					throw(error(permission_error(access, protected_predicate, Pred), Obj::phrase(Ruleset, Input, Rest), Sender))))
 			;
-			throw(error(existence_error(procedure, Pred), Obj::phrase(Ruleset, Input, Rest), Sender)))).
+			((Obj = Sender,
+			  ('$lgt_call'(Def, Pred, Obj, Obj, Obj, Call)
+			   ;
+			   '$lgt_call'(Prefix, _, _, _, _, _, _, DDef), '$lgt_call'(DDef, Pred, Obj, Obj, Obj, Call))) ->
+				call(Call)
+				;
+				throw(error(existence_error(predicate_declaration, Pred), Obj::phrase(Ruleset, Input, Rest), Sender))))
+		;
+		throw(error(existence_error(object, Obj), Obj::phrase(Ruleset, Input, Rest), Sender))).
 
 
 
@@ -7250,11 +7258,13 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	var(Var),
 	!.
 
-'$lgt_dcg_body'(::Goal, ::phrase(Goal, S0, S), S0, S) :-
-	!.
+'$lgt_dcg_body'(::RGoal, ::CGoal, S0, S) :-
+	!,
+	'$lgt_dcg_body'(RGoal, CGoal, S0, S).
 
-'$lgt_dcg_body'(Object::Goal, Object::phrase(Goal, S0, S), S0, S) :-
-	!.
+'$lgt_dcg_body'(Object::RGoal, Object::CGoal, S0, S) :-
+	!,
+	'$lgt_dcg_body'(RGoal, CGoal, S0, S).
 
 '$lgt_dcg_body'((RGoal,RGoals), (CGoal,CGoals), S0, S) :-
 	!,
