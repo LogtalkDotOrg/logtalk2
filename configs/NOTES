@@ -186,16 +186,6 @@ GNU Prolog 1.1.2 (and later versions, except 1.2.13)
 	compilation of source files.
 
 
-IC Prolog II 0.96
-
-	ic.config
-
-	THIS CONFIG FILE IS INCOMPLETE. Any help in finishing it will be 
-	appreciated (how do we define ISO compliant catch/3 and throw/1 
-	predicates ?). Don't forget to use the cd/1 predicate to set the 
-	working directory before loading the library or an example.
-
-
 IF/Prolog 5.1
 
 	if.config
