@@ -1415,14 +1415,14 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 % asserta/1 built-in method
 
+'$lgt_asserta'(Obj, Clause, Sender, _) :-
+	var(Clause),
+	throw(error(instantiation_error, Obj::asserta(Clause), Sender)).
+
 '$lgt_asserta'(Obj, Clause, Sender, Scope) :-
 	'$lgt_db_lookup_cache_'(Obj, Clause, Sender, Scope, Call, _),
 	!,
 	asserta(Call).
-
-'$lgt_asserta'(Obj, Clause, Sender, _) :-
-	var(Clause),
-	throw(error(instantiation_error, Obj::asserta(Clause), Sender)).
 
 '$lgt_asserta'(Obj, Clause, Sender, _) :-
 	Clause \= (_ :- _),
@@ -1498,14 +1498,14 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 % assertz/1 built-in method
 
+'$lgt_assertz'(Obj, Clause, Sender, _) :-
+	var(Clause),
+	throw(error(instantiation_error, Obj::assertz(Clause), Sender)).
+
 '$lgt_assertz'(Obj, Clause, Sender, Scope) :-
 	'$lgt_db_lookup_cache_'(Obj, Clause, Sender, Scope, Call, _),
 	!,
 	assertz(Call).
-
-'$lgt_assertz'(Obj, Clause, Sender, _) :-
-	var(Clause),
-	throw(error(instantiation_error, Obj::assertz(Clause), Sender)).
 
 '$lgt_assertz'(Obj, Clause, Sender, _) :-
 	Clause \= (_ :- _),
@@ -1610,6 +1610,10 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 % clause/2 built-in method
 
+'$lgt_clause'(Obj, Head, Body, Sender, _) :-
+	var(Head),
+	throw(error(instantiation_error, Obj::clause(Head, Body), Sender)).
+
 '$lgt_clause'(Obj, Head, Body, Sender, Scope) :-
 	'$lgt_db_lookup_cache_'(Obj, Head, Sender, Scope, Call, _),	
 	!,
@@ -1618,10 +1622,6 @@ current_logtalk_flag(version, version(2, 22, 6)).
 		true
 		;
 		Body = TBody).
-
-'$lgt_clause'(Obj, Head, Body, Sender, _) :-
-	var(Head),
-	throw(error(instantiation_error, Obj::clause(Head, Body), Sender)).
 
 '$lgt_clause'(Obj, Head, Body, Sender, _) :-
 	\+ callable(Head),
@@ -1667,15 +1667,15 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 % retract/1 built-in method
 
+'$lgt_retract'(Obj, Clause, Sender, _) :-
+	var(Clause),
+	throw(error(instantiation_error, Obj::retract(Clause), Sender)).
+
 '$lgt_retract'(Obj, Clause, Sender, Scope) :-
 	'$lgt_db_lookup_cache_'(Obj, Clause, Sender, Scope, Call, Update),
 	!,
 	retract(Call),
 	call(Update).
-
-'$lgt_retract'(Obj, Clause, Sender, _) :-
-	var(Clause),
-	throw(error(instantiation_error, Obj::retract(Clause), Sender)).
 
 '$lgt_retract'(Obj, (Head:-Body), Sender, _) :-
 	var(Head),
@@ -1769,15 +1769,15 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 % retractall/1 built-in method
 
+'$lgt_retractall'(Obj, Head, Sender, _) :-
+	var(Head),
+	throw(error(instantiation_error, Obj::retractall(Head), Sender)).
+
 '$lgt_retractall'(Obj, Clause, Sender, Scope) :-
 	'$lgt_db_lookup_cache_'(Obj, Clause, Sender, Scope, Call, Update),
 	!,
 	retractall(Call),
 	call(Update).
-
-'$lgt_retractall'(Obj, Head, Sender, _) :-
-	var(Head),
-	throw(error(instantiation_error, Obj::retractall(Head), Sender)).
 
 '$lgt_retractall'(Obj, Head, Sender, _) :-
 	\+ callable(Head),
@@ -8618,7 +8618,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	write('  Event-driven programming support (events):                '), write(Events), nl,
 	write('Read-only compilation flags:'), nl,
 	'$lgt_default_flag'(supports_break_predicate, Break),
-	write('  Support for break/0 predicate (supports_break_predicate): '), writeq(Break), nl,
+	write('  Support for break/0 predicate (supports_break_predicate): '), write(Break), nl,
 	'$lgt_default_flag'(iso_initialization_dir, ISO),
 	write('  ISO initialization/1 directive (iso_initialization_dir):  '), write(ISO), nl,
 	'$lgt_default_flag'(startup_message, Startup),
