@@ -3440,9 +3440,11 @@ current_logtalk_flag(version, version(2, 22, 2)).
 % saves current operator table
 
 '$lgt_save_op_table' :-
-	forall(
-		current_op(Pr, Spec, Op),
-		asserta('$lgt_pp_global_op_'(Pr, Spec, Op))).
+	current_op(Pr, Spec, Op),
+	asserta('$lgt_pp_global_op_'(Pr, Spec, Op)),
+	fail.
+
+'$lgt_save_op_table'.
 
 
 
@@ -3451,13 +3453,17 @@ current_logtalk_flag(version, version(2, 22, 2)).
 % restores current operator table
 
 '$lgt_restores_op_table' :-
-	forall(
-		retract('$lgt_pp_local_op_'(_, Spec, Op)),
-		op(0, Spec, Op)),
+	retract('$lgt_pp_local_op_'(_, Spec, Op)),
+	op(0, Spec, Op),
+	fail.
+
+'$lgt_restores_op_table' :-
 	retractall('$lgt_pp_global_op_'(_, _, ',')),	% ','/2 cannot be an argument to op/3
-	forall(
-		retract('$lgt_pp_global_op_'(Pr2, Spec2, Op2)),
-		op(Pr2, Spec2, Op2)).
+	retract('$lgt_pp_global_op_'(Pr, Spec, Op)),
+	op(Pr, Spec, Op),
+	fail.
+
+'$lgt_restores_op_table'.
 
 
 
@@ -5555,10 +5561,18 @@ current_logtalk_flag(version, version(2, 22, 2)).
 	assertz('$lgt_pp_directive_'(dynamic(IDef/6))),
 	assertz('$lgt_pp_directive_'(dynamic(DDcl/2))),
 	assertz('$lgt_pp_directive_'(dynamic(DDef/5))),
-	forall(
-		('$lgt_pp_def_'(Clause), Clause \= (_ :- _)),
-		(arg(5, Clause, Call), functor(Call, Functor, Arity),
-		 assertz('$lgt_pp_directive_'(dynamic(Functor/Arity))))).
+	'$lgt_gen_dynamic_entity_dynamic_predicate_directives'.
+
+
+'$lgt_gen_dynamic_entity_dynamic_predicate_directives' :-
+	'$lgt_pp_def_'(Clause),
+	Clause \= (_ :- _),
+	arg(5, Clause, Call),
+	functor(Call, Functor, Arity),
+	assertz('$lgt_pp_directive_'(dynamic(Functor/Arity))),
+	fail.
+
+'$lgt_gen_dynamic_entity_dynamic_predicate_directives'.
 
 
 
@@ -5595,10 +5609,7 @@ current_logtalk_flag(version, version(2, 22, 2)).
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/4))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/5))),
 		assertz('$lgt_pp_directive_'(dynamic(Def/5))),
-		forall(
-			('$lgt_pp_def_'(Clause), Clause \= (_ :- _)),
-			(arg(5, Clause, Call), functor(Call, Functor, Arity),
-		 	 assertz('$lgt_pp_directive_'(dynamic(Functor/Arity)))))
+		'$lgt_gen_dynamic_entity_dynamic_predicate_directives'
 		 ;
 		 true.
 
