@@ -5,14 +5,8 @@ Release 2.17.1
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
-To load all objects in this library consult the metapredicates.loader utility
+To load all objects in this library consult the metainterpreters.loader utility
 file.
 
-You will also need to load the library/types.loader file (note that the 
-*.loader files are Prolog files). Alternatively, you may load the 
-library/all.loader file to load all library entities.
-
-
-This example shows the use of metapredicates in Logtalk. Metapredicates are 
-predicates whose head contains arguments that will be called as goals in the 
-body of the predicate definition.
+This example contains simple meta-interpreters for pure Prolog encapsulated in 
+Logtalk objects.
