@@ -22,11 +22,12 @@ WshShell.CurrentDirectory = "..";
 WshSystemEnv.Item("LOGTALKHOME") = WshShell.CurrentDirectory;
 WshSystemEnv.Item("LOGTALKUSER") = WshShell.SpecialFolders("MyDocuments") + "\\logtalk";
 
-if (!FSObject.FolderExists(WshShell.CurrentDirectory + "\\bin"))
-	FSObject.CreateFolder(WshShell.CurrentDirectory + "\\bin");
-
-FSObject.CopyFile(WshShell.CurrentDirectory + "\\README", WshShell.CurrentDirectory + "\\bin\\README.txt");
-FSObject.CopyFile(WshShell.CurrentDirectory + "\\QUICK_START", WshShell.CurrentDirectory + "\\bin\\QUICK_START.txt");
+FSObject.MoveFile(WshShell.CurrentDirectory + "\\BIBLIOGRAPHY", WshShell.CurrentDirectory + "\\BIBLIOGRAPHY.txt");
+FSObject.MoveFile(WshShell.CurrentDirectory + "\\LICENSE", WshShell.CurrentDirectory + "\\LICENSE.txt");
+FSObject.MoveFile(WshShell.CurrentDirectory + "\\QUICK_START", WshShell.CurrentDirectory + "\\QUICK_START.txt");
+FSObject.MoveFile(WshShell.CurrentDirectory + "\\README", WshShell.CurrentDirectory + "\\README.txt");
+FSObject.MoveFile(WshShell.CurrentDirectory + "\\RELEASE_NOTES", WshShell.CurrentDirectory + "\\RELEASE_NOTES.txt");
+FSObject.MoveFile(WshShell.CurrentDirectory + "\\UPGRADING", WshShell.CurrentDirectory + "\\UPGRADING.txt");
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 
@@ -48,13 +49,37 @@ link.Save();
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk ReadMe.lnk");
 
 link.Description = "Open Logtalk ReadMe";
-link.TargetPath = "%LOGTALKHOME%\\bin\\README.txt";
+link.TargetPath = "%LOGTALKHOME%\\README.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Quick Start.lnk");
 
 link.Description = "Open Logtalk Quick Start";
-link.TargetPath = "%LOGTALKHOME%\\bin\\QUICK_START.txt";
+link.TargetPath = "%LOGTALKHOME%\\QUICK_START.txt";
+link.Save();
+
+link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Bibliography.lnk");
+
+link.Description = "Open Logtalk Bibliography";
+link.TargetPath = "%LOGTALKHOME%\\BIBLIOGRAPHY.txt";
+link.Save();
+
+link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk License.lnk");
+
+link.Description = "Open Logtalk License";
+link.TargetPath = "%LOGTALKHOME%\\LICENSE.txt";
+link.Save();
+
+link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Release Notes.lnk");
+
+link.Description = "Open Logtalk Release Notes";
+link.TargetPath = "%LOGTALKHOME%\\RELEASE_NOTES.txt";
+link.Save();
+
+link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Upgrading.lnk");
+
+link.Description = "Open Logtalk Upgrading";
+link.TargetPath = "%LOGTALKHOME%\\UPGRADING.txt";
 link.Save();
 
 WScript.Echo('Logtalk installation completed.');
