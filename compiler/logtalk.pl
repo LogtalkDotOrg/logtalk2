@@ -1075,13 +1075,13 @@ current_logtalk_flag(version, version(2, 14, 5)).
 
 
 
-% 
+% checks if an object exists at runtime
 
 '$lgt_obj_exists'(Obj, Pred, Sender) :-
-	\+ '$lgt_current_object_'(Obj, _, _, _, _),
-	throw(error(existence_error(object, Obj), Obj::Pred, Sender)).
-
-'$lgt_!'(_, _).
+	\+ '$lgt_current_object_'(Obj, _, _, _, _) ->
+		throw(error(existence_error(object, Obj), Obj::Pred, Sender))
+		;
+		true.
 
 
 
