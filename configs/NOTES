@@ -173,6 +173,10 @@ Eclipse 4.2.2~5.1, 5.2~5.3, 5.4~5.7
 	5.4 to 5.7. The fourth file, "eclipseiso.config" contains a call to load 
 	the "iso" library and should be compatible with all versions from 4.2.2 
 	to 5.7.
+	
+	You should use the eclipseiso.config whenever possible. The other config 
+	files may not contain all the needed definitions for ISO Prolog predicates 
+	that are needed for compiling the Logtalk library or the Logtalk examples.
 
 	Add the following calls to the top of all the files in the "compiler" 
 	sub-directory:
