@@ -11,4 +11,6 @@
 		url,
 		xml,
 		shell,
-		walker])). 
+		walker,
+		bom,
+		faa])). 
