@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	2004 January 30
+" Last Change:	2004 February 1
 
 
 " Quit when a syntax file was already loaded:
@@ -65,8 +65,8 @@ syn match	logtalkCloseEntityDir	":- end_category\."
 syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="instantiates("	matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity		contained
 syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="specializes("	matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity		contained
 syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="extends("	matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity		contained
-syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="imports("		matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity		contained
-syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="implements("		matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity		contained
+syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="imports("	matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity		contained
+syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="implements("	matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity		contained
 
 
 " Logtalk directives
@@ -355,13 +355,13 @@ syn match	logtalkLineComment	"%.*"
 
 " Logtalk numbers 
 
-syn match       logtalkNumber           "\<[0-9]\+\>"
+syn match	logtalkNumber		"\<[0-9]\+\>"
 syn match	logtalkNumber		"\<[0-9]\+\.[0-9]\+\>"
 syn match	logtalkNumber		"\<[0-9]\+\.[0-9]\+[eE][-+][0-9]+\>"
-syn match       logtalkNumber           "\<0'[0-9a-zA-Z]\>"
-syn match       logtalkNumber           "\<0b[0-1]\+\>"
-syn match       logtalkNumber           "\<0o[0-7]\+\>"
-syn match       logtalkNumber           "\<0x[0-9a-fA-F]\+\>"
+syn match	logtalkNumber		"\<0'[0-9a-zA-Z]\>"
+syn match	logtalkNumber		"\<0b[0-1]\+\>"
+syn match	logtalkNumber		"\<0o[0-7]\+\>"
+syn match	logtalkNumber		"\<0x[0-9a-fA-F]\+\>"
 
 
 syn sync ccomment maxlines=50
