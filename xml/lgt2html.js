@@ -92,7 +92,7 @@ for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
 		var html_file = directory + "\\" + fso.GetBaseName(file) + ".html";
 		switch (processor) {
 			case "xsltproc" :
-				WshShell.Run("xsltproc -o " + html_file + xslt + " " + file, true);
+				WshShell.Run("xsltproc -o " + html_file + " " + xslt + " " + file, true);
 				break;
 			case "xalan" :
 				WshShell.Run("xalan -o " + html_file + " " + file + " " + xslt, true);
