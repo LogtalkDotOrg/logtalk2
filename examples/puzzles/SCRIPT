@@ -77,3 +77,14 @@ s(alexis,reading,black,5)
 S = [s(mary,english,red,1),s(paul,math,yellow,2),s(josephine,science,green,3),s(derrick,french,blue,4),s(alexis,reading,black,5)] ? 
 
 yes
+
+| ?- camp_swampy::(beds(S), print(S)).
+tim thomas, from maine, sleeps on bed number 1
+sam franklin, from north_carolina, sleeps on bed number 2
+mac miller, from virginia, sleeps on bed number 3
+fred james, from florida, sleeps on bed number 4
+john smith, from arkansas, sleeps on bed number 5
+
+S = [b(tim,thomas,maine,1),b(sam,franklin,north_carolina,2),b(mac,miller,virginia,3),b(fred,james,florida,4),b(john,smith,arkansas,5)] ? 
+
+yes

@@ -5,4 +5,5 @@
 		jam_thief,
 		horses,
 		houses,
-		note])). 
+		note,
+		camp_swampy])). 
