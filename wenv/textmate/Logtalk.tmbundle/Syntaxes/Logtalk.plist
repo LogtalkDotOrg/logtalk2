@@ -1,9 +1,9 @@
 {
 	name = "Logtalk";
 	fileTypes = ( lgt, mlgt, config, loader );
-	foldingStartMarker = "(/\\*\\*|\\{\\s*$)";
-	foldingStopMarker = "(\\*\\*/|^\\s*\\})";
-	increaseIndentPattern = "^.*(\\{[^}\"']*|\\([^)\"']*)$";
+	foldingStartMarker = ":-\\s+(object|protocol|category)(?=[(])";
+	foldingStopMarker = ":-\\s+end_(object|protocol|category)(?=[.])";
+	increaseIndentPattern = ":-$";
 	smartTypingPairs = (
 	   ( "(", ")" ), ( "[", "]" ), ( "{", "}" ),
 	   ( "\"", "\"" ), ( "'", "'" )
