@@ -76,7 +76,8 @@ B-Prolog 4.0~5.0, 6.4 and later versions
 	some examples such as the "symdiff" from running. Don't forget to use the 
 	chdir/1 predicate to set the working directory before loading the library 
 	or an example. Does not support the <library>(<entity>) notation for 
-	loading source files.
+	loading source files. Note that this configuration file redefines the 
+	B-Prolog ::/2 finite-domain built-in predicate.
 
 
 Bin-Prolog 8.x~10.x
