@@ -187,7 +187,7 @@ Note that we can't use this method with the message sending operators (<a title=
             ... .
 </pre>
 <p>
-This is more efficient because the cost of the method <code>this/1</code> is only one single term unification, while <code>parameter/2</code> implies an <code>arg/3</code> call (an ISO Prolog Standard defined built-in predicate). The drawback is that we must check all calls of <code>this/1</code> if we change the object name.
+Both solutions are equally efficient because the cost of the methods <code>this/1</code> and <code>parameter/2</code> is only one single variable unification. The drawback of the second solution is that we must check all calls of <code>this/1</code> if we change the object name.
 </p>
 <p>
 Parametric objects are by convention stored in source files named after the objects with the object arity appended. For instance, if we define an object named <code>sort(Type)</code>, we may save it in a <code>sort1.lgt</code> text file. This way it is easy to avoid file name clashes when saving Logtalk entities that have the same functor but different arities.
@@ -455,7 +455,7 @@ Logtalk defines a pseudo-object named <code>user</code> that contains all user p
 <strong><a href="messages.html">Previous</a> | <a href="protocols.html">Next</a> | <a href="index.html">Table of Contents</a> | <a href="../bibliography.html">Bibliography</a> | <a href="../glossary.html">Glossary</a></strong>
 </p>
 <p class="center">
-Last updated on: August 6, 2002
+Last updated on: August 15, 2002
 </p>
 <hr />
 
