@@ -19,7 +19,7 @@ RELEASE NOTES
 	files as loader files.
 
 	Some improvements to the documentation, including the QUICK_START file and 
-	the User Manual for first-time users.
+	the User Manual for first-time users, and to the example descriptions.
 
 	Corrected a bug in handling of local object operators that are also global 
 	operators.

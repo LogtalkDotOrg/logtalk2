@@ -14,3 +14,12 @@ ph
 
 ch
 	class-based version
+
+Both versions define the following hierarchy of objects:
+
+	shape
+		polygon
+			regular_polygon
+				square
+					q1
+					q2
