@@ -6386,6 +6386,8 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 '$lgt_fix_redef_built_ins' :-
 	\+ '$lgt_pp_redefined_built_in_'(_, _, _),
+	assertz(('$lgt_pp_feclause_'(Clause) :- '$lgt_pp_eclause_'(Clause))),
+	assertz(('$lgt_pp_fentity_init_'(Goal) :- '$lgt_pp_entity_init_'(Goal))),
 	!.
 
 '$lgt_fix_redef_built_ins' :-
