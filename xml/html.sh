@@ -23,11 +23,11 @@ echo value as the title of the index.html file.
 echo
 echo converting XML files to HTML...
 
-foreach file (*.xml)
-	echo "  "converting $file
+for file in *.xml; do
+	echo "  converting" $file
 	name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
 	eval java -cp ${XT_PATH}/xt.jar:${SAX_PATH}/sax.jar:${XP_PATH}/xp.jar -Dcom.jclark.xsl.sax.parser=com.jclark.xml.sax.CommentDriver com.jclark.xsl.sax.Driver $file $XSLT $name.html
-end
+done
 
 echo conversion done
 echo
@@ -45,11 +45,11 @@ echo "<body>" >> index.html
 echo "<h1>"$title"</h1>" >> index.html
 echo "<ul>" >> index.html
 
-foreach file (*.xml)
+for file in *.xml; do
 	name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
-	echo "  "indexing $name.html
+	echo "  indexing" $name.html
 	echo "    <li><a href=\""$name.html"\">"$name"</a></li>" >> index.html
-end
+done
 
 echo "</ul>" >> index.html
 

@@ -10,11 +10,11 @@ echo files applying the XSLT transformation defined in the $XSLT file
 echo using the Apache FOP processor
 echo
 
-foreach file (*.xml)
+for file in *.xml; do
 	echo converting $file
 	name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
 	eval sh $FOP_PATH/fop.sh -q -xsl $XSLT -xml $file -pdf $name.pdf
-end
+done
 
 echo
 echo conversion done
