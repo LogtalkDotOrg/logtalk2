@@ -22,8 +22,9 @@ else
 	fi
 	mkdir -p bin
 	cd bin
-	cp ../configs/xsb.config xsbconfig.P
-	cp ../compiler/logtalk.pl logtalk.P
+	ln -f ../compiler/logtalk.pl logtalk.P
+	ln -f $LOGTALKUSER/configs/xsb.config xsbconfig.P
+	ln -f $LOGTALKUSER/libpaths/libpaths.pl libpaths.P
 	sed 's/^..lgt_current_object_.[(]user.*[)]/:- assertz(&)/' logtalk.P > temp1
 	sed 's/^..lgt_current_object_.[(]debugger.*[)]/:- assertz(&)/' temp1 > temp2
 	sed 's/^..lgt_dbg_leashing_.[(].*[)]/:- assertz(&)/g' temp2 > logtalk.P
@@ -31,7 +32,7 @@ else
 	rm temp2
 	echo ":- reconsult('$LOGTALKHOME/bin/xsbconfig.P')." > logtalkxsb.P
 	echo ":- reconsult('$LOGTALKHOME/bin/logtalk.P')." >> logtalkxsb.P
-	echo ":- reconsult('$LOGTALKUSER/libpaths/libpaths.P')." >> logtalkxsb.P
+	echo ":- reconsult('$LOGTALKHOME/bin/libpaths.P')." >> logtalkxsb.P
 	echo "#/bin/sh" > xsblgt
 	echo "xsb -e \"reconsult('\$LOGTALKHOME/bin/logtalkxsb.P').\"" >> xsblgt
 	chmod a+x xsblgt
