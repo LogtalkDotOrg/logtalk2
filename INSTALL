@@ -7,7 +7,10 @@ Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 
 
 This file contains detailed instruction for installing and configuring 
-Logtalk.
+Logtalk. You should also consult the "misc/NOTES" file for a description 
+of a set of shell scripts that might be used for Logtalk installation on 
+some operating-systems and for easy Logtalk integration with popular 
+Prolog compilers.
 
 
 1. LOGTALK INSTALLATION
@@ -89,14 +92,15 @@ If you use a bash shell, add the following lines to your ~/.profile file:
 When using the provided shell script for installing Logtalk, a symbolic link 
 to the Logtalk installation directory is automatically created. The link is 
 named "logtalk". In this case, you may use this symbolic link to define the 
-environment variable in order to avoid breaking it when upgrading Logtalk.
+LOGTALKHOME environment variable in order to avoid breaking it when upgrading 
+Logtalk.
 
 * Windows systems:
 
 In Windows 95/98/ME, environment variables are defined in the "autoexec.bat" 
 file (you will need to reboot after editing the file):
 
-	SET LOGTALKHOME=C:\your\installation\folder\
+	SET LOGTALKHOME=C:\your\logtalk\installation\folder\
 	SET LOGTALKUSER=%HOMEPATH%\logtalk
 
 In Windows 2000/XP, environment variables are defined using the System 
@@ -112,11 +116,13 @@ script).
 In Logtalk, a library is simply a directory containing source files. Library 
 paths can be declared using a dynamic predicate. This allows compiling and 
 loading of libraries and library files to be performed without worries about 
-library paths. In the "$LOGTALKUSER/libpaths" directory you will find a sample 
-file which, when loaded, defines the library paths for the Logtalk standard 
-library and for all the supplied examples. This file may need to be edited to 
-match your Logtalk installation and your Prolog compiler and operating-system 
-requirements. For more details, see the file "$LOGTALKUSER/libpaths/NOTES".
+library paths. Assuming that you have used the "misc/cplgtdirs.*" shell scripts
+for making a copy of the user-modifiable Logtalk files, you will find in the 
+"$LOGTALKUSER/libpaths" directory a sample file which, when loaded, defines 
+the library paths for the Logtalk standard library and for all the supplied 
+examples. This file may need to be edited to match your Logtalk installation 
+and your Prolog compiler and operating-system requirements. For more details, 
+see the file "$LOGTALKUSER/libpaths/NOTES".
 
 
 2.3 Customizing Prolog configuration files
