@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.23.2 - March ??, 2005
+2.23.2 - April 4, 2005
 
 	Added experimental support for a encoding/1 directive for declaring the 
 	text character encoding of a source file. This directive is fully based 
@@ -37,6 +37,8 @@ RELEASE NOTES
 
 	Much improved and accurate reporting of non-portable predicate calls when 
 	using the "portability" flag.
+
+	Added a Logtalk "clip" file for the TextPad Windows text editor.
 
 	Corrected a bug in the implementation of the built-in database methods 
 	asserta/1 and assertz/1 when asserting facts on objects compiled in debug 
