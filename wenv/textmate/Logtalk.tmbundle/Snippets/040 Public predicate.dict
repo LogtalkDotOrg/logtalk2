@@ -1,0 +1,4 @@
+{
+	name = "Logtalk public predicate";
+	content = "\n\t:- public(${1:Functor/Arity}).\n\t:- mode(Callable, Solutions).\n\t:- info(Functor/Arity, [\n\t\tcomment is '']).\n\n$0";
+}
