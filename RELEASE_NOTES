@@ -21,6 +21,10 @@ RELEASE NOTES
 	Added a font-lock file for Emacs providing syntax coloring for editing 
 	Logtalk source files.
 
+    Updated the config file for ECLiPSe 5.4~5.7 with missing ISO Prolog 
+    predicate definitions needed for successful compilation of all entities 
+    in the Logtalk standard library.
+
 
 2.15.4 - July 9, 2003
 
