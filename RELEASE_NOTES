@@ -17,6 +17,9 @@ RELEASE NOTES
 	library entities "debuggerp" and "debugger" to, respectively, "event_dbgp" 
 	and "event_dbg".
 
+	Added a shell script for installing Logtalk in Unix and Unix-like operating 
+	systems.
+
 	Added a logtalk.spec file for building Linux RPMs from sources.
 
 	Added a set of shell scripts for easy integration of Logtalk with GNU Prolog,
