@@ -26,8 +26,8 @@ RELEASE NOTES
 	Simplified implementation of Logtalk built-in methods asserta/1 and 
 	assertz/1.
 
-	Corrected a performance bug with calls to built-in predicates from 
-	objects and categories.
+	Corrected a performance bug with calls to built-in predicates from objects
+	and categories.
 
 	Corrected spurious backtracking occurring on some calls to the built-in 
 	predicate define_events/5.
@@ -40,8 +40,8 @@ RELEASE NOTES
 	supported text editors. Updated the syntax coloring file for the TextMate 
 	text editor, adding some missing ISO Prolog predicates.
 
-	Improved printing of lists of unknown referenced entities when compiling 
-	source files.
+	Improved printing of lists of unknown referenced entities, misspelt calls, 
+	and singleton variables when compiling source files.
 
 	Added workaround for Prolog compilers with broken read_term/3 singletons/1
 	option.

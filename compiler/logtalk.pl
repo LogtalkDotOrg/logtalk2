@@ -3251,11 +3251,11 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	 '$lgt_compiler_option'(report, on)) ->
 		write('> WARNING!'),
 		\+ \+ ( '$lgt_report_singletons_aux'([Singleton| Singletons], Term, Names),
-				write('  singleton variables: '), write(Names), nl,
+				write('  singleton variables: '), '$lgt_write_list'(Names), nl,
 				(Term = (:- _) ->
-					write('>           in directive: ')
+					write('>           in directive:        ')
 					;
-					write('>           in clause: ')),
+					write('>           in clause:           ')),
 				write(Term), nl)
 		;
 		true.
@@ -5590,6 +5590,19 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 
+% '$lgt_write_list'(+list)
+%
+% auxiliary predicate for writing a non-empty list of elements (non-quoted)
+
+'$lgt_write_list'([Term]) :-
+	write(Term), !.
+
+'$lgt_write_list'([Term1, Term2| Terms]) :-
+	write(Term1), write(', '),
+	'$lgt_write_list'([Term2| Terms]).
+
+
+
 % '$lgt_add_def_clause'(+atom, +integer, +atom, +term)
 %
 % adds a "def clause" (used to translate a predicate call)
@@ -6675,7 +6688,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	'$lgt_pl_built_in'(Pred),
 	functor(Pred, Functor, Arity),
 	functor(Meta, Functor, Arity), 
-	'$lgt_pl_metapredicate'(Meta),
+	'$lgt_pl_metapredicate'(Meta),	% non-standard Prolog built-in metapredicates
 	!,
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
@@ -6713,7 +6726,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 % find and report misspelt predicate calls
-% in the body of objects/cartegories predicates
+% in the body of object and category predicates
 
 '$lgt_find_misspelt_calls' :-
 	setof(Pred, '$lgt_misspelt_call'(Pred), Preds) ->
@@ -6737,7 +6750,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	('$lgt_compiler_option'(misspelt, warning),
 	 '$lgt_compiler_option'(report, on)) ->
 		write('> WARNING!  these static predicates are called but never defined: '),
-		writeq([Pred| Preds]), nl
+		'$lgt_writeq_list'([Pred| Preds]), nl
 		;
 		true.
 
