@@ -1,5 +1,3 @@
-:- system_module.
-
 :- dynamic(prolog_load_file/2).
 :- multifile(prolog_load_file/2).
 
