@@ -20,6 +20,7 @@ RELEASE NOTES
 	Added missing version info key to jEdit prototype template.
 
 	Corrected documentation of built-in local methods self/1 and sender/1.
+	Updated documentation of built-in local methods parameter/2 and this/1.
 
 
 2.15.0 - February 5, 2003
