@@ -39,6 +39,9 @@ make_qplgt.sh
 	makes a script named qplgt for running Logtalk with Qu-Prolog 
 	(based on script code contributed by Peter Robinson)
 
+make_sicstuslgt.sh
+	makes a script named sicstuslgt for running Logtalk with SICStus Prolog
+
 make_swilgt.sh
 	makes a script named swilgt for running Logtalk with SWI-Prolog
 

@@ -23,7 +23,7 @@ RELEASE NOTES
 	Added a logtalk.spec file for building Linux RPMs from sources.
 
 	Added a set of shell scripts for easy integration of Logtalk with ECLiPSe, 
-	GNU Prolog, Qu-Prolog, SWI-Prolog, and YAP.
+	GNU Prolog, Qu-Prolog, SICStus Prolog, SWI-Prolog, and YAP.
 
 	Improved installation instructions for multi-user environments. Added a shell 
 	script for copying Logtalk xml, examples, and library directories to the user 
