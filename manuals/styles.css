@@ -81,3 +81,8 @@ a:hover {
 	float: right;
 	position: relative;
 }
+
+code, pre {
+	color: maroon;
+	font-family: courier, monospace;
+}
