@@ -2,23 +2,23 @@
 <!DOCTYPE syntax SYSTEM "syntax.dtd">
 <syntax>
 
-    <head>
-        <name>Logtalk</name>
-        <charsintokens>
-            <![CDATA[_0987654321abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ]]>
-        </charsintokens> 
-        <charsdelimitingtokens><![CDATA[ -]]></charsdelimitingtokens>
-    </head>
+	<head>
+		<name>Logtalk</name>
+		<charsintokens>
+			<![CDATA[_0987654321abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ{}]]>
+		</charsintokens> 
+		<charsdelimitingtokens><![CDATA[ -[]()]]></charsdelimitingtokens>
+	</head>
 
-    <states>
-    
-        <default id="Base" color="#000" inverted-color="#fff">
+	<states>
+	
+		<default id="Base" color="#000" inverted-color="#fff">
 
-            <keywords id="Variables" color="#464646">
+			<keywords id="Variables" color="#464646" useforautocomplete="no">
 				<regex>[^[:lower:]]([A-Z_][A-Za-z0-9_]*)[^[:alnum:]]</regex>
-            </keywords>
+			</keywords>
 
-            <keywords id="Directives" color="#683820">
+			<keywords id="Directives" color="#881280">
 				<regex>\:\-[[:space:]](object)\(</regex>			
 				<regex>\:\-[[:space:]](end_object)\.</regex>			
 				<regex>\:\-[[:space:]](protocol)\(</regex>			
@@ -38,33 +38,33 @@
 				<regex>\:\-[[:space:]](op)\(</regex>			
 				<regex>\:\-[[:space:]](calls)\(</regex>			
 				<regex>\:\-[[:space:]](uses)\(</regex>			
-            </keywords>
+			</keywords>
 
-            <keywords id="Entity Relations" color="#683820">
+			<keywords id="Entity Relations" color="#881280">
 				<regex>[^A-Za-z0-9_](instantiates)\(</regex>
 				<regex>[^A-Za-z0-9_](specializes)\(</regex>
 				<regex>[^A-Za-z0-9_](extends)\(</regex>
 				<regex>[^A-Za-z0-9_](imports)\(</regex>
 				<regex>[^A-Za-z0-9_](implements)\(</regex>
-            </keywords>
+			</keywords>
 
-            <keywords id="Message Sending Operators" color="#0000ff">
+			<keywords id="Message Sending Operators" color="#0000ff" useforautocomplete="no">
 				<regex>::</regex>			
 				<regex>\^\^</regex>
-            </keywords>
+			</keywords>
 
-            <keywords id="External Call" color="#0000ff">
-				<regex>{</regex>			
-				<regex>}</regex>
-            </keywords>
+			<keywords id="External Call" color="#0000ff" useforautocomplete="no">
+				<regex>\{</regex>			
+				<regex>\}</regex>
+			</keywords>
 
-            <keywords id="Control Constructs" color="#760f4b">
+			<keywords id="Control Constructs" color="#1A1AA6">
 				<regex>[^A-Za-z0-9_](call)\(</regex>
 				<regex>[^A-Za-z0-9_](catch)\(</regex>
 				<regex>[^A-Za-z0-9_](throw)\(</regex>
-            </keywords>
+			</keywords>
 
-            <keywords id="Built-in Methods" color="#760f4b">
+			<keywords id="Built-in Methods" color="#1A1AA6">
 				<regex>[^A-Za-z0-9_](parameter)\(</regex>
 				<regex>[^A-Za-z0-9_](self)\(</regex>
 				<regex>[^A-Za-z0-9_](sender)\(</regex>
@@ -84,9 +84,9 @@
 				<regex>[^A-Za-z0-9_](before)\(</regex>
 				<regex>[^A-Za-z0-9_](after)\(</regex>
 				<regex>[^A-Za-z0-9_](phrase)\(</regex>
-            </keywords>
+			</keywords>
 
-            <keywords id="Built-in Predicates" color="#760f4b">
+			<keywords id="Built-in Predicates" color="#1A1AA6">
 				<regex>[^A-Za-z0-9_](current_object)\(</regex>
 				<regex>[^A-Za-z0-9_](current_protocol)\(</regex>
 				<regex>[^A-Za-z0-9_](current_category)\(</regex>
@@ -114,9 +114,9 @@
 				<regex>[^A-Za-z0-9_](logtalk_load)\(</regex>
 				<regex>[^A-Za-z0-9_](forall)\(</regex>
 				<regex>[^A-Za-z0-9_](retractall)\(</regex>
-            </keywords>
+			</keywords>
 
-            <keywords id="Other Built-in Predicates" color="#760f4b">
+			<keywords id="Other Built-in Predicates" color="#1A1AA6">
 				<!-- Term unification -->
 				<regex>[[:space:]]+(=)[[:space:]]+</regex>
 				<regex>[[:space:]]+(\\=)[[:space:]]+</regex>
@@ -210,10 +210,10 @@
 				<!-- Term input/output -->
 				<regex>[^A-Za-z0-9_](read_term)\(</regex>
 				<regex>[^A-Za-z0-9_](read)\(</regex>
-				<regex>[^A-Za-z0-9_](write_term)\(</regex>
-				<regex>[^A-Za-z0-9_](writeq)\(</regex>
 				<regex>[^A-Za-z0-9_](write)\(</regex>
+				<regex>[^A-Za-z0-9_](writeq)\(</regex>
 				<regex>[^A-Za-z0-9_](write_canonical)\(</regex>
+				<regex>[^A-Za-z0-9_](write_term)\(</regex>
 				<regex>[^A-Za-z0-9_](op)\(</regex>
 				<regex>[^A-Za-z0-9_](current_op)\(</regex>
 				<regex>[^A-Za-z0-9_](char_conversion)\(</regex>
@@ -243,38 +243,38 @@
 				<string>repeat</string>
 				<!-- Implementation defined hooks functions -->
 				<string>halt</string>
-            </keywords>
+			</keywords>
 
-            <keywords id="Numbers" color="#000067">
-				<regex>[0-9]+((\.[0-9]+)?([eE][-+][0-9]+)?)?</regex>
-				<regex>0b[0-1]+</regex>
-				<regex>0o[0-7]+</regex>
-				<regex>0x[0-9a-fA-F]+</regex>
-				<regex>0'[0-9a-zA-Z]</regex>
-            </keywords>
+			<keywords id="Numbers" color="#000067" useforautocomplete="no">
+				<regex>([0-9]+((\.[0-9]+)?([eE][-+][0-9]+)?)?)</regex>
+				<regex>(0b[0-1]+)</regex>
+				<regex>(0o[0-7]+)</regex>
+				<regex>(0x[0-9a-fA-F]+)</regex>
+				<regex>(0'[0-9a-zA-Z])</regex>
+			</keywords>
 
-        </default>
+		</default>
 
-		<state id="Strings" color="#881314">
+		<state id="Strings" color="#881314" useforautocomplete="no">
 			<begin><regex>"</regex></begin>
 			<end><regex>(((?&lt;!\\)(\\\\)*)|^)"</regex></end>
 		</state>
 
-		<state id="Quoted Atoms" color="#881314">
+		<state id="Quoted Atoms" color="#881314" useforautocomplete="no">
 			<begin><regex>'</regex></begin>
 			<end><regex>(((?&lt;!\\)(\\\\)*)|^)'</regex></end>
 		</state>
 
-        <state id="Comment" color="#226d24" font-style="italic">
-            <begin><regex>/\*</regex></begin>
-            <end><regex>\*/</regex></end>
-        </state>
-        
-        <state id="SingleComment" color="#226d24" font-style="italic">
-            <begin><regex>%</regex></begin>
-            <end><regex>[\n\r]</regex></end>
-        </state>
+		<state id="Comment" color="#236E25" font-style="italic" useforautocomplete="no">
+			<begin><regex>/\*</regex></begin>
+			<end><regex>\*/</regex></end>
+		</state>
+		
+		<state id="SingleComment" color="#236E25" font-style="italic" useforautocomplete="no">
+			<begin><regex>%</regex></begin>
+			<end><regex>[\n\r]</regex></end>
+		</state>
 
-    </states>
+	</states>
 
 </syntax>
