@@ -1,0 +1,7 @@
+
+:- initialization(
+	logtalk_load([
+		parsep,
+		calculator,
+		sentence,
+		parsetree])). 
