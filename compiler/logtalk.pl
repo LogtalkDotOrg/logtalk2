@@ -2712,11 +2712,17 @@ current_logtalk_flag(version, version(2, 17, 2)).
 		Error,
 		'$lgt_compiler_error_handler'(Stream, Error)),
 	catch(
-		('$lgt_write_directives'(Stream),
-		 '$lgt_write_clauses'(Stream),
-		 '$lgt_write_init_call'(Stream)),
+		'$lgt_write_directives'(Stream),
 		Error,
 		'$lgt_compiler_error_handler'(Stream, Error)),
+	('$lgt_entity_'(_, _, _, _) ->
+		catch(
+			('$lgt_write_clauses'(Stream),
+			 '$lgt_write_init_call'(Stream)),
+			Error,
+			'$lgt_compiler_error_handler'(Stream, Error))
+		;
+		true),
 	close(Stream).
 
 
@@ -2726,17 +2732,20 @@ current_logtalk_flag(version, version(2, 17, 2)).
 % writes to disk the entity documentation in XML format
 
 '$lgt_write_entity_doc'(Entity) :-
-	'$lgt_compiler_option'(xml, on) ->
-		'$lgt_file_name'(xml, Entity, File),
-		catch(
-			open(File, write, Stream),
-			Error,
-			'$lgt_compiler_error_handler'(Stream, Error)),
-		catch(
-			'$lgt_write_xml_file'(Stream),
-			Error,
-			'$lgt_compiler_error_handler'(Stream, Error)),
-		close(Stream)
+	'$lgt_entity_'(_, _, _, _) ->
+		('$lgt_compiler_option'(xml, on) ->
+			'$lgt_file_name'(xml, Entity, File),
+			catch(
+				open(File, write, Stream),
+				Error,
+				'$lgt_compiler_error_handler'(Stream, Error)),
+			catch(
+				'$lgt_write_xml_file'(Stream),
+				Error,
+				'$lgt_compiler_error_handler'(Stream, Error)),
+			close(Stream)
+			;
+			true)
 		;
 		true.
 
@@ -2774,9 +2783,11 @@ current_logtalk_flag(version, version(2, 17, 2)).
 	close(Stream),
 	'$lgt_fix_redef_built_ins',
 	'$lgt_find_misspelt_calls',
-	'$lgt_entity_'(Type, _, _, _),
-	'$lgt_gen_clauses'(Type),
-	'$lgt_gen_directives'(Type).
+	('$lgt_entity_'(Type, _, _, _) ->
+		'$lgt_gen_clauses'(Type),
+		'$lgt_gen_directives'(Type)
+		;
+		true).	% source file containing no entity definition
 
 
 
