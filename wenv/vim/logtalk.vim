@@ -21,7 +21,7 @@ syn case match
 
 " Logtalk variables
 
-syn match   logtalkVariable	"\<\(\u\|_\)\(\w\)*\>"
+syn match   logtalkVariable		"\<\(\u\|_\)\(\w\)*\>"
 
 
 " Logtalk clause functor
@@ -32,12 +32,7 @@ syn match	logtalkOperator		":-"
 " Logtalk quoted atoms and strings
 
 syn region	logtalkString		start=+"+	skip=+\\"+	end=+"+
-syn region	logtalkAtom			start=+'+	skip=+\\'+	end=+'+
-
-
-" Logtalk character code constants
-
-syn match	logtalkNumber		"0'"
+syn region	logtalkAtom		start=+'+	skip=+\\'+	end=+'+
 
 
 " Logtalk message sending operators
@@ -48,7 +43,7 @@ syn match	logtalkOperator		"\^\^"
 
 " Logtalk external call
 
-syn region	logtalkExtCall			matchgroup=logtalkExtCallTag		start="{"		matchgroup=logtalkExtCallTag		end="}"		contains=ALL
+syn region	logtalkExtCall		matchgroup=logtalkExtCallTag		start="{"		matchgroup=logtalkExtCallTag		end="}"		contains=ALL
 
 
 " Logtalk opening entity directives
@@ -358,6 +353,17 @@ syn region	logtalkBlockComment	start="/\*"	end="\*/"
 syn match	logtalkLineComment	"%.*"
 
 
+" Logtalk numbers 
+
+syn match       logtalkNumber           "\<[0-9]\+\>"
+syn match	logtalkNumber		"\<[0-9]\+\.[0-9]\+\>"
+syn match	logtalkNumber		"\<[0-9]\+\.[0-9]\+[eE][-+][1-9][0-9]*\>"
+syn match       logtalkNumber           "\<0'[0-9a-zA-Z]\>"
+syn match       logtalkNumber           "\<0b[0-1]\+\>"
+syn match       logtalkNumber           "\<0o[0-7]\+\>"
+syn match       logtalkNumber           "\<0x[0-9a-fA-F]\+\>"
+
+
 syn sync ccomment maxlines=50
 
 
@@ -373,36 +379,36 @@ if version >= 508 || !exists("did_logtalk_syn_inits")
 		command -nargs=+ HiLink hi def link <args>
 	endif
 	
-	HiLink	logtalkBlockComment		Comment
-	HiLink	logtalkLineComment		Comment
+	HiLink	logtalkBlockComment	Comment
+	HiLink	logtalkLineComment	Comment
 
 	HiLink	logtalkOpenEntityDir	Normal
-	HiLink	logtalkOpenEntityDirTag	Statement
+	HiLink	logtalkOpenEntityDirTag	PreProc
 
-	HiLink	logtalkEntity			Normal
+	HiLink	logtalkEntity		Normal
 
-	HiLink	logtalkEntityRel		Normal
-	HiLink	logtalkEntityRelTag		Statement
+	HiLink	logtalkEntityRel	Normal
+	HiLink	logtalkEntityRelTag	PreProc
 
-	HiLink	logtalkCloseEntityDir	Statement
+	HiLink	logtalkCloseEntityDir	PreProc
 
-	HiLink	logtalkDir				Normal
-	HiLink	logtalkDirTag			Statement
+	HiLink	logtalkDir		Normal
+	HiLink	logtalkDirTag		PreProc
 
-	HiLink	logtalkAtom				String
-	HiLink	logtalkString			String
+	HiLink	logtalkAtom		String
+	HiLink	logtalkString		String
 
-	HiLink	logtalkNumber			Normal
+	HiLink	logtalkNumber		Number
 
-	HiLink	logtalkKeyword			Keyword
+	HiLink	logtalkKeyword		Keyword
 
-	HiLink	logtalkBuiltIn			Keyword
+	HiLink	logtalkBuiltIn		Keyword
 	HiLink	logtalkBuiltInMethod	Keyword
 
-	HiLink	logtalkOperator			Operator
+	HiLink	logtalkOperator		Operator
 
-	HiLink	logtalkExtCall			Normal
-	HiLink	logtalkExtCallTag		Operator
+	HiLink	logtalkExtCall		Normal
+	HiLink	logtalkExtCallTag	Operator
 
 	HiLink	logtalkVariable		Identifier
 
