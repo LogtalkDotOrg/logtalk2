@@ -2,4 +2,5 @@
 :- initialization(
 	logtalk_load([
 		double,
-		triple])).
+		triple,
+		reverse])).
