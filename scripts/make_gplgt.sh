@@ -22,4 +22,6 @@ else
 	ln -sf $LOGTALKHOME/bin/gplgt /usr/local/bin/gplgt
 	rm gnu.pl
 	rm logtalkgp.pl
+	echo "A link to the script was been created in /usr/local/bin."
+	echo
 fi

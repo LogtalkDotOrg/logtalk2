@@ -27,4 +27,6 @@ chdir('../compiler/'), fcompile('logtalk.pl', [assemble_only(true), string_table
 	rm ../configs/qphook.qo
 	rm ../configs/qu.qo
 	rm ../compiler/logtalk.qo
+	echo "A link to the script was been created in /usr/local/bin."
+	echo
 fi

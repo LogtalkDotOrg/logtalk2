@@ -21,4 +21,6 @@ else
 	echo "yap -l $LOGTALKHOME/bin/logtalkyap.rc" >> yaplgt
 	chmod a+x yaplgt
 	ln -sf $LOGTALKHOME/bin/yaplgt /usr/local/bin/yaplgt
+	echo "A link to the script was been created in /usr/local/bin."
+	echo
 fi

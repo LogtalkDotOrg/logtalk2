@@ -18,6 +18,10 @@ cplgtdirs.sh
 	user home directory (must be runned by the end-user to ensure 
 	proper permissions on the copied files)
 
+
+The following scripts must be runned by a user with administration 
+privileges:
+
 make_gplgt.sh
 	script for making a script named gplgt for running Logtalk with 
 	GNU Prolog

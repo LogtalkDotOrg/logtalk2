@@ -24,4 +24,6 @@ else
 	echo "swipl -f $LOGTALKHOME/bin/logtalkswi.rc" >> swilgt
 	chmod a+x swilgt
 	ln -sf $LOGTALKHOME/bin/swilgt /usr/local/bin/swilgt
+	echo "A link to the script was been created in /usr/local/bin."
+	echo
 fi
