@@ -2976,6 +2976,8 @@ current_logtalk_flag(version, version(2, 17, 3)).
 % only works on Prolog compilers implementing listing/1
 
 '$lgt_dump_all' :-
+	listing('$lgt_current_compiler_option_'/2),
+	listing('$lgt_flag_'/2),
 	listing('$lgt_pp_object_'/9),
 	listing('$lgt_pp_protocol_'/3),
 	listing('$lgt_pp_category_'/4),
@@ -3002,19 +3004,17 @@ current_logtalk_flag(version, version(2, 17, 3)).
 	listing('$lgt_pp_entity_init_'/1),
 	listing('$lgt_pp_fentity_init_'/1),
 	listing('$lgt_pp_entity_comp_mode_'/1),
-	listing('$lgt_dcl_'/1),
-	listing('$lgt_ddcl_'/1),
-	listing('$lgt_def_'/1),
-	listing('$lgt_ddef_'/1),
-	listing('$lgt_super_'/1),
+	listing('$lgt_pp_dcl_'/1),
+	listing('$lgt_pp_ddcl_'/1),
+	listing('$lgt_pp_def_'/1),
+	listing('$lgt_pp_ddef_'/1),
+	listing('$lgt_pp_super_'/1),
 	listing('$lgt_pp_rclause_'/1),
 	listing('$lgt_pp_eclause_'/1),
 	listing('$lgt_pp_feclause_'/1),
 	listing('$lgt_pp_redefined_built_in_'/3),
 	listing('$lgt_pp_defs_pred_'/1),
 	listing('$lgt_pp_calls_pred_'/1),
-	listing('$lgt_current_compiler_option_'/2),
-	listing('$lgt_flag_'/2),
 	listing('$lgt_pp_referenced_object_'/1),
 	listing('$lgt_pp_referenced_protocol_'/1),
 	listing('$lgt_pp_referenced_category_'/1),
@@ -4094,7 +4094,7 @@ current_logtalk_flag(version, version(2, 17, 3)).
 % translates the sending of a message to self
 
 
-% non-instantiated message: traslation performed at runtime
+% non-instantiated message: translation performed at runtime
 
 '$lgt_tr_self_msg'(Pred, '$lgt_send_to_self'(Self, Pred, This), Ctx) :-
 	var(Pred),
