@@ -908,7 +908,7 @@ logtalk_compile(Entities, Options) :-
 
 '$lgt_check_compiler_entities'(Entities) :-
 	\+ '$lgt_proper_list'(Entities),
-	throw(type_error(list, Entities)).
+	throw(type_error(atom_or_atom_list, Entities)).
 
 '$lgt_check_compiler_entities'(Entities) :-
 	'$lgt_check_compiler_entity_list'(Entities).
@@ -922,6 +922,10 @@ logtalk_compile(Entities, Options) :-
 	'$lgt_check_compiler_entity_list'(Entities).
 
 
+
+'$lgt_check_compiler_entity'(Entity) :-
+	var(Entity),
+	throw(instantiation_error).
 
 '$lgt_check_compiler_entity'(Entity) :-
 	\+ atom(Entity),
