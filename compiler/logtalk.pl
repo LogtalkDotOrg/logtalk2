@@ -170,8 +170,11 @@ Obj::Pred :-
 	'$lgt_self'(Ctx, Obj),
 	'$lgt_metavars'(Ctx, []),
 	'$lgt_tr_msg'(Obj, Pred, Call, Ctx),
-	('$lgt_debugging_'(Obj) ->
-		'$lgt_dbg_goal'(Obj::Pred, Call, Ctx)
+	(('$lgt_debugging_'(Obj), '$lgt_dbg_debugging_') ->
+		catch(
+			'$lgt_dbg_goal'(Obj::Pred, Call, Ctx),
+			error(logtalk_debugger_aborted),
+			(write('Debugging session aborted by user.'), nl))
 		;
 		call(Call)).
 
@@ -2047,6 +2050,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	retractall('$lgt_dbg_tracing_'),
 	retractall('$lgt_dbg_tracing_'(_)),
 	assertz('$lgt_dbg_tracing_'),
+	assertz('$lgt_dbg_debugging_'),
 	write('Debugger is on: tracing everything for all objects compiled in debug mode.'), nl.
 
 
@@ -2257,7 +2261,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	!.
 
 '$lgt_dbg_do_port_option'(a, _) :-
-	throw(error(logtalk_execution_aborted)).
+	throw(error(logtalk_debugger_aborted)).
 
 '$lgt_dbg_do_port_option'(x, Ctx) :-
 	'$lgt_sender'(Ctx, Sender),
@@ -2265,7 +2269,8 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	'$lgt_self'(Ctx, Self),
 	write('Sender: '), writeq(Sender), nl,
 	write('This:   '), writeq(This), nl,
-	write('Self:   '), writeq(Self), nl.
+	write('Self:   '), writeq(Self), nl,
+	fail.
 
 '$lgt_dbg_do_port_option'(h, _) :-
 	write('     Available options are:'), nl,
@@ -2275,7 +2280,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	write('       b - break (submit queries to the interpreter, type true to terminate)'), nl,
 	write('       a - abort (return to top level interpreter)'), nl,
 	write('       x - print execution context'), nl,
-	write('       h - help (prints this list of options)'), nl, nl,
+	write('       h - help (prints this list of options)'), nl,
 	fail.
 
 
