@@ -1251,7 +1251,9 @@ current_logtalk_flag(version, version(2, 21, 2)).
 	 Prop = declared_in(TCtn);
 	 '$lgt_once'(Def, Pred, _, _, _, _, DCtn),
 	 Prop = defined_in(DCtn);
-	 Meta \= no, Prop = metapredicate(Meta)).
+	 Meta \= no, Prop = metapredicate(Meta);
+	 '$lgt_current_object_'(TCtn, _, TCtnDcl, _, _, _),
+	 \+ '$lgt_call'(TCtnDcl, Pred, _, _, _), Prop = alias).
 
 '$lgt_predicate_property'(_, Pred, Prop, _, Scope) :-
 	'$lgt_built_in_method'(Pred, PScope),
