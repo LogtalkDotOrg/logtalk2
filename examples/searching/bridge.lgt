@@ -3,24 +3,31 @@
 	instantiates(heuristic_state_space)).
 
 
+	:- uses(list).
+	:- uses(numberlist).
+	:- uses(set).
+	
+
 	initial_state(start, ([], right, [1,3,6,8,12])).
 
 
 	goal_state(end, ([1,3,6,8,12], left, [])).
 
 
-	next_state((Left1, left, Right1), (Left2, right, Right2), Slower) :-	% two person
-		list::sublist([Person1, Person2], Left1),
-		list::subtract(Left1, [Person1, Person2], Left2),
+	next_state((Left1, left, Right1), (Left2, right, Right2), Slower) :-	% two persons
+		list::append(List, [Person1| Persons], Left1),
+		set::select(Person2, Persons, Others),
+		list::append(List, Others, Left2),
 		set::insert_all([Person1, Person2], Right1, Right2),
 		(Person1 > Person2 ->
 			Slower = Person1
 			;
 			Slower = Person2).
 
-	next_state((Left1, right, Right1), (Left2, left, Right2), Slower) :-	% two person
-		list::sublist([Person1, Person2], Right1),
-		list::subtract(Right1, [Person1, Person2], Right2),
+	next_state((Left1, right, Right1), (Left2, left, Right2), Slower) :-	% two persons
+		list::append(List, [Person1| Persons], Right1),
+		set::select(Person2, Persons, Others),
+		list::append(List, Others, Right2),
 		set::insert_all([Person1, Person2], Left1, Left2),
 		(Person1 > Person2 ->
 			Slower = Person1
@@ -36,8 +43,13 @@
 		set::insert(Left1, Person, Left2).
 
 
-	heuristic((_, _, Right), Heuristic) :-
-		numberlist::sum(Right, Heuristic).
+	heuristic((Left, Lamp, Right), Heuristic) :-
+		Lamp = left ->
+			list::min(Left, Heuristic)
+			;
+			list::max(Right, Max),
+			list::min(Right, Min),
+			Heuristic is Max + Min.
 
 
 	print_state((Left, Lamp, Right)) :-
