@@ -104,7 +104,7 @@
 
 
 
-:- dynamic('$lgt_pp_compiler_flag_'/2).		% '$lgt_pp_compiler_flag_'(Option, Value)
+:- dynamic('$lgt_pp_compiler_flag_'/2).			% '$lgt_pp_compiler_flag_'(Option, Value)
 
 :- dynamic('$lgt_pp_dcl_'/1).					% '$lgt_pp_dcl_'(Clause)
 :- dynamic('$lgt_pp_ddcl_'/1).					% '$lgt_pp_ddcl_'(Clause)
@@ -1753,8 +1753,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 % '$lgt_nop'(+goal)
 %
-% used in the implementation of the built-in  
-% method clause/2 to store original clause body
+% used in the implementation of the built-in method
+% clause/2 to store the original clause body
 
 '$lgt_nop'(_).
 
@@ -2856,7 +2856,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 
-% '$lgt_copy_metafile_entity_terms'(+directive, -atom, -entity_identifier)
+% '$lgt_opening_entity_directive'(+directive, -atom, -entity_identifier)
 
 '$lgt_opening_entity_directive'(object(Entity), object, Entity).
 '$lgt_opening_entity_directive'(object(Entity, _), object, Entity).
@@ -2870,7 +2870,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 
-% '$lgt_closing_entity_directive'(+directive, -entity_identifier)
+% '$lgt_closing_entity_directive'(+directive, -atom)
 
 '$lgt_closing_entity_directive'(end_object, object).
 '$lgt_closing_entity_directive'(end_protocol, protocol).
