@@ -36,7 +36,7 @@
 		},
 		{
 			name = "Entity relations";
-			match = "\\b(extends|i(nstantiates|mp(orts|lements))|specializes)(?=[.])";
+			match = "\\b(extends|i(nstantiates|mp(orts|lements))|specializes)(?=[(])";
 			foregroundColor = "#881280";
 		},
 		{
@@ -86,7 +86,7 @@
 		},
 		{
 			name = "Other operators";
-			match = "(!|\\\\\+|,|;|-->|->|=|\\\=|\\.|=\\.\\.|\\<is\\>)";
+			match = "(:-|!|\\\\\+|,|;|-->|->|=|\\\=|\\.|=\\.\\.|\\<is\\>)";
 			foregroundColor = "#0000ff";
 		},
 		{
