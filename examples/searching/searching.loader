@@ -5,6 +5,7 @@
 		water_jug,
 		farmer,
 		heuristic_state_space,
+		bridge,
 		eight_puzzle,
 		miss_cann,
 		search_strategy,
