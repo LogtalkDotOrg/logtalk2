@@ -21,6 +21,21 @@ find /usr/local/lgt2170/ -name .DS_Store -print | xargs rm -f
 %clean
 %files
 %defattr(-,root,users)
-/usr/local/lgt2170
+%doc /usr/local/lgt2170/BIBLIOGRAPHY
+%doc /usr/local/lgt2170/INSTALL
+%doc /usr/local/lgt2170/LICENSE
+%doc /usr/local/lgt2170/QUICK_START
+%doc /usr/local/lgt2170/README
+%doc /usr/local/lgt2170/RELEASE_NOTES
+%doc /usr/local/lgt2170/UPGRADING
+/usr/local/lgt2170/compiler
+/usr/local/lgt2170/configs
+/usr/local/lgt2170/examples
+/usr/local/lgt2170/library
+%docdir /usr/local/lgt2170/manuals
+/usr/local/lgt2170/manuals
+/usr/local/lgt2170/misc
+/usr/local/lgt2170/wenv
+/usr/local/lgt2170/xml
 /usr/local/logtalk
 /usr/local/bin/cplgtdirs.sh
