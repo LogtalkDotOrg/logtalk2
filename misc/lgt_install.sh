@@ -31,6 +31,7 @@ chmod a+x lgt2213/misc/*.sh
 chmod a+x lgt2213/xml/*.sh
 ln -sf lgt2213 logtalk
 
+mkdir -p bin
 cd bin
 ln -sf ../lgt2213/misc/cplgtdirs.sh cplgtdirs
 ln -sf ../lgt2213/xml/lgt2pdf.sh lgt2pdf
