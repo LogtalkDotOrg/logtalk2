@@ -43,3 +43,12 @@ logtalk.syn
 
 	To install, copy this file to the SAMPLES subdirectory in the TextPad 
 	application directory.
+
+
+logtalk.pats
+
+	syntax highlighting patterns file for NEdit 5.2 (http://www.nedit.org)
+
+	To install, follow the instructions available at:
+	
+		http://www.nedit.org/download/patterns.shtml
