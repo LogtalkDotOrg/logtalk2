@@ -2351,17 +2351,17 @@ user0__def(Pred, _, _, _, Pred, user).
 %
 % translates an entity term (either a clause or a directive)
 
-'$lgt_tr_term'((Head:-Body)) :-
+'$lgt_tr_term'((Head :- Body)) :-
 	!,
-	'$lgt_tr_clause'((Head:-Body)).
+	'$lgt_tr_clause'((Head :- Body)).
 
-'$lgt_tr_term'((:-Dir)) :-
+'$lgt_tr_term'((:- Directive)) :-
 	!,
-	'$lgt_tr_directive'(Dir).
+	'$lgt_tr_directive'(Directive).
 
 '$lgt_tr_term'((Head --> Body)) :-
 	!,
-	expand_term((Head --> Body), Clause),
+	'$lgt_dcgrule_to_clause'((Head --> Body), Clause),
 	'$lgt_tr_clause'(Clause).
 
 '$lgt_tr_term'(Fact) :-
@@ -5547,6 +5547,115 @@ user0__def(Pred, _, _, _, Pred, user).
 
 '$lgt_lgt_built_in'(current_logtalk_flag(_, _)).
 '$lgt_lgt_built_in'(set_logtalk_flag(_, _)).
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  DCG rule conversion
+%
+%  adopted from Richard A. O'Keefe code
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+% '$lgt_dcgrule_to_clause'(+dcgrule, -clause)
+%
+% converts a DCG rule to a normal clause
+
+'$lgt_dcgrule_to_clause'((RHead --> RBody), (CHead :- CBody)) :-
+	'$lgt_dcg_head'(RHead, CHead, PushBack, S0, S),
+	'$lgt_dcg_body'(RBody, Body, S0, S),
+	'$lgt_dcg_and'(Body, PushBack, CBody).
+
+
+
+'$lgt_dcg_head'((Non_terminal, Terminals), CHead, PushBack, S0, S) :-
+	!,
+	'$lgt_proper_list'(Terminals),
+	'$lgt_dcg_goal'(Non_terminal, CHead, S0, S1),
+	'$lgt_dcg_body'(Terminals, PushBack, S1, S).
+
+'$lgt_dcg_head'(Non_terminal, CHead, true, S0, S) :-
+	'$lgt_dcg_goal'(Non_terminal, CHead, S0, S).
+
+
+
+'$lgt_dcg_body'((RGoal,RGoals), Body, S0, S) :-
+	!,
+	'$lgt_dcg_body'(RGoal, CGoal, S0, S1),
+	'$lgt_dcg_body'(RGoals, CGoals, S1, S),
+	'$lgt_dcg_and'(CGoal, CGoals, Body).
+
+'$lgt_dcg_body'((RGoal1 -> RGoal2), (CGoal1 -> CGoal2), S0, S) :-
+	!,
+	'$lgt_dcg_body'(RGoal1, CGoal1, S0, S1),
+	'$lgt_dcg_body'(RGoal2, CGoal2, S1, S).
+
+'$lgt_dcg_body'((RGoals1;RGoals2), (CGoals1;CGoals2), S0, S) :-
+	!,
+	'$lgt_dcg_or'(RGoals1, CGoals1, S0, S),
+	'$lgt_dcg_or'(RGoals2, CGoals2, S0, S).
+
+'$lgt_dcg_body'({Goal}, Goal, S, S) :-
+	!.
+
+'$lgt_dcg_body'(!, !, S, S) :-
+	!.
+
+'$lgt_dcg_body'([], true, S, S) :-
+	!.
+
+'$lgt_dcg_body'([Terminal| Terminals], Body, S0, S) :-
+	!,
+	'$lgt_dcg_terminal'(Terminal, Goal, S0, S1),
+	'$lgt_dcg_body'(Terminals, Goals, S1, S),
+	'$lgt_dcg_and'(Goal, Goals, Body).
+
+'$lgt_dcg_body'(Non_terminal, Goal, S0, S) :-
+	'$lgt_dcg_goal'(Non_terminal, Goal, S0, S).
+
+
+
+'$lgt_dcg_and'(Goal, true, Goal) :-
+	!.
+
+'$lgt_dcg_and'(Goal, Goals, Goals2) :-
+	'$lgt_dcg_and2'(Goal, Goals, Goals2).
+
+
+
+'$lgt_dcg_and2'(true, Goals, Goals) :-
+	!.
+
+'$lgt_dcg_and2'((Goal1,Goals1), Goals2, (Goal1,Goals3)) :-
+	!,
+	'$lgt_dcg_and2'(Goals1, Goals2, Goals3).
+
+'$lgt_dcg_and2'(Goal, Goals, (Goal,Goals)).
+
+
+
+'$lgt_dcg_or'(RGoals, CGoals, S0, S) :-
+	'$lgt_dcg_body'(RGoals, Goals, S1, S),
+	(S1 == S ->
+		'$lgt_dcg_and'(S1=S0, Goals, CGoals)
+		;
+		S1 = S0, CGoals = Goals).
+
+
+
+'$lgt_dcg_goal'(RGoal, CGoal, S0, S) :-
+	'$lgt_callable'(RGoal),
+	RGoal =.. [Functor| RArgs],
+	'$lgt_append'(RArgs, [S0, S], CArgs),
+	CGoal =.. [Functor| CArgs].
+
+
+
+'$lgt_dcg_terminal'(Goal, S0=[Goal|S], S0, S).
 
 
 
