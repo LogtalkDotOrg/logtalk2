@@ -10,6 +10,17 @@ RELEASE NOTES
 =============
 
 
+2.22.4 - January 10, 2005
+
+	Simplified method lookup cache tables. Improved method lookup caching 
+	for parametric objects. Added support for caching method lookups for 
+	parametric objects with parameters containing cyclic terms.
+
+	Added a new category, "assignvars" to the Logtalk standard library, 
+	containing an adaptation of the implementation of logical assignable 
+	variables developed by Nobukuni Kino.
+
+
 2.22.3 - December 30, 2004
 
 	Added a configuration file for XSB 2.7.
