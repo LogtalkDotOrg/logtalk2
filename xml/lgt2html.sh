@@ -1,5 +1,12 @@
 #!/bin/bash
 
+## =================================================================
+## Logtalk - Object oriented extension to Prolog
+## Release 2.19.2
+##
+## Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
+## =================================================================
+
 html_xslt="$LOGTALKHOME/xml/lgthtml.xsl"
 xhtml_xslt="$LOGTALKHOME/xml/lgtxhtml.xsl"
 
@@ -99,6 +106,7 @@ html_index_file()
 if ! [ $LOGTALKHOME ]
 then
 	echo "The environment variable LOGTALKHOME must be defined first!"
+	exit 1
 else
 
 	while getopts "f:o:i:t:p:h" Option
@@ -166,5 +174,7 @@ else
 
 	rm logtalk.dtd
 	rm logtalk.xsd
+
+	exit 0
 
 fi
