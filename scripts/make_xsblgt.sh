@@ -22,7 +22,7 @@ else
 	fi
 	mkdir -p bin
 	cd bin
-	ln -f ../compiler/logtalk.pl logtalk.P
+	cp ../compiler/logtalk.pl logtalk.P
 	ln -f $LOGTALKUSER/configs/xsb.config xsbconfig.P
 	ln -f $LOGTALKUSER/libpaths/libpaths.pl libpaths.P
 	sed 's/^..lgt_current_object_.[(]user.*[)]/:- assertz(&)/' logtalk.P > temp1
