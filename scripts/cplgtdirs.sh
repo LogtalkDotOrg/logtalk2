@@ -19,7 +19,7 @@ else
 	if ! [ $LOGTALKUSER ]
 	then
 		LOGTALKUSER=$HOME/logtalk
-		echo "After the script complishion, you must set the environment variable"
+		echo "After the script completion, you must set the environment variable"
 		echo "LOGTALKUSER pointing to $LOGTALKUSER"
 	fi
 	mkdir -p $LOGTALKUSER/configs

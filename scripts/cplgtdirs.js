@@ -27,9 +27,15 @@ else {
 if (WScript.Arguments.Unnamed.Length > 0)
 	usage_help();
 
-var user_home = WshShell.SpecialFolders("MyDocuments")
-
-var logtalk_user = user_home + "\\logtalk";
+if !(WshUserEnv.Item("LOGTALKUSER")) {
+	var logtalk_user = WshShell.SpecialFolders("MyDocuments") + "\\logtalk";
+	WScript.Echo("After the script completion, you must set the user environment variable");
+	WScript.Echo("LOGTALKUSER pointing to MyDocuments\\logtalk");
+	WScript.Echo("");
+}
+else {
+	var logtalk_user = WshUserEnv.Item("LOGTALKUSER");
+}
 
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 
