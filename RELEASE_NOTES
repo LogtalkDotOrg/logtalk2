@@ -32,7 +32,6 @@ RELEASE NOTES
 
 2.21.0 - September 14, 2004
 
-
 	Added a new predicate directive, alias/3, which allows the definition of 
 	alternative predicate names in order to improve readability of inherited 
 	features and to solve conflicts between implemented, imported, or inherited 
