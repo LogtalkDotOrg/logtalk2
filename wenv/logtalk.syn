@@ -1,14 +1,14 @@
 ; TextPad syntax definitions for Logtalk (http://www.logtalk.org/)
 ; 
-; Author: 			Paulo Mourra
-; Last changed in: 	May 18, 2002
+; Author: 		Paulo Moura
+; Last changed in: 	May 21, 2002
 ;
 ; Tags used and sugested colors:
-;   Keywords 1		message sending operators		blue
-;   Keywords 2		entity enclosing directives		purple
-;   Keywords 3		entity  directives				purple
-;   Keywords 4		built-in predicates
-;   Keywords 5		built-in methods
+;   Keywords 1	message sending operators	blue
+;   Keywords 2	entity enclosing directives	purple
+;   Keywords 3	entity  directives		purple
+;   Keywords 4	built-in predicates
+;   Keywords 5	built-in methods
 
 
 C=1
@@ -16,9 +16,11 @@ C=1
 [Syntax]
 Namespace1 = 6
 IgnoreCase = NO
+InitKeyWordChars = 
+KeyWordChars = a-zA-Z0-9_:^;*+,-./;<=>?@[\]^{|}
 KeyWordLength =
-BracketChars = ()[]
-OperatorChars =
+BracketChars = 
+OperatorChars = <=>?@[\]|
 PreprocStart =
 SyntaxStart =
 SyntaxEnd =
@@ -35,8 +37,8 @@ SingleCommentEsc =
 StringsSpanLines = Yes
 StringStart = '
 StringEnd = '
-StringAlt =
-StringEsc =
+StringAlt = "
+StringEsc = '
 CharStart =
 CharEnd =
 CharEsc =
@@ -45,8 +47,14 @@ CharEsc =
 [Keywords 1]
 
 ; Logtalk message sending operators
-::
+
 ^^
+:-
+.
+,
+;
+::
+
 
 ; Logtalk external call
 {
@@ -56,15 +64,15 @@ CharEsc =
 [Keywords 2]
 
 ; Logtalk opening entity directives
-:- object
-:- protocol
-:- category
+object
+protocol
+category
 
 
 ; Logtalk closing entity directives
-:- end_object
-:- end_protocol
-:- end_category
+end_object
+end_protocol
+end_category
 
 ; Logtalk entity relations
 instantiates
@@ -77,18 +85,18 @@ implements
 [Keywords 3]
 
 ; Logtalk directives
-:- initialization
-:- info
-:- mode
-:- dynamic
-:- discontiguous
-:- public
-:- protected
-:- private
-:- metapredicate
-:- op
-:- calls
-:- uses
+initialization
+info
+mode
+dynamic
+discontiguous
+public
+protected
+private
+metapredicate
+op
+calls
+uses
 
 
 [Keywords 4]
@@ -298,3 +306,5 @@ sqrt
 
 ; Logtalk list operator
 |
+
+
