@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.14.0
+Release 2.14.1
 
 Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -8,6 +8,16 @@ Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.14.1 - July 31, 2002
+
+	New Windows NT script for batch converting XML documenting files to HTML.
+
+	Updated Unix shell script to also generate an index.html file containing 
+	links to all converted XML documenting files.
+
+	Corrected XHTML DOCTYPE declaration in manual pages.
 
 
 2.14.0 - July 26, 2002
