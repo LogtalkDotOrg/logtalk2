@@ -2,7 +2,7 @@
 Logtalk - Object oriented extension to Prolog
 Release 2.9.2
 
-Copyright (c) 1998-2001 Paulo Moura.  All Rights Reserved.
+Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 >>>> CONFIG FILE CONTENTS DIFFERENT FROM PREVIOUS RELEASES.
@@ -91,7 +91,7 @@ Arity/Prolog32 V 1.1
 	working directory before loading an example.
 
 
-B-Prolog 4.0~5.0, 6.0
+B-Prolog 4.0~5.0, 6.x
 
 	b5.config
 
@@ -102,7 +102,7 @@ B-Prolog 4.0~5.0, 6.0
 
 	b6.config
 
-	For B-Prolog 6.0.
+	For B-Prolog 6.x.
 	Don't forget to use the chdir/1 predicate to set the working 
 	directory before loading an example.
 
@@ -167,7 +167,7 @@ Eclipse 4.2.2, 5.x
 	directory before loading an example.
 
 
-GNU Prolog 1.1.2
+GNU Prolog 1.1.2 (and later versions)
 
 	gnu.config
 
@@ -175,7 +175,7 @@ GNU Prolog 1.1.2
 	can generate a new Prolog top level that includes the Logtalk config file
 	and pre-processor plus the runtime by doing something like:
 
-	% cd lgt285
+	% cd lgt292
 	% cp configs/gnu.config configs/gnu.pl
 	% gplc -o logtalk configs/gnu.pl compiler/logtalk.pl
 	% mv logtalk /usr/local/bin/
