@@ -2956,16 +2956,14 @@ current_logtalk_flag(version, version(2, 22, 4)).
 %
 % true if an entity of the same name is already loaded
 
-'$lgt_redefined_entity'(Entity, object, Entity) :-
+'$lgt_redefined_entity'(Entity, object, Entity) :-			% non-parametric objects
 	'$lgt_current_object_'(Entity, _, _, _, _, _),
 	!.
 
 '$lgt_redefined_entity'(Entity, object, Identifier) :-		% parametric objects
-	atom_codes(Entity, Codes),								% this is a quick and dirty hack
-	'$lgt_compiler_option'(code_prefix, Atom),				% assuming that code_prefix does
-	atom_codes(Atom, Code),									% not change between entity
-	'$lgt_append'(Code, Codes, Codes2),						% compilations
-	'$lgt_append'(Codes2, '_', Prefix),
+	'$lgt_compiler_option'(code_prefix, Atom),				% (assuming that the code_prefix
+	atom_concat(Atom, Entity, Aux),							% does not change between entity
+	atom_concat(Aux, '_', Prefix),							% compilations)
 	'$lgt_current_object_'(Identifier, Prefix, _, _, _, _),
 	!.
 
@@ -3007,7 +3005,8 @@ current_logtalk_flag(version, version(2, 22, 4)).
 
 '$lgt_report_redefined_entity'(Type, Entity) :-
 	'$lgt_compiler_option'(report, on) ->
-		write('> WARNING!  redefining '), write(Type), write(' '), writeq(Entity), nl
+		write('> WARNING!  redefining '), write(Type), write(' '), 
+		current_output(Output), '$lgt_pretty_print_vars'(Output, Entity), nl
 		;
 		true.
 

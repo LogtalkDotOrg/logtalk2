@@ -20,6 +20,8 @@ RELEASE NOTES
 	containing an adaptation of the implementation of logical assignable 
 	variables developed by Nobukuni Kino.
 
+	Corrected a bug in the code that checks for redefined parametric objects.
+
 
 2.22.3 - December 30, 2004
 
