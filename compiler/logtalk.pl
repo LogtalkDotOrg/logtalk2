@@ -2163,6 +2163,8 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	'$lgt_dbg_valid_leash_ports'(Ports).
 
 
+'$lgt_dbg_valid_leash_port'(fact).
+'$lgt_dbg_valid_leash_port'(rule).
 '$lgt_dbg_valid_leash_port'(call).
 '$lgt_dbg_valid_leash_port'(exit).
 '$lgt_dbg_valid_leash_port'(redo).
@@ -2179,7 +2181,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_fact'(Fact, Ctx) :-
 	'$lgt_dbg_tracing_',
 	!,
-	'$lgt_dbg_port'('Fact: ', Fact, Ctx, Action),
+	'$lgt_dbg_port'(fact, Fact, Ctx, Action),
 	call(Action).
 
 '$lgt_dbg_fact'(_, _).
@@ -2188,7 +2190,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_head'(Head, Ctx) :-
 	'$lgt_dbg_tracing_',
 	!,
-	'$lgt_dbg_port'('Rule: ', Head, Ctx, Action),
+	'$lgt_dbg_port'(rule, Head, Ctx, Action),
 	call(Action).
 
 '$lgt_dbg_head'(_, _).
@@ -2197,16 +2199,16 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_goal'(Goal, TGoal, Ctx) :-
 	'$lgt_dbg_tracing_',
 	!,
-	(	'$lgt_dbg_port'('Call: ', Goal, Ctx, CAction),
+	(	'$lgt_dbg_port'(call, Goal, Ctx, CAction),
 		call(CAction),
 		call(TGoal),
-		(	'$lgt_dbg_port'('Exit: ', Goal, Ctx, EAction),
+		(	'$lgt_dbg_port'(exit, Goal, Ctx, EAction),
 			call(EAction)
 			;
-			'$lgt_dbg_port'('Redo: ', Goal, Ctx, _), fail
+			'$lgt_dbg_port'(redo, Goal, Ctx, _), fail
 		)
 		;
-		'$lgt_dbg_port'('Fail: ', Goal, Ctx, _), fail
+		'$lgt_dbg_port'(fail, Goal, Ctx, _), fail
 	).
 
 '$lgt_dbg_goal'(_, TGoal, _) :-
@@ -2216,18 +2218,32 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_port'(Port, Goal, Ctx, Action) :-
 	'$lgt_dbg_tracing_',
 	!,
-	repeat,
-		write(Port), writeq(Goal), write(' ? '),
-		'$lgt_dbg_read_port_option'(Option),
-	'$lgt_dbg_valid_port_option'(Option),
-	'$lgt_dbg_do_port_option'(Option, Ctx, Action),
+	('$lgt_dbg_leashing_'(Port) ->
+		repeat,
+			'$lgt_dbg_write_port_name'(Port), writeq(Goal), write(' ? '),
+			'$lgt_read_single_char'(Option),
+		'$lgt_dbg_valid_port_option'(Option),
+		'$lgt_dbg_do_port_option'(Option, Ctx, Action)
+		;
+		'$lgt_dbg_write_port_name'(Port), writeq(Goal), nl,
+		Action = true),
 	!.
 
 '$lgt_dbg_port'(_, _, _).
 
 
-'$lgt_dbg_read_port_option'(Option) :-
-	'$lgt_read_single_char'(Option), nl.
+'$lgt_dbg_write_port_name'(fact) :-
+	write('Fact: ').
+'$lgt_dbg_write_port_name'(rule) :-
+	write('Rule: ').
+'$lgt_dbg_write_port_name'(call) :-
+	write('Call: ').
+'$lgt_dbg_write_port_name'(exit) :-
+	write('Exit: ').
+'$lgt_dbg_write_port_name'(redo) :-
+	write('Redo: ').
+'$lgt_dbg_write_port_name'(fail) :-
+	write('Fail: ').
 
 
 '$lgt_dbg_valid_port_option'(' ').
