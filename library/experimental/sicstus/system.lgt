@@ -37,6 +37,18 @@
 		{directory_files(Directory, Files)}.
 
 
+	absolute_file_name(File) :-
+		{absolute_file_name(File, File)}.
+
+
+	absolute_file_name(File, Full) :-
+		{absolute_file_name(File, Full)}.
+
+
+	decompose_file_name(File, Directory, Base, Extension) :-
+		{fail}.
+
+
 	file_exists(File) :-
 		{file_exists(File)}.
 
@@ -75,6 +87,10 @@
 
 	date_time(Year, Month, Day, Hours, Mins, Secs) :-
 		{datime(datime(Year, Month, Day, Hours, Mins, Secs))}.
+
+
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+		{datime(Time, datime(Year, Month, Day, Hours, Mins, Secs))}.
 
 
 	cpu_time(Time) :-
