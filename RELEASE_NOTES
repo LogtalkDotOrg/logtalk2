@@ -18,6 +18,13 @@ RELEASE NOTES
 	categories now work as expected in the presence of local operator 
 	declarations. Added new example "operators".
 
+	Updated built-in method predicate_property/2 for returning metapredicate/1 
+	properties for both Logtalk and Prolog metapredicates.
+
+	Added support for calls to non-ISO Prolog standard built-in metapredicates 
+	inside objects and categories. Added support for the declaration of non-ISO 
+	Prolog standard metapredicates in the config files.
+
 	Small change to the way the Logtalk compiler reports the compilation of
 	entities.
 
