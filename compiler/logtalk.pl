@@ -183,9 +183,9 @@ Obj::Pred :-
 	'$lgt_ctx_ctx'(Ctx, user, user, Obj, '$lgt_po_user0_', []),
 	'$lgt_tr_msg'(Pred, Obj, Call, Ctx),
 	(('$lgt_dbg_debugging_', '$lgt_debugging_'(Obj)) ->
-			catch('$lgt_dbg_goal'(Obj::Pred, Call, Ctx), Error, '$lgt_runtime_error_handler'(Error))
-			;
-			catch(Call, Error, '$lgt_runtime_error_handler'(Error))).
+		catch('$lgt_dbg_goal'(Obj::Pred, Call, Ctx), Error, '$lgt_runtime_error_handler'(Error))
+		;
+		catch(Call, Error, '$lgt_runtime_error_handler'(Error))).
 
 
 
@@ -3431,7 +3431,7 @@ current_logtalk_flag(version, version(2, 23, 1)).
 		 '$lgt_tr_file'(Stream, Term)),
 		Error,
 		'$lgt_compiler_error_handler'(Stream, Error)),
-	'$lgt_restores_op_table',
+	'$lgt_restore_op_table',
 	close(Stream),
 	'$lgt_fix_redef_built_ins',
 	'$lgt_report_misspelt_calls',
@@ -3522,7 +3522,7 @@ current_logtalk_flag(version, version(2, 23, 1)).
 		close(Stream)
 		;
 		true),
-	'$lgt_restores_op_table',
+	'$lgt_restore_op_table',
 	'$lgt_report_compiler_error'(Error),
 	throw(Error).
 
@@ -3635,29 +3635,29 @@ current_logtalk_flag(version, version(2, 23, 1)).
 
 '$lgt_save_op_table' :-
 	current_op(Pr, Spec, Op),
-	asserta('$lgt_pp_global_op_'(Pr, Spec, Op)),
+		asserta('$lgt_pp_global_op_'(Pr, Spec, Op)),
 	fail.
 
 '$lgt_save_op_table'.
 
 
 
-% '$lgt_restores_op_table'
+% '$lgt_restore_op_table'
 %
 % restores current operator table
 
-'$lgt_restores_op_table' :-
+'$lgt_restore_op_table' :-
 	retract('$lgt_pp_local_op_'(_, Spec, Op)),
-	op(0, Spec, Op),
+		op(0, Spec, Op),
 	fail.
 
-'$lgt_restores_op_table' :-
+'$lgt_restore_op_table' :-
 	retractall('$lgt_pp_global_op_'(_, _, ',')),	% ','/2 cannot be an argument to op/3
 	retract('$lgt_pp_global_op_'(Pr, Spec, Op)),
-	op(Pr, Spec, Op),
+		op(Pr, Spec, Op),
 	fail.
 
-'$lgt_restores_op_table'.
+'$lgt_restore_op_table'.
 
 
 
