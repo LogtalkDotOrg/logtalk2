@@ -1,0 +1,20 @@
+=================================================================
+Logtalk - Object oriented extension to Prolog
+Release 2.14.8
+
+Copyright (c) 1998-2003 Paulo Moura.  All Rights Reserved.
+=================================================================
+
+
+This directory contains some files that provide syntax highlighting 
+for editing Logtalk source files with common text editors.
+
+
+logtalk.pats
+
+	syntax highlighting patterns file for NEdit 5.2 (http://www.nedit.org)
+
+	To install, follow the instructions included in the file itself or take 
+	a look at:
+	
+		http://www.nedit.org/download/patterns.shtml
