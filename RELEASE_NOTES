@@ -12,7 +12,7 @@ RELEASE NOTES
 
 2.17.0 - April 26, 2004
 
-	Added buil-in debugging support implemented through the definition of a 
+	Added built-in debugging support implemented through the definition of a 
 	new pseudo-object named "debugger". Added "debug" compiler option. Renamed 
 	library entities "debuggerp" and "debugger" to, respectively, "event_dbgp" 
 	and "event_dbg".
