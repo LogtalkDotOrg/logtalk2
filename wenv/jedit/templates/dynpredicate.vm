@@ -5,16 +5,17 @@
 #prompt ( "Comment:" $comment )
 	:- $scope($functor/$arity).
 	:- dynamic($functor/$arity).
+#prompt ( "Number of solutions:" $solutions "zero_or_one" )
 #if ( $arity == "0" )
+	:- mode($functor, $solutions).
 	:- info($functor/$arity,
 		[comment is '$comment']).
 #else
 #prompt ( "Arguments (comma separated):" $args )
-#prompt ( "Number of solutions:" $solutions )
-#prompt ( "Argument names (comma separated):" $parnames )
+#prompt ( "Argument names (comma separated):" $argnames )
 	:- mode($functor($args), $solutions).
 	:- info($functor/$arity,
 		[comment is '$comment',
-		 parnames is [$parnames]]).
+		 argnames is [$argnames]]).
 #end
 

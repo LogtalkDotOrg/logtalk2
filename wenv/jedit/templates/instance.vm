@@ -5,10 +5,12 @@
 :- object($instancename,
 	instantiates($classes)).
 
+#prompt ( "Version:" $version "1.0" )
 #prompt ( "Author name:" $authorname )
 #prompt ( "Comment:" $comment )
 #today ( $date "yy/MM/dd" )
 	:- info([
+		version is $version,
 		author is '$authorname',
 		date is $date,
 		comment is '$comment').
