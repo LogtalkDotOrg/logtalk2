@@ -68,7 +68,7 @@ if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk"))
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - K-Prolog.lnk");
-link.Arguments = "-h 512k -l 128k -g 512k -e \"(consult('$LOGTALKHOME/bin/logtalk_plc.rc'), '$root').\"";
+link.Arguments = "-h 2048k -l 1024k -g 2048k -e \"(consult('$LOGTALKHOME/bin/logtalk_plc.rc'), '$root').\"";
 link.Description = "Runs Logtalk with K-Prolog";
 link.IconLocation = "app.exe,1";
 link.TargetPath = prolog_path;
