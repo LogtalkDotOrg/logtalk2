@@ -43,7 +43,7 @@ logtalk.syn
 
 	To install, copy this file to the SAMPLES subdirectory in the TextPad 
 	application directory and define a new document class for Logtalk source 
-	files.
+	files. THIS SYNTAX FILE IS UNDER DEVELOPMENT.
 
 
 logtalk.pats
