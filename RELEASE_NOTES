@@ -17,6 +17,9 @@ RELEASE NOTES
 
 	Added scripts for easy integration of Logtalk with K-Prolog.
 
+	Updated JIProlog config file in order to workaround a compiler bug with 
+	the write_canonical/2 predicate and null atoms.
+
 	Changed format of preprocessor and runtime dynamic predicates that deal 
 	with predicate indicators for better performance.
 

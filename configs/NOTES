@@ -195,16 +195,15 @@ IF/Prolog 5.1
 
 
 
-JIProlog 3.0.0-5
+JIProlog 3.0.0-6
 
 	ji.config
 
-	Experimental configuration file, written with the help of the JIProlog 
-	author (but if you find any Logtalk problem please report it to me).
-	When running on MacOS X, there is a bug on the exists_file/1 built-in 
-	predicate which prevents Logtalk from compiling source files.
-	Don't forget to use the chdir/1 predicate to set the working directory 
-	before loading the library or an example.
+	Written with the help of the JIProlog author (but if you find any Logtalk 
+	problem please report it to me). When running on MacOS X, a bug on the 
+	exists_file/1 built-in predicate prevents Logtalk from compiling source 
+	files. Don't forget to use the chdir/1 predicate to set the working 
+	directory before loading the library or an example.
 
 
 K-Prolog 5.01 Linux/Solaris, 5.02 Windows and later versions
