@@ -133,7 +133,7 @@ ECLiPSe 5.5~5.7
 	You should use the eclipseiso.config whenever possible. The alternative 
 	config file may not contain all the needed definitions for ISO Prolog 
 	predicates that are needed for compiling Logtalk itself, the Logtalk 
-	library or the Logtalk examples.
+	library, or the Logtalk examples.
 
 	For improved performance, add the following calls to the top of all the 
 	files in the "compiler" sub-directory:
@@ -189,7 +189,7 @@ IF/Prolog 5.1
 	of source files.
 
 
-JIProlog 3.0.0-4
+JIProlog 3.0.0-5
 
 	ji.config
 
