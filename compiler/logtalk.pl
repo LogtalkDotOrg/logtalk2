@@ -8641,12 +8641,12 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 
-% '$lgt_pred_call_to_xml_term'(+atom, +integer, +nonvar, -nonvar)
+% '$lgt_pred_call_to_xml_term'(+atom, +integer, +nonvar, +nonvar, -nonvar)
 %
 % instantiates the arguments in a predicate call to
 % user defined names or to the atom '_'
 
-'$lgt_pred_call_to_xml_term'(Functor, Arity, Call, XMLTerm) :-
+'$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings, XMLTerm) :-
 	once((
 		'$lgt_pp_info_'(Functor/Arity, List)
 		;
@@ -8657,26 +8657,50 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		'$lgt_member'(arguments is Arguments, List),
 		findall(Name, '$lgt_member'(Name - _, Arguments), Names)),
 	!,
-	Call =.. [Functor| Args],
-	'$lgt_vars_to_atoms'(Args, Names),
+	Call =.. [Functor| Args], writeq('$lgt_binding_vars'(Bindings, Vars)), nl,
+	'$lgt_binding_vars'(Bindings, Vars),
+	'$lgt_vars_to_atoms'(Args, Vars, Names), write(aqui), nl,
 	XMLTerm =.. [Functor| Args].
 
-'$lgt_pred_call_to_xml_term'(Functor, _, Call, XMLTerm) :-
+'$lgt_pred_call_to_xml_term'(Functor, _, Call, _, XMLTerm) :-
 	Call =.. [Functor| Args],
 	'$lgt_vars_to_underscore'(Args, Names),
 	XMLTerm =.. [Functor| Names].
 
 
-
-% '$lgt_vars_to_atoms'(+list, -list)
+% '$lgt_binding_vars'(@nonvar, -list)
 %
-% instantiates the variables in the input list to the atom '_'
+% 
 
-'$lgt_vars_to_atoms'([], []).
+'$lgt_binding_vars'(Bindings, Vars) :-
+	atom(Bindings) ->		% no bindings, just "no" or "yes" or equivalent answers
+		Vars = []
+		;
+		'$lgt_binding_vars_list'(Bindings, Vars).
 
-'$lgt_vars_to_atoms'([Arg| Args], [Name| Names]) :-
-	(var(Arg) -> Name = Arg; true),
-	'$lgt_vars_to_atoms'(Args, Names).
+
+'$lgt_binding_vars_list'((Var = _), [Var]).
+	
+'$lgt_binding_vars_list'(((Var = _), Bindings), [Var| Vars]) :-
+	'$lgt_binding_vars_list'(Bindings, Vars).
+
+
+
+% '$lgt_vars_to_atoms'(+list, +list, -list)
+%
+% instantiates the variables in the input list to either a name orthe atom '_'
+
+'$lgt_vars_to_atoms'([], _, []).
+
+'$lgt_vars_to_atoms'([Arg| Args], Vars, [Name| Names]) :-
+	(var(Arg) ->
+		('$lgt_member_var'(Arg, Vars) ->
+			Arg = Name
+			;
+			Arg = '_')
+		;
+		true),
+	'$lgt_vars_to_atoms'(Args, Vars, Names).
 
 
 
@@ -8857,7 +8881,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		'$lgt_write_xml_open_tag'(Stream, examples, []),
 		forall(
 			'$lgt_member'((Description - Call -> {Bindings}), Examples),
-			('$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Name),
+			('$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings, Name),
 			 '$lgt_write_xml_open_tag'(Stream, example, []),
 			 '$lgt_write_xml_cdata_element'(Stream, description, [], Description),
 			 '$lgt_write_xml_cdata_element'(Stream, call, [], Call),
