@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.9.0
+%  Release 2.9.1
 %
 %  Copyright (c) 1998-2001 Paulo Moura.  All Rights Reserved.
 %
@@ -1009,7 +1009,7 @@ logtalk_version(Major, Minor, Patch) :-
 	\+ integer(Patch),
 	throw(error(type_error(integer, Patch), logtalk_version(Major, Minor, Patch))).
 
-logtalk_version(2, 9, 0).
+logtalk_version(2, 9, 1).
 
 
 
@@ -1512,7 +1512,6 @@ lgt_retractall(Obj, Head, Sender, Scope) :-
 
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  message sending
@@ -1650,7 +1649,6 @@ lgt_metacall_in_object(Obj, Pred, Sender) :-
 			;
 			lgt_current_object_(Obj, Prefix, _, _, _),
 			lgt_prefix(Context, Prefix),
-
 			lgt_sender(Context, Sender),
 			lgt_this(Context, Obj),
 			lgt_self(Context, Obj),
@@ -2235,7 +2233,7 @@ lgt_tr_directive(info, [List]) :-
 	(lgt_valid_info_list(List) ->
 		assertz(lgt_info_(List))
 		;
-		throw(type_error(info_list), List)).
+		throw(type_error(info_list, List))).
 
 
 lgt_tr_directive(info, [Pred, List]) :-
@@ -2243,7 +2241,7 @@ lgt_tr_directive(info, [Pred, List]) :-
 		(lgt_valid_info_list(List) ->
 			assertz(lgt_info_(Pred, List))
 			;
-			throw(type_error(info_list), List))
+			throw(type_error(info_list, List)))
 		;
 		throw(type_error(predicate_indicator, Pred)).
 
@@ -3425,7 +3423,6 @@ lgt_report_unknown_protocols :-
 
 lgt_report_unknown_categories :-
 	findall(
-
 		Ctg,
 		(lgt_referenced_category_(Ctg), \+ (lgt_current_category_(Ctg, _); lgt_entity_(_, Ctg, _, _))),
 		Ctgs),

@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.9.0
+Release 2.9.1
 
 Copyright (c) 1998-2001 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -8,6 +8,15 @@ Copyright (c) 1998-2001 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.9.1 - October 29, 2001
+
+	Corrected a compiler bug in the error checking code for the info/1 
+	and info/2 directives.
+
+	Changed the order of object loading in the "mi" example to avoid 
+	suporious warning messages.
 
 
 2.9.0 - October 22, 2001
@@ -445,7 +454,6 @@ RELEASE NOTES
 	old BIM Prolog 4.0.
 
 	Corrected an error in the config file for OpenProlog in the definiton
-
 	of the write_term/3 predicate.
 
 	Added a safer definition for write_term/3 predicate in the config  
