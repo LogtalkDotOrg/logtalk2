@@ -60,8 +60,9 @@ This will load all the library entities that you will need in order to run
 the Logtalk examples.
 
 2. Open the examples sub-directory. There you find several sub-directories
-with ready to run examples and a NOTES file containing a brief description 
-of each example. Select and open one of the examples sub-directory.
+with ready to run examples and a NOTES file containing general instructions 
+and a brief description of each example. Select and open one of the examples 
+sub-directory.
 
 3. Read the example NOTES file. Some examples are dependent on other examples 
 or on library objects (already loaded on step one). You may need to load 

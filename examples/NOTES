@@ -6,9 +6,15 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-This folder contains several examples of Logtalk programs. Most of 
-these examples need objects, protocols, and categories that are
-defined in the Logtalk standard library or in other examples, so 
+This folder contains several examples of Logtalk programs. A brief 
+description of each example is included below.
+
+Each example contains a NOTES file and a loader utility file that may 
+be used to load all the example entities. In addtion, most examples 
+contain a SCRIPT file with sample queries for your to try.
+
+Most of these examples need objects, protocols, and categories that 
+are defined in the Logtalk standard library or in other examples, so 
 you should load them first (see the NOTES files inside the library 
 folder and the NOTES file inside each example folder).
 
