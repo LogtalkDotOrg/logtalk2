@@ -29,31 +29,42 @@ found in the original code.
 	:- mode(assignable(-assignvar), one).
 	:- info(assignable/1, [
 		comment is 'Makes Variable an assignable variable. Initial state will be empty.',
-		argnames is ['Variable']]).
+		argnames is ['Variable'],
+		exceptions is [
+			'Variable is not a variable' - type_error(variable, 'Variable')]]).
 
 	:- public(assignable/2).
 	:- mode(assignable(-assignvar, @nonvar), one).
 	:- info(assignable/2, [
 		comment is 'Makes Variable an assignable variable and sets its initial state to Value.',
-		argnames is ['Variable', 'Value']]).
+		argnames is ['Variable', 'Value'],
+		exceptions is [
+			'Variable is not a variable' - type_error(variable, 'Variable'),
+			'Value is not instantiated' - instantiation_error]]).
 
 	:- public((<=)/2).
 	:- mode(<=(?assignvar, @nonvar), one).
 	:- info((<=)/2, [
 		comment is 'Sets the state of the assignable variable Variable to Value (initializing the variable if needed).',
-		argnames is ['Variable', 'Value']]).
+		argnames is ['Variable', 'Value'],
+		exceptions is [
+			'Value is not instantiated' - instantiation_error]]).
 
 	:- public((=>)/2).
 	:- mode(=>(+assignvar, ?nonvar), zero_or_one).
 	:- info((=>)/2, [
 		comment is 'Unifies Value with the current state of the assignable variable Variable.',
-		argnames is ['Variable', 'Value']]).
+		argnames is ['Variable', 'Value'],
+		exceptions is [
+			'Variable is not instantiated' - instantiation_error]]).
 
 	:- public((=>>)/2).
 	:- mode(=>>(+assignvar, ?nonvar), zero_or_more).
 	:- info((=>>)/2, [
 		comment is 'Enumerates, by backtracking, the current and past variable values, starting in reverse chronological order from the current one.',
-		argnames is ['Variable', 'Value']]).
+		argnames is ['Variable', 'Value'],
+		exceptions is [
+			'Variable is not instantiated' - instantiation_error]]).
 
 	:-op(100, xfx, <=).
 	:-op(100, xfx, =>).
