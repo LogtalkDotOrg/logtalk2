@@ -22,9 +22,10 @@ RELEASE NOTES
 	entities.
 
 	Corrected a problem with the syntax coloring of quoted atoms and strings 
-	in the SubEthaEdit text editor.
+	in the SubEthaEdit text editor. Added more acurate syntax highlight for
+	built-in methods and built-in predicates.
 
-	New config file for Qu-Prolog 6.3.
+	New config file for Qu-Prolog 6.3 (see the configs/NOTES file for details).
 
 
 2.15.6 - February 9, 2004
