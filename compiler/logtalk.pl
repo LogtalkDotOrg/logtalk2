@@ -8575,9 +8575,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 
-:- initialization((
-	'$lgt_clean_lookup_caches',
-	'$lgt_startup_message')).
+:- initialization('$lgt_startup_message').
 
 
 
