@@ -18,7 +18,8 @@ RELEASE NOTES
 	Corrected bug in the definition of the pseudo-object "user" that resulted 
 	in mixed up metapredicate and type predicate properties.
 
-	Removed config files for outdated Qu-Prolog, CIAO, YAP, and ECLiPSe versions.
+	Removed config files for outdated Qu-Prolog, CIAO, YAP, XSB, and ECLiPSe 
+	versions.
 
 
 2.16.2 - April 2, 2004
