@@ -47,7 +47,7 @@
 
 
 	file_exists(File) :-
-		{access(File, 4, 0)}.
+		{access(File, 0, 0)}.
 
 
 	file_modtime(File, Time) :-
@@ -66,8 +66,14 @@
 		{fail}.
 
 
-	file_permission(File, Permission) :-
-		{fail}.
+	file_permission(File, read) :-
+		{access(File, 4, 0)}.
+
+	file_permission(File, write) :-
+		{access(File, 2, 0)}.
+
+	file_permission(File, execute) :-
+		{access(File, 1, 0)}.
  
 
 	delete_file(File) :-
