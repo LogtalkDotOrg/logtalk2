@@ -2627,8 +2627,8 @@ user0__def(Pred, _, _, _, Pred, user).
 
 '$lgt_tr_clause'(Clause) :-
 	'$lgt_entity_'(Type, Entity, Prefix, _),
-	(Type = object ->
-		'$lgt_this'(Context, Entity)
+	(Type = object ->					% "this" can only be determined at runtime for categories
+		'$lgt_this'(Context, Entity)	% it depends on the object that imports the category
 		;
 		true),
 	'$lgt_prefix'(Context, Prefix),
