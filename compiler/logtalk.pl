@@ -3228,7 +3228,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		List = Result.
 
 
-'$lgt_filter_dont_care_vars'([], Result, Result).
+'$lgt_filter_dont_care_vars'([], Result, Result) :-
+	!.	% cut needed to prevent problems with compilers with broken read_term/3
 
 '$lgt_filter_dont_care_vars'([Atom = Var| List], Sofar, Result) :-
 	sub_atom(Atom, 0, 1, _, '_') ->
@@ -3242,7 +3243,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 %
 % report the singleton variables found while compiling an entity term
 
-'$lgt_report_singletons'([], _).
+'$lgt_report_singletons'([], _) :-
+	!.	% cut needed to prevent problems with compilers with broken read_term/3
 
 '$lgt_report_singletons'([Singleton| Singletons], Term) :-
 	('$lgt_compiler_option'(singletons, warning),
@@ -5530,7 +5532,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		     '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _))),
 		Objs),
 	(Objs \= [] ->
-		write('> WARNING!  references to unknown objects:    '), writeq(Objs), nl
+		write('> WARNING!  references to unknown objects:    '),
+		'$lgt_writeq_list'(Objs), nl
 		;
 		true).
 
@@ -5548,7 +5551,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		     '$lgt_pp_protocol_'(Ptc, _, _, _))),
 		Ptcs),
 	(Ptcs \= [] ->
-		write('> WARNING!  references to unknown protocols:  '), writeq(Ptcs), nl
+		write('> WARNING!  references to unknown protocols:  '),
+		'$lgt_writeq_list'(Ptcs), nl
 		;
 		true).
 
@@ -5566,9 +5570,23 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		     '$lgt_pp_category_'(Ctg, _, _, _, _))),
 		Ctgs),
 	(Ctgs \= [] ->
-		write('> WARNING!  references to unknown categories: '), writeq(Ctgs), nl
+		write('> WARNING!  references to unknown categories: '),
+		'$lgt_writeq_list'(Ctgs), nl
 		;
 		true).
+
+
+
+% '$lgt_writeq_list'(+list)
+%
+% auxiliary predicate for writing a non-empty list of elements (quoted)
+
+'$lgt_writeq_list'([Term]) :-
+	writeq(Term), !.
+
+'$lgt_writeq_list'([Term1, Term2| Terms]) :-
+	writeq(Term1), write(', '),
+	'$lgt_writeq_list'([Term2| Terms]).
 
 
 
