@@ -21,7 +21,8 @@ var FSObject = new ActiveXObject("Scripting.FileSystemObject");
 WshShell.CurrentDirectory = "..";
 WshSystemEnv.Item("LOGTALKHOME") = WshShell.CurrentDirectory;
 
-FSObject.CreateFolder(WshShell.CurrentDirectory + "\\bin");
+if (!FSObject.FolderExists(WshShell.CurrentDirectory + "\\bin"))
+	FSObject.CreateFolder(WshShell.CurrentDirectory + "\\bin");
 
 FSObject.CopyFile(WshShell.CurrentDirectory + "\\README", WshShell.CurrentDirectory + "\\bin\\README.txt");
 FSObject.CopyFile(WshShell.CurrentDirectory + "\\QUICK_START", WshShell.CurrentDirectory + "\\bin\\QUICK_START.txt");
@@ -64,9 +65,11 @@ function usage_help() {
 	WScript.Echo('');
 	WScript.Echo('This script completes the installation of Logtalk by setting the LOGTALKHOME');
 	WScript.Echo('system environment variable and by creating a new program group named "Logtalk"');
-	WScript.Echo('in the Windows Start Menu. The script must be run from this directory by a user');
-	WScript.Echo('with administration privileges after decompressing the Logtalk distribution into');
-	WScript.Echo('its final destination.');
+	WScript.Echo('in the Windows Start Menu.');
+	WScript.Echo('');
+	WScript.Echo('The script must be run from this directory, by a user with administration');
+	WScript.Echo('privileges, after decompressing the Logtalk distribution into its final');
+	WScript.Echo('destination.');
 	WScript.Echo('');
 	WScript.Echo('Usage:');
 	WScript.Echo('  ' + WScript.ScriptName + ' help');
