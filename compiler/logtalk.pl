@@ -1453,7 +1453,7 @@ current_logtalk_flag(version, version(2, 22, 3)).
 	 	'$lgt_assert_ddcl_clause'(DDcl, Head, Scope2)),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
-			(('$lgt_once'(Def, Head, Sender2, This, Self, Call); '$lgt_once'(DDef, Head, Sender2, This, Self, Call)) ->
+			(('$lgt_call'(Def, Head, Sender2, This, Self, Call); '$lgt_call'(DDef, Head, Sender2, This, Self, Call)) ->
 				true
 				;
 				functor(Head, Functor, Arity),
@@ -1489,14 +1489,14 @@ current_logtalk_flag(version, version(2, 22, 3)).
 	 	'$lgt_assert_ddcl_clause'(DDcl, Head, Scope2)),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
-			(('$lgt_once'(Def, Head, _, _, _, Call); '$lgt_once'(DDef, Head, _, _, _, Call)) ->
+			(('$lgt_call'(Def, Head, Sender2, This, Self, Call); '$lgt_call'(DDef, Head, Sender2, This, Self, Call)) ->
 				true
 				;
 				functor(Head, Functor, Arity),
 				'$lgt_assert_ddef_clause'(Functor, Arity, Prefix, DDef, _),
-				'$lgt_once'(DDef, Head, _, _, _, Call)),
+				'$lgt_once'(DDef, Head, Sender2, This, Self, Call)),
 			('$lgt_debugging_'(Obj) ->
-				'$lgt_context'(Ctx, Sender, Obj, Obj, Prefix, []),
+				'$lgt_context'(Ctx, Sender2, This, Self, Prefix, []),
 				asserta((Call :- '$lgt_dbg_fact'(Head, Ctx)))
 				;
 				asserta(Call))
@@ -1548,7 +1548,7 @@ current_logtalk_flag(version, version(2, 22, 3)).
 	 	'$lgt_assert_ddcl_clause'(DDcl, Head, Scope2)),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
-			(('$lgt_once'(Def, Head, Sender2, This, Self, Call); '$lgt_once'(DDef, Head, Sender2, This, Self, Call)) ->
+			(('$lgt_call'(Def, Head, Sender2, This, Self, Call); '$lgt_call'(DDef, Head, Sender2, This, Self, Call)) ->
 				true
 				;
 				functor(Head, Functor, Arity),
@@ -1584,14 +1584,14 @@ current_logtalk_flag(version, version(2, 22, 3)).
 	 	'$lgt_assert_ddcl_clause'(DDcl, Head, Scope2)),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
-			(('$lgt_once'(Def, Head, _, _, _, Call); '$lgt_once'(DDef, Head, _, _, _, Call)) ->
+			(('$lgt_call'(Def, Head, Sender2, This, Self, Call); '$lgt_call'(DDef, Head, Sender2, This, Self, Call)) ->
 				true
 				;
 				functor(Head, Functor, Arity),
 				'$lgt_assert_ddef_clause'(Functor, Arity, Prefix, DDef, _),
-				'$lgt_once'(DDef, Head, _, _, _, Call)),
+				'$lgt_once'(DDef, Head, Sender2, This, Self, Call)),
 			('$lgt_debugging_'(Obj) ->
-				'$lgt_context'(Ctx, Sender, Obj, Obj, Prefix, []),
+				'$lgt_context'(Ctx, Sender2, This, Self, Prefix, []),
 				assertz((Call :- '$lgt_dbg_fact'(Head, Ctx)))
 				;
 				assertz(Call))
@@ -1626,7 +1626,7 @@ current_logtalk_flag(version, version(2, 22, 3)).
 		('$lgt_call'(Dcl, Head, PScope, Type, _, SCtn, _) ->
 			(Type = (dynamic) ->
 				((\+ \+ PScope = Scope; Sender = SCtn) ->
-					once(('$lgt_once'(Def, Head, _, _, _, Call); '$lgt_once'(DDef, Head, _, _, _, Call))),
+					once(('$lgt_call'(Def, Head, _, _, _, Call); '$lgt_call'(DDef, Head, _, _, _, Call))),
 					clause(Call, TBody),
 					(TBody = ('$lgt_nop'(Body), _) ->
 						true
@@ -1640,7 +1640,7 @@ current_logtalk_flag(version, version(2, 22, 3)).
 				;
 				throw(error(permission_error(access, static_predicate, Head), Obj::clause(Head, Body), Sender)))
 			;
-			('$lgt_once'(DDef, Head, _, _, _, Call) ->	% local dynamic predicate with no scope declaration
+			('$lgt_call'(DDef, Head, _, _, _, Call) ->	% local dynamic predicate with no scope declaration
 				clause(Call, TBody),
 				(TBody = ('$lgt_nop'(Body), _) ->
 					true
