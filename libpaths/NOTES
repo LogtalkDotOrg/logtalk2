@@ -50,6 +50,7 @@ Some Prolog compilers which are expected to be compatible with the provided
 
 Some Prolog compilers which imply editing the provided "libpaths.pl" file:
 
+	* JIProlog (does not support expansion of environment variables on paths)
 	* XSB (does not support expansion of environment variables on paths)
 
 Feedback on other Prolog compilers are most appreciated.
