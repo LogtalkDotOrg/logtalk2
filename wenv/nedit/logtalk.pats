@@ -33,7 +33,12 @@ nedit.highlightPatterns: Logtalk:1:0{\n\
 	Control constructs:"<(call|catch|throw)(?=[(])":::Subroutine::\n\
 	Block comment:"/\\*":"\\*/"::Comment::\n\
 	Line comment:"%":"$"::Comment::\n\
-	Number:"0'":::Plain::\n\
+	Number:"0'[A-Za-z0-9]":::Numeric Const::\n\
+	Number:"0b[0-1]+":::Numeric Const::\n\
+	Number:"0o[0-7]+":::Numeric Const::\n\
+	Number:"0x[A-Fa-f0-9]+":::Numeric Const::\n\
+	Number:"[0-9]+(\.[0-9]+)?([eE][-+][0-9]+)?":::Numeric Const::\n\
+	String:"""":""""::String::\n\
 	String:"'":"'"::String::\n\
 	Built-in methods:"<(parameter|self|sender|this|current_predicate|predicate_property|abolish|asserta|assertz|retractall|retract|bagof|findall|forall|setof|before|after|phrase)(?=[(])":::Subroutine::\n\
 	Arithmetic operators:"<is>|\\+|\\*|\\-|/|=:=|=\\\\=|=\\<|\\>=|\\<|\\>":::Subroutine1::\n\
