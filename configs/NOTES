@@ -382,10 +382,14 @@ XSB Prolog 2.6
 		'$lgt_current_object_'(user, ...).
 		'$lgt_current_object_'(debugger, ...).
 	
+		'$lgt_dbg_leasing_'(...).
+		
 	and replace it with the queries:
 	
 		:- assertz('$lgt_current_object_'(user, ...)).
 		:- assertz('$lgt_current_object_'(debugger, ...)).
+
+		:- assertz('$lgt_dbg_leasing_'(...)).
 	
 	You may get syntax errors while compiling the Logtalk pre-processor 
 	or some of the examples due to a know bug in the XSB parsing of infix 
