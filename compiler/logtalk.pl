@@ -197,39 +197,43 @@ Obj::Pred :-
 % top-level runtime error handler
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), context(TFunctor2/TArity2, _))) :-	% SWI-Prolog
-	catch('$lgt_reverse_predicate_functor'(TFunctor1, TArity1, Entity, Type, Functor1, Arity1), _, fail),
-	catch('$lgt_reverse_predicate_functor'(TFunctor2, TArity2, Entity, Type, Functor2, Arity2), _, fail),
+	'$lgt_reverse_predicate_functor'(TFunctor1, TArity1, Entity, Type, Functor1, Arity1),
+	'$lgt_reverse_predicate_functor'(TFunctor2, TArity2, Entity, Type, Functor2, Arity2),
 	throw(error(existence_error(procedure, Functor1/Arity1), context(Type, Entity, Functor2/Arity2))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), TFunctor2/TArity2)) :-				% GNU Prolog
-	catch('$lgt_reverse_predicate_functor'(TFunctor1, TArity1, Entity, Type, Functor1, Arity1), _, fail),
-	catch('$lgt_reverse_predicate_functor'(TFunctor2, TArity2, Entity, Type, Functor2, Arity2), _, fail),
+	'$lgt_reverse_predicate_functor'(TFunctor1, TArity1, Entity, Type, Functor1, Arity1),
+	'$lgt_reverse_predicate_functor'(TFunctor2, TArity2, Entity, Type, Functor2, Arity2),
 	throw(error(existence_error(procedure, Functor1/Arity1), context(Type, Entity, Functor2/Arity2))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/TArity), _)) :-
-	catch('$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity), _, fail),
+	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ModTFunctor/TArity), _)) :-								% CIAO
 	atom_concat('user:', TFunctor, ModTFunctor),
-	catch('$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity), _, fail),
+	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ':'(_, TFunctor/TArity)), _)) :-
-	catch('$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity), _, fail),
+	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TCompound), _)) :-										% K-Prolog
 	functor(TCompound, TFunctor, TArity),
-	catch('$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity), _, fail),
+	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(_, _, procedure, ':'(_, TFunctor/TArity), _), _)) :-					% SICStus Prolog
-	catch('$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity), _, fail),
+	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(undefined_predicate(TFunctor, TArity, _), _, _)) :-									% XSB
-	catch('$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity), _, fail),
+	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
+	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
+
+'$lgt_runtime_error_handler'(undefined_predicate(TFunctor/TArity)) :-													% B-Prolog
+	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(logtalk_debugger_aborted)) :-
@@ -7527,6 +7531,8 @@ current_logtalk_flag(version, version(2, 23, 1)).
 % reverses the functor used for a compiled predicate
 
 '$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity) :-
+	atom(TFunctor),
+	integer(TArity),
 	Arity is TArity - 3,	% subtract message execution context arguments
 	Arity >= 0,
 	number_codes(Arity, Codes),

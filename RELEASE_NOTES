@@ -14,7 +14,7 @@ RELEASE NOTES
 
 	Updated a runtime error handler for top-level ::/2 calls to recognize 
 	non-existing predicate exceptions thrown by XSB, SICStus Prolog, CIAO, 
-	and recent development versions of SWI-Prolog.
+	B-Prolog, and recent development versions of SWI-Prolog.
 
 
 2.23.0 - February 21, 2005
