@@ -11,7 +11,8 @@ var WshProcessEnv = WshShell.Environment("PROCESS");
 var WshSystemEnv = WshShell.Environment("SYSTEM");
 var WshUserEnv = WshShell.Environment("USER");
 var logtalk_home;
-
+var logtalk_user;
+	
 if (WshProcessEnv.Item("LOGTALKHOME"))
 	logtalk_home = WshProcessEnv.Item("LOGTALKHOME");
 else if (WshSystemEnv.Item("LOGTALKHOME"))
@@ -27,14 +28,15 @@ else {
 if (WScript.Arguments.Unnamed.Length > 0)
 	usage_help();
 
-if !(WshUserEnv.Item("LOGTALKUSER")) {
-	var logtalk_user = WshShell.SpecialFolders("MyDocuments") + "\\logtalk";
+if (WshSystemEnv.Item("LOGTALKUSER"))
+	logtalk_user = WshSystemEnv.Item("LOGTALKUSER");
+else if (WshUserEnv.Item("LOGTALKUSER"))
+	logtalk_user = WshUserEnv.Item("LOGTALKUSER");
+else {
+	logtalk_user = WshShell.SpecialFolders("MyDocuments") + "\\logtalk";
 	WScript.Echo("After the script completion, you must set the user environment variable");
 	WScript.Echo("LOGTALKUSER pointing to MyDocuments\\logtalk");
 	WScript.Echo("");
-}
-else {
-	var logtalk_user = WshUserEnv.Item("LOGTALKUSER");
 }
 
 var fso = new ActiveXObject("Scripting.FileSystemObject");
