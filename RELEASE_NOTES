@@ -10,6 +10,17 @@ RELEASE NOTES
 =============
 
 
+2.19.1 - August 2, 2004
+
+	Corrected a bug where entities could not be reloaded if they depend on 
+	other, not yet loaded entities.
+
+	Corrected a bug where compiler options would not be used when compiling 
+	source metafiles.
+
+	Corrected several typos on the Logtalk manuals.
+
+
 2.19.0 - July 26, 2004
 
 	Added support for defining more than one entity per file using Logtalk 
