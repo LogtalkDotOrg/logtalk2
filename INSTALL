@@ -1,0 +1,54 @@
+=================================================================
+Logtalk - Object oriented extension to Prolog
+Release 2.17.0
+
+Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
+=================================================================
+
+
+Installing Logtalk is just a matter of decompressing the downloaded 
+archive and copying the resulting directory to a suitable location. 
+The Logtalk directory can reside in any user accessible location. 
+This location depends on the working environment and on the number 
+of users.
+
+See the user manual for a description of the source files organization 
+and for installing/using instructions (to read the user manual open the 
+file manuals/index.html with a web browser). Most files are formatted 
+using four-space tabs.
+
+
+INSTALLING FOR A SINGLE USER
+
+In the case of a single user, the Logtalk directory can be copied to 
+the user home directory.
+
+
+INSTALLING FOR MULTIPLE USERS
+
+In the case of multiple users, the Logtalk directory can be copied to 
+any location that its accessible by all the users.
+
+Regarding directory and file permissions, it is desirable to make all 
+files read-only in order to avoid user tempering. However, the library 
+and examples sub-directories must be user writable as compiling Logtalk 
+source files generates intermediate Prolog files, which are written to 
+the same location as the source files. In alternative, the library and 
+example files may be pre-compiled and the "smart_compilation" compiler 
+option turned to avoid the need of recompilation when the files are 
+loaded by the users.
+
+
+ENVIRONMENT VARIABLES
+
+In Unix and Unix-like systems you may want to define an environment variable 
+named $LOGTALKHOME pointing to the Logtalk installation for use with your 
+Prolog compilers. If you use a csh shell, add the following line to your 
+.cshrc file:
+
+	setenv LOGTALKHOME "/your/installation/directory/lgt2170"
+
+If you use a bash shell, add the following lines to your .profile file:
+
+	LOGTALKHOME="/your/installation/directory/lgt2170"
+	export LOGTALKHOME
