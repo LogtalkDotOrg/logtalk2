@@ -3529,7 +3529,7 @@ current_logtalk_flag(version, version(2, 22, 2)).
 '$lgt_tr_directive'(Dir) :-
 	\+ '$lgt_pp_entity_'(_, _, _, _),		% directive occurs before opening entity directive
 	functor(Dir, Functor, Arity),
-	'$lgt_lgt_closing_directive'(Functor, Arity),	% opening directive missing/missplet
+	'$lgt_lgt_closing_directive'(Functor, Arity),	% opening directive missing/misspelt
 	throw(error(unmatched_directive, directive(Dir))).
 
 '$lgt_tr_directive'(Dir) :-
