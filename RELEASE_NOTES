@@ -10,21 +10,23 @@ RELEASE NOTES
 =============
 
 
-2.22.1 - December ??, 2004
+2.22.1 - December 6, 2004
 
 	Added helper batch scripts (misc/cplgtdirs.bat, xml/lgt2html.bat, and 
 	xml/lgt2pdf.bat) for running the Windows JScript scripts from the 
-	command-line. Updated the Windows installation JScript script to add 
-	the Logtalk directory "misc" to the system PATH environment variable 
-	and to add the Logtalk directory "xml" to the user PATH environment 
-	variable.
-
-	Added documentation on read-only compiler flags (which are defined in the 
-	configuration files) to the User Manual.
+	command-line.
+	
+	Improved installation instructions. Updated the Windows installation 
+	JScript script to add the Logtalk directory "misc" to the system PATH 
+	environment variable and to add the Logtalk directory "xml" to the user 
+	PATH environment variable.
 
 	Updated the lgt2html.* and lgt2pdf.* shell scripts to use the environment 
 	variable LOGTALKUSER instead of LOGTALKHOME for finding support files, thus 
-	allowing for user customization of the scripts and their related files.
+	allowing for end-user customization of the scripts and their related files.
+
+	Added documentation on read-only compiler flags (which are defined in the 
+	configuration files) to the User Manual.
 
 
 2.22.0 - November 29, 2004
