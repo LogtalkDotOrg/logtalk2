@@ -535,13 +535,14 @@ abolish_protocol(Ptc) :-
 
 
 
-% implements_protocol(?term, ?protocol_identifier)
+% implements_protocol(?object_identifier, ?protocol_identifier)
+% implements_protocol(?category_identifier, ?protocol_identifier)
 
-implements_protocol(Entity, Ptc) :-
+implements_protocol(ObjOrCtg, Ptc) :-
 	catch(
-		implements_protocol(Entity, Ptc, _),
+		implements_protocol(ObjOrCtg, Ptc, _),
 		error(Error, _),
-		throw(error(Error, implements_protocol(Entity, Ptc)))).
+		throw(error(Error, implements_protocol(ObjOrCtg, Ptc)))).
 
 
 
