@@ -126,13 +126,40 @@
 		argnames is ['X', 'Y', 'List']]).
 
 
-	:- public(nth/3).
+	:- public(nth0/3).
 
-	:- mode(nth(?integer, +list, ?term), zero_or_more).
+	:- mode(nth0(?integer, ?list, ?term), zero_or_more).
 
-	:- info(nth/3, [
-		comment is 'Nth element of a list.',
+	:- info(nth0/3, [
+		comment is 'Nth element of a list (counting from zero).',
 		argnames is ['Nth', 'List', 'Element']]).
+
+
+	:- public(nth0/4).
+
+	:- mode(nth0(?integer, ?list, ?term, ?list), zero_or_more).
+
+	:- info(nth0/4, [
+		comment is 'Nth element of a list (counting from zero).',
+		argnames is ['Nth', 'List', 'Element', 'Residue']]).
+
+
+	:- public(nth1/3).
+
+	:- mode(nth1(?integer, ?list, ?term), zero_or_more).
+
+	:- info(nth1/3, [
+		comment is 'Nth element of a list (counting from one).',
+		argnames is ['Nth', 'List', 'Element']]).
+
+
+	:- public(nth1/4).
+
+	:- mode(nth1(?integer, ?list, ?term, ?list), zero_or_more).
+
+	:- info(nth1/4, [
+		comment is 'Nth element of a list (counting from zero).',
+		argnames is ['Nth', 'List', 'Element', 'Residue']]).
 
 
 	:- public(permutation/2).

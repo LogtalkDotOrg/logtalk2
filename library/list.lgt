@@ -158,15 +158,27 @@
 		nextto(X, Y, Tail).
 
 
-	nth(Nth, List, Element) :-
-		nth(Element, List, 1, Nth).
+	nth0(Nth, List, Element) :-
+		nth(Element, List, 0, Nth, _).
 
 
-	nth(Head, [Head| _], Position, Position).
+	nth0(Nth, List, Element, Tail) :-
+		nth(Element, List, 0, Nth, Tail).
 
-	nth(Head, [_| Tail], Count, Position) :-
+
+	nth1(Nth, List, Element) :-
+		nth(Element, List, 1, Nth, _).
+
+
+	nth1(Nth, List, Element, Tail) :-
+		nth(Element, List, 1, Nth, Tail).
+
+
+	nth(Head, [Head| Tail], Position, Position, Tail).
+
+	nth(Head, [_| List], Count, Position, Tail) :-
 		Count2 is Count + 1,
-		nth(Head, Tail, Count2, Position).
+		nth(Head, List, Count2, Position, Tail).
 
 
 	permutation(List, Permutation) :-
