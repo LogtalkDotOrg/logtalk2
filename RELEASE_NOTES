@@ -46,7 +46,9 @@ RELEASE NOTES
 	Added workaround for Prolog compilers with broken read_term/3 singletons/1
 	option.
 
-	Minor documentation improvements.
+	Updated the Logtalk compiler/runtime and the documentation to always 
+	use the expression "compiler flag" instead of "compiler option" for 
+	consistency. Other minor documentation improvements.
 
 
 2.22.4 - January 12, 2005
