@@ -1053,7 +1053,6 @@ logtalk_compile(Entities, Flags) :-
 
 
 
-
 % '$lgt_check_compiler_entities'(@list)
 %
 % check if the entities names are valid and if the corresponding

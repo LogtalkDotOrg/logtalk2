@@ -173,20 +173,20 @@ GNU Prolog 1.1.2 (and later versions, except 1.2.13)
 	gnu.config
 
 	GNU Prolog supports the ISO Prolog standard. No problems expected. You 
-	can generate a new Prolog top level that includes the Logtalk config file
-	and pre-processor plus the runtime by doing something like:
+	can generate a new Prolog top level that includes the config file and 
+	the Logtalk compiler/runtime by doing something like:
 
 	% cd $LOGTALKHOME
 	% mv configs/gnu.config configs/gnu.pl
 
-	Edit the compiler/logtalk.pl file and add the line ":- built_in." to the 
-	top. Then:
+	Edit the compiler/logtalk.pl file and add the line ":- built_in." to 
+	the top. Then:
 
 	% gplc -o logtalk configs/gnu.pl compiler/logtalk.pl
 	% mv logtalk /usr/local/bin/
 
-	This way, every time you want to work with Logtalk you will just need to
-	type:
+	This way, every time you want to work with Logtalk you will just need 
+	to type:
 
 	% logtalk
 
@@ -205,13 +205,13 @@ IF/Prolog 5.1 and later versions
 	of source files. Does not support the "altdirs" compiler flag.
 
 
-JIProlog 3.0.0-12 and later versions
+JIProlog 3.0.1-2 and later versions
 
 	ji.config
 
 	Written with the help of the JIProlog author (but if you find any Logtalk 
-	problem please report it to me). Don't forget to use the chdir/1 predicate 
-	to set the working directory before loading the library or an example.
+	problem please report it to me). Don't forget to use the cd/1 predicate to 
+	set the working directory before loading the library or an example.
 	Supports smart compilation of source files.
 
 

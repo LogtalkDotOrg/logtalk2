@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.23.1 - March ??, 2005
+2.23.1 - March 7, 2005
 
 	Simplified message sending compilation, improving performance of both 
 	entity compilation and runtime top-level message sending.
@@ -32,8 +32,8 @@ RELEASE NOTES
 	message sending calls (previous versions cleaned the caches only after 
 	entity loading).
 
-	The tables of dynamic predicate declarations and dynamic predicate 
-	definitions are now reseted when reloading an object.
+	When reloading an object, its tables of dynamic predicate declarations 
+	and dynamic predicate definitions are now reseted.
 
 	Corrected a compatibility problem with the "birds" example due to the use 
 	of an operator not available in some Prolog compilers.
