@@ -11,6 +11,7 @@ var WshProcessEnv = WshShell.Environment("PROCESS");
 var WshSystemEnv = WshShell.Environment("SYSTEM");
 var WshUserEnv = WshShell.Environment("USER");
 var logtalk_home;
+WScript.Echo(logtalk_home);
 
 if (WshProcessEnv.Item("LOGTALKHOME"))
 	logtalk_home = WshProcessEnv.Item("LOGTALKHOME");
@@ -41,9 +42,7 @@ var f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.pl", true);
 f.WriteLine(":- system_module.");
 f.Close();
 
-var f1 = logtalk_home + "\\compiler\\logtalk.pl";
-var f2 = logtalk_home + "\\bin\\logtalkswi.pl";
-var p = "type " + f1 + " >> " + f2;
+var p = "type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\logtalkswi.pl";
 
 WshShell.Run(p, true);
 
