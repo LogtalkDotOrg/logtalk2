@@ -5614,8 +5614,9 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_dcg_body'(RGoal1, CGoal1, S0, S),
 	'$lgt_dcg_body'(RGoal2, CGoal2, S0, S).
 
-'$lgt_dcg_body'({Goal}, (Goal, S0=S), S0, S) :-
-	!.
+'$lgt_dcg_body'({Goal}, (CGoal, S0=S), S0, S) :-
+	!,
+	(var(Goal) -> CGoal = call(Goal); Cgoal = Goal).
 
 '$lgt_dcg_body'(!, (!, S0=S), S0, S) :-
 	!.
