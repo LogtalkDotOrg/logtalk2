@@ -119,6 +119,7 @@
 :- dynamic('$lgt_pp_private_'/1).				% '$lgt_pp_private_'(Functor/Arity)
 :- dynamic('$lgt_pp_metapredicate_'/1).			% '$lgt_pp_metapredicate_'(Pred)
 :- dynamic('$lgt_pp_alias_'/3).					% '$lgt_pp_alias_'(Entity, Pred1, Pred2)
+:- dynamic('$lgt_pp_non_terminal_'/3).					% '$lgt_pp_non_terminal_'(Functor, Arity, Arity2)
 
 :- dynamic('$lgt_pp_object_'/9).				% '$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef)
 :- dynamic('$lgt_pp_category_'/4).				% '$lgt_pp_category_'(Ctg, Prefix, Dcl, Def)
@@ -3229,6 +3230,7 @@ current_logtalk_flag(version, version(2, 21, 2)).
 	retractall('$lgt_pp_mode_'(_, _)),
 	retractall('$lgt_pp_metapredicate_'(_)),
 	retractall('$lgt_pp_alias_'(_, _, _)),
+	retractall('$lgt_pp_non_terminal_'(_, _, _)),
 	retractall('$lgt_pp_entity_functors_'(_)),
 	retractall('$lgt_pp_entity_'(_, _, _, _)),
 	retractall('$lgt_pp_entity_init_'(_)),
@@ -3523,13 +3525,16 @@ current_logtalk_flag(version, version(2, 21, 2)).
 
 
 '$lgt_tr_directive'(info, [Pred, List]) :-
-	'$lgt_valid_pred_ind'(Pred) ->
-		('$lgt_valid_info_list'(List) ->
+	'$lgt_valid_info_list'(List) ->
+		('$lgt_valid_pred_ind'(Pred) ->
 			assertz('$lgt_pp_info_'(Pred, List))
 			;
-			throw(type_error(info_list, List)))
+			('$lgt_valid_gr_ind'(Pred) ->
+				assertz('$lgt_pp_info_'(Pred, List))
+				;
+				throw(type_error(predicate_indicator, Pred))))
 		;
-		throw(type_error(predicate_indicator, Pred)).
+		throw(type_error(info_list, List)).
 
 
 
@@ -3543,6 +3548,7 @@ current_logtalk_flag(version, version(2, 21, 2)).
 			('$lgt_valid_gr_ind'(Pred) ->
 				Pred = Functor//Arity,
 				Arity2 is Arity + 2,
+				assertz('$lgt_pp_non_terminal_'(Functor, Arity, Arity2)),
 				assertz('$lgt_pp_public_'(Functor/Arity2))
 				;
 				throw(type_error(predicate_indicator, Pred))))).
@@ -3558,6 +3564,7 @@ current_logtalk_flag(version, version(2, 21, 2)).
 			('$lgt_valid_gr_ind'(Pred) ->
 				Pred = Functor//Arity,
 				Arity2 is Arity + 2,
+				assertz('$lgt_pp_non_terminal_'(Functor, Arity, Arity2)),
 				assertz('$lgt_pp_protected_'(Functor/Arity2))
 				;
 				throw(type_error(predicate_indicator, Pred))))).
@@ -3573,6 +3580,7 @@ current_logtalk_flag(version, version(2, 21, 2)).
 			('$lgt_valid_gr_ind'(Pred) ->
 				Pred = Functor//Arity,
 				Arity2 is Arity + 2,
+				assertz('$lgt_pp_non_terminal_'(Functor, Arity, Arity2)),
 				assertz('$lgt_pp_private_'(Functor/Arity2))
 				;
 				throw(type_error(predicate_indicator, Pred))))).
@@ -7641,7 +7649,10 @@ current_logtalk_flag(version, version(2, 21, 2)).
 '$lgt_write_xml_public_predicates'(Stream) :-
 	'$lgt_write_xml_open_tag'(Stream, (public), []),
 	'$lgt_pp_public_'(Functor/Arity),
-	'$lgt_write_xml_predicate'(Stream, Functor/Arity, (public)),
+	('$lgt_pp_non_terminal_'(Functor, Args, Arity) ->
+		'$lgt_write_xml_non_terminal'(Stream, Functor, Args, Arity, (public))
+		;
+		'$lgt_write_xml_predicate'(Stream, Functor, Arity, (public))),
 	fail.
 
 '$lgt_write_xml_public_predicates'(Stream) :-
@@ -7656,7 +7667,10 @@ current_logtalk_flag(version, version(2, 21, 2)).
 '$lgt_write_xml_protected_predicates'(Stream) :-
 	'$lgt_write_xml_open_tag'(Stream, protected, []),
 	'$lgt_pp_protected_'(Functor/Arity),
-	'$lgt_write_xml_predicate'(Stream, Functor/Arity, protected),
+	('$lgt_pp_non_terminal_'(Functor, Args, Arity) ->
+		'$lgt_write_xml_non_terminal'(Stream, Functor, Args, Arity, protected)
+		;
+		'$lgt_write_xml_predicate'(Stream, Functor, Arity, protected)),
 	fail.
 
 '$lgt_write_xml_protected_predicates'(Stream) :-
@@ -7671,7 +7685,10 @@ current_logtalk_flag(version, version(2, 21, 2)).
 '$lgt_write_xml_private_predicates'(Stream) :-
 	'$lgt_write_xml_open_tag'(Stream, private, []),
 	'$lgt_pp_private_'(Functor/Arity),
-	'$lgt_write_xml_predicate'(Stream, Functor/Arity, private),
+	('$lgt_pp_non_terminal_'(Functor, Args, Arity) ->
+		'$lgt_write_xml_non_terminal'(Stream, Functor, Args, Arity, private)
+		;
+		'$lgt_write_xml_predicate'(Stream, Functor, Arity, private)),
 	fail.
 
 '$lgt_write_xml_private_predicates'(Stream) :-
@@ -7679,11 +7696,11 @@ current_logtalk_flag(version, version(2, 21, 2)).
 
 
 
-% '$lgt_write_xml_predicate'(+stream, +atom/+integer, +term)
+% '$lgt_write_xml_predicate'(+stream, +atom, +integer, +term)
 %
 % writes the documentation of a predicate
 
-'$lgt_write_xml_predicate'(Stream, Functor/Arity, Scope) :-
+'$lgt_write_xml_predicate'(Stream, Functor, Arity, Scope) :-
 	(('$lgt_pp_entity_comp_mode_'((dynamic)); '$lgt_pp_dynamic_'(Functor/Arity)) ->
 		Compilation = (dynamic)
 		;
@@ -7726,6 +7743,47 @@ current_logtalk_flag(version, version(2, 21, 2)).
 		true),
 	forall(
 		('$lgt_pp_info_'(Functor/Arity, List),
+		 '$lgt_member'(Key is Value, List),
+		 \+ '$lgt_member'(Key, [comment, argnames, exceptions])),
+		('$lgt_write_xml_open_tag'(Stream, info, []),
+		 '$lgt_write_xml_element'(Stream, key, [], Key),
+		 '$lgt_write_xml_cdata_element'(Stream, value, [], Value),
+		 '$lgt_write_xml_close_tag'(Stream, info))),
+	'$lgt_write_xml_close_tag'(Stream, predicate).
+
+
+
+% '$lgt_write_xml_non_terminal'(+stream, +atom, +atom, +integer, +term)
+%
+% writes the documentation of a grammar rule non terminal
+
+'$lgt_write_xml_non_terminal'(Stream, Functor, Arity, Arity2, Scope) :-
+	(('$lgt_pp_entity_comp_mode_'((dynamic)); '$lgt_pp_dynamic_'(Functor/Arity2)) ->
+		Compilation = (dynamic)
+		;
+		Compilation = static),
+	'$lgt_write_xml_open_tag'(Stream, predicate, []),
+	'$lgt_write_xml_cdata_element'(Stream, name, [], Functor//Arity),
+	'$lgt_write_xml_element'(Stream, scope, [], Scope),
+	'$lgt_write_xml_element'(Stream, compilation, [], Compilation),
+	functor(Template, Functor, Arity),
+	forall(
+		'$lgt_pp_mode_'(Template, Solutions),
+		('$lgt_write_xml_open_tag'(Stream, (mode), []),
+		 '$lgt_write_xml_cdata_element'(Stream, template, [], Template),
+		 '$lgt_write_xml_element'(Stream, solutions, [], Solutions),
+		 '$lgt_write_xml_close_tag'(Stream, (mode)))),
+	(('$lgt_pp_info_'(Functor//Arity, List), '$lgt_member'(comment is Comment, List)) ->
+		'$lgt_write_xml_cdata_element'(Stream, comment, [], Comment)
+		;
+		true),
+	(('$lgt_pp_info_'(Functor//Arity, List), '$lgt_member'(argnames is Names, List)) ->
+		Template =.. [Functor| Names],
+		'$lgt_write_xml_cdata_element'(Stream, template, [], Template)
+		;
+		true),
+	forall(
+		('$lgt_pp_info_'(Functor//Arity, List),
 		 '$lgt_member'(Key is Value, List),
 		 \+ '$lgt_member'(Key, [comment, argnames, exceptions])),
 		('$lgt_write_xml_open_tag'(Stream, info, []),
