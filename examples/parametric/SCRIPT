@@ -17,9 +17,9 @@ Day = 15
 Yes
 
 
-| ?- date(Year, _, _)::(today, leap_year). 
+| ?- date(Year, _, _)::(today, \+ leap_year). 
 
-Year = 2000
+Year = 2002
 
 yes
 
