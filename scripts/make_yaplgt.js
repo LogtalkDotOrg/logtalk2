@@ -5,6 +5,25 @@
 // Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 // =================================================================
 
+var prolog_path = "%SystemDrive%\\Program Files\\Yap\\bin\\yap.exe";
+
+if (WScript.Arguments.Unnamed.Length > 0) {
+	usage_help();
+	WScript.Quit(0);
+}
+
+WScript.Echo('');
+WScript.Echo('Creating a shortcut named "Logtalk - YAP" for running Logtalk');
+WScript.Echo('with YAP...');
+WScript.Echo('');
+
+var FSObject = new ActiveXObject("Scripting.FileSystemObject");
+
+if (!FSObject.FileExists(prolog_path)) {
+	WScript.Echo("Error! Cannot find yap.exe at the expected place!");
+	WScript.Quit(1);
+}
+
 var WshShell = new ActiveXObject("WScript.Shell");
 
 var WshProcessEnv = WshShell.Environment("PROCESS");
@@ -26,21 +45,10 @@ else {
 
 logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
 
-if (WScript.Arguments.Unnamed.Length > 0) {
-	usage_help();
-	WScript.Quit(0);
-}
+if (!FSObject.FolderExists(logtalk_home + "\\bin")) 
+	FSObject.CreateFolder(logtalk_home + "\\bin");
 
-WScript.Echo('');
-WScript.Echo('Creating a shortcut named "Logtalk - YAP" for running Logtalk');
-WScript.Echo('with YAP...');
-
-var fso = new ActiveXObject("Scripting.FileSystemObject");
-
-if (!fso.FolderExists(logtalk_home + "\\bin")) 
-	fso.CreateFolder(logtalk_home + "\\bin");
-
-var f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkyap.pl", true);
+var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalkyap.pl", true);
 
 f.WriteLine(":- reconsult('$LOGTALKHOME\\\\configs\\\\yap.config').");
 f.WriteLine(":- reconsult('$LOGTALKHOME\\\\compiler\\\\logtalk.pl').");
@@ -51,7 +59,7 @@ var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk - YAP.lnk");
 link.Arguments = "-l %LOGTALKHOME%\\bin\\logtalkyap.pl";
 link.Description = "Runs Logtalk with YAP";
 link.IconLocation = "app.exe,1";
-link.TargetPath = "%SystemDrive%\\Program Files\\Yap\\bin\\yap.exe";
+link.TargetPath = prolog_path;
 link.WindowStyle = 1;
 link.WorkingDirectory = logtalk_home;
 link.Save();

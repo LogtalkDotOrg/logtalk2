@@ -5,7 +5,26 @@
 // Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 // =================================================================
 
+if (WScript.Arguments.Unnamed.Length > 0) {
+	usage_help();
+	WScript.Quit(0);
+}
+
+WScript.Echo('');
+WScript.Echo('Creating a shortcut named "Logtalk - SWI-Prolog" for running Logtalk');
+WScript.Echo('with SWI-Prolog...');
+WScript.Echo('');
+
 var WshShell = new ActiveXObject("WScript.Shell");
+
+var prolog_path = WshShell.RegRead("HKLM\\Software\\SWI\\Prolog\\home") + "\\bin\\plwin.exe";
+
+var FSObject = new ActiveXObject("Scripting.FileSystemObject");
+
+if (!FSObject.FileExists(prolog_path)) {
+	WScript.Echo("Error! Cannot find plwin.exe at the expected place!");
+	WScript.Quit(1);
+}
 
 var WshProcessEnv = WshShell.Environment("PROCESS");
 var WshSystemEnv = WshShell.Environment("SYSTEM");
@@ -26,27 +45,16 @@ else {
 
 logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
 
-if (WScript.Arguments.Unnamed.Length > 0) {
-	usage_help();
-	WScript.Quit(0);
-}
+if (!FSObject.FolderExists(logtalk_home + "\\bin"))
+	FSObject.CreateFolder(logtalk_home + "\\bin");
 
-WScript.Echo('');
-WScript.Echo('Creating a shortcut named "Logtalk - SWI-Prolog" for running Logtalk');
-WScript.Echo('with SWI-Prolog...');
-
-var fso = new ActiveXObject("Scripting.FileSystemObject");
-
-if (!fso.FolderExists(logtalk_home + "\\bin"))
-	fso.CreateFolder(logtalk_home + "\\bin");
-
-var f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.pl", true);
+var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.pl", true);
 f.WriteLine(":- system_module.");
 f.Close();
 
 WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\logtalkswi.pl", true);
 
-f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.rc", true);
+f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.rc", true);
 
 f.WriteLine(":- consult('$LOGTALKHOME\\\\configs\\\\swihook.pl').");
 f.WriteLine(":- consult('$LOGTALKHOME\\\\configs\\\\swi.config').");
@@ -58,7 +66,7 @@ var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk - SWI-Prolog.lnk");
 link.Arguments = "-f %LOGTALKHOME%\\bin\\logtalkswi.rc";
 link.Description = "Runs Logtalk with SWI-Prolog";
 link.IconLocation = "app.exe,1";
-link.TargetPath = WshShell.RegRead("HKEY_LOCAL_MACHINE\\Software\\SWI\\Prolog\\home") + "\\bin\\plwin.exe";
+link.TargetPath = prolog_path;
 link.WindowStyle = 1;
 link.WorkingDirectory = logtalk_home;
 link.Save();

@@ -5,7 +5,26 @@
 // Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 // =================================================================
 
+if (WScript.Arguments.Unnamed.Length > 0) {
+	usage_help();
+	WScript.Quit(0);
+}
+
+WScript.Echo('');
+WScript.Echo('Creating a shortcut named "Logtalk - SICStus Prolog" for running Logtalk');
+WScript.Echo('with SICStus Prolog...');
+WScript.Echo('');
+
 var WshShell = new ActiveXObject("WScript.Shell");
+
+var prolog_path = WshShell.RegRead("HKLM\\Software\\SICS\\SICStus3.11_win32\\SP_PATH") + "\\bin\\spwin.exe";
+
+var FSObject = new ActiveXObject("Scripting.FileSystemObject");
+
+if (!FSObject.FileExists(prolog_path)) {
+	WScript.Echo("Error! Cannot find spwin.exe at the expected place!");
+	WScript.Quit(1);
+}
 
 var WshProcessEnv = WshShell.Environment("PROCESS");
 var WshSystemEnv = WshShell.Environment("SYSTEM");
@@ -26,21 +45,10 @@ else {
 
 logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
 
-if (WScript.Arguments.Unnamed.Length > 0) {
-	usage_help();
-	WScript.Quit(0);
-}
+if (!FSObject.FolderExists(logtalk_home + "\\bin")) 
+	FSObject.CreateFolder(logtalk_home + "\\bin");
 
-WScript.Echo('');
-WScript.Echo('Creating a shortcut named "Logtalk - SICStus Prolog" for running Logtalk');
-WScript.Echo('with SICStus Prolog...');
-
-var fso = new ActiveXObject("Scripting.FileSystemObject");
-
-if (!fso.FolderExists(logtalk_home + "\\bin")) 
-	fso.CreateFolder(logtalk_home + "\\bin");
-
-var f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalksicstus.pl", true);
+var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalksicstus.pl", true);
 
 f.WriteLine(":- consult('$LOGTALKHOME\\\\configs\\\\sicstus.config').");
 f.WriteLine(":- consult('$LOGTALKHOME\\\\compiler\\\\logtalk.pl').");
@@ -51,7 +59,7 @@ var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk - SICStus Prolog.ln
 link.Arguments = "-l %LOGTALKHOME%\\bin\\logtalksicstus.pl";
 link.Description = "Runs Logtalk with SICStus Prolog";
 link.IconLocation = "app.exe,1";
-link.TargetPath = WshShell.RegRead("HKEY_LOCAL_MACHINE\\Software\\SICS\\SICStus3.11_win32\\SP_PATH") + "\\bin\\spwin.exe";
+link.TargetPath = prolog_path;
 link.WindowStyle = 1;
 link.WorkingDirectory = logtalk_home;
 link.Save();
