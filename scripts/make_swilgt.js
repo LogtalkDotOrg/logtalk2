@@ -24,7 +24,7 @@ else {
 	WScript.Quit(1);
 }
 
-var re = /\/g;
+var re = /\\/g;
 logtalk_home = logtalk_home.replace(re, "\\\\");
 
 if (WScript.Arguments.Unnamed.Length > 0) {
