@@ -43,7 +43,7 @@
 
 
 	rename_file(Old, New) :-
-		{atom_concat('mv ', Old, Temp), atom_concat(' ', New, Command), os(system(Command))}.
+		{concat_atom([mv, Old, New], ' ', Command), os(system(Command))}.
 
 
 	getenv(Variable, Value) :-
@@ -55,7 +55,7 @@
 
 
 	date_time(Year, Month, Day, Hour, Min, Sec) :-
-		{datime(datime(Year, Month, Day, Hour, Min, Sec))}.
+		{realtime(RT), localtime(RT, LT), LT = local_time(Year, Month, Day, Hour, Min, Sec)}.
 
 
 	host(Name) :-
