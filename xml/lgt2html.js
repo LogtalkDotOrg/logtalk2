@@ -139,11 +139,11 @@ function xhtml_index_file() {
 	f.WriteLine("<html lang=\"en\" xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">");
 	f.WriteLine("<head>");
 	f.WriteLine("    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>");
-	f.WriteLine("    <title>"$title"</title>");
+	f.WriteLine("    <title>" + title + "</title>");
 	f.WriteLine("    <link rel=\"stylesheet\" href=\"logtalk.css\" type=\"text/css\"/>");
 	f.WriteLine("</head>");
 	f.WriteLine("<body>");
-	f.WriteLine("<h1>"$title"</h1>");
+	f.WriteLine("<h1>" + title + "</h1>");
 	f.WriteLine("<ul>");
 
 	var files = WshShell.CurrentDirectory.Files;
