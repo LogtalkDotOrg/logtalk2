@@ -2204,19 +2204,19 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_leash_shortand_ports'(full, [fact, rule, call, exit, redo, fail]).
 
 
-'$lgt_dbg_leashing'(Port, Goal, Ctx) :-
+'$lgt_dbg_leashing'(Port, Goal, Ctx, Code) :-
 	'$lgt_dbg_leashing_'(Port),
 	('$lgt_dbg_tracing_' ->
-		true
+		Code = ' '
 		;
-		'$lgt_dbg_spying'(Port, Goal, Ctx)).
+		'$lgt_dbg_spying'(Port, Goal, Ctx, Code)).
 
 
-'$lgt_dbg_spying'(_, Goal, _) :-
+'$lgt_dbg_spying'(_, Goal, _, '+') :-
 	functor(Goal, Functor, Arity),
 	\+ \+ '$lgt_dbg_spying_'(Functor/Arity).
 	
-'$lgt_dbg_spying'(_, Goal, Ctx) :-
+'$lgt_dbg_spying'(_, Goal, Ctx, 'c') :-
 	'$lgt_sender'(Ctx, Sender),
 	'$lgt_this'(Ctx, This),
 	'$lgt_self'(Ctx, Self),
@@ -2278,15 +2278,15 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_port'(Port, Goal, Ctx, Action) :-
 	'$lgt_dbg_debugging_',
 	!,
-	('$lgt_dbg_leashing'(Port, Goal, Ctx) ->
+	('$lgt_dbg_leashing'(Port, Goal, Ctx, Code) ->
 		repeat,
-			'$lgt_dbg_write_port_name'(Port), writeq(Goal), write(' ? '),
+			write(Code), '$lgt_dbg_write_port_name'(Port), writeq(Goal), write(' ? '),
 			'$lgt_read_single_char'(Option),
-		'$lgt_dbg_valid_port_option'(Port, Option),
+		'$lgt_dbg_valid_port_option'(Option, Port, Code),
 		'$lgt_dbg_do_port_option'(Option, Goal, Ctx, Action)
 		;
 		('$lgt_dbg_tracing_' ->
-			'$lgt_dbg_write_port_name'(Port), writeq(Goal), nl
+			write(' '), '$lgt_dbg_write_port_name'(Port), writeq(Goal), nl
 			;
 			true),
 		Action = true
@@ -2297,37 +2297,37 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 
 '$lgt_dbg_write_port_name'(fact) :-
-	write('    Fact: ').
+	write('   Fact: ').
 '$lgt_dbg_write_port_name'(rule) :-
-	write('    Rule: ').
+	write('   Rule: ').
 '$lgt_dbg_write_port_name'(call) :-
-	write('    Call: ').
+	write('   Call: ').
 '$lgt_dbg_write_port_name'(exit) :-
-	write('    Exit: ').
+	write('   Exit: ').
 '$lgt_dbg_write_port_name'(redo) :-
-	write('    Redo: ').
+	write('   Redo: ').
 '$lgt_dbg_write_port_name'(fail) :-
-	write('    Fail: ').
+	write('   Fail: ').
 
 
-'$lgt_dbg_valid_port_option'(_, ' ').
-'$lgt_dbg_valid_port_option'(_, c).
-'$lgt_dbg_valid_port_option'(_, l).
-'$lgt_dbg_valid_port_option'(call, s).
-'$lgt_dbg_valid_port_option'(redo, s).
-'$lgt_dbg_valid_port_option'(_, f).
-'$lgt_dbg_valid_port_option'(_, n).
-'$lgt_dbg_valid_port_option'(_, '@').
-'$lgt_dbg_valid_port_option'(_, b).
-'$lgt_dbg_valid_port_option'(_, a).
-'$lgt_dbg_valid_port_option'(_, e).
-'$lgt_dbg_valid_port_option'(_, d).
-'$lgt_dbg_valid_port_option'(_, x).
-'$lgt_dbg_valid_port_option'(_, h).
-'$lgt_dbg_valid_port_option'(_, '?').
-'$lgt_dbg_valid_port_option'(_, '=').
-'$lgt_dbg_valid_port_option'(_, '+').
-'$lgt_dbg_valid_port_option'(_, '-').
+'$lgt_dbg_valid_port_option'(' ', _, _).
+'$lgt_dbg_valid_port_option'(c, _, _).
+'$lgt_dbg_valid_port_option'(l, _, _).
+'$lgt_dbg_valid_port_option'(s, call, _).
+'$lgt_dbg_valid_port_option'(s, redo, _).
+'$lgt_dbg_valid_port_option'(f, _, _).
+'$lgt_dbg_valid_port_option'(n, _, _).
+'$lgt_dbg_valid_port_option'(@, _, _).
+'$lgt_dbg_valid_port_option'(b, _, _).
+'$lgt_dbg_valid_port_option'(a, _, _).
+'$lgt_dbg_valid_port_option'(e, _, _).
+'$lgt_dbg_valid_port_option'(d, _, _).
+'$lgt_dbg_valid_port_option'(x, _, _).
+'$lgt_dbg_valid_port_option'(h, _, _).
+'$lgt_dbg_valid_port_option'(?, _, _).
+'$lgt_dbg_valid_port_option'(=, _, _).
+'$lgt_dbg_valid_port_option'(+, _, ' ').
+'$lgt_dbg_valid_port_option'(-, _, +).
 
 
 '$lgt_dbg_do_port_option'(' ', _, _, true).
@@ -2343,19 +2343,25 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_do_port_option'(n, _, _, true) :-
 	'$lgt_dbg_nodebug'.
 
-'$lgt_dbg_do_port_option'('=', _, _, true) :-
+'$lgt_dbg_do_port_option'(=, _, _, true) :-
 	'$lgt_dbg_debugging'.
 
-'$lgt_dbg_do_port_option'('+', Goal, _, _) :-
-	functor(Goal, Functor, Arity),
+'$lgt_dbg_do_port_option'(+, Goal, _, _) :-
+	(Goal = _ :: Pred ->
+		functor(Pred, Functor, Arity)
+		;
+		functor(Goal, Functor, Arity)),
 	'$lgt_dbg_spy'(Functor/Arity),
 	fail.
 
-'$lgt_dbg_do_port_option'('-', Goal, _, true) :-
-	functor(Goal, Functor, Arity),
+'$lgt_dbg_do_port_option'(-, Goal, _, true) :-
+	(Goal = _ :: Pred ->
+		functor(Pred, Functor, Arity)
+		;
+		functor(Goal, Functor, Arity)),
 	'$lgt_dbg_nospy'(Functor/Arity).
 
-'$lgt_dbg_do_port_option'('@', _, _, _) :-
+'$lgt_dbg_do_port_option'(@, _, _, _) :-
 	write('    ?- '),
 	read(Goal),
 	once((Goal; true)),
@@ -2406,7 +2412,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	write('        h - help (prints this list of options)'), nl,
 	fail.
 
-'$lgt_dbg_do_port_option'('?', Goal, Ctx, Action) :-
+'$lgt_dbg_do_port_option'(?, Goal, Ctx, Action) :-
 	'$lgt_dbg_do_port_option'(h, Goal, Ctx, Action).
 
 
