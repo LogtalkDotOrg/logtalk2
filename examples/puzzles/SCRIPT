@@ -63,3 +63,17 @@ h(spanish,dog,lucky,juice,white)
 S = [h(norwegian,fox,kool,water,yellow),h(ukrainian,horse,chesterfield,tea,blue),h(english,snake,winston,milk,red),h(japonese,zebra,kent,coffee,green),h(spanish,dog,lucky,juice,white)] ? ;
 
 yes
+
+
+% Passing a note logical puzzle
+
+| ?- note::(students(S), print(S)).
+s(mary,english,red,1)
+s(paul,math,yellow,2)
+s(josephine,science,green,3)
+s(derrick,french,blue,4)
+s(alexis,reading,black,5)
+
+S = [s(mary,english,red,1),s(paul,math,yellow,2),s(josephine,science,green,3),s(derrick,french,blue,4),s(alexis,reading,black,5)] ? 
+
+yes
