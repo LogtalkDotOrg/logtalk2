@@ -7,15 +7,12 @@
 
 var WshShell = new ActiveXObject("WScript.Shell");
 
-var WshProcessEnv = WshShell.Environment("PROCESS");
 var WshSystemEnv = WshShell.Environment("SYSTEM");
 var WshUserEnv = WshShell.Environment("USER");
 var logtalk_home;
 var logtalk_user;
 	
-if (WshProcessEnv.Item("LOGTALKHOME"))
-	logtalk_home = WshProcessEnv.Item("LOGTALKHOME");
-else if (WshSystemEnv.Item("LOGTALKHOME"))
+if (WshSystemEnv.Item("LOGTALKHOME"))
 	logtalk_home = WshSystemEnv.Item("LOGTALKHOME");
 else if (WshUserEnv.Item("LOGTALKHOME"))
 	logtalk_home = WshUserEnv.Item("LOGTALKHOME")
