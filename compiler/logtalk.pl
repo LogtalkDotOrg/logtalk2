@@ -1871,8 +1871,18 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  built-in pseudo-object object table clauses
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 '$lgt_current_object_'(user, '$lgt_po_user0_', '$lgt_po_user0__dcl', '$lgt_po_user0__def', _, static).
 '$lgt_current_object_'(debugger, '$lgt_po_debugger0_', '$lgt_po_debugger0__dcl', '$lgt_po_debugger0__def', _, static).
+
 
 
 
@@ -2006,45 +2016,56 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 '$lgt_dbg_reset' :-
 	'$lgt_dbg_nospyall',
-	'$lgt_dbg_leash'(full).
+	'$lgt_dbg_leash'(full),
+	'$lgt_dbg_nodebug'.
 
 
 '$lgt_dbg_debug' :-
-	retractall('$lgt_dbg_debugging_'),
-	assertz('$lgt_dbg_debugging_'),
-	retractall('$lgt_dbg_tracing_'),
-	write('Debugger is on: showing spy points for all objects compiled in debug mode.'), nl.
+	'$lgt_dbg_debugging_' ->
+		write('Debugger is on: showing spy points for all objects compiled in debug mode.'), nl
+		;
+		assertz('$lgt_dbg_debugging_'),
+		retractall('$lgt_dbg_tracing_'),
+		write('Debugger switched on: showing spy points for all objects compiled in debug mode.'), nl.
 
 
 '$lgt_dbg_nodebug' :-
-	retractall('$lgt_dbg_debugging_'),
-	retractall('$lgt_dbg_tracing_'),
-	write('Debugger is off.'), nl.
+	'$lgt_dbg_debugging_' ->
+		retractall('$lgt_dbg_debugging_'),
+		retractall('$lgt_dbg_tracing_'),
+		write('Debugger switched off.'), nl
+		;
+		write('Debugger is off.'), nl.
 
 
 '$lgt_dbg_trace' :-
-	retractall('$lgt_dbg_tracing_'),
-	assertz('$lgt_dbg_tracing_'),
-	retractall('$lgt_dbg_debugging_'),
-	assertz('$lgt_dbg_debugging_'),
-	write('Debugger is on: tracing everything for all objects compiled in debug mode.'), nl.
+	'$lgt_dbg_tracing_' ->
+		write('Debugger is on: tracing everything for all objects compiled in debug mode.'), nl
+		;
+		assertz('$lgt_dbg_tracing_'),
+		retractall('$lgt_dbg_debugging_'),
+		assertz('$lgt_dbg_debugging_'),
+		write('Debugger switched on: tracing everything for all objects compiled in debug mode.'), nl.
 
 
 '$lgt_dbg_notrace' :-
-	retractall('$lgt_dbg_tracing_'),
-	retractall('$lgt_dbg_debugging_'),
-	write('Debugger is off.'), nl.
+	'$lgt_dbg_tracing_' ->
+		retractall('$lgt_dbg_tracing_'),
+		retractall('$lgt_dbg_debugging_'),
+		write('Debugger switched off.'), nl
+		;
+		write('Debugger is off.'), nl.
 
 
 '$lgt_dbg_debugging' :-
 	('$lgt_dbg_debugging_' ->
-		write('Debugger is switched on: '),
+		write('Debugger is on: '),
 		('$lgt_dbg_tracing_' ->
 			write('tracing everything.'), nl
 			;
 			write('showing spy points.'), nl)
 		;
-		write('Debugger is switched off.'), nl), nl,
+		write('Debugger is off.'), nl), nl,
 	('$lgt_dbg_spying_'(_) ->
 		write('Defined predicate spy points (Functor/Arity):'), nl,
 		forall(
@@ -2056,7 +2077,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 		write('Defined context spy points (Sender, This, Self, Goal):'), nl,
 		forall(
 			'$lgt_dbg_spying_'(Sender, This, Self, Goal),
-			(write('    '), '$lgt_dbg_pretty_print_spy_point'(Sender, This, Self, Goal), nl))
+			(write('    '), '$lgt_dbg_pretty_print_spypoint'(Sender, This, Self, Goal), nl))
 		;
 		write('No context spy points are defined.'), nl), nl,
 	write('Leashed ports:'), nl, write('    '),
@@ -2069,7 +2090,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	nl.
 
 
-'$lgt_dbg_pretty_print_spy_point'(Sender, This, Self, Goal) :-
+'$lgt_dbg_pretty_print_spypoint'(Sender, This, Self, Goal) :-
 	(var(Sender) -> write('_, '); '$lgt_pretty_print_vars'(Sender), write(', ')),
 	(var(This) -> write('_, '); '$lgt_pretty_print_vars'(This), write(', ')),
 	(var(Self) -> write('_, '); '$lgt_pretty_print_vars'(Self), write(', ')),
