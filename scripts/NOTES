@@ -50,7 +50,8 @@ make_eclipselgt.sh
 make_eclipselgt.js
 	makes a Windows shortcut named "Logtalk - ECLiPSe" for running Logtalk 
 	with ECLiPSe 5.7 (if you are using a different version, you must edit 
-	the reference to the registry key in the script)
+	the reference to the registry key in the script; if you prefer to use
+	TkEclipse, open the %LOGTALKHOME%\bin\logtalkeclipse.pl file with it)
 
 make_gplgt.sh
 	makes a shell script named gplgt for running Logtalk with GNU Prolog
@@ -77,6 +78,8 @@ make_yaplgt.sh
 	makes a shell script named yaplgt for running Logtalk with YAP
 make_yaplgt.js
 	makes a Windows shortcut named "Logtalk - YAP" for running Logtalk with YAP
+	(assumes that the Yap folder is installed in C:\Program Files; edit the path 
+	to the yap.exe executable in the script if necessary)
 
 make_xsblgt.sh
 	makes a shell script named xsblgt for running Logtalk with XSB
