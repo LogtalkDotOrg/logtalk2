@@ -13,7 +13,9 @@ RELEASE NOTES
 2.17.0 - April ??, 2004
 
 	Added buil-in debugging support implemented through the definition of a 
-	new pseudo-object named "debugger". Added "debug" compiler option.
+	new pseudo-object named "debugger". Added "debug" compiler option. Renamed 
+	library entities "debuggerp" and "debugger" to, respectively, "event_dbgp" 
+	and "event_dbg".
 
 	Corrected bug in the definition of the pseudo-object "user" that resulted 
 	in mixed up metapredicate and type predicate properties.
