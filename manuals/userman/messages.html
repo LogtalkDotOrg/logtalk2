@@ -178,7 +178,10 @@ See the session on <a href="events.html">Event-driven programming</a> for more d
 <h2>Message sending performace<a name="performace"></a></h2>
 
 <p>
-When discussing Logtalk message sending performance, two distinct cases should be considered: messages sent by the user from the top-level interpreter and messages sent from compiled objects. In addition, the message declaration and definition lookups may, or may not be already cached by the runtime engine. In what follows, we will assume that the message lookups are already cached (the message lookups are automatically cached the first time the message is sent).
+Logtalk implements dynamic binding, coupled with a cache mechanism which avoids repeated lookups of predicate declarations and predicate definitions for the same messages. This is a solution common to other programming languages supporting dynamic binding. Message lookups are automatically cached the first time a message is sent. Cache entries are automatically removed when loading entities or using Logtalk dynamic features which invalidates the cached lookups.
+</p>
+<p>
+When discussing Logtalk message sending performance, two distinct cases should be considered: messages sent by the user from the top-level interpreter and messages sent from compiled objects. In addition, the message declaration and definition lookups may, or may not be already cached by the runtime engine. In what follows, we will assume that the message lookups are already cached.
 </p>
 <p>
 A message sent from a compiled object to another object takes six logical inferences:
@@ -188,15 +191,13 @@ A message sent from a compiled object to another object takes six logical infere
 	<li>event processing &mdash; 4 logical inferences (assuming that no events are defined)</li>
 	<li>method call &mdash; 1 logical inference</li>
 </ul>
-Messages to <em>self</em> and <em>super</em> calls are transparent for events and, as such, imply only two logical inferences. This compares with one logical inference when calling a predicate in plain Prolog and one or two logical inferences when calling a predicate encapsulated in a module.
 <p>
-When we write a goal such as:
+Given that events can be dynamically defined at runtime, there is no room for reducing the number of logical inferences without droping support for event-driven programming. When events are defined, the number of logical inferences grows proportional to the number of events and event handlers (monitors).
 </p>
-<pre>
-    | ?- object::message.
-</pre>
 <p>
-Logtalk needs to perform a runtime translation of the message sending in order to prove the goal. The overhead, for user-defined messages/predicates, corresponds to roughly twenty more logic inferences than that of the same message sent from a compiled object. The cost of these extra logical inferences translate to time spent depends on the used Prolog compiler. Considering the time taken for the user to type the goal, this overhead is of no consequence.
+Messages to <em>self</em> and <em>super</em> calls are transparent regarding events and, as such, imply only two logical inferences. This compares with one logical inference when calling a predicate in plain Prolog and one or two logical inferences when calling a predicate encapsulated in a module.
+<p>
+When a message is sent by the user from the top-level interpreter, Logtalk needs to perform a runtime translation of the message sending in order to prove the corresponding goal. The overhead, for user-defined messages/predicates, corresponds to roughly twenty more logic inferences than that of the same message when sent from a compiled object. Considering the time taken for the user to type the goal, this overhead is of no consequence.
 </p>
 <p>
 When a message is not cached, the number of logical inferences depends on the number of steps needed for the Logtalk runtime engine to lookup the corresponding predicate scope declaration (to check if the message is valid) and then to lookup a predicate definition for answering the message.
