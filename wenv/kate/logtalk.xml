@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd">
+<language name="Logtalk" version="1.0" kateversion="2.2" section="Sources" extensions="*.lgt" mimetype="text/x-logtalk">
+    <highlighting>
+        <list name="keywordl">
+
+            <item> category </item>
+            <item> object </item>
+            <item> protocol </item>
+            <item> end_category </item>
+            <item> end_object </item>
+            <item> end_protocol </item>
+
+            <item> extends </item>
+            <item> implements </item>
+            <item> imports </item>
+            <item> instantiates </item>
+            <item> specializes </item>
+ 
+            <item> public </item>
+            <item> protected </item>
+            <item> private </item>
+
+            <item> dynamic </item>
+            <item> static </item>
+
+            <item> parameter </item>
+            <item> this </item>
+            <item> self </item>
+            <item> sender </item>
+        </list>
+
+        <list name="keywordu">
+            <item> ABSTRACT </item>
+            <item> ALIGN </item>
+            <item> AS </item>
+            <item> AND </item>
+            <item> CLASS </item>
+            <item> CLAUSES </item>
+            <item> CONSTANTS </item>
+            <item> DATABASE </item>
+            <item> DETERM </item>
+            <item> DOMAINS </item>
+            <item> ELSEDEF </item>
+            <item> ENDCLASS </item>
+            <item> ENDDEF </item>
+            <item> ERRONEOUS </item>
+            <item> FACTS </item>
+            <item> FAILURE </item>
+            <item> GLOBAL </item>
+            <item> GOAL </item>
+            <item> IF </item>
+            <item> IFDEF </item>
+            <item> IFNDEF </item>
+            <item> IMPLEMENT </item>
+            <item> INCLUDE </item>
+            <item> LANGUAGE </item>
+            <item> MULTI </item>
+            <item> NOCOPY </item>
+            <item> NONDETERM </item>
+            <item> OBJECT </item>
+            <item> OR </item>
+            <item> PROCEDURE </item>
+            <item> PROTECTED </item>
+            <item> PREDICATES </item>
+            <item> REFERENCE </item>
+            <item> SINGLE </item>
+            <item> STATIC </item>
+            <item> STRUCT </item>
+            <item> THIS </item>
+        </list>
+
+
+        <list name="special">
+            <item> abolish </item>
+            <item> asserta </item>
+            <item> assertz </item>
+            <item> clause </item>
+            <item> retract </item>
+            <item> retractall </item>
+
+            <item> call </item>
+            <item> catch </item>
+            <item> fail </item>
+            <item> throw </item>
+            <item> true </item>
+
+            <item> current_predicate </item>
+            <item> predicate_property </item>
+
+            <item> before </item>
+            <item> after </item>
+
+            <item> phrase </item>
+
+            <item> bagof </item>
+            <item> findall </item>
+            <item> forall </item>
+            <item> setof </item>
+
+            <item> current_object </item>
+            <item> current_protocol </item>
+            <item> current_category </item>
+            <item> create_object </item>
+            <item> create_protocol </item>
+            <item> create_category </item>
+            <item> object_property </item>
+            <item> protocol_property </item>
+            <item> category_property </item>
+            <item> abolish_object </item>
+            <item> abolish_protocol </item>
+            <item> abolish_category </item>
+            <item> extends_object </item>
+            <item> extends_protocol </item>
+            <item> implements_protocol </item>
+            <item> instantiates_object </item>
+            <item> specializes_object </item>
+            <item> imports_category </item>
+            <item> abolish_events </item>
+            <item> current_event </item>
+            <item> define_events </item>
+            <item> current_logtalk_flag </item>
+            <item> set_logtalk_flag </item>
+            <item> logtalk_compile </item>
+            <item> logtalk_load </item>
+            <item> forall </item>
+            <item> logtalk_version </item>
+            <item> retractall </item>
+            
+            <!-- Term testing -->
+           <item> var </item>
+           <item> atom </item>
+           <item> integer </item>
+           <item> float </item>
+           <item> atomic </item>
+           <item> compound </item>
+           <item> nonvar </item>
+           <item> number </item>
+
+				<!-- Stream selection and control -->
+            <item> current_input </item>
+            <item> current_output </item>
+            <item> set_input </item>
+            <item> set_output </item>
+            <item> open </item>
+            <item> close </item>
+            <item> flush_output </item>
+            <item> stream_property </item>
+            <item> at_end_of_stream </item>
+            <item> set_stream_position </item>
+				<!-- Character input/output -->
+            <item> get_char </item>
+            <item> get_code </item>
+            <item> peek_char </item>
+            <item> peek_code </item>
+            <item> put_char </item>
+            <item> put_code </item>
+            <item> nl)</string>
+				<!-- Byte input/output -->
+            <item> get_byte </item>
+            <item> peek_byte </item>
+            <item> put_byte </item>
+				<!-- Term input/output -->
+            <item> read_term </item>
+            <item> read </item>
+            <item> write_term </item>
+            <item> write </item>
+            <item> writeq </item>
+            <item> write_canonical </item>
+            <item> op </item>
+            <item> current_op </item>
+            <item> char_conversion </item>
+            <item> current_char_conversion </item>
+				<!-- Atomic term processing -->
+            <item> atom_length </item>
+            <item> atom_concat </item>
+            <item> sub_atom </item>
+            <item> atom_chars </item>
+            <item> atom_codes </item>
+            <item> char_code </item>
+            <item> number_chars </item>
+            <item> number_codes </item>
+				<!-- Implementation defined hooks functions -->
+            <item> set_prolog_flag </item>
+            <item> current_prolog_flag </item>
+            <item> halt </item>
+        </list>
+
+        <list name="compiler">
+            <item> bgidriver </item>
+            <item> bgifont </item>
+            <item> check_determ </item>
+            <item> code </item>
+            <item> config </item>
+            <item> diagnostics </item>
+            <item> error </item>
+            <item> errorlevel </item>
+            <item> heap </item>
+            <item> gstacksize </item>
+            <item> nobreak </item>
+            <item> nowarnings </item>
+            <item> printermenu </item>
+            <item> project </item>
+        </list>
+
+        <list name="arith">
+            <item> mod </item>
+            <item> div </item>
+            <item> abs </item>
+            <item> exp </item>
+            <item> ln </item>
+            <item> log </item>
+            <item> sqrt </item>
+            <item> round </item>
+            <item> trunc </item>
+            <item> val </item>
+            <item> cos </item>
+            <item> sin </item>
+            <item> tan </item>
+            <item> arctan </item>
+        </list>
+
+        <list name="basetype">
+            <item> char </item>
+            <item> real </item>
+            <item> string </item>
+            <item> symbol </item>
+            <item> byte </item>
+            <item> sbyte </item>
+            <item> short </item>
+            <item> ushort </item>
+            <item> word </item>
+            <item> integer </item>
+            <item> unsigned </item>
+            <item> dword </item>
+            <item> long </item>
+            <item> ulong </item>
+            <item> binary </item>
+            <item> ref </item>
+        </list>
+
+        <list name="keywords">
+            <item> true </item>
+            <item> false </item>
+        </list>
+
+        <contexts>
+            <context name="normal" attribute="Symbol" lineEndContext="#stay">
+                <keyword attribute="Keyword" context="#stay"  String="keywordl"/>
+                <keyword attribute="Keyword" context="#stay"  String="keywordu"/>
+                <keyword attribute="Arithmetic" context="#stay"  String="arith"/>
+                <keyword attribute="Keyword" context="#stay"  String="compiler"/>
+                <keyword attribute="Keyword" context="#stay"  String="special"/>
+                <keyword attribute="Data Type" context="#stay"  String="basetype"/>
+                <RegExpr String = "[A-Z_][A-Za-z0-9_]*" attribute = "Variable" context="#stay"/>
+                <RegExpr String = "[a-z][A-Za-z0-9_]*" attribute = "Identifier" context="#stay"/>
+                <DetectChar attribute="Comment" context="comment" char="%"/>
+                <Detect2Chars attribute="Comment" context="comment region" char="/" char1="*"/>
+                <Int attribute="Integer" context="#stay" />
+                <DetectChar attribute="String" context="string" char="&quot;" />
+                <DetectChar attribute="String" context="string2" char="'" />
+                <AnyChar attribute="Symbol" context="#stay" String="~!^*()-+=[]|\:;,./?&amp;&lt;&gt;" />
+            </context>
+            <context name="comment" attribute="Comment" lineEndContext="#pop" />
+            <context name="string" attribute="String" lineEndContext="#stay" >
+                <DetectChar attribute="String" context="#pop" char="&quot;" />
+            </context>
+            <context name="string2" attribute="String" lineEndContext="#stay">
+                <DetectChar attribute="String" context="#pop" char="'" />
+            </context>
+            <context name="comment region" attribute="Comment" lineEndContext="#stay">
+                <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" />
+            </context>
+        </contexts>
+        <itemDatas>
+            <itemData name="Normal Text" defStyleNum="dsNormal" />
+            <itemData name="Keyword" defStyleNum="dsKeyword" />
+            <itemData name="Data Type" defStyleNum="dsDataType" />
+            <itemData name="Comment" defStyleNum="dsComment" />
+            <itemData name="Integer" defStyleNum="dsDecVal" />
+            <itemData name="Symbol" defStyleNum="dsNormal" />
+            <itemData name="String"  defStyleNum="dsString"/>
+            <itemData name="Identifier"  defStyleNum="dsNormal"/>
+            <itemData name="Variable"  defStyleNum="dsOthers"/>
+            <itemData name="Arithmetic" defStyleNum="dsKeyword" />
+
+        </itemDatas>
+    </highlighting>
+  <general>
+    <keywords casesensitive="1" />
+    <comments>
+      <comment name="singleLine" start="%" />
+      <comment name="multiLine" start="/*" end="*/" />
+    </comments>
+
+  </general>
+</language>
+
