@@ -4,8 +4,8 @@
 
 ;; Author: Paulo Moura
 ;; Creation date: November 15, 2003
-;; Last modification date: January 10, 2004
-;; Version: 0.41
+;; Last modification date: January 26, 2004
+;; Version: 0.5
 
 ;; Installation:
 ;;
@@ -29,7 +29,7 @@
 
 ;; setup 
 
-(defvar logtalk-mode-version "0.2"
+(defvar logtalk-mode-version "0.5"
 	"Logtalk mode version number")
 
 (defvar logtalk-mode-hook nil)
@@ -84,6 +84,9 @@
 
 (make-face 'logtalk-comment-face)
 (set-face-foreground 'logtalk-comment-face "forest green")
+
+(make-face 'logtalk-variable-face)
+(set-face-foreground 'logtalk-variable-face "dark slate grey")
 
 
 ;; set the font-lock-comment-face to the logtalk-comment-face
@@ -223,6 +226,12 @@
 	))
 
 
+(setq logtalk-font-lock-variables
+	'(
+		("\\<\\([_A-Z][a-zA-Z0-9_]*\\)" 1 'logtalk-variable-face)
+	))
+
+
 
 (setq logtalk-font-lock-keywords
 	(append
@@ -231,6 +240,7 @@
 		logtalk-font-lock-built-in-methods
 		logtalk-font-lock-built-in-predicates
 		logtalk-font-lock-operators
+		logtalk-font-lock-variables
 	))
 
 
