@@ -10,14 +10,17 @@
 	<true/>
 	<key>BBLMKeywordList</key>
 	<array>
-		<string></string>
+		<string>::</string>
+		<string>^^</string>
+		<string>{</string>
+		<string>}</string>
 	</array>
 	<key>BBLMLanguageCode</key>
 	<string>LGT2</string>
 	<key>BBLMLanguageDisplayName</key>
 	<string>Logtalk</string>
 	<key>BBLMScansFunctions</key>
-	<true/>
+	<false/>
 	<key>BBLMSuffixMap</key>
 	<array>
 		<dict>
@@ -58,7 +61,7 @@
 		<key>Escape Char in Strings 2</key>
 		<string></string>
 		<key>Identifier and Keyword Characters</key>
-		<string></string>
+		<string>:^{}</string>
 		<key>Open Block Comments</key>
 		<string>/*</string>
 		<key>Open Line Comments</key>
