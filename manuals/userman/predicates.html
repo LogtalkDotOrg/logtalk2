@@ -219,14 +219,22 @@ In the current Logtalk version, the omission of the <code>Object::</code> prefix
 <h3>Alias directive<a name="alias"></a></h3>
 
 <p>
-<a title="Consult reference manual" href="../refman/directives/alias3.html"><code>alias/3</code></a> directive:
+Logtalk allows the definition of an alternative name for a predicate through the use of the <a title="Consult reference manual" href="../refman/directives/alias3.html"><code>alias/3</code></a> directive:
 </p>
 <pre>
     :- alias(Entity, Predicate, Alias).
 </pre>
 <p>
+This directive can be used in objects, protocols, or categories. The first argument, <code>Entity</code>, must be an entity referenced in the opening directive of the entity contain the <code>alias/3</code> directive. It can be an implemented protocol, an imported category, an extended prototype, an instantiated class, or a specialized class. The second and third arguments are predicate indicators.
 </p>
-
+<p>
+A common use for this directive is to solve conflicts when two inherited predicates have the same functor and arity. We may want to call the predicate which is masked by the Logtalk lookup algorithm (see the <a href="inheritance.html">Inheritance</a> section) or we may need to call both predicates. This is simply accomplished by using the <code>alias/3</code> directive to give alternative names to masked or conflicting predicates. Consider the following example:
+</p>
+<pre>
+</pre>
+<p>
+Note that the <code>alias/3</code> directive never hides a predicate which is visible on the entity containing the directive as a result of the Logtalk lookup algorithm. However, it may be used to make visible a predicate which otherwise would be masked by another predicate, as illustrated in the above example.
+</p>
 
 <h3>Documenting directive<a name="info"></a></h3>
 
