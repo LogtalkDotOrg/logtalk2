@@ -15,6 +15,26 @@ h1, h2, h3, h4, h5, h6 {
 	color: teal;
 }
 
+a:link {
+	color: blue;
+	text-decoration: none
+}
+
+a:visited {
+	color: navy;
+	text-decoration: none
+}
+
+a:hover {
+	color: blue;
+	text-decoration: underline
+} 
+
+a:active {
+	color: red;
+	text-decoration: underline
+}
+
 .header {
 	background-color: #dfdfdf;
 	margin-left: 0em;
@@ -39,7 +59,7 @@ h1, h2, h3, h4, h5, h6 {
 	padding: 0em;
 }
 
-.entity, .predicate {
+.section {
 	background-color: #f3f3f3;
 	margin-left: 0em;
 	margin-top: 0.5em;
@@ -50,25 +70,28 @@ h1, h2, h3, h4, h5, h6 {
 	padding-right: 1em;
 }
 
-.predicate h3 {
+.section h3 {
 	margin-top: 0.5em;
 	padding: 0em;
 }
 
 .predicates {
-
 }
 
 .public {
-
 }
 
 .protected {
-
 }
 
 .private {
+}
 
+.examples {
+}
+
+.example {
+	padding: 0.25em;
 }
 
 .comment {
@@ -88,11 +111,11 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: bold;
 }
 
-.relations {
+dl.relations {
 	padding-left: 0em;
 }
 
-.properties {
+dl.properties {
 	padding-left: 0em;
 }
 
@@ -106,12 +129,12 @@ h1, h2, h3, h4, h5, h6 {
 	padding-left: 0em;
 }
 
-.parameters {
+ul.parameters {
 	list-style-type: none;
 	padding-left: 0em;
 }
 
-.arguments {
+ul.arguments {
 	list-style-type: none;
 	padding-left: 0em;
 	padding-top: 0.5em;
@@ -119,7 +142,7 @@ h1, h2, h3, h4, h5, h6 {
 	margin-bottom: 0em;
 }
 
-.examples {
+dl.examples {
 	list-style-type: none;
 	padding-left: 0em;
 	padding-top: 0.25em;
@@ -127,26 +150,6 @@ h1, h2, h3, h4, h5, h6 {
 	margin-bottom: 0em;
 }
 
-.examples .code {
+dl.examples .code {
 	color: maroon;
-}
-
-a:link {
-	color: blue;
-	text-decoration: none
-}
-
-a:visited {
-	color: navy;
-	text-decoration: none
-}
-
-a:hover {
-	color: blue;
-	text-decoration: underline
-} 
-
-a:active {
-	color: red;
-	text-decoration: underline
 }

@@ -50,13 +50,17 @@
 			</blockquote>
 		</div>
 		<div class="entity">
-			<xsl:apply-templates select="logtalk/entity" />
-			<xsl:apply-templates select="logtalk/relations" />
+			<div class="section">
+				<xsl:apply-templates select="logtalk/entity" />
+				<xsl:apply-templates select="logtalk/relations" />
+			</div>
 		</div>
 		<div class="predicates">
 			<xsl:apply-templates select="logtalk/predicates" />
 		</div>
-		<xsl:apply-templates select="logtalk/examples" />
+		<div class="examples">
+			<xsl:apply-templates select="logtalk/examples" />
+		</div>
 	</body>
 	</html>
 </xsl:template>
@@ -95,51 +99,39 @@
 <xsl:template match="logtalk/relations">
 	<xsl:choose>
 		<xsl:when test="*">
+		<dl class="relations">
 			<xsl:if test="implements">
-			<dl class="relations">
 			<dt class ="key">implements:</dt>
 				<xsl:apply-templates select="implements" />
-			</dl>
 			</xsl:if>
 			<xsl:if test="imports">
-			<dl class="relations">
 			<dt class ="key">imports:</dt>
 				<xsl:apply-templates select="imports" />
-			</dl>
 			</xsl:if>
 			<xsl:if test="extends">
-			<dl class="relations">
 			<dt class ="key">extends:</dt>
 				<xsl:apply-templates select="extends" />
-			</dl>
 			</xsl:if>
 			<xsl:if test="instantiates">
-			<dl class="relations">
 			<dt class ="key">instantiates:</dt>
 				<xsl:apply-templates select="instantiates" />
-			</dl>
 			</xsl:if>
 			<xsl:if test="specializes">
-			<dl class="relations">
 			<dt class ="key">specializes:</dt>
 				<xsl:apply-templates select="specializes" />
-			</dl>
 			</xsl:if>
 			<xsl:if test="uses">
-			<dl class="relations">
 			<dt class ="key">uses:</dt>
 				<xsl:apply-templates select="uses" />
-			</dl>
 			</xsl:if>
 			<xsl:if test="calls">
-			<dl class="relations">
 			<dt class ="key">calls:</dt>
 				<xsl:apply-templates select="calls" />
-			</dl>
 			</xsl:if>
+		</dl>
 		</xsl:when>
 		<xsl:otherwise>	
-			<h3 class="code">(no dependencies on other files)</h3>
+			<p class="comment">(no dependencies on other files)</p>
 		</xsl:otherwise>
 	</xsl:choose>
 </xsl:template>
@@ -168,13 +160,13 @@
 			<xsl:apply-templates select="public/predicate" />
 		</xsl:when>
 		<xsl:when test="/logtalk/relations/*">		
-			<div class="predicate">
-				<h3 class="code">(see related entities)</h3>
+			<div class="section">
+				<p class="comment">(see related entities)</p>
 			</div>
 		</xsl:when>
 		<xsl:otherwise>
-			<div class="predicate">
-				<h3 class="code">(none)</h3>
+			<div class="section">
+				<p class="comment">(none)</p>
 			</div>
 		</xsl:otherwise>
 	</xsl:choose>
@@ -186,13 +178,13 @@
 			<xsl:apply-templates select="protected/predicate" />
 		</xsl:when>
 		<xsl:when test="/logtalk/relations/*">		
-			<div class="predicate">
-				<h3 class="code">(see related entities)</h3>
+			<div class="section">
+				<p class="comment">(see related entities)</p>
 			</div>
 		</xsl:when>
 		<xsl:otherwise>
-			<div class="predicate">
-				<h3 class="code">(none)</h3>
+			<div class="section">
+				<p class="comment">(none)</p>
 			</div>
 		</xsl:otherwise>
 	</xsl:choose>
@@ -204,13 +196,13 @@
 			<xsl:apply-templates select="private/predicate" />
 		</xsl:when>
 		<xsl:when test="/logtalk/relations/*">		
-			<div class="predicate">
-				<h3 class="code">(see related entities)</h3>
+			<div class="section">
+				<p class="comment">(see related entities)</p>
 			</div>
 		</xsl:when>
 		<xsl:otherwise>
-			<div class="predicate">
-				<h3 class="code">(none)</h3>
+			<div class="section">
+				<p class="comment">(none)</p>
 			</div>
 		</xsl:otherwise>
 	</xsl:choose>
@@ -219,7 +211,7 @@
 
 
 <xsl:template match="*/predicate">
-	<div class="predicate">
+	<div class="section">
 	<h3 class="code"><xsl:value-of select="name" /></h3>
 	<blockquote>
 	<xsl:if test="comment">
@@ -279,24 +271,26 @@
 
 <xsl:template match="logtalk/examples">
 	<h2>Examples</h2>
-	<div class="predicate">
+	<div class="section">
 	<xsl:choose>
 		<xsl:when test="example">
 			<xsl:apply-templates select="example" />
 		</xsl:when>
 		<xsl:otherwise>
-			<h3 class="code">(none)</h3>
+			<p class="comment">(none)</p>
 		</xsl:otherwise>
 	</xsl:choose>
 	</div>
 </xsl:template>
 
 <xsl:template match="logtalk/examples/example">
-	<dl class="examples">
-		<dt class="comment"><xsl:value-of select="description" /></dt>
-			<dd class="code"><xsl:value-of select="call" /></dd>
-			<dd class="code"><xsl:value-of select="bindings" /></dd>
-	</dl>
+	<div class="example">
+		<dl class="examples">
+			<dt class="comment"><xsl:value-of select="description" /></dt>
+				<dd class="code"><xsl:value-of select="call" /></dd>
+				<dd class="code"><xsl:value-of select="bindings" /></dd>
+		</dl>
+	</div>
 </xsl:template>
 
 
