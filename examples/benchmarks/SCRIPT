@@ -73,3 +73,15 @@ Goal time: 0.43 seconds
 Average time per call: 3.79999999999999e-06 seconds
 Number of calls per second: 263157.894736843
 yes
+
+
+% create and abolish an elementary dynamic object:
+
+| ?- benchmark((create_object(xpto, [], [], []), abolish_object(xpto))).
+
+Number of repetitions: 100000
+Loop time: 0.039999999999992 seconds
+Goal time: 102.77 seconds
+Average time per call: 0.0010273 seconds
+Number of calls per second: 973.425484279178
+yes
