@@ -357,7 +357,7 @@ syn match	logtalkLineComment	"%.*"
 
 syn match       logtalkNumber           "\<[0-9]\+\>"
 syn match	logtalkNumber		"\<[0-9]\+\.[0-9]\+\>"
-syn match	logtalkNumber		"\<[0-9]\+\.[0-9]\+[eE][-+][1-9][0-9]*\>"
+syn match	logtalkNumber		"\<[0-9]\+\.[0-9]\+[eE][-+][0-9]+\>"
 syn match       logtalkNumber           "\<0'[0-9a-zA-Z]\>"
 syn match       logtalkNumber           "\<0b[0-1]\+\>"
 syn match       logtalkNumber           "\<0o[0-7]\+\>"
