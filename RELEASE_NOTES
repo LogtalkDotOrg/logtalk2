@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.15.5 - November ??, 2003
+2.15.5 - December ??, 2003
 
 	Make operator ^^/1 right-associative for consistency with remaining 
 	operator declarations.
@@ -24,6 +24,9 @@ RELEASE NOTES
     Updated the config file for ECLiPSe 5.4~5.7 with missing ISO Prolog 
     predicate definitions needed for successful compilation of all entities 
     in the Logtalk standard library.
+
+	Updated manual pages to comply with XHTML 1.0 Strict and to provide 
+	better navigation.
 
 
 2.15.4 - July 9, 2003
