@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	March 9, 2005
+" Last Change:	March 12, 2005
 
 
 " Quit when a syntax file was already loaded:
@@ -328,7 +328,7 @@ syn match	logtalkNumber		"\<0o[0-7]\+\>"
 syn match	logtalkNumber		"\<0x[0-9a-fA-F]\+\>"
 
 
-syn sync ccomment maxlines=50
+syn sync ccomment logtalkBlockComment maxlines=50
 
 
 " Define the default highlighting.

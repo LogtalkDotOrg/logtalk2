@@ -15,6 +15,9 @@ RELEASE NOTES
 	Corrected a bug on the "roots" example in the object "class" which failed 
 	to properly test the validity of new object identifiers.
 
+	Corrected a bug in the syntax coloring file for the Vim text editor, which
+	resulted in an error message the first time a Logtalk source file is open.
+
 
 2.23.1 - March 7, 2005
 
