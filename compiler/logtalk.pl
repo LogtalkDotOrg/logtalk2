@@ -7755,7 +7755,7 @@ current_logtalk_flag(version, version(2, 21, 2)).
 
 % '$lgt_write_xml_non_terminal'(+stream, +atom, +atom, +integer, +term)
 %
-% writes the documentation of a grammar rule non terminal
+% writes the documentation of a grammar rule non-terminal
 
 '$lgt_write_xml_non_terminal'(Stream, Functor, Args, Arity, Scope) :-
 	(('$lgt_pp_entity_comp_mode_'((dynamic)); '$lgt_pp_dynamic_'(Functor/Arity)) ->
