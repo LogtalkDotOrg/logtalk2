@@ -172,13 +172,15 @@ Eclipse 4.2.2~5.1, 5.2~5.3, 5.4
 	"iso" library and should be compatible with all versions from 4.2.2 to 
 	5.4.
 
-	Add the following call to the top of all the files in the "compiler" 
+	Add the following calls to the top of all the files in the "compiler" 
 	sub-directory:
 	
 		:- pragma(system).
+		:- pragma(nodebug).
 
-	This call disables debugging support for the Logtalk compiler/runtime 
-	Prolog code, improving performance.
+	These calls disables debugging support for the Logtalk compiler/runtime 
+	Prolog code, improving performance, and also mark the Logtalk predicates 
+	as built-ins.
 
 	Adopted from a config file written and tested with help of Taner Bilgic 
 	for Logtalk 1.x. Don't forget to use the cd/1 predicate to set the working 
