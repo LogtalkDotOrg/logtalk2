@@ -3141,6 +3141,17 @@ user0__def(Pred, _, _, _, Pred, user).
 	writeq(Functor/Arity), nl,
 	fail.
 
+'$lgt_tr_body'(Pred, TPred, Context) :-
+	'$lgt_pl_built_in'(Pred),
+	functor(Pred, Functor, Arity),
+	functor(Meta, Functor, Arity), 
+	'$lgt_pl_metapredicate'(Meta),
+	!,
+	Pred =.. [_| Args],
+	Meta =.. [_| MArgs],
+	'$lgt_tr_margs'(Args, MArgs, Context, TArgs),
+	TPred =.. [Functor| TArgs].
+
 '$lgt_tr_body'(Pred, '$lgt_call_built_in'(Pred, Context), Context) :-
 	'$lgt_built_in'(Pred),
 	!.
@@ -3166,6 +3177,25 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_append'(Args, [Sender, This, Self], Args2),
 	TCondition =.. [PPrefix|Args2],
 	assertz('$lgt_calls_pred_'(Functor/Arity)).
+
+
+
+% '$lgt_tr_margs'(@list, @list, +term, -list)
+%
+% translates the meta-arguments contained in the list of 
+% arguments of a metapredicate
+
+'$lgt_tr_margs'([], [], _, []).
+
+'$lgt_tr_margs'([Arg| Args], [MArg| MArgs], Context, [TArg| TArgs]) :-
+	'$lgt_tr_marg'(MArg, Arg, Context, TArg),
+	'$lgt_tr_margs'(Args, MArgs, Context, TArgs).
+
+
+'$lgt_tr_marg'(*, Arg, _, Arg).
+
+'$lgt_tr_marg'(::, Arg, Context, TArg) :-
+	'$lgt_tr_body'(Arg, TArg, Context).
 
 
 
