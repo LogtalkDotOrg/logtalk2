@@ -12,6 +12,7 @@ var WshUserEnv = WshShell.Environment("USER");
 
 if (!WshSysEnv.Item("LOGTALKHOME") && !WshUserEnv.Item("LOGTALKHOME")) {
 	WScript.Echo("The environment variable LOGTALKHOME must be defined first!");
+	usage_help();
 	WScript.Quit(1);
 }
 
