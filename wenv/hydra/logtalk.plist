@@ -29,41 +29,6 @@
 
 		<dict>
 			<key>Name</key>
-			<string>Numbers</string>
-			<key>Color</key>
-			<array>
-				<real>0.000</real>
-				<real>0.000</real>
-				<real>0.404</real>
-			</array>
-			<key>Multiline</key>
-			<false/>
-			<key>Plain Strings</key>
-			<array>
-				<string>[0-9]*\.*[0-9]+</string>
-			</array>
-		</dict>
-
-		<dict>
-			<key>Name</key>
-			<string>Quoted Atoms and Strings</string>
-			<key>Color</key>
-			<array>
-				<real>0.537</real>
-				<real>0.075</real>
-				<real>0.082</real>
-			</array>
-			<key>Multiline</key>
-			<false/>
-			<key>Regular Expressions</key>
-			<array>
-				<string>'(.+)'</string>
-				<string>"(.+)"</string>
-			</array>
-		</dict>
-
-		<dict>
-			<key>Name</key>
 			<string>Entity Directives</string>
 			<key>Color</key>
 			<array>
@@ -152,6 +117,10 @@
 				<string>(call)\(</string>
 				<string>(catch)\(</string>
 				<string>(throw)\(</string>
+				<string>(true)</string>
+				<string>(fail)</string>
+				<string>({)</string>
+				<string>(})</string>
 			</array>
 		</dict>
 
@@ -259,11 +228,60 @@
 				<string>(compound)\(</string>
 				<string>(nonvar)\(</string>
 				<string>(number)\(</string>
+				<!-- Term comparison -->
+				<string>[[:space:]]+(==)[[:space:]]+</string>
+				<string>[[:space:]]+(\\==)[[:space:]]+</string>
+				<string>[[:space:]]+(@=&lt;)[[:space:]]+</string>
+				<string>[[:space:]]+(@&lt;)[[:space:]]+</string>
+				<string>[[:space:]]+(@&gt;=)[[:space:]]+</string>
+				<string>[[:space:]]+(@&gt;)[[:space:]]+</string>
 				<!-- Term creation and decomposition -->
 				<string>(functor)\(</string>
 				<string>(arg)\(</string>
 				<string>[[:space:]]+(=\.\.)[[:space:]]+</string>
 				<string>(copy_term)\(</string>
+				<!-- Arithemtic evaluation -->
+				<string>[[:space:]]+(is)[[:space:]]+</string>
+				<!-- Arithemtic comparison -->
+				<string>[[:space:]]+(=:=)[[:space:]]+</string>
+				<string>[[:space:]]+(=\=)[[:space:]]+</string>
+				<string>[[:space:]]+(&lt;)[[:space:]]+</string>
+				<string>[[:space:]]+(=&lt;)[[:space:]]+</string>
+				<string>[[:space:]]+(&gt;)[[:space:]]+</string>
+				<string>[[:space:]]+(&gt;=)[[:space:]]+</string>
+				<!-- Evaluable functors -->
+				<string>[[:space:]]+(\+)[[:space:]]+</string>
+				<string>[[:space:]]+(\-)[[:space:]]+</string>
+				<string>[[:space:]]+(\*)[[:space:]]+</string>
+				<string>[[:space:]]+(//)[[:space:]]+</string>
+				<string>[[:space:]]+(/)[[:space:]]+</string>
+				<string>[[:space:]]+(rem)[[:space:]]+</string>
+				<string>[[:space:]]+(mod)[[:space:]]+</string>
+				<string>(rem)\(</string>
+				<string>(mod)\(</string>
+				<string>(abs)\(</string>
+				<string>(sign)\(</string>
+				<string>(float_integer_part)\(</string>
+				<string>(float_fractional_part)\(</string>
+				<string>(float)\(</string>
+				<string>(floor)\(</string>
+				<string>(truncate)\(</string>
+				<string>(round)\(</string>
+				<string>(ceiling)\(</string>
+				<!-- Other arithemtic functors -->
+				<string>[[:space:]]+(\*\*)[[:space:]]+</string>
+				<string>(sin)\(</string>
+				<string>(cos)\(</string>
+				<string>(atan)\(</string>
+				<string>(exp)\(</string>
+				<string>(log)\(</string>
+				<string>(sqrt)\(</string>
+				<!-- Bitwise functors -->
+				<string>[[:space:]]+(&gt;&gt;)[[:space:]]+</string>
+				<string>[[:space:]]+(&lt;&lt;)[[:space:]]+</string>
+				<string>[[:space:]]+(/\\)[[:space:]]+</string>
+				<string>[[:space:]]+(\\/)[[:space:]]+</string>
+				<string>[[:space:]]+(\\)[[:space:]]+</string>
 				<!-- Stream selection and control -->
 				<string>(current_input)\(</string>
 				<string>(current_output)\(</string>
@@ -315,6 +333,41 @@
 				<string>(set_prolog_flag)\(</string>
 				<string>(current_prolog_flag)\(</string>
 				<string>(halt)</string>
+			</array>
+		</dict>
+
+		<dict>
+			<key>Name</key>
+			<string>Numbers</string>
+			<key>Color</key>
+			<array>
+				<real>0.000</real>
+				<real>0.000</real>
+				<real>0.404</real>
+			</array>
+			<key>Multiline</key>
+			<false/>
+			<key>Plain Strings</key>
+			<array>
+				<string>[0-9]*\.*[0-9]+</string>
+			</array>
+		</dict>
+
+		<dict>
+			<key>Name</key>
+			<string>Quoted Atoms and Strings</string>
+			<key>Color</key>
+			<array>
+				<real>0.537</real>
+				<real>0.075</real>
+				<real>0.082</real>
+			</array>
+			<key>Multiline</key>
+			<false/>
+			<key>Regular Expressions</key>
+			<array>
+				<string>'(.+)'</string>
+				<string>"(.+)"</string>
 			</array>
 		</dict>
 
