@@ -35,3 +35,21 @@ compatibility with both the ISO Prolog standard and with most Prolog compilers.
 The code could be greatly simplified by using a multifile predicate directive 
 for the library path dynamic predicate. Unfortunately, not all Prolog compilers
 support multifile predicates.
+
+Some Prolog compilers which are expected to be compatible with the provided 
+"libpaths.pl" file as is, across operating systems:
+
+	* CIAO
+	* ECLiPSe
+	* GNU-Prolog
+	* K-Prolog
+	* Qu-Prolog
+	* SICStus Prolog
+	* SWI-Prolog
+	* YAP
+
+Some Prolog compilers which imply editing the provided "libpaths.pl" file:
+
+	* XSB (does not support expansion of environment variables on paths)
+
+Feedback on other Prolog compilers are most appreciated.
