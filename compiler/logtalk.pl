@@ -1900,7 +1900,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 				functor(Pred, Functor, Arity),
 				functor(GPred, Functor, Arity),
 				'$lgt_once'(Super, GPred, GSender, GThis, GSelf, Call, Ctn),
-				asserta('$lgt_super_lookup_cache_'(This, GPred, GPred, GSender, GThis, GSelf, Call)),
+				asserta('$lgt_super_lookup_cache_'(This, GPred, GSender, GThis, GSelf, Call)),
 				GPred = Pred, GSender = Sender, GThis = This, GSelf = Self,
 				(Ctn \= This ->
 					call(Call)
@@ -1983,21 +1983,15 @@ current_logtalk_flag(version, version(2, 18, 0)).
 '$lgt_po_user0_'('$lgt_po_user0__dcl', '$lgt_po_user0__def', _, _, _, _, _).
 
 '$lgt_po_user0__dcl'(Pred, p(p(p)), Type, no) :-
-	nonvar(Pred),
-	\+ '$lgt_built_in'(Pred),
-	functor(Pred, Functor, Arity),
-	current_predicate(Functor/Arity),
-	('$lgt_predicate_property'(Pred, (dynamic)) ->
-		Type = (dynamic)
+	(nonvar(Pred) ->
+		\+ '$lgt_built_in'(Pred),
+		functor(Pred, Functor, Arity),
+		current_predicate(Functor/Arity)
 		;
-		Type = static).
-
-'$lgt_po_user0__dcl'(Pred, p(p(p)), Type, no) :-
-	var(Pred),
-	current_predicate(Functor/Arity),
-	\+ '$lgt_hidden_functor'(Functor),
-	functor(Pred, Functor, Arity),
-	\+ '$lgt_built_in'(Pred),
+		current_predicate(Functor/Arity),
+		\+ '$lgt_hidden_functor'(Functor),
+		functor(Pred, Functor, Arity),
+		\+ '$lgt_built_in'(Pred)),
 	('$lgt_predicate_property'(Pred, (dynamic)) ->
 		Type = (dynamic)
 		;
@@ -2018,15 +2012,18 @@ current_logtalk_flag(version, version(2, 18, 0)).
 % and those used in the compiled code of objects, protocols, and categories
 
 '$lgt_hidden_functor'(Functor) :-
-	atom_concat('$lgt_', _, Functor).
+	atom_concat('$lgt_', _, Functor),
+	!.
 
 '$lgt_hidden_functor'(Functor) :-
 	'$lgt_current_category_'(_, Prefix, _),
-	atom_concat(Prefix, _, Functor).
+	atom_concat(Prefix, _, Functor),
+	!.
 
 '$lgt_hidden_functor'(Functor) :-
 	'$lgt_current_object_'(_, Prefix, _, _, _, _),
-	atom_concat(Prefix, _, Functor).
+	atom_concat(Prefix, _, Functor),
+	!.
 
 '$lgt_hidden_functor'(Functor) :-
 	'$lgt_current_protocol_'(_, Prefix, _),
@@ -2318,7 +2315,8 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 '$lgt_dbg_spying'(_, Goal, _, '+') :-
 	functor(Goal, Functor, Arity),
-	\+ \+ '$lgt_dbg_spying_'(Functor/Arity).
+	\+ \+ '$lgt_dbg_spying_'(Functor/Arity),
+	!.
 	
 '$lgt_dbg_spying'(_, Goal, Ctx, '*') :-
 	'$lgt_context'(Ctx, Sender, This, Self, _, _),
@@ -2734,12 +2732,14 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 '$lgt_needs_recompilation'(Entity) :-
 	'$lgt_file_name'(prolog, Entity, File),
-	\+ '$lgt_file_exists'(File).
+	\+ '$lgt_file_exists'(File),
+	!.
 
 '$lgt_needs_recompilation'(Entity) :-
 	'$lgt_file_name'(xml, Entity, File),
 	'$lgt_compiler_option'(xml, on),
-	\+ '$lgt_file_exists'(File).
+	\+ '$lgt_file_exists'(File),
+	!.
 
 '$lgt_needs_recompilation'(Entity) :-
 	'$lgt_file_name'(logtalk, Entity, Source),
@@ -3176,7 +3176,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 '$lgt_tr_directive'(Dir) :-
 	functor(Dir, Functor, Arity),
-	'$lgt_lgt_directive'(Functor/Arity),
+	'$lgt_lgt_directive'(Functor, Arity),
 	Dir =.. [Functor| Args],
 	catch(
 		'$lgt_tr_directive'(Functor, Args),
@@ -6205,7 +6205,8 @@ current_logtalk_flag(version, version(2, 18, 0)).
 % checks if the argument is either a Prolog or Logtalk built-in predicate
 
 '$lgt_built_in'(Pred) :-
-	'$lgt_pl_built_in'(Pred).
+	'$lgt_pl_built_in'(Pred),
+	!.
 
 '$lgt_built_in'(Pred) :-
 	'$lgt_lgt_built_in'(Pred).
@@ -6218,7 +6219,8 @@ current_logtalk_flag(version, version(2, 18, 0)).
 % that we have defined in the correspondent config file
 
 '$lgt_pl_built_in'(Pred) :-
-	'$lgt_predicate_property'(Pred, built_in).
+	'$lgt_predicate_property'(Pred, built_in),
+	!.
 
 '$lgt_pl_built_in'(Pred) :-
 	'$lgt_iso_predicate'(Pred).
@@ -6256,78 +6258,77 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 % Logtalk directives
 %
-% '$lgt_lgt_directive'(+atom/+integer)
+% '$lgt_lgt_directive'(+atom, +integer)
 
-'$lgt_lgt_directive'(Directive) :-
-	'$lgt_lgt_opening_directive'(Directive).
+'$lgt_lgt_directive'(Functor, Arity) :-
+	'$lgt_lgt_opening_directive'(Functor, Arity),
+	!.
 
-'$lgt_lgt_directive'(Directive) :-
-	'$lgt_lgt_closing_directive'(Directive).
+'$lgt_lgt_directive'(Functor, Arity) :-
+	'$lgt_lgt_closing_directive'(Functor, Arity),
+	!.
 
-'$lgt_lgt_directive'(Directive) :-
-	'$lgt_lgt_entity_directive'(Directive).
+'$lgt_lgt_directive'(Functor, Arity) :-
+	'$lgt_lgt_entity_directive'(Functor, Arity),
+	!.
 
-'$lgt_lgt_directive'(Directive) :-
-	'$lgt_lgt_predicate_directive'(Directive).
-
-
-'$lgt_lgt_opening_directive'(object/1).
-'$lgt_lgt_opening_directive'(object/2).
-'$lgt_lgt_opening_directive'(object/3).
-'$lgt_lgt_opening_directive'(object/4).
-'$lgt_lgt_opening_directive'(object/5).
-
-'$lgt_lgt_opening_directive'(category/1).
-'$lgt_lgt_opening_directive'(category/2).
-
-'$lgt_lgt_opening_directive'(protocol/1).
-'$lgt_lgt_opening_directive'(protocol/2).
+'$lgt_lgt_directive'(Functor, Arity) :-
+	'$lgt_lgt_predicate_directive'(Functor, Arity).
 
 
+'$lgt_lgt_opening_directive'(object, N) :-
+	N >= 1, N =< 5.
 
-'$lgt_lgt_closing_directive'(end_object/0).
+'$lgt_lgt_opening_directive'(category, N) :-
+	N =:= 1; N =:= 2.
 
-'$lgt_lgt_closing_directive'(end_category/0).
-
-'$lgt_lgt_closing_directive'(end_protocol/0).
-
+'$lgt_lgt_opening_directive'(protocol, N) :-
+	N =:= 1; N =:= 2.
 
 
-'$lgt_lgt_entity_directive'(calls/N) :-
+'$lgt_lgt_closing_directive'(end_object, 0).
+
+'$lgt_lgt_closing_directive'(end_category, 0).
+
+'$lgt_lgt_closing_directive'(end_protocol, 0).
+
+
+
+'$lgt_lgt_entity_directive'(calls, N) :-
 	N >= 1.
-'$lgt_lgt_entity_directive'(uses/N) :-
+'$lgt_lgt_entity_directive'(uses, N) :-
 	N >= 1.
 
-'$lgt_lgt_entity_directive'((initialization)/1).
+'$lgt_lgt_entity_directive'((initialization), 1).
 
-'$lgt_lgt_entity_directive'((dynamic)/N) :-
+'$lgt_lgt_entity_directive'((dynamic), N) :-
 	N =:= 0.
 
-'$lgt_lgt_entity_directive'(op/3).
+'$lgt_lgt_entity_directive'(op, 3).
 
-'$lgt_lgt_entity_directive'(info/1).
+'$lgt_lgt_entity_directive'(info, 1).
 
 
 
-'$lgt_lgt_predicate_directive'((dynamic)/N) :-
+'$lgt_lgt_predicate_directive'((dynamic), N) :-
 	N >= 1.
 
-'$lgt_lgt_predicate_directive'(metapredicate/N) :-
+'$lgt_lgt_predicate_directive'(metapredicate, N) :-
 	N >= 1.
 
-'$lgt_lgt_predicate_directive'((discontiguous)/N) :-
+'$lgt_lgt_predicate_directive'((discontiguous), N) :-
 	N >= 1.
 
-'$lgt_lgt_predicate_directive'((public)/N) :-
+'$lgt_lgt_predicate_directive'((public), N) :-
 	N >= 1.
-'$lgt_lgt_predicate_directive'(protected/N) :-
+'$lgt_lgt_predicate_directive'(protected, N) :-
 	N >= 1.
-'$lgt_lgt_predicate_directive'(private/N) :-
+'$lgt_lgt_predicate_directive'(private, N) :-
 	N >= 1.
 
-'$lgt_lgt_predicate_directive'((mode)/2).
+'$lgt_lgt_predicate_directive'((mode), 2).
 
-'$lgt_lgt_predicate_directive'(info/2).
+'$lgt_lgt_predicate_directive'(info, 2).
 
 
 
