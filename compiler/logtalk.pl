@@ -7150,7 +7150,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 % writes the directives
 
 '$lgt_write_directives'(Stream) :-
-	retract('$lgt_pp_directive_'(encoding(Encoding))),
+	'$lgt_pp_directive_'(encoding(Encoding)),
 	'$lgt_compiler_flag'(supports_encoding_dir, true),
 	write_canonical(Stream, (:- encoding(Encoding))),
 	write(Stream, '.'),
@@ -7159,6 +7159,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 '$lgt_write_directives'(Stream) :-
 	'$lgt_pp_directive_'(Dir),
+	Dir \= encoding(_),
 	write_canonical(Stream, (:- Dir)),
 	write(Stream, '.'),
 	nl(Stream),
