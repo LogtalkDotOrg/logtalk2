@@ -24,9 +24,9 @@ RELEASE NOTES
 	version.
 
 	Updated the lgtpdfa4.xsl and lgtpdfus.xsl XSLT files for compatibility 
-	with the Apache FOP 0.20.4 processor and the XSL 1.0 standard. Updated 
-	the pdf.bat and pdf.sh scripts to reference the latest version of the 
-	Apache FOP processor (0.20.4).
+	with the XSL:FO processors Apache FOP 0.20.4 and PassiveTeX and with the 
+	XSL 1.0 standard. Updated the pdf.bat and pdf.sh scripts to reference the 
+	latest version of the Apache FOP processor (0.20.4).
 
 	Corrected a compatibility problem of the html.sh script with some shells.
 
