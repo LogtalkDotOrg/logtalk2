@@ -145,7 +145,7 @@
 		;; control constructs:
 		;;
 		("\\(ca\\(?:ll\\|tch\\)\\|throw\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("\\(fail\\|true\\)" . 'logtalk-built-in-predicate-face)
+		("\\(fail\\|true\\|!\\)" . 'logtalk-built-in-predicate-face)
 		;;
 		;; logic and control:
 		;;
