@@ -98,8 +98,8 @@
 
 (setq logtalk-font-lock-strings
 	'(
-		("\\(\"\\([^\n\"]\\|\\\\\"\\)*\"\\)" . 'logtalk-string-face)
-		("\\(^\\|[^0-9]\\)\\('\\([^\n']\\|\\\\'\\)*'\\)" . 'logtalk-string-face)
+		("\\(\"\\([^\n\"]\\|\\\\\"\\)*\"\\)" 1 'logtalk-string-face)
+		("\\(^\\|[^0-9]\\)\\('\\([^\n']\\|\\\\'\\)*'\\)" 2 'logtalk-string-face)
 	))
 
 
