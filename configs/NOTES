@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.9.3
+Release 2.9.4
 
 Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -48,7 +48,7 @@ ALS Prolog 3.1
 	set the working directory before loading an example.
 
 
-Amzi! Prolog 4.103, 5.0, 6.1.21
+Amzi! Prolog 4.103, 5.0, 6.1.68
 
 	amzi.config
 
@@ -65,7 +65,7 @@ Amzi! Prolog 4.103, 5.0, 6.1.21
 
 	amzi6.config
 
-	For Amzi! Prolog 6.1.21 beta release. The compiler definition of the 
+	For Amzi! Prolog 6.1.68 beta release. The compiler definition of the 
 	compare/3 built-in predicate returns the atom == instead of = for 
 	identical terms (contrary to every other Prolog compiler!). You need to 
 	search the library files for all calls of the compare/3 predicate and 
@@ -175,7 +175,7 @@ GNU Prolog 1.1.2 (and later versions)
 	can generate a new Prolog top level that includes the Logtalk config file
 	and pre-processor plus the runtime by doing something like:
 
-	% cd lgt292
+	% cd lgt294
 	% cp configs/gnu.config configs/gnu.pl
 	% gplc -o logtalk configs/gnu.pl compiler/logtalk.pl
 	% mv logtalk /usr/local/bin/
@@ -301,8 +301,8 @@ QU-Prolog 4.3
 
 	Not tested but no problems are expected.
 	The predicates lgt_current_date/3 and lgt_current_time/3 have dummy 
-	definitions. For most users, this will be no problem (some examples may 
-	use lgt_current_date/3 only to put a time stamp in new objects).
+	definitions. For most users, this will be no problem (some examples 
+	may use lgt_current_date/3 to put a time stamp in new objects).
 
 
 Quintus Prolog 3.3
@@ -316,7 +316,7 @@ Quintus Prolog 3.3
 	an example.
 
 
-SICStus Prolog 3.5~3.8.x
+SICStus Prolog 3.5~3.9.x
 
 	sicstus35.config
 	
@@ -331,8 +331,8 @@ SICStus Prolog 3.5~3.8.x
 
 	sicstus38.config
 	
-	For version 3.8.x. The config file sets the flag language to iso, but that
-	is only recomended and should not be needed to run Logtalk.
+	For versions 3.8.x and 3.9.x. The config file sets the flag language to 
+	iso, but that is only recomended and should not be needed to run Logtalk.
 	No problems expected although not fully tested. Don't forget to use the 
 	working_directory/2 predicate to set the working directory before loading 
 	an example.
@@ -348,9 +348,9 @@ SWI Prolog 3.2.9 & 3.3.x and later versions
 
 	For version 3.3.x and later releases
 
-	No problems expected. Please report any other problem found (with a 
-	solution if possible). Don't forget to use the cd/1 predicate to set 
-	the working directory before loading an example.
+	No problems expected. Please report any problem found (with a solution 
+	if possible). Don't forget to use the cd/1 predicate to set the working 
+	directory before loading an example.
 
 
 Trinc-Prolog R3
@@ -363,7 +363,7 @@ Trinc-Prolog R3
 	support is needed from TP regarding predicate properties.
 
 
-XSB Prolog 2.3
+XSB Prolog 2.3~5
 
 	xsb.config
 
