@@ -100,7 +100,8 @@ Logtalk installation directory) to be defined. In addition, the shell scripts
 accept as an optional argument a prefix for the location of a link to the 
 scripts (default is /usr/local, creating the links in /usr/local/bin). Please 
 note that the environment variable LOGTALKHOME must be defined in order to run 
-the *lgt scripts that are created by the shell scripts above.
+the *lgt scripts that are created by the shell scripts above or the Windows 
+shortcuts (see the INSTALL file for details on setting the variable).
 
 Note: when Logtalk is manually installed from sources, the shell scripts might 
 not have the executable permission bit set. In that case it will be necessary 
