@@ -6,7 +6,7 @@
 	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
-		date is 2004/5/10,
+		date is 2004/6/5,
 		comment is 'Operating system interface for SWI-Prolog.']).
 
 
@@ -42,23 +42,26 @@
 		{absolute_file_name(File, Full)}.
 
 
-	decompose_file_name(File, Directory, Base, Extension) :-
-		{file_directory_name(File, Directory),
-		 file_base_name(File, Name),
-		 file_name_extension(Base, Extension, Name)}.
+	file_base_name(File, Base) :-
+		{file_base_name(File, Name),
+		 file_name_extension(Base, _, Name)}.
+
+
+	file_name_extension(File, Extension) :-
+		{file_base_name(File, Name),
+		 file_name_extension(_, Extension, Name)}.
+
+
+	file_name_directory(File, Directory) :-
+		{file_directory_name(File, Directory)}.
 
 
 	file_exists(File) :-
 		{exists_file(File)}.
 
 
-	file_modtime(File, Time) :-
+	file_modification_time(File, Time) :-
 		{time_file(File, Time)}.
-
-
-	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
-		{time_file(File, Time),
-		 convert_time(Time, Year, Month, Day, Hours, Mins, Secs)}.
 
 
 	file_size(File, Size) :-
@@ -85,21 +88,25 @@
 		{read_link(File, _, Target)}.
 
 
-	getenv(Variable, Value) :-
+	environment_variable(Variable, Value) :-
 		{getenv(Variable, Value)}.
 
 
-	setenv(Variable, Value) :-
+	set_environment_variable(Variable, Value) :-
 		{setenv(Variable, Value)}.
 
 
-	date_time(Year, Month, Day, Hours, Mins, Secs) :-
+	time_stamp(Time) :-
+		{get_time(Time)}.
+
+
+	date_time(Year, Month, Day, Hours, Mins, Secs, Milisecs) :-
 		{get_time(Time),
-		 convert_time(Time, Year, Month, Day, Hours, Mins, Secs, _)}.
+		 convert_time(Time, Year, Month, Day, Hours, Mins, Secs, Milisecs)}.
 
 
-	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
-		{convert_time(Time, Year, Month, Day, Hours, Mins, Secs)}.
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs, Milisecs) :-
+		{convert_time(Time, Year, Month, Day, Hours, Mins, Secs, Milisecs)}.
 
 
 	cpu_time(Time) :-

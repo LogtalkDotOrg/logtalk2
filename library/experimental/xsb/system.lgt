@@ -10,7 +10,7 @@
 	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
-		date is 2004/5/10,
+		date is 2004/6/5,
 		comment is 'Operating system interface for XSB.']).
 
 
@@ -47,10 +47,16 @@
 		{path_sysop(expand, File, Full)}.
 
 
-	decompose_file_name(File, Directory, Base, Extension) :-
-		{path_sysop(dirname, File, Directory),
-		 path_sysop(basename, File, Base),
-		 path_sysop(extension, File, Extension)}.
+	file_base_name(File, Base) :-
+		{path_sysop(basename, File, Base)}.
+
+
+	file_name_extension(File, Extension) :-
+		{path_sysop(extension, File, Extension)}.
+
+
+	file_name_directory(File, Directory) :-
+		{path_sysop(dirname, File, Directory)}.
 
 
 	file_exists(File) :-
@@ -58,13 +64,9 @@
 		 path_sysop(exists, File)}.
 
 
-	file_modtime(File, Time) :-
+	file_modification_time(File, Time) :-
 		{path_sysop(modtime, File, [High, Low]),
 		 Time is Low + High * 2 ** 24}.
-
-
-	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
-		{fail}.
 
 
 	file_size(File, Size) :-
@@ -93,15 +95,15 @@
 		{fail}.
 
 
-	getenv(Variable, Value) :-
+	environment_variable(Variable, Value) :-
 		{fail}.
 
 
-	setenv(Variable, Value) :-
+	set_environment_variable(Variable, Value) :-
 		{fail}.
 
 
-	date_time(Year, Month, Day, Hours, Mins, Secs) :-
+	date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
 		{datime(datime(Year, Month, Day, Hours, Mins, Secs))}.
 
 

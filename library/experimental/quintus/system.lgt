@@ -11,7 +11,7 @@
 	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
-		date is 2004/5/10,
+		date is 2004/6/5,
 		comment is 'Operating system interface for Quintus Prolog.']).
 
 
@@ -47,20 +47,12 @@
 		{absolute_file_name(File, Full)}.
 
 
-	decompose_file_name(File, Directory, Base, Extension) :-
-		{fail}.
-
-
 	file_exists(File) :-
 		{file_exists(File)}.
 
 
-	file_modtime(File, Time) :-
+	file_modification_time(File, Time) :-
 		{fail}.
-
-
-	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
-		{file_property(File, modify_time, date(Year, Month, Day, Hours, Mins, Secs))}.
 
 
 	file_size(File, Size) :-
@@ -83,19 +75,19 @@
 		{rename_file(Old, New)}.
 
 
-	getenv(Variable, Value) :-
+	environment_variable(Variable, Value) :-
 		{fail}.
 
 
-	setenv(Variable, Value) :-
+	set_environment_variable(Variable, Value) :-
 		{fail}.
 
 
-	date_time(Year, Month, Day, Hours, Mins, Secs) :-
+	date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
 		{date(date(Day, Month, Year)), time(time(Hours, Mins, Secs))}.
 
 
-	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs, Milisecs) :-
 		{fail}.
 
 

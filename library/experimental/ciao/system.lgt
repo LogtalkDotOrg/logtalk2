@@ -10,7 +10,7 @@
 	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
-		date is 2004/5/10,
+		date is 2004/6/5,
 		comment is 'Operating system interface for CIAO.']).
 
 
@@ -46,24 +46,28 @@
 		{absolute_file_name(File, Full)}.
 
 
-	decompose_file_name(File, Directory, Base, Extension) :-
+	file_base_name(File, Base) :-
+		{no_path_file_name_(File, Name),
+		 file_name_extension(Name, Base, _)}.
+
+
+	file_name_extension(File, Extension) :-
+		{no_path_file_name_(File, Name),
+		 file_name_extension(Name, _, Extension)}.
+
+
+	file_name_directory(File, Directory) :-
 		{no_path_file_name_(File, Name),
 		 absolute_file_name(File, Full),
-		 atom_concat(Directory, Name, Full),
-		 file_name_extension(Name, Base, Extension)}.
+		 atom_concat(Directory, Name, Full)}.
 
 
 	file_exists(File) :-
 		{file_exists(File)}.
 
 
-	file_modtime(File, Time) :-
+	file_modification_time(File, Time) :-
 		{modif_time(File, Time)}.
-
-
-	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
-		{modif_time(File, Time),
-		 datime(Time, Year, Month, Day, Hours, Mins, Secs, _, _)}.
 
 
 	file_size(File, Size) :-
@@ -90,21 +94,21 @@
 		{file_property(File, linkto(Target))}.
 
 
-	getenv(Variable, Value) :-
+	environment_variable(Variable, Value) :-
 		{getenvstr(Variable, Codes),
 		 atom_codes(Value, Codes)}.
 
 
-	setenv(Variable, Value) :-
+	set_environment_variable(Variable, Value) :-
 		{atom_codes(Value, Codes),
 		 setenvstr(Variable, Codes)}.
 
 
-	date_time(Year, Month, Day, Hours, Mins, Secs) :-
+	date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
 		{datime(datime(Year, Month, Day, Hours, Mins, Secs))}.
 
 
-	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs, Milisecs) :-
 		{datime(Time, Year, Month, Day, Hours, Mins, Secs, _, _)}.
 
 

@@ -9,7 +9,7 @@
 	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
-		date is 2004/5/10,
+		date is 2004/6/5,
 		comment is 'Operating system interface for YAP.']).
 
 
@@ -45,20 +45,12 @@
 		{absolute_file_name(File, Full)}.
 
 
-	decompose_file_name(File, Directory, Base, Extension) :-
-		{fail}.
-
-
 	file_exists(File) :-
 		{file_exists(File)}.
 
 
-	file_modtime(File, Time) :-
+	file_modification_time(File, Time) :-
 		{file_property(File, mod_time(Time))}.
-
-
-	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
-		{fail}.
 
 
 	file_size(File, Size) :-
@@ -85,16 +77,20 @@
 		{fail}.
 
 
-	getenv(Variable, Value) :-
+	environment_variable(Variable, Value) :-
 		{environ(Variable, Value)}.
 
 
-	setenv(Variable, Value) :-
+	set_environment_variable(Variable, Value) :-
 		{putenv(Variable, Value)}.
 
 
-	date_time(Year, Month, Day, Hours, Mins, Secs) :-
+	date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
 		{datime(datime(Year, Month, Day, Hours, Mins, Secs))}.
+
+
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs, Milisecs) :-
+		{fail}.
 
 
 	cpu_time(Time) :-

@@ -6,7 +6,7 @@
 	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
-		date is 2004/5/10,
+		date is 2004/6/5,
 		comment is 'Operating system interface for ALS Prolog.']).
 
 
@@ -42,22 +42,27 @@
 		{fail}.
 
 
-	decompose_file_name(File, Directory, Base, Extension) :-
-		{path_directory_tail(File, Directory, Name),
-		 file_extension(Name, Base, Extension)}.
+	file_base_name(File, Base) :-
+		{path_directory_tail(File, _, Name),
+		 file_extension(Name, Base, _)}.
+
+
+	file_name_extension(File, Extension) :-
+		{path_directory_tail(File, _, Name),
+		 file_extension(Name, _, Extension)}.
+
+
+	file_name_directory(File, Directory) :-
+		{path_directory_tail(File, Directory, _)}.
 
 
 	file_exists(File) :-
 		{exists_file(File)}.
 
 
-	file_modtime(File, Time) :-
+	file_modification_time(File, Time) :-
 		{file_status(File, Status),
 		 dmember(mod_time=Time, Status)}.
-
-
-	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
-		{fail}.
 
 
 	file_size(File, Size) :-
@@ -88,19 +93,19 @@
 		{fail}.
 
 
-	getenv(Variable, Value) :-
+	environment_variable(Variable, Value) :-
 		{getenv(Variable, Value)}.
 
 
-	setenv(Variable, Value) :-
+	set_environment_variable(Variable, Value) :-
 		{fail}.
 
 
-	date_time(Year, Month, Day, Hours, Mins, Secs) :-
+	date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
 		{datetime(Year/Month/Day, Hours:Mins:Secs)}.
 
 
-	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs, Milisecs) :-
 		{fail}.
 
 

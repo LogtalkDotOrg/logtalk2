@@ -6,7 +6,7 @@
 	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
-		date is 2004/5/10,
+		date is 2004/6/5,
 		comment is 'Operating system interface for Qu-Prolog.']).
 
 
@@ -42,19 +42,11 @@
 		{fail}.
 
 
-	decompose_file_name(File, Directory, Base, Extension) :-
-		{fail}.
-
-
 	file_exists(File) :-
 		{access(File, 0, 0)}.
 
 
-	file_modtime(File, Time) :-
-		{fail}.
-
-
-	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
+	file_modification_time(File, Time) :-
 		{fail}.
 
 
@@ -88,19 +80,19 @@
 		{fail}.
 
 
-	getenv(Variable, Value) :-
+	environment_variable(Variable, Value) :-
 		{fail}.
 
 
-	setenv(Variable, Value) :-
+	set_environment_variable(Variable, Value) :-
 		{fail}.
 
 
-	date_time(Year, Month, Day, Hours, Mins, Secs) :-
+	date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
 		{realtime(RT), localtime(RT, LT), LT = local_time(Year, Month, Day, Hours, Mins, Secs)}.
 
 
-	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs, _) :-
 		{localtime(Time, LT), LT = local_time(Year, Month, Day, Hours, Mins, Secs)}.
 
 

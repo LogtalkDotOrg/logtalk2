@@ -9,7 +9,7 @@
 	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
-		date is 2004/5/10,
+		date is 2004/6/5,
 		comment is 'Operating system interface for ECLiPSe.']).
 
 
@@ -49,23 +49,24 @@
           canonical_path_name(ExtRel, Abs)}.
 
 
-	decompose_file_name(File, Directory, Base, Extension) :-
-		{pathname(File, Directory, Base, Extension)}.
+	file_base_name(File, Base) :-
+		{pathname(File, _, Base, _)}.
+
+
+	file_name_extension(File, Extension) :-
+		{pathname(File, _, _, Extension)}.
+
+
+	file_name_directory(File, Directory) :-
+		{pathname(File, Directory, _, _)}.
 
 
 	file_exists(File) :-
 		{exists(File)}.
 
 
-	file_modtime(File, Time) :-
+	file_modification_time(File, Time) :-
 		{get_file_info(File, mtime, Time)}.
-
-
-	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
-		{get_file_info(File, mtime, Time),
-		 unix_to_mjd(Time, MJD),
-		 mjd_to_date(MJD, Day/Month/Year),
-		 mjd_to_time(MJD, Hours:Mins:Secs)}.
 
 
 	file_size(File, Size) :-
@@ -96,21 +97,21 @@
 		{fail}.
 
 
-	getenv(Variable, Value) :-
+	environment_variable(Variable, Value) :-
 		{getenv(Variable, Value)}.
 
 
-	setenv(Variable, Value) :-
+	set_environment_variable(Variable, Value) :-
 		{fail}.
 
 
-	date_time(Year, Month, Day, Hours, Mins, Secs) :-
+	date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
 		{mjd_now(MJD),
 		 mjd_to_date(MJD, Day/Month/Year),
 		 mjd_to_time(MJD, Hours:Mins:Secs)}.
 
 
-	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs, _) :-
 		{unix_to_mjd(Time, MJD),
 		 mjd_to_date(MJD, Day/Month/Year),
 		 mjd_to_time(MJD, Hours:Mins:Secs)}.

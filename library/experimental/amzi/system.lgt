@@ -9,7 +9,7 @@
 	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
-		date is 2004/5/10,
+		date is 2004/6/5,
 		comment is 'Operating system interface for Amzi! Prolog.']).
 
 
@@ -45,20 +45,12 @@
 		{fail}.
 
 
-	decompose_file_name(File, Directory, Base, Extension) :-
-		{fail}.
-
-
 	file_exists(File) :-
 		{file_exists(File)}.
 
 
-	file_modtime(File, Time) :-
+	file_modification_time(File, Time) :-
 		{stat(File, _, _, Time, _, _, _, _, _)}.
-
-
-	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
-		{fail}.
 
 
 	file_size(File, Size) :-
@@ -81,15 +73,19 @@
 		{fail}.
 
 
-	getenv(Variable, Value) :-
+	environment_variable(Variable, Value) :-
 		{get_env_var(Variable, Value)}.
 
 
-	date_time(Year, Month, Day, Hours, Mins, Secs) :-
+	set_environment_variable(Variable, Value) :-
+		{fail}.
+
+
+	date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
 		{date(Year, Month, Day), time(Hours, Mins, Secs)}.
 
 
-	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs, Milisecs) :-
 		{fail}.
 
 
