@@ -39,28 +39,24 @@ var fso = new ActiveXObject("Scripting.FileSystemObject");
 if (!fso.FolderExists(logtalk_home + "\\bin")) 
 	fso.CreateFolder(logtalk_home + "\\bin"));
 
-var f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkeclipse.pl", true);
+var f = fso.CreateTextFile(logtalk_home + "\\bin\\lgtceclipse.pl", true);
 
 f.WriteLine(":- pragma(system).");
 f.WriteLine(":- pragma(nodebug).");
 f.WriteLine(":- ensure_loaded(library(toplevel)).");
-f.WriteLine(":- include('" + logtalk_home + "\\compiler\\logtalk.pl').");
 f.Close();
 
-f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkeclipse.rc", true);
+WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\lgtceclipse.pl", true);
 
-f.WriteLine(":- consult('" + logtalk_home + "\\configs\\eclipseiso.config').");
-f.WriteLine(":- consult('" + logtalk_home + "\\bin\\logtalkeclipse.pl').");
-f.Close();
+f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkeclipse.pl", true);
 
-f = fso.CreateTextFile(logtalk_home + "\\bin\\swilgt.bat", true).
-
-f.WriteLine("plcon -f " + logtalk_home + "\\bin\\logtalkswi.rc");
+f.WriteLine(":- consult('" + logtalk_home + "\\\\configs\\\\eclipseiso.config').");
+f.WriteLine(":- consult('" + logtalk_home + "\\\\bin\\\\lgtceclipse.pl').");
 f.Close();
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 var link = WshShell.CreateShortcut(ProgramsPath + "\\eclipselgt.lnk");
-link.Arguments = "-b "+ logtalk_home + "\\bin\\logtalkeclipse.rc";
+link.Arguments = "-b "+ logtalk_home + "\\bin\\logtalkeclipse.pl";
 link.Description = "Logtalk & ECLiPSe";
 link.IconLocation = "app.exe,1";
 link.TargetPath = WshShell.RegRead("HKEY_LOCAL_MACHINE\\Software\\SWI\\Prolog\\") + "\\bin\\eclipse.exe";
