@@ -16,6 +16,5 @@ folders:
 
 	~/Library/Application Support/TextMate/Bundles/
 	/Library/Application Support/TextMate/Bundles/
-	/Network/Library/Application Support/TextMate/Bundles/
 
 (create the chosen folder if it does not exist).
