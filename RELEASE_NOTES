@@ -30,6 +30,9 @@ RELEASE NOTES
 	Added Windows JScript script for copying the Logtalk examples, library, and 
 	xml directories to the user directory.
 
+	Added Windows JScript scripts for easy integration of Logtalk with ECLiPSe, 
+	SWI-Prolog, and SICStus Prolog.
+
 	Added missing extension for source metafiles to the SWI-Prolog hook file.
 	
 	Corrected a bug in the lgtxhtml.xsl XSLT file where a wrong reference to 
