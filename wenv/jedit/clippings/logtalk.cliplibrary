@@ -1,0 +1,14 @@
+@title=Logtalk
+
+object=:- object(|).\n \n	:- info([\n		authors is '',\n		date is yy/mm/dd,\n		comment is '']).\n \n:- end_object.\n
+
+protocol=:- protocol(|).\n \n:- end_protocol.\n
+
+category=:- category(|).\n \n:- end_category.\n
+
+prototype=:- object(|,\n	extends()).\n:- end_object.
+
+subclass=:- object(|,\n	specializes()).\n:- end_object.
+
+instance=:- object(|,\n	instantiates()).\n:- end_object.
+
