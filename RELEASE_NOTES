@@ -12,13 +12,19 @@ RELEASE NOTES
 
 2.17.2 - June ??, 2004
 
+	Some improvements to the documentation, including the QUICK_START file and 
+	the User Manual for first-time users.
+
 	Corrected a bug in handling of local object operators that are also global 
 	operators.
 
 	Corrected a bug where dynamic directives are not being generated for dynamic 
 	predicates that lack a scope directive or an initial set of clauses.
 
-	Added new "logic" example.
+	Simplfied compilation of dynamic and discontiguous predicate directives.
+
+	Added new "logic" example implementing a translator from logic propositions 
+	to conjunctive normal form.
 
 
 2.17.1 - June 7, 2004
