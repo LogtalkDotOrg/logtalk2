@@ -6,14 +6,13 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-This directory contains a zip archive containing the Logtalk.mode 
-bundle that provide syntax highlighting for editing Logtalk source 
-files with the SubEthaEdit 2.x text editor 
-(http://www.codingmonkeys.de/subethaedit/).
+This directory contains the Logtalk.mode bundle that provides syntax 
+highlighting for editing Logtalk source files with the SubEthaEdit 2.x 
+text editor (http://www.codingmonkeys.de/subethaedit/).
 
 
-To install unzip the archive and copy the bundle "Logtalk.mode" to 
-one of the following folders:
+To install copy the bundle "Logtalk.mode" to one of the following 
+folders:
 
 	~/Library/Application Support/SubEthaEdit/Modes/
 	/Library/Application Support/SubEthaEdit/Modes/
