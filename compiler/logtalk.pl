@@ -8511,25 +8511,39 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_xml_encoding'(Encoding),
 	'$lgt_xml_header_text'('1.0', Encoding, no, Text),
 	'$lgt_write_xml_open_tag'(Stream, Text, []),
-	write(Stream, '<!DOCTYPE logtalk SYSTEM "logtalk.'),
-	write(Stream, XMLSpec), write(Stream, '">'), nl(Stream),
+	(XMLSpec = dtd ->
+		write(Stream, '<!DOCTYPE logtalk SYSTEM "logtalk.dtd'), nl(Stream)
+		;
+		true),
 	'$lgt_compiler_flag'(xsl, XSL),
 	write(Stream, '<?xml-stylesheet type="text/xsl" href="'),
 	write(Stream, XSL),
 	write(Stream, '"?>'), nl(Stream),
-	'$lgt_write_xml_open_tag'(Stream, logtalk, []).
+	(XMLSpec = dtd ->
+		'$lgt_write_xml_open_tag'(Stream, logtalk, [])
+		;
+		'$lgt_write_xml_open_tag'(Stream, logtalk,
+			['xmlns:xsi'-'http://www.w3.org/2001/XMLSchema-instance',
+			 'xsi:noNamespaceSchemaLocation'-'logtalk.xsd'])).
 
 '$lgt_write_xml_header'(web, XMLSpec, Stream) :-
 	'$lgt_xml_encoding'(Encoding),
 	'$lgt_xml_header_text'('1.0', Encoding, no, Text),
 	'$lgt_write_xml_open_tag'(Stream, Text, []),
-	write(Stream, '<!DOCTYPE logtalk SYSTEM "http://www.logtalk.org/xml/1.3/logtalk.'),
-	write(Stream, XMLSpec), write(Stream, '">'), nl(Stream),
+	(XMLSpec = dtd ->
+		write(Stream, '<!DOCTYPE logtalk SYSTEM "http://www.logtalk.org/xml/1.3/logtalk.dtd'), nl(Stream)
+		;
+		true),
 	'$lgt_compiler_flag'(xsl, XSL),
 	write(Stream, '<?xml-stylesheet type="text/xsl" href="'),
 	write(Stream, XSL),
 	write(Stream, '"?>'), nl(Stream),
-	'$lgt_write_xml_open_tag'(Stream, logtalk, []).
+	(XMLSpec = dtd ->
+		'$lgt_write_xml_open_tag'(Stream, logtalk, [])
+		;
+		'$lgt_write_xml_open_tag'(Stream, logtalk,
+			['xmlns:xsi'-'http://www.w3.org/2001/XMLSchema-instance',
+			 'xsi:noNamespaceSchemaLocation'-'http://www.logtalk.org/xml/1.3/logtalk.xsd'])).
 
 '$lgt_write_xml_header'(standalone, _, Stream) :-
 	'$lgt_xml_encoding'(Encoding),

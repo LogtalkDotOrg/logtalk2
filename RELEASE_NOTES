@@ -40,6 +40,10 @@ RELEASE NOTES
 	Corrected a bug in the method leash/1 of the built-in pseudo-object 
 	"debugger", which failed to accept an empty list as a valid argument.
 
+	Corrected a bug in the header of the generated XML documenting files when 
+	using the XML Schema specification (logtalk.xsd), which could prevented 
+	validation with the compiler flag "doctype" set to "web".
+
 	Corrected a bug on the "roots" example in the object "class" which failed 
 	to properly test the validity of new object identifiers.
 
