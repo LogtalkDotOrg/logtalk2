@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.22.6
+Release 2.23.0
 
 Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.22.6 - February 21, 2005
+2.23.0 - February 21, 2005
 
 	Optimized the code generated for local calls to the built-in predicates 
 	asserta/1, assertz/1, retract/1, and retractall/1, when the argument is 
