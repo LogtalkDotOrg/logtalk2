@@ -290,6 +290,7 @@ Qu-Prolog 6.5
 
 		% cd $LOGTALKHOME
 		% find . -name "*.lgt" -exec perl -pi -e "s/version is (\d)\.(\d)/version is '\1\.\2'/" {} \;
+		% find . -name "*.mlgt" -exec perl -pi -e "s/version is (\d)\.(\d)/version is '\1\.\2'/" {} \;
 
 	Not that the above patch will not enable some examples that use floats to 
 	run.
@@ -355,7 +356,7 @@ SWI Prolog 3.3.x and all later versions
 
 	swi.config
 
-	For version 3.3.x and all later versions (5.2.3 or later recommended)
+	For version 3.3.x and all later versions (5.4.x or later recommended)
 
 	No problems expected. Please report any problem found (with a solution 
 	if possible). Don't forget to use the cd/1 predicate to set the working 
@@ -372,7 +373,7 @@ SWI Prolog 3.3.x and all later versions
 		:- ['drive:\\path to logtalk installation\\configs\\swi.config'].
 		:- ['drive:\\path to logtalk installation\\compiler\\logtalk.pl'].
 
-	 or to your .plrc (on MacOS X, Unix, and similar systems):
+	 or to your .plrc (on MacOS X, Linux, Unix, and similar systems):
 	
 		:- ['$LOGTALKHOME/configs/swi.config'].
 		:- ['$LOGTALKHOME/compiler/logtalk.pl'].

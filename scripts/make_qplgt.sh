@@ -25,6 +25,7 @@ else
 		mkdir bin
 	fi
 	find . -name "*.lgt" -exec perl -pi -e "s/version is (\d)\.(\d)/version is '\1\.\2'/" {} \;
+	find . -name "*.mlgt" -exec perl -pi -e "s/version is (\d)\.(\d)/version is '\1\.\2'/" {} \;
 	cd configs
 	cp qu.config qu.ql
 	echo "fcompile('qu.ql', [assemble_only(true)]), load(qu). \

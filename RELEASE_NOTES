@@ -26,6 +26,9 @@ RELEASE NOTES
 	Updated the benchmarks example to calculate and subtract the benchmark loop 
 	time in order to print absolute timings for the benchmarked goals.
 
+	Updated the Qu-Prolog patching instructions to also convert Logtalk source 
+	metafiles.
+
 	Fixed a typo on the XSB compatibility notes in the configs/NOTES file.
 
 
