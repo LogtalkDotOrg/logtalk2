@@ -40,22 +40,28 @@ shell script that may be called by the end-users for making these copies).
 ENVIRONMENT VARIABLES
 
 It is recommended that you define an environment variable named LOGTALKHOME 
-pointing to the Logtalk installation for use with your Prolog compilers.
+pointing to the Logtalk installation directory for use with your Prolog 
+compilers. In addition, you may want to add the Logtalk sub-directory "xml",
+which contains useful scripts for processing XML documenting files, to your 
+execution path.
 
 * Unix and Unix-like systems:
 
 If you use a csh shell, add the following line to your ~/.cshrc file:
 
-	setenv LOGTALKHOME "/your/installation/directory/lgt2192"
+	setenv LOGTALKHOME /your/installation/directory/lgt2192
+	setenv PATH $PATH:$LOGTALKHOME/xml
 
 If you use a bash shell, add the following lines to your ~/.profile file:
 
-	LOGTALKHOME="/your/installation/directory/lgt2192"
+	LOGTALKHOME=/your/installation/directory/lgt2192
 	export LOGTALKHOME
+	PATH=$PATH:$LOGTALKHOME/xml
+	export PATH
 
 When using the provided shell script for installing Logtalk, a symbolic link 
 to the Logtalk installation directory is automatically created. The link is 
-named "logtalk". In this case, use this symbolic link to define the 
+named "logtalk". In this case, you may use this symbolic link to define the 
 environment variable in order to avoid breaking it when upgrading Logtalk.
 
 * Windows systems:
@@ -64,6 +70,7 @@ In Windows 95/98/ME, environment variables are defined in the autoexec.bat
 file (you will need to reboot after editing the file):
 
 	SET LOGTALKHOME=C:\your\installation\folder\
+	SET PATH=%PATH%;%LOGTALKHOME%\xml\
 
 In Windows NT/2000/XP, environment variables are defined using the System 
 properties control panel (if you are a system administrator, you may define 
