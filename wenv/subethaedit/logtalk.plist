@@ -376,6 +376,7 @@
 				<string>0b[0-1]+</string>
 				<string>0o[0-8]+</string>
 				<string>0x[0-9a-fA-F]+</string>
+				<string>0'[0-9a-zA-Z]</string>
 			</array>
 		</dict>
 
@@ -394,23 +395,6 @@
 			<array>
 				<string>'(.+)'</string>
 				<string>"(.+)"</string>
-			</array>
-		</dict>
-
-		<dict>
-			<key>Name</key>
-			<string>Character Code Constants</string>
-			<key>Color</key>
-			<array>
-				<real>0.000</real>
-				<real>0.000</real>
-				<real>0.404</real>
-			</array>
-			<key>Multiline</key>
-			<false/>
-			<key>Regular Expressions</key>
-			<array>
-				<string>(0'[[:alnum:]])</string>
 			</array>
 		</dict>
 
