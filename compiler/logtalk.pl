@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.22.3
+%  Release 2.22.4
 %
 %  Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 %
@@ -1156,7 +1156,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 22, 3)).
+current_logtalk_flag(version, version(2, 22, 4)).
 
 
 
@@ -4492,18 +4492,19 @@ current_logtalk_flag(version, version(2, 22, 3)).
 % inline methods (translated to a single unification with the corresponding context argument)
 
 '$lgt_tr_body'(sender(Sender), true, '$lgt_dbg_goal'(sender(Temp), Sender=Temp, Ctx), Ctx) :-
-	'$lgt_sender'(Ctx, Sender),
-	!.
+	!,
+	'$lgt_sender'(Ctx, Sender).
 
 '$lgt_tr_body'(this(This), true, '$lgt_dbg_goal'(this(Temp), This=Temp, Ctx), Ctx) :-
-	'$lgt_this'(Ctx, This),
-	!.
+	!,
+	'$lgt_this'(Ctx, This).
 
 '$lgt_tr_body'(self(Self), true, '$lgt_dbg_goal'(self(Temp), Self=Temp, Ctx), Ctx) :-
-	'$lgt_self'(Ctx, Self),
-	!.
+	!,
+	'$lgt_self'(Ctx, Self).
 
 '$lgt_tr_body'(parameter(Arg, Value), TPred, '$lgt_dbg_goal'(parameter(Arg, Temp), DPred, Ctx), Ctx) :-
+	!,
 	'$lgt_this'(Ctx, This),
 	(var(This) ->
 		TPred = arg(Arg, This, Value),	% when using parameter/2 in categories
@@ -4511,8 +4512,7 @@ current_logtalk_flag(version, version(2, 22, 3)).
 		;
 		arg(Arg, This, Value),
 		TPred = true,
-		DPred = (Temp=Value)),
-	!.
+		DPred = (Temp=Value)).
 
 
 % term input predicates that need to be operator aware
