@@ -3619,7 +3619,10 @@ current_logtalk_flag(version, version(2, 22, 2)).
 		throw(type_error(object_identifier, Obj)).
 
 '$lgt_tr_directive'(end_object, []) :-
-	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _).
+	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _) ->
+		true
+		;
+		throw(closing_directive_mismatch).
 
 
 '$lgt_tr_directive'(protocol, [Ptc| Rels]) :-
@@ -3631,7 +3634,10 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 
 '$lgt_tr_directive'(end_protocol, []) :-
-	'$lgt_pp_protocol_'(_, _, _, _).
+	'$lgt_pp_protocol_'(_, _, _, _) ->
+		true
+		;
+		throw(closing_directive_mismatch).
 
 
 '$lgt_tr_directive'(category, [Ctg| Rels]) :-
@@ -3643,7 +3649,10 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 
 '$lgt_tr_directive'(end_category, []) :-
-	'$lgt_pp_category_'(_, _, _, _, _).
+	'$lgt_pp_category_'(_, _, _, _, _) ->
+		true
+		;
+		throw(closing_directive_mismatch).
 
 
 % dynamic entity directive
@@ -7097,9 +7106,8 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 
 
-% utility predicates used during compilation of Logtalk 
-% entities to store and access context information which
-% is represented by a compound term
+% utility predicates used during compilation of Logtalk entities to store 
+% and access context information which is represented by a compound term
 
 '$lgt_context'(context(_, _, _, _, _)).
 
