@@ -29,6 +29,10 @@ RELEASE NOTES
 	Updated the Logtalk shell installation script to create the $prefix/bin 
 	directory if it does not exist.
 
+	The lgt2pdf.sh and lgt2html.sh shell scripts now use "rm -f" when removing 
+	the DTD and XSD files in order to avoid prompting the the user about the file 
+	permisions.
+
 
 2.21.2 - October 18, 2004
 
