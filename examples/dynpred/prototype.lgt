@@ -2,23 +2,23 @@
 :- object(prototype).
 
 
-	:- public(public_assert/0).
-	:- public(protected_assert/0).
-	:- public(private_assert/0).
+	:- public(object_assert/0).
+	:- public(self_assert/0).
+	:- public(this_assert/0).
 
 	:- public(dynamic_predicates/0).
 
 
-	public_assert :-
+	object_assert :-
 		self(Self),
 		Self::assertz(public_predicate).
 
 
-	protected_assert :-
+	self_assert :-
 		::assertz(protected_predicate).
 
 
-	private_assert :-
+	this_assert :-
 		assertz(private_predicate).
 
 
