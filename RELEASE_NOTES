@@ -20,8 +20,8 @@ RELEASE NOTES
 
 	Corrected a bug in the built-in methods asserta/1 and assertz/1 when 
 	asserting facts with the debug flag on, which resulted in wrong 
-	execution context information when debugging calls to the asserted 
-	facts.
+	execution context information being printed when debugging calls to 
+	the asserted facts.
 
 
 2.22.2 - December 24, 2004
