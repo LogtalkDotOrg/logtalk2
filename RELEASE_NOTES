@@ -10,6 +10,11 @@ RELEASE NOTES
 =============
 
 
+2.21.5 - October ??, 2004
+
+	Fixed a typo on the configs/NOTES file on the XSB compatibility notes.
+
+
 2.21.4 - October 26, 2004
 
 	Corrected a silly bug in the definition of the predicate repeat/1 on the 
