@@ -535,7 +535,7 @@ abolish_protocol(Ptc) :-
 
 
 
-% implements_protocol(?term, ?atom)
+% implements_protocol(?term, ?protocol_identifier)
 
 implements_protocol(Entity, Ptc) :-
 	catch(
@@ -545,61 +545,64 @@ implements_protocol(Entity, Ptc) :-
 
 
 
-% implements_protocol(?term, ?atom, ?atom)
+% implements_protocol(?object_identifier, ?protocol_identifier, ?atom)
+% implements_protocol(?category_identifier, ?protocol_identifier, ?atom)
 
-implements_protocol(Entity, Ptc, Scope) :-
-	nonvar(Entity),
-	\+ callable(Entity),
-	throw(error(type_error(object_identifier, Entity), implements_protocol(Entity, Ptc, Scope))).
+implements_protocol(ObjOrCtg, Ptc, Scope) :-
+	nonvar(ObjOrCtg),
+	\+ callable(ObjOrCtg),
+	throw(error(type_error(object_identifier, ObjOrCtg), implements_protocol(ObjOrCtg, Ptc, Scope))).
 
-implements_protocol(Entity, Ptc, Scope) :-
+implements_protocol(ObjOrCtg, Ptc, Scope) :-
 	nonvar(Ptc),
 	\+ atom(Ptc),
-	throw(error(type_error(protocol_identifier, Ptc), implements_protocol(Entity, Ptc, Scope))).
+	throw(error(type_error(protocol_identifier, Ptc), implements_protocol(ObjOrCtg, Ptc, Scope))).
 
-implements_protocol(Entity, Ptc, Scope) :-
+implements_protocol(ObjOrCtg, Ptc, Scope) :-
 	nonvar(Scope),
 	\+ '$lgt_member'(Scope, [(public), protected, private]),
-	throw(error(type_error(scope, Scope), implements_protocol(Entity, Ptc, Scope))).
+	throw(error(type_error(scope, Scope), implements_protocol(ObjOrCtg, Ptc, Scope))).
 
-implements_protocol(Entity, Ptc, Scope) :-
-	'$lgt_implements_protocol_'(Entity, Ptc, Scope).
+implements_protocol(ObjOrCtg, Ptc, Scope) :-
+	'$lgt_implements_protocol_'(ObjOrCtg, Ptc, Scope).
 
 
 
-% imports_category(?term, ?term)
+% imports_category(?object_identifier, ?category_identifier)
+% imports_category(?category_identifier, ?category_identifier)
 
-imports_category(Obj, Ctg) :-
+imports_category(ObjOrCtg, Ctg) :-
 	catch(
-		imports_category(Obj, Ctg, _),
+		imports_category(ObjOrCtg, Ctg, _),
 		error(Error, _),
-		throw(error(Error, imports_category(Obj, Ctg)))).
+		throw(error(Error, imports_category(ObjOrCtg, Ctg)))).
 
 
 
-% imports_category(?term, ?term, ?atom)
+% imports_category(?object_identifier, ?category_identifier, ?atom)
+% imports_category(?category_identifier, ?category_identifier, ?atom)
 
-imports_category(Obj, Ctg, Scope) :-
-	nonvar(Obj),
-	\+ callable(Obj),
-	throw(error(type_error(object_identifier, Obj), imports_category(Obj, Ctg, Scope))).
+imports_category(ObjOrCtg, Ctg, Scope) :-
+	nonvar(ObjOrCtg),
+	\+ callable(ObjOrCtg),
+	throw(error(type_error(object_identifier, ObjOrCtg), imports_category(ObjOrCtg, Ctg, Scope))).
 
-imports_category(Obj, Ctg, Scope) :-
+imports_category(ObjOrCtg, Ctg, Scope) :-
 	nonvar(Ctg),
 	\+ atom(Ctg),
-	throw(error(type_error(category_identifier, Ctg), imports_category(Obj, Ctg, Scope))).
+	throw(error(type_error(category_identifier, Ctg), imports_category(ObjOrCtg, Ctg, Scope))).
 
-imports_category(Obj, Ctg, Scope) :-
+imports_category(ObjOrCtg, Ctg, Scope) :-
 	nonvar(Scope),
 	\+ '$lgt_member'(Scope, [(public), protected, private]),
-	throw(error(type_error(scope, Scope), imports_category(Obj, Ctg, Scope))).
+	throw(error(type_error(scope, Scope), imports_category(ObjOrCtg, Ctg, Scope))).
 
-imports_category(Obj, Ctg, Scope) :-
-	'$lgt_imports_category_'(Obj, Ctg, Scope).
+imports_category(ObjOrCtg, Ctg, Scope) :-
+	'$lgt_imports_category_'(ObjOrCtg, Ctg, Scope).
 
 
 
-% instantiates_class(?term, ?term)
+% instantiates_class(?object_identifier, ?object_identifier)
 
 instantiates_class(Obj, Class) :-
 	catch(
@@ -609,7 +612,7 @@ instantiates_class(Obj, Class) :-
 
 
 
-% instantiates_class(?term, ?term, ?atom)
+% instantiates_class(?object_identifier, ?object_identifier, ?atom)
 
 instantiates_class(Obj, Class, Scope) :-
 	nonvar(Obj),
@@ -631,7 +634,7 @@ instantiates_class(Obj, Class, Scope) :-
 
 
 
-% specializes_class(?term, ?term)
+% specializes_class(?object_identifier, ?object_identifier)
 
 specializes_class(Class, Superclass) :-
 	catch(
@@ -641,7 +644,7 @@ specializes_class(Class, Superclass) :-
 
 
 
-% specializes_class(?term, ?term, ?atom)
+% specializes_class(?object_identifier, ?object_identifier, ?atom)
 
 specializes_class(Class, Superclass, Scope) :-
 	nonvar(Class),
@@ -663,7 +666,7 @@ specializes_class(Class, Superclass, Scope) :-
 
 
 
-% extends_protocol(?atom, ?atom)
+% extends_protocol(?protocol_identifier, ?protocol_identifier)
 
 extends_protocol(Ptc1, Ptc2) :-
 	catch(
@@ -673,7 +676,7 @@ extends_protocol(Ptc1, Ptc2) :-
 
 
 
-% extends_protocol(?atom, ?atom, ?atom)
+% extends_protocol(?protocol_identifier, ?protocol_identifier, ?atom)
 
 extends_protocol(Ptc1, Ptc2, Scope) :-
 	nonvar(Ptc1),
@@ -695,7 +698,7 @@ extends_protocol(Ptc1, Ptc2, Scope) :-
 
 
 
-% extends_object(?term, ?term)
+% extends_object(?object_identifier, ?object_identifier)
 
 extends_object(Prototype, Parent) :-
 	catch(
@@ -705,7 +708,7 @@ extends_object(Prototype, Parent) :-
 
 
 
-% extends_object(?term, ?term, ?atom)
+% extends_object(?object_identifier, ?object_identifier, ?atom)
 
 extends_object(Prototype, Parent, Scope) :-
 	nonvar(Prototype),
