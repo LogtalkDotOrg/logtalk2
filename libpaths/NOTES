@@ -1,0 +1,23 @@
+=================================================================
+Logtalk - Object oriented extension to Prolog
+Release 2.22.0
+
+Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
+=================================================================
+
+This folder contains a Prolog file, "libpaths.pl", which defines the 
+library paths for the Logtalk standard library and for all the supplied examples.
+
+In order to easily compile and load library and example source files 
+using the notation <library>(<entity>), you need to copy one the 
+library paths template files to a file named "libpaths.pl", edit it 
+to reflect your Logtalk installation, and then compile and load it. 
+If you have installed Logtalk in a system-wide location, then copy 
+the file "libpaths_site_template.pl". If you have make a copy of the 
+Logtalk standard library and examples to your home directory using 
+the "misc/cplgtdirs.*" shell scripts, then a copy the template file 
+"libpaths_user_template.pl" named "libpaths.pl" is already in your 
+Logtalk home folder (~/logtalk). Load the "libpaths.pl" into your 
+Prolog compiler after loading the Logtalk compiler/runtime. Note 
+that a few Prolog compilers do not support the <library>(<entity>) 
+notation. See the "configs/NOTES" file for details.
