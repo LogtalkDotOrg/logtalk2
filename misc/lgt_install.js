@@ -51,9 +51,8 @@ var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk")) 
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
-var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Web Site.lnk");
+var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Web Site.url");
 
-link.Description = "Go to Logtalk Web Site";
 link.TargetPath = "http://www.logtalk.org/";
 link.Save();
 
