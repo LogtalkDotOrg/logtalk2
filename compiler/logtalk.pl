@@ -2645,7 +2645,7 @@ current_logtalk_flag(version, version(2, 19, 0)).
 '$lgt_copy_metafile_term'(_, Term, _, _, _, _) :-
 	Term =.. [(:-), Directive],
 	'$lgt_closing_entity_directive'(Directive, Type),
-	throw(missing_opening_directive(Type)).
+	throw(entity_opening_directive_missing(Type)).
 
 '$lgt_copy_metafile_term'(Input, Term, CacheAcc, Cache, EntityAcc, Entities) :-
 	Term =.. [(:-), Directive],
@@ -2682,7 +2682,7 @@ current_logtalk_flag(version, version(2, 19, 0)).
 '$lgt_copy_metafile_entity_terms'(Input, Output, Type) :-
 	read_term(Input, Term, []),
 	(Term = end_of_file ->
-		throw(unexpected_end_of_file)
+		throw(entity_closing_directive_missing(Type))
 		;
 		write_canonical(Output, Term),
 		write_term(Output, '.', []), nl(Output),
@@ -2690,7 +2690,7 @@ current_logtalk_flag(version, version(2, 19, 0)).
 			(Type = Type2 ->
 				close(Output)
 				;
-				throw(entity_enclosing_directives_mismatch))
+				throw(entity_enclosing_directives_mismatch(Type, Type2)))
 			;
 			'$lgt_copy_metafile_entity_terms'(Input, Output, Type))).
 
