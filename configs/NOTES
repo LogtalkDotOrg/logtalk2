@@ -120,11 +120,11 @@ Bin-Prolog 8.x~9.x
 	session. For instance, the project file for the metapredicates example
 	will look like (in the Unix version):
 	
-		:- ['configs/bin.config'].
-		:- ['compiler/logtalk.pl'].
+		:- ['$LOGTALKHOME/configs/bin.config'].
+		:- ['$LOGTALKHOME/compiler/logtalk.pl'].
 		
-		:- ['examples/metapredicates/meta.pl'].
-		:- ['examples/metapredicates/sort1.pl'].
+		:- ['$LOGTALKHOME/examples/metapredicates/meta.pl'].
+		:- ['$LOGTALKHOME/examples/metapredicates/sort1.pl'].
 		...
 	
 	You will probably want to have a project file including only the config
