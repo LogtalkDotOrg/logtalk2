@@ -3,9 +3,9 @@
 
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2002/8/4,
+		date is 2004/5/10,
 		comment is 'Operating system protocol.']).
 
 
@@ -106,6 +106,15 @@
 	:- info(date_time/6, [
 		comment is 'System date and time.',
 		argnames is ['Year', 'Month', 'Day', 'Hour', 'Min', 'Sec']]).
+
+
+	:- public(host/1).
+
+	:- mode(host(-atom), one).
+
+	:- info(host/1, [
+		comment is 'Host name.',
+		argnames is ['Name']]).
 
 
 :- end_protocol.
