@@ -134,7 +134,7 @@ function usage_help() {
 
 function xhtml_index_file() {
 
-	var f = fso.CreateTextFile(directory + "\\" + index_file, true);
+	var f = fso.CreateTextFile(index_file, true);
 
 	f.WriteLine("<?xml version=\"1.0\"?>");
 	f.WriteLine("<?xml-stylesheet href=\"logtalk.css\" type=\"text/css\"?>");
@@ -179,7 +179,7 @@ function xhtml_index_file() {
 
 function html_index_file() {
 
-	var a = fso.CreateTextFile(directory + "\\" + index_file, true);
+	var a = fso.CreateTextFile(index_file, true);
 
 	f.WriteLine("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">");
 	f.WriteLine("<html>");
