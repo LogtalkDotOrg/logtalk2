@@ -31,7 +31,7 @@ RELEASE NOTES
 	xml directories to the user directory.
 
 	Added Windows JScript scripts for easy integration of Logtalk with ECLiPSe, 
-	SWI-Prolog, and SICStus Prolog.
+	SWI-Prolog, SICStus Prolog, and YAP.
 
 	Added missing extension for source metafiles to the SWI-Prolog hook file.
 	
