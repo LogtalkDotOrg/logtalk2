@@ -196,12 +196,12 @@ Obj::Pred :-
 %
 % top-level runtime error handler
 
-'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), context(TFunctor2/TArity2, _))) :-
+'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), context(TFunctor2/TArity2, _))) :-	% SWI-Prolog
 	catch('$lgt_reverse_predicate_functor'(TFunctor1, TArity1, Entity, Type, Functor1, Arity1), _, fail),
 	catch('$lgt_reverse_predicate_functor'(TFunctor2, TArity2, Entity, Type, Functor2, Arity2), _, fail),
 	throw(error(existence_error(procedure, Functor1/Arity1), context(Type, Entity, Functor2/Arity2))).
 
-'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), TFunctor2/TArity2)) :-
+'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), TFunctor2/TArity2)) :-				% GNU Prolog
 	catch('$lgt_reverse_predicate_functor'(TFunctor1, TArity1, Entity, Type, Functor1, Arity1), _, fail),
 	catch('$lgt_reverse_predicate_functor'(TFunctor2, TArity2, Entity, Type, Functor2, Arity2), _, fail),
 	throw(error(existence_error(procedure, Functor1/Arity1), context(Type, Entity, Functor2/Arity2))).
@@ -210,12 +210,25 @@ Obj::Pred :-
 	catch('$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity), _, fail),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
+'$lgt_runtime_error_handler'(error(existence_error(procedure, ModTFunctor/TArity), _)) :-								% CIAO
+	atom_concat('user:', TFunctor, ModTFunctor),
+	catch('$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity), _, fail),
+	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
+
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ':'(_, TFunctor/TArity)), _)) :-
 	catch('$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity), _, fail),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
-'$lgt_runtime_error_handler'(error(existence_error(procedure, TCompound), _)) :-
+'$lgt_runtime_error_handler'(error(existence_error(procedure, TCompound), _)) :-										% K-Prolog
 	functor(TCompound, TFunctor, TArity),
+	catch('$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity), _, fail),
+	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
+
+'$lgt_runtime_error_handler'(error(existence_error(_, _, procedure, ':'(_, TFunctor/TArity), _), _)) :-					% SICStus Prolog
+	catch('$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity), _, fail),
+	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
+
+'$lgt_runtime_error_handler'(error(undefined_predicate(TFunctor, TArity, _), _, _)) :-									% XSB
 	catch('$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity), _, fail),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
