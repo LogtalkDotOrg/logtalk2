@@ -27,6 +27,9 @@ RELEASE NOTES
 	when a modified version of a category is needed for importing into several 
 	unrelated objects. 
 
+	Added new example, "engines", illustrating importing a category from another 
+	category.
+
 	Added autocomplete strings for Logtalk methods and for Logtalk and Prolog 
 	built-in predicates and directives to the SubEthaEdit 2.x text editor.
 

@@ -58,6 +58,10 @@ diamonds
 dynpred
 	example of using some of the built-in database handling methods
 
+engines
+	example of category composition (importation of categories by other 
+	categories) using car engines
+
 errors
 	example showing the Logtalk compiler warning and error reporting
 
