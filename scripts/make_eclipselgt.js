@@ -55,7 +55,7 @@ f.WriteLine(":- consult('" + logtalk_home + "\\\\bin\\\\lgtceclipse.pl').");
 f.Close();
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
-var link = WshShell.CreateShortcut(ProgramsPath + "\\eclipselgt.lnk");
+var link = WshShell.CreateShortcut(ProgramsPath + "\\Eclipselgt.lnk");
 link.Arguments = "-b "+ logtalk_home + "\\bin\\logtalkeclipse.pl";
 link.Description = "Logtalk & ECLiPSe";
 link.IconLocation = "app.exe,1";
