@@ -8,7 +8,7 @@
 
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-	<title>Logtalk entity directive: uses/1</title>
+	<title>Logtalk predicate directive: alias/3</title>
 	<link rel="stylesheet" href="../../styles.css" type="text/css" />
 </head>
 
@@ -18,33 +18,33 @@
 <a href="../../index.html">contents</a> &gt; <a href="../index.html">reference manual</a> &gt; <a href="../index.html#directives">directives</a>
 </div>
 
-<h2><code>uses/1</code></h2>
+<h2><code>alias/3</code></h2>
 
 
 <h4>Description</h4>
 
 <blockquote>
-<pre>uses(Object)</pre>
-<p>
-Declares an object that receives messages from predicates defined in the category or object containing the directive. In the current Logtalk version, this is a non-operational directive, which may be used for documentation. Nevertheless, the compiler will warn you of any unknown object referenced using this directive when an entity containing it is compiled. In a forthcoming release, this directive will likely be used to support object namespaces.
-</p>
+<pre>alias(Entity, Predicate, Alias)</pre>
+	<p>
+	Declares predicate alias. A predicate alias may be used to solve conflicts between implemented, imported, or inherited predicates.
+	</p>
 </blockquote>
 
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>uses(+object_identifier)</pre>
+<pre>alias(+entity_identifier, +predicate_indicator, +predicate_indicator)</pre>
 </blockquote>
 
 
 <h4>Examples</h4>
 
 <blockquote>
-<pre>:- uses(list).</pre>
+<pre>:- alias(set, member/2, set_member/2).</pre>
 </blockquote>
 
 <div class="navbottom">
-<a href="protocol1_2.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="alias3.html">next</a>
+<a href="uses1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="discontiguous1.html">next</a>
 </div>
 
 <div class="copyright">
