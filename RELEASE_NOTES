@@ -23,6 +23,13 @@ RELEASE NOTES
 	files will use the same encoding. When no encoding/1 directive is present,
 	the XML documenting files will assume UTF-8 encoding.
 
+	Added new info/1 documenting directive key, "parameters", allowing the 
+	declaration of both parameter names and parameter descriptions. Added new 
+	info/2 documenting directive key, "arguments", allowing declaration of 
+	both predicate argument names and predicate argument descriptions. Added 
+	new info/2 documenting directive key, "examples", allowing representation 
+	of predicate call examples.
+
 	Much improved and accurate reporting of non-portable predicate calls when 
 	using the "portability" flag.
 
