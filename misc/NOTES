@@ -24,7 +24,7 @@ make_gplgt.sh
 
 make_qplgt.sh
 	script for making a script named qplgt for running Logtalk with 
-	Qu-Prolog
+	Qu-Prolog (based on script code contributed by Peter Robinson)
 
 make_swilgt.sh
 	script for making a script named swilgt for running Logtalk with 
