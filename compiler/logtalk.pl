@@ -5353,8 +5353,8 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 
 '$lgt_gen_object_clauses' :-
-	('$lgt_pp_rclause_'('$lgt_instantiates_class_'(_, _, _));
-	 '$lgt_pp_rclause_'('$lgt_specializes_class_'(_, _, _))) ->
+	('$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _);
+	 '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _)) ->
 		'$lgt_gen_ic_clauses'
 		;
 		'$lgt_gen_prototype_clauses'.
@@ -5627,11 +5627,10 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 
 '$lgt_gen_category_imports_def_clauses' :-
-	'$lgt_pp_category_'(Ctg, Prefix, _, Def),
-	'$lgt_pp_rclause_'('$lgt_imports_category_'(Ctg, Ctg2, _)),
+	'$lgt_pp_category_'(_, Prefix, _, Def),
+	'$lgt_pp_imported_category_'(Ctg2, _, _, Def2, _),
 	'$lgt_pp_alias_'(Ctg2, _, _),
 	Head =.. [Def, Alias, Sender, This, Self, Call, Ctn],
-	'$lgt_pp_imported_category_'(Ctg2, _, _, Def2, _),
 	Lookup =.. [Def2, Pred, Sender, This, Self, Call, Ctn],
 	'$lgt_construct_rename_functor'(Prefix, PRnm),
 	Rename =.. [PRnm, Ctg2, Pred, Alias],
@@ -5639,11 +5638,10 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	fail.
 
 '$lgt_gen_category_imports_def_clauses' :-
-	'$lgt_pp_category_'(Ctg, _, _, Def),
-	'$lgt_pp_rclause_'('$lgt_imports_category_'(Ctg, Ctg2, _)),
+	'$lgt_pp_category_'(_, _, _, Def),
+	'$lgt_pp_imported_category_'(Ctg2, _, _, Def2, _),
 	\+ '$lgt_pp_alias_'(Ctg2, _, _),
 	Head =.. [Def, Pred, Sender, This, Self, Call, Ctn],
-	'$lgt_pp_imported_category_'(Ctg2, _, _, Def2, _),
 	Body =.. [Def2, Pred, Sender, This, Self, Call, Ctn],
 	assertz('$lgt_pp_def_'((Head:-Body))),
 	fail.
@@ -5823,10 +5821,9 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 '$lgt_gen_prototype_imports_def_clauses' :-
 	'$lgt_pp_object_'(Obj, Prefix, _, ODef, _, _, _, _, _),
-	'$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, _)),
+	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
 	'$lgt_pp_alias_'(Ctg, _, _),
 	Head =.. [ODef, Alias, Sender, Obj, Self, Call, Ctn],
-	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
 	Lookup =.. [CDef, Pred, Sender, Obj, Self, Call, Ctn],
 	'$lgt_construct_rename_functor'(Prefix, PRnm),
 	Rename =.. [PRnm, Ctg, Pred, Alias],
@@ -5835,10 +5832,9 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 '$lgt_gen_prototype_imports_def_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _),
-	'$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, _)),
+	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
 	\+ '$lgt_pp_alias_'(Ctg, _, _),
 	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
 	Body =.. [CDef, Pred, Sender, Obj, Self, Call, Ctn],
 	assertz('$lgt_pp_def_'((Head:-Body))),	
 	fail.
@@ -5849,10 +5845,9 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 '$lgt_gen_prototype_extends_def_clauses' :-
 	'$lgt_pp_object_'(Obj, Prefix, _, ODef, _, _, _, _, _),
-	'$lgt_pp_rclause_'('$lgt_extends_object_'(Obj, Parent, _)),
+	'$lgt_pp_extended_object_'(Parent, _, _, PDef, _, _, _, _, _, _),
 	'$lgt_pp_alias_'(Parent, _, _),
 	Head =.. [ODef, Alias, Sender, Obj, Self, Call, Ctn],
-	'$lgt_pp_extended_object_'(Parent, _, _, PDef, _, _, _, _, _, _),
 	Lookup =.. [PDef, Pred, Sender, Parent, Self, Call, Ctn],
 	'$lgt_construct_rename_functor'(Prefix, PRnm),
 	Rename =.. [PRnm, Parent, Pred, Alias],
@@ -5861,10 +5856,9 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 '$lgt_gen_prototype_extends_def_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _),
-	'$lgt_pp_rclause_'('$lgt_extends_object_'(Obj, Parent, _)),
+	'$lgt_pp_extended_object_'(Parent, _, _, PDef, _, _, _, _, _, _),
 	\+ '$lgt_pp_alias_'(Parent, _, _),
 	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-	'$lgt_pp_extended_object_'(Parent, _, _, PDef, _, _, _, _, _, _),
 	Body =.. [PDef, Pred, Sender, Parent, Self, Call, Ctn],
 	assertz('$lgt_pp_def_'((Head:-Body))),
 	fail.
@@ -5876,8 +5870,8 @@ current_logtalk_flag(version, version(2, 21, 0)).
 % we can have a root object where super have nowhere to go ...
 
 '$lgt_gen_prototype_super_clauses' :-
-	'$lgt_pp_object_'(Obj, _, _, _, OSuper, _, _, _, _),
-	\+ '$lgt_pp_rclause_'('$lgt_extends_object_'(Obj, _, _)),
+	'$lgt_pp_object_'(_, _, _, _, OSuper, _, _, _, _),
+	\+ '$lgt_pp_extended_object_'(_, _, _, _, _, _, _, _, _, _),
 	Head =.. [OSuper, _, _, _, _, _, _],
 	assertz('$lgt_pp_def_'((Head:-fail))),
 	!.
@@ -5886,10 +5880,9 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 '$lgt_gen_prototype_super_clauses' :-
 	'$lgt_pp_object_'(Obj, Prefix, _, _, OSuper, _, _, _, _),
-	'$lgt_pp_rclause_'('$lgt_extends_object_'(Obj, Parent, _)),
+	'$lgt_pp_extended_object_'(Parent, _, _, PDef, _, _, _, _, _, _),
 	'$lgt_pp_alias_'(Parent, _, _),
 	Head =.. [OSuper, Alias, Sender, Obj, Self, Call, Ctn],
-	'$lgt_pp_extended_object_'(Parent, _, _, PDef, _, _, _, _, _, _),
 	Lookup =.. [PDef, Pred, Sender, Parent, Self, Call, Ctn],
 	'$lgt_construct_rename_functor'(Prefix, PRnm),
 	Rename =.. [PRnm, Parent, Pred, Alias],
@@ -5898,10 +5891,9 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 '$lgt_gen_prototype_super_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, OSuper, _, _, _, _),
-	'$lgt_pp_rclause_'('$lgt_extends_object_'(Obj, Parent, _)),
+	'$lgt_pp_extended_object_'(Parent, _, _, PDef, _, _, _, _, _, _),
 	\+ '$lgt_pp_alias_'(Parent, _, _),
 	Head =.. [OSuper, Pred, Sender, Obj, Self, Call, Ctn],
-	'$lgt_pp_extended_object_'(Parent, _, _, PDef, _, _, _, _, _, _),
 	Body =.. [PDef, Pred, Sender, Parent, Self, Call, Ctn],
 	assertz('$lgt_pp_def_'((Head:-Body))),
 	fail.
@@ -5972,7 +5964,6 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	Head2 =.. [IDcl, Pred, Scope, (dynamic), no, Obj, Obj],
 	Body2 =.. [DDcl, Pred, Scope],
 	assertz('$lgt_pp_dcl_'((Head2:-Body2))).
-
 
 
 
@@ -6057,10 +6048,21 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 
 '$lgt_gen_ic_imports_def_clauses' :-
-	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _),
-	'$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, _)),
-	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
+	'$lgt_pp_object_'(Obj, Prefix, _, ODef, _, _, _, _, _),
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
+	'$lgt_pp_alias_'(Ctg, _, _),
+	Head =.. [ODef, Alias, Sender, Obj, Self, Call, Ctn],
+	Lookup =.. [CDef, Pred, Sender, Obj, Self, Call, Ctn],
+	'$lgt_construct_rename_functor'(Prefix, PRnm),
+	Rename =.. [PRnm, Ctg, Pred, Alias],
+	assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup))),
+	fail.
+
+'$lgt_gen_ic_imports_def_clauses' :-
+	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _),
+	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
+	\+ '$lgt_pp_alias_'(Ctg, _, _),
+	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
 	Body =.. [CDef, Pred, Sender, Obj, Self, Call, Ctn],
 	assertz('$lgt_pp_def_'((Head:-Body))),	
 	fail.
@@ -6070,10 +6072,21 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 
 '$lgt_gen_ic_hierarchy_def_clauses' :-
-	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _),
-	'$lgt_pp_rclause_'('$lgt_instantiates_class_'(Obj, Class, _)),
-	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
+	'$lgt_pp_object_'(Obj, Prefix, _, ODef, _, _, _, _, _),
 	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, _, CIDef, _, _, _),
+	'$lgt_pp_alias_'(Class, _, _),
+	Head =.. [ODef, Alias, Sender, Obj, Self, Call, Ctn],
+	Lookup =.. [CIDef, Pred, Sender, Class, Self, Call, Ctn],
+	'$lgt_construct_rename_functor'(Prefix, PRnm),
+	Rename =.. [PRnm, Class, Pred, Alias],
+	assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup))),
+	fail.
+
+'$lgt_gen_ic_hierarchy_def_clauses' :-
+	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _),
+	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, _, CIDef, _, _, _),
+	\+ '$lgt_pp_alias_'(Class, _, _),
+	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
 	Body =.. [CIDef, Pred, Sender, Class, Self, Call, Ctn],
 	assertz('$lgt_pp_def_'((Head:-Body))),
 	fail.
@@ -6101,10 +6114,21 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 
 '$lgt_gen_ic_category_idef_clauses' :-
-	'$lgt_pp_object_'(Obj, _, _, _, _, _, OIDef, _, _),
-	'$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, _)),
-	Head =.. [OIDef, Pred, Sender, Obj, Self, Call, Ctg],
+	'$lgt_pp_object_'(Obj, Prefix, _, _, _, _, OIDef, _, _),
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
+	'$lgt_pp_alias_'(Ctg, _, _),
+	Head =.. [OIDef, Alias, Sender, Obj, Self, Call, Ctg],
+	Lookup =.. [CDef, Pred, Sender, Obj, Self, Call],
+	'$lgt_construct_rename_functor'(Prefix, PRnm),
+	Rename =.. [PRnm, Ctg, Pred, Alias],
+	assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup))),
+	fail.
+
+'$lgt_gen_ic_category_idef_clauses' :-
+	'$lgt_pp_object_'(Obj, _, _, _, _, _, OIDef, _, _),
+	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
+	\+ '$lgt_pp_alias_'(Ctg, _, _),
+	Head =.. [OIDef, Pred, Sender, Obj, Self, Call, Ctg],
 	Body =.. [CDef, Pred, Sender, Obj, Self, Call],
 	assertz('$lgt_pp_def_'((Head:-Body))),	
 	fail.
@@ -6114,10 +6138,21 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 
 '$lgt_gen_ic_hierarchy_idef_clauses' :-
-	'$lgt_pp_object_'(Class, _, _, _, _, _, CIDef, _, _),
-	'$lgt_pp_rclause_'('$lgt_specializes_class_'(Class, Super, _)),
-	Head =.. [CIDef, Pred, Sender, Class, Self, Call, Ctn],
+	'$lgt_pp_object_'(Class, Prefix, _, _, _, _, CIDef, _, _),
 	'$lgt_pp_specialized_class_'(Super, _, _, _, _, _, SIDef, _, _, _),
+	'$lgt_pp_alias_'(Super, _, _),
+	Head =.. [CIDef, Alias, Sender, Class, Self, Call, Ctn],
+	Lookup =.. [SIDef, Pred, Sender, Super, Self, Call, Ctn],
+	'$lgt_construct_rename_functor'(Prefix, PRnm),
+	Rename =.. [PRnm, Super, Pred, Alias],
+	assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup))),
+	fail.
+
+'$lgt_gen_ic_hierarchy_idef_clauses' :-
+	'$lgt_pp_object_'(Class, _, _, _, _, _, CIDef, _, _),
+	'$lgt_pp_specialized_class_'(Super, _, _, _, _, _, SIDef, _, _, _),
+	\+ '$lgt_pp_alias_'(Super, _, _),
+	Head =.. [CIDef, Pred, Sender, Class, Self, Call, Ctn],
 	Body =.. [SIDef, Pred, Sender, Super, Self, Call, Ctn],
 	assertz('$lgt_pp_def_'((Head:-Body))),
 	fail.
@@ -6130,8 +6165,8 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 '$lgt_gen_ic_super_clauses' :-
 	'$lgt_pp_object_'(_, _, _, _, OSuper, _, _, _, _),
-	\+ '$lgt_pp_rclause_'('$lgt_instantiates_class_'(_, _, _)),
-	\+ '$lgt_pp_rclause_'('$lgt_specializes_class_'(_, _, _)),
+	\+ '$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _),
+	\+ '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _),
 	Head =.. [OSuper, _, _, _, _, _, _],
 	assertz('$lgt_pp_def_'((Head:-fail))),
 	!.
@@ -6139,10 +6174,21 @@ current_logtalk_flag(version, version(2, 21, 0)).
 % ... or predicates can be redefined in instances...
 
 '$lgt_gen_ic_super_clauses' :-
-	'$lgt_pp_object_'(Obj, _, _, _, OSuper, _, _, _, _),
-	'$lgt_pp_rclause_'('$lgt_instantiates_class_'(Obj, Class, _)),
-	Head =.. [OSuper, Pred, Sender, Obj, Obj, Call, Ctn],
+	'$lgt_pp_object_'(Obj, Prefix, _, _, OSuper, _, _, _, _),
 	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, _, CIDef, _, _, _),
+	'$lgt_pp_alias_'(Class, _, _),
+	Head =.. [OSuper, Alias, Sender, Obj, Obj, Call, Ctn],
+	Lookup =.. [CIDef, Pred, Sender, Class, Obj, Call, Ctn],
+	'$lgt_construct_rename_functor'(Prefix, PRnm),
+	Rename =.. [PRnm, Class, Pred, Alias],
+	assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup))),
+	fail.
+
+'$lgt_gen_ic_super_clauses' :-
+	'$lgt_pp_object_'(Obj, _, _, _, OSuper, _, _, _, _),
+	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, _, CIDef, _, _, _),
+	\+ '$lgt_pp_alias_'(Class, _, _),
+	Head =.. [OSuper, Pred, Sender, Obj, Obj, Call, Ctn],
 	Body =.. [CIDef, Pred, Sender, Class, Obj, Call, Ctn],
 	assertz('$lgt_pp_def_'((Head:-Body))),
 	fail.
@@ -6150,10 +6196,21 @@ current_logtalk_flag(version, version(2, 21, 0)).
 % ... or/and in subclasses...
 
 '$lgt_gen_ic_super_clauses' :-
-	'$lgt_pp_object_'(Class, _, _, _, CSuper, _, _, _, _),
-	'$lgt_pp_rclause_'('$lgt_specializes_class_'(Class, Super, _)),
-	Head =.. [CSuper, Pred, Sender, Class, Self, Call, Ctn],
+	'$lgt_pp_object_'(Class, Prefix, _, _, CSuper, _, _, _, _),
 	'$lgt_pp_specialized_class_'(Super, _, _, _, _, _, SIDef, _, _, _),
+	'$lgt_pp_alias_'(Super, _, _),
+	Head =.. [CSuper, Alias, Sender, Class, Self, Call, Ctn],
+	Lookup =.. [SIDef, Pred, Sender, Super, Self, Call, Ctn],
+	'$lgt_construct_rename_functor'(Prefix, PRnm),
+	Rename =.. [PRnm, Super, Pred, Alias],
+	assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup))),
+	fail.
+
+'$lgt_gen_ic_super_clauses' :-
+	'$lgt_pp_object_'(Class, _, _, _, CSuper, _, _, _, _),
+	'$lgt_pp_specialized_class_'(Super, _, _, _, _, _, SIDef, _, _, _),
+	\+ '$lgt_pp_alias_'(Super, _, _),
+	Head =.. [CSuper, Pred, Sender, Class, Self, Call, Ctn],
 	Body =.. [SIDef, Pred, Sender, Super, Self, Call, Ctn],
 	assertz('$lgt_pp_def_'((Head:-Body))),
 	fail.
