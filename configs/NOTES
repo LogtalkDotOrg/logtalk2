@@ -77,7 +77,8 @@ B-Prolog 4.0~5.0, 6.4 and later versions
 	chdir/1 predicate to set the working directory before loading the library 
 	or an example. Does not support the <library>(<entity>) notation for 
 	loading source files. Note that this configuration file redefines the 
-	B-Prolog ::/2 finite-domain built-in predicate.
+	B-Prolog ::/2 finite-domain built-in predicate (use the in/2 predicate 
+	instead).
 
 
 Bin-Prolog 8.x~10.x
@@ -143,6 +144,12 @@ ECLiPSe 5.5~5.8
 	config file may not contain all the needed definitions for ISO Prolog 
 	predicates that are needed for compiling Logtalk itself, the Logtalk 
 	library, or the Logtalk examples.
+
+	There is a clash between Logtalk and ECLiPSe regarding the ::/2 operator.
+	You may still use the ::/2 operator defined on the ECLiPSe constrait 
+	solver libraries by using explicit module qualification by writing 
+	"{library:(Var::Domain)}" (replace "library" by the actual library name; 
+	the {}/1 construct allows you to bypass the Logtalk compiler).
 
 	For improved performance, add the following calls to the top of all the 
 	files in the "compiler" sub-directory:
