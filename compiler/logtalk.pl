@@ -412,12 +412,10 @@ abolish_object(Obj) :-
 			'$lgt_once'(Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef),
 			forall(
 				'$lgt_call'(Def, _, _, _, _, Pred),
-				(functor(Pred, Functor, Arity),
-				 abolish(Functor/Arity))),
+				(functor(Pred, Functor, Arity), abolish(Functor/Arity))),
 			forall(
 				'$lgt_call'(DDef, _, _, _, _, Pred),
-				(functor(Pred, Functor, Arity),
-				 abolish(Functor/Arity))),
+				(functor(Pred, Functor, Arity), abolish(Functor/Arity))),
 			abolish(Dcl/4),
 			abolish(Dcl/6),
 			abolish(Def/5),
@@ -457,8 +455,7 @@ abolish_category(Ctg) :-
 			'$lgt_once'(Prefix, Dcl, Def),
 			forall(
 				'$lgt_call'(Def, _, _, _, _, Pred),
-				(functor(Pred, Functor, Arity),
-				 abolish(Functor/Arity))),
+				(functor(Pred, Functor, Arity), abolish(Functor/Arity))),
 			abolish(Dcl/4),
 			abolish(Dcl/5),
 			abolish(Def/5),
@@ -1076,7 +1073,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 16, 0)).
+current_logtalk_flag(version, version(2, 16, 1)).
 
 
 
@@ -5772,7 +5769,15 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_valid_metapred_term'(Pred) :-
 	nonvar(Pred),
 	Pred =.. [_| Args],
-	forall('$lgt_member'(Arg, Args), (nonvar(Arg), (Arg = (::); Arg = (*)))).
+	'$lgt_valid_metapred_term_args'(Args).
+
+
+'$lgt_valid_metapred_term_args'([]).
+
+'$lgt_valid_metapred_term_args'([Arg| Args]) :-
+	nonvar(Arg),
+	once((Arg = (::); Arg = (*))),
+	'$lgt_valid_metapred_term_args'(Args).
 
 
 
@@ -5781,10 +5786,17 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_valid_mode_term'(Pred) :-
 	nonvar(Pred),
 	Pred =.. [_| Args],
-	forall(
-		'$lgt_member'(Arg, Args),
-		(nonvar(Arg), functor(Arg, Functor, Arity), Arity =< 1,
-		 '$lgt_pred_arg_instantiation_mode'(Functor))).
+	'$lgt_valid_mode_term_args'(Args).
+
+
+'$lgt_valid_mode_term_args'([]).
+
+'$lgt_valid_mode_term_args'([Arg| Args]) :-
+	nonvar(Arg),
+	functor(Arg, Functor, Arity),
+	Arity =< 1,
+	'$lgt_pred_arg_instantiation_mode'(Functor),
+	'$lgt_valid_mode_term_args'(Args).
 
 
 
