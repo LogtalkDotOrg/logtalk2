@@ -104,8 +104,8 @@ logtalk.xsd
 
 logtalk.css
 
-	Cascade style sheet file to render the HTML output of the .xsl files
-	in a web browser.
+	Cascade style sheet file to render the HTML/XHTML output of the .xsl 
+	files in a web browser.
 
 
 html.sh
@@ -113,8 +113,9 @@ html.sh
 	Sample Unix shell script to batch convert .xml files to .html files.
 	The script also generates an index.html file that contains links to all 
 	converted files. The title of the index.html can be given as a parameter 
-	to the script. Edit the script to match your environment before running it.
-	Requires James Clarck XT processor (http://www.jclark.com/xml/xt.html).
+	to the script. Edit the script to match your environment before running 
+	it and to chose between HTML or XHTML output. Requires James Clarck XT 
+	processor (http://www.jclark.com/xml/xt.html).
 
 
 htmlnt.cmd
@@ -122,15 +123,17 @@ htmlnt.cmd
 	Sample Windows NT batch script to convert .xml files to .html files.
 	The script also generates an index.html file that contains links to all 
 	converted files. The title of the index.html can be given as a parameter 
-	to the script. Edit the script to match your environment before running it.
-	Requires James Clarck XT processor (http://www.jclark.com/xml/xt.html).
+	to the script. Edit the script to match your environment before running 
+	it and to chose between HTML or XHTML output. Requires James Clarck XT 
+	processor (http://www.jclark.com/xml/xt.html).
 
 
 htmldos.bat
 
 	Sample DOS batch script to convert .xml files to .html files. Edit the 
-	script to match your environment before running it. Requires James 
-	Clarck XT processor (http://www.jclark.com/xml/xt.html).
+	script to match your environment before running it and to chose between 
+	HTML or XHTML output. Requires James Clarck XT processor 
+	(http://www.jclark.com/xml/xt.html).
 
 
 pdf.sh
