@@ -8265,7 +8265,9 @@ current_logtalk_flag(version, version(2, 21, 6)).
 	'$lgt_default_flag'(supports_break_predicate, Break),
 	write('  Support for break/0 predicate (supports_break_predicate): '), writeq(Break), nl,
 	'$lgt_default_flag'(smart_compilation, Smart),
-	write('  Smart compilation (smart_compilation):                    '), write(Smart), nl, nl.
+	write('  Smart compilation (smart_compilation):                    '), write(Smart), nl,
+	'$lgt_default_flag'(altdirs, Altdirs),
+	write('  Alternative directories (altdirs):                        '), write(Altdirs), nl, nl.
 
 
 
