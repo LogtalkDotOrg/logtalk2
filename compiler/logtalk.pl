@@ -8229,11 +8229,7 @@ current_logtalk_flag(version, version(2, 21, 6)).
 
 
 '$lgt_default_flags' :-
-	write('Default compilation flags:'), nl,
-	'$lgt_default_flag'(events, Events),
-	write('  Event-driven programming support (events):                '), write(Events), nl,
-	'$lgt_default_flag'(iso_initialization_dir, ISO),
-	write('  ISO initialization/1 directive (iso_initialization_dir):  '), write(ISO), nl,
+	write('Default documentation-related compilation flags:'), nl,
 	'$lgt_default_flag'(xml, XML),
 	write('  XML documenting files (xml):                              '), write(XML), nl,
 	'$lgt_default_flag'(xmlspec, XMLSpec),
@@ -8242,6 +8238,7 @@ current_logtalk_flag(version, version(2, 21, 6)).
 	write('  XML specification file location (doctype):                '), write(Doctype), nl,
 	'$lgt_default_flag'(xsl, XSL),
 	write('  XSL stylesheet (xsl):                                     '), write(XSL), nl,
+	write('Other default compilation flags:'), nl,
 	'$lgt_default_flag'(unknown, Unknown),
 	write('  Unknown entities (unknown):                               '), write(Unknown), nl,
 	'$lgt_default_flag'(misspelt, Misspelt),
@@ -8262,10 +8259,15 @@ current_logtalk_flag(version, version(2, 21, 6)).
 	write('  Compiled code functors prefix (code_prefix):              '), writeq(Code), nl,
 	'$lgt_default_flag'(debug, Debug),
 	write('  Compile entities in debug mode (debug):                   '), writeq(Debug), nl,
-	'$lgt_default_flag'(supports_break_predicate, Break),
-	write('  Support for break/0 predicate (supports_break_predicate): '), writeq(Break), nl,
 	'$lgt_default_flag'(smart_compilation, Smart),
 	write('  Smart compilation (smart_compilation):                    '), write(Smart), nl,
+	'$lgt_default_flag'(events, Events),
+	write('  Event-driven programming support (events):                '), write(Events), nl,
+	write('Read-only compilation flags:'), nl,
+	'$lgt_default_flag'(supports_break_predicate, Break),
+	write('  Support for break/0 predicate (supports_break_predicate): '), writeq(Break), nl,
+	'$lgt_default_flag'(iso_initialization_dir, ISO),
+	write('  ISO initialization/1 directive (iso_initialization_dir):  '), write(ISO), nl,
 	'$lgt_default_flag'(altdirs, Altdirs),
 	write('  Alternative directories (altdirs):                        '), write(Altdirs), nl, nl.
 
