@@ -19,7 +19,8 @@ RELEASE NOTES
 	define (possibly at runtime) dynamic predicates. All clauses for an entity 
 	dynamic predicates are retracted before loading the new entity definition.
 
-	Added two more DCGs examples. New "puzzles" and "metainterpreters" examples.
+	Added two more DCGs examples ("bill of materials" and "command language").
+	New "puzzles" and "metainterpreters" examples.
 
 	Removed predicate nth/3 from library entities listp, list, and difflist. 
 	Replaced by the predicates nth0/3 and nth1/3. Added new predicates nth1/4 
