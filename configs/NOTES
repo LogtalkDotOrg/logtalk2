@@ -46,8 +46,8 @@ ALS Prolog 3.1
 	to replace all occurences of "\+ ::Pred" by "\+ (::Pred)" and all 
 	occurences of "\+ Obj::Pred" by "\+ (Obj::Pred)". Please report any other 
 	problems that you might find. Don't forget to use the cd/1 predicate to 
-	set the working directory before loading an example. Supports smart 
-	compilation of source files.
+	set the working directory before loading the library or an example. 
+	Supports smart compilation of source files.
 
 
 Amzi! Prolog 4.103, 5.0, 6.2.2
@@ -63,7 +63,7 @@ Amzi! Prolog 4.103, 5.0, 6.2.2
 	Older versions of the Amzi! compiler contain a bug in the implementation 
 	of the if-then-else control structure that affects Logtalk behaviour (and
 	any other program using it!). Don't forget to use the chdir/1 predicate 
-	to set the working directory before loading an example.
+	to set the working directory before loading the library or an example.
 
 	amzi6.config
 
@@ -72,7 +72,7 @@ Amzi! Prolog 4.103, 5.0, 6.2.2
 	identical terms (contrary to every other Prolog compiler!). You need to 
 	search the library files for all calls of the compare/3 predicate and 
 	make the necessary changes. Don't forget to use the chdir/1 predicate 
-	to set the working directory before loading an example.
+	to set the working directory before loading the library or an example.
 
 
 Aquarius Prolog 1.0
@@ -81,7 +81,7 @@ Aquarius Prolog 1.0
 
 	THIS CONFIG FILE IS INCOMPLETE. Any help in finishing it will be 
 	appreciated. Don't forget to use the unix(cd(+Directory)) predicate to 
-	set the working directory before loading an example.
+	set the working directory before loading the library or an example.
 
 
 Arity/Prolog32 V 1.1
@@ -90,7 +90,7 @@ Arity/Prolog32 V 1.1
 
 	THIS CONFIG FILE IS INCOMPLETE. Any help in finishing it will be 
 	appreciated. Don't forget to use the chdir/1 predicate to set the 
-	working directory before loading an example.
+	working directory before loading the library or an example.
 
 
 B-Prolog 4.0~5.0, 6.4
@@ -100,14 +100,15 @@ B-Prolog 4.0~5.0, 6.4
 	For B-Prolog 4.0 or 5.0.
 	The (Logtalk) predicates lgt_current_date/3 and lgt_current_time/3 
 	have dummy definitions. Don't forget to use the chdir/1 predicate to 
-	set the working directory before loading an example.
+	set the working directory before loading the library or an example.
 
 	b6.config
 
 	For B-Prolog 6.4.
 	This version contains a bug in the atom_concat/3 predicate that prevents 
 	some examples such as the "symdiff" from running. Don't forget to use the 
-	chdir/1 predicate to set the working directory before loading an example.
+	chdir/1 predicate to set the working directory before loading the library 
+	or an example.
 
 
 Bin-Prolog 8.x~9.x
@@ -130,8 +131,8 @@ Bin-Prolog 8.x~9.x
 	and the pre-processor/runtime files (logtalk.pl) in order to compile the
 	examples using logtalk_compile/1 (do NOT use logtalk_load/1 or the 
 	provided loader files). Don't forget to call the cd/1 predicate to set 
-	the working directory before compiling an example. Supports smart 
-	compilation of source files.
+	the working directory before compiling the library or an example. 
+	Supports smart compilation of source files.
 
 	Updated and tested with help of Arun Majumdar.
 
@@ -152,10 +153,10 @@ CIAO Prolog 1.6p1, 1.8p0
 	lgt_predicate_property/2 in file ciao_aux.config is a bit of a hack, 
 	but should enable you to run the Logtalk companion examples and to try 
 	out your own Logtalk programs. Don't forget to call the cd/1 predicate 
-	to set the working directory before compiling an example (you will need 
-	first to load the library system that exports the cd/1 predicate by 
-	calling the goal use_module(library(system))). Supports smart compilation 
-	of source files.
+	to set the working directory before compiling the library or an example 
+	(you will need first to load the library system that exports the cd/1 
+	predicate by calling the goal use_module(library(system))). Supports 
+	smart compilation of source files.
 
 
 Eclipse 4.2.2~5.1, 5.2~5.3, 5.4~5.7
@@ -190,8 +191,8 @@ Eclipse 4.2.2~5.1, 5.2~5.3, 5.4~5.7
 
 	Adopted from a config file written and tested with help of Taner Bilgic 
 	for Logtalk 1.x. Don't forget to use the cd/1 predicate to set the working 
-	directory before loading an example. Supports smart compilation of source 
-	files.
+	directory before loading the library or an example. Supports smart 
+	compilation of source files.
 
 
 GNU Prolog 1.1.2 (and later versions, except 1.2.13)
@@ -217,8 +218,8 @@ GNU Prolog 1.1.2 (and later versions, except 1.2.13)
 	% logtalk
 
 	Don't forget to use the change_directory/1 predicate to set the working 
-	directory before loading an example. Supports smart compilation of source 
-	files.
+	directory before loading the library or an example. Supports smart 
+	compilation of source files.
 
 
 IC Prolog II 0.96
@@ -228,7 +229,7 @@ IC Prolog II 0.96
 	THIS CONFIG FILE IS INCOMPLETE. Any help in finishing it will be 
 	appreciated (how do we define ISO compliant catch/3 and throw/1 
 	predicates ?). Don't forget to use the cd/1 predicate to set the 
-	working directory before loading an example.
+	working directory before loading the library or an example.
 
 
 IF/Prolog 5.1
@@ -237,7 +238,8 @@ IF/Prolog 5.1
 
 	IF/Prolog 5.1 supports the ISO Prolog standard. No problems expected.
 	Don't forget to use the cd/1 predicate to set the working directory 
-	before loading an example. Supports smart compilation of source files.
+	before loading the library or an example. Supports smart compilation 
+	of source files.
 
 
 K-Prolog 4.5, 5.01 Linux/Solaris, 5.02 Windows
@@ -248,8 +250,8 @@ K-Prolog 4.5, 5.01 Linux/Solaris, 5.02 Windows
 	to the Logtalk pre-processor: find and replace every instance of "throw(" 
 	with "iso_throw(". This config file have been written with the help of 
 	Nobukuni Kino. Don't forget to use the cd/1 predicate to set the working 
-	directory before loading an example. Supports smart compilation of source 
-	files.
+	directory before loading the library or an example. Supports smart 
+	compilation of source files.
 
 	k50.config
 
@@ -258,7 +260,7 @@ K-Prolog 4.5, 5.01 Linux/Solaris, 5.02 Windows
 	using Logtalk). K-Prolog 5.01 supports the ISO Prolog standard. No problems 
 	expected. This config file have been written with the help of Nobukuni Kino. 
 	Don't forget to use the cd/1 predicate to set the working directory before 
-	loading an example. Supports smart compilation of source files.
+	loading the library or an example. Supports smart compilation of source files.
 
 
 LPA MacProlog32 1.25
@@ -289,9 +291,9 @@ LPA WinProlog32 3.61 & 4.xx
 	if you find any bug please direct your flames to me ;-).
 	Be aware that this configuration file redefines some built-ins that
 	you may use in your programs. Don't forget to use the chdir/1 
-	predicate to set the working directory before loading an example. Be 
-	careful to not consult the config file twice. Supports smart compilation 
-	of source files.
+	predicate to set the working directory before loading the library or 
+	an example. Be careful to not consult the config file twice. Supports 
+	smart compilation of source files.
 
 
 MasterProlog 4.1
@@ -312,7 +314,7 @@ Open Prolog 1.1b5
 
 	Limited test done. Please report any problems that you may find.
 	Don't forget to use the set_folder/1 predicate to set the working 
-	directory before loading an example.
+	directory before loading the library or an example.
 
 
 PrologII+ 4.5
@@ -326,7 +328,7 @@ PrologII+ 4.5
 	"catch(close(Stream), _, true)" with "catch(close(Stream), _, :true)",
 	"open(File, read, Stream)" with "open(File, :read, Stream, [eof_action(eof_code)])".
 	Remember that you need to use the set_import_dir/1 built-in predicate to
-	set the working directory before loading an example.
+	set the working directory before loading the library or an example.
 
 
 Qu-Prolog 4.3, 6.3
@@ -340,10 +342,15 @@ Qu-Prolog 4.3, 6.3
 
 	qu63.config
 
-	Some known problems are: singletons/1 option on read_term/3 does not 
-	work (all variables are reported as singletons!). The built-in predicate 
-	write_canonical/2 outputs code that the built-in predicate cannot read 
-	back without generating syntax errors.
+	Qu-Prolog 6.3 does not support floats. In order to compile the Logtalk 
+	library and the Logtalk examplex you will need to replace all occurrences 
+	of floats by either integers or (quoted) atoms. In Unix-like systems, you
+	may perform the changes by running the following command:
+	
+	find lgt2160 -name "*.lgt" -exec perl -i -e "s/version is (\d)\.(\d)/version is '\1\.\2'/" {} \;
+
+	Don't forget to use the chdir/1 predicate to set the working directory 
+	before loading the library or an example.
 
 
 Quintus Prolog 3.3~3.4
@@ -354,7 +361,7 @@ Quintus Prolog 3.3~3.4
 	previous version. Adopted (but not tested) for the current release by
 	using information available on-line in the internet. Don't forget to use 
 	the unix(cd(Dir)) predicate to set the working directory before loading 
-	an example. Supports smart compilation of source files.
+	the library or an example. Supports smart compilation of source files.
 
 
 SICStus Prolog 3.5~3.10.x
@@ -368,7 +375,8 @@ SICStus Prolog 3.5~3.10.x
 	some library objects (like difflist) use the unify_with_occurs_check/2 ISO 
 	predicate that the 3.5 version does not define. Don't forget to use 
 	the SICStus working_directory/2 predicate to set the working directory 
-	before loading an example. Supports smart compilation of source files.
+	before loading the library or an example. Supports smart compilation of 
+	source files.
 
 	sicstus38.config
 	
@@ -376,7 +384,8 @@ SICStus Prolog 3.5~3.10.x
 	iso, but that is only recomended and should not be needed to run Logtalk.
 	No problems expected although not fully tested. Don't forget to use the 
 	SICStus working_directory/2 predicate to set the working directory before 
-	loading an example. Supports smart compilation of source files.
+	loading the library or an example. Supports smart compilation of source 
+	files.
 
 
 SWI Prolog 3.2.9 & 3.3.x and all later versions
@@ -392,12 +401,12 @@ SWI Prolog 3.2.9 & 3.3.x and all later versions
 
 	No problems expected. Please report any problem found (with a solution 
 	if possible). Don't forget to use the cd/1 predicate to set the working 
-	directory before loading an example. Supports smart compilation of 
-	source files. To improve the integration between Logtalk and SWI-Prolog 
-	edit the compiler/logtalk.pl file and add the line ":- system_module." 
-	to the top of the file. You may also load the file configs/swihook.pl 
-	in order to be able to load Logtalk entities using SWI-Prolog load_files/2
-	and consult/1 predicates.
+	directory before loading the library or an example. Supports smart 
+	compilation of source files. To improve the integration between Logtalk 
+	and SWI-Prolog edit the compiler/logtalk.pl file and add the line 
+	":- system_module." to the top of the file. You may also load the file 
+	configs/swihook.pl in order to be able to load Logtalk entities using 
+	SWI-Prolog load_files/2 and consult/1 predicates.
 
 	If you want SWI-Prolog to automatically load Logtalk at startup, then add 
 	the following lines to your pl.ini (on Windows):
@@ -451,7 +460,7 @@ XSB Prolog 2.3~6
 	while loading a Logtalk compiled file we will have to fix the problem by 
 	editing the file (the Prolog output, not the Logtalk source). Don't 
 	forget to use the cd/1 predicate to set the working directory before 
-	loading an example.
+	loading the library or an example.
 
 
 YAP 4.2.0 & 4.3.x~4.5.x
@@ -469,5 +478,5 @@ YAP 4.2.0 & 4.3.x~4.5.x
 	definitions. For most users, this will be no problem (some examples may 
 	use lgt_current_date/3 only to put a time stamp in new objects). Don't 
 	forget to use the cd/1 predicate to set the working directory before 
-	loading an example. Supports smart compilation of source files.
-
+	loading the library or an example. Supports smart compilation of source 
+	files.
