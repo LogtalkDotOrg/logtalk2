@@ -11,6 +11,8 @@ and installation:
 
 logtalk.spec
 	specification file for building Linux RPMs
+	(copy the Logtalk tarball to your RPM SOURCES directory and then 
+	run the command: rpmbuild -ba --target=noarch-*-linux logtalk.spec)
 
 cplgtdirs.sh
 	shell script for copying xml, examples and library directories to 
