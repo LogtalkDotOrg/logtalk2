@@ -1,4 +1,4 @@
 {
 	name = "Logtalk object";
-	content = "\n:- object(${1:Object}).\n\n\t:- info([\n\t\tversion is 1.0,\n\t\tauthor is '',\n\t\tdate is 2004/7/24,\n\t\tcomment is '']).\n\n:- end_object.\n$0";
+	content = "\n:- object(${1:Object}).\n\n\t:- info([\n\t\tversion is 1.0,\n\t\tauthor is '${2:Your Name}',\n\t\tdate is ${3:2004}/${4:10}/${5:18},\n\t\tcomment is '${6:Description}']).\n\n\t$0\n\n:- end_object.\n";
 }
