@@ -6,15 +6,14 @@ Copyright (c) 1998-2003 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-This directory contains some files that provide syntax highlighting 
-for editing Logtalk source files with common text editors.
+This directory contains a file that provides syntax highlighting 
+for editing Logtalk source files with the text editor NEdit 5.2 
+(http://www.nedit.org).
 
 
-logtalk.pats
+To install:
 
-	syntax highlighting patterns file for NEdit 5.2 (http://www.nedit.org)
+	Follow the instructions included in the file logtalk.pats 
+	itself or take a look at the following URL:
 
-	To install, follow the instructions included in the file itself or take 
-	a look at:
-	
-		http://www.nedit.org/download/patterns.shtml
+	http://www.nedit.org/download/patterns.shtml

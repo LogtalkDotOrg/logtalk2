@@ -6,14 +6,16 @@ Copyright (c) 1998-2003 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-This directory contains some files that provide syntax highlighting 
-for editing Logtalk source files with common text editors.
+This directory contains a file that provides syntax highlighting 
+for editing Logtalk source files with the text editor TextPad 4.5 
+(http://www.textpad.com).
 
 
-logtalk.syn
+To install:
 
-	syntax file for TextPad 4.5 (http://www.textpad.com)
+	Copy the file logtalk.syn to the SAMPLES subdirectory in the 
+	TextPad application directory and define a new document class 
+	for Logtalk source files.
 
-	To install, copy this file to the SAMPLES subdirectory in the TextPad 
-	application directory and define a new document class for Logtalk source 
-	files. THIS SYNTAX FILE IS UNDER DEVELOPMENT.
+
+THIS SYNTAX FILE IS UNDER DEVELOPMENT.

@@ -6,31 +6,32 @@ Copyright (c) 1998-2003 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-This directory contains some files that provide syntax highlighting 
-for editing Logtalk source files with common text editors.
+This directory contains files that provide syntax highlighting and 
+programming templates for editing Logtalk source files with the text
+editor jEdit 4.1 (http://www.jedit.org).
 
 
 To install:
 
-logtalk.xml
+1.	Copy the file logtalk.xml to the modes subdirectory of your jEdit 
+	installation directory.
 
-	edit mode file for jEdit 4.1 (http://www.jedit.org/)
-
-	If this file is not included with your version of jEdit or if the 
-	included file is older than the one provided here, copy this file 
-	to the "modes" subdirectory in jEdit directory installation. Next, 
-	check the "catalog" file in the same subdirectory and add (if not 
+2.	Open the "catalog" file in the same subdirectory and add (if not 
 	present) the following entry:
 	
 	<MODE NAME="logtalk" FILE="logtalk.xml" FILE_NAME_GLOB="*.lgt" />
 
+3.	Install (or update if necessary) the jEdit plug-in Templates 3.0.1
+	or later version.
 
-Templates
+4.	Copy the contents of the subdirectory templates to the templates 
+	directory set in the plug-in preferences.
 
-templates
 
-You can costumized the templates for objects, caterories, and protocols to 
-use your name by default by changing the line that reads:
+Note:
+
+You can costumized the templates for objects, caterories, and protocols 
+to use your name by default by changing the line that reads:
 
 #prompt ( "Author name:" $authorname )
 
