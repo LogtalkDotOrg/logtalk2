@@ -83,23 +83,22 @@ fso.CopyFile(logtalk_home + "\\xml\\logtalk.css", directory + "\\logtalk.css");
 WScript.Echo("");
 WScript.Echo("converting XML files...");
 
-var files = WshShell.CurrentDirectory.Files;
+var files = new Enumerator(WshShell.CurrentDirectory.Files);
 var file;
 
-WScript.Echo(files);
-for (file in files)
-	if (fso.GetExtensionName(file) = "xml") {
-		WScript.Echo("  converting" + fso.GetFileName(file));
-		var html_file = directory + "\\" + fso.GetBaseName(file) + ".html";
+for (; !files.atEnd(); files.moveNext())
+	if (fso.GetExtensionName(files.item()) = "xml") {
+		WScript.Echo("  converting" + fso.GetFileName(files.item()));
+		var html_file = directory + "\\" + fso.GetBaseName(files.item()) + ".html";
 		switch (processor) {
 			case "xsltproc" :
-				WshShell.Run(xsltproc + " -o " + html_file + xslt + " " + file, true);
+				WshShell.Run(xsltproc + " -o " + html_file + xslt + " " + files.item(), true);
 				break;
 			case "xalan" :
-				WshShell.Run(xalan + " -o " + html_file + " " + file + " " + xslt, true);
+				WshShell.Run(xalan + " -o " + html_file + " " + files.item() + " " + xslt, true);
 				break;
 			case "sabcmd" :
-				WshShell.Run(sabcmd + " " + xslt + " " + file + " " + html_file, true);
+				WshShell.Run(sabcmd + " " + xslt + " " + files.item() + " " + html_file, true);
 				break;
 		}
 	}
