@@ -3,7 +3,7 @@
 % useful statistics
 
 benchmark(Goal) :-
-	N = 10000000,
+	N = 1000000,
 	write('Number of repetitions: '), write(N), nl,
 	'$lgt_cpu_time'(Seconds1),		% defined in the config files
 	benchmark(N, Goal),
