@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	2004 January 21
+" Last Change:	2004 January 25
 
 
 " Quit when a syntax file was already loaded:
@@ -17,6 +17,11 @@ endif
 " Logtalk is case sensitive:
 
 syn case match
+
+
+" Logtalk variables
+
+syn match   logtalkVariable	"\<\(\u\|_\)\(\w\)*\>"
 
 
 " Logtalk clause functor
@@ -398,6 +403,8 @@ if version >= 508 || !exists("did_logtalk_syn_inits")
 
 	HiLink	logtalkExtCall			Normal
 	HiLink	logtalkExtCallTag		Operator
+
+	HiLink	logtalkVariable		Identifier
 
 	delcommand HiLink
 
