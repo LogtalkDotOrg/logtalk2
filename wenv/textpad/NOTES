@@ -6,7 +6,7 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-This directory contains a file that provides syntax highlighting 
+This directory contains a file that provides basic syntax highlighting 
 for editing Logtalk source files with the text editor TextPad 4.5 
 (http://www.textpad.com).
 
