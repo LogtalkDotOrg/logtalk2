@@ -24,6 +24,8 @@ RELEASE NOTES
 	Updated the "errors" example to illustrate possible conflict errors when 
 	using the uses/2 directive.
 
+	Updated the RPM logtalk.spec file to use the .tgz archive extension.
+
 
 2.20.0 - August 16, 2004
 
