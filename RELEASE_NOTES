@@ -12,8 +12,11 @@ RELEASE NOTES
 
 2.16.1 - March ??, 2004
 
-	Removed references to sax.jar from the scripts for converting XML 
-	documenting into (X)HTML.
+	The local built-in method parameter/2 can now be used inside categories 
+	(but please read the warnings about such practice on the user manual).
+
+	Removed references to file sax.jar from the scripts used to convert XML 
+	documenting files into (X)HTML.
 
 
 2.16.0 - March 3, 2004

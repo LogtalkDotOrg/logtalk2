@@ -3077,9 +3077,13 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_self'(Context, Self),
 	!.
 
-'$lgt_tr_body'(parameter(Arg, Value), true, Context) :-
+'$lgt_tr_body'(parameter(Arg, Value), TPred, Context) :-
 	'$lgt_this'(Context, This),
-	arg(Arg, This, Value),
+	(var(This) ->
+		TPred = arg(Arg, This, Value)
+		;
+		arg(Arg, This, Value),
+		TPred = true),
 	!.
 
 
