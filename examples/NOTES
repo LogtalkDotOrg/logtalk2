@@ -99,6 +99,10 @@ searching
 	example adopted from Ivan Bratko's "Prolog Programming for Artificial 
 	Intelligence" book
 
+shapes
+	geometric shapes implemented as both a prototype hierarchy and a class 
+	hierarchy
+
 sicstus
 	examples adopted from SICStus Objects documentation
 
