@@ -119,7 +119,7 @@
 :- dynamic('$lgt_pp_protected_'/2).				% '$lgt_pp_protected_'(Functor, Arity)
 :- dynamic('$lgt_pp_private_'/2).				% '$lgt_pp_private_'(Functor, Arity)
 :- dynamic('$lgt_pp_metapredicate_'/1).			% '$lgt_pp_metapredicate_'(Pred)
-:- dynamic('$lgt_pp_alias_'/3).					% '$lgt_pp_alias_'(Entity, Pred1, Pred2)
+:- dynamic('$lgt_pp_alias_'/3).					% '$lgt_pp_alias_'(Entity, Pred, Alias)
 :- dynamic('$lgt_pp_non_terminal_'/3).			% '$lgt_pp_non_terminal_'(Functor, Args, Arity)
 
 :- dynamic('$lgt_pp_object_'/10).				% '$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Mode)
@@ -1012,14 +1012,8 @@ logtalk_compile(Entities, Options) :-
 '$lgt_check_compiler_option_list'([]).
 
 '$lgt_check_compiler_option_list'([Option| Options]) :-
-	'$lgt_check_compiler_option'(Option),
-	'$lgt_check_compiler_option_list'(Options).
-
-
-
-'$lgt_check_compiler_option'(Option) :-
 	'$lgt_valid_compiler_option'(Option) ->
-		true
+		'$lgt_check_compiler_option_list'(Options)
 		;
 		throw(type_error(compiler_option, Option)).
 
@@ -3143,23 +3137,17 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_write_tr_entity'(Entity) :-
 	'$lgt_file_name'(prolog, Entity, File),
-	catch(
+	catch((
 		open(File, write, Stream),
-		Error,
-		'$lgt_compiler_error_handler'(Stream, Error)),
-	catch(
 		'$lgt_write_directives'(Stream),
+		('$lgt_pp_entity'(_, _, _, _, _) ->
+			'$lgt_write_clauses'(Stream),
+			 '$lgt_write_init_call'(Stream)
+			 ;
+			 true),
+		close(Stream)),
 		Error,
-		'$lgt_compiler_error_handler'(Stream, Error)),
-	('$lgt_pp_entity'(_, _, _, _, _) ->
-		catch(
-			('$lgt_write_clauses'(Stream),
-			 '$lgt_write_init_call'(Stream)),
-			Error,
-			'$lgt_compiler_error_handler'(Stream, Error))
-		;
-		true),
-	close(Stream).
+		'$lgt_compiler_error_handler'(Stream, Error)).
 
 
 
@@ -3171,15 +3159,12 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	'$lgt_pp_entity'(_, _, _, _, _) ->
 		('$lgt_compiler_option'(xml, on) ->
 			'$lgt_file_name'(xml, Entity, File),
-			catch(
+			catch((
 				open(File, write, Stream),
-				Error,
-				'$lgt_compiler_error_handler'(Stream, Error)),
-			catch(
 				'$lgt_write_xml_file'(Stream),
+				close(Stream)),
 				Error,
-				'$lgt_compiler_error_handler'(Stream, Error)),
-			close(Stream)
+				'$lgt_compiler_error_handler'(Stream, Error))	
 			;
 			true)
 		;
