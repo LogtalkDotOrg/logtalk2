@@ -84,7 +84,7 @@
 
 <xsd:complexType name="examples">
 	<xsd:sequence>
-		<xsd:element name="example"	type="example"	maxOccurs="unbounded"/>
+		<xsd:element name="example"	type="example"	minOccurs="0"	maxOccurs="unbounded"/>
 	</xsd:sequence>
 </xsd:complexType>
 
