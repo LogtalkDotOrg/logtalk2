@@ -165,6 +165,10 @@
 		("\\(arg\\|copy_term\\|functor\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("=\\.\\." . 'logtalk-built-in-predicate-face)
 		;;
+		;; term unification:
+		;;
+		("\\\\?=" . 'logtalk-built-in-predicate-face)
+		;;
 		;; arithemtic evaluation:
 		;;
 		("\\<\\is\\>" . 'logtalk-built-in-predicate-face)
@@ -180,10 +184,6 @@
 		;; other arithemtic functors:
 		;;
 		("\\(atan\\|cos\\|exp\\|log\\|s\\(?:in\\|qrt\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		;;
-		;; term unification:
-		;;
-		("\\\\?=" . 'logtalk-built-in-predicate-face)
 		;;
 		;; stream selection and control:
 		;;
@@ -212,7 +212,8 @@
 		("\\(atom_\\(?:c\\(?:hars\\|o\\(?:des\\|ncat\\)\\)\\|length\\)\\|char_code\\|number_c\\(?:\\(?:har\\|ode\\)s\\)\\|sub_atom\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; bitwise functors:
-		
+		("/\\\\\\|<<\\|>>\\|\\\\/" . 'logtalk-built-in-predicate-face)
+		("\\\\" . 'logtalk-built-in-predicate-face)
 	))
 
 
