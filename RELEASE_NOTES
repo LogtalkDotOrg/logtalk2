@@ -10,12 +10,11 @@ RELEASE NOTES
 =============
 
 
-2.22.5 - January 28, 2005
+2.22.5 - February 1, 2005
 
-	Updated K-Prolog config file, correcting a showstopper bug and enabling 
-	support for using the "library" notation for loading source files.
-
-	Added scripts for easy integration of Logtalk with K-Prolog.
+	Added scripts for easy integration of Logtalk with K-Prolog. Updated the 
+	K-Prolog config file, correcting a showstopper bug and enabling support 
+	for using the "library" notation for loading source files.
 
 	Updated JIProlog config file in order to workaround a compiler bug 
 	with the write_canonical/2 predicate and null atoms and to allow smart 
