@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.9.2
+Release 2.9.3
 
 Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -8,6 +8,14 @@ Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.9.3 - February 9, 2002
+
+	New current_logtalk_flag/2 and set_logtalk_flag/2 built-in predicates.
+
+	New XSL stylesheet (lgtpdf.xsl) to convert Logtalk XML entity documenting 
+	files in PDF format using XSL Formating Objects.
 
 
 2.9.2 - January 4, 2002
