@@ -62,6 +62,10 @@
 		{file_property(File, type(Type))}.
 
 
+	file_permission(File, Permission) :-
+		{file_permission(File, Permission)}.
+ 
+
 	delete_file(File) :-
 		{delete_file(File)}.
 

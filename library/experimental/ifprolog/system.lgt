@@ -63,6 +63,10 @@
 	file_mode_type(iflnk, symlink).
 
 
+	file_permission(File, Permission) :-
+		{file_test(File, Permission)}.
+ 
+
 	delete_file(File) :-
 		{fail}.
 

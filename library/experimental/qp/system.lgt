@@ -54,6 +54,10 @@
 		{fail}.
 
 
+	file_permission(File, Permission) :-
+		{fail}.
+ 
+
 	delete_file(File) :-
 		{atom_concat('rm ', File, Command), os(system(Command))}.
 

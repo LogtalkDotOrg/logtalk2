@@ -62,6 +62,10 @@
 		{fail}.
 
 
+	file_permission(File, Permission) :-
+		{access_file(File, Permission)}.
+
+
 	delete_file(File) :-
 		{delete_file(File)}.
 

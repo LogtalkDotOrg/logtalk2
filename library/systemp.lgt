@@ -85,6 +85,12 @@
 		comment is 'File type (regular, directory, symlink, fifo, socket, unknown).',
 		argnames is ['File', 'Type']]).
 
+	:- public(file_permission/2).
+	:- mode(file_permission(+atom, ?atom), zero_or_more).
+	:- info(file_permission/2, [
+		comment is 'File permission (read, write, execute, and search).',
+		argnames is ['File', 'Permission']]).
+
 	:- public(delete_file/1).
 	:- mode(delete_file(+atom), zero_or_one).
 	:- info(delete_file/1, [

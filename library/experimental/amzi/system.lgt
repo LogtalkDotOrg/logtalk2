@@ -53,6 +53,10 @@
 		{stat(File, _, _, _, Size, _, _, _, _)}.
 
 
+	file_permission(File, Permission) :-
+		{fail}.
+ 
+
 	delete_file(File) :-
 		{delfile(File, 0)}.
 
