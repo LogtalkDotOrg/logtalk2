@@ -5,7 +5,7 @@
 ;; Author: Paulo Moura
 ;; Creation date: November 15, 2003
 ;; Last modification date: December 16, 2003
-;; Version: 0.3
+;; Version: 0.4
 
 ;; Installation:
 ;;
@@ -240,6 +240,7 @@
 	"Major mode for editing Logtalk files"
 	(interactive)
 	(kill-all-local-variables)
+	(setq tab-width 4)
 	(set-syntax-table logtalk-mode-syntax-table)
 	(set (make-local-variable 'font-lock-defaults) '(logtalk-font-lock-keywords))
 	(turn-on-font-lock)
