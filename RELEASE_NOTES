@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.22.2 - December 22, 2004
+2.22.2 - December 24, 2004
 
 	Improved performance of dynamic creation and compilation of objects, 
 	protocols, and categories.

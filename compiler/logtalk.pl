@@ -4001,11 +4001,13 @@ current_logtalk_flag(version, version(2, 22, 2)).
 	(var(Key); var(Value)),
 	throw(instantiation_error). 
 
+'$lgt_tr_entity_info_list'([Key is _| _]) :-
+	\+ atom(Key),
+	throw(type_error(atom, Key)). 
+
 '$lgt_tr_entity_info_list'([Key is Value| Tail]) :-
-	'$lgt_tr_entity_info_key_value'(Key, Value) ->
-		'$lgt_tr_entity_info_list'(Tail)
-		;
-		throw(entity_info_key_value_unknown_error(Key is Value)).
+	'$lgt_tr_entity_info_key_value'(Key, Value),
+	'$lgt_tr_entity_info_list'(Tail).
 
 
 
@@ -4094,11 +4096,13 @@ current_logtalk_flag(version, version(2, 22, 2)).
 	(var(Key); var(Value)),
 	throw(instantiation_error). 
 
+'$lgt_tr_pred_info_list'([Key is _| _], _) :-
+	\+ atom(Key),
+	throw(type_error(atom, Key)). 
+
 '$lgt_tr_pred_info_list'([Key is Value| Tail], Pred) :-
-	'$lgt_tr_pred_info_key_value'(Key, Value, Pred) ->
-		'$lgt_tr_pred_info_list'(Tail, Pred)
-		;
-		throw(pred_info_key_value_unknown_error(Key is Value, Pred)).
+	'$lgt_tr_pred_info_key_value'(Key, Value, Pred),
+	'$lgt_tr_pred_info_list'(Tail, Pred).
 
 
 
