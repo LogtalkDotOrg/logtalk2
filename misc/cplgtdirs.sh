@@ -8,8 +8,10 @@
 ## =================================================================
 
 echo
-echo "This script copies the Logtalk user-modifiable files and"
-echo "directories to the user home directory (~/logtalk)."
+echo "This script copies the Logtalk user-modifiable files and directories"
+echo "to the user home directory. The location can be set by the environment"
+echo "variable \$LOGTALKUSER (defaults to ~/logtalk when the variable is not"
+echo "defined)"
 echo
 
 if ! [ $LOGTALKHOME ]
@@ -40,10 +42,14 @@ else
 	ln -sf $LOGTALKHOME/RELEASE_NOTES $LOGTALKUSER/RELEASE_NOTES
 	ln -sf $LOGTALKHOME/UPGRADING $LOGTALKUSER/UPGRADING
 	ln -sf $LOGTALKHOME/manuals $LOGTALKUSER/manuals
-	echo "Finished copying Logtalk directories."
+	echo "Finished copying Logtalk files directories."
 	echo
 	echo "You may need to edit the \$LOGTALKUSER/libpaths/libpaths.pl file to match"
 	echo "your Prolog compiler and operating-system requirements or to add your own"
 	echo "library paths."
+	echo
+	echo "You may want to customize the default Logtalk compiler options by editing"
+	echo "the configuration file for your Prolog compiler found in the directory"
+	echo "\$LOGTALKUSER/configs."
 	echo
 fi

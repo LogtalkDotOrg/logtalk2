@@ -58,9 +58,13 @@ fso.CopyFolder(logtalk_home + "\\xml", logtalk_user + "\\xml");
 
 WScript.Echo("Finished copying Logtalk files directories.");
 WScript.Echo("");
-WScript.Echo("You may need to edit the My Documents\\logtalk\\libpaths\\libpaths.pl");
-WScript.Echo("file to match your Prolog compiler and operating-system requirements");
-WScript.Echo("or to add your own library paths.");
+WScript.Echo("You may need to edit the \%LOGTALKUSER\%\\libpaths\\libpaths.pl file to");
+WScript.Echo("match your Prolog compiler and operating-system requirements or to add");
+WScript.Echo("your own library paths.");
+WScript.Echo("");
+WScript.Echo("You may want to customize the default Logtalk compiler options by editing");
+WScript.Echo("the configuration file for your Prolog compiler found in the directory");
+WScript.Echo("\%LOGTALKUSER\%/configs.");
 WScript.Echo("");
 
 WScript.Quit(0);
@@ -68,7 +72,9 @@ WScript.Quit(0);
 function usage_help() {
 	WScript.Echo("");
 	WScript.Echo("This script copies the Logtalk user-modifiable files and directories");
-	WScript.Echo("to the user home directory (My Documents\\logtalk).");
+	WScript.Echo("to the user home directory. The location can be set by the environment");
+	WScript.Echo("variable \%LOGTALKUSER\% (defaults to MyDocuments\\logtalk when the");
+	WScript.Echo("variable is not defined)");
 	WScript.Echo("");
 	WScript.Echo("Usage:");
 	WScript.Echo("  " + WScript.ScriptName + " help");
