@@ -2,7 +2,7 @@
 !
 ! Author: Paulo Moura (pmoura at logtalk.org)
 !
-! Last changed in: September 6, 2002
+! Last changed in: July 7, 2003
 !
 !
 ! To install this patterns file:
@@ -27,9 +27,10 @@ nedit.highlightPatterns: Logtalk:1:0{\n\
 	Clause operators:":\\-|\\.":::Keyword::\n\
 	Term testing:"<[^+?@-](var|atom|integer|float|atomic|compound|nonvar|number)>":::Subroutine1::\n\
 	Message sending operators:"::|\\^\\^":::Keyword::\n\
-	Control constructs:"!|,|;|\\-\\>|<(true|fail|call|catch|throw)>":::Subroutine::\n\
+	Control constructs:"!|,|;|\\-\\-\\>|\\-\\>|<(true|fail|call|catch|throw)>":::Subroutine::\n\
 	Block comment:"/\\*":"\\*/"::Comment::\n\
 	Line comment:"%":"$"::Comment::\n\
+	Number:"0'":::Plain::\n\
 	String:"'":"'"::String::\n\
 	Built-in methods:"<(parameter|self|sender|this|current_predicate|predicate_property|abolish|asserta|assertz|retractall|retract|bagof|findall|forall|setof|before|after)>":::Subroutine::\n\
 	Arithmetic operators:"<is>|\\+|\\*|\\-|/|=:=|=\\\\=|=\\<|\\>=|\\<|\\>":::Subroutine1::\n\
