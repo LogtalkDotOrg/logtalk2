@@ -1947,7 +1947,7 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_file_name'(prolog, Entity, File),
 	'$lgt_load_prolog_code'(File),
 	('$lgt_compiler_option'(report, on) ->
-		write('<<<  '), writeq(Entity), write(' loaded'), nl
+		write('<<< '), writeq(Entity), write(' loaded'), nl
 		;
 		true).
 
@@ -1960,7 +1960,7 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_report_redefined_entity'(Entity) :-
 	'$lgt_current_object_'(Entity, _, _, _, _, _),
 	!,
-	write('WARNING!  redefining object '), write(Entity), nl.
+	write('> WARNING!  redefining object '), write(Entity), nl.
 
 '$lgt_report_redefined_entity'(Entity) :-		% parametric objects
 	atom_codes(Entity, Codes),					% this is a quick and dirty hack
@@ -1970,17 +1970,17 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_append'(Codes2, '_', Prefix),
 	'$lgt_current_object_'(_, Prefix, _, _, _, _),
 	!,
-	write('WARNING!  redefining object '), write(Entity), nl.
+	write('> WARNING!  redefining object '), write(Entity), nl.
 
 '$lgt_report_redefined_entity'(Entity) :-
 	'$lgt_current_protocol_'(Entity, _, _),
 	!,
-	write('WARNING!  redefining protocol '), write(Entity), nl.
+	write('> WARNING!  redefining protocol '), write(Entity), nl.
 
 '$lgt_report_redefined_entity'(Entity) :-
 	'$lgt_current_category_'(Entity, _, _),
 	!,
-	write('WARNING!  redefining category '), write(Entity), nl.
+	write('> WARNING!  redefining category '), write(Entity), nl.
 
 '$lgt_report_redefined_entity'(_).
 	
@@ -2007,13 +2007,13 @@ user0__def(Pred, _, _, _, Pred, user).
 	\+ '$lgt_needs_recompilation'(Entity),
 	!,
 	('$lgt_compiler_option'(report, on) ->
-		nl, write('>>>  compiling '), writeq(Entity), write('... up-to-date'), nl
+		nl, write('>>> compiling '), writeq(Entity), write('... up-to-date'), nl
 		;
 		true).
 
 '$lgt_compile_entity'(Entity) :-
 	('$lgt_compiler_option'(report, on) ->
-		nl, write('>>>  compiling '), writeq(Entity), write('...')
+		nl, write('>>> compiling '), writeq(Entity), write('...'), nl
 		;
 		true),
 	'$lgt_clean_up',
@@ -2023,7 +2023,7 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_report_unknown_entities',
 	'$lgt_clean_up',
 	('$lgt_compiler_option'(report, on) ->
-		write(' compiled'), nl
+		write('>>> '), writeq(Entity), write(' compiled'), nl
 		;
 		true).
 
@@ -2177,13 +2177,13 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_report_singletons'([Singleton| Singletons], Term) :-
 	('$lgt_compiler_option'(singletons, warning),
 	 '$lgt_compiler_option'(report, on)) ->
-		write('WARNING!'),
+		write('> WARNING!'),
 		\+ \+ ( '$lgt_report_singletons_aux'([Singleton| Singletons], Term, Names),
 				write('  singleton variables: '), write(Names), nl,
 				(Term = (:- _) ->
-					write('          in directive: ')
+					write('>           in directive: ')
 					;
-					write('          in clause: ')),
+					write('>           in clause: ')),
 				write(Term), nl)
 		;
 		true.
@@ -2219,26 +2219,26 @@ user0__def(Pred, _, _, _, Pred, user).
 
 '$lgt_report_compiler_error'(error(Error, directive(Directive))) :-
 	!,
-	write('ERROR!    '), writeq(Error), nl,
-	write('          in directive: '), write((:- Directive)), nl.
+	write('> ERROR!  '), writeq(Error), nl,
+	write('>         in directive: '), write((:- Directive)), nl.
 
 '$lgt_report_compiler_error'(error(Error, clause(Clause))) :-
 	!,
-	write('ERROR!    '), writeq(Error), nl,
-	write('          in clause: '), write(Clause), nl.
+	write('> ERROR!  '), writeq(Error), nl,
+	write('>         in clause: '), write(Clause), nl.
 
 '$lgt_report_compiler_error'(error(Error, dcgrule(Rule))) :-
 	!,
-	write('ERROR!    '), writeq(Error), nl,
-	write('          in grammar rule: '), write((Rule)), nl.
+	write('> ERROR!  '), writeq(Error), nl,
+	write('>         in grammar rule: '), write((Rule)), nl.
 
 '$lgt_report_compiler_error'(error(Error, Term)) :-
 	!,
-	write('ERROR!    '), writeq(Error), nl,
-	write('          in: '), write(Term), nl.
+	write('> ERROR!  '), writeq(Error), nl,
+	write('>         in: '), write(Term), nl.
 
 '$lgt_report_compiler_error'(Error) :-
-	write('ERROR!    '), writeq(Error), nl.
+	write('> ERROR!  '), writeq(Error), nl.
 
 
 
@@ -2855,7 +2855,7 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_compiler_option'(report, on),
 	\+ '$lgt_redefined_built_in_'(Head, _, _),		% not already reported?
 	functor(Head, Functor, Arity),
-	write('WARNING!  redefining a Logtalk built-in predicate: '),
+	write('> WARNING!  redefining a Logtalk built-in predicate: '),
 	writeq(Functor/Arity), nl,
 	fail.
 
@@ -2868,7 +2868,7 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_compiler_option'(report, on),
 	\+ '$lgt_redefined_built_in_'(Head, _, _),		% not already reported?
 	functor(Head, Functor, Arity),
-	write('WARNING!  redefining a Prolog built-in predicate: '),
+	write('> WARNING!  redefining a Prolog built-in predicate: '),
 	writeq(Functor/Arity), nl,
 	fail.
 
@@ -3137,7 +3137,7 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_compiler_option'(portability, warning),
 	'$lgt_compiler_option'(report, on),
 	functor(Pred, Functor, Arity),
-	write('WARNING!  non-ISO defined built-in predicate call: '),
+	write('> WARNING!  non-ISO defined built-in predicate call: '),
 	writeq(Functor/Arity), nl,
 	fail.
 
@@ -4088,7 +4088,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		('$lgt_referenced_object_'(Obj), \+ ('$lgt_current_object_'(Obj, _, _, _, _, _); '$lgt_entity_'(_, Obj, _, _))),
 		Objs),
 	(Objs \= [] ->
-		write('WARNING!  references to unknown objects:    '), writeq(Objs), nl
+		write('> WARNING!  references to unknown objects:    '), writeq(Objs), nl
 		;
 		true).
 
@@ -4104,7 +4104,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		('$lgt_referenced_protocol_'(Ptc), \+ ('$lgt_current_protocol_'(Ptc, _, _); '$lgt_entity_'(_, Ptc, _, _))),
 		Ptcs),
 	(Ptcs \= [] ->
-		write('WARNING!  references to unknown protocols:  '), writeq(Ptcs), nl
+		write('> WARNING!  references to unknown protocols:  '), writeq(Ptcs), nl
 		;
 		true).
 
@@ -4120,7 +4120,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		('$lgt_referenced_category_'(Ctg), \+ ('$lgt_current_category_'(Ctg, _, _); '$lgt_entity_'(_, Ctg, _, _))),
 		Ctgs),
 	(Ctgs \= [] ->
-		write('WARNING!  references to unknown categories: '), writeq(Ctgs), nl
+		write('> WARNING!  references to unknown categories: '), writeq(Ctgs), nl
 		;
 		true).
 
@@ -5078,7 +5078,7 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_report_misspelt_calls'([Pred| Preds]) :-
 	('$lgt_compiler_option'(misspelt, warning),
 	 '$lgt_compiler_option'(report, on)) ->
-		write('WARNING!  these static predicates are called but never defined: '),
+		write('> WARNING!  these static predicates are called but never defined: '),
 		writeq([Pred| Preds]), nl
 		;
 		true.
