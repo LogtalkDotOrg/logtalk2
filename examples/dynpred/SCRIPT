@@ -1,0 +1,84 @@
+=================================================================
+Logtalk - Object oriented extension to Prolog
+Release 2.12.0
+
+Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
+=================================================================
+
+
+% 
+
+| ?- descendant::p(Value).
+
+Value = root
+yes
+
+
+% 
+
+| ?- descendant::(assertz(p(descendant)), p(Value)).
+
+Value = descendant
+yes
+
+
+% 
+
+| ?- descendant::(retractall(p(_)), p(Value)).
+
+Value = root
+yes
+
+
+%
+
+| ?- class::p1(X).
+
+error(existence_error(predicate_declaration, p1(_)), class::p1(_), user)
+
+
+%
+
+| ?- instance::p1(X).
+
+X = class
+yes
+
+
+%
+
+| ?- class::assertz(p2(class)).
+
+yes
+
+
+%
+
+| ?- class::p2(Value).
+
+error(existence_error(predicate_declaration, p2(_)), class::p2(_), user)
+
+
+%
+
+| ?- instance::p2(X).
+
+X = class
+yes
+
+
+%
+
+| ?- prototype::(public_assert, protected_assert, private_assert).
+
+yes
+
+
+%
+
+| ?- prototype::dynamic_predicates.
+
+public_predicate/0 - public
+protected_predicate/0 - protected
+private_predicate/0 - private
+yes
