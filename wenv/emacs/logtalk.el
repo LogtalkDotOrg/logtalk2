@@ -154,15 +154,25 @@
 		;; term input/output:
 		("c\\(?:har_conversion\\|urrent_\\(?:char_conversion\\|op\\)\\)\\|op\\|read\\(?:_term\\)?\\|write\\(?:_\\(?:canonical\\|term\\)\\|q\\)?" . 'logtalk-built-in-predicate-face)
 		("\\(?:curren\\|se\\)t_prolog_flag\\|halt" . 'logtalk-built-in-predicate-face)
-		("atom_\\(?:c\\(?:hars\\|o\\(?:des\\|ncat\\)\\)\\|length\\)\\|char_code\\|number_c\\(?:\\(?:har\\|ode\\)s\\)\\|sub_atom" . 'logtalk-built-in-predicate-face)))
+		("atom_\\(?:c\\(?:hars\\|o\\(?:des\\|ncat\\)\\)\\|length\\)\\|char_code\\|number_c\\(?:\\(?:har\\|ode\\)s\\)\\|sub_atom" . 'logtalk-built-in-predicate-face)
+	))
 
 
 
-(defvar logtalk-font-lock-operators nil)
+(setq logtalk-font-lock-operators
+	'(
+		("::\\|\\[\\^\\]\\[\\^\\]\\|[{}]" . 'logtalk-operator-face)
+	))
 
 
 
-(setq logtalk-font-lock-keywords logtalk-font-lock-directives)
+(setq logtalk-font-lock-keywords
+	(append
+		logtalk-font-lock-directives
+		logtalk-font-lock-built-in-methods
+		logtalk-font-lock-built-in-predicates
+		logtalk-font-lock-operators
+	))
 
 
 
