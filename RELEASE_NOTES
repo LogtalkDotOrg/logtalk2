@@ -12,8 +12,13 @@ RELEASE NOTES
 
 2.20.2 - August 31, 2004
 
+	Added a Windows JScript script for installing Logtalk. Improved the Windows 
+	JScript scripts used for easy integration of Logtalk with selected Prolog 
+	compilers.
+
 	Improved user manual section on defining object and category metapredicates 
-	and on calling non-stardard Prolog built-in metapredicates.
+	and on calling non-stardard Prolog built-in metapredicates. Improved the 
+	description of some compiler options.
 
 	Added some files missing from the "errors" example (which should have been 
 	included in the previous release).
