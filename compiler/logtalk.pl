@@ -6688,7 +6688,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	'$lgt_compiler_flag'(report, on),
 	setof(Pred, '$lgt_misspelt_call'(Pred), Preds),
 	write('> WARNING!  these static predicates are called but never defined: '),
-	'$lgt_writeq_list'([Pred| Preds]), nl,
+	'$lgt_writeq_list'(Preds), nl,
 	!.
 
 '$lgt_report_misspelt_calls'.
