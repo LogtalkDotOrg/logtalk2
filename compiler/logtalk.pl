@@ -987,7 +987,7 @@ logtalk_compile(Entities, Options) :-
 	throw(existence_error(library, Library)).
 
 '$lgt_check_compiler_library_entity'(Library, Entity) :-
-	logtalk_library_path(Library, Path),
+	once(logtalk_library_path(Library, Path)),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
 	catch(
@@ -2922,7 +2922,7 @@ current_logtalk_flag(version, version(2, 22, 0)).
 	compound(Term),
 	!,
 	Term =.. [Library, Entity],
-	logtalk_library_path(Library, Path),
+	once(logtalk_library_path(Library, Path)),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
 	'$lgt_load_entity'(Entity, Options),
@@ -3083,7 +3083,7 @@ current_logtalk_flag(version, version(2, 22, 0)).
 	compound(Term),
 	!,
 	Term =.. [Library, Entity],
-	logtalk_library_path(Library, Path),
+	once(logtalk_library_path(Library, Path)),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
 	'$lgt_compile_entity'(Entity, Options),
