@@ -17,7 +17,7 @@ Logtalk is an open source object-oriented extension to the Prolog programming la
 %build
 %install
 rm -rf /usr/local/lgt2170
-rm -rf /usr/local/logtalk
+rm -f /usr/local/logtalk
 mkdir /usr/local/lgt2170
 cp -R * /usr/local/lgt2170
 cd /usr/local/lgt2170
