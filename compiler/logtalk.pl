@@ -1440,7 +1440,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
 			'$lgt_assert_pred_to_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call),
-			'$lgt_metavars'(Head, Meta, Metavars),
+			'$lgt_pred_metavars'(Head, Meta, Metavars),
 			'$lgt_context'(Ctx, Sender2, This, Self, Prefix, Metavars),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			('$lgt_debugging_'(Obj) ->
@@ -1458,7 +1458,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_asserta'(Obj, Head, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef),
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PScope, Type, Meta, SCtn),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PScope, Type, _, SCtn),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
 			'$lgt_assert_pred_to_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call),
@@ -1512,7 +1512,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
 			'$lgt_assert_pred_to_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call),
-			'$lgt_metavars'(Head, Meta, Metavars),
+			'$lgt_pred_metavars'(Head, Meta, Metavars),
 			'$lgt_context'(Ctx, Sender2, This, Self, Prefix, Metavars),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			('$lgt_debugging_'(Obj) ->
@@ -1530,7 +1530,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_assertz'(Obj, Head, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef),
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PScope, Type, Meta, SCtn),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PScope, Type, _, SCtn),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
 			'$lgt_assert_pred_to_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call),
@@ -1552,7 +1552,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % 
 
 '$lgt_assert_pred_dcl'(Dcl, _, Pred, _, PScope, Type, Meta, SCtn) :-
-	'$lgt_call'(Dcl, Head, PScope, Type, Meta, SCtn, _),
+	'$lgt_call'(Dcl, Pred, PScope, Type, Meta, SCtn, _),
 	!.
 
 '$lgt_assert_pred_dcl'(_, DDcl, Pred, Scope, Scope, (dynamic), no, _) :-
@@ -4137,10 +4137,10 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_clause'(Clause) :-
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, _),
 	((Type = object, compound(Entity)) ->	% if the entity is a parametric object we need
-		'$lgt_this'(Ctx, Entity)			% "this" for inline compilation of parameter/2
+		'$lgt_ctx_this'(Ctx, Entity)			% "this" for inline compilation of parameter/2
 		;
 		true),
-	'$lgt_prefix'(Ctx, Prefix),
+	'$lgt_ctx_prefix'(Ctx, Prefix),
 	catch(
 		'$lgt_tr_clause'(Clause, TClause, DClause, Ctx),
 		Error,
@@ -4166,8 +4166,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	functor(Head, Functor, Arity),
 	'$lgt_pp_dynamic_'(Functor, Arity),
 	!,
-	'$lgt_metavars'(Head, Metavars),
-	'$lgt_metavars'(Ctx, Metavars),
+	'$lgt_pred_metavars'(Head, Metavars),
+	'$lgt_ctx_metavars'(Ctx, Metavars),
 	'$lgt_tr_head'(Head, THead, Ctx),
 	'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 	'$lgt_simplify_body'(TBody, SBody),
@@ -4175,8 +4175,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_dbg_head'(Head, Ctx),DBody), Ctx) :-
 	!,
-	'$lgt_metavars'(Head, Metavars),
-	'$lgt_metavars'(Ctx, Metavars),
+	'$lgt_pred_metavars'(Head, Metavars),
+	'$lgt_ctx_metavars'(Ctx, Metavars),
 	'$lgt_tr_head'(Head, THead, Ctx),
 	'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 	'$lgt_simplify_body'(TBody, SBody),
@@ -4270,7 +4270,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_head'(Head, THead, Ctx) :-
 	functor(Head, Functor, Arity),
 	Head =.. [_| Args],
-	'$lgt_prefix'(Ctx, EPrefix),
+	'$lgt_ctx_prefix'(Ctx, EPrefix),
 	'$lgt_construct_predicate_functor'(EPrefix, Functor, Arity, PPrefix),
 	(('$lgt_pp_dynamic_'(Functor, Arity),
 	  \+ '$lgt_pp_public_'(Functor, Arity),
@@ -4295,12 +4295,12 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, Ctx), Ctx) :-
 	var(Pred),
 	!,
-	'$lgt_metavars'(Ctx, Metavars),
+	'$lgt_ctx_metavars'(Ctx, Metavars),
 	('$lgt_member_var'(Pred, Metavars) ->
-		'$lgt_sender'(Ctx, Sender),
+		'$lgt_ctx_sender'(Ctx, Sender),
 		TPred = '$lgt_metacall_in_object'(Sender, Pred, Sender)
 		;
-		'$lgt_this'(Ctx, This),
+		'$lgt_ctx_this'(Ctx, This),
 		TPred = '$lgt_metacall_in_object'(This, Pred, This)).
 
 
@@ -4414,72 +4414,72 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_tr_body'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, _), '$lgt_dbg_goal'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, _), Ctx), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_body'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, _), '$lgt_dbg_goal'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, _), Ctx), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 
 % database handling built-in predicates
 
 '$lgt_tr_body'(abolish(Pred), '$lgt_abolish'(This, Pred, This, _), '$lgt_dbg_goal'(abolish(Pred), '$lgt_abolish'(This, Pred, This, _), Ctx), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_body'(asserta(Pred), '$lgt_asserta'(This, Pred, This, _), '$lgt_dbg_goal'(asserta(Pred), '$lgt_asserta'(This, Pred, This, _), Ctx), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_body'(assertz(Pred), '$lgt_assertz'(This, Pred, This, _), '$lgt_dbg_goal'(assertz(Pred), '$lgt_assertz'(This, Pred, This, _), Ctx), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_body'(clause(Head, Body), '$lgt_clause'(This, Head, Body, This, _), '$lgt_dbg_goal'(clause(Head, Body), '$lgt_clause'(This, Head, Body, This, _), Ctx), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_body'(retract(Pred), '$lgt_retract'(This, Pred, This, _), '$lgt_dbg_goal'(retract(Pred), '$lgt_retract'(This, Pred, This, _), Ctx), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_body'(retractall(Pred), '$lgt_retractall'(This, Pred, This, _), '$lgt_dbg_goal'(retractall(Pred), '$lgt_retractall'(This, Pred, This, _), Ctx), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 
 % DCG predicates
 
 '$lgt_tr_body'(expand_term(Term, Clause), '$lgt_expand_term'(This, Term, Clause, This, _), '$lgt_dbg_goal'(expand_term(Term, Clause), '$lgt_expand_term'(This, Term, Clause, This, _), Ctx), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_body'(phrase(Ruleset, Input), '$lgt_phrase'(This, Ruleset, Input, This, _), '$lgt_dbg_goal'(phrase(Ruleset, Input), '$lgt_phrase'(This, Ruleset, Input, This, _), Ctx), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_body'(phrase(Ruleset, Input, Rest), '$lgt_phrase'(This, Ruleset, Input, Rest, This, _), '$lgt_dbg_goal'(phrase(Ruleset, Input, Rest), '$lgt_phrase'(This, Ruleset, Input, Rest, This, _), Ctx), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 
 % inline methods (translated to a single unification with the corresponding context argument)
 
 '$lgt_tr_body'(sender(Sender), true, '$lgt_dbg_goal'(sender(Temp), Sender=Temp, Ctx), Ctx) :-
 	!,
-	'$lgt_sender'(Ctx, Sender).
+	'$lgt_ctx_sender'(Ctx, Sender).
 
 '$lgt_tr_body'(this(This), true, '$lgt_dbg_goal'(this(Temp), This=Temp, Ctx), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_body'(self(Self), true, '$lgt_dbg_goal'(self(Temp), Self=Temp, Ctx), Ctx) :-
 	!,
-	'$lgt_self'(Ctx, Self).
+	'$lgt_ctx_self'(Ctx, Self).
 
 '$lgt_tr_body'(parameter(Arg, Value), TPred, '$lgt_dbg_goal'(parameter(Arg, Temp), DPred, Ctx), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This),
+	'$lgt_ctx_this'(Ctx, This),
 	(var(This) ->
 		TPred = arg(Arg, This, Value),	% when using parameter/2 in categories
 		DPred = (TPred, Temp=Value)
@@ -4634,7 +4634,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_msg'(Pred, Obj, TPred, Ctx) :-
 	var(Pred) ->											% translation performed at runtime
 		!,
-		'$lgt_this'(Ctx, This),
+		'$lgt_ctx_this'(Ctx, This),
 		('$lgt_compiler_option'(events, on) ->
 			TPred = '$lgt_send_to_object'(Obj, Pred, This)
 			;
@@ -4667,19 +4667,19 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_tr_msg'(!, Obj, ('$lgt_obj_exists'(Obj, !, This), !), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_msg'(true, Obj, ('$lgt_obj_exists'(Obj, true, This), true), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_msg'(fail, Obj, ('$lgt_obj_exists'(Obj, fail, This), fail), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_msg'(repeat, Obj, ('$lgt_obj_exists'(Obj, repeat, This), repeat), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_msg'(call(Pred), Obj, TPred, Ctx) :-
 	!,
@@ -4696,7 +4696,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_tr_msg'(throw(Error), Obj, ('$lgt_obj_exists'(Obj, throw(Error), This), throw(Error)), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 
 % built-in metapredicates
@@ -4723,60 +4723,60 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_tr_msg'(current_predicate(Pred), Obj, '$lgt_current_predicate'(Obj, Pred, This, p(p(p))), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_msg'(predicate_property(Pred, Prop), Obj, '$lgt_predicate_property'(Obj, Pred, Prop, This, p(p(p))), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 
 % database handling built-in predicates
 
 '$lgt_tr_msg'(abolish(Pred), Obj, '$lgt_abolish'(Obj, Pred, This, p(p(p))), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_msg'(asserta(Pred), Obj, '$lgt_asserta'(Obj, Pred, This, p(p(p))), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_msg'(assertz(Pred), Obj, '$lgt_assertz'(Obj, Pred, This, p(p(p))), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_msg'(clause(Head, Body), Obj, '$lgt_clause'(Obj, Head, Body, This, p(p(p))), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_msg'(retract(Pred), Obj, '$lgt_retract'(Obj, Pred, This, p(p(p))), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_msg'(retractall(Pred), Obj, '$lgt_retractall'(Obj, Pred, This, p(p(p))), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 
 % DCG predicates
 
 '$lgt_tr_msg'(expand_term(Term, Clause), Obj, '$lgt_expand_term'(Obj, Term, Clause, This, p(p(p))), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_msg'(phrase(Ruleset, List), Obj, '$lgt_phrase'(Obj, Ruleset, List, This, p(p(p))), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_msg'(phrase(Ruleset, List, Rest), Obj, '$lgt_phrase'(Obj, Ruleset, List, Rest, This, p(p(p))), Ctx) :-
 	!,
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This).
 
 
 % message is not a built-in control construct or a call to a built-in 
 % (meta-)predicate: translation performed at runtime
 
 '$lgt_tr_msg'(Pred, Obj, TPred, Ctx) :-
-	'$lgt_this'(Ctx, This),
+	'$lgt_ctx_this'(Ctx, This),
 	(var(Obj) ->
 		('$lgt_compiler_option'(events, on) ->
 			TPred = '$lgt_send_to_object'(Obj, Pred, This)
@@ -4798,8 +4798,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_self_msg'(Pred, '$lgt_send_to_self'(Self, Pred, This), Ctx) :-
 	var(Pred) ->					% translation performed at runtime
 		!,
-		'$lgt_this'(Ctx, This),
-		'$lgt_self'(Ctx, Self)
+		'$lgt_ctx_this'(Ctx, This),
+		'$lgt_ctx_self'(Ctx, Self)
 		;
 		(\+ callable(Pred) ->		% invalid message
 			throw(type_error(callable, Pred))).
@@ -4879,64 +4879,64 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_tr_self_msg'(current_predicate(Pred), '$lgt_current_predicate'(Self, Pred, This, p(_)), Ctx) :-
 	!,
-	'$lgt_self'(Ctx, Self),
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_self'(Ctx, Self),
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_self_msg'(predicate_property(Pred, Prop), '$lgt_predicate_property'(Self, Pred, Prop, This, p(_)), Ctx) :-
 	!,
-	'$lgt_self'(Ctx, Self),
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_self'(Ctx, Self),
+	'$lgt_ctx_this'(Ctx, This).
 
 
 % database handling built-in predicates
 
 '$lgt_tr_self_msg'(abolish(Pred), '$lgt_abolish'(Self, Pred, This, p(_)), Ctx) :-
 	!,
-	'$lgt_self'(Ctx, Self),
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_self'(Ctx, Self),
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_self_msg'(asserta(Pred), '$lgt_asserta'(Self, Pred, This, p(_)), Ctx) :-
 	!,
-	'$lgt_self'(Ctx, Self),
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_self'(Ctx, Self),
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_self_msg'(assertz(Pred), '$lgt_assertz'(Self, Pred, This, p(_)), Ctx) :-
 	!,
-	'$lgt_self'(Ctx, Self),
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_self'(Ctx, Self),
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_self_msg'(clause(Head, Body), '$lgt_clause'(Self, Head, Body, This, p(_)), Ctx) :-
 	!,
-	'$lgt_self'(Ctx, Self),
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_self'(Ctx, Self),
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_self_msg'(retract(Pred), '$lgt_retract'(Self, Pred, This, p(_)), Ctx) :-
 	!,
-	'$lgt_self'(Ctx, Self),
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_self'(Ctx, Self),
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_self_msg'(retractall(Pred), '$lgt_retractall'(Self, Pred, This, p(_)), Ctx) :-
 	!,
-	'$lgt_self'(Ctx, Self),
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_self'(Ctx, Self),
+	'$lgt_ctx_this'(Ctx, This).
 
 
 % DCG predicates
 
 '$lgt_tr_self_msg'(expand_term(Term, Clause), '$lgt_expand_term'(Self, Term, Clause, This, p(_)), Ctx) :-
 	!,
-	'$lgt_self'(Ctx, Self),
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_self'(Ctx, Self),
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_self_msg'(phrase(Ruleset, List), '$lgt_phrase'(Self, Ruleset, List, This, p(_)), Ctx) :-
 	!,
-	'$lgt_self'(Ctx, Self),
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_self'(Ctx, Self),
+	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_self_msg'(phrase(Ruleset, List, Rest), '$lgt_phrase'(Self, Ruleset, List, Rest, This, p(_)), Ctx) :-
 	!,
-	'$lgt_self'(Ctx, Self),
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_self'(Ctx, Self),
+	'$lgt_ctx_this'(Ctx, This).
 
 
 % message is not a built-in control construct or a call to a built-in 
@@ -4944,8 +4944,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_tr_self_msg'(Pred, '$lgt_send_to_self_nv'(Self, Pred, This), Ctx) :-
 	!,
-	'$lgt_self'(Ctx, Self),
-	'$lgt_this'(Ctx, This).
+	'$lgt_ctx_self'(Ctx, Self),
+	'$lgt_ctx_this'(Ctx, This).
 
 
 
@@ -4986,12 +4986,12 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		TPred = '$lgt_send_to_super_nv'(Self, Pred, This, Sender)).
 
 
-% '$lgt_metavars'(+callable, -list)
+% '$lgt_pred_metavars'(+callable, -list)
 %
 % constructs a list of all variables that occur
 % in a position corresponding to a meta-argument
 
-'$lgt_metavars'(Pred, Metavars) :-
+'$lgt_pred_metavars'(Pred, Metavars) :-
 	functor(Pred, Functor, Arity),
 	functor(Meta, Functor, Arity),
 	('$lgt_pp_metapredicate_'(Meta) ->
@@ -5003,12 +5003,12 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 
-% '$lgt_metavars'(+callable, +callable, -list)
+% '$lgt_pred_metavars'(+callable, +callable, -list)
 %
 % constructs a list of all variables that occur
 % in a position corresponding to a meta-argument
 
-'$lgt_metavars'(Pred, Meta, Metavars) :-
+'$lgt_pred_metavars'(Pred, Meta, Metavars) :-
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
 	'$lgt_extract_metavars'(Args, MArgs, Metavars).
@@ -7265,15 +7265,15 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_context'(context(Sender, This, Self, Prefix, Metavars), Sender, This, Self, Prefix, Metavars).
 
-'$lgt_sender'(context(Sender, _, _, _, _), Sender).
+'$lgt_ctx_sender'(context(Sender, _, _, _, _), Sender).
 
-'$lgt_this'(context(_, This, _, _, _), This).
+'$lgt_ctx_this'(context(_, This, _, _, _), This).
 
-'$lgt_self'(context(_, _, Self, _, _), Self).
+'$lgt_ctx_self'(context(_, _, Self, _, _), Self).
 
-'$lgt_prefix'(context(_, _, _, Prefix, _), Prefix).
+'$lgt_ctx_prefix'(context(_, _, _, Prefix, _), Prefix).
 
-'$lgt_metavars'(context(_, _, _, _, Metavars), Metavars).
+'$lgt_ctx_metavars'(context(_, _, _, _, Metavars), Metavars).
 
 
 
