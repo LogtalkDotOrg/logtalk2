@@ -12,8 +12,11 @@ to PDF files, to be viewed in a web browser that supports the W3C standards
 XML, XSLT, CSS, and HTML 4 or XHTML 1.0, or to be converted to LateX for 
 printing.
 
-You will need to either copy your .xml files to this directory or copy
-these files to the directory where the .xml files reside.
+The scripts provided in this folder are just samples which you should adapt 
+to your working environment. Some scripts expect that all files be in the 
+same directory. Some others should be called from the directory containing 
+the XML documenting files that you wish to convert. See the description of 
+each script below for details.
 
 Regarding conversion to HTML/XHTML, the links to the .xsl files on the 
 .xml files and the links to the .css files in the generated .html files 
@@ -116,7 +119,9 @@ xhtml.sh
 	converted files. The title of the index.html file can be given as a parameter 
 	to the script. Edit the scripts to match your environment before running them. 
 	Requires James Clark XT XSLT processor 20020426a or later version 
-	(http://www.jclark.com/xml/).
+	(http://www.jclark.com/xml/). You will need either to copy your .xml files to 
+	this directory or to copy these files to the directory where the .xml files 
+	reside.
 
 
 htmlnt.cmd
@@ -127,6 +132,8 @@ htmlnt.cmd
 	to the script. Edit the script to match your environment before running 
 	it and to chose between HTML or XHTML output. Requires James Clark XT 
 	XSLT processor 20020426a or later version (http://www.jclark.com/xml/).
+	You will need either to copy your .xml files to this directory or to copy 
+	these files to the directory where the .xml files reside.
 
 
 htmldos.bat
@@ -134,7 +141,9 @@ htmldos.bat
 	Sample DOS batch script to convert .xml files to .html files. Edit the 
 	script to match your environment before running it and to chose between 
 	HTML or XHTML output. Requires James Clark XT XSLT processor 20020426a 
-	or later version (http://www.jclark.com/xml/).
+	or later version (http://www.jclark.com/xml/). You will need either to 
+	copy your .xml files to this directory or to copy these files to the 
+	directory where the .xml files reside.
 
 
 pdf.sh
@@ -144,7 +153,9 @@ pdf.sh
 	before running it. Requires Apache FOP processor (http://xml.apache.org/fop).
 	Tested with version 0.20.5 (to workaround a bug on the XALAN processor used 
 	by FOP, you should use the compiler option doctype(standalone) when compiling 
-	your Logtalk source files).
+	your Logtalk source files). You will need either to copy your .xml files to 
+	this directory or to copy these files to the directory where the .xml files 
+	reside.
 
 
 pdf.bat
@@ -154,7 +165,9 @@ pdf.bat
 	before running it. Requires Apache FOP processor (http://xml.apache.org/fop).
 	Tested with version 0.20.5 (to workaround a bug on the XALAN processor used 
 	by FOP, you should use the compiler option doctype(standalone) when compiling 
-	your Logtalk source files).
+	your Logtalk source files). You will need either to copy your .xml files to 
+	this directory or to copy these files to the directory where the .xml files 
+	reside.
 
 
 lgt2a4pdf.sh
@@ -166,6 +179,8 @@ lgt2uspdf.sh
 	compiler option doctype(standalone) when compiling your Logtalk source files).
 	These scripts assume that the LOGTALKHOME environment variable is defined and 
 	that the FOP processor is available with the name "fop" in the path.
+	These scripts should be called from the directory containing the .xml files 
+	you wish to convert.
 
 
 lgt2html.sh
@@ -178,6 +193,8 @@ lgt2xhtml.sh
 	(http://xmlsoft.org/XSLT/).
 	These scripts assume that the LOGTALKHOME environment variable is defined and 
 	that the libxslt processor is available with the name "xsltproc" in the path.
+	These scripts should be called from the directory containing the .xml files 
+	you wish to convert.
 
 
 Note that you can write other XSLT files for converting the XML files to 
