@@ -349,6 +349,19 @@ Qu-Prolog 4.3, 6.3
 	
 	find lgt2160 -name "*.lgt" -exec perl -i -e "s/version is (\d)\.(\d)/version is '\1\.\2'/" {} \;
 
+	In order to compile and load both the config file and the Logtalk compiler,
+	the following sequence of steps is advised. First rename the config file:
+		
+		% cd configs; mv qu63.config qu63.ql
+	
+	Second, start Qu-Prolog and compile and load the config file using:
+	
+		| ?- fcompile('qu63.ql', [assemble_only(true)]), load(qu63).
+
+	Next, compile and load the Logtalk compiler:
+
+		| ?- chdir('../compiler/'), fcompile('logtalk.pl', [assemble_only(true)]), load(logtalk).
+		
 	Don't forget to use the chdir/1 predicate to set the working directory 
 	before loading the library or an example.
 
