@@ -146,6 +146,8 @@ lgt2html.js
 			http://xml.apache.org/xalan-c/index.html
 		* Sablotron (tested with version 1.0.1)
 			http://www.gingerall.com/charlie/ga/xml/p_sab.xml
+		* Microsoft MSXSL (only for the JScript script)
+			http://msdn.microsoft.com/library/en-us/dnxml/html/msxsl.asp
 
 	These scripts assumes that the LOGTALKHOME environment variable is defined 
 	and that the chosen XSLT processor is available in the path.

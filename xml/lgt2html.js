@@ -43,7 +43,8 @@ var directory = WshShell.CurrentDirectory;
 var index_file = "index.html";
 var index_title = "Entity documentation index";
 
-var processor = "xsltproc";
+var processor = "msxsl";
+// var processor = "xsltproc";
 // var processor = "xalan";
 // var processor = "sabcmd";
 
@@ -117,6 +118,9 @@ for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
 		WScript.Echo("  converting " + file);
 		var html_file = directory + "\\" + fso.GetBaseName(file) + ".html";
 		switch (processor) {
+			case "msxsl" :
+				WshShell.Run("msxsl -o " + html_file + " " + file + " " + xslt, true);
+				break;
 			case "xsltproc" :
 				WshShell.Run("xsltproc -o " + html_file + " " + xslt + " " + file, true);
 				break;
