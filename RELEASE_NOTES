@@ -10,20 +10,23 @@ RELEASE NOTES
 =============
 
 
-2.21.7 - November ??, 2004
+2.22.0 - November 29, 2004
 
-	Added experimental support to the built-in predicates logtalk_compile/1-2 
-	and logtalk_load/1-2 for specifying entities using the compound term format 
-	<library>(<entity>).
+	Implemented a notion of library as simply a directory containing source 
+	files. Added a new dynamic predicate, logtalk_library_path/2, for 
+	specifying library paths. Added template files for setting library paths 
+	for the Logtalk standard library and for all the supplied examples.
 
-	Added new dynamic predicate logtalk_library_path/2 for specifying a table of 
-	library paths.
+	Added support for using the notation <library>(<entity>) with the built-in
+	predicates logtalk_compile/1-2 and logtalk_load/1-2 for compiling and 
+	loading source files contained on a library, without the need to first 
+	change the current working directory.
 
-	Added utility predicates for querying and changing the current working 
-	directory to all configuration files.
+	Added utility predicates to all configuration files for querying and 
+	changing the current working directory.
 
-	Corrected a bug in the checking code for file existence when compiling or 
-	loading entities.
+	Corrected a bug in the code that checks for file existence when compiling 
+	or loading source files and source metafiles.
 
 
 2.21.6 - November 15, 2004
