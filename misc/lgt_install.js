@@ -35,7 +35,10 @@ WScript.Echo("");
 
 WshSystemEnv.Item("PATH") = WshSystemEnv.Item("PATH") + ";%LOGTALKHOME%\\misc";
 WScript.Echo("Added Logtalk misc directory to the system PATH environment variable.");
-WshUserEnv.Item("PATH") = WshUserEnv.Item("PATH") + ";%LOGTALKUSER%\\xml";
+if (WshUserEnv.Item("PATH"))
+	WshUserEnv.Item("PATH") = WshUserEnv.Item("PATH") + ";%LOGTALKUSER%\\xml";
+else
+	WshUserEnv.Item("PATH") = "%LOGTALKUSER%\\xml";	
 WScript.Echo("Added Logtalk xml directory to the user PATH environment variable.");
 WScript.Echo("");
 
@@ -59,55 +62,55 @@ link.Save();
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk HTML Documentation.lnk");
 
 link.Description = "Browse Logtalk Documentation";
-link.TargetPath = "\%LOGTALKHOME\%\\manuals\\index.html";
+link.TargetPath = WshShell.CurrentDirectory + "\\manuals\\index.html";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk ReadMe.lnk");
 
 link.Description = "Open Logtalk ReadMe";
-link.TargetPath = "\%LOGTALKHOME\%\\README.txt";
+link.TargetPath = WshShell.CurrentDirectory + "\\README.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Quick Start.lnk");
 
 link.Description = "Open Logtalk Quick Start";
-link.TargetPath = "\%LOGTALKHOME\%\\QUICK_START.txt";
+link.TargetPath = WshShell.CurrentDirectory + "\\QUICK_START.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Bibliography.lnk");
 
 link.Description = "Open Logtalk Bibliography";
-link.TargetPath = "\%LOGTALKHOME\%\\BIBLIOGRAPHY.txt";
+link.TargetPath = WshShell.CurrentDirectory + "\\BIBLIOGRAPHY.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk License.lnk");
 
 link.Description = "Open Logtalk License";
-link.TargetPath = "\%LOGTALKHOME\%\\LICENSE.txt";
+link.TargetPath = WshShell.CurrentDirectory + "\\LICENSE.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Release Notes.lnk");
 
 link.Description = "Open Logtalk Release Notes";
-link.TargetPath = "\%LOGTALKHOME\%\\RELEASE_NOTES.txt";
+link.TargetPath = WshShell.CurrentDirectory + "\\RELEASE_NOTES.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Upgrading.lnk");
 
-link.Description = "Open Logtalk Upgrading";
-link.TargetPath = "\%LOGTALKHOME\%\\UPGRADING.txt";
+link.Description = "Open Logtalk Upgrading instructions";
+link.TargetPath = WshShell.CurrentDirectory + "\\UPGRADING.txt";
 link.Save();
 
 WScript.Echo('Logtalk installation completed. You will need to restart in order');
 WScript.Echo('to activate the new system environment variables and use the items');
 WScript.Echo('in the new Logtalk program group.');
 WScript.Echo('');
-WScript.Echo('Users should run the shell script cplgtdirs in order to copy the');
-WScript.Echo('Logtalk user-modifiable files to their home directories.');
-WScript.Echo('');
-WScript.Echo('The path to the batch script cplgtdirs has been added to the system');
-WScript.Echo('path environment variable. The path to the batch scripts lgt2pdf and');
-WScript.Echo('lgt2html scripts has been added to the user path environment variable.');
+WScript.Echo('Users should run the batch script cplgtdirs in order to copy the');
+WScript.Echo('Logtalk user-modifiable files to their home directories. The path');
+WScript.Echo('to the cplgtdirs script directory has been added to the system');
+WScript.Echo('path environment variable. The path to the lgt2pdf and lgt2html');
+WScript.Echo('batch scripts directory has been added to the user path environment');
+WScript.Echo('variable.');
 WScript.Echo('');
 
 WScript.Quit(0);
