@@ -2517,7 +2517,12 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 '$lgt_compile_entity'(Entity) :-
 	('$lgt_compiler_option'(report, on) ->
-		nl, write('>>> compiling '), writeq(Entity), write('...'), nl
+		nl, write('>>> compiling '), writeq(Entity),
+		('$lgt_compiler_option'(debug, on) ->
+			write(' in debug mode...')
+			;
+			write('...')),
+		nl
 		;
 		true),
 	'$lgt_clean_up',
