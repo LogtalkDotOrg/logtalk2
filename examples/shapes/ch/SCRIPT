@@ -6,6 +6,14 @@ Copyright (c) 1998-2003 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
+| ?- square::nsides(N).
+
+! error(
+    existence_error(predicate_declaration, nsides(_)),
+    square::nsides(N),
+    user)
+
+
 | ?- q1::(color(Color), side(Side), position(X, Y)).
 
 Color = red

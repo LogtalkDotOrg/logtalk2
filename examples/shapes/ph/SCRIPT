@@ -6,6 +6,18 @@ Copyright (c) 1998-2003 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
+| ?- square::nsides(N).
+
+N = 4
+yes
+
+
+| ?- square::area(A).
+
+A = 1
+yes
+
+
 | ?- q1::(color(Color), side(Side), position(X, Y)).
 
 Color = red
