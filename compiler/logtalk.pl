@@ -1549,7 +1549,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 
-% 
+% get or set declaration for asserted predicate
 
 '$lgt_assert_pred_dcl'(Dcl, _, Pred, _, PScope, Type, Meta, SCtn) :-
 	'$lgt_call'(Dcl, Pred, PScope, Type, Meta, SCtn, _),
@@ -1561,7 +1561,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 
-% 
+% get or set compiled call for asserted predicate
 
 '$lgt_assert_pred_to_call'(Def, _, _, Pred, Sender, This, Self, Call) :-
 	'$lgt_call'(Def, Pred, Sender, This, Self, Call),
