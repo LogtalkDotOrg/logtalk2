@@ -186,11 +186,8 @@ Obj::Pred :-
 	(('$lgt_dbg_debugging_', '$lgt_debugging_'(Obj)) ->
 		catch(
 			'$lgt_dbg_goal'(Obj::Pred, Call, Ctx),
-			Error,
-			(Error = error(logtalk_debugger_aborted) ->
-				write('Debugging session aborted by user. Debugger still on.'), nl, fail
-				;
-				throw(Error)))
+			error(logtalk_debugger_aborted),
+			(write('Debugging session aborted by user. Debugger still on.'), nl, fail))
 		;
 		call(Call)).
 
