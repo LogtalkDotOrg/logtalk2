@@ -57,6 +57,7 @@
 		(modify-syntax-entry ?* ". 23b" logtalk-mode-syntax-table)
 		(modify-syntax-entry ?% "<" logtalk-mode-syntax-table)
 		(modify-syntax-entry ?\n ">" logtalk-mode-syntax-table)
+		(modify-syntax-entry ?\' "w" logtalk-mode-syntax-table)
 		logtalk-mode-syntax-table)
 	"Syntax table for logtalk-mode")
 
@@ -233,10 +234,8 @@
 		("\\<\\(0x[a-fA-F0-9]+\\)\\>" 1 'logtalk-number-face)
 		("\\<\\(0o[0-7]+\\)\\>" 1 'logtalk-number-face)
 		("\\<\\(0b[0-1]+\\)\\>" 1 'logtalk-number-face)
-;;		("\\<\\(0['][a-zA-Z0-9]\\)\\>" 1 'logtalk-number-face)
-;;		("\\<\\([0-9]+[.][0-9]+[eE][-+][1-9][0-9]+\\)\\>" 1 'logtalk-number-face)
-		("\\<\\([0-9]+[.][0-9]+\\)\\>" 1 'logtalk-number-face)
-		("\\<\\([0-9]+\\)\\>" 1 'logtalk-number-face)
+		("\\<\\(0['][a-zA-Z0-9]\\)\\>" 1 'logtalk-number-face)
+		("\\<\\([0-9]+\\(\\([.][0-9]+\\)?\\([eE][+-][0-9]+\\)?\\)?\\)\\>" 1 'logtalk-number-face)
 	))
 
 
@@ -256,7 +255,6 @@
 		logtalk-font-lock-variables
 		logtalk-font-lock-numbers
 	))
-
 
 
 ;; entry function
