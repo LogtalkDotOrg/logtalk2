@@ -11,4 +11,14 @@ To load all entities in this example compile and load the loader file:
 | ?- logtalk_load(loader).
 
 This example contains simple meta-interpreters for pure Prolog encapsulated 
-in Logtalk objects.
+in Logtalk objects:
+
+	solver
+		simple meta-interpreter for pure Prolog
+
+	proof_tree
+		simple meta-interpreter for pure Prolog returning the proof tree
+		for successful queries
+
+	tracer
+		simple meta-interpreter for pure Prolog that traces proof construction
