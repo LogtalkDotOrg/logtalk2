@@ -10,13 +10,15 @@ RELEASE NOTES
 =============
 
 
-2.9.1 - October 29, 2001
+2.9.1 - November ??, 2001
 
 	Corrected a compiler bug in the error checking code for the info/1 
 	and info/2 directives.
 
 	Changed the order of object loading in the "mi" example to avoid 
 	suporious warning messages.
+	
+	Added a new problem ("bridge") to the "searching" example.
 
 
 2.9.0 - October 22, 2001
