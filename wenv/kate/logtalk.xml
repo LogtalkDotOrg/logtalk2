@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 
-<language name="Logtalk" version="1.0" kateversion="2.2" section="Sources" extensions="*.lgt" mimetype="text/x-logtalk">
+<language name="Logtalk" version="1.0" kateversion="2.2" section="Sources" extensions="*.lgt;*.loader" mimetype="text/x-logtalk">
 
     <highlighting>
 
         <contexts>
 
             <context name="normal" attribute="Normal" lineEndContext="#stay">
-                <keyword attribute="Operator" context="#stay" String="operators"/>
-
+				<!-- Directives -->
                 <RegExpr String = "^[\s]*:-" attribute="Normal" context="directive" />
-
 				<!-- Event handlers -->
                 <RegExpr String = "\b(after|before)(?=(?=[(]))" attribute="Built-in" context="#stay" />
 				<!-- Method execution context -->
@@ -80,9 +78,8 @@
                 <RegExpr String = "\b(set_prolog_flag|current_prolog_flag)(?=[(])" attribute="Built-in" context="#stay" />
                 <RegExpr String = "\bhalt\b" attribute="Built-in" context="#stay" />
                 <RegExpr String = "\bhalt(?=[(])" attribute="Built-in" context="#stay" />
-
+				<!-- Variables -->
                 <RegExpr String = "\b[A-Z_][A-Za-z0-9_]*" attribute = "Variable" context="#stay"/>
-
 				<!-- Comments -->
                 <DetectChar attribute="Comment" context="single line comment" char="%"/>
                 <Detect2Chars attribute="Comment" context="multiline comment" char="/" char1="*"/>
@@ -155,7 +152,6 @@
                 <StringDetect String = "@" attribute="Operator" context="#stay" />
 				<!-- Clause operator -->
                 <StringDetect String = ":-" attribute="Normal" context="#stay" />
-
             </context>
 
             <context name="directive" attribute="Directive" lineEndContext="#stay">
@@ -165,11 +161,11 @@
  				<!-- Predicate scope directives -->
                 <RegExpr String = "\b(public|protected|private)(?=[(])" attribute="Directive" context="#pop" />
 				<!-- Other directives -->
-                <RegExpr String = "\b(initialization)(?=[(])" attribute="Directive" context="#pop" />
+                <RegExpr String = "\binitialization(?=[(])" attribute="Directive" context="#pop" />
                 <RegExpr String = "\b(info|mode)(?=[(])" attribute="Directive" context="#pop" />
                 <RegExpr String = "\bdynamic[.]" attribute="Directive" context="#pop" />
 				<RegExpr String = "\b(dynamic|discontiguous|metapredicate)(?=[(])" attribute="Directive" context="#pop" />
-                <RegExpr String = "\b(op)(?=[(])" attribute="Directive" context="#pop" />
+                <RegExpr String = "\bop(?=[(])" attribute="Directive" context="#pop" />
                 <RegExpr String = "\b(calls|uses)(?=[(])" attribute="Directive" context="#pop" />
             </context>
 
