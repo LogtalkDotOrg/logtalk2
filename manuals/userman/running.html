@@ -126,23 +126,19 @@ You can use the following options:
 </dl>
 <dl>
 	<dt><code>xmlspec(Option)</code></dt>
-		<dd>Defines the XML documenting files specification format. Possible option values are <code>dtd</code> (for the DTD specification; the usual default) and <code>xsd</code> (for the XML Schema specification).</dd>
+		<dd>Defines the XML documenting files specification format. Possible option values are <code>dtd</code> (for the DTD specification; the usual default) and <code>xsd</code> (for the XML Schema specification). Most XSL processors support DTDs but only some of them support XML Schemes.</dd>
 </dl>
 <dl>
 	<dt><code>doctype(Option)</code></dt>
-		<dd>Sets the DOCTYPE reference in the automatically generated XML documenting files. The default value is <code>local</code>, that is, the DOCTYPE reference points to a local DTD or XSD file (respectively, <code>logtalk.dtd</code> or <code>logtalk.xsd</code>), residing in the same directory as the XML file. Other possible values are <code>web</code> (DOCTYPE reference points to an web location, either <code>http://www.logtalk.org/xml/1.2/logtalk.dtd</code> or <code>http://www.logtalk.org/xml/1.2/logtalk.xsd</code>), and <code>standalone</code> (no DOCTYPE reference in the XML documenting files). The most appropriated option value depends on the XSL processor you intend to use.</dd>
+		<dd>Sets the DOCTYPE reference in the automatically generated XML documenting files. The default value is <code>local</code>, that is, the DOCTYPE reference points to a local DTD or XSD file (respectively, <code>logtalk.dtd</code> or <code>logtalk.xsd</code>), residing in the same directory as the XML file. Other possible values are <code>web</code> (DOCTYPE reference points to an web location, either <code>http://www.logtalk.org/xml/1.2/logtalk.dtd</code> or <code>http://www.logtalk.org/xml/1.2/logtalk.xsd</code>), and <code>standalone</code> (no DOCTYPE reference in the XML documenting files). The most appropriated option value depends on the XSL processor you intend to use. Some of them are buggy an may not work with the default option value.</dd>
 </dl>
 <dl>
 	<dt><code>xsl(File)</code></dt>
-		<dd>Sets the XSLT file to be used with the automatically generated XML documenting files. The default value is <code>lgtxml.xsl</code>, which allows the XML files to be viewed by simply opening them with recent versions of web navigators (after copying the <code>lgtxml.xsl</code> and of the <code>logtalk.css</code> files to the directory containing the XML files).</dd>
+		<dd>Sets the XSLT file to be used with the automatically generated XML documenting files. The default value is <code>lgtxml.xsl</code>, which allows the XML files to be viewed by simply opening them with recent versions of web navigators which support XSLT transformations (after copying the <code>lgtxml.xsl</code> and of the <code>logtalk.css</code> files to the directory containing the XML files).</dd>
 </dl>
 <dl>
 	<dt><code>report(Option)</code></dt>
 		<dd>Controls reporting of each compiled or loaded object, category, or protocol (including compilation and loading warnings). Possible option values are <code>on</code> (the usual default) and <code>off</code> (silent compilation and loading).</dd>
-</dl>
-<dl>
-	<dt><code>iso_initialization_dir(Option)</code></dt>
-		<dd>Controls the use of the <code>initialization/1</code> directive in the Logtalk generated Prolog code. Possible option values are <code>true</code> (if the Prolog compiler supports the ISO specification of the directive) and <code>false</code> (if the Prolog compiler either does not implement the directive or if the implementation does not conform to the ISO standard).</dd>
 </dl>
 <dl>
 	<dt><code>smart_compilation(Option)</code></dt>
@@ -154,7 +150,7 @@ You can use the following options:
 </dl>
 <dl>
 	<dt><code>debug(Option)</code></dt>
-		<dd>Controls the compilation of source files in debug mode. Possible option values are <code>on</code> and <code>off</code> (the usual default).</dd>
+		<dd>Controls the compilation of source files in debug mode (the Logtalk built-in debugger can only be used with files compiled in this mode). Possible option values are <code>on</code> and <code>off</code> (the usual default).</dd>
 </dl>
 </blockquote>
 <p>

@@ -6800,9 +6800,10 @@ current_logtalk_flag(version, version(2, 19, 2)).
 %
 % true if the argument is a read only Logtalk flag
 
+'$lgt_read_only_flag'(iso_initialization_dir).
 '$lgt_read_only_flag'(startup_message).
-'$lgt_read_only_flag'(version).
 '$lgt_read_only_flag'(supports_break_predicate).
+'$lgt_read_only_flag'(version).
 
 
 
