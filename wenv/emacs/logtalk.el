@@ -4,7 +4,7 @@
 
 ;; Author: Paulo Moura
 ;; Creation date: November 15, 2003
-;; Last modification date: January 31, 2004
+;; Last modification date: February 2, 2004
 ;; Version: 0.5
 
 ;; Installation:
@@ -58,7 +58,6 @@
 		(modify-syntax-entry ?% "<" logtalk-mode-syntax-table)
 		(modify-syntax-entry ?\n ">" logtalk-mode-syntax-table)
 		(modify-syntax-entry ?\' "w" logtalk-mode-syntax-table)
-		(modify-syntax-entry ?- "w" logtalk-mode-syntax-table)
 		logtalk-mode-syntax-table)
 	"Syntax table for logtalk-mode")
 
@@ -173,7 +172,9 @@
 		;; evaluable functors:
 		;;
 		("\\(abs\\|ceiling\\|flo\\(?:at\\(?:_\\(?:\\(?:fractional\\|integer\\)_part\\)\\)?\\|or\\)\\|mod\\|r\\(?:em\\|ound\\)\\|sign\\|truncate\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("//\\|[*+/-]" . 'logtalk-built-in-predicate-face)
+		("//\\|[*/]" . 'logtalk-built-in-predicate-face)
+		("\\([^eE]\\)\\([+]\\)" 2 'logtalk-built-in-predicate-face)
+		("\\([^:eE]\\)\\([-]\\)" 2 'logtalk-built-in-predicate-face)
 		("\\<\\(rem\\|mod\\)\\>" . 'logtalk-built-in-predicate-face)
 		;;
 		;; other arithemtic functors:
@@ -217,11 +218,14 @@
 
 (setq logtalk-font-lock-operators
 	'(
-		("::\\|\\^\\^\\|[{}]" . 'logtalk-message-operator-face)
 		;;
 		;; clause operator:
 		;;
 		(":-" . 'logtalk-default-face)
+		;;
+		;; message sending operators:
+		;;
+		("::\\|\\^\\^\\|[{}]" . 'logtalk-message-operator-face)
 		;;
 		;; mode operators:
 		;;
