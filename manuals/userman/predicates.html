@@ -457,6 +457,34 @@ In most cases, the predicates resulting from the translation of the grammar rule
 <p>
 In the body of a grammar rule, we can call rules that are inherited from ancestor objects (or imported categories) or contained in other objects. This is accomplished by using non-terminals as messages. Using a non-terminal as a message to self allows us to call grammar rules in categories and ancestor objects. To call grammar rules encapsulated in other objects, we use a non-terminal as a message to those objects. Along with the message sending operators (<code>::/1</code> and <code>::/2</code>), we may also use other control constructs such as <code>\+/1</code>, <code>!/0</code>, <code>;/2</code>, <code>->/2</code>, and <code>{}/1</code> in the body of a grammar. In addition, grammar rules may contain metacalls (a variable taking the place of a non-terminal), which are translated to calls of the built-in method <code>phrase/3</code>. 
 </p>
+<p>
+You may have noticed that Logtalk defines <code>{}/1</code> as a control construct for bypassing the compiler when compiling a clause body goal. As exemplified above, this is the same control construct that is used in grammar rules for bypassing the expansion of rule body goals when a rule is converted into a clause. Both control constructs can be combined in order to call a goal from a grammar rule body, while bypassing at the same time the Logtalk compiler. Consider the following example:
+</p>
+<pre>
+    bar :-
+        write('bar predicate called'), nl.
+
+
+    :- object(dcgtest).
+
+        :- public(foo/2).
+
+        foo --> {{bar}}.
+
+    :- end_object.
+</pre>
+<p>
+After compiling and loading this code, we may try the following query:
+</p>
+<pre>
+    | ?- dcgtest::foo(_, _).
+    
+    bar predicate called
+    yes
+</pre>
+<p>
+This is the expected result as the expansion of the grammar rule into a clause leves the <code>{bar}</code> goal untouched, which, in turn, is converted into the goal <code>bar</code> when the clause is compiled.
+</p>
 
 <h2>Built-in object predicates (methods)<a name="methods"></a></h2>
 
