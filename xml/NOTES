@@ -54,7 +54,7 @@ lgtpdfa4.xsl lgtpdfus.xsl
 
 	XSLT files to generate PDF files from the .xml files (formatted either 
 	for A4 paper or US Letter paper) using XSL Formatting Objects. Tested 
-	with the XSL:FO processors Apache FOP 0.20.4 (http://xml.apache.org/fop), 
+	with the XSL:FO processors Apache FOP 0.20.5 (http://xml.apache.org/fop), 
 	PassiveTeX 1.21 (http://www.tei-c.org.uk/Software/passivetex/), and 
 	RenderX 2.77 (http://www.renderx.com/).
 
@@ -124,18 +124,16 @@ pdf.sh
 
 	Sample Unix shell script to batch convert .xml files to .pdf files.
 	Edit the script to match your environment and paper format preference 
-	before running it.
-	Requires Apache FOP processor (http://xml.apache.org/fop). Tested with 
-	version 0.20.4.
+	before running it. Requires Apache FOP processor (http://xml.apache.org/fop).
+	Tested with version 0.20.5.
 
 
 pdf.bat
 
 	Sample DOS batch script to convert .xml files to .pdf files.
 	Edit the script to match your environment and paper format preference 
-	before running it.
-	Requires Apache FOP processor (http://xml.apache.org/fop). Tested with 
-	version 0.20.4.
+	before running it. Requires Apache FOP processor (http://xml.apache.org/fop).
+	Tested with version 0.20.5.
 
 
 Note that you can write other XSLT files for converting the XML files to 
