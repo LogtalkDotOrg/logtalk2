@@ -14,7 +14,8 @@ RELEASE NOTES
 
 	The Logtalk compiler can now print a warning when compiling source files 
 	that use non-ISO defined built-in predicates using a new portability/1 
-	compiler option. Updated the relevant sections of the user manual.
+	compiler option. Updated the relevant sections of the user manual and the 
+	errors example.
 
 	Corrected a compiler bug where the entity relation tables only recorded 
 	the last entry per entity relation type.
