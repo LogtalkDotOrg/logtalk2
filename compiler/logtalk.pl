@@ -8548,6 +8548,8 @@ current_logtalk_flag(version, version(2, 22, 3)).
 	write('  Support for break/0 predicate (supports_break_predicate): '), writeq(Break), nl,
 	'$lgt_default_flag'(iso_initialization_dir, ISO),
 	write('  ISO initialization/1 directive (iso_initialization_dir):  '), write(ISO), nl,
+	'$lgt_default_flag'(startup_message, Startup),
+	write('  Startup message (startup_message):                        '), write(Startup), nl,
 	'$lgt_default_flag'(altdirs, Altdirs),
 	write('  Alternative directories (altdirs):                        '), write(Altdirs), nl, nl.
 
