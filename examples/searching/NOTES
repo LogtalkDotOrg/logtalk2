@@ -16,5 +16,3 @@ hierarchies.loader.
 
 Some of the code in this folder is adopted from the book "Prolog Programming
 for Artificial Intelligence" by Ivan Bratko.
-
-The object "performance" only provides correct results for the first solution.
