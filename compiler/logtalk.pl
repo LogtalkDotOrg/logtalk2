@@ -4830,7 +4830,10 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 '$lgt_tr_body'(Pred, _, _, _) :-
 	'$lgt_pl_built_in'(Pred),
+	\+ '$lgt_lgt_built_in'(Pred),
 	\+ '$lgt_iso_spec_pred'(Pred),
+	functor(Pred, Functor, Arity),
+	\+ '$lgt_pp_defs_pred_'(Functor, Arity),
 	'$lgt_compiler_flag'(portability, warning),
 	'$lgt_compiler_flag'(report, on),
 	functor(Pred, Functor, Arity),
