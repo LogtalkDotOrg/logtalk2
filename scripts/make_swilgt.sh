@@ -8,7 +8,7 @@
 ## =================================================================
 
 echo
-echo "Making a script named swilgt for running Logtalk with SWI-Prolog..."
+echo "Creating a script named swilgt for running Logtalk with SWI-Prolog..."
 
 if ! [ $LOGTALKHOME ]
 then

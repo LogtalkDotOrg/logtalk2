@@ -8,7 +8,7 @@
 ## =================================================================
 
 echo
-echo "Making a script named ciaolgt for running Logtalk with CIAO..."
+echo "Creating a script named ciaolgt for running Logtalk with CIAO..."
 
 if ! [ $LOGTALKHOME ]
 then

@@ -8,7 +8,7 @@
 ## =================================================================
 
 echo
-echo "Making a script named gplgt for running Logtalk with GNU Prolog..."
+echo "Creating a script named gplgt for running Logtalk with GNU Prolog..."
 
 if ! [ $LOGTALKHOME ]
 then

@@ -8,7 +8,7 @@
 ## =================================================================
 
 echo
-echo "Making a script named qplgt for running Logtalk with Qu-Prolog..."
+echo "Creating a script named qplgt for running Logtalk with Qu-Prolog..."
 
 if ! [ $LOGTALKHOME ]
 then

@@ -8,7 +8,7 @@
 ## =================================================================
 
 echo
-echo "Making a script named eclipselgt for running Logtalk with ECLiPSe..."
+echo "Creating a script named eclipselgt for running Logtalk with ECLiPSe..."
 
 if ! [ $LOGTALKHOME ]
 then

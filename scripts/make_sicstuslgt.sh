@@ -8,7 +8,7 @@
 ## =================================================================
 
 echo
-echo "Making a script named sicstuslgt for running Logtalk with SICStus Prolog..."
+echo "Creating a script named sicstuslgt for running Logtalk with SICStus Prolog..."
 
 if ! [ $LOGTALKHOME ]
 then
