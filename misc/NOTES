@@ -37,6 +37,9 @@ debian
 The following shell scripts must be run by a user with administration 
 privileges:
 
+make_ciaolgt.sh
+	makes a script named ciaolgt for running Logtalk with CIAO Prolog
+
 make_eclipselgt.sh
 	makes a script named eclipselgt for running Logtalk with ECLiPSe
 
@@ -55,9 +58,6 @@ make_swilgt.sh
 
 make_yaplgt.sh
 	makes a script named yaplgt for running Logtalk with YAP
-
-make_yaplgt.sh
-	makes a script named ciaolgt for running Logtalk with CIAO Prolog
 
 make_xsblgt.sh
 	makes a script named ciaolgt for running Logtalk with XSB
