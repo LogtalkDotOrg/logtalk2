@@ -102,7 +102,8 @@
 
 
 	set_environment_variable(Variable, Value) :-
-		{fail}.
+		{concat_string([Variable,"=",Value], String),
+		 sepia_kernel:setenv(String)}.
 
 
 	date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
