@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.21.3 - October ??, 2004
+2.21.3 - October 25, 2004
 
 	Corrected a silly bug in message translation which resulted in a small 
 	performance loss. Simplified implementation of message sending predicate 
