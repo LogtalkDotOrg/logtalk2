@@ -193,6 +193,8 @@ JIProlog 3.0.0-4
 
 	ji.config
 
+	Written with the help of the JIProlog author (but if you find any Logtalk 
+	problem please report it to me).
 	Don't forget to use the chdir/1 predicate to set the working directory 
 	before loading the library or an example.
 
