@@ -12,7 +12,7 @@ IF NOT "%1" == "" SET INDEX_TITLE=%1%
 
 ECHO This script converts all .xml files in the current directory to .html
 ECHO files applying the XSLT transformation defined in the $XSLT file
-ECHO using the James Clark XT XSLT Java processor (version 20020426a or later).
+ECHO using the James Clark XT XSLT Java processor version 20020426a or later.
 ECHO.
 ECHO An index.html file, containing links to all .html documenting files,
 ECHO is automatically generated. This file uses the script optional parameter 
