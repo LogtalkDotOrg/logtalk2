@@ -3,6 +3,9 @@
 This file contains an adaptation to Logtalk of code for logical assignment 
 of Prolog terms developed by Nobukuni Kino. For more information, please 
 consult the URL http://www.kprolog.com/en/logical_assignment/
+
+I have added a new operator, =>>/2, described below, not found in the 
+original code.
 */
 
 
