@@ -11,17 +11,6 @@
 		<string>lgt</string>
 		<key>Valid Characters for Variables</key>
 		<string>_0987654321abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
-        <key>Functions Regular Expression</key>
-		<string>[[:space:]]*[A-Za-z0-9_]*\([^\)]*\)[	 ]*[\:\-]</string>		
-		<key>Function Modifiers</key>
-		<array>
-			<dict>
-				<key>Replace</key>
-				<string>\([^\)]*\)[	 ]*[\:\-]</string>
-				<key>With</key>
-				<string></string>
-			</dict>
-		</array>
 	</dict>
 	
     <key>Styles</key>
