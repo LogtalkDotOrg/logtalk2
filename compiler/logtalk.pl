@@ -8654,22 +8654,25 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 % '$lgt_pred_call_to_xml_term'(+nonvar, +nonvar)
 %
-% instantiates the arguments in a predicate call to
-% user defined names or to the atom '_'
+% instantiates the arguments in a call to user defined names or to the atom '_'
 
 '$lgt_pred_call_to_xml_term'((Call1, Call2), Bindings) :-
+	!,
 	'$lgt_pred_call_to_xml_term'(Call1, Bindings),
 	'$lgt_pred_call_to_xml_term'(Call2, Bindings).
 
 '$lgt_pred_call_to_xml_term'((Call1; Call2), Bindings) :-
+	!,
 	'$lgt_pred_call_to_xml_term'(Call1, Bindings),
 	'$lgt_pred_call_to_xml_term'(Call2, Bindings).
 
 '$lgt_pred_call_to_xml_term'((Call1 -> Call2), Bindings) :-
+	!,
 	'$lgt_pred_call_to_xml_term'(Call1, Bindings),
 	'$lgt_pred_call_to_xml_term'(Call2, Bindings).
 
 '$lgt_pred_call_to_xml_term'(\+ Call, Bindings) :-
+	!,
 	'$lgt_pred_call_to_xml_term'(Call, Bindings).
 
 '$lgt_pred_call_to_xml_term'(Call, Bindings) :-
