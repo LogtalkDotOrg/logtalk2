@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.14.5 - December ??, 2002
 
+	Simplified dynamic table of predicate declarations by removing two 
+	redundant arguments.
+	
 	Corrected a bug where sending messages such as true/0 or !/0 to an 
 	unknown object succeeded instead of throwing the correct exception.
 
