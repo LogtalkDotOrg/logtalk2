@@ -38,6 +38,10 @@ convert the files to a print-ready format such as PDF.
 
 Here is a short description of each included example:
 
+aliases
+	example of using the alias/3 predicate directive to provide alternative 
+	names to inherited predicates in order to improve readability
+
 birds
 	bird identification expert system
 	example adopted from the Adventure in Prolog Amzi! book
