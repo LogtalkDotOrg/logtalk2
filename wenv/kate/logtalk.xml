@@ -83,7 +83,6 @@
 
                 <RegExpr String = "\b[A-Z_][A-Za-z0-9_]*" attribute = "Variable" context="#stay"/>
 
-
 				<!-- Comments -->
                 <DetectChar attribute="Comment" context="single line comment" char="%"/>
                 <Detect2Chars attribute="Comment" context="multiline comment" char="/" char1="*"/>
@@ -103,6 +102,9 @@
 				<!-- External call -->
                 <DetectChar attribute="Operator" context="#stay" char="{" beginRegion="external" />
                 <DetectChar attribute="Operator" context="#stay" char="}" endRegion="external" />
+				<!-- Logic and control -->
+                <RegExpr String = "\bonce(?=[(])" attribute="Built-in" context="#stay" />
+                <RegExpr String = "\brepeat\b" attribute="Built-in" context="#stay" />
 				<!-- Bitwise functors -->
                 <StringDetect String = "&gt;&gt;" attribute="Operator" context="#stay" />
                 <StringDetect String = "&lt;&lt;" attribute="Operator" context="#stay" />
@@ -146,6 +148,8 @@
                 <StringDetect String = "!" attribute="Operator" context="#stay" />
                 <StringDetect String = "-&gt;" attribute="Operator" context="#stay" />
                 <StringDetect String = ";" attribute="Operator" context="#stay" />
+				<!-- Logic and control -->
+                <StringDetect String = "\+" attribute="Operator" context="#stay" />
 				<!-- Mode operators -->
                 <StringDetect String = "?" attribute="Operator" context="#stay" />
                 <StringDetect String = "@" attribute="Operator" context="#stay" />
