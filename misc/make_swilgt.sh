@@ -5,7 +5,7 @@ echo "Making a script named swilgt for running Logtalk with SWI-Prolog..."
 
 if ! [ $LOGTALKHOME ]
 then
-	echo "The env variable LOGTALKHOME must be defined first!"
+	echo "The environment variable LOGTALKHOME must be defined first!"
 else
 	cd $LOGTALKHOME
 	if [ -z "$1" ]; then
@@ -28,5 +28,7 @@ else
 	chmod a+x swilgt
 	ln -sf $LOGTALKHOME/bin/swilgt $prefix/bin/swilgt
 	echo "Done. A link to the script was been created in $prefix/bin."
+	echo "Users should define the environment variable LOGTALKHOME in"
+	echo "order to use the script."
 	echo
 fi

@@ -5,7 +5,7 @@ echo "Making a script named gplgt for running Logtalk with GNU Prolog..."
 
 if ! [ $LOGTALKHOME ]
 then
-	echo "The env variable LOGTALKHOME must be defined first!"
+	echo "The environment variable LOGTALKHOME must be defined first!"
 else
 	cd $LOGTALKHOME
 	if [ -z "$1" ]; then
@@ -27,5 +27,7 @@ else
 	rm gnu.pl
 	rm logtalkgp.pl
 	echo "Done. A link to the script was been created in $prefix/bin."
+	echo "Users should define the environment variable LOGTALKHOME in"
+	echo "order to use the script."
 	echo
 fi

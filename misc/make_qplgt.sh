@@ -5,7 +5,7 @@ echo "Making a script named qplgt for running Logtalk with Qu-Prolog..."
 
 if ! [ $LOGTALKHOME ]
 then
-	echo "The env variable LOGTALKHOME must be defined first!"
+	echo "The environment variable LOGTALKHOME must be defined first!"
 else
 	cd $LOGTALKHOME
 	if [ -z "$1" ]; then
@@ -32,5 +32,7 @@ chdir('../compiler/'), fcompile('logtalk.pl', [assemble_only(true), string_table
 	rm ../configs/qu.qo
 	rm ../compiler/logtalk.qo
 	echo "Done. A link to the script was been created in $prefix/bin."
+	echo "Users should define the environment variable LOGTALKHOME in"
+	echo "order to use the script."
 	echo
 fi

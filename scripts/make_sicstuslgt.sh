@@ -26,5 +26,7 @@ else
 	chmod a+x sicstuslgt
 	ln -sf $LOGTALKHOME/bin/sicstuslgt $prefix/bin/sicstuslgt
 	echo "Done. A link to the script was been created in $prefix/bin."
+	echo "Users should define the environment variable LOGTALKHOME in"
+	echo "order to use the script."
 	echo
 fi
