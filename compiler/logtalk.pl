@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.10.0
+%  Release 2.11.0
 %
 %  Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 %
@@ -1019,7 +1019,7 @@ logtalk_version(Major, Minor, Patch) :-
 	\+ integer(Patch),
 	throw(error(type_error(integer, Patch), logtalk_version(Major, Minor, Patch))).
 
-logtalk_version(2, 10, 0).
+logtalk_version(2, 11, 0).
 
 
 
@@ -1904,10 +1904,34 @@ lgt_compile_entities([Entity| Entities]) :-
 % compiles to disk an entity
 
 lgt_compile_entity(Entity) :-
-	lgt_tr_entity(Entity),
-	lgt_write_tr_entity(Entity),
-	lgt_write_entity_doc(Entity),
-	lgt_report_unknown_entities.
+	(lgt_compiler_option(smart_compilation, on),
+	 \+ lgt_needs_recompilation(Entity)) ->
+		true
+		;
+		lgt_tr_entity(Entity),
+		lgt_write_tr_entity(Entity),
+		lgt_write_entity_doc(Entity),
+		lgt_report_unknown_entities.
+
+
+
+% lgt_needs_recompilation(+atom)
+%
+% source file needs recompilation
+
+lgt_needs_recompilation(Entity) :-
+	lgt_file_name(prolog, Entity, File),
+	\+ lgt_file_exists(File).
+
+lgt_needs_recompilation(Entity) :-
+	lgt_file_name(xml, Entity, File),
+	lgt_compiler_option(xml, on),
+	\+ lgt_file_exists(File).
+
+lgt_needs_recompilation(Entity) :-
+	lgt_file_name(logtalk, Entity, Source),
+	lgt_file_name(prolog, Entity, Object),
+	lgt_compare_file_mtimes(>, Source, Object).
 
 
 
@@ -5219,6 +5243,9 @@ lgt_valid_compiler_option(portability(Option)) :-
 lgt_valid_compiler_option(report(Option)) :-
 	once((Option == on; Option == off)).
 
+lgt_valid_compiler_option(smart_compilation(Option)) :-
+	once((Option == on; Option == off)).
+
 
 
 % lgt_valid_flag(@nonvar)
@@ -5235,6 +5262,7 @@ lgt_valid_flag(lgtredef).
 lgt_valid_flag(plredef).
 lgt_valid_flag(portability).
 lgt_valid_flag(report).
+lgt_valid_flag(smart_compilation).
 
 
 
