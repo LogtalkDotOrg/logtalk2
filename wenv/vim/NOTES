@@ -16,8 +16,11 @@ To install:
 1.	Copy the file logtalk.vim to the "syntax" sub-directory in your 
 	VIM installation directory.
 
-2.	Add the following entry to the "filetype.vim" configuration 
+2.	Add the following entries to the "filetype.vim" configuration 
 	file (if not present):
 
-" Logtalk
+" Logtalk source files
 au BufNewFile,BufRead *.lgt                     setf logtalk
+
+" Logtalk source file loader
+au BufNewFile,BufRead *.loader                  setf logtalk
