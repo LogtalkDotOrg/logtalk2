@@ -18,7 +18,7 @@ RELEASE NOTES
 	affecting the global operator table (complying with the Logtalk language 
 	specification). Input and output of terms from inside objects and 
 	categories now work as expected in the presence of local operator 
-	declarations. Added new example "operators".
+	declarations. Added a new example named "operators".
 
 	Updated built-in method predicate_property/2 for returning metapredicate/1 
 	properties for both Logtalk and Prolog metapredicates.
@@ -28,17 +28,20 @@ RELEASE NOTES
 	Prolog standard metapredicates in the config files.
 
 	Small change to the way the Logtalk compiler reports the compilation of
-	entities.
+	entities. Small optimizations to the compilation of Logtalk source files.
 
 	Corrected a bug where calls to Logtalk built-in predicates would be 
 	reported as non-portable when the value of compiler option portability is 
 	set to warning.
 
+	New config file for Qu-Prolog 6.4 (see the configs/NOTES file for details).
+
 	Corrected a problem with the syntax coloring of quoted atoms and strings 
-	in the SubEthaEdit text editor. Added more acurate syntax highlight for
+	in the SubEthaEdit text editor. Added more accurate syntax highlight for
 	built-in methods and built-in predicates.
 
-	New config file for Qu-Prolog 6.4 (see the configs/NOTES file for details).
+	Updated the syntax coloring configuration files for all supported text 
+	editors to recognize the file extension used by the config files.
 
 
 2.15.6 - February 9, 2004
