@@ -10,34 +10,37 @@ Quick start
 ===========
 
 
-1. Open the manuals/index.html file with a web browser.
+1. Install Logtalk by following the instructions on the "INSTALL" file.
 
-2. Select the Tutorial link. This will provide you with a basic understanding
+2. Open the "manuals/index.html" file with a web browser.
+
+3. Select the "Tutorial" link. This will provide you with a basic understanding
 of the main Logtalk concepts.
 
-3. Go back to the index.html file and select the User Manual link and then 
+4. Go back to the "index.html" file and select the "User Manual" link and then 
 the Installing and running Logtalk links. This will provide you with a basic 
 understanding of how to start Logtalk and compile and load Logtalk code.
 
 
 Assuming that Logtalk supports your Prolog compiler:
 
-1. Read the NOTES file in the configs sub-directory to check if any patch 
+1. Read the "NOTES" file in the "configs" sub-directory to check if any patch 
 or workaround is needed for your compiler.
 
 2. Start your Prolog compiler.
 
 3. Change the current working directory of your Prolog session to the Logtalk 
 installation directory. If you don't know which predicate to use, check the 
-configs/NOTES file or your Prolog reference manual.
+"configs/NOTES" file or your Prolog compiler reference manual.
 
 4. Compile and load the config file for your Prolog compiler.
 
-5. Compile and load the Logtalk compiler/runtime found on the compiler 
+5. Compile and load the Logtalk compiler/runtime found on the "compiler" 
 sub-directory.
 
-6. Adapt the file libpaths/libpaths.pl to match your Logtalk installation, 
-Prolog compiler, and operating-system, and then compile and load it.
+6. Adapt, if needed, the file "libpaths/libpaths.pl" to match your Logtalk 
+installation, Prolog compiler, and operating-system, and then compile and 
+load it.
 
 Note that both the configuration files, the compiler/runtime files, and the 
 library paths file are Prolog files. The predicate used to load these files 
@@ -68,10 +71,10 @@ on your Prolog interpreter top-level.
 
 Ready to start writing your own programs?
 
-1. Read the User Manual sections on Programming in Logtalk and Running and 
-debugging Logtalk programs.
+1. Read the User Manual sections on "Programming in Logtalk" and "Running and 
+debugging Logtalk programs".
 
-2. Take a look at the wenv sub-directory. There you will find syntax 
+2. Take a look at the "wenv" sub-directory. There you will find syntax 
 configuration files for popular text editors that enable syntax coloring 
 when editing Logtalk source files.
 
