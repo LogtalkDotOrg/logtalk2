@@ -31,8 +31,9 @@ if (WScript.Arguments.Unnamed.Length > 0) {
 	WScript.Quit(0);
 }
 
-WScript.Echo("");
-WScript.Echo("Creating a shortcut named Swilgt for running Logtalk with SWI-Prolog...");
+WScript.Echo('');
+WScript.Echo('Creating a shortcut named "Logtalk - SWI-Prolog" for running Logtalk');
+WScript.Echo('with SWI-Prolog...');
 
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 
@@ -53,7 +54,7 @@ f.WriteLine(":- consult('$LOGTALKHOME\\\\bin\\\\logtalkswi.pl').");
 f.Close();
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
-var link = WshShell.CreateShortcut(ProgramsPath + "\\Swilgt.lnk");
+var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk - SWI-Prolog.lnk");
 link.Arguments = "-f %LOGTALKHOME%\\bin\\logtalkswi.rc";
 link.Description = "Runs Logtalk with SWI-Prolog";
 link.IconLocation = "app.exe,1";
@@ -62,22 +63,22 @@ link.WindowStyle = 1;
 link.WorkingDirectory = logtalk_home;
 link.Save();
 
-WScript.Echo("Done. The Swilgt shortcut was been added to the Start Menu Programs.");
-WScript.Echo("Make sure that the LOGTALKHOME environment variable is defined for all");
-WScript.Echo("users wishing to use the shortcut."
+WScript.Echo('Done. The "Logtalk - SWI-Prolog" shortcut was been added to the');
+WScript.Echo('Start Menu Programs. Make sure that the LOGTALKHOME environment');
+WScript.Echo('variable is defined for all users wishing to use the shortcut.');
 WScript.Echo("");
 
 WScript.Quit(0);
 
 function usage_help() {
-	WScript.Echo("");
-	WScript.Echo("This script creates a shortcut named Swilgt for running Logtalk with");
-	WScript.Echo("SWI-Prolog. The script must be run by an user with administrative rights.");
-	WScript.Echo("The LOGTALKHOME environment variable must be defined before running this");
-	WScript.Echo("script.");
-	WScript.Echo("");
-	WScript.Echo("Usage:");
-	WScript.Echo("  " + WScript.ScriptName + " help");
-	WScript.Echo("  " + WScript.ScriptName);
-	WScript.Echo("");
+	WScript.Echo('');
+	WScript.Echo('This script creates a shortcut named "Logtalk - SWI-Prolog" for');
+	WScript.Echo('running Logtalk with SWI-Prolog. The script must be run by an user');
+	WScript.Echo('with administrative rights. The LOGTALKHOME environment variable');
+	WScript.Echo('must be defined before running this script.');
+	WScript.Echo('');
+	WScript.Echo('Usage:');
+	WScript.Echo('  ' + WScript.ScriptName + ' help');
+	WScript.Echo('  ' + WScript.ScriptName);
+	WScript.Echo('');
 }

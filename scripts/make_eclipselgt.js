@@ -31,8 +31,9 @@ if (WScript.Arguments.Unnamed.Length > 0) {
 	WScript.Quit(0);
 }
 
-WScript.Echo("");
-WScript.Echo("Creating a shortcut named Eclipselgt for running Logtalk with ECLiPSe...");
+WScript.Echo('');
+WScript.Echo('Creating a shortcut named "Logtalk - ECLiPSe" for running Logtalk');
+WScript.Echo('with ECLiPSe...');
 
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 
@@ -47,20 +48,16 @@ f.Close();
 
 WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\lgtceclipse.pl", true);
 
-var lgthome_eclipse = logtalk_home.replace(/C:/, "C");
-lgthome_eclipse = lgthome_eclipse.replace(/D:/, "D");
-lgthome_eclipse = lgthome_eclipse.replace(/E:/, "E");
-lgthome_eclipse = lgthome_eclipse.replace(/\\\\/g, "/");
-
 f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkeclipse.pl", true);
 
 f.WriteLine(":- ensure_loaded(library(toplevel)).");
-f.WriteLine(":- compile('//" + lgthome_eclipse + "/configs/eclipseiso.config').");
-f.WriteLine(":- compile('//" + lgthome_eclipse + "/bin/lgtceclipse.pl').");
+f.WriteLine(":- cd('$LOGTALKHOME').");
+f.WriteLine(":- compile('configs/eclipseiso.config').");
+f.WriteLine(":- compile('bin/lgtceclipse.pl').");
 f.Close();
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
-var link = WshShell.CreateShortcut(ProgramsPath + "\\Eclipselgt.lnk");
+var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk - ECLiPSe.lnk");
 link.Arguments = "-b %LOGTALKHOME%\\bin\\logtalkeclipse.pl";
 link.Description = "Runs Logtalk with ECLiPSe";
 link.IconLocation = "app.exe,1";
@@ -69,22 +66,22 @@ link.WindowStyle = 1;
 link.WorkingDirectory = logtalk_home;
 link.Save();
 
-WScript.Echo("Done. The Eclipselgt shortcut was been added to the Start Menu Programs.");
-WScript.Echo("Make sure that the LOGTALKHOME environment variable is defined for all");
-WScript.Echo("users wishing to use the shortcut."
-WScript.Echo("");
+WScript.Echo('Done. The "Logtalk - ECLiPSe" shortcut was been added to the');
+WScript.Echo('Start Menu Programs. Make sure that the LOGTALKHOME environment');
+WScript.Echo('variable is defined for all users wishing to use the shortcut.');
+WScript.Echo('');
 
 WScript.Quit(0);
 
 function usage_help() {
-	WScript.Echo("");
-	WScript.Echo("This script creates a shortcut named Eclipselgt for running Logtalk");
-	WScript.Echo("with ECLiPSe. The script must be run by an user with administrative");
-	WScript.Echo("rights. The LOGTALKHOME environment variable must be defined before");
-	WScript.Echo("running this script.");
-	WScript.Echo("");
-	WScript.Echo("Usage:");
-	WScript.Echo("  " + WScript.ScriptName + " help");
-	WScript.Echo("  " + WScript.ScriptName);
-	WScript.Echo("");
+	WScript.Echo('');
+	WScript.Echo('This script creates a shortcut named "Logtalk - ECLiPSe" for running Logtalk');
+	WScript.Echo('with ECLiPSe. The script must be run by an user with administrative rights.');
+	WScript.Echo('The LOGTALKHOME environment variable must be defined before running this');
+	WScript.Echo('script.');
+	WScript.Echo('');
+	WScript.Echo('Usage:');
+	WScript.Echo('  ' + WScript.ScriptName + ' help');
+	WScript.Echo('  ' + WScript.ScriptName);
+	WScript.Echo('');
 }
