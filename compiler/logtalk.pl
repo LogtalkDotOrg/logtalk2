@@ -439,12 +439,8 @@ abolish_object(Obj) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, Type) ->
 		(Type = (dynamic) ->
 			'$lgt_call'(Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef),
-			forall(
-				'$lgt_call'(Def, _, _, _, _, Pred),
-				(functor(Pred, Functor, Arity), abolish(Functor/Arity))),
-			forall(
-				'$lgt_call'(DDef, _, _, _, _, Pred),
-				(functor(Pred, Functor, Arity), abolish(Functor/Arity))),
+			'$lgt_abolish_entity_predicates'(Def),
+			'$lgt_abolish_entity_predicates'(DDef),
 			abolish(Dcl/4),
 			abolish(Dcl/6),
 			abolish(Def/5),
@@ -484,9 +480,7 @@ abolish_category(Ctg) :-
 	'$lgt_current_category_'(Ctg, Prefix, Type) ->
 		(Type = (dynamic) ->
 			'$lgt_call'(Prefix, Dcl, Def),
-			forall(
-				'$lgt_call'(Def, _, _, _, _, Pred),
-				(functor(Pred, Functor, Arity), abolish(Functor/Arity))),
+			'$lgt_abolish_entity_predicates'(Def),
 			abolish(Dcl/4),
 			abolish(Dcl/5),
 			abolish(Def/5),
@@ -525,6 +519,18 @@ abolish_protocol(Ptc) :-
 			throw(error(permission_error(modify, static_protocol, Ptc), abolish_protocol(Ptc))))
 		;
 		throw(error(existence_error(protocol, Ptc), abolish_protocol(Ptc))).
+
+
+
+% '$lgt_abolish_entity_predicates'(+atom)
+
+'$lgt_abolish_entity_predicates'(Def) :-
+	'$lgt_call'(Def, _, _, _, _, Pred),
+	functor(Pred, Functor, Arity),
+	abolish(Functor/Arity),
+	fail.
+
+'$lgt_abolish_entity_predicates'(_).
 
 
 
