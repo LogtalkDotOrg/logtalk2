@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.9.3
+%  Release 2.9.4
 %
 %  Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 %
@@ -1017,7 +1017,7 @@ logtalk_version(Major, Minor, Patch) :-
 	\+ integer(Patch),
 	throw(error(type_error(integer, Patch), logtalk_version(Major, Minor, Patch))).
 
-logtalk_version(2, 9, 3).
+logtalk_version(2, 9, 4).
 
 
 
@@ -1304,7 +1304,8 @@ lgt_asserta(Obj, (Head:-Body), Sender, Scope) :-
 	(lgt_once(Dcl, Head, PScope, Type, Meta, SContainer, _) ->
 	 	true
 	 	;
-	 	lgt_assert_dynamic_dcl_clause(Head, DDcl)),
+	 	lgt_convert_test_scope(Scope, Scope2),
+	 	lgt_assert_dynamic_dcl_clause(DDcl, Head, Scope2)),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SContainer)  ->
 			((lgt_once(Def, Head, Sender2, This, Self, Call); lgt_once(DDef, Head, Sender2, This, Self, Call)) ->
@@ -1336,7 +1337,8 @@ lgt_asserta(Obj, Head, Sender, Scope) :-
 	(lgt_once(Dcl, Head, PScope, Type, _, SContainer, _) ->
 	 	true
 	 	;
-	 	lgt_assert_dynamic_dcl_clause(Head, DDcl)),
+	 	lgt_convert_test_scope(Scope, Scope2),
+	 	lgt_assert_dynamic_dcl_clause(DDcl, Head, Scope2)),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SContainer)  ->
 			((lgt_once(Def, Head, _, _, _, Call); lgt_once(DDef, Head, _, _, _, Call)) ->
@@ -1385,7 +1387,8 @@ lgt_assertz(Obj, (Head:-Body), Sender, Scope) :-
 	(lgt_once(Dcl, Head, PScope, Type, Meta, SContainer, _) ->
 	 	true
 	 	;
-	 	lgt_assert_dynamic_dcl_clause(Head, DDcl)),
+	 	lgt_convert_test_scope(Scope, Scope2),
+	 	lgt_assert_dynamic_dcl_clause(DDcl, Head, Scope2)),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SContainer)  ->
 			((lgt_once(Def, Head, Sender2, This, Self, Call); lgt_once(DDef, Head, Sender2, This, Self, Call)) ->
@@ -1417,7 +1420,8 @@ lgt_assertz(Obj, Head, Sender, Scope) :-
 	(lgt_once(Dcl, Head, PScope, Type, _, SContainer, _) ->
 	 	true
 	 	;
-	 	lgt_assert_dynamic_dcl_clause(Head, DDcl)),
+	 	lgt_convert_test_scope(Scope, Scope2),
+	 	lgt_assert_dynamic_dcl_clause(DDcl, Head, Scope2)),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SContainer)  ->
 			((lgt_once(Def, Head, _, _, _, Call); lgt_once(DDef, Head, _, _, _, Call)) ->
@@ -3571,14 +3575,29 @@ lgt_assert_dynamic_def_clause(Functor, Arity, OPrefix, DDef, Call) :-
 
 
 
-% lgt_assert_dynamic_dcl_clause(+term, +atom)
+% lgt_convert_test_scope(@term, +term),
+%
+% convert asserta/z test scope to predicate declaration scope
+
+lgt_convert_test_scope(Scope, Scope2) :-
+	var(Scope) ->
+		Scope2 = p
+		;
+		((Scope = p(V), var(V)) ->
+			Scope2 = p(p)
+			;
+			Scope2 = p(p(p))).
+
+
+
+% lgt_assert_dynamic_dcl_clause(+atom, +term, +term)
 %
 % asserts a dynamic predicate declaration
 
-lgt_assert_dynamic_dcl_clause(Pred, DDcl) :-
+lgt_assert_dynamic_dcl_clause(DDcl, Pred, Scope) :-
 	functor(Pred, Functor, Arity),
 	functor(DPred, Functor, Arity),
-	Clause =.. [DDcl, DPred, p(p(p)), (dynamic), no],
+	Clause =.. [DDcl, DPred, Scope, (dynamic), no],
 	assertz(Clause).
 
 
@@ -5202,6 +5221,9 @@ lgt_lgt_built_in(extends_object(_, _, _)).
 lgt_lgt_built_in(abolish_events(_, _, _, _, _)).
 lgt_lgt_built_in(define_events(_, _, _, _, _)).
 lgt_lgt_built_in(current_event(_, _, _, _, _)).
+
+lgt_lgt_built_in(current_logtalk_flag(_, _)).
+lgt_lgt_built_in(set_logtalk_flag(_, _)).
 
 
 
