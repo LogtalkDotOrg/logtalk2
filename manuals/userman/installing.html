@@ -289,6 +289,10 @@ You can use the following options:
 	<dt><code>code_prefix(Option)</code></dt>
 		<dd>Enables the definition of prefix for all functors of Logtalk generated Prolog code. Option value must be an atom. Default value is ''.</dd>
 </dl>
+<dl>
+	<dt><code>debug(Option)</code></dt>
+		<dd>Controls the compilation of source files in debug mode. Possible option values are <code>on</code> and <code>off</code> (the usual default).</dd>
+</dl>
 
 <p>
 We may also change the default options values from the ones loaded from the config file by using the <a title="Consult reference manual" href="../refman/builtins/set_logtalk_flag2.html"><code>set_logtalk_flag/2</code></a> built-in predicate. For example:
@@ -336,7 +340,7 @@ To supress printing of compiling and loading messages (including compiling warni
 <h2>Debugging Logtalk programs<a name="debugging"></a></h2>
 
 <p>
-Logtalk defines a built-in pseudo-object named <code>debugger</code>, which implements debugging features similar to those found on most Prolog compilers. However, there are some differences between the usual implementation of Prolog debuggers and the current implementation of the Logtalk debugger that you should be aware. First, unlikely most Prolog debuggers, the Logtalk debugger is not implemented as a meta-interpreter. This difference translates to a different, although similar, set of debugging features. Second, debugging is only possible for objects compiled in debug mode. When compiling an object in this mode, Logtalk keeps each compiled clause goal in source form in order to allow tracing of the goal execution. Third, implementation of spy points allows the user to specify the execution context for entering the debugger. This feature follows from the encapsulation of predicates inside objects.
+Logtalk defines a built-in pseudo-object named <code>debugger</code>, which implements debugging features similar to those found on most Prolog compilers. However, there are some differences between the usual implementation of Prolog debuggers and the current implementation of the Logtalk debugger that you should be aware. First, unlikely most Prolog debuggers, the Logtalk debugger is not implemented as a meta-interpreter. This difference translates to a different, although similar, set of debugging features. Second, debugging is only possible for objects compiled in debug mode. When compiling an object in this mode, Logtalk keeps each  clause goal in both source form and compiled form in order to allow tracing of the goal execution. Third, implementation of spy points allows the user to specify the execution context for entering the debugger. This feature is a consequence of the encapsulation of predicates inside objects.
 
 <h3>Compilation of objects in debug mode<a name="debugmode"></a></h3>
 
@@ -354,9 +358,8 @@ In alternative, if we want to compile only some objects in debug mode, we may in
     | ?- logtalk_load([file1, file2, ...], [debug(on)]).
 </pre>
 <p>
-It is advisable to turn off the compiler flag <code>smart_compilation</code> while debugging.
+The compiler flag <code>smart_compilation</code> is automatically turned off whenever the debug flag is turned on at runtime. This is necessary because debug code would not be generated for files previously compiled in normal mode if there is no changes to the source files. However, note that you should be carefull to not turn both flags on at the same time in a config file.
 </p>
-
 
 <h3>Logtalk Procedure Box model<a name="boxmodel"></a></h3>
 
@@ -365,10 +368,6 @@ Logtalk uses a <em>Procedure Box model</em> similar to the one used in most Prol
 </p>
 <blockquote>
 <dl>
-	<dt><code>fact</code></dt>
-		<dd>unification success between a goal and a fact</dd>
-	<dt><code>rule</code></dt>
-		<dd>unification success between a goal and a rule head</dd>
 	<dt><code>call</code></dt>
 		<dd>predicate call</dd>
 	<dt><code>exit</code></dt>
@@ -380,7 +379,7 @@ Logtalk uses a <em>Procedure Box model</em> similar to the one used in most Prol
 </dl>
 </blockquote>
 <p>
-Logtalk adds two more ports, <em>fact</em> and <em>rule</em>, which show the result of the unification of a goal with, respectively, a fact and a rule head:
+Logtalk adds two more ports, <em>fact</em> and <em>rule</em>, which shows the result of the unification of a goal with, respectively, a fact and a rule head:
 </p>
 <blockquote>
 <dl>
@@ -434,14 +433,37 @@ The debugger is evoked whenever the execution context is true and when the spy p
 </p>
 <pre>
     | ?- debugger::spy(_, foo, _, _).
+    
+    Spy point set.
+    yes
 </pre>
 <p>
 For example, we can spy all calls to a <code>foo/2</code> predicate by setting the condition:
 </p>
 <pre>
     | ?- debugger::spy(_, _, _, foo(_, _)).
+    
+    Spy point set.
+    yes
 </pre>
-
+<p>
+The method <code>nospy/4</code> may be used to remove all matching spy points. For example, the call: 
+</p>
+<pre>
+    | ?- debugger::nospy(_, _, foo, _).
+    
+    All matching spy points deleted.
+    yes
+</pre>
+<p>
+will remove all spy points where the value of <em>Self</em> matches the name <code>foo</code>. We may also remove all spy points by using the method <code>nospyall/0</code>:
+</p>
+<pre>
+    | ?- debugger::nospyall.
+    
+    All spy points deleted.
+    yes
+</pre>
 
 <h3>Tracing program execution<a name="trace"></a></h3>
 
@@ -468,7 +490,7 @@ To stop tracing and turning off the debugger, write:
 
 <h3>Debugging using spy points<a name="debug"></a></h3>
 
-Tracing a program execution may generate large amounts of debugging data. Debugging using spy points allows the user to concentrate its attention in specific points of its code. To start the debug in ??? mode, write:
+Tracing a program execution may generate large amounts of debugging data. Debugging using spy points allows the user to concentrate its attention in specific points of its code. To start a debugging session using spy points, write:
 <pre>
     | ?- debugger::debug.
 
