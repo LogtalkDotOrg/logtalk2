@@ -21,6 +21,9 @@ RELEASE NOTES
 
 	Corrected some wrong links on the XHTML manuals.
 
+	Corrected a bug in the syntax coloring of numbers on the SubEthaEdit 2.x 
+	text editor.
+
 
 2.21.0 - September 14, 2004
 
