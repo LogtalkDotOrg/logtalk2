@@ -25,6 +25,8 @@ RELEASE NOTES
 	Improved syntax coloring accuracy of built-in predicates and methods for 
 	the SubEthaEdit text editor.
 
+	Updated config file for Qu-Prolog 6.4.
+
 
 2.16.0 - March 3, 2004
 
