@@ -16,8 +16,8 @@ RELEASE NOTES
 	protocols, and categories.
 
 	Updated the error handling code of the built-in predicates create_object/4, 
-	create_protocol/3, and create_category/4 to throw an instantiation error 
-	when called with a non-instantiated argument.
+	create_protocol/3, and create_category/4 in order to throw an instantiation 
+	error when called with a non-instantiated argument.
 
 	Fixed a typo on the XSB compatibility notes in the configs/NOTES file.
 
