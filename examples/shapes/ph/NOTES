@@ -6,5 +6,6 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-To load all objects in this example consult the ph.loader utility
-file (note that the *.loader files are Prolog files).
+To load all entities in this example compile and load the loader file:
+
+| ?- logtalk_load(loader).

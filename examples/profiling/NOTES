@@ -6,14 +6,14 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-To load all objects in this example consult the profiling.loader utility
-file.
+To load all entities in this example compile and load the loader file:
+
+| ?- logtalk_load(loader).
 
 You will also need to load the following files in the library directory: 
-types.loader, events.loader, metapredicates.loader, and dates.loader (note 
-that the *.loader files are Prolog files). Alternatively, you may load the 
-library/all.loader file to load all library entities.
-
+types_loader, events_loader, metapredicates_loader, and dates_loader. 
+Alternatively, you may load the library all_loader file to load all 
+library entities.
 
 This is a very simple example of the use of events and monitors to make 
 profilers for an application. It's easy to modify to make it do much more. 

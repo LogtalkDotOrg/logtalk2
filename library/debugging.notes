@@ -6,8 +6,10 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-To load all objects in this group consult the debugging.loader utility 
-file.
+To load all entities in this group load the debugging_loader.lgt utility 
+file:
+
+	| ?- logtalk_load(debugging_loader).
 
 You will need to load FIRST the events.loader file otherwise you will get 
 a runtime error.

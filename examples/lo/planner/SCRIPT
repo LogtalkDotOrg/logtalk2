@@ -6,6 +6,12 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
+% start by loading the example:
+
+| ?- logtalk_load(loader).
+...
+
+
 % plan a trip from london to the aiai conference in edinburgh:
 
 | ?- plan(london)::from(imperial, aiai, L).

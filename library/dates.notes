@@ -6,8 +6,10 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-To load all objects in this group consult the dates.loader utility 
-file.
+To load all entities in this group load the dates_loader.lgt utility 
+file:
+
+	| ?- logtalk_load(dates_loader).
 
 The object date implements some useful calandar date predicates.
 

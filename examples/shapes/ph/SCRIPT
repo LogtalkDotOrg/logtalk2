@@ -6,6 +6,15 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
+% start by loading the example:
+
+| ?- logtalk_load(loader).
+...
+
+
+% try some simple queries:
+
+
 | ?- square::nsides(N).
 
 N = 4

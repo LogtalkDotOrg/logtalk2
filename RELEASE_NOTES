@@ -12,6 +12,12 @@ RELEASE NOTES
 
 2.17.2 - June ??, 2004
 
+	Updated the Logtalk compiler to allow compilation of source files which 
+	contain only directives and no entity definition.
+
+	Simplified loading of library and example entities by using Logtalk source 
+	files as loader files.
+
 	Some improvements to the documentation, including the QUICK_START file and 
 	the User Manual for first-time users.
 

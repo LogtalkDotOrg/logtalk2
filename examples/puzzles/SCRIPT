@@ -6,6 +6,12 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
+% start by loading the example:
+
+| ?- logtalk_load(loader).
+...
+
+
 % Harry Potter's room of potions logical puzzle:
 
 | ?- potions::potions(P1, P2, P3, P4, P5, P6, P7).

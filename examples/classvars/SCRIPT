@@ -6,6 +6,12 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
+% start by loading the example:
+
+| ?- logtalk_load(loader).
+...
+
+
 % get the value of the class variable for each instance:
 
 | ?- instance1::cv(Value1), instance2::cv(Value2), instance3::cv(Value3).

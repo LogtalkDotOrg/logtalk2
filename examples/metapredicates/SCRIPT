@@ -6,6 +6,12 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
+% start by loading the example:
+
+| ?- logtalk_load(loader).
+...
+
+
 % note that "user" is a pseudo-object representing the Prolog database
 % this implies that the integer comparisons are done using the standard
 % Prolog built-in predicates

@@ -6,6 +6,12 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
+% start by loading the example:
+
+| ?- logtalk_load(loader).
+...
+
+
 % first create four polygons and move each one to a different position
 
 | ?- triangle::new(t, [position-(4, 5)]).

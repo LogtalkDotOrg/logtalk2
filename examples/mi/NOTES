@@ -5,8 +5,10 @@ Release 2.17.2
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
-To load all objects in this example consult the mi.loader utility
-file (note that the *.loader files are Prolog files).
+
+To load all entities in this example compile and load the loader file:
+
+| ?- logtalk_load(loader).
 
 There are two examples in this folder. The first one is an adoption of a 
 multi-inheritance C++ example found on the D. M. Capper book "Introducing 

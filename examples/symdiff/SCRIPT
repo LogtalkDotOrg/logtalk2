@@ -6,6 +6,11 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
+% start by loading the example:
+
+| ?- logtalk_load(loader).
+...
+
 
 % simplify the expression x^1 + x0 - x1
 

@@ -5,8 +5,10 @@ Release 2.17.2
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
-To load all objects in this example consult the logic.loader utility
-file (note that the *.loader files are Prolog files).
+
+To load all entities in this example compile and load the loader file:
+
+| ?- logtalk_load(loader).
 
 This folder contains an object which implements a translator from 
 logic propositions to a set of clauses in conjunctive normal form. 

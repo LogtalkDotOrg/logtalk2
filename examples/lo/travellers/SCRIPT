@@ -6,6 +6,12 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
+% start by loading the example:
+
+| ?- logtalk_load(loader).
+...
+
+
 % build a route by adding one town at a time:
 
 | ?- incremental::route([london, brighton, portsmouth, exeter, oxford, aberystwyth], Route).

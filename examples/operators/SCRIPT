@@ -6,6 +6,11 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
+% start by loading the example:
+
+| ?- logtalk_load(loader).
+...
+
 
 % operators declared inside an object are not visible outside:
 

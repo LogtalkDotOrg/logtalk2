@@ -6,8 +6,9 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-To load all entities in this example consult the puzzles.loader 
-utility file (note that this is a Prolog file).
+To load all entities in this example compile and load the loader file:
+
+| ?- logtalk_load(loader).
 
 This folder contains examples of Logtalk implementations for popular 
 logical puzzles.
