@@ -2520,10 +2520,7 @@ current_logtalk_flag(version, version(2, 17, 1)).
 		true),
 	'$lgt_file_name'(prolog, Entity, File),
 	'$lgt_load_prolog_code'(File),
-	('$lgt_compiler_option'(report, on) ->
-		write('<<< '), writeq(Entity), write(' loaded'), nl
-		;
-		true).
+	'$lgt_report_loaded_entity'(Entity).
 
 
 
@@ -2555,7 +2552,8 @@ current_logtalk_flag(version, version(2, 17, 1)).
 
 % '$lgt_remove_old_entity'(+atom, +entity_identifier)
 %
-% try to remove old entity before loading the new definition
+% remove old entity if dynamic otherwise retract all 
+% clauses for all dynamic predicates
 
 '$lgt_remove_old_entity'(object, Entity) :-
 	object_property(Entity, (dynamic)) ->
@@ -2592,6 +2590,58 @@ current_logtalk_flag(version, version(2, 17, 1)).
 		true.
 
 
+% '$lgt_report_up_to_date_entity'(+entity_identifier)
+%
+% prints a message that an entity is up-to-date
+
+'$lgt_report_up_to_date_entity'(Entity) :-
+	'$lgt_compiler_option'(report, on) ->
+		nl, write('>>> compiling '), writeq(Entity), write('... up-to-date'), nl
+		;
+		true.
+
+
+
+% '$lgt_report_compiling_entity'(+entity_identifier)
+%
+% prints a message that an entity is being compiled
+
+'$lgt_report_compiling_entity'(Entity) :-
+	'$lgt_compiler_option'(report, on) ->
+		nl, write('>>> compiling '), writeq(Entity),
+		('$lgt_compiler_option'(debug, on) ->
+			write(' in debug mode...')
+			;
+			write('...')),
+		nl
+		;
+		true.
+
+
+
+% '$lgt_report_compiled_entity'(+entity_identifier)
+%
+% prints a message that an entity is finished compiling
+
+'$lgt_report_compiled_entity'(Entity) :-
+	'$lgt_compiler_option'(report, on) ->
+		write('>>> '), writeq(Entity), write(' compiled'), nl
+		;
+		true.
+
+
+
+% '$lgt_report_loaded_entity'(+entity_identifier)
+%
+% prints a message that an entity finished loading
+
+'$lgt_report_loaded_entity'(Entity) :-
+	'$lgt_compiler_option'(report, on) ->
+		write('<<< '), writeq(Entity), write(' loaded'), nl
+		;
+		true.
+
+
 
 % '$lgt_compile_entities'(+list)
 %
@@ -2613,31 +2663,17 @@ current_logtalk_flag(version, version(2, 17, 1)).
 	'$lgt_compiler_option'(smart_compilation, on),
 	\+ '$lgt_needs_recompilation'(Entity),
 	!,
-	('$lgt_compiler_option'(report, on) ->
-		nl, write('>>> compiling '), writeq(Entity), write('... up-to-date'), nl
-		;
-		true).
+	'$lgt_report_up_to_date_entity'(Entity).
 
 '$lgt_compile_entity'(Entity) :-
-	('$lgt_compiler_option'(report, on) ->
-		nl, write('>>> compiling '), writeq(Entity),
-		('$lgt_compiler_option'(debug, on) ->
-			write(' in debug mode...')
-			;
-			write('...')),
-		nl
-		;
-		true),
+	'$lgt_report_compiling_entity'(Entity),
 	'$lgt_clean_up',
 	'$lgt_tr_entity'(Entity),
 	'$lgt_write_tr_entity'(Entity),
 	'$lgt_write_entity_doc'(Entity),
 	'$lgt_report_unknown_entities',
 	'$lgt_clean_up',
-	('$lgt_compiler_option'(report, on) ->
-		write('>>> '), writeq(Entity), write(' compiled'), nl
-		;
-		true).
+	'$lgt_report_compiled_entity'(Entity).
 
 
 
