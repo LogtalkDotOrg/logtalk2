@@ -12,7 +12,7 @@ var WshUserEnv = WshShell.Environment("USER");
 
 if (!WshSysEnv.Item("LOGTALKHOME") && !WshUserEnv.Item("LOGTALKHOME")) {
 	WScript.Echo("The environment variable LOGTALKHOME must be defined first!");
-	WScript.Quit;
+	WScript.Quit(1);
 }
 
 var a4_xsl = WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\lgtpdfa4.xsl";

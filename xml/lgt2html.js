@@ -20,7 +20,7 @@ var xslt;
 var format = "xhtml";
 // var format = "html";
 
-var WshShell = WScript.CreateObject("WScript.Shell");
+var WshShell = new ActiveXObject("WScript.Shell");
 var directory = WshShell.CurrentDirectory;
 
 var index_file = "index.html";
@@ -32,9 +32,8 @@ var processor = "xsltproc";
 
 var arguments = WScript.Arguments.Unnamed;
 
-if (arguments.Exists("help")) {
+if (arguments.Exists("help"))
 	usage_help();
-}
 
 arguments = WScript.Arguments.Named;
 
