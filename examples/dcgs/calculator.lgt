@@ -1,5 +1,3 @@
-% example DCG rules from the SICStus Prolog manual
-
 
 :- object(calculator,
 	implements(parsep)).
@@ -19,7 +17,7 @@
 
 	number(C) --> "+", number(C).
 	number(C) --> "-", number(X), {C is -X}.
-	number(X) --> [C], {"0"=<C, C=<"9", X is C - "0"}.
+	number(X) --> [C], {0'0 =< C, C =< 0'9, X is C - 0'0}.
 
 
 :- end_object.
