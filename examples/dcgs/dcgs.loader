@@ -3,5 +3,8 @@
 	logtalk_load([
 		parsep,
 		calculator,
-		sentence,
-		parsetree])). 
+		parsetree,
+		determiners,
+		nouns,
+		verbs,
+		sentence])). 
