@@ -7247,9 +7247,9 @@ current_logtalk_flag(version, version(2, 21, 0)).
 '$lgt_dcg_body'(!, (!, S0=S), S0, S) :-
 	!.
 
-'$lgt_dcg_body'(\+ RGoal, CGoal, S0, S) :-
+'$lgt_dcg_body'(\+ RGoal, \+ CGoal, S0, S0) :-
 	!,
-	'$lgt_dcg_body'((RGoal -> {fail};{true}), CGoal, S0, S).
+	'$lgt_dcg_body'(RGoal, CGoal, S0, _).
 
 '$lgt_dcg_body'([], (S0=S), S0, S) :-
 	!.

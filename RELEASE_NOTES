@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.21.0
+Release 2.21.1
 
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -10,7 +10,13 @@ RELEASE NOTES
 =============
 
 
+2.21.1 - September ??, 2004
+
+	Corrected bug in the expansion of \+/1 in grammar rule bodies.
+
+
 2.21.0 - September 14, 2004
+
 
 	Added a new predicate directive, alias/3, which allows the definition of 
 	alternative predicate names in order to improve readability of inherited 
