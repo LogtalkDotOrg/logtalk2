@@ -7,7 +7,7 @@
 	written by		Paulo Moura
 	version			1.4
 	created on		2 May 2002
-	last revised	25 January 2004
+	last revised	28 January 2004
 	
 	To install, copy this file to the "modes" subdirectory in jEdit 
 	directory installation.   Next, check the "catalog" file in the 
@@ -36,6 +36,10 @@
 
 		<!-- Character code constants -->
 		<SEQ_REGEXP TYPE="LITERAL1" HASH_CHAR="0">0'[[:alnum:]]</SEQ_REGEXP>
+		<!-- Binary, octal, and hexadecimal numbers -->
+		<SEQ_REGEXP TYPE="LITERAL1" HASH_CHAR="0">0b[0-1]+</SEQ_REGEXP>
+		<SEQ_REGEXP TYPE="LITERAL1" HASH_CHAR="0">0o[0-7]+</SEQ_REGEXP>
+		<SEQ_REGEXP TYPE="LITERAL1" HASH_CHAR="0">0x[0-9a-fA-f]+</SEQ_REGEXP>
 
 		<!-- String literals -->
 		<SPAN TYPE="LITERAL1" NO_LINE_BREAK="TRUE">
