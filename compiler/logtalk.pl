@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.9.2
+%  Release 2.9.3
 %
 %  Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 %
@@ -1009,7 +1009,25 @@ logtalk_version(Major, Minor, Patch) :-
 	\+ integer(Patch),
 	throw(error(type_error(integer, Patch), logtalk_version(Major, Minor, Patch))).
 
-logtalk_version(2, 9, 2).
+logtalk_version(2, 9, 3).
+
+
+
+% set_logtalk_flag(+atom, +nonvar)
+%
+% sets a Logtalk flag
+
+set_logtalk_flag(_, _) :-
+	fail.
+
+
+
+% current_logtalk_flag(?atom, ?nonvar)
+%
+% tests/gets Logtalk flags
+
+current_logtalk_flag(Flag, Value) :-
+	lgt_default_compiler_option(Flag, Value).
 
 
 
