@@ -54,7 +54,8 @@ lgtpdfa4.xsl lgtpdfus.xsl
 
 	XSLT files to generate PDF files from the .xml files (formatted either 
 	for A4 paper or US Letter paper) using XSL Formatting Objects. Tested 
-	with Apache FOP 0.20.4 processor (http://xml.apache.org/fop).
+	with Apache FOP 0.20.4 processor (http://xml.apache.org/fop) and with 
+	PassiveTeX (http://www.tei-c.org.uk/Software/passivetex/).
 
 
 texml.xsl
