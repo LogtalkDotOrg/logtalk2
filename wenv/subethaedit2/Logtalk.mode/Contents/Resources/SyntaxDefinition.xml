@@ -231,7 +231,7 @@
 		</state>
 
 		<state id="Quoted Atoms" color="#881314" useforautocomplete="no">
-			<begin><regex>'</regex></begin>
+			<begin><regex>(?&lt;!0)'</regex></begin>
 			<end><regex>'</regex></end>
 		</state>
 
