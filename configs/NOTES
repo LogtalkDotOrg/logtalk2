@@ -189,6 +189,14 @@ IF/Prolog 5.1
 	of source files.
 
 
+JIProlog 3.0.0-3
+
+	ji.config
+
+	Don't forget to use the chdir/1 predicate to set the working directory 
+	before loading the library or an example.
+
+
 K-Prolog 5.01 Linux/Solaris, 5.02 Windows and later versions
 
 	k.config
