@@ -4,8 +4,8 @@
 
 ;; Author: Paulo Moura
 ;; Creation date: November 15, 2003
-;; Last modification date: December 13, 2003
-;; Version: 0.2
+;; Last modification date: December 16, 2003
+;; Version: 0.3
 
 ;; Installation:
 ;;
@@ -98,8 +98,8 @@
 
 (setq logtalk-font-lock-strings
 	'(
-		("\\(\"\\([^\n\"]\\|\\\\\"\\)*\"\\)" 2 'logtalk-string-face)
-		("\\(^\\|[^0-9]\\)\\('\\([^\n']\\|\\\\'\\)*'\\)" 2 'logtalk-string-face)
+		("\\(\"\\([^\n\"]\\|\\\\\"\\)*\"\\)" . 'logtalk-string-face)
+		("\\(^\\|[^0-9]\\)\\('\\([^\n']\\|\\\\'\\)*'\\)" . 'logtalk-string-face)
 	))
 
 
@@ -175,7 +175,8 @@
 		;; evaluable functors:
 		;;
 		("\\(abs\\|ceiling\\|flo\\(?:at\\(?:_\\(?:\\(?:fractional\\|integer\\)_part\\)\\)?\\|or\\)\\|mod\\|r\\(?:em\\|ound\\)\\|sign\\|truncate\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("//\\|mod\\|rem\\|[*+/-]" . 'logtalk-built-in-predicate-face)
+		("//\\|[*+/-]" . 'logtalk-built-in-predicate-face)
+		("\\([[:blank:]]\\)\\(rem\\|mod\\)\\([[:blank:]]\\)" 2 'logtalk-built-in-predicate-face)
 		;;
 		;; other arithemtic functors:
 		;;
