@@ -1,0 +1,21 @@
+=================================================================
+Logtalk - Object oriented extension to Prolog
+Release 2.17.1
+
+Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
+=================================================================
+
+
+% Harry Potter's room of potions logical puzzle:
+
+| ?- potions::potions(P1, P2, P3, P4, P5, P6, P7).
+
+P1 = poison
+P2 = wine
+P3 = forward
+P4 = poison
+P5 = poison
+P6 = wine
+P7 = backwards
+
+yes
