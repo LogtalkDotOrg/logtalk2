@@ -12,8 +12,8 @@ RELEASE NOTES
 
 2.19.2 - August ??, 2004
 
-	Added five new sample scripts for converting XML documenting files to PDF,
-	HTML, and XHTML using the fop and xsltproc XSL processors.
+	Added five new sample shell scripts for converting XML documenting files 
+	to PDF, HTML, and XHTML using the fop and xsltproc XSL processors.
 
 	Added missing extension for source metafiles to the SWI-Prolog hook file.
 	

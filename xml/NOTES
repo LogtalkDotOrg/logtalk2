@@ -16,7 +16,8 @@ The scripts provided in this folder are just samples which you should adapt
 to your working environment. Some scripts expect that all files be in the 
 same directory. Some others should be called from the directory containing 
 the XML documenting files that you wish to convert. See the description of 
-each script below for details.
+each script below for details. Make sure that the XSL processors you intend 
+to use are properly installed before running the scripts.
 
 Regarding conversion to HTML/XHTML, the links to the .xsl files on the 
 .xml files and the links to the .css files in the generated .html files 
