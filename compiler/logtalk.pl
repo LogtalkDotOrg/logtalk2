@@ -4373,7 +4373,7 @@ current_logtalk_flag(version, version(2, 21, 5)).
 		('$lgt_compiler_option'(events, on) ->
 			TPred = '$lgt_send_to_object'(Obj, Pred, This)
 			;
-			Tpred = '$lgt_send_to_object_ne'(Obj, Pred, This))
+			TPred = '$lgt_send_to_object_ne'(Obj, Pred, This))
 		;
 		\+ callable(Pred),									% invalid message
 		throw(type_error(callable, Pred)).
