@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.15.2 - March ??, 2003
+2.15.2 - April 2, 2003
 
 	Experimental support for DCG rules inside categories and objects. Added 
 	built-in methods phrase/2 and phrase/3.
