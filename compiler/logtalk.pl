@@ -3132,7 +3132,7 @@ user0__def(Pred, _, _, _, Pred, user).
 % Logtalk and Prolog built-in predicates
 
 '$lgt_tr_body'(Pred, _, _) :-
-	'$lgt_built_in'(Pred),
+	'$lgt_pl_built_in'(Pred),
 	\+ '$lgt_iso_def_pred'(Pred),
 	'$lgt_compiler_option'(portability, warning),
 	'$lgt_compiler_option'(report, on),
