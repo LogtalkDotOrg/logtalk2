@@ -86,9 +86,9 @@ WScript.Echo("converting XML files...");
 var files = new Enumerator(fso.GetFolder(WshShell.CurrentDirectory).Files);
 
 for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
-	var file = files.item();
+	var file = files.item().name;
 	if (fso.GetExtensionName(file) = "xml") {
-		WScript.Echo("  converting" + fso.GetFileName(file));
+		WScript.Echo("  converting" + file));
 		var html_file = directory + "\\" + fso.GetBaseName(file) + ".html";
 		switch (processor) {
 			case "xsltproc" :
