@@ -386,7 +386,7 @@ Logtalk provides two built-in methods for inspecting object predicates: <a title
 We can find the properties of visible predicates by calling the <a title="Consult reference manual" href="../refman/methods/predicate_property2.html"><code>predicate_property/2</code></a> built-in method. For example:
 </p>
 <pre>
-	| ?- bar::predicate_property(foo(_), Property).
+    | ?- bar::predicate_property(foo(_), Property).
 </pre>
 <p>
 Note that this method respects the predicate's scope declarations. For instance, the above call will only return properties for public predicates.
@@ -418,10 +418,40 @@ Note that if a predicate is declared in a category imported by the object, it wi
 We can find, by backtracking, all visible user predicates by calling the <a title="Consult reference manual" href="../refman/methods/current_predicate1.html"><code>current_predicate/1</code></a> built-in method. This method respects the predicate's scope declarations. For instance, the following call:
 </p>
 <pre>
-	| ?- some_object::current_predicate(Functor/Arity).
+    | ?- some_object::current_predicate(Functor/Arity).
 </pre>
 <p>
 will only return user predicates that are declared public.
+</p>
+
+<h2>Calling Prolog built-in predicates<a name="prolog"></a></h2>
+
+<p>
+In predicate definitions, predicate calls which are not prefixed with a message sending operator (either <code>::</code> or <code>^^</code>), are compiled to either calls to local predicates or as calls to Logtalk/Prolog built-in predicates. A predicate call is compiled as a call to a local predicate if the object (or category) contains a definition for the called predicate or a dynamic declaration for it. When the object (or category) does not contain either a definition of the called predicate or a corresponding dynamic declaration, Logtalk tests if the call corresponds to a Logtalk or Prolog built-in predicate. Calling a predicate which is neither a local predicate nor a Logtalk/Prolog built-in predicate results in a compile time warning. This means that, in the following example:
+</p>
+<pre>
+    foo :-
+        ...,
+        write(bar),
+        ...
+</pre>
+<p>
+the call to the predicate <code>write/1</code> will be compiled as a call to the corresponding Prolog built-in predicate unless the object (or category) encapsulating the above definition also contains a predicate named <code>write/1</code> or a dynamic declaration for the predicate.
+</p>
+<p>
+When calling non-standard Prolog built-in predicates, you may run into portability problems when trying your applications with other Prolog compilers which might not have the same set of built-in predicates. You may use the Logtalk compiler option <code>portability/1</code> in  order to check for any problematic calls in your code.
+</p>
+
+<h3>Calling Prolog non-standard meta-predicates<a name="prolog_meta"></a></h3>
+
+<p>
+Compiling calls to non-standard, Prolog built-in meta-predicates can be tricky for two reasons: first, there is no standard way of checking if a built-in predicate is also a meta-predicate and finding out which are its meta-arguments; second, in some cases, the meta-arguments of a meta-predicate are not directly called as goals but are used instead for constructing goals. The way the goals are constructed is specific to the meta-predicate and cannot reliable be inferred by the Logtalk compiler. For meta-predicates whose meta-arguments are directly called as goals, the solution is to explicitly declare them in the corresponding Prolog configuration file using the predicate <code>'$lgt_pl_metapredicate'/1</code>. For example:
+</p>
+<pre>
+    '$lgt_pl_metapredicate'(call_with_depth_limit(::, *, *)).
+</pre>
+<p>
+Currenlty, there is no clean workaround for calling non-standard, Prolog built-in meta-predicates whose meta-arguments are used for constructing goals instead of called as goals directly.
 </p>
 
 <div class="navbottom">
@@ -433,7 +463,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: August 14, 2004</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: August 19, 2004</span></p>
 </div>
 </body>
 </html>
