@@ -43,11 +43,16 @@ WScript.Echo("Creating directory " + logtalk_user + "...");
 fso.CreateFolder(logtalk_user);
 
 WScript.Echo("Copying Logtalk directories...");
+fso.CopyFile(logtalk_home + "\\libpaths_user_template.pl", logtalk_user + "\\libpaths.pl");
 fso.CopyFolder(logtalk_home + "\\examples", logtalk_user + "\\examples");
 fso.CopyFolder(logtalk_home + "\\library", logtalk_user + "\\library");
 fso.CopyFolder(logtalk_home + "\\xml", logtalk_user + "\\xml");
 
 WScript.Echo("Finished copying Logtalk directories.");
+WScript.Echo("");
+WScript.Echo("You may need to edit the My Documents\\logtalk\\libpaths.pl file to");
+WScript.Echo("match your Prolog compiler and operating-system requirments or to");
+WScript.Echo("add your own library paths.");
 WScript.Echo("");
 
 WScript.Quit(0);

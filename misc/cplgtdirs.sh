@@ -19,10 +19,14 @@ else
 	mkdir -p $HOME/logtalk/examples
 	mkdir -p $HOME/logtalk/library
 	mkdir -p $HOME/logtalk/xml
+	cp $LOGTALKHOME/compiler/libpaths_user_template.pl $HOME/logtalk/libpaths.pl
 	cp -RL $LOGTALKHOME/examples $HOME/logtalk/
 	cp -RL $LOGTALKHOME/library $HOME/logtalk/
 	cp -RL $LOGTALKHOME/xml $HOME/logtalk/
 	chmod -R u+w $HOME/logtalk
 	echo "Finished copying Logtalk directories."
+	echo
+	echo "You may need to edit the ~/logtalk/libpaths.pl file to match your Prolog"
+	echo "compiler and operating-system requirments or to add your own library paths."
 	echo
 fi
