@@ -15,7 +15,8 @@ RELEASE NOTES
 	Added helper batch scripts (misc/cplgtdirs.bat, xml/lgt2html.bat, and 
 	xml/lgt2pdf.bat) for running the Windows JScript scripts from the 
 	command-line. Updated the Windows installation JScript script to add 
-	the Logtalk directories "misc" and "xml" to the system PATH environment 
+	the Logtalk directory "misc" to the system PATH environment variable 
+	and to add the Logtalk directory "xml" to the user PATH environment 
 	variable.
 
 	Added documentation on read-only compiler flags (which are defined in the 
