@@ -111,17 +111,21 @@ CIAO Prolog 1.8p2 and later versions
 	ciao.config
 	ciao_aux.config
 
-	The ciao.config is just a loader file with two include/1 directives 
-	that load the ciao_aux.config and the Logtalk compiler/runtime. You 
-	must edit the contents of the file ciao.config to match your operating 
-	system (the include directives arguments are file paths that differ 
-	between operating systems). The definition of the '$lgt_predicate_property'/2 
-	in file ciao_aux.config is a bit of a hack, but should enable you to run 
-	the Logtalk companion examples and to try out your own Logtalk programs. 
-	Don't forget to call the cd/1 predicate to set the working directory before 
-	compiling the library or an example (you will need first to load the library 
-	system that exports the cd/1 predicate by calling the goal 
-	use_module(library(system)). Supports smart compilation of source files.
+	The "ciao.config" file is just a loader file containing two include/1 
+	directives which load the "ciao_aux.config" and the Logtalk compiler/
+	runtime. You must edit the contents of the file ciao.config to match 
+	your operating system (the include directives arguments are file paths 
+	that differ between operating systems).
+
+	The definition of the predicate '$lgt_predicate_property'/2 in the file 
+	"ciao_aux.config" is a bit of a hack, but should enable you to run the 
+	Logtalk companion examples and to try out your own Logtalk programs. 
+
+	Don't forget to call the cd/1 predicate to set the working directory 
+	before compiling the library or an example (you will need first to 
+	load the library system that exports the cd/1 predicate by calling the 
+	goal use_module(library(system)). Supports smart compilation of source 
+	files.
 
 
 ECLiPSe 5.5~5.8
@@ -209,10 +213,10 @@ K-Prolog 5.1.2a and later versions
 	k.config
 
 	K-Prolog 5.1.2a supports the ISO Prolog standard. No problems expected. 
-	This config file have been written and tested with the help of Nobukuni 
-	Kino. Don't forget to use the cd/1 predicate to set the working directory 
-	before loading the library or an example. Supports smart compilation of 
-	source files.
+	Config file written and tested with the help of Nobukuni Kino. Don't 
+	forget to use the cd/1 predicate to set the working directory before 
+	loading the library or an example. Supports smart compilation of source 
+	files.
 
 
 LPA MacProlog32 1.25
@@ -286,11 +290,11 @@ PrologII+ 4.5 and later versions
 	Does not support the "altdirs" compiler option.
 
 
-Qu-Prolog 6.6
+Qu-Prolog 6.7
 
 	qu.config
 
-	Qu-Prolog 6.6 does not support floats. In order to compile the Logtalk 
+	Qu-Prolog 6.7 does not support floats. In order to compile the Logtalk 
 	library and the Logtalk examples you will need to replace all occurrences 
 	of floats by either integers or (quoted) atoms. In Unix-like systems, you
 	may perform the changes by running the following commands:
@@ -337,11 +341,11 @@ Quintus Prolog 3.3~3.5
 	the library or an example. Supports smart compilation of source files.
 
 
-SICStus Prolog 3.8~3.11.x
+SICStus Prolog 3.8~3.12.x
 
 	sicstus.config
 	
-	For versions 3.8.x~3.11.x. The config file sets the flag language to 
+	For versions 3.8.x~3.12.x. The config file sets the flag language to 
 	iso, but that is only recommended and should not be needed to run Logtalk.
 	No problems expected although not fully tested. Don't forget to use the 
 	SICStus working_directory/2 predicate to set the working directory before 
