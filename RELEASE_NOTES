@@ -21,6 +21,9 @@ RELEASE NOTES
 	Removed outdated support for MacOS X Project Builder and added support 
 	for the new MacOS X Xcode developer tool.
 
+    Updated VIM syntax coloring configuration file to solve an issue with 
+    the setting of tab stops.
+
     Corrected bug in the shapes example (wrong placement of the declaration 
     of the predicate side/1).
 
