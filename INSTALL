@@ -39,10 +39,12 @@ shell script that may be called by the end-users for making these copies).
 
 ENVIRONMENT VARIABLES
 
-In Unix and Unix-like systems is recommended that you define an environment 
-variable named $LOGTALKHOME pointing to the Logtalk installation for use with 
-your Prolog compilers. If you use a csh shell, add the following line to your 
-~/.cshrc file:
+It is recommended that you define an environment variable named LOGTALKHOME 
+pointing to the Logtalk installation for use with your Prolog compilers.
+
+* Unix and Unix-like systems:
+
+If you use a csh shell, add the following line to your ~/.cshrc file:
 
 	setenv LOGTALKHOME "/your/installation/directory/lgt2192"
 
@@ -55,6 +57,17 @@ When using the provided shell script for installing Logtalk, a symbolic link
 to the Logtalk installation directory is automatically created. The link is 
 named "logtalk". In this case, use this symbolic link to define the 
 environment variable in order to avoid breaking it when upgrading Logtalk.
+
+* Windows systems:
+
+In Windows 95/98/ME, environment variables are defined in the autoexec.bat 
+file (you will need to reboot after editing the file):
+
+	SET LOGTALKHOME=C:\your\installation\folder\
+
+In Windows NT/2000/XP, environment variables are defined using the System 
+properties control panel (if you are a system administrator, you may define 
+LOGTALKHOME as a system variable, otherwise define it as a user variable).
 
 
 CREATING NEW PROLOG TOP-LEVELS FOR AUTOMATIC LOADING OF LOGTALK
