@@ -2188,7 +2188,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_head'(_, _).
 
 
-'$lgt_dbg_goal'(Goal, TGoal, _) :-
+'$lgt_dbg_goal'(Goal, TGoal, Ctx) :-
 	'$lgt_dbg_tracing_',
 	!,
 	(	'$lgt_dbg_port'('Call: ', Goal, Ctx), fail
@@ -3537,7 +3537,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	'$lgt_tr_margs'(Args, MArgs, Ctx, TArgs),
 	TPred =.. [Functor| TArgs].
 
-'$lgt_tr_body'(Pred, '$lgt_call_built_in'(Pred, Ctx), Pred, Ctx) :-
+'$lgt_tr_body'(Pred, '$lgt_call_built_in'(Pred, Ctx), '$lgt_dbg_goal'(Pred, '$lgt_call_built_in'(Pred, Ctx), Ctx), Ctx) :-
 	'$lgt_built_in'(Pred),
 	!.
 
@@ -5465,6 +5465,10 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	'$lgt_fix_redef_built_ins'(Test, TTest).
 
 '$lgt_fix_redef_built_ins'(setof(Term, Pred, List), setof(Term, TPred, List)) :-
+	!,
+	'$lgt_fix_redef_built_ins'(Pred, TPred).
+
+'$lgt_fix_redef_built_ins'('$lgt_dbg_goal'(OPred, Pred, Ctx), '$lgt_dbg_goal'(OPred, TPred, Ctx)) :-
 	!,
 	'$lgt_fix_redef_built_ins'(Pred, TPred).
 
