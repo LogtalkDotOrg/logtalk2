@@ -39,11 +39,11 @@
 			</fo:simple-page-master>
 		</fo:layout-master-set>
 
-		<fo:page-sequence master-name="simple">
+		<fo:page-sequence master-reference="simple">
 		
 			<fo:static-content flow-name="xsl-region-before">
 				<fo:block>
-					<fo:leader leader-pattern="rule" leader-length="inherit"/>
+					<fo:leader leader-pattern="rule" leader-length="100%"/>
 				</fo:block>
 				<fo:block
 						text-align="end" 
@@ -56,7 +56,7 @@
 
 			<fo:static-content flow-name="xsl-region-after">
 				<fo:block>
-					<fo:leader leader-pattern="rule" leader-length="inherit"/>
+					<fo:leader leader-pattern="rule" leader-length="100%"/>
 				</fo:block>
 				<fo:block
 						text-align="end" 
