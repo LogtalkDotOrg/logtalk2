@@ -2609,6 +2609,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 '$lgt_dbg_valid_leash_value'(Shorthand, Ports) :-
 	atom(Shorthand),
+	Shorthand \= [],
 	!,
 	'$lgt_dbg_leash_shortand_ports'(Shorthand, Ports).
 

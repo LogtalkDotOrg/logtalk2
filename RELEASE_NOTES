@@ -30,6 +30,9 @@ RELEASE NOTES
 	asserta/1 and assertz/1 when asserting facts on objects compiled in debug 
 	mode.
 
+	Corrected a bug in the method leash/1 of the built-in pseudo-object 
+	"debugger", which failed to accept an empty list as a valid argument.
+
 	Corrected a bug on the "roots" example in the object "class" which failed 
 	to properly test the validity of new object identifiers.
 
