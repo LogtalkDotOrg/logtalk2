@@ -19,7 +19,8 @@ RELEASE NOTES
 	variables.
 
 	Removed references to file sax.jar from the scripts used to convert XML 
-	documenting files into (X)HTML.
+	documenting files into (X)HTML. Updated scripts html.sh, htmlnt.cmd, and 
+	htmldos.bat to use XT 20020426a or later version.
 
 
 2.16.0 - March 3, 2004
