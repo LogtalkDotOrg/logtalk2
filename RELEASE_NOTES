@@ -13,9 +13,15 @@ RELEASE NOTES
 2.12.0 - May ??, 2002
 
 	New read-only Logtalk flag "version". Corrected exception term generated 
-	when trying to modify a read-only flag using set_logtalk_flag/2.
+	when trying to modify a read-only flag using the set_logtalk_flag/2 
+	built-in predicate.
 
 	Updated config file for OpenProlog 1.1b5.
+
+	New config file for ECLiPSe 5.4.
+
+	Renamed config files for CIAO 1.7 to "ciao_aux18.config" and 
+	"ciao18.config".
 
 	New example of using the built-in database handling methods (dynpred).
 
