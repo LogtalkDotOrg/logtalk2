@@ -211,6 +211,7 @@ Given that events can be dynamically defined at runtime, there is no room for re
 </p>
 <p>
 Messages to <em>self</em> and <em>super</em> calls are transparent regarding events and, as such, imply only two predicate calls (the cache lookup and the method call).
+</p>
 <p>
 When a message is sent by the user from the top-level interpreter, Logtalk needs to perform a runtime translation of the message in order to prove the corresponding goal. For user-defined messages/predicates, the runtime translation overhead corresponds to seventeen predicate calls. Thus, while sending a message from a compiled object corresponds to six predicate calls, the same message sent by the user from the top-level interpreter results in twenty-three predicate calls. Considering the time taken for the user to type the goal, this overhead is of no practical consequence.
 </p>
@@ -279,7 +280,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: January 30, 2005</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: February 3, 2005</span></p>
 </div>
 </body>
 </html>
