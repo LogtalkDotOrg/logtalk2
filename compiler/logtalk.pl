@@ -1881,7 +1881,7 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_report_redefined_entity'(Entity) :-
 	'$lgt_current_object_'(Entity, _, _, _, _),
 	!,
-	write('WARNING!  redefining '), write(Entity), write(' object'), nl.
+	write('WARNING!  redefining object '), write(Entity), nl.
 
 '$lgt_report_redefined_entity'(Entity) :-		% parametric objects
 	atom_codes(Entity, Codes),
@@ -1891,17 +1891,17 @@ user0__def(Pred, _, _, _, Pred, user).
 	functor(Loaded, Functor, Arity),
 	'$lgt_current_object_'(Loaded, _, _, _, _),
 	!,
-	write('WARNING!  redefining '), write(Entity), write(' object'), nl.
+	write('WARNING!  redefining object '), write(Entity), nl.
 
 '$lgt_report_redefined_entity'(Entity) :-
 	'$lgt_current_protocol_'(Entity, _),
 	!,
-	write('WARNING!  redefining '), write(Entity), write(' protocol'), nl.
+	write('WARNING!  redefining protocol '), write(Entity), nl.
 
 '$lgt_report_redefined_entity'(Entity) :-
 	'$lgt_current_category_'(Entity, _),
 	!,
-	write('WARNING!  redefining '), write(Entity), write(' category'), nl.
+	write('WARNING!  redefining category '), write(Entity), nl.
 
 '$lgt_report_redefined_entity'(_).
 	
@@ -2627,8 +2627,8 @@ user0__def(Pred, _, _, _, Pred, user).
 
 '$lgt_tr_clause'(Clause) :-
 	'$lgt_entity_'(Type, Entity, Prefix, _),
-	(Type = object ->					% "this" can only be determined at runtime for categories
-		'$lgt_this'(Context, Entity)	% it depends on the object that imports the category
+	((Type = object, \+ atom(Entity)) ->	% if the entity is a parametric object we need
+		'$lgt_this'(Context, Entity)		% "this" for inline compilation of parameter/2
 		;
 		true),
 	'$lgt_prefix'(Context, Prefix),
