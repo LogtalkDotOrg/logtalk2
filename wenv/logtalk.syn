@@ -1,7 +1,14 @@
 ; TextPad syntax definitions for Logtalk (http://www.logtalk.org/)
 ; 
-; author: Paulo Mourra
-; last changed in: May 18, 2002
+; Author: 			Paulo Mourra
+; Last changed in: 	May 18, 2002
+;
+; Tags used and sugested colors:
+;   Keywords 1		message sending operators		blue
+;   Keywords 2		entity enclosing directives		purple
+;   Keywords 3		entity  directives				purple
+;   Keywords 4		built-in predicates
+;   Keywords 5		built-in methods
 
 
 C=1
@@ -10,8 +17,8 @@ C=1
 Namespace1 = 6
 IgnoreCase = NO
 KeyWordLength =
-BracketChars = ()
-OperatorChars = -+*/<>=
+BracketChars = ()[]
+OperatorChars =
 PreprocStart =
 SyntaxStart =
 SyntaxEnd =
@@ -20,7 +27,7 @@ CommentStart = /*
 CommentEnd = */
 CommentStartAlt =
 CommentEndAlt =
-SingleComment = //
+SingleComment = %
 SingleCommentCol =
 SingleCommentAlt =
 SingleCommentColAlt =
@@ -34,139 +41,116 @@ CharStart =
 CharEnd =
 CharEsc =
 
-[Keywords 1]
-:-
-=..
-.
-!
-|
-_
-%
 
-[Keywords 2]
+[Keywords 1]
 
 ; Logtalk message sending operators
-
 ::
 ^^
 
-
-" Logtalk external call
-
-"{"	"}"
-
-
-" Logtalk opening entity directives
-
-:- object("	").
-:- protocol("	").
-:- category("	").
+; Logtalk external call
+{
+}
 
 
-" Logtalk closing entity directives
+[Keywords 2]
 
-:- end_object.
-:- end_protocol.
-:- end_category.
-
-" Logtalk entity relations
-
-instantiates(")"
-specializes(")"
-extends(")"
-imports("	)"
-implements("	)"
+; Logtalk opening entity directives
+:- object
+:- protocol
+:- category
 
 
-" Logtalk directives
+; Logtalk closing entity directives
+:- end_object
+:- end_protocol
+:- end_category
 
-:- initialization(")\."
-:- info("	)\."
-:- mode("	)\."
-:- dynamic("	)\."
-:- dynamic.
-:- discontiguous(")\."
-:- public("	)\."
-:- protected("	)\."
-:- private("	)\."
-:- metapredicate(")\."
-:- op("		)\."
-:- calls("	)\."
-:- uses("	)\."
+; Logtalk entity relations
+instantiates
+specializes
+extends
+imports
+implements
 
+
+[Keywords 3]
+
+; Logtalk directives
+:- initialization
+:- info
+:- mode
+:- dynamic
+:- discontiguous
+:- public
+:- protected
+:- private
+:- metapredicate
+:- op
+:- calls
+:- uses
+
+
+[Keywords 4]
 
 ; Logtalk built-in predicates
-
 current_object
 current_protocol
 current_category
-
 create_object
 create_protocol
 create_category
-
 object_property
 protocol_property
 category_property
-
 abolish_object
 abolish_protocol
 abolish_category
-
 extends_object
 extends_protocol
 implements_protocol
 instantiates_object
 specializes_object
 imports_category
-
 abolish_events
 current_event
 define_events
-
 current_logtalk_flag
 set_logtalk_flag
-
 logtalk_compile
 logtalk_load
-
 forall
 logtalk_version
 retractall
 
-; Logtalk built-in methods
 
+[Keywords 5]
+
+; Logtalk built-in methods
 parameter
 self
 sender
 this
-
 current_predicate
 predicate_property
-
 abolish
 asserta
 assertz
 clause
 retract
 retractall
-
 bagof
 findall
 forall
 setof
-
 before
 after
 
-" Mode operators
-
+; Mode operators
 ?
 @
 
-
-" Control constructs
-
+; Control constructs
 true
 fail
 call
@@ -177,16 +161,12 @@ call
 catch
 throw
 
-
-" Term unification
-
+; Term unification
 =
 unify_with_occurs_check
 \=
 
-
-" Term testing
-
+; Term testing
 var
 atom
 integer
@@ -196,9 +176,7 @@ compound
 nonvar
 number
 
-
-" Term comparison
-
+; Term comparison
 @=<
 ==
 \==
@@ -206,22 +184,16 @@ number
 @>
 @>=
 
-
-" Term creation and decomposition
-
+; Term creation and decomposition
 functor
 arg
 =..
 copy_term
 
-
-" Arithemtic evaluation
-
+; Arithemtic evaluation
 is
 
-
-" Arithemtic comparison
-
+; Arithemtic comparison
 =:=
 =\=
 <
@@ -229,9 +201,7 @@ is
 >
 >=
 
-
-" Stream selection and control
-
+; Stream selection and control
 current_input
 current_output
 set_input
@@ -243,9 +213,7 @@ stream_property
 at_end_of_stream
 set_stream_position
 
-
-" Character input/output
-
+; Character input/output
 get_char
 get_code
 peek_char
@@ -254,16 +222,12 @@ put_char
 put_code
 nl
 
-
-" Byte input/output
-
+; Byte input/output
 get_byte
 peek_byte
 put_byte
 
-
-" Term input/output
-
+; Term input/output
 read_term
 read
 write_term
@@ -275,16 +239,12 @@ current_op
 char_conversion
 current_char_conversion
 
-
-" Logic and control
-
+; Logic and control
 \+
 once
 repeat
 
-
-" Atomic term processing
-
+; Atomic term processing
 atom_length
 atom_concat
 sub_atom
@@ -294,20 +254,16 @@ char_code
 number_chars
 number_codes
 
-
-" Implementation defined hooks functions
-
+; Implementation defined hooks functions
 set_prolog_flag
 current_prolog_flag
 halt
 
-
-" Evaluable functors
-
+; Evaluable functors
 +
 -
 *
-//"
+//
 /
 rem
 mod
@@ -321,9 +277,7 @@ truncate
 round
 ceiling
 
-
-" Other arithemtic functors
-
+; Other arithemtic functors
 **
 sin
 cos
@@ -332,21 +286,15 @@ exp
 log
 sqrt
 
-
-" Bitwise functors
-
+; Bitwise functors
 >>
 <<
 /\
 \/
 \
 
-
-" Logtalk end-of-clause
-
+; Logtalk end-of-clause
 .
 
-
-" Logtalk list operator
-
+; Logtalk list operator
 |
