@@ -24,7 +24,7 @@
 sender(Sender)
 </pre>
 <p>
-	Returns the object that has sent the message under processing.
+	Returns the object that has sent the message under processing. Note that this predicate implies an instantiation between its argument and the corresponding implicit context argument in the predicate containing the call. This instantiation occurs at the clause head, not at the clause body.
 </p>
 </blockquote>
 
