@@ -900,6 +900,7 @@ logtalk_compile(Entities) :-
 
 logtalk_compile(Entity, Options) :-
 	atom(Entity),
+	Entity \= [],
 	!,
 	catch(
 		('$lgt_check_compiler_entity'(Entity),
@@ -1045,6 +1046,7 @@ logtalk_load(Entities) :-
 
 logtalk_load(Entity, Options) :-
 	atom(Entity),
+	Entity \= [],
 	!,
 	catch(
 		('$lgt_check_compiler_entity'(Entity),
@@ -2519,7 +2521,7 @@ current_logtalk_flag(version, version(2, 19, 0)).
 % '$lgt_split_metafile'(+atom)
 %
 % splits a metafile in individual entity files plus a loader 
-% file; the loader file have the same name as the metafile
+% file; the loader file has the same name as the metafile
 
 '$lgt_split_metafile'(Source) :-
 	'$lgt_compiler_option'(smart_compilation, on),
