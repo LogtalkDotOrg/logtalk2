@@ -24,6 +24,8 @@ else {
 	WScript.Quit(1);
 }
 
+logtalk_home = logtalk_home.replace(/\/g, "\\\\");
+
 if (WScript.Arguments.Unnamed.Length > 0) {
 	usage_help();
 	WScript.Quit(0);
@@ -41,9 +43,7 @@ var f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.pl", true);
 f.WriteLine(":- system_module.");
 f.Close();
 
-// var p = "type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\logtalkswi.pl";
-
-// WshShell.Run(p, true);
+WshShell.Run("type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\logtalkswi.pl", true);
 
 f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.rc", true);
 
