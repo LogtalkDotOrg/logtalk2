@@ -16,6 +16,9 @@ RELEASE NOTES
 	non-existing predicate exceptions thrown by XSB, SICStus Prolog, CIAO, 
 	B-Prolog, and recent development versions of SWI-Prolog.
 
+	Expanded the benchmarks example to test performance of the built-in 
+	database methods.
+
 
 2.23.0 - February 21, 2005
 
