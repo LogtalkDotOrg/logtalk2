@@ -10,9 +10,7 @@ This directory contains miscellaneous files used in Logtalk packaging
 and installation:
 
 logtalk.spec
-	specification file for building Linux RPMs (in its current version,
-	it does not support building from the tarball and assumes an already 
-	existing installation)
+	specification file for building Linux RPMs
 
 cplgtdirs.sh
 	shell script for copying xml, examples and library directories to 

@@ -5,6 +5,7 @@ Release: 1
 License: Artistic License 2.0
 Group: Development/Languages
 Packager: Paulo Moura <pmoura@logtalk.org>
+Source: http://www.logtalk.org/files/lgt2170.tar.gz
 BuildArchitectures: noarch
 URL: http://www.logtalk.org/
 Prefix: /usr/local
@@ -12,12 +13,19 @@ AutoReqProv: no
 %description
 Logtalk is an open source object-oriented extension to the Prolog programming language. Integrating logic programming with object-oriented and event-driven programming, it is compatible with most Prolog compilers. It supports both prototypes and classes. In addition, it supports component-based programming through category-based composition.
 %prep
-find /usr/local/lgt2170/ -name CVS -print | xargs rm -rf
-find /usr/local/lgt2170/ -name .cvsignore -print | xargs rm -f
-find /usr/local/lgt2170/ -name .#* -print | xargs rm -f
-find /usr/local/lgt2170/ -name .DS_Store -print | xargs rm -f
+%setup -n lgt2170
 %build
 %install
+rm -rf /usr/local/lgt2170
+rm -rf /usr/local/logtalk
+mkdir /usr/local/lgt2170
+cp -R * /usr/local/lgt2170
+cd /usr/local/lgt2170
+chmod -R go-w,a+r .
+cd /usr/local
+ln -sf lgt2170 logtalk
+cd bin
+ln -sf ../lgt2170/misc/cplgtdirs.sh cplgtdirs.sh
 %clean
 %files
 %defattr(-,root,users)
