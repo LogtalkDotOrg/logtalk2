@@ -195,16 +195,20 @@ Obj::Pred :-
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), TFunctor2/TArity2)) :-
 	catch('$lgt_reverse_predicate_functor'(TFunctor1, TArity1, Entity, Type, Functor1, Arity1), _, fail),
 	catch('$lgt_reverse_predicate_functor'(TFunctor2, TArity2, Entity, Type, Functor2, Arity2), _, fail),
-	throw(error(existence_error(procedure, Functor1/Arity1), caller(Type, Entity, Functor2/Arity2))).
+	throw(error(existence_error(procedure, Functor1/Arity1), culprit(Type, Entity, Functor2/Arity2))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/TArity), _)) :-
 	catch('$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity), _, fail),
-	throw(error(existence_error(procedure, Functor/Arity), caller(Type, Entity, _))).
+	throw(error(existence_error(procedure, Functor/Arity), culprit(Type, Entity, _))).
+
+'$lgt_runtime_error_handler'(error(existence_error(procedure, ':'(_, TFunctor/TArity)), _)) :-
+	catch('$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity), _, fail),
+	throw(error(existence_error(procedure, Functor/Arity), culprit(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TCompound), _)) :-
 	functor(TCompound, TFunctor, TArity),
 	catch('$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity), _, fail),
-	throw(error(existence_error(procedure, Functor/Arity), caller(Type, Entity, _))).
+	throw(error(existence_error(procedure, Functor/Arity), culprit(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(logtalk_debugger_aborted)) :-
 	write('Debugging session aborted by user. Debugger still on.'), nl,
