@@ -352,8 +352,8 @@
 				<string>(read_term)\(</string>
 				<string>(read)\(</string>
 				<string>(write_term)\(</string>
-				<string>(write)\(</string>
 				<string>(writeq)\(</string>
+				<string>(write)\(</string>
 				<string>(write_canonical)\(</string>
 				<string>(op)\(</string>
 				<string>(current_op)\(</string>
