@@ -25,6 +25,10 @@ cplgtdirs.sh
 	the user home directory (must be run by the end-user to ensure 
 	proper permissions on the copied files)
 
+cleandist.sh
+	shell script for cleaning a Logtalk distribution in preparation for 
+	packaging.
+
 debian
 	directory containing support files for building a Debian package
 	(work in progress; not yet functional)
