@@ -28,6 +28,10 @@ RELEASE NOTES
 	bodies compiled with no information being printed for the rule head 
 	when tracing calls to the asserted rules.
 
+	Corrected a bug in the dynamic creation of objects, protocols, and 
+	categories when the debug flag is on, which resulted in the table of 
+	entities being debugged not being updated.
+
 
 2.22.2 - December 24, 2004
 
