@@ -1940,11 +1940,8 @@ current_logtalk_flag(version, version(2, 22, 3)).
 % '$lgt_send_to_object'(@object, ?term, +object)
 
 '$lgt_send_to_object'(Obj, Pred, Sender) :-
-	nonvar(Obj) ->
-		(nonvar(Pred) ->
-			'$lgt_send_to_object_nv'(Obj, Pred, Sender)
-			;
-			throw(error(instantiation_error, Obj::Pred, Sender)))
+	(nonvar(Obj), nonvar(Pred)) ->
+		'$lgt_send_to_object_nv'(Obj, Pred, Sender)
 		;
 		throw(error(instantiation_error, Obj::Pred, Sender)).
 
@@ -1987,11 +1984,8 @@ current_logtalk_flag(version, version(2, 22, 3)).
 % '$lgt_send_to_object_ne'(@object, ?term, +object)
 
 '$lgt_send_to_object_ne'(Obj, Pred, Sender) :-
-	nonvar(Obj) ->
-		(nonvar(Pred) ->
-			'$lgt_send_to_object_ne_nv'(Obj, Pred, Sender)
-			;
-			throw(error(instantiation_error, Obj::Pred, Sender)))
+	(nonvar(Obj), nonvar(Pred)) ->
+		'$lgt_send_to_object_ne_nv'(Obj, Pred, Sender)
 		;
 		throw(error(instantiation_error, Obj::Pred, Sender)).
 
