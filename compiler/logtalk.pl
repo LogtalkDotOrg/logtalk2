@@ -2140,6 +2140,8 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	'$lgt_dbg_set_leash_ports'(Ports, Obj).
 
 
+'$lgt_dbg_leashing_'(fact).
+'$lgt_dbg_leashing_'(rule).
 '$lgt_dbg_leashing_'(call).
 '$lgt_dbg_leashing_'(exit).
 '$lgt_dbg_leashing_'(redo).
@@ -2172,10 +2174,10 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 
 '$lgt_dbg_leash_shortand_ports'(none, []).
-'$lgt_dbg_leash_shortand_ports'(loose, [call]).
-'$lgt_dbg_leash_shortand_ports'(half, [call, redo]).
-'$lgt_dbg_leash_shortand_ports'(tight, [call, redo, fail]).
-'$lgt_dbg_leash_shortand_ports'(full, [call, exit, redo, fail]).
+'$lgt_dbg_leash_shortand_ports'(loose, [fact, rule, call]).
+'$lgt_dbg_leash_shortand_ports'(half, [fact, rule, call, redo]).
+'$lgt_dbg_leash_shortand_ports'(tight, [fact, rule, call, redo, fail]).
+'$lgt_dbg_leash_shortand_ports'(full, [fact, rule, call, exit, redo, fail]).
 
 
 '$lgt_dbg_fact'(Fact, Ctx) :-
