@@ -16,9 +16,12 @@ RELEASE NOTES
 	by a "smart_compilation" flag. Only available in Prolog compilers that 
 	provide access to file modification dates.
 
+	Added a "startup_message" flag to control printing of the Logtalk banner 
+	at startup.
+
 	Reworked Logtalk pre-processor compilation and loading reports. Compiler 
-	option "report" now togles between silent compilation and loading and 
-	normal reporting (as specified by the other flags).
+	option "report" now togles between normal reporting (as specified by the 
+	other flags) and silent compilation/loading of source files.
 
 
 2.10.0 - April 5, 2002
