@@ -426,8 +426,8 @@ XSB Prolog 2.3~6
 	end with a '.P' extension otherwise the (re)consult built-in predicate 
 	will not find them!
 
-	You also need to patch to the Logtalk compiler. Open the file 
-	compiler/logtalk.pl, find the clause that reads: 
+	You also need to apply the following patch to the Logtalk compiler. Open 
+	the file compiler/logtalk.pl, find the clause that reads: 
 	
 	'$lgt_current_object_'(user, user0_, user0__dcl, user0__def, _).
 	
