@@ -1,0 +1,19 @@
+## template = predicate
+#prompt ( "Scope:" $scope )
+#prompt ( "Functor:" $functor )
+#prompt ( "Arity:" $arity )
+#prompt ( "Comment:" $comment )
+	:- $scope($functor/$arity).
+#if ( $arity == "0" )
+	:- info($functor/$arity,
+		[comment is '$comment']).
+#else
+#prompt ( "Arguments (comma separated):" $args )
+#prompt ( "Number of solutions:" $solutions )
+#prompt ( "Argument names (comma separated):" $parnames )
+	:- mode($functor($args), $solutions).
+	:- info($functor/$arity,
+		[comment is '$comment',
+		 parnames is [$parnames]]).
+#end
+

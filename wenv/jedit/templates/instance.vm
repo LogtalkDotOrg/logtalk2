@@ -1,0 +1,19 @@
+## template = instance
+#buffermode ( "logtalk" )
+#prompt ( "Instance name:" $instancename )
+#prompt ( "Classes (comma separated):" $classes )
+:- object($instancename,
+	instantiates($classes)).
+
+#prompt ( "Author name:" $authorname )
+#prompt ( "Comment:" $comment )
+#today ( $date "yy/MM/dd" )
+	:- info([
+		author is '$authorname',
+		date is $date,
+		comment is '$comment').
+
+
+#caret ()
+
+:- end_object.

@@ -1,0 +1,29 @@
+## template = class
+#buffermode ( "logtalk" )
+#prompt ( "Class name:" $classname )
+#prompt ( "Metaclasses (comma separated):" $metaclasses )
+#prompt ( "Superclasses (comma separated):" $superclasses )
+#if ( !$metaclasses )
+:- object($classname,
+	specializes($superclasses)).
+#elseif ( !$superclasses )
+:- object($classname,
+	instantiates($metaclasses)).
+#else
+:- object($classname,
+	instantiates($metaclasses),
+	specializes($superclasses)).
+#end
+	
+#prompt ( "Author name:" $authorname )
+#prompt ( "Comment:" $comment )
+#today ( $date "yy/MM/dd" )
+	:- info([
+		author is '$authorname',
+		date is $date,
+		comment is '$comment').
+
+
+#caret ()
+
+:- end_object.
