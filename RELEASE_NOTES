@@ -21,9 +21,9 @@ RELEASE NOTES
 	New config file for JIProlog 3.0 (see the configs/NOTES file for details).
 
 	Added a mode bundle for the TextMode 1.0.x (MacOS X) text editor providing 
-	syntax coloring and code snippets for editing Logtalk source files. Corrected 
-	a bug in the syntax coloring of the :-/1-2 operator on the SubEthaEdit 2.x 
-	text editor.
+	syntax highlighting, folding, and code snippets for editing Logtalk source 
+	files. Corrected a bug in the syntax coloring of the :-/1-2 operator on the 
+	SubEthaEdit 2.x text editor.
 
 
 2.21.1 - September 27, 2004
