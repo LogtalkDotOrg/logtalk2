@@ -109,13 +109,14 @@ logtalk.css
 
 
 html.sh
+xhtml.sh
 
-	Sample Unix shell script to batch convert .xml files to .html files.
-	The script also generates an index.html file which contains links to all the 
+	Sample Unix shell scripts to batch convert .xml files to .html files. These 
+	scripts also generates an index.html file which contains links to all the 
 	converted files. The title of the index.html file can be given as a parameter 
-	to the script. Edit the script to match your environment before running it 
-	and to chose between HTML or XHTML output. Requires James Clark XT XSLT 
-	processor 20020426a or later version (http://www.jclark.com/xml/).
+	to the script. Edit the scripts to match your environment before running them. 
+	Requires James Clark XT XSLT processor 20020426a or later version 
+	(http://www.jclark.com/xml/).
 
 
 htmlnt.cmd
@@ -154,6 +155,29 @@ pdf.bat
 	Tested with version 0.20.5 (to workaround a bug on the XALAN processor used 
 	by FOP, you should use the compiler option doctype(standalone) when compiling 
 	your Logtalk source files).
+
+
+lgt2a4pdf.sh
+lgt2uspdf.sh
+
+	Sample Unix shell scripts to batch convert .xml files to .pdf files. Requires 
+	Apache FOP processor (http://xml.apache.org/fop). Tested with version 0.20.5 
+	(to workaround a bug on the XALAN processor used by FOP, you should use the 
+	compiler option doctype(standalone) when compiling your Logtalk source files).
+	These scripts assume that the LOGTALKHOME environment variable is defined and 
+	that the FOP processor is available with the name "fop" in the path.
+
+
+lgt2html.sh
+lgt2xhtml.sh
+
+	Sample Unix shell scripts to batch convert .xml files to .html files. These 
+	scripts also generates an index.html file which contains links to all the 
+	converted files. The title of the index.html file can be given as a parameter 
+	to the script. Requires libxslt XSLT processor 1.1.8 or later version 
+	(http://xmlsoft.org/XSLT/).
+	These scripts assume that the LOGTALKHOME environment variable is defined and 
+	that the libxslt processor is available with the name "xsltproc" in the path.
 
 
 Note that you can write other XSLT files for converting the XML files to 

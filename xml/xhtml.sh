@@ -3,7 +3,7 @@
 XT_PATH="/Applications/XML/XT"
 # XT_PATH="/usr/local/XT"
 
-XSLT="lgthtml.xsl"
+XSLT="lgtxhtml.xsl"
 
 if [ -z "$1" ]; then
 	title="Entity documentation index"
@@ -20,7 +20,7 @@ echo An index.html file, containing links to all .html documenting files,
 echo is automatically generated. This file uses the script optional parameter 
 echo value as the title of the index.html file.
 echo
-echo converting XML files to HTML...
+echo converting XML files to XHTML...
 
 for file in *.xml; do
 	echo "  converting" $file
@@ -34,10 +34,12 @@ echo generating index file...
 
 echo "" > index.html
 
-echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">" >> index.html
-echo "<html>" >> index.html
+echo "<?xml version=\"1.0\"?>" >> index.html
+echo "<?xml-stylesheet href=\"logtalk.css\" type=\"text/css\"?>" >> index.html
+echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">" >> index.html
+echo "<html lang=\"en\" xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">" >> index.html
 echo "<head>" >> index.html
-echo "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" >> index.html
+echo "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>" >> index.html
 echo "    <title>"$title"</title>" >> index.html
 echo "    <link rel=\"stylesheet\" href=\"logtalk.css\" type=\"text/css\">" >> index.html
 echo "</head>" >> index.html

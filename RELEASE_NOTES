@@ -12,6 +12,11 @@ RELEASE NOTES
 
 2.19.2 - August ??, 2004
 
+	Added five new sample scripts for converting XML documenting files to PDF,
+	HTML, and XHTML using the fop and xsltproc XSL processors.
+
+	Added missing extension for source metafiles to the SWI-Prolog hook file.
+	
 	Corrected a bug in the lgtxhtml.xsl XSLT file where a wrong reference to 
 	the Logtalk CSS file is being used in the xml-stylesheet tag.
 
