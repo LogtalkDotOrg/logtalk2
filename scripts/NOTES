@@ -38,7 +38,7 @@ logtalk.spec
 
 cplgtdirs.sh
 cplgtdirs.js
-	sample scripts for copying the Logtalk user-modifiable files and 
+	end-user scripts for copying the Logtalk user-modifiable files and 
 	directories to the location pointed by the environment variable 
 	LOGTALKUSER (defaults to ~/logtalk on Unix-like operating-systems 
 	and to My Documents\logtalk on Windows when the variable is not 
@@ -53,7 +53,8 @@ debian
 	(work in progress; not yet functional)
 
 
-The following scripts must be run by a user with administration privileges:
+The following scripts allow easy integration of Logtalk with selected Prolog 
+compilers; they must be run by a user with administration privileges:
 
 make_ciaolgt.sh
 	makes a shell script named ciaolgt for running Logtalk with CIAO Prolog
@@ -134,5 +135,5 @@ setting the variables).
 
 Note: when Logtalk is manually installed from sources, the shell scripts 
 might not have the executable permission bit set. In that case it will 
-be necessary to first run the command "chmod a+x *.sh" on the scripts 
-directory.
+be necessary to first run the command "chmod a+x *.sh" on the "misc" and 
+"xml" directories.
