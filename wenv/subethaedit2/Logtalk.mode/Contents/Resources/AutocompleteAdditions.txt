@@ -1,5 +1,11 @@
+object(, , , , ).
+object(, , , ).
+object(, , ).
+object(, ).
 object().
+protocol(, extends()).
 protocol().
+category(, implements()).
 category().
 extends()
 implements()
@@ -12,15 +18,20 @@ end_category.
 public(/).
 protected(/).
 private(/).
-uses(, []).
+uses(, [/]).
 uses().
 calls().
 info([]).
 info(/, []).
-mode(, ).
+mode(, one).
+mode(, zero).
+mode(, zero_or_one).
+mode(, zero_or_more).
+mode(, one_or_more).
+mode(, error).
 dynamic(/).
 dynamic.
-discontiguous().
+discontiguous(/).
 metapredicate().
 op(, , ).
 initialization().
@@ -71,21 +82,31 @@ number()
 current_object()
 current_protocol()
 current_category()
-create_object()
-create_protocol()
-create_category()
-object_property()
-protocol_property()
-category_property()
+
+create_object(, , , )
+create_protocol(, , )
+create_category(, , , )
+
+object_property(, )
+protocol_property(, )
+category_property(, )
+
 abolish_object()
 abolish_protocol()
 abolish_category()
-extends_object()
-extends_protocol()
-implements_protocol()
-instantiates_class()
-specializes_class()
-imports_category()
+
+extends_object(, , )
+extends_object(, )
+extends_protocol(, , )
+extends_protocol(, )
+implements_protocol(, , )
+implements_protocol(, )
+instantiates_class(, , )
+instantiates_class(, )
+specializes_class(, , )
+specializes_class(, )
+imports_category(, , )
+imports_category(, )
 
 current_event(, , , , )
 define_events(, , , , )
