@@ -35,6 +35,15 @@ Tree = Tree = s(np(d(the), n(girl)), vp(v(likes), np(d(the), n(boy))))
 yes
 
 
+% parsing command-line shell input
+
+| ?- shell::parse("pwd; cd ..; ls -a", L).
+
+L = [pwd,'cd ..','ls -a'] ? 
+
+yes
+
+
 % conversion between compound terms and XML
 
 | ?- xml::convert(word(child, children), word(singular, plural), XML).
