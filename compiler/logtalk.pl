@@ -3644,8 +3644,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		('$lgt_proper_list'(Preds) ->
 			forall(
 				'$lgt_member'(Pred, Preds),
-				('$lgt_valid_pred_ind'(Pred) ->
-					Pred = Functor/Arity,
+				('$lgt_valid_pred_ind'(Pred, Functor, Arity) ->
 					functor(Template, Functor, Arity),
 					(\+ '$lgt_pp_uses_'(_, Template) ->
 						assertz('$lgt_pp_uses_'(Obj, Template))
@@ -3687,8 +3686,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 '$lgt_tr_directive'(info, [Pred, List]) :-
-	'$lgt_valid_pred_or_gr_ind'(Pred) ->
-		'$lgt_tr_pred_info_list'(List, Pred),
+	'$lgt_valid_pred_or_gr_ind'(Pred, Functor, Arity) ->
+		'$lgt_tr_pred_info_list'(List, Functor, Arity),
 		assertz('$lgt_pp_info_'(Pred, List))
 		;
 		throw(type_error(predicate_indicator, Pred)).
@@ -3698,13 +3697,10 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	'$lgt_convert_to_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
-		('$lgt_valid_pred_ind'(Pred) ->
-			Pred = Functor/Arity,
+		('$lgt_valid_pred_ind'(Pred, Functor, Arity) ->
 			assertz('$lgt_pp_public_'(Functor, Arity))
 			;
-			('$lgt_valid_gr_ind'(Pred) ->
-				Pred = Functor//Arity,
-				Arity2 is Arity + 2,
+			('$lgt_valid_gr_ind'(Pred, Functor, Arity, Arity2) ->
 				assertz('$lgt_pp_non_terminal_'(Functor, Arity, Arity2)),
 				assertz('$lgt_pp_public_'(Functor, Arity2))
 				;
@@ -3715,13 +3711,10 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	'$lgt_convert_to_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
-		('$lgt_valid_pred_ind'(Pred) ->
-			Pred = Functor/Arity,
+		('$lgt_valid_pred_ind'(Pred, Functor, Arity) ->
 			assertz('$lgt_pp_protected_'(Functor, Arity))
 			;
-			('$lgt_valid_gr_ind'(Pred) ->
-				Pred = Functor//Arity,
-				Arity2 is Arity + 2,
+			('$lgt_valid_gr_ind'(Pred, Functor, Arity, Arity2) ->
 				assertz('$lgt_pp_non_terminal_'(Functor, Arity, Arity2)),
 				assertz('$lgt_pp_protected_'(Functor, Arity2))
 				;
@@ -3732,13 +3725,10 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	'$lgt_convert_to_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
-		('$lgt_valid_pred_ind'(Pred) ->
-			Pred = Functor/Arity,
+		('$lgt_valid_pred_ind'(Pred, Functor, Arity) ->
 			assertz('$lgt_pp_private_'(Functor, Arity))
 			;
-			('$lgt_valid_gr_ind'(Pred) ->
-				Pred = Functor//Arity,
-				Arity2 is Arity + 2,
+			('$lgt_valid_gr_ind'(Pred, Functor, Arity, Arity2) ->
 				assertz('$lgt_pp_non_terminal_'(Functor, Arity, Arity2)),
 				assertz('$lgt_pp_private_'(Functor, Arity2))
 				;
@@ -3749,13 +3739,10 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	'$lgt_convert_to_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
-		('$lgt_valid_pred_ind'(Pred) ->
-			Pred = Functor/Arity,
+		('$lgt_valid_pred_ind'(Pred, Functor, Arity) ->
 			assertz('$lgt_pp_dynamic_'(Functor, Arity))
 			;
-			('$lgt_valid_gr_ind'(Pred) ->
-				Pred = Functor//Arity,
-				Arity2 is Arity + 2,
+			('$lgt_valid_gr_ind'(Pred, Functor, Arity, Arity2) ->
 				assertz('$lgt_pp_dynamic_'(Functor, Arity2))
 				;
 				throw(type_error(predicate_indicator, Pred))))).
@@ -3765,13 +3752,10 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	'$lgt_convert_to_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
-		('$lgt_valid_pred_ind'(Pred) ->
-			Pred = Functor/Arity,
+		('$lgt_valid_pred_ind'(Pred, Functor, Arity) ->
 			assertz('$lgt_pp_discontiguous_'(Functor, Arity))
 			;
-			('$lgt_valid_gr_ind'(Pred) ->
-				Pred = Functor//Arity,
-				Arity2 is Arity + 2,
+			('$lgt_valid_gr_ind'(Pred, Functor, Arity, Arity2) ->
 				assertz('$lgt_pp_discontiguous_'(Functor, Arity2))
 				;
 				throw(type_error(predicate_indicator, Pred))))).
@@ -3798,11 +3782,11 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 '$lgt_tr_directive'(alias, [_, PI1, _]) :-
-	\+ '$lgt_valid_pred_ind'(PI1),
+	\+ '$lgt_valid_pred_ind'(PI1, _, _),
 	throw(type_error(predicate_indicator, PI1)).
 
 '$lgt_tr_directive'(alias, [_, _, PI2]) :-
-	\+ '$lgt_valid_pred_ind'(PI2),
+	\+ '$lgt_valid_pred_ind'(PI2, _, _),
 	throw(type_error(predicate_indicator, PI2)).
 
 '$lgt_tr_directive'(alias, [Entity, _, _]) :-
@@ -4026,47 +4010,47 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 
-% '$lgt_tr_pred_info_list'(@list, @predicate_indicator)
+% '$lgt_tr_pred_info_list'(@list, +atom, +integer)
 %
 % true if the argument is a list of valid key-value pairs
 
-'$lgt_tr_pred_info_list'(List, _) :-
+'$lgt_tr_pred_info_list'(List, _, _) :-
 	var(List),
 	throw(instantiation_error). 
 
-'$lgt_tr_pred_info_list'(List, _) :-
+'$lgt_tr_pred_info_list'(List, _, _) :-
 	\+ '$lgt_proper_list'(List),
 	throw(type_error(list, List)).
 
-'$lgt_tr_pred_info_list'([], _).
+'$lgt_tr_pred_info_list'([], _, _).
 
-'$lgt_tr_pred_info_list'([Head| _], _) :-
+'$lgt_tr_pred_info_list'([Head| _], _, _) :-
 	var(Head),
 	throw(instantiation_error). 
 
-'$lgt_tr_pred_info_list'([Head| _], _) :-
+'$lgt_tr_pred_info_list'([Head| _], _, _) :-
 	Head \= (_ is _),
 	throw(type_error(key_value_info_pair, Head)).
 
-'$lgt_tr_pred_info_list'([Key is Value| _], _) :-
+'$lgt_tr_pred_info_list'([Key is Value| _], _, _) :-
 	(var(Key); var(Value)),
 	throw(instantiation_error). 
 
-'$lgt_tr_pred_info_list'([Key is _| _], _) :-
+'$lgt_tr_pred_info_list'([Key is _| _], _, _) :-
 	\+ atom(Key),
 	throw(type_error(atom, Key)). 
 
-'$lgt_tr_pred_info_list'([Key is Value| Tail], Pred) :-
-	'$lgt_tr_pred_info_key_value'(Key, Value, Pred),
-	'$lgt_tr_pred_info_list'(Tail, Pred).
+'$lgt_tr_pred_info_list'([Key is Value| Tail], Functor, Arity) :-
+	'$lgt_tr_pred_info_key_value'(Key, Value, Functor, Arity),
+	'$lgt_tr_pred_info_list'(Tail, Functor, Arity).
 
 
 
-% '$lgt_tr_pred_info_key_value'(+atom, @nonvar, @predicate_indicator)
+% '$lgt_tr_pred_info_key_value'(+atom, @nonvar, +atom, +integer)
 %
 % true if the argument is a valid key-value pair
 
-'$lgt_tr_pred_info_key_value'(allocation, Allocation, _) :-
+'$lgt_tr_pred_info_key_value'(allocation, Allocation, _, _) :-
 	!,
 	(atom(Allocation) ->
 		('$lgt_member'(Allocation, [container, descendants, instances, classes, subclasses, any]) ->
@@ -4076,9 +4060,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		;
 		throw(type_error(atom, Allocation))).
 
-'$lgt_tr_pred_info_key_value'(argnames, Argnames, Pred) :-
+'$lgt_tr_pred_info_key_value'(argnames, Argnames, Functor, Arity) :-
 	!,
-	once((Pred = Functor/Arity; Pred = Functor//Arity)),
 	('$lgt_proper_list'(Argnames) ->
 		(('$lgt_member'(Name, Argnames), \+ atom(Name)) ->
 			throw(type_error(atom, Name))
@@ -4090,14 +4073,14 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		;
 		throw(type_error(list, Argnames))).
 
-'$lgt_tr_pred_info_key_value'(comment, Comment, _) :-
+'$lgt_tr_pred_info_key_value'(comment, Comment, _, _) :-
 	!,
 	(atom(Comment) ->
 		true
 		;
 		throw(type_error(atom, Comment))).
 
-'$lgt_tr_pred_info_key_value'(exceptions, Exceptions, _) :-
+'$lgt_tr_pred_info_key_value'(exceptions, Exceptions, _, _) :-
 	!,
 	('$lgt_proper_list'(Exceptions) ->
 		(('$lgt_member'(Exception, Exceptions),
@@ -4108,7 +4091,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		;
 		throw(type_error(list, Exceptions))).
 
-'$lgt_tr_pred_info_key_value'(redefinition, Redefinition, _) :-
+'$lgt_tr_pred_info_key_value'(redefinition, Redefinition, _, _) :-
 	!,
 	(atom(Redefinition) ->
 		('$lgt_member'(Redefinition, [never, free, specialize, call_super_first, call_super_last]) ->
@@ -4118,7 +4101,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		;
 		throw(type_error(atom, Redefinition))).
 
-'$lgt_tr_pred_info_key_value'(_, _, _).
+'$lgt_tr_pred_info_key_value'(_, _, _, _).
 
 
 
@@ -7263,11 +7246,11 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 
-% '$lgt_valid_pred_ind(@term)
+% '$lgt_valid_pred_ind(@term, -atom, -integer)
 %
 % valid predicate indicator
 
-'$lgt_valid_pred_ind'(Term) :-
+'$lgt_valid_pred_ind'(Term, Functor, Arity) :-
 	nonvar(Term),
 	Term = Functor/Arity,
 	atom(Functor),
@@ -7276,24 +7259,25 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 
-% '$lgt_valid_gr_ind(@term)
+% '$lgt_valid_gr_ind(@term, -atom, -integer, -integer)
 %
 % valid grammar rule indicator
 
-'$lgt_valid_gr_ind'(Term) :-
+'$lgt_valid_gr_ind'(Term, Functor, Arity, Arity2) :-
 	nonvar(Term),
 	Term = Functor//Arity,
 	atom(Functor),
 	integer(Arity),
-	Arity >= 0.
+	Arity >= 0,
+	Arity2 is Arity + 2.
 
 
 
-% '$lgt_valid_pred_or_gr_ind(@term)
+% '$lgt_valid_pred_or_gr_ind(@term, -atom, -integer)
 %
 % valid predicate indicator or grammar rule indicator
 
-'$lgt_valid_pred_or_gr_ind'(Term) :-
+'$lgt_valid_pred_or_gr_ind'(Term, Functor, Arity) :-
 	nonvar(Term),
 	once((Term = Functor/Arity; Term = Functor//Arity)),
 	atom(Functor),

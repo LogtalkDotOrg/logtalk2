@@ -56,6 +56,9 @@ RELEASE NOTES
 
 	Added new predicates '$lgt_call'/9 and '$lgt_once'/9 to all config files.
 
+	Simplified and improved performance of compilation of directives containing
+	predicate indicators.
+
 
 2.22.4 - January 12, 2005
 
