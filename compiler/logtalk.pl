@@ -56,14 +56,14 @@
 
 :- dynamic('$lgt_current_protocol_'/3).		% '$lgt_current_protocol_'(Ptc, Prefix, Type)
 :- dynamic('$lgt_current_category_'/3).		% '$lgt_current_category_'(Ctg, Prefix, Type)
-:- dynamic('$lgt_current_object_'/6).			% '$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, Type)
+:- dynamic('$lgt_current_object_'/6).		% '$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, Type)
 
 :- dynamic('$lgt_implements_protocol_'/3).	% '$lgt_implements_protocol_'(ObjOrCtg, Ptc, Scope)
 :- dynamic('$lgt_imports_category_'/3).		% '$lgt_imports_category_'(Obj, Ctg, Scope)
-:- dynamic('$lgt_instantiates_class_'/3).		% '$lgt_instantiates_class_'(Instance, Class, Scope)
-:- dynamic('$lgt_specializes_class_'/3).		% '$lgt_specializes_class_'(Class, Superclass, Scope)
+:- dynamic('$lgt_instantiates_class_'/3).	% '$lgt_instantiates_class_'(Instance, Class, Scope)
+:- dynamic('$lgt_specializes_class_'/3).	% '$lgt_specializes_class_'(Class, Superclass, Scope)
 :- dynamic('$lgt_extends_protocol_'/3).		% '$lgt_extends_protocol_'(Ptc1, Ptc2, Scope)
-:- dynamic('$lgt_extends_object_'/3).			% '$lgt_extends_object_'(Prototype, Parent, Scope)
+:- dynamic('$lgt_extends_object_'/3).		% '$lgt_extends_object_'(Prototype, Parent, Scope)
 
 
 
@@ -76,69 +76,69 @@
 
 
 
-:- dynamic('$lgt_dcl_'/1).							% '$lgt_dcl_'(Clause)
+:- dynamic('$lgt_dcl_'/1).						% '$lgt_dcl_'(Clause)
 :- dynamic('$lgt_ddcl_'/1).						% '$lgt_ddcl_'(Clause)
-:- dynamic('$lgt_def_'/1).							% '$lgt_def_'(Clause)
+:- dynamic('$lgt_def_'/1).						% '$lgt_def_'(Clause)
 :- dynamic('$lgt_ddef_'/1).						% '$lgt_ddef_'(Clause)
-:- dynamic('$lgt_super_'/1).						% '$lgt_super_'(Clause)
+:- dynamic('$lgt_super_'/1).					% '$lgt_super_'(Clause)
 
-:- dynamic('$lgt_dynamic_'/1).						% '$lgt_dynamic_'(Functor/Arity)
-:- dynamic('$lgt_discontiguous_'/1).				% '$lgt_discontiguous_'(Functor/Arity)
+:- dynamic('$lgt_dynamic_'/1).					% '$lgt_dynamic_'(Functor/Arity)
+:- dynamic('$lgt_discontiguous_'/1).			% '$lgt_discontiguous_'(Functor/Arity)
 :- dynamic('$lgt_mode_'/2).						% '$lgt_mode_'(Mode, Determinism)
-:- dynamic('$lgt_public_'/1).						% '$lgt_public_'(Functor/Arity)
-:- dynamic('$lgt_protected_'/1).					% '$lgt_protected_'(Functor/Arity)
-:- dynamic('$lgt_private_'/1).						% '$lgt_private_'(Functor/Arity)
-:- dynamic('$lgt_metapredicate_'/1).				% '$lgt_metapredicate_'(Pred)
+:- dynamic('$lgt_public_'/1).					% '$lgt_public_'(Functor/Arity)
+:- dynamic('$lgt_protected_'/1).				% '$lgt_protected_'(Functor/Arity)
+:- dynamic('$lgt_private_'/1).					% '$lgt_private_'(Functor/Arity)
+:- dynamic('$lgt_metapredicate_'/1).			% '$lgt_metapredicate_'(Pred)
 
-:- dynamic('$lgt_object_'/9).						% '$lgt_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef)
+:- dynamic('$lgt_object_'/9).					% '$lgt_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef)
 :- dynamic('$lgt_category_'/4).					% '$lgt_category_'(Ctg, Prefix, Dcl, Def)
 :- dynamic('$lgt_protocol_'/3).					% '$lgt_protocol_'(Ptc, Prefix, Dcl)
 
 :- dynamic('$lgt_uses_'/1).						% '$lgt_uses_'(Entity)
-:- dynamic('$lgt_calls_'/1).						% '$lgt_calls_'(Entity)
+:- dynamic('$lgt_calls_'/1).					% '$lgt_calls_'(Entity)
 :- dynamic('$lgt_info_'/1).						% '$lgt_info_'(List)
 :- dynamic('$lgt_info_'/2).						% '$lgt_info_'(Functor/Arity, List)
 
 :- dynamic('$lgt_implemented_protocol_'/4).		% '$lgt_implemented_protocol_'(Ptc, Prefix, Dcl, Scope)
-:- dynamic('$lgt_imported_category_'/5).			% '$lgt_imported_category_'(Ctg, Prefix, Dcl, Def, Scope)
+:- dynamic('$lgt_imported_category_'/5).		% '$lgt_imported_category_'(Ctg, Prefix, Dcl, Def, Scope)
 :- dynamic('$lgt_extended_object_'/10).			% '$lgt_extended_object_'(Parent, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)
 :- dynamic('$lgt_instantiated_class_'/10).		% '$lgt_instantiated_class_'(Class, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)
-:- dynamic('$lgt_specialized_class_'/10).			% '$lgt_specialized_class_'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)
-:- dynamic('$lgt_extended_protocol_'/4).			% '$lgt_extended_protocol_'(Ptc2, Prefix, Dcl, Scope)
+:- dynamic('$lgt_specialized_class_'/10).		% '$lgt_specialized_class_'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)
+:- dynamic('$lgt_extended_protocol_'/4).		% '$lgt_extended_protocol_'(Ptc2, Prefix, Dcl, Scope)
 
-:- dynamic('$lgt_entity_'/4).						% '$lgt_entity_'(Type, Entity, Prefix, Dcl)
+:- dynamic('$lgt_entity_'/4).					% '$lgt_entity_'(Type, Entity, Prefix, Dcl)
 :- dynamic('$lgt_entity_functors_'/1).			% '$lgt_entity_functors_'(Clause)
 :- dynamic('$lgt_entity_init_'/1).				% '$lgt_entity_init_'(Goal)
 :- dynamic('$lgt_fentity_init_'/1).				% '$lgt_fentity_init_'(Goal)
 :- dynamic('$lgt_entity_comp_mode_'/1).			% '$lgt_entity_comp_mode_'(Type)
 
-:- dynamic('$lgt_redefined_built_in_'/3).			% '$lgt_redefined_built_in_'(Head, Context, THead)
+:- dynamic('$lgt_redefined_built_in_'/3).		% '$lgt_redefined_built_in_'(Head, Context, THead)
 
-:- dynamic('$lgt_directive_'/1).					% '$lgt_directive_'(Dir)
-:- dynamic('$lgt_rclause_'/1).						% '$lgt_rclause_'(Clause)
-:- dynamic('$lgt_eclause_'/1).						% '$lgt_eclause_'(Clause)
+:- dynamic('$lgt_directive_'/1).				% '$lgt_directive_'(Dir)
+:- dynamic('$lgt_rclause_'/1).					% '$lgt_rclause_'(Clause)
+:- dynamic('$lgt_eclause_'/1).					% '$lgt_eclause_'(Clause)
 :- dynamic('$lgt_feclause_'/1).					% '$lgt_feclause_'(Clause)
 
-:- dynamic('$lgt_defs_pred_'/1).					% '$lgt_defs_pred_'(Functor/Arity)
-:- dynamic('$lgt_calls_pred_'/1).					% '$lgt_calls_pred_'(Functor/Arity)
+:- dynamic('$lgt_defs_pred_'/1).				% '$lgt_defs_pred_'(Functor/Arity)
+:- dynamic('$lgt_calls_pred_'/1).				% '$lgt_calls_pred_'(Functor/Arity)
 
 :- dynamic('$lgt_current_compiler_option_'/2).	% '$lgt_current_compiler_option_'(Option, Value)
 :- dynamic('$lgt_flag_'/2).						% '$lgt_flag_'(Option, Value)
 
-:- dynamic('$lgt_referenced_object_'/1).			% '$lgt_referenced_object_'(Object)
+:- dynamic('$lgt_referenced_object_'/1).		% '$lgt_referenced_object_'(Object)
 :- dynamic('$lgt_referenced_protocol_'/1).		% '$lgt_referenced_protocol_'(Protocol)
 :- dynamic('$lgt_referenced_category_'/1).		% '$lgt_referenced_category_'(Category)
 
-:- dynamic('$lgt_global_op_'/3).					% '$lgt_global_op_'(Priority, Specifier, Operator)
+:- dynamic('$lgt_global_op_'/3).				% '$lgt_global_op_'(Priority, Specifier, Operator)
 :- dynamic('$lgt_local_op_'/3).					% '$lgt_local_op_'(Priority, Specifier, Operator)
 
-:- dynamic('$lgt_debugging_'/1).					% '$lgt_debugging_'(Entity)
+:- dynamic('$lgt_debugging_'/1).				% '$lgt_debugging_'(Entity)
 
-:- dynamic('$lgt_dbg_debugging_'/0).				% '$lgt_dbg_debugging_'
+:- dynamic('$lgt_dbg_debugging_'/0).			% '$lgt_dbg_debugging_'
 :- dynamic('$lgt_dbg_tracing_'/0).				% '$lgt_dbg_tracing_'
 :- dynamic('$lgt_dbg_skipping_'/0).				% '$lgt_dbg_skipping_'
-:- dynamic('$lgt_dbg_spying_'/1).					% '$lgt_dbg_spying_'(Functor/Arity)
-:- dynamic('$lgt_dbg_spying_'/4).					% '$lgt_dbg_spying_'(Sender, This, Self, Goal)
+:- dynamic('$lgt_dbg_spying_'/1).				% '$lgt_dbg_spying_'(Functor/Arity)
+:- dynamic('$lgt_dbg_spying_'/4).				% '$lgt_dbg_spying_'(Sender, This, Self, Goal)
 :- dynamic('$lgt_dbg_leashing_'/1).				% '$lgt_dbg_leashing_'(Port)
 
 
