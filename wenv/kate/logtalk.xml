@@ -38,8 +38,8 @@
 				<!-- Compiling and loading -->
                 <RegExpr String = "\blogtalk_(compile|load)(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Database -->
-                <RegExpr String = "\b(abolish|clause|retract|retractall)(?=[(])" attribute="Built-in" context="#stay" />
-                <RegExpr String = "\bassert(a|z)(?=[(])" attribute="Built-in" context="#stay" />
+                <RegExpr String = "\b(clause|retract|retractall)(?=[(])" attribute="Built-in" context="#stay" />
+                <RegExpr String = "\b(a(bolish|ssert(a|z))(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Control -->
                 <RegExpr String = "\b(ca(ll|tch)|throw)(?=[(])" attribute="Built-in" context="#stay" />
                 <RegExpr String = "\b(fail|true)\b" attribute="Built-in" context="#stay" />
@@ -54,9 +54,9 @@
                 <RegExpr String = "\b(float_(integer|fractional)_part|float)(?=[(])" attribute="Built-in" context="#stay" />
                 <RegExpr String = "\b(floor|truncate|round|ceiling)(?=[(])" attribute="Built-in" context="#stay" />
                 <!-- Other arithemtic functors -->
-                <RegExpr String = "\b(sin|cos|atan|exp|log|sqrt)(?=[(])" attribute="Built-in" context="#stay" />
+                <RegExpr String = "\b(cos|atan|exp|log|s(in|qrt))(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Term testing -->
-                <RegExpr String = "\b(var|atom|integer|float|atomic|compound|nonvar|number)(?=[(])" attribute="Built-in" context="#stay" />
+                <RegExpr String = "\b(var|atom|integer|float|atomic|compound|n(onvar|umber))(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Stream selection and control -->
                 <RegExpr String = "\bcurrent_(input|output)(?=[(])" attribute="Built-in" context="#stay" />
                 <RegExpr String = "\bset_(input|output)(?=[(])" attribute="Built-in" context="#stay" />
@@ -64,21 +64,17 @@
 				<RegExpr String = "\bflush_output\b" attribute="Built-in" context="#stay" />
 				<RegExpr String = "\bflush_output(?=[(])" attribute="Built-in" context="#stay" />
 				<RegExpr String = "\b(stream_property|at_end_of_stream|set_stream_position)(?=[(])" attribute="Built-in" context="#stay" />
-				<!-- Character input/output -->
-                <RegExpr String = "\b(get|peek|put)_char(?=[(])" attribute="Built-in" context="#stay" />
-                <RegExpr String = "\b((get|peek|put)_code|nl)(?=[(])" attribute="Built-in" context="#stay" />
+				<!-- Character and byte input/output -->
+                <RegExpr String = "\b(get|peek|put)_(byte|c(har|ode))(?=[(])" attribute="Built-in" context="#stay" />
                 <RegExpr String = "\bnl\b" attribute="Built-in" context="#stay" />
-				<!-- Byte input/output -->
-                <RegExpr String = "\b(get|peek|put)_byte(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Term input/output -->
                 <RegExpr String = "\b(read_term|read)(?=[(])" attribute="Built-in" context="#stay" />
                 <RegExpr String = "\b(write|writeq|write_(canonical|term))(?=[(])" attribute="Built-in" context="#stay" />
                 <RegExpr String = "\b(op|current_op)(?=[(])" attribute="Built-in" context="#stay" />
                 <RegExpr String = "\b(char_conversion|current_char_conversion)(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Atomic term processing -->
-                <RegExpr String = "\batom_(length|concat)(?=[(])" attribute="Built-in" context="#stay" />
+                <RegExpr String = "\batom_(length|c(hars|o(ncat|des)))(?=[(])" attribute="Built-in" context="#stay" />
                 <RegExpr String = "\b(char_code|sub_atom)(?=[(])" attribute="Built-in" context="#stay" />
-                <RegExpr String = "\batom_(chars|codes)(?=[(])" attribute="Built-in" context="#stay" />
                 <RegExpr String = "\bnumber_(chars|codes)(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Implementation defined hooks functions -->
                 <RegExpr String = "\b(set|current)_prolog_flag)(?=[(])" attribute="Built-in" context="#stay" />
@@ -166,18 +162,18 @@
                 <RegExpr String = "\b(category|object|protocol)(?=[(])" attribute="Directive" context="entityrelations" />
                 <RegExpr String = "\bend_(category|object|protocol)[.]" attribute="Directive" context="#pop" />
  				<!-- Predicate scope directives -->
-                <RegExpr String = "\b(public|protected|private)(?=[(])" attribute="Directive" context="#pop" />
+                <RegExpr String = "\bp(ublic|r(otected|ivate))(?=[(])" attribute="Directive" context="#pop" />
 				<!-- Other directives -->
-                <RegExpr String = "\binitialization(?=[(])" attribute="Directive" context="#pop" />
-                <RegExpr String = "\b(info|mode)(?=[(])" attribute="Directive" context="#pop" />
+                <RegExpr String = "\bin(fo|itialization)(?=[(])" attribute="Directive" context="#pop" />
+                <RegExpr String = "\bmode(?=[(])" attribute="Directive" context="#pop" />
                 <RegExpr String = "\bdynamic[.]" attribute="Directive" context="#pop" />
-				<RegExpr String = "\b(dynamic|discontiguous|metapredicate)(?=[(])" attribute="Directive" context="#pop" />
+				<RegExpr String = "\b(d(ynamic|iscontiguous)|metapredicate)(?=[(])" attribute="Directive" context="#pop" />
                 <RegExpr String = "\bop(?=[(])" attribute="Directive" context="#pop" />
                 <RegExpr String = "\b(calls|uses)(?=[(])" attribute="Directive" context="#pop" />
             </context>
 
             <context name="entityrelations" attribute="Normal" lineEndContext="#stay">
-                <RegExpr String = "\b(extends|imp(lements|orts)|instantiates|specializes)(?=[(])" attribute="Directive" context="#stay" />
+                <RegExpr String = "\b(extends|i(nstantiates|mp(lements|orts)))|specializes)(?=[(])" attribute="Directive" context="#stay" />
                 <Detect2Chars attribute="Normal" context="normal" char=")" char1="." />
             </context>
 
