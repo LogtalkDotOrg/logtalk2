@@ -316,27 +316,10 @@ Qu-Prolog 6.4
 
 		| ?- chdir('../compiler/'), fcompile('logtalk.pl', [assemble_only(true), string_table(256)]), load(logtalk).
 
-	You may want to generate a new Prolog top level that includes the Logtalk 
-	config file and pre-processor plus the runtime. Start by compiling the file
-	qphook.ql:
-
-	% cd $LOGTALKHOME/configs; qc -c qphook.ql
-
-	Next generate the new interpreter by doing:
-
-	% qc -s 2048 -d 1024 -h 2000 -o qplgt qphook.qo qu.qo ../compiler/logtalk.qo
-
-	This way, every time you want to work with Logtalk you will just need to
-	type:
-
-	% qplgt
-
 	Don't forget to use the chdir/1 predicate to set the working directory 
 	before loading the library or an example.
 
-	Written and tested with the help of Peter Robinson (which also contributed 
-	with the qp_build_qplgt.sh shell script for building a new Qu-Prolog 
-	interpreter embedding Logtalk).
+	Written and tested with the help of Peter Robinson.
 
 
 Quintus Prolog 3.3~3.5
