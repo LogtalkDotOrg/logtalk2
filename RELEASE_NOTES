@@ -19,6 +19,9 @@ RELEASE NOTES
 	create_protocol/3, and create_category/4 in order to throw an instantiation 
 	error when called with a non-instantiated argument.
 
+	Updated the benchmarks example to calculate and subtract the benchmark loop 
+	time in order to print absolute timings for the benchmarked goals.
+
 	Fixed a typo on the XSB compatibility notes in the configs/NOTES file.
 
 
