@@ -17,7 +17,7 @@ RELEASE NOTES
 
 	Changed the possible values of the read-only flag startup_message (defined 
 	in the config files) to "flags" (print banner and flag values), "banner" 
-	(print only the banner), and "none" (do not print neither the banner or the 
+	(print only the banner), and "none" (do not print neither the banner nor the 
 	flag values). Default value is "flags".
 
 	Updated the "errors" example to illustrate the error messages thrown when 
@@ -25,6 +25,9 @@ RELEASE NOTES
 
 	Corrected a small problem with the Logtalk language specification file for 
 	Apple's Xcode IDE.
+
+	Added preliminary support for syntax coloring using the Windows text editor 
+	Crimson Editor.
 
 
 2.16.1 - March 23, 2004

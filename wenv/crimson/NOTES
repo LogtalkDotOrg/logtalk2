@@ -1,0 +1,15 @@
+=================================================================
+Logtalk - Object oriented extension to Prolog
+Release 2.16.2
+
+Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
+=================================================================
+
+
+This directory contains files that provides syntax highlighting 
+for editing Logtalk source files with Crimson Editor V3.60 or 
+later version (http://www.crimsoneditor.com/).
+
+
+
+THESE SYNTAX COLORING SUPPORT FILES ARE UNDER DEVELOPMENT.
