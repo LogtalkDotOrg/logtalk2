@@ -19,7 +19,7 @@
 				<!-- Reflection -->
                 <RegExpr String = "\b(current_predicate|predicate_property)(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- DCGs -->
-                <RegExpr String = "\b(phrase)(?=[(])" attribute="Built-in" context="#stay" />
+                <RegExpr String = "\bphrase(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Entity -->
                 <RegExpr String = "\b(current_object|current_protocol|current_category)(?=[(])" attribute="Built-in" context="#stay" />
                 <RegExpr String = "\b(create_object|create_protocol|create_category)(?=[(])" attribute="Built-in" context="#stay" />
@@ -88,15 +88,15 @@
                 <DetectChar attribute="Comment" context="single line comment" char="%"/>
                 <Detect2Chars attribute="Comment" context="multiline comment" char="/" char1="*"/>
 				<!-- Numbers -->
-                <Float attribute="Number" context="#stay" />
-                <Int attribute="Number" context="#stay" />
                 <RegExpr String = "0'[A-Za-z0-9]" attribute = "Number" context="#stay"/>
                 <RegExpr String = "0b[0-1]+" attribute = "Number" context="#stay"/>
                 <RegExpr String = "0o[0-7]+" attribute = "Number" context="#stay"/>
                 <RegExpr String = "0x[0-9a-fA-F]+" attribute = "Number" context="#stay"/>
+                <Float attribute="Number" context="#stay" />
+                <Int attribute="Number" context="#stay" />
 				<!-- Strings and quoted atoms -->
                 <DetectChar attribute="String" context="string" char="&quot;" />
-                <DetectChar attribute="String" context="atom" char="'" />
+                <RegExpr String = "[^0]'" attribute="String" context="atom" />
                 <!-- Message sending operators -->
                 <StringDetect String = "::" attribute="Operator" context="#stay" />
                 <StringDetect String = "^^" attribute="Operator" context="#stay" />
@@ -136,10 +136,12 @@
                 <StringDetect String = "*" attribute="Operator" context="#stay" />
                 <StringDetect String = "//" attribute="Operator" context="#stay" />
                 <StringDetect String = "/" attribute="Operator" context="#stay" />
-                <StringDetect String = "rem" attribute="Operator" context="#stay" />
-                <StringDetect String = "mod" attribute="Operator" context="#stay" />
+                <RegExpr String = "\brem\b" attribute="Operator" context="#stay" />
+                <RegExpr String = "\bmod\b" attribute="Operator" context="#stay" />
 				<!-- Other arithemtic functors -->
                 <StringDetect String = "**" attribute="Operator" context="#stay" />
+				<!-- DCG rules -->
+                <StringDetect String = "--&gt;" attribute="Operator" context="#stay" />
 				<!-- Control constructs -->
                 <StringDetect String = "!" attribute="Operator" context="#stay" />
                 <StringDetect String = "-&gt;" attribute="Operator" context="#stay" />
@@ -161,7 +163,7 @@
 				<!-- Other directives -->
                 <RegExpr String = "\b(initialization)(?=[(])" attribute="Directive" context="#pop" />
                 <RegExpr String = "\b(info|mode)(?=[(])" attribute="Directive" context="#pop" />
-                <RegExpr String = "\bdynamic\b" attribute="Directive" context="#pop" />
+                <RegExpr String = "\bdynamic[.]" attribute="Directive" context="#pop" />
 				<RegExpr String = "\b(dynamic|discontiguous|metapredicate)(?=[(])" attribute="Directive" context="#pop" />
                 <RegExpr String = "\b(op)(?=[(])" attribute="Directive" context="#pop" />
                 <RegExpr String = "\b(calls|uses)(?=[(])" attribute="Directive" context="#pop" />
@@ -169,7 +171,7 @@
 
             <context name="entityrelations" attribute="Normal" lineEndContext="#stay">
                 <RegExpr String = "\b(extends|implements|imports|instantiates|specializes)(?=[(])" attribute="Directive" context="#stay" />
-                <Detect2Chars attribute="Normal" context="#pop" char=")" char1="." />
+                <Detect2Chars attribute="Normal" context="normal" char=")" char1="." />
             </context>
 
             <context name="single line comment" attribute="Comment" lineEndContext="#pop" />
