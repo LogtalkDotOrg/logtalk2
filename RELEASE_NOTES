@@ -14,11 +14,13 @@ RELEASE NOTES
 
 	Added custom handling of specification of predicate exceptions in info/2 
 	documenting directives (declared as "exceptions is [Term1, Term2, ...]" 
-	where Termi is the term thrown when an exception occurs) when writing XML 
-	documenting files.
+	where each Termi is a term representing a possible exception) when writing 
+	XML documenting files.
 
 	Changed debugger command "e" to print exception terms instead of exiting 
 	Logtalk session.
+
+	Corrected a compilation error with B-Prolog due to operator priorities.
 
 	Corrected a possible problem with the redefinition of loaded entities that 
 	define (possibly at runtime) dynamic predicates. All clauses for an entity 

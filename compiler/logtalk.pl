@@ -2407,7 +2407,7 @@ current_logtalk_flag(version, version(2, 17, 1)).
 	'$lgt_dbg_debugging'.
 
 '$lgt_dbg_do_port_option'(+, Goal, _, _, _) :-
-	(Goal = _ :: Pred ->
+	(Goal = (_ :: Pred) ->
 		functor(Pred, Functor, Arity)
 		;
 		functor(Goal, Functor, Arity)),
@@ -2415,7 +2415,7 @@ current_logtalk_flag(version, version(2, 17, 1)).
 	fail.
 
 '$lgt_dbg_do_port_option'(-, Goal, _, _, true) :-
-	(Goal = _ :: Pred ->
+	(Goal = (_ :: Pred) ->
 		functor(Pred, Functor, Arity)
 		;
 		functor(Goal, Functor, Arity)),
