@@ -4139,7 +4139,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_clause'(Clause) :-
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, _),
 	((Type = object, compound(Entity)) ->	% if the entity is a parametric object we need
-		'$lgt_ctx_this'(Ctx, Entity)			% "this" for inline compilation of parameter/2
+		'$lgt_ctx_this'(Ctx, Entity)		% "this" for inline compilation of parameter/2
 		;
 		true),
 	'$lgt_ctx_prefix'(Ctx, Prefix),
@@ -5783,7 +5783,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_gen_dynamic_entity_dynamic_predicate_directives' :-
 	'$lgt_pp_def_'(Clause),
-	Clause \= (_ :- _),
+	Clause \= (_ :- _),		% only local table; reject linking clauses
 	arg(5, Clause, Call),
 	functor(Call, Functor, Arity),
 	assertz('$lgt_pp_directive_'(dynamic(Functor/Arity))),
@@ -8571,7 +8571,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	'$lgt_default_flag'(startup_message, Startup),
 	write('  Startup message (startup_message):                        '), write(Startup), nl,
 	'$lgt_default_flag'(altdirs, Altdirs),
-	write('  Alternative directories (altdirs):                        '), write(Altdirs), nl, nl.
+	write('  Alternative compilation directories (altdirs):            '), write(Altdirs), nl, nl.
 
 
 
