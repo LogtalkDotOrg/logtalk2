@@ -21,6 +21,9 @@ RELEASE NOTES
 
 	Updated GNU Prolog config file to hide compiled entity predicates.
 
+	Updated SWI-Prolog config file for better integration of Logtalk with 
+	this compiler.
+
 
 2.15.2 - April 2, 2003
 
