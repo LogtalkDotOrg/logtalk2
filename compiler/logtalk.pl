@@ -174,7 +174,7 @@ Obj::Pred :-
 		catch(
 			'$lgt_dbg_goal'(Obj::Pred, Call, Ctx),
 			error(logtalk_debugger_aborted),
-			(write('Debugging session aborted by user.'), nl))
+			(write('Debugging session aborted by user. Debugger still on.'), nl))
 		;
 		call(Call)).
 
@@ -2179,7 +2179,8 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_fact'(Fact, Ctx) :-
 	'$lgt_dbg_tracing_',
 	!,
-	'$lgt_dbg_port'('Fact: ', Fact, Ctx).
+	'$lgt_dbg_port'('Fact: ', Fact, Ctx, Action),
+	call(Action).
 
 '$lgt_dbg_fact'(_, _).
 
@@ -2187,7 +2188,8 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_head'(Head, Ctx) :-
 	'$lgt_dbg_tracing_',
 	!,
-	'$lgt_dbg_port'('Rule: ', Head, Ctx).
+	'$lgt_dbg_port'('Rule: ', Head, Ctx, Action),
+	call(Action).
 
 '$lgt_dbg_head'(_, _).
 
@@ -2195,29 +2197,30 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_goal'(Goal, TGoal, Ctx) :-
 	'$lgt_dbg_tracing_',
 	!,
-	(	'$lgt_dbg_port'('Call: ', Goal, Ctx), fail
-		;
+	(	'$lgt_dbg_port'('Call: ', Goal, Ctx, CAction),
+		call(CAction),
 		call(TGoal),
-		(	'$lgt_dbg_port'('Exit: ', Goal, Ctx)
+		(	'$lgt_dbg_port'('Exit: ', Goal, Ctx, EAction),
+			call(EAction)
 			;
-			'$lgt_dbg_port'('Redo: ', Goal, Ctx), fail
+			'$lgt_dbg_port'('Redo: ', Goal, Ctx, _), fail
 		)
 		;
-		'$lgt_dbg_port'('Fail: ', Goal, Ctx), fail
+		'$lgt_dbg_port'('Fail: ', Goal, Ctx, _), fail
 	).
 
 '$lgt_dbg_goal'(_, TGoal, _) :-
 	call(TGoal).
 
 
-'$lgt_dbg_port'(Port, Goal, Ctx) :-
+'$lgt_dbg_port'(Port, Goal, Ctx, Action) :-
 	'$lgt_dbg_tracing_',
 	!,
 	repeat,
 		write(Port), writeq(Goal), write(' ? '),
 		'$lgt_dbg_read_port_option'(Option),
 	'$lgt_dbg_valid_port_option'(Option),
-	'$lgt_dbg_do_port_option'(Option, Ctx),
+	'$lgt_dbg_do_port_option'(Option, Ctx, Action),
 	!.
 
 '$lgt_dbg_port'(_, _, _).
@@ -2237,16 +2240,15 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_valid_port_option'(h).
 
 
-'$lgt_dbg_do_port_option'(' ', _).
-'$lgt_dbg_do_port_option'(c, _).
+'$lgt_dbg_do_port_option'(' ', _, true).
+'$lgt_dbg_do_port_option'(c, _, true).
 
-'$lgt_dbg_do_port_option'(f, _) :-
-	!, fail.
+'$lgt_dbg_do_port_option'(f, _, fail).
 
-'$lgt_dbg_do_port_option'(n, _) :-
+'$lgt_dbg_do_port_option'(n, _, true) :-
 	'$lgt_dbg_nodebug'.
 
-'$lgt_dbg_do_port_option'(b, _) :-
+'$lgt_dbg_do_port_option'(b, _, true) :-
 	repeat,
 		write('     :- '),
 		read(Goal),
@@ -2260,10 +2262,10 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	Goal = true,
 	!.
 
-'$lgt_dbg_do_port_option'(a, _) :-
+'$lgt_dbg_do_port_option'(a, _, _) :-
 	throw(error(logtalk_debugger_aborted)).
 
-'$lgt_dbg_do_port_option'(x, Ctx) :-
+'$lgt_dbg_do_port_option'(x, Ctx, _) :-
 	'$lgt_sender'(Ctx, Sender),
 	'$lgt_this'(Ctx, This),
 	'$lgt_self'(Ctx, Self),
@@ -2272,7 +2274,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	write('Self:   '), writeq(Self), nl,
 	fail.
 
-'$lgt_dbg_do_port_option'(h, _) :-
+'$lgt_dbg_do_port_option'(h, _, _) :-
 	write('     Available options are:'), nl,
 	write('       c - creep (go on)'), nl,
 	write('       f - fail (force backtracking)'), nl,
