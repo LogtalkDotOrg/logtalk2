@@ -88,17 +88,17 @@ var files = new Enumerator(fso.GetFolder(WshShell.CurrentDirectory).Files);
 for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
 	var file = files.item().name;
 	if (fso.GetExtensionName(file) == "xml") {
-		WScript.Echo("  converting" + file);
+		WScript.Echo("  converting " + file);
 		var html_file = directory + "\\" + fso.GetBaseName(file) + ".html";
 		switch (processor) {
 			case "xsltproc" :
-				WshShell.Run(xsltproc + " -o " + html_file + xslt + " " + file, true);
+				WshShell.Run("xsltproc -o " + html_file + xslt + " " + file, true);
 				break;
 			case "xalan" :
-				WshShell.Run(xalan + " -o " + html_file + " " + file + " " + xslt, true);
+				WshShell.Run("xalan -o " + html_file + " " + file + " " + xslt, true);
 				break;
 			case "sabcmd" :
-				WshShell.Run(sabcmd + " " + xslt + " " + file + " " + html_file, true);
+				WshShell.Run("sabcmd " + xslt + " " + file + " " + html_file, true);
 				break;
 		}
 	}
@@ -162,15 +162,16 @@ function xhtml_index_file() {
 	f.WriteLine("<h1>" + title + "</h1>");
 	f.WriteLine("<ul>");
 
-	var files = WshShell.CurrentDirectory.Files;
-	var file;
+	var files = new Enumerator(fso.GetFolder(WshShell.CurrentDirectory).Files);
 
-	for (file in files) 
-		if (fso.GetExtensionName(file) == ".xml") {
+	for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
+		var file = files.item().name;
+		if (fso.GetExtensionName(file) == "xml") {
 			var html_file = fso.GetBaseName(file) + ".html";
 			WScript.Echo("  indexing " + html_file);
 			f.WriteLine("    <li><a href=\"" + html_file + "\">" + fso.GetBaseName(file) + "</a></li>");
 		}
+	}
 
 	f.WriteLine("</ul>");
 
@@ -206,15 +207,14 @@ function html_index_file() {
 	f.WriteLine("<h1>" + title + "</h1>");
 	f.WriteLine("<ul>");
 
-	var files = WshShell.CurrentDirectory.Files;
-	var file;
-	
-	for (file in files) 
-		if (fso.GetExtensionName(file) == ".xml") {
+	for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
+		var file = files.item().name;
+		if (fso.GetExtensionName(file) == "xml") {
 			var html_file = fso.GetBaseName(file) + ".html";
 			WScript.Echo("  indexing " + html_file);
 			f.WriteLine("    <li><a href=\"" + html_file + "\">" + fso.GetBaseName(file) + "</a></li>");
 		}
+	}
 
 	f.WriteLine("</ul>");
 
