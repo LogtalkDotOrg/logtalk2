@@ -164,8 +164,9 @@
 :- dynamic('$lgt_pp_global_op_'/3).				% '$lgt_pp_global_op_'(Priority, Specifier, Operator)
 :- dynamic('$lgt_pp_local_op_'/3).				% '$lgt_pp_local_op_'(Priority, Specifier, Operator)
 
-:- dynamic('$lgt_pp_warnings_top_arg_'/1).		% '$lgt_pp_warnings_top_arg_'(Term)
-:- dynamic('$lgt_pp_warnings_counter_'/1).		% '$lgt_pp_warnings_counter_'(Counter)
+:- dynamic('$lgt_pp_warnings_top_argument_'/1).	% '$lgt_pp_warnings_top_argument_'(Term)
+:- dynamic('$lgt_pp_comp_warnings_counter_'/1).	% '$lgt_pp_comp_warnings_counter_'(Counter)
+:- dynamic('$lgt_pp_load_warnings_counter_'/1).	% '$lgt_pp_comp_warnings_counter_'(Counter)
 
 
 
@@ -969,30 +970,45 @@ logtalk_compile(Entities, Flags) :-
 % predicates for compilation warning counting and reporting
 
 '$lgt_reset_warnings_counter' :-
-	retractall('$lgt_pp_warnings_counter_'(_)),
-	retractall('$lgt_pp_warnings_top_arg_'(_)).
+	retractall('$lgt_pp_warnings_top_argument_'(_)),
+	retractall('$lgt_pp_comp_warnings_counter_'(_)),
+	retractall('$lgt_pp_load_warnings_counter_'(_)).
 
 
 '$lgt_init_warnings_counter'(Term) :-
-	'$lgt_pp_warnings_top_arg_'(_) ->
+	'$lgt_pp_warnings_top_argument_'(_) ->
 		true
 		;
-		asserta('$lgt_pp_warnings_top_arg_'(Term)),
-		retractall('$lgt_pp_warnings_counter_'(_)),
-		asserta('$lgt_pp_warnings_counter_'(0)).
+		asserta('$lgt_pp_warnings_top_argument_'(Term)),
+		retractall('$lgt_pp_comp_warnings_counter_'(_)),
+		asserta('$lgt_pp_comp_warnings_counter_'(0)),
+		retractall('$lgt_pp_load_warnings_counter_'(_)),
+		asserta('$lgt_pp_load_warnings_counter_'(0)).
 
 
-'$lgt_increment_warnings_counter' :-
-	retract('$lgt_pp_warnings_counter_'(Old)),
+'$lgt_inc_compile_warnings_counter' :-
+	retract('$lgt_pp_comp_warnings_counter_'(Old)),
 	New is Old + 1,
-	asserta('$lgt_pp_warnings_counter_'(New)).
+	asserta('$lgt_pp_comp_warnings_counter_'(New)).
+
+
+'$lgt_inc_load_warnings_counter' :-
+	retract('$lgt_pp_load_warnings_counter_'(Old)),
+	New is Old + 1,
+	asserta('$lgt_pp_load_warnings_counter_'(New)).
 
 
 '$lgt_report_warnings_counter'(Term) :-
-	retract('$lgt_pp_warnings_top_arg_'(Term)),
-	retract('$lgt_pp_warnings_counter_'(Counter)),
+	retract('$lgt_pp_warnings_top_argument_'(Term)),
+	retract('$lgt_pp_comp_warnings_counter_'(CCounter)),
+	retract('$lgt_pp_load_warnings_counter_'(LCounter)),
 	'$lgt_compiler_flag'(report, on),
-	write('('), write(Counter), write(' warnings)'), nl,
+	Counter is CCounter + LCounter,
+	(Counter =:= 0 -> write('(0 warnings)');
+	 LCounter =:= 0 -> write('('), write(CCounter), write(' compilation warnings)');
+	 CCounter =:= 0 -> write('('), write(LCounter), write(' loading warnings)');
+	 write('('), write(CCounter), write(' compilation warnings and '),
+	 write(LCounter), write(' loading warnings)')), nl,
 	!.
 
 '$lgt_report_warnings_counter'(_).
@@ -3160,7 +3176,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 '$lgt_report_redefined_entity'(Type, Entity) :-
 	'$lgt_compiler_flag'(report, on) ->
-		'$lgt_increment_warnings_counter',
+		'$lgt_inc_load_warnings_counter',
 		write('> WARNING!  redefining '), write(Type), write(' '), 
 		current_output(Output), '$lgt_pretty_print_vars'(Output, Entity), nl
 		;
@@ -3431,7 +3447,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 '$lgt_report_singletons'([Singleton| Singletons], Term) :-
 	('$lgt_compiler_flag'(singletons, warning),
 	 '$lgt_compiler_flag'(report, on)) ->
-		'$lgt_increment_warnings_counter',
+		'$lgt_inc_compile_warnings_counter',
 		write('> WARNING!'),
 		\+ \+ ( '$lgt_report_singletons_aux'([Singleton| Singletons], Term, Names),
 				write('  singleton variables: '), '$lgt_write_list'(Names), nl,
@@ -4417,7 +4433,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	'$lgt_compiler_flag'(report, on),
 	\+ '$lgt_pp_redefined_built_in_'(Head, _, _),		% not already reported?
 	functor(Head, Functor, Arity),
-	'$lgt_increment_warnings_counter',
+	'$lgt_inc_compile_warnings_counter',
 	write('> WARNING!  redefining a Logtalk built-in predicate: '),
 	writeq(Functor/Arity), nl,
 	fail.
@@ -4431,7 +4447,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	'$lgt_compiler_flag'(report, on),
 	\+ '$lgt_pp_redefined_built_in_'(Head, _, _),		% not already reported?
 	functor(Head, Functor, Arity),
-	'$lgt_increment_warnings_counter',
+	'$lgt_inc_compile_warnings_counter',
 	write('> WARNING!  redefining a Prolog built-in predicate: '),
 	writeq(Functor/Arity), nl,
 	fail.
@@ -4785,7 +4801,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	'$lgt_compiler_flag'(portability, warning),
 	'$lgt_compiler_flag'(report, on),
 	functor(Pred, Functor, Arity),
-	'$lgt_increment_warnings_counter',
+	'$lgt_inc_compile_warnings_counter',
 	write('> WARNING!  non-ISO defined built-in predicate call: '),
 	writeq(Functor/Arity), nl,
 	fail.
@@ -5910,7 +5926,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 '$lgt_report_unknown_objects' :-
 	setof(Obj, '$lgt_unknown_object'(Obj), Objs) ->
-		'$lgt_increment_warnings_counter',
+		'$lgt_inc_compile_warnings_counter',
 		write('> WARNING!  references to unknown objects:    '),
 		'$lgt_writeq_list'(Objs), nl
 		;
@@ -5930,7 +5946,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 '$lgt_report_unknown_protocols' :-
 	setof(Ptc, '$lgt_unknown_protocol'(Ptc), Ptcs) ->
-		'$lgt_increment_warnings_counter',
+		'$lgt_inc_compile_warnings_counter',
 		write('> WARNING!  references to unknown protocols:  '),
 		'$lgt_writeq_list'(Ptcs), nl
 		;
@@ -5950,7 +5966,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 '$lgt_report_unknown_categories' :-
 	setof(Ctg, '$lgt_unknown_category'(Ctg), Ctgs) ->
-		'$lgt_increment_warnings_counter',
+		'$lgt_inc_compile_warnings_counter',
 		write('> WARNING!  references to unknown categories: '),
 		'$lgt_writeq_list'(Ctgs), nl
 		;
@@ -7104,7 +7120,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	'$lgt_compiler_flag'(misspelt, warning),
 	'$lgt_compiler_flag'(report, on),
 	setof(Pred, '$lgt_misspelt_call'(Pred), Preds),
-	'$lgt_increment_warnings_counter',
+	'$lgt_inc_compile_warnings_counter',
 	write('> WARNING!  these static predicates are called but never defined: '),
 	'$lgt_writeq_list'(Preds), nl,
 	!.
