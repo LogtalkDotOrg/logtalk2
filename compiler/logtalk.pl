@@ -5025,6 +5025,8 @@ user0__def(Pred, _, _, _, Pred, user).
 
 
 % '$lgt_fix_redef_built_ins'(+clause, -clause)
+%
+% fix calls to redefined built-in predicates
 
 '$lgt_fix_redef_built_ins'((Head:-Body), (Head:-Fixed)) :-
 	!,
@@ -5079,6 +5081,17 @@ user0__def(Pred, _, _, _, Pred, user).
 	!,
 	'$lgt_fix_redef_built_ins'(Pred, TPred).
 
+'$lgt_fix_redef_built_ins'(Pred, TPred) :-
+	'$lgt_pl_built_in'(Pred),
+	functor(Pred, Functor, Arity),
+	functor(Meta, Functor, Arity), 
+	'$lgt_pl_metapredicate'(Meta),
+	!,
+	Pred =.. [_| Args],
+	Meta =.. [_| MArgs],
+	'$lgt_fix_redef_built_ins_in_margs'(Args, MArgs, TArgs),
+	TPred =.. [Functor| TArgs].
+
 '$lgt_fix_redef_built_ins'('$lgt_call_built_in'(Pred, Context), TPred) :-
 	!,
 	('$lgt_redefined_built_in_'(Pred, Context, TPred) ->
@@ -5087,6 +5100,25 @@ user0__def(Pred, _, _, _, Pred, user).
 		'$lgt_fix_redef_built_ins'(Pred, TPred)).
 
 '$lgt_fix_redef_built_ins'(Pred, Pred).
+
+
+
+% '$lgt_fix_redef_built_ins_in_margs'(@list, @list, -list)
+%
+% fix calls to redefined built-in predicates in non-standard
+% metapredicate arguments
+
+'$lgt_fix_redef_built_ins_in_margs'([], [], []).
+
+'$lgt_fix_redef_built_ins_in_margs'([Arg| Args], [MArg| MArgs], [TArg| TArgs]) :-
+	'$lgt_fix_redef_built_ins_in_marg'(MArg, Arg, TArg),
+	'$lgt_fix_redef_built_ins_in_margs'(Args, MArgs, TArgs).
+
+
+'$lgt_fix_redef_built_ins_in_marg'(*, Arg, Arg).
+
+'$lgt_fix_redef_built_ins_in_marg'(::, Arg, TArg) :-
+	'$lgt_fix_redef_built_ins'(Arg, TArg).
 
 
 
