@@ -40,9 +40,9 @@ ln -sf ../lgt2221/xml/lgt2html.sh lgt2html
 echo "Logtalk installation completed."
 echo
 echo "Users should define the environment variable LOGTALKHOME pointing"
-echo "to $prefix/logtalk and then run the shell script cplgtdirs in"
-echo "order to make a local copy of the Logtalk examples, library, and"
-echo "xml directories in ~/logtalk."
+echo "to $prefix/logtalk and then run the shell script cplgtdirs"
+echo "in order to copy the Logtalk user-modifiable files to their home"
+echo "directories."
 echo
 echo "Links to the cplgtdirs, lgt2pdf, and lgt2html scripts have been"
 echo "created on $prefix/bin; you may need to add this directory to"
