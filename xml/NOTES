@@ -127,7 +127,9 @@ pdf.sh
 	Sample Unix shell script to batch convert .xml files to .pdf files.
 	Edit the script to match your environment and paper format preference 
 	before running it. Requires Apache FOP processor (http://xml.apache.org/fop).
-	Tested with version 0.20.5.
+	Tested with version 0.20.5 (to workaround a bug on the XALAN processor used 
+	by FOP, you should use the compiler option doctype(standalone) when compiling 
+	your Logtalk source files).
 
 
 pdf.bat
@@ -135,7 +137,9 @@ pdf.bat
 	Sample DOS batch script to convert .xml files to .pdf files.
 	Edit the script to match your environment and paper format preference 
 	before running it. Requires Apache FOP processor (http://xml.apache.org/fop).
-	Tested with version 0.20.5.
+	Tested with version 0.20.5 (to workaround a bug on the XALAN processor used 
+	by FOP, you should use the compiler option doctype(standalone) when compiling 
+	your Logtalk source files).
 
 
 Note that you can write other XSLT files for converting the XML files to 
