@@ -50,11 +50,11 @@ if (!FSObject.FolderExists(logtalk_home + "\\bin"))
 
 FSObject.CopyFile(logtalk_home + "\\configs\\gnu.config", logtalk_home + "\\bin\\gnu.pl");
 
-var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalkgp.pl", true);
+var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_gp.pl", true);
 f.WriteLine(":- built_in.");
 f.Close();
 
-WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\logtalkgp.pl", true);
+WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\logtalk_gp.pl", true);
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 
@@ -62,7 +62,7 @@ if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk"))
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - GNU Prolog.lnk");
-link.Arguments = "--init-goal \"['bin/gnu.pl', 'bin/logtalkgp.pl', '$LOGTALKUSER/libpaths/libpaths.pl']\"";
+link.Arguments = "--init-goal \"['$LOGTALKUSER/configs/gnu.config', '$LOGTALKHOME/bin/logtalk_gp.pl', '$LOGTALKUSER/libpaths/libpaths.pl']\"";
 link.Description = "Runs Logtalk with GNU Prolog";
 link.IconLocation = "app.exe,1";
 link.TargetPath = prolog_path;
