@@ -10,24 +10,22 @@ RELEASE NOTES
 =============
 
 
-2.17.0 - April 27, 2004
+2.17.0 - April 26, 2004
 
 	Added buil-in debugging support implemented through the definition of a 
 	new pseudo-object named "debugger". Added "debug" compiler option. Renamed 
 	library entities "debuggerp" and "debugger" to, respectively, "event_dbgp" 
 	and "event_dbg".
 
-	Added a shell script for installing Logtalk in Unix and Unix-like operating 
-	systems.
+	Improved installation instructions for multi-user environments. Added 
+	a shell script for installing Logtalk in Unix and Unix-like operating 
+	systems. Added a shell script for copying Logtalk xml, examples, and 
+	library directories to the user home directory.
 
 	Added a logtalk.spec file for building Linux RPMs from sources.
 
 	Added a set of shell scripts for easy integration of Logtalk with ECLiPSe, 
 	GNU Prolog, Qu-Prolog, SICStus Prolog, SWI-Prolog, and YAP.
-
-	Improved installation instructions for multi-user environments. Added a shell 
-	script for copying Logtalk xml, examples, and library directories to the user 
-	home directory.
 
 	Corrected bug in the definition of the pseudo-object "user" that resulted 
 	in mixed up metapredicate and type predicate properties.
