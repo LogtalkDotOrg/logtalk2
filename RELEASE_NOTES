@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.14.3
+Release 2.14.4
 
 Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -8,6 +8,16 @@ Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.14.4 - October ??, 2002
+
+	Updated YAP 4.3.x config file to use the YAP "system" to access the 
+	operating system for time, date, and file properties (needed for smart 
+	source code compilation).
+
+	Small change to messages printed on console with smart compilation of 
+	source files turned on.
 
 
 2.14.3 - Sptember 16, 2002
