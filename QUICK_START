@@ -12,8 +12,9 @@ Quick start
 
 1. Install Logtalk by following the instructions on the "INSTALL" file. 
 Depending on your operating-system, working environment, and favorite 
-Prolog compiler, you may already have a shortcut installed for easily 
-running Logtalk with your favorite Prolog compiler.
+Prolog compiler, you may already have a script or a shortcut installed 
+for easily running Logtalk with your favorite Prolog compiler. If so, 
+skip the instructions below for starting up Logtalk.
 
 2. Open the "manuals/index.html" file with a web browser.
 
