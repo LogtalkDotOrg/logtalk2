@@ -25,13 +25,15 @@ RELEASE NOTES
 
     Updated VIM syntax coloring configuration file to solve an issue with 
     the setting of tab stops and added syntax coloring for variables and 
-    numbers.
+    numbers. Corrected typo on two built-in predicate names.
 
 	Corrected syntax coloring of character code constants in the configuration 
-	file for the jEdit text editor.
+	file for the jEdit text editor. Corrected typo on two built-in predicate 
+	names.
 
 	Added syntax coloring for variables and numbers to the configuration files 
-	for the SubEthaEdit and Emacs text editors.
+	of the SubEthaEdit and Emacs text editors.  Corrected typo on two built-in 
+	predicate names.
 
     Corrected bug in the shapes example (wrong placement of the declaration 
     of the predicate side/1).
