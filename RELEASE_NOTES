@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.9.1 - November ??, 2001
 
+	Logtalk compiler now prints a warning when redefining or replacing an
+	existing entity.
+
 	Corrected a compiler bug in the error checking code for the info/1 
 	and info/2 directives.
 
