@@ -21,13 +21,16 @@ lgt_install.sh
 	installation directory (default is /usr/local)
 lgt_install.js
 	Windows NT/2000/XP JScript script for completing the Logtalk installation 
-	by setting the LOGTALKHOME and LOGTALKUSER system environment variables and 
-	by creating a new program group named "Logtalk" in the Windows Start Menu 
-	(must be run from this directory by a user with administration privileges 
-	after decompressing the Logtalk distribution into its final destination; 
-	you will need to restart your computer in order to use the items created in 
-	the "Logtalk" program group due to the definition of new system environment 
-	variables)
+	by setting the LOGTALKHOME system environment variable and the LOGTALKUSER 
+	user environment variable (for the user performing the installation), by 
+	creating a new program group named "Logtalk" in the Windows Start Menu, and 
+	by adding the directories %LOGTALKHOME%\misc and %LOGTALKUSER%\xml to,
+	respectively, the system path environment variable and the user path 
+	path environment variable (must be run from this directory by a user with 
+	administration privileges after decompressing the Logtalk distribution into 
+	its final destination; you will need to restart your computer in order to 
+	use the items created in the "Logtalk" program group due to the definition 
+	of new system environment variables)
 
 logtalk.spec
 	specification file for building Linux RPMs
