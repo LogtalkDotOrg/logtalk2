@@ -5595,33 +5595,34 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_dcg_rule'((RHead --> RBody), CHead) :-
 	RBody == [],
 	!,
-	'$lgt_dcg_head'(RHead, CHead, S, S).
+	'$lgt_dcg_head'(RHead, CHead, _, _, S, S, _).
 
 '$lgt_dcg_rule'((RHead --> RBody), (CHead :- CBody)) :-
-	'$lgt_dcg_head'(RHead, CHead, S0, S),
+	'$lgt_dcg_head'(RHead, CHead, Body, Body2, S0, S, S1),
 	'$lgt_dcg_body'(RBody, Body, S0, S),
-	'$lgt_dcg_fold_unifications'(Body, CBody, S).
+	'$lgt_dcg_fold_unifications'(Body2, CBody, S1).
 
 
 
-% '$lgt_dcg_head'(@dcghead, -head, @var, @var)
+% '$lgt_dcg_head'(@dcghead, -head, @goal, -goal, @var, @var, -var)
 %
 % translates DCG rule head to a Prolog clause head
+% (the last argument returns the variable representing the ouput list)
 
-'$lgt_dcg_head'(RHead, _, _, _) :-
+'$lgt_dcg_head'(RHead, _, _, _, _, _, _) :-
 	var(RHead),
 	throw(instantiation_error).
 
-'$lgt_dcg_head'((_, Terminals), _, _, _) :-
+'$lgt_dcg_head'((_, Terminals), _, _, _, _, _, _) :-
 	\+ '$lgt_proper_list'(Terminals),
 	throw(type_error(list, Terminals)).
 
-'$lgt_dcg_head'((Nonterminal, Terminals), CHead, S0, S) :-
+'$lgt_dcg_head'((Nonterminal, Terminals), CHead, Body, (Body,Goal), S0, S, S1) :-
 	!,
-	'$lgt_append'(Terminals, S, S1),
+	'$lgt_dcg_terminals'(Terminals, Goal, S1, S),
 	'$lgt_dcg_goal'(Nonterminal, CHead, S0, S1).
 
-'$lgt_dcg_head'(Nonterminal, CHead, S0, S) :-
+'$lgt_dcg_head'(Nonterminal, CHead, Body, Body, S0, S, S) :-
 	'$lgt_dcg_goal'(Nonterminal, CHead, S0, S).
 
 
@@ -5723,11 +5724,11 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S),
 	'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S).
 
-'$lgt_dcg_fold_unifications'((Goal1,Goal2), Body, S) :-
+'$lgt_dcg_fold_unifications'((Goal1,Goal2), SGoal, S) :-
 	!,
 	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S),
 	'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S),
-	'$lgt_dcg_simplify_and'((SGoal1,SGoal2), Body).
+	'$lgt_dcg_simplify_and'((SGoal1,SGoal2), SGoal).
 
 '$lgt_dcg_fold_unifications'(S1=S2, S1=S2, S) :-
 	(S1 == S; S2 == S),
@@ -5745,6 +5746,16 @@ user0__def(Pred, _, _, _, Pred, user).
 % '$lgt_dcg_simplify_and'(+goal, -goal)
 %
 % removes redundant calls to true/0 and flats a conjunction of goals
+
+'$lgt_dcg_simplify_and'((Goal1 -> Goal2), (SGoal1 -> SGoal2)) :-
+	!,
+	'$lgt_dcg_simplify_and'(Goal1, SGoal1),
+	'$lgt_dcg_simplify_and'(Goal2, SGoal2).
+
+'$lgt_dcg_simplify_and'((Goal1;Goal2), (SGoal1;SGoal2)) :-
+	!,
+	'$lgt_dcg_simplify_and'(Goal1, SGoal1),
+	'$lgt_dcg_simplify_and'(Goal2, SGoal2).
 
 '$lgt_dcg_simplify_and'(((Goal1,Goal2),Goal3), Body) :-
 	!,
