@@ -6951,7 +6951,7 @@ current_logtalk_flag(version, version(2, 17, 1)).
 
 '$lgt_write_xml_header'(web, XMLSpec, Stream) :-
 	'$lgt_write_xml_open_tag'(Stream, '?xml version="1.0" standalone="no"?', []),
-	write(Stream, '<!DOCTYPE logtalk SYSTEM "http://www.logtalk.org/xml/1.0/logtalk.'),
+	write(Stream, '<!DOCTYPE logtalk SYSTEM "http://www.logtalk.org/xml/1.1/logtalk.'),
 	write(Stream, XMLSpec), write(Stream, '">'), nl(Stream),
 	'$lgt_compiler_option'(xsl, XSL),
 	write(Stream, '<?xml-stylesheet type="text/xsl" href="'),
