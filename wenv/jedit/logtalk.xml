@@ -25,7 +25,10 @@
 		<PROPERTY NAME="tabSize" VALUE="4" />
 	</PROPS>
 
-	<RULES SET="MAIN" IGNORE_CASE="FALSE">
+	<RULES SET="MAIN"
+		IGNORE_CASE="FALSE"
+		HIGHLIGHT_DIGITS="FALSE"
+		DIGIT_RE="[[:digit:]]+([eE][-+][[:digit:]]+)?">
 	
 		<!-- Comments -->
 		<EOL_SPAN TYPE="COMMENT1">%</EOL_SPAN>
@@ -35,11 +38,11 @@
 		</SPAN>
 
 		<!-- Character code constants -->
-		<SEQ_REGEXP TYPE="LITERAL1" HASH_CHAR="0">0'[[:alnum:]]</SEQ_REGEXP>
+		<SEQ_REGEXP TYPE="NULL" HASH_CHAR="0">0'[[:alnum:]]</SEQ_REGEXP>
 		<!-- Binary, octal, and hexadecimal numbers -->
-		<SEQ_REGEXP TYPE="LITERAL1" HASH_CHAR="0">0b[0-1]+</SEQ_REGEXP>
-		<SEQ_REGEXP TYPE="LITERAL1" HASH_CHAR="0">0o[0-7]+</SEQ_REGEXP>
-		<SEQ_REGEXP TYPE="LITERAL1" HASH_CHAR="0">0x[0-9a-fA-f]+</SEQ_REGEXP>
+		<SEQ_REGEXP TYPE="NULL" HASH_CHAR="0">0b[0-1]+</SEQ_REGEXP>
+		<SEQ_REGEXP TYPE="NULL" HASH_CHAR="0">0o[0-7]+</SEQ_REGEXP>
+		<SEQ_REGEXP TYPE="NULL" HASH_CHAR="0">0x[[:xdigit:]]+</SEQ_REGEXP>
 
 		<!-- String literals -->
 		<SPAN TYPE="LITERAL1" NO_LINE_BREAK="TRUE">
