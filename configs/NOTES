@@ -206,17 +206,15 @@ JIProlog 3.0.0-6
 	Supports smart compilation of source files.
 
 
-K-Prolog 5.01 Linux/Solaris, 5.02 Windows and later versions
+K-Prolog 5.1.2 and later versions
 
 	k.config
 
-	Config file for the Linux/Solaris 5.01 version or Windows 5.0.2 version 
-	or later versions (if you are still running version 5.00, please upgrade 
-	before using Logtalk). K-Prolog 5.01 supports the ISO Prolog standard. 
-	No problems expected. This config file have been written with the help of 
-	Nobukuni Kino. Don't forget to use the cd/1 predicate to set the working 
-	directory before loading the library or an example.
-	Supports smart compilation of source files.
+	K-Prolog 5.1.2 supports the ISO Prolog standard. No problems expected. 
+	This config file have been written with the help of Nobukuni Kino. 
+	Don't forget to use the cd/1 predicate to set the working directory 
+	before loading the library or an example. Supports smart compilation of 
+	source files.
 
 
 LPA MacProlog32 1.25
