@@ -17,7 +17,7 @@ To install copy the file "logtalk.xml" to the directory:
 
 or:
     
-    ~/.kde/share/apps/katepart/syntax
+    ~/.kde/share/apps/katepart/syntax/
 
 and restart Kate and Kwrite.
 
