@@ -18,7 +18,8 @@ processor=xsltproc
 usage_help()
 {
 	echo 
-	echo This script converts all XML files in the current directory to XHTML or HTML files
+	echo This script converts all Logtalk XML files documenting files in the 
+	echo current directory to XHTML or HTML files
 	echo
 	echo "Usage: $0 -f format -o directory -i index -t title -p processor"
 	echo

@@ -14,7 +14,8 @@ directory="."
 usage_help()
 {
 	echo 
-	echo This script converts all XML files in the current directory to PDF files
+	echo This script converts all Logtalk XML documenting files in the 
+	echo current directory to PDF files
 	echo
 	echo "Usage: $0 -f format -o directory -p processor"
 	echo
@@ -64,7 +65,7 @@ else
 	for file in *.xml; do
 		echo converting $file
 		name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
-		eval sh $processor -q -xsl $xsl -xml $file -pdf $directory/$name.pdf
+		eval $processor -q -xml $file -xsl $xsl -pdf $directory/$name.pdf
 	done
 
 	echo
