@@ -2231,21 +2231,21 @@ current_logtalk_flag(version, version(2, 17, 0)).
 		Action = true),
 	!.
 
-'$lgt_dbg_port'(_, _, _).
+'$lgt_dbg_port'(_, _, _, true).
 
 
 '$lgt_dbg_write_port_name'(fact) :-
-	write('Fact: ').
+	write('    Fact: ').
 '$lgt_dbg_write_port_name'(rule) :-
-	write('Rule: ').
+	write('    Rule: ').
 '$lgt_dbg_write_port_name'(call) :-
-	write('Call: ').
+	write('    Call: ').
 '$lgt_dbg_write_port_name'(exit) :-
-	write('Exit: ').
+	write('    Exit: ').
 '$lgt_dbg_write_port_name'(redo) :-
-	write('Redo: ').
+	write('    Redo: ').
 '$lgt_dbg_write_port_name'(fail) :-
-	write('Fail: ').
+	write('    Fail: ').
 
 
 '$lgt_dbg_valid_port_option'(' ').
@@ -2256,6 +2256,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_valid_port_option'(a).
 '$lgt_dbg_valid_port_option'(x).
 '$lgt_dbg_valid_port_option'(h).
+'$lgt_dbg_valid_port_option'('?').
 
 
 '$lgt_dbg_do_port_option'(' ', _, true).
@@ -2287,21 +2288,24 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	'$lgt_sender'(Ctx, Sender),
 	'$lgt_this'(Ctx, This),
 	'$lgt_self'(Ctx, Self),
-	write('Sender: '), writeq(Sender), nl,
-	write('This:   '), writeq(This), nl,
-	write('Self:   '), writeq(Self), nl,
+	write('    Sender: '), writeq(Sender), nl,
+	write('    This:   '), writeq(This), nl,
+	write('    Self:   '), writeq(Self), nl,
 	fail.
 
 '$lgt_dbg_do_port_option'(h, _, _) :-
-	write('     Available options are:'), nl,
-	write('       c - creep (go on)'), nl,
-	write('       f - fail (force backtracking)'), nl,
-	write('       n - nodebug (turn off debugging)'), nl,
-	write('       b - break (submit queries to the interpreter, type true to terminate)'), nl,
-	write('       a - abort (return to top level interpreter)'), nl,
-	write('       x - print execution context'), nl,
-	write('       h - help (prints this list of options)'), nl,
+	write('    Available options are:'), nl,
+	write('        c - creep (go on; you may use the spacebar in alternative)'), nl,
+	write('        f - fail (force backtracking)'), nl,
+	write('        n - nodebug (turn off debugging)'), nl,
+	write('        b - break (submit queries to the interpreter, type true to terminate)'), nl,
+	write('        a - abort (return to top level interpreter)'), nl,
+	write('        x - print execution context'), nl,
+	write('        h - help (prints this list of options)'), nl,
 	fail.
+
+'$lgt_dbg_do_port_option'('?', Ctx, Action) :-
+	'$lgt_dbg_do_port_option'(h, Ctx, Action).
 
 
 
