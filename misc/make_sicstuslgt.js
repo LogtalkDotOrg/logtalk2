@@ -37,7 +37,7 @@ WScript.Echo("Making a shortcut named Sicstuslgt for running Logtalk with SICStu
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 
 if (!fso.FolderExists(logtalk_home + "\\bin")) 
-	fso.CreateFolder(logtalk_home + "\\bin"));
+	fso.CreateFolder(logtalk_home + "\\bin");
 
 var f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalksicstus.pl", true);
 
