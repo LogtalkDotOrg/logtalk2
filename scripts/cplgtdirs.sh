@@ -22,6 +22,7 @@ else
 	cp -RL $LOGTALKHOME/examples $HOME/logtalk/
 	cp -RL $LOGTALKHOME/library $HOME/logtalk/
 	cp -RL $LOGTALKHOME/xml $HOME/logtalk/
+	chmod -R u+w $HOME/logtalk
 	echo "Finished copying Logtalk directories."
 	echo
 fi
