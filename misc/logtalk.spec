@@ -43,6 +43,7 @@ ln -sf ../lgt2220/xml/lgt2html.sh lgt2html
 /usr/local/lgt2220/compiler
 /usr/local/lgt2220/configs
 /usr/local/lgt2220/examples
+/usr/local/lgt2220/libpaths
 /usr/local/lgt2220/library
 %docdir /usr/local/lgt2220/manuals
 /usr/local/lgt2220/manuals
