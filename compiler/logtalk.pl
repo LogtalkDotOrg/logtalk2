@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.9.4
+%  Release 2.10.0
 %
 %  Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 %
@@ -1019,7 +1019,7 @@ logtalk_version(Major, Minor, Patch) :-
 	\+ integer(Patch),
 	throw(error(type_error(integer, Patch), logtalk_version(Major, Minor, Patch))).
 
-logtalk_version(2, 9, 4).
+logtalk_version(2, 10, 0).
 
 
 
@@ -1519,10 +1519,7 @@ lgt_retract(Obj, (Head:-Body), Sender, Scope) :-
 					;
 					(lgt_once(DDef, Head, _, _, _, Call) ->
 						retract((Call:-(lgt_tr_body(Body, _, _), _))),
-						(\+ clause(Call, _) ->
-							lgt_retract_ddef_clause(DDef, Call)
-							;
-							true)
+						lgt_update_ddef_table(DDef, Call)
 						;
 						fail))
 				;
@@ -1546,10 +1543,7 @@ lgt_retract(Obj, Head, Sender, Scope) :-
 					;
 					(lgt_once(DDef, Head, _, _, _, Call) ->
 						retract(Call),
-						(\+ clause(Call, _) ->
-							lgt_retract_ddef_clause(DDef, Call)
-							;
-							true)
+						lgt_update_ddef_table(DDef, Call)
 						;
 						fail))
 				;
@@ -1589,10 +1583,7 @@ lgt_retractall(Obj, Head, Sender, Scope) :-
 					;
 					(lgt_once(DDef, Head, _, _, _, Call) ->
 						retractall(Call),
-						(\+ clause(Call, _) ->
-							lgt_retract_ddef_clause(DDef, Call)
-							;
-							true)
+						lgt_update_ddef_table(DDef, Call)
 						;
 						true))
 				;
@@ -2597,14 +2588,15 @@ lgt_tr_head(Head, _, _) :-
 	lgt_entity_(category, _, _, _),
 	functor(Head, Functor, Arity), 
 	lgt_dynamic_(Functor/Arity),
-	throw(permission_error(define, dynamic_predicate, Head)).
+	throw(permission_error(define, dynamic_predicate, Functor/Arity)).
 
 
 % redefinition of built-in methods
 
 lgt_tr_head(Head, _, _) :-
 	lgt_built_in_method(Head, _),
-	throw(permission_error(modify, built_in_method, Head)).
+	functor(Head, Functor, Arity), 
+	throw(permission_error(modify, built_in_method, Functor/Arity)).
 
 
 % redefinition of Logtalk built-in predicates
@@ -3650,13 +3642,19 @@ lgt_assert_ddef_clause(Functor, Arity, OPrefix, DDef, Call) :-
 
 
 
-% lgt_retract_ddef_clause(+atom, +integer, +atom, +atom, -callable)
+% lgt_update_ddef_table(+atom, +callable)
 %
 % retracts a dynamic "ddef clause" (used to translate a predicate call)
+% if there are no more clauses for the predicate otherwise does nothing
 
-lgt_retract_ddef_clause(DDef, Call) :-
-	Clause =.. [DDef, _, _, _, _, Call],
-	retractall(Clause).
+lgt_update_ddef_table(DDef, Call) :-
+	functor(Call, Functor, Arity),
+	functor(Call2, Functor, Arity),
+	(clause(Call2, _) ->
+		true
+		;
+		Clause =.. [DDef, _, _, _, _, Call2],
+		retractall(Clause)).
 
 
 
@@ -3834,6 +3832,8 @@ lgt_gen_object_clauses :-
 
 
 
+% lgt_gen_local_dcl_clauses
+%
 % a (local) predicate declaration is only generated
 % if there is a scope declaration for the predicate
 
@@ -3859,6 +3859,21 @@ lgt_gen_local_dcl_clauses :-
 lgt_gen_local_dcl_clauses.
 
 
+
+lgt_gen_catchall_dcl_clause :-
+	\+ lgt_dcl_(_) ->
+		lgt_entity_(_, _, _, Dcl),
+		Head =.. [Dcl, _, _, _, _],
+		assertz(lgt_dcl_((Head:-fail)))
+		;
+		true.
+
+
+
+% lgt_gen_local_def_clauses
+%
+% generates local def clauses for undefined but declared (via scope or
+% dynamic directives) predicates
 
 lgt_gen_local_def_clauses :-
 	lgt_entity_(_, _, EPrefix, _),
@@ -3897,12 +3912,7 @@ lgt_gen_protocol_clauses :-
 
 lgt_gen_protocol_local_clauses :-
 	lgt_gen_local_dcl_clauses,
-	(\+ lgt_dcl_(_) ->
-		lgt_protocol_(_, _, PDcl),
-		Head =.. [PDcl, _, _, _, _],
-		assertz(lgt_dcl_((Head:-fail)))
-		;
-		true).
+	lgt_gen_catchall_dcl_clause.
 
 
 
@@ -3941,20 +3951,10 @@ lgt_gen_category_clauses :-
 
 
 lgt_gen_category_dcl_clauses :-
-	lgt_gen_category_local_dcl_clauses,
+	lgt_gen_local_dcl_clauses,
+	lgt_gen_catchall_dcl_clause,
 	lgt_gen_category_linking_dcl_clauses,
 	lgt_gen_category_implements_dcl_clauses.
-
-
-
-lgt_gen_category_local_dcl_clauses :-
-	lgt_gen_local_dcl_clauses,
-	(\+ lgt_dcl_(_) ->
-		lgt_category_(_, _, CDcl, _),
-		Head =.. [CDcl, _, _, _, _],
-		assertz(lgt_dcl_((Head:-fail)))
-		;
-		true).
 
 
 
@@ -3993,8 +3993,8 @@ lgt_gen_category_def_clauses :-
 
 lgt_gen_category_catchall_def_clause :-
 	\+ lgt_def_(_) ->
-		lgt_category_(_, _, _, CDef),
-		Head =.. [CDef, _, _, _, _, _],
+		lgt_category_(_, _, _, Def),
+		Head =.. [Def, _, _, _, _, _],
 		assertz(lgt_def_((Head:-fail)))
 		;
 		true.
@@ -4009,22 +4009,12 @@ lgt_gen_prototype_clauses :-
 
 
 lgt_gen_prototype_dcl_clauses :-
-	lgt_gen_prototype_local_dcl_clauses,
+	lgt_gen_local_dcl_clauses,
+	lgt_gen_catchall_dcl_clause,
 	lgt_gen_prototype_linking_dcl_clauses,
 	lgt_gen_prototype_implements_dcl_clauses,
 	lgt_gen_prototype_imports_dcl_clauses,
 	lgt_gen_prototype_extends_dcl_clauses.
-
-
-
-lgt_gen_prototype_local_dcl_clauses :-
-	lgt_gen_local_dcl_clauses,
-	(\+ lgt_dcl_(_) ->
-		lgt_object_(_, _, ODcl, _, _, _, _, _, _),
-		Head =.. [ODcl, _, _, _, _],
-		assertz(lgt_dcl_((Head:-fail)))
-		;
-		true).
 
 
 
@@ -4178,19 +4168,9 @@ lgt_gen_ic_clauses :-
 
 
 lgt_gen_ic_dcl_clauses :-
-	lgt_gen_ic_local_dcl_clauses,
-	lgt_gen_ic_hierarchy_dcl_clauses.
-
-
-
-lgt_gen_ic_local_dcl_clauses :-
 	lgt_gen_local_dcl_clauses,
-	(\+ lgt_dcl_(_) ->
-		lgt_object_(_, _, Dcl, _, _, _, _, _, _),
-		Head =.. [Dcl, _, _, _, _],
-		assertz(lgt_dcl_((Head:-fail)))
-		;
-		true).
+	lgt_gen_catchall_dcl_clause,
+	lgt_gen_ic_hierarchy_dcl_clauses.
 
 
 
@@ -4700,7 +4680,6 @@ lgt_assert_tr_entity :-
 	lgt_assert_directives,
 	lgt_assert_functors_clause,
 	lgt_assert_dcl_clauses,
-	lgt_assert_ddcl_clauses,
 	lgt_assert_def_clauses,
 	lgt_assert_ddef_clauses,
 	lgt_assert_super_clauses,
@@ -4738,15 +4717,6 @@ lgt_assert_dcl_clauses :-
 	fail.
 
 lgt_assert_dcl_clauses.
-
-
-
-lgt_assert_ddcl_clauses :-
-	lgt_ddcl_(Clause),
-	assertz(Clause),
-	fail.
-
-lgt_assert_ddcl_clauses.
 
 
 
@@ -4819,7 +4789,7 @@ lgt_assert_relation_clauses([Clause| Clauses]) :-
 	arg(1, Clause, Entity),
 	lgt_retract_old_relation_clauses(Entity),
 	lgt_assert_new_relation_clauses([Clause| Clauses]).
-	
+
 
 lgt_retract_old_relation_clauses(Entity) :-
 	retractall(lgt_current_object_(Entity, _, _, _, _)),
