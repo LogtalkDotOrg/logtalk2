@@ -16,6 +16,9 @@ RELEASE NOTES
 
 	Corrected documentation of built-in local method this/1.
 
+	New geometric shapes example implemented in two versions, one 
+	prototype-based and the other one class-based.
+
 	Improved support for jEdit text editor by adding a set of programming 
 	templates for use with the editor Templates plug-in.
 
