@@ -3946,30 +3946,18 @@ current_logtalk_flag(version, version(2, 18, 0)).
 % translates the sending of a message to an object
 
 
-% message broadcasting
-
 '$lgt_tr_msg'(Pred, Obj, TPred, Ctx) :-
 	nonvar(Obj),
-	(Obj = (_, _); Obj = (_; _)),
-	!,
-	'$lgt_tr_msg_broadcasting'(Obj, Pred, TPred, Ctx).
-
-
-% invalid object identifier
-
-'$lgt_tr_msg'(_, Obj, _, _) :-
-	nonvar(Obj),
-	\+ callable(Obj),
-	throw(type_error(object_identifier, Obj)).
-
-
-% remember the object receiving the message to later check if it's known
-
-'$lgt_tr_msg'(_, Obj, _, Ctx) :-
-	nonvar(Obj),
-	\+ '$lgt_context'(Ctx, user, user, _, _, _),	% not runtime message translation
-	'$lgt_add_referenced_object'(Obj),
-	fail.
+	((Obj = (_, _); Obj = (_; _)) ->
+		!,
+		'$lgt_tr_msg_broadcasting'(Obj, Pred, TPred, Ctx)	% message broadcasting
+		;
+		(\+ callable(Obj) ->
+			throw(type_error(object_identifier, Obj))		% invalid object identifier
+			;
+			\+ '$lgt_context'(Ctx, user, user, _, _, _),	% not runtime message translation
+			'$lgt_add_referenced_object'(Obj),				% remember object receiving message
+			fail)).
 
 
 % non-instantiated message: translation performed at runtime
