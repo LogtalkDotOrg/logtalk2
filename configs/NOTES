@@ -42,7 +42,8 @@ ALS Prolog 3.1
 	set the working directory before loading the library or an example. Consult 
 	the file builtins/comp_d10.pro in the ALS Prolog installation directory in 
 	order to get the definition of predicate numbervars/3 needed by the Logtalk 
-	built-in debugger. Supports smart compilation of source files.
+	built-in debugger. Supports smart compilation of source files. Does not 
+	support the "altdirs" compiler option.
 
 
 Amzi! Prolog 6.2.2 and later versions
@@ -65,6 +66,7 @@ B-Prolog 4.0~5.0, 6.4 and later versions
 	The (Logtalk) predicates '$lgt_current_date'/3 and '$lgt_current_time'/3 
 	have dummy definitions. Don't forget to use the chdir/1 predicate to 
 	set the working directory before loading the library or an example.
+	Does not support the <library>(<entity>) notation for loading source files.
 
 	b6.config
 
@@ -73,6 +75,7 @@ B-Prolog 4.0~5.0, 6.4 and later versions
 	some examples such as the "symdiff" from running. Don't forget to use the 
 	chdir/1 predicate to set the working directory before loading the library 
 	or an example.
+	Does not support the <library>(<entity>) notation for loading source files.
 
 
 Bin-Prolog 8.x~10.x
@@ -186,7 +189,8 @@ IF/Prolog 5.1
 	IF/Prolog 5.1 supports the ISO Prolog standard. No problems expected.
 	Don't forget to use the cd/1 predicate to set the working directory 
 	before loading the library or an example. Supports smart compilation 
-	of source files.
+	of source files. Does not support the "altdirs" compiler option.
+
 
 
 JIProlog 3.0.0-5
@@ -211,6 +215,7 @@ K-Prolog 5.01 Linux/Solaris, 5.02 Windows and later versions
 	expected. This config file have been written with the help of Nobukuni Kino. 
 	Don't forget to use the cd/1 predicate to set the working directory before 
 	loading the library or an example. Supports smart compilation of source files.
+	Does not support the <library>(<entity>) notation for loading source files.
 
 
 LPA MacProlog32 1.25
@@ -229,7 +234,8 @@ LPA MacProlog32 1.25
 	using the consult/1 predicate instead of using the File:Open menu option.
 	Be aware that this configuration file redefines some built-ins that
 	you may use in your own programs. You must be careful to not consult the 
-	config file twice. Supports smart compilation of source files.
+	config file twice. Supports smart compilation of source files. Does not 
+	support the "altdirs" compiler option.
 
 
 LPA WinProlog32 4.0x
@@ -241,7 +247,8 @@ LPA WinProlog32 4.0x
 	file redefines some built-ins that you may use in your programs. Don't 
 	forget to use the chdir/1 predicate to set the working directory before 
 	loading the library or an example. Be careful to not consult the config 
-	file twice. Supports smart compilation of source files.
+	file twice. Supports smart compilation of source files. Does not support 
+	the "altdirs" compiler option.
 
 
 MasterProlog 4.1
@@ -253,7 +260,8 @@ MasterProlog 4.1
 	If in the MasterProlog version that you are using the implementation of 
 	the close/1 predicate does not follow the ISO standard, you will have to 
 	apply the following patch to the Logtalk pre-processor: replace every 
-	call of close(...) with fclose(...).
+	call of close(...) with fclose(...).  Does not support the "altdirs" 
+	compiler option.
 
 
 Open Prolog 1.1b5
@@ -262,7 +270,8 @@ Open Prolog 1.1b5
 
 	Limited test done. Please report any problems that you may find.
 	Don't forget to use the set_folder/1 predicate to set the working 
-	directory before loading the library or an example.
+	directory before loading the library or an example. Does not support 
+	the "altdirs" compiler option.
 
 
 PrologII+ 4.5 and later versions
@@ -277,6 +286,7 @@ PrologII+ 4.5 and later versions
 	"open(File, read, Stream)" with "open(File, :read, Stream, [eof_action(eof_code)])".
 	Remember that you need to use the set_import_dir/1 built-in predicate to
 	set the working directory before loading the library or an example.
+	Does not support the "altdirs" compiler option.
 
 
 Qu-Prolog 6.5
