@@ -935,7 +935,7 @@ logtalk_compile(Entities, Options) :-
 
 '$lgt_check_compiler_entities'(Entities) :-
 	\+ '$lgt_proper_list'(Entities),
-	throw(type_error(atom_or_atom_list, Entities)).
+	throw(type_error(entity_file_names, Entities)).
 
 '$lgt_check_compiler_entities'(Entities) :-
 	'$lgt_check_compiler_entity_list'(Entities).
@@ -961,7 +961,7 @@ logtalk_compile(Entities, Options) :-
 
 '$lgt_check_compiler_entity'(Entity) :-
 	\+ atom(Entity),
-	throw(type_error(atom, Entity)).
+	throw(type_error(entity_file_name, Entity)).
 
 '$lgt_check_compiler_entity'(Entity) :-
 	'$lgt_file_name'(metafile, Entity, Metafile),
@@ -975,7 +975,7 @@ logtalk_compile(Entities, Options) :-
 
 '$lgt_check_compiler_library_entity'(Term) :-
 	\+ Term =.. [_, _],
-	throw(type_error(library_entity, Term)).
+	throw(type_error(library_entity_file_name, Term)).
 
 '$lgt_check_compiler_library_entity'(Term) :-
 	Term =.. [Library, Entity],
