@@ -176,7 +176,7 @@
 
 
 Obj::Pred :-
-	'$lgt_context'(Ctx, user, user, Obj, _, []),
+	'$lgt_context'(Ctx, user, user, Obj, '$lgt_po_user0_', []),
 	'$lgt_tr_msg'(Pred, Obj, Call, Ctx),
 	(('$lgt_dbg_debugging_', '$lgt_debugging_'(Obj)) ->
 		catch(
