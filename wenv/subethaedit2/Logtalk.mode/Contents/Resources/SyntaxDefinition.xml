@@ -18,7 +18,7 @@
 				<regex>\b([A-Z_][A-Za-z0-9_]*)</regex>
 			</keywords>
 
-			<keywords id="Directives" color="#881280">
+			<keywords id="Directives" color="#881280" useforautocomplete="yes">
 				<regex>:-\s(object)\(</regex>			
 				<regex>:-\s(protocol)\(</regex>			
 				<regex>:-\s(category)\(</regex>			
@@ -40,7 +40,7 @@
 				<regex>(:-)</regex>
 			</keywords>
 
-			<keywords id="Entity Relations" color="#881280">
+			<keywords id="Entity Relations" color="#881280" useforautocomplete="yes">
 				<regex>\b(instantiates)\(</regex>
 				<regex>\b(specializes)\(</regex>
 				<regex>\b(extends)\(</regex>
@@ -57,7 +57,7 @@
 				<regex>(\})</regex>
 			</keywords>
 
-			<keywords id="Control Constructs" color="#1A1AA6">
+			<keywords id="Control Constructs" color="#1A1AA6" useforautocomplete="yes">
 				<regex>\b(ca(ll|tch))\(</regex>
 				<regex>\b(throw)\(</regex>
 				<regex>\b(true)[^[(A-Za-z_]]</regex>
@@ -68,7 +68,7 @@
 				<regex>(;)</regex>
 			</keywords>
 
-			<keywords id="Built-in Methods" color="#1A1AA6">
+			<keywords id="Built-in Methods" color="#1A1AA6" useforautocomplete="yes">
 				<regex>\b(parameter)\(</regex>
 				<regex>\b(se(lf|nder))\(</regex>
 				<regex>\b(this)\(</regex>
@@ -85,7 +85,7 @@
 				<regex>\b(phrase)\(</regex>
 			</keywords>
 
-			<keywords id="Built-in Predicates" color="#1A1AA6">
+			<keywords id="Built-in Predicates" color="#1A1AA6" useforautocomplete="yes">
 				<regex>\b(current_(object|protocol|category|event))\(</regex>
 				<regex>\b(create_(object|protocol|category))\(</regex>
 				<regex>\b((object|protocol|category)_property)\(</regex>
@@ -101,7 +101,7 @@
 				<!-- <regex>\b(retractall)\(</regex> -->
 			</keywords>
 
-			<keywords id="Other Built-in Predicates" color="#1A1AA6">
+			<keywords id="Other Built-in Predicates" color="#1A1AA6" useforautocomplete="yes">
 				<!-- Term unification -->
 				<regex>\s(=)\s</regex>
 				<regex>\s(\\=)\s</regex>
