@@ -333,6 +333,132 @@ To supress printing of the Logtalk startup banner and default flags, set the opt
 To supress printing of compiling and loading messages (including compiling warnings but not error messages), turn off the option <code>report</code> in the used config file.
 </p>
 
+<h2>Debugging Logtalk programs<a name="debugging"></a></h2>
+
+<p>
+Logtalk defines a built-in pseudo-object named <code>debugger</code>, which implements debugging features similar to those found on most Prolog compilers. However, there are some differences between the usual implementation of Prolog debuggers and the current implementation of the Logtalk debugger that you should be aware. First, unlikely most Prolog debuggers, the Logtalk debugger is not implemented as a meta-interpreter. This difference translates to a different, although similar, set of debugging features. Second, debugging is only possible for objects compiled in debug mode. When compiling an object in this mode, Logtalk keeps each compiled clause goal in source form in order to allow tracing of the goal execution. Third, implementation of spy points allows the user to specify the execution context for entering the debugger. This feature follows from the encapsulation of predicates inside objects.
+
+<h3>Compilation of objects in debug mode<a name="debugmode"></a></h3>
+
+Compilation of source files in debug mode is controlled by the compiler flag <code>debug</code>. The default value for this flag, usually <code>off</code>, is defined in the config files. Its value may be changed at runtime by writing:
+</p>
+<pre>
+    | ?- set_logtalk_flag(debug, on).
+
+    yes
+</pre>
+<p>
+In alternative, if we want to compile only some objects in debug mode, we may instead write:
+</p>
+<pre>
+    | ?- logtalk_load([file1, file2, ...], [debug(on)]).
+</pre>
+<p>
+It is advisable to turn off the compiler flag <code>smart_compilation</code> while debugging.
+</p>
+
+
+<h3>Logtalk Procedure Box model<a name="boxmodel"></a></h3>
+
+<p>
+Logtalk uses a <em>Procedure Box model</em> similar to the one used in most Prolog compilers. Prolog procedure box model uses four ports (<em>call</em>, <em>exit</em>, <em>redo</em>, and <em>fail</em>) for describing control flow when a predicate clause is used during program execution: 
+</p>
+<dl>
+	<dt><code>fact</code></dt>
+		<dd>unification success between a goal and a fact</dd>
+	<dt><code>rule</code></dt>
+		<dd>unification success between a goal and a rule head</dd>
+	<dt><code>call</code></dt>
+		<dd>predicate call</dd>
+	<dt><code>exit</code></dt>
+		<dd>success of a predicate call</dd>
+	<dt><code>redo</code></dt>
+		<dd>backtraking into a predicate</dd>
+	<dt><code>fail</code></dt>
+		<dd>failure of a predicate call</dd>
+</dl>
+<p>
+Logtalk adds two more ports, <em>fact</em> and <em>rule</em>, which show the result of the unification of a goal with, respectively, a fact and a rule head:
+</p>
+<dl>
+	<dt><code>fact</code></dt>
+		<dd>unification success between a goal and a fact</dd>
+	<dt><code>rule</code></dt>
+		<dd>unification success between a goal and a rule head</dd>
+</dl>
+
+<h3>Spy points<a name="spypoints"></a></h3>
+
+<p>
+A spy point is a term describing a message execution context and a goal:
+</p>
+<pre>
+    (Sender, This, Self, Goal)
+</pre>
+<p>
+The debugger is evoked whenever the execution context is true and when the spy point goal unifies with the goal currently being executed. Variable bindings in the debugger goal are discarded after unification with the goal argument. The user may establish any number of spy points as necessary. For example, in order to call the debugger whenever a predicate defined on an object named <code>foo</code> is called we may define the following spy point:
+</p>
+<pre>
+    | ?- debugger::spy(_, foo, _, _).
+</pre>
+<p>
+For example, we can spy all calls to a <code>foo/2</code> predicate by setting the condition:
+</p>
+<pre>
+    | ?- debugger::spy(_, _, _, foo(_, _)).
+</pre>
+<p>
+The user may define for which ports we want to interact with the debugger. This may be done by specifiying a list of leashed ports:
+</p>
+<pre>
+    | ?- debugger::leash([call, exit, fail]).
+</pre>
+<p>
+Alternatively, the user may use an atom abbreviation for a pre-defined set of ports. For example:
+</p>
+<pre>
+    | ?- debugger::leash(loose).
+</pre>
+</p>
+<p>
+The abbreviations defined in Logtalk are similar to the ones defined in some Prolog compilers:
+</p>
+<dl>
+	<dt><code>none</code></dt>
+		<dd><code>[]</code></dd>
+	<dt><code>loose</code></dt>
+		<dd><code>[fact, rule, call]</code></dd>
+	<dt><code>half</code></dt>
+		<dd><code>[fact, rule, call, redo]</code></dd>
+	<dt><code>tight</code></dt>
+		<dd><code>[fact, rule, call, redo, fail]</code></dd>
+	<dt><code>full</code></dt>
+		<dd><code>[fact, rule, call, exit, redo, fail]</code></dd>
+</dl>
+
+
+<h3>Tracing program execution<a name="trace"></a></h3>
+
+<p>
+Logtalk allows tracing of execution for all objects compiled in debug mode.
+</p>
+<p>
+In order to trace the execution for all objects compiled in debug mode:</p>
+<pre>
+    | ?- debugger::trace.
+
+    yes
+</pre>
+
+<h3>Debugging using spy points<a name="debug"></a></h3>
+
+
+<pre>
+    | ?- debugger::debug.
+
+    yes
+</pre>
+
 <div class="navbottom">
 <a href="configuration.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="programming.html">next</a>
 </div>
@@ -342,7 +468,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: March 29, 2004</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: April 11, 2004</span></p>
 </div>
 </body>
 </html>
