@@ -16,7 +16,7 @@ RELEASE NOTES
 	private, dynamic, or discontiguous using the notation Functor//Arity. Added 
 	support for documenting non-terminals using the info/2 and mode/2 directives.
 
-	Added support for a new "alias" predicate property.
+	Added support for a new alias/1 predicate property.
 
 	New config file for JIProlog 3.0 (see the configs/NOTES file for details).
 

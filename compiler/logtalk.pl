@@ -1242,7 +1242,7 @@ current_logtalk_flag(version, version(2, 21, 2)).
 	throw(error(existence_error(object, Obj), Obj::predicate_property(Pred, Prop), Sender)).
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, Scope) :-
-	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _),
+	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _),
 	'$lgt_once'(Dcl, Pred, PScope, Type, Meta, SCtn, TCtn),
 	!,
 	once((\+ \+ PScope = Scope; Sender = SCtn)),
@@ -1253,7 +1253,9 @@ current_logtalk_flag(version, version(2, 21, 2)).
 	 Prop = defined_in(DCtn);
 	 Meta \= no, Prop = metapredicate(Meta);
 	 '$lgt_current_object_'(TCtn, _, TCtnDcl, _, _, _),
-	 \+ '$lgt_call'(TCtnDcl, Pred, _, _, _), Prop = alias).
+	 \+ '$lgt_call'(TCtnDcl, Pred, _, _, _),
+	 '$lgt_alias_pred'(Obj, Prefix, Pred, Pred2),
+	 Prop = alias(Pred2)).
 
 '$lgt_predicate_property'(_, Pred, Prop, _, Scope) :-
 	'$lgt_built_in_method'(Pred, PScope),
@@ -1283,6 +1285,52 @@ current_logtalk_flag(version, version(2, 21, 2)).
 '$lgt_scope'(private, p).
 '$lgt_scope'(protected, p(p)).
 '$lgt_scope'((public), p(p(p))).
+
+
+
+% '$lgt_alias_pred'(+object_identifier, +atom, +callable, -callable)
+%
+% finds the predicate pointed by an alias
+
+'$lgt_alias_pred'(Obj, Prefix, Alias, Pred) :-
+	'$lgt_alias_pred'(Obj, Prefix, Alias, Pred, _).
+
+
+'$lgt_alias_pred'(_, Prefix, Alias, Pred, _) :-
+	'$lgt_construct_alias_functor'(Prefix, Functor),
+	catch('$lgt_call'(Functor, _, Pred, Alias), _, fail),
+	Pred \= Alias,
+	!.
+
+'$lgt_alias_pred'(Obj, _, Alias, Pred, _) :-
+	'$lgt_implements_protocol_'(Obj, Ptc, _),
+	'$lgt_current_protocol_'(Ptc, Prefix, _),
+	'$lgt_alias_pred'(Ptc, Prefix, Alias, Pred, _).
+
+'$lgt_alias_pred'(Ptc1, _, Alias, Pred, _) :-
+	'$lgt_extends_protocol_'(Ptc1, Ptc2, _),
+	'$lgt_current_protocol_'(Ptc2, Prefix, _),
+	'$lgt_alias_pred'(Ptc2, Prefix, Alias, Pred, _).
+
+'$lgt_alias_pred'(Obj, _, Alias, Pred, _) :-
+	'$lgt_imports_category_'(Obj, Ctg, _),
+	'$lgt_current_category_'(Ctg, Prefix, _),
+	'$lgt_alias_pred'(Ctg, Prefix, Alias, Pred, _).
+
+'$lgt_alias_pred'(Obj, _, Alias, Pred, prototype) :-
+	'$lgt_extends_object_'(Obj, Parent, _),
+	'$lgt_current_object_'(Parent, Prefix, _, _, _, _),
+	'$lgt_alias_pred'(Parent, Prefix, Alias, Pred, prototype).
+
+'$lgt_alias_pred'(Instance, _, Alias, Pred, instance) :-
+	'$lgt_instantiates_class_'(Instance, Class, _),
+	'$lgt_current_object_'(Class, Prefix, _, _, _, _),
+	'$lgt_alias_pred'(Class, Prefix, Alias, Pred, superclass).
+
+'$lgt_alias_pred'(Class, _, Alias, Pred, superclass) :-
+	'$lgt_specializes_class_'(Class, Superclass, _),
+	'$lgt_current_object_'(Superclass, Prefix, _, _, _, _),
+	'$lgt_alias_pred'(Superclass, Prefix, Alias, Pred, superclass).
 
 
 
