@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.16.0
+Release 2.16.1
 
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -8,6 +8,12 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.16.1 - March ??, 2004
+
+	Removed references to sax.jar from the scripts for converting XML 
+	documenting into (X)HTML.
 
 
 2.16.0 - March 3, 2004
