@@ -15,7 +15,7 @@ format=xhtml
 directory="."
 
 index_title="Entity documentation index"
-index_file="$directory/index.html"
+index_file=index.html
 
 processor=xsltproc
 # processor=xalan
