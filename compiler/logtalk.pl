@@ -2841,7 +2841,7 @@ user0__def(Pred, _, _, _, Pred, user).
 	throw(permission_error(define, dynamic_predicate, Functor/Arity)).
 
 
-% redefinition of built-in methods
+% redefinition of Logtalk built-in methods
 
 '$lgt_tr_head'(Head, _, _) :-
 	'$lgt_built_in_method'(Head, _),
@@ -3185,7 +3185,7 @@ user0__def(Pred, _, _, _, Pred, user).
 % '$lgt_tr_margs'(@list, @list, +term, -list)
 %
 % translates the meta-arguments contained in the list of 
-% arguments of a metapredicate
+% arguments of a call to a metapredicate
 
 '$lgt_tr_margs'([], [], _, []).
 
@@ -5569,13 +5569,13 @@ user0__def(Pred, _, _, _, Pred, user).
 
 
 
-% metapredicates
+% built-in metapredicates
 
 '$lgt_metapredicate'(Meta) :-
 	'$lgt_lgt_metapredicate'(Meta).
 
 '$lgt_metapredicate'(Meta) :-
-	'$lgt_pl_metapredicate'(Meta).
+	'$lgt_pl_metapredicate'(Meta).		% defined in the config files
 
 
 
@@ -6711,7 +6711,7 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_default_flag'(unknown, Unknown),
 	write('  Unknown entities (unknown):                              '), write(Unknown), nl,
 	'$lgt_default_flag'(misspelt, Misspelt),
-	write('  Misspelt predicates (misspelt):                          '), write(Misspelt), nl,
+	write('  Misspelt predicate calls (misspelt):                     '), write(Misspelt), nl,
 	'$lgt_default_flag'(singletons, Singletons),
 	write('  Singletons variables (singletons):                       '), write(Singletons), nl,
 	'$lgt_default_flag'(lgtredef, Lgtredef),
