@@ -14,7 +14,7 @@ RELEASE NOTES
 
 	Added support for defining more that one entity per file using Logtalk 
 	source metafiles (*.mlgt) which the runtime engine automatically splits 
-	on single entity source files plus a loader file.
+	on single entity source files plus loading and compiling helper files.
 
 
 2.18.0 - July 9, 2004
