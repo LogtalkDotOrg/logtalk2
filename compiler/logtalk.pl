@@ -1645,11 +1645,11 @@ current_logtalk_flag(version, version(2, 15, 2)).
 %
 % removes duplicated and redeclared predicates 
 
-'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, Scope) :-
+'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
 	var(Ruleset),
 	throw(error(instantiation_error, Obj::phrase(Ruleset, Input, Rest), Sender)).
 
-'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, Scope) :-
+'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
 	\+ atom(Ruleset),
 	throw(error(type_error(atom, Ruleset), Obj::phrase(Ruleset, Input, Rest), Sender)).
 
@@ -1657,9 +1657,25 @@ current_logtalk_flag(version, version(2, 15, 2)).
 	Pred =.. [Ruleset, Input, Rest],
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _),
 	'$lgt_once'(Dcl, Pred, PScope, _, _, SContainer, _),
-	once((\+ \+ PScope = Scope; Sender = SContainer)),
-	'$lgt_once'(Def, Pred, Sender, Obj, Obj, Call, _),
+	!,
+	((\+ \+ PScope = Scope; Sender = SContainer) ->
+		'$lgt_once'(Def, Pred, Sender, Obj, Obj, Call, _),
+		call(Call)
+		;
+		(PScope = p ->
+				throw(error(permission_error(access, private_ruleset, Head), Obj::phrase(Ruleset, Input, Rest), Sender))
+				;
+				throw(error(permission_error(access, protected_ruleset, Head), Obj::phrase(Ruleset, Input, Rest), Sender)))).
+
+'$lgt_phrase'(This, Ruleset, Input, Rest, This, _) :-
+	Pred =.. [Ruleset, Input, Rest],
+	'$lgt_current_object_'(This, _, _, Def, _),
+	'$lgt_once'(Def, Pred, This, This, This, Call, _),
+	!,
 	call(Call).
+
+'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
+	throw(error(existence_error(ruleset, Ruleset), Obj::phrase(Ruleset, Input, Rest), Sender)).
 
 
 
