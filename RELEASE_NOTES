@@ -15,6 +15,12 @@ RELEASE NOTES
 	Make operator ^^/1 right-associative for consistency with remaining 
 	operator declarations.
 
+	Added file BIBLIOGRAPHY containing a list of Logtalk publications in 
+	BibTeX format.
+
+	Added a font-lock file for Emacs providing syntax coloring for editing 
+	Logtalk source files.
+
 
 2.15.4 - July 9, 2003
 
