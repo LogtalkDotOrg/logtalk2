@@ -17,7 +17,7 @@ fi
 echo
 echo This script converts all .xml files in the current directory to .html
 echo files applying the XSLT transformation defined in the $XSLT file
-echo using the James Clark XT XSLT Java processor.
+echo using the James Clark XT XSLT Java processor and XP Java XML parser.
 echo
 echo An index.html file, containing links to all .html documenting files,
 echo is automatically generated. This file uses the script optional parameter 
