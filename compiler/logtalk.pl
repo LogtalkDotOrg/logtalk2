@@ -4497,25 +4497,45 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	!,
 	'$lgt_ctx_this'(Ctx, This).
 
-'$lgt_tr_body'(asserta(Pred), '$lgt_asserta'(This, Pred, This, _), '$lgt_dbg_goal'(asserta(Pred), '$lgt_asserta'(This, Pred, This, _), Ctx), Ctx) :-
+'$lgt_tr_body'(asserta(Pred), TCond, DCond, Ctx) :-
 	!,
-	'$lgt_ctx_this'(Ctx, This).
+	('$lgt_optimizable_local_db_call'(Pred, Ctx, TPred) ->
+		TCond = asserta(TPred)
+		;
+		'$lgt_ctx_this'(Ctx, This),
+		TCond = '$lgt_asserta'(This, Pred, This, _)),
+		DCond = '$lgt_dbg_goal'(asserta(Pred), TCond, Ctx).
 
-'$lgt_tr_body'(assertz(Pred), '$lgt_assertz'(This, Pred, This, _), '$lgt_dbg_goal'(assertz(Pred), '$lgt_assertz'(This, Pred, This, _), Ctx), Ctx) :-
+'$lgt_tr_body'(assertz(Pred), TCond, DCond, Ctx) :-
 	!,
-	'$lgt_ctx_this'(Ctx, This).
+	('$lgt_optimizable_local_db_call'(Pred, Ctx, TPred) ->
+		TCond = assertz(TPred)
+		;
+		'$lgt_ctx_this'(Ctx, This),
+		TCond = '$lgt_assertz'(This, Pred, This, _)),
+		DCond = '$lgt_dbg_goal'(assertz(Pred), TCond, Ctx).
 
 '$lgt_tr_body'(clause(Head, Body), '$lgt_clause'(This, Head, Body, This, _), '$lgt_dbg_goal'(clause(Head, Body), '$lgt_clause'(This, Head, Body, This, _), Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_this'(Ctx, This).
 
-'$lgt_tr_body'(retract(Pred), '$lgt_retract'(This, Pred, This, _), '$lgt_dbg_goal'(retract(Pred), '$lgt_retract'(This, Pred, This, _), Ctx), Ctx) :-
+'$lgt_tr_body'(retract(Pred), TCond, DCond, Ctx) :-
 	!,
-	'$lgt_ctx_this'(Ctx, This).
+	('$lgt_optimizable_local_db_call'(Pred, Ctx, TPred) ->
+		TCond = retract(TPred)
+		;
+		'$lgt_ctx_this'(Ctx, This),
+		TCond = '$lgt_retract'(This, Pred, This, _)),
+		DCond = '$lgt_dbg_goal'(retract(Pred), TCond, Ctx).
 
-'$lgt_tr_body'(retractall(Pred), '$lgt_retractall'(This, Pred, This, _), '$lgt_dbg_goal'(retractall(Pred), '$lgt_retractall'(This, Pred, This, _), Ctx), Ctx) :-
+'$lgt_tr_body'(retractall(Pred), TCond, DCond, Ctx) :-
 	!,
-	'$lgt_ctx_this'(Ctx, This).
+	('$lgt_optimizable_local_db_call'(Pred, Ctx, TPred) ->
+		TCond = retractall(TPred)
+		;
+		'$lgt_ctx_this'(Ctx, This),
+		TCond = '$lgt_retractall'(This, Pred, This, _)),
+		DCond = '$lgt_dbg_goal'(retractall(Pred), TCond, Ctx).
 
 
 % DCG predicates
@@ -4679,6 +4699,28 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 '$lgt_tr_marg'(::, Arg, Ctx, TArg) :-
 	'$lgt_tr_body'(Arg, TArg, _, Ctx).
+
+
+
+% '$lgt_optimizable_local_db_call'(@term, @nonvar, -callable)
+%
+% checks if a call to a database built-in method can be optimized by direct
+% translation to a call to the corresponding Prolog built-in predicate
+
+'$lgt_optimizable_local_db_call'(Pred, Ctx, TPred) :-
+	callable(Pred),
+	functor(Pred, Functor, Arity),
+	Functor \= (:-),					% only facts
+	'$lgt_pp_dynamic_'(Functor, Arity),
+	once((
+		'$lgt_pp_public_'(Functor, Arity);
+		'$lgt_pp_protected_'(Functor, Arity);
+		'$lgt_pp_private_'(Functor, Arity))),
+	Pred =.. [Functor| Args],
+	'$lgt_ctx_ctx'(Ctx, _, _, _, EPrefix, _),
+	'$lgt_construct_predicate_functor'(EPrefix, Functor, Arity, PPrefix),
+	'$lgt_append'(Args, [_, _, _], Args2),
+	TPred =.. [PPrefix| Args2].
 
 
 
