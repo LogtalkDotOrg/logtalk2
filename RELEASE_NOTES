@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.13.0 - June 7, 2002
+2.13.0 - June 12, 2002
 
 	Logtalk now outputs Prolog code using write_canonical/2 instead of 
 	write_term/3. Goals are better portability of the generated Prolog files 
@@ -18,6 +18,8 @@ RELEASE NOTES
 	use a term print depth limit to prevent problems with cyclic terms.
 
 	Added report of default flag values at Logtalk startup.
+
+	Logtalk now prints a warning when redefining parametric objects.
 
 	Added missing definitions for some ISO built-in predicates to the Amzi! 
 	Prolog 6.2.2 config file.
