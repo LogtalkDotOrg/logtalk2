@@ -49,7 +49,7 @@ ALS Prolog 3.1
 	compilation of source files.
 
 
-Amzi! Prolog 4.103, 5.0, 6.22
+Amzi! Prolog 4.103, 5.0, 6.2.2
 
 	amzi.config
 
@@ -196,10 +196,11 @@ GNU Prolog 1.1.2 (and later versions, except 1.2.13; 1.2.14 is ok)
 	can generate a new Prolog top level that includes the Logtalk config file
 	and pre-processor plus the runtime by doing something like:
 
-	% cd lgt2140
+	% cd lgt2142
 	% cp configs/gnu.config configs/gnu.pl
 
-	Edit the configs/gnu.pl file and define the flag "code_'prefix" to be '$'.
+	Edit the compiler/logtalk.pl file and add the line ":- built_in." to the 
+	top. Then:
 
 	% gplc -o logtalk configs/gnu.pl compiler/logtalk.pl
 	% mv logtalk /usr/local/bin/
