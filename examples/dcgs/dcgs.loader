@@ -9,4 +9,5 @@
 		verbs,
 		sentence,
 		url,
-		xml])). 
+		xml,
+		shell])). 
