@@ -8,6 +8,7 @@ consult the URL http://www.kprolog.com/en/logical_assignment/
 
 :-op(100, xfx, '<=').
 :-op(100, xfx, '=>').
+:-op(100, xfx, '=>>').
 
 
 :- category(assignvars).
@@ -15,7 +16,7 @@ consult the URL http://www.kprolog.com/en/logical_assignment/
 	:- info([
 		version is 1.0,
 		author is 'Nobukuni Kino and Paulo Moura',
-		date is 2005/1/4,
+		date is 2005/1/7,
 		comment is 'Assignable variables (supporting logical, backtracable assignement of non-variable terms).']).
 
 	:- public(assignable/1).
@@ -42,8 +43,15 @@ consult the URL http://www.kprolog.com/en/logical_assignment/
 		comment is 'Unifies Value with the current value of the assignable variable Variable.',
 		argnames is ['Variable', 'Value']]).
 
+	:- public((=>>)/2).
+	:- mode(=>>(+assignvar, ?nonvar), zero_or_more).
+	:- info((=>>)/2, [
+		comment is 'Enumerates, by backtracking, the current and past variable values, starting with the current one.',
+		argnames is ['Variable', 'Value']]).
+
 	:-op(100, xfx, <=).
 	:-op(100, xfx, =>).
+	:-op(100, xfx, =>>).
 
 	assignable(Assig) :-
 		nonvar(Assig),
@@ -90,5 +98,20 @@ consult the URL http://www.kprolog.com/en/logical_assignment/
 			Tail => Value
 			;
 			Current = Value.
+
+	Assig =>> Element :-
+		var(Assig),
+		self(Self),
+		sender(Sender),
+		throw(error(instantiation_error, Self::Assig >=> Element, Sender)).
+
+	[_| Tail] =>> Value :-
+		enumerate(Tail, Value).
+
+	enumerate([_| Tail], Value) :-
+		nonvar(Tail),
+		enumerate(Tail, Value).
+
+	enumerate([Value| _], Value).
 
 :- end_category.
