@@ -13,7 +13,7 @@ echo
 foreach file (*.xml)
 	echo converting $file
 	name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
-	eval sh $FOP_PATH/fop.sh -xsl $XSLT -xml $file -pdf $name.pdf
+	eval sh $FOP_PATH/fop.sh -q -xsl $XSLT -xml $file -pdf $name.pdf
 end
 
 echo

@@ -8,7 +8,7 @@ ECHO This script converts all .xml files in the current directory to .pdf
 ECHO files applying the XSLT transformation defined in the $XSLT file
 ECHO using the Apache FOP processor
 
-FOR %%f IN (*.xml) DO %FOP_PATH%\fop.bat -xsl %XSLT% -xml %%f -pdf %%f.pdf
+FOR %%f IN (*.xml) DO %FOP_PATH%\fop.bat -q -xsl %XSLT% -xml %%f -pdf %%f.pdf
 
 REN *.xml.pdf *.pdf
 
