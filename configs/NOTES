@@ -157,7 +157,7 @@ CIAO Prolog 1.6p1, 1.8p0
 	of source files.
 
 
-Eclipse 4.2.2~5.1, 5.2~5.3, 5.4
+Eclipse 4.2.2~5.1, 5.2~5.3, 5.4~5.5
 
 	eclipse.config
 	eclipse52.config
@@ -169,9 +169,9 @@ Eclipse 4.2.2~5.1, 5.2~5.3, 5.4
 	to load the "iso" library, with versions from 4.2.2 to 5.1. The second 
 	file, "eclipse52.config" is similar to the first one but is written for 
 	version 5.2 and 5.3. The third file, "eclipse54.config", is for version 
-	5.4. The fourth file, "eclipseiso.config" contains a call to load the 
-	"iso" library and should be compatible with all versions from 4.2.2 to 
-	5.4.
+	5.4 or 5.5. The fourth file, "eclipseiso.config" contains a call to load 
+	the "iso" library and should be compatible with all versions from 4.2.2 
+	to 5.5.
 
 	Add the following calls to the top of all the files in the "compiler" 
 	sub-directory:
@@ -197,7 +197,7 @@ GNU Prolog 1.1.2 (and later versions, except 1.2.13)
 	can generate a new Prolog top level that includes the Logtalk config file
 	and pre-processor plus the runtime by doing something like:
 
-	% cd lgt2144
+	% cd lgt2145
 	% cp configs/gnu.config configs/gnu.pl
 
 	Edit the compiler/logtalk.pl file and add the line ":- built_in." to the 
@@ -367,7 +367,7 @@ SICStus Prolog 3.5~3.9.x
 	an example. Supports smart compilation of source files.
 
 
-SWI Prolog 3.2.9 & 3.3.x and later versions
+SWI Prolog 3.2.9 & 3.3.x and all later versions
 
 	swi329.config
 
@@ -377,7 +377,7 @@ SWI Prolog 3.2.9 & 3.3.x and later versions
 
 	swi.config
 
-	For version 3.3.x and later releases
+	For version 3.3.x and all later versions
 
 	No problems expected. Please report any problem found (with a solution 
 	if possible). Don't forget to use the cd/1 predicate to set the working 
