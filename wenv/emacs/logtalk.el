@@ -4,12 +4,14 @@
 
 ;; Author: Paulo Moura
 ;; Creation date: November 15, 2003
-;; Last modification date: February 23, 2004
-;; Version: 0.51
+;; Last modification date: March 4, 2004
+;; Version: 0.52
 
 ;; Installation:
 ;;
-;; Add the following lines in your Emacs init file, for example
+;; First, copy this file to your Emacs lisp/progmodes directory.
+;;
+;; Second, add the following lines in your Emacs init file, for example
 ;; your ~/.emacs file:
 ;;
 ;; (autoload 'logtalk-mode "logtalk" "Major mode for editing Logtalk programs." t)
