@@ -23,6 +23,8 @@ RELEASE NOTES
 	Renamed config files for CIAO 1.7 (beta of 1.8) to "ciao_aux18.config" 
 	and "ciao18.config".
 
+	Updated config file for Amzi! Prolog 6.2.2.
+
 	New example of using the built-in database handling methods (dynpred).
 
 	Syntax coloring configuration files for the jEdit 4.0, VIM 6.1, and 
