@@ -25,11 +25,12 @@ usage_help()
 	echo "current directory to PDF files"
 	echo
 	echo "Usage:"
-	echo "  $0 -f format -o directory -p processor"
+	echo "  $0 -f format -d directory -p processor"
+	echo "  $0 -h"
 	echo
 	echo "Optional arguments:"
 	echo "  -f paper format (either a4 or us; default is $format)"
-	echo "  -o output directory for the PDF files (default is $directory)"
+	echo "  -d output directory for the PDF files (default is $directory)"
 	echo "  -p XSL-FO processor (either fop or xep; default is $processor)"
 	echo "  -h help"
 	echo
@@ -42,11 +43,11 @@ then
 	exit 1
 else
 
-	while getopts "f:o:p:h" Option
+	while getopts "f:d:p:h" Option
 	do
 		case $Option in
 			f) format="$OPTARG";;
-			o) directory="$OPTARG";;
+			d) directory="$OPTARG";;
 			p) processor="$OPTARG";;
 			h) usage_help;;
 			*) usage_help;;

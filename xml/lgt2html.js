@@ -125,15 +125,15 @@ function usage_help() {
 	WScript.Echo("current directory to XHTML or HTML files");
 	WScript.Echo("");
 	WScript.Echo("Usage:");
-	WScript.Echo("  " + WScript.ScriptName + " [help] [/f:format] [/o:directory] [/i:index] [/t:title] [/p:processor]");
+	WScript.Echo("  " + WScript.ScriptName + " [/f:format] [/d:directory] [/i:index] [/t:title] [/p:processor]");
+	WScript.Echo("  " + WScript.ScriptName + " help");
 	WScript.Echo("");
 	WScript.Echo("Optional arguments:");
 	WScript.Echo("  f - output file format (either xhtml or html; default is " + format + ")");
-	WScript.Echo("  o - output directory for the generated files (default is " + directory + ")");
+	WScript.Echo("  d - output directory for the generated files (default is " + directory + ")");
 	WScript.Echo("  i - name of the index file (default is " + index_file + ")");
 	WScript.Echo("  t - title to be used on the index file (default is " + title + ")");
 	WScript.Echo("  p - XSLT processor (xsltproc, xalan, or sabcmd; default is " + processor + ")");
-	WScript.Echo("  help - print usage help");
 	WScript.Echo("");
 	WScript.Quit(1);
 }

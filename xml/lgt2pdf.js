@@ -98,13 +98,13 @@ function usage_help() {
 	WScript.Echo("current directory to PDF files");
 	WScript.Echo("");
 	WScript.Echo("Usage:");
-	WScript.Echo("  " + WScript.ScriptName + " [help] [/f:format] [/o:directory] [/p:processor]");
+	WScript.Echo("  " + WScript.ScriptName + " [/f:format] [/d:directory] [/p:processor]");
+	WScript.Echo("  " + WScript.ScriptName + " help");
 	WScript.Echo("");
 	WScript.Echo("Optional arguments:");
 	WScript.Echo("  f - paper format (either a4 or us; default is " + format + ")");
-	WScript.Echo("  o - output directory for the PDF files (default is " + directory + ")");
+	WScript.Echo("  d - output directory for the PDF files (default is " + directory + ")");
 	WScript.Echo("  p - XSL-FO processor (either fop or xep; default is " + processor + ")");
-	WScript.Echo("  help - print usage help");
 	WScript.Echo("");
 	WScript.Quit(1);
 }

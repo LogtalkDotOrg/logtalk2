@@ -28,11 +28,12 @@ usage_help()
 	echo "current directory to XHTML or HTML files"
 	echo
 	echo "Usage:"
-	echo "  $0 -f format -o directory -i index -t title -p processor"
+	echo "  $0 -f format -d directory -i index -t title -p processor"
+	echo "  $0 -h"
 	echo
 	echo "Optional arguments:"
 	echo "  -f output file format (either xhtml or html; default is $format)"
-	echo "  -o output directory for the generated files (default is $directory)"
+	echo "  -d output directory for the generated files (default is $directory)"
 	echo "  -i name of the index file (default is $index_file)"
 	echo "  -t title to be used on the index file (default is $index_title)"
 	echo "  -p XSLT processor (xsltproc, xalan, or sabcmd; default is $processor)"
@@ -89,11 +90,11 @@ then
 	exit 1
 else
 
-	while getopts "f:o:i:t:p:h" Option
+	while getopts "f:d:i:t:p:h" Option
 	do
 		case $Option in
 			f) format="$OPTARG";;
-			o) directory="$OPTARG";;
+			d) directory="$OPTARG";;
 			i) index_file="$OPTARG";;
 			t) index_title="$OPTARG";;
 			p) processor="$OPTARG";;
