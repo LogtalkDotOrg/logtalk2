@@ -10,7 +10,7 @@
 		version is 1.0,
 		author is 'Paulo Moura',
 		date is 2004/5/10,
-		comment is 'Operating system interface.']).
+		comment is 'Operating system interface for IF/Prolog.']).
 
 
 	make_directory(Directory) :-
@@ -41,8 +41,26 @@
 		{file_test(File, read)}.
 
 
-	file_property(File, Property) :-
-		{get_file_info(File, Attribute, Value), Property =.. [Attribute, Value]}.
+	file_modtime(File, Time) :-
+		{get_file_info(File, mtime, Time)}.
+
+
+	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
+		{get_file_info(File, mtime, Time),
+		 localtime(Time, Year, Month, Day, _, _, Hours, Min, Secs)}.
+
+
+	file_size(File, Size) :-
+		{get_file_info(File, size, Size)}.
+
+
+	file_type(File, Type) :-
+		{get_file_info(File, mode, Mode)},
+		file_mode_type(Mode, Type).
+
+	file_mode_type(ifreg, regular).
+	file_mode_type(ifdir, directory).
+	file_mode_type(iflnk, symlink).
 
 
 	delete_file(File) :-
