@@ -61,7 +61,7 @@ FSObject.CopyFile(prolog_path + "\\w32guicons.dll", logtalk_home + "\\bin\\w32gu
 WshShell.Run("cmd /c gplc --gui-console -o " + logtalk_home + "\\bin\\gplgt.exe" + logtalk_home + "\\bin\\gnu.pl" + " " + logtalk_home + "\\bin\\logtalkgp.pl", true);
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
-var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk - GNU Prolog.lnk");
+var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk - GNU Prolog (precompiled).lnk");
 link.Arguments = "";
 link.Description = "Runs Logtalk with GNU Prolog";
 link.IconLocation = "app.exe,1";
