@@ -1653,33 +1653,35 @@ current_logtalk_flag(version, version(2, 15, 2)).
 	\+ '$lgt_callable'(Ruleset),
 	throw(error(type_error(callable, Ruleset), Obj::phrase(Ruleset, Input, Rest), Sender)).
 
+'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
+	nonvar(Input),
+	\+ '$lgt_proper_list'(Input),
+	throw(error(type_error(list, Input), Obj::phrase(Ruleset, Input, Rest), Sender)).
+
+'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
+	nonvar(Rest),
+	\+ '$lgt_proper_list'(Rest),
+	throw(error(type_error(list, Rest), Obj::phrase(Ruleset, Input, Rest), Sender)).
+
 '$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, Scope) :-
 	Ruleset =.. [Functor| Args],
 	'$lgt_append'(Args, [Input, Rest], Args2),
 	Pred =.. [Functor| Args2],
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _),
-	'$lgt_once'(Dcl, Pred, PScope, _, _, SContainer, _),
-	!,
-	((\+ \+ PScope = Scope; Sender = SContainer) ->
-		'$lgt_once'(Def, Pred, Sender, Obj, Obj, Call, _),
-		call(Call)
-		;
-		(PScope = p ->
-				throw(error(permission_error(access, private_ruleset, Head), Obj::phrase(Ruleset, Input, Rest), Sender))
+	('$lgt_once'(Dcl, Pred, PScope, _, _, SContainer, _) ->
+		((\+ \+ PScope = Scope; Sender = SContainer) ->
+			'$lgt_once'(Def, Pred, Sender, Obj, Obj, Call, _),
+			call(Call)
+			;
+			(PScope = p ->
+				throw(error(permission_error(access, private_predicate, Pred), Obj::phrase(Ruleset, Input, Rest), Sender))
 				;
-				throw(error(permission_error(access, protected_ruleset, Head), Obj::phrase(Ruleset, Input, Rest), Sender)))).
-
-'$lgt_phrase'(This, Ruleset, Input, Rest, This, _) :-
-	Ruleset =.. [Functor| Args],
-	'$lgt_append'(Args, [Input, Rest], Args2),
-	Pred =.. [Functor| Args2],
-	'$lgt_current_object_'(This, _, _, Def, _),
-	'$lgt_once'(Def, Pred, This, This, This, Call, _),
-	!,
-	call(Call).
-
-'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
-	throw(error(existence_error(ruleset, Ruleset), Obj::phrase(Ruleset, Input, Rest), Sender)).
+				throw(error(permission_error(access, protected_predicate, Pred), Obj::phrase(Ruleset, Input, Rest), Sender))))
+		;
+		((Obj = Sender, '$lgt_once'(Def, Pred, Obj, Obj, Obj, Call, _)) ->
+			call(Call)
+			;
+			throw(error(existence_error(procedure, Pred), Obj::phrase(Ruleset, Input, Rest), Sender)))).
 
 
 
