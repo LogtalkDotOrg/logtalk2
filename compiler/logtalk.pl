@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.9.1
+%  Release 2.9.2
 %
 %  Copyright (c) 1998-2001 Paulo Moura.  All Rights Reserved.
 %
@@ -1009,7 +1009,7 @@ logtalk_version(Major, Minor, Patch) :-
 	\+ integer(Patch),
 	throw(error(type_error(integer, Patch), logtalk_version(Major, Minor, Patch))).
 
-logtalk_version(2, 9, 1).
+logtalk_version(2, 9, 2).
 
 
 
@@ -4598,24 +4598,35 @@ lgt_assert_init :-
 
 % lgt_assert_relation_clauses(+list)
 %
-% called when loading a compiled Logtalk 
-% entity to update Logtalk internal tables
-
-lgt_assert_relation_clauses([]).
+% called when loading a compiled Logtalk entity to update Logtalk 
+% internal tables
+%
+% we may be reloading the entity so we must first retract any old
+% relation clauses before asserting the new ones
 
 lgt_assert_relation_clauses([Clause| Clauses]) :-
-	lgt_assert_relation_clause(Clause),
-	lgt_assert_relation_clauses(Clauses).
-
-
-
-lgt_assert_relation_clause(Clause) :-
-	functor(Clause, Functor, Arity),
 	arg(1, Clause, Entity),
-	functor(Old, Functor, Arity),
-	arg(1, Old, Entity),
-	retractall(Old),
-	assertz(Clause).
+	lgt_retract_old_relation_clauses(Entity),
+	lgt_assert_new_relation_clauses([Clause| Clauses]).
+	
+
+lgt_retract_old_relation_clauses(Entity) :-
+	retractall(lgt_current_object_(Entity, _, _, _, _)),
+	retractall(lgt_current_protocol_(Entity, _)),
+	retractall(lgt_current_category_(Entity, _)),
+	retractall(lgt_implements_protocol_(Entity, _, _)),
+	retractall(lgt_imports_category_(Entity, _, _)),
+	retractall(lgt_instantiates_class_(Entity, _, _)),
+	retractall(lgt_specializes_class_(Entity, _, _)),
+	retractall(lgt_extends_protocol_(Entity, _, _)),
+	retractall(lgt_extends_object_(Entity, _, _)).
+
+
+lgt_assert_new_relation_clauses([]).
+
+lgt_assert_new_relation_clauses([Clause| Clauses]) :-
+	assertz(Clause),
+	lgt_assert_new_relation_clauses(Clauses).
 
 
 
