@@ -2626,8 +2626,11 @@ user0__def(Pred, _, _, _, Pred, user).
 	assertz('$lgt_feclause_'(Clause)).
 
 '$lgt_tr_clause'(Clause) :-
-	'$lgt_entity_'(_, Entity, Prefix, _),
-	'$lgt_this'(Context, Entity),
+	'$lgt_entity_'(Type, Entity, Prefix, _),
+	(Type = object ->
+		'$lgt_this'(Context, Entity)
+		;
+		true),
 	'$lgt_prefix'(Context, Prefix),
 	catch(
 		'$lgt_tr_clause'(Clause, TClause, Context),
