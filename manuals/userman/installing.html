@@ -363,6 +363,7 @@ It is advisable to turn off the compiler flag <code>smart_compilation</code> whi
 <p>
 Logtalk uses a <em>Procedure Box model</em> similar to the one used in most Prolog compilers. Prolog procedure box model uses four ports (<em>call</em>, <em>exit</em>, <em>redo</em>, and <em>fail</em>) for describing control flow when a predicate clause is used during program execution: 
 </p>
+<blockquote>
 <dl>
 	<dt><code>fact</code></dt>
 		<dd>unification success between a goal and a fact</dd>
@@ -377,15 +378,48 @@ Logtalk uses a <em>Procedure Box model</em> similar to the one used in most Prol
 	<dt><code>fail</code></dt>
 		<dd>failure of a predicate call</dd>
 </dl>
+</blockquote>
 <p>
 Logtalk adds two more ports, <em>fact</em> and <em>rule</em>, which show the result of the unification of a goal with, respectively, a fact and a rule head:
 </p>
+<blockquote>
 <dl>
 	<dt><code>fact</code></dt>
 		<dd>unification success between a goal and a fact</dd>
 	<dt><code>rule</code></dt>
 		<dd>unification success between a goal and a rule head</dd>
 </dl>
+</blockquote>
+<p>
+The user may define for which ports the debugger should pause for user interaction. This may be done by specifiying a list of leashed ports:
+</p>
+<pre>
+    | ?- debugger::leash([call, exit, fail]).
+</pre>
+<p>
+Alternatively, the user may use an atom abbreviation for a pre-defined set of ports. For example:
+</p>
+<pre>
+    | ?- debugger::leash(loose).
+</pre>
+</p>
+<p>
+The abbreviations defined in Logtalk are similar to the ones defined in some Prolog compilers:
+</p>
+<blockquote>
+<dl>
+	<dt><code>none</code></dt>
+		<dd><code>[]</code></dd>
+	<dt><code>loose</code></dt>
+		<dd><code>[fact, rule, call]</code></dd>
+	<dt><code>half</code></dt>
+		<dd><code>[fact, rule, call, redo]</code></dd>
+	<dt><code>tight</code></dt>
+		<dd><code>[fact, rule, call, redo, fail]</code></dd>
+	<dt><code>full</code></dt>
+		<dd><code>[fact, rule, call, exit, redo, fail]</code></dd>
+</dl>
+</blockquote>
 
 <h3>Spy points<a name="spypoints"></a></h3>
 
@@ -407,54 +441,44 @@ For example, we can spy all calls to a <code>foo/2</code> predicate by setting t
 <pre>
     | ?- debugger::spy(_, _, _, foo(_, _)).
 </pre>
-<p>
-The user may define for which ports we want to interact with the debugger. This may be done by specifiying a list of leashed ports:
-</p>
-<pre>
-    | ?- debugger::leash([call, exit, fail]).
-</pre>
-<p>
-Alternatively, the user may use an atom abbreviation for a pre-defined set of ports. For example:
-</p>
-<pre>
-    | ?- debugger::leash(loose).
-</pre>
-</p>
-<p>
-The abbreviations defined in Logtalk are similar to the ones defined in some Prolog compilers:
-</p>
-<dl>
-	<dt><code>none</code></dt>
-		<dd><code>[]</code></dd>
-	<dt><code>loose</code></dt>
-		<dd><code>[fact, rule, call]</code></dd>
-	<dt><code>half</code></dt>
-		<dd><code>[fact, rule, call, redo]</code></dd>
-	<dt><code>tight</code></dt>
-		<dd><code>[fact, rule, call, redo, fail]</code></dd>
-	<dt><code>full</code></dt>
-		<dd><code>[fact, rule, call, exit, redo, fail]</code></dd>
-</dl>
 
 
 <h3>Tracing program execution<a name="trace"></a></h3>
 
 <p>
-Logtalk allows tracing of execution for all objects compiled in debug mode.
+Logtalk allows tracing of execution for all objects compiled in debug mode. To start the debugger in trace mode, write:
 </p>
-<p>
-In order to trace the execution for all objects compiled in debug mode:</p>
 <pre>
     | ?- debugger::trace.
 
     yes
 </pre>
+<p>
+Note that, when tracing, spy points will be ignored. While tracing, the debugger will pause for user input at each leashed port.
+</p>
+<p>
+To stop tracing and turning off the debugger, write:
+</p>
+<pre>
+    | ?- debugger::notrace.
+
+    yes
+</pre>
+
 
 <h3>Debugging using spy points<a name="debug"></a></h3>
 
-
+Tracing a program execution may generate large amounts of debugging data. Debugging using spy points allows the user to concentrate its attention in specific points of its code. To start the debug in ??? mode, write:
 <pre>
     | ?- debugger::debug.
+
+    yes
+</pre>
+<p>
+To stop the debugger, write:
+</p>
+<pre>
+    | ?- debugger::nodebug.
 
     yes
 </pre>
