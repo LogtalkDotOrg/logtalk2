@@ -1,4 +1,7 @@
 
+% you may need to update the module directive that follows for 
+% compatibility with your Prolog compiler module system
+
 :- module(module, [mod_length/2]).
 
 

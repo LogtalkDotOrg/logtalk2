@@ -18,4 +18,19 @@ changes.
 
 This folder provides simple benchmarks for comparing Logtalk message 
 sending performance with direct calls to Prolog predicates and with 
-calls to module predicates.
+calls to module predicates. These benchmarks may also be used for 
+comparing Logtalk message sending performance across Prolog compilers.
+
+This example is made of four source files:
+
+	benchmark.pl
+		contains the benchmark predicates
+	plain.pl
+		contains a definition for a list length predicate
+	module.pl
+		contains the same definition of a list length predicate 
+		encapsulated in a module
+	object.lgt
+		contains the same definition of a list length predicate 
+		encapsulated in an object
+
