@@ -9,13 +9,13 @@
 		before_event_registry, after_event_registry,
 		monitorp, monitor,
 		
-		event_dbgp,											% debugging
+		event_dbgp,										% debugging
 		event_dbg, 
 
-        subject,                                            % dependents
+        subject,                                     		% dependents
         observer,
 
-		hierarchyp,											% hierarchies
+		hierarchyp,										% hierarchies
 		proto_hierarchyp, proto_hierarchy,
 		class_hierarchyp, class_hierarchy,
 
