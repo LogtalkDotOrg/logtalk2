@@ -83,7 +83,7 @@ WScript.Echo("converting XML files...");
 var files = WshShell.CurrentDirectory.Files;
 
 for (file in files) 
-	if (file.Extension = ".xml") {
+	if (file.Extension = "xml") {
 		WScript.Echo("  converting" + file.Name);
 		switch (processor) {
 			case "xsltproc" :
