@@ -3798,6 +3798,14 @@ current_logtalk_flag(version, version(2, 19, 0)).
 
 % pre-processor bypass (call of external code)
 
+'$lgt_tr_body'({Pred}, _, _, _) :-
+	var(Pred),
+	throw(instantiation_error).
+
+'$lgt_tr_body'({Pred}, _, _, _) :-
+	\+ callable(Pred),
+	throw(type_error(callable, Pred)).
+
 '$lgt_tr_body'({Pred}, Pred, '$lgt_dbg_goal'({Pred}, Pred, Ctx), Ctx) :-
 	!.
 
