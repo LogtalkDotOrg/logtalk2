@@ -29,6 +29,9 @@ RELEASE NOTES
 	Corrected a bug in the lgtxhtml.xsl XSLT file where a wrong reference to 
 	the Logtalk CSS file is being used in the xml-stylesheet tag.
 
+	The iso_initialization_dir/1 compiler option is now a read only flag, 
+	defined in the configuration files.
+
 
 2.19.1 - August 2, 2004
 
