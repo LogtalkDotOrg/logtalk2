@@ -1080,7 +1080,7 @@ current_logtalk_flag(Flag, Value) :-
 	\+ lgt_flag_(Flag, _),
 	lgt_default_flag(Flag, Value).
 
-current_logtalk_flag(version, version(2, 12, 0)).
+current_logtalk_flag(version, version(2, 13, 0)).
 
 
 
@@ -5877,7 +5877,7 @@ lgt_startup_message :-
 
 
 lgt_banner :-
-	logtalk_version(Major, Minor, Patch),
+	current_logtalk_flag(version, version(Major, Minor, Patch)),
 	nl, write('Logtalk '), write(Major), write('.'), write(Minor), write('.'), write(Patch), nl,
 	write('Copyright (c) 1998-2002 Paulo Moura'), nl, nl.
 
