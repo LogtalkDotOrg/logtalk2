@@ -21,7 +21,7 @@ RELEASE NOTES
 	predicate directive.
 
 	Converted all manual pages to XHTML 1.0 format. Corrected a wrong link in 
-	the reference manual.
+	the reference manual. Replaced GIF images by PNG versions.
 
 
 2.13.0 - June 15, 2002
