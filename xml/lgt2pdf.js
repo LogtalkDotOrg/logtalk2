@@ -72,7 +72,7 @@ var files = WshShell.CurrentDirectory.Files;
 for (file in files)
 	if (file.Extension = ".xml") {
 		WScript.Echo("converting " + file.Name);
-		WshShell.Exec(processor + " -q -xml " + file + " -xsl " + xsl + " -pdf " + directory + "\\" + file.FileName + ".pdf");
+		WshShell.Run(processor + " -q -xml " + file + " -xsl " + xsl + " -pdf " + directory + "\\" + file.FileName + ".pdf", true);
 	}
 
 WScript.Echo("");

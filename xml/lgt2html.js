@@ -84,9 +84,12 @@ for (file in files)
 	if (file.Extension = ".xml") {
 		WScript.Echo("  converting" + file.Name);
 		switch (processor) {
-			case "xsltproc" :	WshShell.Exec(xsltproc + " -o " + directory + "\\" + file.FileName + ".html" + xslt + " "+ file.Name);
-			case "xalan" :		WshShell.Exec(xalan + " -o " +  + directory + "\\" + file.FileName + ".html" + " " + xslt);
-			case "sabcmd" :		WshShell.Exec(sabcmd + " " + xslt + " " + file + " " + directory + "\\" + file.FileName + ".html");
+			case "xsltproc" :
+				WshShell.Run(xsltproc + " -o " + directory + "\\" + file.FileName + ".html" + xslt + " "+ file.Name, true);
+			case "xalan" :
+				WshShell.Run(xalan + " -o " +  + directory + "\\" + file.FileName + ".html" + " " + xslt, true);
+			case "sabcmd" :
+				WshShell.Run(sabcmd + " " + xslt + " " + file + " " + directory + "\\" + file.FileName + ".html", true);
 	}
 
 WScript.Echo("conversion done");
