@@ -47,7 +47,7 @@ var f1 = fso.BuildPath(logtalk_home, "\\compiler\\logtalk.pl");
 var f2 = fso.BuildPath(logtalk_home, "\\bin\\lgtcswi.pl");
 var p = "type " + f1 + " >> " + f2;
 //var p = "type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\lgtcswi.pl";
-WshShell.Exec(p, true);
+WshShell.Run(p, true);
 
 f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.pl", true);
 
