@@ -5,7 +5,7 @@
 		version is 1.0,
 		author is 'Paulo Moura',
 		date is 03/02/09,
-		comment is 'Smalltalk dependent handling predicates.').
+		comment is 'Smalltalk dependent handling predicates.']).
 
 	:- public(changed/0).
 	:- mode(changed, one).
