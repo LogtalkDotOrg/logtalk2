@@ -99,8 +99,8 @@ WScript.Echo("generating index file...");
 index_file = directory + "\\" + index_file;
 
 switch (format) {
-	case "xhtml" :	xhtml_index_file(fso);
-	case "html" :	html_index_file(fso);
+	case "xhtml" :	xhtml_index_file();
+	case "html" :	html_index_file();
 }
 
 WScript.Echo("index file generated");
@@ -129,32 +129,33 @@ function usage_help() {
 	WScript.Quit(1);
 }
 
-function xhtml_index_file(fso) {
+function xhtml_index_file() {
 
-	var a = fso.CreateTextFile(directory + "\\" + index_file, true);
+	var f = fso.CreateTextFile(directory + "\\" + index_file, true);
 
-	a.WriteLine("<?xml version=\"1.0\"?>");
-	a.WriteLine("<?xml-stylesheet href=\"logtalk.css\" type=\"text/css\"?>");
-	a.WriteLine("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
-	a.WriteLine("<html lang=\"en\" xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">");
-	a.WriteLine("<head>");
-	a.WriteLine("    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>");
-	a.WriteLine("    <title>"$title"</title>");
-	a.WriteLine("    <link rel=\"stylesheet\" href=\"logtalk.css\" type=\"text/css\"/>");
-	a.WriteLine("</head>");
-	a.WriteLine("<body>");
-	a.WriteLine("<h1>"$title"</h1>");
-	a.WriteLine("<ul>");
+	f.WriteLine("<?xml version=\"1.0\"?>");
+	f.WriteLine("<?xml-stylesheet href=\"logtalk.css\" type=\"text/css\"?>");
+	f.WriteLine("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
+	f.WriteLine("<html lang=\"en\" xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">");
+	f.WriteLine("<head>");
+	f.WriteLine("    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>");
+	f.WriteLine("    <title>"$title"</title>");
+	f.WriteLine("    <link rel=\"stylesheet\" href=\"logtalk.css\" type=\"text/css\"/>");
+	f.WriteLine("</head>");
+	f.WriteLine("<body>");
+	f.WriteLine("<h1>"$title"</h1>");
+	f.WriteLine("<ul>");
 
 	var files = WshShell.CurrentDirectory.Files;
+	var file;
 
 	for (file in files) 
 		if (file.Extension = ".xml") {
 			WScript.Echo("  indexing" + file.FileName + ".html");
-			a.WriteLine("    <li><a href=\"" + file.FileName + ".html" + "\">" + file.FileName + "</a></li>");
+			f.WriteLine("    <li><a href=\"" + file.FileName + ".html" + "\">" + file.FileName + "</a></li>");
 		}
 
-	a.WriteLine("</ul>");
+	f.WriteLine("</ul>");
 
 	var today = new Date();
 	var year  = today.getFullYear();
@@ -167,38 +168,39 @@ function xhtml_index_file(fso) {
         day = "0" + day;
 	};
 	strToday = year + "/" + month + "/" + day;
-	a.WriteLine("<p>Generated on " + strToday + "</p>");
+	f.WriteLine("<p>Generated on " + strToday + "</p>");
 
-	a.WriteLine("</body>");
-	a.WriteLine("</html>");
+	f.WriteLine("</body>");
+	f.WriteLine("</html>");
 
-	a.Close();
+	f.Close();
 }
 
-function html_index_file(fso) {
+function html_index_file() {
 
 	var a = fso.CreateTextFile(directory + "\\" + index_file, true);
 
-	a.WriteLine("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">");
-	a.WriteLine("<html>");
-	a.WriteLine("<head>");
-	a.WriteLine("    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
-	a.WriteLine("    <title>"$title"</title>");
-	a.WriteLine("    <link rel=\"stylesheet\" href=\"logtalk.css\" type=\"text/css\">");
-	a.WriteLine("</head>");
-	a.WriteLine("<body>");
-	a.WriteLine("<h1>"$title"</h1>");
-	a.WriteLine("<ul>");
+	f.WriteLine("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">");
+	f.WriteLine("<html>");
+	f.WriteLine("<head>");
+	f.WriteLine("    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
+	f.WriteLine("    <title>"$title"</title>");
+	f.WriteLine("    <link rel=\"stylesheet\" href=\"logtalk.css\" type=\"text/css\">");
+	f.WriteLine("</head>");
+	f.WriteLine("<body>");
+	f.WriteLine("<h1>"$title"</h1>");
+	f.WriteLine("<ul>");
 
 	var files = WshShell.CurrentDirectory.Files;
-
+	var file;
+	
 	for (file in files) 
 		if (file.Extension = ".xml") {
 			WScript.Echo("  indexing" + file.FileName + ".html");
-			a.WriteLine("    <li><a href=\"" + file.FileName + ".html" + "\">" + file.FileName + "</a></li>");
+			f.WriteLine("    <li><a href=\"" + file.FileName + ".html" + "\">" + file.FileName + "</a></li>");
 		}
 
-	a.WriteLine("</ul>");
+	f.WriteLine("</ul>");
 
 	var today = new Date();
 	var year  = today.getFullYear();
@@ -211,10 +213,10 @@ function html_index_file(fso) {
         day = "0" + day;
 	};
 	var strToday = year + "/" + month + "/" + day;
-	a.WriteLine("<p>Generated on " + strToday + "</p>");
+	f.WriteLine("<p>Generated on " + strToday + "</p>");
 
-	a.WriteLine("</body>");
-	a.WriteLine("</html>");
+	f.WriteLine("</body>");
+	f.WriteLine("</html>");
 
-	a.Close();
+	f.Close();
 }

@@ -68,6 +68,7 @@ WScript.Echo("");
 WScript.Echo("converting XML files to PDF...");
 
 var files = WshShell.CurrentDirectory.Files;
+var file;
 
 for (file in files)
 	if (file.Extension = ".xml") {
