@@ -9,6 +9,7 @@ var WshShell = new ActiveXObject("WScript.Shell");
 
 var WshSysEnv = WshShell.Environment("SYSTEM");
 var WshUserEnv = WshShell.Environment("USER");
+var logtalk_home;
 
 if (WshSysEnv.Item("LOGTALKHOME"))
 	logtalk_home = WshSysEnv.Item("LOGTALKHOME");
@@ -72,9 +73,9 @@ if (processor != "xsltproc" && processor != "xalan" && processor != "sabcmd") {
 
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 
-fso.CopyFile(WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory);
-fso.CopyFile(WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory);
-fso.CopyFile(WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\logtalk.css", directory);
+fso.CopyFile(logtalk_home + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory);
+fso.CopyFile(logtalk_home + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory);
+fso.CopyFile(logtalk_home + "\\xml\\logtalk.css", directory);
 
 WScript.Echo("");
 WScript.Echo("converting XML files...");
@@ -118,7 +119,7 @@ function usage_help() {
 	WScript.Echo("This script converts all Logtalk XML files documenting files in the");
 	WScript.Echo("current directory to XHTML or HTML files");
 	WScript.Echo("");
-	WScript.Echo("Usage: " + WScript.Name + " [help] [/f:format] [/o:directory] [/i:index] [/t:title] [/p:processor]");
+	WScript.Echo("Usage: " + lgt2html.js + " [help] [/f:format] [/o:directory] [/i:index] [/t:title] [/p:processor]");
 	WScript.Echo("");
 	WScript.Echo("Optional arguments:");
 	WScript.Echo("  f - output file format (either xhtml or html; default is " + format + ")");
