@@ -83,6 +83,9 @@
 				<!-- Comments -->
                 <DetectChar attribute="Comment" context="single line comment" char="%"/>
                 <Detect2Chars attribute="Comment" context="multiline comment" char="/" char1="*"/>
+				<!-- Strings and quoted atoms -->
+                <DetectChar attribute="String" context="string" char="&quot;" />
+                <RegExpr String = "'" attribute="String" context="atom" />
 				<!-- Numbers -->
                 <RegExpr String = "0'[A-Za-z0-9]" attribute = "Number" context="#stay"/>
                 <RegExpr String = "0b[0-1]+" attribute = "Number" context="#stay"/>
@@ -90,9 +93,6 @@
                 <RegExpr String = "0x[0-9a-fA-F]+" attribute = "Number" context="#stay"/>
                 <Float attribute="Number" context="#stay" />
                 <Int attribute="Number" context="#stay" />
-				<!-- Strings and quoted atoms -->
-                <DetectChar attribute="String" context="string" char="&quot;" />
-                <RegExpr String = "[^0]'" attribute="String" context="atom" />
                 <!-- Message sending operators -->
                 <StringDetect String = "::" attribute="Operator" context="#stay" />
                 <StringDetect String = "^^" attribute="Operator" context="#stay" />
