@@ -7,12 +7,15 @@
 
 var WshShell = new ActiveXObject("WScript.Shell");
 
-var WshSysEnv = WshShell.Environment("SYSTEM");
+var WshProcessEnv = WshShell.Environment("PROCESS");
+var WshSystemEnv = WshShell.Environment("SYSTEM");
 var WshUserEnv = WshShell.Environment("USER");
 var logtalk_home;
 
-if (WshSysEnv.Item("LOGTALKHOME"))
-	logtalk_home = WshSysEnv.Item("LOGTALKHOME");
+if (WshProcessEnv.Item("LOGTALKHOME"))
+	logtalk_home = WshProcessEnv.Item("LOGTALKHOME");
+else if (WshSystemEnv.Item("LOGTALKHOME"))
+	logtalk_home = WshSystemEnv.Item("LOGTALKHOME");
 else if (WshUserEnv.Item("LOGTALKHOME"))
 	logtalk_home = WshUserEnv.Item("LOGTALKHOME")
 else {
@@ -93,7 +96,7 @@ function usage_help() {
 	WScript.Echo("This script converts all Logtalk XML documenting files in the");
 	WScript.Echo("current directory to PDF files");
 	WScript.Echo("");
-	WScript.Echo("Usage: lgt2pdf.js [help] [/f:format] [/o:directory] [/p:processor]");
+	WScript.Echo("Usage: " + WScript.ScriptName + " [help] [/f:format] [/o:directory] [/p:processor]");
 	WScript.Echo("");
 	WScript.Echo("Optional arguments:");
 	WScript.Echo("  f - paper format (either a4 or us; default is " + format + ")");
