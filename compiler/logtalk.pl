@@ -127,7 +127,7 @@
 
 :- dynamic('$lgt_referenced_object_'/1).		% '$lgt_referenced_object_'(Object)
 :- dynamic('$lgt_referenced_protocol_'/1).		% '$lgt_referenced_protocol_'(Protocol)
-:- dynamic('$lgt_referenced_category_'/1).		% '$lgt_referenced_object_'(Category)
+:- dynamic('$lgt_referenced_category_'/1).		% '$lgt_referenced_category_'(Category)
 
 
 
@@ -2626,7 +2626,8 @@ user0__def(Pred, _, _, _, Pred, user).
 	assertz('$lgt_feclause_'(Clause)).
 
 '$lgt_tr_clause'(Clause) :-
-	'$lgt_entity_'(_, _, Prefix, _),
+	'$lgt_entity_'(_, Entity, Prefix, _),
+	'$lgt_this'(Context, Entity),
 	'$lgt_prefix'(Context, Prefix),
 	catch(
 		'$lgt_tr_clause'(Clause, TClause, Context),
@@ -2646,13 +2647,13 @@ user0__def(Pred, _, _, _, Pred, user).
 	\+ '$lgt_callable'(Head),
 	throw(type_error(callable, Head)).
 
-'$lgt_tr_clause'((Head:-Body), (THead:-TBody), Context) :-
+'$lgt_tr_clause'((Head:-Body), TClause, Context) :-
 	!,
 	'$lgt_extract_metavars'(Head, Metavars),
 	'$lgt_metavars'(Context, Metavars),
 	'$lgt_tr_head'(Head, THead, Context),
 	'$lgt_tr_body'(Body, Body2, Context),
-	'$lgt_simplify_body'(Body2, TBody).
+	'$lgt_simplify_clause'((THead:-TBody), TClause).
 
 '$lgt_tr_clause'(Fact, _, _) :-
 	\+ '$lgt_callable'(Fact),
@@ -2902,11 +2903,9 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_self'(Context, Self),
 	!.
 
-
-% pre-defined methods
-
-'$lgt_tr_body'(parameter(Arg, Value), arg(Arg, This, Value), Context) :-
+'$lgt_tr_body'(parameter(Arg, Value), true, Context) :-
 	'$lgt_this'(Context, This),
+	arg(Arg, This, Value),
 	!.
 
 
@@ -2975,8 +2974,10 @@ user0__def(Pred, _, _, _, Pred, user).
 
 % remember the object receiving the message to later check if it's known
 
-'$lgt_tr_msg'(Obj, _, _, _) :-
+'$lgt_tr_msg'(Obj, _, _, Context) :-
 	nonvar(Obj),
+	\+ '$lgt_sender'(Context, user),	% not runtime msg translation
+	\+ '$lgt_this'(Context, user),
 	'$lgt_add_referenced_object'(Obj),
 	fail.
 
@@ -3336,6 +3337,18 @@ user0__def(Pred, _, _, _, Pred, user).
 
 '$lgt_extract_metavars'([_| Args], [_| MArgs], Metavars) :-
 	'$lgt_extract_metavars'(Args, MArgs, Metavars).
+
+
+
+% '$lgt_simplify_clause'(+clause, -clause)
+%
+% simplify translated clause by examining clause body
+
+'$lgt_simplify_clause'((Head :- true), Head) :-
+	!.
+
+'$lgt_simplify_clause'((Head :- Body), (Head :- SBody)) :-
+	'$lgt_simplify_body'(Body, SBody).
 
 
 
