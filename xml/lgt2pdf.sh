@@ -52,7 +52,14 @@ else
 		xsl=$us_xsl
 	else
 		echo unsupported paper format: $format
-		echo
+		usage_help
+		exit 1
+	fi
+
+	if [[ "$processor" != "fop" && "$processor" != "xep" ]]
+	then
+		echo unsupported XSLT processor: $processor
+		usage_help
 		exit 1
 	fi
 

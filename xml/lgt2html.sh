@@ -126,6 +126,13 @@ else
 		exit 1
 	fi
 
+	if [[ "$processor" != "xsltproc" && "$processor" != "xalan" && "$processor" != "sabcmd" ]]
+	then
+		echo unsupported XSLT processor: $processor
+		usage_help
+		exit 1
+	fi
+
 	cp $LOGTALKHOME/xml/logtalk.dtd .
 	cp $LOGTALKHOME/xml/logtalk.xsd .
 	cp $LOGTALKHOME/xml/logtalk.css $directory
