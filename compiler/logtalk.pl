@@ -3311,7 +3311,7 @@ current_logtalk_flag(version, version(2, 22, 2)).
 					write('>           in directive: ')
 					;
 					write('>           in clause: ')),
-				writeq(Term), nl)
+				write(Term), nl)
 		;
 		true.
 
@@ -3632,7 +3632,6 @@ current_logtalk_flag(version, version(2, 22, 2)).
 		;
 		throw(type_error(protocol_identifier, Ptc)).
 
-
 '$lgt_tr_directive'(end_protocol, []) :-
 	'$lgt_pp_protocol_'(_, _, _, _) ->
 		true
@@ -3646,7 +3645,6 @@ current_logtalk_flag(version, version(2, 22, 2)).
 		'$lgt_tr_category_relations'(Rels, Ctg)
 		;
 		throw(type_error(category_identifier, Ctg)).
-
 
 '$lgt_tr_directive'(end_category, []) :-
 	'$lgt_pp_category_'(_, _, _, _, _) ->
@@ -7302,7 +7300,7 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 % '$lgt_valid_entity_info_list'(@list)
 %
-% true if the argument is a list of key-value pairs
+% true if the argument is a list of valid key-value pairs
 
 '$lgt_valid_entity_info_list'(List) :-
 	var(List),
@@ -7336,7 +7334,7 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 % '$lgt_valid_entity_info_key_value'(+atom, @nonvar)
 %
-% true if the argument is a list of key-value pairs
+% true if the argument is a valid key-value pair
 
 '$lgt_valid_entity_info_key_value'(author, Author) :-
 	!,
@@ -7395,7 +7393,7 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 % '$lgt_valid_pred_info_list'(@list, @predicate_indicator)
 %
-% true if the argument is a list of key-value pairs
+% true if the argument is a list of valid key-value pairs
 
 '$lgt_valid_pred_info_list'(List, _) :-
 	var(List),
@@ -7404,10 +7402,6 @@ current_logtalk_flag(version, version(2, 22, 2)).
 '$lgt_valid_pred_info_list'(List, _) :-
 	\+ '$lgt_proper_list'(List),
 	throw(type_error(list, List)).
-
-'$lgt_valid_pred_info_list'(_, Pred) :-
-	\+ '$lgt_valid_pred_ind'(Pred),
-	throw(type_error(predicate_indicator, Pred)).
 
 '$lgt_valid_pred_info_list'([], _).
 
@@ -7433,7 +7427,7 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 % '$lgt_valid_pred_info_key_value'(+atom, @nonvar, @predicate_indicator)
 %
-% true if the argument is a list of key-value pairs
+% true if the argument is a valid key-value pair
 
 '$lgt_valid_pred_info_key_value'(allocation, Allocation, _) :-
 	!,
