@@ -172,28 +172,6 @@ Logtalk 2.x contains new implementations of some of the examples provided with p
 Each Logtalk entity (object, category or protocol) is contained in a text file named after the entity. The extension <code>.lgt</code> is normally used. The Logtalk preprocessor compiles these files to plain Prolog, replacing the <code>.lgt</code> extension with  <code>.pl</code> (the default Prolog extension). If your Prolog compiler expects the Prolog source filenames to end with a specific, different extension, you can set it in the corresponding configuration file.
 </p>
 
-<h3>Loader utility files<a name="loaders"></a></h3>
-
-<p>
-Most examples directories contain a Logtalk utility file that can be used to load all included source files. These loader utility files are usually named <code>loader.lgt</code> or contain the word "loader" in their name. Loader files are compiled and loaded like any ordinary Logtalk source file. For an example loader file named <code>loader.lgt</code> type:
-</p>
-<pre>
-    :- logtalk_load(loader). 
-</pre>
-<p>
-Usually these files contain a call to the Logtalk built-in predicates <a title="Consult reference manual" href="../refman/builtins/logtalk_load1.html"><code>logtalk_load/1</code></a> or <a title="Consult reference manual" href="../refman/builtins/logtalk_load2.html"><code>logtalk_load/2</code></a>, wrapped inside an <code>initialization/1</code> directive. For instance, if your code is split in three Logtalk source files named <code>source1.lgt</code>, <code>source2.lgt</code>, and <code>source3.lgt</code>, then the contents of your loader file will be:
-</p>
-<pre>
-    :- initialization(
-        logtalk_load([
-            source1,
-            source2,
-            source3])). 
-</pre>
-<p>
-These loader files may not work without modifications depending on the way your Prolog compiler deals with folders/directories. Most of the time you will need to <strong>set the working directory</strong> to be the one that contains the loader file in order to get the example source files loaded. Unfortunately, there is no portable way for us to do that from inside Logtalk due to differences between operating systems and lack of adequate operating system access support in some Prolog compilers.
-</p>
-
 <div class="navbottom">
 <a href="documenting.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="running.html">next</a>
 </div>
