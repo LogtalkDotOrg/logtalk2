@@ -16,6 +16,9 @@ RELEASE NOTES
 	allows access to the Logtalk grammar rule translator. Corrected bug in the 
 	expansion of \+/1 in grammar rule bodies.
 
+	Corrected a bug in the implementation of the built-in method clause/2 which 
+	prevented access to clauses of local dynamic predicates.
+
 	Corrected some wrong links on the XHTML manuals.
 
 

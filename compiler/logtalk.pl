@@ -1537,31 +1537,36 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	\+ callable(Body),
 	throw(error(type_error(callable, Body), Obj::clause(Head, Body), Sender)).
 
-'$lgt_clause'(Obj, Head, Body, Sender, _) :-
-	\+ '$lgt_current_object_'(Obj, _, _, _, _, _),
-	throw(error(existence_error(object, Obj), Obj::clause(Head, Body), Sender)).
-
 '$lgt_clause'(Obj, Head, Body, Sender, Scope) :-
-	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
-	'$lgt_call'(Prefix, Dcl, Def, _, _, _, _, DDef),
-	('$lgt_call'(Dcl, Head, PScope, Type, _, SCtn, _) ->
-		(Type = (dynamic) ->
-			((\+ \+ PScope = Scope; Sender = SCtn) ->
-				once(('$lgt_once'(Def, Head, _, _, _, Call); '$lgt_once'(DDef, Head, _, _, _, Call))),
+	'$lgt_current_object_'(Obj, Prefix, _, _, _, _) ->
+		'$lgt_call'(Prefix, Dcl, Def, _, _, _, _, DDef),
+		('$lgt_call'(Dcl, Head, PScope, Type, _, SCtn, _) ->
+			(Type = (dynamic) ->
+				((\+ \+ PScope = Scope; Sender = SCtn) ->
+					once(('$lgt_once'(Def, Head, _, _, _, Call); '$lgt_once'(DDef, Head, _, _, _, Call))),
+					clause(Call, TBody),
+					(TBody = ('$lgt_nop'(Body), _) ->
+						true
+						;
+						Body = TBody)
+					;
+					(PScope = p ->
+						throw(error(permission_error(access, private_predicate, Head), Obj::clause(Head, Body), Sender))
+						;
+						throw(error(permission_error(access, protected_predicate, Head), Obj::clause(Head, Body), Sender))))
+				;
+				throw(error(permission_error(access, static_predicate, Head), Obj::clause(Head, Body), Sender)))
+			;
+			('$lgt_once'(DDef, Head, _, _, _, Call) ->
 				clause(Call, TBody),
 				(TBody = ('$lgt_nop'(Body), _) ->
 					true
 					;
 					Body = TBody)
 				;
-				(PScope = p ->
-					throw(error(permission_error(access, private_predicate, Head), Obj::clause(Head, Body), Sender))
-					;
-					throw(error(permission_error(access, protected_predicate, Head), Obj::clause(Head, Body), Sender))))
-			;
-			throw(error(permission_error(access, static_predicate, Head), Obj::clause(Head, Body), Sender)))
+				throw(error(existence_error(predicate_declaration, Head), Obj::clause(Head, Body), Sender))))
 		;
-		throw(error(existence_error(predicate_declaration, Head), Obj::clause(Head, Body), Sender))).
+		throw(error(existence_error(object, Obj), Obj::clause(Head, Body), Sender)).
 
 
 
