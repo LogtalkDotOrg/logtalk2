@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
+
 <language name="Logtalk" version="1.0" kateversion="2.2" section="Sources" extensions="*.lgt" mimetype="text/x-logtalk">
+
     <highlighting>
         <list name="directives">
-            <item> category </item>
+        	<!-- Entity directives -->
+			<item> category </item>
             <item> object </item>
             <item> protocol </item>
             <item> end_category </item>
             <item> end_object </item>
             <item> end_protocol </item>
-
-            <item> extends </item>
-            <item> implements </item>
-            <item> imports </item>
-            <item> instantiates </item>
-            <item> specializes </item>
- 
+ 			<!-- Predicate scope directives -->
             <item> public </item>
             <item> protected </item>
             <item> private </item>
-
+			<!-- Other directives -->
             <item> initialization </item>
             <item> info </item>
             <item> mode </item>
@@ -31,6 +28,14 @@
             <item> uses </item>
         </list>
 
+        <list name="entity relations">
+            <item> extends </item>
+            <item> implements </item>
+            <item> imports </item>
+            <item> instantiates </item>
+            <item> specializes </item>
+        </list>
+
         <list name="builtins">
             <item> abolish </item>
             <item> asserta </item>
@@ -39,6 +44,7 @@
             <item> retract </item>
             <item> retractall </item>
 
+			<!-- Method execution context -->
             <item> parameter </item>
             <item> this </item>
             <item> self </item>
@@ -50,11 +56,13 @@
             <item> throw </item>
             <item> true </item>
 
+			<!-- Event handlers -->
+	        <item> after </item>
+            <item> before </item>
+
+			<!-- Reflection -->
             <item> current_predicate </item>
             <item> predicate_property </item>
-
-            <item> before </item>
-            <item> after </item>
 
             <item> phrase </item>
 
@@ -66,43 +74,73 @@
             <item> current_object </item>
             <item> current_protocol </item>
             <item> current_category </item>
+
             <item> create_object </item>
             <item> create_protocol </item>
             <item> create_category </item>
+
             <item> object_property </item>
             <item> protocol_property </item>
             <item> category_property </item>
+
             <item> abolish_object </item>
             <item> abolish_protocol </item>
             <item> abolish_category </item>
+
             <item> extends_object </item>
             <item> extends_protocol </item>
             <item> implements_protocol </item>
             <item> instantiates_object </item>
             <item> specializes_object </item>
             <item> imports_category </item>
+
             <item> abolish_events </item>
             <item> current_event </item>
             <item> define_events </item>
+
             <item> current_logtalk_flag </item>
             <item> set_logtalk_flag </item>
+
             <item> logtalk_compile </item>
             <item> logtalk_load </item>
-            <item> forall </item>
-            <item> logtalk_version </item>
-            <item> retractall </item>
-            
-            <!-- Term testing -->
-           <item> var </item>
-           <item> atom </item>
-           <item> integer </item>
-           <item> float </item>
-           <item> atomic </item>
-           <item> compound </item>
-           <item> nonvar </item>
-           <item> number </item>
 
-				<!-- Stream selection and control -->
+            <item> forall </item>
+			<item> retractall </item>
+			<!-- Term unification -->
+			<item> unify_with_occurs_check </item>
+			<!-- Term creation and decomposition -->
+			<item> functor </item>
+			<item> arg </item>
+			<item> copy_term </item>
+			<!-- Evaluable functors -->
+			<item> rem </item>
+			<item> mod </item>
+			<item> abs </item>
+			<item> sign </item>
+			<item> float_integer_part </item>
+			<item> float_fractional_part </item>
+			<item> float </item>
+			<item> floor </item>
+			<item> truncate </item>
+			<item> round </item>
+			<item> ceiling </item>
+			<!-- Other arithemtic functors -->
+			<item> sin </item>
+			<item> cos </item>
+			<item> atan </item>
+			<item> exp </item>
+			<item> log </item>
+			<item> sqrt </item>
+			<!-- Term testing -->
+			<item> var </item>
+			<item> atom </item>
+			<item> integer </item>
+			<item> float </item>
+			<item> atomic </item>
+			<item> compound </item>
+			<item> nonvar </item>
+			<item> number </item>
+			<!-- Stream selection and control -->
             <item> current_input </item>
             <item> current_output </item>
             <item> set_input </item>
@@ -113,19 +151,19 @@
             <item> stream_property </item>
             <item> at_end_of_stream </item>
             <item> set_stream_position </item>
-				<!-- Character input/output -->
+			<!-- Character input/output -->
             <item> get_char </item>
             <item> get_code </item>
             <item> peek_char </item>
             <item> peek_code </item>
             <item> put_char </item>
             <item> put_code </item>
-            <item> nl)</string>
-				<!-- Byte input/output -->
+            <item> nl </item>
+			<!-- Byte input/output -->
             <item> get_byte </item>
             <item> peek_byte </item>
             <item> put_byte </item>
-				<!-- Term input/output -->
+			<!-- Term input/output -->
             <item> read_term </item>
             <item> read </item>
             <item> write_term </item>
@@ -136,7 +174,7 @@
             <item> current_op </item>
             <item> char_conversion </item>
             <item> current_char_conversion </item>
-				<!-- Atomic term processing -->
+			<!-- Atomic term processing -->
             <item> atom_length </item>
             <item> atom_concat </item>
             <item> sub_atom </item>
@@ -145,95 +183,131 @@
             <item> char_code </item>
             <item> number_chars </item>
             <item> number_codes </item>
-				<!-- Implementation defined hooks functions -->
+			<!-- Implementation defined hooks functions -->
             <item> set_prolog_flag </item>
             <item> current_prolog_flag </item>
             <item> halt </item>
         </list>
 
-        <list name="arith">
-            <item> mod </item>
-            <item> div </item>
-            <item> abs </item>
-            <item> exp </item>
-            <item> ln </item>
-            <item> log </item>
-            <item> sqrt </item>
-            <item> round </item>
-            <item> trunc </item>
-            <item> val </item>
-            <item> cos </item>
-            <item> sin </item>
-            <item> tan </item>
-            <item> arctan </item>
-        </list>
-
-        <list name="basetype">
-            <item> char </item>
-            <item> real </item>
-            <item> string </item>
-            <item> symbol </item>
-            <item> byte </item>
-            <item> sbyte </item>
-            <item> short </item>
-            <item> ushort </item>
-            <item> word </item>
-            <item> integer </item>
-            <item> unsigned </item>
-            <item> dword </item>
-            <item> long </item>
-            <item> ulong </item>
-            <item> binary </item>
-            <item> ref </item>
-        </list>
-
         <contexts>
-            <context name="normal" attribute="Symbol" lineEndContext="#stay">
-                <keyword attribute="Keyword" context="#stay"  String="directives"/>
-                <keyword attribute="Keyword" context="#stay"  String="builtins"/>
-                <keyword attribute="Arithmetic" context="#stay"  String="arith"/>
-                <keyword attribute="Data Type" context="#stay"  String="basetype"/>
-                <RegExpr String = "[A-Z_][A-Za-z0-9_]*" attribute = "Variable" context="#stay"/>
-                <RegExpr String = "[a-z][A-Za-z0-9_]*" attribute = "Identifier" context="#stay"/>
-                <DetectChar attribute="Comment" context="comment" char="%"/>
-                <Detect2Chars attribute="Comment" context="comment region" char="/" char1="*"/>
-                <Int attribute="Integer" context="#stay" />
+
+            <context name="normal" attribute="Normal" lineEndContext="#stay">
+                <keyword attribute="Built-in" context="#stay" String="builtins"/>
+                <keyword attribute="Operator" context="#stay" String="operators"/>
+                <keyword attribute="Directive" context="#stay" String="entity relations"/>
+
+                <RegExpr String = "^[\s]*:-" attribute="Normal" context="directive" />
+
+                <RegExpr String = "\b[A-Z_][A-Za-z0-9_]*" attribute = "Variable" context="#stay"/>
+
+				<!-- Comments -->
+                <DetectChar attribute="Comment" context="single line comment" char="%"/>
+                <Detect2Chars attribute="Comment" context="multiline comment" char="/" char1="*"/>
+				<!-- Numbers -->
+                <Float attribute="Number" context="#stay" />
+                <Int attribute="Number" context="#stay" />
+                <RegExpr String = "0'[A-Za-z0-9]" attribute = "Number" context="#stay"/>
+                <RegExpr String = "0b[0-1]+" attribute = "Number" context="#stay"/>
+                <RegExpr String = "0o[0-8]+" attribute = "Number" context="#stay"/>
+                <RegExpr String = "0x[0-9a-fA-F]+" attribute = "Number" context="#stay"/>
+				<!-- Strings and quoted atoms -->
                 <DetectChar attribute="String" context="string" char="&quot;" />
-                <DetectChar attribute="String" context="string2" char="'" />
-                <AnyChar attribute="Symbol" context="#stay" String="~!^*()-+=[]|\:;,./?&amp;&lt;&gt;" />
+                <DetectChar attribute="String" context="atom" char="'" />
+                <!-- Message sending operators -->
+                <StringDetect String = "::" attribute="Operator" context="#stay" />
+                <StringDetect String = "^^" attribute="Operator" context="#stay" />
+				<!-- External call -->
+                <DetectChar attribute="Operator" context="#stay" char="{" beginRegion="external" />
+                <DetectChar attribute="Operator" context="#stay" char="}" endRegion="external" />
+				<!-- Bitwise functors -->
+                <StringDetect String = "&gt;&gt;" attribute="Operator" context="#stay" />
+                <StringDetect String = "&lt;&lt;" attribute="Operator" context="#stay" />
+                <StringDetect String = "/\" attribute="Operator" context="#stay" />
+                <StringDetect String = "\/" attribute="Operator" context="#stay" />
+                <StringDetect String = "\\" attribute="Operator" context="#stay" />
+				<!-- Arithemtic evaluation -->
+                <StringDetect String = "is" attribute="Operator" context="#stay" />
+				<!-- Arithemtic comparison -->
+                <StringDetect String = "=:=" attribute="Operator" context="#stay" />
+                <StringDetect String = "=\=" attribute="Operator" context="#stay" />
+                <StringDetect String = "&lt;" attribute="Operator" context="#stay" />
+                <StringDetect String = "=&lt;" attribute="Operator" context="#stay" />
+                <StringDetect String = "&gt;" attribute="Operator" context="#stay" />
+                <StringDetect String = "&gt;=" attribute="Operator" context="#stay" />
+				<!-- Term creation and decomposition -->
+                <StringDetect String = "=.." attribute="Operator" context="#stay" />
+				<!-- Term unification -->
+                <StringDetect String = "=" attribute="Operator" context="#stay" />
+                <StringDetect String = "\=" attribute="Operator" context="#stay" />
+				<!-- Term comparison -->
+                <StringDetect String = "==" attribute="Operator" context="#stay" />
+				<StringDetect String = "\==" attribute="Operator" context="#stay" />
+                <StringDetect String = "@=&lt;" attribute="Operator" context="#stay" />
+                <StringDetect String = "@&lt;" attribute="Operator" context="#stay" />
+                <StringDetect String = "@&gt;=" attribute="Operator" context="#stay" />
+                <StringDetect String = "@&gt;" attribute="Operator" context="#stay" />
+				<!-- Evaluable functors -->
+                <StringDetect String = "+" attribute="Operator" context="#stay" />
+                <StringDetect String = "-" attribute="Operator" context="#stay" />
+                <StringDetect String = "*" attribute="Operator" context="#stay" />
+                <StringDetect String = "//" attribute="Operator" context="#stay" />
+                <StringDetect String = "/" attribute="Operator" context="#stay" />
+                <StringDetect String = "rem" attribute="Operator" context="#stay" />
+                <StringDetect String = "mod" attribute="Operator" context="#stay" />
+				<!-- Other arithemtic functors -->
+                <StringDetect String = "**" attribute="Operator" context="#stay" />
+				<!-- Control constructs -->
+                <StringDetect String = "!" attribute="Operator" context="#stay" />
+                <StringDetect String = "-&gt;" attribute="Operator" context="#stay" />
+                <StringDetect String = ";" attribute="Operator" context="#stay" />
+				<!-- Mode operators -->
+                <StringDetect String = "?" attribute="Operator" context="#stay" />
+                <StringDetect String = "@" attribute="Operator" context="#stay" />
+				<!-- Clause operator -->
+                <StringDetect String = ":-" attribute="Normal" context="#stay" />
+
             </context>
-            <context name="comment" attribute="Comment" lineEndContext="#pop" />
+
+            <context name="directive" attribute="Normal" lineEndContext="#stay">
+                <keyword attribute="Directive" context="normal" String="directives"/>
+            </context>
+
+            <context name="single line comment" attribute="Comment" lineEndContext="#pop" />
+
+            <context name="multiline comment" attribute="Comment" lineEndContext="#stay">
+                <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" />
+            </context>
+
             <context name="string" attribute="String" lineEndContext="#stay" >
                 <DetectChar attribute="String" context="#pop" char="&quot;" />
             </context>
-            <context name="string2" attribute="String" lineEndContext="#stay">
+
+            <context name="atom" attribute="String" lineEndContext="#stay">
                 <DetectChar attribute="String" context="#pop" char="'" />
             </context>
-            <context name="comment region" attribute="Comment" lineEndContext="#stay">
-                <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" />
-            </context>
+
         </contexts>
-        <itemDatas>
-            <itemData name="Normal Text" defStyleNum="dsNormal" />
-            <itemData name="Keyword" defStyleNum="dsKeyword" />
-            <itemData name="Data Type" defStyleNum="dsDataType" />
-            <itemData name="Comment" defStyleNum="dsComment" />
-            <itemData name="Integer" defStyleNum="dsDecVal" />
-            <itemData name="Symbol" defStyleNum="dsNormal" />
-            <itemData name="String"  defStyleNum="dsString"/>
-            <itemData name="Identifier"  defStyleNum="dsNormal"/>
-            <itemData name="Variable"  defStyleNum="dsOthers"/>
-            <itemData name="Arithmetic" defStyleNum="dsKeyword" />
 
-        </itemDatas>
-    </highlighting>
-  <general>
-    <keywords casesensitive="1" />
-    <comments>
-      <comment name="singleLine" start="%" />
-      <comment name="multiLine" start="/*" end="*/" />
-    </comments>
+		<itemDatas>
+			<itemData name="Normal" defStyleNum="dsNormal" />
+			<itemData name="Directive" defStyleNum="dsKeyword" />
+			<itemData name="Built-in" defStyleNum="dsKeyword" />
+			<itemData name="Operator" defStyleNum="dsDataType" />
+			<itemData name="Comment" defStyleNum="dsComment" />
+			<itemData name="Number" defStyleNum="dsDecVal" />
+			<itemData name="String"  defStyleNum="dsString"/>
+            <itemData name="Variable" defStyleNum="dsOthers"/>
+		</itemDatas>
 
-  </general>
+	</highlighting>
+
+	<general>
+		<keywords casesensitive="true" />
+		<comments>
+			<comment name="singleLine" start="%" />
+			<comment name="multiLine" start="/*" end="*/" />
+		</comments>
+	</general>
+
 </language>
 
