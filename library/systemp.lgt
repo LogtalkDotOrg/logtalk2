@@ -1,4 +1,4 @@
-
+
 :- protocol(systemp).
 
 	:- info([
@@ -164,5 +164,45 @@
 		comment is 'Converts between canonical and operating system dependent paths.',
 		argnames is ['Canonical', 'OS']]).
 
-:- end_protocol.
+	:- public(canonical_path/3).
+	:- mode(canonical_path(+atom, -atom, -atom), zero_or_one).
+	:- mode(canonical_path(-atom, +atom, -atom), zero_or_one).
+	:- mode(canonical_path(-atom, -atom, +atom), zero_or_one).
+	:- info(canonical_path/3, [
+		comment is 'Converts between relative, absolute, and full canonical paths.',
+		argnames is ['Relative', 'Absolute', 'Full'],
+		exceptions is [
+			instantiation_error,
+			type_error(relative_path, 'Relative'),
+			type_error(absolute_path, 'Absolute'),
+			type_error(full_path, 'Full')]]).
 
+	:- public(relative_path/1).
+	:- mode(relative_path(+atom), zero_or_one).
+	:- info(relative_path/1, [
+		comment is 'True when the argument is a valid, relative canonical path.',
+		argnames is ['Path'],
+		exceptions is [type_error(path, 'Path')]]).
+
+	:- public(absolute_path/1).
+	:- mode(absolute_path(+atom), zero_or_one).
+	:- info(absolute_path/1, [
+		comment is 'True when the argument is a valid, absolute canonical path.',
+		argnames is ['Path'],
+		exceptions is [type_error(path, 'Path')]]).
+
+	:- public(full_path/1).
+	:- mode(full_path(+atom), zero_or_one).
+	:- info(full_path/1, [
+		comment is 'True when the argument is a valid, full canonical path.',
+		argnames is ['Path'],
+		exceptions is [type_error(path, 'Path')]]).
+
+	:- public(file_name_parts/9).
+	:- mode(file_name_parts(+atom, -atom, -atom, -atom, -atom, -atom, -atom, -atom, -atom), zero_or_one).
+	:- mode(file_name_parts(-atom, +atom, +atom, +atom, +atom, +atom, +atom, +atom, +atom), zero_or_one).
+	:- info(file_name_parts/9, [
+		comment is 'Converts between a file name and its constituent parts.',
+		argnames is ['File', 'Protocol', 'User', 'Password', 'Host', 'Port', 'Directory', 'Base', 'Extension']]).
+
+:- end_protocol.
