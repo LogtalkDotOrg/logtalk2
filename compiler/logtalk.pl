@@ -8175,7 +8175,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 % '$lgt_valid_pred_exception'(@term)
 %
-%valid predicate exception documentation on info/2 directive
+% valid predicate exception documentation on info/2 directive
 
 '$lgt_valid_pred_exception'(Description - Term) :-
 	atom(Description),
@@ -8185,22 +8185,22 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 % '$lgt_valid_pred_call_example'(@term)
 %
-%valid predicate call example documentation on info/1 directive
+% valid predicate call example documentation on info/1 directive
 
 '$lgt_valid_pred_call_example'(Description - Call - {Bindings}) :-
 	atom(Description),
 	callable(Call),
 	nonvar(Bindings),
 	(atom(Bindings) ->
-		once((Bindings = no; Bindings = yes))
+		once((Bindings == no; Bindings == yes))
 		;
-		'$lgt_valid_var_bindings'(Bindings)).
+		'$lgt_valid_example_var_bindings'(Bindings)).
 
 
 
 % '$lgt_valid_pred_call_example'(@term, +atom, +integer)
 %
-%valid predicate call example documentation on info/2 directive
+% valid predicate call example documentation on info/2 directive
 
 '$lgt_valid_pred_call_example'((Description - Call - {Bindings}), Functor, Arity) :-
 	atom(Description),
@@ -8209,22 +8209,22 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	Call = Pred,
 	nonvar(Bindings),
 	(atom(Bindings) ->
-		once((Bindings = no; Bindings = yes))
+		once((Bindings == no; Bindings == yes))
 		;
-		'$lgt_valid_var_bindings'(Bindings)).
+		'$lgt_valid_example_var_bindings'(Bindings)).
 
 
 
-'$lgt_valid_var_bindings'((Binding, Bindings)) :-
+'$lgt_valid_example_var_bindings'((Binding, Bindings)) :-
 	!,
-	'$lgt_valid_var_binding'(Binding),
-	'$lgt_valid_var_bindings'(Bindings).
+	'$lgt_valid_example_var_binding'(Binding),
+	'$lgt_valid_example_var_bindings'(Bindings).
 
-'$lgt_valid_var_bindings'(Binding) :-
-	'$lgt_valid_var_binding'(Binding).
+'$lgt_valid_example_var_bindings'(Binding) :-
+	'$lgt_valid_example_var_binding'(Binding).
 
 
-'$lgt_valid_var_binding'(Binding) :-
+'$lgt_valid_example_var_binding'(Binding) :-
 	nonvar(Binding),
 	Binding = (Var = _),
 	var(Var).
