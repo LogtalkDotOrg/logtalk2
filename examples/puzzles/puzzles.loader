@@ -3,4 +3,5 @@
 	logtalk_load([
 		potions,
 		jam_thief,
-		horses])). 
+		horses,
+		houses])). 
