@@ -3431,7 +3431,7 @@ current_logtalk_flag(version, version(2, 17, 2)).
 '$lgt_tr_clause'(Clause) :-
 	'$lgt_entity_'(Type, Entity, Prefix, _),
 	((Type = object, compound(Entity)) ->	% if the entity is a parametric object we need
-		'$lgt_this'(Ctx, Entity)		% "this" for inline compilation of parameter/2
+		'$lgt_this'(Ctx, Entity)			% "this" for inline compilation of parameter/2
 		;
 		true),
 	'$lgt_prefix'(Ctx, Prefix),
@@ -4928,6 +4928,8 @@ current_logtalk_flag(version, version(2, 17, 2)).
 %
 % retracts a dynamic "ddef clause" (used to translate a predicate call)
 % if there are no more clauses for the predicate otherwise does nothing
+%
+% this is needed in order to allow definitions in ancestors to be found
 
 '$lgt_update_ddef_table'(DDef, Call) :-
 	functor(Call, Functor, Arity),
