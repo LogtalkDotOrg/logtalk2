@@ -24,6 +24,9 @@ else {
 	WScript.Quit(1);
 }
 
+if (WScript.Arguments.Unnamed.Length > 0)
+	usage_help();
+
 var user_home = WshShell.SpecialFolders("MyDocuments")
 
 var logtalk_user = user_home + "\\logtalk";
