@@ -1816,9 +1816,9 @@ current_logtalk_flag(version, version(2, 18, 0)).
 			((Scope = p(_); This = SCtn) ->
 				functor(Pred, Functor, Arity),
 				functor(GPred, Functor, Arity),
-				'$lgt_once'(Def, GPred, GSender, GThis, GSelf, Call, _),
-				asserta('$lgt_self_lookup_cache_'(Self, GPred, GSender, GThis, GSelf, Call)),
-				GPred = Pred, GSender = This, GThis = Self, GSelf =Self,
+				'$lgt_once'(Def, GPred, This, Self, Self, Call, _),
+				asserta('$lgt_self_lookup_cache_'(Self, GPred, This, Self, Self, Call)),
+				GPred = Pred,
 				call(Call)
 				;
 				throw(error(permission_error(access, private_predicate, Pred), Self::Pred, This)))
@@ -1858,7 +1858,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 					functor(GPred, Functor, Arity),
 					'$lgt_once'(Def, GPred, GSender, GThis, GSelf, Call, _),
 					asserta('$lgt_obj_lookup_cache_'(Obj, GPred, GSender, GThis, GSelf, Call)),
-					GPred = Pred, GSender = Sender, GSelf = Obj, GThis = Obj,
+					GPred = Pred, GSender = Sender, GThis = Obj, GSelf = Obj,
 					\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),
 					call(Call),
 					\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall))
@@ -1899,10 +1899,10 @@ current_logtalk_flag(version, version(2, 18, 0)).
 				'$lgt_current_object_'(This, _, _, _, Super, _),
 				functor(Pred, Functor, Arity),
 				functor(GPred, Functor, Arity),
-				'$lgt_once'(Super, GPred, GSender, GThis, GSelf, Call, Ctn),
-				asserta('$lgt_super_lookup_cache_'(This, GPred, GSender, GThis, GSelf, Call)),
-				GPred = Pred, GSender = Sender, GThis = This, GSelf = Self,
+				'$lgt_once'(Super, GPred, GSender, This, Self, Call, Ctn),
 				(Ctn \= This ->
+					GPred = Pred, GSender = Sender,
+					asserta('$lgt_super_lookup_cache_'(This, GPred, GSender, This, Self, Call)),
 					call(Call)
 					;
 					throw(error(endless_loop(Pred), ^^Pred, This)))
