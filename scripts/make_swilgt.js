@@ -50,20 +50,20 @@ f.Close();
 
 f = fso.CreateTextFile(logtalk_home + "\\bin\\swilgt.bat", true).
 
-f.WriteLine("plcon -f " +  logtalk_home + "\\bin\\logtalkswi.rc");
+f.WriteLine("plcon -f " + logtalk_home + "\\bin\\logtalkswi.rc");
 f.Close();
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 var link = WshShell.CreateShortcut(ProgramsPath + "\\swilgt.lnk");
-link.Arguments = "";
+link.Arguments = "-f "+ logtalk_home + "\\bin\\logtalkswi.rc";
 link.Description = "Logtalk & SWI-Prolog";
 link.IconLocation = "app.exe,1";
-link.TargetPath = WshShell.RegRead("HKLM\\Software\\SWI\\Prolog\\");
+link.TargetPath = "plwin.exe";
 link.WindowStyle = 3;
 link.WorkingDirectory = logtalk_home;
 link.Save();
 
-WScript.Echo("Done. A link to the script was been created in $prefix/bin.");
+WScript.Echo("Done. The swilgt shortcut was been added to the Start Menu Programs.");
 WScript.Echo("Users should define the environment variable LOGTALKHOME in");
 WScript.Echo("order to use the script.");
 WScript.Echo("");
