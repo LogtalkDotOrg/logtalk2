@@ -10,15 +10,15 @@ RELEASE NOTES
 =============
 
 
-2.16.2 - April ??, 2004
+2.16.2 - April 2, 2004
 
 	Corrected a bug in the library category monitor (file library/monitor.lgt) 
 	that prevents its compilation.
 
 	Changed the possible values of the read-only flag startup_message (defined 
-	in the config files) to "flags" (print banner and flag valuess), "banner" 
+	in the config files) to "flags" (print banner and flag values), "banner" 
 	(print only the banner), and "none" (do not print neither the banner or the 
-	flag values).
+	flag values). Default value is "flags".
 
 
 2.16.1 - March 23, 2004
