@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.15.1 - March ??, 2003
+2.15.1 - March 8, 2003
 
 	New example, msglog, of using events and monitors to record, replay, and 
 	print user messages.
