@@ -16,7 +16,7 @@ RELEASE NOTES
 	source metafiles (*.mlgt), which the runtime engine automatically splits 
 	on single entity source files plus loading and compiling helper files.
 
-	Updated URL used on the automatically generated XML documenting files 
+	Updated the URL used on the automatically generated XML documenting files 
 	when compiling entities with the option doctype(web).
 
 	Improved error checking when compiling calls to the {}/1 control construct.

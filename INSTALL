@@ -16,14 +16,14 @@ easy installation of Logtalk on Unix and Unix-like operating systems.
 
 INSTALLING FOR A SINGLE USER
 
-In the case of a single user, the Logtalk directory can simply be 
-copied to the user home directory.
+In the case of a single user, the Logtalk directory may simply be copied to 
+the user home directory.
 
 
 INSTALLING FOR MULTIPLE USERS
 
-In the case of multiple users, the Logtalk directory can be copied to 
-any location that its accessible by all the users.
+In the case of multiple users, the Logtalk directory can be copied to any 
+location that its accessible by all the users.
 
 Regarding directory and file permissions, it is advisable to make all files 
 read-only in order to avoid user tempering. However, the library and examples 

@@ -12,5 +12,5 @@ file:
 	| ?- logtalk_load(types_loader).
 
 These objects implement predicates over common Prolog terms and 
-structures like lists, diffrence lists, binary trees, dictionaries, 
-and queues.
+structures such as lists, difference lists, binary trees, queues, 
+dictionaries, and sets.

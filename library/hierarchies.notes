@@ -11,5 +11,5 @@ utility file:
 
 	| ?- logtalk_load(hierarchies_loader).
 
-These objects implement reflection predicates over class/instance 
-and prototype hierarchies.
+These objects implement reflection predicates over class and prototype 
+hierarchies.
