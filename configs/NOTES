@@ -5,9 +5,6 @@ Release 2.17.2
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
->>>> CONFIG FILE CONTENTS MAY DIFFER FROM PREVIOUS RELEASES.
->>>> READ THE RELEASE NOTES.
->>>> SEE THE FILE template.config FOR DETAILS.
 
 This file contains some notes about the config files provided. If you
 improve or correct some of these files, or write new ones for other
@@ -20,10 +17,6 @@ As a general rule, always try to use the most recent version of your
 Prolog compiler of choice. Most Prolog compilers are moving towards
 better ISO Standard compatibility and, as a consequence, improved
 Logtalk compatibility.
-
->>>> CHECK THE CONFIGURATION FILE THAT YOU INTEND TO USE CAREFULLY
->>>> BEFORE TRYING TO RUN LOGTALK
-
 
 
 template config file
@@ -334,6 +327,16 @@ SICStus Prolog 3.8~3.11.x
 	loading the library or an example. Supports smart compilation of source 
 	files.
 
+	If you want SICStus Prolog to automatically load Logtalk at startup, then 
+	add the following lines to your ~/.sicstusrc or ~/.sicstus.ini initialization
+	file:
+	
+		:- compile('$LOGTALKHOME/configs/sicstus.config').
+		:- compile('$LOGTALKHOME/compiler/logtalk.pl').
+
+    Consult the SICStus Prolog documentation for further information on the 
+    ~/.sicstusrc and ~/.sicstus.ini user initialization files.
+
 
 SWI Prolog 3.3.x and all later versions
 
@@ -376,13 +379,13 @@ XSB Prolog 2.6
 	You also need to apply the following patch to the Logtalk compiler. Open 
 	the file compiler/logtalk.pl, find the clauses that read: 
 	
-	'$lgt_current_object_'(user, ...).
-	'$lgt_current_object_'(debugger, ...).
+		'$lgt_current_object_'(user, ...).
+		'$lgt_current_object_'(debugger, ...).
 	
 	and replace it with the queries:
 	
-	:- assertz('$lgt_current_object_'(user, ...)).
-	:- assertz('$lgt_current_object_'(debugger, ...)).
+		:- assertz('$lgt_current_object_'(user, ...)).
+		:- assertz('$lgt_current_object_'(debugger, ...)).
 	
 	You may get syntax errors while compiling the Logtalk pre-processor 
 	or some of the examples due to a know bug in the XSB parsing of infix 
