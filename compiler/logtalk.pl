@@ -323,8 +323,8 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 
 create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_clean_pp_clauses',
-	'$lgt_tr_directive'(object, [Obj| Rels]),
-	'$lgt_tr_directive'((dynamic), []),
+	'$lgt_tr_object_id'(Obj, (dynamic)),
+	'$lgt_tr_object_relations'(Rels, Obj),
 	'$lgt_tr_directives'(Dirs),
 	'$lgt_tr_clauses'(Clauses),
 	'$lgt_fix_redef_built_ins',
@@ -370,8 +370,8 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_clean_pp_clauses',
-	'$lgt_tr_directive'(category, [Ctg| Rels]),
-	'$lgt_tr_directive'((dynamic), []),
+	'$lgt_tr_category_id'(Ctg, (dynamic)),
+	'$lgt_tr_category_relations'(Rels, Ctg),
 	'$lgt_tr_directives'(Dirs),
 	'$lgt_tr_clauses'(Clauses),
 	'$lgt_fix_redef_built_ins',
@@ -413,8 +413,8 @@ create_protocol(Ptc, Rels, Dirs) :-
 
 create_protocol(Ptc, Rels, Dirs) :-
 	'$lgt_clean_pp_clauses',
-	'$lgt_tr_directive'(protocol, [Ptc| Rels]),
-	'$lgt_tr_directive'((dynamic), []),
+	'$lgt_tr_protocol_id'(Ptc, (dynamic)),
+	'$lgt_tr_protocol_relations'(Rels, Ptc),
 	'$lgt_tr_directives'(Dirs),
 	'$lgt_gen_protocol_clauses',
 	'$lgt_gen_protocol_directives',
@@ -3613,7 +3613,7 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 '$lgt_tr_directive'(object, [Obj| Rels]) :-
 	callable(Obj) ->
-		'$lgt_tr_object_id'(Obj),
+		'$lgt_tr_object_id'(Obj, static),			% assume static category
 		'$lgt_tr_object_relations'(Rels, Obj)
 		;
 		throw(type_error(object_identifier, Obj)).
@@ -3624,7 +3624,7 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 '$lgt_tr_directive'(protocol, [Ptc| Rels]) :-
 	atom(Ptc) ->
-		'$lgt_tr_protocol_id'(Ptc),
+		'$lgt_tr_protocol_id'(Ptc, static),			% assume static category
 		'$lgt_tr_protocol_relations'(Rels, Ptc)
 		;
 		throw(type_error(protocol_identifier, Ptc)).
@@ -3636,7 +3636,7 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 '$lgt_tr_directive'(category, [Ctg| Rels]) :-
 	atom(Ctg) ->
-		'$lgt_tr_category_id'(Ctg),
+		'$lgt_tr_category_id'(Ctg, static),			% assume static category
 		'$lgt_tr_category_relations'(Rels, Ctg)
 		;
 		throw(type_error(category_identifier, Ctg)).
@@ -5113,39 +5113,39 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 
 
-% '$lgt_tr_object_id'(+object_identifier)
+% '$lgt_tr_object_id'(+object_identifier, +atom)
 %
 % from the object identifier construct the set of 
 % functor prefixes used in the compiled code clauses
 
-'$lgt_tr_object_id'(Obj) :-
+'$lgt_tr_object_id'(Obj, Mode) :-
 	'$lgt_add_referenced_object'(Obj),
 	'$lgt_construct_object_functors'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef),
-	assertz('$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, static)).
+	assertz('$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Mode)).
 
 
 
-% '$lgt_tr_category_id'(+category_identifier)
+% '$lgt_tr_category_id'(+category_identifier, +atom)
 %
 % from the category identifier construct the set of 
 %  functor prefixes used in the compiled code clauses
 
-'$lgt_tr_category_id'(Ctg) :-
+'$lgt_tr_category_id'(Ctg, Mode) :-
 	'$lgt_add_referenced_category'(Ctg),
 	'$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def),
-	assertz('$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, static)).
+	assertz('$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Mode)).
 
 
 
-% '$lgt_tr_protocol_id'(+protocol_identifier)
+% '$lgt_tr_protocol_id'(+protocol_identifier, +atom)
 %
 % from the protocol identifier construct the set of  
 % functor prefixes used in the compiled code clauses
 
-'$lgt_tr_protocol_id'(Ptc) :-
+'$lgt_tr_protocol_id'(Ptc, Mode) :-
 	'$lgt_add_referenced_protocol'(Ptc),
 	'$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl),
-	assertz('$lgt_pp_protocol_'(Ptc, Prefix, Dcl, static)).
+	assertz('$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Mode)).
 
 
 
