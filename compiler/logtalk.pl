@@ -4,7 +4,7 @@
 %  Logtalk - Object oriented extension to Prolog
 %  Release 2.22.4
 %
-%  Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
+%  Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -8502,7 +8502,7 @@ current_logtalk_flag(version, version(2, 22, 4)).
 '$lgt_banner' :-
 	current_logtalk_flag(version, version(Major, Minor, Patch)),
 	nl, write('Logtalk '), write(Major), write('.'), write(Minor), write('.'), write(Patch), nl,
-	write('Copyright (c) 1998-2004 Paulo Moura'), nl, nl.
+	write('Copyright (c) 1998-2005 Paulo Moura'), nl, nl.
 
 
 
