@@ -21,6 +21,11 @@ var FSObject = new ActiveXObject("Scripting.FileSystemObject");
 WshShell.CurrentDirectory = "..";
 WshSystemEnv.Item("LOGTALKHOME") = WshShell.CurrentDirectory;
 
+FSObject.CreateFolder(WshShell.CurrentDirectory + "\\bin");
+
+FSObject.CopyFile(WshShell.CurrentDirectory + "\\README", WshShell.CurrentDirectory + "\\bin\\README.txt");
+FSObject.CopyFile(WshShell.CurrentDirectory + "\\README", WshShell.CurrentDirectory + "\\bin\\README.txt");
+
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 
 if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk")) 
@@ -40,16 +45,14 @@ link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk ReadMe.lnk");
 
-link.Arguments = "%LOGTALKHOME%\\manuals\\README";
 link.Description = "Open Logtalk ReadMe";
-link.TargetPath = "%SystemRoot%\\system32\\notepad.exe";
+link.TargetPath = "%LOGTALKHOME%\\bin\\README.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Quick Start.lnk");
 
-link.Arguments = "%LOGTALKHOME%\\manuals\\QUICK_START";
 link.Description = "Open Logtalk Quick Start";
-link.TargetPath = "%SystemRoot%\\system32\\notepad.exe";
+link.TargetPath = "%LOGTALKHOME%\\bin\\QUICK_START.txt";
 link.Save();
 
 WScript.Echo('Logtalk installation completed.');
