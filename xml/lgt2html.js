@@ -86,9 +86,8 @@ WScript.Echo("converting XML files...");
 var files = new Enumerator(fso.GetFolder(WshShell.CurrentDirectory).Files);
 
 for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
-	var file = files.item();
-	WScript.Echo(fso.GetExtensionName(file.name));
-	if (fso.GetExtensionName(file.name) = "xml") {
+	var file = files.item().name;
+	if (fso.GetExtensionName(file) == "xml") {
 		WScript.Echo("  converting" + file);
 		var html_file = directory + "\\" + fso.GetBaseName(file) + ".html";
 		switch (processor) {
@@ -167,7 +166,7 @@ function xhtml_index_file() {
 	var file;
 
 	for (file in files) 
-		if (fso.GetExtensionName(file) = ".xml") {
+		if (fso.GetExtensionName(file) == ".xml") {
 			var html_file = fso.GetBaseName(file) + ".html";
 			WScript.Echo("  indexing " + html_file);
 			f.WriteLine("    <li><a href=\"" + html_file + "\">" + fso.GetBaseName(file) + "</a></li>");
@@ -211,7 +210,7 @@ function html_index_file() {
 	var file;
 	
 	for (file in files) 
-		if (fso.GetExtensionName(file) = ".xml") {
+		if (fso.GetExtensionName(file) == ".xml") {
 			var html_file = fso.GetBaseName(file) + ".html";
 			WScript.Echo("  indexing " + html_file);
 			f.WriteLine("    <li><a href=\"" + html_file + "\">" + fso.GetBaseName(file) + "</a></li>");
