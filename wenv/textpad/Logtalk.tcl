@@ -11,10 +11,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_object.
-	
 !		
 
 
@@ -28,10 +27,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_object.
-	  
 !
 
 !TEXT=Prototype with protocol
@@ -44,10 +42,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_object.
-
 !
 
 
@@ -61,10 +58,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_object.
-	  
 !
 
 
@@ -80,10 +76,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_object.
-
 !
 
 
@@ -97,10 +92,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_object.
-
 !
 
 
@@ -115,11 +109,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_object.
-
-
 !
 
 
@@ -134,10 +126,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_object.
-
 !
 
 
@@ -152,10 +143,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_object.
-
 !
 
 
@@ -172,10 +162,9 @@
 		date is Year/Month/Day,
 		comment is '${6:Description']).
 
-	
+	\^
 
 :- end_object.
-
 !
 
 
@@ -189,10 +178,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_object.
-
 !
 
 
@@ -207,10 +195,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_object.
-
 !
 
 
@@ -225,10 +212,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_object.
-
 !
 
 
@@ -244,10 +230,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_object.
-
 !
 
 
@@ -260,10 +245,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_protocol.
-
 !
 
 
@@ -277,10 +261,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_protocol.
-
 !
 
 
@@ -293,10 +276,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_category.
-
 !
 
 
@@ -310,10 +292,9 @@
 		date is Year/Month/Day,
 		comment is 'Description']).
 
-	
+	\^
 
 :- end_category.
-
 !
 
 
@@ -324,8 +305,6 @@
 		comment is 'Description',
 		arguments is ['Arg'-'Description']]).
 
-	
-
 !
 
 
@@ -334,8 +313,6 @@
 	:- mode(Functor, Solutions).
 	:- info(Functor/0, [
 		comment is 'Description']).
-
-	
 
 !
 
@@ -347,8 +324,6 @@
 		comment is 'Description',
 		arguments is ['Arg'-'Description']]).
 
-	
-
 !
 
 
@@ -357,8 +332,6 @@
 	:- mode(Functor, Solutions).
 	:- info(Functor/0, [
 		comment is 'Description']).
-
-	
 
 !
 
@@ -370,8 +343,6 @@
 		comment is 'Description',
 		arguments is ['Arg'-'Description']]).
 
-	
-
 !
 
 
@@ -380,7 +351,5 @@
 	:- mode(Functor, Solutions).
 	:- info(Functor/0, [
 		comment is 'Description']).
-
-	
 
 !
