@@ -252,18 +252,16 @@ LPA MacProlog32 1.25
 	config file twice. Supports smart compilation of source files.
 
 
-LPA WinProlog32 3.61 & 4.xx
+LPA WinProlog32 4.0x
 
-	lpawin36.config
-	lpawin40.config
+	lpawin.config
 
-	Written with the help of the LPA support team. Of course, 
-	if you find any bug please direct your flames to me ;-).
-	Be aware that this configuration file redefines some built-ins that
-	you may use in your programs. Don't forget to use the chdir/1 
-	predicate to set the working directory before loading the library or 
-	an example. Be careful to not consult the config file twice. Supports 
-	smart compilation of source files.
+	Written with the help of the LPA support team. Of course, if you find any 
+	bugs please direct your flames to me ;-). Be aware that this configuration 
+	file redefines some built-ins that you may use in your programs. Don't 
+	forget to use the chdir/1 predicate to set the working directory before 
+	loading the library or an example. Be careful to not consult the config 
+	file twice. Supports smart compilation of source files.
 
 
 MasterProlog 4.1
