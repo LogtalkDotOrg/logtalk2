@@ -25,6 +25,9 @@ cplgtdirs.sh
 	the user home directory (must be runned by the end-user to ensure 
 	proper permissions on the copied files)
 
+debian
+	directory containing support files for building a Debian package
+
 
 The following shell scripts must be runned by a user with administration 
 privileges:
