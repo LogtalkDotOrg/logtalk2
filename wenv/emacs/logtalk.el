@@ -10,16 +10,7 @@
 ;; Installation:
 ;;
 ;; Add the following lines in your Emacs init file, for example
-;; your ~/.emacs file.
-;;
-;; (add-hook 'logtalk-mode-hook 'my-logtalk-mode-hook)
-;;
-;; (defun my-logtalk-mode-hook ()
-;;      (cond (window-system
-;;              (require 'logtalk-font-lock)
-;;              (turn-on-font-lock))))
-;;
-;; (setq font-lock-maximum-decoration t)
+;; your ~/.emacs file:
 ;;
 ;; (autoload 'logtalk-mode "logtalk" "Major mode for editing Logtalk programs." t)
 ;; (setq auto-mode-alist (cons '("\\.lgt\\'" . logtalk-mode) auto-mode-alist))
