@@ -1337,42 +1337,20 @@ current_logtalk_flag(version, version(2, 23, 1)).
 	nonvar(Arity),
 	!,
 	functor(Pred, Functor, Arity),
-	'$lgt_current_object_'(Obj, _, Dcl, _, _, _),
-	'$lgt_once'(Dcl, Pred, PScope, _, _, SCtn, _),
-	once((\+ \+ PScope = Scope; Sender = SCtn)).
+	once('$lgt_visible_predicate'(Obj, Pred, Sender, Scope)).
 
 '$lgt_current_predicate'(Obj, Functor/Arity, Sender, Scope) :-
+	setof(Pred, Scope^'$lgt_visible_predicate'(Obj, Pred, Sender, Scope), Preds),
+	'$lgt_member'(Pred, Preds),
+	functor(Pred, Functor, Arity).
+
+
+% '$lgt_visible_predicate'(@object_identifier, ?callable, @object_identifier, @term)
+
+'$lgt_visible_predicate'(Obj, Pred, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, _, _, _),
-	findall(
-		Functor/Arity - (PScope, SCtn),
-		('$lgt_call'(Dcl, Pred, PScope, _, _, SCtn, _),
-		 once((\+ \+ PScope = Scope; Sender = SCtn)),
-		 functor(Pred, Functor, Arity)),
-		Preds),
-	'$lgt_cp_filter'(Preds, Filtered),
-	'$lgt_member'(Functor/Arity - (PScope, SCtn), Filtered).
-
-
-% '$lgt_cp_filter'(+list, -list)
-%
-% removes duplicated and redeclared predicates 
-
-'$lgt_cp_filter'([], []).
-
-'$lgt_cp_filter'([Data| Rest], [Data| Rest2]) :-
-	'$lgt_cp_remove_all'(Rest, Data, Aux),
-	'$lgt_cp_filter'(Aux, Rest2).
-
-
-'$lgt_cp_remove_all'([], _, []).
-
-'$lgt_cp_remove_all'([F/A-_| Rest], F/A-D, List) :-
-	!,
-	'$lgt_cp_remove_all'(Rest, F/A-D, List).
-
-'$lgt_cp_remove_all'([Data| Rest], Filter, [Data| Rest2]) :-
-	!,
-	'$lgt_cp_remove_all'(Rest, Filter, Rest2).
+	'$lgt_call'(Dcl, Pred, PScope, _, _, SCtn, _),
+	 once((\+ \+ PScope = Scope; Sender = SCtn)).
 
 
 
