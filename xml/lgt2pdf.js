@@ -48,9 +48,9 @@ if (WScript.Arguments.Named.Exists("d"))
 if (WScript.Arguments.Named.Exists("p"))
 	processor = WScript.Arguments.Named.Item("p");
 
-if (format = "a4")
+if (format == "a4")
 	xsl = a4_xsl;
-else if (format = "us")
+else if (format == "us")
 	xsl = us_xsl;
 else {
 	WScript.Echo("Error! Unsupported paper format:" + format);
