@@ -64,24 +64,6 @@ Amzi! Prolog 6.2.2 and later versions
 	to set the working directory before loading the library or an example.
 
 
-Aquarius Prolog 1.0
-	
-	aquarius.config
-
-	THIS CONFIG FILE IS INCOMPLETE. Any help in finishing it will be 
-	appreciated. Don't forget to use the unix(cd(+Directory)) predicate to 
-	set the working directory before loading the library or an example.
-
-
-Arity/Prolog32 V 1.1
-
-	arity.config
-
-	THIS CONFIG FILE IS INCOMPLETE. Any help in finishing it will be 
-	appreciated. Don't forget to use the chdir/1 predicate to set the 
-	working directory before loading the library or an example.
-
-
 B-Prolog 4.0~5.0, 6.4 and later versions
 
 	b5.config
@@ -408,16 +390,6 @@ SWI Prolog 3.3.x and all later versions
 
     See the SWI-Prolog documentation for further information on the .plrc and 
     pl.ini user initialization files.
-
-
-Trinc-Prolog R3
-
-	trinc.config
-
-	There is a conflict between Logtalk and Trinc-Prolog operators that 
-	prevents the Logtalk pre-processor/runtime to compile without errors.
-	Also, the definition of lgt_predicate_property/2 is fragile. Better
-	support is needed from TP regarding predicate properties.
 
 
 XSB Prolog 2.6
