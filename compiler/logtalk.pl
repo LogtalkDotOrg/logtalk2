@@ -1931,7 +1931,10 @@ lgt_needs_recompilation(Entity) :-
 lgt_needs_recompilation(Entity) :-
 	lgt_file_name(logtalk, Entity, Source),
 	lgt_file_name(prolog, Entity, Object),
-	lgt_compare_file_mtimes(>, Source, Object).
+	(lgt_compare_file_mtimes(Result, Source, Object) ->
+		Result = '>'
+		;
+		true).
 
 
 
