@@ -5627,12 +5627,12 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 
 '$lgt_gen_category_imports_def_clauses' :-
-	'$lgt_pp_category_'(Ctg, _, _, Def),
+	'$lgt_pp_category_'(Ctg, Prefix, _, Def),
 	'$lgt_pp_rclause_'('$lgt_imports_category_'(Ctg, Ctg2, _)),
 	'$lgt_pp_alias_'(Ctg2, _, _),
 	Head =.. [Def, Alias, Sender, This, Self, Call, Ctn],
 	'$lgt_pp_imported_category_'(Ctg2, _, _, Def2, _),
-	Lookup =.. [Def2, Pred, Sender, Obj, Self, Call, Ctn],
+	Lookup =.. [Def2, Pred, Sender, This, Self, Call, Ctn],
 	'$lgt_construct_rename_functor'(Prefix, PRnm),
 	Rename =.. [PRnm, Ctg2, Pred, Alias],
 	assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup))),
