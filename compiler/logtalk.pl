@@ -166,7 +166,7 @@
 
 :- dynamic('$lgt_pp_warnings_top_argument_'/1).	% '$lgt_pp_warnings_top_argument_'(Term)
 :- dynamic('$lgt_pp_comp_warnings_counter_'/1).	% '$lgt_pp_comp_warnings_counter_'(Counter)
-:- dynamic('$lgt_pp_load_warnings_counter_'/1).	% '$lgt_pp_comp_warnings_counter_'(Counter)
+:- dynamic('$lgt_pp_load_warnings_counter_'/1).	% '$lgt_pp_load_warnings_counter_'(Counter)
 
 
 
@@ -970,7 +970,7 @@ logtalk_compile(Entity, Flags) :-
 		 '$lgt_check_compiler_flags'(Flags),
 		 '$lgt_set_compiler_flags'(Flags),
 		 '$lgt_compile_entity'(Entity, Flags),
-		 '$lgt_report_warnings_counter'(logtalk_compile(Entity, Flags))),
+		 '$lgt_report_warning_numbers'(logtalk_compile(Entity, Flags))),
 		Error,
 		('$lgt_reset_warnings_counter',
 		 throw(error(Error, logtalk_compile(Entity, Flags))))).
@@ -982,7 +982,7 @@ logtalk_compile(Entities, Flags) :-
 		 '$lgt_check_compiler_flags'(Flags),
 		 '$lgt_set_compiler_flags'(Flags),
 		 '$lgt_compile_entities'(Entities, Flags),
-		 '$lgt_report_warnings_counter'(logtalk_compile(Entities, Flags))),
+		 '$lgt_report_warning_numbers'(logtalk_compile(Entities, Flags))),
 		Error,
 		('$lgt_reset_warnings_counter',
 		 throw(error(Error, logtalk_compile(Entities, Flags))))).
@@ -1020,20 +1020,43 @@ logtalk_compile(Entities, Flags) :-
 	asserta('$lgt_pp_load_warnings_counter_'(New)).
 
 
-'$lgt_report_warnings_counter'(Term) :-
+'$lgt_report_warning_numbers'(Term) :-
 	retract('$lgt_pp_warnings_top_argument_'(Term)),
 	retract('$lgt_pp_comp_warnings_counter_'(CCounter)),
 	retract('$lgt_pp_load_warnings_counter_'(LCounter)),
 	'$lgt_compiler_flag'(report, on),
 	Counter is CCounter + LCounter,
-	(Counter =:= 0 -> write('(0 warnings)');
-	 LCounter =:= 0 -> write('('), write(CCounter), write(' compilation warnings)');
-	 CCounter =:= 0 -> write('('), write(LCounter), write(' loading warnings)');
-	 write('('), write(CCounter), write(' compilation warnings and '),
-	 write(LCounter), write(' loading warnings)')), nl,
+	'$lgt_write_warning_numbers'(Counter, CCounter, LCounter),
 	!.
 
-'$lgt_report_warnings_counter'(_).
+'$lgt_report_warning_numbers'(_).
+
+
+'$lgt_write_warning_numbers'(0, _, _) :-
+	!,
+	write('(0 warnings)'), nl.
+
+'$lgt_write_warning_numbers'(_, 0, LCounter) :-
+	!,
+	write('('), write(LCounter), write(' loading '),
+	'$lgt_write_warnings_word'(LCounter), write(')'), nl.
+
+'$lgt_write_warning_numbers'(_, CCounter, 0) :-
+	!,
+	write('('), write(CCounter), write(' compilation '),
+	'$lgt_write_warnings_word'(CCounter), write(')'), nl.
+
+'$lgt_write_warning_numbers'(_, CCounter, LCounter) :-
+	write('('), write(CCounter), write(' compilation '), '$lgt_write_warnings_word'(CCounter), write(' and '),
+	write(LCounter), write(' loading '), '$lgt_write_warnings_word'(LCounter), write(')'), nl.
+
+
+'$lgt_write_warnings_word'(Number) :-
+	Number =:= 1 ->
+		write(warning)
+		;
+		write(warnings).
+
 
 
 
@@ -1188,7 +1211,7 @@ logtalk_load(Entity, Flags) :-
 		 '$lgt_check_compiler_flags'(Flags),
 		 '$lgt_set_compiler_flags'(Flags),
 		 '$lgt_load_entity'(Entity, Flags),
-		 '$lgt_report_warnings_counter'(logtalk_load(Entity, Flags))),
+		 '$lgt_report_warning_numbers'(logtalk_load(Entity, Flags))),
 		Error,
 		('$lgt_reset_warnings_counter',
 		 throw(error(Error, logtalk_load(Entity, Flags))))).
@@ -1200,7 +1223,7 @@ logtalk_load(Entities, Flags) :-
 		 '$lgt_check_compiler_flags'(Flags),
 		 '$lgt_set_compiler_flags'(Flags),
 		 '$lgt_load_entities'(Entities, Flags),
-		 '$lgt_report_warnings_counter'(logtalk_load(Entities, Flags))),
+		 '$lgt_report_warning_numbers'(logtalk_load(Entities, Flags))),
 		Error,
 		('$lgt_reset_warnings_counter',
 		 throw(error(Error, logtalk_load(Entities, Flags))))).
