@@ -26,7 +26,8 @@ else
 	cd configs
 	cp qu.config qu.ql
 	echo "fcompile('qu.ql', [assemble_only(true)]), load(qu). \
-chdir('../compiler/'), fcompile('logtalk.pl', [assemble_only(true), string_table(256)]), load(logtalk). \ chdir('../libpaths/'), fcompile('libpaths.ql', [assemble_only(true)]), load(libpaths)." | qp -s 2048 -d 1024 -h 2000
+chdir('../compiler/'), fcompile('logtalk.pl', [assemble_only(true), string_table(256)]), load(logtalk). \
+chdir('../libpaths/'), fcompile('libpaths.pl', [assemble_only(true)]), load(libpaths)." | qp -s 2048 -d 1024 -h 2000
 	qc -c qphook.ql
 	cd ../bin
 	qc -s 2048 -d 1024 -h 2000 -o qplgt ../configs/qphook.qo ../configs/qu.qo ../compiler/logtalk.qo  ../libpaths/libpaths.qo
