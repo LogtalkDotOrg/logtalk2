@@ -4,7 +4,7 @@
 
 ;; Author: Paulo Moura
 ;; Creation date: November 15, 2003
-;; Last modification date: January 26, 2004
+;; Last modification date: January 28, 2004
 ;; Version: 0.5
 
 ;; Installation:
@@ -88,6 +88,9 @@
 (make-face 'logtalk-variable-face)
 (set-face-foreground 'logtalk-variable-face "dark slate grey")
 
+(make-face 'logtalk-number-face)
+(set-face-foreground 'logtalk-number-face "dark blue")
+
 
 ;; set the font-lock-comment-face to the logtalk-comment-face
 
@@ -97,7 +100,6 @@
 ;; set the font-lock-string-face to the logtalk-string-face
 
 (setq font-lock-string-face 'logtalk-string-face)
-
 
 
 (setq logtalk-font-lock-strings
@@ -226,11 +228,22 @@
 	))
 
 
-(setq logtalk-font-lock-variables
+(setq logtalk-font-lock-numbers
 	'(
-		("\\<\\([_A-Z][a-zA-Z0-9_]*\\)" 1 'logtalk-variable-face)
+		("\\<\\(0x[a-fA-F0-9]+\\)\\>" 1 'logtalk-number-face)
+		("\\<\\(0o[0-7]+\\)\\>" 1 'logtalk-number-face)
+		("\\<\\(0b[0-1]+\\)\\>" 1 'logtalk-number-face)
+;;		("\\<\\(0['][a-zA-Z0-9]\\)\\>" 1 'logtalk-number-face)
+;;		("\\<\\([0-9]+[.][0-9]+[eE][-+][1-9][0-9]+\\)\\>" 1 'logtalk-number-face)
+		("\\<\\([0-9]+[.][0-9]+\\)\\>" 1 'logtalk-number-face)
+		("\\<\\([0-9]+\\)\\>" 1 'logtalk-number-face)
 	))
 
+
+(setq logtalk-font-lock-variables
+	'(
+		("\\<\\([_A-Z][a-zA-Z0-9_]*\\)\\>" 1 'logtalk-variable-face)
+	))
 
 
 (setq logtalk-font-lock-keywords
@@ -241,6 +254,7 @@
 		logtalk-font-lock-built-in-predicates
 		logtalk-font-lock-operators
 		logtalk-font-lock-variables
+		logtalk-font-lock-numbers
 	))
 
 
