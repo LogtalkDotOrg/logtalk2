@@ -10,11 +10,15 @@ RELEASE NOTES
 =============
 
 
-2.11.0 - April 19, 2002
+2.11.0 - April 22, 2002
 
 	Added a "smart compilation" feature to the Logtalk compiler, controlled 
 	by a "smart_compilation" flag. Only available in Prolog compilers that 
 	provide access to file modification dates.
+
+	Reworked Logtalk pre-processor compilation and loading reports. Compiler 
+	option "report" now togles between silent compilation and loading and 
+	normal reporting (as specified by the other flags).
 
 
 2.10.0 - April 5, 2002
