@@ -28,6 +28,8 @@ RELEASE NOTES
 	the pdf.bat and pdf.sh scripts to reference the latest version of the 
 	Apache FOP processor (0.20.4).
 
+	Corrected a compatibility problem of the html.sh script with some shells.
+
 
 2.14.2 - August 26, 2002
 
