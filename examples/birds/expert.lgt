@@ -151,7 +151,8 @@
 	pick_menu(N, Val, Menu):-
 		integer(N),
 		pic_menu(1, N, Val, Menu), !.
-		pick_menu(Val, Val, _).
+
+	pick_menu(Val, Val, _).
 
 
 	pic_menu(_, _, none_of_the_above, []).
