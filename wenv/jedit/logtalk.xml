@@ -205,6 +205,8 @@
 			<FUNCTION>before</FUNCTION>
 			<FUNCTION>after</FUNCTION>
 
+			<FUNCTION>phrase</FUNCTION>
+
 			<!-- Control constructs -->
 			<FUNCTION>true</FUNCTION>
 			<FUNCTION>fail</FUNCTION>

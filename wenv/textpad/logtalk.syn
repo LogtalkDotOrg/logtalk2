@@ -152,6 +152,7 @@ forall
 setof
 before
 after
+phrase
 
 ; Mode operators
 ?

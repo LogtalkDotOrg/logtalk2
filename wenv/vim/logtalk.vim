@@ -150,6 +150,8 @@ syn keyword	logtalkBuiltInMethod	setof
 syn keyword	logtalkBuiltInMethod	before
 syn keyword	logtalkBuiltInMethod	after
 
+syn keyword	logtalkBuiltInMethod	phrase
+
 
 " Mode operators
 
