@@ -14,8 +14,8 @@ format=xhtml
 
 directory="."
 
-index_title="Entity documentation index"
 index_file=index.html
+index_title="Entity documentation index"
 
 processor=xsltproc
 # processor=xalan
@@ -93,33 +93,61 @@ else
 	while getopts "f:d:i:t:p:h" Option
 	do
 		case $Option in
-			f) format="$OPTARG";;
-			d) directory="$OPTARG";;
-			i) index_file="$OPTARG";;
-			t) index_title="$OPTARG";;
-			p) processor="$OPTARG";;
+			f) f_arg="$OPTARG";;
+			d) d_arg="$OPTARG";;
+			i) i_arg="$OPTARG";;
+			t) t_arg="$OPTARG";;
+			p) p_arg="$OPTARG";;
 			h) usage_help;;
 			*) usage_help;;
 		esac
 	done
 
+	if [[ "$f_arg" != "" && "$f_arg" != "xhtml" && "$f_arg" != "html" ]]
+	then
+		echo "Error! Unsupported output format: $f_arg"
+		usage_help
+		exit 1
+	elif [ "$f_arg" != "" ]
+	then
+		format=$f_arg
+	fi
+
+	if [[ "$d_arg" != "" && ! -d "$d_arg" ]]
+	then
+		echo "Error! directory does not exists: $d_arg"
+		usage_help
+		exit 1
+	elif [ "$d_arg" != "" ]
+	then
+		directory=$d_arg
+	fi
+
+	if [[ "$i_arg" != "" ]]
+	then
+		index_file=$i_arg
+	fi
+
+	if [[ "$t_arg" != "" ]]
+	then
+		index_title=$t_arg
+	fi
+
+	if [[ "$p_arg" != "" && "$p_arg" != "xsltproc" && "$p_arg" != "xalan" && "$p_arg" != "sabcmd" ]]
+	then
+		echo "Error! Unsupported XSLT processor: $p_arg"
+		usage_help
+		exit 1
+	elif [ "$p_arg" != "" ]
+	then
+		processor=$p_arg
+	fi
+
 	if [ "$format" = "xhtml" ]
 	then
 		xslt=$xhtml_xslt
-	elif [ "$format" = "html" ]
-	then
-		xslt=$html_xslt
 	else
-		echo "Error! Unsupported output format: $format"
-		usage_help
-		exit 1
-	fi
-
-	if [[ "$processor" != "xsltproc" && "$processor" != "xalan" && "$processor" != "sabcmd" ]]
-	then
-		echo "Error! Unsupported XSLT processor: $processor"
-		usage_help
-		exit 1
+		xslt=$html_xslt
 	fi
 
 	cp $LOGTALKHOME/xml/logtalk.dtd .

@@ -46,31 +46,49 @@ else
 	while getopts "f:d:p:h" Option
 	do
 		case $Option in
-			f) format="$OPTARG";;
-			d) directory="$OPTARG";;
-			p) processor="$OPTARG";;
+			f) f_arg="$OPTARG";;
+			d) d_arg="$OPTARG";;
+			p) p_arg="$OPTARG";;
 			h) usage_help;;
 			*) usage_help;;
 		esac
 	done
 
+	if [[ "$f_arg" != "" && "$f_arg" != "a4" && "$f_arg" != "us" ]]
+	then
+		echo "Error! Unsupported output format: $f_arg"
+		usage_help
+		exit 1
+	elif [ "$f_arg" != "" ]
+	then
+		format=$f_arg
+	fi
+
+	if [[ "$d_arg" != "" && ! -d "$d_arg" ]]
+	then
+		echo "Error! directory does not exists: $d_arg"
+		usage_help
+		exit 1
+	elif [ "$d_arg" != "" ]
+	then
+		directory=$d_arg
+	fi
+
+	if [[ "$p_arg" != "" && "$p_arg" != "fop" && "$p_arg" != "xep" ]]
+	then
+		echo "Error! Unsupported XSL-FO processor: $p_arg"
+		usage_help
+		exit 1
+	elif [ "$p_arg" != "" ]
+	then
+		processor=$p_arg
+	fi
+
 	if [ "$format" = "a4" ]
 	then
 		xsl=$a4_xsl
-	elif [ "$format" = "us" ]
-	then
-		xsl=$us_xsl
 	else
-		echo "Error! Unsupported paper format: $format"
-		usage_help
-		exit 1
-	fi
-
-	if [[ "$processor" != "fop" && "$processor" != "xep" ]]
-	then
-		echo "Error! Unsupported XSLT processor: $processor"
-		usage_help
-		exit 1
+		xsl=$us_xsl
 	fi
 
 	cp $LOGTALKHOME/xml/logtalk.dtd .
