@@ -178,7 +178,7 @@ Obj::Pred :-
 
 Obj::Pred :-
 	'$lgt_context'(Ctx, user, user, Obj, _, []),
-	'$lgt_tr_msg'(Obj, Pred, Call, Ctx),
+	'$lgt_tr_msg'(Pred, Obj, Call, Ctx),
 	(('$lgt_debugging_'(Obj), '$lgt_dbg_debugging_') ->
 		catch(
 			'$lgt_dbg_goal'(Obj::Pred, Call, Ctx),
@@ -3720,7 +3720,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 '$lgt_tr_body'(Obj::Pred, TPred, '$lgt_dbg_goal'(Obj::Pred, TPred, Ctx), Ctx) :-
 	!,
-	'$lgt_tr_msg'(Obj, Pred, TPred, Ctx).
+	'$lgt_tr_msg'(Pred, Obj, TPred, Ctx).
 
 '$lgt_tr_body'(::Pred, TPred, '$lgt_dbg_goal'(::Pred, TPred, Ctx), Ctx) :-
 	!,
@@ -3921,14 +3921,14 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 
 
-% '$lgt_tr_msg'(@object, @term, -term, +term)
+% '$lgt_tr_msg'(@term, @object, -term, +term)
 %
 % translates the sending of a message to an object
 
 
 % message broadcasting
 
-'$lgt_tr_msg'(Obj, Pred, TPred, Ctx) :-
+'$lgt_tr_msg'(Pred, Obj, TPred, Ctx) :-
 	nonvar(Obj),
 	(Obj = (_, _); Obj = (_; _)),
 	!,
@@ -3937,7 +3937,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 % invalid object identifier
 
-'$lgt_tr_msg'(Obj, _, _, _) :-
+'$lgt_tr_msg'(_, Obj, _, _) :-
 	nonvar(Obj),
 	\+ '$lgt_valid_object_id'(Obj),
 	!,
@@ -3946,7 +3946,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 % remember the object receiving the message to later check if it's known
 
-'$lgt_tr_msg'(Obj, _, _, Ctx) :-
+'$lgt_tr_msg'(_, Obj, _, Ctx) :-
 	nonvar(Obj),
 	\+ '$lgt_sender'(Ctx, user),	% not runtime message translation
 	\+ '$lgt_this'(Ctx, user),
@@ -3956,147 +3956,147 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 % non-instantiated message: translation performed at runtime
 
-'$lgt_tr_msg'(Obj, Pred, '$lgt_send_to_object'(Obj, Pred, This), Ctx) :-
+'$lgt_tr_msg'(Pred, Obj, '$lgt_send_to_object'(Obj, Pred, This), Ctx) :-
 	var(Pred),
-	!,
-	'$lgt_this'(Ctx, This).
-
-
-% control constructs
-
-'$lgt_tr_msg'(Obj, (Pred1, Pred2), (TPred1, TPred2), Ctx) :-
-	!,
-	'$lgt_tr_msg'(Obj, Pred1, TPred1, Ctx),
-	'$lgt_tr_msg'(Obj, Pred2, TPred2, Ctx).
-
-'$lgt_tr_msg'(Obj, (Pred1; Pred2), (TPred1; TPred2), Ctx) :-
-	!,
-	'$lgt_tr_msg'(Obj, Pred1, TPred1, Ctx),
-	'$lgt_tr_msg'(Obj, Pred2, TPred2, Ctx).
-
-'$lgt_tr_msg'(Obj, (Pred1 -> Pred2), (TPred1 -> TPred2), Ctx) :-
-	!,
-	'$lgt_tr_msg'(Obj, Pred1, TPred1, Ctx),
-	'$lgt_tr_msg'(Obj, Pred2, TPred2, Ctx).
-
-'$lgt_tr_msg'(Obj, \+ Pred, \+ TPred, Ctx) :-
-	!,
-	'$lgt_tr_msg'(Obj, Pred, TPred, Ctx).
-
-'$lgt_tr_msg'(Obj, !, ('$lgt_obj_exists'(Obj, !, This), !), Ctx) :-
-	!,
-	'$lgt_this'(Ctx, This).
-
-'$lgt_tr_msg'(Obj, true, ('$lgt_obj_exists'(Obj, true, This), true), Ctx) :-
-	!,
-	'$lgt_this'(Ctx, This).
-
-'$lgt_tr_msg'(Obj, fail, ('$lgt_obj_exists'(Obj, fail, This), fail), Ctx) :-
-	!,
-	'$lgt_this'(Ctx, This).
-
-'$lgt_tr_msg'(Obj, repeat, ('$lgt_obj_exists'(Obj, repeat, This), repeat), Ctx) :-
-	!,
-	'$lgt_this'(Ctx, This).
-
-'$lgt_tr_msg'(Obj, call(Pred), TPred, Ctx) :-
-	!,
-	'$lgt_tr_msg'(Obj, Pred, TPred, Ctx).
-
-'$lgt_tr_msg'(Obj, once(Pred), once(TPred), Ctx) :-
-	!,
-	'$lgt_tr_msg'(Obj, Pred, TPred, Ctx).
-
-'$lgt_tr_msg'(Obj, catch(Goal, Catcher, Recovery), catch(TGoal, Catcher, TRecovery), Ctx) :-
-	!,
-	'$lgt_tr_msg'(Obj, Goal, TGoal, Ctx),
-	'$lgt_tr_msg'(Obj, Recovery, TRecovery, Ctx).
-
-'$lgt_tr_msg'(Obj, throw(Error), ('$lgt_obj_exists'(Obj, throw(Error), This), throw(Error)), Ctx) :-
-	!,
-	'$lgt_this'(Ctx, This).
-
-
-% built-in metapredicates
-
-'$lgt_tr_msg'(Obj, bagof(Term, Pred, List), bagof(Term, TPred, List), Ctx) :-
-	!,
-	'$lgt_tr_msg'(Obj, Pred, TPred, Ctx).
-
-'$lgt_tr_msg'(Obj, findall(Term, Pred, List), findall(Term, TPred, List), Ctx) :-
-	!,
-	'$lgt_tr_msg'(Obj, Pred, TPred, Ctx).
-
-'$lgt_tr_msg'(Obj, forall(Gen, Test), forall(TGen, TTest), Ctx) :-
-	!,
-	'$lgt_tr_msg'(Obj, Gen, TGen, Ctx),
-	'$lgt_tr_msg'(Obj, Test, TTest, Ctx).
-
-'$lgt_tr_msg'(Obj, setof(Term, Pred, List), setof(Term, TPred, List), Ctx) :-
-	!,
-	'$lgt_tr_msg'(Obj, Pred, TPred, Ctx).
-
-
-% "reflection" built-in predicates
-
-'$lgt_tr_msg'(Obj, current_predicate(Pred), '$lgt_current_predicate'(Obj, Pred, This, p(p(p))), Ctx) :-
-	!,
-	'$lgt_this'(Ctx, This).
-
-'$lgt_tr_msg'(Obj, predicate_property(Pred, Prop), '$lgt_predicate_property'(Obj, Pred, Prop, This, p(p(p))), Ctx) :-
-	!,
-	'$lgt_this'(Ctx, This).
-
-
-% database handling built-in predicates
-
-'$lgt_tr_msg'(Obj, abolish(Pred), '$lgt_abolish'(Obj, Pred, This, p(p(p))), Ctx) :-
-	!,
-	'$lgt_this'(Ctx, This).
-
-'$lgt_tr_msg'(Obj, asserta(Pred), '$lgt_asserta'(Obj, Pred, This, p(p(p))), Ctx) :-
-	!,
-	'$lgt_this'(Ctx, This).
-
-'$lgt_tr_msg'(Obj, assertz(Pred), '$lgt_assertz'(Obj, Pred, This, p(p(p))), Ctx) :-
-	!,
-	'$lgt_this'(Ctx, This).
-
-'$lgt_tr_msg'(Obj, clause(Head, Body), '$lgt_clause'(Obj, Head, Body, This, p(p(p))), Ctx) :-
-	!,
-	'$lgt_this'(Ctx, This).
-
-'$lgt_tr_msg'(Obj, retract(Pred), '$lgt_retract'(Obj, Pred, This, p(p(p))), Ctx) :-
-	!,
-	'$lgt_this'(Ctx, This).
-
-'$lgt_tr_msg'(Obj, retractall(Pred), '$lgt_retractall'(Obj, Pred, This, p(p(p))), Ctx) :-
-	!,
-	'$lgt_this'(Ctx, This).
-
-
-% DCG predicates
-
-'$lgt_tr_msg'(Obj, phrase(Ruleset, List), '$lgt_phrase'(Obj, Ruleset, List, This, p(p(p))), Ctx) :-
-	!,
-	'$lgt_this'(Ctx, This).
-
-'$lgt_tr_msg'(Obj, phrase(Ruleset, List, Rest), '$lgt_phrase'(Obj, Ruleset, List, Rest, This, p(p(p))), Ctx) :-
 	!,
 	'$lgt_this'(Ctx, This).
 
 
 % invalid goal
 
-'$lgt_tr_msg'(_, Pred, _, _) :-
+'$lgt_tr_msg'(Pred, _, _, _) :-
 	\+ '$lgt_callable'(Pred),
 	throw(type_error(callable, Pred)).
+
+
+% control constructs
+
+'$lgt_tr_msg'((Pred1, Pred2), Obj, (TPred1, TPred2), Ctx) :-
+	!,
+	'$lgt_tr_msg'(Pred1, Obj, TPred1, Ctx),
+	'$lgt_tr_msg'(Pred2, Obj, TPred2, Ctx).
+
+'$lgt_tr_msg'((Pred1; Pred2), Obj, (TPred1; TPred2), Ctx) :-
+	!,
+	'$lgt_tr_msg'(Pred1, Obj, TPred1, Ctx),
+	'$lgt_tr_msg'(Pred2, Obj, TPred2, Ctx).
+
+'$lgt_tr_msg'((Pred1 -> Pred2), Obj, (TPred1 -> TPred2), Ctx) :-
+	!,
+	'$lgt_tr_msg'(Pred1, Obj, TPred1, Ctx),
+	'$lgt_tr_msg'(Pred2, Obj, TPred2, Ctx).
+
+'$lgt_tr_msg'(\+ Pred, Obj, \+ TPred, Ctx) :-
+	!,
+	'$lgt_tr_msg'(Pred, Obj, TPred, Ctx).
+
+'$lgt_tr_msg'(!, Obj, ('$lgt_obj_exists'(Obj, !, This), !), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
+
+'$lgt_tr_msg'(true, Obj, ('$lgt_obj_exists'(Obj, true, This), true), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
+
+'$lgt_tr_msg'(fail, Obj, ('$lgt_obj_exists'(Obj, fail, This), fail), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
+
+'$lgt_tr_msg'(repeat, Obj, ('$lgt_obj_exists'(Obj, repeat, This), repeat), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
+
+'$lgt_tr_msg'(call(Pred), Obj, TPred, Ctx) :-
+	!,
+	'$lgt_tr_msg'(Pred, Obj, TPred, Ctx).
+
+'$lgt_tr_msg'(once(Pred), Obj, once(TPred), Ctx) :-
+	!,
+	'$lgt_tr_msg'(Pred, Obj, TPred, Ctx).
+
+'$lgt_tr_msg'(catch(Goal, Catcher, Recovery), Obj, catch(TGoal, Catcher, TRecovery), Ctx) :-
+	!,
+	'$lgt_tr_msg'(Goal, Obj, TGoal, Ctx),
+	'$lgt_tr_msg'(Recovery, Obj, TRecovery, Ctx).
+
+'$lgt_tr_msg'(throw(Error), Obj, ('$lgt_obj_exists'(Obj, throw(Error), This), throw(Error)), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
+
+
+% built-in metapredicates
+
+'$lgt_tr_msg'(bagof(Term, Pred, List), Obj, bagof(Term, TPred, List), Ctx) :-
+	!,
+	'$lgt_tr_msg'(Pred, Obj, TPred, Ctx).
+
+'$lgt_tr_msg'(findall(Term, Pred, List), Obj, findall(Term, TPred, List), Ctx) :-
+	!,
+	'$lgt_tr_msg'(Pred, Obj, TPred, Ctx).
+
+'$lgt_tr_msg'(forall(Gen, Test), Obj, forall(TGen, TTest), Ctx) :-
+	!,
+	'$lgt_tr_msg'(Gen, Obj, TGen, Ctx),
+	'$lgt_tr_msg'(Test, Obj, TTest, Ctx).
+
+'$lgt_tr_msg'(setof(Term, Pred, List), Obj, setof(Term, TPred, List), Ctx) :-
+	!,
+	'$lgt_tr_msg'(Pred, Obj, TPred, Ctx).
+
+
+% "reflection" built-in predicates
+
+'$lgt_tr_msg'(current_predicate(Pred), Obj, '$lgt_current_predicate'(Obj, Pred, This, p(p(p))), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
+
+'$lgt_tr_msg'(predicate_property(Pred, Prop), Obj, '$lgt_predicate_property'(Obj, Pred, Prop, This, p(p(p))), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
+
+
+% database handling built-in predicates
+
+'$lgt_tr_msg'(abolish(Pred), Obj, '$lgt_abolish'(Obj, Pred, This, p(p(p))), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
+
+'$lgt_tr_msg'(asserta(Pred), Obj, '$lgt_asserta'(Obj, Pred, This, p(p(p))), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
+
+'$lgt_tr_msg'(assertz(Pred), Obj, '$lgt_assertz'(Obj, Pred, This, p(p(p))), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
+
+'$lgt_tr_msg'(clause(Head, Body), Obj, '$lgt_clause'(Obj, Head, Body, This, p(p(p))), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
+
+'$lgt_tr_msg'(retract(Pred), Obj, '$lgt_retract'(Obj, Pred, This, p(p(p))), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
+
+'$lgt_tr_msg'(retractall(Pred), Obj, '$lgt_retractall'(Obj, Pred, This, p(p(p))), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
+
+
+% DCG predicates
+
+'$lgt_tr_msg'(phrase(Ruleset, List), Obj, '$lgt_phrase'(Obj, Ruleset, List, This, p(p(p))), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
+
+'$lgt_tr_msg'(phrase(Ruleset, List, Rest), Obj, '$lgt_phrase'(Obj, Ruleset, List, Rest, This, p(p(p))), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
 
 
 % message is not a built-in control construct or a call to a built-in 
 % (meta-)predicate: translation performed at runtime
 
-'$lgt_tr_msg'(Obj, Pred, '$lgt_send_to_object'(Obj, Pred, This), Ctx) :-
+'$lgt_tr_msg'(Pred, Obj, '$lgt_send_to_object'(Obj, Pred, This), Ctx) :-
 	'$lgt_this'(Ctx, This),
 	(var(Obj) ->
 		TPred = '$lgt_send_to_object'(Obj, Pred, This)
@@ -4269,13 +4269,13 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 '$lgt_tr_msg_broadcasting'((Obj1, Obj2), Pred, (TP1, TP2), Ctx) :-
 	!,
-	'$lgt_tr_msg'(Obj1, Pred, TP1, Ctx),
-	'$lgt_tr_msg'(Obj2, Pred, TP2, Ctx).
+	'$lgt_tr_msg'(Pred, Obj1, TP1, Ctx),
+	'$lgt_tr_msg'(Pred, Obj2, TP2, Ctx).
 
 '$lgt_tr_msg_broadcasting'((Obj1; Obj2), Pred, (TP1; TP2), Ctx) :-
 	!,
-	'$lgt_tr_msg'(Obj1, Pred, TP1, Ctx),
-	'$lgt_tr_msg'(Obj2, Pred, TP2, Ctx).
+	'$lgt_tr_msg'(Pred, Obj1, TP1, Ctx),
+	'$lgt_tr_msg'(Pred, Obj2, TP2, Ctx).
 
 
 
