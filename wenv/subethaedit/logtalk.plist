@@ -46,11 +46,11 @@
 			<false/>
 			<key>Regular Expressions</key>
 			<array>
-				<string>\:\-[[:space:]](object)</string>			
+				<string>\:\-[[:space:]](object)\(</string>			
 				<string>\:\-[[:space:]](end_object)\.</string>			
-				<string>\:\-[[:space:]](protocol)</string>			
+				<string>\:\-[[:space:]](protocol)\(</string>			
 				<string>\:\-[[:space:]](end_protocol)\.</string>			
-				<string>\:\-[[:space:]](category)</string>			
+				<string>\:\-[[:space:]](category)\(</string>			
 				<string>\:\-[[:space:]](end_category)\.</string>			
 				<string>\:\-[[:space:]](initialization)\(</string>			
 				<string>\:\-[[:space:]](info)\(</string>			
@@ -141,8 +141,11 @@
 				<string>(call)\(</string>
 				<string>(catch)\(</string>
 				<string>(throw)\(</string>
-				<string>(true)</string>
-				<string>(fail)</string>
+			</array>
+			<key>Plain Strings</key>
+			<array>
+				<string>true</string>
+				<string>fail</string>
 			</array>
 		</dict>
 
@@ -220,7 +223,6 @@
 				<string>(logtalk_compile)\(</string>
 				<string>(logtalk_load)\(</string>
 				<string>(forall)\(</string>
-				<string>(logtalk_version)\(</string>
 				<string>(retractall)\(</string>
 			</array>
 		</dict>
@@ -313,10 +315,8 @@
 				<string>(open)\(</string>
 				<string>(close)\(</string>
 				<string>(flush_output)\(</string>
-				<string>(flush_output)</string>
 				<string>(stream_property)\(</string>
 				<string>(at_end_of_stream)\(</string>
-				<string>(at_end_of_stream)</string>
 				<string>(set_stream_position)\(</string>
 				<!-- Character input/output -->
 				<string>(get_char)\(</string>
@@ -325,7 +325,7 @@
 				<string>(peek_code)\(</string>
 				<string>(put_char)\(</string>
 				<string>(put_code)\(</string>
-				<string>(nl)</string>
+				<string>(nl)\(</string>
 				<!-- Byte input/output -->
 				<string>(get_byte)\(</string>
 				<string>(peek_byte)\(</string>
@@ -344,7 +344,6 @@
 				<!-- Logic and control -->
 				<string>(\\\+)[[:space:]]+</string>
 				<string>(once)\(</string>
-				<string>(repeat)</string>
 				<!-- Atomic term processing -->
 				<string>(atom_length)\(</string>
 				<string>(atom_concat)\(</string>
@@ -357,7 +356,19 @@
 				<!-- Implementation defined hooks functions -->
 				<string>(set_prolog_flag)\(</string>
 				<string>(current_prolog_flag)\(</string>
-				<string>(halt)</string>
+				<string>(halt)\(</string>
+			</array>
+			<key>Plain Strings</key>
+			<array>
+				<!-- Stream selection and control -->
+				<string>flush_output</string>
+				<string>at_end_of_stream</string>
+				<!-- Character input/output -->
+				<string>nl</string>
+				<!-- Logic and control -->
+				<string>repeat</string>
+				<!-- Implementation defined hooks functions -->
+				<string>halt</string>
 			</array>
 		</dict>
 
@@ -374,7 +385,7 @@
 			<false/>
 			<key>Plain Strings</key>
 			<array>
-				<string>[0-9]+(\.[0-9]+)?([eE][-+][0-9]+)?</string>
+				<string>[0-9]+((\.[0-9]+)?([eE][-+][0-9]+)?)?</string>
 				<string>0b[0-1]+</string>
 				<string>0o[0-7]+</string>
 				<string>0x[0-9a-fA-F]+</string>
