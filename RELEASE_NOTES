@@ -12,6 +12,17 @@ RELEASE NOTES
 
 2.23.2 - March ??, 2005
 
+	Added experimental support for a encoding/1 directive for declaring the 
+	text character encoding of a source file. This directive is fully based 
+	on a directive with the same name and with similar semantics found on 
+	recent development versions of SWI-Prolog. For now, this directive only 
+	works with SWI-Prolog as most Prolog compilers lack support for dealing 
+	with different text encodings. Added new flag "supports_encoding_dir".
+
+	When a source file contains an encoding/1 directive, the XML documenting 
+	files will use the same encoding. When no encoding/1 directive is present,
+	the XML documenting files will assume UTF-8 encoding.
+
 	Corrected a bug on the "roots" example in the object "class" which failed 
 	to properly test the validity of new object identifiers.
 

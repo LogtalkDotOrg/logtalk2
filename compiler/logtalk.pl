@@ -3424,7 +3424,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	!.
 
 '$lgt_tr_file'(Stream, Term) :-
-	'$lgt_tr_term'(Term),
+	'$lgt_tr_term'(Term, Stream),
 	read_term(Stream, Next, [singletons(Singletons1)]),
 	'$lgt_filter_dont_care_vars'(Singletons1, Singletons2),
 	'$lgt_report_singletons'(Singletons2, Next),
@@ -3690,15 +3690,15 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 
-% '$lgt_tr_terms'(+list)
+% '$lgt_tr_terms'(+list, +stream)
 %
 % translates a list of entity terms (clauses and/or directives)
 
-'$lgt_tr_terms'([]).
+'$lgt_tr_terms'([], _).
 
-'$lgt_tr_terms'([Term| Terms]) :-
-	'$lgt_tr_term'(Term),
-	'$lgt_tr_terms'(Terms).
+'$lgt_tr_terms'([Term| Terms], Stream) :-
+	'$lgt_tr_term'(Term, Stream),
+	'$lgt_tr_terms'(Terms, Stream).
 
 
 
@@ -3706,20 +3706,20 @@ current_logtalk_flag(version, version(2, 23, 2)).
 %
 % translates an entity term (either a clause or a directive)
 
-'$lgt_tr_term'((Head :- Body)) :-
+'$lgt_tr_term'((Head :- Body), _) :-
 	!,
 	'$lgt_tr_clause'((Head :- Body)).
 
-'$lgt_tr_term'((:- Directive)) :-
+'$lgt_tr_term'((:- Directive), Stream) :-
 	!,
-	'$lgt_tr_directive'(Directive).
+	'$lgt_tr_directive'(Directive, Stream).
 
-'$lgt_tr_term'((Head --> Body)) :-
+'$lgt_tr_term'((Head --> Body), _) :-
 	!,
 	'$lgt_dcgrule_to_clause'((Head --> Body), Clause),
 	'$lgt_tr_clause'(Clause).
 
-'$lgt_tr_term'(Fact) :-
+'$lgt_tr_term'(Fact, _) :-
 	'$lgt_tr_clause'(Fact).
 
 
@@ -3736,86 +3736,97 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 
-% '$lgt_tr_directive'(+term)
+% '$lgt_tr_directive'(+term, @stream)
 %
 % translates an entity directive
 
-'$lgt_tr_directive'(Dir) :-
+'$lgt_tr_directive'(Dir, _) :-
 	var(Dir),
 	throw(error(instantiantion_error, directive(Dir))).
 
-'$lgt_tr_directive'(Dir) :-
+'$lgt_tr_directive'(Dir, _) :-
 	\+ '$lgt_pp_entity'(_, _, _, _, _),		% directive occurs before opening entity directive
 	functor(Dir, Functor, Arity),
 	'$lgt_lgt_closing_directive'(Functor, Arity),	% opening directive missing/misspelt
 	throw(error(unmatched_directive, directive(Dir))).
 
-'$lgt_tr_directive'(Dir) :-
+'$lgt_tr_directive'(Dir, Stream) :-
 	\+ '$lgt_pp_entity'(_, _, _, _, _),		% directive occurs before opening entity directive
 	functor(Dir, Functor, Arity),
 	\+ '$lgt_lgt_opening_directive'(Functor, Arity),
 	!,
 	assertz('$lgt_pp_directive_'(Dir)),		% directive will be copied to the generated Prolog file
-	(Dir = op(Pr, Spec, Ops) ->				% op/3 directives must be used during entity compilation
-		op(Pr, Spec, Ops)
-		;
-		true).
+	'$lgt_tr_global_directive'(Dir, Stream).
 
-'$lgt_tr_directive'(Dir) :-
+'$lgt_tr_directive'(Dir, Stream) :-
 	functor(Dir, Functor, Arity),
 	'$lgt_lgt_directive'(Functor, Arity),
 	Dir =.. [Functor| Args],
 	catch(
-		'$lgt_tr_directive'(Functor, Args),
+		'$lgt_tr_directive'(Functor, Args, Stream),
 		Error,
 		throw(error(Error, directive(Dir)))),
 	!.
 
-'$lgt_tr_directive'(Dir) :-
+'$lgt_tr_directive'(Dir, _) :-
 	throw(error(domain_error(directive, Dir), directive(Dir))).
 
 
 
-% '$lgt_tr_directive'(+atom, +list)
+% '$lgt_tr_global_directive'(@nonvar, @stream)
+
+'$lgt_tr_global_directive'(op(Pr, Spec, Ops), _) :-			% op/3 directives must be used during entity compilation
+	!,
+	op(Pr, Spec, Ops).
+
+'$lgt_tr_global_directive'(encoding(Encoding), Stream) :-	% encoding/1 directives must be used during entity compilation
+	!,
+	'$lgt_set_stream_encoding'(Stream, Encoding).
+
+'$lgt_tr_global_directive'(_, _).
+
+
+
+% '$lgt_tr_directive'(+atom, +list, @stream)
 %
 % translates a directive and its (possibly empty) list of arguments
 
-'$lgt_tr_directive'(object, [Obj| Rels]) :-
+'$lgt_tr_directive'(object, [Obj| Rels], _) :-
 	callable(Obj) ->
 		'$lgt_tr_object_id'(Obj, static),			% assume static category
 		'$lgt_tr_object_relations'(Rels, Obj)
 		;
 		throw(type_error(object_identifier, Obj)).
 
-'$lgt_tr_directive'(end_object, []) :-
+'$lgt_tr_directive'(end_object, [], _) :-
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _) ->
 		true
 		;
 		throw(closing_directive_mismatch).
 
 
-'$lgt_tr_directive'(protocol, [Ptc| Rels]) :-
+'$lgt_tr_directive'(protocol, [Ptc| Rels], _) :-
 	atom(Ptc) ->
 		'$lgt_tr_protocol_id'(Ptc, static),			% assume static category
 		'$lgt_tr_protocol_relations'(Rels, Ptc)
 		;
 		throw(type_error(protocol_identifier, Ptc)).
 
-'$lgt_tr_directive'(end_protocol, []) :-
+'$lgt_tr_directive'(end_protocol, [], _) :-
 	'$lgt_pp_protocol_'(_, _, _, _, _) ->
 		true
 		;
 		throw(closing_directive_mismatch).
 
 
-'$lgt_tr_directive'(category, [Ctg| Rels]) :-
+'$lgt_tr_directive'(category, [Ctg| Rels], _) :-
 	atom(Ctg) ->
 		'$lgt_tr_category_id'(Ctg, static),			% assume static category
 		'$lgt_tr_category_relations'(Rels, Ctg)
 		;
 		throw(type_error(category_identifier, Ctg)).
 
-'$lgt_tr_directive'(end_category, []) :-
+'$lgt_tr_directive'(end_category, [], _) :-
 	'$lgt_pp_category_'(_, _, _, _, _, _) ->
 		true
 		;
@@ -3824,12 +3835,12 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 % dynamic entity directive
 
-'$lgt_tr_directive'((dynamic), []) :-
+'$lgt_tr_directive'((dynamic), [], _) :-
 	!,
 	'$lgt_update_entity_comp_mode'.
 
 
-'$lgt_tr_directive'(initialization, [Goal]) :-
+'$lgt_tr_directive'(initialization, [Goal], _) :-
 	callable(Goal) ->
 		'$lgt_pp_entity'(_, Entity, Prefix, _, _),
 		'$lgt_ctx_ctx'(Ctx, Entity, Entity, Entity, Prefix, []),
@@ -3839,7 +3850,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		throw(type_error(callable, Goal)).
 
 
-'$lgt_tr_directive'(op, [Pr, Spec, Ops]) :-
+'$lgt_tr_directive'(op, [Pr, Spec, Ops], _) :-
 	'$lgt_valid_op_priority'(Pr) ->
 		('$lgt_valid_op_specifier'(Spec) ->
 			('$lgt_valid_op_names'(Ops) ->
@@ -3853,7 +3864,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		throw(type_error(operator_priority, Pr)).
 
 
-'$lgt_tr_directive'(uses, [Obj, Preds]) :-
+'$lgt_tr_directive'(uses, [Obj, Preds], _) :-
 	!,
 	(callable(Obj) ->
 		assertz('$lgt_pp_referenced_object_'(Obj)),
@@ -3875,7 +3886,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		throw(type_error(object_identifier, Obj))).
 
 
-'$lgt_tr_directive'(uses, [Obj]) :-
+'$lgt_tr_directive'(uses, [Obj], _) :-
 	callable(Obj) ->
 		assertz('$lgt_pp_referenced_object_'(Obj)),
 		assertz('$lgt_pp_uses_'(Obj))
@@ -3883,7 +3894,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		throw(type_error(object_identifier, Obj)).
 
 
-'$lgt_tr_directive'(calls, Ptcs) :-
+'$lgt_tr_directive'(calls, Ptcs, _) :-
 	'$lgt_convert_to_list'(Ptcs, Ptcs2),
 	forall(
 		'$lgt_member'(Ptc, Ptcs2),
@@ -3894,7 +3905,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 			throw(type_error(protocol_identifier, Ptc)))).
 
 
-'$lgt_tr_directive'(info, [List]) :-
+'$lgt_tr_directive'(info, [List], _) :-
 	!,
 	('$lgt_tr_entity_info_list'(List) ->
 		assertz('$lgt_pp_info_'(List))
@@ -3902,7 +3913,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		throw(type_error(entity_info_list, List))).
 
 
-'$lgt_tr_directive'(info, [Pred, List]) :-
+'$lgt_tr_directive'(info, [Pred, List], _) :-
 	'$lgt_valid_pred_or_gr_ind'(Pred, Functor, Arity) ->
 		'$lgt_tr_pred_info_list'(List, Functor, Arity),
 		assertz('$lgt_pp_info_'(Pred, List))
@@ -3910,7 +3921,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		throw(type_error(predicate_indicator, Pred)).
 
 
-'$lgt_tr_directive'((public), Preds) :-
+'$lgt_tr_directive'((public), Preds, _) :-
 	'$lgt_convert_to_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
@@ -3924,7 +3935,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 				throw(type_error(predicate_indicator, Pred))))).
 
 
-'$lgt_tr_directive'(protected, Preds) :-
+'$lgt_tr_directive'(protected, Preds, _) :-
 	'$lgt_convert_to_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
@@ -3938,7 +3949,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 				throw(type_error(predicate_indicator, Pred))))).
 
 
-'$lgt_tr_directive'(private, Preds) :-
+'$lgt_tr_directive'(private, Preds, _) :-
 	'$lgt_convert_to_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
@@ -3952,7 +3963,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 				throw(type_error(predicate_indicator, Pred))))).
 
 
-'$lgt_tr_directive'((dynamic), Preds) :-
+'$lgt_tr_directive'((dynamic), Preds, _) :-
 	'$lgt_convert_to_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
@@ -3965,7 +3976,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 				throw(type_error(predicate_indicator, Pred))))).
 
 
-'$lgt_tr_directive'((discontiguous), Preds) :-
+'$lgt_tr_directive'((discontiguous), Preds, _) :-
 	'$lgt_convert_to_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
@@ -3978,7 +3989,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 				throw(type_error(predicate_indicator, Pred))))).
 
 
-'$lgt_tr_directive'(metapredicate, Preds) :-
+'$lgt_tr_directive'(metapredicate, Preds, _) :-
 	'$lgt_convert_to_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
@@ -3988,7 +3999,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 			throw(type_error(metapredicate_term, Pred)))).
 
 
-'$lgt_tr_directive'((mode), [Mode, Solutions]) :-
+'$lgt_tr_directive'((mode), [Mode, Solutions], _) :-
 	'$lgt_valid_mode_term'(Mode) ->
 		('$lgt_valid_number_of_solutions'(Solutions) ->
 			assertz('$lgt_pp_mode_'(Mode, Solutions))
@@ -3998,23 +4009,23 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		throw(type_error(mode_term, Mode)).
 
 
-'$lgt_tr_directive'(alias, [_, PI1, _]) :-
+'$lgt_tr_directive'(alias, [_, PI1, _], _) :-
 	\+ '$lgt_valid_pred_ind'(PI1, _, _),
 	throw(type_error(predicate_indicator, PI1)).
 
-'$lgt_tr_directive'(alias, [_, _, PI2]) :-
+'$lgt_tr_directive'(alias, [_, _, PI2], _) :-
 	\+ '$lgt_valid_pred_ind'(PI2, _, _),
 	throw(type_error(predicate_indicator, PI2)).
 
-'$lgt_tr_directive'(alias, [Entity, _, _]) :-
+'$lgt_tr_directive'(alias, [Entity, _, _], _) :-
 	\+ callable(Entity),
 	throw(type_error(entity_identifier, Entity)).
 
-'$lgt_tr_directive'(alias, [_, Functor1/Arity1, Functor2/Arity2]) :-
+'$lgt_tr_directive'(alias, [_, Functor1/Arity1, Functor2/Arity2], _) :-
 	Arity1 =\= Arity2,
 	throw(domain_error(arity_mismatch, Functor1/Arity1, Functor2/Arity2)).
 
-'$lgt_tr_directive'(alias, [Entity, PI1, PI2]) :-
+'$lgt_tr_directive'(alias, [Entity, PI1, PI2], _) :-
 	('$lgt_pp_extended_protocol_'(Entity, _, _, _);
 	 '$lgt_pp_implemented_protocol_'(Entity, _, _, _);
 	 '$lgt_pp_imported_category_'(Entity, _, _, _, _);
@@ -4024,7 +4035,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	!,
 	'$lgt_tr_alias_directive'(Entity, PI1, PI2).
 
-'$lgt_tr_directive'(alias, [Entity, _, _]) :-
+'$lgt_tr_directive'(alias, [Entity, _, _], _) :-
 	throw(reference_error(entity_identifier, Entity)).
 
 
@@ -7139,6 +7150,14 @@ current_logtalk_flag(version, version(2, 23, 2)).
 % writes the directives
 
 '$lgt_write_directives'(Stream) :-
+	retract('$lgt_pp_directive_'(encoding(Encoding))),
+	'$lgt_compiler_flag'(supports_encoding_dir, true),
+	write_canonical(Stream, (:- encoding(Encoding))),
+	write(Stream, '.'),
+	nl(Stream),
+	fail.
+
+'$lgt_write_directives'(Stream) :-
 	'$lgt_pp_directive_'(Dir),
 	write_canonical(Stream, (:- Dir)),
 	write(Stream, '.'),
@@ -8058,6 +8077,29 @@ current_logtalk_flag(version, version(2, 23, 2)).
 '$lgt_read_only_flag'(supports_break_predicate).
 '$lgt_read_only_flag'(version).
 '$lgt_read_only_flag'(altdirs).
+'$lgt_read_only_flag'(supports_encoding_dir).
+
+
+
+% '$lgt_xml_encoding'(-atom)
+%
+% returns the text encoding that should be used on the XML documenting file
+
+'$lgt_xml_encoding'(XMLEncoding) :-
+	'$lgt_pp_directive_'(encoding(Encoding)) ->
+		'$lgt_xml_encoding_table'(Encoding, XMLEncoding)
+		;
+		XMLEncoding = 'utf-8'.
+
+
+
+% '$lgt_xml_encoding_table'(?atom, ?atom)
+%
+% converts between Prolog stream encoding names and XML encoding names
+
+'$lgt_xml_encoding_table'(ascii, 'us-ascii').
+'$lgt_xml_encoding_table'(iso_latin_1, 'iso-8859-1').
+'$lgt_xml_encoding_table'(utf8, 'utf-8').
 
 
 
@@ -8361,7 +8403,9 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 '$lgt_write_xml_header'(local, XMLSpec, Stream) :-
-	'$lgt_write_xml_open_tag'(Stream, '?xml version="1.0" standalone="no"?', []),
+	'$lgt_xml_encoding'(Encoding),
+	'$lgt_xml_header_text'('1.0', Encoding, no, Text),
+	'$lgt_write_xml_open_tag'(Stream, Text, []),
 	write(Stream, '<!DOCTYPE logtalk SYSTEM "logtalk.'),
 	write(Stream, XMLSpec), write(Stream, '">'), nl(Stream),
 	'$lgt_compiler_flag'(xsl, XSL),
@@ -8371,7 +8415,9 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_write_xml_open_tag'(Stream, logtalk, []).
 
 '$lgt_write_xml_header'(web, XMLSpec, Stream) :-
-	'$lgt_write_xml_open_tag'(Stream, '?xml version="1.0" standalone="no"?', []),
+	'$lgt_xml_encoding'(Encoding),
+	'$lgt_xml_header_text'('1.0', Encoding, no, Text),
+	'$lgt_write_xml_open_tag'(Stream, Text, []),
 	write(Stream, '<!DOCTYPE logtalk SYSTEM "http://www.logtalk.org/xml/1.2/logtalk.'),
 	write(Stream, XMLSpec), write(Stream, '">'), nl(Stream),
 	'$lgt_compiler_flag'(xsl, XSL),
@@ -8381,12 +8427,23 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_write_xml_open_tag'(Stream, logtalk, []).
 
 '$lgt_write_xml_header'(standalone, _, Stream) :-
-	'$lgt_write_xml_open_tag'(Stream, '?xml version="1.0" standalone="yes"?', []),
+	'$lgt_xml_encoding'(Encoding),
+	'$lgt_xml_header_text'('1.0', Encoding, yes, Text),
+	'$lgt_write_xml_open_tag'(Stream, Text, []),
 	'$lgt_compiler_flag'(xsl, XSL),
 	write(Stream, '<?xml-stylesheet type="text/xsl" href="'),
 	write(Stream, XSL),
 	write(Stream, '"?>'), nl(Stream),
 	'$lgt_write_xml_open_tag'(Stream, logtalk, []).
+
+
+'$lgt_xml_header_text'(Version, Encoding, Standalone, Text) :-
+	atom_concat('?xml version="', Version, Aux1),
+	atom_concat(Aux1, '" encoding="', Aux2),
+	atom_concat(Aux2, Encoding, Aux3),
+	atom_concat(Aux3, '" standalone="', Aux4),
+	atom_concat(Aux4, Standalone, Aux5),
+	atom_concat(Aux5, '"?', Text).
 
 
 
@@ -9017,7 +9074,9 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_default_flag'(startup_message, Startup),
 	write('  Startup message (startup_message):                        '), write(Startup), nl,
 	'$lgt_default_flag'(altdirs, Altdirs),
-	write('  Alternative compilation directories (altdirs):            '), write(Altdirs), nl, nl.
+	write('  Alternative compilation directories (altdirs):            '), write(Altdirs), nl,
+	'$lgt_default_flag'(supports_encoding_dir, Encodings),
+	write('  Support for encoding directive (supports_encoding_dir):   '), write(Encodings), nl, nl.
 
 
 
