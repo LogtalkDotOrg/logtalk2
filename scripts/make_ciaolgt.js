@@ -17,12 +17,12 @@ WScript.Echo('');
 
 var WshShell = new ActiveXObject("WScript.Shell");
 
-var prolog_path = WshShell.RegRead("HKLM\\Software\\Ciao Prolog\\ciao_dir") + "\\shell\\ciaosh.exe";
+var prolog_path = WshShell.RegRead("HKLM\\Software\\Ciao Prolog\\ciao_dir") + "\\shell\\ciaosh.cpx";
 
 var FSObject = new ActiveXObject("Scripting.FileSystemObject");
 
 if (!FSObject.FileExists(prolog_path)) {
-	WScript.Echo("Error! Cannot find ciaosh.exe at the expected place!");
+	WScript.Echo("Error! Cannot find ciaosh.cpx at the expected place!");
 	WScript.Quit(1);
 }
 
