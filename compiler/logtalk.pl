@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.12.0
+%  Release 2.13.0
 %
 %  Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 %
@@ -1019,7 +1019,7 @@ logtalk_version(Major, Minor, Patch) :-
 	\+ integer(Patch),
 	throw(error(type_error(integer, Patch), logtalk_version(Major, Minor, Patch))).
 
-logtalk_version(2, 12, 0).
+logtalk_version(2, 13, 0).
 
 
 
@@ -4579,44 +4579,16 @@ lgt_report_misspelt_calls([Pred| Preds]) :-
 
 % lgt_write_directives(+stream)
 %
-% writes the Logtalk and user directives
+% writes the directives
 
 lgt_write_directives(Stream) :-
-	lgt_write_lgt_directives(Stream),
-	lgt_write_user_directives(Stream).
-
-
-
-% lgt_write_lgt_directives(+stream)
-%
-% writes the Logtalk message sending operator directives
-
-lgt_write_lgt_directives(Stream) :-
-	write_term(Stream, ':- ', []),
-	write_term(Stream, op(600, xfy, ::), [quoted(true)]),
-	write_term(Stream, '.', []), nl(Stream),
-	write_term(Stream, ':- ', []),
-	write_term(Stream, op(600,  fy, ::), [quoted(true)]),
-	write_term(Stream, '.', []), nl(Stream),
-	write_term(Stream, ':- ', []),
-	write_term(Stream, op(600,  fx, ^^), [quoted(true)]),
-	write_term(Stream, '.', []), nl(Stream).
-
-
-
-% lgt_write_user_directives(+stream)
-%
-% writes the user directives
-
-lgt_write_user_directives(Stream) :-
 	lgt_directive_(Dir),
-	write_term(Stream, ':- ', []),
-	write_term(Stream, Dir, [quoted(true)]),
-	write_term(Stream, '.', []),
+	write_canonical(Stream, (:- Dir)),
+	write(Stream, '.'),
 	nl(Stream),
 	fail.
 
-lgt_write_user_directives(_).
+lgt_write_directives(_).
 
 
 
@@ -4632,16 +4604,16 @@ lgt_write_clauses(Stream) :-
 
 lgt_write_functors_clause(Stream) :-
 	lgt_entity_functors_(Clause),
-	write_term(Stream, Clause, [quoted(true)]),
-	write_term(Stream, '.', []),
+	write_canonical(Stream, Clause),
+	write(Stream, '.'),
 	nl(Stream).
 
 
 
 lgt_write_def_clauses(Stream) :-
 	lgt_def_(Clause),
-	write_term(Stream, Clause, [quoted(true)]),
-	write_term(Stream, '.', []), nl(Stream),
+	write_canonical(Stream, Clause),
+	write(Stream, '.'), nl(Stream),
 	fail.
 
 lgt_write_def_clauses(_).
@@ -4650,8 +4622,8 @@ lgt_write_def_clauses(_).
 
 lgt_write_ddef_clauses(Stream) :-
 	lgt_ddef_(Clause),
-	write_term(Stream, Clause, [quoted(true)]),
-	write_term(Stream, '.', []), nl(Stream),
+	write_canonical(Stream, Clause),
+	write(Stream, '.'), nl(Stream),
 	fail.
 
 lgt_write_ddef_clauses(_).
@@ -4660,8 +4632,8 @@ lgt_write_ddef_clauses(_).
 
 lgt_write_dcl_clauses(Stream) :-
 	lgt_dcl_(Clause),
-	write_term(Stream, Clause, [quoted(true)]),
-	write_term(Stream, '.', []),
+	write_canonical(Stream, Clause),
+	write(Stream, '.'),
 	nl(Stream),
 	fail.
 
@@ -4671,8 +4643,8 @@ lgt_write_dcl_clauses(_).
 
 lgt_write_super_clauses(Stream) :-
 	lgt_super_(Clause),
-	write_term(Stream, Clause, [quoted(true)]),
-	write_term(Stream, '.', []),
+	write_canonical(Stream, Clause),
+	write(Stream, '.'),
 	nl(Stream),
 	fail.
 
@@ -4682,8 +4654,8 @@ lgt_write_super_clauses(_).
 
 lgt_write_entity_clauses(Stream) :-
 	lgt_feclause_(Clause),
-	write_term(Stream, Clause, [quoted(true)]),
-	write_term(Stream, '.', []),
+	write_canonical(Stream, Clause),
+	write(Stream, '.'),
 	nl(Stream),
 	fail.
 
@@ -4701,25 +4673,19 @@ lgt_write_init_call(Stream) :-
 	lgt_compiler_option(iso_initialization_dir, true),
 	!,
 	findall(Clause, lgt_rclause_(Clause), Clauses),
-	write_term(Stream, ':- initialization((lgt_assert_relation_clauses(', []),
-	write_term(Stream, Clauses, [quoted(true)]),
-	write_term(Stream, ')', []),
 	(lgt_fentity_init_(Call) ->
-		write_term(Stream, ', ', []),
-		write_term(Stream, Call, [quoted(true)])
+		write_canonical(Stream, (:- initialization((lgt_assert_relation_clauses(Clauses), Call))))
 		;
-		true),
-	write_term(Stream, ')).', []), nl(Stream).
+		write_canonical(Stream, (:- initialization(lgt_assert_relation_clauses(Clauses))))),
+	write(Stream, '.'), nl(Stream).
 
 lgt_write_init_call(Stream) :-
 	findall(Clause, lgt_rclause_(Clause), Clauses),
-	write_term(Stream, ':- lgt_assert_relation_clauses(', []),
-	write_term(Stream, Clauses, [quoted(true)]),
-	write_term(Stream, ').', []), nl(Stream),
+	write_canonical(Stream, (:- initialization(lgt_assert_relation_clauses(Clauses)))),
+	write(Stream, '.'), nl(Stream),
 	(lgt_fentity_init_(Call) ->
-		write_term(Stream, ':- ', []),
-		write_term(Stream, Call, [quoted(true)]),
-		write_term(Stream, '.', []),
+		write_canonical(Stream, (:- Call)),
+		write(Stream, '.'),
 		nl(Stream)
 		;
 		true).
@@ -5396,11 +5362,11 @@ lgt_write_xml_file(Stream) :-
 
 lgt_write_xml_header(Stream) :-
 	lgt_write_xml_open_tag(Stream, '?xml version="1.0"?', []),
-	write_term(Stream, '<!DOCTYPE logtalk SYSTEM "logtalk.dtd">', []), nl(Stream),
+	write(Stream, '<!DOCTYPE logtalk SYSTEM "logtalk.dtd">'), nl(Stream),
 	lgt_compiler_option(xsl, XSL),
-	write_term(Stream, '<?xml-stylesheet type="text/xsl" href="', []),
-	write_term(Stream, XSL, []),
-	write_term(Stream, '"?>', []), nl(Stream),
+	write(Stream, '<?xml-stylesheet type="text/xsl" href="'),
+	write(Stream, XSL),
+	write(Stream, '"?>'), nl(Stream),
 	lgt_write_xml_open_tag(Stream, logtalk, []).
 
 
@@ -5688,10 +5654,10 @@ lgt_write_xml_relation(Stream, Entity, Relation, Tag) :-
 % writes <Tag Att1="V1" Att2="V2" ...>
 
 lgt_write_xml_open_tag(Stream, Tag, Atts) :-
-	write_term(Stream, '<', []),
-	write_term(Stream, Tag, []),
+	write(Stream, '<'),
+	write(Stream, Tag),
 	lgt_write_xml_tag_attributes(Stream, Atts),
-	write_term(Stream, '>', []), nl(Stream).
+	write(Stream, '>'), nl(Stream).
 
 
 
@@ -5700,14 +5666,14 @@ lgt_write_xml_open_tag(Stream, Tag, Atts) :-
 % writes <Tag Att1="V1" Att2="V2" ...>Text</Tag>
 
 lgt_write_xml_element(Stream, Tag, Atts, Text) :-
-	write_term(Stream, '<', []),
-	write_term(Stream, Tag, []),
+	write(Stream, '<'),
+	write(Stream, Tag),
 	lgt_write_xml_tag_attributes(Stream, Atts),
-	write_term(Stream, '>', []),
-	write_term(Stream, Text, []),
-	write_term(Stream, '</', []),
-	write_term(Stream, Tag, []),
-	write_term(Stream, '>', []), nl(Stream).
+	write(Stream, '>'),
+	write(Stream, Text),
+	write(Stream, '</'),
+	write(Stream, Tag),
+	write(Stream, '>'), nl(Stream).
 
 
 
@@ -5716,14 +5682,14 @@ lgt_write_xml_element(Stream, Tag, Atts, Text) :-
 % writes <Tag Att1="V1" Att2="V2" ...><![CDATA[Text]]></Tag>
 
 lgt_write_xml_cdata_element(Stream, Tag, Atts, Text) :-
-	write_term(Stream, '<', []),
-	write_term(Stream, Tag, []),
+	write(Stream, '<'),
+	write(Stream, Tag),
 	lgt_write_xml_tag_attributes(Stream, Atts),
-	write_term(Stream, '><![CDATA[', []),
-	write_term(Stream, Text, []),
-	write_term(Stream, ']]></', []),
-	write_term(Stream, Tag, []),
-	write_term(Stream, '>', []), nl(Stream).
+	write(Stream, '><![CDATA['),
+	write(Stream, Text),
+	write(Stream, ']]></'),
+	write(Stream, Tag),
+	write(Stream, '>'), nl(Stream).
 
 
 
@@ -5733,11 +5699,11 @@ lgt_write_xml_tag_attributes(_, []) :-
 	!.
 
 lgt_write_xml_tag_attributes(Stream, [Attribute-Value| Rest]) :-
-	write_term(Stream, ' ', []),
-	write_term(Stream, Attribute, []),
-	write_term(Stream, '="', []),
-	write_term(Stream, Value, []),
-	write_term(Stream, '"', []),
+	write(Stream, ' '),
+	write(Stream, Attribute),
+	write(Stream, '="'),
+	write(Stream, Value),
+	write(Stream, '"'),
 	lgt_write_xml_tag_attributes(Stream, Rest).
 
 
@@ -5747,9 +5713,9 @@ lgt_write_xml_tag_attributes(Stream, [Attribute-Value| Rest]) :-
 % writes </Tag>
 
 lgt_write_xml_close_tag(Stream, Tag) :-
-	write_term(Stream, '</', []),
-	write_term(Stream, Tag, []),
-	write_term(Stream, '>', []),
+	write(Stream, '</'),
+	write(Stream, Tag),
+	write(Stream, '>'),
 	nl(Stream).
 
 
