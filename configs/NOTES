@@ -333,14 +333,17 @@ QU-Prolog 4.3, 6.3
 
 	qu43.config
 
-	Not tested but no problems are expected.
+	Not tested (written by consulting the documentation).
 	The predicates lgt_current_date/3 and lgt_current_time/3 have dummy 
 	definitions. For most users, this will be no problem (some examples 
 	may use lgt_current_date/3 to put a time stamp in new objects).
 
 	qu63.config
 
-	Not tested but no problems are expected.
+	Some known problems are: singletons/1 option on read_term/3 does not 
+	work (all variables are reported as singletons!). The built-in predicate 
+	write_canonical/2 outputs code that the built-in predicate cannot read 
+	back without generating syntax errors.
 
 
 Quintus Prolog 3.3~3.4
@@ -443,9 +446,9 @@ XSB Prolog 2.3~6
 	or some of the examples due to a know bug in the XSB parsing of infix 
 	operators: just add a space after the infix operator.
 
-	The write() and writeq() predicates output code that in some instances 
-	can not be readed back with read(). If you receive a syntax error while 
-	loading a Logtalk compiled file we will have to fix the problem by 
+	The write_canonical/2 predicates may output code that in some instances 
+	can not be readed back with read_term/3. If you receive a syntax error 
+	while loading a Logtalk compiled file we will have to fix the problem by 
 	editing the file (the Prolog output, not the Logtalk source). Don't 
 	forget to use the cd/1 predicate to set the working directory before 
 	loading an example.
