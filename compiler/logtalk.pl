@@ -2748,7 +2748,7 @@ current_logtalk_flag(version, version(2, 19, 1)).
 '$lgt_load_entity'(Entity, Options) :-
 	'$lgt_compile_entity'(Entity, Options),
 	('$lgt_redefined_entity'(Entity, Type, Identifier) ->
-		'$lgt_remove_old_entity'(Type, Identifier),
+		'$lgt_clean_redefined_entity'(Type, Identifier),
 		'$lgt_report_redefined_entity'(Type, Identifier)
 		;
 		true),
@@ -2785,37 +2785,26 @@ current_logtalk_flag(version, version(2, 19, 1)).
 
 
 
-% '$lgt_remove_old_entity'(+atom, +entity_identifier)
+% '$lgt_clean_redefined_entity'(+atom, +entity_identifier)
 %
-% remove old entity if dynamic otherwise retract all 
-% clauses for all local dynamic predicates
+% retract all clauses for all local dynamic 
+% predicates from a redefined entity
 
-'$lgt_remove_old_entity'(object, Entity) :-
-	object_property(Entity, (dynamic)) ->
-		abolish_object(Entity)
-		;
-		'$lgt_current_object_'(Entity, Prefix, _, _, _, _),
-		'$lgt_call'(Prefix, _, Def, _, _, _, _, DDef),
-		forall(
-			('$lgt_call'(Def, _, _, _, _, Head),
-			 '$lgt_predicate_property'(Head, (dynamic))), 
-			retractall(Head)),
-		forall(
-			('$lgt_call'(DDef, _, _, _, _, Head2),
-			 '$lgt_predicate_property'(Head2, (dynamic))), 
-			retractall(Head2)).
+'$lgt_clean_redefined_entity'(object, Entity) :-
+	'$lgt_current_object_'(Entity, Prefix, _, _, _, _),
+	'$lgt_call'(Prefix, _, Def, _, _, _, _, DDef),
+	forall(
+		('$lgt_call'(Def, _, _, _, _, Head),
+		 '$lgt_predicate_property'(Head, (dynamic))), 
+		retractall(Head)),
+	forall(
+		('$lgt_call'(DDef, _, _, _, _, Head2),
+		 '$lgt_predicate_property'(Head2, (dynamic))), 
+		retractall(Head2)).
 
-'$lgt_remove_old_entity'(protocol, Entity) :-
-	protocol_property(Entity, (dynamic)) ->
-		abolish_protocol(Entity)
-		;
-		true.
+'$lgt_clean_redefined_entity'(protocol, _).
 
-'$lgt_remove_old_entity'(category, Entity) :-
-	category_property(Entity, (dynamic)) ->
-		abolish_category(Entity)
-		;
-		true.
+'$lgt_clean_redefined_entity'(category, _).
 
 
 
