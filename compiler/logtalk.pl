@@ -1363,8 +1363,11 @@ current_logtalk_flag(version, version(2, 17, 0)).
 				;
 				Metavars = []),
 			'$lgt_metavars'(Ctx, Metavars),
-			'$lgt_tr_body'(Body, TBody, _, Ctx),
-			asserta((Call :- ('$lgt_nop'(Body), TBody)))
+			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
+			('$lgt_debugging_'(Obj) ->
+				asserta((Call :- ('$lgt_nop'(Body), DBody)))
+				;
+				asserta((Call :- ('$lgt_nop'(Body), TBody))))
 			;
 			(PScope = p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta((Head:-Body)), Sender))
@@ -1389,7 +1392,14 @@ current_logtalk_flag(version, version(2, 17, 0)).
 				functor(Head, Functor, Arity),
 				'$lgt_assert_ddef_clause'(Functor, Arity, Prefix, DDef, _),
 				'$lgt_once'(DDef, Head, _, _, _, Call)),
-			asserta(Call)
+			('$lgt_debugging_'(Obj) ->
+				'$lgt_context'(Ctx),
+				'$lgt_sender'(Ctx, Sender),
+				'$lgt_this'(Ctx, Obj),
+				'$lgt_self'(Ctx, Obj),
+				asserta((Call :- '$lgt_dbg_fact'(Head, Ctx)))
+				;
+				asserta(Call))
 			;
 			(PScope = p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta(Head), Sender))
@@ -1450,8 +1460,11 @@ current_logtalk_flag(version, version(2, 17, 0)).
 				;
 				Metavars = []),
 			'$lgt_metavars'(Ctx, Metavars),
-			'$lgt_tr_body'(Body, TBody, _, Ctx),
-			assertz((Call :- ('$lgt_nop'(Body), TBody)))
+			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
+			('$lgt_debugging_'(Obj) ->
+				assertz((Call :- ('$lgt_nop'(Body), DBody)))
+				;
+				assertz((Call :- ('$lgt_nop'(Body), TBody))))
 			;
 			(PScope = p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::assertz((Head:-Body)), Sender))
@@ -1476,7 +1489,14 @@ current_logtalk_flag(version, version(2, 17, 0)).
 				functor(Head, Functor, Arity),
 				'$lgt_assert_ddef_clause'(Functor, Arity, Prefix, DDef, _),
 				'$lgt_once'(DDef, Head, _, _, _, Call)),
-			assertz(Call)
+			('$lgt_debugging_'(Obj) ->
+				'$lgt_context'(Ctx),
+				'$lgt_sender'(Ctx, Sender),
+				'$lgt_this'(Ctx, Obj),
+				'$lgt_self'(Ctx, Obj),
+				assertz((Call :- '$lgt_dbg_fact'(Head, Ctx)))
+				;
+				assertz(Call))
 			;
 			(PScope = p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::assertz(Head), Sender))
@@ -1580,10 +1600,16 @@ current_logtalk_flag(version, version(2, 17, 0)).
 		(Type = (dynamic) ->
 			((\+ \+ PScope = Scope; Sender = SCtn) ->
 				('$lgt_once'(Def, Head, _, _, _, Call) ->
-					retract(Call)
+					('$lgt_debugging_'(Obj) ->
+						retract((Call :- '$lgt_dbg_fact'(_, _)))
+						;
+						retract(Call))
 					;
 					('$lgt_once'(DDef, Head, _, _, _, Call) ->
-						retract(Call),
+						('$lgt_debugging_'(Obj) ->
+							retract((Call :- '$lgt_dbg_fact'(_, _)))
+							;
+							retract(Call)),
 						'$lgt_update_ddef_table'(DDef, Call)
 						;
 						fail))
