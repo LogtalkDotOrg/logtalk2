@@ -46,12 +46,16 @@
 		{rename_file(Old, New)}.
 
 
-	environment(Variable, Value) :-
+	getenv(Variable, Value) :-
 		{getenv(Variable, Value)}.
 
 
+	setenv(Variable, Value) :-
+		{setenv(Variable, Value)}.
+
+
 	date_time(Year, Month, Day, Hour, Min, Sec) :-
-		{get time(Time), convert time(Time, Year, Month, Day, Hour, Min, Sec, _)}.
+		{get_time(Time), convert time(Time, Year, Month, Day, Hour, Min, Sec, _)}.
 
 
 	host(Name) :-

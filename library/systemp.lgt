@@ -90,12 +90,21 @@
 		argnames is ['Old', 'New']]).
 
 
-	:- public(environment/2).
+	:- public(getenv/2).
 
-	:- mode(environment(?atom, ?atom), zero_or_more).
+	:- mode(getenv(+atom, ?atom), zero_or_one).
 
-	:- info(environment/2, [
-		comment is 'Environment variable value.',
+	:- info(getenv/2, [
+		comment is 'Get environment variable value.',
+		argnames is ['Variable', 'Value']]).
+
+
+	:- public(setenv/2).
+
+	:- mode(setenv(+atom, +atom), zero_or_one).
+
+	:- info(setenv/2, [
+		comment is 'Set environment variable value.',
 		argnames is ['Variable', 'Value']]).
 
 

@@ -14,19 +14,19 @@
 
 
 	make_directory(Directory) :-
-		{make_directory(Directory)}.
+		{mkdir(Directory)}.
 
 
 	delete_directory(Directory) :-
-		{delete_file(Directory)}.
+		{rmdir(Directory, 0)}.
 
 
 	change_directory(Directory) :-
-		{cd(Directory)}.
+		{chdir(Directory)}.
 
 
 	working_directory(Directory) :-
-		{getcwd(Directory)}.
+		{curdir(Directory, Directory)}.
 
 
 	directory_files(Directory, Files) :-
@@ -42,7 +42,7 @@
 
 
 	delete_file(File) :-
-		{delete_file(File)}.
+		{delfile(File, 0)}.
 
 
 	rename_file(Old, New) :-
@@ -50,19 +50,15 @@
 
 
 	getenv(Variable, Value) :-
-		{environ(Variable, Value)}.
-
-
-	setenv(Variable, Value) :-
-		{putenv(Variable, Value)}.
+		{get_env_var(Variable, Value)}.
 
 
 	date_time(Year, Month, Day, Hour, Min, Sec) :-
-		{datime(datime(Year, Month, Day, Hour, Min, Sec))}.
+		{date(Year, Month, Day), time(Hour, Min, Sec)}.
 
 
 	host(Name) :-
-		{host_name(Name)}.
+		{current_host(Name)}.
 
 
 :- end_object.

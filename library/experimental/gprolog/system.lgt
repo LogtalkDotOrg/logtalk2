@@ -46,7 +46,7 @@
 		{rename_file(Old, New)}.
 
 
-	environment(Variable, Value) :-
+	getenv(Variable, Value) :-
 		{environ(Variable, Value)}.
 
 

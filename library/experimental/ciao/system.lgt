@@ -49,8 +49,12 @@
 		{rename_file(Old, New)}.
 
 
-	environment(Variable, Value) :-
-		{getenvstr(Variable, Value)}.
+	getenv(Variable, Value) :-
+		{getenvstr(Variable, Codes), atom_codes(Value, Codes)}.
+
+
+	setenv(Variable, Value) :-
+		{atom_codes(Value, Codes), setenvstr(Variable, Codes)}.
 
 
 	date_time(Year, Month, Day, Hour, Min, Sec) :-

@@ -1,7 +1,4 @@
 
-:- use_module(library(system)).
-
-
 :- object(system,
 	implements(systemp)).
 
@@ -14,47 +11,47 @@
 
 
 	make_directory(Directory) :-
-		{make_directory(Directory)}.
+		{atom_concat('mkdir ', Directory, Command), os(system(Command))}.
 
 
 	delete_directory(Directory) :-
-		{delete_file(Directory)}.
+		{atom_concat('rmdir ', Directory, Command), os(system(Command))}.
 
 
 	change_directory(Directory) :-
-		{cd(Directory)}.
+		{chdir(Directory)}.
 
 
 	working_directory(Directory) :-
-		{getcwd(Directory)}.
+		{fail}.
 
 
 	directory_files(Directory, Files) :-
-		{directory_files(Directory, Files)}.
+		{fail}.
 
 
 	file_exists(File) :-
-		{file_exists(File)}.
+		{access(File, 4, 0)}.
 
 
 	file_property(File, Property) :-
-		{file_property(File, Property)}.
+		{fail}.
 
 
 	delete_file(File) :-
-		{delete_file(File)}.
+		{atom_concat('rm ', File, Command), os(system(Command))}.
 
 
 	rename_file(Old, New) :-
-		{rename(Old, New)}.
+		{atom_concat('mv ', Old, Temp), atom_concat(' ', New, Command), os(system(Command))}.
 
 
 	getenv(Variable, Value) :-
-		{environ(Variable, Value)}.
+		{fail}.
 
 
 	setenv(Variable, Value) :-
-		{putenv(Variable, Value)}.
+		{fail}.
 
 
 	date_time(Year, Month, Day, Hour, Min, Sec) :-
@@ -62,7 +59,7 @@
 
 
 	host(Name) :-
-		{host_name(Name)}.
+		{fail}.
 
 
 :- end_object.
