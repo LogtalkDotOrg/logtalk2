@@ -5604,6 +5604,10 @@ user0__def(Pred, _, _, _, Pred, user).
 
 
 
+'$lgt_dcg_body'(Var, phrase(Var, S0, S), S0, S) :-
+	var(Var),
+	!.
+
 '$lgt_dcg_body'((RGoal,RGoals), Body, S0, S) :-
 	!,
 	'$lgt_dcg_body'(RGoal, CGoal, S0, S1),
