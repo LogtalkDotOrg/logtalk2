@@ -3100,7 +3100,7 @@ current_logtalk_flag(version, version(2, 17, 2)).
 	functor(Dir, Functor, Arity),
 	\+ '$lgt_lgt_opening_directive'(Functor/Arity),
 	!,
-	assertz('$lgt_directive_'(Dir)).
+	assertz('$lgt_directive_'(Dir)).	% directive will be copied to the generated Prolog file
 
 '$lgt_tr_directive'(Dir) :-
 	functor(Dir, Functor, Arity),
@@ -5022,17 +5022,12 @@ current_logtalk_flag(version, version(2, 17, 2)).
 
 
 '$lgt_gen_static_object_dynamic_directives' :-
-	'$lgt_object_'(_, Prefix, _, Def, _, _, _, DDcl, DDef),
+	'$lgt_object_'(_, Prefix, _, _, _, _, _, DDcl, DDef),
 	assertz('$lgt_directive_'(dynamic(DDcl/2))),
 	assertz('$lgt_directive_'(dynamic(DDef/5))),
 	'$lgt_dynamic_'(Functor/Arity),
-	functor(Pred, Functor, Arity),
-	once((
-			Clause =.. [Def, Pred, _, _, _, TPred], '$lgt_def_'(Clause);
-			Clause =.. [DDef, Pred, _, _, _, TPred], '$lgt_ddef_'(Clause);
-			'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
-			TArity is Arity + 3)),
-	functor(TPred, TFunctor, TArity),
+	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
+	TArity is Arity + 3,
 	assertz('$lgt_directive_'(dynamic(TFunctor/TArity))),
 	fail.
 
@@ -5041,12 +5036,10 @@ current_logtalk_flag(version, version(2, 17, 2)).
 
 
 '$lgt_gen_object_discontiguous_directives' :-
-	'$lgt_object_'(_, _, _, Def, _, _, _, _, _),
+	'$lgt_object_'(_, Prefix, _, _, _, _, _, _, _),
 	'$lgt_discontiguous_'(Functor/Arity),
-	functor(Pred, Functor, Arity),
-	Clause =.. [Def, Pred, _, _, _, TPred],
-	'$lgt_def_'(Clause),
-	functor(TPred, TFunctor, TArity),
+	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
+	TArity is Arity + 3,
 	assertz('$lgt_directive_'(discontiguous(TFunctor/TArity))),
 	fail.
 
