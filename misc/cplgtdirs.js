@@ -48,26 +48,27 @@ if (fso.FolderExists(logtalk_user)) {
 WScript.Echo("Creating directory " + logtalk_user + "...");
 fso.CreateFolder(logtalk_user);
 
-WScript.Echo("Copying Logtalk directories...");
-fso.CopyFile(logtalk_home + "\\libpaths_template.pl", logtalk_user + "\\libpaths.pl");
+WScript.Echo("Copying Logtalk files and directories...");
+WScript.Echo("");
 fso.CopyFolder(logtalk_home + "\\configs", logtalk_user + "\\configs");
 fso.CopyFolder(logtalk_home + "\\examples", logtalk_user + "\\examples");
+fso.CopyFolder(logtalk_home + "\\libpaths", logtalk_user + "\\libpaths");
 fso.CopyFolder(logtalk_home + "\\library", logtalk_user + "\\library");
 fso.CopyFolder(logtalk_home + "\\xml", logtalk_user + "\\xml");
 
-WScript.Echo("Finished copying Logtalk directories.");
+WScript.Echo("Finished copying Logtalk files directories.");
 WScript.Echo("");
-WScript.Echo("You may need to edit the My Documents\\logtalk\\libpaths.pl file to");
-WScript.Echo("match your Prolog compiler and operating-system requirements or to");
-WScript.Echo("add your own library paths.");
+WScript.Echo("You may need to edit the My Documents\\logtalk\\libpaths\\libpaths.pl");
+WScript.Echo("file to match your Prolog compiler and operating-system requirements");
+WScript.Echo("or to add your own library paths.");
 WScript.Echo("");
 
 WScript.Quit(0);
 
 function usage_help() {
 	WScript.Echo("");
-	WScript.Echo("This script copies the Logtalk library, xml, and examples");
-	WScript.Echo("directories to the user home directory (My Documents\\logtalk).");
+	WScript.Echo("This script copies the Logtalk user-modifiable files and directories");
+	WScript.Echo("to the user home directory (My Documents\\logtalk).");
 	WScript.Echo("");
 	WScript.Echo("Usage:");
 	WScript.Echo("  " + WScript.ScriptName + " help");

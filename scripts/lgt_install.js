@@ -65,8 +65,8 @@ WScript.Quit(0);
 function usage_help() {
 	WScript.Echo('');
 	WScript.Echo('This script completes the installation of Logtalk by setting the LOGTALKHOME');
-	WScript.Echo('system environment variable and by creating a new program group named "Logtalk"');
-	WScript.Echo('in the Windows Start Menu.');
+	WScript.Echo('system environment variable, the LOGTALKUSER user environment variable, and');
+	WScript.Echo('by creating a new program group named "Logtalk" in the Windows Start Menu.');
 	WScript.Echo('');
 	WScript.Echo('The script must be run from this directory, by a user with administration');
 	WScript.Echo('privileges, after decompressing the Logtalk distribution into its final');

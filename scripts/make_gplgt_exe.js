@@ -58,7 +58,7 @@ WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl >> " + logt
 
 FSObject.CopyFile(prolog_path + "\\w32guicons.dll", logtalk_home + "\\bin\\w32guicons.dll");
 
-WshShell.Run("cmd /c gplc --gui-console -o " + logtalk_home + "\\bin\\gplgt.exe " + logtalk_home + "\\bin\\gnu.pl " + logtalk_home + "\\bin\\logtalkgp.pl", true);
+WshShell.Run("cmd /c gplc --gui-console -o " + logtalk_home + "\\bin\\gplgt.exe " + logtalk_home + "\\bin\\gnu.pl " + logtalk_home + "\\bin\\logtalkgp.pl " + logtalk_home + "\\libpaths\\libpaths.pl", true);
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 
@@ -75,9 +75,9 @@ link.WorkingDirectory = logtalk_home;
 link.Save();
 
 WScript.Echo('Done. The "Logtalk - GNU Prolog (precompiled)" shortcut was been');
-WScript.Echo('added to the Start Menu Programs. Make sure that the LOGTALKHOME');
-WScript.Echo('environment variable is defined for all users wishing to use the');
-WScript.Echo('shortcut.');
+WScript.Echo('Start Menu Programs. Make sure that the environment variables');
+WScript.Echo('LOGTALKHOME and LOGTALKUSER are defined for all users wishing');
+WScript.Echo('to use the shortcut.');
 WScript.Echo('');
 
 WScript.Quit(0);

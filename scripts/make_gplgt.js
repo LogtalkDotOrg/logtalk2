@@ -62,7 +62,7 @@ if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk"))
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - GNU Prolog.lnk");
-link.Arguments = "--init-goal \"['bin/gnu.pl', 'bin/logtalkgp.pl']\"";
+link.Arguments = "--init-goal \"['bin/gnu.pl', 'bin/logtalkgp.pl', '$LOGTALKUSER/libpaths/libpaths.pl']\"";
 link.Description = "Runs Logtalk with GNU Prolog";
 link.IconLocation = "app.exe,1";
 link.TargetPath = prolog_path;
@@ -71,8 +71,9 @@ link.WorkingDirectory = logtalk_home;
 link.Save();
 
 WScript.Echo('Done. The "Logtalk - GNU Prolog" shortcut was been added to the');
-WScript.Echo('Start Menu Programs. Make sure that the LOGTALKHOME environment');
-WScript.Echo('variable is defined for all users wishing to use the shortcut.');
+WScript.Echo('Start Menu Programs. Make sure that the environment variables');
+WScript.Echo('LOGTALKHOME and LOGTALKUSER are defined for all users wishing');
+WScript.Echo('to use the shortcut.');
 WScript.Echo('');
 
 WScript.Quit(0);

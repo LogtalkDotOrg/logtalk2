@@ -8,7 +8,7 @@
 ## =================================================================
 
 echo
-echo "This script copies the Logtalk library, xml, and examples"
+echo "This script copies the Logtalk user-modifiable files and"
 echo "directories to the user home directory (~/logtalk)."
 echo
 
@@ -24,6 +24,7 @@ else
 	fi
 	mkdir -p $LOGTALKUSER/configs
 	mkdir -p $LOGTALKUSER/examples
+	mkdir -p $LOGTALKUSER/libpaths
 	mkdir -p $LOGTALKUSER/library
 	mkdir -p $LOGTALKUSER/xml
 	cp -RL $LOGTALKHOME/configs $LOGTALKUSER/
