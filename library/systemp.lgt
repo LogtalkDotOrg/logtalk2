@@ -109,6 +109,12 @@
 		comment is 'Renames a file. Fails if the file does not exist or cannot be renamed.',
 		argnames is ['Old', 'New']]).
 
+	:- public(symbolic_link/2).
+	:- mode(symbolic_link(+atom, ?atom), zero_or_one).
+	:- info(symbolic_link/2, [
+		comment is 'Follows a symbolic link returning the target full path.',
+		argnames is ['File', 'Target']]).
+
 	:- public(getenv/2).
 	:- mode(getenv(+atom, ?atom), zero_or_one).
 	:- info(getenv/2, [

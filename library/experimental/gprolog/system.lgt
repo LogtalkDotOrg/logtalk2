@@ -79,6 +79,10 @@
 		{rename_file(Old, New)}.
 
 
+	symbolic_link(File, Target) :-
+		{file_property(File, real_file_name(Target))}.
+
+
 	getenv(Variable, Value) :-
 		{environ(Variable, Value)}.
 
