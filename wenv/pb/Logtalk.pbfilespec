@@ -1,0 +1,13 @@
+/**
+	Logtalk source file specs.
+*/
+(
+{
+  Identifier = text.script.lgt;
+  BasedOn = text.script;
+  Extensions = (lgt);
+  MIMETypes = ("text/x-logtalk");
+  ComputerLanguage = logtalk;
+}
+
+)

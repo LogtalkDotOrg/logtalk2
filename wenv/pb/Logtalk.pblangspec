@@ -1,0 +1,52 @@
+/**
+   Logtalk language specification.
+*/
+
+(
+{
+	Identifier = logtalk;
+  	Name = "Logtalk";
+  	Description = "Logtalk";
+  	BasedOn = c;
+  	SyntaxColoring = {
+    	CaseSensitive = YES;
+		IdentifierStartChars = "_";
+    	IdentifierChars = "_";
+    	MultiLineComment = (
+     	    ( "/*", "*/" )
+        );
+        CommentsCanBeNested = YES;
+    	SingleLineComment = ("%");
+		String = (
+	   	   	("\"", "\"")
+		);
+		Character = (
+                ( "'", "'" )
+         );
+    	EscapeCharacter = "\\";
+    	Keywords = (
+      		":- category",
+			":- end_category",
+			":- end_object",
+			":- end_protocol",
+			":- object",
+			":- protocol",
+		);
+		AltKeywords = (
+			"mode",
+			"info",
+			"calls",
+			"uses",
+			"initialization",
+			"dynamic",					
+		);
+		PreprocessorKeywordStart = ":-";
+		PreprocessorKeywords = (
+			"public",
+			"protected",
+			"private"
+		);
+  	};
+}
+)
+
