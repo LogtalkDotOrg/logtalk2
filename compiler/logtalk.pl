@@ -5603,10 +5603,10 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_dcg_body'(RGoal1, CGoal1, S0, S1),
 	'$lgt_dcg_body'(RGoal2, CGoal2, S1, S).
 
-'$lgt_dcg_body'((RGoals1;RGoals2), (CGoals1;CGoals2), S0, S) :-
+'$lgt_dcg_body'((RGoal1;RGoal2), (CGoal1;CGoal2), S0, S) :-
 	!,
-	'$lgt_dcg_or'(RGoals1, CGoals1, S0, S),
-	'$lgt_dcg_or'(RGoals2, CGoals2, S0, S).
+	'$lgt_dcg_body'(RGoal1, CGoal1, S0, S),
+	'$lgt_dcg_body'(RGoal2, CGoal2, S0, S).
 
 '$lgt_dcg_body'({Goal}, (Goal, S0=S), S0, S) :-
 	!.
@@ -5629,15 +5629,6 @@ user0__def(Pred, _, _, _, Pred, user).
 
 '$lgt_dcg_body'(Non_terminal, Goal, S0, S) :-
 	'$lgt_dcg_goal'(Non_terminal, Goal, S0, S).
-
-
-
-'$lgt_dcg_or'(RGoals, CGoals, S0, S) :-
-	'$lgt_dcg_body'(RGoals, Goals, S1, S),
-	(S1 == S ->
-		'$lgt_dcg_simplify_and'((S1=S0,Goals), CGoals)
-		;
-		S1 = S0, CGoals = Goals).
 
 
 
