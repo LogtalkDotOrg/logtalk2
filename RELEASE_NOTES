@@ -28,6 +28,9 @@ RELEASE NOTES
 	Converted all manual pages to XHTML 1.0 format. Corrected a wrong link in 
 	the reference manual. Replaced GIF images by PNG versions.
 
+	Removed call to the obsolete built-in predicate nodbgcomp/0 from 
+	all ECLiPSe config files.
+
 
 2.13.0 - June 15, 2002
 
