@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.22.0
+Release 2.22.1
 
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -8,6 +8,16 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.22.1 - December ??, 2004
+
+	Added documentation on read-only compiler flags (which are defined in the 
+	configuration files) to the User Manual.
+
+	Updated the lgt2html.* and lgt2pdf.* shell scripts to use the environment 
+	variable LOGTALKUSER instead of LOGTALKHOME for finding support files, thus 
+	allowing for user customization.
 
 
 2.22.0 - November 29, 2004
