@@ -83,7 +83,7 @@ fso.CopyFile(logtalk_home + "\\xml\\logtalk.css", directory + "\\logtalk.css");
 WScript.Echo("");
 WScript.Echo("converting XML files...");
 
-var files = new Enumerator(fso.CurrentDirectory.Files);
+var files = new Enumerator(fso.GetFolder(WshShell.CurrentDirectory).Files);
 var file;
 
 for (; !files.atEnd(); files.moveNext())
