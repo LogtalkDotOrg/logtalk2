@@ -177,8 +177,8 @@ else
 	echo "index file generated"
 	echo
 
-	rm logtalk.dtd
-	rm logtalk.xsd
+	rm -f logtalk.dtd
+	rm -f logtalk.xsd
 
 	exit 0
 
