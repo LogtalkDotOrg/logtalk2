@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.15.7
+Release 2.16.0
 
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -329,7 +329,7 @@ PrologII+ 4.5
 	set the working directory before loading an example.
 
 
-QU-Prolog 4.3, 6.3
+Qu-Prolog 4.3, 6.3
 
 	qu43.config
 
