@@ -1,6 +1,6 @@
 // =================================================================
 // Logtalk - Object oriented extension to Prolog
-// Release 2.20.1
+// Release 2.20.2
 //
 // Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 // =================================================================
@@ -19,7 +19,6 @@ var WshSystemEnv = WshShell.Environment("SYSTEM");
 var FSObject = new ActiveXObject("Scripting.FileSystemObject");
 
 WshShell.CurrentDirectory = "..";
-
 WshSystemEnv.Item("LOGTALKHOME") = WshShell.CurrentDirectory;
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
@@ -39,7 +38,7 @@ link.Description = "Browse Logtalk Documentation";
 link.TargetPath = "%LOGTALKHOME%\\manuals\\index.html";
 link.Save();
 
-link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Readme.lnk");
+link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk ReadMe.lnk");
 
 link.Arguments = "%LOGTALKHOME%\\manuals\\README";
 link.Description = "Open Logtalk ReadMe";
@@ -56,18 +55,15 @@ link.Save();
 WScript.Echo('Logtalk installation completed.');
 WScript.Echo('');
 
-WScript.Echo('Make sure that the LOGTALKHOME environment variable');
-WScript.Echo('is defined for all users wishing to use Logtalk.');
-WScript.Echo('');
-
 WScript.Quit(0);
 
 function usage_help() {
 	WScript.Echo('');
-	WScript.Echo('This script creates a shortcut named "Logtalk - CIAO" for running Logtalk');
-	WScript.Echo('with CIAO. The script must be run by a user with administrative rights.');
-	WScript.Echo('The LOGTALKHOME environment variable must be defined before running this');
-	WScript.Echo('script.');
+	WScript.Echo('This script completes the installation of Logtalk by setting the LOGTALKHOME');
+	WScript.Echo('system environment variable and by creating a new program group named "Logtalk"');
+	WScript.Echo('in the Windows Start Menu. The script must be run from this directory by a user');
+	WScript.Echo('with administration privileges after decompressing the Logtalk distribution into');
+	WScript.Echo('its final destination.');
 	WScript.Echo('');
 	WScript.Echo('Usage:');
 	WScript.Echo('  ' + WScript.ScriptName + ' help');
