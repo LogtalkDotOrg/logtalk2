@@ -2256,18 +2256,9 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	once((Goal; true)).
 
 '$lgt_dbg_do_port_option'(b, _, true) :-
-	repeat,
-		write('     :- '),
-		read(Goal),
-		writeq(Goal),
-		nl,
-		(once(Goal) ->
-			write('     answer: '),
-			writeq(Goal), nl
-			;
-			write('     no'), nl),
-	Goal = true,
-	!.
+	'$lgt_compiler_option'(supports_break_predicate, true) ->
+		break;
+		write('    break no supportd on this Prolog compiler.'), nl.
 
 '$lgt_dbg_do_port_option'(a, _, _) :-
 	throw(error(logtalk_debugger_aborted)).
@@ -2288,7 +2279,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	write('        f - fail (force backtracking)'), nl,
 	write('        n - nodebug (turn off debugging)'), nl,
 	write('        @ - command (read and execute a query)'), nl,
-%	write('        b - break (submit queries to the interpreter; type true to terminate)'), nl,
+	write('        b - break (suspends execution and starts new interpreter; type end_of_file to terminate)'), nl,
 	write('        a - abort (return to top level interpreter)'), nl,
 	write('        x - print execution context'), nl,
 	write('        = - print debugging information'), nl,
@@ -6359,6 +6350,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_valid_flag'(underscore_vars).
 '$lgt_valid_flag'(code_prefix).
 '$lgt_valid_flag'(debug).
+'$lgt_valid_flag'(supports_break_predicate).
 
 
 
@@ -6379,6 +6371,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 '$lgt_read_only_flag'(startup_message).
 '$lgt_read_only_flag'(version).
+'$lgt_read_only_flag'(supports_break_predicate).
 
 
 

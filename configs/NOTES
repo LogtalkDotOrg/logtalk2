@@ -167,7 +167,9 @@ ECLiPSe 5.5~5.7
 		:- pragma(nodebug).
 
 	These calls disables debugging support for the Logtalk compiler/runtime 
-	Prolog code and mark the Logtalk predicates as built-ins.
+	Prolog code and mark the Logtalk predicates as built-ins. Make sure that 
+	the library toplevel is loaded if you want to use the Logtalk built-in 
+	debugger.
 
 	Adopted from a config file written and tested with help of Taner Bilgic 
 	for Logtalk 1.x. Don't forget to use the cd/1 predicate to set the working 
