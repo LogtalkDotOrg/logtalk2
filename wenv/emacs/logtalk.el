@@ -4,7 +4,7 @@
 
 ;; Author: Paulo Moura
 ;; Creation date: November 15, 2003
-;; Last modification date: January 30, 2004
+;; Last modification date: January 31, 2004
 ;; Version: 0.5
 
 ;; Installation:
@@ -63,44 +63,30 @@
 
 
 
-;; create logtalk font-lock-faces
+;; make logtalk font-lock-faces
 
+(make-face 'logtalk-default-face)
 (make-face 'logtalk-directive-face)
-(set-face-foreground 'logtalk-directive-face "brown")
-
 (make-face 'logtalk-built-in-predicate-face)
-(set-face-foreground 'logtalk-built-in-predicate-face "darkmagenta")
-
 (make-face 'logtalk-built-in-method-face)
-(set-face-foreground 'logtalk-built-in-method-face "darkmagenta")
-
 (make-face 'logtalk-message-operator-face)
-(set-face-foreground 'logtalk-message-operator-face "blue")
-
-(make-face 'logtalk-string-face)
-(set-face-foreground 'logtalk-string-face "firebrick")
-
-(make-face 'logtalk-number-face)
-(set-face-foreground 'logtalk-number-face "blue")
-
-(make-face 'logtalk-comment-face)
-(set-face-foreground 'logtalk-comment-face "forest green")
-
 (make-face 'logtalk-variable-face)
-(set-face-foreground 'logtalk-variable-face "dark slate grey")
-
 (make-face 'logtalk-number-face)
-(set-face-foreground 'logtalk-number-face "dark blue")
+(make-face 'logtalk-comment-face)
+(make-face 'logtalk-string-face)
 
+;; set logtalk font-lock-faces
 
-;; set the font-lock-comment-face to the logtalk-comment-face
+(setq logtalk-default-face 'default)
+(setq logtalk-directive-face 'font-lock-keyword-face)
+(setq logtalk-built-in-predicate-face 'font-lock-builtin-face)
+(setq logtalk-built-in-method-face 'font-lock-builtin-face)
+(setq logtalk-message-operator-face 'font-lock-function-name-face)
+(setq logtalk-variable-face 'font-lock-variable-name-face)
+(setq logtalk-number-face 'font-lock-constant-face)
+(setq logtalk-comment-face 'font-lock-comment-face)
+(setq logtalk-string-face 'font-lock-string-face)
 
-(setq font-lock-comment-face 'logtalk-comment-face)
-
-
-;; set the font-lock-string-face to the logtalk-string-face
-
-(setq font-lock-string-face 'logtalk-string-face)
 
 
 (setq logtalk-font-lock-strings
@@ -179,7 +165,8 @@
 		;;
 		("\\\\?=" . 'logtalk-built-in-predicate-face)
 		;;
-		;; dcgs
+		;; dcgs:
+		;;
 		("-->" . 'logtalk-built-in-predicate-face)
 		;;
 		;; evaluable functors:
@@ -214,17 +201,21 @@
 		;; implementation defined hooks functions:
 		;;
 		("\\(\\(?:curren\\|se\\)t_prolog_flag\\|halt\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("halt" . 'logtalk-built-in-predicate-face)
+		("\\<halt\\>" . 'logtalk-built-in-predicate-face)
 		;;
 		;; atomic term processing:
 		;;
 		("\\(atom_\\(?:c\\(?:hars\\|o\\(?:des\\|ncat\\)\\)\\|length\\)\\|char_code\\|number_c\\(?:\\(?:har\\|ode\\)s\\)\\|sub_atom\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; bitwise functors:
+		;;
 		("/\\\\\\|<<\\|>>\\|\\\\/" . 'logtalk-built-in-predicate-face)
 		("\\\\" . 'logtalk-built-in-predicate-face)
+		;;
+		;; clause operator:
+		;;
+		("\\<:-\\>" . 'logtalk-default-face)
 	))
-
 
 
 (setq logtalk-font-lock-operators
