@@ -11,18 +11,15 @@ To load all entities in this example compile and load the loader file:
 | ?- logtalk_load(loader).
 
 This folder contains examples of the used of operators inside objects 
-and categories.
+and categories:
 
 double.lgt
-
 	Simple object containing clauses using an infix operator.
 
 triple.lgt
-
-	Simple object reading from a file, and asserting into self, 
-	clauses that use an infix operator.
+	Simple object reading from a file (triple.txt), and asserting into 
+	self, clauses that use an infix operator.
 
 reverse.lgt
-
-	Simple object reading from a file, and writing to another 
-	file, clauses that use infix operators.
+	Simple object reading from a file (next.txt), and writing to 
+	another file (previous.txt), clauses that use infix operators.
