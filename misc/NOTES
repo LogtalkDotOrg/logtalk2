@@ -6,8 +6,8 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-This directory contains miscellaneous files used in Logtalk packaging
-and installation:
+This directory contains miscellaneous files used in Logtalk packaging, 
+installation, and integration with Prolog compilers:
 
 lgt_install.sh
 	shell script for installing Logtalk in Unix and Unix-like operating 
