@@ -25,7 +25,8 @@ RELEASE NOTES
 
 	Updated config file for Amzi! Prolog 6.2.2.
 
-	New example of using the built-in database handling methods (dynpred).
+	New example of using some of the built-in database handling methods 
+	(dynpred).
 
 	Syntax configuration files for jEdit 4.0, VIM 6.1, NEdit 5.2, and 
 	TextPad 4.5 text editors providing syntax highlighting for editing 
