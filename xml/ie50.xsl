@@ -198,6 +198,12 @@
 			<dd><code><xsl:value-of select="template" /> - <xsl:value-of select="solutions" /></code></dd>
 		</xsl:for-each>
 		</xsl:if>
+		<xsl:if test="exceptions">
+		<dt>exceptions:</dt>
+		<xsl:for-each select="exceptions/exception">
+			<dd><code><xsl:value-of select="." /></code></dd>
+		</xsl:for-each>
+		</xsl:if>
 	</dl>
 	<dl class="predicate">
 		<xsl:for-each select="info">

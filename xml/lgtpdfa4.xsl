@@ -474,6 +474,23 @@
 		</xsl:for-each>
 	</xsl:if>
 
+	<xsl:if test="exceptions">
+       	<fo:block
+				font-size="10pt"
+				font-family="serif" 
+				keep-with-next="always">
+     		exceptions:
+     	</fo:block>
+		<xsl:for-each select="exceptions/exception">
+			<fo:block
+					font-size="9pt"
+					font-family="monospace"
+					margin-left="10mm">
+				<xsl:value-of select="."/>
+			</fo:block>
+		</xsl:for-each>
+	</xsl:if>
+
 	<xsl:if test="info">
 		<xsl:for-each select="info">
        		<fo:block

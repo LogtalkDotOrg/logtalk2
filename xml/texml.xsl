@@ -265,6 +265,15 @@
 			<cmd name="texttt"><parm><xsl:value-of select="solutions" /></parm></cmd>
 		</xsl:for-each>
 	</xsl:if>
+	<xsl:if test="exceptions">
+		<cmd name="medskip"/>
+		<cmd name="noindent"/>
+		exceptions:
+		<cmd name="par"/>
+		<xsl:for-each select="exceptions/exception">
+			<cmd name="texttt"><parm><xsl:value-of select="." /></parm></cmd>
+		</xsl:for-each>
+	</xsl:if>
 	<xsl:for-each select="info">
 		<cmd name="noindent"/>
 		<cmd name="medskip"/>

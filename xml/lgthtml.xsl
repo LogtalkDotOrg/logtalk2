@@ -208,6 +208,12 @@
 			<dd><code><xsl:value-of select="template" /><xsl:text> - </xsl:text><xsl:value-of select="solutions" /></code></dd>
 		</xsl:for-each>
 		</xsl:if>
+		<xsl:if test="exceptions">
+		<dt>exceptions:</dt>
+		<xsl:for-each select="exceptions/exception">
+			<dd><code><xsl:value-of select="." /></code></dd>
+		</xsl:for-each>
+		</xsl:if>
 	</dl>
 	<xsl:if test="info">
 		<dl class="predicate">
