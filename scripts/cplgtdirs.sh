@@ -1,8 +1,8 @@
 #!/bin/sh
 
 echo
-echo "This script copies the Logtalk library, xml, and"
-echo "examples directories to the user home directory."
+echo "This script copies the Logtalk library, xml, and examples"
+echo "directories to the user home directory (~/logtalk)."
 echo
 
 if ! [ $LOGTALKHOME ]
