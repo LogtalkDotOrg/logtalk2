@@ -23,6 +23,8 @@ RELEASE NOTES
 	Added some files missing from the "errors" example (which should have been 
 	included in the previous release).
 
+	Added basic syntax coloring support for the BBEdit 8.x text editor.
+
 
 2.20.1 - August 19, 2004
 
