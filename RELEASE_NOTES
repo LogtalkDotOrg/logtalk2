@@ -15,7 +15,7 @@ RELEASE NOTES
 	Changed debugger command "e" to print exception terms instead of exiting 
 	Logtalk session.
 
-	Added two more DCGs examples. New "puzzles" example.
+	Added two more DCGs examples. New "puzzles" and "metainterpreters" examples.
 
 
 2.17.0 - April 26, 2004
