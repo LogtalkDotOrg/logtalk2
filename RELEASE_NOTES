@@ -35,6 +35,8 @@ RELEASE NOTES
 	Added new "logic" example implementing a translator from logic propositions 
 	to conjunctive normal form.
 
+	Corrected a problem with wrong end-on-lines on some files.
+
 
 2.17.1 - June 7, 2004
 
