@@ -5699,7 +5699,19 @@ user0__def(Pred, _, _, _, Pred, user).
 
 '$lgt_valid_op_specifier'(Specifier) :-
 	nonvar(Specifier),
-	once('$lgt_member'(Specifier, [fx, fy, xfx, xfy, yfx, xf, yf])).
+	'$lgt_op_specifier'(Specifier).
+
+
+
+% '$lgt_op_specifier'(@nonvar)
+
+'$lgt_op_specifier'(fx).
+'$lgt_op_specifier'(fy).
+'$lgt_op_specifier'(xfx).
+'$lgt_op_specifier'(xfy).
+'$lgt_op_specifier'(yfx).
+'$lgt_op_specifier'(xf).
+'$lgt_op_specifier'(yf).
 
 
 
@@ -5708,7 +5720,14 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_valid_op_names'(Operators) :-
 	nonvar(Operators),
 	'$lgt_convert_to_list'(Operators, List),
-	forall('$lgt_member'(Operator, List), atom(Operator)).
+	'$lgt_valid_op_names_aux'(List).
+
+
+'$lgt_valid_op_names_aux'([]).
+
+'$lgt_valid_op_names_aux'([Operator| Operators]) :-
+	atom(Operator),
+	'$lgt_valid_op_names_aux'(Operators).
 
 
 
@@ -5728,7 +5747,17 @@ user0__def(Pred, _, _, _, Pred, user).
 	Pred =.. [_| Args],
 	forall(
 		'$lgt_member'(Arg, Args),
-		(nonvar(Arg), functor(Arg, Functor, Arity), Arity =< 1, '$lgt_member'(Functor, [?, +, -, @]))).
+		(nonvar(Arg), functor(Arg, Functor, Arity), Arity =< 1,
+		 '$lgt_pred_arg_instantiation_mode'(Functor))).
+
+
+
+% '$lgt_pred_arg_instantiation_mode'(@nonvar)
+
+'$lgt_pred_arg_instantiation_mode'(?).
+'$lgt_pred_arg_instantiation_mode'(+).
+'$lgt_pred_arg_instantiation_mode'(-).
+'$lgt_pred_arg_instantiation_mode'(@).
 
 
 
@@ -5736,7 +5765,18 @@ user0__def(Pred, _, _, _, Pred, user).
 
 '$lgt_valid_number_of_solutions'(Solutions) :-
 	nonvar(Solutions),
-	once('$lgt_member'(Solutions, [zero, one, zero_or_one, zero_or_more, one_or_more, error])).
+	'$lgt_pred_number_of_solutions'(Solutions).
+
+
+
+% '$lgt_pred_number_of_solutions'(@nonvar)
+
+'$lgt_pred_number_of_solutions'(zero).
+'$lgt_pred_number_of_solutions'(one).
+'$lgt_pred_number_of_solutions'(zero_or_one).
+'$lgt_pred_number_of_solutions'(zero_or_more).
+'$lgt_pred_number_of_solutions'(one_or_more).
+'$lgt_pred_number_of_solutions'(error).
 
 
 
