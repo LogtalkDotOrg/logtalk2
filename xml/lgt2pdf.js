@@ -39,38 +39,44 @@ var processor = "fop";
 if (WScript.Arguments.Unnamed.Length > 0)
 	usage_help();
 
+var f_arg, d_arg, p_arg;
+
 if (WScript.Arguments.Named.Exists("f"))
-	format = WScript.Arguments.Named.Item("f");
+	f_arg = WScript.Arguments.Named.Item("f");
 
 if (WScript.Arguments.Named.Exists("d"))
-	directory = WScript.Arguments.Named.Item("d");
+	d_arg = WScript.Arguments.Named.Item("d");
 
 if (WScript.Arguments.Named.Exists("p"))
-	processor = WScript.Arguments.Named.Item("p");
+	p_arg = WScript.Arguments.Named.Item("p");
 
-if (format == "a4")
-	xsl = a4_xsl;
-else if (format == "us")
-	xsl = us_xsl;
-else {
-	WScript.Echo("Error! Unsupported paper format:" + format);
+if (f_arg != "" && f_arg != "a4" && f_arg != "us") {
+	WScript.Echo("Error! Unsupported paper format:" + f_arg);
 	WScript.Echo("");
 	usage_help();
-}
+} else if (f_arg != "")
+	format = f_arg;
 
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 
-if (!fso.FolderExists(directory)) {
+if (d_arg != "" && !fso.FolderExists(directory)) {
 	WScript.Echo("Error! directory does not exists: " + directory);
 	WScript.Echo("");
 	usage_help();
-}
+} else if (d_arg != "")
+	directory = d_arg;
 
-if (processor != "fop" && processor != "xep") {
-	WScript.Echo("Error! Unsupported XSL-FO processor:" + processor);
+if (p_arg != "" && p_arg != "fop" && p_arg != "xep") {
+	WScript.Echo("Error! Unsupported XSL-FO processor:" + p_arg);
 	WScript.Echo("");
 	usage_help();
-}
+} else if (p_arg != "")
+	processor = p_arg;
+
+if (format == "a4")
+	xsl = a4_xsl;
+else
+	xsl = us_xsl;
 
 fso.CopyFile(logtalk_home + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory + "\\logtalk.dtd");
 fso.CopyFile(logtalk_home + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory + "\\logtalk.xsd");
