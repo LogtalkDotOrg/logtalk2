@@ -17,7 +17,8 @@ RELEASE NOTES
 	on a directive with the same name and with similar semantics found on 
 	recent development versions of SWI-Prolog. For now, this directive only 
 	works with SWI-Prolog as most Prolog compilers lack support for dealing 
-	with different text encodings. Added new flag "supports_encoding_dir".
+	with different text encodings. Added new flag "supports_encoding_dir". 
+	Added new example of using the new, experimental enconding/1 directive.
 
 	When a source file contains an encoding/1 directive, the XML documenting 
 	files will use the same encoding. When no encoding/1 directive is present,

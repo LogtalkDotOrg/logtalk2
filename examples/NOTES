@@ -71,6 +71,10 @@ diamonds
 dynpred
 	example of using some of the built-in database handling methods
 
+encodings
+	very simple example of using the new, experimental enconding/1 
+	directive (requires Logtalk to be run with the SWI-Prolog compiler)
+
 engines
 	example of category composition (importation of categories by other 
 	categories) using car engines
