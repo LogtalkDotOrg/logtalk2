@@ -2,6 +2,12 @@
 :- object(triple).
 
 
+	:- info([
+		version is 1.0,
+		author is 'Paulo Moura',
+		date is 2004/2/16,
+		comment is 'Read and asserts a simple table of facts from a file for testing operator handling code.']).
+
 	:- public(triple/2).
 	:- dynamic(triple/2).
 

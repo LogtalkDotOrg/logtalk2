@@ -2,6 +2,12 @@
 :- object(reverse).
 
 
+	:- info([
+		version is 1.0,
+		author is 'Paulo Moura',
+		date is 2004/2/16,
+		comment is 'Reads and writes simple table of facts from and to files for testing operator handling code.']).
+
 	:- op(500, xfx, next).
 	:- op(500, xfx, previous).
 
