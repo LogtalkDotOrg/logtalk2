@@ -96,6 +96,13 @@
 
 
 
+(setq logtalk-font-lock-strings
+	'(
+		("\"[^\"]*\"" . logtalk-string-face)
+		("\'[^\']*\'" . logtalk-string-face)
+	))
+
+
 (setq logtalk-font-lock-directives
 	'(
 		("\\(end_\\(?:category\\|object\\|protocol\\)\\)" . 'logtalk-directive-face)
@@ -129,32 +136,73 @@
 		("logtalk_\\(?:compile\\|load\\|version\\)" . 'logtalk-built-in-predicate-face)
 		("forall" . 'logtalk-built-in-predicate-face)
 		("retractall" . 'logtalk-built-in-predicate-face)
+		;;
 		;; control constructs:
+		;;
 		("ca\\(?:ll\\|tch\\)\\|fail\\|t\\(?:hrow\\|rue\\)" . 'logtalk-built-in-predicate-face)
+		;;
 		;; logic and control:
+		;;
 		("\\\\\\+\\|once\\|repeat" . 'logtalk-built-in-predicate-face)
-		;; term unification:
-		("\\\\?=" . 'logtalk-built-in-predicate-face)
+		;;
 		;; term testing:
+		;;
 		("atom\\(?:ic\\)?\\|compound\\|float\\|\\(?:intege\\|n\\(?:onva\\|umbe\\)\\|va\\)r" . 'logtalk-built-in-predicate-face)
+		;;
 		;; term comparison:
-		("==\\|@\\(?:=<\\|>=\\|[<>]\\)\\|\\\\==" . 'logtalk-built-in-predicate-face)
+		;;
+		("==\\|@\\(?:=<\\|>=\\|[<>]\\)\\|\\\\==" . 'logtalk-operator-face)
+		;;
 		;; term creation and decomposition:
+		;;
 		("=\\.\\.\\|arg\\|copy_term\\|functor" . 'logtalk-built-in-predicate-face)
+		;;
 		;; arithemtic evaluation:
-		("is" . 'logtalk-built-in-predicate-face)
+		;;
+		("\\<\\is\\>" . 'logtalk-operator-face)
+		;;
 		;; arithemtic comparison:
-		("=\\(?::=\\|[<\\]\\)\\|>=\\|[<>]" . 'logtalk-built-in-predicate-face)
+		("\\<\\=\\(?::=\\|[<\\]\\)\\|>=\\|[<>]\\>" . 'logtalk-operator-face)
+		;;
 		;; evaluable functors:
-		
+		;;
+		("//\\|mod\\|rem\\|[*+/-]" . 'logtalk-operator-face)
+		("abs\\|ceiling\\|flo\\(?:at\\(?:_\\(?:\\(?:fractional\\|integer\\)_part\\)\\)?\\|or\\)\\|mod\\|r\\(?:em\\|ound\\)\\|sign\\|truncate" . 'logtalk-built-in-predicate-face)
+		;;
+		;; other arithemtic functors:
+		;;
+		("atan\\|cos\\|exp\\|log\\|s\\(?:in\\|qrt\\)" . 'logtalk-built-in-predicate-face)
+		;;
+		;; term unification:
+		;;
+		("\\\\?=" . 'logtalk-built-in-predicate-face)
+		;;
+		;; stream selection and control:
+		;;
 		("at_end_of_stream\\|c\\(?:lose\\|urrent_\\(?:\\(?:in\\|out\\)put\\)\\)\\|flush_output\\|open\\|s\\(?:et_\\(?:input\\|output\\|stream_position\\)\\|tream_property\\)" . 'logtalk-built-in-predicate-face)
+		;;
 		;; character input/output:
+		;;
 		("get_c\\(?:har\\|ode\\)\\|nl\\|p\\(?:eek_c\\(?:har\\|ode\\)\\|ut_c\\(?:har\\|ode\\)\\)" . 'logtalk-built-in-predicate-face)
+		;;
+		;; byte input/output:
+		;;
 		("\\(?:get\\|p\\(?:eek\\|ut\\)\\)_byte" . 'logtalk-built-in-predicate-face)
+		;;
 		;; term input/output:
+		;;
 		("c\\(?:har_conversion\\|urrent_\\(?:char_conversion\\|op\\)\\)\\|op\\|read\\(?:_term\\)?\\|write\\(?:_\\(?:canonical\\|term\\)\\|q\\)?" . 'logtalk-built-in-predicate-face)
+		;;
+		;; implementation defined hooks functions:
+		;;
 		("\\(?:curren\\|se\\)t_prolog_flag\\|halt" . 'logtalk-built-in-predicate-face)
+		;;
+		;; atomic term processing:
+		;;
 		("atom_\\(?:c\\(?:hars\\|o\\(?:des\\|ncat\\)\\)\\|length\\)\\|char_code\\|number_c\\(?:\\(?:har\\|ode\\)s\\)\\|sub_atom" . 'logtalk-built-in-predicate-face)
+		;;
+		;; bitwise functors:
+		
 	))
 
 
@@ -168,6 +216,7 @@
 
 (setq logtalk-font-lock-keywords
 	(append
+		logtalk-font-lock-strings
 		logtalk-font-lock-directives
 		logtalk-font-lock-built-in-methods
 		logtalk-font-lock-built-in-predicates
