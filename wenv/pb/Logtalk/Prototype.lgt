@@ -1,6 +1,6 @@
 
-:- category(Category,
-	implements(Protocol)).
+:- object(Object,
+	extends(Parent)).
 
 	:- info([
 		version is 1.0,
@@ -15,4 +15,4 @@
 	:- private(Functor/Arity).
 
 
-:- end_category.
+:- end_object.

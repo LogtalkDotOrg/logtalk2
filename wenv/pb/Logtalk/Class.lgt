@@ -1,6 +1,7 @@
 
-:- category(Category,
-	implements(Protocol)).
+:- object(Class,
+	instantiates(Metaclass),
+	specializes(Superclass)).
 
 	:- info([
 		version is 1.0,
@@ -15,4 +16,4 @@
 	:- private(Functor/Arity).
 
 
-:- end_category.
+:- end_object.
