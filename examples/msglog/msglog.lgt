@@ -71,10 +71,11 @@
 
 
 	before(Object, Message, _) :-
-		self(Object) ->
+		self(Self),
+		(Self = Object ->
 			true
 			;
-			::assertz(log_(Object, Message)).
+			::assertz(log_(Object, Message))).
 
 
 :- end_object.
