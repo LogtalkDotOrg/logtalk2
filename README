@@ -26,8 +26,8 @@ license. The copyright notice and license applies to all files in this
 release (sources, documentation and examples) unless otherwise explicitly
 stated.
 
-This software is OSI Certified Open Source Software.
-OSI Certified is a certification mark of the Open Source Initiative.
+This software is OSI Certified Open Source Software. OSI Certified is a 
+certification mark of the Open Source Initiative (http://www.opensource.org/).
 
 
 2. HOME OF LOGTALK PACKAGE
@@ -90,7 +90,7 @@ file manuals/index.html with a web browser).
 
 6. DOCUMENTATION
 
-The reference and user manuals and the tutorial are provided in HTML format 
+The reference and user manuals and the tutorial are provided in XHTML format 
 and are contained in the manuals directory.
 
 PDF versions of all documentation are also available as a separated download 
