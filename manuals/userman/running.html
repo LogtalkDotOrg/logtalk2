@@ -130,11 +130,11 @@ You can use the following options:
 </dl>
 <dl>
 	<dt><code>doctype(Option)</code></dt>
-		<dd>Sets the DOCTYPE reference in the automatically generated XML documenting files. The default value is <code>local</code>, that is, the DOCTYPE reference points to a local DTD or XSD file (respectively, <code>logtalk.dtd</code> or <code>logtalk.xsd</code>), residing in the same directory as the XML file. Other possible values are <code>web</code> (DOCTYPE reference points to an web location, either <code>http://www.logtalk.org/xml/1.2/logtalk.dtd</code> or <code>http://www.logtalk.org/xml/1.2/logtalk.xsd</code>) and <code>standalone</code> (no DOCTYPE reference in the XML documenting files).</dd>
+		<dd>Sets the DOCTYPE reference in the automatically generated XML documenting files. The default value is <code>local</code>, that is, the DOCTYPE reference points to a local DTD or XSD file (respectively, <code>logtalk.dtd</code> or <code>logtalk.xsd</code>), residing in the same directory as the XML file. Other possible values are <code>web</code> (DOCTYPE reference points to an web location, either <code>http://www.logtalk.org/xml/1.2/logtalk.dtd</code> or <code>http://www.logtalk.org/xml/1.2/logtalk.xsd</code>), and <code>standalone</code> (no DOCTYPE reference in the XML documenting files). The most appropriated option value depends on the XSL processor you intend to use.</dd>
 </dl>
 <dl>
 	<dt><code>xsl(File)</code></dt>
-		<dd>Sets the XSLT file to be used with the automatically generated XML documenting files. The default value is <code>lgtxml.xsl</code>.</dd>
+		<dd>Sets the XSLT file to be used with the automatically generated XML documenting files. The default value is <code>lgtxml.xsl</code>, which allows the XML files to be viewed by simply opening them with recent versions of web navigators (after copying the <code>lgtxml.xsl</code> and of the <code>logtalk.css</code> files to the directory containing the XML files).</dd>
 </dl>
 <dl>
 	<dt><code>report(Option)</code></dt>
