@@ -40,14 +40,18 @@ if (!fso.FolderExists(logtalk_home + "\\bin"))
 var f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.pl", true);
 
 f.WriteLine(":- system_module.");
-f.WriteLine(":- include('" + logtalk_home + "\\compiler\\logtalk.pl').");
+f.WriteLine(":- set_prolog_flag(character escapes, false).");
+f.WriteLine(":- include('" + logtalk_home + "\\\\compiler\\\\logtalk.pl').");
+f.WriteLine(":- set_prolog_flag(character escapes, true).");
 f.Close();
 
 f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.rc", true);
 
-f.WriteLine(":- consult('" + logtalk_home + "\\\\configs\\\\swi.config').");
-f.WriteLine(":- consult('" + logtalk_home + "\\\\configs\\\\swihook.pl').");
-f.WriteLine(":- consult('" + logtalk_home + "\\\\bin\\\\logtalkswi.pl').");
+f.WriteLine(":- set_prolog_flag(character escapes, false).");
+f.WriteLine(":- consult('" + logtalk_home + "\\configs\\swi.config').");
+f.WriteLine(":- consult('" + logtalk_home + "\\configs\\swihook.pl').");
+f.WriteLine(":- consult('" + logtalk_home + "\\bin\\logtalkswi.pl').");
+f.WriteLine(":- set_prolog_flag(character escapes, true).");
 f.Close();
 
 f = fso.CreateTextFile(logtalk_home + "\\bin\\swilgt.bat", true);
