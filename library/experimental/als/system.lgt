@@ -34,12 +34,26 @@
 		{files(Directory, '*', Files)}.
 
 
+	absolute_file_name(File) :-
+		{is_absolute_path(File)}.
+
+
+	absolute_file_name(File, Full) :-
+		{fail}.
+
+
+	decompose_file_name(File, Directory, Base, Extension) :-
+		{path_directory_tail(File, Directory, Name),
+		 file_extension(Name, Base, Extension)}.
+
+
 	file_exists(File) :-
 		{exists_file(File)}.
 
 
 	file_modtime(File, Time) :-
-		{file_status(File, Status), dmember(mod_time=Time, Status)}.
+		{file_status(File, Status),
+		 dmember(mod_time=Time, Status)}.
 
 
 	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
@@ -47,14 +61,30 @@
 
 
 	file_size(File, Size) :-
-		{file_status(File, Status), dmember(size=Size, Status)}.
+		{file_status(File, Status),
+		 dmember(size=Size, Status)}.
 
+
+	file_type(File, Type) :-
+		{file_status(File, Status),
+		 dmember(type=Type, Status)}.
+ 
+
+	file_permission(File, Permission) :-
+		{file_status(File, Status),
+		 dmember(permissions=Permissions, Status),
+		 member(Permission, Permissions)}.
+ 
 
 	delete_file(File) :-
 		{remove_file(File)}.
 
 
 	rename_file(Old, New) :-
+		{fail}.
+
+
+	symbolic_link(File, Target) :-
 		{fail}.
 
 
@@ -67,7 +97,11 @@
 
 
 	date_time(Year, Month, Day, Hours, Mins, Secs) :-
-		{date(Year/Month/Day), time(Hours:Mins:Secs)}.
+		{datetime(Year/Month/Day, Hours:Mins:Secs)}.
+
+
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+		{fail}.
 
 
 	cpu_time(Time) :-

@@ -34,6 +34,18 @@
 		{fail}.
 
 
+	absolute_file_name(File) :-
+		{fail}.
+
+
+	absolute_file_name(File, Full) :-
+		{fail}.
+
+
+	decompose_file_name(File, Directory, Base, Extension) :-
+		{fail}.
+
+
 	file_exists(File) :-
 		{exists(File)}.
 
@@ -66,6 +78,10 @@
 		{atom_concat('mv ', Old, Temp), atom_concat(' ', New, Command), system(Command)}.
 
 
+	symbolic_link(File, Target) :-
+		{fail}.
+
+
 	getenv(Variable, Value) :-
 		{environ(Variable, Value)}.
 
@@ -76,6 +92,10 @@
 
 	date_time(Year, Month, Day, Hours, Mins, Secs) :-
 		{date(Year, Month, Day), time(Hours, Mins, Secs)}.
+
+
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+		{fail}.
 
 
 	cpu_time(Time) :-
