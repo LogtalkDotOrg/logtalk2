@@ -3560,44 +3560,59 @@ user0__def(Pred, _, _, _, Pred, user).
 
 
 
-% 
+% '$lgt_iso_read_term'(@stream, ?term, +read_options_list, @list)
 %
-%
+% wraps read_term/3 call with the necessary operator settings
 
 '$lgt_iso_read_term'(Stream, Term, Options, Operators) :-
 	catch(
 		('$lgt_save_operators'(Operators, Saved),
-		 '$lgt_apply_operators'(Operators),
+		 '$lgt_add_operators'(Operators),
 		 read_term(Stream, Term, Options),
 		 '$lgt_remove_operators'(Operators)),
 		Error,
 		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
 
 
+
+% '$lgt_iso_read_term'(?term, +read_options_list, @list)
+%
+% wraps read_term/2 call with the necessary operator settings
+
 '$lgt_iso_read_term'(Term, Options, Operators) :-
 	catch(
 		('$lgt_save_operators'(Operators, Saved),
-		 '$lgt_apply_operators'(Operators),
+		 '$lgt_add_operators'(Operators),
 		 read_term(Term, Options),
 		 '$lgt_remove_operators'(Operators)),
 		Error,
 		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
 
 
+
+% '$lgt_iso_read'(@stream, ?term, @list)
+%
+% wraps read/2 call with the necessary operator settings
+
 '$lgt_iso_read'(Stream, Term, Operators) :-
 	catch(
 		('$lgt_save_operators'(Operators, Saved),
-		 '$lgt_apply_operators'(Operators),
+		 '$lgt_add_operators'(Operators),
 		 read(Stream, Term),
 		 '$lgt_remove_operators'(Operators)),
 		Error,
 		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
 
 
+
+% '$lgt_iso_read'(?term, @list)
+%
+% wraps read/1 call with the necessary operator settings
+
 '$lgt_iso_read'(Term, Operators) :-
 	catch(
 		('$lgt_save_operators'(Operators, Saved),
-		 '$lgt_apply_operators'(Operators),
+		 '$lgt_add_operators'(Operators),
 		 read(Term),
 		 '$lgt_pop_operators'(Operators)),
 		Error,
@@ -3607,7 +3622,8 @@ user0__def(Pred, _, _, _, Pred, user).
 
 % '$lgt_save_operators'(@list, -list)
 %
-% 
+% save currently defined operators that might be
+% redefined when a list of operators is added
 
 '$lgt_save_operators'(Operators, Saved) :-
 	findall(
@@ -3618,21 +3634,21 @@ user0__def(Pred, _, _, _, Pred, user).
 
 
 
-% '$lgt_apply_operators'(@list)
+% '$lgt_add_operators'(@list)
 %
-% 
+% adds operators to the global operator table
 
-'$lgt_apply_operators'([]).
+'$lgt_add_operators'([]).
 
-'$lgt_apply_operators'([op(Priority, Specifier, Operator)| Operators]) :-
+'$lgt_add_operators'([op(Priority, Specifier, Operator)| Operators]) :-
 	op(Priority, Specifier, Operator),
-	'$lgt_apply_operators'(Operators).
+	'$lgt_add_operators'(Operators).
 
 
 
 % '$lgt_remove_operators'(@list)
 %
-% 
+% remove operators from the global operator table
 
 '$lgt_remove_operators'([]).
 
@@ -3644,11 +3660,12 @@ user0__def(Pred, _, _, _, Pred, user).
 
 % '$lgt_iso_read_error_handler'(@list, @list, @nonvar)
 %
-% 
+% restores operator table to the its state before the call
+% to one of the '$lgt_iso_read...' raised an error
 
 '$lgt_iso_read_error_handler'(Operators, Saved, Error) :-
 	'$lgt_remove_operators'(Operators),
-	'$lgt_apply_operators'(Saved),
+	'$lgt_add_operators'(Saved),
 	throw(Error).
 
 
