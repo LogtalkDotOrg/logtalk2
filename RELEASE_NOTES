@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.22.5
+Release 2.22.6
 
 Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -8,6 +8,17 @@ Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.22.6 - February 14, 2005
+
+	Added caching of predicate compiled forms for dynamic facts when used 
+	with the database built-in methods clause/2, asserta/1, assertz/1, 
+	retract/1, and retractall/1, resulting in a significant performance 
+	improvement when using an object's dynamic database.
+
+	Corrected a bug on the implementation of the built-in methods asserta/1 
+	and assertz/1 that prevented asserting of rules.
 
 
 2.22.5 - February 9, 2005
