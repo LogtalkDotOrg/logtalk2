@@ -5894,9 +5894,12 @@ lgt_iso_def_pred(halt(_)).
 
 
 lgt_banner :-
-	logtalk_version(Major, Minor, Patch),
-	write('Logtalk '), write(Major), write('.'), write(Minor), write('.'), write(Patch), nl,
-	write('Copyright (c) 1998-2002 Paulo Moura'), nl.
+	lgt_compiler_option(startup_message, on) ->
+		logtalk_version(Major, Minor, Patch),
+		write('Logtalk '), write(Major), write('.'), write(Minor), write('.'), write(Patch), nl,
+		write('Copyright (c) 1998-2002 Paulo Moura'), nl
+		;
+		true.
 
 
 :- initialization(lgt_banner).

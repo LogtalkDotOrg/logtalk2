@@ -199,6 +199,8 @@ lgt_default_flag(report, on).
 
 lgt_default_flag(smart_compilation, off).
 
+lgt_default_flag(startup_message, on).
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
