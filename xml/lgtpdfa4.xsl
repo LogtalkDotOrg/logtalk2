@@ -95,13 +95,18 @@
 				margin-left="10mm"
 				font-size="10pt"
 				font-family="serif" 
-				font-style="italic" 
-				space-after="8pt">
+				font-style="italic">
 			<xsl:value-of select="comment"/>
 		</fo:block>
 	</xsl:if>
 
 	<xsl:if test="parameters">
+		<fo:block
+				font-size="9pt"
+				font-family="monospace"
+				margin-left="10mm"
+				space-before="4pt">
+		</fo:block>
 		<xsl:for-each select="parameters/parameter">
 			<fo:block
 					font-size="9pt"
@@ -116,7 +121,8 @@
 		<fo:block
 				font-size="10pt"
 				font-family="serif" 
-				keep-with-next="always">
+				keep-with-next="always"
+				space-before="8pt">
 			author:
 		</fo:block>
 		<fo:block
