@@ -2007,14 +2007,13 @@ user0__def(Pred, _, _, _, Pred, user).
 	\+ '$lgt_needs_recompilation'(Entity),
 	!,
 	('$lgt_compiler_option'(report, on) ->
-		nl, write('>>>  compiling '), writeq(Entity),	
-		nl, write('>>>  '), writeq(Entity), write(' is up-to-date'), nl
+		nl, write('>>>  compiling '), writeq(Entity), write('... up-to-date'), nl
 		;
 		true).
 
 '$lgt_compile_entity'(Entity) :-
 	('$lgt_compiler_option'(report, on) ->
-		nl, write('>>>  compiling '), writeq(Entity), nl	
+		nl, write('>>>  compiling '), writeq(Entity), write('...')
 		;
 		true),
 	'$lgt_clean_up',
@@ -2024,7 +2023,7 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_report_unknown_entities',
 	'$lgt_clean_up',
 	('$lgt_compiler_option'(report, on) ->
-		write('>>>  '), writeq(Entity), write(' compiled'), nl
+		write(' compiled'), nl
 		;
 		true).
 
