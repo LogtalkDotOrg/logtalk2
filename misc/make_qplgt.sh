@@ -20,10 +20,7 @@ else
 	else
 		prefix="$1"
 	fi
-	if ! [ -d bin ]
-	then
-		mkdir bin
-	fi
+	mkdir -p bin
 	find . -name "*.lgt" -exec perl -pi -e "s/version is (\d)\.(\d)/version is '\1\.\2'/" {} \;
 	find . -name "*.mlgt" -exec perl -pi -e "s/version is (\d)\.(\d)/version is '\1\.\2'/" {} \;
 	cd configs
@@ -40,7 +37,7 @@ chdir('../compiler/'), fcompile('logtalk.pl', [assemble_only(true), string_table
 	rm ../configs/qu.qo
 	rm ../compiler/logtalk.qo
 	echo "Done. A link to the script was been created in $prefix/bin."
-	echo "Users should define the environment variable LOGTALKHOME in"
-	echo "order to use the script."
+	echo "Users should define the environment variables LOGTALKHOME and"
+	echo "LOGTALKUSER in order to use the script."
 	echo
 fi

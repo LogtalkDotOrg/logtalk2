@@ -33,17 +33,20 @@ configs/NOTES file or your Prolog reference manual.
 
 4. Compile and load the config file for your Prolog compiler.
 
-5. Compile and load the Logtalk pre-processor/runtime found in the compiler 
+5. Compile and load the Logtalk compiler/runtime found on the compiler 
 sub-directory.
 
-Note that both the configuration files and the compiler/preprocessor files 
-are Prolog files. The predicate called to load these files depends on your 
-Prolog compiler (consult your Prolog compiler documentation or take a look 
-at the definition of the predicate '$lgt_load_prolog_code'/1 in the config 
-file. For most command-line compilers, you could type at the Prolog prompt 
-something like:
+6. Adapt the file libpaths/libpaths.pl to match your Logtalk installation, 
+Prolog compiler, and operating-system, and then compile and load it.
 
-	| ?- ['configs/foo.config', 'compiler/logtalk.pl'].
+Note that both the configuration files, the compiler/runtime files, and the 
+library paths file are Prolog files. The predicate used to load these files 
+depends on your Prolog compiler (consult your Prolog compiler documentation 
+or take a look at the definition of the predicate '$lgt_load_prolog_code'/1 
+in the config file. For most command-line compilers, you could type at the 
+Prolog prompt something like:
+
+	| ?- ['configs/foo.config', 'compiler/logtalk.pl', 'libpaths/libpaths.pl'].
 
 Replace the file name foo.config with the appropriated config file name for 
 your compiler.
@@ -51,37 +54,16 @@ your compiler.
 
 Now you may try some of the included examples:
 
-1. Change the working directory of your Prolog compiler to the library 
-directory and then type at the Prolog prompt the following query:
-
-	| ?- logtalk_load(all_loader).
-
-This will load all the library entities that you will need in order to run 
-the Logtalk examples.
-
-2. Open the examples sub-directory. There you find several sub-directories
+1. Open the examples sub-directory. There you find several sub-directories
 with ready to run examples and a NOTES file containing general instructions 
 and a brief description of each example. Select and open one of the examples 
 sub-directory.
 
-3. Read the example NOTES file. Some examples are dependent on other examples 
-or on library objects (already loaded on step one). You may need to load 
-additional files before running the chosen example.
+2. Read the example NOTES file for a description of the example.
 
-4. Change the working directory of your Prolog compiler to the example 
-directory.
-
-5. Compile and load the loader file for the example as described in the NOTES 
-and SCRIPT files. For most examples, the loader file is named loader.lgt.
-Therefore, you will need to type the query:
-
-	| ?- logtalk_load(loader).
-
-This will compile and load all the example files.
-
-6. Open the example SCRIPT file, which contains sample queries that you 
-may try by copying-and-pasting or dragging-and-droping them on your Prolog 
-interpreter top-level.
+3. Open SCRIPT file for instructions on how to load the example and for sample 
+queries that you may try by copying-and-pasting or dragging-and-droping them 
+on your Prolog interpreter top-level.
 
 
 Ready to start writing your own programs?

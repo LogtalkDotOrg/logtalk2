@@ -20,21 +20,18 @@ else
 	else
 		prefix="$1"
 	fi
-	if ! [ -d bin ]
-	then
-		mkdir bin
-	fi
+	mkdir -p bin
 	cd bin
 	cp ../configs/gnu.config gnu.pl
-	echo ":- built_in." > logtalkgp.pl
-	cat ../compiler/logtalk.pl >> logtalkgp.pl
-	gplc -o gplgt gnu.pl logtalkgp.pl
+	echo ":- built_in." > logtalk_gp.pl
+	cat ../compiler/logtalk.pl >> logtalk_gp.pl
+	gplc -o gplgt gnu.pl logtalk_gp.pl $LOGTALKUSER/libpaths/libpaths.pl
 	chmod a+x gplgt
 	ln -sf $LOGTALKHOME/bin/gplgt $prefix/bin/gplgt
 	rm gnu.pl
-	rm logtalkgp.pl
+	rm logtalk_gp.pl
 	echo "Done. A link to the script was been created in $prefix/bin."
-	echo "Users should define the environment variable LOGTALKHOME in"
-	echo "order to use the script."
+	echo "Users should define the environment variables LOGTALKHOME and"
+	echo "LOGTALKUSER in order to use the script."
 	echo
 fi

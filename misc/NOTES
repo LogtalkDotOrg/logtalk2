@@ -41,8 +41,7 @@ cplgtdirs.js
 	on the copied files)
 
 cleandist.sh
-	script for cleaning a Logtalk distribution in preparation for 
-	packaging.
+	script for cleaning a Logtalk distribution in preparation for packaging.
 
 debian
 	directory containing support files for building a Debian package
