@@ -33,14 +33,14 @@
 
 <xsd:complexType name="entity">
 	<xsd:sequence>
-		<xsd:element name="name"		type="xsd:string"/>
-		<xsd:element name="type"		type="type"/>
+		<xsd:element name="name"			type="xsd:string"/>
+		<xsd:element name="type"			type="type"/>
 		<xsd:element name="compilation"	type="compilation"/>
 		<xsd:element name="comment"		type="xsd:string"	minOccurs="0"/>
-		<xsd:element name="author"		type="xsd:string"	minOccurs="0"/>
+		<xsd:element name="author"			type="xsd:string"	minOccurs="0"/>
 		<xsd:element name="version"		type="xsd:string"	minOccurs="0"/>
-		<xsd:element name="date"		type="xsd:string"	minOccurs="0"/>
-		<xsd:element name="info"		type="info"			minOccurs="0" maxOccurs="unbounded"/>
+		<xsd:element name="date"			type="xsd:string"	minOccurs="0"/>
+		<xsd:element name="info"			type="info"			minOccurs="0" maxOccurs="unbounded"/>
 	</xsd:sequence>
 </xsd:complexType>
 
@@ -64,7 +64,7 @@
 
 <xsd:complexType name="info">
 	<xsd:sequence>
-		<xsd:element name="key"		type="xsd:string"/>
+		<xsd:element name="key"	type="xsd:string"/>
 		<xsd:element name="value"	type="xsd:string"/>
 	</xsd:sequence>
 </xsd:complexType>
@@ -73,10 +73,10 @@
 <xsd:complexType name="relations">
 	<xsd:sequence>
 		<xsd:element name="implements"		type="relation"		minOccurs="0" maxOccurs="unbounded"/>
-		<xsd:element name="imports"			type="relation"		minOccurs="0" maxOccurs="unbounded"/>
-		<xsd:element name="extends"			type="relation"		minOccurs="0" maxOccurs="unbounded"/>
+		<xsd:element name="imports"		type="relation"		minOccurs="0" maxOccurs="unbounded"/>
+		<xsd:element name="extends"		type="relation"		minOccurs="0" maxOccurs="unbounded"/>
 		<xsd:element name="instantiates"	type="relation"		minOccurs="0" maxOccurs="unbounded"/>
-		<xsd:element name="specializes"		type="relation"		minOccurs="0" maxOccurs="unbounded"/>
+		<xsd:element name="specializes"	type="relation"		minOccurs="0" maxOccurs="unbounded"/>
 		<xsd:element name="uses"			type="docrelation"	minOccurs="0" maxOccurs="unbounded"/>
 		<xsd:element name="calls"			type="docrelation"	minOccurs="0" maxOccurs="unbounded"/>
 	</xsd:sequence>
@@ -113,7 +113,7 @@
 	<xsd:sequence>
 		<xsd:element name="public"		type="public"/>
 		<xsd:element name="protected"	type="protected"/>
-		<xsd:element name="private"		type="private"/>
+		<xsd:element name="private"	type="private"/>
 	</xsd:sequence>
 </xsd:complexType>
 
@@ -141,14 +141,15 @@
 
 <xsd:complexType name="predicate">
 	<xsd:sequence>
-		<xsd:element name="name"		type="xsd:string"/>
-		<xsd:element name="scope"		type="scope"/>
+		<xsd:element name="name"			type="xsd:string"/>
+		<xsd:element name="scope"			type="scope"/>
 		<xsd:element name="compilation"	type="compilation"/>
-		<xsd:element name="meta"		type="xsd:string"		minOccurs="0"/>
-		<xsd:element name="mode"		type="mode"				minOccurs="0" maxOccurs="unbounded"/>
+		<xsd:element name="meta"			type="xsd:string"		minOccurs="0"/>
+		<xsd:element name="mode"			type="mode"				minOccurs="0" maxOccurs="unbounded"/>
 		<xsd:element name="comment"		type="xsd:string"		minOccurs="0"/>
-		<xsd:element name="template"	type="xsd:string"		minOccurs="0" maxOccurs="unbounded"/>
-		<xsd:element name="info"		type="info"				minOccurs="0" maxOccurs="unbounded"/>
+		<xsd:element name="template"		type="xsd:string"		minOccurs="0" maxOccurs="unbounded"/>
+		<xsd:element name="exceptions"		type="exceptions"/>
+		<xsd:element name="info"			type="info"				minOccurs="0" maxOccurs="unbounded"/>
 	</xsd:sequence>
 </xsd:complexType>
 
@@ -171,6 +172,13 @@
 		<xsd:enumeration value="error"/>
 	</xsd:restriction>
 </xsd:simpleType>
+
+
+<xsd:complexType name="exceptions">
+	<xsd:sequence>
+		<xsd:element name="exception"	type="xsd:string"/>
+	</xsd:sequence>
+</xsd:complexType>
 
 
 </xsd:schema>
