@@ -14,7 +14,7 @@
 <!ELEMENT logtalk (entity, relations, predicates)>
 
 
-<!ELEMENT entity (name, type, compilation, comment?, authors?, version?, date?, info*)>
+<!ELEMENT entity (name, type, compilation, comment?, author?, version?, date?, info*)>
 
 <!ELEMENT name (#PCDATA)>
 
@@ -24,7 +24,7 @@
 
 <!ELEMENT comment (#PCDATA)>
 
-<!ELEMENT authors (#PCDATA)>
+<!ELEMENT author (#PCDATA)>
 
 <!ELEMENT version (#PCDATA)>
 

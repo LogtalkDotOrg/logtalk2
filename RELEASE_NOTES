@@ -12,6 +12,8 @@ RELEASE NOTES
 
 2.14.8 - January 31, 2003
 
+	Changed "authors" key in info/1 directive to "author".
+
 	Corrected documentation of built-in local method this/1.
 
 

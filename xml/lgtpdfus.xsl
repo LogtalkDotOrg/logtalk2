@@ -101,18 +101,18 @@
 		</fo:block>
 	</xsl:if>
 
-	<xsl:if test="authors">
+	<xsl:if test="author">
 		<fo:block
 				font-size="10pt"
 				font-family="serif" 
 				keep-with-next="always">
-			authors:
+			author:
 		</fo:block>
 		<fo:block
 				font-size="9pt"
 				font-family="monospace"
 				margin-left="10mm">
-			<xsl:value-of select="authors"/>
+			<xsl:value-of select="author"/>
 		</fo:block>
 	</xsl:if>
 

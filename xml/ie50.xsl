@@ -42,9 +42,9 @@
 		<blockquote><xsl:value-of select="comment" /></blockquote>
 	</xsl:if>
 	<dl>
-	<xsl:if test="authors">
-		<dt>authors:</dt>
-			<dd><code><xsl:value-of select="authors" /></code></dd>
+	<xsl:if test="author">
+		<dt>author:</dt>
+			<dd><code><xsl:value-of select="author" /></code></dd>
 	</xsl:if>
 	<xsl:if test="version">
 		<dt>version:</dt>
