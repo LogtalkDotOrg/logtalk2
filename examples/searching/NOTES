@@ -22,3 +22,22 @@ for Artificial Intelligence" by Ivan Bratko.
 
 For a description of the search problems, please see a classical AI book 
 (such as the one above) or visit the url <http://www.plastelina.net/games>.
+
+This example defines two hierarchies of objects, one for representing state 
+spaces and another for representing search methods:
+
+	state_space
+		farmer
+		water_jug
+		heuristic_state_space
+			bridge
+			eight_puzzle
+			miss_cann
+
+	search_strategy
+		blind_search(Bound)
+			breadth_first(Bound)
+			depth_first(Bound)
+		heuristic_search(Threshold)
+			best_first(Threshold)
+			hill_climbing(Threshold)
