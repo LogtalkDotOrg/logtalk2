@@ -331,16 +331,9 @@ PrologII+ 4.5
 	set the working directory before loading the library or an example.
 
 
-Qu-Prolog 4.3, 6.4
+Qu-Prolog 6.4
 
-	qu43.config
-
-	Not tested (written by consulting the documentation).
-	The predicates lgt_current_date/3 and lgt_current_time/3 have dummy 
-	definitions. For most users, this will be no problem (some examples 
-	may use lgt_current_date/3 to put a time stamp in new objects).
-
-	qu64.config
+	qu.config
 
 	Qu-Prolog 6.4 does not support floats. In order to compile the Logtalk 
 	library and the Logtalk examplex you will need to replace all occurrences 
@@ -356,7 +349,7 @@ Qu-Prolog 4.3, 6.4
 	In order to compile and load both the config file and the Logtalk compiler,
 	the following sequence of steps is advised. First rename the config file:
 
-		% cd $LOGTALKHOME/configs; mv qu64.config qu64.ql
+		% cd $LOGTALKHOME/configs; mv qu.config qu.ql
 
 	Second, start Qu-Prolog using adequate switches. For example:
 
@@ -364,7 +357,7 @@ Qu-Prolog 4.3, 6.4
 
 	Next, compile and load the config file using:
 
-		| ?- fcompile('qu64.ql', [assemble_only(true)]), load(qu64).
+		| ?- fcompile('qu.ql', [assemble_only(true)]), load(qu).
 
 	Finally, compile and load the Logtalk compiler:
 
@@ -378,7 +371,7 @@ Qu-Prolog 4.3, 6.4
 
 	Next generate the new interpreter by doing:
 
-	% qc -s 2048 -d 1024 -h 2000 -o qplgt qphook.qo qu64.qo ../compiler/logtalk.qo
+	% qc -s 2048 -d 1024 -h 2000 -o qplgt qphook.qo qu.qo ../compiler/logtalk.qo
 
 	This way, every time you want to work with Logtalk you will just need to
 	type:

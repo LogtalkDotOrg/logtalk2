@@ -18,6 +18,9 @@ RELEASE NOTES
 	Corrected bug in the definition of the pseudo-object "user" that resulted 
 	in mixed up metapredicate and type predicate properties.
 
+	Removed config file for older Qu-Prolog 4.3 version. Renamed config file 
+	for Qu-Prolog 6.4 to "qu.config".
+
 
 2.16.2 - April 2, 2004
 
