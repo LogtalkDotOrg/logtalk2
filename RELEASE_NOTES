@@ -32,6 +32,9 @@ RELEASE NOTES
 	message sending calls (previous versions cleaned the caches only after 
 	entity loading).
 
+	The tables of dynamic predicate declarations and dynamic predicate 
+	definitions are now reseted when reloading an object.
+
 
 2.23.0 - February 21, 2005
 

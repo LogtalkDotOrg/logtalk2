@@ -1340,9 +1340,11 @@ current_logtalk_flag(version, version(2, 23, 1)).
 	once('$lgt_visible_predicate'(Obj, Pred, Sender, Scope)).
 
 '$lgt_current_predicate'(Obj, Functor/Arity, Sender, Scope) :-
-	setof(Pred, Scope^'$lgt_visible_predicate'(Obj, Pred, Sender, Scope), Preds),
-	'$lgt_member'(Pred, Preds),
-	functor(Pred, Functor, Arity).
+	setof(
+		Functor/Arity,
+		(Pred, Scope)^('$lgt_visible_predicate'(Obj, Pred, Sender, Scope), functor(Pred, Functor, Arity)),
+		Preds),
+	'$lgt_member'(Functor/Arity, Preds).
 
 
 % '$lgt_visible_predicate'(@object_identifier, ?callable, @object_identifier, @term)
@@ -3171,15 +3173,16 @@ current_logtalk_flag(version, version(2, 23, 1)).
 
 '$lgt_clean_redefined_entity'(object, Entity) :-
 	'$lgt_current_object_'(Entity, Prefix, _, _, _, _),
-	'$lgt_call'(Prefix, _, Def, _, _, _, _, DDef, _),
+	'$lgt_call'(Prefix, _, Def, _, _, _, DDcl, DDef, _),
 	forall(
-		('$lgt_call'(Def, _, _, _, _, Head),
-		 '$lgt_predicate_property'(Head, (dynamic))), 
-		retractall(Head)),
+		('$lgt_call'(Def, _, _, _, _, DefHead), '$lgt_predicate_property'(DefHead, (dynamic))),
+		retractall(DefHead)),
+	DDefClause =.. [DDef, _, _, _, _, DDefHead],
 	forall(
-		('$lgt_call'(DDef, _, _, _, _, Head2),
-		 '$lgt_predicate_property'(Head2, (dynamic))), 
-		retractall(Head2)).
+		retract(DDefClause),
+		retractall(DDefHead)),
+	DDclClause =.. [DDcl, _, _],
+	retractall(DDclClause).
 
 '$lgt_clean_redefined_entity'(protocol, _).
 
