@@ -1298,7 +1298,7 @@ current_logtalk_flag(version, version(2, 21, 2)).
 
 '$lgt_alias_pred'(_, Prefix, Alias, Pred, _) :-
 	'$lgt_construct_alias_functor'(Prefix, Functor),
-	catch('$lgt_call'(Functor, _, Pred, Alias), _, fail),
+	'$lgt_once'(Functor, _, Pred, Alias),
 	Pred \= Alias,
 	!.
 
@@ -6498,12 +6498,10 @@ current_logtalk_flag(version, version(2, 21, 2)).
 
 
 '$lgt_write_alias_clauses'(Stream) :-
-	'$lgt_pp_alias_'(_, _, _) ->
-		'$lgt_pp_entity_'(_, _, Prefix, _),
-		'$lgt_construct_alias_functor'(Prefix, PRnm),
-		'$lgt_write_alias_clauses'(Stream, PRnm)
-		;
-		true.
+	'$lgt_pp_entity_'(_, _, Prefix, _),
+	'$lgt_construct_alias_functor'(Prefix, PRnm),
+	'$lgt_write_alias_clauses'(Stream, PRnm).
+
 
 '$lgt_write_alias_clauses'(Stream, Rnm) :-
 	'$lgt_pp_alias_'(Entity, Pred, Alias),
@@ -6518,6 +6516,7 @@ current_logtalk_flag(version, version(2, 21, 2)).
 	write_canonical(Stream, Catchall),
 	write(Stream, '.'),
 	nl(Stream).
+
 
 
 '$lgt_write_entity_clauses'(Stream) :-
