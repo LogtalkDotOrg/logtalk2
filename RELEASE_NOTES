@@ -10,9 +10,9 @@ RELEASE NOTES
 =============
 
 
-2.22.5 - January 24, 2005
+2.22.5 - January 28, 2005
 
-	Updated K-Prolog config file, correcting a showstopper bug and enabling  
+	Updated K-Prolog config file, correcting a showstopper bug and enabling 
 	support for using the "library" notation for loading source files.
 
 	Added scripts for easy integration of Logtalk with K-Prolog.
@@ -23,6 +23,9 @@ RELEASE NOTES
 
 	Changed format of preprocessor and runtime dynamic predicates that deal 
 	with predicate indicators for better performance.
+
+	Simplified implementation of Logtalk built-in methods asserta/1 and 
+	assertz/1.
 
 	Updated the syntax coloring file for the TextMate text editor, adding 
 	some missing ISO Prolog predicates.

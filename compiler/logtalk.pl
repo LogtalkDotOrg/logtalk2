@@ -1436,25 +1436,11 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	!,
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef),
-	('$lgt_call'(Dcl, Head, PScope, Type, Meta, SCtn, _) ->
-	 	true
-	 	;
-	 	'$lgt_convert_test_scope'(Scope, Scope2),
-	 	'$lgt_assert_ddcl_clause'(DDcl, Head, Scope2)),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PScope, Type, Meta, SCtn),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
-			(('$lgt_call'(Def, Head, Sender2, This, Self, Call); '$lgt_call'(DDef, Head, Sender2, This, Self, Call)) ->
-				true
-				;
-				functor(Head, Functor, Arity),
-				'$lgt_assert_ddef_clause'(Functor, Arity, Prefix, DDef, _),
-				'$lgt_once'(DDef, Head, Sender2, This, Self, Call)),
-			(compound(Meta) ->
-				Head =.. [_| Args],
-				Meta =.. [_| MArgs],
-				'$lgt_extract_metavars'(Args, MArgs, Metavars)
-				;
-				Metavars = []),
+			'$lgt_assert_pred_to_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call),
+			'$lgt_metavars'(Head, Meta, Metavars),
 			'$lgt_context'(Ctx, Sender2, This, Self, Prefix, Metavars),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			('$lgt_debugging_'(Obj) ->
@@ -1472,19 +1458,10 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_asserta'(Obj, Head, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef),
-	('$lgt_call'(Dcl, Head, PScope, Type, _, SCtn, _) ->
-	 	true
-	 	;
-	 	'$lgt_convert_test_scope'(Scope, Scope2),
-	 	'$lgt_assert_ddcl_clause'(DDcl, Head, Scope2)),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PScope, Type, Meta, SCtn),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
-			(('$lgt_call'(Def, Head, Sender2, This, Self, Call); '$lgt_call'(DDef, Head, Sender2, This, Self, Call)) ->
-				true
-				;
-				functor(Head, Functor, Arity),
-				'$lgt_assert_ddef_clause'(Functor, Arity, Prefix, DDef, _),
-				'$lgt_once'(DDef, Head, Sender2, This, Self, Call)),
+			'$lgt_assert_pred_to_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call),
 			('$lgt_debugging_'(Obj) ->
 				'$lgt_context'(Ctx, Sender2, This, Self, Prefix, []),
 				asserta((Call :- '$lgt_dbg_fact'(Head, Ctx)))
@@ -1531,25 +1508,11 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	!,
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef),
-	('$lgt_call'(Dcl, Head, PScope, Type, Meta, SCtn, _) ->
-	 	true
-	 	;
-	 	'$lgt_convert_test_scope'(Scope, Scope2),
-	 	'$lgt_assert_ddcl_clause'(DDcl, Head, Scope2)),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PScope, Type, Meta, SCtn),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
-			(('$lgt_call'(Def, Head, Sender2, This, Self, Call); '$lgt_call'(DDef, Head, Sender2, This, Self, Call)) ->
-				true
-				;
-				functor(Head, Functor, Arity),
-				'$lgt_assert_ddef_clause'(Functor, Arity, Prefix, DDef, _),
-				'$lgt_once'(DDef, Head, Sender2, This, Self, Call)),
-			(compound(Meta) ->
-				Head =.. [_| Args],
-				Meta =.. [_| MArgs],
-				'$lgt_extract_metavars'(Args, MArgs, Metavars)
-				;
-				Metavars = []),
+			'$lgt_assert_pred_to_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call),
+			'$lgt_metavars'(Head, Meta, Metavars),
 			'$lgt_context'(Ctx, Sender2, This, Self, Prefix, Metavars),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			('$lgt_debugging_'(Obj) ->
@@ -1567,19 +1530,10 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_assertz'(Obj, Head, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef),
-	('$lgt_call'(Dcl, Head, PScope, Type, _, SCtn, _) ->
-	 	true
-	 	;
-	 	'$lgt_convert_test_scope'(Scope, Scope2),
-	 	'$lgt_assert_ddcl_clause'(DDcl, Head, Scope2)),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PScope, Type, Meta, SCtn),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
-			(('$lgt_call'(Def, Head, Sender2, This, Self, Call); '$lgt_call'(DDef, Head, Sender2, This, Self, Call)) ->
-				true
-				;
-				functor(Head, Functor, Arity),
-				'$lgt_assert_ddef_clause'(Functor, Arity, Prefix, DDef, _),
-				'$lgt_once'(DDef, Head, Sender2, This, Self, Call)),
+			'$lgt_assert_pred_to_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call),
 			('$lgt_debugging_'(Obj) ->
 				'$lgt_context'(Ctx, Sender2, This, Self, Prefix, []),
 				assertz((Call :- '$lgt_dbg_fact'(Head, Ctx)))
@@ -1592,6 +1546,35 @@ current_logtalk_flag(version, version(2, 22, 5)).
 				throw(error(permission_error(modify, protected_predicate, Head), Obj::assertz(Head), Sender))))
 		;
 		throw(error(permission_error(modify, static_predicate, Head), Obj::assertz(Head), Sender))).
+
+
+
+% 
+
+'$lgt_assert_pred_dcl'(Dcl, _, Pred, _, PScope, Type, Meta, SCtn) :-
+	'$lgt_call'(Dcl, Head, PScope, Type, Meta, SCtn, _),
+	!.
+
+'$lgt_assert_pred_dcl'(_, DDcl, Pred, Scope, Scope, (dynamic), no, _) :-
+ 	'$lgt_convert_test_scope'(Scope, Scope2),
+ 	'$lgt_assert_ddcl_clause'(DDcl, Pred, Scope2).
+
+
+
+% 
+
+'$lgt_assert_pred_to_call'(Def, _, _, Pred, Sender, This, Self, Call) :-
+	'$lgt_call'(Def, Pred, Sender, This, Self, Call),
+	!.
+	
+'$lgt_assert_pred_to_call'(_, DDef, _, Pred, Sender, This, Self, Call) :-
+	'$lgt_call'(DDef, Pred, Sender, This, Self, Call),
+	!.
+
+'$lgt_assert_pred_to_call'(_, DDef, Prefix, Pred, Sender, This, Self, Call) :-
+	functor(Pred, Functor, Arity),
+	'$lgt_assert_ddef_clause'(Functor, Arity, Prefix, DDef, _),
+	'$lgt_once'(DDef, Pred, Sender, This, Self, Call).
 
 
 
@@ -4183,7 +4166,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	functor(Head, Functor, Arity),
 	'$lgt_pp_dynamic_'(Functor, Arity),
 	!,
-	'$lgt_extract_metavars'(Head, Metavars),
+	'$lgt_metavars'(Head, Metavars),
 	'$lgt_metavars'(Ctx, Metavars),
 	'$lgt_tr_head'(Head, THead, Ctx),
 	'$lgt_tr_body'(Body, TBody, DBody, Ctx),
@@ -4192,7 +4175,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_dbg_head'(Head, Ctx),DBody), Ctx) :-
 	!,
-	'$lgt_extract_metavars'(Head, Metavars),
+	'$lgt_metavars'(Head, Metavars),
 	'$lgt_metavars'(Ctx, Metavars),
 	'$lgt_tr_head'(Head, THead, Ctx),
 	'$lgt_tr_body'(Body, TBody, DBody, Ctx),
@@ -5003,12 +4986,12 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		TPred = '$lgt_send_to_super_nv'(Self, Pred, This, Sender)).
 
 
-% '$lgt_extract_metavars'(+callable, -list)
+% '$lgt_metavars'(+callable, -list)
 %
 % constructs a list of all variables that occur
 % in a position corresponding to a meta-argument
 
-'$lgt_extract_metavars'(Pred, Metavars) :-
+'$lgt_metavars'(Pred, Metavars) :-
 	functor(Pred, Functor, Arity),
 	functor(Meta, Functor, Arity),
 	('$lgt_pp_metapredicate_'(Meta) ->
@@ -5017,6 +5000,19 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		'$lgt_extract_metavars'(Args, MArgs, Metavars)
 		;
 		Metavars = []).
+
+
+
+% '$lgt_metavars'(+callable, +callable, -list)
+%
+% constructs a list of all variables that occur
+% in a position corresponding to a meta-argument
+
+'$lgt_metavars'(Pred, Meta, Metavars) :-
+	Pred =.. [_| Args],
+	Meta =.. [_| MArgs],
+	'$lgt_extract_metavars'(Args, MArgs, Metavars).
+
 
 
 % '$lgt_extract_metavars'(+list, +list, -list)
