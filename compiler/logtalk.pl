@@ -5560,8 +5560,6 @@ user0__def(Pred, _, _, _, Pred, user).
 %
 %  DCG rule conversion
 %
-%  adopted from Richard A. O'Keefe code
-%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -5580,27 +5578,18 @@ user0__def(Pred, _, _, _, Pred, user).
 
 
 '$lgt_dcg_rule'((RHead --> RBody), (CHead :- CBody)) :-
-	'$lgt_dcg_head'(RHead, CHead, PushBack, S0, S),
+	'$lgt_dcg_head'(RHead, CHead, S0, S),
 	'$lgt_dcg_body'(RBody, Body, S0, S),
-	'$lgt_dcg_and'(Body, PushBack, CBody).
+	'$lgt_dcg_simplify'(Body, CBody, S0, S).
 
 
 
-'$lgt_dcg_head'((_, Terminals), _, _, _, _) :-
-	var(Terminals),
+'$lgt_dcg_head'(Nonterminal, _, _, _) :-
+	var(Nonterminal),
 	throw(instantiation_error).
 
-'$lgt_dcg_head'((_, Terminals), _, _, _, _) :-
-	\+ '$lgt_proper_list'(Terminals),
-	throw(type_error(list, Terminals)).
-
-'$lgt_dcg_head'((Non_terminal, Terminals), CHead, PushBack, S0, S) :-
-	!,
-	'$lgt_dcg_goal'(Non_terminal, CHead, S0, S1),
-	'$lgt_dcg_body'(Terminals, PushBack, S1, S).
-
-'$lgt_dcg_head'(Non_terminal, CHead, true, S0, S) :-
-	'$lgt_dcg_goal'(Non_terminal, CHead, S0, S).
+'$lgt_dcg_head'(Nonterminal, CHead, S0, S) :-
+	'$lgt_dcg_goal'(Nonterminal, CHead, S0, S).
 
 
 
@@ -5608,11 +5597,10 @@ user0__def(Pred, _, _, _, Pred, user).
 	var(Var),
 	!.
 
-'$lgt_dcg_body'((RGoal,RGoals), Body, S0, S) :-
+'$lgt_dcg_body'((RGoal,RGoals), (CGoal,CGoals), S0, S) :-
 	!,
 	'$lgt_dcg_body'(RGoal, CGoal, S0, S1),
-	'$lgt_dcg_body'(RGoals, CGoals, S1, S),
-	'$lgt_dcg_and'(CGoal, CGoals, Body).
+	'$lgt_dcg_body'(RGoals, CGoals, S1, S).
 
 '$lgt_dcg_body'((RGoal1 -> RGoal2), (CGoal1 -> CGoal2), S0, S) :-
 	!,
@@ -5624,53 +5612,34 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_dcg_or'(RGoals1, CGoals1, S0, S),
 	'$lgt_dcg_or'(RGoals2, CGoals2, S0, S).
 
-'$lgt_dcg_body'({Goal}, Goal, S, S) :-
+'$lgt_dcg_body'({Goal}, (Goal, S0=S), S0, S) :-
 	!.
 
-'$lgt_dcg_body'(!, !, S, S) :-
+'$lgt_dcg_body'(!, (!, S0=S), S0, S) :-
 	!.
 
-'$lgt_dcg_body'([], true, S, S) :-
+'$lgt_dcg_body'([], (S0=S), S0, S) :-
 	!.
 
 '$lgt_dcg_body'(\+ RGoal, CGoal, S0, S) :-
 	!,
 	'$lgt_dcg_body'((RGoal -> {fail};{true}), CGoal, S0, S).
 
-'$lgt_dcg_body'([Terminal| Terminals], Body, S0, S) :-
+'$lgt_dcg_body'([Terminal| Terminals], (Goal,Goals2), S0, S) :-
 	!,
 	'$lgt_dcg_terminal'(Terminal, Goal, S0, S1),
 	'$lgt_dcg_body'(Terminals, Goals, S1, S),
-	'$lgt_dcg_and'(Goal, Goals, Body).
+	'$lgt_dcg_simplify_terminals'(Goals, Goals2).
 
 '$lgt_dcg_body'(Non_terminal, Goal, S0, S) :-
 	'$lgt_dcg_goal'(Non_terminal, Goal, S0, S).
 
 
 
-'$lgt_dcg_and'(Goal, true, Goal) :-
-	!.
-
-'$lgt_dcg_and'(Goal, Goals, Goals2) :-
-	'$lgt_dcg_and2'(Goal, Goals, Goals2).
-
-
-
-'$lgt_dcg_and2'(true, Goals, Goals) :-
-	!.
-
-'$lgt_dcg_and2'((Goal1,Goals1), Goals2, (Goal1,Goals3)) :-
-	!,
-	'$lgt_dcg_and2'(Goals1, Goals2, Goals3).
-
-'$lgt_dcg_and2'(Goal, Goals, (Goal,Goals)).
-
-
-
 '$lgt_dcg_or'(RGoals, CGoals, S0, S) :-
 	'$lgt_dcg_body'(RGoals, Goals, S1, S),
 	(S1 == S ->
-		'$lgt_dcg_and'(S1=S0, Goals, CGoals)
+		'$lgt_dcg_simplify_and'((S1=S0,Goals), CGoals)
 		;
 		S1 = S0, CGoals = Goals).
 
@@ -5681,13 +5650,68 @@ user0__def(Pred, _, _, _, Pred, user).
 	throw(type_error(callable, RGoal)).
 
 '$lgt_dcg_goal'(RGoal, CGoal, S0, S) :-
-	RGoal =.. [Functor| RArgs],
-	'$lgt_append'(RArgs, [S0, S], CArgs),
-	CGoal =.. [Functor| CArgs].
+	RGoal =.. RList,
+	'$lgt_append'(RList, [S0, S], CList),
+	CGoal =.. CList.
 
 
 
 '$lgt_dcg_terminal'(Goal, S0=[Goal|S], S0, S).
+
+
+
+'$lgt_dcg_simplify'((Goal1 -> Goal2), (SGoal1 -> SGoal2), S0, S) :-
+	!,
+	'$lgt_dcg_simplify'(Goal1, SGoal1, S0, S),
+	'$lgt_dcg_simplify'(Goal2, SGoal2, S0, S).
+
+'$lgt_dcg_simplify'((Goal1;Goal2), (SGoal1;SGoal2), S0, S) :-
+	!,
+	'$lgt_dcg_simplify'(Goal1, SGoal1, S0, S),
+	'$lgt_dcg_simplify'(Goal2, SGoal2, S0, S).
+
+'$lgt_dcg_simplify'((Goal,Goals), Body, S0, S) :-
+	!,
+	'$lgt_dcg_simplify'(Goal, Goal2, S0, S),
+	'$lgt_dcg_simplify'(Goals, Goals2, S0, S),
+	'$lgt_dcg_simplify_and'((Goal2,Goals2), Body).
+
+'$lgt_dcg_simplify'(S1=S2, S0=S, S0, S) :-
+	S1 == S0,
+	S2 == S,
+	!.
+
+'$lgt_dcg_simplify'(S1=S2, true, S0, S) :-
+	var(S2),
+	(S1 \== S0; S2 \== S),
+	!,
+	S1 = S2.
+
+'$lgt_dcg_simplify'(Body, Body, _, _).
+
+
+
+'$lgt_dcg_simplify_and'((true,Goals), Body) :-
+	!,
+	'$lgt_dcg_simplify_and'(Goals, Body).
+
+'$lgt_dcg_simplify_and'((Goal,true), Goal) :-
+	!.
+
+'$lgt_dcg_simplify_and'((Goal,Goals), (Goal,Goals2)) :-
+	!,
+	'$lgt_dcg_simplify_and'(Goals, Goals2).
+
+'$lgt_dcg_simplify_and'(Goals, Goals).
+
+
+
+'$lgt_dcg_simplify_terminals'(X = Y, X = Y) :-
+	!.
+
+'$lgt_dcg_simplify_terminals'((X=Y,Goals), Goal2) :-
+	X = Y,
+	'$lgt_dcg_simplify_terminals'(Goals, Goal2).
 
 
 
