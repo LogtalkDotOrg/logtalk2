@@ -2259,7 +2259,13 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_do_port_option'(a, _) :-
 	throw(error(logtalk_execution_aborted)).
 
-'$lgt_dbg_do_port_option'(x, _).
+'$lgt_dbg_do_port_option'(x, Ctx) :-
+	'$lgt_sender'(Ctx, Sender),
+	'$lgt_this'(Ctx, This),
+	'$lgt_self'(Ctx, Self),
+	write('Sender: '), writeq(Sender), nl,
+	write('This:   '), writeq(This), nl,
+	write('Self:   '), writeq(Self), nl.
 
 '$lgt_dbg_do_port_option'(h, _) :-
 	write('     Available options are:'), nl,
