@@ -8699,13 +8699,14 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 
-% '$lgt_pred_call_to_xml_term'(+nonvar, +nonvar, -nonvar)
+% '$lgt_pred_call_to_xml_term'(+nonvar, +nonvar, -nonvar, -nonvar)
 %
 % instantiates the arguments in a call to user defined names or to the atom '_'
 
-'$lgt_pred_call_to_xml_term'(Call, Bindings, QCall) :-
+'$lgt_pred_call_to_xml_term'(Call, Bindings, QCall, QBindings) :-
 	'$lgt_double_quote_atoms'(Call, QCall),
-	'$lgt_pred_qcall_to_xml_term'(QCall, Bindings).
+	'$lgt_double_quote_atoms'(Bindings, QBindings),
+	'$lgt_pred_qcall_to_xml_term'(QCall, QBindings).
 
 
 '$lgt_pred_qcall_to_xml_term'((Call1, Call2), Bindings) :-
@@ -8733,14 +8734,14 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 
-% '$lgt_pred_call_to_xml_term'(+atom, +integer, +nonvar, +nonvar, -nonvar)
+% '$lgt_pred_call_to_xml_term'(+atom, +integer, +nonvar, +nonvar, -nonvar, -nonvar)
 %
-% instantiates the arguments in a predicate call to
-% user defined names or to the atom '_'
+% instantiates the arguments in a predicate call to user defined names or to the atom '_'
 
-'$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings, QCall) :-
+'$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings, QCall, QBindings) :-
 	'$lgt_double_quote_atoms'(Call, QCall),
-	'$lgt_pred_qcall_to_xml_term'(Functor, Arity, QCall, Bindings).
+	'$lgt_double_quote_atoms'(Bindings, QBindings),
+	'$lgt_pred_qcall_to_xml_term'(Functor, Arity, QCall, QBindings).
 
 
 '$lgt_pred_qcall_to_xml_term'(Functor, Arity, Call, Bindings) :-
@@ -8810,7 +8811,10 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 '$lgt_double_quote_atoms'(Term, QTerm) :-
 	Term =.. [Functor| Args],
-	'$lgt_double_quote_atoms'(Functor, QFunctor),
+	('$lgt_built_in'(Term) ->
+		QFunctor = Functor
+		;
+		'$lgt_double_quote_atoms'(Functor, QFunctor)),
 	'$lgt_double_quote_atoms'(Args, QArgs),
 	QTerm =.. [QFunctor| QArgs].
 
@@ -9045,11 +9049,11 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		'$lgt_write_xml_open_tag'(Stream, examples, []),
 		forall(
 			'$lgt_member'((Description - Call - {Bindings}), Examples),
-			('$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings, QCall),
+			('$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings, QCall, QBindings),
 			 '$lgt_write_xml_open_tag'(Stream, example, []),
 			 '$lgt_write_xml_cdata_element'(Stream, description, [], Description),
 			 '$lgt_write_xml_cdata_element'(Stream, call, [], QCall),
-			 '$lgt_write_xml_cdata_element'(Stream, bindings, [], Bindings),
+			 '$lgt_write_xml_cdata_element'(Stream, bindings, [], QBindings),
 		 	 '$lgt_write_xml_close_tag'(Stream, example))),
 		'$lgt_write_xml_close_tag'(Stream, examples)
 		;
@@ -9150,11 +9154,11 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	(('$lgt_pp_info_'(Info), '$lgt_member'(examples is Examples, Info)) ->
 		forall(
 			'$lgt_member'((Description - Call - {Bindings}), Examples),
-			('$lgt_pred_call_to_xml_term'(Call, Bindings, QCall),
+			('$lgt_pred_call_to_xml_term'(Call, Bindings, QCall, QBindings),
 			 '$lgt_write_xml_open_tag'(Stream, example, []),
 			 '$lgt_write_xml_cdata_element'(Stream, description, [], Description),
 			 '$lgt_write_xml_cdata_element'(Stream, call, [], QCall),
-			 '$lgt_write_xml_cdata_element'(Stream, bindings, [], Bindings),
+			 '$lgt_write_xml_cdata_element'(Stream, bindings, [], QBindings),
 		 	 '$lgt_write_xml_close_tag'(Stream, example)))
 		;
 		true),
