@@ -4252,6 +4252,17 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		;
 		throw(type_error(atomic, Version))).
 
+
+'$lgt_tr_entity_info_key_value'(examples, Examples) :-
+	!,
+	('$lgt_proper_list'(Examples) ->
+		(('$lgt_member'(Example, Examples), \+ '$lgt_valid_pred_call_example'(Example)) ->
+			throw(type_error(example, Example))
+			;
+			true)
+		;
+		throw(type_error(list, Examples))).
+
 '$lgt_tr_entity_info_key_value'(_, _).
 
 
@@ -8174,15 +8185,49 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 % '$lgt_valid_pred_call_example'(@term)
 %
+%valid predicate call example documentation on info/1 directive
+
+'$lgt_valid_pred_call_example'(Description - Call - {Bindings}) :-
+	atom(Description),
+	callable(Call),
+	nonvar(Bindings),
+	(atom(Bindings) ->
+		once((Bindings = no; Bindings = yes))
+		;
+		'$lgt_valid_var_bindings'(Bindings)).
+
+
+
+% '$lgt_valid_pred_call_example'(@term, +atom, +integer)
+%
 %valid predicate call example documentation on info/2 directive
 
-'$lgt_valid_pred_call_example'((Description - Call -> {Bindings}), Functor, Arity) :-
+'$lgt_valid_pred_call_example'((Description - Call - {Bindings}), Functor, Arity) :-
 	atom(Description),
 	nonvar(Call),
 	functor(Pred, Functor, Arity),
 	Call = Pred,
 	nonvar(Bindings),
-	\+ ('$lgt_member'(Binding, Bindings), Binding = (_ = _)).
+	(atom(Bindings) ->
+		once((Bindings = no; Bindings = yes))
+		;
+		'$lgt_valid_var_bindings'(Bindings)).
+
+
+
+'$lgt_valid_var_bindings'((Binding, Bindings)) :-
+	!,
+	'$lgt_valid_var_binding'(Binding),
+	'$lgt_valid_var_bindings'(Bindings).
+
+'$lgt_valid_var_bindings'(Binding) :-
+	'$lgt_valid_var_binding'(Binding).
+
+
+'$lgt_valid_var_binding'(Binding) :-
+	nonvar(Binding),
+	Binding = (Var = _),
+	var(Var).
 
 
 
@@ -8927,7 +8972,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	('$lgt_member'(examples is Examples, Info) ->
 		'$lgt_write_xml_open_tag'(Stream, examples, []),
 		forall(
-			'$lgt_member'((Description - Call -> {Bindings}), Examples),
+			'$lgt_member'((Description - Call - {Bindings}), Examples),
 			('$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings),
 			 '$lgt_write_xml_open_tag'(Stream, example, []),
 			 '$lgt_write_xml_cdata_element'(Stream, description, [], Description),
@@ -9032,7 +9077,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_write_xml_open_tag'(Stream, examples, []),
 	(('$lgt_pp_info_'(Info), '$lgt_member'(examples is Examples, Info)) ->
 		forall(
-			'$lgt_member'((Description - Call -> {Bindings}), Examples),
+			'$lgt_member'((Description - Call - {Bindings}), Examples),
 			('$lgt_pred_call_to_xml_term'(Call, Bindings),
 			 '$lgt_write_xml_open_tag'(Stream, example, []),
 			 '$lgt_write_xml_cdata_element'(Stream, description, [], Description),
