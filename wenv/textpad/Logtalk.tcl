@@ -298,6 +298,39 @@
 !
 
 
+!TEXT=Category with category
+:- category(Category,
+	imports(Category)).
+
+	:- info([
+		version is 1.0,
+		author is 'Author',
+		date is Year/Month/Day,
+		comment is 'Description']).
+
+	\^
+
+:- end_category.
+!
+
+
+!TEXT=Category with all
+:- category(Category,
+	implements(Protocol),
+	imports(Category)).
+
+	:- info([
+		version is 1.0,
+		author is 'Author',
+		date is Year/Month/Day,
+		comment is 'Description']).
+
+	\^
+
+:- end_category.
+!
+
+
 !TEXT=Public predicate
 	:- public(Functor/Arity).
 	:- mode(Functor(Arguments), Solutions).
