@@ -2031,8 +2031,9 @@ user0__def(Pred, _, _, _, Pred, user).
 		Error,
 		'$lgt_compiler_error_handler'(Stream, Error)),
 	catch(
-		(read_term(Stream, Term, [singletons(Singletons)]),
-		 '$lgt_report_singletons'(Singletons, Term),
+		(read_term(Stream, Term, [singletons(Singletons1)]),
+		 '$lgt_filter_false_singletons'(Singletons1, Singletons2),
+		 '$lgt_report_singletons'(Singletons2, Term),
 		 '$lgt_tr_file'(Stream, Term)),
 		Error,
 		'$lgt_compiler_error_handler'(Stream, Error)),
@@ -2052,9 +2053,28 @@ user0__def(Pred, _, _, _, Pred, user).
 
 '$lgt_tr_file'(Stream, Term) :-
 	'$lgt_tr_term'(Term),
-	read_term(Stream, Next, [singletons(Singletons)]),
-	'$lgt_report_singletons'(Singletons, Next),
+	read_term(Stream, Next, [singletons(Singletons1)]),
+	'$lgt_filter_false_singletons'(Singletons1, Singletons2),
+	'$lgt_report_singletons'(Singletons2, Next),
 	'$lgt_tr_file'(Stream, Next).
+
+
+
+% '$lgt_filter_false_singletons'(+list, -list)
+%
+%
+
+'$lgt_filter_false_singletons'(List, Result) :-
+	'$lgt_filter_false_singletons'(List, [], Result).
+
+
+'$lgt_filter_false_singletons'([], Result, Result).
+
+'$lgt_filter_false_singletons'([Var| Vars], Sofar, Result) :-
+	sub_atom(Var, 0, 1, _, '_') ->
+		'$lgt_filter_false_singletons'(Vars, Sofar, Result)
+		;
+		'$lgt_filter_false_singletons'(Vars, [Var| Sofar], Result).
 
 
 
