@@ -1747,10 +1747,10 @@ current_logtalk_flag(version, version(2, 21, 1)).
 	'$lgt_append'([Head| Tail], Rest, Input).
 
 '$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, Scope) :-
-	Ruleset =.. [Functor| Args],
-	'$lgt_append'(Args, [Input, Rest], Args2),
-	Pred =.. [Functor| Args2],
-	('$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _) ->
+	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _) ->
+		Ruleset =.. [Functor| Args],
+		'$lgt_append'(Args, [Input, Rest], Args2),
+		Pred =.. [Functor| Args2],
 		('$lgt_call'(Dcl, Pred, PScope, _, _, SCtn, _) ->
 			((\+ \+ PScope = Scope; Sender = SCtn) ->
 				'$lgt_once'(Def, Pred, Sender, Obj, Obj, Call, _),
@@ -1769,7 +1769,7 @@ current_logtalk_flag(version, version(2, 21, 1)).
 				;
 				throw(error(existence_error(predicate_declaration, Pred), Obj::phrase(Ruleset, Input, Rest), Sender))))
 		;
-		throw(error(existence_error(object, Obj), Obj::phrase(Ruleset, Input, Rest), Sender))).
+		throw(error(existence_error(object, Obj), Obj::phrase(Ruleset, Input, Rest), Sender)).
 
 
 
@@ -4051,11 +4051,11 @@ current_logtalk_flag(version, version(2, 21, 1)).
 	!,
 	'$lgt_this'(Ctx, This).
 
-'$lgt_tr_body'(phrase(Ruleset, List), '$lgt_phrase'(This, Ruleset, List, This, _), '$lgt_dbg_goal'(phrase(Ruleset, List), '$lgt_phrase'(This, Ruleset, List, This, _), Ctx), Ctx) :-
+'$lgt_tr_body'(phrase(Ruleset, Input), '$lgt_phrase'(This, Ruleset, Input, This, _), '$lgt_dbg_goal'(phrase(Ruleset, Input), '$lgt_phrase'(This, Ruleset, Input, This, _), Ctx), Ctx) :-
 	!,
 	'$lgt_this'(Ctx, This).
 
-'$lgt_tr_body'(phrase(Ruleset, List, Rest), '$lgt_phrase'(This, Ruleset, List, Rest, This, _), '$lgt_dbg_goal'(phrase(Ruleset, List, Rest), '$lgt_phrase'(This, Ruleset, List, Rest, This, _), Ctx), Ctx) :-
+'$lgt_tr_body'(phrase(Ruleset, Input, Rest), '$lgt_phrase'(This, Ruleset, Input, Rest, This, _), '$lgt_dbg_goal'(phrase(Ruleset, Input, Rest), '$lgt_phrase'(This, Ruleset, Input, Rest, This, _), Ctx), Ctx) :-
 	!,
 	'$lgt_this'(Ctx, This).
 
