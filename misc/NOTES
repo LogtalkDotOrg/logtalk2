@@ -70,13 +70,17 @@ make_eclipselgt.js
 	makes a Windows shortcut named "Logtalk - ECLiPSe" for running Logtalk 
 	with ECLiPSe 5.7 (if you are using a different version, you must edit 
 	the reference to the registry key in the script; if you prefer to use
-	TkEclipse, open the %LOGTALKHOME%\bin\logtalke_clipse.pl file with it)
+	TkEclipse, open the %LOGTALKHOME%\bin\logtalke_eclipse.pl file with it)
 
 make_gplgt.sh
-	makes a shell script named gplgt for running Logtalk with GNU Prolog
+	makes a shell script named gplgt for running Logtalk with GNU Prolog (this 
+	script is adequate for development purposes but does not provide the best 
+	possible performance for running Logtalk with this Prolog compiler)	
 make_gplgt.js
 	makes a Windows shortcut named "Logtalk - GNU Prolog" for running Logtalk 
-	with GNU Prolog
+	with GNU Prolog (this script is adequate for development purposes but does 
+	not provide the best possible performance for running Logtalk with this 
+	Prolog compiler)
 
 make_qplgt.sh
 	makes a shell script named qplgt for running Logtalk with Qu-Prolog 
