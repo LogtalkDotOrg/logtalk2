@@ -25,7 +25,7 @@ RELEASE NOTES
 	in the SubEthaEdit text editor. Added more acurate syntax highlight for
 	built-in methods and built-in predicates.
 
-	New config file for Qu-Prolog 6.3 (see the configs/NOTES file for details).
+	New config file for Qu-Prolog 6.4 (see the configs/NOTES file for details).
 
 
 2.15.6 - February 9, 2004

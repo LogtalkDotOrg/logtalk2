@@ -331,7 +331,7 @@ PrologII+ 4.5
 	set the working directory before loading the library or an example.
 
 
-Qu-Prolog 4.3, 6.3
+Qu-Prolog 4.3, 6.4
 
 	qu43.config
 
@@ -340,9 +340,9 @@ Qu-Prolog 4.3, 6.3
 	definitions. For most users, this will be no problem (some examples 
 	may use lgt_current_date/3 to put a time stamp in new objects).
 
-	qu63.config
+	qu64.config
 
-	Qu-Prolog 6.3 does not support floats. In order to compile the Logtalk 
+	Qu-Prolog 6.4 does not support floats. In order to compile the Logtalk 
 	library and the Logtalk examplex you will need to replace all occurrences 
 	of floats by either integers or (quoted) atoms. In Unix-like systems, you
 	may perform the changes by running the following command:
@@ -352,7 +352,7 @@ Qu-Prolog 4.3, 6.3
 	In order to compile and load both the config file and the Logtalk compiler,
 	the following sequence of steps is advised. First rename the config file:
 		
-		% cd configs; mv qu63.config qu63.ql
+		% cd configs; mv qu64.config qu64.ql
 	
 	Second, start Qu-Prolog using adequate switches. For example:
 	
@@ -360,7 +360,7 @@ Qu-Prolog 4.3, 6.3
 	
 	Next, compile and load the config file using:
 	
-		| ?- fcompile('qu63.ql', [assemble_only(true)]), load(qu63).
+		| ?- fcompile('qu64.ql', [assemble_only(true)]), load(qu64).
 
 	Finally, compile and load the Logtalk compiler:
 
@@ -368,6 +368,8 @@ Qu-Prolog 4.3, 6.3
 		
 	Don't forget to use the chdir/1 predicate to set the working directory 
 	before loading the library or an example.
+
+	Written and tested with the help of Peter Robinson.
 
 
 Quintus Prolog 3.3~3.4
