@@ -328,7 +328,6 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_gen_object_clauses',
 	'$lgt_gen_object_directives',
 	'$lgt_assert_tr_entity',
-	'$lgt_report_unknown_entities',
 	'$lgt_clean_pp_clauses'.
 
 
@@ -377,7 +376,6 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_gen_category_clauses',
 	'$lgt_gen_category_directives',
 	'$lgt_assert_tr_entity',
-	'$lgt_report_unknown_entities',
 	'$lgt_clean_pp_clauses'.
 
 
@@ -420,7 +418,6 @@ create_protocol(Ptc, Rels, Dirs) :-
 	'$lgt_gen_protocol_clauses',
 	'$lgt_gen_protocol_directives',
 	'$lgt_assert_tr_entity',
-	'$lgt_report_unknown_entities',
 	'$lgt_clean_pp_clauses'.
 
 
