@@ -12,7 +12,7 @@ RELEASE NOTES
 
 2.21.4 - October 26, 2004
 
-	Corrected silly bug in the definition of the predicate repeat/1 on the 
+	Corrected a silly bug in the definition of the predicate repeat/1 on the 
 	new "benchmarks" example.
 
 
