@@ -60,7 +60,7 @@ var link = WshShell.CreateShortcut(ProgramsPath + "\\swilgt.lnk");
 link.Arguments = "-f "+ logtalk_home + "\\bin\\logtalkswi.rc";
 link.Description = "Logtalk & SWI-Prolog";
 link.IconLocation = "app.exe,1";
-link.TargetPath = WshShell.RegRead("HKEY_LOCAL_MACHINE\\Software\\SWI\\Prolog\\") + "\\bin\\plwin.exe";
+link.TargetPath = WshShell.RegRead("HKEY_LOCAL_MACHINE\\Software\\SWI\\Prolog\\home") + "\\bin\\plwin.exe";
 link.WindowStyle = 1;
 link.WorkingDirectory = logtalk_home;
 link.Save();
