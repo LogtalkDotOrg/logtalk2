@@ -349,27 +349,22 @@ Qu-Prolog 4.3, 6.3
 	
 	find lgt2160 -name "*.lgt" -exec perl -i -e "s/version is (\d)\.(\d)/version is '\1\.\2'/" {} \;
 
-	You also need to apply the following patch to the Logtalk compiler. Open 
-	the file compiler/logtalk.pl, find the clause that reads: 
-	
-	'$lgt_current_object_'(user, user0_, user0__dcl, user0__def, _).
-	
-	and replace it with the query:
-	
-	:- assertz('$lgt_current_object_'(user, user0_, user0__dcl, user0__def, _)).
-	
 	In order to compile and load both the config file and the Logtalk compiler,
 	the following sequence of steps is advised. First rename the config file:
 		
 		% cd configs; mv qu63.config qu63.ql
 	
-	Second, start Qu-Prolog and compile and load the config file using:
+	Second, start Qu-Prolog using adequate switches. For example:
+	
+		% qp -s 2048 -d 1024
+	
+	Next, compile and load the config file using:
 	
 		| ?- fcompile('qu63.ql', [assemble_only(true)]), load(qu63).
 
-	Next, compile and load the Logtalk compiler:
+	Finally, compile and load the Logtalk compiler:
 
-		| ?- chdir('../compiler/'), fcompile('logtalk.pl', [assemble_only(true)]), load(logtalk).
+		| ?- chdir('../compiler/'), fcompile('logtalk.pl', [assemble_only(true), string_table(256)]), load(logtalk).
 		
 	Don't forget to use the chdir/1 predicate to set the working directory 
 	before loading the library or an example.
