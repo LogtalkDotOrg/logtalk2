@@ -41,6 +41,9 @@ bricks
 classvars
 	example of implementation of class variables (as found in Smalltalk)
 
+dcgs
+	example of using DCG rules inside objects and categories
+
 dynpred
 	example of using some of the built-in database handling methods
 
