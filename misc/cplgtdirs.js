@@ -28,14 +28,12 @@ else {
 if (WScript.Arguments.Unnamed.Length > 0)
 	usage_help();
 
-if (WshSystemEnv.Item("LOGTALKUSER"))
-	logtalk_user = WshSystemEnv.Item("LOGTALKUSER");
-else if (WshUserEnv.Item("LOGTALKUSER"))
+if (WshUserEnv.Item("LOGTALKUSER"))
 	logtalk_user = WshUserEnv.Item("LOGTALKUSER");
 else {
 	logtalk_user = WshShell.SpecialFolders("MyDocuments") + "\\logtalk";
-	WScript.Echo("After the script completion, you must set the user environment variable");
-	WScript.Echo("LOGTALKUSER pointing to MyDocuments\\logtalk");
+	WshUserEnv.Item("LOGTALKUSER") = WshShell.SpecialFolders("MyDocuments") + "\\logtalk";
+	WScript.Echo("Defined user environment variable LOGTALKUSER.");
 	WScript.Echo("");
 }
 
@@ -47,11 +45,14 @@ if (fso.FolderExists(logtalk_user)) {
 	usage_help();
 }
 
-WScript.Echo("Creating directory " + logtalk_user + "...");
+WScript.Echo("Creating LOGTALKUSER directory:");
+WScript.Echo("");
+WScript.Echo("  " + logtalk_user);
+WScript.Echo("");
+
 fso.CreateFolder(logtalk_user);
 
 WScript.Echo("Copying Logtalk files and directories...");
-WScript.Echo("");
 fso.CopyFolder(logtalk_home + "\\configs", logtalk_user + "\\configs");
 fso.CopyFolder(logtalk_home + "\\examples", logtalk_user + "\\examples");
 fso.CopyFolder(logtalk_home + "\\libpaths", logtalk_user + "\\libpaths");
@@ -60,13 +61,17 @@ fso.CopyFolder(logtalk_home + "\\xml", logtalk_user + "\\xml");
 
 WScript.Echo("Finished copying Logtalk files directories.");
 WScript.Echo("");
-WScript.Echo("You may need to edit the \%LOGTALKUSER\%\\libpaths\\libpaths.pl file to");
-WScript.Echo("match your Prolog compiler and operating-system requirements or to add");
-WScript.Echo("your own library paths.");
+WScript.Echo("You may need to edit the contents of the file:");
+WScript.Echo("");
+WScript.Echo("  " + logtalk_user + "\\libpaths\\libpaths.pl");
+WScript.Echo("");
+WScript.Echo("to match your Prolog compiler and operating-system requirements or to");
+WScript.Echo("add your own library paths.");
 WScript.Echo("");
 WScript.Echo("You may want to customize the default Logtalk compiler options by editing");
-WScript.Echo("the configuration file for your Prolog compiler found in the directory");
-WScript.Echo("\%LOGTALKUSER\%/configs.");
+WScript.Echo("the configuration file for your Prolog compiler found in the directory:");
+WScript.Echo("");
+WScript.Echo("  " + logtalk_user + "\\configs");
 WScript.Echo("");
 
 WScript.Quit(0);
