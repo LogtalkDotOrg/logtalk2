@@ -4633,17 +4633,23 @@ current_logtalk_flag(version, version(2, 22, 5)).
 			fail)).
 
 
+% translation performed at runtime
+
 '$lgt_tr_msg'(Pred, Obj, TPred, Ctx) :-
-	var(Pred) ->											% translation performed at runtime
-		!,
-		'$lgt_ctx_this'(Ctx, This),
-		('$lgt_compiler_flag'(events, on) ->
-			TPred = '$lgt_send_to_object'(Obj, Pred, This)
-			;
-			TPred = '$lgt_send_to_object_ne'(Obj, Pred, This))
+	var(Pred),
+	!,
+	'$lgt_ctx_this'(Ctx, This),
+	('$lgt_compiler_flag'(events, on) ->
+		TPred = '$lgt_send_to_object'(Obj, Pred, This)
 		;
-		\+ callable(Pred),									% invalid message
-		throw(type_error(callable, Pred)).
+		TPred = '$lgt_send_to_object_ne'(Obj, Pred, This)).
+
+
+% invalid message
+
+'$lgt_tr_msg'(Pred, _, _, _) :-
+	\+ callable(Pred),
+	throw(type_error(callable, Pred)).
 
 
 % control constructs
@@ -4797,14 +4803,20 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % translates the sending of a message to self
 
 
+% translation performed at runtime
+
 '$lgt_tr_self_msg'(Pred, '$lgt_send_to_self'(Self, Pred, This), Ctx) :-
-	var(Pred) ->					% translation performed at runtime
-		!,
-		'$lgt_ctx_this'(Ctx, This),
-		'$lgt_ctx_self'(Ctx, Self)
-		;
-		(\+ callable(Pred) ->		% invalid message
-			throw(type_error(callable, Pred))).
+	var(Pred),
+	!,
+	'$lgt_ctx_this'(Ctx, This),
+	'$lgt_ctx_self'(Ctx, Self).
+
+
+% invalid message
+
+'$lgt_tr_self_msg'(Pred, _, _) :-
+	\+ callable(Pred),
+	throw(type_error(callable, Pred)).
 
 
 % control constructs
@@ -5510,7 +5522,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		'$lgt_report_unknown_protocols',
 		'$lgt_report_unknown_categories'
 		;
-		true.	
+		true.
 
 
 
