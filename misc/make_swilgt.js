@@ -24,8 +24,10 @@ else {
 	WScript.Quit(1);
 }
 
-if (WScript.Arguments.Unnamed.Length > 0)
+if (WScript.Arguments.Unnamed.Length > 0) {
 	usage_help();
+	WScript.Quit(0);
+}
 
 WScript.Echo("");
 WScript.Echo("Making a shortcut named swilgt for running Logtalk with SWI-Prolog...");
@@ -58,8 +60,8 @@ var link = WshShell.CreateShortcut(ProgramsPath + "\\swilgt.lnk");
 link.Arguments = "-f "+ logtalk_home + "\\bin\\logtalkswi.rc";
 link.Description = "Logtalk & SWI-Prolog";
 link.IconLocation = "app.exe,1";
-link.TargetPath = "plwin.exe";
-link.WindowStyle = 3;
+link.TargetPath = WshShell.RegRead("HKEY_LOCAL_MACHINE\\Software\\SWI\\Prolog\\") + "\\bin\\plwin.exe";
+link.WindowStyle = 1;
 link.WorkingDirectory = logtalk_home;
 link.Save();
 
@@ -72,12 +74,11 @@ WScript.Quit(0);
 
 function usage_help() {
 	WScript.Echo("");
-	WScript.Echo("This script create a shortcut named swilgt ");
+	WScript.Echo("This script creates a shortcut named swilgt");
 	WScript.Echo("for running Logtalk with SWI-Prolog.");
 	WScript.Echo("");
 	WScript.Echo("Usage:");
 	WScript.Echo("  " + WScript.ScriptName + " help");
 	WScript.Echo("  " + WScript.ScriptName);
 	WScript.Echo("");
-	WScript.Quit(1);
 }
