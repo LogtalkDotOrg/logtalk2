@@ -45,6 +45,10 @@
 		{fail}.
 
 
+	decompose_file_name(File, Directory, Base, Extension) :-
+		{fail}.
+
+
 	file_exists(File) :-
 		{file_exists(File)}.
 
@@ -54,7 +58,8 @@
 
 
 	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
-		{modif_time(File, Time), datime(Time, Year, Month, Day, Hours, Mins, Secs, _, _)}.
+		{modif_time(File, Time),
+		 datime(Time, Year, Month, Day, Hours, Mins, Secs, _, _)}.
 
 
 	file_size(File, Size) :-
@@ -78,19 +83,26 @@
 
 
 	getenv(Variable, Value) :-
-		{getenvstr(Variable, Codes), atom_codes(Value, Codes)}.
+		{getenvstr(Variable, Codes),
+		 atom_codes(Value, Codes)}.
 
 
 	setenv(Variable, Value) :-
-		{atom_codes(Value, Codes), setenvstr(Variable, Codes)}.
+		{atom_codes(Value, Codes),
+		 setenvstr(Variable, Codes)}.
 
 
 	date_time(Year, Month, Day, Hours, Mins, Secs) :-
 		{datime(datime(Year, Month, Day, Hours, Mins, Secs))}.
 
 
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+		{datime(Time, Year, Month, Day, Hours, Mins, Secs, _, _)}.
+
+
 	cpu_time(Time) :-
-		{statistics(runtime, [Miliseconds| _]), Time is Miliseconds/1000}.
+		{statistics(runtime, [Miliseconds| _]),
+		 Time is Miliseconds/1000}.
 
 
 	host_name(Name) :-

@@ -37,6 +37,22 @@
 		{read_directory(Directory, "*", _, Files)}.
 
 
+	absolute_file_name(File) :-
+		absolute_file_name(File, File).
+
+
+	absolute_file_name(File, Full) :-
+		{Rel == user ->
+			Abs == user  % treat user specially
+          ; get_flag(prolog_suffix, Sufs),
+          (existing_file(Rel, Sufs, [], ExtRel) -> true ; ExtRel = Rel),
+          canonical_path_name(ExtRel, Abs)}.
+
+
+	decompose_file_name(File, Directory, Base, Extension) :-
+		{pathname(File, Directory, Base, Extension)}.
+
+
 	file_exists(File) :-
 		{exists(File)}.
 
@@ -46,7 +62,10 @@
 
 
 	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
-		{get_file_info(File, mtime, Time), unix_to_mjd(Time, MJD), mjd_to_date(MJD, Day/Month/Year), mjd_to_time(MJD, Hours:Mins:Secs)}.
+		{get_file_info(File, mtime, Time),
+		 unix_to_mjd(Time, MJD),
+		 mjd_to_date(MJD, Day/Month/Year),
+		 mjd_to_time(MJD, Hours:Mins:Secs)}.
 
 
 	file_size(File, Size) :-
@@ -82,7 +101,15 @@
 
 
 	date_time(Year, Month, Day, Hours, Mins, Secs) :-
-		{mjd_now(MJD), mjd_to_date(MJD, Day/Month/Year), mjd_to_time(MJD, Hours:Mins:Secs)}.
+		{mjd_now(MJD),
+		 mjd_to_date(MJD, Day/Month/Year),
+		 mjd_to_time(MJD, Hours:Mins:Secs)}.
+
+
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+		{unix_to_mjd(Time, MJD),
+		 mjd_to_date(MJD, Day/Month/Year),
+		 mjd_to_time(MJD, Hours:Mins:Secs)}.
 
 
 	cpu_time(Time) :-
@@ -90,7 +117,8 @@
 
 
 	host_name(Name) :-
-		{get_flag(hostname, String), atom_string(Name, String)}.
+		{get_flag(hostname, String),
+		 atom_string(Name, String)}.
 
 
 :- end_object.

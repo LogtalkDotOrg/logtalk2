@@ -27,7 +27,8 @@
 
 
 	directory_exists(Directory) :-
-		{file_exists(Directory), file_property(File, type(directory))}.
+		{file_exists(Directory),
+		 file_property(File, type(directory))}.
 
 
 	directory_files(Directory, Files) :-
@@ -40,6 +41,10 @@
 
 	absolute_file_name(File, Full) :-
 		{absolute_file_name(File, Full)}.
+
+
+	decompose_file_name(File, Directory, Base, Extension) :-
+		{decompose_file_name(File, Directory, Base, Extension)}.
 
 
 	file_exists(File) :-
@@ -86,8 +91,13 @@
 		{date_time(dt(Year, Month, Day, Hours, Mins, Secs))}.
 
 
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+		{fail}.
+
+
 	cpu_time(Time) :-
-		{cpu_time(Miliseconds), Time is Miliseconds/1000}.
+		{cpu_time(Miliseconds),
+		 Time is Miliseconds/1000}.
 
 
 	host_name(Name) :-

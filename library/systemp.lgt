@@ -46,14 +46,20 @@
 	:- public(absolute_file_name/1).
 	:- mode(absolute_file_name(+atom), zero_or_one).
 	:- info(absolute_file_name/1, [
-		comment is 'True if the argument is a full path name.',
+		comment is 'True if the argument is an absolute path name.',
 		argnames is ['File']]).
 
 	:- public(absolute_file_name/2).
 	:- mode(absolute_file_name(+atom, ?atom), zero_or_one).
 	:- info(absolute_file_name/2, [
-		comment is 'Converts a file name to its full path name.',
+		comment is 'Expands a file name into its absolute path.',
 		argnames is ['File', 'Full']]).
+
+	:- public(decompose_file_name/4).
+	:- mode(decompose_file_name(+atom, ?atom, ?atom, ?atom), zero_or_one).
+	:- info(decompose_file_name/4, [
+		comment is 'Decomposes a file name into its parts.',
+		argnames is ['File', 'Directory', 'Base', 'Extension']]).
 
 	:- public(file_exists/1).
 	:- mode(file_exists(+atom), zero_or_one).
@@ -118,8 +124,14 @@
 	:- public(date_time/6).
 	:- mode(date_time(?integer, ?integer, ?integer, ?integer, ?integer, ?integer), zero_or_one).
 	:- info(date_time/6, [
-		comment is 'System date and time.',
+		comment is 'Current calendar date and time.',
 		argnames is ['Year', 'Month', 'Day', 'Hours', 'Mins', 'Secs']]).
+
+	:- public(convert_time/7).
+	:- mode(convert_time(+number, ?integer, ?integer, ?integer, ?integer, ?integer), zero_or_one).
+	:- info(convert_time/7, [
+		comment is 'Converts system dependent timestamp to calendar date and time.',
+		argnames is ['Time', 'Year', 'Month', 'Day', 'Hours', 'Mins', 'Secs']]).
 
 	:- public(cpu_time/1).
 	:- mode(cpu_time(-number), zero_or_one).

@@ -42,6 +42,12 @@
 		{absolute_file_name(File, Full)}.
 
 
+	decompose_file_name(File, Directory, Base, Extension) :-
+		{file_directory_name(File, Directory),
+		 file_base_name(File, Name),
+		 file_name_extension(Base, Extension, Name)}.
+
+
 	file_exists(File) :-
 		{exists_file(File)}.
 
@@ -51,7 +57,8 @@
 
 
 	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
-		{time_file(File, Time), convert_time(Time, Year, Month, Day, Hours, Mins, Secs)}.
+		{time_file(File, Time),
+		 convert_time(Time, Year, Month, Day, Hours, Mins, Secs)}.
 
 
 	file_size(File, Size) :-
@@ -83,7 +90,12 @@
 
 
 	date_time(Year, Month, Day, Hours, Mins, Secs) :-
-		{get_time(Time), convert_time(Time, Year, Month, Day, Hours, Mins, Secs, _)}.
+		{get_time(Time),
+		 convert_time(Time, Year, Month, Day, Hours, Mins, Secs, _)}.
+
+
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+		{convert_time(Time, Year, Month, Day, Hours, Mins, Secs)}.
 
 
 	cpu_time(Time) :-
