@@ -25,5 +25,5 @@ moving a middle brick, we want to automatically destroy the
 corresponding relation tuple.
 
 It's instructive to use the event debugger in the Logtalk library (loader 
-file debugging.loader) to better understand this example. Set spy points 
+file debugging_loader.lgt) to better understand this example. Set spy points 
 in all brick instances and then activate the debugger.

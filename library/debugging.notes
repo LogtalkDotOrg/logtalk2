@@ -11,7 +11,7 @@ file:
 
 	| ?- logtalk_load(debugging_loader).
 
-You will need to load FIRST the events.loader file otherwise you will get 
+You will need to load FIRST the events_loader.lgt file otherwise you will get 
 a runtime error.
 
 
