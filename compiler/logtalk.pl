@@ -1272,21 +1272,21 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_predicate_property'(_, Pred, Prop, _, Scope) :-
 	'$lgt_built_in_method'(Pred, PScope),
 	!,
-	functor(Pred, Functor, Arity),
-	functor(Meta, Functor, Arity),
 	\+ \+ PScope = Scope,
-	('$lgt_scope'(Prop, PScope);
-	 Prop = static;
+	(Prop = static;
 	 Prop = built_in;
+	 '$lgt_scope'(Prop, PScope);
+	 functor(Pred, Functor, Arity),
+	 functor(Meta, Functor, Arity),
 	 ('$lgt_metapredicate'(Meta) -> Prop = metapredicate(Meta))).
 
 '$lgt_predicate_property'(_, Pred, Prop, _, _) :-
 	'$lgt_built_in'(Pred),
-	functor(Pred, Functor, Arity),
-	functor(Meta, Functor, Arity),
 	(Prop = (public);
-	 ('$lgt_predicate_property'(Pred, (dynamic)) -> Prop = (dynamic); Prop = static);
 	 Prop = built_in;
+	 ('$lgt_predicate_property'(Pred, (dynamic)) -> Prop = (dynamic); Prop = static);
+	 functor(Pred, Functor, Arity),
+	 functor(Meta, Functor, Arity),
 	 ('$lgt_metapredicate'(Meta) -> Prop = metapredicate(Meta))).
 
 
@@ -2163,7 +2163,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_hidden_functor'(Functor) :-
 	'$lgt_current_protocol_'(_, Prefix, _),
-	atom_concat(Prefix, _, Functor).
+	atom_concat(Prefix, _, Functor),
+	!.
 
 
 
@@ -3698,12 +3699,11 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 '$lgt_tr_directive'(info, [Pred, List]) :-
-	once(('$lgt_valid_pred_ind'(Pred); '$lgt_valid_gr_ind'(Pred))) ->
+	'$lgt_valid_pred_or_gr_ind'(Pred) ->
 		'$lgt_tr_pred_info_list'(List, Pred),
 		assertz('$lgt_pp_info_'(Pred, List))
 		;
 		throw(type_error(predicate_indicator, Pred)).
-
 
 
 '$lgt_tr_directive'((public), Preds) :-
@@ -7294,6 +7294,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 % '$lgt_valid_pred_ind(@term)
+%
+% valid predicate indicator
 
 '$lgt_valid_pred_ind'(Term) :-
 	nonvar(Term),
@@ -7305,6 +7307,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 % '$lgt_valid_gr_ind(@term)
+%
+% valid grammar rule indicator
 
 '$lgt_valid_gr_ind'(Term) :-
 	nonvar(Term),
@@ -7316,6 +7320,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 % '$lgt_valid_pred_or_gr_ind(@term)
+%
+% valid predicate indicator or grammar rule indicator
 
 '$lgt_valid_pred_or_gr_ind'(Term) :-
 	nonvar(Term),
