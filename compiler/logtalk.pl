@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.21.4
+%  Release 2.21.5
 %
 %  Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 %
@@ -321,7 +321,8 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_clean_pp_clauses',
 	'$lgt_tr_directive'(object, [Obj| Rels]),
-	'$lgt_tr_directives'([(dynamic)| Dirs]),
+	'$lgt_tr_directive'((dynamic), []),
+	'$lgt_tr_directives'(Dirs),
 	'$lgt_tr_clauses'(Clauses),
 	'$lgt_fix_redef_built_ins',
 	'$lgt_gen_object_clauses',
@@ -369,7 +370,8 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_clean_pp_clauses',
 	'$lgt_tr_directive'(category, [Ctg| Rels]),
-	'$lgt_tr_directives'([(dynamic)| Dirs]),
+	'$lgt_tr_directive'((dynamic), []),
+	'$lgt_tr_directives'(Dirs),
 	'$lgt_tr_clauses'(Clauses),
 	'$lgt_fix_redef_built_ins',
 	'$lgt_gen_category_clauses',
@@ -413,7 +415,8 @@ create_protocol(Ptc, Rels, Dirs) :-
 create_protocol(Ptc, Rels, Dirs) :-
 	'$lgt_clean_pp_clauses',
 	'$lgt_tr_directive'(protocol, [Ptc| Rels]),
-	'$lgt_tr_directives'([(dynamic)| Dirs]),
+	'$lgt_tr_directive'((dynamic), []),
+	'$lgt_tr_directives'(Dirs),
 	'$lgt_gen_protocol_clauses',
 	'$lgt_gen_protocol_directives',
 	'$lgt_assert_tr_entity',
@@ -1123,7 +1126,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 21, 4)).
+current_logtalk_flag(version, version(2, 21, 5)).
 
 
 
