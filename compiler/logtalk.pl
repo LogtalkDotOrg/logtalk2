@@ -1193,8 +1193,7 @@ current_logtalk_flag(version, version(2, 16, 0)).
 	 Prop = declared_in(TContainer);
 	 '$lgt_once'(Def, Pred, _, _, _, _, DContainer),
 	 Prop = defined_in(DContainer);
-	 Meta \= no,
-	 Prop = metapredicate(Meta)).
+	 Meta \= no, Prop = metapredicate(Meta)).
 
 '$lgt_predicate_property'(_, Pred, Prop, _, Scope) :-
 	'$lgt_built_in_method'(Pred, PScope),
@@ -1202,7 +1201,8 @@ current_logtalk_flag(version, version(2, 16, 0)).
 	\+ \+ PScope = Scope,
 	('$lgt_scope'(Prop, PScope);
 	 Prop = static;
-	 Prop = built_in).
+	 Prop = built_in;
+	 ('$lgt_metapredicate'(Meta) -> Prop = metapredicate(Meta))).
 
 '$lgt_predicate_property'(_, Pred, Prop, _, _) :-
 	'$lgt_built_in'(Pred),
@@ -1211,7 +1211,7 @@ current_logtalk_flag(version, version(2, 16, 0)).
 	(Prop = (public);
 	 ('$lgt_predicate_property'(Pred, (dynamic)) -> Prop = (dynamic); Prop = static);
 	 Prop = built_in;
-	 ('$lgt_pl_metapredicate'(Meta) -> Prop = metapredicate(Meta))).
+	 ('$lgt_metapredicate'(Meta) -> Prop = metapredicate(Meta))).
 
 
 % '$lgt_scope'(?atom, ?term).
@@ -5537,20 +5537,30 @@ user0__def(Pred, _, _, _, Pred, user).
 
 
 
-% built-in Prolog metapredicates
+% metapredicates
 
-'$lgt_pl_metapredicate'(catch(::, *, ::)).
+'$lgt_metapredicate'(Meta) :-
+	'$lgt_lgt_metapredicate'(Meta).
 
-'$lgt_pl_metapredicate'(bagof(*, ::, *)).
-'$lgt_pl_metapredicate'(setof(*, ::, *)).
-'$lgt_pl_metapredicate'(findall(*, ::, *)).
+'$lgt_metapredicate'(Meta) :-
+	'$lgt_pl_metapredicate'(Meta).
 
-'$lgt_pl_metapredicate'(forall(::, ::)).
 
-'$lgt_pl_metapredicate'(call(::)).
-'$lgt_pl_metapredicate'(once(::)).
 
-'$lgt_pl_metapredicate'(\+ (::)).
+% built-in Logtalk (and Prolog) metapredicates
+
+'$lgt_lgt_metapredicate'(catch(::, *, ::)).
+
+'$lgt_lgt_metapredicate'(bagof(*, ::, *)).
+'$lgt_lgt_metapredicate'(setof(*, ::, *)).
+'$lgt_lgt_metapredicate'(findall(*, ::, *)).
+
+'$lgt_lgt_metapredicate'(forall(::, ::)).
+
+'$lgt_lgt_metapredicate'(call(::)).
+'$lgt_lgt_metapredicate'(once(::)).
+
+'$lgt_lgt_metapredicate'(\+ (::)).
 
 
 
