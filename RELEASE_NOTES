@@ -15,6 +15,9 @@ RELEASE NOTES
 	Corrected a bug in handling of local object operators that are also global 
 	operators.
 
+	Corrected a bug where dynamic directives are not being generated for dynamic 
+	predicates that lack a scope directive or an initial set of clauses.
+
 	Added new "logic" example.
 
 
