@@ -2528,7 +2528,7 @@ current_logtalk_flag(version, version(2, 19, 0)).
 
 '$lgt_split_metafile'(Source) :-
 	('$lgt_compiler_option'(report, on) ->
-		nl, write('>>> splitting source metafile...')
+		write('>>> splitting source metafile...'), nl
 		;
 		true),
 	'$lgt_file_name'(metafile, Source, Metafile),
@@ -2539,13 +2539,13 @@ current_logtalk_flag(version, version(2, 19, 0)).
 		Error,
 		'$lgt_compiler_error_handler'(Stream, Error)),
 	('$lgt_compiler_option'(report, on) ->
-		nl, write('> creating loader file...')
+		write('> creating loader file...'), nl
 		;
 		true),
 	'$lgt_create_loader_file'(Source, Cache, Entities),
 	('$lgt_compiler_option'(report, on) ->
-		nl, write('> loader file created'),
-		nl, write('>>> source metafile split'), nl
+		write('> loader file created'), nl,
+		write('>>> source metafile split'), nl, nl
 		;
 		true).
 
@@ -2590,7 +2590,10 @@ current_logtalk_flag(version, version(2, 19, 0)).
 
 
 
-'$lgt_create_loader_file_aux'([Entity], Stream) :-
+'$lgt_create_loader_file_aux'([], _) :-
+	!.
+
+	'$lgt_create_loader_file_aux'([Entity], Stream) :-
 	!,
 	write_term(Stream, '        ', []),
 	write_canonical(Stream, Entity).
@@ -2636,7 +2639,7 @@ current_logtalk_flag(version, version(2, 19, 0)).
 	'$lgt_opening_entity_directive'(Directive, Entity),
 	!,
 	('$lgt_compiler_option'(report, on) ->
-		nl, write('> extracting entity '), writeq(Entity), write('...')
+		write('> extracting entity '), writeq(Entity), write('...'), nl
 		;
 		true),
 	'$lgt_file_name'(logtalk, Entity, File),
@@ -2646,7 +2649,7 @@ current_logtalk_flag(version, version(2, 19, 0)).
 	write_term(Output, '.', []), nl(Output),
 	'$lgt_copy_metafile_entity_terms'(Input, Output),
 	('$lgt_compiler_option'(report, on) ->
-		nl, write('> '), writeq(Entity), write(' extracted ')
+		write('> '), writeq(Entity), write(' extracted '), nl
 		;
 		true),
 	read_term(Input, Next, []),
