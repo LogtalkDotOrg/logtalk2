@@ -137,3 +137,10 @@ yes
     
 bar predicate called
 yes
+
+
+% run the Logtalk DCG translator on the test cases:
+
+| ?- dcgtest::run.
+
+...

@@ -14,4 +14,5 @@
 		walker,
 		bom,
 		faa,
-		bypass])). 
+		bypass,
+		dcgtest])). 
