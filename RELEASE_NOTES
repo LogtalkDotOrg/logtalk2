@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.15.3 - June ??, 2003
 
+	Updated experimental support for DCG rules to prevent over-simplification 
+	of unification goals in the compilation of rules to clauses.
+
 	The compilation mode of an entity (static/dynamic) is now stored in the 
 	corresponding entity table (implying recompilation of all entities).
 
