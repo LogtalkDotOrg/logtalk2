@@ -37,7 +37,7 @@ yes
 
 | ?- parsetree::parse([the, girl, likes, the, boy], Tree).
 
-Tree = Tree = s(np(d(the), n(girl)), vp(v(likes), np(d(the), n(boy))))
+Tree = s(np(d(the), n(girl)), vp(v(likes), np(d(the), n(boy))))
 yes
 
 
