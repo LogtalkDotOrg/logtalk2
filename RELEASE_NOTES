@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.17.2 - June ??, 2004
+2.17.2 - June 14, 2004
 
 	Updated the Logtalk compiler to allow compilation of source files which 
 	contain only directives and no entity definition.
