@@ -16,7 +16,8 @@ RELEASE NOTES
     or xsd) of the file describing the XML documenting files specification.
 
 	Renamed compiler option "named_anonymous_vars" to the more appropriated 
-	name "dont_care_vars".
+	name "underscore_vars". Changed possible option values to "dont_care" and 
+	"singletons" (default).
 
     Added XSLT file for converting XML documenting files to XHTML 1.0 Strict 
     files. Set the default encoding of all XSLT files to UTF-8.
