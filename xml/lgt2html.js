@@ -71,11 +71,13 @@ var fso = new ActiveXObject("Scripting.FileSystemObject");
 
 if (!fso.FolderExists(directory)) {
 	WScript.Echo("Error! directory does not exists: " + directory);
+	WScript.Echo("");
 	usage_help();
 }
 
 if (processor != "xsltproc" && processor != "xalan" && processor != "sabcmd") {
 	WScript.Echo("Error! Unsupported XSLT processor:" + processor);
+	WScript.Echo("");
 	usage_help();
 }
 

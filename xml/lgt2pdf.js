@@ -62,14 +62,14 @@ var fso = new ActiveXObject("Scripting.FileSystemObject");
 
 if (!fso.FolderExists(directory)) {
 	WScript.Echo("Error! directory does not exists: " + directory);
+	WScript.Echo("");
 	usage_help();
-	WScript.Quit(1);
 }
 
 if (processor != "fop" && processor != "xep") {
 	WScript.Echo("Error! Unsupported XSL-FO processor:" + processor);
 	WScript.Echo("");
-	WScript.Quit(1);
+	usage_help();
 }
 
 fso.CopyFile(logtalk_home + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory + "\\logtalk.dtd");
