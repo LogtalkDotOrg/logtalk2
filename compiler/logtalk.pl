@@ -5064,12 +5064,10 @@ current_logtalk_flag(version, version(2, 17, 2)).
 
 
 '$lgt_gen_category_discontiguous_directives' :-
-	'$lgt_category_'(_, _, _, Def),
+	'$lgt_category_'(_, Prefix, _, _),
 	'$lgt_discontiguous_'(Functor/Arity),
-	functor(Pred, Functor, Arity),
-	Clause =.. [Def, Pred, _, _, _, TPred],
-	'$lgt_def_'(Clause),
-	functor(TPred, TFunctor, TArity),
+	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
+	TArity is Arity + 3,
 	assertz('$lgt_directive_'(discontiguous(TFunctor/TArity))),
 	fail.
 
