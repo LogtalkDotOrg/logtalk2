@@ -2022,18 +2022,18 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	('$lgt_dbg_debugging_' ->
 		write('Debugger is switched on.'), nl
 		;
-		write('Debugger is switched off.'), nl),
+		write('Debugger is switched off.'), nl), nl,
 	('$lgt_dbg_tracing_' ->
 		write('Debugger mode set to tracing.'), nl
 		;
 		true),
 	('$lgt_dbg_spying_'(_, _, _, _) ->
-		write('Spy points:'), nl,
+		write('Spy points (Sender, This, Self, Goal):'), nl,
 		forall(
 			'$lgt_dbg_spying_'(Sender, This, Self, Goal),
-			(write('  '), write((Sender, This, Self, Goal)), nl))
+			(write('  '), '$lgt_dbg_pretty_print_spy_point'(Sender, This, Self, Goal), nl))
 		;
-		write('No spy points are defined.'), nl),
+		write('No spy points are defined.'), nl), nl,
 	write('Leashed ports: '),
 	('$lgt_dbg_leashing_'(_) ->
 		forall(
@@ -2042,6 +2042,13 @@ current_logtalk_flag(version, version(2, 17, 0)).
 		;
 		write('(none)')),
 	nl.
+
+
+'$lgt_dbg_pretty_print_spy_point'(Sender, This, Self, Goal) :-
+	(var(Sender) -> write('_, '); '$lgt_pretty_print_vars'(Sender), write(', ')),
+	(var(This) -> write('_, '); '$lgt_pretty_print_vars'(This), write(', ')),
+	(var(Self) -> write('_, '); '$lgt_pretty_print_vars'(Self), write(', ')),
+	(var(Goal) -> write('_, '); '$lgt_pretty_print_vars'(Goal)).
 
 
 '$lgt_dbg_spying'(Sender, This, Self, Goal) :-
