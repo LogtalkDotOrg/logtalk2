@@ -16,13 +16,15 @@ RELEASE NOTES
 	allows access to the Logtalk grammar rule translator. Corrected bug in the 
 	expansion of \+/1 in grammar rule bodies. Optimized code generated for 
 	message sending calls in the body of grammar rules. Improved error handling 
-	of the built-in methods phrase/2 and phrase/3. Added section on definite 
-	clause grammars to the user manual.
+	of the built-in methods phrase/2 and phrase/3. Added new section on definite 
+	clause grammars to the user manual. Added two new objects to the "dcgs" 
+	example, dcgtest and bypass, containing test cases for the Logtalk DCG 
+	translator and illustrating some programming techniques with grammar rules.
 
 	Corrected a bug in the implementation of the built-in method clause/2 which 
 	prevented access to clauses of local dynamic predicates.
 
-	Corrected some wrong links on the XHTML manuals.
+	Corrected some dead links on the XHTML manuals.
 
 	Corrected a bug in the syntax coloring of numbers on the SubEthaEdit 2.x 
 	text editor.
