@@ -43,8 +43,9 @@ f.Close();
 
 var f1 = logtalk_home + "\\compiler\\logtalk.pl";
 var f2 = logtalk_home + "\\bin\\logtalkswi.pl";
+var p = "type " + f1 + " >> " + f2;
 
-WshShell.Run("type " + f1 + " >> " + f2, true);
+WshShell.Run(p, true);
 
 f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.rc", true);
 
