@@ -2528,7 +2528,7 @@ current_logtalk_flag(version, version(2, 19, 0)).
 
 '$lgt_split_metafile'(Source) :-
 	('$lgt_compiler_option'(report, on) ->
-		write('>>> splitting source metafile...'), nl
+		write('>>> splitting metafile '), writeq(Source), write('...'), nl
 		;
 		true),
 	'$lgt_file_name'(metafile, Source, Metafile),
@@ -2545,7 +2545,7 @@ current_logtalk_flag(version, version(2, 19, 0)).
 	'$lgt_create_loader_file'(Source, Cache, Entities),
 	('$lgt_compiler_option'(report, on) ->
 		write('> loader file created'), nl,
-		write('>>> source metafile split'), nl, nl
+		write('>>> metafile '), writeq(Source), write(' split'), nl
 		;
 		true).
 
@@ -2636,10 +2636,10 @@ current_logtalk_flag(version, version(2, 19, 0)).
 
 '$lgt_copy_metafile_term'(Input, Term, CacheAcc, Cache, EntityAcc, Entities) :-
 	Term =.. [(:-), Directive],
-	'$lgt_opening_entity_directive'(Directive, Entity),
+	'$lgt_opening_entity_directive'(Directive, Type, Entity),
 	!,
 	('$lgt_compiler_option'(report, on) ->
-		write('> extracting entity '), writeq(Entity), write('...'), nl
+		write('> extracting '), write(Type), write(' '), writeq(Entity), write('...'), nl
 		;
 		true),
 	'$lgt_file_name'(logtalk, Entity, File),
@@ -2680,15 +2680,15 @@ current_logtalk_flag(version, version(2, 19, 0)).
 
 
 
-'$lgt_opening_entity_directive'(object(Entity), Entity).
-'$lgt_opening_entity_directive'(object(Entity, _), Entity).
-'$lgt_opening_entity_directive'(object(Entity, _, _), Entity).
-'$lgt_opening_entity_directive'(object(Entity, _, _, _), Entity).
-'$lgt_opening_entity_directive'(object(Entity, _, _, _, _), Entity).
-'$lgt_opening_entity_directive'(protocol(Entity), Entity).
-'$lgt_opening_entity_directive'(protocol(Entity, _), Entity).
-'$lgt_opening_entity_directive'(category(Entity), Entity).
-'$lgt_opening_entity_directive'(category(Entity, _), Entity).
+'$lgt_opening_entity_directive'(object(Entity), object, Entity).
+'$lgt_opening_entity_directive'(object(Entity, _), object, Entity).
+'$lgt_opening_entity_directive'(object(Entity, _, _), object, Entity).
+'$lgt_opening_entity_directive'(object(Entity, _, _, _), object, Entity).
+'$lgt_opening_entity_directive'(object(Entity, _, _, _, _), object, Entity).
+'$lgt_opening_entity_directive'(protocol(Entity), protocol, Entity).
+'$lgt_opening_entity_directive'(protocol(Entity, _), protocol, Entity).
+'$lgt_opening_entity_directive'(category(Entity), category, Entity).
+'$lgt_opening_entity_directive'(category(Entity, _), category, Entity).
 
 
 '$lgt_closing_entity_directive'(end_object).
