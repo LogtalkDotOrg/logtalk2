@@ -9,5 +9,5 @@ Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 To load all entities in this example consult the dynpred.loader 
 utility file (note that this is a Prolog file).
 
-This folder contains examples of using the built-in database 
+This folder contains examples of using some of the built-in database  
 handling methods.
