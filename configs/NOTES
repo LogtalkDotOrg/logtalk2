@@ -137,16 +137,13 @@ Bin-Prolog 8.x~9.x
 	Updated and tested with help of Arun Majumdar.
 
 
-CIAO Prolog 1.6p1, 1.8p0
+CIAO Prolog 1.8p0 and later versions
 
-	ciao16.config
-	ciao_aux16.config
+	ciao.config
+	ciao_aux.config
 
-	ciao18.config
-	ciao_aux18.config
-
-	The ciao1x.config is just a loader file with two include/1 directives 
-	that load the ciao_aux1x.config and the Logtalk compiler/runtime. You 
+	The ciao.config is just a loader file with two include/1 directives 
+	that load the ciao_aux.config and the Logtalk compiler/runtime. You 
 	must edit the contents of the file ciao.config to match your operating 
 	system (the include directives arguments are file paths that differ 
 	between operating systems). The definition of the 
