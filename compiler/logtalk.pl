@@ -5926,9 +5926,30 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	assertz('$lgt_pp_dcl_'((Head:-fail))).
 
 '$lgt_gen_ic_hierarchy_dcl_clauses' :-
+	'$lgt_pp_object_'(Obj, Prefix, ODcl, _, _, _, _, _, _),
+	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, CIDcl, _, _, _, EScope),
+	'$lgt_pp_alias_'(Class, _, _),
+	Head =.. [ODcl, Alias, Scope, Compilation, Meta, SCtn, TCtn],
+	(EScope = (public) ->
+		Lookup =.. [CIDcl, Pred, Scope, Compilation, Meta, SCtn, TCtn]
+		;
+		(EScope = protected ->
+			Call =.. [CIDcl, Pred, Scope2, Compilation, Meta, SCtn, TCtn],
+			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+			;
+			Scope = p,
+			Call =.. [CIDcl, Pred, Scope2, Compilation, Meta, SCtn2, TCtn],
+			Lookup = (Call, (Scope2 == p -> SCtn = SCtn2; SCtn = Obj)))),
+	'$lgt_construct_rename_functor'(Prefix, PRnm),
+	Rename =.. [PRnm, Class, Pred, Alias],
+	assertz('$lgt_pp_dcl_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup))),
+	fail.
+
+'$lgt_gen_ic_hierarchy_dcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, ODcl, _, _, _, _, _, _),
+	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, CIDcl, _, _, _, EScope),
+	\+ '$lgt_pp_alias_'(Class, _, _),
 	Head =.. [ODcl, Pred, Scope, Compilation, Meta, SCtn, TCtn],
-	'$lgt_pp_instantiated_class_'(_, _, _, _, _, CIDcl, _, _, _, EScope),
 	(EScope = (public) ->
 		Lookup =.. [CIDcl, Pred, Scope, Compilation, Meta, SCtn, TCtn]
 		;
@@ -5968,9 +5989,29 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 
 '$lgt_gen_ic_protocol_idcl_clauses' :-
+	'$lgt_pp_object_'(Obj, Prefix, _, _, _, OIDcl, _, _, _),
+	'$lgt_pp_implemented_protocol_'(Ptc, _, PDcl, EScope),
+	'$lgt_pp_alias_'(Ptc, _, _),
+	Head =.. [OIDcl, Alias, Scope, Compilation, Meta, Obj, Ctn],
+	(EScope = (public) ->
+		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, Ctn]
+		;
+		(EScope = protected ->
+			Call =.. [PDcl, Pred, Scope2, Compilation, Meta, Ctn],
+			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+			;
+			Scope = p,
+			Lookup =.. [PDcl, Pred, _, Compilation, Meta, Ctn])),
+	'$lgt_construct_rename_functor'(Prefix, PRnm),
+	Rename =.. [PRnm, Ptc, Pred, Alias],
+	assertz('$lgt_pp_dcl_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup))),
+	fail.
+
+'$lgt_gen_ic_protocol_idcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, OIDcl, _, _, _),
 	Head =.. [OIDcl, Pred, Scope, Compilation, Meta, Obj, Ctn],
-	'$lgt_pp_implemented_protocol_'(_, _, PDcl, EScope),
+	'$lgt_pp_implemented_protocol_'(Ptc, _, PDcl, EScope),
+	\+ '$lgt_pp_alias_'(Ptc, _, _),
 	(EScope = (public) ->
 		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, Ctn]
 		;
@@ -5988,9 +6029,29 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 
 '$lgt_gen_ic_category_idcl_clauses' :-
+	'$lgt_pp_object_'(Obj, Prefix, _, _, _, OIDcl, _, _, _),
+	'$lgt_pp_imported_category_'(Ctg, _, CDcl, _, EScope),
+	'$lgt_pp_alias_'(Ctg, _, _),
+	Head =.. [OIDcl, Alias, Scope, Compilation, Meta, Obj, Ctn],
+	(EScope = (public) ->
+		Lookup =.. [CDcl, Pred, Scope, Compilation, Meta, Ctn]
+		;
+		(EScope = protected ->
+			Call =.. [CDcl, Pred, Scope2, Compilation, Meta, Ctn],
+			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+			;
+			Scope = p,
+			Lookup =.. [CDcl, Pred, _, Compilation, Meta, Ctn])),
+	'$lgt_construct_rename_functor'(Prefix, PRnm),
+	Rename =.. [PRnm, Ctg, Pred, Alias],
+	assertz('$lgt_pp_dcl_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup))),
+	fail.
+
+'$lgt_gen_ic_category_idcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, OIDcl, _, _, _),
+	'$lgt_pp_imported_category_'(Ctg, _, CDcl, _, EScope),
+	\+ '$lgt_pp_alias_'(Ctg, _, _),
 	Head =.. [OIDcl, Pred, Scope, Compilation, Meta, Obj, Ctn],
-	'$lgt_pp_imported_category_'(_, _, CDcl, _, EScope),
 	(EScope = (public) ->
 		Lookup =.. [CDcl, Pred, Scope, Compilation, Meta, Ctn]
 		;
@@ -6008,9 +6069,30 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 
 '$lgt_gen_ic_hierarchy_idcl_clauses' :-
+	'$lgt_pp_object_'(Obj, Prefix, _, _, _, CIDcl, _, _, _),
+	'$lgt_pp_specialized_class_'(Super, _, _, _, _, SIDcl, _, _, _, EScope),
+	'$lgt_pp_alias_'(Super, _, _),
+	Head =.. [CIDcl, Alias, Scope, Compilation, Meta, SCtn, TCtn],
+	(EScope = (public) ->
+		Lookup =.. [SIDcl, Pred, Scope, Compilation, Meta, SCtn, TCtn]
+		;
+		(EScope = protected ->
+			Call =.. [SIDcl, Pred, Scope2, Compilation, Meta, SCtn, TCtn],
+			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+			;
+			Scope = p,
+			Call =.. [SIDcl, Pred, Scope2, Compilation, Meta, SCtn2, TCtn],
+			Lookup = (Call, (Scope2 == p -> SCtn = SCtn2; SCtn = Obj)))),
+	'$lgt_construct_rename_functor'(Prefix, PRnm),
+	Rename =.. [PRnm, Super, Pred, Alias],
+	assertz('$lgt_pp_dcl_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup))),
+	fail.
+
+'$lgt_gen_ic_hierarchy_idcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, CIDcl, _, _, _),
+	'$lgt_pp_specialized_class_'(Super, _, _, _, _, SIDcl, _, _, _, EScope),
+	\+ '$lgt_pp_alias_'(Super, _, _),
 	Head =.. [CIDcl, Pred, Scope, Compilation, Meta, SCtn, TCtn],
-	'$lgt_pp_specialized_class_'(_, _, _, _, _, SIDcl, _, _, _, EScope),
 	(EScope = (public) ->
 		Lookup =.. [SIDcl, Pred, Scope, Compilation, Meta, SCtn, TCtn]
 		;
