@@ -13,7 +13,8 @@ RELEASE NOTES
 2.21.3 - October ??, 2004
 
 	Corrected a silly bug in message translation which resulted in a small 
-	performance loss.
+	performance loss. Simplified implementation of message sending predicate 
+	::/2.
 
 	Added a new section on message sending performance to the user manual.
 

@@ -173,14 +173,6 @@
 
 
 Obj::Pred :-
-	var(Obj),
-	throw(error(instantiation_error, Obj::Pred, user)).
-
-Obj::Pred :-
-	var(Pred),
-	throw(error(instantiation_error, Obj::Pred, user)).
-
-Obj::Pred :-
 	'$lgt_context'(Ctx, user, user, Obj, _, []),
 	'$lgt_tr_msg'(Pred, Obj, Call, Ctx),
 	(('$lgt_dbg_debugging_', '$lgt_debugging_'(Obj)) ->
