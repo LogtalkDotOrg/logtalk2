@@ -16,8 +16,8 @@ if (!WshSysEnv.Item("LOGTALKHOME") && !WshUserEnv.Item("LOGTALKHOME")) {
 	WScript.Quit(1);
 }
 
-var html_xslt = WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\lgthtml.xsl";
-var xhtml_xslt = WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\lgtxhtml.xsl";
+var html_xslt = WshShell.ExpandEnvironmentStrings("LOGTALKHOME") + "\\xml\\lgthtml.xsl";
+var xhtml_xslt = WshShell.ExpandEnvironmentStrings("LOGTALKHOME") + "\\xml\\lgtxhtml.xsl";
 var xslt;
 
 var format = "xhtml";
@@ -68,9 +68,9 @@ if (processor != "xsltproc" && processor != "xalan" && processor != "sabcmd") {
 
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 
-fso.CopyFile(WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory + "\\logtalk.dtd");
-fso.CopyFile(WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory);
-fso.CopyFile(WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\logtalk.css", directory);
+fso.CopyFile(WshShell.ExpandEnvironmentStrings("LOGTALKHOME") + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory);
+fso.CopyFile(WshShell.ExpandEnvironmentStrings("LOGTALKHOME") + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory);
+fso.CopyFile(WshShell.ExpandEnvironmentStrings("LOGTALKHOME") + "\\xml\\logtalk.css", directory);
 
 WScript.Echo("");
 WScript.Echo("converting XML files...");
