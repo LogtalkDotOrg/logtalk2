@@ -2,7 +2,7 @@
 Logtalk - Object oriented extension to Prolog
 Release 2.9.2
 
-Copyright (c) 1998-2001 Paulo Moura.  All Rights Reserved.
+Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
@@ -10,7 +10,11 @@ RELEASE NOTES
 =============
 
 
-2.9.2 - December 24, 2001
+2.9.2 - January 4, 2002
+
+	The Logtalk compiler can now print a warning when compiling source files 
+	that use non-ISO defined built-in predicates using a new portability/1 
+	compiler option. Updated the relevant sections of the user manual.
 
 	Corrected a compiler bug where the entity relation tables only recorded 
 	the last entry per entity relation type.
