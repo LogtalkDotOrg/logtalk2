@@ -62,7 +62,7 @@ echo "You may need to edit the \$LOGTALKUSER/libpaths/libpaths.pl file to match"
 echo "your Prolog compiler and operating-system requirements or to add your own"
 echo "library paths."
 echo
-echo "You may want to customize the default Logtalk compiler options by editing"
+echo "You may want to customize the default Logtalk compiler flags by editing"
 echo "the configuration file for your Prolog compiler found in the directory"
 echo "\$LOGTALKUSER/configs."
 echo

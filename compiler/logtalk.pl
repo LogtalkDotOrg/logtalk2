@@ -104,7 +104,7 @@
 
 
 
-:- dynamic('$lgt_pp_compiler_option_'/2).		% '$lgt_pp_compiler_option_'(Option, Value)
+:- dynamic('$lgt_pp_compiler_flag_'/2).		% '$lgt_pp_compiler_flag_'(Option, Value)
 
 :- dynamic('$lgt_pp_dcl_'/1).					% '$lgt_pp_dcl_'(Clause)
 :- dynamic('$lgt_pp_ddcl_'/1).					% '$lgt_pp_ddcl_'(Clause)
@@ -861,21 +861,21 @@ abolish_events(after, Obj, Msg, Sender, Monitor) :-
 % compiling and loading built-in predicates
 
 
-% '$lgt_compiler_option'(+atom, ?atom)
+% '$lgt_compiler_flag'(+atom, ?atom)
 %
-% gets/check the current value of a compiler option
+% gets/check the current value of a compiler flag
 
-'$lgt_compiler_option'(Option, Value) :-
-	'$lgt_pp_compiler_option_'(Option, Value2),
+'$lgt_compiler_flag'(Option, Value) :-
+	'$lgt_pp_compiler_flag_'(Option, Value2),
 	!,
 	Value = Value2.
 
-'$lgt_compiler_option'(Option, Value) :-
+'$lgt_compiler_flag'(Option, Value) :-
 	'$lgt_current_flag_'(Option, Value2),
 	!,
 	Value = Value2.
 
-'$lgt_compiler_option'(Option, Value) :-
+'$lgt_compiler_flag'(Option, Value) :-
 	'$lgt_default_flag'(Option, Value).
 
 
@@ -894,27 +894,27 @@ logtalk_compile(Entities) :-
 
 % logtalk_compile(@atom_or_atom_list, @list)
 %
-% compiles to disk an entity or a list of entities using a list of options
+% compiles to disk an entity or a list of entities using a list of flag options
 
-logtalk_compile(Entity, Options) :-
+logtalk_compile(Entity, Flags) :-
 	(atom(Entity), Entity \= []; compound(Entity), Entity \= [_| _]),
 	!,
 	catch(
 		('$lgt_check_compiler_entity'(Entity),
-		 '$lgt_check_compiler_options'(Options),
-		 '$lgt_set_compiler_options'(Options),
-		 '$lgt_compile_entity'(Entity, Options)),
+		 '$lgt_check_compiler_flags'(Flags),
+		 '$lgt_set_compiler_flags'(Flags),
+		 '$lgt_compile_entity'(Entity, Flags)),
 		Error,
-		throw(error(Error, logtalk_compile(Entity, Options)))).
+		throw(error(Error, logtalk_compile(Entity, Flags)))).
 
-logtalk_compile(Entities, Options) :-
+logtalk_compile(Entities, Flags) :-
 	catch(
 		('$lgt_check_compiler_entities'(Entities),
-		 '$lgt_check_compiler_options'(Options),
-		 '$lgt_set_compiler_options'(Options),
-		 '$lgt_compile_entities'(Entities, Options)),
+		 '$lgt_check_compiler_flags'(Flags),
+		 '$lgt_set_compiler_flags'(Flags),
+		 '$lgt_compile_entities'(Entities, Flags)),
 		Error,
-		throw(error(Error, logtalk_compile(Entities, Options)))).
+		throw(error(Error, logtalk_compile(Entities, Flags)))).
 
 
 
@@ -992,60 +992,60 @@ logtalk_compile(Entities, Options) :-
 
 
 
-% '$lgt_check_compiler_options'(@list)
+% '$lgt_check_compiler_flags'(@list)
 %
-% check if the compiler options are valid
+% check if the compiler flags are valid
 
-'$lgt_check_compiler_options'(Options) :-
-	var(Options),
+'$lgt_check_compiler_flags'(Flags) :-
+	var(Flags),
 	throw(instantiation_error).
 
-'$lgt_check_compiler_options'(Options) :-
-	\+ '$lgt_proper_list'(Options),
-	throw(type_error(list, Options)).
+'$lgt_check_compiler_flags'(Flags) :-
+	\+ '$lgt_proper_list'(Flags),
+	throw(type_error(list, Flags)).
 
-'$lgt_check_compiler_options'(Options) :-
-	'$lgt_check_compiler_option_list'(Options).
+'$lgt_check_compiler_flags'(Flags) :-
+	'$lgt_check_compiler_flag_list'(Flags).
 
 
 
-'$lgt_check_compiler_option_list'([]).
+'$lgt_check_compiler_flag_list'([]).
 
-'$lgt_check_compiler_option_list'([Option| Options]) :-
-	'$lgt_valid_compiler_option'(Option) ->
-		'$lgt_check_compiler_option_list'(Options)
+'$lgt_check_compiler_flag_list'([Flag| Flags]) :-
+	'$lgt_valid_compiler_flag'(Flag) ->
+		'$lgt_check_compiler_flag_list'(Flags)
 		;
-		throw(type_error(compiler_option, Option)).
+		throw(type_error(compiler_flag, Flag)).
 
 
 
-% '$lgt_set_compiler_options'(@list)
+% '$lgt_set_compiler_flags'(@list)
 %
-% sets the compiler options
+% sets the compiler flag options
 
-'$lgt_set_compiler_options'(Options) :-
-	retractall('$lgt_pp_compiler_option_'(_, _)),
-	'$lgt_assert_compiler_options'(Options),
-	('$lgt_pp_compiler_option_'(debug, on) ->
-		retractall('$lgt_pp_compiler_option_'(smart_compilation, _)),
-		asserta('$lgt_pp_compiler_option_'(smart_compilation, off))
+'$lgt_set_compiler_flags'(Flags) :-
+	retractall('$lgt_pp_compiler_flag_'(_, _)),
+	'$lgt_assert_compiler_flags'(Flags),
+	('$lgt_pp_compiler_flag_'(debug, on) ->
+		retractall('$lgt_pp_compiler_flag_'(smart_compilation, _)),
+		asserta('$lgt_pp_compiler_flag_'(smart_compilation, off))
 		;
 		true).
 
 
-'$lgt_assert_compiler_options'([]).
+'$lgt_assert_compiler_flags'([]).
 
-'$lgt_assert_compiler_options'([Option| Options]) :-
-	Option =.. [Key, Value],
-	asserta('$lgt_pp_compiler_option_'(Key, Value)),
-	'$lgt_assert_compiler_options'(Options).
+'$lgt_assert_compiler_flags'([Flag| Flags]) :-
+	Flag =.. [Name, Value],
+	asserta('$lgt_pp_compiler_flag_'(Name, Value)),
+	'$lgt_assert_compiler_flags'(Flags).
 
 
 
 % logtalk_load(@atom_or_atom_list)
 %
 % compiles to disk and then loads to memory an entity 
-% or a list of entities using default options
+% or a list of entities using default flag options
 
 logtalk_load(Entities) :-
 	catch(
@@ -1058,27 +1058,27 @@ logtalk_load(Entities) :-
 % logtalk_load(@atom_or_atom_list, @list)
 %
 % compiles to disk and then loads to memory an entity 
-% or a list of entities using a list of options
+% or a list of entities using a list of flag options
 
-logtalk_load(Entity, Options) :-
+logtalk_load(Entity, Flags) :-
 	(atom(Entity), Entity \= []; compound(Entity), Entity \= [_| _]),
 	!,
 	catch(
 		('$lgt_check_compiler_entity'(Entity),
-		 '$lgt_check_compiler_options'(Options),
-		 '$lgt_set_compiler_options'(Options),
-		 '$lgt_load_entity'(Entity, Options)),
+		 '$lgt_check_compiler_flags'(Flags),
+		 '$lgt_set_compiler_flags'(Flags),
+		 '$lgt_load_entity'(Entity, Flags)),
 		Error,
-		throw(error(Error, logtalk_load(Entity, Options)))).
+		throw(error(Error, logtalk_load(Entity, Flags)))).
 
-logtalk_load(Entities, Options) :-
+logtalk_load(Entities, Flags) :-
 	catch(
 		('$lgt_check_compiler_entities'(Entities),
-		 '$lgt_check_compiler_options'(Options),
-		 '$lgt_set_compiler_options'(Options),
-		 '$lgt_load_entities'(Entities, Options)),
+		 '$lgt_check_compiler_flags'(Flags),
+		 '$lgt_set_compiler_flags'(Flags),
+		 '$lgt_load_entities'(Entities, Flags)),
 		Error,
-		throw(error(Error, logtalk_load(Entities, Options)))).
+		throw(error(Error, logtalk_load(Entities, Flags)))).
 
 
 
@@ -2603,7 +2603,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	fail.
 
 '$lgt_dbg_do_port_option'(b, _, _, _, _) :-
-	('$lgt_compiler_option'(supports_break_predicate, true) ->
+	('$lgt_compiler_flag'(supports_break_predicate, true) ->
 		break
 		;
 		write('    break no supportd on this Prolog compiler.'), nl),
@@ -2666,19 +2666,19 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % splits a metafile into individual entity files plus a loading 
 % and a compiling helper files (returning their names)
 
-'$lgt_split_metafile'(Source, Options, Loader, Compiler) :-
+'$lgt_split_metafile'(Source, Flags, Loader, Compiler) :-
 	atom_concat(Source, '_load', Loader),
 	atom_concat(Source, '_compile', Compiler),
-	'$lgt_split_metafile_aux'(Source, Options, Loader, Compiler).
+	'$lgt_split_metafile_aux'(Source, Flags, Loader, Compiler).
 
 
 '$lgt_split_metafile_aux'(Source, _, Loader, Compiler) :-
-	'$lgt_compiler_option'(smart_compilation, on),
+	'$lgt_compiler_flag'(smart_compilation, on),
 	\+ '$lgt_needs_resplitting'(Source, Loader, Compiler),
 	!.
 
-'$lgt_split_metafile_aux'(Source, Options, Loader, Compiler) :-
-	('$lgt_compiler_option'(report, on) ->
+'$lgt_split_metafile_aux'(Source, Flags, Loader, Compiler) :-
+	('$lgt_compiler_flag'(report, on) ->
 		write('>>> splitting metafile '), writeq(Source), write('...'), nl
 		;
 		true),
@@ -2689,8 +2689,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		 '$lgt_copy_metafile_term'(Stream, Term, Cache, Entities)),
 		Error,
 		'$lgt_compiler_error_handler'(Stream, Error)),
-	'$lgt_create_aux_files'(Source, Options, Loader, Compiler, Cache, Entities),
-	('$lgt_compiler_option'(report, on) ->
+	'$lgt_create_aux_files'(Source, Flags, Loader, Compiler, Cache, Entities),
+	('$lgt_compiler_flag'(report, on) ->
 		write('>>> metafile '), writeq(Source), write(' split'), nl
 		;
 		true).
@@ -2724,13 +2724,13 @@ current_logtalk_flag(version, version(2, 22, 5)).
 %
 % creates a loading and a compiling helper files given a list of entities
 
-'$lgt_create_aux_files'(Source, Options, Loader, Compiler, Cache, Names) :-	
+'$lgt_create_aux_files'(Source, Flags, Loader, Compiler, Cache, Names) :-	
 	'$lgt_file_name'(metafile, Source, Metafile),
 	'$lgt_file_name'(logtalk, Loader, LoaderFile),
 	'$lgt_file_name'(logtalk, Compiler, CompilerFile),
 	 '$lgt_reverse'(Names, Names2),
 	 '$lgt_reverse'(Cache, Cache2),
-	('$lgt_compiler_option'(report, on) ->
+	('$lgt_compiler_flag'(report, on) ->
 		write('> creating loading helper file '), write(Loader), write('...'), nl
 		;
 		true),
@@ -2738,13 +2738,13 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		(open(LoaderFile, write, LoaderStream),
 		 write_term(LoaderStream, '% loader file automatically generated from source metafile ', []), 
 		 write_term(LoaderStream, Metafile, []), nl(LoaderStream), nl(LoaderStream),
-		 write_canonical(LoaderStream, (:- initialization(logtalk_load(Names2, Options)))),
+		 write_canonical(LoaderStream, (:- initialization(logtalk_load(Names2, Flags)))),
 		 write_term(LoaderStream, '.', []), nl(LoaderStream),
 		 '$lgt_copy_cached_metafile_terms'(Cache2, LoaderStream)),
 		Error,
 		'$lgt_compiler_error_handler'(LoaderStream, Error)),
 	close(LoaderStream),
-	('$lgt_compiler_option'(report, on) ->
+	('$lgt_compiler_flag'(report, on) ->
 		write('> loading helper file '), write(Loader), write(' created'), nl,
 		write('> creating compiling helper file '), write(Compiler), write('...'), nl
 		;
@@ -2753,12 +2753,12 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		(open(CompilerFile, write, CompilerStream),
 		 write_term(CompilerStream, '% compiler file automatically generated from source metafile ', []), 
 		 write_term(CompilerStream, Metafile, []), nl(CompilerStream), nl(CompilerStream),
-		 write_canonical(CompilerStream, (:- initialization(logtalk_compile(Names2, Options)))),
+		 write_canonical(CompilerStream, (:- initialization(logtalk_compile(Names2, Flags)))),
 		 write_term(CompilerStream, '.', []), nl(CompilerStream)),
 		Error,
 		'$lgt_compiler_error_handler'(CompilerStream, Error)),
 	close(CompilerStream),
-	('$lgt_compiler_option'(report, on) ->
+	('$lgt_compiler_flag'(report, on) ->
 		write('> compiling helper file '), write(Compiler), write(' created'), nl
 		;
 		true).
@@ -2801,7 +2801,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	Term =.. [(:-), Directive],
 	'$lgt_opening_entity_directive'(Directive, Type, Entity),
 	!,
-	('$lgt_compiler_option'(report, on) ->
+	('$lgt_compiler_flag'(report, on) ->
 		write('> extracting '), write(Type), write(' '),
 		current_output(Current), '$lgt_pretty_print_vars_quoted'(Current, Entity), 
 		write('...'), nl
@@ -2820,7 +2820,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	write_canonical(Output, Term),
 	write_term(Output, '.', []), nl(Output),
 	'$lgt_copy_metafile_entity_terms'(Input, Output, Type),
-	('$lgt_compiler_option'(report, on) ->
+	('$lgt_compiler_flag'(report, on) ->
 		write('> '), '$lgt_pretty_print_vars_quoted'(Current, Entity),
 		write(' extracted '), nl
 		;
@@ -2884,9 +2884,9 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_load_entities'([], _).
 
-'$lgt_load_entities'([Entity| Entities], Options) :-
-	'$lgt_load_entity'(Entity, Options),
-	'$lgt_load_entities'(Entities, Options).
+'$lgt_load_entities'([Entity| Entities], Flags) :-
+	'$lgt_load_entity'(Entity, Flags),
+	'$lgt_load_entities'(Entities, Flags).
 
 
 
@@ -2894,26 +2894,26 @@ current_logtalk_flag(version, version(2, 22, 5)).
 %
 % compiles to disk and then loads to memory an entity
 
-'$lgt_load_entity'(Term, Options) :-
+'$lgt_load_entity'(Term, Flags) :-
 	compound(Term),
 	!,
 	Term =.. [Library, Entity],
 	once(logtalk_library_path(Library, Path)),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
-	'$lgt_load_entity'(Entity, Options),
+	'$lgt_load_entity'(Entity, Flags),
 	'$lgt_change_directory'(Current).
 
-'$lgt_load_entity'(Entity, Options) :-
+'$lgt_load_entity'(Entity, Flags) :-
 	'$lgt_file_name'(metafile, Entity, Metafile),
 	'$lgt_file_exists'(Metafile),
 	!,
-	'$lgt_split_metafile'(Entity, Options, Loader, _),
-	'$lgt_load_entity'(Loader, Options).
+	'$lgt_split_metafile'(Entity, Flags, Loader, _),
+	'$lgt_load_entity'(Loader, Flags).
 
 
-'$lgt_load_entity'(Entity, Options) :-
-	'$lgt_compile_entity'(Entity, Options),
+'$lgt_load_entity'(Entity, Flags) :-
+	'$lgt_compile_entity'(Entity, Flags),
 	('$lgt_redefined_entity'(Entity, Type, Identifier) ->
 		'$lgt_clean_redefined_entity'(Type, Identifier),
 		'$lgt_report_redefined_entity'(Type, Identifier)
@@ -2935,7 +2935,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	!.
 
 '$lgt_redefined_entity'(Entity, object, Identifier) :-		% parametric objects
-	'$lgt_compiler_option'(code_prefix, Atom),				% (assuming that the code_prefix
+	'$lgt_compiler_flag'(code_prefix, Atom),				% (assuming that the code_prefix
 	atom_concat(Atom, Entity, Aux),							% does not change between entity
 	atom_concat(Aux, '_', Prefix),							% compilations)
 	'$lgt_current_object_'(Identifier, Prefix, _, _, _, _),
@@ -2978,7 +2978,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % prints a warning for redefined entities
 
 '$lgt_report_redefined_entity'(Type, Entity) :-
-	'$lgt_compiler_option'(report, on) ->
+	'$lgt_compiler_flag'(report, on) ->
 		write('> WARNING!  redefining '), write(Type), write(' '), 
 		current_output(Output), '$lgt_pretty_print_vars'(Output, Entity), nl
 		;
@@ -2990,7 +2990,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % prints a message that an entity is up-to-date
 
 '$lgt_report_up_to_date_entity'(Entity) :-
-	'$lgt_compiler_option'(report, on) ->
+	'$lgt_compiler_flag'(report, on) ->
 		nl, write('>>> compiling '), writeq(Entity), write('... up-to-date'), nl
 		;
 		true.
@@ -3002,9 +3002,9 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % prints a message that an entity is being compiled
 
 '$lgt_report_compiling_entity'(Entity) :-
-	'$lgt_compiler_option'(report, on) ->
+	'$lgt_compiler_flag'(report, on) ->
 		nl, write('>>> compiling '), writeq(Entity),
-		('$lgt_compiler_option'(debug, on) ->
+		('$lgt_compiler_flag'(debug, on) ->
 			write(' in debug mode...')
 			;
 			write('...')),
@@ -3019,7 +3019,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % prints a message that an entity is finished compiling
 
 '$lgt_report_compiled_entity'(Entity) :-
-	'$lgt_compiler_option'(report, on) ->
+	'$lgt_compiler_flag'(report, on) ->
 		write('>>> '), writeq(Entity), write(' compiled'), nl
 		;
 		true.
@@ -3031,7 +3031,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % prints a message that an entity finished loading
 
 '$lgt_report_loaded_entity'(Entity) :-
-	'$lgt_compiler_option'(report, on) ->
+	'$lgt_compiler_flag'(report, on) ->
 		write('<<< '), writeq(Entity), write(' loaded'), nl
 		;
 		true.
@@ -3044,9 +3044,9 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_compile_entities'([], _).
 
-'$lgt_compile_entities'([Entity| Entities], Options) :-
-	'$lgt_compile_entity'(Entity, Options),
-	'$lgt_compile_entities'(Entities, Options).
+'$lgt_compile_entities'([Entity| Entities], Flags) :-
+	'$lgt_compile_entity'(Entity, Flags),
+	'$lgt_compile_entities'(Entities, Flags).
 
 
 
@@ -3054,27 +3054,27 @@ current_logtalk_flag(version, version(2, 22, 5)).
 %
 % compiles to disk an entity
 
-'$lgt_compile_entity'(Term, Options) :-
+'$lgt_compile_entity'(Term, Flags) :-
 	compound(Term),
 	!,
 	Term =.. [Library, Entity],
 	once(logtalk_library_path(Library, Path)),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
-	'$lgt_compile_entity'(Entity, Options),
+	'$lgt_compile_entity'(Entity, Flags),
 	'$lgt_change_directory'(Current).
 
-'$lgt_compile_entity'(Entity, Options) :-
+'$lgt_compile_entity'(Entity, Flags) :-
 	'$lgt_file_name'(metafile, Entity, Metafile),
 	'$lgt_file_exists'(Metafile),
 	!,
-	'$lgt_split_metafile'(Entity, Options, _, Compiler),
-	'$lgt_compile_entity'(Compiler, Options),
+	'$lgt_split_metafile'(Entity, Flags, _, Compiler),
+	'$lgt_compile_entity'(Compiler, Flags),
 	'$lgt_file_name'(prolog, Compiler, File),
 	'$lgt_load_prolog_code'(File).
 
 '$lgt_compile_entity'(Entity, _) :-
-	'$lgt_compiler_option'(smart_compilation, on),
+	'$lgt_compiler_flag'(smart_compilation, on),
 	\+ '$lgt_needs_recompilation'(Entity),
 	!,
 	'$lgt_report_up_to_date_entity'(Entity).
@@ -3101,7 +3101,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_needs_recompilation'(Entity) :-
 	'$lgt_file_name'(xml, Entity, File),
-	'$lgt_compiler_option'(xml, on),
+	'$lgt_compiler_flag'(xml, on),
 	\+ '$lgt_file_exists'(File),
 	!.
 
@@ -3141,7 +3141,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_write_entity_doc'(Entity) :-
 	'$lgt_pp_entity'(_, _, _, _, _) ->
-		('$lgt_compiler_option'(xml, on) ->
+		('$lgt_compiler_flag'(xml, on) ->
 			'$lgt_file_name'(xml, Entity, File),
 			catch((
 				open(File, write, Stream),
@@ -3162,7 +3162,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_file_name'(Type, Entity, File) :-
 	'$lgt_file_extension'(Type, Extension),
-	(('$lgt_compiler_option'(altdirs, on), '$lgt_alt_directory'(Type, Directory)) ->
+	(('$lgt_compiler_flag'(altdirs, on), '$lgt_alt_directory'(Type, Directory)) ->
 		'$lgt_make_directory'(Directory),
 		atom_concat(Entity, Extension, Aux),
 		atom_concat(Directory, Aux, File)
@@ -3192,7 +3192,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	'$lgt_restores_op_table',
 	close(Stream),
 	'$lgt_fix_redef_built_ins',
-	'$lgt_find_misspelt_calls',
+	'$lgt_report_misspelt_calls',
 	('$lgt_pp_entity'(Type, _, _, _, _) ->
 		'$lgt_gen_clauses'(Type),
 		'$lgt_gen_directives'(Type)
@@ -3218,11 +3218,11 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % '$lgt_filter_dont_care_vars'(+list, -list)
 %
 % filter variables whose name start with an underscore from a
-% singletons list if the corresponding compiler option sets their
+% singletons list if the corresponding compiler flag sets their
 % interpretation to don't care variables
 
 '$lgt_filter_dont_care_vars'(List, Result) :-
-	'$lgt_compiler_option'(underscore_vars, dont_care) ->
+	'$lgt_compiler_flag'(underscore_vars, dont_care) ->
 		'$lgt_filter_dont_care_vars'(List, [], Result)
 		;
 		List = Result.
@@ -3247,8 +3247,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	!.	% cut needed to prevent problems with compilers with broken read_term/3
 
 '$lgt_report_singletons'([Singleton| Singletons], Term) :-
-	('$lgt_compiler_option'(singletons, warning),
-	 '$lgt_compiler_option'(report, on)) ->
+	('$lgt_compiler_flag'(singletons, warning),
+	 '$lgt_compiler_flag'(report, on)) ->
 		write('> WARNING!'),
 		\+ \+ ( '$lgt_report_singletons_aux'([Singleton| Singletons], Term, Names),
 				write('  singleton variables: '), '$lgt_write_list'(Names), nl,
@@ -4147,7 +4147,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		'$lgt_tr_clause'(Clause, TClause, DClause, Ctx),
 		Error,
 		throw(error(Error, clause(Clause)))),
-	('$lgt_compiler_option'(debug, on) ->
+	('$lgt_compiler_flag'(debug, on) ->
 		assertz('$lgt_pp_eclause_'(DClause))
 		;
 		assertz('$lgt_pp_eclause_'(TClause))),
@@ -4245,8 +4245,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_tr_head'(Head, _, _) :-
 	'$lgt_lgt_built_in'(Head),
-	'$lgt_compiler_option'(lgtredef, warning),
-	'$lgt_compiler_option'(report, on),
+	'$lgt_compiler_flag'(lgtredef, warning),
+	'$lgt_compiler_flag'(report, on),
 	\+ '$lgt_pp_redefined_built_in_'(Head, _, _),		% not already reported?
 	functor(Head, Functor, Arity),
 	write('> WARNING!  redefining a Logtalk built-in predicate: '),
@@ -4258,8 +4258,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_tr_head'(Head, _, _) :-
 	'$lgt_pl_built_in'(Head),
-	'$lgt_compiler_option'(plredef, warning),
-	'$lgt_compiler_option'(report, on),
+	'$lgt_compiler_flag'(plredef, warning),
+	'$lgt_compiler_flag'(report, on),
 	\+ '$lgt_pp_redefined_built_in_'(Head, _, _),		% not already reported?
 	functor(Head, Functor, Arity),
 	write('> WARNING!  redefining a Prolog built-in predicate: '),
@@ -4552,8 +4552,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_body'(Pred, _, _, _) :-
 	'$lgt_pl_built_in'(Pred),
 	\+ '$lgt_iso_spec_pred'(Pred),
-	'$lgt_compiler_option'(portability, warning),
-	'$lgt_compiler_option'(report, on),
+	'$lgt_compiler_flag'(portability, warning),
+	'$lgt_compiler_flag'(report, on),
 	functor(Pred, Functor, Arity),
 	write('> WARNING!  non-ISO defined built-in predicate call: '),
 	writeq(Functor/Arity), nl,
@@ -4637,7 +4637,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	var(Pred) ->											% translation performed at runtime
 		!,
 		'$lgt_ctx_this'(Ctx, This),
-		('$lgt_compiler_option'(events, on) ->
+		('$lgt_compiler_flag'(events, on) ->
 			TPred = '$lgt_send_to_object'(Obj, Pred, This)
 			;
 			TPred = '$lgt_send_to_object_ne'(Obj, Pred, This))
@@ -4780,12 +4780,12 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_msg'(Pred, Obj, TPred, Ctx) :-
 	'$lgt_ctx_this'(Ctx, This),
 	(var(Obj) ->
-		('$lgt_compiler_option'(events, on) ->
+		('$lgt_compiler_flag'(events, on) ->
 			TPred = '$lgt_send_to_object'(Obj, Pred, This)
 			;
 			TPred = '$lgt_send_to_object_ne'(Obj, Pred, This))
 		;
-		('$lgt_compiler_option'(events, on) ->
+		('$lgt_compiler_flag'(events, on) ->
 			TPred = '$lgt_send_to_object_nv'(Obj, Pred, This)
 			;
 			TPred = '$lgt_send_to_object_ne_nv'(Obj, Pred, This))).
@@ -5337,16 +5337,15 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_implements_protocol'([], _).
 
 '$lgt_tr_implements_protocol'([Ref| Refs], ObjOrCtg) :-
-	'$lgt_valid_scope'(Ref) ->
-		('$lgt_scope_id'(Ref, Scope, Ptc),
-		 (atom(Ptc) ->
-		 	'$lgt_add_referenced_protocol'(Ptc),
+	'$lgt_valid_ref_scope'(Ref, Scope) ->
+		('$lgt_valid_protocol_ref'(Ref, Ptc) ->
+			'$lgt_add_referenced_protocol'(Ptc),
 			assertz('$lgt_pp_rclause_'('$lgt_implements_protocol_'(ObjOrCtg, Ptc, Scope))),
 			'$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl),
 			assertz('$lgt_pp_implemented_protocol_'(Ptc, Prefix, Dcl, Scope)),
 			'$lgt_tr_implements_protocol'(Refs, ObjOrCtg)
 			;
-			throw(type_error(protocol_identifier, Ptc))))
+			throw(type_error(protocol_identifier, Ptc)))
 		;
 		throw(type_error(scope, Ref)).
 
@@ -5361,16 +5360,15 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_imports_category'([], _).
 
 '$lgt_tr_imports_category'([Ref| Refs], ObjOrCtg) :-
-	'$lgt_valid_scope'(Ref) ->
-		('$lgt_scope_id'(Ref, Scope, Ctg),
-		 (atom(Ctg) ->
-		 	'$lgt_add_referenced_category'(Ctg),
+	'$lgt_valid_ref_scope'(Ref, Scope) ->
+		('$lgt_valid_category_ref'(Ref, Ctg) ->
+			'$lgt_add_referenced_category'(Ctg),
 			assertz('$lgt_pp_rclause_'('$lgt_imports_category_'(ObjOrCtg, Ctg, Scope))),
 			'$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def),
 			assertz('$lgt_pp_imported_category_'(Ctg, Prefix, Dcl, Def, Scope)),
 			'$lgt_tr_imports_category'(Refs, ObjOrCtg)
 			;
-			throw(type_error(category_identifier, Ctg))))
+			throw(type_error(category_identifier, Ctg)))
 		;
 		throw(type_error(scope, Ref)).
 
@@ -5384,16 +5382,15 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_instantiates_class'([], _).
 
 '$lgt_tr_instantiates_class'([Ref| Refs], Obj) :-
-	'$lgt_valid_scope'(Ref) ->
-		('$lgt_scope_id'(Ref, Scope, Class),
-		 (callable(Class) ->
-		 	'$lgt_add_referenced_object'(Class),
+	'$lgt_valid_ref_scope'(Ref, Scope) ->
+		('$lgt_valid_object_ref'(Ref, Class) ->
+			'$lgt_add_referenced_object'(Class),
 			assertz('$lgt_pp_rclause_'('$lgt_instantiates_class_'(Obj, Class, Scope))),
 			'$lgt_construct_object_functors'(Class, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef),
 			assertz('$lgt_pp_instantiated_class_'(Class, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)),
 			'$lgt_tr_instantiates_class'(Refs, Obj)
 			;
-			throw(type_error(object_identifier, Class))))
+			throw(type_error(object_identifier, Class)))
 		;
 		throw(type_error(scope, Ref)).
 
@@ -5407,16 +5404,15 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_specializes_class'([], _).
 
 '$lgt_tr_specializes_class'([Ref| Refs], Class) :-
-	'$lgt_valid_scope'(Ref) ->
-		('$lgt_scope_id'(Ref, Scope, Superclass),
-		 (callable(Superclass) ->
-		 	'$lgt_add_referenced_object'(Superclass),
+	'$lgt_valid_ref_scope'(Ref, Scope) ->
+		('$lgt_valid_object_ref'(Ref, Superclass) ->
+			'$lgt_add_referenced_object'(Superclass),
 			assertz('$lgt_pp_rclause_'('$lgt_specializes_class_'(Class, Superclass, Scope))),
 			'$lgt_construct_object_functors'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef),
 			assertz('$lgt_pp_specialized_class_'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)),
 			'$lgt_tr_specializes_class'(Refs, Class)
 			;
-			throw(type_error(object_identifier, Superclass))))
+			throw(type_error(object_identifier, Superclass)))
 		;
 		throw(type_error(scope, Ref)).
 
@@ -5430,16 +5426,15 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_extends_object'([], _).
 
 '$lgt_tr_extends_object'([Ref| Refs], Obj) :-
-	'$lgt_valid_scope'(Ref) ->
-		('$lgt_scope_id'(Ref, Scope, Parent),
-		 (callable(Parent) ->
-		 	'$lgt_add_referenced_object'(Parent),
+	'$lgt_valid_ref_scope'(Ref, Scope) ->
+		('$lgt_valid_object_ref'(Ref, Parent) ->
+			'$lgt_add_referenced_object'(Parent),
 			assertz('$lgt_pp_rclause_'('$lgt_extends_object_'(Obj, Parent, Scope))),
 			'$lgt_construct_object_functors'(Parent, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef),
 			assertz('$lgt_pp_extended_object_'(Parent, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)),
 			'$lgt_tr_extends_object'(Refs, Obj)
 			;
-			throw(type_error(object_identifier, Parent))))
+			throw(type_error(object_identifier, Parent)))
 		;
 		throw(type_error(scope, Ref)).
 
@@ -5453,16 +5448,15 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_extends_protocol'([], _).
 
 '$lgt_tr_extends_protocol'([Ref| Refs], Ptc1) :-
-	'$lgt_valid_scope'(Ref) ->
-		('$lgt_scope_id'(Ref, Scope, Ptc2),
-		 (atom(Ptc2) ->
-		 	'$lgt_add_referenced_protocol'(Ptc2),
+	'$lgt_valid_ref_scope'(Ref, Scope) ->
+		('$lgt_valid_protocol_ref'(Ref, Ptc2) ->
+			'$lgt_add_referenced_protocol'(Ptc2),
 			assertz('$lgt_pp_rclause_'('$lgt_extends_protocol_'(Ptc1, Ptc2, Scope))),
 			'$lgt_construct_protocol_functors'(Ptc2, Prefix, Dcl),
 			assertz('$lgt_pp_extended_protocol_'(Ptc2, Prefix, Dcl, Scope)),
 			'$lgt_tr_extends_protocol'(Refs, Ptc1)
 			;
-			throw(type_error(protocol_identifier, Ptc2))))
+			throw(type_error(protocol_identifier, Ptc2)))
 		;
 		throw(type_error(scope, Ref)).
 
@@ -5507,11 +5501,11 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % '$lgt_report_unknown_entities'
 %
 % report any unknown referenced entities found while compiling an entity
-% (if the corresponding compiler option is not set to "silent")
+% (if the corresponding compiler flag is not set to "silent")
 
 '$lgt_report_unknown_entities' :-
-	('$lgt_compiler_option'(unknown, warning),
-	 '$lgt_compiler_option'(report, on)) ->
+	('$lgt_compiler_flag'(unknown, warning),
+	 '$lgt_compiler_flag'(report, on)) ->
 		'$lgt_report_unknown_objects',
 		'$lgt_report_unknown_protocols',
 		'$lgt_report_unknown_categories'
@@ -6728,31 +6722,21 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % find and report misspelt predicate calls
 % in the body of object and category predicates
 
-'$lgt_find_misspelt_calls' :-
-	setof(Pred, '$lgt_misspelt_call'(Pred), Preds) ->
-		'$lgt_report_misspelt_calls'(Preds)
-		;
-		true.
+'$lgt_report_misspelt_calls' :-
+	'$lgt_compiler_flag'(misspelt, warning),
+	'$lgt_compiler_flag'(report, on),
+	setof(Pred, '$lgt_misspelt_call'(Pred), Preds),
+	write('> WARNING!  these static predicates are called but never defined: '),
+	'$lgt_writeq_list'([Pred| Preds]), nl,
+	!.
+
+'$lgt_report_misspelt_calls'.
 
 
 '$lgt_misspelt_call'(Functor/Arity) :-
 	'$lgt_pp_calls_pred_'(Functor, Arity),
 	\+ '$lgt_pp_defs_pred_'(Functor, Arity),
 	\+ '$lgt_pp_dynamic_'(Functor, Arity).
-
-
-
-% '$lgt_report_misspelt_calls'(+list)
-
-'$lgt_report_misspelt_calls'([]).
-
-'$lgt_report_misspelt_calls'([Pred| Preds]) :-
-	('$lgt_compiler_option'(misspelt, warning),
-	 '$lgt_compiler_option'(report, on)) ->
-		write('> WARNING!  these static predicates are called but never defined: '),
-		'$lgt_writeq_list'([Pred| Preds]), nl
-		;
-		true.
 
 
 
@@ -6892,7 +6876,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_write_init_call'(Stream) :-
 	'$lgt_pp_entity'(_, Entity, _, _, _),
 	findall(Clause, '$lgt_pp_rclause'(Clause), Clauses),
-	('$lgt_compiler_option'(debug, on) ->
+	('$lgt_compiler_flag'(debug, on) ->
 		Goal1 = ('$lgt_assert_relation_clauses'(Clauses), assertz('$lgt_debugging_'(Entity)))
 		;
 		Goal1 = '$lgt_assert_relation_clauses'(Clauses)),
@@ -6900,7 +6884,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 		Goal = (Goal1, Goal2)
 		;
 		Goal = Goal1),
-	('$lgt_compiler_option'(iso_initialization_dir, true) ->
+	('$lgt_compiler_flag'(iso_initialization_dir, true) ->
 		write_canonical(Stream, (:- initialization(Goal)))
 		;
 		write_canonical(Stream, (:- Goal))),
@@ -7006,7 +6990,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % call any defined initialization goal for a dynamically created entity
 
 '$lgt_assert_init' :-
-	('$lgt_compiler_option'(debug, on) ->
+	('$lgt_compiler_flag'(debug, on) ->
 		'$lgt_pp_entity'(_, Entity, _, _, _),
 		assertz('$lgt_debugging_'(Entity))
 		;
@@ -7058,7 +7042,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % constructs all the functors used in the compiled code of an object
 
 '$lgt_construct_object_functors'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef) :-
-	'$lgt_compiler_option'(code_prefix, Code),
+	'$lgt_compiler_flag'(code_prefix, Code),
 	functor(Obj, Functor, Arity),
 	number_codes(Arity, Codes),
 	atom_codes(Atom, Codes),
@@ -7080,7 +7064,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % constructs all the functors used in the compiled code of a protocol
 
 '$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl) :-
-	'$lgt_compiler_option'(code_prefix, Code),
+	'$lgt_compiler_flag'(code_prefix, Code),
 	functor(Ptc, Functor, Arity),
 	number_codes(Arity, Codes),
 	atom_codes(Atom, Codes),
@@ -7096,7 +7080,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % constructs all the functors used in the compiled code of a category
 
 '$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def) :-
-	'$lgt_compiler_option'(code_prefix, Code),
+	'$lgt_compiler_flag'(code_prefix, Code),
 	functor(Ctg, Functor, Arity),
 	number_codes(Arity, Codes),
 	atom_codes(Atom, Codes),
@@ -7285,19 +7269,19 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % utility predicates used during compilation of Logtalk entities to store 
 % and access context information which is represented by a compound term
 
-'$lgt_ctx_ctx'(context(_, _, _, _, _)).
+'$lgt_ctx_ctx'(ctx(_, _, _, _, _)).
 
-'$lgt_ctx_ctx'(context(Sender, This, Self, Prefix, Metavars), Sender, This, Self, Prefix, Metavars).
+'$lgt_ctx_ctx'(ctx(Sender, This, Self, Prefix, Metavars), Sender, This, Self, Prefix, Metavars).
 
-'$lgt_ctx_sender'(context(Sender, _, _, _, _), Sender).
+'$lgt_ctx_sender'(ctx(Sender, _, _, _, _), Sender).
 
-'$lgt_ctx_this'(context(_, This, _, _, _), This).
+'$lgt_ctx_this'(ctx(_, This, _, _, _), This).
 
-'$lgt_ctx_self'(context(_, _, Self, _, _), Self).
+'$lgt_ctx_self'(ctx(_, _, Self, _, _), Self).
 
-'$lgt_ctx_prefix'(context(_, _, _, Prefix, _), Prefix).
+'$lgt_ctx_prefix'(ctx(_, _, _, Prefix, _), Prefix).
 
-'$lgt_ctx_metavars'(context(_, _, _, _, Metavars), Metavars).
+'$lgt_ctx_metavars'(ctx(_, _, _, _, Metavars), Metavars).
 
 
 
@@ -7352,24 +7336,48 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 
-% '$lgt_valid_scope'(@term)
+% '$lgt_valid_ref_scope'(@term, -atom)
 	
-'$lgt_valid_scope'(Term) :-
-	nonvar(Term),	
-	(Term = (Scope::_) ->
+'$lgt_valid_ref_scope'(Ref, Scope) :-
+	nonvar(Ref),	
+	(Ref = (Scope::_) ->
 		nonvar(Scope),
-		once('$lgt_member'(Scope, [(public), protected, private]))
+		'$lgt_scope'(Scope, _)
 		;
-		true).
+		Scope = (public)).
 
 
 
-% '$lgt_scope_id'(+term, -atom, -term)
+% '$lgt_valid_protocol_ref'(+term, -atom)
 
-'$lgt_scope_id'(Scope::Entity, Scope, Entity) :-
-	!.
+'$lgt_valid_protocol_ref'(_::Ptc, Ptc) :-
+	!,
+	atom(Ptc).
 
-'$lgt_scope_id'(Entity, (public), Entity).
+'$lgt_valid_protocol_ref'(Ptc, Ptc) :-
+	atom(Ptc).
+
+
+
+% '$lgt_valid_object_ref'(+term, -atom)
+
+'$lgt_valid_object_ref'(_::Obj, Obj) :-
+	!,
+	callable(Obj).
+
+'$lgt_valid_object_ref'(Obj, Obj) :-
+	callable(Obj).
+
+
+
+% '$lgt_valid_category_ref'(+term, -atom)
+
+'$lgt_valid_category_ref'(_::Ctg, Ctg) :-
+	!,
+	atom(Ctg).
+
+'$lgt_valid_category_ref'(Ctg, Ctg) :-
+	atom(Ctg).
 
 
 
@@ -7497,77 +7505,77 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 
-% '$lgt_valid_compiler_options'(@list)
+% '$lgt_valid_compiler_flags'(@list)
 %
-% true if all compiler options are valid
+% true if all compiler flags are valid
 
-'$lgt_valid_compiler_options'([]).
+'$lgt_valid_compiler_flags'([]).
 
-'$lgt_valid_compiler_options'([Option| Options]) :-
-	nonvar(Option),
-	'$lgt_valid_compiler_option'(Option),
-	'$lgt_valid_compiler_options'(Options).
+'$lgt_valid_compiler_flags'([Flag| Flags]) :-
+	nonvar(Flag),
+	'$lgt_valid_compiler_flag'(Flag),
+	'$lgt_valid_compiler_flags'(Flags).
 
 
 
-% '$lgt_valid_compiler_option'(@nonvar)
+% '$lgt_valid_compiler_flag'(@nonvar)
 
-'$lgt_valid_compiler_option'(iso_initialization_dir(Option)) :-
+'$lgt_valid_compiler_flag'(iso_initialization_dir(Option)) :-
 	once((Option == true; Option == false)).
 
-'$lgt_valid_compiler_option'(xml(Option)) :-
+'$lgt_valid_compiler_flag'(xml(Option)) :-
 	once((Option == on; Option == off)).
 
-'$lgt_valid_compiler_option'(xsl(File)) :-
+'$lgt_valid_compiler_flag'(xsl(File)) :-
 	atom(File).
 
-'$lgt_valid_compiler_option'(unknown(Option)) :-
+'$lgt_valid_compiler_flag'(unknown(Option)) :-
 	once((Option == silent; Option == warning)).
 
-'$lgt_valid_compiler_option'(singletons(Option)) :-
+'$lgt_valid_compiler_flag'(singletons(Option)) :-
 	once((Option == silent; Option == warning)).
 
-'$lgt_valid_compiler_option'(misspelt(Option)) :-
+'$lgt_valid_compiler_flag'(misspelt(Option)) :-
 	once((Option == silent; Option == warning)).
 
-'$lgt_valid_compiler_option'(lgtredef(Option)) :-
+'$lgt_valid_compiler_flag'(lgtredef(Option)) :-
 	once((Option == silent; Option == warning)).
 
-'$lgt_valid_compiler_option'(plredef(Option)) :-
+'$lgt_valid_compiler_flag'(plredef(Option)) :-
 	once((Option == silent; Option == warning)).
 
-'$lgt_valid_compiler_option'(portability(Option)) :-
+'$lgt_valid_compiler_flag'(portability(Option)) :-
 	once((Option == silent; Option == warning)).
 
-'$lgt_valid_compiler_option'(report(Option)) :-
+'$lgt_valid_compiler_flag'(report(Option)) :-
 	once((Option == on; Option == off)).
 
-'$lgt_valid_compiler_option'(smart_compilation(Option)) :-
+'$lgt_valid_compiler_flag'(smart_compilation(Option)) :-
 	once((Option == on; Option == off)).
 
-'$lgt_valid_compiler_option'(underscore_vars(Option)) :-
+'$lgt_valid_compiler_flag'(underscore_vars(Option)) :-
 	once((Option == dont_care; Option == singletons)).
 
-'$lgt_valid_compiler_option'(code_prefix(Prefix)) :-
+'$lgt_valid_compiler_flag'(code_prefix(Prefix)) :-
 	atom(Prefix).
 
-'$lgt_valid_compiler_option'(doctype(Option)) :-
+'$lgt_valid_compiler_flag'(doctype(Option)) :-
 	once((Option == standalone; Option == (local); Option == web)).
 
-'$lgt_valid_compiler_option'(xmlspec(Option)) :-
+'$lgt_valid_compiler_flag'(xmlspec(Option)) :-
 	once((Option == dtd; Option == xsd)).
 
-'$lgt_valid_compiler_option'(debug(Option)) :-
+'$lgt_valid_compiler_flag'(debug(Option)) :-
 	once((Option == on; Option == off)).
 
-'$lgt_valid_compiler_option'(events(Option)) :-
+'$lgt_valid_compiler_flag'(events(Option)) :-
 	once((Option == on; Option == off)).
 
 
 
 % '$lgt_valid_flag'(@nonvar)
 %
-% true if the argument is a valid Logtalk flag
+% true if the argument is a valid Logtalk flag name
 
 '$lgt_valid_flag'(iso_initialization_dir).
 '$lgt_valid_flag'(xml).
@@ -7594,18 +7602,18 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 % '$lgt_valid_flag'(@term, @term)
 %
-% true if the argument is a valid Logtalk flag-value pair
+% true if the argument is a valid Logtalk flag name-value pair
 
-'$lgt_valid_flag'(Flag, Value) :-
-	atom(Flag),
-	Option =.. [Flag, Value],
-	'$lgt_valid_compiler_option'(Option).
+'$lgt_valid_flag'(Name, Value) :-
+	atom(Name),
+	Flag =.. [Name, Value],
+	'$lgt_valid_compiler_flag'(Flag).
 
 
 
 % '$lgt_read_only_flag'(@nonvar)
 %
-% true if the argument is a read only Logtalk flag
+% true if the argument is a read only Logtalk flag name
 
 '$lgt_read_only_flag'(iso_initialization_dir).
 '$lgt_read_only_flag'(startup_message).
@@ -7908,8 +7916,8 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 '$lgt_write_xml_header'(Stream) :-
-	'$lgt_compiler_option'(xmlspec, XMLSpec),
-	'$lgt_compiler_option'(doctype, Doctype),
+	'$lgt_compiler_flag'(xmlspec, XMLSpec),
+	'$lgt_compiler_flag'(doctype, Doctype),
 	'$lgt_write_xml_header'(Doctype, XMLSpec, Stream).
 
 
@@ -7918,7 +7926,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	'$lgt_write_xml_open_tag'(Stream, '?xml version="1.0" standalone="no"?', []),
 	write(Stream, '<!DOCTYPE logtalk SYSTEM "logtalk.'),
 	write(Stream, XMLSpec), write(Stream, '">'), nl(Stream),
-	'$lgt_compiler_option'(xsl, XSL),
+	'$lgt_compiler_flag'(xsl, XSL),
 	write(Stream, '<?xml-stylesheet type="text/xsl" href="'),
 	write(Stream, XSL),
 	write(Stream, '"?>'), nl(Stream),
@@ -7928,7 +7936,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	'$lgt_write_xml_open_tag'(Stream, '?xml version="1.0" standalone="no"?', []),
 	write(Stream, '<!DOCTYPE logtalk SYSTEM "http://www.logtalk.org/xml/1.2/logtalk.'),
 	write(Stream, XMLSpec), write(Stream, '">'), nl(Stream),
-	'$lgt_compiler_option'(xsl, XSL),
+	'$lgt_compiler_flag'(xsl, XSL),
 	write(Stream, '<?xml-stylesheet type="text/xsl" href="'),
 	write(Stream, XSL),
 	write(Stream, '"?>'), nl(Stream),
@@ -7936,7 +7944,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_write_xml_header'(standalone, _, Stream) :-
 	'$lgt_write_xml_open_tag'(Stream, '?xml version="1.0" standalone="yes"?', []),
-	'$lgt_compiler_option'(xsl, XSL),
+	'$lgt_compiler_flag'(xsl, XSL),
 	write(Stream, '<?xml-stylesheet type="text/xsl" href="'),
 	write(Stream, XSL),
 	write(Stream, '"?>'), nl(Stream),

@@ -72,25 +72,25 @@ Both predicates expect an entity name, a source metafile, or a list of entity na
 If you have more than a few source files then you may want to use a loader helper file containing the calls to the <code>logtalk_load/1</code> predicate. Consulting or compiling the loader file will then compile and load all your Logtalk entities into memory (see the <a href="programming.html#loaders">next</a> section for details).
 </p>
 
-<h3>Compiler option flags<a name="options"></a></h3>
+<h3>Compiler flags<a name="flags"></a></h3>
 
 <p>
-The <a title="Consult reference manual" href="../refman/builtins/logtalk_load1.html"><code>logtalk_load/1</code></a> and <a title="Consult reference manual" href="../refman/builtins/logtalk_compile1.html"><code>logtalk_compile/1</code></a> always use the set of default compiler option flags specified in the Logtalk configuration files. Although the default options cover the usual cases, you may want to use a different set of options while compiling or loading some of your Logtalk source files. This can be accomplished by using the <a title="Consult reference manual" href="../refman/builtins/logtalk_load2.html"><code>logtalk_load/2</code></a> or the <a title="Consult reference manual" href="../refman/builtins/logtalk_compile2.html"><code>logtalk_compile/2</code></a> built-in predicates. These two predicates accept a list of options affecting how a Logtalk source file is compiled and loaded:
+The <a title="Consult reference manual" href="../refman/builtins/logtalk_load1.html"><code>logtalk_load/1</code></a> and <a title="Consult reference manual" href="../refman/builtins/logtalk_compile1.html"><code>logtalk_compile/1</code></a> always use the set of default compiler flags specified in the Logtalk configuration files. Although the default flag values cover the usual cases, you may want to use a different set of flag values while compiling or loading some of your Logtalk source files. This can be accomplished by using the <a title="Consult reference manual" href="../refman/builtins/logtalk_load2.html"><code>logtalk_load/2</code></a> or the <a title="Consult reference manual" href="../refman/builtins/logtalk_compile2.html"><code>logtalk_compile/2</code></a> built-in predicates. These two predicates accept a list of flag values affecting how a Logtalk source file is compiled and loaded:
 </p>
 <pre>
-    | ?- logtalk_compile(Files, Options).
+    | ?- logtalk_compile(Files, Flags).
 </pre>
 <p>
 or:
 </p>
 <pre>
-    | ?- logtalk_load(Files, Options).
+    | ?- logtalk_load(Files, Flags).
 </pre>
 <p>
-In fact, the <code>logtalk_load/1</code> and <code>logtalk_compile/1</code> predicates are just shortcuts to the extended versions called with the default compiler options.
+In fact, the <code>logtalk_load/1</code> and <code>logtalk_compile/1</code> predicates are just shortcuts to the extended versions called with the default compiler flag values.
 </p>
 <p>
-You can use the following options:
+You can use the following flags:
 </p>
 <blockquote>
 <dl>
@@ -159,13 +159,13 @@ You can use the following options:
 </dl>
 </blockquote>
 <p>
-We may also change the default options values from the ones loaded from the config file by using the <a title="Consult reference manual" href="../refman/builtins/set_logtalk_flag2.html"><code>set_logtalk_flag/2</code></a> built-in predicate. For example:
+We may also change the default flag values from the ones loaded from the config file by using the <a title="Consult reference manual" href="../refman/builtins/set_logtalk_flag2.html"><code>set_logtalk_flag/2</code></a> built-in predicate. For example:
 </p>
 <pre>
     | ?- set_logtalk_flag(xml, off).
 </pre>
 <p>
-The current values of the default flags can be enumerated using the <a title="Consult reference manual" href="../refman/builtins/current_logtalk_flag2.html"><code>current_logtalk_flag/2</code></a> built-in predicate:
+The current default flags values can be enumerated using the <a title="Consult reference manual" href="../refman/builtins/current_logtalk_flag2.html"><code>current_logtalk_flag/2</code></a> built-in predicate:
 </p>
 <pre>
     | ?- current_logtalk_flag(xml, Value).
@@ -180,7 +180,7 @@ The current values of the default flags can be enumerated using the <a title="Co
 If the Prolog compiler that you are using supports retrieving  of file modification dates, then you can turn on smart compilation of source files to avoid recompiling files that have not been modified since last compilation.
 </p>
 <p>
-Smart compilation of source files is usually off by default. You can turn it on by changing the default flag value in the configuration file, by using the corresponding compiler option with the compiling and loading built-in predicates, or, for the remaining of a working session, by using the call:
+Smart compilation of source files is usually off by default. You can turn it on by changing the default flag value in the configuration file, by using the corresponding compiler flag with the compiling and loading built-in predicates, or, for the remaining of a working session, by using the call:
 </p>
 <pre>
     | ?- set_logtalk_flag(smart_compilation, on).
@@ -477,7 +477,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: February 3, 2005</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: February 6, 2005</span></p>
 </div>
 </body>
 </html>

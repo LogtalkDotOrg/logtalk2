@@ -66,7 +66,7 @@ WScript.Echo("");
 WScript.Echo("to match your Prolog compiler and operating-system requirements or to");
 WScript.Echo("add your own library paths.");
 WScript.Echo("");
-WScript.Echo("You may want to customize the default Logtalk compiler options by editing");
+WScript.Echo("You may want to customize the default Logtalk compiler flags by editing");
 WScript.Echo("the configuration file for your Prolog compiler found in the directory:");
 WScript.Echo("");
 WScript.Echo("  " + logtalk_user + "\\configs");
