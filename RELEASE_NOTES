@@ -10,6 +10,12 @@ RELEASE NOTES
 =============
 
 
+2.15.1 - March ??, 2003
+
+	Corrected a typo on the jEdit templates that resulted in syntax errors.
+	Added missing version info key to jEdit prototype template.
+
+
 2.15.0 - February 5, 2003
 
 	Changed "authors" key in info/1 directive to "author".
