@@ -2143,11 +2143,12 @@ user0__def(Pred, _, _, _, Pred, user).
 
 % '$lgt_filter_dont_care_vars'(+list, -list)
 %
-% filter named anonymous varaibles from a singletons list
-% if the corresponding compiler option is enabled
+% filter variables whose name start with an underscore from a
+% singletons list if the corresponding compiler option sets their
+% interpretation to don't care variables
 
 '$lgt_filter_dont_care_vars'(List, Result) :-
-	'$lgt_compiler_option'(dont_care_vars, on) ->
+	'$lgt_compiler_option'(underscore_vars, dont_care) ->
 		'$lgt_filter_dont_care_vars'(List, [], Result)
 		;
 		List = Result.
@@ -5460,8 +5461,8 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_valid_compiler_option'(smart_compilation(Option)) :-
 	once((Option == on; Option == off)).
 
-'$lgt_valid_compiler_option'(dont_care_vars(Option)) :-
-	once((Option == on; Option == off)).
+'$lgt_valid_compiler_option'(underscore_vars(Option)) :-
+	once((Option == dont_care; Option == singletons)).
 
 '$lgt_valid_compiler_option'(code_prefix(Prefix)) :-
 	atom(Prefix).
@@ -5493,7 +5494,7 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_valid_flag'(smart_compilation).
 '$lgt_valid_flag'(startup_message).
 '$lgt_valid_flag'(version).
-'$lgt_valid_flag'(dont_care_vars).
+'$lgt_valid_flag'(underscore_vars).
 '$lgt_valid_flag'(code_prefix).
 
 
@@ -6379,8 +6380,8 @@ user0__def(Pred, _, _, _, Pred, user).
 	write('  Non portable calls (portability):                        '), write(Portability), nl,
 	'$lgt_default_flag'(report, Report),
 	write('  Compilation report (report):                             '), write(Report), nl,
-	'$lgt_default_flag'(dont_care_vars, Dontcare),
-	write('  Don''t care variables (dont_care_vars):                   '), write(Dontcare), nl,
+	'$lgt_default_flag'(underscore_vars, Underscore),
+	write('  Underscore variables (underscore_vars):                  '), write(Underscore), nl,
 	'$lgt_default_flag'(code_prefix, Code),
 	write('  Compiled code functors prefix (code_prefix):             '), writeq(Code), nl,
 	'$lgt_default_flag'(smart_compilation, Smart),

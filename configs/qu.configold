@@ -5,7 +5,7 @@
 %
 %  configuration file for QU-Prolog 4.3
 %
-%  last updated: February 4, 2004
+%  last updated: February 5, 2004
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -203,7 +203,7 @@ forall(Generate, Test) :-
 
 '$lgt_default_flag'(startup_message, on).
 
-'$lgt_default_flag'(dont_care_vars, off).
+'$lgt_default_flag'(underscore_vars, singletons).
 
 '$lgt_default_flag'(code_prefix, '').
 

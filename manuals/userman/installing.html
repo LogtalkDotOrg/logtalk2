@@ -235,7 +235,11 @@ You can use the following options:
 </dl>
 <dl>
 	<dt><code>singletons(Option)</code></dt>
-		<dd>Controls the singleton variable warnings. Possible option values are <code>warning</code> (the usual default) and <code>silent</code> (not recommended unless you have already checked your code and want to avoid false singletons warnings like some Prolog compilers report for variables that start with an underscore).</dd>
+		<dd>Controls the singleton variable warnings. Possible option values are <code>warning</code> (the usual default) and <code>silent</code> (not recommended).</dd>
+</dl>
+<dl>
+	<dt><code>underscore_vars(Option)</code></dt>
+		<dd>Controls the interpretation of variables that start with an underscore (excluding the anonymous variable) that occur once in a term as either don't care variables or singleton variables. Possible option values are <code>dont_care</code> and <code>singletons</code> (the usual default). Note that, depending on your Prolog compiler, the <code>read_term/3</code> built-in predicate may report variables that start with an underscore as singleton variables. There is no standard behavior, hence this option.</dd>
 </dl>
 <dl>
 	<dt><code>misspelt(Option)</code></dt>
@@ -280,10 +284,6 @@ You can use the following options:
 <dl>
 	<dt><code>smart_compilation(Option)</code></dt>
 		<dd>Controls the use of smart compilation of source files to avoid recompiling files that are unchanged since the last time they are compiled. Possible option values are <code>on</code> and <code>off</code> (the usual default).</dd>
-</dl>
-<dl>
-	<dt><code>dont_care_vars(Option)</code></dt>
-		<dd>Toggles the interpretation of variables that start with an underscore as don't care variables. Possible option values are <code>on</code> and <code>off</code> (the usual default). Set its value to <code>on</code> if your Prolog compiler reports variables that start with an underscore as singletons instead of don't care variables.</dd>
 </dl>
 <dl>
 	<dt><code>code_prefix(Option)</code></dt>
@@ -342,7 +342,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: February 4, 2004</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: February 5, 2004</span></p>
 </div>
 </body>
 </html>
