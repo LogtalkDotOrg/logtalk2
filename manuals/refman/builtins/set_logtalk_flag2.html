@@ -45,6 +45,10 @@ set_logtalk_flag(+atom, +atom)
 			<dd><code>type_error(atom, Flag)</code></dd>
 		<dt>Flag is neither a variable nor a valid flag:</dt>
 			<dd><code>domain_error(valid_flag, Flag)</code></dd>
+		<dt>Value is not a valid value for flag Flag:</dt>
+			<dd><code>domain_error(valid_flag_value, Value)</code></dd>
+		<dt>Flag is a read-only flag:</dt>
+			<dd><code>domain_error(read_only_flag, Flag)</code></dd>
 	</dl>
 </blockquote>
 
