@@ -1,0 +1,23 @@
+=================================================================
+Logtalk - Object oriented extension to Prolog
+Release 2.14.8
+
+Copyright (c) 1998-2003 Paulo Moura.  All Rights Reserved.
+=================================================================
+
+
+This directory contains some files that provide syntax highlighting 
+for editing Logtalk source files with common text editors.
+
+
+logtalk.xml
+
+	edit mode file for jEdit 4.1 (http://www.jedit.org/)
+
+	If this file is not included with your version of jEdit or if the 
+	included file is older than the one provided here, copy this file 
+	to the "modes" subdirectory in jEdit directory installation. Next, 
+	check the "catalog" file in the same subdirectory and add (if not 
+	present) the following entry:
+	
+	<MODE NAME="logtalk" FILE="logtalk.xml" FILE_NAME_GLOB="*.lgt" />
