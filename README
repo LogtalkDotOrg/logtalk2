@@ -82,7 +82,8 @@ Logtalk in any directory that you find convenient.
 
 See the user manual for a description of the source files organization and 
 for installing/using instructions (to read the user manual open the file 
-manuals/index.html with a web browser).
+manuals/index.html with a web browser). Most files are formatted using 
+four-space tabs.
 
 In Unix and Unix-like systems you may want to define an environment variable 
 named $LOGTALKHOME pointing to the Logtalk installation for use with your 
