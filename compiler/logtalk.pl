@@ -8247,9 +8247,13 @@ current_logtalk_flag(version, version(2, 23, 2)).
 %
 % converts between Prolog stream encoding names and XML encoding names
 
-'$lgt_xml_encoding_table'(ascii, 'us-ascii').
-'$lgt_xml_encoding_table'(iso_latin_1, 'iso-8859-1').
-'$lgt_xml_encoding_table'(utf8, 'utf-8').
+'$lgt_xml_encoding_table'(ascii, 'us-ascii') :-
+	!.
+'$lgt_xml_encoding_table'(iso_latin_1, 'iso-8859-1') :-
+	!.
+'$lgt_xml_encoding_table'(utf8, 'utf-8') :-
+	!.
+'$lgt_xml_encoding_table'(Encoding, Encoding).
 
 
 
@@ -8824,7 +8828,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	once((
 		First @< a;
 		First @> z;
-		'$lgt_member'(Char, [First| Rest]),
+		'$lgt_member'(Char, Rest),
 		\+ (Char == '_'; Char @>= a, Char @=< z; Char @>= 'A', Char @=< 'Z'; Char @>= '0', Char @=< '9'))).
 
 
@@ -8834,7 +8838,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 % returns a list of all binding variables
 
 '$lgt_binding_vars'(Bindings, Vars) :-
-	atom(Bindings) ->		% no bindings, just "no" or "yes" or equivalent answers
+	atom(Bindings) ->		% no bindings, just "no", "yes", or equivalent answers
 		Vars = []
 		;
 		'$lgt_binding_vars_list'(Bindings, Vars).

@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.23.2 - April 4, 2005
+2.23.2 - April 11, 2005
 
 	Added experimental support for a encoding/1 directive for declaring the 
 	text character encoding of a source file. This directive is fully based 
