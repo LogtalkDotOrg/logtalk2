@@ -30,7 +30,7 @@ if (WScript.Arguments.Unnamed.Length > 0) {
 }
 
 WScript.Echo("");
-WScript.Echo("Making a shortcut named swilgt for running Logtalk with SWI-Prolog...");
+WScript.Echo("Making a shortcut named Swilgt for running Logtalk with SWI-Prolog...");
 
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 
@@ -39,29 +39,22 @@ if (!fso.FolderExists(logtalk_home + "\\bin"))
 
 var f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.pl", true);
 
+f.WriteLine(":- include('" + logtalk_home + "\\\\configs\\\\swihook.pl').");
 f.WriteLine(":- system_module.");
 f.WriteLine(":- set_prolog_flag(character_escapes, false).");
+f.WriteLine(":- include('" + logtalk_home + "\\\\configs\\\\swi.config').");
 f.WriteLine(":- include('" + logtalk_home + "\\\\compiler\\\\logtalk.pl').");
-f.WriteLine(":- set_prolog_flag(character_escapes, true).");
-f.Close();
-
-f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.rc", true);
-
-f.WriteLine(":- set_prolog_flag(character_escapes, false).");
-f.WriteLine(":- consult('" + logtalk_home + "\\configs\\swi.config').");
-f.WriteLine(":- consult('" + logtalk_home + "\\configs\\swihook.pl').");
-f.WriteLine(":- consult('" + logtalk_home + "\\bin\\logtalkswi.pl').");
 f.WriteLine(":- set_prolog_flag(character_escapes, true).");
 f.Close();
 
 f = fso.CreateTextFile(logtalk_home + "\\bin\\swilgt.bat", true);
 
-f.WriteLine("plcon -f " + logtalk_home + "\\bin\\logtalkswi.rc");
+f.WriteLine("plcon -f " + logtalk_home + "\\bin\\logtalkswi.pl");
 f.Close();
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
-var link = WshShell.CreateShortcut(ProgramsPath + "\\swilgt.lnk");
-link.Arguments = "-f "+ logtalk_home + "\\bin\\logtalkswi.rc";
+var link = WshShell.CreateShortcut(ProgramsPath + "\\Swilgt.lnk");
+link.Arguments = "-f "+ logtalk_home + "\\bin\\logtalkswi.pl";
 link.Description = "Logtalk & SWI-Prolog";
 link.IconLocation = "app.exe,1";
 link.TargetPath = WshShell.RegRead("HKEY_LOCAL_MACHINE\\Software\\SWI\\Prolog\\home") + "\\bin\\plwin.exe";
@@ -69,7 +62,7 @@ link.WindowStyle = 1;
 link.WorkingDirectory = logtalk_home;
 link.Save();
 
-WScript.Echo("Done. The swilgt shortcut was been added to the Start Menu Programs.");
+WScript.Echo("Done. The Swilgt shortcut was been added to the Start Menu Programs.");
 WScript.Echo("Users should define the environment variable LOGTALKHOME in");
 WScript.Echo("order to use the script.");
 WScript.Echo("");
@@ -78,7 +71,7 @@ WScript.Quit(0);
 
 function usage_help() {
 	WScript.Echo("");
-	WScript.Echo("This script creates a shortcut named swilgt");
+	WScript.Echo("This script creates a shortcut named Swilgt");
 	WScript.Echo("for running Logtalk with SWI-Prolog.");
 	WScript.Echo("");
 	WScript.Echo("Usage:");
