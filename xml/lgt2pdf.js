@@ -9,15 +9,20 @@ var WshShell = new ActiveXObject("WScript.Shell");
 
 var WshSysEnv = WshShell.Environment("SYSTEM");
 var WshUserEnv = WshShell.Environment("USER");
+var logtalk_home;
 
-if (!WshSysEnv.Item("LOGTALKHOME") && !WshUserEnv.Item("LOGTALKHOME")) {
+if (WshSysEnv.Item("LOGTALKHOME"))
+	logtalk_home = WshSysEnv.Item("LOGTALKHOME");
+else if (WshUserEnv.Item("LOGTALKHOME"))
+	logtalk_home = WshUserEnv.Item("LOGTALKHOME")
+else {
 	WScript.Echo("The environment variable LOGTALKHOME must be defined first!");
 	usage_help();
 	WScript.Quit(1);
 }
 
-var a4_xsl = WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\lgtpdfa4.xsl";
-var us_xsl = WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\lgtpdfus.xsl";
+var a4_xsl = logtalk_home + "\\xml\\lgtpdfa4.xsl";
+var us_xsl = logtalk_home + "\\xml\\lgtpdfus.xsl";
 var xsl;
 
 var format = "a4";
@@ -58,8 +63,8 @@ if (processor != "fop" && processor != "xep") {
 
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 
-fso.CopyFile(WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory);
-fso.CopyFile(WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory);
+fso.CopyFile(logtalk_home + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory);
+fso.CopyFile(logtalk_home + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory);
 
 WScript.Echo("");
 WScript.Echo("converting XML files to PDF...");

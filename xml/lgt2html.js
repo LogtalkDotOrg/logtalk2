@@ -10,14 +10,18 @@ var WshShell = new ActiveXObject("WScript.Shell");
 var WshSysEnv = WshShell.Environment("SYSTEM");
 var WshUserEnv = WshShell.Environment("USER");
 
-if (!WshSysEnv.Item("LOGTALKHOME") && !WshUserEnv.Item("LOGTALKHOME")) {
+if (WshSysEnv.Item("LOGTALKHOME"))
+	logtalk_home = WshSysEnv.Item("LOGTALKHOME");
+else if (WshUserEnv.Item("LOGTALKHOME"))
+	logtalk_home = WshUserEnv.Item("LOGTALKHOME")
+else {
 	WScript.Echo("The environment variable LOGTALKHOME must be defined first!");
 	usage_help();
 	WScript.Quit(1);
 }
 
-var html_xslt = WshShell.ExpandEnvironmentStrings("LOGTALKHOME") + "\\xml\\lgthtml.xsl";
-var xhtml_xslt = WshShell.ExpandEnvironmentStrings("LOGTALKHOME") + "\\xml\\lgtxhtml.xsl";
+var html_xslt = logtalk_home + "\\xml\\lgthtml.xsl";
+var xhtml_xslt = logtalk_home + "\\xml\\lgtxhtml.xsl";
 var xslt;
 
 var format = "xhtml";
@@ -68,9 +72,9 @@ if (processor != "xsltproc" && processor != "xalan" && processor != "sabcmd") {
 
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 
-fso.CopyFile(WshShell.ExpandEnvironmentStrings("LOGTALKHOME") + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory);
-fso.CopyFile(WshShell.ExpandEnvironmentStrings("LOGTALKHOME") + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory);
-fso.CopyFile(WshShell.ExpandEnvironmentStrings("LOGTALKHOME") + "\\xml\\logtalk.css", directory);
+fso.CopyFile(WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory);
+fso.CopyFile(WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory);
+fso.CopyFile(WshShell.ExpandEnvironmentStrings("%LOGTALKHOME%") + "\\xml\\logtalk.css", directory);
 
 WScript.Echo("");
 WScript.Echo("converting XML files...");
