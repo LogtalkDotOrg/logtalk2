@@ -54,8 +54,8 @@
 
 
 	file_permission(File, Permission) :-
-		{fail}.
- 
+		{stat(File, _, _, _, _, Permission, _, _, _)}.
+
 
 	delete_file(File) :-
 		{delfile(File, 0)}.
