@@ -6,8 +6,9 @@ License: Artistic License 2.0
 Group: Development/Languages
 Packager: Paulo Moura <pmoura@logtalk.org>
 BuildArchitectures: noarch
-URL: http://www.logtalk.org
+URL: http://www.logtalk.org/
 Prefix: /usr/local
+AutoReqProv: no
 %description
 Logtalk is an open source object-oriented extension to the Prolog programming language. Integrating logic programming with object-oriented and event-driven programming, it is compatible with most Prolog compilers. It supports both prototypes and classes. In addition, it supports component-based programming through category-based composition.
 %prep
@@ -25,4 +26,6 @@ find /usr/local/share/lgt2170/ -name .DS_Store -print | xargs rm -f
 %files
 %defattr(-,root,users)
 /usr/local/lib/lgt2170
+/usr/local/lib/logtalk
 /usr/local/share/lgt2170
+/usr/local/share/logtalk
