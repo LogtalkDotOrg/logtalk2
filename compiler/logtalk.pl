@@ -2302,9 +2302,9 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	('$lgt_dbg_leashing'(Port, Goal, Ctx, Code) ->
 		repeat,
 			write(Code), '$lgt_dbg_write_port_name'(Port), writeq(Goal), write(' ? '),
-			'$lgt_read_single_char'(Option),
+			catch('$lgt_read_single_char'(Option), _, fail),
 		'$lgt_dbg_valid_port_option'(Option, Port, Code),
-		'$lgt_dbg_do_port_option'(Option, Goal, Ctx, Action)
+		catch('$lgt_dbg_do_port_option'(Option, Goal, Ctx, Action), _, fail)
 		;
 		('$lgt_dbg_tracing_' ->
 			write(' '), '$lgt_dbg_write_port_name'(Port), writeq(Goal), nl
