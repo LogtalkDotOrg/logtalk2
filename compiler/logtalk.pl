@@ -1894,7 +1894,6 @@ current_logtalk_flag(version, version(2, 21, 5)).
 				throw(error(existence_error(predicate_declaration, Pred), Self::Pred, This))))).
 
 
-
 % '$lgt_send_to_object'(@object, ?term, +object)
 
 '$lgt_send_to_object'(Obj, Pred, Sender) :-
@@ -1927,6 +1926,49 @@ current_logtalk_flag(version, version(2, 21, 5)).
 					\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),
 					call(Call),
 					\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall))
+					;
+					(Scope = p ->
+						throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
+						;
+						throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))))
+				;
+				('$lgt_built_in'(Pred) ->
+					call(Pred)
+					;
+					throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))))
+			;
+			throw(error(existence_error(object, Obj), Obj::Pred, Sender))).
+
+
+
+% '$lgt_send_to_object_ne'(@object, ?term, +object)
+
+'$lgt_send_to_object_ne'(Obj, Pred, Sender) :-
+	nonvar(Obj) ->
+		(nonvar(Pred) ->
+			'$lgt_send_to_object_ne_nv'(Obj, Pred, Sender)
+			;
+			throw(error(instantiation_error, Obj::Pred, Sender)))
+		;
+		throw(error(instantiation_error, Obj::Pred, Sender)).
+
+
+
+% '$lgt_send_to_object_ne_nv'(+object, +term, +object)
+
+'$lgt_send_to_object_ne_nv'(Obj, Pred, Sender) :-
+	'$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Obj, Obj, Call) ->
+		call(Call)
+		;
+		('$lgt_current_object_'(Obj, _, Dcl, Def, _, _) ->
+			('$lgt_call'(Dcl, Pred, Scope, _, _, _, _) ->
+				(Scope = p(p(_)) ->
+					functor(Pred, Functor, Arity),
+					functor(GPred, Functor, Arity),
+					'$lgt_once'(Def, GPred, GSender, GThis, GSelf, Call, _),
+					asserta('$lgt_obj_lookup_cache_'(Obj, GPred, GSender, GThis, GSelf, Call)),
+					GPred = Pred, GSender = Sender, GThis = Obj, GSelf = Obj,
+					call(Call)
 					;
 					(Scope = p ->
 						throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
@@ -4324,10 +4366,14 @@ current_logtalk_flag(version, version(2, 21, 5)).
 			fail)).
 
 
-'$lgt_tr_msg'(Pred, Obj, '$lgt_send_to_object'(Obj, Pred, This), Ctx) :-
+'$lgt_tr_msg'(Pred, Obj, TPred, Ctx) :-
 	var(Pred) ->											% translation performed at runtime
 		!,
-		'$lgt_this'(Ctx, This)
+		'$lgt_this'(Ctx, This),
+		('$lgt_compiler_option'(events, on) ->
+			TPred = '$lgt_send_to_object'(Obj, Pred, This)
+			;
+			Tpred = '$lgt_send_to_object_ne'(Obj, Pred, This))
 		;
 		\+ callable(Pred),									% invalid message
 		throw(type_error(callable, Pred)).
@@ -4467,9 +4513,15 @@ current_logtalk_flag(version, version(2, 21, 5)).
 '$lgt_tr_msg'(Pred, Obj, TPred, Ctx) :-
 	'$lgt_this'(Ctx, This),
 	(var(Obj) ->
-		TPred = '$lgt_send_to_object'(Obj, Pred, This)
+		('$lgt_compiler_option'(events, on) ->
+			TPred = '$lgt_send_to_object'(Obj, Pred, This)
+			;
+			TPred = '$lgt_send_to_object_ne'(Obj, Pred, This))
 		;
-		TPred = '$lgt_send_to_object_nv'(Obj, Pred, This)).
+		('$lgt_compiler_option'(events, on) ->
+			TPred = '$lgt_send_to_object_nv'(Obj, Pred, This)
+			;
+			TPred = '$lgt_send_to_object_ne_nv'(Obj, Pred, This))).
 
 
 
@@ -7186,6 +7238,9 @@ current_logtalk_flag(version, version(2, 21, 5)).
 '$lgt_valid_compiler_option'(debug(Option)) :-
 	once((Option == on; Option == off)).
 
+'$lgt_valid_compiler_option'(events(Option)) :-
+	once((Option == on; Option == off)).
+
 
 
 % '$lgt_valid_flag'(@nonvar)
@@ -7211,6 +7266,7 @@ current_logtalk_flag(version, version(2, 21, 5)).
 '$lgt_valid_flag'(code_prefix).
 '$lgt_valid_flag'(debug).
 '$lgt_valid_flag'(supports_break_predicate).
+'$lgt_valid_flag'(events).
 
 
 
@@ -8151,6 +8207,8 @@ current_logtalk_flag(version, version(2, 21, 5)).
 
 '$lgt_default_flags' :-
 	write('Default compilation flags:'), nl,
+	'$lgt_default_flag'(events, Events),
+	write('  Event-driven programming support (events):                '), write(Events), nl,
 	'$lgt_default_flag'(iso_initialization_dir, ISO),
 	write('  ISO initialization/1 directive (iso_initialization_dir):  '), write(ISO), nl,
 	'$lgt_default_flag'(xml, XML),

@@ -12,6 +12,10 @@ RELEASE NOTES
 
 2.21.5 - October ??, 2004
 
+	Added a new optimization compiler flag, "events", which can be used to switch 
+	off event-driven programming support when not needed, resulting in increased 
+	message sending performance.
+
 	Small performance optimization to the runtime creation of dynamic objects, 
 	protocols, and categories.
 
