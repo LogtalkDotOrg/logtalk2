@@ -44,6 +44,15 @@ L = [pwd,'cd ..','ls -a'] ?
 yes
 
 
+% walker movements
+
+| ?- walker::walk([n(5), e(4), s(2), nw(8), s(5), se(1), n(4)], Ending).
+
+Ending = -0.94974746830583223,6.9497474683058318 ? 
+
+yes
+
+
 % conversion between compound terms and XML
 
 | ?- xml::convert(word(child, children), word(singular, plural), XML).
