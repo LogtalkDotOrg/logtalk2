@@ -5924,6 +5924,9 @@ current_logtalk_flag(version, version(2, 16, 3)).
 '$lgt_valid_compiler_option'(xmlspec(Option)) :-
 	once((Option == dtd; Option == xsd)).
 
+'$lgt_valid_compiler_option'(debug(Option)) :-
+	once((Option == on; Option == off)).
+
 
 
 % '$lgt_valid_flag'(@nonvar)
@@ -5947,6 +5950,7 @@ current_logtalk_flag(version, version(2, 16, 3)).
 '$lgt_valid_flag'(version).
 '$lgt_valid_flag'(underscore_vars).
 '$lgt_valid_flag'(code_prefix).
+'$lgt_valid_flag'(debug).
 
 
 
@@ -6842,6 +6846,8 @@ current_logtalk_flag(version, version(2, 16, 3)).
 	write('  Underscore variables (underscore_vars):                  '), write(Underscore), nl,
 	'$lgt_default_flag'(code_prefix, Code),
 	write('  Compiled code functors prefix (code_prefix):             '), writeq(Code), nl,
+	'$lgt_default_flag'(debug, Debug),
+	write('  Compile entities in debug mode (debug):                  '), writeq(Debug), nl,
 	'$lgt_default_flag'(smart_compilation, Smart),
 	write('  Smart compilation (smart_compilation):                   '), write(Smart), nl, nl.
 
