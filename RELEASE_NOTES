@@ -15,6 +15,10 @@ RELEASE NOTES
 	Changed debugger command "e" to print exception terms instead of exiting 
 	Logtalk session.
 
+	Corrected a possible problem with the redefinition of loaded entities that 
+	define (possibly at runtime) dynamic predicates. All clauses for an entity 
+	dynamic predicates are retracted before loading the new entity definition.
+
 	Added two more DCGs examples. New "puzzles" and "metainterpreters" examples.
 
 

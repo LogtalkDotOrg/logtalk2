@@ -2513,8 +2513,9 @@ current_logtalk_flag(version, version(2, 17, 1)).
 
 '$lgt_load_entity'(Entity) :-
 	'$lgt_compile_entity'(Entity),
-	('$lgt_compiler_option'(report, on) ->
-		'$lgt_report_redefined_entity'(Entity)
+	('$lgt_redefined_entity'(Entity, Type, Identifier) ->
+		'$lgt_remove_old_entity'(Type, Identifier),
+		'$lgt_report_redefined_entity'(Type, Identifier)
 		;
 		true),
 	'$lgt_file_name'(prolog, Entity, File),
@@ -2526,37 +2527,70 @@ current_logtalk_flag(version, version(2, 17, 1)).
 
 
 
-% '$lgt_report_redefined_entity'(+atom)
+% '$lgt_redefined_entity'(+atom, -atom)
 %
-% prints a warning if an entity of the same name is already loaded
+% true if an entity of the same name is already loaded
 
-'$lgt_report_redefined_entity'(Entity) :-
+'$lgt_redefined_entity'(Entity, object, Entity) :-
 	'$lgt_current_object_'(Entity, _, _, _, _, _),
-	!,
-	write('> WARNING!  redefining object '), write(Entity), nl.
+	!.
 
-'$lgt_report_redefined_entity'(Entity) :-		% parametric objects
-	atom_codes(Entity, Codes),					% this is a quick and dirty hack
-	'$lgt_compiler_option'(code_prefix, Atom),	% assuming that code_prefix does
-	atom_codes(Atom, Code),						% not change between entity
-	'$lgt_append'(Code, Codes, Codes2),			% compilations
+'$lgt_redefined_entity'(Entity, object, Identifier) :-		% parametric objects
+	atom_codes(Entity, Codes),								% this is a quick and dirty hack
+	'$lgt_compiler_option'(code_prefix, Atom),				% assuming that code_prefix does
+	atom_codes(Atom, Code),									% not change between entity
+	'$lgt_append'(Code, Codes, Codes2),						% compilations
 	'$lgt_append'(Codes2, '_', Prefix),
-	'$lgt_current_object_'(_, Prefix, _, _, _, _),
-	!,
-	write('> WARNING!  redefining object '), write(Entity), nl.
+	'$lgt_current_object_'(Identifier, Prefix, _, _, _, _),
+	!.
 
-'$lgt_report_redefined_entity'(Entity) :-
+'$lgt_redefined_entity'(Entity, protocol, Entity) :-
 	'$lgt_current_protocol_'(Entity, _, _),
-	!,
-	write('> WARNING!  redefining protocol '), write(Entity), nl.
+	!.
 
-'$lgt_report_redefined_entity'(Entity) :-
-	'$lgt_current_category_'(Entity, _, _),
-	!,
-	write('> WARNING!  redefining category '), write(Entity), nl.
+'$lgt_redefined_entity'(Entity, category, Entity) :-
+	'$lgt_current_category_'(Entity, _, _).
 
-'$lgt_report_redefined_entity'(_).
-	
+
+
+% '$lgt_remove_old_entity'(+atom, +entity_identifier)
+%
+% try to remove old entity before loading the new definition
+
+'$lgt_remove_old_entity'(object, Entity) :-
+	object_property(Entity, (dynamic)) ->
+		abolish_object(Entity)
+		;
+		forall(
+			('$lgt_current_predicate'(Entity, Functor/Arity, Entity, _),
+			 functor(Head, Functor, Arity),
+			 '$lgt_predicate_property'(Entity, Head, (dynamic), Entity, _)), 
+			'$lgt_retractall'(Entity, Head, Entity, _)).
+
+'$lgt_remove_old_entity'(protocol, Entity) :-
+	protocol_property(Entity, (dynamic)) ->
+		abolish_protocol(Entity)
+		;
+		true.
+
+'$lgt_remove_old_entity'(category, Entity) :-
+	category_property(Entity, (dynamic)) ->
+		abolish_category(Entity)
+		;
+		true.
+
+
+
+% '$lgt_report_redefined_entity'(+atom, +entity_identifier)
+%
+% prints a warning for redefined entities
+
+'$lgt_report_redefined_entity'(Type, Entity) :-
+	'$lgt_compiler_option'(report, on) ->
+		write('> WARNING!  redefining '), write(Type), write(' '), write(Entity), nl
+		;
+		true.
+
 
 
 % '$lgt_compile_entities'(+list)
