@@ -313,7 +313,8 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_gen_object_clauses',
 	'$lgt_gen_object_directives',
 	'$lgt_assert_tr_entity',
-	'$lgt_report_unknown_entities'.
+	'$lgt_report_unknown_entities',
+	'$lgt_clean_up'.
 
 
 
@@ -360,7 +361,8 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_gen_category_clauses',
 	'$lgt_gen_category_directives',
 	'$lgt_assert_tr_entity',
-	'$lgt_report_unknown_entities'.
+	'$lgt_report_unknown_entities',
+	'$lgt_clean_up'.
 
 
 
@@ -401,7 +403,8 @@ create_protocol(Ptc, Rels, Dirs) :-
 	'$lgt_gen_protocol_clauses',
 	'$lgt_gen_protocol_directives',
 	'$lgt_assert_tr_entity',
-	'$lgt_report_unknown_entities'.
+	'$lgt_report_unknown_entities',
+	'$lgt_clean_up'.
 
 
 
@@ -1934,10 +1937,12 @@ user0__def(Pred, _, _, _, Pred, user).
 		nl, write('>>>  compiling '), writeq(Entity), nl	
 		;
 		true),
+	'$lgt_clean_up',
 	'$lgt_tr_entity'(Entity),
 	'$lgt_write_tr_entity'(Entity),
 	'$lgt_write_entity_doc'(Entity),
 	'$lgt_report_unknown_entities',
+	'$lgt_clean_up',
 	('$lgt_compiler_option'(report, on) ->
 		write('>>>  '), writeq(Entity), write(' compiled'), nl
 		;
@@ -2024,7 +2029,6 @@ user0__def(Pred, _, _, _, Pred, user).
 % compiles an entity storing the resulting code in memory
 
 '$lgt_tr_entity'(Entity) :-
-	'$lgt_clean_up',
 	'$lgt_file_name'(logtalk, Entity, File),
 	catch(
 		open(File, read, Stream),
