@@ -50,7 +50,7 @@ f.WriteLine(":- consult('" + logtalk_home + "\\configs\\swihook.pl').");
 f.WriteLine(":- consult('" + logtalk_home + "\\bin\\logtalkswi.pl').");
 f.Close();
 
-f = fso.CreateTextFile(logtalk_home + "\\bin\\swilgt.bat", true).
+f = fso.CreateTextFile(logtalk_home + "\\bin\\swilgt.bat", true);
 
 f.WriteLine("plcon -f " + logtalk_home + "\\bin\\logtalkswi.rc");
 f.Close();
