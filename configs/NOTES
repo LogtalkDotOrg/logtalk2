@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.9.4
+Release 2.10.0
 
 Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -48,7 +48,7 @@ ALS Prolog 3.1
 	set the working directory before loading an example.
 
 
-Amzi! Prolog 4.103, 5.0, 6.1.68
+Amzi! Prolog 4.103, 5.0, 6.1.74
 
 	amzi.config
 
@@ -65,7 +65,7 @@ Amzi! Prolog 4.103, 5.0, 6.1.68
 
 	amzi6.config
 
-	For Amzi! Prolog 6.1.68 beta release. The compiler definition of the 
+	For Amzi! Prolog 6.1.74 beta release. The compiler definition of the 
 	compare/3 built-in predicate returns the atom == instead of = for 
 	identical terms (contrary to every other Prolog compiler!). You need to 
 	search the library files for all calls of the compare/3 predicate and 
@@ -105,6 +105,7 @@ B-Prolog 4.0~5.0, 6.x
 	For B-Prolog 6.x.
 	Don't forget to use the chdir/1 predicate to set the working 
 	directory before loading an example.
+
 
 Bin-Prolog 8.x
 
@@ -175,7 +176,7 @@ GNU Prolog 1.1.2 (and later versions)
 	can generate a new Prolog top level that includes the Logtalk config file
 	and pre-processor plus the runtime by doing something like:
 
-	% cd lgt294
+	% cd lgt2100
 	% cp configs/gnu.config configs/gnu.pl
 	% gplc -o logtalk configs/gnu.pl compiler/logtalk.pl
 	% mv logtalk /usr/local/bin/
@@ -272,7 +273,7 @@ MasterProlog 4.1
 	call of close(...) with fclose(...).
 
 
-Open Prolog 1.1b4
+Open Prolog 1.1b5
 
 	open.config
 
@@ -305,7 +306,7 @@ QU-Prolog 4.3
 	may use lgt_current_date/3 to put a time stamp in new objects).
 
 
-Quintus Prolog 3.3
+Quintus Prolog 3.3~3.4
 
 	quintus.config
 
