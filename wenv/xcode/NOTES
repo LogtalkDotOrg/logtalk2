@@ -7,8 +7,8 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 
 
 This directory contains some files that provide syntax highlighting and 
-templates files for editing Logtalk source files with MacOS X Xcode 1.1 
-or later version.
+project and template files for editing Logtalk source files with MacOS X 
+Xcode 1.1 or later version.
 
 
 To install:
