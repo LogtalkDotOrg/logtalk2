@@ -37,7 +37,7 @@ To start a Logtalk session just:
 	<li>Load the Logtalk compiler/preprocessor and runtime files contained in the <code>compiler</code> subdirectory.</li>
 </ol>
 <p>
-Note that the both configuration files and compiler/preprocessor files are Prolog source files. The predicate called to load (and compile) them depends on your Prolog compiler. In case of doubt, consult your Prolog compiler reference manual or take a look at the definition of the predicate <code>lgt_load_prolog_code/1</code> in the corresponding configuration file.
+Note that the both configuration files and compiler/preprocessor files are Prolog source files. The predicate called to load (and compile) them depends on your Prolog compiler. In case of doubt, consult your Prolog compiler reference manual or take a look at the definition of the predicate <code>'$lgt_load_prolog_code'/1</code> in the corresponding configuration file.
 </p>
 
 <h3>Compiling and loading your programs<a name="compiling"></a></h3>
@@ -88,6 +88,7 @@ In fact, the <code>logtalk_load/1</code> and <code>logtalk_compile/1</code> pred
 <p>
 You can use the following options:
 </p>
+<blockquote>
 <dl>
 	<dt><code>unknown(Option)</code></dt>
 		<dd>Controls the unknown entity warnings, resulting from loading an entity that references some other entity that is not currently loaded. Possible option values are <code>warning</code> (the usual default) and <code>silent</code>.</dd>
@@ -152,7 +153,7 @@ You can use the following options:
 	<dt><code>debug(Option)</code></dt>
 		<dd>Controls the compilation of source files in debug mode. Possible option values are <code>on</code> and <code>off</code> (the usual default).</dd>
 </dl>
-
+</blockquote>
 <p>
 We may also change the default options values from the ones loaded from the config file by using the <a title="Consult reference manual" href="../refman/builtins/set_logtalk_flag2.html"><code>set_logtalk_flag/2</code></a> built-in predicate. For example:
 </p>
@@ -199,7 +200,7 @@ To supress printing of compiling and loading messages (including compiling warni
 <h2>Debugging Logtalk programs<a name="debugging"></a></h2>
 
 <p>
-Logtalk defines a built-in pseudo-object named <code>debugger</code>, which implements debugging features similar to those found on most Prolog compilers. However, there are some differences between the usual implementation of Prolog debuggers and the current implementation of the Logtalk debugger that you should be aware. First, unlikely most Prolog debuggers, the Logtalk debugger is not implemented as a meta-interpreter. This difference translates to a different, although similar, set of debugging features. Second, debugging is only possible for objects compiled in debug mode. When compiling an object in this mode, Logtalk keeps each  clause goal in both source form and compiled form in order to allow tracing of the goal execution. Third, implementation of spy points allows the user to specify the execution context for entering the debugger. This feature is a consequence of the encapsulation of predicates inside objects.
+Logtalk defines a built-in pseudo-object named <code>debugger</code>, which implements debugging features similar to those found on most Prolog compilers. However, there are some differences between the usual implementation of Prolog debuggers and the current implementation of the Logtalk debugger that you should be aware. First, unlikely most Prolog debuggers, the Logtalk debugger is not implemented as a meta-interpreter. This difference translates to a different, although similar, set of debugging features with some limitations when compared with Prolog debuggers. Second, debugging is only possible for objects compiled in debug mode. When compiling an object in this mode, Logtalk keeps each  clause goal in both source form and compiled form in order to allow tracing of the goal execution. Third, implementation of spy points allows the user to specify the execution context for entering the debugger. This feature is a consequence of the encapsulation of predicates inside objects.
 
 <h3>Compiling objects in debug mode<a name="debugmode"></a></h3>
 
@@ -387,6 +388,9 @@ Tracing a program execution may generate large amounts of debugging data. Debugg
     yes
 </pre>
 <p>
+At the beginning of a port description, the debugger will print a <code>+</code> or a <code>*</code> if there is, respectively, a predicate spy point or a context spy point defined.
+</p>
+<p>
 To stop the debugger, write:
 </p>
 <pre>
@@ -394,9 +398,16 @@ To stop the debugger, write:
 
     yes
 </pre>
+<p>
+Note that stopping the debugger does not remove any defined spy points.
+</p>
 
 <h3>Debugging commands<a name="commands"></a></h3>
 
+<p>
+The debugger pauses at leashed posts when tracing or when finding a spy point for user interaction. The commands available are as follows:
+</p>
+<blockquote>
 <dl>
 	<dt><code>c</code> &mdash; creep</dt>
 		<dd>go on; you may use the spacebar in alternative</dd>
@@ -431,6 +442,7 @@ To stop the debugger, write:
 	<dt><code>h</code> &mdash; help</dt>
 		<dd>prints list of command options; <code>?</code> can be used in alternative</dd>
 </dl>
+</blockquote>
 
 <div class="navbottom">
 <a href="installing.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="programming.html">next</a>
