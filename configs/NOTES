@@ -159,35 +159,30 @@ CIAO Prolog 1.6p1, 1.8p0
 	smart compilation of source files.
 
 
-Eclipse 4.2.2~5.1, 5.2~5.3, 5.4~5.7
+ECLiPSe 5.5~5.7
 
 	eclipse.config
-	eclipse52.config
-	eclipse54.config
 	eclipseiso.config
 
-	There are four configs files for this compiler. The first one, named 
+	There are two configs files for this compiler. The first one, named 
 	"eclipse.config", should be used when, for some reason, we don't want 
-	to load the "iso" library, with versions from 4.2.2 to 5.1. The second 
-	file, "eclipse52.config" is similar to the first one but is written for 
-	version 5.2 and 5.3. The third file, "eclipse54.config", is for versions 
-	5.4 to 5.7. The fourth file, "eclipseiso.config" contains a call to load 
-	the "iso" library and should be compatible with all versions from 4.2.2 
-	to 5.7.
+	to load the "iso" library. The second file, "eclipseiso.config" contains 
+	a call to load the "iso" library. Both config files may be used with
+	ECLiPSe versions from 5.5 to 5.7
 	
-	You should use the eclipseiso.config whenever possible. The other config 
-	files may not contain all the needed definitions for ISO Prolog predicates 
-	that are needed for compiling the Logtalk library or the Logtalk examples.
+	You should use the eclipseiso.config whenever possible. The alternative 
+	config file may not contain all the needed definitions for ISO Prolog 
+	predicates that are needed for compiling Logtalk itself, the Logtalk 
+	library or the Logtalk examples.
 
-	Add the following calls to the top of all the files in the "compiler" 
-	sub-directory:
+	For improved performance, add the following calls to the top of all the 
+	files in the "compiler" sub-directory:
 	
 		:- pragma(system).
 		:- pragma(nodebug).
 
 	These calls disables debugging support for the Logtalk compiler/runtime 
-	Prolog code, improving performance, and also mark the Logtalk predicates 
-	as built-ins.
+	Prolog code and mark the Logtalk predicates as built-ins.
 
 	Adopted from a config file written and tested with help of Taner Bilgic 
 	for Logtalk 1.x. Don't forget to use the cd/1 predicate to set the working 
