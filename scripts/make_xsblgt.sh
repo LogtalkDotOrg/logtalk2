@@ -23,16 +23,14 @@ else
 	mkdir -p bin
 	cd bin
 	cp ../compiler/logtalk.pl logtalk.P
-	ln -f $LOGTALKUSER/configs/xsb.config xsbconfig.P
-	ln -f $LOGTALKUSER/libpaths/libpaths.pl libpaths.P
 	sed 's/^..lgt_current_object_.[(]user.*[)]/:- assertz(&)/' logtalk.P > temp1
 	sed 's/^..lgt_current_object_.[(]debugger.*[)]/:- assertz(&)/' temp1 > temp2
 	sed 's/^..lgt_dbg_leashing_.[(].*[)]/:- assertz(&)/g' temp2 > logtalk.P
 	rm temp1
 	rm temp2
-	echo ":- reconsult('$LOGTALKHOME/bin/xsbconfig.P')." > logtalkxsb.P
+	echo ":- reconsult('$LOGTALKUSER/configs/xsb.P')." > logtalkxsb.P
 	echo ":- reconsult('$LOGTALKHOME/bin/logtalk.P')." >> logtalkxsb.P
-	echo ":- reconsult('$LOGTALKHOME/bin/libpaths.P')." >> logtalkxsb.P
+	echo ":- reconsult('$LOGTALKUSER/libpaths/libpaths.P')." >> logtalkxsb.P
 	echo "#/bin/sh" > xsblgt
 	echo "xsb -e \"reconsult('\$LOGTALKHOME/bin/logtalkxsb.P').\"" >> xsblgt
 	chmod a+x xsblgt
@@ -40,5 +38,9 @@ else
 	echo "Done. A link to the script was been created in $prefix/bin."
 	echo "Users should define the environment variables LOGTALKHOME and"
 	echo "LOGTALKUSER in order to use the script."
+	echo
+	echo "In addition, each user will need to change the extension of the files"
+	echo "\$LOGTALKUSER/configs/xsb.config and \$LOGTALKUSER/libpaths/libpaths.pl"
+	echo "to '.P' before using the xsblgt script."
 	echo
 fi
