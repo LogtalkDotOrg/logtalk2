@@ -41,3 +41,6 @@ protocols, and categories.
 
 Logtalk version 2.10.0 changes some of the semantics of object dynamic 
 predicates. See the release notes for a description of the changes.
+
+Logtalk version 2.14.0 changes all compiled code functors to start with a "$" 
+character, impliying recompilation of all objects, protocols, and categories.
