@@ -10,12 +10,20 @@ This example illustrates some variants of the "diamond problem"
 (multi-inheritance conflicts and ambiguities) and its respective 
 solutions on Logtalk.
 
+This classical problem can be simply described by constructing a 
+"diamond" of objects and inheritance links as follows:
+
         A       -- contains default definition for a predicate m/0
 	  /   \
     B       C   -- contains redefinitions of the predicate m/0
       \   /
         D       -- inherits both redefinitions of the predicate m/0
 
+The resulting ambiguity is deciding which of the inherited defintions 
+for predicate m/0 (from B and C objects) should be used in object D.
+
+Note that this problem may occur with prototype hierarchies, class 
+hierarchies, protocol hierarchies, or when using category composition.
 
 There are three variants of the problem:
 
@@ -23,10 +31,11 @@ There are three variants of the problem:
 		illustrates the inherited definition which is visible due to the
 		Logtalk predicate lookup algorithm
 	diamond2
-		solution for making the overridden inherited definition the 
-		visible one
+		presents a solution for making the overridden inherited definition 
+		the visible one
 	diamond3
-		allows both inherited definitions to be used
+		presents a solution which allows both inherited definitions to be 
+		used in D
 
 To load all entities in this example compile and load the loader file:
 
