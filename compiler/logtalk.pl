@@ -3589,11 +3589,11 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 % "reflection" built-in predicates
 
-'$lgt_tr_body'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, _), _, Ctx) :-
+'$lgt_tr_body'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, _), '$lgt_dbg_goal'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, _), Ctx), Ctx) :-
 	!,
 	'$lgt_this'(Ctx, This).
 
-'$lgt_tr_body'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, _), _, Ctx) :-
+'$lgt_tr_body'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, _), '$lgt_dbg_goal'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, _), Ctx), Ctx) :-
 	!,
 	'$lgt_this'(Ctx, This).
 
