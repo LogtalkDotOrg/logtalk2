@@ -29,9 +29,13 @@ read-only in order to avoid user tempering. However, the library and examples
 sub-directories (and possibly the compiler sub-directory, depending on the 
 chosen Prolog compiler) must be user writable as compiling Logtalk source 
 files generates intermediate Prolog files, which are written to the same 
-location as the source files. In alternative, the library and example files 
-may be pre-compiled and the "smart_compilation" compiler option turned on to 
-avoid the need of recompilation when the files are loaded by the users.
+location as the source files. However, making directories world-writable is a 
+security risk. There are two alternatives. The first one is to pre-compile the 
+library and all examples and to turn on the compiler option "smart_compilation" 
+in order to avoid the need of recompilation when the files are loaded by the 
+users. The second alternative is to copy the Logtalk examples and library 
+directories to each user directory (browse the "misc" sub-directory for help 
+scripts).
 
 
 ENVIRONMENT VARIABLES
