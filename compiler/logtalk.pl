@@ -3523,7 +3523,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	!,
 	'$lgt_tr_body'(Pred, TPred, DPred, Ctx).
 
-'$lgt_tr_body'(!, !, '$lgt_dbg_goal'(!, !, Ctx), Ctx) :-
+'$lgt_tr_body'(!, !, ('$lgt_dbg_goal'(!, true, Ctx), !), Ctx) :-
 	!.
 
 '$lgt_tr_body'(true, true, '$lgt_dbg_goal'(true, true, Ctx), Ctx) :-
