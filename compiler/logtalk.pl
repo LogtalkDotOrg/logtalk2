@@ -1874,10 +1874,19 @@ lgt_load_entity(Entity) :-
 % lgt_report_redefined_entity(+atom)
 %
 % prints a warning if an entity of the same name is already loaded
-% does not work for parametric objects...
 
 lgt_report_redefined_entity(Entity) :-
 	lgt_current_object_(Entity, _, _, _, _),
+	!,
+	write('WARNING!  redefining '), write(Entity), write(' object'), nl.
+
+lgt_report_redefined_entity(Entity) :-		% parametric objects
+	atom_codes(Entity, Codes),
+	lgt_append(Codes1, Codes2, Codes),
+	catch(number_codes(Arity, Codes2), _, fail),
+	atom_codes(Functor, Codes1),
+	functor(Loaded, Functor, Arity),
+	lgt_current_object_(Loaded, _, _, _, _),
 	!,
 	write('WARNING!  redefining '), write(Entity), write(' object'), nl.
 
