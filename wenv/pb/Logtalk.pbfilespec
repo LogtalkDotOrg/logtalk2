@@ -3,8 +3,8 @@
 */
 (
 {
-  Identifier = text.script.lgt;
-  BasedOn = text.script;
+  Identifier = sourcecode.lgt;
+  BasedOn = sourcecode;
   Extensions = (lgt);
   MIMETypes = ("text/x-logtalk");
   ComputerLanguage = logtalk;

@@ -36,14 +36,20 @@
 			":- private"
 		);
 		AltKeywords = (
-			"mode",
-			"info",
-			"calls",
-			"uses",
 			"initialization",
-			"dynamic",					
+			"info",
+			"mode",
+			"dynamic",
+			"discontiguous",
+			"public",
+			"protected",
+			"private",
+			"metapredicate",
+			"op",
+			"calls",
+			"uses",					
 		);
-		PreprocessorKeywordStart = ":-";
+		PreprocessorKeywordStart = "";
 		PreprocessorKeywords = (
 			"public",
 			"protected",
