@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.21.1
+%  Release 2.21.2
 %
 %  Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 %
@@ -1133,7 +1133,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 21, 1)).
+current_logtalk_flag(version, version(2, 21, 2)).
 
 
 
@@ -1737,6 +1737,30 @@ current_logtalk_flag(version, version(2, 21, 1)).
 	nonvar(Rest),
 	\+ '$lgt_proper_list'(Rest),
 	throw(error(type_error(list, Rest), Obj::phrase(Ruleset, Input, Rest), Sender)).
+
+'$lgt_phrase'(Obj, (Ruleset1, Ruleset2), Input, Rest, Sender, Scope) :-
+	!,
+	'$lgt_phrase'(Obj, Ruleset1, Input, Rest1, Sender, Scope),
+	'$lgt_phrase'(Obj, Ruleset2, Rest1, Rest, Sender, Scope).
+
+'$lgt_phrase'(Obj, (Ruleset1; Ruleset2), Input, Rest, Sender, Scope) :-
+	!,
+	('$lgt_phrase'(Obj, Ruleset1, Input, Rest, Sender, Scope)
+	 ;
+	 '$lgt_phrase'(Obj, Ruleset2, Input, Rest, Sender, Scope)).
+
+'$lgt_phrase'(Obj, (Ruleset1 -> Ruleset2), Input, Rest, Sender, Scope) :-
+	!,
+	'$lgt_phrase'(Obj, Ruleset1, Input, Rest1, Sender, Scope),
+	'$lgt_phrase'(Obj, Ruleset2, Rest1, Rest, Sender, Scope).
+
+'$lgt_phrase'(_, !, Input, Rest, _, _) :-
+	!,
+	Input = Rest.
+
+'$lgt_phrase'(Obj, \+ Ruleset, Input, Rest, Sender, Scope) :-
+	!,
+	\+ '$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, Scope).
 
 '$lgt_phrase'(_, [], Input, Rest, _, _) :-
 	!,
