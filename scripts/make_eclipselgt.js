@@ -47,7 +47,8 @@ f.Close();
 
 WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\lgtceclipse.pl", true);
 
-var lgthome_eclipse =logtalk_home.replace(/\\\\/g, "/");
+var lgthome_eclipse = logtalk_home.replace(/\\\\/g, "/");
+lgthome_eclipse = logtalk_home.replace(/C:/, "");
 
 f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkeclipse.pl", true);
 
