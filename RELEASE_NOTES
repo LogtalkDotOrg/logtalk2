@@ -35,7 +35,9 @@ RELEASE NOTES
 	New "puzzles" and "metainterpreters" examples.
 
 	Added a mode bundle for the SubEthaEdit 2.x (MacOS X) text editor providing 
-	syntax coloring for editing Logtalk source files.
+	syntax coloring for editing Logtalk source files. Optimized some of the 
+	regular expressions in the syntax coloring files for the Kate/Kwrite and Vim 
+	text editors.
 
 	Removed predicate nth/3 from library entities listp, list, and difflist. 
 	Replaced by the predicates nth0/3 and nth1/3. Added new predicates nth1/4 

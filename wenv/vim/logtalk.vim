@@ -167,8 +167,7 @@ syn match	logtalkKeyword		"\<integer\ze("
 syn match	logtalkKeyword		"\<float\ze("
 syn match	logtalkKeyword		"\<atomic\ze("
 syn match	logtalkKeyword		"\<compound\ze("
-syn match	logtalkKeyword		"\<nonvar\ze("
-syn match	logtalkKeyword		"\<number\ze("
+syn match	logtalkKeyword		"\<n\(onvar\|umber\)\ze("
 
 
 " Term comparison
