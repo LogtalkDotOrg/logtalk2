@@ -89,7 +89,7 @@ yes
 
 % test assertz/1 and retract/1 performance in plain Prolog:
 
-| ?- benchmark(test_plain).
+| ?- benchmark(db_test_plain).
 Number of repetitions: 100000
 Loop time: 0.0599999999999454 seconds
 Goal time: 81.25 seconds
