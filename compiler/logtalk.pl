@@ -1861,7 +1861,10 @@ lgt_load_entity(Entity) :-
 		;
 		true),
 	lgt_compile_entity(Entity),
-	lgt_entity_(Type, _, _, _),
+	(lgt_entity_(Type, _, _, _) ->
+		true
+		;
+		Type = entity),
 	(lgt_current_entity(Entity) ->
 		write('WARNING!  redefining '), write(Entity), write(' '),
 		writeq(Type), nl
