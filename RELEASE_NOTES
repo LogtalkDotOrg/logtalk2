@@ -32,7 +32,8 @@ RELEASE NOTES
 	library.
 
 	Added experimental implementations for some Prolog compilers of the library 
-	protocol for operating system access (systemp.lgt).
+	portable protocol for operating system access (systemp.lgt). See the file 
+	library/experimental/NOTES for details.
 
 
 2.17.0 - April 26, 2004

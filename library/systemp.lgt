@@ -76,7 +76,7 @@
 	:- public(file_modtime/7).
 	:- mode(file_modtime(+atom, -integer, -integer, -integer, -integer, -integer, -integer), zero_or_one).
 	:- info(file_modtime/7, [
-		comment is 'File modification time.',
+		comment is 'File modification time using calendar local date and time.',
 		argnames is ['File', 'Year', 'Month', 'Day', 'Hours', 'Mins', 'Secs']]).
 
 	:- public(file_size/2).
@@ -88,7 +88,7 @@
 	:- public(file_type/2).
 	:- mode(file_type(+atom, ?atom), zero_or_one).
 	:- info(file_type/2, [
-		comment is 'File type (regular, directory, symlink, fifo, socket, unknown).',
+		comment is 'File type (regular, directory, symlink, fifo, socket, and unknown).',
 		argnames is ['File', 'Type']]).
 
 	:- public(file_permission/2).
@@ -109,6 +109,12 @@
 		comment is 'Renames a file. Fails if the file does not exist or cannot be renamed.',
 		argnames is ['Old', 'New']]).
 
+	:- public(copy_file/2).
+	:- mode(copy_file(+atom, +atom), zero_or_one).
+	:- info(copy_file/2, [
+		comment is 'Makes a copy of a file.',
+		argnames is ['Original', 'Copy']]).
+
 	:- public(symbolic_link/2).
 	:- mode(symbolic_link(+atom, ?atom), zero_or_one).
 	:- info(symbolic_link/2, [
@@ -118,13 +124,13 @@
 	:- public(getenv/2).
 	:- mode(getenv(+atom, ?atom), zero_or_one).
 	:- info(getenv/2, [
-		comment is 'Get environment variable value.',
+		comment is 'Gets environment variable value.',
 		argnames is ['Variable', 'Value']]).
 
 	:- public(setenv/2).
 	:- mode(setenv(+atom, +atom), zero_or_one).
 	:- info(setenv/2, [
-		comment is 'Set environment variable value.',
+		comment is 'Sets environment variable value.',
 		argnames is ['Variable', 'Value']]).
 
 	:- public(date_time/6).
@@ -136,7 +142,7 @@
 	:- public(convert_time/7).
 	:- mode(convert_time(+number, ?integer, ?integer, ?integer, ?integer, ?integer), zero_or_one).
 	:- info(convert_time/7, [
-		comment is 'Converts system dependent timestamp to calendar date and time.',
+		comment is 'Converts system dependent timestamp to calendar local date and time.',
 		argnames is ['Time', 'Year', 'Month', 'Day', 'Hours', 'Mins', 'Secs']]).
 
 	:- public(cpu_time/1).
