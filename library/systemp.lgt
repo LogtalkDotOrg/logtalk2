@@ -128,7 +128,7 @@
 
 	:- public(cpu_time/1).
 
-	:- mode(cpu_time(-number) zero_or_one).
+	:- mode(cpu_time(-number), zero_or_one).
 
 	:- info(cpu_time/1, [
 		comment is 'System cpu time in seconds.',
