@@ -42,13 +42,15 @@ logtalk.syn
 	syntax file for TextPad 4.5 (http://www.textpad.com)
 
 	To install, copy this file to the SAMPLES subdirectory in the TextPad 
-	application directory.
+	application directory and define a new document class for Logtalk source 
+	files.
 
 
 logtalk.pats
 
 	syntax highlighting patterns file for NEdit 5.2 (http://www.nedit.org)
 
-	To install, follow the instructions available at:
+	To install, follow the instructions included in the file itself or take 
+	a look at:
 	
 		http://www.nedit.org/download/patterns.shtml
