@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.20.3
+Release 2.21.0
 
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -10,7 +10,17 @@ RELEASE NOTES
 =============
 
 
-2.20.3 - September ??, 2004
+2.21.0 - September ??, 2004
+
+	Added new predicate directive, alias/3, which allows the definition of 
+	predicate alias in order to solve conflicts between implemented, imported, 
+	or inherited predicates.
+
+	Allow categories to import other categories, i.e. allow categories to be 
+	defined as a composition of other categories. This feature should only be 
+	used when extending a category without breaking its functional cohesion and 
+	when a modified version of a category is needed for importing on several 
+	unrelated objects. 
 
 	Added autocomplete strings for Logtalk methods and for Logtalk and Prolog 
 	built-in predicates to the SubEthaEdit 2.x MacOS X text editor.
