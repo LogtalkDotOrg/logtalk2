@@ -3,7 +3,6 @@
 SET JAVA_HOME=c:\jdk1.3
 
 SET XT_PATH=c:\xt
-SET SAX_PATH=c:\xt
 SET XP_PATH=c:\xt
 
 SET XSLT=lgthtml.xsl
@@ -24,7 +23,7 @@ ECHO converting XML files to HTML...
 
 FOR /f "tokens=1-2 delims=." %%f IN ('DIR /b *.xml') DO IF EXIST %%f.html DEL %%f.html
 
-FOR /f "tokens=1-2 delims=." %%f IN ('DIR /b *.xml') DO %JAVA_HOME%\bin\java -cp "%XT_PATH%\xt.jar;%SAX_PATH%\sax.jar;%XP_PATH%\xp.jar" -Dcom.jclark.xsl.sax.parser=com.jclark.xml.sax.CommentDriver com.jclark.xsl.sax.Driver %%f.xml %XSLT% %%f.html
+FOR /f "tokens=1-2 delims=." %%f IN ('DIR /b *.xml') DO %JAVA_HOME%\bin\java -cp "%XT_PATH%\xt.jar;%XP_PATH%\xp.jar" -Dcom.jclark.xsl.sax.parser=com.jclark.xml.sax.CommentDriver com.jclark.xsl.sax.Driver %%f.xml %XSLT% %%f.html
 
 ECHO conversion done
 ECHO.

@@ -1,10 +1,8 @@
 #!/bin/sh
 
 XT_PATH="/Applications/XML/XT"
-SAX_PATH="/Applications/XML/XT"
 XP_PATH="/Applications/XML/XP"
 # XT_PATH="/usr/local/XT"
-# SAX_PATH="/usr/local/XT"
 # XP_PATH="/usr/local/XP"
 
 XSLT="lgthtml.xsl"
@@ -30,7 +28,7 @@ echo converting XML files to HTML...
 for file in *.xml; do
 	echo "  converting" $file
 	name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
-	eval java -cp ${XT_PATH}/xt.jar:${SAX_PATH}/sax.jar:${XP_PATH}/xp.jar -Dcom.jclark.xsl.sax.parser=com.jclark.xml.sax.CommentDriver com.jclark.xsl.sax.Driver $file $XSLT $name.html
+	eval java -cp ${XT_PATH}/xt.jar:${XP_PATH}/xp.jar -Dcom.jclark.xsl.sax.parser=com.jclark.xml.sax.CommentDriver com.jclark.xsl.sax.Driver $file $XSLT $name.html
 done
 
 echo conversion done
