@@ -28,7 +28,7 @@ RELEASE NOTES
 	defined as a composition of other categories. This feature should only be 
 	used when extending a category without breaking its functional cohesion 
 	(for example, when a modified version of a category is needed for importing 
-	into several unrelated objects. 
+	into several unrelated objects). 
 
 	Added new example, "engines", illustrating importing a category from another 
 	category.
