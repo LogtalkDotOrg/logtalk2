@@ -449,13 +449,13 @@ The predicate <a title="Consult reference manual" href="../refman/methods/phrase
     yes
 </pre>
 <p>
-In most cases, the predicates resulting from the translation of the grammar rules to regular clauses are not declared. Instead, these predicates are usually called by using the built-in methods <code>phrase/2</code> and <code>phrase/3</code> as shown in the example above. Nevertheless, in case we want to call grammar rules the same way we call any other predicate, the corresponding predicate arity will be the arity of the rule head plus two. For the above example, assuming that we want the predicate corresponding to the <code>expr/1</code> rule to be public, the declaration would be:
+In most cases, the predicates resulting from the translation of the grammar rules to regular clauses are not declared. Instead, these predicates are usually called by using the built-in methods <code>phrase/2</code> and <code>phrase/3</code> as shown in the example above. When we want to send the messages <code>phrase/2</code> and <code>phrase/3</code> to <em>self</em> or to another object, the non-terminal used as first argument must be within the scope of the <em>sender</em>. For the above example, assuming that we want the predicate corresponding to the <code>expr/1</code> non-terminal to be public, the corresponding scope directive would be:
 </p>
 <pre>
     :- public(expr//1). 
 </pre>
 <p>
-The <code>//</code> infix operator used above tells the Logtalk compiler that the scope directive refers to a non-terminal of a grammar rule, not to a predicate. The idea is that the predicate corresponding to the translation of the <code>expr/1</code> non-terminal will have a number of arguments equal to one plus the number of additional arguments necessary for processing the subjacent lists of tokens.
+The <code>//</code> infix operator used above tells the Logtalk compiler that the scope directive refers to a grammar rule non-terminal, not to a predicate. The idea is that the predicate corresponding to the translation of the <code>expr/1</code> non-terminal will have a number of arguments equal to one plus the number of additional arguments necessary for processing the subjacent lists of tokens.
 </p>
 <p>
 In the body of a grammar rule, we can call rules that are inherited from ancestor objects, imported from categories, or contained in other objects. This is accomplished by using non-terminals as messages. Using a non-terminal as a message to self allows us to call grammar rules in categories and ancestor objects. To call grammar rules encapsulated in other objects, we use a non-terminal as a message to those objects. Consider the following example, containing grammar rules for parsing natural language sentences:
