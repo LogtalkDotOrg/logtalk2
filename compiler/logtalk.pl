@@ -51,7 +51,6 @@
 :- dynamic('$lgt_after_'/5).				% '$lgt_after_'(Obj, Msg, Sender, Monitor, Call)
 
 
-
 % tables of loaded entities and respective relationships
 
 :- dynamic('$lgt_current_protocol_'/3).		% '$lgt_current_protocol_'(Ptc, Prefix, Type)
@@ -66,7 +65,6 @@
 :- dynamic('$lgt_extends_object_'/3).		% '$lgt_extends_object_'(Prototype, Parent, Scope)
 
 
-
 % debugger status and tables
 
 :- dynamic('$lgt_debugging_'/1).			% '$lgt_debugging_'(Entity)
@@ -79,11 +77,9 @@
 :- dynamic('$lgt_dbg_leashing_'/1).			% '$lgt_dbg_leashing_'(Port)
 
 
-
 % runtime flags
 
 :- dynamic('$lgt_current_flag_'/2).			% '$lgt_current_flag_'(Option, Value)
-
 
 
 % lookup caches for messages to an object, messages to self, and super calls
@@ -91,7 +87,6 @@
 :- dynamic('$lgt_obj_lookup_cache_'/4).		% '$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Call)
 :- dynamic('$lgt_self_lookup_cache_'/4).	% '$lgt_self_lookup_cache_'(Obj, Pred, Sender, Call)
 :- dynamic('$lgt_super_lookup_cache_'/5).	% '$lgt_super_lookup_cache_'(Self, Pred, This, Sender, Call)
-
 
 
 % table of library paths
@@ -483,6 +478,7 @@ abolish_category(Ctg) :-
 			abolish(Def/5),
 			abolish(Prefix/2),
 			retractall('$lgt_current_category_'(Ctg, _, _)),
+			retractall('$lgt_imports_category_'(Ctg, _, _)),
 			retractall('$lgt_implements_protocol_'(Ctg, _, _)),
 			'$lgt_clean_lookup_caches'
 			;

@@ -26,6 +26,10 @@ RELEASE NOTES
 	Corrected a compiler bug in the code that checks and prints a warning 
 	when redefined parametric objects.
 
+	Corrected a bug in the built-in predicate abolish_category/1, which 
+	failed to delete import relation clauses between the category being 
+	abolished and other categories.
+
 
 2.22.3 - December 30, 2004
 
