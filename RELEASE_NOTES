@@ -27,15 +27,16 @@ RELEASE NOTES
 	Simplified implementation of Logtalk built-in methods asserta/1 and 
 	assertz/1.
 
+	Corrected a performance problem with calls to built-in predicates from 
+	objects and categories.
+
 	Updated shell script "misc/cplgtdirs.sh" to prevent copy of Logtalk files 
 	when the destination directory already exists (thus avoiding overriding 
 	user-modified files when upgrading Logtalk).
 
-	Updated the syntax coloring file for the TextMate text editor, adding 
-	some missing ISO Prolog predicates.
-
 	Added syntax coloring for the predicate logtalk_library_path/2 to the 
-	supported text editors.
+	supported text editors. Updated the syntax coloring file for the TextMate 
+	text editor, adding some missing ISO Prolog predicates.
 
 
 2.22.4 - January 12, 2005
