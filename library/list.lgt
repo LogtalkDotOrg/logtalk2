@@ -5,9 +5,9 @@
 
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2003/4/25,
+		date is 2004/5/9,
 		comment is 'List predicates.']).
 
 
@@ -150,6 +150,12 @@
 
 
 	new([]).
+
+
+	nextto(X, Y, [X, Y| _]).
+
+	nextto(X, Y, [_| Tail]) :-
+		nextto(X, Y, Tail).
 
 
 	nth(Nth, List, Element) :-

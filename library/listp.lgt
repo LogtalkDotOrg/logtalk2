@@ -3,9 +3,9 @@
 
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2003/4/17,
+		date is 2004/5/9,
 		comment is 'List protocol.']).
 
 
@@ -115,6 +115,15 @@
 	:- info(min/2,
 		[comment is 'Determines the minimum value in a list using standard order. Fails if the list is empty.',
 		 argnames is ['List', 'Minimum']]).
+
+
+	:- public(nextto/3).
+
+	:- mode(nextto(?term, ?term, ?list), zero_or_more).
+
+	:- info(nextto/3, [
+		comment is 'X and Y are consecutive elements in List.',
+		argnames is ['X', 'Y', 'List']]).
 
 
 	:- public(nth/3).
