@@ -179,7 +179,7 @@ Obj::Pred :-
 Obj::Pred :-
 	'$lgt_context'(Ctx, user, user, Obj, _, []),
 	'$lgt_tr_msg'(Pred, Obj, Call, Ctx),
-	(('$lgt_debugging_'(Obj), '$lgt_dbg_debugging_') ->
+	(('$lgt_dbg_debugging_', '$lgt_debugging_'(Obj)) ->
 		catch(
 			'$lgt_dbg_goal'(Obj::Pred, Call, Ctx),
 			Error,
@@ -1929,8 +1929,11 @@ current_logtalk_flag(version, version(2, 18, 0)).
 			;
 			'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 			'$lgt_context'(Ctx, Sender, Obj, Obj, Prefix, _),
-			'$lgt_tr_body'(Pred, Call, _, Ctx),
-			call(Call)).
+			'$lgt_tr_body'(Pred, Call, DCall, Ctx),
+			(('$lgt_dbg_debugging_', '$lgt_debugging_'(Obj)) ->
+				call(DCall)
+				;
+				call(Call))).
 
 
 
