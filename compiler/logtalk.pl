@@ -169,8 +169,11 @@ Obj::Pred :-
 	(('$lgt_debugging_'(Obj), '$lgt_dbg_debugging_') ->
 		catch(
 			'$lgt_dbg_goal'(Obj::Pred, Call, Ctx),
-			error(logtalk_debugger_aborted),
-			(write('Debugging session aborted by user. Debugger still on.'), nl, fail))
+			Error,
+			(Error = error(logtalk_debugger_aborted) ->
+				write('Debugging session aborted by user. Debugger still on.'), nl, fail
+				;
+				throw(Error)))
 		;
 		call(Call)).
 
@@ -2190,6 +2193,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_leashing_'(exit).
 '$lgt_dbg_leashing_'(redo).
 '$lgt_dbg_leashing_'(fail).
+'$lgt_dbg_leashing_'(exception).
 
 
 '$lgt_dbg_valid_leash_value'(Shorthand, Ports) :-
@@ -2216,13 +2220,14 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_valid_leash_port'(exit).
 '$lgt_dbg_valid_leash_port'(redo).
 '$lgt_dbg_valid_leash_port'(fail).
+'$lgt_dbg_valid_leash_port'(exception).
 
 
 '$lgt_dbg_leash_shortand_ports'(none, []).
 '$lgt_dbg_leash_shortand_ports'(loose, [fact, rule, call]).
 '$lgt_dbg_leash_shortand_ports'(half, [fact, rule, call, redo]).
-'$lgt_dbg_leash_shortand_ports'(tight, [fact, rule, call, redo, fail]).
-'$lgt_dbg_leash_shortand_ports'(full, [fact, rule, call, exit, redo, fail]).
+'$lgt_dbg_leash_shortand_ports'(tight, [fact, rule, call, redo, fail, exception]).
+'$lgt_dbg_leash_shortand_ports'(full, [fact, rule, call, exit, redo, fail, exception]).
 
 
 '$lgt_dbg_leashing'(Port, Goal, Ctx, Code) :-
@@ -2276,7 +2281,11 @@ current_logtalk_flag(version, version(2, 17, 0)).
 			;
 			CAction2 = CAction),
 		call(CAction2),
-		call(TGoal),
+		catch(
+			call(TGoal),
+			Error,
+			('$lgt_dbg_port'(exception, Goal, Ctx, ErAction),
+			 (ErAction = fail -> fail; throw(Error)))),
 		(	'$lgt_dbg_port'(exit, Goal, Ctx, EAction),
 			call(EAction)
 			;
@@ -2329,6 +2338,8 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	write('   Redo: ').
 '$lgt_dbg_write_port_name'(fail) :-
 	write('   Fail: ').
+'$lgt_dbg_write_port_name'(exception) :-
+	write('   Exception: ').
 
 
 '$lgt_dbg_valid_port_option'(' ', _, _).
