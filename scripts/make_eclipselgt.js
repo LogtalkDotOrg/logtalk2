@@ -43,13 +43,13 @@ var f = fso.CreateTextFile(logtalk_home + "\\bin\\lgtceclipse.pl", true);
 
 f.WriteLine(":- pragma(system).");
 f.WriteLine(":- pragma(nodebug).");
-f.WriteLine(":- ensure_loaded(library(toplevel)).");
 f.Close();
 
 WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\lgtceclipse.pl", true);
 
 f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkeclipse.pl", true);
 
+f.WriteLine(":- ensure_loaded(library(toplevel)).");
 f.WriteLine(":- consult('" + logtalk_home + "\\\\configs\\\\eclipseiso.config').");
 f.WriteLine(":- consult('" + logtalk_home + "\\\\bin\\\\lgtceclipse.pl').");
 f.Close();
