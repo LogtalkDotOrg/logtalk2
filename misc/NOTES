@@ -43,6 +43,7 @@ The following scripts must be run by a user with administration privileges:
 
 make_ciaolgt.sh
 	makes a shell script named ciaolgt for running Logtalk with CIAO Prolog
+	(the first run of the ciaolgt script must be made as root or using sudo)
 
 make_eclipselgt.sh
 	makes a shell script named eclipselgt for running Logtalk with ECLiPSe
