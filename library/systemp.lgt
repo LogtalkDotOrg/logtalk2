@@ -172,31 +172,34 @@
 		comment is 'Converts between relative, absolute, and full canonical paths.',
 		argnames is ['Relative', 'Absolute', 'Full'],
 		exceptions is [
-			instantiation_error,
-			type_error(relative_path, 'Relative'),
-			type_error(absolute_path, 'Absolute'),
-			type_error(full_path, 'Full')]]).
+			'None of the arguments is instantiated' - instantiation_error,
+			'Relative is neither a variable nor a relative path' - type_error(relative_path, 'Relative'),
+			'Absolute is neither a variable nor a absolute path' - type_error(absolute_path, 'Absolute'),
+			'Full is neither a variable nor a full path' - type_error(full_path, 'Full')]]).
 
 	:- public(relative_path/1).
 	:- mode(relative_path(+atom), zero_or_one).
 	:- info(relative_path/1, [
 		comment is 'True when the argument is a valid, relative canonical path.',
 		argnames is ['Path'],
-		exceptions is [type_error(path, 'Path')]]).
+		exceptions is [
+			'Path is not a valid path' - type_error(path, 'Path')]]).
 
 	:- public(absolute_path/1).
 	:- mode(absolute_path(+atom), zero_or_one).
 	:- info(absolute_path/1, [
 		comment is 'True when the argument is a valid, absolute canonical path.',
 		argnames is ['Path'],
-		exceptions is [type_error(path, 'Path')]]).
+		exceptions is [
+			'Path is not a valid path' - type_error(path, 'Path')]]).
 
 	:- public(full_path/1).
 	:- mode(full_path(+atom), zero_or_one).
 	:- info(full_path/1, [
 		comment is 'True when the argument is a valid, full canonical path.',
 		argnames is ['Path'],
-		exceptions is [type_error(path, 'Path')]]).
+		exceptions is [
+			'Path is not a valid path' - type_error(path, 'Path')]]).
 
 	:- public(file_name_parts/9).
 	:- mode(file_name_parts(+atom, -atom, -atom, -atom, -atom, -atom, -atom, -atom, -atom), zero_or_one).
