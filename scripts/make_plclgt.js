@@ -17,7 +17,17 @@ WScript.Echo('');
 
 var WshShell = new ActiveXObject("WScript.Shell");
 
-var prolog_path = "%PLC%\\plc.exe";
+var prolog_path;
+
+if (WshSystemEnv.Item("PLC"))
+	prolog_path = WshSystemEnv.Item("PLC") + "\\plc.exe";
+else if (WshUserEnv.Item("PLC"))
+	prolog_path = WshUserEnv.Item("PLC") + "\\plc.exe"
+else {
+	WScript.Echo("Error! The K-Prolog environment variable PLC must be defined first!");
+	usage_help();
+	WScript.Quit(1);
+}
 
 var FSObject = new ActiveXObject("Scripting.FileSystemObject");
 
