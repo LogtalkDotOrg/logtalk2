@@ -87,7 +87,7 @@
 	case(61, ('[' --> b, c)).
 	case(62, ('=' --> b, c)).
 
-	% ??? tests
+	% more tests
 	case(71, (p --> true, c)).
 	case(72, (p --> fail, c)).
 	case(73, (p(X) --> call(X), c)).
