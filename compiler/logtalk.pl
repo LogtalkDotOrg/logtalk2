@@ -2436,7 +2436,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	write('        e - exit (terminates Logtalk execution)'), nl,
 	write('        d - display (writes current goal without using operator notation)'), nl,
 	write('        x - context (prints execution context)'), nl,
-	write('        = - debugging (prints debugging information'), nl,
+	write('        = - debugging (prints debugging information)'), nl,
 	write('        * - add (adds a context spy point for current goal)'), nl,
 	write('        + - add (adds a predicate spy point for current goal)'), nl,
 	write('        - - remove (removes a predicate spy point for current goal)'), nl,
