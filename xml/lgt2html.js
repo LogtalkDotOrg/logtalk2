@@ -32,7 +32,7 @@ var processor = "xsltproc";
 // var processor = "xalan";
 // var processor = "sabcmd";
 
-if (WScript.Arguments.Unnamed.Exists("help"))
+if (WScript.Arguments.Unnamed.Length > 0)
 	usage_help();
 
 if (WScript.Arguments.Named.Exists("f"))

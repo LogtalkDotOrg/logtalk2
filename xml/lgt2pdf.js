@@ -28,7 +28,7 @@ var directory = WshShell.CurrentDirectory;
 var processor = "fop";
 // var processor = "xep";
 
-if (WScript.Arguments.Unnamed.Exists("help"))
+if (WScript.Arguments.Unnamed.Length > 0)
 	usage_help();
 
 if (WScript.Arguments.Named.Exists("f"))
