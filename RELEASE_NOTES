@@ -14,7 +14,9 @@ RELEASE NOTES
 
 	Added experimental support for a new built-in method, expand_term/2, which 
 	allows access to the Logtalk grammar rule translator. Corrected bug in the 
-	expansion of \+/1 in grammar rule bodies.
+	expansion of \+/1 in grammar rule bodies. Optimized code generated for message 
+	sending calls in the body of grammar rules. Corrected mode of input token list 
+	argument of the built-in methods phrase/2 and phrase/3. 
 
 	Corrected a bug in the implementation of the built-in method clause/2 which 
 	prevented access to clauses of local dynamic predicates.
