@@ -20,13 +20,14 @@ RELEASE NOTES
 
 	New config file for ECLiPSe 5.4.
 
-	Renamed config files for CIAO 1.7 to "ciao_aux18.config" and 
-	"ciao18.config".
+	Renamed config files for CIAO 1.7 (beta of 1.8) to "ciao_aux18.config" 
+	and "ciao18.config".
 
 	New example of using the built-in database handling methods (dynpred).
 
-	Syntax coloring configuration files for the jEdit 4.0 and VIM 6.1 text 
-	editors providing syntax highlighting for editing Logtalk source files.
+	Syntax coloring configuration files for the jEdit 4.0, VIM 6.1, and 
+	TextPad 4.5 text editors providing syntax highlighting for editing 
+	Logtalk source files.
 
 
 2.11.0 - April 22, 2002
