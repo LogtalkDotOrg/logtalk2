@@ -93,7 +93,7 @@ function usage_help() {
 	WScript.Echo("This script converts all Logtalk XML documenting files in the");
 	WScript.Echo("current directory to PDF files");
 	WScript.Echo("");
-	WScript.Echo("Usage: " + WScript.Name + "[help] [/f:format] [/o:directory] [/p:processor]");
+	WScript.Echo("Usage: lgt2pdf.js [help] [/f:format] [/o:directory] [/p:processor]");
 	WScript.Echo("");
 	WScript.Echo("Optional arguments:");
 	WScript.Echo("  f - paper format (either a4 or us; default is " + format + ")");
