@@ -1,0 +1,335 @@
+
+<xsl:stylesheet
+	version="1.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:fo="http://www.w3.org/1999/XSL/Format">
+
+
+<!-- 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  Logtalk - Object oriented extension to Prolog
+%  Release 2.9.3
+%
+%  Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+-->
+
+
+<xsl:output indent="yes"/>
+
+
+<xsl:template match ="/">
+
+	<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+
+		<fo:layout-master-set>
+			<fo:simple-page-master
+					master-name="simple"
+					page-height="29.7cm" 
+					page-width="21cm"
+					margin-top="1.5cm" 
+					margin-bottom="1.5cm" 
+					margin-left="2.5cm" 
+					margin-right="2.5cm">
+				<fo:region-body margin-top="1.5cm"/>
+				<fo:region-before extent="1.5cm"/>
+				<fo:region-after extent="1.5cm"/>
+			</fo:simple-page-master>
+		</fo:layout-master-set>
+
+		<fo:page-sequence master-name="simple">
+		
+			<fo:static-content flow-name="xsl-region-before">
+				<fo:block
+						text-align="end" 
+						font-size="10pt" 
+						font-family="serif" 
+						line-height="14pt" >
+					<xsl:value-of select="logtalk/entity/type" />: <xsl:value-of select="logtalk/entity/name" />
+				</fo:block>
+			</fo:static-content> 
+
+			<fo:static-content flow-name="xsl-region-after">
+				<fo:block>
+					<fo:leader leader-pattern="rule" leader-length="inherit" />
+				</fo:block>
+				<fo:block
+						text-align="end" 
+						font-size="10pt" 
+						font-family="serif" 
+						line-height="14pt" >
+					<fo:page-number/>
+				</fo:block>
+			</fo:static-content> 
+	
+			<fo:flow flow-name="xsl-region-body">
+    	   		<fo:block
+    	   				font-size="24pt" 
+    	        	    font-family="sans-serif" 
+    	        	    font-weight="bold" 
+    	        	    line-height="28pt"
+    	        	    space-after.optimum="15pt"
+    	        	    text-align="left">
+    	    		<xsl:value-of select="logtalk/entity/name" />
+    	    	</fo:block>
+ 				<xsl:apply-templates select="logtalk/entity" />
+				<xsl:apply-templates select="logtalk/relations" />
+				<xsl:apply-templates select="logtalk/predicates" />
+			</fo:flow>
+
+		</fo:page-sequence>
+
+	</fo:root>
+
+</xsl:template>
+
+
+<xsl:template match="logtalk/entity">
+
+	<xsl:if test="comment">
+		<fo:block
+				margin-left="2cm"
+				font-size="12pt" 
+				font-family="sans-serif" 
+				font-style="italic" 
+				line-height="16pt"
+				space-after.optimum="15pt"
+				text-align="left">
+			<xsl:value-of select="comment" />
+		</fo:block>
+	</xsl:if>
+
+	<xsl:if test="authors">
+		<fo:block
+				font-size="12pt" 
+				font-family="sans-serif" 
+				line-height="16pt"
+				space-after.optimum="15pt"
+				text-align="left">
+			authors: <xsl:value-of select="authors" />
+		</fo:block>
+	</xsl:if>
+
+	<xsl:if test="version">
+		<fo:block
+				font-size="12pt" 
+				font-family="sans-serif" 
+				line-height="16pt"
+				space-after.optimum="15pt"
+				text-align="left">
+			version: <xsl:value-of select="version" />
+		</fo:block>
+	</xsl:if>
+
+	<xsl:if test="date">
+		<fo:block
+				font-size="12pt" 
+				font-family="sans-serif" 
+				line-height="16pt"
+				space-after.optimum="15pt"
+				text-align="left">
+			date: <xsl:value-of select="date" />
+		</fo:block>
+	</xsl:if>
+
+	<fo:block
+			font-size="12pt" 
+			font-family="sans-serif" 
+			line-height="16pt"
+			space-after.optimum="15pt"
+			text-align="left">
+		compilation: <xsl:value-of select="compilation" />
+	</fo:block>
+
+	<fo:list-block>
+		<xsl:for-each select="info">
+			<fo:list-item>
+     			<fo:list-item-label>
+       				<fo:block></fo:block>
+    			</fo:list-item-label>
+				<fo:list-item-body>
+     				<fo:block><xsl:value-of select="key" />:</fo:block>
+					<fo:block><xsl:value-of select="value" /></fo:block>
+				</fo:list-item-body>
+			</fo:list-item>
+		</xsl:for-each>
+	</fo:list-block>
+
+</xsl:template>
+
+
+<xsl:template match="logtalk/relations">
+	<xsl:choose>
+		<xsl:when test="*">
+			<xsl:if test="implements">
+				<fo:block>implements:</fo:block>
+				<xsl:apply-templates select="implements" />
+			</xsl:if>
+			<xsl:if test="imports">
+				<fo:block>imports:</fo:block>
+				<xsl:apply-templates select="imports" />
+			</xsl:if>
+			<xsl:if test="extends">
+				<fo:block>extends:</fo:block>
+				<xsl:apply-templates select="extends" />
+			</xsl:if>
+			<xsl:if test="instantiates">
+				<fo:block>instantiates:</fo:block>
+				<xsl:apply-templates select="instantiates" />
+			</xsl:if>
+			<xsl:if test="specializes">
+				<fo:block>specializes:</fo:block>
+				<xsl:apply-templates select="specializes" />
+			</xsl:if>
+			<xsl:if test="uses">
+				<fo:block>uses:</fo:block>
+				<xsl:apply-templates select="uses" />
+			</xsl:if>
+			<xsl:if test="calls">
+				<fo:block>calls:</fo:block>
+				<xsl:apply-templates select="calls" />
+			</xsl:if>
+		</xsl:when>
+		<xsl:otherwise>	
+			<fo:block>(no dependencies on other files)</fo:block>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
+
+<xsl:template match="logtalk/relations/uses">
+	<fo:block><xsl:value-of select="name" /></fo:block>
+</xsl:template>
+
+
+<xsl:template match="logtalk/relations/calls">
+	<fo:block><xsl:value-of select="name" /></fo:block>
+</xsl:template>
+
+
+<xsl:template match="logtalk/relations/*">
+	<fo:block><xsl:value-of select="scope" /> <xsl:value-of select="name" /></fo:block>
+</xsl:template>
+
+
+<xsl:template match="logtalk/predicates">
+
+	<fo:block>Public interface</fo:block>
+	<xsl:choose>
+		<xsl:when test="public/predicate">
+			<xsl:apply-templates select="public/predicate" />
+		</xsl:when>
+		<xsl:when test="/logtalk/relations/*">		
+			<fo:block>(see related entities)</fo:block>
+		</xsl:when>
+		<xsl:otherwise>
+			<fo:block>(none)</fo:block>
+		</xsl:otherwise>
+	</xsl:choose>
+
+	<fo:block>Protected interface</fo:block>
+	<xsl:choose>
+		<xsl:when test="protected/predicate">
+			<xsl:apply-templates select="protected/predicate" />
+		</xsl:when>
+		<xsl:when test="/logtalk/relations/*">		
+			<fo:block>(see related entities)</fo:block>
+		</xsl:when>
+		<xsl:otherwise>
+			<fo:block>(none)</fo:block>
+		</xsl:otherwise>
+	</xsl:choose>
+
+	<fo:block>Private predicates</fo:block>
+	<xsl:choose>
+		<xsl:when test="private/predicate">
+			<xsl:apply-templates select="private/predicate" />
+		</xsl:when>
+		<xsl:when test="/logtalk/relations/*">		
+			<fo:block>(see related entities)</fo:block>
+		</xsl:when>
+		<xsl:otherwise>
+			<fo:block>(none)</fo:block>
+		</xsl:otherwise>
+	</xsl:choose>
+
+</xsl:template>
+
+
+<xsl:template match="*/predicate">
+
+	<fo:block><xsl:value-of select="name" /></fo:block>
+
+	<xsl:if test="comment">
+		<fo:block><xsl:value-of select="comment" /></fo:block>
+	</xsl:if>
+
+	<fo:list-block>
+		<fo:list-item>
+     		<fo:list-item-label>
+     			<fo:block></fo:block>
+     		</fo:list-item-label>
+			<fo:list-item-body>
+     			<fo:block>compilation:</fo:block>
+				<fo:block><xsl:value-of select="compilation" /></fo:block>
+     		</fo:list-item-body>
+		</fo:list-item>
+		<xsl:if test="template">
+			<fo:list-item>
+				<fo:list-item-label>
+      				<fo:block></fo:block>
+    			</fo:list-item-label>
+				<fo:list-item-body>
+     				<fo:block>template:</fo:block>
+					<fo:block><xsl:value-of select="template" /></fo:block>
+     			</fo:list-item-body>
+			</fo:list-item>
+		</xsl:if>
+		<xsl:if test="meta">
+			<fo:list-item>
+				<fo:list-item-label>
+      				<fo:block></fo:block>
+     			</fo:list-item-label>
+				<fo:list-item-body>
+     				<fo:block>metapredicate template:</fo:block>
+					<fo:block><xsl:value-of select="meta" /></fo:block>
+     			</fo:list-item-body>
+			</fo:list-item>
+		</xsl:if>
+		<xsl:if test="mode">
+			<fo:list-item>
+				<fo:list-item-label>
+       				<fo:block></fo:block>
+    			</fo:list-item-label>
+				<fo:list-item-body>
+     				<fo:block>mode - number of solutions:</fo:block>
+					<xsl:for-each select="mode">
+						<fo:block><xsl:value-of select="template" /> - <xsl:value-of select="solutions" /></fo:block>
+					</xsl:for-each>
+     			</fo:list-item-body>
+			</fo:list-item>
+		</xsl:if>
+	</fo:list-block>
+
+	<xsl:if test="info">
+		<fo:list-block>
+			<xsl:for-each select="info">
+				<fo:list-item>
+					<fo:list-item-label>
+       					<fo:block></fo:block>
+   	 				</fo:list-item-label>
+					<fo:list-item-body>
+    	 				<fo:block><xsl:value-of select="key" />:</fo:block>
+						<fo:block><xsl:value-of select="value" /></fo:block>
+					</fo:list-item-body>
+				</fo:list-item>
+			</xsl:for-each>
+		</fo:list-block>
+	</xsl:if>
+
+</xsl:template>
+
+
+</xsl:stylesheet>
