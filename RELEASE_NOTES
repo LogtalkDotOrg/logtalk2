@@ -51,6 +51,9 @@ RELEASE NOTES
 	use the expression "compiler flag" instead of "compiler option" for 
 	consistency. Other minor documentation improvements.
 
+	Corrected a bug with the abolishing of dynamic entities where the clauses 
+	corresponding to the alias/3 directive are not being abolished.
+
 
 2.22.4 - January 12, 2005
 
