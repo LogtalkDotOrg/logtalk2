@@ -105,10 +105,11 @@
 
 (setq logtalk-font-lock-directives
 	'(
-		("\\(end_\\(?:category\\|object\\|protocol\\)\\)" . 'logtalk-directive-face)
+		("\\(\\(end_\\(?:category\\|object\\|protocol\\)\\)\\)\\([\.]\\)" 1 'logtalk-directive-face)
 		("\\(category\\|object\\|protocol\\)\\([(]\\)" 1 'logtalk-directive-face)
 		("\\(p\\(?:r\\(?:ivate\\|otected\\)\\|ublic\\)\\)\\([(]\\)" 1 'logtalk-directive-face)
-		("calls\\|d\\(?:iscontiguous\\|ynamic\\)\\|in\\(?:fo\\|itialization\\)\\|m\\(?:\\(?:etapredicat\\|od\\)e\\)\\|op\\|uses" . 'logtalk-directive-face)
+		("\\(calls\\|d\\(?:iscontiguous\\|ynamic\\)\\|in\\(?:fo\\|itialization\\)\\|m\\(?:\\(?:etapredicat\\|od\\)e\\)\\|op\\|uses\\)\\([(]\\)" 1 'logtalk-directive-face)
+		("\\(dynamic\\)\\([\.]\\)" 1 'logtalk-directive-face)
 		("\\(\\(?:extend\\|i\\(?:mp\\(?:\\(?:lemen\\|or\\)t\\)\\|nstantiate\\)\\|specialize\\)s\\)\\([(]\\)" 1 'logtalk-directive-face)
 	))
 
@@ -139,11 +140,13 @@
 		;;
 		;; control constructs:
 		;;
-		("ca\\(?:ll\\|tch\\)\\|fail\\|t\\(?:hrow\\|rue\\)" . 'logtalk-built-in-predicate-face)
+		("\\(ca\\(?:ll\\|tch\\)\\|throw\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\(fail\\|true\\)" . 'logtalk-built-in-predicate-face)
 		;;
 		;; logic and control:
 		;;
-		("\\\\\\+\\|once\\|repeat" . 'logtalk-built-in-predicate-face)
+		("\\(once\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\\\\\+\\|repeat" . 'logtalk-built-in-predicate-face)
 		;;
 		;; term testing:
 		;;
@@ -155,7 +158,8 @@
 		;;
 		;; term creation and decomposition:
 		;;
-		("=\\.\\.\\|arg\\|copy_term\\|functor" . 'logtalk-built-in-predicate-face)
+		("\\(arg\\|copy_term\\|functor\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("=\\.\\.\\" . 'logtalk-built-in-predicate-face)
 		;;
 		;; arithemtic evaluation:
 		;;
@@ -167,11 +171,11 @@
 		;; evaluable functors:
 		;;
 		("//\\|mod\\|rem\\|[*+/-]" . 'logtalk-operator-face)
-		("abs\\|ceiling\\|flo\\(?:at\\(?:_\\(?:\\(?:fractional\\|integer\\)_part\\)\\)?\\|or\\)\\|mod\\|r\\(?:em\\|ound\\)\\|sign\\|truncate" . 'logtalk-built-in-predicate-face)
+		("\\(abs\\|ceiling\\|flo\\(?:at\\(?:_\\(?:\\(?:fractional\\|integer\\)_part\\)\\)?\\|or\\)\\|mod\\|r\\(?:em\\|ound\\)\\|sign\\|truncate\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; other arithemtic functors:
 		;;
-		("atan\\|cos\\|exp\\|log\\|s\\(?:in\\|qrt\\)" . 'logtalk-built-in-predicate-face)
+		("\\(atan\\|cos\\|exp\\|log\\|s\\(?:in\\|qrt\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; term unification:
 		;;
@@ -179,7 +183,8 @@
 		;;
 		;; stream selection and control:
 		;;
-		("at_end_of_stream\\|c\\(?:lose\\|urrent_\\(?:\\(?:in\\|out\\)put\\)\\)\\|flush_output\\|open\\|s\\(?:et_\\(?:input\\|output\\|stream_position\\)\\|tream_property\\)" . 'logtalk-built-in-predicate-face)
+		("\\(at_end_of_stream\\|c\\(?:lose\\|urrent_\\(?:\\(?:in\\|out\\)put\\)\\)\\|flush_output\\|open\\|s\\(?:et_\\(?:input\\|output\\|stream_position\\)\\|tream_property\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\(at_end_of_stream\\)" . 'logtalk-built-in-predicate-face)
 		;;
 		;; character input/output:
 		;;
@@ -195,11 +200,12 @@
 		;;
 		;; implementation defined hooks functions:
 		;;
-		("\\(?:curren\\|se\\)t_prolog_flag\\|halt" . 'logtalk-built-in-predicate-face)
+		("\\(\\(?:curren\\|se\\)t_prolog_flag\\|halt\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("halt" . 'logtalk-built-in-predicate-face)
 		;;
 		;; atomic term processing:
 		;;
-		("atom_\\(?:c\\(?:hars\\|o\\(?:des\\|ncat\\)\\)\\|length\\)\\|char_code\\|number_c\\(?:\\(?:har\\|ode\\)s\\)\\|sub_atom" . 'logtalk-built-in-predicate-face)
+		("\\(atom_\\(?:c\\(?:hars\\|o\\(?:des\\|ncat\\)\\)\\|length\\)\\|char_code\\|number_c\\(?:\\(?:har\\|ode\\)s\\)\\|sub_atom\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; bitwise functors:
 		
