@@ -24,6 +24,8 @@ else {
 	WScript.Quit(1);
 }
 
+logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
+
 var html_xslt = logtalk_home + "\\xml\\lgthtml.xsl";
 var xhtml_xslt = logtalk_home + "\\xml\\lgtxhtml.xsl";
 var xslt;
