@@ -38,6 +38,21 @@ A Logtalk source file must contain only one entity, either an object, a category
 Any Logtalk source file can contain arbitrary directives and clauses before the opening entity directive. These directives and clauses will not be compiled by the Logtalk preprocessor and will be copied unchanged to the beginning of the corresponding Prolog output file. This feature is included to help the integration of Logtalk with other Prolog extensions such as, for example, constraint programming extensions.
 </p>
 
+<h3>Source metafiles<a name="source_metafiles"></a></h3>
+
+<p>
+Sometimes is useful to be able to define several entities in the same source file. This can be accomplished by using Logtalk source <em>metafiles</em>. Logtalk source metafiles are identified by the extension <code>.mlgt</code>. A metafile can be interpreted as the concatenation of source files. Logtalk compiles a source metafile by automatically splitting it into individual entity source files. In addition, two helper files for compiling and loading the extracted entity files are generated. The names of these helper files are the concatenation of the metafile name with the sufixes <code>_load</code> and <code>_compile</code>. Both helper files use the extension <code>.lgt</code>.
+</p>
+<p>
+Source metafiles may be compiled and loaded in the same way as single-entity source files by using the Logtalk built-in predicates <code>logtalk_compile/1-2</code> and <code>logtalk_load/1-2</code> (omitting the <code>.mlgt</code> file name extension).
+</p>
+<p>
+Currently, only limited error checking is performed during extraction of individual source files from a source metafile. The extraction process is guided by the occurrence of opening and closing entity directives, with all terms being copied to the generated files without further analysis.
+</p>
+<p>
+As with source files, clauses and directives occurring before an entity opening directive are copied unchanged to the extracted entity source file. In the unlikely event that a source metafile does not contain any entity definitions, any predicate clauses and directives it might contain are copied unchanged to the generated loader auxiliar file (but not to the generated compiler auxiliar file).
+</p>
+
 <h3>Loader utility files<a name="loaders"></a></h3>
 
 <p>
@@ -61,21 +76,6 @@ Usually these files contain a call to the Logtalk built-in predicates <a title="
 Another example of directive that could appear in a loader file would be <code>op/3</code> directives declaring global operators used by your application.
 </p>
 These loader files may not work without modifications depending on the way your Prolog compiler deals with folders/directories. Most of the time you will need to <strong>set the working directory</strong> to be the one that contains the loader file in order to get the example source files loaded. Unfortunately, there is no portable way for us to do that from inside Logtalk due to differences between operating systems and lack of adequate operating system access support in some Prolog compilers.
-</p>
-
-<h3>Source metafiles<a name="source_metafiles"></a></h3>
-
-<p>
-Sometimes is useful to be able to define several entities in the same source file. This can be accomplished by using Logtalk source <em>metafiles</em>. Logtalk source metafiles are identified by the extension <code>.mlgt</code>. A metafile can be interpreted as the concatenation of source files. Logtalk compiles a source metafile by automatically splitting it in individual source files and by generating two auxiliary files for compiling and loading all the extracted entity files. The names of the generated auxiliary files are the concatenation of the metafile name with the sufixes <code>_load</code> and <code>_compile</code>. Both files use the extension <code>.lgt</code>.
-</p>
-<p>
-Source metafiles may be compiled and loaded in the same way as single-entity source files by using the Logtalk built-in predicates <code>logtalk_compile/1-2</code> and <code>logtalk_load/1-2</code> (omitting the <code>.mlgt</code> file name extension).
-</p>
-<p>
-Currently, only limited error checking is performed during extraction of individual source files from a source metafile. The extraction process is guided by the occurrence of opening and closing entity directives, with all terms being copied to the generated files without further analysis.
-</p>
-<p>
-As with source files, clauses and directives occurring before an entity opening directive are copied unchanged to the extracted entity source file. In the unlikely event that a source metafile does not contain any entity definitions, any predicate clauses and directives it might contain are copied unchanged to the generated loader auxiliar file (but not to the generated compiler auxiliar file).
 </p>
 
 <h3>Portable programs<a name="portability"></a></h3>
