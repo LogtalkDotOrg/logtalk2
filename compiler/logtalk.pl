@@ -2311,7 +2311,7 @@ current_logtalk_flag(version, version(2, 17, 1)).
 			call(TGoal),
 			Error,
 			('$lgt_dbg_port'(exception, Goal, Error, Ctx, TAction),
-			 (TAction = fail -> fail; throw(Error)))),
+			 (TAction = fail -> fail; TAction = throw -> throw(Error)))),
 		(	'$lgt_dbg_port'(exit, Goal, _, Ctx, EAction),
 			call(EAction)
 			;
@@ -2378,7 +2378,6 @@ current_logtalk_flag(version, version(2, 17, 1)).
 '$lgt_dbg_valid_port_option'(@, _, _).
 '$lgt_dbg_valid_port_option'(b, _, _).
 '$lgt_dbg_valid_port_option'(a, _, _).
-'$lgt_dbg_valid_port_option'(e, _, _).
 '$lgt_dbg_valid_port_option'(d, _, _).
 '$lgt_dbg_valid_port_option'(x, _, _).
 '$lgt_dbg_valid_port_option'(h, _, _).
@@ -2387,7 +2386,7 @@ current_logtalk_flag(version, version(2, 17, 1)).
 '$lgt_dbg_valid_port_option'(*, _, ' ').
 '$lgt_dbg_valid_port_option'(+, _, ' ').
 '$lgt_dbg_valid_port_option'(-, _, +).
-'$lgt_dbg_valid_port_option'(t, exception, _).
+'$lgt_dbg_valid_port_option'(e, exception, _).
 
 
 '$lgt_dbg_do_port_option'(' ', _, _, _, true).
@@ -2445,9 +2444,6 @@ current_logtalk_flag(version, version(2, 17, 1)).
 '$lgt_dbg_do_port_option'(a, _, _, _, _) :-
 	throw(error(logtalk_debugger_aborted)).
 
-'$lgt_dbg_do_port_option'(e, _, _, _, _) :-
-	halt.
-
 '$lgt_dbg_do_port_option'(d, Goal, _, _, _) :-
 	write('    Current goal: '), write_term(Goal, [ignore_ops(true)]), nl,
 	fail.
@@ -2461,7 +2457,7 @@ current_logtalk_flag(version, version(2, 17, 1)).
 	write('    Self:   '), writeq(Self), nl,
 	fail.
 
-'$lgt_dbg_do_port_option'(t, _, Error, _, _) :-
+'$lgt_dbg_do_port_option'(e, _, Error, _, _) :-
 	write('    Exception term: '), writeq(Error), nl,
 	fail.
 
@@ -2475,10 +2471,9 @@ current_logtalk_flag(version, version(2, 17, 1)).
 	write('        @ - command (reads and executes a query)'), nl,
 	write('        b - break (suspends execution and starts new interpreter; type end_of_file to terminate)'), nl,
 	write('        a - abort (returns to top level interpreter)'), nl,
-	write('        e - exit (terminates Logtalk execution)'), nl,
 	write('        d - display (writes current goal without using operator notation)'), nl,
 	write('        x - context (prints execution context)'), nl,
-	write('        t - thrown (prints exception term thrown by current goal)'), nl,
+	write('        e - exception (prints exception term thrown by current goal)'), nl,
 	write('        = - debugging (prints debugging information)'), nl,
 	write('        * - add (adds a context spy point for current goal)'), nl,
 	write('        + - add (adds a predicate spy point for current goal)'), nl,
