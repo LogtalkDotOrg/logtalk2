@@ -116,7 +116,7 @@ yes
 
 % command language example:
 
-?- faa::main.
+| ?- faa::main.
 Fly Amzi! Air
 enter command> list flights
 aa101
@@ -128,4 +128,12 @@ enter command> list passengers aa102
 elana
 tom
 enter command> exit
+yes
+
+
+% double bypass using the {}/1 control constructs of grammar rules and Logtalk:
+
+| ?- bypass::foo(_, _).
+    
+bar predicate called
 yes
