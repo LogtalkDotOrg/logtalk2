@@ -82,7 +82,9 @@ link.Description = "Open Logtalk Upgrading";
 link.TargetPath = "%LOGTALKHOME%\\UPGRADING.txt";
 link.Save();
 
-WScript.Echo('Logtalk installation completed.');
+WScript.Echo('Logtalk installation completed. You will need to restart in order');
+WScript.Echo('to activate the new system environment variables and use the items');
+WScript.Echo('in the new Logtalk program group.');
 WScript.Echo('');
 
 WScript.Quit(0);
@@ -90,8 +92,8 @@ WScript.Quit(0);
 function usage_help() {
 	WScript.Echo('');
 	WScript.Echo('This script completes the installation of Logtalk by setting the LOGTALKHOME');
-	WScript.Echo('system environment variable, the LOGTALKUSER user environment variable, and');
-	WScript.Echo('by creating a new program group named "Logtalk" in the Windows Start Menu.');
+	WScript.Echo('and LOGTALKUSER system environment variables and by creating a new program');
+	WScript.Echo('group named "Logtalk" in the Windows Start Menu.');
 	WScript.Echo('');
 	WScript.Echo('The script must be run from this directory, by a user with administration');
 	WScript.Echo('privileges, after decompressing the Logtalk distribution into its final');
