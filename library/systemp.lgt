@@ -157,4 +157,12 @@
 		comment is 'Host name.',
 		argnames is ['Name']]).
 
+	:- public(canonical_os_path/2).
+	:- mode(canonical_os_path(+atom, -atom), one).
+	:- mode(canonical_os_path(-atom, +atom), one).
+	:- info(canonical_os_path/2, [
+		comment is 'Converts between canonical and operating system dependent paths.',
+		argnames is ['Canonical', 'OS']]).
+
 :- end_protocol.
+
