@@ -48,3 +48,13 @@ yes
 
 Radius = 3 
 yes
+
+| ?- circle(3)::predicate_property(r(_), Property).
+
+Property = public ;
+Property = static ;
+Property = declared_in(ellipse(_G266, _G267)) ;
+Property = defined_in(ellipse(_G299, _G300))
+yes
+
+
