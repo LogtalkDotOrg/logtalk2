@@ -23,7 +23,6 @@ else {
 	usage_help();
 	WScript.Quit(1);
 }
-WScript.Echo(logtalk_home);
 
 if (WScript.Arguments.Unnamed.Length > 0) {
 	usage_help();
@@ -42,7 +41,7 @@ var f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.pl", true);
 f.WriteLine(":- system_module.");
 f.Close();
 
-var p = "type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\logtalkswi.pl";
+var p = "type " + logtalk_home + "\\\\compiler\\\\logtalk.pl" + " >> " + logtalk_home + "\\\\bin\\\\logtalkswi.pl";
 
 WshShell.Run(p, true);
 
