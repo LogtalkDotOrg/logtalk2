@@ -34,10 +34,10 @@ directory may simply be copied to the user home directory.
 
 * Installing for one or more users by a user with administrative rights:
 
-In the case of multiple users, the Logtalk directory can be copied to any 
-location that its accessible by all the users (assuming that copying the 
-Logtalk directory to each user home directory is, for some reason, not 
-feasible or desired).
+In the case of installation by a user with administrative rights, the Logtalk 
+directory can be copied to any location that its accessible by all the users 
+(assuming that copying the Logtalk directory to each user home directory is, 
+for some reason, not feasible or desired).
 
 The "misc" sub-directory contains shell scripts for easy installation of 
 Logtalk on Windows, Unix, and Unix-like operating systems (for details, 
