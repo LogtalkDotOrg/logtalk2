@@ -78,13 +78,6 @@ lgtpdfus.xsl
 	RenderX 2.77 (http://www.renderx.com/).
 
 
-texml.xsl
-
-	XSLT file to output TeXML files that can be further processed by  
-	TeXMLatte to produce LaTeX files. The TeXMLatte program can be found 
-	at: http://www.alphaworks.ibm.com/tech/texml/.
-
-
 ie50.xsl
 
 	XSLT file for viewing .xml files in Microsoft Internet Explorer 5.x 

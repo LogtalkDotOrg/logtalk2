@@ -18,6 +18,9 @@ RELEASE NOTES
 	Updated the User Manual documentation on converting XML documenting files 
 	to other formats.
 
+	Removed the texml.xsl XSLT file as the TeXMLatte application it depends on 
+	is no longer avaialble.
+
 	Added missing extension for source metafiles to the SWI-Prolog hook file.
 	
 	Corrected a bug in the lgtxhtml.xsl XSLT file where a wrong reference to 
