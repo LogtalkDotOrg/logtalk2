@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.15.7
+Release 2.16.0
 
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -10,15 +10,15 @@ RELEASE NOTES
 =============
 
 
-2.15.7 - February ??, 2004
+2.16.0 - February ??, 2004
 
 	Operators declared inside an entity are now local to the entity, complying 
-	with the Logtalk language specification.
+	with the Logtalk language specification. Added new example "operators". 
 
-	Corrected a problem with the syntax coloring of quoted atoms and strings in 
-	the SubEthaEdit text editor.
+	Corrected a problem with the syntax coloring of quoted atoms and strings 
+	in the SubEthaEdit text editor.
 
-	New config file for QU-Prolog 6.3.
+	New config file for Qu-Prolog 6.3.
 
 
 2.15.6 - February 9, 2004
