@@ -326,7 +326,7 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	throw(error(type_error(list, Clauses), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
-	'$lgt_clean_up',
+	'$lgt_clean_pp_clauses',
 	'$lgt_tr_directive'(object, [Obj| Rels]),
 	'$lgt_tr_directives'([(dynamic)| Dirs]),
 	'$lgt_tr_clauses'(Clauses),
@@ -335,7 +335,7 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_gen_object_directives',
 	'$lgt_assert_tr_entity',
 	'$lgt_report_unknown_entities',
-	'$lgt_clean_up'.
+	'$lgt_clean_pp_clauses'.
 
 
 
@@ -374,7 +374,7 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	throw(error(type_error(list, Clauses), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
-	'$lgt_clean_up',
+	'$lgt_clean_pp_clauses',
 	'$lgt_tr_directive'(category, [Ctg| Rels]),
 	'$lgt_tr_directives'([(dynamic)| Dirs]),
 	'$lgt_tr_clauses'(Clauses),
@@ -383,7 +383,7 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_gen_category_directives',
 	'$lgt_assert_tr_entity',
 	'$lgt_report_unknown_entities',
-	'$lgt_clean_up'.
+	'$lgt_clean_pp_clauses'.
 
 
 
@@ -418,14 +418,14 @@ create_protocol(Ptc, Rels, Dirs) :-
 	throw(error(type_error(list, Dirs), create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
-	'$lgt_clean_up',
+	'$lgt_clean_pp_clauses',
 	'$lgt_tr_directive'(protocol, [Ptc| Rels]),
 	'$lgt_tr_directives'([(dynamic)| Dirs]),
 	'$lgt_gen_protocol_clauses',
 	'$lgt_gen_protocol_directives',
 	'$lgt_assert_tr_entity',
 	'$lgt_report_unknown_entities',
-	'$lgt_clean_up'.
+	'$lgt_clean_pp_clauses'.
 
 
 
@@ -2718,12 +2718,12 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 '$lgt_compile_entity'(Entity) :-
 	'$lgt_report_compiling_entity'(Entity),
-	'$lgt_clean_up',
+	'$lgt_clean_pp_clauses',
 	'$lgt_tr_entity'(Entity),
 	'$lgt_write_tr_entity'(Entity),
 	'$lgt_write_entity_doc'(Entity),
 	'$lgt_report_unknown_entities',
-	'$lgt_clean_up',
+	'$lgt_clean_pp_clauses',
 	'$lgt_report_compiled_entity'(Entity).
 
 
@@ -2954,7 +2954,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 % clean up all dynamic predicates used during entity compilation
 
-'$lgt_clean_up' :-
+'$lgt_clean_pp_clauses' :-
 	retractall('$lgt_pp_object_'(_, _, _, _, _, _, _, _, _)),
 	retractall('$lgt_pp_protocol_'(_, _, _)),
 	retractall('$lgt_pp_category_'(_, _, _, _)),
@@ -3050,6 +3050,17 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	listing('$lgt_pp_referenced_category_'/1),
 	listing('$lgt_pp_global_op_'/3),
 	listing('$lgt_pp_local_op_'/3).
+
+
+
+% '$lgt_clean_caches'
+%
+% clean method lookup caches
+
+'$lgt_clean_caches' :-
+	retractall('$lgt_obj_lookup_cache_'(_, _, _, _, _, _)),
+	retractall('$lgt_self_lookup_cache_'(_, _, _, _, _, _)),
+	retractall('$lgt_super_lookup_cache_'(_, _, _, _, _, _)).
 
 
 
@@ -3161,7 +3172,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	functor(Dir, Functor, Arity),
 	\+ '$lgt_lgt_opening_directive'(Functor/Arity),
 	!,
-	assertz('$lgt_pp_directive_'(Dir)).	% directive will be copied to the generated Prolog file
+	assertz('$lgt_pp_directive_'(Dir)).		% directive will be copied to the generated Prolog file
 
 '$lgt_tr_directive'(Dir) :-
 	functor(Dir, Functor, Arity),
@@ -3943,7 +3954,6 @@ current_logtalk_flag(version, version(2, 18, 0)).
 '$lgt_tr_msg'(_, Obj, _, _) :-
 	nonvar(Obj),
 	\+ callable(Obj),
-	!,
 	throw(type_error(object_identifier, Obj)).
 
 
