@@ -5,7 +5,7 @@
 // Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 // =================================================================
 
-var prolog_path = "%SystemDrive%\\Program Files\\Yap\\bin\\yap.exe";
+var prolog_path = "C:\\Program Files\\Yap\\bin\\yap.exe";
 
 if (WScript.Arguments.Unnamed.Length > 0) {
 	usage_help();
@@ -73,10 +73,10 @@ WScript.Quit(0);
 
 function usage_help() {
 	WScript.Echo('');
-	WScript.Echo('This script creates a shortcut named "Logtalk - YAP" running Logtalk');
+	WScript.Echo('This script creates a shortcut named "Logtalk - YAP" for running Logtalk');
 	WScript.Echo('with YAP. The script must be run by a user with administrative rights.');
-	WScript.Echo('The LOGTALKHOME environment variable must be defined before running');
-	WScript.Echo('this script.');
+	WScript.Echo('The LOGTALKHOME environment variable must be defined before running this');
+	WScript.Echo('script.');
 	WScript.Echo('');
 	WScript.Echo('Usage:');
 	WScript.Echo('  ' + WScript.ScriptName + ' help');
