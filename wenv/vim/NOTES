@@ -1,0 +1,24 @@
+=================================================================
+Logtalk - Object oriented extension to Prolog
+Release 2.14.8
+
+Copyright (c) 1998-2003 Paulo Moura.  All Rights Reserved.
+=================================================================
+
+
+This directory contains some files that provide syntax highlighting 
+for editing Logtalk source files with common text editors.
+
+
+logtalk.vim
+
+	syntax file for VIM 6.1 (http://www.vim.org)
+
+	If this file is not included with your version of VIM or if the 
+	included file is older than the one provided here, copy this file 
+	to the "syntax" sub-directory in your VIM installation directory 
+	and add the following entry to the "filetype.vim" configuration 
+	file (if not present):
+
+	" Logtalk
+	au BufNewFile,BufRead *.lgt                     setf logtalk
