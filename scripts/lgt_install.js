@@ -33,13 +33,8 @@ WScript.Echo("");
 WScript.Echo("  " + WshShell.SpecialFolders("MyDocuments") + "\\logtalk");
 WScript.Echo("");
 
-WshSystemEnv.Item("PATH") = WshSystemEnv.Item("PATH") + ";%LOGTALKHOME%\\misc";
-WScript.Echo("Added Logtalk misc directory to the system PATH environment variable.");
-if (WshUserEnv.Item("PATH"))
-	WshUserEnv.Item("PATH") = WshUserEnv.Item("PATH") + ";%LOGTALKUSER%\\xml";
-else
-	WshUserEnv.Item("PATH") = "%LOGTALKUSER%\\xml";	
-WScript.Echo("Added Logtalk xml directory to the user PATH environment variable.");
+WshSystemEnv.Item("PATH") = WshSystemEnv.Item("PATH") + ";%LOGTALKHOME%\\misc;%LOGTALKHOME%\\xml";
+WScript.Echo("Added Logtalk misc and xml directories to the system PATH environment variable.");
 WScript.Echo("");
 
 FSObject.CopyFile(WshShell.CurrentDirectory + "\\BIBLIOGRAPHY", WshShell.CurrentDirectory + "\\BIBLIOGRAPHY.txt");

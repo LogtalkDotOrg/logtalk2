@@ -14,12 +14,13 @@ RELEASE NOTES
 
 	Added helper batch scripts (misc/cplgtdirs.bat, xml/lgt2html.bat, and 
 	xml/lgt2pdf.bat) for running the Windows JScript scripts from the 
-	command-line.
-	
+	command-line (the xml/lgt2*.bat scripts run the corresponding *.js script 
+	stored in the %LOGTALKUSER%/xml directory in order to support user 
+	customization).
+
 	Improved installation instructions. Updated the Windows installation 
-	JScript script to add the Logtalk directory "misc" to the system PATH 
-	environment variable and to add the Logtalk directory "xml" to the user 
-	PATH environment variable.
+	JScript script to add the Logtalk directories "misc" and "xml" to the 
+	system PATH environment variable.
 
 	Updated the lgt2html.* and lgt2pdf.* shell scripts to use the environment 
 	variable LOGTALKUSER instead of LOGTALKHOME for finding support files, thus 
