@@ -5592,7 +5592,7 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_dcg_rule'((RHead --> RBody), (CHead :- CBody)) :-
 	'$lgt_dcg_head'(RHead, CHead, S0, S),
 	'$lgt_dcg_body'(RBody, Body, S0, S),
-	'$lgt_dcg_fold_unifications'(Body, CBody, S0, S).
+	'$lgt_dcg_fold_unifications'(Body, CBody, S).
 
 
 
@@ -5645,18 +5645,18 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_dcg_body'(!, (!, S0=S), S0, S) :-
 	!.
 
-'$lgt_dcg_body'([], (S0=S), S0, S) :-
-	!.
-
 '$lgt_dcg_body'(\+ RGoal, CGoal, S0, S) :-
 	!,
 	'$lgt_dcg_body'((RGoal -> {fail};{true}), CGoal, S0, S).
 
-'$lgt_dcg_body'([Terminal| Terminals], (CGoal,CGoals), S0, S) :-
+'$lgt_dcg_body'([], (S0=S), S0, S) :-
+	!.
+
+'$lgt_dcg_body'([Terminal| Terminals], CGoal, S0, S) :-
 	!,
 	'$lgt_dcg_terminal'(Terminal, CGoal, S0, S1),
-	'$lgt_dcg_body'(Terminals, Goals, S1, S),
-	'$lgt_dcg_simplify_terminals'(Goals, CGoals).
+	'$lgt_dcg_terminals'(Terminals, CGoals, S1, S),
+	'$lgt_dcg_simplify_terminals'(CGoals).
 
 '$lgt_dcg_body'(Non_terminal, CGoal, S0, S) :-
 	'$lgt_dcg_goal'(Non_terminal, CGoal, S0, S).
@@ -5678,49 +5678,57 @@ user0__def(Pred, _, _, _, Pred, user).
 
 
 
-% '$lgt_dcg_goal'(@goal, -goal, @var, @var)
+% '$lgt_dcg_terminal'(@nonvar, -goal, @var, @var)
 %
 % translate terminal; note that we don't use the traditional 'C'/3 predicate
 
-'$lgt_dcg_terminal'(Goal, S0=[Goal|S], S0, S).
+'$lgt_dcg_terminal'(Terminal, S0=[Terminal| S], S0, S).
 
 
 
-% '$lgt_dcg_fold_unifications'(+goal, -goal)
+% '$lgt_dcg_terminals'(@list, -goal, @var, @var)
+%
+% translate terminals
+
+'$lgt_dcg_terminals'([], true, S, S) :-
+	!.
+
+'$lgt_dcg_terminals'([Terminal| Terminals], (Goal,Goals), S0, S) :-
+	'$lgt_dcg_terminal'(Terminal, Goal, S0, S1),
+	'$lgt_dcg_terminals'(Terminals, Goals, S1, S).
+
+
+
+% '$lgt_dcg_fold_unifications'(+goal, -goal, @var)
 %
 % folds redundant calls to =/2 by calling the unification goals
 
-'$lgt_dcg_fold_unifications'((Goal1 -> Goal2), (SGoal1 -> SGoal2), S0, S) :-
+'$lgt_dcg_fold_unifications'((Goal1 -> Goal2), (SGoal1 -> SGoal2), S) :-
 	!,
-	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S0, S),
-	(Goal2 = (_,_) ->
-		'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S0, S)
-		;
-		Goal2 = SGoal2).
+	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S),
+	'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S).
 
-'$lgt_dcg_fold_unifications'((Goal1;Goal2), (SGoal1;SGoal2), S0, S) :-
+'$lgt_dcg_fold_unifications'((Goal1;Goal2), (SGoal1;SGoal2), S) :-
 	!,
-	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S0, S),
-	'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S0, S).
+	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S),
+	'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S).
 
-'$lgt_dcg_fold_unifications'((Goal1,Goal2), Body, S0, S) :-
+'$lgt_dcg_fold_unifications'((Goal1,Goal2), Body, S) :-
 	!,
-	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S0, S),
-	'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S0, S),
+	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S),
+	'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S),
 	'$lgt_dcg_simplify_and'((SGoal1,SGoal2), Body).
 
-'$lgt_dcg_fold_unifications'(S1=S2, S0=S, S0, S) :-
-	S1 == S0,
-	S2 == S,
+'$lgt_dcg_fold_unifications'(S1=S2, S1=S2, S) :-
+	(S1 == S; S2 == S),
 	!.
 
-'$lgt_dcg_fold_unifications'(S1=S2, true, S0, S) :-
+'$lgt_dcg_fold_unifications'(S1=S2, true, _) :-
 	var(S2),
-	(S1 \== S0; S2 \== S),
 	!,
 	S1 = S2.
 
-'$lgt_dcg_fold_unifications'(Body, Body, _, _).
+'$lgt_dcg_fold_unifications'(Body, Body, _).
 
 
 
@@ -5748,16 +5756,16 @@ user0__def(Pred, _, _, _, Pred, user).
 
 
 
-% '$lgt_dcg_simplify_terminals'(+goal, -goal)
+% '$lgt_dcg_simplify_terminals'(+goal)
 %
 % simplifies code generated for list of terminals by folding the chain of unifications
 
-'$lgt_dcg_simplify_terminals'((S=L,Goal1), Goal2) :-
+'$lgt_dcg_simplify_terminals'((S=L,Goals)) :-
 	!,
 	S = L,
-	'$lgt_dcg_simplify_terminals'(Goal1, Goal2).
+	'$lgt_dcg_simplify_terminals'(Goals).
 
-'$lgt_dcg_simplify_terminals'(Goal, Goal).
+'$lgt_dcg_simplify_terminals'(_).
 
 
 
