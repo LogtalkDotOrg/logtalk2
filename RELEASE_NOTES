@@ -12,8 +12,8 @@ RELEASE NOTES
 
 2.22.2 - December ??, 2004
 
-	Optimized compilation of objects and categories which do not redefine 
-	built-in predicates.
+	Optimized dynamic creation and compilation of objects, protocols, and 
+	categories.
 
 
 2.22.1 - December 6, 2004

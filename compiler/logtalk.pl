@@ -333,8 +333,7 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_fix_redef_built_ins',
 	'$lgt_gen_object_clauses',
 	'$lgt_gen_object_directives',
-	'$lgt_assert_tr_entity',
-	'$lgt_clean_pp_clauses'.
+	'$lgt_assert_tr_entity'.
 
 
 
@@ -381,8 +380,7 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_fix_redef_built_ins',
 	'$lgt_gen_category_clauses',
 	'$lgt_gen_category_directives',
-	'$lgt_assert_tr_entity',
-	'$lgt_clean_pp_clauses'.
+	'$lgt_assert_tr_entity'.
 
 
 
@@ -423,8 +421,7 @@ create_protocol(Ptc, Rels, Dirs) :-
 	'$lgt_tr_directives'(Dirs),
 	'$lgt_gen_protocol_clauses',
 	'$lgt_gen_protocol_directives',
-	'$lgt_assert_tr_entity',
-	'$lgt_clean_pp_clauses'.
+	'$lgt_assert_tr_entity'.
 
 
 
@@ -3111,7 +3108,6 @@ current_logtalk_flag(version, version(2, 22, 2)).
 	'$lgt_write_tr_entity'(Entity),
 	'$lgt_write_entity_doc'(Entity),
 	'$lgt_report_unknown_entities',
-	'$lgt_clean_pp_clauses',
 	'$lgt_report_compiled_entity'(Entity).
 
 
