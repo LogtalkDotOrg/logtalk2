@@ -18,6 +18,8 @@ RELEASE NOTES
     Added XSLT file for converting XML documenting files to XHTML 1.0 Strict 
     files. Set the default encoding of all XSLT files to UTF-8.
 
+    Added syntax coloring support for the KDE Kate text editor.
+
 	Removed outdated support for MacOS X Project Builder and added support 
 	for the new MacOS X Xcode developer tool.
 
