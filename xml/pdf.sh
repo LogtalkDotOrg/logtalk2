@@ -1,6 +1,6 @@
 #!/bin/sh
 
-FOP_PATH="/Users/pmoura/Desktop/Fop-0.20.2"
+FOP_PATH="/Applications/Fop-0.20.2"
 
 XSLT="lgtpdfa4.xsl"
 
