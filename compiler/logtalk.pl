@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.21.6
+%  Release 2.21.7
 %
 %  Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 %
@@ -91,6 +91,12 @@
 :- dynamic('$lgt_obj_lookup_cache_'/6).		% '$lgt_obj_lookup_cache_'(Obj, Pred, Sender, This, Self, Call)
 :- dynamic('$lgt_self_lookup_cache_'/6).	% '$lgt_self_lookup_cache_'(Obj, Pred, Sender, This, Self, Call)
 :- dynamic('$lgt_super_lookup_cache_'/6).	% '$lgt_super_lookup_cache_'(Obj, Pred, Sender, This, Self, Call)
+
+
+
+% table of library paths
+
+:- dynamic(logtalk_library_path/2).			% logtalk_library_path(Library, Path)
 
 
 
@@ -895,8 +901,7 @@ logtalk_compile(Entities) :-
 % compiles to disk an entity or a list of entities using a list of options
 
 logtalk_compile(Entity, Options) :-
-	atom(Entity),
-	Entity \= [],
+	(atom(Entity), Entity \= []; compound(Entity), Entity \= [_| _]),
 	!,
 	'$lgt_make_alt_dirs',
 	catch(
@@ -950,17 +955,46 @@ logtalk_compile(Entities, Options) :-
 	throw(instantiation_error).
 
 '$lgt_check_compiler_entity'(Entity) :-
+	compound(Entity),
+	!,
+	'$lgt_check_compiler_library_entity'(Entity).
+
+'$lgt_check_compiler_entity'(Entity) :-
 	\+ atom(Entity),
 	throw(type_error(atom, Entity)).
 
 '$lgt_check_compiler_entity'(Entity) :-
-	'$lgt_file_name'(metafile, Entity, File),
-	\+ '$lgt_file_exists'(File),
+	'$lgt_file_name'(metafile, Entity, Metafile),
+	\+ '$lgt_file_exists'(Metafile),
 	'$lgt_file_name'(logtalk, Entity, File),
 	\+ '$lgt_file_exists'(File),
 	throw(existence_error(entity, Entity)).
 
 '$lgt_check_compiler_entity'(_).
+
+
+'$lgt_check_compiler_library_entity'(Term) :-
+	\+ Term =.. [_, _],
+	throw(type_error(library_entity, Term)).
+
+'$lgt_check_compiler_library_entity'(Term) :-
+	Term =.. [Library, Entity],
+	'$lgt_check_compiler_library_entity'(Library, Entity).
+
+
+'$lgt_check_compiler_library_entity'(Library, _) :-
+	\+ logtalk_library_path(Library, _),
+	throw(existence_error(library, Library)).
+
+'$lgt_check_compiler_library_entity'(Library, Entity) :-
+	logtalk_library_path(Library, Path),
+	'$lgt_current_directory'(Current),
+	'$lgt_change_directory'(Path),
+	catch(
+		'$lgt_check_compiler_entity'(Entity),
+		Error,
+		('$lgt_change_directory'(Current), throw(Error))),
+	'$lgt_change_directory'(Current).
 
 
 
@@ -1039,8 +1073,7 @@ logtalk_load(Entities) :-
 % or a list of entities using a list of options
 
 logtalk_load(Entity, Options) :-
-	atom(Entity),
-	Entity \= [],
+	(atom(Entity), Entity \= []; compound(Entity), Entity \= [_| _]),
 	!,
 	'$lgt_make_alt_dirs',
 	catch(
@@ -1127,7 +1160,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 21, 6)).
+current_logtalk_flag(version, version(2, 21, 7)).
 
 
 
@@ -2885,6 +2918,16 @@ current_logtalk_flag(version, version(2, 21, 6)).
 %
 % compiles to disk and then loads to memory an entity
 
+'$lgt_load_entity'(Term, Options) :-
+	compound(Term),
+	!,
+	Term =.. [Library, Entity],
+	logtalk_library_path(Library, Path),
+	'$lgt_current_directory'(Current),
+	'$lgt_change_directory'(Path),
+	'$lgt_load_entity'(Entity, Options),
+	'$lgt_change_directory'(Current).
+
 '$lgt_load_entity'(Entity, Options) :-
 	'$lgt_file_name'(metafile, Entity, Metafile),
 	'$lgt_file_exists'(Metafile),
@@ -3035,6 +3078,16 @@ current_logtalk_flag(version, version(2, 21, 6)).
 % '$lgt_compile_entity'(+atom, +list)
 %
 % compiles to disk an entity
+
+'$lgt_compile_entity'(Term, Options) :-
+	compound(Term),
+	!,
+	Term =.. [Library, Entity],
+	logtalk_library_path(Library, Path),
+	'$lgt_current_directory'(Current),
+	'$lgt_change_directory'(Path),
+	'$lgt_compile_entity'(Entity, Options),
+	'$lgt_change_directory'(Current).
 
 '$lgt_compile_entity'(Entity, Options) :-
 	'$lgt_file_name'(metafile, Entity, Metafile),
