@@ -6,7 +6,33 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
+This example illustrates some variants of the "diamond problem" 
+(multi-inheritance conflicts and ambiguities) and its respective 
+solutions on Logtalk.
+
+        A       -- contains default definition for a predicate m/0
+	  /   \
+    B       C   -- contains redefinitions of the predicate m/0
+      \   /
+        D       -- inherits both redefinitions of the predicate m/0
+
+
+There are three variants of the problem:
+
+	diamomd1
+		illustrates the inherited definition which is visible due to the
+		Logtalk predicate lookup algorithm
+	diamond2
+		solution for making the overridden inherited definition the 
+		visible one
+	diamond3
+		allows both inherited definitions to be used
+
 To load all entities in this example compile and load the loader file:
 
 | ?- logtalk_load(loader).
 
+To load only a specific variant, compile and load the respective metafile. 
+For example:
+
+| ?- logtalk_load(diamond2).
