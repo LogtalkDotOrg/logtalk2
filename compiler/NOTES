@@ -21,8 +21,9 @@ If you want to compile and load source files using the notation
 you have installed Logtalk in a system-wide location, then copy the 
 file "libpaths_site_template.pl". If you have make a copy of the 
 Logtalk standard library and examples to your home directory using 
-the "misc/cplgtdirs.*" shell scripts, then copy the template file 
-"libpaths_user_template.pl". Load the "libpaths.pl" into your Prolog 
+the "misc/cplgtdirs.*" shell scripts, then a copy the template file 
+"libpaths_user_template.pl" named "libpaths.pl" is already in your 
+Logtalk home folder. Load the "libpaths.pl" into your Prolog 
 compiler after loading the Logtalk compiler/runtime. Note that a few 
 Prolog compilers do not support the <library>(<entity>) notation. 
 See the "configs/NOTES" file for details.

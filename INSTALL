@@ -78,6 +78,17 @@ properties control panel (if you are a system administrator, you should use
 the JScript install script provided in the "misc" sub-directory).
 
 
+LIBRARY PATHS
+
+In Logtalk, a library is simple a directory containing source files. Library 
+paths can be declared using a dynamic predicate. This allows compiling and 
+loading of libraries and library files to be performed without worries about 
+library paths. In the compiler directory you will find some template files 
+which you can copy and edit to match your Logtalk installation and your Prolog 
+compiler and operating-system requirements. Read the compiler/NOTES file for 
+more details.
+
+
 CUSTOMIZING PROLOG CONFIGURATION FILES
 
 Logtalk interfaces with a specific Prolog compiler via a configuration file 
