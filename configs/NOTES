@@ -388,7 +388,9 @@ Qu-Prolog 4.3, 6.4
 	Don't forget to use the chdir/1 predicate to set the working directory 
 	before loading the library or an example.
 
-	Written and tested with the help of Peter Robinson.
+	Written and tested with the help of Peter Robinson (which also contributed 
+	with the qp_build_qplgt.sh shell script for building a new Qu-Prolog 
+	interpreter embedding Logtalk).
 
 
 Quintus Prolog 3.3~3.4
