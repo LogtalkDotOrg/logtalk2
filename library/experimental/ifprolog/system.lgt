@@ -37,6 +37,18 @@
 		{fail}.
 
 
+	absolute_file_name(File) :-
+		{fail}.
+
+
+	absolute_file_name(File, Full) :-
+		{fail}.
+
+
+	decompose_file_name(File, Directory, Base, Extension) :-
+		{fail}.
+
+
 	file_exists(File) :-
 		{file_test(File, read)}.
 
@@ -75,6 +87,10 @@
 		{fail}.
 
 
+	symbolic_link(File, Target) :-
+		{fail}.
+
+
 	getenv(Variable, Value) :-
 		{getenv(Variable, Value)}.
 
@@ -85,6 +101,10 @@
 
 	date_time(Year, Month, Day, Hours, Mins, Secs) :-
 		{localtime(time, Year, Month, Day, _, _, Hours, Min, Secs)}.
+
+
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
+		{localtime(Time, Year, Month, Day, _, _, Hours, Min, Secs)}.
 
 
 	cpu_time(Time) :-

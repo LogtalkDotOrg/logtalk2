@@ -34,6 +34,18 @@
 		{fail}.
 
 
+	absolute_file_name(File) :-
+		{fail}.
+
+
+	absolute_file_name(File, Full) :-
+		{fail}.
+
+
+	decompose_file_name(File, Directory, Base, Extension) :-
+		{fail}.
+
+
 	file_exists(File) :-
 		{exists_file(File)}.
 
@@ -47,15 +59,21 @@
 
 
 	file_size(File, Size) :-
-		{fail}.
+		{file_size(File, Size)}.
 
 
 	file_type(File, Type) :-
 		{fail}.
 
 
-	file_permission(File, Permission) :-
-		{fail}.
+	file_permission(File, read) :-
+		{unix_access(File, 4)}.
+
+	file_permission(File, write) :-
+		{unix_access(File, 2)}.
+
+	file_permission(File, execute) :-
+		{unix_access(File, 1)}.
  
 
 	delete_file(File) :-
@@ -64,6 +82,10 @@
 
 	rename_file(Old, New) :-
 		{atom_concat('mv ', Old, Temp), atom_concat(' ', New, Command), unix(Command)}.
+
+
+	symbolic_link(File, Target) :-
+		{fail}.
 
 
 	getenv(Variable, Value) :-
@@ -75,6 +97,10 @@
 
 
 	date_time(Year, Month, Day, Hours, Mins, Secs) :-
+		{fail}.
+
+
+	convert_time(Time, Year, Month, Day, Hours, Mins, Secs) :-
 		{fail}.
 
 
