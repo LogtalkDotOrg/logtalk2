@@ -5663,7 +5663,10 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_dcg_simplify'((Goal1 -> Goal2), (SGoal1 -> SGoal2), S0, S) :-
 	!,
 	'$lgt_dcg_simplify'(Goal1, SGoal1, S0, S),
-	'$lgt_dcg_simplify'(Goal2, SGoal2, S0, S).
+	(Goal2 = (_,_) ->
+		'$lgt_dcg_simplify'(Goal2, SGoal2, S0, S)
+		;
+		Goal2 = SGoal2).
 
 '$lgt_dcg_simplify'((Goal1;Goal2), (SGoal1;SGoal2), S0, S) :-
 	!,
@@ -5706,7 +5709,7 @@ user0__def(Pred, _, _, _, Pred, user).
 
 
 
-'$lgt_dcg_simplify_terminals'(X = Y, X = Y) :-
+'$lgt_dcg_simplify_terminals'(X=Y, X=Y) :-
 	!.
 
 '$lgt_dcg_simplify_terminals'((X=Y,Goals), Goal2) :-
