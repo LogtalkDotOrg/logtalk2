@@ -12,6 +12,9 @@ To load all entities in this example compile and load the loader file:
 
 If your Prolog compiler does not support a module system, then edit the 
 loader.lgt file and comment out the directive that loads the module code.
+In case your Prolog compiler supports a module system, you may need to 
+edit the code on the module.pl file and make any necessary compatibility 
+changes.
 
 You will also need to load the library all_loader file to load all library 
 entities.
