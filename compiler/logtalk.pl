@@ -2350,7 +2350,7 @@ user0__def(Pred, _, _, _, Pred, user).
 
 '$lgt_save_op_table' :-
 	forall(
-		(current_op(Priority, Specifier, Operator), Operator \= ','),
+		current_op(Priority, Specifier, Operator),
 		asserta('$lgt_global_op_'(Priority, Specifier, Operator))).
 
 
@@ -2363,6 +2363,7 @@ user0__def(Pred, _, _, _, Pred, user).
 	forall(
 		retract('$lgt_local_op_'(_, Specifier, Operator)),
 		op(0, Specifier, Operator)),
+	retractall('$lgt_global_op_'(_, _, ',')),	% ','/2 cannot be an argument to op/3
 	forall(
 		retract('$lgt_global_op_'(Priority2, Specifier2, Operator2)),
 		op(Priority2, Specifier2, Operator2)).
