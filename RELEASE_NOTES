@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.10.0
+Release 2.11.0
 
 Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -8,6 +8,13 @@ Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.11.0 - April 19, 2002
+
+	Added a "smart compilation" feature to the Logtalk compiler, controlled 
+	by a "smart_compilation" flag. Only available in Prolog compilers that 
+	provide access to file modification dates.
 
 
 2.10.0 - April 5, 2002
