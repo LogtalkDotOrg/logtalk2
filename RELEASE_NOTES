@@ -13,12 +13,15 @@ RELEASE NOTES
 2.22.5 - January ??, 2005
 
 	Updated K-Prolog config file, correcting a showstopper bug and enabling  
-	support for using the "library" notation for loading source files (if 
-	you are using Windows, the definition must be edited; see the comments 
-	on the config file itself).
+	support for using the "library" notation for loading source files.
+
+	Added scripts for easy integration of Logtalk with K-Prolog.
 
 	Changed format of preprocessor and runtime dynamic predicates that deal 
 	with predicate indicators for better performance.
+
+	Updated the syntax coloring file for the TextMate text editor, adding 
+	some missing ISO Prolog predicates.
 
 
 2.22.4 - January 12, 2005
