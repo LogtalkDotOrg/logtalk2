@@ -23,8 +23,8 @@ RELEASE NOTES
 	files will use the same encoding. When no encoding/1 directive is present,
 	the XML documenting files will assume UTF-8 encoding.
 
-	Improved reporting of non-portable predicate calls when using the 
-	"portability" flag.
+	Much improved and accurate reporting of non-portable predicate calls when 
+	using the "portability" flag.
 
 	Corrected a bug in the implementation of the built-in database methods 
 	asserta/1 and assertz/1 when asserting facts on objects compiled in debug 

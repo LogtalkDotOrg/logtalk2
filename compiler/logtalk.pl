@@ -156,6 +156,7 @@
 
 :- dynamic('$lgt_pp_defs_pred_'/2).				% '$lgt_pp_defs_pred_'(Functor, Arity)
 :- dynamic('$lgt_pp_calls_pred_'/2).			% '$lgt_pp_calls_pred_'(Functor, Arity)
+:- dynamic('$lgt_non_portable_call_'/2).		% '$lgt_non_portable_call_'(Functor, Arity)
 
 :- dynamic('$lgt_pp_referenced_object_'/1).		% '$lgt_pp_referenced_object_'(Object)
 :- dynamic('$lgt_pp_referenced_protocol_'/1).	% '$lgt_pp_referenced_protocol_'(Protocol)
@@ -3410,6 +3411,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	close(Stream),
 	'$lgt_fix_redef_built_ins',
 	'$lgt_report_misspelt_calls',
+	'$lgt_report_non_portable_calls',
 	('$lgt_pp_entity'(Type, _, _, _, _) ->
 		'$lgt_gen_clauses'(Type),
 		'$lgt_gen_directives'(Type)
@@ -3572,6 +3574,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	retractall('$lgt_pp_redefined_built_in_'(_, _, _)),
 	retractall('$lgt_pp_defs_pred_'(_, _)),
 	retractall('$lgt_pp_calls_pred_'(_, _)),
+	retractall('$lgt_non_portable_call_'(_, _)),
 	retractall('$lgt_pp_referenced_object_'(_)),
 	retractall('$lgt_pp_referenced_protocol_'(_)),
 	retractall('$lgt_pp_referenced_category_'(_)),
@@ -4833,13 +4836,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	\+ '$lgt_lgt_built_in'(Pred),
 	\+ '$lgt_iso_spec_pred'(Pred),
 	functor(Pred, Functor, Arity),
-	\+ '$lgt_pp_defs_pred_'(Functor, Arity),
-	'$lgt_compiler_flag'(portability, warning),
-	'$lgt_compiler_flag'(report, on),
-	functor(Pred, Functor, Arity),
-	'$lgt_inc_compile_warnings_counter',
-	write('> WARNING!  non-ISO defined built-in predicate call: '),
-	writeq(Functor/Arity), nl,
+	assertz('$lgt_non_portable_call_'(Functor, Arity)),
 	fail.
 
 '$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, Ctx), Ctx) :-
@@ -7127,6 +7124,29 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_pp_calls_pred_'(Functor, Arity),
 	\+ '$lgt_pp_defs_pred_'(Functor, Arity),
 	\+ '$lgt_pp_dynamic_'(Functor, Arity).
+
+
+
+% report non-portable predicate calls
+% in the body of object and category predicates
+
+'$lgt_report_non_portable_calls' :-
+	'$lgt_compiler_flag'(portability, warning),
+	'$lgt_compiler_flag'(report, on),
+	setof(Pred, '$lgt_non_portable_call'(Pred), Preds),
+	'$lgt_inc_compile_warnings_counter',
+	write('> WARNING!  non-ISO defined built-in predicate calls: '),
+	'$lgt_writeq_list'(Preds), nl,
+	!.
+
+'$lgt_report_non_portable_calls'.
+
+
+'$lgt_non_portable_call'(Functor/Arity) :-
+	'$lgt_non_portable_call_'(Functor, Arity),
+	\+ '$lgt_pp_defs_pred_'(Functor, Arity),
+	functor(Pred, Functor, Arity),
+	\+ '$lgt_pp_redefined_built_in_'(Pred, _, _).
 
 
 
