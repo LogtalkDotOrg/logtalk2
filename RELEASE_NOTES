@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.21.6
+Release 2.21.7
 
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -8,6 +8,12 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.21.7 - November ??, 2004
+
+	Added an utility predicate for changing the current working directory to all 
+	configuration files.
 
 
 2.21.6 - November 15, 2004
