@@ -61,8 +61,8 @@ if (f_arg != "" && f_arg != "a4" && f_arg != "us") {
 
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 
-if (d_arg != "" && !fso.FolderExists(directory)) {
-	WScript.Echo("Error! directory does not exists: " + directory);
+if (d_arg != "" && !fso.FolderExists(d_arg)) {
+	WScript.Echo("Error! directory does not exists: " + d_arg);
 	WScript.Echo("");
 	usage_help();
 } else if (d_arg != "")
