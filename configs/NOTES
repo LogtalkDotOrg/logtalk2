@@ -80,7 +80,7 @@ Arity/Prolog32 V 1.1
 	working directory before loading the library or an example.
 
 
-B-Prolog 4.0~5.0, 6.4
+B-Prolog 4.0~5.0, 6.4 and later versions
 
 	b5.config
 
@@ -91,7 +91,7 @@ B-Prolog 4.0~5.0, 6.4
 
 	b6.config
 
-	For B-Prolog 6.4.
+	For B-Prolog 6.4 and later versions.
 	This version contains a bug in the atom_concat/3 predicate that prevents 
 	some examples such as the "symdiff" from running. Don't forget to use the 
 	chdir/1 predicate to set the working directory before loading the library 
@@ -285,7 +285,7 @@ Open Prolog 1.1b5
 	directory before loading the library or an example.
 
 
-PrologII+ 4.5
+PrologII+ 4.5 and later versions
 
 	prologII.config
 
@@ -354,7 +354,7 @@ Qu-Prolog 6.4
 	interpreter embedding Logtalk).
 
 
-Quintus Prolog 3.3~3.4
+Quintus Prolog 3.3~3.5
 
 	quintus.config
 
