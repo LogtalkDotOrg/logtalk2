@@ -33,8 +33,10 @@ WScript.Echo("");
 WScript.Echo("  " + WshShell.SpecialFolders("MyDocuments") + "\\logtalk");
 WScript.Echo("");
 
-WshSystemEnv.Item("PATH") = WshSystemEnv.Item("PATH") + ";%LOGTALKHOME%\\misc;%LOGTALKHOME%\\xml";
-WScript.Echo("Added Logtalk xml and misc directories to the PATH environment variable.");
+WshSystemEnv.Item("PATH") = WshSystemEnv.Item("PATH") + ";%LOGTALKHOME%\\misc";
+WScript.Echo("Added Logtalk misc directory to the system PATH environment variable.");
+WshUserEnv.Item("PATH") = WshUserEnv.Item("PATH") + ";%LOGTALKUSER%\\xml";
+WScript.Echo("Added Logtalk xml directory to the user PATH environment variable.");
 WScript.Echo("");
 
 FSObject.CopyFile(WshShell.CurrentDirectory + "\\BIBLIOGRAPHY", WshShell.CurrentDirectory + "\\BIBLIOGRAPHY.txt");
@@ -100,6 +102,9 @@ link.Save();
 WScript.Echo('Logtalk installation completed. You will need to restart in order');
 WScript.Echo('to activate the new system environment variables and use the items');
 WScript.Echo('in the new Logtalk program group.');
+WScript.Echo('');
+WScript.Echo('Users should run the shell script cplgtdirs in order to copy the');
+WScript.Echo('Logtalk user-modifiable files to their home directories.');
 WScript.Echo('');
 
 WScript.Quit(0);
