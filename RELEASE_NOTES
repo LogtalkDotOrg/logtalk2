@@ -10,10 +10,12 @@ RELEASE NOTES
 =============
 
 
-2.9.2 - December 12, 2001
+2.9.2 - December 24, 2001
 
 	Corrected a compiler bug where the entity relation tables only recorded 
-	the last entry per entity relation type. 
+	the last entry per entity relation type.
+	
+	Updated config file for CIAO 1.7#162.
 
 
 2.9.1 - December 5, 2001
