@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.16.2
+%  Release 2.16.3
 %
 %  Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 %
@@ -1074,7 +1074,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 16, 2)).
+current_logtalk_flag(version, version(2, 16, 3)).
 
 
 
@@ -1857,11 +1857,12 @@ current_logtalk_flag(version, version(2, 16, 2)).
 % the following clauses correspond to a virtual 
 % compilation of the pseudo-object user
 
-'$lgt_current_object_'(user, user0_, user0__dcl, user0__def, _, static).
 
-user0_(user0__dcl, user0__def, _, _, _, _, _).
+'$lgt_current_object_'(user, '$user0_', '$user0__dcl', '$user0__def', _, static).
 
-user0__dcl(Pred, p(p(p)), no, Type) :-
+'$user0_'('$user0__dcl', '$user0__def', _, _, _, _, _).
+
+'$user0__dcl'(Pred, p(p(p)), Type, no) :-
 	nonvar(Pred),
 	\+ '$lgt_built_in'(Pred),
 	functor(Pred, Functor, Arity),
@@ -1871,7 +1872,7 @@ user0__dcl(Pred, p(p(p)), no, Type) :-
 		;
 		Type = static).
 
-user0__dcl(Pred, p(p(p)), no, Type) :-
+'$user0__dcl'(Pred, p(p(p)), Type, no) :-
 	var(Pred),
 	current_predicate(Functor/Arity),
 	\+ '$lgt_hidden_functor'(Functor),
@@ -1882,12 +1883,12 @@ user0__dcl(Pred, p(p(p)), no, Type) :-
 		;
 		Type = static).
 
-user0__dcl(Pred, p(p(p)), Type, Meta, user, user) :-
-	user0__dcl(Pred, p(p(p)), Type, Meta).
+'$user0__dcl'(Pred, p(p(p)), Type, Meta, user, user) :-
+	'$user0__dcl'(Pred, p(p(p)), Type, Meta).
 
-user0__def(Pred, _, _, _, Pred).
+'$user0__def'(Pred, _, _, _, Pred).
 
-user0__def(Pred, _, _, _, Pred, user).
+'$user0__def'(Pred, _, _, _, Pred, user).
 
 
 
@@ -2770,7 +2771,7 @@ user0__def(Pred, _, _, _, Pred, user).
 
 '$lgt_tr_clause'(Clause) :-
 	'$lgt_entity_'(Type, Entity, Prefix, _),
-	((Type = object, \+ atom(Entity)) ->	% if the entity is a parametric object we need
+	((Type = object, compound(Entity)) ->	% if the entity is a parametric object we need
 		'$lgt_this'(Context, Entity)		% "this" for inline compilation of parameter/2
 		;
 		true),
@@ -3093,7 +3094,7 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_tr_body'(parameter(Arg, Value), TPred, Context) :-
 	'$lgt_this'(Context, This),
 	(var(This) ->
-		TPred = arg(Arg, This, Value)
+		TPred = arg(Arg, This, Value)	% when using parameter/2 in categories
 		;
 		arg(Arg, This, Value),
 		TPred = true),
