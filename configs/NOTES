@@ -370,6 +370,13 @@ SICStus Prolog 3.5~3.10.x
 
 SWI Prolog 3.2.9 & 3.3.x and all later versions
 
+	If you want SWI-Prolog to automatically load Logtalk at startup, then add 
+	the following lines to your pl.in (on Windows) or .plrc (on Unix systems):
+	
+		:- ['path to configs/swi config file'].
+		:- ['path to compiler/logtalk.pl'].
+
+
 	swi329.config
 
 	For version 3.2.9 (or older versions). Supports smart compilation of 
