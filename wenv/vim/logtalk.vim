@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	2003 July 7
+" Last Change:	2004 January 21
 
 
 " Quit when a syntax file was already loaded:
@@ -406,4 +406,4 @@ endif
 
 let b:current_syntax = "logtalk"
 
-set ts=4
+setlocal ts=4
