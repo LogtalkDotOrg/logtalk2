@@ -2,9 +2,9 @@
 :- protocol(systemp).
 
 	:- info([
-		version is 1.7,
+		version is 1.8,
 		author is 'Portable Operating-System Interface (POSI) initiative',
-		date is 2004/6/24,
+		date is 2004/7/19,
 		comment is 'Portable operating system access protocol.']).
 
 	:- public(make_directory/1).
@@ -106,16 +106,17 @@
 			'No read permission to the original file' - permission_error(read, 'Original'),
 			'No write permission to the file copy' - permission_error(write, 'Copy')]]).
 
-	:- public(symbolic_link/2).
-	:- mode(symbolic_link(+atom, -atom), one).
-	:- info(symbolic_link/2, [
-		comment is 'Follows a symbolic link returning the target full path.',
+	:- public(make_symlink/2).
+	:- mode(make_symlink(+atom, +atom), one).
+	:- info(make_symlink/2, [
+		comment is 'Makes a symbolic link.',
 		argnames is ['Symlink', 'Target'],
 		exceptions is [
 			'Symlink is not instantiated' - instantiation_error,
+			'Target is not instantiated' - instantiation_error,
 			'Symlink is neither a variable nor a valid file name' - type_error(file_name, 'Symlink'),
-			'Symlink is a valid file name but not a symbolic link' - type_error(symlink, 'Symlink'),
-			'No access permission to the symbolic link' - permission_error(access, 'Symlink')]]).
+			'Target is neither a variable nor a valid file name' - type_error(file_name, 'Target'),
+			'No permission for creating the symbolic link' - permission_error(write, 'Symlink')]]).
 
 	:- public(file_property/2).
 	:- mode(file_property(+atom, +nonvar), zero_or_one).
@@ -190,12 +191,13 @@
 
 	:- public(convert_time/2).
 	:- mode(convert_time(+number, ?time(?integer, ?integer, ?integer, ?integer, ?integer, ?integer, ?integer)), zero_or_one).
+	:- mode(convert_time(-number, +time(+integer, +integer, +integer, +integer, +integer, +integer, +integer)), zero_or_one).
 	:- info(convert_time/2, [
-		comment is 'Converts a system-dependent time stamp to calendar local date and time.',
+		comment is 'Converts between system-dependent time stamps and calendar local date and time.',
 		argnames is ['Time', time('Year', 'Month', 'Day', 'Hours', 'Mins', 'Secs', 'Microsecs')],
 		exceptions is [
-			'Time is not instantiated' - instantiation_error,
-			'Time is neither a variable nor a valid time stamp' - type_error(time_stamp, 'Variable')]]).
+			'Neither argument is instantiated' - instantiation_error,
+			'Time is neither a variable nor a valid time stamp' - type_error(time_stamp, 'Time')]]).
 
 	:- public(cpu_time/1).
 	:- mode(cpu_time(-number), one).
@@ -209,24 +211,24 @@
 		comment is 'Host name (default is localhost).',
 		argnames is ['Name']]).
 
-	:- public(canonical_os_path/2).
-	:- mode(canonical_os_path(+atom, -atom), one).
-	:- mode(canonical_os_path(-atom, +atom), one).
-	:- info(canonical_os_path/2, [
-		comment is 'Converts between canonical and operating system dependent paths.',
+	:- public(canonical_os_file_name/2).
+	:- mode(canonical_os_file_name(+atom, -atom), one).
+	:- mode(canonical_os_file_name(-atom, +atom), one).
+	:- info(canonical_os_file_name/2, [
+		comment is 'Converts between canonical and operating system dependent file names.',
 		argnames is ['Canonical', 'OS']]).
 
-	:- public(canonical_path/3).
-	:- mode(canonical_path(+atom, -atom, -atom), zero_or_one).
-	:- mode(canonical_path(-atom, +atom, -atom), zero_or_one).
-	:- mode(canonical_path(-atom, -atom, +atom), zero_or_one).
-	:- info(canonical_path/3, [
-		comment is 'Converts between relative, absolute, and URL canonical paths.',
+	:- public(canonical_file_name/3).
+	:- mode(canonical_file_name(+atom, -atom, -atom), zero_or_one).
+	:- mode(canonical_file_name(-atom, +atom, -atom), zero_or_one).
+	:- mode(canonical_file_name(-atom, -atom, +atom), zero_or_one).
+	:- info(canonical_file_name/3, [
+		comment is 'Converts between relative, absolute, and URL canonical file names.',
 		argnames is ['Relative', 'Absolute', 'URL'],
 		exceptions is [
 			'None of the arguments is instantiated' - instantiation_error,
-			'Relative is neither a variable nor a relative path' - type_error(relative_file_name, 'Relative'),
-			'Absolute is neither a variable nor a absolute path' - type_error(absolute_path, 'Absolute'),
+			'Relative is neither a variable nor a relative file name' - type_error(relative_file_name, 'Relative'),
+			'Absolute is neither a variable nor a absolute file name' - type_error(absolute_file name, 'Absolute'),
 			'URL is neither a variable nor a file name URL' - type_error(url_file_name, 'URL')]]).
 
 	:- public(relative_file_name/1).
