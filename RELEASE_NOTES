@@ -18,7 +18,8 @@ RELEASE NOTES
 
 	Added support for a new alias/1 predicate property.
 
-	New config file for JIProlog 3.0 (see the configs/NOTES file for details).
+	New experimental config file for JIProlog 3.0 (see the configs/NOTES file 
+	for details).
 
 	Added a mode bundle for the TextMode 1.0.x (MacOS X) text editor providing 
 	syntax highlighting, folding, and code snippets for editing Logtalk source 
