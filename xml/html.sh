@@ -8,7 +8,7 @@ XP_PATH="/Applications/XML/XP"
 # XP_PATH="/usr/local/XP"
 
 XSLT="lgthtml.xsl"
-
+# XSLT="lgtxhtml.xsl"
 
 if [ -z "$1" ]; then
 	title="Entity documentation index"
