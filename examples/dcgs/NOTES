@@ -28,6 +28,9 @@ objects and categories:
 		parsing of coomand-line shell commands
 	faa
 		command language DCG example (see below for original source)
+	walker
+		parsing of walker movements and calculation of distance
+		travelled
 
 This folder contains two examples of DCGs (bom and faa) adopted with 
 permission from the Amzi! Prolog documentation. The documentation is 
