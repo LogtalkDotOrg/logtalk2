@@ -30,6 +30,11 @@ RELEASE NOTES
 	new info/1 and info/2 documenting directive key, "examples", allowing the 
 	representation of predicate call examples.
 
+	Rewritten the lgtxhtml.xsl, lgthtml.xsl, lgtxml.xsl XSLT scripts in order 
+	to make it easier to define alternative CSS files for the generated HTML 
+	files. Rewritten the lgtpdfa4.xsl and lgtpdfus.xsl XSLT scripts in order 
+	to improve appearance of the generated PDF files.
+
 	Much improved and accurate reporting of non-portable predicate calls when 
 	using the "portability" flag.
 
