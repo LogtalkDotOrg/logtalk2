@@ -29,9 +29,7 @@
 				<regex>\:\-[[:space:]](dynamic)\(</regex>			
 				<regex>\:\-[[:space:]](dynamic)\.</regex>			
 				<regex>\:\-[[:space:]](discontiguous)\(</regex>			
-				<regex>\:\-[[:space:]](public)\(</regex>			
-				<regex>\:\-[[:space:]](protected)\(</regex>			
-				<regex>\:\-[[:space:]](private)\(</regex>			
+				<regex>\:\-[[:space:]](p(ublic|r(otected|ivate)))\(</regex>			
 				<regex>\:\-[[:space:]](metapredicate)\(</regex>			
 				<regex>\:\-[[:space:]](op)\(</regex>			
 				<regex>\:\-[[:space:]](calls)\(</regex>			
@@ -42,8 +40,7 @@
 				<regex>[^A-Za-z0-9_](instantiates)\(</regex>
 				<regex>[^A-Za-z0-9_](specializes)\(</regex>
 				<regex>[^A-Za-z0-9_](extends)\(</regex>
-				<regex>[^A-Za-z0-9_](imports)\(</regex>
-				<regex>[^A-Za-z0-9_](implements)\(</regex>
+				<regex>[^A-Za-z0-9_](imp(orts|lements))\(</regex>
 			</keywords>
 
 			<keywords id="Message Sending Operators" color="#0000ff" useforautocomplete="no">
@@ -57,8 +54,7 @@
 			</keywords>
 
 			<keywords id="Control Constructs" color="#1A1AA6">
-				<regex>[^A-Za-z0-9_](call)\(</regex>
-				<regex>[^A-Za-z0-9_](catch)\(</regex>
+				<regex>[^A-Za-z0-9_](ca(ll|tch))\(</regex>
 				<regex>[^A-Za-z0-9_](throw)\(</regex>
 				<regex>[^A-Za-z0-9_](true)[^A-Za-z0-9_]</regex>
 				<regex>[^A-Za-z0-9_](fail)[^A-Za-z0-9_]</regex>
@@ -69,20 +65,16 @@
 
 			<keywords id="Built-in Methods" color="#1A1AA6">
 				<regex>[^A-Za-z0-9_](parameter)\(</regex>
-				<regex>[^A-Za-z0-9_](self)\(</regex>
-				<regex>[^A-Za-z0-9_](sender)\(</regex>
+				<regex>[^A-Za-z0-9_](se(lf|nder))\(</regex>
 				<regex>[^A-Za-z0-9_](this)\(</regex>
 				<regex>[^A-Za-z0-9_](current_predicate)\(</regex>
 				<regex>[^A-Za-z0-9_](predicate_property)\(</regex>
 				<regex>[^A-Za-z0-9_](abolish)\(</regex>
 				<regex>[^A-Za-z0-9_](assert(a|z))\(</regex>
 				<regex>[^A-Za-z0-9_](clause)\(</regex>
-				<regex>[^A-Za-z0-9_](retract)\(</regex>
-				<regex>[^A-Za-z0-9_](retractall)\(</regex>
-				<regex>[^A-Za-z0-9_](bagof)\(</regex>
-				<regex>[^A-Za-z0-9_](findall)\(</regex>
-				<regex>[^A-Za-z0-9_](forall)\(</regex>
-				<regex>[^A-Za-z0-9_](setof)\(</regex>
+				<regex>[^A-Za-z0-9_](retract(all)?)\(</regex>
+				<regex>[^A-Za-z0-9_]((bag|set)of)\(</regex>
+				<regex>[^A-Za-z0-9_](f(ind|or)all)\(</regex>
 				<regex>[^A-Za-z0-9_](before)\(</regex>
 				<regex>[^A-Za-z0-9_](after)\(</regex>
 				<regex>[^A-Za-z0-9_](phrase)\(</regex>
@@ -101,7 +93,7 @@
 				<regex>[^A-Za-z0-9_]((set|current)_logtalk_flag)\(</regex>
 				<regex>[^A-Za-z0-9_](logtalk_(compile|load))\(</regex>
 				<regex>[^A-Za-z0-9_](forall)\(</regex>
-				<regex>[^A-Za-z0-9_](retractall)\(</regex>
+				<!-- <regex>[^A-Za-z0-9_](retractall)\(</regex> -->
 			</keywords>
 
 			<keywords id="Other Built-in Predicates" color="#1A1AA6">
@@ -110,13 +102,11 @@
 				<regex>[[:space:]]+(\\=)[[:space:]]+</regex>
 				<regex>[^A-Za-z0-9_](unify_with_occurs_check)\(</regex>
 				<!-- Term testing -->
-				<regex>[^A-Za-z0-9_](var)\(</regex>
-				<regex>[^A-Za-z0-9_](atom)\(</regex>
+				<regex>[^A-Za-z0-9_](atom(ic)?)\(</regex>
 				<regex>[^A-Za-z0-9_](integer)\(</regex>
 				<regex>[^A-Za-z0-9_](float)\(</regex>
-				<regex>[^A-Za-z0-9_](atomic)\(</regex>
 				<regex>[^A-Za-z0-9_](compound)\(</regex>
-				<regex>[^A-Za-z0-9_](nonvar)\(</regex>
+				<regex>[^A-Za-z0-9_]((non)?var)\(</regex>
 				<regex>[^A-Za-z0-9_](number)\(</regex>
 				<!-- Term comparison -->
 				<regex>[[:space:]]+(==)[[:space:]]+</regex>
@@ -151,8 +141,7 @@
 				<regex>[^A-Za-z0-9_](mod)\(</regex>
 				<regex>[^A-Za-z0-9_](abs)\(</regex>
 				<regex>[^A-Za-z0-9_](sign)\(</regex>
-				<regex>[^A-Za-z0-9_](float_(integer|fractional)_part)\(</regex>
-				<regex>[^A-Za-z0-9_](float)\(</regex>
+				<regex>[^A-Za-z0-9_](float(_(integer|fractional)_part)?)\(</regex>
 				<regex>[^A-Za-z0-9_](floor)\(</regex>
 				<regex>[^A-Za-z0-9_](truncate)\(</regex>
 				<regex>[^A-Za-z0-9_](round)\(</regex>
@@ -191,15 +180,11 @@
 				<!-- Byte input/output -->
 				<regex>[^A-Za-z0-9_]((get|peek|put)_byte)\(</regex>
 				<!-- Term input/output -->
-				<regex>[^A-Za-z0-9_](read_term)\(</regex>
-				<regex>[^A-Za-z0-9_](read)\(</regex>
-				<regex>[^A-Za-z0-9_](write)\(</regex>
-				<regex>[^A-Za-z0-9_](writeq)\(</regex>
+				<regex>[^A-Za-z0-9_](read(_term)?)\(</regex>
+				<regex>[^A-Za-z0-9_](write(q)?)\(</regex>
 				<regex>[^A-Za-z0-9_](write_(canonical|term))\(</regex>
-				<regex>[^A-Za-z0-9_](op)\(</regex>
-				<regex>[^A-Za-z0-9_](current_op)\(</regex>
-				<regex>[^A-Za-z0-9_](char_conversion)\(</regex>
-				<regex>[^A-Za-z0-9_](current_char_conversion)\(</regex>
+				<regex>[^A-Za-z0-9_]((current_)?op)\(</regex>
+				<regex>[^A-Za-z0-9_]((current_)?char_conversion)\(</regex>
 				<!-- Logic and control -->
 				<regex>(\\\+)[[:space:]]+</regex>
 				<regex>[^A-Za-z0-9_](once)\(</regex>
