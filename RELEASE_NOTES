@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.23.1 - March ??, 2005
 
+	Simplified message sending compilation, improving performance of both 
+	entity compilation and runtime top-level message sending.
+
 	Updated the runtime error handler for top-level ::/2 calls to recognize 
 	non-existing predicate exceptions thrown by XSB, SICStus Prolog, CIAO, 
 	B-Prolog, and recent development versions of SWI-Prolog. Rewritten the 
