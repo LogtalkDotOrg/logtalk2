@@ -1870,6 +1870,11 @@ lgt_load_entity(Entity) :-
 
 
 
+% lgt_report_redefined_entity(+atom)
+%
+% prints a warning if an entity of the same name is already loaded
+% does not work for parametric objects...
+
 lgt_report_redefined_entity(Entity) :-
 	lgt_current_object_(Entity, _, _, _, _),
 	!,
