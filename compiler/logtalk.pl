@@ -1774,15 +1774,30 @@ lgt_load_entity(Entity) :-
 		;
 		true),
 	lgt_compile_entity(Entity),
+	lgt_entity_(Type, _, _, _),
+	(lgt_current_entity(Entity) ->
+		write('WARNING!  redefining '), write(Entity), write(' '),
+		writeq(Type), nl
+		;
+		true),
 	lgt_file_name(prolog, Entity, File),
 	lgt_load_prolog_code(File),
 	(lgt_compiler_option(report, on) ->
 		write('<<<  '), writeq(Entity),
-		lgt_entity_(Type, _, _, _),
 		write(' '), write(Type), write(' loaded'), nl
 		;
 		true).
 
+
+lgt_current_entity(Obj) :-
+	lgt_current_object_(Obj, _, _, _, _).
+
+lgt_current_entity(Ptc) :-
+	lgt_current_protocol_(Ptc, _).
+
+lgt_current_entity(Ctg) :-
+	lgt_current_category_(Ctg, _).
+	
 
 
 % lgt_compile_entities(+list)
