@@ -11,8 +11,8 @@ if (WScript.Arguments.Unnamed.Length > 0) {
 }
 
 WScript.Echo('');
-WScript.Echo('Creating a shortcut named "Logtalk - ECLiPSe" for running Logtalk');
-WScript.Echo('with ECLiPSe...');
+WScript.Echo('Creating a shortcut named "Logtalk - ECLiPSe" for running Logtalk with');
+WScript.Echo('ECLiPSe 5.7 (edit the script if you are using other version)...');
 WScript.Echo('');
 
 var WshShell = new ActiveXObject("WScript.Shell");

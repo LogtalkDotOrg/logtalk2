@@ -11,13 +11,13 @@ if (WScript.Arguments.Unnamed.Length > 0) {
 }
 
 WScript.Echo('');
-WScript.Echo('Creating a shortcut named "Logtalk - SICStus Prolog" for running Logtalk');
-WScript.Echo('with SICStus Prolog 3.11...');
+WScript.Echo('Creating a shortcut named "Logtalk - SICStus Prolog" for running Logtalk with');
+WScript.Echo('SICStus Prolog 3.12 (edit the script if you are using other version)...');
 WScript.Echo('');
 
 var WshShell = new ActiveXObject("WScript.Shell");
 
-var prolog_path = WshShell.RegRead("HKLM\\Software\\SICS\\SICStus3.11_win32\\SP_PATH") + "\\bin\\spwin.exe";
+var prolog_path = WshShell.RegRead("HKLM\\Software\\SICS\\SICStus3.12_win32\\SP_PATH") + "\\bin\\spwin.exe";
 
 var FSObject = new ActiveXObject("Scripting.FileSystemObject");
 
