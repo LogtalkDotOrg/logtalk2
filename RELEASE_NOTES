@@ -24,7 +24,13 @@ RELEASE NOTES
 	for the new MacOS X Xcode developer tool.
 
     Updated VIM syntax coloring configuration file to solve an issue with 
-    the setting of tab stops.
+    the setting of tab stops and added syntax coloring for variables.
+
+	Corrected syntax coloring of character code constants in the configuration 
+	file for the jEdit text editor.
+
+	Added syntax coloring for variables to the configuration files for the 
+	SubEthaEdit and Emacs text editors.
 
     Corrected bug in the shapes example (wrong placement of the declaration 
     of the predicate side/1).
