@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.20.2
+Release 2.20.3
 
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -8,6 +8,12 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.20.3 - September ??, 2004
+
+	Added autocomplete strings for Logtalk methods and for Logtalk and Prolog 
+	built-in predicates to the SubEthaEdit 2.x MacOS X text editor.
 
 
 2.20.2 - August 31, 2004
