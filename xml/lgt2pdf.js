@@ -84,7 +84,6 @@ for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
 	}
 }
 
-WScript.Echo("");
 WScript.Echo("conversion done");
 WScript.Echo("");
 
