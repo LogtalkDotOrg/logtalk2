@@ -1701,7 +1701,7 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 
 
-% '$lgt_phrase'(+ruleset, ?list)
+% '$lgt_phrase'(+object_identifier, +ruleset, ?list, +object_identifier, +scope)
 %
 % phrase/2 built-in method
 
@@ -1713,7 +1713,7 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 
 
-% '$lgt_phrase'(+ruleset, ?list, ?list)
+% '$lgt_phrase'(+object_identifier, +ruleset, ?list, ?list, +object_identifier, +scope)
 %
 % phrase/3 built-in method
 
@@ -1762,6 +1762,20 @@ current_logtalk_flag(version, version(2, 21, 0)).
 			call(Call)
 			;
 			throw(error(existence_error(procedure, Pred), Obj::phrase(Ruleset, Input, Rest), Sender)))).
+
+
+
+% '$lgt_expand_term'(+object_identifier, @term, -clause, +object_identifier, +scope)
+%
+% expand_term/2 built-in method
+
+'$lgt_expand_term'(_, Term, Clause, _, _) :-
+	nonvar(Term),
+	Term = (_ --> _),
+	!,
+	'$lgt_dcgrule_to_clause'(Term, Clause).
+
+'$lgt_expand_term'(_, Term, Term, _, _).
 
 
 
@@ -4025,6 +4039,10 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 % DCG predicates
 
+'$lgt_tr_body'(expand_term(Term, Clause), '$lgt_expand_term'(This, Term, Clause, This, _), '$lgt_dbg_goal'(expand_term(Term, Clause), '$lgt_expand_term'(This, Term, Clause, This, _), Ctx), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
+
 '$lgt_tr_body'(phrase(Ruleset, List), '$lgt_phrase'(This, Ruleset, List, This, _), '$lgt_dbg_goal'(phrase(Ruleset, List), '$lgt_phrase'(This, Ruleset, List, This, _), Ctx), Ctx) :-
 	!,
 	'$lgt_this'(Ctx, This).
@@ -4326,6 +4344,10 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 % DCG predicates
 
+'$lgt_tr_msg'(expand_term(Term, Clause), Obj, '$lgt_expand_term'(Obj, Term, Clause, This, p(p(p))), Ctx) :-
+	!,
+	'$lgt_this'(Ctx, This).
+
 '$lgt_tr_msg'(phrase(Ruleset, List), Obj, '$lgt_phrase'(Obj, Ruleset, List, This, p(p(p))), Ctx) :-
 	!,
 	'$lgt_this'(Ctx, This).
@@ -4479,6 +4501,11 @@ current_logtalk_flag(version, version(2, 21, 0)).
 
 
 % DCG predicates
+
+'$lgt_tr_self_msg'(expand_term(Term, Clause), '$lgt_expand_term'(Self, Term, Clause, This, p(_)), Ctx) :-
+	!,
+	'$lgt_self'(Ctx, Self),
+	'$lgt_this'(Ctx, This).
 
 '$lgt_tr_self_msg'(phrase(Ruleset, List), '$lgt_phrase'(Self, Ruleset, List, This, p(_)), Ctx) :-
 	!,
@@ -6672,6 +6699,7 @@ current_logtalk_flag(version, version(2, 21, 0)).
 '$lgt_built_in_method'(forall(_, _), p(p(p))).
 '$lgt_built_in_method'(setof(_, _, _), p(p(p))).
 
+'$lgt_built_in_method'(expand_term(_, _), p(p(p))).
 '$lgt_built_in_method'(phrase(_, _), p(p(p))).
 '$lgt_built_in_method'(phrase(_, _, _), p(p(p))).
 
