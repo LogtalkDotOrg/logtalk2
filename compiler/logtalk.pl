@@ -155,6 +155,7 @@ Obj::Pred :-
 	'$lgt_sender'(Context, user),
 	'$lgt_this'(Context, user),
 	'$lgt_self'(Context, Obj),
+	'$lgt_metavars'(Context, []),
 	'$lgt_tr_msg'(Obj, Pred, Call, Context),
 	call(Call).
 
@@ -5028,6 +5029,10 @@ user0__def(Pred, _, _, _, Pred, user).
 % '$lgt_fix_redef_built_ins'(+clause, -clause)
 %
 % fix calls to redefined built-in predicates
+
+'$lgt_fix_redef_built_ins'(Pred, Pred) :-
+	var(Pred),
+	!.
 
 '$lgt_fix_redef_built_ins'((Head:-Body), (Head:-Fixed)) :-
 	!,
