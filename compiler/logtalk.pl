@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.15.1
+%  Release 2.15.2
 %
 %  Copyright (c) 1998-2003 Paulo Moura.  All Rights Reserved.
 %
@@ -1088,7 +1088,7 @@ current_logtalk_flag(Flag, Value) :-
 	\+ '$lgt_flag_'(Flag, _),
 	'$lgt_default_flag'(Flag, Value).
 
-current_logtalk_flag(version, version(2, 15, 1)).
+current_logtalk_flag(version, version(2, 15, 2)).
 
 
 
@@ -1626,6 +1626,40 @@ current_logtalk_flag(version, version(2, 15, 1)).
 % method clause/2 to store original clause body
 
 '$lgt_nop'(_).
+
+
+
+% '$lgt_phrase'(+ruleset, ?list)
+%
+% removes duplicated and redeclared predicates 
+
+'$lgt_phrase'(Obj, Ruleset, Input, Sender, Scope) :-
+	catch(
+		'$lgt_phrase'(Obj, Ruleset, Input, [], Sender, Scope),
+		error(Error, _),
+		throw(error(Error, Obj::phrase(Ruleset, Input), Sender))).
+
+
+
+% '$lgt_phrase'(+ruleset, ?list, ?list)
+%
+% removes duplicated and redeclared predicates 
+
+'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, Scope) :-
+	var(Ruleset),
+	throw(error(instantiation_error, Obj::phrase(Ruleset, Input, Rest), Sender)).
+
+'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, Scope) :-
+	\+ atom(Ruleset),
+	throw(error(type_error(atom, Ruleset), Obj::phrase(Ruleset, Input, Rest), Sender)).
+
+'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, Scope) :-
+	Pred =.. [Ruleset, Input, Rest],
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _),
+	'$lgt_once'(Dcl, Pred, PScope, _, _, SContainer, _),
+	once((\+ \+ PScope = Scope; Sender = SContainer)),
+	'$lgt_once'(Def, Pred, Sender, Obj, Obj, Call, _),
+	call(Call).
 
 
 
@@ -2303,6 +2337,11 @@ user0__def(Pred, _, _, _, Pred, user).
 	!,
 	'$lgt_tr_directive'(Dir).
 
+'$lgt_tr_term'((Head --> Body)) :-
+	!,
+	expand_term((Head --> Body), Clause),
+	'$lgt_tr_clause'(Clause).
+
 '$lgt_tr_term'(Fact) :-
 	'$lgt_tr_clause'(Fact).
 
@@ -2935,6 +2974,17 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_this'(Context, This).
 
 
+% DCG predicates
+
+'$lgt_tr_body'(phrase(Ruleset, List), '$lgt_phrase'(This, Ruleset, List, This, _), Context) :-
+	!,
+	'$lgt_this'(Context, This).
+
+'$lgt_tr_body'(phrase(Ruleset, List, Rest), '$lgt_phrase'(This, Ruleset, List, Rest, This, _), Context) :-
+	!,
+	'$lgt_this'(Context, This).
+
+
 % inline methods (translated to a single unification with the corresponding context argument)
 
 '$lgt_tr_body'(sender(Sender), true, Context) :-
@@ -3149,6 +3199,17 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_this'(Context, This).
 
 
+% DCG predicates
+
+'$lgt_tr_msg'(Obj, phrase(Ruleset, List), '$lgt_phrase'(Obj, Ruleset, List, This, p(p(p))), Context) :-
+	!,
+	'$lgt_this'(Context, This).
+
+'$lgt_tr_msg'(Obj, phrase(Ruleset, List, Rest), '$lgt_phrase'(Obj, Ruleset, List, Rest, This, p(p(p))), Context) :-
+	!,
+	'$lgt_this'(Context, This).
+
+
 % invalid goal
 
 '$lgt_tr_msg'(_, Pred, _, _) :-
@@ -3295,6 +3356,19 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_this'(Context, This).
 
 '$lgt_tr_self_msg'(retractall(Pred), '$lgt_retractall'(Self, Pred, This, p(_)), Context) :-
+	!,
+	'$lgt_self'(Context, Self),
+	'$lgt_this'(Context, This).
+
+
+% DCG predicates
+
+'$lgt_tr_self_msg'(phrase(Ruleset, List), '$lgt_phrase'(Self, Ruleset, List, This, p(_)), Context) :-
+	!,
+	'$lgt_self'(Context, Self),
+	'$lgt_this'(Context, This).
+
+'$lgt_tr_self_msg'(phrase(Ruleset, List, Rest), '$lgt_phrase'(Self, Ruleset, List, Rest, This, p(_)), Context) :-
 	!,
 	'$lgt_self'(Context, Self),
 	'$lgt_this'(Context, This).
@@ -5038,6 +5112,9 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_built_in_method'(forall(_, _), p(p(p))).
 '$lgt_built_in_method'(setof(_, _, _), p(p(p))).
 
+'$lgt_built_in_method'(phrase(_, _), p(p(p))).
+'$lgt_built_in_method'(phrase(_, _, _), p(p(p))).
+
 
 
 % Logtalk directives
@@ -5350,6 +5427,9 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_valid_compiler_option'(doctype(Option)) :-
 	once((Option == standalone; Option == local; Option == web)).
 
+'$lgt_valid_compiler_option'(dcg_support(Option)) :-
+	once((Option == on; Option == off)).
+
 
 
 % '$lgt_valid_flag'(@nonvar)
@@ -5372,6 +5452,7 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_valid_flag'(named_anonymous_vars).
 '$lgt_valid_flag'(code_prefix).
 '$lgt_valid_flag'(doctype).
+'$lgt_valid_flag'(dcg_support).
 
 
 
@@ -6039,6 +6120,8 @@ user0__def(Pred, _, _, _, Pred, user).
 	write('  Non portable calls (portability):                        '), write(Portability), nl,
 	'$lgt_default_flag'(report, Report),
 	write('  Compilation report (report):                             '), write(Report), nl,
+	'$lgt_default_flag'(dcg_support, DCG),
+	write('  DCG support (dcg_support):                               '), write(DCG), nl,
 	'$lgt_default_flag'(named_anonymous_vars, Named),
 	write('  Named anonymous variables (named_anonymous_vars):        '), write(Named), nl,
 	'$lgt_default_flag'(code_prefix, Code),
