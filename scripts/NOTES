@@ -10,8 +10,10 @@ This directory contains miscellaneous files used in Logtalk packaging
 and installation:
 
 logtalk.spec
-	specification file for building Linux RPMs
+	specification file for building Linux RPMs (in its current version,
+	it does not support building form the tarball)
 
 copydirs.sh
 	script for copying examples and library directories to the user 
-	home directory
+	home directory (must be runned by the end-user to ensure proper 
+	permissions on the copied files)
