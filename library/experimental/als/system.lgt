@@ -38,8 +38,16 @@
 		{exists_file(File)}.
 
 
-	file_property(File, Property) :-
+	file_modtime(File, Time) :-
+		{file_status(File, Status), dmember(mod_time=Time, Status)}.
+
+
+	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
 		{fail}.
+
+
+	file_size(File, Size) :-
+		{file_status(File, Status), dmember(size=Size, Status)}.
 
 
 	delete_file(File) :-

@@ -41,8 +41,16 @@
 		{file_exists(File)}.
 
 
-	file_property(File, Property) :-
-		{file_property(File, Property)}.
+	file_modtime(File, Time) :-
+		{stat(File, _, _, Time, _, _, _, _, _)}.
+
+
+	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
+		{fail}.
+
+
+	file_size(File, Size) :-
+		{stat(File, _, _, _, Size, _, _, _, _)}.
 
 
 	delete_file(File) :-
