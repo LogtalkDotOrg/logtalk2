@@ -466,9 +466,9 @@ abolish_object(Obj) :-
 			retractall('$lgt_implements_protocol_'(Obj, _, _)),
 			retractall('$lgt_imports_category_'(Obj, _, _)),
 			retractall('$lgt_debugging_'(Obj)),
-			retractall('$lgt_obj_lookup_cache_'(Obj, _, _, _, _, _)),
-			retractall('$lgt_self_lookup_cache_'(Obj, _, _, _, _, _)),
-			retractall('$lgt_super_lookup_cache_'(Obj, _, _, _, _, _))
+			retractall('$lgt_obj_lookup_cache_'(_, _, _, _, _, _)),
+			retractall('$lgt_self_lookup_cache_'(_, _, _, _, _, _)),
+			retractall('$lgt_super_lookup_cache_'(_, _, _, _, _, _))
 			;
 			throw(error(permission_error(modify, static_object, Obj), abolish_object(Obj))))
 		;
@@ -498,7 +498,10 @@ abolish_category(Ctg) :-
 			abolish(Def/5),
 			abolish(Prefix/2),
 			retractall('$lgt_current_category_'(Ctg, _, _)),
-			retractall('$lgt_implements_protocol_'(Ctg, _, _))
+			retractall('$lgt_implements_protocol_'(Ctg, _, _)),
+			retractall('$lgt_obj_lookup_cache_'(_, _, _, _, _, _)),
+			retractall('$lgt_self_lookup_cache_'(_, _, _, _, _, _)),
+			retractall('$lgt_super_lookup_cache_'(_, _, _, _, _, _))
 			;
 			throw(error(permission_error(modify, static_category, Ctg), abolish_category(Ctg))))
 		;
@@ -524,7 +527,10 @@ abolish_protocol(Ptc) :-
 			abolish(Dcl/5),
 			abolish(Prefix/1),
 			retractall('$lgt_current_protocol_'(Ptc, _, _)),
-			retractall('$lgt_extends_protocol_'(Ptc, _, _))
+			retractall('$lgt_extends_protocol_'(Ptc, _, _)),
+			retractall('$lgt_obj_lookup_cache_'(_, _, _, _, _, _)),
+			retractall('$lgt_self_lookup_cache_'(_, _, _, _, _, _)),
+			retractall('$lgt_super_lookup_cache_'(_, _, _, _, _, _))
 			;
 			throw(error(permission_error(modify, static_protocol, Ptc), abolish_protocol(Ptc))))
 		;
@@ -2567,9 +2573,9 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	'$lgt_file_name'(prolog, Entity, File),
 	'$lgt_load_prolog_code'(File),
 	'$lgt_report_loaded_entity'(Entity),
-	retractall('$lgt_obj_lookup_cache_'(Entity, _, _, _, _, _)),
-	retractall('$lgt_self_lookup_cache_'(Entity, _, _, _, _, _)),
-	retractall('$lgt_super_lookup_cache_'(Entity, _, _, _, _, _)).
+	retractall('$lgt_obj_lookup_cache_'(_, _, _, _, _, _)),
+	retractall('$lgt_self_lookup_cache_'(_, _, _, _, _, _)),
+	retractall('$lgt_super_lookup_cache_'(_, _, _, _, _, _)).
 
 
 
