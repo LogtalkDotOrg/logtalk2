@@ -26,8 +26,8 @@ RELEASE NOTES
 
 	Improved installation instructions and installation scripts documentation.
 
-	Added documentation to the user manual on describing predicate possible 
-	exceptions using the info/2 directive.
+	Added documentation to the user manual on describing predicate exceptions 
+	using the info/2 directive.
 
 
 2.22.1 - December 6, 2004
