@@ -10,4 +10,5 @@
 		sentence,
 		url,
 		xml,
-		shell])). 
+		shell,
+		walker])). 
