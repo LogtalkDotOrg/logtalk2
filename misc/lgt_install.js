@@ -11,23 +11,34 @@ if (WScript.Arguments.Unnamed.Length > 0) {
 }
 
 WScript.Echo('');
-WScript.Echo('Installing Logtalk...');
+WScript.Echo('Completing Logtalk installation...');
 WScript.Echo('');
 
 var WshShell = new ActiveXObject("WScript.Shell");
 var WshSystemEnv = WshShell.Environment("SYSTEM");
+var WshUserEnv = WshShell.Environment("USER");
 var FSObject = new ActiveXObject("Scripting.FileSystemObject");
 
 WshShell.CurrentDirectory = "..";
-WshSystemEnv.Item("LOGTALKHOME") = WshShell.CurrentDirectory;
-WshSystemEnv.Item("LOGTALKUSER") = WshShell.SpecialFolders("MyDocuments") + "\\logtalk";
 
-FSObject.MoveFile(WshShell.CurrentDirectory + "\\BIBLIOGRAPHY", WshShell.CurrentDirectory + "\\BIBLIOGRAPHY.txt");
-FSObject.MoveFile(WshShell.CurrentDirectory + "\\LICENSE", WshShell.CurrentDirectory + "\\LICENSE.txt");
-FSObject.MoveFile(WshShell.CurrentDirectory + "\\QUICK_START", WshShell.CurrentDirectory + "\\QUICK_START.txt");
-FSObject.MoveFile(WshShell.CurrentDirectory + "\\README", WshShell.CurrentDirectory + "\\README.txt");
-FSObject.MoveFile(WshShell.CurrentDirectory + "\\RELEASE_NOTES", WshShell.CurrentDirectory + "\\RELEASE_NOTES.txt");
-FSObject.MoveFile(WshShell.CurrentDirectory + "\\UPGRADING", WshShell.CurrentDirectory + "\\UPGRADING.txt");
+WshSystemEnv.Item("LOGTALKHOME") = WshShell.CurrentDirectory;
+WScript.Echo("Defined system environment variable LOGTALKHOME pointing to:");
+WScript.Echo("");
+WScript.Echo("  " + WshShell.CurrentDirectory);
+WScript.Echo("");
+
+WshUserEnv.Item("LOGTALKUSER") = WshShell.SpecialFolders("MyDocuments") + "\\logtalk";
+WScript.Echo("Defined user environment variable LOGTALKUSER pointing to:");
+WScript.Echo("");
+WScript.Echo("  " + WshShell.SpecialFolders("MyDocuments") + "\\logtalk");
+WScript.Echo("");
+
+FSObject.CopyFile(WshShell.CurrentDirectory + "\\BIBLIOGRAPHY", WshShell.CurrentDirectory + "\\BIBLIOGRAPHY.txt");
+FSObject.CopyFile(WshShell.CurrentDirectory + "\\LICENSE", WshShell.CurrentDirectory + "\\LICENSE.txt");
+FSObject.CopyFile(WshShell.CurrentDirectory + "\\QUICK_START", WshShell.CurrentDirectory + "\\QUICK_START.txt");
+FSObject.CopyFile(WshShell.CurrentDirectory + "\\README", WshShell.CurrentDirectory + "\\README.txt");
+FSObject.CopyFile(WshShell.CurrentDirectory + "\\RELEASE_NOTES", WshShell.CurrentDirectory + "\\RELEASE_NOTES.txt");
+FSObject.CopyFile(WshShell.CurrentDirectory + "\\UPGRADING", WshShell.CurrentDirectory + "\\UPGRADING.txt");
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 
