@@ -24,7 +24,7 @@
 
 
 <xsl:template match="/">
-	<xsl:processing-instruction name="xml-stylesheet">type="text/css" href="styles.css"</xsl:processing-instruction>
+	<xsl:processing-instruction name="xml-stylesheet">href="logtalk.css" type="text/css"</xsl:processing-instruction>
 
 	<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 	<head>

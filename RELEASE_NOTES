@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.19.1
+Release 2.19.2
 
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -8,6 +8,12 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.19.2 - August ??, 2004
+
+	Corrected a bug in the lgtxhtml.xsl XSLT file where a wrong reference to 
+	the Logtalk CSS file is being used in the xml-stylesheet tag.
 
 
 2.19.1 - August 2, 2004
