@@ -50,6 +50,10 @@
 		{fail}.
 
 
+	file_type(File, Type) :-
+		{fail}.
+
+
 	delete_file(File) :-
 		{atom_concat('rm ', File, Command), os(system(Command))}.
 

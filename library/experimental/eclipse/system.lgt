@@ -54,7 +54,15 @@
 
 
 	file_type(File, Type) :-
-		{fail}.
+		{get_file_info(File, mode, Mode)},
+		Mode /\ 8'170000 =:= Result,
+		file_mode_type(Result, Type).
+
+	file_mode_type(8'100000, regular) :- !.
+	file_mode_type(8'040000, directory) :- !.
+	file_mode_type(8'140000, socket) :- !.
+	file_mode_type(8'120000, symlink) :- !.
+	file_mode_type(_, unknown).
 
 
 	delete_file(File) :-
