@@ -2079,7 +2079,11 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_spy'(Preds) :-
 	nonvar(Preds),
 	'$lgt_dbg_spy_aux'(Preds),
-	write('Predicate spy points set.'), nl.
+	write('Predicate spy points set.'), nl,
+	('$lgt_dbg_debugging_' ->
+		true
+		;
+		'$lgt_dbg_debug').
 
 
 '$lgt_dbg_spy_aux'([]).
@@ -2104,7 +2108,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 '$lgt_dbg_nospy'(Preds) :-
 	'$lgt_dbg_nospy_aux'(Preds),
-	write('All matching predicate spy points deleted.'), nl.
+	write('All matching predicate spy points removed.'), nl.
 
 
 '$lgt_dbg_nospy_aux'(Preds) :-
@@ -2126,19 +2130,23 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 '$lgt_dbg_spy'(Sender, This, Self, Goal) :-
 	asserta('$lgt_dbg_spying_'(Sender, This, Self, Goal)),
-	write('Context spy point set.'), nl.
+	write('Context spy point set.'), nl,
+	('$lgt_dbg_debugging_' ->
+		true
+		;
+		'$lgt_dbg_debug').
 
 
 '$lgt_dbg_nospy'(Sender, This, Self, Goal) :-
 	retractall('$lgt_dbg_spying_'(Sender, This, Self, Goal)),
-	write('All matching context spy points deleted.'), nl.
+	write('All matching context spy points removed.'), nl.
 
 
 '$lgt_dbg_nospyall' :-
 	retractall('$lgt_dbg_spying_'(_)),
-	write('All predicate spy points deleted.'), nl,
+	write('All predicate spy points removed.'), nl,
 	retractall('$lgt_dbg_spying_'(_, _, _, _)),
-	write('All context spy points deleted.'), nl.
+	write('All context spy points removed.'), nl.
 
 
 '$lgt_dbg_leash'(Value) :-
@@ -2212,7 +2220,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	'$lgt_sender'(Ctx, Sender),
 	'$lgt_this'(Ctx, This),
 	'$lgt_self'(Ctx, Self),
-	\+ \+ '$lgt_dbg_spying_'(Sender, This, Self, Goal))).
+	\+ \+ '$lgt_dbg_spying_'(Sender, This, Self, Goal).
 
 
 '$lgt_dbg_fact'(Fact, Ctx) :-
@@ -2278,10 +2286,11 @@ current_logtalk_flag(version, version(2, 17, 0)).
 		'$lgt_dbg_do_port_option'(Option, Goal, Ctx, Action)
 		;
 		('$lgt_dbg_tracing_' ->
-			'$lgt_dbg_write_port_name'(Port), writeq(Goal), nl,
-			Action = true
+			'$lgt_dbg_write_port_name'(Port), writeq(Goal), nl
 			;
-			Action = true)),
+			true),
+		Action = true
+	),
 	!.
 
 '$lgt_dbg_port'(_, _, _, true).
