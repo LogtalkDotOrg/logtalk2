@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.21.1 - September ??, 2004
+2.21.1 - September 27, 2004
 
 	Added experimental support for a new built-in method, expand_term/2, which 
 	allows access to the Logtalk grammar rule translator. Corrected bug in the 
