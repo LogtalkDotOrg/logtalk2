@@ -6,24 +6,22 @@ consult the URL http://www.kprolog.com/en/logical_assignment/
 
 As a derivative work, this file is licensed under the Open Software License 
 version 2.1 (http://opensource.org/licenses/osl-2.1.php).
-
-Note: I have added a new enumeration operator, =>>/2, described below, not 
-found in the original code.
 */
 
 
 :-op(100, xfx, '<=').
 :-op(100, xfx, '=>').
-:-op(100, xfx, '=>>').
 
 
 :- category(assignvars).
+
 
 	:- info([
 		version is 1.0,
 		author is 'Nobukuni Kino and Paulo Moura',
 		date is 2005/1/7,
 		comment is 'Assignable variables (supporting logical, backtracable assignement of non-variable terms).']).
+
 
 	:- public(assignable/1).
 	:- mode(assignable(-assignvar), one).
@@ -66,9 +64,11 @@ found in the original code.
 		exceptions is [
 			'Variable is not instantiated' - instantiation_error]]).
 
+
 	:-op(100, xfx, <=).
 	:-op(100, xfx, =>).
 	:-op(100, xfx, =>>).
+
 
 	assignable(Assig) :-
 		nonvar(Assig),
@@ -77,6 +77,7 @@ found in the original code.
 		throw(error(type_error(variable, Assig), Self::assignable(Assig), Sender)).
 
 	assignable([_| _]).
+
 
 	assignable(Assig, Init) :-
 		nonvar(Assig),
@@ -92,6 +93,7 @@ found in the original code.
 
 	assignable([_, Init| _], Init).
 
+
 	Assig <= Value :-
 		var(Value),
 		self(Self),
@@ -103,6 +105,7 @@ found in the original code.
 			Tail <= Value
 			;
 			Tail = [Value| _].
+
 
 	Assig => Value :-
 		var(Assig),
@@ -116,19 +119,5 @@ found in the original code.
 			;
 			Current = Value.
 
-	Assig =>> Value :-
-		var(Assig),
-		self(Self),
-		sender(Sender),
-		throw(error(instantiation_error, Self::Assig =>> Value, Sender)).
-
-	[_| Tail] =>> Value :-
-		enumerate(Tail, Value).
-
-	enumerate([_| Tail], Value) :-
-		nonvar(Tail),
-		enumerate(Tail, Value).
-
-	enumerate([Value| _], Value).
 
 :- end_category.
