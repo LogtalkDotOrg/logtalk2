@@ -27,7 +27,9 @@ chmod a+x lgt2192/misc/*.sh
 chmod a+x lgt2192/xml/*.sh
 ln -sf lgt2192 logtalk
 cd bin
-ln -sf ../lgt2192/misc/cplgtdirs.sh cplgtdirs.sh
+ln -sf ../lgt2192/misc/cplgtdirs.sh cplgtdirs
+ln -sf ../lgt2192/xml/lgt2pdf.sh lgt2pdf
+ln -sf ../lgt2192/xml/lgt2html.sh lgt2html
 %clean
 %files
 %defattr(-,root,users)
@@ -48,4 +50,6 @@ ln -sf ../lgt2192/misc/cplgtdirs.sh cplgtdirs.sh
 /usr/local/lgt2192/wenv
 /usr/local/lgt2192/xml
 /usr/local/logtalk
-/usr/local/bin/cplgtdirs.sh
+/usr/local/bin/cplgtdirs
+/usr/local/bin/lgt2pdf
+/usr/local/bin/lgt2html
