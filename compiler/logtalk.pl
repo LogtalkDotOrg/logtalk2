@@ -8,7 +8,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-:- built_in.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -47,8 +47,8 @@
 
 % tables of defined events and monitors
 
-:- dynamic('$lgt_before_'/5).					% '$lgt_before_'(Obj, Msg, Sender, Monitor, Call)
-:- dynamic('$lgt_after_'/5).					% '$lgt_after_'(Obj, Msg, Sender, Monitor, Call)
+:- dynamic('$lgt_before_'/5).				% '$lgt_before_'(Obj, Msg, Sender, Monitor, Call)
+:- dynamic('$lgt_after_'/5).				% '$lgt_after_'(Obj, Msg, Sender, Monitor, Call)
 
 
 
@@ -4849,7 +4849,8 @@ user0__def(Pred, _, _, _, Pred, user).
 	number_codes(Arity, Codes),
 	atom_codes(Atom, Codes),
 	atom_concat(Functor, Atom, Aux),
-	atom_concat(Aux, '_', Prefix),
+	atom_concat('$', Aux, Aux2),
+	atom_concat(Aux2, '_', Prefix),
 	atom_concat(Prefix, '_dcl', Dcl),
 	atom_concat(Prefix, '_def', Def),
 	atom_concat(Prefix, '_super', Super),
@@ -4869,7 +4870,8 @@ user0__def(Pred, _, _, _, Pred, user).
 	number_codes(Arity, Codes),
 	atom_codes(Atom, Codes),
 	atom_concat(Functor, Atom, Aux),
-	atom_concat(Aux, '_', Prefix),
+	atom_concat('$', Aux, Aux2),
+	atom_concat(Aux2, '_', Prefix),
 	atom_concat(Prefix, '_dcl', Dcl).
 
 
@@ -4883,7 +4885,8 @@ user0__def(Pred, _, _, _, Pred, user).
 	number_codes(Arity, Codes),
 	atom_codes(Atom, Codes),
 	atom_concat(Functor, Atom, Aux),
-	atom_concat(Aux, '_', Prefix),
+	atom_concat('$', Aux, Aux2),
+	atom_concat(Aux2, '_', Prefix),
 	atom_concat(Prefix, '_dcl', Dcl),
 	atom_concat(Prefix, '_def', Def).
 
