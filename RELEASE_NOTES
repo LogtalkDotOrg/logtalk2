@@ -13,8 +13,8 @@ RELEASE NOTES
 2.22.6 - February 18, 2005
 
 	Optimized the code generated for local calls to the built-in predicates 
-	asserta/1, assertz/1, retract/1, and retractall/1, when the argument 
-	is dynamic predicate declared by a scope directive in the object making 
+	asserta/1, assertz/1, retract/1, and retractall/1, when the argument is 
+	a dynamic predicate declared by a scope directive in the object making 
 	the calls.
 
 	Added caching of predicate compiled forms for dynamic facts when used 
