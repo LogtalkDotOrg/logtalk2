@@ -48,7 +48,7 @@ favorite Prolog compilers are supported (if that is not the case, don't
 worry: just follow the steps described in the "QUICK_START" file). The third 
 step is for each user to make a local copy of the Logtalk user-modifiable 
 files to its home directory. This allows each user to easily customize 
-Logtalk to its needs. This copy can be easily made by instructing end-users 
+Logtalk to its needs. These copies can be easily made by instructing end-users 
 to simply run the shell command "cplgtdirs" (the corresponding scripts are 
 described in the "misc/NOTES" file).
 
