@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.13.0 - June 13, 2002
+2.13.0 - June 15, 2002
 
 	Logtalk now outputs Prolog code using write_canonical/2 instead of 
 	write_term/3. Goals are better portability of the generated Prolog files 
