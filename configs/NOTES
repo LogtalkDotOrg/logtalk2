@@ -347,7 +347,7 @@ Qu-Prolog 4.3, 6.3
 	of floats by either integers or (quoted) atoms. In Unix-like systems, you
 	may perform the changes by running the following command:
 	
-	find lgt2160 -name "*.lgt" -exec perl -i -e "s/version is (\d)\.(\d)/version is '\1\.\2'/" {} \;
+	find lgt2160 -name "*.lgt" -exec perl -pi -e "s/version is (\d)\.(\d)/version is '\1\.\2'/" {} \;
 
 	In order to compile and load both the config file and the Logtalk compiler,
 	the following sequence of steps is advised. First rename the config file:
@@ -356,7 +356,7 @@ Qu-Prolog 4.3, 6.3
 	
 	Second, start Qu-Prolog using adequate switches. For example:
 	
-		% qp -s 2048 -d 1024
+		% qp -s 2048 -d 1024 -h 2000
 	
 	Next, compile and load the config file using:
 	
