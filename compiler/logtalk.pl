@@ -132,18 +132,12 @@
 :- dynamic('$lgt_global_op_'/3).				% '$lgt_global_op_'(Priority, Specifier, Operator)
 :- dynamic('$lgt_local_op_'/3).					% '$lgt_local_op_'(Priority, Specifier, Operator)
 
-:- dynamic('$lgt_dbg_leashing_'/1).				% '$lgt_dbg_leashing_'(Port)
-:- dynamic('$lgt_dbg_leashing_'/2).				% '$lgt_dbg_leashing_'(Object, Port)
+:- dynamic('$lgt_debugging_'/1).				% '$lgt_debugging_'(Entity)
 
 :- dynamic('$lgt_dbg_debugging_'/0).			% '$lgt_dbg_debugging_'
-:- dynamic('$lgt_dbg_debugging_'/1).			% '$lgt_dbg_debugging_'(Object)
-
 :- dynamic('$lgt_dbg_tracing_'/0).				% '$lgt_dbg_tracing_'
-:- dynamic('$lgt_dbg_tracing_'/1).				% '$lgt_dbg_tracing_'(Object)
-
-:- dynamic('$lgt_dbg_spying_'/2).				% '$lgt_dbg_spying_'(Object, Functor/Arity)
-
-:- dynamic('$lgt_debugging_'/1).				% '$lgt_debugging_'(Entity).
+:- dynamic('$lgt_dbg_spying_'/4).				% '$lgt_dbg_spying_'(Sender, This, Selg, Goal)
+:- dynamic('$lgt_dbg_leashing_'/1).				% '$lgt_dbg_leashing_'(Port)
 
 
 
@@ -1955,168 +1949,128 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 % debugger public protocol
 
-'$lgt_po_debugger0__dcl'(init, p(p(p)), static, no).
+'$lgt_po_debugger0__dcl'(reset, p(p(p)), static, no).
 
 '$lgt_po_debugger0__dcl'(debug, p(p(p)), static, no).
 '$lgt_po_debugger0__dcl'(nodebug, p(p(p)), static, no).
 
-'$lgt_po_debugger0__dcl'(debug(_), p(p(p)), static, no).
-'$lgt_po_debugger0__dcl'(nodebug(_), p(p(p)), static, no).
-
 '$lgt_po_debugger0__dcl'(debugging, p(p(p)), static, no).
-'$lgt_po_debugger0__dcl'(debugging(_), p(p(p)), static, no).
 
 '$lgt_po_debugger0__dcl'(trace, p(p(p)), static, no).
 '$lgt_po_debugger0__dcl'(notrace, p(p(p)), static, no).
 
-'$lgt_po_debugger0__dcl'(trace(_), p(p(p)), static, no).
-'$lgt_po_debugger0__dcl'(notrace(_), p(p(p)), static, no).
-
-'$lgt_po_debugger0__dcl'(spy(_, _), p(p(p)), static, no).
-'$lgt_po_debugger0__dcl'(nospy(_, _), p(p(p)), static, no).
-
+'$lgt_po_debugger0__dcl'(spy(_, _, _, _), p(p(p)), static, no).
+'$lgt_po_debugger0__dcl'(nospy(_, _, _, _), p(p(p)), static, no).
 '$lgt_po_debugger0__dcl'(nospyall, p(p(p)), static, no).
-'$lgt_po_debugger0__dcl'(nospyall(_), p(p(p)), static, no).
 
 '$lgt_po_debugger0__dcl'(leash(_), p(p(p)), static, no).
-'$lgt_po_debugger0__dcl'(leash(_, _), p(p(p)), static, no).
 
 
 '$lgt_po_debugger0__dcl'(Pred, p(p(p)), Type, Meta, debugger, debugger) :-
 	'$lgt_po_debugger0__dcl'(Pred, p(p(p)), Type, Meta).
 
 
-'$lgt_po_debugger0__def'(init, _, _, _, '$lgt_dbg_init').
+'$lgt_po_debugger0__def'(reset, _, _, _, '$lgt_dbg_reset').
 '$lgt_po_debugger0__def'(debug, _, _, _, '$lgt_dbg_debug').
-'$lgt_po_debugger0__def'(debug(Obj), _, _, _, '$lgt_dbg_debug'(Obj)).
-'$lgt_po_debugger0__def'(debugging, _, _, _, '$lgt_dbg_debugging_').
-'$lgt_po_debugger0__def'(debugging(Obj), _, _, _, '$lgt_dbg_debugging_'(Obj)).
+'$lgt_po_debugger0__def'(debugging, _, _, _, '$lgt_dbg_debugging').
 '$lgt_po_debugger0__def'(nodebug, _, _, _, '$lgt_dbg_nodebug').
-'$lgt_po_debugger0__def'(nodebug(Obj), _, _, _, '$lgt_dbg_nodebug'(Obj)).
 '$lgt_po_debugger0__def'(trace, _, _, _, '$lgt_dbg_trace').
-'$lgt_po_debugger0__def'(trace(Obj), _, _, _, '$lgt_dbg_trace'(Obj)).
 '$lgt_po_debugger0__def'(notrace, _, _, _, '$lgt_dbg_notrace').
-'$lgt_po_debugger0__def'(notrace(Obj), _, _, _, '$lgt_dbg_notrace'(Obj)).
-'$lgt_po_debugger0__def'(spy(Obj, Preds), _, _, _, '$lgt_dbg_spy'(Obj, Preds)).
-'$lgt_po_debugger0__def'(nospy(Obj, Preds), _, _, _, '$lgt_dbg_nospy'(Obj, Preds)).
+'$lgt_po_debugger0__def'(spy(Sender, This, Self, Goal), _, _, _, '$lgt_dbg_spy'(Sender, This, Self, Goal)).
+'$lgt_po_debugger0__def'(nospy(Sender, This, Self, Goal), _, _, _, '$lgt_dbg_nospy'(Sender, This, Self, Goal)).
 '$lgt_po_debugger0__def'(nospyall, _, _, _, '$lgt_dbg_nospyall').
-'$lgt_po_debugger0__def'(nospyall(Obj), _, _, _, '$lgt_dbg_nospyall'(Obj)).
 '$lgt_po_debugger0__def'(leash(Ports), _, _, _, '$lgt_dbg_leash'(Ports)).
-'$lgt_po_debugger0__def'(leash(Obj, Ports), _, _, _, '$lgt_dbg_leash'(Obj, Ports)).
 
 
 '$lgt_po_debugger0__def'(Pred, _, _, _, Call, debugger) :-
 	'$lgt_po_debugger0__def'(Pred, _, _, _, Call).
 
 
-'$lgt_dbg_init' :-
+'$lgt_dbg_reset' :-
 	'$lgt_dbg_nospyall',
-	'$lgt_dbg_nodebug',
 	'$lgt_dbg_leash'(full).
 
 
 '$lgt_dbg_debug' :-
 	retractall('$lgt_dbg_debugging_'),
-	retractall('$lgt_dbg_debugging_'(_)),
 	assertz('$lgt_dbg_debugging_'),
+	retractall('$lgt_dbg_tracing_'),
 	write('Debugger is on: showing spy points for all objects compiled in debug mode.'), nl.
-
-
-'$lgt_dbg_debug'(Obj) :-
-	retractall('$lgt_dbg_debugging_'(Obj)),
-	assertz('$lgt_dbg_debugging_'(Obj)),
-	write('Debugger is on: showing spy points for object '), writeq(Obj), write('.'), nl.
-
-
-'$lgt_dbg_debugging_'(Obj) :-
-	'$lgt_dbg_debugging_'(Obj).
 
 
 '$lgt_dbg_nodebug' :-
 	retractall('$lgt_dbg_debugging_'),
-	retractall('$lgt_dbg_debugging_'(_)),
 	retractall('$lgt_dbg_tracing_'),
-	retractall('$lgt_dbg_tracing_'(_)),
 	write('Debugger is off.'), nl.
-
-
-'$lgt_dbg_nodebug'(Obj) :-
-	retractall('$lgt_dbg_debugging_'(Obj)),
-	retractall('$lgt_dbg_tracing_'(Obj)),
-	write('Debugging is off for object '), write(Obj), write('.'), nl.
 
 
 '$lgt_dbg_trace' :-
 	retractall('$lgt_dbg_tracing_'),
-	retractall('$lgt_dbg_tracing_'(_)),
 	assertz('$lgt_dbg_tracing_'),
+	retractall('$lgt_dbg_debugging_'),
 	assertz('$lgt_dbg_debugging_'),
 	write('Debugger is on: tracing everything for all objects compiled in debug mode.'), nl.
 
 
-'$lgt_dbg_trace'(Obj) :-
-	retractall('$lgt_dbg_tracing_'(Obj)),
-	assertz('$lgt_dbg_tracing_'(Obj)),
-	write('Debugger is on: tracing everything for object '), writeq(Obj), write('.'), nl.
-
-
 '$lgt_dbg_notrace' :-
 	retractall('$lgt_dbg_tracing_'),
-	retractall('$lgt_dbg_tracing_'(_)),
 	retractall('$lgt_dbg_debugging_'),
-	retractall('$lgt_dbg_debugging_'(_)),
 	write('Debugger is off.'), nl.
 
 
-'$lgt_dbg_notrace'(Obj) :-
-	retractall('$lgt_dbg_tracing_'(Obj)),
-	retractall('$lgt_dbg_debugging_'(Obj)),
-	write('Debugging is off for object '), write(Obj), write('.'), nl.
+'$lgt_dbg_debugging' :-
+	('$lgt_dbg_debugging_' ->
+		write('Debugger is switched on.'), nl
+		;
+		write('Debugger is switched off.'), nl),
+	('$lgt_dbg_tracing_' ->
+		write('Debugger mode set to tracing.'), nl
+		;
+		true),
+	('$lgt_dbg_spying_'(_, _, _, _) ->
+		write('Spy points:'), nl,
+		forall(
+			'$lgt_dbg_spying_'(Sender, This, Self, Goal),
+			(write('  '), write((Sender, This, Self, Goal)), nl))
+		;
+		write('No spy points are defined.'), nl),
+	write('Leashed ports: '),
+	('$lgt_dbg_leashing_'(_) ->
+		forall(
+			'$lgt_dbg_leashing_'(Port),
+			(write(Port), write(' ')))
+		;
+		write('(none)')),
+	nl.
 
 
-'$lgt_dbg_spy'(Obj, Preds) :-
-	'$lgt_valid_pred_ind_list'(Preds),
-	'$lgt_dbg_set_sps'(Preds, Obj),
-	write('Spy points set for object '), write(Obj), write('.'), nl.
+'$lgt_dbg_spying'(Sender, This, Self, Goal) :-
+	'$lgt_dbg_spying_'(Sender, This, Self, Goal).
+
+'$lgt_dbg_spying'(_, _, _, _) :-
+	write('No (more) spy points.'), nl.
 
 
-'$lgt_dbg_set_sps'([], _).
-
-'$lgt_dbg_set_sps'([Pred| Preds], Obj) :-
-	retractall('$lgt_dbg_spying_'(Obj, Pred)),
-	assertz('$lgt_dbg_spying_'(Obj, Pred)),
-	'$lgt_dbg_set_sps'(Preds, Obj).
+'$lgt_dbg_spy'(Sender, This, Self, Goal) :-
+	asserta('$lgt_dbg_spying_'(Sender, This, Self, Goal)),
+	write('Spy point set.'), nl.
 
 
-'$lgt_dbg_nospy'(Obj, Preds) :-
-	'$lgt_valid_pred_ind_list'(Preds),
-	'$lgt_dbg_remove_sps'(Preds, Obj),
-	write('Spy points removed for object '), write(Obj), write('.'), nl.
-
-
-'$lgt_dbg_remove_sps'([], _).
-
-'$lgt_dbg_remove_sps'([Pred| Preds], Obj) :-
-	retractall('$lgt_dbg_spying_'(Obj, Pred)),
-	'$lgt_dbg_remove_sps'(Preds, Obj).
+'$lgt_dbg_nospy'(Sender, This, Self, Goal) :-
+	retractall('$lgt_dbg_spying_'(Sender, This, Self, Goal)),
+	write('All matching spy points deleted.'), nl.
 
 
 '$lgt_dbg_nospyall' :-
-	retractall('$lgt_dbg_spying_'(_, _)),
-	write('Spy points removed for all objects.'), nl.
-
-
-'$lgt_dbg_nospyall'(Obj) :-
-	retractall('$lgt_dbg_spying_'(Obj, _)),
-	write('Removed all spy points for object '), writeq(Obj), write('.'), nl.
+	retractall('$lgt_dbg_spying_'(_, _, _, _)),
+	write('All spy points deleted.'), nl.
 
 
 '$lgt_dbg_leash'(Value) :-
 	'$lgt_dbg_valid_leash_value'(Value, Ports),
 	retractall('$lgt_dbg_leashing_'(_)),
-	retractall('$lgt_dbg_leashing_'(_, _)),
 	'$lgt_dbg_set_leash_ports'(Ports),
-	write('Debugger leash ports set for all objects.'), nl.
+	write('Debugger leash ports set to '), write(Ports), nl.
 
 	
 '$lgt_dbg_set_leash_ports'([]).
@@ -2124,20 +2078,6 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_set_leash_ports'([Port| Ports]) :-
 	assertz('$lgt_dbg_leashing_'(Port)),
 	'$lgt_dbg_set_leash_ports'(Ports).
-
-
-'$lgt_dbg_leash'(Obj, Value) :-
-	'$lgt_dbg_valid_leash_ports'(Value, Ports),
-	retractall('$lgt_dbg_leashing_'(Obj, _)),
-	'$lgt_dbg_set_leash_ports'(Obj, Ports),
-	write('Debugger leash ports set for object '), writeq(Obj), write('.'), nl.
-
-	
-'$lgt_dbg_set_leash_ports'([], _).
-
-'$lgt_dbg_set_leash_ports'([Port| Ports], Obj) :-
-	assertz('$lgt_dbg_leashing_'(Obj, Port)),
-	'$lgt_dbg_set_leash_ports'(Ports, Obj).
 
 
 '$lgt_dbg_leashing_'(fact).
@@ -2150,6 +2090,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 '$lgt_dbg_valid_leash_value'(Shorthand, Ports) :-
 	atom(Shorthand),
+	!,
 	'$lgt_dbg_leash_shortand_ports'(Shorthand, Ports).
 
 '$lgt_dbg_valid_leash_value'(Ports, Ports) :-
@@ -2180,8 +2121,19 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_leash_shortand_ports'(full, [fact, rule, call, exit, redo, fail]).
 
 
+'$lgt_dbg_leashing'(Port, Goal, Ctx) :-
+	'$lgt_dbg_leashing_'(Port),
+	('$lgt_dbg_tracing_' ->
+		true
+		;
+		'$lgt_sender'(Ctx, Sender),
+		'$lgt_this'(Ctx, This),
+		'$lgt_self'(Ctx, Self),
+		\+ \+ '$lgt_dbg_spying_'(Sender, This, Self, Goal)).
+
+
 '$lgt_dbg_fact'(Fact, Ctx) :-
-	'$lgt_dbg_tracing_',
+	'$lgt_dbg_debugging_',
 	!,
 	'$lgt_dbg_port'(fact, Fact, Ctx, Action),
 	call(Action).
@@ -2190,7 +2142,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 
 '$lgt_dbg_head'(Head, Ctx) :-
-	'$lgt_dbg_tracing_',
+	'$lgt_dbg_debugging_',
 	!,
 	'$lgt_dbg_port'(rule, Head, Ctx, Action),
 	call(Action).
@@ -2199,7 +2151,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 
 '$lgt_dbg_goal'(Goal, TGoal, Ctx) :-
-	'$lgt_dbg_tracing_',
+	'$lgt_dbg_debugging_',
 	!,
 	(	'$lgt_dbg_port'(call, Goal, Ctx, CAction),
 		call(CAction),
@@ -2218,9 +2170,9 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 
 '$lgt_dbg_port'(Port, Goal, Ctx, Action) :-
-	'$lgt_dbg_tracing_',
+	'$lgt_dbg_debugging_',
 	!,
-	('$lgt_dbg_leashing_'(Port) ->
+	('$lgt_dbg_leashing'(Port, Goal, Ctx) ->
 		repeat,
 			'$lgt_dbg_write_port_name'(Port), writeq(Goal), write(' ? '),
 			'$lgt_read_single_char'(Option),
