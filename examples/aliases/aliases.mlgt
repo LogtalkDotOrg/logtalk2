@@ -1,4 +1,10 @@
+/*
+This example illustrates the use of the predicate directive alias/3 for 
+defining alternative names for inherited predicates.
+*/
 
+
+% first, we define a simple parametric object for representing rectangles:
 
 :- object(rectangle(_Width, _Height)).
 
@@ -20,6 +26,9 @@
 :- end_object.
 
 
+% next, we define a square object which adds an alias, side/1, for the 
+% inherited predicate width/1:
+
 :- object(square(Side),
 	extends(rectangle(Side, Side))).
 
@@ -28,11 +37,9 @@
 :- end_object.
 
 
-
+% a similar example can be defined using ellipses and circles:
 
 :- object(ellipse(_RX, _RY)).
-
-	:- uses(math_constants).
 
 	:- public(rx/1).
 	:- public(ry/1).
@@ -47,13 +54,13 @@
 	area(Area) :-
 		::rx(Rx),
 		::ry(Ry),
-		math_constants::pi(Pi),
-		Area is Rx*Ry*Pi.
+		Area is Rx*Ry*3.1415927.
 
 :- end_object.
 
 
-
+% in this case, we define an alias named r/1 for the inherited 
+% predicate rx/1:
 
 :- object(circle(Radius),
 	extends(ellipse(Radius, Radius))).
