@@ -15,6 +15,9 @@ RELEASE NOTES
 	Corrected a bug in the built-in methods asserta/1 and assertz/1 when 
 	asserting predicate rules.
 
+	The built-in predicates logtalk_compile/1-2 and logtalk_load/1-2 now 
+	accept both an entity (an atom) or a list of entities (a list of atoms).
+
 	Optimized the code generated when compiling or asserting clauses for 
 	dynamic predicates.
 
