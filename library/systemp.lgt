@@ -2,9 +2,9 @@
 :- protocol(systemp).
 
 	:- info([
-		version is 1.5,
+		version is 1.6,
 		author is 'Portable Operating-System Interface (POSI) initiative',
-		date is 2004/6/17,
+		date is 2004/6/23,
 		comment is 'Operating system access protocol.']).
 
 	:- public(make_directory/1).
@@ -173,15 +173,34 @@
 			'Symlink is a valid file name but not a symbolic link' - type_error(symlink, 'Symlink'),
 			'No access permission to the symbolic link' - permission_error(access, 'Symlink')]]).
 
-	:- public(environment_variable/2).
-	:- mode(environment_variable(+atom, ?atom), zero_or_one).
-	:- info(environment_variable/2, [
-		comment is 'Gets environment variable value. Fails if the variable does not exists.',
+	:- public(current_environment_variable/1).
+	:- mode(current_environment_variable(?atom), zero_or_more).
+	:- info(current_environment_variable/1, [
+		comment is 'Argument is a corrently defined environment variable . Fails if the variable does not exists.',
+		argnames is ['Variable'],
+		exceptions is [
+			'Variable is neither a variable nor an atom' - type_error(atom, 'Variable')]]).
+
+	:- public(delete_environment_variable/1).
+	:- mode(delete_environment_variable(+atom), one).
+	:- info(delete_environment_variable/1, [
+		comment is 'Deletes an environment variable.',
 		argnames is ['Variable', 'Value'],
 		exceptions is [
 			'Variable is not instantiated' - instantiation_error,
 			'Variable is neither a variable nor an atom' - type_error(atom, 'Variable'),
-			'Value is neither a variable nor an atom' - type_error(atom, 'Value')]]).
+			'Variable is not a currenttly defined environment variable' - existence_error(environment_variable, 'Variable')]]).
+
+	:- public(get_environment_variable/2).
+	:- mode(get_environment_variable(+atom, ?atom), zero_or_one).
+	:- info(get_environment_variable/2, [
+		comment is 'Gets environment variable value.',
+		argnames is ['Variable', 'Value'],
+		exceptions is [
+			'Variable is not instantiated' - instantiation_error,
+			'Variable is neither a variable nor an atom' - type_error(atom, 'Variable'),
+			'Value is neither a variable nor an atom' - type_error(atom, 'Value'),
+			'Variable is not a currenttly defined environment variable' - existence_error(environment_variable, 'Variable')]]).
 
 	:- public(set_environment_variable/2).
 	:- mode(set_environment_variable(+atom, +atom), one).
@@ -365,8 +384,8 @@
 			'Host is neither a variable nor an atom' - type_error(atom, 'Host')]]).
 
 	:- public(file_name_port/2).
-	:- mode(file_name_host(+atom, ?integer), zero_or_one).
-	:- info(file_name_host/2, [
+	:- mode(file_name_port(+atom, ?integer), zero_or_one).
+	:- info(file_name_port/2, [
 		comment is 'Returns, if it exists, the host port from a file name.',
 		argnames is ['File', 'Port'],
 		exceptions is [
