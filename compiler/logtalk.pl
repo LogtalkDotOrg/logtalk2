@@ -2583,11 +2583,11 @@ current_logtalk_flag(version, version(2, 21, 0)).
 %
 % creates a loading and a compiling helper files given a list of entities
 
-'$lgt_create_aux_files'(Source, Options, Loader, Compiler, Cache, Entities) :-	
+'$lgt_create_aux_files'(Source, Options, Loader, Compiler, Cache, Names) :-	
 	'$lgt_file_name'(metafile, Source, Metafile),
 	'$lgt_file_name'(logtalk, Loader, LoaderFile),
 	'$lgt_file_name'(logtalk, Compiler, CompilerFile),
-	 '$lgt_reverse'(Entities, Entities2),
+	 '$lgt_reverse'(Names, Names2),
 	 '$lgt_reverse'(Cache, Cache2),
 	('$lgt_compiler_option'(report, on) ->
 		write('> creating loading helper file '), write(Loader), write('...'), nl
@@ -2597,7 +2597,7 @@ current_logtalk_flag(version, version(2, 21, 0)).
 		(open(LoaderFile, write, LoaderStream),
 		 write_term(LoaderStream, '% loader file automatically generated from source metafile ', []), 
 		 write_term(LoaderStream, Metafile, []), nl(LoaderStream), nl(LoaderStream),
-		 write_canonical(LoaderStream, (:- initialization(logtalk_load(Entities2, Options)))),
+		 write_canonical(LoaderStream, (:- initialization(logtalk_load(Names2, Options)))),
 		 write_term(LoaderStream, '.', []), nl(LoaderStream),
 		 '$lgt_copy_cached_metafile_terms'(Cache2, LoaderStream)),
 		Error,
@@ -2612,7 +2612,7 @@ current_logtalk_flag(version, version(2, 21, 0)).
 		(open(CompilerFile, write, CompilerStream),
 		 write_term(CompilerStream, '% compiler file automatically generated from source metafile ', []), 
 		 write_term(CompilerStream, Metafile, []), nl(CompilerStream), nl(CompilerStream),
-		 write_canonical(CompilerStream, (:- initialization(logtalk_compile(Entities2, Options)))),
+		 write_canonical(CompilerStream, (:- initialization(logtalk_compile(Names2, Options)))),
 		 write_term(CompilerStream, '.', []), nl(CompilerStream)),
 		Error,
 		'$lgt_compiler_error_handler'(CompilerStream, Error)),
@@ -2643,11 +2643,11 @@ current_logtalk_flag(version, version(2, 21, 0)).
 % copies a term to either a cache or to an entity source file
 % returning cached read terms and a list of extracted entities
 
-'$lgt_copy_metafile_term'(Input, Term, Cache, Entities) :-
-	'$lgt_copy_metafile_term'(Input, Term, [], Cache, [], Entities).
+'$lgt_copy_metafile_term'(Input, Term, Cache, Names) :-
+	'$lgt_copy_metafile_term'(Input, Term, [], Cache, [], Names).
 
 
-'$lgt_copy_metafile_term'(Input, end_of_file, Cache, Cache, Entities, Entities) :-
+'$lgt_copy_metafile_term'(Input, end_of_file, Cache, Cache, Names, Names) :-
 	!,
 	close(Input).
 
@@ -2656,31 +2656,41 @@ current_logtalk_flag(version, version(2, 21, 0)).
 	'$lgt_closing_entity_directive'(Directive, Type),
 	throw(entity_opening_directive_missing(Type)).
 
-'$lgt_copy_metafile_term'(Input, Term, CacheAcc, Cache, EntityAcc, Entities) :-
+'$lgt_copy_metafile_term'(Input, Term, CacheAcc, Cache, Acc, Names) :-
 	Term =.. [(:-), Directive],
 	'$lgt_opening_entity_directive'(Directive, Type, Entity),
 	!,
 	('$lgt_compiler_option'(report, on) ->
-		write('> extracting '), write(Type), write(' '), writeq(Entity), write('...'), nl
+		write('> extracting '), write(Type), write(' '),
+		current_output(Current), '$lgt_pretty_print_vars_quoted'(Current, Entity), 
+		write('...'), nl
 		;
 		true),
-	'$lgt_file_name'(logtalk, Entity, File),
+	(atom(Entity) ->
+		Name = Entity
+		;
+		functor(Entity, Functor, Arity),
+		number_codes(Arity, Codes),
+		atom_codes(Atom, Codes),
+		atom_concat(Functor, Atom, Name)),
+	'$lgt_file_name'(logtalk, Name, File),
 	open(File, write, Output),
 	'$lgt_copy_cached_metafile_terms'(CacheAcc, Output),
 	write_canonical(Output, Term),
 	write_term(Output, '.', []), nl(Output),
 	'$lgt_copy_metafile_entity_terms'(Input, Output, Type),
 	('$lgt_compiler_option'(report, on) ->
-		write('> '), writeq(Entity), write(' extracted '), nl
+		write('> '), '$lgt_pretty_print_vars_quoted'(Current, Entity),
+		write(' extracted '), nl
 		;
 		true),
 	read_term(Input, Next, []),
-	'$lgt_copy_metafile_term'(Input, Next, [], Cache, [Entity| EntityAcc], Entities).
+	'$lgt_copy_metafile_term'(Input, Next, [], Cache, [Name| Acc], Names).
 
 
-'$lgt_copy_metafile_term'(Input, Term, CacheAcc, Cache, EntityAcc, Entities) :-
+'$lgt_copy_metafile_term'(Input, Term, CacheAcc, Cache, Acc, Names) :-
 	read_term(Input, Next, []),
-	'$lgt_copy_metafile_term'(Input, Next, [Term| CacheAcc], Cache, EntityAcc, Entities).
+	'$lgt_copy_metafile_term'(Input, Next, [Term| CacheAcc], Cache, Acc, Names).
 
 
 

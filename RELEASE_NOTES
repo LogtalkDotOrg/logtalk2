@@ -23,15 +23,21 @@ RELEASE NOTES
 
 	Allow categories to import other categories, i.e. allow categories to be 
 	defined as a composition of other categories. This feature should only be 
-	used when extending a category without breaking its functional cohesion or 
-	when a modified version of a category is needed for importing into several 
-	unrelated objects. 
+	used when extending a category without breaking its functional cohesion 
+	(for example, when a modified version of a category is needed for importing 
+	into several unrelated objects. 
 
 	Added new example, "engines", illustrating importing a category from another 
 	category.
 
+	Updated the syntax coloring configuration files for the supported text 
+	editors for the new alias/3 predicate directive.
+
 	Added autocomplete strings for Logtalk methods and for Logtalk and Prolog 
 	built-in predicates and directives to the SubEthaEdit 2.x text editor.
+
+	Corrected a bug which prevented compilation of metafiles containing 
+	parametric entities.
 
 
 2.20.2 - August 31, 2004
