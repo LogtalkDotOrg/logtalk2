@@ -5,6 +5,8 @@
 // Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 // =================================================================
 
+var WshShell = new ActiveXObject("WScript.Shell");
+
 var WshSysEnv = WshShell.Environment("SYSTEM");
 var WshUserEnv = WshShell.Environment("USER");
 
@@ -20,7 +22,6 @@ var xslt;
 var format = "xhtml";
 // var format = "html";
 
-var WshShell = new ActiveXObject("WScript.Shell");
 var directory = WshShell.CurrentDirectory;
 
 var index_file = "index.html";
