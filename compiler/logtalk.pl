@@ -2227,7 +2227,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_valid_port_option'(f).
 '$lgt_dbg_valid_port_option'(n).
 '$lgt_dbg_valid_port_option'('@').
-%'$lgt_dbg_valid_port_option'(b).
+'$lgt_dbg_valid_port_option'(b).
 '$lgt_dbg_valid_port_option'(a).
 '$lgt_dbg_valid_port_option'(x).
 '$lgt_dbg_valid_port_option'(h).
@@ -2251,14 +2251,16 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	'$lgt_dbg_debugging'.
 
 '$lgt_dbg_do_port_option'('@', _, true) :-
-	write('     :- '),
+	write('    ?- '),
 	read(Goal),
-	once((Goal; true)).
+	once((Goal; true)),
+	fail.
 
 '$lgt_dbg_do_port_option'(b, _, true) :-
-	'$lgt_compiler_option'(supports_break_predicate, true) ->
+	('$lgt_compiler_option'(supports_break_predicate, true) ->
 		break;
-		write('    break no supportd on this Prolog compiler.'), nl.
+		write('    break no supportd on this Prolog compiler.'), nl),
+	fail.
 
 '$lgt_dbg_do_port_option'(a, _, _) :-
 	throw(error(logtalk_debugger_aborted)).
