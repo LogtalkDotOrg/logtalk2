@@ -28,8 +28,9 @@ RELEASE NOTES
 	Added documentation on read-only compiler flags (which are defined in the 
 	configuration files) to the User Manual.
 
-	Workaround a Windows Scripting Host bug which may result in broken shortcuts 
-	when using the misc/lgt_install.js JScript script for installing Logtalk.
+	Updated the misc/lgt_install.js JScript installer script to workaround a 
+	Windows Scripting Host bug which may result in broken shortcuts in the 
+	created "Logtalk" program group.
 
 
 2.22.0 - November 29, 2004
