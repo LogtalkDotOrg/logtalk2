@@ -1,5 +1,12 @@
 #! /bin/sh
 
+## =================================================================
+## Logtalk - Object oriented extension to Prolog
+## Release 2.19.2
+##
+## Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
+## =================================================================
+
 echo
 echo "Making a script named gplgt for running Logtalk with GNU Prolog..."
 
