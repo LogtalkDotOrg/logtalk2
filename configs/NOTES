@@ -407,26 +407,25 @@ Trinc-Prolog R3
 	support is needed from TP regarding predicate properties.
 
 
-XSB Prolog 2.3~5
+XSB Prolog 2.3~6
 
-	xsb.config
+	xsb.config		(2.3~5)
+	xsb26.config	(2.6)
 
 	You need to rename both the config file and the Logtalk pre-processor to 
 	end with a '.P' extension otherwise the (re)consult built-in predicate 
 	will not find them!
 
-	You also need to apply the following patchs to the Logtalk pre-processor/
-	runtime:
+	You also need to patch to the Logtalk compiler. Open the file 
+	compiler/logtalk.pl, find the clause that reads: 
 	
-	(1) open the file compiler/logtalk.pl, find the clause that reads: 
-	
-	lgt_current_object_(user, user0_, user0__dcl, user0__def, _).
+	'$lgt_current_object_'(user, user0_, user0__dcl, user0__def, _).
 	
 	and replace it with the query:
 	
-	:- assertz(lgt_current_object_(user, user0_, user0__dcl, user0__def, _)).
+	:- assertz('$lgt_current_object_'(user, user0_, user0__dcl, user0__def, _)).
 	
-	(2) you may get syntax errors while compiling the Logtalk pre-processor 
+	You may get syntax errors while compiling the Logtalk pre-processor 
 	or some of the examples due to a know bug in the XSB parsing of infix 
 	operators: just add a space after the infix operator.
 
