@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	January 20, 2005
+" Last Change:	March 9, 2005
 
 
 " Quit when a syntax file was already loaded:
@@ -72,7 +72,7 @@ syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="implements("	m
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- alias("		matchgroup=logtalkDirTag	end=")\."	contains=ALL
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- initialization("	matchgroup=logtalkDirTag	end=")\."	contains=ALL
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- info("		matchgroup=logtalkDirTag	end=")\."	contains=ALL
-syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- mode("		matchgroup=logtalkDirTag	end=")\."	contains=logtalkOperator,logtalkAtom
+syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- mode("		matchgroup=logtalkDirTag	end=")\."	contains=logtalkOperator, logtalkAtom
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- dynamic("		matchgroup=logtalkDirTag	end=")\."	contains=ALL
 syn match	logtalkDirTag		":- dynamic\."
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- discontiguous("	matchgroup=logtalkDirTag	end=")\."	contains=ALL
@@ -192,7 +192,7 @@ syn match	logtalkKeyword		"\<copy_term\ze("
 
 " Arithemtic evaluation
 
-syn keyword	logtalkOperator		is
+syn match	logtalkOperator		"\<is\>"
 
 
 " Arithemtic comparison
