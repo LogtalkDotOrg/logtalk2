@@ -90,6 +90,7 @@ for (file in files)
 				WshShell.Run(xalan + " -o " +  + directory + "\\" + file.FileName + ".html" + " " + xslt, true);
 			case "sabcmd" :
 				WshShell.Run(sabcmd + " " + xslt + " " + file + " " + directory + "\\" + file.FileName + ".html", true);
+		}
 	}
 
 WScript.Echo("conversion done");
