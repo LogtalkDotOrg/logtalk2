@@ -47,9 +47,9 @@ if (!FSObject.FolderExists(logtalk_home + "\\bin"))
 
 f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_plc.rc", true);
 
-f.WriteLine(":- ensure_loaded('$LOGTALKUSER/configs/k.config').");
-f.WriteLine(":- ensure_loaded('$LOGTALKHOME/compiler/logtalk.pl').");
-f.WriteLine(":- ensure_loaded('$LOGTALKUSER/libpaths/libpaths.pl').");
+f.WriteLine(":- consult('$LOGTALKUSER/configs/k.config').");
+f.WriteLine(":- consult('$LOGTALKHOME/compiler/logtalk.pl').");
+f.WriteLine(":- consult('$LOGTALKUSER/libpaths/libpaths.pl').");
 f.Close();
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
@@ -58,7 +58,7 @@ if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk"))
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - K-Prolog.lnk");
-link.Arguments = "-h 512k -l 128k -g 512k -e \"(consult('$LOGTALKHOME/bin/logtalk_plc.rc'), '$root').\""";
+link.Arguments = "-h 512k -l 128k -g 512k -e \"(consult('$LOGTALKHOME/bin/logtalk_plc.rc'), '$root').\"";
 link.Description = "Runs Logtalk with K-Prolog";
 link.IconLocation = "app.exe,1";
 link.TargetPath = prolog_path;
