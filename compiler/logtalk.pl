@@ -1648,6 +1648,14 @@ current_logtalk_flag(version, version(2, 15, 3)).
 	\+ '$lgt_proper_list'(Rest),
 	throw(error(type_error(list, Rest), Obj::phrase(Ruleset, Input, Rest), Sender)).
 
+'$lgt_phrase'(_, [], Input, Rest, _, _) :-
+	!,
+	Input = Rest.
+
+'$lgt_phrase'(_, [Head| Tail], Input, Rest, _, _) :-
+	!,
+	'$lgt_append'([Head| Tail], Rest, Input).
+
 '$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, Scope) :-
 	Ruleset =.. [Functor| Args],
 	'$lgt_append'(Args, [Input, Rest], Args2),
@@ -5600,9 +5608,18 @@ user0__def(Pred, _, _, _, Pred, user).
 %
 % translates DCG rule head to a Prolog clause head
 
-'$lgt_dcg_head'(Nonterminal, _, _, _) :-
-	var(Nonterminal),
+'$lgt_dcg_head'(RHead, _, _, _) :-
+	var(RHead),
 	throw(instantiation_error).
+
+'$lgt_dcg_head'((_, Terminals), _, _, _) :-
+	\+ '$lgt_proper_list'(Terminals),
+	throw(type_error(list, Terminals)).
+
+'$lgt_dcg_head'((Nonterminal, Terminals), CHead, S0, S) :-
+	!,
+	'$lgt_append'(Terminals, S, S1),
+	'$lgt_dcg_goal'(Nonterminal, CHead, S0, S1).
 
 '$lgt_dcg_head'(Nonterminal, CHead, S0, S) :-
 	'$lgt_dcg_goal'(Nonterminal, CHead, S0, S).
