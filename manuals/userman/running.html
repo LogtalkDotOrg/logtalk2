@@ -224,7 +224,7 @@ The compiler flag <code>smart_compilation</code> is automatically turned off whe
 <h3>Logtalk Procedure Box model<a name="boxmodel"></a></h3>
 
 <p>
-Logtalk uses a <em>Procedure Box model</em> similar to the one found on most Prolog compilers. Prolog procedure box model uses four ports (<em>call</em>, <em>exit</em>, <em>redo</em>, and <em>fail</em>) for describing control flow when a predicate clause is used during program execution: 
+Logtalk uses a <em>Procedure Box model</em> similar to the one found on most Prolog compilers. The traditional Prolog procedure box model uses four ports (<em>call</em>, <em>exit</em>, <em>redo</em>, and <em>fail</em>) for describing control flow when a predicate clause is used during program execution: 
 </p>
 <blockquote>
 <dl>
@@ -239,7 +239,16 @@ Logtalk uses a <em>Procedure Box model</em> similar to the one found on most Pro
 </dl>
 </blockquote>
 <p>
-Logtalk adds two more ports, <em>fact</em> and <em>rule</em>, which shows the result of the unification of a goal with, respectively, a fact and a rule head:
+Logtalk, as found on some recent Prolog compilers, adds a port for dealing with exceptions thrown when calling a predicate:
+</p>
+<blockquote>
+<dl>
+	<dt><code>exception</code></dt>
+		<dd>predicate call throws an exception</dd>
+</dl>
+</blockquote>
+<p>
+In addition to the ports described above, Logtalk adds two more ports, <em>fact</em> and <em>rule</em>, which show the result of the unification of a goal with, respectively, a fact and a rule head:
 </p>
 <blockquote>
 <dl>
@@ -274,9 +283,9 @@ The abbreviations defined in Logtalk are similar to the ones defined on some Pro
 	<dt><code>half</code></dt>
 		<dd><code>[fact, rule, call, redo]</code></dd>
 	<dt><code>tight</code></dt>
-		<dd><code>[fact, rule, call, redo, fail]</code></dd>
+		<dd><code>[fact, rule, call, redo, fail, exception]</code></dd>
 	<dt><code>full</code></dt>
-		<dd><code>[fact, rule, call, exit, redo, fail]</code></dd>
+		<dd><code>[fact, rule, call, exit, redo, fail, exception]</code></dd>
 </dl>
 </blockquote>
 
