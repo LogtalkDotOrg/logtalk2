@@ -25,6 +25,31 @@
 			fontStyle = ( italic ); foregroundColor = "#23763A";
 		},
 		{
+			name = "Entity opening directives";
+			match = ":-\\s+(object|protocol|category)(?=[(])";
+			foregroundColor = "#881280";
+		},
+		{
+			name = "Entity closing directives";
+			match = ":-\\s+end_(object|protocol|category)(?=[.])";
+			foregroundColor = "#881280";
+		},
+		{
+			name = "Entity relations";
+			match = "\\b(extends|i(nstantiates|mp(orts|lements))|specializes)(?=[.])";
+			foregroundColor = "#881280";
+		},
+		{
+			name = "Entity directives";
+			match = ":-\\s+(calls|in(itialization|fo)|uses)(?=[(])";
+			foregroundColor = "#881280";
+		},
+		{
+			name = "Predicate directives";
+			match = ":-\\s+(alias|info|d(ynamic|iscontiguous)|m(etapredicate|ode|ultifile)|p(ublic|r(otected|ivate))|op|uses)(?=[(])";
+			foregroundColor = "#881280";
+		},
+		{
 			name = "Message sending operators";
 			match = "(::|\\^\\^)";
 			foregroundColor = "#0000ff";
@@ -36,27 +61,32 @@
 		},
 		{
 			name = "Term comparison operators";
-			match = "(@=<|=\\\=|=<|<|>|>=)";
+			match = "(@=<|@<|@>|@>=|==|\\\\==)";
 			foregroundColor = "#0000ff";
 		},
 		{
 			name = "Arithemtic comparison operators";
-			match = "(=:=|==|\\\==|@<|@>|@>=)";
+			match = "(=<|<|>|>=|=:=|=\\\\=)";
 			foregroundColor = "#0000ff";
 		},
 		{
 			name = "Bitwise operators";
-			match = "(>>|>>|/\\\|\\\/|\\\)";
+			match = "(<<|>>|/\\\\|\\\\/|\\\\)";
 			foregroundColor = "#0000ff";
 		},
 		{
 			name = "Evaluable operators";
-			match = "(\\*\\*|\\+|-|\\*|/|//|\\<(mod|rem)\\>)";
+			match = "\\<(mod|rem)\\>";
+			foregroundColor = "#0000ff";
+		},
+		{
+			name = "Evaluable operators";
+			match = "(\\*\\*|\\+|-|\\*|/|//)";
 			foregroundColor = "#0000ff";
 		},
 		{
 			name = "Other operators";
-			match = "(:-|!|\\\\\+|,|;|-->|->|=|\\\=|\\.|=\\.\\.|\\<is\\>)";
+			match = "(!|\\\\\+|,|;|-->|->|=|\\\=|\\.|=\\.\\.|\\<is\\>)";
 			foregroundColor = "#0000ff";
 		},
 		{
@@ -173,33 +203,8 @@
 		},
 		{
 			name = "Variables";
-			match = "\\<(\\u|_)(\\w)*\\>";
+			match = "\\<(\\u|_)\\w*\\>";
 			foregroundColor = "#848AB9";
-		},
-		{
-			name = "Entity opening directives";
-			match = "\\<(:-\\s+object|protocol|category))(?=[(])";
-			foregroundColor = "#848AB9";
-		},
-		{
-			name = "Entity closing directives";
-			match = "\\<(:-\\s+end_(object|protocol|category))(?=[.])";
-			foregroundColor = "#848AB9";
-		},
-		{
-			name = "Entity relations";
-			match = "\\<(i(nstantiates|mp(orts|lements))|extends|specializes)(?=[.])";
-			foregroundColor = "#848AB9";
-		},
-		{
-			name = "Entity directives";
-			match = "\\<(:-\\s+(calls|in(itialization|fo)|uses))(?=[(])";
-			foregroundColor = "#848AB9";
-		},
-		{
-			name = "Predicate directives";
-			match = "\\<(:-\\s+(alias|info|d(ynamic|iscontiguous)|m(etapredicate|ode|ultifile)|p(ublic|r(otected|ivate))|op|uses)(?=[(])";
-			foregroundColor = "#848AB9";
-		},
+		}
 	);
 }
