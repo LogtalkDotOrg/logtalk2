@@ -138,7 +138,7 @@ function usage_help() {
 	WScript.Echo("  f - output file format (either xhtml or html; default is " + format + ")");
 	WScript.Echo("  d - output directory for the generated files (default is " + directory + ")");
 	WScript.Echo("  i - name of the index file (default is " + index_file + ")");
-	WScript.Echo("  t - title to be used on the index file (default is " + title + ")");
+	WScript.Echo("  t - title to be used on the index file (default is " + index_title + ")");
 	WScript.Echo("  p - XSLT processor (xsltproc, xalan, or sabcmd; default is " + processor + ")");
 	WScript.Echo("");
 	WScript.Quit(1);
