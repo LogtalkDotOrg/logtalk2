@@ -308,7 +308,7 @@ However, encapsulating the above definition in an object (or category) preceded 
 </p>
 <pre>
     :- metapredicate(apply(::, *)).
-<pre>
+</pre>
 <p>
 will not work as you might expect because the meta-argument is not called as a goal as the metapredicate directive seams to imply. The solution is to write an auxiliary predicate which extends the metapredicate which you want to define with an extra argument which will be bound to the goal constructed by the metapredicate. Applying this solution to our example result in the following code:
 </p>
