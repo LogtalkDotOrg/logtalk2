@@ -23,8 +23,8 @@ for Artificial Intelligence" by Ivan Bratko.
 For a description of the search problems, please see a classical AI book 
 (such as the one above) or visit the url <http://www.plastelina.net/games>.
 
-This example defines two hierarchies of objects, one for representing state 
-spaces and another for representing search methods:
+This example defines two hierarchies of objects, one for representing 
+state-spaces and another for representing search methods:
 
 	state_space
 		farmer
@@ -41,3 +41,6 @@ spaces and another for representing search methods:
 		heuristic_search(Threshold)
 			best_first(Threshold)
 			hill_climbing(Threshold)
+
+Taken together, these two hierarchies implement a framework for solving 
+state-space search problems in Logtalk.
