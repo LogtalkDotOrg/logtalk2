@@ -37,7 +37,7 @@ WScript.Echo("Making a shortcut named Eclipselgt for running Logtalk with ECLiPS
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 
 if (!fso.FolderExists(logtalk_home + "\\bin")) 
-	fso.CreateFolder(logtalk_home + "\\bin"));
+	fso.CreateFolder(logtalk_home + "\\bin");
 
 var f = fso.CreateTextFile(logtalk_home + "\\bin\\lgtceclipse.pl", true);
 
