@@ -24,14 +24,14 @@ INSTALLING FOR MULTIPLE USERS
 In the case of multiple users, the Logtalk directory can be copied to 
 any location that its accessible by all the users.
 
-Regarding directory and file permissions, it is desirable to make all 
-files read-only in order to avoid user tempering. However, the library 
-and examples sub-directories must be user writable as compiling Logtalk 
-source files generates intermediate Prolog files, which are written to 
-the same location as the source files. In alternative, the library and 
-example files may be pre-compiled and the "smart_compilation" compiler 
-option turned on to avoid the need of recompilation when the files are 
-loaded by the users.
+Regarding directory and file permissions, it is desirable to make all files 
+read-only in order to avoid user tempering. However, the library and examples 
+sub-directories (and possibly the compiler sub-directory, depending on the 
+chosen Prolog compiler) must be user writable as compiling Logtalk source 
+files generates intermediate Prolog files, which are written to the same 
+location as the source files. In alternative, the library and example files 
+may be pre-compiled and the "smart_compilation" compiler option turned on to 
+avoid the need of recompilation when the files are loaded by the users.
 
 
 ENVIRONMENT VARIABLES
