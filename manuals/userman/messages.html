@@ -187,7 +187,7 @@ When discussing Logtalk message sending performance, two distinct cases should b
 <h3>Translating message processing to predicate calls<a name="inferences"></a></h3>
 
 <p>
-
+In order to better understand the performance tradeoffs of using Logtalk when compared to plain Prolog or to Prolog module systems, is useful to translate message processing in terms of predicate calls. However, in doing this, we should keep in mind that the number of predicate calls is not a measure of the time taken to execute them.
 </p>
 <p>
 A message sent from a compiled object to another object translates to six predicate calls:
@@ -198,19 +198,19 @@ A message sent from a compiled object to another object translates to six predic
 		<dd>one predicate call to a dynamic table</dd>
 	<dt>checking for <em>before</em> events</dt>
 		<dd>two predicate calls assuming that no events are defined</dd>
-		<dd>one of them to the built-in predicate \+/1</dd>
+		<dd>(one of them to the built-in predicate \+/1)</dd>
 	<dt>method call</dt>
 		<dd>one predicate call</dd>
 	<dt>checking for <em>after</em> events</dt>
 		<dd>two predicate calls assuming that no events are defined</dd>
-		<dd>one of them to the built-in predicate \+/1</dd>
+		<dd>(one of them to the built-in predicate \+/1)</dd>
 </dl>
 </blockquote>
 <p>
 Given that events can be dynamically defined at runtime, there is no room for reducing the number of predicate calls without droping support for event-driven programming. When events are defined, the number of predicate calls grows proportional to the number of events and event handlers (monitors).
 </p>
 <p>
-Messages to <em>self</em> and <em>super</em> calls are transparent regarding events and, as such, imply only two predicate calls.
+Messages to <em>self</em> and <em>super</em> calls are transparent regarding events and, as such, imply only two predicate calls (the cache lookup and the method call).
 <p>
 When a message is sent by the user from the top-level interpreter, Logtalk needs to perform a runtime translation of the message sending in order to prove the corresponding goal. For user-defined messages/predicates, the runtime translation overhead corresponds to seventeen predicate calls. Thus, while sending a message from a compiled object corresponds to six predicate calls, the same message sent by the user from the top-level interpreter results in twenty-three predicate calls. Considering the time taken for the user to type the goal, this overhead is of no practical consequence.
 </p>
@@ -222,6 +222,9 @@ When a message is not cached, the number of predicate calls depends on the numbe
 
 <p>
 Not all predicate calls take the same time. Moreover, the time taken to process a specific predicate call depends on the Prolog compiler implementation details. As such, the only valid performance measure is the time taken for processing a message.
+</p>
+<p>
+The usual way of measuring the time taken by a predicate call is to repeat the call a number of times and than to calculate the average time. A sufficient large number of repetitions would hopefully lead to an accurate measure. In addition, care should be taken to subtract the time taken by the repetition code itself. One way to make sense of numbers we get is to repeat the test with the same predicate using plain Prolog and with the predicate encapsulated in a module.
 </p>
 
 <div class="navbottom">
