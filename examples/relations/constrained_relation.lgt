@@ -5,8 +5,8 @@
 
 
 	:- info([
-		version is 3.1,
-		date is 2004/8/15,
+		version is 3.2,
+		date is 2005/1/28,
 		author is 'Paulo Moura',
 		comment is 'Enables the representation of relations with constraints on the state of participating objects.']).
 
@@ -66,7 +66,8 @@
 		set_monitors(Tuple, Descriptor).
 
 
-	set_monitors([], []).
+	set_monitors([], []) :-
+		!.		% avoid spurious backtracking due to calls to activ_points/3
 
 	set_monitors([Object| Objects], [Role| Roles]) :-
 		::activ_points(Role, before, Messages1),
