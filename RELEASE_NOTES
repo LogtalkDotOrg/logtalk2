@@ -14,9 +14,13 @@ RELEASE NOTES
 
 	Corrected a silly bug in message translation which resulted in a small 
 	performance loss. Simplified implementation of message sending predicate 
-	::/2.
+	::/2, resulting in a small performance improvement.
 
 	Added a new section on message sending performance to the user manual.
+
+	Added a new example, "benchmarks", for helping measuring performance of 
+	Logtalk message seding between Prolog compilers and for comparing message 
+	sending with calls in plain Prolog and with calls to Prolog modules.
 
 
 2.21.2 - October 18, 2004
