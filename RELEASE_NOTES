@@ -35,6 +35,9 @@ RELEASE NOTES
 	with exceptions thrown by calling non-existing predicates by translating 
 	Logtalk generated internal predicate names to user names.
 
+	Print the total number of warnings after a call to the Logtalk built-in 
+	predicates logtalk_compile/1-2 and logtalk_load/1-2.
+
 
 2.22.5 - February 9, 2005
 
