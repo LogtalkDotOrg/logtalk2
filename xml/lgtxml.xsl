@@ -80,6 +80,18 @@
 		<dt class ="key">compilation:</dt>
 			<dd class ="value"><code><xsl:value-of select="compilation" /></code></dd>
 	</dl>
+	<dl class="properties">
+	<xsl:if test="examples">
+	<dt class ="key">examples:</dt>
+		<xsl:for-each select="examples/example">
+		<dd class ="value"><dl class="examples">
+			<dt class="comment"><xsl:value-of select="description" /></dt>
+				<dd class="code"><xsl:value-of select="call" /></dd>
+				<dd class="code"><xsl:value-of select="bindings" /></dd>
+		</dl></dd>
+		</xsl:for-each>
+	</xsl:if>
+	</dl>
 	<xsl:if test="info">
 		<dl class="properties">
 		<xsl:for-each select="info">

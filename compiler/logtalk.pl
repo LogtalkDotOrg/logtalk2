@@ -8560,16 +8560,16 @@ current_logtalk_flag(version, version(2, 23, 2)).
 '$lgt_write_xml_entity'(Stream) :-
 	'$lgt_pp_entity'(Type, Entity, _, _, Compilation),
 	'$lgt_write_xml_open_tag'(Stream, entity, []),
-	'$lgt_entity_to_xml_term'(Entity, Name),
-	'$lgt_write_xml_cdata_element'(Stream, name, [], Name),
+	'$lgt_entity_to_xml_term'(Entity),
+	'$lgt_write_xml_cdata_element'(Stream, name, [], Entity),
 	'$lgt_write_xml_element'(Stream, (type), [], Type),
 	'$lgt_write_xml_element'(Stream, compilation, [], Compilation),
-	('$lgt_pp_info_'(List) ->
-		('$lgt_member'(comment is Comment, List) ->
+	('$lgt_pp_info_'(Info) ->
+		('$lgt_member'(comment is Comment, Info) ->
 			'$lgt_write_xml_cdata_element'(Stream, comment, [], Comment)
 			;
 			true), 
-		('$lgt_member'(parameters is Parameters, List) ->
+		('$lgt_member'(parameters is Parameters, Info) ->
 			'$lgt_write_xml_open_tag'(Stream, parameters, []),
 			forall(
 				'$lgt_member'(Parname-Description, Parameters),
@@ -8580,21 +8580,34 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		 	'$lgt_write_xml_close_tag'(Stream, parameters)
 			;
 			true),
-		('$lgt_member'(author is Author, List) ->
+		('$lgt_member'(author is Author, Info) ->
 			'$lgt_write_xml_cdata_element'(Stream, author, [], Author)
 			;
 			true), 
-		('$lgt_member'(version is Version, List) ->
+		('$lgt_member'(version is Version, Info) ->
 			'$lgt_write_xml_element'(Stream, version, [], Version)
 			;
 			true), 
-		('$lgt_member'(date is Date, List) ->
+		('$lgt_member'(date is Date, Info) ->
 			'$lgt_write_xml_element'(Stream, date, [], Date)
 			;
 			true),
+	('$lgt_member'(examples is Examples, Info) ->
+		'$lgt_write_xml_open_tag'(Stream, examples, []),
 		forall(
-			('$lgt_member'(Key is Value, List),
-			 \+ '$lgt_member'(Key, [comment, author, version, date, parameters, parnames])),
+			'$lgt_member'((Description - Call -> {Bindings}), Examples),
+			('$lgt_pred_call_to_xml_term'(Call, Bindings),
+			 '$lgt_write_xml_open_tag'(Stream, example, []),
+			 '$lgt_write_xml_cdata_element'(Stream, description, [], Description),
+			 '$lgt_write_xml_cdata_element'(Stream, call, [], Call),
+			 '$lgt_write_xml_cdata_element'(Stream, bindings, [], Bindings),
+		 	 '$lgt_write_xml_close_tag'(Stream, example))),
+		'$lgt_write_xml_close_tag'(Stream, examples)
+		;
+		true),
+		forall(
+			('$lgt_member'(Key is Value, Info),
+			 \+ '$lgt_member'(Key, [comment, author, version, date, parameters, parnames, examples])),
 			('$lgt_write_xml_open_tag'(Stream, info, []),
 			 '$lgt_write_xml_element'(Stream, key, [], Key),
 			 '$lgt_write_xml_cdata_element'(Stream, value, [], Value),
@@ -8605,12 +8618,12 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 
-% '$lgt_entity_to_xml_term'(+entity, -nonvar)
+% '$lgt_entity_to_xml_term'(+entity)
 %
 % instantiates the parameters in a parametric object to
 % user defined names or to the atom '_'
 
-'$lgt_entity_to_xml_term'(Entity, XMLTerm) :-
+'$lgt_entity_to_xml_term'(Entity) :-
 	'$lgt_pp_info_'(List),
 	('$lgt_member'(parnames is Names, List) ->
 		true
@@ -8618,35 +8631,59 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		'$lgt_member'(parameters is Parameters, List),
 		findall(Name, '$lgt_member'(Name - _, Parameters), Names)),
 	!,
-	Entity =.. [Functor| Names],
-	XMLTerm =.. [Functor| Names].
+	Entity =.. [_| Args],
+	'$lgt_vars_to_atoms'(Args, Args, Names).
 
-'$lgt_entity_to_xml_term'(Entity, XMLTerm) :-
-	Entity =.. [Functor| Args],
-	'$lgt_vars_to_underscore'(Args, Names),
-	XMLTerm =.. [Functor| Names].
-
+'$lgt_entity_to_xml_term'(Entity) :-
+	Entity =.. [_| Args],
+	'$lgt_vars_to_underscore'(Args).
 
 
-% '$lgt_relation_to_xml_term'(+entity, +entity, -atom)
+
+% '$lgt_relation_to_xml_term'(+entity, +entity)
 %
 % instantiates the parameters in a related entity taking
 % in account the parameter sharing with the original entity
 
-'$lgt_relation_to_xml_term'(Entity, Relation, XMLTerm) :-
-	'$lgt_entity_to_xml_term'(Entity, _),
-	Relation =.. [Functor| Args],
-	'$lgt_vars_to_underscore'(Args, Names),
-	XMLTerm =.. [Functor| Names].
+'$lgt_relation_to_xml_term'(Entity, Relation) :-
+	'$lgt_entity_to_xml_term'(Entity),
+	Relation =.. [_| Args],
+	'$lgt_vars_to_underscore'(Args).
 
 
 
-% '$lgt_pred_call_to_xml_term'(+atom, +integer, +nonvar, +nonvar, -nonvar)
+% '$lgt_pred_call_to_xml_term'(+nonvar, +nonvar)
 %
 % instantiates the arguments in a predicate call to
 % user defined names or to the atom '_'
 
-'$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings, XMLTerm) :-
+'$lgt_pred_call_to_xml_term'((Call1, Call2), Bindings) :-
+	'$lgt_pred_call_to_xml_term'(Call1, Bindings),
+	'$lgt_pred_call_to_xml_term'(Call2, Bindings).
+
+'$lgt_pred_call_to_xml_term'((Call1; Call2), Bindings) :-
+	'$lgt_pred_call_to_xml_term'(Call1, Bindings),
+	'$lgt_pred_call_to_xml_term'(Call2, Bindings).
+
+'$lgt_pred_call_to_xml_term'((Call1 -> Call2), Bindings) :-
+	'$lgt_pred_call_to_xml_term'(Call1, Bindings),
+	'$lgt_pred_call_to_xml_term'(Call2, Bindings).
+
+'$lgt_pred_call_to_xml_term'(\+ Call, Bindings) :-
+	'$lgt_pred_call_to_xml_term'(Call, Bindings).
+
+'$lgt_pred_call_to_xml_term'(Call, Bindings) :-
+	functor(Call, Functor, Arity),
+	'$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings).
+
+
+
+% '$lgt_pred_call_to_xml_term'(+atom, +integer, +nonvar, +nonvar)
+%
+% instantiates the arguments in a predicate call to
+% user defined names or to the atom '_'
+
+'$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings) :-
 	once((
 		'$lgt_pp_info_'(Functor/Arity, List)
 		;
@@ -8657,20 +8694,18 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		'$lgt_member'(arguments is Arguments, List),
 		findall(Name, '$lgt_member'(Name - _, Arguments), Names)),
 	!,
-	Call =.. [Functor| Args], writeq('$lgt_binding_vars'(Bindings, Vars)), nl,
-	'$lgt_binding_vars'(Bindings, Vars),
-	'$lgt_vars_to_atoms'(Args, Vars, Names), write(aqui), nl,
-	XMLTerm =.. [Functor| Args].
-
-'$lgt_pred_call_to_xml_term'(Functor, _, Call, _, XMLTerm) :-
 	Call =.. [Functor| Args],
-	'$lgt_vars_to_underscore'(Args, Names),
-	XMLTerm =.. [Functor| Names].
+	'$lgt_binding_vars'(Bindings, Vars),
+	'$lgt_vars_to_atoms'(Args, Vars, Names).
+
+'$lgt_pred_call_to_xml_term'(Functor, _, Call, _) :-
+	Call =.. [Functor| Args],
+	'$lgt_vars_to_underscore'(Args).
 
 
 % '$lgt_binding_vars'(@nonvar, -list)
 %
-% 
+% returns a list of all binding variables
 
 '$lgt_binding_vars'(Bindings, Vars) :-
 	atom(Bindings) ->		% no bindings, just "no" or "yes" or equivalent answers
@@ -8686,9 +8721,9 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 
-% '$lgt_vars_to_atoms'(+list, +list, -list)
+% '$lgt_vars_to_atoms'(+list, +list, +list)
 %
-% instantiates the variables in the input list to either a name orthe atom '_'
+% instantiates the variables in the input list to either a name or the atom '_'
 
 '$lgt_vars_to_atoms'([], _, []).
 
@@ -8704,15 +8739,15 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 
-% '$lgt_vars_to_underscore'(+list, -list)
+% '$lgt_vars_to_underscore'(+list)
 %
 % instantiates the variables in the input list to the atom '_'
 
-'$lgt_vars_to_underscore'([], []).
+'$lgt_vars_to_underscore'([]).
 
-'$lgt_vars_to_underscore'([Arg| Args], [Name| Names]) :-
-	(var(Arg) -> Name = '_'; Name = Arg),
-	'$lgt_vars_to_underscore'(Args, Names).
+'$lgt_vars_to_underscore'([Arg| Args]) :-
+	(var(Arg) -> Arg = '_'; true),
+	'$lgt_vars_to_underscore'(Args).
 
 
 
@@ -8881,7 +8916,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		'$lgt_write_xml_open_tag'(Stream, examples, []),
 		forall(
 			'$lgt_member'((Description - Call -> {Bindings}), Examples),
-			('$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings, Name),
+			('$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings),
 			 '$lgt_write_xml_open_tag'(Stream, example, []),
 			 '$lgt_write_xml_cdata_element'(Stream, description, [], Description),
 			 '$lgt_write_xml_cdata_element'(Stream, call, [], Call),
@@ -8968,10 +9003,10 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 '$lgt_write_xml_relation'(Stream, Entity, Relation, Tag, Scope) :-
-	'$lgt_relation_to_xml_term'(Entity, Relation, Name),
+	'$lgt_relation_to_xml_term'(Entity, Relation),
 	'$lgt_relation_to_xml_filename'(Relation, File),
 	'$lgt_write_xml_open_tag'(Stream, Tag, []),
-	'$lgt_write_xml_cdata_element'(Stream, name, [], Name),
+	'$lgt_write_xml_cdata_element'(Stream, name, [], Relation),
 	'$lgt_write_xml_element'(Stream, scope, [], Scope),
 	'$lgt_write_xml_cdata_element'(Stream, file, [], File),
 	'$lgt_write_xml_close_tag'(Stream, Tag).
@@ -8979,10 +9014,10 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 '$lgt_write_xml_relation'(Stream, Entity, Relation, Tag) :-
-	'$lgt_relation_to_xml_term'(Entity, Relation, Name),
+	'$lgt_relation_to_xml_term'(Entity, Relation),
 	'$lgt_relation_to_xml_filename'(Relation, File),
 	'$lgt_write_xml_open_tag'(Stream, Tag, []),
-	'$lgt_write_xml_cdata_element'(Stream, name, [], Name),
+	'$lgt_write_xml_cdata_element'(Stream, name, [], Relation),
 	'$lgt_write_xml_cdata_element'(Stream, file, [], File),
 	'$lgt_write_xml_close_tag'(Stream, Tag).
 

@@ -27,8 +27,8 @@ RELEASE NOTES
 	declaration of both parameter names and parameter descriptions. Added new 
 	info/2 documenting directive key, "arguments", allowing declaration of 
 	both predicate argument names and predicate argument descriptions. Added 
-	new info/2 documenting directive key, "examples", allowing representation 
-	of predicate call examples.
+	new info/1 and info/2 documenting directive key, "examples", allowing the 
+	representation of predicate call examples.
 
 	Much improved and accurate reporting of non-portable predicate calls when 
 	using the "portability" flag.

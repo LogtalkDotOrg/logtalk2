@@ -174,9 +174,41 @@
 			font-size="9pt"
 			font-family="monospace"
 			margin-left="10mm" 
-			space-after="8pt">
+			space-after="4pt">
 		<xsl:value-of select="compilation"/>
 	</fo:block>
+
+	<xsl:if test="examples">
+       	<fo:block
+				font-size="10pt"
+				font-family="serif" 
+				keep-with-next="always"
+				space-before="4pt">
+     		examples:
+     	</fo:block>
+		<xsl:for-each select="examples/example">
+       		<fo:block
+					font-size="10pt"
+					font-family="serif" 
+					keep-with-next="always"
+					margin-left="10mm">
+     			<xsl:value-of select="description" />
+     		</fo:block>
+			<fo:block
+					font-size="9pt"
+					font-family="monospace"
+					margin-left="20mm">
+				<xsl:value-of select="call" />
+			</fo:block>
+			<fo:block
+					font-size="9pt"
+					font-family="monospace"
+					margin-left="20mm" 
+					space-after="4pt">
+				<xsl:value-of select="bindings" />
+			</fo:block>
+		</xsl:for-each>
+	</xsl:if>
 
 	<xsl:if test="info">
 		<xsl:for-each select="info">
@@ -199,6 +231,11 @@
 
 
 <xsl:template match="logtalk/relations">
+	<fo:block
+			font-size="10pt"
+			font-family="serif"
+			space-before="4pt">
+	</fo:block>
 	<xsl:choose>
 		<xsl:when test="*">
 			<xsl:if test="implements">

@@ -14,7 +14,7 @@
 <!ELEMENT logtalk (entity, relations, predicates)>
 
 
-<!ELEMENT entity (name, type, compilation, comment?, parameters?, author?, version?, date?, info*)>
+<!ELEMENT entity (name, type, compilation, comment?, (parnames|parameters)?, author?, version?, date?, examples?, info*)>
 
 <!ELEMENT name (#PCDATA)>
 
@@ -23,6 +23,8 @@
 <!ELEMENT compilation (#PCDATA)>
 
 <!ELEMENT comment (#PCDATA)>
+
+<!ELEMENT parnames (#PCDATA)>
 
 <!ELEMENT parameters (parameter*)>
 
@@ -35,6 +37,14 @@
 <!ELEMENT version (#PCDATA)>
 
 <!ELEMENT date (#PCDATA)>
+
+<!ELEMENT examples (example*)>
+
+<!ELEMENT example (description, call, bindings)>
+
+<!ELEMENT call (#PCDATA)>
+
+<!ELEMENT bindings (#PCDATA)>
 
 <!ELEMENT info (key, value)>
 
@@ -76,7 +86,7 @@
 <!ELEMENT private (predicate*)>
 
 
-<!ELEMENT predicate (name, scope, compilation, meta?, mode*, comment?, template?, arguments?, exceptions?, info*)>
+<!ELEMENT predicate (name, scope, compilation, meta?, mode*, comment?, template?, (argnames|arguments)?, exceptions?, examples?, info*)>
 
 <!ELEMENT meta (#PCDATA)>
 
@@ -85,6 +95,8 @@
 <!ELEMENT template (#PCDATA)>
 
 <!ELEMENT solutions (#PCDATA)>
+
+<!ELEMENT argnames (#PCDATA)>
 
 <!ELEMENT arguments (argument*)>
 
