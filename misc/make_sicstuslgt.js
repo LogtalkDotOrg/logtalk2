@@ -66,7 +66,7 @@ WScript.Quit(0);
 function usage_help() {
 	WScript.Echo('');
 	WScript.Echo('This script creates a shortcut named "Logtalk - SICStus Prolog" running');
-	WScript.Echo('Logtalk with SICStus Prolog. The script must be run by an user with');
+	WScript.Echo('Logtalk with SICStus Prolog. The script must be run by a user with');
 	WScript.Echo('administrative rights. The LOGTALKHOME environment variable must be');
 	WScript.Echo('defined before running this script.');
 	WScript.Echo('');

@@ -73,7 +73,7 @@ WScript.Quit(0);
 function usage_help() {
 	WScript.Echo('');
 	WScript.Echo('This script creates a shortcut named "Logtalk - SWI-Prolog" for');
-	WScript.Echo('running Logtalk with SWI-Prolog. The script must be run by an user');
+	WScript.Echo('running Logtalk with SWI-Prolog. The script must be run by a user');
 	WScript.Echo('with administrative rights. The LOGTALKHOME environment variable');
 	WScript.Echo('must be defined before running this script.');
 	WScript.Echo('');

@@ -76,7 +76,7 @@ WScript.Quit(0);
 function usage_help() {
 	WScript.Echo('');
 	WScript.Echo('This script creates a shortcut named "Logtalk - ECLiPSe" for running Logtalk');
-	WScript.Echo('with ECLiPSe. The script must be run by an user with administrative rights.');
+	WScript.Echo('with ECLiPSe. The script must be run by a user with administrative rights.');
 	WScript.Echo('The LOGTALKHOME environment variable must be defined before running this');
 	WScript.Echo('script.');
 	WScript.Echo('');
