@@ -16,6 +16,8 @@ WScript.Echo('with K-Prolog...');
 WScript.Echo('');
 
 var WshShell = new ActiveXObject("WScript.Shell");
+var WshSystemEnv = WshShell.Environment("SYSTEM");
+var WshUserEnv = WshShell.Environment("USER");
 
 var prolog_path;
 
@@ -36,8 +38,6 @@ if (!FSObject.FileExists(prolog_path)) {
 	WScript.Quit(1);
 }
 
-var WshSystemEnv = WshShell.Environment("SYSTEM");
-var WshUserEnv = WshShell.Environment("USER");
 var logtalk_home;
 
 if (WshSystemEnv.Item("LOGTALKHOME"))
