@@ -61,3 +61,7 @@ files.
 
 Logtalk version 2.15.3 changes the format of the runtime entity tables, 
 impliying recompilation of all objects, protocols, and categories.
+
+Logtalk version 2.15.6 renamed the compiler option "named_anonymous_vars" to 
+"underscore_vars" and changed the possible option values form "on/off" to 
+"dont_care/singletons".
