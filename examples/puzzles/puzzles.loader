@@ -1,4 +1,5 @@
 
 :- initialization(
 	logtalk_load([
-		potions])). 
+		potions,
+		jam_thief])). 
