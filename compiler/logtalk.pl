@@ -121,7 +121,7 @@
 :- dynamic(lgt_calls_pred_/1).				% lgt_calls_pred_(Functor/Arity)
 
 :- dynamic(lgt_current_compiler_option_/2).	% lgt_current_compiler_option_(Option, Value)
-:- dynamic(lgt_default_compiler_option_/2).	% lgt_default_compiler_option_(Option, Value)
+:- dynamic(lgt_flag_/2).					% lgt_flag_(Option, Value)
 
 :- dynamic(lgt_referenced_object_/1).		% lgt_referenced_object_(Object)
 :- dynamic(lgt_referenced_protocol_/1).		% lgt_referenced_protocol_(Protocol)
@@ -845,12 +845,12 @@ lgt_compiler_option(Option, Value) :-
 	Value = Value2.
 
 lgt_compiler_option(Option, Value) :-
-	lgt_default_compiler_option_(Option, Value2),
+	lgt_flag_(Option, Value2),
 	!,
 	Value = Value2.
 
 lgt_compiler_option(Option, Value) :-
-	lgt_default_compiler_option(Option, Value).
+	lgt_default_flag(Option, Value).
 
 
 
@@ -1040,16 +1040,16 @@ set_logtalk_flag(Flag, Value) :-
 
 set_logtalk_flag(Flag, Value) :-
 	atom(Flag),
-	\+ lgt_valid_logtalk_flag(Flag, Value),
+	\+ lgt_valid_flag(Flag, Value),
 	throw(error(domain_error(valid_flag, Flag), set_logtalk_flag(Flag, Value))).
 
 set_logtalk_flag(Flag, Value) :-
-	lgt_read_only_logtalk_flag(Flag),
+	lgt_read_only_flag(Flag),
 	throw(error(domain_error(read_only_flag, Flag), set_logtalk_flag(Flag, Value))).
 
 set_logtalk_flag(Flag, Value) :-
-	retractall(lgt_default_compiler_option_(Flag, _)),
-	assertz(lgt_default_compiler_option_(Flag, Value)).
+	retractall(lgt_flag_(Flag, _)),
+	assertz(lgt_flag_(Flag, Value)).
 
 
 
@@ -1064,15 +1064,15 @@ current_logtalk_flag(Flag, Value) :-
 
 current_logtalk_flag(Flag, Value) :-
 	atom(Flag),
-	\+ lgt_valid_logtalk_flag(Flag),
+	\+ lgt_valid_flag(Flag),
 	throw(error(domain_error(valid_flag, Flag), current_logtalk_flag(Flag, Value))).
 
 current_logtalk_flag(Flag, Value) :-
-	lgt_default_compiler_option_(Flag, Value).
+	lgt_flag_(Flag, Value).
 
 current_logtalk_flag(Flag, Value) :-
-	\+ lgt_default_compiler_option_(Flag, _),
-	lgt_default_compiler_option(Flag, Value).
+	\+ lgt_flag_(Flag, _),
+	lgt_default_flag(Flag, Value).
 
 
 
@@ -2128,7 +2128,7 @@ lgt_dump_all :-
 	listing(lgt_defs_pred_/1),
 	listing(lgt_calls_pred_/1),
 	listing(lgt_current_compiler_option_/2),
-	listing(lgt_default_compiler_option_/2),
+	listing(lgt_flag_/2),
 	listing(lgt_referenced_object_/1),
 	listing(lgt_referenced_protocol_/1),
 	listing(lgt_referenced_category_/1).
@@ -5113,39 +5113,39 @@ lgt_valid_compiler_option(report(Option)) :-
 
 
 
-% lgt_valid_logtalk_flag(@nonvar)
+% lgt_valid_flag(@nonvar)
 %
 % true if the argument is a valid Logtalk flag
 
-lgt_valid_logtalk_flag(iso_initialization_dir).
-lgt_valid_logtalk_flag(xml).
-lgt_valid_logtalk_flag(xsl).
-lgt_valid_logtalk_flag(unknown).
-lgt_valid_logtalk_flag(singletons).
-lgt_valid_logtalk_flag(misspelt).
-lgt_valid_logtalk_flag(lgtredef).
-lgt_valid_logtalk_flag(plredef).
-lgt_valid_logtalk_flag(portability).
-lgt_valid_logtalk_flag(report).
+lgt_valid_flag(iso_initialization_dir).
+lgt_valid_flag(xml).
+lgt_valid_flag(xsl).
+lgt_valid_flag(unknown).
+lgt_valid_flag(singletons).
+lgt_valid_flag(misspelt).
+lgt_valid_flag(lgtredef).
+lgt_valid_flag(plredef).
+lgt_valid_flag(portability).
+lgt_valid_flag(report).
 
 
 
-% lgt_valid_logtalk_flag(@term, @term)
+% lgt_valid_flag(@term, @term)
 %
-% true if the argument is a valid Logtalk flag
+% true if the argument is a valid Logtalk flag-value pair
 
-lgt_valid_logtalk_flag(Flag, Value) :-
+lgt_valid_flag(Flag, Value) :-
 	atom(Flag),
 	Option =.. [Flag, Value],
 	lgt_valid_compiler_option(Option).
 
 
 
-% lgt_read_only_logtalk_flag(@nonvar)
+% lgt_read_only_flag(@nonvar)
 %
 % true if the argument is a read only Logtalk flag
 
-lgt_read_only_logtalk_flag(_) :-
+lgt_read_only_flag(_) :-
 	fail.
 
 
