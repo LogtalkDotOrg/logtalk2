@@ -458,7 +458,7 @@ In most cases, the predicates resulting from the translation of the grammar rule
 The <code>//</code> infix operator used above tells the Logtalk compiler that the scope directive refers to a grammar rule non-terminal, not to a predicate. The idea is that the predicate corresponding to the translation of the <code>expr/1</code> non-terminal will have a number of arguments equal to one plus the number of additional arguments necessary for processing the subjacent lists of tokens.
 </p>
 <p>
-In the body of a grammar rule, we can call rules that are inherited from ancestor objects, imported from categories, or contained in other objects. This is accomplished by using non-terminals as messages. Using a non-terminal as a message to self allows us to call grammar rules in categories and ancestor objects. To call grammar rules encapsulated in other objects, we use a non-terminal as a message to those objects. Consider the following example, containing grammar rules for parsing natural language sentences:
+In the body of a grammar rule, we can call rules that are inherited from ancestor objects, imported from categories, or contained in other objects. This is accomplished by using non-terminals as messages. Using a non-terminal as a message to <em>self</em> allows us to call grammar rules in categories and ancestor objects. To call grammar rules encapsulated in other objects, we use a non-terminal as a message to those objects. Consider the following example, containing grammar rules for parsing natural language sentences:
 </p>
 <pre>
     :- object(sentence,
@@ -523,6 +523,9 @@ After compiling and loading this code, we may try the following query:
 </pre>
 <p>
 This is the expected result as the expansion of the grammar rule into a clause leaves the <code>{bar}</code> goal untouched, which, in turn, is converted into the goal <code>bar</code> when the clause is compiled.
+</p>
+<p>
+Grammar rule non-terminal may be declared as dynamic or discontiguous, as any other object predicate, using the same <code><em>Functor//Arity</em></code> notation illustrated above for the scope directives.
 </p>
 
 <h2>Built-in object predicates (methods)<a name="methods"></a></h2>

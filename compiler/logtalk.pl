@@ -3546,8 +3546,7 @@ current_logtalk_flag(version, version(2, 21, 2)).
 			('$lgt_valid_gr_ind'(Pred) ->
 				Pred = Functor//Arity,
 				Arity2 is Arity + 2,
-				assertz('$lgt_pp_public_'(Functor/Arity2)),
-				assertz('$lgt_pp_public_gr_'(Pred))
+				assertz('$lgt_pp_public_'(Functor/Arity2))
 				;
 				throw(type_error(predicate_indicator, Pred))))).
 
@@ -3562,8 +3561,7 @@ current_logtalk_flag(version, version(2, 21, 2)).
 			('$lgt_valid_gr_ind'(Pred) ->
 				Pred = Functor//Arity,
 				Arity2 is Arity + 2,
-				assertz('$lgt_pp_protected_'(Functor/Arity2)),
-				assertz('$lgt_pp_protected_gr_'(Pred))
+				assertz('$lgt_pp_protected_'(Functor/Arity2))
 				;
 				throw(type_error(predicate_indicator, Pred))))).
 
@@ -3578,8 +3576,7 @@ current_logtalk_flag(version, version(2, 21, 2)).
 			('$lgt_valid_gr_ind'(Pred) ->
 				Pred = Functor//Arity,
 				Arity2 is Arity + 2,
-				assertz('$lgt_pp_private_'(Functor/Arity2)),
-				assertz('$lgt_pp_private_gr_'(Pred))
+				assertz('$lgt_pp_private_'(Functor/Arity2))
 				;
 				throw(type_error(predicate_indicator, Pred))))).
 
@@ -3591,7 +3588,12 @@ current_logtalk_flag(version, version(2, 21, 2)).
 		('$lgt_valid_pred_ind'(Pred) ->
 			assertz('$lgt_pp_dynamic_'(Pred))
 			;
-			throw(type_error(predicate_indicator, Pred)))).
+			('$lgt_valid_gr_ind'(Pred) ->
+				Pred = Functor//Arity,
+				Arity2 is Arity + 2,
+				assertz('$lgt_pp_dynamic_'(Functor/Arity2))
+				;
+				throw(type_error(predicate_indicator, Pred))))).
 
 
 '$lgt_tr_directive'((discontiguous), Preds) :-
@@ -3601,7 +3603,12 @@ current_logtalk_flag(version, version(2, 21, 2)).
 		('$lgt_valid_pred_ind'(Pred) ->
 			assertz('$lgt_pp_discontiguous_'(Pred))
 			;
-			throw(type_error(predicate_indicator, Pred)))).
+			('$lgt_valid_gr_ind'(Pred) ->
+				Pred = Functor//Arity,
+				Arity2 is Arity + 2,
+				assertz('$lgt_pp_discontiguous_'(Functor/Arity2))
+				;
+				throw(type_error(predicate_indicator, Pred))))).
 
 
 '$lgt_tr_directive'(metapredicate, Preds) :-
