@@ -50,22 +50,9 @@ ALS Prolog 3.1
 	Supports smart compilation of source files.
 
 
-Amzi! Prolog 4.103~5.0, 6.2.2 and later versions
+Amzi! Prolog 6.2.2 and later versions
 
 	amzi.config
-
-	For Amzi! Prolog 4.103 and 5.0. The compiler definition of the compare/3 
-	built-in predicate returns the atom == instead of = for identical terms 
-	(contrary to every other Prolog compiler!). You need to search the library
-	files for all calls of the compare/3 predicate and make the necessary 
-	changes.
-
-	Older versions of the Amzi! compiler contain a bug in the implementation 
-	of the if-then-else control structure that affects Logtalk behaviour (and
-	any other program using it!). Don't forget to use the chdir/1 predicate 
-	to set the working directory before loading the library or an example.
-
-	amzi6.config
 
 	For Amzi! Prolog 6.22 and later releases. The compiler definition of the 
 	compare/3 built-in predicate returns the atom == instead of = for 
