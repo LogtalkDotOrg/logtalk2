@@ -2186,8 +2186,11 @@ current_logtalk_flag(version, version(2, 17, 0)).
 		'$lgt_dbg_valid_port_option'(Option),
 		'$lgt_dbg_do_port_option'(Option, Ctx, Action)
 		;
-		'$lgt_dbg_write_port_name'(Port), writeq(Goal), nl,
-		Action = true),
+		('$lgt_dbg_tracing_' ->
+			'$lgt_dbg_write_port_name'(Port), writeq(Goal), nl,
+			Action = true
+			;
+			Action = true)),
 	!.
 
 '$lgt_dbg_port'(_, _, _, true).
