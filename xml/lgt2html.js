@@ -84,7 +84,9 @@ WScript.Echo("");
 WScript.Echo("converting XML files...");
 
 var files = WshShell.CurrentDirectory.Files;
+var file;
 
+WScript.Echo(files);
 for (file in files)
 	if (fso.GetExtensionName(file) = "xml") {
 		WScript.Echo("  converting" + fso.GetFileName(file));
