@@ -28,21 +28,17 @@ var directory = WshShell.CurrentDirectory;
 var processor = "fop";
 // var processor = "xep";
 
-var arguments = WScript.Arguments.Unnamed;
-
-if (arguments.Exists("help"))
+if (WScript.Arguments.Unnamed.Exists("help"))
 	usage_help();
 
-arguments = WScript.Arguments.Named;
+if (WScript.Arguments.Named.Exists("f"))
+	format = WScript.Arguments.Named.Item("f");
 
-if (arguments.Exists("f"))
-	format = arguments.Item("f");
+if (WScript.Arguments.Named.Exists("d"))
+	directory = WScript.Arguments.Named.Item("d");
 
-if (arguments.Exists("d"))
-	directory = arguments.Item("d");
-
-if (arguments.Exists("p"))
-	processor = arguments.Item("p");
+if (WScript.Arguments.Named.Exists("p"))
+	processor = WScript.Arguments.Named.Item("p");
 
 if (format = "a4")
 	xsl = a4_xsl;

@@ -32,27 +32,23 @@ var processor = "xsltproc";
 // var processor = "xalan";
 // var processor = "sabcmd";
 
-var arguments = WScript.Arguments.Unnamed;
-
-if (arguments.Exists("help"))
+if (WScript.Arguments.Unnamed.Exists("help"))
 	usage_help();
 
-arguments = WScript.Arguments.Named;
+if (WScript.Arguments.Named.Exists("f"))
+	format = WScript.Arguments.Named.Item("f");
 
-if (arguments.Exists("f"))
-	format = arguments.Item("f");
+if (WScript.Arguments.Named.Exists("d"))
+	directory = WScript.Arguments.Named.Item("d");
 
-if (arguments.Exists("d"))
-	directory = arguments.Item("d");
+if (WScript.Arguments.Named.Exists("i"))
+	index_file = WScript.Arguments.Named.Item("i");
 
-if (arguments.Exists("i"))
-	index_file = arguments.Item("i");
+if (WScript.Arguments.Named.Exists("t"))
+	title = WScript.Arguments.Named.Item("t");
 
-if (arguments.Exists("t"))
-	title = arguments.Item("t");
-
-if (arguments.Exists("p"))
-	processor = arguments.Item("p");
+if (WScript.Arguments.Named.Exists("p"))
+	processor = WScript.Arguments.Named.Item("p");
 
 if (format = "xhtml")
 	xslt = xhtml_xslt;
