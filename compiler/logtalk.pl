@@ -859,9 +859,9 @@ abolish_events(after, Obj, Msg, Sender, Monitor) :-
 
 
 
-% logtalk_compile(+list)
+% logtalk_compile(@atom_or_atom_list)
 %
-% compiles to disk a list of entities using default options
+% compiles to disk an entity or list of entities using default options
 
 logtalk_compile(Entities) :-
 	catch(
@@ -871,9 +871,20 @@ logtalk_compile(Entities) :-
 
 
 
-% logtalk_compile(+list, +list)
+% logtalk_compile(@atom_or_atom_list, @list)
 %
-% compiles to disk a list of entities using a list of options
+% compiles to disk an entity or a list of entities using a list of options
+
+logtalk_compile(Entity, Options) :-
+	atom(Entity),
+	!,
+	catch(
+		('$lgt_check_compiler_entity'(Entity),
+		 '$lgt_check_compiler_options'(Options),
+		 '$lgt_set_compiler_options'(Options),
+		 '$lgt_compile_entity'(Entity)),
+		Error,
+		throw(error(Error, logtalk_compile(Entity, Options)))).
 
 logtalk_compile(Entities, Options) :-
 	catch(
@@ -886,7 +897,7 @@ logtalk_compile(Entities, Options) :-
 
 
 
-% '$lgt_check_compiler_entities'(+list)
+% '$lgt_check_compiler_entities'(@list)
 %
 % check if the entities names are valid and if the corresponding
 % files exist in the current working directory
@@ -925,7 +936,7 @@ logtalk_compile(Entities, Options) :-
 
 
 
-% '$lgt_check_compiler_options'(+list)
+% '$lgt_check_compiler_options'(@list)
 %
 % check if the compiler options are valid
 
@@ -958,7 +969,7 @@ logtalk_compile(Entities, Options) :-
 
 
 
-% '$lgt_set_compiler_options'(+list)
+% '$lgt_set_compiler_options'(@list)
 %
 % sets the compiler options
 
@@ -976,10 +987,10 @@ logtalk_compile(Entities, Options) :-
 
 
 
-% logtalk_load(+list)
+% logtalk_load(@atom_or_atom_list)
 %
-% compiles to disk and then loads to memory a 
-% list of entities using default options
+% compiles to disk and then loads to memory an entity 
+% or a list of entities using default options
 
 logtalk_load(Entities) :-
 	catch(
@@ -989,10 +1000,21 @@ logtalk_load(Entities) :-
 
 
 
-% logtalk_load(+list, +list)
+% logtalk_load(@atom_or_atom_list, @list)
 %
-% compiles to disk and then loads to memory a 
-% list of entities using a list of options
+% compiles to disk and then loads to memory an entity 
+% or a list of entities using a list of options
+
+logtalk_load(Entity, Options) :-
+	atom(Entity),
+	!,
+	catch(
+		('$lgt_check_compiler_entity'(Entity),
+		 '$lgt_check_compiler_options'(Options),
+		 '$lgt_set_compiler_options'(Options),
+		 '$lgt_load_entity'(Entity)),
+		Error,
+		throw(error(Error, logtalk_load(Entity, Options)))).
 
 logtalk_load(Entities, Options) :-
 	catch(
