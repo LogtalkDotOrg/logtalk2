@@ -1,11 +1,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.10.0
+%  Release 2.11.0
 %
 %  configuration file for QU-Prolog 4.3
 %
-%  last updated: December 30, 2001
+%  last updated: April 19, 2002
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -197,6 +197,8 @@ lgt_default_flag(portability, silent).
 
 lgt_default_flag(report, on).
 
+lgt_default_flag(smart_compilation, off).
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -247,6 +249,14 @@ lgt_file_exists(File) :-
 
 lgt_load_prolog_code(File) :-
 	reconsult( File ).
+
+
+% lgt_compare_file_mtimes(?atom, +atom, +atom)
+%
+% compare file modification times
+
+lgt_compare_file_mtimes(_, _, _) :-
+	fail.
 
 
 
