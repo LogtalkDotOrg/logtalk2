@@ -1,8 +1,8 @@
 #!/bin/sh
 
-XT_PATH="."
-SAX_PATH="."
-XP_PATH="."
+XT_PATH="/Applications/XT"
+SAX_PATH="/Applications/XT"
+XP_PATH="/Applications/XT"
 
 XSLT="lgthtml.xsl"
 
@@ -33,7 +33,7 @@ echo conversion done
 echo
 echo generating index file...
 
-> index.html
+echo "" > index.html
 
 echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">" >> index.html
 echo "<html>" >> index.html
