@@ -12,12 +12,14 @@ RELEASE NOTES
 
 2.14.4 - October ??, 2002
 
-	Updated YAP 4.3.x config file to use the YAP "system" library to access 
-	the operating system for time, date, and file properties (enabling smart 
-	source code compilation).
+	Removed definition of depracated built-in predicate logtalk_version/3.
 
 	Small change to messages printed on console with smart compilation of 
 	source files turned on.
+
+	Updated YAP 4.3.x config file to use the YAP "system" library to access 
+	the operating system for time, date, and file properties (enabling smart 
+	source code compilation).
 
 	Updated the lgtpdfa4.xsl and lgtpdfus.xsl XSLT files to workaround a bug 
 	in the PassiveTeX 1.21 XSL:FO processor.
