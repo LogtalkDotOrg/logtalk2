@@ -94,7 +94,7 @@ html.sh
 	Requires James Clarck XT processor (http://www.jclark.com/xml/xt.html).
 
 
-html.cmd
+htmlnt.cmd
 
 	Sample Windows NT batch script to convert .xml files to .html files.
 	The script also generates an index.html file that contains links to all 
@@ -104,7 +104,7 @@ html.cmd
 	Requires James Clarck XT processor (http://www.jclark.com/xml/xt.html).
 
 
-html.bat
+htmldos.bat
 
 	Sample DOS batch script to convert .xml files to .html files.
 	Edit the script to match your environment before running it.
