@@ -5694,7 +5694,7 @@ user0__def(Pred, _, _, _, Pred, user).
 
 
 
-% '$lgt_dcg_terminals'(@list, -goal, @var, @var)
+% '$lgt_dcg_terminals'(+list, -goal, @var, @var)
 %
 % translate list of terminals
 
@@ -5702,7 +5702,8 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_dcg_terminals'(Terminals, S, List).
 
 
-'$lgt_dcg_terminals'([], S, S).
+'$lgt_dcg_terminals'([], S, S) :-
+	!.		% make predicate determinist when first argument is [Var1| Var2]
 
 '$lgt_dcg_terminals'([Terminal| Terminals], S, [Terminal| Rest]) :-
 	'$lgt_dcg_terminals'(Terminals, S, Rest).
@@ -6186,7 +6187,7 @@ user0__def(Pred, _, _, _, Pred, user).
 %
 %  table of ISO defined predicates
 %
-%  used in portability checking
+%  used for portability checking
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
