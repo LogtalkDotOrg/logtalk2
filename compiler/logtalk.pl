@@ -5701,11 +5701,7 @@ current_logtalk_flag(version, version(2, 22, 2)).
 	assertz('$lgt_pp_dcl_'(Fact)),
 	fail.
 
-'$lgt_gen_local_dcl_clauses'.
-
-
-
-'$lgt_gen_catchall_dcl_clause' :-
+'$lgt_gen_local_dcl_clauses' :-		% generate a catchall clause if needed
 	\+ '$lgt_pp_dcl_'(_) ->
 		'$lgt_pp_entity'(_, _, _, Dcl, _),
 		Head =.. [Dcl, _, _, _, _],
@@ -5749,15 +5745,9 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 
 '$lgt_gen_protocol_clauses' :-
-	'$lgt_gen_protocol_local_clauses',
+	'$lgt_gen_local_dcl_clauses',
 	'$lgt_gen_protocol_linking_clauses',
 	'$lgt_gen_protocol_extend_clauses'.
-
-
-
-'$lgt_gen_protocol_local_clauses' :-
-	'$lgt_gen_local_dcl_clauses',
-	'$lgt_gen_catchall_dcl_clause'.
 
 
 
@@ -5808,7 +5798,6 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 '$lgt_gen_category_dcl_clauses' :-
 	'$lgt_gen_local_dcl_clauses',
-	'$lgt_gen_catchall_dcl_clause',
 	'$lgt_gen_category_linking_dcl_clauses',
 	'$lgt_gen_category_implements_dcl_clauses',
 	'$lgt_gen_category_imports_dcl_clauses'.
@@ -5928,7 +5917,6 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 '$lgt_gen_prototype_dcl_clauses' :-
 	'$lgt_gen_local_dcl_clauses',
-	'$lgt_gen_catchall_dcl_clause',
 	'$lgt_gen_prototype_linking_dcl_clauses',
 	'$lgt_gen_prototype_implements_dcl_clauses',
 	'$lgt_gen_prototype_imports_dcl_clauses',
@@ -6124,7 +6112,6 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 '$lgt_gen_ic_dcl_clauses' :-
 	'$lgt_gen_local_dcl_clauses',
-	'$lgt_gen_catchall_dcl_clause',
 	'$lgt_gen_ic_hierarchy_dcl_clauses'.
 
 
@@ -7311,7 +7298,64 @@ current_logtalk_flag(version, version(2, 22, 2)).
 	Head = (Key is Value),
 	nonvar(Key),
 	nonvar(Value),
-	'$lgt_valid_info_list'(Tail).
+	('$lgt_valid_info_key_value'(Key, Value) ->
+		'$lgt_valid_info_list'(Tail)
+		;
+		throw(type_error(info_list_item, Key is Value))).
+
+
+
+% '$lgt_valid_info_key_value'(+atom, @nonvar)
+%
+% true if the argument is a list of key-value pairs
+
+'$lgt_valid_info_key_value'(allocation, Allocation) :-
+	!,
+	once('$lgt_member'(Allocation, [container, descendants, instances, classes, subclasses, any])).
+
+'$lgt_valid_info_key_value'(argnames, List) :-
+	!,
+	'$lgt_proper_list'(List),
+	forall('$lgt_member'(Value, List), atom(Value)).
+
+'$lgt_valid_info_key_value'(author, Author) :-
+	!,
+	atom(Author).
+
+'$lgt_valid_info_key_value'(comment, Comment) :-
+	!,
+	atom(Comment).
+
+'$lgt_valid_info_key_value'(date, Date) :-
+	!,
+	Date = Year/Month/Day,
+	integer(Year),
+	integer(Month),
+	integer(Day).
+
+'$lgt_valid_info_key_value'(exceptions, Exceptions) :-
+	!,
+	'$lgt_proper_list'(Exceptions),
+	forall(
+		'$lgt_member'(Exception, Exceptions),
+		(Exception = (Description - Term), atom(Description), nonvar(Term))).
+
+'$lgt_valid_info_key_value'(redefinition, Redefinition) :-
+	!,
+	once('$lgt_member'(Redefinition, [never, free, specialize, call_super_first, call_super_last])).
+
+'$lgt_valid_info_key_value'(version, Version) :-
+	!,
+	atomic(Version).
+
+'$lgt_valid_info_key_value'(parnames, Parnames) :-
+	!,
+	'$lgt_proper_list'(Parnames),
+	forall('$lgt_member'(Name, Parnames), atom(Name)),
+	'$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _),
+	\+ \+ Obj =.. [_| Parnames].
+
+'$lgt_valid_info_key_value'(_, _).
 
 
 
