@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@noe.ubi.pt>
-" Last Change:	2002 May 11
+" Last Change:	2002 May 18
 
 
 " Quit when a syntax file was already loaded:
@@ -198,7 +198,7 @@ syn match	logtalkOperator		"@>="
 " Term creation and decomposition
 
 syn keyword	logtalkKeyword		functor
-syn keyword	logtalkKeywor		arg
+syn keyword	logtalkKeyword		arg
 syn match	logtalkOperator		"=\.\."
 syn keyword	logtalkKeyword		copy_term
 
