@@ -14,7 +14,7 @@ RELEASE NOTES
 
 	Implemented a notion of library as simply a directory containing source 
 	files. Added a new dynamic predicate, logtalk_library_path/2, for 
-	specifying library paths. Added template files for setting library paths 
+	specifying library paths. Added sample file for setting library paths 
 	for the Logtalk standard library and for all the supplied examples.
 
 	Added support for using the notation <library>(<entity>) with the built-in
@@ -22,13 +22,16 @@ RELEASE NOTES
 	loading source files contained on a library, without the need to first 
 	change the current working directory.
 
-	Changed the library and examples loading instructions to use the notation
-	<library>(<entity>).
+	Changed the library and the examples loading instructions to use the 
+	notation <library>(<entity>).
 
-	Improved installation instructions and installation scripts.
+	Improved installation instructions and installation scripts. Added a new 
+	environment variable, LOGTALKUSER, for defining the location of the copies 
+	of the user-modifiable Logtalk files in a multiple users setup environment.
 
 	Added utility predicates to all configuration files for querying and 
-	changing the current working directory.
+	changing the current working directory (needed for the <library>(<entity>) 
+	notation to work).
 
 	Corrected a bug in the code that checks for file existence when compiling 
 	or loading source files and source metafiles.
