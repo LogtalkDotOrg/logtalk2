@@ -21,6 +21,10 @@ RELEASE NOTES
 
 	Added two more DCGs examples. New "puzzles" and "metainterpreters" examples.
 
+	Removed predicate nth/3 from library entities listp, list, and difflist. 
+	Replaced by the predicates nth0/3 and nth1/3. Added new predicates nth1/4 
+	and nth0/4.
+
 
 2.17.0 - April 26, 2004
 
