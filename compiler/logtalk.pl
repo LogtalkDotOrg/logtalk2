@@ -119,9 +119,6 @@
 :- dynamic('$lgt_pp_private_'/1).				% '$lgt_pp_private_'(Functor/Arity)
 :- dynamic('$lgt_pp_metapredicate_'/1).			% '$lgt_pp_metapredicate_'(Pred)
 :- dynamic('$lgt_pp_alias_'/3).					% '$lgt_pp_alias_'(Entity, Pred1, Pred2)
-:- dynamic('$lgt_pp_public_gr_'/1).				% '$lgt_pp_public_gr_'(Functor/Arity)
-:- dynamic('$lgt_pp_protected_gr_'/1).			% '$lgt_pp_protected_gr_'(Functor/Arity)
-:- dynamic('$lgt_pp_private_gr_'/1).			% '$lgt_pp_private_gr_'(Functor/Arity)
 
 :- dynamic('$lgt_pp_object_'/9).				% '$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef)
 :- dynamic('$lgt_pp_category_'/4).				% '$lgt_pp_category_'(Ctg, Prefix, Dcl, Def)
