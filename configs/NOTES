@@ -386,7 +386,7 @@ Quintus Prolog 3.3~3.4
 	the library or an example. Supports smart compilation of source files.
 
 
-SICStus Prolog 3.5~3.10.x
+SICStus Prolog 3.5~3.11.x
 
 	sicstus35.config
 	
@@ -402,7 +402,7 @@ SICStus Prolog 3.5~3.10.x
 
 	sicstus38.config
 	
-	For versions 3.8.x~3.10.x. The config file sets the flag language to 
+	For versions 3.8.x~3.11.x. The config file sets the flag language to 
 	iso, but that is only recomended and should not be needed to run Logtalk.
 	No problems expected although not fully tested. Don't forget to use the 
 	SICStus working_directory/2 predicate to set the working directory before 
