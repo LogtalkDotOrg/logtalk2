@@ -63,9 +63,9 @@ if (f_arg != "" && f_arg != "a4" && f_arg != "us") {
 } else if (f_arg != "")
 	format = f_arg;
 
-var fso = new ActiveXObject("Scripting.FileSystemObject");
+var FSObject = new ActiveXObject("Scripting.FileSystemObject");
 
-if (d_arg != "" && !fso.FolderExists(d_arg)) {
+if (d_arg != "" && !FSObject.FolderExists(d_arg)) {
 	WScript.Echo("Error! directory does not exists: " + d_arg);
 	WScript.Echo("");
 	usage_help();
@@ -84,20 +84,20 @@ if (format == "a4")
 else
 	xsl = us_xsl;
 
-fso.CopyFile(logtalk_home + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory + "\\logtalk.dtd");
-fso.CopyFile(logtalk_home + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory + "\\logtalk.xsd");
-fso.CopyFile(logtalk_home + "\\xml\\logtalk.css", directory + "\\logtalk.css");
+FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory + "\\logtalk.dtd");
+FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory + "\\logtalk.xsd");
+FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.css", directory + "\\logtalk.css");
 
 WScript.Echo("");
 WScript.Echo("converting XML files to PDF...");
 
-var files = new Enumerator(fso.GetFolder(WshShell.CurrentDirectory).Files);
+var files = new Enumerator(FSObject.GetFolder(WshShell.CurrentDirectory).Files);
 
 for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
 	var file = files.item().name;
-	if (fso.GetExtensionName(file) == "xml") {
+	if (FSObject.GetExtensionName(file) == "xml") {
 		WScript.Echo("  converting " + file);
-		var pdf_file = directory + "\\" + fso.GetBaseName(file)+ ".pdf";
+		var pdf_file = directory + "\\" + FSObject.GetBaseName(file)+ ".pdf";
 		WshShell.Run(processor + " -q -xml " + file + " -xsl " + xsl + " -pdf " + pdf_file, true);
 	}
 }
@@ -105,8 +105,8 @@ for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
 WScript.Echo("conversion done");
 WScript.Echo("");
 
-fso.DeleteFile("logtalk.dtd");
-fso.DeleteFile("logtalk.xsd");
+FSObject.DeleteFile("logtalk.dtd");
+FSObject.DeleteFile("logtalk.xsd");
 
 WScript.Quit(0);
 
