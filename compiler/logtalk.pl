@@ -979,7 +979,12 @@ logtalk_compile(Entities, Options) :-
 
 '$lgt_set_compiler_options'(Options) :-
 	retractall('$lgt_current_compiler_option_'(_, _)),
-	'$lgt_assert_compiler_options'(Options).
+	'$lgt_assert_compiler_options'(Options),
+	('$lgt_current_compiler_option_'(debug, on) ->
+		retractall('$lgt_current_compiler_option_'(smart_compilation, _)),
+		asserta('$lgt_current_compiler_option_'(smart_compilation, off))
+		;
+		true).
 
 
 '$lgt_assert_compiler_options'([]).
@@ -1060,6 +1065,13 @@ set_logtalk_flag(Flag, Value) :-
 set_logtalk_flag(Flag, Value) :-
 	\+ '$lgt_valid_flag'(Flag, Value),
 	throw(error(domain_error(valid_flag_value, Value), set_logtalk_flag(Flag, Value))).
+
+set_logtalk_flag(debug, on) :-
+	!,
+	retractall('$lgt_flag_'(debug, _)),
+	assertz('$lgt_flag_'(debug, on)),
+	retractall('$lgt_flag_'(smart_compilation, _)),
+	assertz('$lgt_flag_'(smart_compilation, off)).
 
 set_logtalk_flag(Flag, Value) :-
 	retractall('$lgt_flag_'(Flag, _)),
@@ -2020,21 +2032,21 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 '$lgt_dbg_debugging' :-
 	('$lgt_dbg_debugging_' ->
-		write('Debugger is switched on.'), nl
+		write('Debugger is switched on: '),
+		('$lgt_dbg_tracing_' ->
+			write('tracing everything.'), nl
+			;
+			write('showing spy points.'), nl)
 		;
 		write('Debugger is switched off.'), nl), nl,
-	('$lgt_dbg_tracing_' ->
-		write('Debugger mode set to tracing.'), nl
-		;
-		true),
 	('$lgt_dbg_spying_'(_, _, _, _) ->
-		write('Spy points (Sender, This, Self, Goal):'), nl,
+		write('Defined spy points (Sender, This, Self, Goal):'), nl,
 		forall(
 			'$lgt_dbg_spying_'(Sender, This, Self, Goal),
-			(write('  '), '$lgt_dbg_pretty_print_spy_point'(Sender, This, Self, Goal), nl))
+			(write('    '), '$lgt_dbg_pretty_print_spy_point'(Sender, This, Self, Goal), nl))
 		;
 		write('No spy points are defined.'), nl), nl,
-	write('Leashed ports: '),
+	write('Leashed ports:'), nl, write('    '),
 	('$lgt_dbg_leashing_'(_) ->
 		forall(
 			'$lgt_dbg_leashing_'(Port),
@@ -2048,7 +2060,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	(var(Sender) -> write('_, '); '$lgt_pretty_print_vars'(Sender), write(', ')),
 	(var(This) -> write('_, '); '$lgt_pretty_print_vars'(This), write(', ')),
 	(var(Self) -> write('_, '); '$lgt_pretty_print_vars'(Self), write(', ')),
-	(var(Goal) -> write('_, '); '$lgt_pretty_print_vars'(Goal)).
+	(var(Goal) -> write('_'); '$lgt_pretty_print_vars'(Goal)).
 
 
 '$lgt_dbg_spying'(Sender, This, Self, Goal) :-
@@ -2214,11 +2226,14 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_valid_port_option'(c).
 '$lgt_dbg_valid_port_option'(f).
 '$lgt_dbg_valid_port_option'(n).
-'$lgt_dbg_valid_port_option'(b).
+'$lgt_dbg_valid_port_option'('@').
+%'$lgt_dbg_valid_port_option'(b).
 '$lgt_dbg_valid_port_option'(a).
 '$lgt_dbg_valid_port_option'(x).
 '$lgt_dbg_valid_port_option'(h).
 '$lgt_dbg_valid_port_option'('?').
+'$lgt_dbg_valid_port_option'(l).
+'$lgt_dbg_valid_port_option'('=').
 
 
 '$lgt_dbg_do_port_option'(' ', _, true).
@@ -2226,8 +2241,19 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 '$lgt_dbg_do_port_option'(f, _, fail).
 
+'$lgt_dbg_do_port_option'(l, _, true) :-
+	retractall('$lgt_dbg_tracing_').
+
 '$lgt_dbg_do_port_option'(n, _, true) :-
 	'$lgt_dbg_nodebug'.
+
+'$lgt_dbg_do_port_option'('=', _, true) :-
+	'$lgt_dbg_debugging'.
+
+'$lgt_dbg_do_port_option'('@', _, true) :-
+	write('     :- '),
+	read(Goal),
+	once((Goal; true)).
 
 '$lgt_dbg_do_port_option'(b, _, true) :-
 	repeat,
@@ -2258,11 +2284,14 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_do_port_option'(h, _, _) :-
 	write('    Available options are:'), nl,
 	write('        c - creep (go on; you may use the spacebar in alternative)'), nl,
+	write('        l - leep (continue execution until the next spy point is found)'), nl,
 	write('        f - fail (force backtracking)'), nl,
 	write('        n - nodebug (turn off debugging)'), nl,
-	write('        b - break (submit queries to the interpreter, type true to terminate)'), nl,
+	write('        @ - command (read and execute a query)'), nl,
+%	write('        b - break (submit queries to the interpreter; type true to terminate)'), nl,
 	write('        a - abort (return to top level interpreter)'), nl,
 	write('        x - print execution context'), nl,
+	write('        = - print debugging information'), nl,
 	write('        h - help (prints this list of options)'), nl,
 	fail.
 
