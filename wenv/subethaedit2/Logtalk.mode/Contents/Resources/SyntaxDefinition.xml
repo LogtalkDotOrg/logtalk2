@@ -53,6 +53,13 @@
 				<regex>(\})</regex>
 			</keywords>
 
+			<keywords id="Mode Operators" color="#0000ff" useforautocomplete="no">
+				<regex>(@)</regex>			
+				<regex>(\?)</regex>
+				<regex>(\+)</regex>
+				<regex>(\-)</regex>
+			</keywords>
+
 			<keywords id="Control Constructs" color="#1A1AA6">
 				<regex>[^A-Za-z0-9_](ca(ll|tch))\(</regex>
 				<regex>[^A-Za-z0-9_](throw)\(</regex>
