@@ -1856,37 +1856,36 @@ lgt_load_entities([Entity| Entities]) :-
 % compiles to disk and then loads to memory an entity
 
 lgt_load_entity(Entity) :-
-	(lgt_compiler_option(report, on) ->
-		nl, write('>>>  compiling '), writeq(Entity), nl
-		;
-		true),
 	lgt_compile_entity(Entity),
-	(lgt_entity_(Type, Entity, _, _) ->
-		true
-		;
-		Type = entity),
-	(lgt_current_entity(Entity) ->
-		write('WARNING!  redefining '), write(Entity), write(' '),
-		writeq(Type), nl
+	(lgt_compiler_option(report, on) ->
+		lgt_report_redefined_entity(Entity)
 		;
 		true),
 	lgt_file_name(prolog, Entity, File),
 	lgt_load_prolog_code(File),
 	(lgt_compiler_option(report, on) ->
-		write('<<<  '), writeq(Entity),
-		write(' '), write(Type), write(' loaded'), nl
+		write('<<<  '), writeq(Entity), write(' loaded'), nl
 		;
 		true).
 
 
-lgt_current_entity(Obj) :-
-	lgt_current_object_(Obj, _, _, _, _).
 
-lgt_current_entity(Ptc) :-
-	lgt_current_protocol_(Ptc, _).
+lgt_report_redefined_entity(Entity) :-
+	lgt_current_object_(Entity, _, _, _, _),
+	!,
+	write('WARNING!  redefining '), write(Entity), write(' object'), nl.
 
-lgt_current_entity(Ctg) :-
-	lgt_current_category_(Ctg, _).
+lgt_report_redefined_entity(Entity) :-
+	lgt_current_protocol_(Entity, _),
+	!,
+	write('WARNING!  redefining '), write(Entity), write(' protocol'), nl.
+
+lgt_report_redefined_entity(Entity) :-
+	lgt_current_category_(Entity, _),
+	!,
+	write('WARNING!  redefining '), write(Entity), write(' category'), nl.
+
+lgt_report_redefined_entity(_).
 	
 
 
@@ -1907,14 +1906,27 @@ lgt_compile_entities([Entity| Entities]) :-
 % compiles to disk an entity
 
 lgt_compile_entity(Entity) :-
-	(lgt_compiler_option(smart_compilation, on),
-	 \+ lgt_needs_recompilation(Entity)) ->
-		true
+	lgt_compiler_option(smart_compilation, on),
+	\+ lgt_needs_recompilation(Entity),
+	!,
+	(lgt_compiler_option(report, on) ->
+		nl, write('>>>  '), writeq(Entity), write(' is up-to-date'), nl
 		;
-		lgt_tr_entity(Entity),
-		lgt_write_tr_entity(Entity),
-		lgt_write_entity_doc(Entity),
-		lgt_report_unknown_entities.
+		true).
+
+lgt_compile_entity(Entity) :-
+	(lgt_compiler_option(report, on) ->
+		nl, write('>>>  compiling '), writeq(Entity), nl	
+		;
+		true),
+	lgt_tr_entity(Entity),
+	lgt_write_tr_entity(Entity),
+	lgt_write_entity_doc(Entity),
+	lgt_report_unknown_entities,
+	(lgt_compiler_option(report, on) ->
+		write('>>>  '), writeq(Entity), write(' compiled'), nl
+		;
+		true).
 
 
 
@@ -2038,7 +2050,8 @@ lgt_tr_file(Stream, Term) :-
 lgt_report_singletons([], _).
 
 lgt_report_singletons([Singleton| Singletons], Term) :-
-	lgt_compiler_option(singletons, warning) ->
+	(lgt_compiler_option(singletons, warning),
+	 lgt_compiler_option(report, on)) ->
 		write('WARNING!'),
 		\+ \+ ( lgt_report_singletons_aux([Singleton| Singletons], Term, Names),
 				write('  singleton variables: '), write(Names), nl,
@@ -2634,6 +2647,7 @@ lgt_tr_head(Head, _, _) :-
 lgt_tr_head(Head, _, _) :-
 	lgt_lgt_built_in(Head),
 	lgt_compiler_option(lgtredef, warning),
+	lgt_compiler_option(report, on),
 	\+ lgt_redefined_built_in_(Head, _, _),		% not already reported?
 	functor(Head, Functor, Arity),
 	write('WARNING!  redefining a Logtalk built-in predicate: '),
@@ -2646,6 +2660,7 @@ lgt_tr_head(Head, _, _) :-
 lgt_tr_head(Head, _, _) :-
 	lgt_pl_built_in(Head),
 	lgt_compiler_option(plredef, warning),
+	lgt_compiler_option(report, on),
 	\+ lgt_redefined_built_in_(Head, _, _),		% not already reported?
 	functor(Head, Functor, Arity),
 	write('WARNING!  redefining a Prolog built-in predicate: '),
@@ -2858,6 +2873,7 @@ lgt_tr_body(Pred, _, _) :-
 	lgt_built_in(Pred),
 	\+ lgt_iso_def_pred(Pred),
 	lgt_compiler_option(portability, warning),
+	lgt_compiler_option(report, on),
 	functor(Pred, Functor, Arity),
 	write('WARNING!  non-ISO defined built-in predicate call: '),
 	writeq(Functor/Arity), nl,
@@ -3540,7 +3556,8 @@ lgt_add_referenced_category(Ctg) :-
 % (if the corresponding compiler option is not set to "silent")
 
 lgt_report_unknown_entities :-
-	lgt_compiler_option(unknown, warning) ->
+	(lgt_compiler_option(unknown, warning),
+	 lgt_compiler_option(report, on)) ->
 		lgt_report_unknown_objects,
 		lgt_report_unknown_protocols,
 		lgt_report_unknown_categories
@@ -4545,7 +4562,8 @@ lgt_find_misspelt_calls :-
 lgt_report_misspelt_calls([]).
 
 lgt_report_misspelt_calls([Pred| Preds]) :-
-	lgt_compiler_option(misspelt, warning) ->
+	(lgt_compiler_option(misspelt, warning),
+	 lgt_compiler_option(report, on)) ->
 		write('WARNING!  these static predicates are called but never defined: '),
 		writeq([Pred| Preds]), nl
 		;
