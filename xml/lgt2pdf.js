@@ -39,7 +39,9 @@ var processor = "fop";
 if (WScript.Arguments.Unnamed.Length > 0)
 	usage_help();
 
-var f_arg, d_arg, p_arg;
+var f_arg = "";
+var d_arg = "";
+var p_arg = "";
 
 if (WScript.Arguments.Named.Exists("f"))
 	f_arg = WScript.Arguments.Named.Item("f");
