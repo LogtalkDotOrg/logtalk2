@@ -137,7 +137,8 @@
 :- dynamic('$lgt_dbg_debugging_'/0).			% '$lgt_dbg_debugging_'
 :- dynamic('$lgt_dbg_tracing_'/0).				% '$lgt_dbg_tracing_'
 :- dynamic('$lgt_dbg_skipping_'/0).				% '$lgt_dbg_skipping_'
-:- dynamic('$lgt_dbg_spying_'/4).				% '$lgt_dbg_spying_'(Sender, This, Selg, Goal)
+:- dynamic('$lgt_dbg_spying_'/1).				% '$lgt_dbg_spying_'(Functor/Arity)
+:- dynamic('$lgt_dbg_spying_'/4).				% '$lgt_dbg_spying_'(Sender, This, Self, Goal)
 :- dynamic('$lgt_dbg_leashing_'/1).				% '$lgt_dbg_leashing_'(Port)
 
 
@@ -1972,7 +1973,9 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_po_debugger0__dcl'(trace, p(p(p)), static, no).
 '$lgt_po_debugger0__dcl'(notrace, p(p(p)), static, no).
 
+'$lgt_po_debugger0__dcl'(spy(_), p(p(p)), static, no).
 '$lgt_po_debugger0__dcl'(spy(_, _, _, _), p(p(p)), static, no).
+'$lgt_po_debugger0__dcl'(nospy(_), p(p(p)), static, no).
 '$lgt_po_debugger0__dcl'(nospy(_, _, _, _), p(p(p)), static, no).
 '$lgt_po_debugger0__dcl'(nospyall, p(p(p)), static, no).
 
@@ -1989,6 +1992,8 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_po_debugger0__def'(nodebug, _, _, _, '$lgt_dbg_nodebug').
 '$lgt_po_debugger0__def'(trace, _, _, _, '$lgt_dbg_trace').
 '$lgt_po_debugger0__def'(notrace, _, _, _, '$lgt_dbg_notrace').
+'$lgt_po_debugger0__def'(spy(Preds), _, _, _, '$lgt_dbg_spy'(Preds)).
+'$lgt_po_debugger0__def'(nospy(Preds), _, _, _, '$lgt_dbg_nospy'(Preds)).
 '$lgt_po_debugger0__def'(spy(Sender, This, Self, Goal), _, _, _, '$lgt_dbg_spy'(Sender, This, Self, Goal)).
 '$lgt_po_debugger0__def'(nospy(Sender, This, Self, Goal), _, _, _, '$lgt_dbg_nospy'(Sender, This, Self, Goal)).
 '$lgt_po_debugger0__def'(nospyall, _, _, _, '$lgt_dbg_nospyall').
@@ -2040,13 +2045,20 @@ current_logtalk_flag(version, version(2, 17, 0)).
 			write('showing spy points.'), nl)
 		;
 		write('Debugger is switched off.'), nl), nl,
+	('$lgt_dbg_spying_'(_) ->
+		write('Defined predicate spy points (Functor/Arity):'), nl,
+		forall(
+			'$lgt_dbg_spying_'(Functor/Arity),
+			(write('    '), writeq(Functor), write('/'), write(Arity), nl))
+		;
+		write('No predicate spy points are defined.'), nl), nl,
 	('$lgt_dbg_spying_'(_, _, _, _) ->
-		write('Defined spy points (Sender, This, Self, Goal):'), nl,
+		write('Defined context spy points (Sender, This, Self, Goal):'), nl,
 		forall(
 			'$lgt_dbg_spying_'(Sender, This, Self, Goal),
 			(write('    '), '$lgt_dbg_pretty_print_spy_point'(Sender, This, Self, Goal), nl))
 		;
-		write('No spy points are defined.'), nl), nl,
+		write('No context spy points are defined.'), nl), nl,
 	write('Leashed ports:'), nl, write('    '),
 	('$lgt_dbg_leashing_'(_) ->
 		forall(
@@ -2064,26 +2076,69 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	(var(Goal) -> write('_'); '$lgt_pretty_print_vars'(Goal)).
 
 
-'$lgt_dbg_spying'(Sender, This, Self, Goal) :-
-	'$lgt_dbg_spying_'(Sender, This, Self, Goal).
+'$lgt_dbg_spy'(Preds) :-
+	nonvar(Preds),
+	'$lgt_dbg_spy_aux'(Preds),
+	write('Predicate spy points set.'), nl.
 
-'$lgt_dbg_spying'(_, _, _, _) :-
-	write('No (more) spy points.'), nl.
+
+'$lgt_dbg_spy_aux'([]).
+
+'$lgt_dbg_spy_aux'([Functor/Arity| Preds]) :-
+	nonvar(Functor),
+	nonvar(Arity),
+	('$lgt_dbg_spying_'(Functor/Arity) ->
+		true
+		;
+		assertz('$lgt_dbg_spying_'(Functor/Arity))),
+	'$lgt_dbg_spy_aux'(Preds).
+
+'$lgt_dbg_spy_aux'(Functor/Arity) :-
+	nonvar(Functor),
+	nonvar(Arity),
+	('$lgt_dbg_spying_'(Functor/Arity) ->
+		true
+		;
+		assertz('$lgt_dbg_spying_'(Functor/Arity))).
+
+
+'$lgt_dbg_nospy'(Preds) :-
+	'$lgt_dbg_nospy_aux'(Preds),
+	write('All matching predicate spy points deleted.'), nl.
+
+
+'$lgt_dbg_nospy_aux'(Preds) :-
+	var(Preds) ->
+		retractall('$lgt_dbg_spying_'(_))
+		;
+		'$lgt_dbg_nospy_aux2'(Preds).
+
+
+'$lgt_dbg_nospy_aux2'([]).
+
+'$lgt_dbg_nospy_aux2'([Functor/Arity| Preds]) :-
+	retractall('$lgt_dbg_spying_'(Functor/Arity)),
+	'$lgt_dbg_nospy_aux2'(Preds).
+
+'$lgt_dbg_nospy_aux2'(Functor/Arity) :-
+	retractall('$lgt_dbg_spying_'(Functor/Arity)).
 
 
 '$lgt_dbg_spy'(Sender, This, Self, Goal) :-
 	asserta('$lgt_dbg_spying_'(Sender, This, Self, Goal)),
-	write('Spy point set.'), nl.
+	write('Context spy point set.'), nl.
 
 
 '$lgt_dbg_nospy'(Sender, This, Self, Goal) :-
 	retractall('$lgt_dbg_spying_'(Sender, This, Self, Goal)),
-	write('All matching spy points deleted.'), nl.
+	write('All matching context spy points deleted.'), nl.
 
 
 '$lgt_dbg_nospyall' :-
+	retractall('$lgt_dbg_spying_'(_)),
+	write('All predicate spy points deleted.'), nl,
 	retractall('$lgt_dbg_spying_'(_, _, _, _)),
-	write('All spy points deleted.'), nl.
+	write('All context spy points deleted.'), nl.
 
 
 '$lgt_dbg_leash'(Value) :-
@@ -2146,10 +2201,18 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	('$lgt_dbg_tracing_' ->
 		true
 		;
-		'$lgt_sender'(Ctx, Sender),
-		'$lgt_this'(Ctx, This),
-		'$lgt_self'(Ctx, Self),
-		\+ \+ '$lgt_dbg_spying_'(Sender, This, Self, Goal)).
+		'$lgt_dbg_spying'(Port, Goal, Ctx)).
+
+
+'$lgt_dbg_spying'(_, Goal, _) :-
+	functor(Goal, Functor, Arity),
+	\+ \+ '$lgt_dbg_spying_'(Functor/Arity).
+	
+'$lgt_dbg_spying'(_, Goal, Ctx) :-
+	'$lgt_sender'(Ctx, Sender),
+	'$lgt_this'(Ctx, This),
+	'$lgt_self'(Ctx, Self),
+	\+ \+ '$lgt_dbg_spying_'(Sender, This, Self, Goal))).
 
 
 '$lgt_dbg_fact'(Fact, Ctx) :-
@@ -2254,6 +2317,8 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_valid_port_option'(_, h).
 '$lgt_dbg_valid_port_option'(_, '?').
 '$lgt_dbg_valid_port_option'(_, '=').
+'$lgt_dbg_valid_port_option'(_, '+').
+'$lgt_dbg_valid_port_option'(_, '-').
 
 
 '$lgt_dbg_do_port_option'(' ', _, _, true).
@@ -2272,7 +2337,16 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_do_port_option'('=', _, _, true) :-
 	'$lgt_dbg_debugging'.
 
-'$lgt_dbg_do_port_option'('@', _, _, true) :-
+'$lgt_dbg_do_port_option'('+', Goal, _, _) :-
+	functor(Goal, Functor, Arity),
+	'$lgt_dbg_spy'(Functor/Arity),
+	fail.
+
+'$lgt_dbg_do_port_option'('-', Goal, _, true) :-
+	functor(Goal, Functor, Arity),
+	'$lgt_dbg_nospy'(Functor/Arity).
+
+'$lgt_dbg_do_port_option'('@', _, _, _) :-
 	write('    ?- '),
 	read(Goal),
 	once((Goal; true)),
@@ -2316,8 +2390,10 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	write('        a - abort (returns to top level interpreter)'), nl,
 	write('        e - exit (terminates Logtalk execution)'), nl,
 	write('        d - display (writes current goal without using operator notation)'), nl,
-	write('        x - context (prints execution context'), nl,
+	write('        x - context (prints execution context)'), nl,
 	write('        = - debugging (prints debugging information'), nl,
+	write('        + - add (adds a predicate spy point for current goal)'), nl,
+	write('        - - remove (removes a predicate spy point for current goal)'), nl,
 	write('        h - help (prints this list of options)'), nl,
 	fail.
 

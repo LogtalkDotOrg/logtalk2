@@ -282,7 +282,33 @@ The abbreviations defined in Logtalk are similar to the ones defined on some Pro
 <h3>Defining spy points<a name="spypoints"></a></h3>
 
 <p>
-A spy point is a term describing a message execution context and a goal:
+Logtalk spy points can be defined by simply stating which predicates should be spied, as in most Prolog debuggers, or by fully specifying the context for activating a spy point. 
+
+<h4>Defining predicate spy points<a name="spypoints"></a></h4>
+
+Predicate spy points are specified using the method <code>spy/1</code>. The argument can be either a predicate indicator (<code>Functor/Arity</code>) or a list of predicate indicators. For example:
+<pre>
+    | ?- debugger::spy(foo/2).
+    
+    Spy points set.
+    yes
+
+    | ?- debugger::spy([foo/4, bar/1]).
+    
+    Spy points set.
+    yes
+</pre>
+Predicate spy points can be removed by using the method <code>nospy/1</code>. The argument can be a predicate indicator, a list of predicate indicators, or a non-instantiated variable in which case all predicate spy points will be removed. For example:
+<pre>
+    | ?- debugger::nospy(_).
+    
+    All matching predicate spy points deleted.
+    yes
+</pre>
+
+<h4>Defining context spy points<a name="spypoints"></a></h4>
+
+A context spy point is a term describing a message execution context and a goal:
 </p>
 <pre>
     (Sender, This, Self, Goal)
@@ -311,11 +337,15 @@ The method <code>nospy/4</code> may be used to remove all matching spy points. F
 <pre>
     | ?- debugger::nospy(_, _, foo, _).
     
-    All matching spy points deleted.
+    All matching context spy points deleted.
     yes
 </pre>
 <p>
-will remove all spy points where the value of <em>Self</em> matches the name <code>foo</code>. We may also remove all spy points by using the method <code>nospyall/0</code>:
+will remove all context spy points where the value of <em>Self</em> matches the name <code>foo</code>.
+
+<h4>Removing all spy points<a name="nospyall"></a></h4>
+
+We may remove all predicate and context spy points by using the method <code>nospyall/0</code>:
 </p>
 <pre>
     | ?- debugger::nospyall.
@@ -373,7 +403,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: April 14, 2004</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: April 15, 2004</span></p>
 </div>
 </body>
 </html>
