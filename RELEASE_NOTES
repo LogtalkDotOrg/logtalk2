@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.16.1 - March ??, 2004
+2.16.1 - March 22, 2004
 
 	The local built-in method parameter/2 can now be used inside categories 
 	(but please read the warnings about such practice on the user manual).
