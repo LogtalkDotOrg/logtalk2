@@ -7,7 +7,7 @@
 		version is 1.0,
 		author is 'Paulo Moura',
 		date is 2004/5/10,
-		comment is 'Operating system interface.']).
+		comment is 'Operating system interface for SWI-Prolog.']).
 
 
 	make_directory(Directory) :-
@@ -34,12 +34,28 @@
 		{fail}.
 
 
+	absolute_file_name(File) :-
+		{is_absolute_file_name(File)}.
+
+
+	absolute_file_name(File, Full) :-
+		{absolute_file_name(File, Full)}.
+
+
 	file_exists(File) :-
 		{exists_file(File)}.
 
 
-	file_property(File, Property) :-
-		{file_property(File, Property)}.
+	file_modtime(File, Time) :-
+		{time_file(File, Time)}.
+
+
+	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
+		{time_file(File, Time), convert_time(Time, Year, Month, Day, Hours, Mins, Secs)}.
+
+
+	file_size(File, Size) :-
+		{size_file(File, Size)}.
 
 
 	delete_file(File) :-
@@ -58,8 +74,8 @@
 		{setenv(Variable, Value)}.
 
 
-	date_time(Year, Month, Day, Hour, Min, Sec) :-
-		{get_time(Time), convert_time(Time, Year, Month, Day, Hour, Min, Sec, _)}.
+	date_time(Year, Month, Day, Hours, Mins, Secs) :-
+		{get_time(Time), convert_time(Time, Year, Month, Day, Hours, Mins, Secs, _)}.
 
 
 	cpu_time(Time) :-

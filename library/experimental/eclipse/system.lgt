@@ -10,7 +10,7 @@
 		version is 1.0,
 		author is 'Paulo Moura',
 		date is 2004/5/10,
-		comment is 'Operating system interface.']).
+		comment is 'Operating system interface for ECLiPSe.']).
 
 
 	make_directory(Directory) :-
@@ -41,8 +41,16 @@
 		{exists(File)}.
 
 
-	file_property(File, Property) :-
-		{get_file_info(File, Attr, Value), Property =.. [Attr, Value]}.
+	file_modtime(File, Time) :-
+		{get_file_info(File, mtime, Time)}.
+
+
+	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
+		{get_file_info(File, mtime, Time), unix_to_mjd(Time, MJD), mjd_to_date(MJD, Day/Month/Year), mjd_to_time(MJD, Hours:Mins:Secs)}.
+
+
+	file_size(File, Size) :-
+		{get_file_info(File, size, Size)}.
 
 
 	delete_file(File) :-
@@ -61,7 +69,7 @@
 		{fail}.
 
 
-	date_time(Year, Month, Day, Hour, Min, Sec) :-
+	date_time(Year, Month, Day, Hours, Mins, Secs) :-
 		{mjd_now(MJD), mjd_to_date(MJD, Day/Month/Year), mjd_to_time(MJD, Hours:Mins:Secs)}.
 
 

@@ -58,7 +58,7 @@
 		{fail}.
 
 
-	date_time(Year, Month, Day, Hour, Min, Sec) :-
+	date_time(Year, Month, Day, Hours, Mins, Secs) :-
 		{time(Secs, Mins, Hours, Day, Month, Year, _, _, _)}.
 
 

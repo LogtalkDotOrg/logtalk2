@@ -63,7 +63,7 @@
 		{fail}.
 
 
-	date_time(Year, Month, Day, Hour, Min, Sec) :-
+	date_time(Year, Month, Day, Hours, Mins, Secs) :-
 		{date(date(Day, Month, Year)), time(time(Hours, Mins, Secs))}.
 
 

@@ -10,7 +10,7 @@
 		version is 1.0,
 		author is 'Paulo Moura',
 		date is 2004/5/10,
-		comment is 'Operating system interface.']).
+		comment is 'Operating system interface for Amzi! Prolog.']).
 
 
 	make_directory(Directory) :-
@@ -57,8 +57,8 @@
 		{get_env_var(Variable, Value)}.
 
 
-	date_time(Year, Month, Day, Hour, Min, Sec) :-
-		{date(Year, Month, Day), time(Hour, Min, Sec)}.
+	date_time(Year, Month, Day, Hours, Mins, Secs) :-
+		{date(Year, Month, Day), time(Hours, Mins, Secs)}.
 
 
 	cpu_time(Time) :-

@@ -7,7 +7,7 @@
 		version is 1.0,
 		author is 'Paulo Moura',
 		date is 2004/5/10,
-		comment is 'Operating system interface.']).
+		comment is 'Operating system interface for XSB.']).
 
 
 	make_directory(Directory) :-
@@ -38,7 +38,15 @@
 		{file_exists(File)}.
 
 
-	file_property(File, Property) :-
+	file_modtime(File, Time) :-
+		{fail}.
+
+
+	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
+		{fail}.
+
+
+	file_size(File, Size) :-
 		{fail}.
 
 
@@ -58,8 +66,8 @@
 		{fail}.
 
 
-	date_time(Year, Month, Day, Hour, Min, Sec) :-
-		{datime(datime(Year, Month, Day, Hour, Min, Sec))}.
+	date_time(Year, Month, Day, Hours, Mins, Secs) :-
+		{datime(datime(Year, Month, Day, Hours, Mins, Secs))}.
 
 
 	cpu_time(Time) :-

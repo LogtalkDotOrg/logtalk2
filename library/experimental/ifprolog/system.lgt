@@ -61,7 +61,7 @@
 		{fail}.
 
 
-	date_time(Year, Month, Day, Hour, Min, Sec) :-
+	date_time(Year, Month, Day, Hours, Mins, Secs) :-
 		{localtime(time, Year, Month, Day, _, _, Hours, Min, Secs)}.
 
 

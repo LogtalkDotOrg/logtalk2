@@ -7,7 +7,7 @@
 		version is 1.0,
 		author is 'Paulo Moura',
 		date is 2004/5/10,
-		comment is 'Operating system interface.']).
+		comment is 'Operating system interface for ALS Prolog.']).
 
 
 	make_directory(Directory) :-
@@ -58,7 +58,7 @@
 		{fail}.
 
 
-	date_time(Year, Month, Day, Hour, Min, Sec) :-
+	date_time(Year, Month, Day, Hours, Mins, Secs) :-
 		{date(Year/Month/Day), time(Hours:Mins:Secs)}.
 
 
