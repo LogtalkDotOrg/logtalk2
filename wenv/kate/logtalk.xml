@@ -37,7 +37,6 @@
                 <RegExpr String = "\b((current|set)_logtalk_flag)(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Compiling and loading -->
                 <RegExpr String = "\blogtalk_(compile|load)(?=[(])" attribute="Built-in" context="#stay" />
-
 				<!-- Database -->
                 <RegExpr String = "\b(abolish|clause|retract|retractall)(?=[(])" attribute="Built-in" context="#stay" />
                 <RegExpr String = "\bassert(a|z)(?=[(])" attribute="Built-in" context="#stay" />
@@ -158,6 +157,8 @@
                 <StringDetect String = "@" attribute="Operator" context="#stay" />
 				<!-- Clause operator -->
                 <StringDetect String = ":-" attribute="Normal" context="#stay" />
+				<!-- Atoms -->
+                <RegExpr String = "\b[a-z][A-Za-z0-9_]*" attribute = "Normal" context="#stay"/>
             </context>
 
             <context name="directive" attribute="Directive" lineEndContext="#stay">
