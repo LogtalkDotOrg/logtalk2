@@ -465,7 +465,7 @@ You may have noticed that Logtalk defines <code>{}/1</code> as a control constru
         write('bar predicate called'), nl.
 
 
-    :- object(dcgtest).
+    :- object(bypass).
 
         :- public(foo/2).
 
@@ -477,7 +477,7 @@ You may have noticed that Logtalk defines <code>{}/1</code> as a control constru
 After compiling and loading this code, we may try the following query:
 </p>
 <pre>
-    | ?- dcgtest::foo(_, _).
+    | ?- bypass::foo(_, _).
     
     bar predicate called
     yes
