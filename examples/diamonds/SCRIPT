@@ -12,7 +12,7 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 ...
 
 
-% 
+% first variant of the "diamond problem", defined in the "diamond1" metafile:
 
 ?- d1::m.
 Redefinition of method m/0 in object b1
@@ -20,7 +20,7 @@ Redefinition of method m/0 in object b1
 Yes
 
 
-% 
+% second variant of the "diamond problem", defined in the "diamond2" metafile:
 
 ?- d2::m.
 Redefinition of method m/0 in object c2
@@ -28,7 +28,7 @@ Redefinition of method m/0 in object c2
 Yes
 
 
-% 
+% third variant of the "diamond problem", defined in the "diamond3" metafile:
 
 ?- d3::b3_m.
 Redefinition of method m/0 in object b3
