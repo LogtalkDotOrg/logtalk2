@@ -10,6 +10,12 @@ RELEASE NOTES
 =============
 
 
+2.15.6 - January ??, 2004
+
+	Removed outdated support for MacOS X Project Builder and added support 
+	for the new MacOS X Xcode 1.1 developer tool.
+
+
 2.15.5 - December 30, 2003
 
 	Make operator ^^/1 right-associative for consistency with remaining 
