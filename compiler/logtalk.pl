@@ -136,6 +136,7 @@
 
 :- dynamic('$lgt_dbg_debugging_'/0).			% '$lgt_dbg_debugging_'
 :- dynamic('$lgt_dbg_tracing_'/0).				% '$lgt_dbg_tracing_'
+:- dynamic('$lgt_dbg_skipping_'/0).				% '$lgt_dbg_skipping_'
 :- dynamic('$lgt_dbg_spying_'/4).				% '$lgt_dbg_spying_'(Sender, This, Selg, Goal)
 :- dynamic('$lgt_dbg_leashing_'/1).				% '$lgt_dbg_leashing_'(Port)
 
@@ -168,7 +169,7 @@ Obj::Pred :-
 		catch(
 			'$lgt_dbg_goal'(Obj::Pred, Call, Ctx),
 			error(logtalk_debugger_aborted),
-			(write('Debugging session aborted by user. Debugger still on.'), nl))
+			(write('Debugging session aborted by user. Debugger still on.'), nl, fail))
 		;
 		call(Call)).
 
@@ -2153,6 +2154,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 '$lgt_dbg_fact'(Fact, Ctx) :-
 	'$lgt_dbg_debugging_',
+	\+ '$lgt_dbg_skipping_',
 	!,
 	'$lgt_dbg_port'(fact, Fact, Ctx, Action),
 	call(Action).
@@ -2162,6 +2164,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 '$lgt_dbg_head'(Head, Ctx) :-
 	'$lgt_dbg_debugging_',
+	\+ '$lgt_dbg_skipping_',
 	!,
 	'$lgt_dbg_port'(rule, Head, Ctx, Action),
 	call(Action).
@@ -2171,18 +2174,31 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 '$lgt_dbg_goal'(Goal, TGoal, Ctx) :-
 	'$lgt_dbg_debugging_',
+	\+ '$lgt_dbg_skipping_',
 	!,
 	(	'$lgt_dbg_port'(call, Goal, Ctx, CAction),
-		call(CAction),
+		(CAction = skip ->
+			retractall('$lgt_dbg_skipping_'),
+			assertz('$lgt_dbg_skipping_'),
+			CAction2 = true
+			;
+			CAction2 = CAction),
+		call(CAction2),
 		call(TGoal),
 		(	'$lgt_dbg_port'(exit, Goal, Ctx, EAction),
 			call(EAction)
 			;
-			'$lgt_dbg_port'(redo, Goal, Ctx, _), fail
+			'$lgt_dbg_port'(redo, Goal, Ctx, RAction),
+			(RAction = skip ->
+				retractall('$lgt_dbg_skipping_'),
+				assertz('$lgt_dbg_skipping_')),
+			fail
 		)
 		;
+		retractall('$lgt_dbg_skipping_'),
 		'$lgt_dbg_port'(fail, Goal, Ctx, _), fail
-	).
+	),
+	retractall('$lgt_dbg_skipping_').
 
 '$lgt_dbg_goal'(_, TGoal, _) :-
 	call(TGoal).
@@ -2224,26 +2240,31 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 '$lgt_dbg_valid_port_option'(_, ' ').
 '$lgt_dbg_valid_port_option'(_, c).
+'$lgt_dbg_valid_port_option'(_, l).
+'$lgt_dbg_valid_port_option'(call, s).
+'$lgt_dbg_valid_port_option'(redo, s).
 '$lgt_dbg_valid_port_option'(_, f).
 '$lgt_dbg_valid_port_option'(_, n).
 '$lgt_dbg_valid_port_option'(_, '@').
 '$lgt_dbg_valid_port_option'(_, b).
 '$lgt_dbg_valid_port_option'(_, a).
+'$lgt_dbg_valid_port_option'(_, e).
 '$lgt_dbg_valid_port_option'(_, d).
 '$lgt_dbg_valid_port_option'(_, x).
 '$lgt_dbg_valid_port_option'(_, h).
 '$lgt_dbg_valid_port_option'(_, '?').
-'$lgt_dbg_valid_port_option'(_, l).
 '$lgt_dbg_valid_port_option'(_, '=').
 
 
 '$lgt_dbg_do_port_option'(' ', _, _, true).
 '$lgt_dbg_do_port_option'(c, _, _, true).
 
-'$lgt_dbg_do_port_option'(f, _, _, fail).
-
 '$lgt_dbg_do_port_option'(l, _, _, true) :-
 	retractall('$lgt_dbg_tracing_').
+
+'$lgt_dbg_do_port_option'(s, _, _, skip).
+
+'$lgt_dbg_do_port_option'(f, _, _, fail).
 
 '$lgt_dbg_do_port_option'(n, _, _, true) :-
 	'$lgt_dbg_nodebug'.
@@ -2257,7 +2278,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	once((Goal; true)),
 	fail.
 
-'$lgt_dbg_do_port_option'(b, _, _, true) :-
+'$lgt_dbg_do_port_option'(b, _, _, _) :-
 	('$lgt_compiler_option'(supports_break_predicate, true) ->
 		break
 		;
@@ -2266,6 +2287,9 @@ current_logtalk_flag(version, version(2, 17, 0)).
 
 '$lgt_dbg_do_port_option'(a, _, _, _) :-
 	throw(error(logtalk_debugger_aborted)).
+
+'$lgt_dbg_do_port_option'(e, _, _, _) :-
+	halt.
 
 '$lgt_dbg_do_port_option'(d, Goal, _, _) :-
 	write('    Current goal: '), write_term(Goal, [ignore_ops(true)]), nl,
@@ -2283,15 +2307,17 @@ current_logtalk_flag(version, version(2, 17, 0)).
 '$lgt_dbg_do_port_option'(h, _, _, _) :-
 	write('    Available options are:'), nl,
 	write('        c - creep (go on; you may use the spacebar in alternative)'), nl,
-	write('        l - leep (continue execution until the next spy point is found)'), nl,
-	write('        f - fail (force backtracking)'), nl,
-	write('        n - nodebug (turn off debugging)'), nl,
-	write('        @ - command (read and execute a query)'), nl,
+	write('        l - leep (continues execution until the next spy point is found)'), nl,
+	write('        s - skip (skips debugging for the current goal; only valid at call and redo ports)'), nl,
+	write('        f - fail (forces backtracking)'), nl,
+	write('        n - nodebug (turns off debugging)'), nl,
+	write('        @ - command (reads and executes a query)'), nl,
 	write('        b - break (suspends execution and starts new interpreter; type end_of_file to terminate)'), nl,
-	write('        a - abort (return to top level interpreter)'), nl,
+	write('        a - abort (returns to top level interpreter)'), nl,
+	write('        e - exit (terminates Logtalk execution)'), nl,
 	write('        d - display (writes current goal without using operator notation)'), nl,
-	write('        x - print execution context'), nl,
-	write('        = - print debugging information'), nl,
+	write('        x - context (prints execution context'), nl,
+	write('        = - debugging (prints debugging information'), nl,
 	write('        h - help (prints this list of options)'), nl,
 	fail.
 
