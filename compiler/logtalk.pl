@@ -2121,10 +2121,10 @@ current_logtalk_flag(version, version(2, 17, 1)).
 
 '$lgt_dbg_pretty_print_spypoint'(Sender, This, Self, Goal) :-
 	current_ouput(Output),
-	(var(Sender) -> write('_, '); \+ \+ '$lgt_pretty_print_vars_quoted'(Output, Sender), write(', ')),
-	(var(This) -> write('_, '); \+ \+ '$lgt_pretty_print_vars_quoted'(Output, This), write(', ')),
-	(var(Self) -> write('_, '); \+ \+ '$lgt_pretty_print_vars_quoted'(Output, Self), write(', ')),
-	(var(Goal) -> write('_'); \+ \+ '$lgt_pretty_print_vars_quoted'(Output, Goal)).
+	(var(Sender) -> write('_, '); '$lgt_pretty_print_vars_quoted'(Output, Sender), write(', ')),
+	(var(This) -> write('_, '); '$lgt_pretty_print_vars_quoted'(Output, This), write(', ')),
+	(var(Self) -> write('_, '); '$lgt_pretty_print_vars_quoted'(Output, Self), write(', ')),
+	(var(Goal) -> write('_'); '$lgt_pretty_print_vars_quoted'(Output, Goal)).
 
 
 '$lgt_dbg_spy'(Preds) :-
@@ -7292,7 +7292,7 @@ current_logtalk_flag(version, version(2, 17, 1)).
 	write(Stream, Tag),
 	'$lgt_write_xml_tag_attributes'(Stream, Atts),
 	write(Stream, '><![CDATA['),
-	\+ \+ '$lgt_pretty_print_vars'(Stream, Text),
+	'$lgt_pretty_print_vars'(Stream, Text),
 	write(Stream, ']]></'),
 	write(Stream, Tag),
 	write(Stream, '>'), nl(Stream).
