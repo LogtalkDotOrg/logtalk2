@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.15.6
+%  Release 2.15.7
 %
 %  Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 %
@@ -128,6 +128,8 @@
 :- dynamic('$lgt_referenced_object_'/1).		% '$lgt_referenced_object_'(Object)
 :- dynamic('$lgt_referenced_protocol_'/1).		% '$lgt_referenced_protocol_'(Protocol)
 :- dynamic('$lgt_referenced_category_'/1).		% '$lgt_referenced_category_'(Category)
+
+:- dynamic('$lgt_op_table_'/1).					% '$lgt_op_table_'(List)
 
 
 
@@ -1073,7 +1075,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 15, 6)).
+current_logtalk_flag(version, version(2, 15, 7)).
 
 
 
@@ -2111,6 +2113,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		open(File, read, Stream),
 		Error,
 		'$lgt_compiler_error_handler'(Stream, Error)),
+	'$lgt_save_op_table',
 	catch(
 		(read_term(Stream, Term, [singletons(Singletons1)]),
 		 '$lgt_filter_dont_care_vars'(Singletons1, Singletons2),
@@ -2118,6 +2121,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		 '$lgt_tr_file'(Stream, Term)),
 		Error,
 		'$lgt_compiler_error_handler'(Stream, Error)),
+	'$lgt_restores_op_table',
 	close(Stream),
 	'$lgt_fix_redef_built_ins',
 	'$lgt_find_misspelt_calls',
@@ -2195,14 +2199,15 @@ user0__def(Pred, _, _, _, Pred, user).
 
 % '$lgt_compiler_error_handler'(@term, +term)
 %
-% close the stream opened for reading the entity 
-% file and report the compilation error found
+% closes the stream opened for reading the entity file, restores
+% the operator table, and reports the compilation error found
 
 '$lgt_compiler_error_handler'(Stream, Error) :-
 	(nonvar(Stream) ->
 		close(Stream)
 		;
 		true),
+	'$lgt_restores_op_table',
 	'$lgt_report_compiler_error'(Error),
 	throw(Error).
 
@@ -2331,6 +2336,37 @@ user0__def(Pred, _, _, _, Pred, user).
 	listing('$lgt_referenced_object_'/1),
 	listing('$lgt_referenced_protocol_'/1),
 	listing('$lgt_referenced_category_'/1).
+
+
+
+% '$lgt_save_op_table'
+%
+% saves current operator table
+
+'$lgt_save_op_table' :-
+	findall(
+		op(Priority, Type, Operator),
+		current_op(Priority, Type, Operator),
+		Operators),
+	retractall('$lgt_op_table_'(_)),
+	asserta('$lgt_op_table_'(Operators)).
+
+
+
+% '$lgt_restores_op_table'
+%
+% restores current operator table
+
+'$lgt_restores_op_table' :-
+	retract('$lgt_op_table_'(Saved)),
+	findall(
+		op(Priority, Type, Operator),
+		(current_op(Priority, Type, Operator),
+		 \+ '$lgt_member'(op(Priority, Type, Operator), Saved)),
+		Operators),
+	forall(
+		'$lgt_member'(op(_, Type2, Operator2), Operators),
+		op(0, Type2, Operator2)).
 
 
 
@@ -2482,8 +2518,7 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_valid_op_priority'(Priority) ->
 		('$lgt_valid_op_specifier'(Specifier) ->
 			('$lgt_valid_op_names'(Operators) ->
-				op(Priority, Specifier, Operators),
-				assertz('$lgt_directive_'(op(Priority, Specifier, Operators)))
+				op(Priority, Specifier, Operators)
 				;
 				throw(type_error(operator_name, Operators)))
 			;
