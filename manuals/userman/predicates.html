@@ -525,8 +525,14 @@ After compiling and loading this code, we may try the following query:
 This is the expected result as the expansion of the grammar rule into a clause leaves the <code>{bar}</code> goal untouched, which, in turn, is converted into the goal <code>bar</code> when the clause is compiled.
 </p>
 <p>
-Grammar rule non-terminal may be declared as dynamic or discontiguous, as any other object predicate, using the same <code><em>Functor//Arity</em></code> notation illustrated above for the scope directives.
+Grammar rule non-terminal may be declared as dynamic or discontiguous, as any other object predicate, using the same <code><em>Functor//Arity</em></code> notation illustrated above for the scope directives. In addition, grammar rule non-terminals can be documented using the <a title="Consult reference manual" href="../refman/directives/info2.html"><code>info/2</code></a> directive, as in the following example:
 </p>
+<pre>
+    :- public(sentence//0).
+
+    :- info(sentence//0, [
+        comment is 'Rewrites a sentence in a noun phrase and verb phrase.']).
+</pre>
 
 <h2>Built-in object predicates (methods)<a name="methods"></a></h2>
 
@@ -712,7 +718,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: October 3, 2004</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: October 5, 2004</span></p>
 </div>
 </body>
 </html>
