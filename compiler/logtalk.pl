@@ -1597,11 +1597,11 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	'$lgt_call'(Def, Pred, Sender, This, Self, Call),
 	!.
 	
-'$lgt_assert_pred_call'(_, DDef, _, Pred, Sender, This, Self, Call, '$lgt_update_ddef_table_generic'(DDef, Pred, Call)) :-
+'$lgt_assert_pred_call'(_, DDef, _, Pred, Sender, This, Self, Call, '$lgt_update_ddef_table'(DDef, Pred, Call)) :-
 	'$lgt_call'(DDef, Pred, Sender, This, Self, Call),
 	!.
 
-'$lgt_assert_pred_call'(_, DDef, Prefix, Pred, Sender, This, Self, Call, '$lgt_update_ddef_table_generic'(DDef, Pred, Call)) :-
+'$lgt_assert_pred_call'(_, DDef, Prefix, Pred, Sender, This, Self, Call, '$lgt_update_ddef_table'(DDef, Pred, Call)) :-
 	functor(Pred, Functor, Arity),
 	'$lgt_assert_ddef_clause'(Functor, Arity, Prefix, DDef, _),
 	'$lgt_once'(DDef, Pred, Sender, This, Self, Call).
@@ -1671,7 +1671,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	'$lgt_db_lookup_cache_'(Obj, Clause, Sender, Scope, Call, Update),
 	!,
 	retract(Call),
-	once(Update).
+	call(Update).
 
 '$lgt_retract'(Obj, Clause, Sender, _) :-
 	var(Clause),
@@ -1740,7 +1740,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 							GObj = Obj, GHead = Head, GSender = Sender,
 							retract((GCall :- '$lgt_dbg_fact'(_, _)))
 							;
-							asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, Scope, GCall, '$lgt_update_ddef_table_generic'(DDef, GHead, GCall))),
+							asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, Scope, GCall, '$lgt_update_ddef_table'(DDef, GHead, GCall))),
 							GObj = Obj, GHead = Head, GSender = Sender,
 							retract(GCall)),
 						'$lgt_update_ddef_table'(DDef, GHead, GCall)
@@ -1773,7 +1773,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	'$lgt_db_lookup_cache_'(Obj, Clause, Sender, Scope, Call, Update),
 	!,
 	retractall(Call),
-	once(Update).
+	call(Update).
 
 '$lgt_retractall'(Obj, Head, Sender, _) :-
 	var(Head),
@@ -5712,24 +5712,6 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	Clause =.. [DDef, Pred, Sender, This, Self, Call],
 	assertz(Clause),
 	'$lgt_clean_lookup_caches'(Pred).
-
-
-
-
-% '$lgt_update_ddef_table_generic'(+atom, +callable, +callable)
-%
-% retracts a dynamic "ddef clause" (used to translate a predicate call)
-% if there are no more clauses for the predicate otherwise does nothing
-%
-% this is needed in order to allow definitions in ancestors to be found
-
-'$lgt_update_ddef_table_generic'(DDef, Head, Call) :-
-	clause(Call, _) ->
-		true
-		;
-		Clause =.. [DDef, Head, _, _, _, _],
-		retractall(Clause),
-		'$lgt_clean_lookup_caches'(Head).
 
 
 
