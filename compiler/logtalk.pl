@@ -5587,7 +5587,11 @@ user0__def(Pred, _, _, _, Pred, user).
 
 
 '$lgt_dcg_head'((_, Terminals), _, _, _, _) :-
-	\+	'$lgt_proper_list'(Terminals),
+	var(Terminals),
+	throw(instantiation_error).
+
+'$lgt_dcg_head'((_, Terminals), _, _, _, _) :-
+	\+ '$lgt_proper_list'(Terminals),
 	throw(type_error(list, Terminals)).
 
 '$lgt_dcg_head'((Non_terminal, Terminals), CHead, PushBack, S0, S) :-
