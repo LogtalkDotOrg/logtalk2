@@ -151,7 +151,7 @@
 		},
 		{
 			name = "Compiling and loading predicates";
-			match = "\\<(logtalk_(compile|load))(?=[(])";
+			match = "\\<(logtalk_(compile|l(ibrary_path|oad)))(?=[(])";
 			foregroundColor = "#1A1AA6";
 		},
 		{
