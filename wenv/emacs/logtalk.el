@@ -58,6 +58,7 @@
 		(modify-syntax-entry ?% "<" logtalk-mode-syntax-table)
 		(modify-syntax-entry ?\n ">" logtalk-mode-syntax-table)
 		(modify-syntax-entry ?\' "w" logtalk-mode-syntax-table)
+		(modify-syntax-entry ?- "w" logtalk-mode-syntax-table)
 		logtalk-mode-syntax-table)
 	"Syntax table for logtalk-mode")
 
@@ -173,7 +174,7 @@
 		;;
 		("\\(abs\\|ceiling\\|flo\\(?:at\\(?:_\\(?:\\(?:fractional\\|integer\\)_part\\)\\)?\\|or\\)\\|mod\\|r\\(?:em\\|ound\\)\\|sign\\|truncate\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("//\\|[*+/-]" . 'logtalk-built-in-predicate-face)
-		("\\([[:blank:]]\\)\\(rem\\|mod\\)\\([[:blank:]]\\)" 2 'logtalk-built-in-predicate-face)
+		("\\<\\(rem\\|mod\\)\\>" . 'logtalk-built-in-predicate-face)
 		;;
 		;; other arithemtic functors:
 		;;
@@ -211,16 +212,20 @@
 		;;
 		("/\\\\\\|<<\\|>>\\|\\\\/" . 'logtalk-built-in-predicate-face)
 		("\\\\" . 'logtalk-built-in-predicate-face)
-		;;
-		;; clause operator:
-		;;
-		("\\<:-\\>" . 'logtalk-default-face)
 	))
 
 
 (setq logtalk-font-lock-operators
 	'(
 		("::\\|\\^\\^\\|[{}]" . 'logtalk-message-operator-face)
+		;;
+		;; clause operator:
+		;;
+		(":-" . 'logtalk-default-face)
+		;;
+		;; mode operators:
+		;;
+		("[@?]" . 'logtalk-built-in-predicate-face)
 	))
 
 
