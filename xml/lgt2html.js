@@ -64,7 +64,15 @@ else if (format = "html")
 	xslt = html_xslt;
 else {
 	WScript.Echo("Error! Unsupported output format: " + format);
-	usage_help;
+	usage_help();
+	WScript.Quit(1);
+}
+
+var fso = new ActiveXObject("Scripting.FileSystemObject");
+
+if (!fso.FolderExists(directory)) {
+	WScript.Echo("Error! directory does not exists: " + directory);
+	usage_help();
 	WScript.Quit(1);
 }
 
@@ -73,8 +81,6 @@ if (processor != "xsltproc" && processor != "xalan" && processor != "sabcmd") {
 	WScript.Echo("");
 	WScript.Quit(1);
 }
-
-var fso = new ActiveXObject("Scripting.FileSystemObject");
 
 fso.CopyFile(logtalk_home + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory + "\\logtalk.dtd");
 fso.CopyFile(logtalk_home + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory + "\\logtalk.xsd");
