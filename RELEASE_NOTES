@@ -10,6 +10,14 @@ RELEASE NOTES
 =============
 
 
+2.16.2 - April ??, 2004
+
+	Changed the possible values of the read-only flag startup_message (defined 
+	in the config files) to "flags" (print banner and flag valuess), "banner" 
+	(print only the banner), and "none" (do not print neither the banner or the 
+	flag values).
+
+
 2.16.1 - March 23, 2004
 
 	The local built-in method parameter/2 can now be used inside categories 
