@@ -24,7 +24,7 @@ WshSystemEnv.Item("LOGTALKHOME") = WshShell.CurrentDirectory;
 FSObject.CreateFolder(WshShell.CurrentDirectory + "\\bin");
 
 FSObject.CopyFile(WshShell.CurrentDirectory + "\\README", WshShell.CurrentDirectory + "\\bin\\README.txt");
-FSObject.CopyFile(WshShell.CurrentDirectory + "\\README", WshShell.CurrentDirectory + "\\bin\\README.txt");
+FSObject.CopyFile(WshShell.CurrentDirectory + "\\QUICK_START", WshShell.CurrentDirectory + "\\bin\\QUICK_START.txt");
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 
