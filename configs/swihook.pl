@@ -6,7 +6,7 @@
 %  integration code for SWI Prolog 3.3.x and later versions
 %  to compile and load Logtalk files using SWI Prolog consult/1
 %
-%  last updated: February 8, 2004
+%  last updated: August 3, 2004
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -15,7 +15,7 @@
 :- multifile(prolog_load_file/2).
 
 user:prolog_load_file(_:Spec, Options) :-
-	absolute_file_name(Spec, [extensions([lgt]), access(read), file_errors(fail)], Path),
+	absolute_file_name(Spec, [extensions([lgt, mlgt]), access(read), file_errors(fail)], Path),
 	file_directory_name(Path, Dir),
 	file_base_name(Path, File),
 	file_name_extension(Entity, _, File),
