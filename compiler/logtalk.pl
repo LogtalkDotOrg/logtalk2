@@ -2195,8 +2195,8 @@ current_logtalk_flag(version, version(2, 17, 0)).
 		repeat,
 			'$lgt_dbg_write_port_name'(Port), writeq(Goal), write(' ? '),
 			'$lgt_read_single_char'(Option),
-		'$lgt_dbg_valid_port_option'(Option),
-		'$lgt_dbg_do_port_option'(Option, Ctx, Action)
+		'$lgt_dbg_valid_port_option'(Port, Option),
+		'$lgt_dbg_do_port_option'(Option, Goal, Ctx, Action)
 		;
 		('$lgt_dbg_tracing_' ->
 			'$lgt_dbg_write_port_name'(Port), writeq(Goal), nl,
@@ -2222,50 +2222,56 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	write('    Fail: ').
 
 
-'$lgt_dbg_valid_port_option'(' ').
-'$lgt_dbg_valid_port_option'(c).
-'$lgt_dbg_valid_port_option'(f).
-'$lgt_dbg_valid_port_option'(n).
-'$lgt_dbg_valid_port_option'('@').
-'$lgt_dbg_valid_port_option'(b).
-'$lgt_dbg_valid_port_option'(a).
-'$lgt_dbg_valid_port_option'(x).
-'$lgt_dbg_valid_port_option'(h).
-'$lgt_dbg_valid_port_option'('?').
-'$lgt_dbg_valid_port_option'(l).
-'$lgt_dbg_valid_port_option'('=').
+'$lgt_dbg_valid_port_option'(_, ' ').
+'$lgt_dbg_valid_port_option'(_, c).
+'$lgt_dbg_valid_port_option'(_, f).
+'$lgt_dbg_valid_port_option'(_, n).
+'$lgt_dbg_valid_port_option'(_, '@').
+'$lgt_dbg_valid_port_option'(_, b).
+'$lgt_dbg_valid_port_option'(_, a).
+'$lgt_dbg_valid_port_option'(_, d).
+'$lgt_dbg_valid_port_option'(_, x).
+'$lgt_dbg_valid_port_option'(_, h).
+'$lgt_dbg_valid_port_option'(_, '?').
+'$lgt_dbg_valid_port_option'(_, l).
+'$lgt_dbg_valid_port_option'(_, '=').
 
 
-'$lgt_dbg_do_port_option'(' ', _, true).
-'$lgt_dbg_do_port_option'(c, _, true).
+'$lgt_dbg_do_port_option'(' ', _, _, true).
+'$lgt_dbg_do_port_option'(c, _, _, true).
 
-'$lgt_dbg_do_port_option'(f, _, fail).
+'$lgt_dbg_do_port_option'(f, _, _, fail).
 
-'$lgt_dbg_do_port_option'(l, _, true) :-
+'$lgt_dbg_do_port_option'(l, _, _, true) :-
 	retractall('$lgt_dbg_tracing_').
 
-'$lgt_dbg_do_port_option'(n, _, true) :-
+'$lgt_dbg_do_port_option'(n, _, _, true) :-
 	'$lgt_dbg_nodebug'.
 
-'$lgt_dbg_do_port_option'('=', _, true) :-
+'$lgt_dbg_do_port_option'('=', _, _, true) :-
 	'$lgt_dbg_debugging'.
 
-'$lgt_dbg_do_port_option'('@', _, true) :-
+'$lgt_dbg_do_port_option'('@', _, _, true) :-
 	write('    ?- '),
 	read(Goal),
 	once((Goal; true)),
 	fail.
 
-'$lgt_dbg_do_port_option'(b, _, true) :-
+'$lgt_dbg_do_port_option'(b, _, _, true) :-
 	('$lgt_compiler_option'(supports_break_predicate, true) ->
-		break;
+		break
+		;
 		write('    break no supportd on this Prolog compiler.'), nl),
 	fail.
 
-'$lgt_dbg_do_port_option'(a, _, _) :-
+'$lgt_dbg_do_port_option'(a, _, _, _) :-
 	throw(error(logtalk_debugger_aborted)).
 
-'$lgt_dbg_do_port_option'(x, Ctx, _) :-
+'$lgt_dbg_do_port_option'(d, Goal, _, _) :-
+	write('    Current goal: '), write_term(Goal, [ignore_ops(true)]), nl,
+	fail.
+
+'$lgt_dbg_do_port_option'(x, _, Ctx, _) :-
 	'$lgt_sender'(Ctx, Sender),
 	'$lgt_this'(Ctx, This),
 	'$lgt_self'(Ctx, Self),
@@ -2274,7 +2280,7 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	write('    Self:   '), writeq(Self), nl,
 	fail.
 
-'$lgt_dbg_do_port_option'(h, _, _) :-
+'$lgt_dbg_do_port_option'(h, _, _, _) :-
 	write('    Available options are:'), nl,
 	write('        c - creep (go on; you may use the spacebar in alternative)'), nl,
 	write('        l - leep (continue execution until the next spy point is found)'), nl,
@@ -2283,13 +2289,14 @@ current_logtalk_flag(version, version(2, 17, 0)).
 	write('        @ - command (read and execute a query)'), nl,
 	write('        b - break (suspends execution and starts new interpreter; type end_of_file to terminate)'), nl,
 	write('        a - abort (return to top level interpreter)'), nl,
+	write('        d - display (writes current goal without using operator notation)'), nl,
 	write('        x - print execution context'), nl,
 	write('        = - print debugging information'), nl,
 	write('        h - help (prints this list of options)'), nl,
 	fail.
 
-'$lgt_dbg_do_port_option'('?', Ctx, Action) :-
-	'$lgt_dbg_do_port_option'(h, Ctx, Action).
+'$lgt_dbg_do_port_option'('?', Goal, Ctx, Action) :-
+	'$lgt_dbg_do_port_option'(h, Goal, Ctx, Action).
 
 
 
