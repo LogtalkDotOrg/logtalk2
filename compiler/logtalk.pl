@@ -5454,9 +5454,6 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_valid_compiler_option'(doctype(Option)) :-
 	once((Option == standalone; Option == local; Option == web)).
 
-'$lgt_valid_compiler_option'(dcg_support(Option)) :-
-	once((Option == on; Option == off)).
-
 
 
 % '$lgt_valid_flag'(@nonvar)
@@ -5479,7 +5476,6 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_valid_flag'(named_anonymous_vars).
 '$lgt_valid_flag'(code_prefix).
 '$lgt_valid_flag'(doctype).
-'$lgt_valid_flag'(dcg_support).
 
 
 
@@ -6310,8 +6306,6 @@ user0__def(Pred, _, _, _, Pred, user).
 	write('  Non portable calls (portability):                        '), write(Portability), nl,
 	'$lgt_default_flag'(report, Report),
 	write('  Compilation report (report):                             '), write(Report), nl,
-	'$lgt_default_flag'(dcg_support, DCG),
-	write('  DCG support (dcg_support):                               '), write(DCG), nl,
 	'$lgt_default_flag'(named_anonymous_vars, Named),
 	write('  Named anonymous variables (named_anonymous_vars):        '), write(Named), nl,
 	'$lgt_default_flag'(code_prefix, Code),
