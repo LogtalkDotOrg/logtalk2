@@ -41,7 +41,10 @@ var f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.pl", true);
 f.WriteLine(":- system_module.");
 f.Close();
 
-WshShell.Run("type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\logtalkswi.pl", true);
+var f1 = logtalk_home + "\\compiler\\logtalk.pl";
+var f2 = logtalk_home + "\\bin\\logtalkswi.pl";
+
+WshShell.Run("type " + f1 + " >> " + f2, true);
 
 f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.rc", true);
 
