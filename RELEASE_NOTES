@@ -15,6 +15,8 @@ RELEASE NOTES
 	Corrected a silly bug in message translation which resulted in a small 
 	performance loss.
 
+	Added a new section on message sending performance to the user manual.
+
 
 2.21.2 - October 18, 2004
 

@@ -172,7 +172,34 @@ If we also need the sender of the message to be other than the object containing
         ... .               % sender will be the pseudo-object user
 </pre>
 <p>
-See the session on Event-driven programming for more details.
+See the session on <a href="events.html">Event-driven programming</a> for more details.
+</p>
+
+<h2>Message sending performace<a name="performace"></a></h2>
+
+<p>
+When discussing Logtalk message sending performance, two distinct cases should be considered: messages sent by the user from the top-level interpreter and messages sent from compiled objects. In addition, the message declaration and definition lookups may, or may not be already cached by the runtime engine. In what follows, we will assume that the message lookups are already cached (the message lookups are automatically cached the first time the message is sent).
+</p>
+<p>
+A message sent from a compiled object to another object takes six logical inferences:
+</p>
+<ul>
+	<li>cache lookup &mdash; 1 logical inference</li>
+	<li>event processing &mdash; 4 logical inferences (assuming that no events are defined)</li>
+	<li>method call &mdash; 1 logical inference</li>
+</ul>
+Messages to <em>self</em> and <em>super</em> calls are transparent for events and, as such, imply only two logical inferences. This compares with one logical inference when calling a predicate in plain Prolog and one or two logical inferences when calling a predicate encapsulated in a module.
+<p>
+When we write a goal such as:
+</p>
+<pre>
+    | ?- object::message.
+</pre>
+<p>
+Logtalk needs to perform a runtime translation of the message sending in order to prove the goal. The overhead, for user-defined messages/predicates, corresponds to roughly twenty more logic inferences than that of the same message sent from a compiled object. The cost of these extra logical inferences translate to time spent depends on the used Prolog compiler. Considering the time taken for the user to type the goal, this overhead is of no consequence.
+</p>
+<p>
+When a message is not cached, the number of logical inferences depends on the number of steps needed for the Logtalk runtime engine to lookup the corresponding predicate scope declaration (to check if the message is valid) and then to lookup a predicate definition for answering the message.
 </p>
 
 <div class="navbottom">
@@ -184,7 +211,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: December 23, 2003</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: October 20, 2004</span></p>
 </div>
 </body>
 </html>
