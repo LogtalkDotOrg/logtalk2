@@ -3507,7 +3507,7 @@ current_logtalk_flag(version, version(2, 22, 2)).
 
 % '$lgt_pp_rclause'(-compound)
 %
-% 
+% returns runtime relation clauses for the entity being compiled
 
 '$lgt_pp_rclause'(Clause) :-
 	'$lgt_pp_rclause_'(Clause).
@@ -6757,7 +6757,7 @@ current_logtalk_flag(version, version(2, 22, 2)).
 	'$lgt_pp_directive_'((dynamic(Functor/Arity))),
 	functor(Pred, Functor, Arity),
 	asserta(Pred),
-	retractall(Pred),
+	retract(Pred),
 	fail.
 
 '$lgt_assert_directives' :-
