@@ -12,12 +12,11 @@ RELEASE NOTES
 
 2.14.1 - July 31, 2002
 
-	New Windows NT script for batch converting XML documenting files to HTML.
+	New Windows NT script and updated Unix shell script for batch converting 
+	XML documenting files to HTML. Both scripts also generate an index.html 
+	file containing links to all converted XML documenting files.
 
-	Updated Unix shell script to also generate an index.html file containing 
-	links to all converted XML documenting files.
-
-	Corrected XHTML DOCTYPE declaration in manual pages.
+	Corrected wrong XHTML DOCTYPE declaration in manual pages.
 
 
 2.14.0 - July 26, 2002
