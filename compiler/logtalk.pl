@@ -3960,19 +3960,13 @@ current_logtalk_flag(version, version(2, 18, 0)).
 			fail)).
 
 
-% non-instantiated message: translation performed at runtime
-
 '$lgt_tr_msg'(Pred, Obj, '$lgt_send_to_object'(Obj, Pred, This), Ctx) :-
-	var(Pred),
-	!,
-	'$lgt_this'(Ctx, This).
-
-
-% invalid goal
-
-'$lgt_tr_msg'(Pred, _, _, _) :-
-	\+ callable(Pred),
-	throw(type_error(callable, Pred)).
+	var(Pred) ->											% translation performed at runtime
+		!,
+		'$lgt_this'(Ctx, This)
+		;
+		\+ callable(Pred),									% invalid goal
+		throw(type_error(callable, Pred)).
 
 
 % control constructs
@@ -4252,13 +4246,6 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	!,
 	'$lgt_self'(Ctx, Self),
 	'$lgt_this'(Ctx, This).
-
-
-% invalid goal
-
-'$lgt_tr_self_msg'(Pred, _, _) :-
-	\+ callable(Pred),
-	throw(type_error(callable, Pred)).
 
 
 % message is not a built-in control construct or a call to a built-in 
