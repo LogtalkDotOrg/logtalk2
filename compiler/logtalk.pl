@@ -3100,6 +3100,35 @@ user0__def(Pred, _, _, _, Pred, user).
 	!.
 
 
+% term output predicates that need to be operator aware
+
+'$lgt_tr_body'(write_term(Stream, Term, Options), '$lgt_iso_write_term'(Stream, Term, Options, Operators), _) :-
+	\+ '$lgt_member'(ignore_ops(true), Options),
+	bagof(op(Priority, Specifier, Operator), '$lgt_local_op_'(Priority, Specifier, Operator), Operators),
+	!.
+
+'$lgt_tr_body'(write_term(Term, Options), '$lgt_iso_write_term'(Term, Options, Operators), _) :-
+	\+ '$lgt_member'(ignore_ops(true), Options),
+	bagof(op(Priority, Specifier, Operator), '$lgt_local_op_'(Priority, Specifier, Operator), Operators),
+	!.
+
+'$lgt_tr_body'(write(Stream, Term), '$lgt_iso_write'(Stream, Term, Operators), _) :-
+	bagof(op(Priority, Specifier, Operator), '$lgt_local_op_'(Priority, Specifier, Operator), Operators),
+	!.
+
+'$lgt_tr_body'(write(Term), '$lgt_iso_write'(Term, Operators), _) :-
+	bagof(op(Priority, Specifier, Operator), '$lgt_local_op_'(Priority, Specifier, Operator), Operators),
+	!.
+
+'$lgt_tr_body'(writeq(Stream, Term), '$lgt_iso_writeq'(Stream, Term, Operators), _) :-
+	bagof(op(Priority, Specifier, Operator), '$lgt_local_op_'(Priority, Specifier, Operator), Operators),
+	!.
+
+'$lgt_tr_body'(writeq(Term), '$lgt_iso_writeq'(Term, Operators), _) :-
+	bagof(op(Priority, Specifier, Operator), '$lgt_local_op_'(Priority, Specifier, Operator), Operators),
+	!.
+
+
 % Logtalk and Prolog built-in predicates
 
 '$lgt_tr_body'(Pred, _, _) :-
@@ -3614,6 +3643,96 @@ user0__def(Pred, _, _, _, Pred, user).
 		('$lgt_save_operators'(Operators, Saved),
 		 '$lgt_add_operators'(Operators),
 		 read(Term),
+		 '$lgt_pop_operators'(Operators)),
+		Error,
+		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
+
+
+
+% '$lgt_iso_write_term'(@stream_or_alias, @term, @write_options_list, @list)
+%
+% wraps write_term/3 call with the necessary operator settings
+
+'$lgt_iso_write_term'(Stream, Term, Options, Operators) :-
+	catch(
+		('$lgt_save_operators'(Operators, Saved),
+		 '$lgt_add_operators'(Operators),
+		 write_term(Stream, Term, Options),
+		 '$lgt_pop_operators'(Operators)),
+		Error,
+		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
+
+
+
+% '$lgt_iso_write_term'(@term, @write_options_list, @list)
+%
+% wraps write_term/2 call with the necessary operator settings
+
+'$lgt_iso_write_term'(Term, Options, Operators) :-
+	catch(
+		('$lgt_save_operators'(Operators, Saved),
+		 '$lgt_add_operators'(Operators),
+		 write_term(Term, Options),
+		 '$lgt_pop_operators'(Operators)),
+		Error,
+		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
+
+
+
+% '$lgt_iso_write'(@stream_or_alias, @term, @list)
+%
+% wraps write/2 call with the necessary operator settings
+
+'$lgt_iso_write'(Stream, Term, Operators) :-
+	catch(
+		('$lgt_save_operators'(Operators, Saved),
+		 '$lgt_add_operators'(Operators),
+		 write(Stream, Term),
+		 '$lgt_pop_operators'(Operators)),
+		Error,
+		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
+
+
+
+% '$lgt_iso_write'(@term, @list)
+%
+% wraps write/1 call with the necessary operator settings
+
+'$lgt_iso_write'(Term, Operators):-
+	catch(
+		('$lgt_save_operators'(Operators, Saved),
+		 '$lgt_add_operators'(Operators),
+		 write(Term),
+		 '$lgt_pop_operators'(Operators)),
+		Error,
+		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
+
+
+
+% '$lgt_iso_writeq'(@stream_or_alias, @term, @list)
+%
+% wraps writeq/2 call with the necessary operator settings
+
+'$lgt_iso_writeq'(Stream, Term, Operators) :-
+	catch(
+		('$lgt_save_operators'(Operators, Saved),
+		 '$lgt_add_operators'(Operators),
+		 writeq(Stream, Term),
+		 '$lgt_pop_operators'(Operators)),
+		Error,
+		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
+
+
+
+% '$lgt_iso_writeq'(@term, @list)
+%
+% wraps writeq/1 call with the necessary operator settings
+
+'$lgt_iso_writeq'(Term, Operators) :-
+	catch(
+		('$lgt_save_operators'(Operators, Saved),
+		 '$lgt_add_operators'(Operators),
+		 writeq(Term),
 		 '$lgt_pop_operators'(Operators)),
 		Error,
 		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
