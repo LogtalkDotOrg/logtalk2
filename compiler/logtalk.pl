@@ -3509,17 +3509,19 @@ current_logtalk_flag(version, version(2, 22, 2)).
 %
 % 
 
+'$lgt_pp_rclause'(Clause) :-
+	'$lgt_pp_rclause_'(Clause).
+
 '$lgt_pp_rclause'('$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, Mode)) :-
-	'$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, _, _, _, _, Mode).
+	'$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, _, _, _, _, Mode),
+	!.
 
 '$lgt_pp_rclause'('$lgt_current_protocol_'(Ptc, Prefix, Mode)) :-
-	'$lgt_pp_protocol_'(Ptc, Prefix, _, Mode).
+	'$lgt_pp_protocol_'(Ptc, Prefix, _, Mode),
+	!.
 
 '$lgt_pp_rclause'('$lgt_current_category_'(Ctg, Prefix, Mode)) :-
 	'$lgt_pp_category_'(Ctg, Prefix, _, _, Mode).
-
-'$lgt_pp_rclause'(Clause) :-
-	'$lgt_pp_rclause_'(Clause).
 
 
 
