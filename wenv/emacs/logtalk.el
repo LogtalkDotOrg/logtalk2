@@ -77,15 +77,15 @@
 
 ;; set logtalk font-lock-faces
 
-(setq logtalk-default-face 'default)
-(setq logtalk-directive-face 'font-lock-keyword-face)
-(setq logtalk-built-in-predicate-face 'font-lock-builtin-face)
-(setq logtalk-built-in-method-face 'font-lock-builtin-face)
-(setq logtalk-message-operator-face 'font-lock-function-name-face)
-(setq logtalk-variable-face 'font-lock-variable-name-face)
-(setq logtalk-number-face 'font-lock-constant-face)
-(setq logtalk-comment-face 'font-lock-comment-face)
-(setq logtalk-string-face 'font-lock-string-face)
+(copy-face 'default 'logtalk-default-face)
+(copy-face 'font-lock-keyword-face 'logtalk-directive-face)
+(copy-face 'font-lock-builtin-face 'logtalk-built-in-predicate-face)
+(copy-face 'font-lock-builtin-face 'logtalk-built-in-method-face)
+(copy-face 'font-lock-function-name-face 'logtalk-message-operator-face)
+(copy-face 'font-lock-variable-name-face 'logtalk-variable-face)
+(copy-face 'font-lock-constant-face 'logtalk-number-face)
+(copy-face 'font-lock-comment-face 'logtalk-comment-face)
+(copy-face 'font-lock-string-face 'logtalk-string-face)
 
 
 
