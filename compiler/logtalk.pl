@@ -5593,6 +5593,12 @@ user0__def(Pred, _, _, _, Pred, user).
 	var(Var),
 	!.
 
+'$lgt_dcg_body'(::Goal, ::phrase(Goal, S0, S), S0, S) :-
+	!.
+
+'$lgt_dcg_body'(Object::Goal, Object::phrase(Goal, S0, S), S0, S) :-
+	!.
+
 '$lgt_dcg_body'((RGoal,RGoals), (CGoal,CGoals), S0, S) :-
 	!,
 	'$lgt_dcg_body'(RGoal, CGoal, S0, S1),
