@@ -7218,13 +7218,13 @@ current_logtalk_flag(version, version(2, 21, 1)).
 	'$lgt_dcg_head'(RHead, CHead, _, _, S, S, _).
 
 '$lgt_dcg_rule'((RHead --> RBody), (CHead :- CBody)) :-
-	'$lgt_dcg_head'(RHead, CHead, Body, Body2, S0, S, S1),
-	'$lgt_dcg_body'(RBody, Body, S0, S),
-	'$lgt_dcg_fold_unifications'(Body2, CBody, S1).
+	'$lgt_dcg_head'(RHead, CHead, Body, Body2, S0, S1, S),
+	'$lgt_dcg_body'(RBody, Body, S0, S1),
+	'$lgt_dcg_fold_unifications'(Body2, CBody, S0, S).
 
 
 
-% '$lgt_dcg_head'(@dcghead, -head, @goal, -goal, @var, @var, -var)
+% '$lgt_dcg_head'(@dcghead, -head, @goal, -goal, @var, @var, @var)
 %
 % translates DCG rule head to a Prolog clause head
 % (the last argument returns the variable representing the ouput list)
@@ -7237,13 +7237,13 @@ current_logtalk_flag(version, version(2, 21, 1)).
 	\+ '$lgt_proper_list'(Terminals),
 	throw(type_error(list, Terminals)).
 
-'$lgt_dcg_head'((Nonterminal, Terminals), CHead, Body, (Body,Goal), S0, S, S1) :-
+'$lgt_dcg_head'((RHead, Terminals), CHead, Body, (Body,Goal), S0, S1, S) :-
 	!,
-	'$lgt_dcg_terminals'(Terminals, Goal, S1, S),
-	'$lgt_dcg_goal'(Nonterminal, CHead, S0, S1).
+	'$lgt_dcg_goal'(RHead, CHead, S0, S),
+	'$lgt_dcg_terminals'(Terminals, Goal, S, S1).
 
-'$lgt_dcg_head'(Nonterminal, CHead, Body, Body, S0, S, S) :-
-	'$lgt_dcg_goal'(Nonterminal, CHead, S0, S).
+'$lgt_dcg_head'(RHead, CHead, Body, Body, S0, S, S) :-
+	'$lgt_dcg_goal'(RHead, CHead, S0, S).
 
 
 
@@ -7296,8 +7296,8 @@ current_logtalk_flag(version, version(2, 21, 1)).
 	!,
 	'$lgt_dcg_terminals'([Terminal| Terminals], CGoal, S0, S).
 
-'$lgt_dcg_body'(Non_terminal, CGoal, S0, S) :-
-	'$lgt_dcg_goal'(Non_terminal, CGoal, S0, S).
+'$lgt_dcg_body'(RGoal, CGoal, S0, S) :-
+	'$lgt_dcg_goal'(RGoal, CGoal, S0, S).
 
 
 
@@ -7332,43 +7332,43 @@ current_logtalk_flag(version, version(2, 21, 1)).
 
 
 
-% '$lgt_dcg_fold_unifications'(+goal, -goal, @var)
+% '$lgt_dcg_fold_unifications'(+goal, -goal, @var, @var)
 %
 % folds redundant calls to =/2 by calling the unification
-% goals execept for output unifications
+% goals except for output unifications
 
-'$lgt_dcg_fold_unifications'((Goal1 -> Goal2), (SGoal1 -> SGoal2), S) :-
+'$lgt_dcg_fold_unifications'((Goal1 -> Goal2), (SGoal1 -> SGoal2), S0, S) :-
 	!,
-	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S),
-	'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S).
+	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S0, S),
+	'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S0, S).
 
-'$lgt_dcg_fold_unifications'((Goal1;Goal2), (SGoal1;SGoal2), S) :-
+'$lgt_dcg_fold_unifications'((Goal1;Goal2), (SGoal1;SGoal2), S0, S) :-
 	!,
-	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S),
-	'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S).
+	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S0, S),
+	'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S0, S).
 
-'$lgt_dcg_fold_unifications'((Goal1,Goal2), SGoal, S) :-
+'$lgt_dcg_fold_unifications'((Goal1,Goal2), SGoal, S0, S) :-
 	!,
-	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S),
-	'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S),
+	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S0, S),
+	'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S0, S),
 	'$lgt_dcg_simplify_and'((SGoal1,SGoal2), SGoal).
 
-'$lgt_dcg_fold_unifications'(S1=S2, S1=S2, S) :-
+'$lgt_dcg_fold_unifications'(S1=S2, S1=S2, _, S) :-
 	(S1 == S; S2 == S),		% avoid output unifications
 	!.
 
-'$lgt_dcg_fold_unifications'(S1=S2, true, _) :-
+'$lgt_dcg_fold_unifications'(S1=S2, true, _, _) :-
 	var(S2),				% avoid unification with list of terminals
 	!,
 	S1 = S2.
 
-'$lgt_dcg_fold_unifications'(Goal, Goal, _).
+'$lgt_dcg_fold_unifications'(Goal, Goal, _, _).
 
 
 
 % '$lgt_dcg_simplify_and'(+goal, -goal)
 %
-% removes redundant calls to true/0 and flats a conjunction of goals
+% removes redundant calls to true/0 and flats conjunction of goals
 
 '$lgt_dcg_simplify_and'((Goal1 -> Goal2), (SGoal1 -> SGoal2)) :-
 	!,
@@ -7395,6 +7395,10 @@ current_logtalk_flag(version, version(2, 21, 1)).
 '$lgt_dcg_simplify_and'((Goal1,Goal2), (Goal1,Goal3)) :-
 	!,
 	'$lgt_dcg_simplify_and'(Goal2, Goal3).
+
+'$lgt_dcg_simplify_and'(\+ Goal, \+ SGoal) :-
+	!,
+	'$lgt_dcg_simplify_and'(Goal, SGoal).
 
 '$lgt_dcg_simplify_and'(Goal, Goal).
 
