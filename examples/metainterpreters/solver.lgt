@@ -13,7 +13,8 @@
 		comment is 'Proofs goal.',
 		argnames is ['Goal']]).
 
-	solve(true).
+	solve(true) :-
+		!.
 	solve((A, B)) :-
 		!, solve(A), solve(B).
 	solve(A) :-
