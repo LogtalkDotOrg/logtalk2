@@ -25,7 +25,7 @@
 <xsd:complexType name="logtalk">
 	<xsd:sequence>
 		<xsd:element name="entity"		type="entity"/>
-		<xsd:element name="relations"	type="relations"/>
+		<xsd:element name="relations"		type="relations"/>
 		<xsd:element name="predicates"	type="predicates"/>
 	</xsd:sequence>
 </xsd:complexType>
@@ -37,7 +37,7 @@
 		<xsd:element name="type"			type="type"/>
 		<xsd:element name="compilation"	type="compilation"/>
 		<xsd:element name="comment"		type="xsd:string"	minOccurs="0"/>
-		<xsd:element name="author"			type="xsd:string"	minOccurs="0"/>
+		<xsd:element name="author"		type="xsd:string"	minOccurs="0"/>
 		<xsd:element name="version"		type="xsd:string"	minOccurs="0"/>
 		<xsd:element name="date"			type="xsd:string"	minOccurs="0"/>
 		<xsd:element name="info"			type="info"			minOccurs="0" maxOccurs="unbounded"/>
@@ -176,9 +176,16 @@
 
 <xsd:complexType name="exceptions">
 	<xsd:sequence>
-		<xsd:element name="exception"	type="xsd:string"	minOccurs="1" maxOccurs="unbounded"/>
+		<xsd:element name="exception"	type="exception"	minOccurs="1" maxOccurs="unbounded"/>
 	</xsd:sequence>
 </xsd:complexType>
 
+
+<xsd:complexType name="exception">
+	<xsd:sequence>
+		<xsd:element name="condition"	type="xsd:string"/>
+		<xsd:element name="term"	type="xsd:string"/>
+	</xsd:sequence>
+</xsd:complexType>
 
 </xsd:schema>

@@ -7166,8 +7166,11 @@ current_logtalk_flag(version, version(2, 17, 1)).
 	(('$lgt_info_'(Functor/Arity, List), '$lgt_member'(exceptions is Terms, List), Terms \= []) ->
 		'$lgt_write_xml_open_tag'(Stream, exceptions, []),
 		forall(
-			'$lgt_member'(Term, Terms),
-		 	'$lgt_write_xml_cdata_element'(Stream, exception, [], Term)),
+			'$lgt_member'(Cond-Term, Terms),
+		 	('$lgt_write_xml_open_tag'(Stream, exception, []),
+		 	 '$lgt_write_xml_cdata_element'(Stream, condition, [], Cond),
+		 	 '$lgt_write_xml_cdata_element'(Stream, term, [], Term),
+		 	 '$lgt_write_xml_close_tag'(Stream, exception))),
 		 '$lgt_write_xml_close_tag'(Stream, exceptions)
 		;
 		true),

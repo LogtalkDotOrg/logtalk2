@@ -213,7 +213,7 @@
 		<xsl:if test="exceptions">
 		<dt>exceptions:</dt>
 		<xsl:for-each select="exceptions/exception">
-			<dd><code><xsl:value-of select="." /></code></dd>
+			<dd><xsl:value-of select="condition" />: <code><xsl:value-of select="term" /></code></dd>
 		</xsl:for-each>
 		</xsl:if>
 	</dl>

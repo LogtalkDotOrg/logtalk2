@@ -271,7 +271,9 @@
 		exceptions:
 		<cmd name="par"/>
 		<xsl:for-each select="exceptions/exception">
-			<cmd name="texttt"><parm><xsl:value-of select="." /></parm></cmd>
+			<cmd name="textsf"><parm><xsl:value-of select="condition" /></parm></cmd>
+			<cmd name="space"/> <cmd name="textendash"/> <cmd name="space"/>
+			<cmd name="texttt"><parm><xsl:value-of select="term" /></parm></cmd>
 		</xsl:for-each>
 	</xsl:if>
 	<xsl:for-each select="info">

@@ -82,4 +82,8 @@
 
 <!ELEMENT exceptions (exception*)>
 
-<!ELEMENT exception (#PCDATA)>
+<!ELEMENT exception (condition, term)>
+
+<!ELEMENT condition (#PCDATA)>
+
+<!ELEMENT term (#PCDATA)>
