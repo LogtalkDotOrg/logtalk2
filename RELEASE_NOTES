@@ -23,6 +23,8 @@ RELEASE NOTES
 	illustrating some possible uses of assignable variables in the context 
 	of parametric objects.
 
+	Simplified installation instructions.
+
 	Corrected a compiler bug in the code that checks and prints a warning 
 	when redefined parametric objects.
 
