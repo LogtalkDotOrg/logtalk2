@@ -33,7 +33,7 @@
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>phrase(+callable, +list, ?list)</pre>
+<pre>phrase(+callable, ?list, ?list)</pre>
 </blockquote>
 
 <h4>Errors</h4>
@@ -44,8 +44,6 @@
 			<dd><code>instantiation_error</code></dd>
 		<dt>Ruleset is neither a variable nor a callable term:</dt>
 			<dd><code>type_error(callable, Ruleset)</code></dd>
-		<dt>Input is a variable:</dt>
-			<dd><code>instantiation_error</code></dd>
 		<dt>Input is neither a variable nor a proper list:</dt>
 			<dd><code>type_error(list, Input)</code></dd>
 		<dt>Rest is neither a variable nor a proper list:</dt>
