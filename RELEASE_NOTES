@@ -35,6 +35,9 @@ RELEASE NOTES
 	The tables of dynamic predicate declarations and dynamic predicate 
 	definitions are now reseted when reloading an object.
 
+	Corrected a compatibility problem with the "birds" example due to the use 
+	of an operator not available in some Prolog compilers.
+
 
 2.23.0 - February 21, 2005
 
