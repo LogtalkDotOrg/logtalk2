@@ -15,7 +15,7 @@
 <body>
 
 <div class="navtop">
-<a href="../index.html">contents</a> > <a href="index.html">tutorial</a>
+<a href="../index.html">contents</a> &gt; <a href="index.html">tutorial</a>
 </div>
 
 <h1>Dynamic object attributes</h1>
@@ -32,8 +32,7 @@ In this example, we will illustrate the use of:
 by defining a category that implements a set of predicates for handling dynamic object attributes.
 </p>
 
-<hr />
-<h2><a class="back" title="Return to index" name="category" href="index.html#attributes_category">Defining a category</a></h2>
+<h2><a name="category" href="index.html#attributes_category">Defining a category</a></h2>
 
 <p>
 We want to define a set of predicates to handle dynamic object attributes. We need public predicates to set, get, and delete attributes, and a private dynamic predicate to store the attributes values. Let us name these predicates <code>set_attribute/2</code> and <code>get_attribute/2</code>, for getting and setting an attribute value, <code>del_attribute/2</code> and <code>del_attributes/2</code>, for deleting attributes, and <code>attribute_/2</code>, for storing the attributes values.
@@ -102,8 +101,7 @@ We have two new directives, <a title="Consult reference manual" href="../refman/
 Any protocol can be implemented by either an object, a category, or both.
 </p>
 
-<hr />
-<h2><a class="back" title="Return to index" name="importing" href="index.html#attributes_importing">Importing the category</a></h2>
+<h2><a name="importing" href="index.html#attributes_importing">Importing the category</a></h2>
 
 <p>
 We reuse a category's predicates by importing them into an object:
@@ -135,8 +133,7 @@ After compiling and loading this object and our category, we can now try queries
     no
 </pre>
 
-<hr />
-<h2><a class="back" title="Return to index" name="summary" href="index.html#attributes_summary">Summary</a></h2>
+<h2><a name="summary" href="index.html#attributes_summary">Summary</a></h2>
 
 <ul>
 	<li>Categories are similar to objects: we just put our predicate directives and definitions bracketed by opening and ending category directives.</li>
