@@ -581,6 +581,12 @@ The usual all solutions metapredicates are pre-defined methods in Logtalk: <a ti
 Logtalk provides two built-in methods for inspecting object predicates: <a title="Consult reference manual" href="../refman/methods/predicate_property2.html"><code>predicate_property/2</code></a>, that return predicate properties and <a title="Consult reference manual" href="../refman/methods/current_predicate1.html"><code>current_predicate/1</code></a>, that enables us to query about predicate definitions. See below for a more detailed description of both methods.
 </p>
 
+<h3>Definite clause grammar parsing methods<a name="parsing"></a></h3>
+
+<p>
+Logtalk supports two definite clause grammar parsing built-in methods, <a title="Consult reference manual" href="../refman/methods/phrase2.html"><code>phrase/2</code></a> and <a title="Consult reference manual" href="../refman/methods/phrase3.html"><code>phrase/3</code></a>, with definitions similar to the predicates with the same name found on most Prolog compilers that support definite clause grammars. The current implementation of the parsing methods only accepts as first argument a non-terminal instead of a rule body.
+</p>
+
 <h2>Predicate properties<a name="properties"></a></h2>
 
 <p>
