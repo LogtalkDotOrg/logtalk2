@@ -7,7 +7,7 @@
 		version is 1.0,
 		author is 'Paulo Moura',
 		date is 2004/5/10,
-		comment is 'Operating system interface.']).
+		comment is 'Operating system interface for K-Prolog.']).
 
 
 	make_directory(Directory) :-
@@ -38,9 +38,25 @@
 		{fail}.
 
 
-	file_property(File, Property) :-
+	file_modtime(File, Time) :-
 		{fail}.
 
+
+	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
+		{fail}.
+
+
+	file_size(File, Size) :-
+		{fail}.
+
+
+	file_type(File, Type) :-
+		{fail}.
+
+
+	file_permission(File, Permission) :-
+		{fail}.
+ 
 
 	delete_file(File) :-
 		{atom_concat('rm ', File, Command), system(Command)}.

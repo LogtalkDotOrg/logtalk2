@@ -12,7 +12,7 @@
 		version is 1.0,
 		author is 'Paulo Moura',
 		date is 2004/5/10,
-		comment is 'Operating system interface.']).
+		comment is 'Operating system interface for Quintus Prolog.']).
 
 
 	make_directory(Directory) :-
@@ -43,9 +43,25 @@
 		{file_exists(File)}.
 
 
-	file_property(File, Property) :-
-		{file_property(File, Attribute, Value), Property =.. [Attribute, Value]}.
+	file_modtime(File, Time) :-
+		{fail}.
 
+
+	file_modtime(File, Year, Month, Day, Hours, Mins, Secs) :-
+		{file_property(File, modify_time, date(Year, Month, Day, Hours, Mins, Secs))}.
+
+
+	file_size(File, Size) :-
+		{file_property(File, size, Size)}.
+
+
+	file_type(File, Type) :-
+		{file_property(File, type, Type)}.
+
+
+	file_permission(File, Permission) :-
+		{file_exists(File, Permission)}.
+ 
 
 	delete_file(File) :-
 		{delete_file(File)}.
