@@ -5,7 +5,7 @@
 benchmark(Goal) :-
 	N = 1000000,
 	write('Number of repetitions: '), write(N), nl,
-	'$lgt_cpu_time'(Seconds1),
+	'$lgt_cpu_time'(Seconds1),		% defined in the config files
 	benchmark(N, Goal),
 	'$lgt_cpu_time'(Seconds2),
 	Average is (Seconds2 - Seconds1)/N,

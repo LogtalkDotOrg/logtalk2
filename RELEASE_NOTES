@@ -20,7 +20,8 @@ RELEASE NOTES
 
 	Added a new example, "benchmarks", for helping measuring performance of 
 	Logtalk message seding between Prolog compilers and for comparing message 
-	sending with calls in plain Prolog and with calls to Prolog modules.
+	sending with predicate calls in plain Prolog and with calls to modules 
+	predicates.
 
 
 2.21.2 - October 18, 2004

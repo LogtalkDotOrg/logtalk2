@@ -18,8 +18,8 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 | ?- benchmark(true).
 
 Number of repetitions: 1000000
-Average time: 1.64e-06
-Calls per second: 609756
+Average time: 1.3e-07
+Calls per second: 7692307.6923077
 yes
 
 
@@ -28,8 +28,8 @@ yes
 | ?- benchmark(my_length([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], _)).
 
 Number of repetitions: 1000000
-Average time: 1.71e-06
-Calls per second: 584795
+Average time: 1.4e-07
+Calls per second: 7142857.14285716
 yes
 
 
@@ -38,8 +38,8 @@ yes
 | ?- benchmark(module:mod_length([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], _)).
 
 Number of repetitions: 1000000
-Average time: 1.725e-06
-Calls per second: 579710
+Average time: 1.4e-07
+Calls per second: 7142857.14285716
 yes
 
 
@@ -48,8 +48,8 @@ yes
 | ?- benchmark(list::length([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], _)).
 
 Number of repetitions: 1000000
-Average time: 1.74e-06
-Calls per second: 574713
+Average time: 1.4e-07
+Calls per second: 7142857.14285716
 yes
 
 
@@ -59,6 +59,6 @@ yes
 | ?- benchmark('$lgt_send_to_object_nv'(list, length([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], _), user)).
 
 Number of repetitions: 1000000
-Average time: 1.72e-06
-Calls per second: 581395
+Average time: 1.4e-07
+Calls per second: 7142857.14285716
 yes
