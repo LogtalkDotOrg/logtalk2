@@ -70,7 +70,6 @@ In Windows 95/98/ME, environment variables are defined in the autoexec.bat
 file (you will need to reboot after editing the file):
 
 	SET LOGTALKHOME=C:\your\installation\folder\
-	SET PATH=%PATH%;%LOGTALKHOME%\xml\
 
 In Windows NT/2000/XP, environment variables are defined using the System 
 properties control panel (if you are a system administrator, you may define 
