@@ -1073,7 +1073,7 @@ current_logtalk_flag(Flag, Value) :-
 	\+ '$lgt_flag_'(Flag, _),
 	'$lgt_default_flag'(Flag, Value).
 
-current_logtalk_flag(version, version(2, 15, 3)).
+current_logtalk_flag(version, version(2, 15, 4)).
 
 
 
@@ -1129,12 +1129,12 @@ current_logtalk_flag(version, version(2, 15, 3)).
 '$lgt_current_predicate'(Obj, Functor/Arity, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, _, _, _),
 	findall(
-		Functor/Arity-(PScope, SContainer),
+		Functor/Arity - (PScope, SContainer),
 		('$lgt_call'(Dcl, Pred, PScope, _, _, SContainer, _),
 		 functor(Pred, Functor, Arity)),
 		Preds),
 	'$lgt_cp_filter'(Preds, Filtered),
-	'$lgt_member'(Functor/Arity-(PScope, SContainer), Filtered),
+	'$lgt_member'(Functor/Arity - (PScope, SContainer), Filtered),
 	once((\+ \+ PScope = Scope; Sender = SContainer)).
 
 
@@ -1330,7 +1330,7 @@ current_logtalk_flag(version, version(2, 15, 3)).
 				Metavars = []),
 			'$lgt_metavars'(Context, Metavars),
 			'$lgt_tr_body'(Body, TBody, Context),
-			asserta((Call:-('$lgt_nop'(Body), TBody)))
+			asserta((Call :- ('$lgt_nop'(Body), TBody)))
 			;
 			(PScope = p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta((Head:-Body)), Sender))
@@ -1417,7 +1417,7 @@ current_logtalk_flag(version, version(2, 15, 3)).
 				Metavars = []),
 			'$lgt_metavars'(Context, Metavars),
 			'$lgt_tr_body'(Body, TBody, Context),
-			assertz((Call:-('$lgt_nop'(Body), TBody)))
+			assertz((Call :- ('$lgt_nop'(Body), TBody)))
 			;
 			(PScope = p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::assertz((Head:-Body)), Sender))
@@ -1522,10 +1522,10 @@ current_logtalk_flag(version, version(2, 15, 3)).
 		(Type = (dynamic) ->
 			((\+ \+ PScope = Scope; Sender = SContainer) ->
 				('$lgt_once'(Def, Head, _, _, _, Call) ->
-					retract((Call:-('$lgt_nop'(Body), _)))
+					retract((Call :- ('$lgt_nop'(Body), _)))
 					;
 					('$lgt_once'(DDef, Head, _, _, _, Call) ->
-						retract((Call:-('$lgt_nop'(Body), _))),
+						retract((Call :- ('$lgt_nop'(Body), _))),
 						'$lgt_update_ddef_table'(DDef, Call)
 						;
 						fail))
@@ -5467,7 +5467,7 @@ user0__def(Pred, _, _, _, Pred, user).
 	atom(Prefix).
 
 '$lgt_valid_compiler_option'(doctype(Option)) :-
-	once((Option == standalone; Option == local; Option == web)).
+	once((Option == standalone; Option == (local); Option == web)).
 
 
 
