@@ -58,20 +58,20 @@ Processing proposition: all(X, exists(Y, p(X)v~q(X)=>r(X, Y)))
 
   1. Remove implications: all(X, exists(Y, ~ (p(X)v~q(X))v r(X, Y)))
   2. Distribute negation: all(X, exists(Y, ~p(X)&q(X)v r(X, Y)))
-  3. Remove existential quantifiers: all(X, ~p(X)&q(X)v r(X, f2(X)))
-  4. Convert to prenex normal form: all(X, ~p(X)&q(X)v r(X, f2(X)))
-  5. Remove universal quantifiers: ~p(X)&q(X)v r(X, f2(X))
-  6. Convert to conjunctive normal form: (~p(X)v r(X, f2(X)))& (q(X)v r(X, f2(X)))
-  7. Convert to clauses: [cl([r(X, f2(X))], [p(X)]), cl([q(X), r(X, f2(X))], [])]
+  3. Remove existential quantifiers: all(X, ~p(X)&q(X)v r(X, f1(X)))
+  4. Convert to prenex normal form: all(X, ~p(X)&q(X)v r(X, f1(X)))
+  5. Remove universal quantifiers: ~p(X)&q(X)v r(X, f1(X))
+  6. Convert to conjunctive normal form: (~p(X)v r(X, f1(X)))& (q(X)v r(X, f1(X)))
+  7. Convert to clauses: [cl([r(X, f1(X))], [p(X)]), cl([q(X), r(X, f1(X))], [])]
 
 Clauses in Prolog-like notation:
-r(X, f2(X)) :- p(X).
-q(X); r(X, f2(X)) :- .
+r(X, f1(X)) :- p(X).
+q(X); r(X, f1(X)) :- .
 
 
 X = X
-Y = f2(X)
-Cs = [cl([r(X, f2(X))], [p(X)]), cl([q(X), r(X, f2(X))], [])] 
+Y = f1(X)
+Cs = [cl([r(X, f1(X))], [p(X)]), cl([q(X), r(X, f1(X))], [])] 
 yes
 
 
