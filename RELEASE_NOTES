@@ -23,6 +23,9 @@ RELEASE NOTES
 	Updated the "errors" example to illustrate the error messages thrown when 
 	trying to redefine Logtalk built-in control constructs.
 
+	Corrected a small problem with the Logtalk language specification file for 
+	Apple's Xcode IDE.
+
 
 2.16.1 - March 23, 2004
 
