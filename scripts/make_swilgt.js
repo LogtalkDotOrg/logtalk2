@@ -39,22 +39,22 @@ var fso = new ActiveXObject("Scripting.FileSystemObject");
 if (!fso.FolderExists(logtalk_home + "\\bin"))
 	fso.CreateFolder(logtalk_home + "\\bin");
 
-var f = fso.CreateTextFile(logtalk_home + "\\bin\\lgtcswi.pl", true);
+var f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.pl", true);
 f.WriteLine(":- system_module.");
 f.Close();
 
-WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\lgtcswi.pl", true);
+WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\logtalkswi.pl", true);
 
-f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.pl", true);
+f = fso.CreateTextFile(logtalk_home + "\\bin\\logtalkswi.rc", true);
 
 f.WriteLine(":- consult('" + logtalk_home + "\\\\configs\\\\swihook.pl').");
 f.WriteLine(":- consult('" + logtalk_home + "\\\\configs\\\\swi.config').");
-f.WriteLine(":- consult('" + logtalk_home + "\\\\bin\\\\lgtcswi.pl').");
+f.WriteLine(":- consult('" + logtalk_home + "\\\\bin\\\\logtalkswi.pl').");
 f.Close();
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Swilgt.lnk");
-link.Arguments = "-f "+ logtalk_home + "\\bin\\logtalkswi.pl";
+link.Arguments = "-f "+ logtalk_home + "\\bin\\logtalkswi.rc";
 link.Description = "Logtalk & SWI-Prolog";
 link.IconLocation = "app.exe,1";
 link.TargetPath = WshShell.RegRead("HKEY_LOCAL_MACHINE\\Software\\SWI\\Prolog\\home") + "\\bin\\plwin.exe";
