@@ -22,6 +22,9 @@ RELEASE NOTES
 	loading source files contained on a library, without the need to first 
 	change the current working directory.
 
+	Changed the library and examples loading instructions to use the notation
+	<library>(<entity>).
+
 	Added utility predicates to all configuration files for querying and 
 	changing the current working directory.
 
