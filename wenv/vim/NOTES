@@ -7,17 +7,18 @@ Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 
 
 This directory contains a file that provides syntax highlighting 
-for editing Logtalk source files with the text editor Vim 6.1
-(http://www.vim.org).
+for editing Logtalk source files with the text editor VIM 6.1 or 
+later version (http://www.vim.org).
 
-
-To install:
+Recent versions of VIM already contain support for Logtalk. However, 
+this directory may contain an updated syntax file. If that is the 
+case, install the syntax file by performing the following steps:
 
 1.	Copy the file logtalk.vim to the "syntax" sub-directory in your 
 	VIM installation directory.
 
 2.	Add the following entries to the "filetype.vim" configuration 
-	file (if not present):
+	file (only if not already present):
 
 " Logtalk source files
 au BufNewFile,BufRead *.lgt                     setf logtalk

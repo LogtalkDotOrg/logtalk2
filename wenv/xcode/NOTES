@@ -13,14 +13,19 @@ Xcode 1.1 or later version.
 
 To install:
 
-1. Copy the files logtalk.pbfilespec and logtalk.pblangspec to the directory 
-~/Library/Application Support/Apple/Developer Tools/Specifications 
+1. Copy the files "logtalk.pbfilespec" and "logtalk.pblangspec" to the 
+directory:
 
-2. Copy the directory Logtalk to the directory 
-~/Library/Application Support/Apple/Developer Tools/File Templates 
+	~/Library/Application Support/Apple/Developer Tools/Specifications 
 
-3. Create (if it does not exist) the directory
-~/Library/Application Support/Apple/Developer Tools/Project Templates/Logtalk
+2. Copy the directory "Logtalk" to the directory:
+ 
+	~/Library/Application Support/Apple/Developer Tools/File Templates 
+
+3. Create (if it does not exist) the directory:
+
+	~/Library/Application Support/Apple/Developer Tools/Project Templates/Logtalk
+
 and copy to it the directory Logtalk Application
 
 
