@@ -79,6 +79,12 @@
 		comment is 'File size in bytes.',
 		argnames is ['File', 'Size']]).
 
+	:- public(file_type/2).
+	:- mode(file_type(+atom, ?atom), zero_or_one).
+	:- info(file_type/2, [
+		comment is 'File type (regular, directory, symlink, fifo, socket, unknown).',
+		argnames is ['File', 'Type']]).
+
 	:- public(delete_file/1).
 	:- mode(delete_file(+atom), zero_or_one).
 	:- info(delete_file/1, [

@@ -53,6 +53,10 @@
 		{file_property(File, size(Size))}.
 
 
+	file_type(File, Type) :-
+		{file_property(File, type(Type))}.
+
+
 	delete_file(File) :-
 		{delete_file(File)}.
 

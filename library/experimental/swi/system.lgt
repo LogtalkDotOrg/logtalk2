@@ -58,6 +58,10 @@
 		{size_file(File, Size)}.
 
 
+	file_type(File, Type) :-
+		{fail}.
+
+
 	delete_file(File) :-
 		{delete_file(File)}.
 

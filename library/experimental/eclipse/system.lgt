@@ -53,6 +53,10 @@
 		{get_file_info(File, size, Size)}.
 
 
+	file_type(File, Type) :-
+		{fail}.
+
+
 	delete_file(File) :-
 		{delete(File)}.
 

@@ -27,7 +27,7 @@
 
 
 	directory_exists(Directory) :-
-		{fail}.
+		{file_exists(Directory), file_property(File, type(directory))}.
 
 
 	directory_files(Directory, Files) :-
@@ -56,6 +56,10 @@
 
 	file_size(File, Size) :-
 		{file_property(File, size(Size))}.
+
+
+	file_type(File, Type) :-
+		{file_property(File, type(Type))}.
 
 
 	delete_file(File) :-
