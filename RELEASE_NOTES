@@ -10,19 +10,25 @@ RELEASE NOTES
 =============
 
 
-2.17.0 - April 22, 2004
+2.17.0 - April 27, 2004
 
 	Added buil-in debugging support implemented through the definition of a 
 	new pseudo-object named "debugger". Added "debug" compiler option. Renamed 
 	library entities "debuggerp" and "debugger" to, respectively, "event_dbgp" 
 	and "event_dbg".
 
+	Added a set of shell scripts for easy integration of Logtalk with GNU Prolog,
+	Qu-Prolog, SWI-Prolog, and YAP.
+
+	Improved installation instructions for multi-user environments. Added a shell 
+	script for copying Logtalk xml, examples, and library directories to the user 
+	home directory.
+
 	Corrected bug in the definition of the pseudo-object "user" that resulted 
 	in mixed up metapredicate and type predicate properties.
 
-	Removed config files for outdated Qu-Prolog, CIAO, YAP, XSB, ECLiPSe, 
-	Amzi! Prolog, K-Prolog, LPA Win-Prolog, SICStus Prolog, and SWI-Prolog 
-	versions.
+	Removed config files for outdated versions of Qu-Prolog, SWI-Prolog, ECLiPSe,
+	K-Prolog, CIAO, YAP, Amzi! Prolog, LPA Win-Prolog, SICStus Prolog, and XSB.
 
 
 2.16.2 - April 2, 2004
