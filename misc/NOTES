@@ -81,6 +81,12 @@ make_gplgt.js
 	not provide the best possible performance for running Logtalk with this 
 	Prolog compiler)
 
+make_plclgt.sh
+	makes a shell script named plclgt for running Logtalk with K-Prolog	
+make_plclgt.js
+	makes a Windows shortcut named "Logtalk - K-Prolog" for running Logtalk 
+	with K-Prolog
+
 make_qplgt.sh
 	makes a shell script named qplgt for running Logtalk with Qu-Prolog 
 	(based on script code contributed by Peter Robinson)
