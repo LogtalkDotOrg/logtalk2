@@ -25,3 +25,6 @@ au BufNewFile,BufRead *.lgt                     setf logtalk
 
 " Logtalk source file loader
 au BufNewFile,BufRead *.loader                  setf logtalk
+
+" Logtalk config files
+au BufNewFile,BufRead *.config                  setf logtalk
