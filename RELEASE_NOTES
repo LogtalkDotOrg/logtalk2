@@ -27,6 +27,10 @@ RELEASE NOTES
 	Simplified implementation of Logtalk built-in methods asserta/1 and 
 	assertz/1.
 
+	Updated shell script "misc/cplgtdirs.sh" to prevent copy of Logtalk files 
+	when the destination directory already exists (thus avoiding overriding 
+	user-modified files when upgrading Logtalk).
+
 	Updated the syntax coloring file for the TextMate text editor, adding 
 	some missing ISO Prolog predicates.
 
