@@ -5731,11 +5731,11 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_dcg_simplify_and'((SGoal1,SGoal2), SGoal).
 
 '$lgt_dcg_fold_unifications'(S1=S2, S1=S2, S) :-
-	(S1 == S; S2 == S),
+	(S1 == S; S2 == S),		% avoid output unifications
 	!.
 
 '$lgt_dcg_fold_unifications'(S1=S2, true, _) :-
-	var(S2),
+	var(S2),				% avoid unification with list of terminals
 	!,
 	S1 = S2.
 
