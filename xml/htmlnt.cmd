@@ -3,7 +3,6 @@
 SET JAVA_HOME=c:\jdk1.3
 
 SET XT_PATH=c:\xt
-SET XP_PATH=c:\xt
 
 SET XSLT=lgthtml.xsl
 REM SET XSLT=lgtxhtml.xsl
@@ -13,7 +12,7 @@ IF NOT "%1" == "" SET INDEX_TITLE=%1%
 
 ECHO This script converts all .xml files in the current directory to .html
 ECHO files applying the XSLT transformation defined in the $XSLT file
-ECHO using the James Clark XT XSLT Java processor and XP Java XML parser.
+ECHO using the James Clark XT XSLT Java processor (version 20020426a or later).
 ECHO.
 ECHO An index.html file, containing links to all .html documenting files,
 ECHO is automatically generated. This file uses the script optional parameter 
@@ -23,7 +22,7 @@ ECHO converting XML files to HTML...
 
 FOR /f "tokens=1-2 delims=." %%f IN ('DIR /b *.xml') DO IF EXIST %%f.html DEL %%f.html
 
-FOR /f "tokens=1-2 delims=." %%f IN ('DIR /b *.xml') DO %JAVA_HOME%\bin\java -cp "%XT_PATH%\xt.jar;%XP_PATH%\xp.jar" -Dcom.jclark.xsl.sax.parser=com.jclark.xml.sax.CommentDriver com.jclark.xsl.sax.Driver %%f.xml %XSLT% %%f.html
+FOR /f "tokens=1-2 delims=." %%f IN ('DIR /b *.xml') DO %JAVA_HOME%\bin\java -cp "%XT_PATH%\xt.jar;%XT_PATH%\lib\xp.jar" -Dcom.jclark.xsl.sax.parser=com.jclark.xml.sax.CommentDriver com.jclark.xsl.sax.Driver %%f.xml %XSLT% %%f.html
 
 ECHO conversion done
 ECHO.

@@ -1,9 +1,7 @@
 #!/bin/sh
 
 XT_PATH="/Applications/XML/XT"
-XP_PATH="/Applications/XML/XP"
 # XT_PATH="/usr/local/XT"
-# XP_PATH="/usr/local/XP"
 
 XSLT="lgthtml.xsl"
 # XSLT="lgtxhtml.xsl"
@@ -17,7 +15,7 @@ fi
 echo
 echo This script converts all .xml files in the current directory to .html
 echo files applying the XSLT transformation defined in the $XSLT file
-echo using the James Clark XT XSLT Java processor and XP Java XML parser.
+echo using the James Clark XT XSLT Java processor (version 20020426a or later).
 echo
 echo An index.html file, containing links to all .html documenting files,
 echo is automatically generated. This file uses the script optional parameter 
@@ -28,7 +26,7 @@ echo converting XML files to HTML...
 for file in *.xml; do
 	echo "  converting" $file
 	name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
-	eval java -cp ${XT_PATH}/xt.jar:${XP_PATH}/xp.jar -Dcom.jclark.xsl.sax.parser=com.jclark.xml.sax.CommentDriver com.jclark.xsl.sax.Driver $file $XSLT $name.html
+	eval java -cp ${XT_PATH}/xt.jar:${XT_PATH}/lib/xp.jar -Dcom.jclark.xsl.sax.parser=com.jclark.xml.sax.CommentDriver com.jclark.xsl.sax.Driver $file $XSLT $name.html
 done
 
 echo conversion done
