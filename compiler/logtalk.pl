@@ -2839,6 +2839,21 @@ user0__def(Pred, _, _, _, Pred, user).
 	throw(permission_error(define, dynamic_predicate, Functor/Arity)).
 
 
+% redefinition of Logtalk message sending and external call control constructs
+
+'$lgt_tr_head'(Term1::Term2, _, _) :-
+	throw(permission_error(modify, control_construct, Term1::Term2)).
+
+'$lgt_tr_head'(::Term, _, _) :-
+	throw(permission_error(modify, control_construct, ::Term)).
+
+'$lgt_tr_head'(^^Term, _, _) :-
+	throw(permission_error(modify, control_construct, ^^Term)).
+
+'$lgt_tr_head'({Term}, _, _) :-
+	throw(permission_error(modify, control_construct, {Term})).
+
+
 % redefinition of Logtalk built-in methods
 
 '$lgt_tr_head'(Head, _, _) :-
