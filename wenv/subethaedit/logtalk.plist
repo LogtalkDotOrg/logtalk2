@@ -312,8 +312,10 @@
 				<string>(set_output)\(</string>
 				<string>(open)\(</string>
 				<string>(close)\(</string>
+				<string>(flush_output)\(</string>
 				<string>(flush_output)</string>
 				<string>(stream_property)\(</string>
+				<string>(at_end_of_stream)\(</string>
 				<string>(at_end_of_stream)</string>
 				<string>(set_stream_position)\(</string>
 				<!-- Character input/output -->
