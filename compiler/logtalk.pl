@@ -1865,13 +1865,13 @@ current_logtalk_flag(version, version(2, 17, 2)).
 				call(Call)
 				;
 				throw(error(endless_loop(Pred), ^^Pred, This)))
+			;
+			throw(error(permission_error(access, private_predicate, Pred), ^^Pred, This)))
 		;
-		throw(error(permission_error(access, private_predicate, Pred), ^^Pred, This)))
-	;
-	('$lgt_built_in'(Pred) ->
-		call(Pred)
-		;
-		throw(error(existence_error(predicate_declaration, Pred), ^^Pred, This)))).
+		('$lgt_built_in'(Pred) ->
+			call(Pred)
+			;
+			throw(error(existence_error(predicate_declaration, Pred), ^^Pred, This)))).
 
 
 
