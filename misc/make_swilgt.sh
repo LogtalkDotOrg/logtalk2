@@ -20,12 +20,11 @@ else
 	cd bin
 	echo ":- system_module." > logtalkswi.pl
 	cat ../compiler/logtalk.pl >> logtalkswi.pl
-	echo ":- consult('$LOGTALKHOME/configs/swi.config')." > logtalkswi.rc
-	echo ":- consult('$LOGTALKHOME/configs/swihook.pl')." >> logtalkswi.rc
-	echo ":- consult('$LOGTALKHOME/bin/logtalkswi.pl')." >> logtalkswi.rc
-
+	echo ":- consult('\$LOGTALKHOME/configs/swi.config')." > logtalkswi.rc
+	echo ":- consult('\$LOGTALKHOME/configs/swihook.pl')." >> logtalkswi.rc
+	echo ":- consult('\$LOGTALKHOME/bin/logtalkswi.pl')." >> logtalkswi.rc
 	echo "#/bin/sh" > swilgt
-	echo "swipl -f $LOGTALKHOME/bin/logtalkswi.rc" >> swilgt
+	echo "swipl -f \$LOGTALKHOME/bin/logtalkswi.rc" >> swilgt
 	chmod a+x swilgt
 	ln -sf $LOGTALKHOME/bin/swilgt $prefix/bin/swilgt
 	echo "Done. A link to the script was been created in $prefix/bin."

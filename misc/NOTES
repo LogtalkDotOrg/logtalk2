@@ -38,4 +38,6 @@ make_yaplgt.sh
 These scripts require the environment variable LOGTALKHOME (containing the 
 Logtalk installation directory) to be defined. In addition, they accept as 
 an optional argument a prefix for the location of a link to the scripts 
-(default is /usr/local, creating the links in /usr/local/bin).
+(default is /usr/local, creating the links in /usr/local/bin). Please note 
+that the environment variable LOGTALKHOME must be defined in oder to run 
+the *lgt scripts that are created by the shell scripts above.

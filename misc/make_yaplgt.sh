@@ -18,11 +18,11 @@ else
 		mkdir bin
 	fi
 	cd bin
-	echo ":- reconsult('$LOGTALKHOME/configs/yap.config')." > logtalkyap.rc
-	echo ":- reconsult('$LOGTALKHOME/compiler/logtalk.pl')." >> logtalkyap.rc
+	echo ":- reconsult('\$LOGTALKHOME/configs/yap.config')." > logtalkyap.rc
+	echo ":- reconsult('\$LOGTALKHOME/compiler/logtalk.pl')." >> logtalkyap.rc
 
 	echo "#/bin/sh" > yaplgt
-	echo "yap -l $LOGTALKHOME/bin/logtalkyap.rc" >> yaplgt
+	echo "yap -l \$LOGTALKHOME/bin/logtalkyap.rc" >> yaplgt
 	chmod a+x yaplgt
 	ln -sf $LOGTALKHOME/bin/yaplgt $prefix/bin/yaplgt
 	echo "Done. A link to the script was been created in $prefix/bin."
