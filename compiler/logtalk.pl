@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.15.7
+%  Release 2.16.0
 %
 %  Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 %
@@ -3082,6 +3082,25 @@ user0__def(Pred, _, _, _, Pred, user).
 	!.
 
 
+% term input predicates that need to be operator aware
+
+'$lgt_tr_body'(read_term(Stream, Term, Options), '$lgt_iso_read_term'(Stream, Term, Options, Operators), _) :-
+	bagof(op(Priority, Specifier, Operator), '$lgt_local_op_'(Priority, Specifier, Operator), Operators),
+	!.
+
+'$lgt_tr_body'(read_term(Term, Options), '$lgt_iso_read_term'(Term, Options, Operators), _) :-
+	bagof(op(Priority, Specifier, Operator), '$lgt_local_op_'(Priority, Specifier, Operator), Operators),
+	!.
+
+'$lgt_tr_body'(read(Stream, Term), '$lgt_iso_read'(Stream, Term, Operators), _) :-
+	bagof(op(Priority, Specifier, Operator), '$lgt_local_op_'(Priority, Specifier, Operator), Operators),
+	!.
+
+'$lgt_tr_body'(read(Term), '$lgt_iso_read'(Term, Operators), _) :-
+	bagof(op(Priority, Specifier, Operator), '$lgt_local_op_'(Priority, Specifier, Operator), Operators),
+	!.
+
+
 % Logtalk and Prolog built-in predicates
 
 '$lgt_tr_body'(Pred, _, _) :-
@@ -3539,6 +3558,99 @@ user0__def(Pred, _, _, _, Pred, user).
 
 '$lgt_extract_metavars'([_| Args], [_| MArgs], Metavars) :-
 	'$lgt_extract_metavars'(Args, MArgs, Metavars).
+
+
+
+% 
+%
+%
+
+'$lgt_iso_read_term'(Stream, Term, Options, Operators) :-
+	catch(
+		('$lgt_save_operators'(Operators, Saved),
+		 '$lgt_apply_operators'(Operators),
+		 read_term(Stream, Term, Options),
+		 '$lgt_remove_operators'(Operators)),
+		Error,
+		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
+
+
+'$lgt_iso_read_term'(Term, Options, Operators) :-
+	catch(
+		('$lgt_save_operators'(Operators, Saved),
+		 '$lgt_apply_operators'(Operators),
+		 read_term(Term, Options),
+		 '$lgt_remove_operators'(Operators)),
+		Error,
+		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
+
+
+'$lgt_iso_read'(Stream, Term, Operators) :-
+	catch(
+		('$lgt_save_operators'(Operators, Saved),
+		 '$lgt_apply_operators'(Operators),
+		 read(Stream, Term),
+		 '$lgt_remove_operators'(Operators)),
+		Error,
+		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
+
+
+'$lgt_iso_read'(Term, Operators) :-
+	catch(
+		('$lgt_save_operators'(Operators, Saved),
+		 '$lgt_apply_operators'(Operators),
+		 read(Term),
+		 '$lgt_pop_operators'(Operators)),
+		Error,
+		'$lgt_iso_read_error_handler'(Operators, Saved, Error)).
+
+
+
+% '$lgt_save_operators'(@list, -list)
+%
+% 
+
+'$lgt_save_operators'(Operators, Saved) :-
+	findall(
+		op(Priority, Specifier, Operator),
+		('$lgt_member'(op(_, _, Operator), Operators),
+		 current_op(Priority, Specifier, Operator)),
+		Saved).
+
+
+
+% '$lgt_apply_operators'(@list)
+%
+% 
+
+'$lgt_apply_operators'([]).
+
+'$lgt_apply_operators'([op(Priority, Specifier, Operator)| Operators]) :-
+	op(Priority, Specifier, Operator),
+	'$lgt_apply_operators'(Operators).
+
+
+
+% '$lgt_remove_operators'(@list)
+%
+% 
+
+'$lgt_remove_operators'([]).
+
+'$lgt_remove_operators'([op(_, Specifier, Operator)| Operators]) :-
+	op(0, Specifier, Operator),
+	'$lgt_remove_operators'(Operators).
+
+
+
+% '$lgt_iso_read_error_handler'(@list, @list, @nonvar)
+%
+% 
+
+'$lgt_iso_read_error_handler'(Operators, Saved, Error) :-
+	'$lgt_remove_operators'(Operators),
+	'$lgt_apply_operators'(Saved),
+	throw(Error).
 
 
 
