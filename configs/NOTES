@@ -463,13 +463,15 @@ XSB Prolog 2.3~6
 	will not find them!
 
 	You also need to apply the following patch to the Logtalk compiler. Open 
-	the file compiler/logtalk.pl, find the clause that reads: 
+	the file compiler/logtalk.pl, find the clauses that read: 
 	
-	'$lgt_current_object_'(user, user0_, user0__dcl, user0__def, _).
+	'$lgt_current_object_'(user, ...).
+	'$lgt_current_object_'(debugger, ...).
 	
-	and replace it with the query:
+	and replace it with the queries:
 	
-	:- assertz('$lgt_current_object_'(user, user0_, user0__dcl, user0__def, _)).
+	:- assertz('$lgt_current_object_'(user, ...)).
+	:- assertz('$lgt_current_object_'(debugger, ...)).
 	
 	You may get syntax errors while compiling the Logtalk pre-processor 
 	or some of the examples due to a know bug in the XSB parsing of infix 
@@ -483,15 +485,9 @@ XSB Prolog 2.3~6
 	loading the library or an example.
 
 
-YAP 4.2.0 & 4.3.x~4.5.x
+YAP 4.3.x~4.5.x
 
-	yap420.config
-	
-	For version 4.2.0 (or older versions). Don't forget to use the cd/1 
-	predicate to set the working directory before loading the library or 
-	an example. Supports smart compilation of source files.
-
-	yap430.config
+	yap.config
 
 	For all 4.3.x and later versions. Don't forget to use the cd/1 predicate 
 	to set the working directory before loading the library or an example. 
