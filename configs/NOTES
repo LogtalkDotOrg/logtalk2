@@ -158,7 +158,7 @@ CIAO Prolog 1.6p1, 1.8p0
 	of source files.
 
 
-Eclipse 4.2.2~5.1, 5.2~5.3, 5.4~5.5
+Eclipse 4.2.2~5.1, 5.2~5.3, 5.4~5.6
 
 	eclipse.config
 	eclipse52.config
@@ -169,10 +169,10 @@ Eclipse 4.2.2~5.1, 5.2~5.3, 5.4~5.5
 	"eclipse.config", should be used when, for some reason, we don't want 
 	to load the "iso" library, with versions from 4.2.2 to 5.1. The second 
 	file, "eclipse52.config" is similar to the first one but is written for 
-	version 5.2 and 5.3. The third file, "eclipse54.config", is for version 
-	5.4 or 5.5. The fourth file, "eclipseiso.config" contains a call to load 
+	version 5.2 and 5.3. The third file, "eclipse54.config", is for versions 
+	5.4 to 5.6. The fourth file, "eclipseiso.config" contains a call to load 
 	the "iso" library and should be compatible with all versions from 4.2.2 
-	to 5.5.
+	to 5.6.
 
 	Add the following calls to the top of all the files in the "compiler" 
 	sub-directory:
