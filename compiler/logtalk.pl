@@ -1070,8 +1070,8 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_flag_'(Flag, Value).
 
 current_logtalk_flag(Flag, Value) :-
-	\+ '$lgt_flag_'(Flag, _),
-	'$lgt_default_flag'(Flag, Value).
+	'$lgt_default_flag'(Flag, Value),
+	\+ '$lgt_flag_'(Flag, _).
 
 current_logtalk_flag(version, version(2, 15, 6)).
 
