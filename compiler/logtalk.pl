@@ -4869,11 +4869,12 @@ user0__def(Pred, _, _, _, Pred, user).
 % constructs all the functors used in the compiled code of an object
 
 '$lgt_construct_object_functors'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef) :-
+	'$lgt_compiler_option'(code_prefix, Code),
 	functor(Obj, Functor, Arity),
 	number_codes(Arity, Codes),
 	atom_codes(Atom, Codes),
 	atom_concat(Functor, Atom, Aux),
-	atom_concat('$', Aux, Aux2),
+	atom_concat(Code, Aux, Aux2),
 	atom_concat(Aux2, '_', Prefix),
 	atom_concat(Prefix, '_dcl', Dcl),
 	atom_concat(Prefix, '_def', Def),
@@ -4890,11 +4891,12 @@ user0__def(Pred, _, _, _, Pred, user).
 % constructs all the functors used in the compiled code of a protocol
 
 '$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl) :-
+	'$lgt_compiler_option'(code_prefix, Code),
 	functor(Ptc, Functor, Arity),
 	number_codes(Arity, Codes),
 	atom_codes(Atom, Codes),
 	atom_concat(Functor, Atom, Aux),
-	atom_concat('$', Aux, Aux2),
+	atom_concat(Code, Aux, Aux2),
 	atom_concat(Aux2, '_', Prefix),
 	atom_concat(Prefix, '_dcl', Dcl).
 
@@ -4905,11 +4907,12 @@ user0__def(Pred, _, _, _, Pred, user).
 % constructs all the functors used in the compiled code of a category
 
 '$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def) :-
+	'$lgt_compiler_option'(code_prefix, Code),
 	functor(Ctg, Functor, Arity),
 	number_codes(Arity, Codes),
 	atom_codes(Atom, Codes),
 	atom_concat(Functor, Atom, Aux),
-	atom_concat('$', Aux, Aux2),
+	atom_concat(Code, Aux, Aux2),
 	atom_concat(Aux2, '_', Prefix),
 	atom_concat(Prefix, '_dcl', Dcl),
 	atom_concat(Prefix, '_def', Def).
@@ -5282,6 +5285,9 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_valid_compiler_option'(named_anonymous_vars(Option)) :-
 	once((Option == on; Option == off)).
 
+'$lgt_valid_compiler_option'(code_prefix(Prefix)) :-
+	atom(Prefix).
+
 
 
 % '$lgt_valid_flag'(@nonvar)
@@ -5302,6 +5308,7 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_valid_flag'(startup_message).
 '$lgt_valid_flag'(version).
 '$lgt_valid_flag'(named_anonymous_vars).
+'$lgt_valid_flag'(code_prefix).
 
 
 
@@ -5948,6 +5955,8 @@ user0__def(Pred, _, _, _, Pred, user).
 	write('  Compilation report:             '), write(Report), nl,
 	'$lgt_default_flag'(named_anonymous_vars, Named),
 	write('  Named anonymous variables:      '), write(Named), nl,
+	'$lgt_default_flag'(code_prefix, Code),
+	write('  Compiled code functors prefix:  '), writeq(Code), nl,
 	'$lgt_default_flag'(smart_compilation, Smart),
 	write('  Smart compilation:              '), write(Smart), nl, nl.
 
