@@ -37,6 +37,18 @@
 		{directory_files(Directory, Files)}.
 
 
+	absolute_file_name(File) :-
+		{absolute_file_name(File, File)}.
+
+
+	absolute_file_name(File, Full) :-
+		{absolute_file_name(File, Full)}.
+
+
+	decompose_file_name(File, Directory, Base, Extension) :-
+		{fail}.
+
+
 	file_exists(File) :-
 		{file_exists(File)}.
 
@@ -67,6 +79,10 @@
 
 	rename_file(Old, New) :-
 		{rename(Old, New)}.
+
+
+	symbolic_link(File, Target) :-
+		{fail}.
 
 
 	getenv(Variable, Value) :-
