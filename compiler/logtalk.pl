@@ -6593,8 +6593,11 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_fix_redef_built_ins' :-
 	retract('$lgt_pp_eclause_'(Clause)),
-	'$lgt_fix_redef_built_ins'(Clause, Fixed),
-	assertz('$lgt_pp_feclause_'(Fixed)),
+	(Clause = (Head:-Body) ->
+		'$lgt_fix_redef_built_ins'(Body, FBody),
+		assertz('$lgt_pp_feclause_'((Head:-FBody)))
+		;
+		assertz('$lgt_pp_feclause_'(Clause))),
 	fail.
 
 '$lgt_fix_redef_built_ins' :-
@@ -6607,17 +6610,13 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 
-% '$lgt_fix_redef_built_ins'(+clause, -clause)
+% '$lgt_fix_redef_built_ins'(+body, -body)
 %
-% fix calls to redefined built-in predicates
+% fix calls to redefined built-in predicates in a clause body
 
 '$lgt_fix_redef_built_ins'(Pred, Pred) :-
 	var(Pred),
 	!.
-
-'$lgt_fix_redef_built_ins'((Head:-Body), (Head:-Fixed)) :-
-	!,
-	'$lgt_fix_redef_built_ins'(Body, Fixed).
 
 '$lgt_fix_redef_built_ins'((Pred1, Pred2), (TPred1, TPred2)) :-
 	!,
