@@ -83,8 +83,8 @@ for further instructions.
 
 See the user manual for a description of the source files organization 
 and for using instructions (to read the user manual open the file 
-manuals/index.html with a web browser). Most files are formatted 
-using four-space tabs.
+manuals/index.html with a web browser). Most files are formatted using 
+four-space tabs.
 
 
 6. DOCUMENTATION
@@ -114,7 +114,7 @@ instructions on how to upgrade your programs to run under this new version.
 8. CITATIONS
 
 If you want to cite Logtalk in your publications, please consult the file 
-BIBLIOGRAPHY for BibTeX references.
+BIBLIOGRAPHY for BibTeX bibliographic references.
 
 
 9. CONTRIBUTIONS

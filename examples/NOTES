@@ -5,11 +5,12 @@ Release 2.17.2
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
+
 This folder contains several examples of Logtalk programs. Most of 
 these examples need objects, protocols, and categories that are
 defined in the Logtalk standard library or in other examples, so 
 you should load them first (see the NOTES files inside the library 
-folder and inside each example folder).
+folder and the NOTES file inside each example folder).
 
 Some examples may redefine objects already loaded from other examples.
 You may want to restart Logtalk after trying each example.
@@ -42,7 +43,7 @@ classvars
 	example of implementation of class variables (as found in Smalltalk)
 
 dcgs
-	example of using DCG rules inside objects and categories
+	examples of using DCG rules inside objects and categories
 
 dynpred
 	example of using some of the built-in database handling methods
