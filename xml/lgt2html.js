@@ -86,19 +86,19 @@ WScript.Echo("converting XML files...");
 var files = new Enumerator(fso.GetFolder(WshShell.CurrentDirectory).Files);
 
 for (; !files.atEnd(); files.moveNext()) {
-	var file = files.Item();
+	var file = files.item();
 	if (fso.GetExtensionName(file) = "xml") {
-		WScript.Echo("  converting" + fso.GetFileName(files.item()));
-		var html_file = directory + "\\" + fso.GetBaseName(files.item()) + ".html";
+		WScript.Echo("  converting" + fso.GetFileName(file));
+		var html_file = directory + "\\" + fso.GetBaseName(file) + ".html";
 		switch (processor) {
 			case "xsltproc" :
-				WshShell.Run(xsltproc + " -o " + html_file + xslt + " " + files.item(), true);
+				WshShell.Run(xsltproc + " -o " + html_file + xslt + " " + file, true);
 				break;
 			case "xalan" :
-				WshShell.Run(xalan + " -o " + html_file + " " + files.item() + " " + xslt, true);
+				WshShell.Run(xalan + " -o " + html_file + " " + file + " " + xslt, true);
 				break;
 			case "sabcmd" :
-				WshShell.Run(sabcmd + " " + xslt + " " + files.item() + " " + html_file, true);
+				WshShell.Run(sabcmd + " " + xslt + " " + file + " " + html_file, true);
 				break;
 		}
 	}
