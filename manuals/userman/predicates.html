@@ -440,7 +440,7 @@ Definite clause grammar rules provide a convenient notation to represent the rew
     :- end_object. 
 </pre>
 <p>
-The predicate <a title="Consult reference manual" href="../refman/methods/phrase2.html"><code>phrase/2</code></a> called in the definition of predicate <code>parse/2</code> is a Logtalk builtin method, similar to the predicate with the same name found on most Prolog compilers that support definite clause grammars. After compiling and loading this object, we can test the grammar rules with calls such as the following one:
+The predicate <a title="Consult reference manual" href="../refman/methods/phrase2.html"><code>phrase/2</code></a> called in the definition of predicate <code>parse/2</code> above is a Logtalk built-in method, similar to the predicate with the same name found on most Prolog compilers that support definite clause grammars. After compiling and loading this object, we can test the grammar rules with calls such as the following one:
 </p>
 <pre>
     | ?- calculator::parse("1+2-3*4", Result).
@@ -449,11 +449,14 @@ The predicate <a title="Consult reference manual" href="../refman/methods/phrase
     yes
 </pre>
 <p>
-In most cases, the predicates resulting from the translation of the grammar rules to regular clauses are not declared. Instead, these predicates are usually called by using the built-in methods <code>phrase/2</code> and <code>phrase/3</code>. Nevertheless, in case we want to call grammar rules the same way we call any other predicate, the corresponding predicate arity will be the arity of the rule head plus two. For the above example, assuming that we want the predicate corresponding to the <code>expr/1</code> rule to be public, the declaration would be:
+In most cases, the predicates resulting from the translation of the grammar rules to regular clauses are not declared. Instead, these predicates are usually called by using the built-in methods <code>phrase/2</code> and <code>phrase/3</code> as shown in the example above. Nevertheless, in case we want to call grammar rules the same way we call any other predicate, the corresponding predicate arity will be the arity of the rule head plus two. For the above example, assuming that we want the predicate corresponding to the <code>expr/1</code> rule to be public, the declaration would be:
 </p>
 <pre>
-    :- public(expr/3). 
+    :- public(expr//1). 
 </pre>
+<p>
+The <code>//</code> infix operator used above tells the Logtalk compiler that the scope directive refers to a non-terminal of a grammar rule, not to a predicate. The idea is that the predicate corresponding to the translation of the <code>expr/1</code> non-terminal will have a number of arguments equal to one plus the number of additional arguments necessary for processing the subjacent lists of tokens.
+</p>
 <p>
 In the body of a grammar rule, we can call rules that are inherited from ancestor objects, imported from categories, or contained in other objects. This is accomplished by using non-terminals as messages. Using a non-terminal as a message to self allows us to call grammar rules in categories and ancestor objects. To call grammar rules encapsulated in other objects, we use a non-terminal as a message to those objects. Consider the following example, containing grammar rules for parsing natural language sentences:
 </p>
@@ -478,12 +481,12 @@ In the body of a grammar rule, we can call rules that are inherited from ancesto
     :- end_object.
 </pre>
 <p>
-The object imported categories would contain the necessary grammar rules for parsing determiners, nouns, and verbs. For example:
+The categories imported by the object would contain the necessary grammar rules for parsing determiners, nouns, and verbs. For example:
 </p>
 <pre>
     :- category(determiners).
 
-        :- private(determiner/2).
+        :- private(determiner//0).
 
         determiner --> [the].
         determiner --> [a].
@@ -503,7 +506,7 @@ You may have noticed that Logtalk defines <code>{}/1</code> as a control constru
 
     :- object(bypass).
 
-        :- public(foo/2).
+        :- public(foo//0).
 
         foo --> {{bar}}.
 
@@ -513,13 +516,13 @@ You may have noticed that Logtalk defines <code>{}/1</code> as a control constru
 After compiling and loading this code, we may try the following query:
 </p>
 <pre>
-    | ?- bypass::foo(_, _).
-    
+    | ?- bypass::phrase(foo, _, _).
+
     bar predicate called
     yes
 </pre>
 <p>
-This is the expected result as the expansion of the grammar rule into a clause leves the <code>{bar}</code> goal untouched, which, in turn, is converted into the goal <code>bar</code> when the clause is compiled.
+This is the expected result as the expansion of the grammar rule into a clause leaves the <code>{bar}</code> goal untouched, which, in turn, is converted into the goal <code>bar</code> when the clause is compiled.
 </p>
 
 <h2>Built-in object predicates (methods)<a name="methods"></a></h2>

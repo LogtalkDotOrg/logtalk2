@@ -119,6 +119,9 @@
 :- dynamic('$lgt_pp_private_'/1).				% '$lgt_pp_private_'(Functor/Arity)
 :- dynamic('$lgt_pp_metapredicate_'/1).			% '$lgt_pp_metapredicate_'(Pred)
 :- dynamic('$lgt_pp_alias_'/3).					% '$lgt_pp_alias_'(Entity, Pred1, Pred2)
+:- dynamic('$lgt_pp_public_gr_'/1).				% '$lgt_pp_public_gr_'(Functor/Arity)
+:- dynamic('$lgt_pp_protected_gr_'/1).			% '$lgt_pp_protected_gr_'(Functor/Arity)
+:- dynamic('$lgt_pp_private_gr_'/1).			% '$lgt_pp_private_gr_'(Functor/Arity)
 
 :- dynamic('$lgt_pp_object_'/9).				% '$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef)
 :- dynamic('$lgt_pp_category_'/4).				% '$lgt_pp_category_'(Ctg, Prefix, Dcl, Def)
@@ -1781,9 +1784,9 @@ current_logtalk_flag(version, version(2, 21, 2)).
 				call(Call)
 				;
 				(PScope = p ->
-					throw(error(permission_error(access, private_predicate, Pred), Obj::phrase(Ruleset, Input, Rest), Sender))
+					throw(error(permission_error(access, private_non_terminal, Ruleset), Obj::phrase(Ruleset, Input, Rest), Sender))
 					;
-					throw(error(permission_error(access, protected_predicate, Pred), Obj::phrase(Ruleset, Input, Rest), Sender))))
+					throw(error(permission_error(access, protected_non_terminal, Ruleset), Obj::phrase(Ruleset, Input, Rest), Sender))))
 			;
 			((Obj = Sender,
 			  ('$lgt_call'(Def, Pred, Obj, Obj, Obj, Call)
@@ -1791,7 +1794,7 @@ current_logtalk_flag(version, version(2, 21, 2)).
 			   '$lgt_call'(Prefix, _, _, _, _, _, _, DDef), '$lgt_call'(DDef, Pred, Obj, Obj, Obj, Call))) ->
 				call(Call)
 				;
-				throw(error(existence_error(predicate_declaration, Pred), Obj::phrase(Ruleset, Input, Rest), Sender))))
+				throw(error(existence_error(non_terminal_declaration, Ruleset), Obj::phrase(Ruleset, Input, Rest), Sender))))
 		;
 		throw(error(existence_error(object, Obj), Obj::phrase(Ruleset, Input, Rest), Sender)).
 
@@ -3540,7 +3543,13 @@ current_logtalk_flag(version, version(2, 21, 2)).
 		('$lgt_valid_pred_ind'(Pred) ->
 			assertz('$lgt_pp_public_'(Pred))
 			;
-			throw(type_error(predicate_indicator, Pred)))).
+			('$lgt_valid_gr_ind'(Pred) ->
+				Pred = Functor//Arity,
+				Arity2 is Arity + 2,
+				assertz('$lgt_pp_public_'(Functor/Arity2)),
+				assertz('$lgt_pp_public_gr_'(Pred))
+				;
+				throw(type_error(predicate_indicator, Pred))))).
 
 
 '$lgt_tr_directive'(protected, Preds) :-
@@ -3550,7 +3559,13 @@ current_logtalk_flag(version, version(2, 21, 2)).
 		('$lgt_valid_pred_ind'(Pred) ->
 			assertz('$lgt_pp_protected_'(Pred))
 			;
-			throw(type_error(predicate_indicator, Pred)))).
+			('$lgt_valid_gr_ind'(Pred) ->
+				Pred = Functor//Arity,
+				Arity2 is Arity + 2,
+				assertz('$lgt_pp_protected_'(Functor/Arity2)),
+				assertz('$lgt_pp_protected_gr_'(Pred))
+				;
+				throw(type_error(predicate_indicator, Pred))))).
 
 
 '$lgt_tr_directive'(private, Preds) :-
@@ -3560,7 +3575,13 @@ current_logtalk_flag(version, version(2, 21, 2)).
 		('$lgt_valid_pred_ind'(Pred) ->
 			assertz('$lgt_pp_private_'(Pred))
 			;
-			throw(type_error(predicate_indicator, Pred)))).
+			('$lgt_valid_gr_ind'(Pred) ->
+				Pred = Functor//Arity,
+				Arity2 is Arity + 2,
+				assertz('$lgt_pp_private_'(Functor/Arity2)),
+				assertz('$lgt_pp_private_gr_'(Pred))
+				;
+				throw(type_error(predicate_indicator, Pred))))).
 
 
 '$lgt_tr_directive'((dynamic), Preds) :-
@@ -6885,18 +6906,25 @@ current_logtalk_flag(version, version(2, 21, 2)).
 
 
 
-% '$lgt_valid_pred_ind_list(@term)
+% '$lgt_valid_gr_ind(@term)
 
-'$lgt_valid_pred_ind_list'(Term) :-
+'$lgt_valid_gr_ind'(Term) :-
 	nonvar(Term),
-	'$lgt_valid_pred_ind_list2'(Term).
+	Term = Functor//Arity,
+	atom(Functor),
+	integer(Arity),
+	Arity >= 0.
 
 
-'$lgt_valid_pred_ind_list2'([]).
 
-'$lgt_valid_pred_ind_list2'([Term| Terms]) :-
-	'$lgt_valid_pred_ind_list'(Term),
-	'$lgt_valid_pred_ind_list2'(Terms).
+% '$lgt_valid_pred_or_gr_ind(@term)
+
+'$lgt_valid_pred_or_gr_ind'(Term) :-
+	nonvar(Term),
+	once((Term = Functor/Arity; Term = Functor//Arity)),
+	atom(Functor),
+	integer(Arity),
+	Arity >= 0.
 
 
 

@@ -5,7 +5,7 @@ bar :-
 
 :- object(bypass).
 
-	:- public(foo/2).
+	:- public(foo//0).
 
 	foo --> {{bar}}.
 
