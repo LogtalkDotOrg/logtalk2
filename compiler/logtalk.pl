@@ -1005,27 +1005,6 @@ logtalk_load(Entities, Options) :-
 
 
 
-% logtalk_version(?integer, ?integer, ?integer)
-
-logtalk_version(Major, Minor, Patch) :-
-	nonvar(Major),
-	\+ integer(Major),
-	throw(error(type_error(integer, Major), logtalk_version(Major, Minor, Patch))).
-
-logtalk_version(Major, Minor, Patch) :-
-	nonvar(Minor),
-	\+ integer(Minor),
-	throw(error(type_error(integer, Minor), logtalk_version(Major, Minor, Patch))).
-
-logtalk_version(Major, Minor, Patch) :-
-	nonvar(Patch),
-	\+ integer(Patch),
-	throw(error(type_error(integer, Patch), logtalk_version(Major, Minor, Patch))).
-
-logtalk_version(2, 14, 4).
-
-
-
 % set_logtalk_flag(+atom, +nonvar)
 %
 % sets a Logtalk flag
@@ -5370,8 +5349,6 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_lgt_built_in'(logtalk_compile(_, _)).
 '$lgt_lgt_built_in'(logtalk_load(_)).
 '$lgt_lgt_built_in'(logtalk_load(_, _)).
-
-'$lgt_lgt_built_in'(logtalk_version(_, _, _)).
 
 '$lgt_lgt_built_in'(protocol_property(_, _)).
 '$lgt_lgt_built_in'(category_property(_, _)).
