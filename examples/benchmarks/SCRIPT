@@ -99,7 +99,7 @@ Number of calls per second: 1231.67877817465
 
 % test assertz/1 and retract/1 performance in this:
 
-| ?- benchmark('$lgt_send_to_object_ne_nv'(database, test_this, user)).
+| ?- benchmark('$lgt_send_to_object_ne_nv'(database, db_test_this, user)).
 Number of repetitions: 100000
 Loop time: 0.0699999999999363 seconds
 Goal time: 92.03 seconds
@@ -109,7 +109,7 @@ Number of calls per second: 1087.42931709439
 
 % test assertz/1 and retract/1 performance in self:
 
-| ?- benchmark('$lgt_send_to_object_ne_nv'(database, test_self, user)).
+| ?- benchmark('$lgt_send_to_object_ne_nv'(database, db_test_self, user)).
 Number of repetitions: 100000
 Loop time: 0.0599999999999454 seconds
 Goal time: 111.92 seconds
