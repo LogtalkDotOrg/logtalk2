@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.14.8
+Release 2.15.0
 
 Copyright (c) 1998-2003 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -9,6 +9,8 @@ Copyright (c) 1998-2003 Paulo Moura.  All Rights Reserved.
 This directory contains some files that provide syntax highlighting 
 for editing Logtalk source files with common text editors.
 
+
+To install:
 
 logtalk.xml
 
@@ -21,3 +23,17 @@ logtalk.xml
 	present) the following entry:
 	
 	<MODE NAME="logtalk" FILE="logtalk.xml" FILE_NAME_GLOB="*.lgt" />
+
+
+Templates
+
+templates
+
+You can costumized the templates for objects, caterories, and protocols to 
+use your name by default by changing the line that reads:
+
+#prompt ( "Author name:" $authorname )
+
+to:
+
+#prompt ( "Author name:" $authorname "Your Name" )
