@@ -84,6 +84,9 @@ S = [s(mary,english,red,1),s(paul,math,yellow,2),s(josephine,science,green,3),s(
 
 yes
 
+
+% Mort's Letter from Camp Swampy logical puzzle
+
 | ?- camp_swampy::(beds(S), print(S)).
 tim thomas, from maine, sleeps on bed number 1
 sam franklin, from north_carolina, sleeps on bed number 2
