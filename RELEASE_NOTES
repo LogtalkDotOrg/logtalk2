@@ -23,6 +23,11 @@ RELEASE NOTES
 	Updated the jEdit syntax coloring config file for the new jEdit 4.1 
 	version.
 
+	Updated the lgtpdfa4.xsl and lgtpdfus.xsl XSLT files for compatibility 
+	with the Apache FOP 0.20.4 processor and the XSL 1.0 standard. Updated 
+	the pdf.bat and pdf.sh scripts to reference the latest version of the 
+	Apache FOP processor (0.20.4).
+
 
 2.14.2 - August 26, 2002
 
