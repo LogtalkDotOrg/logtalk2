@@ -12,8 +12,14 @@ RELEASE NOTES
 
 2.16.0 - February ??, 2004
 
-	Operators declared inside an entity are now local to the entity, complying 
-	with the Logtalk language specification. Added new example "operators". 
+	Operators declared inside an entity are now local to the entity, not 
+	affecting the global operator table (complying with the Logtalk language 
+	specification). Input and output of terms from inside objects and 
+	categories now work as expected in the presence of local operator 
+	declarations. Added new example "operators".
+
+	Small change to the way the Logtalk compiler reports the compilation of
+	entities.
 
 	Corrected a problem with the syntax coloring of quoted atoms and strings 
 	in the SubEthaEdit text editor.
