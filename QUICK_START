@@ -52,10 +52,10 @@ the chosen example.
 directory. If you don't know what predicate to use, check the configs/NOTES 
 file or your Prolog reference manual.
 
-5. Compile and load the file named <example name>.loader. This will compile 
-and load all the example files. Note that the loader file is a Prolog file.
+5. Compile and load the loader file for the example as described in the NOTES 
+and SCRIPT files. This will compile and load all the example files.
 
-6. Open the example SCRIPT file. One by one, copy-and-paste or drag-and-drop 
+6. Open the example SCRIPT file and, one-by-one, copy-and-paste or drag-and-drop 
 the queries in the file to your Prolog top-level.
 
 7. Enjoy!
@@ -73,5 +73,5 @@ when editing Logtalk source files.
 3. Create a sub-directory with a suitable name to hold all the files of your 
 application.
 
-4. Copy to this sub-directory a *.loader file from one of the example 
-directories and modify it to load your own source files.
+4. Copy to this sub-directory a loader file from one of the example directories 
+and modify it to load your own source files.
