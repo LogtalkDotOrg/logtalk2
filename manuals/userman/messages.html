@@ -197,7 +197,7 @@ Given that events can be dynamically defined at runtime, there is no room for re
 <p>
 Messages to <em>self</em> and <em>super</em> calls are transparent regarding events and, as such, imply only two logical inferences. This compares with one logical inference when calling a predicate in plain Prolog and one or two logical inferences when calling a predicate encapsulated in a module.
 <p>
-When a message is sent by the user from the top-level interpreter, Logtalk needs to perform a runtime translation of the message sending in order to prove the corresponding goal. The overhead, for user-defined messages/predicates, corresponds to roughly twenty more logic inferences than that of the same message when sent from a compiled object. Considering the time taken for the user to type the goal, this overhead is of no practical consequence.
+When a message is sent by the user from the top-level interpreter, Logtalk needs to perform a runtime translation of the message sending in order to prove the corresponding goal. The overhead, for user-defined messages/predicates, corresponds to roughly seventeen more logic inferences than that of the same message when sent from a compiled object. Considering the time taken for the user to type the goal, this overhead is of no practical consequence.
 </p>
 <p>
 When a message is not cached, the number of logical inferences depends on the number of steps needed for the Logtalk runtime engine to lookup the corresponding predicate scope declaration (to check if the message is valid) and then to lookup a predicate definition for answering the message.
