@@ -15,7 +15,7 @@ RELEASE NOTES
 	The local built-in method parameter/2 can now be used inside categories 
 	(but please read the warnings about such practice on the user manual).
 
-	Corrected bug with compilation of metacalls whose meta-arguments are 
+	Corrected a bug in the compilation of metacalls whose meta-arguments are 
 	variables.
 
 	Removed references to file sax.jar from the scripts used to convert XML 
