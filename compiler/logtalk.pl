@@ -2120,7 +2120,7 @@ current_logtalk_flag(version, version(2, 17, 1)).
 
 
 '$lgt_dbg_pretty_print_spypoint'(Sender, This, Self, Goal) :-
-	current_ouput(Output),
+	current_output(Output),
 	(var(Sender) -> write('_, '); '$lgt_pretty_print_vars_quoted'(Output, Sender), write(', ')),
 	(var(This) -> write('_, '); '$lgt_pretty_print_vars_quoted'(Output, This), write(', ')),
 	(var(Self) -> write('_, '); '$lgt_pretty_print_vars_quoted'(Output, Self), write(', ')),
