@@ -1428,6 +1428,11 @@ current_logtalk_flag(version, version(2, 22, 2)).
 	var(Clause),
 	throw(error(instantiation_error, Obj::asserta(Clause), Sender)).
 
+'$lgt_asserta'(Obj, Clause, Sender, _) :-
+	Clause \= (_ :- _),
+	\+ callable(Clause),
+	throw(error(type_error(callable, Clause), Obj::asserta(Clause), Sender)).
+
 '$lgt_asserta'(Obj, (Head:-Body), Sender, _) :-
 	var(Head),
 	throw(error(instantiation_error, Obj::asserta((Head:-Body)), Sender)).
@@ -1517,6 +1522,11 @@ current_logtalk_flag(version, version(2, 22, 2)).
 '$lgt_assertz'(Obj, Clause, Sender, _) :-
 	var(Clause),
 	throw(error(instantiation_error, Obj::assertz(Clause), Sender)).
+
+'$lgt_assertz'(Obj, Clause, Sender, _) :-
+	Clause \= (_ :- _),
+	\+ callable(Clause),
+	throw(error(type_error(callable, Clause), Obj::asserta(Clause), Sender)).
 
 '$lgt_assertz'(Obj, (Head:-Body), Sender, _) :-
 	var(Head),
