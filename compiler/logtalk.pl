@@ -1452,7 +1452,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PScope, Type, Meta, SCtn),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
-			'$lgt_assert_pred_to_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
+			'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 			'$lgt_pred_metavars'(Head, Meta, Metavars),
 			'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, Metavars),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
@@ -1475,14 +1475,14 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
 			('$lgt_debugging_'(Obj) ->
-				'$lgt_assert_pred_to_call'(Def, DDef, Prefix, GHead, Sender2, This, Self, Call, _),
+				'$lgt_assert_pred_call'(Def, DDef, Prefix, GHead, Sender2, This, Self, Call, _),
 				'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, []),
 				asserta((Call :- '$lgt_dbg_fact'(Head, Ctx)))
 				;
 				functor(Head, HFunctor, HArity), functor(GHead, HFunctor, HArity),
 				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
 				functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
-				'$lgt_assert_pred_to_call'(Def, DDef, Prefix, GHead, Sender2, This, Self, GCall, Update),
+				'$lgt_assert_pred_call'(Def, DDef, Prefix, GHead, Sender2, This, Self, GCall, Update),
 				asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, Scope, GCall, Update)),
 				GObj = Obj, GHead = Head, GSender = Sender,
 				asserta(GCall))
@@ -1535,7 +1535,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PScope, Type, Meta, SCtn),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
-			'$lgt_assert_pred_to_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
+			'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 			'$lgt_pred_metavars'(Head, Meta, Metavars),
 			'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, Metavars),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
@@ -1558,14 +1558,14 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
 			('$lgt_debugging_'(Obj) ->
-				'$lgt_assert_pred_to_call'(Def, DDef, Prefix, GHead, Sender2, This, Self, Call, _),
+				'$lgt_assert_pred_call'(Def, DDef, Prefix, GHead, Sender2, This, Self, Call, _),
 				'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, []),
 				assertz((Call :- '$lgt_dbg_fact'(Head, Ctx)))
 				;
 				functor(Head, HFunctor, HArity), functor(GHead, HFunctor, HArity),
 				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
 				functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
-				'$lgt_assert_pred_to_call'(Def, DDef, Prefix, GHead, Sender2, This, Self, GCall, Update),
+				'$lgt_assert_pred_call'(Def, DDef, Prefix, GHead, Sender2, This, Self, GCall, Update),
 				asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, Scope, GCall, Update)),
 				GObj = Obj, GHead = Head, GSender = Sender,
 				assertz(GCall))
@@ -1593,15 +1593,15 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 % get or set compiled call for asserted predicate
 
-'$lgt_assert_pred_to_call'(Def, _, _, Pred, Sender, This, Self, Call, true) :-
+'$lgt_assert_pred_call'(Def, _, _, Pred, Sender, This, Self, Call, true) :-
 	'$lgt_call'(Def, Pred, Sender, This, Self, Call),
 	!.
 	
-'$lgt_assert_pred_to_call'(_, DDef, _, Pred, Sender, This, Self, Call, '$lgt_update_ddef_table_generic'(DDef, Pred, Call)) :-
+'$lgt_assert_pred_call'(_, DDef, _, Pred, Sender, This, Self, Call, '$lgt_update_ddef_table_generic'(DDef, Pred, Call)) :-
 	'$lgt_call'(DDef, Pred, Sender, This, Self, Call),
 	!.
 
-'$lgt_assert_pred_to_call'(_, DDef, Prefix, Pred, Sender, This, Self, Call, '$lgt_update_ddef_table_generic'(DDef, Pred, Call)) :-
+'$lgt_assert_pred_call'(_, DDef, Prefix, Pred, Sender, This, Self, Call, '$lgt_update_ddef_table_generic'(DDef, Pred, Call)) :-
 	functor(Pred, Functor, Arity),
 	'$lgt_assert_ddef_clause'(Functor, Arity, Prefix, DDef, _),
 	'$lgt_once'(DDef, Pred, Sender, This, Self, Call).
@@ -1652,7 +1652,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 				;
 				throw(error(permission_error(access, static_predicate, Head), Obj::clause(Head, Body), Sender)))
 			;
-			('$lgt_call'(DDef, Head, _, _, _, Call) ->	% local dynamic predicate with no scope declaration
+			((Obj = Sender, '$lgt_call'(DDef, Head, _, _, _, Call)) ->	% local dynamic predicate with no scope declaration
 				clause(Call, TBody),
 				(TBody = ('$lgt_nop'(Body), _) ->
 					true
@@ -1712,7 +1712,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 			;
 			throw(error(permission_error(modify, static_predicate, Head), Obj::retract((Head:-Body)), Sender)))
 		;
-		('$lgt_call'(DDef, Head, _, _, _, Call) ->	% local dynamic predicate with no scope declaration
+		((Obj = Sender, '$lgt_call'(DDef, Head, _, _, _, Call)) ->	% local dynamic predicate with no scope declaration
 			retract((Call :- ('$lgt_nop'(Body), _)))
 			;
 			throw(error(existence_error(predicate_declaration, Head), Obj::retract((Head:-Body)), Sender)))).
@@ -1754,7 +1754,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 			;
 			throw(error(permission_error(modify, static_predicate, Head), Obj::retract(Head), Sender)))
 		;
-		('$lgt_call'(DDef, GHead, _, _, _, GCall) ->	% local dynamic predicate with no scope declaration
+		((GObj = GSender, '$lgt_call'(DDef, GHead, _, _, _, GCall)) ->	% local dynamic predicate with no scope declaration
 			('$lgt_debugging_'(Obj) ->
 				GObj = Obj, GHead = Head, GSender = Sender,
 				retract((GCall :- '$lgt_dbg_fact'(_, _)))
@@ -1811,7 +1811,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 				;
 				throw(error(permission_error(modify, static_predicate, Head), Obj::retractall(Head), Sender)))
 			;
-			('$lgt_call'(DDef, GHead, _, _, _, GCall) ->	% local dynamic predicate with no scope declaration
+			((GObj = GSender, '$lgt_call'(DDef, GHead, _, _, _, GCall)) ->	% local dynamic predicate with no scope declaration
 				asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, Scope, GCall, true)),
 				GObj = Obj, GHead = Head, GSender = Sender,
 				retractall(GCall)
@@ -3435,7 +3435,7 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 % '$lgt_clean_lookup_caches'
 %
-% clean method lookup caches
+% clean lookup caches
 
 '$lgt_clean_lookup_caches' :-
 	retractall('$lgt_obj_lookup_cache_'(_, _, _, _)),
@@ -3445,15 +3445,27 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 
 
-% '$lgt_clean_lookup_caches'(+callable)
+% '$lgt_clean_lookup_caches'(@callable)
 %
-% clean method lookup caches for the matching predicate
+% clean lookup caches for the matching predicate
 
 '$lgt_clean_lookup_caches'(Pred) :-
 	retractall('$lgt_obj_lookup_cache_'(_, Pred, _, _)),
 	retractall('$lgt_self_lookup_cache_'(_, Pred, _, _)),
 	retractall('$lgt_super_lookup_cache_'(_, Pred, _, _, _)),
 	retractall('$lgt_db_lookup_cache_'(_, Pred, _, _, _, _)).
+
+
+
+% '$lgt_clean_lookup_caches'(@callable, @callable)
+%
+% clean lookup caches for the matching object and predicate
+
+'$lgt_clean_lookup_caches'(Obj, Pred) :-
+	retractall('$lgt_obj_lookup_cache_'(Obj, Pred, _, _)),
+	retractall('$lgt_self_lookup_cache_'(Obj, Pred, _, _)),
+	retractall('$lgt_super_lookup_cache_'(Obj, Pred, _, _, _)),
+	retractall('$lgt_db_lookup_cache_'(Obj, Pred, _, _, _, _)).
 
 
 
