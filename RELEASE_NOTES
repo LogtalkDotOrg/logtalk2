@@ -27,15 +27,15 @@ RELEASE NOTES
 	Simplified implementation of Logtalk built-in methods asserta/1 and 
 	assertz/1.
 
-	Corrected a performance problem with calls to built-in predicates from 
+	Corrected a performance bug with calls to built-in predicates from 
 	objects and categories.
 
-	Corrected spurious backtracking occuring on some calls to the built-in 
+	Corrected spurious backtracking occurring on some calls to the built-in 
 	predicate define_events/5.
 
 	Updated shell script "misc/cplgtdirs.sh" to prevent copy of Logtalk files 
 	when the destination directory already exists (thus avoiding overriding 
-	user-modified files when upgrading Logtalk).
+	any user-modified files when upgrading Logtalk).
 
 	Added syntax coloring for the predicate logtalk_library_path/2 to the 
 	supported text editors. Updated the syntax coloring file for the TextMate 
