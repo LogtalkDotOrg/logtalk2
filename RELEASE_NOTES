@@ -15,6 +15,9 @@ RELEASE NOTES
     Added "xmlspec" compiler option in order to specify the extension (dtd 
     or xsd) of the file describing the XML documenting files specification.
 
+    Added XSLT file for converting XML documenting files to XHTML 1.0 Strict 
+    files. Set the default encoding of all XSLT files to UTF-8.
+
 	Removed outdated support for MacOS X Project Builder and added support 
 	for the new MacOS X Xcode developer tool.
 
