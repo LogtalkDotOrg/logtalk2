@@ -88,9 +88,9 @@
 
 % lookup caches for messages to an object, messages to self, and super calls
 
-:- dynamic('$lgt_obj_lookup_cache_'/6).		% '$lgt_obj_lookup_cache_'(Obj, Pred, Sender, This, Self, Call)
-:- dynamic('$lgt_self_lookup_cache_'/6).	% '$lgt_self_lookup_cache_'(Obj, Pred, Sender, This, Self, Call)
-:- dynamic('$lgt_super_lookup_cache_'/6).	% '$lgt_super_lookup_cache_'(Obj, Pred, Sender, This, Self, Call)
+:- dynamic('$lgt_obj_lookup_cache_'/4).		% '$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Call)
+:- dynamic('$lgt_self_lookup_cache_'/4).	% '$lgt_self_lookup_cache_'(Obj, Pred, Sender, Call)
+:- dynamic('$lgt_super_lookup_cache_'/5).	% '$lgt_super_lookup_cache_'(Self, Pred, This, Sender, Call)
 
 
 
@@ -1905,36 +1905,37 @@ current_logtalk_flag(version, version(2, 22, 4)).
 
 % '$lgt_send_to_self'(+object, ?term, +object)
 
-'$lgt_send_to_self'(Self, Pred, This) :-
+'$lgt_send_to_self'(Obj, Pred, Sender) :-
 	nonvar(Pred) ->
-		'$lgt_send_to_self_nv'(Self, Pred, This)
+		'$lgt_send_to_self_nv'(Obj, Pred, Sender)
 		;
-		throw(error(instantiation_error, Self::Pred, This)).
+		throw(error(instantiation_error, Obj::Pred, Sender)).
 
 
 
 % '$lgt_send_to_self_nv'(+object, +term, +object)
 
-'$lgt_send_to_self_nv'(Self, Pred, This) :-
-	'$lgt_self_lookup_cache_'(Self, Pred, This, Self, Self, Call) ->
+'$lgt_send_to_self_nv'(Obj, Pred, Sender) :-
+	'$lgt_self_lookup_cache_'(Obj, Pred, Sender, Call) ->
 		call(Call)
 		;
-		('$lgt_current_object_'(Self, _, Dcl, Def, _, _),
+		('$lgt_current_object_'(Obj, _, Dcl, Def, _, _),
 		 ('$lgt_call'(Dcl, Pred, Scope, _, _, SCtn, _) ->
-			((Scope = p(_); This = SCtn) ->
-				functor(Pred, Functor, Arity),
-				functor(GPred, Functor, Arity),
-				'$lgt_once'(Def, GPred, This, Self, Self, Call, _),
-				asserta('$lgt_self_lookup_cache_'(Self, GPred, This, Self, Self, Call)),
-				GPred = Pred,
-				call(Call)
+			((Scope = p(_); Sender = SCtn) ->
+				functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),
+				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
+				functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
+				'$lgt_once'(Def, GPred, GSender, GObj, GObj, GCall, _),
+				asserta('$lgt_self_lookup_cache_'(GObj, GPred, GSender, GCall)),
+				GObj = Obj, GPred = Pred, GSender = Sender,
+				call(GCall)
 				;
-				throw(error(permission_error(access, private_predicate, Pred), Self::Pred, This)))
+				throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender)))
 			;
 			('$lgt_built_in'(Pred) ->
 				call(Pred)
 				;
-				throw(error(existence_error(predicate_declaration, Pred), Self::Pred, This))))).
+				throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))))).
 
 
 % '$lgt_send_to_object'(@object, ?term, +object)
@@ -1950,7 +1951,7 @@ current_logtalk_flag(version, version(2, 22, 4)).
 % '$lgt_send_to_object_nv'(+object, +term, +object)
 
 '$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
-	'$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Obj, Obj, Call) ->
+	'$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Call) ->
 		\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),
 		call(Call),
 		\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall))
@@ -1958,13 +1959,13 @@ current_logtalk_flag(version, version(2, 22, 4)).
 		('$lgt_current_object_'(Obj, _, Dcl, Def, _, _) ->
 			('$lgt_call'(Dcl, Pred, Scope, _, _, _, _) ->
 				(Scope = p(p(_)) ->
-					functor(Pred, Functor, Arity),
-					functor(GPred, Functor, Arity),
-					'$lgt_once'(Def, GPred, GSender, GThis, GSelf, Call, _),
-					asserta('$lgt_obj_lookup_cache_'(Obj, GPred, GSender, GThis, GSelf, Call)),
-					GPred = Pred, GSender = Sender, GThis = Obj, GSelf = Obj,
+					functor(Pred, Functor, Arity), functor(GPred, Functor, Arity),
+					functor(Obj, OName, OArity), functor(GObj, OName, OArity),
+					'$lgt_once'(Def, GPred, GSender, GObj, GObj, GCall, _),
+					asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),
+					GObj = Obj, GPred = Pred, GSender = Sender,
 					\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),
-					call(Call),
+					call(GCall),
 					\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall))
 					;
 					(Scope = p ->
@@ -1994,18 +1995,18 @@ current_logtalk_flag(version, version(2, 22, 4)).
 % '$lgt_send_to_object_ne_nv'(+object, +term, +object)
 
 '$lgt_send_to_object_ne_nv'(Obj, Pred, Sender) :-
-	'$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Obj, Obj, Call) ->
+	'$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Call) ->
 		call(Call)
 		;
 		('$lgt_current_object_'(Obj, _, Dcl, Def, _, _) ->
 			('$lgt_call'(Dcl, Pred, Scope, _, _, _, _) ->
 				(Scope = p(p(_)) ->
-					functor(Pred, Functor, Arity),
-					functor(GPred, Functor, Arity),
-					'$lgt_once'(Def, GPred, GSender, GThis, GSelf, Call, _),
-					asserta('$lgt_obj_lookup_cache_'(Obj, GPred, GSender, GThis, GSelf, Call)),
-					GPred = Pred, GSender = Sender, GThis = Obj, GSelf = Obj,
-					call(Call)
+					functor(Pred, Functor, Arity), functor(GPred, Functor, Arity),
+					functor(Obj, OName, OArity), functor(GObj, OName, OArity),
+					'$lgt_once'(Def, GPred, GSender, GObj, GObj, GCall, _),
+					asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),
+					GObj = Obj, GPred = Pred, GSender = Sender,
+					call(GCall)
 					;
 					(Scope = p ->
 						throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
@@ -2034,20 +2035,21 @@ current_logtalk_flag(version, version(2, 22, 4)).
 % '$lgt_send_to_super_nv'(+object, +term, +object, +object)
 
 '$lgt_send_to_super_nv'(Self, Pred, This, Sender) :-
-	'$lgt_super_lookup_cache_'(This, Pred, Sender, This, Self, Call) ->
+	'$lgt_super_lookup_cache_'(Self, Pred, This, Sender, Call) ->
 		call(Call)
 		;
 		('$lgt_current_object_'(Self, _, Dcl, _, _, _),
 		 ('$lgt_call'(Dcl, Pred, Scope, _, _, SCtn, _) ->
 	 		((Scope = p(_); This = SCtn) ->
 				'$lgt_current_object_'(This, _, _, _, Super, _),
-				functor(Pred, Functor, Arity),
-				functor(GPred, Functor, Arity),
-				'$lgt_once'(Super, GPred, GSender, This, Self, Call, Ctn),
-				(Ctn \= This ->
-					GPred = Pred, GSender = Sender,
-					asserta('$lgt_super_lookup_cache_'(This, GPred, GSender, This, Self, Call)),
-					call(Call)
+				functor(Pred, Functor, Arity), functor(GPred, Functor, Arity),
+				functor(This, TName, TArity), functor(GThis, TName, TArity),
+				functor(Self, SName, SArity), functor(GSelf, SName, SArity),
+				'$lgt_once'(Super, GPred, GSender, GThis, GSelf, GCall, Ctn),
+				(Ctn \= GThis ->
+					asserta('$lgt_super_lookup_cache_'(GSelf, GPred, GThis, GSender, GCall)),
+					GSelf = Self, GPred = Pred, GThis = This, GSender = Sender,
+					call(GCall)
 					;
 					throw(error(endless_loop(Pred), ^^Pred, This)))
 				;
@@ -3399,9 +3401,9 @@ current_logtalk_flag(version, version(2, 22, 4)).
 % clean method lookup caches
 
 '$lgt_clean_lookup_caches' :-
-	retractall('$lgt_obj_lookup_cache_'(_, _, _, _, _, _)),
-	retractall('$lgt_self_lookup_cache_'(_, _, _, _, _, _)),
-	retractall('$lgt_super_lookup_cache_'(_, _, _, _, _, _)).
+	retractall('$lgt_obj_lookup_cache_'(_, _, _, _)),
+	retractall('$lgt_self_lookup_cache_'(_, _, _, _)),
+	retractall('$lgt_super_lookup_cache_'(_, _, _, _, _)).
 
 
 
@@ -3410,9 +3412,9 @@ current_logtalk_flag(version, version(2, 22, 4)).
 % clean method lookup caches for the matching predicate
 
 '$lgt_clean_lookup_caches'(Pred) :-
-	retractall('$lgt_obj_lookup_cache_'(_, Pred, _, _, _, _)),
-	retractall('$lgt_self_lookup_cache_'(_, Pred, _, _, _, _)),
-	retractall('$lgt_super_lookup_cache_'(_, Pred, _, _, _, _)).
+	retractall('$lgt_obj_lookup_cache_'(_, Pred, _, _)),
+	retractall('$lgt_self_lookup_cache_'(_, Pred, _, _)),
+	retractall('$lgt_super_lookup_cache_'(_, Pred, _, _, _)).
 
 
 
@@ -6208,7 +6210,7 @@ current_logtalk_flag(version, version(2, 22, 4)).
 	'$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, _)),			% needed for parameter passing
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
 	Lookup =.. [CDef, Pred, Sender, Obj, Self, Call, Ctn],
-	('$lgt_pp_alias_'(Ctg, _, _),
+	('$lgt_pp_alias_'(Ctg, _, _) ->
 		Head =.. [ODef, Alias, Sender, Obj, Self, Call, Ctn],
 		'$lgt_construct_alias_functor'(Prefix, PRnm),
 		Rename =.. [PRnm, Ctg, Pred, Alias],
