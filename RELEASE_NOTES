@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.14.8
+Release 2.15.0
 
 Copyright (c) 1998-2003 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -10,11 +10,17 @@ RELEASE NOTES
 =============
 
 
-2.14.8 - January 31, 2003
+2.15.0 - February 3, 2003
 
 	Changed "authors" key in info/1 directive to "author".
 
 	Corrected documentation of built-in local method this/1.
+
+	Improved support for jEdit text editor by adding a set of programming 
+	templates for use with the editor Templates plug-in.
+
+	Added basic support for syntax highlighting and programming templates 
+	for MacOS X Project builder.
 
 
 2.14.7 - January 10, 2003
