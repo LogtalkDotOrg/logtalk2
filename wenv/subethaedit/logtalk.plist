@@ -92,6 +92,24 @@
 
 		<dict>
 			<key>Name</key>
+			<string>External Call</string>
+			<key>Color</key>
+			<array>
+				<real>0.000</real>
+				<real>0.000</real>
+				<real>1.000</real>
+			</array>
+			<key>Multiline</key>
+			<false/>
+			<key>Regular Expressions</key>
+			<array>
+		      	<string>{</string>
+                <string>}</string>
+			</array>
+		</dict>
+
+		<dict>
+			<key>Name</key>
 			<string>Control Constructs</string>
 			<key>Color</key>
 			<array>
@@ -109,23 +127,6 @@
 				<string>(true)</string>
 				<string>(fail)</string>
 			</array>
-		</dict>
-
-		<dict>
-			<key>Name</key>
-			<string>External Call</string>
-			<key>Color</key>
-			<array>
-				<real>0.463</real>
-				<real>0.059</real>
-				<real>0.298</real>
-			</array>
-			<key>Multiline</key>
-			<true/>
-			<key>Multiline Begin</key>
-			<string>({)</string>
-			<key>Multiline End</key>
-			<string>(})</string>
 		</dict>
 
 		<dict>
