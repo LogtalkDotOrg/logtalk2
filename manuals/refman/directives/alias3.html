@@ -26,7 +26,7 @@
 <blockquote>
 <pre>alias(Entity, Predicate, Alias)</pre>
 	<p>
-	Declares predicate alias. A predicate alias may be used to solve conflicts between implemented, imported, or inherited predicates.
+	Declares predicate alias. A predicate alias is an alternative name for a predicate declared or defined in an implemented protocol, an imported category, an extended prototype, an instantiated class, or a specialized class. Predicate alias may be used to solve conflicts between imported or inherited predicates.
 	</p>
 </blockquote>
 
@@ -40,7 +40,8 @@
 <h4>Examples</h4>
 
 <blockquote>
-<pre>:- alias(set, member/2, set_member/2).</pre>
+<pre>:- alias(list, member/2, list_member/2).
+:- alias(set, member/2, set_member/2).</pre>
 </blockquote>
 
 <div class="navbottom">
