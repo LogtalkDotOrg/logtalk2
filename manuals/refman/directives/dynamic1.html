@@ -24,11 +24,9 @@
 <h4>Description</h4>
 
 <blockquote>
-<pre>
-dynamic(Predicate)
+<pre>dynamic(Predicate)
 dynamic(Predicate1, Predicate2, ...)
-dynamic([Predicate1, Predicate2, ...])
-</pre>
+dynamic([Predicate1, Predicate2, ...])</pre>
 <p>
 	Declares dynamic predicates. Note that an object can be static and have both static and dynamic predicates.
 </p>
@@ -37,22 +35,18 @@ dynamic([Predicate1, Predicate2, ...])
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>
-dynamic(+predicate_indicator_term)
-</pre>
+<pre>dynamic(+predicate_indicator_term)</pre>
 </blockquote>
 
 
 <h4>Examples</h4>
 
 <blockquote>
-<pre>
-:- dynamic(counter/1).
+<pre>:- dynamic(counter/1).
 
 :- dynamic(lives/2, works/2).
 
-:- dynamic([db/4, key/2, file/3]).
-</pre>
+:- dynamic([db/4, key/2, file/3]).</pre>
 </blockquote>
 
 <div class="navbottom">

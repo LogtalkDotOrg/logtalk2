@@ -24,9 +24,7 @@
 <h4>Description</h4>
 
 <blockquote>
-<pre>
-self(Self)
-</pre>
+<pre>self(Self)</pre>
 <p>
 	Returns the object that has received the message under processing. Note that this predicate implies an instantiation between its argument and the corresponding implicit context argument in the predicate containing the call. This instantiation occurs at the clause head, not at the clause body.
 </p>
@@ -35,9 +33,7 @@ self(Self)
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>
-self(?object_identifier)
-</pre>
+<pre>self(?object_identifier)</pre>
 </blockquote>
 
 <h4>Errors</h4>
@@ -51,12 +47,10 @@ self(?object_identifier)
 <h4>Examples</h4>
 
 <blockquote>
-<pre>
-test :-
+<pre>test :-
     self(Self),
     write('executing a method in behalf of '),
-    writeq(Self), nl.
-</pre>
+    writeq(Self), nl.</pre>
 </blockquote>
 
 <div class="navbottom">

@@ -24,11 +24,9 @@
 <h4>Description</h4>
 
 <blockquote>
-<pre>
-private(Predicate)
+<pre>private(Predicate)
 private(Predicate1, Predicate2, ...)
-private([Predicate1, Predicate2, ...])
-</pre>
+private([Predicate1, Predicate2, ...])</pre>
 <p>
 	Declares private predicates. A private predicate can only be called from the object containing the private directive.
 </p>
@@ -37,21 +35,17 @@ private([Predicate1, Predicate2, ...])
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>
-private(+predicate_indicator_term)
-</pre>
+<pre>private(+predicate_indicator_term)</pre>
 </blockquote>
 
 <h4>Examples</h4>
 
 <blockquote>
-<pre>
-:- private(counter/1).
+<pre>:- private(counter/1).
 
 :- private(init/1, free/1).
 
-:- private([data/3, key/1, keys/1]).
-</pre>
+:- private([data/3, key/1, keys/1]).</pre>
 </blockquote>
 
 <div class="navbottom">

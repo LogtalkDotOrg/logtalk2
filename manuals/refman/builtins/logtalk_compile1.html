@@ -24,10 +24,8 @@
 <h4>Description</h4>
 
 <blockquote>
-<pre>
-logtalk_compile(Entity)
-logtalk_compile(Entities)
-</pre>
+<pre>logtalk_compile(Entity)
+logtalk_compile(Entities)</pre>
 <p>
 Compiles to disk an entity or a list of entities (objects, protocols, or categories) using the default compiler options specified in the Logtalk configuration file. The Logtalk file name extension (by default, <code>.lgt</code>) should be omitted. Note that the argument is a list of entity/file names, not file paths. In other words, the files must exist in your current working directory.
 </p>
@@ -39,9 +37,7 @@ Note that only the errors related to problems in the predicate argument are list
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>
-logtalk_compile(@atom_or_atom_list)
-</pre>
+<pre>logtalk_compile(@atom_or_atom_list)</pre>
 </blockquote>
 
 <h4>Errors</h4>
@@ -64,11 +60,9 @@ logtalk_compile(@atom_or_atom_list)
 <h4>Examples</h4>
 
 <blockquote>
-<pre>
-| ?- logtalk_compile(tree).
+<pre>| ?- logtalk_compile(tree).
 
-| ?- logtalk_compile([listp, list]).
-</pre>
+| ?- logtalk_compile([listp, list]).</pre>
 </blockquote>
 
 <div class="navbottom">

@@ -24,11 +24,9 @@
 <h4>Description</h4>
 
 <blockquote>
-<pre>
-extends_protocol(Protocol1, Protocol2)
+<pre>extends_protocol(Protocol1, Protocol2)
 
-extends_protocol(Protocol1, Protocol2, Scope)
-</pre>
+extends_protocol(Protocol1, Protocol2, Scope)</pre>
 <p>
 	Enumerates, by backtracking, all pairs of protocols such that the first one extends the second.
 </p>
@@ -37,11 +35,9 @@ extends_protocol(Protocol1, Protocol2, Scope)
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>
-extends_protocol(?protocol_identifier, ?protocol_identifier)
+<pre>extends_protocol(?protocol_identifier, ?protocol_identifier)
 
-extends_protocol(?protocol_identifier, ?protocol_identifier, ?scope)
-</pre>
+extends_protocol(?protocol_identifier, ?protocol_identifier, ?scope)</pre>
 </blockquote>
 
 <h4>Errors</h4>
@@ -60,11 +56,9 @@ extends_protocol(?protocol_identifier, ?protocol_identifier, ?scope)
 <h4>Examples</h4>
 
 <blockquote>
-<pre>
-| ?- extends_protocol(listp, Protocol).
+<pre>| ?- extends_protocol(listp, Protocol).
 
-| ?- extends_protocol(Protocol, termp, private).
-</pre>
+| ?- extends_protocol(Protocol, termp, private).</pre>
 </blockquote>
 
 <div class="navbottom">

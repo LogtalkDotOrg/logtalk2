@@ -24,13 +24,11 @@
 <h4>Description</h4>
 
 <blockquote>
-<pre>
-implements_protocol(Object, Protocol)
+<pre>implements_protocol(Object, Protocol)
 implements_protocol(Category, Protocol)
 
 implements_protocol(Object, Protocol, Scope)
-implements_protocol(Category, Protocol, Scope)
-</pre>
+implements_protocol(Category, Protocol, Scope)</pre>
 <p>
 	Enumerates, by backtracking, all pairs of entities such that an object or a category implements a protocol.
 </p>
@@ -39,13 +37,11 @@ implements_protocol(Category, Protocol, Scope)
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>
-implements_protocol(?object_identifier, ?protocol_identifier)
+<pre>implements_protocol(?object_identifier, ?protocol_identifier)
 implements_protocol(?category_identifier, ?protocol_identifier)
 
 implements_protocol(?object_identifier, ?protocol_identifier, ?scope)
-implements_protocol(?category_identifier, ?protocol_identifier, ?scope)
-</pre>
+implements_protocol(?category_identifier, ?protocol_identifier, ?scope)</pre>
 </blockquote>
 
 <h4>Errors</h4>
@@ -66,11 +62,9 @@ implements_protocol(?category_identifier, ?protocol_identifier, ?scope)
 <h4>Examples</h4>
 
 <blockquote>
-<pre>
-| ?- implements_protocol(List, listp).
+<pre>| ?- implements_protocol(List, listp).
 
-| ?- implements_protocol(List, listp, public).
-</pre>
+| ?- implements_protocol(List, listp, public).</pre>
 </blockquote>
 
 <div class="navbottom">

@@ -24,11 +24,9 @@
 <h4>Description</h4>
 
 <blockquote>
-<pre>
-protected(Predicate)
+<pre>protected(Predicate)
 protected(Predicate1, Predicate2, ...)
-protected([Predicate1, Predicate2, ...])
-</pre>
+protected([Predicate1, Predicate2, ...])</pre>
 <p>
 	Declares protected predicates. A protected predicate can only be called from the object containing the declaration or from an object that inherits the declaration.
 </p>
@@ -37,22 +35,18 @@ protected([Predicate1, Predicate2, ...])
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>
-protected(+predicate_indicator_term)
-</pre>
+<pre>protected(+predicate_indicator_term)</pre>
 </blockquote>
 
 
 <h4>Examples</h4>
 
 <blockquote>
-<pre>
-:- protected(init/1).
+<pre>:- protected(init/1).
 
 :- protected(print/2, convert/4).
 
-:- protected([load/1, save/3]).
-</pre>
+:- protected([load/1, save/3]).</pre>
 </blockquote>
 
 <div class="navbottom">

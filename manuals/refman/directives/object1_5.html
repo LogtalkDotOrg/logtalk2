@@ -27,8 +27,7 @@
 <p>
 	<em>Stand-alone objects</em>
 </p>
-<pre>
-object(Object)
+<pre>object(Object)
 
 object(Object,
     implements(Protocols))
@@ -38,13 +37,11 @@ object(Object,
 
 object(Object,
     implements(Protocols),
-    imports(Categories))
-</pre>
+    imports(Categories))</pre>
 <p>
 	<em>Prototypes</em>
 </p>
-<pre>
-object(Object,
+<pre>object(Object,
     extends(Objects))
 
 object(Object,
@@ -58,13 +55,11 @@ object(Object,
 object(Object,
     implements(Protocols),
     imports(Categories),
-    extends(Objects))
-</pre>
+    extends(Objects))</pre>
 <p>
 	<em>Instances</em>
 </p>
-<pre>
-object(Object,
+<pre>object(Object,
     instantiates(Classes))
 
 object(Object,
@@ -78,13 +73,11 @@ object(Object,
 object(Object,
     implements(Protocols),
     imports(Categories),
-    instantiates(Classes))
-</pre>
+    instantiates(Classes))</pre>
 <p>
 	<em>Classes</em>
 </p>
-<pre>
-object(Object,
+<pre>object(Object,
     specializes(Classes))
 
 object(Object,
@@ -98,13 +91,11 @@ object(Object,
 object(Object,
     implements(Protocols),
     imports(Categories),
-    specializes(Classes))
-</pre>
+    specializes(Classes))</pre>
 <p>
 	<em>Metaclasses</em>
 </p>
-<pre>
-object(Object,
+<pre>object(Object,
     instantiates(Classes),
     specializes(Classes))
 
@@ -122,8 +113,7 @@ object(Object,
     implements(Protocols),
     imports(Categories),
     instantiates(Classes),
-    specializes(Classes))
-</pre>
+    specializes(Classes))</pre>
 <p>
 	Starting object directive.
 </p>
@@ -136,8 +126,7 @@ object(Object,
 <p>
 	<em>Stand-alone objects</em>
 </p>
-<pre>
-object(+object_identifier)
+<pre>object(+object_identifier)
 
 object(+object_identifier,
     implements(+implemented_protocols))
@@ -147,13 +136,11 @@ object(+object_identifier,
 
 object(+object_identifier,
     implements(+implemented_protocols),
-    imports(+imported_categories))
-</pre>
+    imports(+imported_categories))</pre>
 <p>
 	<em>Prototypes</em>
 </p>
-<pre>
-object(+object_identifier,
+<pre>object(+object_identifier,
     extends(+extended_objects))
 
 object(+object_identifier,
@@ -167,13 +154,11 @@ object(+object_identifier,
 object(+object_identifier,
     implements(+implemented_protocols),
     imports(+imported_categories),
-    extends(+extended_objects))
-</pre>
+    extends(+extended_objects))</pre>
 <p>
 	<em>Instances</em>
 </p>
-<pre>
-object(+object_identifier,
+<pre>object(+object_identifier,
     instantiates(+instantiated_objects))
 
 object(+object_identifier,
@@ -187,13 +172,11 @@ object(+object_identifier,
 object(+object_identifier,
     implements(+implemented_protocols),
     imports(+imported_categories),
-    instantiates(+instantiated_objects))
-</pre>
+    instantiates(+instantiated_objects))</pre>
 <p>
 	<em>Classes</em>
 </p>
-<pre>
-object(+object_identifier,
+<pre>object(+object_identifier,
     specializes(+specialized_objects))
 
 object(+object_identifier,
@@ -207,13 +190,11 @@ object(+object_identifier,
 object(+object_identifier,
     implements(+implemented_protocols),
     imports(+imported_categories),
-    specializes(+specialized_objects))
-</pre>
+    specializes(+specialized_objects))</pre>
 <p>
 	<em>Metaclasses</em>
 </p>
-<pre>
-object(+object_identifier,
+<pre>object(+object_identifier,
     instantiates(+instantiated_objects),
     specializes(+specialized_objects))
 
@@ -231,16 +212,14 @@ object(+object_identifier,
     implements(+implemented_protocols),
     imports(+imported_categories),
     instantiates(+instantiated_objects),
-    specializes(+specialized_objects))
-</pre>
+    specializes(+specialized_objects))</pre>
 </blockquote>
 
 
 <h4>Examples</h4>
 
 <blockquote>
-<pre>
-:- object(list).
+<pre>:- object(list).
 
 :- object(list,
     implements(listp)).
@@ -261,8 +240,7 @@ object(+object_identifier,
     specializes(object)).
 
 :- object(agent,
-    imports(private::attributes)).
-</pre>
+    imports(private::attributes)).</pre>
 </blockquote>
 
 <div class="navbottom">

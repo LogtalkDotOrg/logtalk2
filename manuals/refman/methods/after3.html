@@ -24,9 +24,7 @@
 <h4>Description</h4>
 
 <blockquote>
-<pre>
-after(Object, Message, Sender)
-</pre>
+<pre>after(Object, Message, Sender)</pre>
 <p>
 	This is a pre-declared but user-defined public method for handling <code>after</code> events.
 </p>
@@ -35,9 +33,7 @@ after(Object, Message, Sender)
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>
-after(?object, ?term, ?object)
-</pre>
+<pre>after(?object, ?term, ?object)</pre>
 </blockquote>
 
 <h4>Errors</h4>
@@ -51,11 +47,9 @@ after(?object, ?term, ?object)
 <h4>Examples</h4>
 
 <blockquote>
-<pre>
-after(Object, Message, Sender) :-
+<pre>after(Object, Message, Sender) :-
     writeq(Object), write('::'), writeq(Message),
-    write(' from '), writeq(Sender), nl.
-</pre>
+    write(' from '), writeq(Sender), nl.</pre>
 </blockquote>
 
 <div class="navbottom">

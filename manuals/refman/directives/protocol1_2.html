@@ -24,12 +24,10 @@
 <h4>Description</h4>
 
 <blockquote>
-<pre>
-protocol(Protocol)
+<pre>protocol(Protocol)
 
 protocol(Protocol,
-    extends(Protocols))
-</pre>
+    extends(Protocols))</pre>
 <p>
 	Starting protocol directive.
 </p>
@@ -38,27 +36,23 @@ protocol(Protocol,
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>
-protocol(+protocol_identifier)
+<pre>protocol(+protocol_identifier)
 
 protocol(+protocol_identifier,
-    extends(+extended_protocols))
-</pre>
+    extends(+extended_protocols))</pre>
 </blockquote>
 
 
 <h4>Examples</h4>
 
 <blockquote>
-<pre>
-:- protocol(listp).
+<pre>:- protocol(listp).
 
 :- protocol(listp,
     extends(compoundp)).
 
 :- protocol(queuep,
-    extends(protected::listp)).
-</pre>
+    extends(protected::listp)).</pre>
 </blockquote>
 
 <div class="navbottom">

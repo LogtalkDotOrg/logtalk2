@@ -24,9 +24,7 @@
 <h4>Description</h4>
 
 <blockquote>
-<pre>
-mode(Mode, Number_of_solutions)
-</pre>
+<pre>mode(Mode, Number_of_solutions)</pre>
 <p>
 	Most predicates can be used with several instantiations modes. This directive enables the specification of each instantiation mode and the corresponding number of solutions/proofs.
 </p>
@@ -35,23 +33,19 @@ mode(Mode, Number_of_solutions)
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>
-mode(+predicate_mode_term, +number_of_solutions)
-</pre>
+<pre>mode(+predicate_mode_term, +number_of_solutions)</pre>
 </blockquote>
 
 <h4>Examples</h4>
 
 <blockquote>
-<pre>
-:- mode(append(-, -, +), zero_or_more).
+<pre>:- mode(append(-, -, +), zero_or_more).
 
 :- mode(append(+list, +list, -list), zero_or_one).
 
 :- mode(var(@term), zero_or_one).
 
-:- mode(arg(-, -, +), error).
-</pre>
+:- mode(arg(-, -, +), error).</pre>
 </blockquote>
 
 <div class="navbottom">

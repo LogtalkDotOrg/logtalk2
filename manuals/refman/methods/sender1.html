@@ -24,9 +24,7 @@
 <h4>Description</h4>
 
 <blockquote>
-<pre>
-sender(Sender)
-</pre>
+<pre>sender(Sender)</pre>
 <p>
 	Returns the object that has sent the message under processing. Note that this predicate implies an instantiation between its argument and the corresponding implicit context argument in the predicate containing the call. This instantiation occurs at the clause head, not at the clause body.
 </p>
@@ -35,9 +33,7 @@ sender(Sender)
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>
-sender(?object_identifier)
-</pre>
+<pre>sender(?object_identifier)</pre>
 </blockquote>
 
 <h4>Errors</h4>
@@ -51,12 +47,10 @@ sender(?object_identifier)
 <h4>Examples</h4>
 
 <blockquote>
-<pre>
-test :-
+<pre>test :-
     sender(Sender),
     write('executing a method to answer a message sent by '),
-    writeq(Sender), nl.
-</pre>
+    writeq(Sender), nl.</pre>
 </blockquote>
 
 <div class="navbottom">

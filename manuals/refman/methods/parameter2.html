@@ -24,9 +24,7 @@
 <h4>Description</h4>
 
 <blockquote>
-<pre>
-parameter(Number, Term)
-</pre>
+<pre>parameter(Number, Term)</pre>
 <p>
 	Used only in <a class="glossary" title="Go to glossary definition" href="../../glossary.html#parametric">parametric objects</a>, this method returns parameter values by using the parameter position in the entity identifier. Note that this predicate implies an instantiation between its second argument and the corresponding implicit context argument in the predicate containing the call. This instantiation occurs at the clause head, not at the clause body. See also <a  href="this1.html"><code>this/1</code></a>.
 </p>
@@ -35,9 +33,7 @@ parameter(Number, Term)
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>
-parameter(+integer, ?term)
-</pre>
+<pre>parameter(+integer, ?term)</pre>
 </blockquote>
 
 <h4>Errors</h4>
@@ -58,16 +54,14 @@ parameter(+integer, ?term)
 <h4>Examples</h4>
 
 <blockquote>
-<pre>
-:- object(box(_Colour)).
+<pre>:- object(box(_Colour)).
 
     ...
     
     colour(Colour) :-
         parameter(1, Colour).
 
-    ...
-</pre>
+    ...</pre>
 </blockquote>
 
 <div class="navbottom">

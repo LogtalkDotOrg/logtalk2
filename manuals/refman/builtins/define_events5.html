@@ -24,9 +24,7 @@
 <h4>Description</h4>
 
 <blockquote>
-<pre>
-define_events(Event, Object, Message, Sender, Monitor)
-</pre>
+<pre>define_events(Event, Object, Message, Sender, Monitor)</pre>
 <p>
 	Defines a new set of events.
 </p>
@@ -35,9 +33,7 @@ define_events(Event, Object, Message, Sender, Monitor)
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>
-define_events(@event, @object_identifier, @callable, @object_identifier, +object_identifier)
-</pre>
+<pre>define_events(@event, @object_identifier, @callable, @object_identifier, +object_identifier)</pre>
 </blockquote>
 
 <h4>Errors</h4>
@@ -62,9 +58,7 @@ define_events(@event, @object_identifier, @callable, @object_identifier, +object
 <h4>Examples</h4>
 
 <blockquote>
-<pre>
-| ?- define_events(_, list, member(_, _), _ , debugger).
-</pre>
+<pre>| ?- define_events(_, list, member(_, _), _ , debugger).</pre>
 </blockquote>
 
 <div class="navbottom">

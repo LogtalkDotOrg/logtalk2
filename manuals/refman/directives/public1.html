@@ -24,11 +24,9 @@
 <h4>Description</h4>
 
 <blockquote>
-<pre>
-public(Predicate)
+<pre>public(Predicate)
 public(Predicate1, Predicate2, ...)
-public([Predicate1, Predicate2, ...])
-</pre>
+public([Predicate1, Predicate2, ...])</pre>
 <p>
 	Declares public predicates.  A public predicate can be called from any object.
 </p>
@@ -37,22 +35,18 @@ public([Predicate1, Predicate2, ...])
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>
-public(+predicate_indicator_term)
-</pre>
+<pre>public(+predicate_indicator_term)</pre>
 </blockquote>
 
 
 <h4>Examples</h4>
 
 <blockquote>
-<pre>
-:- public(ancestor/1).
+<pre>:- public(ancestor/1).
 
 :- public(instance/1, instances/1).
 
-:- public([leaf/1, leaves/1]).
-</pre>
+:- public([leaf/1, leaves/1]).</pre>
 </blockquote>
 
 <div class="navbottom">
