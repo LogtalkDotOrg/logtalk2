@@ -59,7 +59,7 @@ var link = WshShell.CreateShortcut(ProgramsPath + "\\eclipselgt.lnk");
 link.Arguments = "-b "+ logtalk_home + "\\bin\\logtalkeclipse.pl";
 link.Description = "Logtalk & ECLiPSe";
 link.IconLocation = "app.exe,1";
-link.TargetPath = WshShell.RegRead("HKEY_LOCAL_MACHINE\\Software\\IC-Parc\\Eclipse\\5.7\\ECLIPSEDIR\\") + "\\lib\\i386_nt\\eclipse.exe";
+link.TargetPath = WshShell.RegRead("HKEY_LOCAL_MACHINE\\Software\\IC-Parc\\Eclipse\\5.7\\ECLIPSEDIR") + "\\lib\\i386_nt\\eclipse.exe";
 link.WindowStyle = 1;
 link.WorkingDirectory = logtalk_home;
 link.Save();

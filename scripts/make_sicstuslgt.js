@@ -46,7 +46,7 @@ f.WriteLine(":- consult('" + logtalk_home + "\\\\compiler\\\\logtalk.pl').");
 f.Close();
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
-var link = WshShell.CreateShortcut(ProgramsPath + "\\sicstuslgt.lnk");
+var link = WshShell.CreateShortcut(ProgramsPath + "\\Sicstuslgt.lnk");
 link.Arguments = "-l "+ logtalk_home + "\\bin\\logtalksicstus.pl";
 link.Description = "Logtalk & SICStus Prolog";
 link.IconLocation = "app.exe,1";
