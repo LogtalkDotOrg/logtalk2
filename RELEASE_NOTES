@@ -24,7 +24,8 @@ RELEASE NOTES
 	predicates.
 
 	Updated the YAP configuration file to hide some of the book-keeping tables 
-	of the Logtalk runtime engine.
+	of the Logtalk runtime engine and to use statistics/2 instead of cputime/0 
+	for more accurate timings.
 
 	Updated the Logtalk shell installation script to create the $prefix/bin 
 	directory if it does not exist.
