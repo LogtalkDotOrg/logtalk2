@@ -2032,7 +2032,7 @@ user0__def(Pred, _, _, _, Pred, user).
 		'$lgt_compiler_error_handler'(Stream, Error)),
 	catch(
 		(read_term(Stream, Term, [singletons(Singletons1)]),
-		 '$lgt_filter_false_singletons'(Singletons1, Singletons2),
+		 '$lgt_filter_named_anonymous_vars'(Singletons1, Singletons2),
 		 '$lgt_report_singletons'(Singletons2, Term),
 		 '$lgt_tr_file'(Stream, Term)),
 		Error,
@@ -2054,27 +2054,31 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_tr_file'(Stream, Term) :-
 	'$lgt_tr_term'(Term),
 	read_term(Stream, Next, [singletons(Singletons1)]),
-	'$lgt_filter_false_singletons'(Singletons1, Singletons2),
+	'$lgt_filter_named_anonymous_vars'(Singletons1, Singletons2),
 	'$lgt_report_singletons'(Singletons2, Next),
 	'$lgt_tr_file'(Stream, Next).
 
 
 
-% '$lgt_filter_false_singletons'(+list, -list)
+% '$lgt_filter_named_anonymous_vars'(+list, -list)
 %
-%
+% filter named anonymous varaibles from a singletons list
+% if the corresponding compiler option is enabled
 
-'$lgt_filter_false_singletons'(List, Result) :-
-	'$lgt_filter_false_singletons'(List, [], Result).
-
-
-'$lgt_filter_false_singletons'([], Result, Result).
-
-'$lgt_filter_false_singletons'([Atom = Var| List], Sofar, Result) :-
-	sub_atom(Atom, 0, 1, _, '_') ->
-		'$lgt_filter_false_singletons'(List, Sofar, Result)
+'$lgt_filter_named_anonymous_vars'(List, Result) :-
+	'$lgt_compiler_option'(named_anonymous_vars, on) ->
+		'$lgt_filter_named_anonymous_vars'(List, [], Result)
 		;
-		'$lgt_filter_false_singletons'(List, [Atom = Var| Sofar], Result).
+		List = Result.
+
+
+'$lgt_filter_named_anonymous_vars'([], Result, Result).
+
+'$lgt_filter_named_anonymous_vars'([Atom = Var| List], Sofar, Result) :-
+	sub_atom(Atom, 0, 1, _, '_') ->
+		'$lgt_filter_named_anonymous_vars'(List, Sofar, Result)
+		;
+		'$lgt_filter_named_anonymous_vars'(List, [Atom = Var| Sofar], Result).
 
 
 
@@ -5275,6 +5279,9 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_valid_compiler_option'(smart_compilation(Option)) :-
 	once((Option == on; Option == off)).
 
+'$lgt_valid_compiler_option'(named_anonymous_vars(Option)) :-
+	once((Option == on; Option == off)).
+
 
 
 % '$lgt_valid_flag'(@nonvar)
@@ -5294,6 +5301,7 @@ user0__def(Pred, _, _, _, Pred, user).
 '$lgt_valid_flag'(smart_compilation).
 '$lgt_valid_flag'(startup_message).
 '$lgt_valid_flag'(version).
+'$lgt_valid_flag'(named_anonymous_vars).
 
 
 
@@ -5938,6 +5946,8 @@ user0__def(Pred, _, _, _, Pred, user).
 	write('  Non portable calls:             '), write(Portability), nl,
 	'$lgt_default_flag'(report, Report),
 	write('  Compilation report:             '), write(Report), nl,
+	'$lgt_default_flag'(named_anonymous_vars, Named),
+	write('  Named anonymous variables:      '), write(Named), nl,
 	'$lgt_default_flag'(smart_compilation, Smart),
 	write('  Smart compilation:              '), write(Smart), nl, nl.
 
