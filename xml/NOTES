@@ -115,7 +115,7 @@ lgt2pdf.js
 	Supported XSL-FO processors:
 		* Apache FOP processor (tested with version 0.20.5)
 			http://xml.apache.org/fop 
-		* RenderX XEP processor (tested with version 3.7.8)
+		* RenderX XEP processor (tested with version 3.8.1)
 			http://www.renderx.com). Tested with XEP version  
 
 	When using the FOP, compile your Logtalk source files using the compiler 
