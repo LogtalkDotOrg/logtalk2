@@ -24,7 +24,7 @@
 :- op(600, xfy, ::).						% send to object
 :- op(600,  fy, ::).						% send to self
 
-:- op(600,  fx, ^^).						% super call
+:- op(600,  fy, ^^).						% super call
 
 
 % mode operators
