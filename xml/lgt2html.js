@@ -184,11 +184,11 @@ function html_index_file() {
 	f.WriteLine("<html>");
 	f.WriteLine("<head>");
 	f.WriteLine("    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
-	f.WriteLine("    <title>"$title"</title>");
+	f.WriteLine("    <title>" + title + "</title>");
 	f.WriteLine("    <link rel=\"stylesheet\" href=\"logtalk.css\" type=\"text/css\">");
 	f.WriteLine("</head>");
 	f.WriteLine("<body>");
-	f.WriteLine("<h1>"$title"</h1>");
+	f.WriteLine("<h1>" + title + "</h1>");
 	f.WriteLine("<ul>");
 
 	var files = WshShell.CurrentDirectory.Files;
