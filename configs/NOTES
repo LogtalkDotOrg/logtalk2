@@ -289,11 +289,11 @@ PrologII+ 4.5 and later versions
 	Does not support the "altdirs" compiler option.
 
 
-Qu-Prolog 6.5
+Qu-Prolog 6.6
 
 	qu.config
 
-	Qu-Prolog 6.5 does not support floats. In order to compile the Logtalk 
+	Qu-Prolog 6.6 does not support floats. In order to compile the Logtalk 
 	library and the Logtalk examples you will need to replace all occurrences 
 	of floats by either integers or (quoted) atoms. In Unix-like systems, you
 	may perform the changes by running the following commands:
