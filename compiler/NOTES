@@ -5,7 +5,7 @@ Release 2.22.5
 Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 =================================================================
 
-This folder contains a single Prolog file, "logtalk.pl", that 
+This folder contains a single Prolog file, "logtalk.pl", which 
 implements both the Logtalk compiler and the Logtalk runtime.
 Before loading this file into your favorite Prolog compiler, 
 you must first load the appropriated configuration file for 
