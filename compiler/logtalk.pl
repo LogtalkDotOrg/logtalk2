@@ -3636,7 +3636,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_directive'(uses, [Obj, Preds]) :-
 	!,
 	(callable(Obj) ->
-		'$lgt_add_referenced_object'(Obj),
+		assertz('$lgt_pp_referenced_object_'(Obj)),
 		assertz('$lgt_pp_uses_'(Obj)),
 		('$lgt_proper_list'(Preds) ->
 			forall(
@@ -3658,7 +3658,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 '$lgt_tr_directive'(uses, [Obj]) :-
 	callable(Obj) ->
-		'$lgt_add_referenced_object'(Obj),
+		assertz('$lgt_pp_referenced_object_'(Obj)),
 		assertz('$lgt_pp_uses_'(Obj))
 		;
 		throw(type_error(object_identifier, Obj)).
@@ -3669,7 +3669,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 	forall(
 		'$lgt_member'(Ptc, Ptcs2),
 		(atom(Ptc) ->
-			'$lgt_add_referenced_protocol'(Ptc),
+			assertz('$lgt_pp_referenced_protocol_'(Ptc)),
 			assertz('$lgt_pp_calls_'(Ptc))
 			;
 			throw(type_error(protocol_identifier, Ptc)))).
@@ -4629,7 +4629,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 			throw(type_error(object_identifier, Obj))		% invalid object identifier
 			;
 			\+ '$lgt_ctx_ctx'(Ctx, user, user, _, _, _),	% not runtime message translation
-			'$lgt_add_referenced_object'(Obj),				% remember object receiving message
+			assertz('$lgt_pp_referenced_object_'(Obj)),		% remember object receiving message
 			fail)).
 
 
@@ -5290,7 +5290,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % functor prefixes used in the compiled code clauses
 
 '$lgt_tr_object_id'(Obj, Mode) :-
-	'$lgt_add_referenced_object'(Obj),
+	assertz('$lgt_pp_referenced_object_'(Obj)),
 	'$lgt_construct_object_functors'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef),
 	assertz('$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Mode)).
 
@@ -5302,7 +5302,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % functor prefixes used in the compiled code clauses
 
 '$lgt_tr_category_id'(Ctg, Mode) :-
-	'$lgt_add_referenced_category'(Ctg),
+	assertz('$lgt_pp_referenced_category_'(Ctg)),
 	'$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def),
 	assertz('$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Mode)).
 
@@ -5314,7 +5314,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % functor prefixes used in the compiled code clauses
 
 '$lgt_tr_protocol_id'(Ptc, Mode) :-
-	'$lgt_add_referenced_protocol'(Ptc),
+	assertz('$lgt_pp_referenced_protocol_'(Ptc)),
 	'$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl),
 	assertz('$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Mode)).
 
@@ -5351,7 +5351,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_implements_protocol'([Ref| Refs], ObjOrCtg) :-
 	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		('$lgt_valid_protocol_ref'(Ref, Ptc) ->
-			'$lgt_add_referenced_protocol'(Ptc),
+			assertz('$lgt_pp_referenced_protocol_'(Ptc)),
 			assertz('$lgt_pp_rclause_'('$lgt_implements_protocol_'(ObjOrCtg, Ptc, Scope))),
 			'$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl),
 			assertz('$lgt_pp_implemented_protocol_'(Ptc, Prefix, Dcl, Scope)),
@@ -5374,7 +5374,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_imports_category'([Ref| Refs], ObjOrCtg) :-
 	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		('$lgt_valid_category_ref'(Ref, Ctg) ->
-			'$lgt_add_referenced_category'(Ctg),
+			assertz('$lgt_pp_referenced_category_'(Ctg)),
 			assertz('$lgt_pp_rclause_'('$lgt_imports_category_'(ObjOrCtg, Ctg, Scope))),
 			'$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def),
 			assertz('$lgt_pp_imported_category_'(Ctg, Prefix, Dcl, Def, Scope)),
@@ -5396,7 +5396,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_instantiates_class'([Ref| Refs], Obj) :-
 	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		('$lgt_valid_object_ref'(Ref, Class) ->
-			'$lgt_add_referenced_object'(Class),
+			assertz('$lgt_pp_referenced_object_'(Class)),
 			assertz('$lgt_pp_rclause_'('$lgt_instantiates_class_'(Obj, Class, Scope))),
 			'$lgt_construct_object_functors'(Class, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef),
 			assertz('$lgt_pp_instantiated_class_'(Class, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)),
@@ -5418,7 +5418,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_specializes_class'([Ref| Refs], Class) :-
 	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		('$lgt_valid_object_ref'(Ref, Superclass) ->
-			'$lgt_add_referenced_object'(Superclass),
+			assertz('$lgt_pp_referenced_object_'(Superclass)),
 			assertz('$lgt_pp_rclause_'('$lgt_specializes_class_'(Class, Superclass, Scope))),
 			'$lgt_construct_object_functors'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef),
 			assertz('$lgt_pp_specialized_class_'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)),
@@ -5440,7 +5440,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_extends_object'([Ref| Refs], Obj) :-
 	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		('$lgt_valid_object_ref'(Ref, Parent) ->
-			'$lgt_add_referenced_object'(Parent),
+			assertz('$lgt_pp_referenced_object_'(Parent)),
 			assertz('$lgt_pp_rclause_'('$lgt_extends_object_'(Obj, Parent, Scope))),
 			'$lgt_construct_object_functors'(Parent, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef),
 			assertz('$lgt_pp_extended_object_'(Parent, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)),
@@ -5462,7 +5462,7 @@ current_logtalk_flag(version, version(2, 22, 5)).
 '$lgt_tr_extends_protocol'([Ref| Refs], Ptc1) :-
 	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		('$lgt_valid_protocol_ref'(Ref, Ptc2) ->
-			'$lgt_add_referenced_protocol'(Ptc2),
+			assertz('$lgt_pp_referenced_protocol_'(Ptc2)),
 			assertz('$lgt_pp_rclause_'('$lgt_extends_protocol_'(Ptc1, Ptc2, Scope))),
 			'$lgt_construct_protocol_functors'(Ptc2, Prefix, Dcl),
 			assertz('$lgt_pp_extended_protocol_'(Ptc2, Prefix, Dcl, Scope)),
@@ -5474,50 +5474,13 @@ current_logtalk_flag(version, version(2, 22, 5)).
 
 
 
-% '$lgt_add_referenced_object'(+object_identifier)
-%
-% assert the name of an object referenced by the entity that we are compiling
-
-'$lgt_add_referenced_object'(Obj) :-
-	'$lgt_pp_referenced_object_'(Obj) ->
-		true
-		;
-		assertz('$lgt_pp_referenced_object_'(Obj)).
-
-
-
-% '$lgt_add_referenced_protocol'(+protocol_identifier)
-%
-% assert the name of a protocol referenced by the entity that we are compiling
-
-'$lgt_add_referenced_protocol'(Ptc) :-
-	'$lgt_pp_referenced_protocol_'(Ptc) ->
-		true
-		;
-		assertz('$lgt_pp_referenced_protocol_'(Ptc)).
-
-
-
-% '$lgt_add_referenced_category'(+category_identifier)
-%
-% assert the name of a category referenced by the entity that we are compiling
-
-'$lgt_add_referenced_category'(Ctg) :-
-	'$lgt_pp_referenced_category_'(Ctg) ->
-		true
-		;
-		assertz('$lgt_pp_referenced_category_'(Ctg)).
-
-
-
 % '$lgt_report_unknown_entities'
 %
 % report any unknown referenced entities found while compiling an entity
-% (if the corresponding compiler flag is not set to "silent")
+% (if the corresponding compiler flag is set to "warning")
 
 '$lgt_report_unknown_entities' :-
-	('$lgt_compiler_flag'(unknown, warning),
-	 '$lgt_compiler_flag'(report, on)) ->
+	('$lgt_compiler_flag'(unknown, warning), '$lgt_compiler_flag'(report, on)) ->
 		'$lgt_report_unknown_objects',
 		'$lgt_report_unknown_protocols',
 		'$lgt_report_unknown_categories'
@@ -5531,17 +5494,17 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % report any unknown referenced objects found while compiling an entity
 
 '$lgt_report_unknown_objects' :-
-	findall(
-		Obj,
-		('$lgt_pp_referenced_object_'(Obj),
-		 \+ '$lgt_current_object_'(Obj, _, _, _, _, _),
-		 \+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _)),
-		Objs),
-	(Objs \= [] ->
+	setof(Obj, '$lgt_unknown_object'(Obj), Objs) ->
 		write('> WARNING!  references to unknown objects:    '),
 		'$lgt_writeq_list'(Objs), nl
 		;
-		true).
+		true.
+
+
+'$lgt_unknown_object'(Obj) :-
+	'$lgt_pp_referenced_object_'(Obj),
+	\+ '$lgt_current_object_'(Obj, _, _, _, _, _),
+	\+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _).
 
 
 
@@ -5550,17 +5513,17 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % report any unknown referenced protocols found while compiling an entity
 
 '$lgt_report_unknown_protocols' :-
-	findall(
-		Ptc,
-		('$lgt_pp_referenced_protocol_'(Ptc),
-		 \+ '$lgt_current_protocol_'(Ptc, _, _),
-		 \+ '$lgt_pp_protocol_'(Ptc, _, _, _)),
-		Ptcs),
-	(Ptcs \= [] ->
+	setof(Ptc, '$lgt_unknown_protocol'(Ptc), Ptcs) ->
 		write('> WARNING!  references to unknown protocols:  '),
 		'$lgt_writeq_list'(Ptcs), nl
 		;
-		true).
+		true.
+
+
+'$lgt_unknown_protocol'(Ptc) :-
+	'$lgt_pp_referenced_protocol_'(Ptc),
+	\+ '$lgt_current_protocol_'(Ptc, _, _),
+	\+ '$lgt_pp_protocol_'(Ptc, _, _, _).
 
 
 
@@ -5569,17 +5532,17 @@ current_logtalk_flag(version, version(2, 22, 5)).
 % report any unknown referenced categories found while compiling an entity
 
 '$lgt_report_unknown_categories' :-
-	findall(
-		Ctg,
-		('$lgt_pp_referenced_category_'(Ctg),
-		 \+ '$lgt_current_category_'(Ctg, _, _),
-		 \+ '$lgt_pp_category_'(Ctg, _, _, _, _)),
-		Ctgs),
-	(Ctgs \= [] ->
+	setof(Ctg, '$lgt_unknown_category'(Ctg), Ctgs) ->
 		write('> WARNING!  references to unknown categories: '),
 		'$lgt_writeq_list'(Ctgs), nl
 		;
-		true).
+		true.
+
+
+'$lgt_unknown_category'(Ctg) :-
+	'$lgt_pp_referenced_category_'(Ctg),
+	\+ '$lgt_current_category_'(Ctg, _, _),
+	\+ '$lgt_pp_category_'(Ctg, _, _, _, _).
 
 
 

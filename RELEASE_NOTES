@@ -41,7 +41,8 @@ RELEASE NOTES
 	text editor, adding some missing ISO Prolog predicates.
 
 	Improved printing of lists of unknown referenced entities, misspelt calls,
-	and singleton variables when compiling source files.
+	and singleton variables when compiling source files. Simplified handling 
+	of references to unknown entities.
 
 	Added workaround for Prolog compilers with broken read_term/3 singletons/1
 	option.
