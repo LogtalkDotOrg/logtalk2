@@ -2578,14 +2578,15 @@ current_logtalk_flag(version, version(2, 19, 0)).
 % creates load and compile auxiliary files given a list of entities
 
 '$lgt_create_aux_files'(Source, Loader, Compiler, Cache, Entities) :-	
-	('$lgt_compiler_option'(report, on) ->
-		write('> creating loading and compiling auxiliary files...'), nl
-		;
-		true),
 	'$lgt_file_name'(metafile, Source, Metafile),
+	'$lgt_file_name'(logtalk, Loader, LoaderFile),
+	'$lgt_file_name'(logtalk, Compiler, CompilerFile),
 	 '$lgt_reverse'(Entities, Entities2),
 	 '$lgt_reverse'(Cache, Cache2),
-	'$lgt_file_name'(logtalk, Loader, LoaderFile),
+	('$lgt_compiler_option'(report, on) ->
+		write('> creating loading helper file '), write(Loader), write('...'), nl
+		;
+		true),
 	catch(
 		(open(LoaderFile, write, LoaderStream),
 		 write_term(LoaderStream, '% loader file automatically generated from source metafile ', []), 
@@ -2596,7 +2597,11 @@ current_logtalk_flag(version, version(2, 19, 0)).
 		Error,
 		'$lgt_compiler_error_handler'(LoaderStream, Error)),
 	close(LoaderStream),
-	'$lgt_file_name'(logtalk, Compiler, CompilerFile),
+	('$lgt_compiler_option'(report, on) ->
+		write('> loading helper file '), write(Loader), write(' created'), nl,
+		write('> creating compiling helper file '), write(Compiler), write('...'), nl
+		;
+		true),
 	catch(
 		(open(CompilerFile, write, CompilerStream),
 		 write_term(CompilerStream, '% compiler file automatically generated from source metafile ', []), 
@@ -2607,7 +2612,7 @@ current_logtalk_flag(version, version(2, 19, 0)).
 		'$lgt_compiler_error_handler'(CompilerStream, Error)),
 	close(CompilerStream),
 	('$lgt_compiler_option'(report, on) ->
-		write('> loading and compiling auxiliary files created'), nl
+		write('> compiling helper file '), write(Compiler), write(' created'), nl
 		;
 		true).
 
