@@ -32,9 +32,9 @@ consult the URL http://www.kprolog.com/en/logical_assignment/
 		argnames is ['Variable', 'Value']]).
 
 	:- public((<=)/2).
-	:- mode(<=(+assignvar, @nonvar), one).
+	:- mode(<=(?assignvar, @nonvar), one).
 	:- info((<=)/2, [
-		comment is 'Sets the value of assignable variable Variable to Value.',
+		comment is 'Sets the value of assignable variable Variable to Value (initializing the variable if needed).',
 		argnames is ['Variable', 'Value']]).
 
 	:- public((=>)/2).
