@@ -437,7 +437,7 @@ abolish_object(Obj) :-
 			abolish(Super/6),
 			abolish(IDcl/6),
 			abolish(IDef/6),
-			abolish(DDcl/4),
+			abolish(DDcl/2),
 			abolish(DDef/5),
 			abolish(Prefix/7),
 			retractall('$lgt_current_object_'(Obj, _, _, _, _)),
@@ -1239,8 +1239,8 @@ current_logtalk_flag(version, version(2, 14, 5)).
 			((\+ \+ PScope = Scope; Sender = SContainer) ->
 				(Compilation = (dynamic) ->
 					'$lgt_once'(Prefix, _, _, _, _, _, DDcl, DDef),
-					('$lgt_once'(DDcl, Pred, _, _, _) ->
-						Clause =.. [DDcl, Pred, _, _, _],
+					('$lgt_once'(DDcl, Pred, _) ->
+						Clause =.. [DDcl, Pred, _],
 						retractall(Clause),
 						('$lgt_once'(DDef, Pred, _, _, _, Call) ->
 							functor(Call, CFunctor, CArity),
