@@ -13,8 +13,8 @@
 #prompt ( "Arguments (comma separated):" $args )
 #prompt ( "Argument names (comma separated):" $argnames )
 	:- mode($functor($args), $solutions).
-	:- info($functor/$arity,
-		[comment is '$comment',
-		 argnames is [$argnames]]).
+	:- info($functor/$arity, [
+		comment is '$comment',
+		argnames is [$argnames]]).
 #end
 
