@@ -19,6 +19,9 @@ RELEASE NOTES
 	Small change to messages printed on console with smart compilation of 
 	source files turned on.
 
+	Updated the lgtpdfa4.xsl and lgtpdfus.xsl XSLT files to workaround a bug 
+	in the PassiveTeX 1.21 XSL:FO processor.
+
 
 2.14.3 - Sptember 16, 2002
 
