@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.23.1 - February ??, 2005
+2.23.1 - March ??, 2005
 
 	Updated the runtime error handler for top-level ::/2 calls to recognize 
 	non-existing predicate exceptions thrown by XSB, SICStus Prolog, CIAO, 
@@ -20,6 +20,11 @@ RELEASE NOTES
 
 	Expanded the benchmarks example to test performance of the built-in 
 	database methods.
+
+	Lookup caches are now cleaned before loading a redefined entity in order 
+	to avoid potential problems with entity initialization goals containing 
+	message sending calls (previous versions cleaned the caches only after 
+	entity loading).
 
 
 2.23.0 - February 21, 2005
