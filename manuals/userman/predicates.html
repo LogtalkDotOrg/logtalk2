@@ -228,7 +228,10 @@ Logtalk allows the definition of an alternative name for a predicate through the
 This directive can be used in objects, protocols, or categories. The first argument, <code>Entity</code>, must be an entity referenced in the opening directive of the entity contain the <code>alias/3</code> directive. It can be an implemented protocol, an imported category, an extended prototype, an instantiated class, or a specialized class. The second and third arguments are predicate indicators.
 </p>
 <p>
-A common use for this directive is to solve conflicts when two inherited predicates have the same functor and arity. We may want to call the predicate which is masked by the Logtalk lookup algorithm (see the <a href="inheritance.html">Inheritance</a> section) or we may need to call both predicates. This is simply accomplished by using the <code>alias/3</code> directive to give alternative names to masked or conflicting predicates. Consider the following example:
+
+</p>
+<p>
+Another common use for this directive is to solve conflicts when two inherited predicates have the same functor and arity. We may want to call the predicate which is masked by the Logtalk lookup algorithm (see the <a href="inheritance.html">Inheritance</a> section) or we may need to call both predicates. This is simply accomplished by using the <code>alias/3</code> directive to give alternative names to masked or conflicting predicates. Consider the following example:
 </p>
 <pre>
     :- object(my_data_structure,
@@ -253,6 +256,25 @@ Assuming that both <code>list</code> and <code>set</code> objects define a <code
 </pre>
 <p>
 Note that the <code>alias/3</code> directive never hides a predicate which is visible on the entity containing the directive as a result of the Logtalk lookup algorithm. However, it may be used to make visible a predicate which otherwise would be masked by another predicate, as illustrated in the above example.
+</p>
+<p>
+The <code>alias/3</code> directive may also be used to make visible a predicate, which otherwise would be masked by another predicate, while keeping the original name as follows:
+</p>
+<pre>
+    :- object(my_data_structure,
+    	extends(list, set).
+
+        :- alias(list, member/2, list_member/2).
+        :- alias(set, member/2, set_member/2).
+
+        member(X, L) :-
+        	::set_member(X, L).
+
+        ...
+
+    :- end_object.
+</pre>
+Thus, when sending the message <code>member/2</code> to <code>my_data_structure</code>, the predicate defintion in <code>set</code> will be used instead of the one contained in <code>list</code>.
 </p>
 
 <h3>Documenting directive<a name="info"></a></h3>
