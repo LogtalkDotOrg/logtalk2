@@ -1,3 +1,3 @@
 @ECHO off
-cscript %LOGTALKHOME%/xml/lgt2pdf.js
+cscript %LOGTALKUSER%\xml\lgt2pdf.js
 @ECHO on
