@@ -5681,18 +5681,23 @@ user0__def(Pred, _, _, _, Pred, user).
 
 
 
-'$lgt_dcg_simplify_and'((true,Goals), Body) :-
+'$lgt_dcg_simplify_and'(((Goal1,Goal2),Goal3), Body) :-
 	!,
-	'$lgt_dcg_simplify_and'(Goals, Body).
+	'$lgt_dcg_simplify_and'((Goal1,(Goal2,Goal3)), Body).
 
-'$lgt_dcg_simplify_and'((Goal,true), Goal) :-
-	!.
-
-'$lgt_dcg_simplify_and'((Goal,Goals), (Goal,Goals2)) :-
+'$lgt_dcg_simplify_and'((true,Goal), Body) :-
 	!,
-	'$lgt_dcg_simplify_and'(Goals, Goals2).
+	'$lgt_dcg_simplify_and'(Goal, Body).
 
-'$lgt_dcg_simplify_and'(Goals, Goals).
+'$lgt_dcg_simplify_and'((Goal,true), Body) :-
+	!,
+	'$lgt_dcg_simplify_and'(Goal, Body).
+
+'$lgt_dcg_simplify_and'((Goal1,Goal2), (Goal1,Goal3)) :-
+	!,
+	'$lgt_dcg_simplify_and'(Goal2, Goal3).
+
+'$lgt_dcg_simplify_and'(Goal, Goal).
 
 
 
