@@ -27,7 +27,7 @@ RELEASE NOTES
 
 	New example of using the built-in database handling methods (dynpred).
 
-	Syntax coloring configuration files for the jEdit 4.0, VIM 6.1, and 
+	Syntax configuration files for jEdit 4.0, VIM 6.1, NEdit 5.2, and 
 	TextPad 4.5 text editors providing syntax highlighting for editing 
 	Logtalk source files.
 
