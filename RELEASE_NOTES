@@ -10,6 +10,12 @@ RELEASE NOTES
 =============
 
 
+2.21.3 - October ??, 2004
+
+	Corrected a silly bug in message translation which resulted in a small 
+	performance loss.
+
+
 2.21.2 - October 18, 2004
 
 	Added support for declaring grammar rule non-terminals as public, protected, 

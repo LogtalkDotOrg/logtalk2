@@ -4475,7 +4475,7 @@ current_logtalk_flag(version, version(2, 21, 2)).
 % message is not a built-in control construct or a call to a built-in 
 % (meta-)predicate: translation performed at runtime
 
-'$lgt_tr_msg'(Pred, Obj, '$lgt_send_to_object'(Obj, Pred, This), Ctx) :-
+'$lgt_tr_msg'(Pred, Obj, TPred, Ctx) :-
 	'$lgt_this'(Ctx, This),
 	(var(Obj) ->
 		TPred = '$lgt_send_to_object'(Obj, Pred, This)
