@@ -99,7 +99,7 @@ file (you will need to reboot after editing the file):
 	SET LOGTALKHOME=C:\your\installation\folder\
 	SET LOGTALKUSER=%HOMEPATH%\logtalk
 
-In Windows NT/2000/XP, environment variables are defined using the System 
+In Windows 2000/XP, environment variables are defined using the System 
 properties control panel (if you are a system administrator, you should use 
 the JScript install script provided in the "misc" sub-directory; this script 
 sets both the LOGTALKHOME and the LOGTALKUSER environment variables).
