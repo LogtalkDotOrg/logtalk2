@@ -385,28 +385,16 @@ SWI Prolog 3.2.9 & 3.3.x and all later versions
 
 	swi.config
 
-	For version 3.3.x and all later versions
+	For version 3.3.x and all later versions (5.2.3 or later recommended)
 
 	No problems expected. Please report any problem found (with a solution 
 	if possible). Don't forget to use the cd/1 predicate to set the working 
 	directory before loading an example. Supports smart compilation of 
 	source files. To improve the integration between Logtalk and SWI-Prolog 
-	edit the compiler/logtalk.pl file and do the following:
-	
-		1. Add the line ":- system_module." to the top of the file.
-
-		2. Add the following cluase as the _first one_ of the predicate 
-		'$lgt_write_directives'/1:
-
-			'$lgt_write_directives'(Stream) :-
-				write_canonical(Stream, (:- system_module)),
-				write(Stream, '.'),
-				nl(Stream),
-				fail.
-
-	In addition, you may load the file configs/swihook.pl in order to be 
-	able to load Logtalk entities using SWI-Prolog load_files/2 and consult/1 
-	predicates.
+	edit the compiler/logtalk.pl file and add the line ":- system_module." 
+	to the top of the file. In addition, you may load the file configs/swihook.pl 
+	in order to be able to load Logtalk entities using SWI-Prolog load_files/2 
+	and consult/1 predicates.
 
 
 Trinc-Prolog R3
