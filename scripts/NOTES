@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.17.0
+Release 2.17.1
 
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -39,13 +39,16 @@ make_gplgt.sh
 	makes a script named gplgt for running Logtalk with GNU Prolog
 
 make_qplgt.sh
+
 	makes a script named qplgt for running Logtalk with Qu-Prolog 
 	(based on script code contributed by Peter Robinson)
 
 make_sicstuslgt.sh
+
 	makes a script named sicstuslgt for running Logtalk with SICStus Prolog
 
 make_swilgt.sh
+
 	makes a script named swilgt for running Logtalk with SWI-Prolog
 
 make_yaplgt.sh
