@@ -51,6 +51,10 @@ classvars
 dcgs
 	examples of using DCG rules inside objects and categories
 
+diamonds
+	examples of problems and solutions for the "diamond problem"
+	(multi-inheritance conflicts and ambiguities)
+
 dynpred
 	example of using some of the built-in database handling methods
 

@@ -1,0 +1,44 @@
+=================================================================
+Logtalk - Object oriented extension to Prolog
+Release 2.21.0
+
+Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
+=================================================================
+
+
+% start by loading the example:
+
+| ?- logtalk_load(loader).
+...
+
+
+% 
+
+?- d1::m.
+Redefinition of method m/0 in object b1
+
+Yes
+
+
+% 
+
+?- d2::m.
+Redefinition of method m/0 in object c2
+
+Yes
+
+
+% 
+
+?- d3::b3_m.
+Redefinition of method m/0 in object b3
+
+Yes
+?- d3::c3_m.
+Redefinition of method m/0 in object c3
+
+Yes
+?- d3::m.
+Redefinition of method m/0 in object b3
+
+Yes

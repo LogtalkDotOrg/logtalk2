@@ -1,0 +1,45 @@
+
+:- object(a3).
+
+	:- public(m/0).
+
+	m :-
+		this(This),
+		write('Default definition of method m/0 in object '),
+		write(This), nl.
+
+:- end_object.
+
+
+
+:- object(b3,
+	extends(a3)).
+
+	m :-
+		this(This),
+		write('Redefinition of method m/0 in object '),
+		write(This), nl.
+
+:- end_object.
+
+
+:- object(c3,
+	extends(a3)).
+
+	m :-
+		this(This),
+		write('Redefinition of method m/0 in object '),
+		write(This), nl.
+
+:- end_object.
+
+
+
+
+:- object(d3,
+	extends(b3, c3)).
+
+	:- alias(b3, m/0, b3_m/0).
+	:- alias(c3, m/0, c3_m/0).
+
+:- end_object.

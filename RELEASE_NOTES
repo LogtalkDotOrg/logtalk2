@@ -16,6 +16,9 @@ RELEASE NOTES
 	alternative predicate names in order to solve conflicts between implemented, 
 	imported, or inherited predicates.
 
+	Added new example, "diamonds", illustrating problems and solutions for the 
+	"diamond problem" (multi-inheritance conflicts and ambiguities).
+
 	Allow categories to import other categories, i.e. allow categories to be 
 	defined as a composition of other categories. This feature should only be 
 	used when extending a category without breaking its functional cohesion or 
