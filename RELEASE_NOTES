@@ -17,6 +17,8 @@ RELEASE NOTES
 	library entities "debuggerp" and "debugger" to, respectively, "event_dbgp" 
 	and "event_dbg".
 
+	Added a logtalk.spec file for building Linux RPMs from sources.
+
 	Added a set of shell scripts for easy integration of Logtalk with GNU Prolog,
 	Qu-Prolog, SWI-Prolog, and YAP.
 
