@@ -8496,6 +8496,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_write_xml_entity'(Stream),
 	'$lgt_write_xml_relations'(Stream),
 	'$lgt_write_xml_predicates'(Stream),
+	'$lgt_write_xml_examples'(Stream),
 	'$lgt_write_xml_footer'(Stream).
 
 
@@ -8512,7 +8513,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_xml_header_text'('1.0', Encoding, no, Text),
 	'$lgt_write_xml_open_tag'(Stream, Text, []),
 	(XMLSpec = dtd ->
-		write(Stream, '<!DOCTYPE logtalk SYSTEM "logtalk.dtd'), nl(Stream)
+		write(Stream, '<!DOCTYPE logtalk SYSTEM "logtalk.dtd">'), nl(Stream)
 		;
 		true),
 	'$lgt_compiler_flag'(xsl, XSL),
@@ -8531,7 +8532,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_xml_header_text'('1.0', Encoding, no, Text),
 	'$lgt_write_xml_open_tag'(Stream, Text, []),
 	(XMLSpec = dtd ->
-		write(Stream, '<!DOCTYPE logtalk SYSTEM "http://www.logtalk.org/xml/1.3/logtalk.dtd'), nl(Stream)
+		write(Stream, '<!DOCTYPE logtalk SYSTEM "http://www.logtalk.org/xml/1.3/logtalk.dtd">'), nl(Stream)
 		;
 		true),
 	'$lgt_compiler_flag'(xsl, XSL),
@@ -8606,19 +8607,6 @@ current_logtalk_flag(version, version(2, 23, 2)).
 			'$lgt_write_xml_element'(Stream, date, [], Date)
 			;
 			true),
-	('$lgt_member'(examples is Examples, Info) ->
-		'$lgt_write_xml_open_tag'(Stream, examples, []),
-		forall(
-			'$lgt_member'((Description - Call -> {Bindings}), Examples),
-			('$lgt_pred_call_to_xml_term'(Call, Bindings),
-			 '$lgt_write_xml_open_tag'(Stream, example, []),
-			 '$lgt_write_xml_cdata_element'(Stream, description, [], Description),
-			 '$lgt_write_xml_cdata_element'(Stream, call, [], Call),
-			 '$lgt_write_xml_cdata_element'(Stream, bindings, [], Bindings),
-		 	 '$lgt_write_xml_close_tag'(Stream, example))),
-		'$lgt_write_xml_close_tag'(Stream, examples)
-		;
-		true),
 		forall(
 			('$lgt_member'(Key is Value, Info),
 			 \+ '$lgt_member'(Key, [comment, author, version, date, parameters, parnames, examples])),
@@ -8929,6 +8917,13 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		 '$lgt_write_xml_close_tag'(Stream, exceptions)
 		;
 		true),
+	forall(
+		('$lgt_member'(Key is Value, Info),
+		 \+ '$lgt_member'(Key, [comment, arguments, argnames, exceptions, examples])),
+		('$lgt_write_xml_open_tag'(Stream, info, []),
+		 '$lgt_write_xml_element'(Stream, key, [], Key),
+		 '$lgt_write_xml_cdata_element'(Stream, value, [], Value),
+		 '$lgt_write_xml_close_tag'(Stream, info))),
 	('$lgt_member'(examples is Examples, Info) ->
 		'$lgt_write_xml_open_tag'(Stream, examples, []),
 		forall(
@@ -8941,14 +8936,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		 	 '$lgt_write_xml_close_tag'(Stream, example))),
 		'$lgt_write_xml_close_tag'(Stream, examples)
 		;
-		true),
-	forall(
-		('$lgt_member'(Key is Value, Info),
-		 \+ '$lgt_member'(Key, [comment, arguments, argnames, exceptions, examples])),
-		('$lgt_write_xml_open_tag'(Stream, info, []),
-		 '$lgt_write_xml_element'(Stream, key, [], Key),
-		 '$lgt_write_xml_cdata_element'(Stream, value, [], Value),
-		 '$lgt_write_xml_close_tag'(Stream, info))).
+		true).
 
 
 
@@ -9037,6 +9025,23 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_write_xml_cdata_element'(Stream, name, [], Relation),
 	'$lgt_write_xml_cdata_element'(Stream, file, [], File),
 	'$lgt_write_xml_close_tag'(Stream, Tag).
+
+
+
+'$lgt_write_xml_examples'(Stream) :-
+	'$lgt_write_xml_open_tag'(Stream, examples, []),
+	(('$lgt_pp_info_'(Info), '$lgt_member'(examples is Examples, Info)) ->
+		forall(
+			'$lgt_member'((Description - Call -> {Bindings}), Examples),
+			('$lgt_pred_call_to_xml_term'(Call, Bindings),
+			 '$lgt_write_xml_open_tag'(Stream, example, []),
+			 '$lgt_write_xml_cdata_element'(Stream, description, [], Description),
+			 '$lgt_write_xml_cdata_element'(Stream, call, [], Call),
+			 '$lgt_write_xml_cdata_element'(Stream, bindings, [], Bindings),
+		 	 '$lgt_write_xml_close_tag'(Stream, example)))
+		;
+		true),
+	'$lgt_write_xml_close_tag'(Stream, examples).
 
 
 

@@ -11,10 +11,10 @@
 -->
 
 
-<!ELEMENT logtalk (entity, relations, predicates)>
+<!ELEMENT logtalk (entity, relations, predicates, examples)>
 
 
-<!ELEMENT entity (name, type, compilation, comment?, (parnames|parameters)?, author?, version?, date?, examples?, info*)>
+<!ELEMENT entity (name, type, compilation, comment?, (parnames|parameters)?, author?, version?, date?, info*)>
 
 <!ELEMENT name (#PCDATA)>
 
@@ -86,7 +86,7 @@
 <!ELEMENT private (predicate*)>
 
 
-<!ELEMENT predicate (name, scope, compilation, meta?, mode*, comment?, template?, (argnames|arguments)?, exceptions?, examples?, info*)>
+<!ELEMENT predicate (name, scope, compilation, meta?, mode*, comment?, template?, (argnames|arguments)?, exceptions?, info*, examples?)>
 
 <!ELEMENT meta (#PCDATA)>
 

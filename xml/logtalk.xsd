@@ -27,6 +27,7 @@
 		<xsd:element name="entity"		type="entity"/>
 		<xsd:element name="relations"	type="relations"/>
 		<xsd:element name="predicates"	type="predicates"/>
+		<xsd:element name="examples"	type="examples"/>
 	</xsd:sequence>
 </xsd:complexType>
 
@@ -44,7 +45,6 @@
 		<xsd:element name="author"		type="xsd:string"	minOccurs="0"/>
 		<xsd:element name="version"		type="xsd:string"	minOccurs="0"/>
 		<xsd:element name="date"		type="xsd:string"	minOccurs="0"/>
-		<xsd:element name="examples"	type="examples"		minOccurs="0"/>
 		<xsd:element name="info"		type="info"			minOccurs="0" maxOccurs="unbounded"/>
 	</xsd:sequence>
 </xsd:complexType>
@@ -189,8 +189,8 @@
 			<xsd:element name="arguments"	type="arguments"/>
 		</xsd:choice>
 		<xsd:element name="exceptions"	type="exceptions"		minOccurs="0"/>
-		<xsd:element name="examples"	type="examples"			minOccurs="0"/>
 		<xsd:element name="info"		type="info"				minOccurs="0"/>
+		<xsd:element name="examples"	type="examples"			minOccurs="0"/>
 	</xsd:sequence>
 </xsd:complexType>
 
