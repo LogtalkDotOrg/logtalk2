@@ -60,43 +60,43 @@ link.Save();
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk HTML Documentation.lnk");
 
 link.Description = "Browse Logtalk Documentation";
-link.TargetPath = "%LOGTALKHOME%\\manuals\\index.html";
+link.TargetPath = "\%LOGTALKHOME\%\\manuals\\index.html";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk ReadMe.lnk");
 
 link.Description = "Open Logtalk ReadMe";
-link.TargetPath = "%LOGTALKHOME%\\README.txt";
+link.TargetPath = "\%LOGTALKHOME\%\\README.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Quick Start.lnk");
 
 link.Description = "Open Logtalk Quick Start";
-link.TargetPath = "%LOGTALKHOME%\\QUICK_START.txt";
+link.TargetPath = "\%LOGTALKHOME\%\\QUICK_START.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Bibliography.lnk");
 
 link.Description = "Open Logtalk Bibliography";
-link.TargetPath = "%LOGTALKHOME%\\BIBLIOGRAPHY.txt";
+link.TargetPath = "\%LOGTALKHOME\%\\BIBLIOGRAPHY.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk License.lnk");
 
 link.Description = "Open Logtalk License";
-link.TargetPath = "%LOGTALKHOME%\\LICENSE.txt";
+link.TargetPath = "\%LOGTALKHOME\%\\LICENSE.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Release Notes.lnk");
 
 link.Description = "Open Logtalk Release Notes";
-link.TargetPath = "%LOGTALKHOME%\\RELEASE_NOTES.txt";
+link.TargetPath = "\%LOGTALKHOME\%\\RELEASE_NOTES.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Upgrading.lnk");
 
 link.Description = "Open Logtalk Upgrading";
-link.TargetPath = "%LOGTALKHOME%\\UPGRADING.txt";
+link.TargetPath = "\%LOGTALKHOME\%\\UPGRADING.txt";
 link.Save();
 
 WScript.Echo('Logtalk installation completed. You will need to restart in order');
