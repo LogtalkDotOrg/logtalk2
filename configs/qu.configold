@@ -5,7 +5,7 @@
 %
 %  configuration file for QU-Prolog 4.3
 %
-%  last updated: April 19, 2002
+%  last updated: August 19, 2002
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -39,7 +39,7 @@ initialization(Goal) :-
 %
 %  predicate properties
 %
-%  this predicate must return at least static, dynamic and built_in 
+%  this predicate must return at least static, dynamic, and built_in 
 %  properties for an existing predicate
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
