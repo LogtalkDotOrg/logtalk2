@@ -1,0 +1,6 @@
+{
+	FilesToRename = {
+		"logtalk.loader" = "«PROJECTNAMEASIDENTIFIER».loader";
+	};
+	Description = "This project defines a Logtalk application.";
+}
