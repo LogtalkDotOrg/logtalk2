@@ -16,6 +16,8 @@ RELEASE NOTES
 
 	Updated documentation on new built-in predicates.
 
+	Renamed SWI-Prolog config file swi330.config to swi.config.
+
 	Renamed config file predicate lgt_default_compiler_option/2 to lgt_flag/2.
 
 	New XSL stylesheets and shell scripts to convert Logtalk XML entity 
