@@ -2652,7 +2652,7 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_extract_metavars'(Head, Metavars),
 	'$lgt_metavars'(Context, Metavars),
 	'$lgt_tr_head'(Head, THead, Context),
-	'$lgt_tr_body'(Body, Body2, Context),
+	'$lgt_tr_body'(Body, TBody, Context),
 	'$lgt_simplify_clause'((THead:-TBody), TClause).
 
 '$lgt_tr_clause'(Fact, _, _) :-
