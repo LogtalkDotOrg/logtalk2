@@ -19,9 +19,14 @@ RELEASE NOTES
 	predicates are used for a given file or library.
 
 	Corrected a bug in the built-in methods asserta/1 and assertz/1 when 
-	asserting facts with the debug flag on, which resulted in wrong 
-	execution context information being printed when debugging calls to 
+	asserting facts into an object being debugged, which resulted in wrong 
+	execution context information being printed when tracing calls to 
 	the asserted facts.
+
+	Corrected a bug in the built-in methods asserta/1 and assertz/1 when 
+	asserting rules into an object being debugged, which resulted in rule 
+	bodies compiled with no information being printed for the rule head 
+	when tracing calls to the asserted rules.
 
 
 2.22.2 - December 24, 2004

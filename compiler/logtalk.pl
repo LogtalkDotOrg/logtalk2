@@ -1468,7 +1468,7 @@ current_logtalk_flag(version, version(2, 22, 3)).
 			'$lgt_context'(Ctx, Sender2, This, Self, Prefix, Metavars),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			('$lgt_debugging_'(Obj) ->
-				asserta((Call :- ('$lgt_nop'(Body), DBody)))
+				asserta((Call :- ('$lgt_nop'(Body), '$lgt_dbg_head'(Head, Ctx), DBody)))
 				;
 				asserta((Call :- ('$lgt_nop'(Body), TBody))))
 			;
@@ -1563,7 +1563,7 @@ current_logtalk_flag(version, version(2, 22, 3)).
 			'$lgt_context'(Ctx, Sender2, This, Self, Prefix, Metavars),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			('$lgt_debugging_'(Obj) ->
-				assertz((Call :- ('$lgt_nop'(Body), DBody)))
+				assertz((Call :- ('$lgt_nop'(Body), '$lgt_dbg_head'(Head, Ctx), DBody)))
 				;
 				assertz((Call :- ('$lgt_nop'(Body), TBody))))
 			;
