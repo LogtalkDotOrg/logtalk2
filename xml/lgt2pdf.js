@@ -55,7 +55,7 @@ else if (format == "us")
 else {
 	WScript.Echo("Error! Unsupported paper format:" + format);
 	WScript.Echo("");
-	WScript.Quit(1);
+	usage_help();
 }
 
 var fso = new ActiveXObject("Scripting.FileSystemObject");
