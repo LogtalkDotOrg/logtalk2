@@ -1376,7 +1376,16 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	\+ integer(Arity),
 	throw(error(type_error(integer, Arity), Obj::abolish(Functor/Arity), Sender)).
 
+'$lgt_abolish'(Obj, Functor/Arity, Sender, _) :-
+	integer(Arity),
+	Arity =< 0,
+	throw(error(domain_error(not_less_than_zero, Arity), Obj::abolish(Functor/Arity), Sender)).
+
 '$lgt_abolish'(Obj, Functor/Arity, Sender, Scope) :-
+	'$lgt_abolish_chk'(Obj, Functor/Arity, Sender, Scope).
+
+
+'$lgt_abolish_chk'(Obj, Functor/Arity, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, _, _, _) ->
 		((functor(Pred, Functor, Arity),
 		  '$lgt_call'(Dcl, Pred, PScope, Compilation, _, SCtn, _)) ->
@@ -3479,18 +3488,6 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 
 
-% '$lgt_clean_lookup_caches'(@callable, @callable)
-%
-% clean lookup caches for the matching object and predicate
-
-'$lgt_clean_lookup_caches'(Obj, Pred) :-
-	retractall('$lgt_obj_lookup_cache_'(Obj, Pred, _, _)),
-	retractall('$lgt_self_lookup_cache_'(Obj, Pred, _, _)),
-	retractall('$lgt_super_lookup_cache_'(Obj, Pred, _, _, _)),
-	retractall('$lgt_db_lookup_cache_'(Obj, Pred, _, _, _, _)).
-
-
-
 % '$lgt_save_op_table'
 %
 % saves current operator table
@@ -4515,9 +4512,15 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 % database handling built-in predicates
 
-'$lgt_tr_body'(abolish(Pred), '$lgt_abolish'(This, Pred, This, _), '$lgt_dbg_goal'(abolish(Pred), '$lgt_abolish'(This, Pred, This, _), Ctx), Ctx) :-
+'$lgt_tr_body'(abolish(Pred), TCond, DCond, Ctx) :-
 	!,
-	'$lgt_ctx_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This),
+	('$lgt_runtime_db_pred_ind_chk'(Pred) ->
+		TCond = '$lgt_abolish'(This, Pred, This, _)
+		;
+		'$lgt_compiler_db_pred_ind_chk'(Pred),
+		TCond = '$lgt_abolish_chk'(This, Pred, This, _)),
+	DCond = '$lgt_dbg_goal'(abolish(Pred), TCond, Ctx).
 
 '$lgt_tr_body'(asserta(Pred), TCond, DCond, Ctx) :-
 	!,
@@ -4525,10 +4528,10 @@ current_logtalk_flag(version, version(2, 22, 6)).
 		TCond = asserta(TPred)
 		;
 		'$lgt_ctx_this'(Ctx, This),
-		('$lgt_runtime_db_chk'(Pred) ->
+		('$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_asserta'(This, Pred, This, _)
 			;
-			'$lgt_compiler_db_chk'(Pred),
+			'$lgt_compiler_db_clause_chk'(Pred),
 			(Pred = (_ :- _) ->
 				TCond = '$lgt_asserta_rule_chk'(This, Pred, This, _)
 				;
@@ -4541,10 +4544,10 @@ current_logtalk_flag(version, version(2, 22, 6)).
 		TCond = assertz(TPred)
 		;
 		'$lgt_ctx_this'(Ctx, This),
-		('$lgt_runtime_db_chk'(Pred) ->
+		('$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_assertz'(This, Pred, This, _)
 			;
-			'$lgt_compiler_db_chk'(Pred),
+			'$lgt_compiler_db_clause_chk'(Pred),
 			(Pred = (_ :- _) ->
 				TCond = '$lgt_assertz_rule_chk'(This, Pred, This, _)
 				;
@@ -4557,10 +4560,10 @@ current_logtalk_flag(version, version(2, 22, 6)).
 		TCond = (clause(THead, TBody), (TBody = ('$lgt_nop'(Body), _) -> true; Body = TBody))
 		;
 		'$lgt_ctx_this'(Ctx, This),
-		('$lgt_runtime_db_chk'((Head :- Body)) ->
+		('$lgt_runtime_db_clause_chk'((Head :- Body)) ->
 			TCond = '$lgt_clause'(This, Head, Body, This, _)
 			;
-			'$lgt_compiler_db_chk'((Head :- Body)),
+			'$lgt_compiler_db_clause_chk'((Head :- Body)),
 			TCond = '$lgt_clause_chk'(This, Head, Body, This, _))),
 	DCond = '$lgt_dbg_goal'(clause(Head, Body), TCond, Ctx).
 
@@ -4570,10 +4573,10 @@ current_logtalk_flag(version, version(2, 22, 6)).
 		TCond = retract(TPred)
 		;
 		'$lgt_ctx_this'(Ctx, This),
-		('$lgt_runtime_db_chk'(Pred) ->
+		('$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_retract'(This, Pred, This, _)
 			;
-			'$lgt_compiler_db_chk'(Pred),
+			'$lgt_compiler_db_clause_chk'(Pred),
 			(Pred = (_ :- _) ->
 				TCond = '$lgt_retract_rule_chk'(This, Pred, This, _)
 				;
@@ -4586,10 +4589,10 @@ current_logtalk_flag(version, version(2, 22, 6)).
 		TCond = retractall(TPred)
 		;
 		'$lgt_ctx_this'(Ctx, This),
-		('$lgt_runtime_db_chk'(Pred) ->
+		('$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_retractall'(This, Pred, This, _)
 			;
-			'$lgt_compiler_db_chk'(Pred),
+			'$lgt_compiler_db_clause_chk'(Pred),
 			TCond = '$lgt_retractall_chk'(This, Pred, This, _))),
 	DCond = '$lgt_dbg_goal'(retractall(Pred), TCond, Ctx).
 
@@ -4780,40 +4783,83 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 
 
-% '$lgt_runtime_db_chk'(@term)
+% '$lgt_runtime_db_clause_chk'(@term)
 %
 % true if the argument forces runtime validity check
 
-'$lgt_runtime_db_chk'(Pred) :-
+'$lgt_runtime_db_clause_chk'(Pred) :-
 	var(Pred),
 	!.
 
-'$lgt_runtime_db_chk'((Head :- _)) :-
+'$lgt_runtime_db_clause_chk'((Head :- _)) :-
 	var(Head),
 	!.
 
-'$lgt_runtime_db_chk'((_ :- Body)) :-
+'$lgt_runtime_db_clause_chk'((_ :- Body)) :-
 	var(Body).
 
 
 
-% '$lgt_compiler_db_chk'(@nonvar)
+% '$lgt_compiler_db_clause_chk'(@nonvar)
 %
 % throws an error if the argument is invalid
 
-'$lgt_compiler_db_chk'((Head :- _)) :-
+'$lgt_compiler_db_clause_chk'((Head :- _)) :-
 	\+ callable(Head),
 	throw(type_error(callable, Head)).
 
-'$lgt_compiler_db_chk'((_ :- Body)) :-
+'$lgt_compiler_db_clause_chk'((_ :- Body)) :-
 	\+ callable(Body),
 	throw(type_error(callable, Body)).
 
-'$lgt_compiler_db_chk'(Clause) :-
+'$lgt_compiler_db_clause_chk'(Clause) :-
 	\+ callable(Clause),
 	throw(type_error(callable, Clause)).
 
-'$lgt_compiler_db_chk'(_).
+'$lgt_compiler_db_clause_chk'(_).
+
+
+
+
+% '$lgt_runtime_db_pred_ind_chk'(@term)
+%
+% true if the argument forces runtime validity check
+
+'$lgt_runtime_db_pred_ind_chk'(Pred) :-
+	var(Pred),
+	!.
+
+'$lgt_runtime_db_pred_ind_chk'(Functor/_) :-
+	var(Functor),
+	!.
+
+'$lgt_runtime_db_pred_ind_chk'(_/Arity) :-
+	var(Arity).
+
+
+
+% '$lgt_compiler_db_pred_ind_chk'(@nonvar)
+%
+% throws an error if the argument is invalid
+
+'$lgt_compiler_db_pred_ind_chk'(Term) :-
+	Term \= (_/_),
+	throw(type_error(predicate_indicator, Term)).
+
+'$lgt_compiler_db_pred_ind_chk'(Functor/_) :-
+	\+ atom(Functor),
+	throw(type_error(atom, Functor)).
+
+'$lgt_compiler_db_pred_ind_chk'(_/Arity) :-
+	\+ integer(Arity),
+	throw(type_error(integer, Arity)).
+
+'$lgt_compiler_db_pred_ind_chk'(_/Arity) :-
+	integer(Arity),
+	Arity =< 0,
+	throw(domain_error(not_less_than_zero, Arity)).
+
+'$lgt_compiler_db_pred_ind_chk'(_).
 
 
 
@@ -4943,17 +4989,22 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 % database handling built-in predicates
 
-'$lgt_tr_msg'(abolish(Pred), Obj, '$lgt_abolish'(Obj, Pred, This, p(p(p))), Ctx) :-
+'$lgt_tr_msg'(abolish(Pred), Obj, TPred, Ctx) :-
 	!,
-	'$lgt_ctx_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This),
+	('$lgt_runtime_db_pred_ind_chk'(Pred) ->
+		TPred = '$lgt_abolish'(Obj, Pred, This, p(p(p)))
+		;
+		'$lgt_compiler_db_pred_ind_chk'(Pred),
+		TPred = '$lgt_abolish_chk'(Obj, Pred, This, p(p(p)))).
 
 '$lgt_tr_msg'(asserta(Pred), Obj, TPred, Ctx) :-
 	!,
 	'$lgt_ctx_this'(Ctx, This),
-	('$lgt_runtime_db_chk'(Pred) ->
+	('$lgt_runtime_db_clause_chk'(Pred) ->
 			TPred = '$lgt_asserta'(Obj, Pred, This, p(p(p)))
 			;
-			'$lgt_compiler_db_chk'(Pred),
+			'$lgt_compiler_db_clause_chk'(Pred),
 			(Pred = (_ :- _) ->
 				TPred = '$lgt_asserta_rule_chk'(Obj, Pred, This, p(p(p)))
 				;
@@ -4962,10 +5013,10 @@ current_logtalk_flag(version, version(2, 22, 6)).
 '$lgt_tr_msg'(assertz(Pred), Obj, TPred, Ctx) :-
 	!,
 	'$lgt_ctx_this'(Ctx, This),
-	('$lgt_runtime_db_chk'(Pred) ->
+	('$lgt_runtime_db_clause_chk'(Pred) ->
 			TPred = '$lgt_assertz'(Obj, Pred, This, p(p(p)))
 			;
-			'$lgt_compiler_db_chk'(Pred),
+			'$lgt_compiler_db_clause_chk'(Pred),
 			(Pred = (_ :- _) ->
 				TPred = '$lgt_assertz_rule_chk'(Obj, Pred, This, p(p(p)))
 				;
@@ -4974,19 +5025,19 @@ current_logtalk_flag(version, version(2, 22, 6)).
 '$lgt_tr_msg'(clause(Head, Body), Obj, TPred, Ctx) :-
 	!,
 	'$lgt_ctx_this'(Ctx, This),
-	('$lgt_runtime_db_chk'((Head :- Body)) ->
+	('$lgt_runtime_db_clause_chk'((Head :- Body)) ->
 		TPred = '$lgt_clause'(Obj, Head, Body, This, p(p(p)))
 		;
-		'$lgt_compiler_db_chk'((Head :- Body)),
+		'$lgt_compiler_db_clause_chk'((Head :- Body)),
 		TPred = '$lgt_clause_chk'(Obj, Head, Body, This, p(p(p)))).
 
 '$lgt_tr_msg'(retract(Pred), Obj, TPred, Ctx) :-
 	!,
 	'$lgt_ctx_this'(Ctx, This),
-	('$lgt_runtime_db_chk'(Pred) ->
+	('$lgt_runtime_db_clause_chk'(Pred) ->
 			TPred = '$lgt_retract'(Obj, Pred, This, p(p(p)))
 			;
-			'$lgt_compiler_db_chk'(Pred),
+			'$lgt_compiler_db_clause_chk'(Pred),
 			(Pred = (_ :- _) ->
 				TPred = '$lgt_retract_rule_chk'(Obj, Pred, This, p(p(p)))
 				;
@@ -4995,10 +5046,10 @@ current_logtalk_flag(version, version(2, 22, 6)).
 '$lgt_tr_msg'(retractall(Pred), Obj, TPred, Ctx) :-
 	!,
 	'$lgt_ctx_this'(Ctx, This),
-	('$lgt_runtime_db_chk'(Pred) ->
+	('$lgt_runtime_db_clause_chk'(Pred) ->
 		TPred = '$lgt_retractall'(Obj, Pred, This, p(p(p)))
 		;
-		'$lgt_compiler_db_chk'(Pred),
+		'$lgt_compiler_db_clause_chk'(Pred),
 		TPred = '$lgt_retractall_chk'(Obj, Pred, This, p(p(p)))).
 
 
@@ -5141,19 +5192,24 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 % database handling built-in predicates
 
-'$lgt_tr_self_msg'(abolish(Pred), '$lgt_abolish'(Self, Pred, This, p(_)), Ctx) :-
+'$lgt_tr_self_msg'(abolish(Pred), TPred, Ctx) :-
 	!,
 	'$lgt_ctx_self'(Ctx, Self),
-	'$lgt_ctx_this'(Ctx, This).
+	'$lgt_ctx_this'(Ctx, This),
+	('$lgt_runtime_db_pred_ind_chk'(Pred) ->
+		TPred = '$lgt_abolish'(Self, Pred, This, p(_))
+		;
+		'$lgt_compiler_db_pred_ind_chk'(Pred),
+		TPred = '$lgt_abolish_chk'(Self, Pred, This, p(_))).
 
 '$lgt_tr_self_msg'(asserta(Pred), TPred, Ctx) :-
 	!,
 	'$lgt_ctx_self'(Ctx, Self),
 	'$lgt_ctx_this'(Ctx, This),
-	('$lgt_runtime_db_chk'(Pred) ->
+	('$lgt_runtime_db_clause_chk'(Pred) ->
 			TPred = '$lgt_asserta'(Self, Pred, This, p(_))
 			;
-			'$lgt_compiler_db_chk'(Pred),
+			'$lgt_compiler_db_clause_chk'(Pred),
 			(Pred = (_ :- _) ->
 				TPred = '$lgt_asserta_rule_chk'(Self, Pred, This, p(_))
 				;
@@ -5163,10 +5219,10 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	!,
 	'$lgt_ctx_self'(Ctx, Self),
 	'$lgt_ctx_this'(Ctx, This),
-	('$lgt_runtime_db_chk'(Pred) ->
+	('$lgt_runtime_db_clause_chk'(Pred) ->
 			TPred = '$lgt_assertz'(Self, Pred, This, p(_))
 			;
-			'$lgt_compiler_db_chk'(Pred),
+			'$lgt_compiler_db_clause_chk'(Pred),
 			(Pred = (_ :- _) ->
 				TPred = '$lgt_assertz_rule_chk'(Self, Pred, This, p(_))
 				;
@@ -5176,21 +5232,20 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	!,
 	'$lgt_ctx_self'(Ctx, Self),
 	'$lgt_ctx_this'(Ctx, This),
-	('$lgt_runtime_db_chk'((Head :- Body)) ->
+	('$lgt_runtime_db_clause_chk'((Head :- Body)) ->
 		TPred = '$lgt_clause'(Self, Head, Body, This, p(_))
 		;
-		'$lgt_compiler_db_chk'((Head :- Body)),
+		'$lgt_compiler_db_clause_chk'((Head :- Body)),
 		TPred = '$lgt_clause_chk'(Self, Head, Body, This, p(_))).
-
 
 '$lgt_tr_self_msg'(retract(Pred), TPred, Ctx) :-
 	!,
 	'$lgt_ctx_self'(Ctx, Self),
 	'$lgt_ctx_this'(Ctx, This),
-	('$lgt_runtime_db_chk'(Pred) ->
+	('$lgt_runtime_db_clause_chk'(Pred) ->
 			TPred = '$lgt_retract'(Self, Pred, This, p(_))
 			;
-			'$lgt_compiler_db_chk'(Pred),
+			'$lgt_compiler_db_clause_chk'(Pred),
 			(Pred = (_ :- _) ->
 				TPred = '$lgt_retract_rule_chk'(Self, Pred, This, p(_))
 				;
@@ -5200,10 +5255,10 @@ current_logtalk_flag(version, version(2, 22, 6)).
 	!,
 	'$lgt_ctx_self'(Ctx, Self),
 	'$lgt_ctx_this'(Ctx, This),
-	('$lgt_runtime_db_chk'(Pred) ->
+	('$lgt_runtime_db_clause_chk'(Pred) ->
 		TPred = '$lgt_retractall'(Self, Pred, This, p(_))
 		;
-		'$lgt_compiler_db_chk'(Pred),
+		'$lgt_compiler_db_clause_chk'(Pred),
 		TPred = '$lgt_retractall_chk'(Self, Pred, This, p(_))).
 
 
