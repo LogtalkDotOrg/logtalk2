@@ -18,7 +18,8 @@ RELEASE NOTES
 	turned on the configuration files of Prolog compilers providing the necessary 
 	operating-system access predicates for implementing this feature.
 
-	Improved reporting of default compilation flags at startup.
+	Improved installation instructions and reporting of default compilation flags 
+	at startup.
 
 	Added a "Hello World!" example.
 
