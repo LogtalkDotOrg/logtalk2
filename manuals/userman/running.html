@@ -302,7 +302,7 @@ Predicate spy points can be removed by using the method <code>nospy/1</code>. Th
 <pre>
     | ?- debugger::nospy(_).
     
-    All matching predicate spy points deleted.
+    All matching predicate spy points removed.
     yes
 </pre>
 
@@ -337,7 +337,7 @@ The method <code>nospy/4</code> may be used to remove all matching spy points. F
 <pre>
     | ?- debugger::nospy(_, _, foo, _).
     
-    All matching context spy points deleted.
+    All matching context spy points removed.
     yes
 </pre>
 <p>
@@ -350,7 +350,8 @@ We may remove all predicate and context spy points by using the method <code>nos
 <pre>
     | ?- debugger::nospyall.
     
-    All spy points deleted.
+    All predicate spy points removed.
+    All context spy points removed.
     yes
 </pre>
 
@@ -394,6 +395,43 @@ To stop the debugger, write:
     yes
 </pre>
 
+<h3>Debugging commands<a name="commands"></a></h3>
+
+<dl>
+	<dt><code>c</code> &mdash; creep</dt>
+		<dd>go on; you may use the spacebar in alternative</dd>
+	<dt><code>l</code> &mdash; leep</dt>
+		<dd>continues execution until the next spy point is found</dd>
+	<dt><code>s</code> &mdash; skip</dt>
+		<dd>skips debugging for the current goal; only valid at call and redo ports</dd>
+	<dt><code>f</code> &mdash; fail</dt>
+		<dd>forces backtracking</dd>
+	<dt><code>n</code> &mdash; nodebug</dt>
+		<dd>turns off debugging</dd>
+	<dt><code>@</code> &mdash; command</dt>
+		<dd>reads and executes a query</dd>
+	<dt><code>b</code> &mdash; break</dt>
+		<dd>suspends execution and starts new interpreter; type <code>end_of_file</code> to terminate</dd>
+	<dt><code>a</code> &mdash; abort</dt>
+		<dd>returns to top level interpreter</dd>
+	<dt><code>e</code> &mdash; exit</dt>
+		<dd>terminates Logtalk execution</dd>
+	<dt><code>d</code> &mdash; display</dt>
+		<dd>writes current goal without using operator notation</dd>
+	<dt><code>x</code> &mdash; context</dt>
+		<dd>prints execution context</dd>
+	<dt><code>=</code> &mdash; debugging</dt>
+		<dd>prints debugging information</dd>
+	<dt><code>*</code> &mdash; add</dt>
+		<dd>adds a context spy point for current goal</dd>
+	<dt><code>+</code> &mdash; add</dt>
+		<dd>adds a predicate spy point for current goal</dd>
+	<dt><code>-</code> &mdash; remove</dt>
+		<dd>removes a predicate spy point for current goal</dd>
+	<dt><code>h</code> &mdash; help</dt>
+		<dd>prints list of command options; <code>?</code> can be used in alternative</dd>
+</dl>
+
 <div class="navbottom">
 <a href="installing.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="programming.html">next</a>
 </div>
@@ -403,7 +441,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: April 15, 2004</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: April 16, 2004</span></p>
 </div>
 </body>
 </html>
