@@ -5,8 +5,9 @@ Release 2.14.4
 Copyright (c) 1998-2002 Paulo Moura.  All Rights Reserved.
 =================================================================
 
->>>> CONFIG FILE CONTENTS DIFFERENT FROM PREVIOUS RELEASES.
->>>> SEE FILE template.config FOR DETAILS.
+>>>> CONFIG FILE CONTENTS MAY DIFFER FROM PREVIOUS RELEASES.
+>>>> READ THE RELEASE NOTES.
+>>>> SEE THE FILE template.config FOR DETAILS.
 
 This file contains some notes about the config files provided. If you
 improve or correct some of these files, or write new ones for other

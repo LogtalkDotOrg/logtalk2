@@ -14,7 +14,7 @@ XML, XSLT, CSS and HTML 4, or to be converted to LateX for printing.
 You will need to either copy your .xml files to this directory or copy
 these files to the directory where the .xml files reside.
 
-Regarding conversion to HTML, the links to  the .xsl files on the .xml 
+Regarding conversion to HTML, the links to the .xsl files on the .xml 
 files and the links to the .css files in the generated .html files assume 
 that all files reside in the same directory.
 
@@ -28,7 +28,7 @@ or contain a reference to the Logtalk DTD file, logtalk.dtd. The reference
 to the logtalk.dtd file can be either a local reference or a URI reference.
 By default, all .xml documenting files contain a local reference but that 
 can be changed either in the config files or by using the doctype/1 compiler 
-option.
+option. Choose the option value that works best for your XSLT tools.
 
 
 Brief description of each file in this folder:
