@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.14.0 - July ??, 2002
+2.14.0 - July 26, 2002
 
 	Renamed all compiler and runtime internal predicates and all auxiliary 
 	predicates in the config files to start with a "$" character.
