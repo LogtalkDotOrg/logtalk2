@@ -421,12 +421,7 @@ SICStus Prolog 3.5~3.11.x
 	files.
 
 
-SWI Prolog 3.2.9 & 3.3.x and all later versions
-
-	swi329.config
-
-	For version 3.2.9 (or older versions). Supports smart compilation of 
-	source files.
+SWI Prolog 3.3.x and all later versions
 
 	swi.config
 
