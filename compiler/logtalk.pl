@@ -6380,7 +6380,7 @@ user0__def(Pred, _, _, _, Pred, user).
 	'$lgt_default_flag'(report, Report),
 	write('  Compilation report (report):                             '), write(Report), nl,
 	'$lgt_default_flag'(dont_care_vars, Dontcare),
-	write('  Don't care variables (dont_care_vars):                   '), write(Dontcare), nl,
+	write('  Don''t care variables (dont_care_vars):                   '), write(Dontcare), nl,
 	'$lgt_default_flag'(code_prefix, Code),
 	write('  Compiled code functors prefix (code_prefix):             '), writeq(Code), nl,
 	'$lgt_default_flag'(smart_compilation, Smart),

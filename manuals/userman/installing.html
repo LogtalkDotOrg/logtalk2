@@ -35,7 +35,7 @@ The Macintosh version is included in the file <code>lgt2xx.sea.bin</code>, a <co
 <h4>MacOS X, BSD, Linux, Unix</h4>
 
 <p>
-The Linux/Unix version is included in the file <code>lgt2xx.tar.gz</code>. In order to decompress and install the system we can use the following commands:
+The Linux/Unix version is included in the file <code>lgt2xx.tar.gz</code>. In order to decompress and install the system you may use the following commands:
 </p>
 <pre>
     % gunzip lgt2xx.tar.gz
@@ -263,7 +263,7 @@ You can use the following options:
 </dl>
 <dl>
 	<dt><code>doctype(Option)</code></dt>
-		<dd>Sets the DOCTYPE reference in the automatically generated XML documenting files. The default value is <code>local</code>, that is, the DOCTYPE reference points to a local DTD file (<code>logtalk.dtd</code>), residing in the same directory as the XML file. Other possible values are <code>web</code> (DOCTYPE reference points to the web location <code>http://www.logtalk.org/xml/1.0/logtalk.dtd</code>) and <code>standalone</code> (no DOCTYPE reference in the XML documenting files).</dd>
+		<dd>Sets the DOCTYPE reference in the automatically generated XML documenting files. The default value is <code>local</code>, that is, the DOCTYPE reference points to a local DTD or XSD file (respectively, <code>logtalk.dtd</code> or <code>logtalk.xsd</code>), residing in the same directory as the XML file. Other possible values are <code>web</code> (DOCTYPE reference points to an web location, either <code>http://www.logtalk.org/xml/1.0/logtalk.dtd</code> or <code>http://www.logtalk.org/xml/1.0/logtalk.xsd</code>) and <code>standalone</code> (no DOCTYPE reference in the XML documenting files).</dd>
 </dl>
 <dl>
 	<dt><code>xsl(File)</code></dt>
@@ -283,7 +283,7 @@ You can use the following options:
 </dl>
 <dl>
 	<dt><code>dont_care_vars(Option)</code></dt>
-		<dd>Toggles the interpretation of variables that start with an underscore as don't care variables. Possible option values are <code>on</code> and <code>off</code> (the usual default).</dd>
+		<dd>Toggles the interpretation of variables that start with an underscore as don't care variables. Possible option values are <code>on</code> and <code>off</code> (the usual default). Set its value to <code>on</code> if your Prolog compiler reports variables that start with an underscore as singletons instead of don't care variables.</dd>
 </dl>
 <dl>
 	<dt><code>code_prefix(Option)</code></dt>
