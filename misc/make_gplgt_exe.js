@@ -17,11 +17,11 @@ WScript.Echo('');
 
 var WshShell = new ActiveXObject("WScript.Shell");
 
-var prolog_path = WshShell.RegRead("HKCU\\Software\\GnuProlog\\RootPath") + "\\bin\\gplc.exe";
+var prolog_path = WshShell.RegRead("HKCU\\Software\\GnuProlog\\RootPath") + "\\bin";
 
 var FSObject = new ActiveXObject("Scripting.FileSystemObject");
 
-if (!FSObject.FileExists(prolog_path)) {
+if (!FSObject.FileExists(prolog_path + "\\gplc.exe")) {
 	WScript.Echo("Error! Cannot find gplc.exe at the expected place!");
 	WScript.Quit(1);
 }
@@ -56,7 +56,11 @@ f.Close();
 
 WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\logtalkgp.pl", true);
 
-WshShell.Run("cmd /c " + prolog_path + " -o " + logtalk_home + "\\bin\\gplgt.exe" + logtalk_home + "\\bin\\gnu.pl" + " " + logtalk_home + "\\bin\\logtalkgp.pl", true);
+WshShell.CurrentDirectory = prolog_path;
+
+WshShell.Run("cmd /c gplc -o " + logtalk_home + "\\bin\\gplgt.exe" + logtalk_home + "\\bin\\gnu.pl" + " " + logtalk_home + "\\bin\\logtalkgp.pl", true);
+
+FSObject.CopyFile(prolog_path + "\\w32guicons.dll", logtalk_home + "\\bin\\w32guicons.dll");
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk - GNU Prolog.lnk");
