@@ -105,6 +105,44 @@ logtalk.css
 	files in a web browser.
 
 
+lgt2pdf.sh
+	(bash shell script)
+lgt2pdf.js
+	(JScript command-line script for Windows; requires WSH 5.6 or later version)
+
+	Sample scripts to batch convert .xml files to .pdf files. Both scripts
+	require either the Apache FOP processor (http://xml.apache.org/fop) or the 
+	RenderX XEP processor (http://www.renderx.com). Tested with XEP version 3.7.8 
+	and FOP version 0.20.5 (to workaround a bug on the XALAN processor used by 
+	FOP, you should use the compiler option doctype(standalone) when compiling 
+	your Logtalk source files).
+	These script assumes that the LOGTALKHOME environment variable is defined
+	and that the chosen XSL-FO processor is available in the path.
+	The scripts should be called from the directory containing the .xml files 
+	you wish to convert. Call the scripts with the help option for a description 
+	of the available optional parameters (type "cscript lgt2pdf.js help" or 
+	"lgt2pdf.sh -h").
+
+
+lgt2html.sh
+	(bash shell script)
+lgt2html.js
+	(JScript command-line script for Windows; requires WSH 5.6 or later version)
+
+	Sample scripts to batch convert .xml files to .html files. These scripts 
+	also generate an index.html file which contains links to all the converted 
+	files. Supports the XSLT processors libxslt (tested with version 1.1.8; 
+	http://xmlsoft.org/XSLT/), Xalan (tested with version 1.7.0; 
+	http://xml.apache.org/xalan-c/index.html), and Sablotron (tested with version 
+	1.0.1; http://www.gingerall.com/charlie/ga/xml/p_sab.xml).
+	These scripts assumes that the LOGTALKHOME environment variable is defined 
+	and that the chosen XSLT processor is available in the path.
+	The scripts should be called from the directory containing the .xml files 
+	you wish to convert. Call the scripts with the help option for a description 
+	of the available optional parameters (type "cscript lgt2pdf.js help" or 
+	"lgt2pdf.sh -h").
+
+
 html.sh
 xhtml.sh
 
@@ -162,36 +200,6 @@ pdf.bat
 	your Logtalk source files). You will need either to copy your .xml files to 
 	this directory or to copy these files to the directory where the .xml files 
 	reside.
-
-
-lgt2pdf.sh
-
-	Sample bash shell script to batch convert .xml files to .pdf files.
-	Requires either the Apache FOP processor (http://xml.apache.org/fop) or the 
-	RenderX XEP processor (http://www.renderx.com). Tested with XEP version 3.7.8 
-	and FOP version 0.20.5 (to workaround a bug on the XALAN processor used by 
-	FOP, you should use the compiler option doctype(standalone) when compiling 
-	your Logtalk source files).
-	This script assumes that the LOGTALKHOME environment variable is defined
-	and that the chosen XSL-FO processor is available in the path.
-	The script should be called from the directory containing the .xml files 
-	you wish to convert. Call the script with the -h option for a description of 
-	the available optional parameters.
-
-
-lgt2html.sh
-
-	Sample bash shell script to batch convert .xml files to .html files. This 
-	script also generates an index.html file which contains links to all the 
-	converted files. Supports the XSLT processors libxslt (tested with version 
-	1.1.8; http://xmlsoft.org/XSLT/), Xalan (tested with version 1.7.0; 
-	http://xml.apache.org/xalan-c/index.html), and Sablotron (tested with version 
-	1.0.1; http://www.gingerall.com/charlie/ga/xml/p_sab.xml).
-	This script assumes that the LOGTALKHOME environment variable is defined 
-	and that the chosen XSLT processor is available in the path.
-	The script should be called from the directory containing the .xml files 
-	you wish to convert. Call the script with the -h option for a description of 
-	the available optional parameters.
 
 
 Note that you can write other XSLT files for converting the XML files to 
