@@ -24,9 +24,9 @@ template config file
 	template.config
 
 	If a config file for your favorite Prolog is not available, use this 
-	file to write one. For each predicate in the file, see if it is built-in 
-	in your Prolog, available in a library, or if you can write a better 
-	definition.
+	file as a template for writing one. For each predicate in the file, 
+	see if it is built-in in your Prolog, available in a library, or if 
+	you can write a better definition.
 
 
 ALS Prolog 3.1
@@ -194,15 +194,13 @@ IF/Prolog 5.1
 	of source files. Does not support the "altdirs" compiler option.
 
 
-JIProlog 3.0.0-6
+JIProlog 3.0.0-7
 
 	ji.config
 
 	Written with the help of the JIProlog author (but if you find any Logtalk 
-	problem please report it to me). When running on MacOS X, a bug on the 
-	exists_file/1 built-in predicate prevents Logtalk from compiling source 
-	files. Don't forget to use the chdir/1 predicate to set the working 
-	directory before loading the library or an example.
+	problem please report it to me). Don't forget to use the chdir/1 predicate 
+	to set the working directory before loading the library or an example.
 	Supports smart compilation of source files.
 
 
