@@ -8699,41 +8699,51 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 
-% '$lgt_pred_call_to_xml_term'(+nonvar, +nonvar)
+% '$lgt_pred_call_to_xml_term'(+nonvar, +nonvar, -nonvar)
 %
 % instantiates the arguments in a call to user defined names or to the atom '_'
 
-'$lgt_pred_call_to_xml_term'((Call1, Call2), Bindings) :-
-	!,
-	'$lgt_pred_call_to_xml_term'(Call1, Bindings),
-	'$lgt_pred_call_to_xml_term'(Call2, Bindings).
+'$lgt_pred_call_to_xml_term'(Call, Bindings, QCall) :-
+	'$lgt_double_quote_atoms'(Call, QCall),
+	'$lgt_pred_qcall_to_xml_term'(QCall, Bindings).
 
-'$lgt_pred_call_to_xml_term'((Call1; Call2), Bindings) :-
-	!,
-	'$lgt_pred_call_to_xml_term'(Call1, Bindings),
-	'$lgt_pred_call_to_xml_term'(Call2, Bindings).
 
-'$lgt_pred_call_to_xml_term'((Call1 -> Call2), Bindings) :-
+'$lgt_pred_qcall_to_xml_term'((Call1, Call2), Bindings) :-
 	!,
-	'$lgt_pred_call_to_xml_term'(Call1, Bindings),
-	'$lgt_pred_call_to_xml_term'(Call2, Bindings).
+	'$lgt_pred_qcall_to_xml_term'(Call1, Bindings),
+	'$lgt_pred_qcall_to_xml_term'(Call2, Bindings).
 
-'$lgt_pred_call_to_xml_term'(\+ Call, Bindings) :-
+'$lgt_pred_qcall_to_xml_term'((Call1; Call2), Bindings) :-
 	!,
-	'$lgt_pred_call_to_xml_term'(Call, Bindings).
+	'$lgt_pred_qcall_to_xml_term'(Call1, Bindings),
+	'$lgt_pred_qcall_to_xml_term'(Call2, Bindings).
 
-'$lgt_pred_call_to_xml_term'(Call, Bindings) :-
+'$lgt_pred_qcall_to_xml_term'((Call1 -> Call2), Bindings) :-
+	!,
+	'$lgt_pred_qcall_to_xml_term'(Call1, Bindings),
+	'$lgt_pred_qcall_to_xml_term'(Call2, Bindings).
+
+'$lgt_pred_qcall_to_xml_term'(\+ Call, Bindings) :-
+	!,
+	'$lgt_pred_qcall_to_xml_term'(Call, Bindings).
+
+'$lgt_pred_qcall_to_xml_term'(Call, Bindings) :-
 	functor(Call, Functor, Arity),
-	'$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings).
+	'$lgt_pred_qcall_to_xml_term'(Functor, Arity, Call, Bindings).
 
 
 
-% '$lgt_pred_call_to_xml_term'(+atom, +integer, +nonvar, +nonvar)
+% '$lgt_pred_call_to_xml_term'(+atom, +integer, +nonvar, +nonvar, -nonvar)
 %
 % instantiates the arguments in a predicate call to
 % user defined names or to the atom '_'
 
-'$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings) :-
+'$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings, QCall) :-
+	'$lgt_double_quote_atoms'(Call, QCall),
+	'$lgt_pred_qcall_to_xml_term'(Functor, Arity, QCall, Bindings).
+
+
+'$lgt_pred_qcall_to_xml_term'(Functor, Arity, Call, Bindings) :-
 	once((
 		'$lgt_pp_info_'(Functor/Arity, List)
 		;
@@ -8748,9 +8758,71 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_binding_vars'(Bindings, Vars),
 	'$lgt_vars_to_atoms'(Args, Vars, Names).
 
-'$lgt_pred_call_to_xml_term'(Functor, _, Call, _) :-
+'$lgt_pred_qcall_to_xml_term'(Functor, _, Call, _) :-
 	Call =.. [Functor| Args],
 	'$lgt_vars_to_underscore'(Args).
+
+
+
+'$lgt_double_quote_atoms'(Var, Var) :-
+	var(Var),
+	!.
+
+'$lgt_double_quote_atoms'((Call1, Call2), (QCall1, QCall2)) :-
+	!,
+	'$lgt_double_quote_atoms'(Call1, QCall1),
+	'$lgt_double_quote_atoms'(Call2, QCall2).
+
+'$lgt_double_quote_atoms'((Call1; Call2), (QCall1; QCall2)) :-
+	!,
+	'$lgt_double_quote_atoms'(Call1, QCall1),
+	'$lgt_double_quote_atoms'(Call2, QCall2).
+
+'$lgt_double_quote_atoms'((Call1 -> Call2), (QCall1 -> QCall2)) :-
+	!,
+	'$lgt_double_quote_atoms'(Call1, QCall1),
+	'$lgt_double_quote_atoms'(Call2, QCall2).
+
+'$lgt_double_quote_atoms'(\+ Call, \+ QCall) :-
+	!,
+	'$lgt_double_quote_atoms'(Call, QCall).
+
+'$lgt_double_quote_atoms'([], []) :-
+	!.
+
+'$lgt_double_quote_atoms'([Arg| Args], [QArg| QArgs]) :-
+	!,
+	'$lgt_double_quote_atoms'(Arg, QArg),
+	'$lgt_double_quote_atoms'(Args, QArgs).
+
+'$lgt_double_quote_atoms'(Atom, QAtom) :-
+	atom(Atom),
+	!,
+	('$lgt_atom_needs_quotes'(Atom) ->
+		atom_concat('''', Atom, Aux),
+		atom_concat(Aux, '''', QAtom)
+		;
+		Atom = QAtom).
+
+'$lgt_double_quote_atoms'(Number, Number) :-
+	number(Number),
+	!.
+
+'$lgt_double_quote_atoms'(Term, QTerm) :-
+	Term =.. [Functor| Args],
+	'$lgt_double_quote_atoms'(Functor, QFunctor),
+	'$lgt_double_quote_atoms'(Args, QArgs),
+	QTerm =.. [QFunctor| QArgs].
+
+
+'$lgt_atom_needs_quotes'(Atom) :-
+	atom_chars(Atom, [First| Rest]),
+	once((
+		First @< a;
+		First @> z;
+		'$lgt_member'(Char, [First| Rest]),
+		\+ (Char == '_'; Char @>= a, Char @=< z; Char @>= 'A', Char @=< 'Z'; Char @>= '0', Char @=< '9'))).
+
 
 
 % '$lgt_binding_vars'(@nonvar, -list)
@@ -8973,10 +9045,10 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		'$lgt_write_xml_open_tag'(Stream, examples, []),
 		forall(
 			'$lgt_member'((Description - Call - {Bindings}), Examples),
-			('$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings),
+			('$lgt_pred_call_to_xml_term'(Functor, Arity, Call, Bindings, QCall),
 			 '$lgt_write_xml_open_tag'(Stream, example, []),
 			 '$lgt_write_xml_cdata_element'(Stream, description, [], Description),
-			 '$lgt_write_xml_cdata_element'(Stream, call, [], Call),
+			 '$lgt_write_xml_cdata_element'(Stream, call, [], QCall),
 			 '$lgt_write_xml_cdata_element'(Stream, bindings, [], Bindings),
 		 	 '$lgt_write_xml_close_tag'(Stream, example))),
 		'$lgt_write_xml_close_tag'(Stream, examples)
@@ -9078,10 +9150,10 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	(('$lgt_pp_info_'(Info), '$lgt_member'(examples is Examples, Info)) ->
 		forall(
 			'$lgt_member'((Description - Call - {Bindings}), Examples),
-			('$lgt_pred_call_to_xml_term'(Call, Bindings),
+			('$lgt_pred_call_to_xml_term'(Call, Bindings, QCall),
 			 '$lgt_write_xml_open_tag'(Stream, example, []),
 			 '$lgt_write_xml_cdata_element'(Stream, description, [], Description),
-			 '$lgt_write_xml_cdata_element'(Stream, call, [], Call),
+			 '$lgt_write_xml_cdata_element'(Stream, call, [], QCall),
 			 '$lgt_write_xml_cdata_element'(Stream, bindings, [], Bindings),
 		 	 '$lgt_write_xml_close_tag'(Stream, example)))
 		;
@@ -9113,6 +9185,22 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	write(Stream, '>'),
 	write(Stream, Text),
 	write(Stream, '</'),
+	write(Stream, Tag),
+	write(Stream, '>'), nl(Stream).
+
+
+
+% '$lgt_writeq_xml_cdata_element'(@stream, @atom, @list, @term)
+%
+% writes <Tag Att1="V1" Att2="V2" ...><![CDATA[Text]]></Tag> (quoted)
+
+'$lgt_writeq_xml_cdata_element'(Stream, Tag, Atts, Text) :-
+	write(Stream, '<'),
+	write(Stream, Tag),
+	'$lgt_write_xml_tag_attributes'(Stream, Atts),
+	write(Stream, '><![CDATA['),
+	'$lgt_pretty_print_vars_quoted'(Stream, Text),
+	write(Stream, ']]></'),
 	write(Stream, Tag),
 	write(Stream, '>'), nl(Stream).
 
