@@ -1163,11 +1163,11 @@ current_logtalk_flag(version, version(2, 17, 1)).
 	findall(
 		Functor/Arity - (PScope, SCtn),
 		('$lgt_call'(Dcl, Pred, PScope, _, _, SCtn, _),
+		 once((\+ \+ PScope = Scope; Sender = SCtn)),
 		 functor(Pred, Functor, Arity)),
 		Preds),
 	'$lgt_cp_filter'(Preds, Filtered),
-	'$lgt_member'(Functor/Arity - (PScope, SCtn), Filtered),
-	once((\+ \+ PScope = Scope; Sender = SCtn)).
+	'$lgt_member'(Functor/Arity - (PScope, SCtn), Filtered).
 
 
 % '$lgt_cp_filter'(+list, -list)
