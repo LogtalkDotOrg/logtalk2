@@ -10,7 +10,10 @@ RELEASE NOTES
 =============
 
 
-2.15.4 - July ??, 2003
+2.15.4 - July 9, 2003
+
+	Corrected a spurious backtracking bug in the DCG rule translator. Added 
+	two more examples of DCGs.
 
 	New config file for XSB 2.6. Updated Logtalk compiler to compile cleanly 
 	under XSB after applying the patch described in configs/NOTES.
