@@ -1,5 +1,5 @@
 
-% benchmark a goal using the default number of repetitions and printing some 
+% benchmark a goal using a default number of repetitions and printing some 
 % useful statistics
 
 benchmark(Goal) :-
@@ -9,9 +9,9 @@ benchmark(Goal) :-
 	benchmark(N, Goal),
 	'$lgt_cpu_time'(Seconds2),
 	Average is (Seconds2 - Seconds1)/N,
-	write('Average time: '), write(Average), nl,
+	write('Average time per call: '), write(Average), write(' seconds'), nl,
 	Speed is 1.0/Average,
-	write('Calls per second: '), write(Speed), nl.
+	write('Number of calls per second: '), write(Speed), nl.
 
 
 % repeat a goal N times using a failure-driven loop to avoid the interference 
@@ -19,7 +19,7 @@ benchmark(Goal) :-
 % on the results
 
 benchmark(N, Goal) :-
-	repeat(N),
+	repeat(N),		% another option would be to use a between/3 built-in predicate
 		call(Goal),
 	fail.
 
