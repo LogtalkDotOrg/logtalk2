@@ -78,7 +78,7 @@
 
 (make-face 'logtalk-operator-face)
 (set-face-foreground 'logtalk-operator-face "blue")
-(set-face-bold-p 'logtalk-operator-face t)
+;; (set-face-bold-p 'logtalk-operator-face t)
 
 (make-face 'logtalk-string-face)
 (set-face-foreground 'logtalk-string-face "brown")
@@ -159,7 +159,7 @@
 		;; term creation and decomposition:
 		;;
 		("\\(arg\\|copy_term\\|functor\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("=\\.\\.\\" . 'logtalk-built-in-predicate-face)
+		("=\\.\\." . 'logtalk-operator-face)
 		;;
 		;; arithemtic evaluation:
 		;;
@@ -170,8 +170,8 @@
 		;;
 		;; evaluable functors:
 		;;
-		("//\\|mod\\|rem\\|[*+/-]" . 'logtalk-operator-face)
 		("\\(abs\\|ceiling\\|flo\\(?:at\\(?:_\\(?:\\(?:fractional\\|integer\\)_part\\)\\)?\\|or\\)\\|mod\\|r\\(?:em\\|ound\\)\\|sign\\|truncate\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("//\\|mod\\|rem\\|[*+/-]" . 'logtalk-operator-face)
 		;;
 		;; other arithemtic functors:
 		;;
@@ -215,7 +215,7 @@
 
 (setq logtalk-font-lock-operators
 	'(
-		("::\\|\\[\\^\\]\\[\\^\\]\\|[{}]" . 'logtalk-operator-face)
+		("::\\|\\^\\^\\|[{}]" . 'logtalk-operator-face)
 	))
 
 
