@@ -5,12 +5,29 @@
 // Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 // =================================================================
 
+var WshShell = new ActiveXObject("WScript.Shell");
+
+var html_xslt = logtalk_home + "\\xml\\lgthtml.xsl";
+var xhtml_xslt = logtalk_home + "\\xml\\lgtxhtml.xsl";
+var xslt;
+
+var format = "xhtml";
+// var format = "html";
+
+var directory = WshShell.CurrentDirectory;
+
+var index_file = "index.html";
+var index_title = "Entity documentation index";
+
+var processor = "msxsl";
+// var processor = "xsltproc";
+// var processor = "xalan";
+// var processor = "sabcmd";
+
 if (WScript.Arguments.Unnamed.Length > 0) {
 	usage_help();
 	WScript.Quit(0);
 }
-
-var WshShell = new ActiveXObject("WScript.Shell");
 
 var WshProcessEnv = WshShell.Environment("PROCESS");
 var WshSystemEnv = WshShell.Environment("SYSTEM");
@@ -30,23 +47,6 @@ else {
 }
 
 logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
-
-var html_xslt = logtalk_home + "\\xml\\lgthtml.xsl";
-var xhtml_xslt = logtalk_home + "\\xml\\lgtxhtml.xsl";
-var xslt;
-
-var format = "xhtml";
-// var format = "html";
-
-var directory = WshShell.CurrentDirectory;
-
-var index_file = "index.html";
-var index_title = "Entity documentation index";
-
-var processor = "msxsl";
-// var processor = "xsltproc";
-// var processor = "xalan";
-// var processor = "sabcmd";
 
 var f_arg = "";
 var d_arg = "";

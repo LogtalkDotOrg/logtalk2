@@ -5,12 +5,24 @@
 // Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 // =================================================================
 
+var WshShell = new ActiveXObject("WScript.Shell");
+
+var a4_xsl = logtalk_home + "\\xml\\lgtpdfa4.xsl";
+var us_xsl = logtalk_home + "\\xml\\lgtpdfus.xsl";
+var xsl;
+
+var format = "a4";
+// var format = "us";
+
+var directory = WshShell.CurrentDirectory;
+
+var processor = "fop";
+// var processor = "xep";
+
 if (WScript.Arguments.Unnamed.Length > 0) {
 	usage_help();
 	WScript.Quit(0);
 }
-
-var WshShell = new ActiveXObject("WScript.Shell");
 
 var WshProcessEnv = WshShell.Environment("PROCESS");
 var WshSystemEnv = WshShell.Environment("SYSTEM");
@@ -30,18 +42,6 @@ else {
 }
 
 logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
-
-var a4_xsl = logtalk_home + "\\xml\\lgtpdfa4.xsl";
-var us_xsl = logtalk_home + "\\xml\\lgtpdfus.xsl";
-var xsl;
-
-var format = "a4";
-// var format = "us";
-
-var directory = WshShell.CurrentDirectory;
-
-var processor = "fop";
-// var processor = "xep";
 
 var f_arg = "";
 var d_arg = "";
