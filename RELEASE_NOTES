@@ -12,6 +12,12 @@ RELEASE NOTES
 
 2.14.2 - August ??, 2002
 
+	Updated Logtalk compiler to clean temporary compilation predicates after 
+	compiling an entity instead of only before compilation.
+
+	Updated YAP 4.3.x config file for better Logtalk integration by hiding 
+	all internal compiler, runtime, and compiled entities predicates.
+
 	Updated the XSLT conversion scripts lgtxml.xsl and lgthtml.xsl to correct 
 	some HTML conformance errors in the generated pages.
 
