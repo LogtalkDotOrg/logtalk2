@@ -205,7 +205,7 @@ Obj::Pred :-
 
 current_object(Obj) :-
 	nonvar(Obj),
-	\+ '$lgt_valid_object_id'(Obj),
+	\+ callable(Obj),
 	throw(error(type_error(object_identifier, Obj), current_object(Obj))).
 
 current_object(Obj) :-
@@ -217,7 +217,7 @@ current_object(Obj) :-
 
 current_protocol(Ptc) :-
 	nonvar(Ptc),
-	\+ '$lgt_valid_protocol_id'(Ptc),
+	\+ atom(Ptc),
 	throw(error(type_error(protocol_identifier, Ptc), current_protocol(Ptc))).
 
 current_protocol(Ptc) :-
@@ -229,7 +229,7 @@ current_protocol(Ptc) :-
 
 current_category(Ctg) :-
 	nonvar(Ctg),
-	\+ '$lgt_valid_category_id'(Ctg),
+	\+ atom(Ctg),
 	throw(error(type_error(category_identifier, Ctg), current_category(Ctg))).
 
 current_category(Ctg) :-
@@ -241,7 +241,7 @@ current_category(Ctg) :-
 
 object_property(Obj, Prop) :-
 	nonvar(Obj),
-	\+ '$lgt_valid_object_id'(Obj),
+	\+ callable(Obj),
 	throw(error(type_error(object_identifier, Obj), object_property(Obj, Prop))).
 
 object_property(Obj, Prop) :-
@@ -261,7 +261,7 @@ object_property(Obj, Prop) :-
 
 category_property(Ctg, Prop) :-
 	nonvar(Ctg),
-	\+ '$lgt_valid_category_id'(Ctg),
+	\+ atom(Ctg),
 	throw(error(type_error(category_identifier, Ctg), category_property(Ctg, Prop))).
 
 category_property(Ctg, Prop) :-
@@ -278,7 +278,7 @@ category_property(Ctg, Prop) :-
 
 protocol_property(Ptc, Prop) :-
 	nonvar(Ptc),
-	\+ '$lgt_valid_protocol_id'(Ptc),
+	\+ atom(Ptc),
 	throw(error(type_error(protocol_identifier, Ptc), protocol_property(Ptc, Prop))).
 
 protocol_property(Ptc, Prop) :-
@@ -298,7 +298,7 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	throw(error(instantiation_error, create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
-	\+ '$lgt_valid_object_id'(Obj),
+	\+ callable(Obj),
 	throw(error(type_error(object_identifier, Obj), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
@@ -346,7 +346,7 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	throw(error(instantiation_error, create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
-	\+ '$lgt_valid_category_id'(Ctg),
+	\+ atom(Ctg),
 	throw(error(type_error(category_identifier, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
@@ -394,7 +394,7 @@ create_protocol(Ptc, Rels, Dirs) :-
 	throw(error(instantiation_error, create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
-	\+ '$lgt_valid_protocol_id'(Ptc),
+	\+ atom(Ptc),
 	throw(error(type_error(protocol_identifier, Ptc), create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
@@ -436,7 +436,7 @@ abolish_object(Obj) :-
 	throw(error(instantiation_error, abolish_object(Obj))).
 
 abolish_object(Obj) :-
-	\+ '$lgt_valid_object_id'(Obj),
+	\+ callable(Obj),
 	throw(error(type_error(object_identifier, Obj), abolish_object(Obj))).
 
 abolish_object(Obj) :-
@@ -483,7 +483,7 @@ abolish_category(Ctg) :-
 	throw(error(instantiation_error, abolish_category(Ctg))).
 
 abolish_category(Ctg) :-
-	\+ '$lgt_valid_category_id'(Ctg),
+	\+ atom(Ctg),
 	throw(error(type_error(category_identifier, Ctg), abolish_category(Ctg))).
 
 abolish_category(Ctg) :-
@@ -513,7 +513,7 @@ abolish_protocol(Ptc) :-
 	throw(error(instantiation_error, abolish_protocol(Ptc))).
 
 abolish_protocol(Ptc) :-
-	\+ '$lgt_valid_protocol_id'(Ptc),
+	\+ atom(Ptc),
 	throw(error(type_error(protocol_identifier, Ptc), abolish_protocol(Ptc))).
 
 abolish_protocol(Ptc) :-
@@ -546,12 +546,12 @@ implements_protocol(Entity, Ptc) :-
 
 implements_protocol(Entity, Ptc, Scope) :-
 	nonvar(Entity),
-	\+ '$lgt_valid_object_id'(Entity),
+	\+ callable(Entity),
 	throw(error(type_error(object_identifier, Entity), implements_protocol(Entity, Ptc, Scope))).
 
 implements_protocol(Entity, Ptc, Scope) :-
 	nonvar(Ptc),
-	\+ '$lgt_valid_protocol_id'(Ptc),
+	\+ atom(Ptc),
 	throw(error(type_error(protocol_identifier, Ptc), implements_protocol(Entity, Ptc, Scope))).
 
 implements_protocol(Entity, Ptc, Scope) :-
@@ -578,12 +578,12 @@ imports_category(Obj, Ctg) :-
 
 imports_category(Obj, Ctg, Scope) :-
 	nonvar(Obj),
-	\+ '$lgt_valid_object_id'(Obj),
+	\+ callable(Obj),
 	throw(error(type_error(object_identifier, Obj), imports_category(Obj, Ctg, Scope))).
 
 imports_category(Obj, Ctg, Scope) :-
 	nonvar(Ctg),
-	\+ '$lgt_valid_category_id'(Ctg),
+	\+ atom(Ctg),
 	throw(error(type_error(category_identifier, Ctg), imports_category(Obj, Ctg, Scope))).
 
 imports_category(Obj, Ctg, Scope) :-
@@ -610,12 +610,12 @@ instantiates_class(Obj, Class) :-
 
 instantiates_class(Obj, Class, Scope) :-
 	nonvar(Obj),
-	\+ '$lgt_valid_object_id'(Obj),
+	\+ callable(Obj),
 	throw(error(type_error(object_identifier, Obj), instantiates_class(Obj, Class, Scope))).
 
 instantiates_class(Obj, Class, Scope) :-
 	nonvar(Class),
-	\+ '$lgt_valid_object_id'(Class),
+	\+ callable(Class),
 	throw(error(type_error(object_identifier, Class), instantiates_class(Obj, Class, Scope))).
 
 instantiates_class(Obj, Class, Scope) :-
@@ -642,12 +642,12 @@ specializes_class(Class, Superclass) :-
 
 specializes_class(Class, Superclass, Scope) :-
 	nonvar(Class),
-	\+ '$lgt_valid_object_id'(Class),
+	\+ callable(Class),
 	throw(error(type_error(object_identifier, Class), specializes_class(Class, Superclass, Scope))).
 
 specializes_class(Class, Superclass, Scope) :-
 	nonvar(Superclass),
-	\+ '$lgt_valid_object_id'(Superclass),
+	\+ callable(Superclass),
 	throw(error(type_error(object_identifier, Superclass), specializes_class(Class, Superclass, Scope))).
 
 specializes_class(Class, Superclass, Scope) :-
@@ -674,12 +674,12 @@ extends_protocol(Ptc1, Ptc2) :-
 
 extends_protocol(Ptc1, Ptc2, Scope) :-
 	nonvar(Ptc1),
-	\+ '$lgt_valid_protocol_id'(Ptc1),
+	\+ atom(Ptc1),
 	throw(error(type_error(protocol_identifier, Ptc1), extends_protocol(Ptc1, Ptc2, Scope))).
 
 extends_protocol(Ptc1, Ptc2, Scope) :-
 	nonvar(Ptc2),
-	\+ '$lgt_valid_protocol_id'(Ptc2),
+	\+ atom(Ptc2),
 	throw(error(type_error(protocol_identifier, Ptc2), extends_protocol(Ptc1, Ptc2, Scope))).
 
 extends_protocol(Ptc1, Ptc2, Scope) :-
@@ -706,12 +706,12 @@ extends_object(Prototype, Parent) :-
 
 extends_object(Prototype, Parent, Scope) :-
 	nonvar(Prototype),
-	\+ '$lgt_valid_object_id'(Prototype),
+	\+ callable(Prototype),
 	throw(error(type_error(object_identifier, Prototype), extends_object(Prototype, Parent, Scope))).
 
 extends_object(Prototype, Parent, Scope) :-
 	nonvar(Parent),
-	\+ '$lgt_valid_object_id'(Parent),
+	\+ callable(Parent),
 	throw(error(type_error(object_identifier, Parent), extends_object(Prototype, Parent, Scope))).
 
 extends_object(Prototype, Parent, Scope) :-
@@ -734,22 +734,22 @@ current_event(Event, Obj, Msg, Sender, Monitor) :-
 
 current_event(Event, Obj, Msg, Sender, Monitor) :-
 	nonvar(Obj),
-	\+ '$lgt_valid_object_id'(Obj),
+	\+ callable(Obj),
 	throw(error(type_error(object_identifier, Obj), current_event(Event, Obj, Msg, Sender, Monitor))).
 
 current_event(Event, Obj, Msg, Sender, Monitor) :-
 	nonvar(Msg),
-	\+ '$lgt_callable'(Msg),
+	\+ callable(Msg),
 	throw(error(type_error(callable, Msg), current_event(Event, Obj, Msg, Sender, Monitor))).
 
 current_event(Event, Obj, Msg, Sender, Monitor) :-
 	nonvar(Sender),
-	\+ '$lgt_valid_object_id'(Sender),
+	\+ callable(Sender),
 	throw(error(type_error(object_identifier, Sender), current_event(Event, Obj, Msg, Sender, Monitor))).
 
 current_event(Event, Obj, Msg, Sender, Monitor) :-
 	nonvar(Monitor),
-	\+ '$lgt_valid_object_id'(Monitor),
+	\+ callable(Monitor),
 	throw(error(type_error(object_identifier, Monitor), current_event(Event, Obj, Msg, Sender, Monitor))).
 
 current_event(before, Obj, Msg, Sender, Monitor) :-
@@ -770,17 +770,17 @@ define_events(Event, Obj, Msg, Sender, Monitor) :-
 
 define_events(Event, Obj, Msg, Sender, Monitor) :-
 	nonvar(Obj),
-	\+ '$lgt_valid_object_id'(Obj),
+	\+ callable(Obj),
 	throw(error(type_error(object_identifier, Obj), define_events(Event, Obj, Msg, Sender, Monitor))).
 
 define_events(Event, Obj, Msg, Sender, Monitor) :-
 	nonvar(Msg),
-	\+ '$lgt_callable'(Msg),
+	\+ callable(Msg),
 	throw(error(type_error(callable, Msg), define_events(Event, Obj, Msg, Sender, Monitor))).
 
 define_events(Event, Obj, Msg, Sender, Monitor) :-
 	nonvar(Sender),
-	\+ '$lgt_valid_object_id'(Sender),
+	\+ callable(Sender),
 	throw(error(type_error(object_identifier, Sender), define_events(Event, Obj, Msg, Sender, Monitor))).
 
 define_events(Event, Obj, Msg, Sender, Monitor) :-
@@ -789,7 +789,7 @@ define_events(Event, Obj, Msg, Sender, Monitor) :-
 
 define_events(Event, Obj, Msg, Sender, Monitor) :-
 	nonvar(Monitor),
-	\+ '$lgt_valid_object_id'(Monitor),
+	\+ callable(Monitor),
 	throw(error(type_error(object_identifier, Monitor), define_events(Event, Obj, Msg, Sender, Monitor))).
 
 define_events(Event, Obj, Msg, Sender, Monitor) :-
@@ -827,22 +827,22 @@ abolish_events(Event, Obj, Msg, Sender, Monitor) :-
 
 abolish_events(Event, Obj, Msg, Sender, Monitor) :-
 	nonvar(Obj),
-	\+ '$lgt_valid_object_id'(Obj),
+	\+ callable(Obj),
 	throw(error(type_error(object_identifier, Obj), abolish_events(Event, Obj, Msg, Sender, Monitor))).
 
 abolish_events(Event, Obj, Msg, Sender, Monitor) :-
 	nonvar(Msg),
-	\+ '$lgt_callable'(Msg),
+	\+ callable(Msg),
 	throw(error(type_error(callable, Msg), abolish_events(Event, Obj, Msg, Sender, Monitor))).
 
 abolish_events(Event, Obj, Msg, Sender, Monitor) :-
 	nonvar(Sender),
-	\+ '$lgt_valid_object_id'(Sender),
+	\+ callable(Sender),
 	throw(error(type_error(object_identifier, Sender), abolish_events(Event, Obj, Msg, Sender, Monitor))).
 
 abolish_events(Event, Obj, Msg, Sender, Monitor) :-
 	nonvar(Monitor),
-	\+ '$lgt_valid_object_id'(Monitor),
+	\+ callable(Monitor),
 	throw(error(type_error(object_identifier, Monitor), abolish_events(Event, Obj, Msg, Sender, Monitor))).
 
 abolish_events(Event, Obj, Msg, Sender, Monitor) :-
@@ -1222,7 +1222,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	throw(error(domain_error(predicate_property, Prop), Obj::predicate_property(Pred, Prop), Sender)).
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, _) :-
-	\+ '$lgt_callable'(Pred),
+	\+ callable(Pred),
 	throw(error(type_error(callable, Pred), Obj::predicate_property(Pred, Prop), Sender)).
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, _) :-
@@ -1344,11 +1344,11 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	throw(error(instantiation_error, Obj::asserta((Head:-Body)), Sender)).
 
 '$lgt_asserta'(Obj, (Head:-Body), Sender, _) :-
-	\+ '$lgt_callable'(Head),
+	\+ callable(Head),
 	throw(error(type_error(callable, Head), Obj::asserta((Head:-Body)), Sender)).
 
 '$lgt_asserta'(Obj, (Head:-Body), Sender, _) :-
-	\+ '$lgt_callable'(Body),
+	\+ callable(Body),
 	throw(error(type_error(callable, Body), Obj::asserta((Head:-Body)), Sender)).
 
 '$lgt_asserta'(Obj, Clause, Sender, _) :-
@@ -1440,11 +1440,11 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	throw(error(instantiation_error, Obj::assertz((Head:-Body)), Sender)).
 
 '$lgt_assertz'(Obj, (Head:-Body), Sender, _) :-
-	\+ '$lgt_callable'(Head),
+	\+ callable(Head),
 	throw(error(type_error(callable, Head), Obj::assertz((Head:-Body)), Sender)).
 
 '$lgt_assertz'(Obj, (Head:-Body), Sender, _) :-
-	\+ '$lgt_callable'(Body),
+	\+ callable(Body),
 	throw(error(type_error(callable, Body), Obj::assertz((Head:-Body)), Sender)).
 
 '$lgt_assertz'(Obj, Clause, Sender, _) :-
@@ -1532,12 +1532,12 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	throw(error(instantiation_error, Obj::clause(Head, Body), Sender)).
 
 '$lgt_clause'(Obj, Head, Body, Sender, _) :-
-	\+ '$lgt_callable'(Head),
+	\+ callable(Head),
 	throw(error(type_error(callable, Head), Obj::clause(Head, Body), Sender)).
 
 '$lgt_clause'(Obj, Head, Body, Sender, _) :-
 	nonvar(Body),
-	\+ '$lgt_callable'(Body),
+	\+ callable(Body),
 	throw(error(type_error(callable, Body), Obj::clause(Head, Body), Sender)).
 
 '$lgt_clause'(Obj, Head, Body, Sender, _) :-
@@ -1579,7 +1579,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	throw(error(instantiation_error, Obj::retract((Head:-Body)), Sender)).
 
 '$lgt_retract'(Obj, (Head:-Body), Sender, _) :-
-	\+ '$lgt_callable'(Head),
+	\+ callable(Head),
 	throw(error(type_error(callable, Head), Obj::retract((Head:-Body)), Sender)).
 
 '$lgt_retract'(Obj, Clause, Sender, _) :-
@@ -1671,7 +1671,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	throw(error(instantiation_error, Obj::retractall(Head), Sender)).
 
 '$lgt_retractall'(Obj, Head, Sender, _) :-
-	\+ '$lgt_callable'(Head),
+	\+ callable(Head),
 	throw(error(type_error(callable, Head), Obj::retractall(Head), Sender)).
 
 '$lgt_retractall'(Obj, Head, Sender, _) :-
@@ -1743,7 +1743,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	throw(error(instantiation_error, Obj::phrase(Ruleset, Input, Rest), Sender)).
 
 '$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
-	\+ '$lgt_callable'(Ruleset),
+	\+ callable(Ruleset),
 	throw(error(type_error(callable, Ruleset), Obj::phrase(Ruleset, Input, Rest), Sender)).
 
 '$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
@@ -3180,7 +3180,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 % translates a directive and its (possibly empty) list of arguments
 
 '$lgt_tr_directive'(object, [Obj| Rels]) :-
-	'$lgt_valid_object_id'(Obj) ->
+	callable(Obj) ->
 		'$lgt_tr_object_id'(Obj),
 		'$lgt_tr_object_relations'(Rels, Obj)
 		;
@@ -3191,7 +3191,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 
 '$lgt_tr_directive'(protocol, [Ptc| Rels]) :-
-	'$lgt_valid_protocol_id'(Ptc) ->
+	atom(Ptc) ->
 		'$lgt_tr_protocol_id'(Ptc),
 		'$lgt_tr_protocol_relations'(Rels, Ptc)
 		;
@@ -3203,7 +3203,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 
 '$lgt_tr_directive'(category, [Ctg| Rels]) :-
-	'$lgt_valid_category_id'(Ctg) ->
+	atom(Ctg) ->
 		'$lgt_tr_category_id'(Ctg),
 		'$lgt_tr_category_relations'(Rels, Ctg)
 		;
@@ -3224,7 +3224,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 
 '$lgt_tr_directive'(initialization, [Goal]) :-
-	'$lgt_callable'(Goal) ->
+	callable(Goal) ->
 		'$lgt_pp_entity_'(_, Entity, Prefix, _),
 		'$lgt_context'(Ctx, Entity, Entity, Entity, Prefix, []),
 		'$lgt_tr_body'(Goal, TGoal, _, Ctx),
@@ -3251,7 +3251,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	'$lgt_convert_to_list'(Objs, Objs2),
 	forall(
 		'$lgt_member'(Obj, Objs2),
-		('$lgt_valid_object_id'(Obj) ->
+		(callable(Obj) ->
 			'$lgt_add_referenced_object'(Obj),
 			assertz('$lgt_pp_uses_'(Obj))
 			;
@@ -3262,7 +3262,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	'$lgt_convert_to_list'(Ptcs, Ptcs2),
 	forall(
 		'$lgt_member'(Ptc, Ptcs2),
-		('$lgt_valid_protocol_id'(Ptc) ->
+		(atom(Ptc) ->
 			'$lgt_add_referenced_protocol'(Ptc),
 			assertz('$lgt_pp_calls_'(Ptc))
 			;
@@ -3496,7 +3496,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 % '$lgt_tr_clause'(+clause, -clause, -clause, +term)
 
 '$lgt_tr_clause'((Head:-_), _, _, _) :-
-	\+ '$lgt_callable'(Head),
+	\+ callable(Head),
 	throw(type_error(callable, Head)).
 
 '$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_dbg_head'(Head, Ctx),DBody), Ctx) :-
@@ -3523,7 +3523,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 		TClause = (THead:-SBody)).
 
 '$lgt_tr_clause'(Fact, _, _, _) :-
-	\+ '$lgt_callable'(Fact),
+	\+ callable(Fact),
 	throw(type_error(callable, Fact)).
 
 '$lgt_tr_clause'(Fact, TFact, (TFact:-'$lgt_dbg_fact'(Fact, Ctx)), Ctx) :-
@@ -3885,7 +3885,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 % invalid goal
 
 '$lgt_tr_body'(Pred, _, _, _) :-
-	\+ '$lgt_callable'(Pred),
+	\+ callable(Pred),
 	throw(type_error(callable, Pred)).
 
 
@@ -3939,7 +3939,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 '$lgt_tr_msg'(_, Obj, _, _) :-
 	nonvar(Obj),
-	\+ '$lgt_valid_object_id'(Obj),
+	\+ callable(Obj),
 	!,
 	throw(type_error(object_identifier, Obj)).
 
@@ -3948,8 +3948,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 '$lgt_tr_msg'(_, Obj, _, Ctx) :-
 	nonvar(Obj),
-	\+ '$lgt_sender'(Ctx, user),	% not runtime message translation
-	\+ '$lgt_this'(Ctx, user),
+	\+ '$lgt_context'(Ctx, user, user, _, _, _),	% not runtime message translation
 	'$lgt_add_referenced_object'(Obj),
 	fail.
 
@@ -3965,7 +3964,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 % invalid goal
 
 '$lgt_tr_msg'(Pred, _, _, _) :-
-	\+ '$lgt_callable'(Pred),
+	\+ callable(Pred),
 	throw(type_error(callable, Pred)).
 
 
@@ -4251,7 +4250,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 % invalid goal
 
 '$lgt_tr_self_msg'(Pred, _, _) :-
-	\+ '$lgt_callable'(Pred),
+	\+ callable(Pred),
 	throw(type_error(callable, Pred)).
 
 
@@ -4288,7 +4287,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 '$lgt_tr_super_sending'(Pred, _, _) :-
 	nonvar(Pred),
-	\+ '$lgt_callable'(Pred),
+	\+ callable(Pred),
 	throw(type_error(callable, Pred)).
 
 
@@ -4651,7 +4650,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 '$lgt_tr_implements_protocol'([Ref| Refs], ObjOrCtg) :-
 	'$lgt_valid_scope'(Ref) ->
 		('$lgt_scope_id'(Ref, Scope, Ptc),
-		 ('$lgt_valid_protocol_id'(Ptc) ->
+		 (atom(Ptc) ->
 		 	'$lgt_add_referenced_protocol'(Ptc),
 			assertz('$lgt_pp_rclause_'('$lgt_implements_protocol_'(ObjOrCtg, Ptc, Scope))),
 			'$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl),
@@ -4674,7 +4673,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 '$lgt_tr_imports_category'([Ref| Refs], Obj) :-
 	'$lgt_valid_scope'(Ref) ->
 		('$lgt_scope_id'(Ref, Scope, Ctg),
-		 ('$lgt_valid_category_id'(Ctg) ->
+		 (atom(Ctg) ->
 		 	'$lgt_add_referenced_category'(Ctg),
 			assertz('$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, Scope))),
 			'$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def),
@@ -4697,7 +4696,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 '$lgt_tr_instantiates_class'([Ref| Refs], Obj) :-
 	'$lgt_valid_scope'(Ref) ->
 		('$lgt_scope_id'(Ref, Scope, Class),
-		 ('$lgt_valid_object_id'(Class) ->
+		 (callable(Class) ->
 		 	'$lgt_add_referenced_object'(Class),
 			assertz('$lgt_pp_rclause_'('$lgt_instantiates_class_'(Obj, Class, Scope))),
 			'$lgt_construct_object_functors'(Class, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef),
@@ -4720,7 +4719,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 '$lgt_tr_specializes_class'([Ref| Refs], Class) :-
 	'$lgt_valid_scope'(Ref) ->
 		('$lgt_scope_id'(Ref, Scope, Superclass),
-		 ('$lgt_valid_object_id'(Superclass) ->
+		 (callable(Superclass) ->
 		 	'$lgt_add_referenced_object'(Superclass),
 			assertz('$lgt_pp_rclause_'('$lgt_specializes_class_'(Class, Superclass, Scope))),
 			'$lgt_construct_object_functors'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef),
@@ -4743,7 +4742,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 '$lgt_tr_extends_object'([Ref| Refs], Obj) :-
 	'$lgt_valid_scope'(Ref) ->
 		('$lgt_scope_id'(Ref, Scope, Parent),
-		 ('$lgt_valid_object_id'(Parent) ->
+		 (callable(Parent) ->
 		 	'$lgt_add_referenced_object'(Parent),
 			assertz('$lgt_pp_rclause_'('$lgt_extends_object_'(Obj, Parent, Scope))),
 			'$lgt_construct_object_functors'(Parent, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef),
@@ -4766,7 +4765,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 '$lgt_tr_extends_protocol'([Ref| Refs], Ptc1) :-
 	'$lgt_valid_scope'(Ref) ->
 		('$lgt_scope_id'(Ref, Scope, Ptc2),
-		 ('$lgt_valid_protocol_id'(Ptc2) ->
+		 (atom(Ptc2) ->
 		 	'$lgt_add_referenced_protocol'(Ptc2),
 			assertz('$lgt_pp_rclause_'('$lgt_extends_protocol_'(Ptc1, Ptc2, Scope))),
 			'$lgt_construct_protocol_functors'(Ptc2, Prefix, Dcl),
@@ -6404,27 +6403,6 @@ current_logtalk_flag(version, version(2, 18, 0)).
 
 
 
-% '$lgt_valid_object_id'(@term)
-
-'$lgt_valid_object_id'(Term) :-
-	once((atom(Term); compound(Term))).
-
-
-
-% '$lgt_valid_category_id'(@term)
-
-'$lgt_valid_category_id'(Term) :-
-	atom(Term).
-
-
-
-% '$lgt_valid_protocol_id'(@term)
-
-'$lgt_valid_protocol_id'(Term) :-
-	atom(Term).
-
-
-
 % '$lgt_valid_scope'(@term)
 	
 '$lgt_valid_scope'(Term) :-
@@ -6443,15 +6421,6 @@ current_logtalk_flag(version, version(2, 18, 0)).
 	!.
 
 '$lgt_scope_id'(Entity, (public), Entity).
-
-
-
-% '$lgt_callable'(@term)
-
-'$lgt_callable'(Term) :-
-	nonvar(Term),
-	functor(Term, Functor, _),
-	atom(Functor).
 
 
 
@@ -6861,7 +6830,7 @@ current_logtalk_flag(version, version(2, 18, 0)).
 % translates DCG goal to Prolog goal
 
 '$lgt_dcg_goal'(RGoal, _, _, _) :-
-	\+ '$lgt_callable'(RGoal),
+	\+ callable(RGoal),
 	throw(type_error(callable, RGoal)).
 
 '$lgt_dcg_goal'(RGoal, CGoal, S0, S) :-
