@@ -13,16 +13,18 @@ RELEASE NOTES
 2.21.0 - September ??, 2004
 
 	Added a new predicate directive, alias/3, which allows the definition of 
-	alternative predicate names in order to solve conflicts between implemented, 
-	imported, or inherited predicates.
+	alternative predicate names in order to improve readability of inherited 
+	features and to solve conflicts between implemented, imported, or inherited 
+	predicates.
 
 	Added new example, "diamonds", illustrating problems and solutions for the 
-	"diamond problem" (multi-inheritance conflicts and ambiguities).
+	"diamond problem" (multi-inheritance conflicts and ambiguities) using the 
+	new alias/3 predicate directive.
 
 	Allow categories to import other categories, i.e. allow categories to be 
 	defined as a composition of other categories. This feature should only be 
 	used when extending a category without breaking its functional cohesion or 
-	when a modified version of a category is needed for importing on several 
+	when a modified version of a category is needed for importing into several 
 	unrelated objects. 
 
 	Added autocomplete strings for Logtalk methods and for Logtalk and Prolog 

@@ -228,8 +228,18 @@ Logtalk allows the definition of an alternative name for a predicate through the
 This directive can be used in objects, protocols, or categories. The first argument, <code>Entity</code>, must be an entity referenced in the opening directive of the entity contain the <code>alias/3</code> directive. It can be an implemented protocol, an imported category, an extended prototype, an instantiated class, or a specialized class. The second and third arguments are predicate indicators.
 </p>
 <p>
-A common use for the <code>alias/3</code> directive is to give an alternative name to an inherited predicate in order to improve readability.
+A common use for the <code>alias/3</code> directive is to give an alternative name to an inherited predicate in order to improve readability. For example:
 </p>
+<pre>
+    :- object(square,
+    	extends(rectangle).
+
+        :- alias(rectangle, width/1, side/1).
+
+        ...
+
+    :- end_object.
+</pre>
 <p>
 Another common use for this directive is to solve conflicts when two inherited predicates have the same functor and arity. We may want to call the predicate which is masked by the Logtalk lookup algorithm (see the <a href="inheritance.html">Inheritance</a> section) or we may need to call both predicates. This is simply accomplished by using the <code>alias/3</code> directive to give alternative names to masked or conflicting predicates. Consider the following example:
 </p>
