@@ -1040,8 +1040,12 @@ set_logtalk_flag(Flag, Value) :-
 
 set_logtalk_flag(Flag, Value) :-
 	atom(Flag),
-	\+ lgt_valid_flag(Flag, Value),
+	\+ lgt_valid_flag(Flag),
 	throw(error(domain_error(valid_flag, Flag), set_logtalk_flag(Flag, Value))).
+
+set_logtalk_flag(Flag, Value) :-
+	\+ lgt_valid_flag(Flag, Value),
+	throw(error(domain_error(valid_flag_value, Value), set_logtalk_flag(Flag, Value))).
 
 set_logtalk_flag(Flag, Value) :-
 	lgt_read_only_flag(Flag),
