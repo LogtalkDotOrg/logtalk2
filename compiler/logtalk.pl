@@ -3143,12 +3143,12 @@ current_logtalk_flag(version, version(2, 21, 6)).
 % creates the alternative directories
 
 '$lgt_make_alt_dirs' :-
-	'$lgt_compiler_option'(altdirs, on) ->
-		forall(
-			'$lgt_alt_directory'(_, Directory),
-			'$lgt_make_directory'(Directory))
-		;
-		true.
+	'$lgt_compiler_option'(altdirs, on),
+	'$lgt_alt_directory'(_, Directory),
+	'$lgt_make_directory'(Directory),
+	fail.
+	
+'$lgt_make_alt_dirs'.
 
 
 
