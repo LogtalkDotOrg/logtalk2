@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.15.6 - January ??, 2004
 
+    Added "xmlspec" compiler option in order to specify the extension (dtd 
+    or xsd) of the file describing the XML documenting files specification.
+
 	Removed outdated support for MacOS X Project Builder and added support 
 	for the new MacOS X Xcode developer tool.
 
