@@ -5,9 +5,10 @@ Release 2.22.2
 Copyright (c) 1998-2004 Paulo Moura.  All Rights Reserved.
 =================================================================
 
-This folder contains a Prolog file, "libpaths.pl", which defines the 
-library paths for the Logtalk standard library and for all the supplied 
-examples.
+This folder contains a Prolog file, "libpaths.pl", which, when loaded, 
+defines the library paths for the Logtalk standard library and for all 
+the supplied examples. You may customize this file by adding the paths 
+to your own "libraries" in order to easily load your own source code.
 
 In order to easily compile and load library and example source files 
 using the notation <library>(<entity>), you will need to load the 
@@ -25,3 +26,9 @@ created by the "misc/cplgtdirs.*" scripts. See the "INSTALL" and the
 "misc/NOTES" files for more details. Note that a few Prolog compilers 
 do not support the <library>(<entity>) notation. See the "configs/NOTES" 
 file for details.
+
+The somehow contrived code found on the "libpaths.pl" file is needed to ensure 
+compatibility with both the ISO Prolog standard and with most Prolog compilers.
+The code could be greatly simplified by using a multifile predicate directive 
+for the library path dynamic predicate. Unfortunately, not all Prolog compilers
+support multifile predicates.
