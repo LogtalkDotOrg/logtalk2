@@ -75,7 +75,7 @@ var fso = new ActiveXObject("Scripting.FileSystemObject");
 
 fso.CopyFile(logtalk_home + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory + "\\logtalk.dtd");
 fso.CopyFile(logtalk_home + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory + "\\logtalk.xsd");
-fso.CopyFile(logtalk_home + "\\xml\\logtalk.css", directory);
+fso.CopyFile(logtalk_home + "\\xml\\logtalk.css", directory + "\\logtalk.css");
 
 WScript.Echo("");
 WScript.Echo("converting XML files...");
