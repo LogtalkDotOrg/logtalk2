@@ -3103,12 +3103,12 @@ user0__def(Pred, _, _, _, Pred, user).
 % term output predicates that need to be operator aware
 
 '$lgt_tr_body'(write_term(Stream, Term, Options), '$lgt_iso_write_term'(Stream, Term, Options, Operators), _) :-
-	\+ '$lgt_member'(ignore_ops(true), Options),
+	('$lgt_member'(ignore_ops(Value), Options) -> Value \== true; true),
 	bagof(op(Priority, Specifier, Operator), '$lgt_local_op_'(Priority, Specifier, Operator), Operators),
 	!.
 
 '$lgt_tr_body'(write_term(Term, Options), '$lgt_iso_write_term'(Term, Options, Operators), _) :-
-	\+ '$lgt_member'(ignore_ops(true), Options),
+	('$lgt_member'(ignore_ops(Value), Options) -> Value \== true; true),
 	bagof(op(Priority, Specifier, Operator), '$lgt_local_op_'(Priority, Specifier, Operator), Operators),
 	!.
 
