@@ -22,6 +22,8 @@ mkdir /usr/local/lgt2170
 cp -R * /usr/local/lgt2170
 cd /usr/local
 chmod -R go-w,a+r lgt2170
+chmod a+x lgt2170
+chmod a+x lgt2170/misc/*.sh
 ln -sf lgt2170 logtalk
 cd bin
 ln -sf ../lgt2170/misc/cplgtdirs.sh cplgtdirs.sh

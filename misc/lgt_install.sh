@@ -20,6 +20,7 @@ cp -R * $prefix/lgt2170
 cd $prefix
 chmod -R go-w,a+r lgt2170
 chmod a+x lgt2170
+chmod a+x lgt2170/misc/*.sh
 ln -sf lgt2170 logtalk
 
 cd bin
