@@ -54,7 +54,7 @@ var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalkgp.pl", true);
 f.WriteLine(":- built_in.");
 f.Close();
 
-WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\logtalkgp.pl", true);
+WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl >> " + logtalk_home + "\\bin\\logtalkgp.pl", true);
 
 FSObject.CopyFile(prolog_path + "\\w32guicons.dll", logtalk_home + "\\bin\\w32guicons.dll");
 
