@@ -57,7 +57,11 @@ f.Close();
 WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\logtalkgp.pl", true);
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
-var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk - GNU Prolog.lnk");
+
+if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk")) 
+	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
+
+var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - GNU Prolog.lnk");
 link.Arguments = "--init-goal \"['bin/gnu.pl', 'bin/logtalkgp.pl']\"";
 link.Description = "Runs Logtalk with GNU Prolog";
 link.IconLocation = "app.exe,1";
