@@ -1198,6 +1198,8 @@ current_logtalk_flag(version, version(2, 16, 0)).
 '$lgt_predicate_property'(_, Pred, Prop, _, Scope) :-
 	'$lgt_built_in_method'(Pred, PScope),
 	!,
+	functor(Pred, Functor, Arity),
+	functor(Meta, Functor, Arity),
 	\+ \+ PScope = Scope,
 	('$lgt_scope'(Prop, PScope);
 	 Prop = static;
