@@ -22,6 +22,9 @@ RELEASE NOTES
 	documenting files into (X)HTML. Updated scripts html.sh, htmlnt.cmd, and 
 	htmldos.bat to use XT 20020426a or later version.
 
+	Improved syntax coloring accuracy of built-in predicates and methods for 
+	the SubEthaEdit text editor.
+
 
 2.16.0 - March 3, 2004
 
