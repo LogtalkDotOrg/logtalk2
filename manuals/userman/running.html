@@ -65,10 +65,10 @@ To compile to disk and also load into memory the source files we can use the Log
 This predicate works in the same way of the predicate <code>logtalk_compile/1</code> but also loads the compiled files to memory. 
 </p>
 <p>
-Both predicates expect an entity name, a list of entity names (atoms), or a source metafile as an argument. The Logtalk source file name extension, as defined in the configuration file, should be omitted.
+Both predicates expect an entity name, a source metafile, or a list of entity names and source metafiles as an argument. The Logtalk source file name extension, as defined in the configuration file, should be omitted.
 </p>
 <p>
-If you have more than a few source files then you may want to use a loader helper file containing the calls to the <code>logtalk_load/1</code> predicate. Consulting or compiling the loader file will then compile and load all your Logtalk entities into memory.
+If you have more than a few source files then you may want to use a loader helper file containing the calls to the <code>logtalk_load/1</code> predicate. Consulting or compiling the loader file will then compile and load all your Logtalk entities into memory (see the <a href="programming.html#loaders">next</a> section for details).
 </p>
 
 <h3>Compiler option flags<a name="options"></a></h3>
@@ -469,7 +469,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: November 12, 2004</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: November 22, 2004</span></p>
 </div>
 </body>
 </html>

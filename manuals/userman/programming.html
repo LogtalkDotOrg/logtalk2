@@ -98,13 +98,13 @@ Logtalk defines a <em>library</em> simply as a directory containg source files. 
 <pre>
     | ?- assertz(logtalk_library_path(shapes, '$LOGTALKHOME/examples/shapes/')). 
 </pre>
-This allows us to load a library source file by just typing:
+This allows us to load a library source file without the need to first change the current working directory to the library directory and then back to the original directory. For example, in order to load a <code>loader.lgt</code> file, contained in a library named <code>shapes</code>, we just need to type:
 </p>
 <pre>
     | ?- logtalk_load(shapes(loader)). 
 </pre>
 <p>
-without the need to first change the current working directory to the library directory and then back to the original directory. The best way to take advantage of this feature is to load at startup a source file containing an <code>initialization/1</code> directive which asserts all the <code>logtalk_library_path/2</code> clauses needed for all available libraries. This allows us to load library source files or entire libraries without worrying about libraries paths, improving code portability.
+The best way to take advantage of this feature is to load at startup a source file containing an <code>initialization/1</code> directive which asserts all the <code>logtalk_library_path/2</code> clauses needed for all available libraries. This allows us to load library source files or entire libraries without worrying about libraries paths, improving code portability.
 </p>
 
 <h3>Portable programs<a name="portability"></a></h3>
