@@ -50,14 +50,12 @@ var link = WshShell.CreateShortcut(ProgramsPath + "\\sicstuslgt.lnk");
 link.Arguments = "-l "+ logtalk_home + "\\bin\\logtalksicstus.pl";
 link.Description = "Logtalk & SICStus Prolog";
 link.IconLocation = "app.exe,1";
-link.TargetPath = WshShell.RegRead("HKEY_LOCAL_MACHINE\\Software\\SWI\\Prolog\\") + "\\bin\\sicstus.exe";
+link.TargetPath = WshShell.RegRead("HKEY_LOCAL_MACHINE\\Software\\SICS\\SICStus3.11_win32\\SP_PATH") + "\\bin\\spwin.exe";
 link.WindowStyle = 1;
 link.WorkingDirectory = logtalk_home;
 link.Save();
 
 WScript.Echo("Done. The Sicstuslgt shortcut was been added to the Start Menu Programs.");
-WScript.Echo("Users should define the environment variable LOGTALKHOME in");
-WScript.Echo("order to use the script.");
 WScript.Echo("");
 
 WScript.Quit(0);
