@@ -7400,6 +7400,24 @@ current_logtalk_flag(version, version(2, 22, 6)).
 
 
 
+% '$lgt_reverse_predicate_functor'(+atom, +integer, -callable, -atom, -atom, -integer)
+%
+% reverses the functor used for a compiled predicate
+
+'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity) :-
+	Arity is TArity - 3,	% subtract message execution context arguments
+	Arity >= 0,
+	number_codes(Arity, Codes),
+	atom_codes(Atom, Codes),
+	atom_concat(Prefix, FunctorPlusArity, TFunctor),	% generate and test
+	('$lgt_current_object_'(Entity, Prefix, _, _, _, _), Type = object
+	;
+	'$lgt_current_category_'(Entity, Prefix, _), Type = category),
+	atom_concat(Functor, Atom, FunctorPlusArity),
+	!.
+
+
+
 % '$lgt_built_in'(+callable)
 %
 % checks if the argument is either a Prolog or Logtalk built-in predicate
