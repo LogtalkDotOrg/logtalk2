@@ -1,7 +1,7 @@
 #!/bin/bash
 
-a4xsl="$LOGTALKHOME/xml/lgtpdfa4.xsl"
-usxsl="$LOGTALKHOME/xml/lgtpdfus.xsl"
+a4_xsl="$LOGTALKHOME/xml/lgtpdfa4.xsl"
+us_xsl="$LOGTALKHOME/xml/lgtpdfus.xsl"
 
 format=a4
 # format=us
@@ -21,7 +21,7 @@ usage_help()
 	echo "Optional arguments:"
 	echo "  -f paper format (either a4 or us; default is $format)"
 	echo "  -o output directory for the PDF files (default is $directory)"
-	echo "  -p XSL-FO processor (name of the executable; default is $processor)"
+	echo "  -p XSL-FO processor (either fop or xep; default is $processor)"
 	echo "  -h help"
 	echo
 	exit 1
@@ -45,10 +45,10 @@ else
 
 	if [ "$format" = "a4" ]
 	then
-		xsl=$a4xsl
+		xsl=$a4_xsl
 	elif [ "$format" = "us" ]
 	then
-		xsl=$usxsl
+		xsl=$us_xsl
 	else
 		echo unsupported paper format: $format
 		echo

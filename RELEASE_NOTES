@@ -12,8 +12,8 @@ RELEASE NOTES
 
 2.19.2 - August ??, 2004
 
-	Added five new sample shell scripts for converting XML documenting files 
-	to PDF, HTML, and XHTML using the fop and xsltproc XSL processors.
+	Added three new sample shell scripts for converting XML documenting files 
+	to PDF, HTML, and XHTML using several XSL processors.
 
 	Updated the User Manual documentation on converting XML documenting files 
 	to other formats.
