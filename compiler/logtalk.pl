@@ -3633,7 +3633,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 '$lgt_restore_op_table' :-
 	retractall('$lgt_pp_global_op_'(_, _, ',')),	% ','/2 cannot be an argument to op/3
 	retract('$lgt_pp_global_op_'(Pr, Spec, Op)),
-		op(Pr, Spec, Op),
+		catch(op(Pr, Spec, Op), _, fail),			% some Prolog compilers may define other operators as non-redefinable
 	fail.
 
 '$lgt_restore_op_table'.

@@ -18,7 +18,7 @@ RELEASE NOTES
 	recent development versions of SWI-Prolog. For now, this directive only 
 	works with SWI-Prolog as most Prolog compilers lack support for dealing 
 	with different text encodings. Added new flag "supports_encoding_dir". 
-	Added new example of using the new, experimental enconding/1 directive.
+	Added a new example, "encodings", of using the new enconding/1 directive.
 
 	When a source file contains an encoding/1 directive, the XML documenting 
 	files will use the same encoding. When no encoding/1 directive is present,
@@ -38,6 +38,9 @@ RELEASE NOTES
 
 	Much improved and accurate reporting of non-portable predicate calls when 
 	using the "portability" flag.
+
+	Added workaround for Prolog compilers that define operators other than 
+	','/2 as non-redefinable (such as new B-Prolog 6.7).
 
 	Added a Logtalk "clip" file for the TextPad Windows text editor.
 
