@@ -9,6 +9,11 @@ Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 To load this example and for sample queries, please see the SCRIPT 
 file.
 
-This is a very simple example of using the new, experimental enconding/1 
+This is a very simple example of using the new, experimental encoding/1 
 directive. Currently, this example requires Logtalk to be run with the 
 SWI-Prolog compiler.
+
+The "babel.lgt" source file uses UTF-8 encoding. When browsing its code, 
+be sure to use a text editor that supports this encoding. In addition, 
+you may need to configure your text editor to open the source file using 
+this encoding.
