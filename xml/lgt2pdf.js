@@ -37,8 +37,6 @@ else {
 	WScript.Quit(1);
 }
 
-logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
-
 var a4_xsl = logtalk_home + "\\xml\\lgtpdfa4.xsl";
 var us_xsl = logtalk_home + "\\xml\\lgtpdfus.xsl";
 var xsl;
@@ -97,7 +95,7 @@ for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
 	if (FSObject.GetExtensionName(file) == "xml") {
 		WScript.Echo("  converting " + file);
 		var pdf_file = directory + "\\" + FSObject.GetBaseName(file)+ ".pdf";
-		WshShell.Run(processor + " -q -xml " + file + " -xsl " + xsl + " -pdf " + pdf_file, true);
+		WshShell.Run(processor + " -q -xml \"" + file + "\" -xsl \"" + xsl + "\" -pdf \"" + pdf_file + "\"", true);
 	}
 }
 
