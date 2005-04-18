@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.23.2
+Release 2.24.0
 
 Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -14,7 +14,7 @@ Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 
 % call the predicate my_length/0 defined in the Prolog database:
 
-| ?- benchmark(my_length([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], _)).
+| ?- generate_list(30, List), benchmark(my_length(List, _)).
 
 Number of repetitions: 100000
 Loop time: 0.04 seconds
@@ -24,21 +24,9 @@ Number of calls per second: 370370.370370371
 yes
 
 
-% call the predicate module:mod_length/2 from top-level:
+% call the predicate object::length/2 from the top-level:
 
-| ?- benchmark(module:mod_length([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], _)).
-
-Number of repetitions: 100000
-Loop time: 0.04 seconds
-Goal time: 0.31 seconds
-Average time per call: 2.7e-06 seconds
-Number of calls per second: 370370.37037037
-yes
-
-
-% call the predicate list::length/2 from top-level:
-
-| ?- benchmark(object::length([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], _)).
+| ?- generate_list(30, List), benchmark(object::length(List, _)).
 
 Number of repetitions: 100000
 Loop time: 0.0600000000000005 seconds
@@ -48,10 +36,10 @@ Number of calls per second: 113636.363636364
 yes
 
 
-% compiled call of the predicate list::length/2 (simulates message sending 
-% from a compiled object to another object; thus no top-level overhead):
+% compiled call of the predicate object::length/2 (simulates message sending 
+% from a compiled object to another object; thus with no top-level overhead):
 
-| ?- benchmark('$lgt_send_to_object_nv'(object, length([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], _), user)).
+| ?- generate_list(30, List), benchmark('$lgt_send_to_object_nv'(object, length(List, _), user)).
 
 Number of repetitions: 100000
 Loop time: 0.0499999999999972 seconds
@@ -61,11 +49,11 @@ Number of calls per second: 217391.304347824
 yes
 
 
-% compiled call of the predicate list::length/2 (simulates message sending 
+% compiled call of the predicate object::length/2 (simulates message sending 
 % from a compiled object to another object with event-driven programming 
 % support switched off and with no top-level overhead):
 
-| ?- benchmark('$lgt_send_to_object_ne_nv'(object, length([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], _), user)).
+| ?- generate_list(30, List), benchmark('$lgt_send_to_object_ne_nv'(object, length(List, _), user)).
 
 Number of repetitions: 100000
 Loop time: 0.0500000000000007 seconds

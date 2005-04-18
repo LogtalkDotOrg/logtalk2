@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.23.2
+%  Release 2.24.0
 %
 %  Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 %
@@ -150,6 +150,7 @@
 :- dynamic('$lgt_pp_redefined_built_in_'/3).	% '$lgt_pp_redefined_built_in_'(Head, Context, THead)
 
 :- dynamic('$lgt_pp_directive_'/1).				% '$lgt_pp_directive_'(Dir)
+:- dynamic('$lgt_pp_ppclause_'/1).				% '$lgt_pp_ppclause_'(Clause)
 :- dynamic('$lgt_pp_rclause_'/1).				% '$lgt_pp_rclause_'(Clause)
 :- dynamic('$lgt_pp_eclause_'/1).				% '$lgt_pp_eclause_'(Clause)
 :- dynamic('$lgt_pp_feclause_'/1).				% '$lgt_pp_feclause_'(Clause)
@@ -1288,7 +1289,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 23, 2)).
+current_logtalk_flag(version, version(2, 24, 0)).
 
 
 
@@ -2945,8 +2946,6 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_file_name'(metafile, Source, Metafile),
 	'$lgt_file_name'(logtalk, Loader, LoaderFile),
 	'$lgt_file_name'(logtalk, Compiler, CompilerFile),
-	 '$lgt_reverse'(Names, Names2),
-	 '$lgt_reverse'(Cache, Cache2),
 	('$lgt_compiler_flag'(report, on) ->
 		write('> creating loading helper file '), write(Loader), write('...'), nl
 		;
@@ -2955,9 +2954,9 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		(open(LoaderFile, write, LoaderStream),
 		 write_term(LoaderStream, '% loader file automatically generated from source metafile ', []), 
 		 write_term(LoaderStream, Metafile, []), nl(LoaderStream), nl(LoaderStream),
-		 write_canonical(LoaderStream, (:- initialization(logtalk_load(Names2, Flags)))),
-		 write_term(LoaderStream, '.', []), nl(LoaderStream),
-		 '$lgt_copy_cached_metafile_terms'(Cache2, LoaderStream)),
+		 '$lgt_copy_cached_metafile_terms'(Cache, LoaderStream), nl(LoaderStream),
+		 write_canonical(LoaderStream, (:- initialization(logtalk_load(Names, Flags)))),
+		 write_term(LoaderStream, '.', []), nl(LoaderStream)),
 		Error,
 		'$lgt_compiler_error_handler'(LoaderStream, Error)),
 	close(LoaderStream),
@@ -2970,7 +2969,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		(open(CompilerFile, write, CompilerStream),
 		 write_term(CompilerStream, '% compiler file automatically generated from source metafile ', []), 
 		 write_term(CompilerStream, Metafile, []), nl(CompilerStream), nl(CompilerStream),
-		 write_canonical(CompilerStream, (:- initialization(logtalk_compile(Names2, Flags)))),
+		 write_canonical(CompilerStream, (:- initialization(logtalk_compile(Names, Flags)))),
 		 write_term(CompilerStream, '.', []), nl(CompilerStream)),
 		Error,
 		'$lgt_compiler_error_handler'(CompilerStream, Error)),
@@ -3002,19 +3001,20 @@ current_logtalk_flag(version, version(2, 23, 2)).
 % returning cached read terms and a list of extracted entities
 
 '$lgt_copy_metafile_term'(Input, Term, Cache, Names) :-
-	'$lgt_copy_metafile_term'(Input, Term, [], Cache, [], Names).
+	'$lgt_copy_metafile_term'(Input, Term, [], Cache, Names).
 
 
-'$lgt_copy_metafile_term'(Input, end_of_file, Cache, Cache, Names, Names) :-
+'$lgt_copy_metafile_term'(Input, end_of_file, Acc, Cache, []) :-
 	!,
-	close(Input).
+	close(Input),
+	'$lgt_reverse'(Acc, Cache).
 
-'$lgt_copy_metafile_term'(_, Term, _, _, _, _) :-
+'$lgt_copy_metafile_term'(_, Term, _, _, _) :-
 	Term =.. [(:-), Directive],
 	'$lgt_closing_entity_directive'(Directive, Type),
 	throw(entity_opening_directive_missing(Type)).
 
-'$lgt_copy_metafile_term'(Input, Term, CacheAcc, Cache, Acc, Names) :-
+'$lgt_copy_metafile_term'(Input, Term, Acc, Cache, [Name| Names]) :-
 	Term =.. [(:-), Directive],
 	'$lgt_opening_entity_directive'(Directive, Type, Entity),
 	!,
@@ -3033,7 +3033,8 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		atom_concat(Functor, Atom, Name)),
 	'$lgt_file_name'(logtalk, Name, File),
 	open(File, write, Output),
-	'$lgt_copy_cached_metafile_terms'(CacheAcc, Output),
+	'$lgt_reverse'(Acc, Acc2),	
+	'$lgt_copy_cached_metafile_terms'(Acc2, Output),
 	write_canonical(Output, Term),
 	write_term(Output, '.', []), nl(Output),
 	'$lgt_copy_metafile_entity_terms'(Input, Output, Type),
@@ -3043,12 +3044,14 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		;
 		true),
 	read_term(Input, Next, []),
-	'$lgt_copy_metafile_term'(Input, Next, [], Cache, [Name| Acc], Names).
+	('$lgt_member'((:- encoding(Encoding)), Acc2) ->
+		'$lgt_copy_metafile_term'(Input, Next, [(:- encoding(Encoding))], Cache, Names)
+		;
+		'$lgt_copy_metafile_term'(Input, Next, [], Cache, Names)).
 
-
-'$lgt_copy_metafile_term'(Input, Term, CacheAcc, Cache, Acc, Names) :-
+'$lgt_copy_metafile_term'(Input, Term, Acc, Cache, Names) :-
 	read_term(Input, Next, []),
-	'$lgt_copy_metafile_term'(Input, Next, [Term| CacheAcc], Cache, Acc, Names).
+	'$lgt_copy_metafile_term'(Input, Next, [Term| Acc], Cache, Names).
 
 
 
@@ -3341,10 +3344,14 @@ current_logtalk_flag(version, version(2, 23, 2)).
 '$lgt_write_tr_entity'(Entity) :-
 	'$lgt_file_name'(prolog, Entity, File),
 	catch((
-		open(File, write, Stream),
+		('$lgt_pp_directive_'(encoding(Encoding)) ->
+			open(File, write, Stream, [encoding(Encoding)])
+			;
+			open(File, write, Stream)),
 		'$lgt_write_directives'(Stream),
+		'$lgt_write_prolog_clauses'(Stream),
 		('$lgt_pp_entity'(_, _, _, _, _) ->
-			'$lgt_write_clauses'(Stream),
+			'$lgt_write_logtalk_clauses'(Stream),
 			 '$lgt_write_init_call'(Stream)
 			 ;
 			 true),
@@ -3363,7 +3370,10 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		('$lgt_compiler_flag'(xml, on) ->
 			'$lgt_file_name'(xml, Entity, File),
 			catch((
-				open(File, write, Stream),
+				('$lgt_pp_directive_'(encoding(Encoding)) ->
+					open(File, write, Stream, [encoding(Encoding)])
+					;
+					open(File, write, Stream)),
 				'$lgt_write_xml_file'(Stream),
 				close(Stream)),
 				Error,
@@ -3402,10 +3412,8 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		'$lgt_compiler_error_handler'(Stream, Error)),
 	'$lgt_save_op_table',
 	catch(
-		(read_term(Stream, Term, [singletons(Singletons1)]),
-		 '$lgt_filter_dont_care_vars'(Singletons1, Singletons2),
-		 '$lgt_report_singletons'(Singletons2, Term),
-		 '$lgt_tr_file'(Stream, Term)),
+		(read_term(Stream, Term, [singletons(Singletons)]),
+		 '$lgt_tr_file'(Stream, Term, Singletons)),
 		Error,
 		'$lgt_compiler_error_handler'(Stream, Error)),
 	'$lgt_restore_op_table',
@@ -3413,25 +3421,21 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_fix_redef_built_ins',
 	'$lgt_report_misspelt_calls',
 	'$lgt_report_non_portable_calls',
-	('$lgt_pp_entity'(Type, _, _, _, _) ->
-		'$lgt_gen_clauses'(Type),
-		'$lgt_gen_directives'(Type)
-		;
-		true).	% source file containing no entity definition
+	'$lgt_generate_compiled_code'.
 
 
 
-% '$lgt_tr_file'(+stream, +term)
+% '$lgt_tr_file'(+stream, +term, +list)
 
-'$lgt_tr_file'(_, end_of_file) :-
+'$lgt_tr_file'(_, end_of_file, _) :-
 	!.
 
-'$lgt_tr_file'(Stream, Term) :-
+'$lgt_tr_file'(Stream, Term, TSingletons) :-
+	'$lgt_filter_dont_care_vars'(TSingletons, FSingletons),
+	'$lgt_report_singletons'(FSingletons, Term),
 	'$lgt_tr_term'(Term, Stream),
-	read_term(Stream, Next, [singletons(Singletons1)]),
-	'$lgt_filter_dont_care_vars'(Singletons1, Singletons2),
-	'$lgt_report_singletons'(Singletons2, Next),
-	'$lgt_tr_file'(Stream, Next).
+	read_term(Stream, Next, [singletons(NSingletons)]),
+	'$lgt_tr_file'(Stream, Next, NSingletons).
 
 
 
@@ -3569,6 +3573,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	retractall('$lgt_pp_def_'(_)),
 	retractall('$lgt_pp_ddef_'(_)),
 	retractall('$lgt_pp_super_'(_)),
+	retractall('$lgt_pp_ppclause_'(_)),
 	retractall('$lgt_pp_rclause_'(_)),
 	retractall('$lgt_pp_eclause_'(_)),
 	retractall('$lgt_pp_feclause_'(_)),
@@ -3706,7 +3711,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 
-% '$lgt_tr_term'(+term)
+% '$lgt_tr_term'(+term, +stream)
 %
 % translates an entity term (either a clause or a directive)
 
@@ -3773,7 +3778,8 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	!.
 
 '$lgt_tr_directive'(Dir, _) :-
-	throw(error(domain_error(directive, Dir), directive(Dir))).
+	functor(Dir, Functor, Arity),
+	throw(error(domain_error(directive, Functor/Arity), directive(Dir))).
 
 
 
@@ -3785,7 +3791,10 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 '$lgt_tr_global_directive'(encoding(Encoding), Stream) :-	% encoding/1 directives must be used during entity compilation
 	!,
-	'$lgt_set_stream_encoding'(Stream, Encoding).
+	('$lgt_compiler_flag'(supports_encoding_dir, true) ->
+		'$lgt_set_stream_encoding'(Stream, Encoding)
+		;
+		throw(error(domain_error(directive, encoding/1), directive(encoding(Encoding))))).
 
 '$lgt_tr_global_directive'(_, _).
 
@@ -4252,17 +4261,6 @@ current_logtalk_flag(version, version(2, 23, 2)).
 		;
 		throw(type_error(atomic, Version))).
 
-
-'$lgt_tr_entity_info_key_value'(examples, Examples) :-
-	!,
-	('$lgt_proper_list'(Examples) ->
-		(('$lgt_member'(Example, Examples), \+ '$lgt_valid_pred_call_example'(Example)) ->
-			throw(type_error(example, Example))
-			;
-			true)
-		;
-		throw(type_error(list, Examples))).
-
 '$lgt_tr_entity_info_key_value'(_, _).
 
 
@@ -4399,7 +4397,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 '$lgt_tr_clause'(Clause) :-
 	\+ '$lgt_pp_entity'(_, _, _, _, _),		% clause occurs before opening entity directive
 	!,
-	assertz('$lgt_pp_feclause_'(Clause)).
+	assertz('$lgt_pp_ppclause_'(Clause)).	% clause will copied unchanged to the generated Prolog file
 
 '$lgt_tr_clause'(Clause) :-
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, _),
@@ -6166,6 +6164,19 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 
+% '$lgt_generate_compiled_code'
+%
+% code generation for the entity being compiled
+
+'$lgt_generate_compiled_code' :-
+	'$lgt_pp_entity'(Type, _, _, _, _) ->
+		'$lgt_gen_clauses'(Type),
+		'$lgt_gen_directives'(Type)
+		;
+		true.	% source file containing no entity definition
+
+
+
 % '$lgt_gen_directives'(+atom)
 %
 % generates entity directives
@@ -7221,16 +7232,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 % writes the directives
 
 '$lgt_write_directives'(Stream) :-
-	'$lgt_pp_directive_'(encoding(Encoding)),
-	'$lgt_compiler_flag'(supports_encoding_dir, true),
-	write_canonical(Stream, (:- encoding(Encoding))),
-	write(Stream, '.'),
-	nl(Stream),
-	fail.
-
-'$lgt_write_directives'(Stream) :-
 	'$lgt_pp_directive_'(Dir),
-	Dir \= encoding(_),
 	write_canonical(Stream, (:- Dir)),
 	write(Stream, '.'),
 	nl(Stream),
@@ -7240,14 +7242,33 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 
-'$lgt_write_clauses'(Stream) :-
+% '$lgt_write_prolog_clauses'(+stream)
+%
+% writes Prolog clauses which appear before the entity opening directive
+
+'$lgt_write_prolog_clauses'(Stream) :-
+	'$lgt_pp_ppclause_'(Clause),
+	write_canonical(Stream, Clause),
+	write(Stream, '.'),
+	nl(Stream),
+	fail.
+
+'$lgt_write_prolog_clauses'(_).
+
+
+
+% '$lgt_write_logtalk_clauses'(+stream)
+%
+% writes Logtalk entity clauses
+
+'$lgt_write_logtalk_clauses'(Stream) :-
 	'$lgt_write_functors_clause'(Stream),
 	'$lgt_write_dcl_clauses'(Stream),
 	'$lgt_write_def_clauses'(Stream),
 	'$lgt_write_ddef_clauses'(Stream),
 	'$lgt_write_super_clauses'(Stream),
 	'$lgt_write_alias_clauses'(Stream),
-	'$lgt_write_entity_clauses'(Stream).
+	'$lgt_write_pred_clauses'(Stream).
 
 
 
@@ -7325,14 +7346,14 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 
-'$lgt_write_entity_clauses'(Stream) :-
+'$lgt_write_pred_clauses'(Stream) :-
 	'$lgt_pp_feclause_'(Clause),
 	write_canonical(Stream, Clause),
 	write(Stream, '.'),
 	nl(Stream),
 	fail.
 
-'$lgt_write_entity_clauses'(_).
+'$lgt_write_pred_clauses'(_).
 
 
 
@@ -7372,7 +7393,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_assert_def_clauses',
 	'$lgt_assert_ddef_clauses',
 	'$lgt_assert_super_clauses',
-	'$lgt_assert_entity_clauses',
+	'$lgt_assert_pred_clauses',
 	'$lgt_assert_relation_clauses',
 	'$lgt_assert_init'.
 
@@ -7436,12 +7457,12 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 
 
-'$lgt_assert_entity_clauses' :-
+'$lgt_assert_pred_clauses' :-
 	'$lgt_pp_feclause_'(Clause),
 	assertz(Clause),
 	fail.
 
-'$lgt_assert_entity_clauses'.
+'$lgt_assert_pred_clauses'.
 
 
 
@@ -8249,6 +8270,8 @@ current_logtalk_flag(version, version(2, 23, 2)).
 
 '$lgt_xml_encoding_table'(ascii, 'us-ascii') :-
 	!.
+'$lgt_xml_encoding_table'(iso_8859_1, 'iso-8859-1') :-
+	!.
 '$lgt_xml_encoding_table'(iso_latin_1, 'iso-8859-1') :-
 	!.
 '$lgt_xml_encoding_table'(utf8, 'utf-8') :-
@@ -8545,7 +8568,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_write_xml_entity'(Stream),
 	'$lgt_write_xml_relations'(Stream),
 	'$lgt_write_xml_predicates'(Stream),
-	'$lgt_write_xml_examples'(Stream),
+	'$lgt_write_xml_remarks'(Stream),
 	'$lgt_write_xml_footer'(Stream).
 
 
@@ -8658,7 +8681,7 @@ current_logtalk_flag(version, version(2, 23, 2)).
 			true),
 		forall(
 			('$lgt_member'(Key is Value, Info),
-			 \+ '$lgt_member'(Key, [comment, author, version, date, parameters, parnames, examples])),
+			 \+ '$lgt_member'(Key, [comment, author, version, date, parameters, parnames, remarks])),
 			('$lgt_write_xml_open_tag'(Stream, info, []),
 			 '$lgt_write_xml_element'(Stream, key, [], Key),
 			 '$lgt_write_xml_cdata_element'(Stream, value, [], Value),
@@ -8700,41 +8723,6 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_entity_to_xml_term'(Entity),
 	Relation =.. [_| Args],
 	'$lgt_vars_to_underscore'(Args).
-
-
-
-% '$lgt_pred_call_to_xml_term'(+nonvar, +nonvar, -nonvar, -nonvar)
-%
-% instantiates the arguments in a call to user defined names or to the atom '_'
-
-'$lgt_pred_call_to_xml_term'(Call, Bindings, QCall, QBindings) :-
-	'$lgt_double_quote_atoms'(Call, QCall),
-	'$lgt_double_quote_atoms'(Bindings, QBindings),
-	'$lgt_pred_qcall_to_xml_term'(QCall, QBindings).
-
-
-'$lgt_pred_qcall_to_xml_term'((Call1, Call2), Bindings) :-
-	!,
-	'$lgt_pred_qcall_to_xml_term'(Call1, Bindings),
-	'$lgt_pred_qcall_to_xml_term'(Call2, Bindings).
-
-'$lgt_pred_qcall_to_xml_term'((Call1; Call2), Bindings) :-
-	!,
-	'$lgt_pred_qcall_to_xml_term'(Call1, Bindings),
-	'$lgt_pred_qcall_to_xml_term'(Call2, Bindings).
-
-'$lgt_pred_qcall_to_xml_term'((Call1 -> Call2), Bindings) :-
-	!,
-	'$lgt_pred_qcall_to_xml_term'(Call1, Bindings),
-	'$lgt_pred_qcall_to_xml_term'(Call2, Bindings).
-
-'$lgt_pred_qcall_to_xml_term'(\+ Call, Bindings) :-
-	!,
-	'$lgt_pred_qcall_to_xml_term'(Call, Bindings).
-
-'$lgt_pred_qcall_to_xml_term'(Call, Bindings) :-
-	functor(Call, Functor, Arity),
-	'$lgt_pred_qcall_to_xml_term'(Functor, Arity, Call, Bindings).
 
 
 
@@ -9152,21 +9140,18 @@ current_logtalk_flag(version, version(2, 23, 2)).
 	'$lgt_write_xml_close_tag'(Stream, Tag).
 
 
-
-'$lgt_write_xml_examples'(Stream) :-
-	'$lgt_write_xml_open_tag'(Stream, examples, []),
-	(('$lgt_pp_info_'(Info), '$lgt_member'(examples is Examples, Info)) ->
+'$lgt_write_xml_remarks'(Stream) :-
+	'$lgt_write_xml_open_tag'(Stream, remarks, []),
+	(('$lgt_pp_info_'(Info), '$lgt_member'(remarks is Remarks, Info)) ->
 		forall(
-			'$lgt_member'((Description - Call - {Bindings}), Examples),
-			('$lgt_pred_call_to_xml_term'(Call, Bindings, QCall, QBindings),
-			 '$lgt_write_xml_open_tag'(Stream, example, []),
-			 '$lgt_write_xml_cdata_element'(Stream, description, [], Description),
-			 '$lgt_write_xml_cdata_element'(Stream, call, [], QCall),
-			 '$lgt_write_xml_cdata_element'(Stream, bindings, [], QBindings),
-		 	 '$lgt_write_xml_close_tag'(Stream, example)))
+			'$lgt_member'((Topic - Text), Remarks),
+			('$lgt_write_xml_open_tag'(Stream, remark, []),
+			 '$lgt_write_xml_cdata_element'(Stream, topic, [], Topic),
+			 '$lgt_write_xml_cdata_element'(Stream, text, [], Text),
+		 	 '$lgt_write_xml_close_tag'(Stream, remark)))
 		;
 		true),
-	'$lgt_write_xml_close_tag'(Stream, examples).
+	'$lgt_write_xml_close_tag'(Stream, remarks).
 
 
 

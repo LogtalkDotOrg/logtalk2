@@ -43,3 +43,19 @@ repeat(N) :-
 	N > 1,
 	N2 is N - 1,
 	repeat(N2).
+
+
+% generate a list containing the first N non-negative integers
+
+generate_list(N, List) :-
+	N >= 0,
+	generate_list(0, N, List).
+
+
+generate_list(N, N, []) :-
+	!.
+
+generate_list(M, N, [M| Ms]) :-
+	M < N,
+	M2 is M + 1,
+	generate_list(M2, N, Ms).

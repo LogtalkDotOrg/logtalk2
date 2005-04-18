@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.23.2
+Release 2.24.0
 
 Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.23.2 - April 11, 2005
+2.24.0 - April 18, 2005
 
 	Added experimental support for a encoding/1 directive for declaring the 
 	text character encoding of a source file. This directive is fully based 
@@ -18,7 +18,7 @@ RELEASE NOTES
 	recent development versions of SWI-Prolog. For now, this directive only 
 	works with SWI-Prolog as most Prolog compilers lack support for dealing 
 	with different text encodings. Added new flag "supports_encoding_dir". 
-	Added a new example, "encodings", of using the new enconding/1 directive.
+	Added a new example, "encodings", of using the new encoding/1 directive.
 
 	When a source file contains an encoding/1 directive, the XML documenting 
 	files will use the same encoding. When no encoding/1 directive is present,
@@ -26,25 +26,35 @@ RELEASE NOTES
 
 	Added new info/1 documenting directive key, "parameters", allowing the 
 	declaration of both parameter names and parameter descriptions. Added new 
-	info/2 documenting directive key, "arguments", allowing declaration of 
-	both predicate argument names and predicate argument descriptions. Added 
-	new info/1 and info/2 documenting directive key, "examples", allowing the 
-	representation of predicate call examples.
+	info/1 documenting directive key, "remarks", allowing general remarks 
+	about an entity to be stated. Added new info/2 documenting directive 
+	key, "arguments", allowing declaration of both predicate argument names 
+	and predicate argument descriptions. Added new info/2 documenting directive
+	key, "examples", allowing the representation of predicate call examples.
 
 	Much improved and accurate reporting of non-portable predicate calls when 
 	using the "portability" flag.
+
+	Added a new directory to the Logtalk distribution, "contributions", which 
+	will be used for user-contributed code. On this release, it contains an 
+	implementation of the ISO 8601 standard by Daniel L. Dudley, providing a 
+	library of useful date predicates.
 
 	Rewritten the lgtxhtml.xsl, lgthtml.xsl, lgtxml.xsl XSLT scripts in order 
 	to make it easier to define alternative CSS files for the generated HTML 
 	files. Rewritten the lgtpdfa4.xsl and lgtpdfus.xsl XSLT scripts in order 
 	to improve appearance of the generated PDF files.
 
-	Corrected a bug in the lgt2html.js and lgt2pdf.js JScript scripts which 
-	resulted in failed transformations whenever the LOGTALKUSER environment 
-	variable or the output directory contained spaces or accented characters.
+	Improved the documentation of the "benchmark" example and added a new 
+	predicate for generating lists of known size for the benchmark tests.
+
+	Corrected a bug in the lgt2html.*, lgt2pdf.*, and cplgtdirs.sh shell 
+	scripts which resulted in failed transformations whenever the LOGTALKHOME 
+	and LOGTALKUSER environment variables or the output directory contained 
+	spaces or accented characters.
 
 	Added workaround for Prolog compilers that define operators other than 
-	','/2 as non-redefinable (such as new B-Prolog 6.7).
+	','/2 that cannot be redefined (such as new B-Prolog 6.7).
 
 	Added a Logtalk "clip" file for the TextPad Windows text editor.
 
@@ -55,15 +65,24 @@ RELEASE NOTES
 	Corrected a bug in the method leash/1 of the built-in pseudo-object 
 	"debugger", which failed to accept an empty list as a valid argument.
 
-	Corrected a bug in the header of the generated XML documenting files when 
-	using the XML Schema specification (logtalk.xsd), which could prevented 
-	validation with the compiler flag "doctype" set to "web".
+	Corrected a bug in the header of the automatically generated XML 
+	documenting files when using the XML Schema specification (logtalk.xsd), 
+	which could prevented validation when the compiler flag "doctype" is set 
+	to "web".
+
+	Corrected a compilation bug where Prolog clauses written outside entities
+	on source metafiles would have their order reversed. Simplified splitting 
+	of source metafiles.
+
+	Corrected a compilation bug where Prolog clauses written before an entity 
+	opening directive would not be copied to the generated Prolog file.
 
 	Corrected a bug on the "roots" example in the object "class" which failed 
 	to properly test the validity of new object identifiers.
 
 	Corrected a bug in the syntax coloring file for the Vim text editor, which
-	resulted in an error message the first time a Logtalk source file is open.
+	resulted in an error message when opening a Logtalk source file for the 
+	first time.
 
 
 2.23.1 - March 7, 2005
