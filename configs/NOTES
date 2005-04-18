@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.23.2
+Release 2.24.0
 
 Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -399,6 +399,11 @@ SWI Prolog 3.3.x and all later versions
 
     See the SWI-Prolog documentation for further information on the .plrc and 
     pl.ini user initialization files.
+
+	If you intend to use Logtalk and XPCE at the same time, and if you are 
+	using an SWI-Prolog version older than 5.5.13, you will need to edit the 
+	compiler/logtalk.pl file and, around line 35, change the declaration of 
+	the @/1 operator to op(100, fx, @).
 
 
 XSB Prolog 2.6~2.7

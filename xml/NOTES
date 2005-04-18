@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.23.2
+Release 2.24.0
 
 Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -128,7 +128,7 @@ lgt2pdf.js
 	you wish to convert. Call the scripts with the help option for a description 
 	of the available optional parameters (type "cscript lgt2pdf.js help" or 
 	"lgt2pdf.sh -h"; depending on your Logtalk installation, you may simply need 
-	to type lgt2pdf in order to run the script).
+	to type "lgt2pdf" in order to run the script).
 
 
 lgt2html.sh
@@ -157,7 +157,7 @@ lgt2html.js
 	you wish to convert. Call the scripts with the help option for a description 
 	of the available optional parameters (type "cscript lgt2html.js help" or 
 	"lgt2html.sh -h"; depending on your Logtalk installation, you may simply need 
-	to type lgt2html in order to run the script).
+	to type "lgt2html" in order to run the script).
 
 
 html.sh

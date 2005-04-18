@@ -17,7 +17,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.23.2
+%  Release 2.24.0
 %
 %  Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 %
@@ -60,8 +60,8 @@
 		<div class="predicates">
 			<xsl:apply-templates select="logtalk/predicates" />
 		</div>
-		<div class="examples">
-			<xsl:apply-templates select="logtalk/examples" />
+		<div class="remarks">
+			<xsl:apply-templates select="logtalk/remarks" />
 		</div>
 	</body>
 	</html>
@@ -271,28 +271,26 @@
 	</div>
 </xsl:template>
 
-<xsl:template match="logtalk/examples">
-	<h2>Examples</h2>
+
+<xsl:template match="logtalk/remarks">
+	<h2>Remarks</h2>
 	<div class="section">
 	<xsl:choose>
-		<xsl:when test="example">
-			<xsl:apply-templates select="example" />
+		<xsl:when test="remark">
+			<xsl:apply-templates select="remark" />
 		</xsl:when>
 		<xsl:otherwise>
-			<p class="comment">(none)</p>
+			<h3 class="code">(none)</h3>
 		</xsl:otherwise>
 	</xsl:choose>
 	</div>
 </xsl:template>
 
-<xsl:template match="logtalk/examples/example">
-	<div class="example">
-		<dl class="examples">
-			<dt class="comment"><xsl:value-of select="description" /></dt>
-				<dd class="code"><xsl:value-of select="call" /></dd>
-				<dd class="code"><xsl:value-of select="bindings" /></dd>
-		</dl>
-	</div>
+<xsl:template match="logtalk/remarks/remark">
+	<dl class="remarks">
+		<dt class="comment"><xsl:value-of select="topic" /></dt>
+			<dd class="text"><xsl:value-of select="text" /></dd>
+	</dl>
 </xsl:template>
 
 

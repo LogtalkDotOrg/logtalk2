@@ -2,7 +2,7 @@
 
 ## =================================================================
 ## Logtalk - Object oriented extension to Prolog
-## Release 2.23.2
+## Release 2.24.0
 ##
 ## Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 ## =================================================================
@@ -10,11 +10,11 @@
 echo
 echo "Creating a script named swilgt for running Logtalk with SWI-Prolog..."
 
-if ! [ $LOGTALKHOME ]
+if ! [ "$LOGTALKHOME" ]
 then
 	echo "The environment variable LOGTALKHOME must be defined first!"
 else
-	cd $LOGTALKHOME
+	cd "$LOGTALKHOME"
 	if [ -z "$1" ]; then
 		prefix=/usr/local
 	else

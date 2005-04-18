@@ -1,6 +1,6 @@
 // =================================================================
 // Logtalk - Object oriented extension to Prolog
-// Release 2.23.2
+// Release 2.24.0
 //
 // Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 // =================================================================
@@ -52,6 +52,7 @@ fso.CreateFolder(logtalk_user);
 
 WScript.Echo("Copying Logtalk files and directories...");
 fso.CopyFolder(logtalk_home + "\\configs", logtalk_user + "\\configs");
+fso.CopyFolder(logtalk_home + "\\contributions", logtalk_user + "\\contributions");
 fso.CopyFolder(logtalk_home + "\\examples", logtalk_user + "\\examples");
 fso.CopyFolder(logtalk_home + "\\libpaths", logtalk_user + "\\libpaths");
 fso.CopyFolder(logtalk_home + "\\library", logtalk_user + "\\library");

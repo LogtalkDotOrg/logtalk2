@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.23.2
+%  Release 2.24.0
 %
 %  Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 %
@@ -11,7 +11,7 @@
 -->
 
 
-<!ELEMENT logtalk (entity, relations, predicates, examples)>
+<!ELEMENT logtalk (entity, relations, predicates, remarks)>
 
 
 <!ELEMENT entity (name, type, compilation, comment?, (parnames|parameters)?, author?, version?, date?, info*)>
@@ -37,14 +37,6 @@
 <!ELEMENT version (#PCDATA)>
 
 <!ELEMENT date (#PCDATA)>
-
-<!ELEMENT examples (example*)>
-
-<!ELEMENT example (description, call, bindings)>
-
-<!ELEMENT call (#PCDATA)>
-
-<!ELEMENT bindings (#PCDATA)>
 
 <!ELEMENT info (key, value)>
 
@@ -109,3 +101,21 @@
 <!ELEMENT condition (#PCDATA)>
 
 <!ELEMENT term (#PCDATA)>
+
+<!ELEMENT examples (example*)>
+
+<!ELEMENT example (description, call, bindings)>
+
+<!ELEMENT call (#PCDATA)>
+
+<!ELEMENT bindings (#PCDATA)>
+
+<!ELEMENT remarks (remark*)>
+
+<!ELEMENT remark (topic, text)>
+
+<!ELEMENT topic (#PCDATA)>
+
+<!ELEMENT text (#PCDATA)>
+
+

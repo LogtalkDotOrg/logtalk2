@@ -11,7 +11,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.23.2
+%  Release 2.24.0
 %
 %  Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 %
@@ -27,7 +27,7 @@
 		<xsd:element name="entity"		type="entity"/>
 		<xsd:element name="relations"	type="relations"/>
 		<xsd:element name="predicates"	type="predicates"/>
-		<xsd:element name="examples"	type="examples"/>
+		<xsd:element name="remarks"		type="remarks"/>
 	</xsd:sequence>
 </xsd:complexType>
 
@@ -78,22 +78,6 @@
 	<xsd:sequence>
 		<xsd:element name="name"		type="xsd:string"/>
 		<xsd:element name="description"	type="xsd:string"/>
-	</xsd:sequence>
-</xsd:complexType>
-
-
-<xsd:complexType name="examples">
-	<xsd:sequence>
-		<xsd:element name="example"	type="example"	minOccurs="0"	maxOccurs="unbounded"/>
-	</xsd:sequence>
-</xsd:complexType>
-
-
-<xsd:complexType name="example">
-	<xsd:sequence>
-		<xsd:element name="description"	type="xsd:string"/>
-		<xsd:element name="call"		type="xsd:string"/>
-		<xsd:element name="bindings"	type="xsd:string"/>
 	</xsd:sequence>
 </xsd:complexType>
 
@@ -243,5 +227,37 @@
 		<xsd:element name="term"		type="xsd:string"/>
 	</xsd:sequence>
 </xsd:complexType>
+
+
+<xsd:complexType name="examples">
+	<xsd:sequence>
+		<xsd:element name="example"	type="example"	minOccurs="0"	maxOccurs="unbounded"/>
+	</xsd:sequence>
+</xsd:complexType>
+
+
+<xsd:complexType name="example">
+	<xsd:sequence>
+		<xsd:element name="description"	type="xsd:string"/>
+		<xsd:element name="call"		type="xsd:string"/>
+		<xsd:element name="bindings"	type="xsd:string"/>
+	</xsd:sequence>
+</xsd:complexType>
+
+
+<xsd:complexType name="remarks">
+	<xsd:sequence>
+		<xsd:element name="remark"	type="remark"	minOccurs="0"	maxOccurs="unbounded"/>
+	</xsd:sequence>
+</xsd:complexType>
+
+
+<xsd:complexType name="remark">
+	<xsd:sequence>
+		<xsd:element name="topic"	type="xsd:string"/>
+		<xsd:element name="text"	type="xsd:string"/>
+	</xsd:sequence>
+</xsd:complexType>
+
 
 </xsd:schema>

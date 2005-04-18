@@ -9,7 +9,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.23.2
+%  Release 2.24.0
 %
 %  Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 %
@@ -78,7 +78,7 @@
  				<xsl:apply-templates select="logtalk/entity"/>
 				<xsl:apply-templates select="logtalk/relations"/>
 				<xsl:apply-templates select="logtalk/predicates"/>
-				<xsl:apply-templates select="logtalk/examples"/>
+				<xsl:apply-templates select="logtalk/remarks"/>
 				<fo:block id="end"/>
 			</fo:flow>
 
@@ -596,7 +596,7 @@
 </xsl:template>
 
 
-<xsl:template match="logtalk/examples">
+<xsl:template match="logtalk/remarks">
 
 	<fo:block
 			font-size="14pt" 
@@ -604,33 +604,24 @@
 			font-weight="bold" 
 			keep-with-next="always"
 			space-before="18pt">
-		Examples
+		Remarks
 	</fo:block>
 	<xsl:choose>
 		<xsl:when test="*">
-			<xsl:for-each select="example">
+			<xsl:for-each select="remark">
        			<fo:block
 						font-size="10pt"
 						font-family="serif"
 						font-style="italic"
 						keep-with-next="always"
-						margin-left="10mm"
 						space-before="10pt">
-     				<xsl:value-of select="description" />
+     				<xsl:value-of select="topic" />
      			</fo:block>
 				<fo:block
-						font-size="9pt"
-						font-family="monospace"
-						keep-with-next="always"
-						margin-left="20mm">
-					<xsl:value-of select="call" />
-				</fo:block>
-				<fo:block
-						font-size="9pt"
-						font-family="monospace"
-						margin-left="20mm" 
-						space-after="4pt">
-					<xsl:value-of select="bindings" />
+						font-size="10pt"
+						font-family="serif"
+						margin-left="10mm">
+					<xsl:value-of select="text" />
 				</fo:block>
 			</xsl:for-each>
 		</xsl:when>
