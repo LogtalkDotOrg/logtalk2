@@ -107,12 +107,11 @@ yes
 
 | ?- benchmark('$lgt_send_to_object_ne_nv'(database, db_test_self, user)).
 
-   ?- benchmark('$lgt_send_to_object_ne_nv'(database, db_test_self, user)).
 Number of repetitions: 100000
 Loop time: 0.0299999999999727 seconds
-Goal time: 71.7 seconds
-Average time per call: 0.000716700000000001 seconds
-Number of calls per second: 1395.28394028185
+Goal time: 71.3499999999999 seconds
+Average time per call: 0.000713199999999999 seconds
+Number of calls per second: 1402.13123948402
 yes
 
 
@@ -122,7 +121,7 @@ yes
 
 Number of repetitions: 100000
 Loop time: 0.0299999999999727 seconds
-Goal time: 69.97 seconds
-Average time per call: 0.000699400000000001 seconds
-Number of calls per second: 1429.79696883042
+Goal time: 68.97 seconds
+Average time per call: 0.0006894 seconds
+Number of calls per second: 1450.53669857847
 yes
