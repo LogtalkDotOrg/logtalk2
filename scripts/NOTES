@@ -6,12 +6,12 @@ Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-This directory contains miscellaneous files used in Logtalk packaging, 
-installation, and integration with Prolog compilers. Several scripts are 
-included. Those with extension .sh are shell scripts for MacOS X, Linux, 
-and similar systems. Those with extension .js are JScript command-line 
-scripts for Windows; they require WSH 5.6 or later version to be installed
-and should be run using cscript.exe from a DOS shell command line.
+This directory contains several scripts used for Logtalk packaging, 
+installation, and integration with Prolog compilers. Those with extension 
+.sh are shell scripts for MacOS X, Linux, and similar systems. Those with 
+extension .js are JScript command-line scripts for Windows; they require 
+WSH 5.6 or later version to be installed and should be run using cscript.exe 
+from a DOS shell command line.
 
 
 lgt_install.sh
@@ -24,7 +24,7 @@ lgt_install.js
 	setting the LOGTALKHOME system environment variable and the LOGTALKUSER 
 	user environment variable (for the user performing the installation), by 
 	creating a new program group named "Logtalk" in the Windows Start Menu, 
-	and by adding the directories %LOGTALKHOME%\misc and %LOGTALKHOME%\xml to 
+	and by adding the directories %LOGTALKHOME%\scripts and %LOGTALKHOME%\xml to 
 	the system path environment variable (must be run from this directory by 
 	a user with administration privileges after decompressing the Logtalk 
 	distribution into its final destination; you will need to restart your 
@@ -136,5 +136,5 @@ setting the variables).
 
 Note: when Logtalk is manually installed from sources, the shell scripts 
 might not have the executable permission bit set. In that case it will 
-be necessary to first run the command "chmod a+x *.sh" on the "misc" and 
+be necessary to first run the command "chmod a+x *.sh" on the "scripts" and 
 "xml" directories.

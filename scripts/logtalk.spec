@@ -23,11 +23,11 @@ cp -R * /usr/local/lgt2240
 cd /usr/local
 chmod -R go-w,a+r lgt2240
 chmod a+x lgt2240
-chmod a+x lgt2240/misc/*.sh
+chmod a+x lgt2240/scripts/*.sh
 chmod a+x lgt2240/xml/*.sh
 ln -sf lgt2240 logtalk
 cd bin
-ln -sf ../lgt2240/misc/cplgtdirs.sh cplgtdirs
+ln -sf ../lgt2240/scripts/cplgtdirs.sh cplgtdirs
 ln -sf ../lgt2240/xml/lgt2pdf.sh lgt2pdf
 ln -sf ../lgt2240/xml/lgt2html.sh lgt2html
 %clean
@@ -48,7 +48,7 @@ ln -sf ../lgt2240/xml/lgt2html.sh lgt2html
 /usr/local/lgt2240/library
 %docdir /usr/local/lgt2240/manuals
 /usr/local/lgt2240/manuals
-/usr/local/lgt2240/misc
+/usr/local/lgt2240/scripts
 /usr/local/lgt2240/wenv
 /usr/local/lgt2240/xml
 /usr/local/logtalk

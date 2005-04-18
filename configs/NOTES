@@ -413,7 +413,7 @@ XSB Prolog 2.6~2.7
 
 	You need to rename both the config file and the Logtalk pre-processor to 
 	end with a ".P" extension otherwise the (re)consult built-in predicate 
-	will not find them! If you want to use the misc/make_xsblgt.sh script, 
+	will not find them! If you want to use the scripts/make_xsblgt.sh script, 
 	first rename (or copy) the config file that you want to use to "xsb.P".
 
 	You also need to apply the following patch to the Logtalk compiler. Open 

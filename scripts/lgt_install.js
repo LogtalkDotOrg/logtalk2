@@ -40,8 +40,8 @@ else {
 }
 WScript.Echo("");
 
-WshSystemEnv.Item("PATH") = WshSystemEnv.Item("PATH") + ";%LOGTALKHOME%\\misc;%LOGTALKHOME%\\xml";
-WScript.Echo("Added Logtalk misc and xml directories to the system PATH environment");
+WshSystemEnv.Item("PATH") = WshSystemEnv.Item("PATH") + ";%LOGTALKHOME%\\scripts;%LOGTALKHOME%\\xml";
+WScript.Echo("Added Logtalk scripts and xml directories to the system PATH environment");
 WScript.Echo("variable.");
 WScript.Echo("");
 

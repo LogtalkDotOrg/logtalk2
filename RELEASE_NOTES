@@ -58,6 +58,8 @@ RELEASE NOTES
 
 	Added a Logtalk "clip" file for the TextPad Windows text editor.
 
+	Renamed directory "misc" to "scripts".
+
 	Corrected a bug in the implementation of the built-in database methods 
 	asserta/1 and assertz/1 when asserting facts on objects compiled in debug 
 	mode.

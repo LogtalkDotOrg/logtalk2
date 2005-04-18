@@ -1,3 +1,3 @@
 @ECHO off
-cscript "%LOGTALKHOME%\misc\cplgtdirs.js"
+cscript "%LOGTALKHOME%\scripts\cplgtdirs.js"
 @ECHO on

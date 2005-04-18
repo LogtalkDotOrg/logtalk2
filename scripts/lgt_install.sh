@@ -27,13 +27,13 @@ cp -R * $prefix/lgt2240
 cd $prefix
 chmod -R go-w,a+r lgt2240
 chmod a+x lgt2240
-chmod a+x lgt2240/misc/*.sh
+chmod a+x lgt2240/scripts/*.sh
 chmod a+x lgt2240/xml/*.sh
 ln -sf lgt2240 logtalk
 
 mkdir -p bin
 cd bin
-ln -sf ../lgt2240/misc/cplgtdirs.sh cplgtdirs
+ln -sf ../lgt2240/scripts/cplgtdirs.sh cplgtdirs
 ln -sf ../lgt2240/xml/lgt2pdf.sh lgt2pdf
 ln -sf ../lgt2240/xml/lgt2html.sh lgt2html
 
