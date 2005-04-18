@@ -27,9 +27,9 @@ RELEASE NOTES
 	Added new info/1 documenting directive key, "parameters", allowing the 
 	declaration of both parameter names and parameter descriptions. Added new 
 	info/1 documenting directive key, "remarks", allowing general remarks 
-	about an entity to be stated. Added new info/2 documenting directive 
-	key, "arguments", allowing declaration of both predicate argument names 
-	and predicate argument descriptions. Added new info/2 documenting directive
+	about an entity to be stated. Added new info/2 documenting directive key, 
+	"arguments", allowing declaration of both predicate argument names and 
+	predicate argument descriptions. Added new info/2 documenting directive
 	key, "examples", allowing the representation of predicate call examples.
 
 	Much improved and accurate reporting of non-portable predicate calls when 
@@ -72,7 +72,7 @@ RELEASE NOTES
 	which could prevented validation when the compiler flag "doctype" is set 
 	to "web".
 
-	Corrected a compilation bug where Prolog clauses written outside entities
+	Corrected a compilation bug where Prolog clauses written outside entities 
 	on source metafiles would have their order reversed. Simplified splitting 
 	of source metafiles.
 
