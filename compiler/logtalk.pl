@@ -376,7 +376,7 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_clean_pp_clauses',
 	'$lgt_tr_object_id'(Obj, (dynamic)),
 	'$lgt_tr_object_relations'(Rels, Obj),
-	'$lgt_tr_directives'(Dirs),
+	'$lgt_tr_directives'(Dirs, _),
 	'$lgt_tr_clauses'(Clauses),
 	'$lgt_fix_redef_built_ins',
 	'$lgt_gen_object_clauses',
@@ -423,7 +423,7 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_clean_pp_clauses',
 	'$lgt_tr_category_id'(Ctg, (dynamic)),
 	'$lgt_tr_category_relations'(Rels, Ctg),
-	'$lgt_tr_directives'(Dirs),
+	'$lgt_tr_directives'(Dirs, _),
 	'$lgt_tr_clauses'(Clauses),
 	'$lgt_fix_redef_built_ins',
 	'$lgt_gen_category_clauses',
@@ -466,7 +466,7 @@ create_protocol(Ptc, Rels, Dirs) :-
 	'$lgt_clean_pp_clauses',
 	'$lgt_tr_protocol_id'(Ptc, (dynamic)),
 	'$lgt_tr_protocol_relations'(Rels, Ptc),
-	'$lgt_tr_directives'(Dirs),
+	'$lgt_tr_directives'(Dirs, _),
 	'$lgt_gen_protocol_clauses',
 	'$lgt_gen_protocol_directives',
 	'$lgt_assert_tr_entity'.
@@ -3733,15 +3733,15 @@ current_logtalk_flag(version, version(2, 24, 0)).
 
 
 
-% '$lgt_tr_directives'(+list)
+% '$lgt_tr_directives'(+list, @stream)
 %
 % translates a list of entity directives
 
-'$lgt_tr_directives'([]).
+'$lgt_tr_directives'([], _).
 
-'$lgt_tr_directives'([Dir| Dirs]) :-
-	'$lgt_tr_directive'(Dir),
-	'$lgt_tr_directives'(Dirs).
+'$lgt_tr_directives'([Dir| Dirs], Stream) :-
+	'$lgt_tr_directive'(Dir, Stream),
+	'$lgt_tr_directives'(Dirs, Stream).
 
 
 
