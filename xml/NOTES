@@ -175,7 +175,10 @@ lgt2xml.js
 	(JScript command-line script for Windows; requires WSH 5.6 or later version)
 
 	Sample scripts for indexing the .xml files in the current directory by 
-	generating an index.html file which contains links to all the files.
+	generating an index.html file which contains links to all the files. In 
+	addition, these scripts also make a copy of the lgtxml.xsl file to the
+	current directory, allowing direct visualization of the .xml files on a 
+	supported web browser.
 
 	These scripts assumes that the LOGTALKUSER environment variable is defined.
 
