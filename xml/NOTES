@@ -148,8 +148,8 @@ lgt2html.js
 			http://xml.apache.org/xalan-c/index.html
 		* Sablotron (tested with version 1.0.1)
 			http://www.gingerall.com/charlie/ga/xml/p_sab.xml
-		* Microsoft MSXSL (only for the JScript script)
-			http://msdn.microsoft.com/library/en-us/dnxml/html/msxsl.asp
+		* Microsoft MSXSL (only for the Windows JScript script)
+			http://msdn.microsoft.com/XML/XMLDownloads/default.aspx
 
 	These scripts assumes that the LOGTALKUSER environment variable is defined 
 	and that the chosen XSLT processor is available in the path.
@@ -157,8 +157,8 @@ lgt2html.js
 	The scripts should be called from the directory containing the .xml files 
 	you wish to convert. Call the scripts with the help option for a description 
 	of the available optional parameters (type "cscript lgt2html.js help" or 
-	"lgt2html.sh -h"; depending on your Logtalk installation, you may simply need 
-	to type "lgt2html" in order to run the script).
+	"lgt2html.sh -h"; depending on your Logtalk installation, you may simply 
+	need to type "lgt2html" in order to run the script).
 
 
 html.sh
