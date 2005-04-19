@@ -40,6 +40,9 @@ RELEASE NOTES
 	implementation of the ISO 8601 standard by Daniel L. Dudley, providing a 
 	library of useful date predicates.
 
+	Added new lgt2xml.* shell scripts for generating (X)HTML indexes of XML 
+	documenting files.
+
 	Rewritten the lgtxhtml.xsl, lgthtml.xsl, lgtxml.xsl XSLT scripts in order 
 	to make it easier to define alternative CSS files for the generated HTML 
 	files. Rewritten the lgtpdfa4.xsl and lgtpdfus.xsl XSLT scripts in order 

@@ -6,18 +6,20 @@ Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-This folder contains supporting files for converting XML documentation 
-files (which are created when compiling objects, categories, or protocols) 
-to PDF files or (X)HTML files using XSL style sheets. The documentation 
-files may also be viewed directly in a web browser that supports the W3C 
-standards XML, XSLT, CSS, and HTML 4 or XHTML 1.0.
+This folder contains supporting files for converting and/or indexing XML 
+documentation files (which are created when compiling objects, categories, 
+or protocols) to PDF files or (X)HTML files using XSL style sheets. The 
+documentation files may also be viewed directly on a web browser that 
+supports the W3C standards XML, XSLT, CSS, and HTML 4 or XHTML 1.0.
 
 The scripts provided in this folder are just samples, which you should adapt 
 to your working environment. Some scripts expect that all files be in the 
 same directory. Some others should be called from the directory containing 
 the XML documenting files that you wish to convert. See the description of 
-each script below for details. Make sure that the XSL processors you intend 
-to use are properly installed before running the scripts.
+each script below for details.
+
+Make sure that the XSL processors you intend to use are properly installed 
+before running the scripts!
 
 Regarding conversion to HTML/XHTML, the links to the .xsl files on the 
 .xml files and the links to the .css files in the generated .html files 
@@ -37,6 +39,12 @@ can be changed either in the config files, by setting a Logtalk compiler
 flag, or by using the doctype/1 compiler flag. Choose the option value 
 that works best with your XSLT tools. To choose between the .dtd or .xsd 
 specifications use the xmlspec/1 compiler flag.
+
+As Logtalk uses a single namespace for all objects, categories, and protocols,
+it is advisable that you define an alternate compilation directory to store 
+all the XML documenting files (see the predicate '$lgt_alt_directory'/2 on the
+config files). This will ensure proper working of links to other entities in 
+the generated (X)HTML files.
 
 
 Brief description of each file in this folder:
@@ -159,6 +167,23 @@ lgt2html.js
 	of the available optional parameters (type "cscript lgt2html.js help" or 
 	"lgt2html.sh -h"; depending on your Logtalk installation, you may simply 
 	need to type "lgt2html" in order to run the script).
+
+
+lgt2xml.sh
+	(bash shell script)
+lgt2xml.js
+	(JScript command-line script for Windows; requires WSH 5.6 or later version)
+
+	Sample scripts for indexing the .xml files in the current directory by 
+	generating an index.html file which contains links to all the files.
+
+	These scripts assumes that the LOGTALKUSER environment variable is defined.
+
+	The scripts should be called from the directory containing the .xml files 
+	you wish to index. Call the scripts with the help option for a description 
+	of the available optional parameters (type "cscript lgt2xml.js help" or 
+	"lgt2xml.sh -h"; depending on your Logtalk installation, you may simply 
+	need to type "lgt2xml" in order to run the script).
 
 
 html.sh
