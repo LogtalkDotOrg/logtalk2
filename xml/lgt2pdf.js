@@ -94,7 +94,7 @@ for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
 	var file = files.item().name;
 	if (FSObject.GetExtensionName(file) == "xml") {
 		WScript.Echo("  converting " + file);
-		var pdf_file = directory + "\\" + FSObject.GetBaseName(file)+ ".pdf";
+		var pdf_file = directory + "\\" + FSObject.GetBaseName(file) + ".pdf";
 		WshShell.Run(processor + " -q -xml \"" + file + "\" -xsl \"" + xsl + "\" -pdf \"" + pdf_file + "\"", true);
 	}
 }
