@@ -30,6 +30,7 @@ cd bin
 ln -sf ../lgt2240/scripts/cplgtdirs.sh cplgtdirs
 ln -sf ../lgt2240/xml/lgt2pdf.sh lgt2pdf
 ln -sf ../lgt2240/xml/lgt2html.sh lgt2html
+ln -sf ../lgt2240/xml/lgt2xml.sh lgt2xml
 %clean
 %files
 %defattr(-,root,users)
@@ -55,3 +56,4 @@ ln -sf ../lgt2240/xml/lgt2html.sh lgt2html
 /usr/local/bin/cplgtdirs
 /usr/local/bin/lgt2pdf
 /usr/local/bin/lgt2html
+/usr/local/bin/lgt2xml

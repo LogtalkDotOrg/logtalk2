@@ -36,6 +36,7 @@ cd bin
 ln -sf ../lgt2240/scripts/cplgtdirs.sh cplgtdirs
 ln -sf ../lgt2240/xml/lgt2pdf.sh lgt2pdf
 ln -sf ../lgt2240/xml/lgt2html.sh lgt2html
+ln -sf ../lgt2240/xml/lgt2xml.sh lgt2xml
 
 echo "Logtalk installation completed."
 echo
@@ -44,7 +45,7 @@ echo "to $prefix/logtalk and then run the shell script cplgtdirs"
 echo "in order to copy the Logtalk user-modifiable files to their home"
 echo "directories."
 echo
-echo "Links to the cplgtdirs, lgt2pdf, and lgt2html scripts have been"
-echo "created on $prefix/bin; you may need to add this directory to"
+echo "Links to the cplgtdirs, lgt2pdf, lgt2html, and lgt2xml scripts have"
+echo "been created on $prefix/bin;  you may need to add this directory to"
 echo "your execution path."
 echo
