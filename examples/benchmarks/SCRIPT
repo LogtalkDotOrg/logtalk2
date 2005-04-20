@@ -72,10 +72,10 @@ yes
 | ?- benchmark((create_object(xpto, [], [], []), abolish_object(xpto))).
 
 Number of repetitions: 100000
-Loop time: 0.0200000000000005 seconds
-Goal time: 53.17 seconds
-Average time per call: 0.0005315 seconds
-Number of calls per second: 1881.46754468485
+Loop time: 0.0300000000000011 seconds
+Goal time: 51.59 seconds
+Average time per call: 0.0005156 seconds
+Number of calls per second: 1939.48797517455
 yes
 
 
