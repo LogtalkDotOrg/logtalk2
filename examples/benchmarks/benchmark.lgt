@@ -4,33 +4,53 @@
 
 benchmark(Goal) :-
 	N = 100000,
-	write('Number of repetitions: '), write(N), nl,
+	benchmark(Goal, N, Looptime, Goaltime, Average, Speed),
+	report(Goal, N, Looptime, Goaltime, Average, Speed).
+
+
+benchmark(Goal, N) :-
+	benchmark(Goal, N, Looptime, Goaltime, Average, Speed),
+	report(Goal, N, Looptime, Goaltime, Average, Speed).
+	
+
+benchmark(Goal, N, Looptime, Goaltime, Average, Speed) :-
 	'$lgt_cpu_time'(Seconds1),		% defined in the config files
-	benchmark(N, true),
+	do_benchmark(N, true),
 	'$lgt_cpu_time'(Seconds2),
 	Looptime is Seconds2 - Seconds1,
-	write('Loop time: '), write(Looptime), write(' seconds'), nl,
 	'$lgt_cpu_time'(Seconds3),
-	benchmark(N, Goal),
+	do_benchmark(N, Goal),
 	'$lgt_cpu_time'(Seconds4),
 	Goaltime is Seconds4 - Seconds3,
-	write('Goal time: '), write(Goaltime), write(' seconds'), nl,
 	Average is (Goaltime - Looptime)/N,
-	write('Average time per call: '), write(Average), write(' seconds'), nl,
-	Speed is 1.0/Average,
-	write('Number of calls per second: '), write(Speed), nl.
+	Speed is 1.0/Average.
+
+
+report(Id, Goal, N, Looptime, Goaltime, Average, Speed) :-
+	write(Id), write(': '),
+	report(Goal, N, Looptime, Goaltime, Average, Speed).
+
+
+report(Goal, N, Looptime, Goaltime, Average, Speed) :-
+	writeq(Goal), nl,
+	write('Number of repetitions: '), write(N), nl,
+	write('Loop time: '), write(Looptime), nl,
+	write('Goal time: '), write(Goaltime), nl,
+	write('Average time per call: '), write(Average), nl,
+	write('Number of calls per second: '), write(Speed), nl,
+	nl.
 
 
 % repeat a goal N times using a failure-driven loop to avoid the interference 
 % of Prolog compiler memory management mechanism (such as garbage collection) 
 % on the results
 
-benchmark(N, Goal) :-
+do_benchmark(N, Goal) :-
 	repeat(N),		% another option would be to use a between/3 built-in predicate
 		call(Goal),
 	fail.
 
-benchmark(_, _).
+do_benchmark(_, _).
 
 
 % some Prolog compilers define the predicate repeat/1 as a built-in predicate;
@@ -59,3 +79,40 @@ generate_list(M, N, [M| Ms]) :-
 	M < N,
 	M2 is M + 1,
 	generate_list(M2, N, Ms).
+
+
+% utility predicate for running all benchmark tests
+
+benchmarks :-
+	N = 100000,
+	benchmark_goal(Id, Goal),
+	benchmark(Goal, N, Looptime, Goaltime, Average, Speed),
+	report(Id, Goal, N, Looptime, Goaltime, Average, Speed),
+	fail.
+
+benchmarks.
+
+
+benchmark_goal('S1', my_length(List, _)) :-
+	generate_list(30, List).
+
+benchmark_goal('S2', object::length(List, _)) :-
+	generate_list(30, List).
+
+benchmark_goal('S3', '$lgt_send_to_object_nv'(object, length(List, _), user)) :-
+	generate_list(30, List).
+
+benchmark_goal('S4', '$lgt_send_to_object_ne_nv'(object, length(List, _), user)) :-
+	generate_list(30, List).
+
+
+benchmark_goal('D1', (create_object(xpto, [], [], []), abolish_object(xpto))).
+
+benchmark_goal('D2', db_test_plain).
+
+benchmark_goal('D3', '$lgt_send_to_object_ne_nv'(database, db_test_this, user)).
+
+benchmark_goal('D4', '$lgt_send_to_object_ne_nv'(database, db_test_self, user)).
+
+benchmark_goal('D5', '$lgt_send_to_object_ne_nv'(database, db_test_obj, user)).
+
