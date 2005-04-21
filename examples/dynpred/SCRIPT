@@ -29,7 +29,7 @@ Value = descendant
 yes
 
 
-% if we retract the local definition, again the inherited definition form root
+% if we retract the local definition, again the definition inherited from root
 % will be used:
 
 | ?- descendant::(retractall(p(_)), p(Value)).
