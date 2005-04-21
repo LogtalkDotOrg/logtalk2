@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.24.0 - April 18, 2005
+2.24.0 - April 22, 2005
 
 	Added experimental support for a encoding/1 directive for declaring the 
 	text character encoding of a source file. This directive is fully based 
@@ -48,8 +48,9 @@ RELEASE NOTES
 	files. Rewritten the lgtpdfa4.xsl and lgtpdfus.xsl XSLT scripts in order 
 	to improve appearance of the generated PDF files.
 
-	Improved the documentation of the "benchmark" example and added a new 
-	predicate for generating lists of known size for the benchmark tests.
+	Improved the documentation of the "benchmarks" example and added new 
+	predicates for running batches of benchmark tests and for generating 
+	lists of known size for the benchmark tests of static code.
 
 	Corrected a bug in the lgt2html.*, lgt2pdf.*, and cplgtdirs.sh shell 
 	scripts which resulted in failed transformations whenever the LOGTALKHOME 
@@ -61,7 +62,7 @@ RELEASE NOTES
 
 	Added a Logtalk "clip" file for the TextPad Windows text editor.
 
-	Renamed directory "misc" to "scripts".
+	Renamed directory "misc" to the more meaningful name "scripts".
 
 	Corrected a bug in the implementation of the built-in database methods 
 	asserta/1 and assertz/1 when asserting facts on objects compiled in debug 
