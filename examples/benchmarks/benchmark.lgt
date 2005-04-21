@@ -93,6 +93,8 @@ benchmarks :-
 benchmarks.
 
 
+% some benchmark tests for static code:
+
 benchmark_goal('S1', my_length(List, _)) :-
 	generate_list(30, List).
 
@@ -105,6 +107,8 @@ benchmark_goal('S3', '$lgt_send_to_object_nv'(object, length(List, _), user)) :-
 benchmark_goal('S4', '$lgt_send_to_object_ne_nv'(object, length(List, _), user)) :-
 	generate_list(30, List).
 
+
+% some benchmark tests for dynamic code:
 
 benchmark_goal('D1', (create_object(xpto, [], [], []), abolish_object(xpto))).
 

@@ -12,6 +12,15 @@ Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 ...
 
 
+% run the default set of benchmark tests:
+
+| ?- benchmarks.
+...
+
+
+% or run specific benchmark tests individually as exemplified next...
+
+
 % call the predicate my_length/0 defined in the Prolog database:
 
 | ?- generate_list(30, List), benchmark(my_length(List, _)).
