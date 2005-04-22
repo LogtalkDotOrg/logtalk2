@@ -1,12 +1,13 @@
 /******************************************************************************
 
- Library: ISO8601.PL
-			 Copyright (c) 2004 Daniel L. Dudley
- Purpose: ISO 8601 (and European civil calendar) compliant library of date
+	Library: ISO8601.PL
+	Copyright (c) 2004-2005 Daniel L. Dudley
+
+	Purpose: ISO 8601 (and European civil calendar) compliant library of date
 			 and time (clock) related predicates. That is, an ISO 8601 handler.
- Author:  Daniel L. Dudley
- Created: 2004-02-18
- Revised:
+
+	Author:  Daniel L. Dudley
+	Created: 2004-02-18
 
 ******************************************************************************/
 
