@@ -44,3 +44,18 @@ Code = zh
 Text = '你好世界!'
 
 Yes
+
+
+% query the table of names:
+
+| ?- latin::name(Name).
+
+Name = 'António Simões' ;
+
+Name = 'Cátia Conceição' ;
+
+Name = 'João Raínho' ;
+
+Name = 'Luís Araújo'
+
+Yes
