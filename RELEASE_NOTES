@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.24.0
+Release 2.25.0
 
 Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -8,6 +8,16 @@ Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.25.0 - April ??, 2005
+
+	Logtalk compiler is now file-based instead of entity-based, meaning that 
+	the a source file may now contain any number of entities, without the 
+	need of using source metafiles. Thus, this version drops support for 
+	source metafiles and the .mlgt file name extension.
+
+	Improved "encodings" example.
 
 
 2.24.0 - April 22, 2005

@@ -1,16 +1,16 @@
 /*
-These metafile objects illustrate a variant of the "diamond problem" using 
+These objects illustrate a variant of the "diamond problem" using 
 a prototype hierarchy.
 
-In this simple case, a solution for making the overridden definition inherited 
-by the bottom object the visible one is implemented using the alias/3 predicate 
-directive. 
+In this simple case, a solution is presented for making two conflicting 
+definitions inherited by the bottom object visible through the use of the 
+alias/3 predicate directive. 
 */
 
 
 % root object, declaring and defining a predicate m/0:
 
-:- object(a2).
+:- object(a3).
 
 	:- public(m/0).
 
@@ -24,8 +24,8 @@ directive.
 
 % an object descending from the root object, which redefines predicate m/0:
 
-:- object(b2,
-	extends(a2)).
+:- object(b3,
+	extends(a3)).
 
 	m :-
 		this(This),
@@ -37,8 +37,8 @@ directive.
 
 % another object descending from the root object, which also redefines predicate m/0:
 
-:- object(c2,
-	extends(a2)).
+:- object(c3,
+	extends(a3)).
 
 	m :-
 		this(This),
@@ -49,16 +49,13 @@ directive.
 
 
 % bottom object, descending from the two previous objects and, as such, inheriting
-% two definitions for the predicate m/0; the overridden definition inherited from 
-% object "c2" is renamed using the alias/3 directive and then we redefined the 
-% predicate m/0 to call the renamed definition:
+% two definitions for the predicate m/0; both inherited definitions are renamed 
+% using the alias/3 directive:
 
-:- object(d2,
-	extends(b2, c2)).
+:- object(d3,
+	extends(b3, c3)).
 
-	:- alias(c2, m/0, c2_m/0).
-	
-	m :-
-		::c2_m.
+	:- alias(b3, m/0, b3_m/0).
+	:- alias(c3, m/0, c3_m/0).
 
 :- end_object.

@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.24.0
+%  Release 2.25.0
 %
 %  Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 %
@@ -941,7 +941,7 @@ abolish_events(after, Obj, Msg, Sender, Monitor) :-
 
 % logtalk_compile(@atom_or_atom_list)
 %
-% compiles to disk an entity or list of entities using default options
+% compiles to disk a source file or list of source files using default options
 
 logtalk_compile(Entities) :-
 	catch(
@@ -953,33 +953,33 @@ logtalk_compile(Entities) :-
 
 % logtalk_compile(@atom_or_atom_list, @list)
 %
-% compiles to disk an entity or a list of entities using a list of flag options
+% compiles to disk a source file or a list of source files using a list of flag options
 
-logtalk_compile(Entity, Flags) :-
-	(atom(Entity), Entity \= []; compound(Entity), Entity \= [_| _]),
+logtalk_compile(File, Flags) :-
+	(atom(File), File \= []; compound(File), File \= [_| _]),
 	!,
 	catch(
-		('$lgt_init_warnings_counter'(logtalk_compile(Entity, Flags)),
-		 '$lgt_check_compiler_entity'(Entity),
+		('$lgt_init_warnings_counter'(logtalk_compile(File, Flags)),
+		 '$lgt_check_source_file'(File),
 		 '$lgt_check_compiler_flags'(Flags),
 		 '$lgt_set_compiler_flags'(Flags),
-		 '$lgt_compile_entity'(Entity, Flags),
-		 '$lgt_report_warning_numbers'(logtalk_compile(Entity, Flags))),
+		 '$lgt_compile_file'(File, Flags),
+		 '$lgt_report_warning_numbers'(logtalk_compile(File, Flags))),
 		Error,
 		('$lgt_reset_warnings_counter',
-		 throw(error(Error, logtalk_compile(Entity, Flags))))).
+		 throw(error(Error, logtalk_compile(File, Flags))))).
 
-logtalk_compile(Entities, Flags) :-
+logtalk_compile(Files, Flags) :-
 	catch(
-		('$lgt_init_warnings_counter'(logtalk_compile(Entities, Flags)),
-		 '$lgt_check_compiler_entities'(Entities),
+		('$lgt_init_warnings_counter'(logtalk_compile(Files, Flags)),
+		 '$lgt_check_source_files'(Files),
 		 '$lgt_check_compiler_flags'(Flags),
 		 '$lgt_set_compiler_flags'(Flags),
-		 '$lgt_compile_entities'(Entities, Flags),
-		 '$lgt_report_warning_numbers'(logtalk_compile(Entities, Flags))),
+		 '$lgt_compile_files'(Files, Flags),
+		 '$lgt_report_warning_numbers'(logtalk_compile(Files, Flags))),
 		Error,
 		('$lgt_reset_warnings_counter',
-		 throw(error(Error, logtalk_compile(Entities, Flags))))).
+		 throw(error(Error, logtalk_compile(Files, Flags))))).
 
 
 
@@ -1055,74 +1055,71 @@ logtalk_compile(Entities, Flags) :-
 
 
 
-% '$lgt_check_compiler_entities'(@list)
+% '$lgt_check_source_files'(@list)
 %
-% check if the entities names are valid and if the corresponding
-% files exist in the current working directory
+% check if the source file names are valid and if they exist in the current working directory
 
-'$lgt_check_compiler_entities'(Entities) :-
-	var(Entities),
+'$lgt_check_source_files'(Files) :-
+	var(Files),
 	throw(instantiation_error).
 
-'$lgt_check_compiler_entities'(Entities) :-
-	\+ '$lgt_proper_list'(Entities),
-	throw(type_error(entity_file_names, Entities)).
+'$lgt_check_source_files'(Files) :-
+	\+ '$lgt_proper_list'(Files),
+	throw(type_error(entity_file_names, Files)).
 
-'$lgt_check_compiler_entities'(Entities) :-
-	'$lgt_check_compiler_entity_list'(Entities).
-
-
-
-'$lgt_check_compiler_entity_list'([]).
-
-'$lgt_check_compiler_entity_list'([Entity| Entities]) :-
-	'$lgt_check_compiler_entity'(Entity),
-	'$lgt_check_compiler_entity_list'(Entities).
+'$lgt_check_source_files'(Files) :-
+	'$lgt_check_source_files_list'(Files).
 
 
 
-'$lgt_check_compiler_entity'(Entity) :-
-	var(Entity),
+'$lgt_check_source_files_list'([]).
+
+'$lgt_check_source_files_list'([File| Files]) :-
+	'$lgt_check_source_file'(File),
+	'$lgt_check_source_files_list'(Files).
+
+
+
+'$lgt_check_source_file'(File) :-
+	var(File),
 	throw(instantiation_error).
 
-'$lgt_check_compiler_entity'(Entity) :-
-	compound(Entity),
+'$lgt_check_source_file'(File) :-
+	compound(File),
 	!,
-	'$lgt_check_compiler_library_entity'(Entity).
+	'$lgt_check_library_source_file'(File).
 
-'$lgt_check_compiler_entity'(Entity) :-
-	\+ atom(Entity),
-	throw(type_error(entity_file_name, Entity)).
+'$lgt_check_source_file'(File) :-
+	\+ atom(File),
+	throw(type_error(source_file_name, File)).
 
-'$lgt_check_compiler_entity'(Entity) :-
-	'$lgt_file_name'(metafile, Entity, Metafile),
-	\+ '$lgt_file_exists'(Metafile),
-	'$lgt_file_name'(logtalk, Entity, File),
-	\+ '$lgt_file_exists'(File),
-	throw(existence_error(entity, Entity)).
+'$lgt_check_source_file'(File) :-
+	'$lgt_file_name'(logtalk, File, FileWithExtension),
+	\+ '$lgt_file_exists'(FileWithExtension),
+	throw(existence_error(file, File)).
 
-'$lgt_check_compiler_entity'(_).
+'$lgt_check_source_file'(_).
 
 
-'$lgt_check_compiler_library_entity'(Term) :-
+'$lgt_check_library_source_file'(Term) :-
 	\+ Term =.. [_, _],
-	throw(type_error(library_entity_file_name, Term)).
+	throw(type_error(library_name, Term)).
 
-'$lgt_check_compiler_library_entity'(Term) :-
-	Term =.. [Library, Entity],
-	'$lgt_check_compiler_library_entity'(Library, Entity).
+'$lgt_check_library_source_file'(Term) :-
+	Term =.. [Library, File],
+	'$lgt_check_library_source_file'(Library, File).
 
 
-'$lgt_check_compiler_library_entity'(Library, _) :-
+'$lgt_check_library_source_file'(Library, _) :-
 	\+ logtalk_library_path(Library, _),
 	throw(existence_error(library, Library)).
 
-'$lgt_check_compiler_library_entity'(Library, Entity) :-
+'$lgt_check_library_source_file'(Library, File) :-
 	once(logtalk_library_path(Library, Path)),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
 	catch(
-		'$lgt_check_compiler_entity'(Entity),
+		'$lgt_check_source_file'(File),
 		Error,
 		('$lgt_change_directory'(Current), throw(Error))),
 	'$lgt_change_directory'(Current).
@@ -1194,34 +1191,34 @@ logtalk_load(Entities) :-
 
 % logtalk_load(@atom_or_atom_list, @list)
 %
-% compiles to disk and then loads to memory an entity 
-% or a list of entities using a list of flag options
+% compiles to disk and then loads to memory a source file 
+% or a list of source files using a list of flag options
 
-logtalk_load(Entity, Flags) :-
-	(atom(Entity), Entity \= []; compound(Entity), Entity \= [_| _]),
+logtalk_load(File, Flags) :-
+	(atom(File), File \= []; compound(File), File \= [_| _]),
 	!,
 	catch(
-		('$lgt_init_warnings_counter'(logtalk_load(Entity, Flags)),
-		 '$lgt_check_compiler_entity'(Entity),
+		('$lgt_init_warnings_counter'(logtalk_load(File, Flags)),
+		 '$lgt_check_source_file'(File),
 		 '$lgt_check_compiler_flags'(Flags),
 		 '$lgt_set_compiler_flags'(Flags),
-		 '$lgt_load_entity'(Entity, Flags),
-		 '$lgt_report_warning_numbers'(logtalk_load(Entity, Flags))),
+		 '$lgt_load_file'(File, Flags),
+		 '$lgt_report_warning_numbers'(logtalk_load(File, Flags))),
 		Error,
 		('$lgt_reset_warnings_counter',
-		 throw(error(Error, logtalk_load(Entity, Flags))))).
+		 throw(error(Error, logtalk_load(File, Flags))))).
 
-logtalk_load(Entities, Flags) :-
+logtalk_load(Files, Flags) :-
 	catch(
-		('$lgt_init_warnings_counter'(logtalk_load(Entities, Flags)),
-		 '$lgt_check_compiler_entities'(Entities),
+		('$lgt_init_warnings_counter'(logtalk_load(Files, Flags)),
+		 '$lgt_check_source_files'(Files),
 		 '$lgt_check_compiler_flags'(Flags),
 		 '$lgt_set_compiler_flags'(Flags),
-		 '$lgt_load_entities'(Entities, Flags),
-		 '$lgt_report_warning_numbers'(logtalk_load(Entities, Flags))),
+		 '$lgt_load_files'(Files, Flags),
+		 '$lgt_report_warning_numbers'(logtalk_load(Files, Flags))),
 		Error,
 		('$lgt_reset_warnings_counter',
-		 throw(error(Error, logtalk_load(Entities, Flags))))).
+		 throw(error(Error, logtalk_load(Files, Flags))))).
 
 
 
@@ -1289,7 +1286,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 24, 0)).
+current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
@@ -2879,261 +2876,34 @@ current_logtalk_flag(version, version(2, 24, 0)).
 
 
 
-% '$lgt_split_metafile'(+atom, +list, -atom, -atom)
+% '$lgt_load_files'(+list, +list)
 %
-% splits a metafile into individual entity files plus a loading 
-% and a compiling helper files (returning their names)
+% compiles to disk and then loads to memory a list of source files
 
-'$lgt_split_metafile'(Source, Flags, Loader, Compiler) :-
-	atom_concat(Source, '_load', Loader),
-	atom_concat(Source, '_compile', Compiler),
-	'$lgt_split_metafile_aux'(Source, Flags, Loader, Compiler).
+'$lgt_load_files'([], _).
 
-
-'$lgt_split_metafile_aux'(Source, _, Loader, Compiler) :-
-	'$lgt_compiler_flag'(smart_compilation, on),
-	\+ '$lgt_needs_resplitting'(Source, Loader, Compiler),
-	!.
-
-'$lgt_split_metafile_aux'(Source, Flags, Loader, Compiler) :-
-	('$lgt_compiler_flag'(report, on) ->
-		write('>>> splitting metafile '), writeq(Source), write('...'), nl
-		;
-		true),
-	'$lgt_file_name'(metafile, Source, Metafile),
-	catch(
-		(open(Metafile, read, Stream),
-		 read_term(Stream, Term, []),
-		 '$lgt_copy_metafile_term'(Stream, Term, Cache, Entities)),
-		Error,
-		'$lgt_compiler_error_handler'(Stream, Error)),
-	'$lgt_create_aux_files'(Source, Flags, Loader, Compiler, Cache, Entities),
-	('$lgt_compiler_flag'(report, on) ->
-		write('>>> metafile '), writeq(Source), write(' split'), nl
-		;
-		true).
+'$lgt_load_files'([File| Files], Flags) :-
+	'$lgt_load_file'(File, Flags),
+	'$lgt_load_files'(Files, Flags).
 
 
 
-% '$lgt_needs_resplitting'(+atom, +atom, +atom)
+% '$lgt_load_file'(+atom, +list)
 %
-% true when a source metafile needs resplitting; assumes that the user does 
-% not temper with the files generated by the splitting of the metafile
+% compiles to disk and then loads to memory a source file
 
-'$lgt_needs_resplitting'(_, Loader, _) :-
-	'$lgt_file_name'(logtalk, Loader, LoaderFile),
-	\+ '$lgt_file_exists'(LoaderFile),
-	!.
-
-'$lgt_needs_resplitting'(Source, _, Compiler) :-
-	'$lgt_file_name'(logtalk, Compiler, CompilerFile),
-	(\+ '$lgt_file_exists'(CompilerFile) ->
-		true
-		;
-		'$lgt_file_name'(metafile, Source, Metafile),
-		('$lgt_compare_file_mtimes'(Result, Metafile, CompilerFile) ->
-			Result = (>)
-			;
-			true)).
-
-
-
-% '$lgt_create_aux_files'(+atom, +atom, +atom, +list, +list)
-%
-% creates a loading and a compiling helper files given a list of entities
-
-'$lgt_create_aux_files'(Source, Flags, Loader, Compiler, Cache, Names) :-	
-	'$lgt_file_name'(metafile, Source, Metafile),
-	'$lgt_file_name'(logtalk, Loader, LoaderFile),
-	'$lgt_file_name'(logtalk, Compiler, CompilerFile),
-	('$lgt_compiler_flag'(report, on) ->
-		write('> creating loading helper file '), write(Loader), write('...'), nl
-		;
-		true),
-	catch(
-		(open(LoaderFile, write, LoaderStream),
-		 write_term(LoaderStream, '% loader file automatically generated from source metafile ', []), 
-		 write_term(LoaderStream, Metafile, []), nl(LoaderStream), nl(LoaderStream),
-		 '$lgt_copy_cached_metafile_terms'(Cache, LoaderStream), nl(LoaderStream),
-		 write_canonical(LoaderStream, (:- initialization(logtalk_load(Names, Flags)))),
-		 write_term(LoaderStream, '.', []), nl(LoaderStream)),
-		Error,
-		'$lgt_compiler_error_handler'(LoaderStream, Error)),
-	close(LoaderStream),
-	('$lgt_compiler_flag'(report, on) ->
-		write('> loading helper file '), write(Loader), write(' created'), nl,
-		write('> creating compiling helper file '), write(Compiler), write('...'), nl
-		;
-		true),
-	catch(
-		(open(CompilerFile, write, CompilerStream),
-		 write_term(CompilerStream, '% compiler file automatically generated from source metafile ', []), 
-		 write_term(CompilerStream, Metafile, []), nl(CompilerStream), nl(CompilerStream),
-		 write_canonical(CompilerStream, (:- initialization(logtalk_compile(Names, Flags)))),
-		 write_term(CompilerStream, '.', []), nl(CompilerStream)),
-		Error,
-		'$lgt_compiler_error_handler'(CompilerStream, Error)),
-	close(CompilerStream),
-	('$lgt_compiler_flag'(report, on) ->
-		write('> compiling helper file '), write(Compiler), write(' created'), nl
-		;
-		true).
-
-
-
-% '$lgt_copy_cached_metafile_terms'(+list, +atom)
-%
-% copies cached terms which occurs before an entity 
-% definition to the entity source file
-
-'$lgt_copy_cached_metafile_terms'([], _).
-
-'$lgt_copy_cached_metafile_terms'([Term| Terms], Stream) :-
-	write_canonical(Stream, Term),
-	write_term(Stream, '.', []), nl(Stream),
-	'$lgt_copy_cached_metafile_terms'(Terms, Stream).
-
-
-
-% '$lgt_copy_metafile_term'(+atom, @term, -list,-list)
-%
-% copies a term to either a cache or to an entity source file
-% returning cached read terms and a list of extracted entities
-
-'$lgt_copy_metafile_term'(Input, Term, Cache, Names) :-
-	'$lgt_copy_metafile_term'(Input, Term, [], Cache, Names).
-
-
-'$lgt_copy_metafile_term'(Input, end_of_file, Acc, Cache, []) :-
-	!,
-	close(Input),
-	'$lgt_reverse'(Acc, Cache).
-
-'$lgt_copy_metafile_term'(_, Term, _, _, _) :-
-	Term =.. [(:-), Directive],
-	'$lgt_closing_entity_directive'(Directive, Type),
-	throw(entity_opening_directive_missing(Type)).
-
-'$lgt_copy_metafile_term'(Input, Term, Acc, Cache, [Name| Names]) :-
-	Term =.. [(:-), Directive],
-	'$lgt_opening_entity_directive'(Directive, Type, Entity),
-	!,
-	('$lgt_compiler_flag'(report, on) ->
-		write('> extracting '), write(Type), write(' '),
-		current_output(Current), '$lgt_pretty_print_vars_quoted'(Current, Entity), 
-		write('...'), nl
-		;
-		true),
-	(atom(Entity) ->
-		Name = Entity
-		;
-		functor(Entity, Functor, Arity),
-		number_codes(Arity, Codes),
-		atom_codes(Atom, Codes),
-		atom_concat(Functor, Atom, Name)),
-	'$lgt_file_name'(logtalk, Name, File),
-	open(File, write, Output),
-	'$lgt_reverse'(Acc, Acc2),	
-	'$lgt_copy_cached_metafile_terms'(Acc2, Output),
-	write_canonical(Output, Term),
-	write_term(Output, '.', []), nl(Output),
-	'$lgt_copy_metafile_entity_terms'(Input, Output, Type),
-	('$lgt_compiler_flag'(report, on) ->
-		write('> '), '$lgt_pretty_print_vars_quoted'(Current, Entity),
-		write(' extracted '), nl
-		;
-		true),
-	read_term(Input, Next, []),
-	('$lgt_member'((:- encoding(Encoding)), Acc2) ->
-		'$lgt_copy_metafile_term'(Input, Next, [(:- encoding(Encoding))], Cache, Names)
-		;
-		'$lgt_copy_metafile_term'(Input, Next, [], Cache, Names)).
-
-'$lgt_copy_metafile_term'(Input, Term, Acc, Cache, Names) :-
-	read_term(Input, Next, []),
-	'$lgt_copy_metafile_term'(Input, Next, [Term| Acc], Cache, Names).
-
-
-
-% '$lgt_copy_metafile_entity_terms'(+atom, +atom, +atom)
-%
-% copies entity terms from the source metafile to an entity source file
-
-'$lgt_copy_metafile_entity_terms'(Input, Output, Type) :-
-	read_term(Input, Term, []),
-	(Term = end_of_file ->
-		throw(entity_closing_directive_missing(Type))
-		;
-		write_canonical(Output, Term),
-		write_term(Output, '.', []), nl(Output),
-		((Term =.. [(:-), Directive], '$lgt_closing_entity_directive'(Directive, Type2)) ->
-			(Type = Type2 ->
-				close(Output)
-				;
-				throw(entity_enclosing_directives_mismatch(Type, Type2)))
-			;
-			'$lgt_copy_metafile_entity_terms'(Input, Output, Type))).
-
-
-
-% '$lgt_opening_entity_directive'(+directive, -atom, -entity_identifier)
-
-'$lgt_opening_entity_directive'(object(Entity), object, Entity).
-'$lgt_opening_entity_directive'(object(Entity, _), object, Entity).
-'$lgt_opening_entity_directive'(object(Entity, _, _), object, Entity).
-'$lgt_opening_entity_directive'(object(Entity, _, _, _), object, Entity).
-'$lgt_opening_entity_directive'(object(Entity, _, _, _, _), object, Entity).
-'$lgt_opening_entity_directive'(protocol(Entity), protocol, Entity).
-'$lgt_opening_entity_directive'(protocol(Entity, _), protocol, Entity).
-'$lgt_opening_entity_directive'(category(Entity), category, Entity).
-'$lgt_opening_entity_directive'(category(Entity, _), category, Entity).
-
-
-
-% '$lgt_closing_entity_directive'(+directive, -atom)
-
-'$lgt_closing_entity_directive'(end_object, object).
-'$lgt_closing_entity_directive'(end_protocol, protocol).
-'$lgt_closing_entity_directive'(end_category, category).
-
-
-
-% '$lgt_load_entities'(+list, +list)
-%
-% compiles to disk and then loads to memory a list of entities
-
-'$lgt_load_entities'([], _).
-
-'$lgt_load_entities'([Entity| Entities], Flags) :-
-	'$lgt_load_entity'(Entity, Flags),
-	'$lgt_load_entities'(Entities, Flags).
-
-
-
-% '$lgt_load_entity'(+atom, +list)
-%
-% compiles to disk and then loads to memory an entity
-
-'$lgt_load_entity'(Term, Flags) :-
+'$lgt_load_file'(Term, Flags) :-
 	compound(Term),
 	!,
-	Term =.. [Library, Entity],
+	Term =.. [Library, File],
 	once(logtalk_library_path(Library, Path)),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
-	'$lgt_load_entity'(Entity, Flags),
+	'$lgt_load_file'(File, Flags),
 	'$lgt_change_directory'(Current).
 
-'$lgt_load_entity'(Entity, Flags) :-
-	'$lgt_file_name'(metafile, Entity, Metafile),
-	'$lgt_file_exists'(Metafile),
-	!,
-	'$lgt_split_metafile'(Entity, Flags, Loader, _),
-	'$lgt_load_entity'(Loader, Flags).
-
-
-'$lgt_load_entity'(Entity, Flags) :-
-	'$lgt_compile_entity'(Entity, Flags),
+'$lgt_load_file'(File, Flags) :-
+	'$lgt_compile_file'(File, Flags),
 	('$lgt_redefined_entity'(Entity, Type, Identifier) ->
 		'$lgt_clean_lookup_caches',
 		'$lgt_clean_redefined_entity'(Type, Identifier),
@@ -3142,7 +2912,7 @@ current_logtalk_flag(version, version(2, 24, 0)).
 		true),
 	'$lgt_file_name'(prolog, Entity, File),
 	'$lgt_load_prolog_code'(File),
-	'$lgt_report_loaded_entity'(Entity).
+	'$lgt_report_loaded_file'(Entity).
 
 
 
@@ -3260,55 +3030,84 @@ current_logtalk_flag(version, version(2, 24, 0)).
 
 
 
-% '$lgt_compile_entities'(+list, +list)
+% '$lgt_report_compiling_file'(+entity_identifier)
 %
-% compiles to disk a list of entities
+% prints a message that an entity is being compiled
 
-'$lgt_compile_entities'([], _).
+'$lgt_report_compiling_file'(File) :-
+	'$lgt_compiler_flag'(report, on) ->
+		nl, write('>>> compiling '), writeq(File),
+		('$lgt_compiler_flag'(debug, on) ->
+			write(' in debug mode...')
+			;
+			write('...')),
+		nl
+		;
+		true.
 
-'$lgt_compile_entities'([Entity| Entities], Flags) :-
-	'$lgt_compile_entity'(Entity, Flags),
-	'$lgt_compile_entities'(Entities, Flags).
 
 
-
-% '$lgt_compile_entity'(+atom, +list)
+% '$lgt_report_compiled_file'(+entity_identifier)
 %
-% compiles to disk an entity
+% prints a message that a source file is finished compiling
 
-'$lgt_compile_entity'(Term, Flags) :-
+'$lgt_report_compiled_file'(File) :-
+	'$lgt_compiler_flag'(report, on) ->
+		write('>>> '), writeq(File), write(' compiled'), nl
+		;
+		true.
+
+
+
+% '$lgt_report_loaded_file'(+entity_identifier)
+%
+% prints a message that a source file finished loading
+
+'$lgt_report_loaded_file'(File) :-
+	'$lgt_compiler_flag'(report, on) ->
+		write('<<< '), writeq(File), write(' loaded'), nl
+		;
+		true.
+
+
+
+% '$lgt_compile_files'(+list, +list)
+%
+% compiles to disk a list of source files
+
+'$lgt_compile_files'([], _).
+
+'$lgt_compile_files'([File| Files], Flags) :-
+	'$lgt_compile_file'(File, Flags),
+	'$lgt_compile_files'(Files, Flags).
+
+
+
+% '$lgt_compile_file'(+atom, +list)
+%
+% compiles to disk a source file
+
+'$lgt_compile_file'(Term, Flags) :-
 	compound(Term),
 	!,
-	Term =.. [Library, Entity],
+	Term =.. [Library, File],
 	once(logtalk_library_path(Library, Path)),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
-	'$lgt_compile_entity'(Entity, Flags),
+	'$lgt_compile_file'(File, Flags),
 	'$lgt_change_directory'(Current).
 
-'$lgt_compile_entity'(Entity, Flags) :-
-	'$lgt_file_name'(metafile, Entity, Metafile),
-	'$lgt_file_exists'(Metafile),
-	!,
-	'$lgt_split_metafile'(Entity, Flags, _, Compiler),
-	'$lgt_compile_entity'(Compiler, Flags),
-	'$lgt_file_name'(prolog, Compiler, File),
-	'$lgt_load_prolog_code'(File).
-
-'$lgt_compile_entity'(Entity, _) :-
+'$lgt_compile_file'(File, _) :-
 	'$lgt_compiler_flag'(smart_compilation, on),
-	\+ '$lgt_needs_recompilation'(Entity),
+	\+ '$lgt_needs_recompilation'(File),
 	!,
-	'$lgt_report_up_to_date_entity'(Entity).
+	'$lgt_report_up_to_date_entity'(File).
 
-'$lgt_compile_entity'(Entity, _) :-
-	'$lgt_report_compiling_entity'(Entity),
+'$lgt_compile_file'(File, _) :-
+	'$lgt_report_compiling_file'(File),
 	'$lgt_clean_pp_clauses',
-	'$lgt_tr_entity'(Entity),
-	'$lgt_write_tr_entity'(Entity),
-	'$lgt_write_entity_doc'(Entity),
-	'$lgt_report_unknown_entities',
-	'$lgt_report_compiled_entity'(Entity).
+	'$lgt_tr_file'(File),
+	'$lgt_report_compiled_file'(File).
 
 
 
@@ -3337,11 +3136,11 @@ current_logtalk_flag(version, version(2, 24, 0)).
 
 
 
-% '$lgt_write_tr_entity'(+atom)
+% '$lgt_write_tr_file'(+atom)
 %
 % writes to disk the entity compiled code
 
-'$lgt_write_tr_entity'(Entity) :-
+'$lgt_write_tr_file'(Entity) :-
 	'$lgt_file_name'(prolog, Entity, File),
 	catch((
 		('$lgt_pp_directive_'(encoding(Encoding)) ->
@@ -3361,14 +3160,35 @@ current_logtalk_flag(version, version(2, 24, 0)).
 
 
 
+% '$lgt_write_tr_entity'(+stream)
+%
+% writes to disk the entity compiled code
+
+'$lgt_write_tr_entity'(Stream) :-
+	catch((
+		'$lgt_write_directives'(Stream),
+		'$lgt_write_prolog_clauses'(Stream),
+		('$lgt_pp_entity'(_, _, _, _, _) ->
+			'$lgt_write_logtalk_clauses'(Stream)
+			 ;
+			 true)),
+		Error,
+		'$lgt_compiler_error_handler'(Stream, Error)).
+
+
+
 % '$lgt_write_entity_doc'(+atom)
 %
 % writes to disk the entity documentation in XML format
 
-'$lgt_write_entity_doc'(Entity) :-
-	'$lgt_pp_entity'(_, _, _, _, _) ->
+'$lgt_write_entity_doc' :-
+	'$lgt_pp_entity'(_, Entity, _, _, _) ->
 		('$lgt_compiler_flag'(xml, on) ->
-			'$lgt_file_name'(xml, Entity, File),
+			functor(Entity, Functor, Arity),
+			number_codes(Arity, Codes),
+			atom_codes(Atom, Codes),
+			atom_concat(Functor, Atom, Name),
+			'$lgt_file_name'(xml, Name, File),
 			catch((
 				('$lgt_pp_directive_'(encoding(Encoding)) ->
 					open(File, write, Stream, [encoding(Encoding)])
@@ -3400,42 +3220,61 @@ current_logtalk_flag(version, version(2, 24, 0)).
 
 
 
-% '$lgt_tr_entity'(+atom)
+% '$lgt_tr_file'(+atom)
 %
-% compiles an entity storing the resulting code in memory
+% compiles a source file storing the resulting code in memory
 
-'$lgt_tr_entity'(Entity) :-
-	'$lgt_file_name'(logtalk, Entity, File),
+'$lgt_tr_file'(File) :-
+	'$lgt_file_name'(logtalk, File, Source),
 	catch(
-		open(File, read, Stream),
-		Error,
-		'$lgt_compiler_error_handler'(Stream, Error)),
+		open(Source, read, SourceStream),
+		SourceError,
+		'$lgt_compiler_error_handler'(SourceStream, SourceError)),
+	'$lgt_file_name'(prolog, File, Object),
+	catch(
+		('$lgt_pp_directive_'(encoding(Encoding)) ->
+			open(Object, write, ObjectStream, [encoding(Encoding)])
+			;
+			open(Object, write, ObjectStream)),
+		ObjectError,
+		'$lgt_compiler_error_handler'(ObjectStream, ObjectError)),
 	'$lgt_save_op_table',
 	catch(
-		(read_term(Stream, Term, [singletons(Singletons)]),
-		 '$lgt_tr_file'(Stream, Term, Singletons)),
+		(read_term(SourceStream, Term, [singletons(Singletons)]),
+		 '$lgt_tr_file'(Term, Singletons, SourceStream, ObjectStream)),
 		Error,
-		'$lgt_compiler_error_handler'(Stream, Error)),
+		'$lgt_compiler_error_handler'(SourceStream, Error)),
 	'$lgt_restore_op_table',
-	close(Stream),
+	'$lgt_write_init_call'(ObjectStream),
+	close(SourceStream),
+	close(ObjectStream).
+
+
+
+'$lgt_tr_entity'(Stream) :-
 	'$lgt_fix_redef_built_ins',
 	'$lgt_report_misspelt_calls',
 	'$lgt_report_non_portable_calls',
-	'$lgt_generate_compiled_code'.
+	'$lgt_generate_compiled_code',
+	'$lgt_write_tr_entity'(Stream),
+	'$lgt_write_entity_doc',
+	'$lgt_report_unknown_entities',
+	'$lgt_entity_init_goal',
+	'$lgt_clean_pp_clauses'.
 
 
 
-% '$lgt_tr_file'(+stream, +term, +list)
+% '$lgt_tr_file'(+term, +list, +stream, +stream)
 
-'$lgt_tr_file'(_, end_of_file, _) :-
+'$lgt_tr_file'(end_of_file, _, _, _) :-
 	!.
 
-'$lgt_tr_file'(Stream, Term, TSingletons) :-
+'$lgt_tr_file'(Term, TSingletons, SourceStream, ObjectStream) :-
 	'$lgt_filter_dont_care_vars'(TSingletons, FSingletons),
 	'$lgt_report_singletons'(FSingletons, Term),
-	'$lgt_tr_term'(Term, Stream),
-	read_term(Stream, Next, [singletons(NSingletons)]),
-	'$lgt_tr_file'(Stream, Next, NSingletons).
+	'$lgt_tr_term'(Term, ObjectStream),
+	read_term(SourceStream, Next, [singletons(NSingletons)]),
+	'$lgt_tr_file'(Next, NSingletons, SourceStream, ObjectStream).
 
 
 
@@ -3703,7 +3542,7 @@ current_logtalk_flag(version, version(2, 24, 0)).
 %
 % translates a list of entity terms (clauses and/or directives)
 
-'$lgt_tr_terms'([], _).
+'$lgt_tr_terms'([], _, _).
 
 '$lgt_tr_terms'([Term| Terms], Stream) :-
 	'$lgt_tr_term'(Term, Stream),
@@ -3711,7 +3550,7 @@ current_logtalk_flag(version, version(2, 24, 0)).
 
 
 
-% '$lgt_tr_term'(+term, +stream)
+% '$lgt_tr_term'(+term, +stream, +stream)
 %
 % translates an entity term (either a clause or a directive)
 
@@ -3811,9 +3650,9 @@ current_logtalk_flag(version, version(2, 24, 0)).
 		;
 		throw(type_error(object_identifier, Obj)).
 
-'$lgt_tr_directive'(end_object, [], _) :-
+'$lgt_tr_directive'(end_object, [], Stream) :-
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _) ->
-		true
+		'$lgt_tr_entity'(Stream)
 		;
 		throw(closing_directive_mismatch).
 
@@ -3825,9 +3664,9 @@ current_logtalk_flag(version, version(2, 24, 0)).
 		;
 		throw(type_error(protocol_identifier, Ptc)).
 
-'$lgt_tr_directive'(end_protocol, [], _) :-
+'$lgt_tr_directive'(end_protocol, [], Stream) :-
 	'$lgt_pp_protocol_'(_, _, _, _, _) ->
-		true
+		'$lgt_tr_entity'(Stream)
 		;
 		throw(closing_directive_mismatch).
 
@@ -3839,9 +3678,9 @@ current_logtalk_flag(version, version(2, 24, 0)).
 		;
 		throw(type_error(category_identifier, Ctg)).
 
-'$lgt_tr_directive'(end_category, [], _) :-
+'$lgt_tr_directive'(end_category, [], Stream) :-
 	'$lgt_pp_category_'(_, _, _, _, _, _) ->
-		true
+		'$lgt_tr_entity'(Stream)
 		;
 		throw(closing_directive_mismatch).
 
@@ -7359,11 +7198,36 @@ current_logtalk_flag(version, version(2, 24, 0)).
 
 % '$lgt_write_init_call'(+stream)
 %
-% writes the initialization call for the compiled entity that will assert 
-% the relation clauses and call any declared initialization goal when the
-% entity is loaded
+% writes the initialization call for the compiled source file that will assert 
+% the relation clauses for all defined entities and call any declared entity 
+% initialization goals when the source file is loaded
 
 '$lgt_write_init_call'(Stream) :-
+	'$lgt_init_goal'(Goal),
+	('$lgt_compiler_flag'(iso_initialization_dir, true) ->
+		write_canonical(Stream, (:- initialization(Goal)))
+		;
+		write_canonical(Stream, (:- Goal))),
+	write(Stream, '.'), nl(Stream).
+
+
+:- dynamic('$lgt_entity_init_goal_'/1).
+
+
+'$lgt_init_goal'(Goal) :-
+	findall(EGoal, '$lgt_entity_init_goal_'(EGoal), EGoals),
+	'$lgt_list_to_conjunction'(EGoals, Goal).
+
+
+
+'$lgt_list_to_conjunction'([], true).
+
+'$lgt_list_to_conjunction'([G| Gs], (G, R)) :-
+	'$lgt_list_to_conjunction'(Gs, R).
+
+
+
+'$lgt_entity_init_goal' :-
 	'$lgt_pp_entity'(_, Entity, _, _, _),
 	findall(Clause, '$lgt_pp_rclause'(Clause), Clauses),
 	('$lgt_compiler_flag'(debug, on) ->
@@ -7374,11 +7238,7 @@ current_logtalk_flag(version, version(2, 24, 0)).
 		Goal = (Goal1, Goal2)
 		;
 		Goal = Goal1),
-	('$lgt_compiler_flag'(iso_initialization_dir, true) ->
-		write_canonical(Stream, (:- initialization(Goal)))
-		;
-		write_canonical(Stream, (:- Goal))),
-	write(Stream, '.'), nl(Stream).
+	assertz('$lgt_entity_init_goal_'(Goal)).
 
 
 
