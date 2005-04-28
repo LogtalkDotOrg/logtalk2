@@ -942,7 +942,8 @@ abolish_events(after, Obj, Msg, Sender, Monitor) :-
 
 
 
-% logtalk_compile(@atom_or_atom_list)
+% logtalk_compile(@source_file_name)
+% logtalk_compile(@source_file_name_list)
 %
 % compiles to disk a source file or list of source files using default options
 
@@ -954,7 +955,8 @@ logtalk_compile(Files) :-
 
 
 
-% logtalk_compile(@atom_or_atom_list, @list)
+% logtalk_compile(@source_file_name, @list)
+% logtalk_compile(@source_file_name_list, @list)
 %
 % compiles to disk a source file or a list of source files using a list of flag options
 
@@ -966,7 +968,7 @@ logtalk_compile(File, Flags) :-
 		 '$lgt_check_source_file'(File),
 		 '$lgt_check_compiler_flags'(Flags),
 		 '$lgt_set_compiler_flags'(Flags),
-		 '$lgt_compile_source_file'(File),
+		 '$lgt_compile_file'(File),
 		 '$lgt_report_warning_numbers'(logtalk_compile(File, Flags))),
 		Error,
 		('$lgt_reset_warnings_counter',
@@ -978,7 +980,7 @@ logtalk_compile(Files, Flags) :-
 		 '$lgt_check_source_files'(Files),
 		 '$lgt_check_compiler_flags'(Flags),
 		 '$lgt_set_compiler_flags'(Flags),
-		 '$lgt_compile_source_files'(Files),
+		 '$lgt_compile_files'(Files),
 		 '$lgt_report_warning_numbers'(logtalk_compile(Files, Flags))),
 		Error,
 		('$lgt_reset_warnings_counter',
@@ -1068,11 +1070,10 @@ logtalk_compile(Files, Flags) :-
 
 '$lgt_check_source_files'(Files) :-
 	\+ '$lgt_proper_list'(Files),
-	throw(type_error(entity_file_names, Files)).
+	throw(type_error(source_file_names, Files)).
 
 '$lgt_check_source_files'(Files) :-
 	'$lgt_check_source_files_list'(Files).
-
 
 
 '$lgt_check_source_files_list'([]).
@@ -1106,7 +1107,7 @@ logtalk_compile(Files, Flags) :-
 
 '$lgt_check_library_source_file'(Term) :-
 	\+ Term =.. [_, _],
-	throw(type_error(library_name, Term)).
+	throw(type_error(source_file_name, Term)).
 
 '$lgt_check_library_source_file'(Term) :-
 	Term =.. [Library, File],
@@ -1179,10 +1180,11 @@ logtalk_compile(Files, Flags) :-
 
 
 
-% logtalk_load(@atom_or_atom_list)
+% logtalk_load(@source_file_name)
+% logtalk_load(@source_file_name_list)
 %
 % compiles to disk and then loads to memory a source file 
-% or a list of source files using default flag options
+% or a list of source files using default compiler options
 
 logtalk_load(Files) :-
 	catch(
@@ -1192,10 +1194,11 @@ logtalk_load(Files) :-
 
 
 
-% logtalk_load(@atom_or_atom_list, @list)
+% logtalk_load(@source_file_name, @list)
+% logtalk_load(@source_file_name_list, @list)
 %
 % compiles to disk and then loads to memory a source file 
-% or a list of source files using a list of flag options
+% or a list of source files using a list of compiler options
 
 logtalk_load(File, Flags) :-
 	(atom(File), File \= []; compound(File), File \= [_| _]),
@@ -2885,7 +2888,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-% '$lgt_load_files'(+list)
+% '$lgt_load_files'(@source_file_name_list)
 %
 % compiles to disk and then loads to memory a list of source files
 
@@ -2897,7 +2900,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-% '$lgt_load_file'(+atom)
+% '$lgt_load_file'(@source_file_name)
 %
 % compiles to disk and then loads to memory a source file
 
@@ -2912,7 +2915,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	'$lgt_change_directory'(Current).
 
 '$lgt_load_file'(File) :-
-	'$lgt_compile_source_file'(File),
+	'$lgt_compile_file'(File),
 	'$lgt_file_name'(prolog, File, PFile),
 	'$lgt_load_prolog_code'(PFile),
 	'$lgt_report_loaded_file'(File).
@@ -3069,39 +3072,39 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-% '$lgt_compile_source_files'(+list)
+% '$lgt_compile_files'(@source_file_name_list)
 %
 % compiles to disk a list of source files
 
-'$lgt_compile_source_files'([]).
+'$lgt_compile_files'([]).
 
-'$lgt_compile_source_files'([File| Files]) :-
-	'$lgt_compile_source_file'(File),
-	'$lgt_compile_source_files'(Files).
+'$lgt_compile_files'([File| Files]) :-
+	'$lgt_compile_file'(File),
+	'$lgt_compile_files'(Files).
 
 
 
-% '$lgt_compile_source_file'(+atom)
+% '$lgt_compile_file'(@source_file_name)
 %
 % compiles to disk a source file
 
-'$lgt_compile_source_file'(Term) :-
+'$lgt_compile_file'(Term) :-
 	compound(Term),
 	!,
 	Term =.. [Library, File],
 	once(logtalk_library_path(Library, Path)),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
-	'$lgt_compile_source_file'(File),
+	'$lgt_compile_file'(File),
 	'$lgt_change_directory'(Current).
 
-'$lgt_compile_source_file'(File) :-
+'$lgt_compile_file'(File) :-
 	'$lgt_compiler_flag'(smart_compilation, on),
 	\+ '$lgt_needs_recompilation'(File),
 	!,
 	'$lgt_report_up_to_date_file'(File).
 
-'$lgt_compile_source_file'(File) :-
+'$lgt_compile_file'(File) :-
 	'$lgt_report_compiling_file'(File),
 	'$lgt_tr_file'(File),
 	'$lgt_report_compiled_file'(File).

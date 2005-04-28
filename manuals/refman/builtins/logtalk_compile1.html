@@ -37,8 +37,7 @@ Note that only the errors related to problems in the predicate argument are list
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>logtalk_compile(@source_file_name)
-logtalk_compile(@source_file_name_list)</pre>
+<pre>logtalk_compile(@source_file_names)</pre>
 </blockquote>
 
 <h4>Errors</h4>
@@ -49,7 +48,7 @@ logtalk_compile(@source_file_name_list)</pre>
 			<dd><code>instantiation_error</code></dd>
 		<dt>Files is a variable or a list with an element which is a variable:</dt>
 			<dd><code>instantiation_error</code></dd>
-		<dt>File, or an element File of the Files list, is neither a variable nor a source file name nor a library entity file name:</dt>
+		<dt>File, or an element File of the Files list, is neither a variable nor a source file name:</dt>
 			<dd><code>type_error(source_file_name, File)</code></dd>
 		<dt>File, or an element File of the Files list, is a compound term but not a library name:</dt>
 			<dd><code>type_error(library_name, File)</code></dd>
