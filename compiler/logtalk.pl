@@ -144,6 +144,9 @@
 :- dynamic('$lgt_pp_specialized_class_'/10).	% '$lgt_pp_specialized_class_'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)
 :- dynamic('$lgt_pp_extended_protocol_'/4).		% '$lgt_pp_extended_protocol_'(Ptc, Prefix, Dcl, Scope)
 
+:- dynamic('$lgt_pp_file_init_'/1).				% '$lgt_pp_file_init_'(Goal)	
+:- dynamic('$lgt_pp_file_init_'/2).				% '$lgt_pp_file_init_'(Entity, Goal)
+
 :- dynamic('$lgt_pp_entity_init_'/1).			% '$lgt_pp_entity_init_'(Goal)
 :- dynamic('$lgt_pp_fentity_init_'/1).			% '$lgt_pp_fentity_init_'(Goal)
 
@@ -3240,7 +3243,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	'$lgt_write_entity_doc',
 	'$lgt_report_unknown_entities',
 	'$lgt_entity_init_goal',
-	'$lgt_clean_pp_clauses'.
+	'$lgt_clean_pp_entity_clauses'.
 
 
 
@@ -3361,6 +3364,12 @@ current_logtalk_flag(version, version(2, 25, 0)).
 % clean up all dynamic predicates used during entity compilation
 
 '$lgt_clean_pp_clauses' :-
+	'$lgt_clean_pp_entity_clauses',
+	retractall('$lgt_pp_file_init_'(_)),	
+	retractall('$lgt_pp_file_init_'(_, _)).
+
+
+'$lgt_clean_pp_entity_clauses' :-
 	retractall('$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _)),
 	retractall('$lgt_pp_protocol_'(_, _, _, _, _)),
 	retractall('$lgt_pp_category_'(_, _, _, _, _, _)),
@@ -3583,7 +3592,6 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	functor(Dir, Functor, Arity),
 	\+ '$lgt_lgt_opening_directive'(Functor, Arity),
 	!,
-	assertz('$lgt_pp_directive_'(Dir)),		% directive will be copied to the generated Prolog file
 	'$lgt_tr_global_directive'(Dir).
 
 '$lgt_tr_directive'(Dir, Stream) :-
@@ -3606,9 +3614,18 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_tr_global_directive'(op(Pr, Spec, Ops)) :-	% op/3 directives must be used during entity compilation
 	!,
+	assertz('$lgt_pp_directive_'(op(Pr, Spec, Ops))),
 	op(Pr, Spec, Ops).
 
-'$lgt_tr_global_directive'(_).
+'$lgt_tr_global_directive'(initialization(Goal)) :-
+	!,
+	(callable(Goal) ->
+		assertz('$lgt_pp_file_init_'(Goal))
+		;
+		throw(type_error(callable, Goal))).
+
+'$lgt_tr_global_directive'(Dir) :-
+	assertz('$lgt_pp_directive_'(Dir)).				% directive will be copied to the generated Prolog file
 
 
 
@@ -7186,25 +7203,37 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_write_init_call'(Stream) :-
 	'$lgt_init_goal'(Goal),
-	('$lgt_compiler_flag'(iso_initialization_dir, true) ->
-		write_canonical(Stream, (:- initialization(Goal)))
+	(Goal = true ->
+		true
 		;
-		write_canonical(Stream, (:- Goal))),
-	write(Stream, '.'), nl(Stream).
+		('$lgt_compiler_flag'(iso_initialization_dir, true) ->
+			write_canonical(Stream, (:- initialization(Goal)))
+			;
+			write_canonical(Stream, (:- Goal))),
+		write(Stream, '.'), nl(Stream)).
 
-
-:- dynamic('$lgt_entity_init_goal_'/2).
 
 
 '$lgt_init_goal'(Goal) :-
-	findall(EGoal, retract('$lgt_entity_init_goal_'(_, EGoal)), EGoals),
-	'$lgt_list_to_conjunction'(EGoals, Goal).
+	findall(EGoal, '$lgt_pp_file_init_'(_, EGoal), EGoals),
+	('$lgt_pp_file_init_'(FGoal) ->
+		(EGoals \= [] ->
+			'$lgt_list_to_conjunction'(EGoals, EGoals2),
+			Goal = (EGoals2, FGoal)
+			;
+			Goal = FGoal)
+		;
+		(EGoals \= [] ->
+			'$lgt_list_to_conjunction'(EGoals, Goal)
+			;
+			Goal = true)).
 
 
 
-'$lgt_list_to_conjunction'([], true).
+'$lgt_list_to_conjunction'([G], G) :-
+	!.
 
-'$lgt_list_to_conjunction'([G| Gs], (G, R)) :-
+'$lgt_list_to_conjunction'([G1, G2| Gs], (G1, G2, R)) :-
 	'$lgt_list_to_conjunction'(Gs, R).
 
 
@@ -7220,7 +7249,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 		Goal = (Goal1, Goal2)
 		;
 		Goal = Goal1),
-	assertz('$lgt_entity_init_goal_'(Entity, Goal)).
+	assertz('$lgt_pp_file_init_'(Entity, Goal)).
 
 
 
