@@ -3101,20 +3101,20 @@ current_logtalk_flag(version, version(2, 25, 0)).
 %
 % source file needs recompilation
 
-'$lgt_needs_recompilation'(Entity) :-
-	'$lgt_file_name'(prolog, Entity, File),
-	\+ '$lgt_file_exists'(File),
+'$lgt_needs_recompilation'(File) :-
+	'$lgt_file_name'(prolog, File, Object),
+	\+ '$lgt_file_exists'(Object),
 	!.
 
-'$lgt_needs_recompilation'(Entity) :-
+'$lgt_needs_recompilation'(Entity) :-	% USELESS!!!!
 	'$lgt_file_name'(xml, Entity, File),
 	'$lgt_compiler_flag'(xml, on),
 	\+ '$lgt_file_exists'(File),
 	!.
 
-'$lgt_needs_recompilation'(Entity) :-
-	'$lgt_file_name'(logtalk, Entity, Source),
-	'$lgt_file_name'(prolog, Entity, Object),
+'$lgt_needs_recompilation'(File) :-
+	'$lgt_file_name'(logtalk, File, Source),
+	'$lgt_file_name'(prolog, File, Object),
 	('$lgt_compare_file_mtimes'(Result, Source, Object) ->
 		Result = (>)
 		;
@@ -3211,6 +3211,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 		 '$lgt_tr_file'(Term, Singletons, SourceStream, ObjectStream),
 		Error,
 		'$lgt_compiler_error_handler'(SourceStream, Error)),
+	'$lgt_write_directives'(ObjectStream),
+	'$lgt_write_prolog_clauses'(ObjectStream),
 	'$lgt_write_init_call'(ObjectStream),
 	'$lgt_restore_op_table',
 	close(SourceStream),
@@ -3576,13 +3578,13 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	'$lgt_lgt_closing_directive'(Functor, Arity),	% opening directive missing/misspelt
 	throw(error(unmatched_directive, directive(Dir))).
 
-'$lgt_tr_directive'(Dir, Stream) :-
+'$lgt_tr_directive'(Dir, _) :-
 	\+ '$lgt_pp_entity'(_, _, _, _, _),		% directive occurs before opening entity directive
 	functor(Dir, Functor, Arity),
 	\+ '$lgt_lgt_opening_directive'(Functor, Arity),
 	!,
 	assertz('$lgt_pp_directive_'(Dir)),		% directive will be copied to the generated Prolog file
-	'$lgt_tr_global_directive'(Dir, Stream).
+	'$lgt_tr_global_directive'(Dir).
 
 '$lgt_tr_directive'(Dir, Stream) :-
 	functor(Dir, Functor, Arity),
@@ -3600,13 +3602,13 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-% '$lgt_tr_global_directive'(@nonvar, @stream)
+% '$lgt_tr_global_directive'(@nonvar)
 
-'$lgt_tr_global_directive'(op(Pr, Spec, Ops), _) :-			% op/3 directives must be used during entity compilation
+'$lgt_tr_global_directive'(op(Pr, Spec, Ops)) :-	% op/3 directives must be used during entity compilation
 	!,
 	op(Pr, Spec, Ops).
 
-'$lgt_tr_global_directive'(_, _).
+'$lgt_tr_global_directive'(_).
 
 
 
