@@ -27,7 +27,7 @@
 <pre>logtalk_compile(File)
 logtalk_compile(Files)</pre>
 <p>
-Compiles to disk a source file or a list of source files using the default compiler flags specified in the Logtalk configuration file. The Logtalk source file name extension (by default, <code>.lgt</code>) must be omitted. Note that the argument is a list of file names, not file paths. In other words, the files must exist in the current working directory.
+Compiles to disk a source file or a list of source files using the default compiler flags specified in the Logtalk configuration file. The Logtalk source file name extension (by default, <code>.lgt</code>) must be omitted. Note that the argument is a file name or a list of file names, not file paths. In other words, the files must exist in the current working directory, unless library notation is used.
 </p>
 <p>
 Note that only the errors related to problems in the predicate argument are listed below. Other exceptions may be thrown by the compiler if any of the compiled entities contain syntax errors.
