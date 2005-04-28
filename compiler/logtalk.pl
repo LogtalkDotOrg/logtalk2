@@ -3511,10 +3511,14 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 % '$lgt_pp_rclause'(-compound)
 %
-% returns runtime relation clauses for the entity being compiled
+% returns runtime table clauses for the entity being compiled
 
 '$lgt_pp_rclause'(Clause) :-
 	'$lgt_pp_rclause_'(Clause).
+
+'$lgt_pp_rclause'('$lgt_debugging_'(Entity)) :-
+	'$lgt_compiler_flag'(debug, on),
+	'$lgt_pp_entity'(_, Entity, _, _, _).
 
 '$lgt_pp_rclause'('$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, Mode)) :-
 	'$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, _, _, _, _, _, Mode),
@@ -7243,10 +7247,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_generate_init_goal' :-
 	'$lgt_pp_entity'(_, Entity, _, _, _),
 	findall(Clause, '$lgt_pp_rclause'(Clause), Clauses),
-	('$lgt_compiler_flag'(debug, on) ->
-		Goal1 = ('$lgt_assert_relation_clauses'(Clauses), assertz('$lgt_debugging_'(Entity)))
-		;
-		Goal1 = '$lgt_assert_relation_clauses'(Clauses)),
+	Goal1 = '$lgt_assert_runtime_clauses'(Clauses),
 	('$lgt_pp_fentity_init_'(Goal2) ->
 		Goal = (Goal1, Goal2)
 		;
@@ -7267,7 +7268,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	'$lgt_assert_ddef_clauses',
 	'$lgt_assert_super_clauses',
 	'$lgt_assert_pred_clauses',
-	'$lgt_assert_relation_clauses',
+	'$lgt_assert_runtime_clauses',
 	'$lgt_assert_init'.
 
 
@@ -7339,12 +7340,12 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-'$lgt_assert_relation_clauses' :-
+'$lgt_assert_runtime_clauses' :-
 	'$lgt_pp_rclause'(Clause),
 	assertz(Clause),
 	fail.
 
-'$lgt_assert_relation_clauses'.
+'$lgt_assert_runtime_clauses'.
 
 
 
@@ -7365,15 +7366,15 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-% '$lgt_assert_relation_clauses'(+list)
+% '$lgt_assert_runtime_clauses'(+list)
 %
 % called when loading a compiled Logtalk entity to update Logtalk 
 % internal tables
 %
 % we may be reloading the entity so we must first retract any old
-% relation clauses before asserting the new ones
+% runtime clauses before asserting the new ones
 
-'$lgt_assert_relation_clauses'([Clause| Clauses]) :-
+'$lgt_assert_runtime_clauses'([Clause| Clauses]) :-
 	arg(1, Clause, Entity),
 	('$lgt_redefined_entity'(Entity, Type) ->
 		'$lgt_clean_lookup_caches',
@@ -7381,11 +7382,11 @@ current_logtalk_flag(version, version(2, 25, 0)).
 		'$lgt_report_redefined_entity'(Type, Entity)
 		;
 		true),
-	'$lgt_retract_old_relation_clauses'(Entity),
-	'$lgt_assert_new_relation_clauses'([Clause| Clauses]).
+	'$lgt_retract_old_runtime_clauses'(Entity),
+	'$lgt_assert_new_runtime_clauses'([Clause| Clauses]).
 
 
-'$lgt_retract_old_relation_clauses'(Entity) :-
+'$lgt_retract_old_runtime_clauses'(Entity) :-
 	retractall('$lgt_current_object_'(Entity, _, _, _, _, _)),
 	retractall('$lgt_current_protocol_'(Entity, _, _)),
 	retractall('$lgt_current_category_'(Entity, _, _)),
@@ -7398,11 +7399,11 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	retractall('$lgt_debugging_'(Entity)).
 
 
-'$lgt_assert_new_relation_clauses'([]).
+'$lgt_assert_new_runtime_clauses'([]).
 
-'$lgt_assert_new_relation_clauses'([Clause| Clauses]) :-
+'$lgt_assert_new_runtime_clauses'([Clause| Clauses]) :-
 	assertz(Clause),
-	'$lgt_assert_new_relation_clauses'(Clauses).
+	'$lgt_assert_new_runtime_clauses'(Clauses).
 
 
 
