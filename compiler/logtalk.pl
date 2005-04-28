@@ -922,7 +922,7 @@ abolish_events(after, Obj, Msg, Sender, Monitor) :-
 
 % '$lgt_compiler_flag'(+atom, ?atom)
 %
-% gets/check the current value of a compiler flag
+% gets/checks the current value of a compiler flag
 
 '$lgt_compiler_flag'(Option, Value) :-
 	'$lgt_pp_compiler_flag_'(Option, Value2),
@@ -2910,31 +2910,24 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-% '$lgt_redefined_entity'(+atom, -atom, -)
+% '$lgt_redefined_entity'(@entity_identifier, -atom)
 %
 % true if an entity of the same name is already loaded
 
-'$lgt_redefined_entity'(Entity, object, Entity) :-			% non-parametric objects
+'$lgt_redefined_entity'(Entity, object) :-
 	'$lgt_current_object_'(Entity, _, _, _, _, _),
 	!.
 
-'$lgt_redefined_entity'(Entity, object, Identifier) :-		% parametric objects
-	'$lgt_compiler_flag'(code_prefix, Atom),				% (assuming that the code_prefix
-	atom_concat(Atom, Entity, Aux),							% does not change between entity
-	atom_concat(Aux, '_', Prefix),							% compilations)
-	'$lgt_current_object_'(Identifier, Prefix, _, _, _, _),
-	!.
-
-'$lgt_redefined_entity'(Entity, protocol, Entity) :-
+'$lgt_redefined_entity'(Entity, protocol) :-
 	'$lgt_current_protocol_'(Entity, _, _),
 	!.
 
-'$lgt_redefined_entity'(Entity, category, Entity) :-
+'$lgt_redefined_entity'(Entity, category) :-
 	'$lgt_current_category_'(Entity, _, _).
 
 
 
-% '$lgt_clean_redefined_entity'(+atom, +entity_identifier)
+% '$lgt_clean_redefined_entity'(+atom, @entity_identifier)
 %
 % retract all clauses for all local dynamic 
 % predicates from a redefined entity
@@ -2958,7 +2951,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-% '$lgt_report_redefined_entity'(+atom, +entity_identifier)
+% '$lgt_report_redefined_entity'(+atom, @entity_identifier)
 %
 % prints a warning for redefined entities
 
@@ -3126,30 +3119,6 @@ current_logtalk_flag(version, version(2, 25, 0)).
 		Result = (>)
 		;
 		true).
-
-
-
-% '$lgt_write_tr_file'(+atom)
-%
-% writes to disk the entity compiled code
-
-'$lgt_write_tr_file'(Entity) :-
-	'$lgt_file_name'(prolog, Entity, File),
-	catch((
-		('$lgt_pp_directive_'(encoding(Encoding)) ->
-			open(File, write, Stream, [encoding(Encoding)])
-			;
-			open(File, write, Stream)),
-		'$lgt_write_directives'(Stream),
-		'$lgt_write_prolog_clauses'(Stream),
-		('$lgt_pp_entity'(_, _, _, _, _) ->
-			'$lgt_write_logtalk_clauses'(Stream),
-			 '$lgt_write_init_call'(Stream)
-			 ;
-			 true),
-		close(Stream)),
-		Error,
-		'$lgt_compiler_error_handler'(Stream, Error)).
 
 
 
@@ -5818,7 +5787,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_unknown_object'(Obj) :-
 	'$lgt_pp_referenced_object_'(Obj),
 	\+ '$lgt_current_object_'(Obj, _, _, _, _, _),
-	\+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _).
+	\+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
+	\+ '$lgt_entity_init_goal_'(Obj, _).
 
 
 
@@ -5838,7 +5808,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_unknown_protocol'(Ptc) :-
 	'$lgt_pp_referenced_protocol_'(Ptc),
 	\+ '$lgt_current_protocol_'(Ptc, _, _),
-	\+ '$lgt_pp_protocol_'(Ptc, _, _, _, _).
+	\+ '$lgt_pp_protocol_'(Ptc, _, _, _, _),
+	\+ '$lgt_entity_init_goal_'(Ptc, _).
 
 
 
@@ -5858,7 +5829,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_unknown_category'(Ctg) :-
 	'$lgt_pp_referenced_category_'(Ctg),
 	\+ '$lgt_current_category_'(Ctg, _, _),
-	\+ '$lgt_pp_category_'(Ctg, _, _, _, _, _).
+	\+ '$lgt_pp_category_'(Ctg, _, _, _, _, _),
+	\+ '$lgt_entity_init_goal_'(Ctg, _).
 
 
 
@@ -7216,11 +7188,11 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	write(Stream, '.'), nl(Stream).
 
 
-:- dynamic('$lgt_entity_init_goal_'/1).
+:- dynamic('$lgt_entity_init_goal_'/2).
 
 
 '$lgt_init_goal'(Goal) :-
-	findall(EGoal, '$lgt_entity_init_goal_'(EGoal), EGoals),
+	findall(EGoal, retract('$lgt_entity_init_goal_'(_, EGoal)), EGoals),
 	'$lgt_list_to_conjunction'(EGoals, Goal).
 
 
@@ -7243,7 +7215,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 		Goal = (Goal1, Goal2)
 		;
 		Goal = Goal1),
-	assertz('$lgt_entity_init_goal_'(Goal)).
+	assertz('$lgt_entity_init_goal_'(Entity, Goal)).
 
 
 
@@ -7367,10 +7339,10 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_assert_relation_clauses'([Clause| Clauses]) :-
 	arg(1, Clause, Entity),
-	('$lgt_redefined_entity'(Entity, Type, Identifier) ->
+	('$lgt_redefined_entity'(Entity, Type) ->
 		'$lgt_clean_lookup_caches',
-		'$lgt_clean_redefined_entity'(Type, Identifier),
-		'$lgt_report_redefined_entity'(Type, Identifier)
+		'$lgt_clean_redefined_entity'(Type, Entity),
+		'$lgt_report_redefined_entity'(Type, Entity)
 		;
 		true),
 	'$lgt_retract_old_relation_clauses'(Entity),
