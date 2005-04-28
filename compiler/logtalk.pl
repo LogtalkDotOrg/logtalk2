@@ -2962,7 +2962,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	'$lgt_compiler_flag'(report, on) ->
 		'$lgt_inc_load_warnings_counter',
 		write('> WARNING!  redefining '), write(Type), write(' '), 
-		current_output(Output), '$lgt_pretty_print_vars'(Output, Entity), nl
+		current_output(Output), '$lgt_pretty_print_vars_quoted'(Output, Entity), nl
 		;
 		true.
 
@@ -2985,7 +2985,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_report_compiling_entity'(Type, Entity) :-
 	'$lgt_compiler_flag'(report, on) ->
-		write('> compiling '), writeq(Entity), write(' '), write(Type),
+		write('> compiling '), write(Type),	write(' '),
+		current_output(Output), '$lgt_pretty_print_vars_quoted'(Output, Entity),
 		('$lgt_compiler_flag'(debug, on) ->
 			write(' in debug mode...')
 			;
@@ -3002,7 +3003,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_report_compiled_entity'(Type, Entity) :-
 	'$lgt_compiler_flag'(report, on) ->
-		write('> '), writeq(Entity), write(' '), write(Type), write(' compiled'), nl
+		write('> compiled '), write(Type), write(' '),
+		current_output(Output), '$lgt_pretty_print_vars_quoted'(Output, Entity), nl
 		;
 		true.
 
@@ -3242,7 +3244,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	'$lgt_write_tr_entity'(Stream),
 	'$lgt_write_entity_doc',
 	'$lgt_report_unknown_entities',
-	'$lgt_entity_init_goal',
+	'$lgt_generate_init_goal',
 	'$lgt_clean_pp_entity_clauses'.
 
 
@@ -5810,7 +5812,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	'$lgt_pp_referenced_object_'(Obj),
 	\+ '$lgt_current_object_'(Obj, _, _, _, _, _),
 	\+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
-	\+ '$lgt_entity_init_goal_'(Obj, _).
+	\+ '$lgt_pp_file_init_'(Obj, _).
 
 
 
@@ -5831,7 +5833,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	'$lgt_pp_referenced_protocol_'(Ptc),
 	\+ '$lgt_current_protocol_'(Ptc, _, _),
 	\+ '$lgt_pp_protocol_'(Ptc, _, _, _, _),
-	\+ '$lgt_entity_init_goal_'(Ptc, _).
+	\+ '$lgt_pp_file_init_'(Ptc, _).
 
 
 
@@ -5852,7 +5854,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	'$lgt_pp_referenced_category_'(Ctg),
 	\+ '$lgt_current_category_'(Ctg, _, _),
 	\+ '$lgt_pp_category_'(Ctg, _, _, _, _, _),
-	\+ '$lgt_entity_init_goal_'(Ctg, _).
+	\+ '$lgt_pp_file_init_'(Ctg, _).
 
 
 
@@ -7233,12 +7235,12 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_list_to_conjunction'([G], G) :-
 	!.
 
-'$lgt_list_to_conjunction'([G1, G2| Gs], (G1, G2, R)) :-
-	'$lgt_list_to_conjunction'(Gs, R).
+'$lgt_list_to_conjunction'([G1, G2| Gs], (G1, R)) :-
+	'$lgt_list_to_conjunction'([G2| Gs], R).
 
 
 
-'$lgt_entity_init_goal' :-
+'$lgt_generate_init_goal' :-
 	'$lgt_pp_entity'(_, Entity, _, _, _),
 	findall(Clause, '$lgt_pp_rclause'(Clause), Clauses),
 	('$lgt_compiler_flag'(debug, on) ->
