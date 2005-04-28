@@ -7354,15 +7354,10 @@ current_logtalk_flag(version, version(2, 25, 0)).
 % call any defined initialization goal for a dynamically created entity
 
 '$lgt_assert_init' :-
-	('$lgt_compiler_flag'(debug, on) ->
-		'$lgt_pp_entity'(_, Entity, _, _, _),
-		assertz('$lgt_debugging_'(Entity))
-		;
-		true),
-	('$lgt_pp_fentity_init_'(Goal) ->
+	'$lgt_pp_fentity_init_'(Goal) ->
 		once(Goal)
 		;
-		true).
+		true.
 
 
 
