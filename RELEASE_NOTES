@@ -17,6 +17,9 @@ RELEASE NOTES
 	need of using source metafiles. Thus, this version drops support for 
 	source metafiles and the .mlgt file name extension.
 
+	Added a new method, debugging/1, to the "debugger" pseudo-object for 
+	querying the system about entities compiled in debug mode.
+
 	Improved "encodings" example.
 
 

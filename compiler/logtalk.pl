@@ -2393,6 +2393,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_po_debugger0__dcl'(nodebug, p(p(p)), static, no).
 
 '$lgt_po_debugger0__dcl'(debugging, p(p(p)), static, no).
+'$lgt_po_debugger0__dcl'(debugging(_), p(p(p)), static, no).
 
 '$lgt_po_debugger0__dcl'(trace, p(p(p)), static, no).
 '$lgt_po_debugger0__dcl'(notrace, p(p(p)), static, no).
@@ -2413,6 +2414,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_po_debugger0__def'(reset, _, _, _, '$lgt_dbg_reset').
 '$lgt_po_debugger0__def'(debug, _, _, _, '$lgt_dbg_debug').
 '$lgt_po_debugger0__def'(debugging, _, _, _, '$lgt_dbg_debugging').
+'$lgt_po_debugger0__def'(debugging(Entity), _, _, _, '$lgt_dbg_debugging'(Entity)).
 '$lgt_po_debugger0__def'(nodebug, _, _, _, '$lgt_dbg_nodebug').
 '$lgt_po_debugger0__def'(trace, _, _, _, '$lgt_dbg_trace').
 '$lgt_po_debugger0__def'(notrace, _, _, _, '$lgt_dbg_notrace').
@@ -2502,6 +2504,10 @@ current_logtalk_flag(version, version(2, 25, 0)).
 		;
 		write('(none)')),
 	nl.
+
+
+'$lgt_dbg_debugging'(Entity) :-
+	'$lgt_debugging_'(Entity).
 
 
 '$lgt_dbg_pretty_print_spypoint'(Sender, This, Self, Goal) :-
