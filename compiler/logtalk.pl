@@ -3147,9 +3147,12 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	'$lgt_pp_entity'(_, Entity, _, _, _) ->
 		('$lgt_compiler_flag'(xml, on) ->
 			functor(Entity, Functor, Arity),
-			number_codes(Arity, Codes),
-			atom_codes(Atom, Codes),
-			atom_concat(Functor, Atom, Name),
+			(Arity > 0 ->
+				number_codes(Arity, Codes),
+				atom_codes(Atom, Codes),
+				atom_concat(Functor, Atom, Name)
+				;
+				Name = Functor),
 			'$lgt_file_name'(xml, Name, File),
 			catch((
 				('$lgt_pp_directive_'(encoding(Encoding)) ->
