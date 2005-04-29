@@ -3120,12 +3120,6 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	\+ '$lgt_file_exists'(Object),
 	!.
 
-'$lgt_needs_recompilation'(Entity) :-	% USELESS!!!!
-	'$lgt_file_name'(xml, Entity, File),
-	'$lgt_compiler_flag'(xml, on),
-	\+ '$lgt_file_exists'(File),
-	!.
-
 '$lgt_needs_recompilation'(File) :-
 	'$lgt_file_name'(logtalk, File, Source),
 	'$lgt_file_name'(prolog, File, Object),
@@ -3158,29 +3152,31 @@ current_logtalk_flag(version, version(2, 25, 0)).
 % writes to disk the entity documentation in XML format
 
 '$lgt_write_entity_doc' :-
-	'$lgt_pp_entity'(_, Entity, _, _, _) ->
-		('$lgt_compiler_flag'(xml, on) ->
-			functor(Entity, Functor, Arity),
-			(Arity > 0 ->
-				number_codes(Arity, Codes),
-				atom_codes(Atom, Codes),
-				atom_concat(Functor, Atom, Name)
+	'$lgt_pp_entity'(_, Entity, _, _, _),
+	('$lgt_compiler_flag'(xml, on) ->
+		'$lgt_entity_doc_file_name'(Entity, File),
+		catch((
+			('$lgt_pp_directive_'(encoding(Encoding)) ->
+				open(File, write, Stream, [encoding(Encoding)])
 				;
-				Name = Functor),
-			'$lgt_file_name'(xml, Name, File),
-			catch((
-				('$lgt_pp_directive_'(encoding(Encoding)) ->
-					open(File, write, Stream, [encoding(Encoding)])
-					;
-					open(File, write, Stream)),
-				'$lgt_write_xml_file'(Stream),
-				close(Stream)),
-				Error,
-				'$lgt_compiler_error_handler'(Stream, Error))	
-			;
-			true)
+				open(File, write, Stream)),
+			 '$lgt_write_xml_file'(Stream),
+			 close(Stream)),
+			Error,
+			'$lgt_compiler_error_handler'(Stream, Error))	
 		;
-		true.
+		true).
+
+
+'$lgt_entity_doc_file_name'(Entity, File) :-
+	functor(Entity, Functor, Arity),
+	(Arity > 0 ->
+		number_codes(Arity, Codes),
+		atom_codes(Atom, Codes),
+		atom_concat(Functor, Atom, Name)
+		;
+		Name = Functor),
+	'$lgt_file_name'(xml, Name, File).
 
 
 
