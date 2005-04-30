@@ -3138,22 +3138,18 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	catch((
 		'$lgt_write_directives'(Stream),
 		'$lgt_write_prolog_clauses'(Stream),
-		('$lgt_pp_entity'(_, _, _, _, _) ->
-			'$lgt_write_logtalk_clauses'(Stream)
-			 ;
-			 true)),
+		'$lgt_write_logtalk_clauses'(Stream)),
 		Error,
 		'$lgt_compiler_error_handler'(Stream, Error)).
 
 
 
-% '$lgt_write_entity_doc'(+atom)
+% '$lgt_write_entity_doc'(@entity_identifier)
 %
 % writes to disk the entity documentation in XML format
 
-'$lgt_write_entity_doc' :-
-	'$lgt_pp_entity'(_, Entity, _, _, _),
-	('$lgt_compiler_flag'(xml, on) ->
+'$lgt_write_entity_doc'(Entity) :-
+	'$lgt_compiler_flag'(xml, on) ->
 		'$lgt_entity_doc_file_name'(Entity, File),
 		catch((
 			('$lgt_pp_directive_'(encoding(Encoding)) ->
@@ -3165,7 +3161,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 			Error,
 			'$lgt_compiler_error_handler'(Stream, Error))	
 		;
-		true).
+		true.
 
 
 '$lgt_entity_doc_file_name'(Entity, File) :-
@@ -3241,11 +3237,13 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-'$lgt_tr_entity'(Type, Stream) :-
+% '$lgt_tr_entity'(+atom, @entity_identifier, +stream)
+
+'$lgt_tr_entity'(Type, Entity, Stream) :-
 	'$lgt_generate_code'(Type),
 	'$lgt_report_problems'(Type),
 	'$lgt_write_tr_entity'(Stream),
-	'$lgt_write_entity_doc',
+	'$lgt_write_entity_doc'(Entity),
 	'$lgt_clean_pp_entity_clauses'.
 
 
@@ -3254,23 +3252,61 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_tr_file'(end_of_file, _, _, ObjectStream) :-
 	!,
-	'$lgt_write_directives'(ObjectStream),
-	'$lgt_write_prolog_clauses'(ObjectStream).
+	'$lgt_write_directives'(ObjectStream),		% write out any Prolog code that may occur
+	'$lgt_write_prolog_clauses'(ObjectStream).	% after the last entity on the source file
 
-'$lgt_tr_file'(Term, TSingletons, SourceStream, ObjectStream) :-
-	'$lgt_filter_dont_care_vars'(TSingletons, FSingletons),
-	'$lgt_report_singletons'(FSingletons, Term),
+'$lgt_tr_file'(Term, Singletons, SourceStream, ObjectStream) :-
+	'$lgt_report_singletons'(Singletons, Term),
 	'$lgt_tr_term'(Term, ObjectStream),
 	read_term(SourceStream, Next, [singletons(NSingletons)]),
 	'$lgt_tr_file'(Next, NSingletons, SourceStream, ObjectStream).
 
 
 
+% '$lgt_report_singletons'(+list, +term)
+%
+% report the singleton variables found while compiling an entity term
+
+'$lgt_report_singletons'(TSingletons, Term) :-
+	'$lgt_filter_dont_care_vars'(TSingletons, FSingletons),
+	'$lgt_report_singletons_aux'(FSingletons, Term).
+
+
+'$lgt_report_singletons_aux'([], _) :-
+	!.	% cut needed to prevent problems with compilers with broken read_term/3
+
+'$lgt_report_singletons_aux'([Singleton| Singletons], Term) :-
+	('$lgt_compiler_flag'(singletons, warning), '$lgt_compiler_flag'(report, on)) ->
+		'$lgt_inc_compile_warnings_counter',
+		write('> WARNING!'),
+		\+ \+ ( '$lgt_instantiate_singleton_vars'([Singleton| Singletons], Term, Names),
+				write('  singleton variables: '), '$lgt_write_list'(Names), nl,
+				(Term = (:- _) ->
+					write('>           in directive:        ')
+					;
+					write('>           in clause:           ')),
+				write(Term), nl)
+		;
+		true.
+
+
+
+% '$lgt_instantiate_singleton_vars'(+list, +nonvar, -list)
+%
+% instantiates singleton variables, returning a list of the variable names
+
+'$lgt_instantiate_singleton_vars'([], _, []).
+
+'$lgt_instantiate_singleton_vars'([Name = Var| Singletons], Term, [Name| Names]) :-
+	Name = Var,
+	'$lgt_instantiate_singleton_vars'(Singletons, Term, Names).
+
+
+
 % '$lgt_filter_dont_care_vars'(+list, -list)
 %
-% filter variables whose name start with an underscore from a
-% singletons list if the corresponding compiler flag sets their
-% interpretation to don't care variables
+% filter variables whose name start with an underscore from a singletons list if 
+% the corresponding compiler flag sets their interpretation to don't care variables
 
 '$lgt_filter_dont_care_vars'(List, Result) :-
 	'$lgt_compiler_flag'(underscore_vars, dont_care) ->
@@ -3287,37 +3323,6 @@ current_logtalk_flag(version, version(2, 25, 0)).
 		'$lgt_filter_dont_care_vars'(List, Sofar, Result)
 		;
 		'$lgt_filter_dont_care_vars'(List, [Atom = Var| Sofar], Result).
-
-
-
-% '$lgt_report_singletons'(+list, +term)
-%
-% report the singleton variables found while compiling an entity term
-
-'$lgt_report_singletons'([], _) :-
-	!.	% cut needed to prevent problems with compilers with broken read_term/3
-
-'$lgt_report_singletons'([Singleton| Singletons], Term) :-
-	('$lgt_compiler_flag'(singletons, warning),
-	 '$lgt_compiler_flag'(report, on)) ->
-		'$lgt_inc_compile_warnings_counter',
-		write('> WARNING!'),
-		\+ \+ ( '$lgt_report_singletons_aux'([Singleton| Singletons], Term, Names),
-				write('  singleton variables: '), '$lgt_write_list'(Names), nl,
-				(Term = (:- _) ->
-					write('>           in directive:        ')
-					;
-					write('>           in clause:           ')),
-				write(Term), nl)
-		;
-		true.
-
-
-'$lgt_report_singletons_aux'([], _, []).
-
-'$lgt_report_singletons_aux'([Name = Var| Singletons], Term, [Name| Names]) :-
-	Name = Var,
-	'$lgt_report_singletons_aux'(Singletons, Term, Names).
 
 
 
@@ -3652,7 +3657,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_tr_directive'(end_object, [], Stream) :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _) ->
-		'$lgt_tr_entity'(object, Stream),
+		'$lgt_tr_entity'(object, Obj, Stream),
 		'$lgt_report_compiled_entity'(object, Obj)
 		;
 		throw(closing_directive_mismatch).
@@ -3668,7 +3673,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_tr_directive'(end_protocol, [], Stream) :-
 	'$lgt_pp_protocol_'(Ptc, _, _, _, _) ->
-		'$lgt_tr_entity'(protocol, Stream),
+		'$lgt_tr_entity'(protocol, Ptc, Stream),
 		'$lgt_report_compiled_entity'(protocol, Ptc)
 		;
 		throw(closing_directive_mismatch).
@@ -3684,7 +3689,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_tr_directive'(end_category, [], Stream) :-
 	'$lgt_pp_category_'(Ctg, _, _, _, _, _) ->
-		'$lgt_tr_entity'(category, Stream),
+		'$lgt_tr_entity'(category, Ctg, Stream),
 		'$lgt_report_compiled_entity'(category, Ctg)
 		;
 		throw(closing_directive_mismatch).
