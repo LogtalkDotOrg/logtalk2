@@ -167,7 +167,8 @@
 :- dynamic('$lgt_pp_referenced_category_'/1).	% '$lgt_pp_referenced_category_'(Category)
 
 :- dynamic('$lgt_pp_global_op_'/3).				% '$lgt_pp_global_op_'(Priority, Specifier, Operator)
-:- dynamic('$lgt_pp_local_op_'/3).				% '$lgt_pp_local_op_'(Priority, Specifier, Operator)
+:- dynamic('$lgt_pp_file_op_'/3).				% '$lgt_pp_file_op_'(Priority, Specifier, Operator)
+:- dynamic('$lgt_pp_entity_op_'/3).				% '$lgt_pp_entity_op_'(Priority, Specifier, Operator)
 
 :- dynamic('$lgt_pp_warnings_top_argument_'/1).	% '$lgt_pp_warnings_top_argument_'(Term)
 :- dynamic('$lgt_pp_comp_warnings_counter_'/1).	% '$lgt_pp_comp_warnings_counter_'(Counter)
@@ -3202,7 +3203,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 		read_term(SourceStream, Term, [singletons(Singletons)])),
 		SourceError,
 		'$lgt_compiler_error_handler'(SourceStream, SourceError)),
-	'$lgt_check_encoding_directive'(Term, SourceStream),		% encoding/1 directive, if present, must be first term on file
+	'$lgt_check_for_encoding_directive'(Term, SourceStream),	% encoding/1 directive, when present, must be the first term on file
 	'$lgt_file_name'(prolog, File, Object),
 	catch(
 		('$lgt_pp_directive_'(encoding(Encoding)) ->
@@ -3212,48 +3213,38 @@ current_logtalk_flag(version, version(2, 25, 0)).
 		ObjectError,
 		'$lgt_compiler_error_handler'(ObjectStream, ObjectError)),
 	'$lgt_clean_pp_clauses',
-	'$lgt_save_op_table',
+	'$lgt_save_global_op_table',
 	catch(
 		 '$lgt_tr_file'(Term, Singletons, SourceStream, ObjectStream),
 		Error,
 		'$lgt_compiler_error_handler'(SourceStream, Error)),
-	'$lgt_write_directives'(ObjectStream),
-	'$lgt_write_prolog_clauses'(ObjectStream),
-	'$lgt_write_init_call'(ObjectStream),
-	'$lgt_restore_op_table',
+	catch(
+		('$lgt_write_directives'(ObjectStream),					% write out any Prolog code that may occur
+		 '$lgt_write_prolog_clauses'(ObjectStream),				% after the last entity on the source file
+		'$lgt_write_init_call'(ObjectStream)),
+		ObjectError,
+		'$lgt_compiler_error_handler'(ObjectStream, ObjectError)),
+	'$lgt_restore_global_op_table',
 	close(SourceStream),
 	close(ObjectStream).
 
 
 
-'$lgt_check_encoding_directive'((:- encoding(Encoding)), Stream) :-	% encoding/1 directives must be used during entity compilation
+'$lgt_check_for_encoding_directive'((:- encoding(Encoding)), Stream) :-	% encoding/1 directives must be used during entity compilation
 	!,
 	('$lgt_compiler_flag'(supports_encoding_dir, true) ->
 		'$lgt_set_stream_encoding'(Stream, Encoding)
 		;
 		throw(error(domain_error(directive, encoding/1), directive(encoding(Encoding))))).
 
-'$lgt_check_encoding_directive'(_, _).
-
-
-
-% '$lgt_tr_entity'(+atom, @entity_identifier, +stream)
-
-'$lgt_tr_entity'(Type, Entity, Stream) :-
-	'$lgt_generate_code'(Type),
-	'$lgt_report_problems'(Type),
-	'$lgt_write_tr_entity'(Stream),
-	'$lgt_write_entity_doc'(Entity),
-	'$lgt_clean_pp_entity_clauses'.
+'$lgt_check_for_encoding_directive'(_, _).
 
 
 
 % '$lgt_tr_file'(+term, +list, +stream, +stream)
 
-'$lgt_tr_file'(end_of_file, _, _, ObjectStream) :-
-	!,
-	'$lgt_write_directives'(ObjectStream),		% write out any Prolog code that may occur
-	'$lgt_write_prolog_clauses'(ObjectStream).	% after the last entity on the source file
+'$lgt_tr_file'(end_of_file, _, _, _) :-
+	!.
 
 '$lgt_tr_file'(Term, Singletons, SourceStream, ObjectStream) :-
 	'$lgt_report_singletons'(Singletons, Term),
@@ -3336,7 +3327,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 		close(Stream)
 		;
 		true),
-	'$lgt_restore_op_table',
+	'$lgt_restore_global_op_table',
 	'$lgt_report_compiler_error'(Error),
 	throw(Error).
 
@@ -3371,10 +3362,24 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
+% '$lgt_tr_entity'(+atom, @entity_identifier, +stream)
+
+'$lgt_tr_entity'(Type, Entity, Stream) :-
+	'$lgt_generate_code'(Type),
+	'$lgt_report_problems'(Type),
+	'$lgt_write_tr_entity'(Stream),
+	'$lgt_write_entity_doc'(Entity),
+	'$lgt_restore_file_op_table',
+	'$lgt_clean_pp_entity_clauses'.
+
+
+
 % clean up all dynamic predicates used during entity compilation
 
 '$lgt_clean_pp_clauses' :-
 	'$lgt_clean_pp_entity_clauses',
+	retractall('$lgt_pp_global_op_'(_, _, _)),
+	retractall('$lgt_pp_file_op_'(_, _, _)),
 	retractall('$lgt_pp_file_init_'(_)),	
 	retractall('$lgt_pp_file_init_'(_, _)).
 
@@ -3422,8 +3427,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	retractall('$lgt_pp_referenced_object_'(_)),
 	retractall('$lgt_pp_referenced_protocol_'(_)),
 	retractall('$lgt_pp_referenced_category_'(_)),
-	retractall('$lgt_pp_global_op_'(_, _, _)),
-	retractall('$lgt_pp_local_op_'(_, _, _)).
+	retractall('$lgt_pp_entity_op_'(_, _, _)).
 
 
 
@@ -3451,52 +3455,89 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-% '$lgt_save_op_table'
+% '$lgt_save_global_op_table'
 %
 % saves current operator table
 
-'$lgt_save_op_table' :-
+'$lgt_save_global_op_table' :-
 	current_op(Pr, Spec, Op),
 		asserta('$lgt_pp_global_op_'(Pr, Spec, Op)),
 	fail.
 
-'$lgt_save_op_table'.
+'$lgt_save_global_op_table'.
 
 
 
-% '$lgt_restore_op_table'
+% '$lgt_restore_global_op_table'
 %
 % restores current operator table
 
-'$lgt_restore_op_table' :-
-	retract('$lgt_pp_local_op_'(_, Spec, Op)),
+'$lgt_restore_global_op_table' :-
+	retract('$lgt_pp_entity_op_'(_, Spec, Op)),
 		op(0, Spec, Op),
 	fail.
 
-'$lgt_restore_op_table' :-
+'$lgt_restore_global_op_table' :-
+	retract('$lgt_pp_file_op_'(_, Spec, Op)),
+		op(0, Spec, Op),
+	fail.
+
+'$lgt_restore_global_op_table' :-
 	retractall('$lgt_pp_global_op_'(_, _, ',')),	% ','/2 cannot be an argument to op/3
 	retract('$lgt_pp_global_op_'(Pr, Spec, Op)),
 		catch(op(Pr, Spec, Op), _, fail),			% some Prolog compilers may define other operators as non-redefinable
 	fail.
 
-'$lgt_restore_op_table'.
+'$lgt_restore_global_op_table'.
 
 
 
-% '$lgt_assert_local_ops'(+integer, +operator_specifier, +atom_or_atom_list)
+% '$lgt_save_file_op_table'
 %
-% asserts local operators
+% saves current operator table
 
-'$lgt_assert_local_ops'(_, _, []) :-
+'$lgt_save_file_op_table' :-
+	current_op(Pr, Spec, Op),
+		asserta('$lgt_pp_file_op_'(Pr, Spec, Op)),
+	fail.
+
+'$lgt_save_file_op_table'.
+
+
+
+% '$lgt_restore_file_op_table'
+%
+% restores current operator table
+
+'$lgt_restore_file_op_table' :-
+	retract('$lgt_pp_entity_op_'(_, Spec, Op)),
+		op(0, Spec, Op),
+	fail.
+
+'$lgt_restore_file_op_table' :-
+	retractall('$lgt_pp_file_op_'(_, _, ',')),		% ','/2 cannot be an argument to op/3
+	retract('$lgt_pp_file_op_'(Pr, Spec, Op)),
+		catch(op(Pr, Spec, Op), _, fail),			% some Prolog compilers may define other operators as non-redefinable
+	fail.
+
+'$lgt_restore_file_op_table'.
+
+
+
+% '$lgt_assert_entity_ops'(+integer, +operator_specifier, +atom_or_atom_list)
+%
+% asserts local entity operators
+
+'$lgt_assert_entity_ops'(_, _, []) :-
 	!.
 
-'$lgt_assert_local_ops'(Pr, Spec, [Op| Ops]) :-
+'$lgt_assert_entity_ops'(Pr, Spec, [Op| Ops]) :-
 	!,
-	asserta('$lgt_pp_local_op_'(Pr, Spec, Op)),
-	'$lgt_assert_local_ops'(Pr, Spec, Ops).
+	asserta('$lgt_pp_entity_op_'(Pr, Spec, Op)),
+	'$lgt_assert_entity_ops'(Pr, Spec, Ops).
 
-'$lgt_assert_local_ops'(Pr, Spec, Op) :-
-	asserta('$lgt_pp_local_op_'(Pr, Spec, Op)).
+'$lgt_assert_entity_ops'(Pr, Spec, Op) :-
+	asserta('$lgt_pp_entity_op_'(Pr, Spec, Op)).
 
 
 
@@ -3606,7 +3647,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	functor(Dir, Functor, Arity),
 	\+ '$lgt_lgt_opening_directive'(Functor, Arity),
 	!,
-	'$lgt_tr_global_directive'(Dir).
+	'$lgt_tr_file_directive'(Dir).
 
 '$lgt_tr_directive'(Dir, Stream) :-
 	functor(Dir, Functor, Arity),
@@ -3624,21 +3665,31 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-% '$lgt_tr_global_directive'(@nonvar)
+% '$lgt_tr_file_directive'(@nonvar)
 
-'$lgt_tr_global_directive'(op(Pr, Spec, Ops)) :-	% op/3 directives must be used during entity compilation
+'$lgt_tr_file_directive'(op(Pr, Spec, Ops)) :-	% op/3 directives must be used during entity compilation
 	!,
-	assertz('$lgt_pp_directive_'(op(Pr, Spec, Ops))),
-	op(Pr, Spec, Ops).
+	('$lgt_valid_op_priority'(Pr) ->
+		('$lgt_valid_op_specifier'(Spec) ->
+			('$lgt_valid_op_names'(Ops) ->
+				assertz('$lgt_pp_directive_'(op(Pr, Spec, Ops))),
+				assertz('$lgt_pp_file_op_'(op(Pr, Spec, Ops))),
+				op(Pr, Spec, Ops)
+				;
+				throw(type_error(operator_name, Ops)))
+			;
+			throw(type_error(operator_specifier, Spec)))
+		;
+		throw(type_error(operator_priority, Pr))).
 
-'$lgt_tr_global_directive'(initialization(Goal)) :-
+'$lgt_tr_file_directive'(initialization(Goal)) :-
 	!,
 	(callable(Goal) ->
 		assertz('$lgt_pp_file_init_'(Goal))
 		;
 		throw(type_error(callable, Goal))).
 
-'$lgt_tr_global_directive'(Dir) :-
+'$lgt_tr_file_directive'(Dir) :-
 	assertz('$lgt_pp_directive_'(Dir)).				% directive will be copied to the generated Prolog file
 
 
@@ -3651,7 +3702,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	callable(Obj) ->
 		'$lgt_report_compiling_entity'(object, Obj),
 		'$lgt_tr_object_id'(Obj, static),			% assume static category
-		'$lgt_tr_object_relations'(Rels, Obj)
+		'$lgt_tr_object_relations'(Rels, Obj),
+		'$lgt_save_file_op_table'
 		;
 		throw(type_error(object_identifier, Obj)).
 
@@ -3667,7 +3719,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	atom(Ptc) ->
 		'$lgt_report_compiling_entity'(protocol, Ptc),
 		'$lgt_tr_protocol_id'(Ptc, static),			% assume static category
-		'$lgt_tr_protocol_relations'(Rels, Ptc)
+		'$lgt_tr_protocol_relations'(Rels, Ptc),
+		'$lgt_save_file_op_table'
 		;
 		throw(type_error(protocol_identifier, Ptc)).
 
@@ -3683,7 +3736,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	atom(Ctg) ->
 		'$lgt_report_compiling_entity'(category, Ctg),
 		'$lgt_tr_category_id'(Ctg, static),			% assume static category
-		'$lgt_tr_category_relations'(Rels, Ctg)
+		'$lgt_tr_category_relations'(Rels, Ctg),
+		'$lgt_save_file_op_table'
 		;
 		throw(type_error(category_identifier, Ctg)).
 
@@ -3717,7 +3771,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 		('$lgt_valid_op_specifier'(Spec) ->
 			('$lgt_valid_op_names'(Ops) ->
 				op(Pr, Spec, Ops),
-				'$lgt_assert_local_ops'(Pr, Spec, Ops)
+				'$lgt_assert_entity_ops'(Pr, Spec, Ops)
 				;
 				throw(type_error(operator_name, Ops)))
 			;
@@ -4671,19 +4725,19 @@ current_logtalk_flag(version, version(2, 25, 0)).
 % term input predicates that need to be operator aware
 
 '$lgt_tr_body'(read_term(Stream, Term, Options), '$lgt_iso_read_term'(Stream, Term, Options, Ops), '$lgt_dbg_goal'(read_term(Stream, Term, Options), '$lgt_iso_read_term'(Stream, Term, Options, Ops), Ctx), Ctx) :-
-	bagof(op(Pr, Spec, Op), '$lgt_pp_local_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
 	!.
 
 '$lgt_tr_body'(read_term(Term, Options), '$lgt_iso_read_term'(Term, Options, Ops), '$lgt_dbg_goal'(read_term(Term, Options), '$lgt_iso_read_term'(Term, Options, Ops), Ctx), Ctx) :-
-	bagof(op(Pr, Spec, Op), '$lgt_pp_local_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
 	!.
 
 '$lgt_tr_body'(read(Stream, Term), '$lgt_iso_read'(Stream, Term, Ops), '$lgt_dbg_goal'(read(Stream, Term), '$lgt_iso_read'(Stream, Term, Ops), Ctx), Ctx) :-
-	bagof(op(Pr, Spec, Op), '$lgt_pp_local_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
 	!.
 
 '$lgt_tr_body'(read(Term), '$lgt_iso_read'(Term, Ops), '$lgt_dbg_goal'(read(Term), '$lgt_iso_read'(Term, Ops), Ctx), Ctx) :-
-	bagof(op(Pr, Spec, Op), '$lgt_pp_local_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
 	!.
 
 
@@ -4691,28 +4745,28 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_tr_body'(write_term(Stream, Term, Options), '$lgt_iso_write_term'(Stream, Term, Options, Ops), '$lgt_dbg_goal'(write_term(Stream, Term, Options), '$lgt_iso_write_term'(Stream, Term, Options, Ops), Ctx), Ctx) :-
 	('$lgt_member'(ignore_ops(Value), Options) -> Value \== true; true),
-	bagof(op(Pr, Spec, Op), '$lgt_pp_local_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
 	!.
 
 '$lgt_tr_body'(write_term(Term, Options), '$lgt_iso_write_term'(Term, Options, Ops), '$lgt_dbg_goal'(write_term(Term, Options), '$lgt_iso_write_term'(Term, Options, Ops), Ctx), Ctx) :-
 	('$lgt_member'(ignore_ops(Value), Options) -> Value \== true; true),
-	bagof(op(Pr, Spec, Op), '$lgt_pp_local_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
 	!.
 
 '$lgt_tr_body'(write(Stream, Term), '$lgt_iso_write'(Stream, Term, Ops), '$lgt_dbg_goal'(write(Stream, Term), '$lgt_iso_write'(Stream, Term, Ops), Ctx), Ctx) :-
-	bagof(op(Pr, Spec, Op), '$lgt_pp_local_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
 	!.
 
 '$lgt_tr_body'(write(Term), '$lgt_iso_write'(Term, Ops), '$lgt_dbg_goal'(write(Term), '$lgt_iso_write'(Term, Ops), Ctx), Ctx) :-
-	bagof(op(Pr, Spec, Op), '$lgt_pp_local_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
 	!.
 
 '$lgt_tr_body'(writeq(Stream, Term), '$lgt_iso_writeq'(Stream, Term, Ops), '$lgt_dbg_goal'(writeq(Stream, Term), '$lgt_iso_writeq'(Stream, Term, Ops), Ctx), Ctx) :-
-	bagof(op(Pr, Spec, Op), '$lgt_pp_local_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
 	!.
 
 '$lgt_tr_body'(writeq(Term), '$lgt_iso_writeq'(Term, Ops), '$lgt_dbg_goal'(writeq(Term), '$lgt_iso_writeq'(Term, Ops), Ctx), Ctx) :-
-	bagof(op(Pr, Spec, Op), '$lgt_pp_local_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
 	!.
 
 
@@ -6043,6 +6097,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 % generates code for the entity being compiled
 
 '$lgt_generate_code'(protocol) :-
+	'$lgt_fix_redef_built_ins',		% needed because of possible initialization goal
 	'$lgt_gen_protocol_clauses',
 	'$lgt_gen_protocol_directives',
 	'$lgt_gen_init_goal'.
