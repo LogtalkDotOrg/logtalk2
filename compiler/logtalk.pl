@@ -3241,23 +3241,21 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-'$lgt_tr_entity'(Stream) :-
-	'$lgt_fix_redef_built_ins',
-	'$lgt_report_misspelt_calls',
-	'$lgt_report_non_portable_calls',
-	'$lgt_generate_compiled_code',
+'$lgt_tr_entity'(Type, Stream) :-
+	'$lgt_generate_code'(Type),
+	'$lgt_report_problems'(Type),
 	'$lgt_write_tr_entity'(Stream),
 	'$lgt_write_entity_doc',
-	'$lgt_report_unknown_entities',
-	'$lgt_generate_init_goal',
 	'$lgt_clean_pp_entity_clauses'.
 
 
 
 % '$lgt_tr_file'(+term, +list, +stream, +stream)
 
-'$lgt_tr_file'(end_of_file, _, _, _) :-
-	!.
+'$lgt_tr_file'(end_of_file, _, _, ObjectStream) :-
+	!,
+	'$lgt_write_directives'(ObjectStream),
+	'$lgt_write_prolog_clauses'(ObjectStream).
 
 '$lgt_tr_file'(Term, TSingletons, SourceStream, ObjectStream) :-
 	'$lgt_filter_dont_care_vars'(TSingletons, FSingletons),
@@ -3654,7 +3652,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_tr_directive'(end_object, [], Stream) :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _) ->
-		'$lgt_tr_entity'(Stream),
+		'$lgt_tr_entity'(object, Stream),
 		'$lgt_report_compiled_entity'(object, Obj)
 		;
 		throw(closing_directive_mismatch).
@@ -3670,7 +3668,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_tr_directive'(end_protocol, [], Stream) :-
 	'$lgt_pp_protocol_'(Ptc, _, _, _, _) ->
-		'$lgt_tr_entity'(Stream),
+		'$lgt_tr_entity'(protocol, Stream),
 		'$lgt_report_compiled_entity'(protocol, Ptc)
 		;
 		throw(closing_directive_mismatch).
@@ -3686,7 +3684,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_tr_directive'(end_category, [], Stream) :-
 	'$lgt_pp_category_'(Ctg, _, _, _, _, _) ->
-		'$lgt_tr_entity'(Stream),
+		'$lgt_tr_entity'(category, Stream),
 		'$lgt_report_compiled_entity'(category, Ctg)
 		;
 		throw(closing_directive_mismatch).
@@ -5789,13 +5787,35 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
+% '$lgt_report_problems'(+atom)
+%
+% reports any potential problem found while compiling an entity 
+
+'$lgt_report_problems'(protocol) :-
+	'$lgt_compiler_flag'(report, on) ->
+		'$lgt_report_unknown_entities'
+		;
+		true.
+
+'$lgt_report_problems'(object) :-
+	'$lgt_compiler_flag'(report, on) ->
+		'$lgt_report_misspelt_calls',
+		'$lgt_report_non_portable_calls',
+		'$lgt_report_unknown_entities'
+		;
+		true.
+
+'$lgt_report_problems'(category) :-
+	'$lgt_report_problems'(object).
+
+
+
 % '$lgt_report_unknown_entities'
 %
-% report any unknown referenced entities found while compiling an 
-% entity (if the corresponding compiler flag is set to "warning")
+% reports any unknown referenced entities found while compiling an entity
 
 '$lgt_report_unknown_entities' :-
-	('$lgt_compiler_flag'(unknown, warning), '$lgt_compiler_flag'(report, on)) ->
+	'$lgt_compiler_flag'(unknown, warning) ->
 		'$lgt_report_unknown_objects',
 		'$lgt_report_unknown_protocols',
 		'$lgt_report_unknown_categories'
@@ -6013,31 +6033,26 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-% '$lgt_generate_compiled_code'
+% '$lgt_generate_code'(+atom)
 %
-% code generation for the entity being compiled
+% generates code for the entity being compiled
 
-'$lgt_generate_compiled_code' :-
-	'$lgt_pp_entity'(Type, _, _, _, _) ->
-		'$lgt_gen_clauses'(Type),
-		'$lgt_gen_directives'(Type)
-		;
-		true.	% source file containing no entity definition
+'$lgt_generate_code'(protocol) :-
+	'$lgt_gen_protocol_clauses',
+	'$lgt_gen_protocol_directives',
+	'$lgt_gen_init_goal'.
 
+'$lgt_generate_code'(object) :-
+	'$lgt_fix_redef_built_ins',
+	'$lgt_gen_object_clauses',
+	'$lgt_gen_object_directives',
+	'$lgt_gen_init_goal'.
 
-
-% '$lgt_gen_directives'(+atom)
-%
-% generates entity directives
-
-'$lgt_gen_directives'(object) :-
-	'$lgt_gen_object_directives'.
-
-'$lgt_gen_directives'(category) :-
-	'$lgt_gen_category_directives'.
-
-'$lgt_gen_directives'(protocol) :-
-	'$lgt_gen_protocol_directives'.
+'$lgt_generate_code'(category) :-
+	'$lgt_fix_redef_built_ins',
+	'$lgt_gen_category_clauses',
+	'$lgt_gen_category_directives',
+	'$lgt_gen_init_goal'.
 
 
 
@@ -6148,19 +6163,6 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	fail.
 
 '$lgt_gen_category_discontiguous_directives'.
-
-
-
-% '$lgt_gen_clauses'(+atom)
-
-'$lgt_gen_clauses'(object) :-
-	'$lgt_gen_object_clauses'.
-
-'$lgt_gen_clauses'(protocol) :-
-	'$lgt_gen_protocol_clauses'.
-
-'$lgt_gen_clauses'(category) :-
-	'$lgt_gen_category_clauses'.
 
 
 
@@ -7018,7 +7020,6 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_report_misspelt_calls' :-
 	'$lgt_compiler_flag'(misspelt, warning),
-	'$lgt_compiler_flag'(report, on),
 	setof(Pred, '$lgt_misspelt_call'(Pred), Preds),
 	'$lgt_inc_compile_warnings_counter',
 	write('> WARNING!  these static predicates are called but never defined: '),
@@ -7040,7 +7041,6 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_report_non_portable_calls' :-
 	'$lgt_compiler_flag'(portability, warning),
-	'$lgt_compiler_flag'(report, on),
 	setof(Pred, '$lgt_non_portable_call'(Pred), Preds),
 	'$lgt_inc_compile_warnings_counter',
 	write('> WARNING!  non-ISO defined built-in predicate calls: '),
@@ -7249,7 +7249,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-'$lgt_generate_init_goal' :-
+'$lgt_gen_init_goal' :-
 	'$lgt_pp_entity'(_, Entity, _, _, _),
 	findall(Clause, '$lgt_pp_rclause'(Clause), Clauses),
 	Goal1 = '$lgt_assert_runtime_clauses'(Clauses),
