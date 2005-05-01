@@ -8,7 +8,7 @@
 
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-	<title>Logtalk built-in predicate: current_logtalk_flag/2</title>
+	<title>Logtalk built-in predicate: logtalk_library_path/2</title>
 	<link rel="stylesheet" href="../../styles.css" type="text/css" />
 </head>
 
@@ -18,43 +18,42 @@
 <a href="../../index.html">contents</a> &gt; <a href="../index.html">reference manual</a> &gt; <a href="../index.html#builtins">built-in predicates</a>
 </div>
 
-<h2><code>current_logtalk_flag/2</code></h2>
+<h2><code>logtalk_library_path/2</code></h2>
 
 
 <h4>Description</h4>
 
 <blockquote>
-<pre>current_logtalk_flag(Flag, Value)</pre>
+<pre>logtalk_library_path(Library, Path)</pre>
 <p>
-	Enumerates, by backtracking, the current Logtalk flag values.
+Dynamic, user-defined predicate for defining paths to libraries of source files. Note that some predicates do not support library notation for compiling and loading source files. The name of the library is usually (although not required) the name of the directory holding the source files.
 </p>
 </blockquote>
 
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>current_logtalk_flag(?atom, ?atom)</pre>
+<pre>logtalk_library_path(?atom, ?atom)</pre>
 </blockquote>
 
 <h4>Errors</h4>
 
 <blockquote>
 	<dl>
-		<dt>Flag is neither a variable nor an atom:</dt>
-			<dd><code>type_error(atom, Flag)</code></dd>
-		<dt>Flag is not a valid flag:</dt>
-			<dd><code>domain_error(valid_flag, Value)</code></dd>
+		<dt>(none)</dt>
 	</dl>
 </blockquote>
 
 <h4>Examples</h4>
 
 <blockquote>
-<pre>| ?- current_logtalk_flag(xml, Value).</pre>
+<pre>| ?- logtalk_library_path(trees, Path).
+
+| ?- assertz(logtalk_load(types, '~/lgtapps/library/types/')).</pre>
 </blockquote>
 
 <div class="navbottom">
-<a href="logtalk_library_path2.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="set_logtalk_flag2.html">next</a>
+<a href="logtalk_load2.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="current_logtalk_flag2.html">next</a>
 </div>
 
 <div class="copyright">
