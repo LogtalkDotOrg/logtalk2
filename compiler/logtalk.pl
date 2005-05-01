@@ -145,7 +145,7 @@
 :- dynamic('$lgt_pp_extended_protocol_'/4).		% '$lgt_pp_extended_protocol_'(Ptc, Prefix, Dcl, Scope)
 
 :- dynamic('$lgt_pp_file_init_'/1).				% '$lgt_pp_file_init_'(Goal)	
-:- dynamic('$lgt_pp_file_init_'/2).				% '$lgt_pp_file_init_'(Entity, Goal)
+:- dynamic('$lgt_pp_entity_init_'/2).			% '$lgt_pp_entity_init_'(Entity, Goal)
 
 :- dynamic('$lgt_pp_entity_init_'/1).			% '$lgt_pp_entity_init_'(Goal)
 :- dynamic('$lgt_pp_fentity_init_'/1).			% '$lgt_pp_fentity_init_'(Goal)
@@ -3374,15 +3374,18 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-% clean up all dynamic predicates used during entity compilation
+% clean up all dynamic predicates used during source file compilation
 
 '$lgt_clean_pp_clauses' :-
 	'$lgt_clean_pp_entity_clauses',
 	retractall('$lgt_pp_global_op_'(_, _, _)),
 	retractall('$lgt_pp_file_op_'(_, _, _)),
 	retractall('$lgt_pp_file_init_'(_)),	
-	retractall('$lgt_pp_file_init_'(_, _)).
+	retractall('$lgt_pp_entity_init_'(_, _)).
 
+
+
+% clean up all dynamic predicates used during entity compilation
 
 '$lgt_clean_pp_entity_clauses' :-
 	retractall('$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _)),
@@ -5900,7 +5903,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	'$lgt_pp_referenced_object_'(Obj),
 	\+ '$lgt_current_object_'(Obj, _, _, _, _, _),
 	\+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
-	\+ '$lgt_pp_file_init_'(Obj, _).
+	\+ '$lgt_pp_entity_init_'(Obj, _).
 
 
 
@@ -5921,7 +5924,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	'$lgt_pp_referenced_protocol_'(Ptc),
 	\+ '$lgt_current_protocol_'(Ptc, _, _),
 	\+ '$lgt_pp_protocol_'(Ptc, _, _, _, _),
-	\+ '$lgt_pp_file_init_'(Ptc, _).
+	\+ '$lgt_pp_entity_init_'(Ptc, _).
 
 
 
@@ -5942,7 +5945,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	'$lgt_pp_referenced_category_'(Ctg),
 	\+ '$lgt_current_category_'(Ctg, _, _),
 	\+ '$lgt_pp_category_'(Ctg, _, _, _, _, _),
-	\+ '$lgt_pp_file_init_'(Ctg, _).
+	\+ '$lgt_pp_entity_init_'(Ctg, _).
 
 
 
@@ -7286,7 +7289,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 '$lgt_init_goal'(Goal) :-
-	findall(EGoal, '$lgt_pp_file_init_'(_, EGoal), EGoals),
+	findall(EGoal, '$lgt_pp_entity_init_'(_, EGoal), EGoals),
 	('$lgt_pp_file_init_'(FGoal) ->
 		(EGoals \= [] ->
 			'$lgt_list_to_conjunction'(EGoals, EGoals2),
@@ -7317,7 +7320,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 		Goal = (Goal1, Goal2)
 		;
 		Goal = Goal1),
-	assertz('$lgt_pp_file_init_'(Entity, Goal)).
+	assertz('$lgt_pp_entity_init_'(Entity, Goal)).
 
 
 
