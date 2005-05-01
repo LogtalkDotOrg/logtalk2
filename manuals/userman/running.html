@@ -207,7 +207,7 @@ To supress printing of compiling and loading messages (including compiling warni
 Logtalk defines a built-in pseudo-object named <code>debugger</code>, which implements debugging features similar to those found on most Prolog compilers. However, there are some differences between the usual implementation of Prolog debuggers and the current implementation of the Logtalk debugger that you should be aware. First, unlikely most Prolog debuggers, the Logtalk debugger is not implemented as a meta-interpreter. This translates to a different, although similar, set of debugging features with some limitations when compared with some Prolog debuggers. Second, debugging is only possible for objects compiled in debug mode. When compiling an object in this mode, Logtalk keeps each  clause goal in both source form and compiled form in order to allow tracing of the goal execution. Third, implementation of spy points allows the user to specify the execution context for entering the debugger. This feature is a consequence of the encapsulation of predicates inside objects.
 </p>
 
-<h3>Compiling objects in debug mode<a name="debugmode"></a></h3>
+<h3>Compiling entities in debug mode<a name="debugmode"></a></h3>
 
 <p>
 Compilation of source files in debug mode is controlled by the compiler flag <code>debug</code>. The default value for this flag, usually <code>off</code>, is defined in the config files. Its value may be changed at runtime by writing:
@@ -218,7 +218,7 @@ Compilation of source files in debug mode is controlled by the compiler flag <co
     yes
 </pre>
 <p>
-In alternative, if we want to compile only some objects in debug mode, we may instead write:
+In alternative, if we want to compile only some entities in debug mode, we may instead write:
 </p>
 <pre>
     | ?- logtalk_load([file1, file2, ...], [debug(on)]).
@@ -226,6 +226,11 @@ In alternative, if we want to compile only some objects in debug mode, we may in
 <p>
 The compiler flag <code>smart_compilation</code> is automatically turned off whenever the debug flag is turned on at runtime. This is necessary because debug code would not be generated for files previously compiled in normal mode if there is no changes to the source files. However, note that you should be carefull to not turn both flags on at the same time in a config file.
 </p>
+<p>We may check or enumerate, by backtracking, all loaded entities compiled in debug mode as follows:
+</p>
+<pre>
+    | ?- debugger::debugging(Entity).
+</pre>
 
 <h3>Logtalk Procedure Box model<a name="boxmodel"></a></h3>
 
