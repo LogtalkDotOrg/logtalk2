@@ -103,7 +103,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  pre-processor directives (used for entity compilation)
+%  pre-processor directives (used for source file compilation)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -7654,6 +7654,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_lgt_closing_directive'(end_protocol, 0).
 
 
+
+'$lgt_lgt_entity_directive'(encoding, 1).
 
 '$lgt_lgt_entity_directive'(calls, N) :-
 	N >= 1.
