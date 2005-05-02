@@ -19,3 +19,17 @@ supports these encodings when opening these files. In addition, you may
 need to configure your text editor to open the source file using the 
 declared encoding. If you are using the SWI-Prolog GUI application on 
 Windows, be sure to select a font which supports Unicode characters.
+
+Currently, Logtalk accepts any atom is an argument for the encoding/1 
+directive. As, by default, Logtalk automatically generates a XML documenting 
+file for each compiled entity, the following table is used to set the 
+encoding of the XML file:
+
+	Logtalk source file		XML file
+	ascii					us-ascii
+	iso_8859_1				iso-8859-1
+	iso_latin_1				iso-8859-1
+	utf8					utf-8
+
+For now, you should only use "ascii", "iso_latin_1", or "utf8" as these are
+the values that would be recognised by SWI-Prolog.

@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.25.0 - April ??, 2005
+2.25.0 - May ??, 2005
 
 	Logtalk compiler is now source file-based instead of entity-based. Thus, 
 	a source file may now contain any number of entities, without the need of 
@@ -18,12 +18,10 @@ RELEASE NOTES
 	metafiles and the .mlgt file name extension.
 
 	The experimental encoding/1 directive, when used, must be the first term 
-	on a source file.
+	on a source file. Improved "encodings" example.
 
 	Added a new method, debugging/1, to the "debugger" pseudo-object for 
 	querying the system about entities compiled in debug mode.
-
-	Improved "encodings" example.
 
 
 2.24.0 - April 22, 2005
