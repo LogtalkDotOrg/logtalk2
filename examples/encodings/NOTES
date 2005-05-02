@@ -27,9 +27,9 @@ encoding of the XML file:
 
 	Logtalk source file		XML file
 	ascii					us-ascii
-	iso_8859_1				iso-8859-1
 	iso_latin_1				iso-8859-1
+	unicode_be				utf-16
+	unicode_le				utf-16
 	utf8					utf-8
 
-For now, you should only use "ascii", "iso_latin_1", or "utf8" as these are
-the values that would be recognised by SWI-Prolog.
+Note that the values on the left column are the ones recognized by SWI-Prolog.

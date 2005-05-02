@@ -8221,6 +8221,10 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	!.
 '$lgt_xml_encoding_table'(utf8, 'utf-8') :-
 	!.
+'$lgt_xml_encoding_table'(unicode_be, 'utf-16') :-
+	!.
+'$lgt_xml_encoding_table'(unicode_le, 'utf-16') :-
+	!.
 '$lgt_xml_encoding_table'(Encoding, Encoding).
 
 
