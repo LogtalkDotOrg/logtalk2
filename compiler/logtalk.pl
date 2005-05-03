@@ -2916,6 +2916,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	'$lgt_change_directory'(Current).
 
 '$lgt_load_file'(File) :-
+	'$lgt_report_loading_file'(File),
 	'$lgt_compile_file'(File),
 	'$lgt_file_name'(prolog, File, PFile),
 	'$lgt_load_prolog_code'(PFile),
@@ -2971,19 +2972,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_report_redefined_entity'(Type, Entity) :-
 	'$lgt_compiler_flag'(report, on) ->
 		'$lgt_inc_load_warnings_counter',
-		write('> WARNING!  redefining '), write(Type), write(' '), 
+		write('  WARNING!  redefining '), write(Type), write(' '), 
 		current_output(Output), '$lgt_pretty_print_vars_quoted'(Output, Entity), nl
-		;
-		true.
-
-
-% '$lgt_report_up_to_date_file'(+entity_identifier)
-%
-% prints a message that an entity is up-to-date
-
-'$lgt_report_up_to_date_file'(File) :-
-	'$lgt_compiler_flag'(report, on) ->
-		nl, write('>>> compiling source file '), writeq(File), write('... up-to-date'), nl
 		;
 		true.
 
@@ -2995,13 +2985,12 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_report_compiling_entity'(Type, Entity) :-
 	'$lgt_compiler_flag'(report, on) ->
-		write('> compiling '), write(Type),	write(' '),
+		write('compiling '), write(Type),	write(' '),
 		current_output(Output), '$lgt_pretty_print_vars_quoted'(Output, Entity),
 		('$lgt_compiler_flag'(debug, on) ->
-			write(' in debug mode...')
+			write(' in debug mode... ')
 			;
-			write('...')),
-		nl
+			write('... ')), nl
 		;
 		true.
 
@@ -3011,10 +3000,9 @@ current_logtalk_flag(version, version(2, 25, 0)).
 %
 % prints a message that an entity is finished compiling
 
-'$lgt_report_compiled_entity'(Type, Entity) :-
+'$lgt_report_compiled_entity'(_, _) :-
 	'$lgt_compiler_flag'(report, on) ->
-		write('> compiled '), write(Type), write(' '),
-		current_output(Output), '$lgt_pretty_print_vars_quoted'(Output, Entity), nl
+		write('compiled'), nl
 		;
 		true.
 
@@ -3038,7 +3026,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_report_compiling_file'(File) :-
 	'$lgt_compiler_flag'(report, on) ->
-		nl, write('>>> compiling source file '), writeq(File),
+		write('>>> compiling source file '), writeq(File),
 		('$lgt_compiler_flag'(debug, on) ->
 			write(' in debug mode...')
 			;
@@ -3049,13 +3037,37 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-% '$lgt_report_compiled_file'(+entity_identifier)
+% '$lgt_report_up_to_date_file'(+entity_identifier)
+%
+% prints a message that an entity is up-to-date
+
+'$lgt_report_up_to_date_file'(File) :-
+	'$lgt_compiler_flag'(report, on) ->
+		write('>>> compiling source file '), writeq(File), write('... up-to-date'), nl
+		;
+		true.
+
+
+
+% '$lgt_report_compiled_file'(+atom)
 %
 % prints a message that a source file is finished compiling
 
 '$lgt_report_compiled_file'(File) :-
 	'$lgt_compiler_flag'(report, on) ->
 		write('>>> '), writeq(File), write(' source file compiled'), nl
+		;
+		true.
+
+
+
+% '$lgt_report_loading_file'(+atom)
+%
+% prints a message that an entity is being compiled
+
+'$lgt_report_loading_file'(File) :-
+	'$lgt_compiler_flag'(report, on) ->
+		write('<<< loading source file '), writeq(File), write('... '), nl
 		;
 		true.
 
@@ -3269,13 +3281,13 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_report_singletons_aux'([Singleton| Singletons], Term) :-
 	('$lgt_compiler_flag'(singletons, warning), '$lgt_compiler_flag'(report, on)) ->
 		'$lgt_inc_compile_warnings_counter',
-		write('> WARNING!'),
+		write('  WARNING!'),
 		\+ \+ ( '$lgt_instantiate_singleton_vars'([Singleton| Singletons], Term, Names),
 				write('  singleton variables: '), '$lgt_write_list'(Names), nl,
 				(Term = (:- _) ->
-					write('>           in directive:        ')
+					write('            in directive:        ')
 					;
-					write('>           in clause:           ')),
+					write('            in clause:           ')),
 				write(Term), nl)
 		;
 		true.
@@ -4419,7 +4431,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	\+ '$lgt_pp_redefined_built_in_'(Head, _, _),		% not already reported?
 	functor(Head, Functor, Arity),
 	'$lgt_inc_compile_warnings_counter',
-	write('> WARNING!  redefining a Logtalk built-in predicate: '),
+	write('  WARNING!  redefining a Logtalk built-in predicate: '),
 	writeq(Functor/Arity), nl,
 	fail.
 
@@ -4433,7 +4445,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	\+ '$lgt_pp_redefined_built_in_'(Head, _, _),		% not already reported?
 	functor(Head, Functor, Arity),
 	'$lgt_inc_compile_warnings_counter',
-	write('> WARNING!  redefining a Prolog built-in predicate: '),
+	nl, write('  WARNING!  redefining a Prolog built-in predicate: '),
 	writeq(Functor/Arity), nl,
 	fail.
 
@@ -5893,7 +5905,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_report_unknown_objects' :-
 	setof(Obj, '$lgt_unknown_object'(Obj), Objs) ->
 		'$lgt_inc_compile_warnings_counter',
-		write('> WARNING!  references to unknown objects:    '),
+		write('  WARNING!  references to unknown objects:    '),
 		'$lgt_writeq_list'(Objs), nl
 		;
 		true.
@@ -5914,7 +5926,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_report_unknown_protocols' :-
 	setof(Ptc, '$lgt_unknown_protocol'(Ptc), Ptcs) ->
 		'$lgt_inc_compile_warnings_counter',
-		write('> WARNING!  references to unknown protocols:  '),
+		write('  WARNING!  references to unknown protocols:  '),
 		'$lgt_writeq_list'(Ptcs), nl
 		;
 		true.
@@ -5935,7 +5947,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_report_unknown_categories' :-
 	setof(Ctg, '$lgt_unknown_category'(Ctg), Ctgs) ->
 		'$lgt_inc_compile_warnings_counter',
-		write('> WARNING!  references to unknown categories: '),
+		write('  WARNING!  references to unknown categories: '),
 		'$lgt_writeq_list'(Ctgs), nl
 		;
 		true.
@@ -7078,14 +7090,13 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-% find and report misspelt predicate calls
-% in the body of object and category predicates
+% find and report misspelt predicate calls in the body of object and category predicates
 
 '$lgt_report_misspelt_calls' :-
 	'$lgt_compiler_flag'(misspelt, warning),
 	setof(Pred, '$lgt_misspelt_call'(Pred), Preds),
 	'$lgt_inc_compile_warnings_counter',
-	write('> WARNING!  these static predicates are called but never defined: '),
+	write('  WARNING!  these static predicates are called but never defined: '),
 	'$lgt_writeq_list'(Preds), nl,
 	!.
 
@@ -7099,14 +7110,13 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
-% report non-portable predicate calls
-% in the body of object and category predicates
+% report non-portable predicate calls in the body of object and category predicates
 
 '$lgt_report_non_portable_calls' :-
 	'$lgt_compiler_flag'(portability, warning),
 	setof(Pred, '$lgt_non_portable_call'(Pred), Preds),
 	'$lgt_inc_compile_warnings_counter',
-	write('> WARNING!  non-ISO defined built-in predicate calls: '),
+	write('  WARNING!  non-ISO defined built-in predicate calls: '),
 	'$lgt_writeq_list'(Preds), nl,
 	!.
 
@@ -7579,6 +7589,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 % that we have defined in the correspondent config file
 
 '$lgt_pl_built_in'(Pred) :-
+	\+ '$lgt_lgt_built_in'(Pred),	% Logtalk built-ins may also have the property built_in
 	'$lgt_predicate_property'(Pred, built_in),
 	!.
 
