@@ -2912,6 +2912,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	once(logtalk_library_path(Library, Path)),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
+	'$lgt_report_working_directory'(Path),
 	'$lgt_load_file'(File),
 	'$lgt_change_directory'(Current).
 
@@ -3020,6 +3021,18 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 
 
+% '$lgt_report_working_directory'(+atom)
+%
+% prints the working directory being used for compiling/loading source files
+
+'$lgt_report_working_directory'(Directory) :-
+	'$lgt_compiler_flag'(report, on) ->
+		nl, write('+++ working on directory '), write(Directory), nl
+		;
+		true.
+
+
+
 % '$lgt_report_compiling_file'(+entity_identifier)
 %
 % prints a message that an entity is being compiled
@@ -3108,6 +3121,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	once(logtalk_library_path(Library, Path)),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
+	'$lgt_report_working_directory'(Path),
 	'$lgt_compile_file'(File),
 	'$lgt_change_directory'(Current).
 

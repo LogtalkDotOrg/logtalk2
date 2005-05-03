@@ -23,6 +23,11 @@ RELEASE NOTES
 	Added a new method, debugging/1, to the "debugger" pseudo-object for 
 	querying the system about entities compiled in debug mode.
 
+	Improved source file and entity compilation and loading reporting. In 
+	particular, when using library notation for source files, the Logtalk 
+	compiler prints the library path containing the source files being 
+	compiled or loaded.
+
 
 2.24.0 - April 22, 2005
 
