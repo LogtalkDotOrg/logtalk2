@@ -3372,6 +3372,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 		;
 		true),
 	'$lgt_restore_global_op_table',
+	'$lgt_reset_warnings_counter',
 	'$lgt_report_compiler_error'(Error),
 	throw(Error).
 
@@ -3383,26 +3384,31 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_report_compiler_error'(error(Error, directive(Directive))) :-
 	!,
-	write('> ERROR!  '), writeq(Error), nl,
-	write('>         in directive: '), writeq((:- Directive)), nl.
+	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
+	write('  ERROR!  '), writeq(Error), nl,
+	write('          in directive: '), writeq((:- Directive)), nl.
 
 '$lgt_report_compiler_error'(error(Error, clause(Clause))) :-
 	!,
-	write('> ERROR!  '), writeq(Error), nl,
-	write('>         in clause: '), writeq(Clause), nl.
+	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
+	write('  ERROR!  '), writeq(Error), nl,
+	write('          in clause: '), writeq(Clause), nl.
 
 '$lgt_report_compiler_error'(error(Error, dcgrule(Rule))) :-
 	!,
-	write('> ERROR!  '), writeq(Error), nl,
-	write('>         in grammar rule: '), writeq((Rule)), nl.
+	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
+	write('  ERROR!  '), writeq(Error), nl,
+	write('          in grammar rule: '), writeq((Rule)), nl.
 
 '$lgt_report_compiler_error'(error(Error, Term)) :-
 	!,
-	write('> ERROR!  '), writeq(Error), nl,
-	write('>         in: '), writeq(Term), nl.
+	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
+	write('  ERROR!  '), writeq(Error), nl,
+	write('          in: '), writeq(Term), nl.
 
 '$lgt_report_compiler_error'(Error) :-
-	write('> ERROR!  '), writeq(Error), nl.
+	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
+	write('  ERROR!  '), writeq(Error), nl.
 
 
 
@@ -3525,8 +3531,9 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	fail.
 
 '$lgt_restore_global_op_table' :-
+	retractall('$lgt_pp_file_op_'(_, _, ',')),		% ','/2 cannot be an argument to op/3
 	retract('$lgt_pp_file_op_'(_, Spec, Op)),
-		op(0, Spec, Op),
+		catch(op(0, Spec, Op), _, fail),			% some Prolog compilers may define other operators as non-redefinable
 	fail.
 
 '$lgt_restore_global_op_table' :-
