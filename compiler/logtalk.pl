@@ -173,6 +173,7 @@
 :- dynamic('$lgt_pp_warnings_top_argument_'/1).	% '$lgt_pp_warnings_top_argument_'(Term)
 :- dynamic('$lgt_pp_comp_warnings_counter_'/1).	% '$lgt_pp_comp_warnings_counter_'(Counter)
 :- dynamic('$lgt_pp_load_warnings_counter_'/1).	% '$lgt_pp_load_warnings_counter_'(Counter)
+:- dynamic('$lgt_pp_entity_warnings_flag_'/0).	% '$lgt_pp_entity_warnings_flag_'
 
 
 
@@ -991,10 +992,19 @@ logtalk_compile(Files, Flags) :-
 
 % predicates for compilation warning counting and reporting
 
+'$lgt_reset_entity_warnings_flag' :-
+	retractall('$lgt_pp_entity_warnings_flag_').
+
+
+'$lgt_entity_warnings_flag' :-
+	'$lgt_pp_entity_warnings_flag_'.
+
+
 '$lgt_reset_warnings_counter' :-
 	retractall('$lgt_pp_warnings_top_argument_'(_)),
 	retractall('$lgt_pp_comp_warnings_counter_'(_)),
-	retractall('$lgt_pp_load_warnings_counter_'(_)).
+	retractall('$lgt_pp_load_warnings_counter_'(_)),
+	retractall('$lgt_pp_entity_warnings_flag_').
 
 
 '$lgt_init_warnings_counter'(Term) :-
@@ -1005,13 +1015,18 @@ logtalk_compile(Files, Flags) :-
 		retractall('$lgt_pp_comp_warnings_counter_'(_)),
 		asserta('$lgt_pp_comp_warnings_counter_'(0)),
 		retractall('$lgt_pp_load_warnings_counter_'(_)),
-		asserta('$lgt_pp_load_warnings_counter_'(0)).
+		asserta('$lgt_pp_load_warnings_counter_'(0)),
+		retractall('$lgt_pp_entity_warnings_flag_').
 
 
 '$lgt_inc_compile_warnings_counter' :-
 	retract('$lgt_pp_comp_warnings_counter_'(Old)),
 	New is Old + 1,
-	asserta('$lgt_pp_comp_warnings_counter_'(New)).
+	asserta('$lgt_pp_comp_warnings_counter_'(New)),
+	('$lgt_pp_entity_warnings_flag_' ->
+		true
+		;
+		assertz('$lgt_pp_entity_warnings_flag_')).
 
 
 '$lgt_inc_load_warnings_counter' :-
@@ -2985,15 +3000,16 @@ current_logtalk_flag(version, version(2, 25, 0)).
 % prints a message that an entity is being compiled
 
 '$lgt_report_compiling_entity'(Type, Entity) :-
-	'$lgt_compiler_flag'(report, on) ->
+	'$lgt_reset_entity_warnings_flag',
+	('$lgt_compiler_flag'(report, on) ->
 		write('compiling '), write(Type),	write(' '),
 		current_output(Output), '$lgt_pretty_print_vars_quoted'(Output, Entity),
 		('$lgt_compiler_flag'(debug, on) ->
 			write(' in debug mode... ')
 			;
-			write('... ')), nl
+			write('... '))
 		;
-		true.
+		true).
 
 
 
@@ -3003,6 +3019,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_report_compiled_entity'(_, _) :-
 	'$lgt_compiler_flag'(report, on) ->
+		('$lgt_entity_warnings_flag' -> nl; true),
 		write('compiled'), nl
 		;
 		true.
@@ -3295,14 +3312,15 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_report_singletons_aux'([Singleton| Singletons], Term) :-
 	('$lgt_compiler_flag'(singletons, warning), '$lgt_compiler_flag'(report, on)) ->
 		'$lgt_inc_compile_warnings_counter',
+		('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
 		write('  WARNING!'),
 		\+ \+ ( '$lgt_instantiate_singleton_vars'([Singleton| Singletons], Term, Names),
-				write('  singleton variables: '), '$lgt_write_list'(Names), nl,
+				write('  singleton variables ('), '$lgt_write_list'(Names),
 				(Term = (:- _) ->
-					write('            in directive:        ')
+					write(') in directive: ')
 					;
-					write('            in clause:           ')),
-				write(Term), nl)
+					write(') in clause: ')),
+				write(Term), ('$lgt_pp_entity'(_, _, _, _, _) -> true; nl))
 		;
 		true.
 
@@ -4445,8 +4463,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	\+ '$lgt_pp_redefined_built_in_'(Head, _, _),		% not already reported?
 	functor(Head, Functor, Arity),
 	'$lgt_inc_compile_warnings_counter',
-	write('  WARNING!  redefining a Logtalk built-in predicate: '),
-	writeq(Functor/Arity), nl,
+	nl, write('  WARNING!  redefining a Logtalk built-in predicate: '),
+	writeq(Functor/Arity),
 	fail.
 
 
@@ -4460,7 +4478,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	functor(Head, Functor, Arity),
 	'$lgt_inc_compile_warnings_counter',
 	nl, write('  WARNING!  redefining a Prolog built-in predicate: '),
-	writeq(Functor/Arity), nl,
+	writeq(Functor/Arity),
 	fail.
 
 
@@ -5919,8 +5937,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_report_unknown_objects' :-
 	setof(Obj, '$lgt_unknown_object'(Obj), Objs) ->
 		'$lgt_inc_compile_warnings_counter',
-		write('  WARNING!  references to unknown objects:    '),
-		'$lgt_writeq_list'(Objs), nl
+		nl, write('  WARNING!  references to unknown objects:    '),
+		'$lgt_writeq_list'(Objs)
 		;
 		true.
 
@@ -5940,8 +5958,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_report_unknown_protocols' :-
 	setof(Ptc, '$lgt_unknown_protocol'(Ptc), Ptcs) ->
 		'$lgt_inc_compile_warnings_counter',
-		write('  WARNING!  references to unknown protocols:  '),
-		'$lgt_writeq_list'(Ptcs), nl
+		nl, write('  WARNING!  references to unknown protocols:  '),
+		'$lgt_writeq_list'(Ptcs)
 		;
 		true.
 
@@ -5961,8 +5979,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 '$lgt_report_unknown_categories' :-
 	setof(Ctg, '$lgt_unknown_category'(Ctg), Ctgs) ->
 		'$lgt_inc_compile_warnings_counter',
-		write('  WARNING!  references to unknown categories: '),
-		'$lgt_writeq_list'(Ctgs), nl
+		nl, write('  WARNING!  references to unknown categories: '),
+		'$lgt_writeq_list'(Ctgs)
 		;
 		true.
 
@@ -7110,8 +7128,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	'$lgt_compiler_flag'(misspelt, warning),
 	setof(Pred, '$lgt_misspelt_call'(Pred), Preds),
 	'$lgt_inc_compile_warnings_counter',
-	write('  WARNING!  these static predicates are called but never defined: '),
-	'$lgt_writeq_list'(Preds), nl,
+	nl, write('  WARNING!  these static predicates are called but never defined: '),
+	'$lgt_writeq_list'(Preds),
 	!.
 
 '$lgt_report_misspelt_calls'.
@@ -7130,8 +7148,8 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	'$lgt_compiler_flag'(portability, warning),
 	setof(Pred, '$lgt_non_portable_call'(Pred), Preds),
 	'$lgt_inc_compile_warnings_counter',
-	write('  WARNING!  non-ISO defined built-in predicate calls: '),
-	'$lgt_writeq_list'(Preds), nl,
+	nl, write('  WARNING!  non-ISO defined built-in predicate calls: '),
+	'$lgt_writeq_list'(Preds),
 	!.
 
 '$lgt_report_non_portable_calls'.
