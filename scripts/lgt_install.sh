@@ -33,10 +33,10 @@ ln -sf lgt2250 logtalk
 
 mkdir -p bin
 cd bin
-ln -sf ../lgt2250/scripts/cplgtdirs.sh cplgtdirs
-ln -sf ../lgt2250/xml/lgt2pdf.sh lgt2pdf
-ln -sf ../lgt2250/xml/lgt2html.sh lgt2html
-ln -sf ../lgt2250/xml/lgt2xml.sh lgt2xml
+ln -sf ../logtalk/scripts/cplgtdirs.sh cplgtdirs
+ln -sf ../logtalk/xml/lgt2pdf.sh lgt2pdf
+ln -sf ../logtalk/xml/lgt2html.sh lgt2html
+ln -sf ../logtalk/xml/lgt2xml.sh lgt2xml
 
 echo "Logtalk installation completed."
 echo
