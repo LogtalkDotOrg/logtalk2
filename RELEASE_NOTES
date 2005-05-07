@@ -28,6 +28,9 @@ RELEASE NOTES
 	compiler now prints the library path containing the source files being 
 	compiled or loaded.
 
+	Added new shell script, makeall_lgt.sh, which runs all the make_*lgt.sh 
+	shell scripts in sequence.
+
 
 2.24.0 - April 22, 2005
 
