@@ -13,6 +13,8 @@ echo "Creating a script named yaplgt for running Logtalk with YAP..."
 if ! [ "$LOGTALKHOME" ]
 then
 	echo "The environment variable LOGTALKHOME must be defined first!"
+	echo
+	exit 1
 else
 	cd "$LOGTALKHOME"
 	if [ -z "$1" ]; then

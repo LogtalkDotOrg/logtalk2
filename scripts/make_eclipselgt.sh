@@ -13,6 +13,8 @@ echo "Creating a script named eclipselgt for running Logtalk with ECLiPSe..."
 if ! [ "$LOGTALKHOME" ]
 then
 	echo "The environment variable LOGTALKHOME must be defined first!"
+	echo
+	exit 1
 else
 	cd "$LOGTALKHOME"
 	if [ -z "$1" ]; then

@@ -13,6 +13,8 @@ echo "Creating a script named ciaolgt for running Logtalk with CIAO..."
 if ! [ "$LOGTALKHOME" ]
 then
 	echo "The environment variable LOGTALKHOME must be defined first!"
+	echo
+	exit 1
 else
 	cd "$LOGTALKHOME"
 	if [ -z "$1" ]; then
