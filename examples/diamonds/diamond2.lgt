@@ -50,7 +50,7 @@ directive.
 
 % bottom object, descending from the two previous objects and, as such, inheriting
 % two definitions for the predicate m/0; the overridden definition inherited from 
-% object "c2" is renamed using the alias/3 directive and then we redefined the 
+% object "c2" is renamed using the alias/3 directive and then we redefine the 
 % predicate m/0 to call the renamed definition:
 
 :- object(d2,
