@@ -56,8 +56,8 @@ else
 	fi	
 	echo
 	echo "Done. Links to the created scripts can be found on $prefix/bin."
-	echo "Make sure that the Prolog compilers are available in your execution"
-	echo "path. Users should define the environment variables LOGTALKHOME and"
-	echo "LOGTALKUSER in order to use the scripts."
+	echo "Make sure that the Prolog compilers are also available on your "
+	echo "execution path.  Users should define the environment variables "
+	echo "LOGTALKHOME and LOGTALKUSER in order to use the scripts."
 	echo
 fi
