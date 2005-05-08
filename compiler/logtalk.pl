@@ -3303,38 +3303,39 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 '$lgt_report_singletons'(TSingletons, Term) :-
 	'$lgt_filter_dont_care_vars'(TSingletons, FSingletons),
-	'$lgt_report_singletons_aux'(FSingletons, Term).
+	'$lgt_singleton_var_names'(FSingletons, Names),
+	'$lgt_report_singletons_aux'(Names, Term).
 
 
 '$lgt_report_singletons_aux'([], _) :-
 	!.	% cut needed to prevent problems with compilers with broken read_term/3
 
-'$lgt_report_singletons_aux'([Singleton| Singletons], Term) :-
+'$lgt_report_singletons_aux'([Name| Names], Term) :-
 	('$lgt_compiler_flag'(singletons, warning), '$lgt_compiler_flag'(report, on)) ->
 		'$lgt_inc_compile_warnings_counter',
 		('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
-		write('  WARNING!'),
-		\+ \+ ( '$lgt_instantiate_singleton_vars'([Singleton| Singletons], Term, Names),
-				write('  singleton variables ('), '$lgt_write_list'(Names),
-				(Term = (:- _) ->
-					write(') in directive: ')
-					;
-					write(') in clause: ')),
-				write(Term), ('$lgt_pp_entity'(_, _, _, _, _) -> true; nl))
+		write('  WARNING!  singleton variables ('), '$lgt_write_list'([Name| Names]),
+		arg(1, Term, Term2),
+		functor(Term2, Functor, Arity),
+		(Term = (:- _) ->
+			write(') in directive ')
+			;
+			write(') in clause for predicate ')),
+		write(Functor/Arity),
+		('$lgt_pp_entity'(_, _, _, _, _) -> true; nl)
 		;
 		true.
 
 
 
-% '$lgt_instantiate_singleton_vars'(+list, +nonvar, -list)
+% '$lgt_singleton_var_names'(@list, -list)
 %
-% instantiates singleton variables, returning a list of the variable names
+% colects singleton variable names into a list
 
-'$lgt_instantiate_singleton_vars'([], _, []).
+'$lgt_singleton_var_names'([], []).
 
-'$lgt_instantiate_singleton_vars'([Name = Var| Singletons], Term, [Name| Names]) :-
-	Name = Var,
-	'$lgt_instantiate_singleton_vars'(Singletons, Term, Names).
+'$lgt_singleton_var_names'([Name = _| Singletons], [Name| Names]) :-
+	'$lgt_singleton_var_names'(Singletons, Names).
 
 
 
@@ -3354,7 +3355,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 	!.	% cut needed to prevent problems with compilers with broken read_term/3
 
 '$lgt_filter_dont_care_vars'([Atom = Var| List], Sofar, Result) :-
-	sub_atom(Atom, 0, 1, _, '_') ->
+	atom_concat('_', _, Atom) ->
 		'$lgt_filter_dont_care_vars'(List, Sofar, Result)
 		;
 		'$lgt_filter_dont_care_vars'(List, [Atom = Var| Sofar], Result).

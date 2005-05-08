@@ -31,6 +31,9 @@ RELEASE NOTES
 	Added new shell script, makeall_lgt.sh, which runs all the make_*lgt.sh 
 	shell scripts in sequence.
 
+	Simplified compiler reporting of singleton variables in directives and 
+	clauses.
+
 
 2.24.0 - April 22, 2005
 
