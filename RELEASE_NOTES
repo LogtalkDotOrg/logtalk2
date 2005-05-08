@@ -34,6 +34,8 @@ RELEASE NOTES
 	Simplified compiler reporting of singleton variables in directives and 
 	clauses.
 
+	Added an adaption of the "timetables" LPA Prolog++ example.
+
 
 2.24.0 - April 22, 2005
 

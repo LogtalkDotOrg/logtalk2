@@ -5,7 +5,7 @@ Release 2.25.0
 Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 =================================================================
 
-This directory contains examples adaptated from the LPA Prolog++ 
-Reference Manual. This manual can be downloaded from the LPA web 
-site at <http://www.lpa.co.uk>. Please consult this reference 
-manual for further informations about each example.
+
+This example is an adaptation of the LPA Prolog++ timetables example.
+
+To load this example and for sample queries, please see the SCRIPT file.
