@@ -2959,15 +2959,11 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 % '$lgt_clean_redefined_entity'(+atom, @entity_identifier)
 %
-% retract all clauses for all local dynamic 
-% predicates from a redefined entity
+% retract all clauses for all dynamically declared predicates from a redefined entity
 
 '$lgt_clean_redefined_entity'(object, Entity) :-
 	'$lgt_current_object_'(Entity, Prefix, _, _, _, _),
-	'$lgt_call'(Prefix, _, Def, _, _, _, DDcl, DDef, _),
-	forall(
-		('$lgt_call'(Def, _, _, _, _, DefHead), '$lgt_predicate_property'(DefHead, (dynamic))),
-		retractall(DefHead)),
+	'$lgt_call'(Prefix, _, _, _, _, _, DDcl, DDef, _),
 	DDefClause =.. [DDef, _, _, _, _, DDefHead],
 	forall(
 		retract(DDefClause),
