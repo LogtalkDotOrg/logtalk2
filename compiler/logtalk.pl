@@ -2942,7 +2942,7 @@ current_logtalk_flag(version, version(2, 25, 0)).
 
 % '$lgt_redefined_entity'(@entity_identifier, -atom)
 %
-% true if an entity of the same name is already loaded
+% true if an entity of the same name is already loaded; returns entity type
 
 '$lgt_redefined_entity'(Entity, object) :-
 	'$lgt_current_object_'(Entity, _, _, _, _, _),
