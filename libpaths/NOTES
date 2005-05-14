@@ -39,6 +39,7 @@ support multifile predicates.
 Some Prolog compilers which are expected to be compatible with the provided 
 "libpaths.pl" file as is, across operating systems:
 
+	* B-Prolog
 	* CIAO
 	* ECLiPSe
 	* GNU-Prolog

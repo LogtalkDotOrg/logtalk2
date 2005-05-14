@@ -58,27 +58,16 @@ Amzi! Prolog 6.2.2 and later versions
 	to set the working directory before loading the library or an example.
 
 
-B-Prolog 4.0~5.0, 6.4 and later versions
+B-Prolog 6.7#2 and later versions
 
-	b5.config
+	b.config
 
-	For B-Prolog 4.0 or 5.0.
-	The (Logtalk) predicates '$lgt_current_date'/3 and '$lgt_current_time'/3 
-	have dummy definitions. Don't forget to use the chdir/1 predicate to 
-	set the working directory before loading the library or an example.
-	Does not support the <library>(<entity>) notation for loading source 
-	files.
-
-	b6.config
-
-	For B-Prolog 6.4 and later versions.
+	For B-Prolog 6.7#2 and later versions.
 	This version contains a bug in the atom_concat/3 predicate that prevents 
 	some examples such as the "symdiff" from running. Don't forget to use the 
 	chdir/1 predicate to set the working directory before loading the library 
-	or an example. Does not support the <library>(<entity>) notation for 
-	loading source files. Note that this configuration file redefines the 
-	B-Prolog ::/2 finite-domain built-in predicate (use the in/2 predicate 
-	instead).
+	or an example. Note that this configuration file redefines the B-Prolog 
+	::/2 finite-domain built-in predicate (use the in/2 predicate instead).
 
 
 Bin-Prolog 8.x~10.x

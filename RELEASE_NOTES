@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.25.0 - May ??, 2005
+2.25.0 - May 16, 2005
 
 	Logtalk compiler is now source file-based instead of entity-based. Thus, 
 	a source file may now contain any number of entities, without the need of 
@@ -36,6 +36,9 @@ RELEASE NOTES
 	clauses.
 
 	Added an adaption of the "timetables" LPA Prolog++ example.
+
+	Updated B-Prolog config file for the new 6.7 #2 version. Dropped support 
+	for older versions of B-Prolog.
 
 
 2.24.0 - April 22, 2005
