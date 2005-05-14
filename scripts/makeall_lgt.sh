@@ -25,34 +25,50 @@ else
 	./make_ciaolgt.sh $prefix > /dev/null
 	if [ $? ]; then
 		echo "ciaolgt script created"
+	else
+		echo "ciaolgt script creation failed"
 	fi
 	./make_eclipselgt.sh $prefix > /dev/null
 	if [ $? ]; then
 		echo "eclipselgt script created"
+	else
+		echo "eclipselgt script creation failed"
 	fi
 	./make_gplgt.sh $prefix > /dev/null
 	if [ $? ]; then
 		echo "gplgt script created"
+	else
+		echo "gplgt script creation failed"
 	fi
 	./make_plclgt.sh $prefix > /dev/null
 	if [ $? ]; then
 		echo "plclgt script created"
+	else
+		echo "plclgt script creation failed"
 	fi
 	./make_sicstuslgt.sh $prefix > /dev/null
 	if [ $? ]; then
 		echo "sicstuslgt script created"
+	else
+		echo "sicstuslgt script creation failed"
 	fi
 	./make_swilgt.sh $prefix > /dev/null
 	if [ $? ]; then
 		echo "swilgt script created"
+	else
+		echo "swilgt script creation failed"
 	fi
 	./make_xsblgt.sh $prefix > /dev/null
 	if [ $? ]; then
 		echo "xsblgt script created"
+	else
+		echo "xsblgt script creation failed"
 	fi
 	./make_yaplgt.sh $prefix > /dev/null
 	if [ $? ]; then
 		echo "yaplgt script created"
+	else
+		echo "yaplgt script creation failed"
 	fi	
 	echo
 	echo "Done. Links to the created scripts can be found on $prefix/bin."
