@@ -7,14 +7,14 @@
 ## Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 ## =================================================================
 
-echo
-echo "Installing Logtalk..."
-
 if [ -z "$1" ]; then
 	prefix=/usr/local
 else
 	prefix="$1"
 fi
+
+echo
+echo "Installing Logtalk on $prefix ..."
 
 rm -rf $prefix/lgt2250
 rm -f $prefix/logtalk
