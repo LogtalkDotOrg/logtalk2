@@ -8260,17 +8260,17 @@ current_logtalk_flag(version, version(2, 25, 0)).
 %
 % converts between Prolog stream encoding names and XML encoding names
 
-'$lgt_xml_encoding_table'(ascii, 'US-ASCII') :-
+'$lgt_xml_encoding_table'(ascii, 'us-ascii') :-
 	!.
-'$lgt_xml_encoding_table'(iso_8859_1, 'ISO-8859-1') :-
+'$lgt_xml_encoding_table'(iso_8859_1, 'iso-8859-1') :-
 	!.
-'$lgt_xml_encoding_table'(iso_latin_1, 'ISO-8859-1') :-
+'$lgt_xml_encoding_table'(iso_latin_1, 'iso-8859-1') :-
 	!.
-'$lgt_xml_encoding_table'(utf8, 'UTF-8') :-
+'$lgt_xml_encoding_table'(utf8, 'utf-8') :-
 	!.
-'$lgt_xml_encoding_table'(unicode_be, 'UCS-2') :-
+'$lgt_xml_encoding_table'(unicode_be, 'utf-16') :-
 	!.
-'$lgt_xml_encoding_table'(unicode_le, 'UCS-2') :-
+'$lgt_xml_encoding_table'(unicode_le, 'utf-16') :-
 	!.
 '$lgt_xml_encoding_table'(Encoding, Encoding).
 
