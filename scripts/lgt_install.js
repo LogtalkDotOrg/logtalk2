@@ -46,6 +46,7 @@ WScript.Echo("variable.");
 WScript.Echo("");
 
 FSObject.CopyFile(WshShell.CurrentDirectory + "\\BIBLIOGRAPHY", WshShell.CurrentDirectory + "\\BIBLIOGRAPHY.txt");
+FSObject.CopyFile(WshShell.CurrentDirectory + "\\INSTALL", WshShell.CurrentDirectory + "\\INSTALL.txt");
 FSObject.CopyFile(WshShell.CurrentDirectory + "\\LICENSE", WshShell.CurrentDirectory + "\\LICENSE.txt");
 FSObject.CopyFile(WshShell.CurrentDirectory + "\\QUICK_START", WshShell.CurrentDirectory + "\\QUICK_START.txt");
 FSObject.CopyFile(WshShell.CurrentDirectory + "\\README", WshShell.CurrentDirectory + "\\README.txt");
