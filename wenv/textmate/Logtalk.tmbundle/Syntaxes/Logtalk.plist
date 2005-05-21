@@ -21,7 +21,7 @@
         }, 
         {
             match = "%.*$"; 
-            name = "comment.line"; 
+            name = "comment.line.percentage"; 
         }, 
         {
             match = ":-\\s+(object|protocol|category)(?=[(])"; 
@@ -196,7 +196,7 @@
             swallow = "\\\\."; 
         }, 
         {
-            match = "\\b(\\u|_)\\w*\\b"; 
+            match = "\\b([A-Z_][A-Za-z0-9_]*)\\b"; 
             name = "variable"; 
         }
     ); 
