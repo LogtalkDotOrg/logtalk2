@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.25.0 - May 16, 2005
+2.25.0 - May 23, 2005
 
 	Logtalk compiler is now source file-based instead of entity-based. Thus, 
 	a source file may now contain any number of entities, without the need of 
