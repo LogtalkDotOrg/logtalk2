@@ -161,7 +161,7 @@ the file "$LOGTALKUSER/xml/NOTES".
 Most Prolog compilers allows the user to define an initialization file that 
 is automatically consulted at startup. This initialization file may contain 
 directives for loading other files, such as the Logtalk configuration file 
-and the Logtalk compiler. The "scripts" sub-directory contains several scripts
-for automating the creation of these initialization files for some Prolog 
-compilers. In addition, be sure to read the "configs/NOTES" file notes on 
-the Prolog compilers that you intend to use. 
+and the Logtalk compiler. The "$LOGTALKHOME/scripts" sub-directory contains 
+several scripts for automating the creation of these initialization files 
+for some Prolog compilers. In addition, be sure to read the "configs/NOTES" 
+file notes on the Prolog compilers that you intend to use. 

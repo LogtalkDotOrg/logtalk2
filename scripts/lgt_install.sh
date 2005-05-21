@@ -38,7 +38,8 @@ ln -sf ../logtalk/xml/lgt2pdf.sh lgt2pdf
 ln -sf ../logtalk/xml/lgt2html.sh lgt2html
 ln -sf ../logtalk/xml/lgt2xml.sh lgt2xml
 
-echo "Logtalk installation completed."
+echo "Logtalk basic installation completed. See the INSTALL file for"
+echo "details on customizing your working environment."
 echo
 echo "Users should define the environment variable LOGTALKHOME pointing"
 echo "to $prefix/logtalk and then run the shell script cplgtdirs"

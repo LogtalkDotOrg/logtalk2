@@ -75,6 +75,12 @@ link.Description = "Open Logtalk ReadMe";
 link.TargetPath = WshShell.CurrentDirectory + "\\README.txt";
 link.Save();
 
+link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Install and configuration.lnk");
+
+link.Description = "Open Logtalk Install and configuration";
+link.TargetPath = WshShell.CurrentDirectory + "\\INSTALL.txt";
+link.Save();
+
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Quick Start.lnk");
 
 link.Description = "Open Logtalk Quick Start";
@@ -105,9 +111,10 @@ link.Description = "Open Logtalk Upgrading instructions";
 link.TargetPath = WshShell.CurrentDirectory + "\\UPGRADING.txt";
 link.Save();
 
-WScript.Echo('Logtalk installation completed. You will need to restart in order');
-WScript.Echo('to activate the new system environment variables and use the items');
-WScript.Echo('in the new Logtalk program group.');
+WScript.Echo('Logtalk basic installation completed. You will need to restart in order');
+WScript.Echo('to activate the new system environment variables and use the items in');
+WScript.Echo('the new Logtalk program group. See the Install and configuration file');
+WScript.Echo('for details on customizing your working environment.');
 WScript.Echo('');
 WScript.Echo('Users should run the batch script cplgtdirs in order to copy the');
 WScript.Echo('Logtalk user-modifiable files to their home directories. The path');
