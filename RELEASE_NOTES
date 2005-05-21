@@ -29,7 +29,7 @@ RELEASE NOTES
 	compiler now prints the library path containing the source files being 
 	compiled or loaded.
 
-	Added new shell script, makeall_lgt.sh, which runs all the make_*lgt.sh 
+	Added new shell scripts, makeall_lgt.*, which run all the make_*lgt.* 
 	shell scripts in sequence.
 
 	Simplified compiler reporting of singleton variables in directives and 
