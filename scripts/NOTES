@@ -24,9 +24,9 @@ lgt_install.js
 	setting the LOGTALKHOME system environment variable and the LOGTALKUSER 
 	user environment variable (for the user performing the installation), by 
 	creating a new program group named "Logtalk" in the Windows Start Menu, 
-	and by adding the directories %LOGTALKHOME%\scripts and %LOGTALKHOME%\xml to 
-	the system path environment variable (must be run from this directory by 
-	a user with administration privileges after decompressing the Logtalk 
+	and by adding the directories %LOGTALKHOME%\scripts and %LOGTALKHOME%\xml 
+	to the system path environment variable (must be run from this directory 
+	by a user with administration privileges after decompressing the Logtalk 
 	distribution into its final destination; you will need to restart your 
 	computer in order to use the items created in the "Logtalk" program group 
 	due to the definition of new system environment variables)
