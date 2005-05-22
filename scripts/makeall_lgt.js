@@ -50,8 +50,9 @@ WScript.Echo('Programs.   Make sure that the environment variables LOGTALKHOME a
 WScript.Echo('LOGTALKUSER are defined for all users wishing to use the shortcuts.');
 WScript.Echo('');
 WScript.Echo('If you get an unexpected failure to create a shortcut for one of the');
-WScript.Echo('above Prolog compilers, please consult the NOTES file on the scripts');
-WScript.Echo('directory or try to run the corresponding script individually.');
+WScript.Echo('above Prolog compilers, make sure that the Prolog compiler is properly');
+WScript.Echo('installed and then consult the NOTES file on the scripts directory and');
+WScript.Echo('try to run the corresponding script individually.');
 WScript.Echo('');
 
 WScript.Quit(0);
