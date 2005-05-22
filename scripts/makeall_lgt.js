@@ -23,7 +23,7 @@ else {
 	WScript.Quit(1);
 }
 
-if (WshShell.Run("cscript %LOGTALKHOME%\\scripts\\make_ciaolgt.js", true) == 0)
+if (WshShell.Exec("cscript %LOGTALKHOME%\\scripts\\make_ciaolgt.js", true).Status == 0)
 	WScript.Echo('Logtalk - CIAO shortcut created');
 else
 	WScript.Echo('Logtalk - CIAO shortcut creation failed (CIAO Prolog not installed?)');
@@ -59,8 +59,8 @@ else
 	WScript.Echo('Logtalk - YAP shortcut creation failed (YAP not installed?)');
 
 WScript.Echo('');
-WScript.Echo('Done. Links to the created scripts was been added to the Start Menu');
-WScript.Echo('Programs.  Make sure that the environment variables LOGTALKHOME and');
+WScript.Echo('Done.  Links to the created scripts was been added to the Start Menu');
+WScript.Echo('Programs.   Make sure that the environment variables LOGTALKHOME and');
 WScript.Echo('LOGTALKUSER are defined for all users wishing to use the shortcuts.');
 WScript.Echo('');
 WScript.Echo('If you get an unexpected failure to create a shortcut for one of the');
