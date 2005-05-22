@@ -116,6 +116,10 @@ WScript.Echo('to activate the new system environment variables and use the items
 WScript.Echo('the new Logtalk program group. See the Install and configuration file');
 WScript.Echo('for details on customizing your working environment.');
 WScript.Echo('');
+WScript.Echo('After restarting your computer, you may want to run some of the Prolog');
+WScript.Echo('integration scripts, which you will find on the same directory as this');
+WScript.Echo('installer script.');
+WScript.Echo('');
 WScript.Echo('Users should run the batch script cplgtdirs in order to copy the');
 WScript.Echo('Logtalk user-modifiable files to their home directories. The path');
 WScript.Echo('to the cplgtdirs, lgt2pdf, lgt2html, and lgt2xml batch scripts has');
