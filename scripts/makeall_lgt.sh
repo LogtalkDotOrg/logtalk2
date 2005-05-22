@@ -76,4 +76,8 @@ else
 	echo "execution path.  Users should define the environment variables "
 	echo "LOGTALKHOME and LOGTALKUSER in order to use the scripts."
 	echo
+	echo "If you get an unexpected failure to create a shortcut for one of the"
+	echo "above Prolog compilers, please consult the NOTES file on the scripts"
+	echo "directory or try to run the corresponding script individually."
+	echo
 fi
