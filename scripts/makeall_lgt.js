@@ -23,7 +23,7 @@ else {
 	WScript.Quit(1);
 }
 
-if (WshShell.Exec("cscript %LOGTALKHOME%\\scripts\\make_ciaolgt.js").Status == 0)
+if (WshShell.Exec("cscript %LOGTALKHOME%\\scripts\\make_ciaolgt.js").ExitCode == 0)
 	WScript.Echo('Logtalk - CIAO shortcut created');
 else
 	WScript.Echo('Logtalk - CIAO shortcut creation failed (CIAO Prolog not installed?)');
