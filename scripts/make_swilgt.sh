@@ -31,7 +31,10 @@ else
 	echo ":- consult('\$LOGTALKHOME/bin/logtalk_swi.pl')." >> logtalk_swi.rc
 	echo ":- consult('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_swi.rc
 	echo "#/bin/sh" > swilgt
-	echo "swipl -f \$LOGTALKHOME/bin/logtalk_swi.rc" >> swilgt
+	case $( uname -s ) in
+		Darwin	) echo "swipl -f \$LOGTALKHOME/bin/logtalk_swi.rc" >> swilgt;;
+		*		) echo "pl -f \$LOGTALKHOME/bin/logtalk_swi.rc" >> swilgt;;
+	esac
 	chmod a+x swilgt
 	ln -sf $LOGTALKHOME/bin/swilgt $prefix/bin/swilgt
 	echo "Done. A link to the script was been created in $prefix/bin."
