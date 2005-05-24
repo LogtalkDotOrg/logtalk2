@@ -15,7 +15,7 @@ this directory may contain an updated syntax file. If that is the
 case, install the syntax file by performing the following steps:
 
 1.	Copy the file logtalk.vim to the "syntax" sub-directory in your 
-	VIM installation directory.
+	VIM installation directory (replacing any existing older file).
 
 2.	Add the following entries to the "filetype.vim" configuration 
 	file (only if not already present):
