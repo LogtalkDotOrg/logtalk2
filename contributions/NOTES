@@ -16,5 +16,5 @@ iso8601.lgt
 	are not yet implemented. The best way to get acquainted with 
 	this library is for you to compile the object and then run 
 	one of the documentation helper scripts to transform the 
-	resulting XML file into a (X)HTML or PDF documentation.	Your 
+	resulting XML file into (X)HTML or PDF documentation. Your 
 	feedback is appreciated.
