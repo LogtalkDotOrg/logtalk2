@@ -102,7 +102,10 @@ make_sicstuslgt.js
 	you must edit the reference to the registry key in the script)
 
 make_swilgt.sh
-	makes a shell script named "swilgt" for running Logtalk with SWI-Prolog
+	makes a shell script named "swilgt" for running Logtalk with SWI-Prolog;
+	the script assumes that the SWI-Prolog executable is named "swipl", which 
+	is true on the MacOS X port but not on Linux where the name "pl" is used 
+	instead (edit the script if needed)
 make_swilgt.js
 	makes a Windows shortcut named "Logtalk - SWI-Prolog" for running Logtalk 
 	with SWI-Prolog
