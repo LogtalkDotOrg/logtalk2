@@ -34,4 +34,9 @@ and add the entry:
 
 Usage example for a "foo.lgt" Logtalk source file:
 
-	% source-highlight --out-format html --input foo.lgt --output foo.html
+	% source-highlight --out-format xhtml --input foo.lgt --output foo.html
+
+You may also use the "logtalk.lang" file with plain Prolog files by using 
+the --src-lang option. For example:
+
+	% source-highlight --src-lang lgt --out-format xhtml --input foo.pl --output foo.html
