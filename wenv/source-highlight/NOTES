@@ -1,0 +1,37 @@
+=================================================================
+Logtalk - Object oriented extension to Prolog
+Release 2.25.1
+
+Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
+=================================================================
+
+
+This directory contains files that provide support for using version 2.0 
+or later of the source-highlight package by Lorenzo Bettini with Logtalk 
+source files.  A detailed description on the source-highlight package is 
+available from:
+
+	http://www.gnu.org/software/src-highlite/
+
+In order to check if your source-highlight installation already includes 
+support for Logtalk, use the following command:
+
+	% source-highlight --lang-list
+
+If support for Logtalk is not included or if it is outdated, copy the file
+"logtalk.lang" to the folder:
+
+	$prefix/share/source-highlight
+
+where $prefix is the installation directory (by default, /usr/local) and 
+then edit, if necessary, the file:
+
+	$prefix/share/source-highlight/lang.map
+
+and add the entry:
+
+	lgt = logtalk.lang
+
+Usage example for a "foo.lgt" Logtalk source file:
+
+	% source-highlight --out-format html --input foo.lgt --output foo.html

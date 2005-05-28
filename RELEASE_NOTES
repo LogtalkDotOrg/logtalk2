@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.25.1 - May ??, 2005
 
+	Added support for using the source-highlight package by Lorenzo Bettini 
+	with Logtalk source files.
+
 	Updated the SWI-Prolog shell integration script (make_swilgt.sh) to use 
 	either "swipl" or "pl" as the name of the Prolog executable, depending 
 	on the host operating system.
