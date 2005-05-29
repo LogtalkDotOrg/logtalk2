@@ -118,8 +118,7 @@ syn match	logtalkBuiltInMethod	"\<predicate_property\ze("
 
 syn match	logtalkBuiltInMethod	"\<a\(bolish\|ssert\(a\|z\)\)\ze("
 syn match	logtalkBuiltInMethod	"\<clause\ze("
-syn match	logtalkBuiltInMethod	"\<retract\ze("
-syn match	logtalkBuiltInMethod	"\<retractall\ze("
+syn match	logtalkBuiltInMethod	"\<retract\(all\)\?\ze("
 
 syn match	logtalkBuiltInMethod	"\<\(bag\|set\)of\ze("
 syn match	logtalkBuiltInMethod	"\<f\(ind\|or\)all\ze("
@@ -160,10 +159,9 @@ syn match	logtalkOperator		"\\="
 " Term testing
 
 syn match	logtalkKeyword		"\<var\ze("
-syn match	logtalkKeyword		"\<atom\ze("
+syn match	logtalkKeyword		"\<atom\(ic\)\?\ze("
 syn match	logtalkKeyword		"\<integer\ze("
 syn match	logtalkKeyword		"\<float\ze("
-syn match	logtalkKeyword		"\<atomic\ze("
 syn match	logtalkKeyword		"\<compound\ze("
 syn match	logtalkKeyword		"\<n\(onvar\|umber\)\ze("
 
@@ -203,8 +201,7 @@ syn match	logtalkOperator		">="
 
 " Stream selection and control
 
-syn match	logtalkKeyword		"\<current_\(in\|out\)put\ze("
-syn match	logtalkKeyword		"\<set_\(in\|out\)put\ze("
+syn match	logtalkKeyword		"\<\(current\|set\)_\(in\|out\)put\ze("
 syn match	logtalkKeyword		"\<open\ze("
 syn match	logtalkKeyword		"\<close\ze("
 syn match	logtalkKeyword		"\<flush_output\ze("
@@ -224,14 +221,10 @@ syn match	logtalkKeyword		"\<nl\>"
 
 " Term input/output
 
-syn match	logtalkKeyword		"\<read_term\ze("
-syn match	logtalkKeyword		"\<read\ze("
-syn match	logtalkKeyword		"\<write\ze("
-syn match	logtalkKeyword		"\<write\(q\|_\(canonical\|term\)\)\ze("
-syn match	logtalkKeyword		"\<op\ze("
-syn match	logtalkKeyword		"\<current_op\ze("
-syn match	logtalkKeyword		"\<char_conversion\ze("
-syn match	logtalkKeyword		"\<current_char_conversion\ze("
+syn match	logtalkKeyword		"\<read\(_term\)\?\ze("
+syn match	logtalkKeyword		"\<write\(q\|_\(canonical\|term\)\)\?\ze("
+syn match	logtalkKeyword		"\<\(current_\)\?op\ze("
+syn match	logtalkKeyword		"\<\(current\)\?char_conversion\ze("
 
 
 " Logic and control
@@ -263,17 +256,14 @@ syn match	logtalkOperator		"-"
 syn match	logtalkOperator		"\*"
 syn match	logtalkOperator		"//"
 syn match	logtalkOperator		"/"
-syn match	logtalkKeyword		"\<rem(?=[(])"
+syn match	logtalkKeyword		"\<r\(ound\|em\)\ze("
 syn match	logtalkKeyword		"\<rem\>"
 syn match	logtalkKeyword		"\<mod\ze("
 syn match	logtalkKeyword		"\<mod\>"
 syn match	logtalkKeyword		"\<abs\ze("
 syn match	logtalkKeyword		"\<sign\ze("
-syn match	logtalkKeyword		"\<float_\(integer\|fractional\)_part\ze("
-syn match	logtalkKeyword		"\<float\ze("
-syn match	logtalkKeyword		"\<floor\ze("
+syn match	logtalkKeyword		"\<flo\(or\|at\(_\(integer\|fractional\)_part\)\?\)\ze("
 syn match	logtalkKeyword		"\<truncate\ze("
-syn match	logtalkKeyword		"\<round\ze("
 syn match	logtalkKeyword		"\<ceiling\ze("
 
 
