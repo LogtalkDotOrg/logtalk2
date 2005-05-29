@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	April 5, 2005
+" Last Change:	May 29, 2005
 
 
 " Quit when a syntax file was already loaded:
@@ -89,13 +89,9 @@ syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- uses("		matchgroup=log
 
 " Logtalk built-in predicates
 
-syn match	logtalkBuiltIn		"\<current_\(object\|protocol\|category\)\ze("
-
-syn match	logtalkBuiltIn		"\<create_\(object\|protocol\|category\)\ze("
+syn match	logtalkBuiltIn		"\<\(abolish\|c\(reate\|urrent\)\)_\(object\|protocol\|category\)\ze("
 
 syn match	logtalkBuiltIn		"\<\(object\|protocol\|category\)_property\ze("
-
-syn match	logtalkBuiltIn		"\<abolish_\(object\|protocol\|category\)\ze("
 
 syn match	logtalkBuiltIn		"\<extends_\(object\|protocol\)\ze("
 syn match	logtalkBuiltIn		"\<imp\(orts_category\|lements_protocol\)\ze("
@@ -120,8 +116,7 @@ syn match	logtalkBuiltInMethod	"\<this\ze("
 syn match	logtalkBuiltInMethod	"\<current_predicate\ze("
 syn match	logtalkBuiltInMethod	"\<predicate_property\ze("
 
-syn match	logtalkBuiltInMethod	"\<abolish\ze("
-syn match	logtalkBuiltInMethod	"\<assert\(a\|z\)\ze("
+syn match	logtalkBuiltInMethod	"\<a\(bolish\|ssert\(a\|z\)\)\ze("
 syn match	logtalkBuiltInMethod	"\<clause\ze("
 syn match	logtalkBuiltInMethod	"\<retract\ze("
 syn match	logtalkBuiltInMethod	"\<retractall\ze("
@@ -208,8 +203,8 @@ syn match	logtalkOperator		">="
 
 " Stream selection and control
 
-syn match	logtalkKeyword		"\<current_\(input\|output\)\ze("
-syn match	logtalkKeyword		"\<set_\(input\|output\)\ze("
+syn match	logtalkKeyword		"\<current_\(in\|out\)put\ze("
+syn match	logtalkKeyword		"\<set_\(in\|out\)put\ze("
 syn match	logtalkKeyword		"\<open\ze("
 syn match	logtalkKeyword		"\<close\ze("
 syn match	logtalkKeyword		"\<flush_output\ze("
@@ -222,7 +217,7 @@ syn match	logtalkKeyword		"\<set_stream_position\ze("
 
 " Character and byte input/output
 
-syn match	logtalkKeyword		"\<\(get\|peek\|put\)_\(char\|code\|byte\)\ze("
+syn match	logtalkKeyword		"\<\(get\|p\(eek\|ut\)\)_\(c\(har\|ode\)\|byte\)\ze("
 syn match	logtalkKeyword		"\<nl\ze("
 syn match	logtalkKeyword		"\<nl\>"
 
@@ -232,8 +227,7 @@ syn match	logtalkKeyword		"\<nl\>"
 syn match	logtalkKeyword		"\<read_term\ze("
 syn match	logtalkKeyword		"\<read\ze("
 syn match	logtalkKeyword		"\<write\ze("
-syn match	logtalkKeyword		"\<writeq\ze("
-syn match	logtalkKeyword		"\<write_\(canonical\|term\)\ze("
+syn match	logtalkKeyword		"\<write\(q\|_\(canonical\|term\)\)\ze("
 syn match	logtalkKeyword		"\<op\ze("
 syn match	logtalkKeyword		"\<current_op\ze("
 syn match	logtalkKeyword		"\<char_conversion\ze("
@@ -249,10 +243,10 @@ syn match	logtalkKeyword		"\<repeat\>"
 
 " Atomic term processing
 
-syn match	logtalkKeyword		"\<atom_\(length\|concat\|chars\|codes\)\ze("
+syn match	logtalkKeyword		"\<atom_\(length\|c\(hars\|o\(ncat\|des\)\)\)\ze("
 syn match	logtalkKeyword		"\<sub_atom\ze("
 syn match	logtalkKeyword		"\<char_code\ze("
-syn match	logtalkKeyword		"\<number_\(chars\|codes\)\ze("
+syn match	logtalkKeyword		"\<number_\(c\(hars\|odes\)\)\ze("
 
 
 " Implementation defined hooks functions
