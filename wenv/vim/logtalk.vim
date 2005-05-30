@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	May 29, 2005
+" Last Change:	May 30, 2005
 
 
 " Quit when a syntax file was already loaded:
@@ -286,31 +286,32 @@ syn match	logtalkOperator		"\\/"
 syn match	logtalkOperator		"\\"
 
 
-" Logtalk end-of-clause
-
-syn match	logtalkOperator		"\."
-
-
 " Logtalk list operator
 
 syn match	logtalkOperator		"|"
+
+
+" Logtalk numbers 
+
+syn match	logtalkNumber		"\<\d\+\>"
+syn match	logtalkNumber		"\<\d\+\.\d\+\>"
+syn match	logtalkNumber		"\<\d\+[eE][-+]\=\d\+\>"
+syn match	logtalkNumber		"\<\d\+\.\d\+[eE][-+]\=\d\+\>"
+syn match	logtalkNumber		"\<0'[0-9a-zA-Z]\>"
+syn match	logtalkNumber		"\<0b[0-1]\+\>"
+syn match	logtalkNumber		"\<0o[0-7]\+\>"
+syn match	logtalkNumber		"\<0x\x\+\>"
+
+
+" Logtalk end-of-clause
+
+syn match	logtalkOperator		"\."
 
 
 " Logtalk comments
 
 syn region	logtalkBlockComment	start="/\*"	end="\*/"
 syn match	logtalkLineComment	"%.*"
-
-
-" Logtalk numbers 
-
-syn match	logtalkNumber		"\<[0-9]\+\>"
-syn match	logtalkNumber		"\<[0-9]\+\.[0-9]\+\>"
-syn match	logtalkNumber		"\<[0-9]\+\.[0-9]\+[eE][-+][0-9]+\>"
-syn match	logtalkNumber		"\<0'[0-9a-zA-Z]\>"
-syn match	logtalkNumber		"\<0b[0-1]\+\>"
-syn match	logtalkNumber		"\<0o[0-7]\+\>"
-syn match	logtalkNumber		"\<0x[0-9a-fA-F]\+\>"
 
 
 syn sync ccomment logtalkBlockComment maxlines=50
