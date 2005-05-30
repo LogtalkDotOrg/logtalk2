@@ -88,7 +88,7 @@
 				<RegExpr String = "0b[0-1]+" attribute = "Number" context="#stay"/>
 				<RegExpr String = "0o[0-7]+" attribute = "Number" context="#stay"/>
 				<RegExpr String = "0x[0-9a-fA-F]+" attribute = "Number" context="#stay"/>
-				<RegExpr String = "[0-9]+(\.[0-9]+)?([eE][-+][0-9]+)?" attribute = "Number" context="#stay"/>
+				<RegExpr String = "[0-9]+(\.[0-9]+)?([eE]([-+])?[0-9]+)?" attribute = "Number" context="#stay"/>
 				<!-- Message sending operators -->
 				<StringDetect String = "::" attribute="Operator" context="#stay" />
 				<StringDetect String = "^^" attribute="Operator" context="#stay" />
