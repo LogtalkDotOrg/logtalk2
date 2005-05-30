@@ -29,12 +29,12 @@
 				<!-- Events -->
 				<RegExpr String = "\b(current_event|(abolish|define)_events)(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Flags -->
-				<RegExpr String = "\b((current|set)_logtalk_flag)(?=[(])" attribute="Built-in" context="#stay" />
+				<RegExpr String = "\b(current|set)_logtalk_flag(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Compiling, loading, and library paths -->
 				<RegExpr String = "\blogtalk_(compile|l(ibrary_path|oad))(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Database -->
-				<RegExpr String = "\b(clause|retract|retractall)(?=[(])" attribute="Built-in" context="#stay" />
-				<RegExpr String = "\b(a(bolish|ssert(a|z))(?=[(])" attribute="Built-in" context="#stay" />
+				<RegExpr String = "\b(clause|retract(all)?)(?=[(])" attribute="Built-in" context="#stay" />
+				<RegExpr String = "\ba(bolish|ssert(a|z))(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Control -->
 				<RegExpr String = "\b(ca(ll|tch)|throw)(?=[(])" attribute="Built-in" context="#stay" />
 				<RegExpr String = "\b(fail|true)\b" attribute="Built-in" context="#stay" />
@@ -46,15 +46,14 @@
 				<RegExpr String = "\b(functor|arg|copy_term)(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Evaluable functors -->
 				<RegExpr String = "\b(rem|mod|abs|sign)(?=[(])" attribute="Built-in" context="#stay" />
-				<RegExpr String = "\b(float_(integer|fractional)_part|float)(?=[(])" attribute="Built-in" context="#stay" />
+				<RegExpr String = "\bfloat(_(integer|fractional)_part)?(?=[(])" attribute="Built-in" context="#stay" />
 				<RegExpr String = "\b(floor|truncate|round|ceiling)(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Other arithemtic functors -->
 				<RegExpr String = "\b(cos|atan|exp|log|s(in|qrt))(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Term testing -->
-				<RegExpr String = "\b(var|atom|integer|float|atomic|compound|n(onvar|umber))(?=[(])" attribute="Built-in" context="#stay" />
+				<RegExpr String = "\b(var|atom(ic)?|integer|float|compound|n(onvar|umber))(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Stream selection and control -->
-				<RegExpr String = "\bcurrent_(in|out)put(?=[(])" attribute="Built-in" context="#stay" />
-				<RegExpr String = "\bset_(in|out)put(?=[(])" attribute="Built-in" context="#stay" />
+				<RegExpr String = "\b(current|set)_(in|out)put(?=[(])" attribute="Built-in" context="#stay" />
 				<RegExpr String = "\b(open|close)(?=[(])" attribute="Built-in" context="#stay" />
 				<RegExpr String = "\bflush_output\b" attribute="Built-in" context="#stay" />
 				<RegExpr String = "\bflush_output(?=[(])" attribute="Built-in" context="#stay" />
@@ -63,16 +62,16 @@
 				<RegExpr String = "\b(nl|(get|peek|put)_(byte|c(har|ode)))(?=[(])" attribute="Built-in" context="#stay" />
 				<RegExpr String = "\bnl\b" attribute="Built-in" context="#stay" />
 				<!-- Term input/output -->
-				<RegExpr String = "\b(read_term|read)(?=[(])" attribute="Built-in" context="#stay" />
-				<RegExpr String = "\b(write|write(q|_(canonical|term)))(?=[(])" attribute="Built-in" context="#stay" />
-				<RegExpr String = "\b(op|current_op)(?=[(])" attribute="Built-in" context="#stay" />
-				<RegExpr String = "\b(char_conversion|current_char_conversion)(?=[(])" attribute="Built-in" context="#stay" />
+				<RegExpr String = "\bread(_term)?(?=[(])" attribute="Built-in" context="#stay" />
+				<RegExpr String = "\bwrite(q|_(canonical|term))?(?=[(])" attribute="Built-in" context="#stay" />
+				<RegExpr String = "\b(current_)?op(?=[(])" attribute="Built-in" context="#stay" />
+				<RegExpr String = "\b(current_)?char_conversion(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Atomic term processing -->
 				<RegExpr String = "\batom_(length|c(hars|o(ncat|des)))(?=[(])" attribute="Built-in" context="#stay" />
 				<RegExpr String = "\b(char_code|sub_atom)(?=[(])" attribute="Built-in" context="#stay" />
 				<RegExpr String = "\bnumber_(c(hars|odes))(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Implementation defined hooks functions -->
-				<RegExpr String = "\b(set|current)_prolog_flag)(?=[(])" attribute="Built-in" context="#stay" />
+				<RegExpr String = "\b(set|current)_prolog_flag(?=[(])" attribute="Built-in" context="#stay" />
 				<RegExpr String = "\bhalt\b" attribute="Built-in" context="#stay" />
 				<RegExpr String = "\bhalt(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Variables -->
