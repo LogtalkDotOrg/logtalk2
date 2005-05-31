@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 
-<language name="Logtalk" version="1.36" kateversion="2.1" section="Sources" extensions="*.lgt;*.config" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
+<language name="Logtalk" version="1.40" kateversion="2.1" section="Sources" extensions="*.lgt;*.config" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
 
 	<highlighting>
 
@@ -24,7 +24,7 @@
 				<!-- Event handlers -->
 				<RegExpr String = "\bextends_(object|protocol)(?=[(])" attribute="Built-in" context="#stay" />
 				<RegExpr String = "\bimplements_protocol(?=[(])" attribute="Built-in" context="#stay" />
-				<RegExpr String = "\b((instantiates|specializes)_class)(?=[(])" attribute="Built-in" context="#stay" />
+				<RegExpr String = "\b(instantiates|specializes)_class(?=[(])" attribute="Built-in" context="#stay" />
 				<RegExpr String = "\bimports_category(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Events -->
 				<RegExpr String = "\b(current_event|(abolish|define)_events)(?=[(])" attribute="Built-in" context="#stay" />
@@ -69,7 +69,7 @@
 				<!-- Atomic term processing -->
 				<RegExpr String = "\batom_(length|c(hars|o(ncat|des)))(?=[(])" attribute="Built-in" context="#stay" />
 				<RegExpr String = "\b(char_code|sub_atom)(?=[(])" attribute="Built-in" context="#stay" />
-				<RegExpr String = "\bnumber_(c(hars|odes))(?=[(])" attribute="Built-in" context="#stay" />
+				<RegExpr String = "\bnumber_c(hars|odes)(?=[(])" attribute="Built-in" context="#stay" />
 				<!-- Implementation defined hooks functions -->
 				<RegExpr String = "\b(set|current)_prolog_flag(?=[(])" attribute="Built-in" context="#stay" />
 				<RegExpr String = "\bhalt\b" attribute="Built-in" context="#stay" />
