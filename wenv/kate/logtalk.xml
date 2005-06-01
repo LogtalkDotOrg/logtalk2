@@ -9,7 +9,7 @@
 
 			<context name = "normal" attribute = "Normal" lineEndContext = "#stay" >
 				<!-- Directives -->
-				<Detect2Chars char = ":" char1 = "-" attribute = "Normal" context = "directive" />
+				<RegExpr String = "^\s*:-" attribute = "Normal" context = "directive" />
 				<!-- Event handlers -->
 				<RegExpr String = "\b(after|before)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Method execution context -->
