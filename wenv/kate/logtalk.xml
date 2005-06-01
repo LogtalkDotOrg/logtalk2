@@ -9,7 +9,7 @@
 
 			<context name = "normal" attribute = "Normal" lineEndContext = "#stay" >
 				<!-- Directives -->
-				<RegExpr String = "^\s*:-" attribute = "Normal" context = "directive" />
+				<Detect2Chars char = ":" char1 = "-" firstNonSpace = "true" attribute = "Normal" context = "directive" />
 				<!-- Event handlers -->
 				<RegExpr String = "\b(after|before)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Method execution context -->
@@ -78,7 +78,7 @@
 				<RegExpr String = "\b[A-Z_]\w*" attribute = "Variable" context = "#stay" />
 				<!-- Comments -->
 				<DetectChar char = "%" attribute = "Comment" context = "single line comment" />
-				<Detect2Chars char = "/" char1 = "*" attribute = "Comment" context = "multiline comment" />
+				<Detect2Chars char = "/" char1 = "*" attribute = "Comment" context = "multiline comment" beginRegion = "Comment" />
 				<!-- Strings and quoted atoms -->
 				<DetectChar char = "&quot;" attribute = "String" context = "string" />
 				<DetectChar char = "'" attribute = "String" context = "atom" />
@@ -148,8 +148,8 @@
 
 			<context name = "directive" attribute = "Directive" lineEndContext = "#stay" >
 				<!-- Entity directives -->
-				<RegExpr String = "\b(category|object|protocol)(?=[(])" attribute = "Directive" context = "entityrelations" />
-				<RegExpr String = "\bend_(category|object|protocol)[.]" attribute = "Directive" context = "#pop" />
+				<RegExpr String = "\b(category|object|protocol)(?=[(])" attribute = "Directive" context = "entityrelations" beginRegion = "Entity"/>
+				<RegExpr String = "\bend_(category|object|protocol)[.]" attribute = "Directive" context = "#pop" endRegion = "Entity" />
  				<!-- Predicate scope directives -->
 				<RegExpr String = "\bp(ublic|r(otected|ivate))(?=[(])" attribute = "Directive" context = "#pop" />
 				<!-- Other directives -->
@@ -169,7 +169,7 @@
 			<context name = "single line comment" attribute = "Comment" lineEndContext = "#pop" />
 
 			<context name = "multiline comment" attribute = "Comment" lineEndContext = "#stay" >
-				<Detect2Chars char = "*" char1 = "/" attribute = "Comment" context = "#pop" />
+				<Detect2Chars char = "*" char1 = "/" attribute = "Comment" context = "#pop" endRegion = "Comment" />
 			</context>
 
 			<context name = "string" attribute = "String" lineEndContext = "#stay" >
@@ -198,7 +198,7 @@
 	<general>
 		<comments>
 			<comment name = "singleLine" start = "%" />
-			<comment name = "multiLine" start = "/*" end = "*/" />
+			<comment name = "multiLine" start = "/*" end = "*/" region = "Comment" />
 		</comments>
 		<keywords casesensitive="true" />
 	</general>
