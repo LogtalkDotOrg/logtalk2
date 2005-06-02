@@ -69,6 +69,17 @@ B-Prolog 6.7#2 and later versions
 	or an example. Note that this configuration file redefines the B-Prolog 
 	::/2 finite-domain built-in predicate (use the in/2 predicate instead).
 
+	You can generate a new Prolog top level that includes the config file, the
+	Logtalk compiler/runtime, and the library paths file by doing something 
+	like:
+
+		| ?- compile('configs/b.config), compile('compiler/logtalk.pl'), compile('libpaths/libpath.pl').
+	
+	This will result in three files, named "b.config.out", "logtalk.pl.out" 
+	and "libpaths.pl.out". Place these files on a convenient place and then 
+	copy the "bp" script to a "bplgt" file and modify it by adding the names
+	of the three *.out files after the "$BPDIR/bp.out" file.
+
 
 Bin-Prolog 8.x~10.x
 
