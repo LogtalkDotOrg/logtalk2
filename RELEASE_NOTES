@@ -16,7 +16,8 @@ RELEASE NOTES
 	with Logtalk source files.
 
 	Several optimizations to the syntax coloring configuration files of some 
-	of the supported text editors.
+	of the supported text editors. Added support for code folding to the Kate 
+	and Vim text editors.
 
 	Updated the SWI-Prolog shell integration script (make_swilgt.sh) to use 
 	either "swipl" or "pl" as the name of the Prolog executable, depending 
