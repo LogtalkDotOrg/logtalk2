@@ -23,8 +23,8 @@ If support for Logtalk is not included or if it is outdated, copy the file
 
 	$prefix/share/source-highlight
 
-where $prefix is the installation directory (by default, /usr/local) and 
-then edit, if necessary, the file:
+where $prefix is the source-highlight installation directory (by default, 
+/usr/local) and then edit, if necessary, the file:
 
 	$prefix/share/source-highlight/lang.map
 
