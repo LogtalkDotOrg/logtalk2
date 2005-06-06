@@ -10,12 +10,12 @@ RELEASE NOTES
 =============
 
 
-2.25.1 - May ??, 2005
+2.25.1 - June ??, 2005
 
-	Added support for using the source-highlight package by Lorenzo Bettini 
-	with Logtalk source files.
+	Added support for using the source-highlight package (version 2.0 or 
+	later) by Lorenzo Bettini with Logtalk source files.
 
-	Several optimizations to the syntax coloring configuration files of some 
+	Several optimizations to the syntax coloring configuration files of most 
 	of the supported text editors. Added support for code folding to the Kate 
 	and Vim text editors.
 
