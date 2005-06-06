@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	June 3, 2005
+" Last Change:	June 6, 2005
 
 
 " Quit when a syntax file was already loaded:
@@ -48,9 +48,9 @@ syn region	logtalkExtCall		matchgroup=logtalkExtCallTag		start="{"		matchgroup=l
 
 " Logtalk opening entity directives
 
-syn region	logtalkOpenEntityDir	matchgroup=logtalkOpenEntityDirTag	start=":- object("	matchgroup=logtalkOpenEntityDirTag	end=")\."	contains=logtalkEntityRel
-syn region	logtalkOpenEntityDir	matchgroup=logtalkOpenEntityDirTag	start=":- protocol("	matchgroup=logtalkOpenEntityDirTag	end=")\."	contains=logtalkEntityRel
-syn region	logtalkOpenEntityDir	matchgroup=logtalkOpenEntityDirTag	start=":- category("	matchgroup=logtalkOpenEntityDirTag	end=")\."	contains=logtalkEntityRel
+syn region	logtalkOpenEntityDir	matchgroup=logtalkOpenEntityDirTag	start=":- object("	matchgroup=logtalkOpenEntityDirTag	end=")\."	contains=logtalkEntity,logtalkVariable,logtalkNumber,logtalkOperator,logtalkEntityRel
+syn region	logtalkOpenEntityDir	matchgroup=logtalkOpenEntityDirTag	start=":- protocol("	matchgroup=logtalkOpenEntityDirTag	end=")\."	contains=logtalkEntity,logtalkVariable,logtalkNumber,logtalkOperator,logtalkEntityRel
+syn region	logtalkOpenEntityDir	matchgroup=logtalkOpenEntityDirTag	start=":- category("	matchgroup=logtalkOpenEntityDirTag	end=")\."	contains=logtalkEntity,logtalkVariable,logtalkNumber,logtalkOperator,logtalkEntityRel
 
 
 " Logtalk closing entity directives
@@ -62,11 +62,11 @@ syn match	logtalkCloseEntityDir	":- end_category\."
 
 " Logtalk entity relations
 
-syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="instantiates("	matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity		contained
-syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="specializes("	matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity		contained
-syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="extends("	matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity		contained
-syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="imports("	matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity		contained
-syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="implements("	matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity		contained
+syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="instantiates("	matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity,logtalkVariable,logtalkNumber,logtalkOperator	contained
+syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="specializes("	matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity,logtalkVariable,logtalkNumber,logtalkOperator	contained
+syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="extends("	matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity,logtalkVariable,logtalkNumber,logtalkOperator	contained
+syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="imports("	matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity,logtalkVariable,logtalkNumber,logtalkOperator	contained
+syn region	logtalkEntityRel	matchgroup=logtalkEntityRelTag	start="implements("	matchgroup=logtalkEntityRelTag	end=")"		contains=logtalkEntity,logtalkVariable,logtalkNumber,logtalkOperator	contained
 
 
 " Logtalk directives
