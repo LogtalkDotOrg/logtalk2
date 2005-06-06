@@ -379,3 +379,5 @@ endif
 let b:current_syntax = "logtalk"
 
 setlocal ts=4
+setlocal fdm=syntax
+setlocal fdc=2
