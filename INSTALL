@@ -6,7 +6,7 @@ Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-This file contains detailed instruction for installing and configuring 
+This file contains detailed instructions for installing and configuring 
 Logtalk. You should also consult the "scripts/NOTES" file for a description 
 of a set of shell scripts that might be used for Logtalk installation on 
 some operating-systems and for easy Logtalk integration with popular 

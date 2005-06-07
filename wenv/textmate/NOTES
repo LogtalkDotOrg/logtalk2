@@ -7,7 +7,7 @@ Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 
 
 This directory contains the Logtalk.tmbundle bundle that provides code 
-folding, syntax highlighting and snippets of code for editing Logtalk 
+folding, syntax highlighting, and snippets of code for editing Logtalk 
 source files with the TextMate 1.x text editor (http://macromates.com/).
 
 
