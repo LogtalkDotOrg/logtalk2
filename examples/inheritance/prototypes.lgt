@@ -9,7 +9,8 @@ This source file defines the following prototype-based hierarchy:
 		prototype3
 			descendant3
 
-
+All objects import the category "interface", which defines a predicate 
+(interface/0) for listing the object interface.
 */
 
 
@@ -19,6 +20,8 @@ This source file defines the following prototype-based hierarchy:
 :- end_object.
 
 
+% public inheritance:
+% parent predicates will be inherited without scope changes
 :- object(prototype1,
 	imports(interface),
 	extends(public::parent)).
@@ -33,6 +36,8 @@ This source file defines the following prototype-based hierarchy:
 :- end_object.
 
 
+% protected inheritance:
+% parent public predicates will be inherited as protected predicates
 :- object(prototype2,
 	imports(interface),
 	extends(protected::parent)).
@@ -47,7 +52,8 @@ This source file defines the following prototype-based hierarchy:
 :- end_object.
 
 
-
+% private inheritance:
+% parent predicates will be inherited as private predicates
 :- object(prototype3,
 	imports(interface),
 	extends(private::parent)).

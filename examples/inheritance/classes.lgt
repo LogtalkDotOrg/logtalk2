@@ -9,7 +9,8 @@ This source file defines the following class-based hierarchy:
 		subclass3
 			instance3
 
-
+All objects import the category "interface", which defines a predicate 
+(interface/0) for listing the object interface.
 */
 
 
@@ -21,6 +22,8 @@ This source file defines the following class-based hierarchy:
 :- end_object.
 
 
+% public inheritance:
+% root predicates will be inherited without scope changes
 :- object(subclass1,
 	imports(interface),
 	specializes(public::root)).
@@ -34,6 +37,8 @@ This source file defines the following class-based hierarchy:
 :- end_object.
 
 
+% protected inheritance:
+% root public predicates will be inherited as protected predicates
 :- object(subclass2,
 	imports(interface),
 	specializes(protected::root)).
@@ -47,6 +52,8 @@ This source file defines the following class-based hierarchy:
 :- end_object.
 
 
+% private inheritance:
+% root predicates will be inherited as private predicates
 :- object(subclass3,
 	imports(interface),
 	specializes(private::root)).
