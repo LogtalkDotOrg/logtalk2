@@ -49,7 +49,7 @@
 	:- public(sort/2).
 	:- mode(sort(+list, -list), one).
 	:- info(sort/2, [
-		comment is 'Sorts a list in ascending order.',
+		comment is 'Sorts a list in ascending order (quicksort algorithm).',
 		argnames is ['List', 'Sorted']]).
 
 	:- private(partition/4).

@@ -9,8 +9,12 @@ This source file defines the following prototype-based hierarchy:
 		prototype3
 			descendant3
 
-All objects import the category "interface", which defines a predicate 
-(interface/0) for listing the object interface.
+The root object imports the category "predicates", which defines one 
+public predicate, public/0, one protected predicate, protected/0, and 
+one private predicate, private/0.
+
+All objects import the category "interface", which defines a predicate, 
+interface/0, for listing the object interface.
 */
 
 
