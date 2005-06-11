@@ -25,7 +25,8 @@ RELEASE NOTES
 
 	Corrected a bug in the generation of object prefixes for compiled code 
 	that could potentially result in the same prefix being used for different 
-	objects (bug report and fix by Brian Hulley).
+	objects (bug report and fix by Brian Hulley). Changes to the prefix format
+	are also reflected on the names of the generated XML documenting files.
 
 
 2.25.0 - May 23, 2005

@@ -3206,12 +3206,10 @@ current_logtalk_flag(version, version(2, 25, 1)).
 
 '$lgt_entity_doc_file_name'(Entity, File) :-
 	functor(Entity, Functor, Arity),
-	(Arity > 0 ->
-		number_codes(Arity, Codes),
-		atom_codes(Atom, Codes),
-		atom_concat(Functor, Atom, Name)
-		;
-		Name = Functor),
+	number_codes(Arity, Codes),
+	atom_codes(Atom, Codes),
+	atom_concat(Functor, '_', Aux),
+	atom_concat(Aux, Atom, Name),
 	'$lgt_file_name'(xml, Name, File).
 
 
