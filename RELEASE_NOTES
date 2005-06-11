@@ -23,6 +23,10 @@ RELEASE NOTES
 	either "swipl" or "pl" as the name of the Prolog executable, depending 
 	on the host operating system.
 
+	Corrected a bug in the generation of object prefixes for compiled code 
+	that could potentially result in the same prefix being used for different 
+	objects (bug report and fix by Brian Hulley).
+
 
 2.25.0 - May 23, 2005
 

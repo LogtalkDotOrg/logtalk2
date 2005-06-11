@@ -7521,13 +7521,7 @@ current_logtalk_flag(version, version(2, 25, 1)).
 % constructs all the functors used in the compiled code of an object
 
 '$lgt_construct_object_functors'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm) :-
-	'$lgt_compiler_flag'(code_prefix, Code),
-	functor(Obj, Functor, Arity),
-	number_codes(Arity, Codes),
-	atom_codes(Atom, Codes),
-	atom_concat(Functor, Atom, Aux),
-	atom_concat(Code, Aux, Aux2),
-	atom_concat(Aux2, '_', Prefix),
+	'$lgt_construct_entity_prefix'(Obj, Prefix),
 	atom_concat(Prefix, '_dcl', Dcl),
 	atom_concat(Prefix, '_def', Def),
 	atom_concat(Prefix, '_super', Super),
@@ -7544,13 +7538,7 @@ current_logtalk_flag(version, version(2, 25, 1)).
 % constructs all the functors used in the compiled code of a protocol
 
 '$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl, Rnm) :-
-	'$lgt_compiler_flag'(code_prefix, Code),
-	functor(Ptc, Functor, Arity),
-	number_codes(Arity, Codes),
-	atom_codes(Atom, Codes),
-	atom_concat(Functor, Atom, Aux),
-	atom_concat(Code, Aux, Aux2),
-	atom_concat(Aux2, '_', Prefix),
+	'$lgt_construct_entity_prefix'(Ptc, Prefix),
 	atom_concat(Prefix, '_dcl', Dcl),
 	atom_concat(Prefix, '_alias', Rnm).
 
@@ -7561,16 +7549,26 @@ current_logtalk_flag(version, version(2, 25, 1)).
 % constructs all the functors used in the compiled code of a category
 
 '$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def, Rnm) :-
-	'$lgt_compiler_flag'(code_prefix, Code),
-	functor(Ctg, Functor, Arity),
-	number_codes(Arity, Codes),
-	atom_codes(Atom, Codes),
-	atom_concat(Functor, Atom, Aux),
-	atom_concat(Code, Aux, Aux2),
-	atom_concat(Aux2, '_', Prefix),
+	'$lgt_construct_entity_prefix'(Ctg, Prefix),
 	atom_concat(Prefix, '_dcl', Dcl),
 	atom_concat(Prefix, '_def', Def),
 	atom_concat(Prefix, '_alias', Rnm).
+
+
+
+% '$lgt_construct_entity_prefix'(@entity_identifier, -atom)
+%
+% constructs the entity prefix used in the compiled code
+
+'$lgt_construct_entity_prefix'(Entity, Prefix) :-
+	'$lgt_compiler_flag'(code_prefix, CodePrefix),
+	functor(Entity, Functor, Arity),
+	number_codes(Arity, ArityCodes),
+	atom_codes(ArityAtom, ArityCodes),
+	atom_concat(CodePrefix, Functor, Aux1),
+	atom_concat(Aux1, '_', Aux2),
+	atom_concat(Aux2, ArityAtom, Aux3),
+	atom_concat(Aux3, '_', Prefix).
 
 
 
