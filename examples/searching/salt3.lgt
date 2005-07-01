@@ -76,11 +76,10 @@ Remarks:
 	% either pouring of a measure into the other till it is filled up
 	% or all content of a measure into the other one
 
-	next_state((Acc, X, Y, Step), (Acc, W, Z, transfer(m2, m1))) :-
+	next_state((Acc, X, Y, _), (Acc, W, Z, transfer(m2, m1))) :-
 		parameter(2, MaxX),
 		Y > 0,
 		X < MaxX,
-		Step \= transfer(m1, m2),
 		(X + Y >= MaxX ->
 			W = MaxX,
 			Z is Y - (MaxX - X)
@@ -89,11 +88,10 @@ Remarks:
 			Z = 0
 		 ).
 
-	next_state((Acc, X, Y, Step), (Acc, W, Z, transfer(m1, m2))) :-
+	next_state((Acc, X, Y, _), (Acc, W, Z, transfer(m1, m2))) :-
 		parameter(3, MaxY),
 		X > 0,
 		Y < MaxY,
-		Step \= transfer(m2, m1),
 		(X + Y >= MaxY ->
 			W is X - (MaxY - Y),
 			Z = MaxY
