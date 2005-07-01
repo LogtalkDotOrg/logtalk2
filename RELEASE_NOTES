@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.25.1 - June ??, 2005
+2.25.1 - July ??, 2005
 
 	Added support for using the source-highlight package (version 2.0 or 
 	later) by Lorenzo Bettini with Logtalk source files.
@@ -27,6 +27,9 @@ RELEASE NOTES
 	that could potentially result in the same prefix being used for different 
 	objects (bug report and fix by Brian Hulley). Changes to the prefix format
 	are also reflected on the names of the generated XML documenting files.
+
+	Added a new state-space search problem, "salt3.lgt", contributed by Paula 
+	Marisa Sampaio, to the "searching" example.
 
 
 2.25.0 - May 23, 2005
