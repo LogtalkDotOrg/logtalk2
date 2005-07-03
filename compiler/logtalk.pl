@@ -3210,10 +3210,10 @@ current_logtalk_flag(version, version(2, 25, 1)).
 		number_codes(Arity, Codes),
 		atom_codes(Atom, Codes),
 		atom_concat(Functor, '_', Aux),
-		atom_concat(Aux, Atom, Name)
+		atom_concat(Aux, Atom, Name),
+		'$lgt_file_name'(xml, Name, File)
 		;
-		Name = Functor),
-	'$lgt_file_name'(xml, Name, File).
+		'$lgt_file_name'(xml, Entity, File)).
 
 
 
