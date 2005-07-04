@@ -23,10 +23,11 @@ RELEASE NOTES
 	either "swipl" or "pl" as the name of the Prolog executable, depending 
 	on the host operating system.
 
-	Corrected a bug in the generation of object prefixes for compiled code 
-	that could potentially result in the same prefix being used for different 
-	objects (bug report and fix by Brian Hulley). Changes to the prefix format
-	are also reflected on the names of the generated XML documenting files.
+	Modified the way object prefixes are generated for compiled code in order 
+	to further minimize possible conflicts resulting from the same prefix being
+	used for different objects (bug report and fix by Brian Hulley). Changes to
+	the prefix format are also reflected on the names of the generated XML 
+	documenting files.
 
 	Added a new state-space search problem, "salt3.lgt", contributed by Paula 
 	Marisa Sampaio, to the "searching" example.
