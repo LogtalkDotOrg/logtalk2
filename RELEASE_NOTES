@@ -12,7 +12,7 @@ RELEASE NOTES
 
 2.25.1 - July ??, 2005
 
-	Added support for using the source-highlight package (version 2.0 or 
+	Added support for using the "source-highlight" package (version 2.0 or 
 	later) by Lorenzo Bettini with Logtalk source files.
 
 	Several optimizations to the syntax coloring configuration files of most 
@@ -27,7 +27,7 @@ RELEASE NOTES
 	to further minimize possible conflicts resulting from the same prefix being
 	used for different objects (bug report and fix by Brian Hulley). Changes to
 	the prefix format are also reflected on the names of the generated XML 
-	documenting files.
+	documenting files for parametric objects.
 
 	Added a new state-space search problem, "salt3.lgt", contributed by Paula 
 	Marisa Sampaio, to the "searching" example.
