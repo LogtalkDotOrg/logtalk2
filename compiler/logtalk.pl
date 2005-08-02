@@ -3206,14 +3206,11 @@ current_logtalk_flag(version, version(2, 25, 1)).
 
 '$lgt_entity_doc_file_name'(Entity, File) :-
 	functor(Entity, Functor, Arity),
-	(Arity > 0 ->
-		number_codes(Arity, Codes),
-		atom_codes(Atom, Codes),
-		atom_concat(Functor, '_', Aux),
-		atom_concat(Aux, Atom, Name),
-		'$lgt_file_name'(xml, Name, File)
-		;
-		'$lgt_file_name'(xml, Entity, File)).
+	number_codes(Arity, Codes),
+	atom_codes(Atom, Codes),
+	atom_concat(Functor, '_', Aux),
+	atom_concat(Aux, Atom, Name),
+	'$lgt_file_name'(xml, Name, File).
 
 
 
@@ -7565,13 +7562,10 @@ current_logtalk_flag(version, version(2, 25, 1)).
 	'$lgt_compiler_flag'(code_prefix, CodePrefix),
 	functor(Entity, Functor, Arity),
 	atom_concat(CodePrefix, Functor, Aux1),
-	(Arity > 0 ->
-		number_codes(Arity, ArityCodes),
-		atom_codes(ArityAtom, ArityCodes),
-		atom_concat(Aux1, '_', Aux2),
-		atom_concat(Aux2, ArityAtom, Aux3)
-		;
-		Aux3 = Aux1),
+	number_codes(Arity, ArityCodes),
+	atom_codes(ArityAtom, ArityCodes),
+	atom_concat(Aux1, '_', Aux2),
+	atom_concat(Aux2, ArityAtom, Aux3)
 	atom_concat(Aux3, '_', Prefix).
 
 
