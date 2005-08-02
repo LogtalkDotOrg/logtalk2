@@ -61,8 +61,15 @@ create_index_file()
 
 	for file in *.xml; do
 		name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
+		entity=${name%_*}
+		pars=${name##*_}
 		echo "  indexing $file"
-		echo "    <li><a href=\""$file"\">"$name"</a></li>" >> "$index_file"
+		if [ $pars -gt 0 ]
+		then
+			echo "    <li><a href=\""$file"\">"$entity"/"$pars"</a></li>" >> "$index_file"
+		else
+			echo "    <li><a href=\""$file"\">"$entity"</a></li>" >> "$index_file"
+		fi
 	done
 
 	echo "</ul>" >> "$index_file"
