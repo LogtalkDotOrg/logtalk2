@@ -7565,7 +7565,7 @@ current_logtalk_flag(version, version(2, 25, 1)).
 	number_codes(Arity, ArityCodes),
 	atom_codes(ArityAtom, ArityCodes),
 	atom_concat(Aux1, '_', Aux2),
-	atom_concat(Aux2, ArityAtom, Aux3)
+	atom_concat(Aux2, ArityAtom, Aux3),
 	atom_concat(Aux3, '_', Prefix).
 
 
