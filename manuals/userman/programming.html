@@ -87,7 +87,7 @@ Unfortunately, a few Prolog compilers do not support the <code>&lt;library&gt;(&
 <h3>Portable programs<a name="portability"></a></h3>
 
 <p>
-Logtalk is compatible with almost all modern Prolog compilers. However, this does not necessarily imply that your Logtalk programs will have the same level of portability. If possible, you should only use in your programs Logtalk built-in predicates and ISO Prolog defined built-in predicates. If you need to use built-in predicates that may not be available in other Prolog compilers, you should try to encapsulate the non-portable code in a minimum of objects and provide a portable <strong>interface</strong> for that code through the use of Logtalk protocols. An example will be code that access operating-system specific features. The Logtalk compiler can warn you of the use of non-ISO defined built-in predicates by using the <code>portability/1</code> compiler flag.
+Logtalk is compatible with almost all modern Prolog compilers. However, this does not necessarily imply that your Logtalk programs will have the same level of portability. If possible, you should only use in your programs Logtalk built-in predicates and ISO Prolog defined built-in predicates. If you need to use built-in predicates that may not be available in other Prolog compilers, you should try to encapsulate the non-portable code in a small number of objects and provide a portable <strong>interface</strong> for that code through the use of Logtalk protocols. An example will be code that access operating-system specific features. The Logtalk compiler can warn you of the use of non-ISO defined built-in predicates by using the <code>portability/1</code> compiler flag.
 </p>
 
 <h3>Avoiding common errors<a name="errors"></a></h3>
