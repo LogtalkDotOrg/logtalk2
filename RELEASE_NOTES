@@ -32,6 +32,9 @@ RELEASE NOTES
 	Updated the lgt2html.* and lgt2xml.* documenting scripts in order to index 
 	parametric objects using the notation <entity>/<number of parameters>.
 
+	Corrected a bug on the lgtxml.xsl XSLT file where links to related files 
+	pointed to .html files instead of .xml files.
+
 	Added a new state-space search problem, "salt3.lgt", contributed by Paula 
 	Marisa Sampaio, to the "searching" example.
 

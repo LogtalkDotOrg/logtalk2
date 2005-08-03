@@ -138,17 +138,17 @@
 
 
 <xsl:template match="logtalk/relations/uses">
-	<dd class ="value"><code><a href="{file}.html"><xsl:value-of select="name" /></a></code></dd>
+	<dd class ="value"><code><a href="{file}.xml"><xsl:value-of select="name" /></a></code></dd>
 </xsl:template>
 
 
 <xsl:template match="logtalk/relations/calls">
-	<dd class ="value"><code><a href="{file}.html"><xsl:value-of select="name" /></a></code></dd>
+	<dd class ="value"><code><a href="{file}.xml"><xsl:value-of select="name" /></a></code></dd>
 </xsl:template>
 
 
 <xsl:template match="logtalk/relations/*">
-	<dd class ="value"><code><xsl:value-of select="scope" /><xsl:text> </xsl:text><a href="{file}.html"><xsl:value-of select="name" /></a></code></dd>
+	<dd class ="value"><code><xsl:value-of select="scope" /><xsl:text> </xsl:text><a href="{file}.xml"><xsl:value-of select="name" /></a></code></dd>
 </xsl:template>
 
 
