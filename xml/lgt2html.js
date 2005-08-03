@@ -203,7 +203,7 @@ function create_index_file() {
 			var index = FSObject.GetBaseName(file).lastIndexOf("_");
 			var pars = FSObject.GetBaseName(file).slice(index+1);
 			var entity = FSObject.GetBaseName(file).slice(0, index);
-			if (pars > 0)
+			if (pars == 0)
 				f.WriteLine("    <li><a href=\"" + html_file + "\">" + entity + "</a></li>");
 			else
 				f.WriteLine("    <li><a href=\"" + html_file + "\">" + entity + "/" + pars + "</a></li>");
