@@ -8866,13 +8866,11 @@ current_logtalk_flag(version, version(2, 25, 1)).
 % needed to build filenames in links to parametric objects
 
 '$lgt_relation_to_xml_filename'(Relation, File) :-
-	atom(Relation) ->
-		File = Relation
-		;
-		functor(Relation, Functor, Arity),
-		number_codes(Arity, Codes),
-		atom_codes(Atom, Codes),
-		atom_concat(Functor, Atom, File).
+	functor(Relation, Functor, Arity),
+	number_codes(Arity, Codes),
+	atom_codes(Atom, Codes),
+	atom_concat(Functor, '_', Aux),
+	atom_concat(Aux, Atom, File).
 
 
 
