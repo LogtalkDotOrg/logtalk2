@@ -134,7 +134,7 @@ function create_index_file() {
 		if (FSObject.GetExtensionName(file) == "xml") {
 			WScript.Echo("  indexing " + file);
 			var index = FSObject.GetBaseName(file).lastIndexOf("_");
-			var pars = FSObject.GetBaseName(file).slice(index);
+			var pars = FSObject.GetBaseName(file).slice(index+1);
 			var entity = FSObject.GetBaseName(file).slice(0, index);
 			if (pars > 0)
 				f.WriteLine("    <li><a href=\"" + file + "\">" + entity + "</a></li>");

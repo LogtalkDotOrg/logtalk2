@@ -201,7 +201,7 @@ function create_index_file() {
 			var html_file = FSObject.GetBaseName(file) + ".html";
 			WScript.Echo("  indexing " + html_file);
 			var index = FSObject.GetBaseName(file).lastIndexOf("_");
-			var pars = FSObject.GetBaseName(file).slice(index);
+			var pars = FSObject.GetBaseName(file).slice(index+1);
 			var entity = FSObject.GetBaseName(file).slice(0, index);
 			if (pars > 0)
 				f.WriteLine("    <li><a href=\"" + html_file + "\">" + entity + "</a></li>");
