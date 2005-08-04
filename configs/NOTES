@@ -11,7 +11,7 @@ improve or correct some of these files, or write new ones for other
 Prolog compilers, please send me a copy. It is impossible for me to 
 individually test Logtalk under each Prolog listed here (or, for that 
 mater, to own a copy of each one of these compilers). For some of 
-these Prologs I only have the (on-line available) manuals.
+these Prolog compilers I only have the manuals available on-line.
 
 As a general rule, always try to use the most recent version of your
 Prolog compiler of choice. Most Prolog compilers are moving towards
@@ -434,7 +434,7 @@ XSB Prolog 2.6~2.7
 	or some of the examples due to a know bug in the XSB parsing of infix 
 	operators: just add a space after the infix operator.
 
-	The write_canonical/2 predicates may output code that in some instances 
+	The write_canonical/2 predicate may output code that in some instances 
 	can not be read back with read_term/3. If you receive a syntax error 
 	while loading a Logtalk compiled file we will have to fix the problem by 
 	editing the file (the Prolog output, not the Logtalk source). Don't 

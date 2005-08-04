@@ -86,7 +86,7 @@ and other goodies when editing Logtalk source files.
 application. You may want to add the directory path to the libpaths.pl file 
 mentioned above in order to easily load your application.
 
-4. Copy to this sub-directory a loader file from one of the example directories 
+4. Copy to this sub-directory a loader file from one of the example directories
 and modify it to load your own source files.
 
 5. Have fun!
