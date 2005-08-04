@@ -35,6 +35,9 @@ RELEASE NOTES
 	Corrected a bug on the lgtxml.xsl XSLT file where links to related files 
 	pointed to .html files instead of .xml files.
 
+	Updated the lgt_install.sh and the make_*lgt.sh shell scripts to check and
+	report invalid installation directory prefixes.
+
 	Added a new state-space search problem, "salt3.lgt", contributed by Paula 
 	Marisa Sampaio, to the "searching" example.
 
