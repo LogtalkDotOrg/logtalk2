@@ -20,7 +20,7 @@ else
 	if [ -z "$1" ]; then
 		prefix=/usr/local
 	elif ! [ -d "$1" ]; then
-		echo "Directory prefix does not exist!"
+		echo "Prefix directory does not exist!"
 		echo
 		exit 1
 	else
