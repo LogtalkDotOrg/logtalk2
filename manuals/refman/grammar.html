@@ -542,7 +542,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 		</dl>
 		<dl>
 			<dt>mode_directive ::=</dt>
-				<dd>"<code>:- mode(</code>" predicate_mode_term "<code>,</code>" number_of_solutions "<code>).</code>"</dd>
+				<dd>"<code>:- mode(</code>" predicate_mode_term | non_terminal_mode_term "<code>,</code>" number_of_solutions "<code>).</code>"</dd>
 		</dl>
 		<dl>
 			<dt>metapredicate_directive ::=</dt>
@@ -596,6 +596,10 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 		</dl>
 		<dl>
 			<dt>predicate_mode_term ::=</dt>
+				<dd><i>atom</i> "<code>(</code>" mode_terms "<code>)</code>"</dd>
+		</dl>
+		<dl>
+			<dt>non_terminal_mode_term ::=</dt>
 				<dd><i>atom</i> "<code>(</code>" mode_terms "<code>)</code>"</dd>
 		</dl>
 		<dl>
@@ -770,7 +774,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: May 15, 2005</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: August 4, 2005</span></p>
 </div>
 </body>
 </html>
