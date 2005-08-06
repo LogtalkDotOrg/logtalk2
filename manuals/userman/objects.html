@@ -191,7 +191,7 @@ Note that we can't use this method with the message sending operators (<a title=
 Both solutions are equally efficient because the runtime cost of the methods <code>this/1</code> and <code>parameter/2</code> is negligible. The drawback of the second solution is that we must check all calls of <code>this/1</code> if we change the object name.
 </p>
 <p>
-Parametric objects are by convention stored in source files named after the objects with the object arity appended. For instance, if we define an object named <code>sort(Type)</code>, we may save it in a <code>sort_1.lgt</code> text file. This way it is easy to avoid file name clashes when saving Logtalk entities that have the same functor but different arities.
+When storing a parametric object in its own source file, the convention is to name the file after the object, with the object arity appended. For instance, when defining an object named <code>sort(Type)</code>, we may save it in a <code>sort_1.lgt</code> text file. This way it is easy to avoid file name clashes when saving Logtalk entities that have the same functor but different arities.
 </p>
 
 <h2>Finding defined objects<a name="finding"></a></h2>
