@@ -10,6 +10,13 @@ RELEASE NOTES
 =============
 
 
+2.25.2 - August ??, 2005
+
+	Corrected a bug on the lgt_install.sh and makeall_lgt.sh shell scripts 
+	where the wrong variable was being referenced when testing directory 
+	prefix existence.
+
+
 2.25.1 - August 8, 2005
 
 	Added support for using the "source-highlight" package (version 2.0 or 
