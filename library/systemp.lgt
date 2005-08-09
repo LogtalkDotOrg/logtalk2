@@ -2,9 +2,9 @@
 :- protocol(systemp).
 
 	:- info([
-		version is 1.9,
+		version is 1.10,
 		author is 'Portable Operating-System Interface (POSI) initiative',
-		date is 2004/7/27,
+		date is 2005/8/8,
 		comment is 'Portable operating system access protocol.']).
 
 	:- public(make_directory/1).
@@ -56,10 +56,23 @@
 			'Directory is not instantiated' - instantiation_error,
 			'Directory is neither a variable nor a valid file name' - type_error(file_name, 'Directory')]]).
 
+	:- public(directory_files/3).
+	:- mode(directory_files(+atom, +atom, -list), one).
+	:- info(directory_files/3, [
+		comment is 'List of all directory files that matches a regular expression (returns an empty when no directory file matches).',
+		argnames is ['Directory', 'Filter', 'Files'],
+		exceptions is [
+			'Directory is not instantiated' - instantiation_error,
+			'Directory is neither a variable nor a valid file name' - type_error(file_name, 'Directory'),
+			'No read permission for the directory' - permission_error(read, 'Directory'),
+			'Directory does not exists' - existence_error(directory, 'Directory'),
+			'Filter is not instantiated' - instantiation_error,
+			'Filter is neither a variable nor an atom' - type_error(atom, 'Filter')]]).
+
 	:- public(directory_files/2).
 	:- mode(directory_files(+atom, -list), one).
 	:- info(directory_files/2, [
-		comment is 'List of all directory files (returns an empty list if the directory is empty).',
+		comment is 'List of all directory files (returns an empty list when the directory is empty).',
 		argnames is ['Directory', 'Files'],
 		exceptions is [
 			'Directory is not instantiated' - instantiation_error,
@@ -137,7 +150,13 @@
 			'File is neither a variable nor a valid file name' - type_error(file_name, 'File'),
 			'File does not exists' - existence_error(file, 'File'),
 			'No read permission to the file' - permission_error(read, 'File'),
-			'Property is neither a variable nor a file property' - type_error(file_property, 'Property')]]).
+			'Property is neither a variable nor a valid file property' - type_error(file_property, 'Property')],
+		examples is [
+			'Querying file size:' - file_property(foo, size(Bytes)) - {Bytes = 32568},
+			'Querying file type:' - file_property(foo, type(Type)) - {Type = regular},
+			'Querying file creation date:' - file_property(foo, creation_time(Time)) - {Time = 13768092},
+			'Querying file modification date:' - file_property(foo, modification_time(Time)) - {Time =813261042}
+	  ]]).
 
 	:- public(current_environment_variable/1).
 	:- mode(current_environment_variable(?atom), zero_or_more).
@@ -155,7 +174,7 @@
 		exceptions is [
 			'Variable is not instantiated' - instantiation_error,
 			'Variable is neither a variable nor an atom' - type_error(atom, 'Variable'),
-			'Variable is not a currenttly defined environment variable' - existence_error(environment_variable, 'Variable')]]).
+			'Variable is not a currently defined environment variable' - existence_error(environment_variable, 'Variable')]]).
 
 	:- public(get_environment_variable/2).
 	:- mode(get_environment_variable(+atom, ?atom), zero_or_one).
@@ -166,7 +185,7 @@
 			'Variable is not instantiated' - instantiation_error,
 			'Variable is neither a variable nor an atom' - type_error(atom, 'Variable'),
 			'Value is neither a variable nor an atom' - type_error(atom, 'Value'),
-			'Variable is not a currenttly defined environment variable' - existence_error(environment_variable, 'Variable')]]).
+			'Variable is not a currently defined environment variable' - existence_error(environment_variable, 'Variable')]]).
 
 	:- public(set_environment_variable/2).
 	:- mode(set_environment_variable(+atom, +atom), one).
@@ -296,7 +315,22 @@
 			'File is not instantiated' - instantiation_error,
 			'File is neither a variable nor a valid file name' - type_error(file_name, 'File'),
 			'File does not exists' - existence_error(file, 'File'),
-			'Part is neither a variable nor a file name part' - type_error(file_name_part, 'Port')]]).
+			'Part is neither a variable nor a file name part' - type_error(file_name_part, 'Port')],
+		examples is [
+			'Querying file access protocol:' - file_name_part(foo, protocol(Protocol)) - {Protocol = file},
+			'Querying file host location:' - file_name_part(foo, host(Host)) - {Host = localhost},
+			'Querying file creation date:' - file_name_part(foo, port(Port)) - {Port = 13768092},
+			'Querying file creation date:' - file_name_part(foo, port(Port)) - {no},
+			'Querying file modification date:' - file_name_part(foo, user(Username)) - {Username = 813261042},
+			'Querying file modification date:' - file_name_part(foo, password(Password)) - {Password = 813261042},
+			'Querying file modification date:' - file_name_part(foo, base(Basename)) - {Basename = 813261042},
+			'Querying file modification date:' - file_name_part(foo, path(Path)) - {Path = 813261042},
+			'Querying file modification date:' - file_name_part('foo.pl', extension(Extension)) - {Extension = '.pl'},
+			'Querying file modification date:' - file_name_part('foo.', extension(Extension)) - {Extension = '.'},
+			'Querying file modification date:' - file_name_part(foo, extension(Extension)) - {Extension = ''},
+			'Querying file modification date:' - file_name_part(foo, search(Pairs)) - {Pairs = 813261042},
+			'Querying file modification date:' - file_name_part(foo, fragment(Fragment)) - {Fragment = 813261042}
+	  ]]).
 
 	:- public(file_name_parts/2).
 	:- mode(file_name_parts(+atom, -list(compound)), one).
