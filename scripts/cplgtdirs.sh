@@ -31,8 +31,8 @@ fi
 
 if [ -d "$LOGTALKUSER" ]
 then
-	echo "Error! Logtalk directory already exists!"
-	echo "Please rename it and run this script again."
+	echo "Error! Logtalk user directory already exists!"
+	echo "Please rename it or delete it and run this script again."
 	echo
 	exit 1
 fi

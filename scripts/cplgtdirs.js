@@ -37,8 +37,8 @@ else {
 var fso = new ActiveXObject("Scripting.FileSystemObject");
 
 if (fso.FolderExists(logtalk_user)) {
-	WScript.Echo("Error! Logtalk directory already exists!");
-	WScript.Echo("Please rename it and run this script again.");
+	WScript.Echo("Error! Logtalk user directory already exists!");
+	WScript.Echo("Please rename it or delete it and run this script again.");
 	WScript.Echo("");
 	usage_help();
 }
