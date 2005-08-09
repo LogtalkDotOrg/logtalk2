@@ -12,7 +12,7 @@ RELEASE NOTES
 
 2.25.2 - August ??, 2005
 
-	Corrected a bug on the lgt_install.sh and makeall_lgt.sh shell scripts 
+	Corrected a bug on the lgt_install.sh and make*lgt.sh shell scripts 
 	where the wrong variable was being referenced when testing directory 
 	prefix existence.
 
