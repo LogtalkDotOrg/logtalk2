@@ -40,6 +40,15 @@ else {
 	WScript.Quit(1);
 }
 
+if (!FSObject.FolderExists(logtalk_home)) {
+	WScript.Echo("The environment variable LOGTALKHOME points to a non-existing directory!");
+	WScript.Echo("Its current value is: %LOGTALKHOME%");
+	WScript.Echo("The variable must be set to your Logtalk installation directory!");
+	WScript.Echo("");
+	usage_help();
+	WScript.Quit(1);
+}
+
 logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
 
 if (!FSObject.FolderExists(logtalk_home + "\\bin")) 

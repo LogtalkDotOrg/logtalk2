@@ -18,6 +18,22 @@ then
 	exit 1
 fi
 
+if ! [ -d "$LOGTALKHOME" ]; then
+	echo "The environment variable LOGTALKHOME points to a non-existing directory!"
+	echo "Its current value is: $LOGTALKHOME"
+	echo "The variable must be set to your Logtalk installation directory!"
+	echo
+	exit 1
+fi
+
+if ! [ -d "$LOGTALKHOME" ]; then
+	echo "The environment variable LOGTALKHOME points to a non-existing directory!"
+	echo "Its current value is: $LOGTALKHOME"
+	echo "The variable must be set to your Logtalk installation directory!"
+	echo
+	exit 1
+fi
+
 if [ -z "$1" ]; then
 	prefix=/usr/local
 else

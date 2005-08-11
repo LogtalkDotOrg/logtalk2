@@ -17,7 +17,18 @@ if (WshSystemEnv.Item("LOGTALKHOME"))
 else if (WshUserEnv.Item("LOGTALKHOME"))
 	logtalk_home = WshUserEnv.Item("LOGTALKHOME")
 else {
-	WScript.Echo("Error! The environment variable LOGTALKHOME must be defined first!");
+	WScript.Echo("The environment variable LOGTALKHOME must be defined first!");
+	usage_help();
+	WScript.Quit(1);
+}
+
+var FSObject = new ActiveXObject("Scripting.FileSystemObject");
+
+if (!FSObject.FolderExists(logtalk_home)) {
+	WScript.Echo("The environment variable LOGTALKHOME points to a non-existing directory!");
+	WScript.Echo("Its current value is: %LOGTALKHOME%");
+	WScript.Echo("The variable must be set to your Logtalk installation directory!");
+	WScript.Echo("");
 	usage_help();
 	WScript.Quit(1);
 }
@@ -34,9 +45,7 @@ else {
 	WScript.Echo("");
 }
 
-var fso = new ActiveXObject("Scripting.FileSystemObject");
-
-if (fso.FolderExists(logtalk_user)) {
+if (FSObject.FolderExists(logtalk_user)) {
 	WScript.Echo("Error! Logtalk user directory already exists!");
 	WScript.Echo("Please rename it or delete it and run this script again.");
 	WScript.Echo("");
@@ -48,15 +57,15 @@ WScript.Echo("");
 WScript.Echo("  " + logtalk_user);
 WScript.Echo("");
 
-fso.CreateFolder(logtalk_user);
+FSObject.CreateFolder(logtalk_user);
 
 WScript.Echo("Copying Logtalk files and directories...");
-fso.CopyFolder(logtalk_home + "\\configs", logtalk_user + "\\configs");
-fso.CopyFolder(logtalk_home + "\\contributions", logtalk_user + "\\contributions");
-fso.CopyFolder(logtalk_home + "\\examples", logtalk_user + "\\examples");
-fso.CopyFolder(logtalk_home + "\\libpaths", logtalk_user + "\\libpaths");
-fso.CopyFolder(logtalk_home + "\\library", logtalk_user + "\\library");
-fso.CopyFolder(logtalk_home + "\\xml", logtalk_user + "\\xml");
+FSObject.CopyFolder(logtalk_home + "\\configs", logtalk_user + "\\configs");
+FSObject.CopyFolder(logtalk_home + "\\contributions", logtalk_user + "\\contributions");
+FSObject.CopyFolder(logtalk_home + "\\examples", logtalk_user + "\\examples");
+FSObject.CopyFolder(logtalk_home + "\\libpaths", logtalk_user + "\\libpaths");
+FSObject.CopyFolder(logtalk_home + "\\library", logtalk_user + "\\library");
+FSObject.CopyFolder(logtalk_home + "\\xml", logtalk_user + "\\xml");
 
 WScript.Echo("Finished copying Logtalk files directories.");
 WScript.Echo("");

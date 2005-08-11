@@ -10,11 +10,14 @@ RELEASE NOTES
 =============
 
 
-2.25.2 - August ??, 2005
+2.25.2 - August 11, 2005
 
-	Corrected a bug on the lgt_install.sh and make*lgt.sh shell scripts 
-	where the wrong variable was being referenced when testing directory 
-	prefix existence.
+	Updated Logtalk installation and Prolog integration scripts in order to 
+	detect a wrongly defined LOGTALKHOME environment variable.
+
+	Corrected a bug on the lgt_install.sh and make*lgt.sh shell scripts where 
+	the wrong variable was being referenced when testing the existence of the 
+	installation directory prefix.
 
 
 2.25.1 - August 8, 2005
