@@ -9,6 +9,7 @@
 
 echo
 echo "Creating a script named sicstuslgt for running Logtalk with SICStus Prolog..."
+echo
 
 if ! [ "$LOGTALKHOME" ]
 then

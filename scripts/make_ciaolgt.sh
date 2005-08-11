@@ -9,6 +9,7 @@
 
 echo
 echo "Creating a script named ciaolgt for running Logtalk with CIAO..."
+echo
 
 if ! [ "$LOGTALKHOME" ]
 then

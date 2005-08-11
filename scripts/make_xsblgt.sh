@@ -9,6 +9,7 @@
 
 echo
 echo "Creating a script named xsblgt for running Logtalk with XSB..."
+echo
 
 if ! [ "$LOGTALKHOME" ]
 then

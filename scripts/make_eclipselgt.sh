@@ -9,6 +9,7 @@
 
 echo
 echo "Creating a script named eclipselgt for running Logtalk with ECLiPSe..."
+echo
 
 if ! [ "$LOGTALKHOME" ]
 then

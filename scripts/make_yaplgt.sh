@@ -9,6 +9,7 @@
 
 echo
 echo "Creating a script named yaplgt for running Logtalk with YAP..."
+echo
 
 if ! [ "$LOGTALKHOME" ]
 then

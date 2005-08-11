@@ -9,6 +9,7 @@
 
 echo
 echo "Creating a script named swilgt for running Logtalk with SWI-Prolog..."
+echo
 
 if ! [ "$LOGTALKHOME" ]
 then

@@ -9,6 +9,7 @@
 
 echo
 echo "Creating a script named plclgt for running Logtalk with K-Prolog..."
+echo
 
 if ! [ "$LOGTALKHOME" ]
 then
