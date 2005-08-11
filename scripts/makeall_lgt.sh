@@ -26,14 +26,6 @@ if ! [ -d "$LOGTALKHOME" ]; then
 	exit 1
 fi
 
-if ! [ -d "$LOGTALKHOME" ]; then
-	echo "The environment variable LOGTALKHOME points to a non-existing directory!"
-	echo "Its current value is: $LOGTALKHOME"
-	echo "The variable must be set to your Logtalk installation directory!"
-	echo
-	exit 1
-fi
-
 if [ -z "$1" ]; then
 	prefix=/usr/local
 else
@@ -47,56 +39,56 @@ if ! [ -d "$prefix" ]; then
 fi
 
 ./make_ciaolgt.sh $prefix > /dev/null
-if [ $? ]; then
+if [[ $? -eq 0 ]]; then
 	echo "ciaolgt script created"
 else
 	echo "ciaolgt script creation failed"
 fi
 
 ./make_eclipselgt.sh $prefix > /dev/null
-if [ $? ]; then
+if [[ $? -eq 0 ]]; then
 	echo "eclipselgt script created"
 else
 	echo "eclipselgt script creation failed"
 fi
 
 ./make_gplgt.sh $prefix > /dev/null
-if [ $? ]; then
+if [[ $? -eq 0 ]]; then
 	echo "gplgt script created"
 else
 	echo "gplgt script creation failed"
 fi
 
 ./make_plclgt.sh $prefix > /dev/null
-if [ $? ]; then
+if [[ $? -eq 0 ]]; then
 	echo "plclgt script created"
 else
 	echo "plclgt script creation failed"
 fi
 
 ./make_sicstuslgt.sh $prefix > /dev/null
-if [ $? ]; then
+if [[ $? -eq 0 ]]; then
 	echo "sicstuslgt script created"
 else
 	echo "sicstuslgt script creation failed"
 fi
 
 ./make_swilgt.sh $prefix > /dev/null
-if [ $? ]; then
+if [[ $? -eq 0 ]]; then
 	echo "swilgt script created"
 else
 	echo "swilgt script creation failed"
 fi
 
 ./make_xsblgt.sh $prefix > /dev/null
-if [ $? ]; then
+if [[ $? -eq 0 ]]; then
 	echo "xsblgt script created"
 else
 	echo "xsblgt script creation failed"
 fi
 
 ./make_yaplgt.sh $prefix > /dev/null
-if [ $? ]; then
+if [[ $? -eq 0 ]]; then
 	echo "yaplgt script created"
 else
 	echo "yaplgt script creation failed"

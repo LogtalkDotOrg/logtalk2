@@ -19,6 +19,9 @@ RELEASE NOTES
 	the wrong variable was being referenced when testing the existence of the 
 	installation directory prefix.
 
+	Corrected a bug on the makeall_lgt.sh shell script that failed to properly
+	detect unsuccessful completion of individual Prolog integration scripts. 
+
 
 2.25.1 - August 8, 2005
 
