@@ -75,7 +75,7 @@ B-Prolog 6.7#2 and later versions
 
 		| ?- compile('configs/b.config), compile('compiler/logtalk.pl'), compile('libpaths/libpath.pl').
 	
-	This will result in three files, named "b.config.out", "logtalk.pl.out" 
+	This will result in three files, named "b.config.out", "logtalk.pl.out", 
 	and "libpaths.pl.out". Place these files on a convenient place and then 
 	copy the "bp" script to a "bplgt" file and modify it by adding the names
 	of the three *.out files after the "$BPDIR/bp.out" file.
@@ -115,7 +115,7 @@ CIAO Prolog 1.8p2 and later versions
 	The "ciao.config" file is just a loader file containing two include/1 
 	directives which load the "ciao_aux.config" and the Logtalk compiler/
 	runtime. You must edit the contents of the file ciao.config to match 
-	your operating system (the include directives arguments are file paths 
+	your operating system (the include directive arguments are file paths 
 	that differ between operating systems).
 
 	The definition of the predicate '$lgt_predicate_property'/2 in the file 
@@ -176,19 +176,19 @@ GNU Prolog 1.1.2 (and later versions, except 1.2.13)
 	can generate a new Prolog top level that includes the config file and 
 	the Logtalk compiler/runtime by doing something like:
 
-	% cd $LOGTALKHOME
-	% mv configs/gnu.config configs/gnu.pl
+		% cd $LOGTALKHOME
+		% mv configs/gnu.config configs/gnu.pl
 
 	Edit the compiler/logtalk.pl file and add the line ":- built_in." to 
 	the top. Then:
 
-	% gplc -o logtalk configs/gnu.pl compiler/logtalk.pl
-	% mv logtalk /usr/local/bin/
+		% gplc -o logtalk configs/gnu.pl compiler/logtalk.pl
+		% mv logtalk /usr/local/bin/
 
 	This way, every time you want to work with Logtalk you will just need 
 	to type:
 
-	% logtalk
+		% logtalk
 
 	Don't forget to use the change_directory/1 predicate to set the working 
 	directory before loading the library or an example. Supports smart 
