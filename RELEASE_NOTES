@@ -12,8 +12,8 @@ RELEASE NOTES
 
 2.25.3 - August ??, 2005
 
-	Consolidated source files of "points", "polygons", "reflection", and
-	"viewpoints" examples into single source files.
+	Consolidated source files of "bricks", "points", "polygons", "reflection",
+	"shapes", and "viewpoints" examples into single source files.
 
 	Updated several config files with declarations for some more non-standard 
 	Prolog meta-predicates.
