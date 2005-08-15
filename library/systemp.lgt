@@ -4,13 +4,13 @@
 	:- info([
 		version is 1.10,
 		author is 'Portable Operating-System Interface (POSI) initiative',
-		date is 2005/8/8,
+		date is 2005/8/14,
 		comment is 'Portable operating system access protocol.']).
 
 	:- public(make_directory/1).
 	:- mode(make_directory(+atom), one).
 	:- info(make_directory/1, [
-		comment is 'Makes a new directory.',
+		comment is 'Makes a new directory. Argument is first expanded to a canonical file name.',
 		argnames is ['Directory'],
 		exceptions is [
 			'Directory is not instantiated' - instantiation_error,
@@ -20,13 +20,14 @@
 	:- public(delete_directory/1).
 	:- mode(delete_directory(+atom), one).
 	:- info(delete_directory/1, [
-		comment is 'Deletes a directory (and all of its contents).',
+		comment is 'Deletes an empty directory.',
 		argnames is ['Directory'],
 		exceptions is [
 			'Directory is not instantiated' - instantiation_error,
 			'Directory is neither a variable nor a valid file name' - type_error(file_name, 'Directory'),
+			'Directory does not exists' - existence_error(directory, 'Directory'),
 			'No permission for deleting the directory' - permission_error(write, 'Directory'),
-			'Directory does not exists' - existence_error(directory, 'Directory')]]).
+			'Directory is not empty' - permission_error(write, 'Directory')]]).
 
 	:- public(change_directory/1).
 	:- mode(change_directory(+atom), one).
@@ -59,7 +60,7 @@
 	:- public(directory_files/3).
 	:- mode(directory_files(+atom, +atom, -list), one).
 	:- info(directory_files/3, [
-		comment is 'List of all directory files that matches a regular expression (returns an empty when no directory file matches).',
+		comment is 'List of all directory files that matches a regular expression (returns an empty list when no file matches).',
 		argnames is ['Directory', 'Filter', 'Files'],
 		exceptions is [
 			'Directory is not instantiated' - instantiation_error,
@@ -155,7 +156,9 @@
 			'Querying file size:' - file_property(foo, size(Bytes)) - {Bytes = 32568},
 			'Querying file type:' - file_property(foo, type(Type)) - {Type = regular},
 			'Querying file creation date:' - file_property(foo, creation_time(Time)) - {Time = 13768092},
-			'Querying file modification date:' - file_property(foo, modification_time(Time)) - {Time =813261042}
+			'Querying file last access date:' - file_property(foo, access_time(Time)) - {Time = 813261042},
+			'Querying file modification date:' - file_property(foo, modification_time(Time)) - {Time = 813261042},
+			'Querying file permissions:' - file_property(foo, permission(Permission)) - {Permission = read}
 	  ]]).
 
 	:- public(current_environment_variable/1).
@@ -318,16 +321,16 @@
 			'Part is neither a variable nor a file name part' - type_error(file_name_part, 'Port')],
 		examples is [
 			'Querying file access protocol:' - file_name_part(foo, protocol(Protocol)) - {Protocol = file},
-			'Querying file host location:' - file_name_part(foo, host(Host)) - {Host = localhost},
-			'Querying file creation date:' - file_name_part(foo, port(Port)) - {Port = 13768092},
+			'Querying file host location:' - file_name_part('http://www.prolog-standard.org:8080/index.html', host(Host)) - {Host = 'www.prolog-standard.org'},
+			'Querying file port access:' - file_name_part('http://www.prolog-standard.org:8080/index.html', port(Port)) - {Port = 8080},
 			'Querying file creation date:' - file_name_part(foo, port(Port)) - {no},
 			'Querying file modification date:' - file_name_part(foo, user(Username)) - {Username = 813261042},
 			'Querying file modification date:' - file_name_part(foo, password(Password)) - {Password = 813261042},
-			'Querying file modification date:' - file_name_part(foo, base(Basename)) - {Basename = 813261042},
-			'Querying file modification date:' - file_name_part(foo, path(Path)) - {Path = 813261042},
-			'Querying file modification date:' - file_name_part('foo.pl', extension(Extension)) - {Extension = '.pl'},
-			'Querying file modification date:' - file_name_part('foo.', extension(Extension)) - {Extension = '.'},
-			'Querying file modification date:' - file_name_part(foo, extension(Extension)) - {Extension = ''},
+			'Querying file base name:' - file_name_part(foo, base(Basename)) - {Basename = 813261042},
+			'Querying file path:' - file_name_part(foo, path(Path)) - {Path = 813261042},
+			'Querying file extension:' - file_name_part('foo.pl', extension(Extension)) - {Extension = '.pl'},
+			'Querying file extension:' - file_name_part('foo.', extension(Extension)) - {Extension = '.'},
+			'Querying file extension:' - file_name_part(foo, extension(Extension)) - {Extension = ''},
 			'Querying file modification date:' - file_name_part(foo, search(Pairs)) - {Pairs = 813261042},
 			'Querying file modification date:' - file_name_part(foo, fragment(Fragment)) - {Fragment = 813261042}
 	  ]]).
@@ -341,6 +344,8 @@
 		exceptions is [
 			'None of the arguments are instantiated' - instantiation_error,
 			'File is neither a variable nor a valid file name' - type_error(file_name, 'File'),
-			'Parts is neither a variable nor a list' - type_error(list(compound), 'Parts')]]).
+			'Parts is neither a variable nor a list' - type_error(list(compound), 'Parts')],
+		examples is [
+			'Decomposing a file name:' - file_name_parts('http://www.prolog-standard.org:8080/index.html', Parts) - {Parts = [protocol(http), host('www.prolog-standard.org'), port(8080), path('/'), base(index), extension('.html')]}]]).
 
 :- end_protocol.
