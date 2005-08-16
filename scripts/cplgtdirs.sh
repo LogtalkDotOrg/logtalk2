@@ -67,7 +67,7 @@ ln -sf "$LOGTALKHOME"/README "$LOGTALKUSER"/README
 ln -sf "$LOGTALKHOME"/RELEASE_NOTES "$LOGTALKUSER"/RELEASE_NOTES
 ln -sf "$LOGTALKHOME"/UPGRADING "$LOGTALKUSER"/UPGRADING
 ln -sf "$LOGTALKHOME"/manuals "$LOGTALKUSER"/manuals
-echo "Finished copying Logtalk files directories."
+echo "Finished copying Logtalk files and directories."
 echo
 echo "You may need to edit the \$LOGTALKUSER/libpaths/libpaths.pl file to match"
 echo "your Prolog compiler and operating-system requirements or to add your own"

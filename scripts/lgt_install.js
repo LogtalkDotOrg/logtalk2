@@ -120,7 +120,7 @@ WScript.Echo('After restarting your computer, you may want to run some of the Pr
 WScript.Echo('integration scripts, which you will find on the same directory as this');
 WScript.Echo('installer script.');
 WScript.Echo('');
-WScript.Echo('Users should run the batch script cplgtdirs in order to copy the');
+WScript.Echo('Users must run the batch script cplgtdirs in order to copy the');
 WScript.Echo('Logtalk user-modifiable files to their home directories. The path');
 WScript.Echo('to the cplgtdirs, lgt2pdf, lgt2html, and lgt2xml batch scripts has');
 WScript.Echo('been added to the system path environment variable.');

@@ -67,7 +67,7 @@ FSObject.CopyFolder(logtalk_home + "\\libpaths", logtalk_user + "\\libpaths");
 FSObject.CopyFolder(logtalk_home + "\\library", logtalk_user + "\\library");
 FSObject.CopyFolder(logtalk_home + "\\xml", logtalk_user + "\\xml");
 
-WScript.Echo("Finished copying Logtalk files directories.");
+WScript.Echo("Finished copying Logtalk files and directories.");
 WScript.Echo("");
 WScript.Echo("You may need to edit the contents of the file:");
 WScript.Echo("");

@@ -51,7 +51,7 @@ echo
 echo "You may want to run some of the Prolog integration scripts, which you"
 echo "will find on the same directory as this installer script."
 echo
-echo "Users should define the environment variable LOGTALKHOME pointing"
+echo "Users must define the environment variable LOGTALKHOME pointing"
 echo "to $prefix/logtalk and then run the shell script cplgtdirs"
 echo "in order to copy the Logtalk user-modifiable files to their home"
 echo "directories."
