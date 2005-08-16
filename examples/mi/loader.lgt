@@ -1,4 +1,13 @@
 
 :- initialization(
-	logtalk_load([
-		mi])).
+	logtalk_load(
+		[mi])).
+
+/*
+If you intend to use the FOP XSL:FO processor for generating PDF documenting
+files, comment the directive above and uncomment the directive below
+
+:- initialization(
+	logtalk_load(
+		[mi], [doctype(standalone)])).
+*/
