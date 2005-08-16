@@ -12,9 +12,9 @@ RELEASE NOTES
 
 2.25.3 - August ??, 2005
 
-	Consolidated source files of "bricks", "parametric", "points", "polygons",
-	"reflection", "shapes", "sicstus", and "viewpoints" examples into single 
-	source files.
+	Consolidated source files of "bricks", "mi", "parametric", "points", 
+	"polygons", "reflection", "shapes", "sicstus", and "viewpoints" examples 
+	into single source files.
 
 	Updated several config files with declarations for some more non-standard 
 	Prolog meta-predicates.
