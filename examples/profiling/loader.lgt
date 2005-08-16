@@ -1,9 +1,7 @@
 
 :- initialization(
-	logtalk_load([
-		timer, 
-		message_counter,
-		stop_watch],
+	logtalk_load(
+		[timer, message_counter, stop_watch],
 		[events(on)])).
 
 /*
@@ -12,5 +10,6 @@ files, comment the directive above and uncomment the directive below
 
 :- initialization(
 	logtalk_load(
-		[timer, message_counter, stop_watch], [events(on), doctype(standalone)])).
+		[timer, message_counter, stop_watch],
+		[events(on), doctype(standalone)])).
 */
