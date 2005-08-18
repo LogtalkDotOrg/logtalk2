@@ -12,7 +12,7 @@
 		comment is 'Tracer for a goal call, exit, and fail ports.']).
 
 	:- public(trace/1).
-	:- metapredicate(trace(::)).
+	:- metapredicate(trace(::)).	% changes interpretation of meta-calls on trace/1 clauses
 	:- mode(trace(+callable), zero_or_more).
 	:- info(trace/1, [
 		comment is 'Traces goal execution.',
@@ -41,8 +41,8 @@
 		date is 2000/7/24,
 		comment is 'List sorting parameterized by the type of the list elements.']).
 
-	:- uses(list, [append/3]).
-	:- uses(tracer, [trace/1]).
+	:- uses(list, [append/3]).		% calls to append(...) will be translated to list::append(...)
+	:- uses(tracer, [trace/1]).		% calls to trace(...) will be translated to tracer::trace(...)
 
 	:- calls(comparingp).
 
@@ -65,7 +65,6 @@
 		trace(sort(Small, Sorted1)),
 		trace(sort(Large, Sorted2))),
 		append(Sorted1, [Head| Sorted2], Sorted).
-
 
 	partition([], _, [], []).
 

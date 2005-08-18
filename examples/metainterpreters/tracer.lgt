@@ -5,7 +5,7 @@
 		version is 1.0,
 		date is 2004/5/5,
 		author is 'Paulo Moura',
-		comment is 'A simple tracer meta-interpreter for pure Prolog.']).
+		comment is 'A simple tracer meta-interpreter for pure Prolog with only conjunctions as clause bodies.']).
 
 	:- public(trace/1).
 	:- mode(trace(+goal), zero_or_more).
