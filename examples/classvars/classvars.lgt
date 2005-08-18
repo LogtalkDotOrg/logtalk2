@@ -1,6 +1,6 @@
 
 :- object(root,
-	instantiates(root)).
+	instantiates(root)).		% the class is its own metaclass
 
 	:- private(cv_/1).
 	:- dynamic(cv_/1).
@@ -12,14 +12,14 @@
 	:- public(set_cv/1).
 	:- mode(set_cv(+integer), one).
 
-	cv_(0).						% cv value is stored locally, in this class
+	cv_(0).						% cv_/1 value is stored locally, in this class
 
 	cv(Value) :-
-		cv_(Value).				% retrive cv value, shared for all instances
+		cv_(Value).				% retrive cv_/1 value, shared for all instances
 
 	set_cv(Value) :-
-		retractall(cv_(_)),		% retract old cv value from this class
-		asserta(cv_(Value)).	% assert the new value in this class
+		retractall(cv_(_)),		% retract old cv_/1 value from this class
+		asserta(cv_(Value)).	% assert the new value into this class
 
 :- end_object.
 
