@@ -8,8 +8,8 @@ Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 
 This directory contains several scripts used for Logtalk packaging, 
 installation, and integration with Prolog compilers. Those with extension 
-.sh are shell scripts for MacOS X, Linux, and similar systems. Those with 
-extension .js are JScript command-line scripts for Windows; they require 
+".sh" are shell scripts for MacOS X, Linux, and similar systems. Those with 
+extension ".js" are JScript command-line scripts for Windows; they require 
 WSH 5.6 or later version to be installed and should be run using cscript.exe 
 from a DOS shell command line.
 

@@ -1,8 +1,13 @@
 
+
+% Categories allows us to neatly organize the different "kinds"
+% of words on this example: determiners, nouns, and verbs
+
+
 :- category(determiners).
 
-	:- private(determiner//0).
-
+	:- private(determiner//0).	% private category non-terminals become private
+								% non-terminals of the objects importing the category
 	determiner --> [the].
 	determiner --> [a].
 
@@ -39,8 +44,8 @@
 
 	sentence --> noun_phrase, verb_phrase.
 
-	noun_phrase --> ::determiner, ::noun.
-	noun_phrase --> ::noun.
+	noun_phrase --> ::determiner, ::noun.	% the ::/1 control construct is used to call grammar
+	noun_phrase --> ::noun.					% rules encapsulated on the imported categories
 
 	verb_phrase --> ::verb.
 	verb_phrase --> ::verb, noun_phrase.
