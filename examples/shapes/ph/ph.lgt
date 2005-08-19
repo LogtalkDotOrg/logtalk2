@@ -1,6 +1,6 @@
 
-:- object(shape).
-
+:- object(shape).	% an object with no hierarchy relations with other 
+					% objects is always compiled as a prototype
 	:- info([
 		author is 'Paulo Moura',
 		version is 1.0,
