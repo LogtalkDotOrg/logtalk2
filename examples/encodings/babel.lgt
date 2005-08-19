@@ -1,5 +1,5 @@
 
-:- encoding(utf8).
+:- encoding(utf8).		% this directive, when present, must be the first term in a source file
 
 
 :- object(babel).

@@ -1,3 +1,8 @@
+/*
+In this example, time and date values are represented as compound terms, 
+which are defined as parametric objects.   This example illustrates how
+to associate a set of methods/predicates with a compound term.
+*/
 
 :- object(date(_Year, _Month, _Day)).
 
