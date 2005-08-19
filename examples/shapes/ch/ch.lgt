@@ -1,4 +1,6 @@
 
+% "shape" abstract class
+
 :- object(shape,
 	instantiates(abstract_class),
 	specializes(object)).
@@ -27,6 +29,8 @@
 
 :- end_object.
 
+
+% "polygon" abstract class
 
 :- object(polygon,
     instantiates(abstract_class),
@@ -59,6 +63,8 @@
 :- end_object.
 
 
+% "regular_polygon" abstract class
+
 :- object(regular_polygon,
     instantiates(abstract_class),
     specializes(polygon)).
@@ -85,6 +91,8 @@
 :- end_object.
 
 
+% "square" instantiable class
+
 :- object(square,
     instantiates(class),
     specializes(regular_polygon)).
@@ -106,6 +114,8 @@
 
 :- object(q1,
     instantiates(square)).
+
+	% inherits default values for position/2, color/1, and side/1
 
 :- end_object.
 
