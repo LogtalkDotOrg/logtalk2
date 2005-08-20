@@ -73,10 +73,12 @@ B-Prolog 6.7#2 and later versions
 	Logtalk compiler/runtime, and the library paths file by doing something 
 	like:
 
-		| ?- compile('configs/b.config), compile('compiler/logtalk.pl'), compile('libpaths/libpath.pl').
+		| ?- set_prolog_flag(redefined, off).
+
+		| ?- compile(['configs/b.config', 'compiler/logtalk.pl', 'libpaths/libpaths.pl']).
 	
 	This will result in three files, named "b.config.out", "logtalk.pl.out", 
-	and "libpaths.pl.out". Place these files on a convenient place and then 
+	and "libpaths.pl.out". Place these files on the $BPDIR directory and then 
 	copy the "bp" script to a "bplgt" file and modify it by adding the names
 	of the three *.out files after the "$BPDIR/bp.out" file.
 

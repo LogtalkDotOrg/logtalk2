@@ -16,8 +16,13 @@ RELEASE NOTES
 	"parametric", "points", "polygons", "reflection", "shapes", "sicstus", 
 	and "viewpoints" into single source files.
 
+	Improved documentation on most example source files.
+
 	Updated several config files with declarations for some more non-standard 
 	Prolog meta-predicates.
+
+	Corrected some omissions and typos on the B-Prolog - Logtalk integration 
+	instructions.
 
 
 2.25.2 - August 11, 2005
