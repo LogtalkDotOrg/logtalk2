@@ -21,9 +21,9 @@ each script below for details.
 MAKE SURE THAT THE XSL PROCESSORS YOU INTEND TO USE ARE PROPERLY INSTALLED 
 AND WORKING BEFORE RUNNING THESE SCRIPTS!
 
-Regarding conversion to HTML/XHTML, the links to the .xsl files on the 
-.xml files and the links to the .css files in the generated .html files 
-assume that all files reside in the same directory.
+Regarding conversion to (X)HTML, the links to the .xsl files on the .xml 
+files and the links to the .css files in the generated .html files assume 
+that all files reside in the same directory.
 
 The choice of the default .xsl file to use is made in the config files by 
 the '$lgt_default_flag'/2 predicate. You may also choose a different 
@@ -127,11 +127,11 @@ lgt2pdf.js
 		* RenderX XEP processor (tested with version 3.8.1)
 			http://www.renderx.com/  
 
-	When using the FOP, compile your Logtalk source files using the compiler 
-	option doctype(standalone) in order to workaround a bug on the XALAN 
-	processor used by this processor.
+	When using the FOP, you must compile your Logtalk source files using the 
+	compiler option doctype(standalone) in order to workaround a bug on the 
+	XALAN processor used by this processor.
 
-	These script assumes that the LOGTALKUSER environment variable is defined
+	These script assume that the LOGTALKUSER environment variable is defined
 	and that the chosen XSL-FO processor is available in the path.
 	The scripts should be called from the directory containing the .xml files 
 	you wish to convert. Call the scripts with the help option for a description 
@@ -237,7 +237,7 @@ pdf.sh
 	Edit the script to match your environment and paper format preference 
 	before running it. Requires Apache FOP processor (http://xml.apache.org/fop).
 	Tested with version 0.20.5 (to workaround a bug on the XALAN processor used 
-	by FOP, you should use the compiler flag doctype(standalone) when compiling 
+	by FOP, you must use the compiler flag doctype(standalone) when compiling 
 	your Logtalk source files). You will need either to copy your .xml files to 
 	this directory or to copy these files to the directory where the .xml files 
 	reside.
@@ -249,7 +249,7 @@ pdf.bat
 	Edit the script to match your environment and paper format preference 
 	before running it. Requires Apache FOP processor (http://xml.apache.org/fop).
 	Tested with version 0.20.5 (to workaround a bug on the XALAN processor used 
-	by FOP, you should use the compiler flag doctype(standalone) when compiling 
+	by FOP, you must use the compiler flag doctype(standalone) when compiling 
 	your Logtalk source files). You will need either to copy your .xml files to 
 	this directory or to copy these files to the directory where the .xml files 
 	reside.
