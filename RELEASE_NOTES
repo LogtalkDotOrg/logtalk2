@@ -24,6 +24,8 @@ RELEASE NOTES
 	Corrected some omissions and typos on the B-Prolog - Logtalk integration 
 	instructions.
 
+	Small performance optimization for non-cached message lookups.
+
 
 2.25.2 - August 11, 2005
 
