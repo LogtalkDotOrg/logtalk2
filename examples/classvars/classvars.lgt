@@ -1,6 +1,6 @@
 
-:- object(root,
-	instantiates(root)).		% the class is its own metaclass
+:- object(root,				% avoid infinite metaclass regression by
+	instantiates(root)).	% making the class its own metaclass
 
 	:- private(cv_/1).
 	:- dynamic(cv_/1).

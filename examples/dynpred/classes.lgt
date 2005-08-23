@@ -1,6 +1,6 @@
 
-:- object(metaclass,
-	instantiates(metaclass)).
+:- object(metaclass,			% avoid infinite metaclass regression by
+	instantiates(metaclass)).	% making the class its own metaclass
 
 :- end_object.
 

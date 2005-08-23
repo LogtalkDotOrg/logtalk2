@@ -1,6 +1,6 @@
 
-:- object(root,
-	instantiates(root)).
+:- object(root,				% avoid infinite metaclass regression by
+	instantiates(root)).	% making the class its own metaclass
 
 	:- public(method/0).
 
