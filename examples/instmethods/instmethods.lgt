@@ -13,15 +13,15 @@
 
 
 
-:- object(instance1,
+:- object(instance1,		% this instance simply inherits the method/0 predicate
 	instantiates(root)).
 
 :- end_object.
 
 
 
-:- object(instance2,
-	instantiates(root)).
+:- object(instance2,		% this instance provides its own definition for the
+	instantiates(root)).	% method/0 predicate
 
 	method :-
 		this(This),
@@ -33,8 +33,8 @@
 
 
 
-:- object(instance3,
-	instantiates(root)).
+:- object(instance3,		% this instance specializes the inherited definition
+	instantiates(root)).	% of the method/0 predicate
 
 	method :-
 		this(This),
