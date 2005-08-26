@@ -1,5 +1,11 @@
 
-:- object(object,
+/*
+In order to better grasp this example, draw a diagram of the hierarchy made of
+the three objects below with their instantiation and specialization relations.
+*/
+
+
+:- object(object,			% root of the inheritance graph
 	instantiates(class)).
 
 	:- info([
@@ -14,8 +20,8 @@
 	:- public(print/0).
 	:- mode(print, one).
 
-	strict_instance.
-
+	strict_instance.		% descendant instances of this class
+							% are, by default, strict instances
 	print :-
 		self(Self),
 		write('Object: '), writeq(Self), nl, nl,
@@ -28,7 +34,7 @@
 :- end_object.
 
 
-:- object(class,
+:- object(class,			% default metaclass for all instantiable classes
 	instantiates(class),
 	specializes(abstract_class)).
 
@@ -62,13 +68,13 @@
 		self(Self),
 		findall(Instance, instantiates_class(Instance, Self), Instances).
 
-	abstract_class :-
-		fail.
+	abstract_class :-		% instances of this class are instantiable classes,
+		fail.				% not abstract classes
 
 :- end_object.
 
 
-:- object(abstract_class,
+:- object(abstract_class,	% default metaclass for all abstract classes
 	instantiates(class),
 	specializes(object)).
 
@@ -84,17 +90,17 @@
 	:- public(abstract_class/0).
 	:- mode(abstract_class, zero_or_one).
 
-	abstract_class :-
-		self(Self),
+	abstract_class :-		% by default, descendant instances of this class are abstract
+		self(Self),			% classes except this class itself which is an instantiable class
 		Self \= abstract_class.
 
-	metaclass :-
-		self(Self),
-		once((
+	metaclass :-			% descendant instances of this class are metaclasses if
+		self(Self),			% their instances are themselves classes, i.e. if their 
+		once((				% instances accept the abstract_class/0 message 
 			instantiates_class(Class, Self),
 			Class::current_predicate(abstract_class/0))).
 
-	strict_instance :-
-		fail.
+	strict_instance :-		% instances of this class are not strict instances;
+		fail.				% they are classes
 
 :- end_object.
