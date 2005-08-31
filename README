@@ -98,23 +98,18 @@ to run Logtalk, provided that your favorite Prolog compiler is supported.
 7. DOCUMENTATION
 
 The reference and user manuals and the tutorial are provided in XHTML format 
-and can be found in the manuals directory.
+and can be found in the "manuals" directory.
 
-PDF versions of all documentation are also available as a separated download 
-from the Logtalk web site. The PDF files include page numbers, an index, and 
-a table of contents and are available for printing in both A4 and US Letter 
-paper formats.
-
-The file RELEASE_NOTES contains descriptions of the changes made in Logtalk 
-since the first public version. Read it carefully if you have been using a 
-previous Logtalk version.
+The file RELEASE_NOTES contains descriptions of all Logtalk updates since the 
+first public version. Read it carefully if you have been using a previous 
+Logtalk version.
 
 
 8. UPGRADING
 
-If you have been using a previous Logtalk version read the file UPGRADING for 
-instructions on how to upgrade your programs or your custom configuration 
-files to run under this new version.
+If you are upgrading from a previous Logtalk version, please check the file 
+UPGRADING for instructions on how to upgrade your programs or your custom 
+configuration files to run under this new version.
 
 
 9. CITATIONS
