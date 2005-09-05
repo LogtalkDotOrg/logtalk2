@@ -17,11 +17,11 @@
 
 	:- public(setScore/1).
 
-	getOlder :-
-		retract(age(Old)),
-		New is Old + 1,
-		asserta(age(New)).
-
+	getOlder :-						% this predicate uses property sharing, i.e.
+		retract(age(Old)),			% the property and its value are shared by all 
+		New is Old + 1,				% descendant prototypes/viewpoints; changes
+		asserta(age(New)).			% are shared no matter which viewpoint receives
+									% the getOlder/1 message
 	address('8 Octave Street').
 
 	age(30).
@@ -30,11 +30,11 @@
 
 	phone(11-11-11-11).
 
-	score(0).
-
-	setScore(Score) :-
-		::retractall(score(_)),
-		::asserta(score(Score)).
+	score(0).						% default value for the score/1 property,
+									% shared by all descendant prototypes/viewpoints;
+	setScore(Score) :-				% changing the default value results in
+		::retractall(score(_)),		% in a local value stored in the descendant
+		::asserta(score(Score)).	% prototype that received the message
 
 :- end_object.
 
@@ -53,7 +53,7 @@
 
 	salary(1500).
 
-	giveRaise(Raise) :-
+	giveRaise(Raise) :-				% another example of property sharing
 		retract(salary(Old)),
 		New is Old + Raise,
 		asserta(salary(New)).
