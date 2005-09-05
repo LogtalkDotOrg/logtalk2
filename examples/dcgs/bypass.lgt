@@ -1,5 +1,5 @@
 
-bar :-
+bar :-					% test predicate
 	write('bar predicate called'), nl.
 
 

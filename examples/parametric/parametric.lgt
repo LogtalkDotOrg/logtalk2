@@ -1,15 +1,17 @@
-/*
-In this example, time and date values are represented as compound terms, 
-which are defined as parametric objects.   This example illustrates how
-to associate a set of methods/predicates with a compound term.
+
+/*	In this example, time and date values are represented as compound terms,
+	which are defined as parametric objects.   This example illustrates how
+	to associate a set of methods/predicates with a compound term.   Object
+	parameters can be accessed using the execution-context built-in methods
+	this/1 and parameter/2; both alternatives are illustrated below.
 */
 
 :- object(date(_Year, _Month, _Day)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 1998/3/23,
+		date is 2005/9/5,
 		comment is 'Dates as parametric objects.',
 		parnames is ['Year', 'Month', 'Day']]).
 
@@ -43,12 +45,29 @@ to associate a set of methods/predicates with a compound term.
 		parameter(2, Month),
 		parameter(3, Day).
 
+/*	Alternative predicate definitions using this/1 instead of parameter/2
+	(see the User Manual for the pros and cons of both alternatives):
+
+	year(Year) :-
+		this(date(Year, _, _)).
+
+	month(Month) :-
+		this(date(_, Month, _)).
+
+	day(Day) :-
+		this(date(_, _, Day)).
+
+	today :-
+		{'$lgt_current_date'(Year, Month, Day)},	% defined in the config files
+		this(date(Year, Month, Day)).
+
+*/
+
 	leap_year :-
 		parameter(1, Year),
-		(0 is mod(Year, 4),
-		 0 is mod(Year, 100)
+		(0 =:= mod(Year, 4), 0 =\= mod(Year, 100)
 		 ;
-		 0 is mod(Year, 400)),
+		 0 =:= mod(Year, 400)),
 		!.
 
 :- end_object.
@@ -57,9 +76,9 @@ to associate a set of methods/predicates with a compound term.
 :- object(time(_Hours, _Mins, _Secs)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 1998/3/23,
+		date is 2005/9/5,
 		comment is 'Time as parametric objects.',
 		parnames is ['Hours', 'Mins', 'Secs']]).
 
@@ -89,5 +108,23 @@ to associate a set of methods/predicates with a compound term.
 		parameter(1, Hours),
 		parameter(2, Mins),
 		parameter(3, Secs).
+
+/*	Alternative predicate definitions using this/1 instead of parameter/2
+	(see the User Manual for the pros and cons of both alternatives):
+
+	hours(Hours) :-
+		this(time(Hours, _, _)).
+
+	mins(Mins) :-
+		this(time(_, Mins, _)).
+
+	secs(Secs) :-
+		this(time(_, _, Secs)).
+
+	now :-
+		{'$lgt_current_time'(Hours, Mins, Secs)},	% defined in the config files
+		this(time(Hours, Mins, Secs)).
+
+*/
 
 :- end_object.
