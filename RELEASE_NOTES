@@ -10,13 +10,15 @@ RELEASE NOTES
 =============
 
 
-2.25.3 - August ??, 2005
+2.25.3 - September 12, 2005
 
 	Consolidated the source files of the examples "bricks", "dynpred", "mi", 
 	"parametric", "points", "polygons", "reflection", "shapes", "sicstus", 
 	and "viewpoints" into single source files.
 
-	Improved documentation on most example source files.
+	Improved documentation on most example source files. Improved "parametric"
+	example by adding a new parametric objects and by illustrating alternative
+	ways of accessing object parameters.
 
 	Updated several config files with declarations for some more non-standard 
 	Prolog meta-predicates.
@@ -24,7 +26,8 @@ RELEASE NOTES
 	Corrected some omissions and typos on the B-Prolog - Logtalk integration 
 	instructions.
 
-	Small performance optimization for non-cached message lookups.
+	Small performance optimization for messages and super-calls with not yet
+	cached method lookups.
 
 
 2.25.2 - August 11, 2005
@@ -245,7 +248,7 @@ RELEASE NOTES
 2.22.5 - February 9, 2005
 
 	Added scripts for easy integration of Logtalk with K-Prolog. Updated the 
-	K-Prolog config file, correcting a showstopper bug and enabling support 
+	K-Prolog config file, correcting a show-stopper bug and enabling support 
 	for using the "library" notation for loading source files.
 
 	Updated JIProlog config file in order to allow smart compilation of source
@@ -986,7 +989,7 @@ RELEASE NOTES
 2.14.6 - December 31, 2002
 
 	Corrected a bug where the opening directive of an object that, 
-	simultaneously, implements a protocol, imports a categoty, instantiates 
+	simultaneously, implements a protocol, imports a category, instantiates 
 	a class, and specializes a superclass, will not be recognized.
 
 
@@ -1004,7 +1007,7 @@ RELEASE NOTES
 
 2.14.4 - November 5, 2002
 
-	Removed definition of depracated built-in predicate logtalk_version/3.
+	Removed definition of deprecated built-in predicate logtalk_version/3.
 
 	Show flag names when printing at startup the default flag values.
 
@@ -1019,7 +1022,7 @@ RELEASE NOTES
 	in the PassiveTeX 1.21 XSL:FO processor.
 
 
-2.14.3 - Sptember 16, 2002
+2.14.3 - September 16, 2002
 
 	New compiler option, doctype, to set the doctype reference (if any) 
 	in the XML documenting files. Default value is "local" for backward 
@@ -1213,7 +1216,7 @@ RELEASE NOTES
 	and info/2 directives.
 
 	Changed the order of object loading in the "mi" example to avoid 
-	suporious warning messages.
+	spurious warning messages.
 	
 	Added a new problem ("bridge") to the "searching" example. Improved 
 	"performance" monitor to give correct reports on alternative solutions. 
@@ -1228,7 +1231,7 @@ RELEASE NOTES
 	entities (by default) prints a warning. Updated user and reference 
 	manuals.
 
-	Rewrited all the compiler warning/error code and output messages.
+	Rewritten all the compiler warning/error code and output messages.
 
 	Changed compiled code functors postfixes from "_sdcl" and "_sdef" to 
 	"_idcl"	and "_idef" (implies recompilation of all objects, protocols, 
@@ -1273,11 +1276,11 @@ RELEASE NOTES
 	Corrected a bug where sending a message for a built-in method to an 
 	unknown object fails instead of generating the expected exception.
 
-	Put some ocorrences of atoms public, mode, and type between ()'s to 
+	Put some occurrences of atoms public, mode, and type between ()'s to 
 	avoid compilation errors in BinProlog 8.0 and other Prolog compilers 
 	that declare these atoms as operators.
 
-	Corrected the definition of the state space of the "Missionaires and 
+	Corrected the definition of the state space of the "Missionaries and 
 	Cannibals" problem in the "searching" example that resulted in some 
 	wrong solutions.
 
@@ -1594,7 +1597,7 @@ RELEASE NOTES
 	pre-processor.
 
 	Removed variables example. The category attributes is now part of the
-	kernel example. Corrected some warmless syntax errors in directives in
+	kernel example. Corrected some harmless syntax errors in directives in
 	kernel/attributes.lgt, kernel/monitor.lgt and miscellaneous/queens.lgt.
 
 	Changed name of blocks example to bricks and object "block" to "brick" 
@@ -1702,7 +1705,7 @@ RELEASE NOTES
 
 	Modified the examples loader utility files to make only a call to
 	logtalk_load/1 by using a list of entities. This should make it easy to
-	modify these files for compilers that don't support arbritrary queries
+	modify these files for compilers that don't support arbitrary queries
 	in a file. 
 
 	Logtalk runtime no longer tries to catch some of the errors thrown 
