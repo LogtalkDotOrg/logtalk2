@@ -557,7 +557,7 @@ RELEASE NOTES
 	Updated the syntax coloring configuration files for the supported text 
 	editors for the new alias/3 predicate directive.
 
-	Added autocomplete strings for Logtalk methods and for Logtalk and Prolog 
+	Added auto-complete strings for Logtalk methods and for Logtalk and Prolog 
 	built-in predicates and directives to the SubEthaEdit 2.x text editor.
 
 	Corrected a bug which prevented compilation of metafiles containing 
@@ -571,7 +571,7 @@ RELEASE NOTES
 	compilers.
 
 	Improved user manual section on defining object and category metapredicates 
-	and on calling non-stardard Prolog built-in metapredicates. Improved the 
+	and on calling non-standard Prolog built-in metapredicates. Improved the 
 	description of some compiler options.
 
 	Added some files missing from the "errors" example (which should have been 
@@ -1151,7 +1151,7 @@ RELEASE NOTES
 	at startup.
 
 	Reworked Logtalk pre-processor compilation and loading reports. Compiler 
-	option "report" now togles between normal reporting (as specified by the 
+	option "report" now toggles between normal reporting (as specified by the 
 	other flags) and silent compilation/loading of source files.
 
 
@@ -1190,7 +1190,7 @@ RELEASE NOTES
 
 	Renamed config file predicate lgt_default_compiler_option/2 to lgt_flag/2.
 
-	New XSL stylesheets and shell scripts to convert Logtalk XML entity 
+	New XSL style-sheets and shell scripts to convert Logtalk XML entity 
 	documenting files to PDF format using XSL Formating Objects.
 
 
@@ -1477,7 +1477,7 @@ RELEASE NOTES
 	Logtalk is now an Open Source project, available under Perl's Artistic 
 	license.
 
-	Two new examples: instmethods, ilustrating the use of instance defined 
+	Two new examples: instmethods, illustrating the use of instance defined 
 	methods, and classvars, showing how to implement class variables.
 
 	Updated Logtalk grammar to explicitly allow for user-defined types
@@ -1657,7 +1657,7 @@ RELEASE NOTES
 	New config file for MasterProlog 4.1; removed config file for the 
 	old BIM Prolog 4.0.
 
-	Corrected an error in the config file for OpenProlog in the definiton
+	Corrected an error in the config file for OpenProlog in the definition
 	of the write_term/3 predicate.
 
 	Added a safer definition for write_term/3 predicate in the config  
