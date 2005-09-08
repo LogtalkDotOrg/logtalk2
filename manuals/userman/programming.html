@@ -85,7 +85,7 @@ This allows us to load a library source file without the need to first change th
 The best way to take advantage of this feature is to load at startup a source file containing an <code>initialization/1</code> directive which asserts all the <code>logtalk_library_path/2</code> clauses needed for all available libraries. This allows us to load library source files or entire libraries without worrying about libraries paths, improving code portability.
 </p>
 <p>
-Unfortunately, a few Prolog compilers do not support the <code>&lt;library&gt;(&lt;source file&gt;)</code> notation. In this case, you will need to set the working directory to be the one that contains the source file in order to load it.
+Unfortunately, a few Prolog compilers do not support the <code>&lt;library&gt;(&lt;source file&gt;)</code> notation. In this case, you will need to set the working directory to be the one that contains the source file in order to load it. The library notation provides functionality similar to the file_search_path/2 mechanism introduced by Quintus Prolog and later adopted by some other Prolog compilers.
 </p>
 
 <h3>Portable programs<a name="portability"></a></h3>
@@ -154,7 +154,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: August 16, 2005</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: September 8, 2005</span></p>
 </div>
 </body>
 </html>
