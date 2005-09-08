@@ -1,4 +1,6 @@
 
+% general information about Joe:
+
 :- object(joePerson).
 
 	:- public(getOlder/0).
@@ -34,10 +36,12 @@
 									% shared by all descendant prototypes/viewpoints;
 	setScore(Score) :-				% changing the default value results in
 		::retractall(score(_)),		% in a local value stored in the descendant
-		::asserta(score(Score)).	% prototype that received the message
+		::asserta(score(Score)).	% prototype that received the setScore/1 message
 
 :- end_object.
 
+
+% information on Joe as an employee:
 
 :- object(joeEmployee,
 	extends(joePerson)).
@@ -61,6 +65,8 @@
 :- end_object.
 
 
+% information on Joe as an chess player:
+
 :- object(joeChessPlayer,
     extends(joePerson)).
 
@@ -70,6 +76,8 @@
 
 :- end_object.
 
+
+% information on Joe as a movies fan:
 
 :- object(joeFilmEnthusiast,
 	extends(joePerson)).
@@ -86,6 +94,8 @@
 
 :- end_object.
 
+
+% information on Joe as a sportsman:
 
 :- object(joeSportsman,
 	extends(joePerson)).
