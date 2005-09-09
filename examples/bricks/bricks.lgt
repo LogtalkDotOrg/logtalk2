@@ -15,7 +15,6 @@
 		comment is 'Brick current position.',
 		argnames is ['X', 'Y']]).
 
-
 	:- private(position_/2).
 	:- dynamic(position_/2).
 	:- mode(position_(?integer, ?integer), zero_or_one).

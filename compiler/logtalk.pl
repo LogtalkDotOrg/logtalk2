@@ -3356,9 +3356,9 @@ current_logtalk_flag(version, version(2, 25, 3)).
 
 
 
-% '$lgt_compiler_error_handler'(@term, +term)
+% '$lgt_compiler_error_handler'(@stream, +term)
 %
-% closes the stream opened for reading the entity file, restores
+% closes the stream being used for reading or writing terms, restores
 % the operator table, and reports the compilation error found
 
 '$lgt_compiler_error_handler'(Stream, Error) :-
@@ -3643,7 +3643,7 @@ current_logtalk_flag(version, version(2, 25, 3)).
 
 
 
-% '$lgt_tr_term'(+term, +stream, +stream)
+% '$lgt_tr_term'(+term, +stream)
 %
 % translates an entity term (either a clause or a directive)
 

@@ -10,7 +10,7 @@
 	:- public(solve/1).
 	:- mode(solve(+goal), zero_or_more).
 	:- info(solve/1, [
-		comment is 'Proofs goal.',
+		comment is 'Proves goal.',
 		argnames is ['Goal']]).
 
 	solve(true) :-
