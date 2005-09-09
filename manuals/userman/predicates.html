@@ -241,7 +241,7 @@ A common use for the <code>alias/3</code> directive is to give an alternative na
     :- end_object.
 </pre>
 <p>
-The directive allows both <code>width/1</code> and <code>side/1</code> to be used as mesages to the object <code>square</code>. Thus, using this directive, there is no need to explictly declare and define a "new" <code>side/1</code> predicate. Note that the <code>alias/3</code> directive does not rename a predicate, only provides an alternative, addtional name; the original name continues to be available.
+The directive allows both <code>width/1</code> and <code>side/1</code> to be used as messages to the object <code>square</code>. Thus, using this directive, there is no need to explicitly declare and define a "new" <code>side/1</code> predicate. Note that the <code>alias/3</code> directive does not rename a predicate, only provides an alternative, additional name; the original name continues to be available.
 </p>
 <p>
 Another common use for this directive is to solve conflicts when two inherited predicates have the same functor and arity. We may want to call the predicate which is masked by the Logtalk lookup algorithm (see the <a href="inheritance.html">Inheritance</a> section) or we may need to call both predicates. This is simply accomplished by using the <code>alias/3</code> directive to give alternative names to masked or conflicting predicates. Consider the following example:
@@ -360,7 +360,7 @@ Because a category can be imported by several different objects, dynamic private
 This way, each importing object will have its own definition for the <code>value_/2</code> private predicate. Furthermore, the <code>get/2</code> and <code>set/2</code> predicates will always access/update the correct definition, contained in the object receiving the messages.
 </p>
 <p>
-A category may only contain clauses for static predicates. Nevertheless, as the example above illustrates, there are no retrictions in declaring and calling dynamic predicates from inside a category.
+A category may only contain clauses for static predicates. Nevertheless, as the example above illustrates, there are no restrictions in declaring and calling dynamic predicates from inside a category.
 </p>
 
 <h3>Metapredicates<a name="metadef"></a></h3>
@@ -369,7 +369,7 @@ A category may only contain clauses for static predicates. Nevertheless, as the 
 Metapredicates may be defined inside objects (and categories) as any other predicate. A metapredicate is declared using the <code>metapredicate/1</code> directive as described earlier on this section.
 </p>
 <p>
-Some metapredicates have meta-arguments which are not called directly as goals. Instead, the meta-arguments are used for constructing a call, usually with other arguments of the metapredicate. A common example is the metapredicate <code>apply/2</code>. The typical definiton is: 
+Some metapredicates have meta-arguments which are not called directly as goals. Instead, the meta-arguments are used for constructing a call, usually with other arguments of the metapredicate. A common example is the metapredicate <code>apply/2</code>. The typical definition is: 
 </p>
 <pre>
     apply(Pred, Args) :-
@@ -611,7 +611,7 @@ After compiling and loading these two objects, we can try the following goal:
     yes
 </pre>
 <p>
-The method <code>parameter/2</code> is only compiled in-ilne when used inside objects; its use inside categories implies a call to the built-in Prolog predicate <code>arg/3</code>. Nevertheless, note that calls to <code>parameter/2</code> from inside categories are inherently problematic: a category may be implemented by several objects, both parametric (with different number of parameters) and non-parametric. Care must be taken to ensure that a parametric object importing such a category match the interpretation of its parameters used in the category.
+The method <code>parameter/2</code> is only compiled in-line when used inside objects; its use inside categories implies a call to the built-in Prolog predicate <code>arg/3</code>. Nevertheless, note that calls to <code>parameter/2</code> from inside categories are inherently problematic: a category may be implemented by several objects, both parametric (with different number of parameters) and non-parametric. Care must be taken to ensure that a parametric object importing such a category match the interpretation of its parameters used in the category.
 </p>
 
 <h3>Database methods<a name="database"></a></h3>
@@ -722,7 +722,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: August 5, 2005</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: September 8, 2005</span></p>
 </div>
 </body>
 </html>

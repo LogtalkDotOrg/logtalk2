@@ -192,13 +192,13 @@ Some caveats that you should be aware. First, some warnings that might be produc
 <h2>Using Logtalk for batch processing<a name="batch"></a></h2>
 
 <p>
-If you use Logtalk for batch processing, you probably want to supress most, if not all, banners, messages, and warnings that are normally printed by the system.
+If you use Logtalk for batch processing, you probably want to suppress most, if not all, banners, messages, and warnings that are normally printed by the system.
 </p>
 <p>
-To supress printing of the Logtalk startup banner and default flags, set the option <code>startup_message</code> in the config file that you are using to <code>none</code>.
+To suppress printing of the Logtalk startup banner and default flags, set the option <code>startup_message</code> in the config file that you are using to <code>none</code>.
 </p>
 <p>
-To supress printing of compiling and loading messages (including compiling warnings but not compiling error messages), turn off the option <code>report</code>.
+To suppress printing of compiling and loading messages (including compiling warnings but not compiling error messages), turn off the option <code>report</code>.
 </p>
 
 <h2>Debugging Logtalk programs<a name="debugging"></a></h2>
@@ -224,7 +224,7 @@ In alternative, if we want to compile only some entities in debug mode, we may i
     | ?- logtalk_load([file1, file2, ...], [debug(on)]).
 </pre>
 <p>
-The compiler flag <code>smart_compilation</code> is automatically turned off whenever the debug flag is turned on at runtime. This is necessary because debug code would not be generated for files previously compiled in normal mode if there is no changes to the source files. However, note that you should be carefull to not turn both flags on at the same time in a config file.
+The compiler flag <code>smart_compilation</code> is automatically turned off whenever the debug flag is turned on at runtime. This is necessary because debug code would not be generated for files previously compiled in normal mode if there is no changes to the source files. However, note that you should be careful to not turn both flags on at the same time in a config file.
 </p>
 <p>We may check or enumerate, by backtracking, all loaded entities compiled in debug mode as follows:
 </p>
@@ -244,7 +244,7 @@ Logtalk uses a <em>Procedure Box model</em> similar to those found on most Prolo
 	<dt><code>exit</code></dt>
 		<dd>success of a predicate call</dd>
 	<dt><code>redo</code></dt>
-		<dd>backtraking into a predicate</dd>
+		<dd>backtracking into a predicate</dd>
 	<dt><code>fail</code></dt>
 		<dd>failure of a predicate call</dd>
 </dl>
@@ -270,7 +270,7 @@ In addition to the ports described above, Logtalk adds two more ports, <em>fact<
 </dl>
 </blockquote>
 <p>
-The user may define for which ports the debugger should pause for user interaction by specifiying a list of leashed ports. For example:
+The user may define for which ports the debugger should pause for user interaction by specifying a list of leashed ports. For example:
 </p>
 <pre>
     | ?- debugger::leash([call, exit, fail]).
@@ -440,7 +440,7 @@ The debugger pauses at leashed posts when tracing or when finding a spy point fo
 <dl>
 	<dt><code>c</code> &mdash; creep</dt>
 		<dd>go on; you may use the spacebar in alternative</dd>
-	<dt><code>l</code> &mdash; leep</dt>
+	<dt><code>l</code> &mdash; leap</dt>
 		<dd>continues execution until the next spy point is found</dd>
 	<dt><code>s</code> &mdash; skip</dt>
 		<dd>skips debugging for the current goal; only valid at call and redo ports</dd>
@@ -482,7 +482,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: August 5, 2005</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: September 8, 2005</span></p>
 </div>
 </body>
 </html>
