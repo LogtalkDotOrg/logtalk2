@@ -58,7 +58,7 @@ compilers; they must be run by a user with administration privileges:
 
 make_ciaolgt.sh
 	makes a shell script named "ciaolgt" for running Logtalk with CIAO Prolog
-	(the first run of the ciaolgt script must be made as root or using sudo)
+	(the first run of the "ciaolgt" script must be made as root or using sudo)
 make_ciaolgt.js
 	makes a Windows shortcut named "Logtalk - CIAO" for running Logtalk with 
 	CIAO 1.10 (the first call to the shortcut must be made by a user with 
@@ -114,11 +114,11 @@ make_yaplgt.sh
 make_yaplgt.js
 	makes a Windows shortcut named "Logtalk - YAP" for running Logtalk with 
 	YAP (assumes that the Yap folder is installed in C:\Program Files; edit 
-	the path to the yap.exe executable in the script if necessary)
+	the path to the "yap.exe" executable in the script if necessary)
 
 make_xsblgt.sh
 	makes a shell script named "xsblgt" for running Logtalk with XSB (the 
-	first run of the xsblgt script must be made as root or using sudo; each 
+	first run of the "xsblgt" script must be made as root or using sudo; each
 	user will need to rename the file configs/xsbXX.config to configs/xsb.P 
 	and make and edit a copy of the libpaths/libpaths.pl in order to replace 
 	all occurrences of the LOGTALKUSER environment variable with its value; 

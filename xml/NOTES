@@ -117,7 +117,8 @@ logtalk.css
 lgt2pdf.sh
 	(bash shell script)
 lgt2pdf.js
-	(JScript command-line script for Windows; requires WSH 5.6 or later version)
+	(JScript command-line script for Windows; requires WSH 5.6 or later 
+	version)
 
 	Sample scripts to batch convert .xml files to .pdf files
 

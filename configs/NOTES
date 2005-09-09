@@ -148,7 +148,7 @@ ECLiPSe 5.5~5.8
 	library, or the Logtalk examples.
 
 	There is a clash between Logtalk and ECLiPSe regarding the ::/2 operator.
-	You may still use the ::/2 operator defined on the ECLiPSe constrait 
+	You may still use the ::/2 operator defined on the ECLiPSe constraint 
 	solver libraries by using explicit module qualification by writing 
 	"{library:(Var::Domain)}" (replace "library" by the actual library name; 
 	the {}/1 construct allows you to bypass the Logtalk compiler).
@@ -161,7 +161,7 @@ ECLiPSe 5.5~5.8
 
 	These calls disables debugging support for the Logtalk compiler/runtime 
 	Prolog code and mark the Logtalk predicates as built-ins. Make sure that 
-	the library toplevel is loaded if you want to use the Logtalk built-in 
+	the library top-level is loaded if you want to use the Logtalk built-in 
 	debugger.
 
 	Adopted from a config file written and tested with help of Taner Bilgic 
