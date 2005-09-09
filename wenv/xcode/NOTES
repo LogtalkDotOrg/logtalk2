@@ -29,7 +29,7 @@ directory:
 and copy to it the directory Logtalk Application
 
 
-Altough the file logtalk.pblangspec provides basic syntax coloring for the 
+Although the file logtalk.pblangspec provides basic syntax coloring for the 
 Logtalk language, it is recommended that you configure Xcode to use an 
 external text editor such as SubEthaEdit or TextMate for editing Logtalk 
 source files.
