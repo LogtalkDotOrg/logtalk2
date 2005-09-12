@@ -4,8 +4,16 @@
 	:- info([
 		version is 1.10,
 		author is 'Portable Operating-System Interface (POSI) initiative',
-		date is 2005/8/14,
-		comment is 'Portable operating system access protocol.']).
+		date is 2005/8/18,
+		comment is 'Portable operating system access protocol.',
+		remarks is [
+			'File names overview:' - 'The main idea is that file names should be operating-system independent. As such, predicates are needed to convert between portable file names and operating-system specific file names. The solution chosen is to use URL syntax for portable file names.',
+			'Local and remote file names:' - 'A (portable) file name may point to either a local file or a remote file.',
+			'URL file names:' - 'These are file names which start with an access protocol (e.g. {http, https, ftp, gopher, file}://).',
+			'Absolute file names:' - 'These are file names that always point to a local file. They always start with a slash character (/).',
+			'Relative file names:' - 'These are file names that always point to a local file. A file name is a relative file name if it does not start with a slash character or a file access protocol (including the :// characters).',
+			'Canonical file names' - 'These are file names where any environment variables was been expanded and where the sequences for current (.) and parent (..) directories have been resolved.',
+			'Time stamps:' - 'Time stamps are used for representing current, system time and in file properties to represent creation, modification, and access times. Time stamps are system-dependent terms but that can be compared (e.g. when testing which of two given files is older).']]).
 
 	:- public(make_directory/1).
 	:- mode(make_directory(+atom), one).
@@ -60,7 +68,7 @@
 	:- public(directory_files/3).
 	:- mode(directory_files(+atom, +atom, -list), one).
 	:- info(directory_files/3, [
-		comment is 'List of all directory files that matches a regular expression (returns an empty list when no file matches).',
+		comment is 'List of all directory files that matches a regular expression (returns an empty list when no file matches; may be used to find hidden files given an appropriate filter).',
 		argnames is ['Directory', 'Filter', 'Files'],
 		exceptions is [
 			'Directory is not instantiated' - instantiation_error,
@@ -68,12 +76,12 @@
 			'No read permission for the directory' - permission_error(read, 'Directory'),
 			'Directory does not exists' - existence_error(directory, 'Directory'),
 			'Filter is not instantiated' - instantiation_error,
-			'Filter is neither a variable nor an atom' - type_error(atom, 'Filter')]]).
+			'Filter is neither a variable nor a valid regular expression' - type_error(regular_expression, 'Filter')]]).
 
 	:- public(directory_files/2).
 	:- mode(directory_files(+atom, -list), one).
 	:- info(directory_files/2, [
-		comment is 'List of all directory files (returns an empty list when the directory is empty).',
+		comment is 'List of all directory files (returns an empty list when the directory is empty; hidden files are not retrieved).',
 		argnames is ['Directory', 'Files'],
 		exceptions is [
 			'Directory is not instantiated' - instantiation_error,
@@ -91,6 +99,16 @@
 			'File is neither a variable nor a valid file name' - type_error(file_name, 'File'),
 			'File does not exists' - existence_error(file, 'File'),
 			'No write permission to the file' - permission_error(write, 'File')]]).
+
+	:- public(delete_files/1).
+	:- mode(delete_files(+atom), one).
+	:- info(delete_files/1, [
+		comment is 'Deletes a set of matching files.',
+		argnames is ['Filter'],
+		exceptions is [
+			'Filter is not instantiated' - instantiation_error,
+			'Filter is neither a variable nor a valid regular expression' - type_error(regular_expression, 'Filter'),
+			'No permission to delete some of the matching files' - permission_error(write, 'File')]]).
 
 	:- public(rename_file/2).
 	:- mode(rename_file(+atom, +atom), zero_or_one).
