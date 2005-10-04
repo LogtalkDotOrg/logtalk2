@@ -131,6 +131,8 @@
 :- dynamic('$lgt_pp_category_'/6).				% '$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Mode)
 :- dynamic('$lgt_pp_protocol_'/5).				% '$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Mode)
 
+:- dynamic('$lgt_pp_module'/1).					% '$lgt_pp_module'(Module)
+
 :- dynamic('$lgt_pp_uses_'/1).					% '$lgt_pp_uses_'(Obj)
 :- dynamic('$lgt_pp_uses_'/2).					% '$lgt_pp_uses_'(Obj, Predicate)
 :- dynamic('$lgt_pp_calls_'/1).					% '$lgt_pp_calls_'(Entity)
@@ -2187,7 +2189,10 @@ current_logtalk_flag(version, version(2, 25, 3)).
 					;
 					throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))))
 			;
-			throw(error(existence_error(object, Obj), Obj::Pred, Sender))).
+			(current_module(Obj) ->
+				Obj:Pred
+				;
+				throw(error(existence_error(object, Obj), Obj::Pred, Sender)))).
 
 
 
@@ -3280,6 +3285,25 @@ current_logtalk_flag(version, version(2, 25, 3)).
 
 % '$lgt_tr_file'(+term, +list, +stream, +stream)
 
+'$lgt_tr_file'(end_of_file, _, _, ObjectStream) :-
+	'$lgt_pp_module'(Module),
+	'$lgt_pp_object_'(Module, _, _, _, _, _, _, _, _, _, _),
+	'$lgt_tr_entity'(object, Module, ObjectStream),
+	'$lgt_report_compiled_entity'(module, Module),
+	!.
+
+'$lgt_tr_file'(end_of_file, _, _, _) :-
+	'$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
+	throw(entity_ending_directive_missing(object, Obj)).
+
+'$lgt_tr_file'(end_of_file, _, _, _) :-
+	'$lgt_pp_protocol_'(Ptc, _, _, _, _),
+	throw(entity_ending_directive_missing(protocol, Ptc)).
+
+'$lgt_tr_file'(end_of_file, _, _, _) :-
+	'$lgt_pp_category_'(Ctg, _, _, _, _, _),
+	throw(entity_ending_directive_missing(category, Ctg)).
+
 '$lgt_tr_file'(end_of_file, _, _, _) :-
 	!.
 
@@ -3436,6 +3460,7 @@ current_logtalk_flag(version, version(2, 25, 3)).
 	retractall('$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _)),
 	retractall('$lgt_pp_protocol_'(_, _, _, _, _)),
 	retractall('$lgt_pp_category_'(_, _, _, _, _, _)),
+	retractall('$lgt_pp_module'(_)),
 	retractall('$lgt_pp_implemented_protocol_'(_, _, _, _)),
 	retractall('$lgt_pp_imported_category_'(_, _, _, _, _)),
 	retractall('$lgt_pp_extended_object_'(_, _, _, _, _, _, _, _, _, _)),
@@ -3798,6 +3823,20 @@ current_logtalk_flag(version, version(2, 25, 3)).
 		throw(closing_directive_mismatch).
 
 
+% compile modules as objects
+
+'$lgt_tr_directive'(module, [Module| ExportList], _) :-
+	atom(Module) ->
+		assertz('$lgt_pp_module'(Module)),				% remeber we are compiling a module
+		'$lgt_report_compiling_entity'(module, Module),
+		'$lgt_tr_object_id'(Module, static),			% assume static module/object
+		'$lgt_tr_object_relations'([], Module),
+		'$lgt_tr_directive'((public), ExportList, _),	% make the export list public predicates
+		'$lgt_save_file_op_table'
+		;
+		throw(type_error(module_identifier, Module)).
+
+
 % dynamic entity directive
 
 '$lgt_tr_directive'((dynamic), [], _) :-
@@ -3857,6 +3896,11 @@ current_logtalk_flag(version, version(2, 25, 3)).
 		assertz('$lgt_pp_uses_'(Obj))
 		;
 		throw(type_error(object_identifier, Obj)).
+
+
+'$lgt_tr_directive'(use_module, [Module, Preds], _) :-
+	!,
+	'$lgt_tr_directive'(uses, [Module, Preds], _).
 
 
 '$lgt_tr_directive'(calls, Ptcs, _) :-
@@ -7689,6 +7733,9 @@ current_logtalk_flag(version, version(2, 25, 3)).
 '$lgt_lgt_opening_directive'(protocol, N) :-
 	N =:= 1; N =:= 2.
 
+'$lgt_lgt_opening_directive'(module, N) :-
+	N =:= 1; N =:= 2.
+
 
 '$lgt_lgt_closing_directive'(end_object, 0).
 
@@ -7703,6 +7750,8 @@ current_logtalk_flag(version, version(2, 25, 3)).
 '$lgt_lgt_entity_directive'(calls, N) :-
 	N >= 1.
 '$lgt_lgt_entity_directive'(uses, N) :-
+	N =:= 1; N =:= 2.
+'$lgt_lgt_entity_directive'(use_module, N) :-
 	N =:= 1; N =:= 2.
 
 '$lgt_lgt_entity_directive'((initialization), 1).
