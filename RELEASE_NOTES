@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.25.3
+Release 2.26.0
 
 Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -8,6 +8,15 @@ Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.26.0 - October ??, 2005
+
+	Added Prolog modules integration code allowing modules to be compiled as 
+	objects and allowing messages to be sent to modules.
+
+	Improved CIAO integration scripts in order to suppress some (warmless) 
+	warnings which are generated at first run.
 
 
 2.25.3 - September 12, 2005

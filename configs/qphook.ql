@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.25.3
+%  Release 2.26.0
 %
 %  integration code for Qu-Prolog 6.4 and later versions
 %  used when generating a new interpreter that embeds Logtalk
