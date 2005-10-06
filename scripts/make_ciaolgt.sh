@@ -2,7 +2,7 @@
 
 ## =================================================================
 ## Logtalk - Object oriented extension to Prolog
-## Release 2.25.3
+## Release 2.26.0
 ##
 ## Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 ## =================================================================
@@ -42,15 +42,16 @@ cd "$LOGTALKHOME"
 mkdir -p bin
 cd bin
 echo ":- ensure_loaded('\$LOGTALKUSER/configs/ciao_aux.config')." > logtalk_ciao.rc
+echo ":- set_prolog_flag(multi_arity_warnings, off)." >> logtalk_ciao.rc
 echo ":- ensure_loaded('\$LOGTALKHOME/compiler/logtalk.pl')." >> logtalk_ciao.rc
 echo ":- ensure_loaded('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_ciao.rc
 echo ":- op(600, xfy, ::)." >> logtalk_ciao.rc
-echo ":- op(600,  fy, ::)." >> logtalk_ciao.rc
-echo ":- op(600,  fy, ^^)." >> logtalk_ciao.rc
-echo ":- op(200,  fy, +)." >> logtalk_ciao.rc
-echo ":- op(200,  fy, ?)." >> logtalk_ciao.rc
-echo ":- op(200,  fy, @)." >> logtalk_ciao.rc
-echo ":- op(200,  fy, -)." >> logtalk_ciao.rc
+echo ":- op(600, fy, ::)." >> logtalk_ciao.rc
+echo ":- op(600, fy, ^^)." >> logtalk_ciao.rc
+echo ":- op(200, fy, +)." >> logtalk_ciao.rc
+echo ":- op(200, fy, ?)." >> logtalk_ciao.rc
+echo ":- op(200, fy, @)." >> logtalk_ciao.rc
+echo ":- op(200, fy, -)." >> logtalk_ciao.rc
 echo "#/bin/sh" > ciaolgt
 echo "ciaosh -l \$LOGTALKHOME/bin/logtalk_ciao.rc" >> ciaolgt
 chmod a+x ciaolgt

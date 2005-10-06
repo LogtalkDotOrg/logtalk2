@@ -1,6 +1,6 @@
 // =================================================================
 // Logtalk - Object oriented extension to Prolog
-// Release 2.25.3
+// Release 2.26.0
 //
 // Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 // =================================================================
@@ -57,15 +57,16 @@ if (!FSObject.FolderExists(logtalk_home + "\\bin"))
 var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_ciao.pl", true);
 
 f.WriteLine(":- ensure_loaded('\$LOGTALKUSER/configs/ciao_aux.config').");
+f.WriteLine(":- set_prolog_flag(multi_arity_warnings, off).");
 f.WriteLine(":- ensure_loaded('\$LOGTALKHOME/compiler/logtalk.pl').");
 f.WriteLine(":- ensure_loaded('\$LOGTALKUSER/libpaths/libpaths.pl').");
 f.WriteLine(":- op(600, xfy, ::).");
-f.WriteLine(":- op(600,  fy, ::).");
-f.WriteLine(":- op(600,  fy, ^^).");
-f.WriteLine(":- op(200,  fy, +).");
-f.WriteLine(":- op(200,  fy, ?).");
-f.WriteLine(":- op(200,  fy, @).");
-f.WriteLine(":- op(200,  fy, -).");
+f.WriteLine(":- op(600, fy, ::).");
+f.WriteLine(":- op(600, fy, ^^).");
+f.WriteLine(":- op(200, fy, +).");
+f.WriteLine(":- op(200, fy, ?).");
+f.WriteLine(":- op(200, fy, @).");
+f.WriteLine(":- op(200, fy, -).");
 f.Close();
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
