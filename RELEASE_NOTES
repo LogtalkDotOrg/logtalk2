@@ -10,12 +10,14 @@ RELEASE NOTES
 =============
 
 
-2.26.0 - October ??, 2005
+2.26.0 - October 17, 2005
 
-	Added Prolog modules integration code allowing modules to be compiled as 
+	Added Prolog modules migration code allowing modules to be compiled as 
 	objects and allowing messages to be sent to modules.
 
-	Improved CIAO integration scripts in order to suppress some (warmless) 
+	Added a Prolog Migration Guide to the Logtalk documentation.
+
+	Improved CIAO integration scripts in order to suppress some (harmless) 
 	warnings which are generated at first run.
 
 

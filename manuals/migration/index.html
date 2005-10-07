@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml-stylesheet type="text/css" href="../styles.css" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<title>Prolog Migration Guide</title>
+	<link rel="stylesheet" href="../styles.css" type="text/css" />
+</head>
+
+<body>
+
+<div class="navtop">
+<a href="../index.html">contents</a>
+</div>
+
+<h1>Prolog Migration Guide</h1>
+
+<p>
+Your application may include plain Prolog files, Prolog modules, and Logtalk objects. This is a perfect valid way of developing a complex application and, in some cases, it might be the most appropriated solution. You may be using modules when simple encapsulation is adequate and Logtalk objects when more powerful encapsulation and reuse features are needed. You may also want to reuse Prolog modules as objects from inside Logtalk. Or you may want to run a Prolog application which uses modules on a Prolog compiler with no module system. This guide provides tips for integrating and migrating plain Prolog code and Prolog module code to Logtalk.
+</p>
+
+
+<h2>Encapsulating plain Prolog code in objects<a name="encapsulating"></a></h2>
+
+<p>
+Most Prolog applications consist of several source files, which one defining a few top predicates and auxiliary predicates that are not meant to be directly called by the user. Encapsulating Prolog code using Logtalk objects is easy. First, for each source file, you add an opening object directive to the beginning of the file and an ending object directive to end of the file. Choose an object name that reflects the purpose of source file code. Second, add public predicate directives for the top-level predicates that are used directly by the user or called from other source files. Third, we need to be able to call from inside an object a predicate defined in other source file/object. The easiest solution, which has the advantage of not implying any modification to the predicate clauses, is to use <code>uses/2</code> directives. If your Prolog compiler supports cross-referencing tools, you may use them to help you make sure that all calls to predicates on other source files/objects are listed in the <code>uses/2</code> directives.
+</p>
+
+<h2>Converting Prolog modules into objects<a name="converting"></a></h2>
+
+<p>
+First, convert the module <code>module/1</code> directive into an opening object directive, <code>object/1</code>, using the module as the object name. For <code>module/2</code> directives apply the same conversion and convert the list of exported predicates into Logtalk public predicate directives. Second, add a closing object directive, <code>end_object</code>, at the end of the module code. Third, convert any <code>export/1</code> directives into public predicate directives. Fourth, convert any <code>use_module/2</code> directives into Logtalk <code>uses/2</code> directives. The conversion of <code>use_module/1</code> directives are also converted into Logtalk <code>uses/2</code> directives but you will need to first find out which predicates your module uses from the specified modules. Fifth, convert any <code>meta_predicate/1</code> directives into Logtalk <code>metapredicate/1</code> directives by replacing the module meta-argument indicator, <code>:</code>, into the Logtalk meta-predicate indicator, <code>::</code>. Arguments which are not meta-arguments are represented by the <code>*</code> character.
+</p>
+
+
+<h2>Compiling Prolog modules as objects<a name="converting"></a></h2>
+
+<p>
+An alternative to convert Prolog modules into objects is to just compile the modules as objects. You may compile a Prolog module as an object by changing the source file name extension to <code>.lgt</code> and then using the <code>logtalk_load/1-2</code> and <code>logtalk_compile/1-2</code> predicates. This allows you to reuse existing module code as objects. However, there are some limitations that you should be aware. These limitations are a consequence of the lack of standardization of Prolog module systems. Currently, Logtalk supports the following module directives:
+</p>
+<dl>
+	<dt><code>module/1</code></dt>
+		<dd>The module name (an atom) becomes the object name.</dd>
+	<dt><code>module/2</code></dt>
+		<dd>The module name (an atom) becomes the object name. The exported predicates become the public object predicates.</dd>
+	<dt><code>use_module/2</code></dt>
+		<dd>This directive is compiled as a Logtalk <code>uses/2</code> directive in order to ensure correct compilation of the module predicate clauses. Note that the module specified on the directive is not automatically loaded by Logtalk (as it would be when compiling the directive using Prolog instead of Logtalk; the programmer may also want the specified module to be compiled as an object).</dd>
+	<dt><code>export/1</code></dt>
+		<dd>Exported predicates are compiled as public object predicates. Exported predicates may be represented as predicate indicators (<code>Functor/Arity</code>) or callable terms (<code>Functor(...)</code>).</dd>
+	<dt><code>meta_predicate/1</code></dt>
+		<dd>Module meta-predicates become the object meta-predicates. Only predicate arguments marked as <code>:</code> are interpreted as meta-arguments.</dd>
+</dl>
+<p>
+Note that module <code>use_module/1</code> directives are not currently supported. Due to the lack standardization, there is no common predicate for finding the list of predicates exported by a module. This prevents the Logtalk compiler of generating the corresponding <code>uses/2</code> directives.
+<p>
+Compiling Prolog modules as objects allows users to run Prolog module applications on Prolog compilers with no module support.<a name="modules"></a></h2>
+</p>
+
+
+<h2>Calling Prolog module predicates from objects using message sending<a name="converting"></a></h2>
+
+<p>
+Logtalk allows you to send a message to a module in order to call one of its predicates. This is usually not advised as it implies a performance penalty when compared to just using <code>Module:Call</code> notation (encapsulating the call between curly brackets when sending the message from inside an object). Note that this only works if there is no object with the same name as the module you are targeting.
+</p>
+
+
+<div class="navbottom">
+<a href="../glossary.html">glossary</a>
+</div>
+
+<div class="copyright">
+Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://www.logtalk.org">Logtalk.org</a>
+</div>
+
+<div class="footer">
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: September 8, 2005</span></p>
+</div>
+</body>
+</html>
