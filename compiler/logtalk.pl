@@ -2189,8 +2189,8 @@ current_logtalk_flag(version, version(2, 26, 0)).
 					;
 					throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))))
 			;
-			(current_module(Obj) ->
-				Obj:Pred
+			(catch(current_module(Obj), _, fail) ->
+				':'(Obj, Pred)
 				;
 				throw(error(existence_error(object, Obj), Obj::Pred, Sender)))).
 
@@ -3898,9 +3898,9 @@ current_logtalk_flag(version, version(2, 26, 0)).
 		throw(type_error(object_identifier, Obj)).
 
 
-'$lgt_tr_directive'(use_module, [Module, Preds], _) :-
-	!,
-	'$lgt_tr_directive'(uses, [Module, Preds], _).
+'$lgt_tr_directive'(use_module, [Module, Preds], Stream) :-
+	(atom(Module) -> Name = Module; arg(1, Module, Name)),
+	'$lgt_tr_directive'(uses, [Name, Preds], Stream).
 
 
 '$lgt_tr_directive'(calls, Ptcs, _) :-
@@ -3942,6 +3942,11 @@ current_logtalk_flag(version, version(2, 26, 0)).
 				assertz('$lgt_pp_public_'(Functor, Arity2))
 				;
 				throw(type_error(predicate_indicator, Pred))))).
+
+
+'$lgt_tr_directive'((export), List, Stream) :-
+	'$lgt_pred_list_to_pred_indicators'(List, Preds),
+	'$lgt_tr_directive'((public), Preds, Stream).
 
 
 '$lgt_tr_directive'(protected, Preds, _) :-
@@ -4008,6 +4013,12 @@ current_logtalk_flag(version, version(2, 26, 0)).
 			throw(type_error(metapredicate_term, Pred)))).
 
 
+'$lgt_tr_directive'(meta_predicate, Preds, Stream) :-
+	'$lgt_convert_to_list'(Preds, Preds2),
+	'$lgt_convert_module_meta_predicate_args'(Preds2, Preds3),
+	'$lgt_tr_directive'(metapredicate, Preds3, Stream).
+
+
 '$lgt_tr_directive'((mode), [Mode, Solutions], _) :-
 	'$lgt_valid_mode_term'(Mode) ->
 		('$lgt_valid_number_of_solutions'(Solutions) ->
@@ -4054,6 +4065,48 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	Pred =.. [_| Args],
 	Alias =.. [Functor2| Args],
 	assertz('$lgt_pp_alias_'(Entity, Pred, Alias)).
+
+
+
+% auxiliary predicate for converting module's meta predicate declarations to 
+% Logtalk ones
+
+'$lgt_convert_module_meta_predicate_args'([], []).
+
+'$lgt_convert_module_meta_predicate_args'([Pred| Preds], [Pred2| Preds2]) :-
+	Pred =.. [Functor| Args],
+	'$lgt_convert_meta_predicate_mode_spec'(Args, Args2),
+	Pred2 =.. [Functor| Args2],
+	'$lgt_convert_module_meta_predicate_args'(Preds, Preds2).
+
+
+'$lgt_convert_meta_predicate_mode_spec'([], []).
+
+'$lgt_convert_meta_predicate_mode_spec'([Arg| Args], [Arg2| Args2]) :-
+	(Arg = (:) -> Arg2 = (::); Arg2 = (*)),
+	'$lgt_convert_meta_predicate_mode_spec'(Args, Args2).
+
+
+
+% auxiliary predicates for converting module's export/1 argument into a list of
+% predicate indicators; some Prolog compilers alaready use a list of predicate
+% indicators while others use a list of predicate templates
+
+'$lgt_pred_list_to_pred_indicators'([], []).
+
+'$lgt_pred_list_to_pred_indicators'([Functor/Arity| Preds], [Functor/Arity| Preds]) :-
+	!.
+
+'$lgt_pred_list_to_pred_indicators'(Templates, Preds) :-
+	!,
+	'$lgt_pred_templates_to_pred_indicators'(Templates, Preds).
+
+
+'$lgt_pred_templates_to_pred_indicators'([], []).
+
+'$lgt_pred_templates_to_pred_indicators'([Template| Templates], [Functor/Arity| Preds]) :-
+	functor(Template, Functor, Arity),
+	'$lgt_pred_templates_to_pred_indicators'(Templates, Preds).
 
 
 
@@ -5993,7 +6046,8 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	'$lgt_pp_referenced_object_'(Obj),
 	\+ '$lgt_current_object_'(Obj, _, _, _, _, _),
 	\+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
-	\+ '$lgt_pp_entity_init_'(Obj, _).
+	\+ '$lgt_pp_entity_init_'(Obj, _),
+	\+ catch(current_module(Obj), _, fail).
 
 
 
@@ -7768,7 +7822,9 @@ current_logtalk_flag(version, version(2, 26, 0)).
 '$lgt_lgt_predicate_directive'((dynamic), N) :-
 	N >= 1.
 
-'$lgt_lgt_predicate_directive'(metapredicate, N) :-
+'$lgt_lgt_predicate_directive'(metapredicate, N) :-		% Logtalk directive
+	N >= 1.
+'$lgt_lgt_predicate_directive'((meta_predicate), N) :-	% Prolog modules directive
 	N >= 1.
 
 '$lgt_lgt_predicate_directive'((discontiguous), N) :-
