@@ -6047,8 +6047,8 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	\+ '$lgt_current_object_'(Obj, _, _, _, _, _),
 	\+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
 	\+ '$lgt_pp_entity_init_'(Obj, _),
-	\+ catch(current_module(Obj), _, fail).
-
+	\+ catch(current_module(Obj), _, fail).		% use catch/3 to avoid errors with Prolog
+												% compilers with no module support
 
 
 % '$lgt_report_unknown_protocols'
@@ -7789,7 +7789,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 '$lgt_lgt_opening_directive'(protocol, N) :-
 	N =:= 1; N =:= 2.
 
-'$lgt_lgt_opening_directive'(module, N) :-
+'$lgt_lgt_opening_directive'(module, N) :-				% Prolog module directive
 	N =:= 1; N =:= 2.
 
 
@@ -7807,8 +7807,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	N >= 1.
 '$lgt_lgt_entity_directive'(uses, N) :-
 	N =:= 1; N =:= 2.
-'$lgt_lgt_entity_directive'(use_module, N) :-
-	N =:= 1; N =:= 2.
+'$lgt_lgt_entity_directive'(use_module, 2).				% Prolog module directive
 
 '$lgt_lgt_entity_directive'((initialization), 1).
 
@@ -7826,7 +7825,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 '$lgt_lgt_predicate_directive'(metapredicate, N) :-		% Logtalk directive
 	N >= 1.
-'$lgt_lgt_predicate_directive'((meta_predicate), N) :-	% Prolog modules directive
+'$lgt_lgt_predicate_directive'((meta_predicate), N) :-	% Prolog module directive
 	N >= 1.
 
 '$lgt_lgt_predicate_directive'((discontiguous), N) :-
@@ -7837,6 +7836,8 @@ current_logtalk_flag(version, version(2, 26, 0)).
 '$lgt_lgt_predicate_directive'(protected, N) :-
 	N >= 1.
 '$lgt_lgt_predicate_directive'(private, N) :-
+	N >= 1.
+'$lgt_lgt_predicate_directive'((export), N) :-			% Prolog module directive
 	N >= 1.
 
 '$lgt_lgt_predicate_directive'((mode), 2).
