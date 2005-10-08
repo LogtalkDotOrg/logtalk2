@@ -15,7 +15,11 @@ RELEASE NOTES
 	Added Prolog modules migration code allowing modules to be compiled as 
 	objects and allowing messages to be sent to modules.
 
-	Added a Prolog Migration Guide to the Logtalk documentation.
+	Added a "Prolog Integration and Migration Guide" to the Logtalk 
+	documentation.
+
+	Changed generation of predicate compiled functors to add an underscore 
+	between the original predicate functor and arity.
 
 	Improved CIAO integration scripts in order to suppress some (harmless) 
 	warnings which are generated at first run.
