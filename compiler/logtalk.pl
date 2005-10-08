@@ -7696,7 +7696,8 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	('$lgt_current_object_'(Entity, Prefix, _, _, _, _), Type = object
 	;
 	'$lgt_current_category_'(Entity, Prefix, _), Type = category),
-	atom_concat(Functor, Atom, FunctorPlusArity),
+	atom_concat(Functor, Aux, FunctorPlusArity),
+	atom_concat('_', Atom, Aux),
 	!.
 
 
