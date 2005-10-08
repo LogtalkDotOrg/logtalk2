@@ -7674,9 +7674,10 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 '$lgt_construct_predicate_functor'(EPrefix, Functor, Arity, PPrefix) :-
 	atom_concat(EPrefix, Functor, Aux),
+	atom_concat(Aux, '_', Aux2),
 	number_codes(Arity, Codes),
 	atom_codes(Atom, Codes),
-	atom_concat(Aux, Atom, PPrefix).
+	atom_concat(Aux2, Atom, PPrefix).
 
 
 
