@@ -19,36 +19,34 @@ Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 paulo
 carlos
 helena
-
 yes
 
 
-% same goal as above but the call is made using an imported meta-predicate:
+% same goal as above but the call is made using a meta-predicate
+% imported from other module:
 
 | ?- test::test.
 
 paulo
 carlos
 helena
-
 yes
 
 
-% test the compilation of the module export/1 directive:
+% test the compilation of the module export/1 directive; module 
+% exported predicates become public predicates:
 
 | ?- exports::current_predicate(P).
 
-P = p/1 ;
-
+P = p/1
 yes
 
 
-% call the module exported predicate using message sending:
+% call the module exported/public predicate using message sending:
 
 | ?- exports::p(N).
 
 N = 1 ;
 N = 2 ;
 N = 3
-
 yes
