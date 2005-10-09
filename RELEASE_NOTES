@@ -13,7 +13,8 @@ RELEASE NOTES
 2.26.0 - October 17, 2005
 
 	Added Prolog modules migration code allowing modules to be compiled as 
-	objects and allowing messages to be sent to modules.
+	objects and allowing messages to be sent to modules. Added a new "modules"
+	example.
 
 	Added a "Prolog Integration and Migration Guide" to the Logtalk 
 	documentation.

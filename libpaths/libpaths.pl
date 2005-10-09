@@ -34,6 +34,7 @@
 	 assertz(logtalk_library_path(metapredicates, '$LOGTALKUSER/examples/metapredicates/')),
 	 assertz(logtalk_library_path(mi, '$LOGTALKUSER/examples/mi/')),
 	 assertz(logtalk_library_path(miscellaneous, '$LOGTALKUSER/examples/miscellaneous/')),
+	 assertz(logtalk_library_path(modules, '$LOGTALKUSER/examples/modules/')),
 	 assertz(logtalk_library_path(msglog, '$LOGTALKUSER/examples/msglog/')),
 	 assertz(logtalk_library_path(operators, '$LOGTALKUSER/examples/operators/')),
 	 assertz(logtalk_library_path(parametric, '$LOGTALKUSER/examples/parametric/')),

@@ -1,0 +1,22 @@
+=================================================================
+Logtalk - Object oriented extension to Prolog
+Release 2.26.0
+
+Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
+=================================================================
+
+
+To load this example and for sample queries, please see the SCRIPT file.
+
+This example illustrates compilation of Prolog module files as objects.
+
+Due to the lack of standardization of Prolog module systems, the module 
+files use a common subset of Prolog module directives. Specifically:
+
+	- module/1-2
+	- use_module/2
+	- export/1
+	- meta_predicate/1
+
+Consult the "Prolog Integration and Migration Guide" in the Logtalk 
+documentation for further details.

@@ -117,6 +117,9 @@ mi
 miscellaneous
 	unsorted examples
 
+modules
+	simple example of compiling Prolog module files as objects
+
 msglog
 	example of using events and monitors for recording, replaying, and 
 	printing user messages
