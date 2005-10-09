@@ -3904,7 +3904,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 '$lgt_tr_directive'(calls, Ptcs, _) :-
-	'$lgt_convert_to_list'(Ptcs, Ptcs2),
+	'$lgt_flatten_list'(Ptcs, Ptcs2),
 	forall(
 		'$lgt_member'(Ptc, Ptcs2),
 		(atom(Ptc) ->
@@ -3931,7 +3931,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 '$lgt_tr_directive'((public), Preds, _) :-
-	'$lgt_convert_to_list'(Preds, Preds2),
+	'$lgt_flatten_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
 		('$lgt_valid_pred_ind'(Pred, Functor, Arity) ->
@@ -3945,13 +3945,13 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 '$lgt_tr_directive'((export), Preds, Stream) :-
-	'$lgt_convert_to_list'(Preds, Preds2),
+	'$lgt_flatten_list'(Preds, Preds2),
 	'$lgt_pred_list_to_pred_indicators'(Preds2, Preds3),
 	'$lgt_tr_directive'((public), Preds3, Stream).
 
 
 '$lgt_tr_directive'(protected, Preds, _) :-
-	'$lgt_convert_to_list'(Preds, Preds2),
+	'$lgt_flatten_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
 		('$lgt_valid_pred_ind'(Pred, Functor, Arity) ->
@@ -3965,7 +3965,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 '$lgt_tr_directive'(private, Preds, _) :-
-	'$lgt_convert_to_list'(Preds, Preds2),
+	'$lgt_flatten_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
 		('$lgt_valid_pred_ind'(Pred, Functor, Arity) ->
@@ -3979,7 +3979,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 '$lgt_tr_directive'((dynamic), Preds, _) :-
-	'$lgt_convert_to_list'(Preds, Preds2),
+	'$lgt_flatten_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
 		('$lgt_valid_pred_ind'(Pred, Functor, Arity) ->
@@ -3992,7 +3992,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 '$lgt_tr_directive'((discontiguous), Preds, _) :-
-	'$lgt_convert_to_list'(Preds, Preds2),
+	'$lgt_flatten_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
 		('$lgt_valid_pred_ind'(Pred, Functor, Arity) ->
@@ -4005,7 +4005,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 '$lgt_tr_directive'(metapredicate, Preds, _) :-
-	'$lgt_convert_to_list'(Preds, Preds2),
+	'$lgt_flatten_list'(Preds, Preds2),
 	forall(
 		'$lgt_member'(Pred, Preds2),
 		('$lgt_valid_metapred_term'(Pred) ->
@@ -4015,7 +4015,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 '$lgt_tr_directive'(meta_predicate, Preds, Stream) :-
-	'$lgt_convert_to_list'(Preds, Preds2),
+	'$lgt_flatten_list'(Preds, Preds2),
 	'$lgt_convert_module_meta_predicate_args'(Preds2, Preds3),
 	'$lgt_tr_directive'(metapredicate, Preds3, Stream).
 
@@ -4131,23 +4131,23 @@ current_logtalk_flag(version, version(2, 26, 0)).
 % translates a relation between an object (the last argument) with other entities
 
 '$lgt_tr_object_relation'(implements, Ptcs, Obj) :-
-	'$lgt_convert_to_list'(Ptcs, List),
+	'$lgt_flatten_list'(Ptcs, List),
 	'$lgt_tr_implements_protocol'(List, Obj).
 
 '$lgt_tr_object_relation'(imports, Ctgs, Obj) :-
-	'$lgt_convert_to_list'(Ctgs, List),
+	'$lgt_flatten_list'(Ctgs, List),
 	'$lgt_tr_imports_category'(List, Obj).
 
 '$lgt_tr_object_relation'(instantiates, Classes, Obj) :-
-	'$lgt_convert_to_list'(Classes, List),
+	'$lgt_flatten_list'(Classes, List),
 	'$lgt_tr_instantiates_class'(List, Obj).
 
 '$lgt_tr_object_relation'(specializes, Superclasses, Class) :-
-	'$lgt_convert_to_list'(Superclasses, List),
+	'$lgt_flatten_list'(Superclasses, List),
 	'$lgt_tr_specializes_class'(List, Class).
 
 '$lgt_tr_object_relation'(extends, Parents, Prototype) :-
-	'$lgt_convert_to_list'(Parents, List),
+	'$lgt_flatten_list'(Parents, List),
 	'$lgt_tr_extends_object'(List, Prototype).
 
 
@@ -4172,7 +4172,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 % translates a relation between a protocol (the last argument) with other entities
 
 '$lgt_tr_protocol_relation'(extends, Ptcs, Ptc) :-
-	'$lgt_convert_to_list'(Ptcs, List),
+	'$lgt_flatten_list'(Ptcs, List),
 	'$lgt_tr_extends_protocol'(List, Ptc).
 
 
@@ -4197,11 +4197,11 @@ current_logtalk_flag(version, version(2, 26, 0)).
 % translates a relation between a category (the last argument) with other entities
 
 '$lgt_tr_category_relation'(implements, Ptcs, Ctg) :-
-	'$lgt_convert_to_list'(Ptcs, List),
+	'$lgt_flatten_list'(Ptcs, List),
 	'$lgt_tr_implements_protocol'(List, Ctg).
 
 '$lgt_tr_category_relation'(imports, Ctgs, Ctg) :-
-	'$lgt_convert_to_list'(Ctgs, List),
+	'$lgt_flatten_list'(Ctgs, List),
 	'$lgt_tr_imports_category'(List, Ctg).
 
 
@@ -7895,18 +7895,20 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 
-% '$lgt_convert_to_list'(+pi_or_pi_list, -pi_list)
+% '$lgt_flatten_list'(+list, -list)
+%
+% flattens a list of terms
 
-'$lgt_convert_to_list'([[A|B]], [A|B]) :-	% predicate indicator list
+'$lgt_flatten_list'([[A|B]], [A|B]) :-	% list containing a single list
 	!.
 
-'$lgt_convert_to_list'([A|B], [A|B]) :-		% predicate indicator sequence
+'$lgt_flatten_list'([[]], []) :-		% list containing a single empty list
 	!.
 
-'$lgt_convert_to_list'([], []) :-			% empty predicate indicator list
+'$lgt_flatten_list'([A|B], [A|B]) :-	% already flattened list
 	!.
 
-'$lgt_convert_to_list'(A, [A]).				% single predicate indicator
+'$lgt_flatten_list'([], []).			% empty  list
 
 
 
@@ -8028,7 +8030,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 '$lgt_valid_op_names'(Ops) :-
 	nonvar(Ops),
-	'$lgt_convert_to_list'(Ops, List),
+	'$lgt_flatten_list'(Ops, List),
 	'$lgt_valid_op_names_aux'(List).
 
 
