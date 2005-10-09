@@ -3944,9 +3944,10 @@ current_logtalk_flag(version, version(2, 26, 0)).
 				throw(type_error(predicate_indicator, Pred))))).
 
 
-'$lgt_tr_directive'((export), List, Stream) :-
-	'$lgt_pred_list_to_pred_indicators'(List, Preds),
-	'$lgt_tr_directive'((public), Preds, Stream).
+'$lgt_tr_directive'((export), Preds, Stream) :-
+	'$lgt_convert_to_list'(Preds, Preds2),
+	'$lgt_pred_list_to_pred_indicators'(Preds2, Preds3),
+	'$lgt_tr_directive'((public), Preds3, Stream).
 
 
 '$lgt_tr_directive'(protected, Preds, _) :-
@@ -7900,6 +7901,9 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	!.
 
 '$lgt_convert_to_list'([A|B], [A|B]) :-		% predicate indicator sequence
+	!.
+
+'$lgt_convert_to_list'([], []) :-			% empty predicate indicator list
 	!.
 
 '$lgt_convert_to_list'(A, [A]).				% single predicate indicator
