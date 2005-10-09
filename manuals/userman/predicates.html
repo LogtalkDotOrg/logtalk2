@@ -210,7 +210,17 @@ Rewriting the code above using this directive results in a simplified and more e
         ...
 </pre>
 <p>
-The <code>uses/2</code> directive allows simpler predicate definitions as long as there are no conflicts between the predicates declared in the directive and the predicates defined in the object (or category) containing the directive. A predicate cannot be listed in more than one <code>uses/2</code> directive. In addition, a <code>uses/2</code> directive cannot list a predicate which is defined in the object (or category) containing the directive. Any conflicts are reported by the Logtalk pre-processor as compilation errors.
+Logtalk supports an extended version of this directive that allows the declaration of predicate alias using the notation <code>Original -&gt; Alias</code> (where both <code>Original</code> and <code>Alias</code> are predicate indicators). For example:
+</p>
+<pre>
+    :- uses(btrees, [new/1 -&gt; new_btree/1]).
+    :- uses(queues, [new/1 -&gt; new_queue/1]).
+</pre>
+<p>
+You may use this extended version for solving conflicts between predicates declared on several <code>uses/2</code> directives or just for giving new  names to the predicates that will be more meaningful on their using context.
+</p>
+<p>
+The <code>uses/2</code> directive allows simpler predicate definitions as long as there are no conflicts between the predicates declared in the directive and the predicates defined in the object (or category) containing the directive. A predicate (or its alias if defined) cannot be listed in more than one <code>uses/2</code> directive. In addition, a <code>uses/2</code> directive cannot list a predicate (or its alias if defined) which is defined in the object (or category) containing the directive. Any conflicts are reported by the Logtalk pre-processor as compilation errors.
 </p>
 <p>
 In the current Logtalk version, the omission of the <code>Object::</code> prefix is not supported when the predicate call occurs as an argument of a user-defined metapredicate (Logtalk specified metapredicates and Prolog non-standard metapredicates declared in the config files pose no problem).
@@ -219,7 +229,7 @@ In the current Logtalk version, the omission of the <code>Object::</code> prefix
 <h3>Alias directive<a name="alias"></a></h3>
 
 <p>
-Logtalk allows the definition of an alternative name for a predicate through the use of the <a title="Consult reference manual" href="../refman/directives/alias3.html"><code>alias/3</code></a> directive:
+Logtalk allows the definition of an alternative name for an inherited or imported predicate through the use of the <a title="Consult reference manual" href="../refman/directives/alias3.html"><code>alias/3</code></a> directive:
 </p>
 <pre>
     :- alias(Entity, Predicate, Alias).
