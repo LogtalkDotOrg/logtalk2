@@ -134,7 +134,7 @@
 :- dynamic('$lgt_pp_module'/1).					% '$lgt_pp_module'(Module)
 
 :- dynamic('$lgt_pp_uses_'/1).					% '$lgt_pp_uses_'(Obj)
-:- dynamic('$lgt_pp_uses_'/2).					% '$lgt_pp_uses_'(Obj, Predicate)
+:- dynamic('$lgt_pp_uses_'/3).					% '$lgt_pp_uses_'(Obj, Predicate, Alias)
 :- dynamic('$lgt_pp_calls_'/1).					% '$lgt_pp_calls_'(Entity)
 :- dynamic('$lgt_pp_info_'/1).					% '$lgt_pp_info_'(List)
 :- dynamic('$lgt_pp_info_'/2).					% '$lgt_pp_info_'(Functor/Arity, List) or '$lgt_pp_info_'(Functor//Args, List)
@@ -3468,7 +3468,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	retractall('$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _)),
 	retractall('$lgt_pp_extended_protocol_'(_, _, _, _)),
 	retractall('$lgt_pp_uses_'(_)),
-	retractall('$lgt_pp_uses_'(_, _)),
+	retractall('$lgt_pp_uses_'(_, _, _)),
 	retractall('$lgt_pp_calls_'(_)),
 	retractall('$lgt_pp_info_'(_)),
 	retractall('$lgt_pp_info_'(_, _)),
@@ -3874,16 +3874,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 		assertz('$lgt_pp_referenced_object_'(Obj)),
 		assertz('$lgt_pp_uses_'(Obj)),
 		('$lgt_proper_list'(Preds) ->
-			forall(
-				'$lgt_member'(Pred, Preds),
-				('$lgt_valid_pred_ind'(Pred, Functor, Arity) ->
-					functor(Template, Functor, Arity),
-					(\+ '$lgt_pp_uses_'(_, Template) ->
-						assertz('$lgt_pp_uses_'(Obj, Template))
-						;
-						throw(permission_error(modify, uses_object_predicate, Functor/Arity)))
-					;
-					throw(type_error(predicate_indicator, Pred))))
+			'$lgt_tr_uses_preds'(Preds, Obj)
 			;
 			throw(type_error(list, Preds)))
 		;
@@ -4066,6 +4057,34 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	Pred =.. [_| Args],
 	Alias =.. [Functor2| Args],
 	assertz('$lgt_pp_alias_'(Entity, Pred, Alias)).
+
+
+
+'$lgt_tr_uses_preds'([], _).
+
+'$lgt_tr_uses_preds'([Pred| Preds], Obj) :-
+	(Pred = (Original -> Alias) ->
+		true
+		;
+		(Original, Alias) = (Pred, Pred)),
+	('$lgt_valid_pred_ind'(Original, OFunctor, OArity) ->
+		functor(TOriginal, OFunctor, OArity)
+		;
+		throw(type_error(predicate_indicator, Original))),
+	('$lgt_valid_pred_ind'(Alias, AFunctor, AArity) ->
+		functor(TAlias, AFunctor, AArity)
+		;
+		throw(type_error(predicate_indicator, Alias))),
+	(OArity =:= AArity ->
+		true
+		;
+		throw(domain_error(arity_mismatch(Original, Alias)))),
+	(\+ '$lgt_pp_uses_'(_, _, TAlias) ->
+		assertz('$lgt_pp_uses_'(Obj, TOriginal, TAlias))
+		;
+		functor(TAlias, Functor, Arity),
+		throw(permission_error(modify, uses_object_predicate, Functor/Arity))),
+	'$lgt_tr_uses_preds'(Preds, Obj).
 
 
 
@@ -4548,9 +4567,9 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % conflict with a predicate specified in a uses/2 directive
 
-'$lgt_tr_head'(Head, _, _) :-
-	'$lgt_pp_uses_'(_, Head),
-	functor(Head, Functor, Arity),
+'$lgt_tr_head'(Alias, _, _) :-
+	'$lgt_pp_uses_'(_, _, Alias),
+	functor(Alias, Functor, Arity),
 	throw(permission_error(modify, uses_object_predicate, Functor/Arity)).
 
 
@@ -4919,8 +4938,8 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % predicates specified in uses/2 directives
 
-'$lgt_tr_body'(Pred, TPred, DPred, Ctx) :-
-	'$lgt_pp_uses_'(Obj, Pred),
+'$lgt_tr_body'(Alias, TPred, DPred, Ctx) :-
+	'$lgt_pp_uses_'(Obj, Pred, Alias),
 	!,
 	'$lgt_tr_body'(Obj::Pred, TPred, DPred, Ctx).
 

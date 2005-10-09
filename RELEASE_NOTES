@@ -19,6 +19,8 @@ RELEASE NOTES
 	Added a "Prolog Integration and Migration Guide" to the Logtalk 
 	documentation.
 
+	Added support for defining predicate aliases when using uses/2 directives.
+
 	Changed generation of predicate compiled functors to add an underscore 
 	between the original predicate functor and arity.
 
