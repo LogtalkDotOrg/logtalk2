@@ -213,8 +213,8 @@ Rewriting the code above using this directive results in a simplified and more e
 Logtalk supports an extended version of this directive that allows the declaration of predicate alias using the notation <code>Original -&gt; Alias</code> (where both <code>Original</code> and <code>Alias</code> are predicate indicators). For example:
 </p>
 <pre>
-    :- uses(btrees, [new/1 -&gt; new_btree/1]).
-    :- uses(queues, [new/1 -&gt; new_queue/1]).
+    :- uses(btrees, [new/1::new_btree/1]).
+    :- uses(queues, [new/1::new_queue/1]).
 </pre>
 <p>
 You may use this extended version for solving conflicts between predicates declared on several <code>uses/2</code> directives or just for giving new  names to the predicates that will be more meaningful on their using context.

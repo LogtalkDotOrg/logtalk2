@@ -57,8 +57,8 @@ foo :-
 <p>
 Another example, using the extended notation that allows us to define predicate aliases:
 </p>
-<pre>:- uses(btrees, [new/1 -&gt; new_btree/1]).
-:- uses(queues, [new/1 -&gt; new_queue/1]).
+<pre>:- uses(btrees, [new/1::new_btree/1]).
+:- uses(queues, [new/1::new_queue/1]).
 
 
 btree_to_queue :-

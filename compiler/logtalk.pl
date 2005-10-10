@@ -4067,7 +4067,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 '$lgt_tr_uses_preds'([], _).
 
 '$lgt_tr_uses_preds'([Pred| Preds], Obj) :-
-	(Pred = (Original -> Alias) ->
+	(Pred = (Original::Alias) ->
 		true
 		;
 		(Original, Alias) = (Pred, Pred)),
