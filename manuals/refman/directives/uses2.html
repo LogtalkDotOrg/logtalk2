@@ -24,16 +24,21 @@
 <h4>Description</h4>
 
 <blockquote>
-<pre>uses(Object, Predicates)</pre>
+<pre>uses(Object, Predicates)
+uses(Object, PredicatesAndAliases)</pre>
 <p>
 Declares that all calls (made from predicates defined in the category or object containing the directive) to the specified predicates are to be interpreted as messages to the specified object. Thus, this directive may be used to simplify writing of predicate definitions by allowing the programmer to omit the <code>Object::</code> prefix when using the predicates listed in the directive (as long as the predicate calls do not occur as arguments for user-defined metapredicates or for non-standard Prolog metapredicates not declared on the config files).
+</p>
+<p>
+It is possible to specify a predicate alias to be used instead of the original name using the notation <code>Functor/Arity -&gt; Alias/Arity</code>. Aliases may be used either for avoiding conflicts between predicates specificed in several <code>uses/2</code> directives or for giving more meanfingul names considering the using context of the predicates.
 </p>
 </blockquote>
 
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>uses(+object_identifier, +predicate_indicator_list)</pre>
+<pre>uses(+object_identifier, +predicate_indicator_list)
+uses(+object_identifier, +predicate_indicator_alias_list)</pre>
 </blockquote>
 
 
