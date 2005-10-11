@@ -4113,7 +4113,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 % auxiliary predicates for converting module's export/1 argument into a list of
-% predicate indicators; some Prolog compilers alaready use a list of predicate
+% predicate indicators; some Prolog compilers already use a list of predicate
 % indicators while others use a list of predicate templates
 
 '$lgt_pred_list_to_pred_indicators'([], []).
