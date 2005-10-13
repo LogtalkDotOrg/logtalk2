@@ -31,6 +31,9 @@ RELEASE NOTES
 	shell script where the value of the LOGTALKHOME environment variable would
 	not be retrieved at runtime.
 
+	Removed config file for older versions of XSB (up to 2.6). Renamed the 
+	config file for XSB 2.7.1 to simply "xsb.config".
+
 
 2.25.3 - September 12, 2005
 

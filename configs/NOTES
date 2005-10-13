@@ -407,10 +407,9 @@ SWI Prolog 3.3.x and all later versions
 	the @/1 operator to op(100, fx, @).
 
 
-XSB Prolog 2.6~2.7
+XSB Prolog 2.7.1
 
-	xsb26.config
-	xsb27.config
+	xsb.config
 
 	You need to rename both the config file and the Logtalk pre-processor to 
 	end with a ".P" extension otherwise the (re)consult built-in predicate 
