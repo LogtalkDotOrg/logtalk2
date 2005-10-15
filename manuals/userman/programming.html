@@ -82,7 +82,7 @@ This allows us to load a library source file without the need to first change th
     | ?- logtalk_load(shapes(loader)). 
 </pre>
 <p>
-The best way to take advantage of this feature is to load at startup a source file containing an <code>initialization/1</code> directive which asserts all the <code>logtalk_library_path/2</code> clauses needed for all available libraries. This allows us to load library source files or entire libraries without worrying about libraries paths, improving code portability.
+The best way to take advantage of this feature is to load at startup a source file containing an <code>initialization/1</code> directive which asserts all the <code>logtalk_library_path/2</code> clauses needed for all available libraries. This allows us to load library source files or entire libraries without worrying about libraries paths, improving code portability. The directory paths on the second argument must always end with the  path directory separator character.
 </p>
 <p>
 Unfortunately, a few Prolog compilers do not support the <code>&lt;library&gt;(&lt;source file&gt;)</code> notation. In this case, you will need to set the working directory to be the one that contains the source file in order to load it. The library notation provides functionality similar to the <code>file_search_path/2</code> mechanism introduced by Quintus Prolog and later adopted by some other Prolog compilers.
