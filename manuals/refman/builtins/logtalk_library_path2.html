@@ -8,7 +8,7 @@
 
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-	<title>Logtalk built-in predicate: logtalk_library_path/2</title>
+	<title>Logtalk built-in predicate: logtalk_library_load/2</title>
 	<link rel="stylesheet" href="../../styles.css" type="text/css" />
 </head>
 
@@ -26,14 +26,15 @@
 <blockquote>
 <pre>logtalk_library_path(Library, Path)</pre>
 <p>
-Dynamic, user-defined predicate for defining paths to libraries of source files. Note that some predicates do not support library notation for compiling and loading source files. The name of the library is usually (although not required) the name of the directory holding the source files. This predicate enables functionality similar to the <code>file_search_path/2</code> mechanism introduced by Quintus Prolog and later adopted by some other Prolog compilers.
+Dynamic, user-defined predicate, allowing the declaration of aliases to library paths. Library aliases may also be used on the second argument (using the notation <em>alias(path)</em>). Paths must always end with the path directory separator character.
 </p>
 </blockquote>
 
 <h4>Template and modes</h4>
 
 <blockquote>
-<pre>logtalk_library_path(?atom, ?atom)</pre>
+<pre>logtalk_library_path(?atom, -atom)
+logtalk_library_path(?atom, -compound)</pre>
 </blockquote>
 
 <h4>Errors</h4>
@@ -47,13 +48,29 @@ Dynamic, user-defined predicate for defining paths to libraries of source files.
 <h4>Examples</h4>
 
 <blockquote>
-<pre>| ?- logtalk_library_path(trees, Path).
+<pre>| ?- logtalk_library_path(viewpoints, Path).
 
-| ?- assertz(logtalk_load(types, '~/lgtapps/library/types/')).</pre>
+Path = examples('viewpoints/')
+yes
+
+| ?- logtalk_library_path(Library, Path).
+
+Library = lgtuser
+Path = '$LOGTALKUSER/' ;
+
+Library = library
+Path = lgtuser('library/') ;
+
+Library = examples
+Path = lgtuser('examples/') ;
+
+Library = viewpoints
+Path = examples('viewpoints/')
+yes</pre>
 </blockquote>
 
 <div class="navbottom">
-<a href="logtalk_load2.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="current_logtalk_flag2.html">next</a>
+<a href="logtalk_load2.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="../index.html#builtins">next</a>
 </div>
 
 <div class="copyright">
@@ -61,7 +78,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: September 8, 2005</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: October 8, 2005</span></p>
 </div>
 </body>
 </html>

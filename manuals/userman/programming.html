@@ -70,10 +70,18 @@ To take the best advantage of loader files, assert a clause to the dynamic predi
 <h3>Libraries of source files<a name="libraries"></a></h3>
 
 <p>
-Logtalk defines a <em>library</em> simply as a directory containing source files. Library locations can be specified by asserting clauses to the dynamic predicate <code>logtalk_library_path/2</code>. For example:
+Logtalk defines a <em>library</em> simply as a directory containing source files. Library locations can be specified by asserting clauses to the dynamic predicate <a title="Consult reference manual" href="../refman/builtins/logtalk_library_path2.html"><code>logtalk_library_path/2</code></a>. For example:
 </p>
 <pre>
-    | ?- assertz(logtalk_library_path(shapes, '$LOGTALKHOME/examples/shapes/')). 
+    | ?- assertz(logtalk_library_path(shapes, '$LOGTALKUSER/examples/shapes/')). 
+</pre>
+<p>
+The first argument of the predicate is used as an alias for the path on the second argument. Library aliases may also be used on the second argument. For example:
+</p>
+<pre>
+    | ?- assertz(logtalk_library_path(lgtuser, '$LOGTALKUSER/')),
+         assertz(logtalk_library_path(examples, lgtuser('examples/'))),
+         assertz(logtalk_library_path(shapes, examples('shapes/'))).
 </pre>
 <p>
 This allows us to load a library source file without the need to first change the current working directory to the library directory and then back to the original directory. For example, in order to load a <code>loader.lgt</code> file, contained in a library named <code>shapes</code>, we just need to type:
