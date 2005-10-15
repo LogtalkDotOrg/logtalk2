@@ -1132,12 +1132,8 @@ logtalk_compile(Files, Flags) :-
 	'$lgt_check_library_source_file'(Library, File).
 
 
-'$lgt_check_library_source_file'(Library, _) :-
-	\+ logtalk_library_path(Library, _),
-	throw(existence_error(library, Library)).
-
 '$lgt_check_library_source_file'(Library, File) :-
-	once(logtalk_library_path(Library, Path)),
+	'$lgt_expand_library_path'(Library, Path),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
 	catch(
@@ -1145,6 +1141,32 @@ logtalk_compile(Files, Flags) :-
 		Error,
 		('$lgt_change_directory'(Current), throw(Error))),
 	'$lgt_change_directory'(Current).
+
+
+
+% '$lgt_expand_library_path'(+atom, -atom)
+%
+% converts a library alias into its corresponding path
+
+'$lgt_expand_library_path'(Library, Path) :-
+	'$lgt_expand_library_path'(Library, Path, 16) ->
+		true
+		;
+		throw(existence_error(library, Library)).
+
+
+'$lgt_expand_library_path'(Library, Path, N) :-
+	logtalk_library_path(Library, Location) ->
+		(atom(Location) ->
+			Path = Location
+			;
+			Location =.. [Library2, Location2],
+			N2 is N - 1,
+			'$lgt_expand_library_path'(Library2, Path2, N2),
+			atom_concat(Path2, Location2, Path))
+		;
+		(atom(Library),
+		Path = Library).
 
 
 
@@ -2929,7 +2951,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	compound(Term),
 	!,
 	Term =.. [Library, File],
-	once(logtalk_library_path(Library, Path)),
+	'$lgt_expand_library_path'(Library, Path),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
 	'$lgt_report_working_directory'(Path),
@@ -3136,7 +3158,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	compound(Term),
 	!,
 	Term =.. [Library, File],
-	once(logtalk_library_path(Library, Path)),
+	'$lgt_expand_library_path'(Library, Path),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
 	'$lgt_report_working_directory'(Path),

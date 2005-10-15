@@ -24,6 +24,9 @@ RELEASE NOTES
 	Added support for syntax coloring of several Prolog module directives to 
 	the configuration files of the supported text editors.
 
+	Added suport for using library aliases on the second argument of the 
+	logtalk_library_path/2 predicate (using the format alias(path)).
+
 	Changed generation of predicate compiled functors to add an underscore 
 	between the original predicate functor and arity.
 
