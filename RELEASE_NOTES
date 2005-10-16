@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.26.0 - October 17, 2005
+2.26.0 - October 24, 2005
 
 	Added support for defining predicate aliases when using uses/2 directives.
 
@@ -39,6 +39,9 @@ RELEASE NOTES
 
 	Removed config file for older versions of XSB (up to 2.6). Renamed the 
 	config file for XSB 2.7.1 to simply "xsb.config".
+
+	Consolidated the source files of the example "symdiff" into a single 
+	source file.
 
 
 2.25.3 - September 12, 2005
