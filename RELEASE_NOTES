@@ -40,8 +40,8 @@ RELEASE NOTES
 	Removed config file for older versions of XSB (up to 2.6). Renamed the 
 	config file for XSB 2.7.1 to simply "xsb.config".
 
-	Consolidated the source files of the example "symdiff" into a single 
-	source file.
+	Consolidated the source files of the examples "relations" and "symdiff" 
+	into a single source files.
 
 
 2.25.3 - September 12, 2005
