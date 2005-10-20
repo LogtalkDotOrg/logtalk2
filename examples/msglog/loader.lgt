@@ -9,5 +9,5 @@ files, comment the directive above and uncomment the directive below
 
 :- initialization(
 	logtalk_load(
-		[msglog], [events(on), doctype(standalone)])).
+		[msglog], [events(on), xmlsref(standalone)])).
 */

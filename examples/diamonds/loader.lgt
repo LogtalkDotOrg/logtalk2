@@ -9,5 +9,5 @@ files, comment the directive above and uncomment the directive below
 
 :- initialization(
 	logtalk_load(
-		[diamond1, diamond2, diamond3], [doctype(standalone)])).
+		[diamond1, diamond2, diamond3], [xmlsref(standalone)])).
 */

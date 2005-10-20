@@ -17,5 +17,5 @@ files, comment the directive above and uncomment the directive below
 		classp, class,
 		objectp, object,
 		abstract_classp, abstract_class,
-		nil], [doctype(standalone)])).
+		nil], [xmlsref(standalone)])).
 */

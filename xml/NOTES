@@ -36,7 +36,7 @@ the Logtalk XML Schema file, logtalk.xsd. The reference to the XML
 specification file can be either a local reference or a URI reference. By 
 default, all .xml documenting files contain a local reference but that 
 can be changed either in the config files, by setting a Logtalk compiler 
-flag, or by using the doctype/1 compiler flag. Choose the option value 
+flag, or by using the xmlsref/1 compiler flag. Choose the option value 
 that works best with your XSLT tools. To choose between the .dtd or .xsd 
 specifications use the xmlspec/1 compiler flag.
 
@@ -129,7 +129,7 @@ lgt2pdf.js
 			http://www.renderx.com/  
 
 	When using the FOP, you must compile your Logtalk source files using the 
-	compiler option doctype(standalone) in order to workaround a bug on the 
+	compiler option xmlsref(standalone) in order to workaround a bug on the 
 	XALAN processor used by this processor.
 
 	These script assume that the LOGTALKUSER environment variable is defined
@@ -238,7 +238,7 @@ pdf.sh
 	Edit the script to match your environment and paper format preference 
 	before running it. Requires Apache FOP processor (http://xml.apache.org/fop).
 	Tested with version 0.20.5 (to workaround a bug on the XALAN processor used 
-	by FOP, you must use the compiler flag doctype(standalone) when compiling 
+	by FOP, you must use the compiler flag xmlsref(standalone) when compiling 
 	your Logtalk source files). You will need either to copy your .xml files to 
 	this directory or to copy these files to the directory where the .xml files 
 	reside.
@@ -250,7 +250,7 @@ pdf.bat
 	Edit the script to match your environment and paper format preference 
 	before running it. Requires Apache FOP processor (http://xml.apache.org/fop).
 	Tested with version 0.20.5 (to workaround a bug on the XALAN processor used 
-	by FOP, you must use the compiler flag doctype(standalone) when compiling 
+	by FOP, you must use the compiler flag xmlsref(standalone) when compiling 
 	your Logtalk source files). You will need either to copy your .xml files to 
 	this directory or to copy these files to the directory where the .xml files 
 	reside.

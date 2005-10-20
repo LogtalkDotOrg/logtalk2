@@ -11,5 +11,5 @@ files, comment the directive above and uncomment the directive below
 
 :- initialization(
 	logtalk_load(
-		[double, triple, reverse], [doctype(standalone)])).
+		[double, triple, reverse], [xmlsref(standalone)])).
 */

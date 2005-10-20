@@ -9,5 +9,5 @@ files, comment the directive above and uncomment the directive below
 
 :- initialization(
 	logtalk_load(
-		[ovals, polygons, sorting], [doctype(standalone)])).
+		[ovals, polygons, sorting], [xmlsref(standalone)])).
 */

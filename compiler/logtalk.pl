@@ -3216,7 +3216,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 % writes to disk the entity documentation in XML format
 
 '$lgt_write_entity_doc'(Entity) :-
-	'$lgt_compiler_flag'(xml, on) ->
+	'$lgt_compiler_flag'(xmldocs, on) ->
 		'$lgt_entity_doc_file_name'(Entity, File),
 		catch((
 			('$lgt_pp_directive_'(encoding(Encoding)) ->
@@ -8220,10 +8220,10 @@ current_logtalk_flag(version, version(2, 26, 0)).
 '$lgt_valid_compiler_flag'(iso_initialization_dir(Option)) :-
 	once((Option == true; Option == false)).
 
-'$lgt_valid_compiler_flag'(xml(Option)) :-
+'$lgt_valid_compiler_flag'(xmldocs(Option)) :-
 	once((Option == on; Option == off)).
 
-'$lgt_valid_compiler_flag'(xsl(File)) :-
+'$lgt_valid_compiler_flag'(xslfile(File)) :-
 	atom(File).
 
 '$lgt_valid_compiler_flag'(unknown(Option)) :-
@@ -8256,7 +8256,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 '$lgt_valid_compiler_flag'(code_prefix(Prefix)) :-
 	atom(Prefix).
 
-'$lgt_valid_compiler_flag'(doctype(Option)) :-
+'$lgt_valid_compiler_flag'(xmlsref(Option)) :-
 	once((Option == standalone; Option == (local); Option == web)).
 
 '$lgt_valid_compiler_flag'(xmlspec(Option)) :-
@@ -8275,10 +8275,10 @@ current_logtalk_flag(version, version(2, 26, 0)).
 % true if the argument is a valid Logtalk flag name
 
 '$lgt_valid_flag'(iso_initialization_dir).
-'$lgt_valid_flag'(xml).
-'$lgt_valid_flag'(xsl).
+'$lgt_valid_flag'(xmldocs).
+'$lgt_valid_flag'(xslfile).
 '$lgt_valid_flag'(xmlspec).
-'$lgt_valid_flag'(doctype).
+'$lgt_valid_flag'(xmlsref).
 '$lgt_valid_flag'(unknown).
 '$lgt_valid_flag'(singletons).
 '$lgt_valid_flag'(misspelt).
@@ -8726,8 +8726,8 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 '$lgt_write_xml_header'(Stream) :-
 	'$lgt_compiler_flag'(xmlspec, XMLSpec),
-	'$lgt_compiler_flag'(doctype, Doctype),
-	'$lgt_write_xml_header'(Doctype, XMLSpec, Stream).
+	'$lgt_compiler_flag'(xmlsref, XMLSRef),
+	'$lgt_write_xml_header'(XMLSRef, XMLSpec, Stream).
 
 
 
@@ -8739,7 +8739,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 		write(Stream, '<!DOCTYPE logtalk SYSTEM "logtalk.dtd">'), nl(Stream)
 		;
 		true),
-	'$lgt_compiler_flag'(xsl, XSL),
+	'$lgt_compiler_flag'(xslfile, XSL),
 	write(Stream, '<?xml-stylesheet type="text/xsl" href="'),
 	write(Stream, XSL),
 	write(Stream, '"?>'), nl(Stream),
@@ -8758,7 +8758,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 		write(Stream, '<!DOCTYPE logtalk SYSTEM "http://www.logtalk.org/xml/1.3/logtalk.dtd">'), nl(Stream)
 		;
 		true),
-	'$lgt_compiler_flag'(xsl, XSL),
+	'$lgt_compiler_flag'(xslfile, XSL),
 	write(Stream, '<?xml-stylesheet type="text/xsl" href="'),
 	write(Stream, XSL),
 	write(Stream, '"?>'), nl(Stream),
@@ -8773,7 +8773,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	'$lgt_xml_encoding'(Encoding),
 	'$lgt_xml_header_text'('1.0', Encoding, yes, Text),
 	'$lgt_write_xml_open_tag'(Stream, Text, []),
-	'$lgt_compiler_flag'(xsl, XSL),
+	'$lgt_compiler_flag'(xslfile, XSL),
 	write(Stream, '<?xml-stylesheet type="text/xsl" href="'),
 	write(Stream, XSL),
 	write(Stream, '"?>'), nl(Stream),
@@ -9582,14 +9582,14 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	'$lgt_default_flag'(underscore_vars, Underscore),
 	write('  Underscore variables interpretation (underscore_vars):    '), write(Underscore), nl,
 	write('Default documenting compilation flags:'), nl,
-	'$lgt_default_flag'(xml, XML),
-	write('  XML documenting files (xml):                              '), write(XML), nl,
+	'$lgt_default_flag'(xmldocs, XMLDocs),
+	write('  XML documenting files (xmldocs):                          '), write(XMLDocs), nl,
 	'$lgt_default_flag'(xmlspec, XMLSpec),
-	write('  XML specification file extension (xmlspec):               '), write(XMLSpec), nl,
-	'$lgt_default_flag'(doctype, Doctype),
-	write('  XML specification file location (doctype):                '), write(Doctype), nl,
-	'$lgt_default_flag'(xsl, XSL),
-	write('  XSL stylesheet (xsl):                                     '), write(XSL), nl,
+	write('  XML specification file (xmlspec):                         '), write(XMLSpec), nl,
+	'$lgt_default_flag'(xmlsref, XMLSRef),
+	write('  XML specification reference (xmlsref):                    '), write(XMLSRef), nl,
+	'$lgt_default_flag'(xslfile, XSLFile),
+	write('  XSL stylesheet file (xslfile):                            '), write(XSLFile), nl,
 	write('Other default compilation flags:'), nl,
 	'$lgt_default_flag'(report, Report),
 	write('  Compilation report (report):                              '), write(Report), nl,

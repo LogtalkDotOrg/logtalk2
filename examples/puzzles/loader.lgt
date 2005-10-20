@@ -19,5 +19,5 @@ files, comment the directive above and uncomment the directive below
 		horses,
 		houses,
 		note,
-		camp_swampy], [doctype(standalone)])).
+		camp_swampy], [xmlsref(standalone)])).
 */

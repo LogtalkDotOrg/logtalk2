@@ -13,5 +13,5 @@ files, comment the directive above and uncomment the directive below
 	logtalk_load(
 		[protos,
 		classes,
-		prototype], [doctype(standalone)])).
+		prototype], [xmlsref(standalone)])).
 */

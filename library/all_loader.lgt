@@ -86,5 +86,5 @@ files, comment the directive above and uncomment the directive below
 		dictionaryp, bintree,
 		setp, set,
 		comparingp],
-		[doctype(standalone)])).
+		[xmlsref(standalone)])).
 */

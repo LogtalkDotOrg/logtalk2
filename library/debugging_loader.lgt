@@ -9,5 +9,5 @@ files, comment the directive above and uncomment the directive below
 
 :- initialization(
 	logtalk_load(
-		[event_dbgp, event_dbg], [events(on), doctype(standalone)])).
+		[event_dbgp, event_dbg], [events(on), xmlsref(standalone)])).
 */

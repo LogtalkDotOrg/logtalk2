@@ -9,5 +9,5 @@ files, comment the directive above and uncomment the directive below
 
 :- initialization(
 	logtalk_load(
-		[fsm3, rectangle3], [doctype(standalone)])).
+		[fsm3, rectangle3], [xmlsref(standalone)])).
 */

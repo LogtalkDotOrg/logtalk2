@@ -126,7 +126,7 @@ You can use the following flags:
 		<dd>Controls the non-ISO specified built-in predicate calls warnings. Possible option values are <code>warning</code> and <code>silent</code> (the usual default).</dd>
 </dl>
 <dl>
-	<dt><code>xml(Option)</code></dt>
+	<dt><code>xmldocs(Option)</code></dt>
 		<dd>Controls the automatic generation of documenting files in XML format. Possible option values are <code>on</code> (the usual default) and <code>off</code>.</dd>
 </dl>
 <dl>
@@ -134,11 +134,11 @@ You can use the following flags:
 		<dd>Defines the XML documenting files specification format. Possible option values are <code>dtd</code> (for the DTD specification; the usual default) and <code>xsd</code> (for the XML Schema specification). Most XSL processors support DTDs but only some of them support XML Schemes.</dd>
 </dl>
 <dl>
-	<dt><code>doctype(Option)</code></dt>
-		<dd>Sets the DOCTYPE reference in the automatically generated XML documenting files. The default value is <code>local</code>, that is, the DOCTYPE reference points to a local DTD or XSD file (respectively, <code>logtalk.dtd</code> or <code>logtalk.xsd</code>), residing in the same directory as the XML file. Other possible values are <code>web</code> (DOCTYPE reference points to an web location, either <code>http://www.logtalk.org/xml/1.3/logtalk.dtd</code> or <code>http://www.logtalk.org/xml/1.3/logtalk.xsd</code>), and <code>standalone</code> (no DOCTYPE reference in the XML documenting files). The most appropriated option value depends on the XSL processor you intend to use. Some of them are buggy an may not work with the default option value.</dd>
+	<dt><code>xmlsref(Option)</code></dt>
+		<dd>Sets the reference to the XML specification file in the automatically generated XML documenting files. The default value is <code>local</code>, that is, the reference points to a local DTD or XSD file (respectively, <code>logtalk.dtd</code> or <code>logtalk.xsd</code>), residing in the same directory as the XML file. Other possible values are <code>web</code> (the reference points to an web location, either <code>http://www.logtalk.org/xml/1.3/logtalk.dtd</code> or <code>http://www.logtalk.org/xml/1.3/logtalk.xsd</code>), and <code>standalone</code> (no reference to specification files in the XML documenting files). The most appropriated option value depends on the XSL processor you intend to use. Some of them are buggy an may not work with the default option value.</dd>
 </dl>
 <dl>
-	<dt><code>xsl(File)</code></dt>
+	<dt><code>xslfile(File)</code></dt>
 		<dd>Sets the XSLT file to be used with the automatically generated XML documenting files. The default value is <code>lgtxml.xsl</code>, which allows the XML files to be viewed by simply opening them with recent versions of web navigators which support XSLT transformations (after copying the <code>lgtxml.xsl</code> and of the <code>logtalk.css</code> files to the directory containing the XML files).</dd>
 </dl>
 <dl>
@@ -482,7 +482,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: September 8, 2005</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: October 20, 2005</span></p>
 </div>
 </body>
 </html>

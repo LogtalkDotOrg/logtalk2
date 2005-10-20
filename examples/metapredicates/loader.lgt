@@ -9,5 +9,5 @@ files, comment the directive above and uncomment the directive below
 
 :- initialization(
 	logtalk_load(
-		[metapredicates], [doctype(standalone)])).
+		[metapredicates], [xmlsref(standalone)])).
 */

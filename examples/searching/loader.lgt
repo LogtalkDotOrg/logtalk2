@@ -41,5 +41,5 @@ files, comment the directive above and uncomment the directive below
 		best_first1,
 		hill_climbing1,
 		performance],
-		[events(on), doctype(standalone)])).
+		[events(on), xmlsref(standalone)])).
 */

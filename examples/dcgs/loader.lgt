@@ -31,5 +31,5 @@ files, comment the directive above and uncomment the directive below
 		bom,
 		faa,
 		bypass,
-		dcgtest], [doctype(standalone)])).
+		dcgtest], [xmlsref(standalone)])).
 */

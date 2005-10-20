@@ -33,5 +33,5 @@ files, comment the directive above and uncomment the directive below
 		queuep, queue,
 		dictionaryp, bintree,
 		setp, set,
-		comparingp], [doctype(standalone)])).
+		comparingp], [xmlsref(standalone)])).
 */

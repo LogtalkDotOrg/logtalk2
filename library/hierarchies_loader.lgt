@@ -13,5 +13,5 @@ files, comment the directive above and uncomment the directive below
 	logtalk_load(
 		[hierarchyp,
 		proto_hierarchyp, proto_hierarchy,
-		class_hierarchyp, class_hierarchy], [doctype(standalone)])).
+		class_hierarchyp, class_hierarchy], [xmlsref(standalone)])).
 */

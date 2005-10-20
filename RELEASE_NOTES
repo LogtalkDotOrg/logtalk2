@@ -27,6 +27,10 @@ RELEASE NOTES
 	Added suport for using library aliases on the second argument of the 
 	logtalk_library_path/2 predicate (using the format alias(path)).
 
+	Renamed some XML documentation-related compiler flags to more meaningful 
+	names: "xml" -> "xmldocs", "xsl" -> "xslfile", and "doctype" -> "xmlsref".
+	No changes to the other flags or flag valid values.
+
 	Changed generation of predicate compiled functors to add an underscore 
 	between the original predicate functor and arity.
 
