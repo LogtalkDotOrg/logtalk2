@@ -110,12 +110,6 @@ Logtalk.
 
 * Windows systems:
 
-In Windows 95/98/ME, environment variables are defined in the "autoexec.bat" 
-file (you will need to reboot after editing the file):
-
-	SET LOGTALKHOME=C:\your\logtalk\installation\folder\
-	SET LOGTALKUSER=%HOMEPATH%\logtalk
-
 In Windows 2000/XP, environment variables are defined using the System 
 properties control panel (if you are a system administrator, you should 
 use the JScript install script provided in the "scripts" sub-directory; 
