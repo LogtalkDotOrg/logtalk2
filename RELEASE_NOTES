@@ -47,6 +47,8 @@ RELEASE NOTES
 	Consolidated the source files of the "birds", "relations" and "symdiff" 
 	examples into a single source files.
 
+	Removed outdated documenting shell scripts from the "xml" directory.
+
 
 2.25.3 - September 12, 2005
 
