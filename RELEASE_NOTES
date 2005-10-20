@@ -34,6 +34,8 @@ RELEASE NOTES
 	Changed generation of predicate compiled functors to add an underscore 
 	between the original predicate functor and arity.
 
+	Improved compilation warning messages.
+
 	Improved CIAO integration scripts in order to suppress some (harmless) 
 	warnings which are generated at first run.
 

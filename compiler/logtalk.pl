@@ -3354,7 +3354,11 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	('$lgt_compiler_flag'(singletons, warning), '$lgt_compiler_flag'(report, on)) ->
 		'$lgt_inc_compile_warnings_counter',
 		('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
-		write('  WARNING!  singleton variables ('), '$lgt_write_list'([Name| Names]),
+		(Names = [] ->
+			write('  WARNING!  singleton variable (')
+			;
+			write('  WARNING!  singleton variables (')),
+		'$lgt_write_list'([Name| Names]),
 		arg(1, Term, Term2),
 		functor(Term2, Functor, Arity),
 		(Term = (:- _) ->
@@ -6082,7 +6086,11 @@ current_logtalk_flag(version, version(2, 26, 0)).
 '$lgt_report_unknown_objects' :-
 	setof(Obj, '$lgt_unknown_object'(Obj), Objs) ->
 		'$lgt_inc_compile_warnings_counter',
-		nl, write('  WARNING!  references to unknown objects:    '),
+		nl,
+		(Objs = [_] ->
+			write('  WARNING!  reference to unknown object:    ')
+			;
+			write('  WARNING!  references to unknown objects:    ')),
 		'$lgt_writeq_list'(Objs)
 		;
 		true.
@@ -6104,7 +6112,11 @@ current_logtalk_flag(version, version(2, 26, 0)).
 '$lgt_report_unknown_protocols' :-
 	setof(Ptc, '$lgt_unknown_protocol'(Ptc), Ptcs) ->
 		'$lgt_inc_compile_warnings_counter',
-		nl, write('  WARNING!  references to unknown protocols:  '),
+		nl,
+		(Ptcs = [_] ->
+			write('  WARNING!  reference to unknown protocol:  ')
+			;
+			write('  WARNING!  references to unknown protocols:  ')),
 		'$lgt_writeq_list'(Ptcs)
 		;
 		true.
@@ -6125,7 +6137,11 @@ current_logtalk_flag(version, version(2, 26, 0)).
 '$lgt_report_unknown_categories' :-
 	setof(Ctg, '$lgt_unknown_category'(Ctg), Ctgs) ->
 		'$lgt_inc_compile_warnings_counter',
-		nl, write('  WARNING!  references to unknown categories: '),
+		nl,
+		(Ctgs = [_] ->
+			write('  WARNING!  reference to unknown category: ')
+			;
+			write('  WARNING!  references to unknown categories: ')),
 		'$lgt_writeq_list'(Ctgs)
 		;
 		true.
@@ -7274,7 +7290,11 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	'$lgt_compiler_flag'(misspelt, warning),
 	setof(Pred, '$lgt_misspelt_call'(Pred), Preds),
 	'$lgt_inc_compile_warnings_counter',
-	nl, write('  WARNING!  these static predicates are called but never defined: '),
+	nl,
+	(Preds = [_] ->
+		write('  WARNING!  this static predicate is called but never defined: ')
+		;
+		write('  WARNING!  these static predicates are called but never defined: ')),
 	'$lgt_writeq_list'(Preds),
 	!.
 
@@ -7294,7 +7314,11 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	'$lgt_compiler_flag'(portability, warning),
 	setof(Pred, '$lgt_non_portable_call'(Pred), Preds),
 	'$lgt_inc_compile_warnings_counter',
-	nl, write('  WARNING!  non-ISO defined built-in predicate calls: '),
+	nl,
+	(Preds = [_] ->
+		write('  WARNING!  call to non-standard Prolog built-in predicate: ')
+		;
+		write('  WARNING!  calls to non-standard Prolog built-in predicates: ')),
 	'$lgt_writeq_list'(Preds),
 	!.
 
