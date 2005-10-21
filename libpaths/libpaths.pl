@@ -29,7 +29,7 @@
 	 assertz(logtalk_library_path(inheritance, examples('inheritance/'))),
 	 assertz(logtalk_library_path(instmethods, examples('instmethods/'))),
 	 assertz(logtalk_library_path(lo_planner, examples('lo/planner/'))),
-	 assertz(logtalk_library_path(lo_travellers, examples('travellers/'))),
+	 assertz(logtalk_library_path(lo_travellers, examples('lo/travellers/'))),
 	 assertz(logtalk_library_path(logic, examples('logic/'))),
 	 assertz(logtalk_library_path(lpa_faults, examples('lpa/faults/'))),
 	 assertz(logtalk_library_path(lpa_timetables, examples('lpa/timetables/'))),
