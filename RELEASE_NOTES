@@ -47,7 +47,8 @@ RELEASE NOTES
 	config file for XSB 2.7.1 to simply "xsb.config".
 
 	Consolidated the source files of the "birds", "errors", "lpa", "lo", 
-	"relations", and "symdiff" examples into single source files.
+	"metainterpreters", "relations", and "symdiff" examples into single 
+	source files.
 
 	Removed outdated documenting shell scripts from the "xml" directory.
 
