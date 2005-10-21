@@ -1,15 +1,13 @@
 
 :- initialization(
 	logtalk_load([
-		fault,
-		mechanical,
-		engine,
-		cylinders,
-		electrical,
-		starting,
-		sparking,
-		plugs,
-		distributor,
-		fuel_system,
-		lights,
-		starter_motor])).
+		faults])).
+
+/*
+If you intend to use the FOP XSL:FO processor for generating PDF documenting
+files, comment the directive above and uncomment the directive below
+
+:- initialization(
+	logtalk_load(
+		[faults], [xmlsref(standalone)])).
+*/
