@@ -6088,7 +6088,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 		'$lgt_inc_compile_warnings_counter',
 		nl,
 		(Objs = [_] ->
-			write('  WARNING!  reference to unknown object:    ')
+			write('  WARNING!  reference to unknown object:      ')
 			;
 			write('  WARNING!  references to unknown objects:    ')),
 		'$lgt_writeq_list'(Objs)
@@ -6114,7 +6114,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 		'$lgt_inc_compile_warnings_counter',
 		nl,
 		(Ptcs = [_] ->
-			write('  WARNING!  reference to unknown protocol:  ')
+			write('  WARNING!  reference to unknown protocol:    ')
 			;
 			write('  WARNING!  references to unknown protocols:  ')),
 		'$lgt_writeq_list'(Ptcs)
@@ -6139,7 +6139,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 		'$lgt_inc_compile_warnings_counter',
 		nl,
 		(Ctgs = [_] ->
-			write('  WARNING!  reference to unknown category: ')
+			write('  WARNING!  reference to unknown category:    ')
 			;
 			write('  WARNING!  references to unknown categories: ')),
 		'$lgt_writeq_list'(Ctgs)
