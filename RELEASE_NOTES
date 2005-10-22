@@ -52,7 +52,8 @@ RELEASE NOTES
 
 	Consolidated the source files of the "birds", "errors", "lpa", "lo", 
 	"metainterpreters", "poem", "relations", and "symdiff" examples into 
-	single source files.
+	single source files. Updated the "searching" example to take advantage 
+	of the uses/2 directive.
 
 	Removed outdated documenting shell scripts from the "xml" directory.
 

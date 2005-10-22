@@ -5,13 +5,13 @@
 
 
 	:- info([
-		version is 1.0,
-		date is 2000/7/24,
+		version is 1.1,
+		date is 2005/10/22,
 		author is 'Paulo Moura',
 		comment is 'Minimal predicates for all prototypes. Default root of the extension graph.']).
 
 
-	:- uses(event_registry).
+	:- uses(event_registry, [del_monitors/4]).
 
 
 	clone(Clone) :-
@@ -25,9 +25,9 @@
 
 	process_free_option(del_monitors) :-
 		self(Self),
-		event_registry::del_monitors(Self, _, _, _),
-		event_registry::del_monitors(_, _, Self, _),
-		event_registry::del_monitors(_, _, _, Self).
+		del_monitors(Self, _, _, _),
+		del_monitors(_, _, Self, _),
+		del_monitors(_, _, _, Self).
 
 
 	print :-
