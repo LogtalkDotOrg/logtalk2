@@ -21,10 +21,10 @@ RELEASE NOTES
 	Added a "Prolog Integration and Migration Guide" to the Logtalk 
 	documentation.
 
-	Added support for syntax coloring of several Prolog module directives to 
+	Added support for syntax coloring of common Prolog module directives to 
 	the configuration files of the supported text editors.
 
-	Added suport for using library aliases on the second argument of the 
+	Added support for using library aliases on the second argument of the 
 	logtalk_library_path/2 predicate (using the format alias(path)).
 
 	Renamed some XML documentation-related compiler flags to more meaningful 
@@ -32,9 +32,11 @@ RELEASE NOTES
 	No changes to the other flags or flag valid values.
 
 	Changed generation of predicate compiled functors to add an underscore 
-	between the original predicate functor and arity.
+	between the original predicate functor and arity (further minimizing the 
+	chance of name conflicts).
 
-	Improved compilation warning messages.
+	Improved compilation warning messages (separately handling plural and 
+	singular forms).
 
 	Corrected a bug on the Logtalk built-in debugger on the processing of the
 	abort option at a leashed port (option was ignored instead of aborting the
