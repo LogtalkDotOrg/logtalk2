@@ -36,6 +36,10 @@ RELEASE NOTES
 
 	Improved compilation warning messages.
 
+	Corrected a bug on the Logtalk built-in debugger on the processing of the
+	abort option at a leashed port (option was ignored instead of aborting the
+	debugging session).
+
 	Improved CIAO integration scripts in order to suppress some (harmless) 
 	warnings which are generated at first run.
 

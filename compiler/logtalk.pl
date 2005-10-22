@@ -238,7 +238,8 @@ Obj::Pred :-
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(logtalk_debugger_aborted)) :-
-	write('Debugging session aborted by user. Debugger still on.'), nl,
+	nl, write('    Debugging session aborted by user. Debugger still on.'), nl,
+	!,
 	fail.
 
 '$lgt_runtime_error_handler'(Error) :-
@@ -2769,6 +2770,9 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	call(TGoal).
 
 
+'$lgt_dbg_port'(exception, _, error(logtalk_debugger_aborted), _, true) :-
+	!.
+
 '$lgt_dbg_port'(Port, Goal, Error, Ctx, Action) :-
 	'$lgt_dbg_debugging_',
 	!,
@@ -2777,7 +2781,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 			write(Code), '$lgt_dbg_write_port_name'(Port), writeq(Goal), write(' ? '),
 			catch('$lgt_read_single_char'(Option), _, fail),
 		'$lgt_dbg_valid_port_option'(Option, Port, Code),
-		catch('$lgt_dbg_do_port_option'(Option, Goal, Error, Ctx, Action), _, fail)
+		'$lgt_dbg_do_port_option'(Option, Goal, Error, Ctx, Action)
 		;
 		('$lgt_dbg_tracing_' ->
 			write(' '), '$lgt_dbg_write_port_name'(Port), writeq(Goal), nl
@@ -4110,6 +4114,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 		;
 		throw(domain_error(arity_mismatch(Original, Alias)))),
 	(\+ '$lgt_pp_uses_'(_, _, TAlias) ->
+		TOriginal =.. [_| Args], TAlias =.. [_| Args],	% unify args of TOriginal and TAlias
 		assertz('$lgt_pp_uses_'(Obj, TOriginal, TAlias))
 		;
 		functor(TAlias, Functor, Arity),
