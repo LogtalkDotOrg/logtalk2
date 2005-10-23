@@ -160,10 +160,20 @@ else
 		xslt=$html_xslt
 	fi
 
-	cp "$LOGTALKHOME"/xml/logtalk.dtd .
-	cp "$LOGTALKHOME"/xml/logtalk.xsd .
+	if ! [[ -a "./logtalk.dtd" ]]
+	then
+		cp "$LOGTALKHOME"/xml/logtalk.dtd .
+	fi
 
-	cp "$LOGTALKUSER"/xml/logtalk.css "$directory"
+	if ! [[ -a "./logtalk.xsd" ]]
+	then
+		cp "$LOGTALKHOME"/xml/logtalk.xsd .
+	fi
+
+	if ! [[ -a "$directory/logtalk.css" ]]
+	then
+		cp "$LOGTALKUSER"/xml/logtalk.css "$directory"
+	fi
 
 	echo
 	echo "converting XML files..."
@@ -187,9 +197,6 @@ else
 
 	echo "index file generated"
 	echo
-
-	rm -f logtalk.dtd
-	rm -f logtalk.xsd
 
 	exit 0
 

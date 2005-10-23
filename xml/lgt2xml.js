@@ -7,9 +7,6 @@
 
 var WshShell = new ActiveXObject("WScript.Shell");
 
-var xslt = "lgtxml.xsl"
-var css = "logtalk.css";
-
 var format = "xhtml";
 // var format = "html";
 
@@ -23,16 +20,13 @@ if (WScript.Arguments.Unnamed.Length > 0) {
 	WScript.Quit(0);
 }
 
-var WshProcessEnv = WshShell.Environment("PROCESS");
 var WshSystemEnv = WshShell.Environment("SYSTEM");
 var WshUserEnv = WshShell.Environment("USER");
 
 var logtalk_home;
 var logtalk_user;
 
-if (WshProcessEnv.Item("LOGTALKHOME"))
-	logtalk_home = WshProcessEnv.Item("LOGTALKHOME");
-else if (WshSystemEnv.Item("LOGTALKHOME"))
+if (WshSystemEnv.Item("LOGTALKHOME"))
 	logtalk_home = WshSystemEnv.Item("LOGTALKHOME");
 else if (WshUserEnv.Item("LOGTALKHOME"))
 	logtalk_home = WshUserEnv.Item("LOGTALKHOME")
@@ -42,9 +36,7 @@ else {
 	WScript.Quit(1);
 }
 
-if (WshProcessEnv.Item("LOGTALKUSER"))
-	logtalk_user = WshProcessEnv.Item("LOGTALKUSER");
-else if (WshSystemEnv.Item("LOGTALKUSER"))
+if (WshSystemEnv.Item("LOGTALKUSER"))
 	logtalk_user = WshSystemEnv.Item("LOGTALKUSER");
 else if (WshUserEnv.Item("LOGTALKUSER"))
 	logtalk_user = WshUserEnv.Item("LOGTALKUSER")
@@ -82,11 +74,21 @@ if (i_arg != "")
 if (t_arg != "")
 	index_title=t_arg;
 
-FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.dtd", directory + "\\logtalk.dtd");
-FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.xsd", directory + "\\logtalk.xsd");
+if (!FSObject.FileExists(directory + "\\logtalk.dtd")) {
+	FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.dtd", directory + "\\logtalk.dtd");
+}
 
-FSObject.CopyFile(logtalk_user + "\\xml\\" + xslt, directory + "\\" + xslt);
-FSObject.CopyFile(logtalk_user + "\\xml\\" + css, directory + "\\" + css);
+if (!FSObject.FileExists(directory + "\\logtalk.xsd")) {
+	FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.xsd", directory + "\\logtalk.xsd");
+}
+
+if (!FSObject.FileExists(directory + "\\logtalk.css")) {
+	FSObject.CopyFile(logtalk_user + "\\xml\\logtalk.css", directory + "\\logtalk.css");
+}
+
+if (!FSObject.FileExists(directory + "\\lgtxml.xsl")) {
+	FSObject.CopyFile(logtalk_user + "\\xml\\lgtxml.xsl", directory + "\\lgtxml.xsl");
+}
 
 WScript.Echo("");
 WScript.Echo("generating index file...");

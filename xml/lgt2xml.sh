@@ -7,8 +7,6 @@
 ## Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 ## =================================================================
 
-xslt=lgtxml.xsl
-css=logtalk.css
 format=xhtml
 index_file=index.html
 index_title="Entity documentation index"
@@ -122,11 +120,25 @@ else
 		index_title=$t_arg
 	fi
 
-	cp "$LOGTALKHOME"/xml/logtalk.dtd .
-	cp "$LOGTALKHOME"/xml/logtalk.xsd .
+	if ! [[ -a "./logtalk.dtd" ]]
+	then
+		cp "$LOGTALKHOME"/xml/logtalk.dtd .
+	fi
+	
+	if ! [[ -a "./logtalk.xsd" ]]
+	then
+		cp "$LOGTALKHOME"/xml/logtalk.xsd .
+	fi
 
-	cp "$LOGTALKUSER"/xml/$css .
-	cp "$LOGTALKUSER"/xml/$xslt .
+	if ! [[ -a "./logtalk.css" ]]
+	then
+		cp "$LOGTALKUSER"/xml/logtalk.css .
+	fi
+
+	if ! [[ -a "./lgtxml.xsl" ]]
+	then
+		cp "$LOGTALKUSER"/xml/lgtxml.xsl .
+	fi
 
 	echo
 	echo "generating index file..."

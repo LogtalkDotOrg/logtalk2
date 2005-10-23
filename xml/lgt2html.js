@@ -25,16 +25,13 @@ if (WScript.Arguments.Unnamed.Length > 0) {
 	WScript.Quit(0);
 }
 
-var WshProcessEnv = WshShell.Environment("PROCESS");
 var WshSystemEnv = WshShell.Environment("SYSTEM");
 var WshUserEnv = WshShell.Environment("USER");
 
 var logtalk_home;
 var logtalk_user;
 
-if (WshProcessEnv.Item("LOGTALKHOME"))
-	logtalk_home = WshProcessEnv.Item("LOGTALKHOME");
-else if (WshSystemEnv.Item("LOGTALKHOME"))
+if (WshSystemEnv.Item("LOGTALKHOME"))
 	logtalk_home = WshSystemEnv.Item("LOGTALKHOME");
 else if (WshUserEnv.Item("LOGTALKHOME"))
 	logtalk_home = WshUserEnv.Item("LOGTALKHOME")
@@ -44,9 +41,7 @@ else {
 	WScript.Quit(1);
 }
 
-if (WshProcessEnv.Item("LOGTALKUSER"))
-	logtalk_user = WshProcessEnv.Item("LOGTALKUSER");
-else if (WshSystemEnv.Item("LOGTALKUSER"))
+if (WshSystemEnv.Item("LOGTALKUSER"))
 	logtalk_user = WshSystemEnv.Item("LOGTALKUSER");
 else if (WshUserEnv.Item("LOGTALKUSER"))
 	logtalk_user = WshUserEnv.Item("LOGTALKUSER")
@@ -116,10 +111,17 @@ if (format == "xhtml")
 else
 	xslt = html_xslt;
 
-FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory + "\\logtalk.dtd");
-FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory + "\\logtalk.xsd");
+if (!FSObject.FileExists(WshShell.CurrentDirectory + "\\logtalk.dtd")) {
+	FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory + "\\logtalk.dtd");
+}
 
-FSObject.CopyFile(logtalk_user + "\\xml\\logtalk.css", directory + "\\logtalk.css");
+if (!FSObject.FileExists(WshShell.CurrentDirectory + "\\logtalk.xsd")) {
+	FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory + "\\logtalk.xsd");
+}
+
+if (!FSObject.FileExists(directory + "\\logtalk.css")) {
+	FSObject.CopyFile(logtalk_user + "\\xml\\logtalk.css", directory + "\\logtalk.css");
+}
 
 WScript.Echo("");
 WScript.Echo("converting XML files...");
@@ -157,9 +159,6 @@ create_index_file();
 
 WScript.Echo("index file generated");
 WScript.Echo("");
-
-FSObject.DeleteFile("logtalk.dtd");
-FSObject.DeleteFile("logtalk.xsd");
 
 WScript.Quit(0);
 

@@ -95,8 +95,15 @@ else
 		xsl=$us_xsl
 	fi
 
-	cp "$LOGTALKHOME"/xml/logtalk.dtd .
-	cp "$LOGTALKHOME"/xml/logtalk.xsd .
+	if ! [[ -a "./logtalk.dtd" ]]
+	then
+		cp "$LOGTALKHOME"/xml/logtalk.dtd .
+	fi
+
+	if ! [[ -a "./logtalk.xsd" ]]
+	then
+		cp "$LOGTALKHOME"/xml/logtalk.xsd .
+	fi
 
 	echo
 	echo "converting XML files to PDF..."
