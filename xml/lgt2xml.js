@@ -8,8 +8,6 @@
 var WshShell = new ActiveXObject("WScript.Shell");
 
 var xslt = "lgtxml.xsl"
-var spec = "logtalk.dtd"
-// var spec = "logtalk.xsd"
 var css = "logtalk.css";
 
 var format = "xhtml";
@@ -28,14 +26,28 @@ if (WScript.Arguments.Unnamed.Length > 0) {
 var WshProcessEnv = WshShell.Environment("PROCESS");
 var WshSystemEnv = WshShell.Environment("SYSTEM");
 var WshUserEnv = WshShell.Environment("USER");
+
 var logtalk_home;
+var logtalk_user;
+
+if (WshProcessEnv.Item("LOGTALKHOME"))
+	logtalk_home = WshProcessEnv.Item("LOGTALKHOME");
+else if (WshSystemEnv.Item("LOGTALKHOME"))
+	logtalk_home = WshSystemEnv.Item("LOGTALKHOME");
+else if (WshUserEnv.Item("LOGTALKHOME"))
+	logtalk_home = WshUserEnv.Item("LOGTALKHOME")
+else {
+	WScript.Echo("Error! The environment variable LOGTALKHOME must be defined first!");
+	usage_help();
+	WScript.Quit(1);
+}
 
 if (WshProcessEnv.Item("LOGTALKUSER"))
-	logtalk_home = WshProcessEnv.Item("LOGTALKUSER");
+	logtalk_user = WshProcessEnv.Item("LOGTALKUSER");
 else if (WshSystemEnv.Item("LOGTALKUSER"))
-	logtalk_home = WshSystemEnv.Item("LOGTALKUSER");
+	logtalk_user = WshSystemEnv.Item("LOGTALKUSER");
 else if (WshUserEnv.Item("LOGTALKUSER"))
-	logtalk_home = WshUserEnv.Item("LOGTALKUSER")
+	logtalk_user = WshUserEnv.Item("LOGTALKUSER")
 else {
 	WScript.Echo("Error! The environment variable LOGTALKUSER must be defined first!");
 	usage_help();
@@ -70,9 +82,11 @@ if (i_arg != "")
 if (t_arg != "")
 	index_title=t_arg;
 
-FSObject.CopyFile(logtalk_home + "\\xml\\" + spec, directory + "\\" + spec);
-FSObject.CopyFile(logtalk_home + "\\xml\\" + xslt, directory + "\\" + xslt);
-FSObject.CopyFile(logtalk_home + "\\xml\\" + css, directory + "\\" + css);
+FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.dtd", directory + "\\logtalk.dtd");
+FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.xsd", directory + "\\logtalk.xsd");
+
+FSObject.CopyFile(logtalk_user + "\\xml\\" + xslt, directory + "\\" + xslt);
+FSObject.CopyFile(logtalk_user + "\\xml\\" + css, directory + "\\" + css);
 
 WScript.Echo("");
 WScript.Echo("generating index file...");

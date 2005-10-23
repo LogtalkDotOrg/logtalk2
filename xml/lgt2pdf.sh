@@ -37,7 +37,11 @@ usage_help()
 	exit 1
 }
 
-if ! [ "$LOGTALKUSER" ]
+if ! [ "$LOGTALKHOME" ]
+then
+	echo "Error! The environment variable LOGTALKHOME must be defined first!"
+	exit 1
+elif ! [ "$LOGTALKUSER" ]
 then
 	echo "Error! The environment variable LOGTALKUSER must be defined first!"
 	exit 1
@@ -91,8 +95,8 @@ else
 		xsl=$us_xsl
 	fi
 
-	cp "$LOGTALKUSER"/xml/logtalk.dtd .
-	cp "$LOGTALKUSER"/xml/logtalk.xsd .
+	cp "$LOGTALKHOME"/xml/logtalk.dtd .
+	cp "$LOGTALKHOME"/xml/logtalk.xsd .
 
 	echo
 	echo "converting XML files to PDF..."

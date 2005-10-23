@@ -31,6 +31,9 @@ RELEASE NOTES
 	names: "xml" -> "xmldocs", "xsl" -> "xslfile", and "doctype" -> "xmlsref".
 	No changes to the other flags or flag valid values.
 
+	Updated documenting scripts to use system-wide resources from LOGTALKHOME
+	and user-modifiable resources from LOGTALKUSER.
+
 	Changed generation of predicate compiled functors to add an underscore 
 	between the original predicate functor and arity (further minimizing the 
 	chance of name conflicts).

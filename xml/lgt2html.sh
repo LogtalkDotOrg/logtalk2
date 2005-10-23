@@ -90,8 +90,11 @@ create_index_file()
 	echo "</html>" >> "$index_file"
 }
 
-
-if ! [ "$LOGTALKUSER" ]
+if ! [ "$LOGTALKHOME" ]
+then
+	echo "Error! The environment variable LOGTALKHOME must be defined first!"
+	exit 1
+elif ! [ "$LOGTALKUSER" ]
 then
 	echo "Error! The environment variable LOGTALKUSER must be defined first!"
 	exit 1
@@ -157,8 +160,9 @@ else
 		xslt=$html_xslt
 	fi
 
-	cp "$LOGTALKUSER"/xml/logtalk.dtd .
-	cp "$LOGTALKUSER"/xml/logtalk.xsd .
+	cp "$LOGTALKHOME"/xml/logtalk.dtd .
+	cp "$LOGTALKHOME"/xml/logtalk.xsd .
+
 	cp "$LOGTALKUSER"/xml/logtalk.css "$directory"
 
 	echo

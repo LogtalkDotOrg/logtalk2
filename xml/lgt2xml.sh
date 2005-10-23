@@ -8,7 +8,6 @@
 ## =================================================================
 
 xslt=lgtxml.xsl
-spec=logtalk.dtd
 css=logtalk.css
 format=xhtml
 index_file=index.html
@@ -82,7 +81,11 @@ create_index_file()
 }
 
 
-if ! [ "$LOGTALKUSER" ]
+if ! [ "$LOGTALKHOME" ]
+then
+	echo "Error! The environment variable LOGTALKHOME must be defined first!"
+	exit 1
+elif ! [ "$LOGTALKUSER" ]
 then
 	echo "Error! The environment variable LOGTALKUSER must be defined first!"
 	exit 1
@@ -119,7 +122,9 @@ else
 		index_title=$t_arg
 	fi
 
-	cp "$LOGTALKUSER"/xml/$spec .
+	cp "$LOGTALKHOME"/xml/logtalk.dtd .
+	cp "$LOGTALKHOME"/xml/logtalk.xsd .
+
 	cp "$LOGTALKUSER"/xml/$css .
 	cp "$LOGTALKUSER"/xml/$xslt .
 

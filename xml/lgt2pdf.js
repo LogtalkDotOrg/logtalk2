@@ -23,22 +23,36 @@ if (WScript.Arguments.Unnamed.Length > 0) {
 var WshProcessEnv = WshShell.Environment("PROCESS");
 var WshSystemEnv = WshShell.Environment("SYSTEM");
 var WshUserEnv = WshShell.Environment("USER");
+
 var logtalk_home;
+var logtalk_user;
+
+if (WshProcessEnv.Item("LOGTALKHOME"))
+	logtalk_home = WshProcessEnv.Item("LOGTALKHOME");
+else if (WshSystemEnv.Item("LOGTALKHOME"))
+	logtalk_home = WshSystemEnv.Item("LOGTALKHOME");
+else if (WshUserEnv.Item("LOGTALKHOME"))
+	logtalk_home = WshUserEnv.Item("LOGTALKHOME")
+else {
+	WScript.Echo("Error! The environment variable LOGTALKHOME must be defined first!");
+	usage_help();
+	WScript.Quit(1);
+}
 
 if (WshProcessEnv.Item("LOGTALKUSER"))
-	logtalk_home = WshProcessEnv.Item("LOGTALKUSER");
+	logtalk_user = WshProcessEnv.Item("LOGTALKUSER");
 else if (WshSystemEnv.Item("LOGTALKUSER"))
-	logtalk_home = WshSystemEnv.Item("LOGTALKUSER");
+	logtalk_user = WshSystemEnv.Item("LOGTALKUSER");
 else if (WshUserEnv.Item("LOGTALKUSER"))
-	logtalk_home = WshUserEnv.Item("LOGTALKUSER")
+	logtalk_user = WshUserEnv.Item("LOGTALKUSER")
 else {
 	WScript.Echo("Error! The environment variable LOGTALKUSER must be defined first!");
 	usage_help();
 	WScript.Quit(1);
 }
 
-var a4_xsl = logtalk_home + "\\xml\\lgtpdfa4.xsl";
-var us_xsl = logtalk_home + "\\xml\\lgtpdfus.xsl";
+var a4_xsl = logtalk_user + "\\xml\\lgtpdfa4.xsl";
+var us_xsl = logtalk_user + "\\xml\\lgtpdfus.xsl";
 var xsl;
 
 var f_arg = "";
