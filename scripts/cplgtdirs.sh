@@ -59,6 +59,9 @@ cp -RL "$LOGTALKHOME"/libpaths "$LOGTALKUSER"/
 cp -RL "$LOGTALKHOME"/library "$LOGTALKUSER"/
 cp -RL "$LOGTALKHOME"/xml "$LOGTALKUSER"/
 chmod -R u+w "$LOGTALKUSER"
+rm -f "$LOGTALKUSER"/xml/lgt2*
+rm -f "$LOGTALKUSER"/xml/logtalk.dtd
+rm -f "$LOGTALKUSER"/xml/logtalk.xsd
 ln -sf "$LOGTALKHOME"/BIBLIOGRAPHY "$LOGTALKUSER"/BIBLIOGRAPHY
 ln -sf "$LOGTALKHOME"/INSTALL "$LOGTALKUSER"/INSTALL
 ln -sf "$LOGTALKHOME"/LICENSE "$LOGTALKUSER"/LICENSE
@@ -67,6 +70,11 @@ ln -sf "$LOGTALKHOME"/README "$LOGTALKUSER"/README
 ln -sf "$LOGTALKHOME"/RELEASE_NOTES "$LOGTALKUSER"/RELEASE_NOTES
 ln -sf "$LOGTALKHOME"/UPGRADING "$LOGTALKUSER"/UPGRADING
 ln -sf "$LOGTALKHOME"/manuals "$LOGTALKUSER"/manuals
+ln -sf "$LOGTALKHOME"/xml/lgt2html.sh "$LOGTALKUSER"/xml/lgt2html
+ln -sf "$LOGTALKHOME"/xml/lgt2pdf.sh "$LOGTALKUSER"/xml/lgt2pdf
+ln -sf "$LOGTALKHOME"/xml/lgt2xml.sh "$LOGTALKUSER"/xml/lgt2xml
+ln -sf "$LOGTALKHOME"/xml/logtalk.dtd "$LOGTALKUSER"/xml/logtalk.dtd
+ln -sf "$LOGTALKHOME"/xml/logtalk.xsd "$LOGTALKUSER"/xml/logtalk.xsd
 echo "Finished copying Logtalk files and directories."
 echo
 echo "You may need to edit the \$LOGTALKUSER/libpaths/libpaths.pl file to match"

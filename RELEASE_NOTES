@@ -34,6 +34,10 @@ RELEASE NOTES
 	Updated documenting scripts to use system-wide resources from LOGTALKHOME
 	and user-modifiable resources from LOGTALKUSER.
 
+	Updated "cplgtdirs.*" shell scripts to create links to the documenting 
+	scripts and to the DTD and XML Schema specifications instead of making 
+	local copies.
+
 	Changed generation of predicate compiled functors to add an underscore 
 	between the original predicate functor and arity (further minimizing the 
 	chance of name conflicts).
