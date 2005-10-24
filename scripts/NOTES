@@ -27,9 +27,9 @@ lgt_install.js
 	and by adding the directories %LOGTALKHOME%\scripts and %LOGTALKHOME%\xml 
 	to the system path environment variable (must be run from this directory 
 	by a user with administration privileges after decompressing the Logtalk 
-	distribution into its final destination; you will need to restart your 
-	computer in order to use the items created in the "Logtalk" program group 
-	due to the definition of new system environment variables)
+	distribution into its final destination; you must restart your computer 
+	after running this script in order to use the items on the "Logtalk"
+	program group due to the definition of new system environment variables)
 
 logtalk.spec
 	specification file for building Linux RPMs
