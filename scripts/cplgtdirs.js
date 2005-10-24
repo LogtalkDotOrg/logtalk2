@@ -71,7 +71,12 @@ FSObject.DeleteFile(logtalk_user + "\\xml\\lgt2*.*");
 FSObject.DeleteFile(logtalk_user + "\\xml\\logtalk.dtd");
 FSObject.DeleteFile(logtalk_user + "\\xml\\logtalk.xsd");
 
-var link = WshShell.CreateShortcut(logtalk_user + "\\xml\\lgt2html.js.lnk");
+var link = WshShell.CreateShortcut(logtalk_user + "\\manuals.lnk");
+link.Description = "Shortcut to Logtalk documentation";
+link.TargetPath = logtalk_home + "\\manuals";
+link.Save();
+
+link = WshShell.CreateShortcut(logtalk_user + "\\xml\\lgt2html.js.lnk");
 link.Description = "Shortcut to lgt2html script";
 link.TargetPath = logtalk_home + "\\xml\\lgt2html.js";
 link.Save();

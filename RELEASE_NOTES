@@ -37,7 +37,8 @@ RELEASE NOTES
 
 	Updated "cplgtdirs.*" shell scripts to create links to the documenting 
 	scripts and to the DTD and XML Schema specifications instead of making 
-	local copies.
+	local copies. Updated the "cplgtdirs.js" Windows JScript script to create
+	a link to the Logtalk manuals.
 
 	Changed generation of predicate compiled functors to add an underscore 
 	between the original predicate functor and arity (further minimizing the 
