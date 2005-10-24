@@ -79,6 +79,9 @@ WScript.Echo('Done. The "Logtalk - YAP" shortcut was been added to the Start Men
 WScript.Echo('Programs. Make sure that the environment variables LOGTALKHOME and');
 WScript.Echo('LOGTALKUSER are defined for all users wishing to use the shortcut.');
 WScript.Echo('');
+WScript.Echo('Users must run the batch script "cplgtdirs" before using the');
+WScript.Echo('"Logtalk - YAP" shortcut.');
+WScript.Echo('');
 
 WScript.Quit(0);
 

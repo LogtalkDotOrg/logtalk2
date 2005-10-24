@@ -12,7 +12,8 @@ RELEASE NOTES
 
 2.26.0 - October 24, 2005
 
-	Added support for defining predicate aliases when using uses/2 directives.
+	Added support for defining predicate aliases when using uses/2 directives
+	(using the format Predicate::Alias).
 
 	Added Prolog modules migration code allowing modules to be compiled as 
 	objects and allowing messages to be sent to modules. Added a new "modules"
@@ -44,6 +45,9 @@ RELEASE NOTES
 
 	Improved compilation warning messages (separately handling plural and 
 	singular forms).
+
+	Improved documentation of Windows JScript installation and integration 
+	scripts.
 
 	Corrected a bug on the Logtalk built-in debugger on the processing of the
 	abort option at a leashed port (option was ignored instead of aborting the
