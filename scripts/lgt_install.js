@@ -111,7 +111,7 @@ link.Description = "Open Logtalk Upgrading instructions";
 link.TargetPath = WshShell.CurrentDirectory + "\\UPGRADING.txt";
 link.Save();
 
-WScript.Echo('Logtalk basic installation completed. You will need to restart in order');
+WScript.Echo('Logtalk basic installation completed. You will need to RESTART in order');
 WScript.Echo('to activate the new system environment variables and use the items in');
 WScript.Echo('the new Logtalk program group. See the Install and configuration file');
 WScript.Echo('for details on customizing your working environment.');

@@ -60,6 +60,9 @@ WScript.Echo('Done.  Links to the created scripts was been added to the Start Me
 WScript.Echo('Programs.   Make sure that the environment variables LOGTALKHOME and');
 WScript.Echo('LOGTALKUSER are defined for all users wishing to use the shortcuts.');
 WScript.Echo('');
+WScript.Echo('Users must run the batch script cplgtdirs before using the Logtalk -');
+WScript.Echo('Prolog integration scripts.');
+WScript.Echo('');
 WScript.Echo('If you get an unexpected failure to create a shortcut for one of the');
 WScript.Echo('above Prolog compilers, make sure that the Prolog compiler is properly');
 WScript.Echo('installed, consult the NOTES file on the scripts directory, and try to');
