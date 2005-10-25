@@ -56,8 +56,8 @@ Logtalk on MacOS X, Windows, Linux, and Unix-like (POSIX) operating systems
 
 >> Windows installation (starting from the Logtalk directory):
 
-	% cd scripts
-	% cscript lgt_install.js
+	C:\logtalk> cd scripts
+	C:\logtalk> cscript lgt_install.js
 	RESTART
 
 The "scripts/lgt_install.*" installation scripts make all files read-only in 
@@ -127,8 +127,8 @@ There are also "makeall_lgt.*" scripts that try to run all the individual
 
 >> Windows:
 
-	% cd %LOGTALKHOME%\scripts
-	% cscript makeall_lgt.js
+	C:\> cd %LOGTALKHOME%\scripts
+	C:\> cscript makeall_lgt.js
 
 This assumes that your favorite Prolog compilers are supported by the 
 "make_*lgt.*" scripts. If that is not the case, don't worry: just follow 
@@ -149,7 +149,7 @@ in the "scripts/NOTES" file).
 
 >> Windows:
 
-	% cplgtdirs
+	C:\> cplgtdirs
 
 The local copies made by the "cplgtdirs" scripts have both read and write 
 permissions for the user running the script. When used with one of the 
