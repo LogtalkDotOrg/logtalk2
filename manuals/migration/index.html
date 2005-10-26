@@ -69,7 +69,7 @@ An alternative to convert Prolog modules into objects is to just compile the mod
 		<dd>Module meta-predicates become object meta-predicates. Only predicate arguments marked as <code>:</code> are interpreted as meta-arguments.</dd>
 </dl>
 <p>
-Logtalk supports the use of the <em>library(name)</em> notation on the <code>module/1-2</code> and <code>use_module/2</code> directives (assuming there is an entry for the library on the <code>logtalk_library_path/2</code> table).
+Logtalk supports the use of the <em>library(name)</em> notation on the <code>module/1-2</code> and <code>use_module/2</code> directives (assuming there is an entry for the library on the <a title="Consult reference manual" href="../refman/builtins/logtalk_library_path2.html"><code>logtalk_library_path/2</code></a> table).
 </p>
 <p>
 Note that <code>use_module/1</code> directives are not currently supported. Therefore, this directives must be converted into <code>use_module/2</code> directives by finding which predicates exported by the specified module are imported into the module containing the directive. Automating the conversion would imply loading the module without re-interpreting it as an object, which might not be what the user intended. Nevertheless, finding the names of the imported predicates is easy. First, comment out the <code>use_module/1</code> directives and compile the file (making sure that the compiler flag <code>misspelt</code> is set to <code>warning</code>). Logtalk will print a warning with a list of predicates that are called but never defined. Second, use these list to replace the <code>use_module/1</code> directives by <code>use_module/2</code> directives. You should then be able to compile the modified Prolog module as an object.
