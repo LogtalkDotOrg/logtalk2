@@ -24,25 +24,31 @@ files and the links to the .css files in the generated .html files assume
 that all files reside in the same directory.
 
 The choice of the default .xsl file to use is made in the config files by 
-the '$lgt_default_flag'/2 predicate. You may also choose a different 
-.xsl file by using the xslfile/1 compiler flag in the logtalk_compile/2 or 
+the '$lgt_default_flag'/2 predicate. You may also choose a different .xsl 
+file by using the xslfile/1 compiler flag in the logtalk_compile/2 or 
 logtalk_load/2 calls. The default file is lgtxml.xsl (described below).
 
-The documenting files can be either generated as standalone XML files or 
-contain a reference to either the Logtalk DTD file, logtalk.dtd, or to 
-the Logtalk XML Schema file, logtalk.xsd. The reference to the XML 
-specification file can be either a local reference or a URI reference. By 
-default, all .xml documenting files contain a local reference but that 
-can be changed either in the config files, by setting a Logtalk compiler 
-flag, or by using the xmlsref/1 compiler flag. Choose the option value 
-that works best with your XSLT tools. To choose between the .dtd or .xsd 
-specifications use the xmlspec/1 compiler flag.
+The documenting files can be generated either as standalone XML files or 
+contain a reference to either the Logtalk DTD file, logtalk.dtd, or to the 
+Logtalk XML Schema file, logtalk.xsd. The reference to the XML specification 
+file can be either a local reference or a URI reference. By default, all .xml 
+documenting files contain a local reference but that can be changed either in 
+the config files, by setting a Logtalk compiler flag, or by using the 
+xmlsref/1 compiler flag. Choose the option value that works best with your 
+XSLT tools. To choose between the .dtd or .xsd specifications use the 
+xmlspec/1 compiler flag.
 
 As Logtalk uses a single namespace for all objects, categories, and protocols,
-it is advisable that you define an alternate compilation directory to store 
-all the XML documenting files (see the predicate '$lgt_alt_directory'/2 on the
-config files). This will ensure proper working of links to other entities in 
-the generated (X)HTML files.
+you may want to define an alternate, global compilation directory to store all 
+the XML documenting files, thus ensuring proper working of links to other 
+entities in the generated (X)HTML files. This can be easily accomplished by 
+using the predicate '$lgt_alt_directory'/2, which is defined on the config 
+files, and by setting the altdirs/1 compiler flag to "on". For example:
+
+	'$lgt_alt_directory'(xml, '%LOGTALKUSER/xmldocs/').
+	...
+	'$lgt_default_flag'(altdirs, on).
+	...
 
 
 Brief description of each file in this folder:
@@ -178,9 +184,9 @@ lgt2xml.js
 
 	Sample scripts for indexing the .xml files in the current directory by 
 	generating an index.html file which contains links to all the files. In 
-	addition, these scripts also make a copy of the lgtxml.xsl file to the
-	current directory, allowing direct visualization of the .xml files on a 
-	supported web browser.
+	addition, these scripts also copies of the lgtxml.xsl and logtalk.css
+	files to the current directory, allowing direct visualization of the .xml 
+	files on a supported web browser.
 
 	These scripts assumes that the LOGTALKHOME and LOGTALKUSER environment 
 	variables are defined.
