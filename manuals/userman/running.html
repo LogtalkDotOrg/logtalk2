@@ -115,11 +115,11 @@ You can use the following flags:
 </dl>
 <dl>
 	<dt><code>lgtredef(Option)</code></dt>
-		<dd>Controls the Logtalk built-in predicate redefinition warnings. Possible option values are <code>warning</code> (the usual default) and <code>silent</code>.</dd>
+		<dd>Controls the Logtalk built-in predicate redefinition warnings. Possible option values are <code>warning</code> (the usual default) and <code>silent</code>. These warnings are almost always programming errors.</dd>
 </dl>
 <dl>
 	<dt><code>plredef(Option)</code></dt>
-		<dd>Controls the Prolog built-in predicate redefinition warnings. Possible option values are <code>warning</code> (can be very verbose if your code redefines a lot of Prolog built-in predicates) and <code>silent</code> (the usual default).</dd>
+		<dd>Controls the Prolog built-in predicate redefinition warnings. Possible option values are <code>warning</code> (can be very verbose if your code redefines a lot of Prolog built-in predicates) and <code>silent</code> (the usual default). When running a Logtalk application on several Prolog compilers, is possible to get different sets of warnings due to different sets of built-in predicates implemented by each Prolog compiler.</dd>
 </dl>
 <dl>
 	<dt><code>portability(Option)</code></dt>
