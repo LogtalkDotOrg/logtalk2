@@ -141,7 +141,10 @@ Whenever a spied event occurs, the message sending mechanisms call the correspon
 <h2>Performance concerns<a name="performance"></a></h2>
 
 <p>
-The existence of monitored messages should not affect the processing of the remaining messages. On the other hand, for each message that has been sent, the system must verify if its respective event is monitored. This verification clearly must be ideally performed in constant time and independently from the number of monitored events. The events representation takes advantage of the first argument indexing performed by most Prolog compilers, which ensure &mdash; in the general case &mdash; an access in constant time.
+Ideally, the existence of monitored messages should not affect the processing of the remaining messages. On the other hand, for each message that has been sent, the system must verify if its respective event is monitored. Whenever possible, this verification should be performed in constant time and independently from the number of monitored events. The events representation takes advantage of the first argument indexing performed by most Prolog compilers, which ensure &mdash; in the general case &mdash; an access in constant time.
+</p>
+<p>
+Event-support can be turned off on a per-object (or per-category) basis using the compiler flag <code>events/1</code>. With event-support turned off, Logtalk uses optimized code for processing message sending calls that skips the checking of monitored events, resulting in a small but measurable performance improvement.
 </p>
 
 <h2>Monitor semantics<a name="semantics"></a></h2>
@@ -287,7 +290,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: September 8, 2005</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: September 27, 2005</span></p>
 </div>
 </body>
 </html>
