@@ -74,6 +74,9 @@ Logtalk supports the use of the <a title="Consult user manual" href="../userman/
 <p>
 Note that <code>use_module/1</code> directives are not currently supported. Therefore, this directives must be converted into <code>use_module/2</code> directives by finding which predicates exported by the specified module are imported into the module containing the directive. Automating the conversion would imply loading the module without re-interpreting it as an object, which might not be what the user intended. Nevertheless, finding the names of the imported predicates is easy. First, comment out the <code>use_module/1</code> directives and compile the file (making sure that the compiler flag <code>misspelt</code> is set to <code>warning</code>). Logtalk will print a warning with a list of predicates that are called but never defined. Second, use these list to replace the <code>use_module/1</code> directives by <code>use_module/2</code> directives. You should then be able to compile the modified Prolog module as an object.
 </p>
+<p>
+Changing the extension of a module source file to <code>.lgt</code> in order to be able to compile it as Logtalk source file is not always feasible. An alternative is to create symbolic links for the module files using <code>*.lgt</code> names. For avoiding conflicts between the Logtalk generated Prolog files and the module files, create the links on a different directory and add an entry to the directory using the predicate <a title="Consult reference manual" href="../refman/builtins/logtalk_library_path2.html"><code>logtalk_library_path/2</code></a>.
+</p>
 
 
 <h2>Calling Prolog module predicates using message sending<a name="converting"></a></h2>
@@ -95,7 +98,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: September 8, 2005</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: September 27, 2005</span></p>
 </div>
 </body>
 </html>
