@@ -75,7 +75,14 @@ Logtalk supports the use of the <a title="Consult user manual" href="../userman/
 Note that <code>use_module/1</code> directives are not currently supported. Therefore, this directives must be converted into <code>use_module/2</code> directives by finding which predicates exported by the specified module are imported into the module containing the directive. Automating the conversion would imply loading the module without re-interpreting it as an object, which might not be what the user intended. Nevertheless, finding the names of the imported predicates is easy. First, comment out the <code>use_module/1</code> directives and compile the file (making sure that the compiler flag <code>misspelt</code> is set to <code>warning</code>). Logtalk will print a warning with a list of predicates that are called but never defined. Second, use these list to replace the <code>use_module/1</code> directives by <code>use_module/2</code> directives. You should then be able to compile the modified Prolog module as an object.
 </p>
 <p>
-Changing the extension of a module source file to <code>.lgt</code> in order to be able to compile it as Logtalk source file is not always feasible. An alternative is to create symbolic links for the module files using <code>*.lgt</code> names. For avoiding conflicts between the Logtalk generated Prolog files and the module files, create the links on a different directory and add a library entry for the directory using the predicate <a title="Consult reference manual" href="../refman/builtins/logtalk_library_path2.html"><code>logtalk_library_path/2</code></a>.
+Changing the extension of a module source file to <code>.lgt</code> in order to be able to compile it as Logtalk source file is not always feasible. An alternative is to create symbolic links for the module files using <code>*.lgt</code> names. In addition, for avoiding conflicts between the Logtalk generated Prolog files and the module files, create the links on a different directory and add a library entry for the directory using the predicate <a title="Consult reference manual" href="../refman/builtins/logtalk_library_path2.html"><code>logtalk_library_path/2</code></a>. For example, assuming a POSIX operating-system and library source file names ending with a <code>.pl</code> extension, the links can be easily created running the following shell commands:
+</p>
+<pre>
+    $ mkdir lgtlib
+    $ for i in *.pl; do ln -sf $i ../liblgt/`basename $i .pl`.lgt; done
+</pre>
+<p>
+The links can also be easily created on most operating-systems using the GUI tools. 
 </p>
 
 
