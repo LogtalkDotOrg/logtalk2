@@ -168,7 +168,7 @@ The configuration files specifies default values for all the Logtalk compiler fl
 </dl>
 <dl>
 	<dt><code>altdirs(Option)</code></dt>
-		<dd>Allows the use of alternative directories for storing the Prolog files and the XML documenting files resulting from entity compilation. This flag can only be set for Prolog compilers providing the necessary operating-system access predicates for implementing this feature (specifically, a built-in predicate for creating new directories). Possible option values are <code>on</code> and <code>off</code> (the usual default). The names of the alternative directories are specified using a predicate which is also defined in the configuration files.</dd>
+		<dd>Allows the use of alternative directories for storing the Prolog files and the XML documenting files resulting from entity compilation. This flag can only be set for Prolog compilers providing the necessary operating-system access predicates for implementing this feature (specifically, a built-in predicate for creating new directories). Possible option values are <code>on</code> and <code>off</code> (the usual default). The names of the alternative directories are specified using the predicate <code>'$lgt_alt_directory'/2</code>, which is also defined in the configuration files.</dd>
 </dl>
 <dl>
 	<dt><code>iso_initialization_dir</code></dt>
@@ -201,7 +201,7 @@ Logtalk 2.x contains new implementations of some of the examples provided with p
 <h3>Logtalk source files<a name="entities"></a></h3>
 
 <p>
-Each Logtalk entity (object, category or protocol) is contained in a text file named after the entity. The extension <code>.lgt</code> is normally used. The Logtalk preprocessor compiles these files to plain Prolog, replacing the <code>.lgt</code> extension with  <code>.pl</code> (the default Prolog extension). If your Prolog compiler expects the Prolog source filenames to end with a specific, different extension, you can set it in the corresponding configuration file.
+Logtalk source files are text files containing entity definitions (objects, categories, or protocols). The extension <code>.lgt</code> is normally used. The Logtalk preprocessor compiles these files to plain Prolog, replacing the <code>.lgt</code> extension with  <code>.pl</code> (the default Prolog extension). If your Prolog compiler expects the Prolog source filenames to end with a specific, different extension, you can set it in the corresponding configuration file.
 </p>
 
 <div class="navbottom">
@@ -213,7 +213,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: October 20, 2005</span></p>
+<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: October 27, 2005</span></p>
 </div>
 </body>
 </html>
