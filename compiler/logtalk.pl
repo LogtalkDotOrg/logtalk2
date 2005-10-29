@@ -3764,6 +3764,32 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	!.
 
 '$lgt_tr_directive'(Dir, _) :-
+	'$lgt_ignore_pl_directive'(Dir),
+	!,
+	('$lgt_compiler_flag'(portability, warning) ->
+		nl, write('  WARNING!  ignoring Prolog directive: '), writeq(Dir)
+		;
+		true).
+
+'$lgt_tr_directive'(Dir, _) :-
+	'$lgt_copy_pl_directive'(Dir),
+	assertz('$lgt_pp_directive_'(Dir)),
+	!,
+	('$lgt_compiler_flag'(portability, warning) ->
+		nl, write('  WARNING!  copying Prolog directive as-is: '), writeq(Dir)
+		;
+		true).
+
+'$lgt_tr_directive'(Dir, Stream) :-
+	'$lgt_rewrite_pl_directive'(Dir, RWDir),
+	!,
+	('$lgt_compiler_flag'(portability, warning) ->
+		nl, write('  WARNING!  rewriting Prolog directive: '), writeq(Dir)
+		;
+		true),
+	'$lgt_tr_directive'(RWDir, Stream).
+
+'$lgt_tr_directive'(Dir, _) :-
 	functor(Dir, Functor, Arity),
 	throw(error(domain_error(directive, Functor/Arity), directive(Dir))).
 

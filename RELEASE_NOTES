@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.26.0 - October 24, 2005
+2.26.0 - October 31, 2005
 
 	Added support for defining predicate aliases when using uses/2 directives
 	(using the format Predicate::Alias).
@@ -27,6 +27,10 @@ RELEASE NOTES
 
 	Added support for using library aliases on the second argument of the 
 	logtalk_library_path/2 predicate (using the format alias(path)).
+
+	Added support for ignoring, copying as-is, or rewriting proprietary Prolog
+	directives. The action to take is defined on a per-directive basis on the
+	config files.
 
 	Renamed some XML documentation-related compiler flags to more meaningful 
 	names: "xml" -> "xmldocs", "xsl" -> "xslfile", and "doctype" -> "xmlsref".
