@@ -3881,13 +3881,16 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % compile modules as objects
 
-'$lgt_tr_directive'(module, [Module| ExportList], _) :-
+'$lgt_tr_directive'(module, [Module], Stream) :-
+	!,
+	'$lgt_tr_directive'(module, [Module, []], Stream).		% empty export list
+
+'$lgt_tr_directive'(module, [Module, ExportList], Stream) :-
 	atom(Module) ->
-		assertz('$lgt_pp_module_'(Module)),				% remeber we are compiling a module
+		assertz('$lgt_pp_module_'(Module)),					% remeber we are compiling a module
 		'$lgt_report_compiling_entity'(module, Module),
-		'$lgt_tr_object_id'(Module, static),			% assume static module/object
-		'$lgt_tr_object_relations'([], Module),
-		'$lgt_tr_directive'((public), ExportList, _),	% make the export list public predicates
+		'$lgt_tr_object_id'(Module, static),				% assume static module/object
+		'$lgt_tr_directive'((public), ExportList, Stream),	% make the export list public predicates
 		'$lgt_save_file_op_table'
 		;
 		throw(type_error(module_identifier, Module)).
@@ -7868,7 +7871,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	N =:= 1; N =:= 2.
 
 '$lgt_lgt_opening_directive'(module, N) :-				% Prolog module directive
-	N =:= 1; N =:= 2.
+	N >= 1, N =< 3.
 
 
 '$lgt_lgt_closing_directive'(end_object, 0).
