@@ -64,7 +64,7 @@ An alternative to convert Prolog modules into objects is to just compile the mod
 	<dt><code>use_module/2</code></dt>
 		<dd>This directive is compiled as a Logtalk <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directive in order to ensure correct compilation of the module predicate clauses. Note that the module specified on the directive is not automatically loaded by Logtalk (as it would be when compiling the directive using Prolog instead of Logtalk; the programmer may also want the specified module to be compiled as an object).</dd>
 	<dt><code>export/1</code></dt>
-		<dd>Exported predicates are compiled as public object predicates. Exported predicates may be represented as either predicate indicators (<code>Functor/Arity</code>) or callable terms (<code>Functor(...)</code>).</dd>
+		<dd>Exported predicates are compiled as public object predicates. The argument must be a predicate indicator (<code>Functor/Arity</code>) or a list of predicate indicators.</dd>
 	<dt><code>meta_predicate/1</code></dt>
 		<dd>Module meta-predicates become object meta-predicates. Only predicate arguments marked as <code>:</code> are interpreted as meta-arguments.</dd>
 </dl>

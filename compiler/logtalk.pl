@@ -3993,8 +3993,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 '$lgt_tr_directive'((export), Preds, Stream) :-
 	'$lgt_flatten_list'(Preds, Preds2),
-	'$lgt_pred_list_to_pred_indicators'(Preds2, Preds3),
-	'$lgt_tr_directive'((public), Preds3, Stream).
+	'$lgt_tr_directive'((public), Preds2, Stream).
 
 
 '$lgt_tr_directive'(protected, Preds, _) :-
@@ -4166,28 +4165,6 @@ current_logtalk_flag(version, version(2, 26, 0)).
 '$lgt_convert_meta_predicate_mode_spec'([Arg| Args], [Arg2| Args2]) :-
 	(Arg = (:) -> Arg2 = (::); Arg2 = (*)),
 	'$lgt_convert_meta_predicate_mode_spec'(Args, Args2).
-
-
-
-% auxiliary predicates for converting module's export/1 argument into a list of
-% predicate indicators; some Prolog compilers already use a list of predicate
-% indicators while others use a list of predicate templates
-
-'$lgt_pred_list_to_pred_indicators'([], []).
-
-'$lgt_pred_list_to_pred_indicators'([Functor/Arity| Preds], [Functor/Arity| Preds]) :-
-	!.
-
-'$lgt_pred_list_to_pred_indicators'(Templates, Preds) :-
-	!,
-	'$lgt_pred_templates_to_pred_indicators'(Templates, Preds).
-
-
-'$lgt_pred_templates_to_pred_indicators'([], []).
-
-'$lgt_pred_templates_to_pred_indicators'([Template| Templates], [Functor/Arity| Preds]) :-
-	functor(Template, Functor, Arity),
-	'$lgt_pred_templates_to_pred_indicators'(Templates, Preds).
 
 
 
