@@ -7976,16 +7976,20 @@ current_logtalk_flag(version, version(2, 26, 0)).
 %
 % flattens a list of terms
 
-'$lgt_flatten_list'([[A|B]], [A|B]) :-	% list containing a single list
+'$lgt_flatten_list'([[A|B]], [A|B]) :-		% list containing a single list
 	!.
 
-'$lgt_flatten_list'([[]], []) :-		% list containing a single empty list
+'$lgt_flatten_list'([[]], []) :-			% list containing a single empty list
 	!.
 
-'$lgt_flatten_list'([A|B], [A|B]) :-	% already flattened list
+'$lgt_flatten_list'([(A, B)], [A|BB]) :-	% list containing a single element,
+	!,										% which is a sequence: (A, B, ...)
+	'$lgt_flatten_list'([B], BB).
+
+'$lgt_flatten_list'([A|B], [A|B]) :-		% already flattened list
 	!.
 
-'$lgt_flatten_list'([], []).			% empty  list
+'$lgt_flatten_list'([], []).				% empty  list
 
 
 
@@ -8104,18 +8108,21 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 % '$lgt_valid_op_names'(@term)
+%
+% (an atom or a list of atoms)
+
+'$lgt_valid_op_names'(Op) :-
+	atom(Op), !.
 
 '$lgt_valid_op_names'(Ops) :-
-	nonvar(Ops),
-	'$lgt_flatten_list'(Ops, List),
-	'$lgt_valid_op_names_aux'(List).
+	'$lgt_valid_op_names_list'(Ops).
 
 
-'$lgt_valid_op_names_aux'([]).
+'$lgt_valid_op_names_list'([]).
 
-'$lgt_valid_op_names_aux'([Op| Ops]) :-
+'$lgt_valid_op_names_list'([Op| Ops]) :-
 	atom(Op),
-	'$lgt_valid_op_names_aux'(Ops).
+	'$lgt_valid_op_names_list'(Ops).
 
 
 
