@@ -131,7 +131,7 @@
 :- dynamic('$lgt_pp_category_'/6).				% '$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Mode)
 :- dynamic('$lgt_pp_protocol_'/5).				% '$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Mode)
 
-:- dynamic('$lgt_pp_module'/1).					% '$lgt_pp_module'(Module)
+:- dynamic('$lgt_pp_module_'/1).				% '$lgt_pp_module_'(Module)
 
 :- dynamic('$lgt_pp_uses_'/1).					% '$lgt_pp_uses_'(Obj)
 :- dynamic('$lgt_pp_uses_'/3).					% '$lgt_pp_uses_'(Obj, Predicate, Alias)
@@ -3312,7 +3312,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 % '$lgt_tr_file'(+term, +list, +stream, +stream)
 
 '$lgt_tr_file'(end_of_file, _, _, ObjectStream) :-
-	'$lgt_pp_module'(Module),
+	'$lgt_pp_module_'(Module),
 	'$lgt_pp_object_'(Module, _, _, _, _, _, _, _, _, _, _),
 	'$lgt_tr_entity'(object, Module, ObjectStream),
 	'$lgt_report_compiled_entity'(module, Module),
@@ -3490,7 +3490,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	retractall('$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _)),
 	retractall('$lgt_pp_protocol_'(_, _, _, _, _)),
 	retractall('$lgt_pp_category_'(_, _, _, _, _, _)),
-	retractall('$lgt_pp_module'(_)),
+	retractall('$lgt_pp_module_'(_)),
 	retractall('$lgt_pp_implemented_protocol_'(_, _, _, _)),
 	retractall('$lgt_pp_imported_category_'(_, _, _, _, _)),
 	retractall('$lgt_pp_extended_object_'(_, _, _, _, _, _, _, _, _, _)),
@@ -3883,7 +3883,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 '$lgt_tr_directive'(module, [Module| ExportList], _) :-
 	atom(Module) ->
-		assertz('$lgt_pp_module'(Module)),				% remeber we are compiling a module
+		assertz('$lgt_pp_module_'(Module)),				% remeber we are compiling a module
 		'$lgt_report_compiling_entity'(module, Module),
 		'$lgt_tr_object_id'(Module, static),			% assume static module/object
 		'$lgt_tr_object_relations'([], Module),
