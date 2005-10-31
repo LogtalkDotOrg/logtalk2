@@ -80,6 +80,9 @@ RELEASE NOTES
 
 	Removed outdated documenting shell scripts from the "xml" directory.
 
+	Corrected a bug when compiling a source file where the generated Prolog 
+	file might not be properly closed when a compilation error occurs.
+
 
 2.25.3 - September 12, 2005
 

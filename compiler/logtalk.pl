@@ -3235,6 +3235,11 @@ current_logtalk_flag(version, version(2, 26, 0)).
 		true.
 
 
+
+% '$lgt_entity_doc_file_name'(@nonvar, -atom)
+%
+% generates the XML file name for an entity
+
 '$lgt_entity_doc_file_name'(Entity, File) :-
 	functor(Entity, Functor, Arity),
 	number_codes(Arity, Codes),
@@ -3265,56 +3270,58 @@ current_logtalk_flag(version, version(2, 26, 0)).
 % compiles a source file storing the resulting code in memory
 
 '$lgt_tr_file'(File) :-
-	'$lgt_file_name'(logtalk, File, Source),
-	catch((
-		open(Source, read, SourceStream),
-		read_term(SourceStream, Term, [singletons(Singletons)])),
-		SourceError,
-		'$lgt_compiler_error_handler'(SourceStream, SourceError)),
-	'$lgt_check_for_encoding_directive'(Term, SourceStream),	% encoding/1 directive, when present, must be the first term on file
-	'$lgt_file_name'(prolog, File, Object),
-	catch(
-		('$lgt_pp_directive_'(encoding(Encoding)) ->
-			open(Object, write, ObjectStream, [encoding(Encoding)])
-			;
-			open(Object, write, ObjectStream)),
-		ObjectError,
-		'$lgt_compiler_error_handler'(ObjectStream, ObjectError)),
 	'$lgt_clean_pp_clauses',
 	'$lgt_save_global_op_table',
+	'$lgt_file_name'(logtalk, File, Source),
 	catch(
-		 '$lgt_tr_file'(Term, Singletons, SourceStream, ObjectStream),
+		(open(Source, read, Input),
+		 read_term(Input, Term, [singletons(Singletons)])),
+		InputError,
+		'$lgt_compiler_error_handler'(Input, InputError)),
+	'$lgt_check_for_encoding_directive'(Term, Input, OutputOption),	% the encoding/1 directive, when present, 
+	'$lgt_file_name'(prolog, File, Object),							% must be the first term on a source file
+	catch(
+		open(Object, write, Output, OutputOption),
+		OutputError,
+		'$lgt_compiler_error_handler'(Input, Output, OutputError)),
+	catch(
+		'$lgt_tr_file'(Term, Singletons, Input, Output),
 		Error,
-		'$lgt_compiler_error_handler'(SourceStream, Error)),
+		'$lgt_compiler_error_handler'(Input, Output, Error)),
+	close(Input),
 	catch(
-		('$lgt_write_directives'(ObjectStream),					% write out any Prolog code that may occur
-		 '$lgt_write_prolog_clauses'(ObjectStream),				% after the last entity on the source file
-		'$lgt_write_init_call'(ObjectStream)),
-		ObjectError,
-		'$lgt_compiler_error_handler'(ObjectStream, ObjectError)),
-	'$lgt_restore_global_op_table',
-	close(SourceStream),
-	close(ObjectStream).
+		('$lgt_write_directives'(Output),						% write out any Prolog code that may occur
+		 '$lgt_write_prolog_clauses'(Output),					% after the last entity on the source file;
+		 '$lgt_write_init_call'(Output)),						% write initialization/1 directive at the
+		OutputError,											% of the file to improve compatibility with
+		'$lgt_compiler_error_handler'(Output, OutputError)),	% non-ISO compliant Prolog compilers
+	close(Output),
+	'$lgt_restore_global_op_table'.
 
 
 
-'$lgt_check_for_encoding_directive'((:- encoding(Encoding)), Stream) :-	% encoding/1 directives must be used during entity compilation
+% '$lgt_check_for_encoding_directive'(@nonvar, +stream, -list)
+%
+% encoding/1 directives must be used during entity compilation 
+% and for the encoding of the generated Prolog and XML files
+
+'$lgt_check_for_encoding_directive'((:- encoding(Encoding)), Input, [encoding(Encoding)]) :-
 	!,
 	('$lgt_compiler_flag'(supports_encoding_dir, true) ->
-		'$lgt_set_stream_encoding'(Stream, Encoding)
+	 	'$lgt_set_stream_encoding'(Input, Encoding)
 		;
 		throw(error(domain_error(directive, encoding/1), directive(encoding(Encoding))))).
 
-'$lgt_check_for_encoding_directive'(_, _).
+'$lgt_check_for_encoding_directive'(_, _, []).	% assume no encoding/1 directive present on the source file
 
 
 
 % '$lgt_tr_file'(+term, +list, +stream, +stream)
 
-'$lgt_tr_file'(end_of_file, _, _, ObjectStream) :-
-	'$lgt_pp_module_'(Module),
-	'$lgt_pp_object_'(Module, _, _, _, _, _, _, _, _, _, _),
-	'$lgt_tr_entity'(object, Module, ObjectStream),
+'$lgt_tr_file'(end_of_file, _, _, Output) :-					% module definitions start with an opening
+	'$lgt_pp_module_'(Module),									% module/1-2 directive and are assumed to
+	'$lgt_pp_object_'(Module, _, _, _, _, _, _, _, _, _, _),	% end at the end of a source file; there is
+	'$lgt_tr_entity'(object, Module, Output),					% no module closing directive
 	'$lgt_report_compiled_entity'(module, Module),
 	!.
 
@@ -3333,11 +3340,11 @@ current_logtalk_flag(version, version(2, 26, 0)).
 '$lgt_tr_file'(end_of_file, _, _, _) :-
 	!.
 
-'$lgt_tr_file'(Term, Singletons, SourceStream, ObjectStream) :-
+'$lgt_tr_file'(Term, Singletons, Input, Output) :-
 	'$lgt_report_singletons'(Singletons, Term),
-	'$lgt_tr_term'(Term, ObjectStream),
-	read_term(SourceStream, Next, [singletons(NSingletons)]),
-	'$lgt_tr_file'(Next, NSingletons, SourceStream, ObjectStream).
+	'$lgt_tr_term'(Term, Output),
+	read_term(Input, Next, [singletons(NSingletons)]),
+	'$lgt_tr_file'(Next, NSingletons, Input, Output).
 
 
 
@@ -3410,16 +3417,28 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 
+% '$lgt_compiler_error_handler'(@stream, @stream, +term)
+%
+% closes the streams being used for reading and writing terms, restores
+% the operator table, and reports the compilation error found
+
+'$lgt_compiler_error_handler'(Input, Output, Error) :-
+	catch(close(Input), _, true),
+	catch(close(Output), _, true),
+	'$lgt_restore_global_op_table',
+	'$lgt_reset_warnings_counter',
+	'$lgt_report_compiler_error'(Error),
+	throw(Error).
+
+
+
 % '$lgt_compiler_error_handler'(@stream, +term)
 %
 % closes the stream being used for reading or writing terms, restores
 % the operator table, and reports the compilation error found
 
 '$lgt_compiler_error_handler'(Stream, Error) :-
-	(nonvar(Stream) ->
-		close(Stream)
-		;
-		true),
+	catch(close(Stream), _, true),
 	'$lgt_restore_global_op_table',
 	'$lgt_reset_warnings_counter',
 	'$lgt_report_compiler_error'(Error),
