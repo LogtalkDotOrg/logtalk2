@@ -3238,7 +3238,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % '$lgt_entity_doc_file_name'(@nonvar, -atom)
 %
-% generates the XML file name for an entity
+% generates the XML file name for an entity using the format <functor>_<arity>
 
 '$lgt_entity_doc_file_name'(Entity, File) :-
 	functor(Entity, Functor, Arity),
@@ -3252,16 +3252,17 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % '$lgt_file_name'(+atom, +atom, -atom)
 %
-% constructs a filename given the type of file and the entity name
+% constructs a filename given the type of file (logtalk, prolog, or xml)
+% and the file basename (filname may include a directory path)
 
-'$lgt_file_name'(Type, Entity, File) :-
-	'$lgt_file_extension'(Type, Extension),
+'$lgt_file_name'(Type, Basename, File) :-
+	'$lgt_file_extension'(Type, Extension),			% defined on the Prolog config files
 	(('$lgt_compiler_flag'(altdirs, on), '$lgt_alt_directory'(Type, Directory)) ->
-		'$lgt_make_directory'(Directory),
-		atom_concat(Entity, Extension, Aux),
-		atom_concat(Directory, Aux, File)
+		'$lgt_make_directory'(Directory),			% succeeds when the directory already exists
+		atom_concat(Basename, Extension, Aux),
+		atom_concat(Directory, Aux, File)			% file on an alternative compilation directory
 		;
-		atom_concat(Entity, Extension, File)).
+		atom_concat(Basename, Extension, File)).	% file local to current working directory
 
 
 
@@ -3423,11 +3424,11 @@ current_logtalk_flag(version, version(2, 26, 0)).
 % the operator table, and reports the compilation error found
 
 '$lgt_compiler_error_handler'(Input, Output, Error) :-
-	catch(close(Input), _, true),
-	catch(close(Output), _, true),
 	'$lgt_restore_global_op_table',
 	'$lgt_reset_warnings_counter',
 	'$lgt_report_compiler_error'(Error),
+	catch(close(Input), _, true),
+	catch(close(Output), _, true),
 	throw(Error).
 
 
@@ -3438,10 +3439,10 @@ current_logtalk_flag(version, version(2, 26, 0)).
 % the operator table, and reports the compilation error found
 
 '$lgt_compiler_error_handler'(Stream, Error) :-
-	catch(close(Stream), _, true),
 	'$lgt_restore_global_op_table',
 	'$lgt_reset_warnings_counter',
 	'$lgt_report_compiler_error'(Error),
+	catch(close(Stream), _, true),
 	throw(Error).
 
 
