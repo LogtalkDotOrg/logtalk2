@@ -77,10 +77,11 @@ B-Prolog 6.7#2 and later versions
 
 		| ?- compile(['configs/b.config', 'compiler/logtalk.pl', 'libpaths/libpaths.pl']).
 	
-	This will result in three files, named "b.config.out", "logtalk.pl.out", 
-	and "libpaths.pl.out". Place these files on the $BPDIR directory and then 
-	copy the "bp" script to a "bplgt" file and modify it by adding the names
-	of the three *.out files after the "$BPDIR/bp.out" file.
+	These calls will result in the creation of three files, "b.config.out", 
+	"logtalk.pl.out", and "libpaths.pl.out". Place these files on the $BPDIR 
+	directory and then copy the "bp" script to a "bplgt" file and modify it 
+	by adding the names of the three *.out files after the "$BPDIR/bp.out" 
+	file (prefixing them with $BPDIR/).
 
 
 Bin-Prolog 8.x~10.x
@@ -376,7 +377,7 @@ SWI Prolog 3.3.x and all later versions
 
 	swi.config
 
-	For version 3.3.x and all later versions (5.4.x or later recommended)
+	For version 3.3.x and all later versions (5.5.x or later recommended)
 
 	No problems expected. Please report any problem found (with a solution 
 	if possible). Don't forget to use the cd/1 predicate to set the working 
