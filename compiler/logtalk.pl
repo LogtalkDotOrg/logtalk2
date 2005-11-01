@@ -6343,19 +6343,19 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	'$lgt_fix_redef_built_ins',		% needed because of possible initialization goal
 	'$lgt_gen_protocol_clauses',
 	'$lgt_gen_protocol_directives',
-	'$lgt_gen_init_goal'.
+	'$lgt_gen_entity_init_goal'.
 
 '$lgt_generate_code'(object) :-
 	'$lgt_fix_redef_built_ins',
 	'$lgt_gen_object_clauses',
 	'$lgt_gen_object_directives',
-	'$lgt_gen_init_goal'.
+	'$lgt_gen_entity_init_goal'.
 
 '$lgt_generate_code'(category) :-
 	'$lgt_fix_redef_built_ins',
 	'$lgt_gen_category_clauses',
 	'$lgt_gen_category_directives',
-	'$lgt_gen_init_goal'.
+	'$lgt_gen_entity_init_goal'.
 
 
 
@@ -7318,7 +7318,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 
-% find and report misspelt predicate calls in the body of object and category predicates
+% report misspelt predicate calls in the body of object and category predicates
 
 '$lgt_report_misspelt_calls' :-
 	'$lgt_compiler_flag'(misspelt, warning),
@@ -7368,6 +7368,8 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 % '$lgt_pp_entity_functors'(-compound)
+%
+% constructs the entity functors clause
 
 '$lgt_pp_entity_functors'(Clause) :-
 	'$lgt_pp_object_'(_, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, _),
@@ -7534,6 +7536,11 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 
+% '$lgt_init_goal'(-callable)
+%
+% source file initialization goal constructed from each entity initialization
+% goals and from the source file initialization/1 directive if present
+
 '$lgt_init_goal'(Goal) :-
 	findall(EGoal, '$lgt_pp_entity_init_'(_, EGoal), EGoals),
 	('$lgt_pp_file_init_'(FGoal) ->
@@ -7549,6 +7556,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 			Goal = true)).
 
 
+% converts a list of goals into a conjunction of goals
 
 '$lgt_list_to_conjunction'([G], G) :-
 	!.
@@ -7558,7 +7566,9 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 
-'$lgt_gen_init_goal' :-
+% generate and assert the initialization goal for the entity being compiled
+
+'$lgt_gen_entity_init_goal' :-
 	'$lgt_pp_entity'(_, Entity, _, _, _),
 	findall(Clause, '$lgt_pp_rclause'(Clause), Clauses),
 	Goal1 = '$lgt_assert_runtime_clauses'(Clauses),
@@ -7864,9 +7874,9 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 
-% Logtalk directives
+%'$lgt_lgt_directive'(+atom, +integer)
 %
-% '$lgt_lgt_directive'(+atom, +integer)
+% valid Logtalk directives
 
 '$lgt_lgt_directive'(Functor, Arity) :-
 	'$lgt_lgt_opening_directive'(Functor, Arity),
@@ -7893,7 +7903,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 '$lgt_lgt_opening_directive'(protocol, N) :-
 	N =:= 1; N =:= 2.
 
-'$lgt_lgt_opening_directive'(module, N) :-				% Prolog module directive; module/3 directives
+'$lgt_lgt_opening_directive'(module, N) :-				% Prolog module directives; module/3 directives
 	N >= 1, N =< 3.										% are not supported but must be recognized as 
 														% entity opening directives
 
@@ -9601,7 +9611,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  Logtalk banner
+%  Logtalk startup messages (banner and default flags)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
