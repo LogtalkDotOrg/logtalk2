@@ -212,12 +212,12 @@ Obj::Pred :-
 	'$lgt_reverse_predicate_functor'(TFunctor2, TArity2, Entity, Type, Functor2, Arity2),
 	throw(error(existence_error(procedure, Functor1/Arity1), context(Type, Entity, Functor2/Arity2))).
 
-'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/TArity), _)) :-									% YAP 5.1 or later
+'$lgt_runtime_error_handler'(error(existence_error(procedure, ModTFunctor/TArity), _)) :-								% CIAO
+	atom_concat('user:', TFunctor, ModTFunctor),
 	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
-'$lgt_runtime_error_handler'(error(existence_error(procedure, ModTFunctor/TArity), _)) :-								% CIAO
-	atom_concat('user:', TFunctor, ModTFunctor),
+'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/TArity), _)) :-									% YAP 5.1 or later
 	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
@@ -2255,7 +2255,10 @@ current_logtalk_flag(version, version(2, 26, 0)).
 					;
 					throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))))
 			;
-			throw(error(existence_error(object, Obj), Obj::Pred, Sender))).
+			(catch(current_module(Obj), _, fail) ->
+				':'(Obj, Pred)
+				;
+				throw(error(existence_error(object, Obj), Obj::Pred, Sender)))).
 
 
 
@@ -3317,7 +3320,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 
-% '$lgt_tr_file'(+term, +list, +stream, +stream)
+% '$lgt_tr_file'(+term, +list, @stream, @stream)
 
 '$lgt_tr_file'(end_of_file, _, _, Output) :-					% module definitions start with an opening
 	'$lgt_pp_module_'(Module),									% module/1-2 directive and are assumed to
@@ -3481,7 +3484,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 
-% '$lgt_tr_entity'(+atom, @entity_identifier, +stream)
+% '$lgt_tr_entity'(+atom, @entity_identifier, @stream)
 
 '$lgt_tr_entity'(Type, Entity, Stream) :-
 	'$lgt_generate_code'(Type),
@@ -3708,7 +3711,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % '$lgt_tr_terms'(+list, +stream)
 %
-% translates a list of entity terms (clauses and/or directives)
+% translates a list of entity terms (clauses, directives, and grammar rules)
 
 '$lgt_tr_terms'([], _, _).
 
