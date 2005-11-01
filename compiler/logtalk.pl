@@ -7893,9 +7893,9 @@ current_logtalk_flag(version, version(2, 26, 0)).
 '$lgt_lgt_opening_directive'(protocol, N) :-
 	N =:= 1; N =:= 2.
 
-'$lgt_lgt_opening_directive'(module, N) :-				% Prolog module directive
-	N >= 1, N =< 3.
-
+'$lgt_lgt_opening_directive'(module, N) :-				% Prolog module directive; module/3 directives
+	N >= 1, N =< 3.										% are not supported but must be recognized as 
+														% entity opening directives
 
 '$lgt_lgt_closing_directive'(end_object, 0).
 
@@ -9612,9 +9612,9 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	'$lgt_startup_message'(Flag).
 
 
-'$lgt_startup_message'(flags) :-
+'$lgt_startup_message'(flags(Option)) :-
 	'$lgt_banner',
-	'$lgt_default_flags'.
+	'$lgt_default_flags'(Option).
 
 '$lgt_startup_message'(banner) :-
 	'$lgt_banner'.
@@ -9630,7 +9630,34 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 
-'$lgt_default_flags' :-
+'$lgt_default_flags'(compact) :-
+	write('Default lint compilation flags: '), nl,
+	'$lgt_default_flag'(unknown, Unknown), write('  unknown: '), write(Unknown),
+	'$lgt_default_flag'(misspelt, Misspelt), write(', misspelt: '), write(Misspelt),
+	'$lgt_default_flag'(lgtredef, Lgtredef), write(', lgtredef: '), write(Lgtredef),
+	'$lgt_default_flag'(plredef, Plredef), write(', plredef: '), write(Plredef), nl,
+	'$lgt_default_flag'(portability, Portability), write('  portability: '), write(Portability),
+	'$lgt_default_flag'(singletons, Singletons), write(', singletons: '), write(Singletons),
+	'$lgt_default_flag'(underscore_vars, Underscore), write(', underscore_vars: '), write(Underscore), nl,
+	write('Default documenting compilation flags:'), nl,
+	'$lgt_default_flag'(xmldocs, XMLDocs), write('  xmldocs: '), write(XMLDocs),
+	'$lgt_default_flag'(xmlspec, XMLSpec), write(', xmlspec: '), write(XMLSpec),
+	'$lgt_default_flag'(xmlsref, XMLSRef), write(', xmlsref: '), write(XMLSRef),
+	'$lgt_default_flag'(xslfile, XSLFile), write(', xslfile: '), write(XSLFile), nl,
+	write('Other default compilation flags:'), nl,
+	'$lgt_default_flag'(report, Report), write('  report: '), write(Report),
+	'$lgt_default_flag'(code_prefix, Code), write(', code_prefix: '), writeq(Code),
+	'$lgt_default_flag'(debug, Debug), write(', debug: '), writeq(Debug),
+	'$lgt_default_flag'(smart_compilation, Smart), write(', smart_compilation: '), write(Smart),
+	'$lgt_default_flag'(events, Events), write(', events: '), write(Events), nl,
+	write('Read-only compilation flags:'), nl,
+	'$lgt_default_flag'(supports_break_predicate, Break), write('  supports_break_predicate: '), write(Break),
+	'$lgt_default_flag'(iso_initialization_dir, ISO), write(', iso_initialization_dir: '), write(ISO), nl,
+	'$lgt_default_flag'(startup_message, Startup), write('  startup_message: '), write(Startup),
+	'$lgt_default_flag'(altdirs, Altdirs), write(', altdirs: '), write(Altdirs),
+	'$lgt_default_flag'(supports_encoding_dir, Encodings), write(', supports_encoding_dir: '), write(Encodings), nl, nl.
+
+'$lgt_default_flags'(verbose) :-
 	write('Default lint compilation flags:'), nl,
 	'$lgt_default_flag'(unknown, Unknown),
 	write('  Unknown entities (unknown):                               '), write(Unknown), nl,

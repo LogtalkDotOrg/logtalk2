@@ -63,6 +63,9 @@ RELEASE NOTES
 	abort option at a leashed port (option was ignored instead of aborting the
 	debugging session).
 
+	Added an option to choose between a "verbose" or "compact" listing of the 
+	default compilation flags at Logtalk startup (defined on the config files).
+
 	Improved CIAO integration scripts in order to suppress some (harmless) 
 	warnings which are generated at first run.
 
