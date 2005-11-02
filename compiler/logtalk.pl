@@ -39,7 +39,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  runtime directives
+%  runtime directives (bookkeeping tables)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -89,7 +89,7 @@
 :- dynamic('$lgt_super_lookup_cache_'/5).	% '$lgt_super_lookup_cache_'(Self, Pred, This, Sender, Call)
 
 
-% lookup caches for asserting and retracting dynamic facts
+% lookup cache for asserting and retracting dynamic facts
 
 :- dynamic('$lgt_db_lookup_cache_'/6).		% '$lgt_db_lookup_cache_'(Obj, Pred, Sender, Scope, Call, UpdateGoal)
 
@@ -932,18 +932,18 @@ abolish_events(after, Obj, Msg, Sender, Monitor) :-
 %
 % gets/checks the current value of a compiler flag
 
-'$lgt_compiler_flag'(Option, Value) :-
-	'$lgt_pp_compiler_flag_'(Option, Value2),
-	!,
+'$lgt_compiler_flag'(Option, Value) :-			% flag value as defined in the options
+	'$lgt_pp_compiler_flag_'(Option, Value2),	% argument of the compiling and loading
+	!,											% predicates
 	Value = Value2.
 
-'$lgt_compiler_flag'(Option, Value) :-
-	'$lgt_current_flag_'(Option, Value2),
-	!,
+'$lgt_compiler_flag'(Option, Value) :-			% default value for the current Logtalk
+	'$lgt_current_flag_'(Option, Value2),		% session, set by calls to the 
+	!,											% set_logtalk_flag/2 predicate
 	Value = Value2.
 
-'$lgt_compiler_flag'(Option, Value) :-
-	'$lgt_default_flag'(Option, Value).
+'$lgt_compiler_flag'(Option, Value) :-			% default value, defined on the
+	'$lgt_default_flag'(Option, Value).			% Prolog config files
 
 
 
@@ -2116,7 +2116,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % '$lgt_expand_term'(+object_identifier, @term, -clause, +object_identifier, +scope)
 %
-% expand_term/2 built-in method
+% expand_term/2 built-in method; for now only deals with grammar rules
 
 '$lgt_expand_term'(_, Term, Clause, _, _) :-
 	nonvar(Term),
