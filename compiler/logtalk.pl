@@ -6132,11 +6132,11 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 '$lgt_unknown_object'(Obj) :-
 	'$lgt_pp_referenced_object_'(Obj),
-	\+ '$lgt_current_object_'(Obj, _, _, _, _, _),
-	\+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
-	\+ '$lgt_pp_entity_init_'(Obj, _),
-	\+ catch(current_module(Obj), _, fail).		% use catch/3 to avoid errors with Prolog
-												% compilers with no module support
+	\+ '$lgt_current_object_'(Obj, _, _, _, _, _),				% not a currently loaded object
+	\+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _),	% not the object being compiled (self references)
+	\+ '$lgt_pp_entity_init_'(Obj, _),							% not an object defined in the source file being compiled
+	\+ catch(current_module(Obj), _, fail).						% not a currently loaded module; use catch/3 to avoid 
+																% errors with Prolog compilers with no module support
 
 
 % '$lgt_report_unknown_protocols'
@@ -6158,9 +6158,9 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 '$lgt_unknown_protocol'(Ptc) :-
 	'$lgt_pp_referenced_protocol_'(Ptc),
-	\+ '$lgt_current_protocol_'(Ptc, _, _),
-	\+ '$lgt_pp_protocol_'(Ptc, _, _, _, _),
-	\+ '$lgt_pp_entity_init_'(Ptc, _).
+	\+ '$lgt_current_protocol_'(Ptc, _, _),		% not a currently loaded protocol
+	\+ '$lgt_pp_protocol_'(Ptc, _, _, _, _),	% not the protocol being compiled (self references)
+	\+ '$lgt_pp_entity_init_'(Ptc, _).			% not a protocol defined in the source file being compiled
 
 
 
@@ -6183,9 +6183,9 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 '$lgt_unknown_category'(Ctg) :-
 	'$lgt_pp_referenced_category_'(Ctg),
-	\+ '$lgt_current_category_'(Ctg, _, _),
-	\+ '$lgt_pp_category_'(Ctg, _, _, _, _, _),
-	\+ '$lgt_pp_entity_init_'(Ctg, _).
+	\+ '$lgt_current_category_'(Ctg, _, _),		% not a currently loaded category
+	\+ '$lgt_pp_category_'(Ctg, _, _, _, _, _),	% not the category being compiled (self references)
+	\+ '$lgt_pp_entity_init_'(Ctg, _).			% not a category defined in the source file being compiled
 
 
 
@@ -7404,7 +7404,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % '$lgt_write_prolog_clauses'(+stream)
 %
-% writes Prolog clauses which appear before the entity opening directive
+% writes any Prolog clauses that appear before an entity opening directive
 
 '$lgt_write_prolog_clauses'(Stream) :-
 	'$lgt_pp_ppclause_'(Clause),
@@ -7687,8 +7687,8 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % '$lgt_assert_runtime_clauses'(+list)
 %
-% called when loading a compiled Logtalk entity to update Logtalk 
-% internal tables
+% called when loading a compiled Logtalk entity in order to update
+% Logtalk internal tables
 %
 % we may be reloading the entity so we must first retract any old
 % runtime clauses before asserting the new ones
@@ -7728,7 +7728,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % '$lgt_construct_object_functors'(+compound, -atom, -atom, -atom, -atom, -atom, -atom, -atom, -atom, -atom)
 %
-% constructs all the functors used in the compiled code of an object
+% constructs functors used in the compiled code of an object
 
 '$lgt_construct_object_functors'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm) :-
 	'$lgt_construct_entity_prefix'(Obj, Prefix),
@@ -7745,7 +7745,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % '$lgt_construct_protocol_functors'(+compound, -atom, -atom, -atom)
 %
-% constructs all the functors used in the compiled code of a protocol
+% constructs functors used in the compiled code of a protocol
 
 '$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl, Rnm) :-
 	'$lgt_construct_entity_prefix'(Ptc, Prefix),
@@ -7756,7 +7756,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % '$lgt_construct_category_functors'(+compound, -atom, -atom, -atom, -atom)
 %
-% constructs all the functors used in the compiled code of a category
+% constructs functors used in the compiled code of a category
 
 '$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def, Rnm) :-
 	'$lgt_construct_entity_prefix'(Ctg, Prefix),
