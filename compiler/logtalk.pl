@@ -189,8 +189,8 @@
 
 
 Obj::Pred :-
-	'$lgt_tr_msg'(Pred, Obj, Call, user),
-	(('$lgt_dbg_debugging_', '$lgt_debugging_'(Obj)) ->
+	'$lgt_tr_msg'(Pred, Obj, Call, user),					% compile the message
+	(('$lgt_dbg_debugging_', '$lgt_debugging_'(Obj)) ->		% check if we're debugging the target object
 		'$lgt_ctx_ctx'(Ctx, user, user, Obj, '$lgt_po_user0_', []),
 		catch('$lgt_dbg_goal'(Obj::Pred, Call, Ctx), Error, '$lgt_runtime_error_handler'(Error))
 		;
@@ -3711,7 +3711,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % '$lgt_tr_terms'(+list, +stream)
 %
-% translates a list of entity terms (clauses, directives, and grammar rules)
+% translates a list of source file terms
 
 '$lgt_tr_terms'([], _, _).
 
@@ -3723,7 +3723,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % '$lgt_tr_term'(+term, +stream)
 %
-% translates an entity term (either a clause or a directive)
+% translates a source file term (clauses, directives, and grammar rules)
 
 '$lgt_tr_term'((Head :- Body), _) :-
 	!,
@@ -3745,7 +3745,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % '$lgt_tr_directives'(+list, @stream)
 %
-% translates a list of entity directives
+% translates a list of directives
 
 '$lgt_tr_directives'([], _).
 
@@ -3757,28 +3757,28 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % '$lgt_tr_directive'(+term, @stream)
 %
-% translates an entity directive
+% translates a directive
 
 '$lgt_tr_directive'(Dir, _) :-
 	var(Dir),
 	throw(error(instantiantion_error, directive(Dir))).
 
-'$lgt_tr_directive'(Dir, _) :-
-	\+ '$lgt_pp_entity'(_, _, _, _, _),		% directive occurs before opening entity directive
-	functor(Dir, Functor, Arity),
-	'$lgt_lgt_closing_directive'(Functor, Arity),	% opening directive missing/misspelt
+'$lgt_tr_directive'(Dir, _) :-					% closing entity directive occurs before the opening
+	\+ '$lgt_pp_entity'(_, _, _, _, _),			% entity directive; the opening directive is probably
+	functor(Dir, Functor, Arity),				% missing or misspelt
+	'$lgt_lgt_closing_directive'(Functor, Arity),
 	throw(error(unmatched_directive, directive(Dir))).
 
 '$lgt_tr_directive'(Dir, _) :-
-	\+ '$lgt_pp_entity'(_, _, _, _, _),		% directive occurs before opening entity directive
+	\+ '$lgt_pp_entity'(_, _, _, _, _),			% directive occurs before opening entity directive
 	functor(Dir, Functor, Arity),
 	\+ '$lgt_lgt_opening_directive'(Functor, Arity),
 	!,
-	'$lgt_tr_file_directive'(Dir).
+	'$lgt_tr_file_directive'(Dir).				% translate it as a source file-level directive
 
 '$lgt_tr_directive'(Dir, Stream) :-
 	functor(Dir, Functor, Arity),
-	'$lgt_lgt_directive'(Functor, Arity),
+	'$lgt_lgt_directive'(Functor, Arity),		% entity opening directive or entity directive
 	Dir =.. [Functor| Args],
 	catch(
 		'$lgt_tr_directive'(Functor, Args, Stream),
@@ -3787,7 +3787,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 	!.
 
 '$lgt_tr_directive'(Dir, _) :-
-	'$lgt_ignore_pl_directive'(Dir),
+	'$lgt_ignore_pl_directive'(Dir),			% defined in the Prolog config files
 	!,
 	('$lgt_compiler_flag'(portability, warning) ->
 		nl, write('  WARNING!  ignoring Prolog directive: '), writeq(Dir)
@@ -3795,7 +3795,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 		true).
 
 '$lgt_tr_directive'(Dir, _) :-
-	'$lgt_copy_pl_directive'(Dir),
+	'$lgt_copy_pl_directive'(Dir),				% defined in the Prolog config files
 	assertz('$lgt_pp_directive_'(Dir)),
 	!,
 	('$lgt_compiler_flag'(portability, warning) ->
@@ -3804,13 +3804,13 @@ current_logtalk_flag(version, version(2, 26, 0)).
 		true).
 
 '$lgt_tr_directive'(Dir, Stream) :-
-	'$lgt_rewrite_pl_directive'(Dir, RWDir),
+	'$lgt_rewrite_pl_directive'(Dir, RWDir),	% defined in the Prolog config files
 	!,
 	('$lgt_compiler_flag'(portability, warning) ->
 		nl, write('  WARNING!  rewriting Prolog directive: '), writeq(Dir)
 		;
 		true),
-	'$lgt_tr_directive'(RWDir, Stream).
+	'$lgt_tr_directive'(RWDir, Stream).			% try to translate the rewritten directive
 
 '$lgt_tr_directive'(Dir, _) :-
 	functor(Dir, Functor, Arity),
@@ -3843,7 +3843,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 		throw(type_error(callable, Goal))).
 
 '$lgt_tr_file_directive'(Dir) :-
-	assertz('$lgt_pp_directive_'(Dir)).				% directive will be copied to the generated Prolog file
+	assertz('$lgt_pp_directive_'(Dir)).			% directive will be copied to the generated Prolog file
 
 
 
