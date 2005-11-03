@@ -45,7 +45,7 @@ about Logtalk.
 To register as a Logtalk user either use the registration form found at 
 the Logtalk web site or send an email message to:
 
-    registration@logtalk.org
+	registration@logtalk.org
 
 with the following information:
 
@@ -63,15 +63,16 @@ At the URL http://www.logtalk.org/bugs.html you can find a list of
 known problems and download bug fixes. The latest news about Logtalk are
 available at the URL http://www.logtalk.org/news.html.
 
-There is also a mailing list, logtalk, used to announce new releases and
+There is also a mailing list, "logtalk", used to announce new releases and
 bug fixes and for discussion between registered Logtalk users, that you 
-may subscribe. For instructions on how to subscribe open the web page:
+may subscribe. For instructions on how to subscribe, please visit the web 
+page:
 
-    http://sagitta.ci.uc.pt/mailman/listinfo.cgi/logtalk
+	http://lserv.ci.uc.pt/mailman/listinfo/logtalk
  
 or send an email message to:
 
-    logtalk-request@list-serv.ci.uc.pt
+    logtalk-request@lserv.ci.uc.pt
 
 with just the word "help" in the subject or in the message body.
 
