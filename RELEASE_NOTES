@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.26.0 - October 31, 2005
+2.26.0 - November 7, 2005
 
 	Added support for defining predicate aliases when using uses/2 directives
 	(using the format Predicate::Alias).
