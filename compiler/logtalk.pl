@@ -225,7 +225,7 @@ Obj::Pred :-
 	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
-'$lgt_runtime_error_handler'(error(existence_error(_, _, procedure, ':'(_, TFunctor/TArity), _), _)) :-					% SICStus Prolog
+'$lgt_runtime_error_handler'(error(existence_error(_, _, procedure, ':'(_, TFunctor/TArity), _), _)) :-					% Quintus, SICStus Prolog
 	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
@@ -1759,19 +1759,32 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 
 
-% get or set declaration for asserted predicate
+% get or set (if doesn't exist) the declaration for an asserted predicate
 
 '$lgt_assert_pred_dcl'(Dcl, _, Pred, _, PScope, Type, Meta, SCtn) :-
 	'$lgt_call'(Dcl, Pred, PScope, Type, Meta, SCtn, _),
 	!.
 
 '$lgt_assert_pred_dcl'(_, DDcl, Pred, Scope, Scope, (dynamic), no, _) :-
- 	'$lgt_convert_test_scope'(Scope, Scope2),
- 	'$lgt_assert_ddcl_clause'(DDcl, Pred, Scope2).
+ 	'$lgt_convert_test_scope'(Scope),
+ 	'$lgt_assert_ddcl_clause'(DDcl, Pred, Scope).
+
+
+% '$lgt_convert_test_scope'(?nonvar)
+%
+% convert asserta/z test scope to predicate declaration scope
+%
+% the test scope is used to verify sender permission to assert the predicate;
+% the declaration scope will be scope of the predicate being asserted if there
+% is no previous declaration (i.e. if it's a new dynamic predicate)
+
+'$lgt_convert_test_scope'(p) :- !.		% test scope is a variable: direct call of asserta/z method
+'$lgt_convert_test_scope'(p(p)) :- !.	% test scope is the term p(_): asserta/z message to self
+'$lgt_convert_test_scope'(p(p(p))).		% test scope is the term p(p(p)): asserta/z message from other object
 
 
 
-% get or set compiled call for asserted predicate
+% get or set (if doesn't exist) the compiled call for an asserted predicate
 
 '$lgt_assert_pred_call'(Def, _, _, Pred, Sender, This, Self, Call, true) :-
 	'$lgt_call'(Def, Pred, Sender, This, Self, Call),
@@ -6305,21 +6318,6 @@ current_logtalk_flag(version, version(2, 26, 0)).
 		Clause =.. [DDef, GHead, _, _, _, _],
 		retractall(Clause),
 		'$lgt_clean_lookup_caches'(GHead)).
-
-
-
-% '$lgt_convert_test_scope'(@term, +term),
-%
-% convert asserta/z test scope to predicate declaration scope
-
-'$lgt_convert_test_scope'(Scope, Scope2) :-
-	var(Scope) ->
-		Scope2 = p
-		;
-		((Scope = p(V), var(V)) ->
-			Scope2 = p(p)
-			;
-			Scope2 = p(p(p))).
 
 
 
