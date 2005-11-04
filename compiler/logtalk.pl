@@ -1761,13 +1761,13 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 % get or set (if doesn't exist) the declaration for an asserted predicate
 
-'$lgt_assert_pred_dcl'(Dcl, _, Pred, _, PScope, Type, Meta, SCtn) :-
-	'$lgt_call'(Dcl, Pred, PScope, Type, Meta, SCtn, _),
-	!.
-
-'$lgt_assert_pred_dcl'(_, DDcl, Pred, Scope, Scope, (dynamic), no, _) :-
- 	'$lgt_convert_test_scope'(Scope),
- 	'$lgt_assert_ddcl_clause'(DDcl, Pred, Scope).
+'$lgt_assert_pred_dcl'(Dcl, DDcl, Pred, TScope, PScope, Type, Meta, SCtn) :-
+	'$lgt_call'(Dcl, Pred, PScope, Type, Meta, SCtn, _) ->
+		true
+		;
+		'$lgt_convert_test_scope'(TScope),
+		'$lgt_assert_ddcl_clause'(DDcl, Pred, TScope),
+		(PScope, Type, Meta, SCtn) = (TScope, (dynamic), no, _).
 
 
 % '$lgt_convert_test_scope'(?nonvar)
