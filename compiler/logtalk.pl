@@ -1537,7 +1537,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 '$lgt_abolish'(Obj, Functor/Arity, Sender, _) :-
 	integer(Arity),
-	Arity =< 0,
+	Arity < 0,
 	throw(error(domain_error(not_less_than_zero, Arity), Obj::abolish(Functor/Arity), Sender)).
 
 '$lgt_abolish'(Obj, Functor/Arity, Sender, Scope) :-
@@ -5181,7 +5181,7 @@ current_logtalk_flag(version, version(2, 26, 0)).
 
 '$lgt_compiler_db_pred_ind_chk'(_/Arity) :-
 	integer(Arity),
-	Arity =< 0,
+	Arity < 0,
 	throw(domain_error(not_less_than_zero, Arity)).
 
 '$lgt_compiler_db_pred_ind_chk'(_).
