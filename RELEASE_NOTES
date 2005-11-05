@@ -29,11 +29,11 @@ RELEASE NOTES
 	logtalk_library_path/2 predicate (using the format alias(path)).
 
 	Added support for ignoring, copying as-is, or rewriting proprietary Prolog
-	directives. The action to take is defined on a per-directive basis on the
-	config files.
+	directives. The action to be taken is defined on a per-directive basis on 
+	the config files.
 
 	Updated the config files of CIAO, ECLiPSe, SWI-Prolog, and YAP to define 
-	actions to some proprietary directives in order to allow some or most of 
+	actions for some proprietary directives in order to allow some or most of 
 	the module libraries distributed with these compilers to be compiled as 
 	objects.
 
