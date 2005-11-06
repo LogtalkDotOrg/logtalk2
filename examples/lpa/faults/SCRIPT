@@ -15,7 +15,7 @@ Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 
 % now you are ready for loading the example:
 
-| ?- logtalk_load(lpa(loader)).
+| ?- logtalk_load(lpa_faults(loader)).
 ...
 
 
