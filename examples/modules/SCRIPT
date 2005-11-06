@@ -36,9 +36,17 @@ yes
 % test the compilation of the module export/1 directive; module 
 % exported predicates become public predicates:
 
-| ?- exports::current_predicate(P).
+| ?- exports::current_predicate(Pred).
 
-P = p/1
+Pred = p/1
+yes
+
+| ?- exports::predicate_property(p(_), Prop).
+
+Prop = public ;
+Prop = static ;
+Prop = declared_in(exports) ;
+Prop = defined_in(exports)
 yes
 
 
