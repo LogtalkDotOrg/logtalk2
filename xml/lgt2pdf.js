@@ -116,7 +116,7 @@ for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
 				break;
 			case "ufo" :
 				var fo_file = directory + "\\" + FSObject.GetBaseName(file) + ".fo";
-				WshShell.Run("uxt \"" + file + "\" \"" + xslt + "\" \"" + fo_file + "\"", true);
+				WshShell.Run("uxt \"" + file + "\" \"" + xsl + "\" \"" + fo_file + "\"", true);
 				WshShell.Run("ufocmd \"" + fo_file + "\" \"" + pdf_file + "\"", true);
 				FSObject.DeleteFile(fo_file);
 				break;
