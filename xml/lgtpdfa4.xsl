@@ -17,7 +17,10 @@
 -->
 
 
-<xsl:output indent="yes"/>
+<xsl:output
+	method="xml"
+	indent="yes"
+	encoding="utf-8"/>
 
 
 <xsl:template match ="/">
