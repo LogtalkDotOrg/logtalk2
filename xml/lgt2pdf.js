@@ -13,6 +13,7 @@ var format = "a4";
 var directory = WshShell.CurrentDirectory;
 
 var processor = "fop";
+// var processor = "ufo";
 // var processor = "xep";
 
 if (WScript.Arguments.Unnamed.Length > 0) {
@@ -79,7 +80,7 @@ if (d_arg != "" && !FSObject.FolderExists(d_arg)) {
 } else if (d_arg != "")
 	directory = d_arg;
 
-if (p_arg != "" && p_arg != "fop" && p_arg != "xep") {
+if (p_arg != "" && p_arg != "fop" && p_arg != "ufo" && p_arg != "xep") {
 	WScript.Echo("Error! Unsupported XSL-FO processor:" + p_arg);
 	WScript.Echo("");
 	usage_help();
@@ -109,7 +110,20 @@ for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
 	if (FSObject.GetExtensionName(file) == "xml") {
 		WScript.Echo("  converting " + file);
 		var pdf_file = directory + "\\" + FSObject.GetBaseName(file) + ".pdf";
-		WshShell.Run(processor + " -q -xml \"" + file + "\" -xsl \"" + xsl + "\" -pdf \"" + pdf_file + "\"", true);
+		switch (processor) {
+			case "fop" :
+				WshShell.Run("fop -q -xml \"" + file + "\" -xsl \"" + xsl + "\" -pdf \"" + pdf_file + "\"", true);
+				break;
+			case "ufo" :
+				var fo_file = directory + "\\" + FSObject.GetBaseName(file) + ".fo";
+				WshShell.Run("uxt \"" + file + "\" \"" + xslt + "\" \"" + fo_file + "\"", true);
+				WshShell.Run("ufocmd \"" + fo_file + "\" \"" + pdf_file + "\"", true);
+				FSObject.DeleteFile(fo_file);
+				break;
+			case "xep" :
+				WshShell.Run("xep -q -xml \"" + file + "\" -xsl \"" + xsl + "\" -pdf \"" + pdf_file + "\"", true);
+				break;
+		}
 	}
 }
 
@@ -130,7 +144,7 @@ function usage_help() {
 	WScript.Echo("Optional arguments:");
 	WScript.Echo("  f - paper format (either a4 or us; default is " + format + ")");
 	WScript.Echo("  d - output directory for the PDF files (default is " + directory + ")");
-	WScript.Echo("  p - XSL-FO processor (either fop or xep; default is " + processor + ")");
+	WScript.Echo("  p - XSL-FO processor (either fop, ufo, or xep; default is " + processor + ")");
 	WScript.Echo("");
 	WScript.Quit(1);
 }

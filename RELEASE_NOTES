@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.26.0
+Release 2.26.1
 
 Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -8,6 +8,15 @@ Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.26.1 - November ??, 2005
+
+	Added support for Unicorn XSLT Processor and Formatting Objects processors
+	to the "lgt2html.js" and "lgt2pdf.js" Windows JScript scripts.
+
+	Added a definition for missing open/4 ISO Prolog predicate to the config 
+	files of Open Prolog, LPA Prolog compilers, and MasterProlog.
 
 
 2.26.0 - November 7, 2005
