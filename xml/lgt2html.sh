@@ -178,6 +178,7 @@ else
 	echo
 	echo "converting XML files..."
 
+	shopt -s nullglob
 	for file in *.xml; do
 		echo "  converting $file"
 		name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
@@ -190,11 +191,10 @@ else
 
 	echo "conversion done"
 	echo
-	echo "generating index file..."
 
+	echo "generating index file..."
 	index_file="$directory/$index_file"
 	create_index_file
-
 	echo "index file generated"
 	echo
 

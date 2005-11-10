@@ -109,6 +109,7 @@ else
 	echo
 	echo "converting XML files to PDF..."
 
+	shopt -s nullglob
 	for file in *.xml; do
 		echo "  converting $file"
 		name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"

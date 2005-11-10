@@ -56,6 +56,7 @@ create_index_file()
 	echo "<h1>"$index_title"</h1>" >> "$index_file"
 	echo "<ul>" >> "$index_file"
 
+	shopt -s nullglob
 	for file in *.xml; do
 		name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
 		entity=${name%_*}
@@ -144,7 +145,6 @@ else
 	echo "generating index file..."
 
 	create_index_file
-
 	echo "index file generated"
 	echo
 
