@@ -1,6 +1,6 @@
 // =================================================================
 // Logtalk - Object oriented extension to Prolog
-// Release 2.26.0
+// Release 2.26.1
 //
 // Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 // =================================================================
@@ -13,8 +13,8 @@ var format = "a4";
 var directory = WshShell.CurrentDirectory;
 
 var processor = "fop";
-// var processor = "ufo";
 // var processor = "xep";
+// var processor = "xinc";
 
 if (WScript.Arguments.Unnamed.Length > 0) {
 	usage_help();
@@ -80,7 +80,7 @@ if (d_arg != "" && !FSObject.FolderExists(d_arg)) {
 } else if (d_arg != "")
 	directory = d_arg;
 
-if (p_arg != "" && p_arg != "fop" && p_arg != "ufo" && p_arg != "xep") {
+if (p_arg != "" && p_arg != "fop" && p_arg != "xep" && p_arg != "xinc") {
 	WScript.Echo("Error! Unsupported XSL-FO processor:" + p_arg);
 	WScript.Echo("");
 	usage_help();
@@ -114,14 +114,11 @@ for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
 			case "fop" :
 				WshShell.Run("fop -q -xml \"" + file + "\" -xsl \"" + xsl + "\" -pdf \"" + pdf_file + "\"", true);
 				break;
-			case "ufo" :
-				var fo_file = directory + "\\" + FSObject.GetBaseName(file) + ".fo";
-				WshShell.Run("uxt \"" + file + "\" \"" + xsl + "\" \"" + fo_file + "\"", true);
-				WshShell.Run("ufocmd \"" + fo_file + "\" \"" + pdf_file + "\"", true);
-				FSObject.DeleteFile(fo_file);
-				break;
 			case "xep" :
 				WshShell.Run("xep -q -xml \"" + file + "\" -xsl \"" + xsl + "\" -pdf \"" + pdf_file + "\"", true);
+				break;
+			case "xinc" :
+				WshShell.Run("xinc -xml \"" + file + "\" -xsl \"" + xsl + "\" -pdf \"" + pdf_file + "\"", true);
 				break;
 		}
 	}
@@ -144,7 +141,7 @@ function usage_help() {
 	WScript.Echo("Optional arguments:");
 	WScript.Echo("  f - paper format (either a4 or us; default is " + format + ")");
 	WScript.Echo("  d - output directory for the PDF files (default is " + directory + ")");
-	WScript.Echo("  p - XSL-FO processor (either fop, ufo, or xep; default is " + processor + ")");
+	WScript.Echo("  p - XSL-FO processor (either fop, xep, or xinc; default is " + processor + ")");
 	WScript.Echo("");
 	WScript.Quit(1);
 }

@@ -19,7 +19,6 @@ var processor = "msxsl";
 // var processor = "xsltproc";
 // var processor = "xalan";
 // var processor = "sabcmd";
-// var processor = "uxt";
 
 if (WScript.Arguments.Unnamed.Length > 0) {
 	usage_help();
@@ -100,7 +99,7 @@ if (i_arg != "")
 if (t_arg != "")
 	index_title=t_arg;
 
-if (p_arg != "" && p_arg != "msxsl" && p_arg != "xsltproc" && p_arg != "xalan" && p_arg != "sabcmd" && p_arg != "uxt") {
+if (p_arg != "" && p_arg != "msxsl" && p_arg != "xsltproc" && p_arg != "xalan" && p_arg != "sabcmd") {
 	WScript.Echo("Error! Unsupported XSLT processor:" + p_arg);
 	WScript.Echo("");
 	usage_help();
@@ -147,9 +146,6 @@ for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
 			case "sabcmd" :
 				WshShell.Run("sabcmd \"" + xslt + "\" \"" + file + "\" \"" + html_file + "\"", true);
 				break;
-			case "uxt" :
-				WshShell.Run("uxt \"" + file + "\" \"" + xslt + "\" \"" + html_file + "\"", true);
-				break;
 		}
 	}
 }
@@ -180,7 +176,7 @@ function usage_help() {
 	WScript.Echo("  d - output directory for the generated files (default is " + directory + ")");
 	WScript.Echo("  i - name of the index file (default is " + index_file + ")");
 	WScript.Echo("  t - title to be used on the index file (default is " + index_title + ")");
-	WScript.Echo("  p - XSLT processor (msxsl, xsltproc, xalan, sabcmd, or uxt; default is " + processor + ")");
+	WScript.Echo("  p - XSLT processor (msxsl, xsltproc, xalan, or sabcmd; default is " + processor + ")");
 	WScript.Echo("");
 	WScript.Quit(1);
 }

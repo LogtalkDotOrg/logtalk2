@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.26.0
+Release 2.26.1
 
 Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -129,8 +129,8 @@ lgt2pdf.js
 	Supported XSL-FO processors:
 		* Apache FOP processor (tested with version 0.20.5)
 			http://xml.apache.org/fop 
-		* Unicorn Formatting Objects (UFO) Lite Edition (Windows only; tested with version 2.01)
-			http://www.unicorn-enterprises.com/products_ufo.html
+		* Lunasil Xinc processor (tested with version 2.02)
+			http://www.lunasil.com/index.html
 		* RenderX XEP processor (tested with version 3.8.1)
 			http://www.renderx.com/  
 
@@ -165,8 +165,6 @@ lgt2html.js
 			http://xml.apache.org/xalan-c/index.html
 		* Sablotron (tested with version 1.0.1)
 			http://www.gingerall.com/charlie/ga/xml/p_sab.xml
-		* Unicorn XSLT Processor Standard Edition (Windows only; tested with version 1.50.00)
-			http://www.unicorn-enterprises.com/products_uxt.html
 		* Microsoft MSXSL (only for the Windows JScript script)
 			http://msdn.microsoft.com/XML/XMLDownloads/default.aspx
 

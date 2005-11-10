@@ -2,7 +2,7 @@
 
 ## =================================================================
 ## Logtalk - Object oriented extension to Prolog
-## Release 2.26.0
+## Release 2.26.1
 ##
 ## Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 ## =================================================================
@@ -15,6 +15,7 @@ format=a4
 
 processor=fop
 # processor=xep
+# processor=xinc
 
 directory="."
 
@@ -31,7 +32,7 @@ usage_help()
 	echo "Optional arguments:"
 	echo "  -f paper format (either a4 or us; default is $format)"
 	echo "  -d output directory for the PDF files (default is $directory)"
-	echo "  -p XSL-FO processor (either fop or xep; default is $processor)"
+	echo "  -p XSL-FO processor (either fop, xep, or xinc; default is $processor)"
 	echo "  -h help"
 	echo
 	exit 1
@@ -78,7 +79,7 @@ else
 		directory=$d_arg
 	fi
 
-	if [[ "$p_arg" != "" && "$p_arg" != "fop" && "$p_arg" != "xep" ]]
+	if [[ "$p_arg" != "" && "$p_arg" != "fop" && "$p_arg" != "xep" && "$p_arg" != "xinc" ]]
 	then
 		echo "Error! Unsupported XSL-FO processor: $p_arg"
 		usage_help
@@ -111,7 +112,10 @@ else
 	for file in *.xml; do
 		echo "  converting $file"
 		name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
-		eval $processor -q -xml \"$file\" -xsl \"$xsl\" -pdf \"$directory\"/\"$name.pdf\"
+		case $processor in
+			xinc)	eval xinc -xml \"$file\" -xsl \"$xsl\" -pdf \"$directory\"/\"$name.pdf\";;
+			*)		eval $processor -q -xml \"$file\" -xsl \"$xsl\" -pdf \"$directory\"/\"$name.pdf\";;
+		esac
 	done
 
 	echo "conversion done"

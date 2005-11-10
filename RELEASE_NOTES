@@ -12,8 +12,8 @@ RELEASE NOTES
 
 2.26.1 - November ??, 2005
 
-	Added support for Unicorn XSLT Processor and Formatting Objects processors
-	to the "lgt2html.js" and "lgt2pdf.js" Windows JScript scripts.
+	Added support for the Lunasil XSL-FO processor to the "lgt2pdf.*" shell 
+	scripts.
 
 	Added a definition for missing open/4 ISO Prolog predicate to the config 
 	files of Open Prolog, LPA Prolog compilers, and MasterProlog.
