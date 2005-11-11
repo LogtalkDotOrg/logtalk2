@@ -25,16 +25,18 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>current_event(Event, Object, Message, Sender, Monitor)</pre>
+<pre>
+current_event(Event, Object, Message, Sender, Monitor)
+</pre>
 <p>
 Enumerates, by backtracking, all defined events. The two types of events are represented by the atoms <code>before</code> and <code>after</code>.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<pre>current_event(?event, ?object_identifier, ?callable, ?object_identifier, ?object_identifier)</pre>
+<pre>
+current_event(?event, ?object_identifier, ?callable, ?object_identifier, ?object_identifier)
+</pre>
 
 <h4>Errors</h4>
 
@@ -55,7 +57,9 @@ Enumerates, by backtracking, all defined events. The two types of events are rep
 
 <h4>Examples</h4>
 
-<pre>| ?- current_event(Event, Object, Message, Sender, debugger).</pre>
+<pre>
+| ?- current_event(Event, Object, Message, Sender, debugger).
+</pre>
 
 <div class="navbottom">
 <a href="abolish_events5.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="define_events5.html">next</a>

@@ -25,16 +25,18 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>abolish_events(Event, Object, Message, Sender, Monitor)</pre>
+<pre>
+abolish_events(Event, Object, Message, Sender, Monitor)
+</pre>
 <p>
 Abolishes all matching events. The two types of events are represented by the atoms <code>before</code> and <code>after</code>.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<pre>abolish_events(@event, @object_identifier, @callable, @object_identifier, @object_identifier)</pre>
+<pre>
+abolish_events(@event, @object_identifier, @callable, @object_identifier, @object_identifier)
+</pre>
 
 <h4>Errors</h4>
 
@@ -55,7 +57,9 @@ Abolishes all matching events. The two types of events are represented by the at
 
 <h4>Examples</h4>
 
-<pre>| ?- abolish_events(_, list, _, _, debugger).</pre>
+<pre>
+| ?- abolish_events(_, list, _, _, debugger).
+</pre>
 
 <div class="navbottom">
 <a href="../index.html#builtins">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="current_event5.html">next</a>

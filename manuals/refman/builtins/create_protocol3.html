@@ -25,16 +25,18 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>create_protocol(Identifier, Relations, Directives)</pre>
+<pre>
+create_protocol(Identifier, Relations, Directives)
+</pre>
 <p>
-	Creates a new, dynamic, protocol.
+Creates a new, dynamic, protocol.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<pre>create_protocol(+protocol_identifier, +list, +list)</pre>
+<pre>
+create_protocol(+protocol_identifier, +list, +list)
+</pre>
 
 <h4>Errors</h4>
 
@@ -57,7 +59,9 @@
 
 <h4>Examples</h4>
 
-<pre>| ?- create_protocol(foo, [extends(bar)], [public(foo/1)]).</pre>
+<pre>
+| ?- create_protocol(foo, [extends(bar)], [public(foo/1)]).
+</pre>
 
 <div class="navbottom">
 <a href="create_object4.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="../index.html#builtins">next</a>

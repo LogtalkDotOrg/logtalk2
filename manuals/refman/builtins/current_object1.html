@@ -10,7 +10,8 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
 	<title>Logtalk built-in predicate: current_object/1</title>
-	<link rel="stylesheet" type="text/css" href="../../styles.css" />
+	<link rel="stylesheet" href="../../screen.css" type="text/css" media="screen"/>
+	<link rel="stylesheet" href="../../print.css" type="text/css" media="print"/>
 </head>
 
 <body>
@@ -24,16 +25,18 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>current_object(Object)</pre>
+<pre>
+current_object(Object)
+</pre>
 <p>
-	Enumerates, by backtracking, all currently defined objects. All objects are found, either static, dynamic or built-in.
+Enumerates, by backtracking, all currently defined objects. All objects are found, either static, dynamic or built-in.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<pre>current_object(?object_identifier)</pre>
+<pre>
+current_object(?object_identifier)
+</pre>
 
 <h4>Errors</h4>
 
@@ -46,7 +49,9 @@
 
 <h4>Examples</h4>
 
-<pre>| ?- current_object(list).</pre>
+<pre>
+| ?- current_object(list).
+</pre>
 
 <div class="navbottom">
 <a href="current_category1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="current_protocol1.html">next</a>
