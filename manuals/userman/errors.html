@@ -29,13 +29,13 @@ All error/exception handling is done in Logtalk by using the ISO defined <code>c
 Errors thrown by Logtalk defined built-in predicates have the following format:
 </p>
 <pre>
-    error(Error, Call)
+error(Error, Call)
 </pre>
 <p>
 For example:
 </p>
 <pre>
-    error(type_error(object_identifier, 33), current_object(33))
+error(type_error(object_identifier, 33), current_object(33))
 </pre>
 <p>
 Errors thrown while processing a message have the following format:

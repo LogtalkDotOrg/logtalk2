@@ -25,26 +25,26 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>implements_protocol(Object, Protocol)
+<pre>
+implements_protocol(Object, Protocol)
 implements_protocol(Category, Protocol)
 
 implements_protocol(Object, Protocol, Scope)
-implements_protocol(Category, Protocol, Scope)</pre>
+implements_protocol(Category, Protocol, Scope)
+</pre>
 <p>
 Enumerates, by backtracking, all pairs of entities such that an object or a category implements a protocol. The relation scope is represented by the atoms <code>public</code>, <code>protected</code>, and <code>private</code>.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>implements_protocol(?object_identifier, ?protocol_identifier)
+<pre>
+implements_protocol(?object_identifier, ?protocol_identifier)
 implements_protocol(?category_identifier, ?protocol_identifier)
 
 implements_protocol(?object_identifier, ?protocol_identifier, ?scope)
-implements_protocol(?category_identifier, ?protocol_identifier, ?scope)</pre>
-</blockquote>
+implements_protocol(?category_identifier, ?protocol_identifier, ?scope)
+</pre>
 
 <h4>Errors</h4>
 
@@ -63,11 +63,11 @@ implements_protocol(?category_identifier, ?protocol_identifier, ?scope)</pre>
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>| ?- implements_protocol(List, listp).
+<pre>
+| ?- implements_protocol(List, listp).
 
-| ?- implements_protocol(List, listp, public).</pre>
-</blockquote>
+| ?- implements_protocol(List, listp, public).
+</pre>
 
 <div class="navbottom">
 <a href="extends_protocol2_3.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="imports_category2_3.html">next</a>

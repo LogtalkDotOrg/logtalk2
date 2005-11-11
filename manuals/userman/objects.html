@@ -47,74 +47,74 @@ Object names can be atoms or compound terms (if we are defining parametric objec
 Object code (directives and predicates) is textually encapsulated by using two Logtalk directives: <a title="Consult reference manual" href="../refman/directives/object1_5.html"><code>object/1-5</code></a> and <a title="Consult reference manual" href="../refman/directives/end_object0.html"><code>end_object/0</code></a>. The most simple object will be one that is self-contained, not depending on any other Logtalk entity:
 </p>
 <pre>
-    :- object(Object).
-        ...
-    :- end_object.
+:- object(Object).
+    ...
+:- end_object.
 </pre>
 <p>
 If an object implements one or more protocols then the opening directive will be:
 </p>
 <pre>
-    :- object(Object,
-        implements(Protocol)).
-        ...
-    :- end_object.
+:- object(Object,
+    implements(Protocol)).
+    ...
+:- end_object.
 </pre>
 <p>
 An object can import one or more categories:
 </p>
 <pre>
-    :- object(Object,
-        imports(Category)).
-        ...
-    :- end_object.
+:- object(Object,
+    imports(Category)).
+    ...
+:- end_object.
 </pre>
 <p>
 If an object implements protocols and imports categories then we will write:
 </p>
 <pre>
-    :- object(Object,
-        implements(Protocol),
-        imports(Category)).
-        ...
-    :- end_object.
+:- object(Object,
+    implements(Protocol),
+    imports(Category)).
+    ...
+:- end_object.
 </pre>
 <p>
 In object-oriented programming objects are usually organized in hierarchies that enable interface and code sharing by inheritance. In Logtalk, we can construct prototype-based hierarchies by writing:
 </p>
 <pre>
-    :- object(Prototype,
-        extends(Parent)).
-        ...
-    :- end_object.
+:- object(Prototype,
+    extends(Parent)).
+    ...
+:- end_object.
 </pre>
 <p>
 We can also have class-based hierarchies by defining instantiation and specialization relations between objects. To define an object as a class instance we will write: 
 </p>
 <pre>
-    :- object(Object,
-        instantiates(Class)).
-        ...
-    :- end_object.
+:- object(Object,
+    instantiates(Class)).
+    ...
+:- end_object.
 </pre>
 <p>
 A class may specialize another class, its superclass:
 </p>
 <pre>
-    :- object(Class,
-        specializes(Superclass)).
-        ...
-    :- end_object.
+:- object(Class,
+    specializes(Superclass)).
+    ...
+:- end_object.
 </pre>
 <p>
 If we are defining a reflexive system where every class is also an object, we will probably be using the following pattern:
 </p>
 <pre>
-    :- object(Class,
-        instantiates(Metaclass),
-        specializes(Superclass)).
-        ...
-    :- end_object.
+:- object(Class,
+    instantiates(Metaclass),
+    specializes(Superclass)).
+    ...
+:- end_object.
 </pre>
 <p>
 In short, an object can be a <em>stand-alone</em> object or be part of an object hierarchy. The hierarchy can be prototype-based (defined by extending other objects) or class-based (with instantiation and specialization relations). An object may also implement one or more protocols or import one or more categories.
@@ -123,24 +123,24 @@ In short, an object can be a <em>stand-alone</em> object or be part of an object
 A <em>stand-alone</em> object is always compiled as a prototype, that is, a self-describing object. If we want to use classes and instances, then we will need to specify at least an instantiation or a specialization relation. The best way to do this is to define a set of objects that provide the basis of a reflective system <a href="../bibliography.html#Cointe87">[Cointe 87</a>, <a href="../bibliography.html#Moura94">Moura 94]</a>. For example:
 </p>
 <pre>
-    :- object(object,               % default root of the inheritance graph
-        instantiates(class)).       % predicates common to all objects
-        ...
-    :- end_object.
+:- object(object,               % default root of the inheritance graph
+    instantiates(class)).       % predicates common to all objects
+    ...
+:- end_object.
 
 
-    :- object(class,                % default metaclass for all classes
-        instantiates(class),        % predicates common to all instantiable classes
-        specializes(abstract_class)).
-        ...
-    :- end_object.
+:- object(class,                % default metaclass for all classes
+    instantiates(class),        % predicates common to all instantiable classes
+    specializes(abstract_class)).
+    ...
+:- end_object.
 
 
-    :- object(abstract_class,       % default metaclass for all abstract classes
-        instantiates(class),        % predicates common to all classes
-        specializes(object)).
-        ...
-    :- end_object.
+:- object(abstract_class,       % default metaclass for all abstract classes
+    instantiates(class),        % predicates common to all classes
+    specializes(object)).
+    ...
+:- end_object.
 </pre>
 <p>
 Note that with these instantiation and specialization relations <code>object</code>, <code>class</code> and <code>abstract_class</code> are, at the same time, classes and instances of some class. In addition, each object inherits its own predicates and the predicates of the other two objects without any inheritance loop problems.
@@ -149,10 +149,10 @@ Note that with these instantiation and specialization relations <code>object</co
 If you do not need a reflective system solution but still want to play with classes and instances then you can simplify the above scheme by making an object an instance of itself or, if you prefer, by making a class its own metaclass. For example:
 </p>
 <pre>
-    :- object(class,
-        instantiates(class)).
-        ...
-    :- end_object.
+:- object(class,
+    instantiates(class)).
+    ...
+:- end_object.
 </pre>
 <p>
 We can have, in the same application, both prototype and class-based hierarchies (and freely exchange messages between all objects). We can not however mix the two types of hierarchies by, e.g., specializing an object that extends another object in this current Logtalk version.
@@ -167,27 +167,27 @@ Parametric objects have a compound term for name instead of an atom. This compou
 In order to give access to an object parameters, Logtalk provides the <a title="Consult reference manual" href="../refman/methods/parameter2.html"><code>parameter/2</code></a> built-in local method:
 </p>
 <pre>
-    :- object(Functor(Arg1, Arg2, ...)).
+:- object(Functor(Arg1, Arg2, ...)).
 
-        ...
+    ...
 
-        Predicate :-
-            ...,
-            parameter(Number, Value),
-            ... .
+    Predicate :-
+        ...,
+        parameter(Number, Value),
+        ... .
 </pre>
 <p>
 Note that we can't use this method with the message sending operators (<a title="Consult reference manual" href="../refman/control/to_object2.html"><code>::/2</code></a>, <a title="Consult reference manual" href="../refman/control/to_self1.html"><code>::/1</code></a> or <a title="Consult reference manual" href="../refman/control/to_object2.html"><code>^^/1</code></a>). An alternative solution is to use the built-in local method <a title="Consult reference manual" href="../refman/methods/this1.html"><code>this/1</code></a>. For example:
 </p>
 <pre>
-    :- object(foo(Arg)).
+:- object(foo(Arg)).
 
-        ...
+    ...
 
-        bar :-
-            ...,
-            this(foo(Arg)),
-            ... .
+    bar :-
+        ...,
+        this(foo(Arg)),
+        ... .
 </pre>
 <p>
 Both solutions are equally efficient because the runtime cost of the methods <code>this/1</code> and <code>parameter/2</code> is negligible. The drawback of the second solution is that we must check all calls of <code>this/1</code> if we change the object name.
@@ -202,7 +202,7 @@ When storing a parametric object in its own source file, the convention is to na
 We can find, by backtracking, all defined objects by calling the <a title="Consult reference manual" href="../refman/builtins/current_object1.html"><code>current_object/1</code></a> built-in predicate with an uninstantiated variable:
 </p>
 <pre>
-    | ?- current_object(Object).
+| ?- current_object(Object).
 </pre>
 <p>
 This predicate can also be used to test if an object is defined by calling it with a valid object identifier (an atom or a compound term).
@@ -214,7 +214,7 @@ This predicate can also be used to test if an object is defined by calling it wi
 An object can be dynamically created at runtime by using the <a title="Consult reference manual" href="../refman/builtins/create_object4.html"><code>create_object/4</code></a> built-in predicate:
 </p>
 <pre>
-    | ?- create_object(Object, Relations, Directives, Clauses).
+| ?- create_object(Object, Relations, Directives, Clauses).
 </pre>
 <p>
 The first argument, the name of the new object (a Prolog atom or compound term), should not match any existing entity name. The remaining three arguments correspond to the relations described in the opening object directive and to the object code contents (directives and clauses).
@@ -223,23 +223,23 @@ The first argument, the name of the new object (a Prolog atom or compound term),
 For instance, the call:
 </p>
 <pre>
-    | ?- create_object(foo, [extends(bar)], [public(foo/1)], [foo(1), foo(2)]).
+| ?- create_object(foo, [extends(bar)], [public(foo/1)], [foo(1), foo(2)]).
 </pre>
 <p>
 is equivalent to compiling and loading the object:
 </p>
 <pre>
-    :- object(foo,
-        extends(bar)).
+:- object(foo,
+    extends(bar)).
 
-        :- dynamic.
+    :- dynamic.
 
-        :- public(foo/1).
+    :- public(foo/1).
 
-        foo(1).
-        foo(2).
+    foo(1).
+    foo(2).
 
-    :- end_object.
+:- end_object.
 </pre>
 <p>
 If we need to create a lot of (dynamic) objects at runtime, then is best to define a metaclass or a prototype with a predicate that will call this built-in predicate to make new objects. This predicate may provide automatic object name generation, name checking and accept object initialization options.
@@ -251,7 +251,7 @@ If we need to create a lot of (dynamic) objects at runtime, then is best to defi
 Dynamic objects can be abolished using the <a title="Consult reference manual" href="../refman/builtins/abolish_object1.html"><code>abolish_object/1</code></a> built-in predicate:
 </p>
 <pre>
-    | ?- abolish_object(Object).
+| ?- abolish_object(Object).
 </pre>
 <p>
 The argument must be an identifier of a defined dynamic object, otherwise an error will be thrown.
@@ -269,46 +269,46 @@ Object directives are used to set initialization goals and object properties and
 We can define a goal to be executed as soon as an object is (compiled and) loaded to memory with the <a title="Consult reference manual" href="../refman/directives/initialization1.html"><code>initialization/1</code></a> directive:
 </p>
 <pre>
-    :- initialization(Goal).
+:- initialization(Goal).
 </pre>
 <p>
 The argument can be any valid Prolog or Logtalk goal, including a message to other object. For example:
 </p>
 <pre>
-    :- object(foo).
+:- object(foo).
 
-        :- initialization(init).
-        :- private(init/0).
+    :- initialization(init).
+    :- private(init/0).
 
-        init :-
-            ... .
+    init :-
+        ... .
 
-        ...
+    ...
 
-    :- end_object.
+:- end_object.
 </pre>
 <p>
 Or:
 </p>
 <pre>
-    :- object(assembler).
+:- object(assembler).
 
-        :- initialization(control::start).
-        ...
+    :- initialization(control::start).
+    ...
 
-    :- end_object.
+:- end_object.
 </pre>
 <p>
 The initialization goal can also be a message to <i>self</i> in order to call an inherited or imported predicate. For example, assuming that we have a <code>monitor</code> category defining a <code>reset/0</code> predicate:
 </p>
 <pre>
-    :- object(profiler,
-        imports(monitor)).
+:- object(profiler,
+    imports(monitor)).
 
-        :- initialization(::reset).
-        ...
+    :- initialization(::reset).
+    ...
 
-    :- end_object.
+:- end_object.
 </pre>
 <p>
 Note, however, that descendant objects do not inherit initialization directives. In this context, <i>self</i> denotes the object that contains the directive. Also note that by initialization we do not necessarily mean setting an object dynamic state.
@@ -320,7 +320,7 @@ Note, however, that descendant objects do not inherit initialization directives.
 As usually happens with Prolog code, an object can be either static or dynamic. An object created during the execution of a program is always dynamic. An object defined in a file can be either dynamic or static. Dynamic objects are declared by using the <a title="Consult reference manual" href="../refman/directives/dynamic0.html"><code>dynamic/0</code></a> directive in the object source code:
 </p>
 <pre>
-    :- dynamic.
+:- dynamic.
 </pre>
 <p>
 Let us just remember that the loss of performance of the dynamic code is usually of considerable importance to the static code. We should only use dynamic objects when these need to be abolished during program execution. Also, note that we can declare and define dynamic predicates in a static object.
@@ -335,13 +335,13 @@ Besides the relations declared in the object opening directive, the predicate de
 The <code>calls/1</code> directive can be used when a predicate definition sends a message that is declared in a specific protocol:
 </p>
 <pre>
-    :- calls(Protocol).
+:- calls(Protocol).
 </pre>
 <p>
 If a predicate definition sends a message to a specific object, this dependence can be declared with the <code>uses/1</code> directive:
 </p>
 <pre>
-    :- uses(Object).
+:- uses(Object).
 </pre>
 <p>
 These two directives may be used by the Logtalk runtime to ensure that all needed entities are loaded when running an application.
@@ -353,7 +353,7 @@ These two directives may be used by the Logtalk runtime to ensure that all neede
 An object can be documented with arbitrary user-defined information by using the <a title="Consult reference manual" href="../refman/directives/info1.html"><code>info/1</code></a> directive:
 </p>
 <pre>
-    :- info(List).
+:- info(List).
 </pre>
 <p>
 See the <a href="documenting.html">Documenting Logtalk programs</a> session for details.
@@ -368,61 +368,61 @@ Logtalk provides five sets of built-in predicates that enable us to query the sy
 The built-in predicates <a title="Consult reference manual" href="../refman/builtins/instantiates_class2_3.html"><code>instantiates_class/2</code></a> and <a title="Consult reference manual" href="../refman/builtins/instantiates_class2_3.html"><code>instantiates_class/3</code></a> can be used to query all instantiation relations:
 </p>
 <pre>
-    | ?- instantiates_class(Instance, Class).
+| ?- instantiates_class(Instance, Class).
 </pre>
 <p>
 or, if we want to know the instantiation scope:
 </p>
 <pre>
-    | ?- instantiates_class(Instance, Class, Scope).
+| ?- instantiates_class(Instance, Class, Scope).
 </pre>
 <p>
 Specialization relations can be found by using either the <a title="Consult reference manual" href="../refman/builtins/specializes_class2_3.html"><code>specializes_class/2</code></a> or the <a title="Consult reference manual" href="../refman/builtins/specializes_class2_3.html"><code>specializes_class/3</code></a> built-in predicates:
 </p>
 <pre>
-    | ?- specializes_class(Class, Superclass).
+| ?- specializes_class(Class, Superclass).
 </pre>
 <p>
 or, if we want to know the specialization scope:
 </p>
 <pre>
-    | ?- specializes_class(Class, Superclass, Scope).
+| ?- specializes_class(Class, Superclass, Scope).
 </pre>
 <p>
 For prototypes, we can query extension relations with the <a title="Consult reference manual" href="../refman/builtins/extends_object2_3.html"><code>extends_object/2</code></a> or the <a title="Consult reference manual" href="../refman/builtins/extends_object2_3.html"><code>extends_object/3</code></a> built-in predicates:
 </p>
 <pre>
-    | ?- extends_object(Object, Parent).
+| ?- extends_object(Object, Parent).
 </pre>
 <p>
 or, if we want to know the extension scope:
 </p>
 <pre>
-    | ?- extends_object(Object, Parent, Scope).
+| ?- extends_object(Object, Parent, Scope).
 </pre>
 <p>
 In order to find which objects import which categories we can use the built-in predicates <a title="Consult reference manual" href="../refman/builtins/imports_category2_3.html"><code>imports_category/2</code></a> or <a title="Consult reference manual" href="../refman/builtins/imports_category2_3.html"><code>imports_category/3</code></a>:
 </p>
 <pre>
-    | ?- imports_category(Object, Category).
+| ?- imports_category(Object, Category).
 </pre>
 <p>
 or, if we want to know the importation scope:
 </p>
 <pre>
-    | ?- imports_category(Object, Category, Scope).
+| ?- imports_category(Object, Category, Scope).
 </pre>
 <p>
 To find which objects implements which protocols we can use the <a title="Consult reference manual" href="../refman/builtins/implements_protocol2_3.html"><code>implements_protocol/2</code></a> or the <a title="Consult reference manual" href="../refman/builtins/implements_protocol2_3.html"><code>implements_protocol/3</code></a> built-in predicates:
 </p>
 <pre>
-    | ?- implements_protocol(Object, Protocol).
+| ?- implements_protocol(Object, Protocol).
 </pre>
 <p>
 or, if we want to know the implementation scope:
 </p>
 <pre>
-    | ?- implements_protocol(Object, Protocol, Scope).
+| ?- implements_protocol(Object, Protocol, Scope).
 </pre>
 <p>
 Note that, if we use an uninstantiated variable for the first argument, we will need to use the <a title="Consult reference manual" href="../refman/builtins/current_object1.html"><code>current_object/1</code></a> built-in predicate to ensure that the entity returned is an object and not a category.
@@ -434,7 +434,7 @@ Note that, if we use an uninstantiated variable for the first argument, we will 
 We can find the properties of defined objects by calling the built-in predicate <a title="Consult reference manual" href="../refman/builtins/object_property2.html"><code>object_property/2</code></a>:
 </p>
 <pre>
-    | ?- object_property(Object, Property).
+| ?- object_property(Object, Property).
 </pre>
 <p>
 An object may have the property <code>static</code>, <code>dynamic</code>, or <code>built_in</code>. Dynamic objects can be abolished in runtime by calling the <a title="Consult reference manual" href="../refman/builtins/abolish_object1.html"><code>abolish_object/1</code></a> built-in predicate.

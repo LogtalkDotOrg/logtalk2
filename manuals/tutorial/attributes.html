@@ -49,49 +49,49 @@ For this kind of situation, Logtalk enables the programmer to encapsulate the pr
 When defining category predicates, we need to remember that a category can be imported by more than one object. Because of that, the calls to the built-in methods that handle the private dynamic predicate (like <a title="Consult reference manual" href="../refman/methods/assertz1.html"><code>assertz/1</code></a> or <a title="Consult reference manual" href="../refman/methods/retract1.html"><code>retract/1</code></a>) must be made using the <em>message to self</em> control structure, <a title="Consult reference manual" href="../refman/control/to_self1.html"><code>::/1</code></a>. This way, we ensure that when we call one of the attribute predicates on an object, the object own definition of <code>attribute_/2</code> will be used. The predicates definitions are straightforward:
 </p>
 <pre>
-    :- category(attributes).
+:- category(attributes).
 
-        :- public(set_attribute/2).
-        :- mode(set_attribute(+nonvar, +nonvar), one).
+    :- public(set_attribute/2).
+    :- mode(set_attribute(+nonvar, +nonvar), one).
 
-        :- public(get_attribute/2).
-        :- mode(get_attribute(?nonvar, ?nonvar), zero_or_more).
+    :- public(get_attribute/2).
+    :- mode(get_attribute(?nonvar, ?nonvar), zero_or_more).
 
-        :- public(del_attribute/2).
-        :- mode(del_attribute(?nonvar, ?nonvar), zero_or_more).
+    :- public(del_attribute/2).
+    :- mode(del_attribute(?nonvar, ?nonvar), zero_or_more).
 
-        :- public(del_attributes/2).
-        :- mode(del_attributes(@term, @term), one).
+    :- public(del_attributes/2).
+    :- mode(del_attributes(@term, @term), one).
 
-        :- private(attribute_/2).
-        :- mode(attribute_(?nonvar, ?nonvar), zero_or_more).
-        :- dynamic(attribute_/2).
+    :- private(attribute_/2).
+    :- mode(attribute_(?nonvar, ?nonvar), zero_or_more).
+    :- dynamic(attribute_/2).
 
-        set_attribute(Attribute, Value):-
-            ::retractall(attribute_(Attribute, _)),
-            ::assertz(attribute_(Attribute, Value)).
+    set_attribute(Attribute, Value):-
+        ::retractall(attribute_(Attribute, _)),
+        ::assertz(attribute_(Attribute, Value)).
 
-        get_attribute(Attribute, Value):-
-            ::attribute_(Attribute, Value).
+    get_attribute(Attribute, Value):-
+        ::attribute_(Attribute, Value).
 
-        del_attribute(Attribute, Value):-
-            ::retract(attribute_(Attribute, Value)).
+    del_attribute(Attribute, Value):-
+        ::retract(attribute_(Attribute, Value)).
 
-        del_attributes(Attribute, Value):-
-            ::retractall(attribute_(Attribute, Value)).
+    del_attributes(Attribute, Value):-
+        ::retractall(attribute_(Attribute, Value)).
 
-    :- end_category.
+:- end_category.
 </pre>
 <p>
 We have two new directives, <a title="Consult reference manual" href="../refman/directives/category1_3.html"><code>category/1</code></a> and <a title="Consult reference manual" href="../refman/directives/end_category0.html"><code>end_category/0</code></a>, that encapsulate the category code. If needed, we can put the predicates directives inside a protocol that will be implemented by the category:
 </p>
 <pre>
-    :- category(attributes,
-        implements(attributes_protocol)).
+:- category(attributes,
+    implements(attributes_protocol)).
 
-        ...
+    ...
 
-    :- end_category.
+:- end_category.
 </pre>
 <p>
 Any protocol can be implemented by either an object, a category, or both.
@@ -103,30 +103,30 @@ Any protocol can be implemented by either an object, a category, or both.
 We reuse a category's predicates by importing them into an object:
 </p>
 <pre>
-    :- object(person,
-        imports(attributes)).
+:- object(person,
+    imports(attributes)).
 
-        ...
+    ...
 
-    :- end_object.
+:- end_object.
 </pre>
 <p>
 After compiling and loading this object and our category, we can now try queries like:
 </p>
 <pre>
-    | ?- person::set_attribute(name, paulo).
+| ?- person::set_attribute(name, paulo).
 
-    yes
+yes
 
-    | ?- person::set_attribute(gender, male).
+| ?- person::set_attribute(gender, male).
 
-    yes
+yes
 
-    | ?- person::get_attribute(Attribute, Value).
+| ?- person::get_attribute(Attribute, Value).
 
-    Attribute = name, Value = paulo ;
-    Attribute = gender, Value = male ;
-    no
+Attribute = name, Value = paulo ;
+Attribute = gender, Value = male ;
+no
 </pre>
 
 <h2>Summary<a name="summary"></a></h2>

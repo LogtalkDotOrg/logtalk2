@@ -38,17 +38,17 @@ by defining a simple profiler that prints the starting and ending time for proce
 In a pure object-oriented system, all computations start by sending messages to objects. We can thus define an <em>event</em> as the sending of a message to an object. An event can then be specified by the tuple <code>(Object, Message, Sender)</code>. This definition can be refined by interpreting the sending of a message and the return of the control to the object that has sent the message as two distinct events. We call these events respectively <code>before</code> and <code>after</code>. Therefore, we end up by representing an event by the tuple <code>(Event, Object, Message, Sender)</code>. For instance, if we send the message:
 </p>
 <pre>
-    | ?- foo::bar(X).
+| ?- foo::bar(X).
 
-    X = 1
-    yes
+X = 1
+yes
 </pre>
 <p>
 the two corresponding events will be:
 </p>
 <pre>
-    (before, foo, bar(X), user)
-    (after, foo, bar(1), user)
+(before, foo, bar(X), user)
+(after, foo, bar(1), user)
 </pre>
 <p>
 Note that the second event is only generated if the message succeeds. If the message as a goal have multiple solutions, then one <code>after</code> event will be generated for each solution.
@@ -66,42 +66,42 @@ A monitor is an object that reacts whenever a spied event occurs. The monitor ac
 In our example, we need a way to get the current time before and after we process a message. We will assume that we have a <code>time</code> object implementing a <code>cpu_time/1</code> predicate that returns the current CPU time for the Prolog session:
 </p>
 <pre>
-    :- object(time).
+:- object(time).
 
-        :- public(cpu_time/1).
-        :- mode(cpu_time(-number), one).
+    :- public(cpu_time/1).
+    :- mode(cpu_time(-number), one).
 
-        ...
+    ...
 
-    :- end_object.
+:- end_object.
 </pre>
 <p>
 Our profiler will be named <code>stop_watch</code>. It must define event handlers for the <code>before</code> and <code>after</code> events that will print the event description (object, message, and sender) and the current time:
 </p>
 <pre>
-    :- object(stop_watch).
+:- object(stop_watch).
 
-        :- uses(time).
+    :- uses(time).
 
-        before(Object, Message, Sender) :-
-            write(Object), write(' &lt;-- '), writeq(Message),
-            write(' from '), write(Sender), nl, write('STARTING at '),
-            time::cpu_time(Seconds), write(Seconds), write(' seconds'), nl.
+    before(Object, Message, Sender) :-
+        write(Object), write(' &lt;-- '), writeq(Message),
+        write(' from '), write(Sender), nl, write('STARTING at '),
+        time::cpu_time(Seconds), write(Seconds), write(' seconds'), nl.
 
-        after(Object, Message, Sender) :-
-            write(Object), write(' &lt;-- '), writeq(Message),
-            write(' from '), write(Sender), nl, write('ENDING at '),
-            time::cpu_time(Seconds), write(Seconds), write(' seconds'), nl.
+    after(Object, Message, Sender) :-
+        write(Object), write(' &lt;-- '), writeq(Message),
+        write(' from '), write(Sender), nl, write('ENDING at '),
+        time::cpu_time(Seconds), write(Seconds), write(' seconds'), nl.
 
-    :- end_object.
+:- end_object.
 </pre>
 <p>
 After compiling and loading the <code>stop_watch</code> object (and the objects that we want to profile), we can use the <a title="Consult reference manual" href="../refman/builtins/define_events5.html"><code>define_events/5</code></a> built-in predicate to set up our profiler. For example, to profile all messages that are sent to the object <code>foo</code>, we need to call the goal:
 </p>
 <pre>
-    | ?- define_events(_, foo, _, _, stop_watch).
+| ?- define_events(_, foo, _, _, stop_watch).
 
-    yes
+yes
 </pre>
 <p>
 This call will register <code>stop_watch</code> as a monitor to all messages sent to object <code>foo</code>, for both <code>before</code> and <code>after</code> events. Note that we say &quot;as a monitor&quot;, not &quot;the monitor&quot;: we can have any number of monitors over the same events.
@@ -110,24 +110,24 @@ This call will register <code>stop_watch</code> as a monitor to all messages sen
 From now on, every time we sent a message to <code>foo</code>, the <code>stop_watch</code> monitor will print the starting and ending times for the message execution. For instance:
 </p>
 <pre>
-    | ?- foo::bar(X).
+| ?- foo::bar(X).
 
-    foo &lt;-- bar(X) from user
-    STARTING at 12.87415 seconds
-    foo &lt;-- bar(1) from user
-    ENDING at 12.87419 seconds
+foo &lt;-- bar(X) from user
+STARTING at 12.87415 seconds
+foo &lt;-- bar(1) from user
+ENDING at 12.87419 seconds
 
-    X = 1
-    yes
+X = 1
+yes
 </pre>
 <p>
 To stop profiling the messages sent to <code>foo</code> we use the <a title="Consult reference manual" href="../refman/builtins/abolish_events5.html"><code>abolish_events/5</code></a>
 built-in predicate:
 </p>
 <pre>
-    | ?- abolish_events(_, foo, _, _, stop_watch).
+| ?- abolish_events(_, foo, _, _, stop_watch).
 
-    yes
+yes
 </pre>
 <p>
 This call will abolish all events defined over the object <code>foo</code> assigned to the <code>stop_watch</code> monitor.

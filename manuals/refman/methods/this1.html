@@ -24,20 +24,18 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<p>
-	<code>this(This)</code>
-</p>
+<pre>
+this(This)
+</pre>
 <p>
 	Unifies its argument with the identifier of the object that contains the predicate clause that is being used. Note that this predicate implies an instantiation between its argument and the corresponding implicit context argument in the predicate containing the call. This instantiation occurs at the clause head, not at the clause body. This method is useful in avoiding problems when an object is renamed or when using parametric objects. Can also be used to retrieve runtime parametric object parameters through unification (see also <a  href="parameter2.html"><code>parameter/2</code></a>).
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>this(?object_identifier)</pre>
-</blockquote>
+<pre>
+this(?object_identifier)
+</pre>
 
 <h4>Errors</h4>
 
@@ -49,12 +47,12 @@
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>test :-
+<pre>
+test :-
     this(This),                                       % after compilation, the write/1 call
     write('executing a definition contained in '),    % will be the first condition on the
-    writeq(This), nl.                                 % clause body</pre>
-</blockquote>
+    writeq(This), nl.                                 % clause body
+</pre>
 
 <div class="navbottom">
 <a href="sender1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="../index.html#methods">next</a>

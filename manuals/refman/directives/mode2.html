@@ -25,31 +25,31 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>mode(Mode, Number_of_solutions)</pre>
+<pre>
+mode(Mode, Number_of_solutions)
+</pre>
 <p>
 Most predicates can be used with several instantiations modes. This directive enables the specification of each instantiation mode and the corresponding number of solutions (not necessarily distinct). You may also use this directive for documenting grammar rule non-terminals.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>mode(+predicate_mode_term, +number_of_solutions)
-mode(+non_terminal_mode_term, +number_of_solutions)</pre>
-</blockquote>
+<pre>
+mode(+predicate_mode_term, +number_of_solutions)
+mode(+non_terminal_mode_term, +number_of_solutions)
+</pre>
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>:- mode(append(-, -, +), zero_or_more).
+<pre>
+:- mode(append(-, -, +), zero_or_more).
 
 :- mode(append(+list, +list, -list), zero_or_one).
 
 :- mode(var(@term), zero_or_one).
 
-:- mode(arg(-, -, +), error).</pre>
-</blockquote>
+:- mode(arg(-, -, +), error).
+</pre>
 
 <div class="navbottom">
 <a href="metapredicate1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="op3.html">next</a>

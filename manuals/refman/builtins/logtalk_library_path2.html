@@ -25,19 +25,19 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>logtalk_library_path(Library, Path)</pre>
+<pre>
+logtalk_library_path(Library, Path)
+</pre>
 <p>
 Dynamic, user-defined predicate, allowing the declaration of aliases to library paths. Library aliases may also be used on the second argument (using the notation <em>alias(path)</em>). Paths must always end with the path directory separator character.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>logtalk_library_path(?atom, -atom)
-logtalk_library_path(?atom, -compound)</pre>
-</blockquote>
+<pre>
+logtalk_library_path(?atom, -atom)
+logtalk_library_path(?atom, -compound)
+</pre>
 
 <h4>Errors</h4>
 
@@ -49,8 +49,8 @@ logtalk_library_path(?atom, -compound)</pre>
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>| ?- logtalk_library_path(viewpoints, Path).
+<pre>
+| ?- logtalk_library_path(viewpoints, Path).
 
 Path = examples('viewpoints/')
 yes
@@ -68,8 +68,8 @@ Path = lgtuser('examples/') ;
 
 Library = viewpoints
 Path = examples('viewpoints/')
-yes</pre>
-</blockquote>
+yes
+</pre>
 
 <div class="navbottom">
 <a href="logtalk_load2.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="../index.html#builtins">next</a>

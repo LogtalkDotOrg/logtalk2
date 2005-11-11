@@ -25,36 +25,36 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>public(Functor/Arity)
+<pre>
+public(Functor/Arity)
 public(Functor1/Arity1, Functor2/Arity2, ...)
 public([Functor1/Arity1, Functor2/Arity2, ...])
 
 public(Functor//Arity)
 public(Functor1//Arity1, Functor2//Arity2, ...)
-public([Functor1//Arity1, Functor2//Arity2, ...])</pre>
+public([Functor1//Arity1, Functor2//Arity2, ...])
+</pre>
 <p>
 Declares public predicates and public grammar rule non-terminals. A public predicate can be called from any object. A public non-terminal can be used as an argument in <a title="Consult reference manual" href="../methods/phrase2.html"><code>phrase/2</code></a> and <a title="Consult reference manual" href="../methods/phrase3.html"><code>phrase/3</code></a> messages sent from any object.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>public(+predicate_indicator_term)
-public(+non_terminal_indicator_term)</pre>
-</blockquote>
+<pre>
+public(+predicate_indicator_term)
+public(+non_terminal_indicator_term)
+</pre>
 
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>:- public(ancestor/1).
+<pre>
+:- public(ancestor/1).
 
 :- public(instance/1, instances/1).
 
-:- public([leaf/1, leaves/1]).</pre>
-</blockquote>
+:- public([leaf/1, leaves/1]).
+</pre>
 
 <div class="navbottom">
 <a href="protected1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="uses2.html">next</a>

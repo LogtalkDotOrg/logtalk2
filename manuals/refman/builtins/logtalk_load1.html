@@ -25,22 +25,22 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>logtalk_load(File)
-logtalk_load(Files)</pre>
+<pre>
+logtalk_load(File)
+logtalk_load(Files)
+</pre>
 <p>
 Compiles to disk and then loads to memory a source file or a list of source files using the default compiler flags specified in the Logtalk configuration file. The Logtalk file name extension (by default, <code>.lgt</code>) must be omitted. Note that the argument is a source file name or a list of source file names, not file paths. In other words, the files must exist in the current working directory, unless library notation is used.
 </p>
 <p>
 Note that only the errors related to problems in the predicate argument are listed below. Other exceptions may be thrown by the compiler if any of the loaded entities contain syntax errors.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>logtalk_load(@source_file_names)</pre>
-</blockquote>
+<pre>
+logtalk_load(@source_file_names)
+</pre>
 
 <h4>Errors</h4>
 
@@ -63,13 +63,13 @@ Note that only the errors related to problems in the predicate argument are list
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>| ?- logtalk_load(set).
+<pre>
+| ?- logtalk_load(set).
 
 | ?- logtalk_load(types(tree)).
 
-| ?- logtalk_load([listp, list]).</pre>
-</blockquote>
+| ?- logtalk_load([listp, list]).
+</pre>
 
 <div class="navbottom">
 <a href="logtalk_compile1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="logtalk_load2.html">next</a>

@@ -25,26 +25,26 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>imports_category(Object, ImportedCategory)
+<pre>
+imports_category(Object, ImportedCategory)
 imports_category(Category, ImportedCategory)
 
 imports_category(Object, ImportedCategory, Scope)
-imports_category(Category, ImportedCategory, Scope)</pre>
+imports_category(Category, ImportedCategory, Scope)
+</pre>
 <p>
 Enumerates, by backtracking, importation relations between objects and categories. The relation scope is represented by the atoms <code>public</code>, <code>protected</code>, and <code>private</code>.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>imports_category(?object_identifier, ?category_identifier)
+<pre>
+imports_category(?object_identifier, ?category_identifier)
 imports_category(?category_identifier, ?category_identifier)
 
 imports_category(?object_identifier, ?category_identifier, ?scope)
-imports_category(?category_identifier, ?category_identifier, ?scope)</pre>
-</blockquote>
+imports_category(?category_identifier, ?category_identifier, ?scope)
+</pre>
 
 <h4>Errors</h4>
 
@@ -63,11 +63,11 @@ imports_category(?category_identifier, ?category_identifier, ?scope)</pre>
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>| ?- imports_category(debugger, monitoring).
+<pre>
+| ?- imports_category(debugger, monitoring).
 
-| ?- imports_category(Object, monitoring, protected).</pre>
-</blockquote>
+| ?- imports_category(Object, monitoring, protected).
+</pre>
 
 <div class="navbottom">
 <a href="implements_protocol2_3.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="instantiates_class2_3.html">next</a>

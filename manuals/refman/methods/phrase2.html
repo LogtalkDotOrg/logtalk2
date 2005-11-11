@@ -25,18 +25,18 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>phrase(Ruleset, Input)</pre>
+<pre>
+phrase(Ruleset, Input)
+</pre>
 <p>
 	True if the list <code>Input</code> can be parsed using the specified non-terminal <code>Ruleset</code>.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>phrase(+callable, ?list)</pre>
-</blockquote>
+<pre>
+phrase(+callable, ?list)
+</pre>
 
 <h4>Errors</h4>
 
@@ -59,8 +59,8 @@
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>| ?- sentence::phrase(sentence, [the, girl, likes, the, boy]).
+<pre>
+| ?- sentence::phrase(sentence, [the, girl, likes, the, boy]).
 
 yes
 
@@ -68,8 +68,8 @@ yes
 | ?- calculator::phrase(expr(Value), "1+2-3*4").
 
 Value = -9
-yes</pre>
-</blockquote>
+yes
+</pre>
 
 <div class="navbottom">
 <a href="../index.html#methods">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="phrase3.html">next</a>

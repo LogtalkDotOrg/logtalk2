@@ -25,18 +25,18 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>self(Self)</pre>
+<pre>
+self(Self)
+</pre>
 <p>
 	Returns the object that has received the message under processing. Note that this predicate implies an instantiation between its argument and the corresponding implicit context argument in the predicate containing the call. This instantiation occurs at the clause head, not at the clause body.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>self(?object_identifier)</pre>
-</blockquote>
+<pre>
+self(?object_identifier)
+</pre>
 
 <h4>Errors</h4>
 
@@ -48,12 +48,12 @@
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>test :-
+<pre>
+test :-
     self(Self),                                   % after compilation, the write/1 call
     write('executing a method in behalf of '),    % will be the first condition on the
-    writeq(Self), nl.                             % clause body</pre>
-</blockquote>
+    writeq(Self), nl.                             % clause body
+</pre>
 
 <div class="navbottom">
 <a href="parameter2.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="sender1.html">next</a>

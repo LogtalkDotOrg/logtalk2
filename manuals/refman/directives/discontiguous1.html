@@ -25,36 +25,36 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>discontiguous(Functor/Arity)
+<pre>
+discontiguous(Functor/Arity)
 discontiguous(Functor1/Arity1, Functor2/Arity2, ...)
 discontiguous([Functor1/Arity1, Functor2/Arity2, ...])
 
 discontiguous(Functor//Arity)
 discontiguous(Functor1//Arity1, Functor2//Arity2, ...)
-discontiguous([Functor1//Arity1, Functor2//Arity2, ...])</pre>
+discontiguous([Functor1//Arity1, Functor2//Arity2, ...])
+</pre>
 <p>
 Declares discontiguous predicates and discontiguous grammar rule non-terminals. The use of this directive should be avoided as not all Prolog compilers support discontiguous predicates.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>discontiguous(+predicate_indicator_term)
-discontiguous(+non_terminal_indicator_term)</pre>
-</blockquote>
+<pre>
+discontiguous(+predicate_indicator_term)
+discontiguous(+non_terminal_indicator_term)
+</pre>
 
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>:- discontiguous(counter/1).
+<pre>
+:- discontiguous(counter/1).
 
 :- discontiguous(lives/2, works/2).
 
-:- discontiguous([db/4, key/2, file/3]).</pre>
-</blockquote>
+:- discontiguous([db/4, key/2, file/3]).
+</pre>
 
 <div class="navbottom">
 <a href="uses1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="dynamic1.html">next</a>

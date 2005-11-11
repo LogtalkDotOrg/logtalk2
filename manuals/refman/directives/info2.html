@@ -25,31 +25,31 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>info(Functor/Arity, List)
-info(Functor//Arity, List)</pre>
+<pre>
+info(Functor/Arity, List)
+info(Functor//Arity, List)
+</pre>
 <p>
-	Documentation directive for predicates and grammar rule non-terminals.
+Documentation directive for predicates and grammar rule non-terminals.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>info(+predicate_indicator, +info_list)
-info(+non_terminal_indicator, +info_list)</pre>
-</blockquote>
+<pre>
+info(+predicate_indicator, +info_list)
+info(+non_terminal_indicator, +info_list)
+</pre>
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>:- info(empty/1, [
+<pre>
+:- info(empty/1, [
     comment is 'True if the argument is an empty list.',
     argnames is ['List']]).
     
 :- info(sentence//0, [
-    comment is 'Rewrites a sentence into a noun phrase and a verb phrase.']).</pre>
-</blockquote>
+    comment is 'Rewrites a sentence into a noun phrase and a verb phrase.']).
+</pre>
 
 <div class="navbottom">
 <a href="dynamic1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="metapredicate1.html">next</a>

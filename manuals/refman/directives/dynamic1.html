@@ -25,36 +25,36 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>dynamic(Functor/Arity)
+<pre>
+dynamic(Functor/Arity)
 dynamic(Functor1/Arity1, Functor2/Arity2, ...)
 dynamic([Functor1/Arity1, Functor2/Arity2, ...])
 
 dynamic(Functor//Arity)
 dynamic(Functor1//Arity1, Functor2//Arity2, ...)
-dynamic([Functor1//Arity1, Functor2//Arity2, ...])</pre>
+dynamic([Functor1//Arity1, Functor2//Arity2, ...])
+</pre>
 <p>
 Declares dynamic predicates and dynamic grammar rule non-terminals. Note that an object can be static and have both static and dynamic predicates/non-terminals.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>dynamic(+predicate_indicator_term)
-dynamic(+non_terminal_indicator_term)</pre>
-</blockquote>
+<pre>
+dynamic(+predicate_indicator_term)
+dynamic(+non_terminal_indicator_term)
+</pre>
 
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>:- dynamic(counter/1).
+<pre>
+:- dynamic(counter/1).
 
 :- dynamic(lives/2, works/2).
 
-:- dynamic([db/4, key/2, file/3]).</pre>
-</blockquote>
+:- dynamic([db/4, key/2, file/3]).
+</pre>
 
 <div class="navbottom">
 <a href="discontiguous1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="info2.html">next</a>

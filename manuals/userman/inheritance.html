@@ -68,41 +68,41 @@ The search order for predicate definitions is similar to the search for predicat
 When we define a predicate that is already inherited from other object, the inherited definitions are hidden by the new definitions. This is called overriding inheritance: a local definition overrides any inherited ones. For example, assume that we have the following two objects:
 </p>
 <pre>
-    :- object(root).
+:- object(root).
 
-        :- public(bar/1).
-        :- public(foo/1).
+    :- public(bar/1).
+    :- public(foo/1).
 
-        bar(root).
+    bar(root).
 
-        foo(root).
+    foo(root).
 
-    :- end_object.
+:- end_object.
 
 
-    :- object(descendant,
-        extends(root)).
+:- object(descendant,
+    extends(root)).
 
-        foo(descendant).
+    foo(descendant).
 
-    :- end_object.
+:- end_object.
 </pre>
 <p>
 After compiling and loading these objects, we can check the overriding behavior by trying the following queries:
 </p>
 <pre>
-    | ?- root::(bar(Bar), foo(Foo)).
+| ?- root::(bar(Bar), foo(Foo)).
 
-    Bar = root
-    Foo = root
-    yes
+Bar = root
+Foo = root
+yes
 
 
-    | ?- descendant::(bar(Bar), foo(Foo)).
+| ?- descendant::(bar(Bar), foo(Foo)).
 
-    Bar = root
-    Foo = descendant
-    yes
+Bar = root
+Foo = descendant
+yes
 </pre>
 <p>
 However, we can explicitly program other behaviors. Let us see a few examples.
@@ -114,32 +114,32 @@ However, we can explicitly program other behaviors. Let us see a few examples.
 Specialization of inherited definitions: the new definition uses the inherited definitions, adding to this new code. This is accomplished by calling the <a title="Consult reference manual" href="../refman/control/to_super1.html"><code>^^/1</code></a> operator in the new definition.
 </p>
 <pre>
-    :- object(root).
+:- object(root).
 
-        :- public(init/0).
+    :- public(init/0).
 
-        init :-
-            write('root init'), nl.
+    init :-
+        write('root init'), nl.
 
-    :- end_object.
-
-
-    :- object(descendant,
-        extends(root)).
-
-        init :-
-            write('descendant init'), nl,
-            ^^init.
-
-    :- end_object.
+:- end_object.
 
 
-    | ?- descendant::init.
-    
-    root init
-    descendant init
-    
-    yes
+:- object(descendant,
+    extends(root)).
+
+    init :-
+        write('descendant init'), nl,
+        ^^init.
+
+:- end_object.
+
+
+| ?- descendant::init.
+
+root init
+descendant init
+
+yes
 </pre>
 
 <h4>Union inheritance<a name="union"></a></h4>
@@ -148,33 +148,33 @@ Specialization of inherited definitions: the new definition uses the inherited d
 Union of the new with the inherited definitions: all the definitions are taken into account, the calling order being defined by the inheritance mechanisms. This can be accomplished by writing a clause that just calls, using the <a title="Consult reference manual" href="../refman/control/to_super1.html"><code>^^/1</code></a> operator, the inherited definitions. The relative position of this clause among the other definition clauses sets the calling order for the local and inherited definitions.
 </p>
 <pre>
-    :- object(root).
+:- object(root).
 
-        :- public(foo/1).
+    :- public(foo/1).
 
-        foo(1).
-        foo(2).
+    foo(1).
+    foo(2).
 
-    :- end_object.
-
-
-    :- object(descendant,
-        extends(root)).
-
-        foo(3).
-        foo(Foo) :-
-            ^^foo(Foo).
-
-    :- end_object.
+:- end_object.
 
 
-    | ?- descendant::foo(Foo).
-    
-    Foo = 3 ;
-    Foo = 1 ;
-    Foo = 2 ;
+:- object(descendant,
+    extends(root)).
 
-    no
+    foo(3).
+    foo(Foo) :-
+        ^^foo(Foo).
+
+:- end_object.
+
+
+| ?- descendant::foo(Foo).
+
+Foo = 3 ;
+Foo = 1 ;
+Foo = 2 ;
+
+no
 </pre>
 
 <h4>Selective inheritance<a name="selective"></a></h4>
@@ -183,33 +183,33 @@ Union of the new with the inherited definitions: all the definitions are taken i
 Hiding some of the inherited definitions, or differential inheritance: this form of inheritance is normally used in the representation of exceptions to generic definitions. Here we will need to use the <a title="Consult reference manual" href="../refman/control/to_super1.html"><code>^^/1</code></a> operator to test and possibly reject some of the inherited definitions.
 </p>
 <pre>
-    :- object(bird).
+:- object(bird).
 
-        :- public(mode/1).
+    :- public(mode/1).
 
-        mode(walks).
-        mode(flies).
+    mode(walks).
+    mode(flies).
 
-    :- end_object.
-
-
-    :- object(penguin,
-        extends(bird)).
-
-        mode(swims).
-        mode(Mode) :-
-            ^^mode(Mode),
-            Mode \= flies.
-
-    :- end_object.
+:- end_object.
 
 
-    | ?- penguin::mode(Mode).
-    
-    Mode = swims ;
-    Mode = walks ;
+:- object(penguin,
+    extends(bird)).
 
-    no
+    mode(swims).
+    mode(Mode) :-
+        ^^mode(Mode),
+        Mode \= flies.
+
+:- end_object.
+
+
+| ?- penguin::mode(Mode).
+
+Mode = swims ;
+Mode = walks ;
+
+no
 </pre>
 
 <h2>Public, protected and private inheritance<a name="types"></a></h2>
@@ -218,37 +218,37 @@ Hiding some of the inherited definitions, or differential inheritance: this form
 To make all public predicates declared via implemented protocols, importeds categories, or inherited objects protected or to make all public and protected predicates private we prefix the entity's name with the corresponding keyword. For instance:
 </p>
 <pre>
-    :- object(Object,
-        implements(private::Protocol)).       % all the Protocol public and protected
-        ...                                   % predicates become Object's private predicates
-    :- end_object.
+:- object(Object,
+    implements(private::Protocol)).       % all the Protocol public and protected
+    ...                                   % predicates become Object's private predicates
+:- end_object.
 </pre>
 <p>
 or:
 </p>
 <pre>
-    :- object(Class,
-        specializes(protected::Superclass)).  % all the Superclass public predicates
-        ...                                   % become Object's protected predicates
-    :- end_object.
+:- object(Class,
+    specializes(protected::Superclass)).  % all the Superclass public predicates
+    ...                                   % become Object's protected predicates
+:- end_object.
 </pre>
 <p>
 Omitting the scope keyword is equivalent to using the public scope keyword. For example:
 </p>
 <pre>
-    :- object(Object,
-        imports(public::Category)).
-        ...
-    :- end_object.
+:- object(Object,
+    imports(public::Category)).
+    ...
+:- end_object.
 </pre>
 <p>
 This is the same as:
 </p>
 <pre>
-    :- object(Object,
-        imports(Category)).
-        ...
-    :- end_object.
+:- object(Object,
+    imports(Category)).
+    ...
+:- end_object.
 </pre>
 <p>
 This way we ensure backward compatibility with older Logtalk versions and a simplified syntax when protected or private inheritance are not used.

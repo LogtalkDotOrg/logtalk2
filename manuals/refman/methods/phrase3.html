@@ -25,18 +25,18 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>phrase(Ruleset, Input, Rest)</pre>
+<pre>
+phrase(Ruleset, Input, Rest)
+</pre>
 <p>
 	True if the list <code>Input</code> can be parsed using the specified non-terminal <code>Ruleset</code>. The list <code>Rest</code> is what remains of the list <code>Input</code> after parsing succeeded.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>phrase(+callable, ?list, ?list)</pre>
-</blockquote>
+<pre>
+phrase(+callable, ?list, ?list)
+</pre>
 
 <h4>Errors</h4>
 
@@ -61,12 +61,12 @@
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>| ?- sentence::phrase(noun_phrase, [the, girl, likes, the, boy], Rest).
+<pre>
+| ?- sentence::phrase(noun_phrase, [the, girl, likes, the, boy], Rest).
 
 Rest = [likes, the, boy]
-yes</pre>
-</blockquote>
+yes
+</pre>
 
 <div class="navbottom">
 <a href="phrase3.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="../index.html#methods">next</a>

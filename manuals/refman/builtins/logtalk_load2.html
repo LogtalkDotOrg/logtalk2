@@ -25,9 +25,10 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>logtalk_load(File, Flags)
-logtalk_load(Files, Flags)</pre>
+<pre>
+logtalk_load(File, Flags)
+logtalk_load(Files, Flags)
+</pre>
 <p>
 Compiles to disk and then loads to memory a source file or a list of source files using a list of flag values. The Logtalk file name extension (by default, <code>.lgt</code>) must be omitted. Note that the first argument is a source file name or a list of source file names, not file paths. In other words, the files must exist in the current working directory, unless library notation is used.
 </p>
@@ -37,13 +38,12 @@ For a description of the available compiler flags, please <a href="../../userman
 <p>
 Note that only the errors related to problems in the predicate arguments are listed below. Other exceptions may be thrown by the compiler if any of the loaded entities contain syntax errors.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>logtalk_load(@source_file_names, @list)</pre>
-</blockquote>
+<pre>
+logtalk_load(@source_file_names, @list)
+</pre>
 
 <h4>Errors</h4>
 
@@ -72,13 +72,13 @@ Note that only the errors related to problems in the predicate arguments are lis
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>| ?- logtalk_load(list, []).
+<pre>
+| ?- logtalk_load(list, []).
 
 | ?- logtalk_load(types(tree), [xmlspec(xsd)]).
 
-| ?- logtalk_load([listp, list], [xml(off), plredf(warning)]).</pre>
-</blockquote>
+| ?- logtalk_load([listp, list], [xml(off), plredf(warning)]).
+</pre>
 
 <div class="navbottom">
 <a href="logtalk_load1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="logtalk_library_path2.html">next</a>

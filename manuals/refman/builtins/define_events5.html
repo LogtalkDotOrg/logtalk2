@@ -25,18 +25,16 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>define_events(Event, Object, Message, Sender, Monitor)</pre>
+<pre>
+define_events(Event, Object, Message, Sender, Monitor)
+</pre>
 <p>
 Defines a new set of events. The two types of events are represented by the atoms <code>before</code> and <code>after</code>.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
 <pre>define_events(@event, @object_identifier, @callable, @object_identifier, +object_identifier)</pre>
-</blockquote>
 
 <h4>Errors</h4>
 
@@ -59,9 +57,7 @@ Defines a new set of events. The two types of events are represented by the atom
 
 <h4>Examples</h4>
 
-<blockquote>
 <pre>| ?- define_events(_, list, member(_, _), _ , debugger).</pre>
-</blockquote>
 
 <div class="navbottom">
 <a href="current_event5.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="../index.html#builtins">next</a>

@@ -25,12 +25,13 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>::Predicate
+<pre>
+::Predicate
 
 ::(Predicate1, Predicate2, ...)
 
-::(Predicate1; Predicate2; ...)</pre>
+::(Predicate1; Predicate2; ...)
+</pre>
 <p>
 	Send a message to <a class="glossary" title="Go to glossary definition" href="../../glossary.html#self">self</a>. Only used in the body of a predicate definition. The argument should match a public or protected predicate of <a class="glossary" title="Go to glossary definition" href="../../glossary.html#self">self</a>. It may also match a private predicate if the predicate is within the scope of the object where the method making the call is defined, if imported from a category, if used from inside a category, or when using private inheritance. We can also send a set of messages to self. The "<code>,</code>" and "<code>;</code>" in the list have the usual Prolog meaning.
 </p>
@@ -38,9 +39,9 @@
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>::+messages</pre>
-</blockquote>
+<pre>
+::+messages
+</pre>
 
 <h4>Errors</h4>
 
@@ -57,12 +58,12 @@
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>area(Area) :-
+<pre>
+area(Area) :-
     ::width(Width),
     ::height(Height),
-    Area is Width*Height.</pre>
-</blockquote>
+    Area is Width*Height.
+</pre>
 
 <div class="navbottom">
 <a href="to_object2.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="to_super1.html">next</a>

@@ -25,22 +25,22 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>instantiates_class(Instance, Class)
+<pre>
+instantiates_class(Instance, Class)
 
-instantiates_class(Instance, Class, Scope)</pre>
+instantiates_class(Instance, Class, Scope)
+</pre>
 <p>
 Enumerates, by backtracking, all pairs of objects such that the first one instantiates the second. The relation scope is represented by the atoms <code>public</code>, <code>protected</code>, and <code>private</code>.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>instantiates_class(?object_identifier, ?object_identifier)
+<pre>
+instantiates_class(?object_identifier, ?object_identifier)
 
-instantiates_class(?object_identifier, ?object_identifier, ?scope)</pre>
-</blockquote>
+instantiates_class(?object_identifier, ?object_identifier, ?scope)
+</pre>
 
 <h4>Errors</h4>
 
@@ -57,11 +57,11 @@ instantiates_class(?object_identifier, ?object_identifier, ?scope)</pre>
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>| ?- instantiates_class(water_jug, state_space).
+<pre>
+| ?- instantiates_class(water_jug, state_space).
 
-| ?- instantiates_class(Space, state_space, public).</pre>
-</blockquote>
+| ?- instantiates_class(Space, state_space, public).
+</pre>
 
 <div class="navbottom">
 <a href="imports_category2_3.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="specializes_class2_3.html">next</a>

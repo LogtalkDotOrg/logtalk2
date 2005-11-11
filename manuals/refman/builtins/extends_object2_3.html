@@ -25,22 +25,22 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>extends_object(Prototype, Parent)
+<pre>
+extends_object(Prototype, Parent)
 
-extends_object(Prototype, Parent, Scope)</pre>
+extends_object(Prototype, Parent, Scope)
+</pre>
 <p>
 Enumerates, by backtracking, all pairs of objects such that the first one extends the second. The relation scope is represented by the atoms <code>public</code>, <code>protected</code>, and <code>private</code>.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>extends_object(?object_identifier, ?object_identifier)
+<pre>
+extends_object(?object_identifier, ?object_identifier)
 
-extends_object(?object_identifier, ?object_identifier, ?scope)</pre>
-</blockquote>
+extends_object(?object_identifier, ?object_identifier, ?scope)
+</pre>
 
 <h4>Errors</h4>
 
@@ -57,11 +57,11 @@ extends_object(?object_identifier, ?object_identifier, ?scope)</pre>
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>| ?- extends_object(Object, state_space).
+<pre>
+| ?- extends_object(Object, state_space).
 
-| ?- extends_object(Object, list, public).</pre>
-</blockquote>
+| ?- extends_object(Object, list, public).
+</pre>
 
 <div class="navbottom">
 <a href="../index.html#builtins">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="extends_protocol2_3.html">next</a>

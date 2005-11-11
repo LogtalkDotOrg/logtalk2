@@ -25,18 +25,18 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>forall(Generator, Test)</pre>
+<pre>
+forall(Generator, Test)
+</pre>
 <p>
-	This predicate is true if, for all solutions of Generator, Test is true (some Prolog compilers already define this or a similar predicate).
+This predicate is true if, for all solutions of Generator, Test is true (some Prolog compilers already define this or a similar predicate).
 </p>
-</blockquote>
  
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>forall(+callable, +callable)</pre>
-</blockquote>
+<pre>
+forall(+callable, +callable)
+</pre>
 
 <h4>Errors</h4>
 
@@ -51,12 +51,12 @@
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>| ?- forall(member(X, [1, 2, 3]), write(X)).
+<pre>
+| ?- forall(member(X, [1, 2, 3]), write(X)).
 
 123
-yes</pre>
-</blockquote>
+yes
+</pre>
 
 <div class="navbottom">
 <a href="../index.html#builtins">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="retractall1.html">next</a>

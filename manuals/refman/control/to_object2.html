@@ -25,8 +25,8 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>Object::Predicate
+<pre>
+Object::Predicate
 
 (Object1, Object2, ...)::Predicate
 
@@ -34,17 +34,17 @@
 
 Object::(Predicate1, Predicate2, ...)
 
-Object::(Predicate1; Predicate2; ...)</pre>
+Object::(Predicate1; Predicate2; ...)
+</pre>
 <p>
 Sends a message to an object. The message argument must match a public predicate of the receiver object. We can also send the same message to a set of objects or a set of messages to the same object. The "<code>,</code>" and "<code>;</code>" in the list have the usual Prolog meaning.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>+receivers::+messages</pre>
-</blockquote>
+<pre>
++receivers::+messages
+</pre>
 
 <h4>Errors</h4>
 
@@ -65,15 +65,14 @@ Sends a message to an object. The message argument must match a public predicate
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>| ?- list::member(X, [1, 2, 3]).
+<pre>
+| ?- list::member(X, [1, 2, 3]).
 
 X = 1 ;
 X = 2 ;
 X = 3
 yes
 </pre>
-</blockquote>
 
 <div class="navbottom">
 <a href="../index.html#constructs">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="to_self1.html">next</a>

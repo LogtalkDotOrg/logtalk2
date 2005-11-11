@@ -25,10 +25,11 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>specializes_class(Class, Superclass)
+<pre>
+specializes_class(Class, Superclass)
 
-specializes_class(Class, Superclass, Scope)</pre>
+specializes_class(Class, Superclass, Scope)
+</pre>
 <p>
 Enumerates, by backtracking, all pairs of objects such that the first one specializes the second. The relation scope is represented by the atoms <code>public</code>, <code>protected</code>, and <code>private</code>.
 </p>
@@ -36,11 +37,11 @@ Enumerates, by backtracking, all pairs of objects such that the first one specia
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>specializes_class(?object_identifier, ?object_identifier)
+<pre>
+specializes_class(?object_identifier, ?object_identifier)
 
-specializes_class(?object_identifier, ?object_identifier, ?scope)</pre>
-</blockquote>
+specializes_class(?object_identifier, ?object_identifier, ?scope)
+</pre>
 
 <h4>Errors</h4>
 
@@ -57,11 +58,11 @@ specializes_class(?object_identifier, ?object_identifier, ?scope)</pre>
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>| ?- specializes_class(Subclass, state_space).
+<pre>
+| ?- specializes_class(Subclass, state_space).
 
-| ?- specializes_class(Subclass, state_space, public).</pre>
-</blockquote>
+| ?- specializes_class(Subclass, state_space, public).
+</pre>
 
 <div class="navbottom">
 <a href="instantiates_class2_3.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="../index.html#builtins">next</a>

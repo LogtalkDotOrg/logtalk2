@@ -82,7 +82,15 @@ a:hover {
 	position: relative;
 }
 
-code, pre {
+code {
 	color: maroon;
 	font-family: courier, monospace;
+	font-size: 9pt;
+}
+
+pre {
+	color: maroon;
+	font-family: courier, monospace;
+	font-size: 9pt;
+	padding: 6pt 24pt 6pt 24pt;
 }

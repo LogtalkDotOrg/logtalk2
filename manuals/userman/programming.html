@@ -46,24 +46,24 @@ Logtalk source files may contain arbitrary Prolog directives and clauses interle
 Most examples directories contain a Logtalk utility file that can be used to load all included source files. These loader utility files are usually named <code>loader.lgt</code> or contain the word "loader" in their name. Loader files are compiled and loaded like any ordinary Logtalk source file. For an example loader file named <code>loader.lgt</code> we would type:
 </p>
 <pre>
-    | ?- logtalk_load(loader). 
+| ?- logtalk_load(loader). 
 </pre>
 <p>
 Usually these files contain a call to the Logtalk built-in predicates <a title="Consult reference manual" href="../refman/builtins/logtalk_load1.html"><code>logtalk_load/1</code></a> or <a title="Consult reference manual" href="../refman/builtins/logtalk_load2.html"><code>logtalk_load/2</code></a>, wrapped inside an <code>initialization/1</code> directive. For instance, if your code is split in three Logtalk source files named <code>source1.lgt</code>, <code>source2.lgt</code>, and <code>source3.lgt</code>, then the contents of your loader file could be:
 </p>
 <pre>
-    :- initialization(
-        logtalk_load([
-            source1, source2, source3])). 
+:- initialization(
+    logtalk_load([
+        source1, source2, source3])). 
 </pre>
 <p>
 Another example of directives that are often used in a loader file would be <code>op/3</code> directives declaring global operators needed by your application. Loader files are also often used for setting compiler options for the source files (this is useful even when you only have a single source file if you always load it with using the same set of compiler options). For example:
 </p>
 <pre>
-    :- initialization(
-        logtalk_load(
-            [source1, source2, source3],
-            [underscore_vars(dont_care), portability(warning), xmlspec(xsd)])). 
+:- initialization(
+    logtalk_load(
+        [source1, source2, source3],
+        [underscore_vars(dont_care), portability(warning), xmlspec(xsd)])). 
 </pre>
 <p>
 To take the best advantage of loader files, assert a clause to the dynamic predicate <code>logtalk_library_path/2</code> for the directory containing your source files, as explained in the next section.
@@ -75,21 +75,21 @@ To take the best advantage of loader files, assert a clause to the dynamic predi
 Logtalk defines a <em>library</em> simply as a directory containing source files. Library locations can be specified by asserting clauses to the dynamic predicate <a title="Consult reference manual" href="../refman/builtins/logtalk_library_path2.html"><code>logtalk_library_path/2</code></a>. For example:
 </p>
 <pre>
-    | ?- assertz(logtalk_library_path(shapes, '$LOGTALKUSER/examples/shapes/')). 
+| ?- assertz(logtalk_library_path(shapes, '$LOGTALKUSER/examples/shapes/')). 
 </pre>
 <p>
 The first argument of the predicate is used as an alias for the path on the second argument. Library aliases may also be used on the second argument. For example:
 </p>
 <pre>
-    | ?- assertz(logtalk_library_path(lgtuser, '$LOGTALKUSER/')),
-         assertz(logtalk_library_path(examples, lgtuser('examples/'))),
-         assertz(logtalk_library_path(viewpoints, examples('viewpoints/'))).
+| ?- assertz(logtalk_library_path(lgtuser, '$LOGTALKUSER/')),
+     assertz(logtalk_library_path(examples, lgtuser('examples/'))),
+     assertz(logtalk_library_path(viewpoints, examples('viewpoints/'))).
 </pre>
 <p>
 This allows us to load a library source file without the need to first change the current working directory to the library directory and then back to the original directory. For example, in order to load a <code>loader.lgt</code> file, contained in a library named <code>shapes</code>, we just need to type:
 </p>
 <pre>
-    | ?- logtalk_load(viewpoints(loader)). 
+| ?- logtalk_load(viewpoints(loader)). 
 </pre>
 <p>
 The best way to take advantage of this feature is to load at startup a source file containing an <code>initialization/1</code> directive which asserts all the <code>logtalk_library_path/2</code> clauses needed for all available libraries. This allows us to load library source files or entire libraries without worrying about libraries paths, improving code portability. The directory paths on the second argument must always end with the  path directory separator character.

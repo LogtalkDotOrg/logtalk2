@@ -41,10 +41,10 @@ Logtalk supports two documentation directives for providing arbitrary user-defin
 Arbitrary user-defined entity information can be represented using the <a title="Consult reference manual" href="../refman/directives/info1.html"><code>info/1</code></a> directive:
 </p>
 <pre>
-    :- info([
-        Key1 is Value1,
-        Key2 is Value2,
-        ...]).
+:- info([
+    Key1 is Value1,
+    Key2 is Value2,
+    ...]).
 </pre>
 <p>
 In this pattern, keys should be atoms and values should be ground terms. The following keys are pre-defined and may be processed specially by Logtalk:
@@ -71,12 +71,12 @@ In this pattern, keys should be atoms and values should be ground terms. The fol
 For example:
 </p>
 <pre>
-    :- info([
-        version is 2.1,
-        author is 'Paulo Moura',
-        date is 2000/4/20,
-        comment is 'Building representation.',
-        diagram is 'UML Class Diagram #312']).
+:- info([
+    version is 2.1,
+    author is 'Paulo Moura',
+    date is 2000/4/20,
+    comment is 'Building representation.',
+    diagram is 'UML Class Diagram #312']).
 </pre>
 <p>
 Use only the keywords that make sense for your application and remember that you are free to invent your own keywords.
@@ -89,10 +89,10 @@ Arbitrary user-defined predicate information can be represented using the
 <a title="Consult reference manual" href="../refman/directives/info2.html"><code>info/2</code></a> directive:
 </p>
 <pre>
-    :- info(Functor/Arity, [
-        Key1 is Value1,
-        Key2 is Value2,
-        ...]).
+:- info(Functor/Arity, [
+    Key1 is Value1,
+    Key2 is Value2,
+    ...]).
 </pre>
 <p>
 Keys should be atoms and values should be ground terms. The following keys are pre-defined and may be processed specially by Logtalk:
@@ -119,10 +119,10 @@ Keys should be atoms and values should be ground terms. The following keys are p
 For example:
 </p>
 <pre>
-    :- info(color/1, [
-        comment is 'Table of defined colors.',
-        argnames is ['Color'],
-        constraint is 'Only a maximum of four visible colors allowed.']).
+:- info(color/1, [
+    comment is 'Table of defined colors.',
+    argnames is ['Color'],
+    constraint is 'Only a maximum of four visible colors allowed.']).
 </pre>
 <p>
 Use only the keywords that make sense for your application and remember that you are free to invent your own keywords.

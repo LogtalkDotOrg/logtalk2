@@ -25,35 +25,35 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>private(Functor/Arity)
+<pre>
+private(Functor/Arity)
 private(Functor1/Arity1, Functor2/Arity2, ...)
 private([Functor1/Arity1, Functor2/Arity2, ...])
 
 private(Functor//Arity)
 private(Functor1//Arity1, Functor2//Arity2, ...)
-private([Functor1//Arity1, Functor2//Arity2, ...])</pre>
+private([Functor1//Arity1, Functor2//Arity2, ...])
+</pre>
 <p>
 Declares private predicates and private grammar rule non-terminals. A private predicate can only be called from the object containing the private directive. A private non-terminal can only be used in a call of the <a title="Consult reference manual" href="../methods/phrase2.html"><code>phrase/2</code></a> and <a title="Consult reference manual" href="../methods/phrase3.html"><code>phrase/3</code></a> methods from the object containing the private directive.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>private(+predicate_indicator_term)
-private(+non_terminal_indicator_term)</pre>
-</blockquote>
+<pre>
+private(+predicate_indicator_term)
+private(+non_terminal_indicator_term)
+</pre>
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>:- private(counter/1).
+<pre>
+:- private(counter/1).
 
 :- private(init/1, free/1).
 
-:- private([data/3, key/1, keys/1]).</pre>
-</blockquote>
+:- private([data/3, key/1, keys/1]).
+</pre>
 
 <div class="navbottom">
 <a href="op3.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="protected1.html">next</a>

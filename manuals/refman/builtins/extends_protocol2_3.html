@@ -25,22 +25,22 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>extends_protocol(Protocol1, Protocol2)
+<pre>
+extends_protocol(Protocol1, Protocol2)
 
-extends_protocol(Protocol1, Protocol2, Scope)</pre>
+extends_protocol(Protocol1, Protocol2, Scope)
+</pre>
 <p>
 Enumerates, by backtracking, all pairs of protocols such that the first one extends the second. The relation scope is represented by the atoms <code>public</code>, <code>protected</code>, and <code>private</code>.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>extends_protocol(?protocol_identifier, ?protocol_identifier)
+<pre>
+extends_protocol(?protocol_identifier, ?protocol_identifier)
 
-extends_protocol(?protocol_identifier, ?protocol_identifier, ?scope)</pre>
-</blockquote>
+extends_protocol(?protocol_identifier, ?protocol_identifier, ?scope)
+</pre>
 
 <h4>Errors</h4>
 
@@ -57,11 +57,11 @@ extends_protocol(?protocol_identifier, ?protocol_identifier, ?scope)</pre>
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>| ?- extends_protocol(listp, Protocol).
+<pre>
+| ?- extends_protocol(listp, Protocol).
 
-| ?- extends_protocol(Protocol, termp, private).</pre>
-</blockquote>
+| ?- extends_protocol(Protocol, termp, private).
+</pre>
 
 <div class="navbottom">
 <a href="extends_object2_3.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="implements_protocol2_3.html">next</a>

@@ -25,37 +25,36 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>protected(Functor/Arity)
+<pre>
+protected(Functor/Arity)
 protected(Functor1/Arity1, Functor2/Arity2, ...)
 protected([Functor1/Arity1, Functor2/Arity2, ...])
 
 protected(Functor//Arity)
 protected(Functor1//Arity1, Functor2//Arity2, ...)
-protected([Functor1//Arity1, Functor2//Arity2, ...])</pre>
+protected([Functor1//Arity1, Functor2//Arity2, ...])
+</pre>
 <p>
 Declares protected predicates and protected grammar rule non-terminals. A protected predicate can only be called from the object containing the directive or from an object that inherits the directive. A protected non-terminal can only be used as an argument in a <a title="Consult reference manual" href="../methods/phrase2.html"><code>phrase/2</code></a> and <a title="Consult reference manual" href="../methods/phrase3.html"><code>phrase/3</code></a> messages sent from the object containing the directive or from an object that inherits the directive.
-
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>protected(+predicate_indicator_term)
-protected(+non_terminal_indicator_term)</pre>
-</blockquote>
+<pre>
+protected(+predicate_indicator_term)
+protected(+non_terminal_indicator_term)
+</pre>
 
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>:- protected(init/1).
+<pre>
+:- protected(init/1).
 
 :- protected(print/2, convert/4).
 
-:- protected([load/1, save/3]).</pre>
-</blockquote>
+:- protected([load/1, save/3]).
+</pre>
 
 <div class="navbottom">
 <a href="private1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="public1.html">next</a>

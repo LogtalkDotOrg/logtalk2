@@ -25,28 +25,28 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>op(Precedence, Associativity, Operator)</pre>
-	<p>
-	Declares operators. Operators declared inside objects and categories have local scope. Global operators can be declared inside a source file by writing the respective directives before the entity opening directives.
-	</p>
-</blockquote>
+<pre>
+op(Precedence, Associativity, Operator)
+</pre>
+<p>
+Declares operators. Operators declared inside objects and categories have local scope. Global operators can be declared inside a source file by writing the respective directives before the entity opening directives.
+</p>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>op(+integer, +associativity, +atom_or_atom_list)</pre>
-</blockquote>
+<pre>
+op(+integer, +associativity, +atom_or_atom_list)
+</pre>
 
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>:- op(950, fx, +).
+<pre>
+:- op(950, fx, +).
 :- op(950, fx, ?).
 :- op(950, fx, @).
-:- op(950, fx, -).</pre>
-</blockquote>
+:- op(950, fx, -).
+</pre>
 
 <div class="navbottom">
 <a href="mode2.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="private1.html">next</a>

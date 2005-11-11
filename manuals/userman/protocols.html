@@ -38,18 +38,18 @@ Protocol names must be atoms. Objects, categories and protocols share the same n
 Protocol directives are textually encapsulated by using two Logtalk directives: <a title="Consult reference manual" href="../refman/directives/protocol1_2.html"><code>protocol/1-2</code></a> and <a title="Consult reference manual" href="../refman/directives/end_protocol0.html"><code>end_protocol/0</code></a>. The most simple protocol will be one that is self-contained, not depending on any other Logtalk entity:
 </p>
 <pre>
-    :- protocol(Protocol).
-        ...
-    :- end_protocol.
+:- protocol(Protocol).
+    ...
+:- end_protocol.
 </pre>
 <p>
 If a protocol extends one or more protocols, then the opening directive will be:
 </p>
 <pre>
-    :- protocol(Protocol,
-        extends(OtherProtocol)).
-        ...
-    :- end_protocol.
+:- protocol(Protocol,
+    extends(OtherProtocol)).
+    ...
+:- end_protocol.
 </pre>
 
 <h2>Finding defined protocols<a name="finding"></a></h2>
@@ -58,7 +58,7 @@ If a protocol extends one or more protocols, then the opening directive will be:
 We can find, by backtracking, all defined protocols by using the <a title="Consult reference manual" href="../refman/builtins/current_protocol1.html"><code>current_protocol/1</code></a> built-in predicate with an uninstantiated variable:
 </p>
 <pre>
-    | ?- current_protocol(Protocol).
+| ?- current_protocol(Protocol).
 </pre>
 <p>
 This predicate can also be used to test if a protocol is defined by calling it with a valid protocol identifier (an atom).
@@ -70,7 +70,7 @@ This predicate can also be used to test if a protocol is defined by calling it w
 We can create a new (dynamic) protocol in runtime by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/create_protocol3.html"><code>create_protocol/3</code></a>:
 </p>
 <pre>
-    | ?- create_protocol(Protocol, Relations, Directives).
+| ?- create_protocol(Protocol, Relations, Directives).
 </pre>
 <p>
 The first argument, the name of the new protocol (a Prolog atom), should not match an existing entity name. The remaining two arguments correspond to the relations described in the opening protocol directive and to the protocol  directives.
@@ -79,20 +79,20 @@ The first argument, the name of the new protocol (a Prolog atom), should not mat
 For instance, the call:
 </p>
 <pre>
-    | ?- create_protocol(ppp, [extends(qqq)], [public(foo/1, bar/1)]).
+| ?- create_protocol(ppp, [extends(qqq)], [public(foo/1, bar/1)]).
 </pre>
 <p>
 is equivalent to compiling and loading the protocol:
 </p>
 <pre>
-    :- protocol(ppp,
-        extends(qqq)).
+:- protocol(ppp,
+    extends(qqq)).
 
-        :- dynamic.
+    :- dynamic.
 
-        :- public(foo/1, bar/1).
+    :- public(foo/1, bar/1).
 
-    :- end_protocol.
+:- end_protocol.
 </pre>
 <p>
 If we need to create a lot of (dynamic) protocols at runtime, then is best to define a metaclass or a prototype with a predicate that will call this built-in predicate in order to provide more sophisticated behavior.
@@ -104,7 +104,7 @@ If we need to create a lot of (dynamic) protocols at runtime, then is best to de
 Dynamic protocols can be abolished using the <a title="Consult reference manual" href="../refman/builtins/abolish_protocol1.html"><code>abolish_protocol/1</code></a> built-in predicate:
 </p>
 <pre>
-    | ?- abolish_protocol(Protocol).
+| ?- abolish_protocol(Protocol).
 </pre>
 <p>
 The argument must be an identifier of a defined dynamic protocol, otherwise an error will be thrown.
@@ -122,7 +122,7 @@ Protocol directives are used to set initialization goals and protocol properties
 We can define a goal to be executed as soon as a protocol is (compiled and) loaded to memory with the <a title="Consult reference manual" href="../refman/directives/initialization1.html"><code>initialization/1</code></a> directive:
 </p>
 <pre>
-    :- initialization(Goal).
+:- initialization(Goal).
 </pre>
 <p>
 The argument can be any valid Prolog or Logtalk goal, including a message sending call.
@@ -134,7 +134,7 @@ The argument can be any valid Prolog or Logtalk goal, including a message sendin
 As usually happens with Prolog code, a protocol can be either static or dynamic. A protocol created during the execution of a program is always dynamic. A protocol defined in a file can be either dynamic or static. Dynamic protocols are declared by using the <a title="Consult reference manual" href="../refman/directives/dynamic0.html"><code>dynamic/0</code></a> directive in the protocol source code:
 </p>
 <pre>
-    :- dynamic.
+:- dynamic.
 </pre>
 <p>
 Let us just remember that the loss of performance of the dynamic code is usually of considerable importance to the static code. We should only use dynamic protocols when these need to be abolished during program execution.
@@ -146,7 +146,7 @@ Let us just remember that the loss of performance of the dynamic code is usually
 A protocol can be documented with arbitrary user-defined information by using the <a title="Consult reference manual" href="../refman/directives/info1.html"><code>info/1</code></a> directive:
 </p>
 <pre>
-    :- info(List).
+:- info(List).
 </pre>
 <p>
 See the <a href="documenting.html">Documenting Logtalk programs</a> session for details.
@@ -161,25 +161,25 @@ Logtalk provides two sets of built-in predicates that enable us to query the sys
 The built-in predicates <a title="Consult reference manual" href="../refman/builtins/extends_protocol2_3.html"><code>extends_protocol/2</code></a> and <a title="Consult reference manual" href="../refman/builtins/extends_protocol2_3.html"><code>extends_protocol/3</code></a> return all pairs of protocols so that the first one extends the second:
 </p>
 <pre>
-    | ?- extends_protocol(Protocol1, Protocol2).
+| ?- extends_protocol(Protocol1, Protocol2).
 </pre>
 <p>
 or, if we want to know the extension scope:
 </p>
 <pre>
-    | ?- extends_protocol(Protocol1, Protocol2, Scope).
+| ?- extends_protocol(Protocol1, Protocol2, Scope).
 </pre>
 <p>
 To find which objects or categories implement which protocols we can call the <a title="Consult reference manual" href="../refman/builtins/implements_protocol2_3.html"><code>implements_protocol/2</code></a> or <a title="Consult reference manual" href="../refman/builtins/implements_protocol2_3.html"><code>implements_protocol/2</code></a> built-in predicates:
 </p>
 <pre>
-    | ?- implements_protocol(ObjectOrCategory, Protocol).
+| ?- implements_protocol(ObjectOrCategory, Protocol).
 </pre>
 <p>
 or, if we want to know the implementation scope:
 </p>
 <pre>
-    | ?- implements_protocol(ObjectOrCategory, Protocol, Scope).
+| ?- implements_protocol(ObjectOrCategory, Protocol, Scope).
 </pre>
 <p>
 Note that, if we use an uninstantiated variable for the first argument, we will need to use the <a title="Consult reference manual" href="../refman/builtins/current_object1.html"><code>current_object/1</code></a> or <a title="Consult reference manual" href="../refman/builtins/current_category1.html"><code>current_category/1</code></a> built-in predicates to identify the kind of entity returned.
@@ -191,7 +191,7 @@ Note that, if we use an uninstantiated variable for the first argument, we will 
 We can find the properties of defined protocols by calling the <a title="Consult reference manual" href="../refman/builtins/protocol_property2.html"><code>protocol_property/2</code></a> built-in predicate:
 </p>
 <pre>
-    | ?- protocol_property(Protocol, Property).
+| ?- protocol_property(Protocol, Property).
 </pre>
 <p>
 A protocol may have the property <code>static</code>, <code>dynamic</code>, or <code>built_in</code>. Dynamic protocols can be abolished in runtime by calling the <a title="Consult reference manual" href="../refman/builtins/abolish_protocol1.html"><code>abolish_protocol/1</code></a> built-in predicate.
@@ -203,46 +203,46 @@ A protocol may have the property <code>static</code>, <code>dynamic</code>, or <
 Any number of objects or categories can implement a protocol. The syntax is very simple:
 </p>
 <pre>
-    :- object(Object,
-        implements(Protocol)).
-        ...
-    :- end_object.
+:- object(Object,
+    implements(Protocol)).
+    ...
+:- end_object.
 </pre>
 <p>
 or, in the case of a category:
 </p>
 <pre>
-    :- category(Object,
-        implements(Protocol)).
-        ...
-    :- end_category.
+:- category(Object,
+    implements(Protocol)).
+    ...
+:- end_category.
 </pre>
 <p>
 To make all public predicates declared via an implemented protocol protected or to make all public and protected predicates private we prefix the protocol's name with the corresponding keyword. For instance:
 </p>
 <pre>
-    :- object(Object,
-        implements(private::Protocol)).
-        ...
-    :- end_object.
+:- object(Object,
+    implements(private::Protocol)).
+    ...
+:- end_object.
 </pre>
 <p>
 or:
 </p>
 <pre>
-    :- object(Object,
-        implements(protected::Protocol)).
-        ...
-    :- end_object.
+:- object(Object,
+    implements(protected::Protocol)).
+    ...
+:- end_object.
 </pre>
 <p>
 Omitting the scope keyword is equivalent to writing:
 </p>
 <pre>
-    :- object(Object,
-        implements(public::Protocol)).
-        ...
-    :- end_object.
+:- object(Object,
+    implements(public::Protocol)).
+    ...
+:- end_object.
 </pre>
 <p>
 The same rules applies to protocols implemented by categories.

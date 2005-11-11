@@ -25,18 +25,18 @@
 
 <h4>Description</h4>
 
-<blockquote>
-<pre>before(Object, Message, Sender)</pre>
+<pre>
+before(Object, Message, Sender)
+</pre>
 <p>
 	This is a pre-declared but user-defined public method for handling <code>before</code> events.
 </p>
-</blockquote>
 
 <h4>Template and modes</h4>
 
-<blockquote>
-<pre>before(?object, ?term, ?object)</pre>
-</blockquote>
+<pre>
+before(?object, ?term, ?object)
+</pre>
 
 <h4>Errors</h4>
 
@@ -48,11 +48,11 @@
 
 <h4>Examples</h4>
 
-<blockquote>
-<pre>before(Object, Message, Sender) :-
+<pre>
+before(Object, Message, Sender) :-
     writeq(Object), write('::'), writeq(Message),
-    write(' from '), writeq(Sender), nl.</pre>
-</blockquote>
+    write(' from '), writeq(Sender), nl.
+</pre>
 
 <div class="navbottom">
 <a href="../index.html#methods">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="after3.html">next</a>

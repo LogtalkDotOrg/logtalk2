@@ -1,13 +1,13 @@
 @page :left {
-	margin-left: 3cm;
-	margin-right: 2cm;
+	margin-left: 2cm;
+	margin-right: 3cm;
 	margin-top: 2cm;
 	margin-bottom: 2cm;
 }
 
 @page :right {
-	margin-left: 2cm;
-	margin-right: 3cm;
+	margin-left: 3cm;
+	margin-right: 2cm;
 	margin-top: 2cm;
 	margin-bottom: 2cm;
 }
@@ -106,9 +106,19 @@ a:hover {
 	content: counter(page, decimal);
 }
 
-code, pre {
+code {
 	color: maroon;
+	font-size: 9pt;
 	font-family: courier, monospace;
-	background-color: gray;
-	border: 1mm;
+}
+
+pre {
+	color: maroon;
+	font-size: 9pt;
+	font-family: courier, monospace;
+	background-color: #eeeeee;
+	border-color: black;
+	border-width: 1pt;
+	border-style: double;
+	padding: 6pt;
 }
