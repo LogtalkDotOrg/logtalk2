@@ -56,7 +56,6 @@ create_index_file()
 	echo "<h1>"$index_title"</h1>" >> "$index_file"
 	echo "<ul>" >> "$index_file"
 
-	shopt -s nullglob
 	for file in *.xml; do
 		name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
 		entity=${name%_*}
@@ -141,12 +140,18 @@ else
 		cp "$LOGTALKUSER"/xml/lgtxml.xsl .
 	fi
 
-	echo
-	echo "generating index file..."
-
-	create_index_file
-	echo "index file generated"
-	echo
+	if [[ `(ls *.xml | wc -l) 2> /dev/null` -gt 0 ]]
+	then
+		echo
+		echo "generating index file..."
+		create_index_file
+		echo "index file generated"
+		echo
+	else
+		echo
+		echo "No XML files exist in the current directory!"
+		echo
+	fi
 
 	exit 0
 

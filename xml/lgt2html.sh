@@ -175,28 +175,31 @@ else
 		cp "$LOGTALKUSER"/xml/logtalk.css "$directory"
 	fi
 
-	echo
-	echo "converting XML files..."
-
-	shopt -s nullglob
-	for file in *.xml; do
-		echo "  converting $file"
-		name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
-		case "$processor" in
-			xsltproc)	eval xsltproc -o \"$directory\"/\"$name.html\" \"$xslt\" \"$file\";;
-			xalan)		eval xalan -o \"$directory\"/\"$name.html\" \"$file\" \"$xslt\";;
-			sabcmd)		eval sabcmd \"$xslt\" \"$file\" \"$directory\"/\"$name.html\";;
-		esac
-	done
-
-	echo "conversion done"
-	echo
-
-	echo "generating index file..."
-	index_file="$directory/$index_file"
-	create_index_file
-	echo "index file generated"
-	echo
+	if [[ `(ls *.xml | wc -l) 2> /dev/null` -gt 0 ]]
+	then
+		echo
+		echo "converting XML files..."
+		for file in *.xml; do
+			echo "  converting $file"
+			name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
+			case "$processor" in
+				xsltproc)	eval xsltproc -o \"$directory\"/\"$name.html\" \"$xslt\" \"$file\";;
+				xalan)		eval xalan -o \"$directory\"/\"$name.html\" \"$file\" \"$xslt\";;
+				sabcmd)		eval sabcmd \"$xslt\" \"$file\" \"$directory\"/\"$name.html\";;
+			esac
+		done
+		echo "conversion done"
+		echo
+		echo "generating index file..."
+		index_file="$directory/$index_file"
+		create_index_file
+		echo "index file generated"
+		echo
+	else
+		echo
+		echo "No XML files exist in the current directory!"
+		echo
+	fi
 
 	exit 0
 

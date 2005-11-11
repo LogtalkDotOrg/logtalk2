@@ -106,21 +106,25 @@ else
 		cp "$LOGTALKHOME"/xml/logtalk.xsd .
 	fi
 
-	echo
-	echo "converting XML files to PDF..."
-
-	shopt -s nullglob
-	for file in *.xml; do
-		echo "  converting $file"
-		name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
-		case $processor in
-			xinc)	eval xinc -xml \"$file\" -xsl \"$xsl\" -pdf \"$directory\"/\"$name.pdf\";;
-			*)		eval $processor -q -xml \"$file\" -xsl \"$xsl\" -pdf \"$directory\"/\"$name.pdf\";;
-		esac
-	done
-
-	echo "conversion done"
-	echo
+	if [[ `(ls *.xml | wc -l) 2> /dev/null` -gt 0 ]]
+	then
+		echo
+		echo "converting XML files to PDF..."
+		for file in *.xml; do
+			echo "  converting $file"
+			name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
+			case $processor in
+				xinc)	eval xinc -xml \"$file\" -xsl \"$xsl\" -pdf \"$directory\"/\"$name.pdf\";;
+				*)		eval $processor -q -xml \"$file\" -xsl \"$xsl\" -pdf \"$directory\"/\"$name.pdf\";;
+			esac
+		done
+		echo "conversion done"
+		echo
+	else
+		echo
+		echo "No XML files exist in the current directory!"
+		echo
+	fi
 
 	rm -f logtalk.dtd
 	rm -f logtalk.xsd
