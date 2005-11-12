@@ -16,8 +16,9 @@
 
 <body>
 
-<div class="navtop">
-<a href="../index.html">contents</a> &gt; <a href="index.html">user manual</a>
+<div class="header">
+	<span class="navtop"><a href="../index.html">contents</a> &gt; <a href="index.html">user manual</a></span>
+	<span class="title">Logtalk user manual: installing Logtalk</span><span class="page"/>
 </div>
 
 <h1>Installing Logtalk</h1>
@@ -68,9 +69,7 @@ The Macintosh version is included in the file <code>lgt2xxx.sit</code>, a StuffI
 <p>
 The MacOS X/BSD/Linux/Unix version is included in the file <code>lgt2xxx.tgz</code>. In order to decompress and install the system you may use the following commands:
 </p>
-<pre>
-% tar -zxvf lgt2xxx.tgz
-</pre>
+<pre>% tar -zxvf lgt2xxx.tgz</pre>
 <p>
 This will create a sub-directory named <code>lgt2xxx</code> in your current directory.
 </p>
@@ -80,9 +79,7 @@ This will create a sub-directory named <code>lgt2xxx</code> in your current dire
 <p>
 The OS/2 and Windows 2000/XP version is included in the file <code>lgt2xxx.zip</code>. The file can be decompressed using an utility like <code>unzip</code>:
 </p>
-<pre>
-unzip lgt2xxx.zip
-</pre>
+<pre>unzip lgt2xxx.zip</pre>
 
 <h4>Other operating systems</h4>
 
@@ -206,16 +203,14 @@ Logtalk 2.x contains new implementations of some of the examples provided with p
 Logtalk source files are text files containing entity definitions (objects, categories, or protocols). The extension <code>.lgt</code> is normally used. The Logtalk preprocessor compiles these files to plain Prolog, replacing the <code>.lgt</code> extension with  <code>.pl</code> (the default Prolog extension). If your Prolog compiler expects the Prolog source filenames to end with a specific, different extension, you can set it in the corresponding configuration file.
 </p>
 
-<div class="navbottom">
-<a href="documenting.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="running.html">next</a>
-</div>
-
-<div class="copyright">
-Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://www.logtalk.org">Logtalk.org</a>
-</div>
-
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: October 27, 2005</span></p>
+	<div class="navbottom"><a href="documenting.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="running.html">next</a></div>
+	<div class="copyright">Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://www.logtalk.org">Logtalk.org</a></div>
+	<div class="footnote">
+		<span class="validators"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span>
+		<span class="date">Last updated on: November 12, 2005</span>
+	</div>
 </div>
+
 </body>
 </html>

@@ -16,8 +16,9 @@
 
 <body>
 
-<div class="navtop">
-<a href="../../index.html">contents</a> &gt; <a href="../index.html">reference manual</a> &gt; <a href="../index.html#directives">directives</a>
+<div class="header">
+	<span class="navtop"><a href="../../index.html">contents</a> &gt; <a href="../index.html">reference manual</a> &gt; <a href="../index.html#directives">directives</a></span>
+	<span class="title">Logtalk predicate directive: discontiguous/1</span><span class="page"/>
 </div>
 
 <h2><code>discontiguous/1</code></h2>
@@ -25,47 +26,39 @@
 
 <h4>Description</h4>
 
-<pre>
-discontiguous(Functor/Arity)
+<pre>discontiguous(Functor/Arity)
 discontiguous(Functor1/Arity1, Functor2/Arity2, ...)
 discontiguous([Functor1/Arity1, Functor2/Arity2, ...])
 
 discontiguous(Functor//Arity)
 discontiguous(Functor1//Arity1, Functor2//Arity2, ...)
-discontiguous([Functor1//Arity1, Functor2//Arity2, ...])
-</pre>
+discontiguous([Functor1//Arity1, Functor2//Arity2, ...])</pre>
 <p>
 Declares discontiguous predicates and discontiguous grammar rule non-terminals. The use of this directive should be avoided as not all Prolog compilers support discontiguous predicates.
 </p>
 
 <h4>Template and modes</h4>
 
-<pre>
-discontiguous(+predicate_indicator_term)
-discontiguous(+non_terminal_indicator_term)
-</pre>
+<pre>discontiguous(+predicate_indicator_term)
+discontiguous(+non_terminal_indicator_term)</pre>
 
 
 <h4>Examples</h4>
 
-<pre>
-:- discontiguous(counter/1).
+<pre>:- discontiguous(counter/1).
 
 :- discontiguous(lives/2, works/2).
 
-:- discontiguous([db/4, key/2, file/3]).
-</pre>
-
-<div class="navbottom">
-<a href="uses1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="dynamic1.html">next</a>
-</div>
-
-<div class="copyright">
-Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://www.logtalk.org">Logtalk.org</a>
-</div>
+:- discontiguous([db/4, key/2, file/3]).</pre>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: August 5, 2005</span></p>
+	<div class="navbottom"><a href="uses1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="dynamic1.html">next</a></div>
+	<div class="copyright">Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://www.logtalk.org">Logtalk.org</a></div>
+	<div class="footnote">
+		<span class="validators"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span>
+		<span class="date">Last updated on: November 12, 2005</span>
+	</div>
 </div>
+
 </body>
 </html>

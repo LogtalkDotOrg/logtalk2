@@ -16,8 +16,9 @@
 
 <body>
 
-<div class="navtop">
-<a href="../../index.html">contents</a> &gt; <a href="../index.html">reference manual</a> &gt; <a href="../index.html#builtins">built-in predicates</a>
+<div class="header">
+	<span class="navtop"><a href="../../index.html">contents</a> &gt; <a href="../index.html">reference manual</a> &gt; <a href="../index.html#builtins">built-in predicates</a></span>
+	<span class="title">Logtalk built-in predicate: logtalk_compile/2</span><span class="page"/>
 </div>
 
 <h2><code>logtalk_compile/2</code></h2>
@@ -25,10 +26,8 @@
 
 <h4>Description</h4>
 
-<pre>
-logtalk_compile(File, Flags)
-logtalk_compile(Files, Flags)
-</pre>
+<pre>logtalk_compile(File, Flags)
+logtalk_compile(Files, Flags)</pre>
 <p>
 Compiles to disk a source file or a list of source files using a list of flag values. The Logtalk file name extension (by default, <code>.lgt</code>) must be omitted. Note that the first argument is a source file name or a list of source file names, not file paths. In other words, the files must exist in the current working directory, unless library notation is used.
 </p>
@@ -41,55 +40,47 @@ Note that only the errors related to problems in the predicate arguments are lis
 
 <h4>Template and modes</h4>
 
-<pre>
-logtalk_compile(@source_file_names, @list)
-</pre>
+<pre>logtalk_compile(@source_file_names, @list)</pre>
 
 <h4>Errors</h4>
 
-<blockquote>
-	<dl>
-		<dt>File is a variable:</dt>
-			<dd><code>instantiation_error</code></dd>
-		<dt>Files is a variable or a list with an element which is a variable:</dt>
-			<dd><code>instantiation_error</code></dd>
-		<dt>File, or an element File of the Files list, is neither a variable nor an entity file name nor a library entity file name:</dt>
-			<dd><code>type_error(source_file_name, File)</code></dd>
-		<dt>File, or an element File of the Files list, is a compound term but not a library entity file name:</dt>
-			<dd><code>type_error(library_source_file_name, Entity)</code></dd>
-		<dt>File or an element File of the Files list does not exist in the current working directory or in the specified library directory:</dt>
-			<dd><code>existence_error(file, File)</code></dd>
-		<dt>Entity library does not exist:</dt>
-			<dd><code>existence_error(library, Library)</code></dd>
-		<dt>Flags is a variable:</dt>
-			<dd><code>instantiation_error</code></dd>
-		<dt>Flags is neither a variable nor a proper list:</dt>
-			<dd><code>type_error(list, Flags)</code></dd>
-		<dt>An element Flag of the Flags list is not valid:</dt>
-			<dd><code>type_error(compiler_flag, Flag)</code></dd>
-	</dl>
-</blockquote>
+<dl class="errors">
+	<dt>File is a variable:</dt>
+		<dd><code>instantiation_error</code></dd>
+	<dt>Files is a variable or a list with an element which is a variable:</dt>
+		<dd><code>instantiation_error</code></dd>
+	<dt>File, or an element File of the Files list, is neither a variable nor an entity file name nor a library entity file name:</dt>
+		<dd><code>type_error(source_file_name, File)</code></dd>
+	<dt>File, or an element File of the Files list, is a compound term but not a library entity file name:</dt>
+		<dd><code>type_error(library_source_file_name, Entity)</code></dd>
+	<dt>File or an element File of the Files list does not exist in the current working directory or in the specified library directory:</dt>
+		<dd><code>existence_error(file, File)</code></dd>
+	<dt>Entity library does not exist:</dt>
+		<dd><code>existence_error(library, Library)</code></dd>
+	<dt>Flags is a variable:</dt>
+		<dd><code>instantiation_error</code></dd>
+	<dt>Flags is neither a variable nor a proper list:</dt>
+		<dd><code>type_error(list, Flags)</code></dd>
+	<dt>An element Flag of the Flags list is not valid:</dt>
+		<dd><code>type_error(compiler_flag, Flag)</code></dd>
+</dl>
 
 <h4>Examples</h4>
 
-<pre>
-| ?- logtalk_compile(list, []).
+<pre>| ?- logtalk_compile(list, []).
 
 | ?- logtalk_compile(types(tree), [xmlspec(xsd)]).
 
-| ?- logtalk_compile([listp, list], [xml(off), plredf(warning)]).
-</pre>
-
-<div class="navbottom">
-<a href="logtalk_compile1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="logtalk_load1.html">next</a>
-</div>
-
-<div class="copyright">
-Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://www.logtalk.org">Logtalk.org</a>
-</div>
+| ?- logtalk_compile([listp, list], [xml(off), plredf(warning)]).</pre>
 
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: August 5, 2005</span></p>
+	<div class="navbottom"><a href="logtalk_compile1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="logtalk_load1.html">next</a></div>
+	<div class="copyright">Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://www.logtalk.org">Logtalk.org</a></div>
+	<div class="footnote">
+		<span class="validators"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span>
+		<span class="date">Last updated on: November 12, 2005</span>
+	</div>
 </div>
+
 </body>
 </html>

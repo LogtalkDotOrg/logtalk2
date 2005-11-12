@@ -16,8 +16,9 @@
 
 <body>
 
-<div class="navtop">
-<a href="../index.html">contents</a> &gt; <a href="index.html">tutorial</a>
+<div class="header">
+	<span class="navtop"><a href="../index.html">contents</a> &gt; <a href="index.html">tutorial</a></span>
+	<span class="title">Logtalk tutorial: dynamic object attributes</span><span class="page"/>
 </div>
 
 <h1>Dynamic object attributes</h1>
@@ -48,8 +49,7 @@ For this kind of situation, Logtalk enables the programmer to encapsulate the pr
 <p>
 When defining category predicates, we need to remember that a category can be imported by more than one object. Because of that, the calls to the built-in methods that handle the private dynamic predicate (like <a title="Consult reference manual" href="../refman/methods/assertz1.html"><code>assertz/1</code></a> or <a title="Consult reference manual" href="../refman/methods/retract1.html"><code>retract/1</code></a>) must be made using the <em>message to self</em> control structure, <a title="Consult reference manual" href="../refman/control/to_self1.html"><code>::/1</code></a>. This way, we ensure that when we call one of the attribute predicates on an object, the object own definition of <code>attribute_/2</code> will be used. The predicates definitions are straightforward:
 </p>
-<pre>
-:- category(attributes).
+<pre>:- category(attributes).
 
     :- public(set_attribute/2).
     :- mode(set_attribute(+nonvar, +nonvar), one).
@@ -80,19 +80,16 @@ When defining category predicates, we need to remember that a category can be im
     del_attributes(Attribute, Value):-
         ::retractall(attribute_(Attribute, Value)).
 
-:- end_category.
-</pre>
+:- end_category.</pre>
 <p>
 We have two new directives, <a title="Consult reference manual" href="../refman/directives/category1_3.html"><code>category/1</code></a> and <a title="Consult reference manual" href="../refman/directives/end_category0.html"><code>end_category/0</code></a>, that encapsulate the category code. If needed, we can put the predicates directives inside a protocol that will be implemented by the category:
 </p>
-<pre>
-:- category(attributes,
+<pre>:- category(attributes,
     implements(attributes_protocol)).
 
     ...
 
-:- end_category.
-</pre>
+:- end_category.</pre>
 <p>
 Any protocol can be implemented by either an object, a category, or both.
 </p>
@@ -102,19 +99,16 @@ Any protocol can be implemented by either an object, a category, or both.
 <p>
 We reuse a category's predicates by importing them into an object:
 </p>
-<pre>
-:- object(person,
+<pre>:- object(person,
     imports(attributes)).
 
     ...
 
-:- end_object.
-</pre>
+:- end_object.</pre>
 <p>
 After compiling and loading this object and our category, we can now try queries like:
 </p>
-<pre>
-| ?- person::set_attribute(name, paulo).
+<pre>| ?- person::set_attribute(name, paulo).
 
 yes
 
@@ -126,8 +120,7 @@ yes
 
 Attribute = name, Value = paulo ;
 Attribute = gender, Value = male ;
-no
-</pre>
+no</pre>
 
 <h2>Summary<a name="summary"></a></h2>
 
@@ -141,16 +134,14 @@ no
 	<li>When do we use a category instead of an object? Whenever we have a set of closely related predicates that we want to reuse in several, unrelated, objects. Categories can be interpreted as object building components.</li>
 </ul>
 
-<div class="navbottom">
-<a href="lists.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="reflection.html">next</a>
-</div>
-
-<div class="copyright">
-Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://www.logtalk.org">Logtalk.org</a>
-</div>
-
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: September 17, 2004</span></p>
+	<div class="navbottom"><a href="lists.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="reflection.html">next</a></div>
+	<div class="copyright">Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://www.logtalk.org">Logtalk.org</a></div>
+	<div class="footnote">
+		<span class="validators"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span>
+		<span class="date">Last updated on: November 12, 2005</span>
+	</div>
 </div>
+
 </body>
 </html>

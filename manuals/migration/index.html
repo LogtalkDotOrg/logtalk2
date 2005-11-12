@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<?xml-stylesheet type="text/css" href="../screen.css" media="screen"?>
 <?xml-stylesheet type="text/css" href="../print.css" media="print"?>
+<?xml-stylesheet type="text/css" href="../screen.css" media="screen"?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -10,15 +10,17 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
 	<title>Logtalk: Prolog Integration and Migration Guide</title>
-	<link rel="stylesheet" href="../screen.css" type="text/css" media="screen"/>
 	<link rel="stylesheet" href="../print.css" type="text/css" media="print"/>
+	<link rel="stylesheet" href="../screen.css" type="text/css" media="screen"/>
 </head>
 
 <body>
 
-<div class="navtop">
-<a href="../index.html">contents</a>
+<div class="header">
+	<span class="navtop"><a href="../index.html">contents</a></span>
+	<span class="title">Prolog Integration and Migration Guide</span><span class="page"/>
 </div>
+
 
 <h1>Prolog Integration and Migration Guide</h1>
 
@@ -85,11 +87,9 @@ Note that <code>use_module/1</code> directives are not currently supported. Ther
 <p>
 Changing the extension of a module source file to <code>.lgt</code> in order to be able to compile it as Logtalk source file is not always feasible. An alternative is to create symbolic links or shortcuts for the module files using <code>*.lgt</code> names. In addition, for avoiding conflicts between the Logtalk generated Prolog files and the module files, create the links on a different directory and add a library entry for the directory using the predicate <a title="Consult reference manual" href="../refman/builtins/logtalk_library_path2.html"><code>logtalk_library_path/2</code></a>. For example, on a POSIX operating-system with <code>library/*.pl</code> module source file names, the links can be easily created by running the following bash shell commands:
 </p>
-<pre>
-$ mkdir lgtlib
+<pre>$ mkdir lgtlib
 $ cd lgtlib
-$ for i in ../library/*.pl; do ln -sf $i `basename $i .pl`.lgt; done
-</pre>
+$ for i in ../library/*.pl; do ln -sf $i `basename $i .pl`.lgt; done</pre>
 <p>
 The symbolic links or shortcuts can also be easily created on most operating-systems using the GUI tools. 
 </p>
@@ -100,16 +100,12 @@ The symbolic links or shortcuts can also be easily created on most operating-sys
 <p>
 Most Prolog compilers define proprietary, non-standard directives that may be used in both plain code and module code. Logtalk will generate compilation errors on source files containing these directives unless you first specify how the directives should be handled. Three actions are possible and can be specified, on a per-directive basis, on the Prolog configuration files: simply ignoring the directive, copying the directive as-is to the generated Prolog files, or rewriting the directive and compiling the resulting one. Each action is specified using, respectively, the predicates: <code>'$lgt_ignore_pl_directive'/1</code>, <code>'$lgt_copy_pl_directive'/1</code>, and <code>'$lgt_rewrite_pl_directive'/2</code>. For example, assume that a given Prolog compiler defines a <code>comment/2</code> directive for predicates using the format:
 </p>
-<pre>
-:- comment(foo/2, "Brief description of the predicate").
-</pre>
+<pre>:- comment(foo/2, "Brief description of the predicate").</pre>
 <p>
 We can rewrite this predicate into a Logtalk <code>info/2</code> directive by defining a suitable clause for the <code>'$lgt_rewrite_pl_directive'/2</code> predicate:
 </p>
-<pre>
-'$lgt_rewrite_pl_directive'(comment(F/A, String), info(F/A, [comment is Atom])) :-
-    atom_codes(Atom, String).
-</pre>
+<pre>'$lgt_rewrite_pl_directive'(comment(F/A, String), info(F/A, [comment is Atom])) :-
+    atom_codes(Atom, String).</pre>
 <p>
 This Logtalk feature can be used to allow compilation of legacy Prolog code without the need of changing the sources. When used, is advisable to set the <code>portability/1</code> compiler flag to <code>warning</code> in order to more easily identify source files that are likely non-portable across Prolog compilers. 
 </p>
@@ -125,16 +121,14 @@ This feature is needed to properly support compilation of modules containing <co
 </p>
 
 
-<div class="navbottom">
-<a href="../glossary.html">glossary</a>
-</div>
-
-<div class="copyright">
-Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://www.logtalk.org">Logtalk.org</a>
-</div>
-
 <div class="footer">
-<p><span class="bleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="bright">Last updated on: September 27, 2005</span></p>
+	<div class="navbottom"><a href="../glossary.html">glossary</a></div>
+	<div class="copyright">Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://www.logtalk.org">Logtalk.org</a></div>
+	<div class="footnote">
+		<span class="validators"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span>
+		<span class="date">Last updated on: September 27, 2005</span>
+	</div>
 </div>
+
 </body>
 </html>

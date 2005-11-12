@@ -1,3 +1,4 @@
+
 @page :left {
 	margin-left: 2cm;
 	margin-right: 3cm;
@@ -12,10 +13,6 @@
 	margin-bottom: 2cm;
 }
 
-@page :first {
-	margin-top: 10cm;
-}
-
 @page body {
 	counter-reset: page;
 }
@@ -24,62 +21,30 @@ body {
 	color: black;
 	font-size: 10pt;
 	font-family: Times, serif;
+	padding: 18pt 0pt 0pt 0pt;
+	margin: 0pt;
 	background: white;
+	page: body;
 }
 
-.title {
-	color: maroon;
-	font-size: 24pt;
-	font-family: "Trebuchet MS", Arial, Verdana, Helvetica, sans-serif;
-	text-align: center;
-	padding: 0pt 0pt 6pt 0pt;
-}
-
-.topictitle {
-	color: maroon;
-	font-size: 12pt;
-	font-family: "Trebuchet MS", Arial, Verdana, Helvetica, sans-serif;
-	text-align: left;
-}
-
-.topic {
-	padding: 0pt 0pt 0pt 24pt;
-}
-
-.spacer {
-}
-
-.navbottom {
-	font-size: 9pt;
+.header {
 	text-align: right;
-	border-width: 0pt 0pt 1pt 0pt;
-	border-style: solid;
-	padding: 12pt 0pt 3pt 0pt;
+	font-size: 9pt;
+	font-weight: bold;
+	page: body;
+	region: top;
 }
 
 .navtop {
-	text-align: right;
-	font-size: 9pt;
-	border-color: #000000;
-	border-width: 1pt 0pt 0pt 0pt;
-	border-style: solid;
-	padding: 3pt 0pt 12pt 0pt;
+	display: none;
 }
 
-.copyright {
-	text-align: center;
-	font-size: 9pt;
-	padding: 9pt 0pt 9pt 0pt;
+.title {
+	display: inline;
 }
 
-.footer {
-	clear: left;
-	text-align: right;
-	font-size: 9pt;
-	border-color: #000000;
-	border-width: 1pt 0pt 0pt 0pt;
-	border-style: solid;
-	padding: 0pt 0pt 9pt 0pt;
+.page:after {
+	content: ": " counter(page) " of " counter(pages);
 }
 
 a {
@@ -93,32 +58,54 @@ a:hover {
 	color: blue;
 }
 
-.bleft {
-	display: none;
-	float: left;
-	position: relative;
+.footer {
+	text-align: right;
+	font-size: 9pt;
 }
 
-.bright {
+.navbottom {
 	display: none;
-	float: right;
-	position: relative;
-	content: counter(page, decimal);
+}
+
+.copyright {
+	display: inline;
+}
+
+.footnote {
+}
+
+.validators {
+	display: none;
+}
+
+.date {
+	font-size: 9pt;
+	display: inline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: Helvetica, "Trebuchet MS", Arial, Verdana, sans-serif;
+	text-align: left;
+}
+
+h1 {
+	padding-top: 96pt;
 }
 
 code {
 	color: maroon;
 	font-size: 9pt;
-	font-family: courier, monospace;
+	font-family: Monaco, 'Courier New', Courier, monospace;
 }
 
 pre {
 	color: maroon;
 	font-size: 9pt;
-	font-family: courier, monospace;
-	background-color: #eeeeee;
-	border-color: black;
+	font-family: Monaco, 'Courier New', Courier, monospace;
+	text-align: left;
+	background-color: #efefef;
+	border-color: #111111;
 	border-width: 1pt;
-	border-style: double;
-	padding: 6pt;
+	border-style: double;	
+	padding: 8pt;
 }
