@@ -126,3 +126,7 @@ pre {
 	padding: 8pt;
 	page-break-before: avoid;
 }
+
+ul, ol, dl {
+	display: compact;
+}

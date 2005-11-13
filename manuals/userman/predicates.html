@@ -36,7 +36,7 @@ All object (or category) predicates that we want to access from other objects mu
 <h3>Scope directives<a name="scope"></a></h3>
 
 <p>
-A predicate can be public, protected or private. Public predicates can be called from any object. Protected predicates can only be called from the container object or from a container descendant. Private predicates can only be called from the container object.
+A predicate can be public, protected, or private. Public predicates can be called from any object. Protected predicates can only be called from the container object or from a container descendant. Private predicates can only be called from the container object.
 </p>
 <p>
 The scope declarations are made using the directives <a title="Consult reference manual" href="../refman/directives/public1.html"><code>public/1</code></a>, <a title="Consult reference manual" href="../refman/directives/protected1.html"><code>protected/1</code></a>, and <a title="Consult reference manual" href="../refman/directives/private1.html"><code>private/1</code></a>. For example:
@@ -98,7 +98,7 @@ Mode declarations can also be used to document that some call modes will throw a
 </p>
 <pre>:- mode(arg(-, -, +), error).</pre> 
 <p>
-Note that most predicates have more than one valid mode implying several mode directives. For example, to document the possible use modes of the atom_concat/3 ISO built-in predicate we would write:
+Note that most predicates have more than one valid mode implying several mode directives. For example, to document the possible use modes of the <code>atom_concat/3</code> ISO built-in predicate we would write:
 </p>
 <pre>:- mode(atom_concat(?atom, ?atom, +atom), one_or_more).
 :- mode(atom_concat(+atom, +atom, -atom), zero_or_one).</pre>
