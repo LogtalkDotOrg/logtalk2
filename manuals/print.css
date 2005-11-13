@@ -92,7 +92,7 @@ a[name] {
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: Helvetica, "Trebuchet MS", Arial, Verdana, sans-serif;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
 	text-align: left;
 }
 
@@ -103,6 +103,11 @@ h1 {
 code {
 	color: maroon;
 	font-size: 9pt;
+	font-family: Monaco, 'Courier New', Courier, monospace;
+}
+
+.code {
+	color: maroon;
 	font-family: Monaco, 'Courier New', Courier, monospace;
 }
 
