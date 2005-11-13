@@ -69,6 +69,7 @@ a[name] {
 .footer {
 	text-align: right;
 	font-size: 9pt;
+	page-break-before: avoid;
 }
 
 .navbottom {
@@ -121,4 +122,5 @@ pre {
 	border-width: 1pt;
 	border-style: double;	
 	padding: 8pt;
+	page-break-before: avoid;
 }

@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.26.1 - November ??, 2005
 
+	Added a CSS style-sheet to the Logtalk XHTML documentation that can be 
+	used with CSSToXSLFO to generate PDF files suitable for printing.
+
 	Added support for the Lunasil XSL-FO processor to the "lgt2pdf.*" shell 
 	scripts.
 
