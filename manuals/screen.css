@@ -69,6 +69,11 @@ code {
 	font-size: 9pt;
 }
 
+.code {
+	color: maroon;
+	font-family: courier, monospace;
+}
+
 pre {
 	color: maroon;
 	font-family: courier, monospace;
