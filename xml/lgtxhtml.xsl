@@ -11,8 +11,8 @@
     encoding="utf-8"
 	omit-xml-declaration="no"
 	standalone="no"
-	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
-	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
+	doctype-public="-//W3C//DTD XHTML 1.1//EN"
+	doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
 
 
 <!-- 
@@ -30,7 +30,7 @@
 <xsl:template match="/">
 	<xsl:processing-instruction name="xml-stylesheet">href="logtalk.css" type="text/css"</xsl:processing-instruction>
 
-	<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title><xsl:value-of select="logtalk/entity/name" /></title>
