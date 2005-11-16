@@ -1,4 +1,8 @@
 
+.page:before {
+	content: counter(page) " of " counter(pages);
+}
+
 @page :left {
 	margin-left: 2cm;
 	margin-right: 3cm;
@@ -25,31 +29,56 @@ body {
 	margin: 0pt;
 	background: white;
 	page: body;
+	region: body;
 	hyphenate: true;
-}
-
-.header {
-	text-align: right;
-	font-size: 9pt;
-	font-weight: bold;
-	page: body;
-	region: top;
 }
 
 .navtop {
 	display: none;
 }
 
-.title {
-	display: inline;
+.top-left { 
+	font-size: 9pt;
+	font-weight: bold;
+	border-color: black;
+	border-width: 0pt 0pt 1pt 0pt;
+	border-style: solid;
+	region: top;
+	page: left;
+	text-align: left;
 }
 
-.contents {
-	display: inline;
+.top-right { 
+	font-size: 9pt;
+	font-weight: bold;
+	border-color: black;
+	border-width: 0pt 0pt 1pt 0pt;
+	border-style: solid;
+	region: top;
+	page: right;
+	text-align: right;
 }
 
-.page:after {
-	content: ": " counter(page) " of " counter(pages);
+.bottom-left { 
+	page: left;
+	region: bottom;
+	text-align: left;
+	font-size: 9pt;
+	font-weight: bold;
+	border-color: black;
+	border-width: 1pt 0pt 0pt 0pt;
+	border-style: solid;
+}
+
+.bottom-right { 
+	page: right;
+	region: bottom;
+	text-align: right;
+	font-size: 9pt;
+	font-weight: bold;
+	border-color: black;
+	border-width: 1pt 0pt 0pt 0pt;
+	border-style: solid;
 }
 
 a {

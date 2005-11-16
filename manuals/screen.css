@@ -6,26 +6,20 @@ body {
 	margin: 12pt;
 }
 
-.header {
+.navtop {
 	text-align: right;
-	font-size: 10pt;
 	border-color: #000000;
 	border-width: 1pt 0pt 0pt 0pt;
 	border-style: solid;
 	padding: 3pt 0pt 12pt 0pt;
 }
 
-.navtop {
-	display: inline;
-}
-
-.title {
+.top-left, .top-right, .bottom-left, .bottom-right {
 	display: none;
 }
 
 .footer {
 	clear: left;
-	font-size: 10pt;
 	padding: 12pt 0pt 6pt 0pt;
 }
 
