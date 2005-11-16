@@ -28,13 +28,13 @@
 Predicate declarations and definitions can be encapsulated inside objects and categories. Protocols can only contain predicate declarations.
 </p>
 
-<h2>Declaring predicates<a name="declaring"></a></h2>
+<h2>Declaring predicates<a id="declaring"></a></h2>
 
 <p>
 All object (or category) predicates that we want to access from other objects must be explicitly declared. A predicate declaration must contain, at least, a scope directive. Other directives may be used to document the predicate or to ensure proper compilation of the predicate definitions.
 </p>
 
-<h3>Scope directives<a name="scope"></a></h3>
+<h3>Scope directives<a id="scope"></a></h3>
 
 <p>
 A predicate can be public, protected, or private. Public predicates can be called from any object. Protected predicates can only be called from the container object or from a container descendant. Private predicates can only be called from the container object.
@@ -51,7 +51,7 @@ The scope declarations are made using the directives <a title="Consult reference
 Note that we do not need to write scope declarations for all defined predicates. If a predicate does not have a scope declaration, it is assumed that the predicate is private, although it will be invisible to the reflection methods and to the message and error handling mechanisms.
 </p>
 
-<h3>Mode directive<a name="mode"></a></h3>
+<h3>Mode directive<a id="mode"></a></h3>
 
 <p>
 Many predicates cannot be called with arbitrary arguments with arbitrary instantiation status. The valid arguments and instantiation modes can be documented by using the <a title="Consult reference manual" href="../refman/directives/mode2.html"><code>mode/2</code></a> directive. For instance:
@@ -107,7 +107,7 @@ Note that most predicates have more than one valid mode implying several mode di
 Some old Prolog compilers supported some sort of mode directives to improve performance. To the best of my knowledge, there is no modern Prolog compiler supporting these kind of directive. The current version of the Logtalk preprocessor just parses and than discards this directive. Nevertheless, the use of mode directives is a good starting point to the documentation of your predicates.
 </p>
 
-<h3>Metapredicate directive<a name="meta"></a></h3>
+<h3>Metapredicate directive<a id="meta"></a></h3>
 
 <p>
 Some predicates may have arguments that will be called as goals. To ensure that these calls will be executed in the correct scope we need to use the <a title="Consult reference manual" href="../refman/directives/metapredicate1.html"><code>metapredicate/1</code></a> directive. For example:
@@ -131,7 +131,7 @@ This is similar to the declaration of metapredicates in the ISO draft for Prolog
 Since each Logtalk entity is independently compiled, this directive must be included in every object or category that contains a definition for the described predicate, even if the predicate declaration is inherited from another entity, to ensure proper compilation of meta-arguments.
 </p>
 
-<h3>Discontiguous directive<a name="discontiguous"></a></h3>
+<h3>Discontiguous directive<a id="discontiguous"></a></h3>
 
 <p>
 The clause of an object (or category) predicate may not be contiguous. In that case, we must declare the predicate discontiguous by using the <a title="Consult reference manual" href="../refman/directives/discontiguous1.html"><code>discontiguous/1</code></a> directive:
@@ -144,7 +144,7 @@ This is a directive that we should avoid using: it makes your code harder to rea
 Because each Logtalk entity is compiled independently from other entities, this directive must be included in every object or category that contains a definition for the described predicate (even if the predicate declaration is inherited from other entity).
 </p>
 
-<h3>Dynamic directive<a name="dynamic"></a></h3>
+<h3>Dynamic directive<a id="dynamic"></a></h3>
 
 <p>
 An object (or category) predicate can be static or dynamic. By default, all object predicates are static. To declare a dynamic predicate we use the <a title="Consult reference manual" href="../refman/directives/dynamic1.html"><code>dynamic/1</code></a> directive:
@@ -154,7 +154,7 @@ An object (or category) predicate can be static or dynamic. By default, all obje
 Because each Logtalk entity is compiled independently from other entities, this directive must be included in every object or category that contains a definition for the described predicate (even if the predicate declaration is inherited from other entity). If we omit the dynamic declaration then the predicate definition will be compiled to static code. Note that any static object may declare and define dynamic predicates.
 </p>
 
-<h3>Operator directive<a name="op"></a></h3>
+<h3>Operator directive<a id="op"></a></h3>
 
 <p>
 An object (or category) predicate can be declared as an operator using the familiar <a title="Consult reference manual" href="../refman/directives/op3.html"><code>op/3</code></a> directive:
@@ -164,7 +164,7 @@ An object (or category) predicate can be declared as an operator using the famil
 Operators are local to the object (or category) where they are declared. This means that, if you declare a public predicate as an operator, you cannot use operator notation when sending to an object (where the predicate is visible) the respective message (as this would imply visibility of the operator declaration in the context of the <em>sender</em> of the message). If you want to declare global operators and, at the same time, use them inside an entity, just write the corresponding directives at the top of your source file, before the entity opening directive.
 </p>
 
-<h3>Uses directive<a name="uses"></a></h3>
+<h3>Uses directive<a id="uses"></a></h3>
 
 <p>
 When a predicate makes heavy use of predicates defined on other objects, its clauses can be excessively verbose due to all the necessary message sending constructs. Consider the following example:
@@ -206,7 +206,7 @@ The <code>uses/2</code> directive allows simpler predicate definitions as long a
 In the current Logtalk version, the omission of the <code>Object::</code> prefix is not supported when the predicate call occurs as an argument of a user-defined metapredicate (Logtalk specified metapredicates and Prolog non-standard metapredicates declared in the config files pose no problem).
 </p>
 
-<h3>Alias directive<a name="alias"></a></h3>
+<h3>Alias directive<a id="alias"></a></h3>
 
 <p>
 Logtalk allows the definition of an alternative name for an inherited or imported predicate through the use of the <a title="Consult reference manual" href="../refman/directives/alias3.html"><code>alias/3</code></a> directive:
@@ -274,7 +274,7 @@ The <code>alias/3</code> directive may also be used to give access to an inherit
 Thus, when sending the message <code>member/2</code> to <code>my_data_structure</code>, the predicate definition in <code>set</code> will be used instead of the one contained in <code>list</code>.
 </p>
 
-<h3>Documenting directive<a name="info"></a></h3>
+<h3>Documenting directive<a id="info"></a></h3>
 
 <p>
 A predicate can be documented with arbitrary user-defined information by using the <a title="Consult reference manual" href="../refman/directives/info2.html"><code>info/2</code></a> directive:
@@ -284,9 +284,9 @@ A predicate can be documented with arbitrary user-defined information by using t
 The second argument is a list of <code>Key is Value</code> terms. See the <a href="documenting.html">Documenting Logtalk programs</a> session for details.
 </p>
 
-<h2>Defining predicates<a name="defining"></a></h2>
+<h2>Defining predicates<a id="defining"></a></h2>
 
-<h3>Object predicates<a name="objects"></a></h3>
+<h3>Object predicates<a id="objects"></a></h3>
 
 <p>
 We define object predicates as we have always defined Prolog predicates, the only difference be that we have four more control structures (the three message sending operators plus the external call operator) to play with. For example, if we wish to define an object containing common utility list predicates like <code>append/2</code> or <code>member/2</code> we could write something like:
@@ -309,7 +309,7 @@ We define object predicates as we have always defined Prolog predicates, the onl
 Note that, abstracting from the opening and closing object directives and the scope directives, what we have written is plain Prolog.  Calls in a predicate definition body default to the local predicates, unless we use the message sending operators or the external call operator. This enables easy conversion from Prolog code to Logtalk objects: we just need to add the necessary encapsulation and scope directives to the old code.
 </p>
 
-<h3>Category predicates<a name="categories"></a></h3>
+<h3>Category predicates<a id="categories"></a></h3>
 
 <p>
 Because a category can be imported by several different objects, dynamic private predicates must be called using the <a title="Consult reference manual" href="../refman/control/to_self1.html"><code>::/1</code></a> message sending operator. This ensures that the correct predicate definition will be used. For example, if we want to define a category implementing variables using destructive assignment we could write:
@@ -337,7 +337,7 @@ This way, each importing object will have its own definition for the <code>value
 A category may only contain clauses for static predicates. Nevertheless, as the example above illustrates, there are no restrictions in declaring and calling dynamic predicates from inside a category.
 </p>
 
-<h3>Metapredicates<a name="metadef"></a></h3>
+<h3>Metapredicates<a id="metadef"></a></h3>
 
 <p>
 Metapredicates may be defined inside objects (and categories) as any other predicate. A metapredicate is declared using the <code>metapredicate/1</code> directive as described earlier on this section.
@@ -381,7 +381,7 @@ apply(Pred, Args, Goal) :-
 Note that the predicate <code>apply/2</code> is no longer declared as a metapredicate. However, it will work as expected when called because of the implicit passing of the method execution context between the two predicates.
 </p>
 
-<h3>Definite clause grammars<a name="dcgs"></a></h3>
+<h3>Definite clause grammars<a id="dcgs"></a></h3>
 
 <p>
 Definite clause grammar rules provide a convenient notation to represent the rewrite rules common of most grammars in Prolog. In Logtalk, definite clause grammar rules can be encapsulated in objects and categories. Currently, the ISO/IEC WG17 group is working on a draft specification for a definite clause grammars Prolog standard. Therefore, in the mean time, Logtalk follows the common practice of Prolog compilers supporting definite clause grammars, extending it to support calling grammar rules contained in categories and objects. A common example of a definite clause grammar is the definition of a set of rules for parsing simple arithmetic expressions:
@@ -487,13 +487,13 @@ Grammar rule non-terminal may be declared as dynamic or discontiguous, as any ot
 :- info(sentence//0, [
     comment is 'Rewrites a sentence in a noun phrase and verb phrase.']).</pre>
 
-<h2>Built-in object predicates (methods)<a name="methods"></a></h2>
+<h2>Built-in object predicates (methods)<a id="methods"></a></h2>
 
 <p>
 Logtalk defines a set of built-in object predicates or methods to access message execution context, to find sets of solutions, to inspect objects and for database handling. Similar to Prolog built-in predicates, these built-in methods should not be redefined.
 </p>
 
-<h3>Execution context methods<a name="context"></a></h3>
+<h3>Execution context methods<a id="context"></a></h3>
 
 <p>
 Logtalk defines four built-in methods to access an object execution context. These methods are compiled in-line and can be freely used without worrying about performance penalties. When called from inside a category, these methods refer to the execution context of the object importing the category.
@@ -558,31 +558,31 @@ yes</pre>
 The method <code>parameter/2</code> is only compiled in-line when used inside objects; its use inside categories implies a call to the built-in Prolog predicate <code>arg/3</code>. Nevertheless, note that calls to <code>parameter/2</code> from inside categories are inherently problematic: a category may be implemented by several objects, both parametric (with different number of parameters) and non-parametric. Care must be taken to ensure that a parametric object importing such a category match the interpretation of its parameters used in the category.
 </p>
 
-<h3>Database methods<a name="database"></a></h3>
+<h3>Database methods<a id="database"></a></h3>
 
 <p>
 Logtalk provides a set of built-in methods for object database handling similar to the usual database Prolog predicates: <a title="Consult reference manual" href="../refman/methods/abolish1.html"><code>abolish/1</code></a>, <a title="Consult reference manual" href="../refman/methods/asserta1.html"><code>asserta/1</code></a>, <a title="Consult reference manual" href="../refman/methods/assertz1.html"><code>assertz/1</code></a>, <a title="Consult reference manual" href="../refman/methods/clause2.html"><code>clause/2</code></a>, <a title="Consult reference manual" href="../refman/methods/retract1.html"><code>retract/1</code></a> and <a title="Consult reference manual" href="../refman/methods/retractall1.html"><code>retractall/1</code></a>. These methods always operate on the database of the object receiving the corresponding message.
 </p>
 
-<h3>All solutions methods<a name="solutions"></a></h3>
+<h3>All solutions methods<a id="solutions"></a></h3>
 
 <p>
 The usual all solutions metapredicates are pre-defined methods in Logtalk: <a title="Consult reference manual" href="../refman/methods/bagof3.html"><code>bagof/3</code></a>, <a title="Consult reference manual" href="../refman/methods/findall3.html"><code>findall/3</code></a> and <a title="Consult reference manual" href="../refman/methods/setof3.html"><code>setof/3</code></a>. There is also a <a title="Consult reference manual" href="../refman/methods/forall2.html"><code>forall/2</code></a> method that implements generate and test loops.
 </p>
 
-<h3>Reflection methods<a name="reflection"></a></h3>
+<h3>Reflection methods<a id="reflection"></a></h3>
 
 <p>
 Logtalk provides two built-in methods for inspecting object predicates: <a title="Consult reference manual" href="../refman/methods/predicate_property2.html"><code>predicate_property/2</code></a>, that return predicate properties and <a title="Consult reference manual" href="../refman/methods/current_predicate1.html"><code>current_predicate/1</code></a>, that enables us to query about predicate definitions. See below for a more detailed description of both methods.
 </p>
 
-<h3>Definite clause grammar parsing methods<a name="parsing"></a></h3>
+<h3>Definite clause grammar parsing methods<a id="parsing"></a></h3>
 
 <p>
 Logtalk supports two definite clause grammar parsing built-in methods, <a title="Consult reference manual" href="../refman/methods/phrase2.html"><code>phrase/2</code></a> and <a title="Consult reference manual" href="../refman/methods/phrase3.html"><code>phrase/3</code></a>, with definitions similar to the predicates with the same name found on most Prolog compilers that support definite clause grammars. The current implementation of the parsing methods only accepts as first argument a non-terminal instead of a rule body.
 </p>
 
-<h2>Predicate properties<a name="properties"></a></h2>
+<h2>Predicate properties<a id="properties"></a></h2>
 
 <p>
 We can find the properties of visible predicates by calling the <a title="Consult reference manual" href="../refman/methods/predicate_property2.html"><code>predicate_property/2</code></a> built-in method. For example:
@@ -613,7 +613,7 @@ The properties <code>declared_in/1</code> and <code>defined_in/1</code> do not a
 Note that if a predicate is declared in a category imported by the object, it will be the category name &mdash; not the object name &mdash; which will be returned by the property <code>declared_in/1</code>. The same goes for protocol declared predicates.
 </p>
 
-<h2>Finding declared predicates<a name="finding"></a></h2>
+<h2>Finding declared predicates<a id="finding"></a></h2>
 
 <p>
 We can find, by backtracking, all visible user predicates by calling the <a title="Consult reference manual" href="../refman/methods/current_predicate1.html"><code>current_predicate/1</code></a> built-in method. This method respects the predicate's scope declarations. For instance, the following call:
@@ -623,7 +623,7 @@ We can find, by backtracking, all visible user predicates by calling the <a titl
 will only return user predicates that are declared public.
 </p>
 
-<h2>Calling Prolog built-in predicates<a name="prolog"></a></h2>
+<h2>Calling Prolog built-in predicates<a id="prolog"></a></h2>
 
 <p>
 In predicate definitions, predicate calls which are not prefixed with a message sending operator (either <code>::</code> or <code>^^</code>), are compiled to either calls to local predicates or as calls to Logtalk/Prolog built-in predicates. A predicate call is compiled as a call to a local predicate if the object (or category) contains a definition for the called predicate or a dynamic declaration for it. When the object (or category) does not contain either a definition of the called predicate or a corresponding dynamic declaration, Logtalk tests if the call corresponds to a Logtalk or Prolog built-in predicate. Calling a predicate which is neither a local predicate nor a Logtalk/Prolog built-in predicate results in a compile time warning. This means that, in the following example:
@@ -639,7 +639,7 @@ the call to the predicate <code>write/1</code> will be compiled as a call to the
 When calling non-standard Prolog built-in predicates, you may run into portability problems when trying your applications with other Prolog compilers which might not have the same set of built-in predicates. You may use the Logtalk compiler flag <a title="Consult user manual" href="running.html#options"><code>portability/1</code></a> to help you check for problematic calls in your code.
 </p>
 
-<h3>Calling Prolog non-standard metapredicates<a name="prolog_meta"></a></h3>
+<h3>Calling Prolog non-standard metapredicates<a id="prolog_meta"></a></h3>
 
 <p>
 Compiling calls to non-standard, Prolog built-in metapredicates can be tricky for two reasons: first, there is no standard way of checking if a built-in predicate is also a metapredicate and finding out which are its meta-arguments; second, in some cases, the meta-arguments of a metapredicate are not directly called as goals but are used instead for constructing goals. The way the goals are constructed is specific to the metapredicate and cannot be reliable inferred by the Logtalk compiler. For metapredicates whose meta-arguments are directly called as goals, the solution is to explicitly declare them in the corresponding Prolog configuration file using the predicate <code>'$lgt_pl_metapredicate'/1</code>. For example:

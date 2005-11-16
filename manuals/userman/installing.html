@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
@@ -25,15 +25,15 @@
 This page provides an overview of Logtalk installation requirements and instructions and a description of the files contained on the Logtalk distribution. For detailed, up-to-date installation instructions, please see the README and INSTALL files distributed with Logtalk. The broad compatibility of Logtalk, both with Prolog compilers and operating-systems, together with all the possible user scenarios, means that installation can vary from very simple by running a couple of scripts to the need of patching both Logtalk and Prolog compilers to workaround the lack of strong Prolog standards.
 </p>
 
-<h2>Hardware &amp; software requirements<a name="requirements"></a></h2>
+<h2>Hardware &amp; software requirements<a id="requirements"></a></h2>
 
-<h3>Computer and operating system<a name="computer"></a></h3>
+<h3>Computer and operating system<a id="computer"></a></h3>
 
 <p>
 Logtalk is compatible with almost any computer/operating-system with a modern Prolog compiler available. Currently, the main development environment is an Apple PowerBook running MacOS X. Being written in Prolog and distributed in source form, the only issue regarding operating system compatibility are the end-of-line codes in the source text files! Most example source file names do not fit in the 8+3 MS-DOS file length limitation, so this may prevent those examples from running under this operating-system (or in any other system with similar limitations).
 </p>
 
-<h3>Prolog compiler<a name="compiler"></a></h3>
+<h3>Prolog compiler<a id="compiler"></a></h3>
 
 <p>
 In writing Logtalk I have tried to follow the recently approved Prolog ISO standard whenever possible. Capabilities needed by Logtalk that are not defined in the ISO standard are:
@@ -50,7 +50,7 @@ For optimal performance, Logtalk requires that the Prolog compiler supports <str
 Since most Prolog compilers are moving closer to the ISO Prolog standard <a href="../bibliography.html#ISO95">[ISO 95]</a>, it is advisable that you try to use a recent version of your favorite Prolog compiler.
 </p>
 
-<h2>Installing Logtalk<a name="installing"></a></h2>
+<h2>Installing Logtalk<a id="installing"></a></h2>
 
 <p>
 The Logtalk system can be installed in any directory that is accessible to the user. The installation process consists merely in decompressing an archive file that will lead to a new directory with the structure/contents described below. The decompression process naturally depends on the operative system that you are using. For some operating systems, an installer may be provided. Users wishing to use the Logtalk library and Logtalk examples will need write access to the respective directories or to make a local copy these directories on their home directories. See the file <code>INSTALL</code> for details. The directory <code>scripts</code> may contain scripts for helping with Logtalk packaging, installation, and integration with Prolog compilers.
@@ -85,7 +85,7 @@ The OS/2 and Windows 2000/XP version is included in the file <code>lgt2xxx.zip</
 Almost all files in the Logtalk distribution are text files. The only difference between the source files, other than the compressing formats, is the end-of-line codes: Macintosh uses a carriage return, Unix uses a line feed, OS/2 and Windows uses both a carriage return and a line feed. This should make it easier to install Logtalk under other operating systems.
 </p>
 
-<h2>Directories and files organization<a name="organization"></a></h2>
+<h2>Directories and files organization<a id="organization"></a></h2>
 
 <p>
 In the Logtalk installation directory, you will find the following files and directories:
@@ -147,7 +147,7 @@ In the Logtalk installation directory, you will find the following files and dir
 		<dd><code>...</code> - other script files</dd>
 </dl>
 
-<h3>Configuration files<a name="configs"></a></h3>
+<h3>Configuration files<a id="configs"></a></h3>
 
 <p>
 Configuration files provide the glue code between the Logtalk preprocessor/runtime and a Prolog compiler. Each configuration file contains two sets of predicates: ISO Prolog standard predicates and directives not built-in in the target Prolog compiler and Logtalk-specific predicates.
@@ -177,25 +177,25 @@ The configuration files specifies default values for all the Logtalk compiler fl
 </dl>
 </blockquote>
 
-<h3>Logtalk compiler and runtime<a name="compiler"></a></h3>
+<h3>Logtalk compiler and runtime<a id="compiler"></a></h3>
 
 <p>
 The <code>compiler</code> sub-directory contains the Prolog source file(s) that implement the Logtalk preprocessor/compiler and the Logtalk runtime. The compiler and the runtime may be split in two (or more) separate files or combined in a single file, depending on the Logtalk release that you are installing.
 </p>
 
-<h3>Library<a name="library"></a></h3>
+<h3>Library<a id="library"></a></h3>
 
 <p>
 Starting from version 2.7, Logtalk contains a standard library of useful objects, categories, and protocols. Read the corresponding <code>NOTES</code> file for details about the library contents.
 </p>
 
-<h3>Examples<a name="examples"></a></h3>
+<h3>Examples<a id="examples"></a></h3>
 
 <p>
 Logtalk 2.x contains new implementations of some of the examples provided with previous 1.x versions. The sources of each one of these examples can be found included in a subdirectory with the same name, inside the directory examples. The majority of these examples include a file named <code>SCRIPT</code> that contains cases of simple utilization. Some examples may depend on other examples and library objects to work properly. Read the corresponding <code>NOTES</code> file for details before running an example.
 </p>
 
-<h3>Logtalk source files<a name="entities"></a></h3>
+<h3>Logtalk source files<a id="entities"></a></h3>
 
 <p>
 Logtalk source files are text files containing entity definitions (objects, categories, or protocols). The extension <code>.lgt</code> is normally used. The Logtalk preprocessor compiles these files to plain Prolog, replacing the <code>.lgt</code> extension with  <code>.pl</code> (the default Prolog extension). If your Prolog compiler expects the Prolog source filenames to end with a specific, different extension, you can set it in the corresponding configuration file.
