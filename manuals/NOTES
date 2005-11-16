@@ -13,8 +13,9 @@ change the appearance of the pages by changing the included "screen.css"
 CSS file. Needless to say, the manual pages look better in recent web 
 browser releases that support both the XHTML 1.1 and CSS web standards.
 
-The "print.css" CSS file can be used with CSSToXSLFO to generate PDF files 
-with page numbers suitable for printing. For informations on how to use
-CSSToXSLFO, please see the following URL:
+The "print.css" CSS file can be used with CSSToXSLFO (version 1.2 or 
+later) to generate PDF files with page numbers suitable for printing. 
+For informations on how to use CSSToXSLFO, please see the following 
+URL:
 
 	http://www.re.be/css2xslfo/

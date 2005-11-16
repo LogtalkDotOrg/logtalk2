@@ -91,7 +91,7 @@ a[href] {
 	link: href;
 }
 
-a[name] {
+a[id] {
 	anchor: name;
 }
 
