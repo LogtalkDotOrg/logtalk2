@@ -114,7 +114,7 @@ else
 			echo "  converting $file"
 			name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
 			case $processor in
-				xinc)	eval xinc -xml \"$file\" -xsl \"$xsl\" -pdf \"$directory\"/\"$name.pdf\";;
+				xinc)	eval xinc -xml \"$file\" -xsl \"$xsl\" -pdf \"$directory\"/\"$name.pdf\" 2> /dev/null;;
 				*)		eval $processor -q -xml \"$file\" -xsl \"$xsl\" -pdf \"$directory\"/\"$name.pdf\";;
 			esac
 		done
