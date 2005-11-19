@@ -17,8 +17,7 @@ RELEASE NOTES
 	running headers and page numbers.
 
 	Updated the Logtalk XHTML documentation for compliance with the XHTML 1.1 
-	Strict standard. Updated the "lgtxhtml.xsl" XSLT file to generate XHTML 
-	1.1 web pages.
+	standard.
 
 	Updated the "lgtxhtml.xsl" XSLT file to generate XHTML 1.1 files.
 
