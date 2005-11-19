@@ -59,10 +59,12 @@ lgtxml.xsl
 	XSLT file for viewing .xml files directly in a browser. The links in the 
 	(internally generated) XHTML 1.1 files point to related XML files. UTF-8 
 	encoding is assumed. Edit the file if you use a different encoding. This 
-	file imports the "lgtxhtml.xsl" file described below. The XSLT import 
-	mechanism may trigger some bugs on the XSLT processors embed on some 
-	browsers. The alternative is to use one of the shell scripts described 
-	below to batch convert the .xml files into XHTML 1.1 files.
+	file imports the "lgtxhtml.xsl" file described below.
+
+	The XSLT import mechanism may trigger some bugs on the CSS support or on 
+	the XSLT processors embed on some browsers. The alternative is to use one 
+	of the shell scripts described below to batch convert the .xml files into 
+	XHTML 1.1 files.
 
 
 lgthtml.xsl
