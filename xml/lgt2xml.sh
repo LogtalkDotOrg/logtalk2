@@ -140,11 +140,6 @@ else
 		cp "$LOGTALKUSER"/xml/lgtxml.xsl .
 	fi
 
-	if ! [[ -a "./lgtxhtml.xsl" ]]
-	then
-		cp "$LOGTALKUSER"/xml/lgtxhtml.xsl .
-	fi
-
 	if [[ `(ls *.xml | wc -l) 2> /dev/null` -gt 0 ]]
 	then
 		echo

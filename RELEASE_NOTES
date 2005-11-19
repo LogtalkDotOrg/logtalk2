@@ -20,10 +20,7 @@ RELEASE NOTES
 	Strict standard. Updated the "lgtxhtml.xsl" XSLT file to generate XHTML 
 	1.1 web pages.
 
-	Updated the "lgtxhtml.xsl" XSLT file to generate XHTML 1.1 files. Updated 
-	the "lgtxml.xsl" XSLT file to import the "lgtxhtml.xsl" file. Updated the 
-	"lgt2xml.*" shell scripts to work with the new version of the "lgtxml.xsl"
-	file.
+	Updated the "lgtxhtml.xsl" XSLT file to generate XHTML 1.1 files.
 
 	Added support for the Lunasil XSL-FO processor to the "lgt2pdf.*" shell 
 	scripts.

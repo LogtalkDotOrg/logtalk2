@@ -25,17 +25,6 @@
 	doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
 
 
-<xsl:param name="ext" select="'html'"/>
-
-<xsl:variable name="extension">
-	<xsl:choose>
-		<xsl:when test="$ext='html'">html</xsl:when>
-		<xsl:when test="$ext='xml'">xml</xsl:when>
-		<xsl:otherwise>xml</xsl:otherwise>
-	</xsl:choose>
-</xsl:variable>
-
-
 <xsl:template match="/">
 	<xsl:processing-instruction name="xml-stylesheet">href="logtalk.css" type="text/css"</xsl:processing-instruction>
 
@@ -155,17 +144,17 @@
 
 
 <xsl:template match="logtalk/relations/uses">
-	<dd class ="value"><code><a href="{file}.{$extension}"><xsl:value-of select="name" /></a></code></dd>
+	<dd class ="value"><code><a href="{file}.html"><xsl:value-of select="name" /></a></code></dd>
 </xsl:template>
 
 
 <xsl:template match="logtalk/relations/calls">
-	<dd class ="value"><code><a href="{file}.{$extension}"><xsl:value-of select="name" /></a></code></dd>
+	<dd class ="value"><code><a href="{file}.html"><xsl:value-of select="name" /></a></code></dd>
 </xsl:template>
 
 
 <xsl:template match="logtalk/relations/*">
-	<dd class ="value"><code><xsl:value-of select="scope" /><xsl:text> </xsl:text><a href="{file}.{$extension}"><xsl:value-of select="name" /></a></code></dd>
+	<dd class ="value"><code><xsl:value-of select="scope" /><xsl:text> </xsl:text><a href="{file}.html"><xsl:value-of select="name" /></a></code></dd>
 </xsl:template>
 
 
