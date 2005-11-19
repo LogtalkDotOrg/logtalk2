@@ -90,6 +90,10 @@ if (!FSObject.FileExists(directory + "\\lgtxml.xsl")) {
 	FSObject.CopyFile(logtalk_user + "\\xml\\lgtxml.xsl", directory + "\\lgtxml.xsl");
 }
 
+if (!FSObject.FileExists(directory + "\\lgtxhtml.xsl")) {
+	FSObject.CopyFile(logtalk_user + "\\xml\\lgtxhtml.xsl", directory + "\\lgtxhtml.xsl");
+}
+
 WScript.Echo("");
 WScript.Echo("generating index file...");
 

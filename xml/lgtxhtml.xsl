@@ -4,17 +4,6 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="http://www.w3.org/1999/xhtml">
 
-
-<xsl:output
-	method="xml"
-    indent="yes"
-    encoding="utf-8"
-	omit-xml-declaration="no"
-	standalone="no"
-	doctype-public="-//W3C//DTD XHTML 1.1//EN"
-	doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
-
-
 <!-- 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -25,6 +14,26 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 -->
+
+<xsl:output
+	method="xml"
+	indent="yes"
+	encoding="utf-8"
+	omit-xml-declaration="no"
+	standalone="no"
+	doctype-public="-//W3C//DTD XHTML 1.1//EN"
+	doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
+
+
+<xsl:param name="ext" select="'html'"/>
+
+<xsl:variable name="extension">
+	<xsl:choose>
+		<xsl:when test="$ext='html'">html</xsl:when>
+		<xsl:when test="$ext='xml'">xml</xsl:when>
+		<xsl:otherwise>xml</xsl:otherwise>
+	</xsl:choose>
+</xsl:variable>
 
 
 <xsl:template match="/">
@@ -40,6 +49,7 @@
 		<div class="header">
 			<p class="type"><xsl:value-of select="logtalk/entity/type" /></p>
 			<h1 class="code"><xsl:value-of select="logtalk/entity/name" /></h1>
+			<xsl:if test="logtalk/entity/comment or logtalk/entity/parameters">
 			<blockquote>
 			<xsl:if test="logtalk/entity/comment">
 				<p class="comment"><xsl:value-of select="logtalk/entity/comment" /></p>
@@ -52,6 +62,7 @@
 				</ul>
 			</xsl:if>
 			</blockquote>
+			</xsl:if>
 		</div>
 		<div class="entity">
 			<div class="section">
@@ -71,6 +82,7 @@
 
 
 <xsl:template match="logtalk/entity">
+	<xsl:if test="author or version or date">
 	<dl class="properties">
 	<xsl:if test="author">
 		<dt class ="key">author:</dt>
@@ -85,6 +97,7 @@
 			<dd class="value"><code><xsl:value-of select="date" /></code></dd>
 	</xsl:if>
 	</dl>
+	</xsl:if>
 	<dl class="properties">
 		<dt class ="key">compilation:</dt>
 			<dd class ="value"><code><xsl:value-of select="compilation" /></code></dd>
@@ -142,17 +155,17 @@
 
 
 <xsl:template match="logtalk/relations/uses">
-	<dd class ="value"><code><a href="{file}.html"><xsl:value-of select="name" /></a></code></dd>
+	<dd class ="value"><code><a href="{file}.{$extension}"><xsl:value-of select="name" /></a></code></dd>
 </xsl:template>
 
 
 <xsl:template match="logtalk/relations/calls">
-	<dd class ="value"><code><a href="{file}.html"><xsl:value-of select="name" /></a></code></dd>
+	<dd class ="value"><code><a href="{file}.{$extension}"><xsl:value-of select="name" /></a></code></dd>
 </xsl:template>
 
 
 <xsl:template match="logtalk/relations/*">
-	<dd class ="value"><code><xsl:value-of select="scope" /><xsl:text> </xsl:text><a href="{file}.html"><xsl:value-of select="name" /></a></code></dd>
+	<dd class ="value"><code><xsl:value-of select="scope" /><xsl:text> </xsl:text><a href="{file}.{$extension}"><xsl:value-of select="name" /></a></code></dd>
 </xsl:template>
 
 
@@ -217,11 +230,11 @@
 <xsl:template match="*/predicate">
 	<div class="section">
 	<h3 class="code"><xsl:value-of select="name" /></h3>
-	<blockquote>
 	<xsl:if test="comment">
+	<blockquote>
 		<p class="comment"><xsl:value-of select="comment" /></p>
-	</xsl:if>
 	</blockquote>
+	</xsl:if>
 	<dl class="properties">
 		<dt class ="key">compilation:</dt>
 			<dd class ="value"><code><xsl:value-of select="compilation" /></code></dd>
