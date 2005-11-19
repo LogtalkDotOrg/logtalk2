@@ -21,6 +21,9 @@ RELEASE NOTES
 
 	Updated the "lgtxhtml.xsl" XSLT file to generate XHTML 1.1 files.
 
+	Added a new, generic "lgtpdf.xsl" XSLT file. Redefined the "lgtpdfa4.xsl" 
+	and "lgtpdfus.xsl" files to import the "lgtpdf.xsl" file.
+
 	Added support for the Lunasil XSL-FO processor to the "lgt2pdf.*" shell 
 	scripts.
 

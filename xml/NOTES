@@ -77,14 +77,19 @@ lgtxhtml.xsl
 	Edit the file if you use a different encoding.
 
 
+lgtpdf.xsl
 lgtpdfa4.xsl
 lgtpdfus.xsl
 
 	XSLT files to generate PDF files from the XML files (formatted either 
 	for A4 paper or US Letter paper) using XSL Formatting Objects. Tested 
-	with the XSL-FO processors Apache FOP 0.20.5 (http://xml.apache.org/fop), 
-	PassiveTeX 1.21 (http://www.tei-c.org.uk/Software/passivetex/), and 
-	RenderX 3.7.8 (http://www.renderx.com/).
+	with the XSL-FO processors Apache FOP 0.20.5 (http://xml.apache.org/fop) 
+	and RenderX 4.4 (http://www.renderx.com/).
+
+	The "lgtpdf.xsl" file defines a parameter for the paper format (either 
+	A4 or US Letter). The files "lgtpdfa4.xsl" and "lgtpdfus.xsl" import the
+	"lgtpdf.xsl" file and set the paper format parameter to the appropriate 
+	value.
 
 
 ie50.xsl
