@@ -19,3 +19,11 @@ For informations on how to use CSSToXSLFO, please see the following
 URL:
 
 	http://www.re.be/css2xslfo/
+
+An usage example would be:
+
+	% java -jar css2xslfo1_2.jar <file>.html -fo <file>.fo
+	% xep -fo <file>.fo -pdf <file>.pdf
+
+RenderX's XEP is strongly recommended. Some of the others XSL-FO 
+processors do not support some of the used XSL-FO 1.0 constructs. 
