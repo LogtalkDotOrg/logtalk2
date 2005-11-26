@@ -44,7 +44,7 @@ Logtalk source files may contain arbitrary Prolog directives and clauses interle
 <p>
 Most examples directories contain a Logtalk utility file that can be used to load all included source files. These loader utility files are usually named <code>loader.lgt</code> or contain the word "loader" in their name. Loader files are compiled and loaded like any ordinary Logtalk source file. For an example loader file named <code>loader.lgt</code> we would type:
 </p>
-<pre>| ?- logtalk_load(loader). </pre>
+<pre>| ?- logtalk_load(loader).</pre>
 <p>
 Usually these files contain a call to the Logtalk built-in predicates <a title="Consult reference manual" href="../refman/builtins/logtalk_load1.html"><code>logtalk_load/1</code></a> or <a title="Consult reference manual" href="../refman/builtins/logtalk_load2.html"><code>logtalk_load/2</code></a>, wrapped inside an <code>initialization/1</code> directive. For instance, if your code is split in three Logtalk source files named <code>source1.lgt</code>, <code>source2.lgt</code>, and <code>source3.lgt</code>, then the contents of your loader file could be:
 </p>
@@ -60,6 +60,13 @@ Another example of directives that are often used in a loader file would be <cod
         [underscore_vars(dont_care), portability(warning), xmlspec(xsd)])). </pre>
 <p>
 To take the best advantage of loader files, assert a clause to the dynamic predicate <code>logtalk_library_path/2</code> for the directory containing your source files, as explained in the next section.
+</p>
+<p>
+A common mistake is to try to set compiler options using <code>logtalk_load/2</code> with a loader file. For example, by writing:
+</p>
+<pre>| ?- logtalk_load(loader, [xmlspec(xsd), xslfile('lgtxhtml.xsl')]).</pre>
+<p>
+This will not work as you might expect as the compiler options will only be used in the compilation of the <code>loader.lgt</code> file itself and will not affect the compilation of files loaded through the <code>initialization/1</code> directive contained on the loader file.	
 </p>
 
 <h3>Libraries of source files<a id="libraries"></a></h3>
