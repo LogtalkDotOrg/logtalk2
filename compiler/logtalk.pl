@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.26.1
+%  Release 2.26.2
 %
 %  Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 %
@@ -1333,7 +1333,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 26, 1)).
+current_logtalk_flag(version, version(2, 26, 2)).
 
 
 
@@ -2684,6 +2684,7 @@ current_logtalk_flag(version, version(2, 26, 1)).
 	'$lgt_dbg_leash_shortand_ports'(Shorthand, Ports).
 
 '$lgt_dbg_valid_leash_value'(Ports, Ports) :-
+	nonvar(Ports),
 	'$lgt_proper_list'(Ports),
 	'$lgt_dbg_valid_leash_ports'(Ports).
 
@@ -3968,10 +3969,13 @@ current_logtalk_flag(version, version(2, 26, 1)).
 	(callable(Obj) ->
 		assertz('$lgt_pp_referenced_object_'(Obj)),
 		assertz('$lgt_pp_uses_'(Obj)),
-		('$lgt_proper_list'(Preds) ->
-			'$lgt_tr_uses_preds'(Preds, Obj)
+		(nonvar(Preds) ->
+			('$lgt_proper_list'(Preds) ->
+				'$lgt_tr_uses_preds'(Preds, Obj)
+				;
+				throw(type_error(list, Preds)))
 			;
-			throw(type_error(list, Preds)))
+			throw(instantiation_error))
 		;
 		throw(type_error(object_identifier, Obj))).
 
@@ -8602,6 +8606,14 @@ current_logtalk_flag(version, version(2, 26, 1)).
 '$lgt_dcg_head'(RHead, _, _, _, _, _, _) :-
 	var(RHead),
 	throw(instantiation_error).
+
+'$lgt_dcg_head'((RHead, _), _, _, _, _, _, _) :-
+    var(RHead),
+    throw(instantiation_error).
+
+'$lgt_dcg_head'((_, Terminals), _, _, _, _, _, _) :-
+    var(Terminals),
+    throw(instantiation_error).
 
 '$lgt_dcg_head'((_, Terminals), _, _, _, _, _, _) :-
 	\+ '$lgt_proper_list'(Terminals),
