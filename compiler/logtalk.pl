@@ -4176,6 +4176,7 @@ current_logtalk_flag(version, version(2, 26, 2)).
 	'$lgt_tr_calls_directive'(Ptcs).
 
 
+
 '$lgt_tr_public_directive'([]).
 
 '$lgt_tr_public_directive'([Pred| _]) :-
@@ -6160,6 +6161,10 @@ current_logtalk_flag(version, version(2, 26, 2)).
 	var(Ref),
 	throw(instantiation_error).
 
+'$lgt_tr_implements_protocol'([Scope::Ptc| _], _) :-
+	(var(Scope); var(Ptc)),
+	throw(instantiation_error).
+
 '$lgt_tr_implements_protocol'([Ref| Refs], ObjOrCtg) :-
 	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		('$lgt_valid_protocol_ref'(Ref, Ptc) ->
@@ -6185,6 +6190,10 @@ current_logtalk_flag(version, version(2, 26, 2)).
 
 '$lgt_tr_imports_category'([Ref| _], _) :-
 	var(Ref),
+	throw(instantiation_error).
+
+'$lgt_tr_imports_category'([Scope::Ctg| _], _) :-
+	(var(Scope); var(Ctg)),
 	throw(instantiation_error).
 
 '$lgt_tr_imports_category'([Ref| Refs], ObjOrCtg) :-
@@ -6213,6 +6222,10 @@ current_logtalk_flag(version, version(2, 26, 2)).
 	var(Ref),
 	throw(instantiation_error).
 
+'$lgt_tr_instantiates_class'([Scope::Class| _], _) :-
+	(var(Scope); var(Class)),
+	throw(instantiation_error).
+
 '$lgt_tr_instantiates_class'([Ref| Refs], Obj) :-
 	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		('$lgt_valid_object_ref'(Ref, Class) ->
@@ -6237,6 +6250,10 @@ current_logtalk_flag(version, version(2, 26, 2)).
 
 '$lgt_tr_specializes_class'([Ref| _], _) :-
 	var(Ref),
+	throw(instantiation_error).
+
+'$lgt_tr_specializes_class'([Scope::Superclass| _], _) :-
+	(var(Scope); var(Superclass)),
 	throw(instantiation_error).
 
 '$lgt_tr_specializes_class'([Ref| Refs], Class) :-
@@ -6265,6 +6282,10 @@ current_logtalk_flag(version, version(2, 26, 2)).
 	var(Ref),
 	throw(instantiation_error).
 
+'$lgt_tr_extends_object'([Scope::Parent| _], _) :-
+	(var(Scope); var(Parent)),
+	throw(instantiation_error).
+
 '$lgt_tr_extends_object'([Ref| Refs], Obj) :-
 	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		('$lgt_valid_object_ref'(Ref, Parent) ->
@@ -6289,6 +6310,10 @@ current_logtalk_flag(version, version(2, 26, 2)).
 
 '$lgt_tr_extends_protocol'([Ref| _], _) :-
 	var(Ref),
+	throw(instantiation_error).
+
+'$lgt_tr_extends_protocol'([Scope::Ptc| _], _) :-
+	(var(Scope); var(Ptc)),
 	throw(instantiation_error).
 
 '$lgt_tr_extends_protocol'([Ref| Refs], Ptc1) :-
@@ -8248,8 +8273,7 @@ current_logtalk_flag(version, version(2, 26, 2)).
 %
 % valid predicate indicator
 
-'$lgt_valid_pred_ind'(Term, Functor, Arity) :-
-	Term = Functor/Arity,
+'$lgt_valid_pred_ind'(Functor/Arity, Functor, Arity) :-
 	atom(Functor),
 	integer(Arity),
 	Arity >= 0.
@@ -8260,8 +8284,7 @@ current_logtalk_flag(version, version(2, 26, 2)).
 %
 % valid grammar rule indicator
 
-'$lgt_valid_gr_ind'(Term, Functor, Arity, Arity2) :-
-	Term = Functor//Arity,
+'$lgt_valid_gr_ind'(Functor//Arity, Functor, Arity, Arity2) :-
 	atom(Functor),
 	integer(Arity),
 	Arity >= 0,
@@ -8281,46 +8304,45 @@ current_logtalk_flag(version, version(2, 26, 2)).
 
 
 
-% '$lgt_valid_ref_scope'(+nonvar, -atom)
+% '$lgt_valid_ref_scope'(@nonvar, -atom)
 
 '$lgt_valid_ref_scope'(Ref, Scope) :-
 	Ref = (Scope::_) ->
-		nonvar(Scope),
 		'$lgt_scope'(Scope, _)
 		;
 		Scope = (public).
 
 
 
-% '$lgt_valid_protocol_ref'(+term, -atom)
+% '$lgt_valid_protocol_ref'(@nonvar, -atom)
 
-'$lgt_valid_protocol_ref'(_::Ptc, Ptc) :-
-	!,
+'$lgt_valid_protocol_ref'(Ref, Ptc) :-
+	(Ref = (_::Ptc) ->
+		true
+		;
+		Ptc = Ref),
 	atom(Ptc).
 
-'$lgt_valid_protocol_ref'(Ptc, Ptc) :-
-	atom(Ptc).
 
 
+% '$lgt_valid_object_ref'(@nonvar, -atom)
 
-% '$lgt_valid_object_ref'(+term, -atom)
-
-'$lgt_valid_object_ref'(_::Obj, Obj) :-
-	!,
-	callable(Obj).
-
-'$lgt_valid_object_ref'(Obj, Obj) :-
+'$lgt_valid_object_ref'(Ref, Obj) :-
+	(Ref = (_::Obj) ->
+		true
+		;
+		Obj = Ref),
 	callable(Obj).
 
 
 
-% '$lgt_valid_category_ref'(+term, -atom)
+% '$lgt_valid_category_ref'(@nonvar, -atom)
 
-'$lgt_valid_category_ref'(_::Ctg, Ctg) :-
-	!,
-	atom(Ctg).
-
-'$lgt_valid_category_ref'(Ctg, Ctg) :-
+'$lgt_valid_category_ref'(Ref, Ctg) :-
+	(Ref = (_::Ctg) ->
+		true
+		;
+		Ctg = Ref),
 	atom(Ctg).
 
 
@@ -8359,7 +8381,8 @@ current_logtalk_flag(version, version(2, 26, 2)).
 % (an atom or a list of atoms)
 
 '$lgt_valid_op_names'(Op) :-
-	atom(Op), !.
+	atom(Op),
+	!.
 
 '$lgt_valid_op_names'(Ops) :-
 	'$lgt_valid_op_names_list'(Ops).
