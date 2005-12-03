@@ -1,12 +1,13 @@
 body {
 	color: #353535;
-	font-size: 12pt;
+	font-size: 11pt;
 	font-family: verdana, arial, sans-serif;
 	background: #eee;
 	margin: 12pt;
 }
 
 .navtop {
+	font-size: 9pt;
 	text-align: right;
 	border-color: #000000;
 	border-width: 1pt 0pt 0pt 0pt;
@@ -19,6 +20,7 @@ body {
 }
 
 .footer {
+	font-size: 9pt;
 	clear: left;
 	padding: 12pt 0pt 6pt 0pt;
 }
@@ -31,6 +33,7 @@ body {
 }
 
 .copyright {
+	font-size: 9pt;
 	text-align: center;
 	padding-top: 3pt;
 }
@@ -59,7 +62,7 @@ a:hover {
 code {
 	color: maroon;
 	font-family: monaco, courier, monospace;
-	font-size: 11pt;
+	font-size: 10pt;
 }
 
 .code {
@@ -70,6 +73,6 @@ code {
 pre {
 	color: maroon;
 	font-family: monaco, courier, monospace;
-	font-size: 11pt;
+	font-size: 10pt;
 	padding: 6pt 24pt 6pt 24pt;
 }
