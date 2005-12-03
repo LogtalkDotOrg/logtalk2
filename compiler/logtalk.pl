@@ -1457,6 +1457,7 @@ current_logtalk_flag(version, version(2, 26, 2)).
 	 ('$lgt_metapredicate'(Meta) -> Prop = metapredicate(Meta))).
 
 
+
 % '$lgt_scope'(?atom, ?term).
 %
 % converts between user and system scope terms
@@ -4011,6 +4012,7 @@ current_logtalk_flag(version, version(2, 26, 2)).
 	throw(type_error(list, Preds)).
 
 '$lgt_tr_directive'(uses, [Obj, Preds], _) :-
+	!,
 	assertz('$lgt_pp_referenced_object_'(Obj)),
 	assertz('$lgt_pp_uses_'(Obj)),
 	'$lgt_tr_uses_preds'(Preds, Obj).
