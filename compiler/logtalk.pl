@@ -2127,7 +2127,10 @@ current_logtalk_flag(version, version(2, 26, 2)).
 				;
 				throw(error(existence_error(non_terminal_declaration, Ruleset), Obj::phrase(Ruleset, Input, Rest), Sender))))
 		;
-		throw(error(existence_error(object, Obj), Obj::phrase(Ruleset, Input, Rest), Sender)).
+		(catch(current_module(Obj), _, fail) ->
+			':'(Obj, Pred)
+			;
+			throw(error(existence_error(object, Obj), Obj::phrase(Ruleset, Input, Rest), Sender)).
 
 
 
