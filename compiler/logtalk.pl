@@ -1625,7 +1625,7 @@ current_logtalk_flag(version, version(2, 26, 2)).
 		(Type = (dynamic) ->
 			((\+ \+ PScope = Scope; Sender = SCtn)  ->
 				'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
-				'$lgt_pred_metavars'(Head, Meta, Metavars),
+				'$lgt_pred_meta_vars'(Head, Meta, Metavars),
 				'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, Metavars),
 				'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 				('$lgt_debugging_'(Obj) ->
@@ -1709,7 +1709,7 @@ current_logtalk_flag(version, version(2, 26, 2)).
 		(Type = (dynamic) ->
 			((\+ \+ PScope = Scope; Sender = SCtn)  ->
 				'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
-				'$lgt_pred_metavars'(Head, Meta, Metavars),
+				'$lgt_pred_meta_vars'(Head, Meta, Metavars),
 				'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, Metavars),
 				'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 				('$lgt_debugging_'(Obj) ->
@@ -2130,7 +2130,7 @@ current_logtalk_flag(version, version(2, 26, 2)).
 		(catch(current_module(Obj), _, fail) ->
 			':'(Obj, Pred)
 			;
-			throw(error(existence_error(object, Obj), Obj::phrase(Ruleset, Input, Rest), Sender)).
+			throw(error(existence_error(object, Obj), Obj::phrase(Ruleset, Input, Rest), Sender))).
 
 
 
@@ -4355,8 +4355,8 @@ current_logtalk_flag(version, version(2, 26, 2)).
 
 
 
-% auxiliary predicate for converting module's meta predicate declarations to 
-% Logtalk ones
+% auxiliary predicate for converting module's meta predicate declarations into 
+% Logtalk ones (: -> ::)
 
 '$lgt_convert_module_meta_predicate_args'([], []).
 
@@ -4762,16 +4762,28 @@ current_logtalk_flag(version, version(2, 26, 2)).
 
 % '$lgt_tr_clause'(+clause, -clause, -clause, +term)
 
+'$lgt_tr_clause'(Clause, _, _, _) :-
+	var(Clause),
+	throw(instantiation_error).
+
+'$lgt_tr_clause'((Head:-Body), _, _, _) :-
+	(var(Head); var(Body)),
+	throw(instantiation_error).
+
 '$lgt_tr_clause'((Head:-_), _, _, _) :-
 	\+ callable(Head),
 	throw(type_error(callable, Head)).
+
+'$lgt_tr_clause'((_:-Body), _, _, _) :-
+	\+ callable(Body),
+	throw(type_error(callable, Body)).
 
 '$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_dbg_head'(Head, Ctx),DBody), Ctx) :-
 	functor(Head, Functor, Arity),
 	'$lgt_pp_dynamic_'(Functor, Arity),
 	!,
-	'$lgt_pred_metavars'(Head, Metavars),
-	'$lgt_ctx_metavars'(Ctx, Metavars),
+	'$lgt_pred_meta_vars'(Head, Metavars),
+	'$lgt_ctx_meta_vars'(Ctx, Metavars),
 	'$lgt_tr_head'(Head, THead, Ctx),
 	'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 	'$lgt_simplify_body'(TBody, SBody),
@@ -4779,8 +4791,8 @@ current_logtalk_flag(version, version(2, 26, 2)).
 
 '$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_dbg_head'(Head, Ctx),DBody), Ctx) :-
 	!,
-	'$lgt_pred_metavars'(Head, Metavars),
-	'$lgt_ctx_metavars'(Ctx, Metavars),
+	'$lgt_pred_meta_vars'(Head, Metavars),
+	'$lgt_ctx_meta_vars'(Ctx, Metavars),
 	'$lgt_tr_head'(Head, THead, Ctx),
 	'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 	'$lgt_simplify_body'(TBody, SBody),
@@ -4901,7 +4913,7 @@ current_logtalk_flag(version, version(2, 26, 2)).
 '$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, Ctx), Ctx) :-
 	var(Pred),
 	!,
-	'$lgt_ctx_metavars'(Ctx, Metavars),
+	'$lgt_ctx_meta_vars'(Ctx, Metavars),
 	('$lgt_member_var'(Pred, Metavars) ->
 		'$lgt_ctx_sender'(Ctx, Sender),
 		TPred = '$lgt_metacall_in_object'(Sender, Pred, Sender)
@@ -5232,7 +5244,7 @@ current_logtalk_flag(version, version(2, 26, 2)).
 	!,
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
-	'$lgt_tr_margs'(Args, MArgs, Ctx, TArgs),
+	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs),
 	TPred =.. [Functor| TArgs].
 
 '$lgt_tr_body'(Pred, '$lgt_call_built_in'(Pred, Ctx), '$lgt_dbg_goal'(Pred, '$lgt_call_built_in'(Pred, Ctx), Ctx), Ctx) :-
@@ -5260,21 +5272,21 @@ current_logtalk_flag(version, version(2, 26, 2)).
 
 
 
-% '$lgt_tr_margs'(@list, @list, +term, -list)
+% '$lgt_tr_meta_args'(@list, @list, +term, -list)
 %
 % translates the meta-arguments contained in the list of 
 % arguments of a call to a metapredicate
 
-'$lgt_tr_margs'([], [], _, []).
+'$lgt_tr_meta_args'([], [], _, []).
 
-'$lgt_tr_margs'([Arg| Args], [MArg| MArgs], Ctx, [TArg| TArgs]) :-
-	'$lgt_tr_marg'(MArg, Arg, Ctx, TArg),
-	'$lgt_tr_margs'(Args, MArgs, Ctx, TArgs).
+'$lgt_tr_meta_args'([Arg| Args], [MArg| MArgs], Ctx, [TArg| TArgs]) :-
+	'$lgt_tr_meta_arg'(MArg, Arg, Ctx, TArg),
+	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs).
 
 
-'$lgt_tr_marg'(*, Arg, _, Arg).
+'$lgt_tr_meta_arg'(*, Arg, _, Arg).
 
-'$lgt_tr_marg'(::, Arg, Ctx, TArg) :-
+'$lgt_tr_meta_arg'(::, Arg, Ctx, TArg) :-
 	'$lgt_tr_body'(Arg, TArg, _, Ctx).
 
 
@@ -5802,50 +5814,50 @@ current_logtalk_flag(version, version(2, 26, 2)).
 		TPred = '$lgt_send_to_super_nv'(Self, Pred, This, Sender)).
 
 
-% '$lgt_pred_metavars'(+callable, -list)
+% '$lgt_pred_meta_vars'(+callable, -list)
 %
 % constructs a list of all variables that occur
 % in a position corresponding to a meta-argument
 
-'$lgt_pred_metavars'(Pred, Metavars) :-
+'$lgt_pred_meta_vars'(Pred, Metavars) :-
 	functor(Pred, Functor, Arity),
 	functor(Meta, Functor, Arity),
 	('$lgt_pp_metapredicate_'(Meta) ->
 		Pred =.. [_| Args],
 		Meta =.. [_| MArgs],
-		'$lgt_extract_metavars'(Args, MArgs, Metavars)
+		'$lgt_extract_meta_vars'(Args, MArgs, Metavars)
 		;
 		Metavars = []).
 
 
 
-% '$lgt_pred_metavars'(+callable, +callable, -list)
+% '$lgt_pred_meta_vars'(+callable, +callable, -list)
 %
 % constructs a list of all variables that occur
 % in a position corresponding to a meta-argument
 
-'$lgt_pred_metavars'(Pred, Meta, Metavars) :-
+'$lgt_pred_meta_vars'(Pred, Meta, Metavars) :-
 	Meta = no ->
 		Metavars = []
 		;
 		Pred =.. [_| Args],
 		Meta =.. [_| MArgs],
-		'$lgt_extract_metavars'(Args, MArgs, Metavars).
+		'$lgt_extract_meta_vars'(Args, MArgs, Metavars).
 
 
 
-% '$lgt_extract_metavars'(+list, +list, -list)
+% '$lgt_extract_meta_vars'(+list, +list, -list)
 
-'$lgt_extract_metavars'([], [], []).
+'$lgt_extract_meta_vars'([], [], []).
 
-'$lgt_extract_metavars'([Var| Args], [MArg| MArgs], [Var| Metavars]) :-
+'$lgt_extract_meta_vars'([Var| Args], [MArg| MArgs], [Var| Metavars]) :-
 	var(Var),
 	MArg = (::),
 	!,
-	'$lgt_extract_metavars'(Args, MArgs, Metavars).
+	'$lgt_extract_meta_vars'(Args, MArgs, Metavars).
 
-'$lgt_extract_metavars'([_| Args], [_| MArgs], Metavars) :-
-	'$lgt_extract_metavars'(Args, MArgs, Metavars).
+'$lgt_extract_meta_vars'([_| Args], [_| MArgs], Metavars) :-
+	'$lgt_extract_meta_vars'(Args, MArgs, Metavars).
 
 
 
@@ -8247,7 +8259,7 @@ current_logtalk_flag(version, version(2, 26, 2)).
 
 '$lgt_ctx_prefix'(ctx(_, _, _, Prefix, _), Prefix).
 
-'$lgt_ctx_metavars'(ctx(_, _, _, _, Metavars), Metavars).
+'$lgt_ctx_meta_vars'(ctx(_, _, _, _, Metavars), Metavars).
 
 
 
