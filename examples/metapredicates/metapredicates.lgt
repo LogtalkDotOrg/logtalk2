@@ -63,7 +63,7 @@
 	sort([Head| Tail], Sorted) :-
 		trace(partition(Tail, Head, Small, Large)),
 		trace(sort(Small, Sorted1)),
-		trace(sort(Large, Sorted2))),
+		trace(sort(Large, Sorted2)),
 		append(Sorted1, [Head| Sorted2], Sorted).
 
 	partition([], _, [], []).
