@@ -7943,7 +7943,7 @@ current_logtalk_flag(version, version(2, 26, 2)).
 % '$lgt_assert_runtime_clauses'(+list)
 %
 % called when loading a compiled Logtalk entity in order to update
-% Logtalk internal tables
+% Logtalk internal runtime tables
 %
 % we may be reloading the entity so we must first retract any old
 % runtime clauses before asserting the new ones
