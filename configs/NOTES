@@ -58,16 +58,15 @@ Amzi! Prolog 6.2.2 and later versions
 	to set the working directory before loading the library or an example.
 
 
-B-Prolog 6.7#2 and later versions
+B-Prolog 6.8 and later versions
 
 	b.config
 
-	For B-Prolog 6.7#2 and later versions.
-	This version contains a bug in the atom_concat/3 predicate that prevents 
-	some examples such as the "symdiff" from running. Don't forget to use the 
-	chdir/1 predicate to set the working directory before loading the library 
-	or an example. Note that this configuration file redefines the B-Prolog 
-	::/2 finite-domain built-in predicate (use the in/2 predicate instead).
+	For B-Prolog 6.8 and later versions. Don't forget to use the chdir/1 
+	predicate to set the working directory before loading the library or an 
+	example. Note that this configuration file redefines the B-Prolog ::/2 
+	finite-domain built-in predicate (you may use the alternative in/2 
+	predicate instead).
 
 	You can generate a new Prolog top level that includes the config file, the
 	Logtalk compiler/runtime, and the library paths file by doing something 
