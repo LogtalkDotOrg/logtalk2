@@ -22,6 +22,9 @@ RELEASE NOTES
 
 	Corrected a compilation bug on the "metapredicates" example source file.
 
+	Switched off generation of XML documenting files for the "symdiff" example
+	in order to avoid file names compatibility problems on Windows.
+
 
 2.26.1 - November 28, 2005
 
