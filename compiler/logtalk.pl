@@ -2160,165 +2160,195 @@ current_logtalk_flag(version, version(2, 26, 2)).
 % '$lgt_send_to_self'(+object, ?term, +object)
 
 '$lgt_send_to_self'(Obj, Pred, Sender) :-
-	nonvar(Pred) ->
-		'$lgt_send_to_self_nv'(Obj, Pred, Sender)
-		;
-		throw(error(instantiation_error, Obj::Pred, Sender)).
+	var(Pred),
+	throw(error(instantiation_error, Obj::Pred, Sender)).
+
+'$lgt_send_to_self'(Obj, Pred, Sender) :-
+	'$lgt_send_to_self_nv'(Obj, Pred, Sender).
 
 
 
 % '$lgt_send_to_self_nv'(+object, +term, +object)
 
 '$lgt_send_to_self_nv'(Obj, Pred, Sender) :-
-	'$lgt_self_lookup_cache_'(Obj, Pred, Sender, Call) ->
-		call(Call)
-		;
-		('$lgt_current_object_'(Obj, _, Dcl, Def, _, _),
-		 ('$lgt_call'(Dcl, Pred, Scope, _, _, SCtn, _) ->
-			((Scope = p(_); Sender = SCtn) ->
-				functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),
-				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
-				functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
-				'$lgt_once'(Def, GPred, GSender, GObj, GObj, GCall, _),
-				asserta('$lgt_self_lookup_cache_'(GObj, GPred, GSender, GCall)),
-				(GObj, GPred, GSender) = (Obj, Pred, Sender),
-				call(GCall)
-				;
-				throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender)))
+	'$lgt_self_lookup_cache_'(Obj, Pred, Sender, Call),
+	!,
+	call(Call).
+
+'$lgt_send_to_self_nv'(Obj, Pred, Sender) :-
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _),
+	('$lgt_call'(Dcl, Pred, Scope, _, _, SCtn, _) ->
+		((Scope = p(_); Sender = SCtn) ->
+			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
+			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
+			functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
+			'$lgt_once'(Def, GPred, GSender, GObj, GObj, GCall, _),
+			asserta('$lgt_self_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
+			(GObj, GPred, GSender) = (Obj, Pred, Sender),
+			call(GCall)
 			;
-			('$lgt_built_in'(Pred) ->
-				call(Pred)
-				;
-				throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))))).
+			throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender)))
+		;
+		('$lgt_built_in'(Pred) ->
+			call(Pred)
+			;
+			throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender)))).
 
 
 % '$lgt_send_to_object'(@object, ?term, +object)
 
 '$lgt_send_to_object'(Obj, Pred, Sender) :-
-	(nonvar(Obj), nonvar(Pred)) ->
-		'$lgt_send_to_object_nv'(Obj, Pred, Sender)
-		;
-		throw(error(instantiation_error, Obj::Pred, Sender)).
+	var(Obj),
+	throw(error(instantiation_error, Obj::Pred, Sender)).
+	
+'$lgt_send_to_object'(Obj, Pred, Sender) :-
+	var(Pred),
+	throw(error(instantiation_error, Obj::Pred, Sender)).
+
+'$lgt_send_to_object'(Obj, Pred, Sender) :-
+	'$lgt_send_to_object_nv'(Obj, Pred, Sender).
 
 
 
 % '$lgt_send_to_object_nv'(+object, +term, +object)
 
 '$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
-	'$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Call) ->
-		\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),
-		call(Call),
-		\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall))
-		;
-		('$lgt_current_object_'(Obj, _, Dcl, Def, _, _) ->
-			('$lgt_call'(Dcl, Pred, Scope, _, _, _, _) ->
-				(Scope = p(p(_)) ->
-					functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),
-					functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
-					'$lgt_once'(Def, GPred, GSender, GObj, GObj, GCall, _),
-					asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),
-					(GObj, GPred, GSender) = (Obj, Pred, Sender),
-					\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),
-					call(GCall),
-					\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall))
-					;
-					(Scope = p ->
-						throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
-						;
-						throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))))
-				;
-				('$lgt_built_in'(Pred) ->
-					call(Pred)
-					;
-					throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))))
+	'$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Call),
+	!,
+	\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),
+	call(Call),
+	\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall)).
+
+'$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _),
+	!,
+	('$lgt_call'(Dcl, Pred, Scope, _, _, _, _) ->
+		(Scope = p(p(_)) ->
+			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
+			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),	% construct object template
+			'$lgt_once'(Def, GPred, GSender, GObj, GObj, GCall, _),
+			asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
+			(GObj, GPred, GSender) = (Obj, Pred, Sender),
+			\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),
+			call(GCall),
+			\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall))
 			;
-			(catch(current_module(Obj), _, fail) ->
-				':'(Obj, Pred)
+			(Scope = p ->
+				throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
 				;
-				throw(error(existence_error(object, Obj), Obj::Pred, Sender)))).
+				throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))))
+		;
+		('$lgt_built_in'(Pred) ->
+			call(Pred)
+			;
+			throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender)))).
+
+'$lgt_send_to_object_nv'(Obj, Pred, _) :-
+	catch(current_module(Obj), _, fail),
+	!,
+	':'(Obj, Pred).
+
+'$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
+	throw(error(existence_error(object, Obj), Obj::Pred, Sender)).
 
 
 
 % '$lgt_send_to_object_ne'(@object, ?term, +object)
 
 '$lgt_send_to_object_ne'(Obj, Pred, Sender) :-
-	(nonvar(Obj), nonvar(Pred)) ->
-		'$lgt_send_to_object_ne_nv'(Obj, Pred, Sender)
-		;
-		throw(error(instantiation_error, Obj::Pred, Sender)).
+	var(Obj),
+	throw(error(instantiation_error, Obj::Pred, Sender)).
+	
+'$lgt_send_to_object_ne'(Obj, Pred, Sender) :-
+	var(Pred),
+	throw(error(instantiation_error, Obj::Pred, Sender)).
+
+'$lgt_send_to_object_ne'(Obj, Pred, Sender) :-
+	'$lgt_send_to_object_ne_nv'(Obj, Pred, Sender).
 
 
 
 % '$lgt_send_to_object_ne_nv'(+object, +term, +object)
 
 '$lgt_send_to_object_ne_nv'(Obj, Pred, Sender) :-
-	'$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Call) ->
-		call(Call)
-		;
-		('$lgt_current_object_'(Obj, _, Dcl, Def, _, _) ->
-			('$lgt_call'(Dcl, Pred, Scope, _, _, _, _) ->
-				(Scope = p(p(_)) ->
-					functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),
-					functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
-					'$lgt_once'(Def, GPred, GSender, GObj, GObj, GCall, _),
-					asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),
-					(GObj, GPred, GSender) = (Obj, Pred, Sender),
-					call(GCall)
-					;
-					(Scope = p ->
-						throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
-						;
-						throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))))
-				;
-				('$lgt_built_in'(Pred) ->
-					call(Pred)
-					;
-					throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))))
+	'$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Call),
+	!,
+	call(Call).
+
+'$lgt_send_to_object_ne_nv'(Obj, Pred, Sender) :-
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _),
+	!,
+	('$lgt_call'(Dcl, Pred, Scope, _, _, _, _) ->
+		(Scope = p(p(_)) ->
+			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
+			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),	% construct object template
+			'$lgt_once'(Def, GPred, GSender, GObj, GObj, GCall, _),
+			asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
+			(GObj, GPred, GSender) = (Obj, Pred, Sender),
+			call(GCall)
 			;
-			(catch(current_module(Obj), _, fail) ->
-				':'(Obj, Pred)
+			(Scope = p ->
+				throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
 				;
-				throw(error(existence_error(object, Obj), Obj::Pred, Sender)))).
+				throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))))
+		;
+		('$lgt_built_in'(Pred) ->
+			call(Pred)
+			;
+			throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender)))).
+
+'$lgt_send_to_object_ne_nv'(Obj, Pred, _) :-
+	catch(current_module(Obj), _, fail),
+	!,
+	':'(Obj, Pred).
+
+'$lgt_send_to_object_ne_nv'(Obj, Pred, Sender) :-
+	throw(error(existence_error(object, Obj), Obj::Pred, Sender)).
 
 
 
 % '$lgt_send_to_super'(+object, ?term, +object, +object)
 
+'$lgt_send_to_super'(_, Pred, This, _) :-
+	var(Pred),
+	throw(error(instantiation_error, ^^Pred, This)).
+
 '$lgt_send_to_super'(Self, Pred, This, Sender) :-
-	nonvar(Pred) ->
-		'$lgt_send_to_super_nv'(Self, Pred, This, Sender)
-		;
-		throw(error(instantiation_error, ^^Pred, This)).
+	'$lgt_send_to_super_nv'(Self, Pred, This, Sender).
 
 
 
 % '$lgt_send_to_super_nv'(+object, +term, +object, +object)
 
 '$lgt_send_to_super_nv'(Self, Pred, This, Sender) :-
-	'$lgt_super_lookup_cache_'(Self, Pred, This, Sender, Call) ->
-		call(Call)
-		;
-		('$lgt_current_object_'(Self, _, Dcl, _, _, _),
-		 ('$lgt_call'(Dcl, Pred, Scope, _, _, SCtn, _) ->
-	 		((Scope = p(_); This = SCtn) ->
-				'$lgt_current_object_'(This, _, _, _, Super, _),
-				functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),
-				functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),
-				functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),
-				'$lgt_once'(Super, GPred, GSender, GThis, GSelf, GCall, Ctn),
-				(Ctn \= GThis ->
-					asserta('$lgt_super_lookup_cache_'(GSelf, GPred, GThis, GSender, GCall)),
-					(GSelf, GPred, GThis, GSender) = (Self, Pred, This, Sender),
-					call(GCall)
-					;
-					throw(error(endless_loop(Pred), ^^Pred, This)))
-				;
-				throw(error(permission_error(access, private_predicate, Pred), ^^Pred, This)))
+	'$lgt_super_lookup_cache_'(Self, Pred, This, Sender, Call),
+	!,
+	call(Call).
+
+'$lgt_send_to_super_nv'(Self, Pred, This, Sender) :-
+	'$lgt_current_object_'(Self, _, Dcl, _, _, _),
+	'$lgt_call'(Dcl, Pred, Scope, _, _, SCtn, _),
+	!,
+	((Scope = p(_); This = SCtn) ->
+		'$lgt_current_object_'(This, _, _, _, Super, _),
+		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
+		functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),	% construct "this" template
+		functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),	% construct "self" template
+		'$lgt_once'(Super, GPred, GSender, GThis, GSelf, GCall, Ctn),
+		(Ctn \= GThis ->
+			asserta('$lgt_super_lookup_cache_'(GSelf, GPred, GThis, GSender, GCall)),	% cache lookup result
+			(GSelf, GPred, GThis, GSender) = (Self, Pred, This, Sender),
+			call(GCall)
 			;
-			('$lgt_built_in'(Pred) ->
-				call(Pred)
-				;
-				throw(error(existence_error(predicate_declaration, Pred), ^^Pred, This))))).
+			throw(error(endless_loop(Pred), ^^Pred, This)))
+		;
+		throw(error(permission_error(access, private_predicate, Pred), ^^Pred, This))).
+
+'$lgt_send_to_super_nv'(_, Pred, This, _) :-
+	'$lgt_built_in'(Pred) ->
+		call(Pred)
+		;
+		throw(error(existence_error(predicate_declaration, Pred), ^^Pred, This)).
 
 
 
@@ -2327,19 +2357,21 @@ current_logtalk_flag(version, version(2, 26, 2)).
 % metacalls in predicate definitions
 
 '$lgt_metacall_in_object'(Obj, Pred, Sender) :-
-	var(Pred) ->
-		throw(error(instantiation_error, Obj::call(Pred), Sender))
+	var(Pred),
+	throw(error(instantiation_error, Obj::call(Pred), Sender)).
+
+'$lgt_metacall_in_object'(user, Pred, _) :-
+	!,
+	call(Pred).
+
+'$lgt_metacall_in_object'(Obj, Pred, Sender) :-
+	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
+	'$lgt_ctx_ctx'(Ctx, Sender, Obj, Obj, Prefix, _),
+	'$lgt_tr_body'(Pred, Call, DCall, Ctx),
+	(('$lgt_dbg_debugging_', '$lgt_debugging_'(Obj)) ->
+		call(DCall)
 		;
-		(Obj = user ->
-			call(Pred)
-			;
-			'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
-			'$lgt_ctx_ctx'(Ctx, Sender, Obj, Obj, Prefix, _),
-			'$lgt_tr_body'(Pred, Call, DCall, Ctx),
-			(('$lgt_dbg_debugging_', '$lgt_debugging_'(Obj)) ->
-				call(DCall)
-				;
-				call(Call))).
+		call(Call)).
 
 
 

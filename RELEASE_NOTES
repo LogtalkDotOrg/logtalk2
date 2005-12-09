@@ -15,6 +15,8 @@ RELEASE NOTES
 	Improved error-checking for the Logtalk compiler and for the grammar rule 
 	translator.
 
+	Small message sending performance improvement.
+
 	Corrected some bugs on the implementation of built-in methods phrase/2-3
 	(thanks to Mats Carlsson for pointing the error).
 
