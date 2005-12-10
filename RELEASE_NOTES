@@ -27,6 +27,9 @@ RELEASE NOTES
 
 	Updated compatibility notes on B-Prolog 6.8.
 
+	Added a config file for the current XSB CVS version and the corresponding 
+	integration shell scripts (for both Windows and POSIX systems).
+
 
 2.26.1 - November 28, 2005
 

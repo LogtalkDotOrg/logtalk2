@@ -123,6 +123,13 @@ make_xsblgt.sh
 	and make and edit a copy of the libpaths/libpaths.pl in order to replace 
 	all occurrences of the LOGTALKUSER environment variable with its value; 
 	the new file should also use the .P extension)
+make_xsbcvslgt.sh
+	similar to the script above but for running Logtalk with the XSB CVS 
+	version
+make_xsbcvslgt.js
+	similar to the script above but for running Logtalk with the XSB CVS 
+	version (assumes that the XSB folder is installed in C:\Program Files; 
+	edit the path to the "xsb.exe" executable in the script if necessary)
 
 makeall_lgt.sh
 	simple shell script for running all the make_*lgt.sh shell scripts in 
