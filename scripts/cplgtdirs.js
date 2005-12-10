@@ -61,9 +61,12 @@ FSObject.CreateFolder(logtalk_user);
 
 WScript.Echo("Copying Logtalk files and directories...");
 FSObject.CopyFolder(logtalk_home + "\\configs", logtalk_user + "\\configs");
+FSObject.CopyFile(logtalk_user + "\\configs\\xsb.config", logtalk_user + "\\configs\\xsb.P");
+FSObject.CopyFile(logtalk_user + "\\configs\\xsbcvs.config", logtalk_user + "\\configs\\xsbcvs.P");
 FSObject.CopyFolder(logtalk_home + "\\contributions", logtalk_user + "\\contributions");
 FSObject.CopyFolder(logtalk_home + "\\examples", logtalk_user + "\\examples");
 FSObject.CopyFolder(logtalk_home + "\\libpaths", logtalk_user + "\\libpaths");
+FSObject.CopyFile(logtalk_user + "\\libpaths\\libpaths.pl", logtalk_user + "\\libpaths\\libpaths.P");
 FSObject.CopyFolder(logtalk_home + "\\library", logtalk_user + "\\library");
 FSObject.CopyFolder(logtalk_home + "\\xml", logtalk_user + "\\xml");
 

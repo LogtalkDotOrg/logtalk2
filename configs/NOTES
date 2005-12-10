@@ -449,13 +449,13 @@ XSB CVS version
 
 	The current XSB CVS version corrects the problem with dynamic predicates 
 	described above, adds some missing ISO Prolog predicates and directives,
-	and fixes some bugs	thus providing better support for running Logtalk when
-	compared with the latest stable release (2.7.1).
+	and fixes some bugs,	thus providing better support for running Logtalk 
+	when compared with the latest stable release (2.7.1).
 	
 	You need to rename both the config file and the Logtalk pre-processor to 
 	end with a ".P" extension otherwise the (re)consult built-in predicate 
 	will not find them! If you want to use the scripts/make_xsbcvslgt.* 
-	scripts, first rename (or copy) the config file to "xsb.P".
+	scripts, first rename (or copy) the config file to "xsbcvs.P".
 
 
 

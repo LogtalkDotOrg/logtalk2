@@ -119,13 +119,14 @@ make_yaplgt.js
 make_xsblgt.sh
 	makes a shell script named "xsblgt" for running Logtalk with XSB (the 
 	first run of the "xsblgt" script must be made as root or using sudo; each
-	user will need to rename the file configs/xsbXX.config to configs/xsb.P 
+	user will need to rename the file configs/xsb.config to configs/xsb.P 
 	and make and edit a copy of the libpaths/libpaths.pl in order to replace 
 	all occurrences of the LOGTALKUSER environment variable with its value; 
 	the new file should also use the .P extension)
 make_xsbcvslgt.sh
 	similar to the script above but for running Logtalk with the XSB CVS 
-	version
+	version (each user will need to rename the file configs/xsbcvs.config 
+	to configs/xsbcvs.P)
 make_xsbcvslgt.js
 	similar to the script above but for running Logtalk with the XSB CVS 
 	version (assumes that the XSB folder is installed in C:\Program Files; 

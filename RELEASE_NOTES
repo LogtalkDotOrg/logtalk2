@@ -28,7 +28,10 @@ RELEASE NOTES
 	Updated compatibility notes on B-Prolog 6.8.
 
 	Added a config file for the current XSB CVS version and the corresponding 
-	integration shell scripts (for both Windows and POSIX systems).
+	integration shell scripts (for both Windows and POSIX systems). Modified 
+	the "cplgtdirs.*" shell scripts in order to make either links or copies of 
+	the config files and the "libpaths.pl" file with the required ".P" file 
+	name extension.
 
 
 2.26.1 - November 28, 2005

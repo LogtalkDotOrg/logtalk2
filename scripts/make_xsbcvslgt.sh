@@ -8,7 +8,7 @@
 ## =================================================================
 
 echo
-echo "Creating a script named xsblgt for running Logtalk with XSB..."
+echo "Creating a script named xsbcvslgt for running Logtalk with XSB..."
 echo
 
 if ! [ "$LOGTALKHOME" ]
@@ -41,20 +41,20 @@ fi
 cd "$LOGTALKHOME"
 mkdir -p bin
 cd bin
-cp ../compiler/logtalk.pl logtalk.P
-echo ":- reconsult('$LOGTALKUSER/configs/xsb.P')." > logtalkxsb.P
-echo ":- reconsult('$LOGTALKHOME/bin/logtalk.P')." >> logtalkxsb.P
-echo ":- reconsult('$LOGTALKUSER/libpaths/libpaths.P')." >> logtalkxsb.P
-echo "#/bin/sh" > xsblgt
-echo "xsb -e \"reconsult('\$LOGTALKHOME/bin/logtalkxsb.P').\"" >> xsblgt
-chmod a+x xsblgt
-ln -sf $LOGTALKHOME/bin/xsblgt $prefix/bin/xsblgt
+cp ../compiler/logtalk.pl logtalkcvs.P
+echo ":- reconsult('$LOGTALKUSER/configs/xsbcvs.P')." > logtalkxsbcvs.P
+echo ":- reconsult('$LOGTALKHOME/bin/logtalkcvs.P')." >> logtalkxsbcvs.P
+echo ":- reconsult('$LOGTALKUSER/libpaths/libpaths.P')." >> logtalkxsbcvs.P
+echo "#/bin/sh" > xsbcvslgt
+echo "xsb -e \"reconsult('\$LOGTALKHOME/bin/logtalkxsbcvs.P').\"" >> xsbcvslgt
+chmod a+x xsbcvslgt
+ln -sf $LOGTALKHOME/bin/xsbcvslgt $prefix/bin/xsbcvslgt
 echo "Done. A link to the script was been created in $prefix/bin."
 echo "Users should define the environment variables LOGTALKHOME and"
 echo "LOGTALKUSER in order to use the script."
 echo
 echo "Users must change the extension of files \$LOGTALKUSER/configs/xsb.config"
-echo "and \$LOGTALKUSER/libpaths/libpaths.pl to '.P' before using the xsblgt"
+echo "and \$LOGTALKUSER/libpaths/libpaths.pl to '.P' before using the xsbcvslgt"
 echo "script. In addition, users must edit the libpaths.P file to replace all"
 echo "occurrences of the LOGTALKUSER environment variable by its value."
 echo

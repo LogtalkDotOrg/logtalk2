@@ -13,7 +13,7 @@ if (WScript.Arguments.Unnamed.Length > 0) {
 }
 
 WScript.Echo('');
-WScript.Echo('Creating a shortcut named "Logtalk - XSB" for running Logtalk');
+WScript.Echo('Creating a shortcut named "Logtalk - XSB CVS" for running Logtalk');
 WScript.Echo('with XSB...');
 WScript.Echo('');
 
@@ -54,11 +54,11 @@ logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
 if (!FSObject.FolderExists(logtalk_home + "\\bin")) 
 	FSObject.CreateFolder(logtalk_home + "\\bin");
 
-FSObject.CopyFile(logtalk_home + "\\compiler\\logtak.pl", logtalk_home + "\\bin\\logtak.P").
+FSObject.CopyFile(logtalk_home + "\\compiler\\logtak.pl", logtalk_home + "\\bin\\logtakcvs.P").
 
-var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_xsb.P", true);
+var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_xsbcvs.P", true);
 
-f.WriteLine(":- reconsult('$LOGTALKUSER\\\\configs\\\\xsb.P').");
+f.WriteLine(":- reconsult('$LOGTALKUSER\\\\configs\\\\xsbcvs.P').");
 f.WriteLine(":- reconsult('$LOGTALKHOME\\\\bin\\\\logtalk.P').");
 f.WriteLine(":- reconsult('$LOGTALKUSER\\\\libpaths\\\\libpaths.P').");
 f.Close();
@@ -68,28 +68,28 @@ var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk")) 
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
-var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - XSB.lnk");
-link.Arguments = "-l %LOGTALKHOME%\\bin\\logtalk_xsb.P";
-link.Description = "Runs Logtalk with XSB";
+var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - XSB CVS.lnk");
+link.Arguments = "-l %LOGTALKHOME%\\bin\\logtalk_xsbcvs.P";
+link.Description = "Runs Logtalk with XSB CVS";
 link.IconLocation = "app.exe,1";
 link.TargetPath = prolog_path;
 link.WindowStyle = 1;
 link.WorkingDirectory = logtalk_home;
 link.Save();
 
-WScript.Echo('Done. The "Logtalk - XSB" shortcut was been added to the Start Menu');
+WScript.Echo('Done. The "Logtalk - XSB CVS" shortcut was been added to the Start Menu');
 WScript.Echo('Programs.  Make sure that the environment variables LOGTALKHOME and');
 WScript.Echo('LOGTALKUSER are defined for all users wishing to use the shortcut.');
 WScript.Echo('');
 WScript.Echo('Users must run the batch script "cplgtdirs" before using the');
-WScript.Echo('"Logtalk - XSB" shortcut.');
+WScript.Echo('"Logtalk - XSB CVS" shortcut.');
 WScript.Echo('');
 
 WScript.Quit(0);
 
 function usage_help() {
 	WScript.Echo('');
-	WScript.Echo('This script creates a shortcut named "Logtalk - XSB" for running Logtalk');
+	WScript.Echo('This script creates a shortcut named "Logtalk - XSB CVS" for running Logtalk');
 	WScript.Echo('with XSB. The script must be run by a user with administrative rights.');
 	WScript.Echo('The LOGTALKHOME environment variable must be defined before running this');
 	WScript.Echo('script.');
