@@ -300,20 +300,9 @@ PrologII+ 4.5 and later versions
 	Does not support the "altdirs" compiler flag.
 
 
-Qu-Prolog 6.7
+Qu-Prolog 7.0
 
 	qu.config
-
-	Qu-Prolog 6.7 does not support floats. In order to compile the Logtalk 
-	library and the Logtalk examples you will need to replace all occurrences 
-	of floats by either integers or (quoted) atoms. In Unix-like systems, you
-	may perform the changes by running the following commands:
-
-		% cd $LOGTALKHOME
-		% find . -name "*.lgt" -exec perl -pi -e "s/version is (\d)\.(\d)/version is '\1\.\2'/" {} \;
-
-	Not that the above patch will not enable some examples that use floats to 
-	run.
 
 	In order to compile and load both the config file and the Logtalk compiler,
 	the following sequence of steps is advised. First make a copy of the config 
@@ -325,13 +314,17 @@ Qu-Prolog 6.7
 
 		% qp -s 2048 -d 1024 -h 2000
 
-	Next, compile and load the config file using:
+	Third, compile and load the config file using:
 
 		| ?- fcompile('qu.ql', [assemble_only(true)]), load(qu).
 
-	Finally, compile and load the Logtalk compiler:
+	Next, compile and load the Logtalk compiler:
 
 		| ?- chdir('../compiler/'), fcompile('logtalk.pl', [assemble_only(true), string_table(256)]), load(logtalk).
+
+	Finally, compile and load the library paths file:
+
+		| ?- chdir('../libpaths/'), fcompile('libpaths.pl', [assemble_only(true)]), load(libpaths).
 
 	Don't forget to use the chdir/1 predicate to set the working directory 
 	before loading the library or an example.

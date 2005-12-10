@@ -26,7 +26,7 @@ RELEASE NOTES
 	Switched off generation of XML documenting files for the "symdiff" example
 	in order to avoid file names compatibility problems on Windows.
 
-	Updated compatibility notes on B-Prolog 6.8.
+	Updated compatibility notes on B-Prolog 6.8 and Qu-Prolog 7.0.
 
 	Added a config file for the current XSB CVS version and the corresponding 
 	integration shell scripts (for both Windows and POSIX systems). Modified 
