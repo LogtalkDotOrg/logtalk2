@@ -17,8 +17,9 @@ RELEASE NOTES
 
 	Small message sending performance improvement.
 
-	Corrected a bugs on the implementation of built-in methods phrase/2-3
-	(thanks to Mats Carlsson for pointing the error).
+	Corrected a bug on the implementation of built-in methods phrase/2-3 for 
+	negated grammar rule bodies (thanks to Mats Carlsson for pointing the 
+	error).
 
 	Corrected a compilation bug on the "metapredicates" example source file.
 
