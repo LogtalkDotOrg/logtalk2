@@ -50,8 +50,8 @@ Amzi! Prolog 6.2.2 and later versions
 
 	amzi.config
 
-	For Amzi! Prolog 6.22 and later releases. The compiler definition of the 
-	compare/3 built-in predicate returns the atom == instead of = for 
+	For Amzi! Prolog 6.22 and later releases. The compiler definition of 
+	the compare/3 built-in predicate returns the atom == instead of = for 
 	identical terms (contrary to every other Prolog compiler!). You need to 
 	search the library files for all calls of the compare/3 predicate and 
 	make the necessary changes. Don't forget to use the chdir/1 predicate 
@@ -63,10 +63,10 @@ B-Prolog 6.8 and later versions
 	b.config
 
 	For B-Prolog 6.8 and later versions. Don't forget to use the chdir/1 
-	predicate to set the working directory before loading the library or an 
-	example. Note that this configuration file redefines the B-Prolog ::/2 
-	finite-domain built-in predicate (you may use the alternative in/2 
-	predicate instead).
+	predicate to set the working directory before loading the library or 
+	an example. Note that this configuration file redefines the B-Prolog 
+	::/2 finite-domain built-in predicate (you may use the alternative 
+	in/2 predicate instead).
 
 	You can generate a new Prolog top level that includes the config file, the
 	Logtalk compiler/runtime, and the library paths file by doing something 
@@ -443,7 +443,7 @@ XSB Prolog 2.7.1
 	loading the library or an example.
 
 
-YAP 4.3.x~4.5.x
+YAP 4.3.x and later versions
 
 	yap.config
 
