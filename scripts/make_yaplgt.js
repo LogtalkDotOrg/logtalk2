@@ -5,7 +5,7 @@
 // Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 // =================================================================
 
-var prolog_path = "C:\\Program Files\\Yap\\bin\\yap.exe";
+var prolog_path = "C:\\Yap\\bin\\yap.exe";
 
 if (WScript.Arguments.Unnamed.Length > 0) {
 	usage_help();
