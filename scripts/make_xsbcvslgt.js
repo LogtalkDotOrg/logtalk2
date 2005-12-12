@@ -54,7 +54,7 @@ logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
 if (!FSObject.FolderExists(logtalk_home + "\\bin")) 
 	FSObject.CreateFolder(logtalk_home + "\\bin");
 
-FSObject.CopyFile(logtalk_home + "\\compiler\\logtak.pl", logtalk_home + "\\bin\\logtakcvs.P").
+FSObject.CopyFile(logtalk_home + "\\compiler\\logtak.pl", logtalk_home + "\\bin\\logtakcvs.P");
 
 var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_xsbcvs.P", true);
 
