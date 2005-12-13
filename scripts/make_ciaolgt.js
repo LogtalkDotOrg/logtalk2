@@ -23,6 +23,7 @@ var FSObject = new ActiveXObject("Scripting.FileSystemObject");
 
 if (!FSObject.FileExists(prolog_path)) {
 	WScript.Echo("Error! Cannot find ciaosh.cpx at the expected place!");
+	WScript.Echo("Please, edit the script and update the location of the ciaosh.cpx executable.");
 	WScript.Quit(1);
 }
 

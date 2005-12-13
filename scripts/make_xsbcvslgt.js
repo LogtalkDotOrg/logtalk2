@@ -21,6 +21,7 @@ var FSObject = new ActiveXObject("Scripting.FileSystemObject");
 
 if (!FSObject.FileExists(prolog_path)) {
 	WScript.Echo("Error! Cannot find xsb.exe at the expected place!");
+	WScript.Echo("Please edit the script and update the location of the xsb.exe executable.");
 	WScript.Quit(1);
 }
 
@@ -54,7 +55,7 @@ logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
 if (!FSObject.FolderExists(logtalk_home + "\\bin")) 
 	FSObject.CreateFolder(logtalk_home + "\\bin");
 
-FSObject.CopyFile(logtalk_home + "\\compiler\\logtak.pl", logtalk_home + "\\bin\\logtakcvs.P");
+FSObject.CopyFile(logtalk_home + "\\compiler\\logtalk.pl", logtalk_home + "\\bin\\logtalkcvs.P");
 
 var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_xsbcvs.P", true);
 
