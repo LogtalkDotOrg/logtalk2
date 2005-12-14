@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 ## =================================================================
 ## Logtalk - Object oriented extension to Prolog
