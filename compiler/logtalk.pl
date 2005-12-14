@@ -3379,8 +3379,8 @@ current_logtalk_flag(version, version(2, 26, 2)).
 		('$lgt_write_directives'(Output),						% write out any Prolog code that may occur
 		 '$lgt_write_prolog_clauses'(Output),					% after the last entity on the source file;
 		 '$lgt_write_init_call'(Output)),						% write initialization/1 directive at the
-		OutputError,											% of the file to improve compatibility with
-		'$lgt_compiler_error_handler'(Output, OutputError)),	% non-ISO compliant Prolog compilers
+		OutputError,											% end of the file to improve compatibility 
+		'$lgt_compiler_error_handler'(Output, OutputError)),	% with non-ISO compliant Prolog compilers
 	close(Output),
 	'$lgt_restore_global_op_table'.
 
@@ -7844,10 +7844,7 @@ current_logtalk_flag(version, version(2, 26, 2)).
 	(Goal = true ->
 		true
 		;
-		('$lgt_compiler_flag'(iso_initialization_dir, true) ->
-			write_canonical(Stream, (:- initialization(Goal)))
-			;
-			write_canonical(Stream, (:- Goal))),
+		write_canonical(Stream, (:- initialization(Goal))),
 		write(Stream, '.'), nl(Stream)).
 
 
@@ -8600,9 +8597,6 @@ current_logtalk_flag(version, version(2, 26, 2)).
 
 % '$lgt_valid_compiler_flag'(@nonvar)
 
-'$lgt_valid_compiler_flag'(iso_initialization_dir(Option)) :-
-	once((Option == true; Option == false)).
-
 '$lgt_valid_compiler_flag'(xmldocs(Option)) :-
 	once((Option == on; Option == off)).
 
@@ -8657,7 +8651,6 @@ current_logtalk_flag(version, version(2, 26, 2)).
 %
 % true if the argument is a valid Logtalk flag name
 
-'$lgt_valid_flag'(iso_initialization_dir).
 '$lgt_valid_flag'(xmldocs).
 '$lgt_valid_flag'(xslfile).
 '$lgt_valid_flag'(xmlspec).
@@ -8695,7 +8688,6 @@ current_logtalk_flag(version, version(2, 26, 2)).
 %
 % true if the argument is a read only Logtalk flag name
 
-'$lgt_read_only_flag'(iso_initialization_dir).
 '$lgt_read_only_flag'(startup_message).
 '$lgt_read_only_flag'(supports_break_predicate).
 '$lgt_read_only_flag'(version).
@@ -9978,7 +9970,6 @@ current_logtalk_flag(version, version(2, 26, 2)).
 	'$lgt_default_flag'(events, Events), write(', events: '), write(Events), nl,
 	write('Read-only compilation flags:'), nl,
 	'$lgt_default_flag'(supports_break_predicate, Break), write('  supports_break_predicate: '), write(Break),
-	'$lgt_default_flag'(iso_initialization_dir, ISO), write(', iso_initialization_dir: '), write(ISO), nl,
 	'$lgt_default_flag'(startup_message, Startup), write('  startup_message: '), write(Startup),
 	'$lgt_default_flag'(altdirs, Altdirs), write(', altdirs: '), write(Altdirs),
 	'$lgt_default_flag'(supports_encoding_dir, Encodings), write(', supports_encoding_dir: '), write(Encodings), nl, nl.
@@ -10022,8 +10013,6 @@ current_logtalk_flag(version, version(2, 26, 2)).
 	write('Read-only compilation flags:'), nl,
 	'$lgt_default_flag'(supports_break_predicate, Break),
 	write('  Support for break/0 predicate (supports_break_predicate): '), write(Break), nl,
-	'$lgt_default_flag'(iso_initialization_dir, ISO),
-	write('  ISO initialization/1 directive (iso_initialization_dir):  '), write(ISO), nl,
 	'$lgt_default_flag'(startup_message, Startup),
 	write('  Startup message (startup_message):                        '), write(Startup), nl,
 	'$lgt_default_flag'(altdirs, Altdirs),

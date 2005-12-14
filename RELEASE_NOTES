@@ -22,6 +22,8 @@ RELEASE NOTES
 	for negated grammar rule bodies (thanks to Mats Carlsson for pointing the 
 	error).
 
+	Removed the read-only compiler flag "iso_initialization_dir".
+
 	Corrected a compilation bug on the "metapredicates" example source file.
 
 	Switched off generation of XML documenting files for the "symdiff" example

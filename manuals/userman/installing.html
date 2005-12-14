@@ -168,10 +168,6 @@ The configuration files specifies default values for all the Logtalk compiler fl
 		<dd>Allows the use of alternative directories for storing the Prolog files and the XML documenting files resulting from entity compilation. This flag can only be set for Prolog compilers providing the necessary operating-system access predicates for implementing this feature (specifically, a built-in predicate for creating new directories). Possible option values are <code>on</code> and <code>off</code> (the usual default). The names of the alternative directories are specified using the predicate <code>'$lgt_alt_directory'/2</code>, which is also defined in the configuration files. Make sure the directory names are valid for your operating system before setting this flag on.</dd>
 </dl>
 <dl>
-	<dt><code>iso_initialization_dir</code></dt>
-		<dd>Informs Logtalk if the Prolog compiler supports the <code>initialization/1</code> directive as specified in the ISO standard. Note that some Prolog compilers support this directive but without the ISO specified semantics. Possible flag values are <code>true</code> and <code>false</code>.</dd>
-</dl>
-<dl>
 	<dt><code>supports_break_predicate</code></dt>
 		<dd>Informs Logtalk if the Prolog compiler supports a <code>break/0</code> predicate (which can be used by the Logtalk built-in debugger). Possible flag values are <code>true</code> and <code>false</code>.</dd>
 </dl>
@@ -206,7 +202,7 @@ Logtalk source files are text files containing entity definitions (objects, cate
 	<div class="copyright">Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://www.logtalk.org">Logtalk.org</a></div>
 	<div class="footnote">
 		<span class="validators"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span>
-		<span class="date">Last updated on: December 10, 2005</span>
+		<span class="date">Last updated on: December 14, 2005</span>
 	</div>
 </div>
 
