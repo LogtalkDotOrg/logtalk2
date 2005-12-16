@@ -53,6 +53,6 @@ echo "eclipse -b \$LOGTALKHOME/bin/logtalk_eclipse.rc" >> eclipselgt
 chmod a+x eclipselgt
 ln -sf $LOGTALKHOME/bin/eclipselgt $prefix/bin/eclipselgt
 echo "Done. A link to the script was been created in $prefix/bin."
-echo "Users should define the environment variables LOGTALKHOME and"
+echo "Users must define the environment variables LOGTALKHOME and"
 echo "LOGTALKUSER in order to use the script."
 echo

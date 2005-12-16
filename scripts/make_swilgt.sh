@@ -55,6 +55,6 @@ esac
 chmod a+x swilgt
 ln -sf $LOGTALKHOME/bin/swilgt $prefix/bin/swilgt
 echo "Done. A link to the script was been created in $prefix/bin."
-echo "Users should define the environment variables LOGTALKHOME and"
+echo "Users must define the environment variables LOGTALKHOME and"
 echo "LOGTALKUSER in order to use the script."
 echo

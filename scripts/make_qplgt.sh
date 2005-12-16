@@ -56,6 +56,6 @@ rm ../configs/qu.qo
 rm ../compiler/logtalk.qo
 rm ../libpaths/libpaths.qo
 echo "Done. A link to the script was been created in $prefix/bin."
-echo "Users should define the environment variables LOGTALKHOME and"
+echo "Users must define the environment variables LOGTALKHOME and"
 echo "LOGTALKUSER in order to use the script."
 echo

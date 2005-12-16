@@ -50,7 +50,7 @@ echo "xsb -e \"reconsult('\$LOGTALKHOME/bin/logtalkxsbcvs.P').\"" >> xsbcvslgt
 chmod a+x xsbcvslgt
 ln -sf $LOGTALKHOME/bin/xsbcvslgt $prefix/bin/xsbcvslgt
 echo "Done. A link to the script was been created in $prefix/bin."
-echo "Users should define the environment variables LOGTALKHOME and"
+echo "Users must define the environment variables LOGTALKHOME and"
 echo "LOGTALKUSER in order to use the script. Users must run the"
 echo "the cplgtdirs script before using the xsbcvslgt script."
 echo

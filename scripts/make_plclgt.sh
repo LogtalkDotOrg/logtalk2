@@ -49,6 +49,6 @@ echo "\$PLC/plc -h 2048k -l 1024k -g 2048k -e \"(consult('\\\$LOGTALKHOME/bin/lo
 chmod a+x plclgt
 ln -sf $LOGTALKHOME/bin/plclgt $prefix/bin/plclgt
 echo "Done. A link to the script was been created in $prefix/bin."
-echo "Users should define the environment variables LOGTALKHOME and"
+echo "Users must define the environment variables LOGTALKHOME and"
 echo "LOGTALKUSER in order to use the script."
 echo
