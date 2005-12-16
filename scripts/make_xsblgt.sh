@@ -56,10 +56,8 @@ chmod a+x xsblgt
 ln -sf $LOGTALKHOME/bin/xsblgt $prefix/bin/xsblgt
 echo "Done. A link to the script was been created in $prefix/bin."
 echo "Users should define the environment variables LOGTALKHOME and"
-echo "LOGTALKUSER in order to use the script."
+echo "LOGTALKUSER in order to use the script. Users must run the"
+echo "the cplgtdirs script before using the xsblgt script."
 echo
-echo "Users must change the extension of files \$LOGTALKUSER/configs/xsb.config"
-echo "and \$LOGTALKUSER/libpaths/libpaths.pl to '.P' before using the xsblgt"
-echo "script. In addition, users must edit the libpaths.P file to replace all"
-echo "occurrences of the LOGTALKUSER environment variable by its value."
+echo "The first call to the script must be made as root or using sudo."
 echo

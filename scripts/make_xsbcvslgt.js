@@ -82,8 +82,14 @@ WScript.Echo('Done. The "Logtalk - XSB CVS" shortcut was been added to the Start
 WScript.Echo('Programs.  Make sure that the environment variables LOGTALKHOME and');
 WScript.Echo('LOGTALKUSER are defined for all users wishing to use the shortcut.');
 WScript.Echo('');
+WScript.Echo('The first call to the shortcut must be made by a user with');
+WScript.Echo('administrative rights.');
+WScript.Echo('');
 WScript.Echo('Users must run the batch script "cplgtdirs" before using the');
-WScript.Echo('"Logtalk - XSB CVS" shortcut.');
+WScript.Echo('"Logtalk - XSB CVS" shortcut. Users must edit the contents of');
+WScript.Echo('the "libpaths.P" file on the "libpaths" directory in order to');
+WScript.Echo('replace all occurrences of the LOGTALKUSER environment variable');
+WScript.Echo('by its value.');
 WScript.Echo('');
 
 WScript.Quit(0);
