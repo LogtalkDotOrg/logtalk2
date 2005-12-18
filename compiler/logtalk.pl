@@ -1135,14 +1135,18 @@ logtalk_compile(Files, Flags) :-
 
 '$lgt_check_library_source_file'(Library, File) :-
 	'$lgt_expand_library_path'(Library, Path),
+	'$lgt_directory_exists'(Path),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
 	catch(
 		'$lgt_check_source_file'(File),
 		Error,
 		('$lgt_change_directory'(Current), throw(Error))),
-	'$lgt_change_directory'(Current).
+	'$lgt_change_directory'(Current),
+	!.
 
+'$lgt_check_library_source_file'(Library, _) :-
+	throw(existence_error(library, Library)).
 
 
 % '$lgt_expand_library_path'(+atom, -atom)
@@ -1150,10 +1154,7 @@ logtalk_compile(Files, Flags) :-
 % converts a library alias into its corresponding path
 
 '$lgt_expand_library_path'(Library, Path) :-
-	'$lgt_expand_library_path'(Library, Path, 16) ->
-		true
-		;
-		throw(existence_error(library, Library)).
+	'$lgt_expand_library_path'(Library, Path, 16).
 
 
 '$lgt_expand_library_path'(Library, Path, N) :-
@@ -1162,6 +1163,7 @@ logtalk_compile(Files, Flags) :-
 			Path = Location
 			;
 			Location =.. [Library2, Location2],
+			N > 0,
 			N2 is N - 1,
 			'$lgt_expand_library_path'(Library2, Path2, N2),
 			atom_concat(Path2, Location2, Path))
