@@ -39,6 +39,8 @@ RELEASE NOTES
 
 	Improved integration scripts documentation and help screens.
 
+	Added a predicate for checking directory existence to the config files.
+
 
 2.26.1 - November 28, 2005
 

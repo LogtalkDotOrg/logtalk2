@@ -416,14 +416,14 @@ XSB Prolog 2.7.1
 		'$lgt_current_object_'(debugger, ...).
 	
 		'$lgt_dbg_leashing_'(...).
-		
+
 	and replace it with the queries:
-	
+
 		:- assertz('$lgt_current_object_'(user, ...)).
 		:- assertz('$lgt_current_object_'(debugger, ...)).
 
 		:- assertz('$lgt_dbg_leashing_'(...)).
-	
+
 	You may get syntax errors while compiling the Logtalk pre-processor 
 	or some of the examples due to a know bug in the XSB parsing of infix 
 	operators: just add a space after the infix operator.
@@ -444,7 +444,7 @@ XSB 3.0 (CVS version)
 	described above, adds some missing ISO Prolog predicates and directives,
 	and fixes some bugs, thus providing better support for running Logtalk 
 	when compared with the latest stable release (2.7.1).
-	
+
 	You need to rename both the config file and the Logtalk pre-processor to 
 	end with a ".P" extension otherwise the (re)consult built-in predicate 
 	will not find them! If you want to use the scripts/make_xsbcvslgt.* 
