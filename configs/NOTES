@@ -46,11 +46,11 @@ ALS Prolog 3.1
 	support the "altdirs" compiler flag.
 
 
-Amzi! Prolog 6.2.2 and later versions
+Amzi! Prolog 7.4.2 and later versions
 
 	amzi.config
 
-	For Amzi! Prolog 6.22 and later releases. The compiler definition of 
+	For Amzi! Prolog 7.4.2 and later versions. The compiler definition of 
 	the compare/3 built-in predicate returns the atom == instead of = for 
 	identical terms (contrary to every other Prolog compiler!). You need to 
 	search the library files for all calls of the compare/3 predicate and 
