@@ -36,7 +36,7 @@ The code could be greatly simplified by using a multifile predicate directive
 for the library path dynamic predicate. Unfortunately, not all Prolog compilers
 support multifile predicates.
 
-Some Prolog compilers which are expected to be compatible with the provided 
+Prolog compilers that are expected to be compatible with the provided 
 "libpaths.pl" file as is, across operating systems:
 
 	* B-Prolog
@@ -49,7 +49,7 @@ Some Prolog compilers which are expected to be compatible with the provided
 	* SWI-Prolog
 	* YAP
 
-Some Prolog compilers which imply editing the provided "libpaths.pl" file:
+Prolog compilers which imply editing the provided "libpaths.pl" file:
 
 	* JIProlog (does not support expansion of environment variables on paths)
 	* XSB (does not support expansion of environment variables on paths)
