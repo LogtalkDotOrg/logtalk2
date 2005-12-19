@@ -25,13 +25,15 @@ RELEASE NOTES
 	Removed the read-only compiler flag "iso_initialization_dir".
 
 	Corrected a compilation bug on the "metapredicates" example source file.
+	Corrected several bugs on the performance monitor of the "searching" 
+	example.
 
 	Switched off generation of XML documenting files for the "symdiff" example
 	in order to avoid file names compatibility problems on Windows.
 
 	Updated compatibility notes on B-Prolog 6.8 and Qu-Prolog 7.0. Added a 
-	config file for the forthcoming SICStus Prolog 4.0 version (based only on 
-	publicly available information).
+	config file for the forthcoming SICStus Prolog 4.0 version (based only 
+	on publicly available information).
 
 	Added a config file for the current XSB CVS version and the corresponding 
 	integration shell scripts (for both Windows and POSIX systems). Modified 
