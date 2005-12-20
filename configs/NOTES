@@ -54,8 +54,10 @@ Amzi! Prolog 7.4.2 and later versions
 	the compare/3 built-in predicate returns the atom == instead of = for 
 	identical terms (contrary to every other Prolog compiler!). You need to 
 	search the library files for all calls of the compare/3 predicate and 
-	make the necessary changes. Don't forget to use the chdir/1 predicate 
-	to set the working directory before loading the library or an example.
+	make the necessary changes. The built-in sort/2 predicate does not 
+	eliminate duplicates, which may result in some problems with some of the 
+	examples. Don't forget to use the chdir/1 predicate to set the working 
+	directory before loading the library or an example.
 
 
 B-Prolog 6.8 and later versions
