@@ -33,7 +33,9 @@ RELEASE NOTES
 
 	Updated compatibility notes on B-Prolog 6.8 and Qu-Prolog 7.0. Added a 
 	config file for the forthcoming SICStus Prolog 4.0 version (based only 
-	on publicly available information).
+	on publicly available information). Updated the config file for Amzi! 
+	Prolog to workaround a problem with predicate properties and to ensure 
+	that file system utility predicates are loaded.
 
 	Added a config file for the current XSB CVS version and the corresponding 
 	integration shell scripts (for both Windows and POSIX systems). Modified 
