@@ -28,8 +28,8 @@ RELEASE NOTES
 	Corrected several bugs on the performance monitor of the "searching" 
 	example.
 
-	Switched off generation of XML documenting files for the "symdiff" example
-	in order to avoid file names compatibility problems on Windows.
+	Switched off default generation of XML documenting files for the "symdiff" 
+	example in order to avoid file names compatibility problems on Windows.
 
 	Updated compatibility notes on B-Prolog 6.8 and Qu-Prolog 7.0. Added a 
 	config file for the forthcoming SICStus Prolog 4.0 version (based only 
@@ -39,7 +39,7 @@ RELEASE NOTES
 
 	Added a config file for the current XSB CVS version and the corresponding 
 	integration shell scripts (for both Windows and POSIX systems). Modified 
-	the "cplgtdirs.*" shell scripts in order to make either links or copies of 
+	the "cplgtdirs.*" shell scripts in order to make either links or copies of
 	the config files and the "libpaths.pl" file with the required ".P" file 
 	name extension.
 
