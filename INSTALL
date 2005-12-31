@@ -137,6 +137,10 @@ the steps described in the "QUICK_START" file.
 
 4. COPYING THE LOGTALK USER-MODIFIABLE FILES TO USERS HOME DIRECTORIES
 
+If you installed Logtalk on your home directory, then skip this step if you 
+have set both Logtalk environment variables (LOGTALKHOME and LOGTALKUSER) to 
+point to the same directory.
+
 Each user must make a local copy of the Logtalk user-modifiable files to its 
 home directory. This setup allows each user to easily and independently 
 customize Logtalk to its needs. These copies can be easily made by instructing
