@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.26.2
+%  Release 2.27.0
 %
 %  Copyright (c) 1998-2005 Paulo Moura.  All Rights Reserved.
 %
@@ -1335,7 +1335,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 26, 2)).
+current_logtalk_flag(version, version(2, 27, 0)).
 
 
 
@@ -8878,7 +8878,7 @@ current_logtalk_flag(version, version(2, 26, 2)).
 	catch(
 		'$lgt_dcg_rule'(Rule, Clause),
 		Error,
-		throw(error(Error, dcgrule(Rule)))).
+		throw(error(Error, grammar_rule(Rule)))).
 
 
 
@@ -8886,46 +8886,65 @@ current_logtalk_flag(version, version(2, 26, 2)).
 %
 % converts a DCG rule to a normal clause
 
-'$lgt_dcg_rule'((RHead --> RBody), CHead) :-
-	RBody == [],
-	!,
-	'$lgt_dcg_head'(RHead, CHead, _, _, S, S, _).
-
-'$lgt_dcg_rule'((RHead --> RBody), (CHead :- CBody)) :-
-	'$lgt_dcg_head'(RHead, CHead, Body, Body2, S0, S1, S),
-	'$lgt_dcg_body'(RBody, Body, S0, S1),
-	'$lgt_dcg_fold_unifications'(Body2, CBody, S0, S).
+'$lgt_dcg_rule'(Rule, Clause) :-
+    '$lgt_dcg_rule'(Rule, S0, S, Expansion),
+    '$lgt_dcg_simplify'(Expansion, S0, S, Clause).
 
 
-
-% '$lgt_dcg_head'(@dcghead, -head, @goal, -goal, @var, @var, @var)
-%
-% translates DCG rule head to a Prolog clause head
-% (the last argument returns the variable representing the ouput list)
-
-'$lgt_dcg_head'(RHead, _, _, _, _, _, _) :-
-	var(RHead),
-	throw(instantiation_error).
-
-'$lgt_dcg_head'((RHead, _), _, _, _, _, _, _) :-
+'$lgt_dcg_rule'((RHead --> _), _, _, _) :-
     var(RHead),
     throw(instantiation_error).
 
-'$lgt_dcg_head'((_, Terminals), _, _, _, _, _, _) :-
+'$lgt_dcg_rule'((RHead, _ --> _), _, _, _) :-
+    var(RHead),
+    throw(instantiation_error).
+
+'$lgt_dcg_rule'((_, Terminals --> _), _, _, _) :-
     var(Terminals),
     throw(instantiation_error).
 
-'$lgt_dcg_head'((_, Terminals), _, _, _, _, _, _) :-
-	\+ '$lgt_proper_list'(Terminals),
-	throw(type_error(list, Terminals)).
+'$lgt_dcg_rule'((NonTerminal, Terminals --> GRBody), S0, S, (Head :- Body)) :-
+    !,
+    '$lgt_dcg_non_terminal'(NonTerminal, S0, S, Head),
+    '$lgt_dcg_body'(GRBody, S0, S1, Goal1),
+    '$lgt_dcg_terminals'(Terminals, S, S1, Goal2),
+    Body = (Goal1, Goal2).
 
-'$lgt_dcg_head'((RHead, Terminals), CHead, Body, (Body,Goal), S0, S1, S) :-
-	!,
-	'$lgt_dcg_goal'(RHead, CHead, S0, S),
-	'$lgt_dcg_terminals'(Terminals, Goal, S, S1).
+'$lgt_dcg_rule'((NonTerminal --> GRBody), S0, S, (Head :- Body)) :-
+    !,
+    '$lgt_dcg_non_terminal'(NonTerminal, S0, S, Head),
+    '$lgt_dcg_body'(GRBody, S0, S, Body).
 
-'$lgt_dcg_head'(RHead, CHead, Body, Body, S0, S, S) :-
-	'$lgt_dcg_goal'(RHead, CHead, S0, S).
+'$lgt_dcg_rule'(Term, _, _, _) :-
+    throw(type_error(grammar_rule, Term)).
+
+
+
+% '$lgt_dcg_non_terminal'(+callable, @var, @var, -goal)
+%
+% translates a grammar goal non-terminal:
+
+'$lgt_dcg_non_terminal'(NonTerminal, _, _, _) :-
+    \+ callable(NonTerminal),
+    throw(type_error(callable, NonTerminal)).
+
+'$lgt_dcg_non_terminal'(NonTerminal, S0, S, Goal) :-
+    NonTerminal =.. NonTerminalUniv,
+    '$lgt_append'(NonTerminalUniv, [S0, S], GoalUniv),
+    Goal =.. GoalUniv.
+
+
+
+% '$lgt_dcg_terminals'(+list, @var, @var, -goal)
+%
+% translates a list of terminals:
+
+'$lgt_dcg_terminals'(Terminals, _, _, _) :-
+    \+ '$lgt_proper_list'(Terminals),
+    throw(type_error(list, Terminals)).
+
+'$lgt_dcg_terminals'(Terminals, S0, S, S0 = List) :-
+    '$lgt_append'(Terminals, S, List).
 
 
 
@@ -8933,156 +8952,168 @@ current_logtalk_flag(version, version(2, 26, 2)).
 %
 % translates DCG rule body to a Prolog clause body
 
-'$lgt_dcg_body'(Var, phrase(Var, S0, S), S0, S) :-
-	var(Var),
-	!.
+'$lgt_dcg_body'(Var, S0, S, phrase(Var, S0, S)) :-
+    var(Var),
+    !.
 
-'$lgt_dcg_body'(::RGoal, ::CGoal, S0, S) :-
+'$lgt_dcg_body'(::RGoal, S0, S, ::CGoal) :-
 	!,
-	'$lgt_dcg_body'(RGoal, CGoal, S0, S).
+	'$lgt_dcg_body'(RGoal, S0, S, CGoal).
 
-'$lgt_dcg_body'(Object::RGoal, Object::CGoal, S0, S) :-
+'$lgt_dcg_body'(Object::RGoal, S0, S, Object::CGoal) :-
 	!,
-	'$lgt_dcg_body'(RGoal, CGoal, S0, S).
+	'$lgt_dcg_body'(RGoal, S0, S, CGoal).
 
-'$lgt_dcg_body'((RGoal,RGoals), (CGoal,CGoals), S0, S) :-
-	!,
-	'$lgt_dcg_body'(RGoal, CGoal, S0, S1),
-	'$lgt_dcg_body'(RGoals, CGoals, S1, S).
+'$lgt_dcg_body'((GRIf -> GRThen), S0, S, (If -> Then)) :-
+    !,
+    '$lgt_dcg_body'(GRIf, S0, S1, If),
+    '$lgt_dcg_body'(GRThen, S1, S, Then).
 
-'$lgt_dcg_body'((RGoal1 -> RGoal2), (CGoal1 -> CGoal2), S0, S) :-
-	!,
-	'$lgt_dcg_body'(RGoal1, CGoal1, S0, S1),
-	'$lgt_dcg_body'(RGoal2, CGoal2, S1, S).
+'$lgt_dcg_body'((GREither; GROr), S0, S, (Either; Or)) :-
+    !,
+    '$lgt_dcg_body'(GREither, S0, S, Either),
+    '$lgt_dcg_body'(GROr, S0, S, Or).
 
-'$lgt_dcg_body'((RGoal1;RGoal2), (CGoal1;CGoal2), S0, S) :-
-	!,
-	'$lgt_dcg_body'(RGoal1, CGoal1, S0, S),
-	'$lgt_dcg_body'(RGoal2, CGoal2, S0, S).
+'$lgt_dcg_body'((GRFirst, GRSecond), S0, S, (First, Second)) :-
+    !,
+    '$lgt_dcg_body'(GRFirst, S0, S1, First),
+    '$lgt_dcg_body'(GRSecond, S1, S, Second).
 
-'$lgt_dcg_body'({Goal}, (CGoal, S0=S), S0, S) :-
-	!,
-	(var(Goal) -> CGoal = call(Goal); CGoal = Goal).
+'$lgt_dcg_body'(!, S0, S, (!, S0 = S)) :-
+    !.
 
-'$lgt_dcg_body'(!, (!, S0=S), S0, S) :-
-	!.
+'$lgt_dcg_body'({}, S0, S, (S0 = S)) :-
+    !.
 
-'$lgt_dcg_body'(\+ RGoal, \+ CGoal, S0, S0) :-
-	!,
-	'$lgt_dcg_body'(RGoal, CGoal, S0, _).
+'$lgt_dcg_body'({Goal}, S0, S, (call(Goal), S0 = S)) :-
+    var(Goal),
+    !.
 
-'$lgt_dcg_body'([], (S0=S), S0, S) :-
-	!.
+'$lgt_dcg_body'({Goal}, _, _, _) :-
+    \+ callable(Goal),
+    throw(type_error(callable, Goal)).
 
-'$lgt_dcg_body'([Terminal| Terminals], CGoal, S0, S) :-
-	!,
-	'$lgt_dcg_terminals'([Terminal| Terminals], CGoal, S0, S).
+'$lgt_dcg_body'({Goal}, S0, S, (Goal, S0 = S)) :-
+    !.
 
-'$lgt_dcg_body'(RGoal, CGoal, S0, S) :-
-	'$lgt_dcg_goal'(RGoal, CGoal, S0, S).
+'$lgt_dcg_body'(\+ GRBody, S0, S, (\+ Goal, S0 = S)) :-
+    !,
+    '$lgt_dcg_body'(GRBody, S0, S, Goal).
+
+'$lgt_dcg_body'([], S0, S, (S0=S)) :-
+    !.
+
+'$lgt_dcg_body'([T| Ts], S0, S, Goal) :-
+    !,
+    '$lgt_dcg_terminals'([T| Ts], S0, S, Goal).
+
+'$lgt_dcg_body'(NonTerminal, S0, S, Goal) :-
+    '$lgt_dcg_non_terminal'(NonTerminal, S0, S, Goal).
 
 
 
-% '$lgt_dcg_goal'(@goal, -goal, @var, @var)
+% '$lgt_dcg_simplify'(+clause, @var, @var, -clause)
 %
-% translates DCG goal to Prolog goal
+% simplifies the resulting clause:
 
-'$lgt_dcg_goal'(RGoal, _, _, _) :-
-	\+ callable(RGoal),
-	throw(type_error(callable, RGoal)).
+'$lgt_dcg_simplify'((Head :- Body), _, _, Clause) :-
+    '$lgt_dcg_flatten_conjunctions'(Body, Flatted),
+    '$lgt_dcg_fold_left'(Flatted, FoldedLeft),
+    '$lgt_dcg_fold_pairs'(FoldedLeft, FoldedPairs),
+    (    FoldedPairs == true ->
+         Clause = Head
+    ;    Clause = (Head :- FoldedPairs)
+    ).
 
-'$lgt_dcg_goal'(RGoal, CGoal, S0, S) :-
-	RGoal =.. RList,
-	'$lgt_append'(RList, [S0, S], CList),
-	CGoal =.. CList.
 
 
-
-% '$lgt_dcg_terminals'(+list, -goal, @var, @var)
+% '$lgt_dcg_flatten_conjunctions'(+goal, -goal)
 %
-% translate list of terminals
+% removes redundant calls to true/0 and flattens conjunction of goals:
 
-'$lgt_dcg_terminals'(Terminals, S0=List, S0, S) :-
-	'$lgt_dcg_terminals'(Terminals, S, List).
+'$lgt_dcg_flatten_conjunctions'((Goal1 -> Goal2), (SGoal1 -> SGoal2)) :-
+    !,
+    '$lgt_dcg_flatten_conjunctions'(Goal1, SGoal1),
+    '$lgt_dcg_flatten_conjunctions'(Goal2, SGoal2).
+
+'$lgt_dcg_flatten_conjunctions'((Goal1; Goal2), (SGoal1; SGoal2)) :-
+    !,
+    '$lgt_dcg_flatten_conjunctions'(Goal1, SGoal1),
+    '$lgt_dcg_flatten_conjunctions'(Goal2, SGoal2).
+
+'$lgt_dcg_flatten_conjunctions'(((Goal1, Goal2), Goal3), Body) :-
+    !,
+    '$lgt_dcg_flatten_conjunctions'((Goal1, (Goal2, Goal3)), Body).
+
+'$lgt_dcg_flatten_conjunctions'((true, Goal), Body) :-
+    !,
+    '$lgt_dcg_flatten_conjunctions'(Goal, Body).
+
+'$lgt_dcg_flatten_conjunctions'((Goal, true), Body) :-
+    !,
+    '$lgt_dcg_flatten_conjunctions'(Goal, Body).
+
+'$lgt_dcg_flatten_conjunctions'((Goal1, Goal2), (Goal1, Goal3)) :-
+    !,
+    '$lgt_dcg_flatten_conjunctions'(Goal2, Goal3).
+
+'$lgt_dcg_flatten_conjunctions'(\+ Goal, \+ SGoal) :-
+    !,
+    '$lgt_dcg_flatten_conjunctions'(Goal, SGoal).
+
+'$lgt_dcg_flatten_conjunctions'(Goal, Goal).
 
 
-'$lgt_dcg_terminals'([], S, S) :-
-	!.		% make predicate determinist when first argument is [Var1| Var2]
 
-'$lgt_dcg_terminals'([Terminal| Terminals], S, [Terminal| Rest]) :-
-	'$lgt_dcg_terminals'(Terminals, S, Rest).
-
-
-
-% '$lgt_dcg_fold_unifications'(+goal, -goal, @var, @var)
+% '$lgt_dcg_fold_left'(+goal, -goal)
 %
-% folds redundant calls to =/2 by calling the unification
-% goals except for output unifications
+% folds left unifications:
 
-'$lgt_dcg_fold_unifications'((Goal1 -> Goal2), (SGoal1 -> SGoal2), S0, S) :-
-	!,
-	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S0, S),
-	'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S0, S).
+'$lgt_dcg_fold_left'((Term1 = Term2), true) :-
+    !,
+    Term1 = Term2.
 
-'$lgt_dcg_fold_unifications'((Goal1;Goal2), (SGoal1;SGoal2), S0, S) :-
-	!,
-	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S0, S),
-	'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S0, S).
+'$lgt_dcg_fold_left'(((Term1 = Term2), Goal), Folded) :-
+    !,
+    Term1 = Term2,
+    '$lgt_dcg_fold_left'(Goal, Folded).
 
-'$lgt_dcg_fold_unifications'((Goal1,Goal2), SGoal, S0, S) :-
-	!,
-	'$lgt_dcg_fold_unifications'(Goal1, SGoal1, S0, S),
-	'$lgt_dcg_fold_unifications'(Goal2, SGoal2, S0, S),
-	'$lgt_dcg_simplify_and'((SGoal1,SGoal2), SGoal).
-
-'$lgt_dcg_fold_unifications'(S1=S2, S1=S2, _, S) :-
-	(S1 == S; S2 == S),		% avoid output unifications
-	!.
-
-'$lgt_dcg_fold_unifications'(S1=S2, true, _, _) :-
-	var(S2),				% avoid unification with list of terminals
-	!,
-	S1 = S2.
-
-'$lgt_dcg_fold_unifications'(Goal, Goal, _, _).
+'$lgt_dcg_fold_left'(Goal, Goal).
 
 
 
-% '$lgt_dcg_simplify_and'(+goal, -goal)
+% '$lgt_dcg_fold_pairs'(+goal, -goal)
 %
-% removes redundant calls to true/0 and flats conjunction of goals
+% folds pairs of consecutive unifications (T1 = T2, T2 = T3):
 
-'$lgt_dcg_simplify_and'((Goal1 -> Goal2), (SGoal1 -> SGoal2)) :-
-	!,
-	'$lgt_dcg_simplify_and'(Goal1, SGoal1),
-	'$lgt_dcg_simplify_and'(Goal2, SGoal2).
+'$lgt_dcg_fold_pairs'((Goal1 -> Goal2), (SGoal1 -> SGoal2)) :-
+    !,
+    '$lgt_dcg_fold_pairs'(Goal1, SGoal1),
+    '$lgt_dcg_fold_pairs'(Goal2, SGoal2).
 
-'$lgt_dcg_simplify_and'((Goal1;Goal2), (SGoal1;SGoal2)) :-
-	!,
-	'$lgt_dcg_simplify_and'(Goal1, SGoal1),
-	'$lgt_dcg_simplify_and'(Goal2, SGoal2).
+'$lgt_dcg_fold_pairs'((Goal1; Goal2), (SGoal1; SGoal2)) :-
+    !,
+    '$lgt_dcg_fold_pairs'(Goal1, SGoal1),
+    '$lgt_dcg_fold_pairs'(Goal2, SGoal2).
 
-'$lgt_dcg_simplify_and'(((Goal1,Goal2),Goal3), Body) :-
-	!,
-	'$lgt_dcg_simplify_and'((Goal1,(Goal2,Goal3)), Body).
+'$lgt_dcg_fold_pairs'(((T1 = T2a), (T2b = T3)), (T1 = T3)) :-
+	T2a == T2b,
+    !.
 
-'$lgt_dcg_simplify_and'((true,Goal), Body) :-
-	!,
-	'$lgt_dcg_simplify_and'(Goal, Body).
+'$lgt_dcg_fold_pairs'(((T1 = T2a), (T2b = T3), Goal), ((T1 = T3), Goal2)) :-
+	T2a == T2b,
+    !,
+    '$lgt_dcg_fold_pairs'(Goal, Goal2).
 
-'$lgt_dcg_simplify_and'((Goal,true), Body) :-
-	!,
-	'$lgt_dcg_simplify_and'(Goal, Body).
+'$lgt_dcg_fold_pairs'((Goal1, Goal2), (Goal1, Goal3)) :-
+    !,
+    '$lgt_dcg_fold_pairs'(Goal2, Goal3).
 
-'$lgt_dcg_simplify_and'((Goal1,Goal2), (Goal1,Goal3)) :-
-	!,
-	'$lgt_dcg_simplify_and'(Goal2, Goal3).
+'$lgt_dcg_fold_pairs'(\+ Goal, \+ SGoal) :-
+    !,
+    '$lgt_dcg_fold_pairs'(Goal, SGoal).
 
-'$lgt_dcg_simplify_and'(\+ Goal, \+ SGoal) :-
-	!,
-	'$lgt_dcg_simplify_and'(Goal, SGoal).
-
-'$lgt_dcg_simplify_and'(Goal, Goal).
+'$lgt_dcg_fold_pairs'(Goal, Goal).
 
 
 
