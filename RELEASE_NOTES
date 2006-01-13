@@ -12,7 +12,9 @@ RELEASE NOTES
 
 2.27.0 - January ??, 2006
 
-	Improved grammar rule translator.
+	Improved grammar rule translator. Allow the built-in methods phrase/2-3 
+	to accept partial lists of terminals. Added predicates for testing if a 
+	term is a partial list or a proper list to all config files.
 
 
 2.26.2 - December 20, 2005
