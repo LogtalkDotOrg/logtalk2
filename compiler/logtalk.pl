@@ -164,6 +164,9 @@
 :- dynamic('$lgt_pp_calls_pred_'/2).			% '$lgt_pp_calls_pred_'(Functor, Arity)
 :- dynamic('$lgt_non_portable_call_'/2).		% '$lgt_non_portable_call_'(Functor, Arity)
 
+:- dynamic('$lgt_pp_defs_nt_'/2).				% '$lgt_pp_defs_nt_'(Functor, Arity)
+:- dynamic('$lgt_pp_calls_nt_'/2).				% '$lgt_pp_calls_nt_'(Functor, Arity)
+
 :- dynamic('$lgt_pp_referenced_object_'/1).		% '$lgt_pp_referenced_object_'(Object)
 :- dynamic('$lgt_pp_referenced_protocol_'/1).	% '$lgt_pp_referenced_protocol_'(Protocol)
 :- dynamic('$lgt_pp_referenced_category_'/1).	% '$lgt_pp_referenced_category_'(Category)
@@ -3634,6 +3637,8 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	retractall('$lgt_pp_defs_pred_'(_, _)),
 	retractall('$lgt_pp_calls_pred_'(_, _)),
 	retractall('$lgt_non_portable_call_'(_, _)),
+	retractall('$lgt_pp_defs_nt_'(_, _)),
+	retractall('$lgt_pp_calls_nt_'(_, _)),
 	retractall('$lgt_pp_referenced_object_'(_)),
 	retractall('$lgt_pp_referenced_protocol_'(_)),
 	retractall('$lgt_pp_referenced_category_'(_)),
@@ -5199,12 +5204,24 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	'$lgt_ctx_this'(Ctx, This).
 
 '$lgt_tr_body'(phrase(Ruleset, Input), '$lgt_phrase'(This, Ruleset, Input, This, _), '$lgt_dbg_goal'(phrase(Ruleset, Input), '$lgt_phrase'(This, Ruleset, Input, This, _), Ctx), Ctx) :-
+	var(Ruleset),
 	!,
 	'$lgt_ctx_this'(Ctx, This).
 
+'$lgt_tr_body'(phrase(Ruleset, Input), TPred, '$lgt_dbg_goal'(phrase(Ruleset, Input), TPred, Ctx), Ctx) :-
+	!,
+	'$lgt_dcg_body'(Ruleset, Input, [], Pred),
+	'$lgt_tr_body'(Pred, TPred, _, Ctx).
+
 '$lgt_tr_body'(phrase(Ruleset, Input, Rest), '$lgt_phrase'(This, Ruleset, Input, Rest, This, _), '$lgt_dbg_goal'(phrase(Ruleset, Input, Rest), '$lgt_phrase'(This, Ruleset, Input, Rest, This, _), Ctx), Ctx) :-
+	var(Ruleset),
 	!,
 	'$lgt_ctx_this'(Ctx, This).
+
+'$lgt_tr_body'(phrase(Ruleset, Input, Rest), TPred, '$lgt_dbg_goal'(phrase(Ruleset, Input, Rest), TPred, Ctx), Ctx) :-
+	!,
+	'$lgt_dcg_body'(Ruleset, Input, Rest, Pred),
+	'$lgt_tr_body'(Pred, TPred, _, Ctx).
 
 
 % inline methods (translated to a single unification with the corresponding context argument)
@@ -7656,7 +7673,13 @@ current_logtalk_flag(version, version(2, 27, 0)).
 '$lgt_misspelt_call'(Functor/Arity) :-
 	'$lgt_pp_calls_pred_'(Functor, Arity),
 	\+ '$lgt_pp_defs_pred_'(Functor, Arity),
-	\+ '$lgt_pp_dynamic_'(Functor, Arity).
+	\+ '$lgt_pp_dynamic_'(Functor, Arity),
+	\+ '$lgt_pp_calls_nt_'(Functor, Arity2),
+	Arity2 =:= Arity + 2.
+
+'$lgt_misspelt_call'(Functor//Arity) :-
+	'$lgt_pp_calls_nt_'(Functor, Arity),
+	\+ '$lgt_pp_defs_nt_'(Functor, Arity).
 
 
 
@@ -8871,7 +8894,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 % '$lgt_dcgrule_to_clause'(@dcgrule, -clause)
 %
-% converts a DCG rule to a normal clause
+% converts a grammar rule into a normal clause
 
 
 '$lgt_dcgrule_to_clause'(Rule, Clause) :-
@@ -8884,7 +8907,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 % '$lgt_dcg_rule'(@dcgrule, -clause)
 %
-% converts a DCG rule to a normal clause
+% converts a grammar rule into a normal clause:
 
 '$lgt_dcg_rule'(Rule, Clause) :-
     '$lgt_dcg_rule'(Rule, S0, S, Expansion),
@@ -8908,12 +8931,20 @@ current_logtalk_flag(version, version(2, 27, 0)).
     '$lgt_dcg_non_terminal'(NonTerminal, S0, S, Head),
     '$lgt_dcg_body'(GRBody, S0, S1, Goal1),
     '$lgt_dcg_terminals'(Terminals, S, S1, Goal2),
-    Body = (Goal1, Goal2).
+    Body = (Goal1, Goal2),
+	functor(NonTerminal, Functor, Arity),
+	(	'$lgt_pp_defs_nt_'(Functor, Arity) -> true
+	;	assertz('$lgt_pp_defs_nt_'(Functor, Arity))
+	).
 
 '$lgt_dcg_rule'((NonTerminal --> GRBody), S0, S, (Head :- Body)) :-
     !,
     '$lgt_dcg_non_terminal'(NonTerminal, S0, S, Head),
-    '$lgt_dcg_body'(GRBody, S0, S, Body).
+    '$lgt_dcg_body'(GRBody, S0, S, Body),
+	functor(NonTerminal, Functor, Arity),
+	(	'$lgt_pp_defs_nt_'(Functor, Arity) -> true
+	;	assertz('$lgt_pp_defs_nt_'(Functor, Arity))
+	).
 
 '$lgt_dcg_rule'(Term, _, _, _) :-
     throw(type_error(grammar_rule, Term)).
@@ -8950,7 +8981,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 % '$lgt_dcg_body'(@dcgbody, -body, @var, @var)
 %
-% translates DCG rule body to a Prolog clause body
+% translates a grammar rule body into a Prolog clause body:
 
 '$lgt_dcg_body'(Var, S0, S, phrase(Var, S0, S)) :-
     var(Var),
@@ -9008,13 +9039,17 @@ current_logtalk_flag(version, version(2, 27, 0)).
     '$lgt_dcg_terminals'([T| Ts], S0, S, Goal).
 
 '$lgt_dcg_body'(NonTerminal, S0, S, Goal) :-
-    '$lgt_dcg_non_terminal'(NonTerminal, S0, S, Goal).
+    '$lgt_dcg_non_terminal'(NonTerminal, S0, S, Goal),
+	functor(NonTerminal, Functor, Arity),
+	(	'$lgt_pp_calls_nt_'(Functor, Arity) -> true
+	;	assertz('$lgt_pp_calls_nt_'(Functor, Arity))
+	).
 
 
 
 % '$lgt_dcg_simplify'(+clause, @var, @var, -clause)
 %
-% simplifies the resulting clause:
+% simplifies the clause resulting from a grammar rule translation:
 
 '$lgt_dcg_simplify'((Head :- Body), _, _, Clause) :-
     '$lgt_dcg_flatten_conjunctions'(Body, Flatted),
@@ -9060,6 +9095,14 @@ current_logtalk_flag(version, version(2, 27, 0)).
 '$lgt_dcg_flatten_conjunctions'(\+ Goal, \+ SGoal) :-
     !,
     '$lgt_dcg_flatten_conjunctions'(Goal, SGoal).
+
+'$lgt_dcg_flatten_conjunctions'(::Goal, ::SGoal) :-
+	!,
+	'$lgt_dcg_flatten_conjunctions'(Goal, SGoal).
+
+'$lgt_dcg_flatten_conjunctions'(Object::Goal, Object::SGoal) :-
+	!,
+	'$lgt_dcg_flatten_conjunctions'(Goal, SGoal).
 
 '$lgt_dcg_flatten_conjunctions'(Goal, Goal).
 
@@ -9112,6 +9155,14 @@ current_logtalk_flag(version, version(2, 27, 0)).
 '$lgt_dcg_fold_pairs'(\+ Goal, \+ SGoal) :-
     !,
     '$lgt_dcg_fold_pairs'(Goal, SGoal).
+
+'$lgt_dcg_fold_pairs'(::Goal, ::SGoal) :-
+	!,
+	'$lgt_dcg_fold_pairs'(Goal, SGoal).
+
+'$lgt_dcg_fold_pairs'(Object::Goal, Object::SGoal) :-
+	!,
+	'$lgt_dcg_fold_pairs'(Goal, SGoal).
 
 '$lgt_dcg_fold_pairs'(Goal, Goal).
 
