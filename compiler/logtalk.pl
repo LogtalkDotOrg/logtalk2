@@ -369,15 +369,15 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	throw(error(permission_error(replace, protocol, Obj), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
-	\+ '$lgt_proper_list'(Rels),
+	\+ '$lgt_is_proper_list'(Rels),
 	throw(error(type_error(list, Rels), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
-	\+ '$lgt_proper_list'(Dirs),
+	\+ '$lgt_is_proper_list'(Dirs),
 	throw(error(type_error(list, Dirs), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
-	\+ '$lgt_proper_list'(Clauses),
+	\+ '$lgt_is_proper_list'(Clauses),
 	throw(error(type_error(list, Clauses), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
@@ -416,15 +416,15 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	throw(error(permission_error(replace, protocol, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
-	\+ '$lgt_proper_list'(Rels),
+	\+ '$lgt_is_proper_list'(Rels),
 	throw(error(type_error(list, Rels), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
-	\+ '$lgt_proper_list'(Dirs),
+	\+ '$lgt_is_proper_list'(Dirs),
 	throw(error(type_error(list, Dirs), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
-	\+ '$lgt_proper_list'(Clauses),
+	\+ '$lgt_is_proper_list'(Clauses),
 	throw(error(type_error(list, Clauses), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
@@ -463,11 +463,11 @@ create_protocol(Ptc, Rels, Dirs) :-
 	throw(error(permission_error(replace, category, Ptc), create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
-	\+ '$lgt_proper_list'(Rels),
+	\+ '$lgt_is_proper_list'(Rels),
 	throw(error(type_error(list, Rels), create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
-	\+ '$lgt_proper_list'(Dirs),
+	\+ '$lgt_is_proper_list'(Dirs),
 	throw(error(type_error(list, Dirs), create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
@@ -1088,7 +1088,7 @@ logtalk_compile(Files, Flags) :-
 	throw(instantiation_error).
 
 '$lgt_check_source_files'(Files) :-
-	\+ '$lgt_proper_list'(Files),
+	\+ '$lgt_is_proper_list'(Files),
 	throw(type_error(source_file_names, Files)).
 
 '$lgt_check_source_files'(Files) :-
@@ -1182,7 +1182,7 @@ logtalk_compile(Files, Flags) :-
 	throw(instantiation_error).
 
 '$lgt_check_compiler_flags'(Flags) :-
-	\+ '$lgt_proper_list'(Flags),
+	\+ '$lgt_is_proper_list'(Flags),
 	throw(type_error(list, Flags)).
 
 '$lgt_check_compiler_flags'(Flags) :-
@@ -2092,12 +2092,12 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 '$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
 	nonvar(Input),
-	\+ '$lgt_proper_list'(Input),
+	\+ '$lgt_is_list'(Input),
 	throw(error(type_error(list, Input), Obj::phrase(Ruleset, Input, Rest), Sender)).
 
 '$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
 	nonvar(Rest),
-	\+ '$lgt_proper_list'(Rest),
+	\+ '$lgt_is_list'(Rest),
 	throw(error(type_error(list, Rest), Obj::phrase(Ruleset, Input, Rest), Sender)).
 
 '$lgt_phrase'(Obj, (Ruleset1, Ruleset2), Input, Rest, Sender, Scope) :-
@@ -2755,7 +2755,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 '$lgt_dbg_valid_leash_value'(Ports, Ports) :-
 	nonvar(Ports),
-	'$lgt_proper_list'(Ports),
+	'$lgt_is_proper_list'(Ports),
 	'$lgt_dbg_valid_leash_ports'(Ports).
 
 
@@ -4074,7 +4074,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	throw(type_error(object_identifier, Obj)).
 
 '$lgt_tr_directive'(uses, [_, Preds], _) :-
-	\+ '$lgt_proper_list'(Preds),
+	\+ '$lgt_is_proper_list'(Preds),
 	throw(type_error(list, Preds)).
 
 '$lgt_tr_directive'(uses, [Obj, Preds], _) :-
@@ -4567,7 +4567,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	throw(instantiation_error). 
 
 '$lgt_tr_entity_info_list'(List) :-
-	\+ '$lgt_proper_list'(List),
+	\+ '$lgt_is_proper_list'(List),
 	throw(type_error(list, List)).
 
 '$lgt_tr_entity_info_list'([]).
@@ -4630,7 +4630,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 '$lgt_tr_entity_info_key_value'(parameters, Parameters) :-
 	!,
-	('$lgt_proper_list'(Parameters) ->
+	('$lgt_is_proper_list'(Parameters) ->
 		(('$lgt_member'(Parameter, Parameters), \+ '$lgt_valid_entity_parameter'(Parameter)) ->
 			throw(type_error(parameter, Parameter))
 			;
@@ -4644,7 +4644,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 '$lgt_tr_entity_info_key_value'(parnames, Parnames) :-
 	!,
-	('$lgt_proper_list'(Parnames) ->
+	('$lgt_is_proper_list'(Parnames) ->
 		(('$lgt_member'(Name, Parnames), \+ atom(Name)) ->
 			throw(type_error(atom, Name))
 			;
@@ -4676,7 +4676,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	throw(instantiation_error). 
 
 '$lgt_tr_pred_info_list'(List, _, _) :-
-	\+ '$lgt_proper_list'(List),
+	\+ '$lgt_is_proper_list'(List),
 	throw(type_error(list, List)).
 
 '$lgt_tr_pred_info_list'([], _, _).
@@ -4719,7 +4719,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 '$lgt_tr_pred_info_key_value'(arguments, Arguments, Functor, Arity) :-
 	!,
-	('$lgt_proper_list'(Arguments) ->
+	('$lgt_is_proper_list'(Arguments) ->
 		(('$lgt_member'(Argument, Arguments), \+ '$lgt_valid_pred_argument'(Argument)) ->
 			throw(type_error(argument, Argument))
 			;
@@ -4732,7 +4732,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 '$lgt_tr_pred_info_key_value'(argnames, Argnames, Functor, Arity) :-
 	!,
-	('$lgt_proper_list'(Argnames) ->
+	('$lgt_is_proper_list'(Argnames) ->
 		(('$lgt_member'(Name, Argnames), \+ atom(Name)) ->
 			throw(type_error(atom, Name))
 			;
@@ -4752,7 +4752,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 '$lgt_tr_pred_info_key_value'(exceptions, Exceptions, _, _) :-
 	!,
-	('$lgt_proper_list'(Exceptions) ->
+	('$lgt_is_proper_list'(Exceptions) ->
 		(('$lgt_member'(Exception, Exceptions), \+ '$lgt_valid_pred_exception'(Exception)) ->
 			throw(type_error(exception, Exception))
 			;
@@ -4762,7 +4762,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 '$lgt_tr_pred_info_key_value'(examples, Examples, Functor, Arity) :-
 	!,
-	('$lgt_proper_list'(Examples) ->
+	('$lgt_is_proper_list'(Examples) ->
 		(('$lgt_member'(Example, Examples), \+ '$lgt_valid_pred_call_example'(Example, Functor, Arity)) ->
 			throw(type_error(example, Example))
 			;
@@ -8940,7 +8940,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 % translates a list of terminals:
 
 '$lgt_dcg_terminals'(Terminals, _, _, _) :-
-    \+ '$lgt_proper_list'(Terminals),
+    \+ '$lgt_is_proper_list'(Terminals),
     throw(type_error(list, Terminals)).
 
 '$lgt_dcg_terminals'(Terminals, S0, S, S0 = List) :-
