@@ -5211,8 +5211,8 @@ current_logtalk_flag(version, version(2, 27, 0)).
 '$lgt_tr_body'(phrase(Ruleset, Input), TPred, '$lgt_dbg_goal'(phrase(Ruleset, Input), TPred, Ctx), Ctx) :-
 	!,
 	'$lgt_dcg_body'(Ruleset, S0, S, Pred),
-	Input = S0, [] = S,
-	'$lgt_tr_body'(Pred, TPred, _, Ctx).
+	'$lgt_tr_body'(Pred, Pred2, _, Ctx),
+	TPred = (Input = S0, [] = S, Pred2).
 
 '$lgt_tr_body'(phrase(Ruleset, Input, Rest), '$lgt_phrase'(This, Ruleset, Input, Rest, This, _), '$lgt_dbg_goal'(phrase(Ruleset, Input, Rest), '$lgt_phrase'(This, Ruleset, Input, Rest, This, _), Ctx), Ctx) :-
 	var(Ruleset),
@@ -5222,8 +5222,8 @@ current_logtalk_flag(version, version(2, 27, 0)).
 '$lgt_tr_body'(phrase(Ruleset, Input, Rest), TPred, '$lgt_dbg_goal'(phrase(Ruleset, Input, Rest), TPred, Ctx), Ctx) :-
 	!,
 	'$lgt_dcg_body'(Ruleset, S0, S, Pred),
-	Input = S0, Rest = S,
-	'$lgt_tr_body'(Pred, TPred, _, Ctx).
+	'$lgt_tr_body'(Pred, Pred2, _, Ctx),
+	TPred = (Input = S0, Rest = S, Pred2).
 
 
 % inline methods (translated to a single unification with the corresponding context argument)
@@ -7676,12 +7676,14 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	'$lgt_pp_calls_pred_'(Functor, Arity),
 	\+ '$lgt_pp_defs_pred_'(Functor, Arity),
 	\+ '$lgt_pp_dynamic_'(Functor, Arity),
-	\+ '$lgt_pp_calls_nt_'(Functor, Arity2),
-	Arity2 =:= Arity + 2.
+	Arity2 is Arity - 2,
+	\+ '$lgt_pp_calls_nt_'(Functor, Arity2).
 
 '$lgt_misspelt_call'(Functor//Arity) :-
 	'$lgt_pp_calls_nt_'(Functor, Arity),
-	\+ '$lgt_pp_defs_nt_'(Functor, Arity).
+	\+ '$lgt_pp_defs_nt_'(Functor, Arity),
+	Arity2 is Arity + 2,
+	\+ '$lgt_pp_dynamic_'(Functor, Arity2).
 
 
 
