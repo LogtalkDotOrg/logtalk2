@@ -5210,7 +5210,8 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 '$lgt_tr_body'(phrase(Ruleset, Input), TPred, '$lgt_dbg_goal'(phrase(Ruleset, Input), TPred, Ctx), Ctx) :-
 	!,
-	'$lgt_dcg_body'(Ruleset, Input, [], Pred),
+	'$lgt_dcg_body'(Ruleset, S0, S, Pred),
+	Input = S0, [] = S,
 	'$lgt_tr_body'(Pred, TPred, _, Ctx).
 
 '$lgt_tr_body'(phrase(Ruleset, Input, Rest), '$lgt_phrase'(This, Ruleset, Input, Rest, This, _), '$lgt_dbg_goal'(phrase(Ruleset, Input, Rest), '$lgt_phrase'(This, Ruleset, Input, Rest, This, _), Ctx), Ctx) :-
@@ -5220,7 +5221,8 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 '$lgt_tr_body'(phrase(Ruleset, Input, Rest), TPred, '$lgt_dbg_goal'(phrase(Ruleset, Input, Rest), TPred, Ctx), Ctx) :-
 	!,
-	'$lgt_dcg_body'(Ruleset, Input, Rest, Pred),
+	'$lgt_dcg_body'(Ruleset, S0, S, Pred),
+	Input = S0, Rest = S,
 	'$lgt_tr_body'(Pred, TPred, _, Ctx).
 
 
