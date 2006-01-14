@@ -2128,10 +2128,8 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 '$lgt_phrase'(Obj, \+ Ruleset, Input, Rest, Sender, Scope) :-
 	!,
-	('$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, Scope) ->
-		fail
-		;
-		Input = Rest).
+	\+ '$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, Scope),
+	Input = Rest.
 
 '$lgt_phrase'(_, [], Input, Rest, _, _) :-
 	!,
