@@ -22,6 +22,9 @@ RELEASE NOTES
 	Added predicates for testing if a term is a partial list or a proper list 
 	to all config files.
 
+	Added a definition for missing open/4 ISO Prolog predicate to the config 
+	files of Bin Prolog.
+
 
 2.26.2 - December 20, 2005
 
