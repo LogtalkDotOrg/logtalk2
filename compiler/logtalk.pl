@@ -3466,16 +3466,40 @@ current_logtalk_flag(version, version(2, 27, 0)).
 			;
 			write('  WARNING!  singleton variables (')),
 		'$lgt_write_list'([Name| Names]),
-		arg(1, Term, Term2),
-		functor(Term2, Functor, Arity),
-		(Term = (:- _) ->
-			write(') in directive ')
-			;
-			write(') in clause for predicate ')),
-		write(Functor/Arity),
+		'lgt_report_singletons_term'(Term),
 		('$lgt_pp_entity'(_, _, _, _, _) -> true; nl)
 		;
 		true.
+
+
+'lgt_report_singletons_term'(:- Term) :-
+	!,
+	functor(Term, Functor, Arity),
+	write(') in directive '),
+	write(Functor/Arity).
+
+'lgt_report_singletons_term'(Term :- _) :-
+	!,
+	functor(Term, Functor, Arity),
+	write(') in clause for predicate '),
+	write(Functor/Arity).
+	
+'lgt_report_singletons_term'((Term, _ --> _)) :-
+	!,
+	functor(Term, Functor, Arity),
+	write(') in grammar rule for non-terminal '),
+	write(Functor/Arity).
+
+'lgt_report_singletons_term'(Term --> _) :-
+	!,
+	functor(Term, Functor, Arity),
+	write(') in grammar rule for non-terminal '),
+	write(Functor/Arity).
+
+'lgt_report_singletons_term'(Term) :-
+	functor(Term, Functor, Arity),
+	write(') in clause for predicate '),
+	write(Functor/Arity).
 
 
 
