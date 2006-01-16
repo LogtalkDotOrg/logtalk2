@@ -19,7 +19,8 @@ RELEASE NOTES
 	Improved grammar rule translator. Report calls to undefined non-terminals 
 	when translating grammar rules.
 
-	Added support for XSB 3.x to the runtime error handler.
+	Added support for XSB 3.x to the runtime error handler. Updated XSB 3.x 
+	config file with declarations for multi-threading meta-predicates.
 	
 	Removed a few choice-points when checking validity of entity directives.
 
