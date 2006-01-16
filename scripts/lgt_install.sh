@@ -57,6 +57,6 @@ echo "in order to copy the Logtalk user-modifiable files to their home"
 echo "directories."
 echo
 echo "Links to the cplgtdirs, lgt2pdf, lgt2html, and lgt2xml scripts have"
-echo "been created on $prefix/bin;  you may need to add this directory to"
+echo "been created on $prefix/bin; you may need to add this directory to"
 echo "your execution path."
 echo
