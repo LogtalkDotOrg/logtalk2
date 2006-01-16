@@ -31,7 +31,7 @@ RELEASE NOTES
 	to all config files.
 
 	Added a definition for missing open/4 ISO Prolog predicate to the config 
-	files of Bin Prolog.
+	file of Bin Prolog.
 
 
 2.26.2 - December 20, 2005
