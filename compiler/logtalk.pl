@@ -9085,7 +9085,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 % simplifies the clause resulting from a grammar rule translation:
 
 '$lgt_dcg_simplify'((Head :- Body), _, _, Clause) :-
-    '$lgt_dcg_flatten_conjunctions'(Body, Flatted),
+    '$lgt_dcg_conjunctions'(Body, Flatted),
     '$lgt_dcg_fold_left'(Flatted, FoldedLeft),
     '$lgt_dcg_fold_pairs'(FoldedLeft, FoldedPairs),
     (    FoldedPairs == true ->
@@ -9095,49 +9095,49 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 
 
-% '$lgt_dcg_flatten_conjunctions'(+goal, -goal)
+% '$lgt_dcg_conjunctions'(+goal, -goal)
 %
 % removes redundant calls to true/0 and flattens conjunction of goals:
 
-'$lgt_dcg_flatten_conjunctions'((Goal1 -> Goal2), (SGoal1 -> SGoal2)) :-
+'$lgt_dcg_conjunctions'((Goal1 -> Goal2), (SGoal1 -> SGoal2)) :-
     !,
-    '$lgt_dcg_flatten_conjunctions'(Goal1, SGoal1),
-    '$lgt_dcg_flatten_conjunctions'(Goal2, SGoal2).
+    '$lgt_dcg_conjunctions'(Goal1, SGoal1),
+    '$lgt_dcg_conjunctions'(Goal2, SGoal2).
 
-'$lgt_dcg_flatten_conjunctions'((Goal1; Goal2), (SGoal1; SGoal2)) :-
+'$lgt_dcg_conjunctions'((Goal1; Goal2), (SGoal1; SGoal2)) :-
     !,
-    '$lgt_dcg_flatten_conjunctions'(Goal1, SGoal1),
-    '$lgt_dcg_flatten_conjunctions'(Goal2, SGoal2).
+    '$lgt_dcg_conjunctions'(Goal1, SGoal1),
+    '$lgt_dcg_conjunctions'(Goal2, SGoal2).
 
-'$lgt_dcg_flatten_conjunctions'(((Goal1, Goal2), Goal3), Body) :-
+'$lgt_dcg_conjunctions'(((Goal1, Goal2), Goal3), Body) :-
     !,
-    '$lgt_dcg_flatten_conjunctions'((Goal1, (Goal2, Goal3)), Body).
+    '$lgt_dcg_conjunctions'((Goal1, (Goal2, Goal3)), Body).
 
-'$lgt_dcg_flatten_conjunctions'((true, Goal), Body) :-
+'$lgt_dcg_conjunctions'((true, Goal), Body) :-
     !,
-    '$lgt_dcg_flatten_conjunctions'(Goal, Body).
+    '$lgt_dcg_conjunctions'(Goal, Body).
 
-'$lgt_dcg_flatten_conjunctions'((Goal, true), Body) :-
+'$lgt_dcg_conjunctions'((Goal, true), Body) :-
     !,
-    '$lgt_dcg_flatten_conjunctions'(Goal, Body).
+    '$lgt_dcg_conjunctions'(Goal, Body).
 
-'$lgt_dcg_flatten_conjunctions'((Goal1, Goal2), (Goal1, Goal3)) :-
+'$lgt_dcg_conjunctions'((Goal1, Goal2), (Goal1, Goal3)) :-
     !,
-    '$lgt_dcg_flatten_conjunctions'(Goal2, Goal3).
+    '$lgt_dcg_conjunctions'(Goal2, Goal3).
 
-'$lgt_dcg_flatten_conjunctions'(\+ Goal, \+ SGoal) :-
+'$lgt_dcg_conjunctions'(\+ Goal, \+ SGoal) :-
     !,
-    '$lgt_dcg_flatten_conjunctions'(Goal, SGoal).
+    '$lgt_dcg_conjunctions'(Goal, SGoal).
 
-'$lgt_dcg_flatten_conjunctions'(::Goal, ::SGoal) :-
+'$lgt_dcg_conjunctions'(::Goal, ::SGoal) :-
 	!,
-	'$lgt_dcg_flatten_conjunctions'(Goal, SGoal).
+	'$lgt_dcg_conjunctions'(Goal, SGoal).
 
-'$lgt_dcg_flatten_conjunctions'(Object::Goal, Object::SGoal) :-
+'$lgt_dcg_conjunctions'(Object::Goal, Object::SGoal) :-
 	!,
-	'$lgt_dcg_flatten_conjunctions'(Goal, SGoal).
+	'$lgt_dcg_conjunctions'(Goal, SGoal).
 
-'$lgt_dcg_flatten_conjunctions'(Goal, Goal).
+'$lgt_dcg_conjunctions'(Goal, Goal).
 
 
 
