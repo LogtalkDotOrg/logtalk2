@@ -19,6 +19,10 @@ RELEASE NOTES
 	Improved grammar rule translator. Report calls to undefined non-terminals 
 	when translating grammar rules.
 
+	Added support for XSB 3.x to the runtime error handler.
+	
+	Removed a few choice-points when checking validity of entity directives.
+
 	Added predicates for testing if a term is a partial list or a proper list 
 	to all config files.
 

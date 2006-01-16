@@ -235,7 +235,11 @@ Obj::Pred :-
 	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
-'$lgt_runtime_error_handler'(error(undefined_predicate(TFunctor, TArity, _), _, _)) :-									% XSB
+'$lgt_runtime_error_handler'(error(existence_error(procedure, ':'(_, TFunctor/TArity)), _, _)) :-						% XSB >= 3.x
+	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
+	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
+
+'$lgt_runtime_error_handler'(error(undefined_predicate(TFunctor, TArity, _), _, _)) :-									% XSB =< 2.7.1
 	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
@@ -1160,7 +1164,7 @@ logtalk_compile(Files, Flags) :-
 % converts a library alias into its corresponding path
 
 '$lgt_expand_library_path'(Library, Path) :-
-	'$lgt_expand_library_path'(Library, Path, 16).
+	'$lgt_expand_library_path'(Library, Path, 16).	% depth bound to prevent loops
 
 
 '$lgt_expand_library_path'(Library, Path, N) :-
@@ -2171,7 +2175,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 % '$lgt_expand_term'(+object_identifier, @term, -clause, +object_identifier, +scope)
 %
-% expand_term/2 built-in method; for now only deals with grammar rules
+% expand_term/2 built-in method; for now only deals with translation of grammar rules
 
 '$lgt_expand_term'(_, Term, Clause, _, _) :-
 	nonvar(Term),
@@ -8244,7 +8248,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	N >= 1, N =< 3.
 
 '$lgt_lgt_opening_directive'(protocol, N) :-
-	N =:= 1; N =:= 2.
+	N >= 1, N =< 2.
 
 '$lgt_lgt_opening_directive'(module, N) :-				% Prolog module directives; module/3 directives
 	N >= 1, N =< 3.										% are not supported but must be recognized as 
@@ -8263,13 +8267,12 @@ current_logtalk_flag(version, version(2, 27, 0)).
 '$lgt_lgt_entity_directive'(calls, N) :-
 	N >= 1.
 '$lgt_lgt_entity_directive'(uses, N) :-
-	N =:= 1; N =:= 2.
+	N >= 1, N =< 2.
 '$lgt_lgt_entity_directive'(use_module, 2).				% Prolog module directive
 
 '$lgt_lgt_entity_directive'((initialization), 1).
 
-'$lgt_lgt_entity_directive'((dynamic), N) :-
-	N =:= 0.
+'$lgt_lgt_entity_directive'((dynamic), 0).
 
 '$lgt_lgt_entity_directive'(op, 3).
 
@@ -8385,7 +8388,8 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 % '$lgt_valid_gr_ind(+nonvar, -atom, -integer, -integer)
 %
-% valid grammar rule indicator
+% valid grammar rule indicator; last argument is the arity
+% of the corresponding predicate
 
 '$lgt_valid_gr_ind'(Functor//Arity, Functor, Arity, Arity2) :-
 	atom(Functor),
