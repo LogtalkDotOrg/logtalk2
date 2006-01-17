@@ -2076,63 +2076,63 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 
 
-% '$lgt_phrase'(+object_identifier, +ruleset, ?list, +object_identifier, +scope)
+% '$lgt_phrase'(+object_identifier, +grbody, ?list, +object_identifier, +scope)
 %
 % phrase/2 built-in method
 
-'$lgt_phrase'(Obj, Ruleset, Input, Sender, Scope) :-
+'$lgt_phrase'(Obj, GRBody, Input, Sender, Scope) :-
 	catch(
-		'$lgt_phrase'(Obj, Ruleset, Input, [], Sender, Scope),
+		'$lgt_phrase'(Obj, GRBody, Input, [], Sender, Scope),
 		error(Error, _),
-		throw(error(Error, Obj::phrase(Ruleset, Input), Sender))).
+		throw(error(Error, Obj::phrase(GRBody, Input), Sender))).
 
 
 
-% '$lgt_phrase'(+object_identifier, +ruleset, +list, ?list, +object_identifier, +scope)
+% '$lgt_phrase'(+object_identifier, +grbody, +list, ?list, +object_identifier, +scope)
 %
 % phrase/3 built-in method
 
-'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
-	var(Ruleset),
-	throw(error(instantiation_error, Obj::phrase(Ruleset, Input, Rest), Sender)).
+'$lgt_phrase'(Obj, GRBody, Input, Rest, Sender, _) :-
+	var(GRBody),
+	throw(error(instantiation_error, Obj::phrase(GRBody, Input, Rest), Sender)).
 
-'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
-	\+ callable(Ruleset),
-	throw(error(type_error(callable, Ruleset), Obj::phrase(Ruleset, Input, Rest), Sender)).
+'$lgt_phrase'(Obj, GRBody, Input, Rest, Sender, _) :-
+	\+ callable(GRBody),
+	throw(error(type_error(callable, GRBody), Obj::phrase(GRBody, Input, Rest), Sender)).
 
-'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
+'$lgt_phrase'(Obj, GRBody, Input, Rest, Sender, _) :-
 	nonvar(Input),
 	\+ '$lgt_is_list'(Input),
-	throw(error(type_error(list, Input), Obj::phrase(Ruleset, Input, Rest), Sender)).
+	throw(error(type_error(list, Input), Obj::phrase(GRBody, Input, Rest), Sender)).
 
-'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, _) :-
+'$lgt_phrase'(Obj, GRBody, Input, Rest, Sender, _) :-
 	nonvar(Rest),
 	\+ '$lgt_is_list'(Rest),
-	throw(error(type_error(list, Rest), Obj::phrase(Ruleset, Input, Rest), Sender)).
+	throw(error(type_error(list, Rest), Obj::phrase(GRBody, Input, Rest), Sender)).
 
-'$lgt_phrase'(Obj, (Ruleset1, Ruleset2), Input, Rest, Sender, Scope) :-
+'$lgt_phrase'(Obj, (GRFirst, GRSecond), Input, Rest, Sender, Scope) :-
 	!,
-	'$lgt_phrase'(Obj, Ruleset1, Input, Rest1, Sender, Scope),
-	'$lgt_phrase'(Obj, Ruleset2, Rest1, Rest, Sender, Scope).
+	'$lgt_phrase'(Obj, GRFirst, Input, Rest1, Sender, Scope),
+	'$lgt_phrase'(Obj, GRSecond, Rest1, Rest, Sender, Scope).
 
-'$lgt_phrase'(Obj, (Ruleset1; Ruleset2), Input, Rest, Sender, Scope) :-
+'$lgt_phrase'(Obj, (GREither; GROr), Input, Rest, Sender, Scope) :-
 	!,
-	('$lgt_phrase'(Obj, Ruleset1, Input, Rest, Sender, Scope)
+	('$lgt_phrase'(Obj, GREither, Input, Rest, Sender, Scope)
 	 ;
-	 '$lgt_phrase'(Obj, Ruleset2, Input, Rest, Sender, Scope)).
+	 '$lgt_phrase'(Obj, GROr, Input, Rest, Sender, Scope)).
 
-'$lgt_phrase'(Obj, (Ruleset1 -> Ruleset2), Input, Rest, Sender, Scope) :-
+'$lgt_phrase'(Obj, (GRIf -> GRThen), Input, Rest, Sender, Scope) :-
 	!,
-	'$lgt_phrase'(Obj, Ruleset1, Input, Rest1, Sender, Scope),
-	'$lgt_phrase'(Obj, Ruleset2, Rest1, Rest, Sender, Scope).
+	'$lgt_phrase'(Obj, GRIf, Input, Rest1, Sender, Scope),
+	'$lgt_phrase'(Obj, GRThen, Rest1, Rest, Sender, Scope).
 
 '$lgt_phrase'(_, !, Input, Rest, _, _) :-
 	!,
 	Input = Rest.
 
-'$lgt_phrase'(Obj, \+ Ruleset, Input, Rest, Sender, Scope) :-
+'$lgt_phrase'(Obj, \+ GRBody, Input, Rest, Sender, Scope) :-
 	!,
-	\+ '$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, Scope),
+	\+ '$lgt_phrase'(Obj, GRBody, Input, Rest, Sender, Scope),
 	Input = Rest.
 
 '$lgt_phrase'(_, [], Input, Rest, _, _) :-
@@ -2143,9 +2143,9 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	!,
 	'$lgt_append'([Head| Tail], Rest, Input).
 
-'$lgt_phrase'(Obj, Ruleset, Input, Rest, Sender, Scope) :-
+'$lgt_phrase'(Obj, NonTerminal, Input, Rest, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _) ->
-		Ruleset =.. [Functor| Args],
+		NonTerminal =.. [Functor| Args],
 		'$lgt_append'(Args, [Input, Rest], Args2),
 		Pred =.. [Functor| Args2],
 		('$lgt_call'(Dcl, Pred, PScope, _, _, SCtn, _) ->
@@ -2154,9 +2154,9 @@ current_logtalk_flag(version, version(2, 27, 0)).
 				call(Call)
 				;
 				(PScope = p ->
-					throw(error(permission_error(access, private_non_terminal, Ruleset), Obj::phrase(Ruleset, Input, Rest), Sender))
+					throw(error(permission_error(access, private_non_terminal, NonTerminal), Obj::phrase(NonTerminal, Input, Rest), Sender))
 					;
-					throw(error(permission_error(access, protected_non_terminal, Ruleset), Obj::phrase(Ruleset, Input, Rest), Sender))))
+					throw(error(permission_error(access, protected_non_terminal, NonTerminal), Obj::phrase(NonTerminal, Input, Rest), Sender))))
 			;
 			((Obj = Sender,
 			  ('$lgt_call'(Def, Pred, Obj, Obj, Obj, Call)
@@ -2164,12 +2164,12 @@ current_logtalk_flag(version, version(2, 27, 0)).
 			   '$lgt_call'(Prefix, _, _, _, _, _, _, DDef, _), '$lgt_call'(DDef, Pred, Obj, Obj, Obj, Call))) ->
 				call(Call)
 				;
-				throw(error(existence_error(non_terminal_declaration, Ruleset), Obj::phrase(Ruleset, Input, Rest), Sender))))
+				throw(error(existence_error(non_terminal_declaration, NonTerminal), Obj::phrase(NonTerminal, Input, Rest), Sender))))
 		;
 		(catch(current_module(Obj), _, fail) ->
 			':'(Obj, Pred)
 			;
-			throw(error(existence_error(object, Obj), Obj::phrase(Ruleset, Input, Rest), Sender))).
+			throw(error(existence_error(object, Obj), Obj::phrase(NonTerminal, Input, Rest), Sender))).
 
 
 
@@ -3472,13 +3472,13 @@ current_logtalk_flag(version, version(2, 27, 0)).
 		true.
 
 
-'lgt_report_singletons_term'(:- Term) :-
+'lgt_report_singletons_term'((:- Term)) :-
 	!,
 	functor(Term, Functor, Arity),
 	write(') in directive '),
 	write(Functor/Arity).
 
-'lgt_report_singletons_term'(Term :- _) :-
+'lgt_report_singletons_term'((Term :- _)) :-
 	!,
 	functor(Term, Functor, Arity),
 	write(') in clause for predicate '),
@@ -3490,7 +3490,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	write(') in grammar rule for non-terminal '),
 	write(Functor/Arity).
 
-'lgt_report_singletons_term'(Term --> _) :-
+'lgt_report_singletons_term'((Term --> _)) :-
 	!,
 	functor(Term, Functor, Arity),
 	write(') in grammar rule for non-terminal '),
@@ -5232,25 +5232,25 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	!,
 	'$lgt_ctx_this'(Ctx, This).
 
-'$lgt_tr_body'(phrase(Ruleset, Input), '$lgt_phrase'(This, Ruleset, Input, This, _), '$lgt_dbg_goal'(phrase(Ruleset, Input), '$lgt_phrase'(This, Ruleset, Input, This, _), Ctx), Ctx) :-
-	var(Ruleset),
+'$lgt_tr_body'(phrase(GRBody, Input), '$lgt_phrase'(This, GRBody, Input, This, _), '$lgt_dbg_goal'(phrase(GRBody, Input), '$lgt_phrase'(This, GRBody, Input, This, _), Ctx), Ctx) :-
+	var(GRBody),
 	!,
 	'$lgt_ctx_this'(Ctx, This).
 
-'$lgt_tr_body'(phrase(Ruleset, Input), TPred, '$lgt_dbg_goal'(phrase(Ruleset, Input), TPred, Ctx), Ctx) :-
+'$lgt_tr_body'(phrase(GRBody, Input), TPred, '$lgt_dbg_goal'(phrase(GRBody, Input), TPred, Ctx), Ctx) :-
 	!,
-	'$lgt_dcg_body'(Ruleset, S0, S, Pred),
+	'$lgt_dcg_body'(GRBody, S0, S, Pred),
 	'$lgt_tr_body'(Pred, Pred2, _, Ctx),
 	TPred = (Input = S0, [] = S, Pred2).
 
-'$lgt_tr_body'(phrase(Ruleset, Input, Rest), '$lgt_phrase'(This, Ruleset, Input, Rest, This, _), '$lgt_dbg_goal'(phrase(Ruleset, Input, Rest), '$lgt_phrase'(This, Ruleset, Input, Rest, This, _), Ctx), Ctx) :-
-	var(Ruleset),
+'$lgt_tr_body'(phrase(GRBody, Input, Rest), '$lgt_phrase'(This, GRBody, Input, Rest, This, _), '$lgt_dbg_goal'(phrase(GRBody, Input, Rest), '$lgt_phrase'(This, GRBody, Input, Rest, This, _), Ctx), Ctx) :-
+	var(GRBody),
 	!,
 	'$lgt_ctx_this'(Ctx, This).
 
-'$lgt_tr_body'(phrase(Ruleset, Input, Rest), TPred, '$lgt_dbg_goal'(phrase(Ruleset, Input, Rest), TPred, Ctx), Ctx) :-
+'$lgt_tr_body'(phrase(GRBody, Input, Rest), TPred, '$lgt_dbg_goal'(phrase(GRBody, Input, Rest), TPred, Ctx), Ctx) :-
 	!,
-	'$lgt_dcg_body'(Ruleset, S0, S, Pred),
+	'$lgt_dcg_body'(GRBody, S0, S, Pred),
 	'$lgt_tr_body'(Pred, Pred2, _, Ctx),
 	TPred = (Input = S0, Rest = S, Pred2).
 
@@ -5685,10 +5685,10 @@ current_logtalk_flag(version, version(2, 27, 0)).
 '$lgt_tr_msg'(expand_term(Term, Clause), Obj, '$lgt_expand_term'(Obj, Term, Clause, This, p(p(p))), This) :-
 	!.
 
-'$lgt_tr_msg'(phrase(Ruleset, List), Obj, '$lgt_phrase'(Obj, Ruleset, List, This, p(p(p))), This) :-
+'$lgt_tr_msg'(phrase(GRBody, List), Obj, '$lgt_phrase'(Obj, GRBody, List, This, p(p(p))), This) :-
 	!.
 
-'$lgt_tr_msg'(phrase(Ruleset, List, Rest), Obj, '$lgt_phrase'(Obj, Ruleset, List, Rest, This, p(p(p))), This) :-
+'$lgt_tr_msg'(phrase(GRBody, List, Rest), Obj, '$lgt_phrase'(Obj, GRBody, List, Rest, This, p(p(p))), This) :-
 	!.
 
 
@@ -5873,10 +5873,10 @@ current_logtalk_flag(version, version(2, 27, 0)).
 '$lgt_tr_self_msg'(expand_term(Term, Clause), '$lgt_expand_term'(Self, Term, Clause, This, p(_)), This, Self) :-
 	!.
 
-'$lgt_tr_self_msg'(phrase(Ruleset, List), '$lgt_phrase'(Self, Ruleset, List, This, p(_)), This, Self) :-
+'$lgt_tr_self_msg'(phrase(GRBody, List), '$lgt_phrase'(Self, GRBody, List, This, p(_)), This, Self) :-
 	!.
 
-'$lgt_tr_self_msg'(phrase(Ruleset, List, Rest), '$lgt_phrase'(Self, Ruleset, List, Rest, This, p(_)), This, Self) :-
+'$lgt_tr_self_msg'(phrase(GRBody, List, Rest), '$lgt_phrase'(Self, GRBody, List, Rest, This, p(_)), This, Self) :-
 	!.
 
 
@@ -9012,7 +9012,63 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 
 
-% '$lgt_dcg_body'(@dcgbody, -body, @var, @var)
+% '$lgt_dcg_msg'(@dcgbody, @var, @var, -body)
+%
+% translates a grammar rule message to an object into a Prolog message:
+
+'$lgt_dcg_msg'(Var, S0, S, phrase(Var, S0, S)) :-
+    var(Var),
+    !.
+
+'$lgt_dcg_msg'((GRIf -> GRThen), S0, S, (If -> Then)) :-
+    !,
+    '$lgt_dcg_msg'(GRIf, S0, S1, If),
+    '$lgt_dcg_msg'(GRThen, S1, S, Then).
+
+'$lgt_dcg_msg'((GREither; GROr), S0, S, (Either; Or)) :-
+    !,
+    '$lgt_dcg_msg'(GREither, S0, S, Either),
+    '$lgt_dcg_msg'(GROr, S0, S, Or).
+
+'$lgt_dcg_msg'((GRFirst, GRSecond), S0, S, (First, Second)) :-
+    !,
+    '$lgt_dcg_msg'(GRFirst, S0, S1, First),
+    '$lgt_dcg_msg'(GRSecond, S1, S, Second).
+
+'$lgt_dcg_msg'(!, S0, S, (!, S0 = S)) :-
+    !.
+
+'$lgt_dcg_msg'({}, S0, S, (S0 = S)) :-
+    !.
+
+'$lgt_dcg_msg'({Goal}, S0, S, (call(Goal), S0 = S)) :-
+    var(Goal),
+    !.
+
+'$lgt_dcg_msg'({Goal}, _, _, _) :-
+    \+ callable(Goal),
+    throw(type_error(callable, Goal)).
+
+'$lgt_dcg_msg'({Goal}, S0, S, (Goal, S0 = S)) :-
+    !.
+
+'$lgt_dcg_msg'(\+ GRBody, S0, S, (\+ Goal, S0 = S)) :-
+    !,
+    '$lgt_dcg_msg'(GRBody, S0, S, Goal).
+
+'$lgt_dcg_msg'([], S0, S, (S0=S)) :-
+    !.
+
+'$lgt_dcg_msg'([T| Ts], S0, S, Goal) :-
+    !,
+    '$lgt_dcg_terminals'([T| Ts], S0, S, Goal).
+
+'$lgt_dcg_msg'(NonTerminal, S0, S, phrase(NonTerminal, S0, S)) :-
+    '$lgt_dcg_non_terminal'(NonTerminal, S0, S, _).		% just check validity
+
+
+
+% '$lgt_dcg_body'(@dcgbody, @var, @var, -body)
 %
 % translates a grammar rule body into a Prolog clause body:
 
@@ -9022,11 +9078,11 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 '$lgt_dcg_body'(::RGoal, S0, S, ::CGoal) :-
 	!,
-	'$lgt_dcg_body'(RGoal, S0, S, CGoal).
+	'$lgt_dcg_msg'(RGoal, S0, S, CGoal).
 
 '$lgt_dcg_body'(Object::RGoal, S0, S, Object::CGoal) :-
 	!,
-	'$lgt_dcg_body'(RGoal, S0, S, CGoal).
+	'$lgt_dcg_msg'(RGoal, S0, S, CGoal).
 
 '$lgt_dcg_body'((GRIf -> GRThen), S0, S, (If -> Then)) :-
     !,
