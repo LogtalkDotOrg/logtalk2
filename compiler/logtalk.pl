@@ -5011,11 +5011,11 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	var(Pred),
 	!,
 	'$lgt_ctx_meta_vars'(Ctx, Metavars),
+	'$lgt_ctx_sender'(Ctx, Sender),
+	'$lgt_ctx_this'(Ctx, This),
 	('$lgt_member_var'(Pred, Metavars) ->
-		'$lgt_ctx_sender'(Ctx, Sender),
-		TPred = '$lgt_metacall_in_object'(Sender, Pred, Sender)
+		TPred = '$lgt_metacall_in_object'(Sender, Pred, This)
 		;
-		'$lgt_ctx_this'(Ctx, This),
 		TPred = '$lgt_metacall_in_object'(This, Pred, This)).
 
 

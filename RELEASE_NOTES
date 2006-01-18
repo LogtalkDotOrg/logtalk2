@@ -27,6 +27,9 @@ RELEASE NOTES
 	Corrected a bug in the reporting of singleton variables, which failed to 
 	write an accurate message for facts and grammar rules.
 
+	Corrected a bug in passing the correct calling context ("this") when 
+	processing meta-calls in objects.
+
 	Added predicates for testing if a term is a partial list or a proper list 
 	to all config files.
 
