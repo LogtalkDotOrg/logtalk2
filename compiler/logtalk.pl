@@ -4223,19 +4223,31 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 '$lgt_tr_directive'(alias, [_, PI1, _], _) :-
 	\+ '$lgt_valid_pred_ind'(PI1, _, _),
+	\+ '$lgt_valid_gr_ind'(PI1, _, _, _),
 	throw(type_error(predicate_indicator, PI1)).
 
 '$lgt_tr_directive'(alias, [_, _, PI2], _) :-
 	\+ '$lgt_valid_pred_ind'(PI2, _, _),
+	\+ '$lgt_valid_gr_ind'(PI2, _, _, _),
 	throw(type_error(predicate_indicator, PI2)).
 
 '$lgt_tr_directive'(alias, [Entity, _, _], _) :-
 	\+ callable(Entity),
 	throw(type_error(entity_identifier, Entity)).
 
+'$lgt_tr_directive'(alias, [_, Functor1//Arity1, Functor2//Arity2], _) :-
+	Arity1 =\= Arity2,
+	throw(domain_error(arity_mismatch, Functor1//Arity1, Functor2//Arity2)).
+
 '$lgt_tr_directive'(alias, [_, Functor1/Arity1, Functor2/Arity2], _) :-
 	Arity1 =\= Arity2,
 	throw(domain_error(arity_mismatch, Functor1/Arity1, Functor2/Arity2)).
+
+'$lgt_tr_directive'(alias, [_, Functor1/Arity1, Functor2//Arity2], _) :-
+	throw(domain_error(indicator_mismatch, Functor1/Arity1, Functor2//Arity2)).
+
+'$lgt_tr_directive'(alias, [_, Functor1//Arity1, Functor2/Arity2], _) :-
+	throw(domain_error(indicator_mismatch, Functor1//Arity1, Functor2/Arity2)).
 
 '$lgt_tr_directive'(alias, [Entity, PI1, PI2], _) :-
 	('$lgt_pp_extended_protocol_'(Entity, _, _, _);
@@ -4251,6 +4263,10 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	throw(reference_error(entity_identifier, Entity)).
 
 
+
+'$lgt_tr_alias_directive'(Entity, Functor1//Arity, Functor2//Arity) :-
+	Arity2 is Arity + 2,
+	'$lgt_tr_alias_directive'(Entity, Functor1/Arity2, Functor2/Arity2).
 
 '$lgt_tr_alias_directive'(Entity, Functor1/Arity, Functor2/Arity) :-
 	functor(Pred, Functor1, Arity),
