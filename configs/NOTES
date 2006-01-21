@@ -87,7 +87,9 @@ B-Prolog 6.8 and later versions
 	"logtalk.pl.out", and "libpaths.pl.out". Place these files on the $BPDIR 
 	directory and then copy the "bp" script to a "bplgt" file and modify it 
 	by adding the names of the three *.out files after the "$BPDIR/bp.out" 
-	file (prefixing them with $BPDIR/).
+	file (prefixing them with $BPDIR/). You will probably need to increase 
+	the sizes of the code areas on the "bplgt" script if you run into 
+	out-of-memory errors with complex applications.
 
 
 Bin-Prolog 8.x~10.x
