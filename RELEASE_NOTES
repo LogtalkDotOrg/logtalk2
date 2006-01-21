@@ -27,6 +27,10 @@ RELEASE NOTES
 	
 	Removed a few choice-points when checking validity of entity directives.
 
+	Removed the experimental "systemp.lgt" protocol from the list of files 
+	loaded by the "library/all_loader.lgt" loader utility files to avoid 
+	compilation errors on some Prolog systems.
+
 	Corrected a bug in the reporting of singleton variables, which failed to 
 	write an accurate message for facts and grammar rules.
 
