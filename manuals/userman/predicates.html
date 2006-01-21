@@ -22,7 +22,7 @@
 <h1>Predicates</h1>
 
 <p>
-Predicate declarations and definitions can be encapsulated inside objects and categories. Protocols can only contain predicate declarations.
+Predicate directives and clauses can be encapsulated inside objects and categories. Protocols can only contain predicate directives.
 </p>
 
 <h2>Declaring predicates<a id="declaring"></a></h2>
@@ -104,7 +104,7 @@ Note that most predicates have more than one valid mode implying several mode di
 Some old Prolog compilers supported some sort of mode directives to improve performance. To the best of my knowledge, there is no modern Prolog compiler supporting these kind of directive. The current version of the Logtalk preprocessor just parses and than discards this directive. Nevertheless, the use of mode directives is a good starting point to the documentation of your predicates.
 </p>
 
-<h3>Metapredicate directive<a id="meta"></a></h3>
+<h3>Meta-predicate directive<a id="meta"></a></h3>
 
 <p>
 Some predicates may have arguments that will be called as goals. To ensure that these calls will be executed in the correct scope we need to use the <a title="Consult reference manual" href="../refman/directives/metapredicate1.html"><code>metapredicate/1</code></a> directive. For example:
@@ -122,7 +122,7 @@ The predicate arguments in this directive have the following meaning:
 </dl>
 </blockquote>
 <p>
-This is similar to the declaration of meta-predicates in the ISO draft for Prolog modules except that we use the atom <code>::</code> instead of <code>:</code> to be consistent with the message sending operators.
+This is similar to the declaration of meta-predicates in the ISO standard for Prolog modules except that we use the atom <code>::</code> instead of <code>:</code> to be consistent with the message sending operators.
 </p>
 <p>
 Since each Logtalk entity is independently compiled, this directive must be included in every object or category that contains a definition for the described predicate, even if the predicate declaration is inherited from another entity, to ensure proper compilation of meta-arguments.
@@ -227,7 +227,7 @@ A common use for the <code>alias/3</code> directive is to give an alternative na
 The directive allows both <code>width/1</code> and <code>side/1</code> to be used as messages to the object <code>square</code>. Thus, using this directive, there is no need to explicitly declare and define a "new" <code>side/1</code> predicate. Note that the <code>alias/3</code> directive does not rename a predicate, only provides an alternative, additional name; the original name continues to be available.
 </p>
 <p>
-Another common use for this directive is to solve conflicts when two inherited predicates have the same functor and arity. We may want to call the predicate which is masked by the Logtalk lookup algorithm (see the <a href="inheritance.html">Inheritance</a> section) or we may need to call both predicates. This is simply accomplished by using the <code>alias/3</code> directive to give alternative names to masked or conflicting predicates. Consider the following example:
+Another common use for this directive is to solve conflicts when two inherited predicates have the same functor and arity. We may want to call the predicate which is masked out by the Logtalk lookup algorithm (see the <a href="inheritance.html">Inheritance</a> section) or we may need to call both predicates. This is simply accomplished by using the <code>alias/3</code> directive to give alternative names to masked out or conflicting predicates. Consider the following example:
 </p>
 <pre>:- object(my_data_structure,
     extends(list, set)).
@@ -370,9 +370,9 @@ apply(Pred, Args, Goal) :-
     (atom(Pred) -&gt;
         Goal =.. [Pred| Args]
         ;
-        Pred =.. Old,
+        Pred =.. [Functor| Old],
         append(Old, Args, New),
-        Goal =.. New),
+        Goal =.. [Functor| New]),
     call(Goal).</pre>
 <p>
 Note that the predicate <code>apply/2</code> is no longer declared as a meta-predicate. However, it will work as expected when called because of the implicit passing of the method execution context between the two predicates.
