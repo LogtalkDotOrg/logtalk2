@@ -25,8 +25,6 @@
 		randomp,										% random
 		random,
 
-		systemp,										% os interface protocol
-
 		termp, term,									% types
 		atomic,
 		atom, callable,
@@ -70,8 +68,6 @@ files, comment the directive above and uncomment the directive below
 
 		randomp,										% random
 		random,
-
-		systemp,										% os interface protocol
 
 		termp, term,									% types
 		atomic,
