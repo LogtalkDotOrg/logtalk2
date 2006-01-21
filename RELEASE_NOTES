@@ -22,6 +22,9 @@ RELEASE NOTES
 	Added support for declaring grammar rule non-terminal aliases using the 
 	alias/3 directive.
 
+	Added a new predicate property, non_terminal/1, which applies to 
+	predicates resulting from the compilation of grammar rule non-terminals.
+
 	Added support for XSB 3.x to the runtime error handler. Updated XSB 3.x 
 	config file with declarations for multi-threading meta-predicates.
 	

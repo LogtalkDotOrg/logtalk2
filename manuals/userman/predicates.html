@@ -45,7 +45,7 @@ The scope declarations are made using the directives <a title="Consult reference
 
 :- private(process_init_options/1).</pre>
 <p>
-Note that we do not need to write scope declarations for all defined predicates. If a predicate does not have a scope declaration, it is assumed that the predicate is private, although it will be invisible to the reflection methods and to the message and error handling mechanisms.
+Note that we do not need to write scope declarations for all defined predicates. If a predicate does not have a scope declaration, it is assumed that the predicate is private, although it will be invisible to the reflection methods and to the message and error handling mechanisms. One exception is local, dynamic predicates: explictly declaring them as private predicates allows the Logtalk compiler to generate optimized code for them.
 </p>
 
 <h3>Mode directive<a id="mode"></a></h3>
@@ -70,7 +70,7 @@ The first argument describes a valid calling mode. The minimum information will 
 </dl>
 </blockquote>
 <p>
-These four mode atoms are also declared as prefix operators by the Logtalk preprocessor. This makes it possible to include type information for each argument like in the example above. Some of the possible type values are: <code>event</code>, <code>object</code>, <code>category</code>, <code>protocol</code>, <code>callable</code>, <code>term</code>, <code>nonvar</code>, <code>var</code>, <code>atomic</code>, <code>atom</code>, <code>number</code>, <code>integer</code>, <code>float</code>, <code>compound</code>, and <code>list</code>. The first four are Logtalk specific. The remaining are common Prolog types. We can also use our own types that can be either atoms or compound terms. 
+These four mode atoms are also declared as prefix operators by the Logtalk compiler. This makes it possible to include type information for each argument like in the example above. Some of the possible type values are: <code>event</code>, <code>object</code>, <code>category</code>, <code>protocol</code>, <code>callable</code>, <code>term</code>, <code>nonvar</code>, <code>var</code>, <code>atomic</code>, <code>atom</code>, <code>number</code>, <code>integer</code>, <code>float</code>, <code>compound</code>, and <code>list</code>. The first four are Logtalk specific. The remaining are common Prolog types. We can also use our own types that can be either atoms or compound terms. 
 </p>
 <p>
 The second argument documents the number of proofs (or solutions) for the specified mode. The possible values are:
@@ -101,7 +101,7 @@ Note that most predicates have more than one valid mode implying several mode di
 <pre>:- mode(atom_concat(?atom, ?atom, +atom), one_or_more).
 :- mode(atom_concat(+atom, +atom, -atom), zero_or_one).</pre>
 <p>
-Some old Prolog compilers supported some sort of mode directives to improve performance. To the best of my knowledge, there is no modern Prolog compiler supporting these kind of directive. The current version of the Logtalk preprocessor just parses and than discards this directive. Nevertheless, the use of mode directives is a good starting point to the documentation of your predicates.
+Some old Prolog compilers supported some sort of mode directives to improve performance. To the best of my knowledge, there is no modern Prolog compiler supporting these kind of directive. The current version of the Logtalk compiler just parses and than discards this directive. Nevertheless, the use of mode directives is a good starting point to the documentation of your predicates.
 </p>
 
 <h3>Meta-predicate directive<a id="meta"></a></h3>
@@ -601,13 +601,14 @@ Possible predicate propertie values are:
 	<li><code>metapredicate(Mode)</code></li>
 	<li><code>declared_in(Entity)</code></li>
 	<li><code>defined_in(Entity)</code></li>
+	<li><code>non_terminal(NonTerminal//Arity)</code></li>
 	<li><code>alias(Predicate)</code></li>
 </ul>
 <p>
-The properties <code>declared_in/1</code> and <code>defined_in/1</code> do not apply to built-in methods and Logtalk or Prolog built-in predicates. The property <code>alias/1</code> is returned for predicates which are an alias to other predicate.
+The properties <code>declared_in/1</code> and <code>defined_in/1</code> do not apply to built-in methods and Logtalk or Prolog built-in predicates. The property <code>non_terminal/1</code> only applies to predicates that result from the compilation of grammar rule non-terminals. The property <code>alias/1</code> is returned for predicates which are an alias to other predicate.
 </p>
 <p>
-Note that if a predicate is declared in a category imported by the object, it will be the category name &mdash; not the object name &mdash; which will be returned by the property <code>declared_in/1</code>. The same goes for protocol declared predicates.
+Note that if a predicate is declared in a category imported by the object, it will be the category name &mdash; not the object name &mdash; that will be returned by the property <code>declared_in/1</code>. The same goes for protocol declared predicates.
 </p>
 
 <h2>Finding declared predicates<a id="finding"></a></h2>
