@@ -576,7 +576,7 @@ Logtalk provides two built-in methods for inspecting object predicates: <a title
 <h3>Definite clause grammar parsing methods<a id="parsing"></a></h3>
 
 <p>
-Logtalk supports two definite clause grammar parsing built-in methods, <a title="Consult reference manual" href="../refman/methods/phrase2.html"><code>phrase/2</code></a> and <a title="Consult reference manual" href="../refman/methods/phrase3.html"><code>phrase/3</code></a>, with definitions similar to the predicates with the same name found on most Prolog compilers that support definite clause grammars. The current implementation of the parsing methods only accepts as first argument a non-terminal instead of a rule body.
+Logtalk supports two definite clause grammar parsing built-in methods, <a title="Consult reference manual" href="../refman/methods/phrase2.html"><code>phrase/2</code></a> and <a title="Consult reference manual" href="../refman/methods/phrase3.html"><code>phrase/3</code></a>, with definitions similar to the predicates with the same name found on most Prolog compilers that support definite clause grammars.
 </p>
 
 <h2>Predicate properties<a id="properties"></a></h2>
@@ -605,11 +605,15 @@ Possible predicate propertie values are:
 	<li><code>alias(Predicate)</code></li>
 </ul>
 <p>
-The properties <code>declared_in/1</code> and <code>defined_in/1</code> do not apply to built-in methods and Logtalk or Prolog built-in predicates. The property <code>non_terminal/1</code> only applies to predicates that result from the compilation of grammar rule non-terminals. The property <code>alias/1</code> is returned for predicates which are an alias to other predicate.
+The properties <code>declared_in/1</code> and <code>defined_in/1</code> do not apply to built-in methods and Logtalk or Prolog built-in predicates. Note that if a predicate is declared in a category imported by the object, it will be the category name &mdash; not the object name &mdash; that will be returned by the property <code>declared_in/1</code>. The same goes for protocol declared predicates.
 </p>
 <p>
-Note that if a predicate is declared in a category imported by the object, it will be the category name &mdash; not the object name &mdash; that will be returned by the property <code>declared_in/1</code>. The same goes for protocol declared predicates.
+The property <code>non_terminal/1</code> only applies to predicates that result from the compilation of grammar rule non-terminals. 
 </p>
+<p>
+The property <code>alias/1</code> is returned for predicates that are an alias to other predicate (which is returned in the property argument).
+</p>
+
 
 <h2>Finding declared predicates<a id="finding"></a></h2>
 
@@ -618,7 +622,14 @@ We can find, by backtracking, all visible user predicates by calling the <a titl
 </p>
 <pre>| ?- some_object::current_predicate(Functor/Arity).</pre>
 <p>
-will only return user predicates that are declared public.
+will only return user predicates that are declared public. The predicate property <code>non_terminal/1</code> may be used to retrieve all grammar rule non-terminals declared for an object. For example:
+</p>
+<pre>current_non_terminal(Object, NonTerminal//Args) :-
+    Object::current_predicate(Functor/Arity),
+    functor(Predicate, Functor, Arity),
+    Object::predicate_property(Predicate, non_terminal(NonTerminal//Args)).</pre>
+<p>
+Usually, the non-terminal and the corresponding predicate share the same functor but users should not rely on this always being true.
 </p>
 
 <h2>Calling Prolog built-in predicates<a id="prolog"></a></h2>
