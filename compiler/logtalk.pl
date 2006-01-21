@@ -2177,17 +2177,26 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 
 
-% '$lgt_expand_term'(+object_identifier, @term, -clause, +object_identifier, +scope)
+% '$lgt_expand_term'(+object_identifier, ?term, ?term, +object_identifier, +scope)
 %
-% expand_term/2 built-in method; for now only deals with translation of grammar rules
+% expand_term/2 built-in method
 
-'$lgt_expand_term'(_, Term, Clause, _, _) :-
-	nonvar(Term),
-	Term = (_ --> _),
-	!,
-	'$lgt_dcgrule_to_clause'(Term, Clause).
+'$lgt_expand_term'(Obj, Term, Expansion, Sender, _) :-
+    (    var(Term) ->
+         Expansion = Term
+    ;    '$lgt_term_expansion'(Obj, Term, Expand, Sender, _) ->
+         Expansion = Expand
+    ;    Term = (_ --> _) ->
+         '$lgt_dcgrule_to_clause'(Term, Clause),
+         Expansion = Clause	
+    ;    Expansion = Term
+    ). 
 
-'$lgt_expand_term'(_, Term, Term, _, _).
+
+'$lgt_term_expansion'(Obj, Term, Expansion, Sender, _) :-
+	'$lgt_current_object_'(Obj, _, _, Def, _, _),
+	'$lgt_once'(Def, term_expansion(Term, Expansion), Sender, Obj, Obj, Call, _),
+	once(Call).
 
 
 
