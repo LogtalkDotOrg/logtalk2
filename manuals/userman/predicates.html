@@ -370,9 +370,9 @@ apply(Pred, Args, Goal) :-
     (atom(Pred) -&gt;
         Goal =.. [Pred| Args]
         ;
-        Pred =.. [Functor| Old],
+        Pred =.. Old,
         append(Old, Args, New),
-        Goal =.. [Functor| New]),
+        Goal =.. New),
     call(Goal).</pre>
 <p>
 Note that the predicate <code>apply/2</code> is no longer declared as a meta-predicate. However, it will work as expected when called because of the implicit passing of the method execution context between the two predicates.
