@@ -2126,10 +2126,6 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	'$lgt_phrase'(Obj, GRIf, Input, Rest1, Sender, Scope),
 	'$lgt_phrase'(Obj, GRThen, Rest1, Rest, Sender, Scope).
 
-'$lgt_phrase'(_, !, Input, Rest, _, _) :-
-	!,
-	Input = Rest.
-
 '$lgt_phrase'(Obj, \+ GRBody, Input, Rest, Sender, Scope) :-
 	!,
 	\+ '$lgt_phrase'(Obj, GRBody, Input, Rest, Sender, Scope),
