@@ -13,6 +13,8 @@ objects and categories:
 
 	calculator
 		canonical DCG example of parsing arithmetic expressions
+	enigma
+		solve a cellphone enigma against a dictionary of words
 	bom
 		bill of materials DCG example (see below for original source)
 	sentences

@@ -34,6 +34,9 @@ RELEASE NOTES
 	
 	Removed a few choice-points when checking validity of entity directives.
 
+	Added a new DCG example for solving enigmas encoded using a cellphone 
+	keypad.
+
 	Removed the experimental "systemp.lgt" protocol from the list of files 
 	loaded by the "library/all_loader.lgt" loader utility files to avoid 
 	compilation errors on some Prolog systems.
