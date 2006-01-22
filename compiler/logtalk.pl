@@ -6857,7 +6857,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 
 '$lgt_gen_category_dynamic_directives' :-
-	'$lgt_pp_category_'(_, Prefix, _, Def, Rnm, (dynamic)) ->
+	'$lgt_pp_category_'(_, Prefix, Dcl, Def, Rnm, (dynamic)) ->
 		assertz('$lgt_pp_directive_'(dynamic(Prefix/2))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/4))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/5))),
