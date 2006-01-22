@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.27.0 - January ??, 2006
+2.27.0 - February 9, 2006
 
 	Improved performance for local calls to the built-in methods phrase/2-3.
 	Allow the built-in methods phrase/2-3 to accept both partial and proper 
@@ -24,6 +24,10 @@ RELEASE NOTES
 
 	Added a new predicate property, non_terminal/1, which applies to 
 	predicates resulting from the compilation of grammar rule non-terminals.
+
+	Improved support for the built-in method, expand_term/2, in order to 
+	allow bypassing of the default Logtalk grammar rule translator by 
+	defining clauses for the term_expansion/2 predicate.
 
 	Added support for XSB 3.x to the runtime error handler. Updated XSB 3.x 
 	config file with declarations for multi-threading meta-predicates.
@@ -39,6 +43,9 @@ RELEASE NOTES
 
 	Corrected a bug in passing the correct calling context ("this") when 
 	processing meta-calls in objects.
+
+	Corrected a bug in scope checking with local calls to reflection and 
+	database methods.
 
 	Added predicates for testing if a term is a partial list or a proper list 
 	to all config files.

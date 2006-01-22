@@ -2177,14 +2177,14 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 
 
-% '$lgt_expand_term'(+object_identifier, ?term, ?term, +object_identifier, +scope)
+% '$lgt_expand_term'(+object_identifier, ?term, ?term, +object_identifier, @scope)
 %
 % expand_term/2 built-in method
 
-'$lgt_expand_term'(Obj, Term, Expansion, Sender, _) :-
+'$lgt_expand_term'(Obj, Term, Expansion, Sender, Scope) :-
     (    var(Term) ->
          Expansion = Term
-    ;    '$lgt_term_expansion'(Obj, Term, Expand, Sender, _) ->
+    ;    '$lgt_term_expansion'(Obj, Term, Expand, Sender, Scope) ->
          Expansion = Expand
     ;    Term = (_ --> _) ->
          '$lgt_dcgrule_to_clause'(Term, Clause),
@@ -2193,9 +2193,26 @@ current_logtalk_flag(version, version(2, 27, 0)).
     ). 
 
 
-'$lgt_term_expansion'(Obj, Term, Expansion, Sender, _) :-
-	'$lgt_current_object_'(Obj, _, _, Def, _, _),
-	'$lgt_once'(Def, term_expansion(Term, Expansion), Sender, Obj, Obj, Call, _),
+% '$lgt_term_expansion'(+object_identifier, ?term, ?term, +object_identifier, @scope)
+%
+% calls the term_expansion/2 user-defined predicate
+%
+% if there is a scope directive, then the call fails if the sender in not within scope;
+% when there is no scope directive, then we call any definition local if the sender and
+% the target object are the same
+
+'$lgt_term_expansion'(Obj, Term, Expansion, Sender, Scope) :-
+	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _),
+	(	('$lgt_once'(Dcl, term_expansion(_, _), PScope, _, _, _, SCtn, _),
+		 (\+ \+ PScope = Scope; Sender = SCtn)) ->
+		'$lgt_once'(Def, term_expansion(Term, Expansion), Sender, Obj, Obj, Call, _)
+	;	Obj = Sender,
+		(	'$lgt_once'(Def, term_expansion(Term, Expansion), Obj, Obj, Obj, Call) ->
+			true
+		;	'$lgt_call'(Prefix, _, _, _, _, _, _, DDef, _),
+			'$lgt_once'(DDef, term_expansion(Term, Expansion), Obj, Obj, Obj, Call)
+		)
+	),
 	once(Call).
 
 
@@ -5159,11 +5176,11 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 % "reflection" built-in predicates
 
-'$lgt_tr_body'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, _), '$lgt_dbg_goal'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, _), Ctx), Ctx) :-
+'$lgt_tr_body'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, p(_)), '$lgt_dbg_goal'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, p(_)), Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_this'(Ctx, This).
 
-'$lgt_tr_body'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, _), '$lgt_dbg_goal'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, _), Ctx), Ctx) :-
+'$lgt_tr_body'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, p(_)), '$lgt_dbg_goal'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, p(_)), Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_this'(Ctx, This).
 
@@ -5174,10 +5191,10 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	!,
 	'$lgt_ctx_this'(Ctx, This),
 	('$lgt_runtime_db_pred_ind_chk'(Pred) ->
-		TCond = '$lgt_abolish'(This, Pred, This, _)
+		TCond = '$lgt_abolish'(This, Pred, This, p(_))
 		;
 		'$lgt_compiler_db_pred_ind_chk'(Pred),
-		TCond = '$lgt_abolish_chk'(This, Pred, This, _)),
+		TCond = '$lgt_abolish_chk'(This, Pred, This, p(_))),
 	DCond = '$lgt_dbg_goal'(abolish(Pred), TCond, Ctx).
 
 '$lgt_tr_body'(asserta(Pred), TCond, DCond, Ctx) :-
@@ -5187,13 +5204,13 @@ current_logtalk_flag(version, version(2, 27, 0)).
 		;
 		'$lgt_ctx_this'(Ctx, This),
 		('$lgt_runtime_db_clause_chk'(Pred) ->
-			TCond = '$lgt_asserta'(This, Pred, This, _)
+			TCond = '$lgt_asserta'(This, Pred, This, p(_))
 			;
 			'$lgt_compiler_db_clause_chk'(Pred),
 			(Pred = (_ :- _) ->
-				TCond = '$lgt_asserta_rule_chk'(This, Pred, This, _)
+				TCond = '$lgt_asserta_rule_chk'(This, Pred, This, p(_))
 				;
-				TCond = '$lgt_asserta_fact_chk'(This, Pred, This, _)))),
+				TCond = '$lgt_asserta_fact_chk'(This, Pred, This, p(_))))),
 	DCond = '$lgt_dbg_goal'(asserta(Pred), TCond, Ctx).
 
 '$lgt_tr_body'(assertz(Pred), TCond, DCond, Ctx) :-
@@ -5203,13 +5220,13 @@ current_logtalk_flag(version, version(2, 27, 0)).
 		;
 		'$lgt_ctx_this'(Ctx, This),
 		('$lgt_runtime_db_clause_chk'(Pred) ->
-			TCond = '$lgt_assertz'(This, Pred, This, _)
+			TCond = '$lgt_assertz'(This, Pred, This, p(_))
 			;
 			'$lgt_compiler_db_clause_chk'(Pred),
 			(Pred = (_ :- _) ->
-				TCond = '$lgt_assertz_rule_chk'(This, Pred, This, _)
+				TCond = '$lgt_assertz_rule_chk'(This, Pred, This, p(_))
 				;
-				TCond = '$lgt_assertz_fact_chk'(This, Pred, This, _)))),
+				TCond = '$lgt_assertz_fact_chk'(This, Pred, This, p(_))))),
 	DCond = '$lgt_dbg_goal'(assertz(Pred), TCond, Ctx).
 
 '$lgt_tr_body'(clause(Head, Body), TCond, DCond, Ctx) :-
@@ -5219,10 +5236,10 @@ current_logtalk_flag(version, version(2, 27, 0)).
 		;
 		'$lgt_ctx_this'(Ctx, This),
 		('$lgt_runtime_db_clause_chk'((Head :- Body)) ->
-			TCond = '$lgt_clause'(This, Head, Body, This, _)
+			TCond = '$lgt_clause'(This, Head, Body, This, p(_))
 			;
 			'$lgt_compiler_db_clause_chk'((Head :- Body)),
-			TCond = '$lgt_clause_chk'(This, Head, Body, This, _))),
+			TCond = '$lgt_clause_chk'(This, Head, Body, This, p(_)))),
 	DCond = '$lgt_dbg_goal'(clause(Head, Body), TCond, Ctx).
 
 '$lgt_tr_body'(retract(Pred), TCond, DCond, Ctx) :-
@@ -5232,13 +5249,13 @@ current_logtalk_flag(version, version(2, 27, 0)).
 		;
 		'$lgt_ctx_this'(Ctx, This),
 		('$lgt_runtime_db_clause_chk'(Pred) ->
-			TCond = '$lgt_retract'(This, Pred, This, _)
+			TCond = '$lgt_retract'(This, Pred, This, p(_))
 			;
 			'$lgt_compiler_db_clause_chk'(Pred),
 			(Pred = (_ :- _) ->
-				TCond = '$lgt_retract_rule_chk'(This, Pred, This, _)
+				TCond = '$lgt_retract_rule_chk'(This, Pred, This, p(_))
 				;
-				TCond = '$lgt_retract_fact_chk'(This, Pred, This, _)))),
+				TCond = '$lgt_retract_fact_chk'(This, Pred, This, p(_))))),
 	DCond = '$lgt_dbg_goal'(retract(Pred), TCond, Ctx).
 
 '$lgt_tr_body'(retractall(Pred), TCond, DCond, Ctx) :-
@@ -5248,16 +5265,16 @@ current_logtalk_flag(version, version(2, 27, 0)).
 		;
 		'$lgt_ctx_this'(Ctx, This),
 		('$lgt_runtime_db_clause_chk'(Pred) ->
-			TCond = '$lgt_retractall'(This, Pred, This, _)
+			TCond = '$lgt_retractall'(This, Pred, This, p(_))
 			;
 			'$lgt_compiler_db_clause_chk'(Pred),
-			TCond = '$lgt_retractall_chk'(This, Pred, This, _))),
+			TCond = '$lgt_retractall_chk'(This, Pred, This, p(_)))),
 	DCond = '$lgt_dbg_goal'(retractall(Pred), TCond, Ctx).
 
 
 % DCG predicates
 
-'$lgt_tr_body'(expand_term(Term, Clause), '$lgt_expand_term'(This, Term, Clause, This, _), '$lgt_dbg_goal'(expand_term(Term, Clause), '$lgt_expand_term'(This, Term, Clause, This, _), Ctx), Ctx) :-
+'$lgt_tr_body'(expand_term(Term, Clause), '$lgt_expand_term'(This, Term, Clause, This, p(_)), '$lgt_dbg_goal'(expand_term(Term, Clause), '$lgt_expand_term'(This, Term, Clause, This, p(_)), Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_this'(Ctx, This).
 

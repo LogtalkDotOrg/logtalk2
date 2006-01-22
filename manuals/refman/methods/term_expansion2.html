@@ -26,7 +26,7 @@
 
 <pre>term_expansion(Term, Expansion)</pre>
 <p>
-Expands a term.
+Defines an expansion for a term. This predicate, if defined, is automatically called by the <a href="expand_term2.html"><code>expand_term/2</code></a> method. Use of this predicate by the <code>expand_term/2</code> method may be restricted by using a scope directive for it. The <code>term_expansion/2</code> clauses are only used by the <code>expand_term/2</code> method if they are within the scope of the <em>sender</em>. When that is not the case, the <code>expand_term/2</code> method only uses the default expansions.
 </p>
 
 <h4>Template and modes</h4>
