@@ -20,6 +20,14 @@ Result = -9
 yes
 
 
+% solve a cellphone keypad encoded enigma:
+
+| ?- enigma::solve("4 96853 5683 86 4283 346637 9484 968 8664448", Message).
+
+Message = [i, would, love, to, have, dinner, with, you, tonight] 
+yes
+
+
 % recognizing gramatically correct sentences:
 
 | ?- sentence::parse([the, girl, likes, the, boy], Result).
