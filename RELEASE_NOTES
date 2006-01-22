@@ -53,6 +53,8 @@ RELEASE NOTES
 	Added a definition for missing open/4 ISO Prolog predicate to the config 
 	file of Bin Prolog.
 
+	Added a workaround for a B-Prolog bug to this compiler config file.
+
 
 2.26.2 - December 20, 2005
 
