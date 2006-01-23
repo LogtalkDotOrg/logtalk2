@@ -41,7 +41,7 @@ RELEASE NOTES
 	loaded by the "library/all_loader.lgt" loader utility files to avoid 
 	compilation errors on some Prolog systems.
 
-	Corrected a bug that prevented dynamic creation of catewgories using the 
+	Corrected a bug that prevented dynamic creation of categories using the 
 	built-in predicate create_category/4.
 
 	Corrected a bug in the reporting of singleton variables, which failed to 
