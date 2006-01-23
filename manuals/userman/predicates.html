@@ -45,7 +45,7 @@ The scope declarations are made using the directives <a title="Consult reference
 
 :- private(process_init_options/1).</pre>
 <p>
-Note that we do not need to write scope declarations for all defined predicates. If a predicate does not have a scope declaration, it is assumed that the predicate is private, although it will be invisible to the reflection methods and to the message and error handling mechanisms. One exception is local, dynamic predicates: explictly declaring them as private predicates allows the Logtalk compiler to generate optimized code for them.
+Note that we do not need to write scope declarations for all defined predicates. If a predicate does not have a scope declaration, it is assumed that the predicate is private, although it will be invisible to the reflection methods and to the message and error handling mechanisms. One exception is local, dynamic predicates: explicitly declaring them as private predicates allows the Logtalk compiler to generate optimized code for them.
 </p>
 
 <h3>Mode directive<a id="mode"></a></h3>
@@ -138,7 +138,7 @@ The clause of an object (or category) predicate may not be contiguous. In that c
 This is a directive that we should avoid using: it makes your code harder to read and it is not supported by some Prolog compilers.
 </p>
 <p>
-Because each Logtalk entity is compiled independently from other entities, this directive must be included in every object or category that contains a definition for the described predicate (even if the predicate declaration is inherited from other entity).
+As each Logtalk entity is compiled independently from other entities, this directive must be included in every object or category that contains a definition for the described predicate (even if the predicate declaration is inherited from other entity).
 </p>
 
 <h3>Dynamic directive<a id="dynamic"></a></h3>
@@ -148,7 +148,7 @@ An object (or category) predicate can be static or dynamic. By default, all obje
 </p>
 <pre>:- dynamic(foo/1).</pre>
 <p>
-Because each Logtalk entity is compiled independently from other entities, this directive must be included in every object or category that contains a definition for the described predicate (even if the predicate declaration is inherited from other entity). If we omit the dynamic declaration then the predicate definition will be compiled to static code. Note that any static object may declare and define dynamic predicates.
+This directive may also be used to declare dynamic grammar rule non-terminals. As each Logtalk entity is compiled independently from other entities, this directive must be included in every object or category that contains a definition for the described predicate (even if the predicate declaration is inherited from other entity). If we omit the dynamic declaration then the predicate definition will be compiled to static code. Note that any static object may declare and define dynamic predicates.
 </p>
 
 <h3>Operator directive<a id="op"></a></h3>
@@ -411,11 +411,11 @@ The predicate <a title="Consult reference manual" href="../refman/methods/phrase
 Result = -9
 yes</pre>
 <p>
-In most cases, the predicates resulting from the translation of the grammar rules to regular clauses are not declared. Instead, these predicates are usually called by using the built-in methods <code>phrase/2</code> and <code>phrase/3</code> as shown in the example above. When we want to send the messages <code>phrase/2</code> and <code>phrase/3</code> to <em>self</em> or to another object, the non-terminal used as first argument must be within the scope of the <em>sender</em>. For the above example, assuming that we want the predicate corresponding to the <code>expr/1</code> non-terminal to be public, the corresponding scope directive would be:
+In most cases, the predicates resulting from the translation of the grammar rules to regular clauses are not declared. Instead, these predicates are usually called by using the built-in methods <code>phrase/2</code> and <code>phrase/3</code> as shown in the example above. When we want to send the messages <code>phrase/2</code> and <code>phrase/3</code> to <em>self</em> or to another object, the non-terminal used as first argument must be within the scope of the <em>sender</em>. For the above example, assuming that we want the predicate corresponding to the <code>expr//1</code> non-terminal to be public, the corresponding scope directive would be:
 </p>
 <pre>:- public(expr//1). </pre>
 <p>
-The <code>//</code> infix operator used above tells the Logtalk compiler that the scope directive refers to a grammar rule non-terminal, not to a predicate. The idea is that the predicate corresponding to the translation of the <code>expr/1</code> non-terminal will have a number of arguments equal to one plus the number of additional arguments necessary for processing the subjacent lists of tokens.
+The <code>//</code> infix operator used above tells the Logtalk compiler that the scope directive refers to a grammar rule non-terminal, not to a predicate. The idea is that the predicate corresponding to the translation of the <code>expr//1</code> non-terminal will have a number of arguments equal to one plus the number of additional arguments necessary for processing the subjacent lists of tokens.
 </p>
 <p>
 In the body of a grammar rule, we can call rules that are inherited from ancestor objects, imported from categories, or contained in other objects. This is accomplished by using non-terminals as messages. Using a non-terminal as a message to <em>self</em> allows us to call grammar rules in categories and ancestor objects. To call grammar rules encapsulated in other objects, we use a non-terminal as a message to those objects. Consider the following example, containing grammar rules for parsing natural language sentences:
@@ -450,7 +450,7 @@ The categories imported by the object would contain the necessary grammar rules 
 
 :- end_category.</pre>
 <p>
-Along with the message sending operators (<code>::/1</code> and <code>::/2</code>), we may also use other control constructs such as <code>\+/1</code>, <code>!/0</code>, <code>;/2</code>, <code>-&gt;/2</code>, and <code>{}/1</code> in the body of a grammar. In addition, grammar rules may contain metacalls (a variable taking the place of a non-terminal), which are translated to calls of the built-in method <code>phrase/3</code>. 
+Along with the message sending operators (<code>::/1</code> and <code>::/2</code>), we may also use other control constructs such as <code>\+/1</code>, <code>!/0</code>, <code>;/2</code>, <code>-&gt;/2</code>, and <code>{}/1</code> in the body of a grammar. In addition, grammar rules may contain meta-calls (a variable taking the place of a non-terminal), which are translated to calls of the built-in method <code>phrase/3</code>. 
 </p>
 <p>
 You may have noticed that Logtalk defines <code>{}/1</code> as a control construct for bypassing the compiler when compiling a clause body goal. As exemplified above, this is the same control construct that is used in grammar rules for bypassing the expansion of rule body goals when a rule is converted into a clause. Both control constructs can be combined in order to call a goal from a grammar rule body, while bypassing at the same time the Logtalk compiler. Consider the following example:
@@ -482,7 +482,7 @@ A grammar rule non-terminal may be declared as dynamic or discontiguous, as any 
 <pre>:- public(sentence//0).
 
 :- info(sentence//0, [
-    comment is 'Rewrites a sentence in a noun phrase and verb phrase.']).</pre>
+    comment is 'Rewrites a sentence into a noun phrase and a verb phrase.']).</pre>
 
 <h2>Built-in object predicates (methods)<a id="methods"></a></h2>
 
@@ -560,6 +560,9 @@ The method <code>parameter/2</code> is only compiled in-line when used inside ob
 <p>
 Logtalk provides a set of built-in methods for object database handling similar to the usual database Prolog predicates: <a title="Consult reference manual" href="../refman/methods/abolish1.html"><code>abolish/1</code></a>, <a title="Consult reference manual" href="../refman/methods/asserta1.html"><code>asserta/1</code></a>, <a title="Consult reference manual" href="../refman/methods/assertz1.html"><code>assertz/1</code></a>, <a title="Consult reference manual" href="../refman/methods/clause2.html"><code>clause/2</code></a>, <a title="Consult reference manual" href="../refman/methods/retract1.html"><code>retract/1</code></a>, and <a title="Consult reference manual" href="../refman/methods/retractall1.html"><code>retractall/1</code></a>. These methods always operate on the database of the object receiving the corresponding message.
 </p>
+<p>
+When working with dynamic grammar rule non-terminals, you may use the built-in method <a title="Consult reference manual" href="../refman/methods/expand_term2.html"><code>expand_term/2</code></a> convert a grammar rule into a clause that can than be used with the database methods.
+</p>
 
 <h3>All solutions methods<a id="solutions"></a></h3>
 
@@ -582,7 +585,7 @@ Logtalk supports two definite clause grammar parsing built-in methods, <a title=
 <h3>Term expansion methods<a id="expanding"></a></h3>
 
 <p>
-Logtalk supports a <a title="Consult reference manual" href="../refman/methods/expand_term2.html"><code>expand_term/2</code></a> built-in method for expanding a term into another. This method is mmostly used to translate grammar rules into Prolog clauses. It can be customized, e.g. for bypassing the default Logtalk grammar rule translator, by defining clause for the predicate <a title="Consult reference manual" href="../refman/methods/term_expansion2.html"><code>term_expansion/2</code></a>.
+Logtalk supports a <a title="Consult reference manual" href="../refman/methods/expand_term2.html"><code>expand_term/2</code></a> built-in method for expanding a term into another. This method is mostly used to translate grammar rules into Prolog clauses. It can be customized, e.g. for bypassing the default Logtalk grammar rule translator, by defining clause for the predicate <a title="Consult reference manual" href="../refman/methods/term_expansion2.html"><code>term_expansion/2</code></a>.
 </p>
 
 <h2>Predicate properties<a id="properties"></a></h2>
@@ -598,7 +601,7 @@ Note that this method respects the predicate's scope declarations. For instance,
 An object's set of visible predicates is the union of all the predicates declared for the object with all the built-in methods and all the Logtalk and Prolog built-in predicates.
 </p>
 <p>
-Possible predicate propertie values are:
+Possible predicate properties values are:
 </p>
 <ul>
 	<li><code>public</code>, <code>protected</code>, <code>private</code></li>
@@ -661,7 +664,7 @@ Compiling calls to non-standard, Prolog built-in meta-predicates can be tricky f
 </p>
 <pre>'$lgt_pl_metapredicate'(call_with_depth_limit(::, *, *)).</pre>
 <p>
-Currenlty, there is no clean workaround for calling non-standard, Prolog built-in meta-predicates whose meta-arguments are used for constructing goals instead of called as goals directly.
+Currently, there is no clean workaround for calling non-standard, Prolog built-in meta-predicates whose meta-arguments are used for constructing goals instead of called as goals directly.
 </p>
 
 <div class="footer">
