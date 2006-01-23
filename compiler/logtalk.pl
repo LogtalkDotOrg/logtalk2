@@ -8679,6 +8679,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 '$lgt_valid_pred_property'(metapredicate(_)).
 '$lgt_valid_pred_property'(built_in).
 '$lgt_valid_pred_property'(alias(_)).
+'$lgt_valid_pred_property'(non_terminal(_)).
 
 
 
