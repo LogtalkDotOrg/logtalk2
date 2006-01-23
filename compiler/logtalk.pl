@@ -1199,14 +1199,20 @@ logtalk_compile(Files, Flags) :-
 	'$lgt_check_compiler_flag_list'(Flags).
 
 
-
 '$lgt_check_compiler_flag_list'([]).
 
-'$lgt_check_compiler_flag_list'([Flag| Flags]) :-
+'$lgt_check_compiler_flag_list'([Flag| Flags]) :-	
 	'$lgt_valid_compiler_flag'(Flag) ->
 		'$lgt_check_compiler_flag_list'(Flags)
 		;
 		throw(type_error(compiler_flag, Flag)).
+
+
+'$lgt_valid_compiler_flag'(Flag) :-
+	compound(Flag),
+	Flag =.. [Name, Value],
+	nonvar(Value),
+	once('$lgt_valid_flag_value'(Name, Value)).
 
 
 
@@ -1308,7 +1314,7 @@ set_logtalk_flag(Flag, Value) :-
 	throw(error(permission_error(modify, read_only_flag, Flag), set_logtalk_flag(Flag, Value))).
 
 set_logtalk_flag(Flag, Value) :-
-	\+ '$lgt_valid_flag'(Flag, Value),
+	\+ '$lgt_valid_flag_value'(Flag, Value),
 	throw(error(domain_error(valid_flag_value, Value), set_logtalk_flag(Flag, Value))).
 
 set_logtalk_flag(debug, on) :-
@@ -8691,71 +8697,6 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 
 
-% '$lgt_valid_compiler_flags'(@list)
-%
-% true if all compiler flags are valid
-
-'$lgt_valid_compiler_flags'([]).
-
-'$lgt_valid_compiler_flags'([Flag| Flags]) :-
-	nonvar(Flag),
-	'$lgt_valid_compiler_flag'(Flag),
-	'$lgt_valid_compiler_flags'(Flags).
-
-
-
-% '$lgt_valid_compiler_flag'(@nonvar)
-
-'$lgt_valid_compiler_flag'(xmldocs(Option)) :-
-	once((Option == on; Option == off)).
-
-'$lgt_valid_compiler_flag'(xslfile(File)) :-
-	atom(File).
-
-'$lgt_valid_compiler_flag'(unknown(Option)) :-
-	once((Option == silent; Option == warning)).
-
-'$lgt_valid_compiler_flag'(singletons(Option)) :-
-	once((Option == silent; Option == warning)).
-
-'$lgt_valid_compiler_flag'(misspelt(Option)) :-
-	once((Option == silent; Option == warning)).
-
-'$lgt_valid_compiler_flag'(lgtredef(Option)) :-
-	once((Option == silent; Option == warning)).
-
-'$lgt_valid_compiler_flag'(plredef(Option)) :-
-	once((Option == silent; Option == warning)).
-
-'$lgt_valid_compiler_flag'(portability(Option)) :-
-	once((Option == silent; Option == warning)).
-
-'$lgt_valid_compiler_flag'(report(Option)) :-
-	once((Option == on; Option == off)).
-
-'$lgt_valid_compiler_flag'(smart_compilation(Option)) :-
-	once((Option == on; Option == off)).
-
-'$lgt_valid_compiler_flag'(underscore_vars(Option)) :-
-	once((Option == dont_care; Option == singletons)).
-
-'$lgt_valid_compiler_flag'(code_prefix(Prefix)) :-
-	atom(Prefix).
-
-'$lgt_valid_compiler_flag'(xmlsref(Option)) :-
-	once((Option == standalone; Option == (local); Option == web)).
-
-'$lgt_valid_compiler_flag'(xmlspec(Option)) :-
-	once((Option == dtd; Option == xsd)).
-
-'$lgt_valid_compiler_flag'(debug(Option)) :-
-	once((Option == on; Option == off)).
-
-'$lgt_valid_compiler_flag'(events(Option)) :-
-	once((Option == on; Option == off)).
-
-
-
 % '$lgt_valid_flag'(@nonvar)
 %
 % true if the argument is a valid Logtalk flag name
@@ -8782,16 +8723,6 @@ current_logtalk_flag(version, version(2, 27, 0)).
 '$lgt_valid_flag'(altdirs).
 
 
-% '$lgt_valid_flag'(@term, @term)
-%
-% true if the argument is a valid Logtalk flag name-value pair
-
-'$lgt_valid_flag'(Name, Value) :-
-	atom(Name),
-	Flag =.. [Name, Value],
-	'$lgt_valid_compiler_flag'(Flag).
-
-
 
 % '$lgt_read_only_flag'(@nonvar)
 %
@@ -8802,6 +8733,59 @@ current_logtalk_flag(version, version(2, 27, 0)).
 '$lgt_read_only_flag'(version).
 '$lgt_read_only_flag'(altdirs).
 '$lgt_read_only_flag'(supports_encoding_dir).
+
+
+
+% '$lgt_valid_flag_value'(@atom, @nonvar)
+
+'$lgt_valid_flag_value'(xmldocs, on).
+'$lgt_valid_flag_value'(xmldocs, off).
+
+'$lgt_valid_flag_value'(xslfile, File) :-
+	atom(File).
+
+'$lgt_valid_flag_value'(xmlsref, standalone).
+'$lgt_valid_flag_value'(xmlsref, (local)).
+'$lgt_valid_flag_value'(xmlsref, web).
+
+'$lgt_valid_flag_value'(xmlspec, dtd).
+'$lgt_valid_flag_value'(xmlspec, xsd).
+
+'$lgt_valid_flag_value'(unknown, silent).
+'$lgt_valid_flag_value'(unknown, warning).
+
+'$lgt_valid_flag_value'(singletons, silent).
+'$lgt_valid_flag_value'(singletons, warning).
+
+'$lgt_valid_flag_value'(misspelt, silent).
+'$lgt_valid_flag_value'(misspelt, warning).
+
+'$lgt_valid_flag_value'(lgtredef, silent).
+'$lgt_valid_flag_value'(lgtredef, warning).
+
+'$lgt_valid_flag_value'(plredef, silent).
+'$lgt_valid_flag_value'(plredef, warning).
+
+'$lgt_valid_flag_value'(portability, silent).
+'$lgt_valid_flag_value'(portability, warning).
+
+'$lgt_valid_flag_value'(report, on).
+'$lgt_valid_flag_value'(report, off).
+
+'$lgt_valid_flag_value'(smart_compilation, on).
+'$lgt_valid_flag_value'(smart_compilation, off).
+
+'$lgt_valid_flag_value'(underscore_vars, dont_care).
+'$lgt_valid_flag_value'(underscore_vars, singletons).
+
+'$lgt_valid_flag_value'(code_prefix, Prefix) :-
+	atom(Prefix).
+
+'$lgt_valid_flag_value'(debug, on).
+'$lgt_valid_flag_value'(debug, off).
+
+'$lgt_valid_flag_value'(events, on).
+'$lgt_valid_flag_value'(events, off).
 
 
 
