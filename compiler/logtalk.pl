@@ -1648,7 +1648,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PScope, Type, Meta, SCtn),
+	'$lgt_assert_pred_dcl'(Obj, Sender, Dcl, DDcl, Head, Scope, PScope, Type, Meta, SCtn),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
 			'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
@@ -1680,7 +1680,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PScope, Type, _, SCtn),
+	'$lgt_assert_pred_dcl'(Obj, Sender, Dcl, DDcl, Head, Scope, PScope, Type, _, SCtn),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
 			('$lgt_debugging_'(Obj) ->
@@ -1742,7 +1742,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PScope, Type, Meta, SCtn),
+	'$lgt_assert_pred_dcl'(Obj, Sender, Dcl, DDcl, Head, Scope, PScope, Type, Meta, SCtn),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
 			'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
@@ -1774,7 +1774,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PScope, Type, _, SCtn),
+	'$lgt_assert_pred_dcl'(Obj, Sender, Dcl, DDcl, Head, Scope, PScope, Type, _, SCtn),
 	(Type = (dynamic) ->
 		((\+ \+ PScope = Scope; Sender = SCtn)  ->
 			('$lgt_debugging_'(Obj) ->
@@ -1804,13 +1804,15 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 % get or set (if doesn't exist) the declaration for an asserted predicate
 
-'$lgt_assert_pred_dcl'(Dcl, DDcl, Pred, TScope, PScope, Type, Meta, SCtn) :-
-	'$lgt_call'(Dcl, Pred, PScope, Type, Meta, _, SCtn, _) ->
-		true
-		;
-		'$lgt_convert_test_scope'(TScope),
+'$lgt_assert_pred_dcl'(Obj, Sender, Dcl, DDcl, Pred, TScope, PScope, Type, Meta, SCtn) :-
+	'$lgt_call'(Dcl, Pred, PScope, Type, Meta, _, SCtn, _) -> true
+	;
+	(	Obj = Sender ->
+		'$lgt_assert_ddcl_clause'(DDcl, Pred, p),
+		(PScope, Type, Meta, SCtn) = (p, (dynamic), no, Obj)
+	;	'$lgt_convert_test_scope'(TScope),
 		'$lgt_assert_ddcl_clause'(DDcl, Pred, TScope),
-		(PScope, Type, Meta, SCtn) = (TScope, (dynamic), no, _).
+		(PScope, Type, Meta, SCtn) = (TScope, (dynamic), no, Obj)).
 
 
 % '$lgt_convert_test_scope'(?nonvar)
