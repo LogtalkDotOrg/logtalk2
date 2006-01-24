@@ -6,6 +6,13 @@ Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
+% start by loading the necessary library support files (if not 
+% already loaded):
+
+| ?- logtalk_load(library(types_loader)).
+...
+
+
 % start by loading the example:
 
 | ?- logtalk_load(puzzles(loader)).

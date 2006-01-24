@@ -37,6 +37,8 @@ RELEASE NOTES
 	Added a new DCG example for solving enigmas encoded using a cellphone 
 	keypad.
 
+	Added a missing library dependency to the "puzzles" example SCRIPT file.
+
 	Removed the experimental "systemp.lgt" protocol from the list of files 
 	loaded by the "library/all_loader.lgt" loader utility files to avoid 
 	compilation errors on some Prolog systems.
