@@ -53,6 +53,9 @@ RELEASE NOTES
 	Corrected a bug in scope checking with local calls to reflection and 
 	database methods.
 
+	Corrected a bug in checking the validity of the arguments of the op/3 
+	directive appearing inside entities.
+
 	Added predicates for testing if a term is a partial list or a proper list 
 	to all config files.
 

@@ -4127,7 +4127,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	throw(type_error(operator_specifier, Spec)).
 
 '$lgt_tr_directive'(op, [_, _, Ops], _) :-
-	'$lgt_valid_op_names'(Ops),
+	\+ '$lgt_valid_op_names'(Ops),
 	throw(type_error(operator_name, Ops)).
 
 '$lgt_tr_directive'(op, [Pr, Spec, Ops], _) :-
