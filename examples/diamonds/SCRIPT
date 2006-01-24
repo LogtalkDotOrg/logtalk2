@@ -41,5 +41,6 @@ Redefinition of method m/0 in object c3
 yes
 
 | ?- d3::m.
+
 Redefinition of method m/0 in object b3
 yes
