@@ -6924,8 +6924,8 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	assertz('$lgt_pp_dcl_'(Fact)),
 	fail.
 
-'$lgt_gen_local_dcl_clauses' :-		% generate a catchall clause if needed
-	\+ '$lgt_pp_dcl_'(_) ->
+'$lgt_gen_local_dcl_clauses' :-		% generate a catchall clause if needed for
+	\+ '$lgt_pp_dcl_'(_) ->			% entities that do not contain declarations
 		'$lgt_pp_entity'(_, _, _, Dcl, _),
 		Head =.. [Dcl, _, _, _, _, _],
 		assertz('$lgt_pp_dcl_'((Head:-fail)))
@@ -6999,7 +6999,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 		Rename =.. [PRnm, Ptc2, Pred, Alias],
 		assertz('$lgt_pp_dcl_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
 		;
-		Head =.. [PDcl1, Pred, Scope, Compilation, Meta, Ctn],
+		Head =.. [PDcl1, Pred, Scope, Compilation, Meta, NonTerminal, Ctn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))),
 	fail.
 
