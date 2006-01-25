@@ -1611,46 +1611,46 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 % asserta/1 built-in method
 
-'$lgt_asserta'(Obj, Clause, Sender, _) :-
+'$lgt_asserta'(Obj, Clause, Sender, _, _) :-
 	var(Clause),
 	throw(error(instantiation_error, Obj::asserta(Clause), Sender)).
 
-'$lgt_asserta'(Obj, Clause, Sender, Scope) :-
+'$lgt_asserta'(Obj, Clause, Sender, Scope, _) :-
 	'$lgt_db_lookup_cache_'(Obj, Clause, Sender, Scope, Call, _),
 	!,
 	asserta(Call).
 
-'$lgt_asserta'(Obj, Clause, Sender, _) :-
+'$lgt_asserta'(Obj, Clause, Sender, _, _) :-
 	Clause \= (_ :- _),
 	\+ callable(Clause),
 	throw(error(type_error(callable, Clause), Obj::asserta(Clause), Sender)).
 
-'$lgt_asserta'(Obj, (Head:-Body), Sender, _) :-
+'$lgt_asserta'(Obj, (Head:-Body), Sender, _, _) :-
 	var(Head),
 	throw(error(instantiation_error, Obj::asserta((Head:-Body)), Sender)).
 
-'$lgt_asserta'(Obj, (Head:-Body), Sender, _) :-
+'$lgt_asserta'(Obj, (Head:-Body), Sender, _, _) :-
 	\+ callable(Head),
 	throw(error(type_error(callable, Head), Obj::asserta((Head:-Body)), Sender)).
 
-'$lgt_asserta'(Obj, (Head:-Body), Sender, _) :-
+'$lgt_asserta'(Obj, (Head:-Body), Sender, _, _) :-
 	\+ callable(Body),
 	throw(error(type_error(callable, Body), Obj::asserta((Head:-Body)), Sender)).
 
-'$lgt_asserta'(Obj, Clause, Sender, Scope) :-
+'$lgt_asserta'(Obj, Clause, Sender, TestScope, DclScope) :-
 	Clause = (_ :- _) ->
-		'$lgt_asserta_rule_chk'(Obj, Clause, Sender, Scope)
+		'$lgt_asserta_rule_chk'(Obj, Clause, Sender, TestScope, DclScope)
 		;
-		'$lgt_asserta_fact_chk'(Obj, Clause, Sender, Scope).
+		'$lgt_asserta_fact_chk'(Obj, Clause, Sender, TestScope, DclScope).
 
 
-'$lgt_asserta_rule_chk'(Obj, (Head:-Body), Sender, Scope) :-
+'$lgt_asserta_rule_chk'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
-	'$lgt_assert_pred_dcl'(Obj, Sender, Dcl, DDcl, Head, Scope, PScope, Type, Meta, SCtn),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope),
 	(Type = (dynamic) ->
-		((\+ \+ PScope = Scope; Sender = SCtn)  ->
+		((\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 			'$lgt_pred_meta_vars'(Head, Meta, Metavars),
 			'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, Metavars),
@@ -1660,29 +1660,29 @@ current_logtalk_flag(version, version(2, 27, 0)).
 				;
 				asserta((Call :- ('$lgt_nop'(Body), TBody))))
 			;
-			(PScope = p ->
+			(Scope = p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta((Head:-Body)), Sender))
 				;
 				throw(error(permission_error(modify, protected_predicate, Head), Obj::asserta((Head:-Body)), Sender))))
 		;
 		throw(error(permission_error(modify, static_predicate, Head), Obj::asserta((Head:-Body)), Sender))).
 
-'$lgt_asserta_rule_chk'(Obj, (Head:-Body), Sender, _) :-
+'$lgt_asserta_rule_chk'(Obj, (Head:-Body), Sender, _, _) :-
 	throw(error(existence_error(object, Obj), Obj::asserta((Head:-Body)), Sender)).
 
 
-'$lgt_asserta_fact_chk'(Obj, Head, Sender, Scope) :-
+'$lgt_asserta_fact_chk'(Obj, Head, Sender, Scope, _) :-
 	'$lgt_db_lookup_cache_'(Obj, Head, Sender, Scope, Call, _),
 	!,
 	asserta(Call).
 
-'$lgt_asserta_fact_chk'(Obj, Head, Sender, Scope) :-
+'$lgt_asserta_fact_chk'(Obj, Head, Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
-	'$lgt_assert_pred_dcl'(Obj, Sender, Dcl, DDcl, Head, Scope, PScope, Type, _, SCtn),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope),
 	(Type = (dynamic) ->
-		((\+ \+ PScope = Scope; Sender = SCtn)  ->
+		((\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			('$lgt_debugging_'(Obj) ->
 				'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 				'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, []),
@@ -1696,55 +1696,55 @@ current_logtalk_flag(version, version(2, 27, 0)).
 				GObj = Obj, GHead = Head, GSender = Sender,
 				asserta(GCall))
 			;
-			(PScope = p ->
+			(Scope = p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta(Head), Sender))
 				;
 				throw(error(permission_error(modify, protected_predicate, Head), Obj::asserta(Head), Sender))))
 		;
 		throw(error(permission_error(modify, static_predicate, Head), Obj::asserta(Head), Sender))).
 
-'$lgt_asserta_fact_chk'(Obj, Head, Sender, _) :-
+'$lgt_asserta_fact_chk'(Obj, Head, Sender, _, _) :-
 	throw(error(existence_error(object, Obj), Obj::asserta(Head), Sender)).
 
 
 
 % assertz/1 built-in method
 
-'$lgt_assertz'(Obj, Clause, Sender, _) :-
+'$lgt_assertz'(Obj, Clause, Sender, _, _) :-
 	var(Clause),
 	throw(error(instantiation_error, Obj::assertz(Clause), Sender)).
 
-'$lgt_assertz'(Obj, (Head:-Body), Sender, _) :-
+'$lgt_assertz'(Obj, (Head:-Body), Sender, _, _) :-
 	var(Head),
 	throw(error(instantiation_error, Obj::assertz((Head:-Body)), Sender)).
 
-'$lgt_assertz'(Obj, (Head:-Body), Sender, _) :-
+'$lgt_assertz'(Obj, (Head:-Body), Sender, _, _) :-
 	\+ callable(Head),
 	throw(error(type_error(callable, Head), Obj::assertz((Head:-Body)), Sender)).
 
-'$lgt_assertz'(Obj, (Head:-Body), Sender, _) :-
+'$lgt_assertz'(Obj, (Head:-Body), Sender, _, _) :-
 	\+ callable(Body),
 	throw(error(type_error(callable, Body), Obj::assertz((Head:-Body)), Sender)).
 
-'$lgt_assertz'(Obj, Clause, Sender, _) :-
+'$lgt_assertz'(Obj, Clause, Sender, _, _) :-
 	Clause \= (_ :- _),
 	\+ callable(Clause),
 	throw(error(type_error(callable, Clause), Obj::asserta(Clause), Sender)).
 
-'$lgt_assertz'(Obj, Clause, Sender, Scope) :-
+'$lgt_assertz'(Obj, Clause, Sender, TestScope, DclScope) :-
 	Clause = (_ :- _) ->
-		'$lgt_assertz_rule_chk'(Obj, Clause, Sender, Scope)
+		'$lgt_assertz_rule_chk'(Obj, Clause, Sender, TestScope, DclScope)
 		;
-		'$lgt_assertz_fact_chk'(Obj, Clause, Sender, Scope).
+		'$lgt_assertz_fact_chk'(Obj, Clause, Sender, TestScope, DclScope).
 
 
-'$lgt_assertz_rule_chk'(Obj, (Head:-Body), Sender, Scope) :-
+'$lgt_assertz_rule_chk'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
-	'$lgt_assert_pred_dcl'(Obj, Sender, Dcl, DDcl, Head, Scope, PScope, Type, Meta, SCtn),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope),
 	(Type = (dynamic) ->
-		((\+ \+ PScope = Scope; Sender = SCtn)  ->
+		((\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 			'$lgt_pred_meta_vars'(Head, Meta, Metavars),
 			'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, Metavars),
@@ -1754,29 +1754,29 @@ current_logtalk_flag(version, version(2, 27, 0)).
 				;
 				assertz((Call :- ('$lgt_nop'(Body), TBody))))
 			;
-			(PScope = p ->
+			(Scope = p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::assertz((Head:-Body)), Sender))
 				;
 				throw(error(permission_error(modify, protected_predicate, Head), Obj::assertz((Head:-Body)), Sender))))
 		;
 		throw(error(permission_error(modify, static_predicate, Head), Obj::assertz((Head:-Body)), Sender))).
 
-'$lgt_assertz_rule_chk'(Obj, (Head:-Body), Sender, _) :-
+'$lgt_assertz_rule_chk'(Obj, (Head:-Body), Sender, _, _) :-
 	throw(error(existence_error(object, Obj), Obj::assertz((Head:-Body)), Sender)).
 
 
-'$lgt_assertz_fact_chk'(Obj, Head, Sender, Scope) :-
+'$lgt_assertz_fact_chk'(Obj, Head, Sender, Scope, _) :-
 	'$lgt_db_lookup_cache_'(Obj, Head, Sender, Scope, Call, _),
 	!,
 	assertz(Call).
 
-'$lgt_assertz_fact_chk'(Obj, Head, Sender, Scope) :-
+'$lgt_assertz_fact_chk'(Obj, Head, Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
-	'$lgt_assert_pred_dcl'(Obj, Sender, Dcl, DDcl, Head, Scope, PScope, Type, _, SCtn),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope),
 	(Type = (dynamic) ->
-		((\+ \+ PScope = Scope; Sender = SCtn)  ->
+		((\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			('$lgt_debugging_'(Obj) ->
 				'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 				'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, []),
@@ -1790,42 +1790,26 @@ current_logtalk_flag(version, version(2, 27, 0)).
 				GObj = Obj, GHead = Head, GSender = Sender,
 				assertz(GCall))
 			;
-			(PScope = p ->
+			(Scope = p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta(Head), Sender))
 				;
 				throw(error(permission_error(modify, protected_predicate, Head), Obj::asserta(Head), Sender))))
 		;
 		throw(error(permission_error(modify, static_predicate, Head), Obj::asserta(Head), Sender))).
 
-'$lgt_assertz_fact_chk'(Obj, Head, Sender, _) :-
+'$lgt_assertz_fact_chk'(Obj, Head, Sender, _, _) :-
 	throw(error(existence_error(object, Obj), Obj::assertz(Head), Sender)).
 
 
 
 % get or set (if doesn't exist) the declaration for an asserted predicate
 
-'$lgt_assert_pred_dcl'(Obj, Sender, Dcl, DDcl, Pred, TScope, PScope, Type, Meta, SCtn) :-
-	'$lgt_call'(Dcl, Pred, PScope, Type, Meta, _, SCtn, _) -> true
-	;
-	(	Obj = Sender ->
-		'$lgt_assert_ddcl_clause'(DDcl, Pred, p),
-		(PScope, Type, Meta, SCtn) = (p, (dynamic), no, Obj)
-	;	'$lgt_convert_test_scope'(TScope),
-		'$lgt_assert_ddcl_clause'(DDcl, Pred, TScope),
-		(PScope, Type, Meta, SCtn) = (TScope, (dynamic), no, Obj)).
-
-
-% '$lgt_convert_test_scope'(?nonvar)
-%
-% convert asserta/z test scope to predicate declaration scope
-%
-% the test scope is used to verify sender permission to assert the predicate;
-% the declaration scope will be scope of the predicate being asserted if there
-% is no previous declaration (i.e. if it's a new dynamic predicate)
-
-'$lgt_convert_test_scope'(p) :- !.		% test scope is a variable: direct call of asserta/z method
-'$lgt_convert_test_scope'(p(p)) :- !.	% test scope is the term p(_): asserta/z message to self
-'$lgt_convert_test_scope'(p(p(p))).		% test scope is the term p(p(p)): asserta/z message from other object
+'$lgt_assert_pred_dcl'(Dcl, DDcl, Pred, Scope, Type, Meta, SCtn, DclScope) :-
+	'$lgt_call'(Dcl, Pred, Scope, Type, Meta, _, SCtn, _) ->
+		true
+		;
+		'$lgt_assert_ddcl_clause'(DDcl, Pred, DclScope),
+		(Scope, Type, Meta) = (DclScope, (dynamic), no).
 
 
 
@@ -5212,13 +5196,13 @@ current_logtalk_flag(version, version(2, 27, 0)).
 		;
 		'$lgt_ctx_this'(Ctx, This),
 		('$lgt_runtime_db_clause_chk'(Pred) ->
-			TCond = '$lgt_asserta'(This, Pred, This, p(_))
+			TCond = '$lgt_asserta'(This, Pred, This, p(_), p)
 			;
 			'$lgt_compiler_db_clause_chk'(Pred),
 			(Pred = (_ :- _) ->
-				TCond = '$lgt_asserta_rule_chk'(This, Pred, This, p(_))
+				TCond = '$lgt_asserta_rule_chk'(This, Pred, This, p(_), p)
 				;
-				TCond = '$lgt_asserta_fact_chk'(This, Pred, This, p(_))))),
+				TCond = '$lgt_asserta_fact_chk'(This, Pred, This, p(_), p)))),
 	DCond = '$lgt_dbg_goal'(asserta(Pred), TCond, Ctx).
 
 '$lgt_tr_body'(assertz(Pred), TCond, DCond, Ctx) :-
@@ -5228,13 +5212,13 @@ current_logtalk_flag(version, version(2, 27, 0)).
 		;
 		'$lgt_ctx_this'(Ctx, This),
 		('$lgt_runtime_db_clause_chk'(Pred) ->
-			TCond = '$lgt_assertz'(This, Pred, This, p(_))
+			TCond = '$lgt_assertz'(This, Pred, This, p(_), p)
 			;
 			'$lgt_compiler_db_clause_chk'(Pred),
 			(Pred = (_ :- _) ->
-				TCond = '$lgt_assertz_rule_chk'(This, Pred, This, p(_))
+				TCond = '$lgt_assertz_rule_chk'(This, Pred, This, p(_), p)
 				;
-				TCond = '$lgt_assertz_fact_chk'(This, Pred, This, p(_))))),
+				TCond = '$lgt_assertz_fact_chk'(This, Pred, This, p(_), p)))),
 	DCond = '$lgt_dbg_goal'(assertz(Pred), TCond, Ctx).
 
 '$lgt_tr_body'(clause(Head, Body), TCond, DCond, Ctx) :-
@@ -5687,24 +5671,24 @@ current_logtalk_flag(version, version(2, 27, 0)).
 '$lgt_tr_msg'(asserta(Pred), Obj, TPred, This) :-
 	!,
 	('$lgt_runtime_db_clause_chk'(Pred) ->
-			TPred = '$lgt_asserta'(Obj, Pred, This, p(p(p)))
+			TPred = '$lgt_asserta'(Obj, Pred, This, p(p(_)), p(p(p)))
 			;
 			'$lgt_compiler_db_clause_chk'(Pred),
 			(Pred = (_ :- _) ->
-				TPred = '$lgt_asserta_rule_chk'(Obj, Pred, This, p(p(p)))
+				TPred = '$lgt_asserta_rule_chk'(Obj, Pred, This, p(p(_)), p(p(p)))
 				;
-				TPred = '$lgt_asserta_fact_chk'(Obj, Pred, This, p(p(p))))).
+				TPred = '$lgt_asserta_fact_chk'(Obj, Pred, This, p(p(_)), p(p(p))))).
 
 '$lgt_tr_msg'(assertz(Pred), Obj, TPred, This) :-
 	!,
 	('$lgt_runtime_db_clause_chk'(Pred) ->
-			TPred = '$lgt_assertz'(Obj, Pred, This, p(p(p)))
+			TPred = '$lgt_assertz'(Obj, Pred, This, p(p(_)), p(p(p)))
 			;
 			'$lgt_compiler_db_clause_chk'(Pred),
 			(Pred = (_ :- _) ->
-				TPred = '$lgt_assertz_rule_chk'(Obj, Pred, This, p(p(p)))
+				TPred = '$lgt_assertz_rule_chk'(Obj, Pred, This, p(p(_)), p(p(p)))
 				;
-				TPred = '$lgt_assertz_fact_chk'(Obj, Pred, This, p(p(p))))).
+				TPred = '$lgt_assertz_fact_chk'(Obj, Pred, This, p(p(_)), p(p(p))))).
 
 '$lgt_tr_msg'(clause(Head, Body), Obj, TPred, This) :-
 	!,
@@ -5874,24 +5858,24 @@ current_logtalk_flag(version, version(2, 27, 0)).
 '$lgt_tr_self_msg'(asserta(Pred), TPred, This, Self) :-
 	!,
 	('$lgt_runtime_db_clause_chk'(Pred) ->
-		TPred = '$lgt_asserta'(Self, Pred, This, p(_))
+		TPred = '$lgt_asserta'(Self, Pred, This, p(_), p(p))
 		;
 		'$lgt_compiler_db_clause_chk'(Pred),
 		(Pred = (_ :- _) ->
-			TPred = '$lgt_asserta_rule_chk'(Self, Pred, This, p(_))
+			TPred = '$lgt_asserta_rule_chk'(Self, Pred, This, p(_), p(p))
 			;
-			TPred = '$lgt_asserta_fact_chk'(Self, Pred, This, p(_)))).
+			TPred = '$lgt_asserta_fact_chk'(Self, Pred, This, p(_), p(p)))).
 
 '$lgt_tr_self_msg'(assertz(Pred), TPred, This, Self) :-
 	!,
 	('$lgt_runtime_db_clause_chk'(Pred) ->
-		TPred = '$lgt_assertz'(Self, Pred, This, p(_))
+		TPred = '$lgt_assertz'(Self, Pred, This, p(_), p(p))
 		;
 		'$lgt_compiler_db_clause_chk'(Pred),
 		(Pred = (_ :- _) ->
-			TPred = '$lgt_assertz_rule_chk'(Self, Pred, This, p(_))
+			TPred = '$lgt_assertz_rule_chk'(Self, Pred, This, p(_), p(p))
 			;
-			TPred = '$lgt_assertz_fact_chk'(Self, Pred, This, p(_)))).
+			TPred = '$lgt_assertz_fact_chk'(Self, Pred, This, p(_), p(p)))).
 
 '$lgt_tr_self_msg'(clause(Head, Body), TPred, This, Self) :-
 	!,
