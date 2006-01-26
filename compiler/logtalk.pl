@@ -7125,7 +7125,8 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	'$lgt_gen_prototype_linking_dcl_clauses',
 	'$lgt_gen_prototype_implements_dcl_clauses',
 	'$lgt_gen_prototype_imports_dcl_clauses',
-	'$lgt_gen_prototype_extends_dcl_clauses'.
+	'$lgt_gen_prototype_extends_dcl_clauses',
+	'$lgt_gen_prototype_as_root_class_dcl_clause'.
 
 
 
@@ -7216,12 +7217,21 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 
 
+'$lgt_gen_prototype_as_root_class_dcl_clause' :-
+	'$lgt_pp_object_'(_, _, Dcl, _, _, IDcl, _, _, _, _, _),
+	Head =.. [IDcl, Pred, Scope, Compilation, Meta, NonTerminal, SCtn, TCtn],
+	Body =.. [Dcl, Pred, Scope, Compilation, Meta, NonTerminal, SCtn, TCtn],
+	assertz('$lgt_pp_dcl_'((Head:-Body))).
+
+
+
 '$lgt_gen_prototype_def_clauses' :-
 	'$lgt_gen_local_def_clauses',
 	'$lgt_gen_obj_catchall_def_clause',
 	'$lgt_gen_prototype_linking_def_clauses',
 	'$lgt_gen_prototype_imports_def_clauses',
-	'$lgt_gen_prototype_extends_def_clauses'.
+	'$lgt_gen_prototype_extends_def_clauses',
+	'$lgt_gen_prototype_as_root_class_def_clause'.
 
 
 
@@ -7268,6 +7278,14 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	fail.
 
 '$lgt_gen_prototype_extends_def_clauses'.
+
+
+
+'$lgt_gen_prototype_as_root_class_def_clause' :-
+	'$lgt_pp_object_'(_, _, _, Def, _, _, IDef, _, _, _, _),
+	Head =.. [IDef, Pred, Sender, This, Self, Call, Ctn],
+	Body =.. [Def, Pred, Sender, This, Self, Call, Ctn],
+	assertz('$lgt_pp_def_'((Head:-Body))).
 
 
 

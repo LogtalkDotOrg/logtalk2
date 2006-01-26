@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.27.0 - February 9, 2006
 
+	Added support for using a stand-alone object as the root of a class-based 
+	hierarchy, making reflective designs optional for using class hierarchies.
+
 	Improved performance for local calls to the built-in methods phrase/2-3.
 	Allow the built-in methods phrase/2-3 to accept both partial and proper 
 	lists of terminals.
