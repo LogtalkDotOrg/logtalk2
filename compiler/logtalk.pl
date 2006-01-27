@@ -7218,10 +7218,13 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 
 '$lgt_gen_prototype_as_root_class_dcl_clause' :-
-	'$lgt_pp_object_'(_, _, Dcl, _, _, IDcl, _, _, _, _, _),
-	Head =.. [IDcl, Pred, Scope, Compilation, Meta, NonTerminal, SCtn, TCtn],
-	Body =.. [Dcl, Pred, Scope, Compilation, Meta, NonTerminal, SCtn, TCtn],
-	assertz('$lgt_pp_dcl_'((Head:-Body))).
+	'$lgt_pp_extended_object_'(_, _, _, _, _, _, _, _, _, _) ->
+		true
+		;
+		'$lgt_pp_object_'(_, _, Dcl, _, _, IDcl, _, _, _, _, _),
+		Head =.. [IDcl, Pred, Scope, Compilation, Meta, NonTerminal, SCtn, TCtn],
+		Body =.. [Dcl, Pred, Scope, Compilation, Meta, NonTerminal, SCtn, TCtn],
+		assertz('$lgt_pp_dcl_'((Head:-Body))).
 
 
 
@@ -7282,10 +7285,13 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 
 '$lgt_gen_prototype_as_root_class_def_clause' :-
-	'$lgt_pp_object_'(_, _, _, Def, _, _, IDef, _, _, _, _),
-	Head =.. [IDef, Pred, Sender, This, Self, Call, Ctn],
-	Body =.. [Def, Pred, Sender, This, Self, Call, Ctn],
-	assertz('$lgt_pp_def_'((Head:-Body))).
+	'$lgt_pp_extended_object_'(_, _, _, _, _, _, _, _, _, _) ->
+		true
+		;
+		'$lgt_pp_object_'(_, _, _, Def, _, _, IDef, _, _, _, _),
+		Head =.. [IDef, Pred, Sender, This, Self, Call, Ctn],
+		Body =.. [Def, Pred, Sender, This, Self, Call, Ctn],
+		assertz('$lgt_pp_def_'((Head:-Body))).
 
 
 
