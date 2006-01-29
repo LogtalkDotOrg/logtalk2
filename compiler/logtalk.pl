@@ -3849,37 +3849,63 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 
 
-% '$lgt_tr_terms'(+list, +stream)
-%
-% translates a list of source file terms
-
-'$lgt_tr_terms'([], _, _).
-
-'$lgt_tr_terms'([Term| Terms], Stream) :-
-	'$lgt_tr_term'(Term, Stream),
-	'$lgt_tr_terms'(Terms, Stream).
-
-
-
 % '$lgt_tr_term'(+term, +stream)
 %
 % translates a source file term (clauses, directives, and grammar rules)
 
-'$lgt_tr_term'((Head :- Body), _) :-
+'$lgt_tr_term'(Term, Stream) :-
+	'$lgt_call_hook_expansion'(Term, Terms) ->
+		'$lgt_tr_expanded_terms'(Terms, Stream)
+		;
+		'$lgt_tr_expanded_term'(Term, Stream).
+
+
+
+% '$lgt_tr_expanded_terms'(+list, +stream)
+%
+% translates a list of source file terms
+
+'$lgt_tr_expanded_terms'([], _).
+
+'$lgt_tr_expanded_terms'([Term| Terms], Stream) :-
+	'$lgt_tr_expanded_term'(Term, Stream),
+	'$lgt_tr_expanded_terms'(Terms, Stream).
+
+
+
+% '$lgt_tr_expanded_term'(+list, +stream)
+%
+% translates a source file term (clauses, directives, and grammar rules)
+
+'$lgt_tr_expanded_term'((Head :- Body), _) :-
 	!,
 	'$lgt_tr_clause'((Head :- Body)).
 
-'$lgt_tr_term'((:- Directive), Stream) :-
+'$lgt_tr_expanded_term'((:- Directive), Stream) :-
 	!,
 	'$lgt_tr_directive'(Directive, Stream).
 
-'$lgt_tr_term'((Head --> Body), _) :-
+'$lgt_tr_expanded_term'((Head --> Body), _) :-
 	!,
 	'$lgt_dcgrule_to_clause'((Head --> Body), Clause),
 	'$lgt_tr_clause'(Clause).
 
-'$lgt_tr_term'(Fact, _) :-
+'$lgt_tr_expanded_term'(Fact, _) :-
 	'$lgt_tr_clause'(Fact).
+
+
+
+% '$lgt_call_hook_expansion'(+nonvar, -list)
+%
+% calls a compiler hook predicate if defined
+
+'$lgt_call_hook_expansion'(Term, Terms) :-
+	'$lgt_compiler_flag'(hook, Obj::Functor),
+	Call =.. [Functor, Term, Terms],
+	(	Obj == user ->
+		Goal = Call
+	;	Goal = Obj::Call),
+	catch(Goal, _, fail).
 
 
 
@@ -7125,8 +7151,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	'$lgt_gen_prototype_linking_dcl_clauses',
 	'$lgt_gen_prototype_implements_dcl_clauses',
 	'$lgt_gen_prototype_imports_dcl_clauses',
-	'$lgt_gen_prototype_extends_dcl_clauses',
-	'$lgt_gen_prototype_as_root_class_dcl_clause'.
+	'$lgt_gen_prototype_extends_dcl_clauses'.
 
 
 
@@ -7217,24 +7242,12 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 
 
-'$lgt_gen_prototype_as_root_class_dcl_clause' :-
-	'$lgt_pp_extended_object_'(_, _, _, _, _, _, _, _, _, _) ->
-		true
-		;
-		'$lgt_pp_object_'(_, _, Dcl, _, _, IDcl, _, _, _, _, _),
-		Head =.. [IDcl, Pred, Scope, Compilation, Meta, NonTerminal, SCtn, TCtn],
-		Body =.. [Dcl, Pred, Scope, Compilation, Meta, NonTerminal, SCtn, TCtn],
-		assertz('$lgt_pp_dcl_'((Head:-Body))).
-
-
-
 '$lgt_gen_prototype_def_clauses' :-
 	'$lgt_gen_local_def_clauses',
 	'$lgt_gen_obj_catchall_def_clause',
 	'$lgt_gen_prototype_linking_def_clauses',
 	'$lgt_gen_prototype_imports_def_clauses',
-	'$lgt_gen_prototype_extends_def_clauses',
-	'$lgt_gen_prototype_as_root_class_def_clause'.
+	'$lgt_gen_prototype_extends_def_clauses'.
 
 
 
@@ -7281,17 +7294,6 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	fail.
 
 '$lgt_gen_prototype_extends_def_clauses'.
-
-
-
-'$lgt_gen_prototype_as_root_class_def_clause' :-
-	'$lgt_pp_extended_object_'(_, _, _, _, _, _, _, _, _, _) ->
-		true
-		;
-		'$lgt_pp_object_'(_, _, _, Def, _, _, IDef, _, _, _, _),
-		Head =.. [IDef, Pred, Sender, This, Self, Call, Ctn],
-		Body =.. [Def, Pred, Sender, This, Self, Call, Ctn],
-		assertz('$lgt_pp_def_'((Head:-Body))).
 
 
 
@@ -8731,6 +8733,7 @@ current_logtalk_flag(version, version(2, 27, 0)).
 '$lgt_valid_flag'(supports_break_predicate).
 '$lgt_valid_flag'(events).
 '$lgt_valid_flag'(altdirs).
+'$lgt_valid_flag'(hook).
 
 
 
@@ -8796,6 +8799,10 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 '$lgt_valid_flag_value'(events, on).
 '$lgt_valid_flag_value'(events, off).
+
+'$lgt_valid_flag_value'(hook, Obj::Functor) :-
+	atom(Functor),
+	once((atom(Obj); compound(Obj))).
 
 
 

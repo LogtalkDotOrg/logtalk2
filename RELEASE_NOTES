@@ -29,6 +29,9 @@ RELEASE NOTES
 	allow bypassing of the default Logtalk grammar rule translator by 
 	defining clauses for the term_expansion/2 predicate.
 
+	Added a new compiler flag, hook/1, allowing the specification of a 
+	compiler hook that is called for which term read from a source file.
+
 	Added support for XSB 3.x to the runtime error handler. Updated XSB 3.x 
 	config file with declarations for multi-threading meta-predicates.
 	
