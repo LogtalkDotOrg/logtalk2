@@ -12,9 +12,6 @@ RELEASE NOTES
 
 2.27.0 - February 9, 2006
 
-	Added support for using a stand-alone object as the root of a class-based 
-	hierarchy, making reflective designs optional for using class hierarchies.
-
 	Improved performance for local calls to the built-in methods phrase/2-3.
 	Allow the built-in methods phrase/2-3 to accept both partial and proper 
 	lists of terminals.
@@ -36,6 +33,9 @@ RELEASE NOTES
 	config file with declarations for multi-threading meta-predicates.
 	
 	Removed a few choice-points when checking validity of entity directives.
+
+	Added a new object, list(Type), to the library supporting validation of 
+	lists whose elements are restricted to a single type.
 
 	Added a new DCG example for solving enigmas encoded using a cellphone 
 	keypad.
