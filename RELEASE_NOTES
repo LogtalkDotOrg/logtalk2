@@ -22,8 +22,8 @@ RELEASE NOTES
 	Added support for declaring grammar rule non-terminal aliases using the 
 	alias/3 directive.
 
-	Added a new predicate property, non_terminal/1, which applies to 
-	predicates resulting from the compilation of grammar rule non-terminals.
+	Added a new predicate property, non_terminal/1, for predicates resulting 
+	from the compilation of grammar rule non-terminals.
 
 	Improved support for the built-in method, expand_term/2, in order to 
 	allow bypassing of the default Logtalk grammar rule translator by 
