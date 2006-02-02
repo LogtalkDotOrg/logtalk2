@@ -11,11 +11,11 @@
 	valid(List) :-
 		nonvar(List),
 		parameter(1, Type),
-		\+ \+ valid2(List, Type).
+		\+ \+ valid(List, Type).
 
-	valid2([], _).
-	valid2([Value| List], Type) :-
+	valid([], _).
+	valid([Value| List], Type) :-
 		Type::valid(Value),
-		valid2(List, Type).
+		valid(List, Type).
 
 :- end_object.
