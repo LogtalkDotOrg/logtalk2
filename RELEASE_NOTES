@@ -37,8 +37,9 @@ RELEASE NOTES
 	
 	Removed a few choice-points when checking validity of entity directives.
 
-	Added a new object, list(Type), to the library supporting validation of 
-	lists whose elements are restricted to a single type.
+	Added new objects, list(Type) and set(Type), to the library supporting 
+	validation of lists and ordered sets whose elements are restricted to a 
+	single type.
 
 	Added a new DCG example for solving enigmas encoded using a cellphone 
 	keypad.

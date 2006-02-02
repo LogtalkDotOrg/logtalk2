@@ -7,13 +7,12 @@
 		characterp, character,
 		number, float, integer, natural,
 		compound,
-		listp, list, difflist,
-		numberlistp, numberlist,
-		varlist,
-		list1,
+		listp, list, list1,
+		difflist,
+		numberlistp, numberlist, varlist,
 		queuep, queue,
 		dictionaryp, bintree,
-		setp, set,
+		setp, set, set1,
 		comparingp])).
 
 /*
@@ -28,12 +27,11 @@ files, comment the directive above and uncomment the directive below
 		characterp, character,
 		number, float, integer, natural,
 		compound,
-		listp, list, difflist,
-		numberlistp, numberlist,
-		varlist,
-		list1,
+		listp, list, list1,
+		difflist,
+		numberlistp, numberlist, varlist,
 		queuep, queue,
 		dictionaryp, bintree,
-		setp, set,
+		setp, set, set1,
 		comparingp], [xmlsref(standalone)])).
 */
