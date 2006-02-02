@@ -88,6 +88,9 @@ errors
 hello_world
 	the unavoidable "hello world" programming example
 
+hooks
+	simple example of using compiler hook predicates
+
 inheritance
 	examples of public, protected, and private inheritance using both 
 	prototypes and classes/instances
