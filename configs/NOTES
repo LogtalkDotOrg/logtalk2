@@ -216,7 +216,7 @@ IF/Prolog 5.1 and later versions
 	of source files. Does not support the "altdirs" compiler flag.
 
 
-JIProlog 3.0.2-3 and later versions
+JIProlog 3.0.2-6 and later versions
 
 	ji.config
 
@@ -309,7 +309,7 @@ PrologII+ 4.5 and later versions
 	Does not support the "altdirs" compiler flag.
 
 
-Qu-Prolog 7.0
+Qu-Prolog 7.1
 
 	qu.config
 
@@ -321,7 +321,7 @@ Qu-Prolog 7.0
 
 	Second, start Qu-Prolog using adequate switches. For example:
 
-		% qp -s 2048 -d 1024 -h 2000
+		% qp -T 16 -s 2048 -d 1024 -h 2000
 
 	Third, compile and load the config file using:
 
