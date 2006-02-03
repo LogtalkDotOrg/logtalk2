@@ -2190,8 +2190,8 @@ current_logtalk_flag(version, version(2, 27, 0)).
 % calls the term_expansion/2 user-defined predicate
 %
 % if there is a scope directive, then the call fails if the sender in not within scope;
-% when there is no scope directive, then we call any definition local if the sender and
-% the target object are the same
+% when there is no scope directive, then we call any local definition when the sender
+% and the target object are the same
 
 '$lgt_term_expansion'(Obj, Term, Expansion, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _),
