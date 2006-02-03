@@ -10191,8 +10191,12 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	'$lgt_default_flag'(report, Report), write('  report: '), write(Report),
 	'$lgt_default_flag'(code_prefix, Code), write(', code_prefix: '), writeq(Code),
 	'$lgt_default_flag'(debug, Debug), write(', debug: '), writeq(Debug),
-	'$lgt_default_flag'(smart_compilation, Smart), write(', smart_compilation: '), write(Smart),
-	'$lgt_default_flag'(events, Events), write(', events: '), write(Events), nl,
+	'$lgt_default_flag'(smart_compilation, Smart), write(', smart_compilation: '), write(Smart), nl,
+	'$lgt_default_flag'(events, Events), write('  events: '), write(Events),
+	(	'$lgt_default_flag'(hook, Hook) -> true
+	;	Hook = '(none defined)'
+	),
+	write(', hook: '), write(Hook), nl,
 	write('Read-only compilation flags:'), nl,
 	'$lgt_default_flag'(supports_break_predicate, Break), write('  supports_break_predicate: '), write(Break),
 	'$lgt_default_flag'(startup_message, Startup), write(', startup_message: '), write(Startup), nl,
@@ -10235,6 +10239,10 @@ current_logtalk_flag(version, version(2, 27, 0)).
 	write('  Smart compilation (smart_compilation):                    '), write(Smart), nl,
 	'$lgt_default_flag'(events, Events),
 	write('  Event-driven programming support (events):                '), write(Events), nl,
+	(	'$lgt_default_flag'(hook, Hook) -> true
+	;	Hook = '(none defined)'
+	),
+	write('  Compiler hook object and hook predicate functor:          '), write(Hook), nl,
 	write('Read-only compilation flags:'), nl,
 	'$lgt_default_flag'(supports_break_predicate, Break),
 	write('  Support for break/0 predicate (supports_break_predicate): '), write(Break), nl,
