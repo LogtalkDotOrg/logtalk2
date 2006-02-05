@@ -98,6 +98,10 @@
 
 :- dynamic(logtalk_library_path/2).			% logtalk_library_path(Library, Path)
 
+% compiler hook goal:
+
+:- dynamic('$lgt_hook_goal_'/2).
+
 
 
 
@@ -179,6 +183,8 @@
 :- dynamic('$lgt_pp_comp_warnings_counter_'/1).	% '$lgt_pp_comp_warnings_counter_'(Counter)
 :- dynamic('$lgt_pp_load_warnings_counter_'/1).	% '$lgt_pp_load_warnings_counter_'(Counter)
 :- dynamic('$lgt_pp_entity_warnings_flag_'/0).	% '$lgt_pp_entity_warnings_flag_'
+
+:- dynamic('$lgt_pp_hook_goal_'/2).
 
 
 
@@ -1222,12 +1228,21 @@ logtalk_compile(Files, Flags) :-
 
 '$lgt_set_compiler_flags'(Flags) :-
 	retractall('$lgt_pp_compiler_flag_'(_, _)),
+	retractall('$lgt_pp_hook_goal_'(_, _)),
 	'$lgt_assert_compiler_flags'(Flags),
-	('$lgt_pp_compiler_flag_'(debug, on) ->
+	(	'$lgt_pp_compiler_flag_'(debug, on) ->
 		retractall('$lgt_pp_compiler_flag_'(smart_compilation, _)),
 		asserta('$lgt_pp_compiler_flag_'(smart_compilation, off))
-		;
-		true).
+	;	true),
+	(	'$lgt_pp_compiler_flag_'(hook, Obj::Functor) ->
+		Call =.. [Functor, Term, Terms],
+		(	Obj == user ->
+			Goal = Call
+		;	'$lgt_tr_msg'(Call, Obj, Goal, user)
+		),
+		assertz(('$lgt_pp_hook_goal_'(Term, Terms) :- catch(Goal, _, fail)))
+	;	true
+	).
 
 
 '$lgt_assert_compiler_flags'([]).
@@ -1323,6 +1338,17 @@ set_logtalk_flag(debug, on) :-
 	assertz('$lgt_current_flag_'(debug, on)),
 	retractall('$lgt_current_flag_'(smart_compilation, _)),
 	assertz('$lgt_current_flag_'(smart_compilation, off)).
+
+set_logtalk_flag(hook, Obj::Functor) :-
+	!,
+	retractall('$lgt_current_flag_'(hook, _)),
+	assertz('$lgt_current_flag_'(hook, Obj::Functor)),
+	Call =.. [Functor, Term, Terms],
+	(	Obj == user ->
+		Goal = Call
+	;	'$lgt_tr_msg'(Call, Obj, Goal, user)),
+	retractall('$lgt_hook_goal_'(_, _)),
+	assertz(('$lgt_hook_goal_'(Term, Terms) :- catch(Goal, _, fail))).
 
 set_logtalk_flag(Flag, Value) :-
 	retractall('$lgt_current_flag_'(Flag, _)),
@@ -3854,10 +3880,18 @@ current_logtalk_flag(version, version(2, 27, 0)).
 % translates a source file term (clauses, directives, and grammar rules)
 
 '$lgt_tr_term'(Term, Stream) :-
-	'$lgt_call_hook_expansion'(Term, Terms) ->
+	'$lgt_hook_goal'(Term, Terms) ->
 		'$lgt_tr_expanded_terms'(Terms, Stream)
 		;
 		'$lgt_tr_expanded_term'(Term, Stream).
+
+
+
+'$lgt_hook_goal'(Term, Terms) :-
+	'$lgt_pp_compiler_flag_'(hook, _) ->
+		'$lgt_pp_hook_goal_'(Term, Terms)
+		;
+		'$lgt_hook_goal_'(Term, Terms).
 
 
 
@@ -3892,20 +3926,6 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 '$lgt_tr_expanded_term'(Fact, _) :-
 	'$lgt_tr_clause'(Fact).
-
-
-
-% '$lgt_call_hook_expansion'(+nonvar, -list)
-%
-% calls a compiler hook predicate if defined
-
-'$lgt_call_hook_expansion'(Term, Terms) :-
-	'$lgt_compiler_flag'(hook, Obj::Functor),
-	Call =.. [Functor, Term, Terms],
-	(	Obj == user ->
-		Goal = Call
-	;	Goal = Obj::Call),
-	catch(Goal, _, fail).
 
 
 
@@ -10255,7 +10275,25 @@ current_logtalk_flag(version, version(2, 27, 0)).
 
 
 
-:- initialization('$lgt_startup_message').
+% '$lgt_assert_hook_goal'
+%
+% asserts the compiler hook goal
+
+'$lgt_assert_hook_goal' :-
+	'$lgt_default_flag'(hook, Obj::Functor),
+	Call =.. [Functor, Term, Terms],
+	(	Obj == user ->
+		Goal = Call
+	;	'$lgt_tr_msg'(Call, Obj, Goal, user)),
+	retractall('$lgt_hook_goal_'(_, _)),
+	assertz(('$lgt_hook_goal_'(Term, Terms) :- catch(Goal, _, fail))),
+	!.
+
+'$lgt_assert_hook_goal'.
+
+
+
+:- initialization(('$lgt_startup_message', '$lgt_assert_hook_goal')).
 
 
 
