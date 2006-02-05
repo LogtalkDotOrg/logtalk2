@@ -27,7 +27,8 @@ RELEASE NOTES
 
 	Improved support for the built-in method expand_term/2 in order to allow 
 	bypassing of the default Logtalk grammar rule translator by defining 
-	clauses for the term_expansion/2 predicate.
+	clauses for the term_expansion/2 predicate. Added a "term_expansionp" 
+	protocol to the Logtalk standard library.
 
 	Added a new compiler flag, hook/1, allowing the specification of a 
 	compiler hook that is called for which term read from a source file.
