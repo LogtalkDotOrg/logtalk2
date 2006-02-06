@@ -37,14 +37,14 @@ RELEASE NOTES
 	to expand author abbreviations in info/1 directives into full names 
 	and email addresses.
 
-	Added support for XSB 3.x to the runtime error handler. Updated XSB 3.x 
-	config file with declarations for multi-threading meta-predicates.
+	Added support for XSB 3.x to the runtime error handler. Updated the XSB 
+	3.x config file with declarations for multi-threading meta-predicates.
 	
 	Removed a few choice-points when checking validity of entity directives.
 
-	Added new objects, list(Type) and set(Type), to the library supporting 
-	validation of lists and ordered sets whose elements are restricted to a 
-	single type.
+	Added two new objects, list(Type) and set(Type), to the standard library 
+	supporting the validation of lists and ordered sets whose elements are 
+	restricted to a single type.
 
 	Added a new DCG example for solving enigmas encoded using a cellphone 
 	keypad.
