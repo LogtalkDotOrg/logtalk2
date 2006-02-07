@@ -91,7 +91,9 @@ make_plclgt.js
 
 make_qplgt.sh
 	makes a shell script named "qplgt" for running Logtalk with Qu-Prolog 
-	(based on script code contributed by Peter Robinson)
+	(based on script code contributed by Peter Robinson); this script does 
+	not read at runtime the config and the libpaths files: you will need to 
+	run this script again if you modify these files
 
 make_sicstuslgt.sh
 	makes a shell script named "sicstuslgt" for running Logtalk with SICStus 
