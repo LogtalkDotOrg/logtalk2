@@ -1,6 +1,6 @@
 Name: logtalk
 Summary: Logtalk - Open source object-oriented extension to Prolog
-Version: 2.26.2
+Version: 2.27.0
 Release: 1
 License: Artistic License 2.0
 Group: Development/Languages
