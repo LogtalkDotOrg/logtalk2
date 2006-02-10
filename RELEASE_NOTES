@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.27.0
+Release 2.27.1
 
 Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -8,6 +8,12 @@ Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.27.1 - February ??, 2006
+
+	Allow calls to the built-in method parameter/2 with the first argument 
+	not instantiated at compile time.
 
 
 2.27.0 - February 9, 2006

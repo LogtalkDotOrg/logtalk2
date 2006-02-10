@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.27.0
+%  Release 2.27.1
 %
 %  Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 %
@@ -1377,7 +1377,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 27, 0)).
+current_logtalk_flag(version, version(2, 27, 1)).
 
 
 
@@ -5356,9 +5356,9 @@ current_logtalk_flag(version, version(2, 27, 0)).
 '$lgt_tr_body'(parameter(Arg, Value), TPred, '$lgt_dbg_goal'(parameter(Arg, Temp), DPred, Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_this'(Ctx, This),
-	(var(This) ->
-		TPred = arg(Arg, This, Value),	% when using parameter/2 in categories
-		DPred = (TPred, Temp=Value)
+	((var(This); var(Arg)) ->			% when using parameter/2 in categories
+		TPred = arg(Arg, This, Value),	% or when the first argument will only 
+		DPred = (TPred, Temp=Value)		% be instantiated at runtime
 		;
 		arg(Arg, This, Value),
 		TPred = true,
