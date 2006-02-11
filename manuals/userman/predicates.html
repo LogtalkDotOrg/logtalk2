@@ -533,7 +533,7 @@ to answer a message received by descendant
 that was sent by user
 yes</pre>
 <p>
-Note that the goals <code>self(Self)</code>, <code>sender(Sender)</code>, and <code>this(This)</code>, being translated to unifications at compile time with the clause head context arguments, are effectively removed from the clause body. This implies that a clause such as:
+Note that the goals <code>self(Self)</code>, <code>sender(Sender)</code>, and <code>this(This)</code>, being translated to unifications with the clause head context arguments at compile time, are effectively removed from the clause body. This implies that a clause such as:
 </p>
 <pre>predicate(Arg) :-
     self(Self),
