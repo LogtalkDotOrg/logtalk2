@@ -15,6 +15,10 @@ RELEASE NOTES
 	Allow calls to the built-in method parameter/2 with the first argument 
 	not instantiated at compile time.
 
+	Optimized generation of predicate definition and declaration linking 
+	clauses, resulting in small lookup performance improvments and in space 
+	savings for the Prolog code generated when compiling Logtalk entities.
+
 
 2.27.0 - February 9, 2006
 

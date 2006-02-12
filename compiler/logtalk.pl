@@ -6928,12 +6928,13 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 
-% '$lgt_gen_local_dcl_clauses'
+% '$lgt_gen_local_dcl_clauses'(-callable)
 %
-% a (local) predicate declaration is only generated
-% if there is a scope declaration for the predicate
+% a (local) predicate declaration is only generated if there is a scope 
+% declaration for the predicate; the single argument returns the atom
+% "true" if there are local declaration claues and the atom "fail" otherwise
 
-'$lgt_gen_local_dcl_clauses' :-
+'$lgt_gen_local_dcl_clauses'(_) :-
 	'$lgt_pp_entity'(_, _, _, Dcl, _),
 	(('$lgt_pp_public_'(Functor, Arity), Scope = p(p(p)));
 	 ('$lgt_pp_protected_'(Functor, Arity), Scope = p(p));
@@ -6956,22 +6957,18 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	assertz('$lgt_pp_dcl_'(Fact)),
 	fail.
 
-'$lgt_gen_local_dcl_clauses' :-		% generate a catchall clause if needed for
-	\+ '$lgt_pp_dcl_'(_) ->			% entities that do not contain declarations
-		'$lgt_pp_entity'(_, _, _, Dcl, _),
-		Head =.. [Dcl, _, _, _, _, _],
-		assertz('$lgt_pp_dcl_'((Head:-fail)))
-		;
-		true.
+'$lgt_gen_local_dcl_clauses'(Local) :-
+	'$lgt_pp_dcl_'(_) -> Local = true; Local = fail.
 
 
 
-% '$lgt_gen_local_def_clauses'
+% '$lgt_gen_local_def_clauses'(-callable)
 %
 % generates local def clauses for undefined but declared (via scope or
-% dynamic directives) predicates
+% dynamic directives) predicates; the single argument returns the atom
+% "true" if there are local definition claues and the atom "fail" otherwise
 
-'$lgt_gen_local_def_clauses' :-
+'$lgt_gen_local_def_clauses'(_) :-
 	'$lgt_pp_entity'(_, _, EPrefix, _, _),
 	'$lgt_pp_dynamic_'(Functor, Arity),
 	\+ '$lgt_pp_defs_pred_'(Functor, Arity),
@@ -6985,31 +6982,25 @@ current_logtalk_flag(version, version(2, 27, 1)).
 		'$lgt_add_def_clause'(Functor, Arity, PPrefix, Ctx)),
 	fail.
 
-'$lgt_gen_local_def_clauses'.
-
-
-
-'$lgt_gen_obj_catchall_def_clause' :-
-	\+ '$lgt_pp_def_'(_) ->
-		'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _),
-		Head =.. [Def, _, _, _, _, _],
-		assertz('$lgt_pp_def_'((Head:-fail)))
-		;
-		true.
+'$lgt_gen_local_def_clauses'(Local) :-
+	'$lgt_pp_def_'(_) -> Local = true; Local = fail.
 
 
 
 '$lgt_gen_protocol_clauses' :-
-	'$lgt_gen_local_dcl_clauses',
-	'$lgt_gen_protocol_linking_clauses',
+	'$lgt_gen_local_dcl_clauses'(Local),
+	'$lgt_gen_protocol_linking_clauses'(Local),
 	'$lgt_gen_protocol_extend_clauses'.
 
 
 
-'$lgt_gen_protocol_linking_clauses' :-
+'$lgt_gen_protocol_linking_clauses'(Local) :-
 	'$lgt_pp_protocol_'(Ptc, _, PDcl, _, _),
 	Head =.. [PDcl, Pred, Scope, Compilation, Meta, NonTerminal, Ptc],
-	Body =.. [PDcl, Pred, Scope, Compilation, Meta, NonTerminal],
+	(	call(Local) ->
+		Body =.. [PDcl, Pred, Scope, Compilation, Meta, NonTerminal]
+	;	Body = fail
+	),
 	assertz('$lgt_pp_dcl_'((Head:-Body))).
 
 
@@ -7051,17 +7042,20 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 '$lgt_gen_category_dcl_clauses' :-
-	'$lgt_gen_local_dcl_clauses',
-	'$lgt_gen_category_linking_dcl_clauses',
+	'$lgt_gen_local_dcl_clauses'(Local),
+	'$lgt_gen_category_linking_dcl_clauses'(Local),
 	'$lgt_gen_category_implements_dcl_clauses',
 	'$lgt_gen_category_imports_dcl_clauses'.
 
 
 
-'$lgt_gen_category_linking_dcl_clauses' :-
+'$lgt_gen_category_linking_dcl_clauses'(Local) :-
 	'$lgt_pp_category_'(Ctg, _, CDcl, _, _, _),
 	Head =.. [CDcl, Pred, Scope, Compilation, Meta, NonTerminal, Ctg],
-	Body =.. [CDcl, Pred, Scope, Compilation, Meta, NonTerminal],
+	(	call(Local) ->
+		Body =.. [CDcl, Pred, Scope, Compilation, Meta, NonTerminal]
+	;	Body = fail
+	),
 	assertz('$lgt_pp_dcl_'((Head:-Body))).
 
 
@@ -7117,26 +7111,18 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 '$lgt_gen_category_def_clauses' :-
-	'$lgt_gen_category_catchall_def_clause',
 	'$lgt_gen_category_linking_def_clauses',
 	'$lgt_gen_category_imports_def_clauses'.
-
-
-
-'$lgt_gen_category_catchall_def_clause' :-
-	\+ '$lgt_pp_def_'(_) ->
-		'$lgt_pp_category_'(_, _, _, Def, _, _),
-		Head =.. [Def, _, _, _, _, _],
-		assertz('$lgt_pp_def_'((Head:-fail)))
-		;
-		true.
 
 
 
 '$lgt_gen_category_linking_def_clauses' :-
 	'$lgt_pp_category_'(Ctg, _, _, Def, _, _),
 	Head =.. [Def, Pred, Sender, This, Self, Call, Ctg],
-	Body =.. [Def, Pred, Sender, This, Self, Call],
+	(	'$lgt_pp_def_'(_) ->
+		Body =.. [Def, Pred, Sender, This, Self, Call]
+	;	Body = fail
+	),
 	assertz('$lgt_pp_def_'((Head:-Body))).
 
 
@@ -7167,19 +7153,22 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 '$lgt_gen_prototype_dcl_clauses' :-
-	'$lgt_gen_local_dcl_clauses',
-	'$lgt_gen_prototype_linking_dcl_clauses',
+	'$lgt_gen_local_dcl_clauses'(Local),
+	'$lgt_gen_prototype_linking_dcl_clauses'(Local),
 	'$lgt_gen_prototype_implements_dcl_clauses',
 	'$lgt_gen_prototype_imports_dcl_clauses',
 	'$lgt_gen_prototype_extends_dcl_clauses'.
 
 
 
-'$lgt_gen_prototype_linking_dcl_clauses' :-
+'$lgt_gen_prototype_linking_dcl_clauses'(Local) :-
 	'$lgt_pp_object_'(Obj, _, Dcl, _, _, _, _, DDcl, _, _, _),
-	Head =.. [Dcl, Pred, Scope, Compilation, Meta, NonTerminal, Obj, Obj],
-	Body =.. [Dcl, Pred, Scope, Compilation, Meta, NonTerminal],
-	assertz('$lgt_pp_dcl_'((Head:-Body))),
+	(	call(Local) ->
+		Head =.. [Dcl, Pred, Scope, Compilation, Meta, NonTerminal, Obj, Obj],
+		Body =.. [Dcl, Pred, Scope, Compilation, Meta, NonTerminal],
+		assertz('$lgt_pp_dcl_'((Head:-Body)))
+	;	true
+	),
 	Head2 =.. [Dcl, Pred, Scope, (dynamic), no, no, Obj, Obj],
 	Body2 =.. [DDcl, Pred, Scope],
 	assertz('$lgt_pp_dcl_'((Head2:-Body2))).
@@ -7263,19 +7252,21 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 '$lgt_gen_prototype_def_clauses' :-
-	'$lgt_gen_local_def_clauses',
-	'$lgt_gen_obj_catchall_def_clause',
-	'$lgt_gen_prototype_linking_def_clauses',
+	'$lgt_gen_local_def_clauses'(Local),
+	'$lgt_gen_prototype_linking_def_clauses'(Local),
 	'$lgt_gen_prototype_imports_def_clauses',
 	'$lgt_gen_prototype_extends_def_clauses'.
 
 
 
-'$lgt_gen_prototype_linking_def_clauses' :-
+'$lgt_gen_prototype_linking_def_clauses'(Local) :-
 	'$lgt_pp_object_'(Obj, _, _, Def, _, _, _, _, DDef, _, _),
 	Head =.. [Def, Pred, Sender, This, Self, Call, Obj],
-	Body =.. [Def, Pred, Sender, This, Self, Call],
-	assertz('$lgt_pp_def_'((Head:-Body))),
+	(	call(Local) ->
+		Body =.. [Def, Pred, Sender, This, Self, Call],
+		assertz('$lgt_pp_def_'((Head:-Body)))
+	;	true
+	),
 	Body2 =.. [DDef, Pred, Sender, This, Self, Call],
 	assertz('$lgt_pp_def_'((Head:-Body2))).
 
@@ -7348,15 +7339,14 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_gen_ic_clauses' :-
 	'$lgt_gen_ic_dcl_clauses',
-	'$lgt_gen_ic_idcl_clauses',
 	'$lgt_gen_ic_def_clauses',
-	'$lgt_gen_ic_idef_clauses',
 	'$lgt_gen_ic_super_clauses'.
 
 
 
 '$lgt_gen_ic_dcl_clauses' :-
-	'$lgt_gen_local_dcl_clauses',
+	'$lgt_gen_local_dcl_clauses'(Local),
+	'$lgt_gen_ic_idcl_clauses'(Local),
 	'$lgt_gen_ic_hierarchy_dcl_clauses'.
 
 
@@ -7396,19 +7386,22 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 % generates instance/class inherited declaration clauses
 
-'$lgt_gen_ic_idcl_clauses' :-
-	'$lgt_gen_ic_linking_idcl_clauses',
+'$lgt_gen_ic_idcl_clauses'(Local) :-
+	'$lgt_gen_ic_linking_idcl_clauses'(Local),
 	'$lgt_gen_ic_protocol_idcl_clauses',
 	'$lgt_gen_ic_category_idcl_clauses',
 	'$lgt_gen_ic_hierarchy_idcl_clauses'.
 
 
 
-'$lgt_gen_ic_linking_idcl_clauses' :-
+'$lgt_gen_ic_linking_idcl_clauses'(Local) :-
 	'$lgt_pp_object_'(Obj, _, Dcl, _, _, IDcl, _, DDcl, _, _, _),
-	Head =.. [IDcl, Pred, Scope, Compilation, Meta, NonTerminal, Obj, Obj],
-	Body =.. [Dcl, Pred, Scope, Compilation, Meta, NonTerminal],
-	assertz('$lgt_pp_dcl_'((Head:-Body))),
+	(	call(Local) ->
+		Head =.. [IDcl, Pred, Scope, Compilation, Meta, NonTerminal, Obj, Obj],
+		Body =.. [Dcl, Pred, Scope, Compilation, Meta, NonTerminal],
+		assertz('$lgt_pp_dcl_'((Head:-Body)))
+	;	true
+	),
 	Head2 =.. [IDcl, Pred, Scope, (dynamic), no, no, Obj, Obj],
 	Body2 =.. [DDcl, Pred, Scope],
 	assertz('$lgt_pp_dcl_'((Head2:-Body2))).
@@ -7492,19 +7485,22 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 '$lgt_gen_ic_def_clauses' :-
-	'$lgt_gen_local_def_clauses',
-	'$lgt_gen_obj_catchall_def_clause',
-	'$lgt_gen_ic_linking_def_clauses',
+	'$lgt_gen_local_def_clauses'(Local),
+	'$lgt_gen_ic_linking_def_clauses'(Local),
 	'$lgt_gen_ic_imports_def_clauses',
-	'$lgt_gen_ic_hierarchy_def_clauses'.
+	'$lgt_gen_ic_hierarchy_def_clauses',
+	'$lgt_gen_ic_idef_clauses'(Local).
 
 
 
-'$lgt_gen_ic_linking_def_clauses' :-
+'$lgt_gen_ic_linking_def_clauses'(Local) :-
 	'$lgt_pp_object_'(Obj, _, _, Def, _, _, _, _, DDef, _, _),
 	Head =.. [Def, Pred, Sender, This, Self, Call, Obj],
-	Body =.. [Def, Pred, Sender, This, Self, Call],
-	assertz('$lgt_pp_def_'((Head:-Body))),
+	(	call(Local) ->		
+		Body =.. [Def, Pred, Sender, This, Self, Call],
+		assertz('$lgt_pp_def_'((Head:-Body)))
+	;	true
+	),
 	Body2 =.. [DDef, Pred, Sender, This, Self, Call],
 	assertz('$lgt_pp_def_'((Head:-Body2))).
 
@@ -7547,18 +7543,21 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 
-'$lgt_gen_ic_idef_clauses' :-
-	'$lgt_gen_ic_linking_idef_clauses',
+'$lgt_gen_ic_idef_clauses'(Local) :-
+	'$lgt_gen_ic_linking_idef_clauses'(Local),
 	'$lgt_gen_ic_category_idef_clauses',
 	'$lgt_gen_ic_hierarchy_idef_clauses'.
 
 
 
-'$lgt_gen_ic_linking_idef_clauses' :-
+'$lgt_gen_ic_linking_idef_clauses'(Local) :-
 	'$lgt_pp_object_'(Obj, _, _, Def, _, _, IDef, _, DDef, _, _),
 	Head =.. [IDef, Pred, Sender, This, Self, Call, Obj],
-	Body =.. [Def, Pred, Sender, This, Self, Call],
-	assertz('$lgt_pp_def_'((Head:-Body))),
+	(	call(Local) ->	
+		Body =.. [Def, Pred, Sender, This, Self, Call],
+		assertz('$lgt_pp_def_'((Head:-Body)))
+	;	true
+	),
 	Body2 =.. [DDef, Pred, Sender, This, Self, Call],
 	assertz('$lgt_pp_def_'((Head:-Body2))).
 
