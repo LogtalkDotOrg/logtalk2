@@ -19,6 +19,9 @@ RELEASE NOTES
 	clauses, resulting in small lookup performance improvments and in space 
 	savings for the Prolog code generated when compiling Logtalk entities.
 
+	Added an object version of the tokenizer described in the Michael 
+	Covington's paper "Tokenization using DCG Rules" to the "dcgs" example.
+
 
 2.27.0 - February 9, 2006
 

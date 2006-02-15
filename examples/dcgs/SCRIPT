@@ -71,6 +71,15 @@ L = [pwd,'cd ..','ls -a'] ?
 yes
 
 
+% convert a string to a list of tokens (words, numbers, ponctuation):
+
+| ?- tokenizer::tokens(" We owe $1,048,576.24 to Agent 007 for Version 3.14159! ", Tokens).
+
+Tokens = [we,owe,$,1048576.24,to,agent,7,for,version,3.14159,!] ? 
+
+yes
+
+
 % walker movements:
 
 | ?- walker::walk([n(5), e(4), s(2), nw(8), s(5), se(1), n(4)], Ending).

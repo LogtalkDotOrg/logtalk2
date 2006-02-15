@@ -6932,7 +6932,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 %
 % a (local) predicate declaration is only generated if there is a scope 
 % declaration for the predicate; the single argument returns the atom
-% "true" if there are local declaration claues and the atom "fail" otherwise
+% "true" if there are local declaration clauses and the atom "fail" otherwise
 
 '$lgt_gen_local_dcl_clauses'(_) :-
 	'$lgt_pp_entity'(_, _, _, Dcl, _),
@@ -6966,7 +6966,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 %
 % generates local def clauses for undefined but declared (via scope or
 % dynamic directives) predicates; the single argument returns the atom
-% "true" if there are local definition claues and the atom "fail" otherwise
+% "true" if there are local definition clauses and the atom "fail" otherwise
 
 '$lgt_gen_local_def_clauses'(_) :-
 	'$lgt_pp_entity'(_, _, EPrefix, _, _),
