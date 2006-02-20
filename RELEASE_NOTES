@@ -24,6 +24,11 @@ RELEASE NOTES
 
 	Improved integration code for Qu-Prolog and Logtalk ("configs/qphook.ql").
 
+	Improved library hierarchy metohds that return lists of objects in order 
+	to avoid duplicated elements (library objects "proto_hierarchy.lgt" and 
+	"class_hierarchy.lgt"). Added new methods extension/1 and extensions/1 to 
+	the library object "proto_hierarchy.lgt".
+
 
 2.27.0 - February 9, 2006
 
