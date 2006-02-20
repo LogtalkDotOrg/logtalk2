@@ -22,6 +22,8 @@ RELEASE NOTES
 	Added an object version of the tokenizer described in the Michael 
 	Covington's paper "Tokenization using DCG Rules" to the "dcgs" example.
 
+	Improved integration code for Qu-Prolog and Logtalk ("configs/qphook.ql").
+
 
 2.27.0 - February 9, 2006
 
