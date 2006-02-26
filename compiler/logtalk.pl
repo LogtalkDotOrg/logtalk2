@@ -100,7 +100,7 @@
 
 % compiler hook goal:
 
-:- dynamic('$lgt_hook_goal_'/2).
+:- dynamic('$lgt_hook_goal_'/2).			% '$lgt_hook_goal_'(Term, Terms)
 
 
 
@@ -184,7 +184,7 @@
 :- dynamic('$lgt_pp_load_warnings_counter_'/1).	% '$lgt_pp_load_warnings_counter_'(Counter)
 :- dynamic('$lgt_pp_entity_warnings_flag_'/0).	% '$lgt_pp_entity_warnings_flag_'
 
-:- dynamic('$lgt_pp_hook_goal_'/2).
+:- dynamic('$lgt_pp_hook_goal_'/2).				% '$lgt_pp_hook_goal_'(Term, Terms)
 
 
 
@@ -948,18 +948,13 @@ abolish_events(after, Obj, Msg, Sender, Monitor) :-
 %
 % gets/checks the current value of a compiler flag
 
-'$lgt_compiler_flag'(Option, Value) :-			% flag value as defined in the options
-	'$lgt_pp_compiler_flag_'(Option, Value2),	% argument of the compiling and loading
-	!,											% predicates
-	Value = Value2.
-
-'$lgt_compiler_flag'(Option, Value) :-			% default value for the current Logtalk
-	'$lgt_current_flag_'(Option, Value2),		% session, set by calls to the 
-	!,											% set_logtalk_flag/2 predicate
-	Value = Value2.
-
-'$lgt_compiler_flag'(Option, Value) :-			% default value, defined on the
-	'$lgt_default_flag'(Option, Value).			% Prolog config files
+'$lgt_compiler_flag'(Option, Value) :-
+	(	'$lgt_pp_compiler_flag_'(Option, Value2) ->	% flag value as defined in the options argument
+		Value = Value2								% of the compiling and loading predicates
+	;	'$lgt_current_flag_'(Option, Value2) ->		% default value for the current Logtalk session,
+		Value = Value2								% set by calls to the set_logtalk_flag/2 predicate
+	;	'$lgt_default_flag'(Option, Value)			% default value, defined on the Prolog config files
+	).
 
 
 
@@ -1055,35 +1050,27 @@ logtalk_compile(Files, Flags) :-
 
 
 '$lgt_report_warning_numbers'(Term) :-
-	retract('$lgt_pp_warnings_top_argument_'(Term)),
-	retract('$lgt_pp_comp_warnings_counter_'(CCounter)),
-	retract('$lgt_pp_load_warnings_counter_'(LCounter)),
-	(	'$lgt_compiler_flag'(report, on) ->
-		Counter is CCounter + LCounter,
-		'$lgt_write_warning_numbers'(Counter, CCounter, LCounter)
+	(	retract('$lgt_pp_warnings_top_argument_'(Term)) ->
+		retract('$lgt_pp_comp_warnings_counter_'(CCounter)),
+		retract('$lgt_pp_load_warnings_counter_'(LCounter)),
+		(	'$lgt_compiler_flag'(report, on) ->
+			(	CCounter + LCounter =:= 0 ->
+				write('(0 warnings)'), nl
+			;	CCounter =:= 0 ->
+				write('('), write(LCounter), write(' loading '),
+				'$lgt_write_warnings_word'(LCounter), write(')'), nl
+			;	LCounter =:= 0 ->
+				write('('), write(CCounter), write(' compilation '),
+				'$lgt_write_warnings_word'(CCounter), write(')'), nl
+			;	write('('), write(CCounter), write(' compilation '),
+				'$lgt_write_warnings_word'(CCounter), write(' and '),
+				write(LCounter), write(' loading '),
+				'$lgt_write_warnings_word'(LCounter), write(')'), nl
+			)
+		;	true
+		)
 	;	true
 	).
-
-
-'$lgt_write_warning_numbers'(0, _, _) :-
-	!,
-	write('(0 warnings)'), nl.
-
-'$lgt_write_warning_numbers'(_, 0, LCounter) :-
-	!,
-	write('('), write(LCounter), write(' loading '),
-	'$lgt_write_warnings_word'(LCounter), write(')'), nl.
-
-'$lgt_write_warning_numbers'(_, CCounter, 0) :-
-	!,
-	write('('), write(CCounter), write(' compilation '),
-	'$lgt_write_warnings_word'(CCounter), write(')'), nl.
-
-'$lgt_write_warning_numbers'(_, CCounter, LCounter) :-
-	write('('), write(CCounter), write(' compilation '),
-	'$lgt_write_warnings_word'(CCounter), write(' and '),
-	write(LCounter), write(' loading '),
-	'$lgt_write_warnings_word'(LCounter), write(')'), nl.
 
 
 '$lgt_write_warnings_word'(Number) :-
@@ -1331,28 +1318,16 @@ set_logtalk_flag(Flag, Value) :-
 	\+ '$lgt_valid_flag_value'(Flag, Value),
 	throw(error(domain_error(valid_flag_value, Value), set_logtalk_flag(Flag, Value))).
 
-set_logtalk_flag(debug, on) :-
-	!,
-	retractall('$lgt_current_flag_'(debug, _)),
-	assertz('$lgt_current_flag_'(debug, on)),
-	retractall('$lgt_current_flag_'(smart_compilation, _)),
-	assertz('$lgt_current_flag_'(smart_compilation, off)).
-
-set_logtalk_flag(hook, Obj::Functor) :-
-	!,
-	retractall('$lgt_current_flag_'(hook, _)),
-	assertz('$lgt_current_flag_'(hook, Obj::Functor)),
-	Call =.. [Functor, Term, Terms],
-	(	Obj == user ->
-		Goal = Call
-	;	'$lgt_tr_msg'(Call, Obj, Goal, user)
-	),
-	retractall('$lgt_hook_goal_'(_, _)),
-	assertz(('$lgt_hook_goal_'(Term, Terms) :- catch(Goal, _, fail))).
-
 set_logtalk_flag(Flag, Value) :-
 	retractall('$lgt_current_flag_'(Flag, _)),
-	assertz('$lgt_current_flag_'(Flag, Value)).
+	assertz('$lgt_current_flag_'(Flag, Value)),
+	(	Flag == debug ->
+		retractall('$lgt_current_flag_'(smart_compilation, _)),
+		assertz('$lgt_current_flag_'(smart_compilation, off))
+	;	Flag == hook ->
+		'$lgt_compile_hook'(Value)
+	;	true
+	).
 
 
 
@@ -2817,7 +2792,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_dbg_valid_leash_value'(Shorthand, Ports) :-
 	atom(Shorthand),
-	Shorthand \= [],
+	Shorthand \== [],
 	!,
 	'$lgt_dbg_leash_shortand_ports'(Shorthand, Ports).
 
@@ -8292,6 +8267,21 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 
+% '$lgt_compile_hook'(+callable)
+%
+% compiles the user-defined compiler hook
+
+'$lgt_compile_hook'(Obj::Functor) :-
+	Call =.. [Functor, Term, Terms],
+	(	Obj == user ->
+		Goal = Call
+	;	'$lgt_tr_msg'(Call, Obj, Goal, user)
+	),
+	retractall('$lgt_hook_goal_'(_, _)),
+	assertz(('$lgt_hook_goal_'(Term, Terms) :- catch(Goal, _, fail))).
+
+
+
 % '$lgt_built_in'(+callable)
 %
 % checks if the argument is either a Prolog or Logtalk built-in predicate
@@ -10299,26 +10289,19 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 
-% '$lgt_assert_hook_goal'
+% '$lgt_assert_default_hook_goal'
 %
-% asserts the compiler hook goal
+% asserts the compiler hook goal specified on the config file
 
-'$lgt_assert_hook_goal' :-
-	'$lgt_default_flag'(hook, Obj::Functor),
-	Call =.. [Functor, Term, Terms],
-	(	Obj == user ->
-		Goal = Call
-	;	'$lgt_tr_msg'(Call, Obj, Goal, user)
-	),
-	retractall('$lgt_hook_goal_'(_, _)),
-	assertz(('$lgt_hook_goal_'(Term, Terms) :- catch(Goal, _, fail))),
-	!.
-
-'$lgt_assert_hook_goal'.
+'$lgt_assert_default_hook_goal' :-
+	(	'$lgt_default_flag'(hook, Hook) ->
+		'$lgt_compile_hook'(Hook)
+	;	true
+	).
 
 
 
-:- initialization(('$lgt_startup_message', '$lgt_assert_hook_goal')).
+:- initialization(('$lgt_startup_message', '$lgt_assert_default_hook_goal')).
 
 
 
