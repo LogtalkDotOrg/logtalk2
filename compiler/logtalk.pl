@@ -1214,7 +1214,7 @@ logtalk_compile(Files, Flags) :-
 
 '$lgt_set_compiler_flags'(Flags) :-
 	retractall('$lgt_pp_compiler_flag_'(_, _)),							% retract old flag values
-	retractall('$lgt_pp_hook_goal_'(_, _)),
+	retractall('$lgt_pp_hook_goal_'(_, _)),								% and any old hook goal
 	'$lgt_assert_compiler_flags'(Flags),
 	(	'$lgt_pp_compiler_flag_'(debug, on) ->							% debug flag on implies
 		retractall('$lgt_pp_compiler_flag_'(smart_compilation, _)),		% smart_compilation flag off
@@ -3646,6 +3646,8 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 % clean up all dynamic predicates used during source file compilation
+% (except any user-defined compiler hook specified as a compiler option
+% on the compiling and loading predicates)
 
 '$lgt_clean_pp_clauses' :-
 	'$lgt_clean_pp_entity_clauses',
@@ -3865,18 +3867,12 @@ current_logtalk_flag(version, version(2, 27, 1)).
 % translates a source file term (clauses, directives, and grammar rules)
 
 '$lgt_tr_term'(Term, Stream) :-
-	'$lgt_hook_goal'(Term, Terms) ->
+	(	'$lgt_pp_hook_goal_'(Term, Terms) ->
 		'$lgt_tr_expanded_terms'(Terms, Stream)
-		;
-		'$lgt_tr_expanded_term'(Term, Stream).
-
-
-
-'$lgt_hook_goal'(Term, Terms) :-
-	'$lgt_pp_compiler_flag_'(hook, _) ->
-		'$lgt_pp_hook_goal_'(Term, Terms)
-		;
-		'$lgt_hook_goal_'(Term, Terms).
+	;	'$lgt_hook_goal_'(Term, Terms) ->
+		'$lgt_tr_expanded_terms'(Terms, Stream)
+	;	'$lgt_tr_expanded_term'(Term, Stream)
+	).
 
 
 
