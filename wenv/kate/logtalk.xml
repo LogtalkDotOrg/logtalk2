@@ -21,7 +21,7 @@
 				<!-- Entity -->
 				<RegExpr String = "\b(abolish|c(reate|urrent))_(object|protocol|category)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\b(object|protocol|category)_property(?=[(])" attribute = "Built-in" context = "#stay" />
-				<!-- Event handlers -->
+				<!-- Entity relations -->
 				<RegExpr String = "\bextends_(object|protocol)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\bimplements_protocol(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\b(instantiates|specializes)_class(?=[(])" attribute = "Built-in" context = "#stay" />
@@ -48,7 +48,7 @@
 				<RegExpr String = "\b(rem|mod|abs|sign)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\bfloat(_(integer|fractional)_part)?(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\b(floor|truncate|round|ceiling)(?=[(])" attribute = "Built-in" context = "#stay" />
-				<!-- Other arithemtic functors -->
+				<!-- Other arithmetic functors -->
 				<RegExpr String = "\b(cos|atan|exp|log|s(in|qrt))(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Term testing -->
 				<RegExpr String = "\b(var|atom(ic)?|integer|float|compound|n(onvar|umber))(?=[(])" attribute = "Built-in" context = "#stay" />
