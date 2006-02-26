@@ -4219,7 +4219,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_tr_directive'(info, [List], _) :-
 	!,
-	(	'$lgt_tr_entity_info_list'(List) ->
+	(	'$lgt_valid_entity_info_list'(List) ->
 		assertz('$lgt_pp_info_'(List))
 	;	throw(type_error(entity_info_list, List))
 	).
@@ -4687,61 +4687,61 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 
-% '$lgt_tr_entity_info_list'(@list)
+% '$lgt_valid_entity_info_list'(@list)
 %
 % true if the argument is a list of valid key-value pairs
 
-'$lgt_tr_entity_info_list'(List) :-
+'$lgt_valid_entity_info_list'(List) :-
 	var(List),
 	throw(instantiation_error). 
 
-'$lgt_tr_entity_info_list'(List) :-
+'$lgt_valid_entity_info_list'(List) :-
 	\+ '$lgt_is_proper_list'(List),
 	throw(type_error(list, List)).
 
-'$lgt_tr_entity_info_list'([]).
+'$lgt_valid_entity_info_list'([]).
 
-'$lgt_tr_entity_info_list'([Head| _]) :-
+'$lgt_valid_entity_info_list'([Head| _]) :-
 	var(Head),
 	throw(instantiation_error). 
 
-'$lgt_tr_entity_info_list'([Head| _]) :-
+'$lgt_valid_entity_info_list'([Head| _]) :-
 	Head \= (_ is _),
 	throw(type_error(key_value_info_pair, Head)).
 
-'$lgt_tr_entity_info_list'([Key is Value| _]) :-
+'$lgt_valid_entity_info_list'([Key is Value| _]) :-
 	(var(Key); var(Value)),
 	throw(instantiation_error). 
 
-'$lgt_tr_entity_info_list'([Key is _| _]) :-
+'$lgt_valid_entity_info_list'([Key is _| _]) :-
 	\+ atom(Key),
 	throw(type_error(atom, Key)). 
 
-'$lgt_tr_entity_info_list'([Key is Value| Tail]) :-
-	'$lgt_tr_entity_info_key_value'(Key, Value),
-	'$lgt_tr_entity_info_list'(Tail).
+'$lgt_valid_entity_info_list'([Key is Value| Tail]) :-
+	'$lgt_valid_entity_info_key_value'(Key, Value),
+	'$lgt_valid_entity_info_list'(Tail).
 
 
 
-% '$lgt_tr_entity_info_key_value'(+atom, @nonvar)
+% '$lgt_valid_entity_info_key_value'(+atom, @nonvar)
 %
 % true if the argument is a valid key-value pair
 
-'$lgt_tr_entity_info_key_value'(author, Author) :-
+'$lgt_valid_entity_info_key_value'(author, Author) :-
 	!,
 	(	atom(Author) ->
 		true
 	;	throw(type_error(atom, Author))
 	).
 
-'$lgt_tr_entity_info_key_value'(comment, Comment) :-
+'$lgt_valid_entity_info_key_value'(comment, Comment) :-
 	!,
 	(	atom(Comment) ->
 		true
 	;	throw(type_error(atom, Comment))
 	).
 
-'$lgt_tr_entity_info_key_value'(date, Date) :-
+'$lgt_valid_entity_info_key_value'(date, Date) :-
 	!,
 	(	Date = Year/Month/Day ->
 		(	integer(Year) ->
@@ -4757,7 +4757,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	;	throw(type_error(date, Date))
 	).
 
-'$lgt_tr_entity_info_key_value'(parameters, Parameters) :-
+'$lgt_valid_entity_info_key_value'(parameters, Parameters) :-
 	!,
 	(	'$lgt_is_proper_list'(Parameters) ->
 		(	'$lgt_member'(Parameter, Parameters), \+ '$lgt_valid_entity_parameter'(Parameter) ->
@@ -4770,7 +4770,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	;	throw(type_error(list, Parameters))
 	).
 
-'$lgt_tr_entity_info_key_value'(parnames, Parnames) :-
+'$lgt_valid_entity_info_key_value'(parnames, Parnames) :-
 	!,
 	(	'$lgt_is_proper_list'(Parnames) ->
 		(	'$lgt_member'(Name, Parnames), \+ atom(Name) ->
@@ -4783,14 +4783,14 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	;	throw(type_error(list, Parnames))
 	).
 
-'$lgt_tr_entity_info_key_value'(version, Version) :-
+'$lgt_valid_entity_info_key_value'(version, Version) :-
 	!,
 	(	atomic(Version) ->
 		true
 	;	throw(type_error(atomic, Version))
 	).
 
-'$lgt_tr_entity_info_key_value'(_, _).
+'$lgt_valid_entity_info_key_value'(_, _).
 
 
 
