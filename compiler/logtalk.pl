@@ -1058,12 +1058,11 @@ logtalk_compile(Files, Flags) :-
 	retract('$lgt_pp_warnings_top_argument_'(Term)),
 	retract('$lgt_pp_comp_warnings_counter_'(CCounter)),
 	retract('$lgt_pp_load_warnings_counter_'(LCounter)),
-	'$lgt_compiler_flag'(report, on),
-	Counter is CCounter + LCounter,
-	'$lgt_write_warning_numbers'(Counter, CCounter, LCounter),
-	!.
-
-'$lgt_report_warning_numbers'(_).
+	(	'$lgt_compiler_flag'(report, on) ->
+		Counter is CCounter + LCounter,
+		'$lgt_write_warning_numbers'(Counter, CCounter, LCounter)
+	;	true
+	).
 
 
 '$lgt_write_warning_numbers'(0, _, _) :-
@@ -1227,15 +1226,15 @@ logtalk_compile(Files, Flags) :-
 % sets the compiler flag options
 
 '$lgt_set_compiler_flags'(Flags) :-
-	retractall('$lgt_pp_compiler_flag_'(_, _)),
+	retractall('$lgt_pp_compiler_flag_'(_, _)),							% retract old flag values
 	retractall('$lgt_pp_hook_goal_'(_, _)),
 	'$lgt_assert_compiler_flags'(Flags),
-	(	'$lgt_pp_compiler_flag_'(debug, on) ->
-		retractall('$lgt_pp_compiler_flag_'(smart_compilation, _)),
+	(	'$lgt_pp_compiler_flag_'(debug, on) ->							% debug flag on implies
+		retractall('$lgt_pp_compiler_flag_'(smart_compilation, _)),		% smart_compilation flag off
 		asserta('$lgt_pp_compiler_flag_'(smart_compilation, off))
 	;	true),
-	(	'$lgt_pp_compiler_flag_'(hook, Obj::Functor) ->
-		Call =.. [Functor, Term, Terms],
+	(	'$lgt_pp_compiler_flag_'(hook, Obj::Functor) ->					% pre-compile hook in order 
+		Call =.. [Functor, Term, Terms],								% to speed up entity compilation
 		(	Obj == user ->
 			Goal = Call
 		;	'$lgt_tr_msg'(Call, Obj, Goal, user)
@@ -2265,8 +2264,8 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_send_to_self_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _),
-	(	'$lgt_call'(Dcl, Pred, Scope, _, _, _, SCtn, _) ->
-		(	(Scope = p(_); Sender = SCtn) ->
+	(	'$lgt_call'(Dcl, Pred, Scope, _, _, _, SCtn, _) ->							% lookup declaration
+		(	(Scope = p(_); Sender = SCtn) ->										% check scope
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
 			functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
@@ -2274,9 +2273,11 @@ current_logtalk_flag(version, version(2, 27, 1)).
 			asserta('$lgt_self_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
 			(GObj, GPred, GSender) = (Obj, Pred, Sender),
 			call(GCall)
-		;	throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
+		;	% message in not within the scope of the sender:
+			throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
 		)
-	;	(	'$lgt_built_in'(Pred) ->
+	;	% no predicate declaration, check if it's a built-in predicate:
+		(	'$lgt_built_in'(Pred) ->
 			call(Pred)
 		;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))
 		)
@@ -2310,26 +2311,28 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _),
 	!,
-	('$lgt_call'(Dcl, Pred, Scope, _, _, _, _, _) ->
-		(Scope = p(p(_)) ->
+	(	'$lgt_call'(Dcl, Pred, Scope, _, _, _, _, _) ->							% lookup declaration
+		(	Scope = p(p(_)) ->													% check scope
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),	% construct object template
-			'$lgt_once'(Def, GPred, GSender, GObj, GObj, GCall, _),
+			'$lgt_once'(Def, GPred, GSender, GObj, GObj, GCall, _),				% lookup definition
 			asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
 			(GObj, GPred, GSender) = (Obj, Pred, Sender),
-			\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),
-			call(GCall),
-			\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall))
-			;
-			(Scope = p ->
+			\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),	% call before event handlers
+			call(GCall),														% call method
+			\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall))		% call after event handlers
+		;	% message in not within the scope of the sender:
+			(	Scope = p ->
 				throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
-				;
-				throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))))
-		;
-		('$lgt_built_in'(Pred) ->
+			;	throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))
+			)
+		)
+	;	% no predicate declaration, check if it's a built-in predicate:
+		(	'$lgt_built_in'(Pred) ->
 			call(Pred)
-			;
-			throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender)))).
+		;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))
+		)
+	).
 
 '$lgt_send_to_object_nv'(Obj, Pred, _) :-
 	catch(current_module(Obj), _, fail),
@@ -2366,24 +2369,25 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_send_to_object_ne_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _),
 	!,
-	('$lgt_call'(Dcl, Pred, Scope, _, _, _, _, _) ->
-		(Scope = p(p(_)) ->
+	(	'$lgt_call'(Dcl, Pred, Scope, _, _, _, _, _) ->							% lookup declaration
+		(	Scope = p(p(_)) ->													% check scope
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),	% construct object template
-			'$lgt_once'(Def, GPred, GSender, GObj, GObj, GCall, _),
+			'$lgt_once'(Def, GPred, GSender, GObj, GObj, GCall, _),				% lookup definition
 			asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
 			(GObj, GPred, GSender) = (Obj, Pred, Sender),
-			call(GCall)
-			;
-			(Scope = p ->
+			call(GCall)															% call method
+		;	% message in not within the scope of the sender:
+			(	Scope = p ->
 				throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
-				;
-				throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))))
-		;
-		('$lgt_built_in'(Pred) ->
+			;	throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))
+			)
+		)
+	;	% no predicate declaration, check if it's a built-in predicate:
+		(	'$lgt_built_in'(Pred) ->
 			call(Pred)
-			;
-			throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender)))).
+		;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender)))
+	).
 
 '$lgt_send_to_object_ne_nv'(Obj, Pred, _) :-
 	catch(current_module(Obj), _, fail),
@@ -2417,20 +2421,21 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	'$lgt_current_object_'(Self, _, Dcl, _, _, _),
 	'$lgt_call'(Dcl, Pred, Scope, _, _, _, SCtn, _),
 	!,
-	((Scope = p(_); This = SCtn) ->
+	(	(Scope = p(_); This = SCtn) ->										% check scope
 		'$lgt_current_object_'(This, _, _, _, Super, _),
 		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
 		functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),	% construct "this" template
 		functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),	% construct "self" template
-		'$lgt_once'(Super, GPred, GSender, GThis, GSelf, GCall, Ctn),
-		(Ctn \= GThis ->
+		'$lgt_once'(Super, GPred, GSender, GThis, GSelf, GCall, Ctn),		% lookup definition
+		(	Ctn \= GThis ->
 			asserta('$lgt_super_lookup_cache_'(GSelf, GPred, GThis, GSender, GCall)),	% cache lookup result
 			(GSelf, GPred, GThis, GSender) = (Self, Pred, This, Sender),
-			call(GCall)
-			;
-			throw(error(endless_loop(Pred), ^^Pred, This)))
-		;
-		throw(error(permission_error(access, private_predicate, Pred), ^^Pred, This))).
+			call(GCall)														% call inherited definition
+		;	throw(error(endless_loop(Pred), ^^Pred, This))
+		)
+	;	% message in not within the scope of the sender:
+		throw(error(permission_error(access, private_predicate, Pred), ^^Pred, This))
+	).
 
 '$lgt_send_to_super_nv'(_, Pred, This, _) :-
 	'$lgt_built_in'(Pred) ->
