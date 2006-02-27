@@ -1216,9 +1216,9 @@ logtalk_compile(Files, Flags) :-
 	retractall('$lgt_pp_compiler_flag_'(_, _)),							% retract old flag values
 	retractall('$lgt_pp_hook_goal_'(_, _)),								% and any old hook goal
 	'$lgt_assert_compiler_flags'(Flags),
-	(	'$lgt_pp_compiler_flag_'(debug, on) ->							% debug flag on implies
-		retractall('$lgt_pp_compiler_flag_'(smart_compilation, _)),		% smart_compilation flag off
-		asserta('$lgt_pp_compiler_flag_'(smart_compilation, off))
+	(	'$lgt_pp_compiler_flag_'(debug, on) ->							% debug flag on implies that
+		retractall('$lgt_pp_compiler_flag_'(smart_compilation, _)),		% the smart_compilation flag
+		asserta('$lgt_pp_compiler_flag_'(smart_compilation, off))		% must be off
 	;	true),
 	(	'$lgt_pp_compiler_flag_'(hook, Obj::Functor) ->					% pre-compile hook in order 
 		Call =.. [Functor, Term, Terms],								% to speed up entity compilation
@@ -1368,10 +1368,10 @@ current_logtalk_flag(version, version(2, 27, 1)).
 % checks if an object exists at runtime
 
 '$lgt_obj_exists'(Obj, Pred, Sender) :-
-	\+ '$lgt_current_object_'(Obj, _, _, _, _, _) ->
-		throw(error(existence_error(object, Obj), Obj::Pred, Sender))
+	'$lgt_current_object_'(Obj, _, _, _, _, _) ->
+		true
 		;
-		true.
+		throw(error(existence_error(object, Obj), Obj::Pred, Sender)).
 
 
 
@@ -1412,6 +1412,8 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 % '$lgt_visible_predicate'(@object_identifier, ?callable, @object_identifier, @term)
+%
+% checks/returns object predicates visible/within the scope of the sender 
 
 '$lgt_visible_predicate'(Obj, Pred, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, _, _, _),
@@ -3646,8 +3648,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 % clean up all dynamic predicates used during source file compilation
-% (except any user-defined compiler hook specified as a compiler option
-% on the compiling and loading predicates)
+% (except any user-defined compiler options specified on the compiling and loading predicates)
 
 '$lgt_clean_pp_clauses' :-
 	'$lgt_clean_pp_entity_clauses',
@@ -4553,19 +4554,16 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_tr_object_relations'([], _).
 
-'$lgt_tr_object_relations'([Clause| _], _) :-
-	var(Clause),
-	throw(instantiation_error).
-
-'$lgt_tr_object_relations'([Clause| Clauses], Obj) :-
-	Clause =.. [Functor| Args],
-	'$lgt_tr_object_relation'(Functor, Args, Obj),
-	!,
-	'$lgt_tr_object_relations'(Clauses, Obj).
-
-'$lgt_tr_object_relations'([Clause| _], _) :-
-	functor(Clause, Functor, Arity),
-	throw(domain_error(object_relation, Functor/Arity)).
+'$lgt_tr_object_relations'([Relation| Relations], Obj) :-
+	(	var(Relation) ->
+		throw(instantiation_error)
+	;	Relation =.. [Functor| Args],
+		'$lgt_tr_object_relation'(Functor, Args, Obj) ->
+		true
+	;	functor(Relation, Functor, Arity),
+		throw(domain_error(object_relation, Functor/Arity))
+	),
+	'$lgt_tr_object_relations'(Relations, Obj).
 
 
 
@@ -4601,19 +4599,16 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_tr_protocol_relations'([], _).
 
-'$lgt_tr_protocol_relations'([Clause| _], _) :-
-	var(Clause),
-	throw(instantiation_error).
-
-'$lgt_tr_protocol_relations'([Clause| Clauses], Obj) :-
-	Clause =.. [Functor| Args],
-	'$lgt_tr_protocol_relation'(Functor, Args, Obj),
-	!,
-	'$lgt_tr_protocol_relations'(Clauses, Obj).
-
-'$lgt_tr_protocol_relations'([Clause| _], _) :-
-	functor(Clause, Functor, Arity),
-	throw(domain_error(protocol_relation, Functor/Arity)).
+'$lgt_tr_protocol_relations'([Relation| Relations], Ptc) :-
+	(	var(Relation) ->
+		throw(instantiation_error)
+	;	Relation =.. [Functor| Args],
+		'$lgt_tr_protocol_relation'(Functor, Args, Ptc) ->
+		true
+	;	functor(Relation, Functor, Arity),
+		throw(domain_error(protocol_relation, Functor/Arity))
+	),
+	'$lgt_tr_protocol_relations'(Relations, Ptc).
 
 
 
@@ -4633,19 +4628,16 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_tr_category_relations'([], _).
 
-'$lgt_tr_category_relations'([Clause| _], _) :-
-	var(Clause),
-	throw(instantiation_error).
-
-'$lgt_tr_category_relations'([Clause| Clauses], Obj) :-
-	Clause =.. [Functor| Args],
-	'$lgt_tr_category_relation'(Functor, Args, Obj),
-	!,
-	'$lgt_tr_category_relations'(Clauses, Obj).
-
-'$lgt_tr_category_relations'([Clause| _], _) :-
-	functor(Clause, Functor, Arity),
-	throw(domain_error(category_relation, Functor/Arity)).
+'$lgt_tr_category_relations'([Relation| Relations], Ptc) :-
+	(	var(Relation) ->
+		throw(instantiation_error)
+	;	Relation =.. [Functor| Args],
+		'$lgt_tr_category_relation'(Functor, Args, Ptc) ->
+		true
+	;	functor(Relation, Functor, Arity),
+		throw(domain_error(category_relation, Functor/Arity))
+	),
+	'$lgt_tr_category_relations'(Relations, Ptc).
 
 
 
@@ -4906,7 +4898,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_tr_clause'(Clause) :-
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, _),
-	(	(Type = object, compound(Entity)) ->	% if the entity is a parametric object we need
+	(	Type = object, compound(Entity) ->		% if the entity is a parametric object we need
 		'$lgt_ctx_this'(Ctx, Entity)			% "this" for inline compilation of parameter/2
 	;	true
 	),
@@ -7820,18 +7812,13 @@ current_logtalk_flag(version, version(2, 27, 1)).
 % constructs the entity functors clause
 
 '$lgt_pp_entity_functors'(Clause) :-
-	'$lgt_pp_object_'(_, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, _),
-	Clause =.. [Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm],
-	!.
-
-'$lgt_pp_entity_functors'(Clause) :-
-	'$lgt_pp_category_'(_, Prefix, Dcl, Def, Rnm, _),
-	Clause =.. [Prefix, Dcl, Def, Rnm],
-	!.
-
-'$lgt_pp_entity_functors'(Clause) :-
-	'$lgt_pp_protocol_'(_, Prefix, Dcl, Rnm, _),
-	Clause =.. [Prefix, Dcl, Rnm].
+	(	'$lgt_pp_object_'(_, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, _) ->
+		Clause =.. [Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm]
+	;	'$lgt_pp_category_'(_, Prefix, Dcl, Def, Rnm, _) ->
+		Clause =.. [Prefix, Dcl, Def, Rnm]
+	;	'$lgt_pp_protocol_'(_, Prefix, Dcl, Rnm, _) ->
+		Clause =.. [Prefix, Dcl, Rnm]
+	).
 
 
 
@@ -8909,7 +8896,8 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 % '$lgt_xml_encoding'(-atom)
 %
-% returns the text encoding that should be used on the XML documenting file
+% returns the text encoding that should be used on the XML documenting file;
+% default encoding is UTF-8
 
 '$lgt_xml_encoding'(XMLEncoding) :-
 	'$lgt_pp_directive_'(encoding(Encoding)) ->
