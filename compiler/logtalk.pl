@@ -1006,14 +1006,6 @@ logtalk_compile(Files, Flags) :-
 
 % predicates for compilation warning counting and reporting
 
-'$lgt_reset_entity_warnings_flag' :-
-	retractall('$lgt_pp_entity_warnings_flag_').
-
-
-'$lgt_entity_warnings_flag' :-
-	'$lgt_pp_entity_warnings_flag_'.
-
-
 '$lgt_reset_warnings_counter' :-
 	retractall('$lgt_pp_warnings_top_argument_'(_)),
 	retractall('$lgt_pp_comp_warnings_counter_'(_)),
@@ -3158,7 +3150,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 % prints a message that an entity is being compiled
 
 '$lgt_report_compiling_entity'(Type, Entity) :-
-	'$lgt_reset_entity_warnings_flag',
+	retractall('$lgt_pp_entity_warnings_flag_'),
 	(	'$lgt_compiler_flag'(report, on) ->
 		write('compiling '), write(Type),	write(' '),
 		current_output(Output), '$lgt_pretty_print_vars_quoted'(Output, Entity),
@@ -3177,7 +3169,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_report_compiled_entity'(_, _) :-
 	'$lgt_compiler_flag'(report, on) ->
-		('$lgt_entity_warnings_flag' -> nl; true),
+		('$lgt_pp_entity_warnings_flag_' -> nl; true),
 		write('compiled'), nl
 		;
 		true.
@@ -7522,7 +7514,6 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 
-
 '$lgt_gen_ic_idef_clauses'(Local) :-
 	'$lgt_gen_ic_linking_idef_clauses'(Local),
 	'$lgt_gen_ic_category_idef_clauses',
@@ -8561,8 +8552,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_valid_op_priority'(Pr) :-
 	integer(Pr),
-	Pr >= 0,
-	Pr =< 1200.
+	0 =< Pr, Pr =< 1200.
 
 
 
