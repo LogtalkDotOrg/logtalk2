@@ -509,7 +509,7 @@ abolish_object(Obj) :-
 
 abolish_object(Obj) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, Type) ->
-		(Type = (dynamic) ->
+		(Type == (dynamic) ->
 			'$lgt_call'(Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm),
 			'$lgt_abolish_entity_predicates'(Def),
 			'$lgt_abolish_entity_predicates'(DDef),
@@ -551,7 +551,7 @@ abolish_category(Ctg) :-
 
 abolish_category(Ctg) :-
 	'$lgt_current_category_'(Ctg, Prefix, Type) ->
-		(Type = (dynamic) ->
+		(Type == (dynamic) ->
 			'$lgt_call'(Prefix, Dcl, Def, Rnm),
 			'$lgt_abolish_entity_predicates'(Def),
 			abolish(Dcl/4),
@@ -582,7 +582,7 @@ abolish_protocol(Ptc) :-
 
 abolish_protocol(Ptc) :-
 	'$lgt_current_protocol_'(Ptc, Prefix, Type) ->
-		(Type = (dynamic) ->
+		(Type == (dynamic) ->
 			'$lgt_call'(Prefix, Dcl, Rnm),
 			abolish(Dcl/4),
 			abolish(Dcl/5),
@@ -1579,7 +1579,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	!,
 	(functor(Pred, Functor, Arity), '$lgt_call'(Dcl, Pred, PScope, Compilation, _, _, SCtn, _) ->
 		((\+ \+ PScope = Scope; Sender = SCtn) ->
-			(Compilation = (dynamic) ->
+			(Compilation == (dynamic) ->
 				'$lgt_call'(Prefix, _, _, _, _, _, DDcl, DDef, _),
 				('$lgt_call'(DDcl, Pred, _) ->
 					Clause =.. [DDcl, Pred, _],
@@ -1600,7 +1600,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 				;
 				throw(error(permission_error(modify, static_predicate, Pred), Obj::abolish(Functor/Arity), Sender)))
 			;
-			(PScope = p ->
+			(PScope == p ->
 				throw(error(permission_error(modify, private_predicate, Pred), Obj::abolish(Functor/Arity), Sender))
 				;
 				throw(error(permission_error(modify, protected_predicate, Pred), Obj::abolish(Functor/Arity), Sender))))
@@ -1652,7 +1652,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope),
-	(Type = (dynamic) ->
+	(Type == (dynamic) ->
 		((\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 			'$lgt_pred_meta_vars'(Head, Meta, Metavars),
@@ -1663,7 +1663,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 				;
 				asserta((Call :- ('$lgt_nop'(Body), TBody))))
 			;
-			(Scope = p ->
+			(Scope == p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta((Head:-Body)), Sender))
 				;
 				throw(error(permission_error(modify, protected_predicate, Head), Obj::asserta((Head:-Body)), Sender))))
@@ -1684,7 +1684,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope),
-	(Type = (dynamic) ->
+	(Type == (dynamic) ->
 		((\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			('$lgt_debugging_'(Obj) ->
 				'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
@@ -1699,7 +1699,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 				GObj = Obj, GHead = Head, GSender = Sender,
 				asserta(GCall))
 			;
-			(Scope = p ->
+			(Scope == p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta(Head), Sender))
 				;
 				throw(error(permission_error(modify, protected_predicate, Head), Obj::asserta(Head), Sender))))
@@ -1746,7 +1746,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope),
-	(Type = (dynamic) ->
+	(Type == (dynamic) ->
 		((\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 			'$lgt_pred_meta_vars'(Head, Meta, Metavars),
@@ -1757,7 +1757,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 				;
 				assertz((Call :- ('$lgt_nop'(Body), TBody))))
 			;
-			(Scope = p ->
+			(Scope == p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::assertz((Head:-Body)), Sender))
 				;
 				throw(error(permission_error(modify, protected_predicate, Head), Obj::assertz((Head:-Body)), Sender))))
@@ -1778,7 +1778,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope),
-	(Type = (dynamic) ->
+	(Type == (dynamic) ->
 		((\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			('$lgt_debugging_'(Obj) ->
 				'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
@@ -1793,7 +1793,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 				GObj = Obj, GHead = Head, GSender = Sender,
 				assertz(GCall))
 			;
-			(Scope = p ->
+			(Scope == p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta(Head), Sender))
 				;
 				throw(error(permission_error(modify, protected_predicate, Head), Obj::asserta(Head), Sender))))
@@ -1866,7 +1866,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, _, DDef, _),
 	('$lgt_call'(Dcl, Head, PScope, Type, _, _, SCtn, _) ->
-		(Type = (dynamic) ->
+		(Type == (dynamic) ->
 			((\+ \+ PScope = Scope; Sender = SCtn) ->
 				once(('$lgt_call'(Def, Head, _, _, _, Call); '$lgt_call'(DDef, Head, _, _, _, Call))),
 				clause(Call, TBody),
@@ -1875,7 +1875,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 					;
 					Body = TBody)
 				;
-				(PScope = p ->
+				(PScope == p ->
 					throw(error(permission_error(access, private_predicate, Head), Obj::clause(Head, Body), Sender))
 					;
 					throw(error(permission_error(access, protected_predicate, Head), Obj::clause(Head, Body), Sender))))
@@ -1922,7 +1922,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, _, DDef, _),
 	('$lgt_call'(Dcl, Head, PScope, Type, _, _, SCtn, _) ->
-		(Type = (dynamic) ->
+		(Type == (dynamic) ->
 			((\+ \+ PScope = Scope; Sender = SCtn) ->
 				('$lgt_call'(Def, Head, _, _, _, Call) ->
 					retract((Call :- ('$lgt_nop'(Body), _)))
@@ -1933,7 +1933,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 						;
 						fail))
 				;
-				(PScope = p ->
+				(PScope == p ->
 					throw(error(permission_error(modify, private_predicate, Head), Obj::retract((Head:-Body)), Sender))
 					;
 					throw(error(permission_error(modify, protected_predicate, Head), Obj::retract((Head:-Body)), Sender))))
@@ -1963,7 +1963,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
 	functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
 	('$lgt_call'(Dcl, Head, PScope, Type, _, _, SCtn, _) ->
-		(Type = (dynamic) ->
+		(Type == (dynamic) ->
 			((\+ \+ PScope = Scope; Sender = SCtn) ->
 				('$lgt_call'(Def, GHead, _, _, _, GCall) ->
 					('$lgt_debugging_'(Obj) ->
@@ -1986,7 +1986,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 						;
 						fail))
 				;
-				(PScope = p ->
+				(PScope == p ->
 					throw(error(permission_error(modify, private_predicate, Head), Obj::retract(Head), Sender))
 					;
 					throw(error(permission_error(modify, protected_predicate, Head), Obj::retract(Head), Sender))))
@@ -2037,7 +2037,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
 	functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
 	('$lgt_call'(Dcl, GHead, PScope, Type, _, _, SCtn, _) ->
-		(Type = (dynamic) ->
+		(Type == (dynamic) ->
 			((\+ \+ PScope = Scope; Sender = SCtn) ->
 				('$lgt_call'(Def, GHead, _, _, _, GCall) ->
 					asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, Scope, GCall, true)),
@@ -2051,7 +2051,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 						;
 						true))
 				;
-				(PScope = p ->
+				(PScope == p ->
 					throw(error(permission_error(modify, private_predicate, Head), Obj::retractall(Head), Sender))
 					;
 					throw(error(permission_error(modify, protected_predicate, Head), Obj::retractall(Head), Sender))))
@@ -2152,7 +2152,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 				'$lgt_once'(Def, Pred, Sender, Obj, Obj, Call, _),
 				call(Call)
 				;
-				(PScope = p ->
+				(PScope == p ->
 					throw(error(permission_error(access, private_non_terminal, NonTerminal), Obj::phrase(NonTerminal, Input, Rest), Sender))
 					;
 					throw(error(permission_error(access, protected_non_terminal, NonTerminal), Obj::phrase(NonTerminal, Input, Rest), Sender))))
@@ -2299,7 +2299,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 			call(GCall),														% call method
 			\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall))		% call after event handlers
 		;	% message in not within the scope of the sender:
-			(	Scope = p ->
+			(	Scope == p ->
 				throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
 			;	throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))
 			)
@@ -2355,7 +2355,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 			(GObj, GPred, GSender) = (Obj, Pred, Sender),
 			call(GCall)															% call method
 		;	% message in not within the scope of the sender:
-			(	Scope = p ->
+			(	Scope == p ->
 				throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
 			;	throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))
 			)
@@ -3326,7 +3326,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	'$lgt_file_name'(logtalk, File, Source),
 	'$lgt_file_name'(prolog, File, Object),
 	(	'$lgt_compare_file_mtimes'(Result, Source, Object) ->
-		Result = (>)
+		Result == (>)
 	;	true
 	).
 
@@ -3496,7 +3496,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	'$lgt_compiler_flag'(singletons, warning), '$lgt_compiler_flag'(report, on) ->
 		'$lgt_inc_compile_warnings_counter',
 		('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
-		(Names = [] ->
+		(Names == [] ->
 			write('  WARNING!  singleton variable (')
 			;
 			write('  WARNING!  singleton variables (')),
@@ -4303,12 +4303,13 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	throw(domain_error(indicator_mismatch, Functor1//Arity1, Functor2/Arity2)).
 
 '$lgt_tr_directive'(alias, [Entity, PI1, PI2], _) :-
-	('$lgt_pp_extended_protocol_'(Entity, _, _, _);
-	 '$lgt_pp_implemented_protocol_'(Entity, _, _, _);
-	 '$lgt_pp_imported_category_'(Entity, _, _, _, _);
-	 '$lgt_pp_extended_object_'(Entity, _, _, _, _, _, _, _, _, _);
-	 '$lgt_pp_instantiated_class_'(Entity, _, _, _, _, _, _, _, _, _);
-	 '$lgt_pp_specialized_class_'(Entity, _, _, _, _, _, _, _, _, _)),
+	(	'$lgt_pp_extended_protocol_'(Entity, _, _, _)
+	;	'$lgt_pp_implemented_protocol_'(Entity, _, _, _)
+	;	'$lgt_pp_imported_category_'(Entity, _, _, _, _)
+	;	'$lgt_pp_extended_object_'(Entity, _, _, _, _, _, _, _, _, _)
+	;	'$lgt_pp_instantiated_class_'(Entity, _, _, _, _, _, _, _, _, _)
+	;	'$lgt_pp_specialized_class_'(Entity, _, _, _, _, _, _, _, _, _)
+	),
 	!,
 	'$lgt_tr_alias_directive'(Entity, PI1, PI2).
 
@@ -4898,7 +4899,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_tr_clause'(Clause) :-
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, _),
-	(	Type = object, compound(Entity) ->		% if the entity is a parametric object we need
+	(	Type == object, compound(Entity) ->		% if the entity is a parametric object we need
 		'$lgt_ctx_this'(Ctx, Entity)			% "this" for inline compilation of parameter/2
 	;	true
 	),
@@ -6009,7 +6010,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 % in a position corresponding to a meta-argument
 
 '$lgt_pred_meta_vars'(Pred, Meta, Metavars) :-
-	Meta = no ->
+	Meta == no ->
 		Metavars = []
 		;
 		Pred =.. [_| Args],
@@ -6024,7 +6025,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_extract_meta_vars'([Var| Args], [MArg| MArgs], [Var| Metavars]) :-
 	var(Var),
-	MArg = (::),
+	MArg == (::),
 	!,
 	'$lgt_extract_meta_vars'(Args, MArgs, Metavars).
 
@@ -6986,9 +6987,9 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_gen_protocol_extend_clauses' :-
 	'$lgt_pp_protocol_'(_, _, PDcl1, PRnm, _),
 	'$lgt_pp_extended_protocol_'(Ptc2, _, PDcl2, EScope),
-	(	EScope = (public) ->
+	(	EScope == (public) ->
 		Lookup =.. [PDcl2, Pred, Scope, Compilation, Meta, NonTerminal, Ctn]
-	;	(	EScope = protected ->
+	;	(	EScope == protected ->
 			Call =.. [PDcl2, Pred, Scope2, Compilation, Meta, NonTerminal, Ctn],
 			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 		;	Scope = p,
@@ -7041,9 +7042,9 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_gen_category_implements_dcl_clauses' :-
 	'$lgt_pp_category_'(_, _, CDcl, _, PRnm, _),
 	'$lgt_pp_implemented_protocol_'(Ptc, _, PDcl, EScope),
-	(	EScope = (public) ->
+	(	EScope == (public) ->
 		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, NonTerminal, Ctn]
-	;	(	EScope = protected ->
+	;	(	EScope == protected ->
 			Call =.. [PDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Ctn],
 			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 		;	Scope = p,
@@ -7066,9 +7067,9 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_gen_category_imports_dcl_clauses' :-
 	'$lgt_pp_category_'(_, _, CDcl, _, PRnm, _),
 	'$lgt_pp_imported_category_'(Ctg, _, ECDcl, _, EScope),
-	(	EScope = (public) ->
+	(	EScope == (public) ->
 		Lookup =.. [ECDcl, Pred, Scope, Compilation, Meta, NonTerminal, Ctn]
-	;	(	EScope = protected ->
+	;	(	EScope == protected ->
 			Call =.. [ECDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Ctn],
 			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 		;	Scope = p,
@@ -7156,9 +7157,9 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_gen_prototype_implements_dcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, ODcl, _, _, _, _, _, _, PRnm, _),
 	'$lgt_pp_implemented_protocol_'(Ptc, _, PDcl, EScope),
-	(	EScope = (public) ->
+	(	EScope == (public) ->
 		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, NonTerminal, Ctn]
-	;	(	EScope = protected ->
+	;	(	EScope == protected ->
 			Call =.. [PDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Ctn],
 			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 		;
@@ -7182,9 +7183,9 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_gen_prototype_imports_dcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, ODcl, _, _, _, _, _, _, PRnm, _),
 	'$lgt_pp_imported_category_'(Ctg, _, CDcl, _, EScope),
-	(	EScope = (public) ->
+	(	EScope == (public) ->
 		Lookup =.. [CDcl, Pred, Scope, Compilation, Meta, NonTerminal, Ctn]
-	;	(	EScope = protected ->
+	;	(	EScope == protected ->
 			Call =.. [CDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Ctn],
 			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 		;	Scope = p,
@@ -7207,9 +7208,9 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_gen_prototype_extends_dcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, ODcl, _, _, _, _, _, _, PRnm, _),
 	'$lgt_pp_extended_object_'(Parent, _, PDcl, _, _, _, _, _, _, EScope),
-	(	EScope = (public) ->
+	(	EScope == (public) ->
 		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, NonTerminal, SCtn, TCtn]
-	;	(	EScope = protected ->
+	;	(	EScope == protected ->
 			Call =.. [PDcl, Pred, Scope2, Compilation, Meta, NonTerminal, SCtn, TCtn],
 			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 		;	Scope = p,
@@ -7340,9 +7341,9 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_gen_ic_hierarchy_dcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, ODcl, _, _, _, _, _, _, PRnm, _),
 	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, CIDcl, _, _, _, EScope),
-	(	EScope = (public) ->
+	(	EScope == (public) ->
 		Lookup =.. [CIDcl, Pred, Scope, Compilation, Meta, NonTerminal, SCtn, TCtn]
-	;	(	EScope = protected ->
+	;	(	EScope == protected ->
 			Call =.. [CIDcl, Pred, Scope2, Compilation, Meta, NonTerminal, SCtn, TCtn],
 			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 		;	Scope = p,
@@ -7390,9 +7391,9 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_gen_ic_protocol_idcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, OIDcl, _, _, _, PRnm, _),
 	'$lgt_pp_implemented_protocol_'(Ptc, _, PDcl, EScope),
-	(	EScope = (public) ->
+	(	EScope == (public) ->
 		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, NonTerminal, Ctn]
-	;	(	EScope = protected ->
+	;	(	EScope == protected ->
 			Call =.. [PDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Ctn],
 			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 		;	Scope = p,
@@ -7415,9 +7416,9 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_gen_ic_category_idcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, OIDcl, _, _, _, PRnm, _),
 	'$lgt_pp_imported_category_'(Ctg, _, CDcl, _, EScope),
-	(	EScope = (public) ->
+	(	EScope == (public) ->
 		Lookup =.. [CDcl, Pred, Scope, Compilation, Meta, NonTerminal, Ctn]
-	;	(	EScope = protected ->
+	;	(	EScope == protected ->
 			Call =.. [CDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Ctn],
 			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 		;	Scope = p,
@@ -7440,9 +7441,9 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_gen_ic_hierarchy_idcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, CIDcl, _, _, _, PRnm, _),
 	'$lgt_pp_specialized_class_'(Super, _, _, _, _, SIDcl, _, _, _, EScope),
-	(	EScope = (public) ->
+	(	EScope == (public) ->
 		Lookup =.. [SIDcl, Pred, Scope, Compilation, Meta, NonTerminal, SCtn, TCtn]
-	;	(	EScope = protected ->
+	;	(	EScope == protected ->
 			Call =.. [SIDcl, Pred, Scope2, Compilation, Meta, NonTerminal, SCtn, TCtn],
 			Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
 		;	Scope = p,
@@ -7960,7 +7961,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_write_init_call'(Stream) :-
 	'$lgt_init_goal'(Goal),
-	(	Goal = true ->
+	(	Goal == true ->
 		true
 	;	write_canonical(Stream, (:- initialization(Goal))),
 		write(Stream, '.'), nl(Stream)
@@ -8643,8 +8644,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_valid_metapred_term_args'([]).
 
 '$lgt_valid_metapred_term_args'([Arg| Args]) :-
-	nonvar(Arg),
-	once((Arg = (::); Arg = (*))),
+	once((Arg == (::); Arg == (*))),
 	'$lgt_valid_metapred_term_args'(Args).
 
 
@@ -9354,7 +9354,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	'$lgt_xml_encoding'(Encoding),
 	'$lgt_xml_header_text'('1.0', Encoding, no, Text),
 	'$lgt_write_xml_open_tag'(Stream, Text, []),
-	(	XMLSpec = dtd ->
+	(	XMLSpec == dtd ->
 		write(Stream, '<!DOCTYPE logtalk SYSTEM "logtalk.dtd">'), nl(Stream)
 	;	true
 	),
@@ -9362,7 +9362,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	write(Stream, '<?xml-stylesheet type="text/xsl" href="'),
 	write(Stream, XSL),
 	write(Stream, '"?>'), nl(Stream),
-	(	XMLSpec = dtd ->
+	(	XMLSpec == dtd ->
 		'$lgt_write_xml_open_tag'(Stream, logtalk, [])
 	;	'$lgt_write_xml_open_tag'(Stream, logtalk,
 			['xmlns:xsi'-'http://www.w3.org/2001/XMLSchema-instance',
@@ -9373,7 +9373,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	'$lgt_xml_encoding'(Encoding),
 	'$lgt_xml_header_text'('1.0', Encoding, no, Text),
 	'$lgt_write_xml_open_tag'(Stream, Text, []),
-	(	XMLSpec = dtd ->
+	(	XMLSpec == dtd ->
 		write(Stream, '<!DOCTYPE logtalk SYSTEM "http://www.logtalk.org/xml/1.3/logtalk.dtd">'), nl(Stream)
 	;	true
 	),
@@ -9381,7 +9381,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	write(Stream, '<?xml-stylesheet type="text/xsl" href="'),
 	write(Stream, XSL),
 	write(Stream, '"?>'), nl(Stream),
-	(	XMLSpec = dtd ->
+	(	XMLSpec == dtd ->
 		'$lgt_write_xml_open_tag'(Stream, logtalk, [])
 	;	'$lgt_write_xml_open_tag'(Stream, logtalk,
 			['xmlns:xsi'-'http://www.w3.org/2001/XMLSchema-instance',
