@@ -636,7 +636,7 @@ implements_protocol(ObjOrCtg, Ptc, Scope) :-
 
 implements_protocol(ObjOrCtg, Ptc, Scope) :-
 	nonvar(Scope),
-	\+ '$lgt_member'(Scope, [(public), protected, private]),
+	Scope \== (public), Scope \== protected, Scope \== private,
 	throw(error(type_error(scope, Scope), implements_protocol(ObjOrCtg, Ptc, Scope))).
 
 implements_protocol(ObjOrCtg, Ptc, Scope) :-
@@ -670,7 +670,7 @@ imports_category(ObjOrCtg, Ctg, Scope) :-
 
 imports_category(ObjOrCtg, Ctg, Scope) :-
 	nonvar(Scope),
-	\+ '$lgt_member'(Scope, [(public), protected, private]),
+	Scope \== (public), Scope \== protected, Scope \== private,
 	throw(error(type_error(scope, Scope), imports_category(ObjOrCtg, Ctg, Scope))).
 
 imports_category(ObjOrCtg, Ctg, Scope) :-
@@ -702,7 +702,7 @@ instantiates_class(Obj, Class, Scope) :-
 
 instantiates_class(Obj, Class, Scope) :-
 	nonvar(Scope),
-	\+ '$lgt_member'(Scope, [(public), protected, private]),
+	Scope \== (public), Scope \== protected, Scope \== private,
 	throw(error(type_error(scope, Scope), instantiates_class(Obj, Class, Scope))).
 
 instantiates_class(Obj, Class, Scope) :-
@@ -734,7 +734,7 @@ specializes_class(Class, Superclass, Scope) :-
 
 specializes_class(Class, Superclass, Scope) :-
 	nonvar(Scope),
-	\+ '$lgt_member'(Scope, [(public), protected, private]),
+	Scope \== (public), Scope \== protected, Scope \== private,
 	throw(error(type_error(scope, Scope), specializes_class(Class, Superclass, Scope))).
 
 specializes_class(Class, Superclass, Scope) :-
@@ -766,7 +766,7 @@ extends_protocol(Ptc1, Ptc2, Scope) :-
 
 extends_protocol(Ptc1, Ptc2, Scope) :-
 	nonvar(Scope),
-	\+ '$lgt_member'(Scope, [(public), protected, private]),
+	Scope \== (public), Scope \== protected, Scope \== private,
 	throw(error(type_error(scope, Scope), extends_protocol(Ptc1, Ptc2, Scope))).
 
 extends_protocol(Ptc1, Ptc2, Scope) :-
@@ -798,7 +798,7 @@ extends_object(Prototype, Parent, Scope) :-
 
 extends_object(Prototype, Parent, Scope) :-
 	nonvar(Scope),
-	\+ '$lgt_member'(Scope, [(public), protected, private]),
+	Scope \== (public), Scope \== protected, Scope \== private,
 	throw(error(type_error(scope, Scope), extends_object(Prototype, Parent, Scope))).
 
 extends_object(Prototype, Parent, Scope) :-
@@ -4798,7 +4798,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_tr_pred_info_key_value'(allocation, Allocation, _, _) :-
 	!,
 	(	atom(Allocation) ->
-		(	'$lgt_member'(Allocation, [container, descendants, instances, classes, subclasses, any]) ->
+		(	'$lgt_valid_pred_allocation'(Allocation) ->
 			true
 		;	throw(domain_error(allocation, Allocation))
 		)
@@ -4861,7 +4861,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_tr_pred_info_key_value'(redefinition, Redefinition, _, _) :-
 	!,
 	(	atom(Redefinition) ->
-		(	'$lgt_member'(Redefinition, [never, free, specialize, call_super_first, call_super_last]) ->
+		(	'$lgt_valid_pred_redefinition'(Redefinition) ->
 			true
 		;	throw(domain_error(redefinition, Redefinition))
 		)
@@ -8806,7 +8806,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 
-% '$'$lgt_valid_pred_argument'(@term)
+% '$lgt_valid_entity_parameter'(@term)
 %
 % valid predicate argument documentation on info/2 directive
 
@@ -8816,13 +8816,37 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 
-% '$'$lgt_valid_pred_argument'(@term)
+% '$lgt_valid_pred_argument'(@term)
 %
 % valid predicate argument documentation on info/2 directive
 
 '$lgt_valid_pred_argument'(Name - Description) :-
 	atom(Name),
 	atom(Description).
+
+
+% '$lgt_valid_pred_allocation'(@nonvar)
+%
+% valid predicate allocation on info/2 directive
+
+'$lgt_valid_pred_allocation'(container).
+'$lgt_valid_pred_allocation'(descendants).
+'$lgt_valid_pred_allocation'(instances).
+'$lgt_valid_pred_allocation'(classes).
+'$lgt_valid_pred_allocation'(subclasses).
+'$lgt_valid_pred_allocation'(any).
+
+
+
+% '$lgt_valid_pred_redefinition'(@nonvar)
+%
+% valid predicate redefinition on info/2 directive
+
+'$lgt_valid_pred_redefinition'(never).
+'$lgt_valid_pred_redefinition'(free).
+'$lgt_valid_pred_redefinition'(specialize).
+'$lgt_valid_pred_redefinition'(call_super_first).
+'$lgt_valid_pred_redefinition'(call_super_last).
 
 
 
