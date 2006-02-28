@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.27.1 - February ??, 2006
+2.27.1 - March ??, 2006
 
 	Allow calls to the built-in method parameter/2 with the first argument 
 	not instantiated at compile time.
@@ -19,12 +19,14 @@ RELEASE NOTES
 	clauses, resulting in small lookup performance improvments and in space 
 	savings for the Prolog code generated when compiling Logtalk entities.
 
+	Many minor code and documentation improvements to the Logtalk compiler.
+
 	Added an object version of the tokenizer described in the Michael 
 	Covington's paper "Tokenization using DCG Rules" to the "dcgs" example.
 
 	Improved integration code for Qu-Prolog and Logtalk ("configs/qphook.ql").
 
-	Improved library hierarchy metohds that return lists of objects in order 
+	Improved library hierarchy methods that return lists of objects in order 
 	to avoid duplicated elements (library objects "proto_hierarchy.lgt" and 
 	"class_hierarchy.lgt"). Added new methods extension/1 and extensions/1 to 
 	the library object "proto_hierarchy.lgt".

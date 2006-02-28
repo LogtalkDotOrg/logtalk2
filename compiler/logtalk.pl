@@ -602,8 +602,8 @@ abolish_protocol(Ptc) :-
 
 '$lgt_abolish_entity_predicates'(Def) :-
 	'$lgt_call'(Def, _, _, _, _, Pred),
-	functor(Pred, Functor, Arity),
-	abolish(Functor/Arity),
+		functor(Pred, Functor, Arity),
+		abolish(Functor/Arity),
 	fail.
 
 '$lgt_abolish_entity_predicates'(_).
@@ -810,8 +810,8 @@ extends_object(Prototype, Parent, Scope) :-
 
 current_event(Event, Obj, Msg, Sender, Monitor) :-
 	nonvar(Event),
-	Event \= before,
-	Event \= after,
+	Event \== before,
+	Event \== after,
 	throw(error(type_error(event, Event), current_event(Event, Obj, Msg, Sender, Monitor))).
 
 current_event(Event, Obj, Msg, Sender, Monitor) :-
@@ -846,8 +846,8 @@ current_event(after, Obj, Msg, Sender, Monitor) :-
 
 define_events(Event, Obj, Msg, Sender, Monitor) :-
 	nonvar(Event),
-	Event \= before,
-	Event \= after,
+	Event \== before,
+	Event \== after,
 	throw(error(type_error(event, Event), define_events(Event, Obj, Msg, Sender, Monitor))).
 
 define_events(Event, Obj, Msg, Sender, Monitor) :-
@@ -903,8 +903,8 @@ define_events(after, Obj, Msg, Sender, Monitor) :-
 
 abolish_events(Event, Obj, Msg, Sender, Monitor) :-
 	nonvar(Event),
-	Event \= before,
-	Event \= after,
+	Event \== before,
+	Event \== after,
 	throw(error(type_error(event, Event), abolish_events(Event, Obj, Msg, Sender, Monitor))).
 
 abolish_events(Event, Obj, Msg, Sender, Monitor) :-
@@ -977,7 +977,7 @@ logtalk_compile(Files) :-
 % compiles to disk a source file or a list of source files using a list of flag options
 
 logtalk_compile(File, Flags) :-
-	(atom(File), File \= []; compound(File), File \= [_| _]),
+	(atom(File), File \== []; compound(File), File \= [_| _]),
 	!,
 	catch(
 		('$lgt_init_warnings_counter'(logtalk_compile(File, Flags)),
@@ -1170,8 +1170,8 @@ logtalk_compile(Files, Flags) :-
 			'$lgt_expand_library_path'(Library2, Path2, N2),
 			atom_concat(Path2, Location2, Path))
 		;
-		(atom(Library),
-		Path = Library).
+		atom(Library),
+		Path = Library.
 
 
 
@@ -1261,7 +1261,7 @@ logtalk_load(Files) :-
 % or a list of source files using a list of compiler options
 
 logtalk_load(File, Flags) :-
-	(atom(File), File \= []; compound(File), File \= [_| _]),
+	(atom(File), File \== []; compound(File), File \= [_| _]),
 	!,
 	catch(
 		('$lgt_init_warnings_counter'(logtalk_load(File, Flags)),
@@ -1451,9 +1451,9 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	;	Prop = declared_in(TCtn)
 	;	'$lgt_once'(Def, Pred, _, _, _, _, DCtn),
 		Prop = defined_in(DCtn)
-	;	Meta \= no,
+	;	Meta \== no,
 		Prop = metapredicate(Meta)
-	;	NonTerminal \= no,
+	;	NonTerminal \== no,
 		functor(Pred, Functor, Arity2),
 		Arity is Arity2 - 2,
 		Prop = non_terminal(Functor//Arity)
@@ -5577,7 +5577,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 		'$lgt_tr_msg_broadcasting'(Obj, Pred, TPred, This)	% message broadcasting
 	;	(	\+ callable(Obj) ->
 			throw(type_error(object_identifier, Obj))		% invalid object identifier
-		;	This \= user,									% not runtime message translation
+		;	This \== user,									% not runtime message translation
 			assertz('$lgt_pp_referenced_object_'(Obj)),		% remember object receiving message
 			fail
 		)
@@ -7976,12 +7976,12 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_init_goal'(Goal) :-
 	findall(EGoal, '$lgt_pp_entity_init_'(_, EGoal), EGoals),
 	(	'$lgt_pp_file_init_'(FGoal) ->
-		(	EGoals \= [] ->
+		(	EGoals \== [] ->
 			'$lgt_list_to_conjunction'(EGoals, EGoals2),
 			Goal = (EGoals2, FGoal)
 		;	Goal = FGoal
 		)
-	;	(	EGoals \= [] ->
+	;	(	EGoals \== [] ->
 			'$lgt_list_to_conjunction'(EGoals, Goal)
 		;	Goal = true
 		)
