@@ -13,10 +13,11 @@ RELEASE NOTES
 2.27.1 - March ??, 2006
 
 	Allow calls to the built-in method parameter/2 with the first argument 
-	not instantiated at compile time.
+	not instantiated at compile time. Detect and report as a compilation error
+	parameter/2 indexes that are out of range.
 
 	Optimized generation of predicate definition and declaration linking 
-	clauses, resulting in small lookup performance improvments and in space 
+	clauses, resulting in small lookup performance improvements and in space 
 	savings for the Prolog code generated when compiling Logtalk entities.
 
 	Many minor code and documentation improvements to the Logtalk compiler.
