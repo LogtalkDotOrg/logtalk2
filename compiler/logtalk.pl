@@ -1592,6 +1592,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 				;
 				throw(error(permission_error(modify, static_predicate, Pred), Obj::abolish(Functor/Arity), Sender)))
 			;
+			% predicate in not within the scope of the sender:
 			(PScope == p ->
 				throw(error(permission_error(modify, private_predicate, Pred), Obj::abolish(Functor/Arity), Sender))
 				;
@@ -1644,23 +1645,24 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope),
-	(Type == (dynamic) ->
-		((\+ \+ Scope = TestScope; Sender = SCtn)  ->
+	(	Type == (dynamic) ->
+		(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
 			'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 			'$lgt_pred_meta_vars'(Head, Meta, Metavars),
 			'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, Metavars),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
-			('$lgt_debugging_'(Obj) ->
+			(	'$lgt_debugging_'(Obj) ->
 				asserta((Call :- ('$lgt_nop'(Body), '$lgt_dbg_head'(Head, Ctx), DBody)))
-				;
-				asserta((Call :- ('$lgt_nop'(Body), TBody))))
-			;
-			(Scope == p ->
+			;	asserta((Call :- ('$lgt_nop'(Body), TBody)))
+			)
+		;	% predicate in not within the scope of the sender:
+			(	Scope == p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta((Head:-Body)), Sender))
-				;
-				throw(error(permission_error(modify, protected_predicate, Head), Obj::asserta((Head:-Body)), Sender))))
-		;
-		throw(error(permission_error(modify, static_predicate, Head), Obj::asserta((Head:-Body)), Sender))).
+			;	throw(error(permission_error(modify, protected_predicate, Head), Obj::asserta((Head:-Body)), Sender))
+			)
+		)
+	;	throw(error(permission_error(modify, static_predicate, Head), Obj::asserta((Head:-Body)), Sender))
+	).
 
 '$lgt_asserta_rule_chk'(Obj, (Head:-Body), Sender, _, _) :-
 	throw(error(existence_error(object, Obj), Obj::asserta((Head:-Body)), Sender)).
@@ -1676,27 +1678,28 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope),
-	(Type == (dynamic) ->
-		((\+ \+ Scope = TestScope; Sender = SCtn)  ->
-			('$lgt_debugging_'(Obj) ->
+	(	Type == (dynamic) ->
+		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
+			(	'$lgt_debugging_'(Obj) ->
 				'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 				'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, []),
 				asserta((Call :- '$lgt_dbg_fact'(Head, Ctx)))
-				;
-				functor(Head, HFunctor, HArity), functor(GHead, HFunctor, HArity),
+			;	functor(Head, HFunctor, HArity), functor(GHead, HFunctor, HArity),
 				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
 				functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
 				'$lgt_assert_pred_call'(Def, DDef, Prefix, GHead, Sender2, This, Self, GCall, Update),
 				asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, Scope, GCall, Update)),
 				(GObj, GHead, GSender) = (Obj, Head, Sender),
-				asserta(GCall))
-			;
-			(Scope == p ->
+				asserta(GCall)
+			)
+		;	% predicate in not within the scope of the sender:
+			(	Scope == p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta(Head), Sender))
-				;
-				throw(error(permission_error(modify, protected_predicate, Head), Obj::asserta(Head), Sender))))
-		;
-		throw(error(permission_error(modify, static_predicate, Head), Obj::asserta(Head), Sender))).
+			;	throw(error(permission_error(modify, protected_predicate, Head), Obj::asserta(Head), Sender))
+			)
+		)
+	;	throw(error(permission_error(modify, static_predicate, Head), Obj::asserta(Head), Sender))
+	).
 
 '$lgt_asserta_fact_chk'(Obj, Head, Sender, _, _) :-
 	throw(error(existence_error(object, Obj), Obj::asserta(Head), Sender)).
@@ -1738,23 +1741,24 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope),
-	(Type == (dynamic) ->
-		((\+ \+ Scope = TestScope; Sender = SCtn)  ->
+	(	Type == (dynamic) ->
+		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 			'$lgt_pred_meta_vars'(Head, Meta, Metavars),
 			'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, Metavars),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
-			('$lgt_debugging_'(Obj) ->
+			(	'$lgt_debugging_'(Obj) ->
 				assertz((Call :- ('$lgt_nop'(Body), '$lgt_dbg_head'(Head, Ctx), DBody)))
-				;
-				assertz((Call :- ('$lgt_nop'(Body), TBody))))
-			;
-			(Scope == p ->
+			;	assertz((Call :- ('$lgt_nop'(Body), TBody)))
+			)
+		;	% predicate in not within the scope of the sender:
+			(	Scope == p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::assertz((Head:-Body)), Sender))
-				;
-				throw(error(permission_error(modify, protected_predicate, Head), Obj::assertz((Head:-Body)), Sender))))
-		;
-		throw(error(permission_error(modify, static_predicate, Head), Obj::assertz((Head:-Body)), Sender))).
+			;	throw(error(permission_error(modify, protected_predicate, Head), Obj::assertz((Head:-Body)), Sender))
+			)
+		)
+	;	throw(error(permission_error(modify, static_predicate, Head), Obj::assertz((Head:-Body)), Sender))
+	).
 
 '$lgt_assertz_rule_chk'(Obj, (Head:-Body), Sender, _, _) :-
 	throw(error(existence_error(object, Obj), Obj::assertz((Head:-Body)), Sender)).
@@ -1770,27 +1774,28 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	!,
 	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope),
-	(Type == (dynamic) ->
-		((\+ \+ Scope = TestScope; Sender = SCtn)  ->
-			('$lgt_debugging_'(Obj) ->
+	(	Type == (dynamic) ->
+		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
+			(	'$lgt_debugging_'(Obj) ->
 				'$lgt_assert_pred_call'(Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 				'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, []),
 				assertz((Call :- '$lgt_dbg_fact'(Head, Ctx)))
-				;
-				functor(Head, HFunctor, HArity), functor(GHead, HFunctor, HArity),
+			;	functor(Head, HFunctor, HArity), functor(GHead, HFunctor, HArity),
 				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
 				functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
 				'$lgt_assert_pred_call'(Def, DDef, Prefix, GHead, Sender2, This, Self, GCall, Update),
 				asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, Scope, GCall, Update)),
 				(GObj, GHead, GSender) = (Obj, Head, Sender),
-				assertz(GCall))
-			;
-			(Scope == p ->
+				assertz(GCall)
+			)
+		;	% predicate in not within the scope of the sender:
+			(	Scope == p ->
 				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta(Head), Sender))
-				;
-				throw(error(permission_error(modify, protected_predicate, Head), Obj::asserta(Head), Sender))))
-		;
-		throw(error(permission_error(modify, static_predicate, Head), Obj::asserta(Head), Sender))).
+			;	throw(error(permission_error(modify, protected_predicate, Head), Obj::asserta(Head), Sender))
+			)
+		)
+	;	throw(error(permission_error(modify, static_predicate, Head), Obj::asserta(Head), Sender))
+	).
 
 '$lgt_assertz_fact_chk'(Obj, Head, Sender, _, _) :-
 	throw(error(existence_error(object, Obj), Obj::assertz(Head), Sender)).
@@ -1867,6 +1872,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 					;
 					Body = TBody)
 				;
+				% predicate in not within the scope of the sender:
 				(PScope == p ->
 					throw(error(permission_error(access, private_predicate, Head), Obj::clause(Head, Body), Sender))
 					;
@@ -1925,6 +1931,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 						;
 						fail))
 				;
+				% predicate in not within the scope of the sender:
 				(PScope == p ->
 					throw(error(permission_error(modify, private_predicate, Head), Obj::retract((Head:-Body)), Sender))
 					;
@@ -1978,6 +1985,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 						;
 						fail))
 				;
+				% predicate in not within the scope of the sender:
 				(PScope == p ->
 					throw(error(permission_error(modify, private_predicate, Head), Obj::retract(Head), Sender))
 					;
@@ -2043,6 +2051,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 						;
 						true))
 				;
+				% predicate in not within the scope of the sender:
 				(PScope == p ->
 					throw(error(permission_error(modify, private_predicate, Head), Obj::retractall(Head), Sender))
 					;
@@ -2144,6 +2153,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 				'$lgt_once'(Def, Pred, Sender, Obj, Obj, Call, _),
 				call(Call)
 				;
+				% non-terminal in not within the scope of the sender:
 				(PScope == p ->
 					throw(error(permission_error(access, private_non_terminal, NonTerminal), Obj::phrase(NonTerminal, Input, Rest), Sender))
 					;
@@ -2190,8 +2200,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_term_expansion'(Obj, Term, Expansion, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _),
-	(	('$lgt_once'(Dcl, term_expansion(_, _), PScope, _, _, _, SCtn, _),
-		 (\+ \+ PScope = Scope; Sender = SCtn)) ->
+	(	('$lgt_once'(Dcl, term_expansion(_, _), PScope, _, _, _, SCtn, _), (\+ \+ PScope = Scope; Sender = SCtn)) ->
 		'$lgt_once'(Def, term_expansion(Term, Expansion), Sender, Obj, Obj, Call, _)
 	;	Obj = Sender,
 		(	'$lgt_once'(Def, term_expansion(Term, Expansion), Obj, Obj, Obj, Call) ->
@@ -2863,12 +2872,12 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	\+ '$lgt_dbg_skipping_',
 	!,
 	(	'$lgt_dbg_port'(call, Goal, _, Ctx, CAction),
-		(CAction = skip ->
+		(	CAction = skip ->
 			retractall('$lgt_dbg_skipping_'),
 			assertz('$lgt_dbg_skipping_'),
 			CAction2 = true
-			;
-			CAction2 = CAction),
+		;	CAction2 = CAction
+		),
 		call(CAction2),
 		catch(
 			call(TGoal),
@@ -2877,11 +2886,10 @@ current_logtalk_flag(version, version(2, 27, 1)).
 			 (TAction = fail -> fail; throw(Error)))),
 		(	'$lgt_dbg_port'(exit, Goal, _, Ctx, EAction),
 			call(EAction)
-			;
-			'$lgt_dbg_port'(redo, Goal, _, Ctx, RAction),
+		;	'$lgt_dbg_port'(redo, Goal, _, Ctx, RAction),
 			(RAction = skip ->
-				retractall('$lgt_dbg_skipping_'),
-				assertz('$lgt_dbg_skipping_')),
+			 retractall('$lgt_dbg_skipping_'),
+			 assertz('$lgt_dbg_skipping_')),
 			fail
 		)
 		;
@@ -3119,9 +3127,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	'$lgt_current_object_'(Entity, Prefix, _, _, _, _),
 	'$lgt_call'(Prefix, _, _, _, _, _, DDcl, DDef, _),
 	DDefClause =.. [DDef, _, _, _, _, DDefHead],
-	forall(
-		retract(DDefClause),
-		retractall(DDefHead)),
+	forall(retract(DDefClause), retractall(DDefHead)),
 	DDclClause =.. [DDcl, _, _],
 	retractall(DDclClause).
 
@@ -3329,10 +3335,10 @@ current_logtalk_flag(version, version(2, 27, 1)).
 % writes to disk the entity compiled code
 
 '$lgt_write_tr_entity'(Stream) :-
-	catch((
-		'$lgt_write_directives'(Stream),
-		'$lgt_write_prolog_clauses'(Stream),
-		'$lgt_write_logtalk_clauses'(Stream)),
+	catch(
+		('$lgt_write_directives'(Stream),
+		 '$lgt_write_prolog_clauses'(Stream),
+		 '$lgt_write_logtalk_clauses'(Stream)),
 		Error,
 		'$lgt_compiler_error_handler'(Stream, Error)).
 
@@ -3345,8 +3351,8 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_write_entity_doc'(Entity) :-
 	'$lgt_compiler_flag'(xmldocs, on) ->
 		'$lgt_entity_doc_file_name'(Entity, File),
-		catch((
-			('$lgt_pp_directive_'(encoding(Encoding)) ->
+		catch(
+			(('$lgt_pp_directive_'(encoding(Encoding)) ->
 				open(File, write, Stream, [encoding(Encoding)])
 				;
 				open(File, write, Stream)),
@@ -4021,7 +4027,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_tr_directive'(object, [Obj| Rels], _) :-
 	'$lgt_report_compiling_entity'(object, Obj),
-	'$lgt_tr_object_id'(Obj, static),			% assume static category
+	'$lgt_tr_object_id'(Obj, static),					% assume static category
 	'$lgt_tr_object_relations'(Rels, Obj),
 	'$lgt_save_file_op_table'.
 
@@ -4042,7 +4048,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_tr_directive'(protocol, [Ptc| Rels], _) :-
 	'$lgt_report_compiling_entity'(protocol, Ptc),
-	'$lgt_tr_protocol_id'(Ptc, static),			% assume static category
+	'$lgt_tr_protocol_id'(Ptc, static),					% assume static category
 	'$lgt_tr_protocol_relations'(Rels, Ptc),
 	'$lgt_save_file_op_table'.
 
@@ -4064,7 +4070,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_tr_directive'(category, [Ctg| Rels], _) :-
 	'$lgt_report_compiling_entity'(category, Ctg),
-	'$lgt_tr_category_id'(Ctg, static),			% assume static category
+	'$lgt_tr_category_id'(Ctg, static),					% assume static category
 	'$lgt_tr_category_relations'(Rels, Ctg),
 	'$lgt_save_file_op_table'.
 
@@ -4080,7 +4086,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_tr_directive'(module, [Module], Stream) :-
 	!,
-	'$lgt_tr_directive'(module, [Module, []], Stream).		% empty export list
+	'$lgt_tr_directive'(module, [Module, []], Stream).	% empty export list
 
 '$lgt_tr_directive'(module, [Module, ExportList], _) :-
 	(var(Module); var(ExportList)),
@@ -8559,12 +8565,12 @@ current_logtalk_flag(version, version(2, 27, 1)).
 % '$lgt_valid_op_specifier'(@term)
 
 '$lgt_valid_op_specifier'(Spec) :-
-	nonvar(Spec),
+	atom(Spec),
 	'$lgt_op_specifier'(Spec).
 
 
 
-% '$lgt_op_specifier'(@nonvar)
+% '$lgt_op_specifier'(+atom)
 
 '$lgt_op_specifier'(fx).
 '$lgt_op_specifier'(fy).
@@ -8669,12 +8675,12 @@ current_logtalk_flag(version, version(2, 27, 1)).
 % '$lgt_valid_number_of_solutions'(@term)
 
 '$lgt_valid_number_of_solutions'(Solutions) :-
-	nonvar(Solutions),
+	atom(Solutions),
 	'$lgt_pred_number_of_solutions'(Solutions).
 
 
 
-% '$lgt_pred_number_of_solutions'(@nonvar)
+% '$lgt_pred_number_of_solutions'(+atom)
 
 '$lgt_pred_number_of_solutions'(zero).
 '$lgt_pred_number_of_solutions'(one).
@@ -8802,7 +8808,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_valid_flag_value'(hook, Obj::Functor) :-
 	atom(Functor),
-	once((atom(Obj); compound(Obj))).
+	callable(Obj).
 
 
 
