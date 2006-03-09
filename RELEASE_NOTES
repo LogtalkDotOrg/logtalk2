@@ -35,6 +35,9 @@ RELEASE NOTES
 	Added support for code completion and for listing entity names on the 
 	symbol pop-up menu to the MacOS X TextMate text editor.
 
+	Updated the "cplgtdirs.*" scripts to also create an alias/shortcut to the 
+	"wenv" directory.
+
 
 2.27.0 - February 9, 2006
 
