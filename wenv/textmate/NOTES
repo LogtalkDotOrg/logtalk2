@@ -18,11 +18,3 @@ folders:
 	/Library/Application Support/TextMate/Bundles/
 
 (create the chosen folder if it does not exist).
-
-Copy the file "Logtalk Theme.tmScopeSettings" to one of the following 
-folders:
-
-	~/Library/Application Support/TextMate/Settings/
-	/Library/Application Support/TextMate/Settings/
-
-(create the chosen folder if it does not exist).
