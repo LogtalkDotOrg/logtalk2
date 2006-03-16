@@ -38,6 +38,9 @@ RELEASE NOTES
 	Updated the "cplgtdirs.*" scripts to also create an alias/shortcut to the 
 	"wenv" directory.
 
+	Renamed the alternative compilation and documentation directory names on 
+	all config files to be compatible across operating-systems.
+
 
 2.27.0 - February 9, 2006
 
