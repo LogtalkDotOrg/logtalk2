@@ -32,6 +32,9 @@ RELEASE NOTES
 	"class_hierarchy.lgt"). Added new methods extension/1 and extensions/1 to 
 	the library object "proto_hierarchy.lgt".
 
+	Documented the concept of "parametric object proxy". Added a new example, 
+	"proxies", illustrating the use of parametric object proxies.
+
 	Added support for code completion and for listing entity names on the 
 	symbol pop-up menu to the MacOS X TextMate text editor.
 
