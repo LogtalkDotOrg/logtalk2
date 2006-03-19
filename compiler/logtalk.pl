@@ -976,23 +976,7 @@ logtalk_compile(Files) :-
 %
 % compiles to disk a source file or a list of source files using a list of flag options
 
-logtalk_compile(File, Flags) :-
-	(	atom(File), File \== []			% single source file in current directory
-	;	compound(File), File \= [_| _]	% single source file in library
-	),
-	!,
-	catch(
-		('$lgt_init_warnings_counter'(logtalk_compile(File, Flags)),
-		 '$lgt_check_source_file'(File),
-		 '$lgt_check_compiler_flags'(Flags),
-		 '$lgt_set_compiler_flags'(Flags),
-		 '$lgt_compile_file'(File),
-		 '$lgt_report_warning_numbers'(logtalk_compile(File, Flags))),
-		Error,
-		('$lgt_reset_warnings_counter',
-		 throw(error(Error, logtalk_compile(File, Flags))))).
-
-logtalk_compile(Files, Flags) :-		% multiple source files
+logtalk_compile(Files, Flags) :-
 	catch(
 		('$lgt_init_warnings_counter'(logtalk_compile(Files, Flags)),
 		 '$lgt_check_source_files'(Files),
@@ -1077,28 +1061,24 @@ logtalk_compile(Files, Flags) :-		% multiple source files
 
 
 
-% '$lgt_check_source_files'(@list)
+% '$lgt_check_source_files'(@term)
 %
-% check if the source file names are valid and if they exist in the current working directory
+% check if the source file names are valid and correspond to existing files
 
 '$lgt_check_source_files'(Files) :-
 	var(Files),
 	throw(instantiation_error).
 
-'$lgt_check_source_files'(Files) :-
-	\+ '$lgt_is_proper_list'(Files),
-	throw(type_error(source_file_names, Files)).
+'$lgt_check_source_files'([]) :-
+	!.
 
-'$lgt_check_source_files'(Files) :-
-	'$lgt_check_source_files_list'(Files).
-
-
-'$lgt_check_source_files_list'([]).
-
-'$lgt_check_source_files_list'([File| Files]) :-
+'$lgt_check_source_files'([File| Files]) :-
+	!,
 	'$lgt_check_source_file'(File),
-	'$lgt_check_source_files_list'(Files).
+	'$lgt_check_source_files'(Files).
 
+'$lgt_check_source_files'(File) :-
+	'$lgt_check_source_file'(File).
 
 
 '$lgt_check_source_file'(File) :-
@@ -1255,23 +1235,7 @@ logtalk_load(Files) :-
 % compiles to disk and then loads to memory a source file 
 % or a list of source files using a list of compiler options
 
-logtalk_load(File, Flags) :-
-	(	atom(File), File \== []			% single source file in current directory
-	;	compound(File), File \= [_| _]	% single source file in library
-	),
-	!,
-	catch(
-		('$lgt_init_warnings_counter'(logtalk_load(File, Flags)),
-		 '$lgt_check_source_file'(File),
-		 '$lgt_check_compiler_flags'(Flags),
-		 '$lgt_set_compiler_flags'(Flags),
-		 '$lgt_load_file'(File),
-		 '$lgt_report_warning_numbers'(logtalk_load(File, Flags))),
-		Error,
-		('$lgt_reset_warnings_counter',
-		 throw(error(Error, logtalk_load(File, Flags))))).
-
-logtalk_load(Files, Flags) :-			% multiple source files
+logtalk_load(Files, Flags) :-
 	catch(
 		('$lgt_init_warnings_counter'(logtalk_load(Files, Flags)),
 		 '$lgt_check_source_files'(Files),
@@ -3086,15 +3050,21 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 
+% '$lgt_load_files'(@source_file_name)
 % '$lgt_load_files'(@source_file_name_list)
 %
-% compiles to disk and then loads to memory a list of source files
+% compiles to disk and then loads to memory a source file or a list of source files
 
-'$lgt_load_files'([]).
+'$lgt_load_files'([]) :-
+	!.
 
 '$lgt_load_files'([File| Files]) :-
+	!,
 	'$lgt_load_file'(File),
 	'$lgt_load_files'(Files).
+
+'$lgt_load_files'(File) :-
+	'$lgt_load_file'(File).
 
 
 
@@ -3291,15 +3261,21 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 
+% '$lgt_compile_files'(@source_file_name)
 % '$lgt_compile_files'(@source_file_name_list)
 %
-% compiles to disk a list of source files
+% compiles to disk a source file or a list of source files
 
-'$lgt_compile_files'([]).
+'$lgt_compile_files'([]) :-
+	!.
 
 '$lgt_compile_files'([File| Files]) :-
+	!,
 	'$lgt_compile_file'(File),
 	'$lgt_compile_files'(Files).
+
+'$lgt_compile_files'(File) :-
+	'$lgt_compile_file'(File).
 
 
 
