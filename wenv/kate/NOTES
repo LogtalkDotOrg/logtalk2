@@ -13,7 +13,7 @@ KDE Kate and KWrite text editors (http://kate.kde.org/).
 
 To install copy the file "logtalk.xml" to the directory:
 
-    $(KDEDIR)/share/apps/katepart/syntax/
+    $KDEDIR/share/apps/katepart/syntax/
 
 or:
     
