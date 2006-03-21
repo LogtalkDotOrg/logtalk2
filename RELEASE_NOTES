@@ -35,9 +35,6 @@ RELEASE NOTES
 	Documented the concept of "parametric object proxy". Added a new example, 
 	"proxies", illustrating the use of parametric object proxies.
 
-	Added basic syntax coloring support for the Windows text editors ConTEXT 
-	and Notepad++.
-
 	Added support for code completion and for listing entity names on the 
 	symbol pop-up menu to the MacOS X TextMate text editor.
 
