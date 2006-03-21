@@ -7,13 +7,13 @@
         </Settings>
         <KeywordLists>
             <Keywords name="Delimiters">&quot;&apos;0&quot;&apos;0</Keywords>
-            <Keywords name="Folder+">:- object( :- protocol( :- category(</Keywords>
-            <Keywords name="Folder-">:- end_object :- end_protocol :- end_category</Keywords>
-            <Keywords name="Operators">:: ^^ { }</Keywords>
+            <Keywords name="Folder+">:-\ object( :-\ protocol( :-\ category(</Keywords>
+            <Keywords name="Folder-">:-\ end_object :-\ end_protocol :-\ end_category</Keywords>
+            <Keywords name="Operators"></Keywords>
             <Keywords name="Comment"> 1 2 0# 0##</Keywords>
-            <Keywords name="Words1">__FILE__ in self __LINE__ defined? ensure redo super break unless until next rescue then when case else nil retry while alias elsif return yield undef require include</Keywords>
-            <Keywords name="Words2">true false</Keywords>
-            <Keywords name="Words3">and or not</Keywords>
+            <Keywords name="Words1">:: ^^ { }</Keywords>
+            <Keywords name="Words2"></Keywords>
+            <Keywords name="Words3"></Keywords>
             <Keywords name="Words4"></Keywords>
         </KeywordLists>
         <Styles>
