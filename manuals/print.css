@@ -17,10 +17,6 @@
 	margin-bottom: 2cm;
 }
 
-@page body {
-	counter-reset: page;
-}
-
 body {
 	color: black;
 	font-size: 10pt;
@@ -28,7 +24,6 @@ body {
 	padding: 18pt 0pt 18pt 0pt;
 	margin: 0pt;
 	background: white;
-	page: body;
 	region: body;
 	hyphenate: true;
 }

@@ -44,6 +44,9 @@ RELEASE NOTES
 	Renamed the alternative compilation and documentation directory names on 
 	all config files to be compatible across operating-systems.
 
+	Updated HTML manuals "print.css" CSS file for compatibility with the 
+	latest versions of CSSToXSLFO.
+
 
 2.27.0 - February 9, 2006
 
