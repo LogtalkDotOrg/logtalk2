@@ -21,8 +21,8 @@ body {
 	color: black;
 	font-size: 10pt;
 	font-family: Times, serif;
-	padding: 18pt 0pt 18pt 0pt;
-	margin: 0pt;
+	padding-top: 18pt;
+	padding-bottom: 18pt;
 	background: white;
 	region: body;
 	hyphenate: true;
