@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.27.1 - March 23, 2006
+2.27.1 - March 27, 2006
 
 	Allow calls to the built-in method parameter/2 with the first argument 
 	not instantiated at compile time. Detect and report as a compilation 
@@ -42,10 +42,11 @@ RELEASE NOTES
 	"wenv" directory.
 
 	Renamed the alternative compilation and documentation directory names on 
-	all config files to be compatible across operating-systems.
+	all config files to be compatible across operating-systems. Removed unused
+	predicate '$lgt_reverse'/2 from all config files.
 
 	Updated HTML manuals "print.css" CSS file for compatibility with the 
-	latest versions of CSSToXSLFO.
+	latest version of CSSToXSLFO.
 
 
 2.27.0 - February 9, 2006
