@@ -1818,8 +1818,13 @@ current_logtalk_flag(version, version(2, 27, 1)).
 		;	Update = true
 		)
 	;	functor(Pred, Functor, Arity),
-		'$lgt_assert_ddef_clause'(Functor, Arity, Prefix, DDef, _),
-		'$lgt_once'(DDef, Pred, Sender, This, Self, Call),
+		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, PredPrefix),
+		Pred =.. [_| Args],
+		'$lgt_append'(Args, [Sender, This, Self], TArgs),
+		Call =.. [PredPrefix| TArgs],
+		Clause =.. [DDef, Pred, Sender, This, Self, Call],
+		assertz(Clause),
+		'$lgt_clean_lookup_caches'(Pred),
 		Update = '$lgt_update_ddef_table'(DDef, Pred, Call)
 	).
 
@@ -6746,22 +6751,6 @@ current_logtalk_flag(version, version(2, 27, 1)).
 		true
 	;	assertz('$lgt_pp_defs_pred_'(Functor, Arity))
 	).
-
-
-
-% '$lgt_assert_ddef_clause'(+atom, +integer, +atom, +atom, -callable)
-%
-% asserts a dynamic "ddef clause" (used to translate a predicate call)
-
-'$lgt_assert_ddef_clause'(Functor, Arity, OPrefix, DDef, Call) :-
-	'$lgt_construct_predicate_functor'(OPrefix, Functor, Arity, PPrefix),
-	functor(Pred, Functor, Arity),
-	Pred =.. [_| Args],
-	'$lgt_append'(Args, [Sender, This, Self], TArgs),
-	Call =.. [PPrefix| TArgs],
-	Clause =.. [DDef, Pred, Sender, This, Self, Call],
-	assertz(Clause),
-	'$lgt_clean_lookup_caches'(Pred).
 
 
 
