@@ -1812,12 +1812,16 @@ current_logtalk_flag(version, version(2, 27, 1)).
 % get or set (if doesn't exist) the compiled call for an asserted predicate
 
 '$lgt_assert_pred_call'(Obj, Def, DDef, Prefix, Pred, Sender, This, Self, Call, Update) :-
-	(	'$lgt_call'(Def, Pred, Sender, This, Self, Call, Obj) ->	
-		(	'$lgt_call'(DDef, Pred, Sender, This, Self, Call) ->
+	(	% if a definition lookup entry alread exists on the object...
+		'$lgt_call'(Def, Pred, Sender, This, Self, Call, Obj) ->	
+		(	% then check if it's a dynamic one that implies an update goal...
+			'$lgt_call'(DDef, Pred, Sender, This, Self, Call) ->
 			Update = '$lgt_update_ddef_table'(DDef, Pred, Call)
-		;	Update = true
+		;	% or a static one...
+			Update = true
 		)
-	;	functor(Pred, Functor, Arity),
+	;	% else no definition lookup entry exists; construct and assert a dynamic one...
+		functor(Pred, Functor, Arity),
 		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, PredPrefix),
 		Pred =.. [_| Args],
 		'$lgt_append'(Args, [Sender, This, Self], TArgs),
