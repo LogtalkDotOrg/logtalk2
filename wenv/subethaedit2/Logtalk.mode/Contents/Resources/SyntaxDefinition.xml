@@ -37,6 +37,7 @@
 				<regex>:-\s(op)\(</regex>			
 				<regex>:-\s(calls)\(</regex>			
 				<regex>:-\s(use(s|_module))\(</regex>			
+				<regex>:-\s(threaded)\.</regex>			
 			</keywords>
 
 			<keywords id="Entity Relations" color="#881280" useforautocomplete="yes">
@@ -83,6 +84,7 @@
 				<regex>\b(expand_term)\(</regex>
 				<regex>\b(term_expansion)\(</regex>
 				<regex>\b(phrase)\(</regex>
+				<regex>\b(threaded_(call|exit))\(</regex>
 			</keywords>
 
 			<keywords id="Built-in Predicates" color="#1A1AA6" useforautocomplete="yes">

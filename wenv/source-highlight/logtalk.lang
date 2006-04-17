@@ -22,6 +22,7 @@ keyword =	'\<(after|before)(?=\()',
 			'\<a(bolish|ssert(a|z))(?=\()',
 			'\<(ca(ll|tch)|throw)(?=\()',
 			'\<((bag|set)of|f(ind|or)all)(?=\()',
+			'\<threaded_(call|exit)(?=\()',
 			'\<unify_with_occurs_check(?=\()',
 			'\<(functor|arg|copy_term)(?=\()',
 			'\<(rem|mod|abs|sign)(?=\()',
@@ -56,7 +57,7 @@ variable =	'\<[A-Z_][A-Za-z0-9_]*'
 cbracket =	"{|}"
 
 preproc =	'^[[:blank:]]*:-[[:blank:]](ca(lls|tegory) | p(ublic|r(ot(ocol|ected)|ivate)) | e(ncoding|xports) | in(fo|itialization) | alias | d(ynamic|iscontiguous) | meta_predicate | m(etapredicate|od(e|ule)|ultifile) | o(bject|p) | use(s|_module))(?=\()',
-			'^[[:blank:]]*:-[[:blank:]](end_(category|object|protocol) | dynamic)\.'
+			'^[[:blank:]]*:-[[:blank:]](end_(category|object|protocol) | dynamic | threaded)\.'
 
 preproc =	'\<(extends|i(nstantiates|mp(lements|orts))|specializes)(?=\()'
 

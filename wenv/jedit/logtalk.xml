@@ -5,9 +5,9 @@
 <!--	jEdit 4.1 Logtalk syntax file
 
 	written by		Paulo Moura
-	version			1.5
+	version			1.6
 	created on		2 May 2002
-	last revised	9 October 2005
+	last revised	16 April 2006
 
 	To install, copy this file to the "modes" subdirectory in jEdit 
 	directory installation.   Next, check the "catalog" file in the 
@@ -172,6 +172,10 @@
 			<BEGIN>:- alias(</BEGIN>
 			<END>).</END>
 		</SPAN>
+		<SPAN TYPE="FUNCTION" NO_LINE_BREAK="FALSE" DELEGATE="MAIN">
+			<BEGIN>:- threaded</BEGIN>
+			<END>.</END>
+		</SPAN>
 
 		<!-- Logtalk message sending operators -->
 		<SEQ TYPE="OPERATOR">::</SEQ>
@@ -241,6 +245,9 @@
 			<FUNCTION>findall</FUNCTION>
 			<FUNCTION>forall</FUNCTION>
 			<FUNCTION>setof</FUNCTION>
+
+			<FUNCTION>threaded_call</FUNCTION>
+			<FUNCTION>threaded_exit</FUNCTION>
 
 			<FUNCTION>before</FUNCTION>
 			<FUNCTION>after</FUNCTION>

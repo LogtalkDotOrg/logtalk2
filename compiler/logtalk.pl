@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.27.1
+%  Release 2.28.0
 %
 %  Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 %
@@ -21,18 +21,21 @@
 
 % message sending operators
 
-:- op(600, xfy, ::).			% send to object
-:- op(600,  fy, ::).			% send to self
+:- op(600, xfy, ::).	% send to object
+:- op(600,  fy, ::).	% send to self
 
-:- op(600,  fy, ^^).			% super call
+:- op(600,  fy, ^^).	% "super" call (call an overriden, inherited method definition)
+
+:- op(1150, fy, <<).	% multi-threading send goal	
+:- op(1150, fy, >>).	% multi-threading get reply
 
 
 % mode operators
 
-:- op(200, fy, +).				% input argument (instantiated)
-:- op(200, fy, ?).				% input/output argument
-:- op(200, fy, @).				% input argument (not modified by the call)
-:- op(200, fy, -).				% output argument (not instantiated)
+:- op(200, fy, +).		% input argument (instantiated)
+:- op(200, fy, ?).		% input/output argument
+:- op(200, fy, @).		% input argument (not modified by the call)
+:- op(200, fy, -).		% output argument (not instantiated)
 
 
 
@@ -186,12 +189,13 @@
 
 :- dynamic('$lgt_pp_hook_goal_'/2).				% '$lgt_pp_hook_goal_'(Term, Terms)
 
+:- dynamic('$lgt_pp_threaded'/0).				% '$lgt_pp_threaded'
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  top level runtime predicate for message sending: ::/2
+%  top level runtime predicates for message sending
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -317,14 +321,19 @@ object_property(Obj, Prop) :-
 
 object_property(Obj, Prop) :-
 	nonvar(Prop),
-	\+ '$lgt_valid_entity_property'(Prop),
+	\+ '$lgt_valid_object_property'(Prop),
 	throw(error(domain_error(object_property, Prop), object_property(Obj, Prop))).
 
 object_property(user, built_in).
 object_property(debugger, built_in).
 
 object_property(Obj, Prop) :-
-	'$lgt_current_object_'(Obj, _, _, _, _, Prop).
+	'$lgt_current_object_'(Obj, _, _, _, _, Prop).		% static/dynamic property
+
+object_property(Obj, threaded) :-
+	'$lgt_default_flag'(supports_multiple_threads, true),
+	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
+	'$lgt_current_thread'(Prefix).
 
 
 
@@ -337,10 +346,10 @@ category_property(Ctg, Prop) :-
 
 category_property(Ctg, Prop) :-
 	nonvar(Prop),
-	\+ '$lgt_valid_entity_property'(Prop),
+	\+ '$lgt_valid_category_property'(Prop),
 	throw(error(domain_error(category_property, Prop), category_property(Ctg, Prop))).
 
-category_property(Ctg, Prop) :-
+category_property(Ctg, Prop) :-		% static/dynamic property
 	'$lgt_current_category_'(Ctg, _, Prop).
 
 
@@ -354,10 +363,10 @@ protocol_property(Ptc, Prop) :-
 
 protocol_property(Ptc, Prop) :-
 	nonvar(Prop),
-	\+ '$lgt_valid_entity_property'(Prop),
+	\+ '$lgt_valid_protocol_property'(Prop),
 	throw(error(domain_error(protocol_property, Prop), protocol_property(Ptc, Prop))).
 
-protocol_property(Ptc, Prop) :-
+protocol_property(Ptc, Prop) :-		% static/dynamic property
 	'$lgt_current_protocol_'(Ptc, _, Prop).
 
 
@@ -531,7 +540,12 @@ abolish_object(Obj) :-
 			retractall('$lgt_implements_protocol_'(Obj, _, _)),
 			retractall('$lgt_imports_category_'(Obj, _, _)),
 			retractall('$lgt_debugging_'(Obj)),
-			'$lgt_clean_lookup_caches'
+			'$lgt_clean_lookup_caches',
+			(	'$lgt_default_flag'(supports_multiple_threads, true),
+				'$lgt_current_thread'(Prefix) ->
+				'$lgt_thread_exit'(Prefix)
+			;	true
+			)
 		;	throw(error(permission_error(modify, static_object, Obj), abolish_object(Obj)))
 		)
 	;	throw(error(existence_error(object, Obj), abolish_object(Obj)))
@@ -953,6 +967,61 @@ abolish_events(after, Obj, Msg, Sender, Monitor) :-
 
 
 
+% built-in multi-threading meta-predicates
+
+threaded_call(Goal) :-
+	catch(
+		threaded_call(Goal, []),
+		error(Error, _),
+		throw(error(Error, threaded_call(Goal)))).
+
+threaded_call(Goal, Options) :-
+	\+ callable(Goal),
+	throw(error(type_error(callable, Goal), threaded_call(Goal, Options))).
+
+threaded_call(Goal, Options) :-
+	'$lgt_member'(Option, Options),
+	\+ '$lgt_valid_threaded_call_option'(Option),
+	throw(error(domain_error(threaded_call_option, Option), threaded_call(Goal, Options))).
+
+threaded_call(Goal, Options) :-
+	'$lgt_ctx_ctx'(Ctx, user, user, user, '$lgt_po_user0_', []),
+	'$lgt_tr_body'(threaded_call(Goal, Options), TGoal, _, Ctx),
+	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
+
+'$lgt_threaded_call'(Thread, Goal, Sender, This, Self, Options) :-
+	(	'$lgt_member'(wait, Options) ->
+		'$lgt_mt_send_goal'(Thread, Goal, Sender, This, Self, Options),
+		'$lgt_mt_get_reply'(Goal, Sender, This, Self, Options)
+	;	'$lgt_mt_send_goal'(Thread, Goal, Sender, This, Self, Options)
+	).
+
+
+threaded_exit(Goal) :-
+	catch(
+		threaded_exit(Goal, []),
+		error(Error, _),
+		throw(error(Error, threaded_exit(Goal)))).
+
+threaded_exit(Goal, Options) :-
+	\+ callable(Goal),
+	throw(error(type_error(callable, Goal), threaded_exit(Goal, Options))).
+
+threaded_exit(Goal, Options) :-
+	'$lgt_member'(Option, Options),
+	\+ '$lgt_valid_threaded_exit_option'(Option),
+	throw(error(domain_error(threaded_exit_option, Option), threaded_exit(Goal, Options))).
+
+threaded_exit(Goal, Options) :-
+	'$lgt_ctx_ctx'(Ctx, user, user, user, '$lgt_po_user0_', []),
+	'$lgt_tr_body'(threaded_exit(Goal, Options), TGoal, _, Ctx),
+	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
+
+
+'$lgt_threaded_exit'(Goal, Sender, This, Self, Options) :-
+	'$lgt_mt_get_reply'(Goal, Sender, This, Self, Options).
+
+
 % compiling and loading built-in predicates
 
 
@@ -1325,7 +1394,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 27, 1)).
+current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
@@ -3142,7 +3211,8 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 % '$lgt_clean_redefined_entity'(+atom, @entity_identifier)
 %
-% retract all clauses for all dynamically declared predicates from a redefined entity
+% retract all clauses for all dynamically declared predicates from
+% a redefined entity and terminates entity thread if it exists
 
 '$lgt_clean_redefined_entity'(object, Entity) :-
 	'$lgt_current_object_'(Entity, Prefix, _, _, _, _),
@@ -3150,7 +3220,14 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	DDefClause =.. [DDef, _, _, _, _, DDefHead],
 	forall(retract(DDefClause), retractall(DDefHead)),
 	DDclClause =.. [DDcl, _, _],
-	retractall(DDclClause).
+	retractall(DDclClause),
+	(	'$lgt_default_flag'(supports_multiple_threads, true) ->
+		(	'$lgt_current_thread'(Prefix) ->
+			'$lgt_thread_exit'(Prefix)
+		;	true
+		)
+	;	true
+	).
 
 '$lgt_clean_redefined_entity'(protocol, _).
 
@@ -3742,7 +3819,8 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	retractall('$lgt_pp_referenced_object_'(_)),
 	retractall('$lgt_pp_referenced_protocol_'(_)),
 	retractall('$lgt_pp_referenced_category_'(_)),
-	retractall('$lgt_pp_entity_op_'(_, _, _)).
+	retractall('$lgt_pp_entity_op_'(_, _, _)),
+	retractall('$lgt_pp_threaded').
 
 
 
@@ -4142,6 +4220,21 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	'$lgt_tr_object_id'(Module, static),				% assume static module/object
 	'$lgt_tr_directive'((public), ExportList, Stream),	% make the export list public predicates
 	'$lgt_save_file_op_table'.
+
+
+% create a dispatcher thread at object initialization
+
+'$lgt_tr_directive'(threaded, [], _) :-
+	\+ '$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
+	throw(domain_error(object_directive, threaded/0)).
+
+'$lgt_tr_directive'(threaded, [], _) :-
+	\+ '$lgt_compiler_flag'(supports_multiple_threads, true),
+	throw(domain_error(supports_multiple_threads, threaded/0)).
+
+'$lgt_tr_directive'(threaded, [], _) :-
+	!,
+	assertz('$lgt_pp_threaded').
 
 
 % dynamic entity directive
@@ -5190,7 +5283,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	!.
 
 
-% built-in metapredicates
+% built-in meta-predicates
 
 '$lgt_tr_body'(bagof(Term, Pred, List), bagof(Term, TPred, List), '$lgt_dbg_goal'(bagof(Term, Pred, List), bagof(Term, DPred, List), Ctx), Ctx) :-
 	!,
@@ -5210,6 +5303,80 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	'$lgt_tr_body'(Pred, TPred, DPred, Ctx).
 
 
+% multi-threading meta-predicates
+
+'$lgt_tr_body'(threaded_call(Pred), TPred, DPred, Ctx) :-
+	!,
+	'$lgt_tr_body'(threaded_call(Pred, []), TPred, DPred, Ctx).
+
+'$lgt_tr_body'(threaded_call(_, _), _, _, _) :-
+	'$lgt_compiler_flag'(report, on),
+	\+ '$lgt_pp_threaded',
+	'$lgt_inc_compile_warnings_counter',
+	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
+	fail.
+
+'$lgt_tr_body'(threaded_call(_, Options), _, _, _) :-
+	'$lgt_member'(Option, Options),
+	nonvar(Option),
+	\+ '$lgt_valid_threaded_call_option'(Option),
+	throw(domain_error(threaded_call_option, Option)).
+
+'$lgt_tr_body'(threaded_call(Obj::Pred, Options), MTPred, '$lgt_dbg_goal'(threaded_call(Obj::Pred, Options), MTPred, Ctx), Ctx) :-
+	!,
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
+	'$lgt_tr_msg'(Pred, Obj, TPred, This),
+	MTPred = '$lgt_threaded_call'(Obj, TPred, Sender, This, Self, Options).
+
+'$lgt_tr_body'(threaded_call(::Pred, Options), MTPred, '$lgt_dbg_goal'(threaded_call(::Pred, Options), MTPred, Ctx), Ctx) :-
+	!,
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
+	'$lgt_tr_self_msg'(Pred, TPred, This, Self),
+	MTPred = '$lgt_threaded_call'(Self, TPred, Sender, This, Self, Options).
+
+'$lgt_tr_body'(threaded_call(Pred, Options), MTPred, '$lgt_dbg_goal'(threaded_call(Pred, Options), MTPred, Ctx), Ctx) :-
+	!,
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
+	'$lgt_tr_body'(Pred, TPred, _, Ctx),
+	MTPred = '$lgt_threaded_call'(This, TPred, Sender, This, Self, Options).
+
+
+'$lgt_tr_body'(threaded_exit(Pred), TPred, DPred, Ctx) :-
+	!,
+	'$lgt_tr_body'(threaded_exit(Pred, []), TPred, DPred, Ctx).
+
+'$lgt_tr_body'(threaded_exit(_, _), _, _, _) :-
+	'$lgt_compiler_flag'(report, on),
+	\+ '$lgt_pp_threaded',
+	'$lgt_inc_compile_warnings_counter',
+	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
+	fail.
+
+'$lgt_tr_body'(threaded_exit(_, Options), _, _, _) :-
+	'$lgt_member'(Option, Options),
+	nonvar(Option),
+	\+ '$lgt_valid_threaded_exit_option'(Option),
+	throw(domain_error(threaded_exit_option, Option)).
+
+'$lgt_tr_body'(threaded_exit(Obj::Pred, Options), MTPred, '$lgt_dbg_goal'(threaded_exit(Obj::Pred, Options), MTPred, Ctx), Ctx) :-
+	!,
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
+	'$lgt_tr_msg'(Pred, Obj, TPred, This),
+	MTPred = '$lgt_threaded_exit'(TPred, Sender, This, Self, Options).
+
+'$lgt_tr_body'(threaded_exit(::Pred, Options), MTPred, '$lgt_dbg_goal'(threaded_exit(::Pred, Options), MTPred, Ctx), Ctx) :-
+	!,
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
+	'$lgt_tr_self_msg'(Pred, TPred, This, Self),
+	MTPred = '$lgt_threaded_exit'(TPred, Sender, This, Self, Options).
+
+'$lgt_tr_body'(threaded_exit(Pred, Options), MTPred, '$lgt_dbg_goal'(threaded_exit(Pred, Options), MTPred, Ctx), Ctx) :-
+	!,
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
+	'$lgt_tr_body'(Pred, TPred, _, Ctx),
+	MTPred = '$lgt_threaded_exit'(TPred, Sender, This, Self, Options).
+
+
 % message sending
 
 '$lgt_tr_body'(Obj::Pred, TPred, '$lgt_dbg_goal'(Obj::Pred, TPred, Ctx), Ctx) :-
@@ -5225,7 +5392,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 '$lgt_tr_body'(^^Pred, TPred, '$lgt_dbg_goal'(^^Pred, TPred, Ctx), Ctx) :-
 	!,
-	'$lgt_tr_super_sending'(Pred, TPred, Ctx).
+	'$lgt_tr_super_call'(Pred, TPred, Ctx).
 
 
 % "reflection" built-in predicates
@@ -6006,14 +6173,14 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 
-% '$lgt_tr_super_sending'(@term, -term, +term)
+% '$lgt_tr_super_call'(@term, -term, +term)
 %
 % translates calling of redefined predicates (super calls)
 
 
 % invalid goal (not callable)
 
-'$lgt_tr_super_sending'(Pred, _, _) :-
+'$lgt_tr_super_call'(Pred, _, _) :-
 	nonvar(Pred),
 	\+ callable(Pred),
 	throw(type_error(callable, Pred)).
@@ -6021,7 +6188,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 % translation performed at runtime
 
-'$lgt_tr_super_sending'(Pred, TPred, Ctx) :-
+'$lgt_tr_super_call'(Pred, TPred, Ctx) :-
 	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
 	(	var(Pred) ->
 		TPred = '$lgt_send_to_super'(Self, Pred, This, Sender)
@@ -8028,12 +8195,16 @@ current_logtalk_flag(version, version(2, 27, 1)).
 % generate and assert the initialization goal for the entity being compiled
 
 '$lgt_gen_entity_init_goal' :-
-	'$lgt_pp_entity'(_, Entity, _, _, _),
+	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
 	findall(Clause, '$lgt_pp_rclause'(Clause), Clauses),
 	Goal1 = '$lgt_assert_runtime_clauses'(Clauses),
 	(	'$lgt_pp_fentity_init_'(Goal2) ->
-		Goal = (Goal1, Goal2)
-	;	Goal = Goal1
+		Goal3 = (Goal1, Goal2)
+	;	Goal3 = Goal1
+	),
+	(	'$lgt_pp_threaded' ->
+		Goal = (Goal3, '$lgt_init_object_thread'(Prefix))
+	;	Goal = Goal3 
 	),
 	assertz('$lgt_pp_entity_init_'(Entity, Goal)).
 
@@ -8137,6 +8308,11 @@ current_logtalk_flag(version, version(2, 27, 1)).
 % call any defined initialization goal for a dynamically created entity
 
 '$lgt_assert_init' :-
+	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _),
+		'$lgt_pp_threaded' ->
+		'$lgt_init_object_thread'(Prefix)
+	;	true 
+	),
 	(	'$lgt_pp_fentity_init_'(Goal) ->
 		once(Goal)
 	;	true
@@ -8407,6 +8583,8 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_lgt_entity_directive'(op, 3).
 
 '$lgt_lgt_entity_directive'(info, 1).
+
+'$lgt_lgt_entity_directive'(threaded, 0).
 
 
 '$lgt_lgt_predicate_directive'((dynamic), N) :-
@@ -8740,11 +8918,28 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 
-% '$lgt_valid_entity_property'(@nonvar)
+% '$lgt_valid_object_property'(@nonvar)
 
-'$lgt_valid_entity_property'((dynamic)).
-'$lgt_valid_entity_property'(static).
-'$lgt_valid_entity_property'(built_in).
+'$lgt_valid_object_property'(built_in).
+'$lgt_valid_object_property'((dynamic)).
+'$lgt_valid_object_property'(static).
+'$lgt_valid_object_property'(threaded).
+
+
+
+% '$lgt_valid_protocol_property'(@nonvar)
+
+'$lgt_valid_protocol_property'(built_in).
+'$lgt_valid_protocol_property'((dynamic)).
+'$lgt_valid_protocol_property'(static).
+
+
+
+% '$lgt_valid_category_property'(@nonvar)
+
+'$lgt_valid_category_property'(built_in).
+'$lgt_valid_category_property'((dynamic)).
+'$lgt_valid_category_property'(static).
 
 
 
@@ -8773,6 +8968,8 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_valid_flag'(events).
 '$lgt_valid_flag'(altdirs).
 '$lgt_valid_flag'(hook).
+'$lgt_valid_flag'(supports_encoding_dir).
+'$lgt_valid_flag'(supports_multiple_threads).
 
 
 
@@ -8785,6 +8982,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_read_only_flag'(version).
 '$lgt_read_only_flag'(altdirs).
 '$lgt_read_only_flag'(supports_encoding_dir).
+'$lgt_read_only_flag'(supports_multiple_threads).
 
 
 
@@ -10226,6 +10424,107 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
+%  Experimental multi-threading support
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+% '$lgt_init_object_thread'(+atom)
+%
+% creates a dispatcher thread for an object given its prefix
+
+'$lgt_init_object_thread'(ObjPrefix) :-
+	'$lgt_thread_create'(ObjPrefix, '$lgt_mt_obj_dispatcher'(ObjPrefix)).
+
+
+
+% '$lgt_mt_obj_dispatcher'(+atom)
+%
+% object's thread message dispatcher processing loop
+
+'$lgt_mt_obj_dispatcher'(Thread) :-
+	repeat,
+		'$lgt_thread_get_message'(Thread, '$lgt_goal'(Goal, Sender, This, Self, Options, Return)),
+		'$lgt_thread_create'(_, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return)),
+	fail.
+
+
+
+% '$lgt_mt_process_goal'(+callable, +list, +object_identifier)
+%
+% processes a deterministic message received by an object's thread queue
+
+'$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return) :-
+	(	'$lgt_member'(noreply, Options) ->
+		catch(Goal, _, true)
+	;	(	catch(Goal, Error, ('$lgt_thread_send_message'(Return, '$lgt_reply'(Goal, Sender, This, Self, Error)), Flag = error)) ->
+			(	var(Flag) ->
+				'$lgt_thread_send_message'(Return, '$lgt_reply'(Goal, Sender, This, Self, success))
+			;	true
+			)
+		;	'$lgt_thread_send_message'(Return, '$lgt_reply'(Goal, Sender, This, Self, failure))
+		)
+	).
+
+
+
+% '$lgt_mt_send_goal'(+object_identifier, @callable, +list, +object_identifier)
+%
+% send a goal to an object dispatcher thread
+
+'$lgt_mt_send_goal'(Obj, Goal, Sender, This, Self, Options) :-
+	(	'$lgt_current_object_'(Obj, ObjPrefix, _, _, _, _) ->
+		(	'$lgt_current_thread'(ObjPrefix) ->
+			'$lgt_current_object_'(This, ThisPrefix, _, _, _, _),
+			'$lgt_thread_send_message'(ObjPrefix, '$lgt_goal'(Goal, Sender, This, Self, Options, ThisPrefix))
+		;	throw(error(existence_error(object_thread, Obj), Goal, Sender))
+		)
+	;	throw(error(existence_error(object, Obj), Goal, Sender))
+	).
+
+
+
+% '$lgt_mt_get_reply'(+callable, +object_identifier)
+%
+% get a reply to a goal sent to the senders object dispatcher thread
+
+'$lgt_mt_get_reply'(Goal, Sender, This, Self, Options) :-
+	(	'$lgt_current_object_'(This, ThisPrefix, _, _, _, _) ->
+		(	'$lgt_current_thread'(ThisPrefix) ->
+			(	'$lgt_member'(peek, Options) ->
+				'$lgt_thread_peek_message'(ThisPrefix, '$lgt_reply'(Goal, Sender, This, Self, _))
+			;	'$lgt_member'(discard, Options) ->
+				forall(
+					'$lgt_thread_peek_message'(ThisPrefix, '$lgt_reply'(Goal, Sender, This, Self, _)),
+					'$lgt_thread_get_message'(ThisPrefix, '$lgt_reply'(Goal, Sender, This, Self, _)))
+			;	'$lgt_thread_get_message'(ThisPrefix, '$lgt_reply'(Goal, Sender, This, Self, Result)),
+				(	Result == success ->
+					true
+				;	Result == failure ->
+					fail
+				;	throw(Result)
+				)
+			)
+		;	throw(error(existence_error(object_thread, Sender), Goal, Sender))
+		)
+	;	throw(error(existence_error(object, Sender), Goal, Sender))
+	).
+
+
+
+'$lgt_valid_threaded_call_option'(noreply).
+'$lgt_valid_threaded_call_option'(wait).
+
+
+'$lgt_valid_threaded_exit_option'(peek).
+'$lgt_valid_threaded_exit_option'(discard).
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 %  Logtalk startup messages (banner and default flags)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -10251,7 +10550,7 @@ current_logtalk_flag(version, version(2, 27, 1)).
 '$lgt_banner' :-
 	current_logtalk_flag(version, version(Major, Minor, Patch)),
 	nl, write('Logtalk '), write(Major), write('.'), write(Minor), write('.'), write(Patch), nl,
-	write('Copyright (c) 1998-2005 Paulo Moura'), nl, nl.
+	write('Copyright (c) 1998-2006 Paulo Moura'), nl, nl.
 
 
 
@@ -10283,57 +10582,60 @@ current_logtalk_flag(version, version(2, 27, 1)).
 	'$lgt_default_flag'(supports_break_predicate, Break), write('  supports_break_predicate: '), write(Break),
 	'$lgt_default_flag'(startup_message, Startup), write(', startup_message: '), write(Startup), nl,
 	'$lgt_default_flag'(altdirs, Altdirs), write('  altdirs: '), write(Altdirs),
-	'$lgt_default_flag'(supports_encoding_dir, Encodings), write(', supports_encoding_dir: '), write(Encodings), nl, nl.
+	'$lgt_default_flag'(supports_encoding_dir, Encodings), write(', supports_encoding_dir: '), write(Encodings), nl,
+	 '$lgt_default_flag'(supports_multiple_threads, Threads), write(', supports_multiple_threads: '), write(Threads), nl, nl.
 
 '$lgt_default_flags'(verbose) :-
 	write('Default lint compilation flags:'), nl,
 	'$lgt_default_flag'(unknown, Unknown),
-	write('  Unknown entities (unknown):                               '), write(Unknown), nl,
+	write('  Unknown entities (unknown):                                '), write(Unknown), nl,
 	'$lgt_default_flag'(misspelt, Misspelt),
-	write('  Misspelt predicate calls (misspelt):                      '), write(Misspelt), nl,
+	write('  Misspelt predicate calls (misspelt):                       '), write(Misspelt), nl,
 	'$lgt_default_flag'(lgtredef, Lgtredef),
-	write('  Logtalk built-in predicates redefinition (lgtredef):      '), write(Lgtredef), nl,
+	write('  Logtalk built-in predicates redefinition (lgtredef):       '), write(Lgtredef), nl,
 	'$lgt_default_flag'(plredef, Plredef),
-	write('  Prolog built-in predicates redefinition (plredef):        '), write(Plredef), nl,
+	write('  Prolog built-in predicates redefinition (plredef):         '), write(Plredef), nl,
 	'$lgt_default_flag'(portability, Portability),
-	write('  Non portable calls (portability):                         '), write(Portability), nl,
+	write('  Non portable calls (portability):                          '), write(Portability), nl,
 	'$lgt_default_flag'(singletons, Singletons),
-	write('  Singletons variables (singletons):                        '), write(Singletons), nl,
+	write('  Singletons variables (singletons):                         '), write(Singletons), nl,
 	'$lgt_default_flag'(underscore_vars, Underscore),
-	write('  Underscore variables interpretation (underscore_vars):    '), write(Underscore), nl,
+	write('  Underscore variables interpretation (underscore_vars):     '), write(Underscore), nl,
 	write('Default documenting compilation flags:'), nl,
 	'$lgt_default_flag'(xmldocs, XMLDocs),
-	write('  XML documenting files (xmldocs):                          '), write(XMLDocs), nl,
+	write('  XML documenting files (xmldocs):                           '), write(XMLDocs), nl,
 	'$lgt_default_flag'(xmlspec, XMLSpec),
-	write('  XML specification file (xmlspec):                         '), write(XMLSpec), nl,
+	write('  XML specification file (xmlspec):                          '), write(XMLSpec), nl,
 	'$lgt_default_flag'(xmlsref, XMLSRef),
-	write('  XML specification reference (xmlsref):                    '), write(XMLSRef), nl,
+	write('  XML specification reference (xmlsref):                     '), write(XMLSRef), nl,
 	'$lgt_default_flag'(xslfile, XSLFile),
-	write('  XSL stylesheet file (xslfile):                            '), write(XSLFile), nl,
+	write('  XSL stylesheet file (xslfile):                             '), write(XSLFile), nl,
 	write('Other default compilation flags:'), nl,
 	'$lgt_default_flag'(report, Report),
-	write('  Compilation report (report):                              '), write(Report), nl,
+	write('  Compilation report (report):                               '), write(Report), nl,
 	'$lgt_default_flag'(code_prefix, Code),
-	write('  Compiled code functors prefix (code_prefix):              '), writeq(Code), nl,
+	write('  Compiled code functors prefix (code_prefix):               '), writeq(Code), nl,
 	'$lgt_default_flag'(debug, Debug),
-	write('  Compile entities in debug mode (debug):                   '), writeq(Debug), nl,
+	write('  Compile entities in debug mode (debug):                    '), writeq(Debug), nl,
 	'$lgt_default_flag'(smart_compilation, Smart),
-	write('  Smart compilation (smart_compilation):                    '), write(Smart), nl,
+	write('  Smart compilation (smart_compilation):                     '), write(Smart), nl,
 	'$lgt_default_flag'(events, Events),
-	write('  Event-driven programming support (events):                '), write(Events), nl,
+	write('  Event-driven programming support (events):                 '), write(Events), nl,
 	(	'$lgt_default_flag'(hook, Hook) -> true
 	;	Hook = '(none defined)'
 	),
-	write('  Compiler hook object and hook predicate functor:          '), write(Hook), nl,
+	write('  Compiler hook object and hook predicate functor:           '), write(Hook), nl,
 	write('Read-only compilation flags:'), nl,
 	'$lgt_default_flag'(supports_break_predicate, Break),
-	write('  Support for break/0 predicate (supports_break_predicate): '), write(Break), nl,
+	write('  Support for break/0 predicate (supports_break_predicate):  '), write(Break), nl,
 	'$lgt_default_flag'(startup_message, Startup),
-	write('  Startup message (startup_message):                        '), write(Startup), nl,
+	write('  Startup message (startup_message):                         '), write(Startup), nl,
 	'$lgt_default_flag'(altdirs, Altdirs),
-	write('  Alternative compilation directories (altdirs):            '), write(Altdirs), nl,
+	write('  Alternative compilation directories (altdirs):             '), write(Altdirs), nl,
 	'$lgt_default_flag'(supports_encoding_dir, Encodings),
-	write('  Support for encoding directive (supports_encoding_dir):   '), write(Encodings), nl, nl.
+	write('  Support for encoding directive (supports_encoding_dir):    '), write(Encodings), nl,
+	'$lgt_default_flag'(supports_multiple_threads, Threads),
+	write('  Support for multiple threads (supports_multiple_threads):  '), write(Threads), nl, nl.
 
 
 
@@ -10349,7 +10651,21 @@ current_logtalk_flag(version, version(2, 27, 1)).
 
 
 
-:- initialization(('$lgt_startup_message', '$lgt_assert_default_hook_goal')).
+% '$lgt_runtime_thread'
+%
+% cretes the default "user" runtime thread when running on
+% Prolog compilers supporting multi-threading programming
+
+'$lgt_runtime_thread' :-
+	(	'$lgt_default_flag'(supports_multiple_threads, true) ->
+		'$lgt_current_object_'(user, Prefix, _, _, _, _),
+		'$lgt_init_object_thread'(Prefix)
+	;	true
+	).
+
+
+
+:- initialization(('$lgt_startup_message', '$lgt_assert_default_hook_goal', '$lgt_runtime_thread')).
 
 
 

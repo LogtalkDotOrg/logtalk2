@@ -49,6 +49,7 @@
 			"op",
 			"calls",
 			"uses",					
+			"threaded",					
 		);
 		PreprocessorKeywordStart = "";
 		PreprocessorKeywords = (

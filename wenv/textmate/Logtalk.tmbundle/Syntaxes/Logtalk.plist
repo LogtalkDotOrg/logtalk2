@@ -25,7 +25,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>%.*$</string>
+			<string>%.*$\n?</string>
 			<key>name</key>
 			<string>comment.line.percentage.logtalk</string>
 		</dict>
@@ -40,13 +40,11 @@
 				<key>3</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name</string>
+					<string>entity.name.logtalk</string>
 				</dict>
 			</dict>
 			<key>match</key>
 			<string>(:-\s+(object|protocol|category|module))(?:\()([^(,)]+)</string>
-			<key>name</key>
-			<string></string>
 		</dict>
 		<dict>
 			<key>match</key>
@@ -59,6 +57,12 @@
 			<string>\b(extends|i(nstantiates|mp(orts|lements))|specializes)(?=[(])</string>
 			<key>name</key>
 			<string>storage.type.relations.logtalk</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>:-\s+(dynamic|threaded)(?=[.])</string>
+			<key>name</key>
+			<string>storage.modifier.others.logtalk</string>
 		</dict>
 		<dict>
 			<key>match</key>
@@ -251,6 +255,12 @@
 			<string>\b((bag|set)of|f(ind|or)all)(?=[(])</string>
 			<key>name</key>
 			<string>support.function.all-solutions.logtalk</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b(threaded_(call|exit))(?=[(])</string>
+			<key>name</key>
+			<string>support.function.multi-threading.logtalk</string>
 		</dict>
 		<dict>
 			<key>match</key>

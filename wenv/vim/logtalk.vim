@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	February 24, 2006
+" Last Change:	April 16, 2006
 
 
 " Quit when a syntax file was already loaded:
@@ -87,6 +87,7 @@ syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- metapredicate("	matchg
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- op("			matchgroup=logtalkDirTag	end=")\."	contains=ALL
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- calls("		matchgroup=logtalkDirTag	end=")\."	contains=ALL
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- uses("		matchgroup=logtalkDirTag	end=")\."	contains=ALL
+syn match	logtalkDirTag		":- threaded\."
 
 
 " Module directives
@@ -139,6 +140,8 @@ syn match	logtalkBuiltInMethod	"\<after\ze("
 syn match	logtalkBuiltInMethod	"\<expand_term\ze("
 syn match	logtalkBuiltInMethod	"\<term_expansion\ze("
 syn match	logtalkBuiltInMethod	"\<phrase\ze("
+
+syn match	logtalkBuiltInMethod	"\<threaded_\(call\|exit\)\ze("
 
 
 " Mode operators

@@ -90,6 +90,7 @@
 				<string>\:\-[[:space:]](calls)\(</string>			
 				<string>\:\-[[:space:]](uses)\(</string>			
 				<string>\:\-[[:space:]](use_module)\(</string>			
+				<string>\:\-[[:space:]](threaded)\.</string>			
 			</array>
 		</dict>
 
@@ -208,6 +209,8 @@
 				<string>[^A-Za-z0-9_](expand_term)\(</string>
 				<string>[^A-Za-z0-9_](term_expansion)\(</string>
 				<string>[^A-Za-z0-9_](phrase)\(</string>
+				<string>[^A-Za-z0-9_](threaded_call)\(</string>
+				<string>[^A-Za-z0-9_](threaded_exit)\(</string>
 			</array>
 		</dict>
 

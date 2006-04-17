@@ -104,6 +104,7 @@ op
 calls
 uses
 use_module
+threaded
 
 
 [Keywords 4]
@@ -163,6 +164,8 @@ after
 expand_term
 term_expansion
 phrase
+threaded_call
+threaded_exit
 
 ; Mode operators
 ?
