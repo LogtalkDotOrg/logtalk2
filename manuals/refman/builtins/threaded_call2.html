@@ -26,7 +26,7 @@
 
 <pre>threaded_call(Goal, Options)</pre>
 <p>
-Prove <code>Goal</code> using a new thread. By default, the proof is done asynchronously. The option <code>wait</code> may be used to block further execution until the thread terminates. The argument can be a message sending. The result (success, failure, or exception) is sent back to the thread of the object containing the call (<em>this</em>). The option <code>noreply</code> may be used when no reply with the proof results is necessary. The option <code>atomic</code> may be used if the goal was side-effects such as dynamic database updates or input-output operations; this option is only safe if the side-effects are confined to the object where the goal is proved (or the object receiving the asynchronous message).
+Prove <code>Goal</code> using a new thread. By default, the proof is done asynchronously. The option <code>wait</code> may be used to block further execution until the thread terminates. The argument can be a message sending. The result (success, failure, or exception) is sent back to the thread of the object containing the call (<em>this</em>). The option <code>noreply</code> may be used when no reply with the proof results is necessary. The option <code>atomic</code> may be used if the goal was side-effects such as dynamic database updates or input-output operations; this option is only safe if the side-effects are confined to the object where the goal is proved (or to the object receiving the asynchronous message).
 </p>
 
 <h4>Template and modes</h4>
