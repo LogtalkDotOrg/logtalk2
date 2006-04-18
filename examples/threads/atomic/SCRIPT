@@ -14,7 +14,7 @@ Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 
 % send three asynchronous messages whose corresponding methods have side-effects:
 
-| ?- threaded_call(nasty::io(alpha)), threaded_call(nasty::io(digit)), threaded_call(nasty::io(alpha)).
+| ?- threaded_call(nasty::io(alpha), [noreply]), threaded_call(nasty::io(digit), [noreply]), threaded_call(nasty::io(alpha), [noreply]).
 
 a0ab1bc2c3ddefef45gg6hh7ii8jkjk9
 llmmnnopopqqrrsstztzyyxxwwuv
@@ -25,7 +25,7 @@ Yes
 
 % the same three asynchronous messages but making them atomic for the receiver object:
 
-| ?- threaded_call(nasty::io(alpha), [atomic]), threaded_call(nasty::io(digit), [atomic]), threaded_call(nasty::io(alpha), [atomic]).
+| ?- threaded_call(nasty::io(alpha), [atomic, noreply]), threaded_call(nasty::io(digit), [atomic, noreply]), threaded_call(nasty::io(alpha), [atomic, noreply]).
 
 abcdefghijklmnopqrstzyxwuv
 0123456789
