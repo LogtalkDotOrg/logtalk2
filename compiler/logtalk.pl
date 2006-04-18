@@ -10444,9 +10444,14 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % object's thread message dispatcher processing loop
 
 '$lgt_mt_obj_dispatcher'(Thread) :-
+	atom_concat(Thread, '_atomic', Id),
 	repeat,
 		'$lgt_thread_get_message'(Thread, '$lgt_goal'(Goal, Sender, This, Self, Options, Return)),
-		'$lgt_thread_create'(_, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return)),
+		(	'$lgt_member'(atomic, Options) ->
+			'$lgt_thread_create'(Id, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return)),
+			'$lgt_thread_join'(Id)
+		;	'$lgt_thread_create'(_, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return))
+		),
 	fail.
 
 
@@ -10513,6 +10518,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
+'$lgt_valid_threaded_call_option'(atomic).
 '$lgt_valid_threaded_call_option'(noreply).
 '$lgt_valid_threaded_call_option'(wait).
 
