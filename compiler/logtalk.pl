@@ -5322,6 +5322,15 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	\+ '$lgt_valid_threaded_call_option'(Option),
 	throw(domain_error(threaded_call_option, Option)).
 
+'$lgt_tr_body'(threaded_call((Pred, Preds), Options), (TPred, TPreds), (DPred, Dpreds), Ctx) :-
+	!,
+	'$lgt_tr_body'(threaded_call(Pred, Options), TPred, DPred, Ctx),
+	'$lgt_tr_body'(threaded_call(Preds, Options), TPreds, Dpreds, Ctx).
+
+'$lgt_tr_body'(threaded_call((Pred; Preds), Options), TPreds, Dpreds, Ctx) :-
+	!,
+	'$lgt_tr_body'(threaded_call((Pred, Preds), [first| Options]), TPreds, Dpreds, Ctx).
+
 '$lgt_tr_body'(threaded_call(Obj::Pred, Options), MTPred, '$lgt_dbg_goal'(threaded_call(Obj::Pred, Options), MTPred, Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
@@ -10435,7 +10444,20 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % creates a dispatcher thread for an object given its prefix
 
 '$lgt_init_object_thread'(ObjPrefix) :-
-	'$lgt_thread_create'(ObjPrefix, '$lgt_mt_obj_dispatcher'(ObjPrefix)).
+	'$lgt_thread_create'(ObjPrefix, '$lgt_mt_obj_protected_dispatcher'(ObjPrefix), detached(true)).
+
+
+
+% an object may be reloaded implying recreating its thread...
+
+'$lgt_mt_obj_protected_dispatcher'(ObjPrefix) :-
+	catch('$lgt_mt_obj_dispatcher'(ObjPrefix), Error, true),
+	(   Error == '$aborted' ->
+		'$lgt_thread_exit'
+	;	nonvar(Error) ->
+		throw(Error)
+	;	true
+	).
 
 
 
@@ -10444,19 +10466,35 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % object's thread message dispatcher processing loop
 
 '$lgt_mt_obj_dispatcher'(Thread) :-
-	atom_concat(Thread, '_atomic', Id),
+	atom_concat(Thread, '_atomic', AtomicId),
 	repeat,
 		'$lgt_thread_get_message'(Thread, '$lgt_goal'(Goal, Sender, This, Self, Options, Return)),
 		(	'$lgt_member'(atomic, Options) ->
-			'$lgt_thread_create'(Id, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return)),
-			'$lgt_thread_join'(Id)
-		;	'$lgt_thread_create'(_, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return))
+			'$lgt_thread_create'(AtomicId, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), detached(false)),
+			'$lgt_thread_join'(AtomicId)
+		;	'$lgt_member'(first, Options) ->
+			'$lgt_thread_create'(Id, '$lgt_mt_competing_goal'(Goal, Sender, This, Self, Options, Return), detached(true)),
+			'$lgt_thread_send_message'(Return, '$lgt_id'(Goal, Sender, This, Self, Id))
+		;	'$lgt_thread_create'(_, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), detached(true))
 		),
 	fail.
 
 
 
-% '$lgt_mt_process_goal'(+callable, +list, +object_identifier)
+% competing goals may be killed before completion...
+
+'$lgt_mt_competing_goal'(Goal, Sender, This, Self, Options, Return) :-
+	catch('$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), Error, true),
+	(   Error == '$aborted' -> 
+		'$lgt_thread_exit'
+	;	nonvar(Error) ->
+		throw(Error)
+	;	true
+	).
+
+
+
+% '$lgt_mt_process_goal'(+callable, +object_identifier, +object_identifier, +object_identifier, +list, +atom)
 %
 % processes a deterministic message received by an object's thread queue
 
@@ -10474,7 +10512,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
-% '$lgt_mt_send_goal'(+object_identifier, @callable, +list, +object_identifier)
+% '$lgt_mt_send_goal'(+object_identifier, @callable, +object_identifier, +object_identifier, +object_identifier, +list)
 %
 % send a goal to an object dispatcher thread
 
@@ -10490,7 +10528,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
-% '$lgt_mt_get_reply'(+callable, +object_identifier)
+% '$lgt_mt_get_reply'(+callable, +object_identifier, +object_identifier, +object_identifier, +list)
 %
 % get a reply to a goal sent to the senders object dispatcher thread
 
@@ -10500,10 +10538,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 			(	'$lgt_member'(peek, Options) ->
 				'$lgt_thread_peek_message'(ThisPrefix, '$lgt_reply'(Goal, Sender, This, Self, _))
 			;	'$lgt_member'(discard, Options) ->
-				forall(
-					'$lgt_thread_peek_message'(ThisPrefix, '$lgt_reply'(Goal, Sender, This, Self, _)),
-					'$lgt_thread_get_message'(ThisPrefix, '$lgt_reply'(Goal, Sender, This, Self, _)))
-			;	'$lgt_thread_get_message'(ThisPrefix, '$lgt_reply'(Goal, Sender, This, Self, Result)),
+				copy_term((Goal, Sender, This, Self), (CGoal, CSender, CThis, CSelf)),
+				'$lgt_mt_discard_matching_replies'(ThisPrefix, CGoal, CSender, CThis, CSelf)
+			;	copy_term((Goal, Sender, This, Self), (CGoal, CSender, CThis, CSelf)),
+				'$lgt_thread_get_message'(ThisPrefix, '$lgt_reply'(Goal, Sender, This, Self, Result)),
+				'$lgt_mt_kill_other_workers'(ThisPrefix, CGoal, CSender, CThis, CSelf),
 				(	Result == success ->
 					true
 				;	Result == failure ->
@@ -10517,8 +10556,28 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	).
 
 
+'$lgt_mt_discard_matching_replies'(Thread, Goal, Sender, This, Self) :-
+	\+ \+ (
+		'$lgt_thread_peek_message'(Thread, '$lgt_reply'(Goal, Sender, This, Self, _)),
+		'$lgt_thread_get_message'(Thread, '$lgt_reply'(Goal, Sender, This, Self, _))),
+	'$lgt_mt_discard_matching_replies'(Thread, Goal, Sender, This, Self).
+
+'$lgt_mt_discard_matching_replies'(_, _, _, _, _).
+
+
+'$lgt_mt_kill_other_workers'(Thread, Goal, Sender, This, Self) :-
+	\+ \+ (
+		'$lgt_thread_peek_message'(Thread, '$lgt_id'(Goal, Sender, This, Self, Id)),
+		'$lgt_thread_get_message'(Thread, '$lgt_id'(Goal, Sender, This, Self, Id)),
+		catch('$lgt_thread_exit'(Id), _, true)),
+	'$lgt_mt_kill_other_workers'(Thread, Goal, Sender, This, Self).
+
+'$lgt_mt_kill_other_workers'(_, _, _, _, _).
+
+
 
 '$lgt_valid_threaded_call_option'(atomic).
+'$lgt_valid_threaded_call_option'(first).
 '$lgt_valid_threaded_call_option'(noreply).
 '$lgt_valid_threaded_call_option'(wait).
 
