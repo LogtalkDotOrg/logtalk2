@@ -10473,7 +10473,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 			'$lgt_thread_create'(AtomicId, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), detached(false)),
 			'$lgt_thread_join'(AtomicId)
 		;	'$lgt_member'(first, Options) ->
-			'$lgt_thread_create'(Id, '$lgt_mt_competing_goal'(Goal, Sender, This, Self, Options, Return), detached(true)),
+			'$lgt_thread_create'(Id, catch('$lgt_mt_competing_goal'(Goal, Sender, This, Self, Options, Return), _, '$lgt_thread_exit'), detached(true)),
 			'$lgt_thread_send_message'(Return, '$lgt_id'(Goal, Sender, This, Self, Id))
 		;	'$lgt_thread_create'(_, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), detached(true))
 		),
@@ -10484,12 +10484,10 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % competing goals may be killed before completion...
 
 '$lgt_mt_competing_goal'(Goal, Sender, This, Self, Options, Return) :-
-	catch('$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), Error, true),
-	(   Error == '$aborted' -> 
-		'$lgt_thread_exit'
-	;	nonvar(Error) ->
-		throw(Error)
-	;	true
+	call(Goal),
+	(	'$lgt_member'(noreply, Options) ->
+		true
+	;	'$lgt_thread_send_message'(Return, '$lgt_reply'(Goal, Sender, This, Self, success))
 	).
 
 
@@ -10543,6 +10541,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 			;	copy_term((Goal, Sender, This, Self), (CGoal, CSender, CThis, CSelf)),
 				'$lgt_thread_get_message'(ThisPrefix, '$lgt_reply'(Goal, Sender, This, Self, Result)),
 				'$lgt_mt_kill_other_workers'(ThisPrefix, CGoal, CSender, CThis, CSelf),
+				'$lgt_mt_discard_matching_replies'(ThisPrefix, CGoal, CSender, CThis, CSelf),
 				(	Result == success ->
 					true
 				;	Result == failure ->
