@@ -10445,20 +10445,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % creates a dispatcher thread for an object given its prefix
 
 '$lgt_init_object_thread'(ObjPrefix) :-
-	'$lgt_thread_create'(ObjPrefix, '$lgt_mt_obj_protected_dispatcher'(ObjPrefix), detached(true)).
-
-
-
-% an object may be reloaded implying recreating its thread...
-
-'$lgt_mt_obj_protected_dispatcher'(ObjPrefix) :-
-	catch('$lgt_mt_obj_dispatcher'(ObjPrefix), Error, true),
-	(   Error == '$aborted' ->
-		'$lgt_thread_exit'
-	;	nonvar(Error) ->
-		throw(Error)
-	;	true
-	).
+	'$lgt_thread_create'(ObjPrefix, '$lgt_mt_obj_dispatcher'(ObjPrefix), detached(true)).
 
 
 
@@ -10474,7 +10461,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 			'$lgt_thread_create'(AtomicId, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), detached(false)),
 			'$lgt_thread_join'(AtomicId)
 		;	'$lgt_member'(first, Options) ->
-			'$lgt_thread_create'(Id, catch('$lgt_mt_competing_goal'(Goal, Sender, This, Self, Options, Return), _, '$lgt_thread_exit'), detached(true)),
+			'$lgt_thread_create'(Id, '$lgt_mt_competing_goal'(Goal, Sender, This, Self, Return), detached(true)),
 			'$lgt_thread_send_message'(Return, '$lgt_id'(Goal, Sender, This, Self, Id))
 		;	'$lgt_thread_create'(_, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), detached(true))
 		),
@@ -10484,11 +10471,10 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 % competing goals may be killed before completion...
 
-'$lgt_mt_competing_goal'(Goal, Sender, This, Self, Options, Return) :-
-	call(Goal),
-	(	'$lgt_member'(noreply, Options) ->
-		true
-	;	'$lgt_thread_send_message'(Return, '$lgt_reply'(Goal, Sender, This, Self, success))
+'$lgt_mt_competing_goal'(Goal, Sender, This, Self, Return) :-
+	(	catch(Goal, _, fail) ->
+		'$lgt_thread_send_message'(Return, '$lgt_reply'(Goal, Sender, This, Self, success))
+	;	true
 	).
 
 
@@ -10560,6 +10546,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	\+ \+ (
 		'$lgt_thread_peek_message'(Thread, '$lgt_reply'(Goal, Sender, This, Self, _)),
 		'$lgt_thread_get_message'(Thread, '$lgt_reply'(Goal, Sender, This, Self, _))),
+	!,
 	'$lgt_mt_discard_matching_replies'(Thread, Goal, Sender, This, Self).
 
 '$lgt_mt_discard_matching_replies'(_, _, _, _, _).
@@ -10569,7 +10556,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	\+ \+ (
 		'$lgt_thread_peek_message'(Thread, '$lgt_id'(Goal, Sender, This, Self, Id)),
 		'$lgt_thread_get_message'(Thread, '$lgt_id'(Goal, Sender, This, Self, Id)),
-		catch('$lgt_thread_exit'(Id), _, true)),
+		'$lgt_thread_exit'(Id)),
+	!,
 	'$lgt_mt_kill_other_workers'(Thread, Goal, Sender, This, Self).
 
 '$lgt_mt_kill_other_workers'(_, _, _, _, _).
