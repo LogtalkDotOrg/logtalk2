@@ -5322,14 +5322,15 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	\+ '$lgt_valid_threaded_call_option'(Option),
 	throw(domain_error(threaded_call_option, Option)).
 
-'$lgt_tr_body'(threaded_call((Pred, Preds), Options), (TPred, TPreds), (DPred, Dpreds), Ctx) :-
+'$lgt_tr_body'(threaded_call((Pred, Preds), Options), (TPred, TPreds), (DPred, DPreds), Ctx) :-
 	!,
 	'$lgt_tr_body'(threaded_call(Pred, Options), TPred, DPred, Ctx),
-	'$lgt_tr_body'(threaded_call(Preds, Options), TPreds, Dpreds, Ctx).
+	'$lgt_tr_body'(threaded_call(Preds, Options), TPreds, DPreds, Ctx).
 
-'$lgt_tr_body'(threaded_call((Pred; Preds), Options), TPreds, Dpreds, Ctx) :-
+'$lgt_tr_body'(threaded_call((Pred; Preds), Options), (TPred, TPreds), (DPred, DPreds), Ctx) :-
 	!,
-	'$lgt_tr_body'(threaded_call((Pred, Preds), [first| Options]), TPreds, Dpreds, Ctx).
+	'$lgt_tr_body'(threaded_call(Pred, [first| Options]), TPred, DPred, Ctx),
+	'$lgt_tr_body'(threaded_call(Preds, [first| Options]), TPreds, DPreds, Ctx).
 
 '$lgt_tr_body'(threaded_call(Obj::Pred, Options), MTPred, '$lgt_dbg_goal'(threaded_call(Obj::Pred, Options), MTPred, Ctx), Ctx) :-
 	!,
