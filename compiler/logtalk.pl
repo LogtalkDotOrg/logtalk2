@@ -5327,10 +5327,10 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	'$lgt_tr_body'(threaded_call(Pred, Options), TPred, DPred, Ctx),
 	'$lgt_tr_body'(threaded_call(Preds, Options), TPreds, DPreds, Ctx).
 
-'$lgt_tr_body'(threaded_call((Pred; Preds), Options), (TPred, TPreds), (DPred, DPreds), Ctx) :-
+'$lgt_tr_body'(threaded_call((Pred; Preds), Options), TPred, DPred, Ctx) :-
 	!,
-	'$lgt_tr_body'(threaded_call(Pred, [first| Options]), TPred, DPred, Ctx),
-	'$lgt_tr_body'(threaded_call(Preds, [first| Options]), TPreds, DPreds, Ctx).
+	'$lgt_convert_disj_to_conj'((Pred; Preds), Conjunction),
+	'$lgt_tr_body'(threaded_call(Conjunction, [first| Options]), TPred, DPred, Ctx).
 
 '$lgt_tr_body'(threaded_call(Obj::Pred, Options), MTPred, '$lgt_dbg_goal'(threaded_call(Obj::Pred, Options), MTPred, Ctx), Ctx) :-
 	!,
@@ -5782,6 +5782,18 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	throw(domain_error(not_less_than_zero, Arity)).
 
 '$lgt_compiler_db_pred_ind_chk'(_).
+
+
+
+% '$lgt_convert_disj_to_conj'(@callable, -callable)
+%
+% converts a disjunction of goals into a conjunction
+
+'$lgt_convert_disj_to_conj'((Pred; Disjunction), (Pred, Conjunction)) :-
+	!,
+	'$lgt_convert_disj_to_conj'(Disjunction, Conjunction).
+
+'$lgt_convert_disj_to_conj'(Pred, Pred).
 
 
 
