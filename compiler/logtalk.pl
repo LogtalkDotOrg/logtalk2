@@ -331,7 +331,7 @@ object_property(Obj, Prop) :-
 	'$lgt_current_object_'(Obj, _, _, _, _, Prop).		% static/dynamic property
 
 object_property(Obj, threaded) :-
-	'$lgt_default_flag'(supports_multiple_threads, true),
+	'$lgt_default_flag'(threads, on),
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	'$lgt_current_thread'(Prefix).
 
@@ -541,7 +541,7 @@ abolish_object(Obj) :-
 			retractall('$lgt_imports_category_'(Obj, _, _)),
 			retractall('$lgt_debugging_'(Obj)),
 			'$lgt_clean_lookup_caches',
-			(	'$lgt_default_flag'(supports_multiple_threads, true),
+			(	'$lgt_default_flag'(threads, on),
 				'$lgt_current_thread'(Prefix) ->
 				'$lgt_thread_exit'(Prefix)
 			;	true
@@ -3221,7 +3221,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	forall(retract(DDefClause), retractall(DDefHead)),
 	DDclClause =.. [DDcl, _, _],
 	retractall(DDclClause),
-	(	'$lgt_default_flag'(supports_multiple_threads, true) ->
+	(	'$lgt_default_flag'(threads, on) ->
 		(	'$lgt_current_thread'(Prefix) ->
 			'$lgt_thread_exit'(Prefix)
 		;	true
@@ -4229,8 +4229,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	throw(domain_error(object_directive, threaded/0)).
 
 '$lgt_tr_directive'(threaded, [], _) :-
-	\+ '$lgt_compiler_flag'(supports_multiple_threads, true),
-	throw(domain_error(supports_multiple_threads, threaded/0)).
+	\+ '$lgt_compiler_flag'(threads, on),
+	throw(domain_error(threads, threaded/0)).
 
 '$lgt_tr_directive'(threaded, [], _) :-
 	!,
@@ -8979,7 +8979,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_valid_flag'(altdirs).
 '$lgt_valid_flag'(hook).
 '$lgt_valid_flag'(supports_encoding_dir).
-'$lgt_valid_flag'(supports_multiple_threads).
+'$lgt_valid_flag'(threads).
 
 
 
@@ -8992,7 +8992,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_read_only_flag'(version).
 '$lgt_read_only_flag'(altdirs).
 '$lgt_read_only_flag'(supports_encoding_dir).
-'$lgt_read_only_flag'(supports_multiple_threads).
+'$lgt_read_only_flag'(threads).
 
 
 
@@ -10636,7 +10636,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	'$lgt_default_flag'(startup_message, Startup), write(', startup_message: '), write(Startup), nl,
 	'$lgt_default_flag'(altdirs, Altdirs), write('  altdirs: '), write(Altdirs),
 	'$lgt_default_flag'(supports_encoding_dir, Encodings), write(', supports_encoding_dir: '), write(Encodings), nl,
-	 '$lgt_default_flag'(supports_multiple_threads, Threads), write(', supports_multiple_threads: '), write(Threads), nl, nl.
+	 '$lgt_default_flag'(threads, Threads), write(', threads: '), write(Threads), nl, nl.
 
 '$lgt_default_flags'(verbose) :-
 	write('Default lint compilation flags:'), nl,
@@ -10687,8 +10687,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	write('  Alternative compilation directories (altdirs):             '), write(Altdirs), nl,
 	'$lgt_default_flag'(supports_encoding_dir, Encodings),
 	write('  Support for encoding directive (supports_encoding_dir):    '), write(Encodings), nl,
-	'$lgt_default_flag'(supports_multiple_threads, Threads),
-	write('  Support for multiple threads (supports_multiple_threads):  '), write(Threads), nl, nl.
+	'$lgt_default_flag'(threads, Threads),
+	write('  Multi-threading programming suport (threads):              '), write(Threads), nl, nl.
 
 
 
@@ -10710,7 +10710,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % Prolog compilers supporting multi-threading programming
 
 '$lgt_runtime_thread' :-
-	(	'$lgt_default_flag'(supports_multiple_threads, true) ->
+	(	'$lgt_default_flag'(threads, on) ->
 		'$lgt_current_object_'(user, Prefix, _, _, _, _),
 		'$lgt_init_object_thread'(Prefix)
 	;	true
