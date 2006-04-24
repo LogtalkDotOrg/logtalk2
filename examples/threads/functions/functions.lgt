@@ -8,6 +8,16 @@
 		comment is 'Default protocol for root find algorithms.']).
 
 	:- public(find_root/5).
+	:- mode(find_root(+object_identifier, +float, +float, +float, -float), one).
+	:- info(find_root/5, [
+		comment is '.',
+		argnames is ['Function', 'A', 'B', 'Error', 'Zero']]).
+
+	:- public(find_root/6).
+	:- mode(find_root(+object_identifier, +float, +float, +float, -float, -object_identifier), one).
+	:- info(find_root/6, [
+		comment is '.',
+		argnames is ['Function', 'A', 'B', 'Error', 'Zero', 'Method']]).
 
 :- end_protocol.
 
@@ -21,7 +31,16 @@
 		comment is 'Default protocol for real functions of a single real variable.']).
 
 	:- public(eval/2).
+	:- mode(eval(+float, -float), one).
+	:- info(eval/2, [
+		comment is '.',
+		argnames is ['X', 'Fx']]).
+
 	:- public(evald/2).
+	:- mode(evald(+float, -float), one).
+	:- info(evald/2, [
+		comment is '.',
+		argnames is ['X', 'DFx']]).
 
 :- end_protocol.
 
@@ -44,13 +63,28 @@
 	implements(functionp)).
 
 	% x^7 + 9x^5 - 13x - 17
-	% 1.25809265665 
+	% 1.29999999999945448
  
 	eval(X, Y) :-
 		Y is X**7 + 9*X**5 - 13*X - 17. 
 
 	evald(X, Y) :-
 		Y is 7*X**6 + 45*X**4 - 13. 
+
+:- end_object.
+
+
+:- object(f3,
+	implements(functionp)).
+
+	% (x - sqrt(2))^7
+	% 1.41421356237309537
+ 
+	eval(X, Y) :-
+		Y is (X - sqrt(2.0))**8.
+
+	evald(X, Y) :-
+		Y is 8*(X - sqrt(2.0))**7. 
 
 :- end_object.
 
@@ -67,12 +101,15 @@
 	:- threaded.
 
 	find_root(Function, A, B, Error, Zero) :-
+		find_root(Function, A, B, Error, Zero, _).
+
+	find_root(Function, A, B, Error, Zero, Algorithm) :-
 		threaded_call(
 			(	try_method(bisection, Function, A, B, Error, Zero)
 			;	try_method(newton, Function, A, B, Error, Zero)
 			;	try_method(muller, Function, A, B, Error, Zero)
 			)),
-		threaded_exit(try_method(_, Function, A, B, Error, Zero)).
+		threaded_exit(try_method(Algorithm, Function, A, B, Error, Zero)).
 
 	try_method(Algorithm, Function, A, B, Error, Zero) :-
 		Algorithm::find_root(Function, A, B, Error, Zero).
@@ -89,15 +126,18 @@
 		author is 'Paulo Nunes',
 		comment is 'Bisection algorithm.']).
 
-	find_root(Function, A, B, Error, Zero) :- 
-		bisection(Function, A, B, Error, Zero).
-	
-	bisection(Function, A, B, Error, Zero) :-
-		Xn1 is (A + B) / 2,
-		Function::eval(Xn1, Fn1),
-		bisection(Function, A, B, Xn1, Fn1, Error, Zero).
+	find_root(Function, A, B, Error, Zero) :-
+		Function::eval(A, Fa),
+		Function::eval(B, Fb),
+		(	Fa > 0.0, Fb < 0.0 ->
+			true
+		;	Fa < 0.0, Fb > 0.0
+		),
+		X0 is (A + B) / 2,
+		Function::eval(X0, F0),
+		bisection(Function, A, B, X0, F0, Error, Zero).
 
-	bisection(_, _, _, Xn1, 0, _, Xn1) :-
+	bisection(_, _, _, Xn1, 0.0, _, Xn1) :-
 		!.
 
 	bisection(_, Xn1, Xn, _, _, Error, Xn1) :-
@@ -108,7 +148,7 @@
 		Xn1 is (An + Bn) / 2,
 		Function::eval(Xn1, Fn1),
 		Function::eval(An, FAn),
-		(	Fn1*FAn < 0 ->
+		(	Fn1*FAn < 0.0 ->
 			An1 is An,
 			Bn1 is Xn1
 		;	An1 is Xn1,
@@ -128,7 +168,8 @@
 		author is 'Paulo Nunes',
 		comment is 'Newton algorithm.']).
 
-	find_root(Function, X0, _, Deviation, Zero) :- 
+	find_root(Function, Xa, Xb, Deviation, Zero) :-
+		X0 is (Xa + Xb) / 2, 
 		newton(Function, X0, Deviation, Zero).
 
 	newton(Function, X0, Deviation, Zero) :-
@@ -144,7 +185,7 @@
 		!.
 
 	% test solution
-	newton(_, Xn1, _, 0, _, Xn1) :-
+	newton(_, Xn1, _, 0.0, _, Xn1) :-
 		!.
 
 	% calc
@@ -190,7 +231,7 @@
 		!.
 
 	% test solution
-	muller(_, _, _, Xc, _, _, _, 0, _, _, _, Xc) :-
+	muller(_, _, _, Xc, _, _, _, 0.0, _, _, _, Xc) :-
 		!.
 
 	% calc
@@ -199,15 +240,15 @@
 		DDcbn is ((Yc - Yb) / H2n),
 		Cn is ((DDcbn - DDba) / (Xc - Xa)),
 		Bn is (DDcbn + H2n * Cn),
-		Rn is (Bn * Bn - 4 * Yc * Cn),
+		Rn is (Bn * Bn - 4.0 * Yc * Cn),
 		% complex
 		% write(Rn),
-		(	Rn < 0 ->
+		(	Rn < 0.0 ->
 			muller(Function, _, _, complex, Deviation, _, _, _, _, _, _, Zero),
 			!, fail
 		;	V is sqrt(Rn)
 		),
-		(	Bn > 0 ->
+		(	Bn > 0.0 ->
 			Dn is (Bn + V) 
 		;	Dn is (Bn - V)
 		),
