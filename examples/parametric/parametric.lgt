@@ -143,7 +143,7 @@
 	updated object identifier.
 */
 
-:- object(rectangle(_width, _height, _x, _y)).
+:- object(rectangle(_Width, _Height, _X, _Y)).
 
 	:- info([
 		version is 1.0,
