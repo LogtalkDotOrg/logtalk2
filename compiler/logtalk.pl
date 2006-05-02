@@ -10568,6 +10568,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	\+ \+ (
 		'$lgt_thread_peek_message'(Thread, '$lgt_id'(Goal, Sender, This, Self, Id)),
 		'$lgt_thread_get_message'(Thread, '$lgt_id'(Goal, Sender, This, Self, Id)),
+		'$lgt_thread_detach'(Id),
 		'$lgt_thread_exit'(Id)),
 	!,
 	'$lgt_mt_kill_other_workers'(Thread, Goal, Sender, This, Self).
