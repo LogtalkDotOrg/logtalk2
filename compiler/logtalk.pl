@@ -10473,7 +10473,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 			'$lgt_thread_create'(AtomicId, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), detached(false)),
 			'$lgt_thread_join'(AtomicId)
 		;	'$lgt_member'(first, Options) ->
-			'$lgt_thread_create'(Id, '$lgt_mt_competing_goal'(Goal, Sender, This, Self, Return), detached(true)),
+			'$lgt_thread_create'(Id, '$lgt_mt_competing_goal'(Goal, Sender, This, Self, Return), detached(false)),
 			'$lgt_thread_send_message'(Return, '$lgt_id'(Goal, Sender, This, Self, Id))
 		;	'$lgt_thread_create'(_, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), detached(true))
 		),
