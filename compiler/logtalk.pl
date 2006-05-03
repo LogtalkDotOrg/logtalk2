@@ -10502,7 +10502,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	;	(	catch(Goal, Error, ('$lgt_thread_send_message'(Return, '$lgt_reply'(Goal, Sender, This, Self, Error)), Flag = error)),
 			var(Flag),
 			'$lgt_thread_send_message'(Return, '$lgt_reply'(Goal, Sender, This, Self, success)),
-			'$lgt_thread_get_message'(next),
+			'$lgt_thread_get_message'('$lgt_next'),
 			fail
 		;	nonvar(Flag),
 			!,
@@ -10534,35 +10534,15 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % get a reply to a goal sent to the senders object dispatcher thread
 
 '$lgt_mt_get_reply'(Goal, Sender, This, Self, Options) :-
-	call_cleanup(
-		'$lgt_mt_get_reply_aux'(Goal, Sender, This, Self, Options),
-		('$lgt_current_object_'(This, ThisPrefix, _, _, _, _),
-		 (	'$lgt_thread_peek_message'(ThisPrefix, '$lgt_w_id'(Goal, Sender, This, Self, Id)) ->
-			'$lgt_thread_get_message'(ThisPrefix, '$lgt_w_id'(Goal, Sender, This, Self, Id)),
-			'$lgt_thread_exit'(Id),
-			'$lgt_thread_join'(Id)
-		 ;	true
-		 ))).
-
-
-'$lgt_mt_get_reply_aux'(Goal, Sender, This, Self, Options) :-
 	(	'$lgt_current_object_'(This, ThisPrefix, _, _, _, _) ->
 		(	'$lgt_current_thread'(ThisPrefix) ->
-			(	'$lgt_member'(peek, Options) ->
-				'$lgt_thread_peek_message'(ThisPrefix, '$lgt_reply'(Goal, Sender, This, Self, _))
-			;	'$lgt_member'(discard, Options) ->
-				copy_term((Goal, Sender, This, Self), (CGoal, CSender, CThis, CSelf)),
-				'$lgt_mt_discard_matching_replies'(ThisPrefix, CGoal, CSender, CThis, CSelf)
-			;	copy_term((Goal, Sender, This, Self), (CGoal, CSender, CThis, CSelf)),
-				'$lgt_thread_get_message'(ThisPrefix, '$lgt_reply'(Goal, Sender, This, Self, Result)),
-				'$lgt_mt_kill_other_workers'(ThisPrefix, CGoal, CSender, CThis, CSelf),
-				'$lgt_mt_discard_matching_replies'(ThisPrefix, CGoal, CSender, CThis, CSelf),
-				(	Result == success ->
-					true
-				;	Result == failure ->
-					!,
-					fail
-				;	throw(Result)
+			call_cleanup(
+				'$lgt_mt_get_reply'(ThisPrefix, Goal, Sender, This, Self, Options),
+				(	'$lgt_thread_peek_message'(ThisPrefix, '$lgt_w_id'(Goal, Sender, This, Self, Id)) ->
+					'$lgt_thread_get_message'(ThisPrefix, '$lgt_w_id'(Goal, Sender, This, Self, Id)),
+					'$lgt_thread_exit'(Id),
+					'$lgt_thread_join'(Id)
+				;	true
 				)
 			)
 		;	throw(error(existence_error(object_thread, Sender), Goal, Sender))
@@ -10570,16 +10550,30 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	;	throw(error(existence_error(object, Sender), Goal, Sender))
 	).
 
-'$lgt_mt_get_reply_aux'(Goal, Sender, This, Self, Options) :-
-	(	'$lgt_current_object_'(This, ThisPrefix, _, _, _, _) ->
-		(	'$lgt_current_thread'(ThisPrefix) ->
-			'$lgt_thread_peek_message'(ThisPrefix, '$lgt_w_id'(Goal, Sender, This, Self, Id)),
-			'$lgt_thread_send_message'(Id, next),
-			'$lgt_mt_get_reply_aux'(Goal, Sender, This, Self, Options)
-		;	throw(error(existence_error(object_thread, Sender), Goal, Sender))
+
+'$lgt_mt_get_reply'(Thread, Goal, Sender, This, Self, Options) :-
+	(	'$lgt_member'(peek, Options) ->
+		'$lgt_thread_peek_message'(Thread, '$lgt_reply'(Goal, Sender, This, Self, _))
+	;	'$lgt_member'(discard, Options) ->
+		copy_term((Goal, Sender, This, Self), (CGoal, CSender, CThis, CSelf)),
+		'$lgt_mt_discard_matching_replies'(Thread, CGoal, CSender, CThis, CSelf)
+	;	copy_term((Goal, Sender, This, Self), (CGoal, CSender, CThis, CSelf)),
+		'$lgt_thread_get_message'(Thread, '$lgt_reply'(Goal, Sender, This, Self, Result)),
+		'$lgt_mt_kill_other_workers'(Thread, CGoal, CSender, CThis, CSelf),
+		'$lgt_mt_discard_matching_replies'(Thread, CGoal, CSender, CThis, CSelf),
+		(	Result == success ->
+			true
+		;	Result == failure ->
+			!,
+			fail
+		;	throw(Result)
 		)
-	;	throw(error(existence_error(object, Sender), Goal, Sender))
 	).
+
+'$lgt_mt_get_reply'(Thread, Goal, Sender, This, Self, Options) :-
+	'$lgt_thread_peek_message'(Thread, '$lgt_w_id'(Goal, Sender, This, Self, Id)),
+	'$lgt_thread_send_message'(Id, '$lgt_next'),
+	'$lgt_mt_get_reply'(Thread, Goal, Sender, This, Self, Options).
 
 
 '$lgt_mt_discard_matching_replies'(Thread, Goal, Sender, This, Self) :-
