@@ -10473,9 +10473,10 @@ current_logtalk_flag(version, version(2, 28, 0)).
 			'$lgt_thread_create'(AtomicId, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), detached(false)),
 			'$lgt_thread_join'(AtomicId)
 		;	'$lgt_member'(first, Options) ->
-			'$lgt_thread_create'(Id, '$lgt_mt_competing_goal'(Goal, Sender, This, Self, Return), detached(false)),
-			'$lgt_thread_send_message'(Return, '$lgt_id'(Goal, Sender, This, Self, Id))
-		;	'$lgt_thread_create'(_, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), detached(true))
+			'$lgt_thread_create'(CgId, '$lgt_mt_competing_goal'(Goal, Sender, This, Self, Return), detached(false)),
+			'$lgt_thread_send_message'(Return, '$lgt_cg_id'(Goal, Sender, This, Self, CgId))
+		;	'$lgt_thread_create'(WorkerId, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), detached(false)),
+			'$lgt_thread_send_message'(Return, '$lgt_w_id'(Goal, Sender, This, Self, WorkerId))
 		),
 	fail.
 
@@ -10498,11 +10499,14 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return) :-
 	(	'$lgt_member'(noreply, Options) ->
 		catch(Goal, _, true)
-	;	(	catch(Goal, Error, ('$lgt_thread_send_message'(Return, '$lgt_reply'(Goal, Sender, This, Self, Error)), Flag = error)) ->
-			(	var(Flag) ->
-				'$lgt_thread_send_message'(Return, '$lgt_reply'(Goal, Sender, This, Self, success))
-			;	true
-			)
+	;	(	catch(Goal, Error, ('$lgt_thread_send_message'(Return, '$lgt_reply'(Goal, Sender, This, Self, Error)), Flag = error)),
+			var(Flag),
+			'$lgt_thread_send_message'(Return, '$lgt_reply'(Goal, Sender, This, Self, success)),
+			'$lgt_thread_get_message'(next),
+			fail
+		;	nonvar(Flag),
+			!,
+			true
 		;	'$lgt_thread_send_message'(Return, '$lgt_reply'(Goal, Sender, This, Self, failure))
 		)
 	).
@@ -10530,6 +10534,18 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % get a reply to a goal sent to the senders object dispatcher thread
 
 '$lgt_mt_get_reply'(Goal, Sender, This, Self, Options) :-
+	call_cleanup(
+		'$lgt_mt_get_reply_aux'(Goal, Sender, This, Self, Options),
+		('$lgt_current_object_'(This, ThisPrefix, _, _, _, _),
+		 (	'$lgt_thread_peek_message'(ThisPrefix, '$lgt_w_id'(Goal, Sender, This, Self, Id)) ->
+			'$lgt_thread_get_message'(ThisPrefix, '$lgt_w_id'(Goal, Sender, This, Self, Id)),
+			'$lgt_thread_exit'(Id),
+			'$lgt_thread_join'(Id)
+		 ;	true
+		 ))).
+
+
+'$lgt_mt_get_reply_aux'(Goal, Sender, This, Self, Options) :-
 	(	'$lgt_current_object_'(This, ThisPrefix, _, _, _, _) ->
 		(	'$lgt_current_thread'(ThisPrefix) ->
 			(	'$lgt_member'(peek, Options) ->
@@ -10544,10 +10560,22 @@ current_logtalk_flag(version, version(2, 28, 0)).
 				(	Result == success ->
 					true
 				;	Result == failure ->
+					!,
 					fail
 				;	throw(Result)
 				)
 			)
+		;	throw(error(existence_error(object_thread, Sender), Goal, Sender))
+		)
+	;	throw(error(existence_error(object, Sender), Goal, Sender))
+	).
+
+'$lgt_mt_get_reply_aux'(Goal, Sender, This, Self, Options) :-
+	(	'$lgt_current_object_'(This, ThisPrefix, _, _, _, _) ->
+		(	'$lgt_current_thread'(ThisPrefix) ->
+			'$lgt_thread_peek_message'(ThisPrefix, '$lgt_w_id'(Goal, Sender, This, Self, Id)),
+			'$lgt_thread_send_message'(Id, next),
+			'$lgt_mt_get_reply_aux'(Goal, Sender, This, Self, Options)
 		;	throw(error(existence_error(object_thread, Sender), Goal, Sender))
 		)
 	;	throw(error(existence_error(object, Sender), Goal, Sender))
@@ -10566,10 +10594,10 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_mt_kill_other_workers'(Thread, Goal, Sender, This, Self) :-
 	\+ \+ (
-		'$lgt_thread_peek_message'(Thread, '$lgt_id'(Goal, Sender, This, Self, Id)),
-		'$lgt_thread_get_message'(Thread, '$lgt_id'(Goal, Sender, This, Self, Id)),
-		'$lgt_thread_detach'(Id),
-		'$lgt_thread_exit'(Id)),
+		'$lgt_thread_peek_message'(Thread, '$lgt_cg_id'(Goal, Sender, This, Self, Id)),
+		'$lgt_thread_get_message'(Thread, '$lgt_cg_id'(Goal, Sender, This, Self, Id)),
+		'$lgt_thread_exit'(Id),
+		'$lgt_thread_join'(Id)),
 	!,
 	'$lgt_mt_kill_other_workers'(Thread, Goal, Sender, This, Self).
 
