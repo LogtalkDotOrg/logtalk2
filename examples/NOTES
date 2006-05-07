@@ -178,7 +178,7 @@ symdiff
 	differentiation and simplification
 
 threads
-	simple examples of multi-threading programming
+	several simple examples of multi-threading programming
 
 viewpoints
 	example on how to implement property and value sharing with prototypes
