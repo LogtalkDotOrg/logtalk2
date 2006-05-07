@@ -10466,17 +10466,18 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % object's thread message dispatcher processing loop
 
 '$lgt_mt_obj_dispatcher'(Thread) :-
-	atom_concat(Thread, '_atomic', AtomicId),
 	repeat,
 		'$lgt_thread_get_message'(Thread, '$lgt_goal'(Goal, Sender, This, Self, Options, Return)),
 		(	'$lgt_member'(atomic, Options) ->
 			'$lgt_thread_create'(AtomicId, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), detached(false)),
 			'$lgt_thread_join'(AtomicId)
 		;	'$lgt_member'(first, Options) ->
-			'$lgt_thread_create'(CgId, '$lgt_mt_competing_goal'(Goal, Sender, This, Self, Return), detached(false)),
-			'$lgt_thread_send_message'(Return, '$lgt_cg_id'(Goal, Sender, This, Self, CgId))
-		;	'$lgt_thread_create'(WorkerId, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), detached(false)),
-			'$lgt_thread_send_message'(Return, '$lgt_w_id'(Goal, Sender, This, Self, WorkerId))
+			'$lgt_thread_create'(DetId, '$lgt_mt_competing_goal'(Goal, Sender, This, Self, Return), detached(false)),
+			'$lgt_thread_send_message'(Return, '$lgt_det_id'(Goal, Sender, This, Self, DetId))
+		;	'$lgt_member'(noreply, Options) ->
+			'$lgt_thread_create'(_, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), detached(true))
+		;	'$lgt_thread_create'(NondetId, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Options, Return), detached(false)),
+			'$lgt_thread_send_message'(Return, '$lgt_non_det_id'(Goal, Sender, This, Self, NondetId))
 		),
 	fail.
 
@@ -10538,8 +10539,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		(	'$lgt_current_thread'(ThisPrefix) ->
 			call_cleanup(
 				'$lgt_mt_get_reply'(ThisPrefix, Goal, Sender, This, Self, Options),
-				(	'$lgt_thread_peek_message'(ThisPrefix, '$lgt_w_id'(Goal, Sender, This, Self, Id)) ->
-					'$lgt_thread_get_message'(ThisPrefix, '$lgt_w_id'(Goal, Sender, This, Self, Id)),
+				(	'$lgt_thread_peek_message'(ThisPrefix, '$lgt_non_det_id'(Goal, Sender, This, Self, Id)) ->
+					'$lgt_thread_get_message'(ThisPrefix, '$lgt_non_det_id'(Goal, Sender, This, Self, Id)),
 					'$lgt_thread_exit'(Id),
 					'$lgt_thread_join'(Id)
 				;	true
@@ -10571,7 +10572,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	).
 
 '$lgt_mt_get_reply'(Thread, Goal, Sender, This, Self, Options) :-
-	'$lgt_thread_peek_message'(Thread, '$lgt_w_id'(Goal, Sender, This, Self, Id)),
+	'$lgt_thread_peek_message'(Thread, '$lgt_non_det_id'(Goal, Sender, This, Self, Id)),
 	'$lgt_thread_send_message'(Id, '$lgt_next'),
 	'$lgt_mt_get_reply'(Thread, Goal, Sender, This, Self, Options).
 
@@ -10588,8 +10589,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_mt_kill_other_workers'(Thread, Goal, Sender, This, Self) :-
 	\+ \+ (
-		'$lgt_thread_peek_message'(Thread, '$lgt_cg_id'(Goal, Sender, This, Self, Id)),
-		'$lgt_thread_get_message'(Thread, '$lgt_cg_id'(Goal, Sender, This, Self, Id)),
+		'$lgt_thread_peek_message'(Thread, '$lgt_det_id'(Goal, Sender, This, Self, Id)),
+		'$lgt_thread_get_message'(Thread, '$lgt_det_id'(Goal, Sender, This, Self, Id)),
 		'$lgt_thread_exit'(Id),
 		'$lgt_thread_join'(Id)),
 	!,
