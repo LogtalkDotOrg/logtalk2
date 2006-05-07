@@ -10470,20 +10470,20 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_mt_obj_dispatcher'(Thread) :-
 	repeat,
 		'$lgt_thread_get_message'(Thread, '$lgt_goal'(Goal, Sender, This, Self, Options, Return)),
-		(	Goal == '$lgt_exit' ->
+		(	Goal == '$lgt_exit' ->						% when abolishing/reloading the object or just halting Logtalk
 			'$lgt_thread_exit'
-		;	(	'$lgt_member'(atomic, Options) ->
-				(	'$lgt_member'(noreply, Options) ->
+		;	(	'$lgt_member'(atomic, Options) ->		% object will not accept other threaded goals until this one is proved
+				(	'$lgt_member'(noreply, Options) ->	% don't bother reporting goal success, failure, or exception
 					'$lgt_thread_create'(AtomicId, catch(Goal, _, true), detached(false))
-				;	'$lgt_thread_create'(AtomicId, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Return), detached(false))
+				;	'$lgt_thread_create'(AtomicId, '$lgt_mt_non_det_goal'(Goal, Sender, This, Self, Return), detached(false))
 				),
-				'$lgt_thread_join'(AtomicId)		% wait until atomic goal terminates
-			;	'$lgt_member'(first, Options) ->
+				'$lgt_thread_join'(AtomicId)			% wait until atomic goal terminates
+			;	'$lgt_member'(first, Options) ->		% goal is one of a set of competing goals performing the same task
 				'$lgt_thread_create'(DetId, '$lgt_mt_competing_goal'(Goal, Sender, This, Self, Return), detached(false)),
 				'$lgt_thread_send_message'(Return, '$lgt_det_id'(Goal, Sender, This, Self, DetId))
-			;	'$lgt_member'(noreply, Options) ->
+			;	'$lgt_member'(noreply, Options) ->		% don't bother reporting goal success, failure, or exception
 				'$lgt_thread_create'(_, catch(Goal, _, true), detached(true))
-			;	'$lgt_thread_create'(NondetId, '$lgt_mt_process_goal'(Goal, Sender, This, Self, Return), detached(false)),
+			;	'$lgt_thread_create'(NondetId, '$lgt_mt_non_det_goal'(Goal, Sender, This, Self, Return), detached(false)),
 				'$lgt_thread_send_message'(Return, '$lgt_non_det_id'(Goal, Sender, This, Self, NondetId))
 			)
 		),
@@ -10493,8 +10493,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 % '$lgt_mt_competing_goal'(G+callable, +object_identifier, +object_identifier, +object_identifier, +atom)
 %
-% processes a deterministic message received by an object's thread queue
-% competing goals may be killed before completion...
+% processes a deterministic message received by an object's thread queue;
+% competing goals may be killed before completion
 
 '$lgt_mt_competing_goal'(Goal, Sender, This, Self, Return) :-
 	(	catch(Goal, _, fail) ->
@@ -10504,11 +10504,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
-% '$lgt_mt_process_goal'(+callable, +object_identifier, +object_identifier, +object_identifier, +atom)
+% '$lgt_mt_non_det_goal'(+callable, +object_identifier, +object_identifier, +object_identifier, +atom)
 %
 % processes a non-deterministic message received by an object's thread queue
 
-'$lgt_mt_process_goal'(Goal, Sender, This, Self, Return) :-
+'$lgt_mt_non_det_goal'(Goal, Sender, This, Self, Return) :-
 	(	catch(Goal, Error, ('$lgt_thread_send_message'(Return, '$lgt_reply'(Goal, Sender, This, Self, Error)), Flag = error)),
 		var(Flag),
 		'$lgt_thread_send_message'(Return, '$lgt_reply'(Goal, Sender, This, Self, success)),
@@ -10573,8 +10573,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		'$lgt_mt_discard_matching_replies'(Thread, Goal, Sender, This, Self)
 	;	copy_term((Goal, Sender, This, Self), (CGoal, CSender, CThis, CSelf)),
 		'$lgt_thread_get_message'(Thread, '$lgt_reply'(Goal, Sender, This, Self, Result)),
-		(	'$lgt_thread_peek_message'(Thread, '$lgt_det_id'(Goal, Sender, This, Self, _)) ->	% if competing goals
-			'$lgt_mt_kill_competing_workers'(Thread, CGoal, CSender, CThis, CSelf),				% then kill other threads
+		(	'$lgt_thread_peek_message'(Thread, '$lgt_det_id'(Goal, Sender, This, Self, _)) ->	% if dealing with competing goals
+			'$lgt_mt_kill_competing_workers'(Thread, CGoal, CSender, CThis, CSelf),				% then kill competing threads
 			'$lgt_mt_discard_matching_replies'(Thread, CGoal, CSender, CThis, CSelf),			% and discard any other replies
 			!																					% commit reply; no alternative solutions
 		;	true
