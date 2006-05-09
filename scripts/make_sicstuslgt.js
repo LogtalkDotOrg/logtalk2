@@ -17,10 +17,22 @@ WScript.Echo('');
 
 var WshShell = new ActiveXObject("WScript.Shell");
 
-var prolog_path4 = WshShell.RegRead("HKLM\\Software\\SICS\\SICStus4.0_win32\\SP_PATH") + "\\bin\\spwin.exe";
-var prolog_path3 = WshShell.RegRead("HKLM\\Software\\SICS\\SICStus3.12_win32\\SP_PATH") + "\\bin\\spwin.exe";
-
+var prolog_path4;
+var prolog_path3;
 var config_file;
+
+try {
+	prolog_path4 = WshShell.RegRead("HKLM\\Software\\SICS\\SICStus4.0_win32\\SP_PATH") + "\\bin\\spwin.exe";
+}
+catch(e) {
+	prolog_path4 = "not_installed.lgt";
+}
+try {
+	prolog_path3 = WshShell.RegRead("HKLM\\Software\\SICS\\SICStus3.12_win32\\SP_PATH") + "\\bin\\spwin.exe";
+}
+catch(e) {
+	prolog_path3 = "not_installed.lgt";
+}
 
 var FSObject = new ActiveXObject("Scripting.FileSystemObject");
 
