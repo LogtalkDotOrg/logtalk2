@@ -12,17 +12,28 @@ if (WScript.Arguments.Unnamed.Length > 0) {
 
 WScript.Echo('');
 WScript.Echo('Creating a shortcut named "Logtalk - SICStus Prolog" for running Logtalk with');
-WScript.Echo('SICStus Prolog 3.12 (edit the script if you are using other version)...');
+WScript.Echo('SICStus Prolog 4.0 or 3.12 (edit the script if you are using other version)...');
 WScript.Echo('');
 
 var WshShell = new ActiveXObject("WScript.Shell");
 
-var prolog_path = WshShell.RegRead("HKLM\\Software\\SICS\\SICStus3.12_win32\\SP_PATH") + "\\bin\\spwin.exe";
+var prolog_path4 = WshShell.RegRead("HKLM\\Software\\SICS\\SICStus4.0_win32\\SP_PATH") + "\\bin\\spwin.exe";
+var prolog_path3 = WshShell.RegRead("HKLM\\Software\\SICS\\SICStus3.12_win32\\SP_PATH") + "\\bin\\spwin.exe";
+
+var config_file;
 
 var FSObject = new ActiveXObject("Scripting.FileSystemObject");
 
-if (!FSObject.FileExists(prolog_path)) {
-	WScript.Echo("Error! Cannot find spwin.exe at the expected place!");
+if (FSObject.FileExists(prolog_path4)) {
+	prolog_path = prolog_path4;
+	config_file = "sicstus4.config";
+}
+else if (FSObject.FileExists(prolog_path3)) {
+	prolog_path = prolog_path3;
+	config_file = "sicstus.config";
+}
+else {
+	WScript.Echo("Error! Cannot find spwin.exe at the expected places!");
 	WScript.Echo("Please, edit the script and update the location of the spwin.exe executable.");
 	WScript.Quit(1);
 }
@@ -57,7 +68,7 @@ if (!FSObject.FolderExists(logtalk_home + "\\bin"))
 
 var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_sicstus.pl", true);
 
-f.WriteLine(":- consult('$LOGTALKUSER/configs/sicstus.config').");
+f.WriteLine(":- consult('$LOGTALKUSER/configs/" + config_file + "').");
 f.WriteLine(":- consult('$LOGTALKHOME/compiler/logtalk.pl').");
 f.WriteLine(":- consult('$LOGTALKUSER/libpaths/libpaths.pl').");
 f.Close();
