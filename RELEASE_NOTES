@@ -17,7 +17,8 @@ RELEASE NOTES
 	threaded_exit/1-2. Added a new set of exemples, "threads".
 
 	Updated the config file for the forthcoming SICStus Prolog 4.0 version 
-	to work in the current beta version.
+	to work in the current beta version. Modified the "make_sicstus.lgt.js" 
+	script to work with both SICStus Prolog 3.12 and 4.0 versions.
 
 
 2.27.1 - March 27, 2006
