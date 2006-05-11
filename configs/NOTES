@@ -378,8 +378,8 @@ SICStus Prolog 4.0
 
 	sicstus4.config
 
-	Config file for the forthcoming SICStus Prolog 4.0 version (based only on 
-	publicly available information).
+	Config file for the forthcoming SICStus Prolog 4.0 version (tested with 
+	the Windows beta version).
 
 
 SWI Prolog 3.3.x and all later versions
