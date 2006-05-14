@@ -990,13 +990,6 @@ threaded_call(Goal, Options) :-
 	'$lgt_tr_body'(threaded_call(Goal, Options), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
-'$lgt_threaded_call'(Thread, Goal, Sender, This, Self, Options) :-
-	(	'$lgt_member'(wait, Options) ->
-		'$lgt_mt_send_goal'(Thread, Goal, Sender, This, Self, Options),
-		'$lgt_mt_get_reply'(Goal, Sender, This, Self, Options)
-	;	'$lgt_mt_send_goal'(Thread, Goal, Sender, This, Self, Options)
-	).
-
 
 threaded_exit(Goal) :-
 	catch(
@@ -1018,9 +1011,6 @@ threaded_exit(Goal, Options) :-
 	'$lgt_tr_body'(threaded_exit(Goal, Options), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
-
-'$lgt_threaded_exit'(Goal, Sender, This, Self, Options) :-
-	'$lgt_mt_get_reply'(Goal, Sender, This, Self, Options).
 
 
 % compiling and loading built-in predicates
@@ -5338,19 +5328,19 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	!,
 	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
 	'$lgt_tr_msg'(Pred, Obj, TPred, This),
-	MTPred = '$lgt_threaded_call'(Obj, TPred, Sender, This, Self, Options).
+	MTPred = '$lgt_mt_send_goal'(Obj, TPred, Sender, This, Self, Options).
 
 '$lgt_tr_body'(threaded_call(::Pred, Options), MTPred, '$lgt_dbg_goal'(threaded_call(::Pred, Options), MTPred, Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
 	'$lgt_tr_self_msg'(Pred, TPred, This, Self),
-	MTPred = '$lgt_threaded_call'(Self, TPred, Sender, This, Self, Options).
+	MTPred = '$lgt_mt_send_goal'(Self, TPred, Sender, This, Self, Options).
 
 '$lgt_tr_body'(threaded_call(Pred, Options), MTPred, '$lgt_dbg_goal'(threaded_call(Pred, Options), MTPred, Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
 	'$lgt_tr_body'(Pred, TPred, _, Ctx),
-	MTPred = '$lgt_threaded_call'(This, TPred, Sender, This, Self, Options).
+	MTPred = '$lgt_mt_send_goal'(This, TPred, Sender, This, Self, Options).
 
 
 '$lgt_tr_body'(threaded_exit(Pred), TPred, DPred, Ctx) :-
@@ -5374,19 +5364,19 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	!,
 	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
 	'$lgt_tr_msg'(Pred, Obj, TPred, This),
-	MTPred = '$lgt_threaded_exit'(TPred, Sender, This, Self, Options).
+	MTPred = '$lgt_mt_get_reply'(TPred, Sender, This, Self, Options).
 
 '$lgt_tr_body'(threaded_exit(::Pred, Options), MTPred, '$lgt_dbg_goal'(threaded_exit(::Pred, Options), MTPred, Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
 	'$lgt_tr_self_msg'(Pred, TPred, This, Self),
-	MTPred = '$lgt_threaded_exit'(TPred, Sender, This, Self, Options).
+	MTPred = '$lgt_mt_get_reply'(TPred, Sender, This, Self, Options).
 
 '$lgt_tr_body'(threaded_exit(Pred, Options), MTPred, '$lgt_dbg_goal'(threaded_exit(Pred, Options), MTPred, Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
 	'$lgt_tr_body'(Pred, TPred, _, Ctx),
-	MTPred = '$lgt_threaded_exit'(TPred, Sender, This, Self, Options).
+	MTPred = '$lgt_mt_get_reply'(TPred, Sender, This, Self, Options).
 
 
 % message sending
@@ -10620,7 +10610,6 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_valid_threaded_call_option'(atomic).
 '$lgt_valid_threaded_call_option'(first).
 '$lgt_valid_threaded_call_option'(noreply).
-'$lgt_valid_threaded_call_option'(wait).
 
 
 '$lgt_valid_threaded_exit_option'(peek).

@@ -62,7 +62,8 @@
 		create_object(Name, [extends(This)], [threaded], [age(Age), gender(Gender)]).
 
 	ask_age(Friend, Age) :-
-		threaded_call(Friend::age(Age), [wait]).
+		threaded_call(Friend::age(Age)),
+		threaded_exit(Friend::age(Age)).
 
 	birthday :-
 		::retract(age(Old)),
