@@ -20,6 +20,11 @@ RELEASE NOTES
 	to work in the current beta version. Modified the "make_sicstus.lgt.js" 
 	script to work with both SICStus Prolog 3.12 and 4.0 versions.
 
+	Updated the config file for YAP to workaround a problem on the Windows 
+	version where testing for directory existence fails if the path ends with 
+	a slash (or a double backslash); this problem prevents the use of library 
+	notation to load source files.
+
 
 2.27.1 - March 27, 2006
 
