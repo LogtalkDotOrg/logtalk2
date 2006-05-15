@@ -13,8 +13,9 @@ RELEASE NOTES
 2.28.0 - May ??, 2006
 
 	Added support for asynchronous messages using multiple threads. Added a 
-	new directive, threaded/0, and four new methods, threaded_call/1-2 and
-	threaded_exit/1-2. Added a new set of exemples, "threads".
+	new object directive, threaded/0, and four new built-in predicates, 
+	threaded_call/1-2 and threaded_exit/1-2. Added a new set of exemples, 
+	"threads".
 
 	Updated the config file for the forthcoming SICStus Prolog 4.0 version 
 	to work in the current beta version. Modified the "make_sicstus.lgt.js" 
