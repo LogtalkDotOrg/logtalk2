@@ -40,11 +40,14 @@ In order to automatically create and set up an object's thread the following obj
 <p>
 The thread is created when the object is loaded or created at runtime. The thread for the pseudo-object <code>user</code> is automatically created when Logtalk is loaded (provided that multi-threading programming is supported and enabled for the chosen Prolog compiler).
 </p>
+<p>
+The message queue associated with an object's thread receives the replies to the <em>threaded calls</em> made from within the object.
+</p>
 
 <h2>Multi-threading built-in predicates<a id="predicates"></a></h2>
 
 <p>
-Logtalk provides a small set of built-in predicates for running goals in new threads and for retriving goal results. These predicates provide high-level support for multi-threading programming which covers the most common use cases.
+Logtalk provides a small set of built-in predicates for running goals in new threads and for retrieving goal results. These predicates provide high-level support for multi-threading programming which covers the most common use cases.
 </p>
 
 <h3>Proving goals asynchronously using threads<a id="call"></a></h3>
@@ -52,14 +55,35 @@ Logtalk provides a small set of built-in predicates for running goals in new thr
 <p>
 A goal may be proved asynchronously using a new thread by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_call1.html"><code>threaded_call/1</code></a>. The term representing the goal is copied, not shared with the thread. Therefore, any variable bindings resulting from the goal proof must be retrieved by calls to the built-in predicates <a title="Consult reference manual" href="../refman/builtins/threaded_exit1.html"><code>threaded_exit/1</code></a> and <a title="Consult reference manual" href="../refman/builtins/threaded_exit2.html"><code>threaded_exit/2</code></a>.
 </p>
+<p>
+For example, assume that we want to find all the prime numbers in a given interval, <code>[N, M]</code>. We can split the interval in two parts and then span two threads to compute the primes numbers in which sub-interval:
+</p>
+<pre>prime_numbers(N, M, Primes) :-
+    M &gt; N,
+    N1 is N + (M - N) // 2,
+    N2 is N1 + 1,
+    threaded_call(prime_numbers(N, N1, [], Acc)),
+    threaded_call(prime_numbers(N2, M, Acc, Primes)),
+    threaded_exit(prime_numbers(N, N1, [], Acc)),
+    threaded_exit(prime_numbers(N2, M, Acc, Primes)).
 
-<h3>Retriving asynchronous goal proof results<a id="exit"></a></h3>
+prime_numbers(N, M, Acc, Primes) :-
+    ...
+</pre>
+<p>
+Note that a call to the <code>threaded_call/1</code> predicate is always true (assuming a callable argument). The <code>threaded_exit/1</code> calls block execution until the results of the <code>threaded_call/1</code> calls are sent to the object's thread. In a computer with two or more processors (or with a processor with or more cores) the code above can be expected to provide better computation times when compared with single-threaded code for sufficiently large intervals.
+</p>
+
+<h3>Retrieving asynchronous goal proof results<a id="exit"></a></h3>
 
 <p>
 The results of proving a goal asynchronously in a new thread may be retrieved by calling the Logtalk built-in predicates <a title="Consult reference manual" href="../refman/builtins/threaded_exit1.html"><code>threaded_exit/1</code></a> and <a title="Consult reference manual" href="../refman/builtins/threaded_exit2.html"><code>threaded_exit/2</code></a> in the same object where the call to the <code>threaded_call/1-2</code> predicate was made.
 </p>
 <p>
-Calls to the <code>threaded_exit/1</code> predicate, and, by default, calls to the <code>threaded_exit/2</code> predicate, block the caller until the object's thread receives the reply to the assynchronous call. The option <code>peek</code> may be used to check if a reply is already avaialble. Using this option, the <code>threaded_exit/2</code> predicate call succeeds or fails immediately without bloking the caller. However, keep in mind that repeated use of this option is equivalent to polling, which may severely hurt performance.
+Calls to the <code>threaded_exit/1</code> predicate, and, by default, calls to the <code>threaded_exit/2</code> predicate, block the caller until the object's thread receives the reply to the asynchronous call. The option <code>peek</code> may be used to check if a reply is already available. Using this option, the <code>threaded_exit/2</code> predicate call succeeds or fails immediately without blocking the caller. However, keep in mind that repeated use of this option is equivalent to polling, which may severely hurt performance.
+</p>
+<p>
+The <code>threaded_exit/2</code> predicate supports an additional option, <code>discard</code>, which allows us to discard all matching replies available on the object's thread waiting to be retrieved.
 </p>
 
 <h2>One-way asynchronous calls<a id="noreply"></a></h2>
@@ -77,7 +101,32 @@ Proving a goal asynchronously using a new thread may lead to problems when the g
 <h2>Competing goals<a id="competing"></a></h2>
 
 <p>
-
+Usually, the argument of the <code>threaded_call/1</code> predicate is a single goal. The predicate also accepts as an argument a conjunction or a disjunction of goals. The semantics of a conjunction of goals is simply the conjunction of the <code>threaded_call/1</code> calls of each individual goal. I.e. a call such as:
+</p>
+<pre>
+threaded_call((G1, G2, ...)), ...
+</pre>
+<p>
+is equivalent to writing:
+</p>
+<pre>
+threaded_call(G1), threaded_call(G2), ... 
+</pre>
+<p>
+A disjunction of goals is interpreted as running a set of <em>competing</em> goals, each one in its own thread. The first thread to terminate successfully leads to the termination of the other threads. This is useful when we have several methods to compute something, without knowing a priori which method will be faster. For example, assume that we have defined a predicate <code>try_method/2</code> that calls a chosen method, returning its result. We may then write:
+</p>
+<pre>method(Result) :-
+    ...,
+    threaded_call(
+        (   try_method(method1, Result)
+        ;   try_method(method2, Result)
+        ;   ...
+        )),
+    threaded_exit(try_method(Method, Result)),
+    ...
+</pre>
+<p>
+The <code>threaded_exit/1</code> call will return both the identifier of the fastest method and its result. Note that, when setting up competing goals such as in the example above, we must ensure that the argument of the <code>threaded_exit/1</code> call unifies with each individual goal in the disjunction used as argument on the <code>threaded_call/1</code> call. This ensures that the <code>threaded_exit/1</code> call will return the results of the first method to complete, no matter which one.
 </p>
 
 <div class="footer">
