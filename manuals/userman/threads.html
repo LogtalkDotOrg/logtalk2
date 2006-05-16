@@ -22,13 +22,13 @@
 <h1>Multi-threading programming</h1>
 
 <p>
-Logtalk supports multi-threading programming on selected Prolog compilers. Logtalk makes use of the low-level Prolog predicates that interface with POSIX threads (or a suitable emulation), providing a high-level set of predicates that allows programmers to easily run several goals concurrently and to send asynchronous messages without caring about the details of creating, synchronizing, or communicating with threads. Logtalk multi-threading programming integrates with object-oriented programming by allowing the optional creation of object threads, enabling objects to send and receive asynchronous messages or to call local predicates concurrently.
+Logtalk supports multi-threading programming on selected Prolog compilers. Logtalk makes use of the low-level Prolog predicates that interface with POSIX threads (or a suitable emulation), providing a high-level set of predicates that allows programmers to easily take advantage of modern multi-processor and multi-core computers without caring about the details of creating, synchronizing, or communicating with threads. Logtalk multi-threading programming integrates with object-oriented programming by allowing the optional creation of per object threads, enabling objects to send and receive asynchronous messages or to call local predicates concurrently.
 </p>
 
 <h2>Enabling multi-threading support<a id="enabling"></a></h2>
 
 <p>
-Multi-threading support is disabled by default. It must be enabled on the Prolog configuration files of supported compilers. A read-only compiler flag, <code>threads</code>, is used. Its value should be set to <code>on</code> to enable multi-threading support on Prolog compilers providing suitable support for POSIX threads.
+Multi-threading support is disabled by default. It must be enabled on the Prolog configuration files of supported compilers by setting the read-only compiler flag <code>threads</code> to <code>on</code>.
 </p>
 
 <h2>Object threads<a id="directive"></a></h2>
@@ -43,26 +43,41 @@ The thread is created when the object is loaded or created at runtime. The threa
 
 <h2>Multi-threading built-in predicates<a id="predicates"></a></h2>
 
+<p>
+Logtalk provides a small set of built-in predicates for running goals in new threads and for retriving goal results. These predicates provide high-level support for multi-threading programming which covers the most common use cases.
+</p>
+
 <h3>Proving goals asynchronously using threads<a id="call"></a></h3>
 
-A goal may be proved asynchronously using a new thread by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_call1.html"><code>threaded_call/1</code></a>. The term representing the goal is <strong>copied</strong>, thus any variable bindings resulting from the goal proof are lost and must be retrieved by calls to the built-in predicates <a title="Consult reference manual" href="../refman/builtins/threaded_exit1.html"><code>threaded_exit/1</code></a> and <a title="Consult reference manual" href="../refman/builtins/threaded_exit2.html"><code>threaded_exit/2</code></a>.
+<p>
+A goal may be proved asynchronously using a new thread by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_call1.html"><code>threaded_call/1</code></a>. The term representing the goal is copied, not shared with the thread. Therefore, any variable bindings resulting from the goal proof must be retrieved by calls to the built-in predicates <a title="Consult reference manual" href="../refman/builtins/threaded_exit1.html"><code>threaded_exit/1</code></a> and <a title="Consult reference manual" href="../refman/builtins/threaded_exit2.html"><code>threaded_exit/2</code></a>.
+</p>
 
 <h3>Retriving asynchronous goal proof results<a id="exit"></a></h3>
 
-The results of proving a goal asynchronously in a new thread may be retrieved by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_exit1.html"><code>threaded_exit/1</code></a> in the same object where the call to the <code>threaded_call/1-2</code> predicate was made.
+<p>
+The results of proving a goal asynchronously in a new thread may be retrieved by calling the Logtalk built-in predicates <a title="Consult reference manual" href="../refman/builtins/threaded_exit1.html"><code>threaded_exit/1</code></a> and <a title="Consult reference manual" href="../refman/builtins/threaded_exit2.html"><code>threaded_exit/2</code></a> in the same object where the call to the <code>threaded_call/1-2</code> predicate was made.
+</p>
+<p>
+Calls to the <code>threaded_exit/1</code> predicate, and, by default, calls to the <code>threaded_exit/2</code> predicate, block the caller until the object's thread receives the reply to the assynchronous call. The option <code>peek</code> may be used to check if a reply is already avaialble. Using this option, the <code>threaded_exit/2</code> predicate call succeeds or fails immediately without bloking the caller. However, keep in mind that repeated use of this option is equivalent to polling, which may severely hurt performance.
+</p>
 
 <h2>One-way asynchronous calls<a id="noreply"></a></h2>
 
-Sometimes we want to call a goal in a new thread without caring for the results. This may be accomplished bu using the built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_call2.html"><code>threaded_call/2</code></a> with the option <code>noreply</code>.
+<p>
+Sometimes we want to call a goal in a new thread without caring for the results. This may be accomplished by using the built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_call2.html"><code>threaded_call/2</code></a> with the option <code>noreply</code>.
+</p>
 
 <h2>Atomic goals and asynchronous calls<a id="atomic"></a></h2>
 
-Proving a goal asynchronously using a new thread may lead to problems when the goal implies side-effects such as input/output operations or modifications to an object's database. For example, if a new thread is started with a similar goal before the first one finished its job, we may end with mixed output or a corrupted database. IN these cases, we may call the built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_call2.html"><code>threaded_call/2</code></a> using the option <code>atomic</code> in order to ensure that the object which will span the thread for proving the goal argument will not accept any other asynchronous request until the first one terminates.
+<p>
+Proving a goal asynchronously using a new thread may lead to problems when the goal implies side-effects such as input/output operations or modifications to an object's database. For example, if a new thread is started with a similar goal before the first one finished its job, we may end with mixed output or a corrupted database. In these cases, we may call the built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_call2.html"><code>threaded_call/2</code></a> using the option <code>atomic</code> in order to ensure that the object which will span the thread for proving the goal argument will not accept any other asynchronous request until the first one terminates.
+</p>
 
-<h2>Competing goals<a id="atomic"></a></h2>
-
+<h2>Competing goals<a id="competing"></a></h2>
 
 <p>
+
 </p>
 
 <div class="footer">
