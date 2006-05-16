@@ -34,7 +34,7 @@ Multi-threading support is disabled by default. It must be enabled on the Prolog
 <h2>Object threads<a id="directive"></a></h2>
 
 <p>
-In order to automatically create and set up an object's thread the following object directive must be used:
+In order to automatically create and set up an object's thread the <a title="Consult reference manual" href="../refman/directives/threaded0.html"><code>threaded/0</code></a> object directive must be used:
 </p>
 <pre>:- threaded.</pre>
 <p>
@@ -47,7 +47,7 @@ The message queue associated with an object's thread receives the replies to the
 <h2>Multi-threading built-in predicates<a id="predicates"></a></h2>
 
 <p>
-Logtalk provides a small set of built-in predicates for running goals in new threads and for retrieving goal results. These predicates provide high-level support for multi-threading programming which covers the most common use cases.
+Logtalk provides a small set of built-in predicates for running goals in new threads and for retrieving goal results. These predicates provide high-level support for multi-threading programming, covering the most common use cases.
 </p>
 
 <h3>Proving goals asynchronously using threads<a id="call"></a></h3>
@@ -56,7 +56,7 @@ Logtalk provides a small set of built-in predicates for running goals in new thr
 A goal may be proved asynchronously using a new thread by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_call1.html"><code>threaded_call/1</code></a>. The term representing the goal is copied, not shared with the thread. Therefore, any variable bindings resulting from the goal proof must be retrieved by calls to the built-in predicates <a title="Consult reference manual" href="../refman/builtins/threaded_exit1.html"><code>threaded_exit/1</code></a> and <a title="Consult reference manual" href="../refman/builtins/threaded_exit2.html"><code>threaded_exit/2</code></a>.
 </p>
 <p>
-For example, assume that we want to find all the prime numbers in a given interval, <code>[N, M]</code>. We can split the interval in two parts and then span two threads to compute the primes numbers in which sub-interval:
+For example, assume that we want to find all the prime numbers in a given interval, <code>[N, M]</code>. We can split the interval in two parts and then span two threads to compute the primes numbers in each sub-interval:
 </p>
 <pre>prime_numbers(N, M, Primes) :-
     M &gt; N,
@@ -77,19 +77,39 @@ Note that a call to the <code>threaded_call/1</code> predicate is always true (a
 <h3>Retrieving asynchronous goal proof results<a id="exit"></a></h3>
 
 <p>
-The results of proving a goal asynchronously in a new thread may be retrieved by calling the Logtalk built-in predicates <a title="Consult reference manual" href="../refman/builtins/threaded_exit1.html"><code>threaded_exit/1</code></a> and <a title="Consult reference manual" href="../refman/builtins/threaded_exit2.html"><code>threaded_exit/2</code></a> in the same object where the call to the <code>threaded_call/1-2</code> predicate was made.
+The results of proving a goal asynchronously in a new thread may be retrieved by calling the Logtalk built-in predicates <a title="Consult reference manual" href="../refman/builtins/threaded_exit1.html"><code>threaded_exit/1</code></a> and <a title="Consult reference manual" href="../refman/builtins/threaded_exit2.html"><code>threaded_exit/2</code></a> within the same object where the call to the <code>threaded_call/1-2</code> predicate was made.
 </p>
 <p>
-Calls to the <code>threaded_exit/1</code> predicate, and, by default, calls to the <code>threaded_exit/2</code> predicate, block the caller until the object's thread receives the reply to the asynchronous call. The option <code>peek</code> may be used to check if a reply is already available. Using this option, the <code>threaded_exit/2</code> predicate call succeeds or fails immediately without blocking the caller. However, keep in mind that repeated use of this option is equivalent to polling, which may severely hurt performance.
+The <code>threaded_exit/1-2</code> predicates allows us to retrieve alternative solutions through backtracking. For example, assuming a <code>lists</code> object implementing the usual <code>member/2</code> predicate, we could write:
+</p>
+<pre>| ?- threaded_call(lists::member(X, [1,2,3])).
+
+X = _G189 
+yes
+
+| ?- threaded_exit(lists::member(X, [1,2,3])).
+
+X = 1 ;
+X = 2 ;
+X = 3 ;
+no
+</pre>
+<p>
+Note that, in this case, the <code>threaded_call/1</code> and the <code>threaded_exit/1</code> calls are made within the pseudo-object <em>user</em>. The implicit thread running the <code>lists::member/2</code> goal suspends itself after providing a solution, waiting for the request of an alternative solution; the thread is terminated when the runtime engine detects that further backtracking to the <code>threaded_exit/1</code> call is no longer possible.
 </p>
 <p>
-The <code>threaded_exit/2</code> predicate supports an additional option, <code>discard</code>, which allows us to discard all matching replies available on the object's thread waiting to be retrieved.
+Calls to the <code>threaded_exit/1</code> predicate, and, by default, calls to the <code>threaded_exit/2</code> predicate, block the caller until the object's thread receives the reply to the asynchronous call. The option <code>peek</code> may be used to check if a reply is already available without removing it from the thread queue. Using this option, the <code>threaded_exit/2</code> predicate call succeeds or fails immediately without blocking the caller. However, keep in mind that repeated use of this option is equivalent to polling a thread queue, which may severely hurt performance. The <code>threaded_exit/2</code> predicate supports an additional option, <code>discard</code>, which allows us to discard all matching replies available on the object's thread waiting to be retrieved.
 </p>
 
 <h2>One-way asynchronous calls<a id="noreply"></a></h2>
 
 <p>
-Sometimes we want to call a goal in a new thread without caring for the results. This may be accomplished by using the built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_call2.html"><code>threaded_call/2</code></a> with the option <code>noreply</code>.
+Sometimes we want to call a goal in a new thread without caring for the results. This may be accomplished by using the built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_call2.html"><code>threaded_call/2</code></a> with the option <code>noreply</code>. For example, assume that we are developing a multi-agent application where an agent may send an happy birthday message to other agent. We could write:
+</p>
+<pre>threaded_call(agent::happy_birthday, [noreply]), ...
+</pre>
+<p>
+The call succeeds with no reply of the goal success, failure, or even exception ever being sent to the object making the call.
 </p>
 
 <h2>Atomic goals and asynchronous calls<a id="atomic"></a></h2>
@@ -103,14 +123,12 @@ Proving a goal asynchronously using a new thread may lead to problems when the g
 <p>
 Usually, the argument of the <code>threaded_call/1</code> predicate is a single goal. The predicate also accepts as an argument a conjunction or a disjunction of goals. The semantics of a conjunction of goals is simply the conjunction of the <code>threaded_call/1</code> calls of each individual goal. I.e. a call such as:
 </p>
-<pre>
-threaded_call((G1, G2, ...)), ...
+<pre>threaded_call((G1, G2, ...)), ...
 </pre>
 <p>
 is equivalent to writing:
 </p>
-<pre>
-threaded_call(G1), threaded_call(G2), ... 
+<pre>threaded_call(G1), threaded_call(G2), ... 
 </pre>
 <p>
 A disjunction of goals is interpreted as running a set of <em>competing</em> goals, each one in its own thread. The first thread to terminate successfully leads to the termination of the other threads. This is useful when we have several methods to compute something, without knowing a priori which method will be faster. For example, assume that we have defined a predicate <code>try_method/2</code> that calls a chosen method, returning its result. We may then write:
@@ -134,7 +152,7 @@ The <code>threaded_exit/1</code> call will return both the identifier of the fas
 	<div class="copyright">Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://www.logtalk.org">Logtalk.org</a></div>
 	<div class="footnote">
 		<span class="validators"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span>
-		<span class="date">Last updated on: May 15, 2006</span>
+		<span class="date">Last updated on: May 17, 2006</span>
 	</div>
 </div>
 
