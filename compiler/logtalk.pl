@@ -10608,7 +10608,6 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 '$lgt_valid_threaded_call_option'(atomic).
-'$lgt_valid_threaded_call_option'(first).
 '$lgt_valid_threaded_call_option'(noreply).
 
 
