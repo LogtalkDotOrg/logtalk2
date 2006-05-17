@@ -10646,7 +10646,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	\+ \+ (
 		'$lgt_thread_peek_message'(Thread, '$lgt_det_id'(Goal, Sender, This, Self, Id)),
 		'$lgt_thread_get_message'(Thread, '$lgt_det_id'(Goal, Sender, This, Self, Id)),
-		'$lgt_thread_exit'(Id),			% force exit
+		'$lgt_thread_exit'(Id),			% force thread exit
 		'$lgt_thread_join'(Id)),
 	!,
 	'$lgt_mt_kill_competing_workers'(Thread, Goal, Sender, This, Self).
@@ -10655,9 +10655,13 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
+% '$lgt_valid_threaded_call_option'(@nonvar)
+
 '$lgt_valid_threaded_call_option'(atomic).
 '$lgt_valid_threaded_call_option'(noreply).
 
+
+% '$lgt_valid_threaded_exit_option'(@nonvar)
 
 '$lgt_valid_threaded_exit_option'(peek).
 '$lgt_valid_threaded_exit_option'(discard).
@@ -10793,12 +10797,12 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
-% '$lgt_runtime_thread'
+% '$lgt_start_runtime_thread'
 %
 % cretes the default "user" runtime thread when running on
 % Prolog compilers supporting multi-threading programming
 
-'$lgt_runtime_thread' :-
+'$lgt_start_runtime_thread' :-
 	(	'$lgt_default_flag'(threads, on) ->
 		'$lgt_current_object_'(user, Prefix, _, _, _, _),
 		'$lgt_init_object_thread'(Prefix)
@@ -10807,7 +10811,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
-:- initialization(('$lgt_startup_message', '$lgt_assert_default_hook_goal', '$lgt_runtime_thread')).
+:- initialization(('$lgt_startup_message', '$lgt_assert_default_hook_goal', '$lgt_start_runtime_thread')).
 
 
 
