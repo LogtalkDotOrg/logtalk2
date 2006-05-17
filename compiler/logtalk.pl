@@ -977,8 +977,17 @@ threaded_call(Goal) :-
 		throw(error(Error, threaded_call(Goal)))).
 
 threaded_call(Goal, Options) :-
+	var(Goal),
+	throw(error(instantiation_error, threaded_call(Goal, Options))).	
+
+threaded_call(Goal, Options) :-
 	\+ callable(Goal),
 	throw(error(type_error(callable, Goal), threaded_call(Goal, Options))).
+
+threaded_call(Goal, Options) :-
+	'$lgt_member'(Option, Options),
+	var(Option),
+	throw(error(instantiation_error, threaded_call(Goal, Options))).
 
 threaded_call(Goal, Options) :-
 	'$lgt_member'(Option, Options),
@@ -998,8 +1007,17 @@ threaded_exit(Goal) :-
 		throw(error(Error, threaded_exit(Goal)))).
 
 threaded_exit(Goal, Options) :-
+	var(Goal),
+	throw(error(instantiation_error, threaded_exit(Goal, Options))).	
+
+threaded_exit(Goal, Options) :-
 	\+ callable(Goal),
 	throw(error(type_error(callable, Goal), threaded_exit(Goal, Options))).
+
+threaded_exit(Goal, Options) :-
+	'$lgt_member'(Option, Options),
+	var(Option),
+	throw(error(instantiation_error, threaded_exit(Goal, Options))).
 
 threaded_exit(Goal, Options) :-
 	'$lgt_member'(Option, Options),
@@ -5310,7 +5328,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_tr_body'(threaded_call(_, Options), _, _, _) :-
 	'$lgt_member'(Option, Options),
-	nonvar(Option),
+	var(Option),
+	throw(instantiantion_error).
+
+'$lgt_tr_body'(threaded_call(_, Options), _, _, _) :-
+	'$lgt_member'(Option, Options),
 	\+ '$lgt_valid_threaded_call_option'(Option),
 	throw(domain_error(threaded_call_option, Option)).
 
@@ -5356,7 +5378,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_tr_body'(threaded_exit(_, Options), _, _, _) :-
 	'$lgt_member'(Option, Options),
-	nonvar(Option),
+	var(Option),
+	throw(instantiantion_error).
+
+'$lgt_tr_body'(threaded_exit(_, Options), _, _, _) :-
+	'$lgt_member'(Option, Options),
 	\+ '$lgt_valid_threaded_exit_option'(Option),
 	throw(domain_error(threaded_exit_option, Option)).
 
