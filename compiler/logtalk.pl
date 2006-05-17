@@ -5336,6 +5336,17 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	\+ '$lgt_valid_threaded_call_option'(Option),
 	throw(domain_error(threaded_call_option, Option)).
 
+'$lgt_tr_body'(threaded_call(Pred, Options), MTPred, '$lgt_dbg_goal'(threaded_call(Pred, Options), MTPred, Ctx), Ctx) :-
+	var(Pred),
+	!,
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
+	'$lgt_tr_body'(Pred, TPred, _, Ctx),
+	MTPred = '$lgt_mt_send_goal'(This, TPred, Sender, This, Self, Options).
+
+'$lgt_tr_body'(threaded_call(Pred, _), _, _, _) :-
+	\+ callable(Pred),
+	throw(type_error(callable, Pred)).
+
 '$lgt_tr_body'(threaded_call((Pred, Preds), Options), (TPred, TPreds), (DPred, DPreds), Ctx) :-
 	!,
 	'$lgt_tr_body'(threaded_call(Pred, Options), TPred, DPred, Ctx),
@@ -5385,6 +5396,17 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	'$lgt_member'(Option, Options),
 	\+ '$lgt_valid_threaded_exit_option'(Option),
 	throw(domain_error(threaded_exit_option, Option)).
+
+'$lgt_tr_body'(threaded_exit(Pred, Options), MTPred, '$lgt_dbg_goal'(threaded_exit(Pred, Options), MTPred, Ctx), Ctx) :-
+	var(Pred),
+	!,
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
+	'$lgt_tr_body'(Pred, TPred, _, Ctx),
+	MTPred = '$lgt_mt_get_reply'(TPred, Sender, This, Self, Options).
+
+'$lgt_tr_body'(threaded_exit(Pred, _), _, _, _) :-
+	\+ callable(Pred),
+	throw(type_error(callable, Pred)).
 
 '$lgt_tr_body'(threaded_exit(Obj::Pred, Options), MTPred, '$lgt_dbg_goal'(threaded_exit(Obj::Pred, Options), MTPred, Ctx), Ctx) :-
 	!,
