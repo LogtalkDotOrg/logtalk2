@@ -10605,32 +10605,53 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 '$lgt_mt_get_reply'(Thread, Goal, Sender, This, Self, Options) :-
-	(	'$lgt_member'(peek, Options) ->
-		'$lgt_thread_peek_message'(Thread, '$lgt_reply'(Goal, Sender, This, Self, _))
-	;	'$lgt_member'(discard, Options) ->
-		'$lgt_mt_discard_matching_replies'(Thread, Goal, Sender, This, Self)
-	;	copy_term((Goal, Sender, This, Self), (CGoal, CSender, CThis, CSelf)),
-		'$lgt_thread_get_message'(Thread, '$lgt_reply'(Goal, Sender, This, Self, Result)),
-		(	'$lgt_thread_peek_message'(Thread, '$lgt_det_id'(Goal, Sender, This, Self, _)) ->	% if dealing with competing goals
-			'$lgt_mt_kill_competing_workers'(Thread, CGoal, CSender, CThis, CSelf),				% then kill competing threads
-			'$lgt_mt_discard_matching_replies'(Thread, CGoal, CSender, CThis, CSelf),			% and discard any other replies
-			!																					% commit reply; no alternative solutions
-		;	true
-		),
-		(	Result == success ->
-			true
-		;	Result == failure ->
-			!,
-			fail
-		;	throw(Result)
-		)
-	).
+	'$lgt_member'(peek, Options),
+	!,
+	'$lgt_thread_peek_message'(Thread, '$lgt_reply'(Goal, Sender, This, Self, _)).
 
 '$lgt_mt_get_reply'(Thread, Goal, Sender, This, Self, Options) :-
-	'$lgt_thread_peek_message'(Thread, '$lgt_non_det_id'(Goal, Sender, This, Self, Id)),
-	'$lgt_thread_send_message'(Id, '$lgt_next'),
-	'$lgt_mt_get_reply'(Thread, Goal, Sender, This, Self, Options).
+	'$lgt_member'(discard, Options),
+	!,
+	'$lgt_mt_discard_matching_replies'(Thread, Goal, Sender, This, Self).
 
+'$lgt_mt_get_reply'(Thread, Goal, Sender, This, Self, _) :-
+	copy_term((Goal, Sender, This, Self), (CGoal, CSender, CThis, CSelf)),
+	% we MUST get the reply before finding out if we're dealing with either det or non-det goals:
+	'$lgt_thread_get_message'(Thread, '$lgt_reply'(CGoal, CSender, CThis, CSelf, Result)),
+	(	'$lgt_thread_peek_message'(Thread, '$lgt_det_id'(CGoal, CSender, CThis, CSelf, _)) ->
+		'$lgt_mt_det_reply'(Thread, Goal, Sender, This, Self, CGoal, CSender, CThis, CSelf, Result)
+	;	'$lgt_thread_peek_message'(Thread, '$lgt_non_det_id'(Goal, Sender, This, Self, Id)), 
+		'$lgt_mt_non_det_reply'(Thread, Goal, Sender, This, Self, Id, CGoal, CSender, CThis, CSelf, Result)
+	).
+
+'$lgt_mt_det_reply'(Thread, Goal, Sender, This, Self, CGoal, CSender, CThis, CSelf, Result) :-
+	'$lgt_mt_kill_competing_threads'(Thread, Goal, Sender, This, Self),
+	'$lgt_mt_discard_matching_replies'(Thread, Goal, Sender, This, Self),
+	(	Result == success ->
+		(Goal, Sender, This, Self) = (CGoal, CSender, CThis, CSelf)
+	;	Result == failure ->
+		fail
+	;	throw(Result)
+	).
+
+
+'$lgt_mt_non_det_reply'(_, Goal, Sender, This, Self, _, Goal, Sender, This, Self, Result) :-
+	(	Result == success ->
+		true
+	;	Result == failure ->
+		!,
+		fail
+	;	throw(Result)
+	).
+	
+'$lgt_mt_non_det_reply'(Thread, Goal, Sender, This, Self, Id, _, _, _, _, _) :-
+	'$lgt_thread_send_message'(Id, '$lgt_next'),											% request the next solution
+	'$lgt_thread_get_message'(Thread, '$lgt_reply'(CGoal, CSender, CThis, CSelf, Result)),	% and retrieve it
+	'$lgt_mt_non_det_reply'(Thread, Goal, Sender, This, Self, Id, CGoal, CSender, CThis, CSelf, Result).
+
+
+
+% discard any matching replies that might be waiting on the thread's queue:
 
 '$lgt_mt_discard_matching_replies'(Thread, Goal, Sender, This, Self) :-
 	\+ \+ (
@@ -10642,22 +10663,26 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_mt_discard_matching_replies'(_, _, _, _, _).
 
 
-'$lgt_mt_kill_competing_workers'(Thread, Goal, Sender, This, Self) :-
+
+% kill any threads that might be running competing goals:
+
+'$lgt_mt_kill_competing_threads'(Thread, Goal, Sender, This, Self) :-
 	\+ \+ (
 		'$lgt_thread_peek_message'(Thread, '$lgt_det_id'(Goal, Sender, This, Self, Id)),
 		'$lgt_thread_get_message'(Thread, '$lgt_det_id'(Goal, Sender, This, Self, Id)),
 		'$lgt_thread_exit'(Id),			% force thread exit
 		'$lgt_thread_join'(Id)),
 	!,
-	'$lgt_mt_kill_competing_workers'(Thread, Goal, Sender, This, Self).
+	'$lgt_mt_kill_competing_threads'(Thread, Goal, Sender, This, Self).
 
-'$lgt_mt_kill_competing_workers'(_, _, _, _, _).
+'$lgt_mt_kill_competing_threads'(_, _, _, _, _).
 
 
 
 % '$lgt_valid_threaded_call_option'(@nonvar)
 
 '$lgt_valid_threaded_call_option'(atomic).
+'$lgt_valid_threaded_call_option'(first).
 '$lgt_valid_threaded_call_option'(noreply).
 
 
