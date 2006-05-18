@@ -10616,11 +10616,12 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_mt_get_reply'(Thread, Goal, Sender, This, Self, _) :-
 	copy_term((Goal, Sender, This, Self), (CGoal, CSender, CThis, CSelf)),
-	% we MUST get the reply before finding out if we're dealing with either det or non-det goals:
+	% we MUST get the reply before finding out if we're dealing with either det or non-det goals;
+	% this ensures that the '$lgt_det_id'/5 or '$lgt_non_det_id'/5 messages are already avaialble 
 	'$lgt_thread_get_message'(Thread, '$lgt_reply'(CGoal, CSender, CThis, CSelf, Result)),
 	(	'$lgt_thread_peek_message'(Thread, '$lgt_det_id'(CGoal, CSender, CThis, CSelf, _)) ->
 		'$lgt_mt_det_reply'(Thread, Goal, Sender, This, Self, CGoal, CSender, CThis, CSelf, Result)
-	;	'$lgt_thread_peek_message'(Thread, '$lgt_non_det_id'(Goal, Sender, This, Self, Id)), 
+	;	'$lgt_thread_peek_message'(Thread, '$lgt_non_det_id'(CGoal, CSender, CThis, CSelf, Id)), 
 		'$lgt_mt_non_det_reply'(Thread, Goal, Sender, This, Self, Id, CGoal, CSender, CThis, CSelf, Result)
 	).
 
