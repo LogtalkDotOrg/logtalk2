@@ -10552,8 +10552,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		'$lgt_thread_send_message'(Return, '$lgt_reply'(Goal, Sender, This, Self, success)),
 		'$lgt_thread_get_message'(Message),
 		(	Message == '$lgt_next' ->
-			fail					% backtrack to try to find another proof
-		;	'$lgt_thread_exit'		% assume Message = '$lgt_exit'; terminate thread
+			fail					% backtrack to the catch(Goal, ...) to try to find an alternative solution
+		;	'$lgt_thread_exit'		% otherwise assume Message = '$lgt_exit' and terminate thread
 		)
 	;	nonvar(Flag),
 		!,
@@ -10625,6 +10625,9 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		'$lgt_mt_non_det_reply'(Thread, Goal, Sender, This, Self, Id, CGoal, CSender, CThis, CSelf, Result)
 	).
 
+
+% return the solution found after killing all the competing threads and removing any other matching replies:
+
 '$lgt_mt_det_reply'(Thread, Goal, Sender, This, Self, CGoal, CSender, CThis, CSelf, Result) :-
 	'$lgt_mt_kill_competing_threads'(Thread, Goal, Sender, This, Self),
 	'$lgt_mt_discard_matching_replies'(Thread, Goal, Sender, This, Self),
@@ -10636,6 +10639,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	).
 
 
+% return current solution:
+
 '$lgt_mt_non_det_reply'(_, Goal, Sender, This, Self, _, Goal, Sender, This, Self, Result) :-
 	(	Result == success ->
 		true
@@ -10644,10 +10649,12 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		fail
 	;	throw(Result)
 	).
-	
+
+% on backtracking, ask working thread for and get from it the next solution:
+
 '$lgt_mt_non_det_reply'(Thread, Goal, Sender, This, Self, Id, _, _, _, _, _) :-
-	'$lgt_thread_send_message'(Id, '$lgt_next'),											% request the next solution
-	'$lgt_thread_get_message'(Thread, '$lgt_reply'(CGoal, CSender, CThis, CSelf, Result)),	% and retrieve it
+	'$lgt_thread_send_message'(Id, '$lgt_next'),
+	'$lgt_thread_get_message'(Thread, '$lgt_reply'(CGoal, CSender, CThis, CSelf, Result)),
 	'$lgt_mt_non_det_reply'(Thread, Goal, Sender, This, Self, Id, CGoal, CSender, CThis, CSelf, Result).
 
 
