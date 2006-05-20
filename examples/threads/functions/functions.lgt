@@ -10,13 +10,13 @@
 	:- public(find_root/5).
 	:- mode(find_root(+object_identifier, +float, +float, +float, -float), one).
 	:- info(find_root/5, [
-		comment is '.',
+		comment is 'Find the root of a function in the interval [A, B] given a maximum aproximation error.',
 		argnames is ['Function', 'A', 'B', 'Error', 'Zero']]).
 
 	:- public(find_root/6).
 	:- mode(find_root(+object_identifier, +float, +float, +float, -float, -object_identifier), one).
 	:- info(find_root/6, [
-		comment is '.',
+		comment is 'Find the root of a function in the interval [A, B] given a maximum aproximation error. Return the method used.',
 		argnames is ['Function', 'A', 'B', 'Error', 'Zero', 'Method']]).
 
 :- end_protocol.
@@ -33,13 +33,13 @@
 	:- public(eval/2).
 	:- mode(eval(+float, -float), one).
 	:- info(eval/2, [
-		comment is '.',
+		comment is 'Calculate the function value.',
 		argnames is ['X', 'Fx']]).
 
 	:- public(evald/2).
 	:- mode(evald(+float, -float), one).
 	:- info(evald/2, [
-		comment is '.',
+		comment is 'Calculate the value of the function derivative.',
 		argnames is ['X', 'DFx']]).
 
 :- end_protocol.
