@@ -12,7 +12,7 @@ Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 ...
 
 
-% send three asynchronous messages whose corresponding methods have side-effects:
+% send three asynchronous messages whose corresponding methods perform output operations:
 
 | ?- threaded_call(nasty::io(alpha), [noreply]), threaded_call(nasty::io(digit), [noreply]), threaded_call(nasty::io(alpha), [noreply]).
 
@@ -30,5 +30,19 @@ Yes
 abcdefghijklmnopqrstzyxwuv
 0123456789
 abcdefghijklmnopqrstzyxwuv
+
+Yes
+
+
+% send three asynchronous messages whose corresponding methods perform database updates:
+
+?- threaded_call(nasty::update_db(_), [noreply]), threaded_call(nasty::update_db(_), [noreply]), threaded_call(nasty::update_db(_), [noreply]).
+
+no
+
+
+% the same three asynchronous messages but making them atomic for the receiver object:
+
+threaded_call(nasty::update_db(_), [atomic, noreply]), threaded_call(nasty::update_db(_), [atomic, noreply]), threaded_call(nasty::update_db(_), [atomic, noreply]).
 
 Yes

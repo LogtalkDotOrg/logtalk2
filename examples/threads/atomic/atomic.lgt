@@ -5,14 +5,14 @@
 		version is 1.0,
 		author is 'Paulo Moura',
 		date is 2006/04/14,
-		comment is 'Simple example for comparing single and multi-threading calculation of prime numbers.']).
+		comment is 'Simple example for using the "atomic" option for multi-threading calls with side-effects.']).
 
 	:- threaded.
 
 	:- public(update_db/1).
 	:- mode(update_db(-integer), one).
 	:- info(update_db/1, [
-		comment is '.',
+		comment is 'Perform a database update with a long delay between retracting the old information and asserting the new one.',
 		argnames is ['New']]).
 
 	:- private(db/1).
@@ -21,14 +21,16 @@
 	:- public(io/1).
 	:- mode(io(+atom), one).
 	:- info(io/1, [
-		comment is '.',
+		comment is 'Write some characters to the standard output stream with a long delay between each write operation.',
 		argnames is ['Chars']]).
 
 	db(0).
 
 	update_db(New) :-
 		retract(db(Old)),
+		waste_time,
 		New is Old + 1,
+		waste_time,
 		assertz(db(New)).
 
 	io(alpha) :-
