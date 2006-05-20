@@ -21,6 +21,7 @@
 			<string>initialization</string>
 			<string>object</string>
 			<string>protocol</string>
+			<string>threaded</string>
 			<string>uses</string>
 			<string>alias</string>
 			<string>discontiguous</string>
@@ -56,6 +57,8 @@
 			<string>logtalk_library_path</string>
 			<string>current_logtalk_flag</string>
 			<string>set_logtalk_flag</string>
+			<string>threaded_call</string>
+			<string>threaded_exit</string>
 			<string>self</string>
 			<string>this</string>
 			<string>sender</string>
