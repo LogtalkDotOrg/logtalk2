@@ -309,7 +309,7 @@ PrologII+ 4.5 and later versions
 	Does not support the "altdirs" compiler flag.
 
 
-Qu-Prolog 7.1
+Qu-Prolog 7.2
 
 	qu.config
 
@@ -386,7 +386,7 @@ SWI Prolog 3.3.x and all later versions
 
 	swi.config
 
-	For version 3.3.x and all later versions (5.5.x or later recommended)
+	For version 3.3.x and all later versions (5.6.x or later recommended)
 
 	No problems expected. Please report any problem found (with a solution 
 	if possible). Don't forget to use the cd/1 predicate to set the working 
