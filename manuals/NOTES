@@ -23,7 +23,7 @@ URL:
 An usage example (with version 1.3.1) would be:
 
 	% java -jar css2xslfo1_3_1.jar <file>.html -fo <file>.fo
-	% xep -fo <file>.fo -pdf <file>.pdf
+	% fop -fo <file>.fo -pdf <file>.pdf
 
-RenderX's XEP is strongly recommended. Some of the others XSL-FO 
-processors do not support some of the used XSL-FO 1.0 constructs.
+The latest FOP version is strongly recommended. You may also use other 
+XSL-FO processors such as RenderX's Xep.
