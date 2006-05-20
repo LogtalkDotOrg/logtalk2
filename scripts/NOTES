@@ -100,8 +100,8 @@ make_sicstuslgt.sh
 	Prolog
 make_sicstuslgt.js
 	makes a Windows shortcut named "Logtalk - SICStus Prolog" for running 
-	Logtalk with SICStus Prolog 3.12 (if you are using a different version, 
-	you must edit the reference to the registry key in the script)
+	Logtalk with SICStus Prolog 3.12 or 4.0 (if you are using a different 
+	version, you must edit the reference to the registry key in the script)
 
 make_swilgt.sh
 	makes a shell script named "swilgt" for running Logtalk with SWI-Prolog;
