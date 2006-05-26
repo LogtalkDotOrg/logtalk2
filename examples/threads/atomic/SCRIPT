@@ -34,15 +34,15 @@ abcdefghijklmnopqrstzyxwuv
 Yes
 
 
-% send three asynchronous messages whose corresponding methods perform database updates:
+% send three asynchronous messages whose corresponding methods perform database updates (this may or may not work):
 
-?- threaded_call(nasty::update_db(_), [noreply]), threaded_call(nasty::update_db(_), [noreply]), threaded_call(nasty::update_db(_), [noreply]).
+| ?- threaded_call(nasty::update_db(_), [noreply]), threaded_call(nasty::update_db(_), [noreply]), threaded_call(nasty::update_db(_), [noreply]).
 
 no
 
 
-% the same three asynchronous messages but making them atomic for the receiver object:
+% the same three asynchronous messages but making them atomic for the receiver object (this should always work):
 
-threaded_call(nasty::update_db(_), [atomic, noreply]), threaded_call(nasty::update_db(_), [atomic, noreply]), threaded_call(nasty::update_db(_), [atomic, noreply]).
+| ?- threaded_call(nasty::update_db(_), [atomic, noreply]), threaded_call(nasty::update_db(_), [atomic, noreply]), threaded_call(nasty::update_db(_), [atomic, noreply]).
 
 Yes
