@@ -5,13 +5,18 @@
 // Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 // =================================================================
 
+if (ScriptEngineMajorVersion() < 5 || ScriptEngineMajorVersion() == 5 && ScriptEngineMinorVersion() < 6) {
+	WScript.Echo('Error! WSH 5.6 or later version needed for running this script.');
+	WScript.Quit(1);
+}
+
 var WshShell = new ActiveXObject("WScript.Shell");
 
 var WshSystemEnv = WshShell.Environment("SYSTEM");
 var WshUserEnv = WshShell.Environment("USER");
 var logtalk_home;
 var logtalk_user;
-	
+
 if (WshSystemEnv.Item("LOGTALKHOME"))
 	logtalk_home = WshSystemEnv.Item("LOGTALKHOME");
 else if (WshUserEnv.Item("LOGTALKHOME"))
