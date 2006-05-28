@@ -417,56 +417,12 @@ SWI Prolog 3.3.x and all later versions
 	the @/1 operator to op(100, fx, @).
 
 
-XSB Prolog 2.7.1
+XSB 3.0
 
 	xsb.config
 
-	You need to rename both the config file and the Logtalk pre-processor to 
-	end with a ".P" extension otherwise the (re)consult built-in predicate 
-	will not find them! If you want to use the scripts/make_xsblgt.sh script, 
-	first rename (or copy) the config file to "xsb.P".
-
-	You also need to apply the following patch to the Logtalk compiler. Open 
-	the file compiler/logtalk.pl, find the clauses that read: 
-	
-		'$lgt_current_object_'(user, ...).
-		'$lgt_current_object_'(debugger, ...).
-	
-		'$lgt_dbg_leashing_'(...).
-
-	and replace it with the queries:
-
-		:- assertz('$lgt_current_object_'(user, ...)).
-		:- assertz('$lgt_current_object_'(debugger, ...)).
-
-		:- assertz('$lgt_dbg_leashing_'(...)).
-
-	You may get syntax errors while compiling the Logtalk pre-processor 
-	or some of the examples due to a know bug in the XSB parsing of infix 
-	operators: just add a space after the infix operator.
-
-	The write_canonical/2 predicate may output code that in some instances 
-	can not be read back with read_term/3. If you receive a syntax error 
-	while loading a Logtalk compiled file we will have to fix the problem by 
-	editing the file (the Prolog output, not the Logtalk source). Don't 
-	forget to use the cd/1 predicate to set the working directory before 
-	loading the library or an example.
-
-
-XSB 3.0 (CVS version)
-
-	xsbcvs.config
-
-	The current XSB CVS version corrects the problem with dynamic predicates 
-	described above, adds some missing ISO Prolog predicates and directives,
-	and fixes some bugs, thus providing better support for running Logtalk 
-	when compared with the latest stable release (2.7.1).
-
-	You need to rename both the config file and the Logtalk pre-processor to 
-	end with a ".P" extension otherwise the (re)consult built-in predicate 
-	will not find them! If you want to use the scripts/make_xsbcvslgt.* 
-	scripts, first rename (or copy) the config file to "xsbcvs.P".
-
+	Don't forget to use the cd/1 predicate to set the working directory 
+	before loading the library or an example.
 
 
 YAP 4.3.x and later versions

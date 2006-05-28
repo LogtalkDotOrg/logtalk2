@@ -53,12 +53,11 @@ mkdir -p "$LOGTALKUSER"/libpaths
 mkdir -p "$LOGTALKUSER"/library
 mkdir -p "$LOGTALKUSER"/xml
 cp -RL "$LOGTALKHOME"/configs "$LOGTALKUSER"/
-ln -sf xsb.config "$LOGTALKUSER"/configs/xsb.P 
-ln -sf xsbcvs.config "$LOGTALKUSER"/configs/xsbcvs.P 
+ln -sf xsb.config "$LOGTALKUSER"/configs/xsb.pl
 cp -RL "$LOGTALKHOME"/contributions "$LOGTALKUSER"/
 cp -RL "$LOGTALKHOME"/examples "$LOGTALKUSER"/
 cp -RL "$LOGTALKHOME"/libpaths "$LOGTALKUSER"/
-sed 's_\$LOGTALKUSER_'$LOGTALKUSER'_' "$LOGTALKUSER"/libpaths/libpaths.pl > "$LOGTALKUSER"/libpaths/libpaths.P
+sed 's_\$LOGTALKUSER_'$LOGTALKUSER'_' "$LOGTALKUSER"/libpaths/libpaths.pl > "$LOGTALKUSER"/libpaths/libpaths_no_env_var.pl
 cp -RL "$LOGTALKHOME"/library "$LOGTALKUSER"/
 cp -RL "$LOGTALKHOME"/xml "$LOGTALKUSER"/
 chmod -R u+w "$LOGTALKUSER"

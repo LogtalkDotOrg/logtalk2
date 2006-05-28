@@ -94,13 +94,6 @@ else
 	echo "xsblgt script creation failed"
 fi
 
-./make_xsbcvslgt.sh $prefix > /dev/null 2> /dev/null
-if [ $? = 0 ] ; then
-	echo "xsbcvslgt script created"
-else
-	echo "xsbcvslgt script creation failed"
-fi
-
 ./make_yaplgt.sh $prefix > /dev/null 2> /dev/null
 if [ $? = 0 ] ; then
 	echo "yaplgt script created"

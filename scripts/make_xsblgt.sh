@@ -41,17 +41,11 @@ fi
 cd "$LOGTALKHOME"
 mkdir -p bin
 cd bin
-cp ../compiler/logtalk.pl logtalk.P
-sed 's/^..lgt_current_object_.[(]user.*[)]/:- assertz(&)/' logtalk.P > temp1
-sed 's/^..lgt_current_object_.[(]debugger.*[)]/:- assertz(&)/' temp1 > temp2
-sed 's/^..lgt_dbg_leashing_.[(].*[)]/:- assertz(&)/g' temp2 > logtalk.P
-rm temp1
-rm temp2
-echo ":- reconsult('$LOGTALKUSER/configs/xsb.P')." > logtalkxsb.P
-echo ":- reconsult('$LOGTALKHOME/bin/logtalk.P')." >> logtalkxsb.P
-echo ":- reconsult('$LOGTALKUSER/libpaths/libpaths.P')." >> logtalkxsb.P
+echo ":- reconsult('$LOGTALKUSER/configs/xsb.pl')." > logtalkxsb.pl
+echo ":- reconsult('$LOGTALKHOME/compiler/logtalk.pl')." >> logtalkxsb.pl
+echo ":- reconsult('$LOGTALKUSER/libpaths/libpaths_no_env_var.pl')." >> logtalkxsb.pl
 echo "#/bin/sh" > xsblgt
-echo "xsb -e \"reconsult('\$LOGTALKHOME/bin/logtalkxsb.P').\"" >> xsblgt
+echo "xsb -e \"reconsult('\$LOGTALKHOME/bin/logtalkxsb.pl').\"" >> xsblgt
 chmod a+x xsblgt
 ln -sf $LOGTALKHOME/bin/xsblgt $prefix/bin/xsblgt
 echo "Done. A link to the script was been created in $prefix/bin."

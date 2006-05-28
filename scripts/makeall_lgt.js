@@ -57,8 +57,8 @@ WshShell.Run("cscript %LOGTALKHOME%\\scripts\\make_sicstuslgt.js", true);
 WScript.Echo('Creating shortcut Logtalk - SWI-Prolog...');
 WshShell.Run("cscript %LOGTALKHOME%\\scripts\\make_swilgt.js", true);
 
-WScript.Echo('Creating shortcut Logtalk - XSB CVS...');
-WshShell.Run("cscript %LOGTALKHOME%\\scripts\\make_xsbcvslgt.js", true);
+WScript.Echo('Creating shortcut Logtalk - XSB...');
+WshShell.Run("cscript %LOGTALKHOME%\\scripts\\make_xsblgt.js", true);
 
 WScript.Echo('Creating shortcut Logtalk - YAP...');
 WshShell.Run("cscript %LOGTALKHOME%\\scripts\\make_yaplgt.js", true);
