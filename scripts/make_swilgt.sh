@@ -41,7 +41,8 @@ fi
 cd "$LOGTALKHOME"
 mkdir -p bin
 cd bin
-echo ":- system_module." > logtalk_swi.pl
+echo ":- set_prolog_flag(generate_debug_info, false)." > logtalk_swi.pl
+echo ":- system_module." >> logtalk_swi.pl
 cat ../compiler/logtalk.pl >> logtalk_swi.pl
 echo ":- consult('\$LOGTALKUSER/configs/swi.config')." > logtalk_swi.rc
 echo ":- consult('\$LOGTALKUSER/configs/swihook.pl')." >> logtalk_swi.rc
