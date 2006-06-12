@@ -11,7 +11,7 @@ installation, and integration with Prolog compilers. Those with extension
 ".sh" are Bourne-compatible shells scripts for MacOS X, Linux, and similar 
 systems. Those with extension ".js" are JScript command-line scripts for 
 Windows; they require WSH 5.6 or later version to be installed and should 
-be run using cscript.exe from a DOS shell command line.
+be run using cscript.exe from a DOS command line shell.
 
 
 lgt_install.sh
@@ -43,7 +43,7 @@ cplgtdirs.js
 	LOGTALKUSER (defaults to ~/logtalk on Unix-like operating-systems 
 	and to My Documents\logtalk on Windows when the variable is not 
 	defined); must be run by the end-user in order to ensure proper 
-	permissions on the copied files
+	permissions for the copied files
 
 cleandist.sh
 	script for cleaning a Logtalk distribution in preparation for packaging
