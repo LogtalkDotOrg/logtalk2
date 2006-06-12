@@ -46,23 +46,24 @@ ALS Prolog 3.1
 	support the "altdirs" compiler flag.
 
 
-Amzi! Prolog 7.4.5 and later versions
+Amzi! Prolog 7.4.10 and later versions
 
 	amzi.config
 
-	For Amzi! Prolog 7.4.5 and later versions. You need to patch the Logtalk 
+	For Amzi! Prolog 7.4.10 and later versions. You need to patch the Logtalk 
 	compiler (the "compiler/logtalk.pl" file) by searching for all calls of 
 	':'/2 and wrap them inside call/1. For better performance, use the Amzi! 
 	"acmp" command-line compiler to compile the files "configs/amzi.config",
 	"compiler/logtalk.pl", and "libpaths/libpaths.pl" and then load the 
-	resulting ".plm" files using the predicate load/1. One potential is that 
-	the compiler definition of the compare/3 built-in predicate returns the 
-	atom == instead of = for identical terms (contrary to every other Prolog 
-	compiler!). You need to search the library files for all calls of the 
-	compare/3 predicate and make the necessary changes. The built-in sort/2 
-	predicate does not eliminate duplicates, which may result in some problems
-	with some of the examples. Don't forget to use the chdir/1 predicate to 
-	set the working directory before loading the library or an example.
+	resulting ".plm" files using the predicate load/1. One potential problem 
+	is that the compiler definition of the compare/3 built-in predicate 
+	returns the atom == instead of = for identical terms (contrary to every 
+	other Prolog compiler!). You need to search the library files for all 
+	calls of the compare/3 predicate and make the necessary changes.
+	The built-in sort/2 predicate does not eliminate duplicates, which may 
+	result in some problems with some of the examples. Don't forget to use 
+	the chdir/1 predicate to set the working directory before loading the 
+	library or an example.
 
 
 B-Prolog 6.8 and later versions
@@ -417,7 +418,7 @@ SWI Prolog 3.3.x and all later versions
 	the @/1 operator to op(100, fx, @).
 
 
-XSB 3.0
+XSB 3.0 and later versions
 
 	xsb.config
 
