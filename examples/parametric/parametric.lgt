@@ -7,7 +7,51 @@
 
 
 
-/* The first two parametric objects represent time and date values as 
+/*	The first parametric object defines some useful predicates for working  
+	with lists.
+*/
+
+
+:- object(.(_, _)).		% note that the [X, Y, ...] notation is just syntactic sugar for ./2
+
+	:- public(last/1).
+	:- mode(last(?term), zero_or_one).
+
+	:- public(member/1).
+	:- mode(member(?term), zero_or_more).
+
+	:- public(nextto/2).
+	:- mode(nextto(?term, ?term), zero_or_more).
+
+	last(Last) :-
+		this([Head| Tail]),
+		last(Tail, Head, Last).
+
+	last([], Last, Last).
+	last([Head| Tail], _, Last) :-
+		last(Tail, Head, Last).
+
+	member(Element) :-
+		this(List),
+		member(Element, List).
+
+	member(Element, [Element| _]).
+	member(Element, [_| Tail]) :-
+		member(Element, Tail).
+
+	nextto(X, Y) :-
+		this([Head| Tail]),
+		nextto(X, Y, [Head| Tail]).
+
+	nextto(X, Y, [X, Y| _]).
+	nextto(X, Y, [_| Tail]) :-
+		nextto(X, Y, Tail).
+
+:- end_object.
+
+
+
+/*	The next two parametric objects represent time and date values as 
 	compound terms using the object's identifiers.
 */
 

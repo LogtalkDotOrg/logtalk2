@@ -12,6 +12,26 @@ Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 ...
 
 
+% some queries using the list parametric object:
+
+| ?- [1, 2, 3]::member(X).
+
+X = 1 ;
+X = 2 ;
+X = 3 ;
+no
+
+| ?- [1, 2, 3]::last(X).
+
+X = 3
+yes
+
+| ?- [1, 2, 3]::nextto(2, Y).
+
+Y = 3
+yes
+
+
 % some queries using the time and date parametric objects:
 
 | ?- date(Year, Month, Day)::today.
@@ -19,14 +39,12 @@ Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 Year = 2000
 Month = 8
 Day = 15 
-
-Yes
+yes
 
 
 | ?- date(Year, _, _)::(today, \+ leap_year). 
 
 Year = 2002
-
 yes
 
 
@@ -35,8 +53,7 @@ yes
 Hours = 13
 Mins = 52
 Secs = 42 
-
-Yes
+yes
 
 
 | ?- R = rectangle(W, H, X, Y), R::init, R::move(3, 4, NR), NR::position(X2, Y2).
@@ -49,5 +66,4 @@ Y = 0
 NR = rectangle(2, 1, 3, 4)
 X2 = 3
 Y2 = 4 
-
-Yes
+yes

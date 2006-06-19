@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.28.0 - May ??, 2006
+2.28.0 - June ??, 2006
 
 	Added support for asynchronous messages using multiple threads. Added a 
 	new object directive, threaded/0, and four new built-in predicates, 
@@ -27,6 +27,8 @@ RELEASE NOTES
 	notation to load source files.
 
 	Dropped support for versions of XSB older than 3.0.
+
+	Extended "parametric" example.
 
 	Update all the JScript scripts to check if a compatible version of WSH is 
 	installed.
