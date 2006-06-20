@@ -11,8 +11,8 @@ installation, and integration with Prolog compilers. Those with extension
 ".sh" are Bourne-compatible shells scripts for MacOS X, Linux, and similar 
 systems. Those with extension ".js" are JScript command-line scripts for 
 Windows; they require WSH 5.6 or later version to be installed and should 
-be run using cscript.exe from a DOS command line shell.
-
+be run using cscript.exe from a DOS command line shell (you may download 
+WSH 5.6 from http://msdn.microsoft.com/downloads/list/webdev.asp)
 
 lgt_install.sh
 	shell script for installing Logtalk in a system-wide location for Unix 
