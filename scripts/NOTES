@@ -37,6 +37,10 @@ logtalk.spec
 	(copy the Logtalk tarball to your RPM SOURCES directory and then 
 	run the command: rpmbuild -ba --target=noarch-*-linux logtalk.spec)
 
+logtalk.iss
+	Inno Setup GUI Windows installer script
+	(http://www.jrsoftware.org/isinfo.php)
+
 cplgtdirs.sh
 cplgtdirs.js
 	end-user scripts for copying the Logtalk user-modifiable files and 

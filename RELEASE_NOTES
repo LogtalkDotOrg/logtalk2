@@ -31,7 +31,9 @@ RELEASE NOTES
 	Extended "parametric" and "metainterpreters" examples.
 
 	Update all the JScript scripts to check if a compatible version of WSH is 
-	installed.
+	installed and to workaround some problems with spaces in file paths.
+
+	Added Inno Setup GUI Windows installer script.
 
 
 2.27.1 - March 27, 2006
