@@ -62,11 +62,18 @@ if (!FSObject.FolderExists(logtalk_home + "\\bin"))
 
 FSObject.CopyFile(logtalk_home + "\\configs\\gnu.config", logtalk_home + "\\bin\\gnu.pl");
 
-var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_gp.pl", true);
-f.WriteLine(":- built_in.");
-f.Close();
+var f1 = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_gp.pl", true);
+var f2 = FSObject.OpenTextFile(logtalk_home + "\\compiler\\logtalk.pl", 1);
+var line;
 
-WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\logtalk_gp.pl", true);
+f1.WriteLine(":- built_in.");
+while (!f2.AtEndOfStream) {
+	line = f2.ReadLine();
+	f1.WriteLine(line);
+}
+
+f1.Close();
+f2.Close();
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 

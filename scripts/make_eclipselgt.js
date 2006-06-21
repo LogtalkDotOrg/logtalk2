@@ -60,13 +60,19 @@ logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
 if (!FSObject.FolderExists(logtalk_home + "\\bin")) 
 	FSObject.CreateFolder(logtalk_home + "\\bin");
 
-var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\lgtc_eclipse.pl", true);
+var f1 = FSObject.CreateTextFile(logtalk_home + "\\bin\\lgtc_eclipse.pl", true);
+var f2 = FSObject.OpenTextFile(logtalk_home + "\\compiler\\logtalk.pl", 1);
+var line;
 
-f.WriteLine(":- pragma(system).");
-f.WriteLine(":- pragma(nodebug).");
-f.Close();
+f1.WriteLine(":- pragma(system).");
+f1.WriteLine(":- pragma(nodebug).");
+while (!f2.AtEndOfStream) {
+	line = f2.ReadLine();
+	f1.WriteLine(line);
+}
 
-WshShell.Run("cmd /c type " + logtalk_home + "\\compiler\\logtalk.pl" + " >> " + logtalk_home + "\\bin\\lgtc_eclipse.pl", true);
+f1.Close();
+f2.Close();
 
 f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_eclipse.pl", true);
 
