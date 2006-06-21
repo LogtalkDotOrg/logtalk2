@@ -73,9 +73,9 @@ if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk"))
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - YAP.lnk");
-link.Arguments = "-l %LOGTALKHOME%\\bin\\logtalk_yap.pl";
-link.Description = "Runs Logtalk with YAP";
-link.IconLocation = "app.exe,1";
+link.Arguments = '-l "%LOGTALKHOME%\\bin\\logtalk_yap.pl"';
+link.Description = 'Runs Logtalk with YAP';
+link.IconLocation = 'app.exe,1';
 link.TargetPath = prolog_path;
 link.WindowStyle = 1;
 link.WorkingDirectory = logtalk_home;

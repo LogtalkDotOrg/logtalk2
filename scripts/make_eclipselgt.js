@@ -91,9 +91,9 @@ if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk"))
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - ECLiPSe.lnk");
-link.Arguments = "-b %LOGTALKHOME%\\bin\\logtalk_eclipse.pl";
-link.Description = "Runs Logtalk with ECLiPSe";
-link.IconLocation = "app.exe,1";
+link.Arguments = '-b "%LOGTALKHOME%\\bin\\logtalk_eclipse.pl"';
+link.Description = 'Runs Logtalk with ECLiPSe';
+link.IconLocation = 'app.exe,1';
 link.TargetPath = prolog_path;
 link.WindowStyle = 1;
 link.WorkingDirectory = logtalk_home;

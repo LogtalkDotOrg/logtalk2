@@ -96,9 +96,9 @@ if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk"))
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - SICStus Prolog.lnk");
-link.Arguments = "-l %LOGTALKHOME%\\bin\\logtalk_sicstus.pl";
-link.Description = "Runs Logtalk with SICStus Prolog";
-link.IconLocation = "app.exe,1";
+link.Arguments = '-l "%LOGTALKHOME%\\bin\\logtalk_sicstus.pl"';
+link.Description = 'Runs Logtalk with SICStus Prolog';
+link.IconLocation = 'app.exe,1';
 link.TargetPath = prolog_path;
 link.WindowStyle = 1;
 link.WorkingDirectory = logtalk_home;
