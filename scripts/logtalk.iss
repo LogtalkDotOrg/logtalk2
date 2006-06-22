@@ -29,7 +29,23 @@ SolidCompression=yes
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "C:\logtalk\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\compiler\*"; DestDir: "{app}\compiler"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\configs\*"; DestDir: "{app}\configs"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\contributions\*"; DestDir: "{app}\contributions"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\examples\*"; DestDir: "{app}\examples"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\libpaths\*"; DestDir: "{app}\libpaths"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\library\*"; DestDir: "{app}\library"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\manuals\*"; DestDir: "{app}\manuals"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\scripts\*"; DestDir: "{app}\scripts"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\wenv\*"; DestDir: "{app}\wenv"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\xml\*"; DestDir: "{app}\xml"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\BIBLIOGRAPHY"; DestDir: "{app}"; DestName: "BIBLIOGRAPHY.txt"; Flags: ignoreversion
+Source: "C:\logtalk\INSTALL"; DestDir: "{app}"; DestName: "INSTALL.txt"; Flags: ignoreversion
+Source: "C:\logtalk\LICENSE"; DestDir: "{app}"; DestName: "LICENSE.txt"; Flags: ignoreversion
+Source: "C:\logtalk\QUICK_START"; DestDir: "{app}"; DestName: "QUICK_START.txt"; Flags: ignoreversion
+Source: "C:\logtalk\README"; DestDir: "{app}"; DestName: "README.txt"; Flags: ignoreversion
+Source: "C:\logtalk\RELEASE_NOTES"; DestDir: "{app}"; DestName: "RELEASE_NOTES.txt"; Flags: ignoreversion
+Source: "C:\logtalk\UPGRADING"; DestDir: "{app}"; DestName: "UPGRADING.txt"; Flags: ignoreversion
 
 Source: "{#LOGTALKUSER}\*"; DestDir: "{#LOGTALKUSER} backup"; Flags: external recursesubdirs createallsubdirs skipifsourcedoesntexist uninsneveruninstall
 
@@ -50,7 +66,7 @@ Name: "{group}\{#MyAppName} License"; Filename: "{app}\LICENSE.txt"
 Name: "{group}\{#MyAppName} Release Notes"; Filename: "{app}\RELEASE_NOTES.txt"
 Name: "{group}\{#MyAppName} Read Me"; Filename: "{app}\README.txt"
 
-Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{app}\{#MyAppUrlName}"
+Name: "{group}\{#MyAppName} Web Site"; Filename: "{app}\{#MyAppUrlName}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 
 Name: "{#LOGTALKUSER}\manuals"; Filename: "{app}\manuals"
@@ -73,6 +89,6 @@ Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_xsblgt.js"""; De
 Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_yaplgt.js"""; Description: "YAP integration"; Flags: postinstall
 
 [UninstallDelete]
-Type: files; Name: "{app}\{#MyAppUrlName}"
+Type: filesandordirs; Name: "{app}"
 Type: filesandordirs; Name: "{group}"
 
