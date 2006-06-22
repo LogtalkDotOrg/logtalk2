@@ -81,9 +81,9 @@ if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk"))
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - CIAO.lnk");
-link.Arguments = "-l %LOGTALKHOME%\\bin\\logtalk_ciao.pl";
-link.Description = "Runs Logtalk with CIAO";
-link.IconLocation = "app.exe,1";
+link.Arguments = '-l "%LOGTALKHOME%\\bin\\logtalk_ciao.pl"';
+link.Description = 'Runs Logtalk with CIAO';
+link.IconLocation = 'app.exe,1';
 link.TargetPath = prolog_path;
 link.WindowStyle = 1;
 link.WorkingDirectory = logtalk_home;
