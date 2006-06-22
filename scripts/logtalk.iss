@@ -29,7 +29,7 @@ SolidCompression=yes
 Name: "full"; Description: "Full installation"
 Name: "base"; Description: "Base system installation"
 Name: "user"; Description: "User-modifiable files installation"
-Name: "prolog"; Description: "Prolog integration installation"
+Name: "prolog"; Description: "Prolog integration (see documentation for compatibility details)"
 Name: "custom"; Description: "Custom installation"; Flags: iscustom
 
 [Components]
@@ -50,7 +50,7 @@ Name: "prolog\yap"; Description: "YAP integration"; Types: full prolog custom
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Messages]
-BeveledLabel=Logtalk 2.28.0 © Paulo Moura, 1998-2006
+BeveledLabel=      Logtalk 2.28.0 © Paulo Moura, 1998-2006
 
 [Files]
 Source: "C:\logtalk\compiler\*"; DestDir: "{app}\compiler"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -81,7 +81,7 @@ Source: "C:\logtalk\library\*"; DestDir: "{#LOGTALKUSER}\library"; Components: u
 Source: "C:\logtalk\xml\*"; DestDir: "{#LOGTALKUSER}\xml"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [INI]
-Filename: "{app}\{#MyAppUrlName}"; Section: "InternetShortcut"; Key: "URL"; String: "{#MyAppURL}"
+Filename: "{app}\{#MyAppUrlName}"; Section: "InternetShortcut"; Key: "URL"; String: "{#MyAppURL}"; Components: base
 
 [Icons]
 Name: "{group}\{#MyAppName} Bibliography"; Filename: "{app}\BIBLIOGRAPHY.txt"; Components: base
@@ -101,16 +101,17 @@ Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environmen
 Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKUSER"; ValueData: "{#LOGTALKUSER}"; Flags: createvalueifdoesntexist
 
 [Run]
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_ciaolgt.js"""; Description: "Ciao Prolog integration"; Components: base prolog
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_eclipselgt.js"""; Description: "ECLiPSe integration"; Components: base prolog
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_gplgt.js"""; Description: "GNU Prolog integration"; Components: base prolog
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_plclgt.js"""; Description: "K-Prolog integration"; Components: base prolog
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_sicstuslgt.js"""; Description: "SICStus Prolog integration"; Components: base prolog
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_swilgt.js"""; Description: "SWI-Prolog integration"; Components: base prolog
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_xsblgt.js"""; Description: "XSB integration"; Components: base prolog
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_yaplgt.js"""; Description: "YAP integration"; Components: base prolog
+Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_ciaolgt.js"""; Description: "Ciao Prolog integration"; Components: prolog\ciao
+Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_eclipselgt.js"""; Description: "ECLiPSe integration"; Components: prolog\eclipse
+Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_gplgt.js"""; Description: "GNU Prolog integration"; Components: prolog\gprolog
+Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_plclgt.js"""; Description: "K-Prolog integration"; Components: prolog\plc
+Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_sicstuslgt.js"""; Description: "SICStus Prolog integration"; Components: prolog\sicstus
+Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_swilgt.js"""; Description: "SWI-Prolog integration"; Components: prolog\swi
+Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_xsblgt.js"""; Description: "XSB integration"; Components: prolog\xsb
+Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_yaplgt.js"""; Description: "YAP integration"; Components: prolog\yap
 
 Filename: "{app}\RELEASE_NOTES.txt"; Description: "View the release notes"; Flags: postinstall shellexec skipifsilent
+Filename: "{app}\INSTALL.txt"; Description: "Review the install instructions for completing your setup"; Flags: postinstall shellexec skipifsilent
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}"
