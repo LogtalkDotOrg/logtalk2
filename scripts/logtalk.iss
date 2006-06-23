@@ -31,7 +31,7 @@ VersionInfoCopyright=© Paulo Moura, 1998-2006
 
 AllowRootDirectory=yes
 
-MinVersion=5.0,5.0
+MinVersion=0,5.0
 
 [Types]
 Name: "full"; Description: "Full installation (recommended)"
