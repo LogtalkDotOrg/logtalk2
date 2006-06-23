@@ -26,6 +26,13 @@ OutputBaseFilename=lgt2280
 Compression=lzma
 SolidCompression=yes
 
+VersionInfoVersion=2.28.0
+VersionInfoCopyright=© Paulo Moura, 1998-2006
+
+AllowRootDirectory=yes
+
+MinVersion=5.0,5.0
+
 [Types]
 Name: "full"; Description: "Full installation (recommended)"
 Name: "base"; Description: "Base system installation"
@@ -98,7 +105,7 @@ Name: "{#LOGTALKUSER}\manuals"; Filename: "{app}\manuals"; Components: user
 Name: "{#LOGTALKUSER}\wenv"; Filename: "{app}\wenv"; Components: user
 
 [Registry]
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "LOGTALKHOME"; ValueData: "{#LOGTALKHOME}"; Flags: deletevalue uninsdeletevalue
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "LOGTALKHOME"; ValueData: "{app}"; Flags: deletevalue uninsdeletevalue
 Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKUSER"; ValueData: "{#LOGTALKUSER}"; Flags: createvalueifdoesntexist
 
 [Run]
