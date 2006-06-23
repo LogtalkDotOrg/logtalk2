@@ -16,6 +16,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
+ChangesEnvironment=yes
 DefaultDirName={#LOGTALKHOME}
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
@@ -26,9 +27,9 @@ Compression=lzma
 SolidCompression=yes
 
 [Types]
-Name: "full"; Description: "Full installation"
+Name: "full"; Description: "Full installation (recommended)"
 Name: "base"; Description: "Base system installation"
-Name: "user"; Description: "User-modifiable files installation"
+Name: "user"; Description: "User-modifiable files installation (must be run by all end-users)"
 Name: "prolog"; Description: "Prolog integration (see documentation for compatibility details)"
 Name: "custom"; Description: "Custom installation"; Flags: iscustom
 
@@ -53,16 +54,16 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 BeveledLabel=      Logtalk 2.28.0 © Paulo Moura, 1998-2006
 
 [Files]
-Source: "C:\logtalk\compiler\*"; DestDir: "{app}\compiler"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\configs\*"; DestDir: "{app}\configs"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\contributions\*"; DestDir: "{app}\contributions"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\examples\*"; DestDir: "{app}\examples"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\libpaths\*"; DestDir: "{app}\libpaths"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\library\*"; DestDir: "{app}\library"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\manuals\*"; DestDir: "{app}\manuals"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\scripts\*"; DestDir: "{app}\scripts"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\wenv\*"; DestDir: "{app}\wenv"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\xml\*"; DestDir: "{app}\xml"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\compiler\*"; Excludes: "CVS"; DestDir: "{app}\compiler"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\configs\*"; Excludes: "CVS"; DestDir: "{app}\configs"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\contributions\*"; Excludes: "CVS"; DestDir: "{app}\contributions"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\examples\*"; Excludes: "CVS"; DestDir: "{app}\examples"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\libpaths\*"; Excludes: "CVS"; DestDir: "{app}\libpaths"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\library\*"; Excludes: "CVS"; DestDir: "{app}\library"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\manuals\*"; Excludes: "CVS"; DestDir: "{app}\manuals"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\scripts\*"; Excludes: "CVS"; DestDir: "{app}\scripts"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\wenv\*"; Excludes: "CVS"; DestDir: "{app}\wenv"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\xml\*"; Excludes: "CVS"; DestDir: "{app}\xml"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\logtalk\BIBLIOGRAPHY"; DestDir: "{app}"; DestName: "BIBLIOGRAPHY.txt"; Components: base; Flags: ignoreversion
 Source: "C:\logtalk\INSTALL"; DestDir: "{app}"; DestName: "INSTALL.txt"; Components: base; Flags: ignoreversion
 Source: "C:\logtalk\LICENSE"; DestDir: "{app}"; DestName: "LICENSE.txt"; Components: base; Flags: ignoreversion
@@ -73,12 +74,12 @@ Source: "C:\logtalk\UPGRADING"; DestDir: "{app}"; DestName: "UPGRADING.txt"; Com
 
 Source: "{#LOGTALKUSER}\*"; DestDir: "{#LOGTALKUSER} backup"; Components: user\backup; Flags: external recursesubdirs createallsubdirs skipifsourcedoesntexist uninsneveruninstall
 
-Source: "C:\logtalk\configs\*"; DestDir: "{#LOGTALKUSER}\configs"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\contributions\*"; DestDir: "{#LOGTALKUSER}\contributions"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\examples\*"; DestDir: "{#LOGTALKUSER}\examples"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\libpaths\*"; DestDir: "{#LOGTALKUSER}\libpaths"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\library\*"; DestDir: "{#LOGTALKUSER}\library"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\xml\*"; DestDir: "{#LOGTALKUSER}\xml"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\configs\*"; Excludes: "CVS"; DestDir: "{#LOGTALKUSER}\configs"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\contributions\*"; Excludes: "CVS"; DestDir: "{#LOGTALKUSER}\contributions"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\examples\*"; Excludes: "CVS"; DestDir: "{#LOGTALKUSER}\examples"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\libpaths\*"; Excludes: "CVS"; DestDir: "{#LOGTALKUSER}\libpaths"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\library\*"; Excludes: "CVS"; DestDir: "{#LOGTALKUSER}\library"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\xml\*"; Excludes: "CVS"; DestDir: "{#LOGTALKUSER}\xml"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
 
 [INI]
 Filename: "{app}\{#MyAppUrlName}"; Section: "InternetShortcut"; Key: "URL"; String: "{#MyAppURL}"; Components: base
