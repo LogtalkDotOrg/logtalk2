@@ -30,6 +30,7 @@ VersionInfoVersion=2.28.0
 VersionInfoCopyright=© Paulo Moura, 1998-2006
 
 AllowRootDirectory=yes
+UninstallFilesDir="{userdocs}\Logtalk uninstaller"
 
 MinVersion=0,5.0
 
@@ -41,18 +42,18 @@ Name: "prolog"; Description: "Prolog integration (see documentation for compatib
 Name: "custom"; Description: "Custom installation"; Flags: iscustom
 
 [Components]
-Name: "base"; Description: "Base system"; Types: full base custom
+Name: "base"; Description: "Base system"; Types: full base custom; Flags: disablenouninstallwarning
 Name: "user"; Description: "User-modifiable files"; Types: full user custom; Flags: checkablealone
 Name: "user\backup"; Description: "Backup current user-modifiable files"; Types: full user custom
-Name: "prolog"; Description: "Prolog integration"; Types: full prolog custom
-Name: "prolog\ciao"; Description: "Ciao Prolog integration"; Types: full prolog custom
-Name: "prolog\eclipse"; Description: "ECLiPSe integration"; Types: full prolog custom
-Name: "prolog\gprolog"; Description: "GNU Prolog integration"; Types: full prolog custom
-Name: "prolog\plc"; Description: "K-Prolog integration"; Types: full prolog custom
-Name: "prolog\sicstus"; Description: "SICStus Prolog integration"; Types: full prolog custom
-Name: "prolog\swi"; Description: "SWI-Prolog integration"; Types: full prolog custom
-Name: "prolog\xsb"; Description: "XSB integration"; Types: full prolog custom
-Name: "prolog\yap"; Description: "YAP integration"; Types: full prolog custom
+Name: "prolog"; Description: "Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\ciao"; Description: "Ciao Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\eclipse"; Description: "ECLiPSe integration"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\gprolog"; Description: "GNU Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\plc"; Description: "K-Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\sicstus"; Description: "SICStus Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\swi"; Description: "SWI-Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\xsb"; Description: "XSB integration"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\yap"; Description: "YAP integration"; Types: full prolog custom; Flags: disablenouninstallwarning
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -62,6 +63,7 @@ BeveledLabel=      Logtalk 2.28.0 © Paulo Moura, 1998-2006
 
 [Dirs]
 Name: {code:GetLgtUserDir}; Components: user; Flags: uninsneveruninstall
+Name: "{userdocs}\Logtalk uninstaller"
 
 [Files]
 Source: "C:\logtalk\compiler\*"; Excludes: "CVS"; DestDir: "{app}\compiler"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -104,11 +106,11 @@ Name: "{group}\{#MyAppName} Read Me"; Filename: "{app}\README.txt"; Components: 
 Name: "{group}\{#MyAppName} Web Site"; Filename: "{app}\{#MyAppUrlName}"; Components: base
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"; Components: base
 
-Name: "{code:GetLgtUserDir}\manuals"; Filename: "{app}\manuals"; Components: user
-Name: "{code:GetLgtUserDir}\wenv"; Filename: "{app}\wenv"; Components: user
+Name: "{code:GetLgtUserDir}\manuals"; Filename: "{app}\manuals"; Components: user; Flags: uninsneveruninstall
+Name: "{code:GetLgtUserDir}\wenv"; Filename: "{app}\wenv"; Components: user; Flags: uninsneveruninstall
 
 [Registry]
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "LOGTALKHOME"; ValueData: "{app}"; Flags: deletevalue uninsdeletevalue
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "LOGTALKHOME"; ValueData: "{app}"; Components: base; Flags: deletevalue uninsdeletevalue
 Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKUSER"; ValueData: "{code:GetLgtUserDir}"; Flags: createvalueifdoesntexist
 
 [Run]
@@ -127,12 +129,12 @@ Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_swilgt.js"""; De
 Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_xsblgt.js"""; Description: "XSB integration"; Components: prolog\xsb
 Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_yaplgt.js"""; Description: "YAP integration"; Components: prolog\yap
 
-Filename: "{app}\RELEASE_NOTES.txt"; Description: "View the release notes"; Flags: postinstall shellexec skipifsilent
-Filename: "{app}\INSTALL.txt"; Description: "Review the install instructions for completing your setup"; Flags: postinstall shellexec skipifsilent
+Filename: "{app}\RELEASE_NOTES.txt"; Description: "View the release notes"; Components: base; Flags: postinstall shellexec skipifsilent
+Filename: "{app}\INSTALL.txt"; Description: "Review the install instructions for completing your setup"; Components: base; Flags: postinstall shellexec skipifsilent
 
 [UninstallDelete]
-Type: filesandordirs; Name: "{app}"
-Type: filesandordirs; Name: "{group}"
+Type: filesandordirs; Name: "{app}"; Components: base
+Type: filesandordirs; Name: "{group}"; Components: base
 
 [Code]
 var
@@ -152,12 +154,29 @@ begin
     Explanation,
     False, 'New Folder');
   LgtUserDirPage.Add('');
-  LgtUserDirPage.Values[0] := ExpandConstant('{#LOGTALKUSER}');
+  LgtUserDirPage.Values[0] := ExpandConstant('{#LOGTALKUSER}')
 end;
 
 function GetLgtUserDir(Param: String): String;
 begin
   { Return the selected DataDir }
-  Result := LgtUserDirPage.Values[0];
+  Result := LgtUserDirPage.Values[0]
+end;
+
+function ShouldSkipPage(PageID: Integer): Boolean;
+begin
+  { Skip pages that shouldn't be shown }
+  if (PageID = wpSelectDir) and not IsAdminLoggedOn then
+    Result := True
+  else if (PageID = wpSelectComponents) and not IsAdminLoggedOn then
+  begin
+    WizardForm.TypesCombo.ItemIndex := 2;
+    WizardForm.TypesCombo.OnChange(nil);
+    Result := True
+  end
+  else if (PageID = wpReady) and not IsAdminLoggedOn then
+    Result := True
+  else
+    Result := False;
 end;
 
