@@ -137,12 +137,19 @@ Type: filesandordirs; Name: "{group}"
 [Code]
 var
   LgtUserDirPage: TInputDirWizardPage;
+  Explanation: String;
 
 procedure InitializeWizard;
 begin
+  Explanation := 'Select the folder in which Setup should install Logtalk user-modifiable files, then click Next.'
+                 + Chr(13) + Chr(13)
+                 + 'These files allows each user to independently customize Logtalk and to freely modify the provided programming examples.'
+                 + ' A copy of these files must exist in the user home folder in order to use the Logtalk-Prolog integration scripts available from the Start Menu.'
+                 + Chr(13) + Chr(13)
+                 + 'Addtional end-users may re-run this installer to install only these files on their home folders after a full installation of Logtalk.';
   LgtUserDirPage := CreateInputDirPage(wpSelectDir,
     'Select Folder for Logtalk User-modifiable Files', 'Where should Logtalk user-modifiable files be installed?',
-    'Select the folder in which Setup should install Logtalk user-modifiable files, then click Next.',
+    Explanation,
     False, 'New Folder');
   LgtUserDirPage.Add('');
   LgtUserDirPage.Values[0] := ExpandConstant('{#LOGTALKUSER}');
