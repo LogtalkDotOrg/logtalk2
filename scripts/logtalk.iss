@@ -60,6 +60,9 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Messages]
 BeveledLabel=      Logtalk 2.28.0 © Paulo Moura, 1998-2006
 
+[Dirs]
+Name: {code:GetLgtUserDir}; Flags: uninsneveruninstall
+
 [Files]
 Source: "C:\logtalk\compiler\*"; Excludes: "CVS"; DestDir: "{app}\compiler"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\logtalk\configs\*"; Excludes: "CVS"; DestDir: "{app}\configs"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -79,14 +82,14 @@ Source: "C:\logtalk\README"; DestDir: "{app}"; DestName: "README.txt"; Component
 Source: "C:\logtalk\RELEASE_NOTES"; DestDir: "{app}"; DestName: "RELEASE_NOTES.txt"; Components: base; Flags: ignoreversion
 Source: "C:\logtalk\UPGRADING"; DestDir: "{app}"; DestName: "UPGRADING.txt"; Components: base; Flags: ignoreversion
 
-Source: "{#LOGTALKUSER}\*"; DestDir: "{#LOGTALKUSER} backup"; Components: user\backup; Flags: external recursesubdirs createallsubdirs skipifsourcedoesntexist uninsneveruninstall
+Source: "{code:GetLgtUserDir}\*"; DestDir: "{code:GetLgtUserDir} backup"; Components: user\backup; Flags: external recursesubdirs createallsubdirs skipifsourcedoesntexist uninsneveruninstall
 
-Source: "C:\logtalk\configs\*"; Excludes: "CVS"; DestDir: "{#LOGTALKUSER}\configs"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
-Source: "C:\logtalk\contributions\*"; Excludes: "CVS"; DestDir: "{#LOGTALKUSER}\contributions"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
-Source: "C:\logtalk\examples\*"; Excludes: "CVS"; DestDir: "{#LOGTALKUSER}\examples"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
-Source: "C:\logtalk\libpaths\*"; Excludes: "CVS"; DestDir: "{#LOGTALKUSER}\libpaths"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
-Source: "C:\logtalk\library\*"; Excludes: "CVS"; DestDir: "{#LOGTALKUSER}\library"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
-Source: "C:\logtalk\xml\*"; Excludes: "CVS"; DestDir: "{#LOGTALKUSER}\xml"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\configs\*"; Excludes: "CVS"; DestDir: "{code:GetLgtUserDir}\configs"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\contributions\*"; Excludes: "CVS"; DestDir: "{code:GetLgtUserDir}\contributions"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\examples\*"; Excludes: "CVS"; DestDir: "{code:GetLgtUserDir}\examples"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\libpaths\*"; Excludes: "CVS"; DestDir: "{code:GetLgtUserDir}\libpaths"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\library\*"; Excludes: "CVS"; DestDir: "{code:GetLgtUserDir}\library"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\xml\*"; Excludes: "CVS"; DestDir: "{code:GetLgtUserDir}\xml"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
 
 [INI]
 Filename: "{app}\{#MyAppUrlName}"; Section: "InternetShortcut"; Key: "URL"; String: "{#MyAppURL}"; Components: base
@@ -101,12 +104,12 @@ Name: "{group}\{#MyAppName} Read Me"; Filename: "{app}\README.txt"; Components: 
 Name: "{group}\{#MyAppName} Web Site"; Filename: "{app}\{#MyAppUrlName}"; Components: base
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"; Components: base
 
-Name: "{#LOGTALKUSER}\manuals"; Filename: "{app}\manuals"; Components: user
-Name: "{#LOGTALKUSER}\wenv"; Filename: "{app}\wenv"; Components: user
+Name: "{code:GetLgtUserDir}\manuals"; Filename: "{app}\manuals"; Components: user
+Name: "{code:GetLgtUserDir}\wenv"; Filename: "{app}\wenv"; Components: user
 
 [Registry]
 Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "LOGTALKHOME"; ValueData: "{app}"; Flags: deletevalue uninsdeletevalue
-Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKUSER"; ValueData: "{#LOGTALKUSER}"; Flags: createvalueifdoesntexist
+Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKUSER"; ValueData: "{code:GetLgtUserDir}"; Flags: createvalueifdoesntexist
 
 [Run]
 Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_ciaolgt.js"""; Description: "Ciao Prolog integration"; Components: prolog\ciao
@@ -124,4 +127,24 @@ Filename: "{app}\INSTALL.txt"; Description: "Review the install instructions for
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}"
 Type: filesandordirs; Name: "{group}"
+
+[Code]
+var
+  LgtUserDirPage: TInputDirWizardPage;
+
+procedure InitializeWizard;
+begin
+  LgtUserDirPage := CreateInputDirPage(wpSelectDir,
+    'Select Folder for Logtalk User-modifiable Files', 'Where should Logtalk user-modifiable files be installed?',
+    'Select the folder in which Setup should install Logtalk user-modifiable files, then click Next.',
+    False, 'New Folder');
+  LgtUserDirPage.Add('');
+  LgtUserDirPage.Values[0] := ExpandConstant('{#LOGTALKUSER}');
+end;
+
+function GetLgtUserDir(Param: String): String;
+begin
+  { Return the selected DataDir }
+  Result := LgtUserDirPage.Values[0];
+end;
 
