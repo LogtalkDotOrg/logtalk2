@@ -61,7 +61,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 BeveledLabel=      Logtalk 2.28.0 © Paulo Moura, 1998-2006
 
 [Dirs]
-Name: {code:GetLgtUserDir}; Flags: uninsneveruninstall
+Name: {code:GetLgtUserDir}; Components: user; Flags: uninsneveruninstall
 
 [Files]
 Source: "C:\logtalk\compiler\*"; Excludes: "CVS"; DestDir: "{app}\compiler"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -112,6 +112,12 @@ Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environmen
 Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKUSER"; ValueData: "{code:GetLgtUserDir}"; Flags: createvalueifdoesntexist
 
 [Run]
+Filename: "{cmd}"; Parameters: "/C for /R ""{app}"" %D in (NOTES) do ren ""%D"" *.txt"; Components: base; Flags: runhidden
+Filename: "{cmd}"; Parameters: "/C for /R ""{app}"" %D in (SCRIPT) do ren ""%D"" *.txt"; Components: base; Flags: runhidden
+
+Filename: "{cmd}"; Parameters: "/C for /R ""{code:GetLgtUserDir}"" %D in (NOTES) do ren ""%D"" *.txt"; Components: user; Flags: runhidden
+Filename: "{cmd}"; Parameters: "/C for /R ""{code:GetLgtUserDir}"" %D in (SCRIPT) do ren ""%D"" *.txt"; Components: user; Flags: runhidden
+
 Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_ciaolgt.js"""; Description: "Ciao Prolog integration"; Components: prolog\ciao
 Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_eclipselgt.js"""; Description: "ECLiPSe integration"; Components: prolog\eclipse
 Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_gplgt.js"""; Description: "GNU Prolog integration"; Components: prolog\gprolog
