@@ -200,3 +200,11 @@ files. You may want to customize these CSS and XSLT files to modify the layout
 or style of the resulting PDF/(X)HTML files or to write new scripts and 
 transformations to generate other formats. For more details, see the file 
 "$LOGTALKUSER/xml/NOTES".
+
+
+8. ADDING SUPPORT FOR EDITING LOGTALK SOURCE FILES TO TEXT EDITORS
+
+Logtalk provides, in the "$LOGTALKHOME/wenv" directory (linked from the 
+$LOGTALKUSER directory), support for syntax coloring of Logtalk source 
+files for several text editors. For more details, see the file 
+"$LOGTALKHOME/wenv/NOTES".
