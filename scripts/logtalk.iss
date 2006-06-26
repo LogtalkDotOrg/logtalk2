@@ -2,7 +2,7 @@
 
 #define MyAppName "Logtalk"
 #define MyAppVerName "Logtalk 2.28.0"
-#define MyAppPublisher "Paulo Moura"
+#define MyAppPublisher "Logtalk.org"
 #define MyAppURL "http://logtalk.org"
 #define MyAppUrlName "Logtalk Web Site.url"
 
@@ -84,8 +84,6 @@ Source: "C:\logtalk\README"; DestDir: "{app}"; DestName: "README.txt"; Component
 Source: "C:\logtalk\RELEASE_NOTES"; DestDir: "{app}"; DestName: "RELEASE_NOTES.txt"; Components: base; Flags: ignoreversion
 Source: "C:\logtalk\UPGRADING"; DestDir: "{app}"; DestName: "UPGRADING.txt"; Components: base; Flags: ignoreversion
 
-Source: "{code:GetLgtUserDir}\*"; DestDir: "{code:GetLgtUserDir} backup"; Components: user\backup; Flags: external recursesubdirs createallsubdirs skipifsourcedoesntexist uninsneveruninstall
-
 Source: "C:\logtalk\configs\*"; Excludes: "CVS"; DestDir: "{code:GetLgtUserDir}\configs"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
 Source: "C:\logtalk\contributions\*"; Excludes: "CVS"; DestDir: "{code:GetLgtUserDir}\contributions"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
 Source: "C:\logtalk\examples\*"; Excludes: "CVS"; DestDir: "{code:GetLgtUserDir}\examples"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
@@ -139,33 +137,48 @@ Type: filesandordirs; Name: "{group}"; Components: base
 [Code]
 var
   LgtUserDirPage: TInputDirWizardPage;
-  Explanation: String;
+  WarningPage: TOutputMsgWizardPage;
+  Explanation, Warning: String;
 
 procedure InitializeWizard;
 begin
   Explanation := 'Select the folder in which Setup should install Logtalk user-modifiable files, then click Next.'
                  + Chr(13) + Chr(13)
                  + 'These files allows each user to independently customize Logtalk and to freely modify the provided programming examples.'
-                 + ' A copy of these files must exist in the user home folder in order to use the Logtalk-Prolog integration scripts available from the Start Menu.'
                  + Chr(13) + Chr(13)
-                 + 'Addtional end-users may re-run this installer to install only these files on their home folders after a full installation of Logtalk.';
+                 + 'A copy of these files must exist in the user home folder in order to use the Logtalk-Prolog integration scripts available from the Start Menu.'
+                 + Chr(13) + Chr(13)
+                 + 'Addtional end-users may use this installer to make a copy of these files on their home folders after a full installation of Logtalk.';
   LgtUserDirPage := CreateInputDirPage(wpSelectDir,
     'Select Folder for Logtalk User-modifiable Files', 'Where should Logtalk user-modifiable files be installed?',
     Explanation,
     False, 'New Folder');
   LgtUserDirPage.Add('');
-  LgtUserDirPage.Values[0] := ExpandConstant('{#LOGTALKUSER}')
+  LgtUserDirPage.Values[0] := ExpandConstant('{#LOGTALKUSER}');
+  if not IsAdminLoggedOn then
+  begin
+    Warning := 'Full installation of Logtalk requires an administrative user.'
+               + Chr(13) + Chr(13)
+               + 'If the base Logtalk system is already installed, you may proceed in order to setup Logtalk for you as an end-user.'
+               + Chr(13) + Chr(13)
+               + 'If Logtalk is already set for you, this installer will make a backup copy of your current files (if you choose the same installation folder) and will restore all user-modifiable files to their initial, pristine state.';
+    WarningPage := CreateOutputMsgPage(wpWelcome,
+  'Information', 'Please read the following important information before continuing.', Warning);
+  end
 end;
 
 function GetLgtUserDir(Param: String): String;
 begin
-  { Return the selected DataDir }
   Result := LgtUserDirPage.Values[0]
+end;
+
+function GetCurrentDate(Param: String): String;
+begin
+  Result := GetDateTimeString('dddddd tt', '-', '-')
 end;
 
 function ShouldSkipPage(PageID: Integer): Boolean;
 begin
-  { Skip pages that shouldn't be shown }
   if (PageID = wpSelectDir) and not IsAdminLoggedOn then
     Result := True
   else if (PageID = wpSelectComponents) and not IsAdminLoggedOn then
@@ -178,5 +191,11 @@ begin
     Result := True
   else
     Result := False;
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if (CurStep = ssInstall) and DirExists(LgtUserDirPage.Values[0]) and (pos('backup', WizardSelectedComponents(False)) > 0) then
+    RenameFile(LgtUserDirPage.Values[0], LgtUserDirPage.Values[0] + ' backup ' + GetDateTimeString('dddddd tt', '-', '-'))
 end;
 
