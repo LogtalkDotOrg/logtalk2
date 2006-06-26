@@ -27,7 +27,9 @@ code or from known Prolog text books and are copyrighted by the respective
 authors.
 
 These are programming examples, meaning that you should study the source 
-files to fully understand them.
+files to fully understand them. However, note that some examples purpose 
+is to illustrate general principles rather than being adequate solutions
+for deployment code.
 
 All examples are formatted using four spaces tabs.
 
