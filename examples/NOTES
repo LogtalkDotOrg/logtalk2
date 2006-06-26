@@ -28,8 +28,8 @@ authors.
 
 These are programming examples, meaning that you should study the source 
 files to fully understand them. However, note that some examples purpose 
-is to illustrate general principles rather than being adequate solutions
-for deployment code.
+is to illustrate general principles rather than being adequate, efficient 
+solutions for deployment code.
 
 All examples are formatted using four spaces tabs.
 
@@ -114,7 +114,8 @@ metapredicates
 	example of using metapredicates in Logtalk objects
 
 metainterpreters
-	some examples of simple metainterpreters
+	some examples of simple meta-interpreters defined as categories which 
+	may be imported by "database" objects
 
 mi
 	multi-inheritance examples
