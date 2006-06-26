@@ -66,16 +66,16 @@ Name: {code:GetLgtUserDir}; Components: user; Flags: uninsneveruninstall
 Name: "{userdocs}\Logtalk uninstaller"
 
 [Files]
-Source: "C:\logtalk\compiler\*"; Excludes: "CVS"; DestDir: "{app}\compiler"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\configs\*"; Excludes: "CVS"; DestDir: "{app}\configs"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\contributions\*"; Excludes: "CVS"; DestDir: "{app}\contributions"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\examples\*"; Excludes: "CVS"; DestDir: "{app}\examples"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\libpaths\*"; Excludes: "CVS"; DestDir: "{app}\libpaths"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\library\*"; Excludes: "CVS"; DestDir: "{app}\library"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\manuals\*"; Excludes: "CVS"; DestDir: "{app}\manuals"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\scripts\*"; Excludes: "CVS"; DestDir: "{app}\scripts"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\wenv\*"; Excludes: "CVS"; DestDir: "{app}\wenv"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\xml\*"; Excludes: "CVS"; DestDir: "{app}\xml"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\compiler\*"; Excludes: ".*,CVS"; DestDir: "{app}\compiler"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\configs\*"; Excludes: ".*,CVS"; DestDir: "{app}\configs"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\contributions\*"; Excludes: ".*,CVS"; DestDir: "{app}\contributions"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\examples\*"; Excludes: ".*,CVS"; DestDir: "{app}\examples"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\libpaths\*"; Excludes: ".*,CVS"; DestDir: "{app}\libpaths"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\library\*"; Excludes: ".*,CVS"; DestDir: "{app}\library"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\manuals\*"; Excludes: ".*,CVS"; DestDir: "{app}\manuals"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\scripts\*"; Excludes: ".*,CVS"; DestDir: "{app}\scripts"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\wenv\*"; Excludes: ".*,CVS"; DestDir: "{app}\wenv"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\logtalk\xml\*"; Excludes: ".*,CVS"; DestDir: "{app}\xml"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\logtalk\BIBLIOGRAPHY"; DestDir: "{app}"; DestName: "BIBLIOGRAPHY.txt"; Components: base; Flags: ignoreversion
 Source: "C:\logtalk\INSTALL"; DestDir: "{app}"; DestName: "INSTALL.txt"; Components: base; Flags: ignoreversion
 Source: "C:\logtalk\LICENSE"; DestDir: "{app}"; DestName: "LICENSE.txt"; Components: base; Flags: ignoreversion
@@ -84,12 +84,12 @@ Source: "C:\logtalk\README"; DestDir: "{app}"; DestName: "README.txt"; Component
 Source: "C:\logtalk\RELEASE_NOTES"; DestDir: "{app}"; DestName: "RELEASE_NOTES.txt"; Components: base; Flags: ignoreversion
 Source: "C:\logtalk\UPGRADING"; DestDir: "{app}"; DestName: "UPGRADING.txt"; Components: base; Flags: ignoreversion
 
-Source: "C:\logtalk\configs\*"; Excludes: "CVS"; DestDir: "{code:GetLgtUserDir}\configs"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
-Source: "C:\logtalk\contributions\*"; Excludes: "CVS"; DestDir: "{code:GetLgtUserDir}\contributions"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
-Source: "C:\logtalk\examples\*"; Excludes: "CVS"; DestDir: "{code:GetLgtUserDir}\examples"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
-Source: "C:\logtalk\libpaths\*"; Excludes: "CVS"; DestDir: "{code:GetLgtUserDir}\libpaths"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
-Source: "C:\logtalk\library\*"; Excludes: "CVS"; DestDir: "{code:GetLgtUserDir}\library"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
-Source: "C:\logtalk\xml\*"; Excludes: "CVS"; DestDir: "{code:GetLgtUserDir}\xml"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\configs\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\configs"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\contributions\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\contributions"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\examples\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\examples"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\libpaths\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\libpaths"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\library\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\library"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "C:\logtalk\xml\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\xml"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
 
 [INI]
 Filename: "{app}\{#MyAppUrlName}"; Section: "InternetShortcut"; Key: "URL"; String: "{#MyAppURL}"; Components: base
