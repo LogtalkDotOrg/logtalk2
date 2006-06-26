@@ -85,3 +85,16 @@ X = 2 ;
 1 fail: p(_G180)
 
 no
+
+
+% another example: expert system rules:
+
+| rules::prove(weather(Wheather)).
+
+Wheather = raining 
+yes
+
+| ?- rules::prove(goto(Where)).
+
+Where = cinema 
+yes
