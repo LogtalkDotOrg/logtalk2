@@ -127,8 +127,8 @@ Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_swilgt.js"""; De
 Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_xsblgt.js"""; Description: "XSB integration"; Components: prolog\xsb
 Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_yaplgt.js"""; Description: "YAP integration"; Components: prolog\yap
 
-Filename: "{app}\RELEASE_NOTES.txt"; Description: "View the release notes"; Components: base; Flags: postinstall shellexec skipifsilent
-Filename: "{app}\INSTALL.txt"; Description: "Review the install instructions for completing your setup"; Components: base; Flags: postinstall shellexec skipifsilent
+Filename: "{app}\RELEASE_NOTES.txt"; Description: "View the release notes"; Components: base user; Flags: postinstall shellexec skipifsilent
+Filename: "{app}\INSTALL.txt"; Description: "Review the install instructions for completing your setup"; Components: base user; Flags: postinstall shellexec skipifsilent
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}"; Components: base
