@@ -141,6 +141,13 @@ CIAO Prolog 1.8p2 and later versions
 	files.
 
 
+CxProlog 0.93.x
+
+	cx.config
+
+	Experimental config file.
+
+
 ECLiPSe 5.5~5.8
 
 	eclipse.config
