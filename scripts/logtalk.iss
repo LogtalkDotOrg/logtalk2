@@ -7,7 +7,7 @@
 #define MyAppUrlName "Logtalk Web Site.url"
 
 #define LOGTALKHOME "{reg:HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment,LOGTALKHOME|{pf}\Logtalk}"
-#define LOGTALKUSER "{reg:HKCU\Environment,LOGTALKUSER|{userdocs}\logtalk}"
+#define LOGTALKUSER "{reg:HKCU\Environment,LOGTALKUSER|{userdocs}\Logtalk}"
 
 [Setup]
 AppName={#MyAppName}
@@ -20,8 +20,8 @@ ChangesEnvironment=yes
 DefaultDirName={#LOGTALKHOME}
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
-LicenseFile=C:\logtalk\LICENSE
-InfoBeforeFile=C:\logtalk\README
+LicenseFile=C:\logtalk\LICENSE.txt
+InfoBeforeFile=C:\logtalk\README.txt
 OutputBaseFilename=lgt2280
 Compression=lzma
 SolidCompression=yes
@@ -66,23 +66,7 @@ Name: {code:GetLgtUserDir}; Components: user; Flags: uninsneveruninstall
 Name: "{userdocs}\Logtalk uninstaller"
 
 [Files]
-Source: "C:\logtalk\compiler\*"; Excludes: ".*,CVS"; DestDir: "{app}\compiler"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\configs\*"; Excludes: ".*,CVS"; DestDir: "{app}\configs"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\contributions\*"; Excludes: ".*,CVS"; DestDir: "{app}\contributions"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\examples\*"; Excludes: ".*,CVS"; DestDir: "{app}\examples"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\libpaths\*"; Excludes: ".*,CVS"; DestDir: "{app}\libpaths"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\library\*"; Excludes: ".*,CVS"; DestDir: "{app}\library"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\manuals\*"; Excludes: ".*,CVS"; DestDir: "{app}\manuals"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\scripts\*"; Excludes: ".*,CVS"; DestDir: "{app}\scripts"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\wenv\*"; Excludes: ".*,CVS"; DestDir: "{app}\wenv"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\xml\*"; Excludes: ".*,CVS"; DestDir: "{app}\xml"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\logtalk\BIBLIOGRAPHY"; DestDir: "{app}"; DestName: "BIBLIOGRAPHY.txt"; Components: base; Flags: ignoreversion
-Source: "C:\logtalk\INSTALL"; DestDir: "{app}"; DestName: "INSTALL.txt"; Components: base; Flags: ignoreversion
-Source: "C:\logtalk\LICENSE"; DestDir: "{app}"; DestName: "LICENSE.txt"; Components: base; Flags: ignoreversion
-Source: "C:\logtalk\QUICK_START"; DestDir: "{app}"; DestName: "QUICK_START.txt"; Components: base; Flags: ignoreversion
-Source: "C:\logtalk\README"; DestDir: "{app}"; DestName: "README.txt"; Components: base; Flags: ignoreversion
-Source: "C:\logtalk\RELEASE_NOTES"; DestDir: "{app}"; DestName: "RELEASE_NOTES.txt"; Components: base; Flags: ignoreversion
-Source: "C:\logtalk\UPGRADING"; DestDir: "{app}"; DestName: "UPGRADING.txt"; Components: base; Flags: ignoreversion
+Source: "C:\logtalk\*"; Excludes: ".*,CVS"; DestDir: "{app}"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
 
 Source: "C:\logtalk\configs\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\configs"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
 Source: "C:\logtalk\contributions\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\contributions"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
@@ -109,15 +93,9 @@ Name: "{code:GetLgtUserDir}\wenv"; Filename: "{app}\wenv"; Components: user; Fla
 
 [Registry]
 Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "LOGTALKHOME"; ValueData: "{app}"; Components: base; Flags: deletevalue uninsdeletevalue
-Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKUSER"; ValueData: "{code:GetLgtUserDir}"; Flags: createvalueifdoesntexist
+Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKUSER"; ValueData: "{code:GetLgtUserDir}"; Flags: deletevalue uninsdeletevalue
 
 [Run]
-Filename: "{cmd}"; Parameters: "/C for /R ""{app}"" %D in (NOTES) do ren ""%D"" *.txt"; Components: base; Flags: runhidden
-Filename: "{cmd}"; Parameters: "/C for /R ""{app}"" %D in (SCRIPT) do ren ""%D"" *.txt"; Components: base; Flags: runhidden
-
-Filename: "{cmd}"; Parameters: "/C for /R ""{code:GetLgtUserDir}"" %D in (NOTES) do ren ""%D"" *.txt"; Components: user; Flags: runhidden
-Filename: "{cmd}"; Parameters: "/C for /R ""{code:GetLgtUserDir}"" %D in (SCRIPT) do ren ""%D"" *.txt"; Components: user; Flags: runhidden
-
 Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_ciaolgt.js"""; Description: "Ciao Prolog integration"; Components: prolog\ciao
 Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_eclipselgt.js"""; Description: "ECLiPSe integration"; Components: prolog\eclipse
 Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_gplgt.js"""; Description: "GNU Prolog integration"; Components: prolog\gprolog
@@ -202,7 +180,7 @@ begin
     Scripts := 'The installer needs to run a set of JScripts scripts within command shells' + Chr(13) +
                'in order to integrate Logtalk with your installed Prolog compilers.' + Chr(13) + Chr(13) +
                'Make sure that any security software you may have installed do not block' + Chr(13) +
-               'the execution of the scripts.' ;
+               'the execution of the scripts.';
     MsgBox(Scripts, mbInformation, MB_OK)
   end
 end;

@@ -28,6 +28,8 @@ RELEASE NOTES
 
 	Dropped support for versions of XSB older than 3.0.
 
+	Add a ".txt" extension to all "NOTES" and "SCRIPT" files.
+
 	Extended "dcgs", "parametric", and "metainterpreters" examples.
 
 	Update all the JScript scripts to check if a compatible version of WSH is 
