@@ -138,7 +138,7 @@ Type: filesandordirs; Name: "{group}"; Components: base
 var
   LgtUserDirPage: TInputDirWizardPage;
   WarningPage: TOutputMsgWizardPage;
-  Explanation, Warning: String;
+  Explanation, Warning, Scripts: String;
 
 procedure InitializeWizard;
 begin
@@ -196,6 +196,14 @@ end;
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if (CurStep = ssInstall) and DirExists(LgtUserDirPage.Values[0]) and (pos('backup', WizardSelectedComponents(False)) > 0) then
-    RenameFile(LgtUserDirPage.Values[0], LgtUserDirPage.Values[0] + ' backup ' + GetDateTimeString('dddddd tt', '-', '-'))
+    RenameFile(LgtUserDirPage.Values[0], LgtUserDirPage.Values[0] + ' backup ' + GetDateTimeString('dddddd tt', '-', '-'));
+  if (CurStep = ssInstall) and (pos('prolog', WizardSelectedComponents(False)) > 0) then
+  begin
+    Scripts := 'The installer needs to run a set of JScripts scripts within command shells' + Chr(13) +
+               'in order to integrate Logtalk with your installed Prolog compilers.' + Chr(13) + Chr(13) +
+               'Make sure that any security software you may have installed do not block' + Chr(13) +
+               'the execution of the scripts.' ;
+    MsgBox(Scripts, mbInformation, MB_OK)
+  end
 end;
 
