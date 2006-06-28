@@ -88,8 +88,8 @@ Name: "{group}\{#MyAppName} Read Me"; Filename: "{app}\README.txt"; Components: 
 Name: "{group}\{#MyAppName} Web Site"; Filename: "{app}\{#MyAppUrlName}"; Components: base
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"; Components: base
 
-Name: "{code:GetLgtUserDir}\manuals"; Filename: "{app}\manuals"; Components: user; Flags: uninsneveruninstall
-Name: "{code:GetLgtUserDir}\wenv"; Filename: "{app}\wenv"; Components: user; Flags: uninsneveruninstall
+Name: "{code:GetLgtUserDir}\manuals"; Filename: "{app}\manuals"; Components: user
+Name: "{code:GetLgtUserDir}\wenv"; Filename: "{app}\wenv"; Components: user
 
 [Registry]
 Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "LOGTALKHOME"; ValueData: "{app}"; Components: base; Flags: deletevalue uninsdeletevalue
