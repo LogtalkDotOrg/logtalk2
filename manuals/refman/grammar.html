@@ -156,6 +156,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 		<dt>specializes_classes ::=</dt>
 			<dd>"<code>specializes(</code>" specialized_objects "<code>)</code>"</dd>
 	</dl>
+</blockquote>
 
 	<h4>Implemented protocols<a id="implemented_protocols"></a></h4>
 	<blockquote>
@@ -311,8 +312,6 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 		</dl>
 	</blockquote>
 
-</blockquote>
-
 
 <h3>Entity identifiers<a id="entity_identifiers"></a></h3>
 
@@ -338,6 +337,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 		<dt>entity_identifier_list ::=</dt>
 			<dd>"<code>[</code>" entity_identifier_sequence "<code>]</code>"</dd>
 	</dl>
+</blockquote>
 
 	<h4>Object identifiers<a id="object_identifiers"></a></h4>
 	<blockquote>
@@ -410,8 +410,6 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 		</dl>
 	</blockquote>
 
-</blockquote>
-
 
 <h3>Source file names<a id="source_file_names"></a></h3>
 
@@ -448,8 +446,6 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 
 
 <h3>Directives<a id="directives"></a></h3>
-
-<blockquote>
 
 	<h4>Source file directives<a id="source_file_directives"></a></h4>
 	<blockquote>
@@ -534,9 +530,11 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 				<dd>metapredicate_directive |</dd>
 				<dd>info_directive |</dd>
 				<dd>dynamic_directive |</dd>
-				<dd>discontiguous_directive</dd>
-				<dd><i>operator_directive</i> |</dd>
+				<dd>discontiguous_directive |</dd>
+				<dd><i>operator_directive</i></dd>
 		</dl>
+	</blockquote>
+	<blockquote>
 		<dl>
 			<dt>alias_directive ::=</dt>
 				<dd>"<code>:- alias(</code>" entity_identifier "<code>,</code>" predicate_indicator "<code>,</code>" predicate_indicator "<code>).</code>" |</dd>
@@ -572,6 +570,8 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>discontiguous_directive ::=</dt>
 				<dd>"<code>:- discontiguous(</code>" predicate_indicator_term | non_terminal_indicator_term "<code>).</code>" |</dd>
 		</dl>
+	</blockquote>
+	<blockquote>
 		<dl>
 			<dt>predicate_indicator_term ::=</dt>
 				<dd><i>predicate_indicator</i> |</dd>
@@ -587,6 +587,8 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>predicate_indicator_list ::=</dt>
 				<dd>"<code>[</code>" predicate_indicator_sequence "<code>]</code>"</dd>
 		</dl>
+	</blockquote>
+	<blockquote>
 		<dl>
 			<dt>predicate_indicator_alias ::=</dt>
 				<dd><i>predicate_indicator</i> |</dd>
@@ -601,6 +603,8 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>predicate_indicator_alias_list ::=</dt>
 				<dd>"<code>[</code>" predicate_indicator_alias_sequence "<code>]</code>"</dd>
 		</dl>
+	</blockquote>
+	<blockquote>
 		<dl>
 			<dt>non_terminal_indicator_term ::=</dt>
 				<dd>non_terminal_indicator |</dd>
@@ -620,6 +624,8 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>non_terminal_indicator ::=</dt>
 				<dd><i>functor</i> "<code>//</code>" <i>arity</i></dd>
 		</dl>
+	</blockquote>
+	<blockquote>
 		<dl>
 			<dt>predicate_mode_term ::=</dt>
 				<dd><i>atom</i> "<code>(</code>" mode_terms "<code>)</code>"</dd>
@@ -636,19 +642,6 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 		<dl>
 			<dt>mode_term ::=</dt>
 				<dd>"<code>@</code>" [type] | "<code>+</code>" [type] | "<code>-</code>" [type] | "<code>?</code>" [type]</dd>
-		</dl>
-		<dl>
-			<dt>metapredicate_mode_indicator ::=</dt>
-				<dd><i>atom</i> "<code>(</code>" metapredicate_terms "<code>)</code>"</dd>
-		</dl>
-		<dl>
-			<dt>metapredicate_terms ::=</dt>
-				<dd>metapredicate_term |</dd>
-				<dd>metapredicate_term "<code>,</code>" metapredicate_terms</dd>
-		</dl>
-		<dl>
-			<dt>metapredicate_term ::=</dt>
-				<dd>"<code>::</code>" | "<code>*</code>"</dd>
 		</dl>
 		<dl>
 			<dt>type ::=</dt>
@@ -675,6 +668,23 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>number_of_solutions ::=</dt>
 				<dd>"<code>zero</code>" | "<code>zero_or_one</code>" | "<code>zero_or_more</code>" | "<code>one</code>" | "<code>one_or_more</code>" | "<code>error</code>"</dd>
 		</dl>
+	</blockquote>
+	<blockquote>
+		<dl>
+			<dt>metapredicate_mode_indicator ::=</dt>
+				<dd><i>atom</i> "<code>(</code>" metapredicate_terms "<code>)</code>"</dd>
+		</dl>
+		<dl>
+			<dt>metapredicate_terms ::=</dt>
+				<dd>metapredicate_term |</dd>
+				<dd>metapredicate_term "<code>,</code>" metapredicate_terms</dd>
+		</dl>
+		<dl>
+			<dt>metapredicate_term ::=</dt>
+				<dd>"<code>::</code>" | "<code>*</code>"</dd>
+		</dl>
+	</blockquote>
+	<blockquote>
 		<dl>
 			<dt>info_list ::=</dt>
 				<dd>"<code>[]</code>" |</dd>
@@ -691,8 +701,6 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 				<dd><i>atom</i></dd>
 		</dl>
 	</blockquote>
-
-</blockquote>
 
 
 <h3>Clauses and goals<a id="clauses"></a></h3>
@@ -803,7 +811,7 @@ Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a 
 </div>
 
 <div class="footer">
-<p><span class="validators"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="date">Last updated on: January 29, 2006</span></p>
+<p><span class="validators"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span><span class="date">Last updated on: June 29, 2006</span></p>
 </div>
 </body>
 </html>
