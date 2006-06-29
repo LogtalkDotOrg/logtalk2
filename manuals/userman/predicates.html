@@ -57,7 +57,6 @@ Many predicates cannot be called with arbitrary arguments with arbitrary instant
 <p>
 The first argument describes a valid calling mode. The minimum information will be the instantiation mode of each argument. There are four possible values (described in <a title="ISO Prolog Standard" href="../bibliography.html#ISO95">[ISO 95]</a>):
 </p>
-<blockquote>
 <dl>
 	<dt><code>+</code></dt>
 		<dd>Argument must be instantiated.</dd>
@@ -68,14 +67,12 @@ The first argument describes a valid calling mode. The minimum information will 
 	<dt><code>@</code></dt>
 		<dd>Argument will not be modified.</dd>
 </dl>
-</blockquote>
 <p>
 These four mode atoms are also declared as prefix operators by the Logtalk compiler. This makes it possible to include type information for each argument like in the example above. Some of the possible type values are: <code>event</code>, <code>object</code>, <code>category</code>, <code>protocol</code>, <code>callable</code>, <code>term</code>, <code>nonvar</code>, <code>var</code>, <code>atomic</code>, <code>atom</code>, <code>number</code>, <code>integer</code>, <code>float</code>, <code>compound</code>, and <code>list</code>. The first four are Logtalk specific. The remaining are common Prolog types. We can also use our own types that can be either atoms or compound terms. 
 </p>
 <p>
 The second argument documents the number of proofs (or solutions) for the specified mode. The possible values are:
 </p>
-<blockquote>
 <dl>
 	<dt><code>zero</code></dt>
 		<dd>Predicate always fails.</dd>
@@ -90,7 +87,6 @@ The second argument documents the number of proofs (or solutions) for the specif
 	<dt><code>error</code></dt>
 		<dd>Predicate will throw an error (see below).</dd>
 </dl>
-</blockquote>
 <p>
 Mode declarations can also be used to document that some call modes will throw an error. For instance, regarding the <code>arg/3</code> ISO Prolog built-in predicate, we may write:
 </p>
@@ -113,14 +109,12 @@ Some predicates may have arguments that will be called as goals. To ensure that 
 <p>
 The predicate arguments in this directive have the following meaning:
 </p>
-<blockquote>
 <dl>
 	<dt><code>::</code></dt>
 		<dd>Meta-argument that will be called as a goal.</dd>
 	<dt><code>*</code></dt>
 		<dd>Normal argument.</dd>
 </dl>
-</blockquote>
 <p>
 This is similar to the declaration of meta-predicates in the ISO standard for Prolog modules except that we use the atom <code>::</code> instead of <code>:</code> to be consistent with the message sending operators.
 </p>
@@ -682,7 +676,7 @@ Currently, there is no clean workaround for calling non-standard, Prolog built-i
 	<div class="copyright">Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></div>
 	<div class="footnote">
 		<span class="validators"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span>
-		<span class="date">Last updated on: February 11, 2006</span>
+		<span class="date">Last updated on: June 29, 2006</span>
 	</div>
 </div>
 

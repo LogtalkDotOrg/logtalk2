@@ -156,3 +156,7 @@ ul, ol, dl {
 	display: compact;
 	page-break-before: avoid;
 }
+
+dl {
+	padding-left: 2em;
+}

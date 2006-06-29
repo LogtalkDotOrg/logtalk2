@@ -70,6 +70,10 @@ code {
 	font-family: monaco, courier, monospace;
 }
 
+dl {
+	padding-left: 2em;
+}
+
 pre {
 	color: maroon;
 	font-family: monaco, courier, monospace;
