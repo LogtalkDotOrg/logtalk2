@@ -105,7 +105,10 @@ The first argument, the name of the new category - a Prolog atom - should not ma
 <p>
 For instance, the call:
 </p>
-<pre>| ?- create_category(ccc, [implements(ppp)], [private(bar/1)], [(foo(X):-bar(X)), bar(1), bar(2)]).</pre>
+<pre>| ?- create_category(ccc,
+                     [implements(ppp)],
+                     [private(bar/1)],
+                     [(foo(X):-bar(X)), bar(1), bar(2)]).</pre>
 <p>
 is equivalent to compiling and loading the category:
 </p>
@@ -269,7 +272,7 @@ Omitting the scope keyword is equivalent to writing:
 	<div class="copyright">Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></div>
 	<div class="footnote">
 		<span class="validators"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span>
-		<span class="date">Last updated on: January 21, 2006</span>
+		<span class="date">Last updated on: June 29, 2006</span>
 	</div>
 </div>
 

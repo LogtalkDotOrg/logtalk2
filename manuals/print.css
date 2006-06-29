@@ -4,17 +4,17 @@
 }
 
 @page :left {
-	margin-left: 2cm;
-	margin-right: 3cm;
-	margin-top: 2cm;
-	margin-bottom: 2cm;
+	margin-left: 15mm;
+	margin-right: 25mm;
+	margin-top: 15mm;
+	margin-bottom: 15mm;
 }
 
 @page :right {
-	margin-left: 3cm;
-	margin-right: 2cm;
-	margin-top: 2cm;
-	margin-bottom: 2cm;
+	margin-left: 25mm;
+	margin-right: 15mm;
+	margin-top: 15mm;
+	margin-bottom: 15mm;
 }
 
 body {
@@ -102,7 +102,8 @@ a[id] {
 }
 
 .copyright {
-	display: inline;
+	display: block;
+	padding-top: 18pt;
 }
 
 .footnote {
