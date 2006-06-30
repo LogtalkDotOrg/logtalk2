@@ -39,6 +39,9 @@ RELEASE NOTES
 
 	Added Inno Setup GUI Windows installer script.
 
+	Added shell scripts for converting the manual XHTML pages into PDF files 
+	using CSSToXSLFO.
+
 
 2.27.1 - March 27, 2006
 
