@@ -155,9 +155,11 @@ pre {
 ul, ol {
 	display: compact;
 	page-break-before: avoid;
+	page-break-inside: avoid;
 }
 
 dl {
 	page-break-before: avoid;
+	page-break-inside: avoid;
 	padding-left: 2em;
 }
