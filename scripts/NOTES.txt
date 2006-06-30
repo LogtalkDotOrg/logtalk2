@@ -39,7 +39,7 @@ logtalk.spec
 
 logtalk.iss
 	Inno Setup GUI Windows installer script; you may compile it with Inno 
-	Setup 5.1.6 or later version to produce a Windows 2000/XP installer
+	Setup 5.1.6 or later version to produce a Windows 2000/XP GUI installer
 	(http://www.jrsoftware.org/isinfo.php)
 
 cplgtdirs.sh
