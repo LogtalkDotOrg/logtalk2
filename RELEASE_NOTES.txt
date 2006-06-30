@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.28.0 - June ??, 2006
+2.28.0 - July ??, 2006
 
 	Added support for multi-threading programming on selected Prolog compilers.
 	Added a new object directive, threaded/0, and four new built-in predicates,
@@ -27,6 +27,8 @@ RELEASE NOTES
 	version where testing for directory existence fails if the path ends with 
 	a slash (or a double backslash); this problem prevents the use of library 
 	notation to load source files.
+
+	Updated the config file for B-Prolog to match the new 6.9 version.
 
 	Dropped support for versions of XSB older than 3.0.
 

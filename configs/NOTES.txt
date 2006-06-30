@@ -66,11 +66,11 @@ Amzi! Prolog 7.4.10 and later versions
 	library or an example.
 
 
-B-Prolog 6.8 and later versions
+B-Prolog 6.9 and later versions
 
 	b.config
 
-	For B-Prolog 6.8 and later versions. Don't forget to use the chdir/1 
+	For B-Prolog 6.9 and later versions. Don't forget to use the chdir/1 
 	predicate to set the working directory before loading the library or 
 	an example. Note that this configuration file redefines the B-Prolog 
 	::/2 finite-domain built-in predicate (you may use the alternative 
