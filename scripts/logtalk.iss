@@ -5,6 +5,8 @@
 #define MyAppPublisher "Logtalk.org"
 #define MyAppURL "http://logtalk.org"
 #define MyAppUrlName "Logtalk Web Site.url"
+#define MyAppRegURL "http://logtalk.org/regform.html"
+#define MyAppRegUrlName "Logtalk Registration.url"
 
 #define LOGTALKHOME "{reg:HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment,LOGTALKHOME|{pf}\Logtalk}"
 #define LOGTALKUSER "{reg:HKCU\Environment,LOGTALKUSER|{userdocs}\Logtalk}"
@@ -55,11 +57,15 @@ Name: "prolog\swi"; Description: "SWI-Prolog integration"; Types: full prolog cu
 Name: "prolog\xsb"; Description: "XSB integration"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\yap"; Description: "YAP integration"; Types: full prolog custom; Flags: disablenouninstallwarning
 
+[Tasks]
+Name: registration; Description: "&Register {#MyAppName}"; Components: base user
+
+
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Messages]
-BeveledLabel=      Logtalk 2.28.0 © Paulo Moura, 1998-2006
+BeveledLabel=Logtalk 2.28.0 © Paulo Moura, 1998-2006
 
 [Dirs]
 Name: {code:GetLgtUserDir}; Components: user; Flags: uninsneveruninstall
@@ -77,6 +83,7 @@ Source: "C:\logtalk\xml\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\x
 
 [INI]
 Filename: "{app}\{#MyAppUrlName}"; Section: "InternetShortcut"; Key: "URL"; String: "{#MyAppURL}"; Components: base
+Filename: "{app}\{#MyAppRegUrlName}"; Section: "InternetShortcut"; Key: "URL"; String: "{#MyAppRegURL}"; Components: base
 
 [Icons]
 Name: "{group}\{#MyAppName} Bibliography"; Filename: "{app}\BIBLIOGRAPHY.txt"; Components: base
@@ -107,6 +114,8 @@ Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_yaplgt.js"""; De
 
 Filename: "{app}\RELEASE_NOTES.txt"; Description: "View the release notes"; Components: base user; Flags: postinstall shellexec skipifsilent
 Filename: "{app}\INSTALL.txt"; Description: "Review the install instructions for completing your setup"; Components: base user; Flags: postinstall shellexec skipifsilent
+
+Filename: "{app}\{#MyAppRegUrlName}"; Flags: ShellExec; Tasks: registration
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}"; Components: base
