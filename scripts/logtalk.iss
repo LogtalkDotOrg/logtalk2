@@ -115,7 +115,7 @@ Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_xsblgt.js"""; De
 Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_yaplgt.js"""; Description: "YAP integration"; Components: prolog\yap
 
 Filename: "{app}\RELEASE_NOTES.txt"; Description: "View the release notes"; Components: base user; Flags: postinstall shellexec skipifsilent
-Filename: "{app}\INSTALL.txt"; Description: "Review the install instructions for completing your setup"; Components: base user; Flags: postinstall shellexec skipifsilent
+Filename: "{app}\CUSTOMIZE.txt"; Description: "Read the customization instructions for completing your setup"; Components: base user; Flags: postinstall shellexec skipifsilent
 
 Filename: "{app}\{#MyAppRegUrlName}"; Flags: shellexec nowait; Tasks: registration
 
