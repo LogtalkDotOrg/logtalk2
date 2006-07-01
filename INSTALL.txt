@@ -162,49 +162,7 @@ This assumes that your favorite Prolog compilers are supported by the
 the steps described in the "QUICK_START" file.
 
 
-5. SETTING LIBRARY PATHS
+5. CUSTOMIZING LOGTALK
 
-In Logtalk, a library is simply a directory containing source files. Library 
-paths can be declared using a dynamic predicate. This allows compiling and 
-loading of libraries and library files to be performed without worries about 
-library paths. Assuming that you have used the "scripts/cplgtdirs.*" shell 
-scripts for making a copy of the user-modifiable Logtalk files, you will find 
-in the "$LOGTALKUSER/libpaths" directory a sample file which, when loaded, 
-defines the library paths for the Logtalk standard library and for all the 
-supplied examples. This file may need to be edited to match your Logtalk 
-installation and your Prolog compiler and operating-system requirements. For 
-more details, see the file "$LOGTALKUSER/libpaths/NOTES".
-
-
-6. CUSTOMIZING PROLOG CONFIGURATION FILES
-
-Logtalk interfaces with a specific Prolog compiler via a configuration file 
-that can be found on the "$LOGTALKUSER/configs" directory. These configuration 
-files can be customized by changing the values of the default flags that are 
-used by Logtalk when compiling source files. For a full description of these 
-default flags, consult the "Running and debugging Logtalk programs" section of 
-the User Manual. Some of the default flags that you may want to change are: 
-"smart_compilation", "startup_message", "portability", "underscore_vars", 
-"altdirs", and the set of documentation-related flags ("xmldocs", "xslfile", 
-"xmlspec", and "xmlsref"). Be sure to read the "$LOGTALKUSER/configs/NOTES" 
-file for Prolog specific notes; some Prolog compilers do not support the whole
-range of compilation flag values.  
-
-
-7. CUSTOMIZING DOCUMENTATION PROCESSING SCRIPTS AND SUPPORTING FILES
-
-Logtalk provides, in the "$LOGTALKUSER/xml" directory, a set of shell scripts, 
-CSS and XSLT style-sheets, and DTD and XML Schema files for processing the XML 
-documenting files that are automatically generated when you compile source 
-files. You may want to customize these CSS and XSLT files to modify the layout 
-or style of the resulting PDF/(X)HTML files or to write new scripts and 
-transformations to generate other formats. For more details, see the file 
-"$LOGTALKUSER/xml/NOTES".
-
-
-8. ADDING SUPPORT FOR EDITING LOGTALK SOURCE FILES TO TEXT EDITORS
-
-Logtalk provides, in the "$LOGTALKHOME/wenv" directory (linked from the 
-$LOGTALKUSER directory), support for syntax coloring of Logtalk source 
-files for several text editors. For more details, see the file 
-"$LOGTALKHOME/wenv/NOTES".
+Please see the file "CUSTOMIZE.txt" for details on how to customize your 
+Logtalk installation and working environment.

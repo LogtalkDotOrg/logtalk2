@@ -13,11 +13,12 @@ CONTENTS
  3. Registration
  4. Support
  5. Installation
- 6. Quick start
- 7. Documentation
- 8. Upgrading
- 9. Citations
-10. Contributions
+ 6. Customization
+ 7. Quick start
+ 8. Documentation
+ 9. Upgrading
+10. Citations
+11. Contributions
 
 
 1. LICENSE
@@ -80,7 +81,7 @@ with just the word "help" in the subject or in the message body.
 
 Logtalk can be installed either from sources by running a few shell scripts 
 or by using one of the provided installers, depending on your operating 
-system. See the file INSTALL for detailed instructions.
+system. See the file "INSTALL.txt" for detailed instructions.
 
 See the user manual for a description of the source files organization 
 and for using instructions (to read the user manual open the file 
@@ -88,36 +89,43 @@ and for using instructions (to read the user manual open the file
 using four-space tabs.
 
 
-6. QUICK START
+6. CUSTOMIZATION
 
-The file QUICK_START provides quick instructions for those of you in a hurry 
-to run Logtalk, provided that your favorite Prolog compiler is supported.
+The file "CUSTOMIZE.txt" provides detailed instructions for customizing the  
+Logtalk installation and working environment.
 
 
-7. DOCUMENTATION
+7. QUICK START
+
+The file "QUICK_START.txt" provides quick instructions for those of you in 
+a hurry to run Logtalk, provided that your favorite Prolog compiler is 
+supported.
+
+
+8. DOCUMENTATION
 
 The reference and user manuals and the tutorial are provided in XHTML format 
 and can be found in the "manuals" directory.
 
-The file RELEASE_NOTES contains descriptions of all Logtalk updates since the 
-first public version. Read it carefully if you have been using a previous 
-Logtalk version.
+The file "RELEASE_NOTES.txt" contains descriptions of all Logtalk updates 
+since the first public version. Read it carefully if you have been using a 
+previous Logtalk version.
 
 
-8. UPGRADING
+9. UPGRADING
 
 If you are upgrading from a previous Logtalk version, please check the file 
-UPGRADING for instructions on how to upgrade your programs or your custom 
-configuration files to run under this new version.
+"UPGRADING.txt" for instructions on how to upgrade your programs or your 
+custom configuration files to run under this new version.
 
 
-9. CITATIONS
+10. CITATIONS
 
 If you want to cite Logtalk in your publications, please consult the file 
-BIBLIOGRAPHY for bibliographic references in BibTeX format.
+"BIBLIOGRAPHY.bib" for bibliographic references in BibTeX format.
 
 
-10. CONTRIBUTIONS
+11. CONTRIBUTIONS
 
 Contributions, constructive criticisms, code, and suggestions are always 
 welcome. If you want to contribute to this project, drop me a line to the 

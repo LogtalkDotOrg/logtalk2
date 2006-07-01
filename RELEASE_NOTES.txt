@@ -44,6 +44,9 @@ RELEASE NOTES
 	Added shell scripts for converting the manual XHTML pages into PDF files 
 	using CSSToXSLFO.
 
+	Split the installation and customization instructions in two files, 
+	"INSTALL.txt" and "CUSTOMIZE.txt".
+
 
 2.27.1 - March 27, 2006
 
