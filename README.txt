@@ -78,11 +78,9 @@ with just the word "help" in the subject or in the message body.
 
 5. INSTALLATION
 
-Installing Logtalk is just a matter of uncompressing/unpacking the 
-distribution archive file for your operating system and running a 
-few shell scripts. You may install Logtalk in any directory that 
-you find convenient. See the file INSTALL for detailed instructions 
-on how to customize your working environment.
+Logtalk can be installed either from sources by running a few shell scripts 
+or by using one of the provided installers, depending on your operating 
+system. See the file INSTALL for detailed instructions.
 
 See the user manual for a description of the source files organization 
 and for using instructions (to read the user manual open the file 
