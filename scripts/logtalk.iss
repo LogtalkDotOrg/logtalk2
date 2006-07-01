@@ -59,7 +59,7 @@ Name: "prolog\yap"; Description: "YAP integration"; Types: full prolog custom; F
 
 [Tasks]
 Name: registration; Description: "&Register {#MyAppName}"; Components: base user
-
+Name: shortcut; Description: "&Create a desktop shortcut to the Logtalk user folder"; Components: user
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -97,6 +97,8 @@ Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"; 
 
 Name: "{code:GetLgtUserDir}\manuals"; Filename: "{app}\manuals"; Components: user
 Name: "{code:GetLgtUserDir}\wenv"; Filename: "{app}\wenv"; Components: user
+
+Name: "{userdesktop}\Logtalk user files"; Filename: "{code:GetLgtUserDir}"; Components: user; Tasks: shortcut
 
 [Registry]
 Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "LOGTALKHOME"; ValueData: "{app}"; Components: base; Flags: deletevalue uninsdeletevalue
