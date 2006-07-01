@@ -39,14 +39,14 @@ MinVersion=0,5.0
 [Types]
 Name: "full"; Description: "Full installation (recommended)"
 Name: "base"; Description: "Base system installation"
-Name: "user"; Description: "User-modifiable files installation (must be run by all end-users)"
+Name: "user"; Description: "User data files installation (must be run by all end-users)"
 Name: "prolog"; Description: "Prolog integration (see documentation for compatibility details)"
 Name: "custom"; Description: "Custom installation"; Flags: iscustom
 
 [Components]
 Name: "base"; Description: "Base system"; Types: full base custom; Flags: disablenouninstallwarning
-Name: "user"; Description: "User-modifiable files"; Types: full user custom; Flags: checkablealone
-Name: "user\backup"; Description: "Backup current user-modifiable files"; Types: full user custom
+Name: "user"; Description: "User data files"; Types: full user custom; Flags: checkablealone
+Name: "user\backup"; Description: "Backup current user data files"; Types: full user custom
 Name: "prolog"; Description: "Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\ciao"; Description: "Ciao Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\eclipse"; Description: "ECLiPSe integration"; Types: full prolog custom; Flags: disablenouninstallwarning
@@ -129,7 +129,7 @@ var
 
 procedure InitializeWizard;
 begin
-  Explanation := 'Select the folder in which Setup should install Logtalk user-modifiable files, then click Next.'
+  Explanation := 'Select the folder in which Setup should install Logtalk user data files, then click Next.'
                  + Chr(13) + Chr(13)
                  + 'These files allows each user to independently customize Logtalk and to freely modify the provided programming examples.'
                  + Chr(13) + Chr(13)
@@ -137,7 +137,7 @@ begin
                  + Chr(13) + Chr(13)
                  + 'Addtional end-users may use this installer to make a copy of these files on their home folders after a full installation of Logtalk.';
   LgtUserDirPage := CreateInputDirPage(wpSelectDir,
-    'Select Folder for Logtalk User-modifiable Files', 'Where should Logtalk user-modifiable files be installed?',
+    'Select folder for Logtalk user data files', 'Where should Logtalk user data files be installed?',
     Explanation,
     False, 'New Folder');
   LgtUserDirPage.Add('');
@@ -148,7 +148,7 @@ begin
                + Chr(13) + Chr(13)
                + 'If the base Logtalk system is already installed, you may proceed in order to setup Logtalk for you as an end-user.'
                + Chr(13) + Chr(13)
-               + 'If Logtalk is already set for you, this installer will make a backup copy of your current files (if you choose the same installation folder) and will restore all user-modifiable files to their initial, pristine state.';
+               + 'If Logtalk is already set for you, this installer will make a backup copy of your current files (if you choose the same installation folder) and will restore all user data files to their default, pristine state.';
     WarningPage := CreateOutputMsgPage(wpWelcome,
   'Information', 'Please read the following important information before continuing.', Warning);
   end
