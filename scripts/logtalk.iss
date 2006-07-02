@@ -94,6 +94,7 @@ Name: "{group}\{#MyAppName} Documentation"; Filename: "{app}\manuals\index.html"
 Name: "{group}\{#MyAppName} License"; Filename: "{app}\LICENSE.txt"; Components: base
 Name: "{group}\{#MyAppName} Release Notes"; Filename: "{app}\RELEASE_NOTES.txt"; Components: base
 Name: "{group}\{#MyAppName} Read Me"; Filename: "{app}\README.txt"; Components: base
+Name: "{group}\{#MyAppName} Customization instructions"; Filename: "{app}\CUSTOMIZE.txt"; Components: base
 
 Name: "{group}\{#MyAppName} Web Site"; Filename: "{app}\{#MyAppUrlName}"; Components: base
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"; Components: base
