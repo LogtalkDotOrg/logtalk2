@@ -45,9 +45,9 @@ else {
 }
 WScript.Echo("");
 
-WshSystemEnv.Item("PATH") = WshSystemEnv.Item("PATH") + ";%LOGTALKHOME%\\scripts;%LOGTALKHOME%\\xml";
-WScript.Echo("Added Logtalk scripts and xml directories to the system PATH environment");
-WScript.Echo("variable.");
+FSObject.CopyFile(WshShell.CurrentDirectory + "\\scripts\\*.bat", FSObject.GetSpecialFolder(0));
+FSObject.CopyFile(WshShell.CurrentDirectory + "\\xml\\*.bat", FSObject.GetSpecialFolder(0));
+WScript.Echo("Copied Logtalk documenting batch scripts to the system's Windows folder");
 WScript.Echo("");
 
 FSObject.CopyFile(WshShell.CurrentDirectory + "\\BIBLIOGRAPHY", WshShell.CurrentDirectory + "\\BIBLIOGRAPHY.txt");

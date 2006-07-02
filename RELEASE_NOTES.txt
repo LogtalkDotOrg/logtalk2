@@ -39,6 +39,10 @@ RELEASE NOTES
 	Update all the JScript scripts to check if a compatible version of WSH 
 	is installed and to workaround some problems with spaces in file paths.
 
+	Updated the "lgt_install.js" JScript script to copy the scripts/*.bat and 
+	the xml/*.bat batch scripts to the system's Windows directory instead of 
+	modifying the PATH environment variable.
+
 	Added Inno Setup GUI Windows installer script.
 
 	Added shell scripts for converting the manual XHTML pages into PDF files 
