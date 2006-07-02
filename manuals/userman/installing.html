@@ -22,7 +22,7 @@
 <h1>Installing Logtalk</h1>
 
 <p>
-This page provides an overview of Logtalk installation requirements and instructions and a description of the files contained on the Logtalk distribution. For detailed, up-to-date installation instructions, please see the README and INSTALL files distributed with Logtalk. The broad compatibility of Logtalk, both with Prolog compilers and operating-systems, together with all the possible user scenarios, means that installation can vary from very simple by running a couple of scripts to the need of patching both Logtalk and Prolog compilers to workaround the lack of strong Prolog standards.
+This page provides an overview of Logtalk installation requirements and instructions and a description of the files contained on the Logtalk distribution. For detailed, up-to-date installation and configuration instructions, please see the <code>README.txt</code>, <code>INSTALL.txt</code>, and <code>CUSTOMIZE.txt</code> files distributed with Logtalk. The broad compatibility of Logtalk, both with Prolog compilers and operating-systems, together with all the possible user scenarios, means that installation can vary from very simple by running an installer or a couple of scripts to the need of patching both Logtalk and Prolog compilers to workaround the lack of strong Prolog standards.
 </p>
 
 <h2>Hardware &amp; software requirements<a id="requirements"></a></h2>
@@ -30,7 +30,7 @@ This page provides an overview of Logtalk installation requirements and instruct
 <h3>Computer and operating system<a id="computer"></a></h3>
 
 <p>
-Logtalk is compatible with almost any computer/operating-system with a modern Prolog compiler available. Currently, the main development environment is an Apple PowerBook running MacOS X. Being written in Prolog and distributed in source form, the only issue regarding operating system compatibility are the end-of-line codes in the source text files! Most example source file names do not fit in the 8+3 MS-DOS file length limitation, so this may prevent those examples from running under this operating-system (or in any other system with similar limitations).
+Logtalk is compatible with almost any computer/operating-system with a modern Prolog compiler available. Currently, the main development environment is an Apple MacBook Pro running MacOS X. Being written in Prolog and distributed in source form, the only issue regarding operating system compatibility are the end-of-line codes in the source text files! Most example source file names do not fit in the 8+3 MS-DOS file length limitation, so this may prevent those examples from running under this operating-system (or in any other system with similar limitations).
 </p>
 
 <h3>Prolog compiler<a id="compiler"></a></h3>
@@ -50,16 +50,10 @@ For optimal performance, Logtalk requires that the Prolog compiler supports <str
 Since most Prolog compilers are moving closer to the ISO Prolog standard <a href="../bibliography.html#ISO95">[ISO 95]</a>, it is advisable that you try to use a recent version of your favorite Prolog compiler.
 </p>
 
-<h2>Installing Logtalk<a id="installing"></a></h2>
+<h2>Source distribution<a id="sources"></a></h2>
 
 <p>
-The Logtalk system can be installed in any directory that is accessible to the user. The installation process consists merely in decompressing an archive file that will lead to a new directory with the structure/contents described below. The decompression process naturally depends on the operative system that you are using. For some operating systems, an installer may be provided. Users wishing to use the Logtalk library and Logtalk examples will need write access to the respective directories or to make a local copy these directories on their home directories. See the file <code>INSTALL</code> for details. The directory <code>scripts</code> may contain scripts for helping with Logtalk packaging, installation, and integration with Prolog compilers.
-</p>
-
-<h4>Mac OS 8.x, 9.x</h4>
-
-<p>
-The Macintosh version is included in the file <code>lgt2xxx.sitx</code>, a StuffIt archive. Drag and drop the <code>.sitx</code> file in a utility like <code>StuffIt Expander</code> for expanding it.
+Logtalk sources are available in two archives, one for POSIX systems and another for Microsoft Windows.
 </p>
 
 <h4>POSIX systems (MacOS X, BSD, Linux, Unix, ...)</h4>
@@ -72,17 +66,17 @@ The POSIX version is included in the file <code>lgt2xxx.tgz</code>. In order to 
 This will create a sub-directory named <code>lgt2xxx</code> in your current directory.
 </p>
 
-<h4>OS/2, Windows 2000/XP</h4>
+<h4>Windows 2000/XP/2003</h4>
 
 <p>
-The OS/2 and Windows 2000/XP version is included in the file <code>lgt2xxx.zip</code>. The file can be decompressed using an utility like <code>unzip</code>:
+The Windows 2000/XP/2003 version is included in the file <code>lgt2xxx.zip</code>. The file can be decompressed using an utility like <code>unzip</code>:
 </p>
 <pre>unzip lgt2xxx.zip</pre>
 
 <h4>Other operating systems</h4>
 
 <p>
-Almost all files in the Logtalk distribution are text files. The only difference between the source files, other than the compressing formats, is the end-of-line codes: Macintosh uses a carriage return, Unix uses a line feed, OS/2 and Windows uses both a carriage return and a line feed. This should make it easier to install Logtalk under other operating systems.
+Almost all files in the Logtalk distribution are text files. The only difference between the source files, other than the compressing formats, is the end-of-line codes: POSIX ssystems use a line feed while Windows uses both a carriage return and a line feed. This should make it easier to install Logtalk under other operating systems.
 </p>
 
 <h2>Directories and files organization<a id="organization"></a></h2>
@@ -91,54 +85,54 @@ Almost all files in the Logtalk distribution are text files. The only difference
 In the Logtalk installation directory, you will find the following files and directories:
 </p>
 <dl>
-	<dt><code>BIBLIOGRAPHY</code> - Logtalk bibliography in BibTeX format</dt>
-	<dt><code>INSTALL</code> - Logtalk installation instructions</dt>
-	<dt><code>LICENSE</code> - Logtalk user license</dt>
-	<dt><code>QUICK_START</code> - Quick start instructions for those that do not like to read manuals</dt>
-	<dt><code>README</code> - several useful information</dt>
-	<dt><code>RELEASE_NOTES</code> - release notes for this version</dt>
-	<dt><code>UPGRADING</code> - instructions on how to upgrade your programs to the current Logtalk version</dt>
+	<dt><code>BIBLIOGRAPHY.bib</code> - Logtalk bibliography in BibTeX format</dt>
+	<dt><code>INSTALL.txt</code> - Logtalk installation instructions</dt>
+	<dt><code>LICENSE.txt</code> - Logtalk user license</dt>
+	<dt><code>QUICK_START.txt</code> - Quick start instructions for those that do not like to read manuals</dt>
+	<dt><code>README.txt</code> - several useful information</dt>
+	<dt><code>RELEASE_NOTES.txt</code> - release notes for this version</dt>
+	<dt><code>UPGRADING.txt</code> - instructions on how to upgrade your programs to the current Logtalk version</dt>
 	<dt><code>compiler</code></dt>
-		<dd><code>NOTES</code> - notes on the current status of the compiler</dd>
+		<dd><code>NOTES.txt</code> - notes on the current status of the compiler</dd>
 		<dd><code>...</code> - compiler source files</dd>
 	<dt><code>configs</code></dt>
-		<dd><code>NOTES</code> - notes on the provided configuration files</dd>
+		<dd><code>NOTES.txt</code> - notes on the provided configuration files</dd>
 		<dd><code>template.config</code> - template configuration file</dd>
 		<dd><code>...</code> - specific configuration files</dd>
 	<dt><code>contributions</code></dt>
-		<dd><code>NOTES</code> - notes on the user-contributed code</dd>
+		<dd><code>NOTES.txt</code> - notes on the user-contributed code</dd>
 		<dd><code>...</code> - user-contributed code files</dd>
 	<dt><code>examples</code></dt>
-		<dd><code>NOTES</code> - short description of the provided examples</dd>
+		<dd><code>NOTES.txt</code> - short description of the provided examples</dd>
 		<dd><code>bricks</code></dd>
 		<dd><dl>
-			<dd><code>NOTES</code> - example description and other notes</dd>
-			<dd><code>SCRIPT</code> - step by step example tutorial</dd>
+			<dd><code>NOTES.txt</code> - example description and other notes</dd>
+			<dd><code>SCRIPT.txt</code> - step by step example tutorial</dd>
 			<dd><code>loader.lgt</code> - loader utility file for the example objects</dd>
 			<dd><code>...</code> - bricks example source files</dd>
 		</dl></dd>
 		<dd><code>...</code> - other examples</dd>
 	<dt><code>libpaths</code></dt>
-		<dd><code>NOTES</code> - description on how to setup library and examples paths</dd>
+		<dd><code>NOTES.txt</code> - description on how to setup library and examples paths</dd>
 		<dd><code>libpaths.pl</code> - default library and example paths</dd>
 	<dt><code>library</code></dt>
-		<dd><code>NOTES</code> - short description of the library contents</dd>
+		<dd><code>NOTES.txt</code> - short description of the library contents</dd>
 		<dd><code>all_loader.lgt</code> - loader utility file for all library entities</dd>
 		<dd><code>...</code> - library source files</dd>
 	<dt><code>manuals</code></dt>
-		<dd><code>NOTES</code> - notes on the provided documentation</dd>
+		<dd><code>NOTES.txt</code> - notes on the provided documentation</dd>
 		<dd><code>bibliography.html</code> - bibliography</dd>
 		<dd><code>glossary.html</code> - glossary</dd>
 		<dd><code>index.html</code> - root document for all documentation</dd>
 		<dd><code>...</code> - other documentation files</dd>
 	<dt><code>scripts</code></dt>
-		<dd><code>NOTES</code> - notes on scripts for Logtalk packaging, installation, and integration with Prolog compilers</dd>
+		<dd><code>NOTES.txt</code> - notes on scripts for Logtalk packaging, installation, and integration with Prolog compilers</dd>
 		<dd><code>...</code> - packaging, installation, and Prolog integration scripts</dd>
 	<dt><code>wenv</code></dt>
-		<dd><code>NOTES</code> - notes on the text editor syntax configuration files providing syntax coloring for editing Logtalk source files</dd>
+		<dd><code>NOTES.txt</code> - notes on the text editor syntax configuration files providing syntax coloring for editing Logtalk source files</dd>
 		<dd><code>...</code> - syntax coloring configuration files</dd>
 	<dt><code>xml</code></dt>
-		<dd><code>NOTES</code> - notes on the automatic generation of XML documentation files</dd>
+		<dd><code>NOTES.txt</code> - notes on the automatic generation of XML documentation files</dd>
 		<dd><code>logtalk.css</code> - cascade style sheet file for the HTML output of the XSLT conversion of the XML files</dd>
 		<dd><code>logtalk.dtd</code> - Document Type Description file describing the structure of the XML files</dd>
 		<dd><code>lgthtml.xsl</code> - transformation style sheet to output HTML code from the XML files</dd>
@@ -163,7 +157,7 @@ The configuration files specifies default values for all the Logtalk compiler fl
 		<dd>Controls the messages printed by Logtalk at startup. Possible flag values are <code>flags(verbose)</code> (the usual default; prints the Logtalk banner and a list of all default compiler flags), <code>flags(compact)</code> (a more compact listing of the default compiler flags), <code>banner</code> (prints only the Logtalk banner), and <code>none</code> (suppress all startup messages; useful for batch processing).</dd>
 </dl>
 <dl>
-	<dt><code>altdirs(Option)</code></dt>
+	<dt><code>altdirs</code></dt>
 		<dd>Allows the use of alternative directories for storing the Prolog files and the XML documenting files resulting from entity compilation. This flag can only be set for Prolog compilers providing the necessary operating-system access predicates for implementing this feature (specifically, a built-in predicate for creating new directories). Possible option values are <code>on</code> and <code>off</code> (the usual default). The names of the alternative directories are specified using the predicate <code>'$lgt_alt_directory'/2</code>, which is also defined in the configuration files. Make sure the directory names are valid for your operating system before setting this flag on.</dd>
 </dl>
 <dl>
@@ -188,13 +182,13 @@ The <code>compiler</code> sub-directory contains the Prolog source file(s) that 
 <h3>Library<a id="library"></a></h3>
 
 <p>
-Starting from version 2.7, Logtalk contains a standard library of useful objects, categories, and protocols. Read the corresponding <code>NOTES</code> file for details about the library contents.
+Starting from version 2.7, Logtalk contains a standard library of useful objects, categories, and protocols. Read the corresponding <code>NOTES.txt</code> file for details about the library contents.
 </p>
 
 <h3>Examples<a id="examples"></a></h3>
 
 <p>
-Logtalk 2.x contains new implementations of some of the examples provided with previous 1.x versions. The sources of each one of these examples can be found included in a subdirectory with the same name, inside the directory examples. The majority of these examples include a file named <code>SCRIPT</code> that contains cases of simple utilization. Some examples may depend on other examples and library objects to work properly. Read the corresponding <code>NOTES</code> file for details before running an example.
+Logtalk 2.x contains new implementations of some of the examples provided with previous 1.x versions. The sources of each one of these examples can be found included in a subdirectory with the same name, inside the directory examples. The majority of these examples include a file named <code>SCRIPT.txt</code> that contains cases of simple utilization. Some examples may depend on other examples and library objects to work properly. Read the corresponding <code>NOTES.txt</code> file for details before running an example.
 </p>
 
 <h3>Logtalk source files<a id="entities"></a></h3>
@@ -208,7 +202,7 @@ Logtalk source files are text files containing entity definitions (objects, cate
 	<div class="copyright">Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></div>
 	<div class="footnote">
 		<span class="validators"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span>
-		<span class="date">Last updated on: April 23, 2006</span>
+		<span class="date">Last updated on: June 29, 2006</span>
 	</div>
 </div>
 

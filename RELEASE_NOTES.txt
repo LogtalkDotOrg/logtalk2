@@ -36,8 +36,8 @@ RELEASE NOTES
 
 	Extended "dcgs", "parametric", and "metainterpreters" examples.
 
-	Update all the JScript scripts to check if a compatible version of WSH is 
-	installed and to workaround some problems with spaces in file paths.
+	Update all the JScript scripts to check if a compatible version of WSH 
+	is installed and to workaround some problems with spaces in file paths.
 
 	Added Inno Setup GUI Windows installer script.
 
