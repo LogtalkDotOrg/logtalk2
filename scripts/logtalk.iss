@@ -58,7 +58,7 @@ Name: "prolog\xsb"; Description: "XSB integration"; Types: full prolog custom; F
 Name: "prolog\yap"; Description: "YAP integration"; Types: full prolog custom; Flags: disablenouninstallwarning
 
 [Tasks]
-Name: registration; Description: "&Register {#MyAppName}"; Components: base user
+Name: registration; Description: "&Register {#MyAppName} (opens a web page; requires Internet connection)"; Components: base user
 Name: shortcut; Description: "&Create a desktop shortcut to the Logtalk user folder"; Components: user
 
 [Languages]
