@@ -24,19 +24,22 @@
 <p>
 This page provides an overview of Logtalk installation requirements and instructions and a description of the files contained on the Logtalk distribution. For detailed, up-to-date installation and configuration instructions, please see the <code>README.txt</code>, <code>INSTALL.txt</code>, and <code>CUSTOMIZE.txt</code> files distributed with Logtalk. The broad compatibility of Logtalk, both with Prolog compilers and operating-systems, together with all the possible user scenarios, means that installation can vary from very simple by running an installer or a couple of scripts to the need of patching both Logtalk and Prolog compilers to workaround the lack of strong Prolog standards.
 </p>
+<p>
+The preferred installation scenario is to have Logtalk installed in a system-wide location, thus available for all users, and a local copy of user-modifiable files on each user home directory (even when you are the single user of your computer). This scenario allows each user to independently customize Logtalk and to freely modify the provided programming examples. Logtalk installers, installation shell scripts, and Prolog integration scripts favor this installation scenario, although alternative installation scenarios are always possible.
+</p>
 
 <h2>Hardware &amp; software requirements<a id="requirements"></a></h2>
 
 <h3>Computer and operating system<a id="computer"></a></h3>
 
 <p>
-Logtalk is compatible with almost any computer/operating-system with a modern Prolog compiler available. Currently, the main development environment is an Apple MacBook Pro running MacOS X. Being written in Prolog and distributed in source form, the only issue regarding operating system compatibility are the end-of-line codes in the source text files! Most example source file names do not fit in the 8+3 MS-DOS file length limitation, so this may prevent those examples from running under this operating-system (or in any other system with similar limitations).
+Logtalk is compatible with almost any computer/operating-system with a modern Prolog compiler available. Currently, the main development environment is an Apple MacBook Pro running MacOS X. Being written in Prolog and distributed in source form, the only issue regarding operating system compatibility are the end-of-line codes in the source text files!
 </p>
 
 <h3>Prolog compiler<a id="compiler"></a></h3>
 
 <p>
-In writing Logtalk I have tried to follow the recently approved Prolog ISO standard whenever possible. Capabilities needed by Logtalk that are not defined in the ISO standard are:
+In writing Logtalk I have tried to follow the current ISO Prolog Part 1 standard whenever possible. Capabilities needed by Logtalk that are not defined in the ISO standard are:
 </p>
 <ul>
 	<li>access to predicate properties (<code>dynamic</code>, <code>static</code>, <code>built_in</code>)</li>
@@ -47,7 +50,7 @@ Logtalk needs access to the predicate property <code>built_in</code> to properly
 For optimal performance, Logtalk requires that the Prolog compiler supports <strong>first-argument indexing</strong> for both static and dynamic code (most modern compilers support this feature).
 </p>
 <p>
-Since most Prolog compilers are moving closer to the ISO Prolog standard <a href="../bibliography.html#ISO95">[ISO 95]</a>, it is advisable that you try to use a recent version of your favorite Prolog compiler.
+Since most Prolog compilers are moving closer to the ISO Prolog standard <a href="../bibliography.html#ISO95">[ISO 95]</a>, it is advisable that you try to use the most recent version of your favorite Prolog compiler.
 </p>
 
 <h2>Source distribution<a id="sources"></a></h2>
