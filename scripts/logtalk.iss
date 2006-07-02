@@ -81,6 +81,9 @@ Source: "C:\logtalk\libpaths\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserD
 Source: "C:\logtalk\library\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\library"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
 Source: "C:\logtalk\xml\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\xml"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
 
+Source: "C:\logtalk\scripts\*.bat"; DestDir: "{win}"; Components: base; Flags: ignoreversion
+Source: "C:\logtalk\xml\*.bat"; DestDir: "{win}"; Components: base; Flags: ignoreversion
+
 [INI]
 Filename: "{app}\{#MyAppUrlName}"; Section: "InternetShortcut"; Key: "URL"; String: "{#MyAppURL}"; Components: base
 Filename: "{app}\{#MyAppRegUrlName}"; Section: "InternetShortcut"; Key: "URL"; String: "{#MyAppRegURL}"; Components: base
