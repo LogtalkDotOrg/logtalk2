@@ -50,14 +50,6 @@ FSObject.CopyFile(WshShell.CurrentDirectory + "\\xml\\*.bat", FSObject.GetSpecia
 WScript.Echo("Copied Logtalk documenting batch scripts to the system's Windows folder");
 WScript.Echo("");
 
-FSObject.CopyFile(WshShell.CurrentDirectory + "\\BIBLIOGRAPHY", WshShell.CurrentDirectory + "\\BIBLIOGRAPHY.txt");
-FSObject.CopyFile(WshShell.CurrentDirectory + "\\INSTALL", WshShell.CurrentDirectory + "\\INSTALL.txt");
-FSObject.CopyFile(WshShell.CurrentDirectory + "\\LICENSE", WshShell.CurrentDirectory + "\\LICENSE.txt");
-FSObject.CopyFile(WshShell.CurrentDirectory + "\\QUICK_START", WshShell.CurrentDirectory + "\\QUICK_START.txt");
-FSObject.CopyFile(WshShell.CurrentDirectory + "\\README", WshShell.CurrentDirectory + "\\README.txt");
-FSObject.CopyFile(WshShell.CurrentDirectory + "\\RELEASE_NOTES", WshShell.CurrentDirectory + "\\RELEASE_NOTES.txt");
-FSObject.CopyFile(WshShell.CurrentDirectory + "\\UPGRADING", WshShell.CurrentDirectory + "\\UPGRADING.txt");
-
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 
 if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk")) 
@@ -82,8 +74,12 @@ link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Install and configuration.lnk");
 
-link.Description = "Open Logtalk Install and configuration";
+link.Description = "Open Logtalk Install and configuration instructions";
 link.TargetPath = WshShell.CurrentDirectory + "\\INSTALL.txt";
+link.Save();
+
+link.Description = "Open Logtalk customization instructions";
+link.TargetPath = WshShell.CurrentDirectory + "\\CUSTOMIZE.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Quick Start.lnk");
