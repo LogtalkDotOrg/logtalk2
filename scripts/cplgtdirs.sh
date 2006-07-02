@@ -39,10 +39,10 @@ fi
 
 if [ -d "$LOGTALKUSER" ]
 then
-	echo "Error! Logtalk user directory already exists!"
-	echo "Please rename it or delete it and run this script again."
+	date=`eval date \"+%Y-%m-%d %H-%M-%S\"`
+	mv $LOGTALKUSER "$LOGTALKUSER backup $date"
+	echo "Created a backup of the existing $LOGTALKUSER directory."
 	echo
-	exit 1
 fi
 
 echo "Copying Logtalk files and directories..."
@@ -64,13 +64,14 @@ chmod -R u+w "$LOGTALKUSER"
 rm -f "$LOGTALKUSER"/xml/lgt2*
 rm -f "$LOGTALKUSER"/xml/logtalk.dtd
 rm -f "$LOGTALKUSER"/xml/logtalk.xsd
-ln -sf "$LOGTALKHOME"/BIBLIOGRAPHY "$LOGTALKUSER"/BIBLIOGRAPHY
-ln -sf "$LOGTALKHOME"/INSTALL "$LOGTALKUSER"/INSTALL
-ln -sf "$LOGTALKHOME"/LICENSE "$LOGTALKUSER"/LICENSE
-ln -sf "$LOGTALKHOME"/QUICK_START "$LOGTALKUSER"/QUICK_START
-ln -sf "$LOGTALKHOME"/README "$LOGTALKUSER"/README
-ln -sf "$LOGTALKHOME"/RELEASE_NOTES "$LOGTALKUSER"/RELEASE_NOTES
-ln -sf "$LOGTALKHOME"/UPGRADING "$LOGTALKUSER"/UPGRADING
+ln -sf "$LOGTALKHOME"/BIBLIOGRAPHY.bib "$LOGTALKUSER"/BIBLIOGRAPHY.bib
+ln -sf "$LOGTALKHOME"/CUSTOMIZE.txt "$LOGTALKUSER"/CUSTOMIZE.txt
+ln -sf "$LOGTALKHOME"/INSTALL.txt "$LOGTALKUSER"/INSTALL.txt
+ln -sf "$LOGTALKHOME"/LICENSE.txt "$LOGTALKUSER"/LICENSE.txt
+ln -sf "$LOGTALKHOME"/QUICK_START.txt "$LOGTALKUSER"/QUICK_START.txt
+ln -sf "$LOGTALKHOME"/README.txt "$LOGTALKUSER"/README.txt
+ln -sf "$LOGTALKHOME"/RELEASE_NOTES.txt "$LOGTALKUSER"/RELEASE_NOTES.txt
+ln -sf "$LOGTALKHOME"/UPGRADING.txt "$LOGTALKUSER"/UPGRADING.txt
 ln -sf "$LOGTALKHOME"/manuals "$LOGTALKUSER"/manuals
 ln -sf "$LOGTALKHOME"/wenv "$LOGTALKUSER"/wenv
 ln -sf "$LOGTALKHOME"/xml/lgt2html.sh "$LOGTALKUSER"/xml/lgt2html

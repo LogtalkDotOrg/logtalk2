@@ -43,6 +43,9 @@ RELEASE NOTES
 	the xml/*.bat batch scripts to the system's Windows directory instead of 
 	modifying the PATH environment variable.
 
+	Updated the "cplgtdirs.*" shell scripts to make a backup copy of any 
+	previous LOGTALKUSER directory.
+
 	Added Inno Setup GUI Windows installer script.
 
 	Added shell scripts for converting the manual XHTML pages into PDF files 

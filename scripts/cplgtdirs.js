@@ -51,10 +51,23 @@ else {
 }
 
 if (FSObject.FolderExists(logtalk_user)) {
-	WScript.Echo("Error! Logtalk user directory already exists!");
-	WScript.Echo("Please rename it or delete it and run this script again.");
+	var today = new Date();
+	var year  = today.getFullYear();
+	var month = today.getMonth() + 1;
+	var day = today.getDate();
+	if (day < 10)
+        day = "0" + day;
+	var hours = today.getHours();
+	if (hours < 10)
+        hours = "0" + hours;
+	var mins = today.getMinutes();
+	if (mins < 10)
+        mins = "0" + mins;
+	var secs = today.getSeconds();
+	date = year + "-" + month + "-" + day + " " + hours + "-" + mins + "-" + secs;
+	FSObject.MoveFolder(logtalk_user, logtalk_user + " backup " + date);
+	WScript.Echo("Created a backup of the existing " + logtalk_user + " directory.");
 	WScript.Echo("");
-	usage_help();
 }
 
 WScript.Echo("Creating LOGTALKUSER directory:");
