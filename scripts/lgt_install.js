@@ -56,58 +56,50 @@ if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk"))
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Web Site.url");
-
 link.TargetPath = "http://www.logtalk.org/";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk HTML Documentation.lnk");
-
 link.Description = "Browse Logtalk Documentation";
 link.TargetPath = WshShell.CurrentDirectory + "\\manuals\\index.html";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk ReadMe.lnk");
-
 link.Description = "Open Logtalk ReadMe";
 link.TargetPath = WshShell.CurrentDirectory + "\\README.txt";
 link.Save();
 
-link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Install and configuration.lnk");
-
+link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Installation and Configuration.lnk");
 link.Description = "Open Logtalk Install and configuration instructions";
 link.TargetPath = WshShell.CurrentDirectory + "\\INSTALL.txt";
 link.Save();
 
+link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Customization.lnk");
 link.Description = "Open Logtalk customization instructions";
 link.TargetPath = WshShell.CurrentDirectory + "\\CUSTOMIZE.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Quick Start.lnk");
-
 link.Description = "Open Logtalk Quick Start";
 link.TargetPath = WshShell.CurrentDirectory + "\\QUICK_START.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Bibliography.lnk");
-
 link.Description = "Open Logtalk Bibliography";
 link.TargetPath = WshShell.CurrentDirectory + "\\BIBLIOGRAPHY.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk License.lnk");
-
 link.Description = "Open Logtalk License";
 link.TargetPath = WshShell.CurrentDirectory + "\\LICENSE.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Release Notes.lnk");
-
 link.Description = "Open Logtalk Release Notes";
 link.TargetPath = WshShell.CurrentDirectory + "\\RELEASE_NOTES.txt";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Upgrading.lnk");
-
 link.Description = "Open Logtalk Upgrading instructions";
 link.TargetPath = WshShell.CurrentDirectory + "\\UPGRADING.txt";
 link.Save();
