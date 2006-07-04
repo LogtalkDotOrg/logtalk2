@@ -38,6 +38,13 @@ if ! [ -d "$prefix" ]; then
 	exit 1
 fi
 
+./make_bplgt.sh $prefix > /dev/null 2> /dev/null
+if [ $? = 0 ] ; then
+	echo "bplgt script created"
+else
+	echo "bplgt script creation failed"
+fi
+
 ./make_ciaolgt.sh $prefix > /dev/null 2> /dev/null
 if [ $? = 0 ] ; then
 	echo "ciaolgt script created"

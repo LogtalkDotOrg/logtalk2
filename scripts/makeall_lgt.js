@@ -39,6 +39,9 @@ if (!FSObject.FolderExists(logtalk_home)) {
 	WScript.Quit(1);
 }
 
+WScript.Echo('Creating shortcut Logtalk - B-Prolog...');
+WshShell.Run("cscript %LOGTALKHOME%\\scripts\\make_bplgt.js", true);
+
 WScript.Echo('Creating shortcut Logtalk - CIAO...');
 WshShell.Run("cscript %LOGTALKHOME%\\scripts\\make_ciaolgt.js", true);
 	
