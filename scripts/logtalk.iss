@@ -45,9 +45,10 @@ Name: "custom"; Description: "Custom installation"; Flags: iscustom
 
 [Components]
 Name: "base"; Description: "Base system"; Types: full base custom; Flags: disablenouninstallwarning
-Name: "user"; Description: "User data files"; Types: full user custom; Flags: checkablealone
-Name: "user\backup"; Description: "Backup current user data files"; Types: full user custom
+Name: "user"; Description: "User data files"; Types: full user custom; Flags: checkablealone disablenouninstallwarning
+Name: "user\backup"; Description: "Backup current user data files"; Types: full user custom; Flags: disablenouninstallwarning
 Name: "prolog"; Description: "Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\bp"; Description: "B-Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\ciao"; Description: "Ciao Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\eclipse"; Description: "ECLiPSe integration"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\gprolog"; Description: "GNU Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
@@ -109,6 +110,7 @@ Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environmen
 Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKUSER"; ValueData: "{code:GetLgtUserDir}"; Flags: deletevalue uninsdeletevalue
 
 [Run]
+Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_bplgt.js"""; Description: "B-Prolog integration"; Components: prolog\bp
 Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_ciaolgt.js"""; Description: "Ciao Prolog integration"; Components: prolog\ciao
 Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_eclipselgt.js"""; Description: "ECLiPSe integration"; Components: prolog\eclipse
 Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_gplgt.js"""; Description: "GNU Prolog integration"; Components: prolog\gprolog
