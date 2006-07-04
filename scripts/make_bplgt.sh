@@ -41,18 +41,18 @@ fi
 cd "$LOGTALKHOME"
 mkdir -p bin
 cd bin
-eval bp -g "set_prolog_flag(redefined, off), compile('compiler/logtalk.pl')."
+eval bp -g "\"set_prolog_flag(redefined, off), compile('compiler/logtalk.pl').\""
 mv compiler/logtalk.pl.out bin
 
 echo ":- set_prolog_flag(redefined, off)." > logtalk_bp.pl
-echo ":- compile('$LOGTALKUSER/configs/b.config')." >> logtalk_bp.pl
-echo ":- load('$LOGTALKUSER/configs/b.config')." >> logtalk_bp.pl
-echo ":- load('$LOGTALKHOME/bin/logtalk.pl')." >> logtalk_bp.pl
-echo ":- compile('$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_bp.pl
-echo ":- load('$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_bp.pl
+echo ":- compile('\$LOGTALKUSER/configs/b.config')." >> logtalk_bp.pl
+echo ":- load('\$LOGTALKUSER/configs/b.config')." >> logtalk_bp.pl
+echo ":- load('\$LOGTALKHOME/bin/logtalk.pl')." >> logtalk_bp.pl
+echo ":- compile('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_bp.pl
+echo ":- load('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_bp.pl
 
 echo "#/bin/sh" > bplgt
-echo "bp -g  \"chdir('$LOGTALKHOME/bin'), consult('logtalk_bp.pl')\"" >> bplgt
+echo "bp -g  \"consult('\$LOGTALKHOME/bin/logtalk_bp.pl'), $bp_top_level\"" >> bplgt
 chmod a+x bplgt
 ln -sf $LOGTALKHOME/bin/bplgt $prefix/bin/bplgt
 echo "Done. A link to the script was been created in $prefix/bin."
