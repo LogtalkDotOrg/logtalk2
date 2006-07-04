@@ -40,7 +40,6 @@ fi
 
 cd "$LOGTALKHOME"
 mkdir -p bin
-cd bin
 eval bp -g "\"set_prolog_flag(redefined, off), compile('compiler/logtalk.pl').\""
 mv compiler/logtalk.pl.out bin
 
