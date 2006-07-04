@@ -41,8 +41,8 @@ fi
 cd "$LOGTALKHOME"
 mkdir -p bin
 cd bin
-eval bp -g "set_prolog_flag(redefined, off), chdir('$LOGTALKHOME/compiler'), compile('logtalk.pl')."
-mv $LOGTALKHOME/compiler/logtalk.pl.out .
+eval bp -g "set_prolog_flag(redefined, off), compile('compiler/logtalk.pl')."
+mv compiler/logtalk.pl.out bin
 
 echo ":- set_prolog_flag(redefined, off)." > logtalk_bp.pl
 echo ":- chdir('$LOGTALKUSER')." >> logtalk_bp.pl
