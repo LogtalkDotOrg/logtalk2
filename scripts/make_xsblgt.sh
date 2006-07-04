@@ -53,5 +53,7 @@ echo "Users must define the environment variables LOGTALKHOME and"
 echo "LOGTALKUSER in order to use the script. Users must run the"
 echo "the cplgtdirs script before using the xsblgt script."
 echo
-echo "The first call to the script must be made as root or using sudo."
+echo "The first call to the script the must be made as root or using"
+echo "sudo. End-users must run the batch script cplgtdirs before"
+echo "using the xsblgt script"
 echo
