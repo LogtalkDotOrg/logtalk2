@@ -45,14 +45,11 @@ eval bp -g "set_prolog_flag(redefined, off), compile('compiler/logtalk.pl')."
 mv compiler/logtalk.pl.out bin
 
 echo ":- set_prolog_flag(redefined, off)." > logtalk_bp.pl
-echo ":- chdir('$LOGTALKUSER')." >> logtalk_bp.pl
-echo ":- compile('configs/b.config')." >> logtalk_bp.pl
-echo ":- load('configs/b.config')." >> logtalk_bp.pl
-echo ":- chdir('$LOGTALKHOME')." >> logtalk_bp.pl
-echo ":- load('bin/logtalk.pl')." >> logtalk_bp.pl
-echo ":- chdir('$LOGTALKUSER')." >> logtalk_bp.pl
-echo ":- compile('libpaths/libpaths.pl')." >> logtalk_bp.pl
-echo ":- load('libpaths/libpaths.pl')." >> logtalk_bp.pl
+echo ":- compile('$LOGTALKUSER/configs/b.config')." >> logtalk_bp.pl
+echo ":- load('$LOGTALKUSER/configs/b.config')." >> logtalk_bp.pl
+echo ":- load('$LOGTALKHOME/bin/logtalk.pl')." >> logtalk_bp.pl
+echo ":- compile('$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_bp.pl
+echo ":- load('$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_bp.pl
 
 echo "#/bin/sh" > bplgt
 echo "bp -g  \"chdir('$LOGTALKHOME/bin'), consult('logtalk_bp.pl')\"" >> bplgt
