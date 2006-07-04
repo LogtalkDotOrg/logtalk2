@@ -62,6 +62,6 @@ echo "LOGTALKUSER in order to use the script. Users must run the"
 echo "the cplgtdirs script before using the ciaolgt script."
 echo
 echo "The first call to script the must be made as root or using"
-echo "sudo. End-users must run the batch script cplgtdirs before"
+echo "sudo. Users must run the batch script cplgtdirs before"
 echo "using the ciaolgt script"
 echo

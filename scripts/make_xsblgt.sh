@@ -55,5 +55,5 @@ echo "the cplgtdirs script before using the xsblgt script."
 echo
 echo "The first call to the script the must be made as root or using"
 echo "sudo. End-users must run the batch script cplgtdirs before"
-echo "using the xsblgt script"
+echo "using the xsblgt script."
 echo

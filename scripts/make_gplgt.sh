@@ -51,6 +51,6 @@ echo "Done. A link to the script was been created in $prefix/bin."
 echo "Users must define the environment variables LOGTALKHOME and"
 echo "LOGTALKUSER in order to use the script."
 echo
-echo "End-users must run the batch script cplgtdirs before using"
-echo "the gplgt script"
+echo "Users must run the batch script cplgtdirs before using the"
+echo "gplgt script."
 echo
