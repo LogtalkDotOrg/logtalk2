@@ -18,3 +18,7 @@ folders:
 	/Library/Application Support/TextMate/Bundles/
 
 (create the chosen folder if it does not exist).
+
+Logtalk source files (including the programming examples) are usually 
+formatted using four-spaces tabs; you may set the tab width on the 
+editor preference panel.
