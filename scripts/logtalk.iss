@@ -110,15 +110,15 @@ Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environmen
 Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKUSER"; ValueData: "{code:GetLgtUserDir}"; Flags: deletevalue uninsdeletevalue
 
 [Run]
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_bplgt.js"""; Description: "B-Prolog integration"; Components: prolog\bp
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_ciaolgt.js"""; Description: "Ciao Prolog integration"; Components: prolog\ciao
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_eclipselgt.js"""; Description: "ECLiPSe integration"; Components: prolog\eclipse
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_gplgt.js"""; Description: "GNU Prolog integration"; Components: prolog\gprolog
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_plclgt.js"""; Description: "K-Prolog integration"; Components: prolog\plc
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_sicstuslgt.js"""; Description: "SICStus Prolog integration"; Components: prolog\sicstus
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_swilgt.js"""; Description: "SWI-Prolog integration"; Components: prolog\swi
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_xsblgt.js"""; Description: "XSB integration"; Components: prolog\xsb
-Filename: "{cmd}"; Parameters: "/C cscript ""{app}\scripts\make_yaplgt.js"""; Description: "YAP integration"; Components: prolog\yap
+Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_bplgt.js"""; Description: "B-Prolog integration"; Components: prolog\bp
+Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_ciaolgt.js"""; Description: "Ciao Prolog integration"; Components: prolog\ciao
+Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_eclipselgt.js"""; Description: "ECLiPSe integration"; Components: prolog\eclipse
+Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_gplgt.js"""; Description: "GNU Prolog integration"; Components: prolog\gprolog
+Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_plclgt.js"""; Description: "K-Prolog integration"; Components: prolog\plc
+Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_sicstuslgt.js"""; Description: "SICStus Prolog integration"; Components: prolog\sicstus
+Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_swilgt.js"""; Description: "SWI-Prolog integration"; Components: prolog\swi
+Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_xsblgt.js"""; Description: "XSB integration"; Components: prolog\xsb
+Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_yaplgt.js"""; Description: "YAP integration"; Components: prolog\yap
 
 Filename: "{app}\RELEASE_NOTES.txt"; Description: "View the release notes"; Components: base user; Flags: postinstall shellexec skipifsilent
 Filename: "{app}\CUSTOMIZE.txt"; Description: "Read the customization instructions for completing your setup"; Components: base user; Flags: postinstall shellexec skipifsilent
