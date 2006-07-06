@@ -70,10 +70,10 @@ f2.Close();
 
 f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_swi.rc", true);
 
-f.WriteLine(":- consult('$LOGTALKUSER/configs/swihook.pl').");
 f.WriteLine(":- consult('$LOGTALKUSER/configs/swi.config').");
 f.WriteLine(":- consult('$LOGTALKHOME/bin/logtalk_swi.pl').");
 f.WriteLine(":- consult('$LOGTALKUSER/libpaths/libpaths.pl').");
+f.WriteLine(":- consult('$LOGTALKUSER/configs/swihook.pl').");
 f.Close();
 
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");

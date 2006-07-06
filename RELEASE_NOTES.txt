@@ -59,6 +59,10 @@ RELEASE NOTES
 	in some clauses not being retracted when an object is abolished  (thanks 
 	to Neng-Fa Zhou for the bug report).
 
+	Changed the Logtalk - SWI-Prolog integration scripts to load the hook 
+	file "swihook.pl" after the other files in order to avoid some possible 
+	errors at startup.
+
 
 2.27.1 - March 27, 2006
 
