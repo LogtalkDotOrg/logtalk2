@@ -55,6 +55,10 @@ RELEASE NOTES
 	Split the installation and customization instructions in two files, 
 	"INSTALL.txt" and "CUSTOMIZE.txt".
 
+	Corrected a bug in the abolish_object/1 built-in predicate that resulted 
+	in some clauses not being retracted when an object is abolished  (thanks 
+	to Neng-Fa Zhou for the bug report).
+
 
 2.27.1 - March 27, 2006
 
