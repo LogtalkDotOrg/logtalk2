@@ -565,8 +565,8 @@ abolish_category(Ctg) :-
 		(	Type == (dynamic) ->
 			'$lgt_call'(Prefix, Dcl, Def, Rnm),
 			'$lgt_abolish_entity_predicates'(Def),
-			abolish(Dcl/4),
 			abolish(Dcl/5),
+			abolish(Dcl/6),
 			abolish(Def/5),
 			abolish(Rnm/3),
 			abolish(Prefix/3),
@@ -595,8 +595,8 @@ abolish_protocol(Ptc) :-
 	(	'$lgt_current_protocol_'(Ptc, Prefix, Type) ->
 		(	Type == (dynamic) ->
 			'$lgt_call'(Prefix, Dcl, Rnm),
-			abolish(Dcl/4),
 			abolish(Dcl/5),
+			abolish(Dcl/6),
 			abolish(Rnm/3),
 			abolish(Prefix/2),
 			retractall('$lgt_current_protocol_'(Ptc, _, _)),
