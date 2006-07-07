@@ -34,7 +34,7 @@ stated.
 
 The latest release of the Logtalk package is always available at the URL:
 
-    http://www.logtalk.org/
+    http://logtalk.org/
 
 At this address you can also find additional documentation and information
 about Logtalk.
@@ -59,9 +59,9 @@ platforms (mac, pc, unix,...) (optional)
 Logtalk support is available for registered users via email to 
 support@logtalk.org.
 
-At the URL http://www.logtalk.org/bugs.html you can find a list of known 
+At the URL http://logtalk.org/bugs.html you can find a list of known 
 problems and download bug fixes. The latest news about Logtalk are
-available at the URL http://www.logtalk.org/news.html.
+available at the URL http://logtalk.org/news.html.
 
 There is also a mailing list, "logtalk", used to announce new releases and
 bug fixes and for discussion between registered Logtalk users, that you 
