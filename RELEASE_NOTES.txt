@@ -56,7 +56,7 @@ RELEASE NOTES
 	"INSTALL.txt" and "CUSTOMIZE.txt".
 
 	Corrected a bug (introduced in version 2.27.0) in the built-in predicates 
-	abolish_object/1, abolish_protocol/1 and abolish_category/1 that resulted 
+	abolish_object/1, abolish_protocol/1, and abolish_category/1 that resulted
 	in some clauses not being retracted when an object is abolished  (thanks 
 	to Neng-Fa Zhou for the bug report).
 
