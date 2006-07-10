@@ -48,15 +48,15 @@ Name: "base"; Description: "Base system"; Types: full base custom; Flags: disabl
 Name: "user"; Description: "User data files"; Types: full user custom; Flags: checkablealone disablenouninstallwarning
 Name: "user\backup"; Description: "Backup current user data files"; Types: full user custom; Flags: disablenouninstallwarning
 Name: "prolog"; Description: "Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\bp"; Description: "B-Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\ciao"; Description: "Ciao Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\eclipse"; Description: "ECLiPSe integration"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\gprolog"; Description: "GNU Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\plc"; Description: "K-Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\sicstus"; Description: "SICStus Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\swi"; Description: "SWI-Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\xsb"; Description: "XSB integration"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\yap"; Description: "YAP integration"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\bp"; Description: "B-Prolog integration (version 6.9 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\ciao"; Description: "Ciao Prolog integration (version 1.10#5 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\eclipse"; Description: "ECLiPSe integration (version 5.8)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\gprolog"; Description: "GNU Prolog integration (version 1.2.16 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\plc"; Description: "K-Prolog integration (version 5.1.4 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\sicstus"; Description: "SICStus Prolog integration (versions 3.12.x, 4.0)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\swi"; Description: "SWI-Prolog integration (version 5.6.16 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\xsb"; Description: "XSB integration (version 3.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\yap"; Description: "YAP integration (version 5.1.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 
 [Tasks]
 Name: registration; Description: "&Register {#MyAppName} (opens a web page; requires Internet connection)"; Components: base user
