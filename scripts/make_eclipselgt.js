@@ -17,16 +17,39 @@ if (WScript.Arguments.Unnamed.Length > 0) {
 
 WScript.Echo('');
 WScript.Echo('Creating a shortcut named "Logtalk - ECLiPSe" for running Logtalk with');
-WScript.Echo('ECLiPSe 5.8 (edit this script if you are using a different version)...');
+WScript.Echo('ECLiPSe 5.8 or 5.9 (edit this script if you are using a different version)...');
 WScript.Echo('');
 
 var WshShell = new ActiveXObject("WScript.Shell");
 
 var prolog_path = WshShell.RegRead("HKLM\\Software\\IC-Parc\\Eclipse\\5.8\\ECLIPSEDIR") + "\\lib\\i386_nt\\eclipse.exe";
 
+var prolog_path;
+var prolog_path58;
+var prolog_path59;
+
+try {
+	prolog_path59 = WshShell.RegRead("HKLM\\Software\\IC-Parc\\Eclipse\\5.9\\ECLIPSEDIR") + "\\lib\\i386_nt\\eclipse.exe";
+}
+catch(e) {
+	prolog_path59 = "not_installed.lgt";
+}
+try {
+	prolog_path58 = WshShell.RegRead("HKLM\\Software\\IC-Parc\\Eclipse\\5.8\\ECLIPSEDIR") + "\\lib\\i386_nt\\eclipse.exe";
+}
+catch(e) {
+	prolog_path58 = "not_installed.lgt";
+}
+
 var FSObject = new ActiveXObject("Scripting.FileSystemObject");
 
-if (!FSObject.FileExists(prolog_path)) {
+if (FSObject.FileExists(prolog_path59)) {
+	prolog_path = prolog_path59;
+}
+else if (FSObject.FileExists(prolog_path58)) {
+	prolog_path = prolog_path58;
+}
+else {
 	WScript.Echo("Error! Cannot find eclipse.exe at the expected place!");
 	WScript.Echo("Please, edit the script and update the location of the eclipse.exe executable.");
 	WScript.Quit(1);
