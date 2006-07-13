@@ -22,6 +22,7 @@ WScript.Echo('');
 
 var WshShell = new ActiveXObject("WScript.Shell");
 
+var prolog_path;
 var prolog_path4;
 var prolog_path3;
 var config_file;
