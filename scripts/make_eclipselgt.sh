@@ -46,8 +46,7 @@ echo ":- pragma(system)." > logtalk_eclipse.pl
 echo ":- pragma(nodebug)." >> logtalk_eclipse.pl
 echo ":- ensure_loaded(library(toplevel))." >> logtalk_eclipse.pl
 echo ":- local abolish/1." >> logtalk_eclipse.pl
-echo ":- tool(abolish/1,abolish_/2)." >> logtalk_eclipse.pl
-echo "abolish_(Pred, Mod) :- (current_predicate(Pred)@Mod -> eclipse_language:abolish(Pred)@Mod; true)." >> logtalk_eclipse.pl
+echo "abolish(Pred) :- (current_predicate(Pred) -> eclipse_language:abolish(Pred); true)." >> logtalk_eclipse.pl
 echo ":- include('\$LOGTALKHOME/compiler/logtalk.pl')." >> logtalk_eclipse.pl
 
 echo ":- compile('\$LOGTALKUSER/configs/eclipseiso.config')." > logtalk_eclipse.rc
