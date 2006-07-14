@@ -89,6 +89,9 @@ var line;
 
 f1.WriteLine(":- pragma(system).");
 f1.WriteLine(":- pragma(nodebug).");
+f1.WriteLine(":- local abolish/1.");
+f1.WriteLine(":- tool(abolish/1,abolish_/2).");
+f1.WriteLine("abolish_(Pred, Mod) :- (current_predicate(Pred)@Mod -> eclipse_language:abolish(Pred)@Mod; true).");
 while (!f2.AtEndOfStream) {
 	line = f2.ReadLine();
 	f1.WriteLine(line);

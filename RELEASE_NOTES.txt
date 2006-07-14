@@ -28,8 +28,12 @@ RELEASE NOTES
 	a slash (or a double backslash); this problem prevents the use of library 
 	notation to load source files.
 
-	Updated the config file for B-Prolog to match the new 6.9 version; added 
-	integration shell scripts (for both Windows and POSIX systems).
+	Updated the config file for B-Prolog to match (and require) the new 6.9 
+	version; added integration shell scripts (for both Windows and POSIX 
+	systems).
+
+	Updated the config files and the integration scripts for ECLiPSe in order 
+	to workaround bugs on the predicates abolish/1 and canonical_path_name/2.
 
 	Dropped support for versions of XSB older than 3.0.
 
