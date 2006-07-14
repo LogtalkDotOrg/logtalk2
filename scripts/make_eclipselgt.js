@@ -119,7 +119,7 @@ link.Description = 'Runs Logtalk with ECLiPSe';
 link.IconLocation = 'app.exe,1';
 link.TargetPath = prolog_path;
 link.WindowStyle = 1;
-link.WorkingDirectory = logtalk_home;
+link.WorkingDirectory = '%LOGTALKUSER%';
 link.Save();
 
 WScript.Echo('Done. The "Logtalk - ECLiPSe" shortcut was been added to the');
