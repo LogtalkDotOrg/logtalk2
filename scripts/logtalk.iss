@@ -196,6 +196,7 @@ begin
   begin
     Scripts := 'The installer needs to run a set of JScripts scripts within command shells' + Chr(13) +
                'in order to integrate Logtalk with your installed Prolog compilers.' + Chr(13) + Chr(13) +
+               'These scripts require WSH 5.6 (or later version) to be installed.' + Chr(13) + Chr(13) +
                'Make sure that any security software you may have installed do not block' + Chr(13) +
                'the execution of the scripts.';
     MsgBox(Scripts, mbInformation, MB_OK)
