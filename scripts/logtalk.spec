@@ -34,13 +34,14 @@ ln -sf ../logtalk/xml/lgt2xml.sh lgt2xml
 %clean
 %files
 %defattr(-,root,users)
-%doc /usr/local/lgt2280/BIBLIOGRAPHY
-%doc /usr/local/lgt2280/INSTALL
-%doc /usr/local/lgt2280/LICENSE
-%doc /usr/local/lgt2280/QUICK_START
-%doc /usr/local/lgt2280/README
-%doc /usr/local/lgt2280/RELEASE_NOTES
-%doc /usr/local/lgt2280/UPGRADING
+%doc /usr/local/lgt2280/BIBLIOGRAPHY.txt
+%doc /usr/local/lgt2280/CUSTOMIZE.txt
+%doc /usr/local/lgt2280/INSTALL.txt
+%doc /usr/local/lgt2280/LICENSE.txt
+%doc /usr/local/lgt2280/QUICK_START.txt
+%doc /usr/local/lgt2280/README.txt
+%doc /usr/local/lgt2280/RELEASE_NOTES.txt
+%doc /usr/local/lgt2280/UPGRADING.txt
 /usr/local/lgt2280/compiler
 /usr/local/lgt2280/configs
 /usr/local/lgt2280/contributions
