@@ -53,6 +53,9 @@ RELEASE NOTES
 
 	Added Inno Setup GUI Windows installer script.
 
+	Added a post-install script to the LINUX RPM "logtalk.spec" file for 
+	setting the environment variable LOGTALKHOME for all users.
+
 	Added shell scripts for converting the manual XHTML pages into PDF files 
 	using CSSToXSLFO.
 

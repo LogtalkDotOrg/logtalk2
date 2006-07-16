@@ -58,3 +58,6 @@ ln -sf ../logtalk/xml/lgt2xml.sh lgt2xml
 /usr/local/bin/lgt2pdf
 /usr/local/bin/lgt2html
 /usr/local/bin/lgt2xml
+%post
+echo "export LOGTALKHOME=$RPM_INSTALL_PREFIX/logtalk" > /etc/profile.d/logtalk.sh
+echo "setenv LOGTALKHOME $RPM_INSTALL_PREFIX/logtalk" > /etc/profile.d/logtalk.csh
