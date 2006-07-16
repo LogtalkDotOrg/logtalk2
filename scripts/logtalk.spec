@@ -34,7 +34,7 @@ ln -sf ../logtalk/xml/lgt2xml.sh lgt2xml
 %clean
 %files
 %defattr(-,root,users)
-%doc /usr/local/lgt2280/BIBLIOGRAPHY.txt
+%doc /usr/local/lgt2280/BIBLIOGRAPHY.bib
 %doc /usr/local/lgt2280/CUSTOMIZE.txt
 %doc /usr/local/lgt2280/INSTALL.txt
 %doc /usr/local/lgt2280/LICENSE.txt
