@@ -56,7 +56,7 @@ Name: "prolog\plc"; Description: "K-Prolog integration (version 5.1.4 or later)"
 Name: "prolog\sicstus"; Description: "SICStus Prolog integration (versions 3.12.x, 4.0)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\swi"; Description: "SWI-Prolog integration (version 5.6.16 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\xsb"; Description: "XSB integration (version 3.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\yap"; Description: "YAP integration (version 5.1.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\yap"; Description: "YAP integration (version 5.1.1 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 
 [Tasks]
 Name: registration; Description: "&Register {#MyAppName} (opens a web page; requires Internet connection)"; Components: base user
