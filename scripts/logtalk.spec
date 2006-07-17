@@ -61,3 +61,4 @@ ln -sf ../logtalk/xml/lgt2xml.sh lgt2xml
 %post
 echo "export LOGTALKHOME=$RPM_INSTALL_PREFIX/logtalk" > /etc/profile.d/logtalk.sh
 echo "setenv LOGTALKHOME $RPM_INSTALL_PREFIX/logtalk" > /etc/profile.d/logtalk.csh
+eval export LOGTALKHOME=$RPM_INSTALL_PREFIX/logtalk; cd $LOGTALKHOME/scripts; ./makeall_lgt.sh $RPM_INSTALL_PREFIX
