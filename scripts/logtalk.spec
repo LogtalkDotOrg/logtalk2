@@ -70,7 +70,7 @@ chmod a+x /etc/profile.d/logtalk.sh
 echo "# Logtalk environment setup" > /etc/profile.d/logtalk.csh
 echo "" >> /etc/profile.d/logtalk.csh
 echo "# Logtalk installation directory:" >> /etc/profile.d/logtalk.csh
-echo "setenv LOGTALKHOME $RPM_INSTALL_PREFIX/logtalk" > /etc/profile.d/logtalk.csh
+echo "setenv LOGTALKHOME $RPM_INSTALL_PREFIX/logtalk" >> /etc/profile.d/logtalk.csh
 echo "" >> /etc/profile.d/logtalk.csh
 echo "# Default location Logtalk end-user files:" >> /etc/profile.d/logtalk.csh
 echo "setenv LOGTALKHUSER $HOME/logtalk" >> /etc/profile.d/logtalk.csh
