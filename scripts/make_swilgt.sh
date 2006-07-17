@@ -56,9 +56,8 @@ esac
 chmod a+x swilgt
 ln -sf $LOGTALKHOME/bin/swilgt $prefix/bin/swilgt
 echo "Done. A link to the script was been created in $prefix/bin."
-echo "Users must define the environment variables LOGTALKHOME and"
-echo "LOGTALKUSER in order to use the script."
 echo
-echo "Users must run the batch script cplgtdirs before using the"
-echo "swilgt script."
+echo "Users should ensure that the environment variables LOGTALKHOME"
+echo "and LOGTALKUSER are defined and then run the \"cplgtdirs\" script"
+echo "once prior to using the swilgt script."
 echo

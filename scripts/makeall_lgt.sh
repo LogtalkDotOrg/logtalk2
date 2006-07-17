@@ -111,10 +111,13 @@ fi
 echo
 echo "Done. Links to the created scripts can be found on $prefix/bin."
 echo "Make sure that the Prolog compilers are also available on your "
-echo "execution path.  Users must define the environment variables "
-echo "LOGTALKHOME and LOGTALKUSER in order to use the scripts."
+echo "execution path."
 echo
 echo "If you got an unexpected failure when creating one of the Prolog"
 echo "integration scripts, please consult the NOTES file on the scripts"
 echo "directory or try to run the corresponding script individually."
+echo
+echo "Users should ensure that the environment variables LOGTALKHOME"
+echo "and LOGTALKUSER are defined and then run the \"cplgtdirs\" script"
+echo "once prior to using the Prolog integration scripts."
 echo

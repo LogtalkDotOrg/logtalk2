@@ -56,9 +56,8 @@ echo "bp -g  \"consult('\$LOGTALKHOME/bin/logtalk_bp.pl'), \\\$bp_top_level\"" >
 chmod a+x bplgt
 ln -sf $LOGTALKHOME/bin/bplgt $prefix/bin/bplgt
 echo "Done. A link to the script was been created in $prefix/bin."
-echo "Users must define the environment variables LOGTALKHOME and"
-echo "LOGTALKUSER in order to use the script."
 echo
-echo "Users must run the batch script cplgtdirs before using the"
-echo "bplgt script."
+echo "Users should ensure that the environment variables LOGTALKHOME"
+echo "and LOGTALKUSER are defined and then run the \"cplgtdirs\" script"
+echo "once prior to using the bplgt script."
 echo

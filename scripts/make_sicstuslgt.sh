@@ -50,9 +50,8 @@ echo "sicstus -l \$LOGTALKHOME/bin/logtalk_sicstus.rc" >> sicstuslgt
 chmod a+x sicstuslgt
 ln -sf $LOGTALKHOME/bin/sicstuslgt $prefix/bin/sicstuslgt
 echo "Done. A link to the script was been created in $prefix/bin."
-echo "Users must define the environment variables LOGTALKHOME and"
-echo "LOGTALKUSER in order to use the script."
 echo
-echo "Users must run the batch script cplgtdirs before using the"
-echo "sicstuslgt script"
+echo "Users should ensure that the environment variables LOGTALKHOME"
+echo "and LOGTALKUSER are defined and then run the \"cplgtdirs\" script"
+echo "once prior to using the sicstuslgt script."
 echo

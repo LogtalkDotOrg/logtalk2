@@ -57,11 +57,10 @@ echo "ciaosh -l \$LOGTALKHOME/bin/logtalk_ciao.rc" >> ciaolgt
 chmod a+x ciaolgt
 ln -sf $LOGTALKHOME/bin/ciaolgt $prefix/bin/ciaolgt
 echo "Done. A link to the script was been created in $prefix/bin."
-echo "Users must define the environment variables LOGTALKHOME and"
-echo "LOGTALKUSER in order to use the script. Users must run the"
-echo "the cplgtdirs script before using the ciaolgt script."
+echo "The first call to the script the must be made as root or using"
+echo "sudo."
 echo
-echo "The first call to script the must be made as root or using"
-echo "sudo. Users must run the batch script cplgtdirs before"
-echo "using the ciaolgt script"
+echo "Users should ensure that the environment variables LOGTALKHOME"
+echo "and LOGTALKUSER are defined and then run the \"cplgtdirs\" script"
+echo "once prior to using the ciaolgt script."
 echo

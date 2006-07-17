@@ -56,10 +56,10 @@ rm ../configs/qu.qo
 rm ../compiler/logtalk.qo
 rm ../libpaths/libpaths.qo
 echo "Done. A link to the script was been created in $prefix/bin."
-echo "Users must define the environment variables LOGTALKHOME and"
-echo "LOGTALKUSER in order to use the script."
+echo "The script must be regenerated whenever changes are made to"
+echo "either the config file or the libpaths file."
 echo
-echo "Users must run the batch script cplgtdirs before using the"
-echo "qplgt script. The script must be regenerated whenver changes"
-echo "are made to either the config file or the libpaths file."
+echo "Users should ensure that the environment variables LOGTALKHOME"
+echo "and LOGTALKUSER are defined and then run the \"cplgtdirs\" script"
+echo "once prior to using the qplgt script."
 echo

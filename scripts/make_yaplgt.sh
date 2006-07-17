@@ -50,9 +50,8 @@ echo "yap -s 49152 -h 16384 -t 1024 -l \$LOGTALKHOME/bin/logtalk_yap.rc" >> yapl
 chmod a+x yaplgt
 ln -sf $LOGTALKHOME/bin/yaplgt $prefix/bin/yaplgt
 echo "Done. A link to the script was been created in $prefix/bin."
-echo "Users must define the environment variables LOGTALKHOME and"
-echo "LOGTALKUSER in order to use the script."
 echo
-echo "Users must run the batch script cplgtdirs before using the"
-echo "the yaplgt script."
+echo "Users should ensure that the environment variables LOGTALKHOME"
+echo "and LOGTALKUSER are defined and then run the \"cplgtdirs\" script"
+echo "once prior to using the yaplgt script."
 echo

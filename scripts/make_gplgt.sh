@@ -48,9 +48,8 @@ echo "gprolog --init-goal \"['\$LOGTALKUSER/configs/gnu.config', '\$LOGTALKHOME/
 chmod a+x gplgt
 ln -sf $LOGTALKHOME/bin/gplgt $prefix/bin/gplgt
 echo "Done. A link to the script was been created in $prefix/bin."
-echo "Users must define the environment variables LOGTALKHOME and"
-echo "LOGTALKUSER in order to use the script."
 echo
-echo "Users must run the batch script cplgtdirs before using the"
-echo "gplgt script."
+echo "Users should ensure that the environment variables LOGTALKHOME"
+echo "and LOGTALKUSER are defined and then run the \"cplgtdirs\" script"
+echo "once prior to using the gplgt script."
 echo
