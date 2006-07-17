@@ -20,7 +20,7 @@ RELEASE NOTES
 	Added an experimental config file for CxProlog 0.93.
 
 	Updated the config file for the forthcoming SICStus Prolog 4.0 version 
-	to work in the current beta version. Modified the "make_sicstus.lgt.js" 
+	to work in the current beta version. Modified the "make_sicstuslgt.js" 
 	script to work with both SICStus Prolog 3.12 and 4.0 versions.
 
 	Updated the config file for YAP to workaround a problem on the Windows 
@@ -34,6 +34,8 @@ RELEASE NOTES
 
 	Updated the config files and the integration scripts for ECLiPSe in order 
 	to workaround bugs on the predicates abolish/1 and canonical_path_name/2.
+	Modified the "make_eclipselgt.js" script to work with both ECLiPSe 5.8 
+	and 5.9 versions.
 
 	Dropped support for versions of XSB older than 3.0.
 
