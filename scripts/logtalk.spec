@@ -59,12 +59,13 @@ ln -sf ../logtalk/xml/lgt2xml.sh lgt2xml
 /usr/local/bin/lgt2html
 /usr/local/bin/lgt2xml
 %post
+mkdir -p /etc/profile.d
 echo "# Logtalk environment setup" > /etc/profile.d/logtalk.sh
 echo "" >> /etc/profile.d/logtalk.sh
 echo "# Logtalk installation directory:" >> /etc/profile.d/logtalk.sh
 echo "export LOGTALKHOME=$RPM_INSTALL_PREFIX/logtalk" >> /etc/profile.d/logtalk.sh
 echo "" >> /etc/profile.d/logtalk.sh
-echo "# Default location Logtalk end-user files:" >> /etc/profile.d/logtalk.sh
+echo "# Default location for Logtalk end-user files:" >> /etc/profile.d/logtalk.sh
 echo "export LOGTALKHUSER=$HOME/logtalk" >> /etc/profile.d/logtalk.sh
 chmod a+x /etc/profile.d/logtalk.sh
 echo "# Logtalk environment setup" > /etc/profile.d/logtalk.csh
@@ -72,7 +73,7 @@ echo "" >> /etc/profile.d/logtalk.csh
 echo "# Logtalk installation directory:" >> /etc/profile.d/logtalk.csh
 echo "setenv LOGTALKHOME $RPM_INSTALL_PREFIX/logtalk" >> /etc/profile.d/logtalk.csh
 echo "" >> /etc/profile.d/logtalk.csh
-echo "# Default location Logtalk end-user files:" >> /etc/profile.d/logtalk.csh
+echo "# Default location for Logtalk end-user files:" >> /etc/profile.d/logtalk.csh
 echo "setenv LOGTALKHUSER $HOME/logtalk" >> /etc/profile.d/logtalk.csh
 chmod a+x /etc/profile.d/logtalk.csh
 eval export LOGTALKHOME=$RPM_INSTALL_PREFIX/logtalk; cd $LOGTALKHOME/scripts; ./makeall_lgt.sh $RPM_INSTALL_PREFIX
