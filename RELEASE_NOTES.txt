@@ -14,7 +14,7 @@ RELEASE NOTES
 
 	Added support for multi-threading programming on selected Prolog compilers.
 	Added a new object directive, threaded/0, and four new built-in predicates,
-	threaded_call/1-2 and threaded_exit/1-2. Added a new set of exemples, 
+	threaded_call/1-2 and threaded_exit/1-2. Added a new set of examples, 
 	"threads".
 
 	Added an experimental config file for CxProlog 0.93.
@@ -26,7 +26,8 @@ RELEASE NOTES
 	Updated the config file for YAP to workaround a problem on the Windows 
 	version where testing for directory existence fails if the path ends with 
 	a slash (or a double backslash); this problem prevents the use of library 
-	notation to load source files.
+	notation to load source files (problem already fixed in the current YAP 
+	CVS version).
 
 	Updated the config file for B-Prolog to match (and require) the new 6.9 
 	version; added integration shell scripts (for both Windows and POSIX 
@@ -56,8 +57,9 @@ RELEASE NOTES
 	Added Inno Setup GUI Windows installer script.
 
 	Added post-install scripts to the LINUX RPM "logtalk.spec" file for 
-	setting the environment variable LOGTALKHOME for all users and for 
-	running the Prolog integration scripts.
+	setting the environment variable LOGTALKHOME for all users, defining 
+	a default value for the environment variable LOGTALKUSER, and running 
+	the Prolog integration scripts.
 
 	Added shell scripts for converting the manual XHTML pages into PDF files 
 	using CSSToXSLFO.
@@ -67,8 +69,8 @@ RELEASE NOTES
 
 	Corrected a bug (introduced in version 2.27.0) in the built-in predicates 
 	abolish_object/1, abolish_protocol/1, and abolish_category/1 that resulted
-	in some clauses not being retracted when an object is abolished  (thanks 
-	to Neng-Fa Zhou for the bug report).
+	in some clauses not being retracted when an object is abolished (thanks to 
+	Neng-Fa Zhou for the bug report).
 
 	Changed the Logtalk - SWI-Prolog integration scripts to load the hook 
 	file "swihook.pl" after the other files in order to avoid some possible 
