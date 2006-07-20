@@ -86,7 +86,7 @@ link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk Bibliography.lnk");
 link.Description = "Open Logtalk Bibliography";
-link.TargetPath = WshShell.CurrentDirectory + "\\BIBLIOGRAPHY.txt";
+link.TargetPath = WshShell.CurrentDirectory + "\\BIBLIOGRAPHY.bib";
 link.Save();
 
 link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk License.lnk");
