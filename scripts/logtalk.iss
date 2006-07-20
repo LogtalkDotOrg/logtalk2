@@ -90,7 +90,7 @@ Filename: "{app}\{#MyAppUrlName}"; Section: "InternetShortcut"; Key: "URL"; Stri
 Filename: "{app}\{#MyAppRegUrlName}"; Section: "InternetShortcut"; Key: "URL"; String: "{#MyAppRegURL}"; Components: base
 
 [Icons]
-Name: "{group}\{#MyAppName} Bibliography"; Filename: "{app}\BIBLIOGRAPHY.txt"; Components: base
+Name: "{group}\{#MyAppName} Bibliography"; Filename: "{app}\BIBLIOGRAPHY.bib"; Components: base
 Name: "{group}\{#MyAppName} Documentation"; Filename: "{app}\manuals\index.html"; Components: base
 Name: "{group}\{#MyAppName} License"; Filename: "{app}\LICENSE.txt"; Components: base
 Name: "{group}\{#MyAppName} Release Notes"; Filename: "{app}\RELEASE_NOTES.txt"; Components: base
