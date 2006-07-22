@@ -112,7 +112,10 @@ make_sicstuslgt.js
 make_swilgt.sh
 	makes a shell script named "swilgt" for running Logtalk with SWI-Prolog;
 	the script assumes that the SWI-Prolog executable is named "swipl" on 
-	MacOS X and named "pl" on Linux and other similar operating systems
+	MacOS X and named "pl" on Linux and other similar operating systems;
+	with multi-threading support turned on, you will get an warmless message
+	when halting the system regarding threads that wouldn't die: you can 
+	supress the message by using "% swilgt 2> /dev/null"
 make_swilgt.js
 	makes a Windows shortcut named "Logtalk - SWI-Prolog" for running Logtalk 
 	with SWI-Prolog
