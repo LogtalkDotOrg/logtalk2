@@ -2509,21 +2509,17 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
-% '$lgt_metacall_in_object'(+object, ?term, +object)
+% '$lgt_metacall_in_object'(?term, +object, +object)
 %
 % metacalls in predicate definitions
 
-'$lgt_metacall_in_object'(Obj, Pred, Sender) :-
+'$lgt_metacall_in_object'(Pred, Obj, This) :-
 	var(Pred),
-	throw(error(instantiation_error, Obj::call(Pred), Sender)).
+	throw(error(instantiation_error, Obj::call(Pred), This)).
 
-'$lgt_metacall_in_object'(user, Pred, _) :-
-	!,
-	call(Pred).
-
-'$lgt_metacall_in_object'(Obj, Pred, Sender) :-
+'$lgt_metacall_in_object'(Pred, Obj, This) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
-	'$lgt_ctx_ctx'(Ctx, Sender, Obj, Obj, Prefix, _),
+	'$lgt_ctx_ctx'(Ctx, This, Obj, Obj, Prefix, _),
 	'$lgt_tr_body'(Pred, Call, DCall, Ctx),
 	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
 		call(DCall)
@@ -4487,6 +4483,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	var(Pred),
 	throw(instantiation_error).
 
+'$lgt_tr_public_directive'([Pred| _]) :-
+	functor(Pred, Functor, Arity),
+	'$lgt_pp_calls_pred_'(Functor, Arity),
+	throw(permission_error(modify, predicate_interpretation, Pred)).
+
 '$lgt_tr_public_directive'([Pred| Preds]) :-
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
 	!,
@@ -4510,6 +4511,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_tr_protected_directive'([Pred| _]) :-
 	var(Pred),
 	throw(instantiation_error).
+
+'$lgt_tr_protected_directive'([Pred| _]) :-
+	functor(Pred, Functor, Arity),
+	'$lgt_pp_calls_pred_'(Functor, Arity),
+	throw(permission_error(modify, predicate_interpretation, Pred)).
 
 '$lgt_tr_protected_directive'([Pred| Preds]) :-
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
@@ -4535,6 +4541,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	var(Pred),
 	throw(instantiation_error).
 
+'$lgt_tr_private_directive'([Pred| _]) :-
+	functor(Pred, Functor, Arity),
+	'$lgt_pp_calls_pred_'(Functor, Arity),
+	throw(permission_error(modify, predicate_interpretation, Pred)).
+
 '$lgt_tr_private_directive'([Pred| Preds]) :-
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
 	!,
@@ -4559,6 +4570,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	var(Pred),
 	throw(instantiation_error).
 
+'$lgt_tr_dynamic_directive'([Pred| _]) :-
+	functor(Pred, Functor, Arity),
+	'$lgt_pp_calls_pred_'(Functor, Arity),
+	throw(permission_error(modify, predicate_interpretation, Pred)).
+
 '$lgt_tr_dynamic_directive'([Pred| Preds]) :-
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
 	!,
@@ -4581,6 +4597,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_tr_discontiguous_directive'([Pred| _]) :-
 	var(Pred),
 	throw(instantiation_error).
+
+'$lgt_tr_discontiguous_directive'([Pred| _]) :-
+	functor(Pred, Functor, Arity),
+	'$lgt_pp_calls_pred_'(Functor, Arity),
+	throw(permission_error(modify, predicate_interpretation, Pred)).
 
 '$lgt_tr_discontiguous_directive'([Pred| Preds]) :-
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
@@ -4608,6 +4629,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_tr_metapredicate_directive'([Pred| _]) :-
 	\+ '$lgt_valid_metapred_term'(Pred),
 	throw(type_error(metapredicate_term, Pred)).
+
+'$lgt_tr_metapredicate_directive'([Pred| _]) :-
+	functor(Pred, Functor, Arity),
+	'$lgt_pp_calls_pred_'(Functor, Arity),
+	throw(permission_error(modify, predicate_interpretation, Pred)).
 
 '$lgt_tr_metapredicate_directive'([Pred| Preds]) :-
 	assertz('$lgt_pp_metapredicate_'(Pred)),
@@ -5210,9 +5236,15 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	'$lgt_ctx_sender'(Ctx, Sender),
 	'$lgt_ctx_this'(Ctx, This),
 	(	'$lgt_member_var'(Pred, Metavars) ->
-		TPred = '$lgt_metacall_in_object'(Sender, Pred, This)
-	;	TPred = '$lgt_metacall_in_object'(This, Pred, This)
+		TPred = '$lgt_metacall_in_object'(Pred, Sender, This)
+	;	TPred = '$lgt_metacall_in_object'(Pred, This, This)
 	).
+
+
+% already translated calls (usually, arguments of meta-predicate calls)
+
+'$lgt_tr_body'('$lgt_tr'(Call, DCall), Call, DCall, _) :-
+	!.
 
 
 % pre-processor bypass (call of external code)
@@ -5684,6 +5716,23 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	throw(type_error(callable, Pred)).
 
 
+% goal is a call to a user meta-predicate
+
+'$lgt_tr_body'(Cond, TCond, '$lgt_dbg_goal'(Cond, TCond, Ctx), Ctx) :-
+	functor(Cond, Functor, Arity),
+	functor(Meta, Functor, Arity),
+	'$lgt_pp_metapredicate_'(Meta),
+	!,
+	Cond =.. [_| Args],
+	Meta =.. [_| MArgs],
+	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs),
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, EPrefix, _),
+	'$lgt_construct_predicate_functor'(EPrefix, Functor, Arity, PPrefix),
+	'$lgt_append'(TArgs, [Sender, This, Self], Args2),
+	TCond =.. [PPrefix| Args2],
+	assertz('$lgt_pp_calls_pred_'(Functor, Arity)).
+
+
 % goal is a call to a user predicate
 
 '$lgt_tr_body'(Cond, TCond, '$lgt_dbg_goal'(Cond, TCond, Ctx), Ctx) :-
@@ -5712,7 +5761,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_tr_meta_arg'(*, Arg, _, Arg).
 
 '$lgt_tr_meta_arg'(::, Arg, Ctx, TArg) :-
-	'$lgt_tr_body'(Arg, TArg, _, Ctx).
+	(	var(Arg) ->
+		TArg = Arg
+	;	'$lgt_tr_body'(Arg, CArg, DArg, Ctx),
+		TArg = '$lgt_tr'(CArg, DArg)
+	).
 
 
 

@@ -17,6 +17,10 @@ RELEASE NOTES
 	threaded_call/1-2 and threaded_exit/1-2. Added a new set of examples, 
 	"threads".
 
+	Updated the Logtalk compiler to generate an error whenever a predicate 
+	directive appears in a source file after predicate clauses that call the 
+	predicate specified in the directive.
+
 	Added an experimental config file for CxProlog 0.93.
 
 	Updated the config file for the forthcoming SICStus Prolog 4.0 version 
@@ -71,6 +75,11 @@ RELEASE NOTES
 	abolish_object/1, abolish_protocol/1, and abolish_category/1 that resulted
 	in some clauses not being retracted when an object is abolished (thanks to 
 	Neng-Fa Zhou for the bug report).
+
+	Corrected a bug in the compilation of user meta-predicates which allowed 
+	illegal calls to non-public predicates on the caller module to be made 
+	from the called module. Thanks to Rémy Haemmerlé and François Fages for 
+	reporting the problem.
 
 	Changed the Logtalk - SWI-Prolog integration scripts to load the hook 
 	file "swihook.pl" after the other files in order to avoid some possible 
