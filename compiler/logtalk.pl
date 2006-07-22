@@ -26,9 +26,6 @@
 
 :- op(600,  fy, ^^).	% "super" call (call an overriden, inherited method definition)
 
-:- op(1150, fy, <<).	% multi-threading send goal	
-:- op(1150, fy, >>).	% multi-threading get reply
-
 
 % mode operators
 
@@ -5703,7 +5700,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % '$lgt_tr_meta_args'(@list, @list, +term, -list)
 %
 % translates the meta-arguments contained in the list of 
-% arguments of a call to a metapredicate
+% arguments of a call to a meta-predicate
 
 '$lgt_tr_meta_args'([], [], _, []).
 
@@ -5920,7 +5917,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	!.
 
 
-% built-in metapredicates
+% built-in meta-predicates
 
 '$lgt_tr_msg'(bagof(Term, Pred, List), Obj, bagof(Term, TPred, List), This) :-
 	!,
@@ -6107,7 +6104,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	!.
 
 
-% built-in metapredicates
+% built-in meta-predicates
 
 '$lgt_tr_self_msg'(bagof(Term, Pred, List), bagof(Term, TPred, List), This, Self) :-
 	!,
@@ -7966,7 +7963,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	'$lgt_pl_built_in'(Pred),
 	functor(Pred, Functor, Arity),
 	functor(Meta, Functor, Arity), 
-	'$lgt_pl_metapredicate'(Meta),	% non-standard Prolog built-in metapredicates
+	'$lgt_pl_metapredicate'(Meta),	% non-standard Prolog built-in meta-predicates
 	!,
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
@@ -7987,7 +7984,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % '$lgt_fix_redef_built_ins_in_margs'(@list, @list, -list)
 %
 % fix calls to redefined built-in predicates in non-standard
-% metapredicate arguments
+% meta-predicate arguments
 
 '$lgt_fix_redef_built_ins_in_margs'([], [], []).
 
@@ -8673,17 +8670,17 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
-% built-in metapredicates
+% built-in meta-predicates
 
-'$lgt_metapredicate'(Meta) :-			% Logtalk built-in metapredicate
+'$lgt_metapredicate'(Meta) :-			% Logtalk built-in meta-predicate
 	'$lgt_lgt_metapredicate'(Meta).
 
-'$lgt_metapredicate'(Meta) :-			% (non ISO Standard) Prolog metapredicate
+'$lgt_metapredicate'(Meta) :-			% (non ISO Standard) Prolog meta-predicate
 	'$lgt_pl_metapredicate'(Meta).		% specified in the config files
 
 
 
-% built-in Logtalk (and Prolog) metapredicates
+% built-in Logtalk (and Prolog) meta-predicates
 
 '$lgt_lgt_metapredicate'(catch(::, *, ::)).
 
