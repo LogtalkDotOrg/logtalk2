@@ -5174,6 +5174,18 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	throw(permission_error(modify, uses_object_predicate, Functor/Arity)).
 
 
+% non-variable meta-argument in clause head of a user-defined meta-predicate
+
+'$lgt_tr_head'(Head, _, _) :-
+	functor(Head, Functor, Arity),
+	functor(Meta, Functor, Arity),
+	'$lgt_pp_metapredicate_'(Meta),
+	Head =.. [_| Args],
+	Meta =.. [_| MArgs],
+	'$lgt_nonvar_meta_arg'(Args, MArgs, Arg),
+	throw(type_error(variable, Arg)).
+
+
 % redefinition of Logtalk built-in predicates
 
 '$lgt_tr_head'(Head, _, _) :-
@@ -5219,6 +5231,14 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _),
 	'$lgt_append'(Args, [Sender, This, Self], Args2),
 	THead =.. [PPrefix| Args2].
+
+
+
+'$lgt_nonvar_meta_arg'([Arg| _], [::| _], Arg) :-
+	nonvar(Arg).
+
+'$lgt_nonvar_meta_arg'([_| Args], [_| MArgs], Arg) :-
+	'$lgt_nonvar_meta_arg'(Args, MArgs, Arg).
 
 
 
