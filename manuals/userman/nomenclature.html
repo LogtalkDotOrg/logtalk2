@@ -33,11 +33,11 @@ There are several C++ glossaries available on the Internet.
 
 <dl>
 	<dt><strong>abstract class</strong></dt>
-		<dd>Logtalk supports interfaces/protocols, which are a much better way to provide the functionality of C++ abstract classes.</dd>
+		<dd>Logtalk supports <em>interfaces</em>/<em>protocols</em>, which are a much better way to provide the functionality of C++ abstract classes.</dd>
 	<dt><strong>base class</strong></dt>
 		<dd>Logtalk uses the term <em>superclass</em> with the same meaning.</dd>
 	<dt><strong>data member</strong></dt>
-		<dd>Logtalk uses predicates for representing both behavior and data.</dd>
+		<dd>Logtalk uses <em>predicates</em> for representing both behavior and data.</dd>
 	<dt><strong>derived class</strong></dt>
 		<dd>Logtalk uses the term <em>subclass</em> with the same meaning.</dd>
 	<dt><strong>friend function</strong></dt>
@@ -49,7 +49,7 @@ There are several C++ glossaries available on the Internet.
 	<dt><strong>nested class</strong></dt>
 		<dd>Logtalk does not support nested classes.</dd>
 	<dt><strong>template</strong></dt>
-		<dd>Logtalk supports parametric objects.</dd>
+		<dd>Logtalk supports <em>parametric objects</em>, which allows you to get the similar functionality of templates at runtime.</dd>
 	<dt><strong>this</strong></dt>
 		<dd>Logtalk uses the built-in context method <code>self/1</code> for retriving the current instance. Logtalk also provides a <code>this/1</code> but for returning the class containing the method being executed. Why the name clashes? Well, the notion of <em>self</em> cames from Smalltalk, which was there first.</dd>
 	<dt><strong>virtual member function</strong></dt>
@@ -68,7 +68,7 @@ There are several Java glossaries available on the Internet.
 	<dt><strong>abstract method</strong></dt>
 		<dd>In Logtalk, you may simply declare a method (predicate) in a class without defining it, leaving its definition to some descendant sub-class.</dd>
 	<dt><strong>extends</strong></dt>
-		<dd>There is not <code>extends</code> keyword in Logtalk. Class inheritance is indicated using <em>specialization</em> relations. Morevover, the <em>extends</em> relation is used in Logtalk to indicate protocol or prototype extension.</dd>
+		<dd>There is no <code>extends</code> keyword in Logtalk. Class inheritance is indicated using <em>specialization</em> relations. Morevover, the <em>extends</em> relation is used in Logtalk to indicate protocol or prototype extension.</dd>
 	<dt><strong>interface</strong></dt>
 		<dd>Logtalk uses the term <em>protocol</em> with the same meaning.</dd>
 	<dt><strong>callback method</strong></dt>
@@ -80,7 +80,7 @@ There are several Java glossaries available on the Internet.
 	<dt><strong>constructor</strong></dt>
 		<dd>There are no special methods for creating new objects in Logtalk. Instead, Logtalk provides a built-in predicate, <code>create_object/4</code>, which is often used to define more sophisticated object creation predicates.</dd>
 	<dt><strong>final</strong></dt>
-		<dd>There is not <code>final</code> keyword in Logtalk; methods may always be redefined in subclasses.</dd>
+		<dd>There is no <code>final</code> keyword in Logtalk; methods may always be redefined in subclasses.</dd>
 	<dt><strong>instance</strong></dt>
 		<dd>In Logtalk, an instance can be either created dynamically at runtime or defined statically in a source file in the same way as classes.</dd>
 	<dt><strong>instance method</strong></dt>
