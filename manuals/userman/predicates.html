@@ -334,7 +334,7 @@ A category may only contain clauses for static predicates. Nevertheless, as the 
 <h3>Meta-predicates<a id="metadef"></a></h3>
 
 <p>
-Meta-predicates may be defined inside objects (and categories) as any other predicate. A meta-predicate is declared using the <code>metapredicate/1</code> directive as described earlier on this section.
+Meta-predicates may be defined inside objects (and categories) as any other predicate. A meta-predicate is declared using the <code>metapredicate/1</code> directive as described earlier on this section. When defining a meta-predicate, the arguments in the clause heads corresponding to meta-arguments must be variables.
 </p>
 <p>
 Some meta-predicates have meta-arguments which are not called directly as goals. Instead, the meta-arguments are used for constructing a call, usually with other arguments of the meta-predicate. A common example is the meta-predicate <code>apply/2</code>. The typical definition is: 
