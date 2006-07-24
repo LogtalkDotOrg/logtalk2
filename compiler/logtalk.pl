@@ -5783,8 +5783,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_tr_meta_arg'(::, Arg, Ctx, TArg) :-
 	(	var(Arg) ->
 		TArg = Arg
-	;	'$lgt_tr_body'(Arg, CArg, DArg, Ctx),
-		TArg = '$lgt_tr'(CArg, DArg)
+	;	'$lgt_ctx_sender'(Ctx, Sender),
+		'$lgt_tr_body'(Sender::Arg, TArg, _, Ctx)
 	).
 
 
