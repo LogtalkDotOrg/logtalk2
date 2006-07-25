@@ -141,7 +141,7 @@ CIAO Prolog 1.8p2 and later versions
 	files.
 
 
-CxProlog 0.93.x
+CxProlog 0.93.1 or later version
 
 	cx.config
 

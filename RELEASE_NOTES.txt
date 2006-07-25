@@ -24,7 +24,7 @@ RELEASE NOTES
 	Updated the Logtalk compiler to generate an error whenever a non-variable 
 	meta-argument is found in a clause head of a user-defined meta-predicate.
 
-	Added an experimental config file for CxProlog 0.93.
+	Added an experimental config file for CxProlog 0.93.1.
 
 	Updated the config file for the forthcoming SICStus Prolog 4.0 version 
 	to work in the current beta version. Modified the "make_sicstuslgt.js" 
