@@ -73,7 +73,7 @@ if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk"))
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - XSB.lnk");
-link.Arguments = "-e \"reconsult('%LOGTALKHOME%\\\\bin\\\\logtalkxsb.pl').\"";
+link.Arguments = "-l -e \"reconsult('%LOGTALKHOME%\\\\bin\\\\logtalkxsb.pl').\"";
 link.Description = "Runs Logtalk with XSB";
 link.IconLocation = "app.exe,1";
 link.TargetPath = prolog_path;
