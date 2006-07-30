@@ -129,15 +129,18 @@ make_yaplgt.js
 
 make_xsblgt.sh
 	makes a shell script named "xsblgt" for running Logtalk with XSB (the 
-	first run of the "xsblgt" script must be made as root or using sudo)
+	first run of the "xsblgt" script must be made as root or using sudo); 
+	due to lack of XSB support for dealing with environment variables in 
+	file paths, each user must set the environment variable LOGTALKUSER to
+	~/logtalk
 make_xsblgt.js
 	makes a Windows shortcut named "Logtalk - XSB" for running Logtalk with 
 	XSB (the first call to the shortcut must be made by a user with 
-	administrative rights; assumes that XSB is installed in C:\Program Files, 
-	edit the path to the "xsb.exe" executable in the script if necessary; 
-	each user will need to edit the file libpaths/libpaths_no_env_var.pl in 
-	order to replace all occurrences of the LOGTALKUSER environment variable 
-	with its value)
+	administrative rights; assumes that XSB is installed in C:\, edit the 
+	path to the "xsb.exe" executable in the script if necessary; each user 
+	will need to edit the file libpaths/libpaths_no_env_var.pl in order to 
+	replace all occurrences of the LOGTALKUSER environment variable with its 
+	value)
 
 makeall_lgt.sh
 	simple shell script for running all the make_*lgt.sh shell scripts in 
