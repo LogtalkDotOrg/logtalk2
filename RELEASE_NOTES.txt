@@ -45,7 +45,8 @@ RELEASE NOTES
 	Modified the "make_eclipselgt.js" script to work with both ECLiPSe 5.8 
 	and 5.9 versions.
 
-	Dropped support for versions of XSB older than 3.0.
+	Dropped support for versions of XSB older than 3.0. Added support for 
+	smart compilation of source files to the XSB config file.
 
 	Add a ".txt" extension to all "NOTES" and "SCRIPT" files.
 

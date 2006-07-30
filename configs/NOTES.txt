@@ -432,7 +432,8 @@ XSB 3.0 and later versions
 	xsb.config
 
 	Don't forget to use the cd/1 predicate to set the working directory 
-	before loading the library or an example.
+	before loading the library or an example. Supports smart compilation 
+	of source files.
 
 
 YAP 4.3.x and later versions
