@@ -186,6 +186,21 @@
 		</fo:block>
 	</xsl:if>
 
+	<xsl:if test="license">
+		<fo:block
+				font-size="10pt"
+				font-family="serif" 
+				keep-with-next="always">
+			license:
+		</fo:block>
+		<fo:block
+				font-size="9pt"
+				font-family="monospace"
+				margin-left="10mm">
+			<xsl:value-of select="license"/>
+		</fo:block>
+	</xsl:if>
+
 	<fo:block
 			font-size="10pt"
 			font-family="serif"

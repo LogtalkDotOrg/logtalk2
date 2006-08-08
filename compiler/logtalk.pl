@@ -4919,6 +4919,13 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	;	throw(type_error(atomic, Version))
 	).
 
+'$lgt_valid_entity_info_key_value'(license, License) :-
+	!,
+	(	atom(License) ->
+		true
+	;	throw(type_error(atom, License))
+	).
+
 '$lgt_valid_entity_info_key_value'(_, _).
 
 
@@ -9754,7 +9761,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	'$lgt_xml_header_text'('1.0', Encoding, no, Text),
 	'$lgt_write_xml_open_tag'(Stream, Text, []),
 	(	XMLSpec == dtd ->
-		write(Stream, '<!DOCTYPE logtalk SYSTEM "http://www.logtalk.org/xml/1.3/logtalk.dtd">'), nl(Stream)
+		write(Stream, '<!DOCTYPE logtalk SYSTEM "http://www.logtalk.org/xml/1.4/logtalk.dtd">'), nl(Stream)
 	;	true
 	),
 	'$lgt_compiler_flag'(xslfile, XSL),
@@ -9765,7 +9772,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		'$lgt_write_xml_open_tag'(Stream, logtalk, [])
 	;	'$lgt_write_xml_open_tag'(Stream, logtalk,
 			['xmlns:xsi'-'http://www.w3.org/2001/XMLSchema-instance',
-			 'xsi:noNamespaceSchemaLocation'-'http://www.logtalk.org/xml/1.3/logtalk.xsd'])
+			 'xsi:noNamespaceSchemaLocation'-'http://www.logtalk.org/xml/1.4/logtalk.xsd'])
 	).
 
 '$lgt_write_xml_header'(standalone, _, Stream) :-
@@ -9835,10 +9842,14 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	(	'$lgt_member'(date is Date, Info) ->
 		'$lgt_write_xml_element'(Stream, date, [], Date)
 	;	true
+	), 
+	(	'$lgt_member'(license is License, Info) ->
+		'$lgt_write_xml_element'(Stream, license, [], License)
+	;	true
 	),
 	forall(
 		('$lgt_member'(Key is Value, Info),
-		 \+ '$lgt_member'(Key, [comment, author, version, date, parameters, parnames, remarks])),
+		 \+ '$lgt_member'(Key, [comment, author, version, date, parameters, parnames, license, remarks])),
 		('$lgt_write_xml_open_tag'(Stream, info, []),
 		 '$lgt_write_xml_element'(Stream, key, [], Key),
 		 '$lgt_write_xml_cdata_element'(Stream, value, [], Value),

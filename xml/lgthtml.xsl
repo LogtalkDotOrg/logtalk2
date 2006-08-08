@@ -79,6 +79,10 @@
 		<dt class ="key">date:</dt>
 			<dd class="value"><code><xsl:value-of select="date" /></code></dd>
 	</xsl:if>
+	<xsl:if test="license">
+		<dt class ="key">license:</dt>
+			<dd class="value"><code><xsl:value-of select="license" /></code></dd>
+	</xsl:if>
 	</dl>
 	<dl class="properties">
 		<dt class ="key">compilation:</dt>
