@@ -47,6 +47,7 @@
 		<xsd:element name="author"		type="xsd:string"	minOccurs="0"/>
 		<xsd:element name="version"		type="xsd:string"	minOccurs="0"/>
 		<xsd:element name="date"		type="xsd:string"	minOccurs="0"/>
+		<xsd:element name="copyright"	type="xsd:string"	minOccurs="0"/>
 		<xsd:element name="license"		type="xsd:string"	minOccurs="0"/>
 		<xsd:element name="info"		type="info"			minOccurs="0" maxOccurs="unbounded"/>
 	</xsd:sequence>

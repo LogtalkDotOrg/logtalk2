@@ -4919,6 +4919,13 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	;	throw(type_error(atomic, Version))
 	).
 
+'$lgt_valid_entity_info_key_value'(copyright, Copyright) :-
+	!,
+	(	atom(Copyright) ->
+		true
+	;	throw(type_error(atom, Copyright))
+	).
+
 '$lgt_valid_entity_info_key_value'(license, License) :-
 	!,
 	(	atom(License) ->
@@ -9843,13 +9850,17 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		'$lgt_write_xml_element'(Stream, date, [], Date)
 	;	true
 	), 
+	(	'$lgt_member'(copyright is Copyright, Info) ->
+		'$lgt_write_xml_element'(Stream, copyright, [], Copyright)
+	;	true
+	), 
 	(	'$lgt_member'(license is License, Info) ->
 		'$lgt_write_xml_element'(Stream, license, [], License)
 	;	true
 	),
 	forall(
 		('$lgt_member'(Key is Value, Info),
-		 \+ '$lgt_member'(Key, [comment, author, version, date, parameters, parnames, license, remarks])),
+		 \+ '$lgt_member'(Key, [comment, author, version, date, parameters, parnames, copyright, license, remarks])),
 		('$lgt_write_xml_open_tag'(Stream, info, []),
 		 '$lgt_write_xml_element'(Stream, key, [], Key),
 		 '$lgt_write_xml_cdata_element'(Stream, value, [], Value),

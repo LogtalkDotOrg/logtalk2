@@ -24,8 +24,8 @@ RELEASE NOTES
 	Updated the Logtalk compiler to generate an error whenever a non-variable 
 	meta-argument is found in a clause head of a user-defined meta-predicate.
 
-	Added support for a "license" key to the info/1 entity documenting 
-	directive.
+	Added support for "copyright" and "license" keys to the info/1 entity 
+	documenting directive.
 
 	Added an experimental config file for CxProlog 0.93.1.
 

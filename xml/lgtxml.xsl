@@ -80,6 +80,10 @@
 		<dt class ="key">date:</dt>
 			<dd class="value"><code><xsl:value-of select="date" /></code></dd>
 	</xsl:if>
+	<xsl:if test="copyright">
+		<dt class ="key">copyright:</dt>
+			<dd class="value"><code><xsl:value-of select="copyright" /></code></dd>
+	</xsl:if>
 	<xsl:if test="license">
 		<dt class ="key">license:</dt>
 			<dd class="value"><code><xsl:value-of select="license" /></code></dd>
