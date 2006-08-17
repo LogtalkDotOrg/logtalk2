@@ -84,9 +84,9 @@ RELEASE NOTES
 	Neng-Fa Zhou for the bug report).
 
 	Corrected a bug in the compilation of user meta-predicates which allowed 
-	illegal calls to non-public predicates on the caller module to be made 
-	from the called module. Thanks to Rémy Haemmerlé and François Fages for 
-	reporting the problem.
+	illegal calls to non-public predicates on the caller object to be made 
+	from the object defining the meta-predicates. Thanks to Rémy Haemmerlé 
+	and François Fages for reporting the problem.
 
 	Changed the Logtalk - SWI-Prolog integration scripts to load the hook 
 	file "swihook.pl" after the other files in order to avoid some possible 
