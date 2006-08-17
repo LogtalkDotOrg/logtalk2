@@ -122,7 +122,7 @@ The predicate arguments in this directive have the following meaning:
 This is similar to the declaration of meta-predicates in the ISO standard for Prolog modules except that we use the atom <code>::</code> instead of <code>:</code> to be consistent with the message sending operators.
 </p>
 <p>
-Since each Logtalk entity is independently compiled, this directive must be included in every object or category that contains a definition for the described predicate, even if the predicate declaration is inherited from another entity, to ensure proper compilation of meta-arguments.
+The <code>metapredicate/1</code></a> directive must precede the meta-predicate definition and any local calls to the meta-predicate in order to ensure proper compilation. In addition, as each Logtalk entity is independently compiled, this directive must be included in every object or category that contains a definition for the described predicate, even if the predicate declaration is inherited from another entity, to ensure proper compilation of meta-arguments.
 </p>
 
 <h3>Discontiguous directive<a id="discontiguous"></a></h3>
@@ -679,7 +679,7 @@ Currently, there is no clean workaround for calling non-standard, Prolog built-i
 	<div class="copyright">Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></div>
 	<div class="footnote">
 		<span class="validators"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span>
-		<span class="date">Last updated on: July 25, 2006</span>
+		<span class="date">Last updated on: August 17, 2006</span>
 	</div>
 </div>
 
