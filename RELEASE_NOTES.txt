@@ -51,6 +51,9 @@ RELEASE NOTES
 	Dropped support for versions of XSB older than 3.0. Added support for 
 	smart compilation of source files to the XSB config file.
 
+	Updated the config file for IF/Prolog 5.1 by adding a missing definition 
+	for predicate retractall/1 and avoiding some warmless singleton warnings.
+
 	Add a ".txt" extension to all "NOTES" and "SCRIPT" files.
 
 	Extended "dcgs", "parametric", and "metainterpreters" examples.
