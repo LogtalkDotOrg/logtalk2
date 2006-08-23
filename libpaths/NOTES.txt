@@ -53,6 +53,7 @@ Prolog compilers that imply editing the provided "libpaths.pl" file due to
 the lack of support for expanding environment variables on paths:
 
 	* Amzi! Prolog
+	* IF/Prolog
 	* JIProlog
 	* XSB
 
