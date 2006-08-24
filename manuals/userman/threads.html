@@ -112,7 +112,7 @@ Sometimes we want to call a goal in a new thread without caring about the result
 The call succeeds with no reply of the goal success, failure, or even exception ever being sent to the object making the call.
 </p>
 
-<h2>Atomic goals and asynchronous calls<a id="atomic"></a></h2>
+<h2>Atomic goals and asynchronous calls<a id="atomic_goals"></a></h2>
 
 <p>
 Proving a goal asynchronously using a new thread may lead to problems when the goal implies side-effects such as input/output operations or modifications to an object's database. For example, if a new thread is started with a similar goal before the first one finished its job, we may end up with mixed output or a corrupted database. In these cases, we may call the built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_call2.html"><code>threaded_call/2</code></a> using the option <code>atomic</code> in order to ensure that the object which will span the thread for proving the goal argument will not accept any other asynchronous request until the first one terminates. For example, assume two predicates for writing, respectively, even and odd numbers in a given interval to the standard output. Given a large interval, a goal such as:
@@ -169,12 +169,29 @@ A disjunction of goals is interpreted as running a set of <em>competing</em> goa
 The <code>threaded_exit/1</code> call will return both the identifier of the fastest method and its result. Note that, when setting up competing goals such as in the example above, we must ensure that the argument of the <code>threaded_exit/1</code> call unifies with each individual goal in the disjunction used as argument on the <code>threaded_call/1</code> call. This ensures that the <code>threaded_exit/1</code> call will return the results of the first method to complete, no matter which one.
 </p>
 
+<h2>Atomic predicates<a id="atomic_predicates"></a></h2>
+
+<p>
+Predicates and grammar rule non-terminals may be declared as <em>atomic</em> by using the <a title="Consult reference manual" href="../refman/directives/atomic1.html"><code>atomic/1</code></a> object and category directive. The execution of an atomic predicate (or atomic non-terminal) is protected by a mutex, thus allowing for easy thread synchronization. For example:
+</p>
+<pre>:- atomic(db_update/1).   % ensure thread synchronization
+
+db_update(Update) :-      % predicate with side-effects
+    ...
+</pre>
+<p>
+The <code>atomic/1</code> directive must precede any local calls to the atomic predicate (or atomic non-terminal) in order to ensure proper compilation. In addition, as each Logtalk entity is independently compiled, this directive must be included in every object or category that contains a definition for the described predicate, even if the predicate declaration is inherited from another entity, in order to ensure proper compilation.
+</p>
+<p>
+Whenever possible, atomic predicates should be coded as deterministic predicates in order to avoid deadlocks. Nevertheless, Logtalk supports both deterministic and non-deterministic atomic predicates (and atomic non-terminals). In those cases where the predicate (or grammar rule) is defined in the same object (or catehory) where the predicate is declared dynamic, Logtalk takes advantage off any existing <a title="Consult reference manual" href="../refman/directives/atomic1.html"><code>mode/2</code></a> directives in order to generate the most appropriated mutex handling code.
+</p>
+
 <div class="footer">
 	<div class="navbottom"><a href="events.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="errors.html">next</a></div>
 	<div class="copyright">Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></div>
 	<div class="footnote">
 		<span class="validators"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span>
-		<span class="date">Last updated on: May 26, 2006</span>
+		<span class="date">Last updated on: August 24, 2006</span>
 	</div>
 </div>
 
