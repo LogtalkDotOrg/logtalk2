@@ -3,10 +3,11 @@
 %  Logtalk - Object oriented extension to Prolog
 %  Release 2.28.0
 %
-%  integration code for SWI Prolog 3.3.x and later versions
-%  to compile and load Logtalk files using SWI Prolog consult/1
+%  integration code for SWI Prolog 3.3.x and later versions to compile and
+%  load Logtalk files using SWI Prolog consult/1 and to support edit/1 and
+%  make/0
 %
-%  last updated: November 3, 2005
+%  last updated: August 24, 2006
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -42,3 +43,17 @@ user:prolog_load_file(_:Spec, Options) :-
 
 '$lgt_filter_compiler_options'([_| Options], Options2) :-
 	'$lgt_filter_compiler_options'(Options, Options2).
+
+
+:- multifile(prolog_edit:locate/3).
+
+prolog_edit:locate(Name, source_file(Source), [file(Source)]) :-
+	write(mine), nl,
+	atom(Name),
+	source_file(Path),
+	file_base_name(Path, File),
+	file_name_extension(Name, 'pl', File),
+	file_name_extension(Plain, _, Path),
+	file_name_extension(Plain, 'lgt', Source),
+	exists_file(Source),
+	!.
