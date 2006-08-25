@@ -12,19 +12,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+
 :- dynamic(prolog_load_file/2).
 :- multifile(prolog_load_file/2).
 
 user:prolog_load_file(_:Spec, Options) :-
-	(atom(Spec) ->
+	(	atom(Spec) ->
 		expand_file_name(Spec, [SpecExp]),
 		absolute_file_name(SpecExp, [extensions([lgt]), access(read), file_errors(fail)], Path)
-		;
-		Spec =.. [Library, File],
+	;	Spec =.. [Library, File],
 		'$lgt_expand_library_path'(Library, LibPath),
 		atom_concat(LibPath, File, Spec2),
 		expand_file_name(Spec2, [SpecExp]),
-		absolute_file_name(SpecExp, [extensions([lgt]), access(read), file_errors(fail)], Path)),
+		absolute_file_name(SpecExp, [extensions([lgt]), access(read), file_errors(fail)], Path)
+	),
 	file_directory_name(Path, Dir),
 	file_base_name(Path, BaseName),
 	file_name_extension(Entity, _, BaseName),
@@ -45,10 +46,10 @@ user:prolog_load_file(_:Spec, Options) :-
 	'$lgt_filter_compiler_options'(Options, Options2).
 
 
+
 :- multifile(prolog_edit:locate/3).
 
 prolog_edit:locate(Name, source_file(Source), [file(Source)]) :-
-	write(mine), nl,
 	atom(Name),
 	source_file(Path),
 	file_base_name(Path, File),
