@@ -519,12 +519,12 @@ abolish_object(Obj) :-
 			'$lgt_call'(Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm),
 			'$lgt_abolish_entity_predicates'(Def),
 			'$lgt_abolish_entity_predicates'(DDef),
-			abolish(Dcl/5),
-			abolish(Dcl/7),
+			abolish(Dcl/6),
+			abolish(Dcl/8),
 			abolish(Def/5),
 			abolish(Def/6),
 			abolish(Super/6),
-			abolish(IDcl/7),
+			abolish(IDcl/8),
 			abolish(IDef/6),
 			abolish(DDcl/2),
 			abolish(DDef/5),
@@ -566,8 +566,8 @@ abolish_category(Ctg) :-
 		(	Type == (dynamic) ->
 			'$lgt_call'(Prefix, Dcl, Def, Rnm),
 			'$lgt_abolish_entity_predicates'(Def),
-			abolish(Dcl/5),
 			abolish(Dcl/6),
+			abolish(Dcl/7),
 			abolish(Def/5),
 			abolish(Rnm/3),
 			abolish(Prefix/3),
@@ -596,8 +596,8 @@ abolish_protocol(Ptc) :-
 	(	'$lgt_current_protocol_'(Ptc, Prefix, Type) ->
 		(	Type == (dynamic) ->
 			'$lgt_call'(Prefix, Dcl, Rnm),
-			abolish(Dcl/5),
 			abolish(Dcl/6),
+			abolish(Dcl/7),
 			abolish(Rnm/3),
 			abolish(Prefix/2),
 			retractall('$lgt_current_protocol_'(Ptc, _, _)),
@@ -2522,13 +2522,6 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_metacall_in_object'(Pred, Obj, This) :-
 	var(Pred),
 	throw(error(instantiation_error, Obj::call(Pred), This)).
-
-'$lgt_metacall_in_object'('$lgt_precomp'(Call, DCall, Obj), _, _) :-
-	!,
-	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
-		call(DCall)
-	;	call(Call)
-	).
 
 '$lgt_metacall_in_object'(Pred, Obj, This) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
@@ -5350,7 +5343,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 % already translated calls (usually, arguments of meta-predicate calls)
 
-'$lgt_tr_body'('$lgt_tr'(Call, DCall), Call, DCall, _) :-
+'$lgt_tr_body'('$lgt_precomp'(Call, DCall, _), Call, DCall, _) :-
 	!.
 
 
@@ -7573,7 +7566,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		assertz('$lgt_pp_dcl_'((Head:-Body)))
 	;	true
 	),
-	Head2 =.. [Dcl, Pred, Scope, (dynamic), no, no, Obj, Obj],
+	Head2 =.. [Dcl, Pred, Scope, (dynamic), no, no, no, Obj, Obj],
 	Body2 =.. [DDcl, Pred, Scope],
 	assertz('$lgt_pp_dcl_'((Head2:-Body2))).
 
@@ -7807,7 +7800,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		assertz('$lgt_pp_dcl_'((Head:-Body)))
 	;	true
 	),
-	Head2 =.. [IDcl, Pred, Scope, (dynamic), no, no, Obj, Obj],
+	Head2 =.. [IDcl, Pred, Scope, (dynamic), no, no, no, Obj, Obj],
 	Body2 =.. [DDcl, Pred, Scope],
 	assertz('$lgt_pp_dcl_'((Head2:-Body2))).
 
