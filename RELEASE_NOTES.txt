@@ -28,6 +28,9 @@ RELEASE NOTES
 	Added support for "copyright" and "license" keys to the info/1 entity 
 	documenting directive.
 
+	Improved compiler error messages to also report source file line number 
+	for selected Prolog compilers.
+
 	Added an experimental config file for CxProlog 0.93.1.
 
 	Updated the config file for SWI-Prolog in order to support the edit/1 and 

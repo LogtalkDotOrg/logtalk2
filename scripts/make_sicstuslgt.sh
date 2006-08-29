@@ -41,7 +41,7 @@ fi
 cd "$LOGTALKHOME"
 mkdir -p bin
 cd bin
-echo ":- compile('\$LOGTALKUSER/configs/sicstus.config')." > logtalk_sicstus.rc
+echo ":- compile('\$LOGTALKUSER/configs/sicstus4.config')." > logtalk_sicstus.rc
 echo ":- compile('\$LOGTALKHOME/compiler/logtalk.pl')." >> logtalk_sicstus.rc
 echo ":- compile('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_sicstus.rc
 

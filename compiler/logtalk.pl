@@ -3709,7 +3709,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_compiler_error_handler'(Input, Output, Error) :-
 	'$lgt_restore_global_op_table',
 	'$lgt_reset_warnings_counter',
-	'$lgt_report_compiler_error'(Error),
+	'$lgt_report_compiler_error'(Input, Error),
 	catch(close(Input), _, true),
 	catch(close(Output), _, true),
 	throw(Error).
@@ -3724,43 +3724,56 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_compiler_error_handler'(Stream, Error) :-
 	'$lgt_restore_global_op_table',
 	'$lgt_reset_warnings_counter',
-	'$lgt_report_compiler_error'(Error),
+	'$lgt_report_compiler_error'(Stream, Error),
 	catch(close(Stream), _, true),
 	throw(Error).
 
 
 
-% '$lgt_report_compiler_error'(+term)
+% '$lgt_report_compiler_error'(+stream, +term)
 %
 % reports a compilation error
 
-'$lgt_report_compiler_error'(error(Error, directive(Directive))) :-
+'$lgt_report_compiler_error'(Stream, Error) :-
+	'$lgt_report_compiler_error_message'(Error),
+	'$lgt_report_compiler_error_line_number'(Stream).
+
+
+'$lgt_report_compiler_error_message'(error(Error, directive(Directive))) :-
 	!,
 	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
 	write('  ERROR!  '), writeq(Error), nl,
 	write('          in directive: '), writeq((:- Directive)), nl.
 
-'$lgt_report_compiler_error'(error(Error, clause(Clause))) :-
+'$lgt_report_compiler_error_message'(error(Error, clause(Clause))) :-
 	!,
 	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
 	write('  ERROR!  '), writeq(Error), nl,
 	write('          in clause: '), writeq(Clause), nl.
 
-'$lgt_report_compiler_error'(error(Error, dcgrule(Rule))) :-
+'$lgt_report_compiler_error_message'(error(Error, dcgrule(Rule))) :-
 	!,
 	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
 	write('  ERROR!  '), writeq(Error), nl,
 	write('          in grammar rule: '), writeq((Rule)), nl.
 
-'$lgt_report_compiler_error'(error(Error, Term)) :-
+'$lgt_report_compiler_error_message'(error(Error, Term)) :-
 	!,
 	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
 	write('  ERROR!  '), writeq(Error), nl,
 	write('          in: '), writeq(Term), nl.
 
-'$lgt_report_compiler_error'(Error) :-
+'$lgt_report_compiler_error_message'(Error) :-
 	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
 	write('  ERROR!  '), writeq(Error), nl.
+
+
+'$lgt_report_compiler_error_line_number'(Stream) :-
+	(	catch(stream_property(Stream, position(Position)), _, fail),
+		'$lgt_stream_position_to_line_number'(Position, Line) ->
+		write('          above line: '), write(Line), nl
+	;	true
+	).
 
 
 
