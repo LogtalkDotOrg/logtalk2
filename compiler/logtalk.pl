@@ -3771,7 +3771,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_report_compiler_error_line_number'(Stream) :-
 	(	catch(stream_property(Stream, position(Position)), _, fail),
 		'$lgt_stream_position_to_line_number'(Position, Line) ->
-		write('          above line: '), write(Line), nl
+		write('          near line: '), write(Line), nl
 	;	true
 	).
 
@@ -5238,17 +5238,17 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 % redefinition of Logtalk message sending and external call control constructs
 
-'$lgt_tr_head'(Term1::Term2, _, _) :-
-	throw(permission_error(modify, control_construct, Term1::Term2)).
+'$lgt_tr_head'(_::_, _, _) :-
+	throw(permission_error(modify, control_construct, (::)/2)).
 
-'$lgt_tr_head'(::Term, _, _) :-
-	throw(permission_error(modify, control_construct, ::Term)).
+'$lgt_tr_head'(::_, _, _) :-
+	throw(permission_error(modify, control_construct, (::)/1)).
 
-'$lgt_tr_head'(^^Term, _, _) :-
-	throw(permission_error(modify, control_construct, ^^Term)).
+'$lgt_tr_head'(^^_, _, _) :-
+	throw(permission_error(modify, control_construct, (^^)/1)).
 
-'$lgt_tr_head'({Term}, _, _) :-
-	throw(permission_error(modify, control_construct, {Term})).
+'$lgt_tr_head'({_}, _, _) :-
+	throw(permission_error(modify, control_construct, ({})/1)).
 
 
 % redefinition of Logtalk built-in methods
