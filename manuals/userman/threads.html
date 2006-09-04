@@ -172,7 +172,7 @@ The <code>threaded_exit/1</code> call will return both the identifier of the fas
 <h2>Atomic predicates<a id="atomic_predicates"></a></h2>
 
 <p>
-Predicates and grammar rule non-terminals may be declared as <em>atomic</em> by using the <a title="Consult reference manual" href="../refman/directives/atomic1.html"><code>atomic/1</code></a> object and category directive. The execution of an atomic predicate (or atomic non-terminal) is protected by a mutex, thus allowing for easy thread synchronization. For example:
+Predicates and grammar rule non-terminals may be declared as <em>atomic</em> by using the <a title="Consult reference manual" href="../refman/directives/atomic1.html"><code>atomic/1</code></a> object and category directive. Proving a query to an atomic predicate (or atomic non-terminal) is protected by a mutex, thus allowing for easy thread synchronization. For example:
 </p>
 <pre>:- atomic(db_update/1).   % ensure thread synchronization
 
@@ -191,7 +191,7 @@ Whenever possible, atomic predicates should be coded as deterministic predicates
 	<div class="copyright">Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></div>
 	<div class="footnote">
 		<span class="validators"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span>
-		<span class="date">Last updated on: August 24, 2006</span>
+		<span class="date">Last updated on: September 1, 2006</span>
 	</div>
 </div>
 

@@ -10,13 +10,14 @@ RELEASE NOTES
 =============
 
 
-2.28.0 - August ??, 2006
+2.28.0 - September ??, 2006
 
-	Added support for multi-threading programming on selected Prolog compilers.
-	Added a new object directive, threaded/0, a new predicate directive, 
-	atomic/1, and four new built-in predicates, threaded_call/1-2 and 
-	threaded_exit/1-2. Added a new set of examples, "threads". Thanks to Paulo 
-	Nunes for helping developing and testing these new features.
+	Added experimental support for multi-threading programming on selected 
+	Prolog compilers. Added a new object directive, threaded/0, a new 
+	predicate directive, atomic/1, and four new built-in predicates, 
+	threaded_call/1-2 and threaded_exit/1-2. Added a new set of examples, 
+	"threads". Thanks to Paulo Nunes for helping developing and testing 
+	these new features.
 
 	Updated the Logtalk compiler to generate an error whenever a predicate 
 	directive appears in a source file after predicate clauses that call the 
@@ -33,8 +34,8 @@ RELEASE NOTES
 
 	Added an experimental config file for CxProlog 0.93.1.
 
-	Updated the config file for SWI-Prolog in order to support the edit/1 and 
-	make/0 development predicates.
+	Updated the SWI-Prolog config and hook files in order to support the 
+	edit/1 and make/0 development predicates.
 
 	Updated the config file for the forthcoming SICStus Prolog 4.0 version 
 	to work in the current beta version. Modified the "make_sicstuslgt.js" 
