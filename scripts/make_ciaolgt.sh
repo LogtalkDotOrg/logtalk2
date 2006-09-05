@@ -41,19 +41,19 @@ fi
 cd "$LOGTALKHOME"
 mkdir -p bin
 cd bin
-echo ":- ensure_loaded('\$LOGTALKUSER/configs/ciao_aux.config')." > logtalk_ciao.rc
-echo ":- set_prolog_flag(multi_arity_warnings, off)." >> logtalk_ciao.rc
-echo ":- ensure_loaded('\$LOGTALKHOME/compiler/logtalk.pl')." >> logtalk_ciao.rc
-echo ":- ensure_loaded('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_ciao.rc
-echo ":- op(600, xfy, ::)." >> logtalk_ciao.rc
-echo ":- op(600, fy, ::)." >> logtalk_ciao.rc
-echo ":- op(600, fy, ^^)." >> logtalk_ciao.rc
-echo ":- op(200, fy, +)." >> logtalk_ciao.rc
-echo ":- op(200, fy, ?)." >> logtalk_ciao.rc
-echo ":- op(200, fy, @)." >> logtalk_ciao.rc
-echo ":- op(200, fy, -)." >> logtalk_ciao.rc
+echo ":- ensure_loaded('\$LOGTALKUSER/configs/ciao_aux.config')." > logtalk_ciao.pl
+echo ":- set_prolog_flag(multi_arity_warnings, off)." >> logtalk_ciao.pl
+echo ":- ensure_loaded('\$LOGTALKHOME/compiler/logtalk.pl')." >> logtalk_ciao.pl
+echo ":- ensure_loaded('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_ciao.pl
+echo ":- op(600, xfy, ::)." >> logtalk_ciao.pl
+echo ":- op(600, fy, ::)." >> logtalk_ciao.pl
+echo ":- op(600, fy, ^^)." >> logtalk_ciao.pl
+echo ":- op(200, fy, +)." >> logtalk_ciao.pl
+echo ":- op(200, fy, ?)." >> logtalk_ciao.pl
+echo ":- op(200, fy, @)." >> logtalk_ciao.pl
+echo ":- op(200, fy, -)." >> logtalk_ciao.pl
 echo "#/bin/sh" > ciaolgt
-echo "ciaosh -l \$LOGTALKHOME/bin/logtalk_ciao.rc" >> ciaolgt
+echo "ciaosh -l \$LOGTALKHOME/bin/logtalk_ciao.pl" >> ciaolgt
 chmod a+x ciaolgt
 ln -sf $LOGTALKHOME/bin/ciaolgt $prefix/bin/ciaolgt
 echo "Done. A link to the script was been created in $prefix/bin."

@@ -41,12 +41,12 @@ fi
 cd "$LOGTALKHOME"
 mkdir -p bin
 cd bin
-echo ":- reconsult('\$LOGTALKUSER/configs/yap.config')." > logtalk_yap.rc
-echo ":- reconsult('\$LOGTALKHOME/compiler/logtalk.pl')." >> logtalk_yap.rc
-echo ":- reconsult('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_yap.rc
+echo ":- reconsult('\$LOGTALKUSER/configs/yap.config')." > logtalk_yap.pl
+echo ":- reconsult('\$LOGTALKHOME/compiler/logtalk.pl')." >> logtalk_yap.pl
+echo ":- reconsult('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_yap.pl
 
 echo "#/bin/sh" > yaplgt
-echo "yap -s 49152 -h 16384 -t 1024 -l \$LOGTALKHOME/bin/logtalk_yap.rc" >> yaplgt
+echo "yap -s 49152 -h 16384 -t 1024 -l \$LOGTALKHOME/bin/logtalk_yap.pl" >> yaplgt
 chmod a+x yaplgt
 ln -sf $LOGTALKHOME/bin/yaplgt $prefix/bin/yaplgt
 echo "Done. A link to the script was been created in $prefix/bin."

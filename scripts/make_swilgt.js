@@ -55,7 +55,7 @@ logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
 if (!FSObject.FolderExists(logtalk_home + "\\bin"))
 	FSObject.CreateFolder(logtalk_home + "\\bin");
 
-var f1 = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_swi.pl", true);
+var f1 = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_comp_swi.pl", true);
 var f2 = FSObject.OpenTextFile(logtalk_home + "\\compiler\\logtalk.pl", 1);
 var line;
 
@@ -68,10 +68,10 @@ while (!f2.AtEndOfStream) {
 f1.Close();
 f2.Close();
 
-f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_swi.rc", true);
+f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_swi.pl", true);
 
 f.WriteLine(":- consult('$LOGTALKUSER/configs/swi.config').");
-f.WriteLine(":- consult('$LOGTALKHOME/bin/logtalk_swi.pl').");
+f.WriteLine(":- consult('$LOGTALKHOME/bin/logtalk_comp_swi.pl').");
 f.WriteLine(":- consult('$LOGTALKUSER/libpaths/libpaths.pl').");
 f.WriteLine(":- consult('$LOGTALKUSER/configs/swihook.pl').");
 f.Close();
@@ -82,7 +82,7 @@ if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk"))
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - SWI-Prolog.lnk");
-link.Arguments = '-f "%LOGTALKHOME%\\bin\\logtalk_swi.rc"';
+link.Arguments = '-f "%LOGTALKHOME%\\bin\\logtalk_swi.pl"';
 link.Description = 'Runs Logtalk with SWI-Prolog';
 link.IconLocation = 'app.exe,1';
 link.TargetPath = prolog_path;

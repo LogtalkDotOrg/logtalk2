@@ -83,7 +83,7 @@ logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
 if (!FSObject.FolderExists(logtalk_home + "\\bin")) 
 	FSObject.CreateFolder(logtalk_home + "\\bin");
 
-var f1 = FSObject.CreateTextFile(logtalk_home + "\\bin\\lgtc_eclipse.pl", true);
+var f1 = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_comp_eclipse.pl", true);
 var f2 = FSObject.OpenTextFile(logtalk_home + "\\compiler\\logtalk.pl", 1);
 var line;
 
@@ -103,7 +103,7 @@ f.WriteLine(":- ensure_loaded(library(toplevel)).");
 f.WriteLine(":- cd('$LOGTALKUSER').");
 f.WriteLine(":- compile('configs/eclipseiso.config').");
 f.WriteLine(":- cd('$LOGTALKHOME').");
-f.WriteLine(":- compile('bin/lgtc_eclipse.pl').");
+f.WriteLine(":- compile('bin/logtalk_comp_eclipse.pl').");
 f.WriteLine(":- cd('$LOGTALKUSER').");
 f.WriteLine(":- compile('libpaths/libpaths.pl').");
 f.Close();
