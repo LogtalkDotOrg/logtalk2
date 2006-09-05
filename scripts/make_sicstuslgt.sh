@@ -41,12 +41,16 @@ fi
 cd "$LOGTALKHOME"
 mkdir -p bin
 cd bin
-echo ":- compile('\$LOGTALKUSER/configs/sicstus4.config')." > logtalk_sicstus.rc
-echo ":- compile('\$LOGTALKHOME/compiler/logtalk.pl')." >> logtalk_sicstus.rc
-echo ":- compile('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_sicstus.rc
+if sicstus -f --goal "halt." 2>&1 | grep "SICStus 4" 2>&1 >/dev/null; then
+	echo ":- compile('\$LOGTALKUSER/configs/sicstus4.config')." > logtalk_sicstus.pl
+else
+	echo ":- compile('\$LOGTALKUSER/configs/sicstus.config')." > logtalk_sicstus.pl
+fi
+echo ":- compile('\$LOGTALKHOME/compiler/logtalk.pl')." >> logtalk_sicstus.pl
+echo ":- compile('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_sicstus.pl
 
 echo "#/bin/sh" > sicstuslgt
-echo "sicstus -l \$LOGTALKHOME/bin/logtalk_sicstus.rc" >> sicstuslgt
+echo "sicstus -l \$LOGTALKHOME/bin/logtalk_sicstus.pl" >> sicstuslgt
 chmod a+x sicstuslgt
 ln -sf $LOGTALKHOME/bin/sicstuslgt $prefix/bin/sicstuslgt
 echo "Done. A link to the script was been created in $prefix/bin."
