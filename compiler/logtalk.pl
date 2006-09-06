@@ -2524,11 +2524,13 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_metacall_in_object'(Pred, MetaCallCtx, Sender, This, Self) :-
 	(	var(MetaCallCtx) ->
-		Obj = Sender
-	;	Obj = This
+		Obj = Sender,
+		'$lgt_current_object_'(Sender, Prefix, _, _, _, _),
+		'$lgt_ctx_ctx'(Ctx, Sender, Sender, Self, Prefix, [], _)
+	;	Obj = This,
+		'$lgt_current_object_'(This, Prefix, _, _, _, _),
+		'$lgt_ctx_ctx'(Ctx, Sender, This, Self, Prefix, [], _)
 	),
-	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
-	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, Prefix, [], _),
 	'$lgt_tr_body'(Pred, Call, DCall, Ctx),
 	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
 		call(DCall)
