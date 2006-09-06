@@ -2539,17 +2539,6 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
-% '$lgt_precomp'(+callable, +callable, +object)
-%
-% pre-compiled metacalls (called from built-in meta-predicates)
-
-'$lgt_precomp'(Call, DCall, Obj) :-
-	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
-		call(DCall)
-	;	call(Call)
-	).
-
-
 
 % '$lgt_call_built_in'(+term, +term)
 %
@@ -5368,12 +5357,6 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	).
 
 
-% already translated calls (usually, arguments of meta-predicate calls)
-
-'$lgt_tr_body'('$lgt_precomp'(Call, DCall, _), Call, DCall, _) :-
-	!.
-
-
 % pre-processor bypass (call of external code)
 
 '$lgt_tr_body'({Pred}, _, _, _) :-
@@ -5820,7 +5803,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	assertz('$lgt_non_portable_call_'(Functor, Arity)),
 	fail.
 
-'$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, Ctx), Ctx) :-
+'$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, DPred, Ctx), Ctx) :-
 	'$lgt_pl_built_in'(Pred),
 	functor(Pred, Functor, Arity),
 	functor(Meta, Functor, Arity), 
@@ -5828,8 +5811,9 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	!,
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
-	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs),
-	TPred =.. [Functor| TArgs].
+	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
+	TPred =.. [Functor| TArgs],
+	DPred =.. [Functor| DArgs].
 
 '$lgt_tr_body'(Pred, '$lgt_call_built_in'(Pred, Ctx), '$lgt_dbg_goal'(Pred, '$lgt_call_built_in'(Pred, Ctx), Ctx), Ctx) :-
 	'$lgt_built_in'(Pred),
@@ -5845,16 +5829,20 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 % goal is a call to a user meta-predicate
 
-'$lgt_tr_body'(Cond, TCond, '$lgt_dbg_goal'(Cond, TCond, Ctx), Ctx) :-
+'$lgt_tr_body'(Cond, TCond, '$lgt_dbg_goal'(Cond, DCond, Ctx), Ctx) :-
 	functor(Cond, Functor, Arity),
 	functor(Meta, Functor, Arity),
 	'$lgt_pp_metapredicate_'(Meta),
 	!,
 	Cond =.. [_| Args],
+	Meta =.. [_| MArgs],
 	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, EPrefix, _, _),
 	'$lgt_construct_predicate_functor'(EPrefix, Functor, Arity, PPrefix),
-	'$lgt_append'(Args, [local, Sender, This, Self], Args2),
-	TCond =.. [PPrefix| Args2],
+	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
+	'$lgt_append'(TArgs, [local, Sender, This, Self], TArgs2),
+	'$lgt_append'(DArgs, [local, Sender, This, Self], DArgs2),
+	TCond =.. [PPrefix| TArgs2],
+	DCond =.. [PPrefix| DArgs2],
 	assertz('$lgt_pp_calls_pred_'(Functor, Arity)).
 
 
@@ -5875,28 +5863,27 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
-% '$lgt_tr_meta_args'(@list, @list, +term, -list)
+% '$lgt_tr_meta_args'(@list, @list, +term, -list, -list)
 %
 % translates the meta-arguments contained in the list of 
 % arguments of a call to a meta-predicate
 
-'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs) :-
+'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs) :-
 	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, EPrefix, _, _),
 	'$lgt_ctx_ctx'(NewCtx, Sender, This, Self, EPrefix, [], _),
-	'$lgt_tr_meta_args_aux'(Args, MArgs, NewCtx, TArgs).
+	'$lgt_tr_meta_args_aux'(Args, MArgs, NewCtx, TArgs, DArgs).
 
 
-'$lgt_tr_meta_args_aux'([], [], _, []).
+'$lgt_tr_meta_args_aux'([], [], _, [], []).
 
-'$lgt_tr_meta_args_aux'([Arg| Args], [MArg| MArgs], Ctx, [TArg| TArgs]) :-
-	'$lgt_tr_meta_arg'(MArg, Arg, Ctx, TArg),
-	'$lgt_tr_meta_args_aux'(Args, MArgs, Ctx, TArgs).
+'$lgt_tr_meta_args_aux'([Arg| Args], [MArg| MArgs], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
+	'$lgt_tr_meta_arg'(MArg, Arg, Ctx, TArg, DArg),
+	'$lgt_tr_meta_args_aux'(Args, MArgs, Ctx, TArgs, DArgs).
 
 
-'$lgt_tr_meta_arg'(*, Arg, _, Arg).
+'$lgt_tr_meta_arg'(*, Arg, _, Arg, Arg).
 
-'$lgt_tr_meta_arg'(::, Arg, Ctx, '$lgt_precomp'(TArg, DArg, This)) :-
-	'$lgt_ctx_this'(Ctx, This),
+'$lgt_tr_meta_arg'(::, Arg, Ctx, TArg, DArg) :-
 	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
 
 
