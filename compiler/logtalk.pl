@@ -1714,8 +1714,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	(	Type == (dynamic) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
 			'$lgt_assert_pred_call'(Obj, Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
-			'$lgt_pred_meta_vars'(Head, Meta, Metavars),
-			'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, Metavars, _),
+			'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
+			'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, MetaVars, _),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			(	'$lgt_debugging_'(Obj) ->
 				asserta((Call :- ('$lgt_nop'(Body), '$lgt_dbg_head'(Head, Ctx), DBody)))
@@ -1813,8 +1813,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	(	Type == (dynamic) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_call'(Obj, Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
-			'$lgt_pred_meta_vars'(Head, Meta, Metavars),
-			'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, Metavars, _),
+			'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
+			'$lgt_ctx_ctx'(Ctx, Sender2, This, Self, Prefix, MetaVars, _),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			(	'$lgt_debugging_'(Obj) ->
 				assertz((Call :- ('$lgt_nop'(Body), '$lgt_dbg_head'(Head, Ctx), DBody)))
@@ -2515,15 +2515,15 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
-'$lgt_metacall_in_object'(Pred, Context, Sender, This, _) :-
+'$lgt_metacall_in_object'(Pred, MetaCallCtx, Sender, This, _) :-
 	var(Pred),
-	(	var(Context) ->
+	(	var(MetaCallCtx) ->
 		throw(error(instantiation_error, Sender::call(Pred), This))
 	;	throw(error(instantiation_error, This::call(Pred), This))
 	).
 
-'$lgt_metacall_in_object'(Pred, Context, Sender, This, Self) :-
-	(	var(Context) ->
+'$lgt_metacall_in_object'(Pred, MetaCallCtx, Sender, This, Self) :-
+	(	var(MetaCallCtx) ->
 		Obj = Sender
 	;	Obj = This
 	),
@@ -5203,8 +5203,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	functor(Head, Functor, Arity),
 	'$lgt_pp_dynamic_'(Functor, Arity),
 	!,
-	'$lgt_pred_meta_vars'(Head, Metavars),
-	'$lgt_ctx_meta_vars'(Ctx, Metavars),
+	'$lgt_pred_meta_vars'(Head, MetaVars),
+	'$lgt_ctx_meta_vars'(Ctx, MetaVars),
 	'$lgt_tr_head'(Head, THead, Ctx),
 	'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 	'$lgt_simplify_body'(TBody, SBody),
@@ -5212,8 +5212,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_dbg_head'(Head, Ctx),DBody), Ctx) :-
 	!,
-	'$lgt_pred_meta_vars'(Head, Metavars),
-	'$lgt_ctx_meta_vars'(Ctx, Metavars),
+	'$lgt_pred_meta_vars'(Head, MetaVars),
+	'$lgt_ctx_meta_vars'(Ctx, MetaVars),
 	'$lgt_tr_head'(Head, THead, Ctx),
 	'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 	'$lgt_simplify_body'(TBody, SBody),
@@ -5332,8 +5332,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	;	'$lgt_add_def_clause'(Functor, Arity, PPrefix, Ctx)
 	),
 	(	'$lgt_pp_metapredicate_'(Meta) ->
-		'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _, Context),
-		'$lgt_append'(Args, [Context, Sender, This, Self], Args2)
+		'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _, MetaCallCtx),
+		'$lgt_append'(Args, [MetaCallCtx, Sender, This, Self], Args2)
 	;	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _, _),
 		'$lgt_append'(Args, [Sender, This, Self], Args2)
 	),
@@ -5359,9 +5359,9 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, Ctx), Ctx) :-
 	var(Pred),
 	!,
-	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, Metavars, Context),
-	(	'$lgt_member_var'(Pred, Metavars) ->
-		TPred = '$lgt_metacall_in_object'(Pred, Context, Sender, This, Self)
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, MetaVars, MetaCallCtx),
+	(	'$lgt_member_var'(Pred, MetaVars) ->
+		TPred = '$lgt_metacall_in_object'(Pred, MetaCallCtx, Sender, This, Self)
 	;	TPred = '$lgt_metacall_in_object'(Pred, local, Sender, This, Self)
 	).
 
@@ -6439,14 +6439,14 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % constructs a list of all variables that occur
 % in a position corresponding to a meta-argument
 
-'$lgt_pred_meta_vars'(Pred, Metavars) :-
+'$lgt_pred_meta_vars'(Pred, MetaVars) :-
 	functor(Pred, Functor, Arity),
 	functor(Meta, Functor, Arity),
 	(	'$lgt_pp_metapredicate_'(Meta) ->
 		Pred =.. [_| Args],
 		Meta =.. [_| MArgs],
-		'$lgt_extract_meta_vars'(Args, MArgs, Metavars)
-	;	Metavars = []
+		'$lgt_extract_meta_vars'(Args, MArgs, MetaVars)
+	;	MetaVars = []
 	).
 
 
@@ -6456,12 +6456,12 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % constructs a list of all variables that occur
 % in a position corresponding to a meta-argument
 
-'$lgt_pred_meta_vars'(Pred, Meta, Metavars) :-
+'$lgt_pred_meta_vars'(Pred, Meta, MetaVars) :-
 	(	Meta == no ->
-		Metavars = []
+		MetaVars = []
 	;	Pred =.. [_| Args],
 		Meta =.. [_| MArgs],
-		'$lgt_extract_meta_vars'(Args, MArgs, Metavars)
+		'$lgt_extract_meta_vars'(Args, MArgs, MetaVars)
 	).
 
 
@@ -6470,14 +6470,14 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_extract_meta_vars'([], [], []).
 
-'$lgt_extract_meta_vars'([Var| Args], [MArg| MArgs], [Var| Metavars]) :-
+'$lgt_extract_meta_vars'([Var| Args], [MArg| MArgs], [Var| MetaVars]) :-
 	var(Var),
 	MArg == (::),
 	!,
-	'$lgt_extract_meta_vars'(Args, MArgs, Metavars).
+	'$lgt_extract_meta_vars'(Args, MArgs, MetaVars).
 
-'$lgt_extract_meta_vars'([_| Args], [_| MArgs], Metavars) :-
-	'$lgt_extract_meta_vars'(Args, MArgs, Metavars).
+'$lgt_extract_meta_vars'([_| Args], [_| MArgs], MetaVars) :-
+	'$lgt_extract_meta_vars'(Args, MArgs, MetaVars).
 
 
 
@@ -7116,12 +7116,12 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	functor(Head, Functor, Arity),
 	functor(Meta, Functor, Arity),
 	Head =.. [_| Args],
-	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _, Context),
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _, MetaCallCtx),
 	(	'$lgt_pp_metapredicate_'(Meta) ->
-		'$lgt_append'(Args, [Context, Sender, This, Self], TArgs)
+		'$lgt_append'(Args, [MetaCallCtx, Sender, This, Self], TArgs)
 	;	'$lgt_append'(Args, [Sender, This, Self], TArgs)
 	),
-	THead =.. [Prefix|TArgs],
+	THead =.. [Prefix| TArgs],
 	(	'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _) ->
 		true
 	;	'$lgt_pp_category_'(_, _, _, Def, _, _)
@@ -7150,12 +7150,12 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	functor(Head, Functor, Arity),
 	functor(Meta, Functor, Arity),
 	Head =.. [_| Args],
-	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _, Context),
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _, MetaCallCtx),
 	(	'$lgt_pp_metapredicate_'(Meta) ->
-		'$lgt_append'(Args, [Context, Sender, This, Self], TArgs)
+		'$lgt_append'(Args, [MetaCallCtx, Sender, This, Self], TArgs)
 	;	'$lgt_append'(Args, [Sender, This, Self], TArgs)
 	),
-	THead =.. [Prefix|TArgs],
+	THead =.. [Prefix| TArgs],
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, DDef, _, _),
 	Clause =.. [DDef, Head, Sender, This, Self, THead],
 	(	'$lgt_pp_ddef_'(Clause) ->
@@ -8946,7 +8946,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_ctx_ctx'(ctx(_, _, _, _, _, _)).
 
-'$lgt_ctx_ctx'(ctx(Sender, This, Self, Prefix, Metavars, MetacallCtx), Sender, This, Self, Prefix, Metavars, MetacallCtx).
+'$lgt_ctx_ctx'(ctx(Sender, This, Self, Prefix, MetaVars, MetaCallCtx), Sender, This, Self, Prefix, MetaVars, MetaCallCtx).
 
 '$lgt_ctx_sender'(ctx(Sender, _, _, _, _, _), Sender).
 
@@ -8956,9 +8956,9 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_ctx_prefix'(ctx(_, _, _, Prefix, _, _), Prefix).
 
-'$lgt_ctx_meta_vars'(ctx(_, _, _, _, Metavars, _), Metavars).
+'$lgt_ctx_meta_vars'(ctx(_, _, _, _, MetaVars, _), MetaVars).
 
-'$lgt_ctx_meta_call_ctx'(ctx(_, _, _, _, _, MetacallCtx), MetacallCtx).
+'$lgt_ctx_meta_call_ctx'(ctx(_, _, _, _, _, MetaCallCtx), MetaCallCtx).
 
 
 
