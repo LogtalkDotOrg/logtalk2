@@ -5829,36 +5829,36 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 % goal is a call to a user meta-predicate
 
-'$lgt_tr_body'(Cond, TCond, '$lgt_dbg_goal'(Cond, DCond, Ctx), Ctx) :-
-	functor(Cond, Functor, Arity),
+'$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, DPred, Ctx), Ctx) :-
+	functor(Pred, Functor, Arity),
 	functor(Meta, Functor, Arity),
 	'$lgt_pp_metapredicate_'(Meta),
 	!,
-	Cond =.. [_| Args],
+	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
 	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, EPrefix, _, _),
 	'$lgt_construct_predicate_functor'(EPrefix, Functor, Arity, PPrefix),
 	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
 	'$lgt_append'(TArgs, [local, Sender, This, Self], TArgs2),
 	'$lgt_append'(DArgs, [local, Sender, This, Self], DArgs2),
-	TCond =.. [PPrefix| TArgs2],
-	DCond =.. [PPrefix| DArgs2],
+	TPred =.. [PPrefix| TArgs2],
+	DPred =.. [PPrefix| DArgs2],
 	assertz('$lgt_pp_calls_pred_'(Functor, Arity)).
 
 
 % goal is a call to a user predicate
 
-'$lgt_tr_body'(Cond, TCond, '$lgt_dbg_goal'(Cond, TCond, Ctx), Ctx) :-
-	Cond =.. [Functor| Args],
-	functor(Cond, Functor, Arity),
+'$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, Ctx), Ctx) :-
+	Pred =.. [Functor| Args],
+	functor(Pred, Functor, Arity),
 	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, EPrefix, _, _),
 	'$lgt_construct_predicate_functor'(EPrefix, Functor, Arity, PPrefix),
-	(	'$lgt_pp_atomic_'(Cond, _) ->
+	(	'$lgt_pp_atomic_'(Pred, _) ->
 		atom_concat(PPrefix, '_atomic', MPrefix)
 	;	MPrefix = PPrefix
 	),
 	'$lgt_append'(Args, [Sender, This, Self], Args2),
-	TCond =.. [MPrefix| Args2],
+	TPred =.. [MPrefix| Args2],
 	assertz('$lgt_pp_calls_pred_'(Functor, Arity)).
 
 
@@ -7286,7 +7286,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	assertz('$lgt_pp_directive_'(dynamic(DDef/5))),
 	'$lgt_pp_dynamic_'(Functor, Arity),
 		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
-		TArity is Arity + 3,
+		functor(Meta, Functor, Arity),
+		(	'$lgt_pp_metapredicate_'(Meta) ->
+			TArity is Arity + 4
+		;	TArity is Arity + 3
+		),
 		assertz('$lgt_pp_directive_'(dynamic(TFunctor/TArity))),
 	fail.
 
@@ -7298,7 +7302,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _),
 	'$lgt_pp_discontiguous_'(Functor, Arity),
 		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
-		TArity is Arity + 3,
+		functor(Meta, Functor, Arity),
+		(	'$lgt_pp_metapredicate_'(Meta) ->
+			TArity is Arity + 4
+		;	TArity is Arity + 3
+		),
 		assertz('$lgt_pp_directive_'(discontiguous(TFunctor/TArity))),
 	fail.
 
@@ -7323,7 +7331,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	'$lgt_pp_category_'(_, Prefix, _, _, _, _),
 	'$lgt_pp_discontiguous_'(Functor, Arity),
 		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
-		TArity is Arity + 3,
+		functor(Meta, Functor, Arity),
+		(	'$lgt_pp_metapredicate_'(Meta) ->
+			TArity is Arity + 4
+		;	TArity is Arity + 3
+		),
 		assertz('$lgt_pp_directive_'(discontiguous(TFunctor/TArity))),
 	fail.
 
@@ -8726,7 +8738,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	atom(TFunctor),
 	integer(TArity),
 	Arity is TArity - 3,	% subtract message execution context arguments
-	Arity >= 0,
+	Arity >= 0,				% this does not work for meta-predicates, which use an additional argument
 	number_codes(Arity, Codes),
 	atom_codes(Atom, Codes),
 	atom_concat(Prefix, FunctorPlusArity, TFunctor),	% generate and test
