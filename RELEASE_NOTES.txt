@@ -100,6 +100,9 @@ RELEASE NOTES
 	defining the meta-predicates. Thanks to Rémy Haemmerlé and François 
 	Fages for reporting the problem.
 
+	Corrected a bug in the compilation of redefined built-in predicates with 
+	no clauses.
+
 	Changed the Logtalk - SWI-Prolog integration scripts to load the hook 
 	file "swihook.pl" after the other files in order to avoid some possible 
 	errors at startup.

@@ -5707,7 +5707,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	TPred = (Input = S0, Rest = S, Pred2).
 
 
-% inline methods (translated to a single unification with the corresponding context argument)
+% inline methods (usually translated to a single unification with the corresponding context argument)
 
 '$lgt_tr_body'(sender(Sender), true, '$lgt_dbg_goal'(sender(Temp), Sender=Temp, Ctx), Ctx) :-
 	!,
@@ -5800,12 +5800,18 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	\+ '$lgt_lgt_built_in'(Pred),
 	\+ '$lgt_iso_spec_pred'(Pred),
 	functor(Pred, Functor, Arity),
+	\+ '$lgt_pp_public_'(Functor, Arity),		% not a
+	\+ '$lgt_pp_protected_'(Functor, Arity),	% redefined
+	\+ '$lgt_pp_private_'(Functor, Arity),		% built-in
 	assertz('$lgt_non_portable_call_'(Functor, Arity)),
 	fail.
 
 '$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, DPred, Ctx), Ctx) :-
 	'$lgt_pl_built_in'(Pred),
 	functor(Pred, Functor, Arity),
+	\+ '$lgt_pp_public_'(Functor, Arity),		% not a
+	\+ '$lgt_pp_protected_'(Functor, Arity),	% redefined
+	\+ '$lgt_pp_private_'(Functor, Arity),		% built-in
 	functor(Meta, Functor, Arity), 
 	'$lgt_pl_metapredicate'(Meta),
 	!,
@@ -5817,6 +5823,10 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_tr_body'(Pred, '$lgt_call_built_in'(Pred, Ctx), '$lgt_dbg_goal'(Pred, '$lgt_call_built_in'(Pred, Ctx), Ctx), Ctx) :-
 	'$lgt_built_in'(Pred),
+	functor(Pred, Functor, Arity),
+	\+ '$lgt_pp_public_'(Functor, Arity),		% not a
+	\+ '$lgt_pp_protected_'(Functor, Arity),	% redefined
+	\+ '$lgt_pp_private_'(Functor, Arity),		% built-in
 	!.
 
 
