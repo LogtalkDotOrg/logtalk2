@@ -2515,6 +2515,30 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
+'$lgt_metacall_in_object'(Closure, Args, MetaCallCtx, Sender, This, _) :-
+	var(Closure),
+	Goal =.. [call, Closure| Args],
+	(	var(MetaCallCtx) ->
+		throw(error(instantiation_error, Sender::Goal, This))
+	;	throw(error(instantiation_error, This::Goal, This))
+	).
+
+'$lgt_metacall_in_object'(Closure, Args, MetaCallCtx, Sender, This, _) :-
+	\+ callable(Closure),
+	Goal =.. [call, Closure| Args],
+	(	var(MetaCallCtx) ->
+		throw(error(type_error(callable, Closure), Sender::Goal, This))
+	;	throw(error(type_error(callable, Closure), This::Goal, This))
+	).
+
+'$lgt_metacall_in_object'(Closure, Args2, MetaCallCtx, Sender, This, Self) :-
+	Closure =.. [Functor| Args],
+	'$lgt_append'(Args, Args2, Args3),
+	Pred =.. [Functor| Args3],
+	'$lgt_metacall_in_object'(Pred, MetaCallCtx, Sender, This, Self).
+
+
+
 '$lgt_metacall_in_object'(Pred, MetaCallCtx, Sender, This, _) :-
 	var(Pred),
 	(	var(MetaCallCtx) ->
@@ -4808,6 +4832,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_convert_meta_predicate_mode_spec'([Arg| Args], [Arg2| Args2]) :-
 	(	Arg == (:) -> Arg2 = (::)
 	;	Arg == (::) -> Arg2 = (::)	% just to be safe...
+	;	integer(Arg) -> Arg2 = Arg
 	;	Arg2 = (*)
 	),
 	'$lgt_convert_meta_predicate_mode_spec'(Args, Args2).
@@ -5443,11 +5468,23 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	!,
 	'$lgt_tr_body'(Pred, TPred, DPred, Ctx).
 
+'$lgt_tr_body'(Metacall, TPred, DPred, Ctx) :-
+	functor(Metacall, call, Arity),
+	Arity > 1,
+	Metacall =..[call, Closure| Args],
+	!,
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, MetaVars, MetaCallCtx),
+	(	'$lgt_member_var'(Closure, MetaVars) ->
+		TPred = '$lgt_metacall_in_object'(Closure, Args, MetaCallCtx, Sender, This, Self)
+	;	TPred = '$lgt_metacall_in_object'(Closure, Args, local, Sender, This, Self)
+	),
+	DPred = '$lgt_dbg_goal'(Metacall, TPred, Ctx).
+
 '$lgt_tr_body'(once(Pred), once(TPred), once(DPred), Ctx) :-
 	!,
 	'$lgt_tr_body'(Pred, TPred, DPred, Ctx).
 
-'$lgt_tr_body'(catch(Goal, Catcher, Recovery), catch(TGoal, Catcher, TRecovery), '$lgt_dbg_goal'(catch(Goal, Catcher, Recovery), catch(DGoal, Catcher, DRecovery)), Ctx) :-
+'$lgt_tr_body'(catch(Goal, Catcher, Recovery), catch(TGoal, Catcher, TRecovery), '$lgt_dbg_goal'(catch(Goal, Catcher, Recovery), catch(DGoal, Catcher, DRecovery), Ctx), Ctx) :-
 	!,
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	'$lgt_tr_body'(Recovery, TRecovery, DRecovery, Ctx).
@@ -5845,9 +5882,12 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	!,
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
-	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
-	TPred =.. [Functor| TArgs],
-	DPred =.. [Functor| DArgs].
+	(	'$lgt_member'(MArg, MArgs), integer(MArg) ->
+		throw(domain_error(closure, Meta))
+	;	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
+		TPred =.. [Functor| TArgs],
+		DPred =.. [Functor| DArgs]
+	).
 
 '$lgt_tr_body'(Pred, '$lgt_call_built_in'(Pred, Ctx), '$lgt_dbg_goal'(Pred, '$lgt_call_built_in'(Pred, Ctx), Ctx), Ctx) :-
 	'$lgt_built_in'(Pred),
@@ -5880,9 +5920,13 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		atom_concat(PPrefix, '_atomic', MPrefix)
 	;	MPrefix = PPrefix
 	),
-	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
-	'$lgt_append'(TArgs, [compiled, Sender, This, Self], TArgs2),
-	'$lgt_append'(DArgs, [compiled, Sender, This, Self], DArgs2),
+	(	'$lgt_member'(MArg, MArgs), integer(MArg) ->
+		'$lgt_append'(Args, [local, Sender, This, Self], TArgs2),
+		'$lgt_append'(Args, [local, Sender, This, Self], DArgs2)
+	;	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
+		'$lgt_append'(TArgs, [compiled, Sender, This, Self], TArgs2),
+		'$lgt_append'(DArgs, [compiled, Sender, This, Self], DArgs2)
+	),
 	TPred =.. [MPrefix| TArgs2],
 	DPred =.. [MPrefix| DArgs2],
 	Arity4 is Arity + 4,
@@ -6511,7 +6555,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_extract_meta_vars'([Var| Args], [MArg| MArgs], [Var| MetaVars]) :-
 	var(Var),
-	MArg == (::),
+	MArg \== (*),
 	!,
 	'$lgt_extract_meta_vars'(Args, MArgs, MetaVars).
 
@@ -9266,7 +9310,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_valid_metapred_term_args'([]).
 
 '$lgt_valid_metapred_term_args'([Arg| Args]) :-
-	once((Arg == (::); Arg == (*))),
+	once((Arg == (::); Arg == (*); integer(Arg), Arg > 0)),
 	'$lgt_valid_metapred_term_args'(Args).
 
 

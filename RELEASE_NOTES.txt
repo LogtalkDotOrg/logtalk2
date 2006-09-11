@@ -19,6 +19,13 @@ RELEASE NOTES
 	"threads". Thanks to Paulo Nunes for helping developing and testing 
 	these new features.
 
+	Expanded support for meta-predicates by allowing the declaration of meta-
+	arguments as closures instead of goals.
+
+	Added the generalized call/N predicate as a built-in predicate. This 
+	built-in predicate must be used in the implementation of meta-predicates 
+	which work with closures instead of goals.
+
 	Updated the Logtalk compiler to generate an error whenever a predicate 
 	directive appears in a source file after predicate clauses that call the 
 	predicate specified in the directive.
