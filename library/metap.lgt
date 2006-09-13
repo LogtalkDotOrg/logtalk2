@@ -2,16 +2,10 @@
 :- protocol(metap).
 
 	:- info([
-		version is 2.1,
-		date is 2006/3/29,
+		version is 3.0,
+		date is 2006/9/11,
 		author is 'Paulo Moura',
 		comment is 'Useful meta-predicates protocol.']).
-
-	:- public(apply/2).
-	:- mode(apply(+callable, +list), zero_or_more).
-	:- info(apply/2, [
-		comment is 'Applies a predicate to list of arguments.',
-		argnames is ['Predicate', 'List']]).
 
 	:- public(callable/1).
 	:- mode(callable(@term), zero_or_one).
@@ -20,27 +14,31 @@
 		argnames is ['Term']]).
 
 	:- public(filter/3).
+	:- metapredicate(filter(1, *, *)).
 	:- mode(filter(+callable, +list, -list), one).
 	:- info(filter/3, [
-		comment is 'Returns a list of all list elements that satisfy a predicate using apply/2.',
+		comment is 'Returns a list of all list elements that satisfy a predicate.',
 		argnames is ['Predicate', 'In', 'Out']]).
 
 	:- public(ignore/1).
+	:- metapredicate(ignore(::)).
 	:- mode(ignore(@callable), one).
 	:- info(ignore/1, [
 		comment is 'Calls Goal once but always succeeds, even if Goal fails.',
 		argnames is ['Goal']]).
 
 	:- public(map/3).
+	:- metapredicate(map(2, *, *)).
 	:- mode(map(+callable, ?list, ?list), zero_or_more).
 	:- info(map/3, [
-		comment is 'Maps a predicate over a list of elements using apply/2.',
+		comment is 'Maps a predicate over a list of elements.',
 		argnames is ['Predicate', 'In', 'Out']]).
 
 	:- public(succeeds/2).
+	:- metapredicate(succeeds(1, *)).
 	:- mode(succeeds(+callable, +list), zero_or_more).
 	:- info(succeeds/2, [
-		comment is 'True if the predicate succeeds for each list element using apply/2.',
+		comment is 'True if the predicate succeeds for each list element.',
 		argnames is ['Predicate', 'List']]).
 
 :- end_protocol.

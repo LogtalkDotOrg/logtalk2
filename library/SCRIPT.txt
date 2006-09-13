@@ -6,11 +6,6 @@ Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-| ?- meta::apply(current_object, [meta]).
-
-yes
-
-
 | ?- meta::succeeds(integer, [1, 2, 3]).
 
 yes
@@ -19,9 +14,7 @@ yes
 | ?- meta::map(object_property, [meta, user], Out).
 
 Out = [static,built_in] ? ;
-
 Out = [static,static] ? ;
-
 no
 
 

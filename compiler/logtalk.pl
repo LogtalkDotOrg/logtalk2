@@ -2518,52 +2518,65 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_metacall_in_object'(Closure, Args, MetaCallCtx, Sender, This, _) :-
 	var(Closure),
 	Goal =.. [call, Closure| Args],
-	(	var(MetaCallCtx) ->
-		throw(error(instantiation_error, Sender::Goal, This))
-	;	throw(error(instantiation_error, This::Goal, This))
+	(	atom(MetaCallCtx) ->
+		throw(error(instantiation_error, This::Goal, This))
+	;	throw(error(instantiation_error, Sender::Goal, This))
 	).
 
 '$lgt_metacall_in_object'(Closure, Args, MetaCallCtx, Sender, This, _) :-
 	\+ callable(Closure),
 	Goal =.. [call, Closure| Args],
-	(	var(MetaCallCtx) ->
-		throw(error(type_error(callable, Closure), Sender::Goal, This))
-	;	throw(error(type_error(callable, Closure), This::Goal, This))
+	(	atom(MetaCallCtx) ->
+		throw(error(type_error(callable, Closure), This::Goal, This))
+	;	throw(error(type_error(callable, Closure), Sender::Goal, This))
 	).
 
-'$lgt_metacall_in_object'(Closure, Args2, MetaCallCtx, Sender, This, Self) :-
+'$lgt_metacall_in_object'(Closure, ExtraArgs, local, Sender, This, Self) :-
+	!,
 	Closure =.. [Functor| Args],
-	'$lgt_append'(Args, Args2, Args3),
-	Pred =.. [Functor| Args3],
-	'$lgt_metacall_in_object'(Pred, MetaCallCtx, Sender, This, Self).
+	'$lgt_append'(Args, ExtraArgs, FullArgs),
+	Pred =.. [Functor| FullArgs],
+	'$lgt_metacall_in_object'(Pred, local, Sender, This, Self).
+
+'$lgt_metacall_in_object'(Closure, ExtraArgs, MetaVars, Sender, This, Self) :-
+	Closure =.. [Functor| Args],
+	'$lgt_append'(Args, ExtraArgs, FullArgs),
+	Pred =.. [Functor| FullArgs],
+	(	\+ '$lgt_member'(Closure, MetaVars) ->
+		'$lgt_metacall_in_object'(Pred, local, Sender, This, Self)
+	;	'$lgt_metacall_in_object'(Pred, [Pred], Sender, This, Self)
+	).
 
 
 
 '$lgt_metacall_in_object'(Pred, MetaCallCtx, Sender, This, _) :-
 	var(Pred),
-	(	var(MetaCallCtx) ->
-		throw(error(instantiation_error, Sender::call(Pred), This))
-	;	throw(error(instantiation_error, This::call(Pred), This))
+	(	atom(MetaCallCtx) ->
+		throw(error(instantiation_error, This::call(Pred), This))
+	;	throw(error(instantiation_error, Sender::call(Pred), This))
 	).
-
-'$lgt_metacall_in_object'(Pred, MetaCallCtx, Sender, _, Self) :-
-	var(MetaCallCtx),
-	!,
-	'$lgt_current_object_'(Sender, Prefix, _, _, _, _),
-	'$lgt_ctx_ctx'(Ctx, Sender, Sender, Self, Prefix, [], _),
-	'$lgt_tr_body'(Pred, Call, DCall, Ctx),
-	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Sender) ->
-		call(DCall)
-	;	call(Call)
-	).	
 
 '$lgt_metacall_in_object'(Pred, compiled, _, _, _) :-
 	!,
 	call(Pred).
 
 '$lgt_metacall_in_object'(Pred, local, Sender, This, Self) :-
+	!,
 	'$lgt_current_object_'(This, Prefix, _, _, _, _),
 	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, Prefix, [], _),
+	'$lgt_tr_body'(Pred, Call, DCall, Ctx),
+	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Sender) ->
+		call(DCall)
+	;	call(Call)
+	).
+
+'$lgt_metacall_in_object'(Pred, MetaVars, Sender, This, Self) :-
+	(	\+ '$lgt_member'(Pred, MetaVars) ->
+		'$lgt_current_object_'(This, Prefix, _, _, _, _),
+		'$lgt_ctx_ctx'(Ctx, Sender, This, Self, Prefix, [], _)
+	;	'$lgt_current_object_'(Sender, Prefix, _, _, _, _),
+		'$lgt_ctx_ctx'(Ctx, Sender, Sender, Self, Prefix, [], _)	
+	),
 	'$lgt_tr_body'(Pred, Call, DCall, Ctx),
 	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Sender) ->
 		call(DCall)
@@ -5364,24 +5377,13 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_tr_head'(Head, THead, Ctx, _) :-
 	functor(Head, Functor, Arity),
-	functor(Meta, Functor, Arity),
-	Head =.. [_| Args],
-	'$lgt_ctx_prefix'(Ctx, EPrefix),
-	'$lgt_construct_predicate_functor'(EPrefix, Functor, Arity, PPrefix),
 	(	'$lgt_pp_dynamic_'(Functor, Arity),
 		\+ '$lgt_pp_public_'(Functor, Arity),
 		\+ '$lgt_pp_protected_'(Functor, Arity),
 		\+ '$lgt_pp_private_'(Functor, Arity) ->
-		'$lgt_add_ddef_clause'(Functor, Arity, PPrefix, Ctx)
-	;	'$lgt_add_def_clause'(Functor, Arity, PPrefix, Ctx)
-	),
-	(	'$lgt_pp_metapredicate_'(Meta) ->
-		'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _, MetaCallCtx),
-		'$lgt_append'(Args, [MetaCallCtx, Sender, This, Self], Args2)
-	;	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _, _),
-		'$lgt_append'(Args, [Sender, This, Self], Args2)
-	),
-	THead =.. [PPrefix| Args2].
+		'$lgt_add_ddef_clause'(Head, Functor, Arity, THead, Ctx)
+	;	'$lgt_add_def_clause'(Head, Functor, Arity, THead, Ctx)
+	).
 
 
 
@@ -5468,17 +5470,24 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	!,
 	'$lgt_tr_body'(Pred, TPred, DPred, Ctx).
 
-'$lgt_tr_body'(Metacall, TPred, DPred, Ctx) :-
-	functor(Metacall, call, Arity),
-	Arity > 1,
-	Metacall =..[call, Closure| Args],
+'$lgt_tr_body'(CallN, _, _, _) :-
+	CallN =.. [call, Call| _],
+	nonvar(Call),
+	(	Call = _::Closure
+	;	Call = ::Closure
+	;	Call = ^^Closure
+	),
+	throw(domain_error(goal, Closure)).
+
+'$lgt_tr_body'(CallN, TPred, DPred, Ctx) :-
+	CallN =.. [call, Closure| Args],
 	!,
 	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, MetaVars, MetaCallCtx),
 	(	'$lgt_member_var'(Closure, MetaVars) ->
 		TPred = '$lgt_metacall_in_object'(Closure, Args, MetaCallCtx, Sender, This, Self)
 	;	TPred = '$lgt_metacall_in_object'(Closure, Args, local, Sender, This, Self)
 	),
-	DPred = '$lgt_dbg_goal'(Metacall, TPred, Ctx).
+	DPred = '$lgt_dbg_goal'(CallN, TPred, Ctx).
 
 '$lgt_tr_body'(once(Pred), once(TPred), once(DPred), Ctx) :-
 	!,
@@ -5914,18 +5923,29 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	!,
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
-	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, EPrefix, _, _),
-	'$lgt_construct_predicate_functor'(EPrefix, Functor, Arity, PPrefix),
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, EntityPrefix, MetaVars, _),
+	'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
 	(	'$lgt_pp_atomic_'(Pred, _) ->
-		atom_concat(PPrefix, '_atomic', MPrefix)
-	;	MPrefix = PPrefix
+		atom_concat(PredPrefix, '_atomic', MPrefix)
+	;	MPrefix = PredPrefix
 	),
-	(	'$lgt_member'(MArg, MArgs), integer(MArg) ->
-		'$lgt_append'(Args, [local, Sender, This, Self], TArgs2),
-		'$lgt_append'(Args, [local, Sender, This, Self], DArgs2)
-	;	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
-		'$lgt_append'(TArgs, [compiled, Sender, This, Self], TArgs2),
-		'$lgt_append'(DArgs, [compiled, Sender, This, Self], DArgs2)
+	(	MetaVars == [] ->
+		% we're not compiling a clause to a meta-predicate, thus we have a local
+		% to a meta-predicate
+		(	'$lgt_member'(MArg, MArgs), integer(MArg) ->
+			% we're compiling a call to a meta-predicate that expects a closure...
+			'$lgt_append'(Args, [local, Sender, This, Self], TArgs2),
+			DArgs2 = TArgs2
+		;	% we're compiling a call to a meta-predicate that does not use closures...
+			'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
+			'$lgt_append'(TArgs, [compiled, Sender, This, Self], TArgs2),
+			'$lgt_append'(DArgs, [compiled, Sender, This, Self], DArgs2)
+		)
+	;	% we have a meta-predicate calling another meta-predicate, the meta-arguments
+		% to be called in the context of the sender will be the ones coming from the
+		% call to the predicate whose body we're compiling
+		'$lgt_append'(Args, [MetaVars, Sender, This, Self], TArgs2),
+		DArgs2 = TArgs2
 	),
 	TPred =.. [MPrefix| TArgs2],
 	DPred =.. [MPrefix| DArgs2],
@@ -5941,11 +5961,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, Ctx), Ctx) :-
 	Pred =.. [Functor| Args],
 	functor(Pred, Functor, Arity),
-	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, EPrefix, _, _),
-	'$lgt_construct_predicate_functor'(EPrefix, Functor, Arity, PPrefix),
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, EntityPrefix, _, _),
+	'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
 	(	'$lgt_pp_atomic_'(Pred, _) ->
-		atom_concat(PPrefix, '_atomic', MPrefix)
-	;	MPrefix = PPrefix
+		atom_concat(PredPrefix, '_atomic', MPrefix)
+	;	MPrefix = PredPrefix
 	),
 	'$lgt_append'(Args, [Sender, This, Self], Args2),
 	TPred =.. [MPrefix| Args2],
@@ -5962,17 +5982,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % translates the meta-arguments contained in the list of 
 % arguments of a call to a meta-predicate
 
-'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs) :-
-	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, EPrefix, _, _),
-	'$lgt_ctx_ctx'(NewCtx, Sender, This, Self, EPrefix, [], _),
-	'$lgt_tr_meta_args_aux'(Args, MArgs, NewCtx, TArgs, DArgs).
+'$lgt_tr_meta_args'([], [], _, [], []).
 
-
-'$lgt_tr_meta_args_aux'([], [], _, [], []).
-
-'$lgt_tr_meta_args_aux'([Arg| Args], [MArg| MArgs], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
+'$lgt_tr_meta_args'([Arg| Args], [MArg| MArgs], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
 	'$lgt_tr_meta_arg'(MArg, Arg, Ctx, TArg, DArg),
-	'$lgt_tr_meta_args_aux'(Args, MArgs, Ctx, TArgs, DArgs).
+	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs).
 
 
 '$lgt_tr_meta_arg'(*, Arg, _, Arg, Arg).
@@ -5997,10 +6011,10 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	;	'$lgt_pp_private_'(Functor, Arity)
 	), !,
 	Pred =.. [Functor| Args],
-	'$lgt_ctx_ctx'(Ctx, _, _, _, EPrefix, _, _),
-	'$lgt_construct_predicate_functor'(EPrefix, Functor, Arity, PPrefix),
+	'$lgt_ctx_ctx'(Ctx, _, _, _, EntityPrefix, _, _),
+	'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
 	'$lgt_append'(Args, [_, _, _], Args2),
-	TPred =.. [PPrefix| Args2].
+	TPred =.. [PredPrefix| Args2].
 
 
 
@@ -6169,6 +6183,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_tr_msg'(call(Pred), Obj, TPred, This) :-
 	!,
 	'$lgt_tr_msg'(Pred, Obj, TPred, This).
+
+'$lgt_tr_msg'(CallN, Obj, TPred, This) :-
+	CallN =.. [call, Closure| Args],
+	!,
+	TPred = '$lgt_metacall_in_object'(Closure, Args, local, This, Obj, Obj).
 
 '$lgt_tr_msg'(once(Pred), Obj, once(TPred), This) :-
 	!,
@@ -6357,6 +6376,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	!,
 	'$lgt_tr_self_msg'(Pred, TPred, This, Self).
 
+'$lgt_tr_self_msg'(CallN, TPred, This, Self) :-
+	CallN =.. [call, Closure| Args],
+	!,
+	TPred = '$lgt_metacall_in_object'(Closure, Args, local, This, Self, Self).
+
 '$lgt_tr_self_msg'(once(Pred), once(TPred), This, Self) :-
 	!,
 	'$lgt_tr_self_msg'(Pred, TPred, This, Self).
@@ -6515,6 +6539,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		TPred = '$lgt_send_to_super'(Self, Pred, This, Sender)
 	;	TPred = '$lgt_send_to_super_nv'(Self, Pred, This, Sender)
 	).
+
 
 
 % '$lgt_pred_meta_vars'(+callable, -list)
@@ -7192,33 +7217,40 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
-% '$lgt_add_def_clause'(+atom, +integer, +atom, +term)
+% '$lgt_add_def_clause'(+callable, -callable, +atom, +integer, +nonvar)
 %
-% adds a "def clause" (used to translate a predicate call)
+% adds a "def clause" (used to translate a predicate call) and returns
+% the translated clause head
 
-'$lgt_add_def_clause'(Functor, Arity, Prefix, Ctx) :-
-	functor(Head, Functor, Arity),
+'$lgt_add_def_clause'(Head, Functor, Arity, HeadDef, Ctx) :-
 	functor(Meta, Functor, Arity),
-	Head =.. [_| Args],
-	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _, MetaCallCtx),
+	functor(HeadTemplate, Functor, Arity),
+	HeadTemplate =.. [_| HeadTemplateArgs],
+	Head =.. [_| HeadArgs],
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, EntityPrefix, _, MetaCallCtx),
 	(	'$lgt_pp_metapredicate_'(Meta) ->
-		'$lgt_append'(Args, [MetaCallCtx, Sender, This, Self], TArgs)
-	;	'$lgt_append'(Args, [Sender, This, Self], TArgs)
+		'$lgt_pred_meta_vars'(HeadTemplate, Meta, MetaVars),
+		'$lgt_append'(HeadTemplateArgs, [MetaVars, Sender, This, Self], HeadTemplateArgsDef),
+		'$lgt_append'(HeadArgs, [MetaCallCtx, Sender, This, Self], HeadArgsDef)
+	;	'$lgt_append'(HeadTemplateArgs, [Sender, This, Self], HeadTemplateArgsDef),
+		'$lgt_append'(HeadArgs, [Sender, This, Self], HeadArgsDef)
 	),
-	THead =.. [Prefix| TArgs],
+	'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
+	HeadTemplateDef =.. [PredPrefix| HeadTemplateArgsDef],
+	HeadDef =.. [PredPrefix| HeadArgsDef],
 	(	'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _) ->
 		true
 	;	'$lgt_pp_category_'(_, _, _, Def, _, _)
 	),
-	Clause =.. [Def, Head, Sender, This, Self, THead],
+	Clause =.. [Def, HeadTemplate, Sender, This, Self, HeadTemplateDef],
 	(	'$lgt_pp_def_'(Clause) ->
 		true
 	;	assertz('$lgt_pp_def_'(Clause))
 	),
 	(	'$lgt_built_in'(Head) ->
-		(	'$lgt_pp_redefined_built_in_'(Head, _, _, _, _) ->
+		(	'$lgt_pp_redefined_built_in_'(HeadTemplate, _, _, _, _) ->
 			true
-		;	assertz('$lgt_pp_redefined_built_in_'(Head, Sender, This, Self, THead))
+		;	assertz('$lgt_pp_redefined_built_in_'(HeadTemplate, Sender, This, Self, HeadTemplateDef))
 		)
 	;	true
 	),
@@ -7229,30 +7261,37 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
-% '$lgt_add_ddef_clause'(+atom, +integer, +atom, +term)
+% '$lgt_add_ddef_clause'(+callable, +atom, +integer, -callable, +nonvar)
 %
-% adds a "ddef clause" (used to translate a predicate call)
+% adds a "ddef clause" (used to translate a predicate call) and returns
+% the translated clause head
 
-'$lgt_add_ddef_clause'(Functor, Arity, Prefix, Ctx) :-
-	functor(Head, Functor, Arity),
+'$lgt_add_ddef_clause'(Head, Functor, Arity, HeadDef, Ctx) :-
 	functor(Meta, Functor, Arity),
-	Head =.. [_| Args],
-	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, _, _, MetaCallCtx),
+	functor(HeadTemplate, Functor, Arity),
+	HeadTemplate =.. [_| HeadTemplateArgs],
+	Head =.. [_| HeadArgs],
+	'$lgt_ctx_ctx'(Ctx, Sender, This, Self, EntityPrefix, _, MetaCallCtx),
 	(	'$lgt_pp_metapredicate_'(Meta) ->
-		'$lgt_append'(Args, [MetaCallCtx, Sender, This, Self], TArgs)
-	;	'$lgt_append'(Args, [Sender, This, Self], TArgs)
+		'$lgt_pred_meta_vars'(HeadTemplate, Meta, MetaVars),
+		'$lgt_append'(HeadTemplateArgs, [MetaVars, Sender, This, Self], HeadTemplateArgsDef),
+		'$lgt_append'(HeadArgs, [MetaCallCtx, Sender, This, Self], HeadArgsDef)
+	;	'$lgt_append'(HeadTemplateArgs, [Sender, This, Self], HeadTemplateArgsDef),
+		'$lgt_append'(HeadArgs, [Sender, This, Self], HeadArgsDef)
 	),
-	THead =.. [Prefix| TArgs],
+	'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
+	HeadTemplateDef =.. [PredPrefix| HeadTemplateArgsDef],
+	HeadDef =.. [PredPrefix| HeadArgsDef],
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, DDef, _, _),
-	Clause =.. [DDef, Head, Sender, This, Self, THead],
+	Clause =.. [DDef, HeadTemplate, Sender, This, Self, HeadTemplateDef],
 	(	'$lgt_pp_ddef_'(Clause) ->
 		true
 	;	assertz('$lgt_pp_ddef_'(Clause))
 	),
 	(	'$lgt_built_in'(Head) ->
-		(	'$lgt_pp_redefined_built_in_'(Head, _, _, _, _) ->
+		(	'$lgt_pp_redefined_built_in_'(HeadTemplate, _, _, _, _) ->
 			true
-		;	assertz('$lgt_pp_redefined_built_in_'(Head, Sender, This, Self, THead))
+		;	assertz('$lgt_pp_redefined_built_in_'(HeadTemplate, Sender, This, Self, HeadTemplateDef))
 		)
 	;	true
 	),
@@ -7502,16 +7541,16 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % "true" if there are local definition clauses and the atom "fail" otherwise
 
 '$lgt_gen_local_def_clauses'(_) :-
-	'$lgt_pp_entity'(_, _, EPrefix, _, _),
+	'$lgt_pp_entity'(_, _, EntityPrefix, _, _),
+	'$lgt_ctx_prefix'(Ctx, EntityPrefix),
 	'$lgt_pp_dynamic_'(Functor, Arity),
 	\+ '$lgt_pp_defs_pred_'(Functor, Arity),
-	'$lgt_construct_predicate_functor'(EPrefix, Functor, Arity, PPrefix),
-	'$lgt_ctx_ctx'(Ctx),
+	functor(Head, Functor, Arity),
 	(	\+ '$lgt_pp_public_'(Functor, Arity),
 		\+ '$lgt_pp_protected_'(Functor, Arity),
 		\+ '$lgt_pp_private_'(Functor, Arity) ->
-		'$lgt_add_ddef_clause'(Functor, Arity, PPrefix, Ctx)
-	;	'$lgt_add_def_clause'(Functor, Arity, PPrefix, Ctx)
+		'$lgt_add_ddef_clause'(Head, Functor, Arity, _, Ctx)
+	;	'$lgt_add_def_clause'(Head, Functor, Arity, _, Ctx)
 	),
 	fail.
 
@@ -8876,12 +8915,12 @@ current_logtalk_flag(version, version(2, 28, 0)).
 %
 % constructs the functor used for a compiled predicate
 
-'$lgt_construct_predicate_functor'(EPrefix, Functor, Arity, PPrefix) :-
-	atom_concat(EPrefix, Functor, Aux),
+'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix) :-
+	atom_concat(EntityPrefix, Functor, Aux),
 	atom_concat(Aux, '_', Aux2),
 	number_codes(Arity, Codes),
 	atom_codes(Atom, Codes),
-	atom_concat(Aux2, Atom, PPrefix).
+	atom_concat(Aux2, Atom, PredPrefix).
 
 
 
@@ -8954,7 +8993,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 % logtalk built-in methods
 %
-% '$lgt_built_in_method'(?callable, ?scope)
+% '$lgt_built_in_method'(+callable, ?scope)
 
 '$lgt_built_in_method'(parameter(_, _), p).
 '$lgt_built_in_method'(self(_), p).
@@ -8979,6 +9018,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_built_in_method'(expand_term(_, _), p(p(p))).
 '$lgt_built_in_method'(phrase(_, _), p(p(p))).
 '$lgt_built_in_method'(phrase(_, _, _), p(p(p))).
+
+'$lgt_built_in_method'(Method, p(p(p))) :-
+	compound(Method),
+	functor(Method, call, Arity),
+	Arity > 0.
 
 
 
