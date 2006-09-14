@@ -101,6 +101,9 @@ RELEASE NOTES
 	in some clauses not being retracted when an object is abolished (thanks to 
 	Neng-Fa Zhou for the bug report).
 
+	Corrected a bug (introduced in version 2.27.1) in the processing of the 
+	term_expansion/2 predicate.
+
 	Improved compilation of meta-predicate meta-arguments. Corrected a bug 
 	in the compilation of user meta-predicates which allowed illegal calls 
 	to non-public predicates on the caller object to be made from the object 
