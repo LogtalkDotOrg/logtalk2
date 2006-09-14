@@ -29,6 +29,7 @@ files, comment the directive above and uncomment the directive below
 		parsetree,
 		sentences,
 		tokenizer,
+		macaddr,
 		url,
 		xml,
 		shell,
