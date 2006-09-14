@@ -2295,7 +2295,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	(	('$lgt_once'(Dcl, term_expansion(_, _), PScope, _, _, _, _, SCtn, _), (\+ \+ PScope = Scope; Sender = SCtn)) ->
 		'$lgt_once'(Def, term_expansion(Term, Expansion), Sender, Obj, Obj, Call, _)
 	;	Obj = Sender,
-		(	'$lgt_once'(Def, term_expansion(Term, Expansion), Obj, Obj, Obj, Call) ->
+		(	'$lgt_once'(Def, term_expansion(Term, Expansion), Obj, Obj, Obj, Call, Obj) ->
 			true
 		;	'$lgt_call'(Prefix, _, _, _, _, _, _, DDef, _),
 			'$lgt_once'(DDef, term_expansion(Term, Expansion), Obj, Obj, Obj, Call)
