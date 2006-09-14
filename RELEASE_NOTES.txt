@@ -45,8 +45,8 @@ RELEASE NOTES
 	edit/1 and make/0 development predicates.
 
 	Updated the config file for the forthcoming SICStus Prolog 4.0 version 
-	to work in the current beta version. Modified the "make_sicstuslgt.js" 
-	script to work with both SICStus Prolog 3.12 and 4.0 versions.
+	to work in the current beta version. Modified the "make_sicstuslgt.*" 
+	shell scripts to work with both SICStus Prolog 3.12 and 4.0 versions.
 
 	Updated the config file for YAP to workaround a problem on the Windows 
 	version where testing for directory existence fails if the path ends with 
