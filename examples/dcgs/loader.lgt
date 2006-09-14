@@ -7,6 +7,7 @@
 		parsetree,
 		sentences,
 		tokenizer,
+		macaddr,
 		url,
 		xml,
 		shell,
