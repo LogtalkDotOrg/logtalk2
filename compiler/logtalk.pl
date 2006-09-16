@@ -5395,6 +5395,10 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_nonvar_meta_arg'([Arg| _], [::| _], Arg) :-
 	nonvar(Arg).
 
+'$lgt_nonvar_meta_arg'([Arg| _], [N| _], Arg) :-
+	integer(N),
+	nonvar(Arg).
+
 '$lgt_nonvar_meta_arg'([_| Args], [_| MArgs], Arg) :-
 	'$lgt_nonvar_meta_arg'(Args, MArgs, Arg).
 
