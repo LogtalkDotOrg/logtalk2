@@ -2511,6 +2511,10 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
+% '$lgt_metacall_in_object'(?term, ?term, ?term, +object, +object, +object)
+%
+% performs a meta-call constructed from a closure and a list of addtional arguments
+
 '$lgt_metacall_in_object'(Closure, Args, MetaCallCtx, Sender, This, _) :-
 	var(Closure),
 	Goal =.. [call, Closure| Args],
@@ -2544,6 +2548,10 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	).
 
 
+
+% '$lgt_metacall_in_object'(?term, ?term, +object, +object, +object)
+%
+% performs a meta-call at runtime
 
 '$lgt_metacall_in_object'(Pred, MetaCallCtx, Sender, This, _) :-
 	var(Pred),
@@ -6009,6 +6017,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 %
 % checks that the number of addtional arguments being appended to a closure
 % in a call/N call matches the corresponding meta-predicate declaration
+% (the relative ordering of the meta-vars is the same of the corresponding 
+% meta-arguments)
 
 '$lgt_same_meta_arg_extra_args'([(*)| MetaArgs], MetaVars, Closure, ExtraArgs) :-
 	!,
