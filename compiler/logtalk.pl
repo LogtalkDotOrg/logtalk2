@@ -5481,7 +5481,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	'$lgt_ctx_ctx'(Ctx, HeadFunctor/HeadArity, _, _, _, _, MetaVars, _),
 	functor(Meta, HeadFunctor, HeadArity),
 	'$lgt_pp_metapredicate_'(Meta),				% if we're compiling a clause for a meta-predicate
-	'$lgt_member_var'(Closure, MetaVars), !,	% and our closure is a meta-argument
+	once('$lgt_member_var'(Closure, MetaVars)),	% and our closure is a meta-argument
 	functor(CallN, _, CallArity),				% then check that the call/N call complies with
 	ExtraArgs is CallArity - 1,					% the meta-predicate declaration
 	Meta =.. [_| MetaArgs],
@@ -6009,6 +6009,14 @@ current_logtalk_flag(version, version(2, 28, 0)).
 %
 % checks that the number of addtional arguments being appended to a closure
 % in a call/N call matches the corresponding meta-predicate declaration
+
+'$lgt_same_meta_arg_extra_args'([(*)| MetaArgs], MetaVars, Closure, ExtraArgs) :-
+	!,
+	'$lgt_same_meta_arg_extra_args'(MetaArgs, MetaVars, Closure, ExtraArgs).
+
+'$lgt_same_meta_arg_extra_args'([(::)| MetaArgs], MetaVars, Closure, ExtraArgs) :-
+	!,
+	'$lgt_same_meta_arg_extra_args'(MetaArgs, MetaVars, Closure, ExtraArgs).
 
 '$lgt_same_meta_arg_extra_args'([MetaArg| _], [MetaVar| _], Closure, ExtraArgs) :-
 	MetaVar == Closure,
