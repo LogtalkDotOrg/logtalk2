@@ -29,12 +29,18 @@ RELEASE NOTES
 	The metapredicate/1 directive should be considered deprecated. Use the 
 	meta_predicate/1 directive instead.
 
+	Updated the Logtalk compiler to generate an error whenever a non-variable 
+	meta-argument is found in a clause head of a user-defined meta-predicate.
+
+	Improved compilation of meta-predicate meta-arguments. Corrected a bug 
+	in the compilation of user meta-predicates that allowed illegal calls 
+	to non-public predicates on the caller object to be made from the object 
+	defining the meta-predicates. Thanks to Rémy Haemmerlé and François 
+	Fages for reporting the problem.
+
 	Updated the Logtalk compiler to generate an error whenever a predicate 
 	directive appears in a source file after predicate clauses that call the 
 	predicate specified in the directive.
-
-	Updated the Logtalk compiler to generate an error whenever a non-variable 
-	meta-argument is found in a clause head of a user-defined meta-predicate.
 
 	Added support for "copyright" and "license" keys to the info/1 entity 
 	documenting directive.
@@ -42,10 +48,25 @@ RELEASE NOTES
 	Improved compiler error messages to also report source file line number 
 	for selected Prolog compilers.
 
+	Corrected a bug (introduced in version 2.27.0) in the built-in predicates 
+	abolish_object/1, abolish_protocol/1, and abolish_category/1 that resulted
+	in some clauses not being retracted when an object is abolished (thanks to 
+	Neng-Fa Zhou for the bug report).
+
+	Corrected a bug (introduced in version 2.27.1) in the processing of the 
+	term_expansion/2 predicate.
+
+	Corrected a bug in the compilation of redefined built-in predicates with 
+	no clauses.
+
 	Added an experimental config file for CxProlog 0.93.1.
 
 	Updated the SWI-Prolog config and hook files in order to support the 
 	edit/1 and make/0 development predicates.
+
+	Changed the Logtalk - SWI-Prolog integration scripts to load the hook 
+	file "swihook.pl" after the other files in order to avoid some possible 
+	errors at startup.
 
 	Updated the config file for the forthcoming SICStus Prolog 4.0 version 
 	to work in the current beta version. Modified the "make_sicstuslgt.*" 
@@ -70,11 +91,13 @@ RELEASE NOTES
 	smart compilation of source files to the XSB config file.
 
 	Updated the config file for IF/Prolog 5.1 by adding a missing definition 
-	for predicate retractall/1 and avoiding some warmless singleton warnings.
+	for predicate retractall/1 and avoiding some harmless singleton warnings.
 
 	Add a ".txt" extension to all "NOTES" and "SCRIPT" files.
 
 	Extended "dcgs", "parametric", and "metainterpreters" examples.
+
+	Added Inno Setup GUI Windows installer script.
 
 	Update all the JScript scripts to check if a compatible version of WSH 
 	is installed and to workaround some problems with spaces in file paths.
@@ -86,39 +109,16 @@ RELEASE NOTES
 	Updated the "cplgtdirs.*" shell scripts to make a backup copy of any 
 	previous LOGTALKUSER directory.
 
-	Added Inno Setup GUI Windows installer script.
-
 	Added post-install scripts to the LINUX RPM "logtalk.spec" file for 
 	setting the environment variable LOGTALKHOME for all users, defining 
 	a default value for the environment variable LOGTALKUSER, and running 
 	the Prolog integration scripts.
 
-	Added shell scripts for converting the manual XHTML pages into PDF files 
-	using CSSToXSLFO.
-
 	Split the installation and customization instructions in two files, 
 	"INSTALL.txt" and "CUSTOMIZE.txt".
 
-	Corrected a bug (introduced in version 2.27.0) in the built-in predicates 
-	abolish_object/1, abolish_protocol/1, and abolish_category/1 that resulted
-	in some clauses not being retracted when an object is abolished (thanks to 
-	Neng-Fa Zhou for the bug report).
-
-	Corrected a bug (introduced in version 2.27.1) in the processing of the 
-	term_expansion/2 predicate.
-
-	Improved compilation of meta-predicate meta-arguments. Corrected a bug 
-	in the compilation of user meta-predicates which allowed illegal calls 
-	to non-public predicates on the caller object to be made from the object 
-	defining the meta-predicates. Thanks to Rémy Haemmerlé and François 
-	Fages for reporting the problem.
-
-	Corrected a bug in the compilation of redefined built-in predicates with 
-	no clauses.
-
-	Changed the Logtalk - SWI-Prolog integration scripts to load the hook 
-	file "swihook.pl" after the other files in order to avoid some possible 
-	errors at startup.
+	Added shell scripts for converting the manual XHTML pages into PDF files 
+	using CSSToXSLFO.
 
 
 2.27.1 - March 27, 2006
