@@ -23,7 +23,7 @@
 				<regex>:-\s(protocol)\(</regex>			
 				<regex>:-\s(category)\(</regex>			
 				<regex>:-\s(end_(object|protocol|category))\.</regex>			
-				<regex>:-\s(alias)\(</regex>			
+				<regex>:-\s(a(lias|tomic))\(</regex>			
 				<regex>:-\s(e(ncoding|xport))\(</regex>			
 				<regex>:-\s(initialization)\(</regex>			
 				<regex>:-\s(info)\(</regex>			

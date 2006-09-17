@@ -35,6 +35,7 @@
 		);
 		AltKeywords = (
 			"alias",
+			"atomic",
 			"encoding",
 			"initialization",
 			"info",

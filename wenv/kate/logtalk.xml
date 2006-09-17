@@ -158,7 +158,7 @@
 				<RegExpr String = "\be(ncoding|xport)(?=[(])" attribute = "Directive" context = "#pop" />
 			   	<RegExpr String = "\bin(fo|itialization)(?=[(])" attribute = "Directive" context = "#pop" />
 				<RegExpr String = "\b(dynamic|threaded)[.]" attribute = "Directive" context = "#pop" />
-				<RegExpr String = "\b(alias|d(ynamic|iscontiguous)|m(eta_predicate|ode|ultifile))(?=[(])" attribute = "Directive" context = "#pop" />
+				<RegExpr String = "\b(a(lias|tomic)|d(ynamic|iscontiguous)|m(eta_predicate|ode|ultifile))(?=[(])" attribute = "Directive" context = "#pop" />
 				<RegExpr String = "\bop(?=[(])" attribute = "Directive" context = "#pop" />
 				<RegExpr String = "\b(calls|use(s|_module))(?=[(])" attribute = "Directive" context = "#pop" />
 			</context>

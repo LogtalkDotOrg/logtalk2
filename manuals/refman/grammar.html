@@ -435,9 +435,10 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 		<dl>
 			<dt>object_directive ::=</dt>
 				<dd><i>initialization_directive</i> |</dd>
+				<dd>"<code>:- threaded.</code>" |</dd>
+				<dd>"<code>:- dynamic.</code>" |</dd>
 				<dd>"<code>:- uses(</code>" object_identifier "<code>).</code>" |</dd>
 				<dd>"<code>:- calls(</code>" protocol_identifiers "<code>).</code>" |</dd>
-				<dd>"<code>:- dynamic.</code>" |</dd>
 				<dd>"<code>:- info(</code>" info_list "<code>).</code>" |</dd>
 				<dd>predicate_directives</dd>
 		</dl>
@@ -481,6 +482,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 		<dl>
 			<dt>predicate_directive ::=</dt>
 				<dd>alias_directive |</dd>
+				<dd>atomic_directive |</dd>
 				<dd>uses_directive |</dd>
 				<dd>scope_directive |</dd>
 				<dd>mode_directive |</dd>
@@ -490,10 +492,15 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 				<dd>discontiguous_directive |</dd>
 				<dd><i>operator_directive</i></dd>
 		</dl>
-				<dl>
+		<dl>
 			<dt>alias_directive ::=</dt>
 				<dd>"<code>:- alias(</code>" entity_identifier "<code>,</code>" predicate_indicator "<code>,</code>" predicate_indicator "<code>).</code>" |</dd>
 				<dd>"<code>:- alias(</code>" entity_identifier "<code>,</code>" non_terminal_indicator "<code>,</code>" non_terminal_indicator "<code>).</code>"</dd>
+		</dl>
+		<dl>
+			<dt>atomic_directive ::=</dt>
+				<dd>"<code>:- atomic(</code>" predicate_indicator "<code>).</code>" |</dd>
+				<dd>"<code>:- atomic(</code>" non_terminal_indicator "<code>).</code>"</dd>
 		</dl>
 		<dl>
 			<dt>uses_directive ::=</dt>

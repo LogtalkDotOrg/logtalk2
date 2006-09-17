@@ -56,7 +56,7 @@ variable =	'\<[A-Z_][A-Za-z0-9_]*'
 
 cbracket =	"{|}"
 
-preproc =	'^[[:blank:]]*:-[[:blank:]](ca(lls|tegory) | p(ublic|r(ot(ocol|ected)|ivate)) | e(ncoding|xports) | in(fo|itialization) | alias | d(ynamic|iscontiguous) | m(eta_predicate|od(e|ule)|ultifile) | o(bject|p) | use(s|_module))(?=\()',
+preproc =	'^[[:blank:]]*:-[[:blank:]](ca(lls|tegory) | p(ublic|r(ot(ocol|ected)|ivate)) | e(ncoding|xports) | in(fo|itialization) | a(lias|tomic) | d(ynamic|iscontiguous) | m(eta_predicate|od(e|ule)|ultifile) | o(bject|p) | use(s|_module))(?=\()',
 			'^[[:blank:]]*:-[[:blank:]](end_(category|object|protocol) | dynamic | threaded)\.'
 
 preproc =	'\<(extends|i(nstantiates|mp(lements|orts))|specializes)(?=\()'
