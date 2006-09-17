@@ -111,7 +111,7 @@ lpa
 	examples adopted from the LPA Prolog++ system
 
 metapredicates
-	example of using metapredicates in Logtalk objects
+	example of using meta-predicates in Logtalk objects
 
 metainterpreters
 	some examples of simple meta-interpreters defined as categories which 
