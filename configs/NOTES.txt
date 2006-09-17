@@ -99,7 +99,7 @@ Bin-Prolog 8.x~10.x
 
 	Start BinProlog using "bp -l4". You will need to create project files to 
 	workaround the restriction of only one top-level file per interactive 
-	session. For instance, the project file for the metapredicates example
+	session. For instance, the project file for the "metapredicates" example
 	will look like (in the Unix version):
 	
 		:- ['$LOGTALKHOME/configs/bin.config'].

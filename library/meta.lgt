@@ -4,7 +4,7 @@
 
 	:- info([
 		version is 2.0,
-		date is 2006/9/11,
+		date is 2006/9/17,
 		author is 'Paulo Moura',
 		comment is 'Some useful meta-predicates.']).
 
@@ -13,7 +13,7 @@
 		functor(Term, Functor, _),
 		atom(Functor).
 
-	:- metapredicate(filter(1, *, *)).
+	:- meta_predicate(filter(1, *, *)).
 	filter(_, [], []) :- !.
 	filter(Closure, [Arg| Args], List) :-
 		(	call(Closure, Arg) ->
@@ -22,20 +22,20 @@
 		),
 		filter(Closure, Args, Args2).
 
-	:- metapredicate(ignore(::)).
+	:- meta_predicate(ignore(::)).
 	ignore(Goal) :-
 		(	call(Goal) ->
 			true
 		;	true
 		).
 
-	:- metapredicate(map(2, *, *)).
+	:- meta_predicate(map(2, *, *)).
 	map(_, [], []).
 	map(Closure, [Old| Olds], [New| News]) :-
 		call(Closure, Old, New),
 		map(Closure, Olds, News).
 
-	:- metapredicate(succeeds(1, *)).
+	:- meta_predicate(succeeds(1, *)).
 	succeeds(_, []).
 	succeeds(Closure, [Head| Tail]) :-
 		call(Closure, Head),

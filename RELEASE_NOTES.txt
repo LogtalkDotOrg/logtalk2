@@ -26,6 +26,9 @@ RELEASE NOTES
 	method must be used in the implementation of meta-predicates which work 
 	with closures instead of goals.
 
+	The metapredicate/1 directive should be considered deprecated. Use the 
+	meta_predicate/1 directive instead.
+
 	Updated the Logtalk compiler to generate an error whenever a predicate 
 	directive appears in a source file after predicate clauses that call the 
 	predicate specified in the directive.

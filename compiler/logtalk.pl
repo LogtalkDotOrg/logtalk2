@@ -129,7 +129,7 @@
 :- dynamic('$lgt_pp_public_'/2).				% '$lgt_pp_public_'(Functor, Arity)
 :- dynamic('$lgt_pp_protected_'/2).				% '$lgt_pp_protected_'(Functor, Arity)
 :- dynamic('$lgt_pp_private_'/2).				% '$lgt_pp_private_'(Functor, Arity)
-:- dynamic('$lgt_pp_metapredicate_'/1).			% '$lgt_pp_metapredicate_'(Pred)
+:- dynamic('$lgt_pp_meta_predicate_'/1).			% '$lgt_pp_meta_predicate_'(Pred)
 :- dynamic('$lgt_pp_alias_'/3).					% '$lgt_pp_alias_'(Entity, Pred, Alias)
 :- dynamic('$lgt_pp_non_terminal_'/3).			% '$lgt_pp_non_terminal_'(Functor, Args, Arity)
 
@@ -1497,7 +1497,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	;	'$lgt_once'(Def, Pred, _, _, _, _, DCtn),
 		Prop = defined_in(DCtn)
 	;	Meta \== no,
-		Prop = metapredicate(Meta)
+		Prop = meta_predicate(Meta)
 	;	NonTerminal \== no,
 		functor(Pred, Functor, Arity2),
 		Arity is Arity2 - 2,
@@ -1519,7 +1519,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	;	'$lgt_scope'(Prop, PScope)
 	;	functor(Pred, Functor, Arity),
 		functor(Meta, Functor, Arity),
-		('$lgt_metapredicate'(Meta) -> Prop = metapredicate(Meta))
+		('$lgt_meta_predicate'(Meta) -> Prop = meta_predicate(Meta))
 	).
 
 '$lgt_predicate_property'(_, Pred, Prop, _, _) :-
@@ -1532,7 +1532,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		)
 	;	functor(Pred, Functor, Arity),
 		functor(Meta, Functor, Arity),
-		('$lgt_metapredicate'(Meta) -> Prop = metapredicate(Meta))
+		('$lgt_meta_predicate'(Meta) -> Prop = meta_predicate(Meta))
 	).
 
 
@@ -3886,7 +3886,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	retractall('$lgt_pp_dynamic_'(_, _)),
 	retractall('$lgt_pp_discontiguous_'(_, _)),
 	retractall('$lgt_pp_mode_'(_, _)),
-	retractall('$lgt_pp_metapredicate_'(_)),
+	retractall('$lgt_pp_meta_predicate_'(_)),
 	retractall('$lgt_pp_alias_'(_, _, _)),
 	retractall('$lgt_pp_non_terminal_'(_, _, _)),
 	retractall('$lgt_pp_entity_init_'(_)),
@@ -4472,15 +4472,16 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	'$lgt_tr_discontiguous_directive'(Preds2).
 
 
-'$lgt_tr_directive'(metapredicate, Preds, _) :-
+'$lgt_tr_directive'(metapredicate, Preds, _) :-		% depracated
 	'$lgt_flatten_list'(Preds, Preds2),
-	'$lgt_tr_metapredicate_directive'(Preds2).
+	'$lgt_normalize_meta_predicate_args'(Preds2, Preds3),
+	'$lgt_tr_meta_predicate_directive'(Preds3).
 
 
-'$lgt_tr_directive'(meta_predicate, Preds, _) :-	% module directive
+'$lgt_tr_directive'(meta_predicate, Preds, _) :-
 	'$lgt_flatten_list'(Preds, Preds2),
-	'$lgt_convert_module_meta_predicate_args'(Preds2, Preds3),
-	'$lgt_tr_metapredicate_directive'(Preds3).
+	'$lgt_normalize_meta_predicate_args'(Preds2, Preds3),
+	'$lgt_tr_meta_predicate_directive'(Preds3).
 
 
 '$lgt_tr_directive'((mode), [Mode, Solutions], _) :-
@@ -4766,24 +4767,24 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 
 
-'$lgt_tr_metapredicate_directive'([]).
+'$lgt_tr_meta_predicate_directive'([]).
 
-'$lgt_tr_metapredicate_directive'([Pred| _]) :-
+'$lgt_tr_meta_predicate_directive'([Pred| _]) :-
 	var(Pred),
 	throw(instantiation_error).
 
-'$lgt_tr_metapredicate_directive'([Pred| _]) :-
+'$lgt_tr_meta_predicate_directive'([Pred| _]) :-
 	\+ '$lgt_valid_metapred_term'(Pred),
-	throw(type_error(metapredicate_term, Pred)).
+	throw(type_error(meta_predicate_term, Pred)).
 
-'$lgt_tr_metapredicate_directive'([Pred| _]) :-
+'$lgt_tr_meta_predicate_directive'([Pred| _]) :-
 	functor(Pred, Functor, Arity),
 	'$lgt_pp_calls_pred_'(Functor, Arity, _, _),
 	throw(permission_error(modify, predicate_interpretation, Pred)).
 
-'$lgt_tr_metapredicate_directive'([Pred| Preds]) :-
-	assertz('$lgt_pp_metapredicate_'(Pred)),
-	'$lgt_tr_metapredicate_directive'(Preds).
+'$lgt_tr_meta_predicate_directive'([Pred| Preds]) :-
+	assertz('$lgt_pp_meta_predicate_'(Pred)),
+	'$lgt_tr_meta_predicate_directive'(Preds).
 
 
 
@@ -4831,9 +4832,9 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % auxiliary predicate for converting module's meta predicate declarations into 
 % Logtalk ones (: -> ::)
 
-'$lgt_convert_module_meta_predicate_args'([], []).
+'$lgt_normalize_meta_predicate_args'([], []).
 
-'$lgt_convert_module_meta_predicate_args'([Pred| Preds], [Pred2| Preds2]) :-
+'$lgt_normalize_meta_predicate_args'([Pred| Preds], [Pred2| Preds2]) :-
 	(	nonvar(Pred) ->
 		true
 	;	throw(instantiation_error)
@@ -4841,7 +4842,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	Pred =.. [Functor| Args],
 	'$lgt_convert_meta_predicate_mode_spec'(Args, Args2),
 	Pred2 =.. [Functor| Args2],
-	'$lgt_convert_module_meta_predicate_args'(Preds, Preds2).
+	'$lgt_normalize_meta_predicate_args'(Preds, Preds2).
 
 
 '$lgt_convert_meta_predicate_mode_spec'([], []).
@@ -5340,7 +5341,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_tr_head'(Head, _, _, _) :-
 	functor(Head, Functor, Arity),
 	functor(Meta, Functor, Arity),
-	'$lgt_pp_metapredicate_'(Meta),
+	'$lgt_pp_meta_predicate_'(Meta),
 	Head =.. [_| Args],
 	Meta =.. [_| MArgs],
 	'$lgt_nonvar_meta_arg'(Args, MArgs, Arg),
@@ -5492,7 +5493,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	CallN =.. [call, Closure| _],
 	'$lgt_ctx_ctx'(Ctx, HeadFunctor/HeadArity, _, _, _, _, MetaVars, _),
 	functor(Meta, HeadFunctor, HeadArity),
-	'$lgt_pp_metapredicate_'(Meta),				% if we're compiling a clause for a meta-predicate
+	'$lgt_pp_meta_predicate_'(Meta),				% if we're compiling a clause for a meta-predicate
 	once('$lgt_member_var'(Closure, MetaVars)),	% and our closure is a meta-argument
 	functor(CallN, _, CallArity),				% then check that the call/N call complies with
 	ExtraArgs is CallArity - 1,					% the meta-predicate declaration
@@ -5908,7 +5909,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	\+ '$lgt_pp_protected_'(Functor, Arity),	% redefined
 	\+ '$lgt_pp_private_'(Functor, Arity),		% built-in
 	functor(Meta, Functor, Arity), 
-	'$lgt_pl_metapredicate'(Meta),
+	'$lgt_pl_meta_predicate'(Meta),
 	!,
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
@@ -5940,7 +5941,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, DPred, Ctx), Ctx) :-
 	functor(Pred, Functor, Arity),
 	functor(Meta, Functor, Arity),
-	'$lgt_pp_metapredicate_'(Meta),
+	'$lgt_pp_meta_predicate_'(Meta),
 	!,
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
@@ -6597,7 +6598,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_pred_meta_vars'(Pred, MetaVars) :-
 	functor(Pred, Functor, Arity),
 	functor(Meta, Functor, Arity),
-	(	'$lgt_pp_metapredicate_'(Meta) ->
+	(	'$lgt_pp_meta_predicate_'(Meta) ->
 		Pred =.. [_| Args],
 		Meta =.. [_| MArgs],
 		'$lgt_extract_meta_vars'(Args, MArgs, MetaVars)
@@ -7275,7 +7276,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	HeadTemplate =.. [_| HeadTemplateArgs],
 	Head =.. [_| HeadArgs],
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, EntityPrefix, _, MetaCallCtx),
-	(	'$lgt_pp_metapredicate_'(Meta) ->
+	(	'$lgt_pp_meta_predicate_'(Meta) ->
 		'$lgt_pred_meta_vars'(HeadTemplate, Meta, MetaVars),
 		'$lgt_append'(HeadTemplateArgs, [MetaVars, Sender, This, Self], HeadTemplateArgsDef),
 		'$lgt_append'(HeadArgs, [MetaCallCtx, Sender, This, Self], HeadArgsDef)
@@ -7319,7 +7320,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	HeadTemplate =.. [_| HeadTemplateArgs],
 	Head =.. [_| HeadArgs],
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, EntityPrefix, _, MetaCallCtx),
-	(	'$lgt_pp_metapredicate_'(Meta) ->
+	(	'$lgt_pp_meta_predicate_'(Meta) ->
 		'$lgt_pred_meta_vars'(HeadTemplate, Meta, MetaVars),
 		'$lgt_append'(HeadTemplateArgs, [MetaVars, Sender, This, Self], HeadTemplateArgsDef),
 		'$lgt_append'(HeadArgs, [MetaCallCtx, Sender, This, Self], HeadArgsDef)
@@ -7474,7 +7475,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	'$lgt_pp_dynamic_'(Functor, Arity),
 		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
 		functor(Meta, Functor, Arity),
-		(	'$lgt_pp_metapredicate_'(Meta) ->
+		(	'$lgt_pp_meta_predicate_'(Meta) ->
 			TArity is Arity + 4
 		;	TArity is Arity + 3
 		),
@@ -7490,7 +7491,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	'$lgt_pp_discontiguous_'(Functor, Arity),
 		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
 		functor(Meta, Functor, Arity),
-		(	'$lgt_pp_metapredicate_'(Meta) ->
+		(	'$lgt_pp_meta_predicate_'(Meta) ->
 			TArity is Arity + 4
 		;	TArity is Arity + 3
 		),
@@ -7519,7 +7520,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	'$lgt_pp_discontiguous_'(Functor, Arity),
 		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
 		functor(Meta, Functor, Arity),
-		(	'$lgt_pp_metapredicate_'(Meta) ->
+		(	'$lgt_pp_meta_predicate_'(Meta) ->
 			TArity is Arity + 4
 		;	TArity is Arity + 3
 		),
@@ -7557,7 +7558,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	;	Compilation = static
 	),
 	functor(Meta, Functor, Arity),
-	(	'$lgt_pp_metapredicate_'(Meta) ->
+	(	'$lgt_pp_meta_predicate_'(Meta) ->
 		Meta2 = Meta
 	;	Meta2 = no
 	),
@@ -8395,7 +8396,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	'$lgt_pl_built_in'(Pred),
 	functor(Pred, Functor, Arity),
 	functor(Meta, Functor, Arity), 
-	'$lgt_pl_metapredicate'(Meta),
+	'$lgt_pl_meta_predicate'(Meta),
 	!,
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
@@ -9165,28 +9166,28 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 % built-in meta-predicates
 
-'$lgt_metapredicate'(Meta) :-			% Logtalk built-in meta-predicate
-	'$lgt_lgt_metapredicate'(Meta).
+'$lgt_meta_predicate'(Meta) :-			% Logtalk built-in meta-predicate
+	'$lgt_lgt_meta_predicate'(Meta).
 
-'$lgt_metapredicate'(Meta) :-			% (non ISO Standard) Prolog meta-predicate
-	'$lgt_pl_metapredicate'(Meta).		% specified in the config files
+'$lgt_meta_predicate'(Meta) :-			% (non ISO Standard) Prolog meta-predicate
+	'$lgt_pl_meta_predicate'(Meta).		% specified in the config files
 
 
 
 % built-in Logtalk (and Prolog) meta-predicates
 
-'$lgt_lgt_metapredicate'(catch(::, *, ::)).
+'$lgt_lgt_meta_predicate'(catch(::, *, ::)).
 
-'$lgt_lgt_metapredicate'(bagof(*, ::, *)).
-'$lgt_lgt_metapredicate'(setof(*, ::, *)).
-'$lgt_lgt_metapredicate'(findall(*, ::, *)).
+'$lgt_lgt_meta_predicate'(bagof(*, ::, *)).
+'$lgt_lgt_meta_predicate'(setof(*, ::, *)).
+'$lgt_lgt_meta_predicate'(findall(*, ::, *)).
 
-'$lgt_lgt_metapredicate'(forall(::, ::)).
+'$lgt_lgt_meta_predicate'(forall(::, ::)).
 
-'$lgt_lgt_metapredicate'(call(::)).
-'$lgt_lgt_metapredicate'(once(::)).
+'$lgt_lgt_meta_predicate'(call(::)).
+'$lgt_lgt_meta_predicate'(once(::)).
 
-'$lgt_lgt_metapredicate'(\+ (::)).
+'$lgt_lgt_meta_predicate'(\+ (::)).
 
 
 
@@ -9463,7 +9464,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_valid_pred_property'((dynamic)).
 '$lgt_valid_pred_property'(declared_in(_)).
 '$lgt_valid_pred_property'(defined_in(_)).
-'$lgt_valid_pred_property'(metapredicate(_)).
+'$lgt_valid_pred_property'(meta_predicate(_)).
 '$lgt_valid_pred_property'(built_in).
 '$lgt_valid_pred_property'(alias(_)).
 '$lgt_valid_pred_property'(non_terminal(_)).
@@ -10577,7 +10578,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_write_xml_predicate_meta'(Stream, Functor, Arity) :-
 	functor(Meta, Functor, Arity),
-	(	'$lgt_pp_metapredicate_'(Meta) ->
+	(	'$lgt_pp_meta_predicate_'(Meta) ->
 		'$lgt_write_xml_cdata_element'(Stream, meta, [], Meta)
 	;	true
 	).

@@ -110,7 +110,7 @@ Try to avoid lengthy hierarchies. Besides performance penalties, composition is 
 Dynamic predicates or dynamic entities are sometimes needed, but we should always try to minimize the use of non-logical features like destructive assignment (asserts and retracts).
 </p>
 <p>
-Since each Logtalk entity is independently compiled, if an object inherits a dynamic or a metapredicate predicate, then we must repeat the respective directives in order to ensure a correct compilation. 
+Since each Logtalk entity is independently compiled, if an object inherits a dynamic or a meta-predicate predicate, then we must repeat the respective directives in order to ensure a correct compilation. 
 </p>
 <p>
 In general, Logtalk does not verify if a user predicate call/return arguments comply with the declared modes. On the other hand, Logtalk built-in predicates, built-in methods and message sending control structures are carefully checked for calling mode errors.
