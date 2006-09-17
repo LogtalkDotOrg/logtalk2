@@ -616,11 +616,11 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 				<dd>"<code>zero</code>" | "<code>zero_or_one</code>" | "<code>zero_or_more</code>" | "<code>one</code>" | "<code>one_or_more</code>" | "<code>error</code>"</dd>
 		</dl>
 				<dl>
-			<dt>meta_predicate_mode_indicator ::=</dt>
+			<dt>meta_predicate_mode_indicator ::=<a id="meta_predicate_mode_indicator"></a></dt>
 				<dd><i>atom</i> "<code>(</code>" meta_predicate_terms "<code>)</code>"</dd>
 		</dl>
 		<dl>
-			<dt>meta_predicate_terms ::=</dt>
+			<dt>meta_predicate_terms ::=<a id="meta_predicate_terms"></a></dt>
 				<dd>meta_predicate_term |</dd>
 				<dd>meta_predicate_term "<code>,</code>" meta_predicate_terms</dd>
 		</dl>
@@ -637,6 +637,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>info_item ::=</dt>
 				<dd>"<code>comment</code>" | "<code>remarks</code>" | </dd>
 				<dd>"<code>author</code>" | "<code>version</code>" | "<code>date</code>" | </dd>
+				<dd>"<code>copyright</code>" | "<code>license</code>" | </dd>
 				<dd>"<code>parameters</code>" | "<code>parnames</code>" | </dd>
 				<dd>"<code>arguments</code>" | "<code>argnames</code>" | </dd>
 				<dd>"<code>definition</code>" | "<code>redefinition</code>" | "<code>allocation</code>" |</dd>
@@ -701,19 +702,19 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 <h3>Entity properties<a id="entity_properties"></a></h3>
 
 	<dl>
-		<dt>category_property ::=</dt>
+		<dt>category_property ::=<a id="category_property"></a></dt>
 			<dd>"<code>static</code>" |</dd>
 			<dd>"<code>dynamic</code>" |</dd>
 			<dd>"<code>built_in</code>"</dd>
 	</dl>
 	<dl>
-		<dt>object_property ::=</dt>
+		<dt>object_property ::=<a id="object_property"></a></dt>
 			<dd>"<code>static</code>" |</dd>
 			<dd>"<code>dynamic</code>" |</dd>
 			<dd>"<code>built_in</code>"</dd>
 	</dl>
 	<dl>
-		<dt>protocol_property ::=</dt>
+		<dt>protocol_property ::=<a id="protocol_property"></a></dt>
 			<dd>"<code>static</code>" |</dd>
 			<dd>"<code>dynamic</code>" |</dd>
 			<dd>"<code>built_in</code>"</dd>
