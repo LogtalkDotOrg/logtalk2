@@ -134,4 +134,5 @@ recompilation of all objects, protocols, and categories that define them.
 In addition, in order to close some security holes where meta-predicates 
 could be used to bypass predicate scope declarations, meta-predicates that 
 use closures must be re-implemented to use the new call/N Logtalk built-in 
-predicate.
+predicate. The directive metapredicate/1 is now deprecated, the directive 
+meta_predicate/1 should be used instead.
