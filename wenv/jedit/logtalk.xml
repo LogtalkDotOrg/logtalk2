@@ -5,9 +5,9 @@
 <!--	jEdit 4.1 Logtalk syntax file
 
 	written by		Paulo Moura
-	version			1.6
+	version			1.7
 	created on		2 May 2002
-	last revised	16 April 2006
+	last revised	17 September 2006
 
 	To install, copy this file to the "modes" subdirectory in jEdit 
 	directory installation.   Next, check the "catalog" file in the 
@@ -83,10 +83,6 @@
 			<BEGIN>:- export(</BEGIN>
 			<END>).</END>
 		</SPAN>
-		<SPAN TYPE="FUNCTION" NO_LINE_BREAK="FALSE" DELEGATE="MAIN">
-			<BEGIN>:- meta_predicate(</BEGIN>
-			<END>).</END>
-		</SPAN>
 		<SPAN TYPE="FUNCTION" NO_LINE_BREAK="FALSE" DELEGATE="PIs">
 			<BEGIN>:- use_module(</BEGIN>
 			<END>).</END>
@@ -153,7 +149,7 @@
 			<END>).</END>
 		</SPAN>
 		<SPAN TYPE="FUNCTION" NO_LINE_BREAK="FALSE" DELEGATE="MAIN">
-			<BEGIN>:- metapredicate(</BEGIN>
+			<BEGIN>:- meta_predicate(</BEGIN>
 			<END>).</END>
 		</SPAN>
 		<SPAN TYPE="FUNCTION" NO_LINE_BREAK="FALSE" DELEGATE="MAIN">

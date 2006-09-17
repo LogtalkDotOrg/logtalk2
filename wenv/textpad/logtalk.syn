@@ -98,7 +98,6 @@ multifile
 public
 protected
 private
-metapredicate
 meta_predicate
 op
 calls

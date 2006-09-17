@@ -2,7 +2,7 @@
 !
 ! Author: Paulo Moura (pmoura at logtalk.org)
 !
-! Last changed in: April 16, 2006
+! Last changed in: September 17, 2006
 !
 !
 ! To install this patterns file:
@@ -24,7 +24,7 @@ nedit.highlightPatterns: Logtalk:1:0{\n\
 	Entity directives:"(?<=:\\-\\s)(object|protocol|category|module)(?=[(])":::Preprocessor::\n\
 	Entity directives:"(?<=:\\-\\s)(end_object|end_protocol|end_category)(?=[.])":::Preprocessor::\n\
 	Entity relations:"<(instantiates|specializes|extends|imports|implements)(?=[(])":::Preprocessor::\n\
-	Directives:"(?<=:\\-\\s)(alias|encoding|export|initialization|info|mode|dynamic|discontiguous|public|protected|private|metapredicate|meta_predicate|multifile|op|calls|uses|use_module)(?=[(])":::Preprocessor::\n\
+	Directives:"(?<=:\\-\\s)(alias|encoding|export|initialization|info|mode|dynamic|discontiguous|public|protected|private|meta_predicate|multifile|op|calls|uses|use_module)(?=[(])":::Preprocessor::\n\
 	Directives:"(?<=:\\-\\s)(dynamic|threaded)>":::Preprocessor::\n\
 	Clause operators:":\\-|\\.|,":::Keyword::\n\
 	Term testing:"(?<![+?@-])(var|atom|integer|float|atomic|compound|nonvar|number)(?=[(])":::Subroutine::\n\

@@ -83,7 +83,6 @@
 				<string>\:\-[[:space:]](public)\(</string>			
 				<string>\:\-[[:space:]](protected)\(</string>			
 				<string>\:\-[[:space:]](private)\(</string>			
-				<string>\:\-[[:space:]](metapredicate)\(</string>			
 				<string>\:\-[[:space:]](meta_predicate)\(</string>			
 				<string>\:\-[[:space:]](multifile)\(</string>			
 				<string>\:\-[[:space:]](op)\(</string>			

@@ -33,7 +33,7 @@ mode(, error).
 dynamic(/).
 dynamic.
 discontiguous(/).
-metapredicate().
+meta_predicate().
 op(, , ).
 initialization().
 encoding().
