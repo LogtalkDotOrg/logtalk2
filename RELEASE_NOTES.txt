@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.28.0 - September ??, 2006
+2.28.0 - September 27, 2006
 
 	Added experimental support for multi-threading programming on selected 
 	Prolog compilers. Added a new object directive, threaded/0, a new 
