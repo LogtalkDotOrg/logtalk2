@@ -43,10 +43,12 @@ mkdir -p bin
 cd bin
 if sicstus -f --goal "halt." 2>&1 | grep "SICStus 4" 2>&1 >/dev/null; then
 	echo ":- compile('\$LOGTALKUSER/configs/sicstus4.config')." > logtalk_sicstus.pl
+	sed -e '/call_with_args/ s//call/g' ../compiler/logtalk.pl > logtalk_comp_sicstus.pl
+	echo ":- compile('\$LOGTALKHOME/bin/logtalk_comp_sicstus.pl')." >> logtalk_sicstus.pl
 else
 	echo ":- compile('\$LOGTALKUSER/configs/sicstus.config')." > logtalk_sicstus.pl
+	echo ":- compile('\$LOGTALKHOME/compiler/logtalk.pl')." >> logtalk_sicstus.pl
 fi
-echo ":- compile('\$LOGTALKHOME/compiler/logtalk.pl')." >> logtalk_sicstus.pl
 echo ":- compile('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_sicstus.pl
 
 echo "#/bin/sh" > sicstuslgt
