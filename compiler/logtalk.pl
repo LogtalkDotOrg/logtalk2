@@ -512,7 +512,7 @@ abolish_object(Obj) :-
 abolish_object(Obj) :-
 	(	'$lgt_current_object_'(Obj, Prefix, _, _, _, Type) ->
 		(	Type == (dynamic) ->
-			'$lgt_call'(Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm),
+			call_with_args(Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm),
 			'$lgt_abolish_entity_predicates'(Def),
 			'$lgt_abolish_entity_predicates'(DDef),
 			abolish(Dcl/6),
@@ -560,7 +560,7 @@ abolish_category(Ctg) :-
 abolish_category(Ctg) :-
 	(	'$lgt_current_category_'(Ctg, Prefix, Type) ->
 		(	Type == (dynamic) ->
-			'$lgt_call'(Prefix, Dcl, Def, Rnm),
+			call_with_args(Prefix, Dcl, Def, Rnm),
 			'$lgt_abolish_entity_predicates'(Def),
 			abolish(Dcl/6),
 			abolish(Dcl/7),
@@ -591,7 +591,7 @@ abolish_protocol(Ptc) :-
 abolish_protocol(Ptc) :-
 	(	'$lgt_current_protocol_'(Ptc, Prefix, Type) ->
 		(	Type == (dynamic) ->
-			'$lgt_call'(Prefix, Dcl, Rnm),
+			call_with_args(Prefix, Dcl, Rnm),
 			abolish(Dcl/6),
 			abolish(Dcl/7),
 			abolish(Rnm/3),
@@ -609,7 +609,7 @@ abolish_protocol(Ptc) :-
 % '$lgt_abolish_entity_predicates'(+atom)
 
 '$lgt_abolish_entity_predicates'(Def) :-
-	'$lgt_call'(Def, _, _, _, _, Pred),
+	call_with_args(Def, _, _, _, _, Pred),
 		functor(Pred, Functor, Arity),
 		abolish(Functor/Arity),
 	fail.
@@ -898,8 +898,8 @@ define_events(Event, Obj, Msg, Sender, Monitor) :-
 	var(Event),
 	!,
 	'$lgt_current_object_'(Monitor, _, _, Def, _, _),
-	'$lgt_once'(Def, before(Obj, Msg, Sender), Monitor, Monitor, Monitor, BCall, _),
-	'$lgt_once'(Def, after(Obj, Msg, Sender), Monitor, Monitor, Monitor, ACall, _),
+	once(call_with_args(Def, before(Obj, Msg, Sender), Monitor, Monitor, Monitor, BCall, _)),
+	once(call_with_args(Def, after(Obj, Msg, Sender), Monitor, Monitor, Monitor, ACall, _)),
 	retractall('$lgt_before_'(Obj, Msg, Sender, Monitor, _)),
 	assertz('$lgt_before_'(Obj, Msg, Sender, Monitor, BCall)),
 	retractall('$lgt_after_'(Obj, Msg, Sender, Monitor, _)),
@@ -907,13 +907,13 @@ define_events(Event, Obj, Msg, Sender, Monitor) :-
 
 define_events(before, Obj, Msg, Sender, Monitor) :-
 	'$lgt_current_object_'(Monitor, _, _, Def, _, _),
-	'$lgt_once'(Def, before(Obj, Msg, Sender), Monitor, Monitor, Monitor, Call, _),
+	once(call_with_args(Def, before(Obj, Msg, Sender), Monitor, Monitor, Monitor, Call, _)),
 	retractall('$lgt_before_'(Obj, Msg, Sender, Monitor, _)),
 	assertz('$lgt_before_'(Obj, Msg, Sender, Monitor, Call)).
 
 define_events(after, Obj, Msg, Sender, Monitor) :-
 	'$lgt_current_object_'(Monitor, _, _, Def, _, _),
-	'$lgt_once'(Def, after(Obj, Msg, Sender), Monitor, Monitor, Monitor, Call, _),
+	once(call_with_args(Def, after(Obj, Msg, Sender), Monitor, Monitor, Monitor, Call, _)),
 	retractall('$lgt_after_'(Obj, Msg, Sender, Monitor, _)),
 	assertz('$lgt_after_'(Obj, Msg, Sender, Monitor, Call)).
 
@@ -1462,7 +1462,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_visible_predicate'(Obj, Pred, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, _, _, _),
-	'$lgt_call'(Dcl, Pred, PScope, _, _, _, _, SCtn, _),
+	call_with_args(Dcl, Pred, PScope, _, _, _, _, SCtn, _),
 	 once((\+ \+ PScope = Scope; Sender = SCtn)).
 
 
@@ -1488,13 +1488,13 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _),
-	'$lgt_once'(Dcl, Pred, PScope, Type, Meta, NonTerminal, Atomic, SCtn, TCtn),
+	call_with_args(Dcl, Pred, PScope, Type, Meta, NonTerminal, Atomic, SCtn, TCtn),
 	!,
 	once((\+ \+ PScope = Scope; Sender = SCtn)),
 	(	'$lgt_scope'(Prop, PScope)
 	;	Prop = Type
 	;	Prop = declared_in(TCtn)
-	;	'$lgt_once'(Def, Pred, _, _, _, _, DCtn),
+	;	once(call_with_args(Def, Pred, _, _, _, _, DCtn)),
 		Prop = defined_in(DCtn)
 	;	Meta \== no,
 		Prop = meta_predicate(Meta)
@@ -1505,7 +1505,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	;	Atomic \== no,
 		Prop = atomic
 	;	'$lgt_current_object_'(TCtn, _, TCtnDcl, _, _, _),
-		\+ '$lgt_call'(TCtnDcl, Pred, _, _, _, _, _),
+		\+ call_with_args(TCtnDcl, Pred, _, _, _, _, _),
 		'$lgt_alias_pred'(Obj, Prefix, Pred, Pred2),
 		Prop = alias(Pred2)
 	).
@@ -1557,7 +1557,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_alias_pred'(_, Prefix, Alias, Pred, _) :-
 	'$lgt_construct_alias_functor'(Prefix, Functor),
-	'$lgt_once'(Functor, _, Pred, Alias),
+	once(call_with_args(Functor, _, Pred, Alias)),
 	Pred \= Alias,
 	!.
 
@@ -1628,14 +1628,14 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	'$lgt_current_object_'(Obj, Prefix, Dcl, _, _, _),
 	!,
 	(	functor(Pred, Functor, Arity),
-		'$lgt_call'(Dcl, Pred, PScope, Compilation, _, _, _, SCtn, _) ->
+		call_with_args(Dcl, Pred, PScope, Compilation, _, _, _, SCtn, _) ->
 		(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 			(	Compilation == (dynamic) ->
-				'$lgt_call'(Prefix, _, _, _, _, _, DDcl, DDef, _),
-				(	'$lgt_call'(DDcl, Pred, _) ->
+				call_with_args(Prefix, _, _, _, _, _, DDcl, DDef, _),
+				(	call_with_args(DDcl, Pred, _) ->
 					Clause =.. [DDcl, Pred, _],
 					retractall(Clause),
-					(	'$lgt_call'(DDef, Pred, _, _, _, Call) ->
+					(	call_with_args(DDef, Pred, _, _, _, Call) ->
 						functor(Call, CFunctor, CArity),
 						abolish(CFunctor/CArity),
 						Clause2 =.. [DDef, Pred, _, _, _, Call],
@@ -1644,7 +1644,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 					;	true
 					)
 				;	% no dynamic predicate declaration:
-					(	'$lgt_call'(Dcl, Pred, _, _, _, _, _) ->
+					(	call_with_args(Dcl, Pred, _, _, _, _, _) ->
 						throw(error(permission_error(modify, predicate_declaration, Pred), Obj::abolish(Functor/Arity), Sender))
 					;	throw(error(existence_error(predicate_declaration, Pred), Obj::abolish(Functor/Arity), Sender))
 					)
@@ -1705,7 +1705,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_asserta_rule_chk'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	!,
-	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
+	call_with_args(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope),
 	(	Type == (dynamic) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
@@ -1739,7 +1739,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_asserta_fact_chk'(Obj, Head, Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	!,
-	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
+	call_with_args(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope),
 	(	Type == (dynamic) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
@@ -1804,7 +1804,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_assertz_rule_chk'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	!,
-	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
+	call_with_args(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope),
 	(	Type == (dynamic) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
@@ -1838,7 +1838,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_assertz_fact_chk'(Obj, Head, Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	!,
-	'$lgt_call'(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
+	call_with_args(Prefix, Dcl, Def, _, _, _, DDcl, DDef, _),
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope),
 	(	Type == (dynamic) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
@@ -1873,7 +1873,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 % get or set (if doesn't exist) the declaration for an asserted predicate
 
 '$lgt_assert_pred_dcl'(Dcl, DDcl, Pred, Scope, Type, Meta, SCtn, DclScope) :-
-	(	'$lgt_call'(Dcl, Pred, Scope, Type, Meta, _, _, SCtn, _) ->
+	(	call_with_args(Dcl, Pred, Scope, Type, Meta, _, _, SCtn, _) ->
 		true
 	;	% no previous predicate declaration:
 		'$lgt_assert_ddcl_clause'(DDcl, Pred, DclScope),
@@ -1886,9 +1886,9 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_assert_pred_call'(Obj, Def, DDef, Prefix, Pred, Sender, This, Self, Call, Update) :-
 	(	% if a definition lookup entry alread exists on the object...
-		'$lgt_call'(Def, Pred, Sender, This, Self, Call, Obj) ->	
+		call_with_args(Def, Pred, Sender, This, Self, Call, Obj) ->	
 		(	% then check if it's a dynamic one that implies an update goal...
-			'$lgt_call'(DDef, Pred, Sender, This, Self, Call) ->
+			call_with_args(DDef, Pred, Sender, This, Self, Call) ->
 			Update = '$lgt_update_ddef_table'(DDef, Pred, Call)
 		;	% or a static one...
 			Update = true
@@ -1938,11 +1938,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_clause_chk'(Obj, Head, Body, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	!,
-	'$lgt_call'(Prefix, Dcl, Def, _, _, _, _, DDef, _),
-	(	'$lgt_call'(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
+	call_with_args(Prefix, Dcl, Def, _, _, _, _, DDef, _),
+	(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
 		(	Type == (dynamic) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
-				once(('$lgt_call'(Def, Head, _, _, _, Call); '$lgt_call'(DDef, Head, _, _, _, Call))),
+				once((call_with_args(Def, Head, _, _, _, Call); call_with_args(DDef, Head, _, _, _, Call))),
 				clause(Call, TBody),
 				(	TBody = ('$lgt_nop'(Body), _) ->
 					true
@@ -1958,7 +1958,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 			throw(error(permission_error(access, static_predicate, Head), Obj::clause(Head, Body), Sender))
 		)
 	;	% local dynamic predicate with no scope declaration:
-		(	(Obj = Sender, '$lgt_call'(DDef, Head, _, _, _, Call)) ->
+		(	(Obj = Sender, call_with_args(DDef, Head, _, _, _, Call)) ->
 			clause(Call, TBody),
 			(	TBody = ('$lgt_nop'(Body), _) ->
 				true
@@ -1997,13 +1997,13 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_retract_rule_chk'(Obj, (Head:-Body), Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	!,
-	'$lgt_call'(Prefix, Dcl, Def, _, _, _, _, DDef, _),
-	(	'$lgt_call'(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
+	call_with_args(Prefix, Dcl, Def, _, _, _, _, DDef, _),
+	(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
 		(	Type == (dynamic) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
-				(	'$lgt_call'(Def, Head, _, _, _, Call) ->
+				(	call_with_args(Def, Head, _, _, _, Call) ->
 					retract((Call :- ('$lgt_nop'(Body), _)))
-				;	(	'$lgt_call'(DDef, Head, _, _, _, Call) ->
+				;	(	call_with_args(DDef, Head, _, _, _, Call) ->
 						retract((Call :- ('$lgt_nop'(Body), _))),
 						'$lgt_update_ddef_table'(DDef, Head, Call)
 					;	fail
@@ -2020,7 +2020,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		)
 	;	% local dynamic predicate with no scope declaration:
 		(	Obj = Sender,
-			'$lgt_call'(DDef, Head, _, _, _, Call) ->
+			call_with_args(DDef, Head, _, _, _, Call) ->
 			retract((Call :- ('$lgt_nop'(Body), _)))
 		;	throw(error(existence_error(predicate_declaration, Head), Obj::retract((Head:-Body)), Sender))
 		)
@@ -2039,14 +2039,14 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_retract_fact_chk'(Obj, Head, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	!,
-	'$lgt_call'(Prefix, Dcl, Def, _, _, _, _, DDef, _),
+	call_with_args(Prefix, Dcl, Def, _, _, _, _, DDef, _),
 	functor(Head, HFunctor, HArity), functor(GHead, HFunctor, HArity),
 	functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
 	functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
-	(	'$lgt_call'(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
+	(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
 		(	Type == (dynamic) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
-				(	'$lgt_call'(Def, GHead, _, _, _, GCall) ->
+				(	call_with_args(Def, GHead, _, _, _, GCall) ->
 					(	'$lgt_debugging_'(Obj) ->
 						(GObj, GHead, GSender) = (Obj, Head, Sender),
 						retract((GCall :- '$lgt_dbg_fact'(_, _)))
@@ -2054,7 +2054,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 						(GObj, GHead, GSender) = (Obj, Head, Sender),
 						retract(GCall)
 					)
-				;	(	'$lgt_call'(DDef, GHead, _, _, _, GCall) ->
+				;	(	call_with_args(DDef, GHead, _, _, _, GCall) ->
 						(	'$lgt_debugging_'(Obj) ->
 							(GObj, GHead, GSender) = (Obj, Head, Sender),
 							retract((GCall :- '$lgt_dbg_fact'(_, _)))
@@ -2076,7 +2076,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 			throw(error(permission_error(modify, static_predicate, Head), Obj::retract(Head), Sender))
 		)
 	;	% local dynamic predicate with no scope declaration:
-		(	GObj = GSender, '$lgt_call'(DDef, GHead, _, _, _, GCall) ->
+		(	GObj = GSender, call_with_args(DDef, GHead, _, _, _, GCall) ->
 			(	'$lgt_debugging_'(Obj) ->
 				(GObj, GHead, GSender) = (Obj, Head, Sender),
 				retract((GCall :- '$lgt_dbg_fact'(_, _)))
@@ -2116,18 +2116,18 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_retractall_chk'(Obj, Head, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 	!,
-	'$lgt_call'(Prefix, Dcl, Def, _, _, _, _, DDef, _),
+	call_with_args(Prefix, Dcl, Def, _, _, _, _, DDef, _),
 	functor(Head, HFunctor, HArity), functor(GHead, HFunctor, HArity),
 	functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
 	functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
-	(	'$lgt_call'(Dcl, GHead, PScope, Type, _, _, _, SCtn, _) ->
+	(	call_with_args(Dcl, GHead, PScope, Type, _, _, _, SCtn, _) ->
 		(	Type == (dynamic) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
-				(	'$lgt_call'(Def, GHead, _, _, _, GCall) ->
+				(	call_with_args(Def, GHead, _, _, _, GCall) ->
 					asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, Scope, GCall, true)),
 					(GObj, GHead, GSender) = (Obj, Head, Sender),
 					retractall(GCall)
-				;	(	'$lgt_call'(DDef, GHead, _, _, _, GCall) ->
+				;	(	call_with_args(DDef, GHead, _, _, _, GCall) ->
 						(GObj, GHead, GSender) = (Obj, Head, Sender),
 						retractall(GCall),
 						'$lgt_update_ddef_table'(DDef, GHead, GCall)
@@ -2145,7 +2145,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		)
 	;	% local dynamic predicate with no scope declaration:
 		(	GObj = GSender,
-			'$lgt_call'(DDef, GHead, _, _, _, GCall) ->
+			call_with_args(DDef, GHead, _, _, _, GCall) ->
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, Scope, GCall, true)),
 			(GObj, GHead, GSender) = (Obj, Head, Sender),
 			retractall(GCall)
@@ -2235,9 +2235,9 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		NonTerminal =.. [Functor| Args],
 		'$lgt_append'(Args, [Input, Rest], Args2),
 		Pred =.. [Functor| Args2],
-		(	'$lgt_call'(Dcl, Pred, PScope, _, _, _, _, SCtn, _) ->
+		(	call_with_args(Dcl, Pred, PScope, _, _, _, _, SCtn, _) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
-				'$lgt_once'(Def, Pred, Sender, Obj, Obj, Call, _),
+				once(call_with_args(Def, Pred, Sender, Obj, Obj, Call, _)),
 				call(Call)
 			;	% non-terminal is not within the scope of the sender:
 				(	PScope == p ->
@@ -2247,8 +2247,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 			)
 		;	% no declaration found for non-terninal:
 			Obj = Sender,
-			(	'$lgt_call'(Def, Pred, Obj, Obj, Obj, Call)
-			;	'$lgt_call'(Prefix, _, _, _, _, _, _, DDef, _), '$lgt_call'(DDef, Pred, Obj, Obj, Obj, Call)
+			(	call_with_args(Def, Pred, Obj, Obj, Obj, Call)
+			;	call_with_args(Prefix, _, _, _, _, _, _, DDef, _), call_with_args(DDef, Pred, Obj, Obj, Obj, Call)
 			)	->
 				call(Call)
 			;	throw(error(existence_error(non_terminal_declaration, NonTerminal), Obj::phrase(NonTerminal, Input, Rest), Sender))
@@ -2288,13 +2288,13 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_term_expansion'(Obj, Term, Expansion, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _),
-	(	('$lgt_once'(Dcl, term_expansion(_, _), PScope, _, _, _, _, SCtn, _), (\+ \+ PScope = Scope; Sender = SCtn)) ->
-		'$lgt_once'(Def, term_expansion(Term, Expansion), Sender, Obj, Obj, Call, _)
+	(	(once(call_with_args(Dcl, term_expansion(_, _), PScope, _, _, _, _, SCtn, _)), (\+ \+ PScope = Scope; Sender = SCtn)) ->
+		once(call_with_args(Def, term_expansion(Term, Expansion), Sender, Obj, Obj, Call, _))
 	;	Obj = Sender,
-		(	'$lgt_once'(Def, term_expansion(Term, Expansion), Obj, Obj, Obj, Call, Obj) ->	% we cannot call Def/5 which may not exist
+		(	call_with_args(Def, term_expansion(Term, Expansion), Obj, Obj, Obj, Call, Obj) ->	% we cannot call Def/5 which may not exist
 			true
-		;	'$lgt_call'(Prefix, _, _, _, _, _, _, DDef, _),
-			'$lgt_once'(DDef, term_expansion(Term, Expansion), Obj, Obj, Obj, Call)
+		;	call_with_args(Prefix, _, _, _, _, _, _, DDef, _),
+			once(call_with_args(DDef, term_expansion(Term, Expansion), Obj, Obj, Obj, Call))
 		)
 	),
 	once(Call).
@@ -2330,12 +2330,12 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_send_to_self_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _),
-	(	'$lgt_call'(Dcl, Pred, Scope, _, _, _, _, SCtn, _) ->						% lookup declaration
+	(	call_with_args(Dcl, Pred, Scope, _, _, _, _, SCtn, _) ->					% lookup declaration
 		(	(Scope = p(_); Sender = SCtn) ->										% check scope
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
 			functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
-			'$lgt_once'(Def, GPred, GSender, GObj, GObj, GCall, _),
+			once(call_with_args(Def, GPred, GSender, GObj, GObj, GCall, _)),
 			asserta('$lgt_self_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
 			(GObj, GPred, GSender) = (Obj, Pred, Sender),
 			call(GCall)
@@ -2377,11 +2377,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _),
 	!,
-	(	'$lgt_call'(Dcl, Pred, Scope, _, _, _, _, _, _) ->						% lookup declaration
+	(	call_with_args(Dcl, Pred, Scope, _, _, _, _, _, _) ->					% lookup declaration
 		(	Scope = p(p(_)) ->													% check scope
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),	% construct object template
-			'$lgt_once'(Def, GPred, GSender, GObj, GObj, GCall, _),				% lookup definition
+			once(call_with_args(Def, GPred, GSender, GObj, GObj, GCall, _)),	% lookup definition
 			asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
 			(GObj, GPred, GSender) = (Obj, Pred, Sender),
 			\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),	% call before event handlers
@@ -2435,11 +2435,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_send_to_object_ne_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _),
 	!,
-	(	'$lgt_call'(Dcl, Pred, Scope, _, _, _, _, _, _) ->						% lookup declaration
+	(	call_with_args(Dcl, Pred, Scope, _, _, _, _, _, _) ->					% lookup declaration
 		(	Scope = p(p(_)) ->													% check scope
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),	% construct object template
-			'$lgt_once'(Def, GPred, GSender, GObj, GObj, GCall, _),				% lookup definition
+			once(call_with_args(Def, GPred, GSender, GObj, GObj, GCall, _)),	% lookup definition
 			asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
 			(GObj, GPred, GSender) = (Obj, Pred, Sender),
 			call(GCall)															% call method
@@ -2485,18 +2485,18 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_send_to_super_nv'(Self, Pred, This, Sender) :-
 	'$lgt_current_object_'(Self, _, Dcl, _, _, _),
-	'$lgt_call'(Dcl, Pred, Scope, _, _, _, _, SCtn, _),
+	call_with_args(Dcl, Pred, Scope, _, _, _, _, SCtn, _),
 	!,
-	(	(Scope = p(_); This = SCtn) ->										% check scope
+	(	(Scope = p(_); This = SCtn) ->											% check scope
 		'$lgt_current_object_'(This, _, _, _, Super, _),
-		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
-		functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),	% construct "this" template
-		functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),	% construct "self" template
-		'$lgt_once'(Super, GPred, GSender, GThis, GSelf, GCall, Ctn),		% lookup definition
+		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
+		functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),		% construct "this" template
+		functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),		% construct "self" template
+		once(call_with_args(Super, GPred, GSender, GThis, GSelf, GCall, Ctn)),	% lookup definition
 		(	Ctn \= GThis ->
 			asserta('$lgt_super_lookup_cache_'(GSelf, GPred, GThis, GSender, GCall)),	% cache lookup result
 			(GSelf, GPred, GThis, GSender) = (Self, Pred, This, Sender),
-			call(GCall)														% call inherited definition
+			call(GCall)															% call inherited definition
 		;	throw(error(endless_loop(Pred), ^^Pred, This))
 		)
 	;	% message is not within the scope of the sender:
@@ -2596,7 +2596,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_call_built_in'(Pred, Ctx) :-
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_current_object_'(This, _, _, Def, _, _),
-	(	'$lgt_call'(Def, Pred, Sender, This, Self, Call) ->
+	(	call_with_args(Def, Pred, Sender, This, Self, Call) ->
 		call(Call)
 	;	call(Pred)
 	).
@@ -3275,7 +3275,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_clean_redefined_entity'(object, Entity) :-
 	'$lgt_current_object_'(Entity, Prefix, _, _, _, _),
-	'$lgt_call'(Prefix, _, _, _, _, _, DDcl, DDef, _),
+	call_with_args(Prefix, _, _, _, _, _, DDcl, DDef, _),
 	DDefClause =.. [DDef, _, _, _, _, DDefHead],
 	forall(retract(DDefClause), retractall(DDefHead)),
 	DDclClause =.. [DDcl, _, _],
