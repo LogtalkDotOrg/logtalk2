@@ -38,9 +38,9 @@ RELEASE NOTES
 	defining the meta-predicates. Thanks to Rémy Haemmerlé and François 
 	Fages for reporting the problem.
 
-	Message sending performance improvements when running with GNU Prolog and 
-	YAP on all operating systems and with SWI-Prolog and SICStus Prolog 4.0 on 
-	POSIX operating systems.
+	Improved message sending performance, notably when running with YAP, 
+	GNU Prolog, and SWI-Prolog on all operating systems and with SICStus 
+	Prolog 4.0 on POSIX operating systems.
 
 	Updated the Logtalk compiler to generate an error whenever a predicate 
 	directive appears in a source file after predicate clauses that call the 

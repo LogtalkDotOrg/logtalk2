@@ -43,7 +43,7 @@ mkdir -p bin
 cd bin
 echo ":- set_prolog_flag(generate_debug_info, false)." > logtalk_comp_swi.pl
 echo ":- system_module." >> logtalk_comp_swi.pl
-sed -e '/call_with_args/ s//call/g' ../compiler/logtalk.pl >> logtalk_comp_swi.pl
+cat ../compiler/logtalk.pl >> logtalk_comp_swi.pl
 echo ":- consult('\$LOGTALKUSER/configs/swi.config')." > logtalk_swi.pl
 echo ":- consult('\$LOGTALKHOME/bin/logtalk_comp_swi.pl')." >> logtalk_swi.pl
 echo ":- consult('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_swi.pl
