@@ -898,12 +898,14 @@ define_events(Event, Obj, Msg, Sender, Monitor) :-
 	var(Event),
 	!,
 	'$lgt_current_object_'(Monitor, _, _, Def, _, _),
-	call_with_args(Def, before(Obj, Msg, Sender), Monitor, Monitor, Monitor, BCall, _) ->
-	call_with_args(Def, after(Obj, Msg, Sender), Monitor, Monitor, Monitor, ACall, _) ->
-	retractall('$lgt_before_'(Obj, Msg, Sender, Monitor, _)),
-	assertz('$lgt_before_'(Obj, Msg, Sender, Monitor, BCall)),
-	retractall('$lgt_after_'(Obj, Msg, Sender, Monitor, _)),
-	assertz('$lgt_after_'(Obj, Msg, Sender, Monitor, ACall)).
+	(	call_with_args(Def, before(Obj, Msg, Sender), Monitor, Monitor, Monitor, BCall, _) ->
+		(	call_with_args(Def, after(Obj, Msg, Sender), Monitor, Monitor, Monitor, ACall, _) ->
+			retractall('$lgt_before_'(Obj, Msg, Sender, Monitor, _)),
+			assertz('$lgt_before_'(Obj, Msg, Sender, Monitor, BCall)),
+			retractall('$lgt_after_'(Obj, Msg, Sender, Monitor, _)),
+			assertz('$lgt_after_'(Obj, Msg, Sender, Monitor, ACall))
+		)
+	).
 
 define_events(before, Obj, Msg, Sender, Monitor) :-
 	'$lgt_current_object_'(Monitor, _, _, Def, _, _),
@@ -2289,8 +2291,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_term_expansion'(Obj, Term, Expansion, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _),
-	(	(call_with_args(Dcl, term_expansion(_, _), PScope, _, _, _, _, SCtn, _), !, (\+ \+ PScope = Scope; Sender = SCtn)) ->
-		call_with_args(Def, term_expansion(Term, Expansion), Sender, Obj, Obj, Call, _)
+	(	(	call_with_args(Dcl, term_expansion(_, _), PScope, _, _, _, _, SCtn, _) ->
+			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
+				call_with_args(Def, term_expansion(Term, Expansion), Sender, Obj, Obj, Call, _)
+			)
+		)
 	;	Obj = Sender,
 		(	call_with_args(Def, term_expansion(Term, Expansion), Obj, Obj, Obj, Call, Obj) ->	% we cannot call Def/5 which may not exist
 			true
