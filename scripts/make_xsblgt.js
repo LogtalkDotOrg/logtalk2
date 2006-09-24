@@ -60,7 +60,7 @@ logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
 if (!FSObject.FolderExists(logtalk_home + "\\bin")) 
 	FSObject.CreateFolder(logtalk_home + "\\bin");
 
-var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalkxsb.pl", true);
+var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_xsb.pl", true);
 
 f.WriteLine(":- expand_filename('configs/xsb.pl', Path), reconsult(Path).");
 f.WriteLine(":- reconsult('" + logtalk_home + "\\\\compiler\\\\logtalk.pl').");
@@ -73,7 +73,7 @@ if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk"))
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - XSB.lnk");
-link.Arguments = "-l -e \"reconsult('%LOGTALKHOME%\\\\bin\\\\logtalkxsb.pl').\"";
+link.Arguments = "-l -e \"reconsult('%LOGTALKHOME%\\\\bin\\\\logtalk_xsb.pl').\"";
 link.Description = "Runs Logtalk with XSB";
 link.IconLocation = "app.exe,1";
 link.TargetPath = prolog_path;

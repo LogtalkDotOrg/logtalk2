@@ -41,11 +41,11 @@ fi
 cd "$LOGTALKHOME"
 mkdir -p bin
 cd bin
-echo ":- reconsult('~/logtalk/configs/xsb.pl')." > logtalkxsb.pl
-echo ":- reconsult('$LOGTALKHOME/compiler/logtalk.pl')." >> logtalkxsb.pl
-echo ":- reconsult('~/logtalk/libpaths/libpaths_no_env_var.pl')." >> logtalkxsb.pl
+echo ":- reconsult('~/logtalk/configs/xsb.pl')." > logtalk_xsb.pl
+echo ":- reconsult('$LOGTALKHOME/compiler/logtalk.pl')." >> logtalk_xsb.pl
+echo ":- reconsult('~/logtalk/libpaths/libpaths_no_env_var.pl')." >> logtalk_xsb.pl
 echo "#/bin/sh" > xsblgt
-echo "xsb -l -e \"reconsult('$LOGTALKHOME/bin/logtalkxsb.pl').\"" >> xsblgt
+echo "xsb -l -e \"reconsult('$LOGTALKHOME/bin/logtalk_xsb.pl').\"" >> xsblgt
 chmod a+x xsblgt
 ln -sf $LOGTALKHOME/bin/xsblgt $prefix/bin/xsblgt
 echo "Done. A link to the script was been created in $prefix/bin."
