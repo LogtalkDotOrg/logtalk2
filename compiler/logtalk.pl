@@ -898,8 +898,8 @@ define_events(Event, Obj, Msg, Sender, Monitor) :-
 	var(Event),
 	!,
 	'$lgt_current_object_'(Monitor, _, _, Def, _, _),
-	once(call_with_args(Def, before(Obj, Msg, Sender), Monitor, Monitor, Monitor, BCall, _)),
-	once(call_with_args(Def, after(Obj, Msg, Sender), Monitor, Monitor, Monitor, ACall, _)),
+	call_with_args(Def, before(Obj, Msg, Sender), Monitor, Monitor, Monitor, BCall, _) ->
+	call_with_args(Def, after(Obj, Msg, Sender), Monitor, Monitor, Monitor, ACall, _) ->
 	retractall('$lgt_before_'(Obj, Msg, Sender, Monitor, _)),
 	assertz('$lgt_before_'(Obj, Msg, Sender, Monitor, BCall)),
 	retractall('$lgt_after_'(Obj, Msg, Sender, Monitor, _)),
@@ -907,13 +907,13 @@ define_events(Event, Obj, Msg, Sender, Monitor) :-
 
 define_events(before, Obj, Msg, Sender, Monitor) :-
 	'$lgt_current_object_'(Monitor, _, _, Def, _, _),
-	once(call_with_args(Def, before(Obj, Msg, Sender), Monitor, Monitor, Monitor, Call, _)),
+	call_with_args(Def, before(Obj, Msg, Sender), Monitor, Monitor, Monitor, Call, _) ->
 	retractall('$lgt_before_'(Obj, Msg, Sender, Monitor, _)),
 	assertz('$lgt_before_'(Obj, Msg, Sender, Monitor, Call)).
 
 define_events(after, Obj, Msg, Sender, Monitor) :-
 	'$lgt_current_object_'(Monitor, _, _, Def, _, _),
-	once(call_with_args(Def, after(Obj, Msg, Sender), Monitor, Monitor, Monitor, Call, _)),
+	call_with_args(Def, after(Obj, Msg, Sender), Monitor, Monitor, Monitor, Call, _) ->
 	retractall('$lgt_after_'(Obj, Msg, Sender, Monitor, _)),
 	assertz('$lgt_after_'(Obj, Msg, Sender, Monitor, Call)).
 
@@ -1494,7 +1494,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	(	'$lgt_scope'(Prop, PScope)
 	;	Prop = Type
 	;	Prop = declared_in(TCtn)
-	;	once(call_with_args(Def, Pred, _, _, _, _, DCtn)),
+	;	call_with_args(Def, Pred, _, _, _, _, DCtn) ->
 		Prop = defined_in(DCtn)
 	;	Meta \== no,
 		Prop = meta_predicate(Meta)
@@ -1557,7 +1557,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_alias_pred'(_, Prefix, Alias, Pred, _) :-
 	'$lgt_construct_alias_functor'(Prefix, Functor),
-	once(call_with_args(Functor, _, Pred, Alias)),
+	call_with_args(Functor, _, Pred, Alias) ->
 	Pred \= Alias,
 	!.
 
@@ -1942,11 +1942,12 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
 		(	Type == (dynamic) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
-				once((call_with_args(Def, Head, _, _, _, Call); call_with_args(DDef, Head, _, _, _, Call))),
-				clause(Call, TBody),
-				(	TBody = ('$lgt_nop'(Body), _) ->
-					true
-				;	Body = TBody
+				(	(call_with_args(Def, Head, _, _, _, Call); call_with_args(DDef, Head, _, _, _, Call)) ->
+					clause(Call, TBody),
+					(	TBody = ('$lgt_nop'(Body), _) ->
+						true
+					;	Body = TBody
+					)
 				)
 			;	% predicate is not within the scope of the sender:
 				(	PScope == p ->
@@ -2237,7 +2238,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		Pred =.. [Functor| Args2],
 		(	call_with_args(Dcl, Pred, PScope, _, _, _, _, SCtn, _) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
-				once(call_with_args(Def, Pred, Sender, Obj, Obj, Call, _)),
+				call_with_args(Def, Pred, Sender, Obj, Obj, Call, _) ->
 				call(Call)
 			;	% non-terminal is not within the scope of the sender:
 				(	PScope == p ->
@@ -2288,15 +2289,16 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_term_expansion'(Obj, Term, Expansion, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _),
-	(	(once(call_with_args(Dcl, term_expansion(_, _), PScope, _, _, _, _, SCtn, _)), (\+ \+ PScope = Scope; Sender = SCtn)) ->
-		once(call_with_args(Def, term_expansion(Term, Expansion), Sender, Obj, Obj, Call, _))
+	(	(call_with_args(Dcl, term_expansion(_, _), PScope, _, _, _, _, SCtn, _), !, (\+ \+ PScope = Scope; Sender = SCtn)) ->
+		call_with_args(Def, term_expansion(Term, Expansion), Sender, Obj, Obj, Call, _)
 	;	Obj = Sender,
 		(	call_with_args(Def, term_expansion(Term, Expansion), Obj, Obj, Obj, Call, Obj) ->	% we cannot call Def/5 which may not exist
 			true
 		;	call_with_args(Prefix, _, _, _, _, _, _, DDef, _),
-			once(call_with_args(DDef, term_expansion(Term, Expansion), Obj, Obj, Obj, Call))
+			call_with_args(DDef, term_expansion(Term, Expansion), Obj, Obj, Obj, Call)
 		)
 	),
+	!,
 	once(Call).
 
 
@@ -2335,10 +2337,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
 			functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
-			once(call_with_args(Def, GPred, GSender, GObj, GObj, GCall, _)),
-			asserta('$lgt_self_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
-			(GObj, GPred, GSender) = (Obj, Pred, Sender),
-			call(GCall)
+			(	call_with_args(Def, GPred, GSender, GObj, GObj, GCall, _) ->
+				asserta('$lgt_self_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
+				(GObj, GPred, GSender) = (Obj, Pred, Sender),
+				call(GCall)
+			)
 		;	% message is not within the scope of the sender:
 			throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
 		)
@@ -2377,16 +2380,17 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _),
 	!,
-	(	call_with_args(Dcl, Pred, Scope, _, _, _, _, _, _) ->					% lookup declaration
-		(	Scope = p(p(_)) ->													% check scope
-			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
-			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),	% construct object template
-			once(call_with_args(Def, GPred, GSender, GObj, GObj, GCall, _)),	% lookup definition
-			asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
-			(GObj, GPred, GSender) = (Obj, Pred, Sender),
-			\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),	% call before event handlers
-			call(GCall),														% call method
-			\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall))		% call after event handlers
+	(	call_with_args(Dcl, Pred, Scope, _, _, _, _, _, _) ->						% lookup declaration
+		(	Scope = p(p(_)) ->														% check scope
+			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
+			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
+			(	call_with_args(Def, GPred, GSender, GObj, GObj, GCall, _) ->		% lookup definition
+				asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
+				(GObj, GPred, GSender) = (Obj, Pred, Sender),
+				\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),	% call before event handlers
+				call(GCall),														% call method
+				\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall))		% call after event handlers
+			)
 		;	% message is not within the scope of the sender:
 			(	Scope == p ->
 				throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
@@ -2439,10 +2443,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		(	Scope = p(p(_)) ->													% check scope
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),	% construct object template
-			once(call_with_args(Def, GPred, GSender, GObj, GObj, GCall, _)),	% lookup definition
-			asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
-			(GObj, GPred, GSender) = (Obj, Pred, Sender),
-			call(GCall)															% call method
+			(	call_with_args(Def, GPred, GSender, GObj, GObj, GCall, _) ->	% lookup definition
+				asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),	% cache lookup result
+				(GObj, GPred, GSender) = (Obj, Pred, Sender),
+				call(GCall)														% call method
+			)
 		;	% message is not within the scope of the sender:
 			(	Scope == p ->
 				throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
@@ -2492,12 +2497,13 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
 		functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),		% construct "this" template
 		functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),		% construct "self" template
-		once(call_with_args(Super, GPred, GSender, GThis, GSelf, GCall, Ctn)),	% lookup definition
-		(	Ctn \= GThis ->
-			asserta('$lgt_super_lookup_cache_'(GSelf, GPred, GThis, GSender, GCall)),	% cache lookup result
-			(GSelf, GPred, GThis, GSender) = (Self, Pred, This, Sender),
-			call(GCall)															% call inherited definition
-		;	throw(error(endless_loop(Pred), ^^Pred, This))
+		(	call_with_args(Super, GPred, GSender, GThis, GSelf, GCall, Ctn) ->	% lookup definition
+			(	Ctn \= GThis ->
+				asserta('$lgt_super_lookup_cache_'(GSelf, GPred, GThis, GSender, GCall)),	% cache lookup result
+				(GSelf, GPred, GThis, GSender) = (Self, Pred, This, Sender),
+				call(GCall)														% call inherited definition
+			;	throw(error(endless_loop(Pred), ^^Pred, This))
+			)
 		)
 	;	% message is not within the scope of the sender:
 		throw(error(permission_error(access, private_predicate, Pred), ^^Pred, This))
@@ -5493,8 +5499,8 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	CallN =.. [call, Closure| _],
 	'$lgt_ctx_ctx'(Ctx, HeadFunctor/HeadArity, _, _, _, _, MetaVars, _),
 	functor(Meta, HeadFunctor, HeadArity),
-	'$lgt_pp_meta_predicate_'(Meta),				% if we're compiling a clause for a meta-predicate
-	once('$lgt_member_var'(Closure, MetaVars)),	% and our closure is a meta-argument
+	'$lgt_pp_meta_predicate_'(Meta),			% if we're compiling a clause for a meta-predicate
+	'$lgt_member_var'(Closure, MetaVars) ->		% and our closure is a meta-argument
 	functor(CallN, _, CallArity),				% then check that the call/N call complies with
 	ExtraArgs is CallArity - 1,					% the meta-predicate declaration
 	Meta =.. [_| MetaArgs],
