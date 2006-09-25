@@ -38,8 +38,8 @@ RELEASE NOTES
 	defining the meta-predicates. Thanks to Rémy Haemmerlé and François 
 	Fages for reporting the problem.
 
-	Improved message sending performance, notably when running with YAP, 
-	GNU Prolog, and SWI-Prolog on all operating systems and with SICStus 
+	Improved performance for non-cached messages, notably when running with 
+	YAP, GNU Prolog, and SWI-Prolog on all operating systems and with SICStus 
 	Prolog 4.0 on POSIX operating systems.
 
 	Updated the Logtalk compiler to generate an error whenever a predicate 
