@@ -11,8 +11,8 @@ css2xslfo=/Applications/XML/CSSToXSLFO/css2xslfo1_3_3.jar
 
 directory="."
 
-processor=fop
-# processor=xep
+#processor=fop
+processor=xep
 # processor=xinc
 
 usage_help()
