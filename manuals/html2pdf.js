@@ -12,7 +12,7 @@ if (ScriptEngineMajorVersion() < 5 || ScriptEngineMajorVersion() == 5 && ScriptE
 
 var WshShell = new ActiveXObject("WScript.Shell");
 
-var css2xslfo = "C:\\CSSToXSLFO\\css2xslfo1_3_2.jar";
+var css2xslfo = "C:\\CSSToXSLFO\\css2xslfo1_3_3.jar";
 
 var directory = WshShell.CurrentDirectory;
 

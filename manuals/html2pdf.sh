@@ -7,7 +7,7 @@
 ## Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 ## =================================================================
 
-css2xslfo=/Applications/XML/CSSToXSLFO/css2xslfo1_3_2.jar
+css2xslfo=/Applications/XML/CSSToXSLFO/css2xslfo1_3_3.jar
 
 directory="."
 

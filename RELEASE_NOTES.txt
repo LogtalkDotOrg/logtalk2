@@ -52,6 +52,9 @@ RELEASE NOTES
 	Improved compiler error messages to also report source file line number 
 	for selected Prolog compilers.
 
+	Added PDF versions of all the manual XHTML pages. Added links to all the 
+	manual XHTML pages to the corresponding PDF versions.
+
 	Corrected a bug (introduced in version 2.27.0) in the built-in predicates 
 	abolish_object/1, abolish_protocol/1, and abolish_category/1 that resulted
 	in some clauses not being retracted when an object is abolished (thanks to 

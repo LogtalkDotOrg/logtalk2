@@ -20,9 +20,9 @@ URL:
 
 	http://www.re.be/css2xslfo/
 
-An usage example (with version 1.3.2) would be:
+An usage example (with version 1.3.3) would be:
 
-	% java -jar css2xslfo1_3_2.jar <file>.html -fo <file>.fo
+	% java -jar css2xslfo1_3_3.jar <file>.html -fo <file>.fo
 	% fop -fo <file>.fo -pdf <file>.pdf
 
 The latest FOP version is strongly recommended. You may also use other 
