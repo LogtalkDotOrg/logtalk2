@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.28.0 - September 27, 2006
 
+	Updated the Logtalk license to the final version of the "The Artistic 
+	License 2.0" (see http://www.perlfoundation.org/legal/ for details).
+
 	Added experimental support for multi-threading programming on selected 
 	Prolog compilers. Added a new object directive, threaded/0, a new 
 	predicate directive, atomic/1, and four new built-in predicates, 
