@@ -135,4 +135,6 @@ In addition, in order to close some security holes where meta-predicates
 could be used to bypass predicate scope declarations, meta-predicates that 
 use closures must be re-implemented to use the new call/N Logtalk built-in 
 predicate. The directive metapredicate/1 is now deprecated, the directive 
-meta_predicate/1 should be used instead.
+meta_predicate/1 should be used instead. There are also changes to the 
+config files that render the Logtalk runtime imcompatible with the config 
+files of previous versions.
