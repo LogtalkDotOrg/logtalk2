@@ -183,7 +183,7 @@ db_update(Update) :-      % predicate with side-effects
 The <code>atomic/1</code> directive must precede any local calls to the atomic predicate (or atomic non-terminal) in order to ensure proper compilation. In addition, as each Logtalk entity is independently compiled, this directive must be included in every object or category that contains a definition for the described predicate, even if the predicate declaration is inherited from another entity, in order to ensure proper compilation.
 </p>
 <p>
-Whenever possible, atomic predicates should be coded as deterministic predicates in order to avoid deadlocks. Nevertheless, Logtalk supports both deterministic and non-deterministic atomic predicates (and atomic non-terminals). In those cases where the predicate (or grammar rule) is defined in the same object (or catehory) where the predicate is declared dynamic, Logtalk takes advantage off any existing <a title="Consult reference manual" href="../refman/directives/atomic1.html"><code>mode/2</code></a> directives in order to generate the most appropriated mutex handling code.
+Whenever possible, atomic predicates should be coded as deterministic predicates in order to avoid deadlocks. Nevertheless, Logtalk supports both deterministic and non-deterministic atomic predicates (and atomic non-terminals). In those cases where the predicate (or grammar rule) is defined in the same object (or catehory) where the predicate is declared dynamic, Logtalk takes advantage off any existing <a title="Consult reference manual" href="../refman/directives/mode2.html"><code>mode/2</code></a> directives in order to generate the most appropriated mutex handling code.
 </p>
 
 <div class="footer">
@@ -194,7 +194,7 @@ Whenever possible, atomic predicates should be coded as deterministic predicates
 	<div class="copyright">Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></div>
 	<div class="standards">
 		<span class="floatleft"><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span>
-		<span class="floatright">Last updated on: September 15, 2006</span>
+		<span class="floatright">Last updated on: September 28, 2006</span>
 	</div>
 </div>
 
