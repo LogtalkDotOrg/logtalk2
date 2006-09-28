@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.28.0 - September 27, 2006
+2.28.0 - September 28, 2006
 
 	Updated the Logtalk license to the final version of the "The Artistic 
 	License 2.0" (see http://www.perlfoundation.org/legal/ for details).
