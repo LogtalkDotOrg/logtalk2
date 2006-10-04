@@ -2,7 +2,7 @@
 
 ## =================================================================
 ## Logtalk - Object oriented extension to Prolog
-## Release 2.28.0
+## Release 2.28.1
 ##
 ## Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 ## =================================================================
@@ -113,9 +113,10 @@ echo "Done. Links to the created scripts can be found on $prefix/bin."
 echo "Make sure that the Prolog compilers are also available on your "
 echo "execution path."
 echo
-echo "If you got an unexpected failure when creating one of the Prolog"
-echo "integration scripts, please consult the NOTES file on the scripts"
-echo "directory or try to run the corresponding script individually."
+echo "If you got an unexpected failure when creating or using one of the"
+echo "Prolog integration scripts, make sure that the Prolog compiler is"
+echo "properly installed, consult the NOTES file on the scripts directory,"
+echo "and try to run the corresponding script individually."
 echo
 echo "Users should ensure that the environment variables LOGTALKHOME"
 echo "and LOGTALKUSER are defined and then run the \"cplgtdirs\" script"

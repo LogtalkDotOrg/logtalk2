@@ -1,6 +1,6 @@
 // =================================================================
 // Logtalk - Object oriented extension to Prolog
-// Release 2.28.0
+// Release 2.28.1
 //
 // Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 // =================================================================
@@ -67,17 +67,17 @@ WScript.Echo('Creating shortcut Logtalk - YAP...');
 WshShell.Run("cscript %LOGTALKHOME%\\scripts\\make_yaplgt.js", true);
 
 WScript.Echo('');
-WScript.Echo('Done.  Links to the created scripts was been added to the Start Menu');
-WScript.Echo('Programs.   Make sure that the environment variables LOGTALKHOME and');
-WScript.Echo('LOGTALKUSER are defined for all users wishing to use the shortcuts.');
+WScript.Echo('Done. Links to the created shortcuts are availasble from the Start Menu');
+WScript.Echo('Logtalk program group. Ensure that the environment variables LOGTALKHOME');
+WScript.Echo('and LOGTALKUSER are defined for all users wishing to use the shortcuts.');
 WScript.Echo('');
-WScript.Echo('Users must run the batch script "cplgtdirs" before using the Logtalk -');
-WScript.Echo('Prolog integration scripts.');
+WScript.Echo('Users must run the batch script "cplgtdirs" once prior to using the');
+WScript.Echo('Logtalk - Prolog integration scripts.');
 WScript.Echo('');
-WScript.Echo('If you get an unexpected failure to create a shortcut for one of the');
-WScript.Echo('above Prolog compilers, make sure that the Prolog compiler is properly');
-WScript.Echo('installed, consult the NOTES file on the scripts directory, and try to');
-WScript.Echo('run the corresponding script individually.');
+WScript.Echo('If you get an unexpected failure when creating or using a shortcut for');
+WScript.Echo('one of the above Prolog compilers, make sure that the Prolog compiler');
+WScript.Echo('is properly installed, consult the NOTES file on the scripts directory,');
+WScript.Echo('and try to run the corresponding script individually.');
 WScript.Echo('');
 
 WScript.Quit(0);

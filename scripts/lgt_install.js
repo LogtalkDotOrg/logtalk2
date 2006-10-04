@@ -1,6 +1,6 @@
 // =================================================================
 // Logtalk - Object oriented extension to Prolog
-// Release 2.28.0
+// Release 2.28.1
 //
 // Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 // =================================================================
@@ -106,17 +106,17 @@ link.Save();
 
 WScript.Echo('Logtalk basic installation completed. You will need to RESTART in order');
 WScript.Echo('to activate the new system environment variables and use the items in');
-WScript.Echo('the new Logtalk program group. See the Install and configuration file');
+WScript.Echo('the new Logtalk program group. See the INSTALL and CUSTOMIZATION files');
 WScript.Echo('for details on customizing your working environment.');
 WScript.Echo('');
 WScript.Echo('After restarting your computer, you may want to run some of the Prolog');
 WScript.Echo('integration scripts, which you will find on the same directory as this');
 WScript.Echo('installer script.');
 WScript.Echo('');
-WScript.Echo('Users must run the batch script cplgtdirs in order to copy the');
-WScript.Echo('Logtalk user-modifiable files to their home directories. The path');
-WScript.Echo('to the cplgtdirs, lgt2pdf, lgt2html, and lgt2xml batch scripts has');
-WScript.Echo('been added to the system path environment variable.');
+WScript.Echo('Users must run the batch script "cplgtdirs" once in order to copy the');
+WScript.Echo('Logtalk user-modifiable files to their home directories. The path to');
+WScript.Echo('the "cplgtdirs", "lgt2pdf", "lgt2html", and "lgt2xml" batch scripts');
+WScript.Echo('has been added to the system path environment variable.');
 WScript.Echo('');
 
 WScript.Quit(0);
