@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.28.0
+%  Release 2.28.1
 %
 %  Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 %
@@ -1398,7 +1398,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 28, 0)).
+current_logtalk_flag(version, version(2, 28, 1)).
 
 
 
@@ -3832,7 +3832,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 '$lgt_report_compiler_error_line_number'(Stream) :-
 	(	catch(stream_property(Stream, position(Position)), _, fail),
 		'$lgt_stream_position_to_line_number'(Position, Line) ->
-		write('            near line: '), write(Line)
+		write('            above line: '), write(Line)
 	;	true
 	).
 
@@ -5017,7 +5017,7 @@ current_logtalk_flag(version, version(2, 28, 0)).
 
 '$lgt_valid_entity_info_key_value'(author, Author) :-
 	!,
-	(	atom(Author) ->
+	(	(atom(Author); nonvar(Author), Author = {EntityName}, atom(EntityName)) ->
 		true
 	;	throw(type_error(atom, Author))
 	).
@@ -10262,23 +10262,35 @@ current_logtalk_flag(version, version(2, 28, 0)).
 	;	true
 	),
 	(	'$lgt_member'(author is Author, Info) ->
-		'$lgt_write_xml_cdata_element'(Stream, author, [], Author)
+		(	atom(Author) ->
+			'$lgt_write_xml_cdata_element'(Stream, author, [], Author)
+		;	'$lgt_entity_name_to_xml_entity'(Author, AuthorEntity),
+			'$lgt_write_xml_element'(Stream, author, [], AuthorEntity)
+		)
 	;	true
-	), 
+	),
 	(	'$lgt_member'(version is Version, Info) ->
 		'$lgt_write_xml_element'(Stream, version, [], Version)
 	;	true
-	), 
+	),
 	(	'$lgt_member'(date is Date, Info) ->
 		'$lgt_write_xml_element'(Stream, date, [], Date)
 	;	true
-	), 
+	),
 	(	'$lgt_member'(copyright is Copyright, Info) ->
-		'$lgt_write_xml_element'(Stream, copyright, [], Copyright)
+		(	atom(Copyright) ->
+			'$lgt_write_xml_element'(Stream, copyright, [], Copyright)
+		;	'$lgt_entity_name_to_xml_entity'(Copyright, CopyrightEntity),
+			'$lgt_write_xml_element'(Stream, copyright, [], CopyrightEntity)
+		)
 	;	true
-	), 
+	),
 	(	'$lgt_member'(license is License, Info) ->
-		'$lgt_write_xml_element'(Stream, license, [], License)
+		(	atom(License) ->
+			'$lgt_write_xml_element'(Stream, license, [], License)
+		;	'$lgt_entity_name_to_xml_entity'(License, LicenseEntity),
+			'$lgt_write_xml_element'(Stream, license, [], LicenseEntity)
+		)
 	;	true
 	),
 	forall(
@@ -10288,6 +10300,11 @@ current_logtalk_flag(version, version(2, 28, 0)).
 		 '$lgt_write_xml_element'(Stream, key, [], Key),
 		 '$lgt_write_xml_cdata_element'(Stream, value, [], Value),
 		 '$lgt_write_xml_close_tag'(Stream, info))).
+
+
+'$lgt_entity_name_to_xml_entity'({EntityName}, XMLEntity) :-
+	atom_concat('&', EntityName, Aux),
+	atom_concat(Aux, ';', XMLEntity).
 
 
 
