@@ -10,8 +10,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 -->
 
-<!ENTITY author "Paulo Moura">
+<!ENTITY author "Your name here">
 
-<!ENTITY copyright "Copyright (c) 1998-2006 Paulo Moura">
+<!ENTITY copyright "Your copyright string here">
 
-<!ENTITY license "Artistic License 2.0">
+<!ENTITY license "License name for your code here">

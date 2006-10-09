@@ -165,6 +165,11 @@ else
 		cp "$LOGTALKHOME"/xml/logtalk.dtd .
 	fi
 
+	if ! [[ -a "./custom.ent" ]]
+	then
+		cp "$LOGTALKUSER"/xml/custom.ent .
+	fi
+
 	if ! [[ -a "./logtalk.xsd" ]]
 	then
 		cp "$LOGTALKHOME"/xml/logtalk.xsd .

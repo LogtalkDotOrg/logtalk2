@@ -10,14 +10,19 @@ RELEASE NOTES
 =============
 
 
-2.28.1 - October ??, 2006
+2.28.1 - October 10, 2006
+
+	Added support for using XML entities using the notation "{entity name}" 
+	in info/1 documenting directives for the "author", "copyright", and 
+	"license" keywords. The XML entities are defined on a "custom.ent" file.
 
 	Updated Logtalk bibliographic references (in file "BIBLIOGRAPHY.bib").
 
 	Added a "lgt_uninstall.sh" shell script for uninstalling Logtalk on POSIX 
 	operating systems.
 
-	Improved RPM install-time messages.
+	Improved RPM install-time messages on the defined Logtalk environment 
+	variables.
 
 	Corrected a typo on the "logtalk.dtd" file that prevents validation of 
 	XML documenting files that use a local reference to the DTD.

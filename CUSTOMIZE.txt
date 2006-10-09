@@ -46,10 +46,12 @@ do not support the whole range of compilation flag values.
 Inside your Logtalk user folder, you will find a "xml" folder containing a 
 set of shell scripts, CSS and XSLT style-sheets, and DTD and XML Schema files 
 for processing the XML documenting files that are automatically generated 
-when you compile source files. You may want to customize these CSS and XSLT 
+when you compile source files. You may want to customize the CSS and XSLT 
 files to modify the layout or style of the resulting PDF/(X)HTML files or to 
-write new scripts and transformations to generate other formats. For details, 
-see the file "xml/NOTES".
+write new scripts and transformations to generate other formats. You may also 
+edit the file "custom.ent" in order to specify XML entities for your personal 
+data that can be used on Logtalk documenting directives. For details, see the 
+file "xml/NOTES".
 
 
 4. ADDING SUPPORT FOR EDITING LOGTALK SOURCE FILES TO TEXT EDITORS

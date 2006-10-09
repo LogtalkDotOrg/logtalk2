@@ -5080,14 +5080,14 @@ current_logtalk_flag(version, version(2, 28, 1)).
 
 '$lgt_valid_entity_info_key_value'(copyright, Copyright) :-
 	!,
-	(	atom(Copyright) ->
+	(	(atom(Copyright); nonvar(Copyright), Copyright = {EntityName}, atom(EntityName)) ->
 		true
 	;	throw(type_error(atom, Copyright))
 	).
 
 '$lgt_valid_entity_info_key_value'(license, License) :-
 	!,
-	(	atom(License) ->
+	(	(atom(License); nonvar(License), License = {EntityName}, atom(EntityName)) ->
 		true
 	;	throw(type_error(atom, License))
 	).
