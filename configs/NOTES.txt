@@ -150,7 +150,7 @@ CxProlog 0.93.1 or later version
 	Logtalk examples and other source files.
 
 
-ECLiPSe 5.5~5.8
+ECLiPSe 5.10 or later version
 
 	eclipse.config
 	eclipseiso.config
@@ -159,7 +159,7 @@ ECLiPSe 5.5~5.8
 	"eclipse.config", should be used when, for some reason, we don't want 
 	to load the "iso" library. The second file, "eclipseiso.config" contains 
 	a call to load the "iso" library. Both config files may be used with
-	ECLiPSe versions from 5.5 to 5.8
+	ECLiPSe 5.10 or later version.
 	
 	You should use the eclipseiso.config whenever possible. The alternative 
 	config file may not contain all the needed definitions for ISO Prolog 
