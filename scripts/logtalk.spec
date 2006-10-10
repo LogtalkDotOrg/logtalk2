@@ -3,7 +3,6 @@ Summary: Logtalk - Open source object-oriented extension to Prolog
 Version: 2.28.1
 Release: 1
 License: Artistic License 2.0
-Copyright: Paulo Moura
 Group: Development/Languages
 Packager: Paulo Moura <pmoura@logtalk.org>
 Source: http://logtalk.org/files/lgt2281.tgz
