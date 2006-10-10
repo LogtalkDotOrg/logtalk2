@@ -24,6 +24,9 @@ RELEASE NOTES
 	Improved RPM install-time messages on the defined Logtalk environment 
 	variables.
 
+	Updated the ECLiPSe integration scripts and config files to work with 
+	and require version 5.10 (the first open source version of ECLiPSe).
+
 	Corrected a typo on the "logtalk.dtd" file that prevents validation of 
 	XML documenting files that use a local reference to the DTD.
 
