@@ -10,6 +10,11 @@ RELEASE NOTES
 =============
 
 
+2.28.2 - October ??, 2006
+
+	Added a Vim dictionary file for Logtalk keyword completion.
+
+
 2.28.1 - October 10, 2006
 
 	Added support for using XML entities using the notation "{entity name}" 

@@ -14,7 +14,7 @@ Recent versions of Vim already contain support for Logtalk. However,
 this directory may contain an updated syntax file. If that is the 
 case, install the syntax file by performing the following steps:
 
-1.	Copy the file logtalk.vim to the "syntax" sub-directory in your 
+1.	Copy the file "logtalk.vim" to the "syntax" sub-directory in your 
 	VIM installation directory (replacing any existing older file).
 
 2.	Add the following entries to the "filetype.vim" configuration 
@@ -25,3 +25,7 @@ au BufNewFile,BufRead *.lgt                     setf logtalk
 
 " Logtalk config files
 au BufNewFile,BufRead *.config                  setf logtalk
+
+3.	Copy the file "logtalk.dict" to some place convenient in your home
+	folder and then type ":help dictionary" in Vim in order to get help 
+	on how to use this dictionary file for Logtalk keyword completion.
