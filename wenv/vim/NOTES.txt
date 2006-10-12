@@ -27,5 +27,6 @@ au BufNewFile,BufRead *.lgt                     setf logtalk
 au BufNewFile,BufRead *.config                  setf logtalk
 
 3.	Copy the file "logtalk.dict" to some place convenient in your home
-	folder and then type ":help dictionary" in Vim in order to get help 
-	on how to use this dictionary file for Logtalk keyword completion.
+	folder and then type e.g. ":setlocal dict=</path/to/logtalk.dict>".
+	You may then perform code completion by typing CTRL-X, CTRL-K and 
+	the CTRL-P or CTRL-N to cycle between all the completion choices.
