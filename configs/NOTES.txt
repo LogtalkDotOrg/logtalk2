@@ -1,6 +1,6 @@
 =================================================================
 Logtalk - Object oriented extension to Prolog
-Release 2.28.1
+Release 2.28.2
 
 Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 =================================================================
@@ -150,7 +150,7 @@ CxProlog 0.93.1 or later version
 	Logtalk examples and other source files.
 
 
-ECLiPSe 5.10 or later version
+ECLiPSe 5.10#26 or later version
 
 	eclipse.config
 	eclipseiso.config
