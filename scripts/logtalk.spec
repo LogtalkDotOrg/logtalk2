@@ -1,11 +1,11 @@
 Name: logtalk
 Summary: Logtalk - Open source object-oriented extension to Prolog
-Version: 2.28.1
+Version: 2.28.2
 Release: 1
 License: Artistic License 2.0
 Group: Development/Languages
 Packager: Paulo Moura <pmoura@logtalk.org>
-Source: http://logtalk.org/files/lgt2281.tgz
+Source: http://logtalk.org/files/lgt2282.tgz
 BuildArchitectures: noarch
 URL: http://logtalk.org/
 Prefix: /usr/local
@@ -13,19 +13,19 @@ AutoReqProv: no
 %description
 Logtalk is an open source object-oriented extension to the Prolog programming language. Integrating logic programming with object-oriented and event-driven programming, it is compatible with most Prolog compilers. It supports both prototypes and classes. In addition, it supports component-based programming through category-based composition.
 %prep
-%setup -n lgt2281
+%setup -n lgt2282
 %build
 %install
-rm -rf /usr/local/lgt2281
+rm -rf /usr/local/lgt2282
 rm -f /usr/local/logtalk
-mkdir /usr/local/lgt2281
-cp -R * /usr/local/lgt2281
+mkdir /usr/local/lgt2282
+cp -R * /usr/local/lgt2282
 cd /usr/local
-chmod -R go-w,a+r lgt2281
-chmod a+x lgt2281
-chmod a+x lgt2281/scripts/*.sh
-chmod a+x lgt2281/xml/*.sh
-ln -sf lgt2281 logtalk
+chmod -R go-w,a+r lgt2282
+chmod a+x lgt2282
+chmod a+x lgt2282/scripts/*.sh
+chmod a+x lgt2282/xml/*.sh
+ln -sf lgt2282 logtalk
 cd bin
 ln -sf ../logtalk/scripts/cplgtdirs.sh cplgtdirs
 ln -sf ../logtalk/xml/lgt2pdf.sh lgt2pdf
@@ -34,25 +34,25 @@ ln -sf ../logtalk/xml/lgt2xml.sh lgt2xml
 %clean
 %files
 %defattr(-,root,users)
-%doc /usr/local/lgt2281/BIBLIOGRAPHY.bib
-%doc /usr/local/lgt2281/CUSTOMIZE.txt
-%doc /usr/local/lgt2281/INSTALL.txt
-%doc /usr/local/lgt2281/LICENSE.txt
-%doc /usr/local/lgt2281/QUICK_START.txt
-%doc /usr/local/lgt2281/README.txt
-%doc /usr/local/lgt2281/RELEASE_NOTES.txt
-%doc /usr/local/lgt2281/UPGRADING.txt
-/usr/local/lgt2281/compiler
-/usr/local/lgt2281/configs
-/usr/local/lgt2281/contributions
-/usr/local/lgt2281/examples
-/usr/local/lgt2281/libpaths
-/usr/local/lgt2281/library
-%docdir /usr/local/lgt2281/manuals
-/usr/local/lgt2281/manuals
-/usr/local/lgt2281/scripts
-/usr/local/lgt2281/wenv
-/usr/local/lgt2281/xml
+%doc /usr/local/lgt2282/BIBLIOGRAPHY.bib
+%doc /usr/local/lgt2282/CUSTOMIZE.txt
+%doc /usr/local/lgt2282/INSTALL.txt
+%doc /usr/local/lgt2282/LICENSE.txt
+%doc /usr/local/lgt2282/QUICK_START.txt
+%doc /usr/local/lgt2282/README.txt
+%doc /usr/local/lgt2282/RELEASE_NOTES.txt
+%doc /usr/local/lgt2282/UPGRADING.txt
+/usr/local/lgt2282/compiler
+/usr/local/lgt2282/configs
+/usr/local/lgt2282/contributions
+/usr/local/lgt2282/examples
+/usr/local/lgt2282/libpaths
+/usr/local/lgt2282/library
+%docdir /usr/local/lgt2282/manuals
+/usr/local/lgt2282/manuals
+/usr/local/lgt2282/scripts
+/usr/local/lgt2282/wenv
+/usr/local/lgt2282/xml
 /usr/local/logtalk
 /usr/local/bin/cplgtdirs
 /usr/local/bin/lgt2pdf
