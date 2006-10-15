@@ -28,7 +28,10 @@ To install:
 	directory set in the plug-in preferences.
 
 
-Note:
+Notes:
+
+You should be able to use jEdit code folding indent mode with Logtalk 
+source files.
 
 You can customize the templates for objects, categories, and protocols 
 to use your name by default by changing the line that reads:

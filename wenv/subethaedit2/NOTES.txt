@@ -6,9 +6,9 @@ Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-This directory contains the Logtalk.mode bundle that provides syntax 
-highlighting for editing Logtalk source files with the SubEthaEdit 2.x 
-text editor (http://www.codingmonkeys.de/subethaedit/).
+This directory contains the Logtalk.mode bundle, which provides syntax 
+highlighting and code completion for editing Logtalk source files with 
+the SubEthaEdit 2.x text editor (http://www.codingmonkeys.de/subethaedit/).
 
 
 To install copy the bundle "Logtalk.mode" to one of the following 
