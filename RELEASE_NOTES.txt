@@ -14,6 +14,8 @@ RELEASE NOTES
 
 	Added a Vim dictionary file for Logtalk keyword completion.
 
+	Added support for the MacOS X Smultron text editor.
+
 	The ECLiPSe config files require release 5.10#26 or a later version.
 
 
