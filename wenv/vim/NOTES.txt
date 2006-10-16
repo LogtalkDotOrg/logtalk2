@@ -8,7 +8,9 @@ Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 
 This directory contains files that provides syntax highlighting, code 
 folding, and code completion for editing Logtalk source files with the 
-text editor Vim 7.0 or later version (http://www.vim.org).
+text editor Vim 7.0 or later version:
+
+	http://www.vim.org/
 
 Recent versions of Vim already contain support for Logtalk. However, 
 this directory may contain an updated syntax file. If that is the 

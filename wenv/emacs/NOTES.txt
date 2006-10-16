@@ -8,7 +8,9 @@ Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 
 This directory contains a logtalk.el file that provides syntax 
 highlighting for editing Logtalk source files with the Emacs text 
-editor (http://www.gnu.org/software/emacs/emacs.html).
+editor:
+
+	http://www.gnu.org/software/emacs/emacs.html
 
 To install follow the instructions contained in the file itself.
 

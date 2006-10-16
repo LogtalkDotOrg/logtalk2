@@ -1,11 +1,11 @@
-;; logtalk.el -- font lock support for Logtalk (http://www.logtalk.org/)
+;; logtalk.el -- font lock support for Logtalk (http://logtalk.org/)
 
 ;; Copyright (C) 2003-2006 Paulo Moura
 
 ;; Author: Paulo Moura
 ;; Creation date: November 15, 2003
-;; Last modification date: September 17, 2006
-;; Version: 0.90
+;; Last modification date: October 16, 2006
+;; Version: 0.91
 
 ;; Installation:
 ;;
@@ -27,7 +27,7 @@
 
 ;; setup 
 
-(defvar logtalk-mode-version "0.7"
+(defvar logtalk-mode-version "0.91"
 	"Logtalk mode version number")
 
 (defvar logtalk-mode-hook nil)
