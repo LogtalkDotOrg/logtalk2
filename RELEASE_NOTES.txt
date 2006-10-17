@@ -12,12 +12,16 @@ RELEASE NOTES
 
 2.28.2 - October ??, 2006
 
+	Corrected a compiler bug where unknown entities will not be report when 
+	compiling a source file whenever an entity with the same name but of a
+	different type is already known.
+
 	Added a Vim dictionary file for Logtalk keyword completion.
 
 	Added basic support for the MacOS X Smultron text editor. Added basic 
 	support for the Notepad++, SuperEdi, and ConTEXT Windows text editors.
 
-	The ECLiPSe config files require release 5.10#26 or a later version.
+	The ECLiPSe config files now require release 5.10#26 or a later version.
 
 
 2.28.1 - October 10, 2006

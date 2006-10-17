@@ -153,7 +153,7 @@
 :- dynamic('$lgt_pp_extended_protocol_'/4).		% '$lgt_pp_extended_protocol_'(Ptc, Prefix, Dcl, Scope)
 
 :- dynamic('$lgt_pp_file_init_'/1).				% '$lgt_pp_file_init_'(Goal)	
-:- dynamic('$lgt_pp_entity_init_'/2).			% '$lgt_pp_entity_init_'(Entity, Goal)
+:- dynamic('$lgt_pp_entity_init_'/3).			% '$lgt_pp_entity_init_'(Type, Entity, Goal)
 
 :- dynamic('$lgt_pp_entity_init_'/1).			% '$lgt_pp_entity_init_'(Goal)
 :- dynamic('$lgt_pp_fentity_init_'/1).			% '$lgt_pp_fentity_init_'(Goal)
@@ -1398,7 +1398,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 28, 1)).
+current_logtalk_flag(version, version(2, 28, 2)).
 
 
 
@@ -3866,7 +3866,7 @@ current_logtalk_flag(version, version(2, 28, 1)).
 	retractall('$lgt_pp_global_op_'(_, _, _)),
 	retractall('$lgt_pp_file_op_'(_, _, _)),
 	retractall('$lgt_pp_file_init_'(_)),	
-	retractall('$lgt_pp_entity_init_'(_, _)).
+	retractall('$lgt_pp_entity_init_'(_, _, _)).
 
 
 
@@ -7195,7 +7195,7 @@ current_logtalk_flag(version, version(2, 28, 1)).
 	'$lgt_pp_referenced_object_'(Obj),
 	\+ '$lgt_current_object_'(Obj, _, _, _, _, _),				% not a currently loaded object
 	\+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _),	% not the object being compiled (self references)
-	\+ '$lgt_pp_entity_init_'(Obj, _),							% not an object defined in the source file being compiled
+	\+ '$lgt_pp_entity_init_'(object, Obj, _),					% not an object defined in the source file being compiled
 	\+ catch(current_module(Obj), _, fail).						% not a currently loaded module; use catch/3 to avoid 
 																% errors with Prolog compilers with no module support
 
@@ -7219,9 +7219,9 @@ current_logtalk_flag(version, version(2, 28, 1)).
 
 '$lgt_unknown_protocol'(Ptc) :-
 	'$lgt_pp_referenced_protocol_'(Ptc),
-	\+ '$lgt_current_protocol_'(Ptc, _, _),		% not a currently loaded protocol
-	\+ '$lgt_pp_protocol_'(Ptc, _, _, _, _),	% not the protocol being compiled (self references)
-	\+ '$lgt_pp_entity_init_'(Ptc, _).			% not a protocol defined in the source file being compiled
+	\+ '$lgt_current_protocol_'(Ptc, _, _),			% not a currently loaded protocol
+	\+ '$lgt_pp_protocol_'(Ptc, _, _, _, _),		% not the protocol being compiled (self references)
+	\+ '$lgt_pp_entity_init_'(protocol, Ptc, _).	% not a protocol defined in the source file being compiled
 
 
 
@@ -7244,9 +7244,9 @@ current_logtalk_flag(version, version(2, 28, 1)).
 
 '$lgt_unknown_category'(Ctg) :-
 	'$lgt_pp_referenced_category_'(Ctg),
-	\+ '$lgt_current_category_'(Ctg, _, _),		% not a currently loaded category
-	\+ '$lgt_pp_category_'(Ctg, _, _, _, _, _),	% not the category being compiled (self references)
-	\+ '$lgt_pp_entity_init_'(Ctg, _).			% not a category defined in the source file being compiled
+	\+ '$lgt_current_category_'(Ctg, _, _),			% not a currently loaded category
+	\+ '$lgt_pp_category_'(Ctg, _, _, _, _, _),		% not the category being compiled (self references)
+	\+ '$lgt_pp_entity_init_'(category, Ctg, _).	% not a category defined in the source file being compiled
 
 
 
@@ -8719,7 +8719,7 @@ current_logtalk_flag(version, version(2, 28, 1)).
 % goals and from the source file initialization/1 directive if present
 
 '$lgt_init_goal'(Goal) :-
-	findall(EGoal, '$lgt_pp_entity_init_'(_, EGoal), EGoals),
+	findall(EGoal, '$lgt_pp_entity_init_'(_, _, EGoal), EGoals),
 	(	'$lgt_pp_file_init_'(FGoal) ->
 		(	EGoals \== [] ->
 			'$lgt_list_to_conjunction'(EGoals, EGoals2),
@@ -8745,7 +8745,7 @@ current_logtalk_flag(version, version(2, 28, 1)).
 % generate and assert the initialization goal for the entity being compiled
 
 '$lgt_gen_entity_init_goal' :-
-	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
+	'$lgt_pp_entity'(Type, Entity, Prefix, _, _),
 	findall(Clause, '$lgt_pp_rclause'(Clause), Clauses),
 	Goal1 = '$lgt_assert_runtime_clauses'(Clauses),
 	(	'$lgt_pp_fentity_init_'(Goal2) ->
@@ -8756,7 +8756,7 @@ current_logtalk_flag(version, version(2, 28, 1)).
 		Goal = (Goal3, '$lgt_init_object_thread'(Prefix))
 	;	Goal = Goal3 
 	),
-	assertz('$lgt_pp_entity_init_'(Entity, Goal)).
+	assertz('$lgt_pp_entity_init_'(Type, Entity, Goal)).
 
 
 
