@@ -48,6 +48,7 @@ echo ":- consult('\$LOGTALKUSER/configs/swi.config')." > logtalk_swi.pl
 echo ":- consult('\$LOGTALKHOME/bin/logtalk_comp_swi.pl')." >> logtalk_swi.pl
 echo ":- consult('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_swi.pl
 echo ":- consult('\$LOGTALKUSER/configs/swihook.pl')." >> logtalk_swi.pl
+echo ":- consult('\$LOGTALKUSER/configs/xpcehook.pl')." >> logtalk_swi.pl
 echo "#/bin/sh" > swilgt
 case $( uname -s ) in
 	Darwin	) echo "swipl -f \$LOGTALKHOME/bin/logtalk_swi.pl" >> swilgt;;
