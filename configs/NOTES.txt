@@ -395,6 +395,8 @@ SICStus Prolog 4.0
 SWI Prolog 3.3.x and all later versions
 
 	swi.config
+	swihook.pl
+	xpcehook.pl
 
 	For version 3.3.x and all later versions (5.6.x or later recommended)
 
@@ -424,7 +426,9 @@ SWI Prolog 3.3.x and all later versions
 	If you intend to use Logtalk and XPCE at the same time, and if you are 
 	using an SWI-Prolog version older than 5.5.13, you will need to edit the 
 	compiler/logtalk.pl file and, around line 35, change the declaration of 
-	the @/1 operator to op(100, fx, @).
+	the @/1 operator to op(100, fx, @). You may load the configs/xpcehook.pl
+	file in order to support Logtalk message sending goals as XPCE call-back 
+	goals.
 
 
 XSB 3.0 and later versions
