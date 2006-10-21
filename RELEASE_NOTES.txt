@@ -21,6 +21,9 @@ RELEASE NOTES
 
 	The ECLiPSe config files now require release 5.10#26 or a later version.
 
+	Added support for listing Logtalk entity names (objects, categories, and 
+	protocols) in the SubEthaEdit symbols menu.
+
 	Added a Vim dictionary file for Logtalk keyword completion.
 
 	Added basic support for the MacOS X Smultron text editor. Added basic 
