@@ -8,7 +8,7 @@ Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 
 This directory contains the Logtalk.plist file that provides basic syntax 
 coloring, code completion, and entity index (using the "function" list)
-for editing Logtalk source files with the Smultron 2.1.x text editor:
+for editing Logtalk source files with the Smultron 2.2 text editor:
 
 	http://smultron.sourceforge.net/
 

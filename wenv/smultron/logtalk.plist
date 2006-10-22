@@ -163,7 +163,7 @@
 	<key>firstString</key>
 	<string>"</string>
 	<key>functionDefinition</key>
-	<string>^:-\s(object|protocol|category|module)\([^(,)]+</string>
+	<string>((?&lt;=:-\sobject\()|(?&lt;=:-\sprotocol\()|(?&lt;=:-\scategory\())[a-z][a-zA-Z_]*</string>
 	<key>removeFromFunction</key>
 	<string></string>
 	<key>keywords</key>
