@@ -24,7 +24,8 @@ RELEASE NOTES
 	Added support for listing Logtalk entity names (objects, categories, and 
 	protocols) in the SubEthaEdit symbols menu.
 
-	Added a Vim dictionary file for Logtalk keyword completion.
+	Added a Vim dictionary file for Logtalk keyword completion and support 
+	for automatic indentation.
 
 	Added basic support for the MacOS X Smultron text editor. Added basic 
 	support for the Notepad++, SuperEdi, and ConTEXT Windows text editors.

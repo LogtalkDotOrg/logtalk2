@@ -16,8 +16,9 @@ Recent versions of Vim already contain support for Logtalk. However,
 this directory may contain an updated syntax file. If that is the 
 case, install the syntax file by performing the following steps:
 
-1.	Copy the file "logtalk.vim" to the "syntax" sub-directory in your 
-	VIM installation directory (replacing any existing older file).
+1.	Copy the file "syntax/logtalk.vim" to the "syntax" sub-directory 
+	in your VIM installation directory (replacing any existing older 
+	file).
 
 2.	Add the following entries to the "filetype.vim" configuration 
 	file (only if not already present):
@@ -28,7 +29,14 @@ au BufNewFile,BufRead *.lgt                     setf logtalk
 " Logtalk config files
 au BufNewFile,BufRead *.config                  setf logtalk
 
-3.	Copy the file "logtalk.dict" to some place convenient in your home
-	folder and then type e.g. ":setlocal dict=</path/to/logtalk.dict>".
+3.	Copy the file "completion/logtalk.dict" to some place convenient 
+	in your home folder and then type e.g.
+	
+		:setlocal dict=</path/to/logtalk.dict>
+	
 	You may then perform code completion by typing CTRL-X, CTRL-K and 
 	the CTRL-P or CTRL-N to cycle between all the completion choices.
+
+4.	Copy the file "indent/logtalk.vim" to the "indent" sub-directory 
+	in your VIM installation directory (replacing any existing older 
+	file).
