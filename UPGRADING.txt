@@ -19,6 +19,10 @@ translation examples.
 Upgrading from a previous Logtalk 2.x versions
 ==============================================
 
+Changes in the Logtalk compiler between releases may render Prolog config 
+files from older versions incompatible with new ones. You may need to update 
+your local Logtalk user files by running e.g. the "cplgtdirs" shell script.
+
 If your Logtalk programs depend on some of the example files, it is
 advisable that you check your code against the new version before 
 throwing away the older release.
