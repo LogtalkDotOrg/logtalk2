@@ -109,15 +109,6 @@ a[id] {
 .footnote {
 }
 
-.validators {
-	display: none;
-}
-
-.date {
-	font-size: 9pt;
-	display: inline;
-}
-
 h1, h2, h3, h4, h5, h6 {
 	font-family: Helvetica, Arial, Verdana, sans-serif;
 	text-align: left;
