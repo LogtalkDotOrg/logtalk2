@@ -128,9 +128,29 @@ span.page-ref > span:before {
 	content: page-ref(class); 
 }
 
+.titles {
+	page-break-after: always;
+}
+
+.title {
+	text-align: center;
+	font-size: 48pt;
+}
+
+.sub-title {
+	text-align: center;
+	font-size: 36pt;
+}
+
+.credits {
+	text-align: center;
+	font-size: 24pt;
+}
+
 h1, h2, h3, h4, h5, h6 {
 	font-family: Helvetica, Arial, Verdana, sans-serif;
 	text-align: left;
+	page-break-after: avoid;
 }
 
 h1 {
