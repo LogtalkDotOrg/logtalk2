@@ -39,6 +39,17 @@ body {
 	position: relative;
 }
 
+.toc {
+}
+
+.leader {
+	display: none;
+}
+
+.page-ref {
+	display: none;
+}
+
 a {
 	text-decoration: none;
 	color: navy;

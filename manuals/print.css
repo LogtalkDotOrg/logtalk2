@@ -50,8 +50,13 @@ body {
 	border-width: 0pt 0pt 1pt 0pt;
 	border-style: solid;
 	region: top;
+	display: none;
 	page: right;
 	text-align: right;
+}
+
+div.top-right > span.mark:before {
+	content: string(mark);
 }
 
 .bottom-left { 
@@ -109,6 +114,20 @@ a[id] {
 .footnote {
 }
 
+.toc {
+	text-align-last: justify;
+}
+
+span.leader { 
+	display: leader; 
+	leader-pattern: dots; 
+	leader-pattern-width: 5pt; 
+} 
+
+span.page-ref > span:before { 
+	content: page-ref(class); 
+}
+
 h1, h2, h3, h4, h5, h6 {
 	font-family: Helvetica, Arial, Verdana, sans-serif;
 	text-align: left;
@@ -116,6 +135,8 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
 	padding-top: 96pt;
+	page-break-before: right;
+	string-set: mark contents;
 }
 
 code {
