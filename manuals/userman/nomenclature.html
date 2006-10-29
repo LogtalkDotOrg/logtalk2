@@ -34,28 +34,52 @@ There are several C++ glossaries available on the Internet.
 <dl>
 	<dt><strong>abstract class</strong></dt>
 		<dd>Logtalk supports <em>interfaces</em>/<em>protocols</em>, which are a much better way to provide the functionality of C++ abstract classes.</dd>
+</dl>
+<dl>
 	<dt><strong>base class</strong></dt>
 		<dd>Logtalk uses the term <em>superclass</em> with the same meaning.</dd>
+</dl>
+<dl>
 	<dt><strong>data member</strong></dt>
 		<dd>Logtalk uses <em>predicates</em> for representing both behavior and data.</dd>
+</dl>
+<dl>
 	<dt><strong>constructor function</strong></dt>
 		<dd>There are no special methods for creating new objects in Logtalk. Instead, Logtalk provides a built-in predicate, <code>create_object/4</code>, which is often used to define more sophisticated object creation predicates.</dd>
+</dl>
+<dl>
 	<dt><strong>derived class</strong></dt>
 		<dd>Logtalk uses the term <em>subclass</em> with the same meaning.</dd>
+</dl>
+<dl>
 	<dt><strong>destructor function</strong></dt>
 		<dd>There are no special methods for deleting new objects in Logtalk. Instead, Logtalk provides a built-in predicate, <code>abolish_object/1</code>, which is often used to define more sophisticated object deletion predicates.</dd>
+</dl>
+<dl>
 	<dt><strong>friend function</strong></dt>
 		<dd>Not supported in Logtalk. Nevertheless, see the manual section on <em>meta-predicates.</em></dd>
+</dl>
+<dl>
 	<dt><strong>member</strong></dt>
 		<dd>Logtalk uses the term predicate.</dd>
+</dl>
+<dl>
 	<dt><strong>member function</strong></dt>
 		<dd>Logtalk uses predicates for representing both behavior and data.</dd>
+</dl>
+<dl>
 	<dt><strong>nested class</strong></dt>
 		<dd>Logtalk does not support nested classes.</dd>
+</dl>
+<dl>
 	<dt><strong>template</strong></dt>
 		<dd>Logtalk supports <em>parametric objects</em>, which allows you to get the similar functionality of templates at runtime.</dd>
+</dl>
+<dl>
 	<dt><strong>this</strong></dt>
 		<dd>Logtalk uses the built-in context method <code>self/1</code> for retriving the current instance. Logtalk also provides a <code>this/1</code> but for returning the class containing the method being executed. Why the name clashes? Well, the notion of <em>self</em> cames from Smalltalk, which was there first.</dd>
+</dl>
+<dl>
 	<dt><strong>virtual member function</strong></dt>
 		<dd>Logtalk allows any predicate defined in a class to be overriden on a descendant class. There is no <code>virtual</code> keyword in Logtalk.</dd>
 </dl>
@@ -69,34 +93,64 @@ There are several Java glossaries available on the Internet.
 <dl>
 	<dt><strong>abstract class</strong></dt>
 		<dd>Moreover, there is no <code>abstract</code> keyword in Logtalk.</dd>
+</dl>
+<dl>
 	<dt><strong>abstract method</strong></dt>
 		<dd>In Logtalk, you may simply declare a method (predicate) in a class without defining it, leaving its definition to some descendant sub-class.</dd>
+</dl>
+<dl>
 	<dt><strong>extends</strong></dt>
 		<dd>There is no <code>extends</code> keyword in Logtalk. Class inheritance is indicated using <em>specialization</em> relations. Morevover, the <em>extends</em> relation is used in Logtalk to indicate protocol or prototype extension.</dd>
+</dl>
+<dl>
 	<dt><strong>interface</strong></dt>
 		<dd>Logtalk uses the term <em>protocol</em> with the same meaning.</dd>
+</dl>
+<dl>
 	<dt><strong>callback method</strong></dt>
 		<dd>Logtalk supports <em>event-driven programming</em>, the most common use context of callback methods.</dd>
+</dl>
+<dl>
 	<dt><strong>class method</strong></dt>
 		<dd>Class methods are implemented in Logtalk by simply defining a predicate inside a class.</dd>
+</dl>
+<dl>
 	<dt><strong>class variable</strong></dt>
 		<dd>Class variables are implemented in Logtalk by simply defining a predicate inside a class. Moreover, there is no <code>static</code> keyword in Logtalk.</dd>
+</dl>
+<dl>
 	<dt><strong>constructor</strong></dt>
 		<dd>There are no special methods for creating new objects in Logtalk. Instead, Logtalk provides a built-in predicate, <code>create_object/4</code>, which is often used to define more sophisticated object creation predicates.</dd>
+</dl>
+<dl>
 	<dt><strong>final</strong></dt>
 		<dd>There is no <code>final</code> keyword in Logtalk; methods may always be redefined in subclasses.</dd>
+</dl>
+<dl>
 	<dt><strong>instance</strong></dt>
 		<dd>In Logtalk, an instance can be either created dynamically at runtime or defined statically in a source file in the same way as classes.</dd>
+</dl>
+<dl>
 	<dt><strong>method</strong></dt>
 		<dd>Logtalk uses the term <em>predicate</em> interchangeably with the term <em>method</em>.</dd>
+</dl>
+<dl>
 	<dt><strong>method call</strong></dt>
 		<dd>Logtalk usually uses the expression <em>message sending</em> for method calls, true to its Smalltalk heritage.</dd>
+</dl>
+<dl>
 	<dt><strong>method signature</strong></dt>
 		<dd>Logtalk selects the method/predicate to execute in order to answer a method call based only on the method name and number of arguments. Logtalk (and Prolog) are not typed languages in the same sense as Java.</dd>
+</dl>
+<dl>
 	<dt><strong>super</strong></dt>
 		<dd>Instead of a <code>super</code> keyword, Logtalk provides a <em>super</em> operator, <code>^^/1</code>, for calling overridden methods.</dd>
+</dl>
+<dl>
 	<dt><strong>synchronized</strong></dt>
 		<dd>Logtalk supports <em>multi-threading programming</em> in selected Prolog compilers, including executing an predicate atomically.</dd>
+</dl>
+<dl>
 	<dt><strong>this</strong></dt>
 		<dd>Logtalk uses the built-in context method <code>self/1</code> for retriving the current instance. Logtalk also provides a <code>this/1</code> but for returning the class containing the method being executed. Why the name clashes? Well, the notion of <em>self</em> cames from Smalltalk, which was there first.</dd>
 </dl>
