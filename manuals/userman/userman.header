@@ -13,7 +13,7 @@
 
 <body>
 
-<div class="">
+<div class="titles">
 	<p class="title">Logtalk 2.28.2</p>
 	<p class="sub-title">User Manual</p>
 	<p class="credits">Copyright &copy; Paulo Moura</p>
