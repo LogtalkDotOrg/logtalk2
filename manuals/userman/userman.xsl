@@ -29,7 +29,7 @@
 
 <xsl:template match="xhtml:div[@class='top-right']">
 	<div class="top-right"> 
-		<span class="mark"/> 
+		<span class="chapter"/> 
 	</div>
 </xsl:template>
 

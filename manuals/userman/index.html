@@ -19,13 +19,15 @@
 <div class="bottom-right"><span class="page"/></div>
 <div class="navtop"><a href="../index.html">contents</a></div>
 
+<div class="toc">
+
 <h1>User Manual</h1>
 
-<ul class="toc">
+<ul class="toc-entries">
 	<li><a href="#features">Logtalk features</a><span class="leader"/><span class="page-ref"><span class="features_features"/></span></li>
 	<li><a href="#nomenclature">Logtalk nomenclature</a><span class="leader"/><span class="page-ref"><span class="nomenclature_nomenclature"/></span></li>
 </ul>
-<ul class="toc">
+<ul class="toc-entries">
 	<li><a href="#messages">Message sending</a><span class="leader"/><span class="page-ref"><span class="messages_messages"/></span></li>
 	<li><a href="#objects">Objects</a><span class="leader"/><span class="page-ref"><span class="objects_objects"/></span></li>
 	<li><a href="#protocols">Protocols</a><span class="leader"/><span class="page-ref"><span class="protocols_protocols"/></span></li>
@@ -36,10 +38,10 @@
 	<li><a href="#threads">Multi-threading programming</a><span class="leader"/><span class="page-ref"><span class="threads_threads"/></span></li>
 	<li><a href="#errors">Error handling</a><span class="leader"/><span class="page-ref"><span class="errors_errors"/></span></li>
 </ul>
-<ul class="toc">
+<ul class="toc-entries">
 	<li><a href="#documenting">Documenting Logtalk programs</a><span class="leader"/><span class="page-ref"><span class="documenting_documenting"/></span></li>
 </ul>
-<ul class="toc">
+<ul class="toc-entries">
 	<li><a href="#installing">Installing Logtalk</a><span class="leader"/><span class="page-ref"><span class="installing_installing"/></span></li>
 	<li><a href="#running">Running and debugging Logtalk programs</a><span class="leader"/><span class="page-ref"><span class="running_running"/></span></li>
 	<li><a href="#programming">Programming in Logtalk</a><span class="leader"/><span class="page-ref"><span class="programming_programming"/></span></li>
@@ -47,7 +49,7 @@
 
 <h2><a id="features" href="features.html">Logtalk features</a></h2>
 
-<dl class="toc">
+<dl class="toc-entries">
 	<dt><a href="features.html#features_logic">Integration of logic and object-oriented programming</a><span class="leader"/><span class="page-ref"><span class="features_logic"/></span></dt>
 	<dt><a href="features.html#features_events">Integration of event-driven and object-oriented programming</a><span class="leader"/><span class="page-ref"><span class="features_events"/></span></dt>
 	<dt><a href="features.html#features_categories">Support for component-based programming</a><span class="leader"/><span class="page-ref"><span class="features_categories"/></span></dt>
@@ -64,14 +66,14 @@
 
 <h2><a id="nomenclature" href="nomenclature.html">Logtalk nomenclature</a></h2>
 
-<dl class="toc">
+<dl class="toc-entries">
 	<dt><a href="nomenclature.html#nomenclature_cpp">C++ nomenclature</a><span class="leader"/><span class="page-ref"><span class="nomenclature_cpp"/></span></dt>
 	<dt><a href="nomenclature.html#nomenclature_java">Java nomenclature</a><span class="leader"/><span class="page-ref"><span class="nomenclature_java"/></span></dt>
 </dl>
 
 <h2><a id="messages" href="messages.html">Message sending</a></h2>
 
-<dl class="toc">
+<dl class="toc-entries">
 	<dt><a href="messages.html#messages_operators">Operators used in message sending</a><span class="leader"/><span class="page-ref"><span class="messages_operators"/></span></dt>
 	<dt><a href="messages.html#messages_sending">Sending a message to an object</a><span class="leader"/><span class="page-ref"><span class="messages_sending"/></span></dt>
 	<dt><a href="messages.html#messages_broadcasting">Broadcasting</a><span class="leader"/><span class="page-ref"><span class="messages_broadcasting"/></span></dt>
@@ -83,7 +85,7 @@
 
 <h2><a id="objects" href="objects.html">Objects</a></h2>
 
-<dl class="toc">
+<dl class="toc-entries">
 	<dt><a href="objects.html#objects_kind">Objects, prototypes, classes, and instances</a><span class="leader"/><span class="page-ref"><span class="objects_kind"/></span></dt>
 	<dt><a href="objects.html#objects_defining">Defining a new object</a><span class="leader"/><span class="page-ref"><span class="objects_defining"/></span></dt>
 	<dt><a href="objects.html#objects_parametric">Parametric objects</a><span class="leader"/><span class="page-ref"><span class="objects_parametric"/></span></dt>
@@ -103,7 +105,7 @@
 
 <h2><a id="protocols" href="protocols.html">Protocols</a></h2>
 
-<dl class="toc">
+<dl class="toc-entries">
 	<dt><a href="protocols.html#protocols_defining">Defining a new protocol</a><span class="leader"/><span class="page-ref"><span class="protocols_defining"/></span></dt>
 	<dt><a href="protocols.html#protocols_finding">Finding defined protocols</a><span class="leader"/><span class="page-ref"><span class="protocols_finding"/></span></dt>
 	<dt><a href="protocols.html#protocols_creating">Creating a new protocol in runtime</a><span class="leader"/><span class="page-ref"><span class="protocols_creating"/></span></dt>
@@ -119,7 +121,7 @@
 
 <h2><a id="categories" href="categories.html">Categories</a></h2>
 
-<dl class="toc">
+<dl class="toc-entries">
 	<dt><a href="categories.html#categories_defining">Defining a new category</a><span class="leader"/><span class="page-ref"><span class="categories_defining"/></span></dt>
 	<dt><a href="categories.html#categories_finding">Finding defined categories</a><span class="leader"/><span class="page-ref"><span class="categories_finding"/></span></dt>
 	<dt><a href="categories.html#categories_creating">Creating a new category in runtime</a><span class="leader"/><span class="page-ref"><span class="categories_creating"/></span></dt>
@@ -136,7 +138,7 @@
 
 <h2><a id="predicates" href="predicates.html">Predicates</a></h2>
 
-<dl class="toc">
+<dl class="toc-entries">
 	<dt><a href="predicates.html#predicates_declaring">Declaring predicates</a><span class="leader"/><span class="page-ref"><span class="predicates_declaring"/></span></dt>
 		<dd><a href="predicates.html#predicates_scope">Scope directives</a><span class="leader"/><span class="page-ref"><span class="predicates_scope"/></span></dd>
 		<dd><a href="predicates.html#predicates_mode">Mode directive</a><span class="leader"/><span class="page-ref"><span class="predicates_mode"/></span></dd>
@@ -168,7 +170,7 @@
 
 <h2><a id="inheritance" href="inheritance.html">Inheritance</a></h2>
 
-<dl class="toc">
+<dl class="toc-entries">
 	<dt><a href="inheritance.html#inheritance_protocol">Protocol inheritance</a><span class="leader"/><span class="page-ref"><span class="inheritance_protocol"/></span></dt>
 		<dd><a href="inheritance.html#inheritance_protocol_prototype">Search order for prototype hierarchies</a><span class="leader"/><span class="page-ref"><span class="inheritance_protocol_prototype"/></span></dd>
 		<dd><a href="inheritance.html#inheritance_protocol_class">Search order for class hierarchies</a><span class="leader"/><span class="page-ref"><span class="inheritance_protocol_class"/></span></dd>
@@ -182,7 +184,7 @@
 
 <h2><a id="events" href="events.html">Event-driven programming</a></h2>
 
-<dl class="toc">
+<dl class="toc-entries">
 	<dt><a href="events.html#events_definitions">Definitions</a><span class="leader"/><span class="page-ref"><span class="events_definitions"/></span></dt>
 		<dd><a href="events.html#events_event">Event</a><span class="leader"/><span class="page-ref"><span class="events_event"/></span></dd>
 		<dd><a href="events.html#events_monitor">Monitor</a><span class="leader"/><span class="page-ref"><span class="events_monitor"/></span></dd>
@@ -200,7 +202,7 @@
 
 <h2><a id="threads" href="threads.html">Multi-threading programming</a></h2>
 
-<dl class="toc">
+<dl class="toc-entries">
 	<dt><a href="threads.html#threads_enabling">Enabling multi-threading support</a><span class="leader"/><span class="page-ref"><span class="threads_enabling"/></span></dt>
 	<dt><a href="threads.html#threads_directive">Object threads</a><span class="leader"/><span class="page-ref"><span class="threads_directive"/></span></dt>
 	<dt><a href="threads.html#threads_builtins">Multi-threading built-in predicates</a><span class="leader"/><span class="page-ref"><span class="threads_builtins"/></span></dt>
@@ -214,7 +216,7 @@
 
 <h2><a id="errors" href="errors.html">Error handling</a></h2>
 
-<dl class="toc">
+<dl class="toc-entries">
 	<dt><a href="errors.html#errors_compiler">Compiler warnings and errors</a><span class="leader"/><span class="page-ref"><span class="errors_compiler"/></span></dt>
 		<dd><a href="errors.html#errors_wunknown">Unknown entities</a><span class="leader"/><span class="page-ref"><span class="errors_wunknown"/></span></dd>
 		<dd><a href="errors.html#errors_wsingletons">Singleton variables</a><span class="leader"/><span class="page-ref"><span class="errors_wsingletons"/></span></dd>
@@ -232,7 +234,7 @@
 
 <h2><a id="documenting" href="documenting.html">Documenting Logtalk programs</a></h2>
 
-<dl class="toc">
+<dl class="toc-entries">
 	<dt><a href="documenting.html#documenting_directives">Documenting directives</a><span class="leader"/><span class="page-ref"><span class="documenting_directives"/></span></dt>
 		<dd><a href="documenting.html#documenting_entity">Entity directives</a><span class="leader"/><span class="page-ref"><span class="documenting_entity"/></span></dd>
 		<dd><a href="documenting.html#documenting_predicate">Predicate directives</a><span class="leader"/><span class="page-ref"><span class="documenting_predicate"/></span></dd>
@@ -241,7 +243,7 @@
 
 <h2><a id="installing" href="installing.html">Installing Logtalk</a></h2>
 
-<dl class="toc">
+<dl class="toc-entries">
 	<dt><a href="installing.html#installing_installing">Installing Logtalk</a><span class="leader"/><span class="page-ref"><span class="installing_installing"/></span></dt>
 	<dt><a href="installing.html#installing_requirements">Hardware &amp; software requirements</a><span class="leader"/><span class="page-ref"><span class="installing_requirements"/></span></dt>
 		<dd><a href="installing.html#installing_computer">Computer and operating system</a><span class="leader"/><span class="page-ref"><span class="installing_computer"/></span></dd>
@@ -258,7 +260,7 @@
 
 <h2><a id="running" href="running.html">Running and debugging Logtalk programs</a></h2>
 
-<dl class="toc">
+<dl class="toc-entries">
 	<dt><a href="running.html#running_session">Running a Logtalk session</a><span class="leader"/><span class="page-ref"><span class="running_session"/></span></dt>
 		<dd><a href="running.html#running_starting">Starting Logtalk</a><span class="leader"/><span class="page-ref"><span class="running_starting"/></span></dd>
 		<dd><a href="running.html#running_compiling">Compiling and loading your programs</a><span class="leader"/><span class="page-ref"><span class="running_compiling"/></span></dd>
@@ -276,7 +278,7 @@
 
 <h2><a id="programming" href="programming.html">Programming in Logtalk</a></h2>
 
-<dl class="toc">
+<dl class="toc-entries">
 	<dt><a href="programming.html#programming_writing">Writing programs</a><span class="leader"/><span class="page-ref"><span class="programming_writing"/></span></dt>
 		<dd><a href="programming.html#programming_source_files">Source files</a><span class="leader"/><span class="page-ref"><span class="programming_source_files"/></span></dd>
 		<dd><a href="programming.html#programming_loaders">Loader utility files</a><span class="leader"/><span class="page-ref"><span class="programming_loaders"/></span></dd>
@@ -286,6 +288,8 @@
 		<dd><a href="programming.html#programming_style">Coding style guidlines</a><span class="leader"/><span class="page-ref"><span class="programming_style"/></span></dd>
 	<dt><a href="programming.html#programming_scope">Logtalk scope</a><span class="leader"/><span class="page-ref"><span class="programming_scope"/></span></dt>
 </dl>
+
+</div>
 
 <div class="footer">
 	<div class="copyright">

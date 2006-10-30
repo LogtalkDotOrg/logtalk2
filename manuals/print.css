@@ -1,6 +1,6 @@
 
 .page:before {
-	content: counter(page) " of " counter(pages);
+	content: counter(page);
 }
 
 @page :left {
@@ -55,8 +55,8 @@ body {
 	text-align: right;
 }
 
-div.top-right > span.mark:before {
-	content: string(mark);
+div.top-right > span.chapter:before {
+	content: string(chapter);
 }
 
 .bottom-left { 
@@ -79,26 +79,6 @@ div.top-right > span.mark:before {
 	border-color: black;
 	border-width: 1pt 0pt 0pt 0pt;
 	border-style: solid;
-}
-
-.first-top-left {
-	page: first-left;
-	region: top;
-}
-
-.first-top-right {
-	page: first-right;
-	region: top;
-}
-
-.first-bottom-left {
-	page: first-left;
-	region: bottom;
-}
-
-.first-bottom-right {
-	page: first-right;
-	region: bottom;
 }
 
 a {
@@ -132,10 +112,6 @@ a[id] {
 }
 
 .footnote {
-}
-
-.toc {
-	text-align-last: justify;
 }
 
 span.leader { 
@@ -177,7 +153,17 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
 	padding-top: 96pt;
 	page-break-before: right;
-	string-set: mark contents;
+	string-set: chapter contents;
+}
+
+div.toc > h1 {
+    string-set: chapter "Table Of Contents";
+    content: "Table Of Contents";
+    text-align-last: left;
+}
+
+.toc-entries {
+	text-align-last: justify;
 }
 
 code {
