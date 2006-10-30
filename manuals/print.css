@@ -81,6 +81,26 @@ div.top-right > span.mark:before {
 	border-style: solid;
 }
 
+.first-top-left {
+	page: first-left;
+	region: top;
+}
+
+.first-top-right {
+	page: first-right;
+	region: top;
+}
+
+.first-bottom-left {
+	page: first-left;
+	region: bottom;
+}
+
+.first-bottom-right {
+	page: first-right;
+	region: bottom;
+}
+
 a {
 	color: black;
 	text-decoration: none;
@@ -130,21 +150,22 @@ span.page-ref > span:before {
 
 .titles {
 	page-break-after: always;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
 }
 
 .title {
 	text-align: center;
-	font-size: 48pt;
+	font-size: 36pt;
 }
 
 .sub-title {
 	text-align: center;
-	font-size: 36pt;
+	font-size: 24pt;
 }
 
 .credits {
 	text-align: center;
-	font-size: 24pt;
+	font-size: 18pt;
 }
 
 h1, h2, h3, h4, h5, h6 {
