@@ -13,12 +13,20 @@
 
 <body>
 
+<div class="title-top"/>
+<div class="title-bottom"/>
+
+<div class="toc-top-left">Logtalk user manual</div>
+<div class="toc-top-right">Table Of Contents</div>
+<div class="toc-bottom-left"><span class="page"/></div>
+<div class="toc-bottom-right"><span class="page"/></div>
+
 <div class="top-left">Logtalk user manual</div>
 <div class="top-right"><span class="mark"/></div>
 <div class="bottom-left"><span class="page"/></div>
 <div class="bottom-right"><span class="page"/></div>
 
-<div class="titles">
+<div class="title-page">
 	<p class="title">Logtalk 2.28.2</p>
 	<p class="sub-title">User Manual</p>
 	<p class="credits">Copyright &copy; Paulo Moura</p>
@@ -27,5 +35,5 @@
 		<br/>
 		<span>http://logtalk.org/</span>
 	</p>
-	<p class="credits">Last updated on October 31, 2005</p>
+	<p class="date">Last updated on October 31, 2006</p>
 </div>
