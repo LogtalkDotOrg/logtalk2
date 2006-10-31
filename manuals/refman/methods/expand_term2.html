@@ -27,8 +27,8 @@
 <pre>expand_term(Term, Expansion)</pre>
 <p>
 Expands a term. The most common use is to expand a grammar rule into a clause. Users may override the default Logtalk grammar rule translator by defining clauses for the predicate <a href="term_expansion2.html"><code>term_expansion/2</code></a>.
-<p>
 </p>
+<p>
 The expansion works as follows: if the first argument is a variable, then it is unified with the second argument; if the first argument is not a variable and clauses for the <code>term_expansion/2</code> predicate are within scope, then this predicate is called to provide an expansion that is then unified with the second argument; if the <code>term_expansion/2</code> predicate is not used and the first argument is a compound term with functor <code>--&gt;/2</code> then the default Logtalk grammar rule translator is used, with the resulting clause being unified with the second argument; when the translator is not used, the two arguments are unified.
 </p>
 <p>

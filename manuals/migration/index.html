@@ -25,7 +25,7 @@ An application may include plain Prolog files, Prolog modules, and Logtalk objec
 </p>
 
 
-<h2>Source files with both Prolog code and Logtalk code<a id="encapsulating"></a></h2>
+<h2>Source files with both Prolog code and Logtalk code<a id="hybrid"></a></h2>
 
 <p>
 Logtalk source files may contain plain Prolog code intermixed with Logtalk code. The Logtalk compiler just copies the plain Prolog code as-is to the generated Prolog file. With Prolog modules, it is assumed that the module code starts with a <code>module/1-2</code> directive and ends at the end of the file. There is no module ending directive which would allowed us define more than one module per file. In fact, most Prolog module systems always define a single module per file. Some of them mandate that the <code>module/1-2</code> directive be the first term on a source file. As such, when the Logtalk compiler finds a <code>module/1-2</code> directive, it assumes that all code that follows until the end of the file belongs to the module.
@@ -51,7 +51,7 @@ Converting a Prolog module into a Logtalk object is easy. First, convert the mod
 </p>
 
 
-<h2>Compiling Prolog modules as objects<a id="converting"></a></h2>
+<h2>Compiling Prolog modules as objects<a id="compiling"></a></h2>
 
 <p>
 An alternative to convert Prolog modules into objects is to just compile the modules as objects. When possible, this has the advantage of not implying any code changes. You may compile a Prolog module as an object by changing the source file name extension to <code>.lgt</code> and then using the <a title="Consult user manual" href="../userman/running.html#compiling"><code>logtalk_load/1-2</code></a> and <a title="Consult user manual" href="../userman/running.html#compiling"><code>logtalk_compile/1-2</code></a> predicates (set the Logtalk <code>portability</code> flag set to <code>warning</code> to help you catch any unnoticed cross-module predicate calls). This allows you to reuse existing module code as objects. However, there are some limitations that you should be aware. These limitations are a consequence of the lack of standardization of Prolog module systems. Currently, Logtalk supports the following module directives:
