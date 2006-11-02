@@ -31,12 +31,11 @@ eval xsltproc -o programming.section userman.xsl programming.html
 cat -s \
 	userman.header \
 	index.section \
-	userman.bodybegin \
+	userman.body \
 	features.section nomenclature.section messages.section \
 	objects.section protocols.section categories.section predicates.section \
 	inheritance.section events.section threads.section errors.section \
 	documenting.section installing.section running.section programming.section \
-	userman.bodyend \
 	userman.footer \
 	> userman.html
 
