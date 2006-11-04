@@ -9,7 +9,7 @@
 
 css2xslfo=/Applications/XML/CSSToXSLFO/css2xslfo1_3_3.jar
 
-rm -f userman.fo
+rm -f userman.fo userman.html
 rm -fr *.section
 eval xsltproc -o index.section userman.xsl index.html
 eval xsltproc -o features.section userman.xsl features.html
@@ -41,5 +41,5 @@ cat -s \
 
 java -jar $css2xslfo userman.html -fo userman.fo
 eval xep -fo userman.fo -pdf userman.pdf
-rm userman.fo
+rm userman.fo userman.html
 rm -fr *.section

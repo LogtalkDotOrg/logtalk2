@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.28.2 - October 31, 2006
+2.28.2 - November 6, 2006
 
 	Corrected a compiler bug where unknown entities will not be report when 
 	compiling a source file whenever an entity with the same name but of a
@@ -19,9 +19,9 @@ RELEASE NOTES
 	Added a XPCE hook file ("configs/xpcehook.pl") supporting Logtalk message 
 	sending goals as XPCE call-back goals.
 
-	Removed the PDF versions of the manual XHTML pages. Replaced by a single 
-	PDF version of the User Manual. Added a shell script, a XSLT file, and 
-	other supporting files for generating the User Manual PDF file.
+	Removed the PDF versions of the manual XHTML pages. Replaced by single 
+	PDF versions of the User and Reference Manuals. Added shell scripts, a 
+	XSLT file, and other supporting files for generating the manual PDF files.
 
 	The ECLiPSe config files now require release 5.10#26 or a later version.
 
