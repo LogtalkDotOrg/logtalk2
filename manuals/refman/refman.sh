@@ -9,8 +9,9 @@
 
 css2xslfo=/Applications/XML/CSSToXSLFO/css2xslfo1_3_3.jar
 
-rm -f refman.fo refman.html
-rm -fr *.section
+# rm -f refman.fo refman.html
+rm -f *.section directives/*.section builtins/*.section methods/*.section control/*.section
+
 eval xsltproc -o index.section refman.xsl index.html
 eval xsltproc -o grammar.section refman.xsl grammar.html
 eval xsltproc -o directives/encoding1.section refman.xsl directives/encoding1.html
@@ -200,5 +201,6 @@ cat -s \
 
 java -jar $css2xslfo refman.html -fo refman.fo
 eval xep -fo refman.fo -pdf refman.pdf
-rm refman.fo refman.html
-rm -fr *.section
+
+# rm refman.fo refman.html
+rm -f *.section directives/*.section builtins/*.section methods/*.section control/*.section

@@ -10,21 +10,21 @@
     encoding="utf-8"
 	omit-xml-declaration="yes"/>
 
-<xsl:template match="processing-instruction()|comment()|node()|@*">
+<xsl:template match="node()|@*">
 	<xsl:copy>
-		<xsl:apply-templates select="processing-instruction()|comment()|node()|@*"/>
+		<xsl:apply-templates select="node()|@*"/>
 	</xsl:copy>
 </xsl:template>
 
 <xsl:template match="xhtml:html">
-		<xsl:apply-templates select="processing-instruction()|comment()|node()|@*"/>
+		<xsl:apply-templates select="node()|@*"/>
 </xsl:template>
 
 <xsl:template match="xhtml:head">
 </xsl:template>
 
 <xsl:template match="xhtml:body">
-		<xsl:apply-templates select="processing-instruction()|comment()|node()|@*"/>
+		<xsl:apply-templates select="node()|@*"/>
 </xsl:template>
 
 <xsl:template match="xhtml:div[@class='top-right']">

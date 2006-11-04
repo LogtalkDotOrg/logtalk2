@@ -65,6 +65,7 @@ body {
 .toc-top-left { 
 	font-size: 9pt;
 	font-weight: bold;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
 	border-color: black;
 	border-width: 0pt 0pt 1pt 0pt;
 	border-style: solid;
@@ -76,6 +77,7 @@ body {
 .toc-top-right { 
 	font-size: 9pt;
 	font-weight: bold;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
 	border-color: black;
 	border-width: 0pt 0pt 1pt 0pt;
 	border-style: solid;
@@ -87,6 +89,7 @@ body {
 .top-left { 
 	font-size: 9pt;
 	font-weight: bold;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
 	border-color: black;
 	border-width: 0pt 0pt 1pt 0pt;
 	border-style: solid;
@@ -98,6 +101,7 @@ body {
 .top-right { 
 	font-size: 9pt;
 	font-weight: bold;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
 	border-color: black;
 	border-width: 0pt 0pt 1pt 0pt;
 	border-style: solid;
@@ -117,6 +121,7 @@ div.top-right > span.chapter:before {
 	text-align: left;
 	font-size: 9pt;
 	font-weight: bold;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
 	border-color: black;
 	border-width: 1pt 0pt 0pt 0pt;
 	border-style: solid;
@@ -128,6 +133,7 @@ div.top-right > span.chapter:before {
 	text-align: right;
 	font-size: 9pt;
 	font-weight: bold;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
 	border-color: black;
 	border-width: 1pt 0pt 0pt 0pt;
 	border-style: solid;
@@ -139,6 +145,7 @@ div.top-right > span.chapter:before {
 	text-align: left;
 	font-size: 9pt;
 	font-weight: bold;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
 	border-color: black;
 	border-width: 1pt 0pt 0pt 0pt;
 	border-style: solid;
@@ -150,6 +157,7 @@ div.top-right > span.chapter:before {
 	text-align: right;
 	font-size: 9pt;
 	font-weight: bold;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
 	border-color: black;
 	border-width: 1pt 0pt 0pt 0pt;
 	border-style: solid;
@@ -270,6 +278,13 @@ code {
 }
 
 .code {
+	color: maroon;
+	font-family: Monaco, 'Courier New', Courier, monospace;
+}
+
+.code2 {
+	padding-top: 24pt;
+	page-break-before: always;
 	color: maroon;
 	font-family: Monaco, 'Courier New', Courier, monospace;
 }
