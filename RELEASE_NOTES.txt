@@ -17,7 +17,8 @@ RELEASE NOTES
 	different type is already known.
 
 	Added a XPCE hook file ("configs/xpcehook.pl") supporting Logtalk message 
-	sending goals as XPCE call-back goals.
+	sending goals as XPCE call-back goals. The XPCE library is now loaded by 
+	default by the SWI-Prolog integration scripts.
 
 	Added support for generating single PDF files of the User and Reference 
 	Manuals. Removed the PDF versions of the individual manual XHTML pages.
