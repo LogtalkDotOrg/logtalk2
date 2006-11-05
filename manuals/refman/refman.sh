@@ -9,97 +9,105 @@
 
 css2xslfo=/Applications/XML/CSSToXSLFO/css2xslfo1_3_3.jar
 
+xslt_proc=xsltproc
+# xslt_proc=xalan
+# xslt_proc=sabcmd
+
+#fo_proc=fop
+fo_proc=xep
+# fo_proc=xinc
+
 # rm -f refman.fo refman.html
 rm -f *.section directives/*.section builtins/*.section methods/*.section control/*.section
 
-eval xsltproc -o index.section refman.xsl index.html
-eval xsltproc -o grammar.section refman.xsl grammar.html
-eval xsltproc -o directives/encoding1.section refman.xsl directives/encoding1.html
-eval xsltproc -o directives/calls1.section refman.xsl directives/calls1.html
-eval xsltproc -o directives/category1_3.section refman.xsl directives/category1_3.html
-eval xsltproc -o directives/dynamic0.section refman.xsl directives/dynamic0.html
-eval xsltproc -o directives/end_category0.section refman.xsl directives/end_category0.html
-eval xsltproc -o directives/end_object0.section refman.xsl directives/end_object0.html
-eval xsltproc -o directives/end_protocol0.section refman.xsl directives/end_protocol0.html
-eval xsltproc -o directives/info1.section refman.xsl directives/info1.html
-eval xsltproc -o directives/initialization1.section refman.xsl directives/initialization1.html
-eval xsltproc -o directives/object1_5.section refman.xsl directives/object1_5.html
-eval xsltproc -o directives/protocol1_2.section refman.xsl directives/protocol1_2.html
-eval xsltproc -o directives/threaded0.section refman.xsl directives/threaded0.html
-eval xsltproc -o directives/uses1.section refman.xsl directives/uses1.html
-eval xsltproc -o directives/alias3.section refman.xsl directives/alias3.html
-eval xsltproc -o directives/atomic1.section refman.xsl directives/atomic1.html
-eval xsltproc -o directives/discontiguous1.section refman.xsl directives/discontiguous1.html
-eval xsltproc -o directives/dynamic1.section refman.xsl directives/dynamic1.html
-eval xsltproc -o directives/info2.section refman.xsl directives/info2.html
-eval xsltproc -o directives/meta_predicate1.section refman.xsl directives/meta_predicate1.html
-eval xsltproc -o directives/mode2.section refman.xsl directives/mode2.html
-eval xsltproc -o directives/op3.section refman.xsl directives/op3.html
-eval xsltproc -o directives/private1.section refman.xsl directives/private1.html
-eval xsltproc -o directives/protected1.section refman.xsl directives/protected1.html
-eval xsltproc -o directives/public1.section refman.xsl directives/public1.html
-eval xsltproc -o directives/uses2.section refman.xsl directives/uses2.html
-eval xsltproc -o builtins/current_category1.section refman.xsl builtins/current_category1.html
-eval xsltproc -o builtins/current_object1.section refman.xsl builtins/current_object1.html
-eval xsltproc -o builtins/current_protocol1.section refman.xsl builtins/current_protocol1.html
-eval xsltproc -o builtins/category_property2.section refman.xsl builtins/category_property2.html
-eval xsltproc -o builtins/object_property2.section refman.xsl builtins/object_property2.html
-eval xsltproc -o builtins/protocol_property2.section refman.xsl builtins/protocol_property2.html
-eval xsltproc -o builtins/create_category4.section refman.xsl builtins/create_category4.html
-eval xsltproc -o builtins/create_object4.section refman.xsl builtins/create_object4.html
-eval xsltproc -o builtins/create_protocol3.section refman.xsl builtins/create_protocol3.html
-eval xsltproc -o builtins/abolish_category1.section refman.xsl builtins/abolish_category1.html
-eval xsltproc -o builtins/abolish_object1.section refman.xsl builtins/abolish_object1.html
-eval xsltproc -o builtins/abolish_protocol1.section refman.xsl builtins/abolish_protocol1.html
-eval xsltproc -o builtins/extends_object2_3.section refman.xsl builtins/extends_object2_3.html
-eval xsltproc -o builtins/extends_protocol2_3.section refman.xsl builtins/extends_protocol2_3.html
-eval xsltproc -o builtins/implements_protocol2_3.section refman.xsl builtins/implements_protocol2_3.html
-eval xsltproc -o builtins/imports_category2_3.section refman.xsl builtins/imports_category2_3.html
-eval xsltproc -o builtins/instantiates_class2_3.section refman.xsl builtins/instantiates_class2_3.html
-eval xsltproc -o builtins/specializes_class2_3.section refman.xsl builtins/specializes_class2_3.html
-eval xsltproc -o builtins/abolish_events5.section refman.xsl builtins/abolish_events5.html
-eval xsltproc -o builtins/current_event5.section refman.xsl builtins/current_event5.html
-eval xsltproc -o builtins/define_events5.section refman.xsl builtins/define_events5.html
-eval xsltproc -o builtins/threaded_call1.section refman.xsl builtins/threaded_call1.html
-eval xsltproc -o builtins/threaded_call2.section refman.xsl builtins/threaded_call2.html
-eval xsltproc -o builtins/threaded_exit1.section refman.xsl builtins/threaded_exit1.html
-eval xsltproc -o builtins/threaded_exit2.section refman.xsl builtins/threaded_exit2.html
-eval xsltproc -o builtins/logtalk_compile1.section refman.xsl builtins/logtalk_compile1.html
-eval xsltproc -o builtins/logtalk_compile2.section refman.xsl builtins/logtalk_compile2.html
-eval xsltproc -o builtins/logtalk_load1.section refman.xsl builtins/logtalk_load1.html
-eval xsltproc -o builtins/logtalk_load2.section refman.xsl builtins/logtalk_load2.html
-eval xsltproc -o builtins/logtalk_library_path2.section refman.xsl builtins/logtalk_library_path2.html
-eval xsltproc -o builtins/current_logtalk_flag2.section refman.xsl builtins/current_logtalk_flag2.html
-eval xsltproc -o builtins/set_logtalk_flag2.section refman.xsl builtins/set_logtalk_flag2.html
-eval xsltproc -o builtins/forall2.section refman.xsl builtins/forall2.html
-eval xsltproc -o builtins/retractall1.section refman.xsl builtins/retractall1.html
-eval xsltproc -o methods/parameter2.section refman.xsl methods/parameter2.html
-eval xsltproc -o methods/self1.section refman.xsl methods/self1.html
-eval xsltproc -o methods/sender1.section refman.xsl methods/sender1.html
-eval xsltproc -o methods/this1.section refman.xsl methods/this1.html
-eval xsltproc -o methods/current_predicate1.section refman.xsl methods/current_predicate1.html
-eval xsltproc -o methods/predicate_property2.section refman.xsl methods/predicate_property2.html
-eval xsltproc -o methods/abolish1.section refman.xsl methods/abolish1.html
-eval xsltproc -o methods/asserta1.section refman.xsl methods/asserta1.html
-eval xsltproc -o methods/assertz1.section refman.xsl methods/assertz1.html
-eval xsltproc -o methods/clause2.section refman.xsl methods/clause2.html
-eval xsltproc -o methods/retract1.section refman.xsl methods/retract1.html
-eval xsltproc -o methods/retractall1.section refman.xsl methods/retractall1.html
-eval xsltproc -o methods/call1.section refman.xsl methods/call1.html
-eval xsltproc -o methods/bagof3.section refman.xsl methods/bagof3.html
-eval xsltproc -o methods/findall3.section refman.xsl methods/findall3.html
-eval xsltproc -o methods/forall2.section refman.xsl methods/forall2.html
-eval xsltproc -o methods/setof3.section refman.xsl methods/setof3.html
-eval xsltproc -o methods/before3.section refman.xsl methods/before3.html
-eval xsltproc -o methods/after3.section refman.xsl methods/after3.html
-eval xsltproc -o methods/phrase2.section refman.xsl methods/phrase2.html
-eval xsltproc -o methods/phrase3.section refman.xsl methods/phrase3.html
-eval xsltproc -o methods/expand_term2.section refman.xsl methods/expand_term2.html
-eval xsltproc -o methods/term_expansion2.section refman.xsl methods/term_expansion2.html
-eval xsltproc -o control/to_object2.section refman.xsl control/to_object2.html
-eval xsltproc -o control/to_self1.section refman.xsl control/to_self1.html
-eval xsltproc -o control/to_super1.section refman.xsl control/to_super1.html
-eval xsltproc -o control/external1.section refman.xsl control/external1.html
+eval $xslt_proc -o index.section refman.xsl index.html
+eval $xslt_proc -o grammar.section refman.xsl grammar.html
+eval $xslt_proc -o directives/encoding1.section refman.xsl directives/encoding1.html
+eval $xslt_proc -o directives/calls1.section refman.xsl directives/calls1.html
+eval $xslt_proc -o directives/category1_3.section refman.xsl directives/category1_3.html
+eval $xslt_proc -o directives/dynamic0.section refman.xsl directives/dynamic0.html
+eval $xslt_proc -o directives/end_category0.section refman.xsl directives/end_category0.html
+eval $xslt_proc -o directives/end_object0.section refman.xsl directives/end_object0.html
+eval $xslt_proc -o directives/end_protocol0.section refman.xsl directives/end_protocol0.html
+eval $xslt_proc -o directives/info1.section refman.xsl directives/info1.html
+eval $xslt_proc -o directives/initialization1.section refman.xsl directives/initialization1.html
+eval $xslt_proc -o directives/object1_5.section refman.xsl directives/object1_5.html
+eval $xslt_proc -o directives/protocol1_2.section refman.xsl directives/protocol1_2.html
+eval $xslt_proc -o directives/threaded0.section refman.xsl directives/threaded0.html
+eval $xslt_proc -o directives/uses1.section refman.xsl directives/uses1.html
+eval $xslt_proc -o directives/alias3.section refman.xsl directives/alias3.html
+eval $xslt_proc -o directives/atomic1.section refman.xsl directives/atomic1.html
+eval $xslt_proc -o directives/discontiguous1.section refman.xsl directives/discontiguous1.html
+eval $xslt_proc -o directives/dynamic1.section refman.xsl directives/dynamic1.html
+eval $xslt_proc -o directives/info2.section refman.xsl directives/info2.html
+eval $xslt_proc -o directives/meta_predicate1.section refman.xsl directives/meta_predicate1.html
+eval $xslt_proc -o directives/mode2.section refman.xsl directives/mode2.html
+eval $xslt_proc -o directives/op3.section refman.xsl directives/op3.html
+eval $xslt_proc -o directives/private1.section refman.xsl directives/private1.html
+eval $xslt_proc -o directives/protected1.section refman.xsl directives/protected1.html
+eval $xslt_proc -o directives/public1.section refman.xsl directives/public1.html
+eval $xslt_proc -o directives/uses2.section refman.xsl directives/uses2.html
+eval $xslt_proc -o builtins/current_category1.section refman.xsl builtins/current_category1.html
+eval $xslt_proc -o builtins/current_object1.section refman.xsl builtins/current_object1.html
+eval $xslt_proc -o builtins/current_protocol1.section refman.xsl builtins/current_protocol1.html
+eval $xslt_proc -o builtins/category_property2.section refman.xsl builtins/category_property2.html
+eval $xslt_proc -o builtins/object_property2.section refman.xsl builtins/object_property2.html
+eval $xslt_proc -o builtins/protocol_property2.section refman.xsl builtins/protocol_property2.html
+eval $xslt_proc -o builtins/create_category4.section refman.xsl builtins/create_category4.html
+eval $xslt_proc -o builtins/create_object4.section refman.xsl builtins/create_object4.html
+eval $xslt_proc -o builtins/create_protocol3.section refman.xsl builtins/create_protocol3.html
+eval $xslt_proc -o builtins/abolish_category1.section refman.xsl builtins/abolish_category1.html
+eval $xslt_proc -o builtins/abolish_object1.section refman.xsl builtins/abolish_object1.html
+eval $xslt_proc -o builtins/abolish_protocol1.section refman.xsl builtins/abolish_protocol1.html
+eval $xslt_proc -o builtins/extends_object2_3.section refman.xsl builtins/extends_object2_3.html
+eval $xslt_proc -o builtins/extends_protocol2_3.section refman.xsl builtins/extends_protocol2_3.html
+eval $xslt_proc -o builtins/implements_protocol2_3.section refman.xsl builtins/implements_protocol2_3.html
+eval $xslt_proc -o builtins/imports_category2_3.section refman.xsl builtins/imports_category2_3.html
+eval $xslt_proc -o builtins/instantiates_class2_3.section refman.xsl builtins/instantiates_class2_3.html
+eval $xslt_proc -o builtins/specializes_class2_3.section refman.xsl builtins/specializes_class2_3.html
+eval $xslt_proc -o builtins/abolish_events5.section refman.xsl builtins/abolish_events5.html
+eval $xslt_proc -o builtins/current_event5.section refman.xsl builtins/current_event5.html
+eval $xslt_proc -o builtins/define_events5.section refman.xsl builtins/define_events5.html
+eval $xslt_proc -o builtins/threaded_call1.section refman.xsl builtins/threaded_call1.html
+eval $xslt_proc -o builtins/threaded_call2.section refman.xsl builtins/threaded_call2.html
+eval $xslt_proc -o builtins/threaded_exit1.section refman.xsl builtins/threaded_exit1.html
+eval $xslt_proc -o builtins/threaded_exit2.section refman.xsl builtins/threaded_exit2.html
+eval $xslt_proc -o builtins/logtalk_compile1.section refman.xsl builtins/logtalk_compile1.html
+eval $xslt_proc -o builtins/logtalk_compile2.section refman.xsl builtins/logtalk_compile2.html
+eval $xslt_proc -o builtins/logtalk_load1.section refman.xsl builtins/logtalk_load1.html
+eval $xslt_proc -o builtins/logtalk_load2.section refman.xsl builtins/logtalk_load2.html
+eval $xslt_proc -o builtins/logtalk_library_path2.section refman.xsl builtins/logtalk_library_path2.html
+eval $xslt_proc -o builtins/current_logtalk_flag2.section refman.xsl builtins/current_logtalk_flag2.html
+eval $xslt_proc -o builtins/set_logtalk_flag2.section refman.xsl builtins/set_logtalk_flag2.html
+eval $xslt_proc -o builtins/forall2.section refman.xsl builtins/forall2.html
+eval $xslt_proc -o builtins/retractall1.section refman.xsl builtins/retractall1.html
+eval $xslt_proc -o methods/parameter2.section refman.xsl methods/parameter2.html
+eval $xslt_proc -o methods/self1.section refman.xsl methods/self1.html
+eval $xslt_proc -o methods/sender1.section refman.xsl methods/sender1.html
+eval $xslt_proc -o methods/this1.section refman.xsl methods/this1.html
+eval $xslt_proc -o methods/current_predicate1.section refman.xsl methods/current_predicate1.html
+eval $xslt_proc -o methods/predicate_property2.section refman.xsl methods/predicate_property2.html
+eval $xslt_proc -o methods/abolish1.section refman.xsl methods/abolish1.html
+eval $xslt_proc -o methods/asserta1.section refman.xsl methods/asserta1.html
+eval $xslt_proc -o methods/assertz1.section refman.xsl methods/assertz1.html
+eval $xslt_proc -o methods/clause2.section refman.xsl methods/clause2.html
+eval $xslt_proc -o methods/retract1.section refman.xsl methods/retract1.html
+eval $xslt_proc -o methods/retractall1.section refman.xsl methods/retractall1.html
+eval $xslt_proc -o methods/call1.section refman.xsl methods/call1.html
+eval $xslt_proc -o methods/bagof3.section refman.xsl methods/bagof3.html
+eval $xslt_proc -o methods/findall3.section refman.xsl methods/findall3.html
+eval $xslt_proc -o methods/forall2.section refman.xsl methods/forall2.html
+eval $xslt_proc -o methods/setof3.section refman.xsl methods/setof3.html
+eval $xslt_proc -o methods/before3.section refman.xsl methods/before3.html
+eval $xslt_proc -o methods/after3.section refman.xsl methods/after3.html
+eval $xslt_proc -o methods/phrase2.section refman.xsl methods/phrase2.html
+eval $xslt_proc -o methods/phrase3.section refman.xsl methods/phrase3.html
+eval $xslt_proc -o methods/expand_term2.section refman.xsl methods/expand_term2.html
+eval $xslt_proc -o methods/term_expansion2.section refman.xsl methods/term_expansion2.html
+eval $xslt_proc -o control/to_object2.section refman.xsl control/to_object2.html
+eval $xslt_proc -o control/to_self1.section refman.xsl control/to_self1.html
+eval $xslt_proc -o control/to_super1.section refman.xsl control/to_super1.html
+eval $xslt_proc -o control/external1.section refman.xsl control/external1.html
 
 cat -s \
 	refman.header \
@@ -200,7 +208,7 @@ cat -s \
 	> refman.html
 
 java -jar $css2xslfo refman.html -fo refman.fo
-eval xep -fo refman.fo -pdf refman.pdf
+eval $fo_proc -fo refman.fo -pdf refman.pdf
 
 # rm refman.fo refman.html
 rm -f *.section directives/*.section builtins/*.section methods/*.section control/*.section

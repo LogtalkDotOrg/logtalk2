@@ -19,9 +19,8 @@ RELEASE NOTES
 	Added a XPCE hook file ("configs/xpcehook.pl") supporting Logtalk message 
 	sending goals as XPCE call-back goals.
 
-	Removed the PDF versions of the manual XHTML pages. Replaced by single 
-	PDF versions of the User and Reference Manuals. Added shell scripts, a 
-	XSLT file, and other supporting files for generating the manual PDF files.
+	Added support for generating single PDF files of the User and Reference 
+	Manuals. Removed the PDF versions of the individual manual XHTML pages.
 
 	The ECLiPSe config files now require release 5.10#26 or a later version.
 
