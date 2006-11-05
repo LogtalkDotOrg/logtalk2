@@ -15,6 +15,10 @@ body {
 	padding: 3pt 0pt 12pt 0pt;
 }
 
+.toc-top-left, .toc-top-right, .toc-bottom-left, .toc-bottom-right {
+	display: none;
+}
+
 .top-left, .top-right, .bottom-left, .bottom-right {
 	display: none;
 }
@@ -42,6 +46,9 @@ body {
 .toc {
 }
 
+.toc-entries {
+}
+
 .leader {
 	display: none;
 }
@@ -61,24 +68,20 @@ a:hover {
 	color: blue;
 }
 
-code {
+pre, code, .code, .codenp {
 	color: maroon;
-	font-family: monaco, courier, monospace;
+	font-family: Monaco, 'Courier New', Courier, monospace;
+}
+
+code {
 	font-size: 10pt;
 }
 
-.code {
-	color: maroon;
-	font-family: monaco, courier, monospace;
+pre {
+	font-size: 10pt;
+	padding: 6pt 24pt 6pt 24pt;
 }
 
 dl {
 	padding-left: 2em;
-}
-
-pre {
-	color: maroon;
-	font-family: monaco, courier, monospace;
-	font-size: 10pt;
-	padding: 6pt 24pt 6pt 24pt;
 }
