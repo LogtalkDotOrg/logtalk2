@@ -10,6 +10,12 @@ RELEASE NOTES
 =============
 
 
+2.28.3 - December 6, 2006
+
+	Improved the "metapredicates" example in order to illustrate the use of 
+	closures instead of goals as meta-arguments.
+
+
 2.28.2 - November 6, 2006
 
 	Corrected a compiler bug where unknown entities will not be report when 

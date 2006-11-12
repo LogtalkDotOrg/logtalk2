@@ -59,3 +59,38 @@ exit: sort([4,9],[4,9])
 Sorted = [1,2,3,4,9] ? 
 
 yes
+
+
+% call the meta-predicate apply/2 directly:
+
+| ?- meta::test_this.
+
+2, b
+
+yes
+
+
+% send an apply/2 message to self:
+
+| ?- meta::test_self.
+
+2, b
+
+yes
+
+
+% the same but through a descendant object:
+
+| ?- desc::test_self.
+
+2, b
+
+yes
+
+
+% send an apply/2 message from another object:
+
+| ?- ?- test::test_obj.
+1, w
+
+yes
