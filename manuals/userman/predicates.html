@@ -106,7 +106,7 @@ Some old Prolog compilers supported some sort of mode directives to improve perf
 <h3>Meta-predicate directive<a id="predicates_meta"></a></h3>
 
 <p>
-Some predicates may have arguments that will be called as goals or closures that will be used for constructing a call. To ensure that these calls and closures will be executed in the correct scope (i.e. in the calling context, not in the predicate definition context) we need to use the <a title="Consult reference manual" href="../refman/directives/meta_predicate1.html"><code>meta_predicate/1</code></a> directive. For example:
+Some predicates may have arguments that will be called as goals or closures that will be used for constructing a call. To ensure that these calls and closures will be executed in the correct scope (i.e. in the calling context, <em>this</em>, not in the predicate definition context) we need to use the <a title="Consult reference manual" href="../refman/directives/meta_predicate1.html"><code>meta_predicate/1</code></a> directive. For example:
 </p>
 <pre>:- meta_predicate(findall(*, ::, *)).</pre>
 <p>
@@ -336,7 +336,7 @@ A category may only contain clauses for static predicates. Nevertheless, as the 
 <h3>Meta-predicates<a id="predicates_metadef"></a></h3>
 
 <p>
-Meta-predicates may be defined inside objects (and categories) as any other predicate. A meta-predicate is declared using the <code>meta_predicate/1</code> directive as described earlier on this section. When defining a meta-predicate, the arguments in the clause heads corresponding to the meta-arguments must be variables. All meta-arguments are called in the context of the <em>sender</em> of the message that resulted in the execution of the meta-predicate.
+Meta-predicates may be defined inside objects (and categories) as any other predicate. A meta-predicate is declared using the <code>meta_predicate/1</code> directive as described earlier on this section. When defining a meta-predicate, the arguments in the clause heads corresponding to the meta-arguments must be variables. All meta-arguments are called in the context of the object calling the meta-predicate (either directly or through message sending).
 </p>
 <p>
 Some meta-predicates have meta-arguments which are not goals but closures. Logtalk supports the definition of meta-predicates that are called with closures instead of goals as long as the definition uses the Logtalk built-in predicates <a title="Consult reference manual" href="../refman/methods/call1.html"><code>call/N</code></a> to call the closure with the addtional arguments. For example:
