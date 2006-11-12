@@ -65,32 +65,24 @@ yes
 
 | ?- meta::test_this.
 
-2, b
+1, meta
 
 yes
 
 
 % send an apply/2 message to self:
 
-| ?- meta::test_self.
-
-2, b
-
-yes
-
-
-% the same but through a descendant object:
-
 | ?- desc::test_self.
 
-2, b
+2, desc
 
 yes
 
 
 % send an apply/2 message from another object:
 
-| ?- ?- test::test_obj.
-1, w
+| ?- test::test_obj.
+
+3, test
 
 yes
