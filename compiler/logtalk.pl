@@ -11192,7 +11192,7 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	).
 
 
-% return the solution found after killing all the competing threads and removing any other matching replies:
+% return the solution found:
 
 '$lgt_mt_det_reply'(_, Goal, Sender, This, Self, _, Goal, Sender, This, Self, Result) :-
 	(	Result == success ->
