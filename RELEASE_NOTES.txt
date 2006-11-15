@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.28.3 - December 6, 2006
 
+	Added a new option, "once", to the threaded_call/2 built-in predicate 
+	and method in order to support deterministic asynchronous calls.
+
 	Improved the "metapredicates" example in order to illustrate the use of 
 	closures instead of goals as meta-arguments.
 

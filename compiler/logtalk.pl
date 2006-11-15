@@ -11041,7 +11041,10 @@ current_logtalk_flag(version, version(2, 28, 3)).
 		;	(	'$lgt_member'(atomic, Options) ->		% object will not accept other threaded goals until this one is proved
 				(	'$lgt_member'(noreply, Options) ->	% don't bother reporting goal success, failure, or exception
 					thread_create(catch(Goal, _, true), AtomicId, [detached(false)])
-				;	thread_create('$lgt_mt_non_det_goal'(Goal, Sender, This, Self, Return), AtomicId, [detached(false)])
+				;	(	'$lgt_member'(once, Options) ->
+						thread_create('$lgt_mt_det_goal'(Goal, Sender, This, Self, Return), AtomicId, [detached(false)])
+					;	thread_create('$lgt_mt_non_det_goal'(Goal, Sender, This, Self, Return), AtomicId, [detached(false)])
+					)
 				),
 				thread_join(AtomicId, _)				% wait until atomic goal terminates
 			;	'$lgt_member'(first, Options) ->		% goal is one of a set of competing goals performing the same task
@@ -11049,8 +11052,11 @@ current_logtalk_flag(version, version(2, 28, 3)).
 				thread_send_message(Return, '$lgt_det_id'(Goal, Sender, This, Self, DetId))
 			;	'$lgt_member'(noreply, Options) ->		% don't bother reporting goal success, failure, or exception
 				thread_create(catch(Goal, _, true), _, [detached(true)])
-			;	thread_create('$lgt_mt_non_det_goal'(Goal, Sender, This, Self, Return), NondetId, [detached(false)]),
-				thread_send_message(Return, '$lgt_non_det_id'(Goal, Sender, This, Self, NondetId))
+			;	(	'$lgt_member'(once, Options) ->
+					thread_create('$lgt_mt_det_goal'(Goal, Sender, This, Self, Return), _, [detached(false)])
+				;	thread_create('$lgt_mt_non_det_goal'(Goal, Sender, This, Self, Return), NondetId, [detached(false)]),
+					thread_send_message(Return, '$lgt_non_det_id'(Goal, Sender, This, Self, NondetId))
+				)
 			)
 		),
 	fail.
@@ -11066,6 +11072,21 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	(	catch(Goal, _, fail) ->
 		thread_send_message(Return, '$lgt_reply'(Goal, Sender, This, Self, success))
 	;	true
+	).
+
+
+
+% '$lgt_mt_det_goal'(+callable, +object_identifier, +object_identifier, +object_identifier, +atom)
+%
+% processes a deterministic message received by an object's thread queue
+
+'$lgt_mt_det_goal'(Goal, Sender, This, Self, Return) :-
+	(	catch(Goal, Error, (thread_send_message(Return, '$lgt_reply'(Goal, Sender, This, Self, Error)), Flag = error)),
+		(	var(Flag) ->
+			thread_send_message(Return, '$lgt_reply'(Goal, Sender, This, Self, success))
+		;	true
+		)
+	;	thread_send_message(Return, '$lgt_reply'(Goal, Sender, This, Self, failure))
 	).
 
 
@@ -11220,6 +11241,7 @@ current_logtalk_flag(version, version(2, 28, 3)).
 '$lgt_valid_threaded_call_option'(atomic).
 '$lgt_valid_threaded_call_option'(first).
 '$lgt_valid_threaded_call_option'(noreply).
+'$lgt_valid_threaded_call_option'(once).
 
 
 % '$lgt_valid_threaded_exit_option'(@nonvar)

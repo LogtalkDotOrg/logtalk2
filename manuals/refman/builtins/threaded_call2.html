@@ -28,7 +28,7 @@
 threaded_call((Goal1, Goal2, ...), Options)
 threaded_call((Goal1; Goal2; ...), Options)</pre>
 <p>
-Prove <code>Goal</code> using a new thread. By default, the proof is done asynchronously. The argument can be a message sending. The result (success, failure, or exception) is sent back to the thread of the object containing the call (<em>this</em>). The option <code>noreply</code> may be used when no reply with the proof results is necessary. The option <code>atomic</code> may be used if the goal has side-effects such as dynamic database updates or input-output operations; this option is only safe if the side-effects are confined to the object where the goal is proved (or to the object receiving the asynchronous message).
+Prove <code>Goal</code> using a new thread. By default, the proof is done asynchronously. The argument can be a message sending. The result (success, failure, or exception) is sent back to the thread of the object containing the call (<em>this</em>). The option <code>noreply</code> may be used when no reply with the proof results is necessary. The option <code>atomic</code> may be used if the goal has side-effects such as dynamic database updates or input-output operations; this option is only safe if the side-effects are confined to the object where the goal is proved (or to the object receiving the asynchronous message). The option <code>once</code> may be used if you want to discard any alternative solutions for <code>Goal</code>.
 </p>
 <p>
 When the argument is a <em>conjunction</em> of goals, the call is equivalent the conjunction of calls of the individual goals. However, when the argument is a <em>disjunction</em> of goals, the call is equivalent to the <em>competing</em> calls of the individual goals: when one of the goals complete, the other ones are aborted (i.e. their threads are terminated). In this case, the corresponding <code>threaded_exit/1-2</code> goal <strong>must</strong> match all the goals in the disjunction. This is useful when you have a set of different methods to solve a problem without knowing a priori which one will lead to the fastest result.
@@ -52,7 +52,7 @@ When the argument is a <em>conjunction</em> of goals, the call is equivalent the
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: October 26, 2006</span>
+		<span>Last updated on: November 15, 2006</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="threaded_call1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="threaded_exit1.html">next</a></span><br/>
