@@ -11181,7 +11181,7 @@ current_logtalk_flag(version, version(2, 28, 3)).
 
 % return the solution found after killing all the competing threads and removing any other matching replies:
 
-'$lgt_mt_competing_reply'(Thread, Goal, Sender, This, Self, CGoal, CSender, CThis, CSelf, Result) :-
+'$lgt_mt_competing_reply'(Thread, Goal, Sender, This, Self, _, CGoal, CSender, CThis, CSelf, Result) :-
 	'$lgt_mt_kill_competing_threads'(Thread, Goal, Sender, This, Self),
 	'$lgt_mt_discard_matching_replies'(Thread, Goal, Sender, This, Self),
 	(	Result == success ->
@@ -11240,8 +11240,8 @@ current_logtalk_flag(version, version(2, 28, 3)).
 
 '$lgt_mt_kill_competing_threads'(Thread, Goal, Sender, This, Self) :-
 	\+ \+ (
-		thread_peek_message(Thread, '$lgt_det_id'(Goal, Sender, This, Self, Id)),
-		thread_get_message(Thread, '$lgt_det_id'(Goal, Sender, This, Self, Id)),
+		thread_peek_message(Thread, '$lgt_competing_id'(Goal, Sender, This, Self, Id)),
+		thread_get_message(Thread, '$lgt_competing_id'(Goal, Sender, This, Self, Id)),
 		catch(thread_signal(Id, thread_exit(true)), _, true),	% force thread exit
 		thread_join(Id, _)),
 	!,
