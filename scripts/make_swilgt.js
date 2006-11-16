@@ -59,6 +59,8 @@ var f1 = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_comp_swi.pl", tr
 var f2 = FSObject.OpenTextFile(logtalk_home + "\\compiler\\logtalk.pl", 1);
 var line;
 
+f1.WriteLine(":- set_prolog_flag(iso, true).");
+f1.WriteLine(":- set_prolog_flag(generate_debug_info, false).");
 f1.WriteLine(":- system_module.");
 while (!f2.AtEndOfStream) {
 	line = f2.ReadLine();
