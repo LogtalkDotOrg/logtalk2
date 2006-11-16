@@ -11053,7 +11053,7 @@ current_logtalk_flag(version, version(2, 28, 3)).
 			;	'$lgt_member'(noreply, Options) ->		% don't bother reporting goal success, failure, or exception
 				thread_create(catch(Goal, _, true), _, [detached(true)])
 			;	(	'$lgt_member'(once, Options) ->
-					thread_create('$lgt_mt_det_goal'(Goal, Sender, This, Self, Return), DetId, [detached(false)]),
+					thread_create('$lgt_mt_det_goal'(Goal, Sender, This, Self, Return), DetId, [detached(true)]),
 					thread_send_message(Return, '$lgt_det_id'(Goal, Sender, This, Self, DetId))
 				;	thread_create('$lgt_mt_non_det_goal'(Goal, Sender, This, Self, Return), NondetId, [detached(false)]),
 					thread_send_message(Return, '$lgt_non_det_id'(Goal, Sender, This, Self, NondetId))
@@ -11166,26 +11166,26 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	'$lgt_mt_discard_matching_replies'(Thread, Goal, Sender, This, Self).
 
 '$lgt_mt_get_reply'(Thread, Goal, Sender, This, Self, _) :-
-	copy_term((Goal, Sender, This, Self), (CGoal, CSender, CThis, CSelf)),
+	copy_term((Goal, Sender, This, Self), (RGoal, RSender, RThis, RSelf)),
 	% we MUST get the reply before finding out if we're dealing with either det or non-det goals;
-	% this ensures that the '$lgt_det_id'/5 or '$lgt_non_det_id'/5 messages are already available 
-	thread_get_message(Thread, '$lgt_reply'(CGoal, CSender, CThis, CSelf, Result)),
-	(	thread_peek_message(Thread, '$lgt_det_id'(CGoal, CSender, CThis, CSelf, Id)) ->
-		'$lgt_mt_det_reply'(Thread, Goal, Sender, This, Self, Id, CGoal, CSender, CThis, CSelf, Result)
-	;	thread_peek_message(Thread, '$lgt_non_det_id'(CGoal, CSender, CThis, CSelf, Id)),
-		'$lgt_mt_non_det_reply'(Thread, Goal, Sender, This, Self, Id, CGoal, CSender, CThis, CSelf, Result)
-	;	thread_peek_message(Thread, '$lgt_competing_id'(CGoal, CSender, CThis, CSelf, Id)),
-		'$lgt_mt_competing_reply'(Thread, Goal, Sender, This, Self, Id, CGoal, CSender, CThis, CSelf, Result)
+	% this ensures that the '$lgt_competing_id'/5 or '$lgt_non_det_id'/5 messages are already available 
+	thread_get_message(Thread, '$lgt_reply'(RGoal, RSender, RThis, RSelf, Result)),
+	(	thread_peek_message(Thread, '$lgt_det_id'(RGoal, RSender, RThis, RSelf, Id)) ->
+		'$lgt_mt_det_reply'(Thread, Goal, Sender, This, Self, Id, RGoal, RSender, RThis, RSelf, Result)
+	;	thread_peek_message(Thread, '$lgt_non_det_id'(RGoal, RSender, RThis, RSelf, Id)),
+		'$lgt_mt_non_det_reply'(Thread, Goal, Sender, This, Self, Id, RGoal, RSender, RThis, RSelf, Result)
+	;	thread_peek_message(Thread, '$lgt_competing_id'(RGoal, RSender, RThis, RSelf, Id)),
+		'$lgt_mt_competing_reply'(Thread, Goal, Sender, This, Self, Id, RGoal, RSender, RThis, RSelf, Result)
 	).
 
 
 % return the solution found after killing all the competing threads and removing any other matching replies:
 
-'$lgt_mt_competing_reply'(Thread, Goal, Sender, This, Self, _, CGoal, CSender, CThis, CSelf, Result) :-
+'$lgt_mt_competing_reply'(Thread, Goal, Sender, This, Self, _, RGoal, RSender, RThis, RSelf, Result) :-
 	'$lgt_mt_kill_competing_threads'(Thread, Goal, Sender, This, Self),
 	'$lgt_mt_discard_matching_replies'(Thread, Goal, Sender, This, Self),
 	(	Result == success ->
-		(Goal, Sender, This, Self) = (CGoal, CSender, CThis, CSelf)
+		(Goal, Sender, This, Self) = (RGoal, RSender, RThis, RSelf)
 	;	Result == failure ->
 		fail
 	;	throw(Result)
@@ -11218,8 +11218,8 @@ current_logtalk_flag(version, version(2, 28, 3)).
 
 '$lgt_mt_non_det_reply'(Thread, Goal, Sender, This, Self, Id, _, _, _, _, _) :-
 	thread_send_message(Id, '$lgt_next'),
-	thread_get_message(Thread, '$lgt_reply'(CGoal, CSender, CThis, CSelf, Result)),
-	'$lgt_mt_non_det_reply'(Thread, Goal, Sender, This, Self, Id, CGoal, CSender, CThis, CSelf, Result).
+	thread_get_message(Thread, '$lgt_reply'(RGoal, RSender, RThis, RSelf, Result)),
+	'$lgt_mt_non_det_reply'(Thread, Goal, Sender, This, Self, Id, RGoal, RSender, RThis, RSelf, Result).
 
 
 
@@ -11254,7 +11254,7 @@ current_logtalk_flag(version, version(2, 28, 3)).
 % '$lgt_valid_threaded_call_option'(@nonvar)
 
 '$lgt_valid_threaded_call_option'(atomic).
-'$lgt_valid_threaded_call_option'(first).
+'$lgt_valid_threaded_call_option'(first).	% system, not user option
 '$lgt_valid_threaded_call_option'(noreply).
 '$lgt_valid_threaded_call_option'(once).
 
