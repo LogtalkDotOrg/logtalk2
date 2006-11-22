@@ -24,6 +24,9 @@ RELEASE NOTES
 	Improved the "metapredicates" example in order to illustrate the use of 
 	closures instead of goals as meta-arguments.
 
+	Added a reference to the  "e" Windows text editor, which supports the 
+	TextMate 1.x text editor syntax configuration files.
+
 
 2.28.2 - November 6, 2006
 
