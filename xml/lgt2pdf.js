@@ -101,6 +101,10 @@ if (!FSObject.FileExists(WshShell.CurrentDirectory + "\\logtalk.dtd")) {
 	FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.dtd", WshShell.CurrentDirectory + "\\logtalk.dtd");
 }
 
+if (!FSObject.FileExists(WshShell.CurrentDirectory + "\\custom.ent")) {
+	FSObject.CopyFile(logtalk_home + "\\xml\\custom.ent", WshShell.CurrentDirectory + "\\custom.ent");
+}
+
 if (!FSObject.FileExists(WshShell.CurrentDirectory + "\\logtalk.xsd")) {
 	FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.xsd", WshShell.CurrentDirectory + "\\logtalk.xsd");
 }

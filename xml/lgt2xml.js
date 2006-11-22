@@ -83,6 +83,10 @@ if (!FSObject.FileExists(directory + "\\logtalk.dtd")) {
 	FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.dtd", directory + "\\logtalk.dtd");
 }
 
+if (!FSObject.FileExists(directory + "\\custom.ent")) {
+	FSObject.CopyFile(logtalk_home + "\\xml\\custom.ent", directory + "\\custom.ent");
+}
+
 if (!FSObject.FileExists(directory + "\\logtalk.xsd")) {
 	FSObject.CopyFile(logtalk_home + "\\xml\\logtalk.xsd", directory + "\\logtalk.xsd");
 }

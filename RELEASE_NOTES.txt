@@ -18,6 +18,9 @@ RELEASE NOTES
 	Modified the SWI-Prolog config file and integration scripts to set the 
 	flag "iso" to "true".
 
+	Corrected a bug in the lgt2*.js scripts where the "custom.ent" file was 
+	not copied when generating (X)HTML and PDF files.
+
 	Improved the "metapredicates" example in order to illustrate the use of 
 	closures instead of goals as meta-arguments.
 
