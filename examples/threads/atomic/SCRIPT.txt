@@ -14,7 +14,7 @@ Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 
 % send three asynchronous messages whose corresponding methods perform output operations:
 
-| ?- threaded_call(nasty1::io(alpha), [noreply]), threaded_call(nasty1::io(digit), [noreply]), threaded_call(nasty1::io(alpha), [noreply]).
+| ?- threaded_ignore(nasty1::io(alpha)), threaded_ignore(nasty1::io(digit)), threaded_ignore(nasty1::io(alpha)).
 
 a0ab1bc2c3ddefef45gg6hh7ii8jkjk9
 llmmnnopopqqrrsstztzyyxxwwuv
@@ -23,34 +23,15 @@ uv
 Yes
 
 
-% the same three asynchronous messages but making them atomic for the receiver object:
-
-| ?- threaded_call(nasty1::io(alpha), [atomic, noreply]), threaded_call(nasty1::io(digit), [atomic, noreply]), threaded_call(nasty1::io(alpha), [atomic, noreply]).
-
-abcdefghijklmnopqrstzyxwuv
-0123456789
-abcdefghijklmnopqrstzyxwuv
-
-Yes
-
-
 % send three asynchronous messages whose corresponding methods perform database updates
 % (this may or may not work, most likely will throw an exception):
 
-| ?- threaded_call(nasty1::update_db(_), [noreply]), threaded_call(nasty1::update_db(_), [noreply]), threaded_call(nasty1::update_db(_), [noreply]).
+| ?- threaded_ignore(nasty1::update_db(_)), threaded_ignore(nasty1::update_db(_)), threaded_ignore(nasty1::update_db(_)).
 
 No
 
 
-% the same three asynchronous messages but making them atomic for the receiver object
-% (this should always work):
-
-| ?- threaded_call(nasty1::update_db(_), [atomic, noreply]), threaded_call(nasty1::update_db(_), [atomic, noreply]), threaded_call(nasty1::update_db(_), [atomic, noreply]).
-
-Yes
-
-
-% a better solution is to declare predicates that need to be thread syncronized as "atomic",
+% the best solution is to declare predicates that need to be thread syncronized as "atomic",
 % as exemplified in object "nasty2":
 
 | ?- nasty2::(io(alpha), io(digit), io(alpha)).

@@ -31,7 +31,7 @@ no
 
 % make a threaded call by commiting to the first solution found:
 
-| ?- threaded_call(lists::member(X, [1,2,3]), [once]).
+| ?- threaded_once(lists::member(X, [1,2,3])).
 
 X = _G189 
 yes

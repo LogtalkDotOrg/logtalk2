@@ -210,7 +210,11 @@
 				<string>[^A-Za-z0-9_](term_expansion)\(</string>
 				<string>[^A-Za-z0-9_](phrase)\(</string>
 				<string>[^A-Za-z0-9_](threaded_call)\(</string>
+				<string>[^A-Za-z0-9_](threaded_once)\(</string>
+				<string>[^A-Za-z0-9_](threaded_ignore)\(</string>
 				<string>[^A-Za-z0-9_](threaded_exit)\(</string>
+				<string>[^A-Za-z0-9_](threaded_peek)\(</string>
+				<string>[^A-Za-z0-9_](threaded_discard)\(</string>
 			</array>
 		</dict>
 

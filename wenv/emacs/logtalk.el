@@ -4,8 +4,8 @@
 
 ;; Author: Paulo Moura
 ;; Creation date: November 15, 2003
-;; Last modification date: October 16, 2006
-;; Version: 0.91
+;; Last modification date: November 23, 2006
+;; Version: 0.92
 
 ;; Installation:
 ;;
@@ -27,7 +27,7 @@
 
 ;; setup 
 
-(defvar logtalk-mode-version "0.91"
+(defvar logtalk-mode-version "0.92"
 	"Logtalk mode version number")
 
 (defvar logtalk-mode-hook nil)
@@ -111,7 +111,6 @@
 		("\\(current_predicate\\|predicate_property\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
 		("\\(a\\(?:bolish\\|ssert[az]\\)\\|clause\\|retract\\(?:all\\)?\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
 		("\\(bagof\\|f\\(?:\\(?:ind\\|or\\)all\\)\\|setof\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
-		("\\(threaded_\\(?:call\\|exit\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
 		("\\(after\\|before\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
 		("\\(phrase\\|expand_term\\|term_expansion\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
 	))
@@ -212,6 +211,10 @@
 		;;
 		("/\\\\\\|<<\\|>>\\|\\\\/" . 'logtalk-built-in-predicate-face)
 		("\\\\" . 'logtalk-built-in-predicate-face)
+		;;
+		;; multi-threading:
+		;;
+		("\\(threaded_\\(?:call\\|once\\|ignore\\|exit\\|peek\\|discard\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 	))
 
 

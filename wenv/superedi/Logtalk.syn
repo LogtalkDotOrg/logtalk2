@@ -163,7 +163,11 @@ expand_term
 term_expansion
 phrase
 threaded_call
+threaded_once
+threaded_ignore
 threaded_exit
+threaded_peek
+threaded_discard
 
 ; Mode operators
 ?

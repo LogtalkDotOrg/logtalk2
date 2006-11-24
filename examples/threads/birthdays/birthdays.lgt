@@ -74,7 +74,7 @@
 		self(Self),
 		write('Happy birthday from '), write(From), write('!'), nl,
 		write('Thanks! Here, have a slice of cake, '), write(From), write('.'), nl,
-		threaded_call(From::cake_slice(Self), [noreply]).
+		threaded_ignore(From::cake_slice(Self)).
 
 	cake_slice(From) :-
 		write('Thanks for the cake '), write(From), write('!'), nl.
@@ -85,6 +85,6 @@
 
 	after(Friend, birthday, _) :-
 		self(Self),
-		threaded_call(Friend::happy_birthday(Self), [noreply]).
+		threaded_ignore(Friend::happy_birthday(Self)).
 
 :- end_object.

@@ -69,9 +69,11 @@ eval $xslt_proc -o builtins/abolish_events5.section refman.xsl builtins/abolish_
 eval $xslt_proc -o builtins/current_event5.section refman.xsl builtins/current_event5.html
 eval $xslt_proc -o builtins/define_events5.section refman.xsl builtins/define_events5.html
 eval $xslt_proc -o builtins/threaded_call1.section refman.xsl builtins/threaded_call1.html
-eval $xslt_proc -o builtins/threaded_call2.section refman.xsl builtins/threaded_call2.html
+eval $xslt_proc -o builtins/threaded_once1.section refman.xsl builtins/threaded_once1.html
+eval $xslt_proc -o builtins/threaded_ignore1.section refman.xsl builtins/threaded_ignore1.html
 eval $xslt_proc -o builtins/threaded_exit1.section refman.xsl builtins/threaded_exit1.html
-eval $xslt_proc -o builtins/threaded_exit2.section refman.xsl builtins/threaded_exit2.html
+eval $xslt_proc -o builtins/threaded_peek1.section refman.xsl builtins/threaded_peek1.html
+eval $xslt_proc -o builtins/threaded_discard1.section refman.xsl builtins/threaded_discard1.html
 eval $xslt_proc -o builtins/logtalk_compile1.section refman.xsl builtins/logtalk_compile1.html
 eval $xslt_proc -o builtins/logtalk_compile2.section refman.xsl builtins/logtalk_compile2.html
 eval $xslt_proc -o builtins/logtalk_load1.section refman.xsl builtins/logtalk_load1.html
@@ -163,9 +165,11 @@ cat -s \
 	builtins/current_event5.section \
 	builtins/define_events5.section \
 	builtins/threaded_call1.section \
-	builtins/threaded_call2.section \
+	builtins/threaded_once1.section \
+	builtins/threaded_ignore1.section \
 	builtins/threaded_exit1.section \
-	builtins/threaded_exit2.section \
+	builtins/threaded_peek1.section \
+	builtins/threaded_discard1.section \
 	builtins/logtalk_compile1.section \
 	builtins/logtalk_compile2.section \
 	builtins/logtalk_load1.section \

@@ -10,10 +10,11 @@ RELEASE NOTES
 =============
 
 
-2.28.3 - December 6, 2006
+2.28.3 - December ??, 2006
 
-	Added a new option, "once", to the threaded_call/2 built-in predicate in 
-	order to support deterministic asynchronous calls.
+	Removed the experimental threaded_call/2 and threaded_exit/2 thread 
+	predicates, replaced by new threaded_once/1, threaded_ignore/1, 
+	threaded_peek/1, and threaded_discard/1 predicates.
 
 	Modified the SWI-Prolog config file and integration scripts to set the 
 	flag "iso" to "true".

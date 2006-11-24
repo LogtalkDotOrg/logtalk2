@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	September 17, 2006
+" Last Change:	November 23, 2006
 
 
 " Quit when a syntax file was already loaded:
@@ -117,6 +117,8 @@ syn match	logtalkBuiltIn		"\<logtalk_\(compile\|l\(ibrary_path\|oad\)\)\ze("
 
 syn match	logtalkBuiltIn		"\<\(for\|retract\)all\ze("
 
+syn match	logtalkBuiltIn		"\<threaded_\(call\|once\|ignore\|exit\|peek\|discard\)\ze("
+
 
 " Logtalk built-in methods
 
@@ -140,8 +142,6 @@ syn match	logtalkBuiltInMethod	"\<after\ze("
 syn match	logtalkBuiltInMethod	"\<expand_term\ze("
 syn match	logtalkBuiltInMethod	"\<term_expansion\ze("
 syn match	logtalkBuiltInMethod	"\<phrase\ze("
-
-syn match	logtalkBuiltInMethod	"\<threaded_\(call\|exit\)\ze("
 
 
 " Mode operators
