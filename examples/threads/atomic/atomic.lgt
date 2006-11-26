@@ -2,9 +2,9 @@
 :- object(nasty1).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2006/04/14,
+		date is 2006/11/26,
 		comment is 'Simple example for using the "atomic" option for multi-threading calls with side-effects.']).
 
 	:- threaded.
@@ -62,9 +62,9 @@
 :- object(nasty2).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2006/04/14,
+		date is 2006/11/26,
 		comment is 'Simple example for using the "atomic" option for multi-threading calls with side-effects.']).
 
 	:- threaded.

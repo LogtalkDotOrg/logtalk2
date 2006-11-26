@@ -3,9 +3,9 @@
 	implements(event_handlersp)).
 
 	:- info([
-		version is 1.0,
-		author is 'Peter Robinson and Paulo Moura',
-		date is 2006/04/09,
+		version is 1.1,
+		author is 'Paulo Moura and Peter Robinson',
+		date is 2006/11/26,
 		comment is 'Simple multi-threading example with agents and their birthdays.']).
 
 	:- threaded.

@@ -14,7 +14,7 @@ RELEASE NOTES
 
 	Removed the experimental threaded_call/2 and threaded_exit/2 thread 
 	predicates, replaced by new threaded_once/1, threaded_ignore/1, 
-	threaded_peek/1, and threaded_discard/1 predicates.
+	threaded_race/1, threaded_peek/1, and threaded_discard/1 predicates.
 
 	Modified the SWI-Prolog config file and integration scripts to set the 
 	flag "iso" to "true".

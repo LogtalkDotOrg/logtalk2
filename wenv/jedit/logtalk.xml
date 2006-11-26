@@ -249,6 +249,7 @@
 			<FUNCTION>threaded_call</FUNCTION>
 			<FUNCTION>threaded_once</FUNCTION>
 			<FUNCTION>threaded_ignore</FUNCTION>
+			<FUNCTION>threaded_race</FUNCTION>
 			<FUNCTION>threaded_exit</FUNCTION>
 			<FUNCTION>threaded_peek</FUNCTION>
 			<FUNCTION>threaded_discard</FUNCTION>

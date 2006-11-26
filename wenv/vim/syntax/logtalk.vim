@@ -117,7 +117,7 @@ syn match	logtalkBuiltIn		"\<logtalk_\(compile\|l\(ibrary_path\|oad\)\)\ze("
 
 syn match	logtalkBuiltIn		"\<\(for\|retract\)all\ze("
 
-syn match	logtalkBuiltIn		"\<threaded_\(call\|once\|ignore\|exit\|peek\|discard\)\ze("
+syn match	logtalkBuiltIn		"\<threaded_\(call\|once\|ignore\|race\|exit\|peek\|discard\)\ze("
 
 
 " Logtalk built-in methods

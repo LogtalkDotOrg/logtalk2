@@ -5599,16 +5599,6 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	\+ callable(Pred),
 	throw(type_error(callable, Pred)).
 
-'$lgt_tr_body'(threaded_call((Pred, Preds)), (TPred, TPreds), (DPred, DPreds), Ctx) :-
-	!,
-	'$lgt_tr_body'(threaded_call(Pred), TPred, DPred, Ctx),
-	'$lgt_tr_body'(threaded_call(Preds), TPreds, DPreds, Ctx).
-
-'$lgt_tr_body'(threaded_call((Pred; Preds)), TPred, DPred, Ctx) :-
-	!,
-	'$lgt_convert_disj_to_conj'((Pred; Preds), Conjunction),
-	'$lgt_tr_body'(threaded_call(Conjunction, [first]), TPred, DPred, Ctx).
-
 '$lgt_tr_body'(threaded_call(Obj::Pred), MTPred, '$lgt_dbg_goal'(threaded_call(Obj::Pred), MTPred, Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
@@ -5628,6 +5618,58 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	MTPred = '$lgt_mt_send_goal'(This, TPred, Sender, This, Self, []).
 
 
+'$lgt_tr_body'(threaded_race(_), _, _, _) :-
+	'$lgt_compiler_flag'(report, on),
+	\+ '$lgt_pp_threaded',
+	'$lgt_inc_compile_warnings_counter',
+	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
+	fail.
+
+'$lgt_tr_body'(threaded_race(Pred), MTPred, '$lgt_dbg_goal'(threaded_race(Pred), MTPred, Ctx), Ctx) :-
+	var(Pred),
+	!,
+	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
+	'$lgt_tr_body'(Pred, TPred, _, Ctx),
+	MTPred = '$lgt_mt_send_goal'(This, TPred, Sender, This, Self, competing).
+
+'$lgt_tr_body'(threaded_race(Pred), _, _, _) :-
+	\+ callable(Pred),
+	throw(type_error(callable, Pred)).
+
+'$lgt_tr_body'(threaded_race(Obj::(Pred; Preds)), (TPred, TPreds), (DPred, DPreds), Ctx) :-
+	!,
+	'$lgt_tr_body'(threaded_race(Obj::Pred), TPred, DPred, Ctx),
+	'$lgt_tr_body'(threaded_race(Obj::Preds), TPreds, DPreds, Ctx).
+
+'$lgt_tr_body'(threaded_race(Obj::Pred), MTPred, '$lgt_dbg_goal'(threaded_race(Obj::Pred), MTPred, Ctx), Ctx) :-
+	!,
+	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
+	'$lgt_tr_msg'(Pred, Obj, TPred, This),
+	MTPred = '$lgt_mt_send_goal'(Obj, TPred, Sender, This, Self, competing).
+
+'$lgt_tr_body'(threaded_race(::(Pred; Preds)), (TPred, TPreds), (DPred, DPreds), Ctx) :-
+	!,
+	'$lgt_tr_body'(threaded_race(::Pred), TPred, DPred, Ctx),
+	'$lgt_tr_body'(threaded_race(::Preds), TPreds, DPreds, Ctx).
+
+'$lgt_tr_body'(threaded_race(::Pred), MTPred, '$lgt_dbg_goal'(threaded_race(::Pred), MTPred, Ctx), Ctx) :-
+	!,
+	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
+	'$lgt_tr_self_msg'(Pred, TPred, This, Self),
+	MTPred = '$lgt_mt_send_goal'(Self, TPred, Sender, This, Self, competing).
+
+'$lgt_tr_body'(threaded_race((Pred; Preds)), (TPred, TPreds), (DPred, DPreds), Ctx) :-
+	!,
+	'$lgt_tr_body'(threaded_race(Pred), TPred, DPred, Ctx),
+	'$lgt_tr_body'(threaded_race(Preds), TPreds, DPreds, Ctx).
+
+'$lgt_tr_body'(threaded_race(Pred), MTPred, '$lgt_dbg_goal'(threaded_race(Pred), MTPred, Ctx), Ctx) :-
+	!,
+	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
+	'$lgt_tr_body'(Pred, TPred, _, Ctx),
+	MTPred = '$lgt_mt_send_goal'(This, TPred, Sender, This, Self, competing).
+
+
 '$lgt_tr_body'(threaded_once(_, _), _, _, _) :-
 	'$lgt_compiler_flag'(report, on),
 	\+ '$lgt_pp_threaded',
@@ -5640,39 +5682,29 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Pred, TPred, _, Ctx),
-	MTPred = '$lgt_mt_send_goal'(This, TPred, Sender, This, Self, [once]).
+	MTPred = '$lgt_mt_send_goal'(This, TPred, Sender, This, Self, once).
 
 '$lgt_tr_body'(threaded_once(Pred, _), _, _, _) :-
 	\+ callable(Pred),
 	throw(type_error(callable, Pred)).
 
-'$lgt_tr_body'(threaded_once((Pred, Preds)), (TPred, TPreds), (DPred, DPreds), Ctx) :-
-	!,
-	'$lgt_tr_body'(threaded_once(Pred, Options), TPred, DPred, Ctx),
-	'$lgt_tr_body'(threaded_once(Preds, Options), TPreds, DPreds, Ctx).
-
-'$lgt_tr_body'(threaded_once((Pred; Preds)), TPred, DPred, Ctx) :-
-	!,
-	'$lgt_convert_disj_to_conj'((Pred; Preds), Conjunction),
-	'$lgt_tr_body'(threaded_once(Conjunction, [first, once]), TPred, DPred, Ctx).
-
 '$lgt_tr_body'(threaded_once(Obj::Pred), MTPred, '$lgt_dbg_goal'(threaded_once(Obj::Pred), MTPred, Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_msg'(Pred, Obj, TPred, This),
-	MTPred = '$lgt_mt_send_goal'(Obj, TPred, Sender, This, Self, [once]).
+	MTPred = '$lgt_mt_send_goal'(Obj, TPred, Sender, This, Self, once).
 
 '$lgt_tr_body'(threaded_once(::Pred), MTPred, '$lgt_dbg_goal'(threaded_once(::Pred), MTPred, Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_self_msg'(Pred, TPred, This, Self),
-	MTPred = '$lgt_mt_send_goal'(Self, TPred, Sender, This, Self, [once]).
+	MTPred = '$lgt_mt_send_goal'(Self, TPred, Sender, This, Self, once).
 
 '$lgt_tr_body'(threaded_once(Pred), MTPred, '$lgt_dbg_goal'(threaded_once(Pred), MTPred, Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Pred, TPred, _, Ctx),
-	MTPred = '$lgt_mt_send_goal'(This, TPred, Sender, This, Self, [once]).
+	MTPred = '$lgt_mt_send_goal'(This, TPred, Sender, This, Self, once).
 
 
 '$lgt_tr_body'(threaded_ignore(_, _), _, _, _) :-
@@ -5687,39 +5719,29 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Pred, TPred, _, Ctx),
-	MTPred = '$lgt_mt_send_goal'(This, TPred, Sender, This, Self, once).
+	MTPred = '$lgt_mt_send_goal'(This, TPred, Sender, This, Self, ignore).
 
 '$lgt_tr_body'(threaded_ignore(Pred, _), _, _, _) :-
 	\+ callable(Pred),
 	throw(type_error(callable, Pred)).
 
-'$lgt_tr_body'(threaded_ignore((Pred, Preds)), (TPred, TPreds), (DPred, DPreds), Ctx) :-
-	!,
-	'$lgt_tr_body'(threaded_ignore(Pred, Options), TPred, DPred, Ctx),
-	'$lgt_tr_body'(threaded_ignore(Preds, Options), TPreds, DPreds, Ctx).
-
-'$lgt_tr_body'(threaded_ignore((Pred; Preds)), TPred, DPred, Ctx) :-
-	!,
-	'$lgt_convert_disj_to_conj'((Pred; Preds), Conjunction),
-	'$lgt_tr_body'(threaded_ignore(Conjunction, [first, noreply]), TPred, DPred, Ctx).
-
 '$lgt_tr_body'(threaded_ignore(Obj::Pred), MTPred, '$lgt_dbg_goal'(threaded_ignore(Obj::Pred), MTPred, Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_msg'(Pred, Obj, TPred, This),
-	MTPred = '$lgt_mt_send_goal'(Obj, TPred, Sender, This, Self, [noreply]).
+	MTPred = '$lgt_mt_send_goal'(Obj, TPred, Sender, This, Self, ignore).
 
 '$lgt_tr_body'(threaded_ignore(::Pred), MTPred, '$lgt_dbg_goal'(threaded_ignore(::Pred), MTPred, Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_self_msg'(Pred, TPred, This, Self),
-	MTPred = '$lgt_mt_send_goal'(Self, TPred, Sender, This, Self, [noreply]).
+	MTPred = '$lgt_mt_send_goal'(Self, TPred, Sender, This, Self, ignore).
 
 '$lgt_tr_body'(threaded_ignore(Pred), MTPred, '$lgt_dbg_goal'(threaded_ignore(Pred), MTPred, Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Pred, TPred, _, Ctx),
-	MTPred = '$lgt_mt_send_goal'(This, TPred, Sender, This, Self, [noreply]).
+	MTPred = '$lgt_mt_send_goal'(This, TPred, Sender, This, Self, ignore).
 
 
 '$lgt_tr_body'(threaded_exit(_), _, _, _) :-
@@ -11199,29 +11221,19 @@ current_logtalk_flag(version, version(2, 28, 3)).
 
 '$lgt_mt_obj_dispatcher'(Thread) :-
 	repeat,
-		thread_get_message(Thread, '$lgt_goal'(Goal, Sender, This, Self, Options, Return)),
-		(	Goal == '$lgt_exit' ->						% when abolishing/reloading the object or just halting Logtalk
+		thread_get_message(Thread, '$lgt_goal'(Goal, Sender, This, Self, Option, Return)),
+		(	Goal == '$lgt_exit' ->		% when abolishing/reloading the object or just halting Logtalk
 			thread_exit(true)
-		;	(	'$lgt_member'(atomic, Options) ->		% object will not accept other threaded goals until this one is proved
-				(	'$lgt_member'(noreply, Options) ->	% don't bother reporting goal success, failure, or exception
-					thread_create(catch(Goal, _, true), AtomicId, [detached(false)])
-				;	(	'$lgt_member'(once, Options) ->
-						thread_create('$lgt_mt_det_goal'(Goal, Sender, This, Self, Return), AtomicId, [detached(false)])
-					;	thread_create('$lgt_mt_non_det_goal'(Goal, Sender, This, Self, Return), AtomicId, [detached(false)])
-					)
-				),
-				thread_join(AtomicId, _)				% wait until atomic goal terminates
-			;	'$lgt_member'(first, Options) ->		% goal is one of a set of competing goals performing the same task
+		;	(	Option == competing ->		% goal is one of a set of competing goals performing the same task
 				thread_create('$lgt_mt_competing_goal'(Goal, Sender, This, Self, Return), CompetingId, [detached(false)]),
 				thread_send_message(Return, '$lgt_competing_id'(Goal, Sender, This, Self, CompetingId))
-			;	'$lgt_member'(noreply, Options) ->		% don't bother reporting goal success, failure, or exception
+			;	Option == ignore ->		% don't bother reporting goal success, failure, or exception
 				thread_create(catch(Goal, _, true), _, [detached(true)])
-			;	(	'$lgt_member'(once, Options) ->
-					thread_create('$lgt_mt_det_goal'(Goal, Sender, This, Self, Return), DetId, [detached(true)]),
-					thread_send_message(Return, '$lgt_det_id'(Goal, Sender, This, Self, DetId))
-				;	thread_create('$lgt_mt_non_det_goal'(Goal, Sender, This, Self, Return), NondetId, [detached(false)]),
-					thread_send_message(Return, '$lgt_non_det_id'(Goal, Sender, This, Self, NondetId))
-				)
+			;	Option == once ->
+				thread_create('$lgt_mt_det_goal'(Goal, Sender, This, Self, Return), DetId, [detached(true)]),
+				thread_send_message(Return, '$lgt_det_id'(Goal, Sender, This, Self, DetId))
+			;	thread_create('$lgt_mt_non_det_goal'(Goal, Sender, This, Self, Return), NondetId, [detached(false)]),
+				thread_send_message(Return, '$lgt_non_det_id'(Goal, Sender, This, Self, NondetId))
 			)
 		),
 	fail.

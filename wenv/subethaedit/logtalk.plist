@@ -212,6 +212,7 @@
 				<string>[^A-Za-z0-9_](threaded_call)\(</string>
 				<string>[^A-Za-z0-9_](threaded_once)\(</string>
 				<string>[^A-Za-z0-9_](threaded_ignore)\(</string>
+				<string>[^A-Za-z0-9_](threaded_race)\(</string>
 				<string>[^A-Za-z0-9_](threaded_exit)\(</string>
 				<string>[^A-Za-z0-9_](threaded_peek)\(</string>
 				<string>[^A-Za-z0-9_](threaded_discard)\(</string>
