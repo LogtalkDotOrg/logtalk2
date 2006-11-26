@@ -80,7 +80,7 @@ Note that a call to the <code>threaded_call/1</code> predicate is always true (a
 The results of proving a goal asynchronously in a new thread may be retrieved by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_exit1.html"><code>threaded_exit/1</code></a> within the same object where the call to the <code>threaded_call/1</code> predicate was made.
 </p>
 <p>
-The <code>threaded_exit/1</code> predicates allow us to retrieve alternative solutions through backtracking (if you want to commit to the first solution, you may use the <code>threaded_once/1</code> predicate). For example, assuming a <code>lists</code> object implementing the usual <code>member/2</code> predicate, we could write:
+The <code>threaded_exit/1</code> predicate allow us to retrieve alternative solutions through backtracking (if you want to commit to the first solution, you may use the <code>threaded_once/1</code> predicate instead of the <code>threaded_call/1</code> predicate). For example, assuming a <code>lists</code> object implementing the usual <code>member/2</code> predicate, we could write:
 </p>
 <pre>| ?- threaded_call(lists::member(X, [1,2,3])).
 

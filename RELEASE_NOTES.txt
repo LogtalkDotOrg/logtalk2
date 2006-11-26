@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.28.3 - December ??, 2006
+2.28.3 - December 11, 2006
 
 	Removed the experimental threaded_call/2 and threaded_exit/2 thread 
 	predicates, replaced by new threaded_once/1, threaded_ignore/1, 
@@ -26,7 +26,7 @@ RELEASE NOTES
 	closures instead of goals as meta-arguments.
 
 	Added a reference to the  "e" Windows text editor, which supports the 
-	TextMate 1.x text editor syntax configuration files.
+	MacOS X TextMate 1.x text editor syntax configuration files.
 
 
 2.28.2 - November 6, 2006
