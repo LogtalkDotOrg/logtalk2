@@ -5636,7 +5636,7 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	\+ callable(Pred),
 	throw(type_error(callable, Pred)).
 
-'$lgt_tr_body'(threaded_race(Obj::(Pred; Preds)), (TPred, TPreds), (DPred, DPreds), Ctx) :-
+'$lgt_tr_body'(threaded_race(Obj::((Pred; Preds))), (TPred, TPreds), (DPred, DPreds), Ctx) :-
 	!,
 	'$lgt_tr_body'(threaded_race(Obj::Pred), TPred, DPred, Ctx),
 	'$lgt_tr_body'(threaded_race(Obj::Preds), TPreds, DPreds, Ctx).
@@ -5647,7 +5647,7 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	'$lgt_tr_msg'(Pred, Obj, TPred, This),
 	MTPred = '$lgt_mt_send_goal'(Obj, TPred, Sender, This, Self, competing).
 
-'$lgt_tr_body'(threaded_race(::(Pred; Preds)), (TPred, TPreds), (DPred, DPreds), Ctx) :-
+'$lgt_tr_body'(threaded_race(::((Pred; Preds))), (TPred, TPreds), (DPred, DPreds), Ctx) :-
 	!,
 	'$lgt_tr_body'(threaded_race(::Pred), TPred, DPred, Ctx),
 	'$lgt_tr_body'(threaded_race(::Preds), TPreds, DPreds, Ctx).
