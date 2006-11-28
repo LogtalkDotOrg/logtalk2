@@ -3605,16 +3605,19 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	'$lgt_save_global_op_table',
 	'$lgt_file_name'(logtalk, File, Source),
 	catch(
-		(open(Source, read, Input),
-		 read_term(Input, Term, [singletons(Singletons)])),
+		open(Source, read, Input),
+		OpenError,
+		'$lgt_compiler_error_handler'(OpenError)),
+	catch(
+		read_term(Input, Term, [singletons(Singletons)]),
 		InputError,
 		'$lgt_compiler_error_handler'(Input, InputError)),
 	'$lgt_check_for_encoding_directive'(Term, Input, OutputOption),	% the encoding/1 directive, when present, 
 	'$lgt_file_name'(prolog, File, Object),							% must be the first term on a source file
 	catch(
 		open(Object, write, Output, OutputOption),
-		OutputError,
-		'$lgt_compiler_error_handler'(Input, Output, OutputError)),
+		OpenError,
+		'$lgt_compiler_error_handler'(Input, Output, OpenError)),
 	catch(
 		'$lgt_tr_file'(Term, Singletons, Input, Output),
 		Error,
@@ -3810,6 +3813,18 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	'$lgt_reset_warnings_counter',
 	'$lgt_report_compiler_error'(Stream, Error),
 	catch(close(Stream), _, true),
+	throw(Error).
+
+
+
+% '$lgt_compiler_error_handler'(+term)
+%
+% restores the operator table, and reports the compilation error found
+
+'$lgt_compiler_error_handler'(Error) :-
+	'$lgt_restore_global_op_table',
+	'$lgt_reset_warnings_counter',
+	write('  ERROR!    '), writeq(Error), nl,
 	throw(Error).
 
 
