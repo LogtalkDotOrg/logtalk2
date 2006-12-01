@@ -20,17 +20,17 @@ RELEASE NOTES
 	might not be properly closed when it contains a syntax error (thanks 
 	to Robert Shiplett for the bug report).
 
-	Modified the SWI-Prolog config file and integration scripts to set the 
-	flag "iso" to "true".
+	Modified the SWI-Prolog config file and integration scripts to set 
+	the flag "iso" to "true".
 
-	Corrected a bug in the lgt2*.js scripts where the "custom.ent" file was 
-	not copied when generating (X)HTML and PDF files.
+	Corrected a bug in the lgt2*.js scripts where the "custom.ent" file 
+	was not being copied when generating (X)HTML and PDF files.
 
-	Improved the "metapredicates" example in order to illustrate the use of 
-	closures instead of goals as meta-arguments.
+	Improved the "metapredicates" example in order to illustrate the use 
+	of closures instead of goals as meta-arguments.
 
-	Added a reference to the  "e" Windows text editor, which supports the 
-	MacOS X TextMate 1.x text editor syntax configuration files.
+	Added a reference to the  "e" Windows text editor, which supports 
+	the MacOS X TextMate 1.x text editor syntax configuration files.
 
 
 2.28.2 - November 6, 2006
