@@ -129,7 +129,7 @@
 :- dynamic('$lgt_pp_public_'/2).				% '$lgt_pp_public_'(Functor, Arity)
 :- dynamic('$lgt_pp_protected_'/2).				% '$lgt_pp_protected_'(Functor, Arity)
 :- dynamic('$lgt_pp_private_'/2).				% '$lgt_pp_private_'(Functor, Arity)
-:- dynamic('$lgt_pp_meta_predicate_'/1).			% '$lgt_pp_meta_predicate_'(Pred)
+:- dynamic('$lgt_pp_meta_predicate_'/1).		% '$lgt_pp_meta_predicate_'(Pred)
 :- dynamic('$lgt_pp_alias_'/3).					% '$lgt_pp_alias_'(Entity, Pred, Alias)
 :- dynamic('$lgt_pp_non_terminal_'/3).			% '$lgt_pp_non_terminal_'(Functor, Args, Arity)
 
@@ -11075,7 +11075,7 @@ current_logtalk_flag(version, version(2, 28, 3)).
 %
 %  table of ISO specified predicates
 %
-%  used for portability checking
+%  (used for portability checking)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -11237,25 +11237,24 @@ current_logtalk_flag(version, version(2, 28, 3)).
 '$lgt_mt_obj_dispatcher'(Thread) :-
 	repeat,
 		thread_get_message(Thread, '$lgt_goal'(Goal, Sender, This, Self, Option, Return)),
-		(	Goal == '$lgt_exit' ->		% when abolishing/reloading the object or just halting Logtalk
+		(	Goal == '$lgt_exit' ->	% when abolishing/reloading the object or just halting Logtalk
 			thread_exit(true)
-		;	(	Option == competing ->		% goal is one of a set of competing goals performing the same task
-				thread_create('$lgt_mt_competing_goal'(Goal, Sender, This, Self, Return), CompetingId, [detached(false)]),
-				thread_send_message(Return, '$lgt_competing_id'(Goal, Sender, This, Self, CompetingId))
-			;	Option == ignore ->		% don't bother reporting goal success, failure, or exception
-				thread_create(catch(Goal, _, true), _, [detached(true)])
-			;	Option == once ->
-				thread_create('$lgt_mt_det_goal'(Goal, Sender, This, Self, Return), DetId, [detached(true)]),
-				thread_send_message(Return, '$lgt_det_id'(Goal, Sender, This, Self, DetId))
-			;	thread_create('$lgt_mt_non_det_goal'(Goal, Sender, This, Self, Return), NondetId, [detached(false)]),
-				thread_send_message(Return, '$lgt_non_det_id'(Goal, Sender, This, Self, NondetId))
-			)
+		;	Option == competing ->	% goal is one of a set of competing goals performing the same task
+			thread_create('$lgt_mt_competing_goal'(Goal, Sender, This, Self, Return), CompetingId, [detached(false)]),
+			thread_send_message(Return, '$lgt_competing_id'(Goal, Sender, This, Self, CompetingId))
+		;	Option == ignore ->		% don't bother reporting goal success, failure, or exception
+			thread_create(catch(Goal, _, true), _, [detached(true)])
+		;	Option == once ->		% make thread goal deterministic
+			thread_create('$lgt_mt_det_goal'(Goal, Sender, This, Self, Return), DetId, [detached(true)]),
+			thread_send_message(Return, '$lgt_det_id'(Goal, Sender, This, Self, DetId))
+		;	thread_create('$lgt_mt_non_det_goal'(Goal, Sender, This, Self, Return), NondetId, [detached(false)]),
+			thread_send_message(Return, '$lgt_non_det_id'(Goal, Sender, This, Self, NondetId))
 		),
 	fail.
 
 
 
-% '$lgt_mt_competing_goal'(G+callable, +object_identifier, +object_identifier, +object_identifier, +atom)
+% '$lgt_mt_competing_goal'(+callable, +object_identifier, +object_identifier, +object_identifier, +atom)
 %
 % processes a deterministic message received by an object's thread queue;
 % competing goals may be killed before completion
