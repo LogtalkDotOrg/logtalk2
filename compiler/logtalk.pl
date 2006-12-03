@@ -8954,7 +8954,7 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	;	Goal3 = Goal1
 	),
 	(	'$lgt_pp_threaded' ->
-		Goal = (Goal3, '$lgt_init_object_thread'(Prefix))
+		Goal = ('$lgt_init_object_thread'(Prefix), Goal3)
 	;	Goal = Goal3 
 	),
 	assertz('$lgt_pp_entity_init_'(Type, Entity, Goal)).

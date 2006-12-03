@@ -16,6 +16,9 @@ RELEASE NOTES
 	predicates, replaced by new threaded_once/1, threaded_ignore/1, 
 	threaded_race/1, threaded_peek/1, and threaded_discard/1 predicates.
 
+	Corrected a bug when using threaded calls as initialization goals on 
+	threaded objects.
+
 	Corrected an elusive bug in the Logtalk compiler where a source file 
 	might not be properly closed when it contains a syntax error (thanks 
 	to Robert Shiplett for the bug report).
