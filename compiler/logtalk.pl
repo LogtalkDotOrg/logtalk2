@@ -1968,7 +1968,7 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
 		(	Type == (dynamic) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
-				(	(call_with_args(Def, Head, _, _, _, Call); call_with_args(DDef, Head, _, _, _, Call)) ->
+				(	(call_with_args(DDef, Head, _, _, _, Call); call_with_args(Def, Head, _, _, _, Call)) ->
 					clause(Call, TBody),
 					(	TBody = ('$lgt_nop'(Body), _) ->
 						true
@@ -2028,13 +2028,11 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
 		(	Type == (dynamic) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
-				(	call_with_args(Def, Head, _, _, _, Call) ->
+				(	call_with_args(DDef, Head, _, _, _, Call) ->
+					retract((Call :- ('$lgt_nop'(Body), _))),
+					'$lgt_update_ddef_table'(DDef, Head, Call)
+				;	call_with_args(Def, Head, _, _, _, Call) ->
 					retract((Call :- ('$lgt_nop'(Body), _)))
-				;	(	call_with_args(DDef, Head, _, _, _, Call) ->
-						retract((Call :- ('$lgt_nop'(Body), _))),
-						'$lgt_update_ddef_table'(DDef, Head, Call)
-					;	fail
-					)
 				)
 			;	% predicate is not within the scope of the sender:
 				(	PScope == p ->
@@ -2073,24 +2071,22 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
 		(	Type == (dynamic) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
-				(	call_with_args(Def, GHead, _, _, _, GCall) ->
+				(	call_with_args(DDef, GHead, _, _, _, GCall) ->
+					(	'$lgt_debugging_'(Obj) ->
+						(GObj, GHead, GSender) = (Obj, Head, Sender),
+						retract((GCall :- '$lgt_dbg_fact'(_, _)))
+					;	asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, Scope, GCall, '$lgt_update_ddef_table'(DDef, GHead, GCall))),
+						(GObj, GHead, GSender) = (Obj, Head, Sender),
+						retract(GCall)
+					),
+					'$lgt_update_ddef_table'(DDef, GHead, GCall)	
+				;	call_with_args(Def, GHead, _, _, _, GCall) ->
 					(	'$lgt_debugging_'(Obj) ->
 						(GObj, GHead, GSender) = (Obj, Head, Sender),
 						retract((GCall :- '$lgt_dbg_fact'(_, _)))
 					;	asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, Scope, GCall, true)),
 						(GObj, GHead, GSender) = (Obj, Head, Sender),
 						retract(GCall)
-					)
-				;	(	call_with_args(DDef, GHead, _, _, _, GCall) ->
-						(	'$lgt_debugging_'(Obj) ->
-							(GObj, GHead, GSender) = (Obj, Head, Sender),
-							retract((GCall :- '$lgt_dbg_fact'(_, _)))
-						;	asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, Scope, GCall, '$lgt_update_ddef_table'(DDef, GHead, GCall))),
-							(GObj, GHead, GSender) = (Obj, Head, Sender),
-							retract(GCall)
-						),
-						'$lgt_update_ddef_table'(DDef, GHead, GCall)
-					;	fail
 					)
 				)
 			;	% predicate is not within the scope of the sender:
@@ -2150,16 +2146,15 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	(	call_with_args(Dcl, GHead, PScope, Type, _, _, _, SCtn, _) ->
 		(	Type == (dynamic) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
-				(	call_with_args(Def, GHead, _, _, _, GCall) ->
+				(	call_with_args(DDef, GHead, _, _, _, GCall) ->
+					(GObj, GHead, GSender) = (Obj, Head, Sender),
+					retractall(GCall),
+					'$lgt_update_ddef_table'(DDef, GHead, GCall)
+				;	call_with_args(Def, GHead, _, _, _, GCall) ->
 					asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, Scope, GCall, true)),
 					(GObj, GHead, GSender) = (Obj, Head, Sender),
 					retractall(GCall)
-				;	(	call_with_args(DDef, GHead, _, _, _, GCall) ->
-						(GObj, GHead, GSender) = (Obj, Head, Sender),
-						retractall(GCall),
-						'$lgt_update_ddef_table'(DDef, GHead, GCall)
-					;	true
-					)
+				;	true
 				)
 			;	% predicate is not within the scope of the sender:
 				(	PScope == p ->
