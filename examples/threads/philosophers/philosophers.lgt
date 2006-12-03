@@ -21,13 +21,14 @@
 	:- atomic(do/1).
 	:- mode(do(+atom), one).
 	:- info(do/1, [
-		comment is 'Handles chopstick pick up and put down atomically.']).
+		comment is 'Handles chopstick pick up and put down atomically.',
+		argnames is ['Action']]).
 
-	:- public(in_use/0).
-	:- dynamic(in_use/0).
-	:- mode(in_use, zero_or_one).
-	:- info(in_use/0, [
-		comment is 'Chopstick state (either in_use or in use).']).
+	:- public(available/0).
+	:- dynamic(available/0).
+	:- mode(available, zero_or_one).
+	:- info(available/0, [
+		comment is 'Chopstick state (either available or in use).']).
 
 	pick_up :-
 		do(pick_up).
@@ -36,11 +37,12 @@
 		do(put_down).
 
 	do(pick_up) :-
-		\+ ::in_use,
-		::assertz(in_use).
+		::available,
+		::retract(available).
 
 	do(put_down) :-
-		::retractall(in_use).
+		\+ ::available,
+		::asserta(available).
 
 :- end_category.
 
@@ -48,9 +50,9 @@
 :- object(cs1,
 	imports(chopstick)).
 
-	:- dynamic(in_use/0).
+	:- dynamic(available/0).
 
-%	in_use.
+	available.
 
 :- end_object.
 
@@ -58,9 +60,9 @@
 :- object(cs2,
 	imports(chopstick)).
 
-	:- dynamic(in_use/0).
+	:- dynamic(available/0).
 
-%	in_use.
+	available.
 
 :- end_object.
 
@@ -68,9 +70,9 @@
 :- object(cs3,
 	imports(chopstick)).
 
-	:- dynamic(in_use/0).
+	:- dynamic(available/0).
 
-%	in_use.
+	available.
 
 :- end_object.
 
@@ -78,9 +80,9 @@
 :- object(cs4,
 	imports(chopstick)).
 
-	:- dynamic(in_use/0).
+	:- dynamic(available/0).
 
-%	in_use.
+	available.
 
 :- end_object.
 
@@ -88,9 +90,9 @@
 :- object(cs5,
 	imports(chopstick)).
 
-	:- dynamic(in_use/0).
+	:- dynamic(available/0).
 
-%	in_use.
+	available.
 
 :- end_object.
 
@@ -122,7 +124,12 @@
 		comment is 'Writes all the atoms on a list atomically.',
 		argnames is ['Atoms']]).
 
-	:- uses(random, [random/3]).
+	:- private(random/2).
+	:- atomic(random/2).
+	:- mode(random(+integer, -integer), one).
+	:- info(random/2, [
+		comment is 'Provides atomic access to the random number generator.',
+		argnames is ['Limit', 'Random']]).
 
 	run(0, _) :-
 		this(Philosopher),
@@ -138,13 +145,13 @@
 
 	think(MaxTime):-
 		this(Philosopher),
-		random(1, MaxTime, ThinkTime),
+		random(MaxTime, ThinkTime),
 		message(['Philosopher ', Philosopher, ' thinking for ', ThinkTime, ' seconds.']),
 		sleep(ThinkTime).
 
 	eat(MaxTime):-
 		this(Philosopher),
-		random(1, MaxTime, EatTime),
+		random(MaxTime, EatTime),
 		::left_chopstick(LeftStick),
 		::right_chopstick(RightStick),
 		LeftStick::pick_up,
@@ -156,6 +163,9 @@
 		;	::LeftStick::put_down,
 			fail
 		).
+
+	random(Limit, Value) :-
+		random::random(1, Limit, Value).
 
 	message([]) :-
 		nl,
