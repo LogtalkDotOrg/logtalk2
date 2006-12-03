@@ -29,6 +29,9 @@ RELEASE NOTES
 	Corrected a bug in the lgt2*.js scripts where the "custom.ent" file 
 	was not being copied when generating (X)HTML and PDF files.
 
+	Added a new multi-threading example, "philosophers", illustrating a 
+	possible implementation of the "dining philosophers" problem.
+
 	Improved the "metapredicates" example in order to illustrate the use 
 	of closures instead of goals as meta-arguments.
 
