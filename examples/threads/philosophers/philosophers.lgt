@@ -5,7 +5,7 @@
 		version is 1.0,
 		author is 'Paulo Moura',
 		date is 2006/12/2,
-		comment is 'Dining philosophers problem.']).
+		comment is 'Dining philosophers problem: chopstick representation.']).
 
 	:- public(pick_up/0).
 	:- mode(pick_up, one).
@@ -24,7 +24,7 @@
 		comment is 'Handles chopstick pick up and put down atomically.',
 		argnames is ['Action']]).
 
-	:- public(available/0).
+	:- private(available/0).
 	:- dynamic(available/0).
 	:- mode(available, zero_or_one).
 	:- info(available/0, [
@@ -103,7 +103,7 @@
 		version is 1.0,
 		author is 'Paulo Moura',
 		date is 2006/12/2,
-		comment is 'Dining philosophers problem.']).
+		comment is 'Dining philosophers problem: philosopher representation.']).
 
 	:- public(left_chopstick/1).
 	:- mode(left_chopstick(?object_identifier), zero_or_one).
@@ -118,16 +118,16 @@
 		argnames is ['Chopstick']]).
 
 	:- public(run/2).
-	:- mode(run(+list(atom)), one).
+	:- mode(run(+integer, +integer), one).
 	:- info(run/2, [
-		comment is 'Runs .',
+		comment is 'Runs Count number of thinking/eating cycles, with each activity taking MaxTime (in seconds).',
 		argnames is ['Count', 'MaxTime']]).
 
 	:- private(message/1).
 	:- atomic(message/1).
-	:- mode(message(+list(atom)), one).
+	:- mode(message(+list), one).
 	:- info(message/1, [
-		comment is 'Writes all the atoms on a list atomically.',
+		comment is 'Writes all the terms on a list atomically.',
 		argnames is ['Atoms']]).
 
 	:- private(random/2).
