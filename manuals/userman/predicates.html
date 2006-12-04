@@ -100,7 +100,7 @@ Note that most predicates have more than one valid mode implying several mode di
 <pre>:- mode(atom_concat(?atom, ?atom, +atom), one_or_more).
 :- mode(atom_concat(+atom, +atom, -atom), zero_or_one).</pre>
 <p>
-Some old Prolog compilers supported some sort of mode directives to improve performance. To the best of my knowledge, there is no modern Prolog compiler supporting these kind of directive. The current version of the Logtalk compiler just parses and than discards this directive. Nevertheless, the use of mode directives is a good starting point to the documentation of your predicates.
+Some old Prolog compilers supported some sort of mode directives to improve performance. To the best of my knowledge, there is no modern Prolog compiler supporting these kind of directive. The current version of the Logtalk compiler just parses and than discards this directive (however, see the description on <a title="Consult user manual" href="threads.html#threads_atomic_predicates">atomic predicates</a> on the <a title="Consult user manual" href="threads.html">multi-threading programming</a> section). Nevertheless, the use of mode directives is a good starting point for documenting your predicates.
 </p>
 
 <h3>Meta-predicate directive<a id="predicates_meta"></a></h3>
@@ -664,7 +664,7 @@ Currently, there is no clean workaround for calling non-standard, Prolog built-i
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: November 12, 2006</span>
+		<span>Last updated on: December 4, 2006</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="categories.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="inheritance.html">next</a></span><br/>
