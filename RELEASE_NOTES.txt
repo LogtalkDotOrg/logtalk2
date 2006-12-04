@@ -24,7 +24,8 @@ RELEASE NOTES
 	to Robert Shiplett for the bug report).
 
 	Corrected a bug in the implementation of the built-in methods retract/1 
-	and retractall/1 which could result in unexpected exceptions.
+	and retractall/1 which could result in unexpected exceptions. Updated 
+	built-in method assertz/1 to always use the lookup cache.
 
 	Modified the SWI-Prolog config file and integration scripts to set 
 	the flag "iso" to "true".

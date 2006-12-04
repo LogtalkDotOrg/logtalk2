@@ -1704,11 +1704,6 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	!,
 	asserta(Call).
 
-'$lgt_asserta'(Obj, Clause, Sender, _, _) :-
-	Clause \= (_ :- _),
-	\+ callable(Clause),
-	throw(error(type_error(callable, Clause), Obj::asserta(Clause), Sender)).
-
 '$lgt_asserta'(Obj, (Head:-Body), Sender, _, _) :-
 	var(Head),
 	throw(error(instantiation_error, Obj::asserta((Head:-Body)), Sender)).
@@ -1720,6 +1715,11 @@ current_logtalk_flag(version, version(2, 28, 3)).
 '$lgt_asserta'(Obj, (Head:-Body), Sender, _, _) :-
 	\+ callable(Body),
 	throw(error(type_error(callable, Body), Obj::asserta((Head:-Body)), Sender)).
+
+'$lgt_asserta'(Obj, Clause, Sender, _, _) :-
+	Clause \= (_ :- _),
+	\+ callable(Clause),
+	throw(error(type_error(callable, Clause), Obj::asserta(Clause), Sender)).
 
 '$lgt_asserta'(Obj, Clause, Sender, TestScope, DclScope) :-
 	(	Clause = (_ :- _) ->
@@ -1803,6 +1803,11 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	var(Clause),
 	throw(error(instantiation_error, Obj::assertz(Clause), Sender)).
 
+'$lgt_assertz'(Obj, Clause, Sender, Scope, _) :-
+	'$lgt_db_lookup_cache_'(Obj, Clause, Sender, Scope, Call, _),
+	!,
+	assertz(Call).
+
 '$lgt_assertz'(Obj, (Head:-Body), Sender, _, _) :-
 	var(Head),
 	throw(error(instantiation_error, Obj::assertz((Head:-Body)), Sender)).
@@ -1818,7 +1823,7 @@ current_logtalk_flag(version, version(2, 28, 3)).
 '$lgt_assertz'(Obj, Clause, Sender, _, _) :-
 	Clause \= (_ :- _),
 	\+ callable(Clause),
-	throw(error(type_error(callable, Clause), Obj::asserta(Clause), Sender)).
+	throw(error(type_error(callable, Clause), Obj::assertz(Clause), Sender)).
 
 '$lgt_assertz'(Obj, Clause, Sender, TestScope, DclScope) :-
 	(	Clause = (_ :- _) ->
