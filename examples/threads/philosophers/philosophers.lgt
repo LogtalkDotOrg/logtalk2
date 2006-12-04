@@ -99,6 +99,12 @@
 
 :- category(philosopher).
 
+	:- info([
+		version is 1.0,
+		author is 'Paulo Moura',
+		date is 2006/12/2,
+		comment is 'Dining philosophers problem.']).
+
 	:- public(left_chopstick/1).
 	:- mode(left_chopstick(?object_identifier), zero_or_one).
 	:- info(left_chopstick/1, [
