@@ -13,10 +13,10 @@ individually test Logtalk under each Prolog listed here (or, for that
 mater, to own a copy of each one of these compilers). For some of 
 these Prolog compilers I only have the manuals available on-line.
 
-As a general rule, always try to use the most recent version of your
-Prolog compiler of choice. Most Prolog compilers are moving towards
-better ISO Standard compatibility and, as a consequence, improved
-Logtalk compatibility.
+As a general rule, always try to use the latest version of your Prolog 
+compiler of choice. Most Prolog compilers are moving towards better 
+ISO Standard compatibility and, as a consequence, improved Logtalk 
+compatibility.
 
 
 template config file
@@ -52,17 +52,22 @@ Amzi! Prolog 7.4.10 and later versions
 
 	For Amzi! Prolog 7.4.10 and later versions. You need to patch the Logtalk 
 	compiler (the "compiler/logtalk.pl" file) by searching for all calls of 
-	':'/2 and wrap them inside call/1. For better performance, use the Amzi! 
-	"acmp" command-line compiler to compile the files "configs/amzi.config",
+	':'/2 and wrap them inside call/1. In addition, all occurrences of the 
+	atom {} need to be quoted. For better performance, use the Amzi! "acmp" 
+	command-line compiler to compile the files "configs/amzi.config",
 	"compiler/logtalk.pl", and "libpaths/libpaths.pl" and then load the 
-	resulting ".plm" files using the predicate load/1. One potential problem 
-	is that the compiler definition of the compare/3 built-in predicate 
-	returns the atom == instead of = for identical terms (contrary to every 
-	other Prolog compiler!). You need to search the library files for all 
-	calls of the compare/3 predicate and make the necessary changes.
+	resulting ".plm" files using the predicate load/1 (you will need first 
+	to change the extension of the config file to either ".pl" or ".pro" and 
+	to edit the "libpaths.pl" file by following the instructions on the 
+	"libpaths/NOTES.txt" file).
+	
+	One potential problem is that the compiler definition of the compare/3 
+	built-in predicate returns the atom == instead of = for identical terms 
+	(contrary to every other Prolog compiler!). Search the library files for 
+	all calls of the compare/3 predicate and make the necessary changes.
 	The built-in sort/2 predicate does not eliminate duplicates, which may 
-	result in some problems with some of the examples. Don't forget to use 
-	the chdir/1 predicate to set the working directory before loading the 
+	result in problems with some of the examples. Don't forget to use the 
+	chdir/1 predicate to set the working directory before loading the 
 	library or an example.
 
 
@@ -392,13 +397,11 @@ SICStus Prolog 4.0
 	the Windows beta version).
 
 
-SWI Prolog 3.3.x and all later versions
+SWI Prolog 3.3.x and later versions (5.6.x or later strongly recommended)
 
 	swi.config
 	swihook.pl
 	xpcehook.pl
-
-	For version 3.3.x and all later versions (5.6.x or later recommended)
 
 	No problems expected. Please report any problem found (with a solution 
 	if possible). Don't forget to use the cd/1 predicate to set the working 
