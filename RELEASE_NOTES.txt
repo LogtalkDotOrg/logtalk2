@@ -30,6 +30,10 @@ RELEASE NOTES
 	Modified the SWI-Prolog config file and integration scripts to set 
 	the flag "iso" to "true".
 
+	Updated the K-Prolog config file to workaround a problem when using 
+	library notation due to failure to check directory existence with the 
+	provided "libpaths.pl" file.
+
 	Corrected a bug in the lgt2*.js scripts where the "custom.ent" file 
 	was not being copied when generating (X)HTML and PDF files.
 
