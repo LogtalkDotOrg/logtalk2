@@ -34,6 +34,9 @@ RELEASE NOTES
 	library notation due to failure to check directory existence with the 
 	provided "libpaths.pl" file.
 
+	Corrected a bug in the Logtalk DTD file (missing "copyright" tag 
+	declaration).
+
 	Corrected a bug in the lgt2*.js scripts where the "custom.ent" file 
 	was not being copied when generating (X)HTML and PDF files.
 

@@ -38,6 +38,8 @@
 
 <!ELEMENT date (#PCDATA)>
 
+<!ELEMENT copyright (#PCDATA)>
+
 <!ELEMENT license (#PCDATA)>
 
 <!ELEMENT info (key, value)>
