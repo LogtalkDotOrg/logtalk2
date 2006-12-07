@@ -121,7 +121,7 @@ The predicate arguments in this directive have the following meaning:
 		<dd>Normal argument.</dd>
 </dl>
 <p>
-This is similar to the declaration of meta-predicates in the ISO standard for Prolog modules except that we use the atom <code>::</code> instead of <code>:</code> to be consistent with the message sending operators. To the best of my knowledge, the use of non-negative integers to specify closures has first introduced on Quintus Prolog for prividing information for the cross-reference tools.
+This is similar to the declaration of meta-predicates in the ISO standard for Prolog modules except that we use the atom <code>::</code> instead of <code>:</code> to be consistent with the message sending operators. To the best of my knowledge, the use of non-negative integers to specify closures has first introduced on Quintus Prolog for providing information for the cross-reference tools.
 </p>
 <p>
 The <code>meta_predicate/1</code> directive must precede the meta-predicate definition and any local calls to the meta-predicate in order to ensure proper compilation. In addition, as each Logtalk entity is independently compiled, this directive must be included in every object or category that contains a definition for the described predicate, even if the predicate declaration is inherited from another entity, to ensure proper compilation of meta-arguments.
