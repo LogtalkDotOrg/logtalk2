@@ -3583,8 +3583,8 @@ current_logtalk_flag(version, version(2, 28, 3)).
 
 % '$lgt_file_name'(+atom, +atom, -atom)
 %
-% constructs a filename given the type of file (logtalk, prolog, or xml)
-% and the file basename (filname may include a directory path)
+% constructs a file name given the file type (logtalk, prolog, or xml)
+% and the file base name (file name may include a directory path)
 
 '$lgt_file_name'(Type, Basename, File) :-
 	'$lgt_file_extension'(Type, Extension),			% defined on the Prolog config files
@@ -5265,9 +5265,9 @@ current_logtalk_flag(version, version(2, 28, 3)).
 % '$lgt_tr_clause'(+clause, +stream)
 
 '$lgt_tr_clause'(Clause, _) :-
-	\+ '$lgt_pp_entity'(_, _, _, _, _),			% clause occurs before opening entity directive
+	\+ '$lgt_pp_entity'(_, _, _, _, _),			% all clause occuring before an opening entity directive
 	!,
-	assertz('$lgt_pp_ppclause_'(Clause)).		% clause will copied unchanged to the generated Prolog file
+	assertz('$lgt_pp_ppclause_'(Clause)).		% are copied unchanged to the generated Prolog file
 
 '$lgt_tr_clause'(Clause, Stream) :-
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, _),
@@ -5442,6 +5442,8 @@ current_logtalk_flag(version, version(2, 28, 3)).
 	).
 
 
+
+% look for a non-variable meta-argument
 
 '$lgt_nonvar_meta_arg'([Arg| _], [::| _], Arg) :-
 	nonvar(Arg).
