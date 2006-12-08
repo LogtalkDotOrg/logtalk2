@@ -5601,6 +5601,7 @@ current_logtalk_flag(version, version(2, 28, 3)).
 '$lgt_tr_body'(threaded_call(_), _, _, _) :-
 	'$lgt_compiler_flag'(report, on),
 	\+ '$lgt_pp_threaded',
+	'$lgt_pp_entity'(object, _, _, _, _),
 	'$lgt_inc_compile_warnings_counter',
 	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
 	fail.
