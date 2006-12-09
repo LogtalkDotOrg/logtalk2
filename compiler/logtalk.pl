@@ -4288,7 +4288,7 @@ current_logtalk_flag(version, version(2, 28, 3)).
 
 '$lgt_tr_directive'(object, [Obj| Rels], _) :-
 	'$lgt_report_compiling_entity'(object, Obj),
-	'$lgt_tr_object_id'(Obj, static),					% assume static category
+	'$lgt_tr_object_id'(Obj, static),					% assume static object
 	'$lgt_tr_object_relations'(Rels, Obj),
 	'$lgt_save_file_op_table'.
 
@@ -4309,7 +4309,7 @@ current_logtalk_flag(version, version(2, 28, 3)).
 
 '$lgt_tr_directive'(protocol, [Ptc| Rels], _) :-
 	'$lgt_report_compiling_entity'(protocol, Ptc),
-	'$lgt_tr_protocol_id'(Ptc, static),					% assume static category
+	'$lgt_tr_protocol_id'(Ptc, static),					% assume static protocol
 	'$lgt_tr_protocol_relations'(Rels, Ptc),
 	'$lgt_save_file_op_table'.
 
