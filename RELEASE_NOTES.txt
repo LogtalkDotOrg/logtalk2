@@ -30,8 +30,9 @@ RELEASE NOTES
 	Modified the SWI-Prolog config file and integration scripts to set 
 	the flag "iso" to "true". Corrected an elusive bug in the definition 
 	of predicate '$lgt_directory_exists'/1 that resulted in "library not 
-	found" errors when loading Logtalk source files from the SWI-Prolog 
-	initialization file (thanks to Robert Shiplett for the bug report).
+	found" errors when loading Logtalk source files from within the 
+	SWI-Prolog initialization file (thanks to Robert Shiplett for the bug 
+	report).
 
 	Updated the K-Prolog config file to workaround a problem when using 
 	library notation due to failure to check directory existence with the 
