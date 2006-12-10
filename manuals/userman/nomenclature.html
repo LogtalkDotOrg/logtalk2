@@ -33,7 +33,7 @@ There are several C++ glossaries available on the Internet.
 
 <dl>
 	<dt><strong>abstract class</strong></dt>
-		<dd>Logtalk supports <em>interfaces</em>/<em>protocols</em>, which are a much better way to provide the functionality of C++ abstract classes.</dd>
+		<dd>Logtalk uses a <em>functional</em> definition of abstract class: any class that does not inherit a method for creating new instances is an abstract class. Moreover, Logtalk supports <em>interfaces</em>/<em>protocols</em>, which are often a better way to provide the functionality of C++ abstract classes.</dd>
 </dl>
 <dl>
 	<dt><strong>base class</strong></dt>
@@ -77,7 +77,7 @@ There are several C++ glossaries available on the Internet.
 </dl>
 <dl>
 	<dt><strong>this</strong></dt>
-		<dd>Logtalk uses the built-in context method <code>self/1</code> for retrieving the current instance. Logtalk also provides a <code>this/1</code> but for returning the class containing the method being executed. Why the name clashes? Well, the notion of <em>self</em> is inherited from Smalltalk, which was there first.</dd>
+		<dd>Logtalk uses the built-in context method <code>self/1</code> for retrieving the current instance. Logtalk also provides a <code>this/1</code> method but for returning the class containing the method being executed. Why the name clashes? Well, the notion of <em>self</em> was inherited from Smalltalk, which predates C++.</dd>
 </dl>
 <dl>
 	<dt><strong>virtual member function</strong></dt>
@@ -92,7 +92,7 @@ There are several Java glossaries available on the Internet.
 
 <dl>
 	<dt><strong>abstract class</strong></dt>
-		<dd>Moreover, there is no <code>abstract</code> keyword in Logtalk.</dd>
+		<dd>Logtalk uses a <em>functional</em> definition of abstract class: any class that does not inherit a method for creating new instances is an abstract class. I.e. there is no <code>abstract</code> keyword in Logtalk.</dd>
 </dl>
 <dl>
 	<dt><strong>abstract method</strong></dt>
@@ -148,11 +148,11 @@ There are several Java glossaries available on the Internet.
 </dl>
 <dl>
 	<dt><strong>synchronized</strong></dt>
-		<dd>Logtalk supports <em>multi-threading programming</em> in selected Prolog compilers, including executing an predicate atomically.</dd>
+		<dd>Logtalk supports <em>multi-threading programming</em> in selected Prolog compilers, including executing a predicate atomically.</dd>
 </dl>
 <dl>
 	<dt><strong>this</strong></dt>
-		<dd>Logtalk uses the built-in context method <code>self/1</code> for retrieving the current instance. Logtalk also provides a <code>this/1</code> but for returning the class containing the method being executed. Why the name clashes? Well, the notion of <em>self</em> inherited from Smalltalk, which was there first.</dd>
+		<dd>Logtalk uses the built-in context method <code>self/1</code> for retrieving the current instance. Logtalk also provides a <code>this/1</code> method but for returning the class containing the method being executed. Why the name clashes? Well, the notion of <em>self</em> was inherited from Smalltalk, which predates Java.</dd>
 </dl>
 
 <div class="footer">
