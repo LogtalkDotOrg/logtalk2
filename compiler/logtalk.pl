@@ -2641,6 +2641,29 @@ current_logtalk_flag(version, version(2, 28, 3)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
+%  built-in pseudo-object entity tables
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+'$lgt_pseudo_object'(logtalk).
+'$lgt_pseudo_object'(user).
+'$lgt_pseudo_object'(debugger).
+
+
+'$lgt_pseudo_protocol'(_) :-
+	fail.
+
+
+'$lgt_pseudo_category'(_) :-
+	fail.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 %  built-in pseudo-object object table clauses
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2668,26 +2691,42 @@ current_logtalk_flag(version, version(2, 28, 3)).
 % the following clauses correspond to a virtual 
 % compilation of the pseudo-object logtalk
 
+:- dynamic('$lgt_po_logtalk_0__ddcl'/2).
+:- dynamic('$lgt_po_logtalk_0__ddef'/5).
+
 
 '$lgt_po_logtalk_0_'('$lgt_po_logtalk_0__dcl', '$lgt_po_logtalk_0__def', '$lgt_po_logtalk_0__super', '$lgt_po_logtalk_0__idcl', '$lgt_po_logtalk_0__idef', '$lgt_po_logtalk_0__ddcl', '$lgt_po_logtalk_0__ddef', '$lgt_po_logtalk_0__alias').
+
 
 '$lgt_po_logtalk_0__dcl'(_, _, _, _, _, _) :-
 	fail.
 
-'$lgt_po_logtalk_0__dcl'(_, _, _, _, _, _, _, _) :-
-	fail.
 
-'$lgt_po_logtalk_0__idcl'(_, _, _, _, _, _, _, _) :-
-	fail.
+'$lgt_po_logtalk_0__dcl'(Pred, Scope, (dynamic), no, no, no, logtalk, logtalk) :-
+	'$lgt_po_logtalk_0__ddcl'(Pred, Scope).
+
 
 '$lgt_po_logtalk_0__def'(_, _, _, _, _) :-
 	fail.
 
-'$lgt_po_logtalk_0__def'(_, _, _, _, _, _) :-
+
+'$lgt_po_logtalk_0__super'(_, _, _, _, _, _) :-
 	fail.
 
-'$lgt_po_logtalk_0__idef'(_, _, _, _, _, _) :-
-	fail.
+
+'$lgt_po_logtalk_0__def'(Pred, Sender, This, Self, Call, logtalk) :-
+	'$lgt_po_logtalk_0__ddef'(Pred, Sender, This, Self, Call).
+
+
+'$lgt_po_logtalk_0__idcl'(Pred, Scope, (dynamic), no, no, no, logtalk, logtalk) :-
+	'$lgt_po_logtalk_0__ddcl'(Pred, Scope).
+
+
+'$lgt_po_logtalk_0__idef'(Pred, Sender, This, Self, Call, logtalk) :-
+	'$lgt_po_logtalk_0__ddef'(Pred, Sender, This, Self, Call).
+
+
+'$lgt_po_logtalk_0__alias'(_, Pred, Pred).
 
 
 
@@ -9159,10 +9198,12 @@ current_logtalk_flag(version, version(2, 28, 3)).
 
 % '$lgt_construct_object_functors'(+object_identifier, -atom, -atom, -atom, -atom, -atom, -atom, -atom, -atom, -atom)
 %
-% constructs functors used in the compiled code of an object
+% constructs functors used in the compiled code of an object;
+% pseudo-objects use a fixed set of functors that do not depend on the code_prefix/1 compiler flag
 
 '$lgt_construct_object_functors'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm) :-
-	(	'$lgt_current_object_'(Obj, Prefix, _, _, _, _) ->
+	(	'$lgt_pseudo_object'(Obj) ->
+		'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 		Call =.. [Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm],
 		once(Call)
 	;	'$lgt_construct_entity_prefix'(Obj, Prefix),
@@ -9180,10 +9221,12 @@ current_logtalk_flag(version, version(2, 28, 3)).
 
 % '$lgt_construct_protocol_functors'(+protocol_identifier, -atom, -atom, -atom)
 %
-% constructs functors used in the compiled code of a protocol
+% constructs functors used in the compiled code of a protocol;
+% pseudo-protocols use a fixed set of functors that do not depend on the code_prefix/1 compiler flag
 
 '$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl, Rnm) :-
-	(	'$lgt_current_protocol_'(Ptc, Prefix, _) ->
+	(	'$lgt_pseudo_protocol'(Ptc) ->
+		'$lgt_current_protocol_'(Ptc, Prefix, _),
 		Call =.. [Prefix, Dcl, Rnm],
 		once(Call)
 	;	'$lgt_construct_entity_prefix'(Ptc, Prefix),
@@ -9195,10 +9238,12 @@ current_logtalk_flag(version, version(2, 28, 3)).
 
 % '$lgt_construct_category_functors'(+category_identifier, -atom, -atom, -atom, -atom)
 %
-% constructs functors used in the compiled code of a category
+% constructs functors used in the compiled code of a category;
+% pseudo-categories use a fixed set of functors that do not depend on the code_prefix/1 compiler flag
 
 '$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def, Rnm) :-
-	(	'$lgt_current_category_'(Ctg, Prefix, _) ->
+	(	'$lgt_pseudo_category'(Ctg) ->
+		'$lgt_current_category_'(Ctg, Prefix, _),
 		Call =.. [Prefix, Dcl, Def, Rnm],
 		once(Call)
 	;	'$lgt_construct_entity_prefix'(Ctg, Prefix),
