@@ -378,22 +378,28 @@ We can find the properties of defined objects by calling the built-in predicate 
 An object may have the property <code>static</code>, <code>dynamic</code>, or <code>built_in</code>. Dynamic objects can be abolished in runtime by calling the <a title="Consult reference manual" href="../refman/builtins/abolish_object1.html"><code>abolish_object/1</code></a> built-in predicate.
 </p>
 
-<h2>The pseudo-object user<a id="objects_user"></a></h2>
+<h2>Built-in pseudo-objects<a id="objects_pseudo"></a></h2>
+
+<p>
+Logtalk defines some built-in, pseudo objects that are always available for any application.
+</p>
+
+<h3>The pseudo-object user<a id="objects_user"></a></h3>
 
 <p>
 Logtalk defines a built-in, pseudo-object named <code>user</code> that contains all user predicate definitions not encapsulated in a Logtalk entity. These predicates are assumed to be implicitly declared public.
 </p>
 
-<h2>The pseudo-object debugger<a id="objects_debugger"></a></h2>
+<h3>The pseudo-object debugger<a id="objects_debugger"></a></h3>
 
 <p>
 Logtalk defines a built-in, pseudo-object named <code>debugger</code> which implements the Logtalk built-in debugger (see the section on <a href="running.html#debugging">debugging Logtalk programs</a> for details).
 </p>
 
-<h2>The pseudo-object logtalk<a id="objects_logtalk"></a></h2>
+<h3>The pseudo-object logtalk<a id="objects_logtalk"></a></h3>
 
 <p>
-Logtalk defines a built-in, empty pseudo-object named <code>logtalk</code>, which can impersonate both a class and a prototype. Can be used to define class hierarchies without forcing the use of metaclasses or reflective designs.
+Logtalk defines a built-in, empty pseudo-object named <code>logtalk</code>, which can impersonate both a class and a prototype. It may be used to define class hierarchies without forcing the use of metaclasses or reflective designs, as illustrated above in this section. This pseudo-object supports the dynamic declaration and definition of predicates (using the dynamic database methods).
 </p>
 
 <div class="footer">
