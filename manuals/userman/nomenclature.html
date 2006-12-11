@@ -28,7 +28,7 @@ Depending on your Object-oriented Programming background (or lack of it), you ma
 <h2>C++ nomenclature<a id="nomenclature_cpp"></a></h2>
 
 <p>
-There are several C++ glossaries available on the Internet.
+There are several C++ glossaries available on the Internet. The list that follows relates the most commonly used C++ terms with their Logtalk equivalents.
 </p>
 
 <dl>
@@ -87,7 +87,7 @@ There are several C++ glossaries available on the Internet.
 <h2>Java nomenclature<a id="nomenclature_java"></a></h2>
 
 <p>
-There are several Java glossaries available on the Internet.
+There are several Java glossaries available on the Internet. The list that follows relates the most commonly used Java terms with their Logtalk equivalents.
 </p>
 
 <dl>
@@ -112,11 +112,11 @@ There are several Java glossaries available on the Internet.
 </dl>
 <dl>
 	<dt><strong>class method</strong></dt>
-		<dd>Class methods are implemented in Logtalk by simply defining a predicate inside a class.</dd>
+		<dd>Class methods may be implemented in Logtalk by using a metaclass for the class and defining the class methods in the metaclass. I.e. class methods are simply instance methods of the class metaclass.</dd>
 </dl>
 <dl>
 	<dt><strong>class variable</strong></dt>
-		<dd>Class variables are implemented in Logtalk by simply defining a predicate inside a class. Moreover, there is no <code>static</code> keyword in Logtalk.</dd>
+		<dd>Class variables may be implemented in Logtalk by using a metaclass for the class and defining the class variables in the class. I.e. class variables are simply instance variables of the class metaclass. Moreover, there is no <code>static</code> keyword in Logtalk.</dd>
 </dl>
 <dl>
 	<dt><strong>constructor</strong></dt>
@@ -124,7 +124,7 @@ There are several Java glossaries available on the Internet.
 </dl>
 <dl>
 	<dt><strong>final</strong></dt>
-		<dd>There is no <code>final</code> keyword in Logtalk; methods may always be redefined in subclasses.</dd>
+		<dd>There is no <code>final</code> keyword in Logtalk; methods may always be redefined in subclasses (and instances!).</dd>
 </dl>
 <dl>
 	<dt><strong>instance</strong></dt>
