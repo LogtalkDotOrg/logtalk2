@@ -103,7 +103,7 @@ If we are defining a reflexive system where every class is also an instance, we 
 In short, an object can be a <em>stand-alone</em> object or be part of an object hierarchy. The hierarchy can be prototype-based (defined by extending other objects) or class-based (with instantiation and specialization relations). An object may also implement one or more protocols or import one or more categories.
 </p>
 <p>
-A <em>stand-alone</em> object (i.e. an object with no extension, instantiation, or specialization relations with other objects) is always compiled as a prototype, that is, a self-describing object. If we want to use classes and instances, then we will need to specify at least an instantiation or a specialization relation. The best way to do this is to define a set of objects that provide the basis of a reflective system <a href="../bibliography.html#Cointe87">[Cointe 87</a>, <a href="../bibliography.html#Moura94">Moura 94]</a>. For example:
+A <em>stand-alone</em> object (i.e. an object with no extension, instantiation, or specialization relations with other objects) is always compiled as a prototype, that is, a self-describing object. If we want to use classes and instances, then we will need to specify at least one instantiation or specialization relation. The best way to do this is to define a set of objects that provide the basis of a reflective system <a href="../bibliography.html#Cointe87">[Cointe 87</a>, <a href="../bibliography.html#Moura94">Moura 94]</a>. For example:
 </p>
 <pre>:- object(object,               % default root of the inheritance graph
     instantiates(class)).       % predicates common to all objects
@@ -124,17 +124,25 @@ A <em>stand-alone</em> object (i.e. an object with no extension, instantiation, 
     ...
 :- end_object.</pre>
 <p>
-Note that with these instantiation and specialization relations, <code>object</code>, <code>class</code> and <code>abstract_class</code> are, at the same time, classes and instances of some class. In addition, each object inherits its own predicates and the predicates of the other two objects without any inheritance loop problems.
+Note that with these instantiation and specialization relations, <code>object</code>, <code>class</code>, and <code>abstract_class</code> are, at the same time, classes and instances of some class. In addition, each object inherits its own predicates and the predicates of the other two objects without any inheritance loop problems.
 </p>
 <p>
-If you do not need a reflective system solution but still want to play with classes and instances then you can simplify the above scheme by making an object an instance of itself or, if you prefer, by making a class its own metaclass. For example:
+If you do not need a reflective system solution but still want to use classes and instances then you can simplify the above scheme by making an object an instance of itself or, if you prefer, by making a class its own metaclass. For example:
 </p>
 <pre>:- object(class,
     instantiates(class)).
     ...
 :- end_object.</pre>
 <p>
-We can have, in the same application, both prototype and class-based hierarchies (and freely exchange messages between all objects). We can not however mix the two types of hierarchies by, e.g., specializing an object that extends another object in this current Logtalk version.
+<p>
+A third alternative is to use neither metaclasses or reflective designs but instead to take advantage of the pseudo-object <code>logtalk</code>. This empty pseudo-object can be used as a dummy root superclass. For example:
+</p>
+<pre>:- object(class,
+    specializes(logtalk)).
+    ...
+:- end_object.</pre>
+<p>
+We can use, in the same application, both prototype and class-based hierarchies (and freely exchange messages between all objects). We can not however mix the two types of hierarchies by, e.g., specializing an object that extends another object in this current Logtalk version.
 </p>
 
 <h2>Parametric objects<a id="objects_parametric"></a></h2>
