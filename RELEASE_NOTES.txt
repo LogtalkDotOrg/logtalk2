@@ -12,6 +12,10 @@ RELEASE NOTES
 
 2.28.3 - December 11, 2006
 
+	Added a new pseudo-object, "logtalk", which can impersonate both a 
+	class and a prototype. Can be used to defien class hierarchies without 
+	forcing the use of metaclasses or refelctive designs.
+
 	Removed the experimental threaded_call/2 and threaded_exit/2 thread 
 	predicates, replaced by new threaded_once/1, threaded_ignore/1, 
 	threaded_race/1, threaded_peek/1, and threaded_discard/1 predicates.
@@ -26,6 +30,9 @@ RELEASE NOTES
 	Corrected a bug in the implementation of the built-in methods retract/1 
 	and retractall/1 which could result in unexpected exceptions. Updated 
 	built-in method assertz/1 to always use the lookup cache.
+
+	Corrected a bug in the compilation of empty classes that are not 
+	instances of a metaclass.
 
 	Modified the SWI-Prolog config file and integration scripts to set 
 	the flag "iso" to "true". Corrected an elusive bug in the definition 
