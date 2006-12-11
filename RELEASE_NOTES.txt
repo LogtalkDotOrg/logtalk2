@@ -12,9 +12,9 @@ RELEASE NOTES
 
 2.28.3 - December 11, 2006
 
-	Added a new pseudo-object, "logtalk", which can impersonate both a 
-	class and a prototype. Can be used to defien class hierarchies without 
-	forcing the use of metaclasses or refelctive designs.
+	Added a new built-in, empty pseudo-object named "logtalk", which can 
+	impersonate both a class and a prototype. Can be used to define class 
+	hierarchies without forcing the use of metaclasses or reflective designs.
 
 	Removed the experimental threaded_call/2 and threaded_exit/2 thread 
 	predicates, replaced by new threaded_once/1, threaded_ignore/1, 

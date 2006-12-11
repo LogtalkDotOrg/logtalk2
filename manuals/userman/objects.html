@@ -25,7 +25,7 @@
 Logtalk objects main goal is the encapsulation and reuse of predicates. Instead of a single clause database containing all your code, Logtalk objects provide separated namespaces or databases allowing the partitioning of code in more manageable parts. Logtalk does not try to bring some sort of new dynamic state change concept to Logic Programming or Prolog.
 </p>
 <p>
-In Logtalk, the only pre-defined objects are the pseudo-objects <code>user</code> and <code>debugger</code>, which are described later at the end of this section.
+In Logtalk, the only pre-defined objects are the pseudo-objects <code>user</code>, <code>debugger</code>, and <code>logtalk</code>, which are described later at the end of this section.
 </p>
 
 <h2>Objects, prototypes, classes, and instances<a id="objects_kind"></a></h2>
@@ -382,10 +382,16 @@ Logtalk defines a built-in, pseudo-object named <code>user</code> that contains 
 Logtalk defines a built-in, pseudo-object named <code>debugger</code> which implements the Logtalk built-in debugger (see the section on <a href="running.html#debugging">debugging Logtalk programs</a> for details).
 </p>
 
+<h2>The pseudo-object logtalk<a id="objects_logtalk"></a></h2>
+
+<p>
+Logtalk defines a built-in, empty pseudo-object named <code>logtalk</code>, which can impersonate both a class and a prototype. Can be used to define class hierarchies without forcing the use of metaclasses or reflective designs.
+</p>
+
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: December 8, 2006</span>
+		<span>Last updated on: December 11, 2006</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="messages.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="protocols.html">next</a></span><br/>
