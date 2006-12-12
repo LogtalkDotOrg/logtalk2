@@ -142,3 +142,7 @@ predicate. The directive metapredicate/1 is now deprecated, the directive
 meta_predicate/1 should be used instead. There are also changes to the 
 config files that render the Logtalk runtime incompatible with the config 
 files of previous versions.
+
+Logtalk 2.29.0 makes some incompatible changes to the experimental support 
+for multi-threading programming that may imply updating any application that 
+uses the multi-threading predicates.
