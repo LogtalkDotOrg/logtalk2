@@ -31,7 +31,7 @@ In Logtalk, the only pre-defined objects are the pseudo-objects <code>user</code
 <h2>Objects, prototypes, classes, and instances<a id="objects_kind"></a></h2>
 
 <p>
-Logtalk uses the term <em>object</em> in a broad sense. The terms <em>prototype</em>, <em>parent</em>, <em>class</em>, <em>subclass</em>, <em>superclass</em>, <em>metaclass</em>, and <em>instance</em> always designate an object. Different names are used to emphasize the role played by an object in a particular context. I.e. we use a term other than object when we want to make the relationship with other objects explicit. There are only three kinds of encapsulation entities in Logtalk: objects, protocols, and categories.
+There are only three kinds of encapsulation entities in Logtalk: objects, protocols, and categories. Logtalk uses the term <em>object</em> in a broad sense. The terms <em>prototype</em>, <em>parent</em>, <em>class</em>, <em>subclass</em>, <em>superclass</em>, <em>metaclass</em>, and <em>instance</em> always designate an object. Different names are used to emphasize the role played by an object in a particular context. I.e. we use a term other than object when we want to make the relationship with other objects explicit. For example, an object with an <em>instantiation</em> relation with other object plays the role of an <em>instance</em>, while the instantiated object plays the role of a <em>class</em>; an object with a <em>specialization</em> relation other object plays the role of a <em>subclass</em>, while the specialized object plays the role of a <em>superclass</em>; an object with an <em>extension</em> relation with other object plays the role of a <em>prototype</em>, the same for the extended object. A <em>stand-alone</em> object, i.e. an object with no relations with other objects, is always interpreted as a prototype.
 </p>
 
 <h2>Defining a new object<a id="objects_defining"></a></h2>
@@ -384,19 +384,19 @@ An object may have the property <code>static</code>, <code>dynamic</code>, or <c
 Logtalk defines some built-in, pseudo objects that are always available for any application.
 </p>
 
-<h3>The pseudo-object user<a id="objects_user"></a></h3>
+<h3>The pseudo-object <em>user</em><a id="objects_user"></a></h3>
 
 <p>
 Logtalk defines a built-in, pseudo-object named <code>user</code> that contains all user predicate definitions not encapsulated in a Logtalk entity. These predicates are assumed to be implicitly declared public.
 </p>
 
-<h3>The pseudo-object debugger<a id="objects_debugger"></a></h3>
+<h3>The pseudo-object <em>debugger</em><a id="objects_debugger"></a></h3>
 
 <p>
 Logtalk defines a built-in, pseudo-object named <code>debugger</code> which implements the Logtalk built-in debugger (see the section on <a href="running.html#debugging">debugging Logtalk programs</a> for details).
 </p>
 
-<h3>The pseudo-object logtalk<a id="objects_logtalk"></a></h3>
+<h3>The pseudo-object <em>logtalk</em><a id="objects_logtalk"></a></h3>
 
 <p>
 Logtalk defines a built-in, empty pseudo-object named <code>logtalk</code>, which can play the role of both a class and a prototype. It may be used to define class hierarchies without forcing the use of metaclasses or reflective designs, as illustrated above in this section. This pseudo-object supports the dynamic declaration and definition of predicates (using the dynamic database methods).
