@@ -27,6 +27,7 @@ InfoBeforeFile=C:\logtalk\README.txt
 OutputBaseFilename=lgt2290
 Compression=lzma
 SolidCompression=yes
+PrivilegesRequired=none
 
 VersionInfoVersion=2.29.0
 VersionInfoCopyright=© Paulo Moura, 1998-2006
@@ -82,6 +83,7 @@ Source: "C:\logtalk\libpaths\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserD
 Source: "C:\logtalk\library\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\library"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
 Source: "C:\logtalk\xml\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\xml"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
 
+Source: "C:\logtalk\configs\amzi.config"; DestDir: "{code:GetLgtUserDir}\configs"; DestName: "amzi.pro"; Components: user; Flags: ignoreversion uninsneveruninstall
 Source: "C:\logtalk\configs\xsb.config"; DestDir: "{code:GetLgtUserDir}\configs"; DestName: "xsb.pl"; Components: user; Flags: ignoreversion uninsneveruninstall
 Source: "C:\logtalk\libpaths\libpaths.pl"; DestDir: "{code:GetLgtUserDir}\libpaths"; DestName: "libpaths_no_env_var.pl"; Components: user; Flags: ignoreversion uninsneveruninstall
 
@@ -100,7 +102,7 @@ Name: "{group}\{#MyAppName} Release Notes"; Filename: "{app}\RELEASE_NOTES.txt";
 Name: "{group}\{#MyAppName} Read Me"; Filename: "{app}\README.txt"; Components: base
 Name: "{group}\{#MyAppName} Customization instructions"; Filename: "{app}\CUSTOMIZE.txt"; Components: base
 
-Name: "{group}\{#MyAppName} Web Site"; Filename: "{app}\{#MyAppUrlName}"; Components: base
+Name: "{group}\{#MyAppName} Web Site"; Filename: "{#MyAppUrl}"; Components: base
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"; Components: base
 
 Name: "{code:GetLgtUserDir}\manuals"; Filename: "{app}\manuals"; Components: user
@@ -205,4 +207,3 @@ begin
     MsgBox(Scripts, mbInformation, MB_OK)
   end
 end;
-
