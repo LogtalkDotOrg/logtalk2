@@ -17,6 +17,10 @@ RELEASE NOTES
 	class hierarchies without forcing the use of metaclasses or reflective 
 	designs.
 
+	The default value of the compiler flag events/1 is now off. As most 
+	applications do not use events, this setting ensures the best possible 
+	message processing performance for those applications.
+
 	Removed the experimental threaded_call/2 and threaded_exit/2 thread 
 	predicates, replaced by new threaded_once/1, threaded_ignore/1, 
 	threaded_race/1, threaded_peek/1, and threaded_discard/1 predicates.
