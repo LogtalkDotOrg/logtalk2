@@ -2652,8 +2652,7 @@ current_logtalk_flag(version, version(2, 29, 0)).
 '$lgt_pseudo_object'(debugger).
 
 
-'$lgt_pseudo_protocol'(_) :-
-	fail.
+'$lgt_pseudo_protocol'(eventable).
 
 
 '$lgt_pseudo_category'(_) :-
@@ -2664,7 +2663,7 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  built-in pseudo-object object table clauses
+%  built-in pseudo-entity table clauses
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -2673,6 +2672,9 @@ current_logtalk_flag(version, version(2, 29, 0)).
 '$lgt_current_object_'(logtalk, '$lgt_po_logtalk_0_', '$lgt_po_logtalk_0__dcl', '$lgt_po_logtalk_0__def', _, static).
 '$lgt_current_object_'(user, '$lgt_po_user_0_', '$lgt_po_user_0__dcl', '$lgt_po_user_0__def', _, static).
 '$lgt_current_object_'(debugger, '$lgt_po_debugger_0_', '$lgt_po_debugger_0__dcl', '$lgt_po_debugger_0__def', _, static).
+
+
+'$lgt_current_protocol_'(eventable, '$lgt_pp_eventable_0_', _, static).
 
 
 
@@ -3310,6 +3312,29 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 '$lgt_dbg_do_port_option'(?, Goal, Error, Ctx, Action) :-
 	'$lgt_dbg_do_port_option'(h, Goal, Error, Ctx, Action).
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  built-in pseudo-protocol eventable
+%
+%  implements the Logtalk event handlers protocol
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+'$lgt_pp_eventable_0_'('$lgt_pp_eventable_0__dcl', '$lgt_pp_eventable_0__alias').
+
+'$lgt_pp_eventable_0__dcl'(before(_, _, _), p(p(p)), static, no, no, no).
+'$lgt_pp_eventable_0__dcl'(after(_, _, _), p(p(p)), static, no, no, no).
+
+'$lgt_pp_eventable_0__dcl'(Pred, Scope, Type, Meta, NonTerminal, Atomic, eventable) :-
+	'$lgt_pp_eventable_0__dcl'(Pred, Scope, Type, Meta, NonTerminal, Atomic).
+
+'$lgt_pp_eventable_0__alias'(_, Pred, Pred).
 
 
 
