@@ -46,15 +46,14 @@ ALS Prolog 3.1
 	support the "altdirs" compiler flag.
 
 
-Amzi! Prolog 7.4.10 and later versions
+Amzi! Prolog 7.6.1 and later versions
 
 	amzi.config
 
-	For Amzi! Prolog 7.4.10 and later versions. You need to patch the Logtalk 
+	For Amzi! Prolog 7.6.1 and later versions. You need to patch the Logtalk 
 	compiler (the "compiler/logtalk.pl" file) by searching for all calls of 
-	':'/2 and wrap them inside call/1. In addition, all occurrences of the 
-	atom {} need to be quoted. For better performance, use the Amzi! "acmp" 
-	command-line compiler to compile the files "configs/amzi.config",
+	':'/2 and wrap them inside call/1. For better performance, use the Amzi! 
+	"acmp" command-line compiler to compile the files "configs/amzi.config",
 	"compiler/logtalk.pl", and "libpaths/libpaths.pl" and then load the 
 	resulting ".plm" files using the predicate load/1 (you will need first 
 	to change the extension of the config file to either ".pl" or ".pro" and 
