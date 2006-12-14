@@ -203,7 +203,7 @@
 Obj::Pred :-
 	'$lgt_tr_msg'(Pred, Obj, Call, user),						% compile the message
 	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->		% check if we're debugging the target object
-		'$lgt_ctx_ctx'(Ctx, _, user, user, Obj, '$lgt_po_user_0_', [], _),
+		'$lgt_ctx_ctx'(Ctx, _, user, user, Obj, '$lgt_bio_user_0_', [], _),
 		catch('$lgt_dbg_goal'(Obj::Pred, Call, Ctx), Error, '$lgt_runtime_error_handler'(Error))
 	;	catch(Call, Error, '$lgt_runtime_error_handler'(Error))
 	).
@@ -974,7 +974,7 @@ threaded_call(Goal) :-
 	throw(error(type_error(callable, Goal), threaded_call(Goal))).
 
 threaded_call(Goal) :-
-	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_po_user_0_', [], _),
+	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
 	'$lgt_tr_body'(threaded_call(Goal), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -988,7 +988,7 @@ threaded_once(Goal) :-
 	throw(error(type_error(callable, Goal), threaded_once(Goal))).
 
 threaded_once(Goal) :-
-	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_po_user_0_', [], _),
+	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
 	'$lgt_tr_body'(threaded_once(Goal), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -1002,7 +1002,7 @@ threaded_ignore(Goal) :-
 	throw(error(type_error(callable, Goal), threaded_ignore(Goal))).
 
 threaded_ignore(Goal) :-
-	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_po_user_0_', [], _),
+	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
 	'$lgt_tr_body'(threaded_ignore(Goal), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -1016,7 +1016,7 @@ threaded_exit(Goal) :-
 	throw(error(type_error(callable, Goal), threaded_exit(Goal))).
 
 threaded_exit(Goal) :-
-	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_po_user_0_', [], _),
+	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
 	'$lgt_tr_body'(threaded_exit(Goal), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -1030,7 +1030,7 @@ threaded_peek(Goal) :-
 	throw(error(type_error(callable, Goal), threaded_peek(Goal))).
 
 threaded_peek(Goal) :-
-	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_po_user_0_', [], _),
+	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
 	'$lgt_tr_body'(threaded_peek(Goal), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -1044,7 +1044,7 @@ threaded_discard(Goal) :-
 	throw(error(type_error(callable, Goal), threaded_discard(Goal))).
 
 threaded_discard(Goal) :-
-	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_po_user_0_', [], _),
+	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
 	'$lgt_tr_body'(threaded_discard(Goal), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -2641,21 +2641,21 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  built-in pseudo-object entity tables
+%  built-in entity tables
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
-'$lgt_pseudo_object'(logtalk).
-'$lgt_pseudo_object'(user).
-'$lgt_pseudo_object'(debugger).
+'$lgt_built_in_object'(logtalk).
+'$lgt_built_in_object'(user).
+'$lgt_built_in_object'(debugger).
 
 
-'$lgt_pseudo_protocol'(eventable).
+'$lgt_built_in_protocol'(monitoring).
 
 
-'$lgt_pseudo_category'(_) :-
+'$lgt_built_in_category'(_) :-
 	fail.
 
 
@@ -2663,93 +2663,93 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  built-in pseudo-entity table clauses
+%  built-in entity table clauses
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
-'$lgt_current_object_'(logtalk, '$lgt_po_logtalk_0_', '$lgt_po_logtalk_0__dcl', '$lgt_po_logtalk_0__def', _, static).
-'$lgt_current_object_'(user, '$lgt_po_user_0_', '$lgt_po_user_0__dcl', '$lgt_po_user_0__def', _, static).
-'$lgt_current_object_'(debugger, '$lgt_po_debugger_0_', '$lgt_po_debugger_0__dcl', '$lgt_po_debugger_0__def', _, static).
+'$lgt_current_object_'(logtalk, '$lgt_bio_logtalk_0_', '$lgt_bio_logtalk_0__dcl', '$lgt_bio_logtalk_0__def', _, static).
+'$lgt_current_object_'(user, '$lgt_bio_user_0_', '$lgt_bio_user_0__dcl', '$lgt_bio_user_0__def', _, static).
+'$lgt_current_object_'(debugger, '$lgt_bio_debugger_0_', '$lgt_bio_debugger_0__dcl', '$lgt_bio_debugger_0__def', _, static).
 
 
-'$lgt_current_protocol_'(eventable, '$lgt_pp_eventable_0_', _, static).
+'$lgt_current_protocol_'(monitoring, '$lgt_bip_monitoring_0_', _, static).
 
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  built-in pseudo-object logtalk
+%  "logtalk" built-in object
 %
 %  empty object, optionally used as root for both prototype and class-based 
 %  hierarchies
 %
+%  the clauses correspond to a virtual compilation of the object
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
-% the following clauses correspond to a virtual 
-% compilation of the pseudo-object logtalk
-
-:- dynamic('$lgt_po_logtalk_0__ddcl'/2).
-:- dynamic('$lgt_po_logtalk_0__ddef'/5).
+:- dynamic('$lgt_bio_logtalk_0__ddcl'/2).
+:- dynamic('$lgt_bio_logtalk_0__ddef'/5).
 
 
-'$lgt_po_logtalk_0_'('$lgt_po_logtalk_0__dcl', '$lgt_po_logtalk_0__def', '$lgt_po_logtalk_0__super', '$lgt_po_logtalk_0__idcl', '$lgt_po_logtalk_0__idef', '$lgt_po_logtalk_0__ddcl', '$lgt_po_logtalk_0__ddef', '$lgt_po_logtalk_0__alias').
+'$lgt_bio_logtalk_0_'('$lgt_bio_logtalk_0__dcl', '$lgt_bio_logtalk_0__def', '$lgt_bio_logtalk_0__super', '$lgt_bio_logtalk_0__idcl', '$lgt_bio_logtalk_0__idef', '$lgt_bio_logtalk_0__ddcl', '$lgt_bio_logtalk_0__ddef', '$lgt_bio_logtalk_0__alias').
 
 
-'$lgt_po_logtalk_0__dcl'(_, _, _, _, _, _) :-
+'$lgt_bio_logtalk_0__dcl'(_, _, _, _, _, _) :-
 	fail.
 
 
-'$lgt_po_logtalk_0__dcl'(Pred, Scope, (dynamic), no, no, no, logtalk, logtalk) :-
-	'$lgt_po_logtalk_0__ddcl'(Pred, Scope).
+'$lgt_bio_logtalk_0__dcl'(Pred, Scope, (dynamic), no, no, no, logtalk, logtalk) :-
+	'$lgt_bio_logtalk_0__ddcl'(Pred, Scope).
 
 
-'$lgt_po_logtalk_0__def'(_, _, _, _, _) :-
+'$lgt_bio_logtalk_0__def'(_, _, _, _, _) :-
 	fail.
 
 
-'$lgt_po_logtalk_0__super'(_, _, _, _, _, _) :-
+'$lgt_bio_logtalk_0__super'(_, _, _, _, _, _) :-
 	fail.
 
 
-'$lgt_po_logtalk_0__def'(Pred, Sender, This, Self, Call, logtalk) :-
-	'$lgt_po_logtalk_0__ddef'(Pred, Sender, This, Self, Call).
+'$lgt_bio_logtalk_0__def'(Pred, Sender, This, Self, Call, logtalk) :-
+	'$lgt_bio_logtalk_0__ddef'(Pred, Sender, This, Self, Call).
 
 
-'$lgt_po_logtalk_0__idcl'(Pred, Scope, (dynamic), no, no, no, logtalk, logtalk) :-
-	'$lgt_po_logtalk_0__ddcl'(Pred, Scope).
+'$lgt_bio_logtalk_0__idcl'(Pred, Scope, (dynamic), no, no, no, logtalk, logtalk) :-
+	'$lgt_bio_logtalk_0__ddcl'(Pred, Scope).
 
 
-'$lgt_po_logtalk_0__idef'(Pred, Sender, This, Self, Call, logtalk) :-
-	'$lgt_po_logtalk_0__ddef'(Pred, Sender, This, Self, Call).
+'$lgt_bio_logtalk_0__idef'(Pred, Sender, This, Self, Call, logtalk) :-
+	'$lgt_bio_logtalk_0__ddef'(Pred, Sender, This, Self, Call).
 
 
-'$lgt_po_logtalk_0__alias'(_, Pred, Pred).
+'$lgt_bio_logtalk_0__alias'(_, Pred, Pred).
 
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  built-in pseudo-object user
+%  "user" built-in pseudo-object
 %
 %  represents the Prolog database (excluding built-in predicates)
 %
+%  the clauses correspond to a virtual compilation of the object
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
-% the following clauses correspond to a virtual 
-% compilation of the pseudo-object user
+% the following clauses correspond to a virtual compilation of the built-in pseudo-object "user"
 
 
-'$lgt_po_user_0_'('$lgt_po_user_0__dcl', '$lgt_po_user_0__def', '$lgt_po_user_0__super', '$lgt_po_user_0__idcl', '$lgt_po_user_0__idef', '$lgt_po_user_0__ddcl', '$lgt_po_user_0__ddef', '$lgt_po_user_0__alias').
+'$lgt_bio_user_0_'('$lgt_bio_user_0__dcl', '$lgt_bio_user_0__def', '$lgt_bio_user_0__super', '$lgt_bio_user_0__idcl', '$lgt_bio_user_0__idef', '$lgt_bio_user_0__ddcl', '$lgt_bio_user_0__ddef', '$lgt_bio_user_0__alias').
 
-'$lgt_po_user_0__dcl'(Pred, p(p(p)), Type, no, no, no) :-
+'$lgt_bio_user_0__dcl'(Pred, p(p(p)), Type, no, no, no) :-
 	(	nonvar(Pred) ->
 		\+ '$lgt_built_in'(Pred),
 		functor(Pred, Functor, Arity),
@@ -2764,12 +2764,12 @@ current_logtalk_flag(version, version(2, 29, 0)).
 	;	Type = static
 	).
 
-'$lgt_po_user_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Atomic, user, user) :-
-	'$lgt_po_user_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Atomic).
+'$lgt_bio_user_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Atomic, user, user) :-
+	'$lgt_bio_user_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Atomic).
 
-'$lgt_po_user_0__def'(Pred, _, _, _, Pred).
+'$lgt_bio_user_0__def'(Pred, _, _, _, Pred).
 
-'$lgt_po_user_0__def'(Pred, _, _, _, Pred, user).
+'$lgt_bio_user_0__def'(Pred, _, _, _, Pred, user).
 
 
 
@@ -2802,63 +2802,64 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  built-in pseudo-object debugger
+%  "debugger" built-in object
 %
 %  implements the Logtalk buit-in debugging features
+%
+%  the clauses correspond to a virtual compilation of the object
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
-% the following clauses correspond to a virtual 
-% compilation of the pseudo-object debugger
+% the following clauses correspond to a virtual compilation of the built-in object debugger
 
-'$lgt_po_debugger_0_'('$lgt_po_debugger_0__dcl', '$lgt_po_debugger_0__def', '$lgt_po_debugger_0__super', '$lgt_po_debugger_0__idcl', '$lgt_po_debugger_0__idef', '$lgt_po_debugger_0__ddcl', '$lgt_po_debugger_0__ddef', '$lgt_po_debugger_0__alias').
+'$lgt_bio_debugger_0_'('$lgt_bio_debugger_0__dcl', '$lgt_bio_debugger_0__def', '$lgt_bio_debugger_0__super', '$lgt_bio_debugger_0__idcl', '$lgt_bio_debugger_0__idef', '$lgt_bio_debugger_0__ddcl', '$lgt_bio_debugger_0__ddef', '$lgt_bio_debugger_0__alias').
 
 
 % debugger public protocol
 
-'$lgt_po_debugger_0__dcl'(reset, p(p(p)), static, no, no, no).
+'$lgt_bio_debugger_0__dcl'(reset, p(p(p)), static, no, no, no).
 
-'$lgt_po_debugger_0__dcl'(debug, p(p(p)), static, no, no, no).
-'$lgt_po_debugger_0__dcl'(nodebug, p(p(p)), static, no, no, no).
+'$lgt_bio_debugger_0__dcl'(debug, p(p(p)), static, no, no, no).
+'$lgt_bio_debugger_0__dcl'(nodebug, p(p(p)), static, no, no, no).
 
-'$lgt_po_debugger_0__dcl'(debugging, p(p(p)), static, no, no, no).
-'$lgt_po_debugger_0__dcl'(debugging(_), p(p(p)), static, no, no, no).
+'$lgt_bio_debugger_0__dcl'(debugging, p(p(p)), static, no, no, no).
+'$lgt_bio_debugger_0__dcl'(debugging(_), p(p(p)), static, no, no, no).
 
-'$lgt_po_debugger_0__dcl'(trace, p(p(p)), static, no, no, no).
-'$lgt_po_debugger_0__dcl'(notrace, p(p(p)), static, no, no, no).
+'$lgt_bio_debugger_0__dcl'(trace, p(p(p)), static, no, no, no).
+'$lgt_bio_debugger_0__dcl'(notrace, p(p(p)), static, no, no, no).
 
-'$lgt_po_debugger_0__dcl'(spy(_), p(p(p)), static, no, no, no).
-'$lgt_po_debugger_0__dcl'(spy(_, _, _, _), p(p(p)), static, no, no, no).
-'$lgt_po_debugger_0__dcl'(nospy(_), p(p(p)), static, no, no, no).
-'$lgt_po_debugger_0__dcl'(nospy(_, _, _, _), p(p(p)), static, no, no, no).
-'$lgt_po_debugger_0__dcl'(nospyall, p(p(p)), static, no, no, no).
+'$lgt_bio_debugger_0__dcl'(spy(_), p(p(p)), static, no, no, no).
+'$lgt_bio_debugger_0__dcl'(spy(_, _, _, _), p(p(p)), static, no, no, no).
+'$lgt_bio_debugger_0__dcl'(nospy(_), p(p(p)), static, no, no, no).
+'$lgt_bio_debugger_0__dcl'(nospy(_, _, _, _), p(p(p)), static, no, no, no).
+'$lgt_bio_debugger_0__dcl'(nospyall, p(p(p)), static, no, no, no).
 
-'$lgt_po_debugger_0__dcl'(leash(_), p(p(p)), static, no, no, no).
-
-
-'$lgt_po_debugger_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Atomic, debugger, debugger) :-
-	'$lgt_po_debugger_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Atomic).
+'$lgt_bio_debugger_0__dcl'(leash(_), p(p(p)), static, no, no, no).
 
 
-'$lgt_po_debugger_0__def'(reset, _, _, _, '$lgt_dbg_reset').
-'$lgt_po_debugger_0__def'(debug, _, _, _, '$lgt_dbg_debug').
-'$lgt_po_debugger_0__def'(debugging, _, _, _, '$lgt_dbg_debugging').
-'$lgt_po_debugger_0__def'(debugging(Entity), _, _, _, '$lgt_dbg_debugging'(Entity)).
-'$lgt_po_debugger_0__def'(nodebug, _, _, _, '$lgt_dbg_nodebug').
-'$lgt_po_debugger_0__def'(trace, _, _, _, '$lgt_dbg_trace').
-'$lgt_po_debugger_0__def'(notrace, _, _, _, '$lgt_dbg_notrace').
-'$lgt_po_debugger_0__def'(spy(Preds), _, _, _, '$lgt_dbg_spy'(Preds)).
-'$lgt_po_debugger_0__def'(nospy(Preds), _, _, _, '$lgt_dbg_nospy'(Preds)).
-'$lgt_po_debugger_0__def'(spy(Sender, This, Self, Goal), _, _, _, '$lgt_dbg_spy'(Sender, This, Self, Goal)).
-'$lgt_po_debugger_0__def'(nospy(Sender, This, Self, Goal), _, _, _, '$lgt_dbg_nospy'(Sender, This, Self, Goal)).
-'$lgt_po_debugger_0__def'(nospyall, _, _, _, '$lgt_dbg_nospyall').
-'$lgt_po_debugger_0__def'(leash(Ports), _, _, _, '$lgt_dbg_leash'(Ports)).
+'$lgt_bio_debugger_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Atomic, debugger, debugger) :-
+	'$lgt_bio_debugger_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Atomic).
 
 
-'$lgt_po_debugger_0__def'(Pred, _, _, _, Call, debugger) :-
-	'$lgt_po_debugger_0__def'(Pred, _, _, _, Call).
+'$lgt_bio_debugger_0__def'(reset, _, _, _, '$lgt_dbg_reset').
+'$lgt_bio_debugger_0__def'(debug, _, _, _, '$lgt_dbg_debug').
+'$lgt_bio_debugger_0__def'(debugging, _, _, _, '$lgt_dbg_debugging').
+'$lgt_bio_debugger_0__def'(debugging(Entity), _, _, _, '$lgt_dbg_debugging'(Entity)).
+'$lgt_bio_debugger_0__def'(nodebug, _, _, _, '$lgt_dbg_nodebug').
+'$lgt_bio_debugger_0__def'(trace, _, _, _, '$lgt_dbg_trace').
+'$lgt_bio_debugger_0__def'(notrace, _, _, _, '$lgt_dbg_notrace').
+'$lgt_bio_debugger_0__def'(spy(Preds), _, _, _, '$lgt_dbg_spy'(Preds)).
+'$lgt_bio_debugger_0__def'(nospy(Preds), _, _, _, '$lgt_dbg_nospy'(Preds)).
+'$lgt_bio_debugger_0__def'(spy(Sender, This, Self, Goal), _, _, _, '$lgt_dbg_spy'(Sender, This, Self, Goal)).
+'$lgt_bio_debugger_0__def'(nospy(Sender, This, Self, Goal), _, _, _, '$lgt_dbg_nospy'(Sender, This, Self, Goal)).
+'$lgt_bio_debugger_0__def'(nospyall, _, _, _, '$lgt_dbg_nospyall').
+'$lgt_bio_debugger_0__def'(leash(Ports), _, _, _, '$lgt_dbg_leash'(Ports)).
+
+
+'$lgt_bio_debugger_0__def'(Pred, _, _, _, Call, debugger) :-
+	'$lgt_bio_debugger_0__def'(Pred, _, _, _, Call).
 
 
 '$lgt_dbg_reset' :-
@@ -3318,23 +3319,25 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  built-in pseudo-protocol eventable
+%  "monitoring" built-in protocol
 %
 %  implements the Logtalk event handlers protocol
+%
+%  the clauses correspond to a virtual compilation of the protocol
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
-'$lgt_pp_eventable_0_'('$lgt_pp_eventable_0__dcl', '$lgt_pp_eventable_0__alias').
+'$lgt_bip_monitoring_0_'('$lgt_bip_monitoring_0__dcl', '$lgt_bip_monitoring_0__alias').
 
-'$lgt_pp_eventable_0__dcl'(before(_, _, _), p(p(p)), static, no, no, no).
-'$lgt_pp_eventable_0__dcl'(after(_, _, _), p(p(p)), static, no, no, no).
+'$lgt_bip_monitoring_0__dcl'(before(_, _, _), p(p(p)), static, no, no, no).
+'$lgt_bip_monitoring_0__dcl'(after(_, _, _), p(p(p)), static, no, no, no).
 
-'$lgt_pp_eventable_0__dcl'(Pred, Scope, Type, Meta, NonTerminal, Atomic, eventable) :-
-	'$lgt_pp_eventable_0__dcl'(Pred, Scope, Type, Meta, NonTerminal, Atomic).
+'$lgt_bip_monitoring_0__dcl'(Pred, Scope, Type, Meta, NonTerminal, Atomic, monitoring) :-
+	'$lgt_bip_monitoring_0__dcl'(Pred, Scope, Type, Meta, NonTerminal, Atomic).
 
-'$lgt_pp_eventable_0__alias'(_, Pred, Pred).
+'$lgt_bip_monitoring_0__alias'(_, Pred, Pred).
 
 
 
@@ -5527,6 +5530,20 @@ current_logtalk_flag(version, version(2, 29, 0)).
 	'$lgt_inc_compile_warnings_counter',
 	nl, write('  WARNING!  Redefining a Prolog built-in predicate: '),
 	writeq(Functor/Arity),
+	nl, '$lgt_report_compiler_error_line_number'(Stream),
+	fail.
+
+
+% definition of event handlers without reference to the "monitoring" built-in protocol
+
+'$lgt_tr_head'(Head, _, _, Stream) :-
+	functor(Head, Functor, 3),
+	once((Functor == before; Functor = after)),
+	\+ '$lgt_pp_implemented_protocol_'(monitoring, _, _, _),
+	'$lgt_compiler_flag'(report, on),
+	'$lgt_inc_compile_warnings_counter',
+	nl, write('  WARNING!  Missing reference to the "monitoring" built-in protocol: '),
+	writeq(Functor/3),
 	nl, '$lgt_report_compiler_error_line_number'(Stream),
 	fail.
 
@@ -9224,10 +9241,10 @@ current_logtalk_flag(version, version(2, 29, 0)).
 % '$lgt_construct_object_functors'(+object_identifier, -atom, -atom, -atom, -atom, -atom, -atom, -atom, -atom, -atom)
 %
 % constructs functors used in the compiled code of an object;
-% pseudo-objects use a fixed set of functors that do not depend on the code_prefix/1 compiler flag
+% built-in objects use a fixed set of functors that do not depend on the code_prefix/1 compiler flag
 
 '$lgt_construct_object_functors'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm) :-
-	(	'$lgt_pseudo_object'(Obj) ->
+	(	'$lgt_built_in_object'(Obj) ->
 		'$lgt_current_object_'(Obj, Prefix, _, _, _, _),
 		Call =.. [Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm],
 		once(Call)
@@ -9247,10 +9264,10 @@ current_logtalk_flag(version, version(2, 29, 0)).
 % '$lgt_construct_protocol_functors'(+protocol_identifier, -atom, -atom, -atom)
 %
 % constructs functors used in the compiled code of a protocol;
-% pseudo-protocols use a fixed set of functors that do not depend on the code_prefix/1 compiler flag
+% built-in protocols use a fixed set of functors that do not depend on the code_prefix/1 compiler flag
 
 '$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl, Rnm) :-
-	(	'$lgt_pseudo_protocol'(Ptc) ->
+	(	'$lgt_built_in_protocol'(Ptc) ->
 		'$lgt_current_protocol_'(Ptc, Prefix, _),
 		Call =.. [Prefix, Dcl, Rnm],
 		once(Call)
@@ -9264,10 +9281,10 @@ current_logtalk_flag(version, version(2, 29, 0)).
 % '$lgt_construct_category_functors'(+category_identifier, -atom, -atom, -atom, -atom)
 %
 % constructs functors used in the compiled code of a category;
-% pseudo-categories use a fixed set of functors that do not depend on the code_prefix/1 compiler flag
+% built-in categories use a fixed set of functors that do not depend on the code_prefix/1 compiler flag
 
 '$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def, Rnm) :-
-	(	'$lgt_pseudo_category'(Ctg) ->
+	(	'$lgt_built_in_category'(Ctg) ->
 		'$lgt_current_category_'(Ctg, Prefix, _),
 		Call =.. [Prefix, Dcl, Def, Rnm],
 		once(Call)

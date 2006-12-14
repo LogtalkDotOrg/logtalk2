@@ -12,13 +12,15 @@ RELEASE NOTES
 
 2.29.0 - December 14, 2006
 
-	Added a new built-in, empty pseudo-object named "logtalk", which can 
-	play the role of both a class and a prototype. It may be used to define 
-	class hierarchies without forcing the use of metaclasses or reflective 
+	Added a new built-in, empty object named "logtalk", which can play the 
+	role of both a class and a prototype. It may be used to define class 
+	hierarchies without forcing the use of metaclasses or reflective 
 	designs.
 
-	Added a built-in pseudo-protocol named "eventable" with declarations 
-	for the before/3 and after/3 public event handler predicates.
+	Added a built-in protocol named "monitoring" with declarations for 
+	the before/3 and after/3 public event handler predicates. Updated 
+	the Logtalk compiler to print a warning when defining an event handler 
+	with no reference to the "monitoring" protocol.
 
 	The default value of the compiler flag events/1 is now off. As most 
 	applications do not use events, this setting ensures the best possible 
