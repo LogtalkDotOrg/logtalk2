@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.29.0 - December 14, 2006
+2.29.0 - December 18, 2006
 
 	Added a new built-in, empty object named "logtalk", which can play the 
 	role of both a class and a prototype. It may be used to define class 
@@ -30,16 +30,16 @@ RELEASE NOTES
 	predicates, replaced by new threaded_once/1, threaded_ignore/1, 
 	threaded_race/1, threaded_peek/1, and threaded_discard/1 predicates.
 
-	Corrected a bug when using threaded calls as initialization goals on 
-	threaded objects.
+	Corrected a bug when using threaded calls as initialization goals 
+	within threaded objects.
 
 	Corrected an elusive bug in the Logtalk compiler where a source file 
-	might not be properly closed when it contains a syntax error (thanks 
+	may not be properly closed when it contains a syntax error (thanks 
 	to Robert Shiplett for the bug report).
 
 	Corrected a bug in the implementation of the built-in methods retract/1 
-	and retractall/1 which could result in unexpected exceptions. Updated 
-	built-in method assertz/1 to always use the lookup cache.
+	and retractall/1 that could result in unexpected exceptions. Updated 
+	the built-in method assertz/1 to always use the lookup cache.
 
 	Corrected a bug in the compilation of empty classes that are not 
 	instances of a metaclass.
@@ -70,7 +70,7 @@ RELEASE NOTES
 	Improved the "metapredicates" example in order to illustrate the use 
 	of closures instead of goals as meta-arguments.
 
-	Added a reference to the  "e" Windows text editor, which supports 
+	Added a reference to the "e" Windows text editor, which supports 
 	the MacOS X TextMate 1.x text editor syntax configuration files.
 
 
