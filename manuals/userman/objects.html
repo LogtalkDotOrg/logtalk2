@@ -25,7 +25,7 @@
 The main goal of Logtalk objects is the encapsulation and reuse of predicates. Instead of a single clause database containing all your code, Logtalk objects provide separated namespaces or databases allowing the partitioning of code in more manageable parts. Logtalk does not try to bring some sort of new dynamic state change concept to Logic Programming or Prolog.
 </p>
 <p>
-In Logtalk, the only pre-defined objects are the pseudo-objects <code>user</code>, <code>debugger</code>, and <code>logtalk</code>, which are described later at the end of this section.
+In Logtalk, the only pre-defined objects are the built-in objects <code>user</code>, <code>debugger</code>, and <code>logtalk</code>, which are described later at the end of this section.
 </p>
 
 <h2>Objects, prototypes, classes, and instances<a id="objects_kind"></a></h2>
@@ -135,7 +135,7 @@ If you do not need a reflective system solution but still want to use classes an
 :- end_object.</pre>
 <p>
 <p>
-A third alternative is to use neither metaclasses or reflective designs but instead to take advantage of the pseudo-object <code>logtalk</code>. This empty pseudo-object can be used as a dummy root superclass. For example:
+A third alternative is to use neither metaclasses or reflective designs but instead to take advantage of the built-in object <code>logtalk</code>. This empty object can be used as a dummy root superclass. For example:
 </p>
 <pre>:- object(class,
     specializes(logtalk)).
@@ -378,10 +378,10 @@ We can find the properties of defined objects by calling the built-in predicate 
 An object may have the property <code>static</code>, <code>dynamic</code>, or <code>built_in</code>. Dynamic objects can be abolished in runtime by calling the <a title="Consult reference manual" href="../refman/builtins/abolish_object1.html"><code>abolish_object/1</code></a> built-in predicate.
 </p>
 
-<h2>Built-in pseudo-objects<a id="objects_pseudo"></a></h2>
+<h2>Built-in objects<a id="objects_built_in"></a></h2>
 
 <p>
-Logtalk defines some built-in, pseudo objects that are always available for any application.
+Logtalk defines some built-in objects that are always available for any application.
 </p>
 
 <h3>The pseudo-object <em>user</em><a id="objects_user"></a></h3>
@@ -390,16 +390,16 @@ Logtalk defines some built-in, pseudo objects that are always available for any 
 Logtalk defines a built-in, pseudo-object named <code>user</code> that contains all user predicate definitions not encapsulated in a Logtalk entity. These predicates are assumed to be implicitly declared public.
 </p>
 
-<h3>The pseudo-object <em>debugger</em><a id="objects_debugger"></a></h3>
+<h3>The built-in object <em>debugger</em><a id="objects_debugger"></a></h3>
 
 <p>
-Logtalk defines a built-in, pseudo-object named <code>debugger</code> which implements the Logtalk built-in debugger (see the section on <a href="running.html#debugging">debugging Logtalk programs</a> for details).
+Logtalk defines a built-in object named <code>debugger</code> which implements the Logtalk built-in debugger (see the section on <a href="running.html#debugging">debugging Logtalk programs</a> for details).
 </p>
 
-<h3>The pseudo-object <em>logtalk</em><a id="objects_logtalk"></a></h3>
+<h3>The built-in object <em>logtalk</em><a id="objects_logtalk"></a></h3>
 
 <p>
-Logtalk defines a built-in, empty pseudo-object named <code>logtalk</code>, which can play the role of both a class and a prototype. It may be used to define class hierarchies without forcing the use of metaclasses or reflective designs, as illustrated above. This pseudo-object supports the dynamic declaration and definition of predicates (using the dynamic database methods).
+Logtalk defines an empty built-in object named <code>logtalk</code>, which can play the role of both a class and a prototype. It may be used to define class hierarchies without forcing the use of metaclasses or reflective designs, as illustrated above. This object supports the dynamic declaration and definition of predicates (using the dynamic database methods).
 </p>
 
 <div class="footer">
