@@ -6,13 +6,7 @@ Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-% start by loading the "event_handlersp" protocol:
-
-| ?- logtalk_load(library(event_handlersp)).
-...
-
-
-% now you are ready for loading the example:
+% load the example:
 
 | ?- logtalk_load(birthdays(loader)).
 ...

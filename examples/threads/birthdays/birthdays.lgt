@@ -1,6 +1,6 @@
 
 :- object(agent,
-	implements(event_handlersp)).
+	implements(monitoring)).
 
 	:- info([
 		version is 1.1,
