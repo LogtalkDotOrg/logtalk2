@@ -2862,6 +2862,9 @@ current_logtalk_flag(version, version(2, 29, 0)).
 	'$lgt_bio_debugger_0__def'(Pred, _, _, _, Call).
 
 
+'$lgt_bio_debugger_0__alias'(_, Pred, Pred).
+
+
 '$lgt_dbg_reset' :-
 	'$lgt_dbg_nospyall',
 	'$lgt_dbg_leash'(full),
