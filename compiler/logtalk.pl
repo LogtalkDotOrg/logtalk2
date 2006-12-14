@@ -2669,12 +2669,12 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 
 
-'$lgt_current_object_'(logtalk, '$lgt_bio_logtalk_0_', '$lgt_bio_logtalk_0__dcl', '$lgt_bio_logtalk_0__def', _, static).
-'$lgt_current_object_'(user, '$lgt_bio_user_0_', '$lgt_bio_user_0__dcl', '$lgt_bio_user_0__def', _, static).
-'$lgt_current_object_'(debugger, '$lgt_bio_debugger_0_', '$lgt_bio_debugger_0__dcl', '$lgt_bio_debugger_0__def', _, static).
+'$lgt_current_object_'(logtalk, '$lgt_bio_logtalk_0_', '$lgt_bio_logtalk_0__dcl', '$lgt_bio_logtalk_0__def', '$lgt_bio_logtalk_0__super', static).
+'$lgt_current_object_'(user, '$lgt_bio_user_0_', '$lgt_bio_user_0__dcl', '$lgt_bio_user_0__def', '$lgt_bio_user_0__super', static).
+'$lgt_current_object_'(debugger, '$lgt_bio_debugger_0_', '$lgt_bio_debugger_0__dcl', '$lgt_bio_debugger_0__def', '$lgt_bio_debugger_0__super', static).
 
 
-'$lgt_current_protocol_'(monitoring, '$lgt_bip_monitoring_0_', _, static).
+'$lgt_current_protocol_'(monitoring, '$lgt_bip_monitoring_0_', static).
 
 
 
