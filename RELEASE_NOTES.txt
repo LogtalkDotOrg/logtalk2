@@ -72,6 +72,9 @@ RELEASE NOTES
 
 	Added a reference to the "e" Windows text editor, which supports 
 	the MacOS X TextMate 1.x text editor syntax configuration files.
+	
+	Updated the manuals index pages in order to workaround browsers bugs 
+	with parsing of empty "span" tags (e.g. Internet Explorer and Opera).
 
 
 2.28.2 - November 6, 2006
