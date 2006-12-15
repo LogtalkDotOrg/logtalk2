@@ -1520,8 +1520,6 @@ current_logtalk_flag(version, version(2, 29, 0)).
 	(	'$lgt_scope'(Prop, PScope)
 	;	Prop = Type
 	;	Prop = declared_in(TCtn)
-	;	call_with_args(Def, Pred, _, _, _, _, DCtn) ->
-		Prop = defined_in(DCtn)
 	;	Meta \== no,
 		Prop = meta_predicate(Meta)
 	;	NonTerminal \== no,
@@ -1534,6 +1532,8 @@ current_logtalk_flag(version, version(2, 29, 0)).
 		\+ call_with_args(TCtnDcl, Pred, _, _, _, _, _),
 		'$lgt_alias_pred'(Obj, Prefix, Pred, Pred2),
 		Prop = alias(Pred2)
+	;	call_with_args(Def, Pred, _, _, _, _, DCtn) ->	% must be the last property checked because
+		Prop = defined_in(DCtn)							% of the implicit cut on the ->/2 call
 	).
 
 '$lgt_predicate_property'(_, Pred, Prop, _, Scope) :-
@@ -2764,12 +2764,18 @@ current_logtalk_flag(version, version(2, 29, 0)).
 	;	Type = static
 	).
 
+
 '$lgt_bio_user_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Atomic, user, user) :-
 	'$lgt_bio_user_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Atomic).
 
+
 '$lgt_bio_user_0__def'(Pred, _, _, _, Pred).
 
+
 '$lgt_bio_user_0__def'(Pred, _, _, _, Pred, user).
+
+
+'$lgt_bio_user_0__alias'(_, Pred, Pred).
 
 
 

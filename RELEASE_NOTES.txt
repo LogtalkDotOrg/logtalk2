@@ -44,6 +44,10 @@ RELEASE NOTES
 	Corrected a bug in the compilation of empty classes that are not 
 	instances of a metaclass.
 
+	Corrected a bug in the built-in method predicate_property/2 where some 
+	predicate properties may not be returned when enumerating properties 
+	using backtracking.
+
 	Modified the SWI-Prolog config file and integration scripts to set 
 	the flag "iso" to "true". Corrected an elusive bug in the definition 
 	of predicate '$lgt_directory_exists'/1 that resulted in "library not 
