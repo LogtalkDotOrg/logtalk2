@@ -44,7 +44,7 @@ var FSObject = new ActiveXObject("Scripting.FileSystemObject");
 if (FSObject.FileExists(prolog_path511)) {
 	prolog_path = prolog_path511;
 }
-else if (FSObject.FileExists(prolog_path3)) {
+else if (FSObject.FileExists(prolog_path510)) {
 	prolog_path = prolog_path510;
 }
 else {
