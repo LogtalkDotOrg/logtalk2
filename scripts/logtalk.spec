@@ -87,7 +87,7 @@ echo "You may need to logout and login again or start a new shell in order to"
 echo "use the new environment variables."
 echo ""
 echo "You may change the default value of the LOGTALKUSER environment variable"
-echo "in your shell configuration files if you already use, or want to use, a 
+echo "in your shell configuration files if you already use, or want to use, a "
 echo "different location for the Logtalk user files directory."
 echo ""
 %postun
