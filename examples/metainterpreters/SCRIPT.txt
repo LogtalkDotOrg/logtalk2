@@ -89,7 +89,7 @@ no
 
 % another example: expert system rules:
 
-| rules::prove(weather(Wheather)).
+| ?- rules::prove(weather(Wheather)).
 
 Wheather = raining 
 yes
