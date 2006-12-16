@@ -74,8 +74,8 @@ make_eclipselgt.sh
 	makes a shell script named "eclipselgt" for running Logtalk with ECLiPSe
 make_eclipselgt.js
 	makes a Windows shortcut named "Logtalk - ECLiPSe" for running Logtalk 
-	with ECLiPSe 5.8 (if you are using a different version, you must edit 
-	the reference to the registry key in the script; if you prefer to use
+	with ECLiPSe 5.11 or 5.10 (if you are using a different version, you must 
+	edit the reference to the registry key in the script; if you prefer to use
 	TkEclipse, open the %LOGTALKHOME%\bin\logtalke_eclipse.pl file with it)
 
 make_gplgt.sh
