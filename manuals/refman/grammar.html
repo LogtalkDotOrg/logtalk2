@@ -436,6 +436,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>object_directive ::=</dt>
 				<dd><i>initialization_directive</i> |</dd>
 				<dd>"<code>:- threaded.</code>" |</dd>
+				<dd>"<code>:- synchronized.</code>" |</dd>
 				<dd>"<code>:- dynamic.</code>" |</dd>
 				<dd>"<code>:- uses(</code>" object_identifier "<code>).</code>" |</dd>
 				<dd>"<code>:- calls(</code>" protocol_identifiers "<code>).</code>" |</dd>
@@ -452,9 +453,10 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 		<dl>
 			<dt>category_directive ::=</dt>
 				<dd><i>initialization_directive</i> |</dd>
+				<dd>"<code>:- synchronized.</code>" |</dd>
+				<dd>"<code>:- dynamic.</code>" |</dd>
 				<dd>"<code>:- uses(</code>" object_identifier "<code>).</code>" |</dd>
 				<dd>"<code>:- calls(</code>" protocol_identifiers "<code>).</code>" |</dd>
-				<dd>"<code>:- dynamic.</code>" |</dd>
 				<dd>"<code>:- info(</code>" info_list "<code>).</code>" |</dd>
 				<dd>predicate_directives</dd>
 		</dl>
