@@ -8678,9 +8678,9 @@ current_logtalk_flag(version, version(2, 29, 0)).
 		'$lgt_pp_mode_'(Mode, _),
 		forall(
 			'$lgt_pp_mode_'(Mode, Solutions),
-			(Solutions \== zero_or_more, Solutions \= one_or_more)) ->
-		assertz('$lgt_pp_feclause_'((MHead:-with_mutex(Mutex, THead))))
-	;	assertz('$lgt_pp_feclause_'((MHead:-mutex_lock(Mutex), call_cleanup(THead, mutex_unlock(Mutex)))))
+			(Solutions \== zero_or_one, Solutions \== one, Solutions \== zero)) ->
+		assertz('$lgt_pp_feclause_'((MHead:-mutex_lock(Mutex), call_cleanup(THead, mutex_unlock(Mutex)))))
+	;	assertz('$lgt_pp_feclause_'((MHead:-with_mutex(Mutex, THead))))
 	),
 	fail.
 
