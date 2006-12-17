@@ -30,8 +30,8 @@ RELEASE NOTES
 	predicates, replaced by new threaded_once/1, threaded_ignore/1, 
 	threaded_race/1, threaded_peek/1, and threaded_discard/1 predicates.
 	Renamed predicate directive atomic/1 to synchronized/1. Added new 
-	object and category directive synchronized/0. Added support for new 
-	"synchronized" and "threaded" entity properties.
+	entity directive synchronized/0. Added support for new "synchronized" 
+	and "threaded" entity properties.
 
 	Corrected a bug when using threaded calls as initialization goals 
 	within threaded objects.
