@@ -45,7 +45,7 @@ synchronized(+non_terminal_indicator_term)</pre>
 
 <pre>:- synchronized(db_update/1).
 
-:- synchronized(write_stream/2, write_stream/2).
+:- synchronized(write_stream/2, read_stream/2).
 
 :- synchronized([add_to_queue/2, remove_from_queue/2]).</pre>
 
