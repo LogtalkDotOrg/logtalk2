@@ -178,7 +178,7 @@ The <code>synchronized/1</code> directive must precede any local calls to the sy
 Logtalk supports both deterministic and non-deterministic synchronized predicates (and synchronized non-terminals). However, whenever possible, synchronized predicates should be coded as deterministic predicates in order to avoid deadlocks. In those cases where the predicate (or grammar rule) is defined in the same object (or category) where the predicate is declared synchronized, Logtalk takes advantage of any existing <a title="Consult reference manual" href="../refman/directives/mode2.html"><code>mode/2</code></a> directives in order to generate the most appropriated mutex handling code. When no <code>mode/2</code> predicate directives are presented, Logtalk assumes a deterministic predicate when generating the mutex handling code.
 </p>
 <p>
-We may declare all predicates of an object (or a category) as synchronized by using the entity directive <a title="Consult reference manual" href="../refman/directives/synchronized0.html"><code>synchronized/0</code></a>. In this case, <code>synchronized/1</code> predicate directive are not necessary and should not be used.
+We may declare all predicates of an object (or a category) as synchronized by using the entity directive <a title="Consult reference manual" href="../refman/directives/synchronized0.html"><code>synchronized/0</code></a>. In this case, the <code>synchronized/1</code> predicate directive is not necessary and should not be used.
 </p>
 
 <div class="footer">
