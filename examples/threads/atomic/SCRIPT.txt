@@ -8,7 +8,7 @@ Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 
 % start by loading the loading the example:
 
-| ?- logtalk_load(atomic(loader)).
+| ?- logtalk_load(sync(loader)).
 ...
 
 
@@ -31,7 +31,7 @@ Yes
 No
 
 
-% the best solution is to declare predicates that need to be thread syncronized as "atomic",
+% the best solution is to declare predicates that need to be thread syncronized as "syncronized",
 % as exemplified in object "nasty2":
 
 | ?- nasty2::(io(alpha), io(digit), io(alpha)).

@@ -15,7 +15,6 @@
 	 assertz(logtalk_library_path(library, lgtuser('library/'))),
 	 assertz(logtalk_library_path(aliases, examples('aliases/'))),
 	 assertz(logtalk_library_path(assignvars, examples('assignvars/'))),
-	 assertz(logtalk_library_path(atomic, threads('atomic/'))),
 	 assertz(logtalk_library_path(benchmarks, examples('benchmarks/'))),
 	 assertz(logtalk_library_path(birds, examples('birds/'))),
 	 assertz(logtalk_library_path(birthdays, threads('birthdays/'))),
@@ -62,6 +61,7 @@
 	 assertz(logtalk_library_path(shapes_ch, examples('shapes/ch/'))),
 	 assertz(logtalk_library_path(shapes_ph, examples('shapes/ph/'))),
 	 assertz(logtalk_library_path(sicstus, examples('sicstus/'))),
+	 assertz(logtalk_library_path(sync, threads('sync/'))),
 	 assertz(logtalk_library_path(symdiff, examples('symdiff/'))),
 	 assertz(logtalk_library_path(threads, examples('threads/'))),
 	 assertz(logtalk_library_path(viewpoints, examples('viewpoints/'))))).

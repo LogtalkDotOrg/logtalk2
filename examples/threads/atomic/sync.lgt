@@ -5,7 +5,7 @@
 		version is 1.1,
 		author is 'Paulo Moura',
 		date is 2006/11/26,
-		comment is 'Simple example for using the "atomic" option for multi-threading calls with side-effects.']).
+		comment is 'Simple example for illustrating the problems with lack of thread syncronization when calling methods with side-effects.']).
 
 	:- threaded.
 
@@ -65,12 +65,12 @@
 		version is 1.1,
 		author is 'Paulo Moura',
 		date is 2006/11/26,
-		comment is 'Simple example for using the "atomic" option for multi-threading calls with side-effects.']).
+		comment is 'Simple example for using the "syncronized" predicate directive for multi-threading methods with side-effects.']).
 
 	:- threaded.
 
 	:- public(update_db/1).
-	:- atomic(update_db/1).
+	:- syncronized(update_db/1).
 	:- mode(update_db(-integer), one).
 	:- info(update_db/1, [
 		comment is 'Perform a database update with a long delay between retracting the old information and asserting the new one.',
@@ -80,7 +80,7 @@
 	:- dynamic(db/1).
 
 	:- public(io/1).
-	:- atomic(io/1).
+	:- syncronized(io/1).
 	:- mode(io(+atom), one).
 	:- info(io/1, [
 		comment is 'Write some characters to the standard output stream with a long delay between each write operation.',
