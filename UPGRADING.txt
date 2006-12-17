@@ -149,4 +149,6 @@ uses the multi-threading predicates. The default value of the compiler flag
 events/1 is now off. Applications using event-driven programming must either 
 turn this flag on or compile source files with the events(on) option. The 
 library protocol "event_handlersp" is now deprecated; new code should use 
-instead the built-in "monitoring" protocol.
+instead the built-in "monitoring" protocol. The new support for "threaded" 
+and "synchronized" entity properties implies implying recompilation of all 
+objects and categories.
