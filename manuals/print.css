@@ -108,7 +108,7 @@ div.top-right > span.chapter:before {
 	border-style: solid;
 }
 
-.toc-bottom-left, .toc-bottom-right, .bottom-left, .bottom-right { 
+.toc-bottom-left { 
 	page: left-toc;
 	text-align: left;
 }
