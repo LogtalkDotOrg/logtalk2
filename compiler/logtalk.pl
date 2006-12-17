@@ -188,7 +188,8 @@
 
 :- dynamic('$lgt_pp_hook_goal_'/2).				% '$lgt_pp_hook_goal_'(Term, Terms)
 
-:- dynamic('$lgt_pp_threaded'/0).				% '$lgt_pp_threaded'
+:- dynamic('$lgt_pp_threaded_'/0).				% '$lgt_pp_threaded_'
+:- dynamic('$lgt_pp_synchronized_'/0).			% '$lgt_pp_synchronized_'
 
 
 
@@ -4075,7 +4076,8 @@ current_logtalk_flag(version, version(2, 29, 0)).
 	retractall('$lgt_pp_referenced_protocol_'(_)),
 	retractall('$lgt_pp_referenced_category_'(_)),
 	retractall('$lgt_pp_entity_op_'(_, _, _)),
-	retractall('$lgt_pp_threaded').
+	retractall('$lgt_pp_threaded_'),
+	retractall('$lgt_pp_synchronized_').
 
 
 
@@ -4492,7 +4494,22 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 '$lgt_tr_directive'(threaded, [], _) :-
 	!,
-	assertz('$lgt_pp_threaded').
+	assertz('$lgt_pp_threaded_').
+
+
+% make all object (or category) predicates synchronized using the same mutex
+
+'$lgt_tr_directive'(synchronized, [], _) :-
+	\+ '$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
+	\+ '$lgt_pp_category_'(_, _, _, _, _, _),
+	throw(domain_error(directive, synchronized/0)).
+
+'$lgt_tr_directive'(synchronized, [], _) :-
+	!,
+	'$lgt_pp_entity'(_, _, Prefix, _, _),
+	atom_concat(Prefix, 'mutex_', Mutex),
+	assertz('$lgt_pp_synchronized_'),
+	assertz('$lgt_pp_synchronized_'(_, Mutex)).
 
 
 % dynamic entity directive
@@ -4602,9 +4619,16 @@ current_logtalk_flag(version, version(2, 29, 0)).
 	).
 
 
-'$lgt_tr_directive'(synchronized, Preds, _) :-
-	'$lgt_flatten_list'(Preds, Preds2),
-	'$lgt_tr_synchronized_directive'(Preds2).
+'$lgt_tr_directive'(synchronized, Preds, Stream) :-
+	(	'$lgt_pp_synchronized_' ->
+		'$lgt_pp_entity'(Type, _, _, _, _),
+		'$lgt_inc_compile_warnings_counter',
+		nl, write('  WARNING!  Ignoring synchronized predicate directive: '),
+		write(Type), write(' already declared as synchronized!'),
+		nl, '$lgt_report_compiler_error_line_number'(Stream)
+	;	'$lgt_flatten_list'(Preds, Preds2),
+		'$lgt_tr_synchronized_directive'(Preds2)
+	).
 
 
 '$lgt_tr_directive'((public), Preds, _) :-
@@ -5729,7 +5753,7 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 '$lgt_tr_body'(threaded_call(_), _, _, _) :-
 	'$lgt_compiler_flag'(report, on),
-	\+ '$lgt_pp_threaded',
+	\+ '$lgt_pp_threaded_',
 	'$lgt_pp_entity'(object, _, _, _, _),
 	'$lgt_inc_compile_warnings_counter',
 	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
@@ -5767,7 +5791,7 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 '$lgt_tr_body'(threaded_race(_), _, _, _) :-
 	'$lgt_compiler_flag'(report, on),
-	\+ '$lgt_pp_threaded',
+	\+ '$lgt_pp_threaded_',
 	'$lgt_inc_compile_warnings_counter',
 	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
 	fail.
@@ -5819,7 +5843,7 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 '$lgt_tr_body'(threaded_once(_, _), _, _, _) :-
 	'$lgt_compiler_flag'(report, on),
-	\+ '$lgt_pp_threaded',
+	\+ '$lgt_pp_threaded_',
 	'$lgt_inc_compile_warnings_counter',
 	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
 	fail.
@@ -5856,7 +5880,7 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 '$lgt_tr_body'(threaded_ignore(_, _), _, _, _) :-
 	'$lgt_compiler_flag'(report, on),
-	\+ '$lgt_pp_threaded',
+	\+ '$lgt_pp_threaded_',
 	'$lgt_inc_compile_warnings_counter',
 	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
 	fail.
@@ -5893,7 +5917,7 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 '$lgt_tr_body'(threaded_exit(_), _, _, _) :-
 	'$lgt_compiler_flag'(report, on),
-	\+ '$lgt_pp_threaded',
+	\+ '$lgt_pp_threaded_',
 	'$lgt_inc_compile_warnings_counter',
 	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
 	fail.
@@ -5930,7 +5954,7 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 '$lgt_tr_body'(threaded_peek(_), _, _, _) :-
 	'$lgt_compiler_flag'(report, on),
-	\+ '$lgt_pp_threaded',
+	\+ '$lgt_pp_threaded_',
 	'$lgt_inc_compile_warnings_counter',
 	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
 	fail.
@@ -5967,7 +5991,7 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 '$lgt_tr_body'(threaded_discard(_), _, _, _) :-
 	'$lgt_compiler_flag'(report, on),
-	\+ '$lgt_pp_threaded',
+	\+ '$lgt_pp_threaded_',
 	'$lgt_inc_compile_warnings_counter',
 	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
 	fail.
@@ -9085,7 +9109,7 @@ current_logtalk_flag(version, version(2, 29, 0)).
 		Goal3 = (Goal1, Goal2)
 	;	Goal3 = Goal1
 	),
-	(	'$lgt_pp_threaded' ->
+	(	'$lgt_pp_threaded_' ->
 		Goal = ('$lgt_init_object_thread'(Prefix), Goal3)
 	;	Goal = Goal3 
 	),
@@ -9192,7 +9216,7 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 '$lgt_assert_init' :-
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _),
-		'$lgt_pp_threaded' ->
+		'$lgt_pp_threaded_' ->
 		'$lgt_init_object_thread'(Prefix)
 	;	true 
 	),
@@ -9492,6 +9516,8 @@ current_logtalk_flag(version, version(2, 29, 0)).
 
 '$lgt_lgt_entity_directive'(info, 1).
 
+'$lgt_lgt_entity_directive'(synchronized, 0).
+
 '$lgt_lgt_entity_directive'(threaded, 0).
 
 
@@ -9501,9 +9527,9 @@ current_logtalk_flag(version, version(2, 29, 0)).
 '$lgt_lgt_predicate_directive'((dynamic), N) :-
 	N >= 1.
 
-'$lgt_lgt_predicate_directive'(metapredicate, N) :-		% Logtalk directive
+'$lgt_lgt_predicate_directive'(metapredicate, N) :-		% deprecated Logtalk directive
 	N >= 1.
-'$lgt_lgt_predicate_directive'((meta_predicate), N) :-	% Prolog module directive
+'$lgt_lgt_predicate_directive'((meta_predicate), N) :-	% Logtalk directive
 	N >= 1.
 
 '$lgt_lgt_predicate_directive'((discontiguous), N) :-
@@ -9839,6 +9865,7 @@ current_logtalk_flag(version, version(2, 29, 0)).
 '$lgt_valid_object_property'(built_in).
 '$lgt_valid_object_property'((dynamic)).
 '$lgt_valid_object_property'(static).
+'$lgt_valid_object_property'(synchronized).
 '$lgt_valid_object_property'(threaded).
 
 
@@ -9856,6 +9883,7 @@ current_logtalk_flag(version, version(2, 29, 0)).
 '$lgt_valid_category_property'(built_in).
 '$lgt_valid_category_property'((dynamic)).
 '$lgt_valid_category_property'(static).
+'$lgt_valid_category_property'(synchronized).
 
 
 
