@@ -11526,8 +11526,8 @@ current_logtalk_flag(version, version(2, 29, 0)).
 				'$lgt_mt_get_reply'(ThisPrefix, Goal, Sender, This, Self, Options),
 				(	thread_peek_message(ThisPrefix, '$lgt_non_det_id'(Goal, Sender, This, Self, Id)) ->
 					thread_get_message(ThisPrefix, '$lgt_non_det_id'(Goal, Sender, This, Self, Id)),
-					(	current_thread(Id, running) ->			% if the thread is still running, it's suspended waiting
-						thread_send_message(Id, '$lgt_exit')	% for a request to an alternative proof; tell it to exit
+					(	current_thread(Id, running) ->							% if the thread is still running, it's suspended waiting
+						catch(thread_send_message(Id, '$lgt_exit'), _, true)	% for a request to an alternative proof; tell it to exit
 					;	true
 					),
 					thread_join(Id, _)
@@ -11602,7 +11602,7 @@ current_logtalk_flag(version, version(2, 29, 0)).
 % on backtracking, ask working thread for and get from it the next solution:
 
 '$lgt_mt_non_det_reply'(Thread, Goal, Sender, This, Self, Id, _, _, _, _, _) :-
-	thread_send_message(Id, '$lgt_next'),
+	catch(thread_send_message(Id, '$lgt_next'), _, fail),
 	thread_get_message(Thread, '$lgt_reply'(RGoal, RSender, RThis, RSelf, Result)),
 	'$lgt_mt_non_det_reply'(Thread, Goal, Sender, This, Self, Id, RGoal, RSender, RThis, RSelf, Result).
 
