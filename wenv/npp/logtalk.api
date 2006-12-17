@@ -123,6 +123,7 @@ specializes
 specializes_class
 stream_property
 sub_atom
+synchronized
 term_expansion
 this
 threaded

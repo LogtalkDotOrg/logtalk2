@@ -22,7 +22,7 @@
 <h1>Multi-threading programming<span id="threads_threads"/></h1>
 
 <p>
-Logtalk supports multi-threading programming on selected Prolog compilers. Logtalk makes use of the low-level Prolog built-in predicates that interface with POSIX threads (or a suitable emulation), providing a high-level set of predicates that allows programmers to easily take advantage of modern multi-processor and multi-core computers without caring about the details of creating, synchronizing, or communicating with threads. Logtalk multi-threading programming integrates with object-oriented programming by allowing the supporting per object threads, enabling objects to call local predicates concurrently and to send and receive asynchronous messages.
+Logtalk provides experimental support for multi-threading programming on selected Prolog compilers. Logtalk makes use of the low-level Prolog built-in predicates that interface with POSIX threads (or a suitable emulation), providing a high-level set of predicates that allows programmers to easily take advantage of modern multi-processor and multi-core computers without caring about the details of creating, synchronizing, or communicating with threads. Logtalk multi-threading programming integrates with object-oriented programming by allowing the supporting per object threads, enabling objects to call local predicates concurrently and to send and receive asynchronous messages.
 </p>
 
 <h2>Enabling multi-threading support<a id="threads_enabling"></a></h2>
@@ -132,14 +132,14 @@ The built-in predicate <a title="Consult reference manual" href="../refman/built
 The <code>threaded_exit/1</code> call will return both the identifier of the fastest method and its result. Note that, when setting up competing goals such as in the example above, we must ensure that the argument of the <code>threaded_exit/1</code> call unifies with each individual goal in the disjunction used as argument on the <code>threaded_race/1</code> call. This ensures that the <code>threaded_exit/1</code> call will return the results of the first method to complete, no matter which one.
 </p>
 
-<h2>Asynchronous calls and atomic goals<a id="threads_atomic_predicates"></a></h2>
+<h2>Asynchronous calls and synchronized predicates<a id="threads_synchronized_predicates"></a></h2>
 
 <p>
-Proving a goal asynchronously using a new thread may lead to problems when the goal implies side-effects such as input/output operations or modifications to an object's database. For example, if a new thread is started with the same goal before the first one finished its job, we may end up with mixed output or a corrupted database. In order to solve this problem, predicates (and grammar rule non-terminals) with side-effects can be declared as <em>atomic</em> by using the <a title="Consult reference manual" href="../refman/directives/atomic1.html"><code>atomic/1</code></a> object and category directive. Proving a query to an atomic predicate (or atomic non-terminal) is protected by a mutex, thus allowing for easy thread synchronization. For example:
+Proving a goal asynchronously using a new thread may lead to problems when the goal implies side-effects such as input/output operations or modifications to an object's database. For example, if a new thread is started with the same goal before the first one finished its job, we may end up with mixed output or a corrupted database. In order to solve this problem, predicates (and grammar rule non-terminals) with side-effects can be declared as <em>synchronized</em> by using the <a title="Consult reference manual" href="../refman/directives/synchronized1.html"><code>synchronized/1</code></a> object and category directive. Proving a query to a synchronized predicate (or synchronized non-terminal) is protected by a mutex, thus allowing for easy thread synchronization. For example:
 </p>
-<pre>:- atomic(db_update/1).   % ensure thread synchronization
+<pre>:- synchronized(db_update/1).   % ensure thread synchronization
 
-db_update(Update) :-      % predicate with side-effects
+db_update(Update) :-            % predicate with side-effects
     ...
 </pre>
 <p>
@@ -151,9 +151,9 @@ A second example. Assume an object defining two predicates for writing, respecti
 ...
 </pre>
 <p>
-will most likely result in a mixed up output. By declaring the <code>odd_numbers/2</code> and <code>even_numbers/2</code> predicates <code>atomic</code>:
+will most likely result in a mixed up output. By declaring the <code>odd_numbers/2</code> and <code>even_numbers/2</code> predicates synchronized:
 </p>
-<pre>:- atomic([
+<pre>:- synchronized([
     odd_numbers/2,
     even_numbers/2]).
 </pre>
@@ -172,16 +172,16 @@ Note that, in a more realistic scenario, the two <code>threaded_call/1</code> ca
 </p>
 
 <p>
-The <code>atomic/1</code> directive must precede any local calls to the atomic predicate (or atomic non-terminal) in order to ensure proper compilation. In addition, as each Logtalk entity is independently compiled, this directive must be included in every object or category that contains a definition for the described predicate, even if the predicate declaration is inherited from another entity, in order to ensure proper compilation.
+The <code>synchronized/1</code> directive must precede any local calls to the synchronized predicate (or synchronized non-terminal) in order to ensure proper compilation. In addition, as each Logtalk entity is independently compiled, this directive must be included in every object or category that contains a definition for the described predicate, even if the predicate declaration is inherited from another entity, in order to ensure proper compilation.
 </p>
 <p>
-Whenever possible, atomic predicates should be coded as deterministic predicates in order to avoid deadlocks. Nevertheless, Logtalk supports both deterministic and non-deterministic atomic predicates (and atomic non-terminals). In those cases where the predicate (or grammar rule) is defined in the same object (or category) where the predicate is declared dynamic, Logtalk takes advantage off any existing <a title="Consult reference manual" href="../refman/directives/mode2.html"><code>mode/2</code></a> directives in order to generate the most appropriated mutex handling code.
+Whenever possible, synchronized predicates should be coded as deterministic predicates in order to avoid deadlocks. Nevertheless, Logtalk supports both deterministic and non-deterministic synchronized predicates (and synchronized non-terminals). In those cases where the predicate (or grammar rule) is defined in the same object (or category) where the predicate is declared dynamic, Logtalk takes advantage off any existing <a title="Consult reference manual" href="../refman/directives/mode2.html"><code>mode/2</code></a> directives in order to generate the most appropriated mutex handling code.
 </p>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: December 8, 2006</span>
+		<span>Last updated on: December 14, 2006</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="events.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="errors.html">next</a></span><br/>

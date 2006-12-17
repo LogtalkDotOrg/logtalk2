@@ -4,7 +4,7 @@
 
 ;; Author: Paulo Moura
 ;; Creation date: November 15, 2003
-;; Last modification date: November 23, 2006
+;; Last modification date: December 14, 2006
 ;; Version: 0.92
 
 ;; Installation:
@@ -100,7 +100,7 @@
 		("\\(category\\|object\\|protocol\\|module\\)\\([(]\\)" 1 'logtalk-directive-face)
 		("\\(p\\(?:r\\(?:ivate\\|otected\\)\\|ublic\\)\\)\\([(]\\)" 1 'logtalk-directive-face)
 		("\\(a\\(?:lias\\|tomic\\)\\|calls\\|d\\(?:iscontiguous\\|ynamic\\)\\|e\\(?:ncoding\\|xport\\)\\|in\\(?:fo\\|itialization\\)\\|m\\(?:\\(?:eta_predicat\\|od\\)e\\)\\|op\\|use\\(?:s\\|_module\\)\\)\\([(]\\)" 1 'logtalk-directive-face)
-		("\\(dynamic\\|threaded\\)\\([\.]\\)" 1 'logtalk-directive-face)
+		("\\(dynamic\\|synchronized\\|threaded\\)\\([\.]\\)" 1 'logtalk-directive-face)
 		("\\(\\(?:extend\\|i\\(?:mp\\(?:\\(?:lemen\\|or\\)t\\)\\|nstantiate\\)\\|specialize\\)s\\)\\([(]\\)" 1 'logtalk-directive-face)
 	))
 

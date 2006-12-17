@@ -36,7 +36,6 @@ eval $xslt_proc -o directives/protocol1_2.section refman.xsl directives/protocol
 eval $xslt_proc -o directives/threaded0.section refman.xsl directives/threaded0.html
 eval $xslt_proc -o directives/uses1.section refman.xsl directives/uses1.html
 eval $xslt_proc -o directives/alias3.section refman.xsl directives/alias3.html
-eval $xslt_proc -o directives/atomic1.section refman.xsl directives/atomic1.html
 eval $xslt_proc -o directives/discontiguous1.section refman.xsl directives/discontiguous1.html
 eval $xslt_proc -o directives/dynamic1.section refman.xsl directives/dynamic1.html
 eval $xslt_proc -o directives/info2.section refman.xsl directives/info2.html
@@ -46,6 +45,7 @@ eval $xslt_proc -o directives/op3.section refman.xsl directives/op3.html
 eval $xslt_proc -o directives/private1.section refman.xsl directives/private1.html
 eval $xslt_proc -o directives/protected1.section refman.xsl directives/protected1.html
 eval $xslt_proc -o directives/public1.section refman.xsl directives/public1.html
+eval $xslt_proc -o directives/synchronized1.section refman.xsl directives/synchronized1.html
 eval $xslt_proc -o directives/uses2.section refman.xsl directives/uses2.html
 eval $xslt_proc -o builtins/current_category1.section refman.xsl builtins/current_category1.html
 eval $xslt_proc -o builtins/current_object1.section refman.xsl builtins/current_object1.html
@@ -132,7 +132,6 @@ cat -s \
 	directives/threaded0.section \
 	directives/uses1.section \
 	directives/alias3.section \
-	directives/atomic1.section \
 	directives/discontiguous1.section \
 	directives/dynamic1.section \
 	directives/info2.section \
@@ -142,6 +141,7 @@ cat -s \
 	directives/private1.section \
 	directives/protected1.section \
 	directives/public1.section \
+	directives/synchronized1.section \
 	directives/uses2.section \
 	builtins.header \
 	builtins/current_category1.section \

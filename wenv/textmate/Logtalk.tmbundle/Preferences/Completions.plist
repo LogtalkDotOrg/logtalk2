@@ -21,6 +21,7 @@
 			<string>initialization</string>
 			<string>object</string>
 			<string>protocol</string>
+			<string>synchronized</string>
 			<string>threaded</string>
 			<string>uses</string>
 			<string>alias</string>

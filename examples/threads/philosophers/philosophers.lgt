@@ -18,7 +18,7 @@
 		comment is 'A Philosopher puts down the chopstick.']).
 
 	:- private(do/1).
-	:- atomic(do/1).
+	:- synchronized(do/1).
 	:- mode(do(+atom), one).
 	:- info(do/1, [
 		comment is 'Handles chopstick pick up and put down atomically.',
@@ -124,14 +124,14 @@
 		argnames is ['Count', 'MaxTime']]).
 
 	:- private(message/1).
-	:- atomic(message/1).
+	:- synchronized(message/1).
 	:- mode(message(+list), one).
 	:- info(message/1, [
 		comment is 'Writes all the terms on a list atomically.',
 		argnames is ['Atoms']]).
 
 	:- private(random/2).
-	:- atomic(random/2).
+	:- synchronized(random/2).
 	:- mode(random(+integer, -integer), one).
 	:- info(random/2, [
 		comment is 'Provides atomic access to the random number generator.',

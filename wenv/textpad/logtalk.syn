@@ -103,6 +103,7 @@ op
 calls
 uses
 use_module
+synchronized
 threaded
 
 

@@ -9,6 +9,7 @@ info
 initialization
 object
 protocol
+synchronized
 threaded
 uses
 alias
