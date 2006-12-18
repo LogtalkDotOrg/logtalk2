@@ -2,7 +2,7 @@
 :- category(chopstick).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
 		date is 2006/12/2,
 		comment is 'Dining philosophers problem: chopstick representation.']).
@@ -17,30 +17,21 @@
 	:- info(put_down/0, [
 		comment is 'A Philosopher puts down the chopstick.']).
 
-	:- private(do/1).
-	:- synchronized(do/1).
-	:- mode(do(+atom), one).
-	:- info(do/1, [
-		comment is 'Handles chopstick pick up and put down atomically.',
-		argnames is ['Action']]).
-
 	:- private(available/0).
 	:- dynamic(available/0).
 	:- mode(available, zero_or_one).
 	:- info(available/0, [
 		comment is 'Chopstick state (either available or in use).']).
 
+	% chopstick actions (picking up and putting down) are synchronized using the same mutext
+	% such that a chopstick can only be handled by a single philosopher at a time:
+	:- synchronized([pick_up/0, put_down/0]).
+
 	pick_up :-
-		do(pick_up).
-
-	put_down :-
-		do(put_down).
-
-	do(pick_up) :-
 		::available,
 		::retract(available).
 
-	do(put_down) :-
+	put_down :-
 		\+ ::available,
 		::asserta(available).
 
@@ -155,6 +146,8 @@
 		message(['Philosopher ', Philosopher, ' thinking for ', ThinkTime, ' seconds.']),
 		sleep(ThinkTime).
 
+	% deadlock while a philosopher is trying to eat is prevented by putting
+	% down the first chopstick when picking up the second one fails:
 	eat(MaxTime):-
 		this(Philosopher),
 		random(MaxTime, EatTime),
@@ -170,9 +163,13 @@
 			fail
 		).
 
+	% as the "random" library object is not multi-threading aware, we must use a  
+	% synchronized wrap up predicate (random/2) to call the random number generator:
 	random(Limit, Value) :-
 		random::random(1, Limit, Value).
 
+	% writing a message needs to be synchronized as it's accomplished  
+	% using a combination of individual write/1 (and nl/0) calls:
 	message([]) :-
 		nl,
 		flush_output.
