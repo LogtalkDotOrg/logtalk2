@@ -3653,7 +3653,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 
-% '$lgt_write_tr_entity'(+stream)
+% '$lgt_write_tr_entity'(@stream)
 %
 % writes to disk the entity compiled code
 
@@ -3755,7 +3755,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 
-% '$lgt_check_for_encoding_directive'(@nonvar, +stream, -list)
+% '$lgt_check_for_encoding_directive'(@nonvar, @stream, -list)
 %
 % encoding/1 directives must be used during entity compilation 
 % and for the encoding of the generated Prolog and XML files
@@ -3803,7 +3803,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 
-% '$lgt_report_singletons'(+list, +term, +stream)
+% '$lgt_report_singletons'(+list, +term, @stream)
 %
 % report the singleton variables found while compiling an entity term
 
@@ -3950,7 +3950,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 
-% '$lgt_report_compiler_error'(+stream, +term)
+% '$lgt_report_compiler_error'(@stream, +term)
 %
 % reports a compilation error
 
@@ -4283,21 +4283,21 @@ current_logtalk_flag(version, version(2, 29, 1)).
 %
 % translates a source file term (clauses, directives, and grammar rules)
 
-'$lgt_tr_expanded_term'((Head :- Body), Input, Output) :-
+'$lgt_tr_expanded_term'((Head :- Body), Input, _) :-
 	!,
-	'$lgt_tr_clause'((Head :- Body), Input, Output).
+	'$lgt_tr_clause'((Head :- Body), Input).
 
 '$lgt_tr_expanded_term'((:- Directive), Input, Output) :-
 	!,
 	'$lgt_tr_directive'(Directive, Input, Output).
 
-'$lgt_tr_expanded_term'((Head --> Body), Input, Output) :-
+'$lgt_tr_expanded_term'((Head --> Body), Input, _) :-
 	!,
 	'$lgt_dcgrule_to_clause'((Head --> Body), Clause),
-	'$lgt_tr_clause'(Clause, Input, Output).
+	'$lgt_tr_clause'(Clause, Input).
 
-'$lgt_tr_expanded_term'(Fact, Input, Output) :-
-	'$lgt_tr_clause'(Fact, Input, Output).
+'$lgt_tr_expanded_term'(Fact, Input, _) :-
+	'$lgt_tr_clause'(Fact, Input).
 
 
 
@@ -5408,24 +5408,24 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 
-% '$lgt_tr_clauses'(+list, @stream, @stream)
+% '$lgt_tr_clauses'(+list, @stream)
 
-'$lgt_tr_clauses'([], _, _).
+'$lgt_tr_clauses'([], _).
 
-'$lgt_tr_clauses'([Clause| Clauses], Input, Output) :-
-	'$lgt_tr_clause'(Clause, Input, Output),
-	'$lgt_tr_clauses'(Clauses, Input, Output).
+'$lgt_tr_clauses'([Clause| Clauses], Input) :-
+	'$lgt_tr_clause'(Clause, Input),
+	'$lgt_tr_clauses'(Clauses, Input).
 
 
 
-% '$lgt_tr_clause'(+clause, @stream, @stream)
+% '$lgt_tr_clause'(+clause, @stream)
 
-'$lgt_tr_clause'(Clause, _, _) :-
+'$lgt_tr_clause'(Clause, _) :-
 	\+ '$lgt_pp_entity'(_, _, _, _, _),			% all clause occuring before an opening entity directive
 	!,
 	assertz('$lgt_pp_ppclause_'(Clause)).		% are copied unchanged to the generated Prolog file
 
-'$lgt_tr_clause'(Clause, Input, Output) :-
+'$lgt_tr_clause'(Clause, Input) :-
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, _),
 	(	Type == object, compound(Entity) ->		% if the entity is a parametric object we need
 		'$lgt_ctx_this'(Ctx, Entity)			% "this" for inline compilation of parameter/2
@@ -5433,7 +5433,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 	),
 	'$lgt_ctx_prefix'(Ctx, Prefix),
 	catch(
-		'$lgt_tr_clause'(Clause, TClause, DClause, Ctx, Input, Output),
+		'$lgt_tr_clause'(Clause, TClause, DClause, Ctx, Input),
 		Error,
 		throw(error(Error, clause(Clause)))),
 	(	'$lgt_compiler_flag'(debug, on) ->
@@ -5442,45 +5442,45 @@ current_logtalk_flag(version, version(2, 29, 1)).
 	),
 	!.
 
-'$lgt_tr_clause'(Clause, _, _) :-
+'$lgt_tr_clause'(Clause, _) :-
 	throw(error(unknown_error, clause(Clause))).
 
 
 
-% '$lgt_tr_clause'(+clause, -clause, -clause, +term, +stream)
+% '$lgt_tr_clause'(+clause, -clause, -clause, +term, @stream)
 
-'$lgt_tr_clause'(Clause, _, _, _, _, _) :-
+'$lgt_tr_clause'(Clause, _, _, _, _) :-
 	var(Clause),
 	throw(instantiation_error).
 
-'$lgt_tr_clause'((Head:-Body), _, _, _, _, _) :-
+'$lgt_tr_clause'((Head:-Body), _, _, _, _) :-
 	(var(Head); var(Body)),
 	throw(instantiation_error).
 
-'$lgt_tr_clause'((Head:-_), _, _, _, _, _) :-
+'$lgt_tr_clause'((Head:-_), _, _, _, _) :-
 	\+ callable(Head),
 	throw(type_error(callable, Head)).
 
-'$lgt_tr_clause'((_:-Body), _, _, _, _, _) :-
+'$lgt_tr_clause'((_:-Body), _, _, _, _) :-
 	\+ callable(Body),
 	throw(type_error(callable, Body)).
 
-'$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_dbg_head'(Head, Ctx),DBody), Ctx, Input, Output) :-
+'$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_dbg_head'(Head, Ctx),DBody), Ctx, Input) :-
 	functor(Head, Functor, Arity),
 	'$lgt_pp_dynamic_'(Functor, Arity),
 	!,
 	'$lgt_pred_meta_vars'(Head, MetaVars),
 	'$lgt_ctx_meta_vars'(Ctx, MetaVars),
-	'$lgt_tr_head'(Head, THead, Ctx, Input, Output),
+	'$lgt_tr_head'(Head, THead, Ctx, Input),
 	'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 	'$lgt_simplify_body'(TBody, SBody),
 	TClause = (THead:-'$lgt_nop'(Body), SBody).
 
-'$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_dbg_head'(Head, Ctx),DBody), Ctx, Input, Output) :-
+'$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_dbg_head'(Head, Ctx),DBody), Ctx, Input) :-
 	!,
 	'$lgt_pred_meta_vars'(Head, MetaVars),
 	'$lgt_ctx_meta_vars'(Ctx, MetaVars),
-	'$lgt_tr_head'(Head, THead, Ctx, Input, Output),
+	'$lgt_tr_head'(Head, THead, Ctx, Input),
 	'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 	'$lgt_simplify_body'(TBody, SBody),
 	(	SBody == true ->
@@ -5488,12 +5488,12 @@ current_logtalk_flag(version, version(2, 29, 1)).
 	;	TClause = (THead:-SBody)
 	).
 
-'$lgt_tr_clause'(Fact, _, _, _, _, _) :-
+'$lgt_tr_clause'(Fact, _, _, _, _) :-
 	\+ callable(Fact),
 	throw(type_error(callable, Fact)).
 
-'$lgt_tr_clause'(Fact, TFact, (TFact:-'$lgt_dbg_fact'(Fact, Ctx)), Ctx, Input, Output) :-
-	'$lgt_tr_head'(Fact, TFact, Ctx, Input, Output).
+'$lgt_tr_clause'(Fact, TFact, (TFact:-'$lgt_dbg_fact'(Fact, Ctx)), Ctx, Input) :-
+	'$lgt_tr_head'(Fact, TFact, Ctx, Input).
 
 
 
@@ -5504,7 +5504,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 % definition of dynamic predicates inside categories
 
-'$lgt_tr_head'(Head, _, _, _, _) :-
+'$lgt_tr_head'(Head, _, _, _) :-
 	'$lgt_pp_category_'(_, _, _, _, _, _),
 	functor(Head, Functor, Arity), 
 	'$lgt_pp_dynamic_'(Functor, Arity),
@@ -5513,22 +5513,22 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 % redefinition of Logtalk message sending and external call control constructs
 
-'$lgt_tr_head'(_::_, _, _, _, _) :-
+'$lgt_tr_head'(_::_, _, _, _) :-
 	throw(permission_error(modify, control_construct, (::)/2)).
 
-'$lgt_tr_head'(::_, _, _, _, _) :-
+'$lgt_tr_head'(::_, _, _, _) :-
 	throw(permission_error(modify, control_construct, (::)/1)).
 
-'$lgt_tr_head'(^^_, _, _, _, _) :-
+'$lgt_tr_head'(^^_, _, _, _) :-
 	throw(permission_error(modify, control_construct, (^^)/1)).
 
-'$lgt_tr_head'({_}, _, _, _, _) :-
+'$lgt_tr_head'({_}, _, _, _) :-
 	throw(permission_error(modify, control_construct, ({})/1)).
 
 
 % redefinition of Logtalk built-in methods
 
-'$lgt_tr_head'(Head, _, _, _, _) :-
+'$lgt_tr_head'(Head, _, _, _) :-
 	'$lgt_built_in_method'(Head, _),
 	functor(Head, Functor, Arity), 
 	throw(permission_error(modify, built_in_method, Functor/Arity)).
@@ -5536,7 +5536,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 % conflict with a predicate specified in a uses/2 directive
 
-'$lgt_tr_head'(Alias, _, _, _, _) :-
+'$lgt_tr_head'(Alias, _, _, _) :-
 	'$lgt_pp_uses_'(_, _, Alias),
 	functor(Alias, Functor, Arity),
 	throw(permission_error(modify, uses_object_predicate, Functor/Arity)).
@@ -5544,7 +5544,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 % non-variable meta-argument in clause head of a user-defined meta-predicate
 
-'$lgt_tr_head'(Head, _, _, _, _) :-
+'$lgt_tr_head'(Head, _, _, _) :-
 	functor(Head, Functor, Arity),
 	functor(Meta, Functor, Arity),
 	'$lgt_pp_meta_predicate_'(Meta),
@@ -5556,7 +5556,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 % redefinition of Logtalk built-in predicates
 
-'$lgt_tr_head'(Head, _, _, Input, _) :-
+'$lgt_tr_head'(Head, _, _, Input) :-
 	'$lgt_lgt_built_in'(Head),
 	'$lgt_compiler_flag'(lgtredef, warning),
 	'$lgt_compiler_flag'(report, on),
@@ -5571,7 +5571,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 % redefinition of Prolog built-in predicates
 
-'$lgt_tr_head'(Head, _, _, Input, _) :-
+'$lgt_tr_head'(Head, _, _, Input) :-
 	'$lgt_pl_built_in'(Head),
 	'$lgt_compiler_flag'(plredef, warning),
 	'$lgt_compiler_flag'(report, on),
@@ -5586,7 +5586,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 % definition of event handlers without reference to the "monitoring" built-in protocol
 
-'$lgt_tr_head'(Head, _, _, Input, _) :-
+'$lgt_tr_head'(Head, _, _, Input) :-
 	functor(Head, Functor, 3),
 	once((Functor == before; Functor = after)),
 	\+ '$lgt_pp_implemented_protocol_'(monitoring, _, _, _),
@@ -5600,7 +5600,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 % translate the head of a clause of a user defined predicate
 
-'$lgt_tr_head'(Head, THead, Ctx, _, _) :-
+'$lgt_tr_head'(Head, THead, Ctx, _) :-
 	functor(Head, Functor, Arity),
 	'$lgt_ctx_head'(Ctx, Functor/Arity),
 	(	'$lgt_pp_dynamic_'(Functor, Arity),
@@ -8941,7 +8941,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 
-% '$lgt_write_directives'(+stream)
+% '$lgt_write_directives'(@stream)
 %
 % writes the directives
 
@@ -8956,7 +8956,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 
-% '$lgt_write_prolog_clauses'(+stream)
+% '$lgt_write_prolog_clauses'(@stream)
 %
 % writes any Prolog clauses that appear before an entity opening directive
 
@@ -8971,7 +8971,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 
-% '$lgt_write_logtalk_clauses'(+stream)
+% '$lgt_write_logtalk_clauses'(@stream)
 %
 % writes Logtalk entity clauses
 
@@ -9071,7 +9071,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 
-% '$lgt_write_init_call'(+stream)
+% '$lgt_write_init_call'(@stream)
 %
 % writes the initialization call for the compiled source file that will assert 
 % the relation clauses for all defined entities and call any declared entity 
@@ -10542,7 +10542,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 
-% '$lgt_write_xml_file'(+stream)
+% '$lgt_write_xml_file'(@stream)
 %
 % writes a XML file containing the documentation of a compiled entity
 
@@ -10907,7 +10907,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 
-% '$lgt_write_xml_predicates'(+stream)
+% '$lgt_write_xml_predicates'(@stream)
 %
 % writes the predicate documentation
 
@@ -10920,7 +10920,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 
-% '$lgt_write_xml_public_predicates'(+stream)
+% '$lgt_write_xml_public_predicates'(@stream)
 %
 % writes the documentation of public predicates
 
@@ -10938,7 +10938,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 
-% '$lgt_write_xml_protected_predicates'(+stream)
+% '$lgt_write_xml_protected_predicates'(@stream)
 %
 % writes the documentation protected predicates
 
@@ -10956,7 +10956,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 
-% '$lgt_write_xml_private_predicates'(+stream)
+% '$lgt_write_xml_private_predicates'(@stream)
 %
 % writes the documentation of private predicates
 
@@ -10974,7 +10974,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 
-% '$lgt_write_xml_predicate'(+stream, +atom, +integer, +term)
+% '$lgt_write_xml_predicate'(@stream, +atom, +integer, +term)
 %
 % writes the documentation of a predicate
 
@@ -11076,7 +11076,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 
-% '$lgt_write_xml_non_terminal'(+stream, +atom, +atom, +integer, +term)
+% '$lgt_write_xml_non_terminal'(@stream, +atom, +atom, +integer, +term)
 %
 % writes the documentation of a grammar rule non-terminal
 
