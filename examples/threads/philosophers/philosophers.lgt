@@ -8,12 +8,12 @@
 		comment is 'Dining philosophers problem: chopstick representation.']).
 
 	:- public(pick_up/0).
-	:- mode(pick_up, one).
+	:- mode(pick_up, zero_or_one).
 	:- info(pick_up/0, [
 		comment is 'A Philosopher picks up the chopstick.']).
 
 	:- public(put_down/0).
-	:- mode(put_down, one).
+	:- mode(put_down, zero_or_one).
 	:- info(put_down/0, [
 		comment is 'A Philosopher puts down the chopstick.']).
 
@@ -118,14 +118,14 @@
 	:- synchronized(message/1).
 	:- mode(message(+list), one).
 	:- info(message/1, [
-		comment is 'Writes all the terms on a list atomically.',
+		comment is 'Writes all the terms on a list as an atomic operation.',
 		argnames is ['Atoms']]).
 
 	:- private(random/2).
 	:- synchronized(random/2).
 	:- mode(random(+integer, -integer), one).
 	:- info(random/2, [
-		comment is 'Provides atomic access to the random number generator.',
+		comment is 'Ensures synchronized access to the random number generator.',
 		argnames is ['Limit', 'Random']]).
 
 	run(0, _) :-
