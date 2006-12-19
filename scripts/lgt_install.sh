@@ -23,20 +23,20 @@ echo
 echo "Installing Logtalk on $prefix ..."
 echo
 
-rm -rf $prefix/lgt2290
+rm -rf $prefix/lgt2291
 rm -f $prefix/logtalk
 
-mkdir $prefix/lgt2290
+mkdir $prefix/lgt2291
 
 cd ..
-cp -R * $prefix/lgt2290
+cp -R * $prefix/lgt2291
 
 cd $prefix
-chmod -R go-w,a+r lgt2290
-chmod a+x lgt2290
-chmod a+x lgt2290/scripts/*.sh
-chmod a+x lgt2290/xml/*.sh
-ln -sf lgt2290 logtalk
+chmod -R go-w,a+r lgt2291
+chmod a+x lgt2291
+chmod a+x lgt2291/scripts/*.sh
+chmod a+x lgt2291/xml/*.sh
+ln -sf lgt2291 logtalk
 
 mkdir -p bin
 cd bin
