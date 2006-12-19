@@ -14,7 +14,8 @@ RELEASE NOTES
 
 	Corrected a bug in the reporting of the line number where a compilation 
 	error (or warning) occurred. Extended support for reporting warning and 
-	error line numbers to Quintus Prolog, ECLiPSe, and Ciao Prolog.
+	error line numbers to Quintus Prolog, Ciao Prolog, Qu-Prolog, and 
+	ECLiPSe.
 
 	Improved "philosophers" multi-threading programming example.
 
