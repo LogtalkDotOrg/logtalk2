@@ -3996,13 +3996,6 @@ current_logtalk_flag(version, version(2, 29, 1)).
 	).
 
 
-'$lgt_get_compiler_error_line_number'(Stream, Line) :-
-	(	catch('$lgt_stream_current_line_number'(Stream, Line), _, fail) ->
-		true
-	;	Line = -1
-	).
-
-
 
 % '$lgt_tr_entity'(+atom, @entity_identifier, @stream)
 
