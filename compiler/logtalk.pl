@@ -5606,7 +5606,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 % look for a non-variable meta-argument
 
-'$lgt_nonvar_meta_arg'([Arg| _], [::| _], Arg) :-
+'$lgt_nonvar_meta_arg'([Arg| _], [(::)| _], Arg) :-
 	nonvar(Arg).
 
 '$lgt_nonvar_meta_arg'([Arg| _], [N| _], Arg) :-
