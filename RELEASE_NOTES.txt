@@ -13,7 +13,8 @@ RELEASE NOTES
 2.29.1 - December ??, 2006
 
 	Corrected a bug in the reporting of the line number where a compilation 
-	error (or warning) occurred.
+	error (or warning) occurred. Added support for reporting warning and 
+	error line numbers for Quintus Prolog and ECLiPSe.
 
 	Improved "philosophers" multi-threading programming example.
 

@@ -3990,16 +3990,14 @@ current_logtalk_flag(version, version(2, 29, 1)).
 
 
 '$lgt_report_compiler_error_line_number'(Stream) :-
-	(	catch(stream_property(Stream, position(Position)), _, fail),
-		'$lgt_stream_position_to_line_number'(Position, Line) ->
+	(	catch('$lgt_stream_current_line_number'(Stream, Line), _, fail) ->
 		write('            above line: '), write(Line)
 	;	true
 	).
 
 
 '$lgt_get_compiler_error_line_number'(Stream, Line) :-
-	(	catch(stream_property(Stream, position(Position)), _, fail),
-		'$lgt_stream_position_to_line_number'(Position, Line) ->
+	(	catch('$lgt_stream_current_line_number'(Stream, Line), _, fail) ->
 		true
 	;	Line = -1
 	).
