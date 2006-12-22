@@ -17,6 +17,9 @@ RELEASE NOTES
 	error line numbers to Quintus Prolog, Ciao Prolog, Qu-Prolog, and 
 	ECLiPSe.
 
+	Corrected a bug when using partial lists with the predicates nth0/3-4 
+	and nth1/3-4 provided by the "list" library object.
+
 	Improved "philosophers" multi-threading programming example.
 
 
