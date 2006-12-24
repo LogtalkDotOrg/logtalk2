@@ -52,8 +52,7 @@ Logtalk on MacOS X, Windows, Linux, and Unix-like (POSIX) operating systems
 
 >> POSIX systems installation (starting from the Logtalk directory):
 
-	% 
-	 scripts
+	% cd scripts
 	% sudo ./lgt_install.sh
 
 >> Windows installation (starting from the Logtalk directory):
