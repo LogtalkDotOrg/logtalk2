@@ -9,7 +9,8 @@
 
 dir="$PWD"
 
-lgt_install.sh
+LOGTALKHOME=/usr/local/logtalk ./lgt_uninstall.sh
+./lgt_install.sh
 
 cd /usr/local/logtalk
 scripts/cleandist.sh
@@ -22,3 +23,5 @@ cd "$dir"
 rpmbuild -ba --target=noarch-*-linux logtalk.spec
 
 cd /usr/src/redhat/RPMS/noarch
+echo $PWD
+ls -l
