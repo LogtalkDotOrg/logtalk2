@@ -32,6 +32,9 @@ lgt_install.js
 	after running this script in order to use the items on the "Logtalk"
 	program group due to the definition of new system environment variables)
 
+build_rpm.sh
+	simple shell script for building Linux RPMs
+
 logtalk.spec
 	specification file for building Linux RPMs
 	(copy the Logtalk tarball to your RPM SOURCES directory and then 
@@ -39,7 +42,7 @@ logtalk.spec
 
 logtalk.iss
 	Inno Setup GUI Windows installer script; you may compile it with Inno 
-	Setup 5.1.6 or later version to produce a Windows 2000/XP GUI installer
+	Setup 5.1.9 or later version to produce a Windows 2000/XP GUI installer
 	(http://www.jrsoftware.org/isinfo.php)
 
 cplgtdirs.sh
