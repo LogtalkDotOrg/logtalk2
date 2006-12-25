@@ -27,7 +27,7 @@ if ! [ -d "$LOGTALKHOME" ]; then
 fi
 
 cd $LOGTALKHOME/..
-rm -rf lgt2282
+rm -rf lgt2291
 rm -f logtalk
 
 if [ -d bin ]; then
