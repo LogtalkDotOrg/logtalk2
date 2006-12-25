@@ -14,6 +14,10 @@ LOGTALKHOME=/usr/local/logtalk ./lgt_uninstall.sh
 
 cd /usr/local/logtalk
 scripts/cleandist.sh
+chmod a+x scripts/*.sh
+chmod a-x scripts/*.js
+chmod a+x xml/*.sh
+chmod a-x xml/*.js
 
 cd ..
 tar -czf lgt2291.tgz lgt2291
