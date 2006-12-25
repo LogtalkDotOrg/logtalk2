@@ -6,7 +6,7 @@ Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-This directory contains several scripts used for Logtalk packaging, 
+This directory contains several shell scripts used for Logtalk packaging, 
 installation, and integration with Prolog compilers. Those with extension 
 ".sh" are Bourne-compatible shells scripts for MacOS X, Linux, and similar 
 systems. Those with extension ".js" are JScript command-line scripts for 
@@ -32,15 +32,18 @@ lgt_install.js
 	after running this script in order to use the items on the "Logtalk"
 	program group due to the definition of new system environment variables)
 
-build_rpm.sh
+linux/build_rpm.sh
 	simple shell script for building Linux RPMs
 
-logtalk.spec
+linux/logtalk.spec
 	specification file for building Linux RPMs
 	(copy the Logtalk tarball to your RPM SOURCES directory and then 
 	run the command: rpmbuild -ba --target=noarch-*-linux logtalk.spec)
 
-logtalk.iss
+macosx/build_pkg.sh
+	simple shell script for building MacOS X installer packages
+
+windows/logtalk.iss
 	Inno Setup GUI Windows installer script; you may compile it with Inno 
 	Setup 5.1.9 or later version to produce a Windows 2000/XP GUI installer
 	(http://www.jrsoftware.org/isinfo.php)
