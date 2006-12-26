@@ -41,7 +41,7 @@ sed -e 's/^distname.*/distname lgt2291/' -i '' Portfile
 port install logtalk
 port pkg logtalk
 
-cd /opt/local/var/db/dports/build/_opt_local_var_db_dports_sources_rsync.rsync.darwinports.org_dpupdate_dports_lang_logtalk/work
+cd work
 rm -fr $HOME/Desktop/logtalk-2.29.1.pkg
 mv logtalk-2.29.1.pkg $HOME/Desktop
 
