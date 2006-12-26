@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.29.1 - December ??, 2006
 
+	Added a Logtalk version of John Fletcher's Prolog XML parser (see the 
+	folder "contributions/xml_parser").
+
 	Added shell scripts for helping building MacOS X installer packages and 
 	Linux RPMs.
 
