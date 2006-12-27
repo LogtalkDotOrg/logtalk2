@@ -233,7 +233,7 @@ Obj::Pred :-
 	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
-'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/TArity), _)) :-									% YAP 5.1 or later
+'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/TArity), _)) :-									% K-Prolog and YAP 5.1 or later
 	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
@@ -4362,7 +4362,7 @@ current_logtalk_flag(version, version(2, 29, 1)).
 		nl, '$lgt_report_compiler_error_line_number'(Input)
 	;	true
 	),
-	'$lgt_tr_directive'(RWDir, Input, Output).			% try to translate the rewritten directive
+	'$lgt_tr_directive'(RWDir, Input, Output).	% try to translate the rewritten directive
 
 '$lgt_tr_directive'(Dir, _, _) :-
 	functor(Dir, Functor, Arity),
