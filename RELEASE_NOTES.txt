@@ -15,9 +15,9 @@ RELEASE NOTES
 	Added a Logtalk version of John Fletcher's Prolog XML parser (see the 
 	folder "contributions/xml_parser").
 
-	Added shell scripts for helping building MacOS X installer packages and 
-	Linux RPMs. Updated the MacOS X installer package to set default values 
-	for the Logtalk environment variables.
+	Added shell scripts for helping building the distribution files of a 
+	new Logtalk release. Updated the MacOS X installer package to set 
+	default values for the Logtalk environment variables.
 
 	Corrected a bug in the reporting of the line number where a compilation 
 	error (or warning) occurred. Extended support for reporting warning and 

@@ -14,6 +14,9 @@ Windows; they require WSH 5.6 or later version to be installed and should
 be run using cscript.exe from a DOS command line shell (you may download 
 WSH 5.6 from http://msdn.microsoft.com/downloads/list/webdev.asp)
 
+build_release.sh
+	helper script for building the distribution files of a new Logtalk release
+
 lgt_install.sh
 	shell script for installing Logtalk in a system-wide location for Unix 
 	and Unix-like operating systems (must be run from this directory by a 
@@ -40,8 +43,8 @@ linux/logtalk.spec
 	(copy the Logtalk tarball to your RPM SOURCES directory and then 
 	run the command: rpmbuild -ba --target=noarch-*-linux logtalk.spec)
 
-macosx/build_pkg.sh
-	simple shell script for building MacOS X installer packages
+macosx
+	directory containing files used when building MacOS X installer packages
 
 windows/logtalk.iss
 	Inno Setup GUI Windows installer script; you may compile it with Inno 
