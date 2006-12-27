@@ -97,8 +97,8 @@ WScript.Echo('');
 WScript.Echo('The first call to the shortcut must be made by a user with');
 WScript.Echo('administrative rights.');
 WScript.Echo('');
-WScript.Echo('Users must run the batch script "cplgtdirs" before using the');
-WScript.Echo('"Logtalk - CIAO" shortcut.');
+WScript.Echo('Users must run the batch script "cplgtdirs" once before using');
+WScript.Echo('the "Logtalk - CIAO" shortcut.');
 WScript.Echo('');
 
 WScript.Quit(0);

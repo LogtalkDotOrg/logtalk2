@@ -94,8 +94,8 @@ WScript.Echo('Start Menu Programs. Make sure that the environment variables');
 WScript.Echo('LOGTALKHOME and LOGTALKUSER are defined for all users wishing');
 WScript.Echo('to use the shortcut.');
 WScript.Echo('');
-WScript.Echo('Users must run the batch script "cplgtdirs" before using the');
-WScript.Echo('"Logtalk - GNU Prolog" shortcut.');
+WScript.Echo('Users must run the batch script "cplgtdirs" once before using');
+WScript.Echo('the "Logtalk - GNU Prolog" shortcut.');
 WScript.Echo('');
 
 WScript.Quit(0);

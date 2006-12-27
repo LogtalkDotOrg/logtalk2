@@ -54,5 +54,5 @@ echo "sudo."
 echo
 echo "Users should ensure that the environment variables LOGTALKHOME"
 echo "and LOGTALKUSER are defined and then run the \"cplgtdirs\" script"
-echo "prior to using the xsblgt script."
+echo "once prior to using the xsblgt script."
 echo
