@@ -3,9 +3,9 @@
 	implements(monitoring)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura and Peter Robinson',
-		date is 2006/11/26,
+		date is 2006/12/27,
 		comment is 'Simple multi-threading example with agents and their birthdays.']).
 
 	:- threaded.
@@ -57,32 +57,40 @@
 		comment is 'New friend, watch out for his/her birthday.',
 		argnames is ['Name']]).
 
+	% new agents are created as threaded objects:
 	new(Name, Age, Gender) :-
 		this(This),
 		create_object(Name, [extends(This)], [threaded], [age(Age), gender(Gender)]).
 
+	% ask a friend's age using an asynchronous message:
 	ask_age(Friend, Age) :-
 		threaded_call(Friend::age(Age)),
 		threaded_exit(Friend::age(Age)).
 
+	% getting older:
 	birthday :-
 		::retract(age(Old)),
 		New is Old + 1,
 		::assertz(age(New)).
 
+	% when someone congratulate us for our birthday, acknowledge it,
+	% and offer her/him a slice of the birthday cake:
 	happy_birthday(From) :-
 		self(Self),
 		write('Happy birthday from '), write(From), write('!'), nl,
 		write('Thanks! Here, have a slice of cake, '), write(From), write('.'), nl,
 		threaded_ignore(From::cake_slice(Self)).
 
+	% be nice, give thanks for the cake offer:
 	cake_slice(From) :-
 		write('Thanks for the cake '), write(From), write('!'), nl.
 
+	% whatch out for our new friend anniversary:
 	new_friend(Friend) :-
 		self(Self),
 		define_events(after, Friend, birthday, _, Self).
 
+	% congratule a friend for his/her birthday:
 	after(Friend, birthday, _) :-
 		self(Self),
 		threaded_ignore(Friend::happy_birthday(Self)).
