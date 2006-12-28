@@ -35,7 +35,10 @@ cd $prefix
 chmod -R go-w,a+r lgt2291
 chmod a+x lgt2291
 chmod a+x lgt2291/scripts/*.sh
+chmod a-x lgt2291/scripts/*.js
+chmod a+x lgt2291/scripts/linux/*.sh
 chmod a+x lgt2291/xml/*.sh
+chmod a-x lgt2291/xml/*.js
 ln -sf lgt2291 logtalk
 
 mkdir -p bin
