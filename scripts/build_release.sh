@@ -15,6 +15,7 @@ cd logtalk
 scripts/cleandist.sh
 chmod a+x manuals/userman/*.sh
 chmod a+x manuals/refman/*.sh
+chmod a+x scripts/*.sh
 chmod a-x scripts/*.js
 chmod a+x scripts/linux/*.sh
 chmod a+x scripts/macosx/postflight
@@ -22,8 +23,8 @@ chmod a+x xml/*.sh
 chmod a-x xml/*.js
 
 cd ..
-cp -R logtalk/manuals man2291
-tar -czf man2291.tgz man2291
+cp -R logtalk/manuals man2292
+tar -czf man2292.tgz man2292
 mv logtalk lgt2292
 tar -czf lgt2292.tgz lgt2292
 
@@ -42,12 +43,12 @@ cp -R work/logtalk-2.29.2.pkg $dir
 sudo port uninstall logtalk
 
 cd $dir
-mkdir manpdf2291
-cd man2291/userman
+mkdir manpdf2292
+cd man2292/userman
 ./userman.sh
-mv userman.pdf ../../manpdf2291
+mv userman.pdf ../../manpdf2292
 cd ../refman
 ./refman.sh
-mv refman.pdf ../../manpdf2291
+mv refman.pdf ../../manpdf2292
 cd ../..
-tar -czf manpdf2291.tgz manpdf2291
+tar -czf manpdf2292.tgz manpdf2292
