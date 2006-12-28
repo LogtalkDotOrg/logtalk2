@@ -17,7 +17,7 @@ chmod a+x manuals/userman/*.sh
 chmod a+x manuals/refman/*.sh
 chmod a-x scripts/*.js
 chmod a+x scripts/linux/*.sh
-chmod a+x lgt2291/scripts/macosx/postflight
+chmod a+x scripts/macosx/postflight
 chmod a+x xml/*.sh
 chmod a-x xml/*.js
 
