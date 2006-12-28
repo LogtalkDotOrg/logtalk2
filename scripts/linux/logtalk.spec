@@ -68,7 +68,7 @@ echo "# Logtalk installation directory:" >> /etc/profile.d/logtalk.sh
 echo "export LOGTALKHOME=$RPM_INSTALL_PREFIX/logtalk" >> /etc/profile.d/logtalk.sh
 echo "" >> /etc/profile.d/logtalk.sh
 echo "# Default location for Logtalk end-user files:" >> /etc/profile.d/logtalk.sh
-echo "export LOGTALKUSER=$HOME/logtalk" >> /etc/profile.d/logtalk.sh
+echo "export LOGTALKUSER=\$HOME/logtalk" >> /etc/profile.d/logtalk.sh
 chmod a+x /etc/profile.d/logtalk.sh
 echo "# Logtalk environment setup" > /etc/profile.d/logtalk.csh
 echo "" >> /etc/profile.d/logtalk.csh
@@ -76,14 +76,14 @@ echo "# Logtalk installation directory:" >> /etc/profile.d/logtalk.csh
 echo "setenv LOGTALKHOME $RPM_INSTALL_PREFIX/logtalk" >> /etc/profile.d/logtalk.csh
 echo "" >> /etc/profile.d/logtalk.csh
 echo "# Default location for Logtalk end-user files:" >> /etc/profile.d/logtalk.csh
-echo "setenv LOGTALKUSER $HOME/logtalk" >> /etc/profile.d/logtalk.csh
+echo "setenv LOGTALKUSER \$HOME/logtalk" >> /etc/profile.d/logtalk.csh
 chmod a+x /etc/profile.d/logtalk.csh
 eval export LOGTALKHOME=$RPM_INSTALL_PREFIX/logtalk; cd $LOGTALKHOME/scripts; ./makeall_lgt.sh $RPM_INSTALL_PREFIX
 echo ""
 echo "Defined the following environment variables for all users:"
 echo ""
 echo "  Logtalk installation directory: LOGTALKHOME = $RPM_INSTALL_PREFIX/logtalk"
-echo "  Default Logtalk user files directory: LOGTALKUSER = $HOME/logtalk"
+echo "  Default Logtalk user files directory: LOGTALKUSER = \$HOME/logtalk"
 echo ""
 echo "You may need to logout and login again or start a new shell in order to"
 echo "use the new environment variables."
