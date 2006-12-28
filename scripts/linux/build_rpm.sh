@@ -7,11 +7,10 @@
 ## Copyright (c) 1998-2006 Paulo Moura.  All Rights Reserved.
 ## =================================================================
 
-cd ..
 dir="$PWD"
 
-LOGTALKHOME=/usr/local/logtalk ./lgt_uninstall.sh
-./lgt_install.sh
+LOGTALKHOME=/usr/local/logtalk ../lgt_uninstall.sh
+../lgt_install.sh
 
 cd /usr/local/logtalk
 scripts/cleandist.sh
