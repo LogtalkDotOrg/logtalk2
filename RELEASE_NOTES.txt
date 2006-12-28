@@ -17,7 +17,9 @@ RELEASE NOTES
 
 	Added shell scripts for helping building the distribution files of a 
 	new Logtalk release. Updated the MacOS X installer package to set 
-	default values for the Logtalk environment variables.
+	default values for the Logtalk environment variables. Corrected a bug 
+	in the logtalk.spec file where the default value for the LOGTALKUSER 
+	environment variable only worked for the user doing the RPM installation.
 
 	Corrected a bug in the reporting of the line number where a compilation 
 	error (or warning) occurred. Extended support for reporting warning and 
