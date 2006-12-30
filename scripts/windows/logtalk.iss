@@ -30,7 +30,7 @@ SolidCompression=yes
 PrivilegesRequired=none
 
 VersionInfoVersion=2.29.2
-VersionInfoCopyright=© Paulo Moura, 1998-2006
+VersionInfoCopyright=© Paulo Moura, 1998-2007
 
 AllowRootDirectory=yes
 UninstallFilesDir="{userdocs}\Logtalk uninstaller"
@@ -67,7 +67,7 @@ Name: shortcut; Description: "&Create a desktop shortcut to the Logtalk user fol
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Messages]
-BeveledLabel=Logtalk 2.29.2 © Paulo Moura, 1998-2006
+BeveledLabel=Logtalk 2.29.2 © Paulo Moura, 1998-2007
 
 [Dirs]
 Name: {code:GetLgtUserDir}; Components: user; Flags: uninsneveruninstall
