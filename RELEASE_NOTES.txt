@@ -10,6 +10,13 @@ RELEASE NOTES
 =============
 
 
+2.29.2 - January ??, 2007
+
+	Dropped loading of broken "cleanup" library from the YAP config file 
+	(the predicates call_cleanup/2-3, required for multi-threading, are 
+	now avaialble as built-in predicates in the YAP CVS version).
+
+
 2.29.1 - December 28, 2006
 
 	Added a Logtalk version of John Fletcher's Prolog XML parser (see the 
