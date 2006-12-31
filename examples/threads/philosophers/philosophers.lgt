@@ -2,9 +2,9 @@
 :- category(chopstick).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2006/12/2,
+		date is 2006/12/31,
 		comment is 'Dining philosophers problem: chopstick representation.']).
 
 	:- public(pick_up/0).
@@ -144,7 +144,7 @@
 		this(Philosopher),
 		random(MaxTime, ThinkTime),
 		message(['Philosopher ', Philosopher, ' thinking for ', ThinkTime, ' seconds.']),
-		sleep(ThinkTime).
+		thread_sleep(ThinkTime).
 
 	% deadlock while a philosopher is trying to eat is prevented by putting
 	% down the first chopstick when picking up the second one fails:
@@ -156,7 +156,7 @@
 		LeftStick::pick_up,
 		(	RightStick::pick_up ->
 			message(['Philosopher ', Philosopher, ' eating for ', EatTime, ' seconds with chopsticks ', LeftStick, ' and ', RightStick, '.']),
-			sleep(EatTime),
+			thread_sleep(EatTime),
 			::LeftStick::put_down,
 			::RightStick::put_down
 		;	::LeftStick::put_down,
