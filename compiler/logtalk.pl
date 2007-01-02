@@ -8643,7 +8643,13 @@ current_logtalk_flag(version, version(2, 29, 2)).
 
 % '$lgt_fix_synchronized_preds'
 %
-% add mutex wrappers for calling synchronized predicates
+% add mutex wrappers for calling synchronized predicates;
+% for Prolog compilers that do not support multi-threading
+% synchronized predicates are compiled as normal predicates
+
+'$lgt_fix_synchronized_preds' :-
+	'$lgt_default_flag'(threads, unsupported),
+	!.
 
 '$lgt_fix_synchronized_preds' :-
 	(	'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, DDef, _, _) ->
@@ -11518,7 +11524,7 @@ current_logtalk_flag(version, version(2, 29, 2)).
 				(	thread_peek_message(ThisPrefix, '$lgt_non_det_id'(Goal, Sender, This, Self, Id)) ->
 					thread_get_message(ThisPrefix, '$lgt_non_det_id'(Goal, Sender, This, Self, Id)),
 					(	current_thread(Id, running) ->							% if the thread is still running, it's suspended waiting
-						catch(thread_send_message(Id, '$lgt_exit'), _, true)	% for a request to an alternative proof; tell it to exit
+						catch(thread_send_message(Id, '$lgt_exit'), _, true)	% for a request for an alternative proof; tell it to exit
 					;	true
 					),
 					thread_join(Id, _)

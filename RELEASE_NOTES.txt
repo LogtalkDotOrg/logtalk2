@@ -12,9 +12,12 @@ RELEASE NOTES
 
 2.29.2 - January ??, 2007
 
+	Silently compile synchronized predicates as normal predicates on 
+	Prolog compilers that don't support multi-threading programming.
+
 	Dropped loading of broken "cleanup" library from the YAP config file 
 	(the predicates call_cleanup/2-3, required for multi-threading, are 
-	now avaialble as built-in predicates in the YAP CVS version).
+	now available as built-in predicates in the YAP CVS version).
 
 
 2.29.1 - December 28, 2006
@@ -25,7 +28,7 @@ RELEASE NOTES
 	Added shell scripts for helping building the distribution files of a 
 	new Logtalk release. Updated the MacOS X installer package to set 
 	default values for the Logtalk environment variables. Corrected a bug 
-	in the logtalk.spec file where the default value for the LOGTALKUSER 
+	in the "logtalk.spec" file where the default value for the LOGTALKUSER 
 	environment variable only worked for the user doing the RPM installation.
 
 	Corrected a bug in the reporting of the line number where a compilation 
