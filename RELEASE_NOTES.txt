@@ -15,6 +15,9 @@ RELEASE NOTES
 	Silently compile synchronized predicates as normal predicates on 
 	Prolog compilers that don't support multi-threading programming.
 
+	Make "random" a synchronized object. Updated the "philosophers" 
+	multi-threading example accordingly.
+
 	Dropped loading of broken "cleanup" library from the YAP config file 
 	(the predicates call_cleanup/2-3, required for multi-threading, are 
 	now available as built-in predicates in the YAP CVS version).
