@@ -10135,6 +10135,13 @@ current_logtalk_flag(version, version(2, 29, 2)).
 '$lgt_lgt_built_in'(current_logtalk_flag(_, _)).
 '$lgt_lgt_built_in'(set_logtalk_flag(_, _)).
 
+'$lgt_lgt_built_in'(threaded_call(_)).
+'$lgt_lgt_built_in'(threaded_once(_)).
+'$lgt_lgt_built_in'(threaded_ignore(_)).
+'$lgt_lgt_built_in'(threaded_race(_)).
+'$lgt_lgt_built_in'(threaded_exit(_)).
+'$lgt_lgt_built_in'(threaded_peek(_)).
+
 
 
 
