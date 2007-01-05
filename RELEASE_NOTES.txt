@@ -15,6 +15,14 @@ RELEASE NOTES
 	Silently compile synchronized predicates as normal predicates on 
 	Prolog compilers that don't support multi-threading programming.
 
+	Corrected a bug that resulted in a loading error when reloading 
+	source files containing threaded objects.
+
+	Corrected a bug in the implementation of the built-in predicate 
+	threaded_peek/1 that prevented alternative solutions from being 
+	retrieved using the built-in predicate threaded_exit/1. Removed 
+	the built-in predicate threaded_discard/1.
+
 	Make "random" a synchronized object. Updated the "philosophers" 
 	multi-threading example accordingly.
 
