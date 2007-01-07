@@ -11437,8 +11437,11 @@ current_logtalk_flag(version, version(2, 29, 2)).
 	(	catch(Goal, Error, (thread_send_message(Return, '$lgt_reply'(Goal, Sender, This, Self, Error)), Flag = error)),
 		var(Flag),
 		thread_send_message(Return, '$lgt_reply'(Goal, Sender, This, Self, success)),
-		thread_get_message('$lgt_next'),
-		fail	% backtrack to the catch(Goal, ...) to try to find an alternative solution
+		thread_get_message(Message),
+		(	Message == '$lgt_next' ->
+			fail				% backtrack to the catch(Goal, ...) to try to find an alternative solution
+		;	thread_exit(true)	% otherwise assume Message = '$lgt_exit' and terminate thread
+		)
 	;	nonvar(Flag),
 		!,
 		true
@@ -11489,8 +11492,8 @@ current_logtalk_flag(version, version(2, 29, 2)).
 				'$lgt_mt_get_reply'(ThisPrefix, Goal, Sender, This, Self, Options),
 				(	thread_peek_message(ThisPrefix, '$lgt_non_det_id'(Goal, Sender, This, Self, Id)) ->
 					thread_get_message(ThisPrefix, '$lgt_non_det_id'(Goal, Sender, This, Self, Id)),
-					(	current_thread(Id, running) ->			% if the thread is still running, it's suspended waiting
-						thread_signal(Id, thread_exit(true))	% for a request for an alternative proof; tell it to exit
+					(	current_thread(Id, running) ->							% if the thread is still running, it's suspended waiting
+						catch(thread_send_message(Id, '$lgt_exit'), _, true)	% for a request to an alternative proof; tell it to exit
 					;	true
 					),
 					thread_join(Id, _)
