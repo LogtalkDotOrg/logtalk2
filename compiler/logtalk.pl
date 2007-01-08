@@ -11386,7 +11386,7 @@ current_logtalk_flag(version, version(2, 29, 2)).
 	repeat,
 		thread_get_message(Thread, '$lgt_goal'(Goal, Sender, This, Self, Option, Return)),
 		(	Option == competing ->	% goal is one of a set of competing goals performing the same task
-			thread_create('$lgt_mt_competing_goal'(Goal, Sender, This, Self, Return), CompetingId, [detached(false)]),
+			thread_create('$lgt_mt_competing_goal'(Goal, Sender, This, Self, Return), CompetingId, [detached(true)]),
 			thread_send_message(Return, '$lgt_competing_id'(Goal, Sender, This, Self, CompetingId))
 		;	Option == ignore ->		% don't bother reporting goal success, failure, or exception
 			thread_create(catch(Goal, _, true), _, [detached(true)])
@@ -11509,20 +11509,20 @@ current_logtalk_flag(version, version(2, 29, 2)).
 '$lgt_mt_get_reply'(Thread, Goal, Sender, This, Self, _) :-
 	copy_term((Goal, Sender, This, Self), (RGoal, RSender, RThis, RSelf)),
 	% we MUST get the reply before finding out if we're dealing with either det or non-det goals;
-	% this ensures that the '$lgt_competing_id'/5 or '$lgt_non_det_id'/5 messages are already available 
+	% this ensures that the '$lgt_competing_id'/5 or '$lgt_non_det_id'/5 messages are already available
 	thread_get_message(Thread, '$lgt_reply'(RGoal, RSender, RThis, RSelf, Result)),
-	(	thread_peek_message(Thread, '$lgt_det_id'(RGoal, RSender, RThis, RSelf, Id)) ->
-		'$lgt_mt_det_reply'(Thread, Goal, Sender, This, Self, Id, RGoal, RSender, RThis, RSelf, Result)
+	(	thread_peek_message(Thread, '$lgt_det_id'(RGoal, RSender, RThis, RSelf, _)) ->
+		'$lgt_mt_det_reply'(Thread, Goal, Sender, This, Self, RGoal, RSender, RThis, RSelf, Result)
 	;	thread_peek_message(Thread, '$lgt_non_det_id'(RGoal, RSender, RThis, RSelf, Id)),
 		'$lgt_mt_non_det_reply'(Thread, Goal, Sender, This, Self, Id, RGoal, RSender, RThis, RSelf, Result)
-	;	thread_peek_message(Thread, '$lgt_competing_id'(RGoal, RSender, RThis, RSelf, Id)),
-		'$lgt_mt_competing_reply'(Thread, Goal, Sender, This, Self, Id, RGoal, RSender, RThis, RSelf, Result)
+	;	thread_peek_message(Thread, '$lgt_competing_id'(RGoal, RSender, RThis, RSelf, _)),
+		'$lgt_mt_competing_reply'(Thread, Goal, Sender, This, Self, RGoal, RSender, RThis, RSelf, Result)
 	).
 
 
 % return the solution found after killing all the competing threads and removing any other matching replies:
 
-'$lgt_mt_competing_reply'(Thread, Goal, Sender, This, Self, _, RGoal, RSender, RThis, RSelf, Result) :-
+'$lgt_mt_competing_reply'(Thread, Goal, Sender, This, Self, RGoal, RSender, RThis, RSelf, Result) :-
 	'$lgt_mt_kill_competing_threads'(Thread, Goal, Sender, This, Self),
 	'$lgt_mt_discard_matching_replies'(Thread, Goal, Sender, This, Self),
 	(	Result == success ->
@@ -11535,7 +11535,7 @@ current_logtalk_flag(version, version(2, 29, 2)).
 
 % return the solution found:
 
-'$lgt_mt_det_reply'(_, Goal, Sender, This, Self, _, Goal, Sender, This, Self, Result) :-
+'$lgt_mt_det_reply'(_, Goal, Sender, This, Self, Goal, Sender, This, Self, Result) :-
 	(	Result == success ->
 		true
 	;	Result == failure ->
@@ -11575,13 +11575,13 @@ current_logtalk_flag(version, version(2, 29, 2)).
 
 
 
-% kill any threads that might be running competing goals:
+% kill any threads that might still be running competing goals:
 
 '$lgt_mt_kill_competing_threads'(Thread, Goal, Sender, This, Self) :-
 	\+ \+ (
 		thread_peek_message(Thread, '$lgt_competing_id'(Goal, Sender, This, Self, Id)),
 		thread_get_message(Thread, '$lgt_competing_id'(Goal, Sender, This, Self, Id)),
-		catch((thread_signal(Id, thread_exit(true)), thread_join(Id, _)), _, true)
+		catch(thread_signal(Id, thread_exit(true)), _, true)
 		),
 	!,
 	'$lgt_mt_kill_competing_threads'(Thread, Goal, Sender, This, Self).

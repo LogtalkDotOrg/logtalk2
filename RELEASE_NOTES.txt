@@ -15,6 +15,9 @@ RELEASE NOTES
 	Silently compile synchronized predicates as normal predicates on 
 	single-threaded Prolog compilers.
 
+	When using the threaded_race/1 predicate, competing thread are now 
+	created detached.
+
 	Corrected a bug that resulted in a loading error when reloading 
 	source files defining threaded objects.
 
