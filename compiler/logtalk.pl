@@ -11581,7 +11581,7 @@ current_logtalk_flag(version, version(2, 29, 2)).
 	\+ \+ (
 		thread_peek_message(Thread, '$lgt_competing_id'(Goal, Sender, This, Self, Id)),
 		thread_get_message(Thread, '$lgt_competing_id'(Goal, Sender, This, Self, Id)),
-		catch((thread_signal(Id, thread_exit(true)), thread_join(Id, _)), _, true),
+		catch((thread_signal(Id, thread_exit(true)), thread_join(Id, _)), _, true)
 		),
 	!,
 	'$lgt_mt_kill_competing_threads'(Thread, Goal, Sender, This, Self).
