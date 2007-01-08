@@ -10,13 +10,13 @@ RELEASE NOTES
 =============
 
 
-2.29.2 - January 9, 2007
+2.29.2 - January 10, 2007
 
 	Silently compile synchronized predicates as normal predicates on 
 	single-threaded Prolog compilers.
 
-	When using the threaded_race/1 predicate, competing thread are now 
-	created detached.
+	When using the threaded_race/1 predicate, competing threads are 
+	now created detached.
 
 	Corrected a bug that resulted in a loading error when reloading 
 	source files defining threaded objects.
@@ -26,8 +26,8 @@ RELEASE NOTES
 	retrieved using the built-in predicate threaded_exit/1. Removed 
 	the built-in predicate threaded_discard/1.
 
-	Make "random" a synchronized object. Updated the "philosophers" 
-	multi-threading example accordingly.
+	The library object "random" is now a synchronized object. Updated 
+	the "philosophers" multi-threading example accordingly.
 
 	Dropped loading of broken "cleanup" library from the YAP config file 
 	(the call_cleanup/2 predicate, required for Logtalk multi-threading, 
