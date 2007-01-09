@@ -128,9 +128,9 @@ If you want to cite Logtalk in your publications, please consult the file
 
 11. CONTRIBUTIONS
 
-Contributions, constructive criticisms, code, and suggestions are always 
-welcome. If you want to contribute to this project, drop me a line to the 
-support address given above.
+Contributions, constructive criticisms, code, bug reports, and suggestions 
+are always welcome. If you want to contribute to this project, drop me a 
+line to the support address given above.
 
 
 Happy Logtalking!
