@@ -1414,7 +1414,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 29, 2)).
+current_logtalk_flag(version, version(2, 29, 3)).
 
 
 
@@ -2313,7 +2313,7 @@ current_logtalk_flag(version, version(2, 29, 2)).
 			)
 		)
 	;	Obj = Sender,
-		(	call_with_args(Def, term_expansion(Term, Expansion), Obj, Obj, Obj, Call, Obj) ->	% we cannot call Def/5 which may not exist
+		(	call_with_args(Def, term_expansion(Term, Expansion), Obj, Obj, Obj, Call) ->
 			true
 		;	call_with_args(Prefix, _, _, _, _, _, _, DDef, _),
 			call_with_args(DDef, term_expansion(Term, Expansion), Obj, Obj, Obj, Call)
@@ -7865,7 +7865,7 @@ current_logtalk_flag(version, version(2, 29, 2)).
 
 
 
-% '$lgt_gen_local_dcl_clauses'(-callable)
+% '$lgt_gen_local_dcl_clauses'(-atom)
 %
 % a (local) predicate declaration is only generated if there is a scope 
 % declaration for the predicate; the single argument returns the atom
@@ -7902,12 +7902,15 @@ current_logtalk_flag(version, version(2, 29, 2)).
 '$lgt_gen_local_dcl_clauses'(Local) :-
 	(	'$lgt_pp_dcl_'(_) ->
 		Local = true
-	;	Local = fail
+	;	Local = fail,
+		'$lgt_pp_entity'(_, _, _, Dcl, _),		% generate a catchall clause for
+		Head =.. [Dcl, _, _, _, _, _, _],		% entities that do not contain
+		assertz('$lgt_pp_dcl_'((Head :- fail)))	% predicate declarations
 	).
 
 
 
-% '$lgt_gen_local_def_clauses'(-callable)
+% '$lgt_gen_local_def_clauses'(-atom)
 %
 % generates local def clauses for undefined but declared (via scope or
 % dynamic directives) predicates; the single argument returns the atom
@@ -7928,7 +7931,13 @@ current_logtalk_flag(version, version(2, 29, 2)).
 	fail.
 
 '$lgt_gen_local_def_clauses'(Local) :-
-	'$lgt_pp_def_'(_) -> Local = true; Local = fail.
+	(	'$lgt_pp_def_'(_) ->
+		Local = true
+	;	Local = fail,
+		'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _),	% generate a catchall clause
+		Head =.. [Def, _, _, _, _, _],							% for entities that do not 
+		assertz('$lgt_pp_def_'((Head :- fail)))					% contain predicate definitions
+	).
 
 
 
@@ -7939,14 +7948,13 @@ current_logtalk_flag(version, version(2, 29, 2)).
 
 
 
-'$lgt_gen_protocol_linking_clauses'(Local) :-
+'$lgt_gen_protocol_linking_clauses'(true) :-
 	'$lgt_pp_protocol_'(Ptc, _, PDcl, _, _),
 	Head =.. [PDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ptc],
-	(	call(Local) ->
-		Body =.. [PDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized]
-	;	Body = fail
-	),
+	Body =.. [PDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized],
 	assertz('$lgt_pp_dcl_'((Head:-Body))).
+
+'$lgt_gen_protocol_linking_clauses'(fail).
 
 
 
@@ -7994,14 +8002,13 @@ current_logtalk_flag(version, version(2, 29, 2)).
 
 
 
-'$lgt_gen_category_linking_dcl_clauses'(Local) :-
+'$lgt_gen_category_linking_dcl_clauses'(true) :-
 	'$lgt_pp_category_'(Ctg, _, CDcl, _, _, _),
 	Head =.. [CDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctg],
-	(	call(Local) ->
-		Body =.. [CDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized]
-	;	Body = fail
-	),
+	Body =.. [CDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized],
 	assertz('$lgt_pp_dcl_'((Head:-Body))).
+
+'$lgt_gen_category_linking_dcl_clauses'(fail).
 
 
 
