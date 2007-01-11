@@ -17,6 +17,9 @@ RELEASE NOTES
 	by the Logtalk built-in database methods when there is no initial 
 	declaration and definition for the referenced dynamic predicates.
 
+	Corrected a bug in the compilation of empty, standalone protocols 
+	and categories.
+
 
 2.29.2 - January 10, 2007
 

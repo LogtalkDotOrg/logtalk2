@@ -7902,10 +7902,7 @@ current_logtalk_flag(version, version(2, 29, 3)).
 '$lgt_gen_local_dcl_clauses'(Local) :-
 	(	'$lgt_pp_dcl_'(_) ->
 		Local = true
-	;	Local = fail,
-		'$lgt_pp_entity'(_, _, _, Dcl, _),		% generate a catchall clause for
-		Head =.. [Dcl, _, _, _, _, _, _],		% entities that do not contain
-		assertz('$lgt_pp_dcl_'((Head :- fail)))	% predicate declarations
+	;	Local = fail
 	).
 
 
@@ -7933,10 +7930,7 @@ current_logtalk_flag(version, version(2, 29, 3)).
 '$lgt_gen_local_def_clauses'(Local) :-
 	(	'$lgt_pp_def_'(_) ->
 		Local = true
-	;	Local = fail,
-		'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _),	% generate a catchall clause
-		Head =.. [Def, _, _, _, _, _],							% for entities that do not 
-		assertz('$lgt_pp_def_'((Head :- fail)))					% contain predicate definitions
+	;	Local = fail
 	).
 
 
@@ -7944,7 +7938,8 @@ current_logtalk_flag(version, version(2, 29, 3)).
 '$lgt_gen_protocol_clauses' :-
 	'$lgt_gen_local_dcl_clauses'(Local),
 	'$lgt_gen_protocol_linking_clauses'(Local),
-	'$lgt_gen_protocol_extend_clauses'.
+	'$lgt_gen_protocol_extend_clauses',
+	'$lgt_gen_protocol_catchall_clauses'.
 
 
 
@@ -7983,6 +7978,17 @@ current_logtalk_flag(version, version(2, 29, 3)).
 
 
 
+'$lgt_gen_protocol_catchall_clauses' :-
+	(	'$lgt_pp_dcl_'(_) ->
+		true
+	;	% empty, standalone protocol 
+		'$lgt_pp_protocol_'(_, _, PDcl, _, _),
+		Head =.. [PDcl, _, _, _, _, _, _, _],
+		assertz('$lgt_pp_dcl_'((Head:-fail)))
+	).
+
+
+
 '$lgt_construct_alias_functor'(Prefix, PRen) :-
 	atom_concat(Prefix, '_alias', PRen).
 
@@ -7998,7 +8004,8 @@ current_logtalk_flag(version, version(2, 29, 3)).
 	'$lgt_gen_local_dcl_clauses'(Local),
 	'$lgt_gen_category_linking_dcl_clauses'(Local),
 	'$lgt_gen_category_implements_dcl_clauses',
-	'$lgt_gen_category_imports_dcl_clauses'.
+	'$lgt_gen_category_imports_dcl_clauses',
+	'$lgt_gen_category_catchall_dcl_clauses'.
 
 
 
@@ -8062,6 +8069,17 @@ current_logtalk_flag(version, version(2, 29, 3)).
 
 
 
+'$lgt_gen_category_catchall_dcl_clauses' :-
+	(	'$lgt_pp_dcl_'(_) ->
+		true
+	;	% empty, standalone category 
+		'$lgt_pp_category_'(_, _, CDcl, _, _, _),
+		Head =.. [CDcl, _, _, _, _, _, _, _],
+		assertz('$lgt_pp_dcl_'((Head:-fail)))
+	).
+
+
+
 '$lgt_gen_category_def_clauses' :-
 	'$lgt_gen_category_linking_def_clauses',
 	'$lgt_gen_category_imports_def_clauses'.
@@ -8097,6 +8115,28 @@ current_logtalk_flag(version, version(2, 29, 3)).
 
 
 
+% the database built-in methods need to check if a local declaration or a local definition 
+% exists for a predicate; in order to avoid predicate existence errors, we need to generate 
+% catchall clauses when there are no local predicate declarations or no local predicate 
+% definitions
+
+'$lgt_gen_object_catchall_dcl_clauses'(true).
+
+'$lgt_gen_object_catchall_dcl_clauses'(fail) :-
+	'$lgt_pp_object_'(_, _, Dcl, _, _, _, _, _, _, _, _),	% generate a catchall clause for
+	Head =.. [Dcl, _, _, _, _, _, _],						% objects that do not contain
+	assertz('$lgt_pp_dcl_'((Head:-fail))).					% predicate declarations
+
+
+'$lgt_gen_object_catchall_def_clauses'(true).
+
+'$lgt_gen_object_catchall_def_clauses'(fail) :-
+	'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _),	% generate a catchall clause
+	Head =.. [Def, _, _, _, _, _],							% for objects that do not 
+	assertz('$lgt_pp_def_'((Head:-fail))).					% contain predicate definitions
+
+
+
 '$lgt_gen_prototype_clauses' :-
 	'$lgt_gen_prototype_dcl_clauses',
 	'$lgt_gen_prototype_def_clauses',
@@ -8109,7 +8149,8 @@ current_logtalk_flag(version, version(2, 29, 3)).
 	'$lgt_gen_prototype_linking_dcl_clauses'(Local),
 	'$lgt_gen_prototype_implements_dcl_clauses',
 	'$lgt_gen_prototype_imports_dcl_clauses',
-	'$lgt_gen_prototype_extends_dcl_clauses'.
+	'$lgt_gen_prototype_extends_dcl_clauses',
+	'$lgt_gen_object_catchall_dcl_clauses'(Local).
 
 
 
@@ -8208,7 +8249,8 @@ current_logtalk_flag(version, version(2, 29, 3)).
 	'$lgt_gen_local_def_clauses'(Local),
 	'$lgt_gen_prototype_linking_def_clauses'(Local),
 	'$lgt_gen_prototype_imports_def_clauses',
-	'$lgt_gen_prototype_extends_def_clauses'.
+	'$lgt_gen_prototype_extends_def_clauses',
+	'$lgt_gen_object_catchall_def_clauses'(Local).
 
 
 
@@ -8300,7 +8342,8 @@ current_logtalk_flag(version, version(2, 29, 3)).
 '$lgt_gen_ic_dcl_clauses' :-
 	'$lgt_gen_local_dcl_clauses'(Local),
 	'$lgt_gen_ic_idcl_clauses'(Local),
-	'$lgt_gen_ic_hierarchy_dcl_clauses'.
+	'$lgt_gen_ic_hierarchy_dcl_clauses',
+	'$lgt_gen_object_catchall_dcl_clauses'(Local).
 
 
 
@@ -8442,7 +8485,8 @@ current_logtalk_flag(version, version(2, 29, 3)).
 	'$lgt_gen_ic_linking_def_clauses'(Local),
 	'$lgt_gen_ic_imports_def_clauses',
 	'$lgt_gen_ic_hierarchy_def_clauses',
-	'$lgt_gen_ic_idef_clauses'(Local).
+	'$lgt_gen_ic_idef_clauses'(Local),
+	'$lgt_gen_object_catchall_def_clauses'(Local).
 
 
 
