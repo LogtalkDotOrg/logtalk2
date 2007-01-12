@@ -7978,12 +7978,17 @@ current_logtalk_flag(version, version(2, 29, 3)).
 
 
 
+% when a protocol is empty, i.e. when it does not contain any predicate declarations, and 
+% does not extend other protocols, we need a catchall clause in order to prevent predicate 
+% existence errors when sending a message to an object implementing (directly or 
+% indirectly) the protocol
+
 '$lgt_gen_protocol_catchall_clauses' :-
 	(	'$lgt_pp_dcl_'(_) ->
 		true
 	;	% empty, standalone protocol 
-		'$lgt_pp_protocol_'(_, _, PDcl, _, _),
-		Head =.. [PDcl, _, _, _, _, _, _, _],
+		'$lgt_pp_protocol_'(_, _, Dcl, _, _),
+		Head =.. [Dcl, _, _, _, _, _, _, _],
 		assertz('$lgt_pp_dcl_'((Head:-fail)))
 	).
 
@@ -8069,12 +8074,17 @@ current_logtalk_flag(version, version(2, 29, 3)).
 
 
 
+% when a category contains no predicate declarations, does not implement any protocol, 
+% and does not import other categories, we need a catchall clause in order to prevent 
+% predicate existence errors when sending a message to an object importing (directly or 
+% indirectly) the category
+
 '$lgt_gen_category_catchall_dcl_clauses' :-
 	(	'$lgt_pp_dcl_'(_) ->
 		true
-	;	% empty, standalone category 
-		'$lgt_pp_category_'(_, _, CDcl, _, _, _),
-		Head =.. [CDcl, _, _, _, _, _, _, _],
+	;	% standalone category with no local predicate declarations
+		'$lgt_pp_category_'(_, _, Dcl, _, _, _),
+		Head =.. [Dcl, _, _, _, _, _, _, _],
 		assertz('$lgt_pp_dcl_'((Head:-fail)))
 	).
 
