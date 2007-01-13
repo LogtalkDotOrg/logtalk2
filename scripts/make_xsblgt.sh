@@ -42,7 +42,7 @@ cd "$LOGTALKHOME"
 mkdir -p bin
 cd bin
 echo ":- reconsult('~/logtalk/configs/xsb.pl')." > logtalk_xsb.pl
-echo ":- reconsult('$LOGTALKHOME/compiler/logtalk.pl')." >> logtalk_xsb.pl
+echo ":- reconsult('compiler/logtalk.pl')." >> logtalk_xsb.pl
 echo ":- reconsult('~/logtalk/libpaths/libpaths_no_env_var.pl')." >> logtalk_xsb.pl
 echo ":- path_sysop(chdir, '~')." >> logtalk_xsb.pl
 echo "#/bin/sh" > xsblgt
