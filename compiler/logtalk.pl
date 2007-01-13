@@ -7882,10 +7882,10 @@ current_logtalk_flag(version, version(2, 29, 3)).
 		Compilation = (dynamic)
 	;	Compilation = static
 	),
-	functor(Meta, Functor, Arity),
-	(	'$lgt_pp_meta_predicate_'(Meta) ->
-		Meta2 = Meta
-	;	Meta2 = no
+	functor(Template, Functor, Arity),
+	(	'$lgt_pp_meta_predicate_'(Template) ->
+		Meta = Template
+	;	Meta = no
 	),
 	(	'$lgt_pp_non_terminal_'(Functor, _, Arity) ->
 		NonTerminal = yes
@@ -7895,7 +7895,7 @@ current_logtalk_flag(version, version(2, 29, 3)).
 		Synchronized = yes
 	;	Synchronized = no
 	),
-	Fact =.. [Dcl, Pred, Scope, Compilation, Meta2, NonTerminal, Synchronized],
+	Fact =.. [Dcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized],
 	assertz('$lgt_pp_dcl_'(Fact)),
 	fail.
 
