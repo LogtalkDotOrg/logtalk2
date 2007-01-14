@@ -14,7 +14,7 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 
 % direct call of p/1:
 
-| ?- ?- database::p(X).
+| ?- database::p(X).
 
 X = 1 ;
 X = 2 

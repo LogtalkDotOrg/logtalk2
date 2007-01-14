@@ -31,7 +31,7 @@ yes
 Y = 3
 yes
 
-| ?- []::member(X)
+| ?- []::member(X).
 
 no
 
