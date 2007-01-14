@@ -7,7 +7,7 @@
 ## Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ## =================================================================
 
-css2xslfo=/Applications/XML/CSSToXSLFO/css2xslfo1_3_3.jar
+css2xslfo=/Applications/XML/CSSToXSLFO/css2xslfo1_4.jar
 
 xslt_proc=xsltproc
 # xslt_proc=xalan
