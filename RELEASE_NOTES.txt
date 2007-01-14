@@ -25,6 +25,9 @@ RELEASE NOTES
 	the lack of support in XSB for using environment variables in 
 	the argument of the reconsult/1 predicate.
 
+	Corrected a bug in the "potions.lgt" example puzzle that prevented 
+	its solution of being found.
+
 
 2.29.2 - January 10, 2007
 
