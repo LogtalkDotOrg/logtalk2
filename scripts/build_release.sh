@@ -23,8 +23,8 @@ chmod a+x xml/*.sh
 chmod a-x xml/*.js
 
 cd ..
-cp -R logtalk/manuals man2292
-tar -czf man2292.tgz man2292
+cp -R logtalk/manuals man2293
+tar -czf man2293.tgz man2293
 mv logtalk lgt2293
 tar -czf lgt2293.tgz lgt2293
 
@@ -43,12 +43,12 @@ cp -R work/logtalk-2.29.3.pkg $dir
 sudo port uninstall logtalk
 
 cd $dir
-mkdir manpdf2292
-cd man2292/userman
+mkdir manpdf2293
+cd man2293/userman
 ./userman.sh
-mv userman.pdf ../../manpdf2292
+mv userman.pdf ../../manpdf2293
 cd ../refman
 ./refman.sh
-mv refman.pdf ../../manpdf2292
+mv refman.pdf ../../manpdf2293
 cd ../..
-tar -czf manpdf2292.tgz manpdf2292
+tar -czf manpdf2293.tgz manpdf2293
