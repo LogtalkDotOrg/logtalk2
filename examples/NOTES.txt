@@ -59,7 +59,8 @@ birds
 	(example adopted from the Adventure in Prolog Amzi! book)
 
 bricks
-	example of representation and handling of relations using events
+	example of representation and handling of relations using events;
+	illustrates how to use events to avoid breaking object encapsulation
 
 classvars
 	example of implementation of class variables
@@ -77,7 +78,7 @@ dynpred
 
 encodings
 	very simple example of using the new, experimental encoding/1 
-	directive (requires Logtalk to be run with the SWI-Prolog compiler)
+	directive (requires Logtalk to be run with the SWI-Prolog)
 
 engines
 	example of category composition (importation of categories by other 
@@ -140,7 +141,9 @@ poem
 	examples adopted from the Ben Staveley-Taylor POEM system
 
 points
-	example adopted from SICStus Objects documentation
+	example adopted from SICStus Objects documentation; defines a simple 
+	class hierarchy of points illustrating how to use categories as 
+	object components
 
 polygons
 	example of representation and handling of relations using events
@@ -163,6 +166,8 @@ relations
 
 roots
 	objects, protocols, and categories needed by most of the other examples;
+	illustrates how you can define object creation and abolishing methods, 
+	complete with initialization and termination options
 
 searching
 	state-space searching framework
@@ -170,8 +175,8 @@ searching
 	Intelligence" book)
 
 shapes
-	geometric shapes implemented as both a prototype hierarchy and a class 
-	hierarchy
+	simple geometric shapes implemented as both a prototype hierarchy and a 
+	class hierarchy
 
 sicstus
 	examples adopted from SICStus Objects documentation
@@ -182,6 +187,8 @@ symdiff
 
 threads
 	several simple examples of multi-threading programming
+	(requires Logtalk to be run with either YAP or SWI-Prolog)
 
 viewpoints
-	example on how to implement property and value sharing with prototypes
+	example on how to implement property sharing and value sharing with 
+	prototypes
