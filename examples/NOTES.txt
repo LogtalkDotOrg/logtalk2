@@ -48,6 +48,7 @@ aliases
 
 assignvars
 	example of using assignable variables in the context of parametric objects
+	in order to represent object state
 
 benchmarks
 	simple benchmarks for helping measuring performance of Logtalk message 
@@ -74,7 +75,8 @@ diamonds
 	(multi-inheritance conflicts and ambiguities)
 
 dynpred
-	example of using some of the built-in database handling methods
+	example of using some of the built-in database handling methods in 
+	order to implement dynamic object state
 
 encodings
 	very simple example of using the new, experimental encoding/1 
@@ -99,7 +101,8 @@ inheritance
 	prototypes and classes/instances
 
 instmethods
-	example of instance defined methods
+	example of instance defined methods; also illustrates the use of 
+	"super calls" to call overridden method definitions
 
 lo
 	examples adopted from the Francis G. McCabe L&O system
@@ -162,7 +165,7 @@ reflection
 
 relations
 	objects implementing predicates for dealing with relations and 
-	constrained relations between objects
+	constrained relations between objects; used by other examples
 
 roots
 	objects, protocols, and categories needed by most of the other examples;
