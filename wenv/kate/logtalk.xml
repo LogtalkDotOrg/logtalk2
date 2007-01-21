@@ -41,7 +41,7 @@
 				<!-- All solutions -->
 				<RegExpr String = "\b((bag|set)of|f(ind|or)all)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Multi-threading meta-predicates -->
-				<RegExpr String = "\bthreaded_(call|once|ignore|race|exit|peek|discard)(?=[(])" attribute = "Built-in" context = "#stay" />
+				<RegExpr String = "\bthreaded_(call|once|ignore|race|exit|peek)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Term unification -->
 				<RegExpr String = "\bunify_with_occurs_check(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Term creation and decomposition -->

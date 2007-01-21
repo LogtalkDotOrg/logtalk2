@@ -4,8 +4,8 @@
 
 ;; Author: Paulo Moura
 ;; Creation date: November 15, 2003
-;; Last modification date: December 14, 2006
-;; Version: 0.92
+;; Last modification date: January 21, 2007
+;; Version: 0.93
 
 ;; Installation:
 ;;
@@ -27,7 +27,7 @@
 
 ;; setup 
 
-(defvar logtalk-mode-version "0.92"
+(defvar logtalk-mode-version "0.93"
 	"Logtalk mode version number")
 
 (defvar logtalk-mode-hook nil)
@@ -214,7 +214,7 @@
 		;;
 		;; multi-threading:
 		;;
-		("\\(threaded_\\(?:call\\|once\\|ignore\\|race\\|exit\\|peek\\|discard\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\(threaded_\\(?:call\\|once\\|ignore\\|race\\|exit\\|peek\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 	))
 
 
