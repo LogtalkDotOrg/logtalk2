@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	January 21, 2007
+" Last Change:	January 31, 2007
 
 
 " Quit when a syntax file was already loaded:
@@ -87,6 +87,7 @@ syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- private("		matchgroup=
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- meta_predicate("	matchgroup=logtalkDirTag	end=")\."	contains=ALL
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- op("			matchgroup=logtalkDirTag	end=")\."	contains=ALL
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- synchronized("	matchgroup=logtalkDirTag	end=")\."	contains=ALL
+syn match	logtalkDirTag		":- synchronized\."
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- uses("		matchgroup=logtalkDirTag	end=")\."	contains=ALL
 syn match	logtalkDirTag		":- threaded\."
 

@@ -135,6 +135,9 @@
 		<SPAN TYPE="FUNCTION" NO_LINE_BREAK="FALSE" DELEGATE="PIs">
 			<BEGIN>:- synchronized(</BEGIN>
 			<END>).</END>
+		<SPAN TYPE="FUNCTION" NO_LINE_BREAK="FALSE" DELEGATE="PIs">
+			<BEGIN>:- synchronized</BEGIN>
+			<END>.</END>
 		</SPAN>
 		<SPAN TYPE="FUNCTION" NO_LINE_BREAK="FALSE" DELEGATE="PIs">
 			<BEGIN>:- discontiguous(</BEGIN>
