@@ -59,6 +59,9 @@ birds
 	bird identification expert system
 	(example adopted from the Adventure in Prolog Amzi! book)
 
+bottles
+	99 bottles of beer on the wall! Sing along!
+
 bricks
 	example of representation and handling of relations using events;
 	illustrates how to use events to avoid breaking object encapsulation

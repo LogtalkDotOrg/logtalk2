@@ -18,6 +18,8 @@ RELEASE NOTES
 
 	Added auto indent support to the jEdit text editor.
 
+	New example: 99 bottles of beer on the wall! Sing along!
+
 
 2.29.3 - January 15, 2007
 
