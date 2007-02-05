@@ -16,6 +16,8 @@ RELEASE NOTES
 	additional problem resulting from the lack of support in XSB for 
 	using environment variables in file paths.
 
+	Added minimal support for using Exuberant Ctags with Logtalk.
+
 	Added auto indent support to the jEdit text editor.
 
 	New example: 99 bottles of beer on the wall! Sing along!

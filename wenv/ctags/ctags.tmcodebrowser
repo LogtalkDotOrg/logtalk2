@@ -1,0 +1,5 @@
+--langdef=logtalk
+--langmap=logtalk:.lgt
+--regex-logtalk=/^[ \t]*:- object\(([a-z][a-zA-Z0-9_]*)/\1/o,objects/
+--regex-logtalk=/^[ \t]*:- protocol\(([a-z][a-zA-Z0-9_]*)/\1/p,protocols/
+--regex-logtalk=/^[ \t]*:- category\(([a-z][a-zA-Z0-9_]*)/\1/c,categories/
