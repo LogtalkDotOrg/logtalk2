@@ -196,7 +196,7 @@ sync_random(Random) :-
 and then always use the <code>sync_random/1</code> predicate instead of the predicate <code>random/1</code> from threaded code.
 </p>
 <p>
-The synchronization entity and predicate directives may be used when defining objects that may be reused in both single-threaded and multi-threaded Logtalk applications. The directives are simply ignored (i.e. the synchronized predicates are interpreted as normal predicates) when the objects are compiled in a single-threaded application.
+The synchronization entity and predicate directives may be used when defining objects that may be reused in both single-threaded and multi-threaded Logtalk applications. The directives are simply ignored (i.e. the synchronized predicates are interpreted as normal predicates) when the objects are used in a single-threaded application.
 </p>
 
 <div class="footer">
