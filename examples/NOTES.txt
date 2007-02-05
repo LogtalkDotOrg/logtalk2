@@ -83,7 +83,7 @@ dynpred
 
 encodings
 	very simple example of using the new, experimental encoding/1 
-	directive (requires Logtalk to be run with the SWI-Prolog)
+	directive (requires Logtalk to be run with the SWI-Prolog compiler)
 
 engines
 	example of category composition (importation of categories by other 
@@ -97,7 +97,7 @@ hello_world
 	the unavoidable "hello world" programming example
 
 hooks
-	simple example of using compiler hook predicates
+	simple example of using compiler hook objects and predicates
 
 inheritance
 	examples of public, protected, and private inheritance using both 
@@ -125,7 +125,7 @@ metainterpreters
 	may be imported by "database" objects
 
 mi
-	multi-inheritance examples
+	simple multi-inheritance examples
 
 miscellaneous
 	unsorted examples
@@ -158,7 +158,8 @@ profiling
 	examples of using of events and monitors to implement profilers
 
 proxies
-	example of using parametric object proxies
+	example of using parametric object proxies for an efficient 
+	representation of objects with read-only state
 
 puzzles
 	several examples of logical puzzles
