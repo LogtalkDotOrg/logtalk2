@@ -20,6 +20,10 @@ RELEASE NOTES
 
 	Added auto indent support to the jEdit text editor.
 
+	Converted TextMate code snippets from the old Property List format 
+	to XML in order to provide compatibility with the "e" Windows text
+	editor.
+
 	New example: 99 bottles of beer on the wall! Sing along!
 
 
