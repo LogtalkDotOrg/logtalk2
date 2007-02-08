@@ -17,7 +17,12 @@ RELEASE NOTES
 
 	Corrected a bug when asserting rules into an object's database that	
 	resulted in only the first asserted rule being visible when calling 
-	the predicate. Thanks to Parker Jones for the bug report.
+	the predicate through message sending. Thanks to Parker Jones for 
+	the bug report.
+
+	Corrected a bug when compiling dynamic entities (defined in source 
+	files using the dynamic/0 directive) where declared predicates would 
+	be wrongly compiled as static instead of dynamic.
 
 	Updated the "make_xsblgt.sh" integration script again to fix an 
 	additional problem resulting from the lack of support in XSB for 

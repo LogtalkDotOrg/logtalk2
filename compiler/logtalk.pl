@@ -7874,15 +7874,15 @@ current_logtalk_flag(version, version(2, 29, 4)).
 % "true" if there are local declaration clauses and the atom "fail" otherwise
 
 '$lgt_gen_local_dcl_clauses'(_) :-
-	'$lgt_pp_entity'(_, _, _, Dcl, _),
+	'$lgt_pp_entity'(_, _, _, Dcl, EntityCompilation),
 	(	'$lgt_pp_public_'(Functor, Arity), Scope = p(p(p))
 	;	'$lgt_pp_protected_'(Functor, Arity), Scope = p(p)
 	;	'$lgt_pp_private_'(Functor, Arity), Scope = p
 	),
 	functor(Pred, Functor, Arity),
-	(	'$lgt_pp_dynamic_'(Functor, Arity)->
+	(	'$lgt_pp_dynamic_'(Functor, Arity) ->
 		Compilation = (dynamic)
-	;	Compilation = static
+	;	Compilation = EntityCompilation
 	),
 	functor(Template, Functor, Arity),
 	(	'$lgt_pp_meta_predicate_'(Template) ->
