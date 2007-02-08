@@ -4,7 +4,7 @@
 	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
-		date is 2007/2/6,
+		date is 2007/2/8,
 		comment is 'Listing predicates.']).
 
 	:- public(listing/0).
@@ -42,7 +42,7 @@
 		::predicate_property(Head, (dynamic)),
 		nl,
 		listing_properties(Head, Functor, Arity),
-		listing_clauses(Head),
+		listing_clauses(Head, Functor, Arity),
 		fail.
 	listing.
 
@@ -53,37 +53,33 @@
 		functor(Head, Functor, Arity),
 		::predicate_property(Head, (dynamic)), !,
 		listing_properties(Head, Functor, Arity),
-		listing_clauses(Head).
-
-	listing_properties(Head, Functor, Arity) :-
-		write('% '), writeq(Functor/Arity), nl,
-		::predicate_property(Head, declared_in(DclEntity)),
-		write('%   '), writeq(declared_in(DclEntity)),
-		(	::predicate_property(Head, defined_in(DefEntity)) ->
-			write('  '), writeq(defined_in(DefEntity))
-		;	true
-		), nl,
-		(	::predicate_property(Head, non_terminal(NonTerminal//NTArity)) ->
-			write('%   '), writeq(non_terminal(NonTerminal//NTArity)), nl
-		;	true
-		), nl,
-		fail.
+		listing_clauses(Head, Functor, Arity).
 
 	listing_properties(Head, Functor, Arity) :-
 		::predicate_property(Head, public),
-		write(':- public('), writeq(Functor/Arity), write(').'), nl,
+		write(':- public('), writeq(Functor/Arity), write(').'),
 		fail.
 	listing_properties(Head, Functor, Arity) :-
 		::predicate_property(Head, protected),
-		write(':- protected('), writeq(Functor/Arity), write(').'), nl,
+		write(':- protected('), writeq(Functor/Arity), write(').'),
 		fail.
 	listing_properties(Head, Functor, Arity) :-
 		::predicate_property(Head, private),
-		write(':- private('), writeq(Functor/Arity), write(').'), nl,
+		write(':- private('), writeq(Functor/Arity), write(').'),
+		fail.
+	listing_properties(Head, _, _) :-
+		::predicate_property(Head, declared_in(DclEntity)),
+		write('    % '), writeq(declared_in(DclEntity)), nl,
 		fail.
 	listing_properties(Head, Functor, Arity) :-
 		::predicate_property(Head, (dynamic)),
-		write(':- dynamic('), writeq(Functor/Arity), write(').'), nl,
+		write(':- dynamic('), writeq(Functor/Arity), write(').'),
+		fail.
+	listing_properties(Head, _, _) :-
+		(	::clause(Head, _) ->
+			nl
+		;	write('   % no local clauses found'), nl
+		),
 		fail.
 	listing_properties(Head, _, _) :-
 		::predicate_property(Head, meta_predicate(Mode)),
@@ -97,10 +93,13 @@
 		::predicate_property(Head, alias(OFunctor/OArity)),
 		write(':- alias('), writeq(OFunctor/OArity), write(', '), writeq(Functor/Arity), write(').'), nl,
 		fail.
-	listing_properties(_, _, _) :-
-		nl.
+	listing_properties(Head, _, _) :-
+		::predicate_property(Head, non_terminal(NonTerminal//NTArity)) ->
+		write('% clauses resulting from the expansion of the non-terminal '), writeq(NonTerminal//NTArity), nl,
+		fail.
+	listing_properties(_, _, _).
 
-	listing_clauses(Head) :-
+	listing_clauses(Head, _, _) :-
 		::clause(Head, Body),
 		::portray_clause((Head :- Body)),
 		fail.
