@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.29.4 - February ??, 2007
 
+	Added a new library category, "listing", defining listing/0 and 
+	listing/1 methods for helping in debugging tasks.
+
 	Corrected a bug when asserting rules into an object's database that	
 	resulted in only the first asserted rule being visible when calling 
 	the predicate. Thanks to Parker Jones for the bug report.
