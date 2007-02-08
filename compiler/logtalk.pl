@@ -1918,14 +1918,16 @@ current_logtalk_flag(version, version(2, 29, 4)).
 		)
 	;	% else no definition lookup entry exists; construct and assert a dynamic one...
 		functor(Pred, Functor, Arity),
-		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, PredPrefix),
-		Pred =.. [_| Args],
+		functor(Template, Functor, Arity),
+		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TemplatePrefix),
+		Template =.. [_| Args],
 		'$lgt_append'(Args, [Sender, This, Self], TArgs),
-		Call =.. [PredPrefix| TArgs],
-		Clause =.. [DDef, Pred, Sender, This, Self, Call],
+		Call =.. [TemplatePrefix| TArgs],
+		Clause =.. [DDef, Template, Sender, This, Self, Call],
 		assertz(Clause),
-		'$lgt_clean_lookup_caches'(Pred),
-		Update = '$lgt_update_ddef_table'(DDef, Pred, Call)
+		'$lgt_clean_lookup_caches'(Template),
+		Update = '$lgt_update_ddef_table'(DDef, Template, Call),
+		Template = Pred
 	).
 
 

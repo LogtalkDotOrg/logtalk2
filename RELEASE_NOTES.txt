@@ -12,6 +12,10 @@ RELEASE NOTES
 
 2.29.4 - February ??, 2007
 
+	Corrected a bug when asserting rules into an object's database that	
+	resulted in only the first asserted rule being visible when calling 
+	the predicate. Thanks to Parker Jones for the bug report.
+
 	Updated the "make_xsblgt.sh" integration script again to fix an 
 	additional problem resulting from the lack of support in XSB for 
 	using environment variables in file paths.
