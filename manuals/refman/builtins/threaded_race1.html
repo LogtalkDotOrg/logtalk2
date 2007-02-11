@@ -26,7 +26,7 @@
 
 <pre>threaded_race((Goal; Goals))</pre>
 <p>
-Proves a <em>disjunction</em> of goals asynchronously using a set of concurrent threads, one thread per goal. This call always succeeds. The call is equivalent to the <em>competing</em> calls of the individual goals: when one of the goals succeeds, the other ones are aborted (i.e. their threads are terminated). The result (of the first goal to succeed) is sent back to the thread of the object containing the call (<em>this</em>). The corresponding <code>threaded_exit/1</code> goal <strong>must</strong> match all the goals in the disjunction. This is useful when you have a set of different methods to solve a problem without knowing a priori which one will lead to the fastest result.
+Allows a disjunction of goals to be interpreted as a set of <em>competing</em> goals, each one running on its own thread. This call always succeeds. When one of the goals succeeds, the other ones are aborted (i.e. their threads are terminated). The result (of the first goal to succeed) is sent back to the thread of the object containing the call (<em>this</em>). The corresponding <code>threaded_exit/1</code> goal <strong>must</strong> match all the goals in the disjunction. This is useful when you have a set of different methods to solve a problem without knowing a priori which one will lead to the fastest result.
 </p>
 
 <h4>Template and modes</h4>
