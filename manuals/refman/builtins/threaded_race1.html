@@ -45,18 +45,18 @@ Allows a disjunction of goals to be interpreted as a set of <em>competing</em> g
 <h4>Examples</h4>
 
 <dl>
-	<dt>Prove a set of competing goals asynchronously in a new thread:</dt>
+	<dt>Prove a set of competing goals asynchronously, each one in its own thread:</dt>
 		<dd><code>threaded_race((Goal; Goals)</code></dd>
-	<dt>Send a set of competing goals as an asynchronous message to <em>self</em>:</dt>
+	<dt>Prove a set of competing messages to <em>self</em> asynchronously, each one in its own thread:</dt>
 		<dd><code>threaded_race(::(Message; Messages))</code></dd>
-	<dt>Send a set of competing goals as an asynchronous message to an object:</dt>
+	<dt>Prove a set of competing messages to an object asynchronously, each one in its own thread:</dt>
 		<dd><code>threaded_race((Object::(Message; Messages))</code></dd>
 </dl>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: February 11, 2007</span>
+		<span>Last updated on: February 13, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="threaded_ignore1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="threaded_exit1.html">next</a></span><br/>
