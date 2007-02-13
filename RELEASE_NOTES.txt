@@ -15,6 +15,10 @@ RELEASE NOTES
 	Added a new library category, "listing", defining listing/0 and 
 	listing/1 methods for helping in debugging tasks.
 
+	Simplified and changed implementation of the threaded built-in 
+	predicates in order to ensure that the threaded/0 directive is only 
+	required on objects calling these predicates.
+
 	Corrected a bug when asserting rules into an object's database that	
 	resulted in only the first asserted rule being visible when calling 
 	the predicate through message sending. Thanks to Parker Jones for 
