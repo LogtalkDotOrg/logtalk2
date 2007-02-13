@@ -22,7 +22,7 @@
 <h1>Multi-threading programming<span id="threads_threads"/></h1>
 
 <p>
-Logtalk provides experimental support for multi-threading programming on selected Prolog compilers. Logtalk makes use of the low-level Prolog built-in predicates that interface with POSIX threads (or a suitable emulation), providing a high-level set of predicates that allows programmers to easily take advantage of modern multi-processor and multi-core computers without caring about the details of creating, synchronizing, or communicating with threads. Logtalk multi-threading programming integrates with object-oriented programming by supporting per object threads, enabling objects to call local predicates concurrently and to send and receive asynchronous messages.
+Logtalk provides experimental support for multi-threading programming on selected Prolog compilers. Logtalk makes use of the low-level Prolog built-in predicates that interface with POSIX threads (or a suitable emulation), providing a high-level set of predicates that allows programmers to easily take advantage of modern multi-processor and multi-core computers without caring about the details of creating, synchronizing, or communicating with threads. Logtalk multi-threading programming integrates with object-oriented programming by supporting per object threads, enabling objects to prove goals asynchronously (including call to local predicates and message sending goals). This allows an object to send both synchronous and asynchronous messages.
 </p>
 
 <h2>Enabling multi-threading support<a id="threads_enabling"></a></h2>
@@ -202,7 +202,7 @@ The synchronization entity and predicate directives may be used when defining ob
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: February 5, 2007</span>
+		<span>Last updated on: February 13, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="events.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="errors.html">next</a></span><br/>
