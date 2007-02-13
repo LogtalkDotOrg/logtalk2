@@ -199,6 +199,13 @@ and then always use the <code>sync_random/1</code> predicate instead of the pred
 The synchronization entity and predicate directives may be used when defining objects that may be reused in both single-threaded and multi-threaded Logtalk applications. The directives are simply ignored (i.e. the synchronized predicates are interpreted as normal predicates) when the objects are used in a single-threaded application.
 </p>
 
+<h2>Synchronizing threads through notifications<a id="threads_notifications"></a></h2>
+
+<p>
+Synchronizing predicates can only ensure that they are not executed at the same time by different threads. Sometimes we need to suspend a thread not on a synchronization lock but on some condition that must hold true for a thread goal to proceed. The built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_wait1.html"><code>threaded_wait/1</code></a> allows us to suspend a predicate execution (running in its own thread) until a notification is received. Notifications are posted using the built-in predicate
+ <a title="Consult reference manual" href="../refman/builtins/threaded_notify1.html"><code>threaded_notify/1</code></a>. Any Prolog term can be used as a notification argument for these predicates. 
+</p>
+
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
