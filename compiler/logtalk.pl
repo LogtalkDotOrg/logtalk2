@@ -5788,6 +5788,16 @@ current_logtalk_flag(version, version(2, 29, 4)).
 	\+ callable(Goal),
 	throw(type_error(callable, Goal)).
 
+'$lgt_tr_body'(threaded_race(Obj::(Goal; Goals)), (TGoal, TGoals), (DGoal, DGoals), Ctx) :-
+	!,
+	'$lgt_tr_body'(threaded_race(Obj::Goal), TGoal, DGoal, Ctx),
+	'$lgt_tr_body'(threaded_race(Obj::Goals), TGoals, DGoals, Ctx).
+
+'$lgt_tr_body'(threaded_race(::(Goal; Goals)), (TGoal, TGoals), (DGoal, DGoals), Ctx) :-
+	!,
+	'$lgt_tr_body'(threaded_race(::Goal), TGoal, DGoal, Ctx),
+	'$lgt_tr_body'(threaded_race(::Goals), TGoals, DGoals, Ctx).
+
 '$lgt_tr_body'(threaded_race((Goal; Goals)), (TGoal, TGoals), (DGoal, DGoals), Ctx) :-
 	!,
 	'$lgt_tr_body'(threaded_race(Goal), TGoal, DGoal, Ctx),
