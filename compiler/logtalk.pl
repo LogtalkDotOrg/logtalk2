@@ -5757,11 +5757,7 @@ current_logtalk_flag(version, version(2, 29, 4)).
 % multi-threading meta-predicates
 
 '$lgt_tr_body'(threaded_call(_), _, _, _) :-
-	'$lgt_compiler_flag'(report, on),
-	\+ '$lgt_pp_threaded_',
-	'$lgt_pp_entity'(object, _, _, _, _),
-	'$lgt_inc_compile_warnings_counter',
-	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
+	'$lgt_check_for_threaded_directive',
 	fail.
 
 '$lgt_tr_body'(threaded_call(Goal), _, _, _) :-
@@ -5777,10 +5773,7 @@ current_logtalk_flag(version, version(2, 29, 4)).
 
 
 '$lgt_tr_body'(threaded_race(_), _, _, _) :-
-	'$lgt_compiler_flag'(report, on),
-	\+ '$lgt_pp_threaded_',
-	'$lgt_inc_compile_warnings_counter',
-	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
+	'$lgt_check_for_threaded_directive',
 	fail.
 
 '$lgt_tr_body'(threaded_race(Goal), _, _, _) :-
@@ -5788,12 +5781,12 @@ current_logtalk_flag(version, version(2, 29, 4)).
 	\+ callable(Goal),
 	throw(type_error(callable, Goal)).
 
-'$lgt_tr_body'(threaded_race(Obj::(Goal; Goals)), (TGoal, TGoals), (DGoal, DGoals), Ctx) :-
+'$lgt_tr_body'(threaded_race(Obj::((Goal; Goals))), (TGoal, TGoals), (DGoal, DGoals), Ctx) :-
 	!,
 	'$lgt_tr_body'(threaded_race(Obj::Goal), TGoal, DGoal, Ctx),
 	'$lgt_tr_body'(threaded_race(Obj::Goals), TGoals, DGoals, Ctx).
 
-'$lgt_tr_body'(threaded_race(::(Goal; Goals)), (TGoal, TGoals), (DGoal, DGoals), Ctx) :-
+'$lgt_tr_body'(threaded_race(::((Goal; Goals))), (TGoal, TGoals), (DGoal, DGoals), Ctx) :-
 	!,
 	'$lgt_tr_body'(threaded_race(::Goal), TGoal, DGoal, Ctx),
 	'$lgt_tr_body'(threaded_race(::Goals), TGoals, DGoals, Ctx).
@@ -5811,10 +5804,7 @@ current_logtalk_flag(version, version(2, 29, 4)).
 
 
 '$lgt_tr_body'(threaded_once(_), _, _, _) :-
-	'$lgt_compiler_flag'(report, on),
-	\+ '$lgt_pp_threaded_',
-	'$lgt_inc_compile_warnings_counter',
-	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
+	'$lgt_check_for_threaded_directive',
 	fail.
 
 '$lgt_tr_body'(threaded_once(Goal), _, _, _) :-
@@ -5830,10 +5820,7 @@ current_logtalk_flag(version, version(2, 29, 4)).
 
 
 '$lgt_tr_body'(threaded_ignore(_), _, _, _) :-
-	'$lgt_compiler_flag'(report, on),
-	\+ '$lgt_pp_threaded_',
-	'$lgt_inc_compile_warnings_counter',
-	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
+	'$lgt_check_for_threaded_directive',
 	fail.
 
 '$lgt_tr_body'(threaded_ignore(Goal), _, _, _) :-
@@ -5849,10 +5836,7 @@ current_logtalk_flag(version, version(2, 29, 4)).
 
 
 '$lgt_tr_body'(threaded_exit(_), _, _, _) :-
-	'$lgt_compiler_flag'(report, on),
-	\+ '$lgt_pp_threaded_',
-	'$lgt_inc_compile_warnings_counter',
-	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
+	'$lgt_check_for_threaded_directive',
 	fail.
 
 '$lgt_tr_body'(threaded_exit(Goal), _, _, _) :-
@@ -5868,10 +5852,7 @@ current_logtalk_flag(version, version(2, 29, 4)).
 
 
 '$lgt_tr_body'(threaded_peek(_), _, _, _) :-
-	'$lgt_compiler_flag'(report, on),
-	\+ '$lgt_pp_threaded_',
-	'$lgt_inc_compile_warnings_counter',
-	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
+	'$lgt_check_for_threaded_directive',
 	fail.
 
 '$lgt_tr_body'(threaded_peek(Goal), _, _, _) :-
@@ -5887,10 +5868,7 @@ current_logtalk_flag(version, version(2, 29, 4)).
 
 
 '$lgt_tr_body'(threaded_wait(_), _, _, _) :-
-	'$lgt_compiler_flag'(report, on),
-	\+ '$lgt_pp_threaded_',
-	'$lgt_inc_compile_warnings_counter',
-	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
+	'$lgt_check_for_threaded_directive',
 	fail.
 
 '$lgt_tr_body'(threaded_wait(Msg), MTPred, '$lgt_dbg_goal'(threaded_wait(Msg), MTPred, Ctx), Ctx) :-
@@ -5898,16 +5876,13 @@ current_logtalk_flag(version, version(2, 29, 4)).
 	'$lgt_ctx_ctx'(Ctx, Functor/Arity, _, _, _, EntityPrefix, _, _),
 	functor(Head, Functor, Arity),
 	(	'$lgt_pp_synchronized_'(Head, Mutex) ->
-		MTPred = (mutex_unlock(Mutex), thread_get_message(EntityPrefix, '$lgt_wn'(Msg)), write('trying to lock...'), write(Head), mutex_lock(EntityPrefix), write('...locked!'), nl)
+		MTPred = (mutex_unlock(Mutex), thread_get_message(EntityPrefix, '$lgt_wn'(Msg)), mutex_lock(EntityPrefix))
 	;	MTPred = thread_get_message(EntityPrefix, '$lgt_wn'(Msg))
 	).
 
 
 '$lgt_tr_body'(threaded_notify(_), _, _, _) :-
-	'$lgt_compiler_flag'(report, on),
-	\+ '$lgt_pp_threaded_',
-	'$lgt_inc_compile_warnings_counter',
-	nl, write('  WARNING!  threaded/0 directive is missing!') , nl,
+	'$lgt_check_for_threaded_directive',
 	fail.
 
 '$lgt_tr_body'(threaded_notify(Msg), MTPred, '$lgt_dbg_goal'(threaded_notify(Msg), MTPred, Ctx), Ctx) :-
@@ -6254,6 +6229,20 @@ current_logtalk_flag(version, version(2, 29, 4)).
 		true
 	;	assertz('$lgt_pp_calls_pred_'(Functor, Arity, MPrefix, Arity3))
 	).
+
+
+
+% '$lgt_check_for_threaded_directive'
+%
+% print a warning when the threaded/0 directive is not present on 
+% an object contaning calls to the threaded built-in predicates
+
+'$lgt_check_for_threaded_directive' :-
+	'$lgt_compiler_flag'(report, on),
+	\+ '$lgt_pp_threaded_',
+	'$lgt_pp_entity'(object, _, _, _, _),
+	'$lgt_inc_compile_warnings_counter',
+	nl, write('  WARNING!  threaded/0 directive is missing!') , nl.
 
 
 
