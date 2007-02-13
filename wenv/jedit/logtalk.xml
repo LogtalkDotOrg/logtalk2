@@ -7,7 +7,7 @@
 	written by		Paulo Moura
 	version			1.9
 	created on		2 May 2002
-	last revised	4 February 2007
+	last revised	13 February 2007
 
 	To install, copy this file to the "modes" subdirectory in jEdit 
 	directory installation.   Next, check the "catalog" file in the 
@@ -258,6 +258,8 @@
 			<FUNCTION>threaded_race</FUNCTION>
 			<FUNCTION>threaded_exit</FUNCTION>
 			<FUNCTION>threaded_peek</FUNCTION>
+			<FUNCTION>threaded_wait</FUNCTION>
+			<FUNCTION>threaded_notify</FUNCTION>
 
 			<FUNCTION>before</FUNCTION>
 			<FUNCTION>after</FUNCTION>
