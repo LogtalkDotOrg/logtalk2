@@ -193,7 +193,7 @@ sync_random(Random) :-
     random::random(Random).
 </pre>
 <p>
-and then always use the <code>sync_random/1</code> predicate instead of the predicate <code>random/1</code> from threaded code.
+and then always use the <code>sync_random/1</code> predicate instead of the predicate <code>random/1</code> from multi-threaded code.
 </p>
 <p>
 The synchronization entity and predicate directives may be used when defining objects that may be reused in both single-threaded and multi-threaded Logtalk applications. The directives are simply ignored (i.e. the synchronized predicates are interpreted as normal predicates) when the objects are used in a single-threaded application.
@@ -202,8 +202,8 @@ The synchronization entity and predicate directives may be used when defining ob
 <h2>Synchronizing threads through notifications<a id="threads_notifications"></a></h2>
 
 <p>
-Synchronizing predicates can only ensure that they are not executed at the same time by different threads. Sometimes we need to suspend a thread not on a synchronization lock but on some condition that must hold true for a thread goal to proceed. The built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_wait1.html"><code>threaded_wait/1</code></a> allows us to suspend a predicate execution (running in its own thread) until a notification is received. Notifications are posted using the built-in predicate
- <a title="Consult reference manual" href="../refman/builtins/threaded_notify1.html"><code>threaded_notify/1</code></a>. Any Prolog term can be used as a notification argument for these predicates. 
+Synchronizing predicates can only ensure that they are not executed at the same time by different threads. Sometimes we need to suspend a thread not on a synchronization lock but on some condition that must hold true for a thread goal to proceed. I.e. we want the thread goal to be suspended instead of simply failing. The built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_wait1.html"><code>threaded_wait/1</code></a> allows us to suspend a predicate execution (running in its own thread) until a notification is received. Notifications are posted using the built-in predicate
+ <a title="Consult reference manual" href="../refman/builtins/threaded_notify1.html"><code>threaded_notify/1</code></a>. Any Prolog term can be used as a notification argument for these predicates. Related calls to the <code>threaded_wait/1</code> and <code>threaded_notify/1</code> must be made within the same object, <em>this</em>, as the object's thread message queue is used for posting and retrieving notifications.
 </p>
 
 <div class="footer">
