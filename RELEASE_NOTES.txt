@@ -17,7 +17,8 @@ RELEASE NOTES
 
 	Added two new experimental multi-threading predicates, threaded_wait/1 
 	and threaded_notify/1, which allows suspension of a thread's goal until  
-	a notification is received.
+	a notification is received. Added a new example, "threads/buffer",
+	illustrating the use of these predicates.
 
 	Simplified and changed implementation of the threaded built-in 
 	predicates in order to ensure that the threaded/0 directive is only 
