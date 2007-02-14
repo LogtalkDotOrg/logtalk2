@@ -5876,7 +5876,7 @@ current_logtalk_flag(version, version(2, 29, 4)).
 	'$lgt_ctx_ctx'(Ctx, Functor/Arity, _, _, _, EntityPrefix, _, _),
 	functor(Head, Functor, Arity),
 	(	'$lgt_pp_synchronized_'(Head, Mutex) ->
-		MTPred = (mutex_unlock(Mutex), thread_get_message(EntityPrefix, '$lgt_wn'(Msg)), mutex_lock(EntityPrefix))
+		MTPred = (mutex_unlock(Mutex), thread_get_message(EntityPrefix, '$lgt_wn'(Msg)), mutex_lock(Mutex))
 	;	MTPred = thread_get_message(EntityPrefix, '$lgt_wn'(Msg))
 	).
 

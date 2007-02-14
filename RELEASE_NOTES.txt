@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.29.4 - February ??, 2007
+2.29.4 - February 19, 2007
 
 	Added a new library category, "listing", defining listing/0 and 
 	listing/1 methods for helping in debugging tasks.
