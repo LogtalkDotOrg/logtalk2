@@ -1043,11 +1043,11 @@ threaded_peek(Goal) :-
 
 threaded_wait(Message) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _),
-	thread_get_message(Prefix, '$lgt_wn'(Message)).
+	thread_get_message(Prefix, '$lgt_notification'(Message)).
 
 threaded_notify(Message) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _),
-	thread_send_message(Prefix, '$lgt_wn'(Message)).
+	thread_send_message(Prefix, '$lgt_notification'(Message)).
 
 
 
@@ -5876,8 +5876,8 @@ current_logtalk_flag(version, version(2, 29, 4)).
 	'$lgt_ctx_ctx'(Ctx, Functor/Arity, _, _, _, EntityPrefix, _, _),
 	functor(Head, Functor, Arity),
 	(	'$lgt_pp_synchronized_'(Head, Mutex) ->
-		MTPred = (mutex_unlock(Mutex), thread_get_message(EntityPrefix, '$lgt_wn'(Msg)), mutex_lock(Mutex))
-	;	MTPred = thread_get_message(EntityPrefix, '$lgt_wn'(Msg))
+		MTPred = (mutex_unlock(Mutex), thread_get_message(EntityPrefix, '$lgt_notification'(Msg)), mutex_lock(Mutex))
+	;	MTPred = thread_get_message(EntityPrefix, '$lgt_notification'(Msg))
 	).
 
 
@@ -5888,7 +5888,7 @@ current_logtalk_flag(version, version(2, 29, 4)).
 '$lgt_tr_body'(threaded_notify(Msg), MTPred, '$lgt_dbg_goal'(threaded_notify(Msg), MTPred, Ctx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, _, _, _, EntityPrefix, _, _),
-	MTPred = thread_send_message(EntityPrefix, '$lgt_wn'(Msg)).
+	MTPred = thread_send_message(EntityPrefix, '$lgt_notification'(Msg)).
 
 
 % message sending
