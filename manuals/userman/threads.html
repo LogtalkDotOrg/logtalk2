@@ -206,7 +206,7 @@ Synchronizing predicates can only ensure that they are not executed at the same 
  <a title="Consult reference manual" href="../refman/builtins/threaded_notify1.html"><code>threaded_notify/1</code></a>. Any Prolog term can be used as a notification argument for these predicates. Related calls to the <code>threaded_wait/1</code> and <code>threaded_notify/1</code> must be made within the same object, <em>this</em>, as the object's thread message queue is used for posting and retrieving notifications.
 </p>
 <p>
-Care should be taken to avoid deadlocks when two (or more) threads both wait and post notifications to each other.
+Each notification posted by a call to the <code>threaded_notify/1</code> predicate is consumed by a single <code>threaded_wait/1</code> predicate call. Care should be taken to avoid deadlocks when two (or more) threads both wait and post notifications to each other.
 </p>
 
 <div class="footer">
