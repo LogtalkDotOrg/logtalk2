@@ -26,6 +26,10 @@ RELEASE NOTES
 
 	Only print a warning for a missing threaded/0 directive for objects.
 
+	Corrected a ordering bug on the entity initialization goal that 
+	prevented using an object initialization goal that make use of 
+	the object thread. 
+
 	Corrected a bug when asserting rules into an object's database that	
 	resulted in only the first asserted rule being visible when calling 
 	the predicate through message sending. Thanks to Parker Jones for 
