@@ -174,6 +174,8 @@ cat -s \
 	builtins/threaded_race1.section \
 	builtins/threaded_exit1.section \
 	builtins/threaded_peek1.section \
+	builtins/threaded_wait1.section \
+	builtins/threaded_notify1.section \
 	builtins/logtalk_compile1.section \
 	builtins/logtalk_compile2.section \
 	builtins/logtalk_load1.section \
