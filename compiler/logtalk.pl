@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.29.4
+%  Release 2.29.5
 %
 %  Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 %
@@ -1423,7 +1423,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 29, 4)).
+current_logtalk_flag(version, version(2, 29, 5)).
 
 
 
@@ -1736,7 +1736,7 @@ current_logtalk_flag(version, version(2, 29, 4)).
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope),
 	(	Type == (dynamic) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
-			'$lgt_assert_pred_call'(Obj, Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
+			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 			'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
 			'$lgt_ctx_ctx'(Ctx, _, Sender2, This, Self, Prefix, MetaVars, _),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
@@ -1771,14 +1771,14 @@ current_logtalk_flag(version, version(2, 29, 4)).
 	(	Type == (dynamic) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			(	'$lgt_debugging_'(Obj) ->
-				'$lgt_assert_pred_call'(Obj, Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
+				'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 				'$lgt_ctx_ctx'(Ctx, _, Sender2, This, Self, Prefix, [], _),
 				asserta((Call :- '$lgt_dbg_fact'(Head, Ctx)))
 			;	% not debugging, generate predicate template for caching:
 				functor(Head, HFunctor, HArity), functor(GHead, HFunctor, HArity),
 				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
 				functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
-				'$lgt_assert_pred_call'(Obj, Def, DDef, Prefix, GHead, Sender2, This, Self, GCall, Update),
+				'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, GHead, Sender2, This, Self, GCall, Update),
 				asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, Scope, GCall, Update)),
 				(GObj, GHead, GSender) = (Obj, Head, Sender),
 				asserta(GCall)
@@ -1840,7 +1840,7 @@ current_logtalk_flag(version, version(2, 29, 4)).
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope),
 	(	Type == (dynamic) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
-			'$lgt_assert_pred_call'(Obj, Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
+			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 			'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
 			'$lgt_ctx_ctx'(Ctx, _, Sender2, This, Self, Prefix, MetaVars, _),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
@@ -1875,14 +1875,14 @@ current_logtalk_flag(version, version(2, 29, 4)).
 	(	Type == (dynamic) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			(	'$lgt_debugging_'(Obj) ->
-				'$lgt_assert_pred_call'(Obj, Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
+				'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
 				'$lgt_ctx_ctx'(Ctx, _, Sender2, This, Self, Prefix, [], _),
 				assertz((Call :- '$lgt_dbg_fact'(Head, Ctx)))
 			;	% not debugging, generate predicate template for caching:
 				functor(Head, HFunctor, HArity), functor(GHead, HFunctor, HArity),
 				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
 				functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
-				'$lgt_assert_pred_call'(Obj, Def, DDef, Prefix, GHead, Sender2, This, Self, GCall, Update),
+				'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, GHead, Sender2, This, Self, GCall, Update),
 				asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, Scope, GCall, Update)),
 				(GObj, GHead, GSender) = (Obj, Head, Sender),
 				assertz(GCall)
@@ -1916,7 +1916,7 @@ current_logtalk_flag(version, version(2, 29, 4)).
 
 % get or set (if doesn't exist) the compiled call for an asserted predicate
 
-'$lgt_assert_pred_call'(Obj, Def, DDef, Prefix, Pred, Sender, This, Self, Call, Update) :-
+'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Pred, Sender, This, Self, Call, Update) :-
 	(	% if a definition lookup entry alread exists on the object...
 		call_with_args(Def, Pred, Sender, This, Self, Call, Obj) ->	
 		(	% then check if it's a dynamic one that implies an update goal...
@@ -2067,7 +2067,7 @@ current_logtalk_flag(version, version(2, 29, 4)).
 	'$lgt_db_lookup_cache_'(Obj, Head, Sender, Scope, Call, Update),
 	!,
 	retract(Call),
-	call(Update).
+	once(Update).
 
 '$lgt_retract_fact_chk'(Obj, Head, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _, _, _),
@@ -2142,7 +2142,7 @@ current_logtalk_flag(version, version(2, 29, 4)).
 	'$lgt_db_lookup_cache_'(Obj, Head, Sender, Scope, Call, Update),
 	!,
 	retractall(Call),
-	call(Update).
+	once(Update).
 
 '$lgt_retractall_chk'(Obj, Head, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, Prefix, _, _, _, _, _, _),
