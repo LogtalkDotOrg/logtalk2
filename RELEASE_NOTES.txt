@@ -16,8 +16,11 @@ RELEASE NOTES
 	caching of dynamic predicate lookups. Improved performance of of the 
 	built-in methods retract/1 and retractall/1.
 
-	Updated GNU Prolog config file to take advantege of some list built-in 
+	Updated GNU Prolog config file to take advantege of some built-in list 
 	predicates (requires version 1.2.14 or later).
+
+	Updated the POSIX shell scripts to pass along any command line options 
+	to the corresponding Prolog compiler.
 
 
 2.29.4 - February 19, 2007

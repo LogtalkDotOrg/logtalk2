@@ -52,8 +52,8 @@ echo ":- consult('\$LOGTALKUSER/configs/swihook.pl')." >> logtalk_swi.pl
 echo ":- consult('\$LOGTALKUSER/configs/xpcehook.pl')." >> logtalk_swi.pl
 echo "#/bin/sh" > swilgt
 case $( uname -s ) in
-	Darwin	) echo "swipl -f \$LOGTALKHOME/bin/logtalk_swi.pl" >> swilgt;;
-	*		) echo "pl -f \$LOGTALKHOME/bin/logtalk_swi.pl" >> swilgt;;
+	Darwin	) echo "swipl -f \$LOGTALKHOME/bin/logtalk_swi.pl \$@" >> swilgt;;
+	*		) echo "pl -f \$LOGTALKHOME/bin/logtalk_swi.pl \$@" >> swilgt;;
 esac
 chmod a+x swilgt
 ln -sf $LOGTALKHOME/bin/swilgt $prefix/bin/swilgt
