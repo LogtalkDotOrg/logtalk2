@@ -2172,7 +2172,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 % '$lgt_add_db_lookup_cache_entry'(@object_identifier, @callable, @object_identifier, @callable)
 %
-% adds a new database lookup cache entry
+% adds a new database lookup cache entry (when an update goal is not needed)
 
 '$lgt_add_db_lookup_cache_entry'(Obj, Head, Sender, Call) :-
 	functor(Obj, OFunctor, OArity),
@@ -6226,7 +6226,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	;	MPrefix = PredPrefix
 	),
 	(	MetaVars == [] ->
-		% we're not compiling a clause to a meta-predicate, thus we have a local
+		% we're not compiling a clause to a meta-predicate, thus we have a local call
 		% to a meta-predicate
 		(	'$lgt_member'(MArg, MArgs), integer(MArg) ->
 			% we're compiling a call to a meta-predicate that expects a closure...
