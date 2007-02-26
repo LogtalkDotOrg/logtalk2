@@ -19,8 +19,9 @@ RELEASE NOTES
 	Updated GNU Prolog config file to take advantege of some built-in list 
 	predicates (requires version 1.2.14 or later).
 
-	Updated the POSIX shell scripts to pass along any command line options 
-	to the corresponding Prolog compiler.
+	Updated the POSIX integration shell scripts to pass along any command 
+	line options to the corresponding Prolog compiler and to prevent some 
+	problems with paths containing spaces.
 
 
 2.29.4 - February 19, 2007
