@@ -13,7 +13,7 @@ RELEASE NOTES
 2.29.5 - March ??, 2007
 
 	Simplified implementation of the database built-in methods. Simplified 
-	caching of dynamic predicate lookups. Improved performance of of the 
+	caching of dynamic predicate lookups. Improved performance of the 
 	built-in methods retract/1 and retractall/1.
 
 	Updated GNU Prolog config file to take advantege of some built-in list 

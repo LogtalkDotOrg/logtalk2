@@ -202,8 +202,8 @@ The synchronization entity and predicate directives may be used when defining ob
 <h2>Synchronizing threads through notifications<a id="threads_notifications"></a></h2>
 
 <p>
-Synchronizing predicates can only ensure that they are not executed at the same time by different threads. Sometimes we need to suspend a thread not on a synchronization lock but on some condition that must hold true for a thread goal to proceed. I.e. we want the thread goal to be suspended instead of simply failing. The built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_wait1.html"><code>threaded_wait/1</code></a> allows us to suspend a predicate execution (running in its own thread) until a notification is received. Notifications are posted using the built-in predicate
- <a title="Consult reference manual" href="../refman/builtins/threaded_notify1.html"><code>threaded_notify/1</code></a>. Any Prolog term can be used as a notification argument for these predicates. Related calls to the <code>threaded_wait/1</code> and <code>threaded_notify/1</code> must be made within the same object, <em>this</em>, as the object's thread message queue is used for posting and retrieving notifications.
+Declaring a set of predicates as synchronized can only ensure that they are not executed at the same time by different threads. Sometimes we need to suspend a thread not on a synchronization lock but on some condition that must hold true for a thread goal to proceed. I.e. we want a thread goal to be suspended until a condition becomes true instead of simply failing. The built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_wait1.html"><code>threaded_wait/1</code></a> allows us to suspend a predicate execution (running in its own thread) until a notification is received. Notifications are posted using the built-in predicate
+ <a title="Consult reference manual" href="../refman/builtins/threaded_notify1.html"><code>threaded_notify/1</code></a>. A notification is a Prolog term that the programer chooses to represent some condition becoming true. Any Prolog term can be used as a notification argument for these predicates. Related calls to the <code>threaded_wait/1</code> and <code>threaded_notify/1</code> must be made within the same object, <em>this</em>, as the object's thread message queue is used internally for posting and retrieving notifications.
 </p>
 <p>
 Each notification posted by a call to the <code>threaded_notify/1</code> predicate is consumed by a single <code>threaded_wait/1</code> predicate call. Care should be taken to avoid deadlocks when two (or more) threads both wait and post notifications to each other.
@@ -212,7 +212,7 @@ Each notification posted by a call to the <code>threaded_notify/1</code> predica
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: February 16, 2007</span>
+		<span>Last updated on: February 28, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="events.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="errors.html">next</a></span><br/>
