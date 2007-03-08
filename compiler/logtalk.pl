@@ -3329,7 +3329,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 '$lgt_dbg_do_port_option'(h, _, _, _, _) :-
 	write('    Available options are:'), nl,
-	write('        c - creep (go on; you may use the spacebar in alternative)'), nl,
+	write('        c - creep (go on; you may use also the spacebar)'), nl,
 	write('        l - leep (continues execution until the next spy point is found)'), nl,
 	write('        s - skip (skips debugging for the current goal; only valid at call and redo ports)'), nl,
 	write('        f - fail (forces backtracking)'), nl,
@@ -3345,6 +3345,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	write('        + - add (adds a predicate spy point for current goal)'), nl,
 	write('        - - remove (removes a predicate spy point for current goal)'), nl,
 	write('        h - help (prints this list of options)'), nl,
+	write('        ? - help (prints this list of options)'), nl,
 	fail.
 
 '$lgt_dbg_do_port_option'(?, Goal, Error, Ctx, Action) :-
