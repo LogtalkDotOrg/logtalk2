@@ -3331,7 +3331,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	write('    Available options are:'), nl,
 	write('        c - creep (go on; you may use also the spacebar)'), nl,
 	write('        l - leep (continues execution until the next spy point is found)'), nl,
-	write('        s - skip (skips debugging for the current goal; only valid at call and redo ports)'), nl,
+	write('        s - skip (skips debugging for the current goal; only meaningful at call and redo ports)'), nl,
 	write('        f - fail (forces backtracking)'), nl,
 	write('        n - nodebug (turns off debugging)'), nl,
 	write('        @ - command (reads and executes a query)'), nl,

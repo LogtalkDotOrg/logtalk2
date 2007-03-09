@@ -138,7 +138,7 @@ The <code>threaded_exit/1</code> call will return both the identifier of the fas
 <h2>Asynchronous calls and synchronized predicates<a id="threads_synchronized_predicates"></a></h2>
 
 <p>
-Proving a goal asynchronously using a new thread may lead to problems when the goal implies side-effects such as input/output operations or modifications to an object's database. For example, if a new thread is started with the same goal before the first one finished its job, we may end up with mixed output or a corrupted database. In order to solve this problem, predicates (and grammar rule non-terminals) with side-effects can be declared as <em>synchronized</em> by using the <a title="Consult reference manual" href="../refman/directives/synchronized1.html"><code>synchronized/1</code></a> predicate directive. Proving a query to a synchronized predicate (or synchronized non-terminal) is protected by a mutex, thus allowing for easy thread synchronization. For example:
+Proving a goal asynchronously using a new thread may lead to problems when the goal implies side-effects such as input/output operations or modifications to an object's database. For example, if a new thread is started with the same goal before the first one finished its job, we may end up with mixed output, a corrupted database, or unexpected goal failures. In order to solve this problem, predicates (and grammar rule non-terminals) with side-effects can be declared as <em>synchronized</em> by using the <a title="Consult reference manual" href="../refman/directives/synchronized1.html"><code>synchronized/1</code></a> predicate directive. Proving a query to a synchronized predicate (or synchronized non-terminal) is protected by a mutex, thus allowing for easy thread synchronization. For example:
 </p>
 <pre>:- synchronized(db_update/1).   % ensure thread synchronization
 
@@ -212,7 +212,7 @@ Each notification posted by a call to the <code>threaded_notify/1</code> predica
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: February 28, 2007</span>
+		<span>Last updated on: March 9, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="events.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="errors.html">next</a></span><br/>
