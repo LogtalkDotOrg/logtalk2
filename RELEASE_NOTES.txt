@@ -16,6 +16,9 @@ RELEASE NOTES
 	caching of dynamic predicate lookups. Improved performance of the 
 	built-in methods retract/1 and retractall/1.
 
+	Allow the debugger command "skip" to work as the command "creep" in 
+	ports other than "call" and "redo".
+
 	Updated GNU Prolog config file to take advantege of some built-in list 
 	predicates (requires version 1.2.14 or later).
 

@@ -3209,7 +3209,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 			catch('$lgt_read_single_char'(Option), _, fail),
 		'$lgt_dbg_valid_port_option'(Option, Port, Code),
 		!,
-		'$lgt_dbg_do_port_option'(Option, Goal, Error, Ctx, Action)
+		'$lgt_dbg_do_port_option'(Option, Port, Goal, Error, Ctx, Action)
 	;	(	'$lgt_dbg_tracing_' ->
 			write(' '), '$lgt_dbg_write_port_name'(Port), writeq(Goal), nl
 		;	true
@@ -3239,8 +3239,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 '$lgt_dbg_valid_port_option'(' ', _, _).
 '$lgt_dbg_valid_port_option'(c, _, _).
 '$lgt_dbg_valid_port_option'(l, _, _).
-'$lgt_dbg_valid_port_option'(s, call, _).
-'$lgt_dbg_valid_port_option'(s, redo, _).
+'$lgt_dbg_valid_port_option'(s, _, _).
 '$lgt_dbg_valid_port_option'(f, _, _).
 '$lgt_dbg_valid_port_option'(n, _, _).
 '$lgt_dbg_valid_port_option'(@, _, _).
@@ -3257,23 +3256,24 @@ current_logtalk_flag(version, version(2, 29, 5)).
 '$lgt_dbg_valid_port_option'(e, exception, _).
 
 
-'$lgt_dbg_do_port_option'(' ', _, _, _, true).
-'$lgt_dbg_do_port_option'(c, _, _, _, true).
+'$lgt_dbg_do_port_option'(' ', _, _, _, _, true).
+'$lgt_dbg_do_port_option'(c, _, _, _, _, true).
 
-'$lgt_dbg_do_port_option'(l, _, _, _, true) :-
+'$lgt_dbg_do_port_option'(l, _, _, _, _, true) :-
 	retractall('$lgt_dbg_tracing_').
 
-'$lgt_dbg_do_port_option'(s, _, _, _, skip).
+'$lgt_dbg_do_port_option'(s, Port, _, _, _, Action) :-
+	'$lgt_dbg_do_port_option_skip'(Port, Action).
 
-'$lgt_dbg_do_port_option'(f, _, _, _, fail).
+'$lgt_dbg_do_port_option'(f, _, _, _, _, fail).
 
-'$lgt_dbg_do_port_option'(n, _, _, _, true) :-
+'$lgt_dbg_do_port_option'(n, _, _, _, _, true) :-
 	'$lgt_dbg_nodebug'.
 
-'$lgt_dbg_do_port_option'(=, _, _, _, true) :-
+'$lgt_dbg_do_port_option'(=, _, _, _, _, true) :-
 	'$lgt_dbg_debugging'.
 
-'$lgt_dbg_do_port_option'(+, Goal, _, _, _) :-
+'$lgt_dbg_do_port_option'(+, _, Goal, _, _, _) :-
 	(	Goal = (_ :: Pred) ->
 		functor(Pred, Functor, Arity)
 	;	functor(Goal, Functor, Arity)
@@ -3281,14 +3281,14 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	'$lgt_dbg_spy'(Functor/Arity),
 	fail.
 
-'$lgt_dbg_do_port_option'(-, Goal, _, _, true) :-
+'$lgt_dbg_do_port_option'(-, _, Goal, _, _, true) :-
 	(	Goal = (_ :: Pred) ->
 		functor(Pred, Functor, Arity)
 	;	functor(Goal, Functor, Arity)
 	),
 	'$lgt_dbg_nospy'(Functor/Arity).
 
-'$lgt_dbg_do_port_option'(*, Goal, _, _, true) :-
+'$lgt_dbg_do_port_option'(*, _, Goal, _, _, true) :-
 	functor(Goal, Functor, Arity),
 	functor(CGoal, Functor, Arity),
 	write('    Enter a context spy point term formatted as (Sender, This, Self, Goal): '),
@@ -3296,38 +3296,38 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	Spypoint = (Sender, This, Self, CGoal),
 	'$lgt_dbg_spy'(Sender, This, Self, CGoal).
 
-'$lgt_dbg_do_port_option'(@, _, _, _, _) :-
+'$lgt_dbg_do_port_option'(@, _, _, _, _, _) :-
 	write('    ?- '),
 	read(Goal),
 	Goal ->
 	fail.
 
-'$lgt_dbg_do_port_option'(b, _, _, _, _) :-
+'$lgt_dbg_do_port_option'(b, _, _, _, _, _) :-
 	(	'$lgt_compiler_flag'(supports_break_predicate, true) ->
 		break
 	;	write('    break no supportd on this Prolog compiler.'), nl
 	),
 	fail.
 
-'$lgt_dbg_do_port_option'(a, _, _, _, _) :-
+'$lgt_dbg_do_port_option'(a, _, _, _, _, _) :-
 	throw(error(logtalk_debugger_aborted)).
 
-'$lgt_dbg_do_port_option'(d, Goal, _, _, _) :-
+'$lgt_dbg_do_port_option'(d, _, Goal, _, _, _) :-
 	write('    Current goal: '), write_term(Goal, [ignore_ops(true)]), nl,
 	fail.
 
-'$lgt_dbg_do_port_option'(x, _, _, Ctx, _) :-
+'$lgt_dbg_do_port_option'(x, _, _, _, Ctx, _) :-
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	write('    Sender: '), writeq(Sender), nl,
 	write('    This:   '), writeq(This), nl,
 	write('    Self:   '), writeq(Self), nl,
 	fail.
 
-'$lgt_dbg_do_port_option'(e, _, Error, _, _) :-
+'$lgt_dbg_do_port_option'(e, _, _, Error, _, _) :-
 	write('    Exception term: '), writeq(Error), nl,
 	fail.
 
-'$lgt_dbg_do_port_option'(h, _, _, _, _) :-
+'$lgt_dbg_do_port_option'(h, _, _, _, _, _) :-
 	write('    Available options are:'), nl,
 	write('        c - creep (go on; you may use also the spacebar)'), nl,
 	write('        l - leep (continues execution until the next spy point is found)'), nl,
@@ -3348,8 +3348,18 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	write('        ? - help (prints this list of options)'), nl,
 	fail.
 
-'$lgt_dbg_do_port_option'(?, Goal, Error, Ctx, Action) :-
-	'$lgt_dbg_do_port_option'(h, Goal, Error, Ctx, Action).
+'$lgt_dbg_do_port_option'(?, Port, Goal, Error, Ctx, Action) :-
+	'$lgt_dbg_do_port_option'(h, Port, Goal, Error, Ctx, Action).
+
+
+
+'$lgt_dbg_do_port_option_skip'(exit, true).
+'$lgt_dbg_do_port_option_skip'(fail, true).
+'$lgt_dbg_do_port_option_skip'(fact, true).
+'$lgt_dbg_do_port_option_skip'(rule, true).
+'$lgt_dbg_do_port_option_skip'(exception, true).
+'$lgt_dbg_do_port_option_skip'(call, skip).
+'$lgt_dbg_do_port_option_skip'(redo, skip).
 
 
 
