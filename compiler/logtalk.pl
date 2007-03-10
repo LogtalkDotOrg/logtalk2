@@ -3143,7 +3143,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	!.
 	
 '$lgt_dbg_spying'(_, Goal, DbgCtx, '*') :-
-	'$lgt_dbg_ctx'(DbgCtx, Sender, This, Self, _),
+	'$lgt_dbg_ctx'(DbgCtx, Sender, This, Self),
 	\+ \+ '$lgt_dbg_spying_'(Sender, This, Self, Goal).
 
 
@@ -3275,8 +3275,9 @@ current_logtalk_flag(version, version(2, 29, 5)).
 '$lgt_dbg_do_port_option'(n, _, _, _, _, true) :-
 	'$lgt_dbg_nodebug'.
 
-'$lgt_dbg_do_port_option'(=, _, _, _, _, true) :-
-	'$lgt_dbg_debugging'.
+'$lgt_dbg_do_port_option'(=, _, _, _, _, _) :-
+	'$lgt_dbg_debugging',
+	fail.
 
 '$lgt_dbg_do_port_option'(+, _, Goal, _, _, _) :-
 	(	Goal = (_ :: Pred) ->
@@ -3322,7 +3323,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	fail.
 
 '$lgt_dbg_do_port_option'(x, _, _, _, DbgCtx, _) :-
-	'$lgt_dbg_ctx'(DbgCtx, Sender, This, Self, _),
+	'$lgt_dbg_ctx'(DbgCtx, Sender, This, Self),
 	write('    Sender: '), writeq(Sender), nl,
 	write('    This:   '), writeq(This), nl,
 	write('    Self:   '), writeq(Self), nl,
@@ -9682,7 +9683,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 % utility predicates used during debugging of Logtalk entities to store 
 % and access context information which is represented by a compound term
 
-'$lgt_dbg_ctx'(ctx(Sender, This, Self, Level), Sender, This, Self, Level).
+'$lgt_dbg_ctx'(ctx(Sender, This, Self), Sender, This, Self).
 
 
 

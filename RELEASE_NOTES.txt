@@ -17,10 +17,11 @@ RELEASE NOTES
 	built-in methods retract/1 and retractall/1.
 
 	Corrected a bug in the built-in debugger when processing actions at a 
-	port that imply reading a port action again (e.g. print exception term 
-	and help options). Allow the debugger command "skip" to work as the 
-	command "creep" in ports other than "call" and "redo". Simplified the 
-	code generated when compiling entities in debugging mode.
+	port that imply reading a port action again (e.g. print exception term, 
+	print debugging status, and help options). Allow the debugger command 
+	"skip" to work as the command "creep" in ports other than "call" and 
+	"redo". Simplified the code generated when compiling entities in 
+	debugging mode.
 
 	Updated GNU Prolog config file to take advantage of some built-in list 
 	predicates (requires version 1.2.14 or later).
