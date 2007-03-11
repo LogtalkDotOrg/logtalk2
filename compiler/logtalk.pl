@@ -3178,23 +3178,26 @@ current_logtalk_flag(version, version(2, 29, 5)).
 			CAction2 = true
 		;	CAction2 = CAction
 		),
-		call(CAction2),
-		catch(
-			call(TGoal),
-			Error,
-			('$lgt_dbg_port'(exception, Goal, Error, DbgCtx, TAction),
-			 (TAction = fail -> fail; throw(Error)))),
-		(	'$lgt_dbg_port'(exit, Goal, _, DbgCtx, EAction),
-			call(EAction)
-		;	'$lgt_dbg_port'(redo, Goal, _, DbgCtx, RAction),
-			(RAction = skip ->
-			 retractall('$lgt_dbg_skipping_'),
-			 assertz('$lgt_dbg_skipping_')),
-			fail
+		(	CAction2 = ignore ->
+			true
+		;	call(CAction2),
+			catch(
+				call(TGoal),
+				Error,
+				('$lgt_dbg_port'(exception, Goal, Error, DbgCtx, TAction), (TAction = fail -> fail; throw(Error)))),
+			(	'$lgt_dbg_port'(exit, Goal, _, DbgCtx, EAction),
+				call(EAction)
+			;	'$lgt_dbg_port'(redo, Goal, _, DbgCtx, RAction),
+				(	RAction = skip ->
+				 	retractall('$lgt_dbg_skipping_'),
+				 	assertz('$lgt_dbg_skipping_')
+				),
+				RAction = ignore
+			)
+			;
+			retractall('$lgt_dbg_skipping_'),
+			'$lgt_dbg_port'(fail, Goal, _, DbgCtx, _), fail
 		)
-		;
-		retractall('$lgt_dbg_skipping_'),
-		'$lgt_dbg_port'(fail, Goal, _, DbgCtx, _), fail
 	),
 	retractall('$lgt_dbg_skipping_').
 
@@ -3212,7 +3215,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 		repeat,
 			write(Code), '$lgt_dbg_write_port_name'(Port), writeq(Goal), write(' ? '),
 			catch('$lgt_read_single_char'(Option), _, fail),
-		'$lgt_dbg_valid_port_option'(Option, Port, Code),
+		once('$lgt_dbg_valid_port_option'(Option, Port, Code)),
 		'$lgt_dbg_do_port_option'(Option, Port, Goal, Error, DbgCtx, Action),
 		!
 	;	(	'$lgt_dbg_tracing_' ->
@@ -3245,7 +3248,10 @@ current_logtalk_flag(version, version(2, 29, 5)).
 '$lgt_dbg_valid_port_option'(c, _, _).
 '$lgt_dbg_valid_port_option'(l, _, _).
 '$lgt_dbg_valid_port_option'(s, _, _).
-'$lgt_dbg_valid_port_option'(f, _, _).
+'$lgt_dbg_valid_port_option'(i, call, _).
+'$lgt_dbg_valid_port_option'(i, redo, _).
+'$lgt_dbg_valid_port_option'(f, call, _).
+'$lgt_dbg_valid_port_option'(f, redo, _).
 '$lgt_dbg_valid_port_option'(n, _, _).
 '$lgt_dbg_valid_port_option'(@, _, _).
 '$lgt_dbg_valid_port_option'(b, _, _).
@@ -3269,6 +3275,8 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 '$lgt_dbg_do_port_option'(s, Port, _, _, _, Action) :-
 	'$lgt_dbg_do_port_option_skip'(Port, Action).
+
+'$lgt_dbg_do_port_option'(i, _, _, _, _, ignore).
 
 '$lgt_dbg_do_port_option'(f, _, _, _, _, fail).
 
@@ -3339,6 +3347,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	write('        c - creep (go on; you may use also the spacebar)'), nl,
 	write('        l - leep (continues execution until the next spy point is found)'), nl,
 	write('        s - skip (skips debugging for the current goal; only meaningful at call and redo ports)'), nl,
+	write('        i - ignore (ignores goal, assumes that it succeeded)'), nl,
 	write('        f - fail (forces backtracking)'), nl,
 	write('        n - nodebug (turns off debugging)'), nl,
 	write('        @ - command (reads and executes a query)'), nl,

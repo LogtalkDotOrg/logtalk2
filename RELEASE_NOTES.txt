@@ -20,8 +20,8 @@ RELEASE NOTES
 	port that imply reading a port action again (e.g. print exception term, 
 	print debugging status, and help options). Allow the debugger command 
 	"skip" to work as the command "creep" in ports other than "call" and 
-	"redo". Simplified the code generated when compiling entities in 
-	debugging mode.
+	"redo". Added a new debugger command, "ignore". Simplified the code 
+	generated when compiling entities in debugging mode.
 
 	Updated GNU Prolog config file to take advantage of some built-in list 
 	predicates (requires version 1.2.14 or later).
