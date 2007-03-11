@@ -3253,6 +3253,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 '$lgt_dbg_valid_port_option'(f, call, _).
 '$lgt_dbg_valid_port_option'(f, redo, _).
 '$lgt_dbg_valid_port_option'(n, _, _).
+'$lgt_dbg_valid_port_option'(!, _, _).
 '$lgt_dbg_valid_port_option'(@, _, _).
 '$lgt_dbg_valid_port_option'(b, _, _).
 '$lgt_dbg_valid_port_option'(a, _, _).
@@ -3311,6 +3312,9 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	'$lgt_dbg_spy'(Sender, This, Self, CGoal),
 	fail.
 
+'$lgt_dbg_do_port_option'(!, Port, Goal, Error, DbgCtx, Action) :-
+	'$lgt_dbg_do_port_option'(@, Port, Goal, Error, DbgCtx, Action).
+
 '$lgt_dbg_do_port_option'(@, _, _, _, _, _) :-
 	write('    ?- '),
 	read(Goal),
@@ -3350,6 +3354,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	write('        i - ignore (ignores goal, assumes that it succeeded)'), nl,
 	write('        f - fail (forces backtracking)'), nl,
 	write('        n - nodebug (turns off debugging)'), nl,
+	write('        ! - command (reads and executes a query)'), nl,
 	write('        @ - command (reads and executes a query)'), nl,
 	write('        b - break (suspends execution and starts new interpreter; type end_of_file to terminate)'), nl,
 	write('        a - abort (returns to top level interpreter)'), nl,
