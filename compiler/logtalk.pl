@@ -3294,18 +3294,19 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	),
 	'$lgt_dbg_nospy'(Functor/Arity).
 
-'$lgt_dbg_do_port_option'(*, _, Goal, _, _, true) :-
+'$lgt_dbg_do_port_option'(*, _, Goal, _, _, _) :-
 	functor(Goal, Functor, Arity),
 	functor(CGoal, Functor, Arity),
 	write('    Enter a context spy point term formatted as (Sender, This, Self, Goal): '),
 	read(Spypoint),
 	Spypoint = (Sender, This, Self, CGoal),
-	'$lgt_dbg_spy'(Sender, This, Self, CGoal).
+	'$lgt_dbg_spy'(Sender, This, Self, CGoal),
+	fail.
 
 '$lgt_dbg_do_port_option'(@, _, _, _, _, _) :-
 	write('    ?- '),
 	read(Goal),
-	Goal ->
+	call(Goal) ->
 	fail.
 
 '$lgt_dbg_do_port_option'(b, _, _, _, _, _) :-
