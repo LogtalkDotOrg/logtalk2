@@ -2927,6 +2927,25 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	).
 
 
+'$lgt_dbg_suspend'(Tracing) :-
+	(	'$lgt_dbg_tracing_' ->
+		Tracing = true
+	;	Tracing = false
+	),
+	retractall('$lgt_dbg_debugging_'),
+	retractall('$lgt_dbg_tracing_').
+
+
+'$lgt_dbg_resume'(Tracing) :-
+	(	Tracing == true ->
+		retractall('$lgt_dbg_tracing_'),
+		assertz('$lgt_dbg_tracing_')
+	;	true
+	),
+	retractall('$lgt_dbg_debugging_'),
+	assertz('$lgt_dbg_debugging_').
+
+
 '$lgt_dbg_trace' :-
 	(	'$lgt_dbg_tracing_' ->
 		write('Debugger is on: tracing everything for all objects compiled in debug mode.'), nl
@@ -3323,7 +3342,9 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 '$lgt_dbg_do_port_option'(b, _, _, _, _, _) :-
 	(	'$lgt_compiler_flag'(supports_break_predicate, true) ->
-		break
+		'$lgt_dbg_suspend'(Tracing),
+		break,
+		'$lgt_dbg_resume'(Tracing)
 	;	write('    break no supportd on this Prolog compiler.'), nl
 	),
 	fail.
