@@ -9,7 +9,7 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 % start by loading the necessary library and support example files (if not 
 % already loaded):
 
-| ?- logtalk_load([library(events_loader), library(types_loader), library(hierarchies_loader)]).
+| ?- logtalk_load([library(events_loader), library(types_loader), library(hierarchies_loader)], [reload(skip)]).
 ...
 
 | ?- logtalk_load(roots(loader)).
