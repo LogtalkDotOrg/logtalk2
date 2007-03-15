@@ -1307,9 +1307,11 @@ logtalk_compile(Files, Flags) :-
 	retractall('$lgt_pp_compiler_flag_'(_, _)),							% retract old flag values
 	retractall('$lgt_pp_hook_goal_'(_, _)),								% and any old hook goal
 	'$lgt_assert_compiler_flags'(Flags),
-	(	'$lgt_pp_compiler_flag_'(debug, on) ->							% debug flag on implies that
-		retractall('$lgt_pp_compiler_flag_'(smart_compilation, _)),		% the smart_compilation flag
-		asserta('$lgt_pp_compiler_flag_'(smart_compilation, off))		% must be off
+	(	'$lgt_pp_compiler_flag_'(debug, on) ->							% debug flag on requires the
+		retractall('$lgt_pp_compiler_flag_'(smart_compilation, _)),		% smart_compilation flag to 
+		asserta('$lgt_pp_compiler_flag_'(smart_compilation, off)),		% be off and 
+		retractall('$lgt_pp_compiler_flag_'(reload, _)),				% the reload flag to be set
+		asserta('$lgt_pp_compiler_flag_'(reload, always))				% to always
 	;	true),
 	(	'$lgt_pp_compiler_flag_'(hook, Obj::Functor) ->					% pre-compile hook in order 
 		Call =.. [Functor, Term, Terms],								% to speed up entity compilation
