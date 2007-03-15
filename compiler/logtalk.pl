@@ -65,6 +65,11 @@
 :- dynamic('$lgt_extends_object_'/3).		% '$lgt_extends_object_'(Prototype, Parent, Scope)
 
 
+% table of loaded files
+
+:- dynamic('$lgt_loaded_file'/2).			% '$lgt_loaded_file'(File, Directory)
+
+
 % debugger status and tables
 
 :- dynamic('$lgt_debugging_'/1).			% '$lgt_debugging_'(Entity)
@@ -3473,11 +3478,23 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	'$lgt_change_directory'(Current).
 
 '$lgt_load_file'(File) :-
-	'$lgt_report_loading_file'(File),
-	'$lgt_compile_file'(File),
-	'$lgt_file_name'(prolog, File, PFile),
-	'$lgt_load_prolog_code'(PFile),
-	'$lgt_report_loaded_file'(File).
+	'$lgt_current_directory'(Directory),
+	(	'$lgt_loaded_file'(File, Directory) ->
+		(	'$lgt_compiler_flag'(reload, skip) ->
+			'$lgt_report_skiping_file'(File)
+		;	'$lgt_report_reloading_file'(File),
+			'$lgt_compile_file'(File),
+			'$lgt_file_name'(prolog, File, PFile),
+			'$lgt_load_prolog_code'(PFile),
+			'$lgt_report_reloaded_file'(File)
+		)
+	;	'$lgt_report_loading_file'(File),
+		'$lgt_compile_file'(File),
+		'$lgt_file_name'(prolog, File, PFile),
+		'$lgt_load_prolog_code'(PFile),
+		'$lgt_report_loaded_file'(File),
+		assertz('$lgt_loaded_file'(File, Directory))
+	).
 
 
 
@@ -3640,7 +3657,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 % '$lgt_report_loading_file'(+atom)
 %
-% prints a message that an entity is being compiled
+% prints a message that a file is being loaded
 
 '$lgt_report_loading_file'(File) :-
 	(	'$lgt_compiler_flag'(report, on) ->
@@ -3648,6 +3665,27 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	;	true
 	).
 
+
+% '$lgt_report_reloading_file'(+atom)
+%
+% prints a message that a file is being reloaded
+
+'$lgt_report_reloading_file'(File) :-
+	(	'$lgt_compiler_flag'(report, on) ->
+		write('<<< reloading source file '), writeq(File), write('... '), nl
+	;	true
+	).
+
+
+% '$lgt_report_skiping_file'(+atom)
+%
+% prints a message that loading a file is being skiped
+
+'$lgt_report_skiping_file'(File) :-
+	(	'$lgt_compiler_flag'(report, on) ->
+		write('<<< skiping loading of source file '), writeq(File), write(' (already loaded) '), nl
+	;	true
+	).
 
 
 % '$lgt_report_loaded_file'(+entity_identifier)
@@ -3657,6 +3695,17 @@ current_logtalk_flag(version, version(2, 29, 5)).
 '$lgt_report_loaded_file'(File) :-
 	(	'$lgt_compiler_flag'(report, on) ->
 		write('<<< '), writeq(File), write(' source file loaded'), nl
+	;	true
+	).
+
+
+% '$lgt_report_reloaded_file'(+entity_identifier)
+%
+% prints a message that a source file finished reloading
+
+'$lgt_report_reloaded_file'(File) :-
+	(	'$lgt_compiler_flag'(report, on) ->
+		write('<<< '), writeq(File), write(' source file reloaded'), nl
 	;	true
 	).
 
@@ -10030,6 +10079,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 '$lgt_valid_flag'(portability).
 '$lgt_valid_flag'(report).
 '$lgt_valid_flag'(smart_compilation).
+'$lgt_valid_flag'(reload).
 '$lgt_valid_flag'(startup_message).
 '$lgt_valid_flag'(version).
 '$lgt_valid_flag'(underscore_vars).
@@ -10095,6 +10145,9 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 '$lgt_valid_flag_value'(smart_compilation, on) :- !.
 '$lgt_valid_flag_value'(smart_compilation, off) :- !.
+
+'$lgt_valid_flag_value'(reload, always) :- !.
+'$lgt_valid_flag_value'(reload, skip) :- !.
 
 '$lgt_valid_flag_value'(underscore_vars, dont_care) :- !.
 '$lgt_valid_flag_value'(underscore_vars, singletons) :- !.
@@ -11806,7 +11859,8 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	'$lgt_default_flag'(report, Report), write('  report: '), write(Report),
 	'$lgt_default_flag'(code_prefix, Code), write(', code_prefix: '), writeq(Code),
 	'$lgt_default_flag'(debug, Debug), write(', debug: '), writeq(Debug),
-	'$lgt_default_flag'(smart_compilation, Smart), write(', smart_compilation: '), write(Smart), nl,
+	'$lgt_default_flag'(smart_compilation, Smart), write(', smart_compilation: '), write(Smart),
+	'$lgt_default_flag'(reload, Reload), write(', reload: '), write(Reload), nl,
 	'$lgt_default_flag'(events, Events), write('  events: '), write(Events),
 	(	'$lgt_default_flag'(hook, Hook) -> true
 	;	Hook = '(none defined)'
@@ -11851,6 +11905,8 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	write('  Compiled code functors prefix (code_prefix):               '), writeq(Code), nl,
 	'$lgt_default_flag'(debug, Debug),
 	write('  Compile entities in debug mode (debug):                    '), writeq(Debug), nl,
+	'$lgt_default_flag'(reload, Reload),
+	write('  Reloading of already loaded source files (reload):         '), write(Reload), nl,
 	'$lgt_default_flag'(smart_compilation, Smart),
 	write('  Smart compilation (smart_compilation):                     '), write(Smart), nl,
 	'$lgt_default_flag'(events, Events),

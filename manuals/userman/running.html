@@ -160,8 +160,12 @@ yes</pre>
 			<dd>Controls the compilation of source files in debug mode (the Logtalk built-in debugger can only be used with files compiled in this mode). Possible option values are <code>on</code> and <code>off</code> (the usual default).</dd>
 	</dl>
 	<dl>
+		<dt><code>reload(Option)</code></dt>
+			<dd>Defines the reloading behavior for source files. Possible option values are <code>skip</code> (skip loading of already loaded files) and <code>always</code> (always reload files; the usual default). This option must not be used when recompiling source files in debug mode (see <code>debug/1</code> option below).</dd>
+	</dl>
+	<dl>
 		<dt><code>smart_compilation(Option)</code></dt>
-			<dd>Controls the use of smart compilation of source files to avoid recompiling files that are unchanged since the last time they are compiled. Possible option values are <code>on</code> and <code>off</code> (the usual default). This option is only supported in some Prolog compilers. It must not be used when compiling source files in debug mode (see <code>debug/1</code> option below).</dd>
+			<dd>Controls the use of smart compilation of source files to avoid recompiling files that are unchanged since the last time they are compiled. Possible option values are <code>on</code> and <code>off</code> (the usual default). This option is only supported in some Prolog compilers. It must not be used when recompiling source files in debug mode (see <code>debug/1</code> option below).</dd>
 	</dl>
 	<dl>
 		<dt><code>events(Option)</code></dt>
@@ -172,8 +176,11 @@ yes</pre>
 			<dd>Allows the definition of a compiler hook that is called for each term read form a source file. This option specifies both an object (which can be the pseudo-object <code>user</code>) and the functor of a public predicate with two arguments, the first one receiving the term read form the source file and the second one returning a list of terms corresponding to the expansion of the first argument.</dd>
 	</dl>
 
-<h3>Smart compilation of source files<a id="running_smart"></a></h3>
+<h3>Reloading and smart compilation of source files<a id="running_smart"></a></h3>
 
+<p>
+When using library entities and stable code, you can avoid reloading the corresponding source files by setting the compiler option <code>reload</code> to <code>skip</code>.
+</p>
 <p>
 If the Prolog compiler that you are using supports retrieving  of file modification dates, then you can turn on smart compilation of source files to avoid recompiling files that have not been modified since last compilation.
 </p>
@@ -426,7 +433,7 @@ The debugger pauses at leashed posts when tracing or when finding a spy point fo
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: March 9, 2007</span>
+		<span>Last updated on: March 15, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="installing.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="programming.html">next</a></span><br/>
