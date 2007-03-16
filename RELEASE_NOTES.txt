@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.29.5 - March ??, 2007
+2.29.5 - March 21, 2007
 
 	Simplified implementation of the database built-in methods. Simplified 
 	caching of dynamic predicate lookups. Improved performance of the 
