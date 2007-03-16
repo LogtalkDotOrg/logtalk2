@@ -169,7 +169,7 @@ yes</pre>
 	</dl>
 	<dl>
 		<dt><code>events(Option)</code></dt>
-			<dd>Allows Logtalk event-driven programming support to be turned off when not needed in order to improve message sending performance. Possible option values are <code>on</code> (the usual default) and <code>off</code>. Objects (and categories) compiled with this option set to <code>off</code> use optimized code for message-sending that does not trigger events. As such, this option can be used on a per-object (or per-category) basis. Note that turning off this option is of no consequence for objects and categories already compiled and loaded.</dd>
+			<dd>Allows Logtalk event-driven programming support to be turned off when not needed in order to improve message sending performance. Possible option values are <code>on</code> and <code>off</code> (the usual default). Objects (and categories) compiled with this option set to <code>off</code> use optimized code for message-sending that does not trigger events. As such, this option can be used on a per-object (or per-category) basis. Note that turning on this option is of no consequence for objects and categories already compiled and loaded.</dd>
 	</dl>
 	<dl>
 		<dt><code>hook(Object::Functor)</code></dt>
