@@ -67,7 +67,7 @@
 
 % table of loaded files
 
-:- dynamic('$lgt_loaded_file'/2).			% '$lgt_loaded_file'(File, Directory)
+:- dynamic('$lgt_loaded_file_'/2).			% '$lgt_loaded_file_'(File, Directory)
 
 
 % debugger status and tables
@@ -3481,7 +3481,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 '$lgt_load_file'(File) :-
 	'$lgt_current_directory'(Directory),
-	(	'$lgt_loaded_file'(File, Directory) ->
+	(	'$lgt_loaded_file_'(File, Directory) ->
 		(	'$lgt_compiler_flag'(reload, skip) ->
 			'$lgt_report_skiping_file'(File)
 		;	'$lgt_report_reloading_file'(File),
@@ -3495,7 +3495,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 		'$lgt_file_name'(prolog, File, PFile),
 		'$lgt_load_prolog_code'(PFile),
 		'$lgt_report_loaded_file'(File),
-		assertz('$lgt_loaded_file'(File, Directory))
+		assertz('$lgt_loaded_file_'(File, Directory))
 	).
 
 
