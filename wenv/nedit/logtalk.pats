@@ -25,7 +25,7 @@ nedit.highlightPatterns: Logtalk:1:0{\n\
 	Entity directives:"(?<=:\\-\\s)(end_object|end_protocol|end_category)(?=[.])":::Preprocessor::\n\
 	Entity relations:"<(instantiates|specializes|extends|imports|implements)(?=[(])":::Preprocessor::\n\
 	Directives:"(?<=:\\-\\s)(alias|synchronized|encoding|export|initialization|info|mode|dynamic|discontiguous|public|protected|private|meta_predicate|multifile|op|calls|uses|use_module)(?=[(])":::Preprocessor::\n\
-	Directives:"(?<=:\\-\\s)(dynamic|threaded)>":::Preprocessor::\n\
+	Directives:"(?<=:\\-\\s)(dynamic|synchronized|threaded)>":::Preprocessor::\n\
 	Clause operators:":\\-|\\.|,":::Keyword::\n\
 	Term testing:"(?<![+?@-])(var|atom|integer|float|atomic|compound|nonvar|number)(?=[(])":::Subroutine::\n\
 	Message sending operators:"::|\\^\\^":::Keyword::\n\
