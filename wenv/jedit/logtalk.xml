@@ -28,10 +28,7 @@
         <PROPERTY NAME="indentNextLine" VALUE="((^\s*:-\s(object|protocol|category)\(.*,$)|.*\s:-$)" />
 	</PROPS>
 
-	<RULES SET="MAIN"
-		IGNORE_CASE="FALSE"
-		HIGHLIGHT_DIGITS="TRUE"
-		DIGIT_RE="[[:digit:]]+([eE][-+][[:digit:]]+)?">
+	<RULES SET="MAIN" IGNORE_CASE="FALSE">
 	
 		<!-- Comments -->
 		<EOL_SPAN TYPE="COMMENT1">%</EOL_SPAN>
@@ -39,6 +36,21 @@
 			<BEGIN>/*</BEGIN>
 			<END>*/</END>
 		</SPAN>
+
+		<!-- Entity directives -->
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD1">^\s*:-\s(category|object|protocol)(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD1">^\s*:-\send_(category|object|protocol)[.]</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD1">^\s*:-\smodule(?=[(])</SEQ_REGEXP>
+ 		<!-- Predicate scope directives -->
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD1">^\s*:-\sp(ublic|r(otected|ivate))(?=[(])</SEQ_REGEXP>
+		<!-- Other directives -->
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD1">^\s*:-\se(ncoding|xport)(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD1">^\s*:-\sin(fo|itialization)(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD1">^\s*:-\s(dynamic|synchronized|threaded)[.]</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD1">^\s*:-\s(a(lias|tomic)|d(ynamic|iscontiguous)|m(eta_predicate|ode|ultifile)|synchronized)(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD1">^\s*:-\sop(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD1">^\s*:-\s(calls|use(s|_module))(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD1">(extends|i(nstantiates|mp(lements|orts))|specializes)(?=[(])</SEQ_REGEXP>
 
 		<!-- Event handlers -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(after|before)(?=[(])</SEQ_REGEXP>
@@ -129,132 +141,19 @@
 			<BEGIN>"</BEGIN>
 			<END>"</END>
 		</SPAN>
-		
+
 		<!-- External call -->
 		<SPAN TYPE="OPERATOR" DELEGATE="MAIN">
 			<BEGIN>{</BEGIN>
 			<END>}</END>
 		</SPAN>
 
-		<!-- Opening entity directives -->
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="ENTITY_RELATIONS">
-			<BEGIN>:- object(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="ENTITY_RELATIONS">
-			<BEGIN>:- protocol(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="ENTITY_RELATIONS">
-			<BEGIN>:- category(</BEGIN>
-			<END>).</END>
-		</SPAN>
-
-		<!-- Module directives -->
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="MAIN">
-			<BEGIN>:- module(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="PIs">
-			<BEGIN>:- export(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="PIs">
-			<BEGIN>:- use_module(</BEGIN>
-			<END>).</END>
-		</SPAN>
-
-		<!-- Closing entity directives -->
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE">
-			<BEGIN>:- end_object</BEGIN>
-			<END>.</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE">
-			<BEGIN>:- end_protocol</BEGIN>
-			<END>.</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE">
-			<BEGIN>:- end_category</BEGIN>
-			<END>.</END>
-		</SPAN>
-
-		<!-- Directives -->
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="MAIN">
-			<BEGIN>:- encoding(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="MAIN">
-			<BEGIN>:- initialization(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="INFO">
-			<BEGIN>:- info(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="MODE">
-			<BEGIN>:- mode(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="PIs">
-			<BEGIN>:- dynamic(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="MAIN">
-			<BEGIN>:- dynamic</BEGIN>
-			<END>.</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="PIs">
-			<BEGIN>:- alias(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="PIs">
-			<BEGIN>:- synchronized(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="PIs">
-			<BEGIN>:- synchronized</BEGIN>
-			<END>.</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="PIs">
-			<BEGIN>:- discontiguous(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="PIs">
-			<BEGIN>:- multifile(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="PIs">
-			<BEGIN>:- public(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="PIs">
-			<BEGIN>:- protected(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="PIs">
-			<BEGIN>:- private(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="MAIN">
-			<BEGIN>:- meta_predicate(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="MAIN">
-			<BEGIN>:- op(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="ENTITY_NAMES">
-			<BEGIN>:- calls(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="ENTITY_NAMES">
-			<BEGIN>:- uses(</BEGIN>
-			<END>).</END>
-		</SPAN>
-		<SPAN TYPE="KEYWORD1" NO_LINE_BREAK="FALSE" DELEGATE="MAIN">
-			<BEGIN>:- threaded</BEGIN>
-			<END>.</END>
-		</SPAN>
+		<!-- Numbers -->
+		<SEQ_REGEXP AT_WORD_START="TRUE" HASH_CHAR="0" TYPE="DIGIT">0'.</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" HASH_CHAR="0" TYPE="DIGIT">0b[0-1]+</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" HASH_CHAR="0" TYPE="DIGIT">0o[0-7]+</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" HASH_CHAR="0" TYPE="DIGIT">0x[0-9a-fA-F]+</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="DIGIT">\d+(\.\d+)?([eE]([-+])?\d+)?</SEQ_REGEXP>
 
 		<!-- Logtalk message sending operators -->
 		<SEQ TYPE="OPERATOR">::</SEQ>
@@ -263,7 +162,7 @@
 		<KEYWORDS AT_WORD_START="TRUE">
 
 			<!-- Control constructs -->
-			<SEQ TYPE="FUNCTION">!</SEQ>
+			<SEQ TYPE="OPERATOR">!</SEQ>
 			<SEQ TYPE="OPERATOR">,</SEQ>
 			<SEQ TYPE="OPERATOR">;</SEQ>
 			<SEQ TYPE="OPERATOR">--&gt;</SEQ>
@@ -272,7 +171,6 @@
 			<!-- Term unification -->
 			<SEQ TYPE="OPERATOR">=</SEQ>
 			<SEQ TYPE="OPERATOR">\=</SEQ>
-
 
 			<!-- Term comparison -->
 			<SEQ TYPE="OPERATOR">@=&lt;</SEQ>
