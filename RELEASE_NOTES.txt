@@ -39,7 +39,7 @@ RELEASE NOTES
 	line options to the corresponding Prolog compiler and to prevent some 
 	problems with paths containing spaces.
 
-	Much improved syntac coloring support for the jEdit text editor.
+	Much improved syntax coloring support for the jEdit text editor.
 
 
 2.29.4 - February 19, 2007
