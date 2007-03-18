@@ -30,7 +30,7 @@ RELEASE NOTES
 	defined in the config files) and "skip".
 
 	Updated the programming examples to use the new "reload" compiler option 
-	when library entities.
+	when loading library entities.
 
 	Updated GNU Prolog config file to take advantage of some built-in list 
 	predicates (requires version 1.2.14 or later).
