@@ -159,8 +159,6 @@
 		<SEQ TYPE="OPERATOR">::</SEQ>
 		<SEQ TYPE="OPERATOR">^^</SEQ>
 
-		<KEYWORDS AT_WORD_START="TRUE">
-
 			<!-- Control constructs -->
 			<SEQ TYPE="OPERATOR">!</SEQ>
 			<SEQ TYPE="OPERATOR">,</SEQ>
@@ -214,9 +212,152 @@
 			<SEQ TYPE="OPERATOR">\/</SEQ>
 			<SEQ TYPE="OPERATOR">\</SEQ>
 
+			<!-- Clause operators -->
 			<SEQ TYPE="OPERATOR">.</SEQ>
-		<!-- :-/2 clause operator -->
-		<SEQ_REGEXP TYPE="OPERATOR">\s:-($|\s)</SEQ_REGEXP>
+			<SEQ_REGEXP TYPE="OPERATOR">\s:-($|\s)</SEQ_REGEXP>
+
+		<KEYWORDS AT_WORD_START="TRUE"> <!-- just for code completion to work! -->
+
+			<NULL>abolish</NULL>
+			<NULL>abolish_category</NULL>
+			<NULL>abolish_events</NULL>
+			<NULL>abolish_object</NULL>
+			<NULL>abolish_protocol</NULL>
+			<NULL>after</NULL>
+			<NULL>alias</NULL>
+			<NULL>arg</NULL>
+			<NULL>asserta</NULL>
+			<NULL>assertz</NULL>
+			<NULL>atom</NULL>
+			<NULL>atomic</NULL>
+			<NULL>atom_chars</NULL>
+			<NULL>atom_codes</NULL>
+			<NULL>atom_concat</NULL>
+			<NULL>atom_length</NULL>
+			<NULL>at_end_of_stream</NULL>
+			<NULL>bagof</NULL>
+			<NULL>before</NULL>
+			<NULL>call</NULL>
+			<NULL>calls</NULL>
+			<NULL>catch</NULL>
+			<NULL>category</NULL>
+			<NULL>category_property</NULL>
+			<NULL>char_code</NULL>
+			<NULL>char_conversion</NULL>
+			<NULL>clause</NULL>
+			<NULL>close</NULL>
+			<NULL>compound</NULL>
+			<NULL>copy_term</NULL>
+			<NULL>create_category</NULL>
+			<NULL>create_object</NULL>
+			<NULL>create_protocol</NULL>
+			<NULL>current_category</NULL>
+			<NULL>current_char_conversion</NULL>
+			<NULL>current_event</NULL>
+			<NULL>current_input</NULL>
+			<NULL>current_logtalk_flag</NULL>
+			<NULL>current_object</NULL>
+			<NULL>current_op</NULL>
+			<NULL>current_output</NULL>
+			<NULL>current_predicate</NULL>
+			<NULL>current_prolog_flag</NULL>
+			<NULL>current_protocol</NULL>
+			<NULL>define_events</NULL>
+			<NULL>discontiguous</NULL>
+			<NULL>dynamic</NULL>
+			<NULL>encoding</NULL>
+			<NULL>end_category</NULL>
+			<NULL>end_object</NULL>
+			<NULL>end_protocol</NULL>
+			<NULL>expand_term</NULL>
+			<NULL>extends</NULL>
+			<NULL>extends_object</NULL>
+			<NULL>extends_protocol</NULL>
+			<NULL>fail</NULL>
+			<NULL>findall</NULL>
+			<NULL>float</NULL>
+			<NULL>flush_output</NULL>
+			<NULL>forall</NULL>
+			<NULL>functor</NULL>
+			<NULL>get_byte</NULL>
+			<NULL>get_char</NULL>
+			<NULL>get_code</NULL>
+			<NULL>halt</NULL>
+			<NULL>implements</NULL>
+			<NULL>implements_protocol</NULL>
+			<NULL>imports</NULL>
+			<NULL>imports_category</NULL>
+			<NULL>info</NULL>
+			<NULL>initialization</NULL>
+			<NULL>instantiates</NULL>
+			<NULL>instantiates_class</NULL>
+			<NULL>integer</NULL>
+			<NULL>logtalk_compile</NULL>
+			<NULL>logtalk_library_path</NULL>
+			<NULL>logtalk_load</NULL>
+			<NULL>meta_predicate</NULL>
+			<NULL>mode</NULL>
+			<NULL>nl</NULL>
+			<NULL>nonvar</NULL>
+			<NULL>number</NULL>
+			<NULL>number_chars</NULL>
+			<NULL>number_codes</NULL>
+			<NULL>object</NULL>
+			<NULL>object_property</NULL>
+			<NULL>once</NULL>
+			<NULL>op</NULL>
+			<NULL>open</NULL>
+			<NULL>parameter</NULL>
+			<NULL>peek_byte</NULL>
+			<NULL>peek_char</NULL>
+			<NULL>peek_code</NULL>
+			<NULL>phrase</NULL>
+			<NULL>predicate_property</NULL>
+			<NULL>private</NULL>
+			<NULL>protected</NULL>
+			<NULL>protocol</NULL>
+			<NULL>protocol_property</NULL>
+			<NULL>public</NULL>
+			<NULL>put_byte</NULL>
+			<NULL>put_char</NULL>
+			<NULL>put_code</NULL>
+			<NULL>read</NULL>
+			<NULL>read_term</NULL>
+			<NULL>repeat</NULL>
+			<NULL>retract</NULL>
+			<NULL>retractall</NULL>
+			<NULL>self</NULL>
+			<NULL>sender</NULL>
+			<NULL>setof</NULL>
+			<NULL>set_input</NULL>
+			<NULL>set_logtalk_flag</NULL>
+			<NULL>set_output</NULL>
+			<NULL>set_prolog_flag</NULL>
+			<NULL>set_stream_position</NULL>
+			<NULL>specializes</NULL>
+			<NULL>specializes_class</NULL>
+			<NULL>stream_property</NULL>
+			<NULL>sub_atom</NULL>
+			<NULL>synchronized</NULL>
+			<NULL>term_expansion</NULL>
+			<NULL>this</NULL>
+			<NULL>threaded</NULL>
+			<NULL>threaded_call</NULL>
+			<NULL>threaded_once</NULL>
+			<NULL>threaded_ignore</NULL>
+			<NULL>threaded_race</NULL>
+			<NULL>threaded_exit</NULL>
+			<NULL>threaded_peek</NULL>
+			<NULL>threaded_wait</NULL>
+			<NULL>threaded_notify</NULL>
+			<NULL>throw</NULL>
+			<NULL>true</NULL>
+			<NULL>unify_with_occurs_check</NULL>
+			<NULL>uses</NULL>
+			<NULL>var</NULL>
+			<NULL>write</NULL>
+			<NULL>writeq</NULL>
+			<NULL>write_canonical</NULL>
 
 		</KEYWORDS>
 		
