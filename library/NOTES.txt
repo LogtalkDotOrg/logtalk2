@@ -73,4 +73,4 @@ See the xml sub-directory for instructions on how to browse the .xml files
 for on-line reading or how to convert the files to a print-ready format such 
 as PDF.
 
-All source files are formatted using four-spaces tabs.
+All source files are formatted using four-space tabs.
