@@ -10,13 +10,17 @@ Quick start
 ===========
 
 
+Starting up Logtalk
+-------------------
+
 1. Install Logtalk by using either the installer provided for your 
 operating-system (when available) or by following the instructions 
 on the "INSTALL" file. Depending on your operating-system, working 
 environment, and favorite Prolog compiler, you may already have a 
 script or a shortcut installed for easily running Logtalk with your 
-favorite Prolog compiler. If so, skip the instructions below for 
-starting up Logtalk.
+favorite Prolog compiler. In this case, skip the instructions below 
+for starting up Logtalk and go straight to the instructions on running 
+the examples.
 
 2. Open the "manuals/index.html" file with a web browser.
 
@@ -63,7 +67,10 @@ Replace the file name foo.config with the appropriated config file name for
 your compiler.
 
 
-Now you may try some of the included examples:
+Running the examples
+--------------------
+
+You may now try some of the included examples:
 
 1. Open the examples sub-directory. There you find several sub-directories
 with ready to run examples and a NOTES file containing general instructions 
@@ -76,6 +83,9 @@ sub-directory.
 sample queries that you may try by copying-and-pasting or dragging-and-droping
 them on your Prolog interpreter top-level.
 
+
+Writing your own programs
+_________________________
 
 Ready to start writing your own programs?
 
