@@ -1,8 +1,8 @@
-Package: logtalk
+Source: logtalk
 Version: 2.29.5
 Section: devel
 Priority: optional
-Architecture: all
+Architecture: any
 Essential: no
 Recommends: swi-prolog | gprolog
 Maintainer: Paulo Moura <pmoura@logtalk.org>
