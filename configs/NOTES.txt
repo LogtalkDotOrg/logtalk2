@@ -174,7 +174,7 @@ ECLiPSe 5.10#26 or later version
 	You may still use the ::/2 operator defined on the ECLiPSe constraint 
 	solver libraries by using explicit module qualification by writing 
 	"{library:(Var::Domain)}" (replace "library" by the actual library name; 
-	the {}/1 construct allows you to bypass the Logtalk compiler).
+	the {}/1 control construct allows you to bypass the Logtalk compiler).
 
 	For improved performance, add the following calls to the top of all the 
 	files in the "compiler" sub-directory:
