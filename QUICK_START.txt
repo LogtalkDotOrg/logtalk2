@@ -27,10 +27,10 @@ the examples.
 3. Select the "Tutorial" link. This will provide you with a basic 
 understanding of the main Logtalk concepts.
 
-4. Go back to the "index.html" file and select the "User Manual" 
-link and then the Installing and running Logtalk links. This will 
-provide you with a basic understanding of how to start Logtalk and 
-compile and load Logtalk code.
+4. Go back to the "index.html" file, select the "User Manual" link, 
+then the "Installing Logtalk" and "Running and debugging Logtalk 
+programs" links. This will provide you with a basic understanding of 
+how to start Logtalk as well as how to compile and load Logtalk code.
 
 
 Assuming that Logtalk supports your Prolog compiler:
@@ -51,7 +51,7 @@ manual.
 sub-directory.
 
 6. Adapt, if needed, the file "libpaths/libpaths.pl" to match your Logtalk 
-installation, Prolog compiler, and operating-system, and then compile and 
+installation, Prolog compiler, operating-system, and then compile and 
 load it.
 
 Note that both the configuration files, the compiler/runtime files, and the 
@@ -63,16 +63,16 @@ Prolog prompt something like:
 
 	| ?- ['configs/foo.config', 'compiler/logtalk.pl', 'libpaths/libpaths.pl'].
 
-Replace the file name foo.config with the appropriated config file name for 
+Replace the file name "foo.config" with the appropriate config file name for 
 your compiler.
 
 
 Running the examples
 --------------------
 
-You may now try some of the included examples:
+You may now try some of the provided examples:
 
-1. Open the examples sub-directory. There you find several sub-directories
+1. Open the "examples" sub-directory. There you find several sub-directories
 with ready to run examples and a "NOTES.txt" file containing general 
 instructions and a brief description of each example. Select and open one 
 of the examples sub-directory.
@@ -80,8 +80,8 @@ of the examples sub-directory.
 2. Read the example "NOTES.txt" file for a description of the example.
 
 3. Open the "SCRIPT.txt" file for instructions on how to load the example 
-and for sample queries that you may try by either copying-and-pasting or 
-dragging-and-droping them on your Prolog interpreter top-level.
+and for sample queries that you may try by copying-and-pasting them to 
+your Prolog interpreter top-level.
 
 
 Writing your own programs
@@ -93,7 +93,7 @@ Ready to start writing your own programs?
 and debugging Logtalk programs".
 
 2. Take a look at the "wenv" sub-directory. There you will find syntax 
-configuration files for popular text editors that enable syntax coloring 
+configuration files for popular text editors which enable syntax coloring 
 and other text services when editing Logtalk source files.
 
 3. Create a sub-directory with a suitable name to hold all the files of 
