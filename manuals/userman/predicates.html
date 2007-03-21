@@ -159,6 +159,14 @@ An object (or category) predicate can be declared as an operator using the famil
 <p>
 Operators are local to the object (or category) where they are declared. This means that, if you declare a public predicate as an operator, you cannot use operator notation when sending to an object (where the predicate is visible) the respective message (as this would imply visibility of the operator declaration in the context of the <em>sender</em> of the message). If you want to declare global operators and, at the same time, use them inside an entity, just write the corresponding directives at the top of your source file, before the entity opening directive.
 </p>
+<p>
+When the same operators are used on several entities within the same source file, the corresponding directives must appear before any entity that uses them. However, this results in a global scope for the operators. If you prefer the operators to be local to the source file, just <em>undefine</em> them at the end of the file. For example:
+</p>
+<pre>:- op(400, xfx, implies).  % before any entity that uses the operator
+
+...
+
+:- op(0, xfx, implies).    % after all entities that used the operator</pre>
 
 <h3>Uses directive<a id="predicates_uses"></a></h3>
 
@@ -664,7 +672,7 @@ Currently, there is no clean workaround for calling non-standard, Prolog built-i
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: February 24, 2007</span>
+		<span>Last updated on: March 21, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="categories.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="inheritance.html">next</a></span><br/>
