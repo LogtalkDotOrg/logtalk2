@@ -42,6 +42,10 @@ RELEASE NOTES
 	Much improved syntax coloring and code completion support for the jEdit 
 	text editor.
 
+	Expanded the "operators" example to illustrate a simple solution for 
+	making operators local to source files (but global to all entities 
+	defined within the source files).
+
 
 2.29.4 - February 19, 2007
 
