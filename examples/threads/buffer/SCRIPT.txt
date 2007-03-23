@@ -6,7 +6,7 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-% start by loading the example and the required library files
+% start by loading the example and the required library files:
 
 | ?- logtalk_load(buffer(loader)).
 ...
