@@ -1,5 +1,7 @@
 
-:- initialization(
+:- initialization((
+	logtalk_load(library(all_loader), [reload(skip)]),
+	logtalk_load(roots(loader), [reload(skip)]),
 	logtalk_load([
 		state_space,
 		water_jug,
@@ -17,13 +19,15 @@
 		best_first1,
 		hill_climbing1,
 		performance],
-		[events(on)])).
+		[events(on)]))).
 
 /*
 If you intend to use the FOP XSL:FO processor for generating PDF documenting
 files, comment the directive above and uncomment the directive below
 
-:- initialization(
+:- initialization((
+	logtalk_load(library(all_loader), [reload(skip)]),
+	logtalk_load(roots(loader), [reload(skip)]),
 	logtalk_load(
 		[state_space,
 		water_jug,
@@ -41,5 +45,5 @@ files, comment the directive above and uncomment the directive below
 		best_first1,
 		hill_climbing1,
 		performance],
-		[events(on), xmlsref(standalone)])).
+		[events(on), xmlsref(standalone)]))).
 */
