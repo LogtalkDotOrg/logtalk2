@@ -15,11 +15,17 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 
 % generate a big list and then sort it using a single thread:
 
-| ?- generator::list(50000, List), msort::st_msort(List, Sorted).
+| ?- generator::list(50000, List), msort(1)::msort(List, Sorted).
 ...
 
 
 % generate a big list and then sort it using two threads:
 
-| ?- generator::list(50000, List), msort::mt_msort(List, Sorted).
+| ?- generator::list(50000, List), msort(2)::msort(List, Sorted).
+...
+
+
+% generate a big list and then sort it using four threads:
+
+| ?- generator::list(50000, List), msort(4)::msort(List, Sorted).
 ...

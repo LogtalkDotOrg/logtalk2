@@ -1,67 +1,74 @@
-/* This example's code is adapted from the following paper:
 
-@incollection{ apt93modular,
-    author = "Krzysztof R. Apt and Dino Pedreschi",
-    title = "Modular Termination Proofs for Logic and Pure Prolog Programs.",
-    booktitle = "116",
-    month = "31",
-    publisher = "Centrum voor Wiskunde en Informatica (CWI)",
-    address = "ISSN 0169-118X",
-    pages = "35",
-    year = "1993",
-    url = "citeseer.ist.psu.edu/apt93modular.html" }
-*/
-
-:- object(msort).
+:- object(msort(_Threads)).
 
 	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
 		date is 2007/03/22,
-		comment is 'Single-threaded and multi-threaded versions of the merge sort algorithm.']).
+		comment is 'Single-threaded and multi-threaded versions of the merge sort algorithm.',
+		parameters is ['Threads'- 'Number of threads to use in sorting. Valid values are 1, 2, and 4.']]).
 
 	:- threaded.
 
-	:- public(st_msort/2).
+	:- public(msort/2).
 
-	st_msort(List, Sorted) :-
-		st_msort(List, Sorted, List).
+	msort(List, Sorted) :-
+		parameter(1, Threads),
+		msort(Threads, List, Sorted).
 
-	st_msort([], [], _).
-	st_msort([X], [X], _).
-	st_msort([X, Y| Xs], Ys, [H| Ls]) :-
-		split([X, Y| Xs], X1s, X2s, [H| Ls]),
-		st_msort(X1s, Y1s, Ls),
-		st_msort(X2s, Y2s, Ls),
-		merge(Y1s, Y2s, Ys, [H| Ls]).
+	msort(1, List, Sorted) :-
+		st_msort(List, Sorted).
+	msort(2, List, Sorted) :-
+		mt_msort_2(List, Sorted).
+	msort(4, List, Sorted) :-
+		mt_msort_4(List, Sorted).
 
-	:- public(mt_msort/2).
+	st_msort([], []).
+	st_msort([X], [X]).
+	st_msort([X, Y| Xs], Ys) :-
+		split([X, Y| Xs], X1s, X2s),
+		st_msort(X1s, Y1s),
+		st_msort(X2s, Y2s),
+		merge(Y1s, Y2s, Ys).
 
-	mt_msort(List, Sorted) :-
-		mt_msort(List, Sorted, List).
+	mt_msort_2(L, S) :-
+		split(L, L1, L2),
+		threaded_call(st_msort(L1, S1)),
+		threaded_call(st_msort(L2, S2)),
+		threaded_exit(st_msort(L1, S1)),
+		threaded_exit(st_msort(L2, S2)),
+		merge(S1, S2, S).
 
-	mt_msort([], [], _).
-	mt_msort([X], [X], _).
-	mt_msort([X, Y| Xs], Ys, [H| Ls]) :-
-		split([X, Y| Xs], X1s, X2s, [H| Ls]),
-		threaded_call(st_msort(X1s, Y1s, Ls)),
-		threaded_call(st_msort(X2s, Y2s, Ls)),
-		threaded_exit(st_msort(X1s, Y1s, Ls)),
-		threaded_exit(st_msort(X2s, Y2s, Ls)),
-		merge(Y1s, Y2s, Ys, [H| Ls]).
+	mt_msort_4(L, S) :-
+		split(L, L1, L2),
+		split(L1, L11, L12),
+		split(L2, L21, L22),
+		threaded_call(st_msort(L11, S11)),
+		threaded_call(st_msort(L12, S12)),
+		threaded_call(st_msort(L21, S21)),
+		threaded_call(st_msort(L22, S22)),
+		threaded_exit(st_msort(L11, S11)),
+		threaded_exit(st_msort(L12, S12)),
+		threaded_exit(st_msort(L21, S21)),
+		threaded_exit(st_msort(L22, S22)),
+		threaded_call(merge(S11, S12, S1)),
+		threaded_call(merge(S21, S22, S2)),
+		threaded_exit(merge(S11, S12, S1)),
+		threaded_exit(merge(S21, S22, S2)),
+		merge(S1, S2, S).
 
-	split([], [], [], _).
-	split([X| Xs], [X| Ys], Zs, [_| Ls]) :-
-		split(Xs, Zs, Ys, Ls).
+	split([], [], []).
+	split([X| Xs], [X| Ys], Zs) :-
+		split(Xs, Zs, Ys).
 
-	merge([], Xs, Xs, _) :- !.
-	merge(Xs, [], Xs, _) :- !.
-	merge([X| Xs], [Y| Ys], [X| Zs], [_| Ls]) :-
+	merge([X| Xs], [Y| Ys], [X| Zs]) :-
 		X @=< Y, !,
-		merge(Xs, [Y| Ys], Zs, Ls).
-	merge([X| Xs], [Y| Ys], [Y| Zs], [_| Ls]) :-
-		X @> Y,
-		merge([X | Xs], Ys, Zs, Ls).
+		merge(Xs, [Y| Ys], Zs).
+	merge([X| Xs], [Y| Ys], [Y| Zs]) :-
+		X @> Y, !,
+		merge([X | Xs], Ys, Zs).
+	merge([], Xs, Xs) :- !.
+	merge(Xs, [], Xs).
 
 :- end_object.
 
