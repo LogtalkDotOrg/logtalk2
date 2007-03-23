@@ -10,5 +10,7 @@ To load this example and for sample queries, please see the SCRIPT file.
 
 This folder contains a simple single-threaded and multi-threaded versions 
 of the merge sort algorithm.  Depending on the size of the lists that are 
-ordered, the single-threaded version can be faster due to the overhead of 
-thread creation on the multi-threaded version.
+ordered, the single-threaded version is often faster due not only to the 
+overhead of thread creation on the multi-threaded version but also because 
+the merge of the sorted sub-lists, where the bulk of the sorting work is 
+performed, does not take advantage of multi-threading.
