@@ -6,14 +6,7 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-% start by loading the necessary library support example files (if not 
-% already loaded):
-
-| ?- logtalk_load(library(types_loader), [reload(skip)]).
-...
-
-
-% now you are ready for loading the example:
+% start by loading the example and the required library files:
 
 | ?- logtalk_load(lpa_timetables(loader)).
 ...
