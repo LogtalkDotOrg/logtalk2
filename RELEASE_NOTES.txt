@@ -42,6 +42,8 @@ RELEASE NOTES
 	Much improved syntax coloring and code completion support for the jEdit 
 	text editor.
 
+	Simplified loading of example source files.
+
 	Added new multi-threading example, "msort", implementing single-threaded 
 	and multi-threaded versions of the merge sort algorithm.
 

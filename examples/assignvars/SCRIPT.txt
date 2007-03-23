@@ -6,13 +6,7 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 =================================================================
 
 
-% start by loading the "assignvars" category:
-
-| ?- logtalk_load(library(assignvars)).
-...
-
-
-% now you are ready for loading the example:
+% start by loading the "assignvars" category and the example:
 
 | ?- logtalk_load(assignvars(loader)).
 ...
