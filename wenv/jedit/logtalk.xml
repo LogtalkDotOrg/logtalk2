@@ -83,7 +83,7 @@
 		<!-- All solutions -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b((bag|set)of|f(ind|or)all)(?=[(])</SEQ_REGEXP>
 		<!-- Multi-threading meta-predicates -->
-		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bthreaded_(call|once|ignore|race|exit|peek|wait|notify)(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bthreaded(_(call|once|ignore|race|exit|peek|wait|notify)?)(?=[(])</SEQ_REGEXP>
 		<!-- Term unification -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bunify_with_occurs_check(?=[(])</SEQ_REGEXP>
 		<!-- Term creation and decomposition -->
