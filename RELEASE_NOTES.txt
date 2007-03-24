@@ -30,6 +30,9 @@ RELEASE NOTES
 	"redo". Added a new debugger command, "ignore". Suspend debugging when 
 	using the "break" debugger command.
 
+	Improving reporting of working directory when loading or compiling source 
+	files by expanding any environment variables occurring in the path.
+
 	Added a new compiler option, "reload", for defining the Logtalk behavior 
 	when reloading source files. Valid values are "always" (default value; 
 	defined in the config files) and "skip".

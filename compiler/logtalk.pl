@@ -992,6 +992,16 @@ threaded(Goals) :-
 	\+ callable(Goal),
 	throw(error(type_error(callable, Goal), Call)).
 
+'$threaded_calls'((Obj::(Goal, Goals)), (TGoal, TGoals), (DGoal, DGoals), Ctx) :-
+	!,
+	'$threaded_calls'(Obj::Goal, TGoal, DGoal, Ctx),
+	'$threaded_calls'(Obj::Goals, TGoals, DGoals, Ctx).
+
+'$threaded_calls'(::(Goal, Goals), (TGoal, TGoals), (DGoal, DGoals), Ctx) :-
+	!,
+	'$threaded_calls'(::Goal, TGoal, DGoal, Ctx),
+	'$threaded_calls'(::Goals, TGoals, DGoals, Ctx).
+
 '$threaded_calls'((Goal, Goals), (TGoal, TGoals), Call, Ctx) :-
 	!,
 	'$threaded_calls'(Goal, TGoal, Call, Ctx),
@@ -1000,6 +1010,16 @@ threaded(Goals) :-
 '$threaded_calls'(Goal, TGoal, Call, Ctx) :-
 	catch('$lgt_tr_body'(threaded_call(Goal), TGoal, _, Ctx), error(Error, _), throw(Error, Call)).
 
+
+'$threaded_exits'((Obj::(Goal, Goals)), (TGoal, TGoals), (DGoal, DGoals), Ctx) :-
+	!,
+	'$threaded_exits'(Obj::Goal, TGoal, DGoal, Ctx),
+	'$threaded_exits'(Obj::Goals, TGoals, DGoals, Ctx).
+
+'$threaded_exits'(::(Goal, Goals), (TGoal, TGoals), (DGoal, DGoals), Ctx) :-
+	!,
+	'$threaded_exits'(::Goal, TGoal, DGoal, Ctx),
+	'$threaded_exits'(::Goals, TGoals, DGoals, Ctx).
 
 '$threaded_exits'((Goal, Goals), (TGoal, TGoals), Call, Ctx) :-
 	!,
@@ -3508,7 +3528,8 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	'$lgt_expand_library_path'(Library, Path),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
-	'$lgt_report_working_directory'(Path),
+	'$lgt_current_directory'(ExpandedPath),
+	'$lgt_report_working_directory'(ExpandedPath),
 	'$lgt_load_file'(File),
 	'$lgt_change_directory'(Current).
 
@@ -3775,7 +3796,8 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	'$lgt_expand_library_path'(Library, Path),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
-	'$lgt_report_working_directory'(Path),
+	'$lgt_current_directory'(ExpandedPath),
+	'$lgt_report_working_directory'(ExpandedPath),
 	'$lgt_compile_file'(File),
 	'$lgt_change_directory'(Current).
 
