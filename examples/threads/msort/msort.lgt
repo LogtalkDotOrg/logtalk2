@@ -4,7 +4,7 @@
 	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
-		date is 2007/03/22,
+		date is 2007/03/24,
 		comment is 'Single-threaded and multi-threaded versions of the merge sort algorithm.',
 		parameters is ['Threads'- 'Number of threads to use in sorting. Valid values are 1, 2, and 4.']]).
 
@@ -33,28 +33,23 @@
 
 	mt_msort_2(L, S) :-
 		split(L, L1, L2),
-		threaded_call(st_msort(L1, S1)),
-		threaded_call(st_msort(L2, S2)),
-		threaded_exit(st_msort(L1, S1)),
-		threaded_exit(st_msort(L2, S2)),
+		threaded((
+			st_msort(L1, S1),
+			st_msort(L2, S2))),
 		merge(S1, S2, S).
 
 	mt_msort_4(L, S) :-
 		split(L, L1, L2),
 		split(L1, L11, L12),
 		split(L2, L21, L22),
-		threaded_call(st_msort(L11, S11)),
-		threaded_call(st_msort(L12, S12)),
-		threaded_call(st_msort(L21, S21)),
-		threaded_call(st_msort(L22, S22)),
-		threaded_exit(st_msort(L11, S11)),
-		threaded_exit(st_msort(L12, S12)),
-		threaded_exit(st_msort(L21, S21)),
-		threaded_exit(st_msort(L22, S22)),
-		threaded_call(merge(S11, S12, S1)),
-		threaded_call(merge(S21, S22, S2)),
-		threaded_exit(merge(S11, S12, S1)),
-		threaded_exit(merge(S21, S22, S2)),
+		threaded((
+			st_msort(L11, S11),
+			st_msort(L12, S12),
+			st_msort(L21, S21),
+			st_msort(L22, S22))),
+		threaded((
+			merge(S11, S12, S1),
+			merge(S21, S22, S2))),
 		merge(S1, S2, S).
 
 	split([], [], []).

@@ -2,9 +2,9 @@
 :- object(primes).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2006/11/26,
+		date is 2007/3/24,
 		comment is 'Simple example for comparing single and multi-threading calculation of prime numbers.']).
 
 	:- threaded.
@@ -29,20 +29,19 @@
 		M > N,
 		N1 is N + (M - N) // 2,
 		N2 is N1 + 1,
-		threaded_call(prime_numbers(N, N1, [], Acc)),
-		threaded_call(prime_numbers(N2, M, Acc, Primes)),
-		threaded_exit(prime_numbers(N, N1, [], Acc)),
-		threaded_exit(prime_numbers(N2, M, Acc, Primes)).
+		threaded((
+			prime_numbers(N2, M, [], Acc),
+			prime_numbers(N, N1, Acc, Primes))).
 
 	prime_numbers(N, M, Primes, Primes) :-
 		N > M,
 		!.
 	prime_numbers(N, M, Acc, Primes) :-
 		(	is_prime(N) ->
-			Acc2 = [N| Acc]
-		;	Acc2 = Acc),
+			Primes = [N| Primes2]
+		;	Primes = Primes2),
 	    N2 is N + 1,
-		prime_numbers(N2, M, Acc2, Primes).
+		prime_numbers(N2, M, Acc, Primes2).
 
 	is_prime(2) :- !.
 	is_prime(Prime):-

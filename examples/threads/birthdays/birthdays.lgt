@@ -3,9 +3,9 @@
 	implements(monitoring)).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura and Peter Robinson',
-		date is 2006/12/27,
+		date is 2007/3/24,
 		comment is 'Simple multi-threading example with agents and their birthdays.']).
 
 	:- threaded.
@@ -64,8 +64,7 @@
 
 	% ask a friend's age using an asynchronous message:
 	ask_age(Friend, Age) :-
-		threaded_call(Friend::age(Age)),
-		threaded_exit(Friend::age(Age)).
+		threaded(Friend::age(Age)).
 
 	% getting older:
 	birthday :-
