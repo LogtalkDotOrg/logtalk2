@@ -47,7 +47,28 @@ The message queue associated with an object's thread receives both goals to be p
 <h2>Multi-threading built-in predicates<a id="threads_builtins"></a></h2>
 
 <p>
-Logtalk provides a small set of built-in predicates for running goals in new threads and for retrieving goal results. These predicates provide high-level support for multi-threading programming, covering common use cases.
+Logtalk provides a small set of built-in predicates for multi-threading programming. For simple tasks where you simply want to prove a set of goals, each one in its own thread, Logtalk provides a <a title="Consult reference manual" href="../refman/builtins/threaded1.html"><code>threaded/1</code></a> built-in predicate. The remaining predicates allow for fine-grained control, including postponing retrieving of thread goal results at a later time, supporting non-deterministic thread goals, and make <em>one-way</em> asynchronous calls. Together, these predicates provide high-level support for multi-threading programming, covering most common use cases.
+</p>
+
+<h3>Proving goals concurrently using threads<a id="threads_threaded"></a></h3>
+
+<p>
+A conjunction of goals may be proved asynchronously using a new thread by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded1.html"><code>threaded/1</code></a>. For example, assume that we want to find all the prime numbers in a given interval, <code>[N, M]</code>. We can split the interval in two parts and then span two threads to compute the primes numbers in each sub-interval:
+</p>
+<pre>prime_numbers(N, M, Primes) :-
+    M &gt; N,
+    N1 is N + (M - N) // 2,
+    N2 is N1 + 1,
+    threaded((
+        prime_numbers(N, N1, [], Acc),
+        prime_numbers(N2, M, Acc, Primes)
+    )).
+
+prime_numbers(N, M, Acc, Primes) :-
+    ...
+</pre>
+<p>
+The <code>threaded/1</code> call terminates when the two implicit thread calls terminate. In a computer with two or more processors (or with a processor with two or more cores) the code above can be expected to provide better computation times when compared with single-threaded code for sufficiently large intervals.
 </p>
 
 <h3>Proving goals asynchronously using threads<a id="threads_call"></a></h3>
@@ -56,7 +77,7 @@ Logtalk provides a small set of built-in predicates for running goals in new thr
 A goal may be proved asynchronously using a new thread by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_call1.html"><code>threaded_call/1</code></a>. The term representing the goal is copied, not shared with the thread. Therefore, any variable bindings resulting from the goal proof must be retrieved by calls to the built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_exit1.html"><code>threaded_exit/1</code></a>.
 </p>
 <p>
-For example, assume that we want to find all the prime numbers in a given interval, <code>[N, M]</code>. We can split the interval in two parts and then span two threads to compute the primes numbers in each sub-interval:
+The above example with prime numbers can be rewritten using the <code>threaded_call/1</code> and <code>threaded_exit/1</code> predicates:
 </p>
 <pre>prime_numbers(N, M, Primes) :-
     M &gt; N,
@@ -212,7 +233,7 @@ Each notification posted by a call to the <code>threaded_notify/1</code> predica
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: March 9, 2007</span>
+		<span>Last updated on: March 24, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="events.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="errors.html">next</a></span><br/>
