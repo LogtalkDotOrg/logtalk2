@@ -12,6 +12,11 @@ RELEASE NOTES
 
 2.29.5 - March 21, 2007
 
+	Added a new built-in predicate, "threaded/1", for proving each goal in 
+	a conjunction in its own thread, simplifying common multi-threading 
+	tasks that previously required sequences of calls to the built-in 
+	predicates threaded_call/1 and threaded_exit/1.
+
 	Simplified implementation of the database built-in methods. Simplified 
 	caching of dynamic predicate lookups. Improved performance of the 
 	built-in methods retract/1 and retractall/1.
@@ -44,8 +49,10 @@ RELEASE NOTES
 
 	Simplified loading of example source files.
 
-	Added new multi-threading example, "msort", implementing single-threaded 
-	and multi-threaded versions of the merge sort algorithm.
+	Updated the "threads/birthdays" and "threads/primes" examples to use the 
+	new "threaded/1" built-in predicate. Added new multi-threading example, 
+	"msort", implementing single-threaded and multi-threaded versions of the 
+	merge sort algorithm.
 
 	Expanded the "operators" example to illustrate a simple solution for 
 	making operators local to source files (but global to all entities 
