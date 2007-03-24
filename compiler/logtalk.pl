@@ -3800,6 +3800,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	'$lgt_expand_library_path'(Library, Path),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
+	'$lgt_current_directory'(ExpandedPath),
 	(	Current \== ExpandedPath ->
 		'$lgt_report_working_directory'(ExpandedPath),
 		'$lgt_compile_file'(File),
