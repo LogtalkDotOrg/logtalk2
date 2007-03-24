@@ -3529,9 +3529,13 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
 	'$lgt_current_directory'(ExpandedPath),
-	'$lgt_report_working_directory'(ExpandedPath),
-	'$lgt_load_file'(File),
-	'$lgt_change_directory'(Current).
+	(	Current \== ExpandedPath ->
+		'$lgt_report_working_directory'(ExpandedPath),
+		'$lgt_load_file'(File),
+		'$lgt_change_directory'(Current),
+		'$lgt_report_working_directory'(Current)
+	;	'$lgt_load_file'(File)
+	).
 
 '$lgt_load_file'(File) :-
 	'$lgt_current_directory'(Directory),
@@ -3796,10 +3800,13 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	'$lgt_expand_library_path'(Library, Path),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),
-	'$lgt_current_directory'(ExpandedPath),
-	'$lgt_report_working_directory'(ExpandedPath),
-	'$lgt_compile_file'(File),
-	'$lgt_change_directory'(Current).
+	(	Current \== ExpandedPath ->
+		'$lgt_report_working_directory'(ExpandedPath),
+		'$lgt_compile_file'(File),
+		'$lgt_change_directory'(Current),
+		'$lgt_report_working_directory'(Current)
+	;	'$lgt_compile_file'(File)
+	).
 
 '$lgt_compile_file'(File) :-
 	'$lgt_compiler_flag'(smart_compilation, on),
