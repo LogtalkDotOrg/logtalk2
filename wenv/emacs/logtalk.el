@@ -214,7 +214,7 @@
 		;;
 		;; multi-threading:
 		;;
-		("\\(threaded\\(_\\(?:call\\|once\\|ignore\\|race\\|exit\\|peek\\|wait\\|notify\\)?\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\(threaded\\(_\\(?:call\\|once\\|ignore\\|race\\|exit\\|peek\\|wait\\|notify\\)\\)?\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 	))
 
 
