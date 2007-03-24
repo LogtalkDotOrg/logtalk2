@@ -16,16 +16,16 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 
 | ?- primes::st_prime_numbers(1, 200000, Primes).
 
-Primes = [199999, 199967, 199961, 199933, 199931, 199921, 199909, 199889, 199877|...] 
+Primes = [2, 3, 5, 7, 11, 13, 17, 19, 23|...] 
 
 Yes
 
 
 % calculate the prime numbers in a given interval by splitting the interval 
-% in two sub-intervals and using a thread pere interval:
+% in two sub-intervals and using a thread per sub-interval:
 
 | ?- primes::mt_prime_numbers(1, 200000, Primes).
 
-Primes = [199999, 199967, 199961, 199933, 199931, 199921, 199909, 199889, 199877|...] 
+Primes = [2, 3, 5, 7, 11, 13, 17, 19, 23|...] 
 
 Yes
