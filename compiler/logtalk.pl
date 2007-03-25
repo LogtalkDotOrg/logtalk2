@@ -981,6 +981,10 @@ threaded(Goals) :-
 	var(Goals),
 	throw(error(instantiation_error, threaded(Goals))).
 
+threaded(_) :-
+	\+ '$lgt_compiler_flag'(threads, on),
+	throw(domain_error(threads, threaded/1)).
+
 threaded(Goals) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
 	'$threaded_calls'(Goals, TCalls, threaded(Goals), Ctx),
@@ -5971,7 +5975,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 
 '$lgt_tr_body'(threaded(_), _, _, _) :-
-	'$lgt_check_for_threaded_directive',
+	'$lgt_check_for_threaded_directive'(threaded/1),
 	fail.
 
 '$lgt_tr_body'(threaded(Goals), _, _, _) :-
@@ -5987,7 +5991,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 
 '$lgt_tr_body'(threaded_call(_), _, _, _) :-
-	'$lgt_check_for_threaded_directive',
+	'$lgt_check_for_threaded_directive'(threaded_call/1),
 	fail.
 
 '$lgt_tr_body'(threaded_call(Goal), _, _, _) :-
@@ -6004,7 +6008,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 
 '$lgt_tr_body'(threaded_race(_), _, _, _) :-
-	'$lgt_check_for_threaded_directive',
+	'$lgt_check_for_threaded_directive'(threaded_race/1),
 	fail.
 
 '$lgt_tr_body'(threaded_race(Goal), _, _, _) :-
@@ -6036,7 +6040,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 
 '$lgt_tr_body'(threaded_once(_), _, _, _) :-
-	'$lgt_check_for_threaded_directive',
+	'$lgt_check_for_threaded_directive'(threaded_once/1),
 	fail.
 
 '$lgt_tr_body'(threaded_once(Goal), _, _, _) :-
@@ -6053,7 +6057,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 
 '$lgt_tr_body'(threaded_ignore(_), _, _, _) :-
-	'$lgt_check_for_threaded_directive',
+	'$lgt_check_for_threaded_directive'(threaded_ignore/1),
 	fail.
 
 '$lgt_tr_body'(threaded_ignore(Goal), _, _, _) :-
@@ -6070,7 +6074,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 
 '$lgt_tr_body'(threaded_exit(_), _, _, _) :-
-	'$lgt_check_for_threaded_directive',
+	'$lgt_check_for_threaded_directive'(threaded_exit/1),
 	fail.
 
 '$lgt_tr_body'(threaded_exit(Goal), _, _, _) :-
@@ -6087,7 +6091,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 
 '$lgt_tr_body'(threaded_peek(_), _, _, _) :-
-	'$lgt_check_for_threaded_directive',
+	'$lgt_check_for_threaded_directive'(threaded_peek/1),
 	fail.
 
 '$lgt_tr_body'(threaded_peek(Goal), _, _, _) :-
@@ -6104,7 +6108,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 
 '$lgt_tr_body'(threaded_wait(_), _, _, _) :-
-	'$lgt_check_for_threaded_directive',
+	'$lgt_check_for_threaded_directive'(threaded_wait/1),
 	fail.
 
 '$lgt_tr_body'(threaded_wait(Msg), MTPred, '$lgt_dbg_goal'(threaded_wait(Msg), MTPred, DbgCtx), Ctx) :-
@@ -6130,7 +6134,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 
 '$lgt_tr_body'(threaded_notify(_), _, _, _) :-
-	'$lgt_check_for_threaded_directive',
+	'$lgt_check_for_threaded_directive'(threaded_notify/1),
 	fail.
 
 '$lgt_tr_body'(threaded_notify(Msg), MTPred, '$lgt_dbg_goal'(threaded_notify(Msg), MTPred, DbgCtx), Ctx) :-
@@ -6521,17 +6525,15 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 
 
-% '$lgt_check_for_threaded_directive'
+% '$lgt_check_for_threaded_directive'(+predicate_indicator)
 %
-% print a warning when the threaded/0 directive is not present on 
+% throw an error when the threaded/0 directive is not present on 
 % an object contaning calls to the threaded built-in predicates
 
-'$lgt_check_for_threaded_directive' :-
-	'$lgt_compiler_flag'(report, on),
+'$lgt_check_for_threaded_directive'(Pred) :-
 	\+ '$lgt_pp_threaded_',
 	'$lgt_pp_entity'(object, _, _, _, _),
-	'$lgt_inc_compile_warnings_counter',
-	nl, write('  WARNING!  threaded/0 directive is missing!') , nl.
+	throw(domain_error(threads, Pred)).
 
 
 
