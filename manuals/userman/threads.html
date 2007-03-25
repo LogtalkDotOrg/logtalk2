@@ -53,15 +53,15 @@ Logtalk provides a small set of built-in predicates for multi-threading programm
 <h3>Proving goals concurrently using threads<a id="threads_threaded"></a></h3>
 
 <p>
-A conjunction of goals may be proved concurrently by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded1.html"><code>threaded/1</code></a>. This is akin to <em>and-parallelism</em>. For example, assume that we want to find all the prime numbers in a given interval, <code>[N, M]</code>. We can split the interval in two parts and then span two threads to compute the primes numbers in each sub-interval:
+A conjunction of goals may be proved concurrently by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded1.html"><code>threaded/1</code></a>. Each goal in the conjunction runs in its own thread. This is akin to <em>and-parallelism</em>. For example, assume that we want to find all the prime numbers in a given interval, <code>[N, M]</code>. We can split the interval in two parts and then span two threads to compute the primes numbers in each sub-interval:
 </p>
 <pre>prime_numbers(N, M, Primes) :-
     M &gt; N,
     N1 is N + (M - N) // 2,
     N2 is N1 + 1,
     threaded((
-        prime_numbers(N, N1, [], Acc),
-        prime_numbers(N2, M, Acc, Primes)
+        prime_numbers(N2, M, [], Acc),
+        prime_numbers(N, N1, Acc, Primes)
     )).
 
 prime_numbers(N, M, Acc, Primes) :-
@@ -112,16 +112,16 @@ The above example with prime numbers can be rewritten using the <code>threaded_c
     M &gt; N,
     N1 is N + (M - N) // 2,
     N2 is N1 + 1,
-    threaded_call(prime_numbers(N, N1, [], Acc)),
-    threaded_call(prime_numbers(N2, M, Acc, Primes)),
-    threaded_exit(prime_numbers(N, N1, [], Acc)),
-    threaded_exit(prime_numbers(N2, M, Acc, Primes)).
+    threaded_call(prime_numbers(N2, M, [], Acc)),
+    threaded_call(prime_numbers(N, N1, Acc, Primes)),
+    threaded_exit(prime_numbers(N2, M, [], Acc)),
+    threaded_exit(prime_numbers(N, N1, Acc, Primes)).
 
 prime_numbers(N, M, Acc, Primes) :-
     ...
 </pre>
 <p>
-Note that a call to the <code>threaded_call/1</code> predicate is always true (assuming a callable argument). The <code>threaded_exit/1</code> calls block execution until the results of the <code>threaded_call/1</code> calls are sent back to the object's thread. In a computer with two or more processors (or with a processor with two or more cores) the code above can be expected to provide better computation times when compared with single-threaded code for sufficiently large intervals.
+Note that a call to the <code>threaded_call/1</code> predicate is always true (assuming a callable argument). The <code>threaded_exit/1</code> calls block execution until the results of the <code>threaded_call/1</code> calls are sent back to the object's thread.
 </p>
 
 <h3>Retrieving asynchronous goal proof results<a id="threads_exit"></a></h3>
