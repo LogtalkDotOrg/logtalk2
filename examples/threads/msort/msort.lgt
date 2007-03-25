@@ -11,6 +11,10 @@
 	:- threaded.
 
 	:- public(msort/2).
+	:- mode(msort(+list, -list), one).
+	:- info(msort/2, [
+		comment is 'Sorts a list of terms into ascending order.',
+		argnames is ['List', 'Sorted']]).
 
 	msort(List, Sorted) :-
 		parameter(1, Threads),

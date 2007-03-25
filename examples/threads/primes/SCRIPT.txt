@@ -14,7 +14,7 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 
 % calculate the prime numbers in a given interval using a single thread:
 
-| ?- primes::st_prime_numbers(1, 200000, Primes).
+| ?- T0 is cputime, primes(1)::primes(1, 200000, Primes), T1 is cputime, T is T1 - T0.
 
 Primes = [2, 3, 5, 7, 11, 13, 17, 19, 23|...] 
 
@@ -24,7 +24,17 @@ Yes
 % calculate the prime numbers in a given interval by splitting the interval 
 % in two sub-intervals and using a thread per sub-interval:
 
-| ?- primes::mt_prime_numbers(1, 200000, Primes).
+| ?- T0 is cputime, primes(2)::primes(1, 200000, Primes), T1 is cputime, T is T1 - T0.
+
+Primes = [2, 3, 5, 7, 11, 13, 17, 19, 23|...] 
+
+Yes
+
+
+% calculate the prime numbers in a given interval by splitting the interval 
+% in four sub-intervals and using a thread per sub-interval:
+
+| ?- T0 is cputime, primes(4)::primes(1, 200000, Primes), T1 is cputime, T is T1 - T0.
 
 Primes = [2, 3, 5, 7, 11, 13, 17, 19, 23|...] 
 
