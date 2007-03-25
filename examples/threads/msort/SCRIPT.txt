@@ -12,6 +12,11 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ...
 
 
+% NOTE: the example queries below use a SWI-Prolog proprietary predicate 
+% time/1 in order to get accurate goal times. For other Prolog compilers, 
+% replace the time/1 call by any appropriate timing calls (e.g. cputime/0).
+
+
 % generate a big list of random floats and then sort it using a single thread:
 
 ?- generator::list(75000, List), time(msort(1)::msort(List, Sorted)).
