@@ -4702,10 +4702,13 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 '$lgt_tr_directive'(synchronized, [], _, _) :-
 	!,
-	'$lgt_pp_entity'(_, _, Prefix, _, _),
-	atom_concat(Prefix, 'mutex_', Mutex),
-	assertz('$lgt_pp_synchronized_'),
-	assertz('$lgt_pp_synchronized_'(_, Mutex)).
+	(	'$lgt_default_flag'(threads, on) ->
+		'$lgt_pp_entity'(_, _, Prefix, _, _),
+		atom_concat(Prefix, 'mutex_', Mutex),
+		assertz('$lgt_pp_synchronized_'),
+		assertz('$lgt_pp_synchronized_'(_, Mutex))
+	;	true
+	).
 
 
 % dynamic entity directive
@@ -4816,14 +4819,17 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 
 '$lgt_tr_directive'(synchronized, Preds, Input, _) :-
-	(	'$lgt_pp_synchronized_' ->
-		'$lgt_pp_entity'(Type, _, _, _, _),
-		'$lgt_inc_compile_warnings_counter',
-		nl, write('  WARNING!  Ignoring synchronized predicate directive: '),
-		write(Type), write(' already declared as synchronized!'),
-		nl, '$lgt_report_compiler_error_line_number'(Input)
-	;	'$lgt_flatten_list'(Preds, Preds2),
-		'$lgt_tr_synchronized_directive'(Preds2)
+	(	'$lgt_default_flag'(threads, on) ->
+		(	'$lgt_pp_synchronized_' ->
+			'$lgt_pp_entity'(Type, _, _, _, _),
+			'$lgt_inc_compile_warnings_counter',
+			nl, write('  WARNING!  Ignoring synchronized predicate directive: '),
+			write(Type), write(' already declared as synchronized!'),
+			nl, '$lgt_report_compiler_error_line_number'(Input)
+		;	'$lgt_flatten_list'(Preds, Preds2),
+			'$lgt_tr_synchronized_directive'(Preds2)
+		)
+	;	true
 	).
 
 
@@ -8875,7 +8881,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 % '$lgt_fix_synchronized_preds'
 %
 % add mutex wrappers for calling synchronized predicates;
-% for Prolog compilers that do not support multi-threading
+% for Prolog compilers that do not support multi-threading,
 % synchronized predicates are compiled as normal predicates
 
 '$lgt_fix_synchronized_preds' :-

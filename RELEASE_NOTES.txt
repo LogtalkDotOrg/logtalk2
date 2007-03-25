@@ -30,6 +30,9 @@ RELEASE NOTES
 	"redo". Added a new debugger command, "ignore". Suspend debugging when 
 	using the "break" debugger command.
 
+	Corrected a bug when compiling entities containing synchronization 
+	directives on single-threaded Prolog configurations.
+
 	Improving reporting of working directory when loading or compiling source 
 	files by expanding any environment variables occurring in the path.
 
