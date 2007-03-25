@@ -983,7 +983,7 @@ threaded(Goals) :-
 
 threaded(_) :-
 	\+ '$lgt_compiler_flag'(threads, on),
-	throw(domain_error(threads, threaded/1)).
+	throw(resource_error(threads, threaded/1)).
 
 threaded(Goals) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
@@ -4690,7 +4690,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 '$lgt_tr_directive'(threaded, [], _, _) :-
 	\+ '$lgt_compiler_flag'(threads, on),
-	throw(domain_error(threads, threaded/0)).
+	throw(resource_error(threads, threaded/0)).
 
 '$lgt_tr_directive'(threaded, [], _, _) :-
 	!,
@@ -6533,7 +6533,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 '$lgt_check_for_threaded_directive'(Pred) :-
 	\+ '$lgt_pp_threaded_',
 	'$lgt_pp_entity'(object, _, _, _, _),
-	throw(domain_error(threads, Pred)).
+	throw(resource_error(threads, Pred)).
 
 
 

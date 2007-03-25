@@ -31,8 +31,8 @@ RELEASE NOTES
 	using the "break" debugger command.
 
 	Generate a compilation error instead of just printing a warning when 
-	compiling calls to the multi-threading built-in predicates within objects 
-	with no threaded/0 directive present.
+	compiling calls to the multi-threading built-in predicates within an 
+	object with no threaded/0 directive present.
 
 	Corrected a bug when compiling entities containing synchronization 
 	directives on single-threaded Prolog configurations.
