@@ -26,7 +26,7 @@
 
 <pre>threaded(Conjunction)</pre>
 <p>
-Proves each goal in a conjunction asynchronously using a new thread. The argument can be a message sending goal. This call terminates only when all individual threads terminate.
+Proves each goal in a conjunction of goals in its own thread. The argument can also be a conjunction of messages, either to <em>self</em> or to an explicit object. This call blocks until all individual threads terminate. This predicate is transparent to cuts and exceptions.
 </p>
 
 <h4>Template and modes</h4>
@@ -38,6 +38,10 @@ Proves each goal in a conjunction asynchronously using a new thread. The argumen
 <dl>
 	<dt>Conjunction is a variable:</dt>
 		<dd><code>instantiation_error</code></dd>
+	<dt>A goal in Conjunction is a variable:</dt>
+		<dd><code>instantiation_error</code></dd>
+	<dt>Conjunction is neither a variable nor a callable term:</dt>
+		<dd><code>type_error(callable, Conjunction)</code></dd>
 	<dt>A goal Goal in Conjunction is neither a variable nor a callable term:</dt>
 		<dd><code>type_error(callable, Goal)</code></dd>
 </dl>

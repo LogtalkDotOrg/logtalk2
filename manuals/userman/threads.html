@@ -22,7 +22,7 @@
 <h1>Multi-threading programming<span id="threads_threads"/></h1>
 
 <p>
-Logtalk provides experimental support for multi-threading programming on selected Prolog compilers. Logtalk makes use of the low-level Prolog built-in predicates that interface with POSIX threads (or a suitable emulation), providing a high-level set of predicates that allows programmers to easily take advantage of modern multi-processor and multi-core computers without caring about the details of creating, synchronizing, or communicating with threads. Logtalk multi-threading programming integrates with object-oriented programming by supporting per object threads, enabling objects to prove goals asynchronously (including call to local predicates and message sending goals). This allows an object to send both synchronous and asynchronous messages.
+Logtalk provides experimental support for multi-threading programming on selected Prolog compilers. Logtalk makes use of the low-level Prolog built-in predicates that interface with POSIX threads (or a suitable emulation), providing a small set of high-level predicates and directives that allows programmers to easily take advantage of modern multi-processor and multi-core computers without caring about the details of creating, synchronizing, or communicating with threads. Logtalk multi-threading programming integrates with object-oriented programming by supporting per object threads, enabling objects to prove goals asynchronously (including call to local predicates and message sending goals). This allows an object to send both synchronous and asynchronous messages.
 </p>
 
 <h2>Enabling multi-threading support<a id="threads_enabling"></a></h2>
@@ -53,7 +53,7 @@ Logtalk provides a small set of built-in predicates for multi-threading programm
 <h3>Proving goals concurrently using threads<a id="threads_threaded"></a></h3>
 
 <p>
-A conjunction of goals may be proved asynchronously using a new thread by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded1.html"><code>threaded/1</code></a>. For example, assume that we want to find all the prime numbers in a given interval, <code>[N, M]</code>. We can split the interval in two parts and then span two threads to compute the primes numbers in each sub-interval:
+A conjunction of goals may be proved concurrently by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded1.html"><code>threaded/1</code></a>. This is akin to <em>and-parallelism</em>. For example, assume that we want to find all the prime numbers in a given interval, <code>[N, M]</code>. We can split the interval in two parts and then span two threads to compute the primes numbers in each sub-interval:
 </p>
 <pre>prime_numbers(N, M, Primes) :-
     M &gt; N,
@@ -69,6 +69,35 @@ prime_numbers(N, M, Acc, Primes) :-
 </pre>
 <p>
 The <code>threaded/1</code> call terminates when the two implicit thread calls terminate. In a computer with two or more processors (or with a processor with two or more cores) the code above can be expected to provide better computation times when compared with single-threaded code for sufficiently large intervals.
+</p>
+<p>
+Backtracking over a <code>threaded/1</code> call is equivalent to backtracking over its argument. For example:
+</p>
+<pre>?- threaded(list::(member(X, [1,2,3]), member(Y, [a,b,c]))).
+
+X = 1, Y = a ;
+X = 1, Y = b ;
+X = 1, Y = c ;
+X = 2, Y = a ;
+X = 2, Y = b ;
+X = 2, Y = c ;
+X = 3, Y = a ;
+X = 3, Y = b ;
+X = 3, Y = c
+yes
+</pre>
+<p>
+The <code>threaded/1</code> built-in predicate is transparent to cuts and exceptions. For example:
+</p>
+<pre>?- threaded(list::(member(X, [1,2,3]), !,  member(Y, [a,b,c]))).
+
+X = 1, Y = a ;
+X = 1, Y = b ;
+X = 1, Y = c
+yes
+</pre>
+<p>
+The <code>threaded/1</code> built-in predicate is most useful for lengthy, independent deterministic computations where the computational costs of each goal outweigh the overhead of the implicit thread creation and management.
 </p>
 
 <h3>Proving goals asynchronously using threads<a id="threads_call"></a></h3>
