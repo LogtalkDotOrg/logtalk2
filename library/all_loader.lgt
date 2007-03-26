@@ -8,4 +8,4 @@
 		library(hierarchies_loader),
 		library(metapredicates_loader),
 		library(random_loader),
-		library(types_loader)])).
+		library(types_loader)], [reload(skip)])).
