@@ -1987,13 +1987,13 @@ current_logtalk_flag(version, version(2, 29, 5)).
 		functor(GHead, Functor, Arity),
 		'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
 		GHead =.. [_| Args],
-		'$lgt_append'(Args, [Sender, This, Self], TArgs),
-		Call =.. [PredPrefix| TArgs],
-		Clause =.. [DDef, GHead, Sender, This, Self, Call],
+		'$lgt_append'(Args, [GSender, GThis, GSelf], TArgs),
+		GCall =.. [PredPrefix| TArgs],
+		Clause =.. [DDef, GHead, GSender, GThis, GSelf, GCall],
 		assertz(Clause),
 		'$lgt_clean_lookup_caches'(GHead),
 		NeedsUpdate = true,
-		GHead = Head
+		(GHead, GSender, GThis, GSelf, GCall) = (Head, Sender, This, Self, Call)
 	).
 
 
@@ -2254,7 +2254,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	functor(GCall, CFunctor, CArity),
 	GHead =.. [_| Args],
 	GCall =.. [_| ExtArgs],
-	'$lgt_unify_args'(Args, ExtArgs), 
+	'$lgt_unify_args'(Args, ExtArgs, [GSender, _, _]), 
 	asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GCall, true)).
 
 
@@ -2263,7 +2263,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 %
 % adds a new database lookup cache entry
 
-'$lgt_add_db_lookup_cache_entry'(Obj, Head, Sender, Call, DDef, Update) :-
+'$lgt_add_db_lookup_cache_entry'(Obj, Head, Sender, Call, DDef, NeedsUpdate) :-
 	functor(Obj, OFunctor, OArity),
 	functor(GObj, OFunctor, OArity),
 	functor(Head, HFunctor, HArity),
@@ -2274,19 +2274,21 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	functor(GCall, CFunctor, CArity),
 	GHead =.. [_| Args],
 	GCall =.. [_| ExtArgs],
-	'$lgt_unify_args'(Args, ExtArgs), 
-	(	Update == true ->
-		Clause =.. [DDef, GHead, _, _, _, _],
-		asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GCall, '$lgt_update_ddef_table_opt'(GHead, GCall, Clause)))
+	'$lgt_unify_args'(Args, ExtArgs, [GSender, _, _]),
+	(	NeedsUpdate == true ->
+		functor(UHead, HFunctor, HArity),
+		functor(UCall, CFunctor, CArity),
+		UClause =.. [DDef, UHead, _, _, _, _],
+		asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GCall, '$lgt_update_ddef_table_opt'(UHead, UCall, UClause)))
 	;	asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GCall, true))
 	).
 
 
 
-'$lgt_unify_args'([], _).
+'$lgt_unify_args'([], Ctx, Ctx).
 
-'$lgt_unify_args'([Arg| Args], [Arg| ExtArgs]) :-
-	'$lgt_unify_args'(Args, ExtArgs).
+'$lgt_unify_args'([Arg| Args], [Arg| ExtArgs], Ctx) :-
+	'$lgt_unify_args'(Args, ExtArgs, Ctx).
 
 
 
