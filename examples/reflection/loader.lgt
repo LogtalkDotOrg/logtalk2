@@ -1,3 +1,3 @@
 
 :- initialization(
-	logtalk_load(reflection)).
+	logtalk_load(reflection, [unknown(silent)])).
