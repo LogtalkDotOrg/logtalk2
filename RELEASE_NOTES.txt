@@ -48,7 +48,9 @@ RELEASE NOTES
 	when loading library entities.
 
 	Updated GNU Prolog config file to take advantage of some built-in list 
-	predicates (requires version 1.2.14 or later).
+	predicates (requires version 1.2.14 or later); changed the compiler flag 
+	"underscore_vars" value to "dont_care" to avoid spurious warnings with 
+	some examples.
 
 	Updated the POSIX integration shell scripts to pass along any command 
 	line options to the corresponding Prolog compiler and to prevent some 
