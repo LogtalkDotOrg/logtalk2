@@ -1,5 +1,3 @@
 
 :- initialization(
-	logtalk_load([
-		hanoi,
-		queens])).
+	logtalk_load([hanoi, queens])).
