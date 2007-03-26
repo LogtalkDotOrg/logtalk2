@@ -2254,7 +2254,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	functor(GCall, CFunctor, CArity),
 	GHead =.. [_| Args],
 	GCall =.. [_| ExtArgs],
-	'$lgt_unify_args'(Args, ExtArgs, [GSender, _, _]), 
+	'$lgt_unify_args'(Args, ExtArgs), 
 	asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GCall, true)).
 
 
@@ -2274,7 +2274,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	functor(GCall, CFunctor, CArity),
 	GHead =.. [_| Args],
 	GCall =.. [_| ExtArgs],
-	'$lgt_unify_args'(Args, ExtArgs, [GSender, _, _]),
+	'$lgt_unify_args'(Args, ExtArgs),
 	(	NeedsUpdate == true ->
 		functor(UHead, HFunctor, HArity),
 		functor(UCall, CFunctor, CArity),
@@ -2285,10 +2285,10 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 
 
-'$lgt_unify_args'([], Ctx, Ctx).
+'$lgt_unify_args'([], _).
 
-'$lgt_unify_args'([Arg| Args], [Arg| ExtArgs], Ctx) :-
-	'$lgt_unify_args'(Args, ExtArgs, Ctx).
+'$lgt_unify_args'([Arg| Args], [Arg| ExtArgs]) :-
+	'$lgt_unify_args'(Args, ExtArgs).
 
 
 
