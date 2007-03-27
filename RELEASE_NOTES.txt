@@ -17,6 +17,8 @@ RELEASE NOTES
 	tasks that previously required sequences of calls to the built-in 
 	predicates threaded_call/1 and threaded_exit/1.
 
+	Simplified implementation of Logtalk multi-threading support.
+
 	Simplified implementation of the database built-in methods. Simplified 
 	caching of dynamic predicate lookups. Improved performance of the 
 	built-in methods retract/1 and retractall/1.
