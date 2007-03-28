@@ -67,7 +67,7 @@ RELEASE NOTES
 
 	Updated the "threads/primes" example to use the new "threaded/1" built-in 
 	predicate. Updated the "threads/birthdays" example to better illustrate 
-	the use of the built-in multi-threading predicates.	Added a new 
+	the use of the built-in multi-threading predicates. Added a new 
 	multi-threading example, "msort", implementing single-threaded and 
 	multi-threaded versions of the merge sort algorithm.
 

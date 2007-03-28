@@ -11686,17 +11686,18 @@ current_logtalk_flag(version, version(2, 29, 5)).
 % creates a dispatcher thread for an object given its prefix
 
 '$lgt_init_object_thread'(ObjPrefix) :-
-	thread_create('$lgt_mt_obj_dispatcher'(ObjPrefix), _, [alias(ObjPrefix), detached(false)]).
+	thread_create('$lgt_mt_obj_dispatcher', _, [alias(ObjPrefix), detached(false)]).
 
 
 
-% '$lgt_mt_obj_dispatcher'(+atom)
+% '$lgt_mt_obj_dispatcher'
 %
 % object's thread message dispatcher processing loop
 
-'$lgt_mt_obj_dispatcher'(Thread) :-
+'$lgt_mt_obj_dispatcher' :-
+	thread_self(Return),
 	repeat,
-		thread_get_message(Thread, '$lgt_goal'(Goal, This, Self, Option, Return)),
+		thread_get_message('$lgt_goal'(Goal, This, Self, Option)),
 		(	Option == competing ->	% goal is one of a set of competing goals performing the same task
 			thread_create('$lgt_mt_competing_goal'(Goal, This, Self, Return), CompetingId, [detached(true)]),
 			thread_send_message(Return, '$lgt_competing_id'(Goal, This, Self, CompetingId))
@@ -11769,7 +11770,7 @@ current_logtalk_flag(version, version(2, 29, 5)).
 '$lgt_mt_send_goal'(Goal, Sender, This, Self, Options) :-
 	'$lgt_current_object_'(This, Thread, _, _, _, _, _, _), !,
 	(	current_thread(Thread, running) ->
-		thread_send_message(Thread, '$lgt_goal'(Goal, This, Self, Options, Thread))
+		thread_send_message(Thread, '$lgt_goal'(Goal, This, Self, Options))
 	;	throw(error(existence_error(object_thread, This), Goal, Sender))
 	).
 
