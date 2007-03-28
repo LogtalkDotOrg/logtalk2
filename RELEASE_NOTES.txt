@@ -57,6 +57,8 @@ RELEASE NOTES
 	"underscore_vars" value to "dont_care" to avoid spurious warnings with 
 	some examples.
 
+	Added a config file for B-Prolog 7.0b1.
+
 	Updated the POSIX integration shell scripts to pass along any command 
 	line options to the corresponding Prolog compiler and to prevent some 
 	problems with paths containing spaces.

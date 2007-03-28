@@ -96,6 +96,12 @@ B-Prolog 6.9 and later versions
 	the sizes of the code areas on the "bplgt" script if you run into 
 	out-of-memory errors with complex applications.
 
+B-Prolog 7.0b1
+
+	b7.config
+
+	For B-Prolog 7.0b1. See the remarks above for version 6.9.
+
 
 Bin-Prolog 8.x~10.x
 
