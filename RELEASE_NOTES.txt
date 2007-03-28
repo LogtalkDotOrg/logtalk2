@@ -17,7 +17,8 @@ RELEASE NOTES
 	tasks that previously required sequences of calls to the built-in 
 	predicates threaded_call/1 and threaded_exit/1.
 
-	Simplified implementation of Logtalk multi-threading support.
+	Simplified and optimized the implementation of Logtalk multi-threading 
+	support.
 
 	Simplified implementation of the database built-in methods. Simplified 
 	caching of dynamic predicate lookups. Improved performance of the 
@@ -61,7 +62,8 @@ RELEASE NOTES
 	Much improved syntax coloring and code completion support for the jEdit 
 	text editor.
 
-	Simplified loading of example source files.
+	Simplified loading of example source files (by updating the utility 
+	loader files to automatically load all required library files).
 
 	Updated the "threads/primes" example to use the new "threaded/1" built-in 
 	predicate. Updated the "threads/birthdays" example to better illustrate 
