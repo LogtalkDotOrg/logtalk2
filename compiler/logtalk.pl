@@ -11686,28 +11686,27 @@ current_logtalk_flag(version, version(2, 29, 5)).
 % creates a dispatcher thread for an object given its prefix
 
 '$lgt_init_object_thread'(ObjPrefix) :-
-	thread_create('$lgt_mt_obj_dispatcher', _, [alias(ObjPrefix), detached(false)]).
+	thread_create('$lgt_mt_obj_dispatcher'(ObjPrefix), _, [alias(ObjPrefix), detached(false)]).
 
 
 
-% '$lgt_mt_obj_dispatcher'
+% '$lgt_mt_obj_dispatcher'(+atom)
 %
 % object's thread message dispatcher processing loop
 
-'$lgt_mt_obj_dispatcher' :-
-	thread_self(Return),
+'$lgt_mt_obj_dispatcher'(Thread) :-
 	repeat,
 		thread_get_message('$lgt_goal'(Goal, This, Self, Option)),
 		(	Option == competing ->	% goal is one of a set of competing goals performing the same task
-			thread_create('$lgt_mt_competing_goal'(Goal, This, Self, Return), CompetingId, [detached(true)]),
-			thread_send_message(Return, '$lgt_competing_id'(Goal, This, Self, CompetingId))
+			thread_create('$lgt_mt_competing_goal'(Goal, This, Self, Thread), CompetingId, [detached(true)]),
+			thread_send_message(Thread, '$lgt_competing_id'(Goal, This, Self, CompetingId))
 		;	Option == ignore ->		% don't bother reporting goal success, failure, or exception
 			thread_create(catch(Goal, _, true), _, [detached(true)])
 		;	Option == once ->		% make thread goal deterministic
-			thread_create('$lgt_mt_det_goal'(Goal, This, Self, Return), DetId, [detached(true)]),
-			thread_send_message(Return, '$lgt_det_id'(Goal, This, Self, DetId))
-		;	thread_create('$lgt_mt_non_det_goal'(Goal, This, Self, Return), NondetId, [detached(false)]),
-			thread_send_message(Return, '$lgt_non_det_id'(Goal, This, Self, NondetId))
+			thread_create('$lgt_mt_det_goal'(Goal, This, Self, Thread), DetId, [detached(true)]),
+			thread_send_message(Thread, '$lgt_det_id'(Goal, This, Self, DetId))
+		;	thread_create('$lgt_mt_non_det_goal'(Goal, This, Self, Thread), NondetId, [detached(false)]),
+			thread_send_message(Thread, '$lgt_non_det_id'(Goal, This, Self, NondetId))
 		),
 	fail.
 
