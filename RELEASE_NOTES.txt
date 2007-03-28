@@ -48,7 +48,9 @@ RELEASE NOTES
 	defined in the config files) and "skip".
 
 	Updated the programming examples to use the new "reload" compiler option 
-	when loading library entities.
+	when loading library entities. Simplified loading of example source files 
+	(by updating the utility loader files to automatically load all required 
+	library files).
 
 	Updated GNU Prolog config file to take advantage of some built-in list 
 	predicates (requires version 1.2.14 or later); changed the compiler flag 
@@ -61,9 +63,6 @@ RELEASE NOTES
 
 	Much improved syntax coloring and code completion support for the jEdit 
 	text editor.
-
-	Simplified loading of example source files (by updating the utility 
-	loader files to automatically load all required library files).
 
 	Updated the "threads/primes" example to use the new "threaded/1" built-in 
 	predicate. Updated the "threads/birthdays" example to better illustrate 
