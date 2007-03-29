@@ -2,7 +2,7 @@
 
 ## =================================================================
 ## Logtalk - Object oriented extension to Prolog
-## Release 2.29.5
+## Release 2.29.6
 ##
 ## Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ## =================================================================
@@ -27,7 +27,7 @@ if ! [ -d "$LOGTALKHOME" ]; then
 fi
 
 cd $LOGTALKHOME/..
-rm -rf lgt2295
+rm -rf lgt2296
 rm -f logtalk
 
 if [ -d bin ]; then

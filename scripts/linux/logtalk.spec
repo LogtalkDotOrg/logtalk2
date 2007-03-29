@@ -1,11 +1,11 @@
 Name: logtalk
 Summary: Logtalk - Open source object-oriented extension to Prolog
-Version: 2.29.5
+Version: 2.29.6
 Release: 1
 License: Artistic License 2.0
 Group: Development/Languages
 Packager: Paulo Moura <pmoura@logtalk.org>
-Source: http://logtalk.org/files/lgt2295.tgz
+Source: http://logtalk.org/files/lgt2296.tgz
 BuildArchitectures: noarch
 URL: http://logtalk.org/
 Prefix: /usr/local
@@ -13,23 +13,23 @@ AutoReqProv: no
 %description
 Logtalk is an open source object-oriented extension to the Prolog programming language. Integrating logic programming with object-oriented and event-driven programming, it is compatible with most Prolog compilers. It supports both prototypes and classes. In addition, it supports component-based programming through category-based composition.
 %prep
-%setup -n lgt2295
+%setup -n lgt2296
 %build
 %install
-rm -rf /usr/local/lgt2295
+rm -rf /usr/local/lgt2296
 rm -f /usr/local/logtalk
-mkdir /usr/local/lgt2295
-cp -R * /usr/local/lgt2295
+mkdir /usr/local/lgt2296
+cp -R * /usr/local/lgt2296
 cd /usr/local
-chmod -R go-w,a+r lgt2295
-chmod a+x lgt2295
-chmod a+x lgt2295/scripts/*.sh
-chmod a-x lgt2295/scripts/*.js
-chmod a+x lgt2295/scripts/linux/*.sh
-chmod a+x lgt2295/scripts/macosx/postflight
-chmod a+x lgt2295/xml/*.sh
-chmod a-x lgt2295/xml/*.js
-ln -sf lgt2295 logtalk
+chmod -R go-w,a+r lgt2296
+chmod a+x lgt2296
+chmod a+x lgt2296/scripts/*.sh
+chmod a-x lgt2296/scripts/*.js
+chmod a+x lgt2296/scripts/linux/*.sh
+chmod a+x lgt2296/scripts/macosx/postflight
+chmod a+x lgt2296/xml/*.sh
+chmod a-x lgt2296/xml/*.js
+ln -sf lgt2296 logtalk
 cd bin
 ln -sf ../logtalk/scripts/cplgtdirs.sh cplgtdirs
 ln -sf ../logtalk/xml/lgt2pdf.sh lgt2pdf
@@ -38,25 +38,25 @@ ln -sf ../logtalk/xml/lgt2xml.sh lgt2xml
 %clean
 %files
 %defattr(-,root,users)
-%doc /usr/local/lgt2295/BIBLIOGRAPHY.bib
-%doc /usr/local/lgt2295/CUSTOMIZE.txt
-%doc /usr/local/lgt2295/INSTALL.txt
-%doc /usr/local/lgt2295/LICENSE.txt
-%doc /usr/local/lgt2295/QUICK_START.txt
-%doc /usr/local/lgt2295/README.txt
-%doc /usr/local/lgt2295/RELEASE_NOTES.txt
-%doc /usr/local/lgt2295/UPGRADING.txt
-/usr/local/lgt2295/compiler
-/usr/local/lgt2295/configs
-/usr/local/lgt2295/contributions
-/usr/local/lgt2295/examples
-/usr/local/lgt2295/libpaths
-/usr/local/lgt2295/library
-%docdir /usr/local/lgt2295/manuals
-/usr/local/lgt2295/manuals
-/usr/local/lgt2295/scripts
-/usr/local/lgt2295/wenv
-/usr/local/lgt2295/xml
+%doc /usr/local/lgt2296/BIBLIOGRAPHY.bib
+%doc /usr/local/lgt2296/CUSTOMIZE.txt
+%doc /usr/local/lgt2296/INSTALL.txt
+%doc /usr/local/lgt2296/LICENSE.txt
+%doc /usr/local/lgt2296/QUICK_START.txt
+%doc /usr/local/lgt2296/README.txt
+%doc /usr/local/lgt2296/RELEASE_NOTES.txt
+%doc /usr/local/lgt2296/UPGRADING.txt
+/usr/local/lgt2296/compiler
+/usr/local/lgt2296/configs
+/usr/local/lgt2296/contributions
+/usr/local/lgt2296/examples
+/usr/local/lgt2296/libpaths
+/usr/local/lgt2296/library
+%docdir /usr/local/lgt2296/manuals
+/usr/local/lgt2296/manuals
+/usr/local/lgt2296/scripts
+/usr/local/lgt2296/wenv
+/usr/local/lgt2296/xml
 /usr/local/logtalk
 /usr/local/bin/cplgtdirs
 /usr/local/bin/lgt2pdf
