@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.29.5
+%  Release 2.29.6
 %
 %  Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 %
@@ -1488,7 +1488,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 29, 5)).
+current_logtalk_flag(version, version(2, 29, 6)).
 
 
 
@@ -6005,7 +6005,10 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
-	MTGoal = '$lgt_mt_send_goal'(TGoal, Sender, This, Self, []),
+	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
+		MTGoal = '$lgt_mt_send_goal'(Prefix, TGoal, Sender, This, Self, [])
+	;	MTGoal = '$lgt_mt_send_goal'(TGoal, Sender, This, Self, [])
+	),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
@@ -6037,7 +6040,10 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
-	MTGoal = '$lgt_mt_send_goal'(TGoal, Sender, This, Self, competing),
+	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
+		MTGoal = '$lgt_mt_send_goal'(Prefix, TGoal, Sender, This, Self, competing)
+	;	MTGoal = '$lgt_mt_send_goal'(TGoal, Sender, This, Self, competing)
+	),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
@@ -6054,7 +6060,10 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
-	MTGoal = '$lgt_mt_send_goal'(TGoal, Sender, This, Self, once),
+	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
+		MTGoal = '$lgt_mt_send_goal'(Prefix, TGoal, Sender, This, Self, once)
+	;	MTGoal = '$lgt_mt_send_goal'(TGoal, Sender, This, Self, once)
+	),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
@@ -6071,7 +6080,10 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
-	MTGoal = '$lgt_mt_send_goal'(TGoal, Sender, This, Self, ignore),
+	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
+		MTGoal = '$lgt_mt_send_goal'(Prefix, TGoal, Sender, This, Self, ignore)
+	;	MTGoal = '$lgt_mt_send_goal'(TGoal, Sender, This, Self, ignore)
+	),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
@@ -6088,7 +6100,10 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
-	MTGoal = '$lgt_mt_get_reply'(TGoal, Sender, This, Self, []),
+	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
+		MTGoal = '$lgt_mt_get_reply'(Prefix, TGoal, Sender, This, Self)
+	;	MTGoal = '$lgt_mt_get_reply'(TGoal, Sender, This, Self)
+	),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
@@ -6105,7 +6120,10 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
-	MTGoal = '$lgt_mt_peek_reply'(TGoal, Sender, This, Self),
+	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
+		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, Sender, This, Self)
+	;	MTGoal = '$lgt_mt_peek_reply'(TGoal, Sender, This, Self)
+	),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
@@ -11762,12 +11780,21 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 
 
-% '$lgt_mt_send_goal'(+object_identifier, @callable, +object_identifier, +object_identifier, +object_identifier, +list)
+% '$lgt_mt_send_goal'(@callable, +object_identifier, +object_identifier, +object_identifier, +list)
 %
 % send a goal to an object dispatcher thread
 
 '$lgt_mt_send_goal'(Goal, Sender, This, Self, Options) :-
-	'$lgt_current_object_'(This, Thread, _, _, _, _, _, _), !,
+	'$lgt_current_object_'(This, Thread, _, _, _, _, _, _) ->
+	'$lgt_mt_send_goal'(Thread, Goal, Sender, This, Self, Options).
+
+
+
+% '$lgt_mt_send_goal'(+atom, @callable, +object_identifier, +object_identifier, +object_identifier, +list)
+%
+% send a goal to an object dispatcher thread
+
+'$lgt_mt_send_goal'(Thread, Goal, Sender, This, Self, Options) :-
 	(	current_thread(Thread, running) ->
 		thread_send_message(Thread, '$lgt_goal'(Goal, This, Self, Options))
 	;	throw(error(existence_error(object_thread, This), Goal, Sender))
@@ -11775,12 +11802,21 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 
 
-% '$lgt_mt_peek_reply'(+callable, +object_identifier, +object_identifier, +object_identifier, +list)
+% '$lgt_mt_peek_reply'(+callable, +object_identifier, +object_identifier, +object_identifier)
 %
 % peek a reply to a goal sent to the senders object dispatcher thread
 
 '$lgt_mt_peek_reply'(Goal, Sender, This, Self) :-
-	'$lgt_current_object_'(This, Thread, _, _, _, _, _, _), !,
+	'$lgt_current_object_'(This, Thread, _, _, _, _, _, _) ->
+	'$lgt_mt_peek_reply'(Thread, Goal, Sender, This, Self).
+
+
+
+% '$lgt_mt_peek_reply'(+atom, +callable, +object_identifier, +object_identifier, +object_identifier)
+%
+% peek a reply to a goal sent to the senders object dispatcher thread
+
+'$lgt_mt_peek_reply'(Thread, Goal, Sender, This, Self) :-
 	(	current_thread(Thread, running) ->
 		thread_peek_message(Thread, '$lgt_reply'(Goal, This, Self, _))
 	;	throw(error(existence_error(object_thread, This), Goal, Sender))
@@ -11788,15 +11824,24 @@ current_logtalk_flag(version, version(2, 29, 5)).
 
 
 
-% '$lgt_mt_get_reply'(+callable, +object_identifier, +object_identifier, +object_identifier, +list)
+% '$lgt_mt_get_reply'(+callable, +object_identifier, +object_identifier, +object_identifier)
 %
 % get a reply to a goal sent to the senders object dispatcher thread
 
-'$lgt_mt_get_reply'(Goal, Sender, This, Self, Options) :-
-	'$lgt_current_object_'(This, Thread, _, _, _, _, _, _), !,
+'$lgt_mt_get_reply'(Goal, Sender, This, Self) :-
+	'$lgt_current_object_'(This, Thread, _, _, _, _, _, _) ->
+	'$lgt_mt_get_reply'(Thread, Goal, Sender, This, Self).
+
+
+
+% '$lgt_mt_get_reply'(+atom, +callable, +object_identifier, +object_identifier, +object_identifier)
+%
+% get a reply to a goal sent to the senders object dispatcher thread
+
+'$lgt_mt_get_reply'(Thread, Goal, Sender, This, Self) :-
 	(	current_thread(Thread, running) ->
 		call_cleanup(
-			'$lgt_mt_get_reply_aux'(Thread, Goal, This, Self, Options),
+			'$lgt_mt_get_reply_aux'(Thread, Goal, This, Self),
 			(	thread_peek_message(Thread, '$lgt_non_det_id'(Goal, This, Self, Id)) ->
 				thread_get_message(Thread, '$lgt_non_det_id'(Goal, This, Self, Id)),
 				(	current_thread(Id, running) ->							% if the thread is still running, it's suspended waiting
@@ -11811,7 +11856,8 @@ current_logtalk_flag(version, version(2, 29, 5)).
 	).
 
 
-'$lgt_mt_get_reply_aux'(Thread, Goal, This, Self, _) :-
+
+'$lgt_mt_get_reply_aux'(Thread, Goal, This, Self) :-
 	copy_term((Goal, This, Self), (RGoal, RThis, RSelf)),
 	% we MUST get the reply before finding out if we're dealing with either det or non-det goals;
 	% this ensures that the '$lgt_competing_id'/5 or '$lgt_non_det_id'/5 messages are already available
