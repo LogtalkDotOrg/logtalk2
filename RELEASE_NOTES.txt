@@ -12,13 +12,16 @@ RELEASE NOTES
 
 2.29.6 - March ??, 2007
 
+	Allow non-instantiated arguments at compile time for the multi-threading 
+	built-in predicate threaded/1.
+
 	Simplified and optimized the implementation of Logtalk multi-threading 
 	support.
 
 
 2.29.5 - March 28, 2007
 
-	Added a new built-in predicate, "threaded/1", for proving each goal in 
+	Added a new built-in predicate, threaded/1, for proving each goal in 
 	a conjunction in its own thread, simplifying common multi-threading 
 	tasks that previously required sequences of calls to the built-in 
 	predicates threaded_call/1 and threaded_exit/1.
