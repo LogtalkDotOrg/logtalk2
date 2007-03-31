@@ -29,7 +29,7 @@
 		threaded((
 			mt_msort(N2, List1, Sorted1),
 			mt_msort(N2, List2, Sorted2)
-		)),
+		)), !,	% SWI-Prolog needs help with determinism detection
 		merge(Sorted1, Sorted2, Sorted).
 
 	st_msort([], []).
