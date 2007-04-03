@@ -3558,17 +3558,17 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	'$lgt_current_directory'(Directory),
 	(	'$lgt_loaded_file_'(File, Directory) ->
 		(	'$lgt_compiler_flag'(reload, skip) ->
-			'$lgt_report_skiping_file'(File)
+			'$lgt_report_skipping_file'(File)
 		;	'$lgt_report_reloading_file'(File),
 			'$lgt_compile_file'(File),
-			'$lgt_file_name'(prolog, File, PFile),
-			'$lgt_load_prolog_code'(PFile),
+			'$lgt_file_name'(prolog, File, PrologFile),
+			'$lgt_load_prolog_code'(PrologFile, File),
 			'$lgt_report_reloaded_file'(File)
 		)
 	;	'$lgt_report_loading_file'(File),
 		'$lgt_compile_file'(File),
-		'$lgt_file_name'(prolog, File, PFile),
-		'$lgt_load_prolog_code'(PFile),
+		'$lgt_file_name'(prolog, File, PrologFile),
+		'$lgt_load_prolog_code'(PrologFile, File),
 		'$lgt_report_loaded_file'(File),
 		assertz('$lgt_loaded_file_'(File, Directory))
 	).
@@ -3754,13 +3754,13 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	).
 
 
-% '$lgt_report_skiping_file'(+atom)
+% '$lgt_report_skipping_file'(+atom)
 %
 % prints a message that loading a file is being skiped
 
-'$lgt_report_skiping_file'(File) :-
+'$lgt_report_skipping_file'(File) :-
 	(	'$lgt_compiler_flag'(report, on) ->
-		write('<<< skiping loading of source file '), writeq(File), write(' (already loaded) '), nl
+		write('<<< skipping loading of source file '), writeq(File), write(' (already loaded) '), nl
 	;	true
 	).
 
@@ -12068,7 +12068,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	'$lgt_default_flag'(supports_encoding_dir, Encodings),
 	write('  Support for encoding directive (supports_encoding_dir):    '), write(Encodings), nl,
 	'$lgt_default_flag'(threads, Threads),
-	write('  Multi-threading programming suport (threads):              '), write(Threads), nl, nl.
+	write('  Multi-threading programming support (threads):              '), write(Threads), nl, nl.
 
 
 
