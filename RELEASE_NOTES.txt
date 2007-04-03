@@ -18,6 +18,8 @@ RELEASE NOTES
 	Simplified and optimized the implementation of Logtalk multi-threading 
 	support.
 
+	Added predicate depth/2 to the library object "term".
+
 	Corrected a bug when running Logtalk with SWI-Prolog that prevented the 
 	use of alternate compilation directories (i.e. switching the "altdirs" 
 	compiler flag on).
