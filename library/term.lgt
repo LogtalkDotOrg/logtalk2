@@ -115,6 +115,10 @@
 
 	valid(_).
 
+	variant(Term1, Term2) :-
+		\+ \+ subsumes(Term1, Term2),
+		\+ \+ subsumes(Term2, Term1).
+
 	vars(Term, Vars) :-
 		vars(Term, [], Vars).
 

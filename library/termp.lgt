@@ -49,6 +49,12 @@
 		comment is 'Term is valid.',
 		argnames is ['Term']]).
 
+	:- public(variant/2).
+	:- mode(variant(@term, @term), zero_or_one).
+	:- info(variant/2, [
+		comment is 'Each term is a variant of the other (i.e. they are structurally equivalent).',
+		argnames is ['Term1', 'Term2']]).
+
 	:- public(vars/2).
 	:- mode(vars(@term, -list), one).
 	:- info(vars/2, [

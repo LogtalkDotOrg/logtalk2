@@ -18,7 +18,7 @@ RELEASE NOTES
 	Simplified and optimized the implementation of Logtalk multi-threading 
 	support.
 
-	Added predicate depth/2 to the library object "term".
+	Added predicates depth/2 and variant/2 to the library object "term".
 
 	Corrected a bug when running Logtalk with SWI-Prolog that prevented the 
 	use of alternate compilation directories (i.e. switching the "altdirs" 
@@ -26,6 +26,9 @@ RELEASE NOTES
 
 	Corrected a bug when running Logtalk with SWI-Prolog that can prevent 
 	make/0 from recompiling and reloading modified Logtalk source files.
+
+	Updated the CxProlog config file to use the new built-in predicates in 
+	version 0.95.
 
 
 2.29.5 - March 28, 2007
