@@ -12068,7 +12068,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	'$lgt_default_flag'(supports_encoding_dir, Encodings),
 	write('  Support for encoding directive (supports_encoding_dir):    '), write(Encodings), nl,
 	'$lgt_default_flag'(threads, Threads),
-	write('  Multi-threading programming support (threads):              '), write(Threads), nl, nl.
+	write('  Multi-threading programming support (threads):             '), write(Threads), nl, nl.
 
 
 
