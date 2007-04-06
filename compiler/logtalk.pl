@@ -1799,8 +1799,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	throw(error(type_error(callable, Clause), Obj::asserta(Clause), Sender)).
 
 '$lgt_asserta'(Obj, Clause, Sender, TestScope, DclScope) :-
-	(	Clause = (_ :- _) ->
-		'$lgt_asserta_rule_chk'(Obj, Clause, Sender, TestScope, DclScope)
+	(	Clause = (Head :- Body) ->
+		(	Body == true ->
+			'$lgt_asserta_fact_chk'(Obj, Head, Sender, TestScope, DclScope)
+		;	'$lgt_asserta_rule_chk'(Obj, Clause, Sender, TestScope, DclScope)
+		)
 	;	'$lgt_asserta_fact_chk'(Obj, Clause, Sender, TestScope, DclScope)
 	).
 
@@ -1899,8 +1902,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	throw(error(type_error(callable, Clause), Obj::assertz(Clause), Sender)).
 
 '$lgt_assertz'(Obj, Clause, Sender, TestScope, DclScope) :-
-	(	Clause = (_ :- _) ->
-		'$lgt_assertz_rule_chk'(Obj, Clause, Sender, TestScope, DclScope)
+	(	Clause = (Head :- Body) ->
+		(	Body == true ->
+			'$lgt_assertz_fact_chk'(Obj, Head, Sender, TestScope, DclScope)
+		;	'$lgt_assertz_rule_chk'(Obj, Clause, Sender, TestScope, DclScope)
+		)
 	;	'$lgt_assertz_fact_chk'(Obj, Clause, Sender, TestScope, DclScope)
 	).
 
@@ -2091,8 +2097,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	throw(error(type_error(callable, Head), Obj::retract((Head:-Body)), Sender)).
 
 '$lgt_retract'(Obj, Clause, Sender, Scope) :-
-	(	Clause = (_ :- _) ->
-		'$lgt_retract_rule_chk'(Obj, Clause, Sender, Scope)
+	(	Clause = (Head :- Body) ->
+		(	Body == true ->
+			'$lgt_retract_fact_chk'(Obj, Head, Sender, Scope)
+		;	'$lgt_retract_rule_chk'(Obj, Clause, Sender, Scope)
+		)
 	;	'$lgt_retract_fact_chk'(Obj, Clause, Sender, Scope)
 	).
 
@@ -3348,6 +3357,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 '$lgt_dbg_valid_port_option'(i, redo, _).
 '$lgt_dbg_valid_port_option'(f, call, _).
 '$lgt_dbg_valid_port_option'(f, redo, _).
+'$lgt_dbg_valid_port_option'(t, _, _).
 '$lgt_dbg_valid_port_option'(n, _, _).
 '$lgt_dbg_valid_port_option'(!, _, _).
 '$lgt_dbg_valid_port_option'(@, _, _).
@@ -3376,6 +3386,13 @@ current_logtalk_flag(version, version(2, 29, 6)).
 '$lgt_dbg_do_port_option'(i, _, _, _, _, ignore).
 
 '$lgt_dbg_do_port_option'(f, _, _, _, _, fail).
+
+'$lgt_dbg_do_port_option'(t, _, _, _, _, _) :-
+	(	'$lgt_dbg_tracing_' ->
+		true
+	;	assertz('$lgt_dbg_tracing_')
+	),
+	fail.
 
 '$lgt_dbg_do_port_option'(n, _, _, _, _, true) :-
 	'$lgt_dbg_nodebug'.
@@ -3451,6 +3468,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	write('        s - skip (skips debugging for the current goal; only meaningful at call and redo ports)'), nl,
 	write('        i - ignore (ignores goal, assumes that it succeeded)'), nl,
 	write('        f - fail (forces backtracking)'), nl,
+	write('        t - start tracing (when waiting for user input on a spy point)'), nl,
 	write('        n - nodebug (turns off debugging)'), nl,
 	write('        ! - command (reads and executes a query)'), nl,
 	write('        @ - command (reads and executes a query)'), nl,
@@ -6236,8 +6254,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_asserta'(This, Pred, This, p(_), p)
 		;	'$lgt_compiler_db_clause_chk'(Pred),
-			(	Pred = (_ :- _) ->
-				TCond = '$lgt_asserta_rule_chk'(This, Pred, This, p(_), p)
+			(	Pred = (Head :- Body) ->
+				(	Body == true ->
+					TCond = '$lgt_asserta_fact_chk'(This, Head, This, p(_), p)
+				;	TCond = '$lgt_asserta_rule_chk'(This, Pred, This, p(_), p)
+				)
 			;	TCond = '$lgt_asserta_fact_chk'(This, Pred, This, p(_), p)
 			)
 		)
@@ -6253,8 +6274,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_assertz'(This, Pred, This, p(_), p)
 		;	'$lgt_compiler_db_clause_chk'(Pred),
-			(	Pred = (_ :- _) ->
-				TCond = '$lgt_assertz_rule_chk'(This, Pred, This, p(_), p)
+			(	Pred = (Head :- Body) ->
+				(	Body == true ->
+					TCond = '$lgt_assertz_fact_chk'(This, Head, This, p(_), p)
+				;	TCond = '$lgt_assertz_rule_chk'(This, Pred, This, p(_), p)
+				)
 			;	TCond = '$lgt_assertz_fact_chk'(This, Pred, This, p(_), p)
 			)
 		)
@@ -6284,8 +6308,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_retract'(This, Pred, This, p(_))
 		;	'$lgt_compiler_db_clause_chk'(Pred),
-			(	Pred = (_ :- _) ->
-				TCond = '$lgt_retract_rule_chk'(This, Pred, This, p(_))
+			(	Pred = (Head :- Body) ->
+				(	Body == true ->
+					TCond = '$lgt_retract_fact_chk'(This, Head, This, p(_))
+				;	TCond = '$lgt_retract_rule_chk'(This, Pred, This, p(_))
+				)
 			;	TCond = '$lgt_retract_fact_chk'(This, Pred, This, p(_))
 			)
 		)
@@ -6620,14 +6647,18 @@ current_logtalk_flag(version, version(2, 29, 6)).
 
 '$lgt_optimizable_local_db_call'(Pred, Ctx, TPred) :-
 	callable(Pred),
-	functor(Pred, Functor, Arity),
-	Functor \== (:-),						% only facts allowed
+	(	Pred = (Head :- Body) ->			% only facts allowed
+		Body == true,
+		Pred2 = Head
+	;	Pred2 = Pred
+	),
+	functor(Pred2, Functor, Arity),
 	'$lgt_pp_dynamic_'(Functor, Arity),
 	(	'$lgt_pp_public_'(Functor, Arity)	% a scope directive must be present
 	;	'$lgt_pp_protected_'(Functor, Arity)
 	;	'$lgt_pp_private_'(Functor, Arity)
 	), !,
-	Pred =.. [Functor| Args],
+	Pred2 =.. [Functor| Args],
 	'$lgt_ctx_ctx'(Ctx, _, _, _, _, EntityPrefix, _, _),
 	'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
 	'$lgt_append'(Args, [_, _, _], Args2),
@@ -6863,8 +6894,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	(	'$lgt_runtime_db_clause_chk'(Pred) ->
 		TPred = '$lgt_asserta'(Obj, Pred, This, p(p(_)), p(p(p)))
 	;	'$lgt_compiler_db_clause_chk'(Pred),
-		(	Pred = (_ :- _) ->
-			TPred = '$lgt_asserta_rule_chk'(Obj, Pred, This, p(p(_)), p(p(p)))
+		(	Pred = (Head :- Body) ->
+			(	Body == true ->
+				TPred = '$lgt_asserta_fact_chk'(Obj, Head, This, p(p(_)), p(p(p)))
+			;	TPred = '$lgt_asserta_rule_chk'(Obj, Pred, This, p(p(_)), p(p(p)))
+			)
 		;	TPred = '$lgt_asserta_fact_chk'(Obj, Pred, This, p(p(_)), p(p(p)))
 		)
 	).
@@ -6874,8 +6908,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	(	'$lgt_runtime_db_clause_chk'(Pred) ->
 		TPred = '$lgt_assertz'(Obj, Pred, This, p(p(_)), p(p(p)))
 	;	'$lgt_compiler_db_clause_chk'(Pred),
-		(	Pred = (_ :- _) ->
-			TPred = '$lgt_assertz_rule_chk'(Obj, Pred, This, p(p(_)), p(p(p)))
+		(	Pred = (Head :- Body) ->
+			(	Body == true ->
+				TPred = '$lgt_assertz_fact_chk'(Obj, Head, This, p(p(_)), p(p(p)))
+			;	TPred = '$lgt_assertz_rule_chk'(Obj, Pred, This, p(p(_)), p(p(p)))
+			)
 		;	TPred = '$lgt_assertz_fact_chk'(Obj, Pred, This, p(p(_)), p(p(p)))
 		)
 	).
@@ -6893,8 +6930,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	(	'$lgt_runtime_db_clause_chk'(Pred) ->
 		TPred = '$lgt_retract'(Obj, Pred, This, p(p(p)))
 	;	'$lgt_compiler_db_clause_chk'(Pred),
-		(	Pred = (_ :- _) ->
-			TPred = '$lgt_retract_rule_chk'(Obj, Pred, This, p(p(p)))
+		(	Pred = (Head :- Body) ->
+			(	Body == true ->
+				TPred = '$lgt_retract_fact_chk'(Obj, Head, This, p(p(p)))
+			;	TPred = '$lgt_retract_rule_chk'(Obj, Pred, This, p(p(p)))
+			)
 		;	TPred = '$lgt_retract_fact_chk'(Obj, Pred, This, p(p(p)))
 		)
 	).
@@ -7055,8 +7095,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	(	'$lgt_runtime_db_clause_chk'(Pred) ->
 		TPred = '$lgt_asserta'(Self, Pred, This, p(_), p(p))
 	;	'$lgt_compiler_db_clause_chk'(Pred),
-		(	Pred = (_ :- _) ->
-			TPred = '$lgt_asserta_rule_chk'(Self, Pred, This, p(_), p(p))
+		(	Pred = (Head :- Body) ->
+			(	Body == true ->
+				TPred = '$lgt_asserta_fact_chk'(Self, Head, This, p(_), p(p))
+			;	TPred = '$lgt_asserta_rule_chk'(Self, Pred, This, p(_), p(p))
+			)
 		;	TPred = '$lgt_asserta_fact_chk'(Self, Pred, This, p(_), p(p))
 		)
 	).
@@ -7066,8 +7109,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	(	'$lgt_runtime_db_clause_chk'(Pred) ->
 		TPred = '$lgt_assertz'(Self, Pred, This, p(_), p(p))
 	;	'$lgt_compiler_db_clause_chk'(Pred),
-		(	Pred = (_ :- _) ->
-			TPred = '$lgt_assertz_rule_chk'(Self, Pred, This, p(_), p(p))
+		(	Pred = (Head :- Body) ->
+			(	Body == true ->
+				TPred = '$lgt_assertz_fact_chk'(Self, Head, This, p(_), p(p))
+			;	TPred = '$lgt_assertz_rule_chk'(Self, Pred, This, p(_), p(p))
+			)
 		;	TPred = '$lgt_assertz_fact_chk'(Self, Pred, This, p(_), p(p))
 		)
 	).
@@ -7085,8 +7131,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	(	'$lgt_runtime_db_clause_chk'(Pred) ->
 		TPred = '$lgt_retract'(Self, Pred, This, p(_))
 	;	'$lgt_compiler_db_clause_chk'(Pred),
-		(	Pred = (_ :- _) ->
-			TPred = '$lgt_retract_rule_chk'(Self, Pred, This, p(_))
+		(	Pred = (Head :- Body) ->
+			(	Body == true ->
+				TPred = '$lgt_retract_fact_chk'(Self, Head, This, p(_))
+			;	TPred = '$lgt_retract_rule_chk'(Self, Pred, This, p(_))
+			)
 		;	TPred = '$lgt_retract_fact_chk'(Self, Pred, This, p(_))
 		)
 	).
