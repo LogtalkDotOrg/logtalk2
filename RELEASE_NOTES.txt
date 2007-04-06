@@ -18,6 +18,9 @@ RELEASE NOTES
 	Simplified and optimized the implementation of Logtalk multi-threading 
 	support.
 
+	Updated the Logtalk built-in database methods to always interpret rules 
+	whose body is the control construct true/0 as facts.
+
 	Added predicates depth/2 and variant/2 to the library object "term".
 
 	Corrected a bug when running Logtalk with SWI-Prolog that prevented the 
@@ -34,6 +37,10 @@ RELEASE NOTES
 
 	Updated the CxProlog config file to use the new built-in predicates in 
 	version 0.95.
+
+	Updated the Ciao and ECLiPSe config files to set the compiler flag 
+	"underscore_vars" to "dont_care" in order to avoid spurious warnings 
+	with some examples.
 
 
 2.29.5 - March 28, 2007
