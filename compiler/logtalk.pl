@@ -3238,7 +3238,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	'$lgt_dbg_leashing_'(Port),
 	(	'$lgt_dbg_tracing_' ->
 		Code = ' '
-	;	'$lgt_dbg_spying'(Port, Goal, DbgCtx, Code)
+	;	'$lgt_dbg_spying'(Port, Goal, DbgCtx, Code),
+		(	'$lgt_dbg_tracing_' ->
+			true
+		;	assertz('$lgt_dbg_tracing_')
+		)
 	).
 
 
@@ -3357,12 +3361,12 @@ current_logtalk_flag(version, version(2, 29, 6)).
 '$lgt_dbg_valid_port_option'(i, redo, _).
 '$lgt_dbg_valid_port_option'(f, call, _).
 '$lgt_dbg_valid_port_option'(f, redo, _).
-'$lgt_dbg_valid_port_option'(t, _, _).
 '$lgt_dbg_valid_port_option'(n, _, _).
 '$lgt_dbg_valid_port_option'(!, _, _).
 '$lgt_dbg_valid_port_option'(@, _, _).
 '$lgt_dbg_valid_port_option'(b, _, _).
 '$lgt_dbg_valid_port_option'(a, _, _).
+'$lgt_dbg_valid_port_option'(q, _, _).
 '$lgt_dbg_valid_port_option'(d, _, _).
 '$lgt_dbg_valid_port_option'(x, _, _).
 '$lgt_dbg_valid_port_option'(h, _, _).
@@ -3446,6 +3450,9 @@ current_logtalk_flag(version, version(2, 29, 6)).
 '$lgt_dbg_do_port_option'(a, _, _, _, _, _) :-
 	throw(error(logtalk_debugger_aborted)).
 
+'$lgt_dbg_do_port_option'(q, _, _, _, _, _) :-
+	halt.
+
 '$lgt_dbg_do_port_option'(d, _, Goal, _, _, _) :-
 	write('    Current goal: '), write_term(Goal, [ignore_ops(true)]), nl,
 	fail.
@@ -3464,16 +3471,16 @@ current_logtalk_flag(version, version(2, 29, 6)).
 '$lgt_dbg_do_port_option'(h, _, _, _, _, _) :-
 	write('    Available options are:'), nl,
 	write('        c - creep (go on; you may use also the spacebar)'), nl,
-	write('        l - leep (continues execution until the next spy point is found)'), nl,
+	write('        l - leap (continues execution until the next spy point is found)'), nl,
 	write('        s - skip (skips debugging for the current goal; only meaningful at call and redo ports)'), nl,
 	write('        i - ignore (ignores goal, assumes that it succeeded)'), nl,
 	write('        f - fail (forces backtracking)'), nl,
-	write('        t - start tracing (when waiting for user input on a spy point)'), nl,
 	write('        n - nodebug (turns off debugging)'), nl,
 	write('        ! - command (reads and executes a query)'), nl,
 	write('        @ - command (reads and executes a query)'), nl,
 	write('        b - break (suspends execution and starts new interpreter; type end_of_file to terminate)'), nl,
 	write('        a - abort (returns to top level interpreter)'), nl,
+	write('        q - quit (quits Logtalk)'), nl,
 	write('        d - display (writes current goal without using operator notation)'), nl,
 	write('        x - context (prints execution context)'), nl,
 	write('        e - exception (prints exception term thrown by current goal)'), nl,
