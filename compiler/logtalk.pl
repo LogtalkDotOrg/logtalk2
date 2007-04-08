@@ -87,6 +87,11 @@
 :- dynamic('$lgt_current_flag_'/2).			% '$lgt_current_flag_'(Option, Value)
 
 
+% static binding cache
+
+:- dynamic('$lgt_static_binding_cache_'/4).	% '$lgt_static_binding_cache_'(Obj, Pred, Sender, Call)
+
+
 % lookup caches for messages to an object, messages to self, and super calls
 
 :- dynamic('$lgt_obj_lookup_cache_'/4).		% '$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Call)
@@ -1566,7 +1571,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 '$lgt_visible_predicate'(Obj, Pred, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, _, _, _, _, _),
 	call_with_args(Dcl, Pred, PScope, _, _, _, _, SCtn, _),
-	 once((\+ \+ PScope = Scope; Sender = SCtn)).
+	once((\+ \+ PScope = Scope; Sender = SCtn)).
 
 
 
@@ -4315,7 +4320,8 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	retractall('$lgt_obj_lookup_cache_'(_, _, _, _)),
 	retractall('$lgt_self_lookup_cache_'(_, _, _, _)),
 	retractall('$lgt_super_lookup_cache_'(_, _, _, _, _)),
-	retractall('$lgt_db_lookup_cache_'(_, _, _, _, _)).
+	retractall('$lgt_db_lookup_cache_'(_, _, _, _, _)),
+	retractall('$lgt_static_binding_cache_'(_, _, _, _)).
 
 
 
@@ -4327,7 +4333,8 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	retractall('$lgt_obj_lookup_cache_'(_, Pred, _, _)),
 	retractall('$lgt_self_lookup_cache_'(_, Pred, _, _)),
 	retractall('$lgt_super_lookup_cache_'(_, Pred, _, _, _)),
-	retractall('$lgt_db_lookup_cache_'(_, Pred, _, _, _)).
+	retractall('$lgt_db_lookup_cache_'(_, Pred, _, _, _)),
+	retractall('$lgt_static_binding_cache_'(_, Pred, _, _)).
 
 
 
@@ -6977,8 +6984,16 @@ current_logtalk_flag(version, version(2, 29, 6)).
 		;	TPred = '$lgt_send_to_object_ne'(Obj, Pred, This)
 		)
 	;	(	'$lgt_compiler_flag'(events, on) ->
-			TPred = '$lgt_send_to_object_nv'(Obj, Pred, This)
-		;	TPred = '$lgt_send_to_object_ne_nv'(Obj, Pred, This)
+			(	'$lgt_static_binding_cache_'(Obj, Pred, This, Call) ->
+				TPred = (\+ ('$lgt_before_'(Obj, Pred, This, _, BCall), \+ call(BCall)),
+						 Call,
+						 \+ ('$lgt_after_'(Obj, Pred, This, _, ACall), \+ call(ACall)))
+			;	TPred = '$lgt_send_to_object_nv'(Obj, Pred, This)
+			)
+		;	(	'$lgt_static_binding_cache_'(Obj, Pred, This, Call) ->
+				TPred = Call
+			;	TPred = '$lgt_send_to_object_ne_nv'(Obj, Pred, This)
+			)
 		)
 	).
 
@@ -9450,8 +9465,13 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	;	Goal2 = Goal1
 	),
 	(	'$lgt_pp_fentity_init_'(Goal3) ->
-		Goal = (Goal2, Goal3)
-	;	Goal = Goal2
+		Goal4 = (Goal2, Goal3)
+	;	Goal4 = Goal2
+	),
+	(	'$lgt_pp_object_'(_, _, Dcl, Def, _, _, _, _, _, _, static),
+	 	'$lgt_compiler_flag'(reload, skip) ->
+		Goal = (Goal4, '$lgt_add_static_binding_cache_entry'((Entity, Dcl, Def)))
+	;	Goal = Goal4  
 	),
 	assertz('$lgt_pp_entity_init_'(Type, Entity, Goal)).
 
@@ -12005,6 +12025,32 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	'$lgt_mt_kill_competing_threads'(Thread, Goal, This, Self).
 
 '$lgt_mt_kill_competing_threads'(_, _, _, _).
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  static binding supporting predicates
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+'$lgt_add_static_binding_cache_entries'([]).
+
+'$lgt_add_static_binding_cache_entries'([Obj| Objs]) :-
+	'$lgt_add_static_binding_cache_entry'(Obj),
+	'$lgt_add_static_binding_cache_entries'(Objs).
+
+
+'$lgt_add_static_binding_cache_entry'((Obj, Dcl, Def)) :-
+	call_with_args(Dcl, Pred, p(p(p)), static, _, _, _, _, _),
+	(	call_with_args(Def, Pred, Sender, Obj, Obj, Call, _) ->
+		assertz('$lgt_static_binding_cache_'(Obj, Pred, Sender, Call))
+	),
+	fail.
+'$lgt_add_static_binding_cache_entry'(_).
 
 
 
