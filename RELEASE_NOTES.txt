@@ -19,7 +19,15 @@ RELEASE NOTES
 	support.
 
 	Updated the Logtalk built-in database methods to always interpret rules 
-	whose body is the control construct true/0 as facts.
+	whose body is the control construct true/0 as facts. Corrected a bug when 
+	compiling dynamic predicates that would prevent using of the clause/2 
+	built-in database method.
+
+	Corrected a bug when using the Logtalk built-in database method clause/2 
+	with entities compiled in debug mode.
+
+	Added a quit option, "q", to the Logtalk built-in debugger. Automatically 
+	switch the debugger to trace mode when finding a spy point.
 
 	Added predicates depth/2 and variant/2 to the library object "term".
 

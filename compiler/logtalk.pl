@@ -1795,6 +1795,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	throw(error(type_error(callable, Head), Obj::asserta((Head:-Body)), Sender)).
 
 '$lgt_asserta'(Obj, (Head:-Body), Sender, _, _) :-
+	nonvar(Body),
 	\+ callable(Body),
 	throw(error(type_error(callable, Body), Obj::asserta((Head:-Body)), Sender)).
 
@@ -1898,6 +1899,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	throw(error(type_error(callable, Head), Obj::assertz((Head:-Body)), Sender)).
 
 '$lgt_assertz'(Obj, (Head:-Body), Sender, _, _) :-
+	nonvar(Body),
 	\+ callable(Body),
 	throw(error(type_error(callable, Body), Obj::assertz((Head:-Body)), Sender)).
 
@@ -2043,9 +2045,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	'$lgt_db_lookup_cache_'(Obj, Head, Sender, Call, _),	
 	!,
 	clause(Call, TBody),
-	(	TBody = ('$lgt_nop'(Body), _) ->
+	(	TBody = ('$lgt_nop'(Body), _) ->	% rules (compiled both in normal and debug mode)
 		true
-	;	Body = TBody
+	;	TBody = '$lgt_dbg_fact'(_, _) ->	% facts compiled in debug mode
+		Body = true
+	;	TBody = Body						% facts compiled in normal mode
 	).
 
 '$lgt_clause_chk'(Obj, Head, Body, Sender, Scope) :-
@@ -2059,7 +2063,9 @@ current_logtalk_flag(version, version(2, 29, 6)).
 					clause(Call, TBody),
 					(	TBody = ('$lgt_nop'(Body), _) ->
 						true
-					;	Body = TBody
+					;	TBody = '$lgt_dbg_fact'(_, _) ->
+						Body = true
+					;	TBody = Body
 					)
 				)
 			;	% predicate is not within the scope of the sender:
@@ -2076,7 +2082,9 @@ current_logtalk_flag(version, version(2, 29, 6)).
 			clause(Call, TBody),
 			(	TBody = ('$lgt_nop'(Body), _) ->
 				true
-			;	Body = TBody
+			;	TBody = '$lgt_dbg_fact'(_, _) ->
+				Body = true
+			;	TBody = Body
 			)
 		;	throw(error(existence_error(predicate_declaration, Head), Obj::clause(Head, Body), Sender))
 		)
@@ -2101,14 +2109,73 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	\+ callable(Head),
 	throw(error(type_error(callable, Head), Obj::retract((Head:-Body)), Sender)).
 
+'$lgt_retract'(Obj, (Head:-Body), Sender, _) :-
+	nonvar(Body),
+	\+ callable(Body),
+	throw(error(type_error(callable, Body), Obj::retract((Head:-Body)), Sender)).
+
 '$lgt_retract'(Obj, Clause, Sender, Scope) :-
 	(	Clause = (Head :- Body) ->
-		(	Body == true ->
+		(	var(Body) ->
+			'$lgt_retract_var_body_chk'(Obj, Clause, Sender, Scope)
+		;	Body == true ->
 			'$lgt_retract_fact_chk'(Obj, Head, Sender, Scope)
 		;	'$lgt_retract_rule_chk'(Obj, Clause, Sender, Scope)
 		)
 	;	'$lgt_retract_fact_chk'(Obj, Clause, Sender, Scope)
 	).
+
+
+'$lgt_retract_var_body_chk'(Obj, (Head:-Body), Sender, Scope) :-
+	'$lgt_current_object_'(Obj, Prefix, _, _, _, _, _, _),
+	!,
+	call_with_args(Prefix, Dcl, Def, _, _, _, _, DDef, _),
+	(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
+		(	Type == (dynamic) ->
+			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
+				(	call_with_args(DDef, Head, _, _, _, Call) ->
+					retract((Call :- TBody)),
+					(	TBody = ('$lgt_nop'(Body), _) ->
+						true
+					;	TBody = '$lgt_dbg_fact'(_, _) ->
+						Body = true
+					;	TBody = Body
+					),
+					'$lgt_update_ddef_table'(DDef, Head, Call)
+				;	call_with_args(Def, Head, _, _, _, Call) ->
+					retract((Call :- TBody)),
+					(	TBody = ('$lgt_nop'(Body), _) ->
+						true
+					;	TBody = '$lgt_dbg_fact'(_, _) ->
+						Body = true
+					;	TBody = Body
+					)
+				)
+			;	% predicate is not within the scope of the sender:
+				(	PScope == p ->
+					throw(error(permission_error(modify, private_predicate, Head), Obj::retract((Head:-Body)), Sender))
+				;	throw(error(permission_error(modify, protected_predicate, Head), Obj::retract((Head:-Body)), Sender))
+				)
+			)
+		;	% predicate is static:
+			throw(error(permission_error(modify, static_predicate, Head), Obj::retract((Head:-Body)), Sender))
+		)
+	;	% local dynamic predicate with no scope declaration:
+		(	Obj = Sender,
+			call_with_args(DDef, Head, _, _, _, Call) ->
+			retract((Call :- TBody)),
+			(	TBody = ('$lgt_nop'(Body), _) ->
+				true
+			;	TBody = '$lgt_dbg_fact'(_, _) ->
+				Body = true
+			;	TBody = Body
+			)
+		;	throw(error(existence_error(predicate_declaration, Head), Obj::retract((Head:-Body)), Sender))
+		)
+	).
+
+'$lgt_retract_var_body_chk'(Obj, (Head:-Body), Sender, _) :-
+	throw(error(existence_error(object, Obj), Obj::retract((Head:-Body)), Sender)).
 
 
 '$lgt_retract_rule_chk'(Obj, (Head:-Body), Sender, Scope) :-
@@ -5699,7 +5766,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	\+ callable(Body),
 	throw(type_error(callable, Body)).
 
-'$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_dbg_head'(Head, DbgCtx),DBody), Ctx, Input) :-
+'$lgt_tr_clause'((Head:-Body), (THead:-'$lgt_nop'(Body), SBody), (THead:-'$lgt_nop'(Body),'$lgt_dbg_head'(Head, DbgCtx),DBody), Ctx, Input) :-
 	functor(Head, Functor, Arity),
 	'$lgt_pp_dynamic_'(Functor, Arity),
 	!,
@@ -5708,7 +5775,6 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	'$lgt_tr_head'(Head, THead, Ctx, Input),
 	'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 	'$lgt_simplify_body'(TBody, SBody),
-	TClause = (THead:-'$lgt_nop'(Body), SBody),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 '$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_dbg_head'(Head, DbgCtx),DBody), Ctx, Input) :-
@@ -6303,7 +6369,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 '$lgt_tr_body'(clause(Head, Body), TCond, DCond, Ctx) :-
 	!,
 	(	'$lgt_optimizable_local_db_call'(Head, Ctx, THead) ->
-		TCond = (clause(THead, TBody), (TBody = ('$lgt_nop'(Body), _) -> true; Body = TBody))
+		TCond = (clause(THead, TBody), (TBody = ('$lgt_nop'(Body), _) -> true; TBody = Body))
 	;	'$lgt_ctx_this'(Ctx, This),
 		(	'$lgt_runtime_db_clause_chk'((Head :- Body)) ->
 			TCond = '$lgt_clause'(This, Head, Body, This, p(_))
@@ -6323,7 +6389,9 @@ current_logtalk_flag(version, version(2, 29, 6)).
 			TCond = '$lgt_retract'(This, Pred, This, p(_))
 		;	'$lgt_compiler_db_clause_chk'(Pred),
 			(	Pred = (Head :- Body) ->
-				(	Body == true ->
+				(	var(Body) ->
+					'$lgt_retract_var_body_chk'(This, Pred, This, p(_))
+				;	Body == true ->
 					TCond = '$lgt_retract_fact_chk'(This, Head, This, p(_))
 				;	TCond = '$lgt_retract_rule_chk'(This, Pred, This, p(_))
 				)
@@ -6660,6 +6728,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 % translation to a call to the corresponding Prolog built-in predicate
 
 '$lgt_optimizable_local_db_call'(Pred, Ctx, TPred) :-
+	'$lgt_compiler_flag'(debug, off),		% not debugging
 	callable(Pred),
 	(	Pred = (Head :- Body) ->			% only facts allowed
 		Body == true,
@@ -6706,6 +6775,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	throw(type_error(callable, Head)).
 
 '$lgt_compiler_db_clause_chk'((_ :- Body)) :-
+	nonvar(Body),
 	\+ callable(Body),
 	throw(type_error(callable, Body)).
 
@@ -6945,7 +7015,9 @@ current_logtalk_flag(version, version(2, 29, 6)).
 		TPred = '$lgt_retract'(Obj, Pred, This, p(p(p)))
 	;	'$lgt_compiler_db_clause_chk'(Pred),
 		(	Pred = (Head :- Body) ->
-			(	Body == true ->
+			(	var(Body) ->
+				'$lgt_retract_var_body_chk'(Obj, Pred, This, p(p(p)))
+			;	Body == true ->
 				TPred = '$lgt_retract_fact_chk'(Obj, Head, This, p(p(p)))
 			;	TPred = '$lgt_retract_rule_chk'(Obj, Pred, This, p(p(p)))
 			)
@@ -7154,7 +7226,9 @@ current_logtalk_flag(version, version(2, 29, 6)).
 		TPred = '$lgt_retract'(Self, Pred, This, p(_))
 	;	'$lgt_compiler_db_clause_chk'(Pred),
 		(	Pred = (Head :- Body) ->
-			(	Body == true ->
+			(	var(Body) ->
+				'$lgt_retract_var_body_chk'(Self, Pred, This, p(_))
+			;	Body == true ->
 				TPred = '$lgt_retract_fact_chk'(Self, Head, This, p(_))
 			;	TPred = '$lgt_retract_rule_chk'(Self, Pred, This, p(_))
 			)
