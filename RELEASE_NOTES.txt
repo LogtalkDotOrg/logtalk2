@@ -30,6 +30,8 @@ RELEASE NOTES
 	Corrected a bug when using the Logtalk built-in database method clause/2 
 	with entities compiled in debug mode.
 
+	Improved detection and reporting of entity existence errors.
+
 	Added a quit option, "q", to the Logtalk built-in debugger. Automatically 
 	switch the debugger to trace mode when finding a spy point.
 

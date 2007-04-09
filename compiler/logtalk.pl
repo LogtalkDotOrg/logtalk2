@@ -226,6 +226,31 @@ Obj::Pred :-
 %
 % top-level runtime error handler
 
+'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/8), _)) :-
+	once((atom_concat(ObjArity, '__idcl', TFunctor); atom_concat(ObjArity, '__dcl', TFunctor))),
+	atom_codes(ObjArity, ObjArityCodes),
+	char_code('_', Underscore),
+	'$lgt_append'(FunctorCodes, [Underscore, ArityCode| ArityCodes], ObjArityCodes),
+	catch(number_codes(Arity, [ArityCode| ArityCodes]), _, fail),
+	atom_codes(Functor, FunctorCodes),
+	functor(Obj, Functor, Arity),
+	(	'$lgt_instantiates_class_'(_, Obj, _)
+	;	'$lgt_specializes_class_'(_, Obj, _)
+	;	'$lgt_extends_object_'(_, Obj, _)
+	),
+	\+ '$lgt_current_object_'(Obj, _, _, _, _, _, _, _),
+	throw(error(existence_error(object, Obj), _, _)).
+
+'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/7), _)) :-
+	atom_concat(CtgOrPtc, '_0__dcl', TFunctor),
+	(	'$lgt_implements_protocol_'(_, CtgOrPtc, _), \+ '$lgt_current_protocol_'(CtgOrPtc, _, _) ->
+		throw(error(existence_error(protocol, CtgOrPtc), _, _))
+	;	'$lgt_extends_protocol_'(_, CtgOrPtc, _), \+ '$lgt_current_protocol_'(CtgOrPtc, _, _) ->
+		throw(error(existence_error(protocol, CtgOrPtc), _, _))
+	;	'$lgt_imports_category_'(_, CtgOrPtc, _), \+ '$lgt_current_category_'(CtgOrPtc, _, _, _) ->
+		throw(error(existence_error(category, CtgOrPtc), _, _))
+	).
+
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), context(':'(_, TFunctor2/TArity2), _))) :-
 	'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), context(TFunctor2/TArity2, _))).
 
