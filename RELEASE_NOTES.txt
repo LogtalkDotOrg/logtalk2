@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.29.6 - April ??, 2007
 
+	Added preliminary support for static binding when using the ::/2 message 
+	sending operator.
+
 	Allow non-instantiated arguments at compile time for the multi-threading 
 	built-in predicate threaded/1.
 
@@ -21,7 +24,8 @@ RELEASE NOTES
 	Updated the Logtalk built-in database methods to always interpret rules 
 	whose body is the control construct true/0 as facts. Corrected a bug when 
 	compiling dynamic predicates that would prevent using of the clause/2 
-	built-in database method.
+	built-in database method. Improved predicate lookup caching when asserting
+	and retracting dynamic facts.
 
 	Corrected a bug when using the Logtalk built-in database method clause/2 
 	with entities compiled in debug mode.
