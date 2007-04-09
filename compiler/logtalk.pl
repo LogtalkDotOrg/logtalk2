@@ -2615,7 +2615,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
 			(	call_with_args(Def, GPred, GSender, GObj, GObj, GCall, _) ->		% lookup definition
 				asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
-				(GObj, GPred, GSender) = (Obj, Pred, Sender),
+				(GObj, GPred, GSender) = (Obj, Pred, Sender),						% unify message arguments
 				\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),	% call before event handlers
 				call(GCall),														% call method
 				\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall))		% call after event handlers
@@ -2674,7 +2674,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),	% construct object template
 			(	call_with_args(Def, GPred, GSender, GObj, GObj, GCall, _) ->	% lookup definition
 				asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),	% cache lookup result
-				(GObj, GPred, GSender) = (Obj, Pred, Sender),
+				(GObj, GPred, GSender) = (Obj, Pred, Sender),					% unify message arguments
 				call(GCall)														% call method
 			)
 		;	% message is not within the scope of the sender:
@@ -2721,16 +2721,16 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	'$lgt_current_object_'(Self, _, Dcl, _, _, _, _, _),
 	call_with_args(Dcl, Pred, Scope, _, _, _, _, SCtn, _),
 	!,
-	(	(Scope = p(_); This = SCtn) ->											% check scope
+	(	(Scope = p(_); This = SCtn) ->														% check scope
 		'$lgt_current_object_'(This, _, _, _, Super, _, _, _),
-		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
-		functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),		% construct "this" template
-		functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),		% construct "self" template
-		(	call_with_args(Super, GPred, GSender, GThis, GSelf, GCall, Ctn) ->	% lookup definition
+		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
+		functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),					% construct "this" template
+		functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),					% construct "self" template
+		(	call_with_args(Super, GPred, GSender, GThis, GSelf, GCall, Ctn) ->				% lookup definition
 			(	Ctn \= GThis ->
 				asserta('$lgt_super_lookup_cache_'(GSelf, GPred, GThis, GSender, GCall)),	% cache lookup result
-				(GSelf, GPred, GThis, GSender) = (Self, Pred, This, Sender),
-				call(GCall)														% call inherited definition
+				(GSelf, GPred, GThis, GSender) = (Self, Pred, This, Sender),				% unify message arguments
+				call(GCall)																	% call inherited definition
 			;	throw(error(endless_loop(Pred), ^^Pred, This))
 			)
 		)
