@@ -1821,14 +1821,15 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope),
 	(	Type == (dynamic) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
-			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
+			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, Sender2, This, Self, Call, Update),
 			'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
 			'$lgt_ctx_ctx'(Ctx, _, Sender2, This, Self, Prefix, MetaVars, _),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			(	'$lgt_debugging_'(Obj) ->
 				'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
 				asserta((Call :- ('$lgt_nop'(Body), '$lgt_dbg_head'(Head, DbgCtx), DBody)))
-			;	asserta((Call :- ('$lgt_nop'(Body), TBody)))
+			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, Sender, Call, DDef, Update),
+				asserta((Call :- ('$lgt_nop'(Body), TBody)))
 			)
 		;	% predicate is not within the scope of the sender:
 			(	Scope == p ->
@@ -1925,14 +1926,15 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope),
 	(	Type == (dynamic) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
-			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, Sender2, This, Self, Call, _),
+			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, Sender2, This, Self, Call, Update),
 			'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
 			'$lgt_ctx_ctx'(Ctx, _, Sender2, This, Self, Prefix, MetaVars, _),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			(	'$lgt_debugging_'(Obj) ->
 				'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
 				assertz((Call :- ('$lgt_nop'(Body), '$lgt_dbg_head'(Head, DbgCtx), DBody)))
-			;	assertz((Call :- ('$lgt_nop'(Body), TBody)))
+			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, Sender, Call, DDef, Update),
+				assertz((Call :- ('$lgt_nop'(Body), TBody)))
 			)
 		;	% predicate is not within the scope of the sender:
 			(	Scope == p ->
