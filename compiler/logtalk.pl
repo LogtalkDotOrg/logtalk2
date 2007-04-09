@@ -228,11 +228,10 @@ Obj::Pred :-
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/8), _)) :-
 	once((atom_concat(ObjArity, '__idcl', TFunctor); atom_concat(ObjArity, '__dcl', TFunctor))),
-	atom_codes(ObjArity, ObjArityCodes),
-	char_code('_', Underscore),
-	'$lgt_append'(FunctorCodes, [Underscore, ArityCode| ArityCodes], ObjArityCodes),
-	catch(number_codes(Arity, [ArityCode| ArityCodes]), _, fail),
-	atom_codes(Functor, FunctorCodes),
+	atom_chars(ObjArity, ObjArityChars),
+	'$lgt_append'(FunctorChars, ['_', ArityChar| ArityChars], ObjArityChars),
+	catch(number_chars(Arity, [ArityChar| ArityChars]), _, fail),
+	atom_chars(Functor, FunctorChars),
 	functor(Obj, Functor, Arity),
 	(	'$lgt_instantiates_class_'(_, Obj, _)
 	;	'$lgt_specializes_class_'(_, Obj, _)
