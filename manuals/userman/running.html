@@ -133,6 +133,10 @@ yes</pre>
 			<dd>Controls the automatic generation of documenting files in XML format. Possible option values are <code>on</code> (the usual default) and <code>off</code>.</dd>
 	</dl>
 	<dl>
+		<dt><code>xmldir(Directory)</code></dt>
+			<dd>Sets the directory to be used to store the automatically generated XML documenting files. The default value is <code>xml_docs</code>, a sub-directory of the source files directory. Use of this flag implies that the read-only flag <code>altdirs</code> be set to <code>on</code> (not supported in some back-end Prolog compilers).</dd>
+	</dl>
+	<dl>
 		<dt><code>xmlspec(Option)</code></dt>
 			<dd>Defines the XML documenting files specification format. Possible option values are <code>dtd</code> (for the DTD specification; the usual default) and <code>xsd</code> (for the XML Schema specification). Most XSL processors support DTDs but only some of them support XML Schemas.</dd>
 	</dl>
@@ -174,6 +178,10 @@ yes</pre>
 	<dl>
 		<dt><code>hook(Object::Functor)</code></dt>
 			<dd>Allows the definition of a compiler hook that is called for each term read form a source file. This option specifies both an object (which can be the pseudo-object <code>user</code>) and the functor of a public predicate with two arguments, the first one receiving the term read form the source file and the second one returning a list of terms corresponding to the expansion of the first argument.</dd>
+	</dl>
+	<dl>
+		<dt><code>tmpdir(Directory)</code></dt>
+			<dd>Sets the directory to be used to store the intermediate files generated when compiling source files (e.g. Prolog files). The default value is <code>lgt_tmp</code>, a sub-directory of the source files directory. Use of this flag implies that the read-only flag <code>altdirs</code> be set to <code>on</code> (not supported in some back-end Prolog compilers).</dd>
 	</dl>
 
 <h3>Reloading and smart compilation of source files<a id="running_smart"></a></h3>
@@ -435,7 +443,7 @@ The debugger pauses at leashed posts when tracing or when finding a spy point fo
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: April 7, 2007</span>
+		<span>Last updated on: April 10, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="installing.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="programming.html">next</a></span><br/>

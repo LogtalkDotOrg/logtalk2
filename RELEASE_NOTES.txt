@@ -33,7 +33,11 @@ RELEASE NOTES
 	Added a quit option, "q", to the Logtalk built-in debugger. Automatically 
 	switch the debugger to trace mode when finding a spy point.
 
-	Added predicates depth/2 and variant/2 to the library object "term".
+	Added two new compiler options, "xmldir" and "tmpdir", allowing a per 
+	project definition of directories for storing XML documenting files and 
+	for storing intermediate compilation files (e.g. Prolog files). Removed  
+	the config file predicate '$lgt_alt_directory'/2. Older config files are
+	incompatible with this new Logtalk version.
 
 	Corrected a bug when running Logtalk with SWI-Prolog that prevented the 
 	use of alternate compilation directories (i.e. switching the "altdirs" 
@@ -53,6 +57,8 @@ RELEASE NOTES
 	Updated the Ciao, K-Prolog, and ECLiPSe config files to set the compiler 
 	flag "underscore_vars" to "dont_care" in order to avoid spurious warnings 
 	with some examples.
+
+	Added predicates depth/2 and variant/2 to the library object "term".
 
 
 2.29.5 - March 28, 2007

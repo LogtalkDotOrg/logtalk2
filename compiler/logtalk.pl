@@ -1171,6 +1171,18 @@ threaded_notify(Message) :-
 
 
 
+% '$lgt_file_type_alt_directory'(+atom, ?atom)
+%
+% gets/checks the current value of the alternate compilation directory for the given file type
+
+'$lgt_file_type_alt_directory'(xml, Directory) :-
+	'$lgt_compiler_flag'(xmldir, Directory).
+
+'$lgt_file_type_alt_directory'(prolog, Directory) :-
+	'$lgt_compiler_flag'(tmpdir, Directory).
+	
+
+
 % logtalk_compile(@source_file_name)
 % logtalk_compile(@source_file_name_list)
 %
@@ -4045,10 +4057,10 @@ current_logtalk_flag(version, version(2, 29, 6)).
 
 '$lgt_file_name'(Type, Basename, File) :-
 	'$lgt_file_extension'(Type, Extension),			% defined on the Prolog config files
-	(	'$lgt_compiler_flag'(altdirs, on), '$lgt_alt_directory'(Type, Directory) ->
+	(	'$lgt_compiler_flag'(altdirs, on), '$lgt_file_type_alt_directory'(Type, Directory) ->
 		'$lgt_make_directory'(Directory),			% succeeds when the directory already exists
 		atom_concat(Basename, Extension, Aux),
-		atom_concat(Directory, Aux, File)			% file on an alternative compilation directory
+		atom_concat(Directory, Aux, File)			% file on the alternate compilation directory
 	;	atom_concat(Basename, Extension, File)		% file local to current working directory
 	).
 
@@ -10393,6 +10405,8 @@ current_logtalk_flag(version, version(2, 29, 6)).
 '$lgt_valid_flag'(supports_break_predicate).
 '$lgt_valid_flag'(events).
 '$lgt_valid_flag'(altdirs).
+'$lgt_valid_flag'(tmpdir).
+'$lgt_valid_flag'(xmldir).
 '$lgt_valid_flag'(hook).
 '$lgt_valid_flag'(supports_encoding_dir).
 '$lgt_valid_flag'(threads).
@@ -10469,6 +10483,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 '$lgt_valid_flag_value'(hook, Obj::Functor) :-
 	atom(Functor),
 	callable(Obj).
+
+'$lgt_valid_flag_value'(xmldir, Directory) :-
+	atom(Directory).
+'$lgt_valid_flag_value'(tmpdir, Directory) :-
+	atom(Directory).
 
 
 
