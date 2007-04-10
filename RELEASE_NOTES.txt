@@ -50,8 +50,8 @@ RELEASE NOTES
 	Updated the CxProlog config file to use the new built-in predicates in 
 	version 0.95.
 
-	Updated the Ciao and ECLiPSe config files to set the compiler flag 
-	"underscore_vars" to "dont_care" in order to avoid spurious warnings 
+	Updated the Ciao, K-Prolog, and ECLiPSe config files to set the compiler 
+	flag "underscore_vars" to "dont_care" in order to avoid spurious warnings 
 	with some examples.
 
 
