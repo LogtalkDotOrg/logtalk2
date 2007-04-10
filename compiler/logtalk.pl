@@ -2590,9 +2590,9 @@ current_logtalk_flag(version, version(2, 29, 6)).
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
 			functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
-			(	call_with_args(Def, GPred, GSender, GObj, GObj, GCall, _) ->
+			(	call_with_args(Def, GPred, GSender, GObj, GObj, GCall, _) ->		% lookup definition
 				asserta('$lgt_self_lookup_cache_'(GObj, GPred, GSender, GCall)),	% cache lookup result
-				(GObj, GPred, GSender) = (Obj, Pred, Sender),
+				(GObj, GPred, GSender) = (Obj, Pred, Sender),						% unify message arguments
 				call(GCall)
 			)
 		;	% message is not within the scope of the sender:
