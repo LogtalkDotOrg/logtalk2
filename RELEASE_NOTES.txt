@@ -24,11 +24,9 @@ RELEASE NOTES
 	Updated the Logtalk built-in database methods to always interpret rules 
 	whose body is the control construct true/0 as facts. Corrected a bug when 
 	compiling dynamic predicates that would prevent using of the clause/2 
-	built-in database method. Improved predicate lookup caching when asserting
-	and retracting dynamic facts.
-
-	Corrected a bug when using the Logtalk built-in database method clause/2 
-	with entities compiled in debug mode.
+	built-in database method. Corrected a bug when using the Logtalk built-in 
+	database method clause/2 with entities compiled in debug mode. Improved 
+	predicate lookup caching when asserting and retracting dynamic facts.
 
 	Improved detection and reporting of entity existence errors.
 

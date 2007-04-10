@@ -1885,7 +1885,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 				'$lgt_ctx_ctx'(Ctx, _, GSender, GThis, GSelf, Prefix, [], _),
 				'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
 				asserta((THead :- '$lgt_dbg_fact'(Head, DbgCtx)))
-			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, DclScope, Sender, THead, DDef, Update),
+			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, DclScope, Sender, THead, DDef, Update),
 				asserta(THead)
 			)
 		;	% predicate is not within the scope of the sender:
@@ -1989,7 +1989,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 				'$lgt_ctx_ctx'(Ctx, _, GSender, GThis, GSelf, Prefix, [], _),
 				'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
 				assertz((THead :- '$lgt_dbg_fact'(Head, DbgCtx)))
-			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, DclScope, Sender, THead, DDef, Update),
+			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, DclScope, Sender, THead, DDef, Update),
 				assertz(THead)
 			)
 		;	% predicate is not within the scope of the sender:
@@ -2252,7 +2252,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 				(	call_with_args(DDef, Head, _, _, _, Call) ->
 					(	'$lgt_debugging_'(Obj) ->
 						retract((Call :- '$lgt_dbg_fact'(_, _)))
-					;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, PScope, Sender, Call, DDef, true),
+					;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, PScope, Sender, Call, DDef, true),
 						retract(Call)
 					),
 					'$lgt_update_ddef_table'(DDef, Head, Call)
@@ -2377,11 +2377,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	).
 
 
-% '$lgt_add_db_lookup_cache_entry'(@object_identifier, @callable, @callable, @object_identifier, @callable, +atom, +atom)
+% '$lgt_add_db_lookup_cache_entry'(@object_identifier, @callable, @callable, @callable, @object_identifier, @callable, +atom, +atom)
 %
 % adds a new database lookup cache entry
 
-'$lgt_add_db_lookup_cache_entry'(Obj, Head, Scope, Sender, Call, DDef, NeedsUpdate) :-
+'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, Scope, Sender, Call, DDef, NeedsUpdate) :-
 	functor(Obj, OFunctor, OArity),
 	functor(GObj, OFunctor, OArity),
 	functor(Head, HFunctor, HArity),
@@ -2391,7 +2391,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	GHead =.. [_| Args],
 	GCall =.. [_| ExtArgs],
 	'$lgt_unify_args'(Args, ExtArgs),
-	(	NeedsUpdate == true ->
+	(	NeedsUpdate == true, Sender \= SCtn ->
 		functor(UHead, HFunctor, HArity),
 		functor(UCall, CFunctor, CArity),
 		UClause =.. [DDef, UHead, _, _, _, _],
