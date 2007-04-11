@@ -12,8 +12,8 @@ RELEASE NOTES
 
 2.29.6 - April ??, 2007
 
-	Added preliminary support for static binding when using the ::/2 message 
-	sending operator.
+	Added preliminary support for static binding when sending messages to 
+	objects compiled and loaded using the compiler option "reload(skip)".
 
 	Allow non-instantiated arguments at compile time for the multi-threading 
 	built-in predicate threaded/1.
