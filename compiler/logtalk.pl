@@ -2051,7 +2051,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 		THead =.. [PredPrefix| TArgs],
 		DDefClause =.. [DDef, GHead, GSender, GThis, GSelf, THead],
 		assertz(DDefClause),
-		'$lgt_clean_lookup_caches'(THead),
+		'$lgt_clean_lookup_caches'(GHead),
 		NeedsUpdate = true,
 		(GHead, THead) = (Head, Call)
 	).
