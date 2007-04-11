@@ -12224,6 +12224,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	'$lgt_default_flag'(underscore_vars, Underscore), write(', underscore_vars: '), write(Underscore), nl,
 	write('Default documenting compilation flags:'), nl,
 	'$lgt_default_flag'(xmldocs, XMLDocs), write('  xmldocs: '), write(XMLDocs),
+	'$lgt_default_flag'(xmldir, XMLDir), write(', xmldir: '), write(XMLDir),
 	'$lgt_default_flag'(xmlspec, XMLSpec), write(', xmlspec: '), write(XMLSpec),
 	'$lgt_default_flag'(xmlsref, XMLSRef), write(', xmlsref: '), write(XMLSRef),
 	'$lgt_default_flag'(xslfile, XSLFile), write(', xslfile: '), write(XSLFile), nl,
@@ -12237,12 +12238,13 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	(	'$lgt_default_flag'(hook, Hook) -> true
 	;	Hook = '(none defined)'
 	),
-	write(', hook: '), write(Hook), nl,
-	write('Read-only compilation flags:'), nl,
+	write(', hook: '), write(Hook),
+	'$lgt_default_flag'(tmpdir, TmpDir), write(', tmpdir: '), write(TmpDir), nl,
+	write('Read-only compilation flags:'),
 	'$lgt_default_flag'(supports_break_predicate, Break), write('  supports_break_predicate: '), write(Break),
 	'$lgt_default_flag'(startup_message, Startup), write(', startup_message: '), write(Startup), nl,
 	'$lgt_default_flag'(altdirs, Altdirs), write('  altdirs: '), write(Altdirs),
-	'$lgt_default_flag'(supports_encoding_dir, Encodings), write(', supports_encoding_dir: '), write(Encodings), nl,
+	'$lgt_default_flag'(supports_encoding_dir, Encodings), write(', supports_encoding_dir: '), write(Encodings),
 	 '$lgt_default_flag'(threads, Threads), write(', threads: '), write(Threads), nl, nl.
 
 '$lgt_default_flags'(verbose) :-
@@ -12264,6 +12266,8 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	write('Default documenting compilation flags:'), nl,
 	'$lgt_default_flag'(xmldocs, XMLDocs),
 	write('  XML documenting files (xmldocs):                           '), write(XMLDocs), nl,
+	'$lgt_default_flag'(xmldir, XMLDir),
+	write('  XML documenting files directory (xmldir):                  '), write(XMLDir), nl,
 	'$lgt_default_flag'(xmlspec, XMLSpec),
 	write('  XML specification file (xmlspec):                          '), write(XMLSpec), nl,
 	'$lgt_default_flag'(xmlsref, XMLSRef),
@@ -12287,6 +12291,8 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	;	Hook = '(none defined)'
 	),
 	write('  Compiler hook object and hook predicate functor:           '), write(Hook), nl,
+	'$lgt_default_flag'(tmpdir, TmpDir),
+	write('  Directory for temporary compiler generated files (tmpdir): '), write(TmpDir), nl,
 	write('Read-only compilation flags:'), nl,
 	'$lgt_default_flag'(supports_break_predicate, Break),
 	write('  Support for break/0 predicate (supports_break_predicate):  '), write(Break), nl,
