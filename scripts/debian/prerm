@@ -7,5 +7,5 @@
 ## Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ## =================================================================
 
-rm -f /etc/profile.d/logtalk.sh
-rm -f /etc/profile.d/logtalk.csh
+rm -f /etc/profile.d/logtalk.sh 2> /dev/null
+rm -f /etc/profile.d/logtalk.csh 2> /dev/null
