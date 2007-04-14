@@ -44,6 +44,8 @@ RELEASE NOTES
 	in case of conflict with some Prolog native feature or lack of compliance
 	with the ISO Prolog standard regarding the definition of the {}/1 syntax.
 
+	Allow the compiler flag "misspelt" to be set to "error".
+
 	Corrected a bug when running Logtalk with SWI-Prolog that prevented the 
 	use of alternate compilation directories (i.e. switching the "altdirs" 
 	compiler flag on).

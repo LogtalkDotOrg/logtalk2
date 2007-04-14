@@ -4308,6 +4308,12 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	nl.
 
 
+'$lgt_report_compiler_error_message'(error(Error, entity(Type, Entity))) :-
+	!,
+	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
+	write('  ERROR!    '), writeq(Error), nl,
+	write('            in '), write(Type), write(': '), writeq(Entity), nl.
+
 '$lgt_report_compiler_error_message'(error(Error, directive(Directive))) :-
 	!,
 	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
@@ -4675,9 +4681,22 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	!,
 	'$lgt_tr_file_directive'(Dir).				% translate it as a source file-level directive
 
-'$lgt_tr_directive'(Dir, Input, Output) :-
+'$lgt_tr_directive'(Dir, Input, Output) :-		% entity closing directive
 	functor(Dir, Functor, Arity),
-	'$lgt_lgt_directive'(Functor, Arity),		% entity opening directive or entity directive
+	'$lgt_lgt_closing_directive'(Functor, Arity),
+	Dir =.. [Functor| Args],
+	catch(
+		'$lgt_tr_directive'(Functor, Args, Input, Output),
+		Error,
+		(	'$lgt_pp_entity'(Type, Entity, _, _, _) ->
+			throw(error(Error, entity(Type, Entity)))
+		;	throw(error(Error, directive(Dir)))
+		)),
+	!.
+
+'$lgt_tr_directive'(Dir, Input, Output) :-		% entity opening directive or entity directive
+	functor(Dir, Functor, Arity),
+	'$lgt_lgt_directive'(Functor, Arity),
 	Dir =.. [Functor| Args],
 	catch(
 		'$lgt_tr_directive'(Functor, Args, Input, Output),
@@ -9279,6 +9298,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 % report calls to declared, static but undefined predicates in the body of object and category predicates
 
 '$lgt_report_undef_pred_calls' :-
+	'$lgt_compiler_flag'(misspelt, error),
+	'$lgt_undef_pred_call'(Pred),
+	throw(existence_error(procedure, Pred)).
+
+'$lgt_report_undef_pred_calls' :-
 	'$lgt_compiler_flag'(misspelt, warning),
 	setof(Pred, '$lgt_undef_pred_call'(Pred), Preds),
 	'$lgt_inc_compile_warnings_counter',
@@ -9322,6 +9346,11 @@ current_logtalk_flag(version, version(2, 29, 6)).
 
 
 % report possible misspelt predicate calls in the body of object and category predicates
+
+'$lgt_report_misspelt_calls' :-
+	'$lgt_compiler_flag'(misspelt, error),
+	'$lgt_misspelt_call'(Pred),
+	throw(existence_error(predicate, Pred)).
 
 '$lgt_report_misspelt_calls' :-
 	'$lgt_compiler_flag'(misspelt, warning),
@@ -10449,6 +10478,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 
 '$lgt_valid_flag_value'(misspelt, silent) :- !.
 '$lgt_valid_flag_value'(misspelt, warning) :- !.
+'$lgt_valid_flag_value'(misspelt, error) :- !.
 
 '$lgt_valid_flag_value'(lgtredef, silent) :- !.
 '$lgt_valid_flag_value'(lgtredef, warning) :- !.
