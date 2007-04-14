@@ -40,7 +40,7 @@ RELEASE NOTES
 	incompatible with this new Logtalk version.
 
 	Added a shortcut to the Logtalk built-in predicate logtalk_load/1, {}/1,
-	to all config files (defined there in order to be able to comment it out 
+	to all config files (defined there in order to be easy to comment it out 
 	in case of conflict with some Prolog native feature or lack of compliance
 	with the ISO Prolog standard regarding the definition of the {}/1 syntax.
 

@@ -49,7 +49,7 @@
 </dl></dd>
 
 <dt class="glossary"><strong>directive</strong><a id="directive"></a></dt>
-<dd>A Prolog term that affects the interpretation of Prolog code. Directives are represented using the <code>:-/1</code> prefix operator.</dd>
+<dd>A Prolog/Logtalk term that affects the interpretation of Prolog/Logtalk code. Directives are represented using the <code>:-/1</code> prefix operator.</dd>
 
 <dd><dl>
 
@@ -87,7 +87,7 @@
 </dl></dd>
 
 <dt class="glossary"><strong>identity</strong><a id="identity"></a></dt>
-<dd>Property of an entity that distinguish it from every other entity. In Logtalk an entity identity can be an atom or a compound term. All Logtalk entities (objects, protocols, and categories) share the same name space.</dd>
+<dd>Property of an entity that distinguishes it from every other entity. In Logtalk, an object identity can be an atom or a compound term. Category and protocol identities must be atoms. All Logtalk entities (objects, protocols, and categories) share the same name space.</dd>
 
 <dt class="glossary"><strong>inheritance</strong><a id="inheritance"></a></dt>
 <dd>An object inherits predicate directives and clauses from other objects that it extends or specializes. If an object extends other object then we have a prototype-based inheritance. If an object specializes or instantiates another object we have a class-based inheritance.</dd>
@@ -109,7 +109,7 @@
 <dd>The same as object. This term is used when we want to emphasize that an object characteristics are defined by another object (its class).</dd>
 
 <dt class="glossary"><strong>instantiation</strong><a id="instantiation"></a></dt>
-<dd>The process of creating a new class instance. In Logtalk does not necessarily implies dynamic creation of an object at runtime; an instance may also be defined as a static object in a source file.</dd>
+<dd>The process of creating a new class instance. In Logtalk, this does not necessarily implies dynamic creation of an object at runtime; an instance may also be defined as a static object in a source file.</dd>
 
 <dt class="glossary"><strong>library</strong><a id="library"></a></dt>
 <dd>A directory containing source files. The directory name is used as the library name.</dd>
@@ -127,7 +127,7 @@
 <dd>Any object that is notified when a spied event occurs. The spied events can be set by the monitor itself or by any other object.</dd>
 
 <dt class="glossary"><strong>object</strong><a id="object"></a></dt>
-<dd>An entity characterized by an identity and a set of predicate directives and clauses. In Logtalk objects can be either static or dynamic, like any other Prolog code.</dd>
+<dd>An entity characterized by an identity and a set of predicate directives and clauses. Logtalk objects can be either static or dynamic. Logtalk objects can play the role of classes, instances, or prototypes.</dd>
 
 <dd><dl>
 
@@ -141,7 +141,7 @@
 
 
 <dt class="glossary"><strong>parent</strong><a id="parent"></a></dt>
-<dd>An object that is extended by another object.</dd>
+<dd>A prototype that is extended by another prototype.</dd>
 
 <dt class="glossary"><strong>predicate</strong><a id="predicate"></a></dt>
 <dd>Predicates describe what is true about the application domain. A predicate is identified by its name and number of arguments using the notation <code>&lt;name&gt;/&lt;nargs&gt;</code>.</dd>
