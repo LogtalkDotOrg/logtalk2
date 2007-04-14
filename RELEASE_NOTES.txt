@@ -39,14 +39,14 @@ RELEASE NOTES
 	the config file predicate '$lgt_alt_directory'/2. Older config files are
 	incompatible with this new Logtalk version.
 
-	Corrected a bug when running Logtalk with SWI-Prolog that prevented the 
-	use of alternate compilation directories (i.e. switching the "altdirs" 
-	compiler flag on).
-
 	Added a shortcut to the Logtalk built-in predicate logtalk_load/1, {}/1,
 	to all config files (defined there in order to be able to comment it out 
 	in case of conflict with some Prolog native feature or lack of compliance
 	with the ISO Prolog standard regarding the definition of the {}/1 syntax.
+
+	Corrected a bug when running Logtalk with SWI-Prolog that prevented the 
+	use of alternate compilation directories (i.e. switching the "altdirs" 
+	compiler flag on).
 
 	Corrected a bug when running Logtalk with SWI-Prolog that can prevent 
 	make/0 from recompiling and reloading modified Logtalk source files.

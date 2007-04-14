@@ -37,7 +37,7 @@ Predicate directives should always precede the corresponding predicate definitio
 <h3>Scope directives<a id="predicates_scope"></a></h3>
 
 <p>
-A predicate can be public, protected, or private. Public predicates can be called from any object. Protected predicates can only be called from the container object or from a container descendant. Private predicates can only be called from the container object.
+A predicate can be public, protected, private, or local. Public predicates can be called from any object. Protected predicates can only be called from the container object or from a container descendant. Private predicates can only be called from the container object. Local predicates, like private predicates, can only be called from the container object (or category) but they are invisible to the reflection methods and to the message and error handling mechanisms.
 </p>
 <p>
 The scope declarations are made using the directives <a title="Consult reference manual" href="../refman/directives/public1.html"><code>public/1</code></a>, <a title="Consult reference manual" href="../refman/directives/protected1.html"><code>protected/1</code></a>, and <a title="Consult reference manual" href="../refman/directives/private1.html"><code>private/1</code></a>. For example:
@@ -48,7 +48,7 @@ The scope declarations are made using the directives <a title="Consult reference
 
 :- private(process_init_options/1).</pre>
 <p>
-Note that we do not need to write scope declarations for all defined predicates. If a predicate does not have a scope declaration, it is assumed that the predicate is private, although it will be invisible to the reflection methods and to the message and error handling mechanisms. One exception is local, dynamic predicates: explicitly declaring them as private predicates allows the Logtalk compiler to generate optimized code for them.
+Note that we do not need to write scope declarations for all defined predicates. If a predicate does not have a scope declaration, it is assumed that the predicate is local. One exception is local, dynamic predicates: declaring them as private predicates may allow the Logtalk compiler to generate optimized code for asserting and retracting clauses.
 </p>
 
 <h3>Mode directive<a id="predicates_mode"></a></h3>
@@ -656,7 +656,7 @@ In predicate definitions, predicate calls which are not prefixed with a message 
 the call to the predicate <code>write/1</code> will be compiled as a call to the corresponding Prolog built-in predicate unless the object (or category) encapsulating the above definition also contains a predicate named <code>write/1</code> or a dynamic declaration for the predicate.
 </p>
 <p>
-When calling non-standard Prolog built-in predicates, you may run into portability problems when trying your applications with other Prolog compilers which might not have the same set of built-in predicates. You may use the Logtalk compiler flag <a title="Consult user manual" href="running.html#options"><code>portability/1</code></a> to help you check for problematic calls in your code.
+When calling non-standard Prolog built-in predicates, you may run into portability problems while trying your applications with different back-end Prolog compilers (non-standard predicates are often specific to a Prolog compiler). You may use the Logtalk compiler flag <a title="Consult user manual" href="running.html#options"><code>portability/1</code></a> to help check for problematic calls in your code.
 </p>
 
 <h3>Calling Prolog non-standard meta-predicates<a id="predicates_prolog_meta"></a></h3>
@@ -672,7 +672,7 @@ Currently, there is no clean workaround for calling non-standard, Prolog built-i
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: March 21, 2007</span>
+		<span>Last updated on: April 14, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="categories.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="inheritance.html">next</a></span><br/>
