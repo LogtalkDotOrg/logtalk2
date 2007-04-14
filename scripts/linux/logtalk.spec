@@ -95,5 +95,5 @@ echo "in your shell configuration files if you already use, or want to use, a "
 echo "different location for the Logtalk user files directory."
 echo ""
 %postun
-rm -f /etc/profile.d/logtalk.sh
-rm -f /etc/profile.d/logtalk.csh
+rm -f /etc/profile.d/logtalk.sh 2> /dev/null
+rm -f /etc/profile.d/logtalk.csh 2> /dev/null
