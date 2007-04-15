@@ -3737,8 +3737,8 @@ current_logtalk_flag(version, version(2, 29, 6)).
 
 % '$lgt_clean_redefined_entity'(+atom, @entity_identifier)
 %
-% retract all clauses for all dynamically declared predicates from
-% a redefined entity and terminates entity thread if it exists
+% retracts all clauses for all dynamically declared predicates from
+% a redefined entity and terminates the entity thread if it exists
 
 '$lgt_clean_redefined_entity'(object, Entity) :-
 	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _),
