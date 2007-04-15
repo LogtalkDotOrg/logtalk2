@@ -19,7 +19,7 @@
 <div class="bottom-right"><span class="page"/></div>
 <div class="navtop"><a href="../index.html">contents</a> &gt; <a href="index.html">user manual</a></div>
 
-<h1>Multi-threading programming<span id="threads_threads"/></h1>
+<h1 id="threads_threads">Multi-threading programming</h1>
 
 <p>
 Logtalk provides experimental support for multi-threading programming on selected Prolog compilers. Logtalk makes use of the low-level Prolog built-in predicates that interface with POSIX threads (or a suitable emulation), providing a small set of high-level predicates and directives that allows programmers to easily take advantage of modern multi-processor and multi-core computers without caring about the details of creating, synchronizing, or communicating with threads. Logtalk multi-threading programming integrates with object-oriented programming by supporting per object threads, enabling objects to prove goals asynchronously (including call to local predicates and message sending goals). This allows an object to send both synchronous and asynchronous messages.
