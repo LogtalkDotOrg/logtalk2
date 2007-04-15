@@ -36,7 +36,7 @@ default flags that are used by Logtalk when compiling source files. For a
 full description of these default flags, consult the "Running and debugging 
 Logtalk programs" section of the User Manual. Some of the default flags that 
 you may want to change include: "smart_compilation", "startup_message", 
-"portability", "underscore_vars", "altdirs", and the set of documentation-
+"portability", "underscore_vars", "altdirs", "tmpdir", and the documentation-
 related flags ("xmldocs", "xmldir", "xslfile", "xmlspec", and "xmlsref"). 
 Be sure to read the "configs/NOTES.txt" file for Prolog specific notes; 
 some Prolog compilers do not support the whole range of compilation flag 
