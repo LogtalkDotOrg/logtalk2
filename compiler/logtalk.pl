@@ -3735,33 +3735,6 @@ current_logtalk_flag(version, version(2, 29, 6)).
 
 
 
-% '$lgt_clean_redefined_entity'(+atom, @entity_identifier)
-%
-% retracts all clauses for all dynamically declared predicates from
-% a redefined entity and terminates the entity thread if it exists
-
-'$lgt_clean_redefined_entity'(object, Entity) :-
-	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _),
-	call_with_args(Prefix, _, _, _, _, _, DDcl, DDef, _),
-	DDefClause =.. [DDef, _, _, _, _, DDefHead],
-	forall(retract(DDefClause), retractall(DDefHead)),
-	DDclClause =.. [DDcl, _, _],
-	retractall(DDclClause),
-	(	'$lgt_default_flag'(threads, on) ->
-		(	current_thread(Prefix, running) ->
-			thread_signal(Prefix, thread_exit(true)),
-			thread_join(Prefix, _)
-		;	true
-		)
-	;	true
-	).
-
-'$lgt_clean_redefined_entity'(protocol, _).
-
-'$lgt_clean_redefined_entity'(category, _).
-
-
-
 % '$lgt_report_redefined_entity'(+atom, @entity_identifier)
 %
 % prints a warning for redefined entities
@@ -9751,7 +9724,7 @@ current_logtalk_flag(version, version(2, 29, 6)).
 	arg(1, Clause, Entity),
 	(	'$lgt_redefined_entity'(Entity, Type) ->
 		'$lgt_clean_lookup_caches',
-		'$lgt_clean_redefined_entity'(Type, Entity),
+		'$lgt_stop_entity_thread'(Entity),
 		'$lgt_report_redefined_entity'(Type, Entity)
 	;	true
 	),
@@ -9777,6 +9750,26 @@ current_logtalk_flag(version, version(2, 29, 6)).
 '$lgt_assert_new_runtime_clauses'([Clause| Clauses]) :-
 	assertz(Clause),
 	'$lgt_assert_new_runtime_clauses'(Clauses).
+
+
+
+% '$lgt_stop_entity_thread'(@entity_identifier)
+%
+% stops the entity thread if it exists; note that we can be changing the 
+% type of the entity being reload (e.g. from an object to a category)
+
+'$lgt_stop_entity_thread'(Entity) :-
+	(	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _) ->
+		(	'$lgt_default_flag'(threads, on) ->
+			(	current_thread(Prefix, running) ->
+				thread_signal(Prefix, thread_exit(true)),
+				thread_join(Prefix, _)
+			;	true
+			)
+		;	true
+		)
+	;	true
+	).
 
 
 

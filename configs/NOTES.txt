@@ -198,6 +198,11 @@ ECLiPSe 5.10#26 or later version
 	directory before loading the library or an example. Supports smart 
 	compilation of source files.
 
+	With this Prolog compiler, avoid reloading Logtalk source files declaring 
+	and defining dynamic predicates. Due to the semantics of the ECLiPSe 
+	built-in predicate compile/1, new clauses for dynamic predicates are 
+	appended to the old ones instead of replacing them!
+
 
 GNU Prolog 1.1.2 (and later versions, except 1.2.13)
 
