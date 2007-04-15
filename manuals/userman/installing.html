@@ -169,7 +169,7 @@ The configuration files specifies default values for all the Logtalk compiler fl
 </dl>
 <dl>
 	<dt><code>altdirs</code></dt>
-		<dd>Allows the use of alternative directories for storing the Prolog files and the XML documenting files resulting from entity compilation. This flag can only be set for Prolog compilers providing the necessary operating-system access predicates for implementing this feature (specifically, a built-in predicate for creating new directories). Possible option values are <code>on</code> and <code>off</code> (the usual default). The names of the alternative directories are specified using the predicate <code>'$lgt_alt_directory'/2</code>, which is also defined in the configuration files. Make sure the directory names are valid for your operating system before setting this flag on.</dd>
+		<dd>Allows the use of alternative directories for storing the Prolog files and the XML documenting files resulting from entity compilation. This flag can only be set for Prolog compilers providing the necessary operating-system access predicates for implementing this feature (specifically, a built-in predicate for creating new directories). Possible option values are <code>on</code> and <code>off</code> (the usual default). The names of the alternative directories are specified using the compiler flags <code>tmpdir</code> and <code>xmldir</code>, which are also defined in the configuration files. Make sure the directory names are valid for your operating system before setting this flag on.</dd>
 </dl>
 <dl>
 	<dt><code>supports_break_predicate</code></dt>
