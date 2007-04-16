@@ -130,7 +130,7 @@ A <em>stand-alone</em> object (i.e. an object with no extension, instantiation, 
 Note that with these instantiation and specialization relations, <code>object</code>, <code>class</code>, and <code>abstract_class</code> are, at the same time, classes and instances of some class. In addition, each object inherits its own predicates and the predicates of the other two objects without any inheritance loop problems.
 </p>
 <p>
-If you do not need a reflective system solution but still want to use classes and instances then you can simplify the above scheme by making an object an instance of itself or, if you prefer, by making a class its own metaclass. For example:
+When a full-blown reflective system solution is not needed, the above scheme can be simplified by making an object an instance of itself, i.e. by making a class its own metaclass. For example:
 </p>
 <pre>:- object(class,
     instantiates(class)).
@@ -407,7 +407,7 @@ Logtalk defines an empty built-in object named <code>logtalk</code>, which can p
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: January 15, 2007</span>
+		<span>Last updated on: April 14, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="messages.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="protocols.html">next</a></span><br/>
