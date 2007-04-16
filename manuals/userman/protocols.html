@@ -34,7 +34,7 @@ In Logtalk, the only pre-defined protocol is the built-in protocol <code>monitor
 We can define a new object in the same way we write Prolog code: by using a text editor. Logtalk source files may contain one or more objects, categories, or protocols. If you prefer to define each entity in its own source file, it is recommended that the file be named after the protocol. By default, all Logtalk source files use the extension <code>.lgt</code> but this is optional and can be set in the configuration files. Compiled source files (by the Logtalk preprocessor) have, by default, a <code>.pl</code> extension. Again, this can be set to match the needs of a particular Prolog compiler in the corresponding configuration file. For example, we may define a protocol named <code>listp</code> and save it in a <code>listp.lgt</code> source file that will be compiled to a <code>listp.pl</code> Prolog file.
 </p>
 <p>
-Protocol names must be atoms. Objects, categories and protocols share the same name space: we can not have a protocol with the same name as an object or a category.
+Protocol names must be atoms. Objects, categories and protocols share the same name space: we cannot have a protocol with the same name as an object or a category.
 </p>
 <p>
 Protocol directives are textually encapsulated by using two Logtalk directives: <a title="Consult reference manual" href="../refman/directives/protocol1_2.html"><code>protocol/1-2</code></a> and <a title="Consult reference manual" href="../refman/directives/end_protocol0.html"><code>end_protocol/0</code></a>. The most simple protocol will be one that is self-contained, not depending on any other Logtalk entity:

@@ -31,7 +31,7 @@ In Logtalk, the only pre-defined objects are the built-in objects <code>user</co
 <h2 id="objects_kind">Objects, prototypes, classes, and instances</h2>
 
 <p>
-There are only three kinds of encapsulation entities in Logtalk: objects, protocols, and categories. Logtalk uses the term <em>object</em> in a broad sense. The terms <em>prototype</em>, <em>parent</em>, <em>class</em>, <em>subclass</em>, <em>superclass</em>, <em>metaclass</em>, and <em>instance</em> always designate an object. Different names are used to emphasize the role played by an object in a particular context. I.e. we use a term other than object when we want to make the relationship with other objects explicit. For example, an object with an <em>instantiation</em> relation with other object plays the role of an <em>instance</em>, while the instantiated object plays the role of a <em>class</em>; an object with a <em>specialization</em> relation other object plays the role of a <em>subclass</em>, while the specialized object plays the role of a <em>superclass</em>; an object with an <em>extension</em> relation with other object plays the role of a <em>prototype</em>, the same for the extended object. A <em>stand-alone</em> object, i.e. an object with no relations with other objects, is always interpreted as a prototype. In Logtalk, entity relations essentially define <em>patterns</em> of code reuse.
+There are only three kinds of encapsulation entities in Logtalk: objects, protocols, and categories. Logtalk uses the term <em>object</em> in a broad sense. The terms <em>prototype</em>, <em>parent</em>, <em>class</em>, <em>subclass</em>, <em>superclass</em>, <em>metaclass</em>, and <em>instance</em> always designate an object. Different names are used to emphasize the <em>role</em> played by an object in a particular context. I.e. we use a term other than object when we want to make the relationship with other objects explicit. For example, an object with an <em>instantiation</em> relation with other object plays the role of an <em>instance</em>, while the instantiated object plays the role of a <em>class</em>; an object with a <em>specialization</em> relation other object plays the role of a <em>subclass</em>, while the specialized object plays the role of a <em>superclass</em>; an object with an <em>extension</em> relation with other object plays the role of a <em>prototype</em>, the same for the extended object. A <em>stand-alone</em> object, i.e. an object with no relations with other objects, is always interpreted as a prototype. In Logtalk, entity relations essentially define <em>patterns</em> of code reuse. An entity is compiled accordingly to the roles it plays.
 </p>
 <p>
 Logtalk allows you to work from standalone objects to any kind of hierarchy, either class-based or prototype-based. You may use single or multiple inheritance, use or forgo metaclasses, implement reflective designs, use parametric objects, and take advantage of protocols and categories (think components).
@@ -43,7 +43,7 @@ Logtalk allows you to work from standalone objects to any kind of hierarchy, eit
 We can define a new object in the same way we write Prolog code: by using a text editor. Logtalk source files may contain one or more objects, categories, or protocols. If you prefer to define each entity in its own source file, it is recommended that the file be named after the object. By default, all Logtalk source files use the extension <code>.lgt</code> but this is optional and can be set in the configuration files. Compiled source files (by the Logtalk preprocessor) have, by default, a <code>.pl</code> extension. Again, this can be set to match the needs of a particular Prolog compiler in the corresponding configuration file. For instance, we may define an object named <code>vehicle</code> and save it in a <code>vehicle.lgt</code> source file which will be compiled to a <code>vehicle.pl</code> Prolog file.
 </p>
 <p>
-Object names can be atoms or compound terms (when defining parametric objects, see below). Objects, categories and protocols share the same name space: we can not have an object with the same name as a protocol or a category.
+Object names can be atoms or compound terms (when defining parametric objects, see below). Objects, categories, and protocols share the same name space: we cannot have an object with the same name as a protocol or a category.
 </p>
 <p>
 Object code (directives and predicates) is textually encapsulated by using two Logtalk directives: <a title="Consult reference manual" href="../refman/directives/object1_5.html"><code>object/1-5</code></a> and <a title="Consult reference manual" href="../refman/directives/end_object0.html"><code>end_object/0</code></a>. The most simple object will be one that is self-contained, not depending on any other Logtalk entity:
@@ -144,7 +144,7 @@ A third alternative is to use neither metaclasses or reflective designs but inst
     ...
 :- end_object.</pre>
 <p>
-We can use, in the same application, both prototype and class-based hierarchies (and freely exchange messages between all objects). We can not however mix the two types of hierarchies by, e.g., specializing an object that extends another object in this current Logtalk version.
+We can use, in the same application, both prototype and class-based hierarchies (and freely exchange messages between all objects). We cannot however mix the two types of hierarchies by, e.g., specializing an object that extends another object in this current Logtalk version.
 </p>
 
 <h2 id="objects_parametric">Parametric objects</h2>
@@ -401,7 +401,7 @@ Logtalk defines a built-in object named <code>debugger</code> which implements t
 <h3 id="objects_logtalk">The built-in object <em>logtalk</em></h3>
 
 <p>
-Logtalk defines an empty built-in object named <code>logtalk</code>, which can play the role of both a class and a prototype. It may be used to define class hierarchies without forcing the use of metaclasses or reflective designs, as illustrated above. This object supports the dynamic declaration and definition of predicates (using the dynamic database methods).
+Logtalk defines an empty built-in object named <code>logtalk</code>, which can play the role of both a class and a prototype. It may be used to define class hierarchies without forcing the use of metaclasses or reflective designs, as illustrated above. This object supports the dynamic declaration and definition of predicates (using the dynamic database built-in methods).
 </p>
 
 <div class="footer">
