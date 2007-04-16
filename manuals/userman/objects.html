@@ -37,6 +37,18 @@ There are only three kinds of encapsulation entities in Logtalk: objects, protoc
 Logtalk allows you to work from standalone objects to any kind of hierarchy, either class-based or prototype-based. You may use single or multiple inheritance, use or forgo metaclasses, implement reflective designs, use parametric objects, and take advantage of protocols and categories (think components).
 </p>
 
+<h3 id="objects_prototypes">Prototypes</h3>
+
+<p>
+Prototypes are either self-defined objects or objects defined as extensions to other prototypes with whom they share common properties. Prototypes are ideal for representing one-of-a-kind objects. Prototypes usually represent concrete objects in the application domain. When linking prototypes using <em>extension</em> relations, Logtalk uses the term <em>prototype hierarchies</em> although most authors prefer to use the term <em>hierarchy</em> only with class generalization/specialization relations. In the context of logic programming, prototypes are often the ideal replacement for modules.
+</p>
+
+<h3 id="objects_classes">Classes</h3>
+
+<p>
+Classes are used to represent abstractions of common properties of sets of objects. Classes provide an ideal structuring solution when you want to express hierarchies of abstractions or work with many similar objects. Classes are used indirectly through <em>instantiation</em>. Contrary to most object-oriented programming languages, instances can be created both dynamically at runtime or defined in a source file like other objects.
+</p>
+
 <h2 id="objects_defining">Defining a new object</h2>
 
 <p>

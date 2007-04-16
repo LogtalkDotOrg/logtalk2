@@ -62,10 +62,10 @@ RELEASE NOTES
 	Corrected a bug when running Logtalk with SWI-Prolog that can prevent 
 	make/0 from recompiling and reloading modified Logtalk source files.
 
-	Added a "swi_set_logtalk_context.pl" file defining a useful but fragile 
-	hack implementing a set_logtalk_context/1 built-in predicate for switching
-	the Logtalk top-level execution context to objects other than the pseudo-
-	object "user".
+	Added a "configs/swi_set_logtalk_context.pl" file defining a useful but 
+	fragile hack implementing a set_logtalk_context/1 built-in predicate for 
+	switching the Logtalk top-level execution context to objects other than 
+	the pseudo-object "user".
 
 	Updated the CxProlog config file to use the new built-in predicates in 
 	version 0.95.
