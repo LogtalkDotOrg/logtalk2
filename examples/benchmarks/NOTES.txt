@@ -13,7 +13,7 @@ sending performance with direct predicates calls in plain Prolog.
 These benchmarks may also be used for comparing Logtalk message sending 
 performance across Prolog compilers.
 
-This example is made of three loader files and five source files:
+This example is made of four loader files and five source files:
 
 	loader_events.lgt
 		loads all source files with event support turned on
@@ -22,6 +22,8 @@ This example is made of three loader files and five source files:
 	loader_static_binding.lgt
 		loads all source files with event support turned off and using
 		static binding
+	loader.lgt
+		the same as the loader_static_binding.lgt file
 
 	benchmarks.lgt
 		contains the benchmark goals and testing predicates
