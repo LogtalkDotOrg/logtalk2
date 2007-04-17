@@ -30,8 +30,8 @@ RELEASE NOTES
 
 	Improved detection and reporting of entity existence errors.
 
-	Added a quit option, "q", to the Logtalk built-in debugger. Automatically 
-	switch the debugger to trace mode when finding a spy point.
+	Added a quit option, "q", to the Logtalk built-in debugger. Modified the 
+	debugger behavior to switch to trace mode when finding a spy point.
 
 	Added two new compiler options, "xmldir" and "tmpdir", allowing a per 
 	project definition of directories for storing XML documenting files and 
@@ -56,8 +56,8 @@ RELEASE NOTES
 	information.
 
 	Corrected a bug when running Logtalk with SWI-Prolog that prevented the 
-	use of alternate compilation directories (i.e. switching the "altdirs" 
-	compiler flag on).
+	use of alternative compilation directories (i.e. turning on the "altdirs" 
+	compiler flag).
 
 	Corrected a bug when running Logtalk with SWI-Prolog that can prevent 
 	make/0 from recompiling and reloading modified Logtalk source files.
@@ -75,6 +75,10 @@ RELEASE NOTES
 	with some examples.
 
 	Added predicates depth/2 and variant/2 to the library object "term".
+
+	Much improved "benchmarks" example, updated to allow running tests in 
+	three different scenarios: event support on, event support off, and 
+	using static binding.
 
 
 2.29.5 - March 28, 2007

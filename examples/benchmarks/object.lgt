@@ -1,18 +1,24 @@
 
 :- object(object).
 
+	:- info([
+		version is 2.0,
+		author is 'Paulo Moura',
+		date is 2007/04/17,
+		comment is 'Example object for benchmarking library predicate calls.']).
+
 	:- public(length/2).
 
 	length(List, Length) :-
-		integer(Length) ->
+		(	integer(Length) ->
 			Length >= 0,
 			make_list(Length, List)
-			;
-			length(List, 0, Length).
+		;	length(List, 0, Length)
+		).
 
-	make_list(0, []) :-
-		!.
+	make_list(0, []) :- !.
 	make_list(N, [_| Tail]):-
+		N > 0,
 		M is N-1,
 		make_list(M, Tail).
 
