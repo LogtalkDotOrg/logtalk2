@@ -78,7 +78,9 @@ RELEASE NOTES
 
 	Much improved "benchmarks" example, updated to allow running tests in 
 	three different scenarios: event support on, event support off, and 
-	using static binding.
+	using static binding. Moreover, metacalls are no longer used to run 
+	the benchmark goals, resulting in much more meaningful and accurate 
+	results.
 
 
 2.29.5 - March 28, 2007
