@@ -30,14 +30,15 @@ RELEASE NOTES
 
 	Improved detection and reporting of entity existence errors.
 
-	Added a quit option, "q", to the Logtalk built-in debugger. Modified the 
-	debugger behavior to switch to trace mode when finding a spy point.
+	Added a quit option, "q", to the Logtalk built-in debugger. Modified 
+	the debugger behavior to automatically switch to trace mode when a spy 
+	point is found.
 
-	Added two new compiler options, "xmldir" and "tmpdir", allowing a per 
-	project definition of directories for storing XML documenting files and 
-	for storing intermediate compilation files (e.g. Prolog files). Removed  
-	the config file predicate '$lgt_alt_directory'/2. Older config files are
-	incompatible with this new Logtalk version.
+	Added two new compiler options, "xmldir" and "tmpdir", allowing per 
+	project definition of directories for storing XML documenting files 
+	and for storing intermediate compilation files (e.g. Prolog files).
+	Removed the config file predicate '$lgt_alt_directory'/2.
+	Older config files are incompatible with this new Logtalk version.
 
 	Added a shortcut to the Logtalk built-in predicate logtalk_load/1, {}/1,
 	to all config files (defined there in order to be easy to comment it out 
@@ -68,7 +69,9 @@ RELEASE NOTES
 	the pseudo-object "user".
 
 	Updated the CxProlog config file to use the new built-in predicates in 
-	version 0.95.
+	version 0.95. Added a shell script, "make_cxlgt.sh", for easy integration
+	of Logtalk with CxProlog on POSIX systems (with the help of Artur Miguel 
+	Dias, CxProlog author).
 
 	Updated the Ciao, K-Prolog, and ECLiPSe config files to set the compiler 
 	flag "underscore_vars" to "dont_care" in order to avoid spurious warnings 
