@@ -1,16 +1,6 @@
 
 my_length(List, Length) :-
-	(	integer(Length) ->
-		Length >= 0,
-		my_make_list(Length, List)
-	;	my_length(List, 0, Length)
-	).
-
-my_make_list(0, []):-
-	!.
-my_make_list(N, [_| Tail]):-
-	M is N-1,
-	my_make_list(M, Tail).
+	my_length(List, 0, Length).
 
 my_length([], Length, Length).
 my_length([_| Tail], Acc, Length) :-
@@ -18,26 +8,26 @@ my_length([_| Tail], Acc, Length) :-
 	my_length(Tail, Acc2, Length).
 
 
-:- dynamic(pred_plain/0).
+:- dynamic(pred_plain/1).
 
-db_test_plain :-
-	repeat(100),
-		assertz(pred_plain),
-	fail.
-db_test_plain :-
-	retract(pred_plain),
-	fail.
-db_test_plain.
+db_test_plain(N) :-
+	assertz(pred_plain(N)),
+	retract(pred_plain(N)).
 
-% some Prolog compilers define the predicate repeat/1 as a built-in predicate;
-% if that's the case of the Prolog compiler you are using, then comment out 
-% the definition that follows
 
-repeat(_).
-repeat(N) :-
+my_between(Lower, _, Lower).
+my_between(Lower, Upper, Integer) :-
+	Lower < Upper,
+	Next is Lower + 1,
+	my_between(Next, Upper, Integer).
+
+
+my_repeat(_).
+my_repeat(N) :-
 	N > 1,
 	N2 is N - 1,
-	repeat(N2).
+	my_repeat(N2).
+
 
 % generate a list containing the first N non-negative integers
 

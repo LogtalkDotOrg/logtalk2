@@ -57,62 +57,62 @@
 
 	% some benchmark tests for dynamic code:
 	benchmark(d1, (create_object(xpto, [], [], []), abolish_object(xpto))).
-	benchmark(d2, db_test_plain).
-	benchmark(d3, database::db_test_this).
-	benchmark(d4, database::db_test_self).
-	benchmark(d5, database::db_test_obj).
+	benchmark(d2, db_test_plain(_)).
+	benchmark(d3, database::db_test_this(_)).
+	benchmark(d4, database::db_test_self(_)).
+	benchmark(d5, database::db_test_obj(_)).
 
 	% repeat a goal N times without using call/1 and using a failure-driven loop to 
 	% avoid the interference of Prolog compiler memory management mechanism (such as 
 	% garbage collection) on the results 
 	do_benchmark(empty_loop, N) :-
-		{repeat(N)},
+		{my_repeat(N)},
 			true,
 		fail.
 	do_benchmark(empty_loop, _).
 
 	do_benchmark(s1, N) :-
 		{generate_list(20, List)},
-		{repeat(N)},
+		{my_repeat(N)},
 			{my_length(List, _)},
 		fail.
 	do_benchmark(s1, _).
 
 	do_benchmark(s2, N) :-
 		{generate_list(20, List)},
-		{repeat(N)},
+		{my_repeat(N)},
 			object::length(List, _),
 		fail.
 	do_benchmark(s2, _).
 
 	do_benchmark(d1, N) :-
-		{repeat(N)},
+		{my_repeat(N)},
 			create_object(xpto, [], [], []),
 			abolish_object(xpto),
 		fail.
 	do_benchmark(d1, _).
 
 	do_benchmark(d2, N) :-
-		{repeat(N)},
-			{db_test_plain},
+		{my_repeat(N)},
+			{db_test_plain(N)},
 		fail.
 	do_benchmark(d2, _).
 
 	do_benchmark(d3, N) :-
-		{repeat(N)},
-			database::db_test_this,
+		{my_repeat(N)},
+			database::db_test_this(N),
 		fail.
 	do_benchmark(d3, _).
 
 	do_benchmark(d4, N) :-
-		{repeat(N)},
-			database::db_test_self,
+		{my_repeat(N)},
+			database::db_test_self(N),
 		fail.
 	do_benchmark(d4, _).
 
 	do_benchmark(d5, N) :-
-		{repeat(N)},
-			database::db_test_obj,
+		{my_repeat(N)},
+			database::db_test_obj(N),
 		fail.
 	do_benchmark(d5, _).
 
