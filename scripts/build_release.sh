@@ -37,10 +37,10 @@ sudo sed -e 's/^version.*/version 2.29.6/' -i '' Portfile
 sudo sed -e "s/^checksums.*/checksums md5 $md5/" -i '' Portfile
 sudo sed -e 's/^distname.*/distname lgt2296/' -i '' Portfile
 sudo port clean --archive logtalk
-sudo port install logtalk
+sudo port destroot logtalk
 sudo port pkg logtalk
 cp -R work/logtalk-2.29.6.pkg $dir
-sudo port uninstall logtalk
+sudo port clean logtalk
 
 cd $dir
 mkdir manpdf2296
