@@ -85,6 +85,10 @@ RELEASE NOTES
 	the benchmark goals, resulting in much more meaningful and accurate 
 	results.
 
+	Updated the integration, uninstall, and user-setup POSIX shell scripts 
+	to try to locate the Logtalk installation directory when the environment 
+	variable LOGTALKHOME is not defined.
+
 
 2.29.5 - March 28, 2007
 
