@@ -42,6 +42,10 @@ chmod a+x lgt2296/xml/*.sh
 chmod a-x lgt2296/xml/*.js
 ln -sf lgt2296 logtalk
 
+cd lgt2296
+scripts/cleandist.sh
+cd ..
+
 mkdir -p bin
 cd bin
 ln -sf ../logtalk/scripts/cplgtdirs.sh cplgtdirs
