@@ -52,6 +52,13 @@ else
 	echo "ciaolgt script creation failed    (Ciao Prolog integration script)"
 fi
 
+./make_cxlgt.sh $prefix > /dev/null 2> /dev/null
+if [ $? = 0 ] ; then
+	echo "cxlgt script created      (CxProlog integration script)"
+else
+	echo "cxlgt script creation failed      (CxProlog integration script)"
+fi
+
 ./make_eclipselgt.sh $prefix > /dev/null 2> /dev/null
 if [ $? = 0 ] ; then
 	echo "eclipselgt script created (ECLiPSe integration script)"

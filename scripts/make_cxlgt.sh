@@ -43,7 +43,7 @@ mkdir -p bin
 cd bin
 echo ":- set_prolog_flag(file_name_variables, true)." > logtalk_cx.pl
 echo ":- silent_consult('\$LOGTALKUSER/configs/cx.config')." >> logtalk_cx.pl
-echo ":- silent_consult('\$LOGTALKHOME/bin/logtalk_comp_cx.pl')." >> logtalk_cx.pl
+echo ":- silent_consult('\$LOGTALKHOME/compiler/logtalk.pl')." >> logtalk_cx.pl
 echo ":- silent_consult('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_cx.pl
 echo "#!/bin/sh" > cxlgt
 echo "cxprolog --goal silent_consult\(\"'\$LOGTALKHOME/bin/logtalk_cx.pl'\"\) \"\$@\"" >> cxlgt

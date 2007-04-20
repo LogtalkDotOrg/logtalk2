@@ -79,6 +79,9 @@ make_ciaolgt.js
 	CIAO 1.10 (the first call to the shortcut must be made by a user with 
 	administrative rights)
 
+make_cxlgt.sh
+	makes a shell script named "cxlgt" for running Logtalk with CxProlog
+
 make_eclipselgt.sh
 	makes a shell script named "eclipselgt" for running Logtalk with ECLiPSe
 make_eclipselgt.js
