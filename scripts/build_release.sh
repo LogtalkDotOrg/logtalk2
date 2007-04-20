@@ -17,6 +17,8 @@ chmod a+x manuals/userman/*.sh
 chmod a+x manuals/refman/*.sh
 chmod a+x scripts/*.sh
 chmod a-x scripts/*.js
+chmod a+x scripts/debian/postinst
+chmod a+x scripts/debian/prerm
 chmod a+x scripts/linux/*.sh
 chmod a+x scripts/macosx/postflight
 chmod a+x xml/*.sh
@@ -27,6 +29,15 @@ cp -R logtalk/manuals man2296
 tar -czf man2296.tgz man2296
 mv logtalk lgt2296
 tar -czf lgt2296.tgz lgt2296
+
+mkdir -p fake_root/usr/local
+cd lgt2296/scripts
+./lgt_install.sh $dir/fake_root/usr/local
+cd $dir/fake_root
+ln -sf usr/local/lgt2296/scripts/debian DEBIAN
+dpkg-deb -b . logtalk_2.29.6-1_all.deb
+mv logtalk_2.29.6-1_all.deb ..
+cd ..
 
 md5="`md5 -q lgt2296.tgz`"
 sudo mkdir -p /opt/local/var/db/dports/distfiles/logtalk

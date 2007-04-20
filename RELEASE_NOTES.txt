@@ -89,8 +89,11 @@ RELEASE NOTES
 	to try to locate the Logtalk installation directory when the environment 
 	variable LOGTALKHOME is not defined.
 
-	Update the "scripts/lgt_install.sh" POSIX shell script to clean the 
+	Updated the "scripts/lgt_install.sh" POSIX shell script to clean the 
 	installation directory (by calling the "scripts/cleandist.sh" script).
+
+	Updated the "scripts/build_release.sh" POSIX shell script to also build 
+	a Debian installer package (experimental).
 
 
 2.29.5 - March 28, 2007
