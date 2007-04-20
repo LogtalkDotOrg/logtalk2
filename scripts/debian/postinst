@@ -22,6 +22,8 @@ else
 	echo 'export LOGTALKHOME LOGTALKUSER' >> /etc/profile
 fi
 
+eval export LOGTALKHOME=/usr/local/logtalk; cd $LOGTALKHOME/scripts; ./makeall_lgt.sh 
+
 echo ""
 echo "You have succesfully installed Logtalk!"
 echo ""
