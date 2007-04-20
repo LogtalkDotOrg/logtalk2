@@ -7,34 +7,21 @@
 ## Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ## =================================================================
 
-mkdir -p /etc/profile.d
-echo "# Logtalk environment setup" > /etc/profile.d/logtalk.sh
-echo "" >> /etc/profile.d/logtalk.sh
-echo "# Logtalk installation directory:" >> /etc/profile.d/logtalk.sh
-echo "export LOGTALKHOME=/usr/local/logtalk" >> /etc/profile.d/logtalk.sh
-echo "" >> /etc/profile.d/logtalk.sh
-echo "# Default location for Logtalk end-user files:" >> /etc/profile.d/logtalk.sh
-echo "export LOGTALKUSER=\$HOME/logtalk" >> /etc/profile.d/logtalk.sh
-chmod a+x /etc/profile.d/logtalk.sh
-echo "# Logtalk environment setup" > /etc/profile.d/logtalk.csh
-echo "" >> /etc/profile.d/logtalk.csh
-echo "# Logtalk installation directory:" >> /etc/profile.d/logtalk.csh
-echo "setenv LOGTALKHOME /usr/local/logtalk" >> /etc/profile.d/logtalk.csh
-echo "" >> /etc/profile.d/logtalk.csh
-echo "# Default location for Logtalk end-user files:" >> /etc/profile.d/logtalk.csh
-echo "setenv LOGTALKUSER \$HOME/logtalk" >> /etc/profile.d/logtalk.csh
-chmod a+x /etc/profile.d/logtalk.csh
-eval export LOGTALKHOME=/usr/local/logtalk; cd $LOGTALKHOME/scripts; ./makeall_lgt.sh /usr/local
 echo ""
-echo "Defined the following environment variables for all users:"
+echo "Checking for the Logtalk environment variable definitions..."
 echo ""
-echo "  Logtalk installation directory: LOGTALKHOME = /usr/local/logtalk"
-echo "  Default Logtalk user files directory: LOGTALKUSER = \$HOME/logtalk"
+
+if grep "LOGTALKHOME=/usr/local/logtalk" /etc/profile >/dev/null 2>&1; then
+	echo "Logtalk environment variables default values already set for bash!"
+else
+	/bin/cp -fp /etc/profile /etc/profile.lgtsaved
+	echo '' >> /etc/profile
+	echo '# Logtalk environment variables default values' >> /etc/profile
+	echo 'LOGTALKHOME=/usr/local/logtalk' >> /etc/profile
+	echo 'LOGTALKUSER=$HOME/logtalk' >> /etc/profile
+	echo 'export LOGTALKHOME LOGTALKUSER' >> /etc/profile
+fi
+
 echo ""
-echo "You may need to logout and login again or start a new shell in order to"
-echo "use the new environment variables."
-echo ""
-echo "You may change the default value of the LOGTALKUSER environment variable"
-echo "in your shell configuration files if you already use, or want to use, a "
-echo "different location for the Logtalk user files directory."
+echo "You have succesfully installed Logtalk!"
 echo ""

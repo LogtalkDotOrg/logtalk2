@@ -7,5 +7,12 @@
 ## Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ## =================================================================
 
-rm -f /etc/profile.d/logtalk.sh 2> /dev/null
-rm -f /etc/profile.d/logtalk.csh 2> /dev/null
+echo ""
+echo "Removing default Logtalk environment variable definitions..."
+echo ""
+
+sed -e '/# Logtalk environment variables default values/{N;N;N;d;}' -i /etc/profile
+
+echo ""
+echo "You have succesfully uninstalled Logtalk!"
+echo ""

@@ -8,7 +8,7 @@
 ## =================================================================
 
 echo ""
-echo "Checking the LOGTALKHOME environment variable definition..."
+echo "Checking for the Logtalk environment variable definitions..."
 echo ""
 
 if grep "LOGTALKHOME=/opt/local/share/logtalk" /etc/profile >/dev/null 2>&1; then
