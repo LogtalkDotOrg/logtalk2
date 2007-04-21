@@ -5,5 +5,5 @@ Abstract: These manuals describes what Logtalk is, and how it can be used.
 Section: Devel/Languages
 
 Format: HTML
-Index: /usr/share/doc/logtalk/manuals/index.html
-Files: /usr/share/doc/logtalk/manuals/*
+Index: /usr/local/logtalk/manuals/index.html
+Files: /usr/local/logtalk/manuals/*
