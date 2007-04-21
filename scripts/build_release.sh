@@ -35,6 +35,7 @@ mkdir -p fake_root/usr/share/doc-base
 cd lgt2296/scripts
 ./lgt_install.sh $dir/fake_root/usr/local
 cp debian/logtalk.doc-base $dir/fake_root/usr/share/doc-base/logtalk-docs
+cp debian/menu $dir/fake_root/usr/lib/menu/logtalk
 cd $dir/fake_root
 ln -sf usr/local/lgt2296/scripts/debian DEBIAN
 dpkg-deb -b . logtalk_2.29.6-1_all.deb
