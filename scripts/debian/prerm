@@ -18,10 +18,10 @@ fi
 
 echo "Removing default Logtalk environment variable definitions..."
 
-/bin/sed -e '/# Logtalk environment variables default values/d' -i '' /etc/profile
-/bin/sed -e '/LOGTALKHOME=.*$/d' -i '' /etc/profile
-/bin/sed -e '/LOGTALKUSER=.*$/d' -i '' /etc/profile
-/bin/sed -e '/export LOGTALKHOME LOGTALKUSER/d' -i '' /etc/profile
+/bin/sed -e '/# Logtalk environment variables default values/d' -i /etc/profile
+/bin/sed -e '/LOGTALKHOME=.*$/d' -i /etc/profile
+/bin/sed -e '/LOGTALKUSER=.*$/d' -i /etc/profile
+/bin/sed -e '/export LOGTALKHOME LOGTALKUSER/d' -i /etc/profile
 
 echo ""
 echo "You have succesfully uninstalled Logtalk!"
