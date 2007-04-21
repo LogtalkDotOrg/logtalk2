@@ -16,12 +16,17 @@ if [ "$1" = remove -o "$1" = upgrade ]; then
 	fi
 fi
 
+echo ""
+echo "Removing Logtalk integration and documentation scripts..."
+
+rm -rf /usr/local/logtalk/bin
+
 echo "Removing default Logtalk environment variable definitions..."
 
-sed -e '/# Logtalk environment variables default values/d' -i '' /etc/profile
-sed -e '/LOGTALKHOME=.*$/d' -i '' /etc/profile
-sed -e '/LOGTALKUSER=.*$/d' -i '' /etc/profile
-sed -e '/export LOGTALKHOME LOGTALKUSER/d' -i '' /etc/profile
+sed -e '/# Logtalk environment variables default values/d' -i /etc/profile
+sed -e '/LOGTALKHOME=.*$/d' -i /etc/profile
+sed -e '/LOGTALKUSER=.*$/d' -i /etc/profile
+sed -e '/export LOGTALKHOME LOGTALKUSER/d' -i /etc/profile
 
 echo ""
 echo "You have succesfully uninstalled Logtalk!"
