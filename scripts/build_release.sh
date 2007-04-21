@@ -19,6 +19,7 @@ chmod a+x scripts/*.sh
 chmod a-x scripts/*.js
 chmod a+x scripts/debian/postinst
 chmod a+x scripts/debian/prerm
+chmod a+x scripts/debian/postrm
 chmod a+x scripts/linux/*.sh
 chmod a+x scripts/macosx/postflight
 chmod a+x xml/*.sh
