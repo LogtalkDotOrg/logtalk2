@@ -5,7 +5,7 @@ Section: devel
 Priority: optional
 Architecture: all
 Essential: no
-Depends: gprolog (>= 1.2.14), swi-prolog (>= 5.6.14)
+Depends: gprolog (>= 1.2.14)
 Description: Open source object-oriented logic programming language.
  Logtalk is an open source object-oriented logic programming language, which
  can be used with a large number of back-end Prolog compilers. Integrating
