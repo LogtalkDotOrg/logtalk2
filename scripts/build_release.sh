@@ -32,6 +32,7 @@ tar -czf lgt2296.tgz lgt2296
 
 mkdir -p fake_root/usr/local
 mkdir -p fake_root/usr/share/doc-base
+mkdir -p fake_root/usr/lib/menu
 cd lgt2296/scripts
 ./lgt_install.sh $dir/fake_root/usr/local
 cp debian/logtalk.doc-base $dir/fake_root/usr/share/doc-base/logtalk-docs
