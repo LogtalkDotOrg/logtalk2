@@ -61,10 +61,17 @@ echo ":- consult('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_swi.pl
 echo ":- consult('\$LOGTALKUSER/configs/swihook.pl')." >> logtalk_swi.pl
 echo ":- consult('\$LOGTALKUSER/configs/xpcehook.pl')." >> logtalk_swi.pl
 echo "#/bin/sh" > swilgt
-case $( uname -s ) in
+
+if pl -t halt 2>&1 | grep "SWI-Prolog"; then
+	echo "pl -f \"\$LOGTALKHOME/bin/logtalk_swi.pl\" \"\$@\"" >> swilgt
+elif swipl -t halt 2>&1 | grep "SWI-Prolog"; then
+	echo "swipl -f \"\$LOGTALKHOME/bin/logtalk_swi.pl\" \"\$@\"" >> swilgt
+else case $( uname -s ) in
 	Darwin	) echo "swipl -f \"\$LOGTALKHOME/bin/logtalk_swi.pl\" \"\$@\"" >> swilgt;;
 	*		) echo "pl -f \"\$LOGTALKHOME/bin/logtalk_swi.pl\" \"\$@\"" >> swilgt;;
 esac
+fi
+
 chmod a+x swilgt
 ln -sf $LOGTALKHOME/bin/swilgt $prefix/bin/swilgt
 echo "Done. A link to the script was been created in $prefix/bin."
