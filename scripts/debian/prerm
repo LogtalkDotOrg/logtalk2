@@ -8,6 +8,16 @@
 ## =================================================================
 
 echo ""
+echo "Uninstalling and de-registering Logtalk online documentation..."
+echo ""
+
+if [ "$1" = remove -o "$1" = upgrade ]; then
+	if which install-docs >/dev/null 2>&1; then
+		install-docs -r logtalk
+	fi
+fi
+
+echo ""
 echo "Removing default Logtalk environment variable definitions..."
 echo ""
 

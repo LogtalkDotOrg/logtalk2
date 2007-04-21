@@ -8,6 +8,16 @@
 ## =================================================================
 
 echo ""
+echo "Installing and registering Logtalk online documentation..."
+echo ""
+
+if [ "$1" = configure ]; then
+	if which install-docs >/dev/null 2>&1; then
+		install-docs -i /usr/share/doc-base/logtalk
+	fi
+fi
+
+echo ""
 echo "Checking for the Logtalk environment variable definitions..."
 echo ""
 
