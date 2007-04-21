@@ -9,7 +9,6 @@
 
 echo ""
 echo "Installing and registering Logtalk online documentation..."
-echo ""
 
 if [ "$1" = configure ]; then
 	if which install-docs >/dev/null 2>&1; then
@@ -17,15 +16,12 @@ if [ "$1" = configure ]; then
 	fi
 fi
 
-echo ""
 echo "Checking for the Logtalk environment variable definitions..."
-echo ""
 
 if grep "LOGTALKHOME=/usr/local/logtalk" /etc/profile >/dev/null 2>&1; then
 	echo "Logtalk environment variables default values already set for bash!"
 else
 	/bin/cp -fp /etc/profile /etc/profile.lgtsaved
-	echo '' >> /etc/profile
 	echo '# Logtalk environment variables default values' >> /etc/profile
 	echo 'LOGTALKHOME=/usr/local/logtalk' >> /etc/profile
 	echo 'LOGTALKUSER=$HOME/logtalk' >> /etc/profile

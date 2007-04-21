@@ -1,7 +1,8 @@
 Document: logtalk-docs
-Title: Logtalk Manuals
+Title: Logtalk
 Author: Paulo Moura
-Abstract: These manuals describes what Logtalk is, and how it can be used.
+Abstract: Logtalk documentation.
+ Logtalk is an open source object-oriented extension to the Prolog programming language.
 Section: Apps/Programming
 
 Format: HTML
