@@ -1,0 +1,18 @@
+#!/bin/bash
+
+## =================================================================
+## Logtalk - Object oriented extension to Prolog
+## Release 2.29.6
+##
+## Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
+## =================================================================
+
+echo "Removing menu entries for some of the Logtalk integration scripts..."
+
+if test -x /usr/bin/update-menus; then
+	update-menus
+fi
+
+echo ""
+echo "You have succesfully uninstalled Logtalk!"
+echo ""
