@@ -2,7 +2,7 @@ Document: logtalk-docs
 Title: Logtalk Manuals
 Author: Paulo Moura
 Abstract: These manuals describes what Logtalk is, and how it can be used.
-Section: ApplicationsProgramming
+Section: Apps/Programming
 
 Format: HTML
 Index: /usr/local/logtalk/manuals/index.html
