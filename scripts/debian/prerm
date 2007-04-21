@@ -21,7 +21,7 @@ echo ""
 echo "Removing default Logtalk environment variable definitions..."
 echo ""
 
-sed -e '/# Logtalk environment variables default values/{N;N;N;d;}' -i '' /etc/profile
+sed -e '/# Logtalk environment variables default values/{N;N;N;d;}' -i /etc/profile
 
 echo ""
 echo "You have succesfully uninstalled Logtalk!"
