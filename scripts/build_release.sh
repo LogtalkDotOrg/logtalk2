@@ -31,7 +31,7 @@ tar -czf man2296.tgz man2296
 mv logtalk lgt2296
 tar -czf lgt2296.tgz lgt2296
 
-mkdir -p debian/usr/local
+mkdir -p debian/usr/local/share
 mkdir -p debian/usr/share/doc-base
 mkdir -p debian/usr/share/menu
 cd lgt2296/scripts

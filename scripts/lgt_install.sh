@@ -23,6 +23,8 @@ echo
 echo "Installing Logtalk on $prefix/share ..."
 echo
 
+mkdir -p $prefix/share
+
 rm -rf $prefix/share/lgt2296
 rm -f $prefix/share/logtalk
 
