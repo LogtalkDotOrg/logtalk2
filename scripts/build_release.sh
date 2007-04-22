@@ -48,7 +48,8 @@ cp debian/control $dir/debian/DEBIAN
 cp debian/postinst $dir/debian/DEBIAN
 cp debian/prerm $dir/debian/DEBIAN
 cp debian/postrm $dir/debian/DEBIAN
-dpkg-deb -b ./debian logtalk_2.29.6-1_all.deb
+cd $dir
+dpkg-deb -b debian logtalk_2.29.6-1_all.deb
 
 md5="`md5 -q lgt2296.tgz`"
 sudo mkdir -p /opt/local/var/db/dports/distfiles/logtalk
