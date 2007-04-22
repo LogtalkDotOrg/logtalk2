@@ -45,6 +45,9 @@ cp debian/changelog $dir/debian/usr/share/doc/logtalk
 gzip --best $dir/debian/usr/share/doc/logtalk/changelog 
 #gzip --best $dir/debian/usr/share/doc/logtalk/changelog.Debian
 cp debian/control $dir/debian/DEBIAN
+cp debian/postinst $dir/debian/DEBIAN
+cp debian/prerm $dir/debian/DEBIAN
+cp debian/postrm $dir/debian/DEBIAN
 cd $dir/debian
 dpkg-deb -b . logtalk_2.29.6-1_all.deb
 mv logtalk_2.29.6-1_all.deb ..
