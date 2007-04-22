@@ -65,7 +65,7 @@ cleandist.sh
 
 debian
 	directory containing support files for building a Debian package
-	(work in progress; not yet functional)
+	(work in progress; experimental)
 
 
 The following scripts allow easy integration of Logtalk with selected Prolog 
