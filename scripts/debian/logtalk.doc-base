@@ -9,3 +9,7 @@ Section: Apps/Programming
 Format: HTML
 Index: /usr/share/logtalk/manuals/index.html
 Files: /usr/share/logtalk/manuals/*
+
+Format: text
+Files: /usr/share/logtalk/BIBLIOGRAPHY.bib /usr/share/logtalk/CUSTOMIZE.txt /usr/share/logtalk/INSTALL.txt /usr/share/logtalk/LICENSE.txt /usr/share/logtalk/QUICK_START.txt /usr/share/logtalk/README.txt /usr/share/logtalk/RELEASE_NOTES.txt /usr/share/logtalk/UPGRADING.txt
+

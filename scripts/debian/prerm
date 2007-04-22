@@ -19,7 +19,7 @@ fi
 echo ""
 echo "Removing Logtalk integration and documentation scripts..."
 
-rm -rf /usr/local/logtalk/bin
+rm -rf /usr/share/logtalk/bin
 
 echo "Removing default Logtalk environment variable definitions..."
 
