@@ -50,9 +50,8 @@ cp debian/prerm $dir/debian/DEBIAN
 cp debian/postrm $dir/debian/DEBIAN
 cd $dir
 find debian -type d -print0 | xargs -0 chmod 755
-sudo chown -Rf 0:0 debian
 dpkg-deb -b debian logtalk_2.29.6-1_all.deb
-exit 1
+
 md5="`md5 -q lgt2296.tgz`"
 sudo mkdir -p /opt/local/var/db/dports/distfiles/logtalk
 sudo cp -f lgt2296.tgz /opt/local/var/db/dports/distfiles/logtalk/lgt2296.tgz

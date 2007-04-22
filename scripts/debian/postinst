@@ -32,7 +32,7 @@ else
 	echo 'export LOGTALKHOME LOGTALKUSER' >> /etc/profile
 fi
 
-eval export LOGTALKHOME=/usr/share/logtalk; cd $LOGTALKHOME/scripts; ./makeall_lgt.sh 
+eval export LOGTALKHOME=/usr/share/logtalk; cd $LOGTALKHOME/scripts; ./makeall_lgt.sh /usr
 
 echo "Adding menu entries for some of the Logtalk integration scripts..."
 
