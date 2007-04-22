@@ -67,6 +67,8 @@ echo ":- compile('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_eclipse.pl
 echo "#/bin/sh" > eclipselgt
 echo "eclipse -b \"\$LOGTALKHOME/bin/logtalk_eclipse.pl\" \"\$@\"" >> eclipselgt
 chmod a+x eclipselgt
+
+mkdir -p $prefix/bin
 ln -sf $LOGTALKHOME/bin/eclipselgt $prefix/bin/eclipselgt
 
 echo "Done. A link to the script was been created in $prefix/bin."

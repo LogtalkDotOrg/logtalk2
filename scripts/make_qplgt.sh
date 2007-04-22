@@ -53,6 +53,7 @@ fi
 
 cd "$LOGTALKHOME"
 mkdir -p bin
+
 cd configs
 cp qu.config qu.ql
 echo "fcompile('qu.ql', [assemble_only(true)]), load(qu). \
@@ -62,12 +63,16 @@ qc -c qphook.ql
 cd ../bin
 qc -s 3072 -d 1024 -h 2048 -o qplgt ../configs/qphook.qo ../configs/qu.qo ../compiler/logtalk.qo  ../libpaths/libpaths.qo
 chmod a+x qplgt
+
+mkdir -p $prefix/bin
 ln -sf $LOGTALKHOME/bin/qplgt $prefix/bin/qplgt
+
 rm ../configs/qu.ql
 rm ../configs/qphook.qo
 rm ../configs/qu.qo
 rm ../compiler/logtalk.qo
 rm ../libpaths/libpaths.qo
+
 echo "Done. A link to the script was been created in $prefix/bin."
 echo "The script must be regenerated whenever changes are made to"
 echo "either the config file or the libpaths file."

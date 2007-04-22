@@ -54,12 +54,17 @@ fi
 cd "$LOGTALKHOME"
 mkdir -p bin
 cd bin
+
 echo ":- built_in." > logtalk_gp.pl
 cat ../compiler/logtalk.pl >> logtalk_gp.pl
+
 echo "#/bin/sh" > gplgt
 echo "gprolog --init-goal \"['\$LOGTALKUSER/configs/gnu.config', '\$LOGTALKHOME/bin/logtalk_gp.pl', '\$LOGTALKUSER/libpaths/libpaths.pl']\" \"\$@\"" >> gplgt
 chmod a+x gplgt
+
+mkdir -p $prefix/bin
 ln -sf $LOGTALKHOME/bin/gplgt $prefix/bin/gplgt
+
 echo "Done. A link to the script was been created in $prefix/bin."
 echo
 echo "Users should ensure that the environment variables LOGTALKHOME"

@@ -54,6 +54,7 @@ fi
 cd "$LOGTALKHOME"
 mkdir -p bin
 cd bin
+
 echo ":- set_prolog_flag(iso, true)." > logtalk_comp_swi.pl
 echo ":- set_prolog_flag(generate_debug_info, false)." >> logtalk_comp_swi.pl
 echo ":- system_module." >> logtalk_comp_swi.pl
@@ -63,8 +64,8 @@ echo ":- consult('\$LOGTALKHOME/bin/logtalk_comp_swi.pl')." >> logtalk_swi.pl
 echo ":- consult('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_swi.pl
 echo ":- consult('\$LOGTALKUSER/configs/swihook.pl')." >> logtalk_swi.pl
 echo ":- consult('\$LOGTALKUSER/configs/xpcehook.pl')." >> logtalk_swi.pl
-echo "#/bin/sh" > swilgt
 
+echo "#/bin/sh" > swilgt
 if pl -t halt 2>&1 | grep "SWI-Prolog"; then
 	echo "pl -f \"\$LOGTALKHOME/bin/logtalk_swi.pl\" \"\$@\"" >> swilgt
 elif swipl -t halt 2>&1 | grep "SWI-Prolog"; then
@@ -74,9 +75,11 @@ else case $( uname -s ) in
 	*		) echo "pl -f \"\$LOGTALKHOME/bin/logtalk_swi.pl\" \"\$@\"" >> swilgt;;
 esac
 fi
-
 chmod a+x swilgt
+
+mkdir -p $prefix/bin
 ln -sf $LOGTALKHOME/bin/swilgt $prefix/bin/swilgt
+
 echo "Done. A link to the script was been created in $prefix/bin."
 echo
 echo "Users should ensure that the environment variables LOGTALKHOME"

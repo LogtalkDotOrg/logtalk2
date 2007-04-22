@@ -54,14 +54,19 @@ fi
 cd "$LOGTALKHOME"
 mkdir -p bin
 cd bin
+
 echo ":- set_prolog_flag(file_name_variables, true)." > logtalk_cx.pl
 echo ":- silent_consult('\$LOGTALKUSER/configs/cx.config')." >> logtalk_cx.pl
 echo ":- silent_consult('\$LOGTALKHOME/compiler/logtalk.pl')." >> logtalk_cx.pl
 echo ":- silent_consult('\$LOGTALKUSER/libpaths/libpaths.pl')." >> logtalk_cx.pl
+
 echo "#!/bin/sh" > cxlgt
 echo "cxprolog --goal silent_consult\(\"'\$LOGTALKHOME/bin/logtalk_cx.pl'\"\) \"\$@\"" >> cxlgt
 chmod a+x cxlgt
+
+mkdir -p $prefix/bin
 ln -sf $LOGTALKHOME/bin/cxlgt $prefix/bin/cxlgt
+
 echo "Done. A link to the script was been created in $prefix/bin."
 echo
 echo "Users should ensure that the environment variables LOGTALKHOME"
