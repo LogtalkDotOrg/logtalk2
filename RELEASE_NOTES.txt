@@ -86,6 +86,11 @@ RELEASE NOTES
 	results.
 
 	Updated the integration, uninstall, and user-setup POSIX shell scripts 
+	to use $prefix/share/logtalk as the default installation directory to 
+	better comply with the Filesystem Hierarchy Standard 2.3 for UNIX-like 
+	operating systems.
+
+	Updated the integration, uninstall, and user-setup POSIX shell scripts 
 	to try to locate the Logtalk installation directory when the environment 
 	variable LOGTALKHOME is not defined.
 

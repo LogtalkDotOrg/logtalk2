@@ -14,15 +14,18 @@ echo
 if ! [ "$LOGTALKHOME" ]; then
 	echo "The environment variable LOGTALKHOME should be defined first!"
 	echo "Trying default Logtalk installation directories..."
-	if [ -d "/usr/local/logtalk" ]; then
-		LOGTALKHOME=/usr/local/logtalk
-		echo "Using Logtalk installation at /usr/local/logtalk"
-	elif [ -d "/opt/local/logtalk" ]; then
-		LOGTALKHOME=/opt/local/logtalk
-		echo "Using Logtalk installation at /opt/local/logtalk"
+	if [ -d "/usr/local/share/logtalk" ]; then
+		LOGTALKHOME=/usr/local/share/logtalk
+		echo "Using Logtalk installation at /usr/local/share/logtalk"
+	elif [ -d "/usr/share/logtalk" ]; then
+		LOGTALKHOME=/usr/share/logtalk
+		echo "Using Logtalk installation at /usr/share/logtalk"
 	elif [ -d "/opt/local/share/logtalk" ]; then
 		LOGTALKHOME=/opt/local/share/logtalk
 		echo "Using Logtalk installation at /opt/local/share/logtalk"
+	elif [ -d "/opt/share/logtalk" ]; then
+		LOGTALKHOME=/opt/share/logtalk
+		echo "Using Logtalk installation at /opt/share/logtalk"
 	else
 		echo "Unable to locate Logtalk installation directory!"
 		echo

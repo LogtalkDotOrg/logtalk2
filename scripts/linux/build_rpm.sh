@@ -10,13 +10,10 @@
 dir="$PWD"
 cd ..
 
-LOGTALKHOME=/usr/local/logtalk ./lgt_uninstall.sh
+LOGTALKHOME=/usr/local/share/logtalk ./lgt_uninstall.sh
 ./lgt_install.sh
 
-cd /usr/local/logtalk
-scripts/cleandist.sh
-
-cd ..
+cd /usr/local/share
 tar -czf lgt2296.tgz lgt2296
 mv lgt2296.tgz /usr/src/redhat/SOURCES
 
