@@ -13,6 +13,8 @@ cvs -d :pserver:anonymous@cvs.logtalk.org:/usr/local/cvsroot checkout logtalk
 
 cd logtalk
 scripts/cleandist.sh
+find . -type f -print0 | xargs -0 chmod 644
+find . -type d -print0 | xargs -0 chmod 755
 chmod a+x manuals/userman/*.sh
 chmod a+x manuals/refman/*.sh
 chmod a+x scripts/*.sh
@@ -53,7 +55,6 @@ cp debian/postinst $dir/debian/DEBIAN
 cp debian/prerm $dir/debian/DEBIAN
 cp debian/postrm $dir/debian/DEBIAN
 cd $dir
-find debian -type d -print0 | xargs -0 chmod 755
 dpkg-deb -b debian logtalk_2.29.6-1_all.deb
 
 md5="`md5 -q lgt2296.tgz`"
