@@ -1,2 +1,3 @@
-logtalk Debian maintainer and upstream author are identical.
-Therefore see also normal changelog file for Debian changes.
+Logtalk Debian maintainer and upstream author are the same.
+Consult the normal changelog file for any Debian changes.
+Consult the RELEASE_NOTES.txt file for Logtalk changes.

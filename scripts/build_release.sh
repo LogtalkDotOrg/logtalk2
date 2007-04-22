@@ -39,9 +39,13 @@ cd lgt2296/scripts
 ./lgt_install.sh $dir/debian/usr
 cp debian/logtalk.doc-base $dir/debian/usr/share/doc-base/logtalk-docs
 cp debian/menu $dir/debian/usr/share/menu/logtalk
+cp ../*.bib $dir/debian/usr/share/doc/logtalk
+cp ../*.txt $dir/debian/usr/share/doc/logtalk
 cp debian/copyright $dir/debian/usr/share/doc/logtalk
 cp debian/changelog $dir/debian/usr/share/doc/logtalk
 cp debian/changelog.Debian $dir/debian/usr/share/doc/logtalk
+gzip --best $dir/debian/usr/share/doc/logtalk/*.bib 
+gzip --best $dir/debian/usr/share/doc/logtalk/*.txt 
 gzip --best $dir/debian/usr/share/doc/logtalk/changelog 
 gzip --best $dir/debian/usr/share/doc/logtalk/changelog.Debian
 cp debian/control $dir/debian/DEBIAN
