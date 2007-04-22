@@ -7,5 +7,5 @@ Abstract: Logtalk documentation.
 Section: Apps/Programming
 
 Format: HTML
-Index: /usr/local/logtalk/manuals/index.html
-Files: /usr/local/logtalk/manuals/*
+Index: /usr/local/share/logtalk/manuals/index.html
+Files: /usr/local/share/logtalk/manuals/*

@@ -31,15 +31,21 @@ tar -czf man2296.tgz man2296
 mv logtalk lgt2296
 tar -czf lgt2296.tgz lgt2296
 
-mkdir -p debian/usr/local/share
+mkdir -p debian/usr/share/doc/logtalk
 mkdir -p debian/usr/share/doc-base
 mkdir -p debian/usr/share/menu
+mkdir -p debian/DEBIAN
 cd lgt2296/scripts
-./lgt_install.sh $dir/debian/usr/local
+./lgt_install.sh $dir/debian/usr
 cp debian/logtalk.doc-base $dir/debian/usr/share/doc-base/logtalk-docs
 cp debian/menu $dir/debian/usr/share/menu/logtalk
+cp debian/copyright $dir/debian/usr/share/doc/logtalk
+cp debian/changelog $dir/debian/usr/share/doc/logtalk
+#cp debian/changelog.Debian $dir/debian/usr/share/doc/logtalk
+gzip --best $dir/debian/usr/share/doc/logtalk/changelog 
+#gzip --best $dir/debian/usr/share/doc/logtalk/changelog.Debian
+cp debian/control $dir/debian/DEBIAN
 cd $dir/debian
-ln -sf usr/local/share/lgt2296/scripts/debian DEBIAN
 dpkg-deb -b . logtalk_2.29.6-1_all.deb
 mv logtalk_2.29.6-1_all.deb ..
 cd ..
