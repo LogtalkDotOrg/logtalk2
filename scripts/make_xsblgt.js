@@ -73,7 +73,7 @@ if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk"))
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - XSB.lnk");
-link.Arguments = "-l -e \"['%LOGTALKUSER%\\\\configs\\\\xsb.pl', '%LOGTALKHOME%\\\\compiler\\\\logtalk.pl', '%LOGTALKUSER%\\\\libpaths\\\\libpaths_no_env_var.pl']).\"";
+link.Arguments = "-l -e \"['%LOGTALKUSER%\\\\configs\\\\xsb.pl', '%LOGTALKHOME%\\\\compiler\\\\logtalk.pl', '%LOGTALKUSER%\\\\libpaths\\\\libpaths_no_env_var.pl'].\"";
 link.Description = "Runs Logtalk with XSB";
 link.IconLocation = "app.exe,1";
 link.TargetPath = prolog_path;
