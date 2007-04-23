@@ -15,6 +15,7 @@ cd logtalk
 scripts/cleandist.sh
 find . -type f -print0 | xargs -0 chmod 644
 find . -type d -print0 | xargs -0 chmod 755
+chmod a+x integration/*.sh
 chmod a+x manuals/userman/*.sh
 chmod a+x manuals/refman/*.sh
 chmod a+x scripts/*.sh
@@ -33,12 +34,13 @@ tar -czf man2296.tgz man2296
 mv logtalk lgt2296
 tar -czf lgt2296.tgz lgt2296
 
+mkdir -p debian/usr/bin
 mkdir -p debian/usr/share/doc/logtalk
 mkdir -p debian/usr/share/doc-base
 mkdir -p debian/usr/share/menu
 mkdir -p debian/DEBIAN
 cd lgt2296/scripts
-./lgt_install.sh $dir/debian/usr
+./install.sh $dir/debian/usr
 cp debian/logtalk.doc-base $dir/debian/usr/share/doc-base/logtalk-docs
 cp debian/menu $dir/debian/usr/share/menu/logtalk
 cp ../*.bib $dir/debian/usr/share/doc/logtalk
@@ -55,7 +57,7 @@ cp debian/postinst $dir/debian/DEBIAN
 cp debian/prerm $dir/debian/DEBIAN
 cp debian/postrm $dir/debian/DEBIAN
 cd $dir
-dpkg-deb -b debian logtalk_2.29.6-1_all.deb
+dpkg-deb --build debian logtalk_2.29.6-1_all.deb
 
 md5="`md5 -q lgt2296.tgz`"
 sudo mkdir -p /opt/local/var/db/dports/distfiles/logtalk

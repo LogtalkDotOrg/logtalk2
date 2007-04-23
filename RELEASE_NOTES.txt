@@ -89,6 +89,8 @@ RELEASE NOTES
 	the benchmark goals, resulting in much more meaningful and accurate 
 	results.
 
+	New, much improved installation and integration scripts.
+
 	Updated the integration, uninstall, and user-setup POSIX shell scripts 
 	to use $prefix/share/logtalk as the default installation directory to 
 	better comply with the Filesystem Hierarchy Standard 2.3 for UNIX-like 
