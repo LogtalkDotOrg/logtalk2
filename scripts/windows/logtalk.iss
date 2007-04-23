@@ -95,14 +95,35 @@ Filename: "{app}\{#MyAppUrlName}"; Section: "InternetShortcut"; Key: "URL"; Stri
 Filename: "{app}\{#MyAppRegUrlName}"; Section: "InternetShortcut"; Key: "URL"; String: "{#MyAppRegURL}"; Components: base
 
 [Icons]
-Name: "{group}\{#MyAppName} Bibliography"; Filename: "{app}\BIBLIOGRAPHY.bib"; Components: base
-Name: "{group}\{#MyAppName} Documentation"; Filename: "{app}\manuals\index.html"; Components: base
-Name: "{group}\{#MyAppName} License"; Filename: "{app}\LICENSE.txt"; Components: base
-Name: "{group}\{#MyAppName} Release Notes"; Filename: "{app}\RELEASE_NOTES.txt"; Components: base
-Name: "{group}\{#MyAppName} Read Me"; Filename: "{app}\README.txt"; Components: base
-Name: "{group}\{#MyAppName} Customization instructions"; Filename: "{app}\CUSTOMIZE.txt"; Components: base
+Name: "{group}\Bibliography"; Filename: "{app}\BIBLIOGRAPHY.bib"; Components: base
+Name: "{group}\Documentation"; Filename: "{app}\manuals\index.html"; Components: base
+Name: "{group}\License"; Filename: "{app}\LICENSE.txt"; Components: base
+Name: "{group}\Release Notes"; Filename: "{app}\RELEASE_NOTES.txt"; Components: base
+Name: "{group}\Read Me"; Filename: "{app}\README.txt"; Components: base
+Name: "{group}\Customization instructions"; Filename: "{app}\CUSTOMIZE.txt"; Components: base
 
-Name: "{group}\{#MyAppName} Web Site"; Filename: "{#MyAppUrl}"; Components: base
+Name: "{group}\Web Site"; Filename: "{#MyAppUrl}"; Components: base
+
+Name: "{group}\Logtalk - B-Prolog"; Filename: "{code:GetBPExePath}"; Parameters: "-g ""consult('$LOGTALKHOME/integration/logtalk_bp_win.pl'), $bp_top_level"""; Comment: "Runs Logtalk with B-Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\bp; Flags: createonlyiffileexists
+
+Name: "{group}\Logtalk - Ciao Prolog"; Filename: "{code:GetCiaoExePath}"; Parameters: "-l ""$LOGTALKHOME/integration/logtalk_ciao.pl"""; Comment: "Runs Logtalk with Ciao Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\ciao; Flags: createonlyiffileexists
+
+Name: "{group}\Logtalk - ECLiPSe"; Filename: "{code:GetEclipseExePath}"; Parameters: "-b ""%LOGTALKHOME%\integration\logtalk_eclipse.pl"""; Comment: "Runs Logtalk with ECLiPSe"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\eclipse; Flags: createonlyiffileexists
+
+Name: "{group}\Logtalk - GNU Prolog"; Filename: "{code:GetGPExePath}"; Parameters: "--init-goal ""['$LOGTALKUSER/configs/gnu.config', '$LOGTALKHOME/integration/logtalk_gp.pl', '$LOGTALKUSER/libpaths/libpaths.pl']"""; Comment: "Runs Logtalk with GNU Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\gprolog; Flags: createonlyiffileexists
+
+Name: "{group}\Logtalk - K-Prolog"; Filename: "{code:GetKPExePath}"; Parameters: "-h 2048k -l 1024k -g 2048k -e ""(consult('$LOGTALKHOME/integration/logtalk_plc.pl'), '$root')."""; Comment: "Runs Logtalk with K-Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\gprolog; Flags: createonlyiffileexists
+
+Name: "{group}\Logtalk - SICStus Prolog 3"; Filename: "{code:GetSP3ExePath}"; Parameters: "-l ""%LOGTALKHOME%\integration\logtalk_sicstus3.pl"""; Comment: "Runs Logtalk with SSICStus Prolog 3"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\sicstus; Flags: createonlyiffileexists
+
+Name: "{group}\Logtalk - SICStus Prolog 4"; Filename: "{code:GetSP4ExePath}"; Parameters: "-l ""%LOGTALKHOME%\integration\logtalk_sicstus4.pl"""; Comment: "Runs Logtalk with SICStus Prolog 4"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\sicstus; Flags: createonlyiffileexists
+
+Name: "{group}\Logtalk - SWI-Prolog"; Filename: "{code:GetSWIExePath}"; Parameters: "-f ""%LOGTALKHOME%\integration\logtalk_swi.pl"""; Comment: "Runs Logtalk with SWI-Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\swi; Flags: createonlyiffileexists
+
+Name: "{group}\Logtalk - XSB"; Filename: "C:\XSB\config\x86-pc-windows\bin\xsb.exe"; Parameters: "-l -e ""['%LOGTALKUSER%\\configs\\xsb.pl', '%LOGTALKHOME%\\compiler\\logtalk.pl', '%LOGTALKUSER%\\libpaths\\libpaths_no_env_var.pl']."""; Comment: "Runs Logtalk with XSB"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\xsb; Flags: createonlyiffileexists
+
+Name: "{group}\Logtalk - YAP"; Filename: "C:\Yap\bin\yap.exe"; Parameters: "-l ""$LOGTALKHOME/integration/logtalk_yap.pl"""; Comment: "Runs Logtalk with YAP"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\yap; Flags: createonlyiffileexists
+
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"; Components: base
 
 Name: "{code:GetLgtUserDir}\manuals"; Filename: "{app}\manuals"; Components: user
@@ -115,16 +136,6 @@ Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environmen
 Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKUSER"; ValueData: "{code:GetLgtUserDir}"; Flags: deletevalue uninsdeletevalue
 
 [Run]
-Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_bplgt.js"""; Description: "B-Prolog integration"; Components: prolog\bp
-Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_ciaolgt.js"""; Description: "Ciao Prolog integration"; Components: prolog\ciao
-Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_eclipselgt.js"""; Description: "ECLiPSe integration"; Components: prolog\eclipse
-Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_gplgt.js"""; Description: "GNU Prolog integration"; Components: prolog\gprolog
-Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_plclgt.js"""; Description: "K-Prolog integration"; Components: prolog\plc
-Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_sicstuslgt.js"""; Description: "SICStus Prolog integration"; Components: prolog\sicstus
-Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_swilgt.js"""; Description: "SWI-Prolog integration"; Components: prolog\swi
-Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_xsblgt.js"""; Description: "XSB integration"; Components: prolog\xsb
-Filename: "{cmd}"; Parameters: "/C set LOGTALKHOME={app} & cscript ""{app}\scripts\make_yaplgt.js"""; Description: "YAP integration"; Components: prolog\yap
-
 Filename: "{app}\RELEASE_NOTES.txt"; Description: "View the release notes"; Components: base user; Flags: postinstall shellexec skipifsilent
 Filename: "{app}\CUSTOMIZE.txt"; Description: "Read the customization instructions for completing your setup"; Components: base user; Flags: postinstall shellexec skipifsilent
 
@@ -138,7 +149,7 @@ Type: filesandordirs; Name: "{group}"; Components: base
 var
   LgtUserDirPage: TInputDirWizardPage;
   WarningPage: TOutputMsgWizardPage;
-  Explanation, Warning, Scripts: String;
+  Explanation, Warning: String;
 
 procedure InitializeWizard;
 begin
@@ -193,17 +204,77 @@ begin
     Result := False;
 end;
 
-procedure CurStepChanged(CurStep: TSetupStep);
+function GetBPExePath(Param: String): String;
+var
+  BPDIR: String;
 begin
-  if (CurStep = ssInstall) and DirExists(LgtUserDirPage.Values[0]) and (pos('backup', WizardSelectedComponents(False)) > 0) then
-    RenameFile(LgtUserDirPage.Values[0], LgtUserDirPage.Values[0] + ' backup ' + GetDateTimeString('dddddd tt', '-', '-'));
-  if (CurStep = ssInstall) and (pos('prolog', WizardSelectedComponents(False)) > 0) then
-  begin
-    Scripts := 'The installer needs to run a set of JScripts scripts within command shells' + Chr(13) +
-               'in order to integrate Logtalk with your installed Prolog compilers.' + Chr(13) + Chr(13) +
-               'These scripts require WSH 5.6 (or later version) to be installed.' + Chr(13) + Chr(13) +
-               'Make sure that any security software you may have installed do not block' + Chr(13) +
-               'the execution of the scripts.';
-    MsgBox(Scripts, mbInformation, MB_OK)
-  end
+  if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'BPDIR', BPDIR) then
+    Result := BPDIR + '\bp.bat'
+  else
+	Result := 'lgt_exe_does_not_exist'
+end;
+
+function GetCiaoExePath(Param: String): String;
+var
+  CiaoDir: String;
+begin
+  if RegQueryStringValue(HKLM, 'Software\Ciao Prolog\', 'ciao_dir', CiaoDir) then
+    Result := CiaoDir + '\shell\ciaosh.cpx'
+  else
+	Result := 'lgt_exe_does_not_exist'
+end;
+
+function GetEclipseExePath(Param: String): String;
+var
+  ECLIPSEDIR: String;
+begin
+  if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\5.10\', 'ECLIPSEDIR', ECLIPSEDIR) then
+    Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
+  else
+	Result := 'lgt_exe_does_not_exist'
+end;
+
+function GetGPExePath(Param: String): String;
+var
+  RootPath: String;
+begin
+  if RegQueryStringValue(HKCU, 'Software\GnuProlog\', 'RootPath', RootPath) then
+    Result := RootPath + '\bin\gprolog.exe'
+  else
+	Result := 'lgt_exe_does_not_exist'
+end;
+
+function GetKPExePath(Param: String): String;
+begin
+    Result := GetEnv('PLC') + '\plc.exe'
+end;
+
+function GetSP3ExePath(Param: String): String;
+var
+  SP_PATH: String;
+begin
+  if RegQueryStringValue(HKLM, 'Software\SICS\SICStus3.12_win32\', 'SP_PATH', SP_PATH) then
+    Result := SP_PATH + '\bin\spwin.exe'
+  else
+	Result := 'lgt_exe_does_not_exist'
+end;
+
+function GetSP4ExePath(Param: String): String;
+var
+  SP_PATH: String;
+begin
+  if RegQueryStringValue(HKLM, 'Software\SICS\SICStus4.0_win32\', 'SP_PATH', SP_PATH) then
+    Result := SP_PATH + '\bin\spwin.exe'
+  else
+	Result := 'lgt_exe_does_not_exist'
+end;
+
+function GetSWIExePath(Param: String): String;
+var
+  Home: String;
+begin
+  if RegQueryStringValue(HKLM, 'Software\SWI\Prolog\', 'home', Home) then
+    Result := Home + '\bin\plwin.exe'
+  else
+	Result := 'lgt_exe_does_not_exist'
 end;
