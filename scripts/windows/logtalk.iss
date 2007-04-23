@@ -228,7 +228,9 @@ function GetEclipseExePath(Param: String): String;
 var
   ECLIPSEDIR: String;
 begin
-  if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\5.10\', 'ECLIPSEDIR', ECLIPSEDIR) then
+  if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\5.11\', 'ECLIPSEDIR', ECLIPSEDIR) then
+    Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
+  else if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\5.10\', 'ECLIPSEDIR', ECLIPSEDIR) then
     Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
   else
 	Result := 'lgt_exe_does_not_exist'

@@ -100,7 +100,7 @@ B-Prolog 7.0b1
 
 	b7.config
 
-	For B-Prolog 7.0b1. See the remarks above for version 6.9.
+	For B-Prolog 7.0b1. Experiemntal. See the remarks above for version 6.9.
 
 
 Bin-Prolog 8.x~10.x
@@ -151,7 +151,7 @@ CIAO Prolog 1.8p2 and later versions
 	files.
 
 
-CxProlog 0.93.1 or later version
+CxProlog 0.95.x or later versions
 
 	cx.config
 
@@ -160,7 +160,7 @@ CxProlog 0.93.1 or later version
 	Logtalk examples and other source files.
 
 
-ECLiPSe 5.10#26 or later version
+ECLiPSe 5.10#26 or later versions
 
 	eclipse.config
 	eclipseiso.config
@@ -204,7 +204,7 @@ ECLiPSe 5.10#26 or later version
 	appended to the old ones instead of replacing them!
 
 
-GNU Prolog 1.1.2 (and later versions, except 1.2.13)
+GNU Prolog GNU Prolog 1.2.14 and later versions
 
 	gnu.config
 
@@ -407,7 +407,7 @@ SICStus Prolog 4.0
 	the Windows beta version).
 
 
-SWI Prolog 3.3.x and later versions (5.6.x or later strongly recommended)
+SWI Prolog 5.6.x and later versions
 
 	swi.config
 	swihook.pl
@@ -447,6 +447,10 @@ SWI Prolog 3.3.x and later versions (5.6.x or later strongly recommended)
 	See the comments in the "swi_set_logtalk_context.pl" itself for a 
 	description of its functionality.
 
+	With multi-threading support turned on, you will get an warmless message
+	when halting the system regarding threads that wouldn't die: you can 
+	supress the message on POSIX systems by using "% swilgt 2> /dev/null".
+
 
 XSB 3.0 and later versions
 
@@ -457,10 +461,10 @@ XSB 3.0 and later versions
 	of source files.
 
 
-YAP 4.3.x and later versions
+YAP 5.1.1 and later versions
 
 	yap.config
 
-	For all 4.3.x and later versions. Don't forget to use the cd/1 predicate 
+	For all 5.1.1 and later versions. Don't forget to use the cd/1 predicate 
 	to set the working directory before loading the library or an example. 
 	Supports smart compilation of source files.

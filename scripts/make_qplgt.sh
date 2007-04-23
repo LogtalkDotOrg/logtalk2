@@ -7,6 +7,12 @@
 ## Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ## =================================================================
 
+#	makes a shell script named "qplgt" for running Logtalk with Qu-Prolog 
+#	(based on script code contributed by Peter Robinson); this script does 
+#	not read at runtime the config and the libpaths files: you will need to 
+#	run this script again if you modify these files
+
+
 echo
 echo "Creating a script named qplgt for running Logtalk with Qu-Prolog..."
 echo
