@@ -43,7 +43,7 @@ cd $LOGTALKHOME/..
 rm -rf lgt2296
 rm -f logtalk
 
-if [ -d bin ]; then
+if [ -d ../bin ]; then
 	cd bin
 	rm -f bplgt
 	rm -f ciaolgt
