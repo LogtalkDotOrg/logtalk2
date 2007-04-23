@@ -1,0 +1,31 @@
+=================================================================
+Logtalk - Object oriented extension to Prolog
+Release 2.29.6
+
+Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
+=================================================================
+
+
+This directory contains Prolog integration shell scripts and auxiliary 
+Prolog files.
+
+On POSIX systems, the Logtalk installers make the following integration 
+scripts available from the command-line (you may need to adjust your 
+system path):
+
+	bplgt		B-Prolog integration script
+	ciaolgt		Ciao Prolog integration script
+	cxlgt		CxProlog integration script
+	eclipselgt	ECLiPSe integration script
+	gplgt		GNU Prolog integration script
+	plclgt		K-Prolog integration script
+	sicstuslgt	SICStus Prolog integration script
+	swilgt		SWI-Prolog integration script
+	xsblgt		XSB integration script
+	yaplgt		YAP integration script
+
+On Windows systems, the Logtalk installer makes the Prolog integration 
+shortcuts available from the Start Menu/Programs/Logtalk menu.
+
+Other Prolog compilers require manual steps for integration with Logtalk.
+See the configs/NOTES.txt file for details.
