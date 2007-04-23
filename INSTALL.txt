@@ -53,15 +53,9 @@ Logtalk on MacOS X, Windows, Linux, and Unix-like (POSIX) operating systems
 >> POSIX systems installation (starting from the Logtalk directory):
 
 	% cd scripts
-	% sudo ./lgt_install.sh
+	% sudo ./install.sh
 
->> Windows installation (starting from the Logtalk directory):
-
-	C:\logtalk> cd scripts
-	C:\logtalk> cscript lgt_install.js
-	RESTART
-
-The "scripts/lgt_install.*" installation scripts make all files read-only in 
+The "scripts/install.sh" installation script makes all files read-only in 
 order to avoid user tempering. This is a convenient setup for computer labs, 
 given that making directories world-writable is a security risk.
 
@@ -147,16 +141,6 @@ initialization files for some Prolog compilers. In addition, be sure to read
 the "configs/NOTES.txt" file notes on the Prolog compilers that you intend to 
 use. There are also "makeall_lgt.*" scripts that try to run all the individual
 "make_*lgt.*" scripts:
-
->> POSIX systems:
-
-	% cd $LOGTALKHOME/scripts
-	% sudo ./makeall_lgt.sh
-
->> Windows:
-
-	C:\> cd %LOGTALKHOME%\scripts
-	C:\> cscript makeall_lgt.js
 
 This assumes that your favorite Prolog compilers are supported by the 
 "make_*lgt.*" scripts. If that is not the case, don't worry: just follow 
