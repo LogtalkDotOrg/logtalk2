@@ -20,18 +20,6 @@ fi
 
 chown -f -R -L root:root /usr/share/doc/logtalk
 
-echo "Checking for the Logtalk environment variable definitions..."
-
-if grep "LOGTALKHOME=/usr/share/logtalk" /etc/profile >/dev/null 2>&1; then
-	echo "Logtalk environment variables default values already set for bash!"
-else
-	/bin/cp -fp /etc/profile /etc/profile.lgtsaved
-	echo '# Logtalk environment variables default values' >> /etc/profile
-	echo 'LOGTALKHOME=/usr/share/logtalk' >> /etc/profile
-	echo 'LOGTALKUSER=$HOME/logtalk' >> /etc/profile
-	echo 'export LOGTALKHOME LOGTALKUSER' >> /etc/profile
-fi
-
 echo "Adding menu entries for some of the Logtalk integration scripts..."
 
 if test -x /usr/bin/update-menus; then

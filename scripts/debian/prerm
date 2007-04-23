@@ -20,10 +20,3 @@ echo ""
 echo "Removing Logtalk integration and documentation scripts..."
 
 rm -rf /usr/share/logtalk/bin
-
-echo "Removing default Logtalk environment variable definitions..."
-
-sed -e '/# Logtalk environment variables default values/d' -i /etc/profile
-sed -e '/LOGTALKHOME=.*$/d' -i /etc/profile
-sed -e '/LOGTALKUSER=.*$/d' -i /etc/profile
-sed -e '/export LOGTALKHOME LOGTALKUSER/d' -i /etc/profile
