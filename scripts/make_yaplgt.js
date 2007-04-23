@@ -57,23 +57,13 @@ if (!FSObject.FolderExists(logtalk_home)) {
 
 logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
 
-if (!FSObject.FolderExists(logtalk_home + "\\bin")) 
-	FSObject.CreateFolder(logtalk_home + "\\bin");
-
-var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_yap.pl", true);
-
-f.WriteLine(":- reconsult('$LOGTALKUSER\\\\configs\\\\yap.config').");
-f.WriteLine(":- reconsult('$LOGTALKHOME\\\\compiler\\\\logtalk.pl').");
-f.WriteLine(":- reconsult('$LOGTALKUSER\\\\libpaths\\\\libpaths.pl').");
-f.Close();
-
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 
 if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk")) 
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - YAP.lnk");
-link.Arguments = '-l "%LOGTALKHOME%\\bin\\logtalk_yap.pl"';
+link.Arguments = '-l "%LOGTALKHOME%\\integration\\logtalk_yap.pl"';
 link.Description = 'Runs Logtalk with YAP';
 link.IconLocation = 'app.exe,1';
 link.TargetPath = prolog_path;
