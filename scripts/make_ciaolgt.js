@@ -57,31 +57,13 @@ if (!FSObject.FolderExists(logtalk_home)) {
 
 logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
 
-if (!FSObject.FolderExists(logtalk_home + "\\bin")) 
-	FSObject.CreateFolder(logtalk_home + "\\bin");
-
-var f = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_ciao.pl", true);
-
-f.WriteLine(":- ensure_loaded('$LOGTALKUSER/configs/ciao_aux.config').");
-f.WriteLine(":- set_prolog_flag(multi_arity_warnings, off).");
-f.WriteLine(":- ensure_loaded('$LOGTALKHOME/compiler/logtalk.pl').");
-f.WriteLine(":- ensure_loaded('$LOGTALKUSER/libpaths/libpaths.pl').");
-f.WriteLine(":- op(600, xfy, ::).");
-f.WriteLine(":- op(600, fy, ::).");
-f.WriteLine(":- op(600, fy, ^^).");
-f.WriteLine(":- op(200, fy, +).");
-f.WriteLine(":- op(200, fy, ?).");
-f.WriteLine(":- op(200, fy, @).");
-f.WriteLine(":- op(200, fy, -).");
-f.Close();
-
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 
 if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk")) 
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - CIAO.lnk");
-link.Arguments = '-l "$LOGTALKHOME/bin/logtalk_ciao.pl"';
+link.Arguments = '-l "$LOGTALKHOME/integration/logtalk_ciao.pl"';
 link.Description = 'Runs Logtalk with CIAO';
 link.IconLocation = 'app.exe,1';
 link.TargetPath = prolog_path;

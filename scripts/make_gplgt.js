@@ -57,31 +57,13 @@ if (!FSObject.FolderExists(logtalk_home)) {
 
 logtalk_home = logtalk_home.replace(/\\/g, "\\\\");
 
-if (!FSObject.FolderExists(logtalk_home + "\\bin")) 
-	FSObject.CreateFolder(logtalk_home + "\\bin");
-
-FSObject.CopyFile(logtalk_home + "\\configs\\gnu.config", logtalk_home + "\\bin\\gnu.pl");
-
-var f1 = FSObject.CreateTextFile(logtalk_home + "\\bin\\logtalk_gp.pl", true);
-var f2 = FSObject.OpenTextFile(logtalk_home + "\\compiler\\logtalk.pl", 1);
-var line;
-
-f1.WriteLine(":- built_in.");
-while (!f2.AtEndOfStream) {
-	line = f2.ReadLine();
-	f1.WriteLine(line);
-}
-
-f1.Close();
-f2.Close();
-
 var ProgramsPath = WshShell.SpecialFolders("AllUsersPrograms");
 
 if (!FSObject.FolderExists(ProgramsPath + "\\Logtalk")) 
 	FSObject.CreateFolder(ProgramsPath + "\\Logtalk");
 
 var link = WshShell.CreateShortcut(ProgramsPath + "\\Logtalk\\Logtalk - GNU Prolog.lnk");
-link.Arguments = "--init-goal \"['$LOGTALKUSER/configs/gnu.config', '$LOGTALKHOME/bin/logtalk_gp.pl', '$LOGTALKUSER/libpaths/libpaths.pl']\"";
+link.Arguments = "--init-goal \"['$LOGTALKUSER/configs/gnu.config', '$LOGTALKHOME/integration/logtalk_gp.pl', '$LOGTALKUSER/libpaths/libpaths.pl']\"";
 link.Description = "Runs Logtalk with GNU Prolog";
 link.IconLocation = "app.exe,1";
 link.TargetPath = prolog_path;
