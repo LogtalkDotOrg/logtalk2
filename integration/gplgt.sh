@@ -56,4 +56,4 @@ fi
 
 export LOGTALKHOME LOGTALKUSER
 
-exec gprolog --init-goal "['$LOGTALKUSER/configs/gnu.config', '$LOGTALKHOME/integration/logtalk_gp.pl', '$LOGTALKUSER/libpaths/libpaths.pl']" "$@"
+exec gprolog --init-goal `echo "['$LOGTALKUSER/configs/gnu.config','$LOGTALKHOME/integration/logtalk_gp.pl','$LOGTALKUSER/libpaths/libpaths.pl']"` "$@"
