@@ -13,21 +13,22 @@ if ! [ "$LOGTALKHOME" ]; then
 	echo "Trying the default locations for the Logtalk installation..."
 	if [ -d "/usr/local/share/logtalk" ]; then
 		LOGTALKHOME=/usr/local/share/logtalk
-		echo "Using Logtalk installation found at /usr/local/share/logtalk"
+		echo "... using Logtalk installation found at /usr/local/share/logtalk"
 	elif [ -d "/usr/share/logtalk" ]; then
 		LOGTALKHOME=/usr/share/logtalk
-		echo "Using Logtalk installation found at /usr/share/logtalk"
+		echo "... using Logtalk installation found at /usr/share/logtalk"
 	elif [ -d "/opt/local/share/logtalk" ]; then
 		LOGTALKHOME=/opt/local/share/logtalk
-		echo "Using Logtalk installation found at /opt/local/share/logtalk"
+		echo "... using Logtalk installation found at /opt/local/share/logtalk"
 	elif [ -d "/opt/share/logtalk" ]; then
 		LOGTALKHOME=/opt/share/logtalk
-		echo "Using Logtalk installation found at /opt/share/logtalk"
+		echo "... using Logtalk installation found at /opt/share/logtalk"
 	else
-		echo "Unable to locate Logtalk installation directory!"
+		echo "... unable to locate Logtalk installation directory!"
 		echo
 		exit 1
 	fi
+	echo
 elif ! [ -d "$LOGTALKHOME" ]; then
 	echo "The environment variable LOGTALKHOME points to a non-existing directory!"
 	echo "Its current value is: $LOGTALKHOME"
@@ -35,17 +36,18 @@ elif ! [ -d "$LOGTALKHOME" ]; then
 	echo
 	exit 1
 fi
+export LOGTALKHOME
 
 if ! [ "$LOGTALKUSER" ]; then
 	echo "The environment variable LOGTALKUSER should be defined first, pointing"
 	echo "to your Logtalk user directory!"
 	echo "Trying the default location for the Logtalk user directory..."
-	if [ -d "$HOME/logtalk" ]; then
-		LOGTALKUSER=$HOME/logtalk
-		echo "Using Logtalk user directory found at $HOME/logtalk"
+	export LOGTALKUSER=$HOME/logtalk
+	if [ -d "$LOGTALKUSER" ]; then		
+		echo "... using Logtalk user directory found at $LOGTALKUSER"
 	else
-		echo "Logtalk user directory not found at default location. Creating a new"
-		echo "Logtalk user directory by running the \"cplgtdirs\" shell script:"
+		echo "... Logtalk user directory not found at default location. Creating a"
+		echo "new Logtalk user directory by running the \"cplgtdirs\" shell script:"
 		cplgtdirs
 	fi
 elif ! [ -d "$LOGTALKUSER" ]; then
@@ -53,7 +55,6 @@ elif ! [ -d "$LOGTALKUSER" ]; then
 	echo "by running the \"cplgtdirs\" shell script:"
 	cplgtdirs
 fi
-
-export LOGTALKHOME LOGTALKUSER
+echo
 
 exec xsb -l -e "['$LOGTALKUSER/configs/xsb.pl', '$LOGTALKHOME/compiler/logtalk.pl', '$LOGTALKUSER/libpaths/libpaths_no_env_var.pl']." "$@"
