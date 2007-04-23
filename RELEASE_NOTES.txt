@@ -77,6 +77,10 @@ RELEASE NOTES
 	flag "underscore_vars" to "dont_care" in order to avoid spurious warnings 
 	with some examples.
 
+	Updated the B-Prolog config file to workaround the lack of support for 
+	expanding environment variables in the argument of the built-in predicate 
+	exists/1.
+
 	Added predicates depth/2 and variant/2 to the library object "term".
 
 	Much improved "benchmarks" example, updated to allow running tests in 
