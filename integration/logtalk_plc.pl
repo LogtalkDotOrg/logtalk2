@@ -9,6 +9,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-:- ensure_loaded('$LOGTALKUSER/configs/k.config').
-:- ensure_loaded('$LOGTALKHOME/compiler/logtalk.pl').
-:- ensure_loaded('$LOGTALKUSER/libpaths/libpaths.pl').
+:- consult('$LOGTALKUSER/configs/k.config').
+:- consult('$LOGTALKHOME/compiler/logtalk.pl').
+:- consult('$LOGTALKUSER/libpaths/libpaths.pl').
