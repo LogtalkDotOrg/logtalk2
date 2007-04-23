@@ -43,8 +43,8 @@ if ! [ "$LOGTALKUSER" ]; then
 		echo "Using Logtalk user directory at $HOME/logtalk"
 	fi
 elif ! [ -d "$LOGTALKUSER" ]; then
-	echo "Cannot find \$LOGTALKUSER directory. Creating a new one:"
-	echo
+	echo "Cannot find \$LOGTALKUSER directory! Creating a new Logtalk user directory"
+	echo "by running the \"cplgtdirs\" shell script:"
 	cplgtdirs
 fi
 
