@@ -58,11 +58,12 @@ cd ..
 ln -sf lgt2296 logtalk
 
 mkdir -p $prefix/bin
+cd $prefix/bin
 
-ln -sf $prefix/share/logtalk/scripts/cplgtdirs.sh $prefix/bin/cplgtdirs
-ln -sf $prefix/share/logtalk/xml/lgt2pdf.sh $prefix/bin/lgt2pdf
-ln -sf $prefix/share/logtalk/xml/lgt2html.sh $prefix/bin/lgt2html
-ln -sf $prefix/share/logtalk/xml/lgt2xml.sh $prefix/bin/lgt2xml
+ln -sf ../share/logtalk/scripts/cplgtdirs.sh cplgtdirs
+ln -sf ../share/logtalk/xml/lgt2pdf.sh lgt2pdf
+ln -sf ../share/logtalk/xml/lgt2html.sh lgt2html
+ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
 
 echo
 echo "Links to the cplgtdirs, lgt2pdf, lgt2html, and lgt2xml scripts have"
@@ -70,37 +71,37 @@ echo "been created on $prefix/bin; you may need to add this directory to"
 echo "your execution path."
 echo
 
-ln -sf $prefix/share/logtalk/integration/bplgt.sh $prefix/bin/bplgt
+ln -sf ../share/logtalk/integration/bplgt.sh bplgt
 echo "bplgt script installed       (B-Prolog integration script)"
 
-ln -sf $prefix/share/logtalk/integration/ciaolgt.sh $prefix/bin/ciaolgt
+ln -sf ../share/logtalk/integration/ciaolgt.sh ciaolgt
 echo "ciaolgt script installed     (Ciao Prolog integration script)"
 
-ln -sf $prefix/share/logtalk/integration/cxlgt.sh $prefix/bin/cxlgt
+ln -sf ../share/logtalk/integration/cxlgt.sh cxlgt
 echo "cxlgt script installed       (CxProlog integration script)"
 
-ln -sf $prefix/share/logtalk/integration/eclipselgt.sh $prefix/bin/eclipselgt
+ln -sf ../share/logtalk/integration/eclipselgt.sh eclipselgt
 echo "eclipselgt script installed  (ECLiPSe integration script)"
 
-ln -sf $prefix/share/logtalk/integration/gplgt.sh $prefix/bin/gplgt
+ln -sf ../share/logtalk/integration/gplgt.sh gplgt
 echo "gplgt script installed       (GNU Prolog integration script)"
 
-ln -sf $prefix/share/logtalk/integration/plclgt.sh $prefix/bin/plclgt
+ln -sf ../share/logtalk/integration/plclgt.sh plclgt
 echo "plclgt script installed      (K-Prolog integration script)"
 
-#ln -sf $prefix/share/logtalk/integration/qplgt.sh $prefix/bin/qplgt
+#ln -sf ../share/logtalk/integration/qplgt.sh qplgt
 #echo "qplgt script installed       (Qu-Prolog integration script)"
 
-ln -sf $prefix/share/logtalk/integration/sicstuslgt.sh $prefix/bin/sicstuslgt
+ln -sf ../share/logtalk/integration/sicstuslgt.sh sicstuslgt
 echo "sicstuslgt script installed  (SICStus Prolog integration script)"
 
-ln -sf $prefix/share/logtalk/integration/swilgt.sh $prefix/bin/swilgt
+ln -sf ../share/logtalk/integration/swilgt.sh swilgt
 echo "swilgt script installed      (SWI-Prolog integration script)"
 
-ln -sf $prefix/share/logtalk/integration/xsblgt.sh $prefix/bin/xsblgt
+ln -sf ../share/logtalk/integration/xsblgt.sh xsblgt
 echo "xsblgt script installed      (XSB integration script)"
 
-ln -sf $prefix/share/logtalk/integration/yaplgt.sh $prefix/bin/yaplgt
+ln -sf ../share/logtalk/integration/yaplgt.sh yaplgt
 echo "yaplgt script installed      (YAP integration script)"
 
 echo
