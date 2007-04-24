@@ -54,7 +54,7 @@ details). Starting from the Logtalk directory, type:
 	% cd scripts
 	% sudo ./install.sh
 
-The "scripts/install.sh" installation script makes all files read-only in 
+This installation script makes all files read-only for non-admin users in 
 order to avoid user tempering. This is a convenient setup for computer labs, 
 given that making directories world-writable is a security risk.
 
@@ -62,10 +62,10 @@ given that making directories world-writable is a security risk.
 2. SETTING LOGTALK ENVIRONMENT VARIABLES
 
 You need to set two environment variables, LOGTALKHOME and LOGTALKUSER. The 
-environment variable LOGTALKHOME should point to the Logtalk installation 
+environment variable LOGTALKHOME should be set to the Logtalk installation 
 directory. The environment variable LOGTALKUSER should point to a directory 
 in your home directory where you want to store the user-specific Logtalk files
-(for example, ~/logtalk). Both environment variables may be set for all users 
+(by default, ~/logtalk). Both environment variables may be set for all users 
 by a user with administration privileges. The two environment variables can 
 have the same value if you are the only Logtalk user on your computer and if 
 you have full permissions to the Logtalk installation directory. In addition, 
@@ -102,7 +102,7 @@ also sets the LOGTALKUSER environment variable for the administrator user
 running the installer.
 
 
-3. COPYING THE LOGTALK USER-MODIFIABLE FILES TO USERS HOME DIRECTORIES
+3. END-USER SETUP (COPYING LOGTALK USER-MODIFIABLE FILES TO USERS HOME DIRS)
 
 If you installed Logtalk on your home directory, then skip this step if you 
 have set both Logtalk environment variables (LOGTALKHOME and LOGTALKUSER) to 
@@ -128,11 +128,14 @@ Prolog compilers for which an integration script is provided on the "scripts"
 directory, this setup as the advantage of allowing each end-user to 
 independently customize default compilation options and library paths.
 
+Windows (non-admin) users may also use the Logtalk GUI installer to setup 
+their Logtalk user folder and the LOGTALKUSER environment variable.
+
 
 4. CREATING NEW PROLOG TOP-LEVELS FOR AUTOMATIC LOADING OF LOGTALK
 
 Most Prolog compilers allows the user to define an initialization file 
-that is automatically consulted at startup. This initialization file 
+that is automatically consulted at startup. These initialization files
 may contain directives for loading other files, such as the Logtalk 
 configuration file and the Logtalk compiler. The "$LOGTALKHOME/integration" 
 sub-directory contains several pre-made scripts (named "*lgt.*") for running 
