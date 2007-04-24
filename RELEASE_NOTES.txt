@@ -112,6 +112,11 @@ RELEASE NOTES
 	Updated the "build_release.sh" POSIX shell script to also build a Debian 
 	installer package (experimental).
 
+	The Windows GUI installer no longer spans command-line shells running 
+	JScript scripts to build the Prolog integration shortcuts. This hopefully 
+	solves issues with security software silently blocking and breaking the 
+	Logtalk installation.
+
 
 2.29.5 - March 28, 2007
 
