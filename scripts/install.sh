@@ -2,7 +2,7 @@
 
 ## =================================================================
 ## Logtalk - Object oriented extension to Prolog
-## Release 2.29.6
+## Release 2.30.0
 ##
 ## Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ## =================================================================
@@ -29,15 +29,15 @@ echo
 
 mkdir -p $prefix/share
 
-rm -rf $prefix/share/lgt2296
+rm -rf $prefix/share/lgt2300
 rm -f $prefix/share/logtalk
 
-mkdir $prefix/share/lgt2296
+mkdir $prefix/share/lgt2300
 
 cd ..
-cp -R * $prefix/share/lgt2296
+cp -R * $prefix/share/lgt2300
 
-cd $prefix/share/lgt2296
+cd $prefix/share/lgt2300
 scripts/cleandist.sh
 find . -type f -print0 | xargs -0 chmod 644
 find . -type d -print0 | xargs -0 chmod 755
@@ -55,7 +55,7 @@ chmod a+x xml/*.sh
 chmod a-x xml/*.js
 
 cd ..
-ln -sf lgt2296 logtalk
+ln -sf lgt2300 logtalk
 
 mkdir -p $prefix/bin
 cd $prefix/bin

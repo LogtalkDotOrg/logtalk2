@@ -2,7 +2,7 @@
 
 ## =================================================================
 ## Logtalk - Object oriented extension to Prolog
-## Release 2.29.6
+## Release 2.30.0
 ##
 ## Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ## =================================================================
@@ -14,8 +14,8 @@ LOGTALKHOME=/usr/local/share/logtalk ./lgt_uninstall.sh
 ./lgt_install.sh
 
 cd /usr/local/share
-tar -czf lgt2296.tgz lgt2296
-mv lgt2296.tgz /usr/src/redhat/SOURCES
+tar -czf lgt2300.tgz lgt2300
+mv lgt2300.tgz /usr/src/redhat/SOURCES
 
 cd "$dir"
 rpmbuild -ba --target=noarch-*-linux logtalk.spec

@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.29.6
+%  Release 2.30.0
 %
 %  integration code for XPCE 6.6.21 and later versions supporting Logtalk 
 %  message sending goals as call-backs goals by using the syntax:

@@ -1,11 +1,11 @@
 Name: logtalk
 Summary: Logtalk - Open source object-oriented extension to Prolog
-Version: 2.29.6
+Version: 2.30.0
 Release: 1
 License: Artistic License 2.0
 Group: Development/Languages
 Packager: Paulo Moura <pmoura@logtalk.org>
-Source: http://logtalk.org/files/lgt2296.tgz
+Source: http://logtalk.org/files/lgt2300.tgz
 BuildArchitectures: noarch
 URL: http://logtalk.org/
 Prefix: /usr/local
@@ -13,24 +13,24 @@ AutoReqProv: no
 %description
 Logtalk is an open source object-oriented extension to the Prolog programming language. Integrating logic programming with object-oriented and event-driven programming, it is compatible with most Prolog compilers. It supports both prototypes and classes. In addition, it supports component-based programming through category-based composition.
 %prep
-%setup -n lgt2296
+%setup -n lgt2300
 %build
 %install
 mkdir -p /usr/local/share
-rm -rf /usr/local/share/lgt2296
+rm -rf /usr/local/share/lgt2300
 rm -f /usr/local/share/logtalk
-mkdir /usr/local/share/lgt2296
-cp -R * /usr/local/share/lgt2296
+mkdir /usr/local/share/lgt2300
+cp -R * /usr/local/share/lgt2300
 cd /usr/local/share
-chmod -R go-w,a+r lgt2296
-chmod a+x lgt2296
-chmod a+x lgt2296/scripts/*.sh
-chmod a-x lgt2296/scripts/*.js
-chmod a+x lgt2296/scripts/linux/*.sh
-chmod a+x lgt2296/scripts/macosx/postflight
-chmod a+x lgt2296/xml/*.sh
-chmod a-x lgt2296/xml/*.js
-ln -sf lgt2296 logtalk
+chmod -R go-w,a+r lgt2300
+chmod a+x lgt2300
+chmod a+x lgt2300/scripts/*.sh
+chmod a-x lgt2300/scripts/*.js
+chmod a+x lgt2300/scripts/linux/*.sh
+chmod a+x lgt2300/scripts/macosx/postflight
+chmod a+x lgt2300/xml/*.sh
+chmod a-x lgt2300/xml/*.js
+ln -sf lgt2300 logtalk
 cd ..
 mkdir -p bin 
 cd bin
@@ -41,25 +41,25 @@ ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
 %clean
 %files
 %defattr(-,root,users)
-%doc /usr/local/share/lgt2296/BIBLIOGRAPHY.bib
-%doc /usr/local/share/lgt2296/CUSTOMIZE.txt
-%doc /usr/local/share/lgt2296/INSTALL.txt
-%doc /usr/local/share/lgt2296/LICENSE.txt
-%doc /usr/local/share/lgt2296/QUICK_START.txt
-%doc /usr/local/share/lgt2296/README.txt
-%doc /usr/local/share/lgt2296/RELEASE_NOTES.txt
-%doc /usr/local/share/lgt2296/UPGRADING.txt
-/usr/local/share/lgt2296/compiler
-/usr/local/share/lgt2296/configs
-/usr/local/share/lgt2296/contributions
-/usr/local/share/lgt2296/examples
-/usr/local/share/lgt2296/libpaths
-/usr/local/share/lgt2296/library
-%docdir /usr/local/share/lgt2296/manuals
-/usr/local/share/lgt2296/manuals
-/usr/local/share/lgt2296/scripts
-/usr/local/share/lgt2296/wenv
-/usr/local/share/lgt2296/xml
+%doc /usr/local/share/lgt2300/BIBLIOGRAPHY.bib
+%doc /usr/local/share/lgt2300/CUSTOMIZE.txt
+%doc /usr/local/share/lgt2300/INSTALL.txt
+%doc /usr/local/share/lgt2300/LICENSE.txt
+%doc /usr/local/share/lgt2300/QUICK_START.txt
+%doc /usr/local/share/lgt2300/README.txt
+%doc /usr/local/share/lgt2300/RELEASE_NOTES.txt
+%doc /usr/local/share/lgt2300/UPGRADING.txt
+/usr/local/share/lgt2300/compiler
+/usr/local/share/lgt2300/configs
+/usr/local/share/lgt2300/contributions
+/usr/local/share/lgt2300/examples
+/usr/local/share/lgt2300/libpaths
+/usr/local/share/lgt2300/library
+%docdir /usr/local/share/lgt2300/manuals
+/usr/local/share/lgt2300/manuals
+/usr/local/share/lgt2300/scripts
+/usr/local/share/lgt2300/wenv
+/usr/local/share/lgt2300/xml
 /usr/local/share/logtalk
 /usr/local/bin/cplgtdirs
 /usr/local/bin/lgt2pdf

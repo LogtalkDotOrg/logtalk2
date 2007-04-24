@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Object oriented extension to Prolog
-%  Release 2.29.6
+%  Release 2.30.0
 %
 %  a useful but fragile hack for SWI Prolog 5.6.x that allows setting the 
 %  Logtalk top-level context to other object than the pseudo-object "user"

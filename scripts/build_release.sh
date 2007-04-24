@@ -2,7 +2,7 @@
 
 ## =================================================================
 ## Logtalk - Object oriented extension to Prolog
-## Release 2.29.6
+## Release 2.30.0
 ##
 ## Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ## =================================================================
@@ -29,17 +29,17 @@ chmod a+x xml/*.sh
 chmod a-x xml/*.js
 
 cd ..
-cp -R logtalk/manuals man2296
-tar -czf man2296.tgz man2296
-mv logtalk lgt2296
-tar -czf lgt2296.tgz lgt2296
+cp -R logtalk/manuals man2300
+tar -czf man2300.tgz man2300
+mv logtalk lgt2300
+tar -czf lgt2300.tgz lgt2300
 
 mkdir -p debian/usr/bin
 mkdir -p debian/usr/share/doc/logtalk
 mkdir -p debian/usr/share/doc-base
 mkdir -p debian/usr/share/menu
 mkdir -p debian/DEBIAN
-cd lgt2296/scripts
+cd lgt2300/scripts
 ./install.sh $dir/debian/usr
 cp debian/logtalk.doc-base $dir/debian/usr/share/doc-base/logtalk-docs
 cp debian/menu $dir/debian/usr/share/menu/logtalk
@@ -57,29 +57,29 @@ cp debian/postinst $dir/debian/DEBIAN
 cp debian/prerm $dir/debian/DEBIAN
 cp debian/postrm $dir/debian/DEBIAN
 cd $dir
-dpkg-deb --build debian logtalk_2.29.6-1_all.deb
+dpkg-deb --build debian logtalk_2.30.0-1_all.deb
 
-md5="`md5 -q lgt2296.tgz`"
+md5="`md5 -q lgt2300.tgz`"
 sudo mkdir -p /opt/local/var/db/dports/distfiles/logtalk
-sudo cp -f lgt2296.tgz /opt/local/var/db/dports/distfiles/logtalk/lgt2296.tgz
+sudo cp -f lgt2300.tgz /opt/local/var/db/dports/distfiles/logtalk/lgt2300.tgz
 cd /opt/local/var/db/dports/sources/rsync.rsync.darwinports.org_dpupdate_dports/lang/logtalk/
 sudo cp -f Portfile Portfile.old
-sudo sed -e 's/^version.*/version 2.29.6/' -i '' Portfile
+sudo sed -e 's/^version.*/version 2.30.0/' -i '' Portfile
 sudo sed -e "s/^checksums.*/checksums md5 $md5/" -i '' Portfile
-sudo sed -e 's/^distname.*/distname lgt2296/' -i '' Portfile
+sudo sed -e 's/^distname.*/distname lgt2300/' -i '' Portfile
 sudo port clean --archive logtalk
 sudo port destroot logtalk
 sudo port pkg logtalk
-cp -R work/logtalk-2.29.6.pkg $dir
+cp -R work/logtalk-2.30.0.pkg $dir
 sudo port clean logtalk
 
 cd $dir
-mkdir manpdf2296
-cd man2296/userman
+mkdir manpdf2300
+cd man2300/userman
 ./userman.sh
-mv userman.pdf ../../manpdf2296
+mv userman.pdf ../../manpdf2300
 cd ../refman
 ./refman.sh
-mv refman.pdf ../../manpdf2296
+mv refman.pdf ../../manpdf2300
 cd ../..
-tar -czf manpdf2296.tgz manpdf2296
+tar -czf manpdf2300.tgz manpdf2300
