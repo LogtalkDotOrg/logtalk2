@@ -58,19 +58,19 @@ RELEASE NOTES
 
 	Corrected a bug when running Logtalk with SWI-Prolog that prevented the 
 	use of alternative compilation directories (i.e. turning on the "altdirs" 
-	compiler flag).
-
-	Corrected a bug when running Logtalk with SWI-Prolog that can prevent 
-	make/0 from recompiling and reloading modified Logtalk source files.
+	compiler flag). Corrected a bug when running Logtalk with SWI-Prolog that 
+	can prevent make/0 from recompiling and reloading modified Logtalk source 
+	files. Updated the SWI-Prolog integration script, "swilgt.sh", to more 
+	reliably detect the compiler executable name.
 
 	Added a "configs/swi_set_logtalk_context.pl" file defining a useful but 
 	fragile hack implementing a set_logtalk_context/1 built-in predicate for 
 	switching the Logtalk top-level execution context to objects other than 
-	the pseudo-object "user".
+	the default pseudo-object "user".
 
 	Updated the CxProlog config file to use the new built-in predicates in 
-	version 0.95. Added a shell script, "make_cxlgt.sh", for easy integration
-	of Logtalk with CxProlog on POSIX systems (with the help of Artur Miguel 
+	version 0.95. Added a shell script, "cxlgt.sh", for easy integration of 
+	Logtalk with CxProlog on POSIX systems (with the help of Artur Miguel 
 	Dias, CxProlog author).
 
 	Updated the Ciao, K-Prolog, and ECLiPSe config files to set the compiler 
@@ -89,25 +89,28 @@ RELEASE NOTES
 	the benchmark goals, resulting in much more meaningful and accurate 
 	results.
 
-	New, much improved installation and integration scripts.
-
+	Removed all the "make_*lgt.*" and "makeall_lgt.*" shell scripts, replaced 
+	by pre-made integration scripts, that can be found on the new "integration"
+	directory. Removed the "lgt_install.js" script. Renamed the POSIX install 
+	and uninstall scripts to, respectively, "install.sh" and "uninstall.sh".
 	Updated the integration, uninstall, and user-setup POSIX shell scripts 
-	to use $prefix/share/logtalk as the default installation directory to 
+	to use "$prefix/share/logtalk" as the default installation directory to 
 	better comply with the Filesystem Hierarchy Standard 2.3 for UNIX-like 
 	operating systems.
 
+	Updated the integration scripts to automatically call the "cplgtdirs" 
+	script when the Logtalk user directory cannot be located.
+
 	Updated the integration, uninstall, and user-setup POSIX shell scripts 
-	to try to locate the Logtalk installation directory when the environment 
-	variable LOGTALKHOME is not defined.
+	to try to locate the Logtalk installation directory and the Logtalk user 
+	directory when the environment variables LOGTALKHOME and LOGTALKUSER are 
+	not set.
 
-	Updated the "scripts/lgt_install.sh" POSIX shell script to clean the 
-	installation directory (by calling the "scripts/cleandist.sh" script).
+	Updated the "install.sh" POSIX shell script to better clean and sanitize 
+	the file permissions on the installation directory.
 
-	Updated the "scripts/build_release.sh" POSIX shell script to also build 
-	a Debian installer package (experimental).
-
-	Updated the SWI-Prolog integration script, "make_swilgt.sh", to more 
-	reliably detect the compiler executable name.
+	Updated the "build_release.sh" POSIX shell script to also build a Debian 
+	installer package (experimental).
 
 
 2.29.5 - March 28, 2007
