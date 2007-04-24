@@ -109,21 +109,15 @@ echo "The Prolog integration scripts can be found on $prefix/bin."
 echo "Make sure that the Prolog compilers are also available on your execution"
 echo "path."
 echo
+echo "Users should ensure that the environment variable LOGTALKHOME is set to"
+echo "$prefix/share/logtalk and then run the \"cplgtdirs\" shell script once"
+echo "before running the integration scripts."
+echo
 echo "If you got an unexpected failure when using one of the Prolog integration"
 echo "scripts, make sure that the Prolog compiler is properly installed, consult"
 echo "the NOTES file on the scripts directory, and try to run the corresponding"
 echo "script individually."
 echo
-echo "Users should ensure that the environment variables LOGTALKHOME"
-echo "and LOGTALKUSER are defined and then run the \"cplgtdirs\" script"
-echo "once prior to using the Prolog integration scripts."
-echo
-
-echo "Logtalk basic installation completed. See the INSTALL and CUSTOMIZATION"
-echo "files for details on customizing your working environment."
-echo
-echo "Users must define the environment variable LOGTALKHOME pointing to"
-echo "$prefix/share/logtalk and then run the \"cplgtdirs\" shell script"
-echo "in order to copy the Logtalk user-modifiable files to their home"
-echo "directories."
+echo "Logtalk basic installation completed. See \$LOGTALKHOME/CUSTOMIZATION.txt"
+echo "file for details on customizing Logtalk and your working environment."
 echo

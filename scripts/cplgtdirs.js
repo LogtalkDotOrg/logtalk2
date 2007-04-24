@@ -140,6 +140,8 @@ WScript.Echo("the configuration file for your Prolog compiler found in the direc
 WScript.Echo("");
 WScript.Echo("  " + logtalk_user + "\\configs");
 WScript.Echo("");
+WScript.Echo("See the \%LOGTALKUSER\%\\CUSTOMIZATION.txt file for details.");
+WScript.Echo("");
 
 WScript.Quit(0);
 
