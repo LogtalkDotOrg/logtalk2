@@ -101,10 +101,10 @@ RELEASE NOTES
 	Updated the integration scripts to automatically call the "cplgtdirs" 
 	script when the Logtalk user directory cannot be located.
 
-	Updated the integration, uninstall, and user-setup POSIX shell scripts 
-	to try to locate the Logtalk installation directory and the Logtalk user 
-	directory when the environment variables LOGTALKHOME and LOGTALKUSER are 
-	not set.
+	Updated the integration, documentation, uninstall, and user-setup POSIX 
+	shell scripts to try to locate the Logtalk installation directory and the 
+	Logtalk user directory when the environment variables LOGTALKHOME and 
+	LOGTALKUSER are not set.
 
 	Updated the "install.sh" POSIX shell script to better clean and sanitize 
 	the file permissions on the installation directory.
