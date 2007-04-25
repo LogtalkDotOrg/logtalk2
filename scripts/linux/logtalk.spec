@@ -12,10 +12,17 @@ Prefix: /usr/local
 AutoReqProv: no
 %description
 Logtalk is an open source object-oriented logic programming language that can use most Prolog implementations as a back-end compiler. As a multi-paradigm language, Logtalk includes support for both prototypes and classes, protocols, component-based programming through category-based composition, event-driven programming, and multi-threading programming.
+
 %prep
+
 %setup -n lgt2300
+
 %build
+
 %install
+echo
+echo "Installing Logtalk on $RPM_INSTALL_PREFIX/share ..."
+echo
 mkdir -p /usr/local/share
 rm -rf /usr/local/share/lgt2300
 rm -f /usr/local/share/logtalk
@@ -87,6 +94,7 @@ ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
 /usr/local/bin/swilgt
 /usr/local/bin/xsblgt
 /usr/local/bin/yaplgt
+
 %post
 echo
 echo "Links to the cplgtdirs, lgt2pdf, lgt2html, and lgt2xml scripts have"
@@ -131,21 +139,25 @@ echo "" >> /etc/profile.d/logtalk.csh
 echo "# Default location for Logtalk end-user files:" >> /etc/profile.d/logtalk.csh
 echo "setenv LOGTALKUSER \$HOME/logtalk" >> /etc/profile.d/logtalk.csh
 chmod a+x /etc/profile.d/logtalk.csh
-echo ""
+echo
 echo "Defined the following environment variables for all users:"
-echo ""
+echo
 echo "  Logtalk installation directory: LOGTALKHOME = $RPM_INSTALL_PREFIX/share/logtalk"
 echo "  Default Logtalk user files directory: LOGTALKUSER = \$HOME/logtalk"
-echo ""
+echo
 echo "You may need to logout and login again or start a new shell in order to"
 echo "use the new environment variables."
-echo ""
+echo
 echo "Users may change the default value of the LOGTALKUSER environment variable"
 echo "in their shell configuration files if they already use, or want to use, a "
 echo "different location for the Logtalk user files directory. This directory "
 echo "is created by running the \"cplgtdirs\" shell script, which must be run "
 echo "once by each user before using the integration scripts."
-echo ""
+echo
+echo "Logtalk basic installation completed. See the \$LOGTALKHOME/CUSTOMIZE.txt"
+echo "file for details on customizing Logtalk and your working environment."
+echo
+
 %postun
 rm -f /etc/profile.d/logtalk.sh 2> /dev/null
 rm -f /etc/profile.d/logtalk.csh 2> /dev/null
