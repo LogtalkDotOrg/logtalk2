@@ -41,6 +41,7 @@ Prolog compilers that are expected to be compatible with the provided
 
 	* B-Prolog
 	* CIAO
+	* CxProlog
 	* ECLiPSe
 	* GNU-Prolog
 	* K-Prolog

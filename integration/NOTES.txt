@@ -25,7 +25,7 @@ system path):
 	yaplgt		YAP integration script
 
 On Windows systems, the Logtalk installer makes the Prolog integration 
-shortcuts available from the Start Menu/Programs/Logtalk menu.
+shortcuts available from the "Start Menu/Programs/Logtalk" menu.
 
 Other Prolog compilers require manual steps for integration with Logtalk.
-See the configs/NOTES.txt file for details.
+See the "configs/NOTES.txt" file for details.
