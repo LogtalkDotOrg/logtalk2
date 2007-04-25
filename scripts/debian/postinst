@@ -7,6 +7,9 @@
 ## Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ## ================================================================
 
+echo ""
+echo "Installed Logtalk on \"/usr/share\"."
+
 chown -f -R -L root:root /usr/share/logtalk
 
 echo ""
@@ -54,5 +57,5 @@ echo
 echo "If you got an unexpected failure when using one of the Prolog integration"
 echo "scripts, consult see the \"/usr/share/logtalk/configs/NOTES.txt\" file."
 echo
-echo "You have succesfully installed Logtalk!"
+echo "Logtalk basic installation completed."
 echo
