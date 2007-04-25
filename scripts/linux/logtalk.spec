@@ -94,12 +94,11 @@ ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
 
 %post
 echo
-echo "Installed Logtalk on $RPM_INSTALL_PREFIX/share."
+echo "Installed Logtalk on \"$RPM_INSTALL_PREFIX/share\"."
 echo
-echo
-echo "Links to the \"cplgtdirs\", \"lgt2pdf\", \"lgt2html\", and \"lgt2xml\" scripts have"
-echo "been created on \"$RPM_INSTALL_PREFIX/bin\"; you may need to add this directory to"
-echo "your execution path."
+echo "Links to the \"cplgtdirs\", \"lgt2pdf\", \"lgt2html\", and \"lgt2xml\" scripts"
+echo "have been created on \"$RPM_INSTALL_PREFIX/bin\"; you may need to add this directory"
+echo "to your execution path."
 echo
 echo "The following integration scripts are installed for running Logtalk"
 echo "with selected back-end Prolog compilers:"
