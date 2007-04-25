@@ -114,7 +114,6 @@ echo
 echo "If you got an unexpected failure when using one of the Prolog integration"
 echo "scripts, make sure that the Prolog compiler is properly installed and see"
 echo "the $RPM_INSTALL_PREFIX/share/logtalk/configs/NOTES.txt file."
-echo
 mkdir -p /etc/profile.d
 echo "# Logtalk environment setup" > /etc/profile.d/logtalk.sh
 echo "" >> /etc/profile.d/logtalk.sh
@@ -141,11 +140,11 @@ echo ""
 echo "You may need to logout and login again or start a new shell in order to"
 echo "use the new environment variables."
 echo ""
-echo "You may change the default value of the LOGTALKUSER environment variable"
-echo "in your shell configuration files if you already use, or want to use, a "
+echo "Users may change the default value of the LOGTALKUSER environment variable"
+echo "in their shell configuration files if they already use, or want to use, a "
 echo "different location for the Logtalk user files directory. This directory "
 echo "is created by running the \"cplgtdirs\" shell script, which must be run "
-echo "once before using the integration scripts."
+echo "once by each user before using the integration scripts."
 echo ""
 %postun
 rm -f /etc/profile.d/logtalk.sh 2> /dev/null
