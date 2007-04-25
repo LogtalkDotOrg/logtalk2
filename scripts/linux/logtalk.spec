@@ -22,8 +22,9 @@ rm -f /usr/local/share/logtalk
 mkdir /usr/local/share/lgt2300
 cp -R * /usr/local/share/lgt2300
 cd /usr/local/share
-chmod -R go-w,a+r lgt2300
-chmod a+x lgt2300
+find lgt2300 -type f -print0 | xargs -0 chmod 644
+find lgt2300 -type d -print0 | xargs -0 chmod 755
+chmod a+x lgt2300/integration/*.sh
 chmod a+x lgt2300/scripts/*.sh
 chmod a-x lgt2300/scripts/*.js
 chmod a+x lgt2300/scripts/linux/*.sh
@@ -34,6 +35,16 @@ ln -sf lgt2300 logtalk
 cd ..
 mkdir -p bin 
 cd bin
+ln -sf ../share/logtalk/integration/bplgt.sh bplgt
+ln -sf ../share/logtalk/integration/ciaolgt.sh ciaolgt
+ln -sf ../share/logtalk/integration/cxlgt.sh cxlgt
+ln -sf ../share/logtalk/integration/eclipselgt.sh eclipselgt
+ln -sf ../share/logtalk/integration/gplgt.sh gplgt
+ln -sf ../share/logtalk/integration/plclgt.sh plclgt
+ln -sf ../share/logtalk/integration/sicstuslgt.sh sicstuslgt
+ln -sf ../share/logtalk/integration/swilgt.sh swilgt
+ln -sf ../share/logtalk/integration/xsblgt.sh xsblgt
+ln -sf ../share/logtalk/integration/yaplgt.sh yaplgt
 ln -sf ../share/logtalk/scripts/cplgtdirs.sh cplgtdirs
 ln -sf ../share/logtalk/xml/lgt2pdf.sh lgt2pdf
 ln -sf ../share/logtalk/xml/lgt2html.sh lgt2html
@@ -53,6 +64,7 @@ ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
 /usr/local/share/lgt2300/configs
 /usr/local/share/lgt2300/contributions
 /usr/local/share/lgt2300/examples
+/usr/local/share/lgt2300/integration
 /usr/local/share/lgt2300/libpaths
 /usr/local/share/lgt2300/library
 %docdir /usr/local/share/lgt2300/manuals
@@ -65,7 +77,46 @@ ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
 /usr/local/bin/lgt2pdf
 /usr/local/bin/lgt2html
 /usr/local/bin/lgt2xml
+/usr/local/bin/bplgt
+/usr/local/bin/ciaolgt
+/usr/local/bin/cxlgt
+/usr/local/bin/eclipselgt
+/usr/local/bin/gplgt
+/usr/local/bin/plclgt
+/usr/local/bin/sicstuslgt
+/usr/local/bin/swilgt
+/usr/local/bin/xsblgt
+/usr/local/bin/yaplgt
 %post
+echo
+echo "Links to the cplgtdirs, lgt2pdf, lgt2html, and lgt2xml scripts have"
+echo "been created on $RPM_INSTALL_PREFIX/bin; you may need to add this directory to"
+echo "your execution path."
+echo
+echo "bplgt script installed       (B-Prolog integration script)"
+echo "ciaolgt script installed     (Ciao Prolog integration script)"
+echo "cxlgt script installed       (CxProlog integration script)"
+echo "eclipselgt script installed  (ECLiPSe integration script)"
+echo "gplgt script installed       (GNU Prolog integration script)"
+echo "plclgt script installed      (K-Prolog integration script)"
+echo "sicstuslgt script installed  (SICStus Prolog integration script)"
+echo "swilgt script installed      (SWI-Prolog integration script)"
+echo "xsblgt script installed      (XSB integration script)"
+echo "yaplgt script installed      (YAP integration script)"
+echo
+echo "The Prolog integration scripts can be found on $RPM_INSTALL_PREFIX/bin."
+echo "Make sure that the Prolog compilers are also available on your execution"
+echo "path."
+echo
+echo "Users should ensure that the environment variable LOGTALKHOME is set to"
+echo "$RPM_INSTALL_PREFIX/share/logtalk and then run the \"cplgtdirs\" shell script once"
+echo "before running the integration scripts."
+echo
+echo "If you got an unexpected failure when using one of the Prolog integration"
+echo "scripts, make sure that the Prolog compiler is properly installed, consult"
+echo "the NOTES file on the scripts directory, and try to run the corresponding"
+echo "script individually."
+echo
 mkdir -p /etc/profile.d
 echo "# Logtalk environment setup" > /etc/profile.d/logtalk.sh
 echo "" >> /etc/profile.d/logtalk.sh
@@ -83,7 +134,6 @@ echo "" >> /etc/profile.d/logtalk.csh
 echo "# Default location for Logtalk end-user files:" >> /etc/profile.d/logtalk.csh
 echo "setenv LOGTALKUSER \$HOME/logtalk" >> /etc/profile.d/logtalk.csh
 chmod a+x /etc/profile.d/logtalk.csh
-eval export LOGTALKHOME=$RPM_INSTALL_PREFIX/share/logtalk; cd $LOGTALKHOME/scripts; ./makeall_lgt.sh $RPM_INSTALL_PREFIX
 echo ""
 echo "Defined the following environment variables for all users:"
 echo ""
