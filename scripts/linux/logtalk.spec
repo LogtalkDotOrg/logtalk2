@@ -20,9 +20,6 @@ Logtalk is an open source object-oriented logic programming language that can us
 %build
 
 %install
-echo
-echo "Installing Logtalk on $RPM_INSTALL_PREFIX/share ..."
-echo
 mkdir -p /usr/local/share
 rm -rf /usr/local/share/lgt2300
 rm -f /usr/local/share/logtalk
@@ -97,8 +94,11 @@ ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
 
 %post
 echo
-echo "Links to the cplgtdirs, lgt2pdf, lgt2html, and lgt2xml scripts have"
-echo "been created on $RPM_INSTALL_PREFIX/bin; you may need to add this directory to"
+echo "Installed Logtalk on $RPM_INSTALL_PREFIX/share."
+echo
+echo
+echo "Links to the \"cplgtdirs\", \"lgt2pdf\", \"lgt2html\", and \"lgt2xml\" scripts have"
+echo "been created on \"$RPM_INSTALL_PREFIX/bin\"; you may need to add this directory to"
 echo "your execution path."
 echo
 echo "The following integration scripts are installed for running Logtalk"
@@ -121,7 +121,7 @@ echo "path."
 echo
 echo "If you got an unexpected failure when using one of the Prolog integration"
 echo "scripts, make sure that the Prolog compiler is properly installed and see"
-echo "the $RPM_INSTALL_PREFIX/share/logtalk/configs/NOTES.txt file."
+echo "the \"$RPM_INSTALL_PREFIX/share/logtalk/configs/NOTES.txt\" file."
 mkdir -p /etc/profile.d
 echo "# Logtalk environment setup" > /etc/profile.d/logtalk.sh
 echo "" >> /etc/profile.d/logtalk.sh
@@ -154,7 +154,7 @@ echo "different location for the Logtalk user files directory. This directory "
 echo "is created by running the \"cplgtdirs\" shell script, which must be run "
 echo "once by each user before using the integration scripts."
 echo
-echo "Logtalk basic installation completed. See the \$LOGTALKHOME/CUSTOMIZE.txt"
+echo "Logtalk basic installation completed. See the \"\$LOGTALKHOME/CUSTOMIZE.txt\""
 echo "file for details on customizing Logtalk and your working environment."
 echo
 
