@@ -51,7 +51,7 @@ ln -sf ../share/logtalk/xml/lgt2html.sh lgt2html
 ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
 %clean
 %files
-%defattr(-,root,users)
+%defattr(-,root,root)
 %doc /usr/local/share/lgt2300/BIBLIOGRAPHY.bib
 %doc /usr/local/share/lgt2300/CUSTOMIZE.txt
 %doc /usr/local/share/lgt2300/INSTALL.txt
