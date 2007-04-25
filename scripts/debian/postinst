@@ -26,6 +26,33 @@ if test -x /usr/bin/update-menus; then
 	update-menus
 fi
 
-echo ""
+echo
+echo "Links to the cplgtdirs, lgt2pdf, lgt2html, and lgt2xml scripts have"
+echo "been created on /usr/bin."
+echo
+echo "The following integration scripts are installed for running Logtalk"
+echo "with selected back-end Prolog compilers:"
+echo
+echo "  B-Prolog:       bplgt       (first run must use sudo)"
+echo "  CIAO:           ciaolgt     (first run must use sudo)"
+echo "  CxProlog:       cxlgt"
+echo "  ECLiPSe:        eclipselgt"
+echo "  GNU Prolog:     gplgt"
+echo "  K-Prolog:       plclgt"
+echo "  SICStus Prolog: sicstuslgt"
+echo "  SWI-Prolog:     swilgt"
+echo "  XSB:            xsblgt      (first run must use sudo)"
+echo "  YAP:            yaplgt"
+echo
+echo "The Prolog integration scripts can be found on /usr/bin. Make sure that"
+echo "the Prolog compilers are also available on your execution path."
+echo
+echo "Users should run the \"cplgtdirs\" shell script once before using the"
+echo "integration scripts."
+echo
+echo "If you got an unexpected failure when using one of the Prolog integration"
+echo "scripts, make sure that the Prolog compiler is properly installed and see"
+echo "the /usr/share/logtalk/configs/NOTES.txt file."
+echo
 echo "You have succesfully installed Logtalk!"
-echo ""
+echo

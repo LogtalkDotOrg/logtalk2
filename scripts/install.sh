@@ -115,8 +115,7 @@ echo "before running the integration scripts."
 echo
 echo "If you got an unexpected failure when using one of the Prolog integration"
 echo "scripts, make sure that the Prolog compiler is properly installed, consult"
-echo "the NOTES file on the scripts directory, and try to run the corresponding"
-echo "script individually."
+echo "the NOTES.txt file on the \$LOGTALKHOME/configs directory."
 echo
 echo "Logtalk basic installation completed. See the \$LOGTALKHOME/CUSTOMIZE.txt"
 echo "file for details on customizing Logtalk and your working environment."
