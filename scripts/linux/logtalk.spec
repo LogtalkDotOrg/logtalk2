@@ -114,13 +114,13 @@ echo "  SWI-Prolog:     swilgt"
 echo "  XSB:            xsblgt      (first run must use sudo)"
 echo "  YAP:            yaplgt"
 echo
-echo "The Prolog integration scripts can be found on $RPM_INSTALL_PREFIX/bin."
-echo "Make sure that the Prolog compilers are also available on your execution"
-echo "path."
+echo "The Prolog integration scripts can be found on \"$RPM_INSTALL_PREFIX/bin\"."
+echo "Make sure that the Prolog compilers are properly installed and available"
+echo "on your execution path."
 echo
 echo "If you got an unexpected failure when using one of the Prolog integration"
-echo "scripts, make sure that the Prolog compiler is properly installed and see"
-echo "the \"$RPM_INSTALL_PREFIX/share/logtalk/configs/NOTES.txt\" file."
+echo "scripts, consult the \"$RPM_INSTALL_PREFIX/share/logtalk/configs/NOTES.txt\" file."
+echo
 mkdir -p /etc/profile.d
 echo "# Logtalk environment setup" > /etc/profile.d/logtalk.sh
 echo "" >> /etc/profile.d/logtalk.sh
@@ -138,7 +138,6 @@ echo "" >> /etc/profile.d/logtalk.csh
 echo "# Default location for Logtalk end-user files:" >> /etc/profile.d/logtalk.csh
 echo "setenv LOGTALKUSER \$HOME/logtalk" >> /etc/profile.d/logtalk.csh
 chmod a+x /etc/profile.d/logtalk.csh
-echo
 echo "Defined the following environment variables for all users:"
 echo
 echo "  Logtalk installation directory: LOGTALKHOME = $RPM_INSTALL_PREFIX/share/logtalk"
@@ -153,8 +152,7 @@ echo "different location for the Logtalk user files directory. This directory "
 echo "is created by running the \"cplgtdirs\" shell script, which must be run "
 echo "once by each user before using the integration scripts."
 echo
-echo "Logtalk basic installation completed. See the \"\$LOGTALKHOME/CUSTOMIZE.txt\""
-echo "file for details on customizing Logtalk and your working environment."
+echo "Logtalk basic installation completed."
 echo
 
 %postun

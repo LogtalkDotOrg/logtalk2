@@ -65,58 +65,47 @@ ln -sf ../share/logtalk/xml/lgt2pdf.sh lgt2pdf
 ln -sf ../share/logtalk/xml/lgt2html.sh lgt2html
 ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
 
-echo
-echo "Links to the cplgtdirs, lgt2pdf, lgt2html, and lgt2xml scripts have"
-echo "been created on $prefix/bin; you may need to add this directory to"
-echo "your execution path."
+echo "Links to the \"cplgtdirs\", \"lgt2pdf\", \"lgt2html\", and \"lgt2xml\" scripts"
+echo "have been created on \"$prefix/bin\"; you may need to add this directory"
+echo "to your execution path."
 echo
 
 ln -sf ../share/logtalk/integration/bplgt.sh bplgt
-echo "bplgt script installed       (B-Prolog integration script)"
-
 ln -sf ../share/logtalk/integration/ciaolgt.sh ciaolgt
-echo "ciaolgt script installed     (Ciao Prolog integration script)"
-
 ln -sf ../share/logtalk/integration/cxlgt.sh cxlgt
-echo "cxlgt script installed       (CxProlog integration script)"
-
 ln -sf ../share/logtalk/integration/eclipselgt.sh eclipselgt
-echo "eclipselgt script installed  (ECLiPSe integration script)"
-
 ln -sf ../share/logtalk/integration/gplgt.sh gplgt
-echo "gplgt script installed       (GNU Prolog integration script)"
-
 ln -sf ../share/logtalk/integration/plclgt.sh plclgt
-echo "plclgt script installed      (K-Prolog integration script)"
-
 #ln -sf ../share/logtalk/integration/qplgt.sh qplgt
-#echo "qplgt script installed       (Qu-Prolog integration script)"
-
 ln -sf ../share/logtalk/integration/sicstuslgt.sh sicstuslgt
-echo "sicstuslgt script installed  (SICStus Prolog integration script)"
-
 ln -sf ../share/logtalk/integration/swilgt.sh swilgt
-echo "swilgt script installed      (SWI-Prolog integration script)"
-
 ln -sf ../share/logtalk/integration/xsblgt.sh xsblgt
-echo "xsblgt script installed      (XSB integration script)"
-
 ln -sf ../share/logtalk/integration/yaplgt.sh yaplgt
-echo "yaplgt script installed      (YAP integration script)"
 
+echo "The following integration scripts are installed for running Logtalk"
+echo "with selected back-end Prolog compilers:"
 echo
-echo "The Prolog integration scripts can be found on $prefix/bin."
-echo "Make sure that the Prolog compilers are also available on your execution"
-echo "path."
+echo "  B-Prolog:       bplgt       (first run must use sudo)"
+echo "  CIAO:           ciaolgt     (first run must use sudo)"
+echo "  CxProlog:       cxlgt"
+echo "  ECLiPSe:        eclipselgt"
+echo "  GNU Prolog:     gplgt"
+echo "  K-Prolog:       plclgt"
+echo "  SICStus Prolog: sicstuslgt"
+echo "  SWI-Prolog:     swilgt"
+echo "  XSB:            xsblgt      (first run must use sudo)"
+echo "  YAP:            yaplgt"
+echo
+echo "The Prolog integration scripts can be found on \"$prefix/bin\"."
+echo "Make sure that the Prolog compilers are properly installed and available"
+echo "on your execution path."
 echo
 echo "Users should ensure that the environment variable LOGTALKHOME is set to"
-echo "$prefix/share/logtalk and then run the \"cplgtdirs\" shell script once"
+echo "\"$prefix/share/logtalk\" and then run the \"cplgtdirs\" shell script once"
 echo "before running the integration scripts."
 echo
 echo "If you got an unexpected failure when using one of the Prolog integration"
-echo "scripts, make sure that the Prolog compiler is properly installed, consult"
-echo "the NOTES.txt file on the \$LOGTALKHOME/configs directory."
+echo "scripts, consult the \"$prefix/share/logtalk/configs/NOTES.txt\" file."
 echo
-echo "Logtalk basic installation completed. See the \$LOGTALKHOME/CUSTOMIZE.txt"
-echo "file for details on customizing Logtalk and your working environment."
+echo "Logtalk basic installation completed."
 echo
