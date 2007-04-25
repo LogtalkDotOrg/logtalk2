@@ -10,8 +10,8 @@
 dir="$PWD"
 cd ..
 
-LOGTALKHOME=/usr/local/share/logtalk ./lgt_uninstall.sh
-./lgt_install.sh
+LOGTALKHOME=/usr/local/share/logtalk ./uninstall.sh
+./install.sh
 
 cd /usr/local/share
 tar -czf lgt2300.tgz lgt2300
