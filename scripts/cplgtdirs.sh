@@ -100,6 +100,6 @@ echo "library paths."
 echo
 echo "You may want to customize the default Logtalk compiler flags by editing"
 echo "the configuration file for your Prolog compiler found in the directory"
-echo "\$LOGTALKUSER/configs. See the \$LOGTALKUSER/CUSTOMIZATION.txt file for"
+echo "\$LOGTALKUSER/configs. See the \$LOGTALKUSER/CUSTOMIZE.txt file for"
 echo "details."
 echo

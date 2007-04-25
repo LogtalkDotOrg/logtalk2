@@ -118,6 +118,6 @@ echo "scripts, make sure that the Prolog compiler is properly installed, consult
 echo "the NOTES file on the scripts directory, and try to run the corresponding"
 echo "script individually."
 echo
-echo "Logtalk basic installation completed. See \$LOGTALKHOME/CUSTOMIZATION.txt"
+echo "Logtalk basic installation completed. See the \$LOGTALKHOME/CUSTOMIZE.txt"
 echo "file for details on customizing Logtalk and your working environment."
 echo
