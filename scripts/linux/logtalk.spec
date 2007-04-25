@@ -108,10 +108,6 @@ echo "The Prolog integration scripts can be found on $RPM_INSTALL_PREFIX/bin."
 echo "Make sure that the Prolog compilers are also available on your execution"
 echo "path."
 echo
-echo "Users should ensure that the environment variable LOGTALKHOME is set to"
-echo "$RPM_INSTALL_PREFIX/share/logtalk and then run the \"cplgtdirs\" shell script once"
-echo "before running the integration scripts."
-echo
 echo "If you got an unexpected failure when using one of the Prolog integration"
 echo "scripts, make sure that the Prolog compiler is properly installed, consult"
 echo "the NOTES file on the scripts directory, and try to run the corresponding"
@@ -145,7 +141,9 @@ echo "use the new environment variables."
 echo ""
 echo "You may change the default value of the LOGTALKUSER environment variable"
 echo "in your shell configuration files if you already use, or want to use, a "
-echo "different location for the Logtalk user files directory."
+echo "different location for the Logtalk user files directory. This directory "
+echo "is created by running the \"cplgtdirs\" shell script, which must be run "
+echo "once before using the integration scripts."
 echo ""
 %postun
 rm -f /etc/profile.d/logtalk.sh 2> /dev/null
