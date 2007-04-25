@@ -204,6 +204,12 @@ begin
     Result := False;
 end;
 
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if (CurStep = ssInstall) and DirExists(LgtUserDirPage.Values[0]) and (pos('backup', WizardSelectedComponents(False)) > 0) then
+    RenameFile(LgtUserDirPage.Values[0], LgtUserDirPage.Values[0] + ' backup ' + GetDateTimeString('dddddd tt', '-', '-'))
+end;
+
 function GetBPExePath(Param: String): String;
 var
   BPDIR: String;
