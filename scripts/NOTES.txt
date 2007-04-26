@@ -6,7 +6,7 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ================================================================
 
 
-This directory contains several shell scripts used for Logtalk packaging, 
+This directory contains some shell scripts used for Logtalk packaging, 
 installation, and integration with Prolog compilers. Those with extension 
 ".sh" are Bourne-compatible shells scripts for MacOS X, Linux, and similar 
 systems. Those with extension ".js" are JScript command-line scripts for 
@@ -29,6 +29,7 @@ install.sh
 	Darwin and "/usr/local" on other POSIX systems, resulting in Logtalk 
 	being installed in "$prefix/share" with useful scripts written to 
 	"$prefix/bin", which should be your path)
+
 uninstall.sh
 	shell script for de-installing Logtalk in Unix and Unix-like operating 
 	systems (must be run from this directory by a user with administration 
@@ -59,25 +60,3 @@ cplgtdirs.js
 	permissions for the copied files; the LOGTALKHOME environment 
 	variable must be defined (pointing to the Logtalk installation 
 	directory)
-
-Please note that the environment variables LOGTALKHOME and LOGTALKUSER 
-must be defined in order to run the integration scripts created by the 
-installer scripts (see the "INSTALL.txt" file for details on setting the 
-variables).
-
-All the provided installers automatically create a set of integration 
-scripts or shortcuts for easily running Logtalk with several back-end 
-Prolog compilers. On POSIX systems, the scripts should be available 
-from you path. On Windows systems, the shortcuts are available on the 
-"Start Menu/Programs/Logtalk" menu. The integration scripts and shortcuts 
-may fail if you use non-standard locations for your Prolog compilers.
-
-The first run of the B-Prolog, Ciao, and XSB integration scripts must be 
-made by an user with administrative rights (on POSIX systems, run them 
-once as root or using sudo; in Windows systems run them once from an 
-administrative account).
-
-Depending on the size and complexity of your Logtalk applications, you 
-may need to change the integration scripts in order to allocate more 
-memory to the back-end Prolog compilers. Please consult the documentation 
-on the Prolog compilers you intend to use for details.
