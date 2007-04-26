@@ -5,13 +5,25 @@
 		version is 2.0,
 		author is 'Paulo Moura',
 		date is 2007/04/17,
-		comment is 'Benchmark utility predicates.']).
+		comment is 'Benchmark utility predicates and standard set of benchmarks.']).
 
 	:- public(run/1).
+	:- mode(run(+integer), one).
+	:- info(run/1, [
+		comment is 'Runs all benchmarks the specified number of times.',
+		argnames is ['N']]).
 
 	:- public(run/2).
+	:- mode(run(+atom, +integer), one).
+	:- info(run/2, [
+		comment is 'Runs a specific benchmark the specified number of times.',
+		argnames is ['Id', 'Y']]).
 
 	:- public(benchmark/2).
+	:- mode(move(?atom, -callable), zero_or_more).
+	:- info(move/2, [
+		comment is 'Table of benchmark identifiers and benchmark goals.',
+		argnames is ['Id', 'Goal']]).
 
 	% run all benchmark tests:
 	run(N) :-
@@ -57,10 +69,10 @@
 
 	% some benchmark tests for dynamic code:
 	benchmark(d1, (create_object(xpto, [], [], []), abolish_object(xpto))).
-	benchmark(d2, db_test_plain(_)).
-	benchmark(d3, database::db_test_this(_)).
-	benchmark(d4, database::db_test_self(_)).
-	benchmark(d5, database::db_test_obj(_)).
+	benchmark(d2, plain_dyndb(_)).
+	benchmark(d3, database::this_dyndb(_)).
+	benchmark(d4, database::obj_dyndb(_)).
+	benchmark(d5, database::obj_dyndb(_)).
 
 	% repeat a goal N times without using call/1 and using a failure-driven loop to 
 	% avoid the interference of Prolog compiler memory management mechanism (such as 
@@ -94,25 +106,25 @@
 
 	do_benchmark(d2, N) :-
 		{my_repeat(N)},
-			{db_test_plain(N)},
+			{plain_dyndb(N)},
 		fail.
 	do_benchmark(d2, _).
 
 	do_benchmark(d3, N) :-
 		{my_repeat(N)},
-			database::db_test_this(N),
+			database::this_dyndb(N),
 		fail.
 	do_benchmark(d3, _).
 
 	do_benchmark(d4, N) :-
 		{my_repeat(N)},
-			database::db_test_self(N),
+			database::obj_dyndb(N),
 		fail.
 	do_benchmark(d4, _).
 
 	do_benchmark(d5, N) :-
 		{my_repeat(N)},
-			database::db_test_obj(N),
+			database::obj_dyndb(N),
 		fail.
 	do_benchmark(d5, _).
 

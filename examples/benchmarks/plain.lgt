@@ -10,7 +10,7 @@ my_length([_| Tail], Acc, Length) :-
 
 :- dynamic(pred_plain/1).
 
-db_test_plain(N) :-
+plain_dyndb(N) :-
 	assertz(pred_plain(N)),
 	retract(pred_plain(N)).
 

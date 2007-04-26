@@ -6,7 +6,7 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ================================================================
 
 
-% start by loading the example by choosing one of the laoder files
+% start by loading the example by choosing one of the loader files
 % (you must quit and restart Logtalk for each testing scenario):
 
 
@@ -41,16 +41,16 @@ Id = s2 ? ;
 Goal = create_object(xpto,[],[],[]),abolish_object(xpto)
 Id = d1 ? ;
 
-Goal = db_test_plain
+Goal = plain_dyndb
 Id = d2 ? ;
 
-Goal = database::db_test_this
+Goal = database::this_dyndb
 Id = d3 ? ;
 
-Goal = database::db_test_self
+Goal = database::self_dyndb
 Id = d4 ? ;
 
-Goal = database::db_test_obj
+Goal = database::obj_dyndb
 Id = d5
 
 yes
@@ -106,11 +106,11 @@ yes
 
 
 % test assertz/1 and retract/1 performance in plain Prolog by making a plain Prolog 
-% call to the predicate db_test_plain/0:
+% call to the predicate plain_dyndb/0:
 
 | ?- benchmarks::run(d2, 10000).
 
-d2: db_test_plain
+d2: plain_dyndb
 Number of repetitions: 10000
 Loop time: 0.037999999999999812
 Goal time: 3.0830000000000002
@@ -123,7 +123,7 @@ yes
 
 | ?- benchmarks::run(d3, 10000).
 
-d3: database::db_test_this
+d3: database::this_dyndb
 Number of repetitions: 10000
 Loop time: 0.038000000000000256
 Goal time: 2.5099999999999989
@@ -136,7 +136,7 @@ yes
 
 | ?- benchmarks::run(d4, 10000).
 
-d4: database::db_test_self
+d4: database::self_dyndb
 Number of repetitions: 10000
 Loop time: 0.038000000000000256
 Goal time: 3.9190000000000005
@@ -149,7 +149,7 @@ yes
 
 | ?- benchmarks::run(d5, 10000).
 
-d5: database::db_test_obj
+d5: database::obj_dyndb
 Number of repetitions: 10000
 Loop time: 0.038000000000000256
 Goal time: 3.9830000000000005
