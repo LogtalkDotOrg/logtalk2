@@ -54,7 +54,7 @@ echo
 echo "Users should run the \"cplgtdirs\" shell script once before using the"
 echo "integration scripts."
 echo
-echo "If you got an unexpected failure when using one of the Prolog integration"
+echo "If you get an unexpected failure when using one of the Prolog integration"
 echo "scripts, consult see the \"/usr/share/logtalk/configs/NOTES.txt\" file."
 echo
 echo "Logtalk basic installation completed."

@@ -104,7 +104,7 @@ echo "Users should ensure that the environment variable LOGTALKHOME is set to"
 echo "\"$prefix/share/logtalk\" and then run the \"cplgtdirs\" shell script once"
 echo "before running the integration scripts."
 echo
-echo "If you got an unexpected failure when using one of the Prolog integration"
+echo "If you get an unexpected failure when using one of the Prolog integration"
 echo "scripts, consult the \"$prefix/share/logtalk/configs/NOTES.txt\" file."
 echo
 echo "Logtalk basic installation completed."
