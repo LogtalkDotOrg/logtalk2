@@ -66,16 +66,16 @@ RELEASE NOTES
 	Added a "configs/swi_set_logtalk_context.pl" file defining a useful but 
 	fragile hack implementing a set_logtalk_context/1 built-in predicate for 
 	switching the Logtalk top-level execution context to objects other than 
-	the default pseudo-object "user".
+	the default pseudo-object "user" (you may use it as a debugging tool).
 
 	Updated the CxProlog config file to use the new built-in predicates in 
 	version 0.95. Added a shell script, "cxlgt.sh", for easy integration of 
 	Logtalk with CxProlog on POSIX systems (with the help of Artur Miguel 
 	Dias, CxProlog author).
 
-	Updated the Ciao, K-Prolog, and ECLiPSe config files to set the compiler 
-	flag "underscore_vars" to "dont_care" in order to avoid spurious warnings 
-	with some examples.
+	Updated the Ciao, K-Prolog, and ECLiPSe config files to set the default 
+	value for the compiler flag "underscore_vars" to "dont_care" in order to 
+	avoid spurious warnings with some of the provided examples.
 
 	Updated the B-Prolog config file to workaround the lack of support for 
 	expanding environment variables in the argument of the built-in predicate 
@@ -90,7 +90,7 @@ RELEASE NOTES
 	results.
 
 	Removed all the "make_*lgt.*" and "makeall_lgt.*" shell scripts, replaced 
-	by pre-made integration scripts, that can be found on the new "integration"
+	by pre-made integration scripts that can be found on the new "integration"
 	directory. Removed the "lgt_install.js" script. Renamed the POSIX install 
 	and uninstall scripts to, respectively, "install.sh" and "uninstall.sh".
 	Updated the integration, uninstall, and user-setup POSIX shell scripts 
@@ -110,7 +110,7 @@ RELEASE NOTES
 	the file permissions on the installation directory.
 
 	Updated the "build_release.sh" POSIX shell script to also build a Debian 
-	installer package (experimental).
+	binary installer package (experimental).
 
 	The Windows GUI installer no longer spans command-line shells running 
 	JScript scripts to build the Prolog integration shortcuts. This hopefully 
