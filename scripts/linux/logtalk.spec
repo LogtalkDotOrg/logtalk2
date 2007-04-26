@@ -119,7 +119,8 @@ echo "Make sure that the Prolog compilers are properly installed and available"
 echo "on your execution path."
 echo
 echo "If you get an unexpected failure when using one of the Prolog integration"
-echo "scripts, consult the \"$RPM_INSTALL_PREFIX/share/logtalk/configs/NOTES.txt\" file."
+echo "scripts, consult the \"$RPM_INSTALL_PREFIX/share/logtalk/configs/NOTES.txt\" file"
+echo "for compatibility notes."
 echo
 mkdir -p /etc/profile.d
 echo "# Logtalk environment setup" > /etc/profile.d/logtalk.sh

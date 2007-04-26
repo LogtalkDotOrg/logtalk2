@@ -105,7 +105,8 @@ echo "\"$prefix/share/logtalk\" and then run the \"cplgtdirs\" shell script once
 echo "before running the integration scripts."
 echo
 echo "If you get an unexpected failure when using one of the Prolog integration"
-echo "scripts, consult the \"$prefix/share/logtalk/configs/NOTES.txt\" file."
+echo "scripts, consult the \"$prefix/share/logtalk/configs/NOTES.txt\" file"
+echo "for compatibility notes."
 echo
 echo "Logtalk basic installation completed."
 echo

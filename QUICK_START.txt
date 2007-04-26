@@ -39,6 +39,8 @@ properly installed for running the scripts!):
 
 On Windows systems, shortcuts for running Logtalk with selected back-end 
 Prolog compilers are created on the "Start Menu/Programs/Logtalk" menu.
+If you get an unexpected failure when using one of the Prolog integration
+scripts, consult the "configs/NOTES.txt" file for compatibility notes.
 
 2. Open the "manuals/index.html" file with a web browser.
 
