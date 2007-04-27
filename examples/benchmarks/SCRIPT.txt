@@ -56,103 +56,14 @@ Id = d5
 yes
 
 
-% run all the benchmark tests:
+% run all the benchmark tests the default number of times:
 
-| ?- benchmarks::run(10000).
+| ?- benchmarks::run.
 ...
 
 
-% or run specific benchmark tests individually:
+% or run specific benchmark tests individually, for example:
 
 
-% plain Prolog call of the predicate my_length/2 defined in the Prolog database:
-
-| ?- benchmarks::run(s1, 10000).
-
-s1: my_length([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],_70)
-Number of repetitions: 10000
-Loop time: 0.039000000000000007
-Goal time: 0.25700000000000001
-Average time per call: 2.1800000000000001e-05
-Number of calls per second: 45871.559633027522
-yes
-
-
-% message object::length/2 sent from the "benchmarks" object:
-
-| ?- benchmarks::run(s2, 10000)).
-
-s2: object::length([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],_73)
-Number of repetitions: 10000
-Loop time: 0.037000000000000033
-Goal time: 0.26900000000000002
-Average time per call: 2.3199999999999998e-05
-Number of calls per second: 43103.448275862072
-yes
-
-
-% create and abolish an elementary dynamic object by calling the Logtalk built-in 
-% predicates create_object/4 and abolish_object/1 from the "benchmarks" object:
-
-| ?- benchmarks::run(d1, 10000).
-
-d1: create_object(xpto,[],[],[]),abolish_object(xpto)
-Number of repetitions: 10000
-Loop time: 0.037999999999999923
-Goal time: 1.9670000000000001
-Average time per call: 0.00019290000000000003
-Number of calls per second: 5184.0331778123373
-yes
-
-
-% test assertz/1 and retract/1 performance in plain Prolog by making a plain Prolog 
-% call to the predicate plain_dyndb/0:
-
-| ?- benchmarks::run(d2, 10000).
-
-d2: plain_dyndb
-Number of repetitions: 10000
-Loop time: 0.037999999999999812
-Goal time: 3.0830000000000002
-Average time per call: 0.00030450000000000003
-Number of calls per second: 3284.0722495894906
-yes
-
-
-% test assertz/1 and retract/1 performance on "this" using the "database" object:
-
-| ?- benchmarks::run(d3, 10000).
-
-d3: database::this_dyndb
-Number of repetitions: 10000
-Loop time: 0.038000000000000256
-Goal time: 2.5099999999999989
-Average time per call: 0.00024719999999999988
-Number of calls per second: 4045.3074433656975
-yes
-
-
-% test assertz/1 and retract/1 performance on "self" (::/1) using the "database" object:
-
-| ?- benchmarks::run(d4, 10000).
-
-d4: database::self_dyndb
-Number of repetitions: 10000
-Loop time: 0.038000000000000256
-Goal time: 3.9190000000000005
-Average time per call: 0.0003881
-Number of calls per second: 2576.6555011594951
-yes
-
-
-% test assertz/1 and retract/1 performance on another object (::/2) using the "database" object:
-
-| ?- benchmarks::run(d5, 10000).
-
-d5: database::obj_dyndb
-Number of repetitions: 10000
-Loop time: 0.038000000000000256
-Goal time: 3.9830000000000005
-Average time per call: 0.00039450000000000005
-Number of calls per second: 2534.8542458808615
-yes
+| ?- benchmarks::run(s1, 1000000).
+...

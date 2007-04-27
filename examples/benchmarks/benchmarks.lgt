@@ -7,6 +7,11 @@
 		date is 2007/04/17,
 		comment is 'Benchmark utility predicates and standard set of benchmarks.']).
 
+	:- public(run/0).
+	:- mode(run, one).
+	:- info(run/0, [
+		comment is 'Runs all benchmarks the default number of times.']).
+
 	:- public(run/1).
 	:- mode(run(+integer), one).
 	:- info(run/1, [
@@ -25,7 +30,11 @@
 		comment is 'Table of benchmark identifiers and benchmark goals.',
 		argnames is ['Id', 'Goal']]).
 
-	% run all benchmark tests:
+	% run all benchmarks the default number of times:
+	run :-
+		run(1000000).
+
+	% run all benchmark tests N times:
 	run(N) :-
 		benchmark(Id, Goal),
 		run(Id, N, Looptime, Goaltime, Average, Speed),
