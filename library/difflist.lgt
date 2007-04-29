@@ -3,18 +3,14 @@
 	implements(listp),
 	extends(compound)).
 
-
 	:- info([
 		version is 1.1,
 		author is 'Paulo Moura',
 		date is 2004/5/9,
 		comment is 'Difference list predicates.']).
 
-
 	:- public(as_list/2).
-
 	:- mode(as_list(+list, -list), one).
-
 	:- info(as_list/2,
 		[comment is 'Converts a difference list to a normal list.',
 		 argnames is ['Diffist', 'List']]).
