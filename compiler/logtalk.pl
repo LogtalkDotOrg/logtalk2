@@ -8191,9 +8191,9 @@ current_logtalk_flag(version, version(2, 30, 0)).
 
 '$lgt_gen_protocol_directives' :-
 	(	'$lgt_pp_protocol_'(_, Prefix, Dcl, Rnm, (dynamic)) ->
-		assertz('$lgt_pp_directive_'(dynamic(Prefix/1))),
-		assertz('$lgt_pp_directive_'(dynamic(Dcl/4))),
-		assertz('$lgt_pp_directive_'(dynamic(Dcl/5))),
+		assertz('$lgt_pp_directive_'(dynamic(Prefix/2))),
+		assertz('$lgt_pp_directive_'(dynamic(Dcl/6))),
+		assertz('$lgt_pp_directive_'(dynamic(Dcl/7))),
 		assertz('$lgt_pp_directive_'(dynamic(Rnm/3)))
 	;	true
 	).
@@ -8210,13 +8210,13 @@ current_logtalk_flag(version, version(2, 30, 0)).
 
 '$lgt_gen_dynamic_object_dynamic_directives' :-
 	'$lgt_pp_object_'(_, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, _),
-	assertz('$lgt_pp_directive_'(dynamic(Prefix/7))),
-	assertz('$lgt_pp_directive_'(dynamic(Dcl/4))),
+	assertz('$lgt_pp_directive_'(dynamic(Prefix/8))),
 	assertz('$lgt_pp_directive_'(dynamic(Dcl/6))),
+	assertz('$lgt_pp_directive_'(dynamic(Dcl/8))),
 	assertz('$lgt_pp_directive_'(dynamic(Def/5))),
 	assertz('$lgt_pp_directive_'(dynamic(Def/6))),
 	assertz('$lgt_pp_directive_'(dynamic(Super/6))),
-	assertz('$lgt_pp_directive_'(dynamic(IDcl/6))),
+	assertz('$lgt_pp_directive_'(dynamic(IDcl/8))),
 	assertz('$lgt_pp_directive_'(dynamic(IDef/6))),
 	assertz('$lgt_pp_directive_'(dynamic(DDcl/2))),
 	assertz('$lgt_pp_directive_'(dynamic(DDef/5))),
@@ -8272,9 +8272,9 @@ current_logtalk_flag(version, version(2, 30, 0)).
 
 '$lgt_gen_category_dynamic_directives' :-
 	(	'$lgt_pp_category_'(_, Prefix, Dcl, Def, Rnm, (dynamic)) ->
-		assertz('$lgt_pp_directive_'(dynamic(Prefix/2))),
-		assertz('$lgt_pp_directive_'(dynamic(Dcl/4))),
-		assertz('$lgt_pp_directive_'(dynamic(Dcl/5))),
+		assertz('$lgt_pp_directive_'(dynamic(Prefix/3))),
+		assertz('$lgt_pp_directive_'(dynamic(Dcl/6))),
+		assertz('$lgt_pp_directive_'(dynamic(Dcl/7))),
 		assertz('$lgt_pp_directive_'(dynamic(Def/5))),
 		assertz('$lgt_pp_directive_'(dynamic(Rnm/3))),
 		'$lgt_gen_dynamic_entity_dynamic_predicate_directives'

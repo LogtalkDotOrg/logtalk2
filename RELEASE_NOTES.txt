@@ -56,6 +56,9 @@ RELEASE NOTES
 	correctly in all cases. Consult the "configs/NOTES.txt" file for more 
 	information.
 
+	Corrected a bug that prevents abolishing a dynamic entity loaded from a 
+	source file. Thanks to Victor Noel for the bug report.
+
 	Corrected a bug when running Logtalk with SWI-Prolog that prevented the 
 	use of alternative compilation directories (i.e. turning on the "altdirs" 
 	compiler flag). Corrected a bug when running Logtalk with SWI-Prolog that 
