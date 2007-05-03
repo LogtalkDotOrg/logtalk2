@@ -1,16 +1,16 @@
 ## Here is an example for Logtalk.
 ##
-syntax "logtalk" "\.lgt$"
+syntax "logtalk" "\.(lgt|config)$"
 
 color brightblack start="^[[:space:]]*:- (object|category|protocol)\(" end="\)\."
 color brightblack "^[[:space:]]*:- end_(object|category|protocol)\."
 
-color red "::"
+color magenta "::"
+color magenta "^^"
+color magenta "[{}]"
 
-color cyan "[A-Z_][0-9A-Za-z_]*"
-
-color brightyellow ""[^"]*""
-color brightyellow "'[^']*'"
+color green ""[^"]*""
+color green "'[^']*'"
 
 color blue "%.*"
 color blue start="/\*" end="\*/"
