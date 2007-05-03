@@ -120,6 +120,8 @@ RELEASE NOTES
 	solves issues with security software silently blocking and breaking the 
 	Logtalk installation.
 
+	Added basic syntax coloring support for the GNU Nano 2.x text editor.
+
 
 2.29.5 - March 28, 2007
 
