@@ -8,11 +8,6 @@
 		date is 2006/9/17,
 		comment is 'Loop control structures predicates.']).
 
-	:- meta_predicate(dowhile(::, ::)).
-	dowhile(Action, Condition) :-
-		\+ \+ call(Action),
-		whiledo(Condition, Action).
-
 	:- meta_predicate(whiledo(::, ::)).
 	whiledo(Condition, Action) :-
 		(	call(Condition) ->
@@ -20,6 +15,11 @@
 			whiledo(Condition, Action)
 		;	true
 		).
+
+	:- meta_predicate(dowhile(::, ::)).
+	dowhile(Action, Condition) :-
+		\+ \+ call(Action),
+		whiledo(Condition, Action).
 
 	:- meta_predicate(forto(*, *, ::)).
 	forto(First, Last, Call) :-
