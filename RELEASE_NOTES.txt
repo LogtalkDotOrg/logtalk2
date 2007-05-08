@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.30.0 - April ??, 2007
+2.30.0 - May 8, 2007
 
 	Added preliminary support for static binding when sending messages to 
 	objects compiled and loaded using the compiler option "reload(skip)".
@@ -19,7 +19,9 @@ RELEASE NOTES
 	built-in predicate threaded/1.
 
 	Simplified and optimized the implementation of Logtalk multi-threading 
-	support.
+	support. Use a single dispatcher thread for all objects instead of each 
+	object running its own dispatcher in order to minimize the number of 
+	created threads (which is can be problematic on 32 bits systems).
 
 	Updated the Logtalk built-in database methods to always interpret rules 
 	whose body is the control construct true/0 as facts. Corrected a bug when 
