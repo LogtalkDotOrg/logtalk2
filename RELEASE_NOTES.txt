@@ -21,7 +21,9 @@ RELEASE NOTES
 	Simplified and optimized the implementation of Logtalk multi-threading 
 	support. Use a single dispatcher thread for all objects instead of each 
 	object running its own dispatcher in order to minimize the number of 
-	created threads (which is can be problematic on 32 bits systems).
+	created threads (which can be problematic on 32 bits systems). Updated 
+	the built-in predicate threaded/1 to make it deterministic and opaque to 
+	cuts (similar to once/1).
 
 	Updated the Logtalk built-in database methods to always interpret rules 
 	whose body is the control construct true/0 as facts. Corrected a bug when 
