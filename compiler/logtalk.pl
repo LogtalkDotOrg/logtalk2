@@ -1031,6 +1031,9 @@ threaded(Goals) :-
 	\+ callable(Goal),
 	throw(error(type_error(callable, Goal), Call)).
 
+'$threaded_calls'(!, !, !, _, _) :-
+	!.
+
 '$threaded_calls'(Obj::Goal, TGoal, DGoal, Call, Ctx) :-
 	!,
 	'$threaded_calls_obj_broadcast'(Obj, Goal, TGoal, DGoal, Call, Ctx).
@@ -1053,6 +1056,9 @@ threaded(Goals) :-
 	'$threaded_calls_obj_broadcast'(Obj, Goal, TGoal, DGoal, Call, Ctx),
 	'$threaded_calls_obj_broadcast'(Obj, Goals, TGoals, DGoals, Call, Ctx).
 
+'$threaded_calls_obj_broadcast'(_, !, !, !, _, _) :-
+	!.
+
 '$threaded_calls_obj_broadcast'(Obj, Goal, TGoal, DGoal, Call, Ctx) :-
 	catch('$lgt_tr_body'(threaded_call(Obj::Goal), TGoal, DGoal, Ctx), error(Error, _), throw(Error, Call)).
 
@@ -1061,6 +1067,9 @@ threaded(Goals) :-
 	!,
 	'$threaded_calls_self_broadcast'(Goal, TGoal, DGoal, Call, Ctx),
 	'$threaded_calls_self_broadcast'(Goals, TGoals, DGoals, Call, Ctx).
+
+'$threaded_calls_self_broadcast'(!, !, !, _, _) :-
+	!.
 
 '$threaded_calls_self_broadcast'(Goal, TGoal, DGoal, Call, Ctx) :-
 	catch('$lgt_tr_body'(threaded_call(::Goal), TGoal, DGoal, Ctx), error(Error, _), throw(Error, Call)).
@@ -11996,15 +12005,12 @@ current_logtalk_flag(version, version(2, 30, 0)).
 	repeat,
 		thread_get_message('$lgt_goal'(Queue, Goal, This, Self, Option)),
 		(	Option == competing ->	% goal is one of a set of competing goals performing the same task
-			thread_create('$lgt_mt_competing_goal'(Goal, This, Self, Queue), CompetingId, [detached(true)]),
-			thread_send_message(Queue, '$lgt_competing_id'(Goal, This, Self, CompetingId))
+			thread_create('$lgt_mt_competing_goal'(Goal, This, Self, Queue), _, [detached(true)])
 		;	Option == ignore ->		% don't bother reporting goal success, failure, or exception
 			thread_create(catch(Goal, _, true), _, [detached(true)])
 		;	Option == once ->		% make thread goal deterministic
-			thread_create('$lgt_mt_det_goal'(Goal, This, Self, Queue), DetId, [detached(true)]),
-			thread_send_message(Queue, '$lgt_det_id'(Goal, This, Self, DetId))
-		;	thread_create('$lgt_mt_non_det_goal'(Goal, This, Self, Queue), NonDetId, [detached(false)]),
-			thread_send_message(Queue, '$lgt_non_det_id'(Goal, This, Self, NonDetId))
+			thread_create('$lgt_mt_det_goal'(Goal, This, Self, Queue), _, [detached(true)])
+		;	thread_create('$lgt_mt_non_det_goal'(Goal, This, Self, Queue), _, [detached(false)])
 		),
 	fail.
 
@@ -12016,6 +12022,8 @@ current_logtalk_flag(version, version(2, 30, 0)).
 % competing goals may be killed before completion
 
 '$lgt_mt_competing_goal'(Goal, This, Self, Return) :-
+	thread_self(CompetingId),
+	thread_send_message(Return, '$lgt_thread_id'(competing, Goal, This, Self, CompetingId)),
 	(	catch(Goal, _, fail) ->
 		thread_send_message(Return, '$lgt_reply'(Goal, This, Self, success))
 	;	true
@@ -12028,6 +12036,8 @@ current_logtalk_flag(version, version(2, 30, 0)).
 % processes a deterministic message received by an object's message queue
 
 '$lgt_mt_det_goal'(Goal, This, Self, Return) :-
+	thread_self(DetId),
+	thread_send_message(Return, '$lgt_thread_id'(deterministic, Goal, This, Self, DetId)),
 	(	catch(Goal, Error, (thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Error)), Flag = error)),
 		(	var(Flag) ->
 			thread_send_message(Return, '$lgt_reply'(Goal, This, Self, success))
@@ -12044,6 +12054,8 @@ current_logtalk_flag(version, version(2, 30, 0)).
 % processes a non-deterministic message received by an object's message queue
 
 '$lgt_mt_non_det_goal'(Goal, This, Self, Return) :-
+	thread_self(NonDetId),
+	thread_send_message(Return, '$lgt_thread_id'(non_deterministic, Goal, This, Self, NonDetId)),
 	(	catch(Goal, Error, (thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Error)), Flag = error)),
 		var(Flag),
 		thread_send_message(Return, '$lgt_reply'(Goal, This, Self, success)),
@@ -12103,7 +12115,7 @@ current_logtalk_flag(version, version(2, 30, 0)).
 
 % '$lgt_mt_get_reply'(+callable, +object_identifier, +object_identifier, +object_identifier)
 %
-% get a reply to a goal sent to the senders object dispatcher thread
+% get a reply to a goal sent to the senders object message queue
 
 '$lgt_mt_get_reply'(Goal, Sender, This, Self) :-
 	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _) ->
@@ -12113,13 +12125,13 @@ current_logtalk_flag(version, version(2, 30, 0)).
 
 % '$lgt_mt_get_reply'(+atom, +callable, +object_identifier, +object_identifier, +object_identifier)
 %
-% get a reply to a goal sent to the senders object dispatcher thread
+% get a reply to a goal sent to the senders object message queue
 
 '$lgt_mt_get_reply'(Queue, Goal, _, This, Self) :-
+	thread_get_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Id)),
 	call_cleanup(
-		'$lgt_mt_get_reply_aux'(Queue, Goal, This, Self),
-		(	thread_peek_message(Queue, '$lgt_non_det_id'(Goal, This, Self, Id)) ->
-			thread_get_message(Queue, '$lgt_non_det_id'(Goal, This, Self, Id)),
+		'$lgt_mt_get_reply_aux'(Type, Queue, Goal, This, Self, Id),
+		(	Type == non_deterministic ->
 			(	current_thread(Id, running) ->							% if the thread is still running, it's suspended waiting
 				catch(thread_send_message(Id, '$lgt_exit'), _, true)	% for a request to an alternative proof; tell it to exit
 			;	true
@@ -12130,28 +12142,26 @@ current_logtalk_flag(version, version(2, 30, 0)).
 	).
 
 
+'$lgt_mt_get_reply_aux'(deterministic, Queue, Goal, This, Self, _) :-
+	'$lgt_mt_det_reply'(Queue, Goal, This, Self).
 
-'$lgt_mt_get_reply_aux'(Queue, Goal, This, Self) :-
-	copy_term((Goal, This, Self), (RGoal, RThis, RSelf)),
-	% we MUST get the reply before finding out if we're dealing with either det or non-det goals;
-	% this ensures that the '$lgt_competing_id'/5 or '$lgt_non_det_id'/5 messages are already available
-	thread_get_message(Queue, '$lgt_reply'(RGoal, RThis, RSelf, Result)),
-	(	thread_peek_message(Queue, '$lgt_det_id'(RGoal, RThis, RSelf, _)) ->
-		'$lgt_mt_det_reply'(Queue, Goal, This, Self, RGoal, RThis, RSelf, Result)
-	;	thread_peek_message(Queue, '$lgt_non_det_id'(RGoal, RThis, RSelf, Id)),
-		'$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Id, RGoal, RThis, RSelf, Result)
-	;	thread_peek_message(Queue, '$lgt_competing_id'(RGoal, RThis, RSelf, _)),
-		'$lgt_mt_competing_reply'(Queue, Goal, This, Self, RGoal, RThis, RSelf, Result)
-	).
+'$lgt_mt_get_reply_aux'(non_deterministic, Queue, Goal, This, Self, Id) :-
+	'$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Id).
+
+'$lgt_mt_get_reply_aux'(competing, Queue, Goal, This, Self, _) :-
+	'$lgt_mt_competing_reply'(Queue, Goal, This, Self).
+
 
 
 % return the solution found after killing all the competing threads and removing any other matching replies:
 
-'$lgt_mt_competing_reply'(Queue, Goal, This, Self, RGoal, RThis, RSelf, Result) :-
-	'$lgt_mt_kill_competing_threads'(Queue, Goal, This, Self),
-	'$lgt_mt_discard_matching_replies'(Queue, Goal, This, Self),
+'$lgt_mt_competing_reply'(Queue, Goal, This, Self) :-
+	copy_term((Goal, This, Self), (RGoal, RThis, RSelf)), 
+	thread_get_message(Queue, '$lgt_reply'(Goal, This, Self, Result)),
+	'$lgt_mt_kill_competing_threads'(Queue, RGoal, RThis, RSelf),
+	'$lgt_mt_discard_matching_replies'(Queue, RGoal, RThis, RSelf),
 	(	Result == success ->
-		(Goal, This, Self) = (RGoal, RThis, RSelf)
+		true
 	;	Result == failure ->
 		fail
 	;	throw(Result)
@@ -12160,7 +12170,8 @@ current_logtalk_flag(version, version(2, 30, 0)).
 
 % return the solution found:
 
-'$lgt_mt_det_reply'(_, Goal, This, Self, Goal, This, Self, Result) :-
+'$lgt_mt_det_reply'(Queue, Goal, This, Self) :-
+	thread_get_message(Queue, '$lgt_reply'(Goal, This, Self, Result)),
 	(	Result == success ->
 		true
 	;	Result == failure ->
@@ -12171,7 +12182,8 @@ current_logtalk_flag(version, version(2, 30, 0)).
 
 % return current solution; on backtracking, ask working thread for and get from it the next solution:
 
-'$lgt_mt_non_det_reply'(_, Goal, This, Self, _, Goal, This, Self, Result) :-
+'$lgt_mt_non_det_reply'(Queue, Goal, This, Self, _) :-
+	thread_get_message(Queue, '$lgt_reply'(Goal, This, Self, Result)),
 	(	Result == success ->
 		true
 	;	Result == failure ->
@@ -12180,10 +12192,9 @@ current_logtalk_flag(version, version(2, 30, 0)).
 	;	throw(Result)
 	).
 
-'$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Id, _, _, _, _) :-
+'$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Id) :-
 	catch(thread_send_message(Id, '$lgt_next'), _, fail),
-	thread_get_message(Queue, '$lgt_reply'(RGoal, RThis, RSelf, Result)),
-	'$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Id, RGoal, RThis, RSelf, Result).
+	'$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Id).
 
 
 
