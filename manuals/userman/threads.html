@@ -71,32 +71,6 @@ prime_numbers(N, M, Acc, Primes) :-
 The <code>threaded/1</code> call terminates when the two implicit thread calls terminate. In a computer with two or more processors (or with a processor with two or more cores) the code above can be expected to provide better computation times when compared with single-threaded code for sufficiently large intervals.
 </p>
 <p>
-Backtracking over a <code>threaded/1</code> call is equivalent to backtracking over its argument. For example:
-</p>
-<pre>?- threaded(list::(member(X, [1,2,3]), member(Y, [a,b,c]))).
-
-X = 1, Y = a ;
-X = 1, Y = b ;
-X = 1, Y = c ;
-X = 2, Y = a ;
-X = 2, Y = b ;
-X = 2, Y = c ;
-X = 3, Y = a ;
-X = 3, Y = b ;
-X = 3, Y = c
-yes
-</pre>
-<p>
-The <code>threaded/1</code> built-in predicate is transparent to cuts and exceptions. For example:
-</p>
-<pre>?- threaded(list::(member(X, [1,2,3]), !,  member(Y, [a,b,c]))).
-
-X = 1, Y = a ;
-X = 1, Y = b ;
-X = 1, Y = c
-yes
-</pre>
-<p>
 The <code>threaded/1</code> built-in predicate is most useful for lengthy, independent deterministic computations where the computational costs of each goal outweigh the overhead of the implicit thread creation and management.
 </p>
 
@@ -262,7 +236,7 @@ Each notification posted by a call to the <code>threaded_notify/1</code> predica
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: March 24, 2007</span>
+		<span>Last updated on: May 8, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="events.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="errors.html">next</a></span><br/>

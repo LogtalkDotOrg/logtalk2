@@ -1016,104 +1016,95 @@ threaded(Goals) :-
 
 threaded(Goals) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	'$threaded_calls'(Goals, TCalls, _, threaded(Goals), Ctx),
-	'$threaded_exits'(Goals, TExits, _, threaded(Goals), Ctx),
-	catch((TCalls, TExits), Error, '$lgt_runtime_error_handler'(Error)).
+	'$lgt_tr_threaded_call'(Goals, MTGoals, threaded(Goals), Ctx),
+	catch(MTGoals, Error, '$lgt_runtime_error_handler'(Error)).
 
 
-'$threaded_calls'(Goal, TGoal, DGoal, Call, Ctx) :-
+
+'$lgt_tr_threaded_call'(Goals, (TCalls,TExits), Call, Ctx) :-
+	'$lgt_flatten_broadcasting'(Goals, FlattenedGoals),
+	'$lgt_tr_threaded_calls'(FlattenedGoals, TCalls, Call, Ctx),
+	'$lgt_tr_threaded_exits'(FlattenedGoals, TExits, Call, Ctx).
+
+
+'$lgt_flatten_broadcasting'(Goal, Goal) :-
+	var(Goal),
+	!.
+
+'$lgt_flatten_broadcasting'((Obj, Objs)::Msgs, Goals) :-
+	!,
+	'$lgt_flatten_msg_broadcasting'((Obj, Objs), Msgs, ObjMsgs),
+	'$lgt_flatten_broadcasting'(ObjMsgs, Goals).
+
+'$lgt_flatten_broadcasting'(Obj::(Msg, Msgs), Goals) :-
+	!,
+	'$lgt_flatten_obj_broadcasting'((Msg, Msgs), Obj, ObjMsgs),
+	'$lgt_flatten_broadcasting'(ObjMsgs, Goals).
+
+'$lgt_flatten_broadcasting'(::((Msg, Msgs)), Goals) :-
+	!,
+	'$lgt_flatten_self_broadcasting'((Msg, Msgs), Goals).
+
+'$lgt_flatten_broadcasting'((Goal, Goals), (FGoal, FGoals)) :-
+	!,
+	'$lgt_flatten_broadcasting'(Goal, FGoal),
+	'$lgt_flatten_broadcasting'(Goals, FGoals).
+
+'$lgt_flatten_broadcasting'(Goal, Goal).
+
+
+'$lgt_flatten_msg_broadcasting'((Obj, Objs), Msgs, (Obj::Msgs, Goals)) :-
+	!,
+	'$lgt_flatten_msg_broadcasting'(Objs, Msgs, Goals).
+
+'$lgt_flatten_msg_broadcasting'(Obj, Msgs, Obj::Msgs).
+
+
+'$lgt_flatten_obj_broadcasting'((Msg, Msgs), Obj, (Obj::Msg, Goals)) :-
+	!,
+	'$lgt_flatten_obj_broadcasting'(Msgs, Obj, Goals).
+
+'$lgt_flatten_obj_broadcasting'(Msg, Obj, Obj::Msg).
+
+
+'$lgt_flatten_self_broadcasting'((Msg, Msgs), (::Msg, Goals)) :-
+	!,
+	'$lgt_flatten_self_broadcasting'(Msgs, Goals).
+
+'$lgt_flatten_self_broadcasting'(Msg, ::Msg).
+
+
+'$lgt_tr_threaded_calls'(Goal, TGoal, Call, Ctx) :-
 	var(Goal),
 	!,
-	catch('$lgt_tr_body'(threaded_call(Goal), TGoal, DGoal, Ctx), error(Error, _), throw(Error, Call)).
+	catch('$lgt_tr_body'(threaded_once(Goal), TGoal, _, Ctx), error(Error, _), throw(Error, Call)).
 
-'$threaded_calls'(Goal, _, _, Call, _) :-
+'$lgt_tr_threaded_calls'(Goal, _, Call, _) :-
 	nonvar(Goal),
 	\+ callable(Goal),
 	throw(error(type_error(callable, Goal), Call)).
 
-'$threaded_calls'(!, !, !, _, _) :-
-	!.
-
-'$threaded_calls'(Obj::Goal, TGoal, DGoal, Call, Ctx) :-
+'$lgt_tr_threaded_calls'((Goal, Goals), (TGoal, TGoals), Call, Ctx) :-
 	!,
-	'$threaded_calls_obj_broadcast'(Obj, Goal, TGoal, DGoal, Call, Ctx).
+	'$lgt_tr_threaded_calls'(Goal, TGoal, Call, Ctx),
+	'$lgt_tr_threaded_calls'(Goals, TGoals, Call, Ctx).
 
-'$threaded_calls'(::Goal, TGoal, DGoal, Call, Ctx) :-
-	!,
-	'$threaded_calls_self_broadcast'(Goal, TGoal, DGoal, Call, Ctx).
-
-'$threaded_calls'((Goal, Goals), (TGoal, TGoals), (DGoal, DGoals), Call, Ctx) :-
-	!,
-	'$threaded_calls'(Goal, TGoal, DGoal, Call, Ctx),
-	'$threaded_calls'(Goals, TGoals, DGoals, Call, Ctx).
-
-'$threaded_calls'(Goal, TGoal, DGoal, Call, Ctx) :-
-	catch('$lgt_tr_body'(threaded_call(Goal), TGoal, DGoal, Ctx), error(Error, _), throw(Error, Call)).
+'$lgt_tr_threaded_calls'(Goal, TGoal, Call, Ctx) :-
+	catch('$lgt_tr_body'(threaded_once(Goal), TGoal, _, Ctx), error(Error, _), throw(Error, Call)).
 
 
-'$threaded_calls_obj_broadcast'(Obj, (Goal, Goals), (TGoal, TGoals), (DGoal, DGoals), Call, Ctx) :-
-	!,
-	'$threaded_calls_obj_broadcast'(Obj, Goal, TGoal, DGoal, Call, Ctx),
-	'$threaded_calls_obj_broadcast'(Obj, Goals, TGoals, DGoals, Call, Ctx).
-
-'$threaded_calls_obj_broadcast'(_, !, !, !, _, _) :-
-	!.
-
-'$threaded_calls_obj_broadcast'(Obj, Goal, TGoal, DGoal, Call, Ctx) :-
-	catch('$lgt_tr_body'(threaded_call(Obj::Goal), TGoal, DGoal, Ctx), error(Error, _), throw(Error, Call)).
-
-
-'$threaded_calls_self_broadcast'((Goal, Goals), (TGoal, TGoals), (DGoal, DGoals), Call, Ctx) :-
-	!,
-	'$threaded_calls_self_broadcast'(Goal, TGoal, DGoal, Call, Ctx),
-	'$threaded_calls_self_broadcast'(Goals, TGoals, DGoals, Call, Ctx).
-
-'$threaded_calls_self_broadcast'(!, !, !, _, _) :-
-	!.
-
-'$threaded_calls_self_broadcast'(Goal, TGoal, DGoal, Call, Ctx) :-
-	catch('$lgt_tr_body'(threaded_call(::Goal), TGoal, DGoal, Ctx), error(Error, _), throw(Error, Call)).
-
-
-
-'$threaded_exits'(Goal, TGoal, DGoal, Call, Ctx) :-
+'$lgt_tr_threaded_exits'(Goal, TGoal, Call, Ctx) :-
 	var(Goal),
 	!,
-	catch('$lgt_tr_body'(threaded_exit(Goal), TGoal, DGoal, Ctx), error(Error, _), throw(Error, Call)).
+	catch('$lgt_tr_body'(threaded_exit(Goal), TGoal, _, Ctx), error(Error, _), throw(Error, Call)).
 
-'$threaded_exits'(Obj::Goal, TGoal, DGoal, Call, Ctx) :-
+'$lgt_tr_threaded_exits'((Goal, Goals), (TGoal, TGoals), Call, Ctx) :-
 	!,
-	'$threaded_exits_obj_broadcast'(Obj, Goal, TGoal, DGoal, Call, Ctx).
+	'$lgt_tr_threaded_exits'(Goal, TGoal, Call, Ctx),
+	'$lgt_tr_threaded_exits'(Goals, TGoals, Call, Ctx).
 
-'$threaded_exits'(::Goal, TGoal, DGoal, Call, Ctx) :-
-	!,
-	'$threaded_exits_self_broadcast'(Goal, TGoal, DGoal, Call, Ctx).
-
-'$threaded_exits'((Goal, Goals), (TGoal, TGoals), (DGoal, DGoals), Call, Ctx) :-
-	!,
-	'$threaded_exits'(Goal, TGoal, DGoal, Call, Ctx),
-	'$threaded_exits'(Goals, TGoals, DGoals, Call, Ctx).
-
-'$threaded_exits'(Goal, TGoal, DGoal, Call, Ctx) :-
-	catch('$lgt_tr_body'(threaded_exit(Goal), TGoal, DGoal, Ctx), error(Error, _), throw(Error, Call)).
-
-
-'$threaded_exits_obj_broadcast'(Obj, (Goal, Goals), (TGoal, TGoals), (DGoal, DGoals), Call, Ctx) :-
-	!,
-	'$threaded_exits_obj_broadcast'(Obj, Goal, TGoal, DGoal, Call, Ctx),
-	'$threaded_exits_obj_broadcast'(Obj, Goals, TGoals, DGoals, Call, Ctx).
-
-'$threaded_exits_obj_broadcast'(Obj, Goal, TGoal, DGoal, Call, Ctx) :-
-	catch('$lgt_tr_body'(threaded_exit(Obj::Goal), TGoal, DGoal, Ctx), error(Error, _), throw(Error, Call)).
-
-
-'$threaded_exits_self_broadcast'((Goal, Goals), (TGoal, TGoals), (DGoal, DGoals), Call, Ctx) :-
-	!,
-	'$threaded_exits_self_broadcast'(Goal, TGoal, DGoal, Call, Ctx),
-	'$threaded_exits_self_broadcast'(Goals, TGoals, DGoals, Call, Ctx).
-
-'$threaded_exits_self_broadcast'(Goal, TGoal, DGoal, Call, Ctx) :-
-	catch('$lgt_tr_body'(threaded_exit(::Goal), TGoal, DGoal, Ctx), error(Error, _), throw(Error, Call)).
+'$lgt_tr_threaded_exits'(Goal, TGoal, Call, Ctx) :-
+	catch('$lgt_tr_body'(threaded_exit(Goal), TGoal, _, Ctx), error(Error, _), throw(Error, Call)).
 
 
 
@@ -6175,10 +6166,9 @@ current_logtalk_flag(version, version(2, 30, 0)).
 	\+ callable(Goals),
 	throw(type_error(callable, Goals)).
 
-'$lgt_tr_body'(threaded(Goals), (TCalls, TExits), '$lgt_dbg_goal'(threaded(Goals), (TCalls, TExits), DbgCtx), Ctx) :-
+'$lgt_tr_body'(threaded(Goals), MTGoals, '$lgt_dbg_goal'(threaded(Goals), MTGoals, DbgCtx), Ctx) :-
 	!,
-	'$threaded_calls'(Goals, TCalls, _, threaded(Goals), Ctx),
-	'$threaded_exits'(Goals, TExits, _, threaded(Goals), Ctx),
+	'$lgt_tr_threaded_call'(Goals, MTGoals, threaded(Goals), Ctx),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
