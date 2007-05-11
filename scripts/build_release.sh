@@ -9,7 +9,7 @@
 
 dir=`PWD`
 
-cvs -d :pserver:anonymous@cvs.logtalk.org:/usr/local/cvsroot checkout logtalk
+svn export http://svn.logtalk.org/logtalk/trunk logtalk
 
 cd logtalk
 scripts/cleandist.sh
