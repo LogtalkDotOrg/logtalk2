@@ -80,7 +80,7 @@
 	benchmark(d1, (create_object(xpto, [], [], []), abolish_object(xpto))).
 	benchmark(d2, plain_dyndb(_)).
 	benchmark(d3, database::this_dyndb(_)).
-	benchmark(d4, database::obj_dyndb(_)).
+	benchmark(d4, database::self_dyndb(_)).
 	benchmark(d5, database::obj_dyndb(_)).
 
 	% repeat a goal N times without using call/1 and using a failure-driven loop to 
@@ -127,7 +127,7 @@
 
 	do_benchmark(d4, N) :-
 		{my_repeat(N)},
-			database::obj_dyndb(N),
+			database::self_dyndb(N),
 		fail.
 	do_benchmark(d4, _).
 
