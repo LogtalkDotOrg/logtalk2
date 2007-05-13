@@ -94,6 +94,7 @@ ln -sf "$LOGTALKHOME"/xml/lgt2html.sh "$LOGTALKUSER"/xml/lgt2html
 ln -sf "$LOGTALKHOME"/xml/lgt2pdf.sh "$LOGTALKUSER"/xml/lgt2pdf
 ln -sf "$LOGTALKHOME"/xml/lgt2xml.sh "$LOGTALKUSER"/xml/lgt2xml
 ln -sf "$LOGTALKHOME"/xml/logtalk.dtd "$LOGTALKUSER"/xml/logtalk.dtd
+ln -sf "$LOGTALKHOME"/xml/logtalk.rng "$LOGTALKUSER"/xml/logtalk.rng
 ln -sf "$LOGTALKHOME"/xml/logtalk.xsd "$LOGTALKUSER"/xml/logtalk.xsd
 echo "Finished copying Logtalk files and directories."
 echo

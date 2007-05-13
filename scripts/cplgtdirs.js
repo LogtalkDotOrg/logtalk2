@@ -121,6 +121,11 @@ link.Description = "Shortcut to Logtalk DTD";
 link.TargetPath = logtalk_home + "\\xml\\logtalk.dtd";
 link.Save();
 
+link = WshShell.CreateShortcut(logtalk_user + "\\xml\\logtalk.rng.lnk");
+link.Description = "Shortcut to Logtalk RELAX NG Schema";
+link.TargetPath = logtalk_home + "\\xml\\logtalk.rng";
+link.Save();
+
 link = WshShell.CreateShortcut(logtalk_user + "\\xml\\logtalk.xsd.lnk");
 link.Description = "Shortcut to Logtalk XML Schema";
 link.TargetPath = logtalk_home + "\\xml\\logtalk.xsd";
