@@ -6,9 +6,9 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ================================================================
 
 
-This directory contains a logtalk.el file that provides basic syntax 
-highlighting for editing Logtalk source files with the GNU Nano 2.x
-text editor:
+This directory contains a "logtalk.nanorc" file that provides basic syntax 
+highlighting for editing Logtalk source files with the GNU Nano 2.x text 
+editor:
 
 	http://www.nano-editor.org/
 
