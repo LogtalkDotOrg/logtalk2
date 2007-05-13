@@ -32,6 +32,10 @@ made by an user with administrative rights (on POSIX systems, run them
 once as root or using sudo; in Windows systems run them once from an 
 administrative account).
 
+The GNU Prolog integration script provides adequate performance for 
+development. For production environments, improved performance can be 
+achieved by generating a new GNU-Prolog top-level that includes Logtalk.
+
 Other Prolog compilers require manual steps for integration with Logtalk.
 See the "configs/NOTES.txt" file for details.
 
@@ -48,7 +52,8 @@ memory to the back-end Prolog compilers. Please consult the documentation
 on the Prolog compilers you intend to use for details.
 
 All the scripts accept command-line options, which are passed straight to 
-the back-end Prolog compiler. For example (on a POSIX system):
+the back-end Prolog compiler. For example (on a POSIX operating-system, 
+using SWI-Prolog as the back-end compiler):
 
 	% swilgt -g "write('Hello world!'), nl"
 
