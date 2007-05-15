@@ -85,6 +85,7 @@ Source: "C:\logtalk\xml\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\x
 
 Source: "C:\logtalk\configs\amzi.config"; DestDir: "{code:GetLgtUserDir}\configs"; DestName: "amzi.pro"; Components: user; Flags: ignoreversion uninsneveruninstall
 Source: "C:\logtalk\configs\xsb.config"; DestDir: "{code:GetLgtUserDir}\configs"; DestName: "xsb.pl"; Components: user; Flags: ignoreversion uninsneveruninstall
+Source: "C:\logtalk\configs\xsbcvs.config"; DestDir: "{code:GetLgtUserDir}\configs"; DestName: "xsbcvs.pl"; Components: user; Flags: ignoreversion uninsneveruninstall
 Source: "C:\logtalk\libpaths\libpaths.pl"; DestDir: "{code:GetLgtUserDir}\libpaths"; DestName: "libpaths_no_env_var.pl"; Components: user; Flags: ignoreversion uninsneveruninstall
 
 Source: "C:\logtalk\scripts\*.bat"; DestDir: "{win}"; Components: base; Flags: ignoreversion
