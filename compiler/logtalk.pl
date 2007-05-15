@@ -4712,7 +4712,7 @@ current_logtalk_flag(version, version(2, 30, 0)).
 	!.
 
 '$lgt_tr_directive'(Dir, Input, _) :-
-	'$lgt_ignore_pl_directive'(Dir),			% defined in the Prolog config files
+	'$lgt_ignore_pl_directive'(Dir),						% defined in the Prolog config files
 	!,
 	(	'$lgt_compiler_flag'(portability, warning) ->
 		nl, write('  WARNING!  Ignoring Prolog directive: '), writeq(Dir),
@@ -4721,20 +4721,22 @@ current_logtalk_flag(version, version(2, 30, 0)).
 	).
 
 '$lgt_tr_directive'(Dir, Input, _) :-
-	'$lgt_copy_pl_directive'(Dir),				% defined in the Prolog config files
-	assertz('$lgt_pp_directive_'(Dir)),
+	'$lgt_rewrite_and_copy_pl_directive'(Dir, RWDir),		% defined in the Prolog config files
+	assertz('$lgt_pp_directive_'(RWDir)),
 	!,
 	(	'$lgt_compiler_flag'(portability, warning) ->
-		nl, write('  WARNING!  Copying Prolog directive as-is: '), writeq(Dir),
+		nl, write('  WARNING!  Rewriting Prolog directive:         '), writeq(Dir),
+		nl, write('            Copying resulting Prolog directive: '), writeq(RWDir),
 		nl, '$lgt_report_compiler_error_line_number'(Input)
 	;	true
 	).
 
 '$lgt_tr_directive'(Dir, Input, Output) :-
-	'$lgt_rewrite_pl_directive'(Dir, RWDir),	% defined in the Prolog config files
+	'$lgt_rewrite_and_recompile_pl_directive'(Dir, RWDir),	% defined in the Prolog config files
 	!,
 	(	'$lgt_compiler_flag'(portability, warning) ->
-		nl, write('  WARNING!  Rewriting Prolog directive: '), writeq(Dir),
+		nl, write('  WARNING!  Rewriting Prolog directive:             '), writeq(Dir),
+		nl, write('            Recompiling resulting Prolog directive: '), writeq(RWDir),
 		nl, '$lgt_report_compiler_error_line_number'(Input)
 	;	true
 	),
