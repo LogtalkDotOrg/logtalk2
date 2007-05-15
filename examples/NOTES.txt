@@ -194,6 +194,9 @@ symdiff
 	example of using parametric objects to implement symbolic 
 	expression differentiation and simplification
 
+tabling
+	simple example of using tabling directives within objects
+
 threads
 	several simple examples of multi-threading programming
 	(requires Logtalk to be run with either YAP or SWI-Prolog)
