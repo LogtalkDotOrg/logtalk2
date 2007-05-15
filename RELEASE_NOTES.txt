@@ -63,6 +63,14 @@ RELEASE NOTES
 	Corrected a bug that prevents abolishing a dynamic entity loaded from a 
 	source file. Thanks to Victor Noel for the bug report.
 
+	Renamed the '$lgt_copy_pl_directive'/1 and '$lgt_rewrite_pl_directive'/2 
+	config files predicates to '$lgt_rewrite_and_copy_pl_directive'/2 and 
+	'$lgt_rewrite_and_recompile_pl_directive'/2. 
+
+	Added basic support for tabling to the config files of B-Prolog, XSB, 
+	and YAP. Added a simple example of using tabling directives within 
+	objects.
+
 	Corrected a bug when running Logtalk with SWI-Prolog that prevented the 
 	use of alternative compilation directories (i.e. turning on the "altdirs" 
 	compiler flag). Corrected a bug when running Logtalk with SWI-Prolog that 
@@ -87,6 +95,11 @@ RELEASE NOTES
 	Updated the B-Prolog config file to workaround the lack of support for 
 	expanding environment variables in the argument of the built-in predicate 
 	exists/1.
+
+	Added a config file and integration scripts for the current XSB CVS 
+	version (3.0.1+), which supports some features needed by Logtalk not 
+	present in the current stable version (namely, expansion of environment 
+	variables).
 
 	Added predicates depth/2 and variant/2 to the library object "term".
 

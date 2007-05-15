@@ -70,6 +70,7 @@ mkdir -p "$LOGTALKUSER"/library
 mkdir -p "$LOGTALKUSER"/xml
 cp -RL "$LOGTALKHOME"/configs "$LOGTALKUSER"/
 ln -sf xsb.config "$LOGTALKUSER"/configs/xsb.pl
+ln -sf xsbcvs.config "$LOGTALKUSER"/configs/xsbcvs.pl
 cp -RL "$LOGTALKHOME"/contributions "$LOGTALKUSER"/
 cp -RL "$LOGTALKHOME"/examples "$LOGTALKUSER"/
 cp -RL "$LOGTALKHOME"/libpaths "$LOGTALKUSER"/
