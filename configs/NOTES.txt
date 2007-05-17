@@ -70,11 +70,11 @@ Amzi! Prolog 7.6.1 and later versions
 	library or an example.
 
 
-B-Prolog 6.9 and later versions
+B-Prolog 7.0 and later versions
 
 	b.config
 
-	For B-Prolog 6.9 and later versions. Don't forget to use the chdir/1 
+	For B-Prolog 7.0 and later versions. Don't forget to use the chdir/1 
 	predicate to set the working directory before loading the library or 
 	an example. Note that this configuration file redefines the B-Prolog 
 	::/2 finite-domain built-in predicate (you may use the alternative 
@@ -89,18 +89,12 @@ B-Prolog 6.9 and later versions
 		| ?- compile(['configs/b.config', 'compiler/logtalk.pl', 'libpaths/libpaths.pl']).
 	
 	These calls will result in the creation of three files, "b.config.out", 
-	"logtalk.pl.out", and "libpaths.pl.out". Place these files on the $BPDIR 
+	"logtalk.out", and "libpaths.out". Place these files on the $BPDIR 
 	directory and then copy the "bp" script to a "bplgt" file and modify it 
 	by adding the names of the three *.out files after the "$BPDIR/bp.out" 
 	file (prefixing them with $BPDIR/). You will probably need to increase 
 	the sizes of the code areas on the "bplgt" script if you run into 
 	out-of-memory errors with complex applications.
-
-B-Prolog 7.0b1
-
-	b7.config
-
-	For B-Prolog 7.0b1. Experiemntal. See the remarks above for version 6.9.
 
 
 Bin-Prolog 8.x~10.x

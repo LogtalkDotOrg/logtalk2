@@ -49,7 +49,7 @@ Name: "base"; Description: "Base system"; Types: full base custom; Flags: disabl
 Name: "user"; Description: "User data files"; Types: full user custom; Flags: checkablealone disablenouninstallwarning
 Name: "user\backup"; Description: "Backup current user data files"; Types: full user custom; Flags: disablenouninstallwarning
 Name: "prolog"; Description: "Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\bp"; Description: "B-Prolog integration (version 6.9 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\bp"; Description: "B-Prolog integration (version 7.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\ciao"; Description: "Ciao Prolog integration (version 1.10#5 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\eclipse"; Description: "ECLiPSe integration (version 5.10#26 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\gprolog"; Description: "GNU Prolog integration (version 1.2.16 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
@@ -105,7 +105,7 @@ Name: "{group}\Customization instructions"; Filename: "{app}\CUSTOMIZE.txt"; Com
 
 Name: "{group}\Web Site"; Filename: "{#MyAppUrl}"; Components: base
 
-Name: "{group}\Logtalk - B-Prolog"; Filename: "{code:GetBPExePath}"; Parameters: "-g ""consult('$LOGTALKHOME/integration/logtalk_bp_win.pl'), $bp_top_level"""; Comment: "Runs Logtalk with B-Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\bp; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - B-Prolog"; Filename: "{code:GetBPExePath}"; Parameters: "-g ""consult('$LOGTALKHOME/integration/logtalk_bp.pl'), $bp_top_level"""; Comment: "Runs Logtalk with B-Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\bp; Flags: createonlyiffileexists
 
 Name: "{group}\Logtalk - Ciao Prolog"; Filename: "{code:GetCiaoExePath}"; Parameters: "-l ""$LOGTALKHOME/integration/logtalk_ciao.pl"""; Comment: "Runs Logtalk with Ciao Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\ciao; Flags: createonlyiffileexists
 

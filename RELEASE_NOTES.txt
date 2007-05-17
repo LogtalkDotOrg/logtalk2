@@ -67,6 +67,9 @@ RELEASE NOTES
 	config files predicates to '$lgt_rewrite_and_copy_pl_directive'/2 and 
 	'$lgt_rewrite_and_recompile_pl_directive'/2. 
 
+	Updated the config file for B-Prolog to match (and require) the new 7.0 
+	version; updated and simplified the corresponding integration scripts.
+	
 	Added basic support for tabling to the config files of B-Prolog, XSB, 
 	and YAP. Added a simple example of using tabling directives within 
 	objects.
