@@ -69,7 +69,10 @@ RELEASE NOTES
 
 	Updated the config file for B-Prolog to match (and require) the new 7.0 
 	version; updated and simplified the corresponding integration scripts.
-	
+
+	Updated the XSB POSIX integration script to automatically detect if we 
+	are running the XSB stable version of the XSB CVS version.
+
 	Added basic support for tabling to the config files of B-Prolog, XSB, 
 	and YAP. Added a simple example of using tabling directives within 
 	objects.
