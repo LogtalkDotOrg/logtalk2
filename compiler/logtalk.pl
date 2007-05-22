@@ -574,13 +574,7 @@ abolish_object(Obj) :-
 			retractall('$lgt_implements_protocol_'(Obj, _, _)),
 			retractall('$lgt_imports_category_'(Obj, _, _)),
 			retractall('$lgt_debugging_'(Obj)),
-			'$lgt_clean_lookup_caches',
-			(	'$lgt_default_flag'(threads, on),
-				current_thread(Prefix, running) ->
-				thread_signal(Prefix, thread_exit(true)),
-				thread_join(Prefix, _)
-			;	true
-			)
+			'$lgt_clean_lookup_caches'
 		;	throw(error(permission_error(modify, static_object, Obj), abolish_object(Obj)))
 		)
 	;	throw(error(existence_error(object, Obj), abolish_object(Obj)))
@@ -9759,7 +9753,6 @@ current_logtalk_flag(version, version(2, 30, 0)).
 	arg(1, Clause, Entity),
 	(	'$lgt_redefined_entity'(Entity, Type) ->
 		'$lgt_clean_lookup_caches',
-		'$lgt_stop_entity_thread'(Entity),
 		'$lgt_report_redefined_entity'(Type, Entity)
 	;	true
 	),
@@ -9785,26 +9778,6 @@ current_logtalk_flag(version, version(2, 30, 0)).
 '$lgt_assert_new_runtime_clauses'([Clause| Clauses]) :-
 	assertz(Clause),
 	'$lgt_assert_new_runtime_clauses'(Clauses).
-
-
-
-% '$lgt_stop_entity_thread'(@entity_identifier)
-%
-% stops the entity thread if it exists; note that we can be changing the 
-% type of the entity being reload (e.g. from an object to a category)
-
-'$lgt_stop_entity_thread'(Entity) :-
-	(	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _) ->
-		(	'$lgt_default_flag'(threads, on) ->
-			(	current_thread(Prefix, running) ->
-				thread_signal(Prefix, thread_exit(true)),
-				thread_join(Prefix, _)
-			;	true
-			)
-		;	true
-		)
-	;	true
-	).
 
 
 
@@ -11985,7 +11958,7 @@ current_logtalk_flag(version, version(2, 30, 0)).
 % creates a dispatcher thread for an object given its prefix
 
 '$lgt_start_runtime_dispatcher' :-
-	thread_create('$lgt_mt_obj_dispatcher', _, [alias('$lgt_dispatcher'), detached(false)]).
+	thread_create('$lgt_mt_obj_dispatcher', _, [alias(logtalk_dispatcher), detached(false)]).
 
 
 
