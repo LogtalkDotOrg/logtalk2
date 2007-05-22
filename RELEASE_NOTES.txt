@@ -77,6 +77,10 @@ RELEASE NOTES
 	and YAP. Added a simple example of using tabling directives within 
 	objects.
 
+	Updated the SWI-Prolog and YAP config files to automatically detect if 
+	the Prolog systems have been compiled with multi-threading support and 
+	to set the Logtalk compiler flag "threads" accordingly.
+
 	Corrected a bug when running Logtalk with SWI-Prolog that prevented the 
 	use of alternative compilation directories (i.e. turning on the "altdirs" 
 	compiler flag). Corrected a bug when running Logtalk with SWI-Prolog that 
