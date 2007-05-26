@@ -1025,7 +1025,7 @@ threaded(Goals) :-
 	'$lgt_tr_threaded_flattened_exits'(FGoals, TExits, Ctx). 
 
 
-'$lgt_flatten_conjunction'(Goals, _, var(Action)) :-
+'$lgt_flatten_conjunction'(Goals, Goals, var(Action)) :-
 	var(Goals),
 	(	Action == error ->
 		throw(instantiation_error)
@@ -1052,14 +1052,14 @@ threaded(Goals) :-
 '$lgt_flatten_conjunction'(Goal, Goal, _).
 
 
-'$lgt_flatten_conjunction_obj_msg'(Obj, _, _, var(Action)) :-
+'$lgt_flatten_conjunction_obj_msg'(Obj, Msg, Obj::Msg, var(Action)) :-
 	var(Obj),
 	(	Action == error ->
 		throw(instantiation_error)
 	;	!
 	).
 
-'$lgt_flatten_conjunction_obj_msg'(_, Msg, _, var(Action)) :-
+'$lgt_flatten_conjunction_obj_msg'(Obj, Msg, Obj::Msg, var(Action)) :-
 	var(Msg),
 	(	Action == error ->
 		throw(instantiation_error)
@@ -1085,7 +1085,7 @@ threaded(Goals) :-
 '$lgt_flatten_conjunction_obj_msg'(Obj, Msg, Obj::Msg, _).
 
 
-'$lgt_flatten_conjunction_obj_msgs'(_, Msg, _, var(Action)) :-
+'$lgt_flatten_conjunction_obj_msgs'(Obj, Msg, Obj::Msg, var(Action)) :-
 	var(Msg),
 	(	Action == error ->
 		throw(instantiation_error)
@@ -1104,7 +1104,7 @@ threaded(Goals) :-
 '$lgt_flatten_conjunction_obj_msgs'(Obj, Msg, Obj::Msg, _).
 
 
-'$lgt_flatten_conjunction_objs_msg'(Obj, _, _, var(Action)) :-
+'$lgt_flatten_conjunction_objs_msg'(Obj, Msg, Obj::Msg, var(Action)) :-
 	var(Obj),
 	(	Action == error ->
 		throw(instantiation_error)
@@ -1123,7 +1123,7 @@ threaded(Goals) :-
 '$lgt_flatten_conjunction_objs_msg'(Obj, Msg, Obj::Msg, _).
 
 
-'$lgt_flatten_conjunction_msg'(Msg, _, var(Action)) :-
+'$lgt_flatten_conjunction_msg'(Msg, ::Msg, var(Action)) :-
 	var(Msg),
 	(	Action == error ->
 		throw(instantiation_error)
@@ -12018,7 +12018,7 @@ current_logtalk_flag(version, version(2, 30, 0)).
 % creates a message queue for an object given its prefix
 
 '$lgt_init_object_message_queue'(ObjPrefix) :-
-	message_queue_create(ObjPrefix).
+	catch(message_queue_create(ObjPrefix), _, true).
 
 
 
