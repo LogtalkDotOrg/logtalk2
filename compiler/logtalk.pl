@@ -1010,14 +1010,12 @@ threaded(Goals) :-
 	catch(MTGoals, Error, '$lgt_runtime_error_handler'(Error)).
 
 
-'$lgt_tr_threaded_call'(Goals, _, var(Action), _) :-
+'$lgt_tr_threaded_call'(Goals, _, var(error), _) :-
 	var(Goals),
-	(	Action == error ->
-		throw(instantiation_error)
-	;	!
-	).
+	throw(instantiation_error).
 
 '$lgt_tr_threaded_call'(Goals, _, _, _) :-
+	nonvar(Goals),
 	\+ callable(Goals),
 	throw(type_error(callable, Goals)).
 
