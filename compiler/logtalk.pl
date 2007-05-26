@@ -1001,104 +1001,175 @@ abolish_events(after, Obj, Msg, Sender, Monitor) :-
 % built-in multi-threading meta-predicates
 
 threaded(Goals) :-
-	var(Goals),
-	throw(error(instantiation_error, threaded(Goals))).
-
-threaded(Goals) :-
 	\+ '$lgt_compiler_flag'(threads, on),
 	throw(resource_error(threads, threaded(Goals))).
 
 threaded(Goals) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	'$lgt_tr_threaded_call'(Goals, MTGoals, threaded(Goals), Ctx),
+	catch('$lgt_tr_threaded_call'(Goals, MTGoals, var(error), Ctx), Error, throw(error(Error, threaded(Goals)))),
 	catch(MTGoals, Error, '$lgt_runtime_error_handler'(Error)).
 
 
+'$lgt_tr_threaded_call'(Goals, _, var(Action), _) :-
+	var(Goals),
+	(	Action == error ->
+		throw(instantiation_error)
+	;	!
+	).
 
-'$lgt_tr_threaded_call'(Goals, (TCalls,TExits), Call, Ctx) :-
-	'$lgt_flatten_broadcasting'(Goals, FlattenedGoals),
-	'$lgt_tr_threaded_calls'(FlattenedGoals, TCalls, Call, Ctx),
-	'$lgt_tr_threaded_exits'(FlattenedGoals, TExits, Call, Ctx).
+'$lgt_tr_threaded_call'(Goals, _, _, _) :-
+	\+ callable(Goals),
+	throw(type_error(callable, Goals)).
+
+'$lgt_tr_threaded_call'(Goals, (TCalls, TExits), Var, Ctx) :-
+	'$lgt_flatten_conjunction'(Goals, FGoals, Var),
+	'$lgt_tr_threaded_flattened_calls'(FGoals, TCalls, Ctx),
+	'$lgt_tr_threaded_flattened_exits'(FGoals, TExits, Ctx). 
 
 
-'$lgt_flatten_broadcasting'(Goal, Goal) :-
+'$lgt_flatten_conjunction'(Goals, _, var(Action)) :-
+	var(Goals),
+	(	Action == error ->
+		throw(instantiation_error)
+	;	!
+	).
+
+'$lgt_flatten_conjunction'(Goals, _, _) :-
+	\+ callable(Goals),
+	throw(type_error(callable, Goals)).
+
+'$lgt_flatten_conjunction'(Obj::Msg, FGoals, Var) :-
+	!,
+	'$lgt_flatten_conjunction_obj_msg'(Obj, Msg, FGoals, Var).
+
+'$lgt_flatten_conjunction'(::Msg, FGoals, Var) :-
+	!,
+	'$lgt_flatten_conjunction_msg'(Msg, FGoals, Var).
+
+'$lgt_flatten_conjunction'((Goal, Goals), (FGoal, FGoals), Var) :-
+	!,
+	'$lgt_flatten_conjunction'(Goal, FGoal, Var),
+	'$lgt_flatten_conjunction'(Goals, FGoals, Var).
+
+'$lgt_flatten_conjunction'(Goal, Goal, _).
+
+
+'$lgt_flatten_conjunction_obj_msg'(Obj, _, _, var(Action)) :-
+	var(Obj),
+	(	Action == error ->
+		throw(instantiation_error)
+	;	!
+	).
+
+'$lgt_flatten_conjunction_obj_msg'(_, Msg, _, var(Action)) :-
+	var(Msg),
+	(	Action == error ->
+		throw(instantiation_error)
+	;	!
+	).
+
+'$lgt_flatten_conjunction_obj_msg'(Obj, _, _, _) :-
+	\+ callable(Obj),
+	throw(type_error(object_identifier, Obj)).
+
+'$lgt_flatten_conjunction_obj_msg'(_, Msg, _, _) :-
+	\+ callable(Msg),
+	throw(type_error(callable, Msg)).
+
+'$lgt_flatten_conjunction_obj_msg'(Obj, (Msg, Msgs), FGoals, Var) :-
+	!,
+	'$lgt_flatten_conjunction_obj_msgs'(Obj, (Msg, Msgs), FGoals, Var).
+
+'$lgt_flatten_conjunction_obj_msg'((Obj, Objs), Msg, FGoals, Var) :-
+	!,
+	'$lgt_flatten_conjunction_objs_msg'((Obj, Objs), Msg, FGoals, Var).
+
+'$lgt_flatten_conjunction_obj_msg'(Obj, Msg, Obj::Msg, _).
+
+
+'$lgt_flatten_conjunction_obj_msgs'(_, Msg, _, var(Action)) :-
+	var(Msg),
+	(	Action == error ->
+		throw(instantiation_error)
+	;	!
+	).
+
+'$lgt_flatten_conjunction_obj_msgs'(_, Msg, _, _) :-
+	\+ callable(Msg),
+	throw(type_error(callable, Msg)).
+
+'$lgt_flatten_conjunction_obj_msgs'(Obj, (Msg, Msgs), (FGoal, FGoals), Var) :-
+	!,
+	'$lgt_flatten_conjunction_obj_msgs'(Obj, Msg, FGoal, Var),
+	'$lgt_flatten_conjunction_obj_msgs'(Obj, Msgs, FGoals, Var).
+
+'$lgt_flatten_conjunction_obj_msgs'(Obj, Msg, Obj::Msg, _).
+
+
+'$lgt_flatten_conjunction_objs_msg'(Obj, _, _, var(Action)) :-
+	var(Obj),
+	(	Action == error ->
+		throw(instantiation_error)
+	;	!
+	).
+
+'$lgt_flatten_conjunction_objs_msg'(Obj, _, _, _) :-
+	\+ callable(Obj),
+	throw(type_error(object_identifier, Obj)).
+
+'$lgt_flatten_conjunction_objs_msg'((Obj, Objs), Msg, (FGoal, FGoals), Var) :-
+	!,
+	'$lgt_flatten_conjunction_objs_msg'(Obj, Msg, FGoal, Var),
+	'$lgt_flatten_conjunction_objs_msg'(Objs, Msg, FGoals, Var).
+
+'$lgt_flatten_conjunction_objs_msg'(Obj, Msg, Obj::Msg, _).
+
+
+'$lgt_flatten_conjunction_msg'(Msg, _, var(Action)) :-
+	var(Msg),
+	(	Action == error ->
+		throw(instantiation_error)
+	;	!
+	).
+
+'$lgt_flatten_conjunction_msg'(Msg, _, _) :-
+	\+ callable(Msg),
+	throw(type_error(callable, Msg)).
+
+'$lgt_flatten_conjunction_msg'((Msg, Msgs), (FGoal, FGoals), Var) :-
+	!,
+	'$lgt_flatten_conjunction_msg'(Msg, FGoal, Var),
+	'$lgt_flatten_conjunction_msg'(Msgs, FGoals, Var).
+
+'$lgt_flatten_conjunction_msg'(Msg, ::Msg, _).
+
+
+'$lgt_tr_threaded_flattened_calls'(Goal, TGoal, Ctx) :-
 	var(Goal),
-	!.
-
-'$lgt_flatten_broadcasting'((Obj, Objs)::Msgs, Goals) :-
 	!,
-	'$lgt_flatten_msg_broadcasting'((Obj, Objs), Msgs, ObjMsgs),
-	'$lgt_flatten_broadcasting'(ObjMsgs, Goals).
+	'$lgt_tr_body'(threaded_once(Goal), TGoal, _, Ctx).
 
-'$lgt_flatten_broadcasting'(Obj::(Msg, Msgs), Goals) :-
+'$lgt_tr_threaded_flattened_calls'((Goal, Goals), (TGoal, TGoals), Ctx) :-
 	!,
-	'$lgt_flatten_obj_broadcasting'((Msg, Msgs), Obj, ObjMsgs),
-	'$lgt_flatten_broadcasting'(ObjMsgs, Goals).
+	'$lgt_tr_threaded_flattened_calls'(Goal, TGoal, Ctx),
+	'$lgt_tr_threaded_flattened_calls'(Goals, TGoals, Ctx).
 
-'$lgt_flatten_broadcasting'(::((Msg, Msgs)), Goals) :-
-	!,
-	'$lgt_flatten_self_broadcasting'((Msg, Msgs), Goals).
-
-'$lgt_flatten_broadcasting'((Goal, Goals), (FGoal, FGoals)) :-
-	!,
-	'$lgt_flatten_broadcasting'(Goal, FGoal),
-	'$lgt_flatten_broadcasting'(Goals, FGoals).
-
-'$lgt_flatten_broadcasting'(Goal, Goal).
+'$lgt_tr_threaded_flattened_calls'(Goal, TGoal, Ctx) :-
+	'$lgt_tr_body'(threaded_once(Goal), TGoal, _, Ctx).
 
 
-'$lgt_flatten_msg_broadcasting'((Obj, Objs), Msgs, (Obj::Msgs, Goals)) :-
-	!,
-	'$lgt_flatten_msg_broadcasting'(Objs, Msgs, Goals).
-
-'$lgt_flatten_msg_broadcasting'(Obj, Msgs, Obj::Msgs).
-
-
-'$lgt_flatten_obj_broadcasting'((Msg, Msgs), Obj, (Obj::Msg, Goals)) :-
-	!,
-	'$lgt_flatten_obj_broadcasting'(Msgs, Obj, Goals).
-
-'$lgt_flatten_obj_broadcasting'(Msg, Obj, Obj::Msg).
-
-
-'$lgt_flatten_self_broadcasting'((Msg, Msgs), (::Msg, Goals)) :-
-	!,
-	'$lgt_flatten_self_broadcasting'(Msgs, Goals).
-
-'$lgt_flatten_self_broadcasting'(Msg, ::Msg).
-
-
-'$lgt_tr_threaded_calls'(Goal, TGoal, Call, Ctx) :-
+'$lgt_tr_threaded_flattened_exits'(Goal, TGoal, Ctx) :-
 	var(Goal),
 	!,
-	catch('$lgt_tr_body'(threaded_once(Goal), TGoal, _, Ctx), error(Error, _), throw(Error, Call)).
+	'$lgt_tr_body'(threaded_exit(Goal), TGoal, _, Ctx).
 
-'$lgt_tr_threaded_calls'(Goal, _, Call, _) :-
-	nonvar(Goal),
-	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), Call)).
-
-'$lgt_tr_threaded_calls'((Goal, Goals), (TGoal, TGoals), Call, Ctx) :-
+'$lgt_tr_threaded_flattened_exits'((Goal, Goals), (TGoal, TGoals), Ctx) :-
 	!,
-	'$lgt_tr_threaded_calls'(Goal, TGoal, Call, Ctx),
-	'$lgt_tr_threaded_calls'(Goals, TGoals, Call, Ctx).
+	'$lgt_tr_threaded_flattened_exits'(Goal, TGoal, Ctx),
+	'$lgt_tr_threaded_flattened_exits'(Goals, TGoals, Ctx).
 
-'$lgt_tr_threaded_calls'(Goal, TGoal, Call, Ctx) :-
-	catch('$lgt_tr_body'(threaded_once(Goal), TGoal, _, Ctx), error(Error, _), throw(Error, Call)).
-
-
-'$lgt_tr_threaded_exits'(Goal, TGoal, Call, Ctx) :-
-	var(Goal),
-	!,
-	catch('$lgt_tr_body'(threaded_exit(Goal), TGoal, _, Ctx), error(Error, _), throw(Error, Call)).
-
-'$lgt_tr_threaded_exits'((Goal, Goals), (TGoal, TGoals), Call, Ctx) :-
-	!,
-	'$lgt_tr_threaded_exits'(Goal, TGoal, Call, Ctx),
-	'$lgt_tr_threaded_exits'(Goals, TGoals, Call, Ctx).
-
-'$lgt_tr_threaded_exits'(Goal, TGoal, Call, Ctx) :-
-	catch('$lgt_tr_body'(threaded_exit(Goal), TGoal, _, Ctx), error(Error, _), throw(Error, Call)).
+'$lgt_tr_threaded_flattened_exits'(Goal, TGoal, Ctx) :-
+	'$lgt_tr_body'(threaded_exit(Goal), TGoal, _, Ctx).
 
 
 
@@ -4862,7 +4933,7 @@ current_logtalk_flag(version, version(2, 30, 0)).
 	'$lgt_save_file_op_table'.
 
 
-% create a dispatcher thread at object initialization
+% create a message queue at object initialization
 
 '$lgt_tr_directive'(threaded, [], _, _) :-
 	\+ '$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
@@ -6164,7 +6235,7 @@ current_logtalk_flag(version, version(2, 30, 0)).
 
 '$lgt_tr_body'(threaded(Goals), MTGoals, '$lgt_dbg_goal'(threaded(Goals), MTGoals, DbgCtx), Ctx) :-
 	!,
-	'$lgt_tr_threaded_call'(Goals, MTGoals, threaded(Goals), Ctx),
+	'$lgt_tr_threaded_call'(Goals, MTGoals, var(accept), Ctx),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
@@ -12052,9 +12123,9 @@ current_logtalk_flag(version, version(2, 30, 0)).
 % send a goal to the dispatcher thread
 
 '$lgt_mt_send_goal'(Queue, Goal, Sender, This, Self, Options) :-
-	(	current_thread('$lgt_dispatcher', running) ->
-		thread_send_message('$lgt_dispatcher', '$lgt_goal'(Queue, Goal, This, Self, Options))
-	;	throw(error(existence_error(dispatcher, This), Goal, Sender))
+	(	current_thread(logtalk_dispatcher, running) ->
+		thread_send_message(logtalk_dispatcher, '$lgt_goal'(Queue, Goal, This, Self, Options))
+	;	throw(error(existence_error(logtalk_dispatcher, This), Goal, Sender))
 	).
 
 
