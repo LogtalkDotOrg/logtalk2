@@ -88,7 +88,6 @@
 	% garbage collection) on the results 
 	do_benchmark(empty_loop, N) :-
 		{my_repeat(N)},
-			true,
 		fail.
 	do_benchmark(empty_loop, _).
 
