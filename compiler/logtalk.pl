@@ -1006,169 +1006,8 @@ threaded(Goals) :-
 
 threaded(Goals) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	catch('$lgt_tr_threaded_call'(Goals, MTGoals, var(error), Ctx), Error, throw(error(Error, threaded(Goals)))),
+	catch('$lgt_tr_threaded_call'(Goals, MTGoals, Ctx), Error, throw(error(Error, threaded(Goals)))),
 	catch(MTGoals, Error, '$lgt_runtime_error_handler'(Error)).
-
-
-'$lgt_tr_threaded_call'(Goals, _, var(error), _) :-
-	var(Goals),
-	throw(instantiation_error).
-
-'$lgt_tr_threaded_call'(Goals, _, _, _) :-
-	nonvar(Goals),
-	\+ callable(Goals),
-	throw(type_error(callable, Goals)).
-
-'$lgt_tr_threaded_call'(Goals, (TCalls, TExits), Var, Ctx) :-
-	'$lgt_flatten_conjunction'(Goals, FGoals, Var),
-	'$lgt_tr_threaded_flattened_calls'(FGoals, TCalls, Ctx),
-	'$lgt_tr_threaded_flattened_exits'(FGoals, TExits, Ctx). 
-
-
-'$lgt_flatten_conjunction'(Goals, Goals, var(Action)) :-
-	var(Goals),
-	(	Action == error ->
-		throw(instantiation_error)
-	;	!
-	).
-
-'$lgt_flatten_conjunction'(Goals, _, _) :-
-	\+ callable(Goals),
-	throw(type_error(callable, Goals)).
-
-'$lgt_flatten_conjunction'(Obj::Msg, FGoals, Var) :-
-	!,
-	'$lgt_flatten_conjunction_obj_msg'(Obj, Msg, FGoals, Var).
-
-'$lgt_flatten_conjunction'(::Msg, FGoals, Var) :-
-	!,
-	'$lgt_flatten_conjunction_msg'(Msg, FGoals, Var).
-
-'$lgt_flatten_conjunction'((Goal, Goals), (FGoal, FGoals), Var) :-
-	!,
-	'$lgt_flatten_conjunction'(Goal, FGoal, Var),
-	'$lgt_flatten_conjunction'(Goals, FGoals, Var).
-
-'$lgt_flatten_conjunction'(Goal, Goal, _).
-
-
-'$lgt_flatten_conjunction_obj_msg'(Obj, Msg, Obj::Msg, var(Action)) :-
-	var(Obj),
-	(	Action == error ->
-		throw(instantiation_error)
-	;	!
-	).
-
-'$lgt_flatten_conjunction_obj_msg'(Obj, Msg, Obj::Msg, var(Action)) :-
-	var(Msg),
-	(	Action == error ->
-		throw(instantiation_error)
-	;	!
-	).
-
-'$lgt_flatten_conjunction_obj_msg'(Obj, _, _, _) :-
-	\+ callable(Obj),
-	throw(type_error(object_identifier, Obj)).
-
-'$lgt_flatten_conjunction_obj_msg'(_, Msg, _, _) :-
-	\+ callable(Msg),
-	throw(type_error(callable, Msg)).
-
-'$lgt_flatten_conjunction_obj_msg'(Obj, (Msg, Msgs), FGoals, Var) :-
-	!,
-	'$lgt_flatten_conjunction_obj_msgs'(Obj, (Msg, Msgs), FGoals, Var).
-
-'$lgt_flatten_conjunction_obj_msg'((Obj, Objs), Msg, FGoals, Var) :-
-	!,
-	'$lgt_flatten_conjunction_objs_msg'((Obj, Objs), Msg, FGoals, Var).
-
-'$lgt_flatten_conjunction_obj_msg'(Obj, Msg, Obj::Msg, _).
-
-
-'$lgt_flatten_conjunction_obj_msgs'(Obj, Msg, Obj::Msg, var(Action)) :-
-	var(Msg),
-	(	Action == error ->
-		throw(instantiation_error)
-	;	!
-	).
-
-'$lgt_flatten_conjunction_obj_msgs'(_, Msg, _, _) :-
-	\+ callable(Msg),
-	throw(type_error(callable, Msg)).
-
-'$lgt_flatten_conjunction_obj_msgs'(Obj, (Msg, Msgs), (FGoal, FGoals), Var) :-
-	!,
-	'$lgt_flatten_conjunction_obj_msgs'(Obj, Msg, FGoal, Var),
-	'$lgt_flatten_conjunction_obj_msgs'(Obj, Msgs, FGoals, Var).
-
-'$lgt_flatten_conjunction_obj_msgs'(Obj, Msg, Obj::Msg, _).
-
-
-'$lgt_flatten_conjunction_objs_msg'(Obj, Msg, Obj::Msg, var(Action)) :-
-	var(Obj),
-	(	Action == error ->
-		throw(instantiation_error)
-	;	!
-	).
-
-'$lgt_flatten_conjunction_objs_msg'(Obj, _, _, _) :-
-	\+ callable(Obj),
-	throw(type_error(object_identifier, Obj)).
-
-'$lgt_flatten_conjunction_objs_msg'((Obj, Objs), Msg, (FGoal, FGoals), Var) :-
-	!,
-	'$lgt_flatten_conjunction_objs_msg'(Obj, Msg, FGoal, Var),
-	'$lgt_flatten_conjunction_objs_msg'(Objs, Msg, FGoals, Var).
-
-'$lgt_flatten_conjunction_objs_msg'(Obj, Msg, Obj::Msg, _).
-
-
-'$lgt_flatten_conjunction_msg'(Msg, ::Msg, var(Action)) :-
-	var(Msg),
-	(	Action == error ->
-		throw(instantiation_error)
-	;	!
-	).
-
-'$lgt_flatten_conjunction_msg'(Msg, _, _) :-
-	\+ callable(Msg),
-	throw(type_error(callable, Msg)).
-
-'$lgt_flatten_conjunction_msg'((Msg, Msgs), (FGoal, FGoals), Var) :-
-	!,
-	'$lgt_flatten_conjunction_msg'(Msg, FGoal, Var),
-	'$lgt_flatten_conjunction_msg'(Msgs, FGoals, Var).
-
-'$lgt_flatten_conjunction_msg'(Msg, ::Msg, _).
-
-
-'$lgt_tr_threaded_flattened_calls'(Goal, TGoal, Ctx) :-
-	var(Goal),
-	!,
-	'$lgt_tr_body'(threaded_once(Goal), TGoal, _, Ctx).
-
-'$lgt_tr_threaded_flattened_calls'((Goal, Goals), (TGoal, TGoals), Ctx) :-
-	!,
-	'$lgt_tr_threaded_flattened_calls'(Goal, TGoal, Ctx),
-	'$lgt_tr_threaded_flattened_calls'(Goals, TGoals, Ctx).
-
-'$lgt_tr_threaded_flattened_calls'(Goal, TGoal, Ctx) :-
-	'$lgt_tr_body'(threaded_once(Goal), TGoal, _, Ctx).
-
-
-'$lgt_tr_threaded_flattened_exits'(Goal, TGoal, Ctx) :-
-	var(Goal),
-	!,
-	'$lgt_tr_body'(threaded_exit(Goal), TGoal, _, Ctx).
-
-'$lgt_tr_threaded_flattened_exits'((Goal, Goals), (TGoal, TGoals), Ctx) :-
-	!,
-	'$lgt_tr_threaded_flattened_exits'(Goal, TGoal, Ctx),
-	'$lgt_tr_threaded_flattened_exits'(Goals, TGoals, Ctx).
-
-'$lgt_tr_threaded_flattened_exits'(Goal, TGoal, Ctx) :-
-	'$lgt_tr_body'(threaded_exit(Goal), TGoal, _, Ctx).
-
 
 
 threaded_call(Goal) :-
@@ -6233,7 +6072,7 @@ current_logtalk_flag(version, version(2, 30, 0)).
 
 '$lgt_tr_body'(threaded(Goals), MTGoals, '$lgt_dbg_goal'(threaded(Goals), MTGoals, DbgCtx), Ctx) :-
 	!,
-	'$lgt_tr_threaded_call'(Goals, MTGoals, var(accept), Ctx),
+	'$lgt_tr_threaded_call'(Goals, MTGoals, Ctx),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
@@ -6810,6 +6649,36 @@ current_logtalk_flag(version, version(2, 30, 0)).
 	\+ '$lgt_pp_threaded_',
 	'$lgt_pp_entity'(object, _, _, _, _),
 	throw(resource_error(threads, Call)).
+
+
+
+% '$lgt_tr_threaded_call'(+callable, -callable, +callable)
+%
+% translates the argument of built-in predicate threaded/1 calls
+
+'$lgt_tr_threaded_call'(Goals, (MTCalls, MTExits), Ctx) :-
+	'$lgt_tr_body'(Goals, TGoals, _, Ctx),
+	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
+	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
+		'$lgt_tr_threaded_call'(TGoals, MTCalls, MTExits, Prefix, Sender, This, Self)
+	;	'$lgt_tr_threaded_call'(TGoals, MTCalls, MTExits, Sender, This, Self)
+	).
+
+
+'$lgt_tr_threaded_call'((TGoal, TGoals), (MTCall, MTCalls), (MTExit, MTExits), Prefix, Sender, This, Self) :-
+	!,
+	'$lgt_tr_threaded_call'(TGoal, MTCall, MTExit, Prefix, Sender, This, Self),
+	'$lgt_tr_threaded_call'(TGoals, MTCalls, MTExits, Prefix, Sender, This, Self).
+
+'$lgt_tr_threaded_call'(TGoal, '$lgt_mt_send_goal'(Prefix, TGoal, Sender, This, Self, once), '$lgt_mt_get_reply'(Prefix, TGoal, Sender, This, Self), Prefix, Sender, This, Self).
+
+
+'$lgt_tr_threaded_call'((TGoal, TGoals), (MTCall, MTCalls), (MTExit, MTExits), Sender, This, Self) :-
+	!,
+	'$lgt_tr_threaded_call'(TGoal, MTCall, MTExit, Sender, This, Self),
+	'$lgt_tr_threaded_call'(TGoals, MTCalls, MTExits, Sender, This, Self).
+
+'$lgt_tr_threaded_call'(TGoal, '$lgt_mt_send_goal'(TGoal, Sender, This, Self, once), '$lgt_mt_get_reply'(TGoal, Sender, This, Self), Sender, This, Self).
 
 
 
