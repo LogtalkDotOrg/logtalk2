@@ -289,6 +289,9 @@ Obj::Pred :-
 	!,
 	fail.
 
+'$lgt_runtime_error_handler'(error(Error, user::Goal, user)) :-
+	throw(error(Error, Goal)).
+
 '$lgt_runtime_error_handler'(Error) :-
 	throw(Error).
 
@@ -447,7 +450,8 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_fix_pred_calls',
 	'$lgt_gen_object_clauses',
 	'$lgt_gen_object_directives',
-	'$lgt_assert_tr_entity'.
+	'$lgt_assert_tr_entity',
+	'$lgt_clean_pp_clauses'.
 
 
 
@@ -495,7 +499,8 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_fix_pred_calls',
 	'$lgt_gen_category_clauses',
 	'$lgt_gen_category_directives',
-	'$lgt_assert_tr_entity'.
+	'$lgt_assert_tr_entity',
+	'$lgt_clean_pp_clauses'.
 
 
 
@@ -536,7 +541,8 @@ create_protocol(Ptc, Rels, Dirs) :-
 	'$lgt_tr_directives'(Dirs, user_input, _),
 	'$lgt_gen_protocol_clauses',
 	'$lgt_gen_protocol_directives',
-	'$lgt_assert_tr_entity'.
+	'$lgt_assert_tr_entity',
+	'$lgt_clean_pp_clauses'.
 
 
 
@@ -1005,14 +1011,26 @@ threaded(Goals) :-
 	throw(resource_error(threads, threaded(Goals))).
 
 threaded(Goals) :-
+	var(Goals),
+	throw(error(instantiation_error, threaded(Goals))).
+
+threaded(Goals) :-
+	\+ callable(Goals),
+	throw(error(type_error(callable, Goals), threaded(Goals))).
+
+threaded(Goals) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
 	catch('$lgt_tr_threaded_call'(Goals, MTGoals, Ctx), Error, throw(error(Error, threaded(Goals)))),
 	catch(MTGoals, Error, '$lgt_runtime_error_handler'(Error)).
 
 
 threaded_call(Goal) :-
+	\+ '$lgt_compiler_flag'(threads, on),
+	throw(resource_error(threads, threaded_call(Goal))).
+
+threaded_call(Goal) :-
 	var(Goal),
-	throw(error(instantiation_error, threaded_call(Goal))).	
+	throw(error(instantiation_error, threaded_call(Goal))).
 
 threaded_call(Goal) :-
 	\+ callable(Goal),
@@ -1025,8 +1043,12 @@ threaded_call(Goal) :-
 
 
 threaded_once(Goal) :-
+	\+ '$lgt_compiler_flag'(threads, on),
+	throw(resource_error(threads, threaded_once(Goal))).
+
+threaded_once(Goal) :-
 	var(Goal),
-	throw(error(instantiation_error, threaded_once(Goal))).	
+	throw(error(instantiation_error, threaded_once(Goal))).
 
 threaded_once(Goal) :-
 	\+ callable(Goal),
@@ -1039,8 +1061,12 @@ threaded_once(Goal) :-
 
 
 threaded_ignore(Goal) :-
+	\+ '$lgt_compiler_flag'(threads, on),
+	throw(resource_error(threads, threaded_ignore(Goal))).
+
+threaded_ignore(Goal) :-
 	var(Goal),
-	throw(error(instantiation_error, threaded_ignore(Goal))).	
+	throw(error(instantiation_error, threaded_ignore(Goal))).
 
 threaded_ignore(Goal) :-
 	\+ callable(Goal),
@@ -1053,8 +1079,12 @@ threaded_ignore(Goal) :-
 
 
 threaded_exit(Goal) :-
+	\+ '$lgt_compiler_flag'(threads, on),
+	throw(resource_error(threads, threaded_exit(Goal))).
+
+threaded_exit(Goal) :-
 	var(Goal),
-	throw(error(instantiation_error, threaded_exit(Goal))).	
+	throw(error(instantiation_error, threaded_exit(Goal))).
 
 threaded_exit(Goal) :-
 	\+ callable(Goal),
@@ -1067,8 +1097,12 @@ threaded_exit(Goal) :-
 
 
 threaded_peek(Goal) :-
+	\+ '$lgt_compiler_flag'(threads, on),
+	throw(resource_error(threads, threaded_peek(Goal))).
+
+threaded_peek(Goal) :-
 	var(Goal),
-	throw(error(instantiation_error, threaded_peek(Goal))).	
+	throw(error(instantiation_error, threaded_peek(Goal))).
 
 threaded_peek(Goal) :-
 	\+ callable(Goal),
@@ -1081,8 +1115,17 @@ threaded_peek(Goal) :-
 
 
 threaded_wait(Message) :-
+	\+ '$lgt_compiler_flag'(threads, on),
+	throw(resource_error(threads, threaded_wait(Message))).
+
+threaded_wait(Message) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _),
 	thread_get_message(Prefix, '$lgt_notification'(Message)).
+
+
+threaded_notify(Message) :-
+	\+ '$lgt_compiler_flag'(threads, on),
+	throw(resource_error(threads, threaded_notify(Message))).
 
 threaded_notify(Message) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _),
@@ -4172,6 +4215,7 @@ current_logtalk_flag(version, version(2, 30, 0)).
 % the operator table, and reports the compilation error found
 
 '$lgt_compiler_error_handler'(Input, Output, Error) :-
+	'$lgt_clean_pp_clauses',
 	'$lgt_restore_global_op_table',
 	'$lgt_reset_warnings_counter',
 	'$lgt_report_compiler_error'(Input, Error),
@@ -4187,6 +4231,7 @@ current_logtalk_flag(version, version(2, 30, 0)).
 % the operator table, and reports the compilation error found
 
 '$lgt_compiler_error_handler'(Stream, Error) :-
+	'$lgt_clean_pp_clauses',
 	'$lgt_restore_global_op_table',
 	'$lgt_reset_warnings_counter',
 	'$lgt_report_compiler_error'(Stream, Error),
@@ -4200,6 +4245,7 @@ current_logtalk_flag(version, version(2, 30, 0)).
 % restores the operator table, and reports the compilation error found
 
 '$lgt_compiler_error_handler'(Error) :-
+	'$lgt_clean_pp_clauses',
 	'$lgt_restore_global_op_table',
 	'$lgt_reset_warnings_counter',
 	write('  ERROR!    '), writeq(Error), nl,
@@ -6647,7 +6693,7 @@ current_logtalk_flag(version, version(2, 30, 0)).
 
 '$lgt_check_for_threaded_directive'(Call) :-
 	\+ '$lgt_pp_threaded_',
-	'$lgt_pp_entity'(object, _, _, _, _),
+	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads, Call)).
 
 
@@ -6658,7 +6704,7 @@ current_logtalk_flag(version, version(2, 30, 0)).
 
 '$lgt_tr_threaded_call'(Goals, (MTCalls, MTExits), Ctx) :-
 	'$lgt_tr_body'(Goals, TGoals, _, Ctx),
-	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
+	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, Prefix, _, _),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
 		'$lgt_tr_threaded_call'(TGoals, MTCalls, MTExits, Prefix, Sender, This, Self)
 	;	'$lgt_tr_threaded_call'(TGoals, MTCalls, MTExits, Sender, This, Self)
