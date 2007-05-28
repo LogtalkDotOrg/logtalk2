@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.30.0 - May 8, 2007
+2.30.0 - May 28, 2007
 
 	Added preliminary support for static binding when sending messages to 
 	objects compiled and loaded using the compiler option "reload(skip)".
@@ -102,10 +102,6 @@ RELEASE NOTES
 	value for the compiler flag "underscore_vars" to "dont_care" in order to 
 	avoid spurious warnings with some of the provided examples.
 
-	Updated the B-Prolog config file to workaround the lack of support for 
-	expanding environment variables in the argument of the built-in predicate 
-	exists/1.
-
 	Added a config file and integration scripts for the current XSB CVS 
 	version (3.0.1+), which supports some features needed by Logtalk not 
 	present in the current stable version (namely, expansion of environment 
@@ -116,8 +112,7 @@ RELEASE NOTES
 	Much improved "benchmarks" example, updated to allow running tests in 
 	three different scenarios: event support on, event support off, and 
 	using static binding. Moreover, metacalls are no longer used to run 
-	the benchmark goals, resulting in much more meaningful and accurate 
-	results.
+	the benchmark goals, resulting in more meaningful and accurate results.
 
 	Removed all the "make_*lgt.*" and "makeall_lgt.*" shell scripts, replaced 
 	by pre-made integration scripts that can be found on the new "integration"
