@@ -26,17 +26,17 @@
 :- object(fibonacci).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2007/05/14,
+		date is 2007/05/28,
 		comment is 'Simple tabling example using Fibonacci numbers.',
 		source is 'Direct conversion to Logtalk of a B-Prolog tabling example.']).
 
 	:- public(fib/2).
 	:- table(fib/2).
 
-	fib(0, 1) :- !.
-	fib(1, 1) :- !.
+	fib(0, 1).
+	fib(1, 1).
 	fib(N,F) :-
 		N > 1,
 		N1 is N - 1,
