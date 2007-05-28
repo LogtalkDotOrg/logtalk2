@@ -24,7 +24,7 @@
 :- op(600, xfy, ::).	% send to object
 :- op(600,  fy, ::).	% send to self
 
-:- op(600,  fy, ^^).	% "super" call (call an overriden, inherited method definition)
+:- op(600,  fy, ^^).	% "super" call (calls an overriden, inherited method definition)
 
 
 % mode operators
@@ -1006,6 +1006,9 @@ abolish_events(after, Obj, Msg, Sender, Monitor) :-
 
 % built-in multi-threading meta-predicates
 
+
+% threaded(+callable)
+
 threaded(Goals) :-
 	\+ '$lgt_compiler_flag'(threads, on),
 	throw(resource_error(threads, threaded(Goals))).
@@ -1023,6 +1026,8 @@ threaded(Goals) :-
 	catch('$lgt_tr_threaded_call'(Goals, MTGoals, Ctx), Error, throw(error(Error, threaded(Goals)))),
 	catch(MTGoals, Error, '$lgt_runtime_error_handler'(Error)).
 
+
+% threaded_call(@callable)
 
 threaded_call(Goal) :-
 	\+ '$lgt_compiler_flag'(threads, on),
@@ -1042,6 +1047,8 @@ threaded_call(Goal) :-
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
+% threaded_once(@callable)
+
 threaded_once(Goal) :-
 	\+ '$lgt_compiler_flag'(threads, on),
 	throw(resource_error(threads, threaded_once(Goal))).
@@ -1059,6 +1066,8 @@ threaded_once(Goal) :-
 	'$lgt_tr_body'(threaded_once(Goal), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
+
+% threaded_ignore(@callable)
 
 threaded_ignore(Goal) :-
 	\+ '$lgt_compiler_flag'(threads, on),
@@ -1078,6 +1087,8 @@ threaded_ignore(Goal) :-
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
+% threaded_exit(+callable)
+
 threaded_exit(Goal) :-
 	\+ '$lgt_compiler_flag'(threads, on),
 	throw(resource_error(threads, threaded_exit(Goal))).
@@ -1095,6 +1106,8 @@ threaded_exit(Goal) :-
 	'$lgt_tr_body'(threaded_exit(Goal), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
+
+% threaded_peek(+callable)
 
 threaded_peek(Goal) :-
 	\+ '$lgt_compiler_flag'(threads, on),
@@ -1114,6 +1127,8 @@ threaded_peek(Goal) :-
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
+% threaded_wait(?term)
+
 threaded_wait(Message) :-
 	\+ '$lgt_compiler_flag'(threads, on),
 	throw(resource_error(threads, threaded_wait(Message))).
@@ -1122,6 +1137,8 @@ threaded_wait(Message) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _),
 	thread_get_message(Prefix, '$lgt_notification'(Message)).
 
+
+% threaded_notify(@term)
 
 threaded_notify(Message) :-
 	\+ '$lgt_compiler_flag'(threads, on),
@@ -6106,7 +6123,6 @@ current_logtalk_flag(version, version(2, 30, 0)).
 
 % multi-threading meta-predicates
 
-
 '$lgt_tr_body'(threaded(Goals), _, _, _) :-
 	'$lgt_check_for_threaded_directive'(threaded(Goals)),
 	fail.
@@ -6700,7 +6716,7 @@ current_logtalk_flag(version, version(2, 30, 0)).
 
 % '$lgt_tr_threaded_call'(+callable, -callable, +callable)
 %
-% translates the argument of built-in predicate threaded/1 calls
+% translates the argument of a built-in predicate threaded/1 call
 
 '$lgt_tr_threaded_call'(Goals, (MTCalls, MTExits), Ctx) :-
 	'$lgt_tr_body'(Goals, TGoals, _, Ctx),
@@ -6878,18 +6894,6 @@ current_logtalk_flag(version, version(2, 30, 0)).
 	throw(domain_error(not_less_than_zero, Arity)).
 
 '$lgt_compiler_db_pred_ind_chk'(_).
-
-
-
-% '$lgt_convert_disj_to_conj'(@callable, -callable)
-%
-% converts a disjunction of goals into a conjunction
-
-'$lgt_convert_disj_to_conj'((Pred; Disjunction), (Pred, Conjunction)) :-
-	!,
-	'$lgt_convert_disj_to_conj'(Disjunction, Conjunction).
-
-'$lgt_convert_disj_to_conj'(Pred, Pred).
 
 
 
@@ -7317,7 +7321,7 @@ current_logtalk_flag(version, version(2, 30, 0)).
 
 
 
-% message broadcasting
+% message broadcasting (sending a message to several objects)
 
 '$lgt_tr_msg_broadcasting'((Obj1, Obj2), Pred, (TP1, TP2), This) :-
 	!,
@@ -7333,20 +7337,14 @@ current_logtalk_flag(version, version(2, 30, 0)).
 
 % '$lgt_tr_super_call'(@term, -term, +term)
 %
-% translates calling of redefined predicates (super calls)
+% translates calling of redefined predicates ("super" calls)
 
-
-% invalid goal (not callable)
-
-'$lgt_tr_super_call'(Pred, _, _) :-
+'$lgt_tr_super_call'(Pred, _, _) :-			% invalid goal (not callable)
 	nonvar(Pred),
 	\+ callable(Pred),
 	throw(type_error(callable, Pred)).
 
-
-% translation performed at runtime
-
-'$lgt_tr_super_call'(Pred, TPred, Ctx) :-
+'$lgt_tr_super_call'(Pred, TPred, Ctx) :-	% translation performed at runtime
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	(	var(Pred) ->
 		TPred = '$lgt_send_to_super'(Self, Pred, This, Sender)
