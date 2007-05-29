@@ -1,11 +1,11 @@
 Name: logtalk
 Summary: Logtalk - Open source object-oriented logic programming language
-Version: 2.30.0
+Version: 2.30.1
 Release: 1
 License: Artistic License 2.0
 Group: Development/Languages
 Packager: Paulo Moura <pmoura@logtalk.org>
-Source: http://logtalk.org/files/lgt2300.tgz
+Source: http://logtalk.org/files/lgt2301.tgz
 BuildArchitectures: noarch
 URL: http://logtalk.org/
 Prefix: /usr/local
@@ -15,27 +15,27 @@ Logtalk is an open source object-oriented logic programming language that can us
 
 %prep
 
-%setup -n lgt2300
+%setup -n lgt2301
 
 %build
 
 %install
 mkdir -p /usr/local/share
-rm -rf /usr/local/share/lgt2300
+rm -rf /usr/local/share/lgt2301
 rm -f /usr/local/share/logtalk
-mkdir /usr/local/share/lgt2300
-cp -R * /usr/local/share/lgt2300
+mkdir /usr/local/share/lgt2301
+cp -R * /usr/local/share/lgt2301
 cd /usr/local/share
-find lgt2300 -type f -print0 | xargs -0 chmod 644
-find lgt2300 -type d -print0 | xargs -0 chmod 755
-chmod a+x lgt2300/integration/*.sh
-chmod a+x lgt2300/scripts/*.sh
-chmod a-x lgt2300/scripts/*.js
-chmod a+x lgt2300/scripts/linux/*.sh
-chmod a+x lgt2300/scripts/macosx/postflight
-chmod a+x lgt2300/xml/*.sh
-chmod a-x lgt2300/xml/*.js
-ln -sf lgt2300 logtalk
+find lgt2301 -type f -print0 | xargs -0 chmod 644
+find lgt2301 -type d -print0 | xargs -0 chmod 755
+chmod a+x lgt2301/integration/*.sh
+chmod a+x lgt2301/scripts/*.sh
+chmod a-x lgt2301/scripts/*.js
+chmod a+x lgt2301/scripts/linux/*.sh
+chmod a+x lgt2301/scripts/macosx/postflight
+chmod a+x lgt2301/xml/*.sh
+chmod a-x lgt2301/xml/*.js
+ln -sf lgt2301 logtalk
 cd ..
 mkdir -p bin 
 cd bin
@@ -56,26 +56,26 @@ ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
 %clean
 %files
 %defattr(-,root,root)
-%doc /usr/local/share/lgt2300/BIBLIOGRAPHY.bib
-%doc /usr/local/share/lgt2300/CUSTOMIZE.txt
-%doc /usr/local/share/lgt2300/INSTALL.txt
-%doc /usr/local/share/lgt2300/LICENSE.txt
-%doc /usr/local/share/lgt2300/QUICK_START.txt
-%doc /usr/local/share/lgt2300/README.txt
-%doc /usr/local/share/lgt2300/RELEASE_NOTES.txt
-%doc /usr/local/share/lgt2300/UPGRADING.txt
-/usr/local/share/lgt2300/compiler
-/usr/local/share/lgt2300/configs
-/usr/local/share/lgt2300/contributions
-/usr/local/share/lgt2300/examples
-/usr/local/share/lgt2300/integration
-/usr/local/share/lgt2300/libpaths
-/usr/local/share/lgt2300/library
-%docdir /usr/local/share/lgt2300/manuals
-/usr/local/share/lgt2300/manuals
-/usr/local/share/lgt2300/scripts
-/usr/local/share/lgt2300/wenv
-/usr/local/share/lgt2300/xml
+%doc /usr/local/share/lgt2301/BIBLIOGRAPHY.bib
+%doc /usr/local/share/lgt2301/CUSTOMIZE.txt
+%doc /usr/local/share/lgt2301/INSTALL.txt
+%doc /usr/local/share/lgt2301/LICENSE.txt
+%doc /usr/local/share/lgt2301/QUICK_START.txt
+%doc /usr/local/share/lgt2301/README.txt
+%doc /usr/local/share/lgt2301/RELEASE_NOTES.txt
+%doc /usr/local/share/lgt2301/UPGRADING.txt
+/usr/local/share/lgt2301/compiler
+/usr/local/share/lgt2301/configs
+/usr/local/share/lgt2301/contributions
+/usr/local/share/lgt2301/examples
+/usr/local/share/lgt2301/integration
+/usr/local/share/lgt2301/libpaths
+/usr/local/share/lgt2301/library
+%docdir /usr/local/share/lgt2301/manuals
+/usr/local/share/lgt2301/manuals
+/usr/local/share/lgt2301/scripts
+/usr/local/share/lgt2301/wenv
+/usr/local/share/lgt2301/xml
 /usr/local/share/logtalk
 /usr/local/bin/cplgtdirs
 /usr/local/bin/lgt2pdf

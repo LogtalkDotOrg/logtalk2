@@ -2,7 +2,7 @@
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
-## Release 2.30.0
+## Release 2.30.1
 ##
 ## Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ## ================================================================
@@ -31,15 +31,15 @@ chmod a-x xml/*.js
 cd ..
 cp -R logtalk/manuals man2300
 tar -czf man2300.tgz man2300
-mv logtalk lgt2300
-tar -czf lgt2300.tgz lgt2300
+mv logtalk lgt2301
+tar -czf lgt2301.tgz lgt2301
 
 mkdir -p debian/usr/bin
 mkdir -p debian/usr/share/doc/logtalk
 mkdir -p debian/usr/share/doc-base
 mkdir -p debian/usr/share/menu
 mkdir -p debian/DEBIAN
-cd lgt2300/scripts
+cd lgt2301/scripts
 ./install.sh $dir/debian/usr
 cp debian/logtalk.doc-base $dir/debian/usr/share/doc-base/logtalk-docs
 cp debian/menu $dir/debian/usr/share/menu/logtalk
@@ -57,20 +57,20 @@ cp debian/postinst $dir/debian/DEBIAN
 cp debian/prerm $dir/debian/DEBIAN
 cp debian/postrm $dir/debian/DEBIAN
 cd $dir
-dpkg-deb --build debian logtalk_2.30.0-1_all.deb
+dpkg-deb --build debian logtalk_2.30.1-1_all.deb
 
-md5="`md5 -q lgt2300.tgz`"
+md5="`md5 -q lgt2301.tgz`"
 sudo mkdir -p /opt/local/var/db/dports/distfiles/logtalk
-sudo cp -f lgt2300.tgz /opt/local/var/db/dports/distfiles/logtalk/lgt2300.tgz
+sudo cp -f lgt2301.tgz /opt/local/var/db/dports/distfiles/logtalk/lgt2301.tgz
 cd /opt/local/var/db/dports/sources/rsync.rsync.darwinports.org_dpupdate_dports/lang/logtalk/
 sudo cp -f Portfile Portfile.old
-sudo sed -e 's/^version.*/version 2.30.0/' -i '' Portfile
+sudo sed -e 's/^version.*/version 2.30.1/' -i '' Portfile
 sudo sed -e "s/^checksums.*/checksums md5 $md5/" -i '' Portfile
-sudo sed -e 's/^distname.*/distname lgt2300/' -i '' Portfile
+sudo sed -e 's/^distname.*/distname lgt2301/' -i '' Portfile
 sudo port clean --archive logtalk
 sudo port destroot logtalk
 sudo port pkg logtalk
-cp -R work/logtalk-2.30.0.pkg $dir
+cp -R work/logtalk-2.30.1.pkg $dir
 sudo port clean logtalk
 
 cd $dir
