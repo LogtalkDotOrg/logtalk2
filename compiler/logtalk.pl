@@ -226,6 +226,29 @@ Obj::Pred :-
 %
 % top-level runtime error handler
 
+'$lgt_runtime_error_handler'(error(existence_error(goal_thread, '$lgt_send_to_object_ne_nv'(Self, Goal, Sender)), _)) :-
+	(	Self == user ->
+		throw(error(existence_error(goal_thread, Goal), Sender))
+	;	throw(error(existence_error(goal_thread, Self::Goal), Sender))
+	).
+
+'$lgt_runtime_error_handler'(error(existence_error(goal_thread, '$lgt_send_to_object_nv'(Self, Goal, Sender)), _)) :-
+	(	Self == user ->
+		throw(error(existence_error(goal_thread, Goal), Sender))
+	;	throw(error(existence_error(goal_thread, Self::Goal), Sender))
+	).
+
+'$lgt_runtime_error_handler'(error(existence_error(goal_thread, TGoal), Sender)) :-
+	functor(TGoal, TFunctor, TArity),
+	TGoal =.. [_| TArgs],
+	'$lgt_reverse_predicate_functor'(TFunctor, TArity, _, _, Functor, Arity),
+	'$lgt_reverse_predicate_args'(Arity, TArgs, Args, _, _, Self),
+	Goal =.. [Functor| Args],
+	(	Self == user ->
+		throw(error(existence_error(goal_thread, Goal), Sender))
+	;	throw(error(existence_error(goal_thread, Self::Goal), Sender))
+	).
+
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/8), _)) :-
 	once((atom_concat(ObjArity, '__idcl', TFunctor); atom_concat(ObjArity, '__dcl', TFunctor))),
 	atom_chars(ObjArity, ObjArityChars),
@@ -9875,6 +9898,18 @@ current_logtalk_flag(version, version(2, 30, 0)).
 
 
 
+% '$lgt_reverse_predicate_args'(+integer, @list, -list, -object_identifier, -object_identifier, -object_identifier)
+
+'$lgt_reverse_predicate_args'(0, TArgs, [], Sender, This, Self) :-
+	!,
+	'$lgt_append'(_, [Sender, This, Self], TArgs).
+'$lgt_reverse_predicate_args'(N, [Arg| TArgs], [Arg| Args], Sender, This, Self) :-
+	N > 0,
+	N2 is N - 1,
+	'$lgt_reverse_predicate_args'(N2, TArgs, Args, Sender, This, Self).
+
+
+
 % '$lgt_compile_hook'(+callable)
 %
 % compiles the user-defined compiler hook
@@ -11971,6 +12006,8 @@ current_logtalk_flag(version, version(2, 30, 0)).
 '$lgt_mt_competing_goal'(Goal, This, Self, Return) :-
 	thread_self(CompetingId),
 	thread_send_message(Return, '$lgt_thread_id'(competing, Goal, This, Self, CompetingId)),
+	% signal that the thread running the goal is ready:
+	thread_send_message(Return, '$lgt_ready'(Goal, This, Self, competing)),
 	(	catch(Goal, _, fail) ->
 		thread_send_message(Return, '$lgt_reply'(Goal, This, Self, success))
 	;	true
@@ -11985,6 +12022,8 @@ current_logtalk_flag(version, version(2, 30, 0)).
 '$lgt_mt_det_goal'(Goal, This, Self, Return) :-
 	thread_self(DetId),
 	thread_send_message(Return, '$lgt_thread_id'(deterministic, Goal, This, Self, DetId)),
+	% signal that the thread running the goal is ready:
+	thread_send_message(Return, '$lgt_ready'(Goal, This, Self, once)),
 	(	catch(Goal, Error, (thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Error)), Flag = error)),
 		(	var(Flag) ->
 			thread_send_message(Return, '$lgt_reply'(Goal, This, Self, success))
@@ -12003,6 +12042,8 @@ current_logtalk_flag(version, version(2, 30, 0)).
 '$lgt_mt_non_det_goal'(Goal, This, Self, Return) :-
 	thread_self(NonDetId),
 	thread_send_message(Return, '$lgt_thread_id'(non_deterministic, Goal, This, Self, NonDetId)),
+	% signal that the thread running the goal is ready:
+	thread_send_message(Return, '$lgt_ready'(Goal, This, Self, [])),
 	(	catch(Goal, Error, (thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Error)), Flag = error)),
 		var(Flag),
 		thread_send_message(Return, '$lgt_reply'(Goal, This, Self, success)),
@@ -12023,9 +12064,9 @@ current_logtalk_flag(version, version(2, 30, 0)).
 %
 % send a goal to the dispatcher thread
 
-'$lgt_mt_send_goal'(Goal, Sender, This, Self, Options) :-
+'$lgt_mt_send_goal'(Goal, Sender, This, Self, Option) :-
 	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _) ->
-	'$lgt_mt_send_goal'(Queue, Goal, Sender, This, Self, Options).
+	'$lgt_mt_send_goal'(Queue, Goal, Sender, This, Self, Option).
 
 
 
@@ -12033,9 +12074,12 @@ current_logtalk_flag(version, version(2, 30, 0)).
 %
 % send a goal to the dispatcher thread
 
-'$lgt_mt_send_goal'(Queue, Goal, Sender, This, Self, Options) :-
+'$lgt_mt_send_goal'(Queue, Goal, Sender, This, Self, Option) :-
 	(	current_thread(logtalk_dispatcher, running) ->
-		thread_send_message(logtalk_dispatcher, '$lgt_goal'(Queue, Goal, This, Self, Options))
+		% ask the Logtalk dispatcher to create a new thread for proving the goal:
+		thread_send_message(logtalk_dispatcher, '$lgt_goal'(Queue, Goal, This, Self, Option)),
+		% wait until the thread proving goal is ready before proceeding:
+		thread_get_message(Queue, '$lgt_ready'(Goal, This, Self, Option))
 	;	throw(error(existence_error(logtalk_dispatcher, This), Goal, Sender))
 	).
 
@@ -12074,18 +12118,24 @@ current_logtalk_flag(version, version(2, 30, 0)).
 %
 % get a reply to a goal sent to the senders object message queue
 
-'$lgt_mt_get_reply'(Queue, Goal, _, This, Self) :-
-	thread_get_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Id)),
-	call_cleanup(
-		'$lgt_mt_get_reply_aux'(Type, Queue, Goal, This, Self, Id),
-		(	Type == non_deterministic ->
-			(	current_thread(Id, running) ->							% if the thread is still running, it's suspended waiting
-				catch(thread_send_message(Id, '$lgt_exit'), _, true)	% for a request to an alternative proof; tell it to exit
+'$lgt_mt_get_reply'(Queue, Goal, Sender, This, Self) :-
+	(	% first check if there is a thread running for proving the goal before proceeding:
+		thread_peek_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Id)) ->
+		% answering thread exists; go ahead and retrieve the solution(s):
+		thread_get_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Id)),
+		call_cleanup(
+			'$lgt_mt_get_reply_aux'(Type, Queue, Goal, This, Self, Id),
+			(	Type == non_deterministic ->
+				(	current_thread(Id, running) ->							% if the thread is still running, it's suspended waiting
+					catch(thread_send_message(Id, '$lgt_exit'), _, true)	% for a request to an alternative proof; tell it to exit
+				;	true
+				),
+				thread_join(Id, _)
 			;	true
-			),
-			thread_join(Id, _)
-		;	true
+			)
 		)
+	;	% answering thread does not exists; generate an exception (failing is not an option as it could simply mean goal failure)
+		throw(error(existence_error(goal_thread, Goal), Sender))
 	).
 
 

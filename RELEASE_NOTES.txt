@@ -10,6 +10,13 @@ RELEASE NOTES
 =============
 
 
+2.30.1 - June ??, 2007
+
+	Improved multi-threading support in order to make the built-in predicate 
+	threaded_exit/1 generate an exception instead of blocking indefinitely 
+	waiting for a reply from a non-existing thread.
+
+
 2.30.0 - May 28, 2007
 
 	Added preliminary support for static binding when sending messages to 
