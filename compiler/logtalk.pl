@@ -3099,6 +3099,8 @@ current_logtalk_flag(version, version(2, 30, 1)).
 
 '$lgt_bio_debugger_0__dcl'(leash(_), p(p(p)), static, no, no, no).
 
+'$lgt_bio_debugger_0__dcl'(within(_, _), p(p(p)), static, no, no, no).
+
 
 '$lgt_bio_debugger_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Synchronized, debugger, debugger) :-
 	'$lgt_bio_debugger_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Synchronized).
@@ -3117,10 +3119,11 @@ current_logtalk_flag(version, version(2, 30, 1)).
 '$lgt_bio_debugger_0__def'(nospy(Sender, This, Self, Goal), _, _, _, '$lgt_dbg_nospy'(Sender, This, Self, Goal)).
 '$lgt_bio_debugger_0__def'(nospyall, _, _, _, '$lgt_dbg_nospyall').
 '$lgt_bio_debugger_0__def'(leash(Ports), _, _, _, '$lgt_dbg_leash'(Ports)).
+'$lgt_bio_debugger_0__def'(within(Obj, Goal), Sender, _, _, '$lgt_dbg_within'(Obj, Goal, Sender)).
 
 
-'$lgt_bio_debugger_0__def'(Pred, _, _, _, Call, debugger) :-
-	'$lgt_bio_debugger_0__def'(Pred, _, _, _, Call).
+'$lgt_bio_debugger_0__def'(Pred, Sender, This, Self, Call, debugger) :-
+	'$lgt_bio_debugger_0__def'(Pred, Sender, This, Self, Call).
 
 
 '$lgt_bio_debugger_0__alias'(_, Pred, Pred).
@@ -3641,6 +3644,39 @@ current_logtalk_flag(version, version(2, 30, 1)).
 '$lgt_dbg_do_port_option_skip'(exception, true).
 '$lgt_dbg_do_port_option_skip'(call, skip).
 '$lgt_dbg_do_port_option_skip'(redo, skip).
+
+
+
+% '$lgt_dbg_within'(+object_identifier, +callable, +callable)
+%
+% context-switching debugging utility predicate: executes a query in the 
+% context of an object (which must have been compiled in debug mode)
+
+'$lgt_dbg_within'(Obj, Goal, Sender) :-
+	var(Obj),
+	throw(error(instantiation_error, debugger::within(Obj, Goal), Sender)).
+
+'$lgt_dbg_within'(Obj, Goal, Sender) :-
+	var(Goal),
+	throw(error(instantiation_error, debugger::within(Obj, Goal), Sender)).
+
+'$lgt_dbg_within'(Obj, Goal, Sender) :-
+	\+ callable(Goal),
+	throw(error(type_error(callable, Goal), debugger::within(Obj, Goal), Sender)).
+
+'$lgt_dbg_within'(Obj, Goal, Sender) :-
+	(	'$lgt_current_object_'(Obj, Prefix, _, _, _, _, _, _) ->
+		(	'$lgt_debugging_'(Obj) ->
+			'$lgt_ctx_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _),
+			'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
+			(	'$lgt_dbg_debugging_' ->
+				catch(DGoal, Error, '$lgt_runtime_error_handler'(Error))
+			;	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error))
+			)
+		;	throw(error(permission_error(access, object, Obj), debugger::within(Obj, Goal), Sender))
+		)
+	;	throw(error(existence_error(object, Obj), debugger::within(Obj, Goal), Sender))
+	).
 
 
 
@@ -11972,7 +12008,7 @@ current_logtalk_flag(version, version(2, 30, 1)).
 
 % '$lgt_start_runtime_dispatcher'
 %
-% creates a dispatcher thread for an object given its prefix
+% starts up the dispatcher thread 
 
 '$lgt_start_runtime_dispatcher' :-
 	thread_create('$lgt_mt_obj_dispatcher', _, [alias(logtalk_dispatcher), detached(false)]).
@@ -12062,7 +12098,7 @@ current_logtalk_flag(version, version(2, 30, 1)).
 
 % '$lgt_mt_send_goal'(@callable, +object_identifier, +object_identifier, +object_identifier, +list)
 %
-% send a goal to the dispatcher thread
+% sends a goal to the dispatcher thread (this predicate is called from within categories)
 
 '$lgt_mt_send_goal'(Goal, Sender, This, Self, Option) :-
 	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _) ->
@@ -12072,22 +12108,23 @@ current_logtalk_flag(version, version(2, 30, 1)).
 
 % '$lgt_mt_send_goal'(+atom, @callable, +object_identifier, +object_identifier, +object_identifier, +list)
 %
-% send a goal to the dispatcher thread
+% sends a goal to the dispatcher thread
 
 '$lgt_mt_send_goal'(Queue, Goal, Sender, This, Self, Option) :-
 	(	current_thread(logtalk_dispatcher, running) ->
 		% ask the Logtalk dispatcher to create a new thread for proving the goal:
 		thread_send_message(logtalk_dispatcher, '$lgt_goal'(Queue, Goal, This, Self, Option)),
-		% wait until the thread proving goal is ready before proceeding:
+		% wait until the thread created for proving goal is ready before proceeding:
 		thread_get_message(Queue, '$lgt_ready'(Goal, This, Self, Option))
-	;	throw(error(existence_error(logtalk_dispatcher, This), Goal, Sender))
+	;	% something went terrible wrong with the dispatcher thread:
+		throw(error(existence_error(logtalk_dispatcher, This), Goal, Sender))
 	).
 
 
 
 % '$lgt_mt_peek_reply'(+callable, +object_identifier, +object_identifier, +object_identifier)
 %
-% peek a reply to a goal sent to the senders object message queue
+% peeks a reply to a goal sent to the senders object message queue (this predicate is called from within categories)
 
 '$lgt_mt_peek_reply'(Goal, Sender, This, Self) :-
 	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _) ->
@@ -12097,7 +12134,7 @@ current_logtalk_flag(version, version(2, 30, 1)).
 
 % '$lgt_mt_peek_reply'(+atom, +callable, +object_identifier, +object_identifier, +object_identifier)
 %
-% peek a reply to a goal sent to the senders object message queue
+% peeks a reply to a goal sent to the senders object message queue
 
 '$lgt_mt_peek_reply'(Queue, Goal, _, This, Self) :-
 	thread_peek_message(Queue, '$lgt_reply'(Goal, This, Self, _)).
@@ -12106,7 +12143,7 @@ current_logtalk_flag(version, version(2, 30, 1)).
 
 % '$lgt_mt_get_reply'(+callable, +object_identifier, +object_identifier, +object_identifier)
 %
-% get a reply to a goal sent to the senders object message queue
+% gets a reply to a goal sent to the senders object message queue (this predicate is called from within categories)
 
 '$lgt_mt_get_reply'(Goal, Sender, This, Self) :-
 	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _) ->
@@ -12116,7 +12153,7 @@ current_logtalk_flag(version, version(2, 30, 1)).
 
 % '$lgt_mt_get_reply'(+atom, +callable, +object_identifier, +object_identifier, +object_identifier)
 %
-% get a reply to a goal sent to the senders object message queue
+% gets a reply to a goal sent to the senders object message queue
 
 '$lgt_mt_get_reply'(Queue, Goal, Sender, This, Self) :-
 	(	% first check if there is a thread running for proving the goal before proceeding:
@@ -12208,7 +12245,9 @@ current_logtalk_flag(version, version(2, 30, 1)).
 
 
 
-% kill any threads that might still be running competing goals:
+% try to kill any threads that might still be running competing goals:
+% (this may or may not work as a thread can be in state where signals are not
+% processed; in the worst case scenario, a thread will run until completion)
 
 '$lgt_mt_kill_competing_threads'(Queue, Goal, This, Self) :-
 	\+ \+ (

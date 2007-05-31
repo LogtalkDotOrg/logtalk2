@@ -16,6 +16,9 @@ RELEASE NOTES
 	threaded_exit/1 generate an exception instead of blocking indefinitely 
 	waiting for a reply from a non-existing thread.
 
+	Added a new method, within/2, to the Logtalk built-in debugger allowing 
+	the execution of queries within the context of a specified object.
+
 
 2.30.0 - May 28, 2007
 
