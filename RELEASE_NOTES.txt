@@ -19,6 +19,9 @@ RELEASE NOTES
 	Added a new method, within/2, to the Logtalk built-in debugger allowing 
 	the execution of queries within the context of a specified object.
 
+	Updated the Logtalk compiler to generate an error when compiling from a 
+	source file new definitions for built-in entities.
+
 
 2.30.0 - May 28, 2007
 

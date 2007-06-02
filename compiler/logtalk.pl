@@ -2941,7 +2941,7 @@ current_logtalk_flag(version, version(2, 30, 1)).
 %  empty object, optionally used as root for both prototype and class-based 
 %  hierarchies
 %
-%  the clauses correspond to a virtual compilation of the object
+%  its clauses correspond to a virtual compilation of the object
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -4813,6 +4813,10 @@ current_logtalk_flag(version, version(2, 30, 1)).
 	\+ callable(Obj),
 	throw(type_error(object_identifier, Obj)).
 
+'$lgt_tr_directive'(object, [Obj| _], _, _) :-
+	'$lgt_built_in_object'(Obj),
+	throw(permission_error(replace, object, Obj)).
+
 '$lgt_tr_directive'(object, [Obj| Rels], _, _) :-
 	'$lgt_report_compiling_entity'(object, Obj),
 	'$lgt_tr_object_id'(Obj, static),					% assume static object
@@ -4833,6 +4837,10 @@ current_logtalk_flag(version, version(2, 30, 1)).
 '$lgt_tr_directive'(protocol, [Ptc| _], _, _) :-
 	\+ atom(Ptc),
 	throw(type_error(protocol_identifier, Ptc)).
+
+'$lgt_tr_directive'(protocol, [Ptc| _], _, _) :-
+	'$lgt_built_in_protocol'(Ptc),
+	throw(permission_error(replace, protocol, Ptc)).
 
 '$lgt_tr_directive'(protocol, [Ptc| Rels], _, _) :-
 	'$lgt_report_compiling_entity'(protocol, Ptc),
@@ -4855,6 +4863,10 @@ current_logtalk_flag(version, version(2, 30, 1)).
 '$lgt_tr_directive'(category, [Ctg| _], _, _) :-
 	\+ atom(Ctg),
 	throw(type_error(category_identifier, Ctg)).
+
+'$lgt_tr_directive'(category, [Ctg| _], _, _) :-
+	'$lgt_built_in_category'(Ctg),
+	throw(permission_error(replace, category, Ctg)).
 
 '$lgt_tr_directive'(category, [Ctg| Rels], _, _) :-
 	'$lgt_report_compiling_entity'(category, Ctg),
