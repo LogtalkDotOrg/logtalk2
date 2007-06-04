@@ -441,15 +441,15 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 
 create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _),
-	throw(error(permission_error(replace, object, Obj), create_object(Obj, Rels, Dirs, Clauses))).
+	throw(error(permission_error(modify, object, Obj), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_current_category_'(Obj, _, _, _),
-	throw(error(permission_error(replace, category, Obj), create_object(Obj, Rels, Dirs, Clauses))).
+	throw(error(permission_error(modify, category, Obj), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_current_protocol_'(Obj, _, _),
-	throw(error(permission_error(replace, protocol, Obj), create_object(Obj, Rels, Dirs, Clauses))).
+	throw(error(permission_error(modify, protocol, Obj), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
 	\+ '$lgt_is_proper_list'(Rels),
@@ -490,15 +490,15 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_current_category_'(Ctg, _, _, _),
-	throw(error(permission_error(replace, category, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
+	throw(error(permission_error(modify, category, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_current_object_'(Ctg, _, _, _, _, _, _, _),
-	throw(error(permission_error(replace, object, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
+	throw(error(permission_error(modify, object, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_current_protocol_'(Ctg, _, _),
-	throw(error(permission_error(replace, protocol, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
+	throw(error(permission_error(modify, protocol, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
 	\+ '$lgt_is_proper_list'(Rels),
@@ -539,15 +539,15 @@ create_protocol(Ptc, Rels, Dirs) :-
 
 create_protocol(Ptc, Rels, Dirs) :-
 	'$lgt_current_protocol_'(Ptc, _, _),
-	throw(error(permission_error(replace, protocol, Ptc), create_protocol(Ptc, Rels, Dirs))).
+	throw(error(permission_error(modify, protocol, Ptc), create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
 	'$lgt_current_object_'(Ptc, _, _, _, _, _, _, _),
-	throw(error(permission_error(replace, object, Ptc), create_protocol(Ptc, Rels, Dirs))).
+	throw(error(permission_error(modify, object, Ptc), create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
 	'$lgt_current_category_'(Ptc, _, _, _),
-	throw(error(permission_error(replace, category, Ptc), create_protocol(Ptc, Rels, Dirs))).
+	throw(error(permission_error(modify, category, Ptc), create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
 	\+ '$lgt_is_proper_list'(Rels),
@@ -4814,8 +4814,13 @@ current_logtalk_flag(version, version(2, 30, 1)).
 	throw(type_error(object_identifier, Obj)).
 
 '$lgt_tr_directive'(object, [Obj| _], _, _) :-
-	'$lgt_built_in_object'(Obj),
-	throw(permission_error(replace, object, Obj)).
+	(	'$lgt_built_in_object'(Obj) ->
+		throw(permission_error(modify, object, Obj))
+	;	'$lgt_built_in_protocol'(Obj) ->
+		throw(permission_error(modify, protocol, Obj))
+	;	'$lgt_built_in_category'(Obj) ->
+		throw(permission_error(modify, category, Obj))
+	).
 
 '$lgt_tr_directive'(object, [Obj| Rels], _, _) :-
 	'$lgt_report_compiling_entity'(object, Obj),
@@ -4839,8 +4844,13 @@ current_logtalk_flag(version, version(2, 30, 1)).
 	throw(type_error(protocol_identifier, Ptc)).
 
 '$lgt_tr_directive'(protocol, [Ptc| _], _, _) :-
-	'$lgt_built_in_protocol'(Ptc),
-	throw(permission_error(replace, protocol, Ptc)).
+	(	'$lgt_built_in_object'(Ptc) ->
+		throw(permission_error(modify, object, Ptc))
+	;	'$lgt_built_in_protocol'(Ptc) ->
+		throw(permission_error(modify, protocol, Ptc))
+	;	'$lgt_built_in_category'(Ptc) ->
+		throw(permission_error(modify, category, Ptc))
+	).
 
 '$lgt_tr_directive'(protocol, [Ptc| Rels], _, _) :-
 	'$lgt_report_compiling_entity'(protocol, Ptc),
@@ -4865,8 +4875,13 @@ current_logtalk_flag(version, version(2, 30, 1)).
 	throw(type_error(category_identifier, Ctg)).
 
 '$lgt_tr_directive'(category, [Ctg| _], _, _) :-
-	'$lgt_built_in_category'(Ctg),
-	throw(permission_error(replace, category, Ctg)).
+	(	'$lgt_built_in_object'(Ctg) ->
+		throw(permission_error(modify, object, Ctg))
+	;	'$lgt_built_in_protocol'(Ctg) ->
+		throw(permission_error(modify, protocol, Ctg))
+	;	'$lgt_built_in_category'(Ctg) ->
+		throw(permission_error(modify, category, Ctg))
+	).
 
 '$lgt_tr_directive'(category, [Ctg| Rels], _, _) :-
 	'$lgt_report_compiling_entity'(category, Ctg),
