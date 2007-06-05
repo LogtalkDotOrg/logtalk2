@@ -35,6 +35,11 @@
 :- op(200, fy, -).		% output argument (not instantiated)
 
 
+% bitwise left-shift operator (used as a predicate for unit test context-switching)
+
+:- op(400, yfx, <<).
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -205,19 +210,29 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  top level runtime predicates for message sending
+%  top-level predicates for message sending and context switching calls
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
 Obj::Pred :-
-	'$lgt_tr_msg'(Pred, Obj, Call, user),						% compile the message
-	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->		% check if we're debugging the target object
+	catch('$lgt_tr_msg'(Pred, Obj, Call, user), Error, '$lgt_runtime_error_handler'(error(Error, Obj::Pred, user))),
+	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
 		'$lgt_ctx_ctx'(Ctx, _, user, user, Obj, '$lgt_bio_user_0_', [], _),
 		'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
 		catch('$lgt_dbg_goal'(Obj::Pred, Call, DbgCtx), Error, '$lgt_runtime_error_handler'(Error))
 	;	catch(Call, Error, '$lgt_runtime_error_handler'(Error))
+	).
+
+
+
+Obj<<Pred :-
+	'$lgt_ctx_ctx'(Ctx, _, user, user, Obj, '$lgt_bio_user_0_', [], _),
+	catch('$lgt_tr_body'(Obj<<Pred, TPred, DPred, Ctx), Error, '$lgt_runtime_error_handler'(error(Error, Obj<<Pred, user))),
+	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
+		catch(DPred, Error, '$lgt_runtime_error_handler'(Error))
+	;	catch(TPred, Error, '$lgt_runtime_error_handler'(Error))
 	).
 
 
@@ -2889,6 +2904,23 @@ current_logtalk_flag(version, version(2, 30, 1)).
 	(	call_with_args(Def, Pred, Sender, This, Self, Call) ->
 		call(Call)
 	;	call(Pred)
+	).
+
+
+
+% '$lgt_call_within_context'(+object_identifier, +callable)
+%
+% calls a goal within the context of the specified object
+
+'$lgt_call_within_context'(Obj, Goal, This) :-
+	(	'$lgt_current_object_'(Obj, Prefix, _, _, _, _, _, _) ->
+		'$lgt_ctx_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _),
+		'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
+		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
+			call(DGoal)
+		;	call(TGoal)
+		)
+	;	throw(error(existence_error(object, Obj), Obj<<Goal, This))
 	).
 
 
@@ -6421,6 +6453,30 @@ current_logtalk_flag(version, version(2, 30, 1)).
 	!,
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
 	'$lgt_tr_super_call'(Pred, TPred, Ctx).
+
+
+% context-switching
+
+'$lgt_tr_body'(Obj<<_, _, _, _) :-
+	var(Obj),
+	throw(instantiation_error).
+
+'$lgt_tr_body'(_<<Pred, _, _, _) :-
+	var(Pred),
+	throw(instantiation_error).
+
+'$lgt_tr_body'(Obj<<_, _, _, _) :-
+	\+ callable(Obj),
+	throw(type_error(object_identifier, Obj)).
+
+'$lgt_tr_body'(_<<Pred, _, _, _) :-
+	\+ callable(Pred),
+	throw(type_error(callable, Pred)).
+
+'$lgt_tr_body'(Obj<<Pred, '$lgt_call_within_context'(Obj, Pred, This), '$lgt_dbg_goal'(Obj<<Pred, '$lgt_call_within_context'(Obj, Pred, This), DbgCtx), Ctx) :-
+	!,
+	'$lgt_ctx_this'(Ctx, This),
+	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
 % "reflection" built-in predicates

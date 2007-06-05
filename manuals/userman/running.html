@@ -441,10 +441,10 @@ The debugger pauses at leashed posts when tracing or when finding a spy point fo
 		<dd>prints list of command options; <code>?</code> can be used in alternative</dd>
 </dl>
 
-<h3>Proving goals from within the context of an object<a id="running_context"></a></h3>
+<h3 id="running_context">Context-switching calls</h3>
 
 <p>
-The Logtalk debugger provides a built-in method, <code>within/2</code>, which allows the execution of a query within the context of an object. Common uses include checking an object local predicates (e.g. predicates representing internal dynamic state) and sending a message from within an object. This method can only be used with objects compiled in debug mode (trying to use it with objects not compiled in debug mode results in a permission error).
+Logtalk provides a control construct, <a title="Consult reference manual" href="../refman/control/context2.html"><code>&lt;&lt;/2</code></a>, which allows the execution of a query within the context of an object. Common debugging uses include checking an object local predicates (e.g. predicates representing internal dynamic state) and sending a message from within an object.
 </p>
 <p>
 Consider the following toy example:
@@ -468,40 +468,31 @@ Something is wrong when we try the object public predicate, <code>a/1</code>:
 
 no</pre>
 <p>
-We cannot peek inside the object to check non-public predicates for possible errors:
+For helping diagnosing the problem, instead of compiling the object in debug mode and doing a <em>trace</em> of the query to check the clauses for the non-public predicates, we can instead simply type:
 </p>
-<pre>| ?- broken::c(C).
-
-error(permission_error(access, private_predicate, Pred), broken::c(_), user)</pre>
-<p>
-For helping diagnosing the problem, we can start by recompiling the object in debug mode:
-</p>
-<pre>| ?- logtalk_load(broken, [debug(on)]).
-
-yes</pre>
-<p>
-However, instead of doing a <em>trace</em> of the query to check the clauses for the non-public predicates, we can instead simply type:
-</p>
-<pre>| ?- debugger::within(broken, c(C)).
+<pre>| ?- broken << c(C).
 
 C = 3
 yes
 </pre>
 <p>
-The <code>within/2</code> method works by switching the execution context to the object in the first argument and then compiling and executing the second argument within that context:
+The <code>&lt;&lt;/2</code> control construct works by switching the execution context to the object in the first argument and then compiling and executing the second argument within that context:
 </p>
-<pre>| ?- debugger::within(broken, (self(Self), sender(Sender), this(This))).
+<pre>| ?- broken << (self(Self), sender(Sender), this(This)).
 
 Self = broken
 Sender = broken
 This = broken
 
 yes</pre>
+<p>
+As exemplified above, the <code>&lt;&lt;/2</code> control construct allows you to call an object local and private predicates. However, it is important to stress that we are not bypassing or defeating an object predicate scope directives. The calls take place within the context of the specified object, not within the context of the object making the <code>&lt;&lt;/2</code> call. Thus, the <code>&lt;&lt;/2</code> control construct  implements a form of <em>execution-context switching</em>.
+</p>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: May 29, 2007</span>
+		<span>Last updated on: June 5, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="installing.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="programming.html">next</a></span><br/>
