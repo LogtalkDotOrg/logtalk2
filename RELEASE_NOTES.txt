@@ -23,6 +23,10 @@ RELEASE NOTES
 	Updated the Logtalk compiler to generate an error when compiling from a 
 	source file new definitions for built-in entities.
 
+	Updated the config files for ECLiPSe, Ciao Prolog, SICStus Prolog, 
+	SWI-Prolog, and YAP to use the renamed hook predicates introduced in 
+	Logtalk 2.30.0 for parsing Prolog proprietary directives.
+
 
 2.30.0 - May 28, 2007
 
