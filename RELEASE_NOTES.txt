@@ -12,6 +12,13 @@ RELEASE NOTES
 
 2.30.1 - June ??, 2007
 
+	Added a new, experimental control construct, :/1, for calling category 
+	predicates without using message sending mechanisms.
+
+	Added preliminary support for static binding when calling category 
+	predicates without using message sending mechanisms for categories 
+	compiled and loaded using the compiler option "reload(skip)".
+
 	Added a new control construct, <</2, which allows proving a goal within 
 	the context of a specified object. Useful for debugging and for writing 
 	object unit tests.
