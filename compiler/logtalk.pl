@@ -94,6 +94,7 @@
 
 % static binding caches
 
+:- dynamic('$lgt_static_binding_entity_'/1).	% '$lgt_static_binding_entity_'(Entity)
 :- dynamic('$lgt_obj_static_binding_cache_'/4).	% '$lgt_obj_static_binding_cache_'(Obj, Pred, Sender, Call)
 :- dynamic('$lgt_ctg_static_binding_cache_'/6).	% '$lgt_ctg_static_binding_cache_'(Ctg, Pred, Sender, This, Self, Call)
 
@@ -4519,9 +4520,7 @@ current_logtalk_flag(version, version(2, 30, 1)).
 	retractall('$lgt_obj_lookup_cache_'(_, _, _, _)),
 	retractall('$lgt_self_lookup_cache_'(_, _, _, _)),
 	retractall('$lgt_super_lookup_cache_'(_, _, _, _, _)),
-	retractall('$lgt_db_lookup_cache_'(_, _, _, _, _)),
-	retractall('$lgt_obj_static_binding_cache_'(_, _, _, _)),
-	retractall('$lgt_ctg_static_binding_cache_'(_, _, _, _, _, _)).
+	retractall('$lgt_db_lookup_cache_'(_, _, _, _, _)).
 
 
 
@@ -4533,9 +4532,7 @@ current_logtalk_flag(version, version(2, 30, 1)).
 	retractall('$lgt_obj_lookup_cache_'(_, Pred, _, _)),
 	retractall('$lgt_self_lookup_cache_'(_, Pred, _, _)),
 	retractall('$lgt_super_lookup_cache_'(_, Pred, _, _, _)),
-	retractall('$lgt_db_lookup_cache_'(_, Pred, _, _, _)),
-	retractall('$lgt_obj_static_binding_cache_'(_, Pred, _, _)),
-	retractall('$lgt_ctg_static_binding_cache_'(_, Pred, _, _, _, _)).
+	retractall('$lgt_db_lookup_cache_'(_, Pred, _, _, _)).
 
 
 
@@ -5990,7 +5987,7 @@ current_logtalk_flag(version, version(2, 30, 1)).
 	throw(permission_error(define, dynamic_predicate, Functor/Arity)).
 
 
-% redefinition of Logtalk message sending and external call control constructs
+% redefinition of Logtalk message sending and remaining control constructs
 
 '$lgt_tr_head'(_::_, _, _, _) :-
 	throw(permission_error(modify, control_construct, (::)/2)).
@@ -6003,6 +6000,12 @@ current_logtalk_flag(version, version(2, 30, 1)).
 
 '$lgt_tr_head'({_}, _, _, _) :-
 	throw(permission_error(modify, control_construct, ({})/1)).
+
+'$lgt_tr_head'(_<<_, _, _, _) :-
+	throw(permission_error(modify, control_construct, (<<)/2)).
+
+'$lgt_tr_head'(':'(_), _, _, _) :-
+	throw(permission_error(modify, control_construct, (:)/1)).
 
 
 % redefinition of Logtalk built-in methods
@@ -6521,7 +6524,7 @@ current_logtalk_flag(version, version(2, 30, 1)).
 			true
 		;	Pred = Alias
 		),
-		'$lgt_ctg_static_binding_cache_'(Ctg, Pred, Sender, This, Self, Call) ->
+		'$lgt_ctg_static_binding_cache'(Ctg, Pred, Sender, This, Self, Call) ->
 		TPred = Call
 	;	Pred = Alias,
 		(	'$lgt_pp_object_'(_, _, Dcl, Def, _, IDcl, _, _, _, _, _) ->
@@ -7309,13 +7312,13 @@ current_logtalk_flag(version, version(2, 30, 1)).
 		;	TPred = '$lgt_send_to_object_ne'(Obj, Pred, This)
 		)
 	;	(	'$lgt_compiler_flag'(events, on) ->
-			(	'$lgt_obj_static_binding_cache_'(Obj, Pred, This, Call) ->
+			(	'$lgt_obj_static_binding_cache'(Obj, Pred, This, Call) ->
 				TPred = (\+ ('$lgt_before_'(Obj, Pred, This, _, BCall), \+ call(BCall)),
 						 Call,
 						 \+ ('$lgt_after_'(Obj, Pred, This, _, ACall), \+ call(ACall)))
 			;	TPred = '$lgt_send_to_object_nv'(Obj, Pred, This)
 			)
-		;	(	'$lgt_obj_static_binding_cache_'(Obj, Pred, This, Call) ->
+		;	(	'$lgt_obj_static_binding_cache'(Obj, Pred, This, Call) ->
 				TPred = Call
 			;	TPred = '$lgt_send_to_object_ne_nv'(Obj, Pred, This)
 			)
@@ -9788,7 +9791,7 @@ current_logtalk_flag(version, version(2, 30, 1)).
 % generates and asserts the initialization goal for the entity being compiled
 
 '$lgt_gen_entity_init_goal' :-
-	'$lgt_pp_entity'(Type, Entity, Prefix, _, _),
+	'$lgt_pp_entity'(Type, Entity, Prefix, _, Compilation),
 	findall(Clause, '$lgt_pp_rclause'(Clause), Clauses),
 	Goal1 = '$lgt_assert_runtime_clauses'(Clauses),
 	(	'$lgt_pp_threaded_' ->
@@ -9799,12 +9802,8 @@ current_logtalk_flag(version, version(2, 30, 1)).
 		Goal4 = (Goal2, Goal3)
 	;	Goal4 = Goal2
 	),
-	(	Type \== protocol, '$lgt_compiler_flag'(reload, skip) ->
-		(	'$lgt_pp_object_'(_, _, Dcl, Def, _, _, _, _, _, _, static) ->
-			Goal = (Goal4, '$lgt_add_obj_static_binding_cache_entry'(Entity, Dcl, Def))
-		;	'$lgt_pp_category_'(_, _, Dcl, Def, _, static) ->
-			Goal = (Goal4, '$lgt_add_ctg_static_binding_cache_entry'(Entity, Dcl, Def))
-		)
+	(	Type \== protocol, Compilation == static, '$lgt_compiler_flag'(reload, skip) ->
+		Goal = (Goal4, '$lgt_add_static_binding_cache_entry'(Entity))
 	;	Goal = Goal4  
 	),
 	assertz('$lgt_pp_entity_init_'(Type, Entity, Goal)).
@@ -12413,23 +12412,49 @@ current_logtalk_flag(version, version(2, 30, 1)).
 
 
 
-'$lgt_add_obj_static_binding_cache_entry'(Obj, Dcl, Def) :-
-	call_with_args(Dcl, Pred, p(p(p)), static, _, _, _, _, _),
-	(	call_with_args(Def, Pred, Sender, Obj, Obj, Call, _) ->
-		assertz('$lgt_obj_static_binding_cache_'(Obj, Pred, Sender, Call))
-	),
-	fail.
-'$lgt_add_obj_static_binding_cache_entry'(_, _, _).
+'$lgt_add_static_binding_cache_entry'(Entity) :-
+	retractall('$lgt_static_binding_entity_'(Entity)),
+	assertz('$lgt_static_binding_entity_'(Entity)).
 
 
 
-'$lgt_add_ctg_static_binding_cache_entry'(Ctg, Dcl, Def) :-
-	call_with_args(Dcl, Pred, _, static, _, _, _, _),
-	(	call_with_args(Def, Pred, Sender, This, Self, Call, _) ->
-		assertz('$lgt_ctg_static_binding_cache_'(Ctg, Pred, Sender, This, Self, Call))
-	),
-	fail.
-'$lgt_add_ctg_static_binding_cache_entry'(_, _, _).
+'$lgt_obj_static_binding_cache'(Obj, Pred, Sender, Call) :-
+	(	'$lgt_obj_static_binding_cache_'(Obj, Pred, Sender, Call) ->
+		true
+	;	'$lgt_static_binding_entity_'(Obj),
+		'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _),
+		call_with_args(Dcl, Pred, p(p(p)), static, _, _, _, _, DclCtn), !,
+		functor(Obj, ObjFunctor, ObjArity),
+		functor(GObj, ObjFunctor, ObjArity),
+		functor(Pred, PredFunctor, PredArity),
+		functor(GPred, PredFunctor, PredArity),
+		call_with_args(Def, GPred, Sender, GObj, GObj, GCall, DefCtn), !,
+		'$lgt_safe_static_binding_paths'(GObj, DclCtn, DefCtn),
+		assertz('$lgt_obj_static_binding_cache_'(GObj, GPred, Sender, GCall)),
+		(Obj, Pred, Call) = (GObj, GPred, GCall)
+	).
+
+
+
+'$lgt_ctg_static_binding_cache'(Ctg, Pred, Sender, This, Self, Call) :-
+	(	'$lgt_ctg_static_binding_cache_'(Ctg, Pred, Sender, This, Self, Call) ->
+		true
+	;	'$lgt_static_binding_entity_'(Ctg),
+		'$lgt_current_category_'(Ctg, Prefix, _, _),
+		Clause =.. [Prefix, Dcl, Def, _],
+		call(Clause),
+		call_with_args(Dcl, Pred, _, static, _, _, _, DclCtn), !,
+		functor(Pred, PredFunctor, PredArity),
+		functor(GPred, PredFunctor, PredArity),
+		call_with_args(Def, GPred, Sender, This, Self, GCall, DefCtn), !,
+		'$lgt_safe_static_binding_paths'(Ctg, DclCtn, DefCtn),
+		assertz('$lgt_ctg_static_binding_cache_'(Ctg, GPred, Sender, This, Self, GCall)),
+		(Pred, Call) = (GPred, GCall)
+	).
+
+
+
+'$lgt_safe_static_binding_paths'(_, _, _).
 
 
 
