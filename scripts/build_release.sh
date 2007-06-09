@@ -32,7 +32,7 @@ cd ..
 cp -R logtalk/manuals man2300
 tar -czf man2300.tgz man2300
 mv logtalk lgt2301
-tar -czf lgt2301.tgz lgt2301
+tar -cjf lgt2301.tar.bz2 lgt2301
 
 mkdir -p debian/usr/bin
 mkdir -p debian/usr/share/doc/logtalk
