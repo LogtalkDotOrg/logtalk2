@@ -38,7 +38,12 @@
 % bitwise left-shift operator (used as a predicate for unit test context-switching)
 
 :- op(400, yfx, <<).
+
+
+% category predicate direct call operator
+
 :- op(600,  fy,  :).
+
 
 
 
@@ -2818,6 +2823,15 @@ current_logtalk_flag(version, version(2, 30, 1)).
 
 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  meta-calls
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 % '$lgt_metacall_in_object'(?term, ?term, ?term, +object, +object, +object)
 %
 % performs a meta-call constructed from a closure and a list of addtional arguments
@@ -3149,27 +3163,29 @@ current_logtalk_flag(version, version(2, 30, 1)).
 
 '$lgt_bio_debugger_0__dcl'(leash(_), p(p(p)), static, no, no, no).
 
-'$lgt_bio_debugger_0__dcl'(within(_, _), p(p(p)), static, no, no, no).
-
 
 '$lgt_bio_debugger_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Synchronized, debugger, debugger) :-
 	'$lgt_bio_debugger_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Synchronized).
 
 
 '$lgt_bio_debugger_0__def'(reset, _, _, _, '$lgt_dbg_reset').
+
 '$lgt_bio_debugger_0__def'(debug, _, _, _, '$lgt_dbg_debug').
+'$lgt_bio_debugger_0__def'(nodebug, _, _, _, '$lgt_dbg_nodebug').
+
 '$lgt_bio_debugger_0__def'(debugging, _, _, _, '$lgt_dbg_debugging').
 '$lgt_bio_debugger_0__def'(debugging(Entity), _, _, _, '$lgt_dbg_debugging'(Entity)).
-'$lgt_bio_debugger_0__def'(nodebug, _, _, _, '$lgt_dbg_nodebug').
+
 '$lgt_bio_debugger_0__def'(trace, _, _, _, '$lgt_dbg_trace').
 '$lgt_bio_debugger_0__def'(notrace, _, _, _, '$lgt_dbg_notrace').
+
 '$lgt_bio_debugger_0__def'(spy(Preds), _, _, _, '$lgt_dbg_spy'(Preds)).
 '$lgt_bio_debugger_0__def'(nospy(Preds), _, _, _, '$lgt_dbg_nospy'(Preds)).
 '$lgt_bio_debugger_0__def'(spy(Sender, This, Self, Goal), _, _, _, '$lgt_dbg_spy'(Sender, This, Self, Goal)).
 '$lgt_bio_debugger_0__def'(nospy(Sender, This, Self, Goal), _, _, _, '$lgt_dbg_nospy'(Sender, This, Self, Goal)).
 '$lgt_bio_debugger_0__def'(nospyall, _, _, _, '$lgt_dbg_nospyall').
+
 '$lgt_bio_debugger_0__def'(leash(Ports), _, _, _, '$lgt_dbg_leash'(Ports)).
-'$lgt_bio_debugger_0__def'(within(Obj, Goal), Sender, _, _, '$lgt_dbg_within'(Obj, Goal, Sender)).
 
 
 '$lgt_bio_debugger_0__def'(Pred, Sender, This, Self, Call, debugger) :-
@@ -3694,39 +3710,6 @@ current_logtalk_flag(version, version(2, 30, 1)).
 '$lgt_dbg_do_port_option_skip'(exception, true).
 '$lgt_dbg_do_port_option_skip'(call, skip).
 '$lgt_dbg_do_port_option_skip'(redo, skip).
-
-
-
-% '$lgt_dbg_within'(+object_identifier, +callable, +callable)
-%
-% context-switching debugging utility predicate: executes a query in the 
-% context of an object (which must have been compiled in debug mode)
-
-'$lgt_dbg_within'(Obj, Goal, Sender) :-
-	var(Obj),
-	throw(error(instantiation_error, debugger::within(Obj, Goal), Sender)).
-
-'$lgt_dbg_within'(Obj, Goal, Sender) :-
-	var(Goal),
-	throw(error(instantiation_error, debugger::within(Obj, Goal), Sender)).
-
-'$lgt_dbg_within'(Obj, Goal, Sender) :-
-	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), debugger::within(Obj, Goal), Sender)).
-
-'$lgt_dbg_within'(Obj, Goal, Sender) :-
-	(	'$lgt_current_object_'(Obj, Prefix, _, _, _, _, _, _) ->
-		(	'$lgt_debugging_'(Obj) ->
-			'$lgt_ctx_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _),
-			'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-			(	'$lgt_dbg_debugging_' ->
-				catch(DGoal, Error, '$lgt_runtime_error_handler'(Error))
-			;	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error))
-			)
-		;	throw(error(permission_error(access, object, Obj), debugger::within(Obj, Goal), Sender))
-		)
-	;	throw(error(existence_error(object, Obj), debugger::within(Obj, Goal), Sender))
-	).
 
 
 
