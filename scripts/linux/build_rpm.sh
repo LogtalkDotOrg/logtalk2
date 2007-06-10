@@ -14,8 +14,8 @@ LOGTALKHOME=/usr/local/share/logtalk ./uninstall.sh
 ./install.sh
 
 cd /usr/local/share
-tar -czf lgt2301.tgz lgt2301
-mv lgt2301.tgz /usr/src/redhat/SOURCES
+tar -cjf lgt2301.tar.bz2 lgt2301
+mv lgt2301.tar.bz2 /usr/src/redhat/SOURCES
 
 cd "$dir"
 rpmbuild -ba --target=noarch-*-linux logtalk.spec
