@@ -2,12 +2,15 @@
 ##
 syntax "logtalk" "\.(lgt|config)$"
 
+color magenta "::"
+color magenta ":"
+color magenta "\^\^"
+color magenta "<<"
+color magenta "[{}]"
+color black ":-"
+
 color brightblack start="^[[:space:]]*:- (object|category|protocol)\(" end="\)\."
 color brightblack "^[[:space:]]*:- end_(object|category|protocol)\."
-
-color magenta "::"
-color magenta "^^"
-color magenta "[{}]"
 
 color green ""[^"]*""
 color green "'[^']*'"
