@@ -103,6 +103,14 @@ Object names can be compound terms (instead of atoms), providing a way to parame
 </p>
 </blockquote>
 
+<h2 id="features_parametric">High level multi-threading programming support</h2>
+
+<blockquote>
+<p>
+High level multi-threading programming is available when running Logtalk with selected back-end Prolog compilers, allowing objects to support both synchronous and asynchronous messages. Logtalk allows programmers to take advantage of modern multi-processor and multi-core computers without bothering with the details of creating and destroying threads, implement thread communication, or synchronizing threads.
+</p>
+</blockquote>
+
 <h2 id="features_learning">Smooth learning curve</h2>
 
 <blockquote>
@@ -126,17 +134,17 @@ The Logtalk system has been designed to be compatible with most Prolog compilers
 The current Logtalk implementation works as a pre-processor: Logtalk source files are first compiled to Prolog source files, which are then compiled by the chosen Prolog compiler. Therefore, Logtalk performance necessarily depends on the back-end Prolog compiler. The Logtalk pre-processor respects the programmers choices when writing efficient code that takes advantage of tail recursion and first-argument indexing.
 </p>
 <p>
-As an object-oriented language, Logtalk uses dynamic binding for matching messages and methods. Furthermore, Logtalk entities (objects, protocols, and categories) are independently compiled, allowing for a very flexible programming development. Entities can be edited, compiled, and loaded at runtime, without necessarily implying recompilation of all related entities.
+As an object-oriented language, Logtalk uses both static binding and dynamic binding for matching messages and methods. Furthermore, Logtalk entities (objects, protocols, and categories) are independently compiled, allowing for a very flexible programming development. Entities can be edited, compiled, and loaded at runtime, without necessarily implying recompilation of all related entities.
 </p>
 <p>
-The Logtalk runtime engine implements caching of method lookups (including messages to <em>self</em> and <em>super</em> calls), ensuring a performance level close to what could be achieved with static binding implementations.
+When dynamic binding is used, the Logtalk runtime engine implements caching of method lookups (including messages to <em>self</em> and <em>super</em> calls), ensuring a performance level close to what could be achieved when using static binding.
 </p>
 </blockquote>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: April 14, 2007</span>
+		<span>Last updated on: June 8, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="index.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="messages.html">next</a></span><br/>
