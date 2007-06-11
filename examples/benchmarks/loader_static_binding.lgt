@@ -4,5 +4,5 @@
 
 :- initialization((
 	logtalk_load([category], [events(off), reload(skip)]),
-	logtalk_load([object, descendants, database], [events(off), reload(skip)]),
+	logtalk_load([objects, database], [events(off), reload(skip)]),
 	logtalk_load([plain, benchmarks], [events(off)]))).
