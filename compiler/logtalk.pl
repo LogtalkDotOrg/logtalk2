@@ -8221,9 +8221,9 @@ current_logtalk_flag(version, version(2, 30, 1)).
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, EntityPrefix, _, MetaCallCtx),
 	(	'$lgt_pp_meta_predicate_'(Meta) ->
 		'$lgt_pred_meta_vars'(HeadTemplate, Meta, MetaVars),
-		'$lgt_append'(HeadTemplateArgs, [MetaVars, Sender, This, Self], HeadTemplateArgsDef),
+		'$lgt_append'(HeadTemplateArgs, [MetaVars, Sender2, This2, Self2], HeadTemplateArgsDef),
 		'$lgt_append'(HeadArgs, [MetaCallCtx, Sender, This, Self], HeadArgsDef)
-	;	'$lgt_append'(HeadTemplateArgs, [Sender, This, Self], HeadTemplateArgsDef),
+	;	'$lgt_append'(HeadTemplateArgs, [Sender2, This2, Self2], HeadTemplateArgsDef),
 		'$lgt_append'(HeadArgs, [Sender, This, Self], HeadArgsDef)
 	),
 	'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
@@ -8233,7 +8233,7 @@ current_logtalk_flag(version, version(2, 30, 1)).
 		true
 	;	'$lgt_pp_category_'(_, _, _, Def, _, _)
 	),
-	Clause =.. [Def, HeadTemplate, Sender, This, Self, HeadTemplateDef],
+	Clause =.. [Def, HeadTemplate, Sender2, This2, Self2, HeadTemplateDef],
 	(	'$lgt_pp_def_'(Clause) ->
 		true
 	;	assertz('$lgt_pp_def_'(Clause))
@@ -8241,7 +8241,7 @@ current_logtalk_flag(version, version(2, 30, 1)).
 	(	'$lgt_built_in'(Head) ->
 		(	'$lgt_pp_redefined_built_in_'(HeadTemplate, _, _, _, _) ->
 			true
-		;	assertz('$lgt_pp_redefined_built_in_'(HeadTemplate, Sender, This, Self, HeadTemplateDef))
+		;	assertz('$lgt_pp_redefined_built_in_'(HeadTemplate, Sender2, This2, Self2, HeadTemplateDef))
 		)
 	;	true
 	),
@@ -8265,16 +8265,16 @@ current_logtalk_flag(version, version(2, 30, 1)).
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, EntityPrefix, _, MetaCallCtx),
 	(	'$lgt_pp_meta_predicate_'(Meta) ->
 		'$lgt_pred_meta_vars'(HeadTemplate, Meta, MetaVars),
-		'$lgt_append'(HeadTemplateArgs, [MetaVars, Sender, This, Self], HeadTemplateArgsDef),
+		'$lgt_append'(HeadTemplateArgs, [MetaVars, Sender2, This2, Self2], HeadTemplateArgsDef),
 		'$lgt_append'(HeadArgs, [MetaCallCtx, Sender, This, Self], HeadArgsDef)
-	;	'$lgt_append'(HeadTemplateArgs, [Sender, This, Self], HeadTemplateArgsDef),
+	;	'$lgt_append'(HeadTemplateArgs, [Sender2, This2, Self2], HeadTemplateArgsDef),
 		'$lgt_append'(HeadArgs, [Sender, This, Self], HeadArgsDef)
 	),
 	'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
 	HeadTemplateDef =.. [PredPrefix| HeadTemplateArgsDef],
 	HeadDef =.. [PredPrefix| HeadArgsDef],
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, DDef, _, _),
-	Clause =.. [DDef, HeadTemplate, Sender, This, Self, HeadTemplateDef],
+	Clause =.. [DDef, HeadTemplate, Sender2, This2, Self2, HeadTemplateDef],
 	(	'$lgt_pp_ddef_'(Clause) ->
 		true
 	;	assertz('$lgt_pp_ddef_'(Clause))
@@ -8282,7 +8282,7 @@ current_logtalk_flag(version, version(2, 30, 1)).
 	(	'$lgt_built_in'(Head) ->
 		(	'$lgt_pp_redefined_built_in_'(HeadTemplate, _, _, _, _) ->
 			true
-		;	assertz('$lgt_pp_redefined_built_in_'(HeadTemplate, Sender, This, Self, HeadTemplateDef))
+		;	assertz('$lgt_pp_redefined_built_in_'(HeadTemplate, Sender2, This2, Self2, HeadTemplateDef))
 		)
 	;	true
 	),
