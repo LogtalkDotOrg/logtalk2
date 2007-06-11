@@ -2,9 +2,9 @@
 :- object(benchmarks).
 
 	:- info([
-		version is 2.0,
+		version is 3.0,
 		author is 'Paulo Moura',
-		date is 2007/04/17,
+		date is 2007/06/11,
 		comment is 'Benchmark utility predicates and standard set of benchmarks.']).
 
 	:- public(run/0).
@@ -22,7 +22,7 @@
 	:- mode(run(+atom, +integer), one).
 	:- info(run/2, [
 		comment is 'Runs a specific benchmark the specified number of times.',
-		argnames is ['Id', 'Y']]).
+		argnames is ['Id', 'N']]).
 
 	:- public(benchmark/2).
 	:- mode(move(?atom, -callable), zero_or_more).
@@ -76,6 +76,10 @@
 	benchmark(s2, object::length(List, _)) :-
 		{generate_list(20, List)}.
 
+	% some benchmark tests for category predicate calls:
+	benchmark(c1, leaf::ctg_direct).
+	benchmark(c2, leaf::ctg_self).
+
 	% some benchmark tests for dynamic code:
 	benchmark(d1, (create_object(xpto, [], [], []), abolish_object(xpto))).
 	benchmark(d2, plain_dyndb(_)).
@@ -104,6 +108,18 @@
 			object::length(List, _),
 		fail.
 	do_benchmark(s2, _).
+
+	do_benchmark(c1, N) :-
+		{my_repeat(N)},
+			leaf::ctg_direct,
+		fail.
+	do_benchmark(c1, _).
+
+	do_benchmark(c2, N) :-
+		{my_repeat(N)},
+			leaf::ctg_self,
+		fail.
+	do_benchmark(c2, _).
 
 	do_benchmark(d1, N) :-
 		{my_repeat(N)},

@@ -3,4 +3,4 @@
 %:- ensure_loaded(module).
 
 :- initialization(
-	logtalk_load([object, database, plain, benchmarks], [events(on)])). 
+	logtalk_load([category, object, descendants, database, plain, benchmarks], [events(on)])). 

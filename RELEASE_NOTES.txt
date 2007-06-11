@@ -10,14 +10,14 @@ RELEASE NOTES
 =============
 
 
-2.30.1 - June ??, 2007
+2.30.1 - June 12, 2007
 
-	Added a new, experimental control construct, :/1, for calling category 
-	predicates without using message sending mechanisms.
+	Added a new, experimental control construct, :/1, for calling imported 
+	category predicates without using message sending mechanisms.
 
-	Added preliminary support for static binding when calling category 
-	predicates without using message sending mechanisms for categories 
-	compiled and loaded using the compiler option "reload(skip)".
+	Added preliminary support for static binding when calling imported 
+	category using the new :/1 control construct for categories compiled 
+	and loaded using the compiler option "reload(skip)".
 
 	Added a new control construct, <</2, which allows proving a goal within 
 	the context of a specified object. Useful for debugging and for writing 
@@ -30,9 +30,16 @@ RELEASE NOTES
 	Updated the Logtalk compiler to generate an error when compiling from a 
 	source file new definitions for built-in entities.
 
+	Updated the Logtalk compiler to generate simpler clauses for the book-
+	keeping table of local predicate definitions for parametric entities.
+
 	Updated the config files for ECLiPSe, Ciao Prolog, SICStus Prolog, 
 	SWI-Prolog, and YAP to use the renamed hook predicates introduced in 
 	Logtalk 2.30.0 for parsing Prolog proprietary directives.
+
+	Updated the "benchmarks" example to compare the performance of calls to 
+	imported category predicates when using a message to "self" and a direct 
+	call.
 
 
 2.30.0 - May 28, 2007

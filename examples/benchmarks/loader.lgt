@@ -3,5 +3,6 @@
 %:- ensure_loaded(module).
 
 :- initialization((
-	logtalk_load([object, database], [events(off), reload(skip)]),
+	logtalk_load([category], [events(off), reload(skip)]),
+	logtalk_load([object, descendants, database], [events(off), reload(skip)]),
 	logtalk_load([plain, benchmarks], [events(off)]))).
