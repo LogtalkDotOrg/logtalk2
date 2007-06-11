@@ -29,7 +29,7 @@
 	:- public(ctg_direct/0).
 
 	% call an imported category predicate directly by using the :/1 control construct;
-	% (may use static binding depending on how the category is compiled)
+	% (static binding may be used, depending on how the category is compiled)
 	ctg_direct :-
 		:ctg_pred.
 
