@@ -2950,7 +2950,6 @@ current_logtalk_flag(version, version(2, 30, 1)).
 		(	'$lgt_imports_category_'(This, Ctg, _),
 			call_with_args(Def, Pred, Sender, This, Self, Call, Ctg) ->
 			call(Call)
-		;	throw(existence_error(procedure, Pred))
 		)
 	;	throw(error(existence_error(predicate_declaration, Pred), ':'(Pred), This))
 	).
@@ -6507,16 +6506,13 @@ current_logtalk_flag(version, version(2, 30, 1)).
 			true
 		;	Pred = Alias
 		),
-		'$lgt_ctg_static_binding_cache'(Ctg, Pred, Sender, This, Self, Call) ->
-		TPred = Call
+		'$lgt_ctg_static_binding_cache'(Ctg, Pred, Sender, This, Self, TPred) ->
+		true
 	;	Pred = Alias,
-		(	'$lgt_pp_object_'(_, _, Dcl, Def, _, IDcl, _, _, _, _, _) ->
-			(	('$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _); '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _)) ->
-				TPred = '$lgt_call_ctg_pred'(IDcl, Def, Pred, Sender, This, Self)
-			;	TPred = '$lgt_call_ctg_pred'(Dcl, Def, Pred, Sender, This, Self)
-			)
-		;	'$lgt_pp_category_'(_, _, Dcl, Def, _, _) ->
-			TPred = '$lgt_call_ctg_pred'(Dcl, Def, Pred, Sender, This, Self)
+		'$lgt_pp_object_'(_, _, Dcl, Def, _, IDcl, _, _, _, _, _),
+		(	('$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _); '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _)) ->
+			TPred = '$lgt_call_ctg_pred'(IDcl, Def, Pred, Sender, This, Self)
+		;	TPred = '$lgt_call_ctg_pred'(Dcl, Def, Pred, Sender, This, Self)
 		)
 	).
 

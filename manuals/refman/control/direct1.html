@@ -25,7 +25,7 @@
 
 <pre>:Goal</pre>
 <p>
-Calls a category predicate without using the message sending mechanisms. The category predicate is called with the same execution context (<em>sender</em>, <em>this</em>, and <em>self</em>) as the predicate whose body contains the call. The lookup for both the predicate declaration and the predicate definition begins in <em>this</em>. For the predicate definition, the lookup is restricted to the imported categories. As a consequence, any redeclaration or redefinition of the predicate in a descendant of the object containing the call will be ignored.
+Calls an imported category predicate without using the message sending mechanisms. The category predicate is called with the same execution context (<em>sender</em>, <em>this</em>, and <em>self</em>) as the predicate whose body contains the call. The lookup for both the predicate declaration and the predicate definition begins in <em>this</em>. For the predicate definition, the lookup is restricted to the imported categories. As a consequence, any redeclaration or redefinition of the predicate in a descendant of the object containing the call will be ignored.
 </p>
 
 <h4>Template and modes</h4>

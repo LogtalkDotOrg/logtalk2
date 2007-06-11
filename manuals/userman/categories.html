@@ -297,10 +297,10 @@ Using the message sending mechanisms, the predicate <code>out/1</code> can be ca
 
 :- end_object.</pre>
 <p>
-This is the recommended way of calling category predicates as it supports the specialization/redefinition of the category predicate in a descendant object (as the predicate declaration and definition lookups will start from <em>self</em>).
+This is the recommended way of calling category predicates as it supports the specialization/redefinition of the category predicate in a descendant object (as the predicate declaration and definition lookups will start from <em>self</em>). Messages to <em>self</em> usually imply the use of dynamic binding as the actual object that will receive the message is only known at runtime. This translates to a small performance penalty when compared with calls to local object predicates.
 </p>
 <p>
-Messages to <em>self</em> usually imply the use of dynamic binding as the actual object that will receive the message is only known at runtime. This translates to a small performance penalty when compared with calls to local object predicates. We may also call the category predicates directly by using the <a title="Consult reference manual" href="../refman/control/direct1.html"><code>:/1</code></a> control construct. For example:
+It is also possible to call category predicates such that the predicate declaration and definition lookups will start from <em>this</em> instead of <em>self</em> by using the <a title="Consult reference manual" href="../refman/control/direct1.html"><code>:/1</code></a> control construct. For example:
 </p>
 <pre>:- object(worker,
     imports(output)).
@@ -313,7 +313,7 @@ Messages to <em>self</em> usually imply the use of dynamic binding as the actual
 
 :- end_object.</pre>
 <p>
-This alternative should only be used when the user knows a priori that the category predicates will not be specialized or redefined by descendant objects of the object importing the category. Its advantage is that, whenever possible, the Logtalk compiler will optimize the calls by using static binding. Even when static binding cannot be applied due to lack of sufficient information at compile time, the runtime lookups for the predicate declaration/definition will be faster as they will start from <em>this</em> instead of from <em>self</em>.
+This alternative should only be used when the user knows a priori that the category predicates will not be specialized or redefined by descendant objects of the object importing the category. Its advantage is that, whenever possible, the Logtalk compiler will optimize the calls by using static binding. However, when static binding is not possible due to the lack of sufficient information at compilation time, the performance may be worse than calling the category predicate using a message to <em>self</em> due to the lack of a caching mechanism.
 </p>
 
 <div class="footer">
