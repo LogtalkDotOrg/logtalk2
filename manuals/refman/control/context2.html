@@ -23,14 +23,14 @@
 
 <h4>Description</h4>
 
-<pre>Object << Goal</pre>
+<pre>Object &lt;&lt; Goal</pre>
 <p>
 Calls a goal within the context of the specified object. Goal is called with the execution context (<em>sender</em>, <em>this</em>, and <em>self</em>) set to Object. Goal may need to be written within brackets to avoid parsing errors due to operator clashes. This control construct is mainly used for debugging and for writing object unit tests.
 </p>
 
 <h4>Template and modes</h4>
 
-<pre>+object_identifier << +callable</pre>
+<pre>+object_identifier &lt;&lt; +callable</pre>
 
 <h4>Errors</h4>
 
@@ -50,12 +50,12 @@ Calls a goal within the context of the specified object. Goal is called with the
 <h4>Examples</h4>
 
 <pre>test(member) :-
-    list << member(1, [1]).</pre>
+    list &lt;&lt; member(1, [1]).</pre>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: June 5, 2007</span>
+		<span>Last updated on: June 8, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="../index.html#constructs">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="../index.html#constructs">next</a></span><br/>
