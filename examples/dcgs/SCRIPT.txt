@@ -20,10 +20,18 @@ Result = -9
 yes
 
 
-% Recognize MAC addresses:
+% recognize MAC addresses:
 
 | ?- macaddr::valid("00:1e:4a:ef:72:8b").
 
+yes
+
+
+% decode Morse code messages:
+
+?- morse::phrase(morse(Message), "... --- ...").
+
+Message = [sos] 
 yes
 
 
