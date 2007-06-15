@@ -12,6 +12,12 @@ RELEASE NOTES
 
 2.30.2 - July ??, 2007
 
+	Updated the Logtalk compiler throw a compilation error when a duplicate 
+	or conflicting predicate scope directive is found.
+
+	Updated the Logtalk compiler to correct a cosmetic glitch when reporting 
+	compilation errors.
+
 	Added a new DCG example, "dcgs/morse.lgt", for parsing messages in Morse 
 	code.
 

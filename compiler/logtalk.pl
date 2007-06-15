@@ -4323,10 +4323,10 @@ current_logtalk_flag(version, version(2, 30, 2)).
 % the operator table, and reports the compilation error found
 
 '$lgt_compiler_error_handler'(Input, Output, Error) :-
+	'$lgt_report_compiler_error'(Input, Error),
 	'$lgt_clean_pp_clauses',
 	'$lgt_restore_global_op_table',
 	'$lgt_reset_warnings_counter',
-	'$lgt_report_compiler_error'(Input, Error),
 	catch(close(Input), _, true),
 	catch(close(Output), _, true),
 	throw(Error).
@@ -4339,10 +4339,10 @@ current_logtalk_flag(version, version(2, 30, 2)).
 % the operator table, and reports the compilation error found
 
 '$lgt_compiler_error_handler'(Stream, Error) :-
+	'$lgt_report_compiler_error'(Stream, Error),
 	'$lgt_clean_pp_clauses',
 	'$lgt_restore_global_op_table',
 	'$lgt_reset_warnings_counter',
-	'$lgt_report_compiler_error'(Stream, Error),
 	catch(close(Stream), _, true),
 	throw(Error).
 
@@ -4353,10 +4353,11 @@ current_logtalk_flag(version, version(2, 30, 2)).
 % restores the operator table, and reports the compilation error found
 
 '$lgt_compiler_error_handler'(Error) :-
+	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
+	write('  ERROR!    '), writeq(Error), nl,
 	'$lgt_clean_pp_clauses',
 	'$lgt_restore_global_op_table',
 	'$lgt_reset_warnings_counter',
-	write('  ERROR!    '), writeq(Error), nl,
 	throw(Error).
 
 
@@ -5300,12 +5301,14 @@ current_logtalk_flag(version, version(2, 30, 2)).
 '$lgt_tr_public_directive'([Pred| Preds]) :-
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
 	!,
+	\+ '$lgt_duplicated_scope_directives'(Pred, Functor, Arity),
 	assertz('$lgt_pp_public_'(Functor, Arity)),
 	'$lgt_tr_public_directive'(Preds).
 
 '$lgt_tr_public_directive'([Pred| Preds]) :-
 	'$lgt_valid_gr_ind'(Pred, Functor, Arity, Arity2),
 	!,
+	\+ '$lgt_duplicated_scope_directives'(Pred, Functor, Arity2),
 	assertz('$lgt_pp_non_terminal_'(Functor, Arity, Arity2)),
 	assertz('$lgt_pp_public_'(Functor, Arity2)),
 	'$lgt_tr_public_directive'(Preds).
@@ -5329,12 +5332,14 @@ current_logtalk_flag(version, version(2, 30, 2)).
 '$lgt_tr_protected_directive'([Pred| Preds]) :-
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
 	!,
+	\+ '$lgt_duplicated_scope_directives'(Pred, Functor, Arity),
 	assertz('$lgt_pp_protected_'(Functor, Arity)),
 	'$lgt_tr_protected_directive'(Preds).
 
 '$lgt_tr_protected_directive'([Pred| Preds]) :-
 	'$lgt_valid_gr_ind'(Pred, Functor, Arity, Arity2),
 	!,
+	\+ '$lgt_duplicated_scope_directives'(Pred, Functor, Arity2),
 	assertz('$lgt_pp_non_terminal_'(Functor, Arity, Arity2)),
 	assertz('$lgt_pp_protected_'(Functor, Arity2)),
 	'$lgt_tr_protected_directive'(Preds).
@@ -5358,18 +5363,29 @@ current_logtalk_flag(version, version(2, 30, 2)).
 '$lgt_tr_private_directive'([Pred| Preds]) :-
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
 	!,
+	\+ '$lgt_duplicated_scope_directives'(Pred, Functor, Arity),
 	assertz('$lgt_pp_private_'(Functor, Arity)),
 	'$lgt_tr_private_directive'(Preds).
 
 '$lgt_tr_private_directive'([Pred| Preds]) :-
 	'$lgt_valid_gr_ind'(Pred, Functor, Arity, Arity2),
 	!,
+	\+ '$lgt_duplicated_scope_directives'(Pred, Functor, Arity2),
 	assertz('$lgt_pp_non_terminal_'(Functor, Arity, Arity2)),
 	assertz('$lgt_pp_private_'(Functor, Arity2)),
 	'$lgt_tr_private_directive'(Preds).
 
 '$lgt_tr_private_directive'([Pred| _]) :-
 	throw(type_error(predicate_indicator, Pred)).
+
+
+
+'$lgt_duplicated_scope_directives'(Pred, Functor, Arity) :-
+	(	'$lgt_pp_public_'(Functor, Arity)
+	;	'$lgt_pp_protected_'(Functor, Arity)
+	;	'$lgt_pp_private_'(Functor, Arity)
+	),
+	throw(permission_error(modify, predicate_interpretation, Pred)).
 
 
 
