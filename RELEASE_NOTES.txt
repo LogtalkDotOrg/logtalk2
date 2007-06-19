@@ -24,6 +24,10 @@ RELEASE NOTES
 	Added a new DCG example, "dcgs/morse.lgt", for parsing messages in Morse 
 	code.
 
+	Extended the "parametric" example to illustrate a solution for dealing 
+	with inheritance when defining "setter" predicates/methods that return 
+	updated object identifiers.
+
 
 2.30.1 - June 12, 2007
 
