@@ -18,6 +18,9 @@ RELEASE NOTES
 	Updated the Logtalk compiler to correct a cosmetic glitch when reporting 
 	compilation errors.
 
+	Updated the Logtalk compiler to check for mismatches between the argument 
+	of this/1 calls and the parametric object identifier.
+
 	Added a new DCG example, "dcgs/morse.lgt", for parsing messages in Morse 
 	code.
 

@@ -6693,7 +6693,10 @@ current_logtalk_flag(version, version(2, 30, 2)).
 
 '$lgt_tr_body'(this(This), true, '$lgt_dbg_goal'(this(Temp), This=Temp, DbgCtx), Ctx) :-
 	!,
-	'$lgt_ctx_this'(Ctx, This),
+	(	'$lgt_ctx_this'(Ctx, This) ->	% check for mismatches between the argument of
+		true							% this/1 and the parametric object identifier
+	;	throw(domain_error(object_identifier, This))
+	),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 '$lgt_tr_body'(self(Self), true, '$lgt_dbg_goal'(self(Temp), Self=Temp, DbgCtx), Ctx) :-
