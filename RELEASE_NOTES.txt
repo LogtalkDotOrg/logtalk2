@@ -21,6 +21,9 @@ RELEASE NOTES
 	Updated the Logtalk compiler to check for mismatches between the argument 
 	of this/1 calls and the parametric object identifier.
 
+	Corrected a bug in the implementation of the multi-threading built-in 
+	predicate threaded_ignore/1.
+
 	Added a new DCG example, "dcgs/morse.lgt", for parsing messages in Morse 
 	code.
 

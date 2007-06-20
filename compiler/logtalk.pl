@@ -12253,8 +12253,11 @@ current_logtalk_flag(version, version(2, 30, 2)).
 	(	current_thread(logtalk_dispatcher, running) ->
 		% ask the Logtalk dispatcher to create a new thread for proving the goal:
 		thread_send_message(logtalk_dispatcher, '$lgt_goal'(Queue, Goal, This, Self, Option)),
-		% wait until the thread created for proving goal is ready before proceeding:
-		thread_get_message(Queue, '$lgt_ready'(Goal, This, Self, Option))
+		(	Option == ignore ->
+			true
+		;	% wait until the thread created for proving the goal is ready before proceeding:
+			thread_get_message(Queue, '$lgt_ready'(Goal, This, Self, Option))
+		)
 	;	% something went terrible wrong with the dispatcher thread:
 		throw(error(existence_error(logtalk_dispatcher, This), Goal, Sender))
 	).
