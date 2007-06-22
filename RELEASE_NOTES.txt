@@ -24,6 +24,9 @@ RELEASE NOTES
 	Corrected a bug in the implementation of the multi-threading built-in 
 	predicate threaded_ignore/1.
 
+	Revamped the "threads/buffer" example to support setting the buffer 
+	maximum number of items.
+
 	Added a new DCG example, "dcgs/morse.lgt", for parsing messages in Morse 
 	code.
 
