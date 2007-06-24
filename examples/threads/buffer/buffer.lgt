@@ -29,6 +29,24 @@
 
 	size_(0).
 
+	:- synchronized([put_item/1, get_item/1]).
+
+	put_item(Item) :-
+		assertz(item_(Item)),
+		retract(size_(N)),
+		N2 is N + 1,
+		assertz(size_(N2)),
+		sender(Sender),
+		writeq(Sender), write(' stored item '), write(Item), nl.
+
+	get_item(Item) :-
+		retract(item_(Item)),
+		retract(size_(N)),
+		N2 is N - 1,
+		assertz(size_(N2)),
+		sender(Sender),
+		writeq(Sender), write(' consumed item '), write(Item), nl.
+
 	put(Item) :-
 		parameter(1, MaxCapacity),
 		size_(N),
@@ -54,24 +72,6 @@
 			;	true
 			)
 		).
-
-	:- synchronized([put_item/1, get_item/1]).
-
-	put_item(Item) :-
-		assertz(item_(Item)),
-		retract(size_(N)),
-		N2 is N + 1,
-		assertz(size_(N2)),
-		sender(Sender),
-		writeq(Sender), write(' stored item '), write(Item), nl.
-
-	get_item(Item) :-
-		retract(item_(Item)),
-		retract(size_(N)),
-		N2 is N - 1,
-		assertz(size_(N2)),
-		sender(Sender),
-		writeq(Sender), write(' consumed item '), write(Item), nl.
 
 :- end_object.
 
