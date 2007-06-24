@@ -32,20 +32,22 @@
 	:- synchronized([put_item/1, get_item/1]).
 
 	put_item(Item) :-
+		parameter(1, MaxCapacity),
 		assertz(item_(Item)),
 		retract(size_(N)),
 		N2 is N + 1,
 		assertz(size_(N2)),
-		sender(Sender),
-		writeq(Sender), write(' stored item '), write(Item), nl.
+		write(' produced item '), write(Item),
+		write(' ('), write(N2), write('/'), write(MaxCapacity), write(' items in the buffer'), write(')'), nl.
 
 	get_item(Item) :-
+		parameter(1, MaxCapacity),
 		retract(item_(Item)),
 		retract(size_(N)),
 		N2 is N - 1,
 		assertz(size_(N2)),
-		sender(Sender),
-		writeq(Sender), write(' consumed item '), write(Item), nl.
+		write(' consumed item '), write(Item),
+		write(' ('), write(N2), write('/'), write(MaxCapacity), write(' items in the buffer'), write(')'), nl.
 
 	put(Item) :-
 		parameter(1, MaxCapacity),
