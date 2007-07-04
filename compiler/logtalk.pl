@@ -6919,27 +6919,24 @@ current_logtalk_flag(version, version(2, 30, 3)).
 
 '$lgt_tr_threaded_call'(Goals, (MTCalls, MTExits), Ctx) :-
 	'$lgt_tr_body'(Goals, TGoals, _, Ctx),
-	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, Prefix, _, _),
-	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		'$lgt_tr_threaded_call'(TGoals, MTCalls, MTExits, Prefix, Sender, This, Self)
-	;	'$lgt_tr_threaded_call'(TGoals, MTCalls, MTExits, Sender, This, Self)
+	'$lgt_tr_threaded_call_aux'(TGoals, MTCalls, MTExits).
+
+
+'$lgt_tr_threaded_call_aux'((TGoal, TGoals), (MTCall, MTCalls), (MTExit, MTExits)) :-
+	!,
+	'$lgt_tr_threaded_call_aux'(TGoal, MTCall, MTExit),
+	'$lgt_tr_threaded_call_aux'(TGoals, MTCalls, MTExits).
+
+'$lgt_tr_threaded_call_aux'(TGoal, thread_create((TGoal, thread_exit(TGoal)), Id, [detached(false)]), '$lgt_threaded_join'(Id, TGoal)).
+
+
+
+'$lgt_threaded_join'(Id, TGoal) :-
+	thread_join(Id, Status),
+	(	Status = exception(Exception) ->
+		throw(Exception)
+	;	Status = exited(TGoal)
 	).
-
-
-'$lgt_tr_threaded_call'((TGoal, TGoals), (MTCall, MTCalls), (MTExit, MTExits), Prefix, Sender, This, Self) :-
-	!,
-	'$lgt_tr_threaded_call'(TGoal, MTCall, MTExit, Prefix, Sender, This, Self),
-	'$lgt_tr_threaded_call'(TGoals, MTCalls, MTExits, Prefix, Sender, This, Self).
-
-'$lgt_tr_threaded_call'(TGoal, '$lgt_mt_send_goal'(Prefix, TGoal, Sender, This, Self, once), '$lgt_mt_get_reply'(Prefix, TGoal, Sender, This, Self), Prefix, Sender, This, Self).
-
-
-'$lgt_tr_threaded_call'((TGoal, TGoals), (MTCall, MTCalls), (MTExit, MTExits), Sender, This, Self) :-
-	!,
-	'$lgt_tr_threaded_call'(TGoal, MTCall, MTExit, Sender, This, Self),
-	'$lgt_tr_threaded_call'(TGoals, MTCalls, MTExits, Sender, This, Self).
-
-'$lgt_tr_threaded_call'(TGoal, '$lgt_mt_send_goal'(TGoal, Sender, This, Self, once), '$lgt_mt_get_reply'(TGoal, Sender, This, Self), Sender, This, Self).
 
 
 
@@ -12183,10 +12180,14 @@ current_logtalk_flag(version, version(2, 30, 3)).
 	thread_send_message(Return, '$lgt_thread_id'(competing, Goal, This, Self, CompetingId)),
 	% signal that the thread running the goal is ready:
 	thread_send_message(Return, '$lgt_ready'(Goal, This, Self, competing)),
-	(	catch(Goal, _, fail) ->
-		thread_send_message(Return, '$lgt_reply'(Goal, This, Self, success, CompetingId))
-	;	true
-	).
+	(	catch(Goal, Error, (thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Error, CompetingId)), Flag = error)),
+		(	var(Flag) ->
+			thread_send_message(Return, '$lgt_reply'(Goal, This, Self, success, CompetingId))
+		;	true
+		)
+	;	thread_send_message(Return, '$lgt_reply'(Goal, This, Self, failure, CompetingId))
+	),
+	thread_exit(true).
 
 
 

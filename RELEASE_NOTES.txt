@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.30.3 - July ??, 2007
 
+	Optimized the implementation of the multi-threading built-in predicate 
+	threaded/1.
+
 	Corrected a bug in the implementation of the multi-threading built-in 
 	predicate threaded_exit/1 when there is more than one thread running 
 	the same non-deterministic goal (the fix ensures that all alternative 
