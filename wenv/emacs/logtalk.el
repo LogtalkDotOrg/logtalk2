@@ -4,8 +4,8 @@
 
 ;; Author: Paulo Moura
 ;; Creation date: November 15, 2003
-;; Last modification date: June 10, 2007
-;; Version: 0.97
+;; Last modification date: July 4, 2007
+;; Version: 0.98
 
 ;; Installation:
 ;;
@@ -214,7 +214,7 @@
 		;;
 		;; multi-threading:
 		;;
-		("\\(threaded\\(_\\(?:call\\|once\\|ignore\\|race\\|exit\\|peek\\|wait\\|notify\\)\\)?\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\(threaded\\(_\\(?:call\\|once\\|ignore\\|exit\\|peek\\|wait\\|notify\\)\\)?\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 	))
 
 

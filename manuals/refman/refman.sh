@@ -73,7 +73,6 @@ eval $xslt_proc -o builtins/threaded1.section refman.xsl builtins/threaded1.html
 eval $xslt_proc -o builtins/threaded_call1.section refman.xsl builtins/threaded_call1.html
 eval $xslt_proc -o builtins/threaded_once1.section refman.xsl builtins/threaded_once1.html
 eval $xslt_proc -o builtins/threaded_ignore1.section refman.xsl builtins/threaded_ignore1.html
-eval $xslt_proc -o builtins/threaded_race1.section refman.xsl builtins/threaded_race1.html
 eval $xslt_proc -o builtins/threaded_exit1.section refman.xsl builtins/threaded_exit1.html
 eval $xslt_proc -o builtins/threaded_peek1.section refman.xsl builtins/threaded_peek1.html
 eval $xslt_proc -o builtins/threaded_wait1.section refman.xsl builtins/threaded_wait1.html
@@ -175,7 +174,6 @@ cat -s \
 	builtins/threaded_call1.section \
 	builtins/threaded_once1.section \
 	builtins/threaded_ignore1.section \
-	builtins/threaded_race1.section \
 	builtins/threaded_exit1.section \
 	builtins/threaded_peek1.section \
 	builtins/threaded_wait1.section \

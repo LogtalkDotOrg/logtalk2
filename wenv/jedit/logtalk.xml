@@ -7,7 +7,7 @@
 	written by		Paulo Moura
 	version			1.10
 	created on		2 May 2002
-	last revised	10 June 2007
+	last revised	4 July 2007
 
 	To install, copy this file to the "modes" subdirectory in jEdit 
 	directory installation.   Next, check the "catalog" file in the 
@@ -83,7 +83,7 @@
 		<!-- All solutions -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b((bag|set)of|f(ind|or)all)(?=[(])</SEQ_REGEXP>
 		<!-- Multi-threading meta-predicates -->
-		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bthreaded(_(call|once|ignore|race|exit|peek|wait|notify))?(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bthreaded(_(call|once|ignore|exit|peek|wait|notify))?(?=[(])</SEQ_REGEXP>
 		<!-- Term unification -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bunify_with_occurs_check(?=[(])</SEQ_REGEXP>
 		<!-- Term creation and decomposition -->
@@ -354,7 +354,6 @@
 			<NULL>threaded_call</NULL>
 			<NULL>threaded_once</NULL>
 			<NULL>threaded_ignore</NULL>
-			<NULL>threaded_race</NULL>
 			<NULL>threaded_exit</NULL>
 			<NULL>threaded_peek</NULL>
 			<NULL>threaded_wait</NULL>

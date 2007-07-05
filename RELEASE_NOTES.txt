@@ -17,6 +17,9 @@ RELEASE NOTES
 	Optimized the predicate implementation and performance whew its 
 	argument is a conjunction of goals.
 
+	Removed the experimental threaded_race/1 multi-threading built-in 
+	predicate.
+
 	Corrected a bug in the implementation of the multi-threading built-in 
 	predicate threaded_exit/1 when there is more than one thread running 
 	the same non-deterministic goal (the fix ensures that all alternative 
