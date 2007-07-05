@@ -28,16 +28,16 @@
 threaded(Conjunction)
 threaded(Disjunction)</pre>
 <p>
-Proves each goal in a conjunction (disjunction) of goals in its own thread. The argument can also be a conjunction (disjunction) of messages, either to <em>self</em> or to an explicit object.
+Proves each goal in a conjunction (disjunction) of goals in its own thread. The argument can also be a conjunction (disjunction) of messages, either to <em>self</em> or to an explicit object. This predicate is deterministic and opaque to cuts.
 </p>
 <p>
-When the argument is a conjunction of goals, a call to this predicate blocks until all individual threads terminate. The predicate call is true <em>iff</em> all goals are true.
+When the argument is a conjunction of goals, a call to this predicate blocks until either all goals succeed, one of the goals fail, or one of the goals generate an exception; the failure of one of the goals or an exception on the execution of one of the goals results in the termination of the remaining threads. The predicate call is true <em>iff</em> all goals are true.
 </p>
 <p>
-When the argument is a disjunction of goals, a call to this terminates blocks until either one of the goals succeeds, all the goals fail, or one of the goals generate an exception; the success of a goal or an exception on the execution of a goal results in the termination of the remaining threads. The predicate call is true <em>iff</em> one of the goals is true.
+When the argument is a disjunction of goals, a call to this predicate blocks until either one of the goals succeeds, all the goals fail, or one of the goals generate an exception; the success of one of the goals or an exception on the execution of one of the goals results in the termination of the remaining threads. The predicate call is true <em>iff</em> one of the goals is true.
 </p>
 <p>
-This predicate is deterministic and opaque to cuts, similar to <code>once/1</code>.
+ When the predicate argument contains neither a conjunction not a disjunction of goals, no threads are used. In this case, the predicate call is equivalent to a <code>once/1</code> predicate call.
 </p>
 
 <h4>Template and modes</h4>
