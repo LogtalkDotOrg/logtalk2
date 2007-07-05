@@ -22,6 +22,7 @@
 :- end_protocol.
 
 
+
 :- protocol(functionp).
 
 	:- info([
@@ -45,6 +46,7 @@
 :- end_protocol.
 
 
+
 :- object(f1,
 	implements(functionp)).
 
@@ -57,6 +59,7 @@
 		Y is 2 * X.
 
 :- end_object.
+
 
 
 :- object(f2,
@@ -74,6 +77,7 @@
 :- end_object.
 
 
+
 :- object(f3,
 	implements(functionp)).
 
@@ -88,33 +92,6 @@
 
 :- end_object.
 
-
-:- object(function_root,
-	implements(find_rootp)).
-
-	:- info([
-		version is 1.1,
-		author is 'Paulo Moura and Paulo Nunes',
-		date is 2006/11/26,
-		comment is 'Multi-threading interface to root finding algorithms.']).
-
-	:- threaded.
-
-	find_root(Function, A, B, Error, Zero) :-
-		find_root(Function, A, B, Error, Zero, _).
-
-	find_root(Function, A, B, Error, Zero, Algorithm) :-
-		threaded_race(
-			(	try_method(bisection, Function, A, B, Error, Zero)
-			;	try_method(newton, Function, A, B, Error, Zero)
-			;	try_method(muller, Function, A, B, Error, Zero)
-			)),
-		threaded_exit(try_method(Algorithm, Function, A, B, Error, Zero)).
-
-	try_method(Algorithm, Function, A, B, Error, Zero) :-
-		Algorithm::find_root(Function, A, B, Error, Zero).
-
-:- end_object.
 
 
 :- object(bisection,
@@ -159,6 +136,7 @@
 :- end_object.
 
 
+
 :- object(newton,
 	implements(find_rootp)).
 
@@ -197,6 +175,7 @@
 		newton(Function, Xn1, Deviation, Fn1, Ac1, Zero).			
 
 :- end_object.
+
 
 
 :- object(muller,
@@ -264,5 +243,32 @@
 		H1n is H2n,
 		DDban is DDcbn,
 		muller(Function, Xan, Xbn, Xcn, Deviation, Yan, Ybn, Ycn, Acn, H1n, DDban, Zero).
+
+:- end_object.
+
+
+
+:- object(function_root,
+	implements(find_rootp)).
+
+	:- info([
+		version is 2.0,
+		author is 'Paulo Moura and Paulo Nunes',
+		date is 2007/07/05,
+		comment is 'Multi-threading interface to root finding algorithms.']).
+
+	:- threaded.
+
+	find_root(Function, A, B, Error, Zero) :-
+		find_root(Function, A, B, Error, Zero, _).
+
+	find_root(Function, A, B, Error, Zero, Algorithm) :-
+		threaded((
+			(bisection::find_root(Function, A, B, Error, Zero), Algorithm = bisection)
+			;
+			(newton::find_root(Function, A, B, Error, Zero), Algorithm = newton)
+			;
+			(muller::find_root(Function, A, B, Error, Zero), Algorithm = muller)
+		)).
 
 :- end_object.

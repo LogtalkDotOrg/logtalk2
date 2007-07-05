@@ -26,6 +26,9 @@ RELEASE NOTES
 	Updated the sample queries in the "threads/buffer"/SCRIPT.txt" file to 
 	match the updated entities in the example.
 
+	Updated the "threads/functions" example to use the new version of the 
+	threaded/1 multi-threading built-in predicate.
+
 
 2.30.2 - June 24, 2007
 
