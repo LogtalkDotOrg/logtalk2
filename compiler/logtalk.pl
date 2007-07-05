@@ -6919,23 +6919,113 @@ current_logtalk_flag(version, version(2, 30, 3)).
 
 '$lgt_tr_threaded_call'(Goals, (MTCalls, MTExits), Ctx) :-
 	'$lgt_tr_body'(Goals, TGoals, _, Ctx),
-	'$lgt_tr_threaded_call_aux'(TGoals, MTCalls, MTExits).
+	'$lgt_tr_threaded_call'(TGoals, MTCalls, MTExits, Ctx).
 
 
-'$lgt_tr_threaded_call_aux'((TGoal, TGoals), (MTCall, MTCalls), (MTExit, MTExits)) :-
+
+'$lgt_tr_threaded_call'((TGoal; TGoals), MTCalls, MTExits, Ctx) :-
 	!,
-	'$lgt_tr_threaded_call_aux'(TGoal, MTCall, MTExit),
-	'$lgt_tr_threaded_call_aux'(TGoals, MTCalls, MTExits).
+	'$lgt_tr_threaded_or_call'((TGoal; TGoals), MTCalls, MTExits, Ctx).
 
-'$lgt_tr_threaded_call_aux'(TGoal, thread_create((TGoal, thread_exit(TGoal)), Id, [detached(false)]), '$lgt_threaded_join'(Id, TGoal)).
+'$lgt_tr_threaded_call'(TGoals, MTCalls, MTExits, _) :-
+	!,
+	'$lgt_tr_threaded_and_call'(TGoals, MTCalls, MTExits).
 
 
 
-'$lgt_threaded_join'(Id, TGoal) :-
+'$lgt_tr_threaded_and_call'((TGoal, TGoals), (MTCall, MTCalls), (MTExit, MTExits)) :-
+	!,
+	'$lgt_tr_threaded_and_call'(TGoal, MTCall, MTExit),
+	'$lgt_tr_threaded_and_call'(TGoals, MTCalls, MTExits).
+
+'$lgt_tr_threaded_and_call'(TGoal, thread_create((TGoal, thread_exit(TGoal)), Id, [detached(false)]), '$lgt_mt_threaded_and_exit'(Id, TGoal)).
+
+
+'$lgt_mt_threaded_and_exit'(Id, TGoal) :-
 	thread_join(Id, Status),
 	(	Status = exception(Exception) ->
 		throw(Exception)
 	;	Status = exited(TGoal)
+	).
+
+
+
+'$lgt_tr_threaded_or_call'(TGoals, MTCalls, MTExit, Ctx) :-
+	'$lgt_tr_threaded_or_call'(TGoals, TGoals, Queue, MTCalls0, Tag, Tag, Results),
+	(	'$lgt_pp_object_'(_, Queue, _, _, _, _, _, _, _, _, _) ->
+		MTCalls = MTCalls0
+	;	'$lgt_ctx_this'(Ctx, This),
+		MTCalls = ('$lgt_current_object_'(This, Queue, _, _, _, _, _, _), !, MTCalls0)
+	),
+	MTExit = '$lgt_mt_threaded_or_exit'(TGoals, Tag, Queue, Results).
+
+
+
+'$lgt_tr_threaded_or_call'(AllTGoals, (TGoal; TGoals), Prefix, (MTCall, MTCalls), [Id| Ids], Tag, [Result| Results]) :-
+	!,
+	'$lgt_tr_threaded_or_call'(AllTGoals, TGoal, Prefix, MTCall, [Id], Tag, [Result]),
+	'$lgt_tr_threaded_or_call'(AllTGoals, TGoals, Prefix, MTCalls, Ids, Tag, Results).
+
+'$lgt_tr_threaded_or_call'(AllTGoals, TGoal, Prefix, thread_create('$lgt_mt_threaded_or_call'(AllTGoals, TGoal, Tag, Prefix), Id, [detached(false)]), [Id], Tag, [id(Id, _)]).
+
+
+
+'$lgt_mt_threaded_or_call'(TGoals, TGoal, Tag, Queue) :-
+	thread_self(Id),
+	(	catch(TGoal, Error, thread_send_message(Queue, '$lgt_or_call'(Tag, Id, TGoals, error(Error)))) ->
+		thread_send_message(Queue, '$lgt_or_call'(Tag, Id, TGoals, true))
+	;	thread_send_message(Queue, '$lgt_or_call'(Tag, Id, TGoals, fail))
+	).
+
+
+
+'$lgt_mt_threaded_or_exit'(TGoals, Tag, Queue, Results) :-
+	thread_get_message(Queue, '$lgt_or_call'(Tag, Id, TGoals, Result)),
+	(	Result = error(Error) ->
+		'$lgt_mt_threaded_or_clean'(Tag, Queue),
+		throw(Error)
+	;	Result == true ->
+		'$lgt_mt_threaded_or_clean'(Tag, Queue)
+	;	'$lgt_mt_threaded_or_continue'(Results, Id) ->
+		'$lgt_mt_threaded_or_exit'(TGoals, Tag, Queue, Results)
+	;	'$lgt_mt_join_threads'(Tag)
+	).
+
+
+
+'$lgt_mt_threaded_or_clean'([], _).
+
+'$lgt_mt_threaded_or_clean'([Id| Ids], Queue) :-
+	catch(thread_signal(Id, throw(abort)), _, true),
+	(	thread_peek_message(Queue, '$lgt_or_call'(Tag, Id, _, _)) ->
+		thread_get_message(Queue, '$lgt_or_call'(Tag, Id, _, _))
+	;	true
+	),
+	thread_join(Id, _),
+	'$lgt_mt_threaded_or_clean'(Ids, Queue).
+
+
+
+'$lgt_mt_threaded_or_continue'(Ids, Id) :-
+	'$lgt_mt_threaded_or_continue'(Ids, _, Id).
+
+
+'$lgt_mt_threaded_or_continue'([id(Id1, Result)| Ids], Continue, Id2) :-
+	(	Id1 == Id2 ->
+		Result = fail,
+		(	Continue == true ->
+			true
+		;	'$lgt_mt_threaded_or_continue'(Ids)
+		)
+	;	var(Result) ->
+		'$lgt_mt_threaded_or_continue'(Ids, true, Id2)
+	;	'$lgt_mt_threaded_or_continue'(Ids, Continue, Id2)
+	).
+
+'$lgt_mt_threaded_or_continue'([id(_, Result)| Ids]) :-
+	(	var(Result) ->
+		true
+	;	'$lgt_mt_threaded_or_continue'(Ids)
 	).
 
 

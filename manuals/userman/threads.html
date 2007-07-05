@@ -50,7 +50,10 @@ Logtalk provides a small set of built-in predicates for multi-threading programm
 <h3 id="threads_threaded">Proving goals concurrently using threads</h3>
 
 <p>
-A conjunction of goals may be proved concurrently by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded1.html"><code>threaded/1</code></a>. Each goal in the conjunction runs in its own thread. This is akin to <em>and-parallelism</em>. For example, assume that we want to find all the prime numbers in a given interval, <code>[N, M]</code>. We can split the interval in two parts and then span two threads to compute the primes numbers in each sub-interval:
+A set of goals may be proved concurrently by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded1.html"><code>threaded/1</code></a>. Each goal in the set runs in its own thread. 
+</p>
+<p>
+When the <code>threaded/1</code> predicate argument is a conjunction of goals, the predicate call is akin to <em>and-parallelism</em>. For example, assume that we want to find all the prime numbers in a given interval, <code>[N, M]</code>. We can split the interval in two parts and then span two threads to compute the primes numbers in each sub-interval:
 </p>
 <pre>prime_numbers(N, M, Primes) :-
     M &gt; N,
@@ -66,6 +69,21 @@ prime_numbers(N, M, Acc, Primes) :-
 </pre>
 <p>
 The <code>threaded/1</code> call terminates when the two implicit threads terminate. In a computer with two or more processors (or with a processor with two or more cores) the code above can be expected to provide better computation times when compared with single-threaded code for sufficiently large intervals.
+</p>
+<p>
+When the <code>threaded/1</code> predicate argument is a disjunction of goals, the predicate call is akin to <em>or-parallelism</em>. For example, assume that we have several different methods to find the roots of real functions. Depending on the real function, some methods will faster than others. Some methods will converge into the solution while others may diverge and never find it. We can try all the methods at one by writing:
+</p>
+<pre>find_root(Function, A, B, Error, Zero, Algorithm) :-
+    threaded((
+        (bisection::find_root(Function, A, B, Error, Zero), Algorithm = bisection)
+        ;
+        (newton::find_root(Function, A, B, Error, Zero), Algorithm = newton)
+        ;
+        (muller::find_root(Function, A, B, Error, Zero), Algorithm = muller)
+    )).
+</pre>
+<p>
+The <code>threaded/1</code> call succeeds when one of the implicit threads succeeds in finding the function root.
 </p>
 <p>
 The <code>threaded/1</code> built-in predicate is most useful for lengthy, independent deterministic computations where the computational costs of each goal outweigh the overhead of the implicit thread creation and management.
@@ -227,7 +245,7 @@ Each notification posted by a call to the <code>threaded_notify/1</code> predica
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: June 19, 2007</span>
+		<span>Last updated on: July 4, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="events.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="errors.html">next</a></span><br/>

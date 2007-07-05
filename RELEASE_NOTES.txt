@@ -12,8 +12,10 @@ RELEASE NOTES
 
 2.30.3 - July ??, 2007
 
-	Optimized the implementation of the multi-threading built-in predicate 
-	threaded/1.
+	Updated the multi-threading built-in predicate threaded/1 to accept 
+	disjunctions as an argument, implementing a form of or-parallelism.
+	Optimized the predicate implementation and performance whew its 
+	argument is a conjunction of goals.
 
 	Corrected a bug in the implementation of the multi-threading built-in 
 	predicate threaded_exit/1 when there is more than one thread running 
