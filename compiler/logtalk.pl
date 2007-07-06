@@ -6920,75 +6920,6 @@ current_logtalk_flag(version, version(2, 30, 3)).
 
 
 
-'$lgt_mt_threaded_and_call'(TGoal, Tag, Queue) :-
-	thread_self(Id),
-	(	catch(TGoal, Error, thread_send_message(Queue, '$lgt_and_call'(Tag, Id, error(Error)))) ->
-		thread_send_message(Queue, '$lgt_and_call'(Tag, Id, true(TGoal)))
-	;	thread_send_message(Queue, '$lgt_and_call'(Tag, Id, fail))
-	).
-
-
-
-'$lgt_mt_threaded_and_exit'(TGoals, Tag, Queue, Results) :-
-	thread_get_message(Queue, '$lgt_and_call'(Tag, Id, Result)),
-	(	Result = error(Error) ->
-		'$lgt_mt_threaded_and_clean'(Tag, Queue),
-		throw(Error)
-	;	Result = true(Tgoal) ->
-		'$lgt_mt_threaded_and_add_result'(Results, Id, Tgoal, Continue),
-		(	Continue == false ->
-			'$lgt_mt_threaded_and_clean'(Tag, Queue),
-			'$lgt_mt_threaded_and_exit_unify'(TGoals, Results)
-		;	'$lgt_mt_threaded_and_exit'(TGoals, Tag, Queue, Results)
-		)
-	;	% Result == fail ->
-		'$lgt_mt_threaded_and_clean'(Tag, Queue),
-		fail
-	).
-
-
-
-'$lgt_mt_threaded_and_exit_unify'((TGoal, TGoals), [id(_, TGoal)| Results]) :-
-	!,
-	'$lgt_mt_threaded_and_exit_unify'(TGoals, Results).
-'$lgt_mt_threaded_and_exit_unify'(TGoal, [id(_, TGoal)]).
-
-
-
-'$lgt_mt_threaded_and_clean'([], _).
-
-'$lgt_mt_threaded_and_clean'([Id| Ids], Queue) :-
-	catch(thread_signal(Id, thread_exit(abort)), _, true),
-	(	thread_peek_message(Queue, '$lgt_and_call'(Tag, Id, _)) ->
-		thread_get_message(Queue, '$lgt_and_call'(Tag, Id, _))
-	;	true
-	),
-	thread_join(Id, _),
-	'$lgt_mt_threaded_and_clean'(Ids, Queue).
-
-
-
-'$lgt_mt_threaded_and_add_result'([id(Id1, Result1)| Ids], Id2, Result2, Continue) :-
-	(	Id1 == Id2 ->
-		Result1 = Result2,
-		(	var(Continue) ->
-			'$lgt_mt_threaded_and_add_result'(Ids, Continue)
-		;	true
-		)
-	;	var(Result1) ->
-		'$lgt_mt_threaded_and_add_result'(Ids, Id2, Result2, true)
-	;	'$lgt_mt_threaded_and_add_result'(Ids, Id2, Result2, Continue)
-	).
-
-'$lgt_mt_threaded_and_add_result'([], false).
-'$lgt_mt_threaded_and_add_result'([id(_, Result)| Ids], Continue) :-
-	(	var(Result) ->
-		Continue = true
-	;	'$lgt_mt_threaded_and_add_result'(Ids, Continue)
-	).
-
-
-
 '$lgt_tr_threaded_or_call'(TGoals, MTCalls, MTExit, Ctx) :-
 	'$lgt_tr_threaded_or_call'(TGoals, Queue, MTCalls0, Tag, Tag, Results),
 	(	'$lgt_pp_object_'(_, Queue, _, _, _, _, _, _, _, _, _) ->
@@ -7006,76 +6937,6 @@ current_logtalk_flag(version, version(2, 30, 3)).
 	'$lgt_tr_threaded_or_call'(TGoals, Queue, MTCalls, Ids, Tag, Results).
 
 '$lgt_tr_threaded_or_call'(TGoal, Queue, thread_create('$lgt_mt_threaded_or_call'(TGoal, Tag, Queue), Id, [detached(false)]), [Id], Tag, [id(Id, _)]).
-
-
-
-'$lgt_mt_threaded_or_call'(TGoal, Tag, Queue) :-
-	thread_self(Id),
-	(	catch(TGoal, Error, thread_send_message(Queue, '$lgt_or_call'(Tag, Id, error(Error)))) ->
-		thread_send_message(Queue, '$lgt_or_call'(Tag, Id, true(TGoal)))
-	;	thread_send_message(Queue, '$lgt_or_call'(Tag, Id, fail))
-	).
-
-
-
-'$lgt_mt_threaded_or_exit'(TGoals, Tag, Queue, Results) :-
-	thread_get_message(Queue, '$lgt_or_call'(Tag, Id, Result)),
-	(	Result = error(Error) ->
-		'$lgt_mt_threaded_or_clean'(Tag, Queue),
-		throw(Error)
-	;	Result = true(TGoal) ->
-		'$lgt_mt_threaded_or_clean'(Tag, Queue),
-		'$lgt_mt_threaded_or_exit_unify'(TGoals, Tag, Id, TGoal)
-	;	'$lgt_mt_threaded_or_continue'(Results, Id) ->
-		'$lgt_mt_threaded_or_exit'(TGoals, Tag, Queue, Results)
-	;	'$lgt_mt_threaded_or_clean'(Tag, Queue)
-	).
-
-
-'$lgt_mt_threaded_or_exit_unify'((TGoal1; TGoals), [Id1| Ids], Id2, TGoal2) :-
-	!,
-	(	Id1 == Id2 ->
-		TGoal1 = TGoal2
-	;	'$lgt_mt_threaded_or_exit_unify'(TGoals, Ids, Id2, TGoal2)
-	).
-'$lgt_mt_threaded_or_exit_unify'(TGoal, [Id], Id, TGoal).
-
-
-
-'$lgt_mt_threaded_or_clean'([], _).
-
-'$lgt_mt_threaded_or_clean'([Id| Ids], Queue) :-
-	catch(thread_signal(Id, thread_exit(abort)), _, true),
-	(	thread_peek_message(Queue, '$lgt_or_call'(Tag, Id, _)) ->
-		thread_get_message(Queue, '$lgt_or_call'(Tag, Id, _))
-	;	true
-	),
-	thread_join(Id, _),
-	'$lgt_mt_threaded_or_clean'(Ids, Queue).
-
-
-
-'$lgt_mt_threaded_or_continue'(Ids, Id) :-
-	'$lgt_mt_threaded_or_continue'(Ids, _, Id).
-
-
-'$lgt_mt_threaded_or_continue'([id(Id1, Result)| Ids], Continue, Id2) :-
-	(	Id1 == Id2 ->
-		Result = fail,
-		(	Continue == true ->
-			true
-		;	'$lgt_mt_threaded_or_continue'(Ids)
-		)
-	;	var(Result) ->
-		'$lgt_mt_threaded_or_continue'(Ids, true, Id2)
-	;	'$lgt_mt_threaded_or_continue'(Ids, Continue, Id2)
-	).
-
-'$lgt_mt_threaded_or_continue'([id(_, Result)| Ids]) :-
-	(	var(Result) ->
-		true
-	;	'$lgt_mt_threaded_or_continue'(Ids)
-	).
 
 
 
@@ -12469,6 +12330,178 @@ current_logtalk_flag(version, version(2, 30, 3)).
 '$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Id) :-
 	catch(thread_send_message(Id, '$lgt_next'), _, fail),
 	'$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Id).
+
+
+
+% '$lgt_mt_threaded_and_call'(+callable, +list(object_identifier), +object_identifier)
+%
+% proves a goal from a conjunction in a threaded/1 predicate call and sends the result
+% back to the message queue of the object containing the call
+
+'$lgt_mt_threaded_and_call'(TGoal, Tag, Queue) :-
+	thread_self(Id),
+	(	catch(TGoal, Error, thread_send_message(Queue, '$lgt_and_call'(Tag, Id, error(Error)))) ->
+		thread_send_message(Queue, '$lgt_and_call'(Tag, Id, true(TGoal)))
+	;	thread_send_message(Queue, '$lgt_and_call'(Tag, Id, fail))
+	).
+
+
+
+% '$lgt_mt_threaded_and_exit'(+callable, +list(object_identifier), +object_identifier, +list)
+%
+% retrieves the result of proving a conjunction of goals using a threaded/1 predicate call
+
+'$lgt_mt_threaded_and_exit'(TGoals, Tag, Queue, Results) :-
+	thread_get_message(Queue, '$lgt_and_call'(Tag, Id, Result)),
+	(	Result = error(Error) ->
+		'$lgt_mt_threaded_and_clean'(Tag, Queue),
+		throw(Error)
+	;	Result = true(Tgoal) ->
+		'$lgt_mt_threaded_and_add_result'(Results, Id, Tgoal, Continue),
+		(	Continue == false ->
+			'$lgt_mt_threaded_and_clean'(Tag, Queue),
+			'$lgt_mt_threaded_and_exit_unify'(TGoals, Results)
+		;	'$lgt_mt_threaded_and_exit'(TGoals, Tag, Queue, Results)
+		)
+	;	% Result == fail ->
+		'$lgt_mt_threaded_and_clean'(Tag, Queue),
+		fail
+	).
+
+
+
+% unifies the successful thread goal results with the original calls
+
+'$lgt_mt_threaded_and_exit_unify'((TGoal, TGoals), [id(_, TGoal)| Results]) :-
+	!,
+	'$lgt_mt_threaded_and_exit_unify'(TGoals, Results).
+'$lgt_mt_threaded_and_exit_unify'(TGoal, [id(_, TGoal)]).
+
+
+
+% aborts (if needed) and joins all threads, making sure no dangling results
+% are left on the object message queue
+
+'$lgt_mt_threaded_and_clean'([], _).
+
+'$lgt_mt_threaded_and_clean'([Id| Ids], Queue) :-
+	catch(thread_signal(Id, thread_exit(abort)), _, true),
+	(	thread_peek_message(Queue, '$lgt_and_call'(Tag, Id, _)) ->
+		thread_get_message(Queue, '$lgt_and_call'(Tag, Id, _))
+	;	true
+	),
+	thread_join(Id, _),
+	'$lgt_mt_threaded_and_clean'(Ids, Queue).
+
+
+
+% adds the result of proving a goal and checks if all goals have succeeded:
+
+'$lgt_mt_threaded_and_add_result'([id(Id1, Result1)| Ids], Id2, Result2, Continue) :-
+	(	Id1 == Id2 ->
+		Result1 = Result2,
+		(	var(Continue) ->
+			'$lgt_mt_threaded_and_add_result'(Ids, Continue)
+		;	true
+		)
+	;	var(Result1) ->
+		'$lgt_mt_threaded_and_add_result'(Ids, Id2, Result2, true)
+	;	'$lgt_mt_threaded_and_add_result'(Ids, Id2, Result2, Continue)
+	).
+
+'$lgt_mt_threaded_and_add_result'([], false).
+'$lgt_mt_threaded_and_add_result'([id(_, Result)| Ids], Continue) :-
+	(	var(Result) ->
+		Continue = true
+	;	'$lgt_mt_threaded_and_add_result'(Ids, Continue)
+	).
+
+
+
+% '$lgt_mt_threaded_or_call'(+callable, +list(object_identifier), +object_identifier)
+%
+% proves a goal from a disjunction in a threaded/1 predicate call and sends the result
+% back to the message queue of the object containing the call
+
+'$lgt_mt_threaded_or_call'(TGoal, Tag, Queue) :-
+	thread_self(Id),
+	(	catch(TGoal, Error, thread_send_message(Queue, '$lgt_or_call'(Tag, Id, error(Error)))) ->
+		thread_send_message(Queue, '$lgt_or_call'(Tag, Id, true(TGoal)))
+	;	thread_send_message(Queue, '$lgt_or_call'(Tag, Id, fail))
+	).
+
+
+
+% '$lgt_mt_threaded_or_exit'(+callable, +list(object_identifier), +object_identifier, +list)
+%
+% retrieves the result of proving a disjunction of goals using a threaded/1 predicate call
+
+'$lgt_mt_threaded_or_exit'(TGoals, Tag, Queue, Results) :-
+	thread_get_message(Queue, '$lgt_or_call'(Tag, Id, Result)),
+	(	Result = error(Error) ->
+		'$lgt_mt_threaded_or_clean'(Tag, Queue),
+		throw(Error)
+	;	Result = true(TGoal) ->
+		'$lgt_mt_threaded_or_clean'(Tag, Queue),
+		'$lgt_mt_threaded_or_exit_unify'(TGoals, Tag, Id, TGoal)
+	;	'$lgt_mt_threaded_or_continue'(Results, Id) ->
+		'$lgt_mt_threaded_or_exit'(TGoals, Tag, Queue, Results)
+	;	'$lgt_mt_threaded_or_clean'(Tag, Queue)
+	).
+
+
+
+% unifies the successful thread goal result with the original call
+
+'$lgt_mt_threaded_or_exit_unify'((TGoal1; TGoals), [Id1| Ids], Id2, TGoal2) :-
+	!,
+	(	Id1 == Id2 ->
+		TGoal1 = TGoal2
+	;	'$lgt_mt_threaded_or_exit_unify'(TGoals, Ids, Id2, TGoal2)
+	).
+'$lgt_mt_threaded_or_exit_unify'(TGoal, [Id], Id, TGoal).
+
+
+
+% aborts (if needed) and joins all threads, making sure no dangling results
+% are left on the object message queue
+
+'$lgt_mt_threaded_or_clean'([], _).
+
+'$lgt_mt_threaded_or_clean'([Id| Ids], Queue) :-
+	catch(thread_signal(Id, thread_exit(abort)), _, true),
+	(	thread_peek_message(Queue, '$lgt_or_call'(Tag, Id, _)) ->
+		thread_get_message(Queue, '$lgt_or_call'(Tag, Id, _))
+	;	true
+	),
+	thread_join(Id, _),
+	'$lgt_mt_threaded_or_clean'(Ids, Queue).
+
+
+
+% checks if all goals have failed
+
+'$lgt_mt_threaded_or_continue'(Ids, Id) :-
+	'$lgt_mt_threaded_or_continue'(Ids, _, Id).
+
+
+'$lgt_mt_threaded_or_continue'([id(Id1, Result)| Ids], Continue, Id2) :-
+	(	Id1 == Id2 ->
+		Result = fail,
+		(	Continue == true ->
+			true
+		;	'$lgt_mt_threaded_or_continue'(Ids)
+		)
+	;	var(Result) ->
+		'$lgt_mt_threaded_or_continue'(Ids, true, Id2)
+	;	'$lgt_mt_threaded_or_continue'(Ids, Continue, Id2)
+	).
+
+'$lgt_mt_threaded_or_continue'([id(_, Result)| Ids]) :-
+	(	var(Result) ->
+		true
+	;	'$lgt_mt_threaded_or_continue'(Ids)
+	).
 
 
 

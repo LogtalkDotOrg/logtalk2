@@ -10,15 +10,15 @@ RELEASE NOTES
 =============
 
 
-2.30.3 - July ??, 2007
+2.30.3 - July 9, 2007
 
-	Updated the multi-threading built-in predicate threaded/1 to accept 
-	disjunctions as an argument, implementing a form of or-parallelism.
-	Optimized the predicate implementation and performance whew its 
-	argument is a conjunction of goals.
+	Updated the multi-threading built-in predicate threaded/1 to support 
+	both conjunctions of goals (akin to and-parallelism) and disjunctions 
+	of goals (akin to or-parallelism) as an argument.
 
 	Removed the experimental threaded_race/1 multi-threading built-in 
-	predicate.
+	predicate (its or-parallelism functionality is subsumed by the updated 
+	threaded/1 predicate).
 
 	Corrected a bug in the implementation of the multi-threading built-in 
 	predicate threaded_exit/1 when there is more than one thread running 
