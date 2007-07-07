@@ -12340,7 +12340,7 @@ current_logtalk_flag(version, version(2, 30, 3)).
 
 '$lgt_mt_threaded_and_call'(TGoal, Tag, Queue) :-
 	thread_self(Id),
-	(	catch(TGoal, Error, thread_send_message(Queue, '$lgt_and_call'(Tag, Id, error(Error)))) ->
+	(	catch(TGoal, Error, (thread_send_message(Queue, '$lgt_and_call'(Tag, Id, error(Error))), throw(Error))) ->
 		thread_send_message(Queue, '$lgt_and_call'(Tag, Id, true(TGoal)))
 	;	thread_send_message(Queue, '$lgt_and_call'(Tag, Id, fail))
 	).
@@ -12386,8 +12386,8 @@ current_logtalk_flag(version, version(2, 30, 3)).
 
 '$lgt_mt_threaded_and_clean'([Id| Ids], Queue) :-
 	catch(thread_signal(Id, thread_exit(abort)), _, true),
-	(	thread_peek_message(Queue, '$lgt_and_call'(Tag, Id, _)) ->
-		thread_get_message(Queue, '$lgt_and_call'(Tag, Id, _))
+	(	thread_peek_message(Queue, '$lgt_and_call'(_, Id, _)) ->
+		thread_get_message(Queue, '$lgt_and_call'(_, Id, _))
 	;	true
 	),
 	thread_join(Id, _),
@@ -12425,7 +12425,7 @@ current_logtalk_flag(version, version(2, 30, 3)).
 
 '$lgt_mt_threaded_or_call'(TGoal, Tag, Queue) :-
 	thread_self(Id),
-	(	catch(TGoal, Error, thread_send_message(Queue, '$lgt_or_call'(Tag, Id, error(Error)))) ->
+	(	catch(TGoal, Error, (thread_send_message(Queue, '$lgt_or_call'(Tag, Id, error(Error))), throw(Error))) ->
 		thread_send_message(Queue, '$lgt_or_call'(Tag, Id, true(TGoal)))
 	;	thread_send_message(Queue, '$lgt_or_call'(Tag, Id, fail))
 	).
@@ -12470,8 +12470,8 @@ current_logtalk_flag(version, version(2, 30, 3)).
 
 '$lgt_mt_threaded_or_clean'([Id| Ids], Queue) :-
 	catch(thread_signal(Id, thread_exit(abort)), _, true),
-	(	thread_peek_message(Queue, '$lgt_or_call'(Tag, Id, _)) ->
-		thread_get_message(Queue, '$lgt_or_call'(Tag, Id, _))
+	(	thread_peek_message(Queue, '$lgt_or_call'(_, Id, _)) ->
+		thread_get_message(Queue, '$lgt_or_call'(_, Id, _))
 	;	true
 	),
 	thread_join(Id, _),
