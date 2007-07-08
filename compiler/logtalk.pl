@@ -6916,7 +6916,7 @@ current_logtalk_flag(version, version(2, 30, 3)).
 	'$lgt_tr_threaded_and_call'(TGoal, Queue, MTCall, [Id], Tag, [Result]),
 	'$lgt_tr_threaded_and_call'(TGoals, Queue, MTCalls, Ids, Tag, Results).
 
-'$lgt_tr_threaded_and_call'(TGoal, Queue, thread_create('$lgt_mt_threaded_and_call'(TGoal, Tag, Queue), Id, [detached(false)]), [Id], Tag, [id(Id, _)]).
+'$lgt_tr_threaded_and_call'(TGoal, Queue, thread_create('$lgt_mt_threaded_and_call'(TGoal, Tag, Id, Queue), Id, [detached(false)]), [Id], Tag, [id(Id, _)]).
 
 
 
@@ -6936,7 +6936,7 @@ current_logtalk_flag(version, version(2, 30, 3)).
 	'$lgt_tr_threaded_or_call'(TGoal, Queue, MTCall, [Id], Tag, [Result]),
 	'$lgt_tr_threaded_or_call'(TGoals, Queue, MTCalls, Ids, Tag, Results).
 
-'$lgt_tr_threaded_or_call'(TGoal, Queue, thread_create('$lgt_mt_threaded_or_call'(TGoal, Tag, Queue), Id, [detached(false)]), [Id], Tag, [id(Id, _)]).
+'$lgt_tr_threaded_or_call'(TGoal, Queue, thread_create('$lgt_mt_threaded_or_call'(TGoal, Tag, Id, Queue), Id, [detached(false)]), [Id], Tag, [id(Id, _)]).
 
 
 
@@ -12333,12 +12333,12 @@ current_logtalk_flag(version, version(2, 30, 3)).
 
 
 
-% '$lgt_mt_threaded_and_call'(+callable, +list(object_identifier), +object_identifier)
+% '$lgt_mt_threaded_and_call'(+callable, +list(object_identifier), +thread_identifier, +object_identifier)
 %
 % proves a goal from a conjunction in a threaded/1 predicate call and sends the result
 % back to the message queue of the object containing the call
 
-'$lgt_mt_threaded_and_call'(TGoal, Tag, Queue) :-
+'$lgt_mt_threaded_and_call'(TGoal, Tag, Id, Queue) :-
 	thread_self(Id),
 	(	catch(TGoal, Error, (thread_send_message(Queue, '$lgt_and_call'(Tag, Id, error(Error))), throw(Error))) ->
 		thread_send_message(Queue, '$lgt_and_call'(Tag, Id, true(TGoal)))
@@ -12418,12 +12418,12 @@ current_logtalk_flag(version, version(2, 30, 3)).
 
 
 
-% '$lgt_mt_threaded_or_call'(+callable, +list(object_identifier), +object_identifier)
+% '$lgt_mt_threaded_or_call'(+callable, +list(object_identifier), +thread_identifier, +object_identifier)
 %
 % proves a goal from a disjunction in a threaded/1 predicate call and sends the result
 % back to the message queue of the object containing the call
 
-'$lgt_mt_threaded_or_call'(TGoal, Tag, Queue) :-
+'$lgt_mt_threaded_or_call'(TGoal, Tag, Id, Queue) :-
 	thread_self(Id),
 	(	catch(TGoal, Error, (thread_send_message(Queue, '$lgt_or_call'(Tag, Id, error(Error))), throw(Error))) ->
 		thread_send_message(Queue, '$lgt_or_call'(Tag, Id, true(TGoal)))
