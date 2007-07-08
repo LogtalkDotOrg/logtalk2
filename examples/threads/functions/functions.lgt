@@ -55,6 +55,7 @@
 
 	eval(X, Y) :-
 		Y is X * X - 4.
+
 	evald(X, Y) :-
 		Y is 2 * X.
 
@@ -94,13 +95,29 @@
 
 
 
+:- object(f4,
+	implements(functionp)).
+
+	% x + x^2*sin(2.0/x)
+	% 0.0
+ 
+	eval(X, Y) :-
+		Y is X + (X**2)*sin(2.0/X).
+
+	evald(X, Y) :-
+		Y is 1 + 2*X*sin(2.0/X) - 2*cos(2.0/X). 
+
+:- end_object.
+
+
+
 :- object(bisection,
 	implements(find_rootp)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura and Paulo Nunes',
-		date is 2006/11/26,
+		date is 2007/7/7,
 		comment is 'Bisection algorithm.']).
 
 	find_root(Function, A, B, Error, Zero) :-
@@ -110,19 +127,15 @@
 			true
 		;	Fa < 0.0, Fb > 0.0
 		),
-		X0 is (A + B) / 2,
+		X0 is (A + B) / 2.0,
 		Function::eval(X0, F0),
 		bisection(Function, A, B, X0, F0, Error, Zero).
 
-	bisection(_, _, _, Xn1, 0.0, _, Xn1) :-
+	bisection(_, _, _, Xn, Fn, Error, Xn) :-
+		abs(Fn) < Error,
 		!.
-
-	bisection(_, Xn1, Xn, _, _, Error, Xn1) :-
-		abs(Xn1 - Xn) < Error,
-		!.
-
 	bisection(Function, An, Bn, _, _, Error, Zero) :-
-		Xn1 is (An + Bn) / 2,
+		Xn1 is (An + Bn) / 2.0,
 		Function::eval(Xn1, Fn1),
 		Function::eval(An, FAn),
 		(	Fn1*FAn < 0.0 ->
@@ -141,41 +154,29 @@
 	implements(find_rootp)).
 
 	:- info([
-		version is 1.1,
-		author is 'Paulo Moura and Paulo Nunes',
-		date is 2006/11/26,
+		version is 1.2,
+		author is 'Paul Crocker .. No More Coffee',
+		date is 2007/07/06,
 		comment is 'Newton algorithm.']).
 
-	find_root(Function, Xa, Xb, Deviation, Zero) :-
-		X0 is (Xa + Xb) / 2, 
-		newton(Function, X0, Deviation, Zero).
+    %Choose Ac so that First Point will be midpoint	
+    find_root(Function, Xa, Xb, Deviation, Zero) :-
+		Ac is (Xb - Xa) / 2,		
+		newton(Function, Xa, Ac,Deviation, Zero).
 
-	newton(Function, X0, Deviation, Zero) :-
-		Xn1 is X0,
-		Function::eval(Xn1, Fn1),
-		Function::evald(Xn1, DFn1),
-		Ac is -(Fn1 / DFn1), 
-		newton(Function, Xn1, Deviation, Fn1, Ac, Zero).
-
-	% test deviation
-	newton(_, Xn1, Deviation, _, Ac, Xn1) :-
-		abs(Ac) < Deviation,  
+    % Terminal Case
+	newton(_, Zero, Ac, Deviation,Zero) :-
+		abs(Ac) < Deviation,
 		!.
 
-	% test solution
-	newton(_, Xn1, _, 0.0, _, Xn1) :-
-		!.
-
-	% calc
-	newton(Function, Xn, Deviation, _, Ac, Zero) :-
-		Xn1 is Xn + Ac,
-		Function::eval(Xn1, Fn1),
-		Function::evald(Xn1, DFn1),
-		Ac1 is (-(Fn1 / DFn1)), 
-		newton(Function, Xn1, Deviation, Fn1, Ac1, Zero).			
+    newton(Function, X0, Ac, Deviation, Zero):-
+        Xn1 is X0 + Ac,
+        Function::eval(Xn1,Fx),
+        Function::evald(Xn1,DFx),
+        Ac2 is -(Fx/DFx),
+        newton(Function, Xn1, Ac2, Deviation, Zero).	
 
 :- end_object.
-
 
 
 :- object(muller,
@@ -188,16 +189,16 @@
 		comment is 'Muller algorithm.']).
 
 	find_root(Function, Xa, Xb, Deviation, Zero) :-
-		Xc is (Xa + Xb) / 2, 
+		Xc is (Xa + Xb) / 2.0, 
 		muller(Function, Xa, Xc, Xb, Deviation, Zero).
 
 	muller(Function, Xa, Xb, Xc, Deviation, Zero) :-
 		Function::eval(Xa, Ya),
 		Function::eval(Xb, Yb),
 		Function::eval(Xc, Yc),
-		H1 is (Xb - Xa),
-		DDba is ((Yb - Ya) / H1),
-		Ac is (Deviation + 1),
+		H1 is Xb - Xa,
+		DDba is (Yb - Ya) / H1,
+		Ac is Deviation + 1.0,
 		muller(Function, Xa, Xb, Xc, Deviation, Ya, Yb, Yc, Ac, H1, DDba, Zero).
 
 	% complex
@@ -215,11 +216,11 @@
 
 	% calc
 	muller(Function, Xa, Xb, Xc, Deviation, _, Yb, Yc, _, _, DDba, Zero) :-
-		H2n is (Xc - Xb),
-		DDcbn is ((Yc - Yb) / H2n),
-		Cn is ((DDcbn - DDba) / (Xc - Xa)),
-		Bn is (DDcbn + H2n * Cn),
-		Rn is (Bn * Bn - 4.0 * Yc * Cn),
+		H2n is Xc - Xb,
+		DDcbn is (Yc - Yb) / H2n,
+		Cn is (DDcbn - DDba) / (Xc - Xa),
+		Bn is DDcbn + H2n * Cn,
+		Rn is Bn * Bn - 4.0 * Yc * Cn,
 		% complex
 		% write(Rn),
 		(	Rn < 0.0 ->
@@ -228,10 +229,10 @@
 		;	V is sqrt(Rn)
 		),
 		(	Bn > 0.0 ->
-			Dn is (Bn + V) 
-		;	Dn is (Bn - V)
+			Dn is Bn + V
+		;	Dn is Bn - V
 		),
-		Acn is (-(2 * Yc / Dn)),
+		Acn is -(2 * Yc / Dn),
 		Xan is Xb,
 		Xbn is Xc,
 		Xcn is Xc + Acn,
@@ -264,11 +265,9 @@
 
 	find_root(Function, A, B, Error, Zero, Algorithm) :-
 		threaded((
-			(bisection::find_root(Function, A, B, Error, Zero), Algorithm = bisection)
-			;
-			(newton::find_root(Function, A, B, Error, Zero), Algorithm = newton)
-			;
-			(muller::find_root(Function, A, B, Error, Zero), Algorithm = muller)
-		)).
+				(bisection::find_root(Function, A, B, Error, Zero), Algorithm = bisection)
+			;	(newton::find_root(Function, A, B, Error, Zero), Algorithm = newton)
+			;	(muller::find_root(Function, A, B, Error, Zero), Algorithm = muller)
+			)).
 
 :- end_object.

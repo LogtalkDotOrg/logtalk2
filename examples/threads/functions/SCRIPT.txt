@@ -63,3 +63,9 @@ yes
 Zero = 1.4142135623731
 Method = newton 
 yes
+
+| ?- function_root::find_root(f4, -1.0, 2.0, 1e-15, Zero, Method).
+
+Zero = -8.88178e-16,
+Method = bisection 
+yes
