@@ -21,7 +21,7 @@ RELEASE NOTES
 	threaded/1 predicate).
 
 	Corrected a bug in the implementation of the multi-threading built-in 
-	predicate threaded_exit/1 when there is more than one thread running 
+	predicate threaded_exit/1 when there are more than one thread running 
 	the same non-deterministic goal (the fix ensures that all alternative 
 	solutions per threaded_exit/1 call come from the same computing thread). 
 	Thanks to Paul Crocker for the suggested bug fix solution.
