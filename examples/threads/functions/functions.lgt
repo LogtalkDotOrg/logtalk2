@@ -13,12 +13,6 @@
 		comment is 'Find the root of a function in the interval [A, B] given a maximum aproximation error.',
 		argnames is ['Function', 'A', 'B', 'Error', 'Zero']]).
 
-	:- public(find_root/6).
-	:- mode(find_root(+object_identifier, +float, +float, +float, -float, -object_identifier), one).
-	:- info(find_root/6, [
-		comment is 'Find the root of a function in the interval [A, B] given a maximum aproximation error. Return the method used.',
-		argnames is ['Function', 'A', 'B', 'Error', 'Zero', 'Method']]).
-
 :- end_protocol.
 
 
@@ -260,8 +254,11 @@
 
 	:- threaded.
 
-	find_root(Function, A, B, Error, Zero) :-
-		find_root(Function, A, B, Error, Zero, _).
+	:- public(find_root/6).
+	:- mode(find_root(+object_identifier, +float, +float, +float, -float, -object_identifier), one).
+	:- info(find_root/6, [
+		comment is 'Find the root of a function in the interval [A, B] given a maximum aproximation error. Return the method used.',
+		argnames is ['Function', 'A', 'B', 'Error', 'Zero', 'Method']]).
 
 	find_root(Function, A, B, Error, Zero, Algorithm) :-
 		threaded((
@@ -269,5 +266,8 @@
 			;	(newton::find_root(Function, A, B, Error, Zero), Algorithm = newton)
 			;	(muller::find_root(Function, A, B, Error, Zero), Algorithm = muller)
 			)).
+
+	find_root(Function, A, B, Error, Zero) :-
+		find_root(Function, A, B, Error, Zero, _).
 
 :- end_object.
