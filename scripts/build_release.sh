@@ -2,7 +2,7 @@
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
-## Release 2.30.3
+## Release 2.30.4
 ##
 ## Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ## ================================================================
@@ -29,17 +29,17 @@ chmod a+x xml/*.sh
 chmod a-x xml/*.js
 
 cd ..
-cp -R logtalk/manuals man2303
-tar -czf man2303.tgz man2303
-mv logtalk lgt2303
-tar -cjf lgt2303.tar.bz2 lgt2303
+cp -R logtalk/manuals man2304
+tar -czf man2304.tgz man2304
+mv logtalk lgt2304
+tar -cjf lgt2304.tar.bz2 lgt2304
 
 mkdir -p debian/usr/bin
 mkdir -p debian/usr/share/doc/logtalk
 mkdir -p debian/usr/share/doc-base
 mkdir -p debian/usr/share/menu
 mkdir -p debian/DEBIAN
-cd lgt2303/scripts
+cd lgt2304/scripts
 ./install.sh $dir/debian/usr
 cp debian/logtalk.doc-base $dir/debian/usr/share/doc-base/logtalk-docs
 cp debian/menu $dir/debian/usr/share/menu/logtalk
@@ -57,30 +57,30 @@ cp debian/postinst $dir/debian/DEBIAN
 cp debian/prerm $dir/debian/DEBIAN
 cp debian/postrm $dir/debian/DEBIAN
 cd $dir
-dpkg-deb --build debian logtalk_2.30.3-1_all.deb
+dpkg-deb --build debian logtalk_2.30.4-1_all.deb
 
-md5="`md5 -q lgt2303.tar.bz2`"
+md5="`md5 -q lgt2304.tar.bz2`"
 sudo mkdir -p /opt/local/var/db/dports/distfiles/logtalk
-sudo cp -f lgt2303.tar.bz2 /opt/local/var/db/dports/distfiles/logtalk/lgt2303.tar.bz2
+sudo cp -f lgt2304.tar.bz2 /opt/local/var/db/dports/distfiles/logtalk/lgt2304.tar.bz2
 cd /opt/local/var/db/dports/sources/rsync.rsync.darwinports.org_dpupdate_dports/lang/logtalk/
 sudo cp -f Portfile Portfile.old
-sudo sed -e 's/^version.*/version 2.30.3/' -i '' Portfile
+sudo sed -e 's/^version.*/version 2.30.4/' -i '' Portfile
 sudo sed -e "s/^checksums.*/checksums md5 $md5/" -i '' Portfile
-sudo sed -e 's/^distname.*/distname lgt2303/' -i '' Portfile
+sudo sed -e 's/^distname.*/distname lgt2304/' -i '' Portfile
 sudo sed -e 's/^extract\.suffix.*/extract.suffix .tar.bz2/' -i '' Portfile
 sudo port clean --archive logtalk
 sudo port destroot logtalk
 sudo port pkg logtalk
-cp -R work/logtalk-2.30.3.pkg $dir
+cp -R work/logtalk-2.30.4.pkg $dir
 sudo port clean logtalk
 
 cd $dir
-mkdir manpdf2303
-cd man2303/userman
+mkdir manpdf2304
+cd man2304/userman
 ./userman.sh
-mv userman.pdf ../../manpdf2303
+mv userman.pdf ../../manpdf2304
 cd ../refman
 ./refman.sh
-mv refman.pdf ../../manpdf2303
+mv refman.pdf ../../manpdf2304
 cd ../..
-tar -czf manpdf2303.tgz manpdf2303
+tar -czf manpdf2304.tgz manpdf2304
