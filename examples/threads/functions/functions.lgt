@@ -177,7 +177,7 @@
 	implements(find_rootp)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura and Paulo Nunes',
 		date is 2006/11/26,
 		comment is 'Muller algorithm.']).
@@ -195,17 +195,9 @@
 		Ac is Deviation + 1.0,
 		muller(Function, Xa, Xb, Xc, Deviation, Ya, Yb, Yc, Ac, H1, DDba, Zero).
 
-	% complex
-	muller(_, _, _, complex, _,  _, _, _, _, _, _, complex) :- 
-		!.
-
 	% test deviation
 	muller(_, _, _, Xc, Deviation, _, _, _, Ac, _, _, Xc) :-
 		abs(Ac) < Deviation,  
-		!.
-
-	% test solution
-	muller(_, _, _, Xc, _, _, _, 0.0, _, _, _, Xc) :-
 		!.
 
 	% calc
@@ -215,11 +207,8 @@
 		Cn is (DDcbn - DDba) / (Xc - Xa),
 		Bn is DDcbn + H2n * Cn,
 		Rn is Bn * Bn - 4.0 * Yc * Cn,
-		% complex
-		% write(Rn),
 		(	Rn < 0.0 ->
-			muller(Function, _, _, complex, Deviation, _, _, _, _, _, _, Zero),
-			!, fail
+			fail
 		;	V is sqrt(Rn)
 		),
 		(	Bn > 0.0 ->
@@ -230,11 +219,9 @@
 		Xan is Xb,
 		Xbn is Xc,
 		Xcn is Xc + Acn,
-
 		Yan is Yb,
 		Ybn is Yc,
 		Function::eval(Xcn, Ycn),
-
 		H1n is H2n,
 		DDban is DDcbn,
 		muller(Function, Xan, Xbn, Xcn, Deviation, Yan, Ybn, Ycn, Acn, H1n, DDban, Zero).
