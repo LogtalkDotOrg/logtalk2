@@ -10,6 +10,14 @@ RELEASE NOTES
 =============
 
 
+2.30.4 - ???? ??, 2007
+
+	Updated the "threads/philosophers" example to use notifications instead 
+	of a dynamic predicate for representing chopstick availability. Added an 
+	alternative implementation using a parametric object. Improved example 
+	documentation.
+
+
 2.30.3 - July 9, 2007
 
 	Updated the multi-threading built-in predicate threaded/1 to support 
