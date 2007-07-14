@@ -28,13 +28,13 @@
 	:- public(eval/2).
 	:- mode(eval(+float, -float), one).
 	:- info(eval/2, [
-		comment is 'Calculate the function value.',
+		comment is 'Calculates the function value.',
 		argnames is ['X', 'Fx']]).
 
 	:- public(evald/2).
 	:- mode(evald(+float, -float), one).
 	:- info(evald/2, [
-		comment is 'Calculate the value of the function derivative.',
+		comment is 'Calculates the value of the function derivative.',
 		argnames is ['X', 'DFx']]).
 
 :- end_protocol.
@@ -149,24 +149,21 @@
 
 	:- info([
 		version is 1.2,
-		author is 'Paul Crocker .. No More Coffee',
+		author is 'Paul Crocker... No More Coffee',
 		date is 2007/07/06,
 		comment is 'Newton algorithm.']).
 
-    %Choose Ac so that First Point will be midpoint	
     find_root(Function, Xa, Xb, Deviation, Zero) :-
 		Ac is (Xb - Xa) / 2,		
-		newton(Function, Xa, Ac,Deviation, Zero).
+		newton(Function, Xa, Ac, Deviation, Zero).
 
-    % Terminal Case
-	newton(_, Zero, Ac, Deviation,Zero) :-
+	newton(_, Zero, Ac, Deviation, Zero) :-
 		abs(Ac) < Deviation,
 		!.
-
     newton(Function, X0, Ac, Deviation, Zero):-
         Xn1 is X0 + Ac,
-        Function::eval(Xn1,Fx),
-        Function::evald(Xn1,DFx),
+        Function::eval(Xn1, Fx),
+        Function::evald(Xn1, DFx),
         Ac2 is -(Fx/DFx),
         newton(Function, Xn1, Ac2, Deviation, Zero).	
 
@@ -195,12 +192,9 @@
 		Ac is Deviation + 1.0,
 		muller(Function, Xa, Xb, Xc, Deviation, Ya, Yb, Yc, Ac, H1, DDba, Zero).
 
-	% test deviation
 	muller(_, _, _, Xc, Deviation, _, _, _, Ac, _, _, Xc) :-
 		abs(Ac) < Deviation,  
 		!.
-
-	% calc
 	muller(Function, Xa, Xb, Xc, Deviation, _, Yb, Yc, _, _, DDba, Zero) :-
 		H2n is Xc - Xb,
 		DDcbn is (Yc - Yb) / H2n,
@@ -244,7 +238,7 @@
 	:- public(find_root/6).
 	:- mode(find_root(+object_identifier, +float, +float, +float, -float, -object_identifier), one).
 	:- info(find_root/6, [
-		comment is 'Find the root of a function in the interval [A, B] given a maximum aproximation error. Return the method used.',
+		comment is 'Finds the root of a function in the interval [A, B] given a maximum aproximation error. Returns the method used.',
 		argnames is ['Function', 'A', 'B', 'Error', 'Zero', 'Method']]).
 
 	find_root(Function, A, B, Error, Zero, Algorithm) :-
@@ -253,6 +247,15 @@
 			;	(newton::find_root(Function, A, B, Error, Zero), Algorithm = newton)
 			;	(muller::find_root(Function, A, B, Error, Zero), Algorithm = muller)
 			)).
+
+%	an alternative, possibly better definition would be to make the methods simply fail in case of error:
+%
+%	find_root(Function, A, B, Error, Zero, Algorithm) :-
+%		threaded((
+%				(catch(bisection::find_root(Function, A, B, Error, Zero), _, fail), Algorithm = bisection)
+%			;	(catch(newton::find_root(Function, A, B, Error, Zero), _, fail), Algorithm = newton)
+%			;	(catch(muller::find_root(Function, A, B, Error, Zero), _, fail), Algorithm = muller)
+%			)).
 
 	find_root(Function, A, B, Error, Zero) :-
 		find_root(Function, A, B, Error, Zero, _).
