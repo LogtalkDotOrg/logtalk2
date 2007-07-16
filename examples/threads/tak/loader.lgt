@@ -1,3 +1,3 @@
 
 :- initialization(
-	logtalk_load(tak])). 
+	logtalk_load(tak)). 
