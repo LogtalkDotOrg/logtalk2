@@ -36,14 +36,19 @@ Yes
 
 % single-threaded version:
 
-| ?- time(tak::tak_st(24, 16, 8, R)).
+| ?- time(tak::tak_st(21, 14, 7, R)).
+% 1,583,066 inferences, 12.40 CPU in 12.53 seconds (99% CPU, 127667 Lips)
 
-...
+R = 14 
+
+Yes
 
 
 % multi-threaded version:
 
-| ?- time(tak::tak_mt(24, 16, 8, R)).
+| ?- time(tak::tak_mt(21, 14, 7, R)).
+% 122 inferences, 11.98 CPU in 7.74 seconds (155% CPU, 10 Lips)
 
-...
+R = 14 
 
+Yes
