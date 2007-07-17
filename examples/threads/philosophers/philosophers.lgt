@@ -35,8 +35,6 @@
 	:- threaded.
 	:- initialization(threaded_notify(available)).
 
-	available.
-
 :- end_object.
 
 
@@ -45,8 +43,6 @@
 
 	:- threaded.
 	:- initialization(threaded_notify(available)).
-
-	available.
 
 :- end_object.
 
@@ -57,8 +53,6 @@
 	:- threaded.
 	:- initialization(threaded_notify(available)).
 
-	available.
-
 :- end_object.
 
 
@@ -68,8 +62,6 @@
 	:- threaded.
 	:- initialization(threaded_notify(available)).
 
-	available.
-
 :- end_object.
 
 
@@ -78,8 +70,6 @@
 
 	:- threaded.
 	:- initialization(threaded_notify(available)).
-
-	available.
 
 :- end_object.
 
@@ -136,8 +126,6 @@
 		message(['Philosopher ', Philosopher, ' thinking for ', ThinkTime, ' seconds.']),
 		thread_sleep(ThinkTime).
 
-	% deadlock while a philosopher is trying to eat is prevented by putting
-	% down the first chopstick when picking up the second one fails:
 	eat(MaxTime):-
 		this(Philosopher),
 		random(1, MaxTime, EatTime),
@@ -265,8 +253,6 @@
 		message(['Philosopher ', Philosopher, ' thinking for ', ThinkTime, ' seconds.']),
 		thread_sleep(ThinkTime).
 
-	% deadlock while a philosopher is trying to eat is prevented by putting
-	% down the first chopstick when picking up the second one fails:
 	eat(MaxTime):-
 		random(1, MaxTime, EatTime),
 		parameter(2, LeftStick),
