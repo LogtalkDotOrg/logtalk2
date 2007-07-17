@@ -7,8 +7,6 @@
 		date is 2007/3/19,
 		comment is 'Dining philosophers problem: chopstick representation.']).
 
-	:- synchronized.
-
 	:- public(pick_up/0).
 	:- mode(pick_up, zero_or_one).
 	:- info(pick_up/0, [
