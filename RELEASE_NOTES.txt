@@ -12,6 +12,8 @@ RELEASE NOTES
 
 2.30.4 - ???? ??, 2007
 
+	Updated config file for Qu-Prolog 8.0.
+
 	Added a new multi-threading example, "threads/tak", implementing the 
 	Takeuchi function (recursive arithmetic).
 
