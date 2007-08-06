@@ -6128,12 +6128,14 @@ current_logtalk_flag(version, version(2, 30, 4)).
 % pre-processor bypass (call of external code)
 
 '$lgt_tr_body'({Pred}, _, _, _) :-
-	var(Pred),
-	throw(instantiation_error).
-
-'$lgt_tr_body'({Pred}, _, _, _) :-
+	nonvar(Pred),
 	\+ callable(Pred),
 	throw(type_error(callable, Pred)).
+
+'$lgt_tr_body'({Pred}, call(Pred), '$lgt_dbg_goal'({Pred}, call(Pred), DbgCtx), Ctx) :-
+	var(Pred),
+	!,
+	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 '$lgt_tr_body'({Pred}, Pred, '$lgt_dbg_goal'({Pred}, Pred, DbgCtx), Ctx) :-
 	!,
