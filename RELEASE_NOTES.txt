@@ -24,9 +24,12 @@ RELEASE NOTES
 	alternative implementation using a parametric object. Improved example 
 	documentation.
 
-	Updated Emacs support in order to fix problems with syntax-coloring of 
-	some Logtalk built-in predicates and applied a patch contributed by 
+	Updated Emacs support in order to fix problems with the syntax-coloring 
+	of some Logtalk built-in predicates and applied a patch contributed by 
 	Nicolas Pelletier to workaround a compatibility problem with XEmacs.
+
+	Updated jEdit support in order to fix a problem with the syntax-coloring 
+	of the :/1 control construct.
 
 
 2.30.3 - July 9, 2007
