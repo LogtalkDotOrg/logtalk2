@@ -10,11 +10,14 @@ RELEASE NOTES
 =============
 
 
-2.30.4 - ???? ??, 2007
+2.30.4 - August ??, 2007
 
 	Allow the argument of {}/1 calls to be a variable at compile time.
 
 	Updated config file for Qu-Prolog 8.0.
+
+	Updated the XSB config files to take advantage of the compiler option 
+	optimize/1 when loading Logtalk-generated Prolog intermediate files.
 
 	Added a new multi-threading example, "threads/tak", implementing the 
 	Takeuchi function (recursive arithmetic).
