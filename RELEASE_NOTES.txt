@@ -27,6 +27,9 @@ RELEASE NOTES
 	alternative implementation using a parametric object. Improved example 
 	documentation.
 
+	Updated the "benchmarks" example to allow comparisons between calls to 
+	imported category predicates and calls to local object predicates.
+
 	Updated Emacs support in order to fix problems with the syntax-coloring 
 	of some Logtalk built-in predicates and applied a patch contributed by 
 	Nicolas Pelletier to workaround a compatibility problem with XEmacs.

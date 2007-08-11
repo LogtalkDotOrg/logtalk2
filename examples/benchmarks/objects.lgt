@@ -33,6 +33,16 @@
 	ctg_direct :-
 		:ctg_pred.
 
+	:- public(obj_local/0).
+
+	% call a local object predicate directly; used for comparing performance with 
+	% calls to category predicates using the ::/1 and :/1 control constructs
+
+	obj_local :-
+		local_pred.
+
+	local_pred.
+
 :- end_object.
 
 
