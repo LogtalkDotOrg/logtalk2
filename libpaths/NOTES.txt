@@ -49,6 +49,7 @@ Prolog compilers that are expected to be compatible with the provided
 	* SICStus Prolog
 	* SWI-Prolog
 	* YAP
+	* XSB
 
 Prolog compilers that imply editing the provided "libpaths.pl" file due 
 to the lack of support for expanding environment variables on paths:
@@ -56,6 +57,5 @@ to the lack of support for expanding environment variables on paths:
 	* Amzi! Prolog
 	* IF/Prolog
 	* JIProlog
-	* XSB (version 3.0.1 or older)
 
 Feedback on other Prolog compilers is most appreciated.
