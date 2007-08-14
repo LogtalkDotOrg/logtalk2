@@ -57,8 +57,4 @@ elif ! [ -d "$LOGTALKUSER" ]; then
 fi
 echo
 
-if xsb -v 2>&1 | grep "CVS" 2>&1 >/dev/null; then
-	exec xsb -l -e "['$LOGTALKUSER/configs/xsbcvs.pl', '$LOGTALKHOME/compiler/logtalk.pl', '$LOGTALKUSER/libpaths/libpaths.pl']." "$@"
-else
-	exec xsb -l -e "['$LOGTALKUSER/configs/xsb.pl', '$LOGTALKHOME/compiler/logtalk.pl', '$LOGTALKUSER/libpaths/libpaths_no_env_var.pl']." "$@"
-fi
+exec xsb -l -e "['$LOGTALKUSER/configs/xsb.config', '$LOGTALKHOME/compiler/logtalk.pl', '$LOGTALKUSER/libpaths/libpaths.pl']." "$@"

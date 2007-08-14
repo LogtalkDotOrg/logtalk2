@@ -446,7 +446,7 @@ SWI Prolog 5.6.x and later versions
 	supress the message on POSIX systems by using "% swilgt 2> /dev/null".
 
 
-XSB 3.0 and later versions
+XSB 3.1 and later versions
 
 	xsb.config
 

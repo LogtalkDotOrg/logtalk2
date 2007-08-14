@@ -56,8 +56,8 @@ Name: "prolog\gprolog"; Description: "GNU Prolog integration (version 1.2.16 or 
 Name: "prolog\plc"; Description: "K-Prolog integration (version 5.1.4 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\sicstus"; Description: "SICStus Prolog integration (versions 3.12.x, 4.0)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\swi"; Description: "SWI-Prolog integration (version 5.6.16 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\xsb"; Description: "XSB integration (version 3.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\yap"; Description: "YAP integration (version 5.1.1 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\xsb"; Description: "XSB integration (version 3.1 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\yap"; Description: "YAP integration (version 5.1.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 
 [Tasks]
 Name: registration; Description: "&Register {#MyAppName} (opens a web page; requires an Internet connection)"; Components: base user
@@ -84,8 +84,6 @@ Source: "C:\logtalk\library\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDi
 Source: "C:\logtalk\xml\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\xml"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
 
 Source: "C:\logtalk\configs\amzi.config"; DestDir: "{code:GetLgtUserDir}\configs"; DestName: "amzi.pro"; Components: user; Flags: ignoreversion uninsneveruninstall
-Source: "C:\logtalk\configs\xsb.config"; DestDir: "{code:GetLgtUserDir}\configs"; DestName: "xsb.pl"; Components: user; Flags: ignoreversion uninsneveruninstall
-Source: "C:\logtalk\configs\xsbcvs.config"; DestDir: "{code:GetLgtUserDir}\configs"; DestName: "xsbcvs.pl"; Components: user; Flags: ignoreversion uninsneveruninstall
 Source: "C:\logtalk\libpaths\libpaths.pl"; DestDir: "{code:GetLgtUserDir}\libpaths"; DestName: "libpaths_no_env_var.pl"; Components: user; Flags: ignoreversion uninsneveruninstall
 
 Source: "C:\logtalk\scripts\*.bat"; DestDir: "{win}"; Components: base; Flags: ignoreversion
@@ -121,9 +119,7 @@ Name: "{group}\Logtalk - SICStus Prolog 4"; Filename: "{code:GetSP4ExePath}"; Pa
 
 Name: "{group}\Logtalk - SWI-Prolog"; Filename: "{code:GetSWIExePath}"; Parameters: "-f ""%LOGTALKHOME%\integration\logtalk_swi.pl"""; Comment: "Runs Logtalk with SWI-Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\swi; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - XSB"; Filename: "C:\XSB\config\x86-pc-windows\bin\xsb.exe"; Parameters: "-l -e ""['%LOGTALKUSER%\\configs\\xsb.pl', '%LOGTALKHOME%\\compiler\\logtalk.pl', '%LOGTALKUSER%\\libpaths\\libpaths_no_env_var.pl']."""; Comment: "Runs Logtalk with XSB"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\xsb; Flags: createonlyiffileexists
-
-Name: "{group}\Logtalk - XSB CVS"; Filename: "C:\XSB\config\x86-pc-windows\bin\xsb.exe"; Parameters: "-l -e ""['%LOGTALKUSER%\\configs\\xsbcvs.pl', '%LOGTALKHOME%\\compiler\\logtalk.pl', '%LOGTALKUSER%\\libpaths\\libpaths.pl']."""; Comment: "Runs Logtalk with XSB CVS"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\xsb; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - XSB"; Filename: "C:\XSB\config\x86-pc-windows\bin\xsb.exe"; Parameters: "-l -e ""['%LOGTALKUSER%\\configs\\xsb.config', '%LOGTALKHOME%\\compiler\\logtalk.pl', '%LOGTALKUSER%\\libpaths\\libpaths.pl']."""; Comment: "Runs Logtalk with XSB"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\xsb; Flags: createonlyiffileexists
 
 Name: "{group}\Logtalk - YAP"; Filename: "C:\Yap\bin\yap.exe"; Parameters: "-l ""$LOGTALKHOME/integration/logtalk_yap.pl"""; Comment: "Runs Logtalk with YAP"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\yap; Flags: createonlyiffileexists
 
