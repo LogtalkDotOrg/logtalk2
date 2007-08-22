@@ -60,9 +60,9 @@ cd $dir
 dpkg-deb --build debian logtalk_2.30.4-1_all.deb
 
 md5="`md5 -q lgt2304.tar.bz2`"
-sudo mkdir -p /opt/local/var/db/dports/distfiles/logtalk
-sudo cp -f lgt2304.tar.bz2 /opt/local/var/db/dports/distfiles/logtalk/lgt2304.tar.bz2
-cd /opt/local/var/db/dports/sources/rsync.rsync.darwinports.org_dpupdate_dports/lang/logtalk/
+sudo mkdir -p /opt/local/var/macports/distfiles/logtalk
+sudo cp -f lgt2304.tar.bz2 /opt/local/var/macports/distfiles/logtalk/lgt2304.tar.bz2
+cd /opt/local/var/macports/sources/rsync.macports.org/release/ports/lang/logtalk/
 sudo cp -f Portfile Portfile.old
 sudo sed -e 's/^version.*/version 2.30.4/' -i '' Portfile
 sudo sed -e "s/^checksums.*/checksums md5 $md5/" -i '' Portfile
