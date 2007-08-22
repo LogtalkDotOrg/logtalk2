@@ -10,18 +10,18 @@ RELEASE NOTES
 =============
 
 
-2.30.4 - August ??, 2007
+2.30.4 - August 22, 2007
 
 	Allow the argument of {}/1 calls to be a variable at compile time.
 
 	Updated the Qu-Prolog config file to match and require version 8.1 and 
-	added "qplgt" integration script.
+	added a "qplgt" integration script.
 
 	Updated the XSB config file to match and require version 3.1 and to 
 	take advantage of the compiler option optimize/1 when loading Logtalk 
 	generated Prolog intermediate files.
 
-	Added a new library object, "lgtunit", providing prelimary support for 
+	Added a new library object, "lgtunit", providing preliminary support for 
 	writing and running unit tests. Added a new example, "testing", defining 
 	sample unit tests.
 
