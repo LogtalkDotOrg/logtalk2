@@ -328,7 +328,7 @@ PrologII+ 4.5 and later versions
 	Does not support the "altdirs" compiler flag.
 
 
-Qu-Prolog 8.0
+Qu-Prolog 8.1
 
 	qu.config
 

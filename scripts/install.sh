@@ -76,7 +76,7 @@ ln -sf ../share/logtalk/integration/cxlgt.sh cxlgt
 ln -sf ../share/logtalk/integration/eclipselgt.sh eclipselgt
 ln -sf ../share/logtalk/integration/gplgt.sh gplgt
 ln -sf ../share/logtalk/integration/plclgt.sh plclgt
-#ln -sf ../share/logtalk/integration/qplgt.sh qplgt
+ln -sf ../share/logtalk/integration/qplgt.sh qplgt
 ln -sf ../share/logtalk/integration/sicstuslgt.sh sicstuslgt
 ln -sf ../share/logtalk/integration/swilgt.sh swilgt
 ln -sf ../share/logtalk/integration/xsblgt.sh xsblgt
@@ -91,6 +91,7 @@ echo "  CxProlog:       cxlgt"
 echo "  ECLiPSe:        eclipselgt"
 echo "  GNU Prolog:     gplgt"
 echo "  K-Prolog:       plclgt"
+echo "  Qu-Prolog:      qplgt"
 echo "  SICStus Prolog: sicstuslgt"
 echo "  SWI-Prolog:     swilgt"
 echo "  XSB:            xsblgt      (first run must use sudo)"

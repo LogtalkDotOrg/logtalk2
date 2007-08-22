@@ -14,7 +14,8 @@ RELEASE NOTES
 
 	Allow the argument of {}/1 calls to be a variable at compile time.
 
-	Updated the Qu-Prolog config file to match and require version 8.0.
+	Updated the Qu-Prolog config file to match and require version 8.1 and 
+	added "qplgt" integration script.
 
 	Updated the XSB config file to match and require version 3.1 and to 
 	take advantage of the compiler option optimize/1 when loading Logtalk 
