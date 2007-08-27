@@ -2,9 +2,9 @@
 :- object(lgtunit).
 
 	:- info([
-		version is 0.1,
+		version is 0.2,
 		author is 'Paulo Moura',
-		date is 2007/08/5,
+		date is 2007/08/27,
 		comment is 'Logtalk unit test framework.']).
 
 	:- public(succeeds/2).
@@ -84,10 +84,10 @@
 	test_throws(Test, Goal, Error) :-
 		(	catch({Goal}, Ball, ((Ball = Error -> passed_test(Test, Goal); failed_test(Test, Goal)), Flag = error)) ->
 			(	var(Flag) ->
-				failed_test(Test, Goal, Error)
+				failed_test(Test, Goal)
 			;	true
 			)
-		;	failed_test(Test, Goal, Error)
+		;	failed_test(Test, Goal)
 		).
 
 	passed_test(Test, _Goal) :-
