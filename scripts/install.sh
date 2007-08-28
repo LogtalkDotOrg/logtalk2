@@ -8,10 +8,14 @@
 ## ================================================================
 
 if [ -z "$1" ]; then
-	case $( uname -s ) in
-		Darwin	) prefix=/opt/local;;
-		*		) prefix=/usr/local;;
-	esac
+	if [ -f "/etc/debian_version" ]; then
+		prefix=/usr
+	else
+		case $( uname -s ) in
+			Darwin	) prefix=/opt/local;;
+			*		) prefix=/usr/local;;
+		esac
+	fi
 	mkdir -p $prefix
 else
 	prefix="$1"

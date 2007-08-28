@@ -16,7 +16,8 @@ RELEASE NOTES
 	failed_test/2 predicate calls).
 
 	Simplified installation scripts by moving shared sanitization code into 
-	the "cleandist.sh" script.
+	the "cleandist.sh" script. Updated the "install.sh" script to set the 
+	installation prefix to "/usr" on Debian systems.
 
 
 2.30.4 - August 22, 2007
