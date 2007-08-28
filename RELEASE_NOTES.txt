@@ -15,6 +15,9 @@ RELEASE NOTES
 	Corrected a bug in the library object "lgtunit" (wrong arity on two 
 	failed_test/2 predicate calls).
 
+	Simplified installation scripts by moving shared sanitization code into 
+	the "cleandist.sh" script.
+
 
 2.30.4 - August 22, 2007
 

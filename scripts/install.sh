@@ -38,21 +38,8 @@ cd ..
 cp -R * $prefix/share/lgt2305
 
 cd $prefix/share/lgt2305
+chmod a+x scripts/cleandist.sh
 scripts/cleandist.sh
-find . -type f -print0 | xargs -0 chmod 644
-find . -type d -print0 | xargs -0 chmod 755
-chmod a+x integration/*.sh
-chmod a+x manuals/userman/*.sh
-chmod a+x manuals/refman/*.sh
-chmod a+x scripts/*.sh
-chmod a-x scripts/*.js
-chmod a+x scripts/debian/postinst
-chmod a+x scripts/debian/prerm
-chmod a+x scripts/debian/postrm
-chmod a+x scripts/linux/*.sh
-chmod a+x scripts/macosx/postflight
-chmod a+x xml/*.sh
-chmod a-x xml/*.js
 
 cd ..
 ln -sf lgt2305 logtalk

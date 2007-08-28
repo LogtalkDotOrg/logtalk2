@@ -25,16 +25,10 @@ rm -rf /usr/local/share/lgt2305
 rm -f /usr/local/share/logtalk
 mkdir /usr/local/share/lgt2305
 cp -R * /usr/local/share/lgt2305
-cd /usr/local/share
-find lgt2305 -type f -print0 | xargs -0 chmod 644
-find lgt2305 -type d -print0 | xargs -0 chmod 755
-chmod a+x lgt2305/integration/*.sh
-chmod a+x lgt2305/scripts/*.sh
-chmod a-x lgt2305/scripts/*.js
-chmod a+x lgt2305/scripts/linux/*.sh
-chmod a+x lgt2305/scripts/macosx/postflight
-chmod a+x lgt2305/xml/*.sh
-chmod a-x lgt2305/xml/*.js
+cd /usr/local/share/lgt2305
+chmod a+x scripts/cleandist.sh
+scripts/cleandist.sh
+cd ..
 ln -sf lgt2305 logtalk
 cd ..
 mkdir -p bin 
