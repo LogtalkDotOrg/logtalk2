@@ -48,7 +48,28 @@ ln -sf ../share/logtalk/scripts/cplgtdirs.sh cplgtdirs
 ln -sf ../share/logtalk/xml/lgt2pdf.sh lgt2pdf
 ln -sf ../share/logtalk/xml/lgt2html.sh lgt2html
 ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
+
 %clean
+cd /usr/local/share
+rm -rf lgt2305
+rm -f logtalk
+cd ../bin
+rm -f bplgt
+rm -f ciaolgt
+rm -f cplgtdirs
+rm -f cxlgt
+rm -f eclipselgt
+rm -f gplgt
+rm -f lgt2html
+rm -f lgt2pdf
+rm -f lgt2xml
+rm -f plclgt
+rm -f qplgt
+rm -f sicstuslgt
+rm -f swilgt
+rm -f xsblgt
+rm -f yaplgt
+
 %files
 %defattr(-,root,root)
 %doc /usr/local/share/lgt2305/BIBLIOGRAPHY.bib
