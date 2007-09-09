@@ -134,6 +134,30 @@ The example on the previous section with prime numbers could be rewritten using 
 prime_numbers(N, M, Acc, Primes) :-
     ...
 </pre>
+<p>
+When using asynchronous calls, the link between a <code>threaded_exit/1</code> call and the corresponding <code>threaded_call/1</code> call is made using unification. If there are several <code>threaded_call/1</code> calls for a matching <code>threaded_exit/1</code> call, the connection can be established with any of them. Nevertheless, you can easily use a tag for linking a <code>threaded_exit/1</code> call with a specific <code>threaded_call/1</code> call. For example, assume defined a <code>gensym/2</code> predicate that generates unique identifiers. Using this predicate you can write:
+</p>
+<pre>
+?- gensym(t, Tag), threaded_call((atom(Tag), member(X, [1,2,3]))).
+
+Tag = t1
+yes
+
+?- gensym(t, Tag), threaded_call((atom(Tag), member(X, [1,2,3]))).
+
+Tag = t2
+yes
+
+?- threaded_exit((atom(t2), member(X, [1,2,3]))).
+
+X = 1 ;
+X = 2 ;
+X = 3
+yes
+</pre>
+<p>
+Here we have used the standard built-in predicate <code>atom/1</code> for goal tagging but any other predicate that will not interfere with the threaded goal can be used.
+</p>
 
 <h2 id="threads_ignore">One-way asynchronous calls</h2>
 
@@ -223,7 +247,7 @@ Each notification posted by a call to the <code>threaded_notify/1</code> predica
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: July 4, 2007</span>
+		<span>Last updated on: September 9, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="events.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="errors.html">next</a></span><br/>
