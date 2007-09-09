@@ -12278,9 +12278,9 @@ current_logtalk_flag(version, version(2, 30, 5)).
 
 '$lgt_mt_get_reply'(Queue, Goal, Sender, This, Self) :-
 	(	% first check if there is a thread running for proving the goal before proceeding:
-		thread_peek_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Id)) ->
+		\+ \+ thread_peek_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Id)) ->
 		% answering thread exists; go ahead and retrieve the solution(s):
-		thread_get_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Id)),
+		thread_get_message(Queue, '$lgt_thread_id'(Type, _, This, Self, Id)),
 		call_cleanup(
 			'$lgt_mt_get_reply_aux'(Type, Queue, Goal, This, Self, Id),
 			(	Type == non_deterministic ->
@@ -12297,8 +12297,8 @@ current_logtalk_flag(version, version(2, 30, 5)).
 	).
 
 
-'$lgt_mt_get_reply_aux'(deterministic, Queue, Goal, This, Self, _) :-
-	'$lgt_mt_det_reply'(Queue, Goal, This, Self).
+'$lgt_mt_get_reply_aux'(deterministic, Queue, Goal, This, Self, Id) :-
+	'$lgt_mt_det_reply'(Queue, Goal, This, Self, Id).
 
 '$lgt_mt_get_reply_aux'(non_deterministic, Queue, Goal, This, Self, Id) :-
 	'$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Id).
@@ -12307,10 +12307,10 @@ current_logtalk_flag(version, version(2, 30, 5)).
 
 % return the solution found:
 
-'$lgt_mt_det_reply'(Queue, Goal, This, Self) :-
-	thread_get_message(Queue, '$lgt_reply'(Goal, This, Self, Result, _)),
+'$lgt_mt_det_reply'(Queue, Goal, This, Self, Id) :-
+	thread_get_message(Queue, '$lgt_reply'(Reply, This, Self, Result, Id)),
 	(	Result == success ->
-		true
+		Goal = Reply
 	;	Result == failure ->
 		fail
 	;	throw(Result)
@@ -12320,9 +12320,9 @@ current_logtalk_flag(version, version(2, 30, 5)).
 % return current solution; on backtracking, ask working thread for and get from it the next solution:
 
 '$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Id) :-
-	thread_get_message(Queue, '$lgt_reply'(Goal, This, Self, Result, Id)),
+	thread_get_message(Queue, '$lgt_reply'(Reply, This, Self, Result, Id)),
 	(	Result == success ->
-		true
+		Goal = Reply
 	;	Result == failure ->
 		!,
 		fail

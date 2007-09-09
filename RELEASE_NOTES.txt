@@ -12,6 +12,10 @@ RELEASE NOTES
 
 2.30.5 - September ??, 2007
 
+	Changed the implementation of the built-in predicate threaded_exit/1 in 
+	order to avoid blocking when its argument is subsumed by the argument of 
+	the corresponding threaded_call/1 call instead of being a variant.
+
 	Corrected a bug in the library object "lgtunit" (wrong arity on two 
 	failed_test/2 predicate calls).
 
