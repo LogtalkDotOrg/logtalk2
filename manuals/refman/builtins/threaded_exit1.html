@@ -27,6 +27,9 @@
 <p>
 Retrieves the result of proving <code>Goal</code> in a new thread. This predicate blocks execution until the reply is sent to the <em>this</em> message queue by the thread executing the goal. When there is no thread proving the goal, the predicate generates an exception. This predicate is non-deterministic, providing access to any alternative solutions of its argument.
 </p>
+<p>
+The argument of this predicate should be a <em>variant</em> of the argument of the corresponding <a href="threaded_call1.html">threaded_call/1</a> call. When the predicate argument is subsumed by the <a href="threaded_call1.html">threaded_call/1</a> call argument, the <code>threaded_exit/1</code> call will succeed iff its argument is a solution of the (more general) goal.
+</p>
 
 <h4>Template and modes</h4>
 
@@ -57,7 +60,7 @@ Retrieves the result of proving <code>Goal</code> in a new thread. This predicat
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: May 29, 2007</span>
+		<span>Last updated on: September 9, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="threaded_ignore1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="threaded_peek1.html">next</a></span><br/>
