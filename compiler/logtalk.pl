@@ -6263,9 +6263,10 @@ current_logtalk_flag(version, version(2, 30, 5)).
 
 % multi-threading meta-predicates
 
-'$lgt_tr_body'(threaded(Goals), _, _, _) :-
-	'$lgt_check_for_threaded_directive'(threaded(Goals)),
-	fail.
+'$lgt_tr_body'(threaded(_), _, _, _) :-
+	\+ '$lgt_pp_threaded_',
+	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
+	throw(resource_error(threads)).
 
 '$lgt_tr_body'(threaded(Goals), _, _, _) :-
 	nonvar(Goals),
@@ -6278,9 +6279,10 @@ current_logtalk_flag(version, version(2, 30, 5)).
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
-'$lgt_tr_body'(threaded_call(Goal), _, _, _) :-
-	'$lgt_check_for_threaded_directive'(threaded_call(Goal)),
-	fail.
+'$lgt_tr_body'(threaded_call(_), _, _, _) :-
+	\+ '$lgt_pp_threaded_',
+	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
+	throw(resource_error(threads)).
 
 '$lgt_tr_body'(threaded_call(Goal), _, _, _) :-
 	nonvar(Goal),
@@ -6298,9 +6300,10 @@ current_logtalk_flag(version, version(2, 30, 5)).
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
-'$lgt_tr_body'(threaded_once(Goal), _, _, _) :-
-	'$lgt_check_for_threaded_directive'(threaded_once(Goal)),
-	fail.
+'$lgt_tr_body'(threaded_once(_), _, _, _) :-
+	\+ '$lgt_pp_threaded_',
+	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
+	throw(resource_error(threads)).
 
 '$lgt_tr_body'(threaded_once(Goal), _, _, _) :-
 	nonvar(Goal),
@@ -6318,9 +6321,10 @@ current_logtalk_flag(version, version(2, 30, 5)).
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
-'$lgt_tr_body'(threaded_ignore(Goal), _, _, _) :-
-	'$lgt_check_for_threaded_directive'(threaded_ignore(Goal)),
-	fail.
+'$lgt_tr_body'(threaded_ignore(_), _, _, _) :-
+	\+ '$lgt_pp_threaded_',
+	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
+	throw(resource_error(threads)).
 
 '$lgt_tr_body'(threaded_ignore(Goal), _, _, _) :-
 	nonvar(Goal),
@@ -6338,9 +6342,10 @@ current_logtalk_flag(version, version(2, 30, 5)).
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
-'$lgt_tr_body'(threaded_exit(Goal), _, _, _) :-
-	'$lgt_check_for_threaded_directive'(threaded_exit(Goal)),
-	fail.
+'$lgt_tr_body'(threaded_exit(_), _, _, _) :-
+	\+ '$lgt_pp_threaded_',
+	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
+	throw(resource_error(threads)).
 
 '$lgt_tr_body'(threaded_exit(Goal), _, _, _) :-
 	nonvar(Goal),
@@ -6358,9 +6363,10 @@ current_logtalk_flag(version, version(2, 30, 5)).
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
-'$lgt_tr_body'(threaded_peek(Goal), _, _, _) :-
-	'$lgt_check_for_threaded_directive'(threaded_peek(Goal)),
-	fail.
+'$lgt_tr_body'(threaded_peek(_), _, _, _) :-
+	\+ '$lgt_pp_threaded_',
+	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
+	throw(resource_error(threads)).
 
 '$lgt_tr_body'(threaded_peek(Goal), _, _, _) :-
 	nonvar(Goal),
@@ -6378,9 +6384,10 @@ current_logtalk_flag(version, version(2, 30, 5)).
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
-'$lgt_tr_body'(threaded_wait(Msg), _, _, _) :-
-	'$lgt_check_for_threaded_directive'(threaded_wait(Msg)),
-	fail.
+'$lgt_tr_body'(threaded_wait(_), _, _, _) :-
+	\+ '$lgt_pp_threaded_',
+	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
+	throw(resource_error(threads)).
 
 '$lgt_tr_body'(threaded_wait(Msg), MTPred, '$lgt_dbg_goal'(threaded_wait(Msg), MTPred, DbgCtx), Ctx) :-
 	!,
@@ -6404,9 +6411,10 @@ current_logtalk_flag(version, version(2, 30, 5)).
 	).
 
 
-'$lgt_tr_body'(threaded_notify(Msg), _, _, _) :-
-	'$lgt_check_for_threaded_directive'(threaded_notify(Msg)),
-	fail.
+'$lgt_tr_body'(threaded_notify(_), _, _, _) :-
+	\+ '$lgt_pp_threaded_',
+	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
+	throw(resource_error(threads)).
 
 '$lgt_tr_body'(threaded_notify(Msg), MTPred, '$lgt_dbg_goal'(threaded_notify(Msg), MTPred, DbgCtx), Ctx) :-
 	!,
@@ -6865,18 +6873,6 @@ current_logtalk_flag(version, version(2, 30, 5)).
 		true
 	;	assertz('$lgt_pp_calls_pred_'(Functor, Arity, MPrefix, Arity3))
 	).
-
-
-
-% '$lgt_check_for_threaded_directive'(@callable)
-%
-% throw an error when the threaded/0 directive is not present on 
-% an object contaning calls to the threaded built-in predicates
-
-'$lgt_check_for_threaded_directive'(Call) :-
-	\+ '$lgt_pp_threaded_',
-	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
-	throw(error(resource_error(threads), Call)).
 
 
 
