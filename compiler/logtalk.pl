@@ -1056,7 +1056,7 @@ abolish_events(after, Obj, Msg, Sender, Monitor) :-
 
 threaded(Goals) :-
 	\+ '$lgt_compiler_flag'(threads, on),
-	throw(resource_error(threads, threaded(Goals))).
+	throw(error(resource_error(threads), threaded(Goals))).
 
 threaded(Goals) :-
 	var(Goals),
@@ -1076,7 +1076,7 @@ threaded(Goals) :-
 
 threaded_call(Goal) :-
 	\+ '$lgt_compiler_flag'(threads, on),
-	throw(resource_error(threads, threaded_call(Goal))).
+	throw(error(resource_error(threads), threaded_call(Goal))).
 
 threaded_call(Goal) :-
 	var(Goal),
@@ -1096,7 +1096,7 @@ threaded_call(Goal) :-
 
 threaded_once(Goal) :-
 	\+ '$lgt_compiler_flag'(threads, on),
-	throw(resource_error(threads, threaded_once(Goal))).
+	throw(error(resource_error(threads), threaded_once(Goal))).
 
 threaded_once(Goal) :-
 	var(Goal),
@@ -1116,7 +1116,7 @@ threaded_once(Goal) :-
 
 threaded_ignore(Goal) :-
 	\+ '$lgt_compiler_flag'(threads, on),
-	throw(resource_error(threads, threaded_ignore(Goal))).
+	throw(error(resource_error(threads), threaded_ignore(Goal))).
 
 threaded_ignore(Goal) :-
 	var(Goal),
@@ -1136,7 +1136,7 @@ threaded_ignore(Goal) :-
 
 threaded_exit(Goal) :-
 	\+ '$lgt_compiler_flag'(threads, on),
-	throw(resource_error(threads, threaded_exit(Goal))).
+	throw(error(resource_error(threads), threaded_exit(Goal))).
 
 threaded_exit(Goal) :-
 	var(Goal),
@@ -1156,7 +1156,7 @@ threaded_exit(Goal) :-
 
 threaded_peek(Goal) :-
 	\+ '$lgt_compiler_flag'(threads, on),
-	throw(resource_error(threads, threaded_peek(Goal))).
+	throw(error(resource_error(threads), threaded_peek(Goal))).
 
 threaded_peek(Goal) :-
 	var(Goal),
@@ -1176,7 +1176,7 @@ threaded_peek(Goal) :-
 
 threaded_wait(Message) :-
 	\+ '$lgt_compiler_flag'(threads, on),
-	throw(resource_error(threads, threaded_wait(Message))).
+	throw(error(resource_error(threads), threaded_wait(Message))).
 
 threaded_wait(Message) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _),
@@ -1187,7 +1187,7 @@ threaded_wait(Message) :-
 
 threaded_notify(Message) :-
 	\+ '$lgt_compiler_flag'(threads, on),
-	throw(resource_error(threads, threaded_notify(Message))).
+	throw(error(resource_error(threads), threaded_notify(Message))).
 
 threaded_notify(Message) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _),
@@ -4958,7 +4958,7 @@ current_logtalk_flag(version, version(2, 30, 5)).
 
 '$lgt_tr_directive'(threaded, [], _, _) :-
 	\+ '$lgt_compiler_flag'(threads, on),
-	throw(resource_error(threads, threaded/0)).
+	throw(error(resource_error(threads), threaded/0)).
 
 '$lgt_tr_directive'(threaded, [], _, _) :-
 	!,
@@ -6868,7 +6868,7 @@ current_logtalk_flag(version, version(2, 30, 5)).
 
 
 
-% '$lgt_check_for_threaded_directive'(+predicate_indicator)
+% '$lgt_check_for_threaded_directive'(@callable)
 %
 % throw an error when the threaded/0 directive is not present on 
 % an object contaning calls to the threaded built-in predicates
@@ -6876,7 +6876,7 @@ current_logtalk_flag(version, version(2, 30, 5)).
 '$lgt_check_for_threaded_directive'(Call) :-
 	\+ '$lgt_pp_threaded_',
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
-	throw(resource_error(threads, Call)).
+	throw(error(resource_error(threads), Call)).
 
 
 

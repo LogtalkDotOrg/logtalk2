@@ -16,13 +16,17 @@ RELEASE NOTES
 	order to avoid blocking when its argument is subsumed by the argument of 
 	the corresponding threaded_call/1 call instead of being a variant.
 
+	Updated the Logtalk compiler to encapsulate resource errors inside 
+	error/2 exception terms (as specified in the ISO Prolog core standard).
+
 	Corrected a bug in the library object "lgtunit" (wrong arity on two 
 	failed_test/2 predicate calls).
 
-	Simplified installation scripts by moving shared sanitization code into 
-	the "cleandist.sh" script. Updated the "install.sh" script to set the 
-	installation prefix to "/usr" on Debian systems. Updated the Linux RPM 
-	spec file to clean the building directory after the package creation.
+	Simplified installation scripts by moving shared distribution cleaning 
+	code into the "cleandist.sh" script. Updated the "install.sh" script to 
+	set the installation prefix to "/usr" on Debian systems. Updated the 
+	Linux RPM spec file in order to clean the building directory after the 
+	package creation.
 
 
 2.30.4 - August 22, 2007
