@@ -22,7 +22,8 @@ RELEASE NOTES
 	Corrected a bug in the library object "lgtunit" (wrong arity on two 
 	failed_test/2 predicate calls).
 
-	Added a missing entry to the "libpaths.pl" file for the "testing" example.
+	Corrected two problems with the "testing" example: a wrong call on the 
+	object "dyn_tests" add a missing entry in the "libpaths.pl" file.
 
 	Simplified installation scripts by moving shared distribution cleaning 
 	code into the "cleandist.sh" script. Updated the "install.sh" script to 

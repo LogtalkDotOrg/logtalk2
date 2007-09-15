@@ -95,9 +95,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2007/04/17,
+		date is 2007/09/15,
 		comment is 'Tests dynamic objects and dynamic predicates.']).
 
 %	:- initialization(::run).
@@ -117,14 +117,15 @@
 		dyn_test::predicate_property(a(_), public),
 		dyn_test::predicate_property(a(_), dynamic),
 		dyn_test::predicate_property(a(_), declared_in(dyn_test)),
-		dyn_test::predicate_property(a(_), defined_in(dyn_test)),		
+		dyn_test::predicate_property(a(_), defined_in(dyn_test)),
 		dyn_test::assertz(a(2)),
 		dyn_test::retractall(a(_)),
 		\+ dyn_test::a(_),
-		\+ dyn_test::predicate_property(a(_), defined_in(dyn_test)),		
+		dyn_test::predicate_property(a(_), defined_in(dyn_test)),
 		dyn_test::current_predicate(a/1),
 		dyn_test::abolish(a/1),
 		\+ dyn_test::predicate_property(a(_), declared_in(dyn_test)),
+		\+ dyn_test::predicate_property(a(_), defined_in(dyn_test)),
 		\+ dyn_test::current_predicate(_).
 
 	cleanup :-
