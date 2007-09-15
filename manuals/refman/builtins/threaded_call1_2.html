@@ -24,18 +24,18 @@
 <h4>Description</h4>
 
 <pre>threaded_call(Goal)
-threaded_call(Tag, Goal)</pre>
+threaded_call(Goal, Tag)</pre>
 <p>
 Proves <code>Goal</code> asynchronously using a new thread. The argument can be a message sending goal. Calls to this predicate always succeeds and return immediately. The results (success, failure, or exception) are sent back to the message queue of the object containing the call (<em>this</em>); they can be retrieved by calling the <a title="Consult reference manual" href="threaded_exit1_2.html"><code>threaded_exit/1</code></a> predicate.
 </p>
 <p>
-The variant <code>threaded_call/2</code> returns a threaded call identifier tag that can be used with the <a title="Consult reference manual" href="threaded_exit1_2.html"><code>threaded_exit/2</code></a> predicate.
+The variant <code>threaded_call/2</code> returns a threaded call identifier tag that can be used with the <a title="Consult reference manual" href="threaded_exit1_2.html"><code>threaded_exit/2</code></a> predicate. Tags shall be considered as an opaque term; users shall not rely on its type.
 </p>
 
 <h4>Template and modes</h4>
 
 <pre>threaded_call(@callable)
-threaded_call(-nonvar, @callable)</pre>
+threaded_call(@callable, -nonvar)</pre>
 
 <h4>Errors</h4>
 

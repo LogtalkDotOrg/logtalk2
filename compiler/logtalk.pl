@@ -1078,27 +1078,27 @@ threaded(Goals) :-
 	catch(MTGoals, Error, '$lgt_runtime_error_handler'(Error)).
 
 
-% threaded_call(-nonvar, @callable)
+% threaded_call(@callable, -nonvar)
 
-threaded_call(Tag, Goal) :-
+threaded_call(Goal, Tag) :-
 	\+ '$lgt_compiler_flag'(threads, on),
-	throw(error(resource_error(threads), threaded_call(Tag, Goal))).
+	throw(error(resource_error(threads), threaded_call(Goal, Tag))).
 
-threaded_call(Tag, Goal) :-
+threaded_call(Goal, Tag) :-
 	nonvar(Tag),
-	throw(error(type_error(variable, Tag), threaded_call(Tag, Goal))).
+	throw(error(type_error(variable, Tag), threaded_call(Goal, Tag))).
 
-threaded_call(Tag, Goal) :-
+threaded_call(Goal, Tag) :-
 	var(Goal),
-	throw(error(instantiation_error, threaded_call(Tag, Goal))).
+	throw(error(instantiation_error, threaded_call(Goal, Tag))).
 
-threaded_call(Tag, Goal) :-
+threaded_call(Goal, Tag) :-
 	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), threaded_call(Tag, Goal))).
+	throw(error(type_error(callable, Goal), threaded_call(Goal, Tag))).
 
-threaded_call(Tag, Goal) :-
+threaded_call(Goal, Tag) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	'$lgt_tr_body'(threaded_call(Tag, Goal), TGoal, _, Ctx),
+	'$lgt_tr_body'(threaded_call(Goal, Tag), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
@@ -1122,27 +1122,27 @@ threaded_call(Goal) :-
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
-% threaded_once(-nonvar, @callable)
+% threaded_once(@callable, -nonvar)
 
-threaded_once(Tag, Goal) :-
+threaded_once(Goal, Tag) :-
 	\+ '$lgt_compiler_flag'(threads, on),
-	throw(error(resource_error(threads), threaded_once(Tag, Goal))).
+	throw(error(resource_error(threads), threaded_once(Goal, Tag))).
 
-threaded_once(Tag, Goal) :-
+threaded_once(Goal, Tag) :-
 	nonvar(Tag),
-	throw(error(type_error(variable, Tag), threaded_once(Tag, Goal))).
+	throw(error(type_error(variable, Tag), threaded_once(Goal, Tag))).
 
-threaded_once(Tag, Goal) :-
+threaded_once(Goal, Tag) :-
 	var(Goal),
-	throw(error(instantiation_error, threaded_once(Tag, Goal))).
+	throw(error(instantiation_error, threaded_once(Goal, Tag))).
 
-threaded_once(Tag, Goal) :-
+threaded_once(Goal, Tag) :-
 	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), threaded_once(Tag, Goal))).
+	throw(error(type_error(callable, Goal), threaded_once(Goal, Tag))).
 
-threaded_once(Tag, Goal) :-
+threaded_once(Goal, Tag) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	'$lgt_tr_body'(threaded_once(Tag, Goal), TGoal, _, Ctx),
+	'$lgt_tr_body'(threaded_once(Goal, Tag), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
@@ -1186,27 +1186,27 @@ threaded_ignore(Goal) :-
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
-% threaded_exit(+nonvar, +callable)
+% threaded_exit(+callable, +nonvar)
 
-threaded_exit(Tag, Goal) :-
+threaded_exit(Goal, Tag) :-
 	\+ '$lgt_compiler_flag'(threads, on),
-	throw(error(resource_error(threads), threaded_exit(Tag, Goal))).
+	throw(error(resource_error(threads), threaded_exit(Goal, Tag))).
 
-threaded_exit(Tag, Goal) :-
+threaded_exit(Goal, Tag) :-
 	var(Tag),
-	throw(error(instantiation_error, threaded_exit(Tag, Goal))).
+	throw(error(instantiation_error, threaded_exit(Goal, Tag))).
 
-threaded_exit(Tag, Goal) :-
+threaded_exit(Goal, Tag) :-
 	var(Goal),
-	throw(error(instantiation_error, threaded_exit(Tag, Goal))).
+	throw(error(instantiation_error, threaded_exit(Goal, Tag))).
 
-threaded_exit(Tag, Goal) :-
+threaded_exit(Goal, Tag) :-
 	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), threaded_exit(Tag, Goal))).
+	throw(error(type_error(callable, Goal), threaded_exit(Goal, Tag))).
 
-threaded_exit(Tag, Goal) :-
+threaded_exit(Goal, Tag) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	'$lgt_tr_body'(threaded_exit(Tag, Goal), TGoal, _, Ctx),
+	'$lgt_tr_body'(threaded_exit(Goal, Tag), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
@@ -1230,27 +1230,27 @@ threaded_exit(Goal) :-
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
-% threaded_peek(+nonvar, +callable)
+% threaded_peek(+callable, +nonvar)
 
-threaded_peek(Tag, Goal) :-
+threaded_peek(Goal, Tag) :-
 	\+ '$lgt_compiler_flag'(threads, on),
-	throw(error(resource_error(threads), threaded_peek(Tag, Goal))).
+	throw(error(resource_error(threads), threaded_peek(Goal, Tag))).
 
-threaded_peek(Tag, Goal) :-
+threaded_peek(Goal, Tag) :-
 	var(Tag),
-	throw(error(instantiation_error, threaded_peek(Tag, Goal))).
+	throw(error(instantiation_error, threaded_peek(Goal, Tag))).
 
-threaded_peek(Tag, Goal) :-
+threaded_peek(Goal, Tag) :-
 	var(Goal),
-	throw(error(instantiation_error, threaded_peek(Tag, Goal))).
+	throw(error(instantiation_error, threaded_peek(Goal, Tag))).
 
-threaded_peek(Tag, Goal) :-
+threaded_peek(Goal, Tag) :-
 	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), threaded_peek(Tag, Goal))).
+	throw(error(type_error(callable, Goal), threaded_peek(Goal, Tag))).
 
-threaded_peek(Tag, Goal) :-
+threaded_peek(Goal, Tag) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	'$lgt_tr_body'(threaded_peek(Tag, Goal), TGoal, _, Ctx),
+	'$lgt_tr_body'(threaded_peek(Goal, Tag), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
@@ -6386,16 +6386,16 @@ current_logtalk_flag(version, version(2, 30, 5)).
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads)).
 
-'$lgt_tr_body'(threaded_call(Tag, _), _, _, _) :-
+'$lgt_tr_body'(threaded_call(_, Tag), _, _, _) :-
 	nonvar(Tag),
 	throw(type_error(variable, Tag)).
 
-'$lgt_tr_body'(threaded_call(_, Goal), _, _, _) :-
+'$lgt_tr_body'(threaded_call(Goal, _), _, _, _) :-
 	nonvar(Goal),
 	\+ callable(Goal),
 	throw(type_error(callable, Goal)).
 
-'$lgt_tr_body'(threaded_call(Tag, Goal), MTGoal, '$lgt_dbg_goal'(threaded_call(Tag, Goal), MTGoal, DbgCtx), Ctx) :-
+'$lgt_tr_body'(threaded_call(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_call(Goal, Tag), MTGoal, DbgCtx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
@@ -6432,16 +6432,16 @@ current_logtalk_flag(version, version(2, 30, 5)).
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads)).
 
-'$lgt_tr_body'(threaded_once(Tag, _), _, _, _) :-
+'$lgt_tr_body'(threaded_once(_, Tag), _, _, _) :-
 	nonvar(Tag),
 	throw(type_error(variable, Tag)).
 
-'$lgt_tr_body'(threaded_once(_, Goal), _, _, _) :-
+'$lgt_tr_body'(threaded_once(Goal, _), _, _, _) :-
 	nonvar(Goal),
 	\+ callable(Goal),
 	throw(type_error(callable, Goal)).
 
-'$lgt_tr_body'(threaded_once(Tag, Goal), MTGoal, '$lgt_dbg_goal'(threaded_once(Tag, Goal), MTGoal, DbgCtx), Ctx) :-
+'$lgt_tr_body'(threaded_once(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_once(Goal, Tag), MTGoal, DbgCtx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
@@ -6499,16 +6499,16 @@ current_logtalk_flag(version, version(2, 30, 5)).
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads)).
 
-'$lgt_tr_body'(threaded_exit(Tag, _), _, _, _) :-
+'$lgt_tr_body'(threaded_exit(_, Tag), _, _, _) :-
 	var(Tag),
 	throw(instantiation_error).
 
-'$lgt_tr_body'(threaded_exit(_, Goal), _, _, _) :-
+'$lgt_tr_body'(threaded_exit(Goal, _), _, _, _) :-
 	nonvar(Goal),
 	\+ callable(Goal),
 	throw(type_error(callable, Goal)).
 
-'$lgt_tr_body'(threaded_exit(Tag, Goal), MTGoal, '$lgt_dbg_goal'(threaded_exit(Tag, Goal), MTGoal, DbgCtx), Ctx) :-
+'$lgt_tr_body'(threaded_exit(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_exit(Goal, Tag), MTGoal, DbgCtx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
@@ -6545,16 +6545,16 @@ current_logtalk_flag(version, version(2, 30, 5)).
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads)).
 
-'$lgt_tr_body'(threaded_peek(Tag, _), _, _, _) :-
+'$lgt_tr_body'(threaded_peek(_, Tag), _, _, _) :-
 	var(Tag),
 	throw(instantiation_error).
 
-'$lgt_tr_body'(threaded_peek(_, Goal), _, _, _) :-
+'$lgt_tr_body'(threaded_peek(Goal, _), _, _, _) :-
 	nonvar(Goal),
 	\+ callable(Goal),
 	throw(type_error(callable, Goal)).
 
-'$lgt_tr_body'(threaded_peek(Tag, Goal), MTGoal, '$lgt_dbg_goal'(threaded_peek(Tag, Goal), MTGoal, DbgCtx), Ctx) :-
+'$lgt_tr_body'(threaded_peek(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_peek(Goal, Tag), MTGoal, DbgCtx), Ctx) :-
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
