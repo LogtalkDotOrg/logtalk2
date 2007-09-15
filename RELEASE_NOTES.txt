@@ -22,6 +22,8 @@ RELEASE NOTES
 	Corrected a bug in the library object "lgtunit" (wrong arity on two 
 	failed_test/2 predicate calls).
 
+	Added a missing entry to the "libpaths.pl" file for the "testing" example.
+
 	Simplified installation scripts by moving shared distribution cleaning 
 	code into the "cleandist.sh" script. Updated the "install.sh" script to 
 	set the installation prefix to "/usr" on Debian systems. Updated the 

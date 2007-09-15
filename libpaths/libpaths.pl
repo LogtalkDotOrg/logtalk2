@@ -69,5 +69,6 @@
 	 assertz(logtalk_library_path(symdiff, examples('symdiff/'))),
 	 assertz(logtalk_library_path(tabling, examples('tabling/'))),
 	 assertz(logtalk_library_path(tak, threads('tak/'))),
+	 assertz(logtalk_library_path(testing, examples('testing/'))),
 	 assertz(logtalk_library_path(threads, examples('threads/'))),
 	 assertz(logtalk_library_path(viewpoints, examples('viewpoints/'))))).
