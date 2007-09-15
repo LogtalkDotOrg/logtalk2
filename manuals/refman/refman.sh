@@ -70,11 +70,11 @@ eval $xslt_proc -o builtins/abolish_events5.section refman.xsl builtins/abolish_
 eval $xslt_proc -o builtins/current_event5.section refman.xsl builtins/current_event5.html
 eval $xslt_proc -o builtins/define_events5.section refman.xsl builtins/define_events5.html
 eval $xslt_proc -o builtins/threaded1.section refman.xsl builtins/threaded1.html
-eval $xslt_proc -o builtins/threaded_call1.section refman.xsl builtins/threaded_call1.html
-eval $xslt_proc -o builtins/threaded_once1.section refman.xsl builtins/threaded_once1.html
+eval $xslt_proc -o builtins/threaded_call1_2.section refman.xsl builtins/threaded_call1_2.html
+eval $xslt_proc -o builtins/threaded_once1_2.section refman.xsl builtins/threaded_once1_2.html
 eval $xslt_proc -o builtins/threaded_ignore1.section refman.xsl builtins/threaded_ignore1.html
-eval $xslt_proc -o builtins/threaded_exit1.section refman.xsl builtins/threaded_exit1.html
-eval $xslt_proc -o builtins/threaded_peek1.section refman.xsl builtins/threaded_peek1.html
+eval $xslt_proc -o builtins/threaded_exit1_2.section refman.xsl builtins/threaded_exit1_2.html
+eval $xslt_proc -o builtins/threaded_peek1_2.section refman.xsl builtins/threaded_peek1_2.html
 eval $xslt_proc -o builtins/threaded_wait1.section refman.xsl builtins/threaded_wait1.html
 eval $xslt_proc -o builtins/threaded_notify1.section refman.xsl builtins/threaded_notify1.html
 eval $xslt_proc -o builtins/logtalk_compile1.section refman.xsl builtins/logtalk_compile1.html
@@ -171,11 +171,11 @@ cat -s \
 	builtins/current_event5.section \
 	builtins/define_events5.section \
 	builtins/threaded1.section \
-	builtins/threaded_call1.section \
-	builtins/threaded_once1.section \
+	builtins/threaded_call1_2.section \
+	builtins/threaded_once1_2.section \
 	builtins/threaded_ignore1.section \
-	builtins/threaded_exit1.section \
-	builtins/threaded_peek1.section \
+	builtins/threaded_exit1_2.section \
+	builtins/threaded_peek1_2.section \
 	builtins/threaded_wait1.section \
 	builtins/threaded_notify1.section \
 	builtins/logtalk_compile1.section \

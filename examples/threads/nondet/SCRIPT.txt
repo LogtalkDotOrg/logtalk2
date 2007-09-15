@@ -42,3 +42,23 @@ yes
 
 X = 1 ;
 no
+
+
+% use tags to distinguish between threaded calls:
+
+| ?- threaded_call(Tag, lists::member(X, [1,2,3])).
+
+Tag = 1
+yes
+
+?- threaded_call(Tag, lists::member(X, [1,2,3])).
+
+Tag = 2
+yes
+
+?- threaded_exit(2, lists::member(X, [1,2,3])).
+
+X = 1 ;
+X = 2 ;
+X = 3 ;
+no

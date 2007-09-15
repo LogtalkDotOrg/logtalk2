@@ -90,13 +90,13 @@ The <code>threaded/1</code> built-in predicate is most useful for lengthy, indep
 <h3 id="threads_call">Proving goals asynchronously using threads</h3>
 
 <p>
-A goal may be proved asynchronously using a new thread by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_call1.html"><code>threaded_call/1</code></a>. Calls to this predicate are always true and return immediately (assuming a callable argument). The term representing the goal is copied, not shared with the thread.
+A goal may be proved asynchronously using a new thread by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_call1_2.html"><code>threaded_call/1</code></a>. Calls to this predicate are always true and return immediately (assuming a callable argument). The term representing the goal is copied, not shared with the thread.
 </p>
 <p>
-The results of proving a goal asynchronously in a new thread may be later retrieved by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_exit1.html"><code>threaded_exit/1</code></a> within the same object where the call to the <code>threaded_call/1</code> predicate was made. The <code>threaded_exit/1</code> calls block execution until the results of the <code>threaded_call/1</code> calls are sent back to the object message queue.
+The results of proving a goal asynchronously in a new thread may be later retrieved by calling the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/builtins/threaded_exit1_2.html"><code>threaded_exit/1</code></a> within the same object where the call to the <code>threaded_call/1</code> predicate was made. The <code>threaded_exit/1</code> calls block execution until the results of the <code>threaded_call/1</code> calls are sent back to the object message queue.
 </p>
 <p>
-The <code>threaded_exit/1</code> predicate allow us to retrieve alternative solutions through backtracking (if you want to commit to the first solution, you may use the <a title="Consult reference manual" href="../refman/builtins/threaded_once1.html"><code>threaded_once/1</code></a> predicate instead of the <code>threaded_call/1</code> predicate). For example, assuming a <code>lists</code> object implementing the usual <code>member/2</code> predicate, we could write:
+The <code>threaded_exit/1</code> predicate allow us to retrieve alternative solutions through backtracking (if you want to commit to the first solution, you may use the <a title="Consult reference manual" href="../refman/builtins/threaded_once1_2.html"><code>threaded_once/1</code></a> predicate instead of the <code>threaded_call/1</code> predicate). For example, assuming a <code>lists</code> object implementing the usual <code>member/2</code> predicate, we could write:
 </p>
 <pre>| ?- threaded_call(lists::member(X, [1,2,3])).
 
@@ -114,7 +114,7 @@ no
 In this case, the <code>threaded_call/1</code> and the <code>threaded_exit/1</code> calls are made within the pseudo-object <em>user</em>. The implicit thread running the <code>lists::member/2</code> goal suspends itself after providing a solution, waiting for a request to an alternative solution; the thread is automatically terminated when the runtime engine detects that backtracking to the <code>threaded_exit/1</code> call is no longer possible.
 </p>
 <p>
-Calls to the <code>threaded_exit/1</code> predicate block the caller until the object message queue receives the reply to the asynchronous call. The predicate <a title="Consult reference manual" href="../refman/builtins/threaded_peek1.html"><code>threaded_peek/1</code></a> may be used to check if a reply is already available without removing it from the thread queue. The <code>threaded_peek/1</code> predicate call succeeds or fails immediately without blocking the caller. However, keep in mind that repeated use of this predicate is equivalent to polling a message queue, which may severely hurt performance.
+Calls to the <code>threaded_exit/1</code> predicate block the caller until the object message queue receives the reply to the asynchronous call. The predicate <a title="Consult reference manual" href="../refman/builtins/threaded_peek1_2.html"><code>threaded_peek/1</code></a> may be used to check if a reply is already available without removing it from the thread queue. The <code>threaded_peek/1</code> predicate call succeeds or fails immediately without blocking the caller. However, keep in mind that repeated use of this predicate is equivalent to polling a message queue, which may severely hurt performance.
 </p>
 <p>
 Be careful when using the <code>threaded_exit/1</code> predicate inside failure-driven loops. When all the solutions have been found (and the thread generating them is therefore terminated), re-calling the predicate will generate an exception. Note that failing instead of throwing an exception is not an acceptable solution as it could be misinterpreted as a failure of the <code>threaded_exit/1</code> argument.
@@ -135,20 +135,20 @@ prime_numbers(N, M, Acc, Primes) :-
     ...
 </pre>
 <p>
-When using asynchronous calls, the link between a <code>threaded_exit/1</code> call and the corresponding <code>threaded_call/1</code> call is made using unification. If there are several <code>threaded_call/1</code> calls for a matching <code>threaded_exit/1</code> call, the connection can be established with any of them. Nevertheless, you can easily use a tag for linking a <code>threaded_exit/1</code> call with a specific <code>threaded_call/1</code> call. For example, assume defined a <code>gensym/2</code> predicate that generates unique identifiers. Using this predicate you can write:
+When using asynchronous calls, the link between a <code>threaded_exit/1</code> call and the corresponding <code>threaded_call/1</code> call is made using unification. If there are several <code>threaded_call/1</code> calls for a matching <code>threaded_exit/1</code> call, the connection can potentially be established with any of them. Nevertheless, you can easily use a tag the calls by using the extended <a title="Consult reference manual" href="../refman/builtins/threaded_call1_2.html"><code>threaded_call/2</code></a> and <a title="Consult reference manual" href="../refman/builtins/threaded_exit1_2.html"><code>threaded_exit/2</code></a> built-in predicates. For example:
 </p>
 <pre>
-?- gensym(t, Tag), threaded_call((atom(Tag), member(X, [1,2,3]))).
+?- threaded_call(Tag, member(X, [1,2,3])).
 
-Tag = t1
+Tag = 1
 yes
 
-?- gensym(t, Tag), threaded_call((atom(Tag), member(X, [1,2,3]))).
+?- threaded_call(Tag, member(X, [1,2,3])).
 
-Tag = t2
+Tag = 2
 yes
 
-?- threaded_exit((atom(t2), member(X, [1,2,3]))).
+?- threaded_exit(2, member(X, [1,2,3])).
 
 X = 1 ;
 X = 2 ;
@@ -156,7 +156,7 @@ X = 3
 yes
 </pre>
 <p>
-Here we have used the standard built-in predicate <code>atom/1</code> for goal tagging but any other predicate that will not interfere with the threaded goal can be used.
+When using these predicates, the tags shall be considered as an opaque term; users shall not rely on its type.
 </p>
 
 <h2 id="threads_ignore">One-way asynchronous calls</h2>
@@ -247,7 +247,7 @@ Each notification posted by a call to the <code>threaded_notify/1</code> predica
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: September 9, 2007</span>
+		<span>Last updated on: September 15, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="events.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="errors.html">next</a></span><br/>
