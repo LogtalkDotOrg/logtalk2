@@ -12363,16 +12363,16 @@ current_logtalk_flag(version, version(2, 30, 5)).
 		thread_get_message('$lgt_goal'(Queue, Goal, This, Self, Option)),
 		(	Option == ignore ->		% don't bother reporting goal success, failure, or exception
 			thread_create(catch(Goal, _, true), _, [detached(true)])
-		;	Option = once(Tag) ->		% make thread goal deterministic
+		;	Option = once(Tag) ->	% make thread goal deterministic
 			thread_create('$lgt_mt_det_goal'(Queue, Goal, This, Self, Tag), _, [detached(true)])
-		;	Option = call(Tag) ->
+		;	Option = call(Tag) ->	% make thread goal non-deterministic
 			thread_create('$lgt_mt_non_det_goal'(Queue, Goal, This, Self, Tag), _, [detached(false)])
 		),
 	fail.
 
 
 
-% '$lgt_mt_det_goal'(+message_queue, +callable, +object_identifier, +object_identifier, @nonvar)
+% '$lgt_mt_det_goal'(+atom, +callable, +object_identifier, +object_identifier, @nonvar)
 %
 % processes a deterministic message received by an object's message queue
 
@@ -12392,7 +12392,7 @@ current_logtalk_flag(version, version(2, 30, 5)).
 
 
 
-% '$lgt_mt_non_det_goal'(+message_queue, +callable, +object_identifier, +object_identifier, @nonvar)
+% '$lgt_mt_non_det_goal'(+atom, +callable, +object_identifier, +object_identifier, @nonvar)
 %
 % processes a non-deterministic message received by an object's message queue
 
@@ -12481,9 +12481,9 @@ current_logtalk_flag(version, version(2, 30, 5)).
 
 '$lgt_mt_get_reply'(Queue, Goal, Sender, This, Self, Tag) :-
 	(	% first check if there is a thread running for proving the goal before proceeding:
-		\+ \+ thread_peek_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)) ->
+		thread_peek_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)) ->
 		% answering thread exists; go ahead and retrieve the solution(s):
-		thread_get_message(Queue, '$lgt_thread_id'(Type, _, This, Self, Tag, Id)),
+		thread_get_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)),
 		call_cleanup(
 			'$lgt_mt_get_reply_aux'(Type, Queue, Goal, This, Self, Tag, Id),
 			(	Type == non_deterministic ->
