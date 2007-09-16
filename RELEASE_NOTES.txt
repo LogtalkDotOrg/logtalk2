@@ -34,7 +34,8 @@ RELEASE NOTES
 	two pointless dynamic predicate directives in the "buffer" example.
 
 	Improved documentation of multi-threading programming and predicate 
-	properties.
+	properties. Corrected the reference manual page describing the threaded/0 
+	directive.
 
 	Simplified installation scripts by moving shared distribution cleaning 
 	code into the "cleandist.sh" script. Updated the "install.sh" script to 
