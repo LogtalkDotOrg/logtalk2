@@ -2,21 +2,19 @@
 :- object(buffer(_MaxCapacity)).
 
 	:- info([
-		version is 2.0,
+		version is 2.1,
 		author is 'Paulo Moura',
-		date is 2007/6/20,
+		date is 2007/9/16,
 		comment is 'Producer-consumer problem with a bounded buffer.']).
 
 	:- threaded.
 
 	:- public(put/1).
-	:- dynamic(put/1).
 	:- mode(put(?integer), one).
 	:- info(put/1, [
 		comment is 'Put an item in the buffer.']).
 
 	:- public(get/1).
-	:- dynamic(get/1).
 	:- mode(get(?integer), one).
 	:- info(get/1, [
 		comment is 'Get an item from the buffer.']).
