@@ -143,7 +143,7 @@ When using asynchronous calls, the link between a <code>threaded_exit/1</code> c
 Tag = 1
 yes
 
-?- threaded_call(Tag, member(X, [1,2,3]), Tag).
+?- threaded_call(member(X, [1,2,3]), Tag).
 
 Tag = 2
 yes
