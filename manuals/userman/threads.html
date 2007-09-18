@@ -44,7 +44,7 @@ This directive results in the automatic creation and set up an object message qu
 <h2 id="threads_builtins">Multi-threading built-in predicates</h2>
 
 <p>
-Logtalk provides a small set of built-in predicates for multi-threading programming. For simple tasks where you simply want to prove a set of goals, each one in its own thread, Logtalk provides a <a title="Consult reference manual" href="../refman/builtins/threaded1.html"><code>threaded/1</code></a> built-in predicate. The remaining predicates allow for fine-grained control, including postponing retrieving of thread goal results at a later time, supporting non-deterministic thread goals, and make <em>one-way</em> asynchronous calls. Together, these predicates provide high-level support for multi-threading programming, covering most common use cases.
+Logtalk provides a small set of built-in predicates for multi-threading programming. For simple tasks where you simply want to prove a set of goals, each one in its own thread, Logtalk provides a <a title="Consult reference manual" href="../refman/builtins/threaded1.html"><code>threaded/1</code></a> built-in predicate. The remaining predicates allow for fine-grained control, including postponing retrieving of thread goal results at a later time, supporting non-deterministic thread goals, and making <em>one-way</em> asynchronous calls. Together, these predicates provide high-level support for multi-threading programming, covering most common use cases.
 </p>
 
 <h3 id="threads_threaded">Proving goals concurrently using threads</h3>
@@ -71,7 +71,7 @@ prime_numbers(N, M, Acc, Primes) :-
 The <code>threaded/1</code> call terminates when the two implicit threads terminate. In a computer with two or more processors (or with a processor with two or more cores) the code above can be expected to provide better computation times when compared with single-threaded code for sufficiently large intervals.
 </p>
 <p>
-When the <code>threaded/1</code> predicate argument is a disjunction of goals, the predicate call is akin to <em>or-parallelism</em>. For example, assume that we have several different methods to find the roots of real functions. Depending on the real function, some methods will faster than others. Some methods will converge into the solution while others may diverge and never find it. We can try all the methods at one by writing:
+When the <code>threaded/1</code> predicate argument is a disjunction of goals, the predicate call is akin to <em>or-parallelism</em>, here reinterpreted as a set of goal <em>competing</em> for providing a solution. For example, assume that we have several different methods to find the roots of real functions. Depending on the real function, some methods will faster than others. Some methods will converge into the solution while others may diverge and never find it. We can try all the methods at one by writing:
 </p>
 <pre>find_root(Function, A, B, Error, Zero, Algorithm) :-
     threaded((
@@ -81,7 +81,7 @@ When the <code>threaded/1</code> predicate argument is a disjunction of goals, t
     )).
 </pre>
 <p>
-The <code>threaded/1</code> call succeeds when one of the implicit threads succeeds in finding the function root.
+The <code>threaded/1</code> call succeeds when one of the implicit threads succeeds in finding the function root, leading to the termination of all the remaining competing threads.
 </p>
 <p>
 The <code>threaded/1</code> built-in predicate is most useful for lengthy, independent deterministic computations where the computational costs of each goal outweigh the overhead of the implicit thread creation and management.
