@@ -121,7 +121,7 @@
 		dyn_test::assertz(a(2)),
 		dyn_test::retractall(a(_)),
 		\+ dyn_test::a(_),
-		dyn_test::predicate_property(a(_), defined_in(dyn_test)),
+		dyn_test::predicate_property(a(_), defined_in(dyn_test)),	% closed-world assumption
 		dyn_test::current_predicate(a/1),
 		dyn_test::abolish(a/1),
 		\+ dyn_test::predicate_property(a(_), declared_in(dyn_test)),
