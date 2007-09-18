@@ -37,6 +37,10 @@ The GNU Prolog integration script provides adequate performance for
 development. For production environments, improved performance can be 
 achieved by generating a new GNU-Prolog top-level that includes Logtalk.
 
+The SWI-Prolog integration script assumes XPCE is installed. If that's 
+not the case, comment out the loading of the file "xpcehook.pl" on the 
+"integration/logtalk_swi.pl" file.
+
 Other Prolog compilers require manual steps for integration with Logtalk.
 See the "configs/NOTES.txt" file for details.
 
