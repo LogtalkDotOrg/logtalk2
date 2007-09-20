@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.30.5
+%  Release 2.30.6
 %
 %  integration code for Qu-Prolog 7.1 and later versions
 %  used when generating a new interpreter that embeds Logtalk
