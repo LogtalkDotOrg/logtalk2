@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+ Author: Paulo Moura <pmoura@logtalk.org>
+ Copyright (C) 2007 Paulo Moura <pmoura@logtalk.org>
+
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Library General Public
+ License as published by the Free Software Foundation; either
+ version 2 of the License, or (at your option) any later version.
+
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Library General Public License for more details.
+
+ You should have received a copy of the GNU Library General Public
+ License along with this library; if not, write to the
+ Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ Boston, MA 02111-1307, USA.
+
+-->
+<language id="logtalk" _name="Logtalk" version="2.0" _section="Sources">
+
+	<metadata>
+		<property name="mimetypes">text/x-logtalk</property>
+		<property name="globs">*.lgt</property>
+		<property name="line-comment-start">%</property>
+		<property name="block-comment-start">/*</property>
+		<property name="block-comment-end">*/</property>
+	</metadata>
+
+	<styles>
+		<style id="comment" _name="Comment" map-to="def:comment"/>
+		<style id="operator" _name="Operator" map-to="def:operator"/>
+		<style id="error" _name="Error" map-to="def:error"/>
+		<style id="string" _name="String" map-to="def:string"/>
+		<style id="entity" _name="External" map-to="def:preprocessor"/>
+		<style id="directive" _name="Declaration" map-to="def:type"/>
+		<style id="number" _name="Number" map-to="def:decimal"/>
+		<style id="built-in" _name="Builtin" map-to="def:builtin"/>
+	</styles>
+
+	<definitions>
+
+	    <context id="string" style-ref="string" end-at-line-end="true">
+	      <start>"</start>
+	      <end>"</end>
+	    </context>
+	
+	    <context id="quoted-atom" style-ref="string" end-at-line-end="true">
+	      <start>'</start>
+	      <end>'</end>
+	    </context>
+	
+	    <context id="line-comment" style-ref="comment" end-at-line-end="true">
+	      <start>%</start>
+	      <include>
+	        <context ref="def:in-line-comment"/>
+	      </include>
+	    </context>
+	
+	    <context id="block-comment" style-ref="comment">
+	      <start>/\*</start>
+	      <end>\*/</end>
+	      <include>
+	        <context ref="def:in-comment"/>
+	      </include>
+	    </context>
+
+		<context id="entity-directives" style-ref="entity">
+			<keyword>:-\s(object)\(</keyword>			
+			<keyword>:-\s(protocol)\(</keyword>			
+			<keyword>:-\s(category)\(</keyword>			
+			<keyword>:-\s(end_(object|protocol|category))\.</keyword>			
+		</context>
+
+		<context id="entity-relations" style-ref="entity">
+			<keyword>\b(specializes)\(</keyword>
+			<keyword>\b(extends)\(</keyword>
+			<keyword>\b(i(mp(orts|lements)|nstantiates))\(</keyword>
+		</context>
+
+		<context id="predicate-directives" style-ref="directive">
+			<keyword>:-\s(alias)\(</keyword>			
+			<keyword>:-\s(e(ncoding|xport))\(</keyword>			
+			<keyword>:-\s(initialization)\(</keyword>			
+			<keyword>:-\s(info)\(</keyword>			
+			<keyword>:-\s(mod(e|ule))\(</keyword>			
+			<keyword>:-\s(dynamic)\(</keyword>			
+			<keyword>:-\s(dynamic)\.</keyword>			
+			<keyword>:-\s(discontiguous)\(</keyword>			
+			<keyword>:-\s(p(ublic|r(otected|ivate)))\(</keyword>			
+			<keyword>:-\s(m(eta_predicate|ultifile))\(</keyword>			
+			<keyword>:-\s(op)\(</keyword>			
+			<keyword>:-\s(calls)\(</keyword>			
+			<keyword>:-\s(use(s|_module))\(</keyword>			
+			<keyword>:-\s(synchronized)\(</keyword>			
+			<keyword>:-\s(synchronized)\.</keyword>			
+			<keyword>:-\s(threaded)\.</keyword>			
+		</context>
+
+		<context id="built-in-methods" style-ref="built-in">
+			<keyword>\b(parameter)\(</keyword>
+			<keyword>\b(se(lf|nder))\(</keyword>
+			<keyword>\b(this)\(</keyword>
+			<keyword>\b(current_predicate)\(</keyword>
+			<keyword>\b(predicate_property)\(</keyword>
+			<keyword>\b(abolish)\(</keyword>
+			<keyword>\b(assert(a|z))\(</keyword>
+			<keyword>\b(clause)\(</keyword>
+			<keyword>\b(retract(all)?)\(</keyword>
+			<keyword>\b((bag|set)of)\(</keyword>
+			<keyword>\b(f(ind|or)all)\(</keyword>
+			<keyword>\b(before)\(</keyword>
+			<keyword>\b(after)\(</keyword>
+			<keyword>\b(expand_term)\(</keyword>
+			<keyword>\b(term_expansion)\(</keyword>
+			<keyword>\b(phrase)\(</keyword>
+		</context>
+
+		<context id="built-in-predicates" style-ref="built-in">
+			<keyword>\b(current_(object|protocol|category|event))\(</keyword>
+			<keyword>\b(create_(object|protocol|category))\(</keyword>
+			<keyword>\b((object|protocol|category)_property)\(</keyword>
+			<keyword>\b(abolish_(object|protocol|category|events))\(</keyword>
+			<keyword>\b(extends_(object|protocol))\(</keyword>
+			<keyword>\b(implements_protocol)\(</keyword>
+			<keyword>\b((instantiates|specializes)_class)\(</keyword>
+			<keyword>\b(imports_category)\(</keyword>
+			<keyword>\b(define_events)\(</keyword>
+			<keyword>\b((set|current)_logtalk_flag)\(</keyword>
+			<keyword>\b(logtalk_(compile|l(ibrary_path|oad)))\(</keyword>
+			<keyword>\b(forall)\(</keyword>
+			<keyword>\b(threaded(_(call|once|ignore|exit|peek|wait|notify))?)\(</keyword>
+		</context>
+
+		<context id="other-built-in-predicates" style-ref="built-in">
+			<!-- Term unification -->
+			<keyword>\s(=)\s</keyword>
+			<keyword>\s(\\=)\s</keyword>
+			<keyword>\b(unify_with_occurs_check)\(</keyword>
+			<!-- Term testing -->
+			<keyword>\b(atom(ic)?)\(</keyword>
+			<keyword>\b(integer)\(</keyword>
+			<keyword>\b(float)\(</keyword>
+			<keyword>\b(compound)\(</keyword>
+			<keyword>\b((non)?var)\(</keyword>
+			<keyword>\b(number)\(</keyword>
+			<!-- Term comparison -->
+			<keyword>(==)</keyword>
+			<keyword>(\\==)</keyword>
+			<keyword>(@&lt;)</keyword>
+			<keyword>(@=&lt;)</keyword>
+			<keyword>(@&gt;=)</keyword>
+			<keyword>(@&gt;)</keyword>
+			<!-- Term creation and decomposition -->
+			<keyword>\b(functor)\(</keyword>
+			<keyword>\b(arg)\(</keyword>
+			<keyword>(=\.\.)</keyword>
+			<keyword>\b(copy_term)\(</keyword>
+			<!-- Arithemtic evaluation -->
+			<keyword>\s(is)\s</keyword>
+			<!-- Arithemtic comparison -->
+			<keyword>(=:=)</keyword>
+			<keyword>(=\\=)</keyword>
+			<keyword>(&lt;)</keyword>
+			<keyword>(=&lt;)</keyword>
+			<keyword>(&gt;)</keyword>
+			<keyword>(&gt;=)</keyword>
+			<!-- Evaluable functors -->
+			<keyword>(\+)</keyword>
+			<keyword>(?&lt;!:)(-)</keyword>
+			<keyword>(\*)</keyword>
+			<keyword>(//)</keyword>
+			<keyword>(/)</keyword>
+			<keyword>\s(rem)\s</keyword>
+			<keyword>\s(mod)\s</keyword>
+			<keyword>\b(rem)\(</keyword>
+			<keyword>\b(mod)\(</keyword>
+			<keyword>\b(abs)\(</keyword>
+			<keyword>\b(sign)\(</keyword>
+			<keyword>\b(float(_(integer|fractional)_part)?)\(</keyword>
+			<keyword>\b(floor)\(</keyword>
+			<keyword>\b(truncate)\(</keyword>
+			<keyword>\b(round)\(</keyword>
+			<keyword>\b(ceiling)\(</keyword>
+			<!-- Other arithemtic functors -->
+			<keyword>(\*\*)</keyword>
+			<keyword>\b(sin)\(</keyword>
+			<keyword>\b(cos)\(</keyword>
+			<keyword>\b(atan)\(</keyword>
+			<keyword>\b(exp)\(</keyword>
+			<keyword>\b(log)\(</keyword>
+			<keyword>\b(sqrt)\(</keyword>
+			<!-- Bitwise functors -->
+			<keyword>(&gt;&gt;)</keyword>
+			<keyword>(&lt;&lt;)</keyword>
+			<keyword>(/\\)</keyword>
+			<keyword>(\\/)</keyword>
+			<keyword>(\\)</keyword>
+			<!-- Stream selection and control -->
+			<keyword>\b((current|set)_(in|out)put)\(</keyword>
+			<keyword>\b(open)\(</keyword>
+			<keyword>\b(close)\(</keyword>
+			<keyword>\b(flush_output)\(</keyword>
+			<keyword>\b(stream_property)\(</keyword>
+			<keyword>\b(at_end_of_stream)\(</keyword>
+			<keyword>\b(set_stream_position)\(</keyword>
+			<keyword>\b(flush_output)[^[(A-Za-z_]]</keyword>
+			<keyword>\b(at_end_of_stream)[^[(A-Za-z_]]</keyword>
+			<!-- Character input/output -->
+			<keyword>\b((get|p(eek|ut))_c(har|ode))\(</keyword>
+			<keyword>\b(nl)\(</keyword>
+			<keyword>\b(nl)\b</keyword>
+			<!-- Byte input/output -->
+			<keyword>\b((get|peek|put)_byte)\(</keyword>
+			<!-- Term input/output -->
+			<keyword>\b(read(_term)?)\(</keyword>
+			<keyword>\b(write(q)?)\(</keyword>
+			<keyword>\b(write_(canonical|term))\(</keyword>
+			<keyword>\b((current_)?op)\(</keyword>
+			<keyword>\b((current_)?char_conversion)\(</keyword>
+			<!-- Logic and control -->
+			<keyword>(\\\+)</keyword>
+			<keyword>\b(once)\(</keyword>
+			<keyword>\b(repeat)[^[(A-Za-z_]]</keyword>
+			<!-- Atomic term processing -->
+			<keyword>\b(atom_(length|c(hars|o(ncat|des))))\(</keyword>
+			<keyword>\b(sub_atom)\(</keyword>
+			<keyword>\b(char_code)\(</keyword>
+			<keyword>\b(number_c(hars|odes))\(</keyword>
+			<!-- Implementation defined hooks functions -->
+			<keyword>\b((set|current)_prolog_flag)\(</keyword>
+			<keyword>\b(halt)\(</keyword>
+			<keyword>\b(halt)[^[(A-Za-z_]]</keyword>
+		</context>
+	
+		<context id="number" style-ref="number">
+			<match extended="true">
+	        \b(0'.|0b[0-1]+|0o[0-7]+|0x[0-9a-fA-F]+|\d+(\.\d+)?([eE]([-+])?\d+)?)
+			</match>
+		</context>
+	
+		<context id="variable" style-ref="variable">
+			<match extended="true">
+			\b[A-Z_][a-zA-Z0-9_]*
+			</match>
+		</context>
+
+		<context id="message-sending-operators" style-ref="operator">
+			<keyword>(::)</keyword>			
+			<keyword>(\^\^)</keyword>
+		</context>
+
+		<context id="Category predicate direct call" style-ref="operator">
+			<keyword>(:)</keyword>			
+		</context>
+
+		<context id="external-call-operator" style-ref="operator">
+			<keyword>(\{)</regex>			
+			<regex>(\})</regex>
+		</context>
+
+		<context id="logtalk">
+			<include>
+				<context ref="string"/>
+				<context ref="quoted-atom"/>
+				<context ref="line-comment"/>
+				<context ref="block-comment"/>
+				<context ref="entity-directives"/>
+				<context ref="predicate-directives"/>
+				<context ref="built-in-methods"/>
+				<context ref="built-in-predicates"/>
+				<context ref="other-built-in-predicates"/>
+				<context ref="number"/>
+				<context ref="variable"/>
+			</include>
+		</context>
+
+	</definitions>
+
+</language>
