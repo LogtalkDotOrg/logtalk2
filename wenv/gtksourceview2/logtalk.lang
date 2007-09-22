@@ -69,84 +69,98 @@
 	    </context>
 
 		<context id="entity-directives" style-ref="entity">
-			<keyword>:-\s(object)\(</keyword>			
-			<keyword>:-\s(protocol)\(</keyword>			
-			<keyword>:-\s(category)\(</keyword>			
-			<keyword>:-\s(end_(object|protocol|category))\.</keyword>			
+			<prefix>^\s*:-\s</prefix>
+			<keyword>(object)(?=[(])</keyword>			
+			<keyword>(protocol)(?=[(])</keyword>			
+			<keyword>(category)(?=[(])</keyword>			
+			<keyword>(end_(object|protocol|category))(?=[.])</keyword>			
 		</context>
 
 		<context id="entity-relations" style-ref="entity">
-			<keyword>\b(specializes)\(</keyword>
-			<keyword>\b(extends)\(</keyword>
-			<keyword>\b(i(mp(orts|lements)|nstantiates))\(</keyword>
+			<keyword>\b(specializes)(?=[(])</keyword>
+			<keyword>\b(extends)(?=[(])</keyword>
+			<keyword>\b(i(mp(orts|lements)|nstantiates))(?=[(])</keyword>
 		</context>
 
 		<context id="predicate-directives" style-ref="directive">
-			<keyword>:-\s(alias)\(</keyword>			
-			<keyword>:-\s(e(ncoding|xport))\(</keyword>			
-			<keyword>:-\s(initialization)\(</keyword>			
-			<keyword>:-\s(info)\(</keyword>			
-			<keyword>:-\s(mod(e|ule))\(</keyword>			
-			<keyword>:-\s(dynamic)\(</keyword>			
-			<keyword>:-\s(dynamic)\.</keyword>			
-			<keyword>:-\s(discontiguous)\(</keyword>			
-			<keyword>:-\s(p(ublic|r(otected|ivate)))\(</keyword>			
-			<keyword>:-\s(m(eta_predicate|ultifile))\(</keyword>			
-			<keyword>:-\s(op)\(</keyword>			
-			<keyword>:-\s(calls)\(</keyword>			
-			<keyword>:-\s(use(s|_module))\(</keyword>			
-			<keyword>:-\s(synchronized)\(</keyword>			
-			<keyword>:-\s(synchronized)\.</keyword>			
-			<keyword>:-\s(threaded)\.</keyword>			
+ 			<prefix>^\s*:-\s</prefix>
+			<!-- Scope directives -->
+			<keyword>(p(ublic|r(otected|ivate)))(?=[(])</keyword>			
+ 			<!-- Multi-threading directives -->
+			<keyword>(synchronized)(?=[(])</keyword>			
+			<keyword>(synchronized)(?=[.])</keyword>			
+			<keyword>(threaded)(?=[.])</keyword>			
+			<!-- Other directives -->
+			<keyword>(alias)(?=[(])</keyword>			
+			<keyword>(e(ncoding|xport))(?=[(])</keyword>			
+			<keyword>(in(itialization|fo)(?=[(])</keyword>			
+			<keyword>(mod(e|ule))(?=[(])</keyword>			
+			<keyword>(dynamic)(?=[(])</keyword>			
+			<keyword>(dynamic)(?=[.])</keyword>			
+			<keyword>(discontiguous)(?=[(])</keyword>			
+			<keyword>(m(eta_predicate|ultifile))(?=[(])</keyword>			
+			<keyword>(op)(?=[(])</keyword>			
+			<keyword>(calls)(?=[(])</keyword>			
+			<keyword>(use(s|_module))(?=[(])</keyword>			
 		</context>
 
 		<context id="built-in-methods" style-ref="built-in">
-			<keyword>\b(parameter)\(</keyword>
-			<keyword>\b(se(lf|nder))\(</keyword>
-			<keyword>\b(this)\(</keyword>
-			<keyword>\b(current_predicate)\(</keyword>
-			<keyword>\b(predicate_property)\(</keyword>
-			<keyword>\b(abolish)\(</keyword>
-			<keyword>\b(assert(a|z))\(</keyword>
-			<keyword>\b(clause)\(</keyword>
-			<keyword>\b(retract(all)?)\(</keyword>
-			<keyword>\b((bag|set)of)\(</keyword>
-			<keyword>\b(f(ind|or)all)\(</keyword>
-			<keyword>\b(before)\(</keyword>
-			<keyword>\b(after)\(</keyword>
-			<keyword>\b(expand_term)\(</keyword>
-			<keyword>\b(term_expansion)\(</keyword>
-			<keyword>\b(phrase)\(</keyword>
+			<!-- Method execution context -->
+			<keyword>\b(parameter)(?=[(])</keyword>
+			<keyword>\b(se(lf|nder))(?=[(])</keyword>
+			<keyword>\b(this)(?=[(])</keyword>
+			<!-- Reflection -->
+			<keyword>\b(current_predicate)(?=[(])</keyword>
+			<keyword>\b(predicate_property)(?=[(])</keyword>
+			<!-- Database -->
+			<keyword>\b(a(bolish|ssert(a|z)))(?=[(])</keyword>
+			<keyword>\b(clause)(?=[(])</keyword>
+			<keyword>\b(retract(all)?)(?=[(])</keyword>
+			<!-- All solutions -->
+			<keyword>\b((bag|set)of)(?=[(])</keyword>
+			<keyword>\b(f(ind|or)all)(?=[(])</keyword>
+			<!-- Event handlers -->
+			<keyword>\b(before)(?=[(])</keyword>
+			<keyword>\b(after)(?=[(])</keyword>
+			<!-- DCGs -->
+			<keyword>\b(expand_term)(?=[(])</keyword>
+			<keyword>\b(term_expansion)(?=[(])</keyword>
+			<keyword>\b(phrase)(?=[(])</keyword>
 		</context>
 
 		<context id="built-in-predicates" style-ref="built-in">
-			<keyword>\b(current_(object|protocol|category|event))\(</keyword>
-			<keyword>\b(create_(object|protocol|category))\(</keyword>
-			<keyword>\b((object|protocol|category)_property)\(</keyword>
-			<keyword>\b(abolish_(object|protocol|category|events))\(</keyword>
-			<keyword>\b(extends_(object|protocol))\(</keyword>
-			<keyword>\b(implements_protocol)\(</keyword>
-			<keyword>\b((instantiates|specializes)_class)\(</keyword>
-			<keyword>\b(imports_category)\(</keyword>
-			<keyword>\b(define_events)\(</keyword>
-			<keyword>\b((set|current)_logtalk_flag)\(</keyword>
-			<keyword>\b(logtalk_(compile|l(ibrary_path|oad)))\(</keyword>
-			<keyword>\b(forall)\(</keyword>
-			<keyword>\b(threaded(_(call|once|ignore|exit|peek|wait|notify))?)\(</keyword>
+			<!-- Entity -->
+			<keyword>\b((abolish|c(reate|urrent))_(object|protocol|category))(?=[(])</keyword>
+			<keyword>\b((object|protocol|category)_property)(?=[(])</keyword>
+			<!-- Entity relations -->
+			<keyword>\b(extends_(object|protocol))(?=[(])</keyword>
+			<keyword>\b(imp(lements_protocol|orts_category)(?=[(])</keyword>
+			<keyword>\b((instantiat|specializ)es_class)(?=[(])</keyword>
+			<!-- Events -->
+			<keyword>\b(current_event)(?=[(])</keyword>
+			<keyword>\b((abolish|define)_events)(?=[(])</keyword>
+			<!-- Flags -->
+			<keyword>\b((se|curren)t_logtalk_flag)(?=[(])</keyword>
+			<!-- Compiling, loading, and library paths -->
+			<keyword>\b(logtalk_(compile|l(ibrary_path|oad)))(?=[(])</keyword>
+			<!-- Multi-threading meta-predicates -->
+			<keyword>\b(threaded(_(call|once|ignore|exit|peek|wait|notify))?)(?=[(])</keyword>
+			<!-- All solutions -->
+			<keyword>\b(forall)(?=[(])</keyword>
 		</context>
 
 		<context id="other-built-in-predicates" style-ref="built-in">
 			<!-- Term unification -->
 			<keyword>\s(=)\s</keyword>
 			<keyword>\s(\\=)\s</keyword>
-			<keyword>\b(unify_with_occurs_check)\(</keyword>
+			<keyword>\b(unify_with_occurs_check)(?=[(])</keyword>
 			<!-- Term testing -->
-			<keyword>\b(atom(ic)?)\(</keyword>
-			<keyword>\b(integer)\(</keyword>
-			<keyword>\b(float)\(</keyword>
-			<keyword>\b(compound)\(</keyword>
-			<keyword>\b((non)?var)\(</keyword>
-			<keyword>\b(number)\(</keyword>
+			<keyword>\b(atom(ic)?)(?=[(])</keyword>
+			<keyword>\b(integer)(?=[(])</keyword>
+			<keyword>\b(float)(?=[(])</keyword>
+			<keyword>\b(compound)(?=[(])</keyword>
+			<keyword>\b((non)?var)(?=[(])</keyword>
+			<keyword>\b(number)(?=[(])</keyword>
 			<!-- Term comparison -->
 			<keyword>(==)</keyword>
 			<keyword>(\\==)</keyword>
@@ -155,10 +169,10 @@
 			<keyword>(@&gt;=)</keyword>
 			<keyword>(@&gt;)</keyword>
 			<!-- Term creation and decomposition -->
-			<keyword>\b(functor)\(</keyword>
-			<keyword>\b(arg)\(</keyword>
+			<keyword>\b(functor)(?=[(])</keyword>
+			<keyword>\b(arg)(?=[(])</keyword>
 			<keyword>(=\.\.)</keyword>
-			<keyword>\b(copy_term)\(</keyword>
+			<keyword>\b(copy_term)(?=[(])</keyword>
 			<!-- Arithemtic evaluation -->
 			<keyword>\s(is)\s</keyword>
 			<!-- Arithemtic comparison -->
@@ -176,23 +190,23 @@
 			<keyword>(/)</keyword>
 			<keyword>\s(rem)\s</keyword>
 			<keyword>\s(mod)\s</keyword>
-			<keyword>\b(rem)\(</keyword>
-			<keyword>\b(mod)\(</keyword>
-			<keyword>\b(abs)\(</keyword>
-			<keyword>\b(sign)\(</keyword>
-			<keyword>\b(float(_(integer|fractional)_part)?)\(</keyword>
-			<keyword>\b(floor)\(</keyword>
-			<keyword>\b(truncate)\(</keyword>
-			<keyword>\b(round)\(</keyword>
-			<keyword>\b(ceiling)\(</keyword>
+			<keyword>\b(rem)(?=[(])</keyword>
+			<keyword>\b(mod)(?=[(])</keyword>
+			<keyword>\b(abs)(?=[(])</keyword>
+			<keyword>\b(sign)(?=[(])</keyword>
+			<keyword>\b(float(_(integer|fractional)_part)?)(?=[(])</keyword>
+			<keyword>\b(floor)(?=[(])</keyword>
+			<keyword>\b(truncate)(?=[(])</keyword>
+			<keyword>\b(round)(?=[(])</keyword>
+			<keyword>\b(ceiling)(?=[(])</keyword>
 			<!-- Other arithemtic functors -->
 			<keyword>(\*\*)</keyword>
-			<keyword>\b(sin)\(</keyword>
-			<keyword>\b(cos)\(</keyword>
-			<keyword>\b(atan)\(</keyword>
-			<keyword>\b(exp)\(</keyword>
-			<keyword>\b(log)\(</keyword>
-			<keyword>\b(sqrt)\(</keyword>
+			<keyword>\b(sin)(?=[(])</keyword>
+			<keyword>\b(cos)(?=[(])</keyword>
+			<keyword>\b(atan)(?=[(])</keyword>
+			<keyword>\b(exp)(?=[(])</keyword>
+			<keyword>\b(log)(?=[(])</keyword>
+			<keyword>\b(sqrt)(?=[(])</keyword>
 			<!-- Bitwise functors -->
 			<keyword>(&gt;&gt;)</keyword>
 			<keyword>(&lt;&lt;)</keyword>
@@ -200,39 +214,39 @@
 			<keyword>(\\/)</keyword>
 			<keyword>(\\)</keyword>
 			<!-- Stream selection and control -->
-			<keyword>\b((current|set)_(in|out)put)\(</keyword>
-			<keyword>\b(open)\(</keyword>
-			<keyword>\b(close)\(</keyword>
-			<keyword>\b(flush_output)\(</keyword>
-			<keyword>\b(stream_property)\(</keyword>
-			<keyword>\b(at_end_of_stream)\(</keyword>
-			<keyword>\b(set_stream_position)\(</keyword>
+			<keyword>\b((current|set)_(in|out)put)(?=[(])</keyword>
+			<keyword>\b(open)(?=[(])</keyword>
+			<keyword>\b(close)(?=[(])</keyword>
+			<keyword>\b(flush_output)(?=[(])</keyword>
+			<keyword>\b(stream_property)(?=[(])</keyword>
+			<keyword>\b(at_end_of_stream)(?=[(])</keyword>
+			<keyword>\b(set_stream_position)(?=[(])</keyword>
 			<keyword>\b(flush_output)[^[(A-Za-z_]]</keyword>
 			<keyword>\b(at_end_of_stream)[^[(A-Za-z_]]</keyword>
 			<!-- Character input/output -->
-			<keyword>\b((get|p(eek|ut))_c(har|ode))\(</keyword>
-			<keyword>\b(nl)\(</keyword>
+			<keyword>\b((get|p(eek|ut))_c(har|ode))(?=[(])</keyword>
+			<keyword>\b(nl)(?=[(])</keyword>
 			<keyword>\b(nl)\b</keyword>
 			<!-- Byte input/output -->
-			<keyword>\b((get|peek|put)_byte)\(</keyword>
+			<keyword>\b((get|peek|put)_byte)(?=[(])</keyword>
 			<!-- Term input/output -->
-			<keyword>\b(read(_term)?)\(</keyword>
-			<keyword>\b(write(q)?)\(</keyword>
-			<keyword>\b(write_(canonical|term))\(</keyword>
-			<keyword>\b((current_)?op)\(</keyword>
-			<keyword>\b((current_)?char_conversion)\(</keyword>
+			<keyword>\b(read(_term)?)(?=[(])</keyword>
+			<keyword>\b(write(q)?)(?=[(])</keyword>
+			<keyword>\b(write_(canonical|term))(?=[(])</keyword>
+			<keyword>\b((current_)?op)(?=[(])</keyword>
+			<keyword>\b((current_)?char_conversion)(?=[(])</keyword>
 			<!-- Logic and control -->
 			<keyword>(\\\+)</keyword>
-			<keyword>\b(once)\(</keyword>
+			<keyword>\b(once)(?=[(])</keyword>
 			<keyword>\b(repeat)[^[(A-Za-z_]]</keyword>
 			<!-- Atomic term processing -->
-			<keyword>\b(atom_(length|c(hars|o(ncat|des))))\(</keyword>
-			<keyword>\b(sub_atom)\(</keyword>
-			<keyword>\b(char_code)\(</keyword>
-			<keyword>\b(number_c(hars|odes))\(</keyword>
+			<keyword>\b(atom_(length|c(hars|o(ncat|des))))(?=[(])</keyword>
+			<keyword>\b(sub_atom)(?=[(])</keyword>
+			<keyword>\b(char_code)(?=[(])</keyword>
+			<keyword>\b(number_c(hars|odes))(?=[(])</keyword>
 			<!-- Implementation defined hooks functions -->
-			<keyword>\b((set|current)_prolog_flag)\(</keyword>
-			<keyword>\b(halt)\(</keyword>
+			<keyword>\b((set|current)_prolog_flag)(?=[(])</keyword>
+			<keyword>\b(halt)(?=[(])</keyword>
 			<keyword>\b(halt)[^[(A-Za-z_]]</keyword>
 		</context>
 	
@@ -258,8 +272,15 @@
 		</context>
 
 		<context id="external-call-operator" style-ref="operator">
-			<keyword>(\{)</regex>			
-			<regex>(\})</regex>
+			<keyword>(\{)</keyword>			
+			<keyword>(\})</keyword>
+		</context>
+
+		<context id="mode-operators" style-ref="operator">
+			<keyword>(+)</keyword>	
+			<keyword>(-)</keyword>
+			<keyword>(?)</keyword>
+			<keyword>(@)</keyword>
 		</context>
 
 		<context id="logtalk">

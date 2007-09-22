@@ -78,8 +78,7 @@
 				<regex>\b(this)\(</regex>
 				<regex>\b(current_predicate)\(</regex>
 				<regex>\b(predicate_property)\(</regex>
-				<regex>\b(abolish)\(</regex>
-				<regex>\b(assert(a|z))\(</regex>
+				<regex>\b(a(bolish|ssert(a|z)))\(</regex>
 				<regex>\b(clause)\(</regex>
 				<regex>\b(retract(all)?)\(</regex>
 				<regex>\b((bag|set)of)\(</regex>
@@ -97,11 +96,10 @@
 				<regex>\b((object|protocol|category)_property)\(</regex>
 				<regex>\b(abolish_(object|protocol|category|events))\(</regex>
 				<regex>\b(extends_(object|protocol))\(</regex>
-				<regex>\b(implements_protocol)\(</regex>
-				<regex>\b((instantiates|specializes)_class)\(</regex>
-				<regex>\b(imports_category)\(</regex>
+				<regex>\b(impl(ements_protocol|orts_category))\(</regex>
+				<regex>\b((instantiat|specializ)es_class)\(</regex>
 				<regex>\b(define_events)\(</regex>
-				<regex>\b((set|current)_logtalk_flag)\(</regex>
+				<regex>\b((se|curren)t_logtalk_flag)\(</regex>
 				<regex>\b(logtalk_(compile|l(ibrary_path|oad)))\(</regex>
 				<regex>\b(forall)\(</regex>
 				<!-- <regex>\b(retractall)\(</regex> -->
@@ -173,7 +171,7 @@
 				<regex>(\\/)</regex>
 				<regex>(\\)</regex>
 				<!-- Stream selection and control -->
-				<regex>\b((current|set)_(in|out)put)\(</regex>
+				<regex>\b((curren|se)t_(in|out)put)\(</regex>
 				<regex>\b(open)\(</regex>
 				<regex>\b(close)\(</regex>
 				<regex>\b(flush_output)\(</regex>
@@ -202,9 +200,9 @@
 				<regex>\b(atom_(length|c(hars|o(ncat|des))))\(</regex>
 				<regex>\b(sub_atom)\(</regex>
 				<regex>\b(char_code)\(</regex>
-				<regex>\b(number_c(hars|odes))\(</regex>
+				<regex>\b(number_c(har|ode)s)\(</regex>
 				<!-- Implementation defined hooks functions -->
-				<regex>\b((set|current)_prolog_flag)\(</regex>
+				<regex>\b((se|curren)t_prolog_flag)\(</regex>
 				<regex>\b(halt)\(</regex>
 				<regex>\b(halt)[^[(A-Za-z_]]</regex>
 			</keywords>

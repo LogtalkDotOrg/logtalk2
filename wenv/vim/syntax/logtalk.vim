@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	July 4, 2007
+" Last Change:	September 22, 2007
 
 
 " Quit when a syntax file was already loaded:
@@ -113,7 +113,7 @@ syn match	logtalkBuiltIn		"\<\(instantiates\|specializes\)_class\ze("
 syn match	logtalkBuiltIn		"\<\(abolish\|define\)_events\ze("
 syn match	logtalkBuiltIn		"\<current_event\ze("
 
-syn match	logtalkBuiltIn		"\<\(current\|set\)_logtalk_flag\ze("
+syn match	logtalkBuiltIn		"\<\(curren\|se\)t_logtalk_flag\ze("
 
 syn match	logtalkBuiltIn		"\<logtalk_\(compile\|l\(ibrary_path\|oad\)\)\ze("
 
@@ -217,7 +217,7 @@ syn match	logtalkOperator		">="
 
 " Stream selection and control
 
-syn match	logtalkKeyword		"\<\(current\|set\)_\(in\|out\)put\ze("
+syn match	logtalkKeyword		"\<\(curren\|se\)t_\(in\|out\)put\ze("
 syn match	logtalkKeyword		"\<open\ze("
 syn match	logtalkKeyword		"\<close\ze("
 syn match	logtalkKeyword		"\<flush_output\ze("
@@ -255,12 +255,12 @@ syn match	logtalkKeyword		"\<repeat\>"
 syn match	logtalkKeyword		"\<atom_\(length\|c\(hars\|o\(ncat\|des\)\)\)\ze("
 syn match	logtalkKeyword		"\<sub_atom\ze("
 syn match	logtalkKeyword		"\<char_code\ze("
-syn match	logtalkKeyword		"\<number_\(c\(hars\|odes\)\)\ze("
+syn match	logtalkKeyword		"\<number_c\(har\|ode\)s\ze("
 
 
 " Implementation defined hooks functions
 
-syn match	logtalkKeyword		"\<\(current\|set\)_prolog_flag\ze("
+syn match	logtalkKeyword		"\<\(curren\|se\)t_prolog_flag\ze("
 syn match	logtalkKeyword		"\<halt\ze("
 syn match	logtalkKeyword		"\<halt\>"
 
