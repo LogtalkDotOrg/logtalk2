@@ -108,7 +108,7 @@ syn match	logtalkBuiltIn		"\<\(object\|protocol\|category\)_property\ze("
 
 syn match	logtalkBuiltIn		"\<extends_\(object\|protocol\)\ze("
 syn match	logtalkBuiltIn		"\<imp\(orts_category\|lements_protocol\)\ze("
-syn match	logtalkBuiltIn		"\<\(instantiates\|specializes\)_class\ze("
+syn match	logtalkBuiltIn		"\<\(instantiat\|specializ\)es_class\ze("
 
 syn match	logtalkBuiltIn		"\<\(abolish\|define\)_events\ze("
 syn match	logtalkBuiltIn		"\<current_event\ze("
