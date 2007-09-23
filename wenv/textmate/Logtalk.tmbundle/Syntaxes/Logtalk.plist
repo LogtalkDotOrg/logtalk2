@@ -211,13 +211,13 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(var|atom|integer|float|atomic|compound|n(onvar|umber))(?=[(])</string>
+			<string>\b(var|atom(ic)?|integer|float|compound|n(onvar|umber))(?=[(])</string>
 			<key>name</key>
 			<string>support.function.term-testing.logtalk</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(read_term|read|write|write(q|_(canonical|term))|op|current_op|char_conversion|current_char_conversion)(?=[(])</string>
+			<string>\b(read(_term)?|write(q|_(canonical|term))?|(current_)?(char_conversion|op))(?=[(])</string>
 			<key>name</key>
 			<string>support.function.term-io.logtalk</string>
 		</dict>
@@ -301,7 +301,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(a(bolish|ssert(a|z))|clause|retract|retractall)(?=[(])</string>
+			<string>\b(a(bolish|ssert(a|z))|clause|retract(all)?)(?=[(])</string>
 			<key>name</key>
 			<string>support.function.database.logtalk</string>
 		</dict>
