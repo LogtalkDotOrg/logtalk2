@@ -4243,17 +4243,17 @@ current_logtalk_flag(version, version(2, 30, 6)).
 		read_term(Input, Term, [singletons(Singletons)]),
 		InputError,
 		'$lgt_compiler_error_handler'(Input, InputError)),
-	'$lgt_check_for_encoding_directive'(Term, Input, OutputOption),	% the encoding/1 directive, when present, 
-	'$lgt_file_name'(prolog, File, Object),							% must be the first term on a source file
+	'$lgt_check_for_encoding_directive'(Term, Source, Input, NewInput, OutputOption),	% the encoding/1 directive, when present, 
+	'$lgt_file_name'(prolog, File, Object),												% must be the first term on a source file
 	catch(
 		open(Object, write, Output, OutputOption),
 		OpenError,
-		'$lgt_compiler_error_handler'(Input, Output, OpenError)),
+		'$lgt_compiler_error_handler'(NewInput, Output, OpenError)),
 	catch(
-		'$lgt_tr_file'(Term, Singletons, Input, Output),
+		'$lgt_tr_file'(Term, Singletons, NewInput, Output),
 		Error,
-		'$lgt_compiler_error_handler'(Input, Output, Error)),
-	close(Input),
+		'$lgt_compiler_error_handler'(NewInput, Output, Error)),
+	close(NewInput),
 	catch(
 		('$lgt_write_directives'(Output),						% write out any Prolog code that may occur
 		 '$lgt_write_prolog_clauses'(Output),					% after the last entity on the source file;
@@ -4265,19 +4265,21 @@ current_logtalk_flag(version, version(2, 30, 6)).
 
 
 
-% '$lgt_check_for_encoding_directive'(@nonvar, @stream, -list)
+% '$lgt_check_for_encoding_directive'(@nonvar, +atom, @stream, -stream, -list)
 %
-% encoding/1 directives must be used during entity compilation 
-% and for the encoding of the generated Prolog and XML files
+% encoding/1 directives must be used during entity compilation and for the
+% encoding of the generated Prolog and XML files
 
-'$lgt_check_for_encoding_directive'((:- encoding(Encoding)), Input, [encoding(Encoding)]) :-
+'$lgt_check_for_encoding_directive'((:- encoding(Encoding)), Source, Input, NewInput, [encoding(Encoding)]) :-
 	!,
 	(	'$lgt_compiler_flag'(supports_encoding_dir, true) ->
-	 	'$lgt_set_stream_encoding'(Input, Encoding)
+		close(Input),
+		open(Source, read, NewInput, [encoding(Encoding)]),
+		read_term(NewInput, _, [singletons(_)])					% throw away encoding/1 directive
 	;	throw(error(domain_error(directive, encoding/1), directive(encoding(Encoding))))
 	).
 
-'$lgt_check_for_encoding_directive'(_, _, []).	% assume no encoding/1 directive present on the source file
+'$lgt_check_for_encoding_directive'(_, _, Input, Input, []).	% assume no encoding/1 directive present on the source file
 
 
 

@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.30.6 - September ??, 2007
 
+	Changed handling of the encoding/1 directive by the Logtalk compiler in 
+	order to improve compatibility with YAP.
+
 	Added syntax coloring support for the GtkSourceView 2.x text widget 
 	(used e.g. on the Gnome's Gedit text editor and on the MonoDevelop IDE).
 
