@@ -16,6 +16,12 @@ RELEASE NOTES
 	order to improve compatibility with YAP. Removed from the config files 
 	the now obsolete '$lgt_set_stream_encoding'/2 predicate definition.
 
+	Added a workaround for the lack of built-in support for character 
+	unbuffered input when using the Logtalk built-in debugger to the config 
+	files of ALS Prolog, B-Prolog, Ciao, CxProlog, IF/Prolog, JIProlog, 
+	Prolog II+, SICStus Prolog, XSB, and YAP. Thanks to Parker Jones for the 
+	bug report.
+
 	Added syntax coloring support for the GtkSourceView 2.x text widget 
 	(used e.g. on the Gnome's Gedit text editor and on the MonoDevelop IDE).
 
