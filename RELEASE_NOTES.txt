@@ -13,12 +13,15 @@ RELEASE NOTES
 2.30.6 - October ??, 2007
 
 	Changed handling of the encoding/1 directive by the Logtalk compiler in 
-	order to improve compatibility with YAP. Removed from the config files 
-	the now obsolete '$lgt_set_stream_encoding'/2 predicate definition.
+	order to improve compatibility with YAP and SICStus Prolog. Removed from 
+	the config files the now obsolete '$lgt_set_stream_encoding'/2 predicate 
+	definition. Renamed the compiler option "supports_encoding_dir" to 
+	"encoding_directive" and changed its possible values to "unsupported", 
+	"full" (used in both Logtalk source files and compiler generated Prolog 
+	files), and "source" (used only in Logtalk source files).
 
 	Renamed compiler option "underscore_vars" to "underscore_variables".
 	Renamed compiler option "supports_break_predicate" to "break_predicate".
-	Renamed compiler option "supports_encoding_dir" to "encoding_directive".
 
 	Added a workaround for the lack of built-in support for character 
 	unbuffered input when using the Logtalk built-in debugger to the config 

@@ -4272,7 +4272,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 
 '$lgt_check_for_encoding_directive'((:- encoding(Encoding)), Source, Input, NewInput, [encoding(Encoding)]) :-
 	!,
-	(	'$lgt_compiler_flag'(encoding_directive, true) ->
+	(	\+ '$lgt_compiler_flag'(encoding_directive, unsupported) ->
 		close(Input),
 		open(Source, read, NewInput, [encoding(Encoding)]),
 		read_term(NewInput, _, [singletons(_)])					% throw away encoding/1 directive
@@ -9812,13 +9812,16 @@ current_logtalk_flag(version, version(2, 30, 6)).
 
 % '$lgt_write_directives'(@stream)
 %
-% writes the directives
+% writes the directives; cumbersome due to the special processing of the encoding/1 directive
 
 '$lgt_write_directives'(Stream) :-
 	'$lgt_pp_directive_'(Dir),
-		write_canonical(Stream, (:- Dir)),
+	(	Dir = encoding(_), '$lgt_compiler_flag'(encoding_directive, source) ->
+		true
+	;	write_canonical(Stream, (:- Dir)),
 		write(Stream, '.'),
-		nl(Stream),
+		nl(Stream)
+	),
 	fail.
 
 '$lgt_write_directives'(_).
