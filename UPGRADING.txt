@@ -164,3 +164,7 @@ a per-project definition of directories for storing XML documenting files and
 for storing intermediate compilation files (e.g. Prolog files). Removed from 
 the config files the predicate '$lgt_alt_directory'/2. Older config files are 
 incompatible with this new Logtalk version.
+
+Logtalk version 2.30.6 renamed the compiler flags "supports_break_predicate", 
+"supports_encoding_dir", and "underscore_vars". Older config files are not
+compatible with this new Logtalk version.
