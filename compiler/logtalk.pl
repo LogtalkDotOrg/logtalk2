@@ -3746,7 +3746,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	fail.
 
 '$lgt_dbg_do_port_option'(b, _, _, _, _, _) :-
-	(	'$lgt_compiler_flag'(supports_break_predicate, true) ->
+	(	'$lgt_compiler_flag'(break_predicate, true) ->
 		'$lgt_dbg_suspend'(Tracing),
 		break,
 		'$lgt_dbg_resume'(Tracing)
@@ -4272,7 +4272,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 
 '$lgt_check_for_encoding_directive'((:- encoding(Encoding)), Source, Input, NewInput, [encoding(Encoding)]) :-
 	!,
-	(	'$lgt_compiler_flag'(supports_encoding_dir, true) ->
+	(	'$lgt_compiler_flag'(encoding_directive, true) ->
 		close(Input),
 		open(Source, read, NewInput, [encoding(Encoding)]),
 		read_term(NewInput, _, [singletons(_)])					% throw away encoding/1 directive
@@ -4404,7 +4404,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 % the corresponding compiler flag sets their interpretation to don't care variables
 
 '$lgt_filter_dont_care_vars'(List, Result) :-
-	(	'$lgt_compiler_flag'(underscore_vars, dont_care) ->
+	(	'$lgt_compiler_flag'(underscore_variables, dont_care) ->
 		'$lgt_filter_dont_care_vars'(List, [], Result)
 	;	List = Result
 	).
@@ -10820,16 +10820,16 @@ current_logtalk_flag(version, version(2, 30, 6)).
 '$lgt_valid_flag'(reload).
 '$lgt_valid_flag'(startup_message).
 '$lgt_valid_flag'(version).
-'$lgt_valid_flag'(underscore_vars).
+'$lgt_valid_flag'(underscore_variables).
 '$lgt_valid_flag'(code_prefix).
 '$lgt_valid_flag'(debug).
-'$lgt_valid_flag'(supports_break_predicate).
+'$lgt_valid_flag'(break_predicate).
 '$lgt_valid_flag'(events).
 '$lgt_valid_flag'(altdirs).
 '$lgt_valid_flag'(tmpdir).
 '$lgt_valid_flag'(xmldir).
 '$lgt_valid_flag'(hook).
-'$lgt_valid_flag'(supports_encoding_dir).
+'$lgt_valid_flag'(encoding_directive).
 '$lgt_valid_flag'(threads).
 
 
@@ -10839,10 +10839,10 @@ current_logtalk_flag(version, version(2, 30, 6)).
 % true if the argument is a read only Logtalk flag name
 
 '$lgt_read_only_flag'(startup_message).
-'$lgt_read_only_flag'(supports_break_predicate).
+'$lgt_read_only_flag'(break_predicate).
 '$lgt_read_only_flag'(version).
 '$lgt_read_only_flag'(altdirs).
-'$lgt_read_only_flag'(supports_encoding_dir).
+'$lgt_read_only_flag'(encoding_directive).
 '$lgt_read_only_flag'(threads).
 
 
@@ -10890,8 +10890,8 @@ current_logtalk_flag(version, version(2, 30, 6)).
 '$lgt_valid_flag_value'(reload, always) :- !.
 '$lgt_valid_flag_value'(reload, skip) :- !.
 
-'$lgt_valid_flag_value'(underscore_vars, dont_care) :- !.
-'$lgt_valid_flag_value'(underscore_vars, singletons) :- !.
+'$lgt_valid_flag_value'(underscore_variables, dont_care) :- !.
+'$lgt_valid_flag_value'(underscore_variables, singletons) :- !.
 
 '$lgt_valid_flag_value'(code_prefix, Prefix) :-
 	atom(Prefix).
@@ -12820,7 +12820,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	'$lgt_default_flag'(plredef, Plredef), write(', plredef: '), write(Plredef), nl,
 	'$lgt_default_flag'(portability, Portability), write('  portability: '), write(Portability),
 	'$lgt_default_flag'(singletons, Singletons), write(', singletons: '), write(Singletons),
-	'$lgt_default_flag'(underscore_vars, Underscore), write(', underscore_vars: '), write(Underscore), nl,
+	'$lgt_default_flag'(underscore_variables, Underscore), write(', underscore_variables: '), write(Underscore), nl,
 	write('Default documenting compilation flags:'), nl,
 	'$lgt_default_flag'(xmldocs, XMLDocs), write('  xmldocs: '), write(XMLDocs),
 	'$lgt_default_flag'(xmldir, XMLDir), write(', xmldir: '), write(XMLDir),
@@ -12840,69 +12840,69 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	write(', hook: '), write(Hook),
 	'$lgt_default_flag'(tmpdir, TmpDir), write(', tmpdir: '), write(TmpDir), nl,
 	write('Read-only compilation flags:'),
-	'$lgt_default_flag'(supports_break_predicate, Break), write('  supports_break_predicate: '), write(Break),
+	'$lgt_default_flag'(break_predicate, Break), write('  break_predicate: '), write(Break),
 	'$lgt_default_flag'(startup_message, Startup), write(', startup_message: '), write(Startup), nl,
 	'$lgt_default_flag'(altdirs, Altdirs), write('  altdirs: '), write(Altdirs),
-	'$lgt_default_flag'(supports_encoding_dir, Encodings), write(', supports_encoding_dir: '), write(Encodings),
+	'$lgt_default_flag'(encoding_directive, Encodings), write(', encoding_directive: '), write(Encodings),
 	 '$lgt_default_flag'(threads, Threads), write(', threads: '), write(Threads), nl, nl.
 
 '$lgt_default_flags'(verbose) :-
 	write('Default lint compilation flags:'), nl,
 	'$lgt_default_flag'(unknown, Unknown),
-	write('  Unknown entities (unknown):                                '), write(Unknown), nl,
+	write('  Unknown entities (unknown):                                 '), write(Unknown), nl,
 	'$lgt_default_flag'(misspelt, Misspelt),
-	write('  Misspelt predicate calls (misspelt):                       '), write(Misspelt), nl,
+	write('  Misspelt predicate calls (misspelt):                        '), write(Misspelt), nl,
 	'$lgt_default_flag'(lgtredef, Lgtredef),
-	write('  Logtalk built-in predicates redefinition (lgtredef):       '), write(Lgtredef), nl,
+	write('  Logtalk built-in predicates redefinition (lgtredef):        '), write(Lgtredef), nl,
 	'$lgt_default_flag'(plredef, Plredef),
-	write('  Prolog built-in predicates redefinition (plredef):         '), write(Plredef), nl,
+	write('  Prolog built-in predicates redefinition (plredef):          '), write(Plredef), nl,
 	'$lgt_default_flag'(portability, Portability),
-	write('  Non portable calls (portability):                          '), write(Portability), nl,
+	write('  Non portable calls (portability):                           '), write(Portability), nl,
 	'$lgt_default_flag'(singletons, Singletons),
-	write('  Singletons variables (singletons):                         '), write(Singletons), nl,
-	'$lgt_default_flag'(underscore_vars, Underscore),
-	write('  Underscore variables interpretation (underscore_vars):     '), write(Underscore), nl,
+	write('  Singletons variables (singletons):                          '), write(Singletons), nl,
+	'$lgt_default_flag'(underscore_variables, Underscore),
+	write('  Underscore variables interpretation (underscore_variables): '), write(Underscore), nl,
 	write('Default documenting compilation flags:'), nl,
 	'$lgt_default_flag'(xmldocs, XMLDocs),
-	write('  XML documenting files (xmldocs):                           '), write(XMLDocs), nl,
+	write('  XML documenting files (xmldocs):                            '), write(XMLDocs), nl,
 	'$lgt_default_flag'(xmldir, XMLDir),
-	write('  XML documenting files directory (xmldir):                  '), write(XMLDir), nl,
+	write('  XML documenting files directory (xmldir):                   '), write(XMLDir), nl,
 	'$lgt_default_flag'(xmlspec, XMLSpec),
-	write('  XML specification file (xmlspec):                          '), write(XMLSpec), nl,
+	write('  XML specification file (xmlspec):                           '), write(XMLSpec), nl,
 	'$lgt_default_flag'(xmlsref, XMLSRef),
-	write('  XML specification reference (xmlsref):                     '), write(XMLSRef), nl,
+	write('  XML specification reference (xmlsref):                      '), write(XMLSRef), nl,
 	'$lgt_default_flag'(xslfile, XSLFile),
-	write('  XSL stylesheet file (xslfile):                             '), write(XSLFile), nl,
+	write('  XSL stylesheet file (xslfile):                              '), write(XSLFile), nl,
 	write('Other default compilation flags:'), nl,
 	'$lgt_default_flag'(report, Report),
-	write('  Compilation report (report):                               '), write(Report), nl,
+	write('  Compilation report (report):                                '), write(Report), nl,
 	'$lgt_default_flag'(code_prefix, Code),
-	write('  Compiled code functors prefix (code_prefix):               '), writeq(Code), nl,
+	write('  Compiled code functors prefix (code_prefix):                '), writeq(Code), nl,
 	'$lgt_default_flag'(debug, Debug),
-	write('  Compile entities in debug mode (debug):                    '), writeq(Debug), nl,
+	write('  Compile entities in debug mode (debug):                     '), writeq(Debug), nl,
 	'$lgt_default_flag'(reload, Reload),
-	write('  Reloading of already loaded source files (reload):         '), write(Reload), nl,
+	write('  Reloading of already loaded source files (reload):          '), write(Reload), nl,
 	'$lgt_default_flag'(smart_compilation, Smart),
-	write('  Smart compilation (smart_compilation):                     '), write(Smart), nl,
+	write('  Smart compilation (smart_compilation):                      '), write(Smart), nl,
 	'$lgt_default_flag'(events, Events),
-	write('  Event-driven programming support (events):                 '), write(Events), nl,
+	write('  Event-driven programming support (events):                  '), write(Events), nl,
 	(	'$lgt_default_flag'(hook, Hook) -> true
 	;	Hook = '(none defined)'
 	),
-	write('  Compiler hook object and hook predicate functor:           '), write(Hook), nl,
+	write('  Compiler hook object and hook predicate functor:            '), write(Hook), nl,
 	'$lgt_default_flag'(tmpdir, TmpDir),
-	write('  Directory for temporary compiler generated files (tmpdir): '), write(TmpDir), nl,
+	write('  Directory for compiler generated temporary files (tmpdir):  '), write(TmpDir), nl,
 	write('Read-only compilation flags:'), nl,
-	'$lgt_default_flag'(supports_break_predicate, Break),
-	write('  Support for break/0 predicate (supports_break_predicate):  '), write(Break), nl,
+	'$lgt_default_flag'(break_predicate, Break),
+	write('  Support for break/0 predicate (break_predicate):            '), write(Break), nl,
 	'$lgt_default_flag'(startup_message, Startup),
-	write('  Startup message (startup_message):                         '), write(Startup), nl,
+	write('  Startup message (startup_message):                          '), write(Startup), nl,
 	'$lgt_default_flag'(altdirs, Altdirs),
-	write('  Alternative compilation directories (altdirs):             '), write(Altdirs), nl,
-	'$lgt_default_flag'(supports_encoding_dir, Encodings),
-	write('  Support for encoding directive (supports_encoding_dir):    '), write(Encodings), nl,
+	write('  Alternative compilation directories (altdirs):              '), write(Altdirs), nl,
+	'$lgt_default_flag'(encoding_directive, Encodings),
+	write('  Support for encoding/1 directive (encoding_directive):      '), write(Encodings), nl,
 	'$lgt_default_flag'(threads, Threads),
-	write('  Multi-threading programming support (threads):             '), write(Threads), nl, nl.
+	write('  Multi-threading programming support (threads):              '), write(Threads), nl, nl.
 
 
 
