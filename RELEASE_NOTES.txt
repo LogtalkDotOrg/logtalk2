@@ -29,6 +29,9 @@ RELEASE NOTES
 	Prolog II+, SICStus Prolog, XSB, and YAP. Thanks to Parker Jones for the 
 	bug report.
 
+	Added a BOM to the "babel.lgt" UTF-8 file in the "encodings" example in 
+	order to improve compatibility with SICStus Prolog.
+
 	Added syntax coloring support for the GtkSourceView 2.x text widget 
 	(used e.g. on the Gnome's Gedit text editor and on the MonoDevelop IDE).
 
