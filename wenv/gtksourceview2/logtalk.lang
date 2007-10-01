@@ -35,10 +35,11 @@
 		<style id="operator" _name="Operator" map-to="def:operator"/>
 		<style id="error" _name="Error" map-to="def:error"/>
 		<style id="string" _name="String" map-to="def:string"/>
-		<style id="entity" _name="External" map-to="def:preprocessor"/>
-		<style id="directive" _name="Declaration" map-to="def:type"/>
+		<style id="entity" _name="Data type" map-to="def:type"/>
+		<style id="directive" _name="Preprocessor directive" map-to="def:preprocessor"/>
 		<style id="number" _name="Number" map-to="def:decimal"/>
-		<style id="built-in" _name="Builtin" map-to="def:builtin"/>
+		<style id="built-in" _name="Keyword" map-to="def:keyword"/>
+		<style id="variable" _name="Variable" map-to="def:identifier"/>
 	</styles>
 
 	<definitions>
@@ -77,9 +78,9 @@
 		</context>
 
 		<context id="entity-relations" style-ref="entity">
-			<keyword>\b(specializes)(?=[(])</keyword>
-			<keyword>\b(extends)(?=[(])</keyword>
-			<keyword>\b(i(mp(orts|lements)|nstantiates))(?=[(])</keyword>
+			<keyword>(specializes)(?=[(])</keyword>
+			<keyword>(extends)(?=[(])</keyword>
+			<keyword>(i(mp(orts|lements)|nstantiates))(?=[(])</keyword>
 		</context>
 
 		<context id="predicate-directives" style-ref="directive">
@@ -93,7 +94,7 @@
 			<!-- Other directives -->
 			<keyword>(alias)(?=[(])</keyword>			
 			<keyword>(e(ncoding|xport))(?=[(])</keyword>			
-			<keyword>(in(itialization|fo)(?=[(])</keyword>			
+			<keyword>(in(itialization|fo))(?=[(])</keyword>			
 			<keyword>(mod(e|ule))(?=[(])</keyword>			
 			<keyword>(dynamic)(?=[(])</keyword>			
 			<keyword>(dynamic)(?=[.])</keyword>			
@@ -134,7 +135,7 @@
 			<keyword>\b((object|protocol|category)_property)(?=[(])</keyword>
 			<!-- Entity relations -->
 			<keyword>\b(extends_(object|protocol))(?=[(])</keyword>
-			<keyword>\b(imp(lements_protocol|orts_category)(?=[(])</keyword>
+			<keyword>\b(imp(lements_protocol|orts_category))(?=[(])</keyword>
 			<keyword>\b((instantiat|specializ)es_class)(?=[(])</keyword>
 			<!-- Events -->
 			<keyword>\b(current_event)(?=[(])</keyword>
@@ -262,24 +263,24 @@
 			</match>
 		</context>
 
-		<context id="message-sending-operators" style-ref="operator">
+		<context id="message-sending-operators" style-ref="built-in">
 			<keyword>(::)</keyword>			
 			<keyword>(\^\^)</keyword>
 		</context>
 
-		<context id="Category predicate direct call" style-ref="operator">
+		<context id="category-predicate-direct-call" style-ref="built-in">
 			<keyword>(:)</keyword>			
 		</context>
 
-		<context id="external-call-operator" style-ref="operator">
+		<context id="external-call-operator" style-ref="built-in">
 			<keyword>(\{)</keyword>			
 			<keyword>(\})</keyword>
 		</context>
 
-		<context id="mode-operators" style-ref="operator">
-			<keyword>(+)</keyword>	
+		<context id="mode-operators" style-ref="built-in">
+			<keyword>(\+)</keyword>	
 			<keyword>(-)</keyword>
-			<keyword>(?)</keyword>
+			<keyword>(\?)</keyword>
 			<keyword>(@)</keyword>
 		</context>
 
@@ -290,12 +291,17 @@
 				<context ref="line-comment"/>
 				<context ref="block-comment"/>
 				<context ref="entity-directives"/>
+				<context ref="entity-relations"/>
 				<context ref="predicate-directives"/>
 				<context ref="built-in-methods"/>
 				<context ref="built-in-predicates"/>
 				<context ref="other-built-in-predicates"/>
 				<context ref="number"/>
 				<context ref="variable"/>
+				<context ref="message-sending-operators"/>
+				<context ref="category-predicate-direct-call"/>
+				<context ref="external-call-operator"/>
+				<context ref="mode-operators"/>
 			</include>
 		</context>
 
