@@ -107,61 +107,61 @@
 
 		<context id="built-in-methods" style-ref="built-in">
 			<!-- Method execution context -->
-			<keyword>\b(parameter)(?=[(])</keyword>
-			<keyword>\b(se(lf|nder))(?=[(])</keyword>
-			<keyword>\b(this)(?=[(])</keyword>
+			<keyword>(parameter)(?=[(])</keyword>
+			<keyword>(se(lf|nder))(?=[(])</keyword>
+			<keyword>(this)(?=[(])</keyword>
 			<!-- Reflection -->
-			<keyword>\b(current_predicate)(?=[(])</keyword>
-			<keyword>\b(predicate_property)(?=[(])</keyword>
+			<keyword>(current_predicate)(?=[(])</keyword>
+			<keyword>(predicate_property)(?=[(])</keyword>
 			<!-- Database -->
-			<keyword>\b(a(bolish|ssert(a|z)))(?=[(])</keyword>
-			<keyword>\b(clause)(?=[(])</keyword>
-			<keyword>\b(retract(all)?)(?=[(])</keyword>
+			<keyword>(a(bolish|ssert(a|z)))(?=[(])</keyword>
+			<keyword>(clause)(?=[(])</keyword>
+			<keyword>(retract(all)?)(?=[(])</keyword>
 			<!-- All solutions -->
-			<keyword>\b((bag|set)of)(?=[(])</keyword>
-			<keyword>\b(f(ind|or)all)(?=[(])</keyword>
+			<keyword>((bag|set)of)(?=[(])</keyword>
+			<keyword>(f(ind|or)all)(?=[(])</keyword>
 			<!-- Event handlers -->
-			<keyword>\b(before)(?=[(])</keyword>
-			<keyword>\b(after)(?=[(])</keyword>
+			<keyword>(before)(?=[(])</keyword>
+			<keyword>(after)(?=[(])</keyword>
 			<!-- DCGs -->
-			<keyword>\b(expand_term)(?=[(])</keyword>
-			<keyword>\b(term_expansion)(?=[(])</keyword>
-			<keyword>\b(phrase)(?=[(])</keyword>
+			<keyword>(expand_term)(?=[(])</keyword>
+			<keyword>(term_expansion)(?=[(])</keyword>
+			<keyword>(phrase)(?=[(])</keyword>
 		</context>
 
 		<context id="built-in-predicates" style-ref="built-in">
 			<!-- Entity -->
-			<keyword>\b((abolish|c(reate|urrent))_(object|protocol|category))(?=[(])</keyword>
-			<keyword>\b((object|protocol|category)_property)(?=[(])</keyword>
+			<keyword>((abolish|c(reate|urrent))_(object|protocol|category))(?=[(])</keyword>
+			<keyword>((object|protocol|category)_property)(?=[(])</keyword>
 			<!-- Entity relations -->
-			<keyword>\b(extends_(object|protocol))(?=[(])</keyword>
-			<keyword>\b(imp(lements_protocol|orts_category))(?=[(])</keyword>
-			<keyword>\b((instantiat|specializ)es_class)(?=[(])</keyword>
+			<keyword>(extends_(object|protocol))(?=[(])</keyword>
+			<keyword>(imp(lements_protocol|orts_category))(?=[(])</keyword>
+			<keyword>((instantiat|specializ)es_class)(?=[(])</keyword>
 			<!-- Events -->
-			<keyword>\b(current_event)(?=[(])</keyword>
-			<keyword>\b((abolish|define)_events)(?=[(])</keyword>
+			<keyword>(current_event)(?=[(])</keyword>
+			<keyword>((abolish|define)_events)(?=[(])</keyword>
 			<!-- Flags -->
-			<keyword>\b((se|curren)t_logtalk_flag)(?=[(])</keyword>
+			<keyword>((se|curren)t_logtalk_flag)(?=[(])</keyword>
 			<!-- Compiling, loading, and library paths -->
-			<keyword>\b(logtalk_(compile|l(ibrary_path|oad)))(?=[(])</keyword>
+			<keyword>(logtalk_(compile|l(ibrary_path|oad)))(?=[(])</keyword>
 			<!-- Multi-threading meta-predicates -->
-			<keyword>\b(threaded(_(call|once|ignore|exit|peek|wait|notify))?)(?=[(])</keyword>
+			<keyword>(threaded(_(call|once|ignore|exit|peek|wait|notify))?)(?=[(])</keyword>
 			<!-- All solutions -->
-			<keyword>\b(forall)(?=[(])</keyword>
+			<keyword>(forall)(?=[(])</keyword>
 		</context>
 
 		<context id="other-built-in-predicates" style-ref="built-in">
 			<!-- Term unification -->
 			<keyword>\s(=)\s</keyword>
 			<keyword>\s(\\=)\s</keyword>
-			<keyword>\b(unify_with_occurs_check)(?=[(])</keyword>
+			<keyword>(unify_with_occurs_check)(?=[(])</keyword>
 			<!-- Term testing -->
-			<keyword>\b(atom(ic)?)(?=[(])</keyword>
-			<keyword>\b(integer)(?=[(])</keyword>
-			<keyword>\b(float)(?=[(])</keyword>
-			<keyword>\b(compound)(?=[(])</keyword>
-			<keyword>\b((non)?var)(?=[(])</keyword>
-			<keyword>\b(number)(?=[(])</keyword>
+			<keyword>(atom(ic)?)(?=[(])</keyword>
+			<keyword>(integer)(?=[(])</keyword>
+			<keyword>(float)(?=[(])</keyword>
+			<keyword>(compound)(?=[(])</keyword>
+			<keyword>((non)?var)(?=[(])</keyword>
+			<keyword>(number)(?=[(])</keyword>
 			<!-- Term comparison -->
 			<keyword>(==)</keyword>
 			<keyword>(\\==)</keyword>
@@ -170,12 +170,12 @@
 			<keyword>(@&gt;=)</keyword>
 			<keyword>(@&gt;)</keyword>
 			<!-- Term creation and decomposition -->
-			<keyword>\b(functor)(?=[(])</keyword>
-			<keyword>\b(arg)(?=[(])</keyword>
+			<keyword>(functor)(?=[(])</keyword>
+			<keyword>(arg)(?=[(])</keyword>
 			<keyword>(=\.\.)</keyword>
-			<keyword>\b(copy_term)(?=[(])</keyword>
+			<keyword>(copy_term)(?=[(])</keyword>
 			<!-- Arithemtic evaluation -->
-			<keyword>\s(is)\s</keyword>
+			<keyword>is</keyword>
 			<!-- Arithemtic comparison -->
 			<keyword>(=:=)</keyword>
 			<keyword>(=\\=)</keyword>
@@ -191,23 +191,23 @@
 			<keyword>(/)</keyword>
 			<keyword>\s(rem)\s</keyword>
 			<keyword>\s(mod)\s</keyword>
-			<keyword>\b(rem)(?=[(])</keyword>
-			<keyword>\b(mod)(?=[(])</keyword>
-			<keyword>\b(abs)(?=[(])</keyword>
-			<keyword>\b(sign)(?=[(])</keyword>
-			<keyword>\b(float(_(integer|fractional)_part)?)(?=[(])</keyword>
-			<keyword>\b(floor)(?=[(])</keyword>
-			<keyword>\b(truncate)(?=[(])</keyword>
-			<keyword>\b(round)(?=[(])</keyword>
-			<keyword>\b(ceiling)(?=[(])</keyword>
+			<keyword>(rem)(?=[(])</keyword>
+			<keyword>(mod)(?=[(])</keyword>
+			<keyword>(abs)(?=[(])</keyword>
+			<keyword>(sign)(?=[(])</keyword>
+			<keyword>(float(_(integer|fractional)_part)?)(?=[(])</keyword>
+			<keyword>(floor)(?=[(])</keyword>
+			<keyword>(truncate)(?=[(])</keyword>
+			<keyword>(round)(?=[(])</keyword>
+			<keyword>(ceiling)(?=[(])</keyword>
 			<!-- Other arithemtic functors -->
 			<keyword>(\*\*)</keyword>
-			<keyword>\b(sin)(?=[(])</keyword>
-			<keyword>\b(cos)(?=[(])</keyword>
-			<keyword>\b(atan)(?=[(])</keyword>
-			<keyword>\b(exp)(?=[(])</keyword>
-			<keyword>\b(log)(?=[(])</keyword>
-			<keyword>\b(sqrt)(?=[(])</keyword>
+			<keyword>(sin)(?=[(])</keyword>
+			<keyword>(cos)(?=[(])</keyword>
+			<keyword>(atan)(?=[(])</keyword>
+			<keyword>(exp)(?=[(])</keyword>
+			<keyword>(log)(?=[(])</keyword>
+			<keyword>(sqrt)(?=[(])</keyword>
 			<!-- Bitwise functors -->
 			<keyword>(&gt;&gt;)</keyword>
 			<keyword>(&lt;&lt;)</keyword>
@@ -215,40 +215,39 @@
 			<keyword>(\\/)</keyword>
 			<keyword>(\\)</keyword>
 			<!-- Stream selection and control -->
-			<keyword>\b((current|set)_(in|out)put)(?=[(])</keyword>
-			<keyword>\b(open)(?=[(])</keyword>
-			<keyword>\b(close)(?=[(])</keyword>
-			<keyword>\b(flush_output)(?=[(])</keyword>
-			<keyword>\b(stream_property)(?=[(])</keyword>
-			<keyword>\b(at_end_of_stream)(?=[(])</keyword>
-			<keyword>\b(set_stream_position)(?=[(])</keyword>
-			<keyword>\b(flush_output)[^[(A-Za-z_]]</keyword>
-			<keyword>\b(at_end_of_stream)[^[(A-Za-z_]]</keyword>
+			<keyword>((current|set)_(in|out)put)(?=[(])</keyword>
+			<keyword>(open)(?=[(])</keyword>
+			<keyword>(close)(?=[(])</keyword>
+			<keyword>(flush_output)(?=[(])</keyword>
+			<keyword>flush_output</keyword>
+			<keyword>(stream_property)(?=[(])</keyword>
+			<keyword>(at_end_of_stream)(?=[(])</keyword>
+			<keyword>at_end_of_stream</keyword>
+			<keyword>(set_stream_position)(?=[(])</keyword>
 			<!-- Character input/output -->
-			<keyword>\b((get|p(eek|ut))_c(har|ode))(?=[(])</keyword>
-			<keyword>\b(nl)(?=[(])</keyword>
-			<keyword>\b(nl)\b</keyword>
+			<keyword>((get|p(eek|ut))_c(har|ode))(?=[(])</keyword>
+			<keyword>(nl)(?=[(])</keyword>
+			<keyword>nl</keyword>
 			<!-- Byte input/output -->
-			<keyword>\b((get|peek|put)_byte)(?=[(])</keyword>
+			<keyword>((get|peek|put)_byte)(?=[(])</keyword>
 			<!-- Term input/output -->
-			<keyword>\b(read(_term)?)(?=[(])</keyword>
-			<keyword>\b(write(q)?)(?=[(])</keyword>
-			<keyword>\b(write_(canonical|term))(?=[(])</keyword>
-			<keyword>\b((current_)?op)(?=[(])</keyword>
-			<keyword>\b((current_)?char_conversion)(?=[(])</keyword>
+			<keyword>(read(_term)?)(?=[(])</keyword>
+			<keyword>(write(q|_(canonical|term))?)(?=[(])</keyword>
+			<keyword>((current_)?op)(?=[(])</keyword>
+			<keyword>((current_)?char_conversion)(?=[(])</keyword>
 			<!-- Logic and control -->
 			<keyword>(\\\+)</keyword>
-			<keyword>\b(once)(?=[(])</keyword>
-			<keyword>\b(repeat)[^[(A-Za-z_]]</keyword>
+			<keyword>(once)(?=[(])</keyword>
+			<keyword>(true|fail|repeat)(?![-!(^~])</keyword>
 			<!-- Atomic term processing -->
-			<keyword>\b(atom_(length|c(hars|o(ncat|des))))(?=[(])</keyword>
-			<keyword>\b(sub_atom)(?=[(])</keyword>
-			<keyword>\b(char_code)(?=[(])</keyword>
-			<keyword>\b(number_c(hars|odes))(?=[(])</keyword>
+			<keyword>(atom_(length|c(hars|o(ncat|des))))(?=[(])</keyword>
+			<keyword>(sub_atom)(?=[(])</keyword>
+			<keyword>(char_code)(?=[(])</keyword>
+			<keyword>(number_c(hars|odes))(?=[(])</keyword>
 			<!-- Implementation defined hooks functions -->
-			<keyword>\b((set|current)_prolog_flag)(?=[(])</keyword>
-			<keyword>\b(halt)(?=[(])</keyword>
-			<keyword>\b(halt)[^[(A-Za-z_]]</keyword>
+			<keyword>((set|current)_prolog_flag)(?=[(])</keyword>
+			<keyword>(halt)(?=[(])</keyword>
+			<keyword>halt</keyword>
 		</context>
 	
 		<context id="number" style-ref="number">

@@ -34,7 +34,6 @@ RELEASE NOTES
 
 	Added syntax coloring support for the GtkSourceView 2.x text widget 
 	(used e.g. on the Gnome's Gedit text editor and on the MonoDevelop IDE).
-
 	Removed syntax coloring for the obsolete atomic/1 predicate directive 
 	from the support files of Source-highlight, Emacs, SubEthaEdit, jEdit, 
 	and Kate. Optimized the regular expressions used in most syntax coloring 
