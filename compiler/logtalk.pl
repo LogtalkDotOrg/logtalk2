@@ -12437,7 +12437,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 % sends a goal to the dispatcher thread
 
 '$lgt_mt_send_goal'(Queue, Goal, Sender, This, Self, Option) :-
-	(	current_thread(logtalk_dispatcher, running) ->
+	(	thread_property(logtalk_dispatcher, status(running)) ->
 		% ask the Logtalk dispatcher to create a new thread for proving the goal:
 		thread_send_message(logtalk_dispatcher, '$lgt_goal'(Queue, Goal, This, Self, Option)),
 		(	Option == ignore ->
@@ -12492,7 +12492,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 		call_cleanup(
 			'$lgt_mt_get_reply_aux'(Type, Queue, Goal, This, Self, Tag, Id),
 			(	Type == non_deterministic ->
-				(	current_thread(Id, running) ->							% if the thread is still running, it's suspended waiting
+				(	thread_property(Id, status(running)) ->					% if the thread is still running, it's suspended waiting
 					catch(thread_send_message(Id, '$lgt_exit'), _, true)	% for a request to an alternative proof; tell it to exit
 				;	true
 				),
