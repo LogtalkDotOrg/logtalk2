@@ -22,7 +22,8 @@ system path):
 	qplgt		Qu-Prolog integration script
 	sicstuslgt	SICStus Prolog integration script
 	swilgt		SWI-Prolog integration script
-	xsblgt		XSB integration script
+	xsblgt		XSB integration script (single-threaded)
+	xsbmtlgt	XSB integration script (multi-threaded)
 	yaplgt		YAP integration script
 
 On Windows systems, the Logtalk installer makes the Prolog integration 
