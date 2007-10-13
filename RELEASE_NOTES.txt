@@ -14,8 +14,10 @@ RELEASE NOTES
 
 	Replaced calls to the proprietary current_thread/2 predicate in the 
 	Logtalk runtime by calls to the thread_property/2 predicate as per 
-	the ISO DTR on multi-threading predicates. Added a definition for the 
-	thread_property/2 predicate to the SWI-Prolog config file.
+	the ISO DTR on multi-threading predicates. Added a goal_expansion/2 
+	clause to the SWI-Prolog config file to automatically switch between 
+	the current_thread/2 and thread_property/2 predicates depending on 
+	availability.
 
 	Changed handling of the encoding/1 directive by the Logtalk compiler in 
 	order to improve compatibility with YAP and SICStus Prolog. Removed from 
