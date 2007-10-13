@@ -43,6 +43,7 @@ ln -sf ../share/logtalk/integration/qplgt.sh qplgt
 ln -sf ../share/logtalk/integration/sicstuslgt.sh sicstuslgt
 ln -sf ../share/logtalk/integration/swilgt.sh swilgt
 ln -sf ../share/logtalk/integration/xsblgt.sh xsblgt
+ln -sf ../share/logtalk/integration/xsbmtlgt.sh xsbmtlgt
 ln -sf ../share/logtalk/integration/yaplgt.sh yaplgt
 ln -sf ../share/logtalk/scripts/cplgtdirs.sh cplgtdirs
 ln -sf ../share/logtalk/xml/lgt2pdf.sh lgt2pdf
@@ -68,6 +69,7 @@ rm -f qplgt
 rm -f sicstuslgt
 rm -f swilgt
 rm -f xsblgt
+rm -f xsbmtlgt
 rm -f yaplgt
 
 %files
@@ -107,6 +109,7 @@ rm -f yaplgt
 /usr/local/bin/sicstuslgt
 /usr/local/bin/swilgt
 /usr/local/bin/xsblgt
+/usr/local/bin/xsbmtlgt
 /usr/local/bin/yaplgt
 
 %post
@@ -130,6 +133,7 @@ echo "  Qu-Prolog:      qplgt"
 echo "  SICStus Prolog: sicstuslgt"
 echo "  SWI-Prolog:     swilgt"
 echo "  XSB:            xsblgt      (first run must use sudo)"
+echo "  XSB (MT):       xsbmtlgt    (first run must use sudo)"
 echo "  YAP:            yaplgt"
 echo
 echo "The Prolog integration scripts can be found on \"$RPM_INSTALL_PREFIX/bin\"."

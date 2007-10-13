@@ -46,6 +46,7 @@ echo "  Qu-Prolog:      qplgt"
 echo "  SICStus Prolog: sicstuslgt"
 echo "  SWI-Prolog:     swilgt"
 echo "  XSB:            xsblgt      (first run must use sudo)"
+echo "  XSB (MT):       xsbmtlgt    (first run must use sudo)"
 echo "  YAP:            yaplgt"
 echo
 echo "The Prolog integration scripts can be found on \"/usr/bin\"."

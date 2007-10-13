@@ -71,6 +71,7 @@ ln -sf ../share/logtalk/integration/qplgt.sh qplgt
 ln -sf ../share/logtalk/integration/sicstuslgt.sh sicstuslgt
 ln -sf ../share/logtalk/integration/swilgt.sh swilgt
 ln -sf ../share/logtalk/integration/xsblgt.sh xsblgt
+ln -sf ../share/logtalk/integration/xsbmtlgt.sh xsbmtlgt
 ln -sf ../share/logtalk/integration/yaplgt.sh yaplgt
 
 echo "The following integration scripts are installed for running Logtalk"
@@ -86,6 +87,7 @@ echo "  Qu-Prolog:      qplgt"
 echo "  SICStus Prolog: sicstuslgt"
 echo "  SWI-Prolog:     swilgt"
 echo "  XSB:            xsblgt      (first run must use sudo)"
+echo "  XSB (MT):       xsbmtlgt    (first run must use sudo)"
 echo "  YAP:            yaplgt"
 echo
 echo "The Prolog integration scripts can be found on \"$prefix/bin\"."
