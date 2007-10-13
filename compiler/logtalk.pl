@@ -146,7 +146,7 @@
 :- dynamic('$lgt_pp_dcl_'/1).					% '$lgt_pp_dcl_'(Clause)
 :- dynamic('$lgt_pp_ddcl_'/1).					% '$lgt_pp_ddcl_'(Clause)
 :- dynamic('$lgt_pp_def_'/1).					% '$lgt_pp_def_'(Clause)
-:- dynamic('$lgt_pp_ddef_'/1).					% '$lgt_pp_ddef_'(Clause)
+:- dynamic('$lgt_pp_fdef_'/1).					% '$lgt_pp_fdef_'(Clause)
 :- dynamic('$lgt_pp_super_'/1).					% '$lgt_pp_super_'(Clause)
 
 :- dynamic('$lgt_pp_synchronized_'/2).			% '$lgt_pp_synchronized_'(Pred, Mutex)
@@ -497,6 +497,7 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_tr_object_relations'(Rels, Obj),
 	'$lgt_tr_directives'(Dirs, user_input, _),
 	'$lgt_tr_clauses'(Clauses, user_input),
+	'$lgt_gen_local_def_clauses',
 	'$lgt_fix_synchronized_preds',
 	'$lgt_fix_pred_calls',
 	'$lgt_gen_object_clauses',
@@ -546,6 +547,7 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_tr_category_relations'(Rels, Ctg),
 	'$lgt_tr_directives'(Dirs, user_input, _),
 	'$lgt_tr_clauses'(Clauses, user_input),
+	'$lgt_gen_local_def_clauses',
 	'$lgt_fix_synchronized_preds',
 	'$lgt_fix_pred_calls',
 	'$lgt_gen_category_clauses',
@@ -4578,7 +4580,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	retractall('$lgt_pp_dcl_'(_)),
 	retractall('$lgt_pp_ddcl_'(_)),
 	retractall('$lgt_pp_def_'(_)),
-	retractall('$lgt_pp_ddef_'(_)),
+	retractall('$lgt_pp_fdef_'(_)),
 	retractall('$lgt_pp_super_'(_)),
 	retractall('$lgt_pp_ppclause_'(_)),
 	retractall('$lgt_pp_rclause_'(_)),
@@ -7024,10 +7026,10 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	!,
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
-	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, EntityPrefix, MetaVars, _),
+	'$lgt_ctx_ctx'(Ctx, Head, Sender, This, Self, EntityPrefix, MetaVars, _),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
 	'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
-	(	'$lgt_pp_synchronized_'(Pred, _) ->
+	(	'$lgt_pp_synchronized_'(Pred, _), Functor/Arity \= Head ->
 		atom_concat(PredPrefix, '_sync', MPrefix)
 	;	MPrefix = PredPrefix
 	),
@@ -7063,10 +7065,10 @@ current_logtalk_flag(version, version(2, 30, 6)).
 '$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, DbgCtx), Ctx) :-
 	Pred =.. [Functor| Args],
 	functor(Pred, Functor, Arity),
-	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, EntityPrefix, _, _),
+	'$lgt_ctx_ctx'(Ctx, Head, Sender, This, Self, EntityPrefix, _, _),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
 	'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
-	(	'$lgt_pp_synchronized_'(Pred, _) ->
+	(	'$lgt_pp_synchronized_'(Pred, _), Functor/Arity \= Head ->
 		atom_concat(PredPrefix, '_sync', MPrefix)
 	;	MPrefix = PredPrefix
 	),
@@ -8493,9 +8495,9 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	HeadDef =.. [PredPrefix| HeadArgsDef],
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, DDef, _, _),
 	Clause =.. [DDef, HeadTemplate, Sender2, This2, Self2, HeadTemplateDef],
-	(	'$lgt_pp_ddef_'(Clause) ->
+	(	'$lgt_pp_def_'(Clause) ->
 		true
-	;	assertz('$lgt_pp_ddef_'(Clause))
+	;	assertz('$lgt_pp_def_'(Clause))
 	),
 	(	'$lgt_built_in'(Head) ->
 		(	'$lgt_pp_redefined_built_in_'(HeadTemplate, _, _, _, _) ->
@@ -8571,6 +8573,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	'$lgt_gen_entity_init_goal'.
 
 '$lgt_generate_code'(object) :-
+	'$lgt_gen_local_def_clauses',
 	'$lgt_fix_synchronized_preds',
 	'$lgt_fix_pred_calls',
 	'$lgt_gen_object_clauses',
@@ -8578,6 +8581,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	'$lgt_gen_entity_init_goal'.
 
 '$lgt_generate_code'(category) :-
+	'$lgt_gen_local_def_clauses',
 	'$lgt_fix_synchronized_preds',
 	'$lgt_fix_pred_calls',
 	'$lgt_gen_category_clauses',
@@ -8634,7 +8638,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 
 
 '$lgt_gen_dynamic_entity_dynamic_predicate_directives' :-
-	'$lgt_pp_def_'(Clause),
+	'$lgt_pp_fdef_'(Clause),
 	Clause \= (_ :- _),		% only local table; reject linking clauses
 	arg(5, Clause, Call),
 	functor(Call, Functor, Arity),
@@ -8759,13 +8763,11 @@ current_logtalk_flag(version, version(2, 30, 6)).
 
 
 
-% '$lgt_gen_local_def_clauses'(-atom)
+% '$lgt_gen_local_def_clauses'
 %
-% generates local def clauses for undefined but declared (via scope or
-% dynamic directives) predicates; the single argument returns the atom
-% "true" if there are local definition clauses and the atom "fail" otherwise
+% generates local def clauses for undefined but declared (via scope or dynamic directives) predicates
 
-'$lgt_gen_local_def_clauses'(_) :-
+'$lgt_gen_local_def_clauses' :-
 	'$lgt_pp_entity'(_, _, EntityPrefix, _, _),
 	'$lgt_ctx_prefix'(Ctx, EntityPrefix),
 	'$lgt_pp_dynamic_'(Functor, Arity),
@@ -8779,11 +8781,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	),
 	fail.
 
-'$lgt_gen_local_def_clauses'(Local) :-
-	(	'$lgt_pp_def_'(_) ->
-		Local = true
-	;	Local = fail
-	).
+'$lgt_gen_local_def_clauses'.
 
 
 
@@ -8951,11 +8949,11 @@ current_logtalk_flag(version, version(2, 30, 6)).
 '$lgt_gen_category_linking_def_clauses' :-
 	'$lgt_pp_category_'(Ctg, _, _, Def, _, _),
 	Head =.. [Def, Pred, Sender, This, Self, Call, Ctg],
-	(	'$lgt_pp_def_'(_) ->
+	(	'$lgt_pp_fdef_'(_) ->
 		Body =.. [Def, Pred, Sender, This, Self, Call]
 	;	Body = fail
 	),
-	assertz('$lgt_pp_def_'((Head:-Body))).
+	assertz('$lgt_pp_fdef_'((Head:-Body))).
 
 
 
@@ -8967,9 +8965,9 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	(	'$lgt_pp_alias_'(Ctg2, _, _) ->
 		Head =.. [Def, Alias, Sender, This, Self, Call, Ctn],
 		Rename =.. [PRnm, Ctg2, Pred, Alias],
-		assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
 	;	Head =.. [Def, Pred, Sender, This, Self, Call, Ctn],
-		assertz('$lgt_pp_def_'((Head:-Lookup)))
+		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
 	fail.
 
@@ -8995,7 +8993,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 '$lgt_gen_object_catchall_def_clauses'(fail) :-
 	'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _),	% generate a catchall clause
 	Head =.. [Def, _, _, _, _, _],							% for objects that do not 
-	assertz('$lgt_pp_def_'((Head:-fail))).					% contain predicate definitions
+	assertz('$lgt_pp_fdef_'((Head:-fail))).					% contain predicate definitions
 
 
 
@@ -9108,7 +9106,10 @@ current_logtalk_flag(version, version(2, 30, 6)).
 
 
 '$lgt_gen_prototype_def_clauses' :-
-	'$lgt_gen_local_def_clauses'(Local),
+	(	'$lgt_pp_fdef_'(_) ->
+		Local = true
+	;	Local = fail
+	),
 	'$lgt_gen_prototype_linking_def_clauses'(Local),
 	'$lgt_gen_prototype_imports_def_clauses',
 	'$lgt_gen_prototype_extends_def_clauses',
@@ -9121,11 +9122,11 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	Head =.. [Def, Pred, Sender, This, Self, Call, Obj],
 	(	call(Local) ->
 		Body =.. [Def, Pred, Sender, This, Self, Call],
-		assertz('$lgt_pp_def_'((Head:-Body)))
+		assertz('$lgt_pp_fdef_'((Head:-Body)))
 	;	true
 	),
 	Body2 =.. [DDef, Pred, Sender, This, Self, Call],
-	assertz('$lgt_pp_def_'((Head:-Body2))).
+	assertz('$lgt_pp_fdef_'((Head:-Body2))).
 
 
 
@@ -9137,9 +9138,9 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	(	'$lgt_pp_alias_'(Ctg, _, _) ->
 		Head =.. [ODef, Alias, Sender, Obj, Self, Call, Ctn],
 		Rename =.. [PRnm, Ctg, Pred, Alias],
-		assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
 	;	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-		assertz('$lgt_pp_def_'((Head:-Lookup)))
+		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
 	fail.
 
@@ -9155,9 +9156,9 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	(	'$lgt_pp_alias_'(Parent, _, _) ->
 		Head =.. [ODef, Alias, Sender, Obj, Self, Call, Ctn],
 		Rename =.. [PRnm, Parent, Pred, Alias],
-		assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
 	;	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-		assertz('$lgt_pp_def_'((Head:-Lookup)))
+		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
 	fail.
 
@@ -9171,7 +9172,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	'$lgt_pp_object_'(_, _, _, _, OSuper, _, _, _, _, _, _),
 	\+ '$lgt_pp_extended_object_'(_, _, _, _, _, _, _, _, _, _),
 	Head =.. [OSuper, _, _, _, _, _, _],
-	assertz('$lgt_pp_def_'((Head:-fail))),
+	assertz('$lgt_pp_fdef_'((Head:-fail))),
 	!.
 
 % ... or we may extends some objects
@@ -9184,9 +9185,9 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	(	'$lgt_pp_alias_'(Parent, _, _) ->
 		Head =.. [OSuper, Alias, Sender, Obj, Self, Call, Ctn],
 		Rename =.. [PRnm, Parent, Pred, Alias],
-		assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
 	;	Head =.. [OSuper, Pred, Sender, Obj, Self, Call, Ctn],
-		assertz('$lgt_pp_def_'((Head:-Lookup)))
+		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
 	fail.
 
@@ -9343,7 +9344,10 @@ current_logtalk_flag(version, version(2, 30, 6)).
 
 
 '$lgt_gen_ic_def_clauses' :-
-	'$lgt_gen_local_def_clauses'(Local),
+	(	'$lgt_pp_fdef_'(_) ->
+		Local = true
+	;	Local = fail
+	),
 	'$lgt_gen_ic_linking_def_clauses'(Local),
 	'$lgt_gen_ic_imports_def_clauses',
 	'$lgt_gen_ic_hierarchy_def_clauses',
@@ -9357,11 +9361,11 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	Head =.. [Def, Pred, Sender, This, Self, Call, Obj],
 	(	call(Local) ->		
 		Body =.. [Def, Pred, Sender, This, Self, Call],
-		assertz('$lgt_pp_def_'((Head:-Body)))
+		assertz('$lgt_pp_fdef_'((Head:-Body)))
 	;	true
 	),
 	Body2 =.. [DDef, Pred, Sender, This, Self, Call],
-	assertz('$lgt_pp_def_'((Head:-Body2))).
+	assertz('$lgt_pp_fdef_'((Head:-Body2))).
 
 
 
@@ -9373,9 +9377,9 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	(	'$lgt_pp_alias_'(Ctg, _, _) ->
 		Head =.. [ODef, Alias, Sender, Obj, Self, Call, Ctn],
 		Rename =.. [PRnm, Ctg, Pred, Alias],
-		assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
 	;	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-		assertz('$lgt_pp_def_'((Head:-Lookup)))
+		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
 	fail.
 
@@ -9391,9 +9395,9 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	(	'$lgt_pp_alias_'(Class, _, _) ->
 		Head =.. [ODef, Alias, Sender, Obj, Self, Call, Ctn],
 		Rename =.. [PRnm, Class, Pred, Alias],
-		assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
 	;	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-		assertz('$lgt_pp_def_'((Head:-Lookup)))
+		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
 	fail.
 
@@ -9413,11 +9417,11 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	Head =.. [IDef, Pred, Sender, This, Self, Call, Obj],
 	(	call(Local) ->	
 		Body =.. [Def, Pred, Sender, This, Self, Call],
-		assertz('$lgt_pp_def_'((Head:-Body)))
+		assertz('$lgt_pp_fdef_'((Head:-Body)))
 	;	true
 	),
 	Body2 =.. [DDef, Pred, Sender, This, Self, Call],
-	assertz('$lgt_pp_def_'((Head:-Body2))).
+	assertz('$lgt_pp_fdef_'((Head:-Body2))).
 
 
 
@@ -9429,9 +9433,9 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	(	'$lgt_pp_alias_'(Ctg, _, _) ->
 		Head =.. [OIDef, Alias, Sender, Obj, Self, Call, Ctg],
 		Rename =.. [PRnm, Ctg, Pred, Alias],
-		assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
 	;	Head =.. [OIDef, Pred, Sender, Obj, Self, Call, Ctg],
-		assertz('$lgt_pp_def_'((Head:-Lookup)))
+		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
 	fail.
 
@@ -9447,9 +9451,9 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	(	'$lgt_pp_alias_'(Super, _, _) ->
 		Head =.. [CIDef, Alias, Sender, Class, Self, Call, Ctn],
 		Rename =.. [PRnm, Super, Pred, Alias],
-		assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
 	;	Head =.. [CIDef, Pred, Sender, Class, Self, Call, Ctn],
-		assertz('$lgt_pp_def_'((Head:-Lookup)))
+		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
 	fail.
 
@@ -9464,7 +9468,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	\+ '$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _),
 	\+ '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _),
 	Head =.. [OSuper, _, _, _, _, _, _],
-	assertz('$lgt_pp_def_'((Head:-fail))),
+	assertz('$lgt_pp_fdef_'((Head:-fail))),
 	!.
 
 % ... or predicates can be redefined in instances...
@@ -9477,9 +9481,9 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	(	'$lgt_pp_alias_'(Class, _, _) ->
 		Head =.. [OSuper, Alias, Sender, Obj, Obj, Call, Ctn],
 		Rename =.. [PRnm, Class, Pred, Alias],
-		assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
 	;	Head =.. [OSuper, Pred, Sender, Obj, Obj, Call, Ctn],
-		assertz('$lgt_pp_def_'((Head:-Lookup)))
+		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
 	fail.
 
@@ -9493,9 +9497,9 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	(	'$lgt_pp_alias_'(Super, _, _) ->
 		Head =.. [CSuper, Alias, Sender, Class, Self, Call, Ctn],
 		Rename =.. [PRnm, Super, Pred, Alias],
-		assertz('$lgt_pp_def_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
 	;	Head =.. [CSuper, Pred, Sender, Class, Self, Call, Ctn],
-		assertz('$lgt_pp_def_'((Head:-Lookup)))
+		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
 	fail.
 
@@ -9524,22 +9528,22 @@ current_logtalk_flag(version, version(2, 30, 6)).
 
 
 '$lgt_fix_synchronized_preds'(Def) :-
-	'$lgt_pp_synchronized_'(Head, Mutex),
-	Old =.. [Def, Head, Sender, This, Self, THead],
 	retract('$lgt_pp_def_'(Old)),
-	THead =.. [TFunctor| Args],
-	atom_concat(TFunctor, '_sync', MFunctor),
-	MHead =.. [MFunctor| Args],
-	New =.. [Def, Head, Sender, This, Self, MHead],
-	assertz('$lgt_pp_def_'(New)),
-	(	functor(Head, Functor, Arity),
-		functor(Mode, Functor, Arity),
-		'$lgt_pp_mode_'(Mode, _),
-		forall(
-			'$lgt_pp_mode_'(Mode, Solutions),
-			(Solutions \== zero_or_one, Solutions \== one, Solutions \== zero)) ->
-		assertz('$lgt_pp_feclause_'((MHead:-mutex_lock(Mutex), call_cleanup(THead, mutex_unlock(Mutex)))))
-	;	assertz('$lgt_pp_feclause_'((MHead:-with_mutex(Mutex, THead))))
+	Old =.. [Def, Head, Sender, This, Self, THead],
+	(	'$lgt_pp_synchronized_'(Head, Mutex) ->
+		THead =.. [TFunctor| Args],
+		atom_concat(TFunctor, '_sync', MFunctor),
+		MHead =.. [MFunctor| Args],
+		New =.. [Def, Head, Sender, This, Self, MHead],
+		assertz('$lgt_pp_fdef_'(New)),
+		(	functor(Head, Functor, Arity),
+			functor(Mode, Functor, Arity),
+			'$lgt_pp_mode_'(Mode, _),
+			forall('$lgt_pp_mode_'(Mode, Solutions), (Solutions \== zero_or_one, Solutions \== one, Solutions \== zero)) ->
+			assertz('$lgt_pp_feclause_'((MHead:-mutex_lock(Mutex), call_cleanup(THead, mutex_unlock(Mutex)))))
+		;	assertz('$lgt_pp_feclause_'((MHead:-with_mutex(Mutex, THead))))
+		)
+	;	assertz('$lgt_pp_fdef_'(Old))
 	),
 	fail.
 
@@ -9851,7 +9855,6 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	'$lgt_write_functors_clause'(Stream),
 	'$lgt_write_dcl_clauses'(Stream),
 	'$lgt_write_def_clauses'(Stream),
-	'$lgt_write_ddef_clauses'(Stream),
 	'$lgt_write_super_clauses'(Stream),
 	'$lgt_write_alias_clauses'(Stream),
 	'$lgt_write_pred_clauses'(Stream).
@@ -9867,22 +9870,12 @@ current_logtalk_flag(version, version(2, 30, 6)).
 
 
 '$lgt_write_def_clauses'(Stream) :-
-	'$lgt_pp_def_'(Clause),
+	'$lgt_pp_fdef_'(Clause),
 		write_canonical(Stream, Clause),
 		write(Stream, '.'), nl(Stream),
 	fail.
 
 '$lgt_write_def_clauses'(_).
-
-
-
-'$lgt_write_ddef_clauses'(Stream) :-
-	'$lgt_pp_ddef_'(Clause),
-		write_canonical(Stream, Clause),
-		write(Stream, '.'), nl(Stream),
-	fail.
-
-'$lgt_write_ddef_clauses'(_).
 
 
 
@@ -9994,17 +9987,21 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, Compilation),
 	findall(Clause, '$lgt_pp_rclause'(Clause), Clauses),
 	Goal1 = '$lgt_assert_runtime_clauses'(Clauses),
-	(	'$lgt_pp_threaded_' ->
-		Goal2 = (Goal1, '$lgt_init_object_message_queue'(Prefix))
+	(	setof(Mutex, Head^'$lgt_pp_synchronized_'(Head, Mutex), Mutexes) ->
+		Goal2 = (Goal1, '$lgt_create_mutexes'(Mutexes))
 	;	Goal2 = Goal1
 	),
-	(	'$lgt_pp_fentity_init_'(Goal3) ->
-		Goal4 = (Goal2, Goal3)
-	;	Goal4 = Goal2
+	(	'$lgt_pp_threaded_' ->
+		Goal3 = (Goal2, '$lgt_init_object_message_queue'(Prefix))
+	;	Goal3 = Goal2
+	),
+	(	'$lgt_pp_fentity_init_'(Goal4) ->
+		Goal5 = (Goal3, Goal4)
+	;	Goal5 = Goal3
 	),
 	(	Type \== protocol, Compilation == static, '$lgt_compiler_flag'(reload, skip) ->
-		Goal = (Goal4, '$lgt_add_static_binding_cache_entry'(Entity))
-	;	Goal = Goal4  
+		Goal = (Goal5, '$lgt_add_static_binding_cache_entry'(Entity))
+	;	Goal = Goal5  
 	),
 	assertz('$lgt_pp_entity_init_'(Type, Entity, Goal)).
 
@@ -10019,7 +10016,6 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	'$lgt_assert_functors_clause',
 	'$lgt_assert_dcl_clauses',
 	'$lgt_assert_def_clauses',
-	'$lgt_assert_ddef_clauses',
 	'$lgt_assert_super_clauses',
 	'$lgt_assert_pred_clauses',
 	'$lgt_assert_runtime_clauses',
@@ -10059,20 +10055,11 @@ current_logtalk_flag(version, version(2, 30, 6)).
 
 
 '$lgt_assert_def_clauses' :-
-	'$lgt_pp_def_'(Clause),
+	'$lgt_pp_fdef_'(Clause),
 		assertz(Clause),
 	fail.
 
 '$lgt_assert_def_clauses'.
-
-
-
-'$lgt_assert_ddef_clauses' :-
-	'$lgt_pp_ddef_'(Clause),
-		assertz(Clause),
-	fail.
-
-'$lgt_assert_ddef_clauses'.
 
 
 
@@ -12344,9 +12331,15 @@ current_logtalk_flag(version, version(2, 30, 6)).
 % '$lgt_init_object_message_queue'(+atom)
 %
 % creates a message queue for an object given its prefix
+% (assume that any exception generated is due to the fact that the message
+% queue already exists, which may happen when reloading threaded objects;
+% there is no standard predicate for testing message queue existence)
 
 '$lgt_init_object_message_queue'(ObjPrefix) :-
-	catch(message_queue_create(ObjPrefix), _, true).
+	(	'$lgt_predicate_property'(message_queue_create(_, _), built_in) ->
+		catch(message_queue_create(_, [alias(ObjPrefix)]), _, true)
+	;	catch(message_queue_create(ObjPrefix), _, true)
+	).
 
 
 
@@ -12728,6 +12721,18 @@ current_logtalk_flag(version, version(2, 30, 6)).
 
 
 
+% create entity mutexes (called when loading an entity)
+
+'$lgt_create_mutexes'([]).
+'$lgt_create_mutexes'([Mutex| Mutexes]) :-
+	(	'$lgt_predicate_property'(mutex_create(_, _), built_in) ->
+		mutex_create(_, [alias(Mutex)])
+	;	mutex_create(Mutex)
+	),
+	'$lgt_create_mutexes'(Mutexes).
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -12930,7 +12935,11 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	(	'$lgt_default_flag'(threads, on) ->
 		'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _),
 		'$lgt_init_object_message_queue'(Prefix),
-		'$lgt_start_runtime_dispatcher'
+		'$lgt_start_runtime_dispatcher',
+		(	'$lgt_predicate_property'(mutex_create(_, _), built_in) ->
+			mutex_create(_, [alias('$lgt_threaded_tag')])
+		;	mutex_create('$lgt_threaded_tag')
+		)
 	;	true
 	).
 

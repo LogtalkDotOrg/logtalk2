@@ -28,6 +28,15 @@ RELEASE NOTES
 	Renamed compiler option "underscore_vars" to "underscore_variables".
 	Renamed compiler option "supports_break_predicate" to "break_predicate".
 
+	Improved the performance of recursive predicate definitions synchronized 
+	by mutexes. Explicitly create all mutexes used by an entity at load time 
+	for compatibility with XSB. Several changes to multi-threading support in 
+	order to improve compatibility with current and forthcoming versions of 
+	YAP, SWI-Prolog, and XSB.
+
+	Updated the Logtalk compiler for compatibility with both logical and 
+	immediate update semantics when compiling synchronized predicates.
+
 	Added a workaround for the lack of built-in support for character 
 	unbuffered input when using the Logtalk built-in debugger to the config 
 	files of ALS Prolog, B-Prolog, Ciao, CxProlog, IF/Prolog, JIProlog, 
