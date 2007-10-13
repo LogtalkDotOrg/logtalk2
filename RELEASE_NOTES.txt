@@ -43,6 +43,10 @@ RELEASE NOTES
 	Added a BOM to the "babel.lgt" UTF-8 file in the "encodings" example in 
 	order to improve compatibility with SICStus Prolog.
 
+	Updated the library object "random" by replacing the synchronized/0 
+	directive by a synchronized/1 directive listing only the predicates 
+	that modify the random number seed.
+
 	Added syntax coloring support for the GtkSourceView 2.x text widget 
 	(used e.g. on the Gnome's Gedit text editor and on the MonoDevelop IDE).
 	Removed syntax coloring for the obsolete atomic/1 predicate directive 
