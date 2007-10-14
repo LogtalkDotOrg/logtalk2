@@ -66,8 +66,8 @@ Amzi! Prolog 7.6.1 and later versions
 	all calls of the compare/3 predicate and make the necessary changes.
 	The built-in sort/2 predicate does not eliminate duplicates, which may 
 	result in problems with some of the examples. Don't forget to use the 
-	chdir/1 predicate to set the working directory before loading the 
-	library or an example.
+	chdir/1 predicate to set the working directory before loading a library 
+	or an example.
 
 
 B-Prolog 7.0 and later versions
@@ -455,10 +455,10 @@ XSB 3.1 and later versions
 	of source files.
 
 
-YAP 5.1.1 and later versions
+YAP 5.1.2 and later versions
 
 	yap.config
 
-	For all 5.1.1 and later versions. Don't forget to use the cd/1 predicate 
-	to set the working directory before loading the library or an example. 
-	Supports smart compilation of source files.
+	Don't forget to use the cd/1 predicate to set the working directory 
+	before loading the library or an example. Supports smart compilation 
+	of source files.
