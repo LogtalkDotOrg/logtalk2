@@ -39,6 +39,10 @@ RELEASE NOTES
 	Updated the Logtalk compiler for compatibility with both logical and 
 	immediate update semantics when compiling synchronized predicates.
 
+	Updated the meta-predicate compilation sanity checks to verify the 
+	existence of the minimum number of normal arguments in a clause head 
+	required by the closure of maximum arity.
+
 	Added a workaround for the lack of built-in support for character 
 	unbuffered input when using the Logtalk built-in debugger to the config 
 	files of ALS Prolog, B-Prolog, Ciao, CxProlog, IF/Prolog, JIProlog, 

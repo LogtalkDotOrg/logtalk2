@@ -6144,6 +6144,17 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	throw(type_error(variable, Arg)).
 
 
+% number of extra-arguments less than the minimum required by a closure
+
+'$lgt_tr_head'(Head, _, _, _) :-
+	functor(Head, Functor, Arity),
+	functor(Meta, Functor, Arity),
+	'$lgt_pp_meta_predicate_'(Meta),
+	Meta =.. [_| MArgs],
+	'$lgt_insufficient_closure_args'(MArgs),
+	throw(arity_mismatch(closure, Head, Meta)).
+
+
 % redefinition of Logtalk built-in predicates
 
 '$lgt_tr_head'(Head, _, _, Input) :-
@@ -6214,6 +6225,29 @@ current_logtalk_flag(version, version(2, 30, 6)).
 
 '$lgt_nonvar_meta_arg'([_| Args], [_| MArgs], Arg) :-
 	'$lgt_nonvar_meta_arg'(Args, MArgs, Arg).
+
+
+
+% check if there are enough normal arguments for the closure with maximum arity
+
+'$lgt_insufficient_closure_args'(Args) :-
+	'$lgt_insufficient_closure_args'(Args, 0, MaxClosure, 0, TotalNormalArgs),
+	TotalNormalArgs >= MaxClosure.
+
+
+'$lgt_insufficient_closure_args'([], MaxClosure, MaxClosure, TotalNormalArgs, TotalNormalArgs).
+
+'$lgt_insufficient_closure_args'([MArg| MArgs], MaxClosureSoFar, MaxClosure, TotalNormalArgsAcc, TotalNormalArgs) :-
+	(	MArg == '*' ->
+		MaxClosureSoFar2 is MaxClosureSoFar,
+		TotalNormalArgsAcc2 is TotalNormalArgsAcc + 1
+	;	(	MArg > MaxClosureSoFar ->
+			MaxClosureSoFar2 is MArg
+		;	MaxClosureSoFar2 is MaxClosureSoFar
+		),
+		TotalNormalArgsAcc2 is TotalNormalArgsAcc
+	),
+	'$lgt_insufficient_closure_args'(MArgs, 0, MaxClosure, 0, TotalNormalArgs).
 
 
 
