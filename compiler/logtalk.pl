@@ -6152,7 +6152,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	'$lgt_pp_meta_predicate_'(Meta),
 	Meta =.. [_| MArgs],
 	'$lgt_insufficient_closure_args'(MArgs),
-	throw(arity_mismatch(closure, Head, Meta)).
+	throw(arity_mismatch(closure, Meta)).
 
 
 % redefinition of Logtalk built-in predicates
