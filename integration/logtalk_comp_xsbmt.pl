@@ -9,8 +9,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-:- import call_cleanup/2 from standard.
-
 :- import stat_set_flag/2 from machine.	% workaround for compiling/loading source files
 :- stat_set_flag(79, 1).				% when more than one thread is active
 
