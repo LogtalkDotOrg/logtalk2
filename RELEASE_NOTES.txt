@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.30.6 - October ??, 2007
+2.30.6 - October 20, 2007
 
 	Replaced calls to the proprietary current_thread/2 predicate in the 
 	Logtalk runtime by calls to the thread_property/2 predicate as per 
@@ -54,7 +54,8 @@ RELEASE NOTES
 
 	Updated the XSB config file to auto-detect multi-threading support
 	when setting the "threads" compiler option. Added an integration script 
-	(xsbmtlgt.sh) and supporting files for the multi-threaded version of XSB.
+	(xsbmtlgt.sh) and supporting files for the multi-threaded version of XSB 
+	(requires current development version, available from the XSB CVS server).
 
 	Added a MacPorts portfile for building MacOS X installer packages.
 
