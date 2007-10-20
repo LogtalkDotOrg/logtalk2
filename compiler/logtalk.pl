@@ -6238,7 +6238,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 '$lgt_insufficient_closure_args'([], MaxClosure, MaxClosure, TotalNormalArgs, TotalNormalArgs).
 
 '$lgt_insufficient_closure_args'([MArg| MArgs], MaxClosureSoFar, MaxClosure, TotalNormalArgsAcc, TotalNormalArgs) :-
-	(	MArg == '*' ->
+	(	MArg == (*) ->
 		MaxClosureSoFar2 is MaxClosureSoFar,
 		TotalNormalArgsAcc2 is TotalNormalArgsAcc + 1
 	;	(	MArg > MaxClosureSoFar ->
