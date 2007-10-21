@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.30.6 - October 20, 2007
+2.30.6 - October 21, 2007
 
 	Replaced calls to the proprietary current_thread/2 predicate in the 
 	Logtalk runtime by calls to the thread_property/2 predicate as per 

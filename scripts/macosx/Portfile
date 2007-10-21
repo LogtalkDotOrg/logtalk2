@@ -20,7 +20,7 @@ long_description	\
 homepage        http://logtalk.org/
 master_sites	${homepage}/files/
 
-checksums md5 e30ee6675257945749d9190cdd4a2b7d
+checksums md5 0653f6e2e10219111deed4b2096e6394
 
 distname lgt2306
 extract.suffix .tar.bz2
