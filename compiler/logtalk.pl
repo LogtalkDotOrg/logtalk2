@@ -6241,7 +6241,7 @@ current_logtalk_flag(version, version(2, 30, 6)).
 	(	MArg == (*) ->
 		MaxClosureSoFar2 is MaxClosureSoFar,
 		TotalNormalArgsAcc2 is TotalNormalArgsAcc + 1
-		MArg == (::) ->
+	;	MArg == (::) ->
 		MaxClosureSoFar2 is MaxClosureSoFar,
 		TotalNormalArgsAcc2 is TotalNormalArgsAcc
 	;	(	MArg > MaxClosureSoFar ->
