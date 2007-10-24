@@ -243,11 +243,14 @@ Obj::Pred :-
 
 
 Obj<<Pred :-
-	'$lgt_ctx_ctx'(Ctx, _, user, user, Obj, '$lgt_bio_user_0_', [], _),
-	catch('$lgt_tr_body'(Obj<<Pred, TPred, DPred, Ctx), Error, '$lgt_runtime_error_handler'(error(Error, Obj<<Pred, user))),
-	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
-		catch(DPred, Error, '$lgt_runtime_error_handler'(Error))
-	;	catch(TPred, Error, '$lgt_runtime_error_handler'(Error))
+	(	'$lgt_compiler_flag'(context_switching_calls, allow) ->
+		'$lgt_ctx_ctx'(Ctx, _, user, user, Obj, '$lgt_bio_user_0_', [], _),
+		catch('$lgt_tr_body'(Obj<<Pred, TPred, DPred, Ctx), Error, '$lgt_runtime_error_handler'(error(Error, Obj<<Pred, user))),
+		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
+			catch(DPred, Error, '$lgt_runtime_error_handler'(Error))
+		;	catch(TPred, Error, '$lgt_runtime_error_handler'(Error))
+		)
+	;	throw(error(resource_error(context_switching_calls), Obj<<Goal, user))
 	).
 
 
@@ -3035,14 +3038,17 @@ current_logtalk_flag(version, version(2, 30, 7)).
 % calls a goal within the context of the specified object
 
 '$lgt_call_within_context'(Obj, Goal, This) :-
-	(	'$lgt_current_object_'(Obj, Prefix, _, _, _, _, _, _) ->
-		'$lgt_ctx_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _),
-		'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
-			call(DGoal)
-		;	call(TGoal)
+	(	'$lgt_compiler_flag'(context_switching_calls, allow) ->
+		(	'$lgt_current_object_'(Obj, Prefix, _, _, _, _, _, _) ->
+			'$lgt_ctx_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _),
+			'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
+			(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
+				call(DGoal)
+			;	call(TGoal)
+			)
+		;	throw(error(existence_error(object, Obj), Obj<<Goal, This))
 		)
-	;	throw(error(existence_error(object, Obj), Obj<<Goal, This))
+	;	throw(error(resource_error(context_switching_calls), Obj<<Goal, This))
 	).
 
 
@@ -10919,6 +10925,7 @@ current_logtalk_flag(version, version(2, 30, 7)).
 '$lgt_read_only_flag'(altdirs).
 '$lgt_read_only_flag'(encoding_directive).
 '$lgt_read_only_flag'(threads).
+'$lgt_read_only_flag'(context_switching_calls).
 
 
 

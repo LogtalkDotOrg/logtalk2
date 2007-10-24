@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.30.7 - October ??, 2007
 
+	Added a new read-only compiler flag, "context_switching_calls", allowing 
+	context switiching calls to be disabled (by default, they are enabled).
+
 	Added a workaround for a parsing bug in XSB while compiling the "sicstus" 
 	example.
 
