@@ -1281,7 +1281,7 @@ threaded_peek(Goal) :-
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
-% threaded_wait(?term)
+% threaded_wait(?nonvar)
 
 threaded_wait(Message) :-
 	\+ '$lgt_compiler_flag'(threads, on),
@@ -1289,10 +1289,15 @@ threaded_wait(Message) :-
 
 threaded_wait(Message) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _),
-	thread_get_message(Prefix, '$lgt_notification'(Message)).
+	'$lgt_thread_get_notifications'(Message, Prefix).
+
 
 
 % threaded_notify(@term)
+
+threaded_notify(Message) :-
+	var(Message),
+	throw(error(instantiation_error, threaded_notify(Message))).
 
 threaded_notify(Message) :-
 	\+ '$lgt_compiler_flag'(threads, on),
@@ -1300,7 +1305,7 @@ threaded_notify(Message) :-
 
 threaded_notify(Message) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _),
-	thread_send_message(Prefix, '$lgt_notification'(Message)).
+	'$lgt_thread_send_notifications'(Message, Prefix).
 
 
 
@@ -6650,16 +6655,16 @@ current_logtalk_flag(version, version(2, 30, 7)).
 	functor(Head, Functor, Arity),
 	(	'$lgt_pp_synchronized_'(Head, Mutex) ->
 		(	Type == object ->
-			MTPred = (mutex_unlock(Mutex), thread_get_message(EntityPrefix, '$lgt_notification'(Msg)), mutex_lock(Mutex))
+			MTPred = (mutex_unlock(Mutex), '$lgt_thread_get_notifications'(Msg, EntityPrefix), mutex_lock(Mutex))
 		;	% we're compiling a category predicate
 			'$lgt_ctx_this'(Ctx, This),
-			MTPred = ('$lgt_current_object_'(This, Prefix, _, _, _, _, _, _), mutex_unlock(Mutex), thread_get_message(Prefix, '$lgt_notification'(Msg)), mutex_lock(Mutex))
+			MTPred = ('$lgt_current_object_'(This, Prefix, _, _, _, _, _, _), mutex_unlock(Mutex), '$lgt_thread_get_notifications'(Msg, Prefix), mutex_lock(Mutex))
 		)
 	;	(	Type == object ->
-			MTPred = thread_get_message(EntityPrefix, '$lgt_notification'(Msg))
+			MTPred = '$lgt_thread_get_notifications'(Msg, EntityPrefix)
 		;	% we're compiling a category predicate
 			'$lgt_ctx_this'(Ctx, This),
-			MTPred = ('$lgt_current_object_'(This, Prefix, _, _, _, _, _, _), thread_get_message(Prefix, '$lgt_notification'(Msg)))
+			MTPred = ('$lgt_current_object_'(This, Prefix, _, _, _, _, _, _), '$lgt_thread_get_notifications'(Msg, Prefix))
 		)
 	).
 
@@ -6675,10 +6680,10 @@ current_logtalk_flag(version, version(2, 30, 7)).
 	'$lgt_ctx_ctx'(Ctx, _, _, _, _, EntityPrefix, _, _),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
 	(	Type == object ->
-		MTPred = thread_send_message(EntityPrefix, '$lgt_notification'(Msg))
+		MTPred = '$lgt_thread_send_notifications'(Msg, EntityPrefix)
 	;	% we're compiling a category predicate
 		'$lgt_ctx_this'(Ctx, This),
-		MTPred = ('$lgt_current_object_'(This, Prefix, _, _, _, _, _, _), thread_send_message(Prefix, '$lgt_notification'(Msg)))
+		MTPred = ('$lgt_current_object_'(This, Prefix, _, _, _, _, _, _), '$lgt_thread_send_notifications'(Msg, Prefix))
 	).
 
 
@@ -7188,6 +7193,50 @@ current_logtalk_flag(version, version(2, 30, 7)).
 	'$lgt_tr_threaded_or_call'(TGoals, Queue, MTCalls, Ids, Tag, Results).
 
 '$lgt_tr_threaded_or_call'(TGoal, Queue, thread_create('$lgt_mt_threaded_or_call'(TGoal, Tag, Id, Queue), Id, [detached(false)]), [Id], Tag, [id(Id, _)]).
+
+
+
+% '$lgt_thread_get_notifications'(@term, @object_identifier)
+%
+% translates the notification argument of a built-in predicate threaded_wait/1 call
+
+'$lgt_thread_get_notifications'(Msg, Prefix) :-
+	var(Msg),
+	!,
+	thread_get_message(Prefix, '$lgt_notification'(Msg)).
+
+'$lgt_thread_get_notifications'([], _) :-
+	!.
+
+'$lgt_thread_get_notifications'([Msg| Msgs], Prefix) :-
+	!,
+	thread_get_message(Prefix, '$lgt_notification'(Msg)),
+	'$lgt_thread_get_notifications'(Msgs, Prefix).
+
+'$lgt_thread_get_notifications'(Msg, Prefix) :-
+	thread_get_message(Prefix, '$lgt_notification'(Msg)).
+
+
+
+% '$lgt_thread_send_notifications'(@term, @object_identifier)
+%
+% translates the notification argument of a built-in predicate threaded_notify/1 call
+
+'$lgt_thread_send_notifications'(Msg, Prefix) :-
+	var(Msg),
+	!,
+	thread_send_message(Prefix, '$lgt_notification'(Msg)).
+
+'$lgt_thread_send_notifications'([], _) :-
+	!.
+
+'$lgt_thread_send_notifications'([Msg| Msgs], Prefix) :-
+	!,
+	thread_send_message(Prefix, '$lgt_notification'(Msg)),
+	'$lgt_thread_send_notifications'(Msgs, Prefix).
+
+'$lgt_thread_send_notifications'(Msg, Prefix) :-
+	thread_send_message(Prefix, '$lgt_notification'(Msg)).
 
 
 
