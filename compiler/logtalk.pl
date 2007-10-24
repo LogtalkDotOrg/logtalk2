@@ -250,7 +250,7 @@ Obj<<Pred :-
 			catch(DPred, Error, '$lgt_runtime_error_handler'(Error))
 		;	catch(TPred, Error, '$lgt_runtime_error_handler'(Error))
 		)
-	;	throw(error(resource_error(context_switching_calls), Obj<<Goal, user))
+	;	throw(error(resource_error(context_switching_calls), Obj<<Pred, user))
 	).
 
 
@@ -12992,6 +12992,7 @@ current_logtalk_flag(version, version(2, 30, 7)).
 	'$lgt_default_flag'(break_predicate, Break), write('  break_predicate: '), write(Break),
 	'$lgt_default_flag'(startup_message, Startup), write(', startup_message: '), write(Startup), nl,
 	'$lgt_default_flag'(altdirs, Altdirs), write('  altdirs: '), write(Altdirs),
+	'$lgt_default_flag'(context_switching_calls, ContextCalls), write('  context_switching_calls: '), write(ContextCalls),
 	'$lgt_default_flag'(encoding_directive, Encodings), write(', encoding_directive: '), write(Encodings),
 	 '$lgt_default_flag'(threads, Threads), write(', threads: '), write(Threads), nl, nl.
 
@@ -13048,6 +13049,8 @@ current_logtalk_flag(version, version(2, 30, 7)).
 	write('  Startup message (startup_message):                          '), write(Startup), nl,
 	'$lgt_default_flag'(altdirs, Altdirs),
 	write('  Alternative compilation directories (altdirs):              '), write(Altdirs), nl,
+	'$lgt_default_flag'(context_switching_calls, ContextCalls),
+	write('  Context-switching calls (context_switching_calls):          '), write(ContextCalls), nl,
 	'$lgt_default_flag'(encoding_directive, Encodings),
 	write('  Support for encoding/1 directive (encoding_directive):      '), write(Encodings), nl,
 	'$lgt_default_flag'(threads, Threads),

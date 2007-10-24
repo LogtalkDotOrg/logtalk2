@@ -165,8 +165,11 @@ for storing intermediate compilation files (e.g. Prolog files). Removed from
 the config files the predicate '$lgt_alt_directory'/2. Older config files are 
 incompatible with this new Logtalk version.
 
-Logtalk version 2.30.7 renamed the compiler flags "supports_break_predicate", 
+Logtalk 2.30.6 renamed the compiler flags "supports_break_predicate", 
 "supports_encoding_dir", and "underscore_vars" to, respectively, 
 "break_predicate", "encoding_directive", and "underscore_variables". Changed 
 the possible values of the "encoding_directive" compiler option (see manual).
+Older config files are not compatible with this new Logtalk version.
+
+Logtalk 2.30.7 added a new compiler flag "context_switching_calls".
 Older config files are not compatible with this new Logtalk version.
