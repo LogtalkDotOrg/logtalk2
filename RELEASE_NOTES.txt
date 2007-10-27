@@ -16,7 +16,7 @@ RELEASE NOTES
 	threaded_wait/1 to accept lists of notifications.
 
 	Added a new read-only compiler flag, "context_switching_calls", allowing 
-	context switching calls to be disabled (by default, they are enabled).
+	context switching calls to be disabled (they are enabled by default).
 
 	Updated the XSB config file to recognize thread_shared/1 directives.
 
