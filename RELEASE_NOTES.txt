@@ -20,6 +20,8 @@ RELEASE NOTES
 
 	Updated the XSB config file to recognize thread_shared/1 directives.
 
+	Added a multi-threading example, "barriers", of barrier synchronization.
+
 	Added a workaround for a parsing bug in XSB while compiling the "sicstus" 
 	example.
 
