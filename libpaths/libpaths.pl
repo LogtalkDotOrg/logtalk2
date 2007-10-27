@@ -15,6 +15,7 @@
 	 assertz(logtalk_library_path(library, lgtuser('library/'))),
 	 assertz(logtalk_library_path(aliases, examples('aliases/'))),
 	 assertz(logtalk_library_path(assignvars, examples('assignvars/'))),
+	 assertz(logtalk_library_path(barriers, threads('barriers/'))),
 	 assertz(logtalk_library_path(benchmarks, examples('benchmarks/'))),
 	 assertz(logtalk_library_path(birds, examples('birds/'))),
 	 assertz(logtalk_library_path(birthdays, threads('birthdays/'))),
