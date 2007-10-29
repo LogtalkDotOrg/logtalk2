@@ -22,6 +22,9 @@ RELEASE NOTES
 
 	Added a multi-threading example, "barriers", of barrier synchronization.
 
+	Updated the "functions" example sample queries for compatibility with the 
+	ISO Prolog standard regarding representation of float numbers.
+
 	Added a workaround for a parsing bug in XSB while compiling the "sicstus" 
 	example.
 
