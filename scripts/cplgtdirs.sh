@@ -55,7 +55,7 @@ fi
 
 if [ -d "$LOGTALKUSER" ]
 then
-	date=`eval date \"+%Y-%m-%d %H-%M-%S\"`
+	date=`eval date \"+%Y-%m-%d-%H%M%S\"`
 	mv $LOGTALKUSER "$LOGTALKUSER backup $date"
 	echo "Created a backup of the existing \"$LOGTALKUSER\" directory."
 	echo
