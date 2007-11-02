@@ -29,6 +29,8 @@ RELEASE NOTES
 	Updated the "xsbmtlgt.sh" integration script to start XSB-MT using the 
 	new command-line option "--shared-predicates".
 
+	Updated the Windows GUI installer to support running Logtalk with XSB-MT.
+
 	Added a multi-threading example, "barriers", of barrier synchronization.
 
 	Updated the "functions" example sample queries for compatibility with the 
