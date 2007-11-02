@@ -57,4 +57,4 @@ elif ! [ -d "$LOGTALKUSER" ]; then
 fi
 echo
 
-exec xsb-mt -l -e "['$LOGTALKHOME/integration/logtalk_xsbmt.pl']." "$@"
+exec xsb-mt --shared-predicates -l -e "['$LOGTALKHOME/integration/logtalk_xsbmt.pl']." "$@"
