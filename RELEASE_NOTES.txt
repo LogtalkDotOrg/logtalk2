@@ -27,7 +27,7 @@ RELEASE NOTES
 	scripts to not include whitespace characters.
 
 	Updated the "xsbmtlgt.sh" integration script to start XSB-MT using the 
-	new command-line option "--shared-predicates".
+	new command-line option "--shared_predicates".
 
 	Updated the Windows GUI installer to support running Logtalk with XSB-MT.
 
