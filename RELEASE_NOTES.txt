@@ -18,6 +18,7 @@ RELEASE NOTES
 	Added a new read-only compiler flag, "context_switching_calls", allowing 
 	context switching calls to be disabled (they are enabled by default).
 
+	Updated the B-Prolog config file to recognize eager_consume/1 directives.
 	Updated the XSB config file to recognize thread_shared/1 directives.
 	Updated the YAP config file to recognize thread_local/1 directives.
 	Updated the SICStus Prolog config files to recognize volatile/1 directives.
