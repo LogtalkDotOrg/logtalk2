@@ -20,7 +20,8 @@ RELEASE NOTES
 
 	Updated the B-Prolog config file to recognize eager_consume/1 directives.
 	Updated the XSB config file to recognize use_subsumptive_tabling/1,
-	use_variant_tabling/1, index/1, and thread_shared/1 directives.
+	use_variant_tabling/1, index/1, thread_private/1, and thread_shared/1 
+	directives.
 	Updated the YAP config file to recognize thread_local/1 directives.
 	Updated the SICStus Prolog config files to recognize volatile/1 directives.
 	Updated the SWI-Prolog config file to recognize thread_local/1, index/1, 
@@ -31,9 +32,8 @@ RELEASE NOTES
 
 	Updated the "xsbmtlgt.sh" integration script to start XSB-MT using the 
 	new command-line option "--shared_predicates" (requires current XSB CVS 
-	version).
-
-	Updated the Windows GUI installer to support running Logtalk with XSB-MT.
+	version). Updated the Windows GUI installer to support running Logtalk 
+	with XSB-MT.
 
 	Added a multi-threading example, "barriers", of barrier synchronization.
 
