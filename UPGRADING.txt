@@ -171,5 +171,5 @@ Logtalk 2.30.6 renamed the compiler flags "supports_break_predicate",
 the possible values of the "encoding_directive" compiler option (see manual).
 Older config files are not compatible with this new Logtalk version.
 
-Logtalk 2.30.7 added a new compiler flag "context_switching_calls".
+Logtalk 2.30.7 adds a new compiler flag "context_switching_calls".
 Older config files are not compatible with this new Logtalk version.

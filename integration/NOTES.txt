@@ -35,7 +35,7 @@ once as root or using sudo; in Windows systems run them once from an
 administrative account).
 
 The GNU Prolog integration script provides adequate performance for 
-development. For production environments, improved performance can be 
+development. For production environments, improved performance may be 
 achieved by generating a new GNU-Prolog top-level that includes Logtalk.
 
 The SWI-Prolog integration script assumes XPCE is installed. If that's 
@@ -65,4 +65,4 @@ using SWI-Prolog as the back-end compiler):
 
 However, keep in mind that the integration scripts already use the back-end 
 Prolog command-line option that allows a initialization file to be loaded 
-in order to bootstrap Logtalk. See the scripts/shortcut files for details.
+in order to bootstrap Logtalk. See the scripts files for details.
