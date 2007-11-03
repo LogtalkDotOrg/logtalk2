@@ -20,6 +20,7 @@ RELEASE NOTES
 
 	Updated the XSB config file to recognize thread_shared/1 directives.
 	Updated the YAP config file to recognize thread_local/1 directives.
+	Updated the SICStus Prolog config files to recognize volatile/1 directives.
 	Updated the SWI-Prolog config file to recognize thread_local/1, index/1, 
 	and hash/1 directives.
 
@@ -27,7 +28,8 @@ RELEASE NOTES
 	scripts to not include whitespace characters.
 
 	Updated the "xsbmtlgt.sh" integration script to start XSB-MT using the 
-	new command-line option "--shared_predicates".
+	new command-line option "--shared_predicates" (requires current XSB CVS 
+	version).
 
 	Updated the Windows GUI installer to support running Logtalk with XSB-MT.
 
