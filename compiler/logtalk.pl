@@ -9611,7 +9611,15 @@ current_logtalk_flag(version, version(2, 30, 8)).
 
 '$lgt_fix_synchronized_preds' :-
 	\+ '$lgt_default_flag'(threads, on),
-	!.
+	!,
+	(	retract('$lgt_pp_def_'(Def)),
+		assertz('$lgt_pp_fdef_'(Def)),
+		fail
+	;	retract('$lgt_pp_ddef_'(DDef)),
+		assertz('$lgt_pp_fddef_'(DDef)),
+		fail
+	;	true
+	).
 
 '$lgt_fix_synchronized_preds' :-
 	(	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _) ->
