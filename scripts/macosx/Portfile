@@ -1,8 +1,8 @@
-# $Id: Portfile 26918 2007-07-11 15:28:15Z gwright@macports.org $
+# $Id: Portfile 28172 2007-08-23 13:33:11Z gwright@macports.org $
 
 PortSystem	1.0
 name		logtalk
-version 2.30.7
+version 2.30.8
 
 categories	lang
 maintainers	pmoura@logtalk.org
@@ -20,9 +20,9 @@ long_description	\
 homepage        http://logtalk.org/
 master_sites	${homepage}/files/
 
-checksums md5 0653f6e2e10219111deed4b2096e6394
+checksums md5 e2caa17e15f650bfbf440fa683f0ecea
 
-distname lgt2307
+distname lgt2308
 extract.suffix .tar.bz2
 
 use_bzip2 yes
@@ -50,8 +50,8 @@ post-activate {
 	ui_msg "*  back-end Prolog compilers (which must be properly installed for running"
 	ui_msg "*  the scripts!):"
 	ui_msg "*"
-	ui_msg "*    B-Prolog:       bplgt        (first run must use sudo)"
-	ui_msg "*    CIAO:           ciaolgt      (first run must use sudo)"
+	ui_msg "*    B-Prolog:       bplgt"
+	ui_msg "*    CIAO:           ciaolgt"
 	ui_msg "*    CxProlog:       cxlgt"
 	ui_msg "*    ECLiPSe:        eclipselgt"
 	ui_msg "*    GNU Prolog:     gplgt"
@@ -59,8 +59,7 @@ post-activate {
 	ui_msg "*    Qu-Prolog:      qplgt"
 	ui_msg "*    SICStus Prolog: sicstuslgt"
 	ui_msg "*    SWI-Prolog:     swilgt"
-	ui_msg "*    XSB:            xsblgt       (first run must use sudo)"
-	ui_msg "*    XSB (MT):       xsbmtlgt     (first run must use sudo)"
+	ui_msg "*    XSB:            xsblgt"
 	ui_msg "*    YAP:            yaplgt"
 	ui_msg "*"
 	ui_msg "* Remember to set the environment variable LOGTALKHOME to the path to"

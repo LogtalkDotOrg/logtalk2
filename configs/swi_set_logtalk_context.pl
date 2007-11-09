@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.30.7
+%  Release 2.30.8
 %
 %  a useful but fragile hack for SWI Prolog 5.6.x that allows setting the 
 %  Logtalk top-level context to other object than the pseudo-object "user"
