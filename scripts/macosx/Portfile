@@ -2,7 +2,7 @@
 
 PortSystem	1.0
 name		logtalk
-version 2.30.8
+version Release 2.30.9
 
 categories	lang
 maintainers	pmoura@logtalk.org
@@ -22,7 +22,7 @@ master_sites	${homepage}/files/
 
 checksums md5 e2caa17e15f650bfbf440fa683f0ecea
 
-distname lgt2308
+distname lgt2309
 extract.suffix .tar.bz2
 
 use_bzip2 yes

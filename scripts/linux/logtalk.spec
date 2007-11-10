@@ -1,11 +1,11 @@
 Name: logtalk
 Summary: Logtalk - Open source object-oriented logic programming language
-Version: 2.30.8
+Version: Release 2.30.9
 Release: 1
 License: Artistic License 2.0
 Group: Development/Languages
 Packager: Paulo Moura <pmoura@logtalk.org>
-Source: http://logtalk.org/files/lgt2308.tar.bz2
+Source: http://logtalk.org/files/lgt2309.tar.bz2
 BuildArchitectures: noarch
 URL: http://logtalk.org/
 Prefix: /usr/local
@@ -15,21 +15,21 @@ Logtalk is an open source object-oriented logic programming language that can us
 
 %prep
 
-%setup -n lgt2308
+%setup -n lgt2309
 
 %build
 
 %install
 mkdir -p /usr/local/share
-rm -rf /usr/local/share/lgt2308
+rm -rf /usr/local/share/lgt2309
 rm -f /usr/local/share/logtalk
-mkdir /usr/local/share/lgt2308
-cp -R * /usr/local/share/lgt2308
-cd /usr/local/share/lgt2308
+mkdir /usr/local/share/lgt2309
+cp -R * /usr/local/share/lgt2309
+cd /usr/local/share/lgt2309
 chmod a+x scripts/cleandist.sh
 scripts/cleandist.sh
 cd ..
-ln -sf lgt2308 logtalk
+ln -sf lgt2309 logtalk
 cd ..
 mkdir -p bin 
 cd bin
@@ -52,7 +52,7 @@ ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
 
 %clean
 cd /usr/local/share
-rm -rf lgt2308
+rm -rf lgt2309
 rm -f logtalk
 cd ../bin
 rm -f bplgt
@@ -74,26 +74,26 @@ rm -f yaplgt
 
 %files
 %defattr(-,root,root)
-%doc /usr/local/share/lgt2308/BIBLIOGRAPHY.bib
-%doc /usr/local/share/lgt2308/CUSTOMIZE.txt
-%doc /usr/local/share/lgt2308/INSTALL.txt
-%doc /usr/local/share/lgt2308/LICENSE.txt
-%doc /usr/local/share/lgt2308/QUICK_START.txt
-%doc /usr/local/share/lgt2308/README.txt
-%doc /usr/local/share/lgt2308/RELEASE_NOTES.txt
-%doc /usr/local/share/lgt2308/UPGRADING.txt
-/usr/local/share/lgt2308/compiler
-/usr/local/share/lgt2308/configs
-/usr/local/share/lgt2308/contributions
-/usr/local/share/lgt2308/examples
-/usr/local/share/lgt2308/integration
-/usr/local/share/lgt2308/libpaths
-/usr/local/share/lgt2308/library
-%docdir /usr/local/share/lgt2308/manuals
-/usr/local/share/lgt2308/manuals
-/usr/local/share/lgt2308/scripts
-/usr/local/share/lgt2308/wenv
-/usr/local/share/lgt2308/xml
+%doc /usr/local/share/lgt2309/BIBLIOGRAPHY.bib
+%doc /usr/local/share/lgt2309/CUSTOMIZE.txt
+%doc /usr/local/share/lgt2309/INSTALL.txt
+%doc /usr/local/share/lgt2309/LICENSE.txt
+%doc /usr/local/share/lgt2309/QUICK_START.txt
+%doc /usr/local/share/lgt2309/README.txt
+%doc /usr/local/share/lgt2309/RELEASE_NOTES.txt
+%doc /usr/local/share/lgt2309/UPGRADING.txt
+/usr/local/share/lgt2309/compiler
+/usr/local/share/lgt2309/configs
+/usr/local/share/lgt2309/contributions
+/usr/local/share/lgt2309/examples
+/usr/local/share/lgt2309/integration
+/usr/local/share/lgt2309/libpaths
+/usr/local/share/lgt2309/library
+%docdir /usr/local/share/lgt2309/manuals
+/usr/local/share/lgt2309/manuals
+/usr/local/share/lgt2309/scripts
+/usr/local/share/lgt2309/wenv
+/usr/local/share/lgt2309/xml
 /usr/local/share/logtalk
 /usr/local/bin/cplgtdirs
 /usr/local/bin/lgt2pdf
