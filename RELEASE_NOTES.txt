@@ -10,14 +10,14 @@ RELEASE NOTES
 =============
 
 
-Release 2.30.9 - November ??, 2007
+2.30.9 - November ??, 2007
 
 	Updated the B-Prolog config file to recognize mode/1 directives.
 	Added some missing meta-predicate specifications to the config files of 
 	XSB and YAP.
 
 
-Release 2.30.8 - November 9, 2007
+2.30.8 - November 9, 2007
 
 	Fixed bug in the compilation of synchronized predicates that breaks 
 	Logtalk on single-threaded Prolog compilers.
