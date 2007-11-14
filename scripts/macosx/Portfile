@@ -18,11 +18,11 @@ long_description	\
 		multi-threading programming.
 
 homepage        http://logtalk.org/
-master_sites	${homepage}/files/
+master_sites	${homepage}files/
 
 checksums md5 c80bc685a5868639edc66cff9fde6f6c
 
-distname lgt2309
+distname lgt[strsed ${version} {g/\.//}]
 extract.suffix .tar.bz2
 
 use_bzip2 yes
@@ -32,8 +32,7 @@ configure	{}
 build		{}
 
 destroot	{
-	cd ${workpath}/${worksrcdir}/scripts
-	system "./install.sh ${destroot}/${prefix}"
+	system "cd ${workpath}/${worksrcdir}/scripts && ./install.sh ${destroot}/${prefix}"
 }
 
 post-pkg {
