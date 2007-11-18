@@ -13,8 +13,12 @@ RELEASE NOTES
 2.30.9 - November ??, 2007
 
 	Updated the B-Prolog config file to recognize mode/1 directives.
-	Added some missing meta-predicate specifications to the config files of 
-	XSB and YAP.
+	Added some missing meta-predicate specifications to the config files 
+	of XSB and YAP.
+
+	Updated TextMate support snippets to use  the TM_FULLNAME variable 
+	instead of niutil to retrive the user full name. Thanks to Michael 
+	Sheets for the update. 
 
 
 2.30.8 - November 9, 2007
