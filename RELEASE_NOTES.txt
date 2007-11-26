@@ -12,6 +12,11 @@ RELEASE NOTES
 
 2.30.9 - November ??, 2007
 
+	Updated the Logtalk compiler to convert version numbers to atoms when 
+	generating XML documenting files (thus avoiding problems with some 
+	Prolog compilers that resulted in version numbers with a large number 
+	of fractional digits).
+
 	Updated the B-Prolog config file to recognize mode/1 directives.
 	Added some missing meta-predicate specifications to the config files 
 	of XSB and YAP.

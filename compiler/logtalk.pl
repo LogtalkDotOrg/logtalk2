@@ -11727,7 +11727,9 @@ current_logtalk_flag(version, version(2, 30, 9)).
 	;	true
 	),
 	(	'$lgt_member'(version is Version, Info) ->
-		'$lgt_write_xml_element'(Stream, version, [], Version)
+		number_codes(Version, VersionCodes),
+		atom_codes(VersionAtom, VersionCodes),
+		'$lgt_write_xml_element'(Stream, version, [], VersionAtom)
 	;	true
 	),
 	(	'$lgt_member'(date is Date, Info) ->
