@@ -86,7 +86,7 @@
 				<regex>\b(before)\(</regex>
 				<regex>\b(after)\(</regex>
 				<regex>\b(expand_term)\(</regex>
-				<regex>\b(term_expansion)\(</regex>
+				<regex>\b((goal|term)_expansion)\(</regex>
 				<regex>\b(phrase)\(</regex>
 			</keywords>
 

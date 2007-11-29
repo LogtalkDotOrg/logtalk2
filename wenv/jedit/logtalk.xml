@@ -5,9 +5,9 @@
 <!--	jEdit 4.3 Logtalk syntax file
 
 	written by		Paulo Moura
-	version			1.13
+	version			1.14
 	created on		2 May 2002
-	last revised	22 September 2007
+	last revised	22 November 2007
 
 	To install, copy this file to the "modes" subdirectory in jEdit 
 	directory installation.   Next, check the "catalog" file in the 
@@ -59,7 +59,7 @@
 		<!-- Reflection -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(current_predicate|predicate_property)(?=[(])</SEQ_REGEXP>
 		<!-- DCGs -->
-		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(expand_term|term_expansion|phrase)(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(expand_term|(goal|term)_expansion|phrase)(?=[(])</SEQ_REGEXP>
 		<!-- Entity -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(abolish|c(reate|urrent))_(object|protocol|category)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(object|protocol|category)_property(?=[(])</SEQ_REGEXP>
@@ -347,6 +347,7 @@
 			<NULL>stream_property</NULL>
 			<NULL>sub_atom</NULL>
 			<NULL>synchronized</NULL>
+			<NULL>goal_expansion</NULL>
 			<NULL>term_expansion</NULL>
 			<NULL>this</NULL>
 			<NULL>threaded</NULL>

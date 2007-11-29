@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	September 22, 2007
+" Last Change:	November 29, 2007
 
 
 " Quit when a syntax file was already loaded:
@@ -142,7 +142,7 @@ syn match	logtalkBuiltInMethod	"\<before\ze("
 syn match	logtalkBuiltInMethod	"\<after\ze("
 
 syn match	logtalkBuiltInMethod	"\<expand_term\ze("
-syn match	logtalkBuiltInMethod	"\<term_expansion\ze("
+syn match	logtalkBuiltInMethod	"\<\(goal\|term\)_expansion\ze("
 syn match	logtalkBuiltInMethod	"\<phrase\ze("
 
 

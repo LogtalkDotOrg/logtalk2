@@ -4,8 +4,8 @@
 
 ;; Author: Paulo Moura
 ;; Creation date: November 15, 2003
-;; Last modification date: September 20, 2007
-;; Version: 1.0
+;; Last modification date: November 29, 2007
+;; Version: 1.1
 
 ;; Installation:
 ;;
@@ -27,7 +27,7 @@
 
 ;; setup 
 
-(defvar logtalk-mode-version "1.0"
+(defvar logtalk-mode-version "1.1"
 	"Logtalk mode version number")
 
 (defvar logtalk-mode-hook nil)
@@ -114,7 +114,7 @@
 		("\\(a\\(?:bolish\\|ssert[az]\\)\\|clause\\|retract\\(?:all\\)?\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
 		("\\(bagof\\|f\\(?:\\(?:ind\\|or\\)all\\)\\|setof\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
 		("\\(after\\|before\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
-		("\\(phrase\\|expand_term\\|term_expansion\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
+		("\\(phrase\\|expand_term\\|\\(?:goal\\|term\\)_expansion\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
 	))
 
 

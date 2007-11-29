@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 
-<language name="Logtalk" version="1.95" kateversion="2.4" section="Sources" extensions="*.lgt;*.config" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
+<language name="Logtalk" version="1.96" kateversion="2.4" section="Sources" extensions="*.lgt;*.config" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
 
 	<highlighting>
 
@@ -17,7 +17,7 @@
 				<!-- Reflection -->
 				<RegExpr String = "\b(current_predicate|predicate_property)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- DCGs -->
-				<RegExpr String = "\b(expand_term|term_expansion|phrase)(?=[(])" attribute = "Built-in" context = "#stay" />
+				<RegExpr String = "\b(expand_term|(goal|term)_expansion|phrase)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Entity -->
 				<RegExpr String = "\b(abolish|c(reate|urrent))_(object|protocol|category)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\b(object|protocol|category)_property(?=[(])" attribute = "Built-in" context = "#stay" />

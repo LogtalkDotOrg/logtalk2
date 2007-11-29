@@ -129,7 +129,7 @@
 			<keyword>(after)(?=[(])</keyword>
 			<!-- DCGs -->
 			<keyword>(expand_term)(?=[(])</keyword>
-			<keyword>(term_expansion)(?=[(])</keyword>
+			<keyword>((goal|term)_expansion)(?=[(])</keyword>
 			<keyword>(phrase)(?=[(])</keyword>
 		</context>
 

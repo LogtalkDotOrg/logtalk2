@@ -66,6 +66,7 @@ before
 after
 phrase
 expand_term
+goal_expansion
 term_expansion
 true
 fail

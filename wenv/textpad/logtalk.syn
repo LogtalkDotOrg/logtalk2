@@ -175,6 +175,7 @@ setof
 before
 after
 expand_term
+goal_expansion
 term_expansion
 phrase
 

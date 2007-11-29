@@ -82,6 +82,7 @@ after(, , )
 
 phrase(, )
 phrase(, , )
+goal_expansion(, )
 term_expansion(, )
 expand_term(, )
 
