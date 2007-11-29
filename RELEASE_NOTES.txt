@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.30.9 - November ??, 2007
 
+	Added a new built-in protocol, "expanding", declaring goal_expansion/1 
+	and term_expansion/1 public predicates.
+
 	Updated the Logtalk compiler to convert version numbers to atoms when 
 	generating XML documenting files (thus avoiding problems with some 
 	Prolog compilers that resulted in version numbers with a large number 

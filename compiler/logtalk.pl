@@ -3087,6 +3087,7 @@ current_logtalk_flag(version, version(2, 30, 9)).
 '$lgt_built_in_object'(debugger).
 
 
+'$lgt_built_in_protocol'(expanding).
 '$lgt_built_in_protocol'(monitoring).
 
 
@@ -3109,6 +3110,7 @@ current_logtalk_flag(version, version(2, 30, 9)).
 '$lgt_current_object_'(debugger, '$lgt_bio_debugger_0_', '$lgt_bio_debugger_0__dcl', '$lgt_bio_debugger_0__def', '$lgt_bio_debugger_0__super', static, no, no).
 
 
+'$lgt_current_protocol_'(expanding, '$lgt_bip_expanding_0_', static).
 '$lgt_current_protocol_'(monitoring, '$lgt_bip_monitoring_0_', static).
 
 
@@ -3200,8 +3202,8 @@ current_logtalk_flag(version, version(2, 30, 9)).
 	).
 
 
-'$lgt_bio_user_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Synchronized, user, user) :-
-	'$lgt_bio_user_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Synchronized).
+'$lgt_bio_user_0__dcl'(Pred, Scope, Type, Meta, NonTerminal, Synchronized, user, user) :-
+	'$lgt_bio_user_0__dcl'(Pred, Scope, Type, Meta, NonTerminal, Synchronized).
 
 
 '$lgt_bio_user_0__def'(Pred, _, _, _, Pred).
@@ -3280,8 +3282,8 @@ current_logtalk_flag(version, version(2, 30, 9)).
 '$lgt_bio_debugger_0__dcl'(leash(_), p(p(p)), static, no, no, no).
 
 
-'$lgt_bio_debugger_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Synchronized, debugger, debugger) :-
-	'$lgt_bio_debugger_0__dcl'(Pred, p(p(p)), Type, Meta, NonTerminal, Synchronized).
+'$lgt_bio_debugger_0__dcl'(Pred, Scope, Type, Meta, NonTerminal, Synchronized, debugger, debugger) :-
+	'$lgt_bio_debugger_0__dcl'(Pred, Scope, Type, Meta, NonTerminal, Synchronized).
 
 
 '$lgt_bio_debugger_0__def'(reset, _, _, _, '$lgt_dbg_reset').
@@ -3832,6 +3834,31 @@ current_logtalk_flag(version, version(2, 30, 9)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
+%  "expanding" built-in protocol
+%
+%  implements the Logtalk term and goal expansion protocol
+%
+%  the clauses correspond to a virtual compilation of the protocol
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+'$lgt_bip_expanding_0_'('$lgt_bip_expanding_0__dcl', '$lgt_bip_expanding_0__alias').
+
+'$lgt_bip_expanding_0__dcl'(goal_expansion(_, _), p(p(p)), static, no, no, no).
+'$lgt_bip_expanding_0__dcl'(term_expansion(_, _), p(p(p)), static, no, no, no).
+
+'$lgt_bip_expanding_0__dcl'(Pred, Scope, Type, Meta, NonTerminal, Synchronized, expanding) :-
+	'$lgt_bip_expanding_0__dcl'(Pred, Scope, Type, Meta, NonTerminal, Synchronized).
+
+'$lgt_bip_expanding_0__alias'(_, Pred, Pred).
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 %  "monitoring" built-in protocol
 %
 %  implements the Logtalk event handlers protocol
@@ -3857,7 +3884,7 @@ current_logtalk_flag(version, version(2, 30, 9)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  pre-processor - compiles Logtalk source files to Prolog
+%  pre-processor - compiles Logtalk source files into Prolog source files
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -11702,6 +11729,12 @@ current_logtalk_flag(version, version(2, 30, 9)).
 	'$lgt_write_xml_close_tag'(Stream, entity).
 
 
+
+% '$lgt_write_xml_entity_info'(+stream, +list)
+%
+% outputs the contents of entity info/1 directive
+% in the order specified in the Logtalk DTD file
+
 '$lgt_write_xml_entity_info'(Stream, Info) :-
 	(	'$lgt_member'(comment is Comment, Info) ->
 		'$lgt_write_xml_cdata_element'(Stream, comment, [], Comment)
@@ -11760,6 +11793,12 @@ current_logtalk_flag(version, version(2, 30, 9)).
 		 '$lgt_write_xml_cdata_element'(Stream, value, [], Value),
 		 '$lgt_write_xml_close_tag'(Stream, info))).
 
+
+
+% '$lgt_entity_name_to_xml_entity'(+nonvar, -atom)
+%
+% converts and entity name reference into an atom
+% representing the corresponding XML entity
 
 '$lgt_entity_name_to_xml_entity'({EntityName}, XMLEntity) :-
 	atom_concat('&', EntityName, Aux),
