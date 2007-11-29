@@ -10,15 +10,15 @@ To load this example and for sample queries, please see the SCRIPT file.
 
 This is a very simple example of using the new, experimental encoding/1 
 directive, which is fully based on the directive with the same name found 
-on recent development releases of SWI-Prolog. Currently, this example 
-requires Logtalk to be run with the SWI-Prolog compiler.
+on recent development releases of SWI-Prolog and YAP. Currently, this example 
+requires Logtalk to be run with the SWI-Prolog or YAP compilers.
 
-The "babel.lgt" source file uses UTF-8 encoding. The "latin.lgt" source 
-file uses ISO-8859-1 (Latin 1) encoding. Be sure to use a text editor that 
-supports these encodings when opening these files. In addition, you may 
-need to configure your text editor to open the source file using the 
-declared encoding. If you are using the SWI-Prolog GUI application on 
-Windows, be sure to select a font which supports Unicode characters.
+The "babel.lgt" source file uses UTF-8 encoding (with a BOM). The "latin.lgt" 
+source file uses ISO-8859-1 (Latin 1) encoding. Be sure to use a text editor 
+that supports these encodings when opening these files. In addition, you may 
+need to configure your text editor to open the source file using the declared 
+encoding. If you are using the SWI-Prolog GUI application on Windows, be sure 
+to select a font which supports Unicode characters.
 
 The current Logtalk version accepts any atom as an argument for the encoding/1
 directive. As, by default, Logtalk automatically generates a XML documenting 
@@ -32,4 +32,5 @@ of the XML file:
 	unicode_le				utf-16
 	utf8					utf-8
 
-Note that the values on the left column are the ones recognized by SWI-Prolog.
+Note that the values on the left column are the ones recognized by the YAP 
+and SWI-Prolog compilers.
