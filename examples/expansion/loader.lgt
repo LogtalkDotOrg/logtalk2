@@ -1,3 +1,3 @@
 
 :- initialization(
-	logtalk_load([library(term_expansionp), expansion])).
+	logtalk_load(expansion)).

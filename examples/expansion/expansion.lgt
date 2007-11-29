@@ -1,6 +1,6 @@
 
 :- category(number_conversion,
-	implements(term_expansionp)).
+	implements(expanding)).
 
 	term_expansion(0, zero).
 	term_expansion(1, one).
