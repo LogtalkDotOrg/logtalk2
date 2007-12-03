@@ -180,8 +180,8 @@ yes</pre>
 			<dd>Allows Logtalk event-driven programming support to be turned off when not needed in order to improve message sending performance. Possible option values are <code>on</code> and <code>off</code> (the usual default). Objects (and categories) compiled with this option set to <code>off</code> use optimized code for message-sending that does not trigger events. As such, this option can be used on a per-object (or per-category) basis. Note that turning on this option is of no consequence for objects and categories already compiled and loaded.</dd>
 	</dl>
 	<dl>
-		<dt><code>hook(Object::Functor)</code></dt>
-			<dd>Allows the definition of a compiler hook that is called for each term read form a source file. This option specifies both an object (which can be the pseudo-object <code>user</code>) and the functor of a public predicate with two arguments, the first one receiving the term read form the source file and the second one returning a list of terms corresponding to the expansion of the first argument.</dd>
+		<dt><code>hook(Object)</code></dt>
+			<dd>Allows the definition of a compiler hook that is called for each term read form a source file. This option specifies both an object (which can be the pseudo-object <code>user</code>) implementing the <code>expanding</code> built-in protocol. The object is expected to define clauses for the <code>term_expansion/2</code> where the first argument is the term read form the source file and the second argument returns a list of terms corresponding to the expansion of the first argument.</dd>
 	</dl>
 	<dl>
 		<dt><code>tmpdir(Directory)</code></dt>
@@ -492,7 +492,7 @@ As exemplified above, the <code>&lt;&lt;/2</code> control construct allows you t
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: June 8, 2007</span>
+		<span>Last updated on: December 3, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="installing.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="programming.html">next</a></span><br/>

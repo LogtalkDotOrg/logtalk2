@@ -10,10 +10,15 @@ RELEASE NOTES
 =============
 
 
-2.30.9 - November ??, 2007
+2.30.9 - December ??, 2007
 
 	Added a new built-in protocol, "expanding", declaring goal_expansion/1 
 	and term_expansion/1 public predicates.
+
+	Added compiler support for user-defined goal expansion hooks. Changed 
+	the implementation of compiler hooks to use object-defined predicates 
+	term_expansion/2 and goal_expansion. Changed the compiler option "hook" 
+	to accept object identifiers.
 
 	Updated the Logtalk compiler to convert version numbers to atoms when 
 	generating XML documenting files (thus avoiding problems with some 
@@ -23,6 +28,9 @@ RELEASE NOTES
 	Updated the B-Prolog config file to recognize mode/1 directives.
 	Added some missing meta-predicate specifications to the config files 
 	of XSB and YAP.
+
+	Added syntax coloring support for the goal_expansion/1 predicate to all 
+	supported text editors.
 
 	Updated TextMate support snippets to use  the TM_FULLNAME variable 
 	instead of niutil to retrive the user full name. Thanks to Michael 

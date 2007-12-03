@@ -121,9 +121,10 @@
 :- dynamic(logtalk_library_path/2).			% logtalk_library_path(Library, Path)
 
 
-% compiler hook goal:
+% compiler hook term and goal expansion:
 
-:- dynamic('$lgt_hook_goal_'/2).			% '$lgt_hook_goal_'(Term, Terms)
+:- dynamic('$lgt_hook_term_expansion_'/2).	% '$lgt_hook_term_expansion_'(Term, Terms)
+:- dynamic('$lgt_hook_goal_expansion_'/2).	% '$lgt_hook_goal_expansion_'(Term, Terms)
 
 
 % multi-threading tags
@@ -216,7 +217,8 @@
 :- dynamic('$lgt_pp_load_warnings_counter_'/1).	% '$lgt_pp_load_warnings_counter_'(Counter)
 :- dynamic('$lgt_pp_entity_warnings_flag_'/0).	% '$lgt_pp_entity_warnings_flag_'
 
-:- dynamic('$lgt_pp_hook_goal_'/2).				% '$lgt_pp_hook_goal_'(Term, Terms)
+:- dynamic('$lgt_pp_hook_term_expansion_'/2).	% '$lgt_pp_hook_term_expansion_'(Term, Terms)
+:- dynamic('$lgt_pp_hook_goal_expansion_'/2).	% '$lgt_pp_hook_goal_expansion_'(Term, Terms)
 
 :- dynamic('$lgt_pp_threaded_'/0).				% '$lgt_pp_threaded_'
 :- dynamic('$lgt_pp_synchronized_'/0).			% '$lgt_pp_synchronized_'
@@ -1568,22 +1570,25 @@ logtalk_compile(Files, Flags) :-
 % sets the compiler flag options
 
 '$lgt_set_compiler_flags'(Flags) :-
-	retractall('$lgt_pp_compiler_flag_'(_, _)),							% retract old flag values
-	retractall('$lgt_pp_hook_goal_'(_, _)),								% and any old hook goal
+	retractall('$lgt_pp_compiler_flag_'(_, _)),						% retract old flag values
+	retractall('$lgt_pp_hook_term_expansion_'(_, _)),				% and any old term and
+	retractall('$lgt_pp_hook_goal_expansion_'(_, _)),				% goal expansion hooks
 	'$lgt_assert_compiler_flags'(Flags),
-	(	'$lgt_pp_compiler_flag_'(debug, on) ->							% debug flag on requires the
-		retractall('$lgt_pp_compiler_flag_'(smart_compilation, _)),		% smart_compilation flag to 
-		asserta('$lgt_pp_compiler_flag_'(smart_compilation, off)),		% be off and 
-		retractall('$lgt_pp_compiler_flag_'(reload, _)),				% the reload flag to be set
-		asserta('$lgt_pp_compiler_flag_'(reload, always))				% to always
+	(	'$lgt_pp_compiler_flag_'(debug, on) ->						% debug flag on requires the
+		retractall('$lgt_pp_compiler_flag_'(smart_compilation, _)),	% smart_compilation flag to 
+		asserta('$lgt_pp_compiler_flag_'(smart_compilation, off)),	% be off and 
+		retractall('$lgt_pp_compiler_flag_'(reload, _)),			% the reload flag to be set
+		asserta('$lgt_pp_compiler_flag_'(reload, always))			% to always
 	;	true),
-	(	'$lgt_pp_compiler_flag_'(hook, Obj::Functor) ->					% pre-compile hook in order 
-		Call =.. [Functor, Term, Terms],								% to speed up entity compilation
-		(	Obj == user ->
-			Goal = Call
-		;	'$lgt_tr_msg'(Call, Obj, Goal, user)
+	(	'$lgt_pp_compiler_flag_'(hook, Obj) ->						% pre-compile hooks in order 
+		(	Obj == user ->											% to speed up entity compilation
+			TermExpansionGoal = term_expansion(Term, Terms),
+			GoalExpansionGoal = goal_expansion(Term, Terms)
+		;	'$lgt_tr_msg'(term_expansion(Term, Terms), Obj, TermExpansionGoal, user),
+			'$lgt_tr_msg'(goal_expansion(Term, Terms), Obj, GoalExpansionGoal, user)
 		),
-		assertz(('$lgt_pp_hook_goal_'(Term, Terms) :- catch(Goal, _, fail)))
+		assertz(('$lgt_pp_hook_term_expansion_'(Term, Terms) :- catch(TermExpansionGoal, _, fail))),
+		assertz(('$lgt_pp_hook_goal_expansion_'(Term, Terms) :- catch(GoalExpansionGoal, _, fail)))
 	;	true
 	).
 
@@ -1668,7 +1673,7 @@ set_logtalk_flag(Flag, Value) :-
 		retractall('$lgt_current_flag_'(smart_compilation, _)),
 		assertz('$lgt_current_flag_'(smart_compilation, off))
 	;	Flag == hook ->
-		'$lgt_compile_hook'(Value)
+		'$lgt_compile_hooks'(Value)
 	;	true
 	).
 
@@ -4813,10 +4818,10 @@ current_logtalk_flag(version, version(2, 30, 9)).
 
 '$lgt_tr_term'(Term, Input, Output) :-
 	(	% source-file specific compiler hook:
-		'$lgt_pp_hook_goal_'(Term, Terms) ->
+		'$lgt_pp_hook_term_expansion_'(Term, Terms) ->
 		'$lgt_tr_expanded_terms'(Terms, Input, Output)
 	;	% default compiler hook:
-		'$lgt_hook_goal_'(Term, Terms) ->
+		'$lgt_hook_term_expansion_'(Term, Terms) ->
 		'$lgt_tr_expanded_terms'(Terms, Input, Output)
 	;	% no compiler hook defined:
 		'$lgt_tr_expanded_term'(Term, Input, Output)
@@ -6325,6 +6330,18 @@ current_logtalk_flag(version, version(2, 30, 9)).
 '$lgt_tr_body'({Pred}, Pred, '$lgt_dbg_goal'({Pred}, Pred, DbgCtx), Ctx) :-
 	!,
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
+
+
+% goal expansion
+
+'$lgt_tr_body'(Pred, TPred, DPred, Ctx) :-
+	(	% source-file specific compiler hook:
+		'$lgt_pp_hook_goal_expansion_'(Pred, EPred)
+	;	% default compiler hook:
+		'$lgt_hook_goal_expansion_'(Pred, EPred)
+	),
+	!,
+	'$lgt_tr_body'(EPred, TPred, DPred, Ctx).
 
 
 % bagof/3 and setof/3 existential quantifiers
@@ -10449,18 +10466,21 @@ current_logtalk_flag(version, version(2, 30, 9)).
 
 
 
-% '$lgt_compile_hook'(+callable)
+% '$lgt_compile_hooks'(+callable)
 %
 % compiles the user-defined compiler hook
 
-'$lgt_compile_hook'(Obj::Functor) :-
-	Call =.. [Functor, Term, Terms],
+'$lgt_compile_hooks'(Obj) :-
 	(	Obj == user ->
-		Goal = Call
-	;	'$lgt_tr_msg'(Call, Obj, Goal, user)
+		TermExpansionGoal = term_expansion(Term, Terms),
+		GoalExpansionGoal = goal_expansion(Term, Terms)
+	;	'$lgt_tr_msg'(term_expansion(Term, Terms), Obj, TermExpansionGoal, user),
+		'$lgt_tr_msg'(goal_expansion(Term, Terms), Obj, GoalExpansionGoal, user)
 	),
-	retractall('$lgt_hook_goal_'(_, _)),
-	assertz(('$lgt_hook_goal_'(Term, Terms) :- catch(Goal, _, fail))).
+	retractall('$lgt_hook_term_expansion_'(_, _)),
+	assertz(('$lgt_hook_term_expansion_'(Term, Terms) :- catch(TermExpansionGoal, _, fail))),
+	retractall('$lgt_hook_goal_expansion_'(_, _)),
+	assertz(('$lgt_hook_goal_expansion_'(Term, Terms) :- catch(GoalExpansionGoal, _, fail))).
 
 
 
@@ -11068,8 +11088,7 @@ current_logtalk_flag(version, version(2, 30, 9)).
 '$lgt_valid_flag_value'(events, on) :- !.
 '$lgt_valid_flag_value'(events, off) :- !.
 
-'$lgt_valid_flag_value'(hook, Obj::Functor) :-
-	atom(Functor),
+'$lgt_valid_flag_value'(hook, Obj) :-
 	callable(Obj).
 
 '$lgt_valid_flag_value'(xmldir, Directory) :-
@@ -13088,7 +13107,7 @@ current_logtalk_flag(version, version(2, 30, 9)).
 	(	'$lgt_default_flag'(hook, Hook) -> true
 	;	Hook = '(none defined)'
 	),
-	write('  Compiler hook object and hook predicate functor:            '), write(Hook), nl,
+	write('  Compiler hook object (hook):                                '), write(Hook), nl,
 	'$lgt_default_flag'(tmpdir, TmpDir),
 	write('  Directory for compiler generated temporary files (tmpdir):  '), write(TmpDir), nl,
 	write('Read-only compilation flags:'), nl,
@@ -13107,13 +13126,13 @@ current_logtalk_flag(version, version(2, 30, 9)).
 
 
 
-% '$lgt_assert_default_hook_goal'
+% '$lgt_assert_default_hooks'
 %
 % asserts the compiler hook goal specified on the config file
 
-'$lgt_assert_default_hook_goal' :-
+'$lgt_assert_default_hooks' :-
 	(	'$lgt_default_flag'(hook, Hook) ->
-		'$lgt_compile_hook'(Hook)
+		'$lgt_compile_hooks'(Hook)
 	;	true
 	).
 
@@ -13138,7 +13157,7 @@ current_logtalk_flag(version, version(2, 30, 9)).
 
 
 
-:- initialization(('$lgt_startup_message', '$lgt_assert_default_hook_goal', '$lgt_start_runtime_threading')).
+:- initialization(('$lgt_startup_message', '$lgt_assert_default_hooks', '$lgt_start_runtime_threading')).
 
 
 
