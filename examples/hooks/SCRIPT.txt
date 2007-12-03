@@ -11,5 +11,15 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 | ?- logtalk_load(hooks(loader)).
 ...
 
-
 % check the XML documenting file generated for "object"
+% for the results of term_expansion/2 calls
+
+
+% check the results of the goal_expansion/2 calls:
+
+| ?- object::out.
+
+1
+2
+3
+yes

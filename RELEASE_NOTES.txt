@@ -29,6 +29,8 @@ RELEASE NOTES
 	Added some missing meta-predicate specifications to the config files 
 	of XSB and YAP.
 
+	Updated the "hooks" example for illustrating goal expansion hooks.
+
 	Added syntax coloring support for the goal_expansion/1 predicate to all 
 	supported text editors.
 

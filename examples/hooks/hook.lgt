@@ -1,20 +1,17 @@
 
-:- object(hook).
+:- object(hook,
+	implements(expanding)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2006/01/29,
+		date is 2007/12/3,
 		comment is 'Example of an object defining compiler hook predicates.']).
 
-	:- public(hook/2).
-	:- mode(hook(@nonvar, -list), zero_or_one).
-	:- info(hook/2, [
-		comment is 'Compiler hook predicate.',
-		arguments is ['Term'-'Source file term', 'Terms'-'Resulting list of terms']]).
-
-	hook((:- info(Original)), [(:- info(New))]) :-
+	term_expansion((:- info(Original)), [(:- info(New))]) :-
 		expand_author(Original, New).
+
+	goal_expansion(write(Term), (write(Term), nl)).
 
 	expand_author([], []).
 	expand_author([Info| Infos], [Info2| Infos2]) :-
