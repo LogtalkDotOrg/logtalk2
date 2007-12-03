@@ -181,7 +181,7 @@ yes</pre>
 	</dl>
 	<dl>
 		<dt><code>hook(Object)</code></dt>
-			<dd>Allows the definition of a compiler hook that is called for each term read form a source file. This option specifies both an object (which can be the pseudo-object <code>user</code>) implementing the <code>expanding</code> built-in protocol. The object is expected to define clauses for the <code>term_expansion/2</code> where the first argument is the term read form the source file and the second argument returns a list of terms corresponding to the expansion of the first argument.</dd>
+			<dd>Allows the definition of a compiler hooks that are called for each term read form a source file and for each compiled goal. This option specifies both an object (which can be the pseudo-object <code>user</code>) implementing the <code>expanding</code> built-in protocol. The object is expected to define clauses for the <code>term_expansion/2</code> and <code>goal_expansion/2</code> predicates. In the case of the <code>term_expansion/2</code> predicate, the first argument is the term read form the source file while the second argument returns a list of terms corresponding to the expansion of the first argument. In the case of the <code>goal_expansion/2</code> predicate, the second argument should be a goal resulting from the expansion of the goal in the first argument. The predicate <code>goal_expansion/2</code> is called on the expanded goals so care must be taken to avoid compilation loops.</dd>
 	</dl>
 	<dl>
 		<dt><code>tmpdir(Directory)</code></dt>
