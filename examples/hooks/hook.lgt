@@ -11,7 +11,7 @@
 	term_expansion((:- info(Original)), [(:- info(New))]) :-
 		expand_author(Original, New).
 
-	goal_expansion(write(Term), (write(Term), nl)).
+	goal_expansion(write(Term), (write_term(Term, []), nl)).
 
 	expand_author([], []).
 	expand_author([Info| Infos], [Info2| Infos2]) :-
