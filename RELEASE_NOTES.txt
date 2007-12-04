@@ -29,6 +29,9 @@ RELEASE NOTES
 	Added some missing meta-predicate specifications to the config files 
 	of XSB and YAP.
 
+	Updated the Windows GUI installer to support running Logtalk with 
+	CxProlog 0.96.1 and later versions.
+
 	Updated the "hooks" example for illustrating goal expansion hooks.
 
 	Added syntax coloring support for the goal_expansion/1 predicate to all 
