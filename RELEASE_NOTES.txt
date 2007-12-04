@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.30.9
+Release 2.31.0
 
 Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ================================================================
@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.30.9 - December ??, 2007
+2.31.0 - December ??, 2007
 
 	Added a new built-in protocol, "expanding", declaring goal_expansion/1 
 	and term_expansion/1 public predicates.

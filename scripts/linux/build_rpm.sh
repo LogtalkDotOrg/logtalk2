@@ -2,7 +2,7 @@
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
-## Release 2.30.9
+## Release 2.31.0
 ##
 ## Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ## ================================================================
@@ -14,8 +14,8 @@ LOGTALKHOME=/usr/local/share/logtalk ./uninstall.sh
 ./install.sh
 
 cd /usr/local/share
-tar -cjf lgt2309.tar.bz2 lgt2309
-mv lgt2309.tar.bz2 /usr/src/redhat/SOURCES
+tar -cjf lgt2310.tar.bz2 lgt2310
+mv lgt2310.tar.bz2 /usr/src/redhat/SOURCES
 
 cd "$dir"
 rpmbuild -ba --target=noarch-*-linux logtalk.spec
