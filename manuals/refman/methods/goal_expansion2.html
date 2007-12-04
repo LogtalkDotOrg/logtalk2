@@ -25,7 +25,7 @@
 
 <pre>goal_expansion(Goal, ExpandedGoal)</pre>
 <p>
-Defines an expansion for a goal.
+Defines an expansion for a goal. The first argument is the goal to be expanded. The expanded goal is returned in the second argument. This predicate is called recursively on the expanded goal. Thus, care must be taken to avoid compilation loops.
 </p>
 
 <h4>Template and modes</h4>
@@ -41,7 +41,7 @@ Defines an expansion for a goal.
 <h4>Examples</h4>
 
 <dl>
-	<dt>(none)</dt>
+	<dt>goal_expansion(write(Term), (write_term(Term, []), nl)).</dt>
 </dl>
 
 <div class="footer">
