@@ -25,6 +25,8 @@ RELEASE NOTES
 	Prolog compilers that resulted in version numbers with a large number 
 	of fractional digits).
 
+	Added a new config file, "k6.config", for the K-Prolog 6.0 beta version.
+
 	Updated the B-Prolog config file to recognize mode/1 directives.
 	Added some missing meta-predicate specifications to the config files 
 	of XSB and YAP.
