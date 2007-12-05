@@ -16,9 +16,9 @@ RELEASE NOTES
 	and term_expansion/1 public predicates.
 
 	Added compiler support for user-defined goal expansion hooks. Changed 
-	the implementation of compiler hooks to use object-defined predicates 
-	term_expansion/2 and goal_expansion. Changed the compiler option "hook" 
-	to accept object identifiers.
+	the implementation of compiler term and goal expansion hooks to use 
+	the object-defined predicates term_expansion/2 and goal_expansion/2.
+	Changed the compiler option "hook" to accept object identifiers.
 
 	Updated the Logtalk compiler to convert version numbers to atoms when 
 	generating XML documenting files (thus avoiding problems with some 
@@ -32,14 +32,15 @@ RELEASE NOTES
 	Updated the Windows GUI installer to support running Logtalk with 
 	CxProlog 0.96.1 and later versions.
 
-	Updated the "hooks" example for illustrating goal expansion hooks.
+	Updated the "hooks" example for illustrating goal expansion hooks in 
+	addition to term expansion hooks.
 
-	Added syntax coloring support for the goal_expansion/1 predicate to all 
-	supported text editors.
+	Added syntax coloring support for the goal_expansion/1 predicate to 
+	all supported text editors.
 
-	Updated TextMate support snippets to use  the TM_FULLNAME variable 
-	instead of niutil to retrive the user full name. Thanks to Michael 
-	Sheets for the update. 
+	Updated the TextMate code snippets to use the TM_FULLNAME variable 
+	instead of the deprecated "niutil" command to retrieve the user full 
+	name. Thanks to Michael Sheets for the update. 
 
 
 2.30.8 - November 9, 2007
