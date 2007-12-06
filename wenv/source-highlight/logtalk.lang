@@ -7,7 +7,7 @@ string delim "'" "'"  escape "\\"
 
 keyword =	'\<(abolish|c(urrent|reate))_(object|protocol|category)(?=\()',
 			'\<(object|protocol|category)_property(?=\()',
-			'\<extends_(object|protocol)(?=\()',
+			'\<extends_(object|protocol|category)(?=\()',
 			'\<imp(lements_protocol|orts_category)(?=\()',
 			'\<(instantiat|specializ)es_class(?=\()',
 			'\<(current_event|(abolish|define)_events)(?=\()',

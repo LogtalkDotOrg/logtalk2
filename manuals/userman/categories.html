@@ -52,8 +52,8 @@ If a category implements one or more protocols then the opening directive will b
 <p>
 A category may be defined as a composition of other categories by writing:
 </p>
-<pre>:- category(Component,
-    imports(Category1, Category2, ...)).
+<pre>:- category(Category,
+    extends(Category1, Category2, ...)).
     ...
 :- end_category.</pre>
 <p>
@@ -213,20 +213,28 @@ or, if we want to know the implementation scope:
 Note that, if we use an uninstantiated variable for the first argument, we will need to use the <a title="Consult reference manual" href="../refman/builtins/current_category1.html"><code>current_category/1</code></a> built-in predicate to ensure that the returned entity is a category and not an object.
 </p>
 <p>
-To find which objects (or categories) import which categories we can use the 
+To find which objects import which categories we can use the 
 <a title="Consult reference manual" href="../refman/builtins/imports_category2_3.html"><code>imports_category/2</code></a> or <a title="Consult reference manual" href="../refman/builtins/imports_category2_3.html"><code>imports_category/3</code></a> built-in predicates:
 </p>
-<pre>| ?- imports_category(Object, Category).
-
-| ?- imports_category(Category1, Category2).</pre>
+<pre>| ?- imports_category(Object, Category).</pre>
 <p>
 or, if we want to know the importation scope:
 </p>
-<pre>| ?- imports_category(Object, Category, Scope).
-
-| ?- imports_category(Category1, Category2, Scope).</pre>
+<pre>| ?- imports_category(Object, Category, Scope).</pre>
 <p>
-Note that a category may be imported by several objects (or other categories).
+Note that a category may be imported by several objects.
+</p>
+<p>
+To find which categories extend other categories we can use the 
+<a title="Consult reference manual" href="../refman/builtins/extends_category2_3.html"><code>extends_category/2</code></a> or <a title="Consult reference manual" href="../refman/builtins/extends_category2_3.html"><code>extends_category/3</code></a> built-in predicates:
+</p>
+<pre>| ?- extends_category(Category1, Category2).</pre>
+<p>
+or, if we want to know the extension scope:
+</p>
+<pre>| ?- extends_category(Category1, Category2, Scope).</pre>
+<p>
+Note that a category may be extended by several categories.
 </p>
 
 <h2 id="categories_properties">Category properties</h2>
@@ -319,7 +327,7 @@ This alternative should only be used when the user knows a priori that the categ
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: September 15, 2007</span>
+		<span>Last updated on: December 6, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="protocols.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="predicates.html">next</a></span><br/>

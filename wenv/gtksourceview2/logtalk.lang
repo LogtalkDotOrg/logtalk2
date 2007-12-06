@@ -138,7 +138,7 @@
 			<keyword>((abolish|c(reate|urrent))_(object|protocol|category))(?=[(])</keyword>
 			<keyword>((object|protocol|category)_property)(?=[(])</keyword>
 			<!-- Entity relations -->
-			<keyword>(extends_(object|protocol))(?=[(])</keyword>
+			<keyword>(extends_(object|protocol|category))(?=[(])</keyword>
 			<keyword>(imp(lements_protocol|orts_category))(?=[(])</keyword>
 			<keyword>((instantiat|specializ)es_class)(?=[(])</keyword>
 			<!-- Events -->

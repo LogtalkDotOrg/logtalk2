@@ -129,6 +129,7 @@ abolish_protocol
 abolish_category
 extends_object
 extends_protocol
+extends_category
 implements_protocol
 instantiates_class
 specializes_class

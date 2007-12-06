@@ -266,6 +266,7 @@
 				<string>[^A-Za-z0-9_](abolish_category)\(</string>
 				<string>[^A-Za-z0-9_](extends_object)\(</string>
 				<string>[^A-Za-z0-9_](extends_protocol)\(</string>
+				<string>[^A-Za-z0-9_](extends_category)\(</string>
 				<string>[^A-Za-z0-9_](implements_protocol)\(</string>
 				<string>[^A-Za-z0-9_](instantiates_class)\(</string>
 				<string>[^A-Za-z0-9_](specializes_class)\(</string>

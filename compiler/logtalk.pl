@@ -68,11 +68,12 @@
 :- dynamic('$lgt_current_object_'/8).		% '$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, Type, Synchronized, Threaded)
 
 :- dynamic('$lgt_implements_protocol_'/3).	% '$lgt_implements_protocol_'(ObjOrCtg, Ptc, Scope)
-:- dynamic('$lgt_imports_category_'/3).		% '$lgt_imports_category_'(ObjOrCtg, Ctg, Scope)
+:- dynamic('$lgt_imports_category_'/3).		% '$lgt_imports_category_'(Obj, Ctg, Scope)
 :- dynamic('$lgt_instantiates_class_'/3).	% '$lgt_instantiates_class_'(Instance, Class, Scope)
 :- dynamic('$lgt_specializes_class_'/3).	% '$lgt_specializes_class_'(Class, Superclass, Scope)
+:- dynamic('$lgt_extends_category_'/3).		% '$lgt_extends_category_'(Ctg1, Ctg2, Scope)
+:- dynamic('$lgt_extends_object_'/3).		% '$lgt_extends_protocol_'(Prototype, Parent, Scope)
 :- dynamic('$lgt_extends_protocol_'/3).		% '$lgt_extends_protocol_'(Ptc1, Ptc2, Scope)
-:- dynamic('$lgt_extends_object_'/3).		% '$lgt_extends_object_'(Prototype, Parent, Scope)
 
 
 % table of loaded files
@@ -182,6 +183,7 @@
 :- dynamic('$lgt_pp_instantiated_class_'/10).	% '$lgt_pp_instantiated_class_'(Class, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)
 :- dynamic('$lgt_pp_specialized_class_'/10).	% '$lgt_pp_specialized_class_'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)
 :- dynamic('$lgt_pp_extended_protocol_'/4).		% '$lgt_pp_extended_protocol_'(Ptc, Prefix, Dcl, Scope)
+:- dynamic('$lgt_pp_extended_category_'/5).		% '$lgt_pp_extended_category_'(Ctg, Prefix, Dcl, Def, Scope)
 
 :- dynamic('$lgt_pp_file_init_'/1).				% '$lgt_pp_file_init_'(Goal)	
 :- dynamic('$lgt_pp_entity_init_'/3).			% '$lgt_pp_entity_init_'(Type, Entity, Goal)
@@ -305,6 +307,8 @@ Obj<<Pred :-
 	;	'$lgt_extends_protocol_'(_, CtgOrPtc, _), \+ '$lgt_current_protocol_'(CtgOrPtc, _, _) ->
 		throw(error(existence_error(protocol, CtgOrPtc), _, _))
 	;	'$lgt_imports_category_'(_, CtgOrPtc, _), \+ '$lgt_current_category_'(CtgOrPtc, _, _, _) ->
+		throw(error(existence_error(category, CtgOrPtc), _, _))
+	;	'$lgt_extends_category_'(_, CtgOrPtc, _), \+ '$lgt_current_category_'(CtgOrPtc, _, _, _) ->
 		throw(error(existence_error(category, CtgOrPtc), _, _))
 	).
 
@@ -669,7 +673,7 @@ abolish_category(Ctg) :-
 			abolish(Rnm/3),
 			abolish(Prefix/3),
 			retractall('$lgt_current_category_'(Ctg, _, _, _)),
-			retractall('$lgt_imports_category_'(Ctg, _, _)),
+			retractall('$lgt_extends_category_'(Ctg, _, _)),
 			retractall('$lgt_implements_protocol_'(Ctg, _, _)),
 			'$lgt_clean_lookup_caches'
 		;	throw(error(permission_error(modify, static_category, Ctg), abolish_category(Ctg)))
@@ -756,38 +760,36 @@ implements_protocol(ObjOrCtg, Ptc, Scope) :-
 
 
 % imports_category(?object_identifier, ?category_identifier)
-% imports_category(?category_identifier, ?category_identifier)
 
-imports_category(ObjOrCtg, Ctg) :-
+imports_category(Obj, Ctg) :-
 	catch(
-		imports_category(ObjOrCtg, Ctg, _),
+		imports_category(Obj, Ctg, _),
 		error(Error, _),
-		throw(error(Error, imports_category(ObjOrCtg, Ctg)))).
+		throw(error(Error, imports_category(Obj, Ctg)))).
 
 
 
 % imports_category(?object_identifier, ?category_identifier, ?atom)
-% imports_category(?category_identifier, ?category_identifier, ?atom)
 
-imports_category(ObjOrCtg, Ctg, Scope) :-
-	nonvar(ObjOrCtg),
-	\+ callable(ObjOrCtg),
-	throw(error(type_error(object_identifier, ObjOrCtg), imports_category(ObjOrCtg, Ctg, Scope))).
+imports_category(Obj, Ctg, Scope) :-
+	nonvar(Obj),
+	\+ callable(Obj),
+	throw(error(type_error(object_identifier, Obj), imports_category(Obj, Ctg, Scope))).
 
-imports_category(ObjOrCtg, Ctg, Scope) :-
+imports_category(Obj, Ctg, Scope) :-
 	nonvar(Ctg),
 	\+ atom(Ctg),
-	throw(error(type_error(category_identifier, Ctg), imports_category(ObjOrCtg, Ctg, Scope))).
+	throw(error(type_error(category_identifier, Ctg), imports_category(Obj, Ctg, Scope))).
 
-imports_category(ObjOrCtg, Ctg, Scope) :-
+imports_category(Obj, Ctg, Scope) :-
 	nonvar(Scope),
 	Scope \== (public),
 	Scope \== protected,
 	Scope \== private,
-	throw(error(type_error(scope, Scope), imports_category(ObjOrCtg, Ctg, Scope))).
+	throw(error(type_error(scope, Scope), imports_category(Obj, Ctg, Scope))).
 
-imports_category(ObjOrCtg, Ctg, Scope) :-
-	'$lgt_imports_category_'(ObjOrCtg, Ctg, Scope).
+imports_category(Obj, Ctg, Scope) :-
+	'$lgt_imports_category_'(Obj, Ctg, Scope).
 
 
 
@@ -856,6 +858,40 @@ specializes_class(Class, Superclass, Scope) :-
 
 specializes_class(Class, Superclass, Scope) :-
 	'$lgt_specializes_class_'(Class, Superclass, Scope).
+
+
+
+% extends_category(?category_identifier, ?category_identifier)
+
+extends_category(Ctg1, Ctg2) :-
+	catch(
+		extends_protocol(Ctg1, Ctg2, _),
+		error(Error, _),
+		throw(error(Error, extends_category(Ctg1, Ctg2)))).
+
+
+
+% extends_category(?category_identifier, ?category_identifier, ?atom)
+
+extends_category(Ctg1, Ctg2, Scope) :-
+	nonvar(Ctg1),
+	\+ atom(Ctg1),
+	throw(error(type_error(category_identifier, Ctg1), extends_category(Ctg1, Ctg2, Scope))).
+
+extends_category(Ctg1, Ctg2, Scope) :-
+	nonvar(Ctg2),
+	\+ atom(Ctg2),
+	throw(error(type_error(category_identifier, Ctg2), extends_category(Ctg1, Ctg2, Scope))).
+
+extends_category(Ctg1, Ctg2, Scope) :-
+	nonvar(Scope),
+	Scope \== (public),
+	Scope \== protected,
+	Scope \== private,
+	throw(error(type_error(scope, Scope), extends_category(Ctg1, Ctg2, Scope))).
+
+extends_category(Ctg1, Ctg2, Scope) :-
+	'$lgt_extends_category_'(Ctg1, Ctg2, Scope).
 
 
 
@@ -4603,6 +4639,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 	retractall('$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _)),
 	retractall('$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _)),
 	retractall('$lgt_pp_extended_protocol_'(_, _, _, _)),
+	retractall('$lgt_pp_extended_category_'(_, _, _, _, _)),
 	retractall('$lgt_pp_uses_'(_)),
 	retractall('$lgt_pp_uses_'(_, _, _)),
 	retractall('$lgt_pp_calls_'(_)),
@@ -5789,9 +5826,9 @@ current_logtalk_flag(version, version(2, 31, 0)).
 	'$lgt_flatten_list'(Ptcs, List),
 	'$lgt_tr_implements_protocol'(List, Ctg).
 
-'$lgt_tr_category_relation'(imports, Ctgs, Ctg) :-
+'$lgt_tr_category_relation'(extends, Ctgs, Ctg) :-
 	'$lgt_flatten_list'(Ctgs, List),
-	'$lgt_tr_imports_category'(List, Ctg).
+	'$lgt_tr_extends_category'(List, Ctg).
 
 
 
@@ -8249,8 +8286,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 % '$lgt_tr_implements_protocol'(+list, +object_identifier)
 % '$lgt_tr_implements_protocol'(+list, +category_identifier)
 %
-% translates an "implementents" relation between 
-%  a category or an object and a list of protocols
+% translates an "implementents" relation between a category or an object and a list of protocols
 
 '$lgt_tr_implements_protocol'([], _).
 
@@ -8278,10 +8314,8 @@ current_logtalk_flag(version, version(2, 31, 0)).
 
 
 % '$lgt_tr_imports_category'(+list, +object_identifier)
-% '$lgt_tr_imports_category'(+list, +category_identifier)
 %
-% translates an "imports" relation between 
-% an object/category and a list of categories 
+% translates an "imports" relation between an object and a list of categories 
 
 '$lgt_tr_imports_category'([], _).
 
@@ -8293,14 +8327,14 @@ current_logtalk_flag(version, version(2, 31, 0)).
 	(var(Scope); var(Ctg)),
 	throw(instantiation_error).
 
-'$lgt_tr_imports_category'([Ref| Refs], ObjOrCtg) :-
+'$lgt_tr_imports_category'([Ref| Refs], Obj) :-
 	(	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		(	'$lgt_valid_category_ref'(Ref, Ctg) ->
 			assertz('$lgt_pp_referenced_category_'(Ctg)),
-			assertz('$lgt_pp_rclause_'('$lgt_imports_category_'(ObjOrCtg, Ctg, Scope))),
+			assertz('$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, Scope))),
 			'$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def, _),
 			assertz('$lgt_pp_imported_category_'(Ctg, Prefix, Dcl, Def, Scope)),
-			'$lgt_tr_imports_category'(Refs, ObjOrCtg)
+			'$lgt_tr_imports_category'(Refs, Obj)
 		;	throw(type_error(category_identifier, Ctg))
 		)
 	;	throw(type_error(scope, Ref))
@@ -8310,8 +8344,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 
 % '$lgt_tr_instantiates_class'(+list, +object_identifier)
 %
-% translates an "instantiates" relation between 
-% an instance and a list of classes
+% translates an "instantiates" relation between an instance and a list of classes
 
 '$lgt_tr_instantiates_class'([], _).
 
@@ -8340,8 +8373,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 
 % '$lgt_tr_specializes_class'(+list, +object_identifier)
 %
-% translates a "specializes" relation between 
-% a class and a list of superclasses
+% translates a "specializes" relation between a class and a list of superclasses
 
 '$lgt_tr_specializes_class'([], _).
 
@@ -8370,8 +8402,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 
 % '$lgt_tr_extends_object'(+list, +object_identifier)
 %
-% translates an "extends" relation between 
-% a prototype and a list of parents
+% translates an "extends" relation between a prototype and a list of parents
 
 '$lgt_tr_extends_object'([], _).
 
@@ -8400,8 +8431,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 
 % '$lgt_tr_extends_protocol'(+list, +protocol_identifier)
 %
-% translates an "extends" relation between 
-% a protocol and a list of protocols
+% translates an "extends" relation between a protocol and a list of protocols
 
 '$lgt_tr_extends_protocol'([], _).
 
@@ -8422,6 +8452,35 @@ current_logtalk_flag(version, version(2, 31, 0)).
 			assertz('$lgt_pp_extended_protocol_'(Ptc2, Prefix, Dcl, Scope)),
 			'$lgt_tr_extends_protocol'(Refs, Ptc1)
 		;	throw(type_error(protocol_identifier, Ptc2))
+		)
+	;	throw(type_error(scope, Ref))
+	).
+
+
+
+% '$lgt_tr_extends_category'(+list, +category_identifier)
+%
+% translates an "extends" relation between a category and a list of categories
+
+'$lgt_tr_extends_category'([], _).
+
+'$lgt_tr_extends_category'([Ref| _], _) :-
+	var(Ref),
+	throw(instantiation_error).
+
+'$lgt_tr_extends_category'([Scope::Ctg| _], _) :-
+	(var(Scope); var(Ctg)),
+	throw(instantiation_error).
+
+'$lgt_tr_extends_category'([Ref| Refs], Ctg1) :-
+	(	'$lgt_valid_ref_scope'(Ref, Scope) ->
+		(	'$lgt_valid_category_ref'(Ref, Ctg2) ->
+			assertz('$lgt_pp_referenced_category_'(Ctg2)),
+			assertz('$lgt_pp_rclause_'('$lgt_extends_category_'(Ctg1, Ctg2, Scope))),
+			'$lgt_construct_category_functors'(Ctg2, Prefix, Dcl, Def, _),
+			assertz('$lgt_pp_extended_category_'(Ctg2, Prefix, Dcl, Def, Scope)),
+			'$lgt_tr_extends_category'(Refs, Ctg1)
+		;	throw(type_error(category_identifier, Ctg2))
 		)
 	;	throw(type_error(scope, Ref))
 	).
@@ -8999,7 +9058,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 	'$lgt_gen_local_dcl_clauses'(Local),
 	'$lgt_gen_category_linking_dcl_clauses'(Local),
 	'$lgt_gen_category_implements_dcl_clauses',
-	'$lgt_gen_category_imports_dcl_clauses',
+	'$lgt_gen_category_extends_dcl_clauses',
 	'$lgt_gen_category_catchall_dcl_clauses'.
 
 
@@ -9039,9 +9098,9 @@ current_logtalk_flag(version, version(2, 31, 0)).
 
 
 
-'$lgt_gen_category_imports_dcl_clauses' :-
+'$lgt_gen_category_extends_dcl_clauses' :-
 	'$lgt_pp_category_'(_, _, CDcl, _, PRnm, _),
-	'$lgt_pp_imported_category_'(Ctg, _, ECDcl, _, EScope),
+	'$lgt_pp_extended_category_'(Ctg, _, ECDcl, _, EScope),
 	(	EScope == (public) ->
 		Lookup =.. [ECDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn]
 	;	(	EScope == protected ->
@@ -9060,12 +9119,12 @@ current_logtalk_flag(version, version(2, 31, 0)).
 	),
 	fail.
 
-'$lgt_gen_category_imports_dcl_clauses'.
+'$lgt_gen_category_extends_dcl_clauses'.
 
 
 
 % when a category contains no predicate declarations, does not implement any protocol, 
-% and does not import other categories, we need a catchall clause in order to prevent 
+% and does not extend other categories, we need a catchall clause in order to prevent 
 % predicate existence errors when sending a message to an object importing (directly or 
 % indirectly) the category
 
@@ -9082,7 +9141,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 
 '$lgt_gen_category_def_clauses' :-
 	'$lgt_gen_category_linking_def_clauses',
-	'$lgt_gen_category_imports_def_clauses'.
+	'$lgt_gen_category_extends_def_clauses'.
 
 
 
@@ -9097,10 +9156,10 @@ current_logtalk_flag(version, version(2, 31, 0)).
 
 
 
-'$lgt_gen_category_imports_def_clauses' :-
+'$lgt_gen_category_extends_def_clauses' :-
 	'$lgt_pp_category_'(Ctg, _, _, Def, PRnm, _),
-	'$lgt_pp_rclause_'('$lgt_imports_category_'(Ctg, Ctg2, _)),		% needed for parameter passing
-	'$lgt_pp_imported_category_'(Ctg2, _, _, Def2, _),
+	'$lgt_pp_rclause_'('$lgt_extends_category_'(Ctg, Ctg2, _)),		% needed for parameter passing
+	'$lgt_pp_extended_category_'(Ctg2, _, _, Def2, _),
 	Lookup =.. [Def2, Pred, Sender, This, Self, Call, Ctn],
 	(	'$lgt_pp_alias_'(Ctg2, _, _) ->
 		Head =.. [Def, Alias, Sender, This, Self, Call, Ctn],
@@ -9111,7 +9170,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 	),
 	fail.
 
-'$lgt_gen_category_imports_def_clauses'.
+'$lgt_gen_category_extends_def_clauses'.
 
 
 
@@ -10331,6 +10390,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 	retractall('$lgt_specializes_class_'(Entity, _, _)),
 	retractall('$lgt_extends_protocol_'(Entity, _, _)),
 	retractall('$lgt_extends_object_'(Entity, _, _)),
+	retractall('$lgt_extends_category_'(Entity, _, _)),
 	retractall('$lgt_debugging_'(Entity)).
 
 
@@ -11275,6 +11335,8 @@ current_logtalk_flag(version, version(2, 31, 0)).
 '$lgt_lgt_built_in'(extends_protocol(_, _, _)).
 '$lgt_lgt_built_in'(extends_object(_, _)).
 '$lgt_lgt_built_in'(extends_object(_, _, _)).
+'$lgt_lgt_built_in'(extends_category(_, _)).
+'$lgt_lgt_built_in'(extends_category(_, _, _)).
 
 '$lgt_lgt_built_in'(abolish_events(_, _, _, _, _)).
 '$lgt_lgt_built_in'(define_events(_, _, _, _, _)).
@@ -12245,6 +12307,11 @@ current_logtalk_flag(version, version(2, 31, 0)).
 '$lgt_write_xml_relations'(Stream) :-
 	'$lgt_pp_rclause_'('$lgt_extends_protocol_'(Entity, Ptc, Scope)),
 	'$lgt_write_xml_relation'(Stream, Entity, Ptc, extends, Scope),
+	fail.
+
+'$lgt_write_xml_relations'(Stream) :-
+	'$lgt_pp_rclause_'('$lgt_extends_category_'(Entity, Ctg, Scope)),
+	'$lgt_write_xml_relation'(Stream, Entity, Ctg, extends, Scope),
 	fail.
 
 '$lgt_write_xml_relations'(Stream) :-

@@ -173,3 +173,7 @@ Older config files are not compatible with this new Logtalk version.
 
 Logtalk 2.30.7 adds a new compiler flag "context_switching_calls".
 Older config files are not compatible with this new Logtalk version.
+
+Logtalk 2.31.0 changes the "imports" relation between categories to the 
+relation "extends". The relation "imports" is now only used for objects 
+importing categories.

@@ -62,6 +62,7 @@ eval $xslt_proc -o builtins/abolish_object1.section refman.xsl builtins/abolish_
 eval $xslt_proc -o builtins/abolish_protocol1.section refman.xsl builtins/abolish_protocol1.html
 eval $xslt_proc -o builtins/extends_object2_3.section refman.xsl builtins/extends_object2_3.html
 eval $xslt_proc -o builtins/extends_protocol2_3.section refman.xsl builtins/extends_protocol2_3.html
+eval $xslt_proc -o builtins/extends_category2_3.section refman.xsl builtins/extends_category2_3.html
 eval $xslt_proc -o builtins/implements_protocol2_3.section refman.xsl builtins/implements_protocol2_3.html
 eval $xslt_proc -o builtins/imports_category2_3.section refman.xsl builtins/imports_category2_3.html
 eval $xslt_proc -o builtins/instantiates_class2_3.section refman.xsl builtins/instantiates_class2_3.html
@@ -163,6 +164,7 @@ cat -s \
 	builtins/abolish_protocol1.section \
 	builtins/extends_object2_3.section \
 	builtins/extends_protocol2_3.section \
+	builtins/extends_category2_3.section \
 	builtins/implements_protocol2_3.section \
 	builtins/imports_category2_3.section \
 	builtins/instantiates_class2_3.section \

@@ -35,6 +35,7 @@ abolish_category
 extends
 extends_object
 extends_protocol
+extends_category
 implements
 implements_protocol
 imports
