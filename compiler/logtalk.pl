@@ -1911,6 +1911,11 @@ current_logtalk_flag(version, version(2, 31, 0)).
 	'$lgt_current_protocol_'(Ptc2, Prefix, _),
 	'$lgt_alias_pred'(Ptc2, Prefix, Alias, Pred, _).
 
+'$lgt_alias_pred'(Ctg1, _, Alias, Pred, _) :-
+	'$lgt_extends_category_'(Ctg1, Ctg2, _),
+	'$lgt_current_category_'(Ctg2, Prefix, _, _),
+	'$lgt_alias_pred'(Ctg2, Prefix, Alias, Pred, _).
+
 '$lgt_alias_pred'(Obj, _, Alias, Pred, _) :-
 	'$lgt_imports_category_'(Obj, Ctg, _),
 	'$lgt_current_category_'(Ctg, Prefix, _, _),
