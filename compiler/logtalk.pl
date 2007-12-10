@@ -10307,7 +10307,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 '$lgt_gen_entity_init_goal' :-
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, Compilation),
 	findall(Clause, '$lgt_pp_rclause'(Clause), Clauses),
-	Goal1 = '$lgt_assert_runtime_clauses'(Clauses),
+	Goal1 = '$lgt_assert_runtime_clauses'(Entity, Clauses),
 	(	setof(Mutex, Head^'$lgt_pp_synchronized_'(Head, Mutex), Mutexes) ->
 		Goal2 = (Goal1, '$lgt_create_mutexes'(Mutexes))
 	;	Goal2 = Goal1
@@ -10438,7 +10438,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 
 
 
-% '$lgt_assert_runtime_clauses'(+list)
+% '$lgt_assert_runtime_clauses'(+callable, +list)
 %
 % called when loading a compiled Logtalk entity in order to update
 % Logtalk internal runtime tables
@@ -10449,15 +10449,14 @@ current_logtalk_flag(version, version(2, 31, 0)).
 % this is mostly a workaround for the lack of support of multifile
 % predicates in some Prolog compilers
 
-'$lgt_assert_runtime_clauses'([Clause| Clauses]) :-
-	arg(1, Clause, Entity),
+'$lgt_assert_runtime_clauses'(Entity, Clauses) :-
 	(	'$lgt_redefined_entity'(Entity, Type) ->
 		'$lgt_clean_lookup_caches',
 		'$lgt_report_redefined_entity'(Type, Entity)
 	;	true
 	),
 	'$lgt_retract_old_runtime_clauses'(Entity),
-	'$lgt_assert_new_runtime_clauses'([Clause| Clauses]).
+	'$lgt_assert_new_runtime_clauses'(Clauses).
 
 
 '$lgt_retract_old_runtime_clauses'(Entity) :-
@@ -10471,6 +10470,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 	retractall('$lgt_extends_protocol_'(Entity, _, _)),
 	retractall('$lgt_extends_object_'(Entity, _, _)),
 	retractall('$lgt_extends_category_'(Entity, _, _)),
+	retractall('$lgt_complemented_object_'(_, Entity, _, _)),
 	retractall('$lgt_debugging_'(Entity)).
 
 

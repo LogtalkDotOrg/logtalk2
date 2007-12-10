@@ -176,4 +176,6 @@ Older config files are not compatible with this new Logtalk version.
 
 Logtalk 2.31.0 changes the "imports" relation between categories to the 
 relation "extends". The relation "imports" is now only used for objects 
-importing categories.
+importing categories. Logtalk source files will need to be recompiled 
+because of the changes done in this version to improve updating runtime 
+bookkeeping tables when loading new entities.
