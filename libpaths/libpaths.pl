@@ -23,6 +23,7 @@
 	 assertz(logtalk_library_path(bottles, examples('bottles/'))),
 	 assertz(logtalk_library_path(bricks, examples('bricks/'))),
 	 assertz(logtalk_library_path(buffer, threads('buffer/'))),
+	 assertz(logtalk_library_path(complements, examples('complements/'))),
 	 assertz(logtalk_library_path(classvars, examples('classvars/'))),
 	 assertz(logtalk_library_path(dcgs, examples('dcgs/'))),
 	 assertz(logtalk_library_path(diamonds, examples('diamonds/'))),

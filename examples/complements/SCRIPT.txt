@@ -1,0 +1,31 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.31.0
+
+Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
+================================================================
+
+
+% start by loading the example:
+
+| ?- logtalk_load(complements(loader)).
+...
+
+
+% use the event handler defined in the "logging" category for the object "employee":
+
+| ?- employee::name(Name).
+Received message name(_16) from user
+
+Name = john
+
+yes
+
+
+% check the protocol of the object "employee":
+
+| ?- employee::predicates.
+Received message predicates from user
+[after/3,age/1,before/3,name/1,predicates/0,salary/1]
+
+yes

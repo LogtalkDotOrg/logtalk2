@@ -22,7 +22,8 @@ RELEASE NOTES
 
 	Allow a category to explicitly expand an existing object, therefore 
 	providing functionality similar to Objective-C categories. Added 
-	complements_object/2 built-in predicate.
+	complements_object/2 built-in predicate. Added a new example, 
+	"complements", illustrating the new category functionality.
 
 	When constructing a new category from other categories, the relation 
 	"extends" is now used instead of the relation "imports". The relation 
