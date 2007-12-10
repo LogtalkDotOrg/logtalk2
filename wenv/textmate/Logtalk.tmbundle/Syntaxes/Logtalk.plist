@@ -283,7 +283,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b((object|protocol|category)_property|extends_(object|protocol|category)|imp(orts_category|lements_protocol)|(instantiat|specializ)es_class)(?=[(])</string>
+			<string>\b((object|protocol|category)_property|expands_object|extends_(object|protocol|category)|imp(orts_category|lements_protocol)|(instantiat|specializ)es_class)(?=[(])</string>
 			<key>name</key>
 			<string>support.function.reflection.logtalk</string>
 		</dict>

@@ -50,6 +50,7 @@ end_category
 end_object
 end_protocol
 expand_term
+expands_object
 extends
 extends_object
 extends_protocol

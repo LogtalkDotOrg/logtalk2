@@ -60,6 +60,13 @@ A category may be defined as a composition of other categories by writing:
 This feature should only be used when extending a category without breaking its functional cohesion (for example, when a modified version of a category is needed for importing on several unrelated objects). The prefered way of composing several categories is by importing them into an object.
 </p>
 <p>
+A category may explicitly expand one or more existing object, thus providing functionality similar to Objective-C categories:
+</p>
+<pre>:- category(Category,
+    expands(Object1, Object2, ....)).
+    ...
+:- end_category.</pre>
+<p>
 Categories cannot inherit from objects. In addition, categories cannot contain clauses for dynamic predicates. This restriction applies because a category can be imported by several objects and because we cannot use the database handling built-in methods with categories (messages can only be sent to objects). However, categories may contain declarations for dynamic predicates and they can contain predicates which handle dynamic predicates. For example:
 </p>
 <pre>:- category(attributes).
@@ -236,6 +243,13 @@ or, if we want to know the extension scope:
 <p>
 Note that a category may be extended by several categories.
 </p>
+To find which categories explicitly expand existing objects we can use the 
+<a title="Consult reference manual" href="../refman/builtins/expands_object2.html"><code>expands_object/2</code></a> built-in predicate:
+</p>
+<pre>| ?- expands_object(Category, Object).</pre>
+<p>
+Note that a category may explicitly expand several objects.
+</p>
 
 <h2 id="categories_properties">Category properties</h2>
 
@@ -327,7 +341,7 @@ This alternative should only be used when the user knows a priori that the categ
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: December 6, 2007</span>
+		<span>Last updated on: December 9, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="protocols.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="predicates.html">next</a></span><br/>

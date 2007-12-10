@@ -7,7 +7,7 @@
 	written by		Paulo Moura
 	version			1.2
 	created on		2 May 2002
-	last revised	6 December 2007
+	last revised	9 December 2007
 
 	To install, copy this file to the "modes" subdirectory in jEdit 
 	directory installation.   Next, check the "catalog" file in the 
@@ -64,6 +64,7 @@
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(abolish|c(reate|urrent))_(object|protocol|category)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(object|protocol|category)_property(?=[(])</SEQ_REGEXP>
 		<!-- Entity relations -->
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bexpands_object(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bextends_(object|protocol)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bimp(lements_protocol|orts_category)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(instantiat|specializ)es_class(?=[(])</SEQ_REGEXP>
@@ -277,6 +278,7 @@
 			<NULL>end_category</NULL>
 			<NULL>end_object</NULL>
 			<NULL>end_protocol</NULL>
+			<NULL>expands_object</NULL>
 			<NULL>expand_term</NULL>
 			<NULL>extends</NULL>
 			<NULL>extends_object</NULL>
