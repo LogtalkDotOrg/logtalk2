@@ -64,7 +64,7 @@
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(abolish|c(reate|urrent))_(object|protocol|category)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(object|protocol|category)_property(?=[(])</SEQ_REGEXP>
 		<!-- Entity relations -->
-		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bexpands_object(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bcomplements_object(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bextends_(object|protocol)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bimp(lements_protocol|orts_category)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(instantiat|specializ)es_class(?=[(])</SEQ_REGEXP>
@@ -255,6 +255,7 @@
 			<NULL>char_conversion</NULL>
 			<NULL>clause</NULL>
 			<NULL>close</NULL>
+			<NULL>complements_object</NULL>
 			<NULL>compound</NULL>
 			<NULL>copy_term</NULL>
 			<NULL>create_category</NULL>
@@ -278,7 +279,6 @@
 			<NULL>end_category</NULL>
 			<NULL>end_object</NULL>
 			<NULL>end_protocol</NULL>
-			<NULL>expands_object</NULL>
 			<NULL>expand_term</NULL>
 			<NULL>extends</NULL>
 			<NULL>extends_object</NULL>

@@ -60,10 +60,10 @@ A category may be defined as a composition of other categories by writing:
 This feature should only be used when extending a category without breaking its functional cohesion (for example, when a modified version of a category is needed for importing on several unrelated objects). The prefered way of composing several categories is by importing them into an object.
 </p>
 <p>
-A category may explicitly expand one or more existing object, thus providing functionality similar to Objective-C categories:
+A category may explicitly extend one or more existing object, thus providing functionality similar to Objective-C categories:
 </p>
 <pre>:- category(Category,
-    expands(Object1, Object2, ....)).
+    complements(Object1, Object2, ....)).
     ...
 :- end_category.</pre>
 <p>
@@ -244,11 +244,11 @@ or, if we want to know the extension scope:
 Note that a category may be extended by several categories.
 </p>
 To find which categories explicitly expand existing objects we can use the 
-<a title="Consult reference manual" href="../refman/builtins/expands_object2.html"><code>expands_object/2</code></a> built-in predicate:
+<a title="Consult reference manual" href="../refman/builtins/complements_object2.html"><code>complements_object/2</code></a> built-in predicate:
 </p>
-<pre>| ?- expands_object(Category, Object).</pre>
+<pre>| ?- complements_object(Category, Object).</pre>
 <p>
-Note that a category may explicitly expand several objects.
+Note that a category may explicitly complement several objects.
 </p>
 
 <h2 id="categories_properties">Category properties</h2>

@@ -113,7 +113,7 @@ abolish_object()
 abolish_protocol()
 abolish_category()
 
-expands_object(, )
+complements_object(, )
 extends_object(, , )
 extends_object(, )
 extends_protocol(, , )

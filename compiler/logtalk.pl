@@ -75,29 +75,29 @@
 :- dynamic('$lgt_extends_object_'/3).		% '$lgt_extends_object_'(Prototype, Parent, Scope)
 :- dynamic('$lgt_extends_protocol_'/3).		% '$lgt_extends_protocol_'(Ptc1, Ptc2, Scope)
 
-:- dynamic('$lgt_expanded_object_'/4).		% '$lgt_expanded_object_'(Object, Category, Dcl, Def)
+:- dynamic('$lgt_complemented_object_'/4).	% '$lgt_complemented_object_'(Object, Category, Dcl, Def)
 
 
 % table of loaded files
 
-:- dynamic('$lgt_loaded_file_'/2).			% '$lgt_loaded_file_'(File, Directory)
+:- dynamic('$lgt_loaded_file_'/2).				% '$lgt_loaded_file_'(File, Directory)
 
 
 % debugger status and tables
 
-:- dynamic('$lgt_debugging_'/1).			% '$lgt_debugging_'(Entity)
-
-:- dynamic('$lgt_dbg_debugging_'/0).		% '$lgt_dbg_debugging_'
-:- dynamic('$lgt_dbg_tracing_'/0).			% '$lgt_dbg_tracing_'
-:- dynamic('$lgt_dbg_skipping_'/0).			% '$lgt_dbg_skipping_'
-:- dynamic('$lgt_dbg_spying_'/2).			% '$lgt_dbg_spying_'(Functor, Arity)
-:- dynamic('$lgt_dbg_spying_'/4).			% '$lgt_dbg_spying_'(Sender, This, Self, Goal)
-:- dynamic('$lgt_dbg_leashing_'/1).			% '$lgt_dbg_leashing_'(Port)
+:- dynamic('$lgt_debugging_'/1).				% '$lgt_debugging_'(Entity)
+                                            	
+:- dynamic('$lgt_dbg_debugging_'/0).			% '$lgt_dbg_debugging_'
+:- dynamic('$lgt_dbg_tracing_'/0).				% '$lgt_dbg_tracing_'
+:- dynamic('$lgt_dbg_skipping_'/0).				% '$lgt_dbg_skipping_'
+:- dynamic('$lgt_dbg_spying_'/2).				% '$lgt_dbg_spying_'(Functor, Arity)
+:- dynamic('$lgt_dbg_spying_'/4).				% '$lgt_dbg_spying_'(Sender, This, Self, Goal)
+:- dynamic('$lgt_dbg_leashing_'/1).				% '$lgt_dbg_leashing_'(Port)
 
 
 % runtime flags
 
-:- dynamic('$lgt_current_flag_'/2).			% '$lgt_current_flag_'(Option, Value)
+:- dynamic('$lgt_current_flag_'/2).				% '$lgt_current_flag_'(Option, Value)
 
 
 % static binding caches
@@ -109,30 +109,30 @@
 
 % lookup caches for messages to an object, messages to self, and super calls
 
-:- dynamic('$lgt_obj_lookup_cache_'/4).		% '$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Call)
-:- dynamic('$lgt_self_lookup_cache_'/4).	% '$lgt_self_lookup_cache_'(Obj, Pred, Sender, Call)
-:- dynamic('$lgt_super_lookup_cache_'/5).	% '$lgt_super_lookup_cache_'(Self, Pred, This, Sender, Call)
+:- dynamic('$lgt_obj_lookup_cache_'/4).			% '$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Call)
+:- dynamic('$lgt_self_lookup_cache_'/4).		% '$lgt_self_lookup_cache_'(Obj, Pred, Sender, Call)
+:- dynamic('$lgt_super_lookup_cache_'/5).		% '$lgt_super_lookup_cache_'(Self, Pred, This, Sender, Call)
 
 
 % lookup cache for asserting and retracting dynamic facts
 
-:- dynamic('$lgt_db_lookup_cache_'/5).		% '$lgt_db_lookup_cache_'(Obj, Pred, Sender, Call, UpdateGoal)
+:- dynamic('$lgt_db_lookup_cache_'/5).			% '$lgt_db_lookup_cache_'(Obj, Pred, Sender, Call, UpdateGoal)
 
 
 % table of library paths
 
-:- dynamic(logtalk_library_path/2).			% logtalk_library_path(Library, Path)
+:- dynamic(logtalk_library_path/2).				% logtalk_library_path(Library, Path)
 
 
 % compiler hook term and goal expansion:
 
-:- dynamic('$lgt_hook_term_expansion_'/2).	% '$lgt_hook_term_expansion_'(Term, Terms)
-:- dynamic('$lgt_hook_goal_expansion_'/2).	% '$lgt_hook_goal_expansion_'(Term, Terms)
+:- dynamic('$lgt_hook_term_expansion_'/2).		% '$lgt_hook_term_expansion_'(Term, Terms)
+:- dynamic('$lgt_hook_goal_expansion_'/2).		% '$lgt_hook_goal_expansion_'(Term, Terms)
 
 
 % multi-threading tags
 
-:- dynamic('$lgt_threaded_tag_counter'/1).	% '$lgt_threaded_tag_counter'(Tag)
+:- dynamic('$lgt_threaded_tag_counter'/1).		% '$lgt_threaded_tag_counter'(Tag)
 
 
 
@@ -965,27 +965,27 @@ extends_object(Prototype, Parent, Scope) :-
 
 
 
-% expands_object(?category_identifier, ?object_identifier)
+% complements_object(?category_identifier, ?object_identifier)
 
-expands_object(Category, Object) :-
+complements_object(Category, Object) :-
 	nonvar(Category),
 	\+ atom(Category),
-	throw(error(type_error(category_identifier, Category), expands_object(Category, Object))).
+	throw(error(type_error(category_identifier, Category), complements_object(Category, Object))).
 
-expands_object(Category, Object) :-
+complements_object(Category, Object) :-
 	nonvar(Object),
 	\+ callable(Object),
-	throw(error(type_error(object_identifier, Object), expands_object(Category, Object))).
+	throw(error(type_error(object_identifier, Object), complements_object(Category, Object))).
 
-expands_object(Category, Object) :-
+complements_object(Category, Object) :-
 	nonvar(Scope),
 	Scope \== (public),
 	Scope \== protected,
 	Scope \== private,
-	throw(error(type_error(scope, Scope), expands_object(Category, Object))).
+	throw(error(type_error(scope, Scope), complements_object(Category, Object))).
 
-expands_object(Category, Object) :-
-	'$lgt_expanded_object_'(Object, Category, _, _).
+complements_object(Category, Object) :-
+	'$lgt_complemented_object_'(Object, Category, _, _).
 
 
 
@@ -5861,9 +5861,9 @@ current_logtalk_flag(version, version(2, 31, 0)).
 	'$lgt_flatten_list'(Ctgs, List),
 	'$lgt_tr_extends_category'(List, Ctg).
 
-'$lgt_tr_category_relation'(expands, Objs, Ctg) :-
+'$lgt_tr_category_relation'(complements, Objs, Ctg) :-
 	'$lgt_flatten_list'(Objs, List),
-	'$lgt_tr_expands_category'(List, Ctg).
+	'$lgt_tr_complements_category'(List, Ctg).
 
 
 
@@ -8522,26 +8522,26 @@ current_logtalk_flag(version, version(2, 31, 0)).
 
 
 
-% '$lgt_tr_expands_category'(+list, +category_identifier)
+% '$lgt_tr_complements_category'(+list, +category_identifier)
 %
-% translates an "expands" relation between a category and a list of objects
+% translates a "complements" relation between a category and a list of objects
 
-'$lgt_tr_expands_category'(Objs, Ctg) :-
+'$lgt_tr_complements_category'(Objs, Ctg) :-
 	'$lgt_pp_category_'(Ctg, _, Dcl, Def, _, _),
-	'$lgt_tr_expands_category'(Objs, Ctg, Dcl, Def).
+	'$lgt_tr_complements_category'(Objs, Ctg, Dcl, Def).
 
 
-'$lgt_tr_expands_category'([], _, _, _).
+'$lgt_tr_complements_category'([], _, _, _).
 
-'$lgt_tr_expands_category'([Obj| _], _, _, _) :-
+'$lgt_tr_complements_category'([Obj| _], _, _, _) :-
 	var(Obj),
 	throw(instantiation_error).
 
-'$lgt_tr_expands_category'([Obj| Objs], Ctg, Dcl, Def) :-
+'$lgt_tr_complements_category'([Obj| Objs], Ctg, Dcl, Def) :-
 	(	callable(Obj) ->
 		assertz('$lgt_pp_referenced_object_'(Obj)),
-		assertz('$lgt_pp_rclause_'('$lgt_expanded_object_'(Obj, Ctg, Dcl, Def))),
-		'$lgt_tr_expands_category'(Objs, Ctg, Dcl, Def)
+		assertz('$lgt_pp_rclause_'('$lgt_complemented_object_'(Obj, Ctg, Dcl, Def))),
+		'$lgt_tr_complements_category'(Objs, Ctg, Dcl, Def)
 	;	throw(type_error(object_identifier, Obj))
 	).
 
@@ -9337,7 +9337,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 '$lgt_gen_prototype_imports_dcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, ODcl, _, _, _, _, _, _, _, _),
 	Head =.. [ODcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Obj, Ctn],
-	Lookup = ('$lgt_expanded_object_'(Obj, _, CDcl, _), call_with_args(CDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn)),
+	Lookup = ('$lgt_complemented_object_'(Obj, _, CDcl, _), call_with_args(CDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn)),
 	assertz('$lgt_pp_dcl_'((Head:-Lookup))).
 
 
@@ -9410,7 +9410,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 '$lgt_gen_prototype_imports_def_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, _, _),
 	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-	Lookup = ('$lgt_expanded_object_'(Obj, _, _, CDef), call_with_args(CDef, Pred, Sender, Obj, Self, Call, Ctn)),
+	Lookup = ('$lgt_complemented_object_'(Obj, _, _, CDef), call_with_args(CDef, Pred, Sender, Obj, Self, Call, Ctn)),
 	assertz('$lgt_pp_fdef_'((Head:-Lookup))).
 
 
@@ -9583,7 +9583,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 '$lgt_gen_ic_category_idcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, OIDcl, _, _, _, _, _),
 	Head =.. [OIDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Obj, Ctn],
-	Lookup = ('$lgt_expanded_object_'(Obj, _, CDcl, _), call_with_args(CDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn)),
+	Lookup = ('$lgt_complemented_object_'(Obj, _, CDcl, _), call_with_args(CDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn)),
 	assertz('$lgt_pp_dcl_'((Head:-Lookup))).
 
 
@@ -9657,7 +9657,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 '$lgt_gen_ic_imports_def_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, _, _),
 	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-	Lookup = ('$lgt_expanded_object_'(Obj, _, _, CDef), call_with_args(CDef, Pred, Sender, Obj, Self, Call, Ctn)),
+	Lookup = ('$lgt_complemented_object_'(Obj, _, _, CDef), call_with_args(CDef, Pred, Sender, Obj, Self, Call, Ctn)),
 	assertz('$lgt_pp_fdef_'((Head:-Lookup))).
 
 
@@ -9717,7 +9717,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 '$lgt_gen_ic_category_idef_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, _, OIDef, _, _, _, _),
 	Head =.. [OIDef, Pred, Sender, Obj, Self, Call, Ctn],
-	Lookup = ('$lgt_expanded_object_'(Obj, _, _, CDef), call_with_args(CDef, Pred, Sender, Obj, Self, Call, Ctn)),
+	Lookup = ('$lgt_complemented_object_'(Obj, _, _, CDef), call_with_args(CDef, Pred, Sender, Obj, Self, Call, Ctn)),
 	assertz('$lgt_pp_fdef_'((Head:-Lookup))).
 
 

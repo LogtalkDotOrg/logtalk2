@@ -22,7 +22,7 @@ RELEASE NOTES
 
 	Allow a category to explicitly expand an existing object, therefore 
 	providing functionality similar to Objective-C categories. Added 
-	expands_object/2 built-in predicate.
+	complements_object/2 built-in predicate.
 
 	When constructing a new category from other categories, the relation 
 	"extends" is now used instead of the relation "imports". The relation 
@@ -50,7 +50,7 @@ RELEASE NOTES
 	to category relations.
 
 	Added syntax coloring support for the new goal_expansion/1, 
-	expands_object/2, and extends_category/2-3 predicates to all 
+	complements_object/2, and extends_category/2-3 predicates to all 
 	supported text editors.
 
 	Updated the TextMate code snippets to use the TM_FULLNAME variable 
