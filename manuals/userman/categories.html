@@ -60,12 +60,15 @@ A category may be defined as a composition of other categories by writing:
 This feature should only be used when extending a category without breaking its functional cohesion (for example, when a modified version of a category is needed for importing on several unrelated objects). The prefered way of composing several categories is by importing them into an object.
 </p>
 <p>
-A category may explicitly extend one or more existing object, thus providing functionality similar to Objective-C categories:
+A category may explicitly complement one or more existing object, thus providing functionality similar to Objective-C categories:
 </p>
 <pre>:- category(Category,
     complements(Object1, Object2, ....)).
     ...
 :- end_category.</pre>
+<p>
+When you want to use static binding with a <em>complemented</em> object, be sure to compile and load the <em>complementing</em> category before the object (otherwise the new functionality added by the category will be ignored by the object clients).
+</p>
 <p>
 Categories cannot inherit from objects. In addition, categories cannot contain clauses for dynamic predicates. This restriction applies because a category can be imported by several objects and because we cannot use the database handling built-in methods with categories (messages can only be sent to objects). However, categories may contain declarations for dynamic predicates and they can contain predicates which handle dynamic predicates. For example:
 </p>
