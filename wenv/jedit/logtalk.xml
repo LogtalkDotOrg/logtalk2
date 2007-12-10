@@ -50,7 +50,7 @@
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD1">^\s*:-\s(alias|d(ynamic|iscontiguous)|m(eta_predicate|ode|ultifile)|synchronized)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD1">^\s*:-\sop(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD1">^\s*:-\s(calls|use(s|_module))(?=[(])</SEQ_REGEXP>
-		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD1">(extends|i(nstantiates|mp(lements|orts))|specializes)(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD1">(complements|extends|i(nstantiates|mp(lements|orts))|specializes)(?=[(])</SEQ_REGEXP>
 
 		<!-- Event handlers -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(after|before)(?=[(])</SEQ_REGEXP>
@@ -255,6 +255,7 @@
 			<NULL>char_conversion</NULL>
 			<NULL>clause</NULL>
 			<NULL>close</NULL>
+			<NULL>complements</NULL>
 			<NULL>complements_object</NULL>
 			<NULL>compound</NULL>
 			<NULL>copy_term</NULL>

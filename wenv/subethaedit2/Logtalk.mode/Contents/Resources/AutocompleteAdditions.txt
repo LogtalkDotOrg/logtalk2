@@ -5,9 +5,12 @@ object(, ).
 object().
 protocol(, extends()).
 protocol().
+category(, complements()).
+category(, extends()).
 category(, implements()).
 category().
 encoding()
+complements()
 extends()
 implements()
 imports()

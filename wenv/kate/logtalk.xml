@@ -166,7 +166,7 @@
 			</context>
 
 			<context name = "entityrelations" attribute = "Normal" lineEndContext = "#stay" >
-				<RegExpr String = "\b(extends|i(nstantiates|mp(lements|orts))|specializes)(?=[(])" attribute = "Directive" context = "#stay" />
+				<RegExpr String = "\b(complements|extends|i(nstantiates|mp(lements|orts))|specializes)(?=[(])" attribute = "Directive" context = "#stay" />
 				<Detect2Chars attribute = "Normal" context = "normal" char = ")" char1 = "." />
 			</context>
 

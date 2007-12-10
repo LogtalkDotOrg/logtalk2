@@ -82,9 +82,10 @@
 		</context>
 
 		<context id="entity-relations" style-ref="entity">
-			<keyword>(specializes)(?=[(])</keyword>
+			<keyword>(complements)(?=[(])</keyword>
 			<keyword>(extends)(?=[(])</keyword>
 			<keyword>(i(mp(orts|lements)|nstantiates))(?=[(])</keyword>
+			<keyword>(specializes)(?=[(])</keyword>
 		</context>
 
 		<context id="predicate-directives" style-ref="directive">

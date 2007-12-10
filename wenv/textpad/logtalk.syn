@@ -81,6 +81,7 @@ end_protocol
 end_category
 
 ; Logtalk entity relations
+complements
 instantiates
 specializes
 extends

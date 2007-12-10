@@ -85,7 +85,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(extends|i(nstantiates|mp(orts|lements))|specializes)(?=[(])</string>
+			<string>\b(complements|extends|i(nstantiates|mp(orts|lements))|specializes)(?=[(])</string>
 			<key>name</key>
 			<string>storage.type.relations.logtalk</string>
 		</dict>

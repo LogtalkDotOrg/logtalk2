@@ -108,6 +108,7 @@
 			<false/>
 			<key>Regular Expressions</key>
 			<array>
+				<string>[^A-Za-z0-9_](complements)\(</string>
 				<string>[^A-Za-z0-9_](instantiates)\(</string>
 				<string>[^A-Za-z0-9_](specializes)\(</string>
 				<string>[^A-Za-z0-9_](extends)\(</string>

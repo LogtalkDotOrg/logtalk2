@@ -59,7 +59,7 @@ cbracket =	"{|}"
 preproc =	'^[[:blank:]]*:-[[:blank:]](ca(lls|tegory)|p(ublic|r(ot(ocol|ected)|ivate))|e(ncoding|xports)|in(fo|itialization)|alias|d(ynamic|iscontiguous)|m(eta_predicate|od(e|ule)|ultifile)|synchronized|o(bject|p)|use(s|_module))(?=\()',
 			'^[[:blank:]]*:-[[:blank:]](end_(category|object|protocol)|dynamic|synchronized|threaded)\.'
 
-preproc =	'\<(extends|i(nstantiates|mp(lements|orts))|specializes)(?=\()'
+preproc =	'\<(complements|extends|i(nstantiates|mp(lements|orts))|specializes)(?=\()'
 
 normal =	'\<[a-z][A-Za-z0-9_]*'
 

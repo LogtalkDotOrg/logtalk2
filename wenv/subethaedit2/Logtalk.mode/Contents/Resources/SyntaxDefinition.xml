@@ -42,9 +42,10 @@
 			</keywords>
 
 			<keywords id="Entity Relations" color="#881280" useforautocomplete="yes">
-				<regex>\b(specializes)\(</regex>
+				<regex>\b(complements)\(</regex>
 				<regex>\b(extends)\(</regex>
 				<regex>\b(i(mp(orts|lements)|nstantiates))\(</regex>
+				<regex>\b(specializes)\(</regex>
 			</keywords>
 
 			<keywords id="Message Sending Operators" color="#0000ff" useforautocomplete="no">
