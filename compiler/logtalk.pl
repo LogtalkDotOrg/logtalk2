@@ -1058,6 +1058,10 @@ define_events(Event, Obj, Msg, Sender, Monitor) :-
 	throw(error(type_error(object_identifier, Monitor), define_events(Event, Obj, Msg, Sender, Monitor))).
 
 define_events(Event, Obj, Msg, Sender, Monitor) :-
+	\+ '$lgt_current_object_'(Monitor, _, _, _, _, _, _, _),
+	throw(error(existence_error(object, Monitor), define_events(Event, Obj, Msg, Sender, Monitor))).
+
+define_events(Event, Obj, Msg, Sender, Monitor) :-
 	var(Event),
 	!,
 	'$lgt_current_object_'(Monitor, _, _, Def, _, _, _, _),

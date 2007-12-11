@@ -30,6 +30,10 @@ RELEASE NOTES
 	"imports" is now only used when an object imports a category. Added  
 	extends_category/2-3 built-in predicates.
 
+	Modified the built-in predicate define_events/5 to throw an existence 
+	error instead of failing when the specified monitor object does not 
+	exists. 
+
 	Updated the Logtalk compiler to convert version numbers to atoms when 
 	generating XML documenting files (thus avoiding problems with some 
 	Prolog compilers that resulted in version numbers with a large number 
