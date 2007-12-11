@@ -46,7 +46,7 @@ Category code (directives and predicates) is textually encapsulated by using two
 If a category implements one or more protocols then the opening directive will be:
 </p>
 <pre>:- category(Category,
-    implements(Protocol)).
+    implements(Protocol1, Protocol2, ...)).
     ...
 :- end_category.</pre>
 <p>
@@ -246,7 +246,7 @@ or, if we want to know the extension scope:
 <p>
 Note that a category may be extended by several categories.
 </p>
-To find which categories explicitly expand existing objects we can use the 
+To find which categories explicitly complement existing objects we can use the 
 <a title="Consult reference manual" href="../refman/builtins/complements_object2.html"><code>complements_object/2</code></a> built-in predicate:
 </p>
 <pre>| ?- complements_object(Category, Object).</pre>
