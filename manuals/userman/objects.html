@@ -346,7 +346,7 @@ See the <a href="documenting.html">documenting Logtalk programs</a> session for 
 <h2 id="objects_relationships">Object relationships</h2>
 
 <p>
-Logtalk provides five sets of built-in predicates that enable us to query the system about the possible relationships that an object may have with other entities.
+Logtalk provides six sets of built-in predicates that enable us to query the system about the possible relationships that an object may have with other entities.
 </p>
 <p>
 The built-in predicates <a title="Consult reference manual" href="../refman/builtins/instantiates_class2_3.html"><code>instantiates_class/2</code></a> and <a title="Consult reference manual" href="../refman/builtins/instantiates_class2_3.html"><code>instantiates_class/3</code></a> can be used to query all instantiation relations:
@@ -391,6 +391,15 @@ or, if we want to know the implementation scope:
 <p>
 Note that, if we use an uninstantiated variable for the first argument, we will need to use the <a title="Consult reference manual" href="../refman/builtins/current_object1.html"><code>current_object/1</code></a> built-in predicate to ensure that the entity returned is an object and not a category.
 </p>
+<p>
+To find which objects are explicitly complement by categories we can use the 
+<a title="Consult reference manual" href="../refman/builtins/complements_object2.html"><code>complements_object/2</code></a> built-in predicate:
+</p>
+<pre>| ?- complements_object(Category, Object).</pre>
+<p>
+Note that more than one category may explicitly complement a single object.
+</p>
+
 
 <h2 id="objects_properties">Object properties</h2>
 
@@ -429,7 +438,7 @@ Logtalk defines an empty built-in object named <code>logtalk</code>, which can p
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: June 19, 2007</span>
+		<span>Last updated on: December 9, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="messages.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="protocols.html">next</a></span><br/>
