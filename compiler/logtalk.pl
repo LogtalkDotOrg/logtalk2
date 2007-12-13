@@ -229,6 +229,7 @@
 
 
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  top-level predicates for message sending and context switching calls
@@ -11160,6 +11161,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 '$lgt_valid_flag'(hook).
 '$lgt_valid_flag'(encoding_directive).
 '$lgt_valid_flag'(threads).
+'$lgt_valid_flag'(context_switching_calls).
 
 
 
