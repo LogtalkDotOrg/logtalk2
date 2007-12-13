@@ -11421,6 +11421,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 '$lgt_lgt_built_in'(extends_object(_, _, _)).
 '$lgt_lgt_built_in'(extends_category(_, _)).
 '$lgt_lgt_built_in'(extends_category(_, _, _)).
+'$lgt_lgt_built_in'(complements_object(_, _)).
 
 '$lgt_lgt_built_in'(abolish_events(_, _, _, _, _)).
 '$lgt_lgt_built_in'(define_events(_, _, _, _, _)).
