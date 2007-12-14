@@ -868,7 +868,7 @@ specializes_class(Class, Superclass, Scope) :-
 
 extends_category(Ctg1, Ctg2) :-
 	catch(
-		extends_protocol(Ctg1, Ctg2, _),
+		extends_category(Ctg1, Ctg2, _),
 		error(Error, _),
 		throw(error(Error, extends_category(Ctg1, Ctg2)))).
 
