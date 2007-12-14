@@ -24,8 +24,18 @@ yes
 
 % check the protocol of the object "employee":
 
-| ?- employee::predicates.
-Received message predicates from user
-[after/3,age/1,before/3,name/1,predicates/0,salary/1]
+| ?- employee::predicates(Predicates).
+Received message predicates(_G180) from user
+
+Predicates = [after/3, age/1, before/3, name/1, predicates/1, salary/1]
+
+yes
+
+| ?- employee::predicate_property(predicates(_), Property).
+
+Property = public ;
+Property = static ;
+Property = declared_in(logging) ;
+Property = defined_in(logging)
 
 yes

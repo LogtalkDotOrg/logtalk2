@@ -15,16 +15,20 @@
 	implements(monitoring),
 	complements(employee)).
 
-	:- initialization(define_events(before, employee, _, _, employee)).	% implies that the category must be loaded *after*
-																		% the object due to the define_events/5 goal
+	% add a simple logging functionality by defining a "before" event and 
+	% the corresponding event handler (implies that the category must be 
+	% loaded *after* the object due to the define_events/5 goal):
+
+	:- initialization(define_events(before, employee, _, _, employee)).
+
 	before(_, Message, Sender) :-
 		write('Received message '), writeq(Message), write(' from '), writeq(Sender), nl.
 
-	:- public(predicates/0).
+	% add a new method to the object:
 
-	predicates :-	% list only public predicates
-		this(This),
-		setof(Predicate, This::current_predicate(Predicate), Predicates),
-		write(Predicates), nl. 
+	:- public(predicates/1).
+
+	predicates(Predicates) :-
+		setof(Predicate, ::current_predicate(Predicate), Predicates). 
 
 :- end_category.
