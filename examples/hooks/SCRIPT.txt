@@ -19,8 +19,8 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 
 | ?- object::out.
 
-1
-2
+'A'
+x(A, A)
 3
 
 yes

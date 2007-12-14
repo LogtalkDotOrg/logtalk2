@@ -11,16 +11,17 @@
 	term_expansion((:- info(Original)), [(:- info(New))]) :-
 		expand_author(Original, New).
 
-	goal_expansion(write(Term), (write_term(Term, []), nl)).
+	goal_expansion(write(Term), (numbervars(Term, 0, _), write_term(Term, [quoted(true), numbervars(true)]))).
 
 	expand_author([], []).
-	expand_author([Info| Infos], [Info2| Infos2]) :-
+	expand_author([Info| Infos], [ExpInfo| ExpInfos]) :-
 		(	Info = (author is Abbreviation) ->
 			author(Abbreviation, FullName),
-			Info2 = (author is FullName)
-		;	Info = Info2
-		),
-		expand_author(Infos, Infos2).
+			ExpInfo = (author is FullName),
+			ExpInfos = Infos
+		;	ExpInfo = Info,
+			expand_author(Infos, ExpInfos)
+		).
 
 	author(pm, 'Paulo Moura, pmoura@logtalk.org').
 
