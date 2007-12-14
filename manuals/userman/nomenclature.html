@@ -120,7 +120,7 @@ There are several Java glossaries available on the Internet. The list that follo
 </dl>
 <dl>
 	<dt><strong>class variable</strong></dt>
-		<dd>Class variables may be implemented in Logtalk by using a metaclass for the class and defining the class variables in the class. I.e. class variables are simply instance variables of the class metaclass. Moreover, there is no <code>static</code> keyword in Logtalk.</dd>
+		<dd>True class variables may be implemented in Logtalk by using a metaclass for the class and defining the class variables in the class. I.e. class variables are simply instance variables of the class metaclass. Shared instance variables may be implemented by using the built-in database methods (which can be used to implement variable assignment) to access and updated a single occurrence of the variable stored in the class (there is no <code>static</code> keyword in Logtalk).</dd>
 </dl>
 <dl>
 	<dt><strong>constructor</strong></dt>
@@ -162,7 +162,7 @@ There are several Java glossaries available on the Internet. The list that follo
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: July 11, 2007</span>
+		<span>Last updated on: December 9, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="features.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="messages.html">next</a></span><br/>
