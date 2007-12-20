@@ -1,3 +1,3 @@
 
 :- initialization(
-	logtalk_load(hanoi_1)). 
+	logtalk_load(hanoi)). 

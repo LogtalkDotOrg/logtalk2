@@ -1,3 +1,3 @@
 
 :- initialization(
-	logtalk_load(fibonacci_1)). 
+	logtalk_load(fibonacci)). 
