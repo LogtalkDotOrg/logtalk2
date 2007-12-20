@@ -54,7 +54,8 @@ RELEASE NOTES
 
 	Added two new multi-threading examples, "fibonacci" and "hanoi", and 
 	corrected a bug in the recursive creation of threads on the "sorting" 
-	example.
+	example.Updated the "primes" multi-threading example to also work with  
+	eight threads.
 
 	Updated the "hooks" example for illustrating goal expansion hooks in 
 	addition to term expansion hooks.
