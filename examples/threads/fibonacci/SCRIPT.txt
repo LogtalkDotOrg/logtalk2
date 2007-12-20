@@ -8,97 +8,50 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 
 % start by loading the loading the example:
 
-| ?- logtalk_load(nondet(loader)).
+| ?- logtalk_load(fibonacci(loader)).
 ...
 
 
-% make a threaded call with a non-deterministic goal:
-
-| ?- threaded_call(lists::member(X, [1,2,3])).
-
-X = _G189 
-yes
-
-% retrieve through backtracking all solutions for the non-deterministic goal:
-
-| ?- threaded_exit(lists::member(X, [1,2,3])).
-
-X = 1 ;
-X = 2 ;
-X = 3 ;
-no
+% NOTE: the example queries below use a SWI-Prolog proprietary predicate 
+% time/1 in order to get accurate goal times. For other Prolog compilers, 
+% replace the time/1 call by any appropriate timing calls (e.g. cputime/0).
 
 
-% make a threaded call by commiting to the first solution found:
+% calculate 24 Fibonacci number using a single thread:
 
-| ?- threaded_once(lists::member(X, [1,2,3])).
+?- time(fibonacci(1)::fib(24, N)).
+% 450,175 inferences, 0.20 CPU in 0.23 seconds (88% CPU, 2250875 Lips)
 
-X = _G189 
-yes
-
-% retrieve through backtracking the goal solution:
-
-| ?- threaded_exit(lists::member(X, [1,2,3])).
-
-X = 1 ;
-no
+N = 75025
 
 
-% when two or more variant calls are made...
+% calculate the 24 Fibonacci number using two threads:
 
-| ?- threaded_call(lists::member(X, [1,2,3])), threaded_call(lists::member(Y, [1,2,3])).
+?- time(fibonacci(2)::fib(24, N)).
+% 81 inferences, 0.18 CPU in 0.14 seconds (131% CPU, 450 Lips)
 
-X = _G189 Y =_G190
-yes
-
-% ...the first threaded_exit/1 call will pick one of them:
-
-| ?- threaded_exit(lists::member(X, [1,2,3])).
-
-X = 1 ;
-X = 2 ;
-X = 3 ;
-no
-
-% ...and a second threaded_exit/1 call will pick the remaining one:
-
-| ?- threaded_exit(lists::member(X, [1,2,3])).
-
-X = 1 ;
-X = 2 ;
-X = 3 ;
-no
+N = 75025
 
 
-% tags may be used to distinguish between threaded calls if needed:
+% calculate the 24 Fibonacci number using four threads:
 
-| ?- threaded_call(lists::member(X, [1,2,3]), Tag).
+?- time(fibonacci(4)::fib(24, N)).
+% 81 inferences, 0.17 CPU in 0.14 seconds (124% CPU, 476 Lips)
 
-Tag = 1
-yes
-
-| ?- threaded_call(lists::member(X, [1,2,3]), Tag).
-
-Tag = 2
-yes
-
-| ?- threaded_exit(lists::member(X, [1,2,3]), 2).
-
-X = 1 ;
-X = 2 ;
-X = 3 ;
-no
+N = 75025
 
 
-% use a subsumed goal instead of a variant of the original goal:
+% calculate the 24 Fibonacci number using eight threads:
 
-| ?- threaded_call(lists::member(X, [1,2,3,2])).
+?- time(fibonacci(8)::fib(24, N)).
+% 81 inferences, 0.16 CPU in 0.09 seconds (181% CPU, 506 Lips)
 
-X = _G189 
-yes
+N = 75025
 
-| ?- threaded_exit(lists::member(2, [1,2,3,2])).
 
-More ;
-More ;
-no
+% calculate the 24 Fibonacci number using sixteen threads:
+
+?- time(fibonacci(16)::fib(24, N)).
+% 81 inferences, 0.16 CPU in 0.08 seconds (206% CPU, 506 Lips)
+
+N = 75025

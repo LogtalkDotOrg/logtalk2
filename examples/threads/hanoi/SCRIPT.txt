@@ -8,97 +8,50 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 
 % start by loading the loading the example:
 
-| ?- logtalk_load(nondet(loader)).
+| ?- logtalk_load(hanoi(loader)).
 ...
 
 
-% make a threaded call with a non-deterministic goal:
-
-| ?- threaded_call(lists::member(X, [1,2,3])).
-
-X = _G189 
-yes
-
-% retrieve through backtracking all solutions for the non-deterministic goal:
-
-| ?- threaded_exit(lists::member(X, [1,2,3])).
-
-X = 1 ;
-X = 2 ;
-X = 3 ;
-no
+% NOTE: the example queries below use a SWI-Prolog proprietary predicate 
+% time/1 in order to get accurate goal times. For other Prolog compilers, 
+% replace the time/1 call by any appropriate timing calls (e.g. cputime/0).
 
 
-% make a threaded call by commiting to the first solution found:
+% solve the Towerrs of Hanoi problem for 24 disks using a single thread:
 
-| ?- threaded_once(lists::member(X, [1,2,3])).
+?- time(hanoi(1)::run(24)).
+% 25,165,864 inferences, 4.94 CPU in 5.12 seconds (96% CPU, 5094304 Lips)
 
-X = _G189 
-yes
-
-% retrieve through backtracking the goal solution:
-
-| ?- threaded_exit(lists::member(X, [1,2,3])).
-
-X = 1 ;
-no
+Yes
 
 
-% when two or more variant calls are made...
+% solve the Towerrs of Hanoi problem for 24 disks using two threads:
 
-| ?- threaded_call(lists::member(X, [1,2,3])), threaded_call(lists::member(Y, [1,2,3])).
+?- time(hanoi(2)::run(24)).
+% 78 inferences, 4.87 CPU in 2.66 seconds (183% CPU, 16 Lips)
 
-X = _G189 Y =_G190
-yes
-
-% ...the first threaded_exit/1 call will pick one of them:
-
-| ?- threaded_exit(lists::member(X, [1,2,3])).
-
-X = 1 ;
-X = 2 ;
-X = 3 ;
-no
-
-% ...and a second threaded_exit/1 call will pick the remaining one:
-
-| ?- threaded_exit(lists::member(X, [1,2,3])).
-
-X = 1 ;
-X = 2 ;
-X = 3 ;
-no
+Yes
 
 
-% tags may be used to distinguish between threaded calls if needed:
+% solve the Towerrs of Hanoi problem for 24 disks using four threads:
 
-| ?- threaded_call(lists::member(X, [1,2,3]), Tag).
+?- time(hanoi(4)::run(24)).
+% 78 inferences, 4.88 CPU in 2.60 seconds (187% CPU, 16 Lips)
 
-Tag = 1
-yes
-
-| ?- threaded_call(lists::member(X, [1,2,3]), Tag).
-
-Tag = 2
-yes
-
-| ?- threaded_exit(lists::member(X, [1,2,3]), 2).
-
-X = 1 ;
-X = 2 ;
-X = 3 ;
-no
+Yes
 
 
-% use a subsumed goal instead of a variant of the original goal:
+% solve the Towerrs of Hanoi problem for 24 disks using eight threads:
 
-| ?- threaded_call(lists::member(X, [1,2,3,2])).
+?- time(hanoi(8)::run(24)).
+% 78 inferences, 4.98 CPU in 1.55 seconds (321% CPU, 16 Lips)
 
-X = _G189 
-yes
+Yes
 
-| ?- threaded_exit(lists::member(2, [1,2,3,2])).
 
-More ;
-More ;
-no
+% solve the Towerrs of Hanoi problem for 24 disks using sixteen threads:
+
+?- time(hanoi(16)::run(24)).
+% 78 inferences, 5.03 CPU in 1.44 seconds (348% CPU, 16 Lips)
+
+Yes

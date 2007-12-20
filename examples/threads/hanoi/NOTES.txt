@@ -8,5 +8,6 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 
 To load this example and for sample queries, please see the SCRIPT file.
 
-This folder illustrates non-deterministic multi-threading calls and the 
-use of tags to distinguish between multi-threading calls.
+This folder provides a multi-threading solution for solving the "Towers 
+of Hanoi" problem. This solution is only useful for benchmarking as the 
+problem is solved without actually printing the solution steps.
