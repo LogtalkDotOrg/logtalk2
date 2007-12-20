@@ -106,11 +106,11 @@ Bin-Prolog 8.x~10.x
 	session. For instance, the project file for the "metapredicates" example
 	will look like (in the Unix version):
 	
-		:- ['$LOGTALKHOME/configs/bin.config'].
+		:- ['$LOGTALKUSER/configs/bin.config'].
 		:- ['$LOGTALKHOME/compiler/logtalk.pl'].
 		
-		:- ['$LOGTALKHOME/examples/metapredicates/meta.pl'].
-		:- ['$LOGTALKHOME/examples/metapredicates/sort1.pl'].
+		:- ['$LOGTALKUSER/examples/metapredicates/meta.pl'].
+		:- ['$LOGTALKUSER/examples/metapredicates/sort1.pl'].
 		...
 	
 	You will probably want to have a project file including only the config
@@ -158,12 +158,12 @@ ECLiPSe 5.10#26 or later versions
 	eclipseiso.config
 
 	There are two configs files for this compiler. The first one, named 
-	"eclipse.config", should be used when, for some reason, we don't want 
+	"eclipse.config", should be used when, for some reason, you don't want 
 	to load the "iso" library. The second file, "eclipseiso.config" contains 
 	a call to load the "iso" library. Both config files may be used with
-	ECLiPSe 5.10 or later version.
-	
-	You should use the eclipseiso.config whenever possible. The alternative 
+	ECLiPSe 5.10#26 or later versions.
+
+	You should use the "eclipseiso.config" whenever possible. The alternative 
 	config file may not contain all the needed definitions for ISO Prolog 
 	predicates that are needed for compiling Logtalk itself, the Logtalk 
 	library, or the Logtalk examples.
@@ -387,7 +387,7 @@ SICStus Prolog 3.8~3.12.x
 	add the following lines to your ~/.sicstusrc or ~/.sicstus.ini initialization
 	file:
 	
-		:- compile('$LOGTALKHOME/configs/sicstus.config').
+		:- compile('$LOGTALKUSER/configs/sicstus.config').
 		:- compile('$LOGTALKHOME/compiler/logtalk.pl').
 
     Consult the SICStus Prolog documentation for further information on the 
@@ -421,12 +421,12 @@ SWI Prolog 5.6.x and later versions
 	If you want SWI-Prolog to automatically load Logtalk at startup, then add 
 	the following lines to your pl.ini (on Windows):
 
-		:- ['drive:\\path to logtalk installation\\configs\\swi.config'].
+		:- ['drive:\\path to logtalk user folder\\configs\\swi.config'].
 		:- ['drive:\\path to logtalk installation\\compiler\\logtalk.pl'].
 
 	 or to your .plrc (on MacOS X, Linux, Unix, and similar systems):
 	
-		:- ['$LOGTALKHOME/configs/swi.config'].
+		:- ['$LOGTALKUSER/configs/swi.config'].
 		:- ['$LOGTALKHOME/compiler/logtalk.pl'].
 
     See the SWI-Prolog documentation for further information on the .plrc and 

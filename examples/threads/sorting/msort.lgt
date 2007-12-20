@@ -2,9 +2,9 @@
 :- object(msort(_Threads)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura and Paul Crocker',
-		date is 2007/03/30,
+		date is 2007/12/19,
 		comment is 'Multi-threaded implementation of the merge sort algorithm.',
 		parameters is ['Threads'- 'Number of threads to use in sorting. Valid values are 1, 2, 4, 8, etc.']]).
 
@@ -18,18 +18,20 @@
 
 	msort(List, Sorted) :-
 		parameter(1, Threads),
-		mt_msort(Threads, List, Sorted).
+		Forks is Threads//2 + 1,
+		mt_msort(Forks, List, Sorted).
 
 	mt_msort(1, List, Sorted) :-
 		st_msort(List, Sorted).
-	mt_msort(N, List, Sorted) :-
-		N > 1,
-		N2 is N//2,
+	mt_msort(Forks, List, Sorted) :-
+		Forks > 1,
+		Forks1 is Forks//2,
+		Forks2 is Forks - Forks1,
 		split(List, List1, List2),
 		threaded((
-			mt_msort(N2, List1, Sorted1),
-			mt_msort(N2, List2, Sorted2)
-		)), !,	% SWI-Prolog needs help with determinism detection
+			mt_msort(Forks1, List1, Sorted1),
+			mt_msort(Forks2, List2, Sorted2)
+		)),
 		merge(Sorted1, Sorted2, Sorted).
 
 	st_msort([], []).
