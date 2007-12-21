@@ -1876,7 +1876,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 	;	'$lgt_current_object_'(TCtn, _, TCtnDcl, _, _, _, _, _),
 		\+ call_with_args(TCtnDcl, Pred, _, _, _, _, _),
 		'$lgt_alias_pred'(Obj, Prefix, Pred, Pred2),
-		Prop = alias(Pred2)
+		Prop = alias_of(Pred2)
 	;	call_with_args(Def, Pred, _, _, _, _, DCtn) ->	% must be the last property checked because
 		Prop = defined_in(DCtn)							% of the implicit cut on the ->/2 call
 	).
@@ -11098,7 +11098,7 @@ current_logtalk_flag(version, version(2, 31, 0)).
 '$lgt_valid_pred_property'(defined_in(_)).
 '$lgt_valid_pred_property'(meta_predicate(_)).
 '$lgt_valid_pred_property'(built_in).
-'$lgt_valid_pred_property'(alias(_)).
+'$lgt_valid_pred_property'(alias_of(_)).
 '$lgt_valid_pred_property'(non_terminal(_)).
 '$lgt_valid_pred_property'(synchronized).
 

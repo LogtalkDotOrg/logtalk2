@@ -609,7 +609,7 @@ Possible predicate properties values are:
 	<li><code>declared_in(Entity)</code></li>
 	<li><code>defined_in(Entity)</code></li>
 	<li><code>non_terminal(NonTerminal//Arity)</code></li>
-	<li><code>alias(Predicate)</code></li>
+	<li><code>alias_of(Predicate)</code></li>
 	<li><code>synchronized</code></li>
 </ul>
 <p>
@@ -622,7 +622,7 @@ The predicate property <code>defined_in(Entity)</code> implies that definitions 
 The property <code>non_terminal/1</code> only applies to predicates that result from the compilation of grammar rule non-terminals. 
 </p>
 <p>
-The property <code>alias/1</code> is returned for predicates that are an alias to other predicate (which is returned in the property argument).
+The property <code>alias_of/1</code> is returned for a predicate that is an alias of another predicate (which is returned in the property argument).
 </p>
 <p>
 The property <code>synchronized</code> is returned for predicates that are declared synchronized when using multi-threading programming.
@@ -675,7 +675,7 @@ Currently, there is no clean workaround for calling non-standard, Prolog built-i
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: September 15, 2007</span>
+		<span>Last updated on: December 9, 2007</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="categories.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="inheritance.html">next</a></span><br/>

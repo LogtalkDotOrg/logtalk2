@@ -36,7 +36,7 @@ Property = public ;
 Property = static ;
 Property = declared_in(rectangle(_G264, _G265)) ;
 Property = defined_in(rectangle(_G297, _G298)) ;
-Property = alias(width(_G182))
+Property = alias_of(width(_G182))
 yes
 
 | ?- square(2)::predicate_property(width(_), Property).
@@ -72,7 +72,7 @@ Property = public ;
 Property = static ;
 Property = declared_in(ellipse(_G266, _G267)) ;
 Property = defined_in(ellipse(_G299, _G300)) ;
-Property = alias(rx(_G177))
+Property = alias_of(rx(_G177))
 yes
 
 | ?- circle(3)::predicate_property(rx(_), Property).

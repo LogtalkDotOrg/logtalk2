@@ -42,6 +42,9 @@ RELEASE NOTES
 	Improved updating of runtime bookkeeping tables when loading source 
 	files.
 
+	Renamed the predicate property "alias/1" to "alias_of/1" in order to 
+	disambiguate its meaning.
+
 	Added a new config file, "k6.config", for the K-Prolog 6.0 beta 
 	version.
 
@@ -54,7 +57,7 @@ RELEASE NOTES
 
 	Added two new multi-threading examples, "fibonacci" and "hanoi", and 
 	corrected a bug in the recursive creation of threads on the "sorting" 
-	example.Updated the "primes" multi-threading example to also work with  
+	example. Updated the "primes" multi-threading example to also support 
 	eight threads.
 
 	Updated the "hooks" example for illustrating goal expansion hooks in 
