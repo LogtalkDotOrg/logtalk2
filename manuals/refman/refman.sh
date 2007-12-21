@@ -67,6 +67,7 @@ eval $xslt_proc -o builtins/implements_protocol2_3.section refman.xsl builtins/i
 eval $xslt_proc -o builtins/imports_category2_3.section refman.xsl builtins/imports_category2_3.html
 eval $xslt_proc -o builtins/instantiates_class2_3.section refman.xsl builtins/instantiates_class2_3.html
 eval $xslt_proc -o builtins/specializes_class2_3.section refman.xsl builtins/specializes_class2_3.html
+eval $xslt_proc -o builtins/complements_object2.section refman.xsl builtins/complements_object2.html
 eval $xslt_proc -o builtins/abolish_events5.section refman.xsl builtins/abolish_events5.html
 eval $xslt_proc -o builtins/current_event5.section refman.xsl builtins/current_event5.html
 eval $xslt_proc -o builtins/define_events5.section refman.xsl builtins/define_events5.html
@@ -110,6 +111,7 @@ eval $xslt_proc -o methods/phrase2.section refman.xsl methods/phrase2.html
 eval $xslt_proc -o methods/phrase3.section refman.xsl methods/phrase3.html
 eval $xslt_proc -o methods/expand_term2.section refman.xsl methods/expand_term2.html
 eval $xslt_proc -o methods/term_expansion2.section refman.xsl methods/term_expansion2.html
+eval $xslt_proc -o methods/goal_expansion2.section refman.xsl methods/goal_expansion2.html
 eval $xslt_proc -o control/to_object2.section refman.xsl control/to_object2.html
 eval $xslt_proc -o control/to_self1.section refman.xsl control/to_self1.html
 eval $xslt_proc -o control/to_super1.section refman.xsl control/to_super1.html
@@ -169,6 +171,7 @@ cat -s \
 	builtins/imports_category2_3.section \
 	builtins/instantiates_class2_3.section \
 	builtins/specializes_class2_3.section \
+	builtins/complements_object2.section \
 	builtins/abolish_events5.section \
 	builtins/current_event5.section \
 	builtins/define_events5.section \
@@ -213,6 +216,7 @@ cat -s \
 	methods/phrase3.section \
 	methods/expand_term2.section \
 	methods/term_expansion2.section \
+	methods/goal_expansion2.section \
 	control.header \
 	control/to_object2.section \
 	control/to_self1.section \
