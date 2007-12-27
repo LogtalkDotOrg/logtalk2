@@ -21,9 +21,9 @@
 		mt_fib(Threads, N, F),
 		!.
 
-	mt_fib(_, 0, 1).
-	mt_fib(_, 1, 1).
-	mt_fib(1, N, F) :-
+	mt_fib(_, 0, 1) :- !.
+	mt_fib(_, 1, 1) :- !.
+	mt_fib(1, N, F) :- !,
 		st_fib(N, F).
 	mt_fib(Threads, N, F) :-
 		Threads > 1,
@@ -37,8 +37,8 @@
 		)),
 		F is F1 + F2.
 
-	st_fib(0, 1).
-	st_fib(1, 1).
+	st_fib(0, 1) :- !.
+	st_fib(1, 1) :- !.
 	st_fib(N, F) :-
 		N > 1,
 		N1 is N - 1,

@@ -20,7 +20,7 @@
 		parameter(1, Threads),
 		mt_msort(Threads, List, Sorted).
 
-	mt_msort(1, List, Sorted) :-
+	mt_msort(1, List, Sorted) :- !,
 		st_msort(List, Sorted).
 	mt_msort(Threads, List, Sorted) :-
 		Threads > 1,
@@ -32,8 +32,8 @@
 		)),
 		merge(Sorted1, Sorted2, Sorted).
 
-	st_msort([], []).
-	st_msort([X], [X]).
+	st_msort([], []) :- !.
+	st_msort([X], [X]) :- !.
 	st_msort([X, Y| Xs], Ys) :-
 		split([X, Y| Xs], X1s, X2s),
 		st_msort(X1s, Y1s),

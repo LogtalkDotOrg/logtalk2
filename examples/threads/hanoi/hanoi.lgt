@@ -20,7 +20,7 @@
 		parameter(1, Threads),
 		mt_move(Threads, Disks, left, middle, right).
 
-	mt_move(1, Disks, Left, Aux, Right) :-
+	mt_move(1, Disks, Left, Aux, Right) :- !,
 		st_move(Disks, Left, Aux, Right).
 	mt_move(Threads, Disks, Left, Aux, Right) :-
 		Threads > 1,
@@ -32,7 +32,7 @@
 			mt_move(Threads2, Disks2, Aux, Left, Right)
 		)).
 
-	st_move(1, _Left, _, _Right).
+	st_move(1, _Left, _, _Right) :- !.
 	st_move(Disks, Left, Aux, Right) :-
 		Disks > 1,
 		Disks2 is Disks - 1,
