@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.31.0
+Release 2.31.1
 
 Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 ================================================================
@@ -8,6 +8,14 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.31.1 - December ??, 2007
+
+	Updated the "sorting", "hanoi", and "fibonacci" multi-threading examples 
+	to interpret the object parameter as the number of non-suspended threads 
+	(i.e. threads that will perform the actual work instead of only be used 
+	for spanning additional threads).
 
 
 2.31.0 - December 21, 2007

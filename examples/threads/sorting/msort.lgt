@@ -2,9 +2,9 @@
 :- object(msort(_Threads)).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura and Paul Crocker',
-		date is 2007/12/19,
+		date is 2007/12/27,
 		comment is 'Multi-threaded implementation of the merge sort algorithm.',
 		parameters is ['Threads'- 'Number of threads to use in sorting. Valid values are 1, 2, 4, 8, etc.']]).
 
@@ -18,19 +18,17 @@
 
 	msort(List, Sorted) :-
 		parameter(1, Threads),
-		Forks is Threads//2 + 1,
-		mt_msort(Forks, List, Sorted).
+		mt_msort(Threads, List, Sorted).
 
 	mt_msort(1, List, Sorted) :-
 		st_msort(List, Sorted).
-	mt_msort(Forks, List, Sorted) :-
-		Forks > 1,
-		Forks1 is Forks//2,
-		Forks2 is Forks - Forks1,
+	mt_msort(Threads, List, Sorted) :-
+		Threads > 1,
+		Threads2 is Threads//2,
 		split(List, List1, List2),
 		threaded((
-			mt_msort(Forks1, List1, Sorted1),
-			mt_msort(Forks2, List2, Sorted2)
+			mt_msort(Threads2, List1, Sorted1),
+			mt_msort(Threads2, List2, Sorted2)
 		)),
 		merge(Sorted1, Sorted2, Sorted).
 
