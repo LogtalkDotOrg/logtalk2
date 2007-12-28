@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.31.1 - December ??, 2007
 
+	Updated the "tak" multi-threading example to allow parameterization of 
+	the number of threads to use.
+
 	Updated the "sorting", "hanoi", and "fibonacci" multi-threading examples 
 	to interpret the object parameter as the number of non-suspended threads 
 	(i.e. threads that will perform the actual work instead of only be used 

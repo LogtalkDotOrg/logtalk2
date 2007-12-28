@@ -13,19 +13,19 @@
 	:- public(run/1).
 	:- mode(run(+integer), one).
 	:- info(run/1, [
-		comment is 'Simulates solving the towers of Hanoi problem for the specified number of disks without actually returning a list of the necessary moves.',
+		comment is 'Simulates solving the Towers of Hanoi problem for the specified number of disks without actually returning a list of the necessary disk moves.',
 		argnames is ['Disks']]).
 
 	:- public(run/2).
 	:- mode(run(+integer, -list), one).
 	:- info(run/2, [
-		comment is 'Solves the towers of Hanoi problem for the specified number of disks.',
+		comment is 'Solves the towers of Hanoi problem for the specified number of disks returning a list of the necessary disk moves.',
 		argnames is ['Disks', 'Moves']]).
 
 	:- public(write_moves/1).
 	:- mode(write_moves(+list), one).
 	:- info(write_moves/1, [
-		comment is 'Writes a list of disk moves to the standard output (one move per line).',
+		comment is 'Writes a list of disk moves to the standard output (one disk move per line).',
 		argnames is ['Moves']]).
 
 	run(Disks) :-
