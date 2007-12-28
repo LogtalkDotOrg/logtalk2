@@ -14,7 +14,7 @@ Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
 
 % single-threaded version:
 
-| ?- time(tak::tak_st(18, 12, 6, R)).
+| ?- time(tak(1)::tak(18, 12, 6, R)).
 
 % 254,474 inferences, 1.44 CPU in 1.47 seconds (98% CPU, 176718 Lips)
 
@@ -25,7 +25,7 @@ Yes
 
 % multi-threaded version:
 
-| ?- time(tak::tak_mt(18, 12, 6, R)).
+| ?- time(tak(3)::tak(18, 12, 6, R)).
 
 % 202 inferences, 1.45 CPU in 0.77 seconds (188% CPU, 139 Lips)
 
@@ -36,7 +36,7 @@ Yes
 
 % single-threaded version:
 
-| ?- time(tak::tak_st(21, 14, 7, R)).
+| ?- time(tak(1)::tak(21, 14, 7, R)).
 % 1,583,066 inferences, 12.40 CPU in 12.53 seconds (99% CPU, 127667 Lips)
 
 R = 14 
@@ -46,7 +46,7 @@ Yes
 
 % multi-threaded version:
 
-| ?- time(tak::tak_mt(21, 14, 7, R)).
+| ?- time(tak(3)::tak(21, 14, 7, R)).
 % 122 inferences, 11.98 CPU in 7.74 seconds (155% CPU, 10 Lips)
 
 R = 14 
