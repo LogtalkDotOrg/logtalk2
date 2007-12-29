@@ -12,6 +12,12 @@ RELEASE NOTES
 
 2.31.1 - December ??, 2007
 
+	Updated the K-Prolog integration scripts to use the new 6.0.1 version by 
+	default.
+
+	Updated the Linux (RMP and Debian) and MacOS X package build scripts to 
+	include Prolog version compatibility information.
+
 	Updated the "tak" multi-threading example to allow parameterization of 
 	the number of threads to use.
 

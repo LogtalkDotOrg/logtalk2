@@ -54,8 +54,8 @@ Name: "prolog\ciao"; Description: "Ciao Prolog integration (version 1.10#5 or la
 Name: "prolog\cxprolog"; Description: "CxProlog integration (version 0.96.1 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\eclipse"; Description: "ECLiPSe integration (version 5.10#26 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\gprolog"; Description: "GNU Prolog integration (version 1.2.16 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\plc"; Description: "K-Prolog integration (version 5.1.4 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\sicstus"; Description: "SICStus Prolog integration (versions 3.12.x, 4.0)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\plc"; Description: "K-Prolog integration (version 6.0.1 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\sicstus"; Description: "SICStus Prolog integration (versions 3.12.x, 4.0.x)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\swi"; Description: "SWI-Prolog integration (version 5.6.16 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\xsb"; Description: "XSB integration (version 3.1 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\yap"; Description: "YAP integration (version 5.1.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning

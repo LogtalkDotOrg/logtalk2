@@ -22,7 +22,7 @@
 
 	tak_mt(1, X, Y, Z, A) :- !,
 		tak_st(X, Y, Z, A).
-	tak_mt(_, X, Y, Z, A):-
+	tak_mt(_, X, Y, Z, A) :-
 		X =< Y, !,
 		Z = A.
 	tak_mt(Threads, X, Y, Z, A) :-
@@ -39,10 +39,10 @@
 		)),
 		tak_st(A1, A2, A3, A).
 
-	tak_st(X, Y, Z, A):-
+	tak_st(X, Y, Z, A) :-
 		X =< Y,
 		Z = A.
-	tak_st(X, Y, Z, A):-
+	tak_st(X, Y, Z, A) :-
 		X > Y,
 		X1 is X - 1,
 		tak_st(X1, Y, Z, A1),
