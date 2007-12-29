@@ -26,6 +26,9 @@ RELEASE NOTES
 	(i.e. threads that will perform the actual work instead of only be used 
 	for spanning additional threads).
 
+	Updated the TextMate text editor support to include a command to 
+	automatically generate the XTML documentation of open source files.
+
 
 2.31.0 - December 21, 2007
 
