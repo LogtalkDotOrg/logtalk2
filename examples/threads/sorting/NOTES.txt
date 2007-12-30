@@ -34,3 +34,8 @@ You probably want to play with the list sizes in order to find out when the
 lists to be sorted are big enough to make the use of multi-threading worth
 performance-wise (i.e. to compensate the overhead of thread creation and 
 management).
+
+The implementation of the Quicksort algorithm makes the possible performance 
+gains due to the use of multi-threading highly dependent on the pivots used 
+for vector partition. Increasing the number of threads alleviates the problem 
+provided an adequate number of processing cores.

@@ -205,8 +205,9 @@ testing
 	some examples of writing unit tests
 
 threads
-	several simple examples of multi-threading programming
-	(requires Logtalk to be run with either YAP or SWI-Prolog)
+	several simple examples of multi-threading programming, some of 
+	them intended only for benchmarking multi-threading Prolog compilers
+	(requires Logtalk to be run with either YAP, SWI-Prolog, or XSB)
 
 viewpoints
 	example on how to implement property sharing and value sharing 
