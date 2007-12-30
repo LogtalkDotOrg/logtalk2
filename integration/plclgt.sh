@@ -57,4 +57,4 @@ elif ! [ -d "$LOGTALKUSER" ]; then
 fi
 echo
 
-exec "$PLC"/plc -h 2048k -l 1024k -g 2048k -e "(consult('$LOGTALKHOME/integration/logtalk_plc.pl'), '\$root')." "$@"
+exec "$PLC"/plc -h 4096k -l 2048k -g 4096k -e "(consult('$LOGTALKHOME/integration/logtalk_plc.pl'), '\$root')." "$@"
