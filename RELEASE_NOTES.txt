@@ -18,6 +18,11 @@ RELEASE NOTES
 	Updated the K-Prolog integration scripts to use the new 6.0.1 version by 
 	default.
 
+	Updated the YAP config file to set the flag "language" to "iso". This 
+	is not strictly necessary to run Logtalk with YAP but it helps prevent 
+	nasty surprises when writing portable applications that rely on ISO 
+	Prolog semantics.
+
 	Updated the Linux (RMP and Debian) and MacOS X package build scripts to 
 	include Prolog version compatibility information.
 
