@@ -57,25 +57,25 @@
 
 % tables of defined events and monitors
 
-:- dynamic('$lgt_before_'/5).				% '$lgt_before_'(Obj, Msg, Sender, Monitor, Call)
-:- dynamic('$lgt_after_'/5).				% '$lgt_after_'(Obj, Msg, Sender, Monitor, Call)
+:- dynamic('$lgt_before_'/5).					% '$lgt_before_'(Obj, Msg, Sender, Monitor, Call)
+:- dynamic('$lgt_after_'/5).					% '$lgt_after_'(Obj, Msg, Sender, Monitor, Call)
 
 
 % tables of loaded entities and respective relationships
 
-:- dynamic('$lgt_current_protocol_'/3).		% '$lgt_current_protocol_'(Ptc, Prefix, Type)
-:- dynamic('$lgt_current_category_'/4).		% '$lgt_current_category_'(Ctg, Prefix, Type, Synchronized)
-:- dynamic('$lgt_current_object_'/8).		% '$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, Type, Synchronized, Threaded)
-
-:- dynamic('$lgt_implements_protocol_'/3).	% '$lgt_implements_protocol_'(ObjOrCtg, Ptc, Scope)
-:- dynamic('$lgt_imports_category_'/3).		% '$lgt_imports_category_'(Obj, Ctg, Scope)
-:- dynamic('$lgt_instantiates_class_'/3).	% '$lgt_instantiates_class_'(Instance, Class, Scope)
-:- dynamic('$lgt_specializes_class_'/3).	% '$lgt_specializes_class_'(Class, Superclass, Scope)
-:- dynamic('$lgt_extends_category_'/3).		% '$lgt_extends_category_'(Ctg1, Ctg2, Scope)
-:- dynamic('$lgt_extends_object_'/3).		% '$lgt_extends_object_'(Prototype, Parent, Scope)
-:- dynamic('$lgt_extends_protocol_'/3).		% '$lgt_extends_protocol_'(Ptc1, Ptc2, Scope)
-
-:- dynamic('$lgt_complemented_object_'/4).	% '$lgt_complemented_object_'(Object, Category, Dcl, Def)
+:- dynamic('$lgt_current_protocol_'/3).			% '$lgt_current_protocol_'(Ptc, Prefix, Type)
+:- dynamic('$lgt_current_category_'/4).			% '$lgt_current_category_'(Ctg, Prefix, Type, Synchronized)
+:- dynamic('$lgt_current_object_'/8).			% '$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, Type, Synchronized, Threaded)
+                                            	
+:- dynamic('$lgt_implements_protocol_'/3).		% '$lgt_implements_protocol_'(ObjOrCtg, Ptc, Scope)
+:- dynamic('$lgt_imports_category_'/3).			% '$lgt_imports_category_'(Obj, Ctg, Scope)
+:- dynamic('$lgt_instantiates_class_'/3).		% '$lgt_instantiates_class_'(Instance, Class, Scope)
+:- dynamic('$lgt_specializes_class_'/3).		% '$lgt_specializes_class_'(Class, Superclass, Scope)
+:- dynamic('$lgt_extends_category_'/3).			% '$lgt_extends_category_'(Ctg1, Ctg2, Scope)
+:- dynamic('$lgt_extends_object_'/3).			% '$lgt_extends_object_'(Prototype, Parent, Scope)
+:- dynamic('$lgt_extends_protocol_'/3).			% '$lgt_extends_protocol_'(Ptc1, Ptc2, Scope)
+                                            	
+:- dynamic('$lgt_complemented_object_'/4).		% '$lgt_complemented_object_'(Object, Category, Dcl, Def)
 
 
 % table of loaded files
@@ -1577,10 +1577,11 @@ logtalk_compile(Files, Flags) :-
 
 % '$lgt_expand_library_path'(+atom, -atom)
 %
-% converts a library alias into its corresponding path
+% converts a library alias into its corresponding path; uses a depth
+% bound to prevent loops (inspired by similar code in SWI-Prolog)
 
 '$lgt_expand_library_path'(Library, Path) :-
-	'$lgt_expand_library_path'(Library, Path, 16).	% depth bound to prevent loops
+	'$lgt_expand_library_path'(Library, Path, 16).
 
 
 '$lgt_expand_library_path'(Library, Path, N) :-
@@ -13073,9 +13074,6 @@ current_logtalk_flag(version, version(2, 31, 1)).
 
 % multi-threading tags
 
-'$lgt_threaded_tag_counter'(0).
-
-
 '$lgt_new_threaded_tag'(New) :-
 	with_mutex('$lgt_threaded_tag', 
 		(retract('$lgt_threaded_tag_counter'(Old)),
@@ -13305,6 +13303,11 @@ current_logtalk_flag(version, version(2, 31, 1)).
 		(	'$lgt_predicate_property'(mutex_create(_, _), built_in) ->
 			mutex_create(_, [alias('$lgt_threaded_tag')])
 		;	mutex_create('$lgt_threaded_tag')
+		),
+		(	current_prolog_flag(bounded, true) ->
+			current_prolog_flag(min_integer, Min),
+			assertz('$lgt_threaded_tag_counter'(Min))
+		;	assertz('$lgt_threaded_tag_counter'(0))
 		)
 	;	true
 	).
