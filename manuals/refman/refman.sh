@@ -4,7 +4,7 @@
 ## Logtalk - Open source object-oriented logic programming language
 ## Release 2.31.1
 ##
-## Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
+## Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 ## ================================================================
 
 css2xslfo=/Applications/XML/CSSToXSLFO/css2xslfo1_5_2.jar

@@ -4,7 +4,7 @@
 %  Logtalk - Open source object-oriented logic programming language
 %  Release 2.31.1
 %
-%  Copyright (c) 1998-2007 Paulo Moura.  All Rights Reserved.
+%  Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -2870,9 +2870,9 @@ current_logtalk_flag(version, version(2, 31, 1)).
 '$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
 	'$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Call),
 	!,
-	\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),
-	call(Call),
-	\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall)).
+	\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),				% call before event handlers
+	call(Call),																		% call method
+	\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall)).				% call after event handlers
 
 '$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _),
@@ -13179,7 +13179,7 @@ current_logtalk_flag(version, version(2, 31, 1)).
 '$lgt_banner' :-
 	current_logtalk_flag(version, version(Major, Minor, Patch)),
 	nl, write('Logtalk '), write(Major), write('.'), write(Minor), write('.'), write(Patch), nl,
-	write('Copyright (c) 1998-2007 Paulo Moura'), nl, nl.
+	write('Copyright (c) 1998-2008 Paulo Moura'), nl, nl.
 
 
 
