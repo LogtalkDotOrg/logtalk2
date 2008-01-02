@@ -263,9 +263,11 @@ K-Prolog 6.0.1 and later versions
 	k6.config
 
 	K-Prolog 6.0.1 supports the current ISO Prolog standard and features 
-	from the draft core revison proposal. No problems expected. 
-	Config file written and tested with the help of Nobukuni Kino. Don't 
-	forget to use the cd/1 predicate to set the working directory before 
+	from the draft core revison proposal. The Windows version is missing the 
+	forall/2 predicate. Other bugs exist in the 6.0.1 beta version that may
+	cause trouble to Prolog and Logtalk applications. These bugs are expected 
+	to be corrected in the next K-Prolog version. 
+	Don't forget to use the cd/1 predicate to set the working directory before
 	loading the library or an example. Supports smart compilation of source 
 	files.
 
