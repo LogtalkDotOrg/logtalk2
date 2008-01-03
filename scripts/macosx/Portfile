@@ -1,4 +1,4 @@
-# $Id: Portfile 26918 2007-07-11 15:28:15Z gwright@macports.org $
+# $Id: Portfile 32263 2007-12-23 11:23:10Z ryandesign@macports.org $
 
 PortSystem	1.0
 name		logtalk
@@ -20,7 +20,7 @@ long_description	\
 homepage        http://logtalk.org/
 master_sites	${homepage}files/
 
-checksums md5	a5cd3891ceb0274eede49dbdb00d08dc
+checksums md5	dd4186355459fdd2dc1768d84bfa4be7
 
 distname		lgt[strsed ${version} {g/\.//}]
 
