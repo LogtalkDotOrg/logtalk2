@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.31.1
+%  Release 2.31.2
 %
 %  Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 %
@@ -1768,7 +1768,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 31, 1)).
+current_logtalk_flag(version, version(2, 31, 2)).
 
 
 
@@ -4363,10 +4363,10 @@ current_logtalk_flag(version, version(2, 31, 1)).
 		read_term(Input, Term, [singletons(Singletons)]),
 		InputError,
 		'$lgt_compiler_error_handler'(Input, InputError)),
-	'$lgt_check_for_encoding_directive'(Term, Source, Input, NewInput, OutputOption),	% the encoding/1 directive, when present, 
+	'$lgt_check_for_encoding_directive'(Term, Source, Input, NewInput, OutputOptions),	% the encoding/1 directive, when present, 
 	'$lgt_file_name'(prolog, File, Object),												% must be the first term on a source file
 	catch(
-		open(Object, write, Output, OutputOption),
+		open(Object, write, Output, OutputOptions),
 		OpenError,
 		'$lgt_compiler_error_handler'(NewInput, Output, OpenError)),
 	catch(
@@ -4390,11 +4390,15 @@ current_logtalk_flag(version, version(2, 31, 1)).
 % encoding/1 directives must be used during entity compilation and for the
 % encoding of the generated Prolog and XML files
 
-'$lgt_check_for_encoding_directive'((:- encoding(Encoding)), Source, Input, NewInput, [encoding(Encoding)]) :-
+'$lgt_check_for_encoding_directive'((:- encoding(Encoding)), Source, Input, NewInput, [encoding(Encoding)|BOM]) :-
 	!,
 	(	\+ '$lgt_compiler_flag'(encoding_directive, unsupported) ->
 		close(Input),
 		open(Source, read, NewInput, [encoding(Encoding)]),
+		(	stream_property(NewInput, bom(Boolean)) ->			% a BOM present in the source file is
+			BOM = [bom(Boolean)]								% inherited by the generated Prolog file
+		;	BOM = []
+		),
 		read_term(NewInput, _, [singletons(_)])					% throw away encoding/1 directive
 	;	throw(error(domain_error(directive, encoding/1), directive(encoding(Encoding))))
 	).
