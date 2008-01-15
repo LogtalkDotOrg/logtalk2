@@ -4395,7 +4395,8 @@ current_logtalk_flag(version, version(2, 31, 2)).
 % '$lgt_check_for_encoding_directive'(@nonvar, +atom, @stream, -stream, -list)
 %
 % encoding/1 directives must be used during entity compilation and for the
-% encoding of the generated Prolog and XML files
+% encoding of the generated Prolog and XML files; BOM present in the source
+% file is inherited by the generated Prolog and XML files:
 
 '$lgt_check_for_encoding_directive'((:- encoding(LogtalkEncoding)), Source, Input, NewInput, [encoding(PrologEncoding)|BOM]) :-
 	!,
@@ -4404,9 +4405,11 @@ current_logtalk_flag(version, version(2, 31, 2)).
 		'$lgt_logtalk_prolog_encoding'(LogtalkEncoding, PrologEncoding),
 		assertz('$lgt_pp_file_encoding_'(LogtalkEncoding, PrologEncoding)),
 		open(Source, read, NewInput, [encoding(PrologEncoding)]),
-		(	stream_property(NewInput, bom(Boolean)) ->			% a BOM present in the source file is inherited
-			BOM = [bom(Boolean)],								% by the generated Prolog and XML files
+		(	catch(stream_property(NewInput, bom(Boolean)), _, fail) ->					% SWI-Prolog and YAP
+			BOM = [bom(Boolean)],
 			assertz('$lgt_pp_file_bom_'(bom(Boolean)))
+		;	catch(stream_property(NewInput, encoding_signature(Boolean)), _, fail) ->	% SICStus Prolog
+			BOM = [encoding_signature(Boolean)]
 		;	BOM = []
 		),
 		read_term(NewInput, _, [singletons(_)])					% throw away encoding/1 directive
