@@ -32,7 +32,7 @@ Code = ko
 Text = '여보세요 세계!' ;
 
 Code = nl
-Text = 'Hello wereld!' ;
+Text = 'Hallo wereld!' ;
 
 Code = pt
 Text = 'Olá mundo!' ;
