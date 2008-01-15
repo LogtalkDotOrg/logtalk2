@@ -13,7 +13,12 @@ RELEASE NOTES
 2.31.2 - January ??, 2008
 
 	Improved source file encoding handling by ensuring that a BOM present in 
-	a source file being compiled is inherited by the generated Prolog file.
+	a source file being compiled is inherited by the generated Prolog and XML 
+	files. Changed the atoms used to represent different encodings when using 
+	the encoding/1 directive; Logtalk now uses the encoding names specified by 
+	IANA (using the preferred MIME name whenever available).
+
+	Updated the "encoding" example to use the new encoding names.
 
 
 2.31.1 - January 3, 2008

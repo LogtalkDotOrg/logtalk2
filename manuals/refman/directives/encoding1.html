@@ -25,7 +25,7 @@
 
 <pre>encoding(Encoding)</pre>
 <p>
-Declares the source file text encoding. This is an <strong>experimental</strong> source file directive, which is only supported on some Prolog compilers. When used, this directive must be the first term in the source file. Currently recognized encodings include <code>ascii</code>, <code>iso_8859_1</code>, <code>iso_latin_1</code> (an alias to the previous one), <code>utf8</code>, <code>unicode_be</code>, and <code>unicode_le</code>.
+Declares the source file text encoding. This is an <strong>experimental</strong> source file directive, which is only supported on some Prolog compilers. When used, this directive must be the first term in the source file. Currently recognized encodings include <code>'US-ASCII'</code>, <code>'ISO-8859-1'</code>, <code>'UTF-8'</code>, <code>'UTF-16LE'</code>, and <code>'UTF-16BE'</code>. Be sure to use an encoding  supported by the chosen back-end Prolog compiler (which config file must define a table that translates between the Logtalk and Prolog-specific terms that represent each supported encoding).   
 </p>
 
 <h4>Template and modes</h4>
@@ -35,14 +35,12 @@ Declares the source file text encoding. This is an <strong>experimental</strong>
 
 <h4>Examples</h4>
 
-<pre>:- encoding(utf8).
-
-:- encoding(iso_latin_1).</pre>
+<pre>:- encoding('UTF-8').</pre>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: October 26, 2006</span>
+		<span>Last updated on: January 10, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="../index.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="../index.html">next</a></span><br/>

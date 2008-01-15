@@ -1,13 +1,13 @@
 
-:- encoding(iso_latin_1).	% this directive, when present, must be the first term in a source file
+:- encoding('ISO-8859-1').	% this directive, when present, must be the first term in a source file
 
 
 :- object(latin).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2005/04/24,
+		date is 2008/01/10,
 		comment is 'Simple test of the encoding/1 directive.']).
 
 	:- public(name/1).

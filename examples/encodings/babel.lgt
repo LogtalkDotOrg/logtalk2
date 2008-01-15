@@ -1,13 +1,13 @@
 ﻿
-:- encoding(utf8).		% this directive, when present, must be the first term in a source file
+:- encoding('UTF-8').		% this directive, when present, must be the first term in a source file
 
 
 :- object(babel).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2005/04/06,
+		date is 2008/01/10,
 		comment is 'Simple test of the encoding/1 directive.']).
 
 	:- public(hello_world/2).

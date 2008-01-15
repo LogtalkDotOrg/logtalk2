@@ -227,6 +227,9 @@
 :- dynamic('$lgt_pp_threaded_'/0).				% '$lgt_pp_threaded_'
 :- dynamic('$lgt_pp_synchronized_'/0).			% '$lgt_pp_synchronized_'
 
+:- dynamic('$lgt_pp_file_encoding_'/2).			% '$lgt_pp_file_encoding_'(LogtalkEncoding, PrologEncoding)))
+:- dynamic('$lgt_pp_file_bom_'/1).				% '$lgt_pp_file_bom_'(BOM)))
+
 
 
 
@@ -4304,11 +4307,15 @@ current_logtalk_flag(version, version(2, 31, 2)).
 '$lgt_write_entity_doc'(Entity) :-
 	(	'$lgt_compiler_flag'(xmldocs, on) ->
 		'$lgt_entity_doc_file_name'(Entity, File),
+		(	'$lgt_pp_file_encoding_'(_, Encoding) ->
+			(	'$lgt_pp_file_bom_'(bom(Boolean)) ->
+				StreamOptions = [encoding(Encoding), bom(Boolean)]
+			;	StreamOptions = [encoding(Encoding)]
+			)
+		;	StreamOptions = []
+		),
 		catch(
-			((	'$lgt_pp_directive_'(encoding(Encoding)) ->
-				open(File, write, Stream, [encoding(Encoding)])
-			 ;	open(File, write, Stream)
-			 ),
+			(open(File, write, Stream, StreamOptions),
 			 '$lgt_write_xml_file'(Stream),
 			 close(Stream)),
 			Error,
@@ -4364,7 +4371,7 @@ current_logtalk_flag(version, version(2, 31, 2)).
 		InputError,
 		'$lgt_compiler_error_handler'(Input, InputError)),
 	'$lgt_check_for_encoding_directive'(Term, Source, Input, NewInput, OutputOptions),	% the encoding/1 directive, when present, 
-	'$lgt_file_name'(prolog, File, Object),												% must be the first term on a source file
+	'$lgt_file_name'(prolog, File, Object),														% must be the first term on a source file
 	catch(
 		open(Object, write, Output, OutputOptions),
 		OpenError,
@@ -4390,17 +4397,20 @@ current_logtalk_flag(version, version(2, 31, 2)).
 % encoding/1 directives must be used during entity compilation and for the
 % encoding of the generated Prolog and XML files
 
-'$lgt_check_for_encoding_directive'((:- encoding(Encoding)), Source, Input, NewInput, [encoding(Encoding)|BOM]) :-
+'$lgt_check_for_encoding_directive'((:- encoding(LogtalkEncoding)), Source, Input, NewInput, [encoding(PrologEncoding)|BOM]) :-
 	!,
 	(	\+ '$lgt_compiler_flag'(encoding_directive, unsupported) ->
 		close(Input),
-		open(Source, read, NewInput, [encoding(Encoding)]),
-		(	stream_property(NewInput, bom(Boolean)) ->			% a BOM present in the source file is
-			BOM = [bom(Boolean)]								% inherited by the generated Prolog file
+		'$lgt_logtalk_prolog_encoding'(LogtalkEncoding, PrologEncoding),
+		assertz('$lgt_pp_file_encoding_'(LogtalkEncoding, PrologEncoding)),
+		open(Source, read, NewInput, [encoding(PrologEncoding)]),
+		(	stream_property(NewInput, bom(Boolean)) ->			% a BOM present in the source file is inherited
+			BOM = [bom(Boolean)],								% by the generated Prolog and XML files
+			assertz('$lgt_pp_file_bom_'(bom(Boolean)))
 		;	BOM = []
 		),
 		read_term(NewInput, _, [singletons(_)])					% throw away encoding/1 directive
-	;	throw(error(domain_error(directive, encoding/1), directive(encoding(Encoding))))
+	;	throw(error(domain_error(directive, encoding/1), directive(encoding(LogtalkEncoding))))
 	).
 
 '$lgt_check_for_encoding_directive'(_, _, Input, Input, []).	% assume no encoding/1 directive present on the source file
@@ -4663,7 +4673,9 @@ current_logtalk_flag(version, version(2, 31, 2)).
 	retractall('$lgt_pp_global_op_'(_, _, _)),
 	retractall('$lgt_pp_file_op_'(_, _, _)),
 	retractall('$lgt_pp_file_init_'(_)),	
-	retractall('$lgt_pp_entity_init_'(_, _, _)).
+	retractall('$lgt_pp_entity_init_'(_, _, _)),
+	retractall('$lgt_pp_file_encoding_'(_, _)),
+	retractall('$lgt_pp_file_bom_'(_)).
 
 
 
@@ -5057,6 +5069,9 @@ current_logtalk_flag(version, version(2, 31, 2)).
 		assertz('$lgt_pp_file_init_'(Goal))
 	;	throw(type_error(callable, Goal))
 	).
+
+'$lgt_tr_file_directive'(encoding(_)) :-		% the encoding/1 directive is already processed 
+	!.
 
 '$lgt_tr_file_directive'(Dir) :-
 	assertz('$lgt_pp_directive_'(Dir)).			% directive will be copied to the generated Prolog file
@@ -10139,13 +10154,18 @@ current_logtalk_flag(version, version(2, 31, 2)).
 % writes the directives; cumbersome due to the special processing of the encoding/1 directive
 
 '$lgt_write_directives'(Stream) :-
-	'$lgt_pp_directive_'(Dir),
-	(	Dir = encoding(_), '$lgt_compiler_flag'(encoding_directive, source) ->
-		true
-	;	write_canonical(Stream, (:- Dir)),
-		write(Stream, '.'),
-		nl(Stream)
-	),
+	'$lgt_compiler_flag'(encoding_directive, full),
+	'$lgt_pp_file_encoding_'(_, Encoding),
+	write_canonical(Stream, (:- encoding(Encoding))),
+	write(Stream, '.'),
+	nl(Stream),
+	fail.
+
+'$lgt_write_directives'(Stream) :-
+	'$lgt_pp_directive_'(Directive),
+	write_canonical(Stream, (:- Directive)),
+	write(Stream, '.'),
+	nl(Stream),
 	fail.
 
 '$lgt_write_directives'(_).
@@ -11356,31 +11376,11 @@ current_logtalk_flag(version, version(2, 31, 2)).
 % returns the text encoding that should be used on the XML documenting file;
 % default encoding is UTF-8
 
-'$lgt_xml_encoding'(XMLEncoding) :-
-	(	'$lgt_pp_directive_'(encoding(Encoding)) ->
-		'$lgt_xml_encoding_table'(Encoding, XMLEncoding)
-	;	XMLEncoding = 'utf-8'
+'$lgt_xml_encoding'(Encoding) :-
+	(	'$lgt_pp_file_encoding_'(Encoding, _) ->
+		true
+	;	Encoding = 'UTF-8'
 	).
-
-
-
-% '$lgt_xml_encoding_table'(?atom, ?atom)
-%
-% converts between Prolog stream encoding names and XML encoding names
-
-'$lgt_xml_encoding_table'(ascii, 'us-ascii') :-
-	!.
-'$lgt_xml_encoding_table'(iso_8859_1, 'iso-8859-1') :-
-	!.
-'$lgt_xml_encoding_table'(iso_latin_1, 'iso-8859-1') :-
-	!.
-'$lgt_xml_encoding_table'(utf8, 'utf-8') :-
-	!.
-'$lgt_xml_encoding_table'(unicode_be, 'utf-16') :-
-	!.
-'$lgt_xml_encoding_table'(unicode_le, 'utf-16') :-
-	!.
-'$lgt_xml_encoding_table'(Encoding, Encoding).
 
 
 
@@ -13089,6 +13089,7 @@ current_logtalk_flag(version, version(2, 31, 2)).
 % create entity mutexes (called when loading an entity)
 
 '$lgt_create_mutexes'([]).
+
 '$lgt_create_mutexes'([Mutex| Mutexes]) :-
 	(	'$lgt_predicate_property'(mutex_create(_, _), built_in) ->
 		mutex_create(_, [alias(Mutex)])
@@ -13279,6 +13280,15 @@ current_logtalk_flag(version, version(2, 31, 2)).
 	write('  Support for encoding/1 directive (encoding_directive):      '), write(Encodings), nl,
 	'$lgt_default_flag'(threads, Threads),
 	write('  Multi-threading programming support (threads):              '), write(Threads), nl, nl.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  Logtalk startup initialization (compiler hooks and multi-threading support) 
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 

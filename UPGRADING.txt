@@ -182,3 +182,8 @@ changes compiler hook support; you will need to update your code if you're
 using hook objects and hook predicates. Moreover, Logtalk source files will 
 need to be recompiled because of the changes done in this version to improve 
 updating runtime bookkeeping tables when loading new entities.
+
+Logtalk 2.31.2 changes the valid values for the encoding/1 directive from 
+the SWI-Prolog original values to atoms complying with the IANA standard. 
+Old values are deprecated but still recognized for compatibility with older 
+Logtalk releases (see the config files of YAP and SWI-Prolog).
