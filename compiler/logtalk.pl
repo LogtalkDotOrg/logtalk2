@@ -4401,9 +4401,9 @@ current_logtalk_flag(version, version(2, 31, 2)).
 '$lgt_check_for_encoding_directive'((:- encoding(LogtalkEncoding)), Source, Input, NewInput, [encoding(PrologEncoding)|BOM]) :-
 	!,
 	(	\+ '$lgt_compiler_flag'(encoding_directive, unsupported) ->
-		close(Input),
-		(	'$lgt_logtalk_prolog_encoding'(LogtalkEncoding, PrologEncoding) ->
+		(	'$lgt_logtalk_prolog_encoding'(LogtalkEncoding, PrologEncoding, Input) ->		% defined in the config files
 			assertz('$lgt_pp_file_encoding_'(LogtalkEncoding, PrologEncoding)),
+			close(Input),
 			open(Source, read, NewInput, [encoding(PrologEncoding)]),
 			(	catch(stream_property(NewInput, bom(Boolean)), _, fail) ->					% SWI-Prolog and YAP
 				BOM = [bom(Boolean)],
