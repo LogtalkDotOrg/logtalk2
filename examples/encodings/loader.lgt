@@ -1,3 +1,3 @@
 
 :- initialization(
-	logtalk_load([babel, latin])). 
+	logtalk_load([asian, babel, latin, mythology])). 

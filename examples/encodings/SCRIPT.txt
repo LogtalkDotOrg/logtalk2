@@ -59,3 +59,51 @@ Name = 'João Raínho' ;
 Name = 'Luís Araújo'
 
 Yes
+
+
+% query the table of countries:
+
+| ?- asian::country(Country, Name, Capital).
+
+Name = '中国'
+Capital = '北京'
+Country = china ;
+
+Name = '日本'
+Capital = '東京'
+Country = japan ;
+
+Name = 'Монгол Улс'
+Capital = 'Улаанбатаар'
+Country = mongolia ? ;
+
+Name = '臺灣'
+Capital = '臺北'
+Country = taiwan ;
+
+Name = 'Тоҷикистон'
+Capital = 'Душанбе'
+Country = tajikistan
+
+Yes
+
+
+% query the table of greek mythology divinities:
+
+| ?- mythology::divinity(English, Greek).
+Greek = 'Ηρα'
+English = hera ? ;
+
+Greek = 'Καλυψω'
+English = kalypso ? ;
+
+Greek = 'Μορφευς'
+English = morpheus ? ;
+
+Greek = 'Ποσειδων'
+English = poseidon ? ;
+
+Greek = 'Ζευς'
+English = zeus
+
+Yes

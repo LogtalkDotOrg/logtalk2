@@ -4371,7 +4371,7 @@ current_logtalk_flag(version, version(2, 31, 2)).
 		InputError,
 		'$lgt_compiler_error_handler'(Input, InputError)),
 	'$lgt_check_for_encoding_directive'(Term, Source, Input, NewInput, OutputOptions),	% the encoding/1 directive, when present, 
-	'$lgt_file_name'(prolog, File, Object),														% must be the first term on a source file
+	'$lgt_file_name'(prolog, File, Object),												% must be the first term on a source file
 	catch(
 		open(Object, write, Output, OutputOptions),
 		OpenError,
@@ -4402,18 +4402,20 @@ current_logtalk_flag(version, version(2, 31, 2)).
 	!,
 	(	\+ '$lgt_compiler_flag'(encoding_directive, unsupported) ->
 		close(Input),
-		'$lgt_logtalk_prolog_encoding'(LogtalkEncoding, PrologEncoding),
-		assertz('$lgt_pp_file_encoding_'(LogtalkEncoding, PrologEncoding)),
-		open(Source, read, NewInput, [encoding(PrologEncoding)]),
-		(	catch(stream_property(NewInput, bom(Boolean)), _, fail) ->					% SWI-Prolog and YAP
-			BOM = [bom(Boolean)],
-			assertz('$lgt_pp_file_bom_'(bom(Boolean)))
-		;	catch(stream_property(NewInput, encoding_signature(Boolean)), _, fail) ->	% SICStus Prolog
-			BOM = [encoding_signature(Boolean)]
-		;	BOM = []
-		),
-		read_term(NewInput, _, [singletons(_)])					% throw away encoding/1 directive
-	;	throw(error(domain_error(directive, encoding/1), directive(encoding(LogtalkEncoding))))
+		(	'$lgt_logtalk_prolog_encoding'(LogtalkEncoding, PrologEncoding) ->
+			assertz('$lgt_pp_file_encoding_'(LogtalkEncoding, PrologEncoding)),
+			open(Source, read, NewInput, [encoding(PrologEncoding)]),
+			(	catch(stream_property(NewInput, bom(Boolean)), _, fail) ->					% SWI-Prolog and YAP
+				BOM = [bom(Boolean)],
+				assertz('$lgt_pp_file_bom_'(bom(Boolean)))
+			;	catch(stream_property(NewInput, encoding_signature(Boolean)), _, fail) ->	% SICStus Prolog
+				BOM = [encoding_signature(Boolean)]
+			;	BOM = []
+			),
+			read_term(NewInput, _, [singletons(_)])				% throw away encoding/1 directive
+		;	throw(error(domain_error(directive, encoding/1), directive(encoding(LogtalkEncoding))))
+		)
+	;	throw(error(resource_error(text_encoding_support), directive(encoding(LogtalkEncoding))))
 	).
 
 '$lgt_check_for_encoding_directive'(_, _, Input, Input, []).	% assume no encoding/1 directive present on the source file
