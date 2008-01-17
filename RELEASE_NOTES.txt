@@ -10,15 +10,15 @@ RELEASE NOTES
 =============
 
 
-2.31.2 - January ??, 2008
+2.31.2 - January 21, 2008
 
 	Extended compatibility of the experimental Logtalk encoding/1 directive 
 	to SICStus Prolog 4.0.2 and improved its compatibility with SWI-Prolog 
 	and YAP.
 
-	Improved source file encoding handling by ensuring that a BOM present in 
-	a source file being compiled is inherited by the generated Prolog and XML 
-	files.
+	Improved source file encoding handling by ensuring that a BOM present 
+	in a source file being compiled is inherited by the generated Prolog 
+	and XML files.
 	
 	Changed the atoms used to represent different encodings when using the 
 	encoding/1 directive; Logtalk now uses the encoding names specified by 
@@ -29,6 +29,8 @@ RELEASE NOTES
 
 	Updated the "encodings" example to use the new encoding names and added 
 	new source files using UTF-16 and UTF-32 text encodings.
+
+	Added a POSIX integration script for Quintus Prolog.
 
 
 2.31.1 - January 3, 2008
