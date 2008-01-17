@@ -19,11 +19,11 @@ RELEASE NOTES
 	Improved source file encoding handling by ensuring that a BOM present 
 	in a source file being compiled is inherited by the generated Prolog 
 	and XML files.
-	
+
 	Changed the atoms used to represent different encodings when using the 
 	encoding/1 directive; Logtalk now uses the encoding names specified by 
 	IANA (using the preferred MIME name whenever available).
-	
+
 	Updated the Logtalk compiler to throw an exception when the specified 
 	encoding is not supported by the used back-end Prolog compiler.
 
