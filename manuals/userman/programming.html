@@ -38,6 +38,9 @@ Logtalk source files may contain any number of objects, categories, protocols, a
 <p>
 Logtalk source files may contain arbitrary Prolog directives and clauses interleaved with Logtalk entity definitions. These directives and clauses will not be compiled by Logtalk and will be copied unchanged to the corresponding Prolog output file. This feature is included to help the integration of Logtalk with Prolog extensions such as, for example, constraint programming extensions.
 </p>
+<p>
+The text encoding used in a source file may be declared using the <a title="Consult reference manual" href="../refman/directives/encoding1.html"><code>encoding/1</code></a> directive when running Logtalk with some back-end Prolog compilers that support multiple encodings (check the <code>encoding_directive</code> flag in the configuration file of your Prolog compiler). The encoding used (and, in the case of a Unicode encoding, any BOM present) in a source file will be used for the generated Prolog and XML files.
+</p>
 
 <h3 id="programming_loaders">Loader utility files</h3>
 
