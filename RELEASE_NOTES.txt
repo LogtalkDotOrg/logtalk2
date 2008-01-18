@@ -30,7 +30,7 @@ RELEASE NOTES
 	Updated the "encodings" example to use the new encoding names and added 
 	new source files using UTF-16 and UTF-32 text encodings.
 
-	Added a POSIX integration script for Quintus Prolog.
+	Added POSIX and Windows integration scripts for Quintus Prolog.
 
 
 2.31.1 - January 3, 2008

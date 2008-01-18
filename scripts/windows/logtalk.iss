@@ -276,7 +276,7 @@ end;
 
 function GetQuintusExePath(Param: String): String;
 begin
-    Result := 'qpwin.exe'
+    Result := GetEnv('Quintus') + '\bin\ix86\qpwin.exe'
 end;
 
 function GetSP3ExePath(Param: String): String;
