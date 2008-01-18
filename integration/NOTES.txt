@@ -20,6 +20,7 @@ system path):
 	gplgt		GNU Prolog integration script
 	plclgt		K-Prolog integration script
 	qplgt		Qu-Prolog integration script
+	quintuslgt	Quintus Prolog integration script
 	sicstuslgt	SICStus Prolog integration script
 	swilgt		SWI-Prolog integration script
 	xsblgt		XSB integration script (single-threaded)

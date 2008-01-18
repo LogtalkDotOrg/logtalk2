@@ -40,6 +40,7 @@ ln -sf ../share/logtalk/integration/eclipselgt.sh eclipselgt
 ln -sf ../share/logtalk/integration/gplgt.sh gplgt
 ln -sf ../share/logtalk/integration/plclgt.sh plclgt
 ln -sf ../share/logtalk/integration/qplgt.sh qplgt
+ln -sf ../share/logtalk/integration/quintuslgt.sh quintuslgt
 ln -sf ../share/logtalk/integration/sicstuslgt.sh sicstuslgt
 ln -sf ../share/logtalk/integration/swilgt.sh swilgt
 ln -sf ../share/logtalk/integration/xsblgt.sh xsblgt
@@ -66,6 +67,7 @@ rm -f lgt2pdf
 rm -f lgt2xml
 rm -f plclgt
 rm -f qplgt
+rm -f quintuslgt
 rm -f sicstuslgt
 rm -f swilgt
 rm -f xsblgt
@@ -106,6 +108,7 @@ rm -f yaplgt
 /usr/local/bin/gplgt
 /usr/local/bin/plclgt
 /usr/local/bin/qplgt
+/usr/local/bin/quintuslgt
 /usr/local/bin/sicstuslgt
 /usr/local/bin/swilgt
 /usr/local/bin/xsblgt
@@ -130,6 +133,7 @@ echo "  ECLiPSe (version 5.10#26 or later):      eclipselgt"
 echo "  GNU Prolog (version 1.2.16 or later):    gplgt"
 echo "  K-Prolog (version 6.0.1 or later):       plclgt"
 echo "  Qu-Prolog (version 8.1 or later):        qplgt"
+echo "  Quintus Prolog (versions 3.5):           quintuslgt"
 echo "  SICStus Prolog (versions 3.12.x, 4.0.x): sicstuslgt"
 echo "  SWI-Prolog (version 5.6.16 or later):    swilgt"
 echo "  XSB (version 3.1 or later):              xsblgt   (first run must use sudo)"

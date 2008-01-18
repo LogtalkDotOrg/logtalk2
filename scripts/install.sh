@@ -68,6 +68,7 @@ ln -sf ../share/logtalk/integration/eclipselgt.sh eclipselgt
 ln -sf ../share/logtalk/integration/gplgt.sh gplgt
 ln -sf ../share/logtalk/integration/plclgt.sh plclgt
 ln -sf ../share/logtalk/integration/qplgt.sh qplgt
+ln -sf ../share/logtalk/integration/quintuslgt.sh quintuslgt
 ln -sf ../share/logtalk/integration/sicstuslgt.sh sicstuslgt
 ln -sf ../share/logtalk/integration/swilgt.sh swilgt
 ln -sf ../share/logtalk/integration/xsblgt.sh xsblgt
@@ -77,18 +78,19 @@ ln -sf ../share/logtalk/integration/yaplgt.sh yaplgt
 echo "The following integration scripts are installed for running Logtalk"
 echo "with selected back-end Prolog compilers:"
 echo
-echo "  B-Prolog:       bplgt       (first run must use sudo)"
-echo "  CIAO:           ciaolgt     (first run must use sudo)"
-echo "  CxProlog:       cxlgt"
-echo "  ECLiPSe:        eclipselgt"
-echo "  GNU Prolog:     gplgt"
-echo "  K-Prolog:       plclgt"
-echo "  Qu-Prolog:      qplgt"
-echo "  SICStus Prolog: sicstuslgt"
-echo "  SWI-Prolog:     swilgt"
-echo "  XSB:            xsblgt      (first run must use sudo)"
-echo "  XSB (MT):       xsbmtlgt    (first run must use sudo)"
-echo "  YAP:            yaplgt"
+echo "  B-Prolog (version 7.0 or later):         bplgt    (first run must use sudo)"
+echo "  CIAO (version 1.10#5 or later):          ciaolgt  (first run must use sudo)"
+echo "  CxProlog (version 0.96.1 or later):      cxlgt"
+echo "  ECLiPSe (version 5.10#26 or later):      eclipselgt"
+echo "  GNU Prolog (version 1.2.16 or later):    gplgt"
+echo "  K-Prolog (version 6.0.1 or later):       plclgt"
+echo "  Qu-Prolog (version 8.1 or later):        qplgt"
+echo "  Quintus Prolog (versions 3.5):           quintuslgt"
+echo "  SICStus Prolog (versions 3.12.x, 4.0.x): sicstuslgt"
+echo "  SWI-Prolog (version 5.6.16 or later):    swilgt"
+echo "  XSB (version 3.1 or later):              xsblgt   (first run must use sudo)"
+echo "  XSB MT (CVS version):                    xsbmtlgt (first run must use sudo)"
+echo "  YAP (version 5.1.2 or later):            yaplgt"
 echo
 echo "The Prolog integration scripts can be found on \"$prefix/bin\"."
 echo "Make sure that the Prolog compilers are properly installed and available"
