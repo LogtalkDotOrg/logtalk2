@@ -13,8 +13,8 @@ RELEASE NOTES
 2.31.2 - January 21, 2008
 
 	Extended compatibility of the experimental Logtalk encoding/1 directive 
-	to SICStus Prolog 4.0.2 and improved its compatibility with SWI-Prolog 
-	and YAP.
+	to CxProlog 0.96.3 and SICStus Prolog 4.0.2 and improved support for YAP 
+	and SWI-Prolog.
 
 	Improved source file encoding handling by ensuring that a BOM present 
 	in a source file being compiled is inherited by the generated Prolog 
