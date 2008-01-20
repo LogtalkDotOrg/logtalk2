@@ -25,7 +25,7 @@
 
 <pre>encoding(Encoding)</pre>
 <p>
-Declares the source file text encoding. This is an <strong>experimental</strong> source file directive, which is only supported on some Prolog compilers. When used, this directive must be the first term in the source file. Currently recognized encodings include <code>'US-ASCII'</code>, <code>'ISO-8859-1'</code>, <code>'UTF-8'</code>, <code>'UTF-16'</code>, <code>'UTF-16LE'</code>, <code>'UTF-16BE'</code>, <code>'UTF-32'</code>, <code>'UTF-32LE'</code>, and <code>'UTF-32BE'</code>. Be sure to use an encoding  supported by the chosen back-end Prolog compiler (which config file must define a table that translates between the Logtalk and Prolog-specific terms that represent each supported encoding).   
+Declares the source file text encoding. This is an <strong>experimental</strong> source file directive, which is only supported on some back-end Prolog compilers. When used, this directive must be the first term in the source file. Currently recognized encodings values include <code>'US-ASCII'</code>, <code>'ISO-8859-1'</code>, <code>'UTF-8'</code>, <code>'UTF-16'</code>, <code>'UTF-16LE'</code>, <code>'UTF-16BE'</code>, <code>'UTF-32'</code>, <code>'UTF-32LE'</code>, <code>'UTF-32BE'</code>, <code>'Shift_JIS'</code>, and <code>'EUC-JP'</code>. Be sure to use an encoding supported by the chosen back-end Prolog compiler (whose config file must define a table that translates between the Logtalk and Prolog-specific terms that represent each supported encoding).   
 </p>
 
 <h4>Template and modes</h4>
