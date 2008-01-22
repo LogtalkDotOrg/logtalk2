@@ -9,6 +9,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-:- compile('$LOGTALKUSER/configs/quintus.config').
-:- compile('$LOGTALKHOME/compiler/logtalk.pl').
-:- compile('$LOGTALKUSER/libpaths/libpaths.pl').
+:- unix(argv([_, LOGTALKUSER| _])), unix(cd(LOGTALKUSER)), compile('configs/quintus.config').
+:- unix(argv([LOGTALKHOME| _])), unix(cd(LOGTALKHOME)), compile('compiler/logtalk.pl').
+:- unix(argv([_, LOGTALKUSER| _])), unix(cd(LOGTALKUSER)), compile('libpaths/libpaths.pl').

@@ -57,4 +57,4 @@ elif ! [ -d "$LOGTALKUSER" ]; then
 fi
 echo
 
-exec prolog +l "$LOGTALKHOME/integration/logtalk_quintus.pl" "$@"
+exec prolog +l "$LOGTALKHOME/integration/logtalk_quintus.pl" +z "$LOGTALKHOME" "$LOGTALKUSER" "$@"
