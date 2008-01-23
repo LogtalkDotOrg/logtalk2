@@ -187,3 +187,8 @@ Logtalk 2.31.2 changes the valid values for the encoding/1 directive from
 the SWI-Prolog original values to atoms complying with the IANA standard. 
 Old values are deprecated but still recognized for compatibility with older 
 Logtalk releases (see the config files of YAP and SWI-Prolog).
+
+Logtalk 2.31.3 changes the predicate used to load Prolog files, adding an 
+additional argument that represents a list of load/compile options (notably,
+encoding/1). Older config files are incompatible with this new Logtalk 
+version.

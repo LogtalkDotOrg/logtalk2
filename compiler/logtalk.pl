@@ -4009,16 +4009,22 @@ current_logtalk_flag(version, version(2, 31, 3)).
 			'$lgt_report_skipping_file'(File)
 		;	'$lgt_report_reloading_file'(File),
 			'$lgt_compile_file'(File),
-			'$lgt_file_name'(prolog, File, PrologFile),
-			'$lgt_load_prolog_code'(PrologFile, File),
+			'$lgt_load_compiled_file'(File),
 			'$lgt_report_reloaded_file'(File)
 		)
 	;	'$lgt_report_loading_file'(File),
 		'$lgt_compile_file'(File),
-		'$lgt_file_name'(prolog, File, PrologFile),
-		'$lgt_load_prolog_code'(PrologFile, File),
+		'$lgt_load_compiled_file'(File),
 		'$lgt_report_loaded_file'(File),
 		assertz('$lgt_loaded_file_'(File, Directory))
+	).
+
+
+'$lgt_load_compiled_file'(Source) :-
+	'$lgt_file_name'(prolog, Source, PrologFile),
+	(	'$lgt_pp_file_encoding_'(_, Encoding) ->
+		'$lgt_load_prolog_code'(PrologFile, Source, [encoding(Encoding)])
+	;	'$lgt_load_prolog_code'(PrologFile, Source, [])
 	).
 
 
