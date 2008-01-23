@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.31.3 - January ??, 2008
 
+	Added a "VERSION.txt" file that will be used to check compatibility 
+	between an existing LOGTALKUSER folder and a new Logtalk version.
+
 	Changed the predicate used to load Prolog files, adding an additional 
 	argument that represents a list of load/compile options (notably,
 	encoding/1).
