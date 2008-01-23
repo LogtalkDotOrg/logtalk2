@@ -982,13 +982,6 @@ complements_object(Category, Object) :-
 	throw(error(type_error(object_identifier, Object), complements_object(Category, Object))).
 
 complements_object(Category, Object) :-
-	nonvar(Scope),
-	Scope \== (public),
-	Scope \== protected,
-	Scope \== private,
-	throw(error(type_error(scope, Scope), complements_object(Category, Object))).
-
-complements_object(Category, Object) :-
 	'$lgt_complemented_object_'(Object, Category, _, _).
 
 
@@ -1771,7 +1764,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 31, 2)).
+current_logtalk_flag(version, version(2, 31, 3)).
 
 
 
