@@ -75,6 +75,7 @@ cp -RL "$LOGTALKHOME"/libpaths "$LOGTALKUSER"/
 sed 's_\$LOGTALKUSER_'$LOGTALKUSER'_' "$LOGTALKUSER"/libpaths/libpaths.pl > "$LOGTALKUSER"/libpaths/libpaths_no_env_var.pl
 cp -RL "$LOGTALKHOME"/library "$LOGTALKUSER"/
 cp -RL "$LOGTALKHOME"/xml "$LOGTALKUSER"/
+cp  "$LOGTALKHOME"/VERSION.txt "$LOGTALKUSER"/
 chmod -R u+w "$LOGTALKUSER"
 rm -f "$LOGTALKUSER"/xml/lgt2*
 rm -f "$LOGTALKUSER"/xml/logtalk.dtd
