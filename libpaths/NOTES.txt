@@ -57,5 +57,6 @@ to the lack of support for expanding environment variables on paths:
 	* Amzi! Prolog
 	* IF/Prolog
 	* JIProlog
+	* Quintus Prolog
 
 Feedback on other Prolog compilers is most appreciated.
