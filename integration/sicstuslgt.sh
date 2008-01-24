@@ -1,4 +1,4 @@
-#/bin/sh
+#/bin/bash
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
@@ -42,15 +42,24 @@ if ! [ "$LOGTALKUSER" ]; then
 	echo "The environment variable LOGTALKUSER should be defined first, pointing"
 	echo "to your Logtalk user directory!"
 	echo "Trying the default location for the Logtalk user directory..."
+	echo
 	export LOGTALKUSER=$HOME/logtalk
-	if [ -d "$LOGTALKUSER" ]; then		
-		echo "... using Logtalk user directory found at $LOGTALKUSER"
-	else
-		echo "... Logtalk user directory not found at default location. Creating a"
-		echo "new Logtalk user directory by running the \"cplgtdirs\" shell script:"
+fi
+
+if [ -d "$LOGTALKUSER" ]; then
+	if ! [ -a "$LOGTALKUSER/VERSION.txt" ]; then
+		echo "Logtalk user directory at $LOGTALKUSER is outdated!"
+		echo "Creating an up-to-date Logtalk user directory..."
 		cplgtdirs
+	else
+		current=`cat $LOGTALKUSER/VERSION.txt | sed 's/\.//g'`
+		if [ $current -lt 2313 ]; then
+			echo "Logtalk user directory at $LOGTALKUSER is outdated!"
+			echo "Creating an up-to-date Logtalk user directory..."
+			cplgtdirs
+		fi
 	fi
-elif ! [ -d "$LOGTALKUSER" ]; then
+else
 	echo "Cannot find \$LOGTALKUSER directory! Creating a new Logtalk user directory"
 	echo "by running the \"cplgtdirs\" shell script:"
 	cplgtdirs
