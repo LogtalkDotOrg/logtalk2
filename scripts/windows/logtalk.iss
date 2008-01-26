@@ -140,6 +140,7 @@ Name: "{code:GetLgtUserDir}\wenv"; Filename: "{app}\wenv"; Components: user
 Name: "{userdesktop}\Logtalk user files"; Filename: "{code:GetLgtUserDir}"; Components: user; Tasks: shortcut
 
 [Registry]
+Root: HKLM; Subkey: "Software\Logtalk"; ValueType: dword; ValueName: "Version"; ValueData: "2313"; Components: base; Flags: deletevalue uninsdeletevalue
 Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "LOGTALKHOME"; ValueData: "{app}"; Components: base; Flags: deletevalue uninsdeletevalue
 Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "LOGTALKUSER"; ValueData: "{code:GetLgtUserDir}"; Flags: deletevalue uninsdeletevalue
 
