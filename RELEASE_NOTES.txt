@@ -21,7 +21,7 @@ RELEASE NOTES
 	"cplgtdirs" script (a backup is automatically made of the old directory).
 
 	Updated the Windows installer to create a registry key with the Logtalk 
-	version number.
+	version number and to check for an outdated Logtalk user directory.
 
 	Changed the predicate used to load Prolog files, adding an additional 
 	argument that represents a list of load/compile options (notably,

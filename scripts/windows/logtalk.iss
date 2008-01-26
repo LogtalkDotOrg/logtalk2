@@ -161,6 +161,9 @@ var
   Explanation, Warning: String;
 
 procedure InitializeWizard;
+var
+  Version, InstalledVersion: Cardinal;
+  LOGTALKHOME: String;
 begin
   Explanation := 'Select the folder in which Setup should install Logtalk user data files, then click Next.'
                  + Chr(13) + Chr(13)
@@ -184,6 +187,22 @@ begin
                + 'If Logtalk is already set for you, this installer will make a backup copy of your current files (if you choose the same installation folder) and will restore all user data files to their default, pristine state.';
     WarningPage := CreateOutputMsgPage(wpWelcome,
   'Information', 'Please read the following important information before continuing.', Warning);
+  end;
+  if RegQueryDWordValue(HKLM, 'Software\Logtalk\', 'Version', Version) then
+    InstalledVersion := Version
+  else if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'LOGTALKHOME', LOGTALKHOME) and DirExists(LOGTALKHOME) then
+    InstalledVersion := 0
+  else
+    InstalledVersion := -1;
+  if IsAdminLoggedOn and (InstalledVersion >= 0) and (InstalledVersion < 2313) then
+  begin
+    Warning := 'You have an older version of Logtalk installed whose configuration files are incompatible with this new version (configuration files are stored in your Logtalk user data folder).'
+               + Chr(13) + Chr(13)
+               + 'You must updade your Logtalk user data folder by performing a full installation.'
+               + Chr(13) + Chr(13)
+               + 'All aditional Logtalk users on your computer must also use this installer to update their Logtalk user data folders.';
+    WarningPage := CreateOutputMsgPage(wpWelcome,
+  'Warning', 'Logtalk user data folder update required.', Warning);
   end
 end;
 
