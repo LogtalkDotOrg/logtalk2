@@ -27,6 +27,9 @@ RELEASE NOTES
 	argument that represents a list of load/compile options (notably,
 	encoding/1).
 
+	Updated the SICStus Prolog 4 config file to also accept UCS-2 encodings 
+	when using the encoding/1 directive.
+
 	Added a workaround to the Quintus Prolog integration scripts for its 
 	lack of support for expanding environment variables in file names.
 
