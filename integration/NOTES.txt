@@ -13,19 +13,19 @@ On POSIX systems, the Logtalk installers make the following integration
 scripts available from the command-line (you may need to adjust your 
 system path):
 
-	bplgt		B-Prolog integration script
-	ciaolgt		Ciao Prolog integration script
-	cxlgt		CxProlog integration script
-	eclipselgt	ECLiPSe integration script
-	gplgt		GNU Prolog integration script
-	plclgt		K-Prolog integration script
-	qplgt		Qu-Prolog integration script
-	quintuslgt	Quintus Prolog integration script
-	sicstuslgt	SICStus Prolog integration script
-	swilgt		SWI-Prolog integration script
-	xsblgt		XSB integration script (single-threaded)
-	xsbmtlgt	XSB integration script (multi-threaded)
-	yaplgt		YAP integration script
+	B-Prolog (version 7.0 or later):         bplgt    (first run must use sudo)
+	CIAO (version 1.10#5 or later):          ciaolgt  (first run must use sudo)
+	CxProlog (version 0.96.1 or later):      cxlgt
+	ECLiPSe (version 5.10#26 or later):      eclipselgt
+	GNU Prolog (version 1.2.16 or later):    gplgt
+	K-Prolog (version 5.1.2a or later):      plclgt
+	Qu-Prolog (version 8.1 or later):        qplgt
+	Quintus Prolog (version 3.5):            quintuslgt
+	SICStus Prolog (versions 3.12.x, 4.0.x): sicstuslgt
+	SWI-Prolog (version 5.6.16 or later):    swilgt
+	XSB (version 3.1 or later):              xsblgt   (first run must use sudo)
+	XSB MT (CVS version):                    xsbmtlgt (first run must use sudo)
+	YAP (version 5.1.2 or later):            yaplgt
 
 On Windows systems, the Logtalk installer makes the Prolog integration 
 shortcuts available from the "Start Menu/Programs/Logtalk" menu.
@@ -38,10 +38,6 @@ administrative account).
 The GNU Prolog integration script provides adequate performance for 
 development. For production environments, improved performance may be 
 achieved by generating a new GNU-Prolog top-level that includes Logtalk.
-
-The SWI-Prolog integration script assumes XPCE is installed. If that's 
-not the case, comment out the loading of the file "xpcehook.pl" on the 
-"integration/logtalk_swi.pl" file.
 
 Other Prolog compilers require manual steps for integration with Logtalk.
 See the "configs/NOTES.txt" file for details.

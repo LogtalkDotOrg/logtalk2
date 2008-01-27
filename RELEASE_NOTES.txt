@@ -10,25 +10,26 @@ RELEASE NOTES
 =============
 
 
-2.31.3 - January ??, 2008
+2.31.3 - January 28, 2008
 
 	Added a "VERSION.txt" file that is used to check compatibility between 
 	an existing Logtalk user folder (whose path is stored in the LOGTALKUSER 
 	environment variable) and a new Logtalk version.
 
 	Updated the POSIX Prolog integration scripts to check for an outdated 
-	Logtalk user directory, creating a new one if necessary by running the 
+	Logtalk user folder, creating a new one if necessary by running the 
 	"cplgtdirs" script (a backup is automatically made of the old directory).
 
 	Updated the Windows installer to create a registry key with the Logtalk 
-	version number and to check for an outdated Logtalk user directory.
+	version number and to check for an outdated Logtalk user folder.
 
 	Changed the predicate used to load Prolog files, adding an additional 
 	argument that represents a list of load/compile options (notably,
-	encoding/1).
+	encoding/1, which is necessary for supporting source files encodings 
+	such as ISO-8859-X).
 
 	Updated the SICStus Prolog 4 config file to also accept UCS-2 encodings 
-	when using the encoding/1 directive.
+	when using the encoding/1 directive (UCS-2 is subsumed by UTF-16).
 
 	Added a workaround to the Quintus Prolog integration scripts for its 
 	lack of support for expanding environment variables in file names.
