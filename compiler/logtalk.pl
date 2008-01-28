@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.31.3
+%  Release 2.31.4
 %
 %  Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 %
@@ -1764,7 +1764,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 31, 3)).
+current_logtalk_flag(version, version(2, 31, 4)).
 
 
 
@@ -2898,8 +2898,8 @@ current_logtalk_flag(version, version(2, 31, 3)).
 		)
 	).
 
-'$lgt_send_to_object_nv'(Obj, Pred, _) :-
-	catch(current_module(Obj), _, fail),
+'$lgt_send_to_object_nv'(Obj, Pred, _) :-		% allow Obj::Pred to be used as a shortcut
+	catch(current_module(Obj), _, fail),		% for calling module predicates
 	!,
 	':'(Obj, Pred).
 
@@ -2954,8 +2954,8 @@ current_logtalk_flag(version, version(2, 31, 3)).
 		;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender)))
 	).
 
-'$lgt_send_to_object_ne_nv'(Obj, Pred, _) :-
-	catch(current_module(Obj), _, fail),
+'$lgt_send_to_object_ne_nv'(Obj, Pred, _) :-	% allow Obj::Pred to be used as a shortcut
+	catch(current_module(Obj), _, fail),		% for calling module predicates
 	!,
 	':'(Obj, Pred).
 
@@ -6333,7 +6333,7 @@ current_logtalk_flag(version, version(2, 31, 3)).
 
 '$lgt_tr_head'(Head, _, _, Input) :-
 	functor(Head, Functor, 3),
-	once((Functor == before; Functor = after)),
+	once((Functor == before; Functor == after)),
 	\+ '$lgt_pp_implemented_protocol_'(monitoring, _, _, _),
 	'$lgt_compiler_flag'(report, on),
 	'$lgt_inc_compile_warnings_counter',
@@ -12757,8 +12757,7 @@ current_logtalk_flag(version, version(2, 31, 3)).
 		;	true
 		)
 	;	thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Tag, failure, DetId))
-	),
-	thread_exit(true).
+	).
 
 
 
@@ -12776,8 +12775,8 @@ current_logtalk_flag(version, version(2, 31, 3)).
 		thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Tag, success, NonDetId)),
 		thread_get_message(Message),
 		(	Message == '$lgt_next' ->
-			fail				% backtrack to the catch(Goal, ...) to try to find an alternative solution
-		;	thread_exit(true)	% otherwise assume Message = '$lgt_exit' and terminate thread
+			fail	% backtrack to the catch(Goal, ...) to try to find an alternative solution
+		;	true	% otherwise assume Message = '$lgt_exit' and terminate thread
 		)
 	;	nonvar(Flag),
 		!,
