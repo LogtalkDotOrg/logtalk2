@@ -1,11 +1,11 @@
 Name: logtalk
 Summary: Logtalk - Open source object-oriented logic programming language
-Version: 2.31.3
+Version: 2.31.4
 Release: 1
 License: Artistic License 2.0
 Group: Development/Languages
 Packager: Paulo Moura <pmoura@logtalk.org>
-Source: http://logtalk.org/files/lgt2313.tar.bz2
+Source: http://logtalk.org/files/lgt2314.tar.bz2
 BuildArchitectures: noarch
 URL: http://logtalk.org/
 Prefix: /usr/local
@@ -15,21 +15,21 @@ Logtalk is an open source object-oriented logic programming language that can us
 
 %prep
 
-%setup -n lgt2313
+%setup -n lgt2314
 
 %build
 
 %install
 mkdir -p /usr/local/share
-rm -rf /usr/local/share/lgt2313
+rm -rf /usr/local/share/lgt2314
 rm -f /usr/local/share/logtalk
-mkdir /usr/local/share/lgt2313
-cp -R * /usr/local/share/lgt2313
-cd /usr/local/share/lgt2313
+mkdir /usr/local/share/lgt2314
+cp -R * /usr/local/share/lgt2314
+cd /usr/local/share/lgt2314
 chmod a+x scripts/cleandist.sh
 scripts/cleandist.sh
 cd ..
-ln -sf lgt2313 logtalk
+ln -sf lgt2314 logtalk
 cd ..
 mkdir -p bin 
 cd bin
@@ -53,7 +53,7 @@ ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
 
 %clean
 cd /usr/local/share
-rm -rf lgt2313
+rm -rf lgt2314
 rm -f logtalk
 cd ../bin
 rm -f bplgt
@@ -76,26 +76,26 @@ rm -f yaplgt
 
 %files
 %defattr(-,root,root)
-%doc /usr/local/share/lgt2313/BIBLIOGRAPHY.bib
-%doc /usr/local/share/lgt2313/CUSTOMIZE.txt
-%doc /usr/local/share/lgt2313/INSTALL.txt
-%doc /usr/local/share/lgt2313/LICENSE.txt
-%doc /usr/local/share/lgt2313/QUICK_START.txt
-%doc /usr/local/share/lgt2313/README.txt
-%doc /usr/local/share/lgt2313/RELEASE_NOTES.txt
-%doc /usr/local/share/lgt2313/UPGRADING.txt
-/usr/local/share/lgt2313/compiler
-/usr/local/share/lgt2313/configs
-/usr/local/share/lgt2313/contributions
-/usr/local/share/lgt2313/examples
-/usr/local/share/lgt2313/integration
-/usr/local/share/lgt2313/libpaths
-/usr/local/share/lgt2313/library
-%docdir /usr/local/share/lgt2313/manuals
-/usr/local/share/lgt2313/manuals
-/usr/local/share/lgt2313/scripts
-/usr/local/share/lgt2313/wenv
-/usr/local/share/lgt2313/xml
+%doc /usr/local/share/lgt2314/BIBLIOGRAPHY.bib
+%doc /usr/local/share/lgt2314/CUSTOMIZE.txt
+%doc /usr/local/share/lgt2314/INSTALL.txt
+%doc /usr/local/share/lgt2314/LICENSE.txt
+%doc /usr/local/share/lgt2314/QUICK_START.txt
+%doc /usr/local/share/lgt2314/README.txt
+%doc /usr/local/share/lgt2314/RELEASE_NOTES.txt
+%doc /usr/local/share/lgt2314/UPGRADING.txt
+/usr/local/share/lgt2314/compiler
+/usr/local/share/lgt2314/configs
+/usr/local/share/lgt2314/contributions
+/usr/local/share/lgt2314/examples
+/usr/local/share/lgt2314/integration
+/usr/local/share/lgt2314/libpaths
+/usr/local/share/lgt2314/library
+%docdir /usr/local/share/lgt2314/manuals
+/usr/local/share/lgt2314/manuals
+/usr/local/share/lgt2314/scripts
+/usr/local/share/lgt2314/wenv
+/usr/local/share/lgt2314/xml
 /usr/local/share/logtalk
 /usr/local/bin/cplgtdirs
 /usr/local/bin/lgt2pdf
