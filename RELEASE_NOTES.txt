@@ -12,6 +12,8 @@ RELEASE NOTES
 
 2.31.4 - February ??, 2008
 
+	Updated multi-threading support. Improved thread cancellation when 
+	executing and-parallelism and competitive or-parallelism calls.
 	Removed two redundant calls to the built-in predicate thread_exit/1 
 	on the Logtalk compiler.
 

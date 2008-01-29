@@ -12959,7 +12959,10 @@ current_logtalk_flag(version, version(2, 31, 4)).
 '$lgt_mt_threaded_and_clean'([], _).
 
 '$lgt_mt_threaded_and_clean'([Id| Ids], Queue) :-
-	catch(thread_signal(Id, thread_exit(abort)), _, true),
+	(	thread_property(Id, running) ->							% we need to use catch/3 as the thread may 
+		catch(thread_signal(Id, thread_exit(aborted)), _, true)	% terminate after testing if it's running
+	;	true													% and before we can abort it
+	),
 	(	thread_peek_message(Queue, '$lgt_and_call'(_, Id, _)) ->
 		thread_get_message(Queue, '$lgt_and_call'(_, Id, _))
 	;	true
@@ -13043,7 +13046,10 @@ current_logtalk_flag(version, version(2, 31, 4)).
 '$lgt_mt_threaded_or_clean'([], _).
 
 '$lgt_mt_threaded_or_clean'([Id| Ids], Queue) :-
-	catch(thread_signal(Id, thread_exit(abort)), _, true),
+	(	thread_property(Id, running) ->							% we need to use catch/3 as the thread may
+		catch(thread_signal(Id, thread_exit(aborted)), _, true)	% terminate after testing if it's running
+	;	true													% and before we can abort it
+	),
 	(	thread_peek_message(Queue, '$lgt_or_call'(_, Id, _)) ->
 		thread_get_message(Queue, '$lgt_or_call'(_, Id, _))
 	;	true
