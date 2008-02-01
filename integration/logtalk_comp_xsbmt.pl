@@ -64,8 +64,9 @@
 % table of library paths
 :- thread_shared(logtalk_library_path(_, _)).
 
-% compiler hook goal:
-:- thread_shared('$lgt_hook_goal_'(_, _)).
+% compiler hook term and goal expansion:
+:- thread_shared('$lgt_hook_term_expansion_'(_, _)).
+:- thread_shared('$lgt_hook_goal_expansion_'(_, _)).
 
 % multi-threading tags
 :- thread_shared('$lgt_threaded_tag_counter'(_)).
