@@ -12933,11 +12933,10 @@ current_logtalk_flag(version, version(2, 31, 4)).
 	;	Result = true(Tgoal) ->
 		'$lgt_mt_threaded_and_add_result'(Results, Id, Tgoal, Continue),
 		(	Continue == false ->
-			'$lgt_mt_threaded_and_clean'(Tag, Queue),
 			'$lgt_mt_threaded_and_exit_unify'(TGoals, Results)
 		;	'$lgt_mt_threaded_and_exit'(TGoals, Tag, Queue, Results)
 		)
-	;	% Result == fail ->
+	;	% Result = fail ->
 		'$lgt_mt_threaded_and_clean'(Tag, Queue),
 		fail
 	).
@@ -12949,6 +12948,7 @@ current_logtalk_flag(version, version(2, 31, 4)).
 '$lgt_mt_threaded_and_exit_unify'((TGoal, TGoals), [id(_, TGoal)| Results]) :-
 	!,
 	'$lgt_mt_threaded_and_exit_unify'(TGoals, Results).
+
 '$lgt_mt_threaded_and_exit_unify'(TGoal, [id(_, TGoal)]).
 
 
@@ -12976,29 +12976,36 @@ current_logtalk_flag(version, version(2, 31, 4)).
 
 '$lgt_mt_threaded_and_add_result'([id(Id1, Result1)| Ids], Id2, Result2, Continue) :-
 	(	Id1 == Id2 ->
+		% join thread and record thread result
+		thread_join(Id1, _),
 		Result1 = Result2,
 		(	var(Continue) ->
 			'$lgt_mt_threaded_and_add_result'(Ids, Continue)
 		;	true
 		)
 	;	var(Result1) ->
+		% we found a thread whose result is still pending, ser Continue to true
 		'$lgt_mt_threaded_and_add_result'(Ids, Id2, Result2, true)
 	;	'$lgt_mt_threaded_and_add_result'(Ids, Id2, Result2, Continue)
 	).
 
+
 '$lgt_mt_threaded_and_add_result'([], false).
+
 '$lgt_mt_threaded_and_add_result'([id(_, Result)| Ids], Continue) :-
 	(	var(Result) ->
+		% we found a thread whose result is still pending
 		Continue = true
-	;	'$lgt_mt_threaded_and_add_result'(Ids, Continue)
+	;	% otherwise continue examining the reamaining thread results
+		'$lgt_mt_threaded_and_add_result'(Ids, Continue)
 	).
 
 
 
 % '$lgt_mt_threaded_or_call'(+callable, +list(object_identifier), +thread_identifier, +object_identifier)
 %
-% proves a goal from a disjunction in a threaded/1 predicate call and sends the result
-% back to the message queue of the object containing the call
+% proves a goal from a disjunction in a threaded/1 predicate call and sends
+% the result back to the message queue of the object containing the call
 
 '$lgt_mt_threaded_or_call'(TGoal, Tag, Id, Queue) :-
 	thread_self(Id),
@@ -13021,7 +13028,7 @@ current_logtalk_flag(version, version(2, 31, 4)).
 	;	Result = true(TGoal) ->
 		'$lgt_mt_threaded_or_clean'(Tag, Queue),
 		'$lgt_mt_threaded_or_exit_unify'(TGoals, Tag, Id, TGoal)
-	;	'$lgt_mt_threaded_or_continue'(Results, Id) ->
+	;	'$lgt_mt_threaded_or_continue'(Results, Id) -> 
 		'$lgt_mt_threaded_or_exit'(TGoals, Tag, Queue, Results)
 	;	'$lgt_mt_threaded_or_clean'(Tag, Queue)
 	).
@@ -13036,6 +13043,7 @@ current_logtalk_flag(version, version(2, 31, 4)).
 		TGoal1 = TGoal2
 	;	'$lgt_mt_threaded_or_exit_unify'(TGoals, Ids, Id2, TGoal2)
 	).
+
 '$lgt_mt_threaded_or_exit_unify'(TGoal, [Id], Id, TGoal).
 
 
@@ -13067,20 +13075,25 @@ current_logtalk_flag(version, version(2, 31, 4)).
 
 '$lgt_mt_threaded_or_continue'([id(Id1, Result)| Ids], Continue, Id2) :-
 	(	Id1 == Id2 ->
+		% record failed thread
 		Result = fail,
 		(	Continue == true ->
 			true
 		;	'$lgt_mt_threaded_or_continue'(Ids)
 		)
 	;	var(Result) ->
+		% we found a thread whose result is still pending
 		'$lgt_mt_threaded_or_continue'(Ids, true, Id2)
-	;	'$lgt_mt_threaded_or_continue'(Ids, Continue, Id2)
+	;	% otherwise continue examining the reamaining thread results
+		'$lgt_mt_threaded_or_continue'(Ids, Continue, Id2)
 	).
 
 '$lgt_mt_threaded_or_continue'([id(_, Result)| Ids]) :-
 	(	var(Result) ->
+		% we found a thread whose result is still pending
 		true
-	;	'$lgt_mt_threaded_or_continue'(Ids)
+	;	% otherwise continue examining the reamaining thread results
+		'$lgt_mt_threaded_or_continue'(Ids)
 	).
 
 
