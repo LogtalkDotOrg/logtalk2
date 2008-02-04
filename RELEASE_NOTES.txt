@@ -12,8 +12,8 @@ RELEASE NOTES
 
 2.31.4 - February ??, 2008
 
-	Optimized performance of the threaded/1 predicate when the argument is a 
-	conjunction of goals (and-parallelism).
+	Optimized performance of successful threaded/1 calls when the argument 
+	is a conjunction of goals (and-parallelism).
 
 	Improved thread cancellation when executing competitive or-parallelism 
 	and and-parallelism calls.

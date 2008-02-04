@@ -12928,16 +12928,17 @@ current_logtalk_flag(version, version(2, 31, 4)).
 '$lgt_mt_threaded_and_exit'(TGoals, Tag, Queue, Results) :-
 	thread_get_message(Queue, '$lgt_and_call'(Tag, Id, Result)),
 	(	Result = error(Error) ->
-		'$lgt_mt_threaded_and_clean'(Tag, Queue),
+		'$lgt_mt_threaded_and_abort'(Tag, Queue),
 		throw(Error)
 	;	Result = true(Tgoal) ->
 		'$lgt_mt_threaded_and_add_result'(Results, Id, Tgoal, Continue),
 		(	Continue == false ->
+			'$lgt_mt_threaded_and_clean'(Tag, Queue),
 			'$lgt_mt_threaded_and_exit_unify'(TGoals, Results)
 		;	'$lgt_mt_threaded_and_exit'(TGoals, Tag, Queue, Results)
 		)
 	;	% Result = fail ->
-		'$lgt_mt_threaded_and_clean'(Tag, Queue),
+		'$lgt_mt_threaded_and_abort'(Tag, Queue),
 		fail
 	).
 
@@ -12953,12 +12954,22 @@ current_logtalk_flag(version, version(2, 31, 4)).
 
 
 
-% aborts (if needed) and joins all threads, making sure no dangling results
-% are left on the object message queue
+% joins all threads
 
 '$lgt_mt_threaded_and_clean'([], _).
 
 '$lgt_mt_threaded_and_clean'([Id| Ids], Queue) :-
+	thread_join(Id, _),
+	'$lgt_mt_threaded_and_clean'(Ids, Queue).
+
+
+
+% aborts (if needed) and joins all threads, making sure no dangling results
+% are left on the object message queue
+
+'$lgt_mt_threaded_and_abort'([], _).
+
+'$lgt_mt_threaded_and_abort'([Id| Ids], Queue) :-
 	(	thread_property(Id, status(running)) ->					% we need to use catch/3 as the thread may 
 		catch(thread_signal(Id, thread_exit(aborted)), _, true)	% terminate after testing if it's running
 	;	true													% and before we can abort it
@@ -12968,7 +12979,7 @@ current_logtalk_flag(version, version(2, 31, 4)).
 	;	true
 	),
 	thread_join(Id, _),
-	'$lgt_mt_threaded_and_clean'(Ids, Queue).
+	'$lgt_mt_threaded_and_abort'(Ids, Queue).
 
 
 
@@ -12976,8 +12987,7 @@ current_logtalk_flag(version, version(2, 31, 4)).
 
 '$lgt_mt_threaded_and_add_result'([id(Id1, Result1)| Ids], Id2, Result2, Continue) :-
 	(	Id1 == Id2 ->
-		% join thread and record thread result
-		thread_join(Id1, _),
+		% record thread result
 		Result1 = Result2,
 		(	var(Continue) ->
 			'$lgt_mt_threaded_and_add_result'(Ids, Continue)
