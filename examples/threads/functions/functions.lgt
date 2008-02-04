@@ -109,9 +109,9 @@
 	implements(find_rootp)).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura and Paulo Nunes',
-		date is 2007/7/7,
+		date is 2008/2/4,
 		comment is 'Bisection algorithm.']).
 
 	find_root(Function, A, B, Error, Zero) :-
@@ -122,13 +122,12 @@
 		;	Fa < 0.0, Fb > 0.0
 		),
 		X0 is (A + B) / 2.0,
-		Function::eval(X0, F0),
-		bisection(Function, A, B, X0, F0, Error, Zero).
+		bisection(Function, A, B, X0, Error, Zero).
 
-	bisection(_, _, _, Xn, Fn, Error, Xn) :-
-		abs(Fn) < Error,
+	bisection(_, An, Bn, Xn, Error, Xn) :-
+		abs(An-Bn) < 2*Error,
 		!.
-	bisection(Function, An, Bn, _, _, Error, Zero) :-
+	bisection(Function, An, Bn, _, Error, Zero) :-
 		Xn1 is (An + Bn) / 2.0,
 		Function::eval(Xn1, Fn1),
 		Function::eval(An, FAn),
@@ -138,7 +137,7 @@
 		;	An1 is Xn1,
 			Bn1 is Bn
 		),
-		bisection(Function, An1, Bn1, Xn1, Fn1, Error, Zero).
+		bisection(Function, An1, Bn1, Xn1, Error, Zero).
 
 :- end_object.
 

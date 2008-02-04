@@ -21,6 +21,12 @@ RELEASE NOTES
 	Removed two redundant calls to the built-in predicate thread_exit/1 on 
 	the Logtalk compiler.
 
+	Corrected a bug where a competitive or-parallelism call would succeed 
+	when all the individual calls had failed.
+
+	Corrected a bug in the implementation of the bisection algorithm in the 
+	multi-threading example "functions."
+
 
 2.31.3 - January 28, 2008
 
