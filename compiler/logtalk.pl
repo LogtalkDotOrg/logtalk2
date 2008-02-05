@@ -12970,12 +12970,9 @@ current_logtalk_flag(version, version(2, 31, 4)).
 '$lgt_mt_threaded_and_abort'([], _).
 
 '$lgt_mt_threaded_and_abort'([Id| Ids], Queue) :-
-	(	thread_property(Id, status(running)) ->					% we need to use catch/3 as the thread may 
-		catch(thread_signal(Id, thread_exit(aborted)), _, true)	% terminate after testing if it's running
-	;	true													% and before we can abort it
-	),
-	(	thread_peek_message(Queue, '$lgt_and_call'(_, Id, _)) ->
-		thread_get_message(Queue, '$lgt_and_call'(_, Id, _))
+	catch(thread_signal(Id, thread_exit(aborted)), _, true),		% use catch/3 as the thread may already be terminated
+	(	thread_peek_message(Queue, '$lgt_and_call'(_, Id, _)) ->	% the Id is only released after the thread is
+		thread_get_message(Queue, '$lgt_and_call'(_, Id, _))		% joined, therefore we can ignore the tag here
 	;	true
 	),
 	thread_join(Id, _),
@@ -12985,29 +12982,30 @@ current_logtalk_flag(version, version(2, 31, 4)).
 
 % adds the result of proving a goal and checks if all goals have succeeded:
 
-'$lgt_mt_threaded_and_add_result'([id(Id1, Result1)| Ids], Id2, Result2, Continue) :-
+'$lgt_mt_threaded_and_add_result'([id(Id1, Result1)| Results], Id2, Result2, Continue) :-
 	(	Id1 == Id2 ->
 		% record thread result
 		Result1 = Result2,
 		(	var(Continue) ->
-			'$lgt_mt_threaded_and_add_result'(Ids, Continue)
+			'$lgt_mt_threaded_and_continue'(Results, Continue)
 		;	true
 		)
 	;	var(Result1) ->
-		% we found a thread whose result is still pending, ser Continue to true
-		'$lgt_mt_threaded_and_add_result'(Ids, Id2, Result2, true)
-	;	'$lgt_mt_threaded_and_add_result'(Ids, Id2, Result2, Continue)
+		% we found a thread whose result is still pending, set Continue to true
+		'$lgt_mt_threaded_and_add_result'(Results, Id2, Result2, true)
+	;	% continue checking for threads with pending results
+		'$lgt_mt_threaded_and_add_result'(Results, Id2, Result2, Continue)
 	).
 
 
-'$lgt_mt_threaded_and_add_result'([], false).
+'$lgt_mt_threaded_and_continue'([], false).
 
-'$lgt_mt_threaded_and_add_result'([id(_, Result)| Ids], Continue) :-
+'$lgt_mt_threaded_and_continue'([id(_, Result)| Results], Continue) :-
 	(	var(Result) ->
 		% we found a thread whose result is still pending
 		Continue = true
-	;	% otherwise continue examining the reamaining thread results
-		'$lgt_mt_threaded_and_add_result'(Ids, Continue)
+	;	% otherwise continue looking for a thread with a still pending result
+		'$lgt_mt_threaded_and_continue'(Results, Continue)
 	).
 
 
@@ -13033,14 +13031,19 @@ current_logtalk_flag(version, version(2, 31, 4)).
 '$lgt_mt_threaded_or_exit'(TGoals, Tag, Queue, Results) :-
 	thread_get_message(Queue, '$lgt_or_call'(Tag, Id, Result)),
 	(	Result = error(Error) ->
-		'$lgt_mt_threaded_or_clean'(Tag, Queue),
+		'$lgt_mt_threaded_or_abort'(Tag, Queue),
 		throw(Error)
 	;	Result = true(TGoal) ->
-		'$lgt_mt_threaded_or_clean'(Tag, Queue),
+		'$lgt_mt_threaded_or_abort'(Tag, Queue),
 		'$lgt_mt_threaded_or_exit_unify'(TGoals, Tag, Id, TGoal)
-	;	'$lgt_mt_threaded_or_continue'(Results, Id) -> 
-		'$lgt_mt_threaded_or_exit'(TGoals, Tag, Queue, Results)
-	;	'$lgt_mt_threaded_or_clean'(Tag, Queue)
+	;	% Result = fail ->
+		'$lgt_mt_threaded_or_record_failure'(Results, Id, Continue),
+		(	Continue == true ->
+			'$lgt_mt_threaded_or_exit'(TGoals, Tag, Queue, Results)
+		;	% all goals failed
+			'$lgt_mt_threaded_or_abort'(Tag, Queue),
+			fail
+		)
 	).
 
 
@@ -13061,49 +13064,45 @@ current_logtalk_flag(version, version(2, 31, 4)).
 % aborts (if needed) and joins all threads, making sure no dangling results
 % are left on the object message queue
 
-'$lgt_mt_threaded_or_clean'([], _).
+'$lgt_mt_threaded_or_abort'([], _).
 
-'$lgt_mt_threaded_or_clean'([Id| Ids], Queue) :-
-	(	thread_property(Id, status(running)) ->					% we need to use catch/3 as the thread may 
-		catch(thread_signal(Id, thread_exit(aborted)), _, true)	% terminate after testing if it's running
-	;	true													% and before we can abort it
-	),
-	(	thread_peek_message(Queue, '$lgt_or_call'(_, Id, _)) ->
-		thread_get_message(Queue, '$lgt_or_call'(_, Id, _))
+'$lgt_mt_threaded_or_abort'([Id| Ids], Queue) :-
+	catch(thread_signal(Id, thread_exit(aborted)), _, true),		% use catch/3 as the thread may already be terminated
+	(	thread_peek_message(Queue, '$lgt_or_call'(_, Id, _)) ->		% the Id is only released after the thread is
+		thread_get_message(Queue, '$lgt_or_call'(_, Id, _))			% joined, therefore we can ignore the tag here
 	;	true
 	),
 	thread_join(Id, _),
-	'$lgt_mt_threaded_or_clean'(Ids, Queue).
+	'$lgt_mt_threaded_or_abort'(Ids, Queue).
 
 
 
-% checks if all goals have failed
+% records a goal failure and checks if all goals the all have failed:
 
-'$lgt_mt_threaded_or_continue'(Ids, Id) :-
-	'$lgt_mt_threaded_or_continue'(Ids, _, Id).
-
-
-'$lgt_mt_threaded_or_continue'([id(Id1, Result)| Ids], Continue, Id2) :-
+'$lgt_mt_threaded_or_record_failure'([id(Id1, Result)| Results], Id2, Continue) :-
 	(	Id1 == Id2 ->
 		% record failed thread
 		Result = fail,
 		(	Continue == true ->
 			true
-		;	'$lgt_mt_threaded_or_continue'(Ids)
+		;	'$lgt_mt_threaded_or_continue'(Results, Continue)
 		)
 	;	var(Result) ->
 		% we found a thread whose result is still pending
-		'$lgt_mt_threaded_or_continue'(Ids, true, Id2)
+		'$lgt_mt_threaded_or_record_failure'(Results, Id2, true)
 	;	% otherwise continue examining the reamaining thread results
-		'$lgt_mt_threaded_or_continue'(Ids, Continue, Id2)
+		'$lgt_mt_threaded_or_record_failure'(Results, Id2, Continue)
 	).
 
-'$lgt_mt_threaded_or_continue'([id(_, Result)| Ids]) :-
+
+'$lgt_mt_threaded_or_continue'([], false).
+
+'$lgt_mt_threaded_or_continue'([id(_, Result)| Results], Continue) :-
 	(	var(Result) ->
 		% we found a thread whose result is still pending
-		true
-	;	% otherwise continue examining the reamaining thread results
-		'$lgt_mt_threaded_or_continue'(Ids)
+		Continue = true
+	;	% otherwise continue looking for a thread with a still pending result
+		'$lgt_mt_threaded_or_continue'(Results, Continue)
 	).
 
 
