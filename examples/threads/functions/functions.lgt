@@ -105,6 +105,22 @@
 
 
 
+:- object(humps,
+	implements(functionp)).
+
+	% The Matlab humps function
+	% 1.29954968258482
+
+	eval(X, Y) :-
+		Y is 1.0/((X-0.3)**2+0.01) + 1.0/((X-0.9)**2+0.04) - 6.0.
+
+	evald(X, Y) :-
+		Y is -1.0/((X-0.3)**2+0.01)**2*(2*X-3.0/5.0) -1.0/((X-0.9)**2+0.04)**2*(2*X-1.8).
+
+:- end_object.
+
+
+
 :- object(bisection,
 	implements(find_rootp)).
 
@@ -246,15 +262,6 @@
 			;	(newton::find_root(Function, A, B, Error, Zero), Algorithm = newton)
 			;	(muller::find_root(Function, A, B, Error, Zero), Algorithm = muller)
 			)).
-
-%	an alternative, possibly better definition would be to make the methods simply fail in case of error:
-%
-%	find_root(Function, A, B, Error, Zero, Algorithm) :-
-%		threaded((
-%				(catch(bisection::find_root(Function, A, B, Error, Zero), _, fail), Algorithm = bisection)
-%			;	(catch(newton::find_root(Function, A, B, Error, Zero), _, fail), Algorithm = newton)
-%			;	(catch(muller::find_root(Function, A, B, Error, Zero), _, fail), Algorithm = muller)
-%			)).
 
 	find_root(Function, A, B, Error, Zero) :-
 		find_root(Function, A, B, Error, Zero, _).

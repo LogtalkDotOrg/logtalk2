@@ -13083,9 +13083,9 @@ current_logtalk_flag(version, version(2, 31, 4)).
 	(	Id1 == Id2 ->
 		% record failed thread
 		Result = fail,
-		(	Continue == true ->
-			true
-		;	'$lgt_mt_threaded_or_continue'(Results, Continue)
+		(	var(Continue) ->
+			'$lgt_mt_threaded_or_continue'(Results, Continue)
+		;	true
 		)
 	;	var(Result) ->
 		% we found a thread whose result is still pending
