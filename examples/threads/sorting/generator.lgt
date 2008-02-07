@@ -2,18 +2,14 @@
 :- object(generator).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2007/03/22,
+		date is 2008/2/7,
 		comment is 'Simple object defining a predicate for generating lists of random values.']).
 
 	:- public(list/2).
 
-	list(0, []).
-	list(N, [R| Rs]) :-
-		N > 0,
-		N2 is N - 1,
-		random::random(R),
-		list(N2, Rs).
+	list(N, List) :-
+		random::randseq(N, 0.0, 1.0, List).
 
 :- end_object.

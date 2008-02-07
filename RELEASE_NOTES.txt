@@ -25,7 +25,11 @@ RELEASE NOTES
 	when all the individual calls had failed.
 
 	Corrected a bug in the implementation of the bisection algorithm in the 
-	multi-threading example "functions."
+	multi-threading example "functions". Added an implementation of the Matlab
+	humps function. 
+
+	Updated the multi-threading example "sorting" to workaround a performance 
+	issue with XSB when generating lists of random numbers.
 
 
 2.31.3 - January 28, 2008
