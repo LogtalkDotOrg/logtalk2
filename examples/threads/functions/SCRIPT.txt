@@ -43,6 +43,18 @@ yes
 Zero = 1.25809265664599
 yes
 
+| ?- bisection::find_root(humps, -1.0, 2.0, 1.0e-15, Zero).
+
+no
+
+| ?- muller::find_root(humps, -1.0, 2.0, 1.0e-15, Zero).
+
+Zero = 1.29954968258
+yes
+
+| ?- newton::find_root(humps, -1.0, 2.0, 1.0e-15, Zero).
+ERROR: is/2: Arithmetic: evaluation error: `float_overflow'
+
 
 % find the roots of some functions running all methods at once using multi-threading:
 
@@ -68,4 +80,10 @@ yes
 
 Zero = -8.88178419700125e-16
 Method = bisection 
+yes
+
+| ?- function_root::find_root(humps, -1.0, 2.0, 1.0e-15, Zero, Method).
+
+Zero = 1.29954968258482
+Method = muller
 yes
