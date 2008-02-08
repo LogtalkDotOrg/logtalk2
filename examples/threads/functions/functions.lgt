@@ -258,9 +258,9 @@
 
 	find_root(Function, A, B, Error, Zero, Algorithm) :-
 		threaded((
-				(bisection::find_root(Function, A, B, Error, Zero), Algorithm = bisection)
-			;	(newton::find_root(Function, A, B, Error, Zero), Algorithm = newton)
-			;	(muller::find_root(Function, A, B, Error, Zero), Algorithm = muller)
+				(catch(bisection::find_root(Function, A, B, Error, Zero), _, fail), Algorithm = bisection)
+			;	(catch(newton::find_root(Function, A, B, Error, Zero), _, fail), Algorithm = newton)
+			;	(catch(muller::find_root(Function, A, B, Error, Zero), _, fail), Algorithm = muller)
 			)).
 
 	find_root(Function, A, B, Error, Zero) :-
