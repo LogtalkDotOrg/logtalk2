@@ -12,14 +12,20 @@ RELEASE NOTES
 
 2.31.4 - February ??, 2008
 
-	Optimized performance of successful threaded/1 calls when the argument 
-	is a conjunction of goals (and-parallelism).
+	Optimized the performance of threaded/1 calls by using a per-call message 
+	queue for collecting the individual call results and by using the message 
+	queue identifier as a tag for the individual calls. This solution avoids 
+	runtime synchronization of a large number of threads on the same message 
+	queue and simplifies compilation and runtime handling of threaded/1 calls.
 
-	Improved thread cancellation when executing competitive or-parallelism 
+	Simplified thread cancellation when executing competitive or-parallelism 
 	and and-parallelism calls.
 
 	Removed two redundant calls to the built-in predicate thread_exit/1 on 
 	the Logtalk compiler.
+
+	Corrected a bug where a competitive or-parallelism call would prematurely 
+	fail with one or more individual calls still pending.
 
 	Corrected a bug where a competitive or-parallelism call would succeed 
 	when all the individual calls had failed.
