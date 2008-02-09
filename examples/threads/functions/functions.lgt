@@ -243,9 +243,9 @@
 	implements(find_rootp)).
 
 	:- info([
-		version is 2.0,
+		version is 2.1,
 		author is 'Paulo Moura and Paulo Nunes',
-		date is 2007/07/05,
+		date is 2008/02/08,
 		comment is 'Multi-threading interface to root finding algorithms.']).
 
 	:- threaded.
