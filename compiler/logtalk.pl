@@ -12919,7 +12919,7 @@ current_logtalk_flag(version, version(2, 31, 4)).
 '$lgt_mt_threaded_and_exit'(TGoals, Queue, Results) :-
 	thread_get_message(Queue, '$lgt_and_call'(Id, Result)),
 	(	Result = error(Error) ->
-		'$lgt_mt_threaded_and_abort'(Results),
+		'$lgt_mt_threaded_call_abort'(Results),
 		throw(Error)
 	;	Result = true(Tgoal) ->
 		'$lgt_mt_threaded_and_add_result'(Results, Id, Tgoal, Continue),
@@ -12929,7 +12929,7 @@ current_logtalk_flag(version, version(2, 31, 4)).
 		;	'$lgt_mt_threaded_and_exit'(TGoals, Queue, Results)
 		)
 	;	% Result = fail ->
-		'$lgt_mt_threaded_and_abort'(Results),
+		'$lgt_mt_threaded_call_abort'(Results),
 		fail
 	).
 
@@ -12955,25 +12955,15 @@ current_logtalk_flag(version, version(2, 31, 4)).
 
 
 
-% aborts (if needed) and joins all threads, making sure no dangling results
-% are left on the object message queue
-
-'$lgt_mt_threaded_and_abort'([]).
-
-'$lgt_mt_threaded_and_abort'([id(Id, _)| Results]) :-
-	catch(thread_signal(Id, thread_exit(aborted)), _, true),	% use catch/3 as the thread may already be terminated
-	thread_join(Id, _),
-	'$lgt_mt_threaded_and_abort'(Results).
-
-
-
-% adds the result of proving a goal and checks if all goals have succeeded:
+% '$lgt_mt_threaded_and_add_result'(+list, +thread_identifier, @callable, -atom)
+%
+% adds the result of proving a goal and checks if all other goals have succeeded:
 
 '$lgt_mt_threaded_and_add_result'([id(Id1, Result1)| Results], Id2, Result2, Continue) :-
 	(	Id1 == Id2 ->
 		% record thread result
 		Result1 = Result2,
-		(	var(Continue) ->
+		(	var(Continue) ->	% we still don't know if there are any pending results
 			'$lgt_mt_threaded_and_continue'(Results, Continue)
 		;	true
 		)
@@ -12985,11 +12975,7 @@ current_logtalk_flag(version, version(2, 31, 4)).
 	).
 
 
-'$lgt_mt_threaded_and_continue'([], Continue) :-
-	(	var(Continue) ->
-		Continue = false
-	;	true
-	).
+'$lgt_mt_threaded_and_continue'([], false).
 
 '$lgt_mt_threaded_and_continue'([id(_, Result)| Results], Continue) :-
 	(	var(Result) ->
@@ -13022,17 +13008,17 @@ current_logtalk_flag(version, version(2, 31, 4)).
 '$lgt_mt_threaded_or_exit'(TGoals, Queue, Results) :-
 	thread_get_message(Queue, '$lgt_or_call'(Id, Result)),
 	(	Result = error(Error) ->
-		'$lgt_mt_threaded_or_abort'(Results),
+		'$lgt_mt_threaded_call_abort'(Results),
 		throw(Error)
 	;	Result = true(TGoal) ->
-		'$lgt_mt_threaded_or_abort'(Results),
+		'$lgt_mt_threaded_call_abort'(Results),
 		'$lgt_mt_threaded_or_exit_unify'(TGoals, Results, Id, TGoal)
 	;	% Result = fail ->
 		'$lgt_mt_threaded_or_record_failure'(Results, Id, Continue),
 		(	Continue == true ->
 			'$lgt_mt_threaded_or_exit'(TGoals, Queue, Results)
 		;	% all goals failed
-			'$lgt_mt_threaded_or_abort'(Results),
+			'$lgt_mt_threaded_call_abort'(Results),
 			fail
 		)
 	).
@@ -13052,24 +13038,14 @@ current_logtalk_flag(version, version(2, 31, 4)).
 
 
 
-% aborts (if needed) and joins all threads, making sure no dangling results
-% are left on the object message queue
-
-'$lgt_mt_threaded_or_abort'([]).
-
-'$lgt_mt_threaded_or_abort'([id(Id, _)| Results]) :-
-	catch(thread_signal(Id, thread_exit(aborted)), _, true),		% use catch/3 as the thread may already be terminated
-	thread_join(Id, _),
-	'$lgt_mt_threaded_or_abort'(Results).
-
-
-
-% records a goal failure and checks if all goals the all have failed:
+% '$lgt_mt_threaded_or_record_failure'(+list, +thread_identifier, -atom)
+%
+% records a goal failure and checks if all other goals have failed:
 
 '$lgt_mt_threaded_or_record_failure'([id(Id1, Result1)| Results], Id2, Continue) :-
 	(	Id1 == Id2 ->
 		Result1 = fail,			% record failed thread
-		(	var(Continue) ->
+		(	var(Continue) ->	% we still don't know if there are any pending results
 			'$lgt_mt_threaded_or_continue'(Results, Continue)
 		;	true
 		)
@@ -13081,11 +13057,7 @@ current_logtalk_flag(version, version(2, 31, 4)).
 	).
 
 
-'$lgt_mt_threaded_or_continue'([], Continue) :-
-	(	var(Continue) ->
-		Continue = false
-	;	true
-	).
+'$lgt_mt_threaded_or_continue'([], false).
 
 '$lgt_mt_threaded_or_continue'([id(_, Result)| Results], Continue) :-
 	(	var(Result) ->
@@ -13094,6 +13066,18 @@ current_logtalk_flag(version, version(2, 31, 4)).
 	;	% otherwise continue looking for a thread with a still pending result
 		'$lgt_mt_threaded_or_continue'(Results, Continue)
 	).
+
+
+
+% aborts a threaded call by aborting and joining all individual threads;
+% we must use catch/3 as some thread may already be terminated
+
+'$lgt_mt_threaded_call_abort'([]).
+
+'$lgt_mt_threaded_call_abort'([id(Id, _)| Results]) :-
+	catch(thread_signal(Id, thread_exit(aborted)), _, true),
+	thread_join(Id, _),
+	'$lgt_mt_threaded_call_abort'(Results).
 
 
 
