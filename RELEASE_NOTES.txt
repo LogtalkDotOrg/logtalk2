@@ -30,6 +30,9 @@ RELEASE NOTES
 	Corrected a bug where a competitive or-parallelism call would 
 	succeed when all the individual calls had failed.
 
+	Corrected a bug in the implementation of the predicate lookup/3 in 
+	the library object "bintree".
+
 	Corrected a bug in the implementation of the bisection algorithm in 
 	the multi-threading example "functions". Added an implementation of 
 	the MATLAB humps function (contributed by Paul Crocker).

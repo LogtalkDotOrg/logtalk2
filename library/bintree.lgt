@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2006/9/17,
+		date is 2008/2/11,
 		comment is 'Dictionary protocol implemented using binary trees.']).
 
 	:- private(map/4).
@@ -54,7 +54,7 @@
 	lookup_nonvar(=, _, Value, Value, _, _).
 	lookup_nonvar(<, Key, Value, _, Left, _) :-
 		lookup_nonvar(Key, Value, Left).
-	lookup_nonvar(<, Key, Value, _, _, Right) :-
+	lookup_nonvar(>, Key, Value, _, _, Right) :-
 		lookup_nonvar(Key, Value, Right).
 
 	lookup_var(Key, Value, t(_, _, Left, _)) :-
