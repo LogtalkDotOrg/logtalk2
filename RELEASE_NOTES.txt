@@ -40,9 +40,6 @@ RELEASE NOTES
 	Updated the multi-threading example "sorting" to workaround a mutex 
 	performance issue with XSB when generating lists of random numbers.
 
-	Simplified Prolog integration scripts by moving the safety checks 
-	into its own file that gets included in every script.
-
 
 2.31.3 - January 28, 2008
 
