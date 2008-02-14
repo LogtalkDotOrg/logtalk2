@@ -12,10 +12,10 @@
 	list(N, Cs) :-
 		N2 is N*2,
 		random::randseq(N2, 0.0, 1.0, Fs),
-        convert(Fs, Cs).
+		convert(Fs, Cs).
 
-    convert([], []).
-    convert([F1, F2 | Fs] , [c(F1, F2)| Cs]) :-
+	convert([], []).
+	convert([F1, F2 | Fs] , [c(F1, F2)| Cs]) :-
 		convert(Fs, Cs).
 
 :- end_object.
