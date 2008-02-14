@@ -33,7 +33,7 @@ yes
 
 % now we check using known results - in this case against Matlab... too lazy to do my own calcs:
 
-| ?- N=8, L=[c(1,0),c(2,0),c(3,0),c(4,0),c(5,0),c(6,0),c(7,0),c(8,0)], fft(4)::fft(N,L,F4), fft(8)::fft(N,L,F4).
+| ?- N=8, L=[c(1,0),c(2,0),c(3,0),c(4,0),c(5,0),c(6,0),c(7,0),c(8,0)], fft(4)::fft(N,L,F4), fft(8)::fft(N,L,F8).
 
 N = 8,
 L = [c(1, 0), c(2, 0), c(3, 0), c(4, 0), c(5, 0), c(6, 0), c(7, 0), c(8, 0)],
