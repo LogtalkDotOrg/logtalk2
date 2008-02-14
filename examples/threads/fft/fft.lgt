@@ -42,12 +42,11 @@
 			product_and_sum(Et, Ot, W1, Wn, Ft, Gt)
 		)).
 
-	% The (Cooley-Tukey) Algorithm - recursive, 1-d, unordered radix 2 fft
-
+	/* The (Cooley-Tukey) Algorithm - recursive, 1-d, unordered radix 2 fft          */
+	/*                                                                               */
 	/* fft(N, F, Ft) is true if the list Ft contains the Fourier transform of        */
 	/*   the N -- a power of two -- samples in the list F.  Each sample is a         */
 	/*   complex number represented by c(RealPart, ImaginaryPart).			         */
-
 	st_fft(1, Ft, Ft) :-
 		!.
 	st_fft(N, F, Ft) :-
@@ -62,7 +61,8 @@
 		product_and_sum(Et, Ot, W2, Wn, Gt, []),
 		product_and_sum(Et, Ot, W1, Wn, Ft, Gt).
 
-	/* Multiply and Add vectors */
+	/* Multiply and Add vectors;                                                    */
+	/* optimized version, does not use the product/3 and sum/3 predicates           */
 	product_and_sum([], [], _, _, Ft, Ft).
 	product_and_sum([c(Re, Ie)| Et], [c(Ro, Io)| Ot], c(Rw, Iw), c(Rwn, Iwn), [c(Rf, If)| Ft], Fu) :-
 		Rf is Re + (Rw*Ro - Iw*Io),
@@ -89,6 +89,7 @@
 		Rc is Ra*Rb - Ia*Ib,
 		Ic is Ra*Ib + Ia*Rb.
 
+	/* twiddle(N, C) is only included to illustrate the calculation of w/2 values.  */
 	twiddle(N, c(R, I)) :-
 		R is cos(2.0*pi/N),
 		I is sin(2.0*pi/N).
