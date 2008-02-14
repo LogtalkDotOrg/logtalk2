@@ -185,7 +185,7 @@
 		<SEQ TYPE="OPERATOR">=..</SEQ>
 
 		<!-- Arithemtic evaluation -->
-		<SEQ TYPE="OPERATOR">is</SEQ>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="OPERATOR">\bis\b</SEQ_REGEXP>
 
 		<!-- Arithemtic comparison -->
 		<SEQ TYPE="OPERATOR">=:=</SEQ>
