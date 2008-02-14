@@ -60,9 +60,9 @@ ans =
 
 | ?- N=16384, cgenerator::list(N, L), time(fft(1)::fft(N,L,F1)), time(fft(2)::fft(N,L,F2)), time(fft(4)::fft(N,L,F3)).
 
-% 2,736,157 inferences, 1.55 CPU in 1.67 seconds (93% CPU, 1765263 Lips)
-% 180,303 inferences, 1.49 CPU in 0.94 seconds (159% CPU, 121009 Lips)
-% 180,303 inferences, 1.65 CPU in 0.80 seconds (207% CPU, 109275 Lips)
+% 2,687,008 inferences, 1.52 CPU in 1.65 seconds (92% CPU, 1767768 Lips)
+% 16,496 inferences, 1.55 CPU in 0.94 seconds (165% CPU, 10643 Lips)
+% 16,496 inferences, 1.61 CPU in 0.59 seconds (271% CPU, 10246 Lips)
 
 N = 16384,
 L = [c(0.0980332, 0.534537), c(0.783046, 0.0702899), c(0.00399351, 0.458403), c(0.332693, 0.365153), c(0.584027, 0.271888), c(0.0550958, 0.545072), c(0.190854, 0.288811), c(0.0521769, 0.123861), c(..., ...)|...],
@@ -76,9 +76,9 @@ yes
 
 | ?- N=8192, cgenerator::list(N, L), time(fft(1)::fft(N,L,F1)), time(fft(2)::fft(N,L,F2)), time(fft(4)::fft(N,L,F3)).
 
-% 1,277,969 inferences, 0.71 CPU in 0.75 seconds (95% CPU, 1799956 Lips)
-% 90,191 inferences, 0.70 CPU in 0.44 seconds (159% CPU, 128844 Lips)
-% 90,191 inferences, 0.74 CPU in 0.36 seconds (204% CPU, 121880 Lips)
+% 1,253,396 inferences, 0.69 CPU in 0.74 seconds (93% CPU, 1816516 Lips)
+% 8,304 inferences, 0.71 CPU in 0.43 seconds (164% CPU, 11696 Lips)
+% 8,303 inferences, 0.75 CPU in 0.34 seconds (224% CPU, 11071 Lips)
 
 N = 8192,
 L = [c(0.108653, 0.130382), c(0.299788, 0.366249), c(0.797314, 0.0934765), c(0.618671, 0.557751), c(0.23189, 0.736263), c(0.157462, 0.455775), c(0.398063, 0.128278), c(0.0265977, 0.540345), c(..., ...)|...],
@@ -90,11 +90,11 @@ yes
 
 % a very big test
 
-| ?- N is 16384*4, cgenerator::list(N, L), time(fft(1)::fft(N,L,F1)), time(fft(2)::fft(N,L,F2)), time(fft(4)::fft(N,L,F3)).
+| ?- N is 65536, cgenerator::list(N, L), time(fft(1)::fft(N,L,F1)), time(fft(2)::fft(N,L,F2)), time(fft(4)::fft(N,L,F3)).
 
-% 12,386,329 inferences, 8.03 CPU in 8.65 seconds (93% CPU, 1542507 Lips)
-% 720,975 inferences, 7.73 CPU in 4.98 seconds (155% CPU, 93270 Lips)
-% 720,975 inferences, 8.05 CPU in 3.75 seconds (214% CPU, 89562 Lips)
+% 12,189,728 inferences, 7.85 CPU in 8.48 seconds (93% CPU, 1552832 Lips)
+% 65,648 inferences, 8.01 CPU in 4.96 seconds (161% CPU, 8196 Lips)
+% 65,648 inferences, 8.15 CPU in 3.21 seconds (254% CPU, 8055 Lips)
 
 N = 65536,
 L = [c(0.416673, 0.410381), c(0.340778, 0.930646), c(0.373208, 0.0208154), c(0.853131, 0.265193), c(0.661878, 0.674402), c(0.99455, 0.599138), c(0.109308, 0.617546), c(0.187351, 0.0837411), c(..., ...)|...],
