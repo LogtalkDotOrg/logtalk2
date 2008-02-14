@@ -33,6 +33,9 @@ RELEASE NOTES
 	Corrected a bug in the implementation of the predicate lookup/3 in 
 	the library object "bintree".
 
+	Added a multi-threading example of the Fast Fourier Transform, "fft", 
+	contributed by Paul Crocker.
+
 	Corrected a bug in the implementation of the bisection algorithm in 
 	the multi-threading example "functions". Added an implementation of 
 	the MATLAB humps function (contributed by Paul Crocker).

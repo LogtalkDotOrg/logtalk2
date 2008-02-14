@@ -32,6 +32,7 @@
 	 assertz(logtalk_library_path(engines, examples('engines/'))),
 	 assertz(logtalk_library_path(errors, examples('errors/'))),
 	 assertz(logtalk_library_path(expansion, examples('expansion/'))),
+	 assertz(logtalk_library_path(fft, threads('fft/'))),
 	 assertz(logtalk_library_path(fibonacci, threads('fibonacci/'))),
 	 assertz(logtalk_library_path(functions, threads('functions/'))),
 	 assertz(logtalk_library_path(hanoi, threads('hanoi/'))),

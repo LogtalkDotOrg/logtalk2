@@ -1,0 +1,88 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.31.4
+
+Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
+================================================================
+
+
+% start by loading the loading the example:
+
+| ?- logtalk_load(fft(loader)).
+...
+
+
+% NOTE: some example queries below use a SWI-Prolog proprietary predicate 
+% time/1 in order to get accurate goal times. This predicate is also found 
+% on recent development versions of YAP and XSB. For other Prolog compilers, 
+% replace the time/1 call by any appropriate timing calls (e.g. cputime/0).
+
+
+% start by testing the results for the various multi-threading versions to check 
+% the results using a random number generator to create an initial list:
+
+| ?- N=8, cgenerator::list(N,L), fft(1)::fft(N,L,F1), fft(2)::fft(N,L,F2), fft(4)::fft(N,L,F4).
+
+N = 8,
+L = [c(0.562342, 0.37745), c(0.448983, 0.0468073), c(0.482978, 0.81187), c(0.229581, 0.879153), c(0.39853, 0.909), c(0.248164, 0.314326), c(0.744353, 0.0665809), c(0.381964, 0.993583)],
+F1 = [c(3.4969, 4.39877), c(-0.0616465, -0.866927), c(1.24514, 0.493602), c(0.929429, -0.127675), c(0.879511, -0.0689684), c(-1.10131, -0.718926), c(-1.77806, 0.322397), c(0.888774, -0.412674)],
+F2 = [c(3.4969, 4.39877), c(-0.0616465, -0.866927), c(1.24514, 0.493602), c(0.929429, -0.127675), c(0.879511, -0.0689684), c(-1.10131, -0.718926), c(-1.77806, 0.322397), c(0.888774, -0.412674)],
+F4 = [c(3.4969, 4.39877), c(-0.0616465, -0.866927), c(1.24514, 0.493602), c(0.929429, -0.127675), c(0.879511, -0.0689684), c(-1.10131, -0.718926), c(-1.77806, 0.322397), c(0.888774, -0.412674)]
+yes
+
+
+% now we check using known results - in this case against Matlab... too lazy to do my own calcs:
+
+| ?- N=8, L=[c(1,0),c(2,0),c(3,0),c(4,0),c(5,0),c(6,0),c(7,0),c(8,0)], fft(4)::fft(N,L,F4), fft(8)::fft(N,L,F4).
+
+N = 8,
+L = [c(1, 0), c(2, 0), c(3, 0), c(4, 0), c(5, 0), c(6, 0), c(7, 0), c(8, 0)],
+F4 = [c(36.0, 0.0), c(-4.0, -9.65686), c(-4.0, -4.0), c(-4.0, -1.65686), c(-4.0, 0.0), c(-4.0, 1.65686), c(-4.0, 4.0), c(-4.0, 9.65686)],
+F8 = [c(36.0, 0.0), c(-4.0, -9.65686), c(-4.0, -4.0), c(-4.0, -1.65686), c(-4.0, 0.0), c(-4.0, 1.65686), c(-4.0, 4.0), c(-4.0, 9.65686)]
+
+% From Matlab - we can see that the results are ok for 4 and 8 threads... within rounding errors...
+EDU» x = [1 ,2,3,4,5,6,7,8]
+EDU» fft(x,8)
+ans =
+ 36.00000000000000                     
+-4.00000000000000 + 9.65685424949238i
+-4.00000000000000 + 4.00000000000000i 
+-4.00000000000000 + 1.65685424949238i
+-4.00000000000000                     
+-4.00000000000000 - 1.65685424949238i
+-4.00000000000000 - 4.00000000000000i 
+-4.00000000000000 - 9.65685424949238i
+
+
+% now a longer test with N=16384...
+
+| ?- N=16384, cgenerator::list(N, L), time(fft(1)::fft(N,L,F1)), time(fft(2)::fft(N,L,F2)), time(fft(4)::fft(N,L,F3)).
+
+16384
+% 2,686,997 inferences, 2.55 CPU in 2.73 seconds (93% CPU, 1053724 Lips)
+% 180,303 inferences, 2.50 CPU in 1.57 seconds (159% CPU, 72121 Lips)
+% 180,303 inferences, 2.55 CPU in 1.65 seconds (155% CPU, 70707 Lips)
+
+N = 16384,
+L = [c(0.0980332, 0.534537), c(0.783046, 0.0702899), c(0.00399351, 0.458403), c(0.332693, 0.365153), c(0.584027, 0.271888), c(0.0550958, 0.545072), c(0.190854, 0.288811), c(0.0521769, 0.123861), c(..., ...)|...],
+F1 = [c(8174.33, 8219.08), c(-20.8685, -26.0953), c(25.668, 53.9194), c(-27.0944, 19.5957), c(21.5431, -19.3457), c(29.1652, -14.5477), c(-9.71613, -11.4724), c(-30.8867, -26.4551), c(..., ...)|...],
+F2 = [c(8174.33, 8219.08), c(-20.8685, -26.0953), c(25.668, 53.9194), c(-27.0944, 19.5957), c(21.5431, -19.3457), c(29.1652, -14.5477), c(-9.71613, -11.4724), c(-30.8867, -26.4551), c(..., ...)|...],
+F3 = [c(8174.33, 8219.08), c(-20.8685, -26.0953), c(25.668, 53.9194), c(-27.0944, 19.5957), c(21.5431, -19.3457), c(29.1652, -14.5477), c(-9.71613, -11.4724), c(-30.8867, -26.4551), c(..., .
+
+
+% a smaller test
+
+| ?- N=8192, cgenerator::list(N, L), time(fft(1)::fft(N,L,F1)), time(fft(2)::fft(N,L,F2)), time(fft(4)::fft(N,L,F3)).
+
+% 1,253,397 inferences, 1.17 CPU in 1.25 seconds (93% CPU, 1071279 Lips)
+% 90,191 inferences, 1.15 CPU in 0.72 seconds (159% CPU, 78427 Lips)
+% 90,191 inferences, 1.14 CPU in 0.73 seconds (157% CPU, 79115 Lips)
+
+
+# a very big test
+
+| ?- N is 16384*4, cgenerator::list(N, L), time(fft(1)::fft(N,L,F1)), time(fft(2)::fft(N,L,F2)), time(fft(4)::fft(N,L,F3)).
+
+% 12,386,330 inferences, 13.18 CPU in 14.43 seconds (91% CPU, 939782 Lips)
+% 720,978 inferences, 12.82 CPU in 8.50 seconds (151% CPU, 56239 Lips)
+% 720,978 inferences, 12.65 CPU in 8.33 seconds (152% CPU, 56994 Lips)
