@@ -64,11 +64,12 @@
 
 	/* Multiply and Add vectors */
 	product_and_sum([], [], _, _, Ft, Ft).
-	product_and_sum([E| Et], [O| Ot], Wk, Wn, [F| Ft], Fu) :-
-		product(O, Wk, Temp),
-		sum(E, Temp, F),
-		product(Wk, Wn, Wk1),
-		product_and_sum(Et, Ot, Wk1, Wn, Ft, Fu).
+	product_and_sum([c(Re, Ie)| Et], [c(Ro, Io)| Ot], c(Rw, Iw), c(Rwn, Iwn), [c(Rf, If)| Ft], Fu) :-
+		Rf is Re + (Rw*Ro - Iw*Io),
+		If is Ie + (Rw*Io + Iw*Ro),
+		Rwk is Rw*Rwn - Iw*Iwn,
+		Iwk is Rw*Iwn + Iw*Rwn,
+		product_and_sum(Et, Ot, c(Rwk, Iwk), c(Rwn, Iwn), Ft, Fu).
 
 	/* evens_and_odds(Xs, Evens, Odds) is true if Evens is the list of the	        */
 	/*   even-positioned elements of the list Xs, and Odds is the list of the       */
