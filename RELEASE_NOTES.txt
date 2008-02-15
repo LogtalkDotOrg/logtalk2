@@ -47,6 +47,8 @@ RELEASE NOTES
 	Updated the multi-threading example "sorting" to workaround a mutex 
 	performance issue with XSB when generating lists of random numbers.
 
+	Added missing tab triggers to the TextMate Logtalk snippets.
+
 	Corrected a bug in the jEdit syntax coloring support for the is/2 
 	operator.
 
