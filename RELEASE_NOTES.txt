@@ -27,12 +27,12 @@ RELEASE NOTES
 	Corrected a bug where a competitive or-parallelism call would 
 	prematurely fail with one or more individual calls still pending.
 
-	Corrected a bug where a competitive or-parallelism call would 
-	succeed when all the individual calls had failed.
+	Corrected a bug where a competitive or-parallelism call would succeed 
+	when all the individual calls had failed.
 
 	Updated the library object "loop" to allow arithmetic expressions as 
-	arguments in the forto/3-4 and fordownto/3-4 predicates for convenience 
-	and clarity. Added a foreach/3 meta-predicate.
+	arguments in the forto/3-4 and fordownto/3-4 predicates for clarity  
+	and convenience. Added a foreach/3 meta-predicate.
 
 	Corrected a bug in the implementation of the predicate lookup/3 in 
 	the library object "bintree".
@@ -47,7 +47,9 @@ RELEASE NOTES
 	Updated the multi-threading example "sorting" to workaround a mutex 
 	performance issue with XSB when generating lists of random numbers.
 
-	Added missing tab triggers to the TextMate Logtalk snippets.
+	Updated support for the TextMate text editor. Added a command for 
+	generating the PDF documentation of open source files. Added missing 
+	tab triggers to the Logtalk snippets. Updated installation notes.
 
 	Corrected a bug in the jEdit syntax coloring support for the is/2 
 	operator.

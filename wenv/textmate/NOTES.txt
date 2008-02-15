@@ -22,10 +22,19 @@ folders:
 (create the chosen folder if it does not exist).
 
 In order to use the Logtalk bundle commands to compile and automatically 
-generate XHTML documentation for the frontmost source file window, open 
+generate (X)HTML documentation for the frontmost source file window, open 
 the TextMate Preferences window, select the "Advanced" tab, click on the 
-"Shell Variables" button and add a new variable, "LOGTALK_COMMAND", set 
-to the name of the shell script you use to launch Logtalk (e.g. yaplgt).
+"Shell Variables" button and add the following new variables:
+
+LOGTALK_COMMAND
+	set to the name of the shell script you use to launch Logtalk
+	(e.g. yaplgt)
+LOGTALK_HTML_COMMAND
+	set to the name of the shell script you use to generate the (X)HTML 
+	documentation (e.g. lgt2html)
+LOGTALK_PDF_COMMAND
+	set to the name of the shell script you use to generate the PDF 
+	documentation (e.g. lgt2pdf)
 
 Logtalk source files (including the programming examples) are usually 
 formatted using four-space tabs; you may set the tab width on the 
