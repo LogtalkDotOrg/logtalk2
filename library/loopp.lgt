@@ -1,4 +1,4 @@
- 
+
 :- protocol(loopp).
 
 	:- info([
@@ -25,28 +25,28 @@
 	:- meta_predicate(forto(*, *, ::)).
 	:- mode(forto(+integer, +integer, @callable), zero_or_one).
 	:- info(forto/3, [
-		comment is 'Counting from First to Last call Goal. For convenience and clarity, First and Last can be arithmetic expressions.',
+		comment is 'Counting from First to Last call Goal. For convenience and clarity, First and Last can be integer expressions.',
 		argnames is ['First', 'Last', 'Goal']]).
 
 	:- public(forto/4).
 	:- meta_predicate(forto(*, *, *, ::)).
 	:- mode(forto(-integer, +integer, +integer, @callable), zero_or_one).
 	:- info(forto/4, [
-		comment is 'Call Goal counting from First to Last and instantiating Count to each successive value. For convenience and clarity, First and Last can be arithmetic expressions.',
+		comment is 'Call Goal counting from First to Last and instantiating Count to each successive value. For convenience and clarity, First and Last can be integer expressions.',
 		argnames is ['Count', 'First', 'Last', 'Goal']]).
 
 	:- public(fordownto/3).
 	:- meta_predicate(fordownto(*, *, ::)).
 	:- mode(fordownto(+integer, +integer, @callable), zero_or_one).
 	:- info(fordownto/3, [
-		comment is 'Counting from First to Last call Goal. For convenience and clarity, First and Last can be arithmetic expressions.',
+		comment is 'Counting from First to Last call Goal. For convenience and clarity, First and Last can be integer expressions.',
 		argnames is ['First', 'Last', 'Goal']]).
 
 	:- public(fordownto/4).
 	:- meta_predicate(fordownto(*, *, *, ::)).
 	:- mode(fordownto(-integer, +integer, +integer, @callable), zero_or_one).
 	:- info(fordownto/4, [
-		comment is 'Call Goal counting from First to Last and instantiating Count to each successive value. For convenience and clarity, First and Last can be arithmetic expressions.',
+		comment is 'Call Goal counting from First to Last and instantiating Count to each successive value. For convenience and clarity, First and Last can be integer expressions.',
 		argnames is ['Count', 'First', 'Last', 'Goal']]).
 
 	:- public(whiledo/2).
