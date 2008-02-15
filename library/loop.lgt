@@ -3,9 +3,9 @@
 	implements(loopp)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2006/9/17,
+		date is 2008/2/15,
 		comment is 'Loop control structures predicates.']).
 
 	:- meta_predicate(whiledo(::, ::)).
@@ -22,7 +22,9 @@
 		whiledo(Condition, Action).
 
 	:- meta_predicate(forto(*, *, ::)).
-	forto(First, Last, Call) :-
+	forto(FirstExp, LastExp, Call) :-
+		First is FirstExp,
+		Last is LastExp,
 		(	First =< Last ->
 			\+ \+ call(Call),
 			Next is First + 1,
@@ -31,7 +33,9 @@
 		).
 
 	:- meta_predicate(forto(*, *, *, ::)).
-	forto(Count, First, Last, Call) :-
+	forto(Count, FirstExp, LastExp, Call) :-
+		First is FirstExp,
+		Last is LastExp,
 		(	First =< Last ->
 			\+ \+ (Count = First, call(Call)),
 			Next is First + 1,
@@ -40,7 +44,9 @@
 		).
 
 	:- meta_predicate(fordownto(*, *, ::)).
-	fordownto(First, Last, Call) :-
+	fordownto(FirstExp, LastExp, Call) :-
+		First is FirstExp,
+		Last is LastExp,
 		(	First >= Last ->
 			\+ \+ call(Call),
 			Next is First - 1,
@@ -49,7 +55,9 @@
 		).
 
 	:- meta_predicate(fordownto(*, *, *, ::)).
-	fordownto(Count, First, Last, Call) :-
+	fordownto(Count, FirstExp, LastExp, Call) :-
+		First is FirstExp,
+		Last is LastExp,
 		(	First >= Last ->
 			\+ \+ (Count = First, call(Call)),
 			Next is First - 1,
