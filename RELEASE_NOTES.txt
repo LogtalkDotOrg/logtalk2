@@ -32,7 +32,7 @@ RELEASE NOTES
 
 	Updated the library object "loop" to allow arithmetic expressions as 
 	arguments in the forto/3-4 and fordownto/3-4 predicates for convenience 
-	and clarity.
+	and clarity. Added a foreach/3 meta-predicate.
 
 	Corrected a bug in the implementation of the predicate lookup/3 in 
 	the library object "bintree".
