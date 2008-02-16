@@ -7214,6 +7214,14 @@ current_logtalk_flag(version, version(2, 31, 4)).
 	throw(type_error(callable, Pred)).
 
 
+% calls from within the pseudo-object "user"
+
+'$lgt_tr_body'(Pred, Pred, '$lgt_dbg_goal'(Pred, Pred, DbgCtx), Ctx) :-
+	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', _, _),
+	!,
+	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
+
+
 % goal is a call to a user meta-predicate
 
 '$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, DPred, DbgCtx), Ctx) :-
