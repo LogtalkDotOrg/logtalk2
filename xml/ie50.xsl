@@ -189,7 +189,7 @@
 			<dd><code><xsl:value-of select="template" /></code></dd>
 		</xsl:if>
 		<xsl:if test="meta">
-		<dt>metapredicate template:</dt>
+		<dt>meta-predicate template:</dt>
 			<dd><code><xsl:value-of select="meta" /></code></dd>
 		</xsl:if>
 		<xsl:if test="mode">

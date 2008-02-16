@@ -239,7 +239,7 @@
 			</xsl:for-each></ul></dd>
 		</xsl:if>
 		<xsl:if test="meta">
-		<dt class ="key">metapredicate template:</dt>
+		<dt class ="key">meta-predicate template:</dt>
 			<dd class ="value"><code><xsl:value-of select="meta" /></code></dd>
 		</xsl:if>
 		<xsl:if test="mode">
