@@ -30,9 +30,10 @@ RELEASE NOTES
 	Corrected a bug where a competitive or-parallelism call would succeed 
 	when all the individual calls had failed.
 
-	Updated the library object "loop" to allow arithmetic expressions as 
-	arguments in the forto/3-4 and fordownto/3-4 predicates for clarity  
-	and convenience. Added a foreach/3 meta-predicate.
+	Added foreach/3, forto/5, and fordownto/5 meta-predicates to the 
+	library object "loop". Updated the definitions of the forto/3-4 
+	and fordownto/3-4 meta-predicates to allow the use of arithmetic 
+	expressions as arguments for convenience and clarity.
 
 	Corrected a bug in the implementation of the predicate lookup/3 in 
 	the library object "bintree".
