@@ -1146,8 +1146,29 @@ threaded(Goals) :-
 
 threaded(Goals) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	catch('$lgt_tr_threaded_call'(Goals, MTGoals, Ctx), Error, throw(error(Error, threaded(Goals)))),
+	'$lgt_tr_threaded_wrap_calls'(Goals, WrappedGoals, threaded(Goals)),
+	catch('$lgt_tr_threaded_call'(WrappedGoals, MTGoals, Ctx), Error, throw(error(Error, threaded(Goals)))),
 	catch(MTGoals, Error, '$lgt_runtime_error_handler'(Error)).
+
+
+'$lgt_tr_threaded_wrap_calls'(Goal, _, OriginalGoal) :-
+	var(Goal),
+	throw(error(instantiation_error, OriginalGoal)).
+
+'$lgt_tr_threaded_wrap_calls'(Goal, _, OriginalGoal) :-
+	\+ callable(Goal),
+	throw(error(type_error(callable, Goal), OriginalGoal)).
+
+'$lgt_tr_threaded_wrap_calls'((Goal; Goals), ({Goal}; WrappedGoals), OriginalGoal) :-
+	!,
+	'$lgt_tr_threaded_wrap_calls'(Goals, WrappedGoals, OriginalGoal).
+
+'$lgt_tr_threaded_wrap_calls'((Goal, Goals), ({Goal}, WrappedGoals), OriginalGoal) :-
+	!,
+	'$lgt_tr_threaded_wrap_calls'(Goals, WrappedGoals, OriginalGoal).
+
+'$lgt_tr_threaded_wrap_calls'(Goal, {Goal}, _).
+
 
 
 % threaded_call(@callable, -nonvar)
@@ -1170,7 +1191,7 @@ threaded_call(Goal, Tag) :-
 
 threaded_call(Goal, Tag) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	'$lgt_tr_body'(threaded_call(Goal, Tag), TGoal, _, Ctx),
+	'$lgt_tr_body'(threaded_call({Goal}, Tag), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
@@ -1190,7 +1211,7 @@ threaded_call(Goal) :-
 
 threaded_call(Goal) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	'$lgt_tr_body'(threaded_call(Goal), TGoal, _, Ctx),
+	'$lgt_tr_body'(threaded_call({Goal}), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
@@ -1214,7 +1235,7 @@ threaded_once(Goal, Tag) :-
 
 threaded_once(Goal, Tag) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	'$lgt_tr_body'(threaded_once(Goal, Tag), TGoal, _, Ctx),
+	'$lgt_tr_body'(threaded_once({Goal}, Tag), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
@@ -1234,7 +1255,7 @@ threaded_once(Goal) :-
 
 threaded_once(Goal) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	'$lgt_tr_body'(threaded_once(Goal), TGoal, _, Ctx),
+	'$lgt_tr_body'(threaded_once({Goal}), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
@@ -1254,7 +1275,7 @@ threaded_ignore(Goal) :-
 
 threaded_ignore(Goal) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	'$lgt_tr_body'(threaded_ignore(Goal), TGoal, _, Ctx),
+	'$lgt_tr_body'(threaded_ignore({Goal}), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
@@ -1278,7 +1299,7 @@ threaded_exit(Goal, Tag) :-
 
 threaded_exit(Goal, Tag) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	'$lgt_tr_body'(threaded_exit(Goal, Tag), TGoal, _, Ctx),
+	'$lgt_tr_body'(threaded_exit({Goal}, Tag), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
@@ -1298,7 +1319,7 @@ threaded_exit(Goal) :-
 
 threaded_exit(Goal) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	'$lgt_tr_body'(threaded_exit(Goal), TGoal, _, Ctx),
+	'$lgt_tr_body'(threaded_exit({Goal}), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
@@ -1322,7 +1343,7 @@ threaded_peek(Goal, Tag) :-
 
 threaded_peek(Goal, Tag) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	'$lgt_tr_body'(threaded_peek(Goal, Tag), TGoal, _, Ctx),
+	'$lgt_tr_body'(threaded_peek({Goal}, Tag), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
@@ -1342,7 +1363,7 @@ threaded_peek(Goal) :-
 
 threaded_peek(Goal) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
-	'$lgt_tr_body'(threaded_peek(Goal), TGoal, _, Ctx),
+	'$lgt_tr_body'(threaded_peek({Goal}), TGoal, _, Ctx),
 	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
 
 
@@ -7212,14 +7233,6 @@ current_logtalk_flag(version, version(2, 31, 4)).
 '$lgt_tr_body'(Pred, _, _, _) :-
 	\+ callable(Pred),
 	throw(type_error(callable, Pred)).
-
-
-% calls from within the pseudo-object "user"
-
-'$lgt_tr_body'(Pred, Pred, '$lgt_dbg_goal'(Pred, Pred, DbgCtx), Ctx) :-
-	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', _, _),
-	!,
-	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
 % goal is a call to a user meta-predicate
