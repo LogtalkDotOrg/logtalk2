@@ -6,7 +6,7 @@ Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 ================================================================
 
 
-% start by loading the loading the example:
+% start by loading the example and the required library files:
 
 | ?- logtalk_load(fft(loader)).
 ...

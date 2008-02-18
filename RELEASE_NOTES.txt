@@ -31,8 +31,8 @@ RELEASE NOTES
 	when all the individual calls had failed.
 
 	Corrected a bug when compiling calls to the Logtalk multi-threading 
-	predicates made from the top-level interpreter, i.e. from within the 
-	pseudo-object "user".
+	built-in predicates made from the top-level interpreter, i.e. from 
+	within the pseudo-object "user".
 
 	Added foreach/3, forto/5, and fordownto/5 meta-predicates to the 
 	library object "loop". Updated the definitions of the forto/3-4 
