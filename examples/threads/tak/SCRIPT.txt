@@ -20,40 +20,34 @@ Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 % single-threaded version:
 
 | ?- time(tak(1)::tak(18, 12, 6, R)).
+% 254,476 inferences, 0.06 CPU in 0.07 seconds (91% CPU, 4241267 Lips)
 
-% 254,474 inferences, 1.44 CPU in 1.47 seconds (98% CPU, 176718 Lips)
-
-R = 7 
-
-Yes
+R = 7
+yes
 
 
 % multi-threaded version:
 
 | ?- time(tak(3)::tak(18, 12, 6, R)).
+% 714 inferences, 0.06 CPU in 0.05 seconds (121% CPU, 11900 Lips)
 
-% 202 inferences, 1.45 CPU in 0.77 seconds (188% CPU, 139 Lips)
-
-R = 7 
-
-Yes
+R = 7
+yes
 
 
 % single-threaded version:
 
 | ?- time(tak(1)::tak(21, 14, 7, R)).
-% 1,583,066 inferences, 12.40 CPU in 12.53 seconds (99% CPU, 127667 Lips)
+% 1,583,068 inferences, 0.52 CPU in 0.61 seconds (86% CPU, 3044362 Lips)
 
-R = 14 
-
-Yes
+R = 14
+yes
 
 
 % multi-threaded version:
 
 | ?- time(tak(3)::tak(21, 14, 7, R)).
-% 122 inferences, 11.98 CPU in 7.74 seconds (155% CPU, 10 Lips)
+% 106 inferences, 0.48 CPU in 0.38 seconds (127% CPU, 221 Lips)
 
-R = 14 
-
-Yes
+R = 14
+yes

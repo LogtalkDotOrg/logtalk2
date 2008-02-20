@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.31.4 - February 18, 2008
+2.31.4 - February 20, 2008
 
 	Optimized the performance of threaded/1 calls by using a per-call 
 	message queue for collecting the individual call results and by 
