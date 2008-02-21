@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.31.4
+%  Release 2.31.5
 %
 %  integration code for XPCE 6.6.21 and later versions supporting Logtalk 
 %  message sending goals as call-backs goals by using the syntax:
