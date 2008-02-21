@@ -11,7 +11,7 @@ file:
 
 	| ?- logtalk_load(dates_loader).
 
-The object date implements some useful calandar date predicates.
+The object date implements some useful calendar date predicates.
 
 The object time implements some useful time predicates.
 
