@@ -12,7 +12,7 @@ RELEASE NOTES
 
 2.31.5 - March ??, 2008
 
-	
+	Simplified building of MacOS X Installer packages.
 
 
 2.31.4 - February 20, 2008

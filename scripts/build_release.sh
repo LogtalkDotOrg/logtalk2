@@ -53,8 +53,6 @@ cd /opt/local/var/macports/sources/rsync.macports.org/release/ports/lang/logtalk
 sudo cp -f Portfile Portfile.old
 sudo sed -e 's/^version.*/version 2.31.5/' -i '' Portfile
 sudo sed -e "s/^checksums.*/checksums md5 $md5/" -i '' Portfile
-sudo sed -e 's/^distname.*/distname lgt2315/' -i '' Portfile
-sudo sed -e 's/^extract\.suffix.*/extract.suffix .tar.bz2/' -i '' Portfile
 sudo port clean --archive logtalk
 sudo port destroot logtalk
 sudo port pkg logtalk
