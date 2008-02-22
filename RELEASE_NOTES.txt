@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.31.5 - March ??, 2008
 
+	Updated the XSB config file to use the new optimized call/N predicates 
+	found on the current XSB CVS version.
+
 	Simplified building of MacOS X Installer packages.
 
 
