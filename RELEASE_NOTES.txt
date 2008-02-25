@@ -12,6 +12,11 @@ RELEASE NOTES
 
 2.31.5 - March ??, 2008
 
+	Updated the implementation of the threaded/1 built-in predicate to 
+	ensure that thread creation errors (usually, virtual memory exhaustion) 
+	result in the corresponding exception rather than in a non-terminating 
+	call.
+
 	Updated the XSB config file to use the new optimized call/N predicates 
 	found on the current XSB CVS version.
 
