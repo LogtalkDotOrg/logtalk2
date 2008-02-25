@@ -50,7 +50,7 @@
 				loop::forto(T, 0, 3,
 					(	Threads is truncate(2**T),
 						run(primes(Threads, Size), N, Average),
-						put_char('\t'), write(Average)
+						put_char('\t'), write(Average), flush_output
 					)), nl
 			)), nl.
 
@@ -63,12 +63,12 @@
 			)), nl,
 		loop::forto(S, 1, 10,
 			(	Size is S*5000,
-				write(Size), put_char('\t'),
+				write(Size),
 				generator::list(Size, List),
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
 						run(msort(Threads, List), N, Average),
-						write(Average), put_char('\t')
+						put_char('\t'), write(Average), flush_output
 					)), nl
 			)), nl.
 
@@ -81,12 +81,12 @@
 			)), nl,
 		loop::forto(S, 1, 10,
 			(	Size is S*5000,
-				write(Size), put_char('\t'),
+				write(Size),
 				generator::list(Size, List),
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
 						run(qsort(Threads, List), N, Average),
-						write(Average), put_char('\t')
+						put_char('\t'), write(Average), flush_output
 					)), nl
 			)), nl.
 
@@ -102,7 +102,7 @@
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
 						run(fibonacci(Threads, Nth), N, Average),
-						put_char('\t'), write(Average)
+						put_char('\t'), write(Average), flush_output
 					)), nl
 			)), nl.
 
@@ -118,7 +118,7 @@
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
 						run(hanoi(Threads, Disks), N, Average),
-						put_char('\t'), write(Average)
+						put_char('\t'), write(Average), flush_output
 					)), nl
 			)), nl.
 
@@ -131,9 +131,9 @@
 				put_char('\t'), write(Threads)
 			)), nl,
 		loop::forto(T, 0, 5,
-			(	Threads is truncate(2**T),
+			(	Threads is truncate(3**T),
 				run(tak(Threads, 21, 14, 7), N, Average),
-				put_char('\t'), write(Average)
+				put_char('\t'), write(Average), flush_output
 			)), nl.
 
 	run(Id, N, Average) :-
