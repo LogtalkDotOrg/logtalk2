@@ -17,6 +17,9 @@ RELEASE NOTES
 
 	Simplified building of MacOS X Installer packages.
 
+	Added a new multi-threading example, "mtbatch", for benchmarking 
+	multi-threading performance.
+
 
 2.31.4 - February 20, 2008
 

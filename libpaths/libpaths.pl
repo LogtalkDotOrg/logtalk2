@@ -51,6 +51,7 @@
 	 assertz(logtalk_library_path(miscellaneous, examples('miscellaneous/'))),
 	 assertz(logtalk_library_path(modules, examples('modules/'))),
 	 assertz(logtalk_library_path(msglog, examples('msglog/'))),
+	 assertz(logtalk_library_path(mtbatch, threads('mtbatch/'))),
 	 assertz(logtalk_library_path(nondet, threads('nondet/'))),
 	 assertz(logtalk_library_path(operators, examples('operators/'))),
 	 assertz(logtalk_library_path(parametric, examples('parametric/'))),
