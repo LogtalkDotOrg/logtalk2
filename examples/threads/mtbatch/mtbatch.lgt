@@ -125,11 +125,11 @@
 	% Takeuchi function benchmarks:
 	run(tak, N) :-
 		write('Takeuchi function (average of '), write(N), write(' runs)'), nl,
-		write((21,14,7)), nl,
 		loop::forto(T, 0, 5,
 			(	Threads is truncate(3**T),
 				put_char('\t'), write(Threads)
 			)), nl,
+		write((21,14,7)),
 		loop::forto(T, 0, 5,
 			(	Threads is truncate(3**T),
 				run(tak(Threads, 21, 14, 7), N, Average),
