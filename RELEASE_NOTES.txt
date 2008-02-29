@@ -26,8 +26,8 @@ RELEASE NOTES
 	multi-threading performance.
 
 	Updated the TextMate Logtalk bundle and its configuration instructions 
-	to make the "Compile" command more general, making it compatible with 
-	most Prolog compilers.
+	to make the "Compile" and "Generate ..." commands more general, making 
+	it compatible with most Prolog compilers.
 
 
 2.31.4 - February 20, 2008
