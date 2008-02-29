@@ -2,46 +2,80 @@
 :- object(primes(_Threads)).
 
 	:- info([
-		version is 1.3,
+		version is 2.0,
 		author is 'Paulo Moura',
-		date is 2007/12/20,
+		date is 2008/2/29,
 		comment is 'Simple example for comparing single and multi-threading calculation of prime numbers.',
-		parameters is ['Threads'- 'Number of threads to use. Valid values are 1, 2, 4, and 8.']]).
+		parameters is ['Threads'- 'Number of threads to use.']]).
 
 	:- threaded.
 
-	:- public(primes/3).
-	:- mode(primes(+integer, +integer, -list), one).
-	:- info(primes/3, [
-		comment is 'Returns a list of all prime numbers in the given interval.',
+	:- public(primes_custom/3).
+	:- mode(primes_custom(+integer, +integer, -list), one).
+	:- info(primes_custom/3, [
+		comment is 'Returns a list of all prime numbers in the given interval. Valid number of threads are 1, 2, 4, and 8. Custom code is used for each valid number of threads.',
 		argnames is ['Inf', 'Sup', 'Primes']]).
 
+	:- public(primes_spawn/3).
+	:- mode(primes_spawn(+integer, +integer, -list), one).
+	:- info(primes_spawn/3, [
+		comment is 'Returns a list of all prime numbers in the given interval. No restrictions on the number of threads to use besides those imposed by the backend Prolog compiler.',
+		argnames is ['Inf', 'Sup', 'Primes']]).
 
-	primes(N, M, Primes) :-
+	primes_spawn(N, M, Primes) :-
 		parameter(1, Threads),
-		primes(Threads, N, M, Primes).
+		M > N,
+		(M - N + 1) mod Threads =:= 0,
+		Size is (M - N + 1) // Threads,
+		split(N, M, Size, Intervals),
+		spawn(Intervals, [], Primes, Goals),
+		collect(Goals).
 
-	primes(1, N, M, Primes) :-
-		st_primes(N, M, Primes).
-	primes(2, N, M, Primes) :-
-		mt_primes_2(N, M, Primes).
-	primes(4, N, M, Primes) :-
-		mt_primes_4(N, M, Primes).
-	primes(8, N, M, Primes) :-
-		mt_primes_8(N, M, Primes).
+	split(N, M, _, []) :-
+		M < N,
+		!.
+	split(N, M, Size, [Inf-M| Intervals]) :-
+		Sup is M - Size,
+		Inf is Sup + 1,
+		split(N, Sup, Size, Intervals).
 
-	st_primes(N, M, Primes) :-
+	spawn([], Primes, Primes, []).
+	spawn([N-M| Intervals], Acc, Primes, [prime_numbers(N, M, Acc, Acc2)| Goals]) :-
+		threaded_once(prime_numbers(N, M, Acc, Acc2)),
+		spawn(Intervals, Acc2, Primes, Goals).
+
+	collect([]).
+	collect([prime_numbers(N, M, Acc, Primes)| Goals]) :-
+		threaded_exit(prime_numbers(N, M, Acc, Primes)),
+		collect(Goals).
+
+	primes_custom(N, M, Primes) :-
+		parameter(1, Threads),
+		M > N,
+		(M - N + 1) mod Threads =:= 0,
+		primes_custom(Threads, N, M, Primes).
+
+	primes_custom(1, N, M, Primes) :-
+		primes_custom_1(N, M, Primes).
+	primes_custom(2, N, M, Primes) :-
+		primes_custom_2(N, M, Primes).
+	primes_custom(4, N, M, Primes) :-
+		primes_custom_4(N, M, Primes).
+	primes_custom(8, N, M, Primes) :-
+		primes_custom_8(N, M, Primes).
+
+	primes_custom_1(N, M, Primes) :-
 		M > N,
 		prime_numbers(N, M, [], Primes).
 
-	mt_primes_2(N, M, Primes) :-
+	primes_custom_2(N, M, Primes) :-
 		M > N,
 		N1 is N + (M - N) // 2, N2 is N1 + 1,
 		threaded((
 			prime_numbers(N2, M,  [],  Acc),
 			prime_numbers(N,  N1, Acc, Primes))).
 
-	mt_primes_4(N, M, Primes) :-
+	primes_custom_4(N, M, Primes) :-
 		M > N,
 		N3 is N  + (M  - N ) // 2, N4 is N3 + 1,
 		N1 is N  + (N3 - N ) // 2, N2 is N1 + 1,
@@ -52,7 +86,7 @@
 			prime_numbers(N2, N3, Acc2, Acc3),
 			prime_numbers(N,  N1, Acc3, Primes))).
 
-	mt_primes_8(N, M, Primes) :-
+	primes_custom_8(N, M, Primes) :-
 		M > N,
 		N7  is N   + (M   - N  ) // 2, N8  is N7  + 1,
 		N3  is N   + (N7  - N  ) // 2, N4  is N3  + 1,

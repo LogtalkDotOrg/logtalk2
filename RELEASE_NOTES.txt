@@ -22,6 +22,9 @@ RELEASE NOTES
 
 	Simplified building of MacOS X Installer packages.
 
+	Updated the "primes" multi-threading example to allow any number of 
+	threads to be used in the computation of primes numbers.
+
 	Added a new multi-threading example, "mtbatch", for benchmarking 
 	multi-threading performance.
 
