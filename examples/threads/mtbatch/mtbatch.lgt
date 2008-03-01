@@ -37,25 +37,8 @@
 		fail.
 	run(_).
 
-	% prime numbers benchmarks (using custom code for 1, 2, 4, and 8 threads):
-	run(primes_custom, N) :-
-		write('Prime numbers (average of '), write(N), write(' runs using custom code for 1, 2, 4, and 8 threads)'), nl,
-		loop::forto(T, 0, 3,
-			(	Threads is truncate(2**T),
-				put_char('\t'), write(Threads)
-			)), nl,
-		loop::forto(S, 1, 10,
-			(	Size is S*10000,
-				write(Size),
-				loop::forto(T, 0, 3,
-					(	Threads is truncate(2**T),
-						run(primes_custom(Threads, Size), N, Average),
-						put_char('\t'), write(Average), flush_output
-					)), nl
-			)), nl.
-
 	% prime numbers benchmarks:
-	run(primes_spawn, N) :-
+	run(primes, N) :-
 		write('Prime numbers (average of '), write(N), write(' runs)'), nl,
 		loop::forto(Threads, 1, 16,
 			(	put_char('\t'), write(Threads)
@@ -64,7 +47,7 @@
 			(	Size is S*10000,
 				write(Size),
 				loop::forto(Threads, 1, 16,
-					(	run(primes_spawn(Threads, Size), N, Average),
+					(	run(primes(Threads, Size), N, Average),
 						put_char('\t'), write(Average), flush_output
 					)), nl
 			)), nl.
@@ -170,17 +153,11 @@
 		fail.
 	do_benchmark(empty_loop, _).
 
-	do_benchmark(primes_custom(Threads, Size), N) :-
+	do_benchmark(primes(Threads, Size), N) :-
 		repeat(N),
-			primes(Threads)::primes_custom(1, Size, _),
+			primes(Threads)::primes(1, Size, _),
 		fail.
-	do_benchmark(primes_custom(_, _), _).
-
-	do_benchmark(primes_spawn(Threads, Size), N) :-
-		repeat(N),
-			primes(Threads)::primes_spawn(1, Size, _),
-		fail.
-	do_benchmark(primes_spawn(_, _), _).
+	do_benchmark(primes(_, _), _).
 
 	do_benchmark(msort(Threads, List), N) :-
 		repeat(N),
