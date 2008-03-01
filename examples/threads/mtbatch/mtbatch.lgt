@@ -172,43 +172,43 @@
 
 	do_benchmark(primes_custom(Threads, Size), N) :-
 		repeat(N),
-			{primes(Threads)::primes_custom(1, Size, _)},
+			primes(Threads)::primes_custom(1, Size, _),
 		fail.
 	do_benchmark(primes_custom(_, _), _).
 
 	do_benchmark(primes_spawn(Threads, Size), N) :-
 		repeat(N),
-			{primes(Threads)::primes_spawn(1, Size, _)},
+			primes(Threads)::primes_spawn(1, Size, _),
 		fail.
 	do_benchmark(primes_spawn(_, _), _).
 
 	do_benchmark(msort(Threads, List), N) :-
 		repeat(N),
-			{msort(Threads)::msort(List, _)},
+			msort(Threads)::msort(List, _),
 		fail.
 	do_benchmark(msort(_, _), _).
 
 	do_benchmark(qsort(Threads, List), N) :-
 		repeat(N),
-			{qsort(Threads)::qsort(List, _)},
+			qsort(Threads)::qsort(List, _),
 		fail.
 	do_benchmark(qsort(_, _), _).
 
 	do_benchmark(fibonacci(Threads, Nth), N) :-
 		repeat(N),
-			{fibonacci(Threads)::fib(Nth, _)},
+			fibonacci(Threads)::fib(Nth, _),
 		fail.
 	do_benchmark(fibonacci(_, _), _).
 
 	do_benchmark(hanoi(Threads, Disks), N) :-
 		repeat(N),
-			{hanoi(Threads)::run(Disks)},
+			hanoi(Threads)::run(Disks),
 		fail.
 	do_benchmark(hanoi(_, _), _).
 
 	do_benchmark(tak(Threads, A, B, C), N) :-
 		repeat(N),
-			{tak(Threads)::tak(A, B, C, _)},
+			tak(Threads)::tak(A, B, C, _),
 		fail.
 	do_benchmark(tak(_, _, _, _), _).
 
