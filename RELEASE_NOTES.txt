@@ -21,7 +21,8 @@ RELEASE NOTES
 	found on the current XSB CVS version.
 
 	Simplified building of MacOS X Installer packages. Updated the Windows 
-	installation script to use the "C:\lgtsvn" as base.
+	installation script to use the "C:\lgtsvn" as base. Simplified manual 
+	installation instructions.
 
 	Updated the "primes" multi-threading example to allow any number of 
 	threads to be used in the computation of primes numbers.
