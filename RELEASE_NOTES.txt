@@ -20,7 +20,8 @@ RELEASE NOTES
 	Updated the XSB config file to use the new optimized call/N predicates 
 	found on the current XSB CVS version.
 
-	Simplified building of MacOS X Installer packages.
+	Simplified building of MacOS X Installer packages. Updated the Windows 
+	installation script to use the "C:\lgtsvn" as base.
 
 	Updated the "primes" multi-threading example to allow any number of 
 	threads to be used in the computation of primes numbers.

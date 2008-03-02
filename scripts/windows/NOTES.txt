@@ -10,3 +10,6 @@ This directory contains files used when building Windows 2000/XP GUI
 installers using Inno Setup 5.1.11 (or a later version):
 
 	http://www.jrsoftware.org/isinfo.php
+
+The building script, "logtalk.iss", assumes that a local copy of Logtalk 
+exists in the "C:\lgtsvn" directory.
