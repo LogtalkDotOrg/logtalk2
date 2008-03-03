@@ -7324,7 +7324,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 '$lgt_tr_threaded_and_call'(TGoals, MTCalls, MTExits) :-
 	'$lgt_tr_threaded_and_call'(TGoals, Queue, MTGoals, Ids, Results),
-	MTCalls = (message_queue_create(Queue), MTGoals, '$lgt_mt_check_threads'(Ids, Results)),
+	MTCalls = (message_queue_create(Queue), MTGoals, '$lgt_mt_check_threads'(Ids, Queue)),
 	MTExits = ('$lgt_mt_threaded_and_exit'(TGoals, Queue, Results), message_queue_destroy(Queue)).
 
 
@@ -7339,7 +7339,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 '$lgt_tr_threaded_or_call'(TGoals, MTCalls, MTExits) :-
 	'$lgt_tr_threaded_or_call'(TGoals, Queue, MTGoals, Ids, Results),
-	MTCalls = (message_queue_create(Queue), MTGoals, '$lgt_mt_check_threads'(Ids, Results)),
+	MTCalls = (message_queue_create(Queue), MTGoals, '$lgt_mt_check_threads'(Ids, Queue)),
 	MTExits = ('$lgt_mt_threaded_or_exit'(TGoals, Queue, Results), message_queue_destroy(Queue)).
 
 
@@ -12921,29 +12921,29 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 % '$lgt_mt_threaded_and_call'(+callable, +message_queue_identifier)
 %
-% proves a goal from a conjunction in a threaded/1 predicate call and sends the result
-% back to the message queue of the object containing the call
+% proves a goal from a conjunction in a threaded/1 predicate call and
+% sends the result back to the message queue associated to the call
 
 '$lgt_mt_threaded_and_call'(TGoal, Queue) :-
 	thread_self(Id),
-	(	catch(TGoal, Error, (thread_send_message(Queue, '$lgt_and_call'(Id, error(Error))), throw(Error))) ->
-		thread_send_message(Queue, '$lgt_and_call'(Id, true(TGoal)))
-	;	thread_send_message(Queue, '$lgt_and_call'(Id, fail))
+	(	catch(TGoal, Error, (thread_send_message(Queue, Id::error(Error)), throw(Error))) ->
+		thread_send_message(Queue, Id::true(TGoal))
+	;	thread_send_message(Queue, Id::fail)
 	).
 
 
 
 % '$lgt_mt_check_threads'(@list, @list)
 %
-% checks sucesseful creation of working threads
+% checks sucesseful creation of working "or" threads
 
 '$lgt_mt_check_threads'([], _).
-'$lgt_mt_check_threads'([Id| Ids], Results) :-
+'$lgt_mt_check_threads'([Id| Ids], Queue) :-
 	(	thread_property(Id, status(exception(Error))) ->
-		'$lgt_mt_threaded_call_abort'(Results),
-		throw(Error)
-	;	'$lgt_mt_check_threads'(Ids, Results)
-	).
+		thread_send_message(Queue, Id::error(Error))
+	;	true
+	),
+	'$lgt_mt_check_threads'(Ids, Queue).
 
 
 
@@ -12952,7 +12952,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 % retrieves the result of proving a conjunction of goals using a threaded/1 predicate call
 
 '$lgt_mt_threaded_and_exit'(TGoals, Queue, Results) :-
-	thread_get_message(Queue, '$lgt_and_call'(Id, Result)),
+	thread_get_message(Queue, Id::Result),
 	(	Result = error(Error) ->
 		'$lgt_mt_threaded_call_abort'(Results),
 		throw(Error)
@@ -13024,14 +13024,14 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 % '$lgt_mt_threaded_or_call'(+callable, +message_queue_identifier)
 %
-% proves a goal from a disjunction in a threaded/1 predicate call and sends
-% the result back to the message queue of the object containing the call
+% proves a goal from a disjunction in a threaded/1 predicate call and
+% sends the result back to the message queue associated to the call
 
 '$lgt_mt_threaded_or_call'(TGoal, Queue) :-
 	thread_self(Id),
-	(	catch(TGoal, Error, (thread_send_message(Queue, '$lgt_or_call'(Id, error(Error))), throw(Error))) ->
-		thread_send_message(Queue, '$lgt_or_call'(Id, true(TGoal)))
-	;	thread_send_message(Queue, '$lgt_or_call'(Id, fail))
+	(	catch(TGoal, Error, (thread_send_message(Queue, Id::error(Error)), throw(Error))) ->
+		thread_send_message(Queue, Id::true(TGoal))
+	;	thread_send_message(Queue, Id::fail)
 	).
 
 
@@ -13041,7 +13041,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 % retrieves the result of proving a disjunction of goals using a threaded/1 predicate call
 
 '$lgt_mt_threaded_or_exit'(TGoals, Queue, Results) :-
-	thread_get_message(Queue, '$lgt_or_call'(Id, Result)),
+	thread_get_message(Queue, Id::Result),
 	(	Result = error(Error) ->
 		'$lgt_mt_threaded_call_abort'(Results),
 		throw(Error)
