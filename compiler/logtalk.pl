@@ -13110,7 +13110,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 '$lgt_mt_threaded_call_abort'([]).
 
 '$lgt_mt_threaded_call_abort'([id(Id, _)| Results]) :-
-	catch(thread_signal(Id, thread_exit(aborted)), _, true),
+	catch(thread_signal(Id, (mutex_unlock_all, thread_exit(aborted))), _, true),
 	thread_join(Id, _),
 	'$lgt_mt_threaded_call_abort'(Results).
 
@@ -13126,7 +13126,10 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 
 
-% create entity mutexes (called when loading an entity)
+% '$lgt_create_mutexes'(list(mutex_identifier))
+%
+% create entity mutexes (called when loading an entity);
+% use catch/2 as we may be reloading an entity
 
 '$lgt_create_mutexes'([]).
 

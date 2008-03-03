@@ -21,6 +21,9 @@ RELEASE NOTES
 	file with entities defining synchronized predicates. A proper solution 
 	is pending on advances on the ISO Threads DTR adoption.
 
+	Updated the Logtalk runtime to unlock all mutexes hold by a thread when 
+	upon thread cancellation.
+
 	Updated the XSB config file to use the new optimized call/N predicates 
 	found on the current XSB CVS version.
 
