@@ -13132,8 +13132,8 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 '$lgt_create_mutexes'([Mutex| Mutexes]) :-
 	(	'$lgt_predicate_property'(mutex_create(_, _), built_in) ->
-		mutex_create(_, [alias(Mutex)])
-	;	mutex_create(Mutex)
+		catch(mutex_create(_, [alias(Mutex)]), _, true)
+	;	catch(mutex_create(Mutex), _, true)
 	),
 	'$lgt_create_mutexes'(Mutexes).
 
