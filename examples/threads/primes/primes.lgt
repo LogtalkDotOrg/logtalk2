@@ -55,7 +55,8 @@
 	primes(N, M, Acc, Primes) :-
 		(	is_prime(N) ->
 			Primes = [N| Primes2]
-		;	Primes = Primes2),
+		;	Primes = Primes2
+		),
 	    N2 is N + 1,
 		primes(N2, M, Acc, Primes2).
 
