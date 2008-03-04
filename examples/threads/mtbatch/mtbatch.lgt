@@ -2,9 +2,9 @@
 :- object(mtbatch(_Prolog)).
 
 	:- info([
-		version is 1.1,
+		version is 1.0,
 		author is 'Paulo Moura',
-		date is 2008/02/24,
+		date is 2008/03/04,
 		comment is 'Multi-threading benchmarks.',
 		parameters is ['Prolog'- 'Prolog backend compiler. Supported compilers are SWI-Prolog (swi), YAP (yap), and XSB (xsb).']]).
 
@@ -48,7 +48,7 @@
 				write(Size),
 				loop::forto(Threads, 1, 16,
 					(	run(primes(Threads, Size), N, Average),
-						put_char('\t'), write(Average), flush_output
+						put_char('\t'), write_float(Average), flush_output
 					)), nl
 			)), nl.
 
@@ -66,7 +66,7 @@
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
 						run(msort(Threads, List), N, Average),
-						put_char('\t'), write(Average), flush_output
+						put_char('\t'), write_float(Average), flush_output
 					)), nl
 			)), nl.
 
@@ -84,7 +84,7 @@
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
 						run(qsort(Threads, List), N, Average),
-						put_char('\t'), write(Average), flush_output
+						put_char('\t'), write_float(Average), flush_output
 					)), nl
 			)), nl.
 
@@ -100,7 +100,7 @@
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
 						run(fibonacci(Threads, Nth), N, Average),
-						put_char('\t'), write(Average), flush_output
+						put_char('\t'), write_float(Average), flush_output
 					)), nl
 			)), nl.
 
@@ -116,7 +116,7 @@
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
 						run(hanoi(Threads, Disks), N, Average),
-						put_char('\t'), write(Average), flush_output
+						put_char('\t'), write_float(Average), flush_output
 					)), nl
 			)), nl.
 
@@ -131,7 +131,7 @@
 		loop::forto(T, 0, 5,
 			(	Threads is truncate(3**T),
 				run(tak(Threads, 21, 14, 7), N, Average),
-				put_char('\t'), write(Average), flush_output
+				put_char('\t'), write_float(Average), flush_output
 			)), nl.
 
 	run(Id, N, Average) :-
@@ -216,5 +216,16 @@
 		N > 1,
 		N2 is N - 1,
 		repeat(N2).
+
+	write_float(Float) :-
+		parameter(1, Prolog),
+		write_float(Prolog, Float).
+
+	write_float(swi, Float) :-
+		format('~6f', [Float]).
+	write_float(yap, Float) :-
+		format('~6f', [Float]).
+	write_float(xsb, Float) :-
+		fmt_write("%6f", Float).
 
 :- end_object.
