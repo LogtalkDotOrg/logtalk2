@@ -12926,7 +12926,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 '$lgt_mt_threaded_and_call'(TGoal, Queue) :-
 	thread_self(Id),
-	(	catch(TGoal, Error, (thread_send_message(Queue, Id::error(Error)), throw(Error))) ->
+	(	catch(TGoal, Error, (thread_send_message(Queue, Id::exception(Error)), throw(Error))) ->
 		thread_send_message(Queue, Id::true(TGoal))
 	;	thread_send_message(Queue, Id::fail)
 	).
@@ -12938,9 +12938,10 @@ current_logtalk_flag(version, version(2, 31, 5)).
 % checks sucesseful creation of working "or" threads
 
 '$lgt_mt_check_threads'([], _).
+
 '$lgt_mt_check_threads'([Id| Ids], Queue) :-
 	(	thread_property(Id, status(exception(Error))) ->
-		thread_send_message(Queue, Id::error(Error))
+		thread_send_message(Queue, Id::exception(Error))
 	;	true
 	),
 	'$lgt_mt_check_threads'(Ids, Queue).
@@ -12953,20 +12954,26 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 '$lgt_mt_threaded_and_exit'(TGoals, Queue, Results) :-
 	thread_get_message(Queue, Id::Result),
-	(	Result = error(Error) ->
-		'$lgt_mt_threaded_call_abort'(Results),
-		throw(Error)
-	;	Result = true(Tgoal) ->
-		'$lgt_mt_threaded_and_add_result'(Results, Id, Tgoal, Continue),
-		(	Continue == false ->
-			'$lgt_mt_threaded_and_clean'(Results, Queue),
-			'$lgt_mt_threaded_and_exit_unify'(TGoals, Results)
-		;	'$lgt_mt_threaded_and_exit'(TGoals, Queue, Results)
-		)
-	;	% Result = fail ->
-		'$lgt_mt_threaded_call_abort'(Results),
-		fail
+	'$lgt_mt_threaded_and_exit'(Result, Id, TGoals, Queue, Results).
+
+
+'$lgt_mt_threaded_and_exit'(exception(Error), _, _, Queue, Results) :-
+	'$lgt_mt_threaded_call_abort'(Results),
+	message_queue_destroy(Queue),
+	throw(Error).
+
+'$lgt_mt_threaded_and_exit'(true(Tgoal), Id, TGoals, Queue, Results) :-
+	'$lgt_mt_threaded_and_add_result'(Results, Id, Tgoal, Continue),
+	(	Continue == false ->
+		'$lgt_mt_threaded_and_clean'(Results, Queue),
+		'$lgt_mt_threaded_and_exit_unify'(TGoals, Results)
+	;	'$lgt_mt_threaded_and_exit'(TGoals, Queue, Results)
 	).
+
+'$lgt_mt_threaded_and_exit'(fail, _, _, Queue, Results) :-
+	'$lgt_mt_threaded_call_abort'(Results),
+	message_queue_destroy(Queue),
+	fail.
 
 
 
@@ -13029,7 +13036,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 '$lgt_mt_threaded_or_call'(TGoal, Queue) :-
 	thread_self(Id),
-	(	catch(TGoal, Error, (thread_send_message(Queue, Id::error(Error)), throw(Error))) ->
+	(	catch(TGoal, Error, (thread_send_message(Queue, Id::exception(Error)), throw(Error))) ->
 		thread_send_message(Queue, Id::true(TGoal))
 	;	thread_send_message(Queue, Id::fail)
 	).
@@ -13042,20 +13049,26 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 '$lgt_mt_threaded_or_exit'(TGoals, Queue, Results) :-
 	thread_get_message(Queue, Id::Result),
-	(	Result = error(Error) ->
+	'$lgt_mt_threaded_or_exit'(Result, Id, TGoals, Queue, Results).
+
+
+'$lgt_mt_threaded_or_exit'(exception(Error), _, _, Queue, Results) :-
+	'$lgt_mt_threaded_call_abort'(Results),
+	message_queue_destroy(Queue),
+	throw(Error).
+
+'$lgt_mt_threaded_or_exit'(true(TGoal), Id, TGoals, _, Results) :-
+	'$lgt_mt_threaded_call_abort'(Results),
+	'$lgt_mt_threaded_or_exit_unify'(TGoals, Results, Id, TGoal).
+
+'$lgt_mt_threaded_or_exit'(fail, Id, TGoals, Queue, Results) :-
+	'$lgt_mt_threaded_or_record_failure'(Results, Id, Continue),
+	(	Continue == true ->
+		'$lgt_mt_threaded_or_exit'(TGoals, Queue, Results)
+	;	% all goals failed
 		'$lgt_mt_threaded_call_abort'(Results),
-		throw(Error)
-	;	Result = true(TGoal) ->
-		'$lgt_mt_threaded_call_abort'(Results),
-		'$lgt_mt_threaded_or_exit_unify'(TGoals, Results, Id, TGoal)
-	;	% Result = fail ->
-		'$lgt_mt_threaded_or_record_failure'(Results, Id, Continue),
-		(	Continue == true ->
-			'$lgt_mt_threaded_or_exit'(TGoals, Queue, Results)
-		;	% all goals failed
-			'$lgt_mt_threaded_call_abort'(Results),
-			fail
-		)
+		message_queue_destroy(Queue),
+		fail
 	).
 
 
