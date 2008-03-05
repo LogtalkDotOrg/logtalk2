@@ -26,6 +26,9 @@ RELEASE NOTES
 	Updated the Logtalk runtime to unlock all mutexes hold by a thread when 
 	upon thread cancellation.
 
+	Corrected a Logtalk compiler bug that allowed a predicate to be declared 
+	both dynamic and synchronized.
+
 	Updated the XSB config file to use the new optimized call/N predicates 
 	found on the current XSB CVS version.
 

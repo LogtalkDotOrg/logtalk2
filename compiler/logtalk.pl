@@ -5536,20 +5536,24 @@ current_logtalk_flag(version, version(2, 31, 5)).
 '$lgt_tr_synchronized_directive'([Pred| Preds], Mutex) :-
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
 	!,
-	functor(Head, Functor, Arity),
-	(	'$lgt_pp_calls_pred_'(Functor, Arity, _, _) ->
+	(	'$lgt_pp_dynamic_'(Functor, Arity) ->
 		throw(permission_error(modify, predicate_interpretation, Pred))
-	;	assertz('$lgt_pp_synchronized_'(Head, Mutex)),
+	;	'$lgt_pp_calls_pred_'(Functor, Arity, _, _) ->
+		throw(permission_error(modify, predicate_interpretation, Pred))
+	;	functor(Head, Functor, Arity),
+		assertz('$lgt_pp_synchronized_'(Head, Mutex)),
 		'$lgt_tr_synchronized_directive'(Preds, Mutex)
 	).
 
 '$lgt_tr_synchronized_directive'([Pred| Preds], Mutex) :-
 	'$lgt_valid_gr_ind'(Pred, Functor, Arity, Arity2),
 	!,
-	functor(Head, Functor, Arity2),
-	(	'$lgt_pp_calls_nt_'(Functor, Arity) ->
+	(	'$lgt_pp_dynamic_'(Functor, Arity2) ->
+		throw(permission_error(modify, predicate_interpretation, Pred))
+	;	'$lgt_pp_calls_nt_'(Functor, Arity) ->
 		throw(permission_error(modify, non_terminal_interpretation, Pred))
-	;	assertz('$lgt_pp_synchronized_'(Head, Mutex)),
+	;	functor(Head, Functor, Arity2),
+		assertz('$lgt_pp_synchronized_'(Head, Mutex)),
 		'$lgt_tr_synchronized_directive'(Preds, Mutex)
 	).
 
@@ -5666,22 +5670,29 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	var(Pred),
 	throw(instantiation_error).
 
-'$lgt_tr_dynamic_directive'([Pred| _]) :-
-	functor(Pred, Functor, Arity),
-	'$lgt_pp_calls_pred_'(Functor, Arity, _, _),
-	throw(permission_error(modify, predicate_interpretation, Pred)).
-
 '$lgt_tr_dynamic_directive'([Pred| Preds]) :-
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
 	!,
-	assertz('$lgt_pp_dynamic_'(Functor, Arity)),
-	'$lgt_tr_dynamic_directive'(Preds).
+	(	functor(Head, Functor, Arity),
+		'$lgt_pp_synchronized_'(Head, _) ->
+		throw(permission_error(modify, predicate_interpretation, Pred))
+	;	'$lgt_pp_calls_pred_'(Functor, Arity, _, _) ->
+		throw(permission_error(modify, predicate_interpretation, Pred))
+	;	assertz('$lgt_pp_dynamic_'(Functor, Arity)),
+		'$lgt_tr_dynamic_directive'(Preds)
+	).
 
 '$lgt_tr_dynamic_directive'([Pred| Preds]) :-
-	'$lgt_valid_gr_ind'(Pred, Functor, _, Arity2),
+	'$lgt_valid_gr_ind'(Pred, Functor, Arity, Arity2),
 	!,
-	assertz('$lgt_pp_dynamic_'(Functor, Arity2)),
-	'$lgt_tr_dynamic_directive'(Preds).
+	(	functor(Head, Functor, Arity2),
+		'$lgt_pp_synchronized_'(Head, _) ->
+		throw(permission_error(modify, predicate_interpretation, Pred))
+	;	'$lgt_pp_calls_nt_'(Functor, Arity) ->
+		throw(permission_error(modify, predicate_interpretation, Pred))
+	;	assertz('$lgt_pp_dynamic_'(Functor, Arity2)),
+		'$lgt_tr_dynamic_directive'(Preds)
+	).
 
 '$lgt_tr_dynamic_directive'([Pred| _]) :-
 	throw(type_error(predicate_indicator, Pred)).
@@ -12933,9 +12944,11 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 
 
-% '$lgt_mt_check_threads'(@list, @list)
+% '$lgt_mt_check_threads'(@list, +message_queue_identifier)
 %
-% checks sucesseful creation of working "or" threads
+% checks sucesseful creation of working threads; failure to create a thread
+% usually results from exhaustion of virtual memory address space or exceeding 
+% the maximum number of threads allowed by the back-end Prolog compiler
 
 '$lgt_mt_check_threads'([], _).
 
@@ -12950,7 +12963,8 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 % '$lgt_mt_threaded_and_exit'(+callable, +message_queue_identifier, +list)
 %
-% retrieves the result of proving a conjunction of goals using a threaded/1 predicate call
+% retrieves the result of proving a conjunction of goals using a threaded/1 predicate
+% call by collecting the individual thread results posted to the call message queue
 
 '$lgt_mt_threaded_and_exit'(TGoals, Queue, Results) :-
 	thread_get_message(Queue, Id::Result),
@@ -13045,7 +13059,8 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 % '$lgt_mt_threaded_or_exit'(+callable, +message_queue_identifier, +list)
 %
-% retrieves the result of proving a disjunction of goals using a threaded/1 predicate call
+% retrieves the result of proving a disjunction of goals using a threaded/1 predicate
+% call by collecting the individual thread results posted to the call message queue
 
 '$lgt_mt_threaded_or_exit'(TGoals, Queue, Results) :-
 	thread_get_message(Queue, Id::Result),
