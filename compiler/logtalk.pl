@@ -12955,18 +12955,8 @@ current_logtalk_flag(version, version(2, 31, 5)).
 '$lgt_mt_check_threads'([Id| Ids], Queue) :-
 	(	thread_property(Id, status(exception(Error))) ->
 		thread_send_message(Queue, '$lgt_result'(Id, exception(Error)))
-	;	'$lgt_mt_check_threads'(Ids)
+	;	'$lgt_mt_check_threads'(Ids, Queue)
 	).
-
-
-'$lgt_mt_check_threads'([]).
-
-'$lgt_mt_check_threads'([Id| Ids]) :-
-	(	thread_property(Id, status(exception(Error))) ->
-		thread_join(Id, _)
-	;	true
-	),
-	'$lgt_mt_check_threads'(Ids).
 
 
 
@@ -12977,24 +12967,26 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 '$lgt_mt_threaded_and_exit'(TGoals, Ids, Results) :-
 	thread_get_message('$lgt_result'(Id, Result)),
-	thread_join(Id, _),
 	'$lgt_mt_threaded_and_exit'(Result, Id, TGoals, Ids, Results).
 
 
-'$lgt_mt_threaded_and_exit'(exception(Error), Id, _, Ids, _) :-
-	'$lgt_mt_threaded_call_abort'(Ids, Id),
+'$lgt_mt_threaded_and_exit'(exception(Error), _, _, Ids, _) :-
+	'$lgt_mt_threaded_call_abort'(Ids),
 	throw(Error).
 
 '$lgt_mt_threaded_and_exit'(true(Tgoal), Id, TGoals, Ids, Results) :-
 	'$lgt_mt_threaded_and_add_result'(Results, Id, Tgoal, Continue),
 	(	Continue == false ->
+		'$lgt_mt_threaded_and_clean'(Ids),
 		'$lgt_mt_threaded_and_exit_unify'(TGoals, Results)
 	;	'$lgt_mt_threaded_and_exit'(TGoals, Ids, Results)
 	).
 
-'$lgt_mt_threaded_and_exit'(fail, Id, _, Ids, _) :-
-	'$lgt_mt_threaded_call_abort'(Ids, Id),
+'$lgt_mt_threaded_and_exit'(fail, _, _, Ids, _) :-
+	'$lgt_mt_threaded_call_abort'(Ids),
 	fail.
+
+'$lgt_mt_threaded_and_exit'(abort, _, _, _, _).
 
 
 
@@ -13005,6 +12997,16 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	'$lgt_mt_threaded_and_exit_unify'(TGoals, Results).
 
 '$lgt_mt_threaded_and_exit_unify'(TGoal, [id(_, TGoal)]).
+
+
+
+% joins all threads
+
+'$lgt_mt_threaded_and_clean'([]).
+
+'$lgt_mt_threaded_and_clean'([Id| Ids]) :-
+	thread_join(Id, _),
+	'$lgt_mt_threaded_and_clean'(Ids).
 
 
 
@@ -13065,12 +13067,12 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	'$lgt_mt_threaded_or_exit'(Result, Id, TGoals, Ids, Results).
 
 
-'$lgt_mt_threaded_or_exit'(exception(Error), Id, _, Ids, _) :-
-	'$lgt_mt_threaded_call_abort'(Ids, Id),
+'$lgt_mt_threaded_or_exit'(exception(Error), _, _, Ids, _) :-
+	'$lgt_mt_threaded_call_abort'(Ids),
 	throw(Error).
 
 '$lgt_mt_threaded_or_exit'(true(TGoal), Id, TGoals, Ids, Results) :-
-	'$lgt_mt_threaded_call_abort'(Ids, Id),
+	'$lgt_mt_threaded_call_abort'(Ids),
 	'$lgt_mt_threaded_or_exit_unify'(TGoals, Results, Id, TGoal).
 
 '$lgt_mt_threaded_or_exit'(fail, Id, TGoals, Ids, Results) :-
@@ -13078,7 +13080,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	(	Continue == true ->
 		'$lgt_mt_threaded_or_exit'(TGoals, Ids, Results)
 	;	% all goals failed
-		'$lgt_mt_threaded_call_abort'(Ids, Id),
+		'$lgt_mt_threaded_call_abort'(Ids),
 		fail
 	).
 
@@ -13131,31 +13133,27 @@ current_logtalk_flag(version, version(2, 31, 5)).
 % aborts a threaded call by aborting and joining all individual threads;
 % we must use catch/3 as some thread may already be terminated
 
-'$lgt_mt_threaded_call_abort'(Ids, Id) :-
-	'$lgt_mt_threaded_call_abort_filter'(Ids, Id, RIds),
-	'$lgt_mt_threaded_call_abort'(RIds).
+'$lgt_mt_threaded_call_abort'(Ids) :-
+	'$lgt_mt_threaded_call_cancel'(Ids),
+	'$lgt_mt_threaded_call_clean'(Ids).
 
 
-'$lgt_mt_threaded_call_abort_filter'([], _, []).
+'$lgt_mt_threaded_call_cancel'([]).
 
-'$lgt_mt_threaded_call_abort_filter'([Id| Ids], Id, Ids) :-
-	!.
-
-'$lgt_mt_threaded_call_abort_filter'([RId| Ids], Id, [RId| RIds]) :-
-	'$lgt_mt_threaded_call_abort_filter'(Ids, Id, RIds).
-
-
-'$lgt_mt_threaded_call_abort'([]).
-
-'$lgt_mt_threaded_call_abort'([Id| Ids]) :-
-	(	catch(thread_peek_message(Id, '$lgt_workers'(DIds)), _, fail) ->
-		'$lgt_mt_threaded_call_abort'(DIds)
-	;	true
+'$lgt_mt_threaded_call_cancel'([Id| Ids]) :-
+	(	catch(thread_peek_message(Id, '$lgt_workers'([Worker| _])), _, fail) ->
+		catch(thread_send_message(Id, '$lgt_result'(Worker, exception(aborted))), _, true)
+	;	catch(thread_signal(Id, throw(abort)), _, true)
 	),
-	catch(thread_signal(Id, thread_exit(aborted)), _, true),
+	'$lgt_mt_threaded_call_cancel'(Ids).
+
+
+'$lgt_mt_threaded_call_clean'([]).
+
+'$lgt_mt_threaded_call_clean'([Id| Ids]) :-
 	catch(thread_join(Id, _), _, true),
-	'$lgt_mt_threaded_call_abort'(Ids).
-	
+	'$lgt_mt_threaded_call_clean'(Ids).
+
 
 
 % multi-threading tags
