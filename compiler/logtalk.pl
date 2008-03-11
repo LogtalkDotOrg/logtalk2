@@ -12977,7 +12977,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 '$lgt_mt_threaded_and_exit'(true(Tgoal), Id, TGoals, Ids, Results) :-
 	'$lgt_mt_threaded_and_add_result'(Results, Id, Tgoal, Continue),
 	(	Continue == false ->
-		'$lgt_mt_threaded_and_clean'(Ids),
+		'$lgt_mt_threaded_call_clean'(Ids),
 		'$lgt_mt_threaded_and_exit_unify'(TGoals, Results)
 	;	'$lgt_mt_threaded_and_exit'(TGoals, Ids, Results)
 	).
@@ -12995,16 +12995,6 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	'$lgt_mt_threaded_and_exit_unify'(TGoals, Results).
 
 '$lgt_mt_threaded_and_exit_unify'(TGoal, [id(_, TGoal)]).
-
-
-
-% joins all threads
-
-'$lgt_mt_threaded_and_clean'([]).
-
-'$lgt_mt_threaded_and_clean'([Id| Ids]) :-
-	thread_join(Id, _),
-	'$lgt_mt_threaded_and_clean'(Ids).
 
 
 
@@ -13061,7 +13051,6 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 '$lgt_mt_threaded_or_exit'(TGoals, Ids, Results) :-
 	thread_get_message('$lgt_result'(Id, Result)),
-	thread_join(Id, _),
 	'$lgt_mt_threaded_or_exit'(Result, Id, TGoals, Ids, Results).
 
 
@@ -13078,7 +13067,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	(	Continue == true ->
 		'$lgt_mt_threaded_or_exit'(TGoals, Ids, Results)
 	;	% all goals failed
-		'$lgt_mt_threaded_call_abort'(Ids),
+		'$lgt_mt_threaded_call_clean'(Ids),
 		fail
 	).
 
