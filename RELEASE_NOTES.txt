@@ -33,6 +33,9 @@ RELEASE NOTES
 	Updated the XSB config file to use the new optimized call/N predicates 
 	found on the current XSB CVS version.
 
+	Added an integration script, "xsbmt64lgt", for using Logtalk with the 
+	multi-threaded, 64 bits version of XSB.
+
 	Simplified building of MacOS X Installer packages. Updated the Windows 
 	installation script to use the "C:\lgtsvn" as base. Simplified manual 
 	installation instructions.

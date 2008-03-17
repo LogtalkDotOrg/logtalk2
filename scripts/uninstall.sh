@@ -59,6 +59,7 @@ rm -f sicstuslgt
 rm -f swilgt
 rm -f xsblgt
 rm -f xsbmtlgt
+rm -f xsbmt64lgt
 rm -f yaplgt
 
 echo "Logtalk system-level uninstall completed. For uninstalling user-level"

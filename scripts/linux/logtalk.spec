@@ -45,6 +45,7 @@ ln -sf ../share/logtalk/integration/sicstuslgt.sh sicstuslgt
 ln -sf ../share/logtalk/integration/swilgt.sh swilgt
 ln -sf ../share/logtalk/integration/xsblgt.sh xsblgt
 ln -sf ../share/logtalk/integration/xsbmtlgt.sh xsbmtlgt
+ln -sf ../share/logtalk/integration/xsbmt64lgt.sh xsbmt64lgt
 ln -sf ../share/logtalk/integration/yaplgt.sh yaplgt
 ln -sf ../share/logtalk/scripts/cplgtdirs.sh cplgtdirs
 ln -sf ../share/logtalk/xml/lgt2pdf.sh lgt2pdf
@@ -72,6 +73,7 @@ rm -f sicstuslgt
 rm -f swilgt
 rm -f xsblgt
 rm -f xsbmtlgt
+rm -f xsbmt64lgt
 rm -f yaplgt
 
 %files
@@ -113,6 +115,7 @@ rm -f yaplgt
 /usr/local/bin/swilgt
 /usr/local/bin/xsblgt
 /usr/local/bin/xsbmtlgt
+/usr/local/bin/xsbmt64lgt
 /usr/local/bin/yaplgt
 
 %post
@@ -126,19 +129,20 @@ echo
 echo "The following integration scripts are installed for running Logtalk"
 echo "with selected back-end Prolog compilers:"
 echo
-echo "  B-Prolog (version 7.0 or later):         bplgt    (first run must use sudo)"
-echo "  CIAO (version 1.10#5 or later):          ciaolgt  (first run must use sudo)"
-echo "  CxProlog (version 0.96.1 or later):      cxlgt"
-echo "  ECLiPSe (version 5.10#26 or later):      eclipselgt"
-echo "  GNU Prolog (version 1.2.16 or later):    gplgt"
-echo "  K-Prolog (version 5.1.2a or later):      plclgt"
-echo "  Qu-Prolog (version 8.1 or later):        qplgt"
-echo "  Quintus Prolog (version 3.5):            quintuslgt"
-echo "  SICStus Prolog (versions 3.12.x, 4.0.x): sicstuslgt"
-echo "  SWI-Prolog (version 5.6.16 or later):    swilgt"
-echo "  XSB (version 3.1 or later):              xsblgt   (first run must use sudo)"
-echo "  XSB MT (CVS version):                    xsbmtlgt (first run must use sudo)"
-echo "  YAP (version 5.1.2 or later):            yaplgt"
+echo "* B-Prolog (version 7.0 or later):         bplgt      (first run must use sudo)"
+echo "* CIAO (version 1.10#5 or later):          ciaolgt    (first run must use sudo)"
+echo "* CxProlog (version 0.96.1 or later):      cxlgt"
+echo "* ECLiPSe (version 5.10#26 or later):      eclipselgt"
+echo "* GNU Prolog (version 1.2.16 or later):    gplgt"
+echo "* K-Prolog (version 5.1.2a or later):      plclgt"
+echo "* Qu-Prolog (version 8.1 or later):        qplgt"
+echo "* Quintus Prolog (version 3.5):            quintuslgt"
+echo "* SICStus Prolog (versions 3.12.x, 4.0.x): sicstuslgt"
+echo "* SWI-Prolog (version 5.6.16 or later):    swilgt"
+echo "* XSB (version 3.1 or later):              xsblgt     (first run must use sudo)"
+echo "* XSB MT (CVS version):                    xsbmtlgt   (first run must use sudo)"
+echo "* XSB MT 64 bits (CVS version):            xsbmt64lgt (first run must use sudo)"
+echo "* YAP (version 5.1.2 or later):            yaplgt"
 echo
 echo "The Prolog integration scripts can be found on \"$RPM_INSTALL_PREFIX/bin\"."
 echo "Make sure that the Prolog compilers are properly installed and available"
