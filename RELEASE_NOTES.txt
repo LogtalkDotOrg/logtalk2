@@ -43,6 +43,9 @@ RELEASE NOTES
 	Added a new multi-threading example, "mtbatch", for benchmarking 
 	multi-threading performance.
 
+	Added preliminary support for using the Highlight package (version 2.6.8 
+	or later) by Andre Simon with Logtalk source files.
+
 	Updated the TextMate Logtalk bundle and its configuration instructions 
 	to make the "Compile" and "Generate ..." commands more general, making 
 	it compatible with most Prolog compilers.

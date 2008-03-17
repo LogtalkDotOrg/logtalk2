@@ -1,0 +1,40 @@
+# Logtalk language definition file
+#
+# Author: Paulo Moura
+#   Mail: pmoura@logtalk.org
+#   Date: 17.03.08
+# ------------------------------------------
+# This file is a part of highlight, a free source code converter released under the GPL.
+#
+# The file is used to describe keywords and special symbols of programming languages.
+# See README in the highlight directory for details.
+#
+# New definition files for future releases of highlight are always appreciated ;)
+#
+# ----------
+# pmoura@logtalk.org
+# http://logtalk.org/
+
+$DESCRIPTION=Logtalk
+
+$KW_RE(kwb)=regex([A-Z_]\w*)
+
+$KW_RE(kwa)=regex(^\s*:-\s((ca(?:lls|tegory)|p(?:ublic|r(ot(?:ocol|ected)|ivate))|e(?:ncoding|xports)|in(?:fo|itialization)|alias|d(?:ynamic|iscontiguous)|m(?:eta_predicate|od(?:e|ule)|ultifile)|synchronized|o(?:bject|p)|use(?:s|_module)(?=[(])|(dynamic|synchronized|threaded|end_protocol|end_category|end_object)(?=\.))), 1)
+
+$KW_RE(kwd)=regex((::|\^\^))
+
+$STRINGDELIMITERS=" '
+
+$SL_COMMENT=%
+
+$ML_COMMENT=/* */
+
+$ALLOWNESTEDCOMMENTS=false
+
+$IGNORECASE=false
+
+# $DIGIT=regex(0'.|0b[0-1]+|0o[0-7]+|0x\p{XDigit}+|\d+(\.\d+)?([eE]([-+])?\d+)?)
+
+$ESCCHAR=\
+
+$SYMBOLS= ( ) [ ] { } , ; : & | < > !  = / *  + -
