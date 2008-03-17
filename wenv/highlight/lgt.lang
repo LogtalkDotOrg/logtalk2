@@ -21,9 +21,11 @@ $KW_RE(kwb)=regex([A-Z_]\w*)
 
 $KW_RE(kwa)=regex(^\s*:-\s((ca(?:lls|tegory)|p(?:ublic|r(ot(?:ocol|ected)|ivate))|e(?:ncoding|xports)|in(?:fo|itialization)|alias|d(?:ynamic|iscontiguous)|m(?:eta_predicate|od(?:e|ule)|ultifile)|synchronized|o(?:bject|p)|use(?:s|_module)(?=[(])|(dynamic|synchronized|threaded|end_protocol|end_category|end_object)(?=\.))), 1)
 
-$KW_RE(kwd)=regex((::|\^\^))
+$KW_RE(kwd)=regex((::|\^\^|<<))
 
 $STRINGDELIMITERS=" '
+
+$KW_LIST(kwc)=regex((0(').|0b[0-1]+|0o[0-7]+|0x\p{XDigit}+|\d+(\.\d+)?([eE]([-+])?\d+)?), 1)
 
 $SL_COMMENT=%
 
@@ -32,8 +34,6 @@ $ML_COMMENT=/* */
 $ALLOWNESTEDCOMMENTS=false
 
 $IGNORECASE=false
-
-# $DIGIT=regex(0'.|0b[0-1]+|0o[0-7]+|0x\p{XDigit}+|\d+(\.\d+)?([eE]([-+])?\d+)?)
 
 $ESCCHAR=\
 
