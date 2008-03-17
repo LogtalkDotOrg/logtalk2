@@ -7,5 +7,5 @@ Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 
 
 The "e" Windows text editor (http://www.e-texteditor.com/) supports 
-the TextMate 1.x text editor syntax configuration files; see the 
-../textmate folder.
+the TextMate 1.x text editor syntax configuration files; for details, 
+see the ../textmate folder.

@@ -16,7 +16,7 @@ RELEASE NOTES
 	ensure that thread creation errors (usually, virtual memory address 
 	space exhaustion) result in the corresponding exception rather than 
 	in a non-terminating call. Improved cancellation of all individual 
-	threads when one of them results in an exception or failure.
+	threads when one of them terminates with an exception or a failure.
 
 	Simplified the terms used to post individual results from threaded/1
 	calls to the queue associated to the call.
