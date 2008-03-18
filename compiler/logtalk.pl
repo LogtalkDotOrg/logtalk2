@@ -1147,7 +1147,7 @@ threaded(Goals) :-
 threaded(Goals) :-
 	'$lgt_ctx_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _),
 	'$lgt_tr_threaded_wrap_calls'(Goals, WrappedGoals, threaded(Goals)),
-	catch('$lgt_tr_threaded_call'(WrappedGoals, MTGoals, Ctx), Error, throw(error(Error, threaded(Goals)))),
+	catch('$lgt_tr_body'(threaded(WrappedGoals), MTGoals, _, Ctx), Error, throw(error(Error, threaded(Goals)))),
 	catch(MTGoals, Error, '$lgt_runtime_error_handler'(Error)).
 
 
@@ -6610,7 +6610,8 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 '$lgt_tr_body'(threaded(Goals), MTGoals, '$lgt_dbg_goal'(threaded(Goals), MTGoals, DbgCtx), Ctx) :-
 	!,
-	'$lgt_tr_threaded_call'(Goals, MTGoals, Ctx),
+	'$lgt_tr_body'(Goals, TGoals, _, Ctx),
+	'$lgt_tr_threaded_call'(TGoals, MTGoals),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
@@ -7311,32 +7312,32 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 
 
-% '$lgt_tr_threaded_call'(+callable, -callable, +callable)
+% '$lgt_tr_threaded_call'(+callable, -callable)
 %
-% translates the argument of a built-in predicate threaded/1 call
+% translates the argument of a call to the built-in predicate threaded/1
 
-'$lgt_tr_threaded_call'(Goals, (MTCalls, MTExits), Ctx) :-
-	'$lgt_tr_body'(Goals, TGoals, _, Ctx),
-	'$lgt_tr_threaded_call'(TGoals, MTCalls, MTExits, Ctx).
-
-
-
-'$lgt_tr_threaded_call'((TGoal; TGoals), MTCalls, MTExits, _) :-
+'$lgt_tr_threaded_call'((TGoal; TGoals), ThreadedCall) :-
 	!,
-	'$lgt_tr_threaded_or_call'((TGoal; TGoals), MTCalls, MTExits).
+	'$lgt_tr_threaded_or_call'((TGoal; TGoals), Queue, MTGoals, [], Ids, Results),
+	ThreadedCall = (	thread_self(Queue),
+						MTGoals,
+						thread_send_message(Queue, '$lgt_workers'(Ids)),
+						'$lgt_mt_check_threads'(Ids, Queue),
+						'$lgt_mt_threaded_or_exit'((TGoal; TGoals), Ids, Results)
+					).
 
-'$lgt_tr_threaded_call'((TGoal, TGoals), MTCalls, MTExits, _) :-
+'$lgt_tr_threaded_call'((TGoal, TGoals), ThreadedCall) :-
 	!,
-	'$lgt_tr_threaded_and_call'((TGoal, TGoals), MTCalls, MTExits).
+	'$lgt_tr_threaded_and_call'((TGoal, TGoals), Queue, MTGoals, [], Ids, Results),
+	ThreadedCall = (	thread_self(Queue),
+						MTGoals,
+						thread_send_message(Queue, '$lgt_workers'(Ids)),
+						'$lgt_mt_check_threads'(Ids, Queue),
+						'$lgt_mt_threaded_and_exit'((TGoal, TGoals), Ids, Results)
+					).
 
-'$lgt_tr_threaded_call'(TGoal, once(TGoal), true, _).
+'$lgt_tr_threaded_call'(TGoal, once(TGoal)).
 
-
-
-'$lgt_tr_threaded_and_call'(TGoals, MTCalls, MTExits) :-
-	'$lgt_tr_threaded_and_call'(TGoals, Queue, MTGoals, [], Ids, Results),
-	MTCalls = (thread_self(Queue), MTGoals, thread_send_message(Queue, '$lgt_workers'(Ids))),
-	MTExits = ('$lgt_mt_check_threads'(Ids, Queue), '$lgt_mt_threaded_and_exit'(TGoals, Ids, Results)).
 
 
 '$lgt_tr_threaded_and_call'((TGoal, TGoals), Queue, (MTGoal, MTGoals), Acc, Ids, [Result| Results]) :-
@@ -7344,14 +7345,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	'$lgt_tr_threaded_and_call'(TGoal, Queue, MTGoal, Acc, Acc2, [Result]),
 	'$lgt_tr_threaded_and_call'(TGoals, Queue, MTGoals, Acc2, Ids, Results).
 
-'$lgt_tr_threaded_and_call'(TGoal, Queue, thread_create('$lgt_mt_threaded_and_call'(TGoal, Queue), Id, [detached(false)]), Acc, [Id| Acc], [id(Id, _)]).
-
-
-
-'$lgt_tr_threaded_or_call'(TGoals, MTCalls, MTExits) :-
-	'$lgt_tr_threaded_or_call'(TGoals, Queue, MTGoals, [], Ids, Results),
-	MTCalls = (thread_self(Queue), MTGoals, thread_send_message(Queue, '$lgt_workers'(Ids))),
-	MTExits = ('$lgt_mt_check_threads'(Ids, Queue), '$lgt_mt_threaded_or_exit'(TGoals, Ids, Results)).
+'$lgt_tr_threaded_and_call'(TGoal, Queue, thread_create('$lgt_mt_threaded_call'(TGoal, Queue), Id, [detached(false)]), Acc, [Id| Acc], [id(Id, _)]).
 
 
 
@@ -7360,7 +7354,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	'$lgt_tr_threaded_or_call'(TGoal, Queue, MTGoal, Acc, Acc2, [Result]),
 	'$lgt_tr_threaded_or_call'(TGoals, Queue, MTGoals, Acc2, Ids, Results).
 
-'$lgt_tr_threaded_or_call'(TGoal, Queue, thread_create('$lgt_mt_threaded_or_call'(TGoal, Queue), Id, [detached(false)]), Acc, [Id| Acc], [id(Id, _)]).
+'$lgt_tr_threaded_or_call'(TGoal, Queue, thread_create('$lgt_mt_threaded_call'(TGoal, Queue), Id, [detached(false)]), Acc, [Id| Acc], [id(Id, _)]).
 
 
 
@@ -12930,32 +12924,16 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 
 
-% '$lgt_mt_threaded_and_call'(+callable, +message_queue_identifier)
+% '$lgt_mt_threaded_call'(+callable, +message_queue_identifier)
 %
-% proves a goal from a conjunction in a threaded/1 predicate call and
+% proves an individual goal from a threaded/1 predicate call and
 % sends the result back to the message queue associated to the call
 
-'$lgt_mt_threaded_and_call'(TGoal, Queue) :-
+'$lgt_mt_threaded_call'(TGoal, Queue) :-
 	thread_self(Id),
 	(	catch(TGoal, Error, (thread_send_message(Queue, '$lgt_result'(Id, exception(Error))), throw(Error))) ->
 		thread_send_message(Queue, '$lgt_result'(Id, true(TGoal)))
 	;	thread_send_message(Queue, '$lgt_result'(Id, fail))
-	).
-
-
-
-% '$lgt_mt_check_threads'(@list, +message_queue_identifier)
-%
-% checks sucesseful creation of working threads; failure to create a thread
-% usually results from exhaustion of virtual memory address space or exceeding 
-% the maximum number of threads allowed by the back-end Prolog compiler
-
-'$lgt_mt_check_threads'([], _).
-
-'$lgt_mt_check_threads'([Id| Ids], Queue) :-
-	(	thread_property(Id, status(exception(Error))) ->
-		thread_send_message(Queue, '$lgt_result'(Id, exception(Error)))
-	;	'$lgt_mt_check_threads'(Ids, Queue)
 	).
 
 
@@ -13026,20 +13004,6 @@ current_logtalk_flag(version, version(2, 31, 5)).
 		Continue = true
 	;	% otherwise continue looking for a thread with a still pending result
 		'$lgt_mt_threaded_and_continue'(Results, Continue)
-	).
-
-
-
-% '$lgt_mt_threaded_or_call'(+callable, +message_queue_identifier)
-%
-% proves a goal from a disjunction in a threaded/1 predicate call and
-% sends the result back to the message queue associated to the call
-
-'$lgt_mt_threaded_or_call'(TGoal, Queue) :-
-	thread_self(Id),
-	(	catch(TGoal, Error, (thread_send_message(Queue, '$lgt_result'(Id, exception(Error))), throw(Error))) ->
-		thread_send_message(Queue, '$lgt_result'(Id, true(TGoal)))
-	;	thread_send_message(Queue, '$lgt_result'(Id, fail))
 	).
 
 
@@ -13117,6 +13081,24 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 
 
+% '$lgt_mt_check_threads'(@list, +message_queue_identifier)
+%
+% checks sucesseful creation of working threads; failure to create a thread
+% usually results from exhaustion of virtual memory address space or exceeding 
+% the maximum number of threads allowed by the back-end Prolog compiler
+
+'$lgt_mt_check_threads'([], _).
+
+'$lgt_mt_check_threads'([Id| Ids], Queue) :-
+	(	thread_property(Id, status(exception(Error))) ->
+		thread_send_message(Queue, '$lgt_result'(Id, exception(Error)))
+	;	'$lgt_mt_check_threads'(Ids, Queue)
+	).
+
+
+
+% '$lgt_mt_threaded_call_abort'(+list(thread_identifier))
+%
 % aborts a threaded call by aborting and joining all individual threads;
 % we must use catch/3 as some thread may already be terminated
 
