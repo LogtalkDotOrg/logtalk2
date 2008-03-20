@@ -141,7 +141,7 @@
 			(	Threads is truncate(2**T),
 				put_char('\t'), write(Threads)
 			)), nl,
-		loop::forto(S, 12, 16,
+		loop::forto(S, 10, 16,
 			(	Size is truncate(2**S),
 				write(Size),
 				cgenerator::list(Size, List),
