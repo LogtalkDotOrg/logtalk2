@@ -64,7 +64,7 @@
 		).
 
 	% trapezium
-	quadrature(Function, Threads, Left, Right, Fleft, Fright, Area, Epsilon, Integral):-
+	quadrature(Function, Threads, Left, Right, Fleft, Fright, Area, Epsilon, Integral) :-
 		Middle is 0.5*(Right+Left),
 		Function::eval(Middle, Fmiddle),
 		trapezium_area(Left,   Middle, Fleft,   Fmiddle, Area1),
@@ -85,10 +85,10 @@
 		;	Integral is Area1 + Area2
 		).
 
-	interval_area(_, Left, Right, 0, _, Acc, Soma):- 
+	interval_area(_, Left, Right, 0, _, Acc, Soma) :- 
 		Soma is (Right-Left)*Acc,
 		!.
-		interval_area(Function, Left, Right, N, NP, Acc, Soma):- 
+	interval_area(Function, Left, Right, N, NP, Acc, Soma) :- 
 		coeficients::(c(NP, N, C), w(NP, N, W)),
 		XK is Left + (Right-Left)*C,
 		Function::eval(XK, Y),

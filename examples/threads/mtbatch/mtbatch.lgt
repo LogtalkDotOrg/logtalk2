@@ -134,6 +134,25 @@
 				put_char('\t'), write_float(Average), flush_output
 			)), nl.
 
+	% fast Fourier transform benchmarks:
+	run(fft, N) :-
+		write('Fast Fourier transform (average of '), write(N), write(' runs)'), nl,
+		loop::forto(T, 0, 4,
+			(	Threads is truncate(2**T),
+				put_char('\t'), write(Threads)
+			)), nl,
+		loop::forto(S, 12, 16,
+			(	Size is truncate(2**S),
+				write(Size),
+				cgenerator::list(Size, List),
+				loop::forto(T, 0, 4,
+					(	Threads is truncate(2**T),
+						run(fft(Threads, 8, List), N, Average),
+							put_char('\t'), write_float(Average), flush_output
+					)), nl
+			)), nl.
+
+
 	% integration benchmarks:
 	run(integration, N) :-
 		write('Numerical integration using recursive calls to threaded/1 (average of '), write(N), write(' runs)'), nl,
@@ -215,6 +234,12 @@
 			tak(Threads)::tak(A, B, C, _),
 		fail.
 	do_benchmark(tak(_, _, _, _), _).
+
+	do_benchmark(fft(Threads, Size, List), N) :-
+		repeat(N),
+			fft(Threads)::fft(Size, List, _),
+		fail.
+	do_benchmark(fft(_, _, _), _).
 
 	do_benchmark(quadrec(Threads, Function), N) :-
 		repeat(N),
