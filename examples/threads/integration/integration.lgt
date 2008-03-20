@@ -89,7 +89,8 @@
 		Soma is (Right-Left)*Acc,
 		!.
 	interval_area(Function, Left, Right, N, NP, Acc, Soma) :- 
-		coeficients::(c(NP, N, C), w(NP, N, W)),
+		coeficients::c(NP, N, C)
+		coeficients::w(NP, N, W),
 		XK is Left + (Right-Left)*C,
 		Function::eval(XK, Y),
 		N2 is N - 1,
@@ -181,7 +182,8 @@
 		Area is (Right-Left)*Acc,
 		!.
 	interval_area(Function, Left, Right, N, NP, Acc, Area) :-
-		coeficients::(c(NP, N, C), w(NP, N, W)),
+		coeficients::c(NP, N, C)
+		coeficients::w(NP, N, W),
 		XK is Left + (Right-Left)*C,
 		Function::eval(XK, Y),
 		N1 is N - 1,
