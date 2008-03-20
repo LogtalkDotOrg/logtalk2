@@ -43,6 +43,10 @@ RELEASE NOTES
 	Updated the "primes" multi-threading example to allow any number of 
 	threads to be used in the computation of primes numbers.
 
+	Added a new multi-threading example, "integration", implementing 
+	Recursive Gaussian Quadrature Methods for Numerical Integration for 
+	functions of a single variable.
+
 	Added a new multi-threading example, "mtbatch", for benchmarking 
 	multi-threading performance.
 

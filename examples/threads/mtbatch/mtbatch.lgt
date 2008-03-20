@@ -134,6 +134,33 @@
 				put_char('\t'), write_float(Average), flush_output
 			)), nl.
 
+	% integration benchmarks:
+	run(integration, N) :-
+		write('Numerical integration using recursive calls to threaded/1 (average of '), write(N), write(' runs)'), nl,
+		loop::forto(T, 0, 4,
+			(	Threads is truncate(2**T),
+				put_char('\t'), write(Threads)
+			)), nl,
+		forall(
+			(Function = f1; Function = f2; Function = f3 /*Function = f4; Function = f5; Function = f6*/),
+			(	write(Function),
+				loop::forto(T, 0, 4,
+					(	Threads is truncate(2**T),
+						run(quadrec(Threads, Function), N, Average),
+						put_char('\t'), write_float(Average), flush_output
+					)), nl
+			)), nl,
+		write('Numerical integration using a thread for each integration sub-interval (average of '), write(N), write(' runs)'), nl,
+		forall(
+			(Function = f1; Function = f2; Function = f3 /*Function = f4; Function = f5; Function = f6*/),
+			(	write(Function),
+				loop::forto(T, 0, 4,
+					(	Threads is truncate(2**T),
+						run(quadsplit(Threads, Function), N, Average),
+						put_char('\t'), write_float(Average), flush_output
+					)), nl
+			)), nl.
+
 	run(Id, N, Average) :-
 		walltime_begin(Walltime1),
 		do_benchmark(empty_loop, N),
@@ -188,6 +215,18 @@
 			tak(Threads)::tak(A, B, C, _),
 		fail.
 	do_benchmark(tak(_, _, _, _), _).
+
+	do_benchmark(quadrec(Threads, Function), N) :-
+		repeat(N),
+			quadrec(Threads)::integrate(Function, 0, 4, 4, 1.0e-15, _),
+		fail.
+	do_benchmark(quadrec(_, _), _).
+
+	do_benchmark(quadsplit(Threads, Function), N) :-
+		repeat(N),
+			quadsplit(Threads)::integrate(Function, 0, 4, 4, 1.0e-15, _),
+		fail.
+	do_benchmark(quadsplit(_, _), _).
 
 	walltime_begin(Walltime) :-
 		parameter(1, Prolog),

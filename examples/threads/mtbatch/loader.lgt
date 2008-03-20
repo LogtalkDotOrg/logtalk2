@@ -7,5 +7,6 @@
 	logtalk_load(fibonacci(loader)),
 	logtalk_load(hanoi(loader)),
 	logtalk_load(tak(loader)),
+	logtalk_load(integration(loader)),
 	logtalk_load(mtbatch, [misspelt(silent)])
 	)). 
