@@ -147,7 +147,7 @@
 				cgenerator::list(Size, List),
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
-						run(fft(Threads, 8, List), N, Average),
+						run(fft(Threads, Size, List), N, Average),
 							put_char('\t'), write_float(Average), flush_output
 					)), nl
 			)), nl.
