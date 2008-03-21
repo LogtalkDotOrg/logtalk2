@@ -68,7 +68,7 @@
 :- object(f5,
 	implements(evaluating)).
 
-	% 1/xsin(1/x) [0.001 1]
+	% 1/xsin(1/x) [0.001 1] integral = 0.62415
 
 	eval(X, Y) :-
 		Y is (1.0/X)*sin(1.0/X).
@@ -80,7 +80,7 @@
 :- object(f6,
 	implements(evaluating)).
 
-	% 1/xsin(1/x) - 1/(1-x)sin(1/(1-x)) [0.001 0.999]
+	% 1/xsin(1/x) - 1/(1-x)sin(1/(1-x)) [0.001 0.999] integral = 0.099109
 
 	eval(X, Y) :-
 		S is 1-X,
