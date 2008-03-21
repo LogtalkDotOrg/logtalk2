@@ -161,11 +161,17 @@
 				put_char('\t'), write(Threads)
 			)), nl,
 		forall(
-			(Function = f1; Function = f2; Function = f3 /*Function = f4; Function = f5; Function = f6*/),
+			(	Function = f1, Inf =  0.000, Sup = 4.000
+			;	Function = f2, Inf =  1.000, Sup = 1.500
+			;	Function = f3, Inf = -2.000, Sup = 2.000
+			;	Function = f4, Inf =  0.000, Sup = 2.000
+%			;	Function = f5, Inf =  0.001, Sup = 1.000
+			;	Function = f6, Inf =  0.001, Sup = 0.999
+			),
 			(	write(Function),
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
-						run(quadrec(Threads, Function), N, Average),
+						run(quadrec(Threads, Function, Inf, Sup), N, Average),
 						put_char('\t'), write_float(Average), flush_output
 					)), nl
 			)), nl,
@@ -175,11 +181,17 @@
 				put_char('\t'), write(Threads)
 			)), nl,
 		forall(
-			(Function = f1; Function = f2; Function = f3 /*Function = f4; Function = f5; Function = f6*/),
+			(	Function = f1, Inf =  0.000, Sup = 4.000
+			;	Function = f2, Inf =  1.000, Sup = 1.500
+			;	Function = f3, Inf = -2.000, Sup = 2.000
+			;	Function = f4, Inf =  0.000, Sup = 2.000
+%			;	Function = f5, Inf =  0.001, Sup = 1.000
+			;	Function = f6, Inf =  0.001, Sup = 0.999
+			),
 			(	write(Function),
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
-						run(quadsplit(Threads, Function), N, Average),
+						run(quadsplit(Threads, Function, Inf, Sup), N, Average),
 						put_char('\t'), write_float(Average), flush_output
 					)), nl
 			)), nl.
@@ -245,17 +257,17 @@
 		fail.
 	do_benchmark(fft(_, _, _), _).
 
-	do_benchmark(quadrec(Threads, Function), N) :-
+	do_benchmark(quadrec(Threads, Function, Inf, Sup), N) :-
 		repeat(N),
-			quadrec(Threads)::integrate(Function, 0, 4, 4, 1.0e-15, _),
+			quadrec(Threads)::integrate(Function, Inf, Sup, 4, 1.0e-15, _),
 		fail.
-	do_benchmark(quadrec(_, _), _).
+	do_benchmark(quadrec(_, _, _, _), _).
 
-	do_benchmark(quadsplit(Threads, Function), N) :-
+	do_benchmark(quadsplit(Threads, Function, Inf, Sup), N) :-
 		repeat(N),
-			quadsplit(Threads)::integrate(Function, 0, 4, 4, 1.0e-15, _),
+			quadsplit(Threads)::integrate(Function, Inf, Sup, 4, 1.0e-15, _),
 		fail.
-	do_benchmark(quadsplit(_, _), _).
+	do_benchmark(quadsplit(_, _, _, _), _).
 
 	walltime_begin(Walltime) :-
 		parameter(1, Prolog),
