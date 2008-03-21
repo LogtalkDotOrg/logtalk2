@@ -170,6 +170,10 @@
 					)), nl
 			)), nl,
 		write('Numerical integration using a thread for each integration sub-interval (average of '), write(N), write(' runs)'), nl,
+		loop::forto(T, 0, 4,
+			(	Threads is truncate(2**T),
+				put_char('\t'), write(Threads)
+			)), nl,
 		forall(
 			(Function = f1; Function = f2; Function = f3 /*Function = f4; Function = f5; Function = f6*/),
 			(	write(Function),
