@@ -28,7 +28,7 @@ RELEASE NOTES
 	upon thread cancellation.
 
 	Corrected a Logtalk compiler bug that allowed a predicate to be declared 
-	both dynamic and synchronized.
+	both dynamic and synchronized. Thanks to Paul Crocker for the bug report.
 
 	Updated the XSB config file to use the new optimized call/N predicates 
 	found on the current XSB CVS version.
@@ -45,7 +45,7 @@ RELEASE NOTES
 
 	Added a new multi-threading example, "integration", implementing 
 	Recursive Gaussian Quadrature Methods for Numerical Integration for 
-	functions of a single variable.
+	functions of a single variable, contributed by Paul Crocker.
 
 	Added a new multi-threading example, "mtbatch", for benchmarking 
 	multi-threading performance.

@@ -13112,7 +13112,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 '$lgt_mt_threaded_call_cancel'([Id| Ids]) :-
 	(	catch(thread_peek_message(Id, '$lgt_workers'([Worker| _])), _, fail) ->
 		catch(thread_send_message(Id, '$lgt_result'(Worker, exception(aborted))), _, true)
-	;	catch(thread_signal(Id, thread_exit(false)), _, true)
+	;	catch(thread_signal(Id, (mutex_unlock_all, thread_exit(false))), _, true)
 	),
 	'$lgt_mt_threaded_call_cancel'(Ids).
 
@@ -13127,7 +13127,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 '$lgt_mt_threaded_call_cancel'([Id| Ids], Error) :-
 	(	catch(thread_peek_message(Id, '$lgt_workers'([Worker| _])), _, fail) ->
 		catch(thread_send_message(Id, '$lgt_result'(Worker, exception(Error))), _, true)
-	;	catch(thread_signal(Id, throw(Error)), _, true)
+	;	catch(thread_signal(Id, (mutex_unlock_all, throw(Error))), _, true)
 	),
 	'$lgt_mt_threaded_call_cancel'(Ids, Error).
 
