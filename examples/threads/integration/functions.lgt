@@ -2,22 +2,16 @@
 :- protocol(evaluating).
 
 	:- info([
-		version is 1.1,
-		author is 'Paulo Moura and Paulo Nunes',
+		version is 1.0,
+		author is 'Paul Crocker',
 		date is 2006/11/26,
-		comment is 'Default protocol for real functions of a single real variable.']).
+		comment is 'Default protocol for evaluating real functions of a single real variable.']).
 
 	:- public(eval/2).
 	:- mode(eval(+float, -float), one).
 	:- info(eval/2, [
 		comment is 'Calculates the function value.',
 		argnames is ['X', 'Fx']]).
-
-	:- public(evald/2).
-	:- mode(evald(+float, -float), one).
-	:- info(evald/2, [
-		comment is 'Calculates the value of the function derivative.',
-		argnames is ['X', 'DFx']]).
 
 :- end_protocol.
 
@@ -29,9 +23,6 @@
 	% exp(x) [0,4] integral = 53.59815
 
 	eval(X, Y) :-
-		Y is exp(X).
-
-	evald(X, Y) :-
 		Y is exp(X).
 
 :- end_object.
@@ -46,9 +37,6 @@
 	eval(X, Y) :-
 		Y is exp(-(X*X)).
 
-	evald(X, Y) :-
-		Y is X.
-
 :- end_object.
 
 
@@ -60,9 +48,6 @@
 
 	eval(X, Y) :-
 		Y is 5.0/(1.0 + 4.0*X*X).
-
-	evald(X, Y) :-
-		Y is X.
 
 :- end_object.
 
@@ -76,9 +61,6 @@
 	eval(X, Y) :-
 		Y is (4.0*X-(X*X*X))*exp(X*X).
 
-	evald(X, Y) :-
-		Y is X.
-
 :- end_object.
 
 
@@ -90,9 +72,6 @@
 
 	eval(X, Y) :-
 		Y is (1.0/X)*sin(1.0/X).
-
-	evald(X, Y) :-
-		Y is X.
 
 :- end_object.
 
@@ -106,8 +85,5 @@
 	eval(X, Y) :-
 		S is 1-X,
 		Y is ((1.0/X)*sin(1.0/X) * (1.0/S)*sin(1.0/S)).
-
-	evald(X, Y) :-
-		Y is X.
 
 :- end_object.
