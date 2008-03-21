@@ -4,8 +4,10 @@
 	:- info([
 		version is 1.0,
 		author is 'Paul Crocker',
-		date is 2008/03/19,
+		date is 2008/03/21,
 		comment is 'Interval and trapezium area predicates for quadrature methods.']).
+
+	:- private(interval_area/7).
 
 	interval_area(_, Left, Right, 0, _, Acc, Area) :-
 		Area is (Right-Left)*Acc,
@@ -18,6 +20,8 @@
 		N2 is N - 1,
 		Acc2 is Acc + W*Y,
 		interval_area(Function, Left, Right, N2, NP, Acc2, Area).
+
+	:- private(trapezium_area/5).
 
 	trapezium_area(Left, Right, Fleft, Fright, Area) :-
 		Area is 0.5*(Right-Left)*(Fright+Fleft).
