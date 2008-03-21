@@ -17,7 +17,18 @@
 
 
 
-:- object(f1,
+:- object(const,
+	implements(evaluating)).
+
+	% exp(x) [0,4] integral = 8.0
+
+	eval(_, 2).
+
+:- end_object.
+
+
+
+:- object(exp,
 	implements(evaluating)).
 
 	% exp(x) [0,4] integral = 53.59815
@@ -29,7 +40,31 @@
 
 
 
-:- object(f2,
+:- object(log,
+	implements(evaluating)).
+
+	% log(x) [1,4] integral = 2.54518
+
+	eval(X, Y) :-
+		Y is log(X).
+
+:- end_object.
+
+
+
+:- object(sin,
+	implements(evaluating)).
+
+	% sin(x) [0.000,6.283] integral = 1.71694e-08
+
+	eval(X, Y) :-
+		Y is sin(X).
+
+:- end_object.
+
+
+
+:- object(f1,
 	implements(evaluating)).
 
 	% exp(-x*x) [1,1.5] integral = 0.1093643
@@ -41,7 +76,7 @@
 
 
 
-:- object(f3,
+:- object(f2,
 	implements(evaluating)).
 
 	% 5/1+4x*x [-2,2 ] integral = 5 atan 4 = 6.6.29088
@@ -53,7 +88,7 @@
 
 
 
-:- object(f4,
+:- object(f3,
 	implements(evaluating)).
 
 	% (4*x-x+x*x)exp(x*x) [0,2] integral = (e**4-5)/2 = 24.79907 
@@ -65,7 +100,7 @@
 
 
 
-:- object(f5,
+:- object(f4,
 	implements(evaluating)).
 
 	% 1/xsin(1/x) [0.001 1] integral = 0.62415
@@ -77,7 +112,7 @@
 
 
 
-:- object(f6,
+:- object(f5,
 	implements(evaluating)).
 
 	% 1/xsin(1/x) - 1/(1-x)sin(1/(1-x)) [0.001 0.999] integral = 0.099109
