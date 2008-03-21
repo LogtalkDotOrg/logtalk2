@@ -1,16 +1,26 @@
 
-:- object(coeficients).
+:- category(areas).
 
 	:- info([
 		version is 1.0,
 		author is 'Paul Crocker',
 		date is 2008/03/19,
-		comment is 'Orthogonal Polinomials']).
+		comment is 'Interval and trapezium area predicates for quadrature methods.']).
 
-	% static data for quadrature methods
+	interval_area(_, Left, Right, 0, _, Acc, Area) :-
+		Area is (Right-Left)*Acc,
+		!.
+	interval_area(Function, Left, Right, N, NP, Acc, Area) :-
+		c(NP, N, C),
+		w(NP, N, W),
+		XK is Left + (Right-Left)*C,
+		Function::eval(XK, Y),
+		N2 is N - 1,
+		Acc2 is Acc + W*Y,
+		interval_area(Function, Left, Right, N2, NP, Acc2, Area).
 
-	:- public(w/3).
-	:- public(c/3).
+	trapezium_area(Left, Right, Fleft, Fright, Area) :-
+		Area is 0.5*(Right-Left)*(Fright+Fleft).
 
 	w(1,1, 1.0).
 	w(2,1, 0.5).
@@ -34,25 +44,4 @@
 	c(4,3, 1-0.330009478207571867598).
 	c(4,4, 1-0.06943184420973712388).
 
-	:- public(legendre/3).
-	:- mode(  legendre(+float,+integer,-float), one).
-	:- info(  legendre/3, [
-		comment is 'Calculate Pnx where Pn is the Nth Legendre Polynomial',
-		argnames is ['X', 'N', 'Pnx']]).
-
-	legendre(_, 0, 1.0) :- !.
-	legendre(X, 1,   X) :- !.
-	legendre(X, N,  PX) :-
-		N > 1,
-		!,
-		legendre(X, N, 2, X, 1.0, PX).
-	legendre(X, N, N, PN1, PN2, PX) :-
-		!,
-		PX is ((2.0*N-1.0)*X*PN1-(N-1.0)*PN2)/N.
-	legendre(X, N, Ncurrent, PN1, PN2, PX) :-
-		PN is ((2.0*Ncurrent-1.0)*X*PN1-(Ncurrent-1.0)*PN2)/Ncurrent,	
-		PN2_NEW is PN1,
-		Ncurr is Ncurrent + 1,	
-		legendre(X, N, Ncurr, PN, PN2_NEW, PX).
-
-:- end_object.
+:- end_category.
