@@ -7318,7 +7318,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 '$lgt_tr_threaded_call'((TGoal; TGoals), ThreadedCall) :-
 	!,
-	'$lgt_tr_threaded_or_call'((TGoal; TGoals), Queue, MTGoals, [], Ids, Results),
+	'$lgt_tr_threaded_or_call'((TGoal; TGoals), Queue, MTGoals, Ids, Results),
 	ThreadedCall = (	thread_self(Queue),
 						MTGoals,
 						thread_send_message(Queue, '$lgt_workers'(Ids)),
@@ -7328,7 +7328,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 '$lgt_tr_threaded_call'((TGoal, TGoals), ThreadedCall) :-
 	!,
-	'$lgt_tr_threaded_and_call'((TGoal, TGoals), Queue, MTGoals, [], Ids, Results),
+	'$lgt_tr_threaded_and_call'((TGoal, TGoals), Queue, MTGoals, Ids, Results),
 	ThreadedCall = (	thread_self(Queue),
 						MTGoals,
 						thread_send_message(Queue, '$lgt_workers'(Ids)),
@@ -7339,22 +7339,25 @@ current_logtalk_flag(version, version(2, 31, 5)).
 '$lgt_tr_threaded_call'(TGoal, once(TGoal)).
 
 
-
-'$lgt_tr_threaded_and_call'((TGoal, TGoals), Queue, (MTGoal, MTGoals), Acc, Ids, [Result| Results]) :-
+'$lgt_tr_threaded_or_call'((TGoal; TGoals), Queue, (MTGoal, MTGoals), [Id| Ids], [Result| Results]) :-
 	!,
-	'$lgt_tr_threaded_and_call'(TGoal, Queue, MTGoal, Acc, Acc2, [Result]),
-	'$lgt_tr_threaded_and_call'(TGoals, Queue, MTGoals, Acc2, Ids, Results).
+	'$lgt_tr_threaded_individual_goal'(TGoal, Queue, MTGoal, Id, Result),
+	'$lgt_tr_threaded_or_call'(TGoals, Queue, MTGoals, Ids, Results).
 
-'$lgt_tr_threaded_and_call'(TGoal, Queue, thread_create('$lgt_mt_threaded_call'(TGoal, Queue), Id, [detached(false)]), Acc, [Id| Acc], [id(Id, _)]).
+'$lgt_tr_threaded_or_call'(TGoal, Queue, MTGoal, [Id], [Result]) :-
+	'$lgt_tr_threaded_individual_goal'(TGoal, Queue, MTGoal, Id, Result).
 
 
-
-'$lgt_tr_threaded_or_call'((TGoal; TGoals), Queue, (MTGoal, MTGoals), Acc, Ids, [Result| Results]) :-
+'$lgt_tr_threaded_and_call'((TGoal, TGoals), Queue, (MTGoal, MTGoals), [Id| Ids], [Result| Results]) :-
 	!,
-	'$lgt_tr_threaded_or_call'(TGoal, Queue, MTGoal, Acc, Acc2, [Result]),
-	'$lgt_tr_threaded_or_call'(TGoals, Queue, MTGoals, Acc2, Ids, Results).
+	'$lgt_tr_threaded_individual_goal'(TGoal, Queue, MTGoal, Id, Result),
+	'$lgt_tr_threaded_and_call'(TGoals, Queue, MTGoals, Ids, Results).
 
-'$lgt_tr_threaded_or_call'(TGoal, Queue, thread_create('$lgt_mt_threaded_call'(TGoal, Queue), Id, [detached(false)]), Acc, [Id| Acc], [id(Id, _)]).
+'$lgt_tr_threaded_and_call'(TGoal, Queue, MTGoal, [Id], [Result]) :-
+	'$lgt_tr_threaded_individual_goal'(TGoal, Queue, MTGoal, Id, Result).
+
+
+'$lgt_tr_threaded_individual_goal'(TGoal, Queue, thread_create('$lgt_mt_threaded_call'(TGoal, Queue), Id, [detached(false)]), Id, id(Id, _)).
 
 
 
@@ -12929,10 +12932,13 @@ current_logtalk_flag(version, version(2, 31, 5)).
 % proves an individual goal from a threaded/1 predicate call and
 % sends the result back to the message queue associated to the call
 
-'$lgt_mt_threaded_call'(TGoal, Queue) :-
+'$lgt_mt_threaded_call'(Goal, Queue) :-
 	thread_self(Id),
-	(	catch(TGoal, Error, (thread_send_message(Queue, '$lgt_result'(Id, exception(Error))), throw(Error))) ->
-		thread_send_message(Queue, '$lgt_result'(Id, true(TGoal)))
+	(	catch(Goal, Error, thread_send_message(Queue, '$lgt_result'(Id, exception(Error)))) ->
+		(	var(Error) ->
+			thread_send_message(Queue, '$lgt_result'(Id, true(Goal)))
+		;	true
+		)
 	;	thread_send_message(Queue, '$lgt_result'(Id, fail))
 	).
 

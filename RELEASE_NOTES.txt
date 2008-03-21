@@ -21,6 +21,9 @@ RELEASE NOTES
 	Simplified the terms used to post individual results from threaded/1
 	calls to the queue associated to the call.
 
+	Corrected a bug in the built-in predicate threaded/1 when its argument 
+	is a conjunction (disjunction) or conjunctions (disjunctions).
+
 	Added a workaround for a mutex creation error when reloading a source 
 	file with entities defining synchronized predicates.
 
