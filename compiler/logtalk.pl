@@ -7357,7 +7357,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	'$lgt_tr_threaded_individual_goal'(TGoal, Queue, MTGoal, Id, Result).
 
 
-'$lgt_tr_threaded_individual_goal'(TGoal, Queue, thread_create(catch('$lgt_mt_threaded_call'(TGoal, Queue), _, true), Id, [detached(false)]), Id, id(Id, _)).
+'$lgt_tr_threaded_individual_goal'(TGoal, Queue, thread_create(catch('$lgt_mt_threaded_call'(TGoal, Queue), Error, '$lgt_mt_threaded_error_handler'(Error, Queue)), Id, [detached(false)]), Id, id(Id, _)).
 
 
 
@@ -12934,13 +12934,20 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 '$lgt_mt_threaded_call'(Goal, Queue) :-
 	thread_self(Id),
-	(	catch(Goal, Error, thread_send_message(Queue, '$lgt_result'(Id, exception(Error)))) ->
-		(	var(Error) ->
-			thread_send_message(Queue, '$lgt_result'(Id, true(Goal)))
-		;	true
-		)
+	(	call(Goal) ->
+		thread_send_message(Queue, '$lgt_result'(Id, true(Goal)))
 	;	thread_send_message(Queue, '$lgt_result'(Id, fail))
 	).
+
+
+
+% '$lgt_mt_threaded_error_handler'(@nonvar, +message_queue_identifier)
+%
+% error handler for threaded/1 individual thread calls
+
+'$lgt_mt_threaded_error_handler'(Error, Queue) :-
+	thread_self(Id),
+	thread_send_message(Queue, '$lgt_result'(Id, exception(Error))).
 
 
 
