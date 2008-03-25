@@ -37,13 +37,12 @@
 			Function::eval(Left,  Fleft),
 			Function::eval(Right, Fright),
 			:trapezium_area(Left, Right, Fleft, Fright, InitialArea),
-			quadrature(Function, Threads, Left, Right, Fleft, Fright, InitialArea, Epsilon, Integral)
+			trapezium(Function, Threads, Left, Right, Fleft, Fright, InitialArea, Epsilon, Integral)
 		;	NP > 0,
 			:interval_area(Function, Left, Right, NP, NP, 0.0, InitialArea),
 			quadrature(Function, Threads, Left, Right, InitialArea, NP, Epsilon, Integral)
 		).
 
-	% NP Point Quadrature 
 	quadrature(Function, Threads, Left, Right, Area, NP, Epsilon, Integral) :-		
 		Middle is 0.5*(Right+Left),
 		:interval_area(Function, Left,   Middle, NP, NP, 0.0, Area1),
@@ -64,8 +63,7 @@
 		;	Integral is Area1 + Area2
 		).
 
-	% trapezium
-	quadrature(Function, Threads, Left, Right, Fleft, Fright, Area, Epsilon, Integral) :-
+	trapezium(Function, Threads, Left, Right, Fleft, Fright, Area, Epsilon, Integral) :-
 		Middle is 0.5*(Right+Left),
 		Function::eval(Middle, Fmiddle),
 		:trapezium_area(Left,   Middle, Fleft,   Fmiddle, Area1),
@@ -73,13 +71,13 @@
 		Error is abs(Area-Area1-Area2),
 		(	Error > Epsilon -> 
 			(	Threads =:= 1 ->
-				quadrature(Function, Threads, Left, Middle,  Fleft, Fmiddle,  Area1, Epsilon, I1),
-				quadrature(Function, Threads, Middle, Right, Fmiddle, Fright, Area2, Epsilon, I2)
+				trapezium(Function, Threads, Left, Middle,  Fleft, Fmiddle,  Area1, Epsilon, I1),
+				trapezium(Function, Threads, Middle, Right, Fmiddle, Fright, Area2, Epsilon, I2)
 			;	% Threads > 1,
 				Threads2 is Threads//2,
 				threaded(( 
-					quadrature(Function, Threads2, Left,   Middle,  Fleft,   Fmiddle,  Area1, Epsilon, I1),
-					quadrature(Function, Threads2, Middle, Right,   Fmiddle, Fright,   Area2, Epsilon, I2)
+					trapezium(Function, Threads2, Left,   Middle,  Fleft,   Fmiddle,  Area1, Epsilon, I1),
+					trapezium(Function, Threads2, Middle, Right,   Fmiddle, Fright,   Area2, Epsilon, I2)
 				))
 			),
 			Integral is I1 + I2
@@ -108,9 +106,13 @@
 		Threads > 0,
 		Right > Left,
 		NP >= 0, NP =< 4,
-		split(Left, Right, Threads, Intervals),
-		spawn(Intervals, Function, NP, Epsilon, Goals),
-		collect(Goals, 0.0, Integral).
+		(	Threads =:= 1 ->
+			start(Function, Left, Right, NP, Epsilon, Integral)
+		;	% Threads > 1
+			split(Left, Right, Threads, Intervals),
+			spawn(Intervals, Function, NP, Epsilon, Goals),
+			collect(Goals, 0.0, Integral)
+		).
 
 	% split an interval into a list of intervals.
 	split(Inf, Sup, N, Intervals):-
@@ -143,13 +145,12 @@
 			Function::eval(Left, Fleft),
 			Function::eval(Right,Fright),
 			:trapezium_area(Left, Right, Fleft, Fright, InitialArea),
-			quadrature(Function, Left, Right, Fleft, Fright, InitialArea, Epsilon, Integral)
+			trapezium(Function, Left, Right, Fleft, Fright, InitialArea, Epsilon, Integral)
 		;	% NP > 0,
 			:interval_area(Function, Left, Right, NP, NP, 0.0, InitialArea),
 			quadrature(Function, Left, Right, InitialArea, NP, Epsilon, Integral)
 		).
 
-	% NP Point Quadrature 
 	quadrature(Function, Left, Right, Area, NP, Epsilon, Integral) :-
 		Middle is 0.5*(Right+Left),
 		:interval_area(Function, Left,   Middle, NP, NP, 0.0, Area1),
@@ -162,16 +163,15 @@
 		;	Integral is Area1 + Area2
 		).
 
-	% trapezium
-	quadrature(Function, Left, Right, Fleft, Fright, Area, Epsilon, Integral) :-
+	trapezium(Function, Left, Right, Fleft, Fright, Area, Epsilon, Integral) :-
 		Middle is 0.5*(Right+Left),
 		Function::eval(Middle, Fmiddle),
 		:trapezium_area(Left,   Middle, Fleft,   Fmiddle, Area1),
 		:trapezium_area(Middle, Right,  Fmiddle, Fright,  Area2),
 		Error is abs(Area-Area1-Area2),	
 		(	Error > Epsilon -> 
-			quadrature(Function, Left,   Middle, Fleft,   Fmiddle, Area1, Epsilon, I1),
-			quadrature(Function, Middle, Right,  Fmiddle, Fright,  Area2, Epsilon, I2),
+			trapezium(Function, Left,   Middle, Fleft,   Fmiddle, Area1, Epsilon, I1),
+			trapezium(Function, Middle, Right,  Fmiddle, Fright,  Area2, Epsilon, I2),
 			Integral is I1 + I2
 		;	Integral is Area1 + Area2
 		).
