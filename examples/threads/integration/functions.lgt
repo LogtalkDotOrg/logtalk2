@@ -83,7 +83,7 @@
 	% exp(-x*x) [1,1.5] integral = 0.1093643
 
 	eval(X, Y) :-
-		Y is exp(-(X*X)).
+		Y is exp(-X*X).
 
 :- end_object.
 
@@ -107,7 +107,7 @@
 	% (4*x-x*x*x)exp(x*x) [0,2] integral = (e**4-5)/2 = 24.79907 
 
 	eval(X, Y) :-
-		Y is (4.0*X-X*X*X))*exp(X*X).
+		Y is (4.0*X-X*X*X)*exp(X*X).
 
 :- end_object.
 
