@@ -161,10 +161,11 @@
 				put_char('\t'), write(Threads)
 			)), nl,
 		forall(
-			(	Function = const, Inf =  0.000, Sup = 4.000
-			;	Function = exp,   Inf =  0.000, Sup = 4.000
-			;	Function = log,   Inf =  1.000, Sup = 4.000
-			;	Function = sin,   Inf =  0.000, Sup = 6.283
+			(	Function = const,  Inf =  0.000, Sup = 4.000
+			;	Function = exp,    Inf =  0.000, Sup = 4.000
+			;	Function = log,    Inf =  1.000, Sup = 4.000
+			;	Function = sin,    Inf =  0.000, Sup = 6.283
+			;	Function = quiver, Inf =  0.001, Sup = 0.999
 			),
 			(	write(Function),
 				loop::forto(T, 0, 4,
@@ -179,10 +180,11 @@
 				put_char('\t'), write(Threads)
 			)), nl,
 		forall(
-			(	Function = const, Inf =  0.000, Sup = 4.000
-			;	Function = exp,   Inf =  0.000, Sup = 4.000
-			;	Function = log,   Inf =  1.000, Sup = 4.000
-			;	Function = sin,   Inf =  0.000, Sup = 6.283
+			(	Function = const,  Inf =  0.000, Sup = 4.000
+			;	Function = exp,    Inf =  0.000, Sup = 4.000
+			;	Function = log,    Inf =  1.000, Sup = 4.000
+			;	Function = sin,    Inf =  0.000, Sup = 6.283
+			;	Function = quiver, Inf =  0.001, Sup = 0.999
 			),
 			(	write(Function),
 				loop::forto(T, 0, 4,

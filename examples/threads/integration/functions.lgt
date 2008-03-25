@@ -64,6 +64,19 @@
 
 
 
+:- object(quiver,
+	implements(evaluating)).
+
+	% 1/xsin(1/x) - 1/(1-x)sin(1/(1-x)) [0.001 0.999] integral = 0.099109
+
+	eval(X, Y) :-
+		S is 1-X,
+		Y is sin(1.0/X)/X - sin(1.0/S)/S.
+
+:- end_object.
+
+
+
 :- object(f1,
 	implements(evaluating)).
 
@@ -79,7 +92,7 @@
 :- object(f2,
 	implements(evaluating)).
 
-	% 5/1+4x*x [-2,2 ] integral = 5 atan 4 = 6.6.29088
+	% 5/1+4x*x [-2,2 ] integral = 5 atan 4 = 6.629088
 
 	eval(X, Y) :-
 		Y is 5.0/(1.0 + 4.0*X*X).
@@ -91,10 +104,10 @@
 :- object(f3,
 	implements(evaluating)).
 
-	% (4*x-x+x*x)exp(x*x) [0,2] integral = (e**4-5)/2 = 24.79907 
+	% (4*x-x*x*x)exp(x*x) [0,2] integral = (e**4-5)/2 = 24.79907 
 
 	eval(X, Y) :-
-		Y is (4.0*X-(X*X*X))*exp(X*X).
+		Y is (4.0*X-X*X*X))*exp(X*X).
 
 :- end_object.
 
@@ -106,19 +119,6 @@
 	% 1/xsin(1/x) [0.001 1] integral = 0.62415
 
 	eval(X, Y) :-
-		Y is (1.0/X)*sin(1.0/X).
-
-:- end_object.
-
-
-
-:- object(f5,
-	implements(evaluating)).
-
-	% 1/xsin(1/x) - 1/(1-x)sin(1/(1-x)) [0.001 0.999] integral = 0.099109
-
-	eval(X, Y) :-
-		S is 1-X,
-		Y is ((1.0/X)*sin(1.0/X) * (1.0/S)*sin(1.0/S)).
+		Y is sin(1.0/X)/X.
 
 :- end_object.
