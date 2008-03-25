@@ -2,7 +2,7 @@
 :- object(qsort(_Threads)).
 
 	:- info([
-		version is 1.2,
+		version is 1.21,
 		author is 'Paul Crocker and Paulo Moura',
 		date is 2007/12/27,
 		comment is 'Multi-threaded version of the quick sort algorithm.',
@@ -18,14 +18,14 @@
 
 	qsort(List, Sorted) :-
 		parameter(1, Threads),
+		Threads > 0,
 		qsort(List, [], Sorted, Threads).
 
 	qsort([], Sorted, Sorted, _).
 	qsort([Pivot| Rest], Acc, Sorted, Threads) :-
 		(	Threads =:= 1 ->
 			quicksort([Pivot| Rest], Acc, Sorted)
-		;	Threads > 1,
-			Threads2 is Threads//2,
+		;	Threads2 is Threads//2,
 			partition(Rest, Pivot, Smaller0, Bigger0),
 			threaded((
 				qsort(Smaller0, [Pivot| Bigger], Sorted, Threads2),

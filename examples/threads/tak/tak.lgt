@@ -2,7 +2,7 @@
 :- object(tak(_Threads)).
 
 	:- info([
-		version is 1.1,
+		version is 1.11,
 		author is 'Paulo Moura',
 		date is 2007/12/28,
 		comment is 'Takeuchi function (recursive arithmetic).',
@@ -18,15 +18,16 @@
 
 	tak(X, Y, Z, A) :-
 		parameter(1, Threads),
+		Threads > 0,
 		tak_mt(Threads, X, Y, Z, A).
 
-	tak_mt(1, X, Y, Z, A) :- !,
+	tak_mt(1, X, Y, Z, A) :-
+		!,
 		tak_st(X, Y, Z, A).
 	tak_mt(_, X, Y, Z, A) :-
 		X =< Y, !,
 		Z = A.
 	tak_mt(Threads, X, Y, Z, A) :-
-		Threads > 1,
 		Threads3 is Threads//3,
 		X > Y,
 		X1 is X - 1,

@@ -2,7 +2,7 @@
 :- object(fft(_Threads)).
 
 	:- info([
-		version is 1.0,
+		version is 1.01,
 		date is 2008/2/13,
 		author is 'Paul Crocker, adapted from original code by Colin Barker',
 		comment is 'Simple multi-threaded version of the Fast Fourier Transform.',
@@ -15,10 +15,11 @@
 	:- mode(fft(+integer, +list, -list), one).
 	:- info(fft/3, [
 		comment is 'Returns a list of complex numbers the FFT given a List of Complex Numbers and N the size of that list a power of two',
-		argnames is ['Number', 'List', 'FFT']]).
+		argnames is ['N', 'List', 'FFT']]).
 
 	fft(N, L, Ft) :-
 		parameter(1, Threads),
+		Threads > 0,
 		mt_fft(Threads, N, L, Ft).
 
 	mt_fft(_, 1, Ft, Ft) :-
@@ -27,7 +28,7 @@
 		!,
 		st_fft(N, L, Ft).
 	mt_fft(Threads, N, L, Ft) :-
-		Threads2 is Threads//2,
+		Threads2 is Threads // 2,
 		N2 is N // 2,
 		evens_and_odds(L, E, O),
 		threaded((

@@ -2,7 +2,7 @@
 :- object(msort(_Threads)).
 
 	:- info([
-		version is 1.3,
+		version is 1.31,
 		author is 'Paulo Moura and Paul Crocker',
 		date is 2007/12/27,
 		comment is 'Multi-threaded implementation of the merge sort algorithm.',
@@ -18,12 +18,13 @@
 
 	msort(List, Sorted) :-
 		parameter(1, Threads),
+		Threads > 0,
 		mt_msort(Threads, List, Sorted).
 
-	mt_msort(1, List, Sorted) :- !,
+	mt_msort(1, List, Sorted) :-
+		!,
 		st_msort(List, Sorted).
 	mt_msort(Threads, List, Sorted) :-
-		Threads > 1,
 		Threads2 is Threads//2,
 		split(List, List1, List2),
 		threaded((
