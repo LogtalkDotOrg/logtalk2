@@ -84,11 +84,33 @@
 	
 	eval(X, Y) :-
 		W is 99.0,
-		Y  is cos( (W+1.0)*X).
+		Y is cos( (W+1.0)*X).
 
 :- end_object.
 
 
+:- object(test04,
+	implements(evaluating)).
+	
+%This test taken from http://www.osti.gov/energycitations/servlets/purl/860346-LpvoMN/860346.PDF
+%Integrate no intervalo [0 1] is 5*pi*pi/96 = 0.51404189589
+	
+	eval(X, Y) :-
+		W is sqrt(2.0+X*X),
+		Y is atan(W)/(W*(1.0+X*X)).
+
+:- end_object.
+
+:- object(test15,
+	implements(evaluating)).
+	
+%This test taken from http://www.osti.gov/energycitations/servlets/purl/860346-LpvoMN/860346.PDF
+%Integrate no intervalo [0 infinity] = pi/2.  
+	
+	eval(X, Y) :-
+		Y is sin(x)/x.
+
+:- end_object.
 
 :- object(f1,
 	implements(evaluating)).
