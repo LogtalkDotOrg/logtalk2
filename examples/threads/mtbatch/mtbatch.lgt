@@ -47,8 +47,11 @@
 			(	Size is S*10000,
 				write(Size),
 				loop::forto(Threads, 1, 16,
-					(	run(primes(Threads, Size), N, Average),
-						put_char('\t'), write_float(Average), flush_output
+					(	catch(run(primes(Threads, Size), N, Average), Error, write_error) ->
+						(	var(Error) ->
+							write_average(Average)
+						;	true
+						)
 					)), nl
 			)), nl.
 
@@ -65,8 +68,11 @@
 				generator::list(Size, List),
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
-						run(msort(Threads, List), N, Average),
-						put_char('\t'), write_float(Average), flush_output
+						catch(run(msort(Threads, List), N, Average), Error, write_error) ->
+						(	var(Error) ->
+							write_average(Average)
+						;	true
+						)
 					)), nl
 			)), nl.
 
@@ -83,8 +89,11 @@
 				generator::list(Size, List),
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
-						run(qsort(Threads, List), N, Average),
-						put_char('\t'), write_float(Average), flush_output
+						catch(run(qsort(Threads, List), N, Average), Error, write_error) ->
+						(	var(Error) ->
+							write_average(Average)
+						;	true
+						)
 					)), nl
 			)), nl.
 
@@ -99,8 +108,11 @@
 			(	write(Nth),
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
-						run(fibonacci(Threads, Nth), N, Average),
-						put_char('\t'), write_float(Average), flush_output
+						catch(run(fibonacci(Threads, Nth), N, Average), Error, write_error) ->
+						(	var(Error) ->
+							write_average(Average)
+						;	true
+						)
 					)), nl
 			)), nl.
 
@@ -115,8 +127,11 @@
 			(	write(Disks),
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
-						run(hanoi(Threads, Disks), N, Average),
-						put_char('\t'), write_float(Average), flush_output
+						catch(run(hanoi(Threads, Disks), N, Average), Error, write_error) ->
+						(	var(Error) ->
+							write_average(Average)
+						;	true
+						)
 					)), nl
 			)), nl.
 
@@ -130,8 +145,11 @@
 		write((21,14,7)),
 		loop::forto(T, 0, 5,
 			(	Threads is truncate(3**T),
-				run(tak(Threads, 21, 14, 7), N, Average),
-				put_char('\t'), write_float(Average), flush_output
+				catch(run(tak(Threads, 21, 14, 7), N, Average), Error, write_error) ->
+				(	var(Error) ->
+					write_average(Average)
+				;	true
+				)
 			)), nl.
 
 	% fast Fourier transform benchmarks:
@@ -147,8 +165,11 @@
 				cgenerator::list(Size, List),
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
-						run(fft(Threads, Size, List), N, Average),
-							put_char('\t'), write_float(Average), flush_output
+						catch(run(fft(Threads, Size, List), N, Average), Error, write_error) ->
+						(	var(Error) ->
+							write_average(Average)
+						;	true
+						)
 					)), nl
 			)), nl.
 
@@ -177,8 +198,11 @@
 			(	write(Function),
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
-						run(quadrec(Threads, Function, Inf, Sup, Epsilon), N, Average),
-						put_char('\t'), write_float(Average), flush_output
+						catch(run(quadrec(Threads, Function, Inf, Sup, Epsilon), N, Average), Error, write_error) ->
+						(	var(Error) ->
+							write_average(Average)
+						;	true
+						)
 					)), nl
 			)), nl,
 		write('Numerical integration using a thread for each integration sub-interval (average of '), write(N), write(' runs)'), nl,
@@ -203,8 +227,11 @@
 			(	write(Function),
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
-						run(quadsplit(Threads, Function, Inf, Sup, Epsilon), N, Average),
-						put_char('\t'), write_float(Average), flush_output
+						catch(run(quadsplit(Threads, Function, Inf, Sup, Epsilon), N, Average), Error, write_error) ->
+						(	var(Error) ->
+							write_average(Average)
+						;	true
+						)
 					)), nl
 			)), nl.
 
@@ -309,15 +336,22 @@
 		N2 is N - 1,
 		repeat(N2).
 
-	write_float(Float) :-
+	write_average(Average) :-
+		put_char('\t'),
 		parameter(1, Prolog),
-		write_float(Prolog, Float).
+		write_average(Prolog, Average),
+		flush_output.
 
-	write_float(swi, Float) :-
-		format('~6f', [Float]).
-	write_float(yap, Float) :-
-		format('~6f', [Float]).
-	write_float(xsb, Float) :-
-		fmt_write("%6f", Float).
+	write_average(swi, Average) :-
+		format('~6f', [Average]).
+	write_average(yap, Average) :-
+		format('~6f', [Average]).
+	write_average(xsb, Average) :-
+		fmt_write("%6f", Average).
+
+	write_error :-
+		put_char('\t'),
+		write('*error!*'),
+		flush_output.
 
 :- end_object.
