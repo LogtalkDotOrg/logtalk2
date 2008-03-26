@@ -67,7 +67,7 @@
 :- object(quiver,
 	implements(evaluating)).
 
-	% 1/xsin(1/x) - 1/(1-x)sin(1/(1-x)) [0.001 0.999] integral = 0.099109
+	% 1/xsin(1/x) - 1/(1-x)sin(1/(1-x)) [0.001 0.999] integral ~= 0.0
 
 	eval(X, Y) :-
 		S is 1-X,
