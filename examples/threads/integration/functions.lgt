@@ -76,6 +76,19 @@
 :- end_object.
 
 
+:- object(oscillate,
+	implements(evaluating)).
+
+	% cos ( (w+1)x) [-1,1] integral = 2 sin(w+1)/(w+1)
+	% exemplo para w = 99  integral = -0.01012731282
+	
+	eval(X, Y) :-
+		W is 99.0,
+		Y  is cos( (W+1.0)*X).
+
+:- end_object.
+
+
 
 :- object(f1,
 	implements(evaluating)).
