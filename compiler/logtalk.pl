@@ -12947,14 +12947,14 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 '$lgt_mt_threaded_error_handler'(Error, Queue) :-
 	thread_self(Id),
-	thread_send_message(Queue, '$lgt_result'(Id, exception(Error))).
+	catch(thread_send_message(Queue, '$lgt_result'(Id, exception(Error))), _, thread_detach(Id)).
 
 
 
 % '$lgt_mt_threaded_and_exit'(+callable, +list(thread_identifier), +list)
 %
-% retrieves the result of proving a conjunction of goals using a threaded/1 predicate
-% call by collecting the individual thread results posted to the call message queue
+% retrieves the result of proving a conjunction of goals using a threaded/1 predicate call
+% by collecting the individual thread results posted to the master thread message queue
 
 '$lgt_mt_threaded_and_exit'(Ids, Results) :-
 	thread_get_message('$lgt_result'(Id, Result)),
@@ -13116,7 +13116,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 '$lgt_mt_threaded_call_cancel'([Id| Ids]) :-
 	(	catch(thread_peek_message(Id, '$lgt_master'), _, fail) ->
 		catch(thread_send_message(Id, '$lgt_result'(_, terminate)), _, true)
-	;	catch(thread_signal(Id, thread_exit(aborted)), _, true)
+	;	catch(thread_signal(Id, throw(abort)), _, true)
 	),
 	'$lgt_mt_threaded_call_cancel'(Ids).
 
