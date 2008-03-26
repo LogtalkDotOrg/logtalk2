@@ -157,8 +157,8 @@
 		:interval_area(Function, Middle, Right,  NP, NP, 0.0, Area2),	
 		Error is abs(Area-Area1-Area2),
 		(	Error > Epsilon -> 	
-			quadrature(Function, Left, Middle,   Area1, NP, Epsilon, I1),
-			quadrature(Function, Middle, Right,  Area2, NP, Epsilon, I2),
+			quadrature(Function, Left, Middle,  Area1, NP, Epsilon, I1),
+			quadrature(Function, Middle, Right, Area2, NP, Epsilon, I2),
 			Integral is I1 + I2
 		;	Integral is Area1 + Area2
 		).

@@ -161,16 +161,23 @@
 				put_char('\t'), write(Threads)
 			)), nl,
 		forall(
-			(	Function = const,  Inf =  0.000, Sup = 4.000
-			;	Function = exp,    Inf =  0.000, Sup = 4.000
-			;	Function = log,    Inf =  1.000, Sup = 4.000
-			;	Function = sin,    Inf =  0.000, Sup = 6.283
-			;	Function = quiver, Inf =  0.001, Sup = 0.999
+			(	Function = const,     Inf =  0.000, Sup = 4.000, Epsilon = 1.0e-10
+			;	Function = exp,       Inf =  0.000, Sup = 4.000, Epsilon = 1.0e-10
+			;	Function = log,       Inf =  1.000, Sup = 4.000, Epsilon = 1.0e-10
+			;	Function = sin,       Inf =  0.000, Sup = 6.283, Epsilon = 1.0e-10
+			;	Function = quiver,    Inf =  0.001, Sup = 0.999, Epsilon = 1.0e-10
+			;	Function = oscillate, Inf = -1.000, Sup = 1.000, Epsilon = 1.0e-10
+			;	Function = test01,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
+			;	Function = test02,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
+			;	Function = test03,    Inf =  0.000, Sup = 1.571, Epsilon = 1.0e-15
+			;	Function = test04,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
+			;	Function = test05,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
+			;	Function = test06,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
 			),
 			(	write(Function),
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
-						run(quadrec(Threads, Function, Inf, Sup), N, Average),
+						run(quadrec(Threads, Function, Inf, Sup, Epsilon), N, Average),
 						put_char('\t'), write_float(Average), flush_output
 					)), nl
 			)), nl,
@@ -180,16 +187,23 @@
 				put_char('\t'), write(Threads)
 			)), nl,
 		forall(
-			(	Function = const,  Inf =  0.000, Sup = 4.000
-			;	Function = exp,    Inf =  0.000, Sup = 4.000
-			;	Function = log,    Inf =  1.000, Sup = 4.000
-			;	Function = sin,    Inf =  0.000, Sup = 6.283
-			;	Function = quiver, Inf =  0.001, Sup = 0.999
+			(	Function = const,     Inf =  0.000, Sup = 4.000, Epsilon = 1.0e-10
+			;	Function = exp,       Inf =  0.000, Sup = 4.000, Epsilon = 1.0e-10
+			;	Function = log,       Inf =  1.000, Sup = 4.000, Epsilon = 1.0e-10
+			;	Function = sin,       Inf =  0.000, Sup = 6.283, Epsilon = 1.0e-10
+			;	Function = quiver,    Inf =  0.001, Sup = 0.999, Epsilon = 1.0e-10
+			;	Function = oscillate, Inf = -1.000, Sup = 1.000, Epsilon = 1.0e-10
+			;	Function = test01,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
+			;	Function = test02,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
+			;	Function = test03,    Inf =  0.000, Sup = 1.571, Epsilon = 1.0e-15
+			;	Function = test04,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
+			;	Function = test05,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
+			;	Function = test06,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
 			),
 			(	write(Function),
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
-						run(quadsplit(Threads, Function, Inf, Sup), N, Average),
+						run(quadsplit(Threads, Function, Inf, Sup, Epsilon), N, Average),
 						put_char('\t'), write_float(Average), flush_output
 					)), nl
 			)), nl.
@@ -255,17 +269,17 @@
 		fail.
 	do_benchmark(fft(_, _, _), _).
 
-	do_benchmark(quadrec(Threads, Function, Inf, Sup), N) :-
+	do_benchmark(quadrec(Threads, Function, Inf, Sup, Epsilon), N) :-
 		repeat(N),
-			quadrec(Threads)::integrate(Function, Inf, Sup, 4, 1.0e-10, _),
+			quadrec(Threads)::integrate(Function, Inf, Sup, 4, Epsilon, _),
 		fail.
-	do_benchmark(quadrec(_, _, _, _), _).
+	do_benchmark(quadrec(_, _, _, _, _), _).
 
-	do_benchmark(quadsplit(Threads, Function, Inf, Sup), N) :-
+	do_benchmark(quadsplit(Threads, Function, Inf, Sup, Epsilon), N) :-
 		repeat(N),
-			quadsplit(Threads)::integrate(Function, Inf, Sup, 4, 1.0e-10, _),
+			quadsplit(Threads)::integrate(Function, Inf, Sup, 4, Epsilon, _),
 		fail.
-	do_benchmark(quadsplit(_, _, _, _), _).
+	do_benchmark(quadsplit(_, _, _, _, _), _).
 
 	walltime_begin(Walltime) :-
 		parameter(1, Prolog),

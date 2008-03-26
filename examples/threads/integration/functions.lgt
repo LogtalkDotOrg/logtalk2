@@ -67,7 +67,7 @@
 :- object(quiver,
 	implements(evaluating)).
 
-	% 1/xsin(1/x) - 1/(1-x)sin(1/(1-x)) [0.001 0.999] integral ~= 0.0
+	% [0.001, 0.999] integral ~= 0.0
 
 	eval(X, Y) :-
 		S is 1-X,
@@ -76,41 +76,96 @@
 :- end_object.
 
 
+
 :- object(oscillate,
 	implements(evaluating)).
 
-	% cos ( (w+1)x) [-1,1] integral = 2 sin(w+1)/(w+1)
-	% exemplo para w = 99  integral = -0.01012731282
-	
+	% cos((w+1)x) [-1,1] integral = 2 sin(w+1)/(w+1)
+	% for w = 99  integral = -0.01012731282
+
 	eval(X, Y) :-
 		W is 99.0,
-		Y is cos( (W+1.0)*X).
+		Y is cos((W+1.0)*X).
 
 :- end_object.
 
 
+
+% the six functions that follows, test01..test06, are taken from the paper
+% http://www.osti.gov/energycitations/servlets/purl/860346-LpvoMN/860346.PDF
+
+:- object(test01,
+	implements(evaluating)).
+
+	% [0, 1] integral = 0.25
+
+	eval(X, Y) :-
+		Y is X*log(1+X).
+
+:- end_object.
+
+
+
+:- object(test02,
+	implements(evaluating)).
+
+	% [0, 1] integral = (pi - 2 + 2log2)/12 = 0,210657251226
+
+	eval(X, Y) :-
+		Y is X*X*atan(X).
+
+:- end_object.
+
+
+
+:- object(test03,
+	implements(evaluating)).
+
+	% [0, pi/2] integral = (e^(pi/2) - 1)/2 = 1,905238690483
+
+	eval(X, Y) :-
+		Y is exp(X)*cos(X).
+
+:- end_object.
+
+
+
 :- object(test04,
 	implements(evaluating)).
-	
-%This test taken from http://www.osti.gov/energycitations/servlets/purl/860346-LpvoMN/860346.PDF
-%Integrate no intervalo [0 1] is 5*pi*pi/96 = 0.51404189589
-	
+
+ 	% [0, 1] integral = (5*pi^2)/96 = 0.51404189589
+
 	eval(X, Y) :-
 		W is sqrt(2.0+X*X),
 		Y is atan(W)/(W*(1.0+X*X)).
 
 :- end_object.
 
-:- object(test15,
+
+
+:- object(test05,
 	implements(evaluating)).
-	
-%This test taken from http://www.osti.gov/energycitations/servlets/purl/860346-LpvoMN/860346.PDF
-%Integrate no intervalo [0 infinity] = pi/2.  
-	
+
+	% [0, 1] integral = -4/9 = 0,44444444444(4)
+
 	eval(X, Y) :-
-		Y is sin(x)/x.
+		Y is sqrt(X)*log(X).
 
 :- end_object.
+
+
+
+:- object(test06,
+	implements(evaluating)).
+
+	% [0, 1] integral = pi/9 = 0,349065850399
+
+	eval(X, Y) :-
+		Y is sqrt(1-X*X).
+
+:- end_object.
+
+
 
 :- object(f1,
 	implements(evaluating)).
