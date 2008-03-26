@@ -12,22 +12,19 @@ Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 ...
 
 
-% integrate the function f1 using the recursive adaptive trapezio method with 4 threads
+% integrate the function "quiver" using the recursive adaptive trapezio method with 4 threads
 
-?- quadrec(4)::integrate(f1, 0, 4, 0, 1.0e-10, I).
-I = 53.5982.
+?- quadrec(4)::integrate(quiver, 0.001, 0.999, 0, 1.0e-10, Integral).
+Integral = 6.66134e-16.
 
 
-% integrate the function f1 using the recursive adaptive 4 point gaussian scheme with 8 threads
+% integrate the function "quiver" using the recursive adaptive 4 point gaussian scheme with 8 threads
 
-?- quadrec(8)::integrate(f1, 0, 4, 4, 1.0e-10, I).
-I = 53.5982.
-
-?- quadrec(8)::integrate(f1, 0, 4, 4, 1.0e-10, I).
-I = 53.5982.
+?- quadrec(8)::integrate(quiver, 0.001, 0.999, 4, 1.0e-10, Integral).
+Integral = 2.70827e-10 
 
 
 % the other versions
 
-?- quadsplit(8)::integrate(f1, 0, 4, 0, 1.0e-10, I).
-I = 53.5982.
+?- quadsplit(8)::integrate(quiver, 0.001, 0.999, 4, 1.0e-10, Integral).
+Integral = 2.70827e-10.
