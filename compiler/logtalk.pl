@@ -13116,7 +13116,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 '$lgt_mt_threaded_call_cancel'([Id| Ids]) :-
 	(	catch(thread_peek_message(Id, '$lgt_master'), _, fail) ->
 		catch(thread_send_message(Id, '$lgt_result'(_, terminate)), _, true)
-	;	catch(thread_signal(Id, (mutex_unlock_all, throw(abort)), _, true)
+	;	catch(thread_signal(Id, (mutex_unlock_all, throw(abort))), _, true)
 	),
 	'$lgt_mt_threaded_call_cancel'(Ids).
 
