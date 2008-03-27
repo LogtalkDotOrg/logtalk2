@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.31.5 - March ??, 2008
+2.31.5 - March 31, 2008
 
 	Updated the implementation of the threaded/1 built-in predicate to 
 	ensure that thread creation errors (usually, virtual memory address 
