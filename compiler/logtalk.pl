@@ -7357,7 +7357,9 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	'$lgt_tr_threaded_individual_goal'(TGoal, Queue, MTGoal, Id, Result).
 
 
-'$lgt_tr_threaded_individual_goal'(TGoal, Queue, thread_create(catch('$lgt_mt_threaded_call'(TGoal, Queue), Error, '$lgt_mt_threaded_error_handler'(Error, Queue)), Id, [detached(false)]), Id, id(Id, TGoal, _)).
+%'$lgt_tr_threaded_individual_goal'(TGoal, Queue, thread_create(catch('$lgt_mt_threaded_call'(TGoal, Queue), Error, '$lgt_mt_threaded_error_handler'(Error, Queue)), Id, [detached(false), at_exit(thread_send_message(Queue, '$lgt_worker'(Id)))]), Id, id(Id, TGoal, _)).
+
+'$lgt_tr_threaded_individual_goal'(TGoal, Queue, thread_create(catch('$lgt_mt_threaded_call'(TGoal, Queue), Error, thread_send_message(Queue, '$lgt_result'(Id, exception(Error)))), Id, [detached(false), at_exit(thread_send_message(Queue, '$lgt_worker'(Id)))]), Id, id(Id, TGoal, _)).
 
 
 
@@ -13116,7 +13118,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 '$lgt_mt_threaded_call_cancel'([Id| Ids]) :-
 	(	catch(thread_peek_message(Id, '$lgt_master'), _, fail) ->
 		catch(thread_send_message(Id, '$lgt_result'(_, terminate)), _, true)
-	;	catch(thread_signal(Id, (mutex_unlock_all, throw(abort))), _, true)
+	;	catch(thread_signal(Id, '$lgt_mt_thread_abort'(abort)), _, true)
 	),
 	'$lgt_mt_threaded_call_cancel'(Ids).
 
@@ -13131,7 +13133,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 '$lgt_mt_threaded_call_cancel'([Id| Ids], Error) :-
 	(	catch(thread_peek_message(Id, '$lgt_master'), _, fail) ->
 		catch(thread_send_message(Id, '$lgt_result'(_, terminate)), _, true)
-	;	catch(thread_signal(Id, (mutex_unlock_all, throw(Error))), _, true)
+	;	catch(thread_signal(Id, '$lgt_mt_thread_abort'(Error)), _, true)
 	),
 	'$lgt_mt_threaded_call_cancel'(Ids, Error).
 
@@ -13141,6 +13143,13 @@ current_logtalk_flag(version, version(2, 31, 5)).
 '$lgt_mt_threaded_call_clean'([Id| Ids]) :-
 	catch(thread_join(Id, _), _, true),
 	'$lgt_mt_threaded_call_clean'(Ids).
+
+
+'$lgt_mt_thread_abort'(Error) :-
+	findall(Id, (thread_peek_message('$lgt_worker'(Id)), thread_get_message('$lgt_worker'(Id))), Ids),
+	'$lgt_mt_threaded_call_abort'(Ids, Error),
+	mutex_unlock_all,
+	throw(Error).
 
 
 
