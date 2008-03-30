@@ -109,7 +109,7 @@
 :- object(test02,
 	implements(evaluating)).
 
-	% [0, 1] integral = (pi - 2 + 2log2)/12 = 0,210657251226
+	% [0, 1] integral = (pi - 2 + 2log2)/12 = 0.210657251226
 
 	eval(X, Y) :-
 		Y is X*X*atan(X).
@@ -121,7 +121,7 @@
 :- object(test03,
 	implements(evaluating)).
 
-	% [0, pi/2] integral = (e^(pi/2) - 1)/2 = 1,905238690483
+	% [0, pi/2] integral = (e^(pi/2) - 1)/2 = 1.905238690483
 
 	eval(X, Y) :-
 		Y is exp(X)*cos(X).
@@ -146,7 +146,7 @@
 :- object(test05,
 	implements(evaluating)).
 
-	% [0, 1] integral = -4/9 = 0,44444444444(4)
+	% [0, 1] integral = -4/9 = 0.44444444444(4)
 
 	eval(X, Y) :-
 		Y is sqrt(X)*log(X).
@@ -158,7 +158,7 @@
 :- object(test06,
 	implements(evaluating)).
 
-	% [0, 1] integral = pi/9 = 0,349065850399
+	% [0, 1] integral = pi/9 = 0.349065850399
 
 	eval(X, Y) :-
 		Y is sqrt(1-X*X).
