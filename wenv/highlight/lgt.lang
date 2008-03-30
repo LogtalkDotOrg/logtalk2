@@ -36,7 +36,7 @@ $KEYWORDS(kwc)=regex((parameter|this|se(lf|nder))(?=[(]), 1)
 # reflection
 $KEYWORDS(kwc)=regex((current_predicate|predicate_property)(?=[(]), 1)
 # DCGs
-$KEYWORDS(kwc)=regex((expand_term|(goal|term)_expansion|phrase)(?=[(]), 1)
+$KEYWORDS(kwc)=regex((expand_term|(?:goal|term)_expansion|phrase)(?=[(]), 1)
 # entity
 $KEYWORDS(kwc)=regex(((abolish|c(reate|urrent))_(object|protocol|category))(?=[(]), 1)
 $KEYWORDS(kwc)=regex(((object|protocol|category)_property)(?=[(]), 1)
@@ -55,10 +55,10 @@ $KEYWORDS(kwc)=regex((logtalk_(compile|l(ibrary_path|oad)))(?=[(]), 1)
 $KEYWORDS(kwc)=regex((clause|retract(all)?)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((a(bolish|ssert(a|z)))(?=[(]), 1)
 # control
-$KEYWORDS(kwc)=regex((ca(?:ll|tch)|throw)(?=[(]), 1)
+$KEYWORDS(kwc)=regex((call|catch|throw)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((fail|true), 1)
 # all solutions
-$KEYWORDS(kwc)=regex(((?:bag|set)of|f(?:ind|or)all)(?=[(]), 1)
+$KEYWORDS(kwc)=regex((bagof|setof|findall|forall)(?=[(]), 1)
 # multi-threading meta-predicates
 $KEYWORDS(kwc)=regex((threaded(_(call|once|ignore|exit|peek|wait|notify))?)(?=[(]), 1)
 # term unification
@@ -72,15 +72,16 @@ $KEYWORDS(kwc)=regex((floor|truncate|round|ceiling)(?=[(]), 1)
 # other arithmetic functors
 $KEYWORDS(kwc)=regex((cos|atan|exp|log|s(in|qrt))(?=[(]), 1)
 # term testing
-$KEYWORDS(kwc)=regex((var|atom(?:ic)?|integer|float|compound|n(?:onvar|umber))(?=[(]), 1)
+$KEYWORDS(kwc)=regex((var|atomic|atom|integer|float|compound|nonvar|number)(?=[(]), 1)
 # stream selection and control
 $KEYWORDS(kwc)=regex(((curren|se)t_(in|out)put)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((open|close)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((flush_output)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((flush_output), 1)
 $KEYWORDS(kwc)=regex((stream_property|at_end_of_stream|set_stream_position)(?=[(]), 1)
+$KEYWORDS(kwc)=regex((at_end_of_stream), 1)
 # character and byte input/output
-$KEYWORDS(kwc)=regex((nl|(?:get|peek|put)_(?:byte|char|code))(?=[(]), 1)
+$KEYWORDS(kwc)=regex((nl|(get|peek|put)_(byte|char|code))(?=[(]), 1)
 $KEYWORDS(kwc)=regex((nl), 1)
 # term input/output
 $KEYWORDS(kwc)=regex((read(_term)?)(?=[(]), 1)
@@ -92,26 +93,34 @@ $KEYWORDS(kwc)=regex((atom_(length|c(hars|o(ncat|des))))(?=[(]), 1)
 $KEYWORDS(kwc)=regex((char_code|sub_atom)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((number_c(har|ode)s)(?=[(]), 1)
 # implementation defined hooks functions
-$KEYWORDS(kwc)=regex((se|curren)t_prolog_flag(?=[(]), 1)
+$KEYWORDS(kwc)=regex(((?:se|curren)t_prolog_flag)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((halt), 1)
 $KEYWORDS(kwc)=regex((halt)(?=[(]), 1)
 # logic and control
 $KEYWORDS(kwc)=regex((once)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((repeat), 1)
 
-# operators
-$KEYWORDS(kwd)=regex((::|\^\^|<<))
-$KEYWORDS(kwd)=regex((\\\+|->|=..|;|!|:-))
-$KEYWORDS(kwd)=regex((is|mod|rem|//|[+\-*/]))
-$KEYWORDS(kwd)=regex((/\\|\\/|>>))
-$KEYWORDS(kwd)=regex((=|\\=))
-$KEYWORDS(kwd)=regex((<|=<|=:=|=\\=|>|>=))
+# Logtalk message sending operators
+$KEYWORDS(kwd)=regex((::|\^\^|<<|:))
+# Prolog operators
+$KEYWORDS(kwd)=regex((\\\+|->|=\.\.|;|!|:-|\^))
+# Prolog arithmetic operators
+$KEYWORDS(kwd)=regex((is|mod|rem|//|[+\-*/]|[*][*]))
+# Prolog arithmetic comparison operators
+$KEYWORDS(kwd)=regex((=<|<|=:=|=\\=|>=|>))
+# Prolog term comparison operators
 $KEYWORDS(kwd)=regex((@<|@=<|==|\\==|@>|@>=))
+# Prolog unification operators
+$KEYWORDS(kwd)=regex((=|\\=))
+# Logtalk mode operators
+$KEYWORDS(kwd)=regex((\?|@))
+# Prolog bitwise operators
+$KEYWORDS(kwd)=regex((/\\|\\/|>>|\\))
 
 $STRINGDELIMITERS=" '
 
 # numbers
-$KEYWORDS(kwc)=regex((0(').|0b[0-1]+|0o[0-7]+|0x\p{XDigit}+|\d+(\.\d+)?([eE]([-+])?\d+)?), 1)
+$KEYWORDS(kwc)=regex((\b0(').|0''|0'"|0b[0-1]+|0o[0-7]+|0x\p{XDigit}+|\d+(\.\d+)?([eE]([-+])?\d+)?), 1)
 
 $SL_COMMENT=%
 
