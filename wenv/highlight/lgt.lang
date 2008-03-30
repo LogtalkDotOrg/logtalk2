@@ -130,6 +130,6 @@ $ALLOWNESTEDCOMMENTS=false
 
 $IGNORECASE=false
 
-$ESCCHAR=\
+$ESCCHAR=regex(\\\d{3}|\\x\p{XDigit}{2}|\\[ntvbrfa\\\?'"])
 
 $SYMBOLS= ( ) [ ] { } , ; : & | < > !  = / *  + -
