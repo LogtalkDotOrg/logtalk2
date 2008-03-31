@@ -1,19 +1,16 @@
 # Logtalk language definition file
 #
-# Author: Paulo Moura
-#   Mail: pmoura@logtalk.org
-#   Date: 28.03.08
+# http://logtalk.org/
+#
+#  Author: Paulo Moura
+#    Mail: pmoura@logtalk.org
+#    Date: 31.03.08
+# Version: 1.0
 # ------------------------------------------
 # This file is a part of highlight, a free source code converter released under the GPL.
 #
 # The file is used to describe keywords and special symbols of programming languages.
 # See README in the highlight directory for details.
-#
-# New definition files for future releases of highlight are always appreciated ;)
-#
-# ----------
-# pmoura@logtalk.org
-# http://logtalk.org/
 
 $DESCRIPTION=Logtalk
 
