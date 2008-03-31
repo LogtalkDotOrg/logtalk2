@@ -1,0 +1,27 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.31.5
+
+Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
+================================================================
+
+
+% load the example:
+
+| ?- logtalk_load(ack(loader)).
+...
+
+
+% some example queries:
+
+?- time(ack::ack(2, 4, V)).
+% 195 inferences, 0.00 CPU in 0.00 seconds (0% CPU, Infinite Lips)
+V = 11.
+
+?- time(ack::ack(3, 3, V)).
+% 6,074 inferences, 0.00 CPU in 0.00 seconds (0% CPU, Infinite Lips)
+V = 61.
+
+?- time(ack::ack(3, 4, V)).
+% 25,730 inferences, 0.01 CPU in 0.01 seconds (89% CPU, 2573000 Lips)
+V = 125.

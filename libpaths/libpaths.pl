@@ -13,6 +13,7 @@
 	 assertz(logtalk_library_path(contributions, lgtuser('contributions/'))),
 	 assertz(logtalk_library_path(examples, lgtuser('examples/'))),
 	 assertz(logtalk_library_path(library, lgtuser('library/'))),
+	 assertz(logtalk_library_path(ack, examples('ack/'))),
 	 assertz(logtalk_library_path(aliases, examples('aliases/'))),
 	 assertz(logtalk_library_path(assignvars, examples('assignvars/'))),
 	 assertz(logtalk_library_path(barriers, threads('barriers/'))),
