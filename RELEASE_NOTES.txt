@@ -33,6 +33,9 @@ RELEASE NOTES
 	Corrected a Logtalk compiler bug that allowed a predicate to be declared 
 	both dynamic and synchronized. Thanks to Paul Crocker for the bug report.
 
+	Updated the YAP and SWI-Prolog config files to set the default value of 
+	the "tmpdir" flag depending on the host operating-system.
+
 	Updated the XSB config file to use the new optimized call/N predicates 
 	found on the current XSB CVS version.
 
