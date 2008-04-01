@@ -326,7 +326,8 @@
 	walltime_end(swi, Walltime) :-
 		get_time(Walltime).
 	walltime_end(yap, Walltime) :-
-		statistics(walltime, [_, Walltime]).
+		statistics(walltime, [_, Time]),
+		Walltime is Time / 1000.
 	walltime_end(xsb, Walltime) :-
 		walltime(Walltime).
 
