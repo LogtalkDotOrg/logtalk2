@@ -33,6 +33,10 @@ RELEASE NOTES
 	Corrected a Logtalk compiler bug that allowed a predicate to be declared 
 	both dynamic and synchronized. Thanks to Paul Crocker for the bug report.
 
+	Corrected a Logtalk compiler bug where local definition clauses for 
+	dynamic predicates are being generated for categories. Thanks to Victor 
+	Noel for the bug report.
+
 	Updated the YAP and SWI-Prolog config files to set the default value of 
 	the "tmpdir" flag depending on the host operating-system.
 

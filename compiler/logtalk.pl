@@ -514,7 +514,7 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_tr_object_relations'(Rels, Obj),
 	'$lgt_tr_directives'(Dirs, user_input, _),
 	'$lgt_tr_clauses'(Clauses, user_input),
-	'$lgt_gen_local_def_clauses',
+	'$lgt_gen_object_local_def_clauses',
 	'$lgt_fix_synchronized_preds',
 	'$lgt_fix_pred_calls',
 	'$lgt_gen_object_clauses',
@@ -564,7 +564,6 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_tr_category_relations'(Rels, Ctg),
 	'$lgt_tr_directives'(Dirs, user_input, _),
 	'$lgt_tr_clauses'(Clauses, user_input),
-	'$lgt_gen_local_def_clauses',
 	'$lgt_fix_synchronized_preds',
 	'$lgt_fix_pred_calls',
 	'$lgt_gen_category_clauses',
@@ -8879,7 +8878,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	'$lgt_gen_entity_init_goal'.
 
 '$lgt_generate_code'(object) :-
-	'$lgt_gen_local_def_clauses',
+	'$lgt_gen_object_local_def_clauses',
 	'$lgt_fix_synchronized_preds',
 	'$lgt_fix_pred_calls',
 	'$lgt_gen_object_clauses',
@@ -8887,7 +8886,6 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	'$lgt_gen_entity_init_goal'.
 
 '$lgt_generate_code'(category) :-
-	'$lgt_gen_local_def_clauses',
 	'$lgt_fix_synchronized_preds',
 	'$lgt_fix_pred_calls',
 	'$lgt_gen_category_clauses',
@@ -9069,11 +9067,12 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 
 
-% '$lgt_gen_local_def_clauses'
+% '$lgt_gen_object_local_def_clauses'
 %
 % generates local def clauses for undefined but declared (via scope or dynamic directives) predicates
+% (only necessary for objects as categories cannot contain clauses for dynamic predicates)
 
-'$lgt_gen_local_def_clauses' :-
+'$lgt_gen_object_local_def_clauses' :-
 	'$lgt_pp_entity'(_, _, EntityPrefix, _, _),
 	'$lgt_ctx_prefix'(Ctx, EntityPrefix),
 	'$lgt_pp_dynamic_'(Functor, Arity),
@@ -9087,7 +9086,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	),
 	fail.
 
-'$lgt_gen_local_def_clauses'.
+'$lgt_gen_object_local_def_clauses'.
 
 
 
