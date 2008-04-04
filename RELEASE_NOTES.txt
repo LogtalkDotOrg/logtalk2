@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.31.5 - March 31, 2008
+2.31.5 - April ??, 2008
 
 	Updated the implementation of the threaded/1 built-in predicate to 
 	ensure that thread creation errors (usually, virtual memory address 
@@ -69,6 +69,9 @@ RELEASE NOTES
 	Updated the TextMate Logtalk bundle and its configuration instructions 
 	to make the "Compile" and "Generate ..." commands more general, making 
 	it compatible with most Prolog compilers.
+
+	Corrected a bug in the SubEthaEdit 2.x syntax coloring support for 
+	character codes using the 0' notation.
 
 
 2.31.4 - February 20, 2008
