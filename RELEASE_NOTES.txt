@@ -71,7 +71,8 @@ RELEASE NOTES
 	it compatible with most Prolog compilers.
 
 	Corrected a syntax coloring bug with character codes using the 0' 
-	notation in the SubEthaEdit 2.x and Vim text editors.
+	notation in the SubEthaEdit 2.x and Vim text editors and in the
+	source-highlight package.
 
 	Removed some redundant regular expressions from the jEdit text editor 
 	syntax coloring support files.
