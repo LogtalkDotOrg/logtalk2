@@ -73,6 +73,9 @@ RELEASE NOTES
 	Corrected a syntax coloring bug with character codes using the 0' 
 	notation in the SubEthaEdit 2.x and Vim text editors.
 
+	Removed some redundant regular expressions from the jEdit text editor 
+	syntax coloring support files.
+
 
 2.31.4 - February 20, 2008
 
