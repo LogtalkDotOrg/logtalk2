@@ -6633,8 +6633,8 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_send_goal'(Prefix, TGoal, Sender, This, Self, call(Tag)))
-	;	MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_send_goal'(TGoal, Sender, This, Self, call(Tag)))
+		MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(Prefix, TGoal, Sender, This, Self, call(Tag)))
+	;	MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(TGoal, Sender, This, Self, call(Tag)))
 	),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
@@ -6654,8 +6654,8 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_send_goal'(Prefix, TGoal, Sender, This, Self, call([]))
-	;	MTGoal = '$lgt_mt_send_goal'(TGoal, Sender, This, Self, call([]))
+		MTGoal = '$lgt_mt_dispatch_goal'(Prefix, TGoal, Sender, This, Self, call([]))
+	;	MTGoal = '$lgt_mt_dispatch_goal'(TGoal, Sender, This, Self, call([]))
 	),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
@@ -6679,8 +6679,8 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_send_goal'(Prefix, TGoal, Sender, This, Self, once(Tag)))
-	;	MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_send_goal'(TGoal, Sender, This, Self, once(Tag)))
+		MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(Prefix, TGoal, Sender, This, Self, once(Tag)))
+	;	MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(TGoal, Sender, This, Self, once(Tag)))
 	),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
@@ -6700,8 +6700,8 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_send_goal'(Prefix, TGoal, Sender, This, Self, once([]))
-	;	MTGoal = '$lgt_mt_send_goal'(TGoal, Sender, This, Self, once([]))
+		MTGoal = '$lgt_mt_dispatch_goal'(Prefix, TGoal, Sender, This, Self, once([]))
+	;	MTGoal = '$lgt_mt_dispatch_goal'(TGoal, Sender, This, Self, once([]))
 	),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
@@ -6721,8 +6721,8 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_send_goal'(Prefix, TGoal, Sender, This, Self, ignore)
-	;	MTGoal = '$lgt_mt_send_goal'(TGoal, Sender, This, Self, ignore)
+		MTGoal = '$lgt_mt_dispatch_goal'(Prefix, TGoal, Sender, This, Self, ignore)
+	;	MTGoal = '$lgt_mt_dispatch_goal'(TGoal, Sender, This, Self, ignore)
 	),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
@@ -12803,21 +12803,21 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 
 
-% '$lgt_mt_send_goal'(@callable, +object_identifier, +object_identifier, +object_identifier, +list)
+% '$lgt_mt_dispatch_goal'(@callable, +object_identifier, +object_identifier, +object_identifier, +list)
 %
 % sends a goal to the dispatcher thread (this predicate is called from within categories)
 
-'$lgt_mt_send_goal'(Goal, Sender, This, Self, Option) :-
+'$lgt_mt_dispatch_goal'(Goal, Sender, This, Self, Option) :-
 	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _) ->
-	'$lgt_mt_send_goal'(Queue, Goal, Sender, This, Self, Option).
+	'$lgt_mt_dispatch_goal'(Queue, Goal, Sender, This, Self, Option).
 
 
 
-% '$lgt_mt_send_goal'(+message_queue, @callable, +object_identifier, +object_identifier, +object_identifier, +list)
+% '$lgt_mt_dispatch_goal'(+message_queue, @callable, +object_identifier, +object_identifier, +object_identifier, +list)
 %
 % sends a goal to the dispatcher thread
 
-'$lgt_mt_send_goal'(Queue, Goal, Sender, This, Self, Option) :-
+'$lgt_mt_dispatch_goal'(Queue, Goal, Sender, This, Self, Option) :-
 	(	thread_property(logtalk_dispatcher, status(running)) ->
 		% ask the Logtalk dispatcher to create a new thread for proving the goal:
 		thread_send_message(logtalk_dispatcher, '$lgt_goal'(Queue, Goal, This, Self, Option)),
