@@ -40,7 +40,7 @@
 	:- public(insert_all/3).
 	:- mode(insert_all(+list, +set, ?set), one).
 	:- info(insert_all/3, [
-		comment is 'Inserts a list of elemnts in a set, returning the resulting set.',
+		comment is 'Inserts a list of elements in a set, returning the resulting set.',
 		argnames is ['List', 'In', 'Out']]).
 
 	:- public(intersect/2).

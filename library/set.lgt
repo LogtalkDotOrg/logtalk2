@@ -93,7 +93,7 @@
 	member_var(Element, [_| Set]) :-
 		member_var(Element, Set).
 
-	member_nonvar(Element, [Head| Tail]):-
+	member_nonvar(Element, [Head| Tail]) :-
 	    compare(Order, Element, Head),
 	    member_nonvar(Order, Element, Tail).
 
@@ -104,17 +104,17 @@
 
 	new([]).
 
-	powerset(Set, PowerSet):-
+	powerset(Set, PowerSet) :-
 		reverse(Set, RSet),
 		powerset_1(RSet, [[]], PowerSet).
 
 	powerset_1([], PowerSet, PowerSet).
-	powerset_1([X| Xs], Yss0, Yss):-
+	powerset_1([X| Xs], Yss0, Yss) :-
 		powerset_2(Yss0, X, Yss1),
 		powerset_1(Xs, Yss1, Yss).
 
 	powerset_2([], _, []).
-	powerset_2([Zs| Zss], X, [Zs, [X| Zs]| Yss]):-
+	powerset_2([Zs| Zss], X, [Zs, [X| Zs]| Yss]) :-
 		powerset_2(Zss, X, Yss).
 
 	reverse(List, Reversed) :-
