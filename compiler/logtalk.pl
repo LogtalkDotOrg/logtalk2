@@ -13095,9 +13095,8 @@ current_logtalk_flag(version, version(2, 31, 5)).
 '$lgt_mt_threaded_call_abort'([]).
 
 '$lgt_mt_threaded_call_abort'([Id| Ids]) :-
-	catch(thread_send_message(Id, '$lgt_status'(_, terminate)), _, true),
 	(	catch(thread_peek_message(Id, '$lgt_master'), _, fail) ->
-		true
+		catch(thread_send_message(Id, '$lgt_status'(_, terminate)), _, true)
 	;	catch(thread_signal(Id, '$lgt_mt_thread_abort'(abort)), _, true)
 	),
 	'$lgt_mt_threaded_call_abort'(Ids).
@@ -13111,9 +13110,8 @@ current_logtalk_flag(version, version(2, 31, 5)).
 '$lgt_mt_threaded_call_abort'([], _).
 
 '$lgt_mt_threaded_call_abort'([Id| Ids], Error) :-
-	catch(thread_send_message(Id, '$lgt_status'(_, terminate)), _, true),
 	(	catch(thread_peek_message(Id, '$lgt_master'), _, fail) ->
-		true
+		catch(thread_send_message(Id, '$lgt_status'(_, terminate)), _, true)
 	;	catch(thread_signal(Id, '$lgt_mt_thread_abort'(Error)), _, true)
 	),
 	'$lgt_mt_threaded_call_abort'(Ids, Error).
@@ -13127,8 +13125,6 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 
 '$lgt_mt_thread_abort'(Error) :-
-	findall(Id, (thread_peek_message('$lgt_status'(Id, _)), thread_get_message('$lgt_status'(Id, _)), nonvar(Id)), Ids),
-	'$lgt_mt_threaded_call_abort'(Ids, Error),
 	mutex_unlock_all,
 	throw(Error).
 
