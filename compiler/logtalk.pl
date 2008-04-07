@@ -12938,7 +12938,10 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 % '$lgt_mt_threaded_exit_handler'(@nonvar, +message_queue_identifier)
 %
-% error handler for threaded/1 individual thread calls
+% error handler for threaded/1 individual thread calls; an error generated 
+% by the thread_send_message/2 call is interpreted as meaning that the 
+% master/parent thread (Queue) no longer exists leading to the detaching of
+% the worker thread
 
 '$lgt_mt_threaded_exit_handler'(Id, Queue) :-
 	thread_property(Id, status(Status)),

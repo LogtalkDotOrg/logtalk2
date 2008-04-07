@@ -196,7 +196,7 @@ ECLiPSe 5.10#26 or later versions
 	appended to the old ones instead of replacing them!
 
 
-GNU Prolog GNU Prolog 1.2.14 and later versions
+GNU Prolog 1.2.14 and later versions
 
 	gnu.config
 
@@ -247,7 +247,7 @@ JIProlog 3.0.2-6 and later versions
 	Prolog standard compliance. Supports smart compilation of source files.
 
 
-K-Prolog 5.1.2a and later 5.1.x versions
+K-Prolog 5.1.2a and later versions
 
 	k.config
 
@@ -343,7 +343,7 @@ PrologII+ 4.5 and later versions
 	Does not support the "altdirs" compiler flag.
 
 
-Qu-Prolog 8.1
+Qu-Prolog 8.1 and later versions
 
 	qu.config
 
@@ -416,7 +416,7 @@ SICStus Prolog 4.0
 	the Windows beta version).
 
 
-SWI Prolog 5.6.x and later versions
+SWI Prolog 5.6.23 and later versions
 
 	swi.config
 	swihook.pl
@@ -474,4 +474,5 @@ YAP 5.1.2 and later versions
 
 	Don't forget to use the cd/1 predicate to set the working directory 
 	before loading the library or an example. Supports smart compilation 
-	of source files.
+	of source files. Support for the Logtalk multi-threading features 
+	requires YAP CVS version.
