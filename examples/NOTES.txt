@@ -81,6 +81,10 @@ classvars
 dcgs
 	examples of using DCG rules inside objects and categories
 
+debug_hooks
+	simple example of using compilation hooks and term expansion for 
+	conditional compilation of debug statements
+
 diamonds
 	examples of problems and solutions for the "diamond problem"
 	(multi-inheritance conflicts and ambiguities)

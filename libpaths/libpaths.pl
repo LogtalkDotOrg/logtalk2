@@ -27,6 +27,7 @@
 	 assertz(logtalk_library_path(complements, examples('complements/'))),
 	 assertz(logtalk_library_path(classvars, examples('classvars/'))),
 	 assertz(logtalk_library_path(dcgs, examples('dcgs/'))),
+	 assertz(logtalk_library_path(debug_hooks, examples('debug_hooks/'))),
 	 assertz(logtalk_library_path(diamonds, examples('diamonds/'))),
 	 assertz(logtalk_library_path(dynpred, examples('dynpred/'))),
 	 assertz(logtalk_library_path(encodings, examples('encodings/'))),

@@ -50,6 +50,9 @@ RELEASE NOTES
 	installation script to use the "C:\lgtsvn" as base. Simplified manual 
 	installation instructions.
 
+	Added a simple example, "debug_hooks", of using compilation hooks and 
+	term expansion for conditional compilation of debug statements.
+
 	Updated the "primes" multi-threading example to allow any number of 
 	threads to be used in the computation of primes numbers.
 

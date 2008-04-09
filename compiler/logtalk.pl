@@ -126,8 +126,8 @@
 
 % compiler hook term and goal expansion:
 
-:- dynamic('$lgt_hook_term_expansion_'/2).		% '$lgt_hook_term_expansion_'(Term, Terms)
-:- dynamic('$lgt_hook_goal_expansion_'/2).		% '$lgt_hook_goal_expansion_'(Term, Terms)
+:- dynamic('$lgt_hook_term_expansion_'/2).		% '$lgt_hook_term_expansion_'(Term, ExpandedTerm)
+:- dynamic('$lgt_hook_goal_expansion_'/2).		% '$lgt_hook_goal_expansion_'(Term, ExpandedTerm)
 
 
 % multi-threading tags
@@ -10663,15 +10663,15 @@ current_logtalk_flag(version, version(2, 31, 5)).
 
 '$lgt_compile_hooks'(Obj) :-
 	(	Obj == user ->
-		TermExpansionGoal = term_expansion(Term, Terms),
-		GoalExpansionGoal = goal_expansion(Term, Terms)
-	;	'$lgt_tr_msg'(term_expansion(Term, Terms), Obj, TermExpansionGoal, user),
-		'$lgt_tr_msg'(goal_expansion(Term, Terms), Obj, GoalExpansionGoal, user)
+		TermExpansionGoal = term_expansion(Term, ExpandedTerm),
+		GoalExpansionGoal = goal_expansion(Term, ExpandedTerm)
+	;	'$lgt_tr_msg'(term_expansion(Term, ExpandedTerm), Obj, TermExpansionGoal, user),
+		'$lgt_tr_msg'(goal_expansion(Term, ExpandedTerm), Obj, GoalExpansionGoal, user)
 	),
 	retractall('$lgt_hook_term_expansion_'(_, _)),
-	assertz(('$lgt_hook_term_expansion_'(Term, Terms) :- catch(TermExpansionGoal, _, fail))),
+	assertz(('$lgt_hook_term_expansion_'(Term, ExpandedTerm) :- catch(TermExpansionGoal, _, fail))),
 	retractall('$lgt_hook_goal_expansion_'(_, _)),
-	assertz(('$lgt_hook_goal_expansion_'(Term, Terms) :- catch(GoalExpansionGoal, _, fail))).
+	assertz(('$lgt_hook_goal_expansion_'(Term, ExpandedTerm) :- catch(GoalExpansionGoal, _, fail))).
 
 
 
