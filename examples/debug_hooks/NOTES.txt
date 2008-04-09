@@ -8,8 +8,8 @@ Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 
 To load this example and for sample queries, please see the SCRIPT file.
 
-This folder contains a very simple example of using the Logtalk compiler 
-hook to (1) expand author abbreviations in info/1 directives into full 
-names and email addresses; (2) convert write/1 goals into write_term/3 
-goals where the terms written are quoted and pre-processed by using 
-numbervars/3.
+This folder contains a very simple example of using the compiler option 
+hook/1 and the term expansion mechanism to either discard or activate 
+debugging goals. For debugging goals in clause bodies, one defines clauses 
+for goal_expansion/2. For debugging goals in directives (e.g.in the 
+initialization/1 directive), one defines clauses for term_expansion/2.
