@@ -41,6 +41,9 @@ RELEASE NOTES
 	the "tmpdir" flag depending on the host operating-system. Added missing
 	declaration for the multi-threading predicate thread_initialization/1.
 
+	Added missing declarations for some proprietary built-in meta-predicates 
+	to the B-Prolog config file.
+
 	Corrected a bug in the SWI-Prolog config file in the declaration of the 
 	proprietary built-in meta-predicate "soft cut". Thanks to Victor Noel 
 	for the bug report.
