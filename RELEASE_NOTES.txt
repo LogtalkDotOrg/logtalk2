@@ -22,7 +22,7 @@ RELEASE NOTES
 	calls to the queue associated to the call.
 
 	Corrected a bug in the built-in predicate threaded/1 when its argument 
-	is a conjunction (disjunction) or conjunctions (disjunctions).
+	is a conjunction (disjunction) of conjunctions (disjunctions).
 
 	Added a workaround for a mutex creation error when reloading a source 
 	file with entities defining synchronized predicates.
@@ -81,7 +81,7 @@ RELEASE NOTES
 	to make the "Compile" and "Generate ..." commands more general, making 
 	it compatible with most Prolog compilers.
 
-	Corrected a syntax coloring bug with character codes using the 0' 
+	Corrected a syntax coloring bug with character codes using the 0'Char 
 	notation in the SubEthaEdit 2.x and Vim text editors and in the
 	source-highlight package.
 

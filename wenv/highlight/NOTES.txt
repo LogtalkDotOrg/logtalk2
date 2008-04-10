@@ -6,7 +6,7 @@ Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 ================================================================
 
 
-This directory contains files that provide support for using version 2.6.8 
+This directory contains files that provide support for using version 2.6.9 
 or later of the Highlight package by Andre Simon with Logtalk source files.
 A detailed description on the Highlight package is available from:
 

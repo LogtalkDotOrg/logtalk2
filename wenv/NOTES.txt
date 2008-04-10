@@ -22,7 +22,9 @@ width on your editor preferences panel.
 You may notice that support for some text editors, notably for Windows-only 
 editors, is rather poor. Proper syntax highlighting support for Prolog and 
 Logtalk requires support for regular expressions with zero-width look-ahead 
-features, which some editors lack.
+features, which some editors lack. Some text editors supporting regular 
+expressions contain bugs and/or limitations that prevent full optimization 
+of the syntax coloring patterns.
 
 As Logtalk can be viewed as a superset of ISO Prolog, you may also use 
 the resources in this directory for editing plain Prolog source files.
