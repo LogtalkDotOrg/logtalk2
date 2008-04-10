@@ -40,6 +40,10 @@ RELEASE NOTES
 	Updated the YAP and SWI-Prolog config files to set the default value of 
 	the "tmpdir" flag depending on the host operating-system.
 
+	Corrected a bug in the SWI-Prolog config file in the declaration of the 
+	proprietary built-in meta-predicate "soft cut". Added declaration for the 
+	multi-threading built-in predicate thread_initialization/1.
+
 	Updated the XSB config file to use the new optimized call/N predicates 
 	found on the current XSB CVS version.
 
