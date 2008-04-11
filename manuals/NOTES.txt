@@ -5,6 +5,7 @@ Release 2.31.5
 Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 ================================================================
 
+
 To consult the Logtalk documentation open the file "index.html" with a
 web browser.
 

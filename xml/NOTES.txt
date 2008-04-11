@@ -31,7 +31,7 @@ logtalk_load/2 calls. The default file is "lgtxml.xsl" (described below).
 The documenting files can be generated either as standalone XML files 
 or contain a reference to either the Logtalk DTD file, "logtalk.dtd", 
 or to the Logtalk XML Schema file, "logtalk.xsd". The reference to the 
-XML specificationfile can be either a local reference or a URI reference.
+XML specification file can be either a local reference or a URI reference.
 By default, all XML documenting files contain a local reference but that 
 can be changed either in the config files, by setting a Logtalk compiler 
 flag, or by using the xmlsref/1 compiler flag. Choose the option value 
@@ -202,7 +202,7 @@ lgt2xml.js
 	later version)
 
 	Sample scripts for indexing the XML files in the current directory 
-	by generating an index.html file which contains links to all the 
+	by generating an "index.html" file which contains links to all the 
 	files. In addition, these scripts also copies of the "lgtxml.xsl" 
 	and "logtalk.css" files to the current directory, allowing direct 
 	visualization of the XML files on a supported web browser.

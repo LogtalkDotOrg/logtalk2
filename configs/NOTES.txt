@@ -263,7 +263,7 @@ K-Prolog 6.0.1 and later versions
 	k6.config
 
 	K-Prolog 6.0.1 supports the current ISO Prolog standard and features 
-	from the draft core revison proposal. The Windows version is missing the 
+	from the draft core revision proposal. The Windows version is missing the 
 	forall/2 predicate. Other bugs exist in the 6.0.1 beta version that may
 	cause trouble to Prolog and Logtalk applications. These bugs are expected 
 	to be corrected in the next K-Prolog version. 
@@ -412,8 +412,8 @@ SICStus Prolog 4.0
 
 	sicstus4.config
 
-	Config file for the forthcoming SICStus Prolog 4.0 version (tested with 
-	the Windows beta version).
+	Config file for the SICStus Prolog 4.0 version (tested with the Windows 
+	beta version).
 
 
 SWI Prolog 5.6.23 and later versions
@@ -453,9 +453,9 @@ SWI Prolog 5.6.23 and later versions
 	See the comments in the "swi_set_logtalk_context.pl" itself for a 
 	description of its functionality.
 
-	With multi-threading support turned on, you will get an warmless message
+	With multi-threading support turned on, you may get an harmless message
 	when halting the system regarding threads that wouldn't die: you can 
-	supress the message on POSIX systems by using "% swilgt 2> /dev/null".
+	suppress the message on POSIX systems by using "% swilgt 2> /dev/null".
 
 
 XSB 3.1 and later versions
