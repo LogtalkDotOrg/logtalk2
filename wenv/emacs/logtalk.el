@@ -4,8 +4,8 @@
 
 ;; Author: Paulo Moura
 ;; Creation date: November 15, 2003
-;; Last modification date: December 6, 2007
-;; Version: 1.2
+;; Last modification date: April 18, 2008
+;; Version: 1.3
 
 ;; Installation:
 ;;
@@ -27,7 +27,7 @@
 
 ;; setup 
 
-(defvar logtalk-mode-version "1.2"
+(defvar logtalk-mode-version "1.3"
 	"Logtalk mode version number")
 
 (defvar logtalk-mode-hook nil)
@@ -50,7 +50,6 @@
 (defvar logtalk-mode-syntax-table
 	(let ((logtalk-mode-syntax-table (make-syntax-table)))
 		(modify-syntax-entry ?_ "w" logtalk-mode-syntax-table)
-		(modify-syntax-entry ?_ "_" logtalk-mode-syntax-table)
 		(modify-syntax-entry ?/ ". 14b" logtalk-mode-syntax-table)
 		(modify-syntax-entry ?* ". 23b" logtalk-mode-syntax-table)
 		(modify-syntax-entry ?% "<" logtalk-mode-syntax-table)
@@ -103,50 +102,51 @@
 		("\\(:- \\)\\(p\\(?:r\\(?:ivate\\|otected\\)\\|ublic\\)\\)\\([(]\\)" 2 'logtalk-directive-face)
 		("\\(:- \\)\\(alias\\|calls\\|d\\(?:iscontiguous\\|ynamic\\)\\|e\\(?:ncoding\\|xport\\)\\|in\\(?:fo\\|itialization\\)\\|m\\(?:\\(?:eta_predicat\\|od\\)e\\)\\|op\\|use\\(?:s\\|_module\\)\\|synchronized\\)\\([(]\\)" 2 'logtalk-directive-face)
 		("\\(:- \\)\\(dynamic\\|synchronized\\|threaded\\)\\([\.]\\)" 2 'logtalk-directive-face)
-		("\\(\\(?:complement\\|extend\\|i\\(?:mp\\(?:\\(?:lemen\\|or\\)t\\)\\|nstantiate\\)\\|specialize\\)s\\)\\([(]\\)" 1 'logtalk-directive-face)
+		("\\<\\(\\(?:complement\\|extend\\|i\\(?:mp\\(?:\\(?:lemen\\|or\\)t\\)\\|nstantiate\\)\\|specialize\\)s\\)\\([(]\\)" 1 'logtalk-directive-face)
 	))
 
 
 (setq logtalk-font-lock-built-in-methods
 	'(
-		("\\(parameter\\|se\\(?:lf\\|nder\\)\\|this\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
-		("\\(current_predicate\\|predicate_property\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
-		("\\(a\\(?:bolish\\|ssert[az]\\)\\|clause\\|retract\\(?:all\\)?\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
-		("\\(bagof\\|f\\(?:\\(?:ind\\|or\\)all\\)\\|setof\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
-		("\\(after\\|before\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
-		("\\(phrase\\|expand_term\\|\\(?:goal\\|term\\)_expansion\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
+		("\\<\\(parameter\\|se\\(?:lf\\|nder\\)\\|this\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
+		("\\<\\(current_predicate\\|predicate_property\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
+		("\\<\\(a\\(?:bolish\\|ssert[az]\\)\\|clause\\|retract\\(?:all\\)?\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
+		("\\<\\(bagof\\|f\\(?:\\(?:ind\\|or\\)all\\)\\|setof\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
+		("\\<\\(after\\|before\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
+		("\\<\\(phrase\\|expand_term\\|\\(?:goal\\|term\\)_expansion\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
 	))
 
 
 (setq logtalk-font-lock-built-in-predicates
 	'(
-		("\\(c\\(?:urrent\\|reate\\)_\\(?:category\\|object\\|protocol\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("\\(abolish_\\(?:category\\|object\\|protocol\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("\\(\\(?:category\\|object\\|protocol\\)_property\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("\\(complements_object\\|extends_\\(?:object\\|protocol\\|category\\)\\|i\\(?:mp\\(?:lements_protocol\\|orts_category\\)\\|nstantiates_class\\)\\|specializes_class\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("\\(\\(?:abolish\\|define\\)_events\\|current_event\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("\\(\\(?:curren\\|se\\)t_logtalk_flag\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("\\(logtalk_\\(?:compile\\|load\\|version\\|library_path\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("\\(forall\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("\\(retractall\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(c\\(?:urrent\\|reate\\)_\\(?:category\\|object\\|protocol\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(abolish_\\(?:category\\|object\\|protocol\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(\\(?:category\\|object\\|protocol\\)_property\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(complements_object\\|extends_\\(?:object\\|protocol\\|category\\)\\|i\\(?:mp\\(?:lements_protocol\\|orts_category\\)\\|nstantiates_class\\)\\|specializes_class\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(\\(?:abolish\\|define\\)_events\\|current_event\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(\\(?:curren\\|se\\)t_logtalk_flag\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(logtalk_\\(?:compile\\|load\\|version\\|library_path\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(forall\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(retractall\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; control constructs:
 		;;
-		("\\(ca\\(?:ll\\|tch\\)\\|throw\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("\\(fail\\|true\\|!\\|->\\|;\\)" 0 'logtalk-built-in-predicate-face)
+		("\\<\\(ca\\(?:ll\\|tch\\)\\|throw\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(fail\\|true\\)\\>" 0 'logtalk-built-in-predicate-face)
+		("\\(!\\|->\\|;\\)" 0 'logtalk-built-in-predicate-face)
 		;;
 		;; multi-threading:
 		;;
-		("\\(threaded\\(_\\(?:call\\|once\\|ignore\\|exit\\|peek\\|wait\\|notify\\)\\)?\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(threaded\\(_\\(?:call\\|once\\|ignore\\|exit\\|peek\\|wait\\|notify\\)\\)?\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; logic and control:
 		;;
-		("\\(once\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("\\\\\\+\\|repeat" 0 'logtalk-built-in-predicate-face)
+		("\\<\\(once\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\\\\\+\\|\\<repeat\\>" 0 'logtalk-built-in-predicate-face)
 		;;
 		;; term testing:
 		;;
-		("\\(atom\\(?:ic\\)?\\|compound\\|float\\|\\(?:intege\\|n\\(?:onva\\|umbe\\)\\|va\\)r\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(atom\\(?:ic\\)?\\|compound\\|float\\|\\(?:intege\\|n\\(?:onva\\|umbe\\)\\|va\\)r\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; term comparison:
 		;;
@@ -154,12 +154,12 @@
 		;;
 		;; term creation and decomposition:
 		;;
-		("\\(arg\\|copy_term\\|functor\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(arg\\|copy_term\\|functor\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("=\\.\\." 0 'logtalk-built-in-predicate-face)
 		;;
 		;; arithemtic evaluation:
 		;;
-		("\\<\\is\\>" 0 'logtalk-built-in-predicate-face)
+		("\\<is\\>" 0 'logtalk-built-in-predicate-face)
 		;;
 		;; arithemtic comparison:
 		("=:=\\|@\\(?:=<\\|>=\\|[<>]\\)\\|\\\\==" 0 'logtalk-built-in-predicate-face)
@@ -174,7 +174,7 @@
 		;;
 		;; evaluable functors:
 		;;
-		("\\(abs\\|ceiling\\|flo\\(?:at\\(?:_\\(?:\\(?:fractional\\|integer\\)_part\\)\\)?\\|or\\)\\|mod\\|r\\(?:em\\|ound\\)\\|sign\\|truncate\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(abs\\|ceiling\\|flo\\(?:at\\(?:_\\(?:\\(?:fractional\\|integer\\)_part\\)\\)?\\|or\\)\\|mod\\|r\\(?:em\\|ound\\)\\|sign\\|truncate\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("//\\|[*/]" 0 'logtalk-built-in-predicate-face)
 		("\\([^eE]\\)\\([+]\\)" 2 'logtalk-built-in-predicate-face)
 		("\\([^:eE]\\)\\([-]\\)" 2 'logtalk-built-in-predicate-face)
@@ -182,35 +182,35 @@
 		;;
 		;; other arithemtic functors:
 		;;
-		("\\(atan\\|cos\\|exp\\|log\\|s\\(?:in\\|qrt\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(atan\\|cos\\|exp\\|log\\|s\\(?:in\\|qrt\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("\\*\\*" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; stream selection and control:
 		;;
-		("\\(at_end_of_stream\\|c\\(?:lose\\|urrent_\\(?:\\(?:in\\|out\\)put\\)\\)\\|flush_output\\|open\\|s\\(?:et_\\(?:input\\|output\\|stream_position\\)\\|tream_property\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(at_end_of_stream\\|c\\(?:lose\\|urrent_\\(?:\\(?:in\\|out\\)put\\)\\)\\|flush_output\\|open\\|s\\(?:et_\\(?:input\\|output\\|stream_position\\)\\|tream_property\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("\\<\\(at_end_of_stream\\|flush_output\\)\\>" 0 'logtalk-built-in-predicate-face)
 		;;
 		;; character input/output:
 		;;
-		("\\(get_c\\(?:har\\|ode\\)\\|nl\\|p\\(?:eek_c\\(?:har\\|ode\\)\\|ut_c\\(?:har\\|ode\\)\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(get_c\\(?:har\\|ode\\)\\|nl\\|p\\(?:eek_c\\(?:har\\|ode\\)\\|ut_c\\(?:har\\|ode\\)\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("\\<nl\\>" 0 'logtalk-built-in-predicate-face)
 		;;
 		;; byte input/output:
 		;;
-		("\\(\\(?:get\\|p\\(?:eek\\|ut\\)\\)_byte\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(\\(?:get\\|p\\(?:eek\\|ut\\)\\)_byte\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; term input/output:
 		;;
-		("\\(c\\(?:har_conversion\\|urrent_\\(?:char_conversion\\|op\\)\\)\\|op\\|read\\(?:_term\\)?\\|write\\(?:_\\(?:canonical\\|term\\)\\|q\\)?\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(c\\(?:har_conversion\\|urrent_\\(?:char_conversion\\|op\\)\\)\\|op\\|read\\(?:_term\\)?\\|write\\(?:_\\(?:canonical\\|term\\)\\|q\\)?\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; implementation defined hooks functions:
 		;;
-		("\\(\\(?:curren\\|se\\)t_prolog_flag\\|halt\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(\\(?:curren\\|se\\)t_prolog_flag\\|halt\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("\\<halt\\>" 0 'logtalk-built-in-predicate-face)
 		;;
 		;; atomic term processing:
 		;;
-		("\\(atom_\\(?:c\\(?:hars\\|o\\(?:des\\|ncat\\)\\)\\|length\\)\\|char_code\\|number_c\\(?:\\(?:har\\|ode\\)s\\)\\|sub_atom\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(atom_\\(?:c\\(?:hars\\|o\\(?:des\\|ncat\\)\\)\\|length\\)\\|char_code\\|number_c\\(?:\\(?:har\\|ode\\)s\\)\\|sub_atom\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; bitwise functors:
 		;;

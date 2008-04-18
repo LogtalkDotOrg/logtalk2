@@ -88,6 +88,10 @@ RELEASE NOTES
 	Removed some redundant regular expressions from the jEdit text editor 
 	syntax coloring support files.
 
+	Corrected syntax coloring bugs with variables starting with underscores 
+	(including anonymous variables) and with atoms containing an underscore 
+	in the Emacs text editor. Thanks to Joerg Schuster for the bug report.
+
 	Updated the Logtalk grammar documentation to reflect the changes to 
 	category relations introduced in version 2.31.0.
 
