@@ -101,7 +101,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 	<dl>
 		<dt>category_relation ::=</dt>
 			<dd>implements_protocols |</dd>
-			<dd>imports_categories</dd>
+			<dd>extends_categories</dd>
 	</dl>
 
 
@@ -124,20 +124,24 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 <h2 id="grammar_entity_relations">Entity relations</h2>
 
 	<dl>
-		<dt>implements_protocols ::=</dt>
-			<dd>"<code>implements(</code>" implemented_protocols "<code>)</code>"</dd>
-	</dl>
-	<dl>
 		<dt>extends_protocols ::=</dt>
 			<dd>"<code>extends(</code>" extended_protocols "<code>)</code>"</dd>
 	</dl>
 	<dl>
-		<dt>imports_categories ::=</dt>
-			<dd>"<code>imports(</code>" imported_categories "<code>)</code>"</dd>
-	</dl>
-	<dl>
 		<dt>extends_objects ::=</dt>
 			<dd>"<code>extends(</code>" extended_objects "<code>)</code>"</dd>
+	</dl>
+	<dl>
+		<dt>extends_categories ::=</dt>
+			<dd>"<code>extends(</code>" extended_categories "<code>)</code>"</dd>
+	</dl>
+	<dl>
+		<dt>implements_protocols ::=</dt>
+			<dd>"<code>implements(</code>" implemented_protocols "<code>)</code>"</dd>
+	</dl>
+	<dl>
+		<dt>imports_categories ::=</dt>
+			<dd>"<code>imports(</code>" imported_categories "<code>)</code>"</dd>
 	</dl>
 	<dl>
 		<dt>instantiates_classes ::=</dt>
@@ -234,6 +238,28 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 		<dl>
 			<dt>extended_object_list ::=</dt>
 				<dd>"<code>[</code>" extended_object_sequence "<code>]</code>"</dd>
+		</dl>
+	
+	<h3 id="grammar_extended_categories">Extended categories</h3>
+		<dl>
+			<dt>extended_categories ::=</dt>
+				<dd>extended_category |</dd>
+				<dd>extended_category_sequence |</dd>
+				<dd>extended_category_list</dd>
+		</dl>
+		<dl>
+			<dt>extended_category ::=</dt>
+				<dd>category_identifier |</dd>
+				<dd>scope "<code>::</code>" category_identifier</dd>
+		</dl>
+		<dl>
+			<dt>extended_category_sequence ::=</dt>
+				<dd>extended_category |</dd>
+				<dd>extended_category "<code>,</code>" extended_category_sequence</dd>
+		</dl>
+		<dl>
+			<dt>extended_category_list ::=</dt>
+				<dd>"<code>[</code>" extended_category_sequence "<code>]</code>"</dd>
 		</dl>
 	
 	<h3 id="grammar_instantiated_objects">Instantiated objects</h3>
@@ -754,7 +780,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: December 9, 2007</span>
+		<span>Last updated on: April 18, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="index.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>
