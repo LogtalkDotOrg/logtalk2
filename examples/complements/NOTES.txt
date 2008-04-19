@@ -9,5 +9,5 @@ Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 To load this example and for sample queries, please see the SCRIPT file.
 
 This folder contains an example that shows how to use a category to 
-explicitly complement an existing object, thus providing functionality 
-similar to Objective-C categories.
+explicitly complement an existing object (without modifying its source 
+code), thus providing functionality similar to Objective-C categories.
