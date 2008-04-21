@@ -83,7 +83,8 @@ RELEASE NOTES
 
 	Updated the TextMate Logtalk bundle and its configuration instructions 
 	to make the "Compile" and "Generate ..." commands more general, making 
-	it compatible with most Prolog compilers.
+	it compatible with most Prolog compilers. Added syntax coloring for 
+	standard arithmetic functions.
 
 	Corrected a syntax coloring bug with character codes using the 0'Char 
 	notation in the SubEthaEdit 2.x and Vim text editors and in the
