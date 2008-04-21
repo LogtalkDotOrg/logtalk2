@@ -659,7 +659,7 @@ In predicate definitions, predicate calls which are not prefixed with a message 
 the call to the predicate <code>write/1</code> will be compiled as a call to the corresponding Prolog built-in predicate unless the object (or category) encapsulating the above definition also contains a predicate named <code>write/1</code> or a dynamic declaration for the predicate.
 </p>
 <p>
-When calling non-standard Prolog built-in predicates, you may run into portability problems while trying your applications with different back-end Prolog compilers (non-standard predicates are often specific to a Prolog compiler). You may use the Logtalk compiler flag <a title="Consult user manual" href="running.html#options"><code>portability/1</code></a> to help check for problematic calls in your code.
+When calling non-standard Prolog built-in predicates or using non-standard Prolog arithmetic functions, you may run into portability problems while trying your applications with different back-end Prolog compilers (non-standard predicates and non-standard arithmetic functions are often specific to a Prolog compiler). You may use the Logtalk compiler flag <a title="Consult user manual" href="running.html#options"><code>portability/1</code></a> to help check for problematic calls in your code.
 </p>
 
 <h3 id="predicates_prolog_meta">Calling Prolog non-standard meta-predicates</h3>
@@ -675,7 +675,7 @@ Currently, there is no clean workaround for calling non-standard, Prolog built-i
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: April 7, 2008</span>
+		<span>Last updated on: April 21, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="categories.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="inheritance.html">next</a></span><br/>

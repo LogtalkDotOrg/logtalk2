@@ -204,6 +204,7 @@
 :- dynamic('$lgt_pp_defs_pred_'/2).				% '$lgt_pp_defs_pred_'(Functor, Arity)
 :- dynamic('$lgt_pp_calls_pred_'/4).			% '$lgt_pp_calls_pred_'(Functor, Arity, TFunctor, TArity)
 :- dynamic('$lgt_non_portable_call_'/2).		% '$lgt_non_portable_call_'(Functor, Arity)
+:- dynamic('$lgt_non_portable_function_'/2).	% '$lgt_non_portable_function_'(Functor, Arity)
 
 :- dynamic('$lgt_pp_defs_nt_'/2).				% '$lgt_pp_defs_nt_'(Functor, Arity)
 :- dynamic('$lgt_pp_calls_nt_'/2).				% '$lgt_pp_calls_nt_'(Functor, Arity)
@@ -4751,6 +4752,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	retractall('$lgt_pp_defs_pred_'(_, _)),
 	retractall('$lgt_pp_calls_pred_'(_, _, _, _)),
 	retractall('$lgt_non_portable_call_'(_, _)),
+	retractall('$lgt_non_portable_function_'(_, _)),
 	retractall('$lgt_pp_defs_nt_'(_, _)),
 	retractall('$lgt_pp_calls_nt_'(_, _)),
 	retractall('$lgt_pp_referenced_object_'(_)),
@@ -7197,6 +7199,37 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	'$lgt_tr_body'(Obj::Pred, TPred, DPred, Ctx).
 
 
+% arithmetic predicates (portability checks)
+
+'$lgt_tr_body'(_ is Exp, _, _, _) :-
+	'$lgt_check_non_portable_functions'(Exp),
+	fail.
+'$lgt_tr_body'(Exp1 =:= Exp2, _, _, _) :-
+	'$lgt_check_non_portable_functions'(Exp1),
+	'$lgt_check_non_portable_functions'(Exp2),
+	fail.
+'$lgt_tr_body'(Exp1 =\= Exp2, _, _, _) :-
+	'$lgt_check_non_portable_functions'(Exp1),
+	'$lgt_check_non_portable_functions'(Exp2),
+	fail.
+'$lgt_tr_body'(Exp1 < Exp2, _, _, _) :-
+	'$lgt_check_non_portable_functions'(Exp1),
+	'$lgt_check_non_portable_functions'(Exp2),
+	fail.
+'$lgt_tr_body'(Exp1 =< Exp2, _, _, _) :-
+	'$lgt_check_non_portable_functions'(Exp1),
+	'$lgt_check_non_portable_functions'(Exp2),
+	fail.
+'$lgt_tr_body'(Exp1 > Exp2, _, _, _) :-
+	'$lgt_check_non_portable_functions'(Exp1),
+	'$lgt_check_non_portable_functions'(Exp2),
+	fail.
+'$lgt_tr_body'(Exp1 >= Exp2, _, _, _) :-
+	'$lgt_check_non_portable_functions'(Exp1),
+	'$lgt_check_non_portable_functions'(Exp2),
+	fail.
+
+
 % Logtalk and Prolog built-in (meta-)predicates
 
 '$lgt_tr_body'(Pred, _, _, _) :-
@@ -7552,6 +7585,43 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	throw(domain_error(not_less_than_zero, Arity)).
 
 '$lgt_compiler_db_pred_ind_chk'(_).
+
+
+
+% '$lgt_check_non_portable_functions'(@term)
+%
+% checks an arithmetic expression for calls to non-standard Prolog functions
+
+
+'$lgt_check_non_portable_functions'(Exp) :-
+	var(Exp),
+	!.
+
+'$lgt_check_non_portable_functions'(Exp) :-
+	number(Exp),
+	!.
+
+'$lgt_check_non_portable_functions'(Exp) :-
+	'$lgt_iso_spec_function'(Exp),
+	!,
+	Exp =.. [_| Exps],
+	'$lgt_check_non_portable_function_args'(Exps).
+
+'$lgt_check_non_portable_functions'(Exp) :-
+	functor(Exp, Functor, Arity),
+	(	'$lgt_non_portable_function_'(Functor, Arity) ->
+		true
+	;	assertz('$lgt_non_portable_function_'(Functor, Arity))
+	),
+	Exp =.. [_| Exps],
+	'$lgt_check_non_portable_function_args'(Exps).
+
+
+'$lgt_check_non_portable_function_args'([]).
+
+'$lgt_check_non_portable_function_args'([Exp| Exps]) :-
+	'$lgt_check_non_portable_functions'(Exp),
+	'$lgt_check_non_portable_function_args'(Exps).
 
 
 
@@ -8608,6 +8678,7 @@ current_logtalk_flag(version, version(2, 31, 5)).
 		'$lgt_report_undef_pred_calls',
 		'$lgt_report_misspelt_calls',
 		'$lgt_report_non_portable_calls',
+		'$lgt_report_non_portable_functions',
 		'$lgt_report_unknown_entities'
 	;	true
 	).
@@ -10152,6 +10223,24 @@ current_logtalk_flag(version, version(2, 31, 5)).
 	\+ '$lgt_pp_defs_pred_'(Functor, Arity),
 	functor(Pred, Functor, Arity),
 	\+ '$lgt_pp_redefined_built_in_'(Pred, _, _, _, _).
+
+
+
+% report non-portable arithmetic function calls in the body of object and category predicates
+
+'$lgt_report_non_portable_functions' :-
+	'$lgt_compiler_flag'(portability, warning),
+	setof(Functor/Arity, '$lgt_non_portable_function_'(Functor, Arity), Functions),
+	'$lgt_inc_compile_warnings_counter',
+	nl,
+	(	Functions = [_] ->
+		write('  WARNING!  Call to non-standard Prolog built-in arithmetic function: ')
+	;	write('  WARNING!  Calls to non-standard Prolog built-in arithmetic functions: ')
+	),
+	'$lgt_writeq_list'(Functions),
+	!.
+
+'$lgt_report_non_portable_functions'.
 
 
 
@@ -12705,6 +12794,50 @@ current_logtalk_flag(version, version(2, 31, 5)).
 '$lgt_iso_spec_pred'(current_prolog_flag(_, _)).
 '$lgt_iso_spec_pred'(halt).
 '$lgt_iso_spec_pred'(halt(_)).
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  table of ISO specified arithmetic functions
+%
+%  (used for portability checking)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+'$lgt_iso_spec_function'('-'(_)).
+'$lgt_iso_spec_function'('+'(_, _)).
+'$lgt_iso_spec_function'('-'(_, _)).
+'$lgt_iso_spec_function'('*'(_, _)).
+'$lgt_iso_spec_function'('/'(_, _)).
+'$lgt_iso_spec_function'('//'(_, _)).
+'$lgt_iso_spec_function'(rem(_, _)).
+'$lgt_iso_spec_function'(mod(_, _)).
+'$lgt_iso_spec_function'('/\\'(_, _)).
+'$lgt_iso_spec_function'('\\/'(_, _)).
+'$lgt_iso_spec_function'('\\'(_, _)).
+'$lgt_iso_spec_function'('<<'(_, _)).
+'$lgt_iso_spec_function'('>>'(_, _)).
+'$lgt_iso_spec_function'('**'(_, _)).
+
+'$lgt_iso_spec_function'(abs(_)).
+'$lgt_iso_spec_function'(sign(_)).
+'$lgt_iso_spec_function'(sqrt(_)).
+'$lgt_iso_spec_function'(atan(_)).
+'$lgt_iso_spec_function'(cos(_)).
+'$lgt_iso_spec_function'(sin(_)).
+'$lgt_iso_spec_function'(exp(_)).
+'$lgt_iso_spec_function'(log(_)).
+'$lgt_iso_spec_function'(float(_)).
+'$lgt_iso_spec_function'(ceiling(_)).
+'$lgt_iso_spec_function'(floor(_)).
+'$lgt_iso_spec_function'(round(_)).
+'$lgt_iso_spec_function'(truncate(_)).
+'$lgt_iso_spec_function'(float_fractional_part(_)).
+'$lgt_iso_spec_function'(float_integer_part(_)).
 
 
 
