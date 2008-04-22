@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.3,
+		version is 1.4,
 		author is 'Paulo Moura',
-		date is 2006/12/21,
+		date is 2008/4/22,
 		comment is 'List predicates.']).
 
 	:- public(as_difflist/2).
@@ -202,12 +202,11 @@
 	suffix(List, [_| Tail]) :-
 		suffix(List, Tail).
 
-	valid(List) :-
-		nonvar(List),
-		\+ \+ valid2(List).
-
-	valid2([]).
-	valid2([_| List]) :-
-		valid2(List).
+	valid(-) :-		% catch variables and lists with unbound tails
+		!,
+		fail.
+	valid([]).
+	valid([_| List]) :-
+		valid(List).
 
 :- end_object.

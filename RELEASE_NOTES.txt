@@ -62,6 +62,11 @@ RELEASE NOTES
 	installation script to use the "C:\lgtsvn" as base. Simplified manual 
 	installation instructions.
 
+	Updated the definitions of the predicate valid/1 for the library objects 
+	"list", "list(Type)", "numberlist", "set", "set(Type)", "varlist" to fail 
+	for lists with unbound tails after discussion with Jan Wielemaker and 
+	Ulrich Neumerkel.
+
 	Added a simple example, "debug_hooks", of using compilation hooks and 
 	term expansion for conditional compilation of debug statements.
 

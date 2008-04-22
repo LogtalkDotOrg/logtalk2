@@ -3,19 +3,18 @@
 	extends(list)).
 
 	:- info([
-		version is 1.01,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2006/4/25,
+		date is 2008/4/22,
 		comment is 'List predicates with elements constrained to a single type.']).
 
-	valid(List) :-
-		nonvar(List),
+	valid(-) :-		% catch variables and lists with unbound tails
+		!,
+		fail.
+	valid([]).
+	valid([Element| List]) :-
 		parameter(1, Type),
-		\+ \+ valid(List, Type).
-
-	valid([], _).
-	valid([Value| List], Type) :-
-		Type::valid(Value),
-		valid(List, Type).
+		Type::valid(Element),
+		valid(List).
 
 :- end_object.

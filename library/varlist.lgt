@@ -3,9 +3,9 @@
 	extends(list)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2000/7/24,
+		date is 2008/4/22,
 		comment is 'List of variables predicates.']).
 
 	member(Element, [Head| _]) :-
@@ -25,13 +25,12 @@
 		Head1 == Head2,
 		prefix(Tail1, Tail2).
 
-	valid(List) :-
-		nonvar(List),
-		\+ \+ valid2(List).
-
-	valid2([]).
-	valid2([Head| Tail]) :-
-		var(Head),
-		valid2(Tail).
+	valid(-) :-		% catch variables and lists with unbound tails
+		!,
+		fail.
+	valid([]).
+	valid([Element| List]) :-
+		var(Element),
+		valid(List).
 
 :- end_object.

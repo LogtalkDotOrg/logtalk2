@@ -4,9 +4,9 @@
 	extends(list)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2007/4/20,
+		date is 2008/4/22,
 		comment is 'List of numbers predicates.']).
 
 	average([], 0.0).
@@ -56,13 +56,12 @@
 		Acc2 is Acc + N,
 		sum(Ns, Acc2, Sum).
 
-	valid(List) :-
-		nonvar(List),
-		\+ \+ valid2(List).
-
-	valid2([]).
-	valid2([Head| Tail]) :-
-		number(Head),
-		valid2(Tail).
+	valid(-) :-		% catch variables and lists with unbound tails
+		!,
+		fail.
+	valid([]).
+	valid([Element| List]) :-
+		number(Element),
+		valid(List).
 
 :- end_object.

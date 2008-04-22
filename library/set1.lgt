@@ -3,25 +3,29 @@
 	extends(set)).
 
 	:- info([
-		version is 1.01,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2006/4/25,
+		date is 2008/4/22,
 		comment is 'Set predicates with elements constrained to a single type.']).
 
-	valid(Set) :-
-		nonvar(Set),
-		parameter(1, Type),
-		\+ \+ valid(Set, Type).
-
-	valid([], _) :-
-		!.
-	valid([Element], Type) :-
+	valid(-) :-				% catch variables
 		!,
-		Type::valid(Element).
-	valid([Element1, Element2| Set], Type) :-
-		Element1 @< Element2,
+		fail.
+	valid([]) :-
+		!.
+	valid([Element| Set]) :-
+		check_order(Set, Element).
+
+	check_order(-, _) :-	% catch unbound tails
+		!,
+		fail.
+	check_order([], _) :-
+		!.
+	check_order([Element2| Set], Element1) :-
+		parameter(1, Type),
 		Type::valid(Element1),
 		Type::valid(Element2),
-		valid([Element2| Set], Type).
+		Element2 @> Element1,
+		check_order(Set, Element2).
 
 :- end_object.
