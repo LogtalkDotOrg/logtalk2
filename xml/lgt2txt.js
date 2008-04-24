@@ -102,19 +102,19 @@ for (files.moveFirst(); !files.atEnd(); files.moveNext()) {
 	var file = files.item().name;
 	if (FSObject.GetExtensionName(file) == "xml") {
 		WScript.Echo("  converting " + file);
-		var html_file = directory + "\\" + FSObject.GetBaseName(file) + ".html";
+		var txt_file = directory + "\\" + FSObject.GetBaseName(file) + ".txt";
 		switch (processor) {
 			case "msxsl" :
-				WshShell.Run("msxsl -o \"" + html_file + "\" \"" + file + "\" \"" + xslt + "\"", true);
+				WshShell.Run("msxsl -o \"" + txt_file + "\" \"" + file + "\" \"" + xslt + "\"", true);
 				break;
 			case "xsltproc" :
-				WshShell.Run("xsltproc -o \"" + html_file + "\" \"" + xslt + "\" \"" + file + "\"", true);
+				WshShell.Run("xsltproc -o \"" + txt_file + "\" \"" + xslt + "\" \"" + file + "\"", true);
 				break;
 			case "xalan" :
-				WshShell.Run("xalan -o \"" + html_file + "\" \"" + file + "\" \"" + xslt + "\"", true);
+				WshShell.Run("xalan -o \"" + txt_file + "\" \"" + file + "\" \"" + xslt + "\"", true);
 				break;
 			case "sabcmd" :
-				WshShell.Run("sabcmd \"" + xslt + "\" \"" + file + "\" \"" + html_file + "\"", true);
+				WshShell.Run("sabcmd \"" + xslt + "\" \"" + file + "\" \"" + txt_file + "\"", true);
 				break;
 		}
 	}
