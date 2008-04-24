@@ -116,6 +116,11 @@ link.Description = "Shortcut to lgt2xml script";
 link.TargetPath = logtalk_home + "\\xml\\lgt2xml.js";
 link.Save();
 
+link = WshShell.CreateShortcut(logtalk_user + "\\xml\\lgt2txt.js.lnk");
+link.Description = "Shortcut to lgt2txt script";
+link.TargetPath = logtalk_home + "\\xml\\lgt2txt.js";
+link.Save();
+
 link = WshShell.CreateShortcut(logtalk_user + "\\xml\\logtalk.dtd.lnk");
 link.Description = "Shortcut to Logtalk DTD";
 link.TargetPath = logtalk_home + "\\xml\\logtalk.dtd";

@@ -105,7 +105,10 @@ RELEASE NOTES
 	Updated the Logtalk grammar documentation to reflect the changes to 
 	category relations introduced in version 2.31.0.
 
-	Updated the "lgtxml.xsl" XSLT stylesheet to ensure that the generated 
+	Added a "lgttxt.xsl" XSLT style-sheet and two shell scripts, "lgt2txt.sh" 
+	and "lgt2txt.js", for converting XML documenting files into text files.
+
+	Updated the "lgtxml.xsl" XSLT style-sheet to ensure that the generated 
 	HTML files are fully compliant with the HTML 4.01 standard.
 
 

@@ -55,10 +55,11 @@ ln -sf ../share/logtalk/scripts/cplgtdirs.sh cplgtdirs
 ln -sf ../share/logtalk/xml/lgt2pdf.sh lgt2pdf
 ln -sf ../share/logtalk/xml/lgt2html.sh lgt2html
 ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
+ln -sf ../share/logtalk/xml/lgt2txt.sh lgt2txt
 
-echo "Links to the \"cplgtdirs\", \"lgt2pdf\", \"lgt2html\", and \"lgt2xml\" scripts"
-echo "have been created on \"$prefix/bin\"; you may need to add this directory"
-echo "to your execution path."
+echo "Links to the \"cplgtdirs\", \"lgt2pdf\", \"lgt2html\", \"lgt2xml\", and"
+echo "\"lgt2txt\" scripts have been created on \"$prefix/bin\";"
+echo "you may need to add this directory to your execution path."
 echo
 
 ln -sf ../share/logtalk/integration/bplgt.sh bplgt

@@ -77,6 +77,10 @@ lgtxhtml.xsl
 	to batch convert XML files to XHTML files. UTF-8 encoding is assumed. 
 	Edit the file if you use a different encoding.
 
+lgttxt.xsl
+
+	XSLT file to output simple text files from the XML files. UTF-8 encoding 
+	is assumed. Edit the file if you use a different encoding.
 
 lgtpdf.xsl
 lgtpdfa4.xsl
@@ -215,6 +219,24 @@ lgt2xml.js
 	of the available optional parameters (type "cscript lgt2xml.js help" or 
 	"lgt2xml.sh -h"; depending on your Logtalk installation, you may simply 
 	need to type "lgt2xml" in order to run the script).
+
+
+lgt2txt.sh
+	(bash shell script)
+lgt2txt.js
+	(JScript command-line script for Windows; requires WSH 5.6 or 
+	later version)
+
+	Sample scripts to batch convert XML files to text files.
+
+	These scripts assumes that the LOGTALKHOME and LOGTALKUSER environment 
+	variables are defined.
+
+	The scripts should be called from the directory containing the XML files 
+	you wish to convert. Call the scripts with the help option for a description 
+	of the available optional parameters (type "cscript lgt2txt.js help" or 
+	"lgt2txt.sh -h"; depending on your Logtalk installation, you may simply 
+	need to type "lgt2txt" in order to run the script).
 
 
 Note that you can write other XSL files for converting the XML files to 

@@ -51,6 +51,7 @@ ln -sf ../share/logtalk/scripts/cplgtdirs.sh cplgtdirs
 ln -sf ../share/logtalk/xml/lgt2pdf.sh lgt2pdf
 ln -sf ../share/logtalk/xml/lgt2html.sh lgt2html
 ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
+ln -sf ../share/logtalk/xml/lgt2txt.sh lgt2txt
 
 %clean
 cd /usr/local/share
@@ -66,6 +67,7 @@ rm -f gplgt
 rm -f lgt2html
 rm -f lgt2pdf
 rm -f lgt2xml
+rm -f lgt2txt
 rm -f plclgt
 rm -f qplgt
 rm -f quintuslgt
@@ -103,6 +105,7 @@ rm -f yaplgt
 /usr/local/bin/lgt2pdf
 /usr/local/bin/lgt2html
 /usr/local/bin/lgt2xml
+/usr/local/bin/lgt2txt
 /usr/local/bin/bplgt
 /usr/local/bin/ciaolgt
 /usr/local/bin/cxlgt
@@ -122,9 +125,9 @@ rm -f yaplgt
 echo
 echo "Installed Logtalk on \"$RPM_INSTALL_PREFIX/share\"."
 echo
-echo "Links to the \"cplgtdirs\", \"lgt2pdf\", \"lgt2html\", and \"lgt2xml\" scripts"
-echo "have been created on \"$RPM_INSTALL_PREFIX/bin\"; you may need to add this directory"
-echo "to your execution path."
+echo "Links to the \"cplgtdirs\", \"lgt2pdf\", \"lgt2html\", \"lgt2xml\", and"
+echo "\"lgt2txt\" scripts have been created on \"$RPM_INSTALL_PREFIX/bin\";"
+echo " you may need to add this directoryto your execution path."
 echo
 echo "The following integration scripts are installed for running Logtalk"
 echo "with selected back-end Prolog compilers:"

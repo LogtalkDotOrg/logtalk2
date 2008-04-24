@@ -52,6 +52,7 @@ rm -f gplgt
 rm -f lgt2html
 rm -f lgt2pdf
 rm -f lgt2xml
+rm -f lgt2txt
 rm -f plclgt
 rm -f qplgt
 rm -f quintuslgt
