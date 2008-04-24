@@ -38,4 +38,8 @@ You may also use the "lgt.lang" file with plain Prolog files by using the
 
 	% highlight --syntax=lgt --xhtml --input=foo.pl --output=foo.html
 
+As the Highlight package itself, the "lgt.lang" file is licensed under the 
+GNU GPL 2 license.
+
+
 THIS SYNTAX COLORING FILE IS UNDER DEVELOPMENT.
