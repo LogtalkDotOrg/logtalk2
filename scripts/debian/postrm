@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
@@ -9,7 +9,7 @@
 
 echo "Removing menu entries for some of the Logtalk integration scripts..."
 
-if test -x /usr/bin/update-menus; then
+if [ -x /usr/bin/update-menus ] ; then
 	update-menus
 fi
 

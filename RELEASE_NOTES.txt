@@ -119,6 +119,9 @@ RELEASE NOTES
 	Updated the "lgtxml.xsl" XSLT style-sheet to ensure that the generated 
 	HTML files are fully compliant with the HTML 4.01 standard.
 
+	Updated the Debian installer package shell scripts for POSIX compliance, 
+	removing dependencies on bash shell features.
+
 
 2.31.4 - February 20, 2008
 

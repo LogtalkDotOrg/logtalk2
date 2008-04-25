@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
@@ -10,8 +10,8 @@
 echo ""
 echo "Uninstalling and de-registering Logtalk online documentation..."
 
-if [ "$1" = remove -o "$1" = upgrade ]; then
-	if which install-docs >/dev/null 2>&1; then
+if [ "$1" = "remove" ] || [ "$1" = "upgrade" ] ; then
+	if which install-docs > /dev/null 2>&1 ; then
 		install-docs -r logtalk-docs
 	fi
 fi
