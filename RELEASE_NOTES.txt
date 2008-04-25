@@ -67,6 +67,11 @@ RELEASE NOTES
 	for lists with unbound tails after discussion with Jan Wielemaker and 
 	Ulrich Neumerkel.
 
+	Corrected a bug in the library object "lgtunit" when running "throws" 
+	tests (make sure the generated exception is subsumed by the expected 
+	exception). Added a "lgtunit_loader" loader utility file for loading 
+	the Logtalk unit test library.
+
 	Added a simple example, "debug_hooks", of using compilation hooks and 
 	term expansion for conditional compilation of debug statements.
 

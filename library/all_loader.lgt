@@ -6,6 +6,7 @@
 		library(debugging_loader),
 		library(dependents_loader),
 		library(hierarchies_loader),
+		library(lgtunit_loader),
 		library(metapredicates_loader),
 		library(random_loader),
 		library(types_loader)],

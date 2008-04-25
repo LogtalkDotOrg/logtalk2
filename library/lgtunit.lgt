@@ -2,28 +2,30 @@
 :- object(lgtunit).
 
 	:- info([
-		version is 0.2,
+		version is 0.3,
 		author is 'Paulo Moura',
-		date is 2007/08/27,
+		date is 2008/04/25,
 		comment is 'Logtalk unit test framework.']).
+
+	:- uses(term, [subsumes/2]).
 
 	:- public(succeeds/2).
 	:- mode(succeeds(+atom, @callable), zero_or_more).
 	:- info(succeeds/2, [
 		comment is 'Defines a test goal which is expected to succeed.',
-		argnames is ['Test', 'Goal']]).
+		argnames is ['Identifier', 'Goal']]).
 
 	:- public(fails/2).
 	:- mode(fails(+atom, @callable), zero_or_more).
 	:- info(fails/2, [
 		comment is 'Defines a test goal which is expected to fail.',
-		argnames is ['Test', 'Goal']]).
+		argnames is ['Identifier', 'Goal']]).
 
 	:- public(throws/3).
 	:- mode(throws(+atom, @callable, @nonvar), zero_or_more).
 	:- info(throws/3, [
 		comment is 'Defines a test goal which is expected to throw an error.',
-		argnames is ['Test', 'Goal', 'Error']]).
+		argnames is ['Identifier', 'Goal', 'Error']]).
 
 	:- public(run/2).
 	:- mode(run(+atom, +atom), zero_or_one).
@@ -82,7 +84,7 @@
 		forall(::throws(Test, Goal, Error), test_throws(Test, Goal, Error)).
 
 	test_throws(Test, Goal, Error) :-
-		(	catch({Goal}, Ball, ((Ball = Error -> passed_test(Test, Goal); failed_test(Test, Goal)), Flag = error)) ->
+		(	catch({Goal}, Ball, ((subsumes(Error, Ball) -> passed_test(Test, Goal); failed_test(Test, Goal)), Flag = error)) ->
 			(	var(Flag) ->
 				failed_test(Test, Goal)
 			;	true
