@@ -113,6 +113,8 @@ RELEASE NOTES
 
 	Added a "lgttxt.xsl" XSLT style-sheet and two shell scripts, "lgt2txt.sh" 
 	and "lgt2txt.js", for converting XML documenting files into text files.
+	Updated the "lgt2*.sh" shell scripts for POSIX compliance, removing 
+	dependencies on bash shell features.
 
 	Updated the "lgtxml.xsl" XSLT style-sheet to ensure that the generated 
 	HTML files are fully compliant with the HTML 4.01 standard.

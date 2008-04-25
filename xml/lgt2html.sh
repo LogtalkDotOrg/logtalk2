@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
@@ -153,75 +153,61 @@ do
 	esac
 done
 
-if [[ "$f_arg" != "" && "$f_arg" != "xhtml" && "$f_arg" != "html" ]]
-then
+if [ "$f_arg" != "" ] && [ "$f_arg" != "xhtml" ] && [ "$f_arg" != "html" ] ; then
 	echo "Error! Unsupported output format: $f_arg"
 	usage_help
 	exit 1
-elif [ "$f_arg" != "" ]
-then
+elif [ "$f_arg" != "" ] ; then
 	format=$f_arg
 fi
 
-if [[ "$d_arg" != "" && ! -d "$d_arg" ]]
-then
+if [ "$d_arg" != "" ] && [ ! -d "$d_arg" ] ; then
 	echo "Error! directory does not exists: $d_arg"
 	usage_help
 	exit 1
-elif [ "$d_arg" != "" ]
-then
+elif [ "$d_arg" != "" ] ; then
 	directory=$d_arg
 fi
 
-if [[ "$i_arg" != "" ]]
-then
+if [ "$i_arg" != "" ] ; then
 	index_file=$i_arg
 fi
 
-if [[ "$t_arg" != "" ]]
-then
+if [ "$t_arg" != "" ] ; then
 	index_title=$t_arg
 fi
 
-if [[ "$p_arg" != "" && "$p_arg" != "xsltproc" && "$p_arg" != "xalan" && "$p_arg" != "sabcmd" ]]
-then
+if [ "$p_arg" != "" ] && [ "$p_arg" != "xsltproc" ] && [ "$p_arg" != "xalan" ] && [ "$p_arg" != "sabcmd" ] ; then
 	echo "Error! Unsupported XSLT processor: $p_arg"
 	usage_help
 	exit 1
-elif [ "$p_arg" != "" ]
-then
+elif [ "$p_arg" != "" ] ; then
 	processor=$p_arg
 fi
 
-if [ "$format" = "xhtml" ]
-then
+if [ "$format" = "xhtml" ] ; then
 	xslt=$xhtml_xslt
 else
 	xslt=$html_xslt
 fi
 
-if ! [[ -a "./logtalk.dtd" ]]
-then
+if ! [ -e "./logtalk.dtd" ] ; then
 	cp "$LOGTALKHOME"/xml/logtalk.dtd .
 fi
 
-if ! [[ -a "./custom.ent" ]]
-then
+if ! [ -e "./custom.ent" ] ; then
 	cp "$LOGTALKUSER"/xml/custom.ent .
 fi
 
-if ! [[ -a "./logtalk.xsd" ]]
-then
+if ! [ -e "./logtalk.xsd" ] ; then
 	cp "$LOGTALKHOME"/xml/logtalk.xsd .
 fi
 
-if ! [[ -a "$directory/logtalk.css" ]]
-then
+if ! [ -e "$directory/logtalk.css" ] ; then
 	cp "$LOGTALKUSER"/xml/logtalk.css "$directory"
 fi
 
-if [[ `(ls *.xml | wc -l) 2> /dev/null` -gt 0 ]]
-then
+if [ `(ls *.xml | wc -l) 2> /dev/null` -gt 0 ] ; then
 	echo
 	echo "converting XML files..."
 	for file in *.xml; do

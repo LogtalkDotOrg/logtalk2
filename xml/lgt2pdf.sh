@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
@@ -99,8 +99,7 @@ do
 	esac
 done
 
-if [[ "$f_arg" != "" && "$f_arg" != "a4" && "$f_arg" != "us" ]]
-then
+if [ "$f_arg" != "" ] && [ "$f_arg" != "a4" ] && [ "$f_arg" != "us" ] ; then
 	echo "Error! Unsupported output format: $f_arg"
 	usage_help
 	exit 1
@@ -109,50 +108,41 @@ then
 	format=$f_arg
 fi
 
-if [[ "$d_arg" != "" && ! -d "$d_arg" ]]
-then
+if [ "$d_arg" != "" ] && [ ! -d "$d_arg" ] ; then
 	echo "Error! directory does not exists: $d_arg"
 	usage_help
 	exit 1
-elif [ "$d_arg" != "" ]
-then
+elif [ "$d_arg" != "" ] ; then
 	directory=$d_arg
 fi
 
-if [[ "$p_arg" != "" && "$p_arg" != "fop" && "$p_arg" != "xep" && "$p_arg" != "xinc" ]]
-then
+if [ "$p_arg" != "" ] && [ "$p_arg" != "fop" ] && [ "$p_arg" != "xep" ] && [ "$p_arg" != "xinc" ] ; then
 	echo "Error! Unsupported XSL-FO processor: $p_arg"
 	usage_help
 	exit 1
-elif [ "$p_arg" != "" ]
-then
+elif [ "$p_arg" != "" ] ; then
 	processor=$p_arg
 fi
 
-if [ "$format" = "a4" ]
-then
+if [ "$format" = "a4" ] ; then
 	xsl=$a4_xsl
 else
 	xsl=$us_xsl
 fi
 
-if ! [[ -a "./logtalk.dtd" ]]
-then
+if ! [ -e "./logtalk.dtd" ] ; then
 	cp "$LOGTALKHOME"/xml/logtalk.dtd .
 fi
 
-if ! [[ -a "./custom.ent" ]]
-then
+if ! [ -e "./custom.ent" ] ; then
 	cp "$LOGTALKUSER"/xml/custom.ent .
 fi
 
-if ! [[ -a "./logtalk.xsd" ]]
-then
+if ! [ -e "./logtalk.xsd" ] ; then
 	cp "$LOGTALKHOME"/xml/logtalk.xsd .
 fi
 
-if [[ `(ls *.xml | wc -l) 2> /dev/null` -gt 0 ]]
-then
+if [ `(ls *.xml | wc -l) 2> /dev/null` -gt 0 ] ; then
 	echo
 	echo "converting XML files to PDF..."
 	for file in *.xml; do

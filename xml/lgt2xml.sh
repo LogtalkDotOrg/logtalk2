@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
@@ -139,53 +139,43 @@ do
 	esac
 done
 
-if [[ "$f_arg" != "" && "$f_arg" != "xhtml" && "$f_arg" != "html" ]]
-then
+if [ "$f_arg" != "" ] && [ "$f_arg" != "xhtml" ] && [ "$f_arg" != "html" ] ; then
 	echo "Error! Unsupported output format: $f_arg"
 	usage_help
 	exit 1
-elif [ "$f_arg" != "" ]
-then
+elif [ "$f_arg" != "" ] ; then
 	format=$f_arg
 fi
 
-if [[ "$i_arg" != "" ]]
-then
+if [ "$i_arg" != "" ] ; then
 	index_file=$i_arg
 fi
 
-if [[ "$t_arg" != "" ]]
-then
+if [ "$t_arg" != "" ] ; then
 	index_title=$t_arg
 fi
 
-if ! [[ -a "./logtalk.dtd" ]]
-then
+if ! [ -e "./logtalk.dtd" ] ; then
 	cp "$LOGTALKHOME"/xml/logtalk.dtd .
 fi
 
-if ! [[ -a "./custom.ent" ]]
-then
+if ! [ -e "./custom.ent" ] ; then
 	cp "$LOGTALKUSER"/xml/custom.ent .
 fi
 
-if ! [[ -a "./logtalk.xsd" ]]
-then
+if ! [ -e "./logtalk.xsd" ] ; then
 	cp "$LOGTALKHOME"/xml/logtalk.xsd .
 fi
 
-if ! [[ -a "./logtalk.css" ]]
-then
+if ! [ -e "./logtalk.css" ] ; then
 	cp "$LOGTALKUSER"/xml/logtalk.css .
 fi
 
-if ! [[ -a "./lgtxml.xsl" ]]
-then
+if ! [ -e "./lgtxml.xsl" ] ; then
 	cp "$LOGTALKUSER"/xml/lgtxml.xsl .
 fi
 
-if [[ `(ls *.xml | wc -l) 2> /dev/null` -gt 0 ]]
-then
+if [ `(ls *.xml | wc -l) 2> /dev/null` -gt 0 ] ; then
 	echo
 	echo "generating index file..."
 	create_index_file
