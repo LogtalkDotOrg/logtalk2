@@ -88,8 +88,8 @@ lgtpdfus.xsl
 
 	XSLT files to generate PDF files from the XML files (formatted either 
 	for A4 paper or US Letter paper) using XSL Formatting Objects. Tested 
-	with the XSL-FO processors Apache FOP 0.20.5 (http://xml.apache.org/fop) 
-	and RenderX 4.4 (http://www.renderx.com/).
+	with the XSL-FO processors RenderX 4.4 (http://www.renderx.com/) and 
+	Apache FOP 0.94 (http://xmlgraphics.apache.org/fop/).
 
 	The "lgtpdf.xsl" file defines a parameter for the paper format (either 
 	A4 or US Letter). The files "lgtpdfa4.xsl" and "lgtpdfus.xsl" import the
@@ -145,16 +145,12 @@ lgt2pdf.js
 	Sample scripts to batch convert XML files to PDF files
 
 	Supported XSL-FO processors:
-		* Apache FOP processor (tested with version 0.20.5)
-			http://xml.apache.org/fop 
+		* Apache FOP processor (tested with version 0.94)
+			http://xmlgraphics.apache.org/fop/ 
 		* Lunasil Xinc processor (tested with version 2.02)
 			http://www.lunasil.com/index.html
 		* RenderX XEP processor (tested with version 3.8.1)
 			http://www.renderx.com/  
-
-	When using the FOP, you must compile your Logtalk source files using 
-	the compiler option xmlsref(standalone) in order to workaround a bug 
-	on the XALAN processor used by this processor.
 
 	These script assume that the LOGTALKHOME and LOGTALKUSER environment 
 	variables are defined and that the chosen XSL-FO processor is available 
