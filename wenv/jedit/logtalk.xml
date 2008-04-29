@@ -5,9 +5,9 @@
 <!--	jEdit 4.3 Logtalk syntax file
 
 	written by		Paulo Moura
-	version			1.3
+	version			1.4
 	created on		5 May 2002
-	last revised	4 April 2008
+	last revised	29 April 2008
 
 	To install, copy this file to the "modes" subdirectory in jEdit 
 	directory installation.   Next, check the "catalog" file in the 
@@ -365,6 +365,22 @@
 			<NULL>write</NULL>
 			<NULL>writeq</NULL>
 			<NULL>write_canonical</NULL>
+			<NULL>abs</NULL>
+			<NULL>atan</NULL>
+			<NULL>ceiling</NULL>
+			<NULL>cos</NULL>
+			<NULL>exp</NULL>
+			<NULL>float_fractional_part</NULL>
+			<NULL>float_integer_part</NULL>
+			<NULL>floor</NULL>
+			<NULL>log</NULL>
+			<NULL>mod</NULL>
+			<NULL>rem</NULL>
+			<NULL>round</NULL>
+			<NULL>sign</NULL>
+			<NULL>sin</NULL>
+			<NULL>sqrt</NULL>
+			<NULL>truncate</NULL>
 
 		</KEYWORDS>
 		

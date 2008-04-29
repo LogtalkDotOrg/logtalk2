@@ -212,3 +212,20 @@ current_prolog_flag(, )
 
 halt().
 halt.
+
+abs()
+atan()
+ceiling()
+cos()
+exp()
+float_fractional_part()
+float_integer_part()
+floor()
+log()
+mod(, )
+rem(, )
+round()
+sign()
+sin()
+sqrt()
+truncate()

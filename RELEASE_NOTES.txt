@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.31.5
+Release 2.31.6
 
 Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 ================================================================
@@ -8,6 +8,13 @@ Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 
 RELEASE NOTES
 =============
+
+
+2.31.6 - May ??, 2008
+
+	Added missing auto-completion keywords for the ISO Prolog standard 
+	arithmetic functions to the SubEthaEdit, TextMate, Notepad++, jEdit, 
+	Vim, and Smultron text editors.
 
 
 2.31.5 - April 29, 2008
