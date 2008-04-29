@@ -10,11 +10,10 @@ RELEASE NOTES
 =============
 
 
-2.31.5 - April ??, 2008
+2.31.5 - April 29, 2008
 
 	Added support for checking arithmetic expressions for calls to 
-	non-portable function calls when using the "portability" compiler 
-	flag.
+	non-portable functions when using the "portability" compiler flag.
 
 	Updated the implementation of the threaded/1 built-in predicate to 
 	ensure that thread creation errors (usually, virtual memory address 
