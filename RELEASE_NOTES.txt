@@ -25,6 +25,10 @@ RELEASE NOTES
 	Corrected a bug in the Vim syntax coloring support for the ISO Prolog 
 	built-in predicate current_char_conversion/2.
 
+	Corrected a bug in the jEdit syntax coloring support for hexadecimal 
+	numbers and added missing support for the extends_category/2-3 and 
+	at_end_of_stream/0 built-in predicates.
+
 	Added missing support for the syntax coloring of the external call 
 	Logtalk control construct, {}/1, to the TextMate text editor and to 
 	the Highlight package.

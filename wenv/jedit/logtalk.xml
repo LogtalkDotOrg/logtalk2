@@ -5,9 +5,9 @@
 <!--	jEdit 4.3 Logtalk syntax file
 
 	written by		Paulo Moura
-	version			1.4
+	version			1.5
 	created on		5 May 2002
-	last revised	29 April 2008
+	last revised	30 April 2008
 
 	To install, copy this file to the "modes" subdirectory in jEdit 
 	directory installation.   Next, check the "catalog" file in the 
@@ -65,7 +65,7 @@
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(object|protocol|category)_property(?=[(])</SEQ_REGEXP>
 		<!-- Entity relations -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bcomplements_object(?=[(])</SEQ_REGEXP>
-		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bextends_(object|protocol)(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bextends_(object|protocol|category)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bimp(lements_protocol|orts_category)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(instantiat|specializ)es_class(?=[(])</SEQ_REGEXP>
 		<!-- Events -->
@@ -100,7 +100,7 @@
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(current|set)_(in|out)put(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(open|close)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bflush_output(?=[(])</SEQ_REGEXP>
-		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bflush_output\b</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(flush_output|at_end_of_stream)\b</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(stream_property|at_end_of_stream|set_stream_position)(?=[(])</SEQ_REGEXP>
 		<!-- Character and byte input/output -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(nl|(get|peek|put)_(byte|c(har|ode)))(?=[(])</SEQ_REGEXP>
@@ -146,7 +146,7 @@
 		<!-- Binary, octal, and hexadecimal numbers -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" HASH_CHAR="0" TYPE="DIGIT">0b[0-1]+</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" HASH_CHAR="0" TYPE="DIGIT">0o[0-7]+</SEQ_REGEXP>
-		<SEQ_REGEXP AT_WORD_START="TRUE" HASH_CHAR="0" TYPE="DIGIT">0x[[:xdigit:]]+</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" HASH_CHAR="0" TYPE="DIGIT">0x\p{XDigit}+</SEQ_REGEXP>
 		<!-- Numbers -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="DIGIT">\d+(\.\d+)?([eE]([-+])?\d+)?</SEQ_REGEXP>
 
