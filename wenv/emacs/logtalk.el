@@ -4,8 +4,8 @@
 
 ;; Author: Paulo Moura <pmoura@logtalk.org>
 ;; Creation date: November 15, 2003
-;; Last modification date: April 19, 2008
-;; Version: 1.3
+;; Last modification date: April 30, 2008
+;; Version: 1.4
 
 ;; Installation:
 ;;
@@ -27,7 +27,7 @@
 
 ;; setup 
 
-(defvar logtalk-mode-version "1.3"
+(defvar logtalk-mode-version "1.4"
 	"Logtalk mode version number")
 
 (defvar logtalk-mode-hook nil)
@@ -167,6 +167,7 @@
 		;; term unification:
 		;;
 		("\\\\?=" 0 'logtalk-built-in-predicate-face)
+		("\\<\\(unify_with_occurs_check\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; dcgs:
 		;;
