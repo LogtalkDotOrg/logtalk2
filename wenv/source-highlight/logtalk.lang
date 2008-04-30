@@ -1,3 +1,7 @@
+# highlighting for Logtalk source files (http://logtalk.org/)
+#
+#	written by Paulo Moura (pmoura@logtalk.org)
+#	last revised on 30 April 2008
 
 comment start "%"
 comment delim "/*" "*/" multiline nested
@@ -34,7 +38,7 @@ keyword =	'\<(after|before)(?=\()',
 			'\<(curren|se)t_(in|out)put(?=\()',
 			'\<(open|close)(?=\()',
 			'\<flush_output(?=\()',
-			'\<flush_output\>',
+			'\<(flush_output|at_end_of_stream)\>',
 			'\<(stream_property|at_end_of_stream|set_stream_position)(?=\()',
 			'\<(get|p(eek|ut))_(byte|c(har|ode))(?=\()',
 			'\<nl(?=\()', '\<(nl)\>',
