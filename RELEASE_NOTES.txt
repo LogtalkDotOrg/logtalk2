@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.31.6 - May ??, 2008
 
+	Added a new sample Logtalk source file for testing syntax coloring 
+	support.
+
 	Added missing auto-completion keywords for the ISO Prolog standard 
 	arithmetic functions to the SubEthaEdit, TextMate, Notepad++, jEdit, 
 	Vim, and Smultron text editors.
