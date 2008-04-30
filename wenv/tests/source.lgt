@@ -169,7 +169,7 @@ comment
 		Y is 13.13,
 		Z is 13.13e-23,
 		C1 is 0'A, C2 is 0'', C3 is 0'",
-		B is 0o1011101,
+		B is 0b1011101,
 		O is 0o1234560,
 		H is 0x1234567890abcDEF.
 
