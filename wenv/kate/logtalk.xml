@@ -58,7 +58,7 @@
 				<RegExpr String = "\b(curren|se)t_(in|out)put(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\b(open|close)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\bflush_output(?=[(])" attribute = "Built-in" context = "#stay" />
-				<RegExpr String = "\bflush_output\b" attribute = "Built-in" context = "#stay" />
+				<RegExpr String = "\b(at_end_of_stream|flush_output)\b" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\b(stream_property|at_end_of_stream|set_stream_position)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Character and byte input/output -->
 				<RegExpr String = "\b(nl|(get|peek|put)_(byte|c(har|ode)))(?=[(])" attribute = "Built-in" context = "#stay" />
