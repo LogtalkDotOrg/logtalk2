@@ -26,7 +26,8 @@ RELEASE NOTES
 	built-in predicate current_char_conversion/2.
 
 	Added missing support for the syntax coloring of the external call 
-	Logtalk control construct, {}/1, to the TextMate text editor.
+	Logtalk control construct, {}/1, to the TextMate text editor and to 
+	the Highlight package.
 
 	Added missing support for the syntax coloring of the built-in predicate 
 	at_end_of_stream/0 to the Kate text editor and to the Source-highlight 

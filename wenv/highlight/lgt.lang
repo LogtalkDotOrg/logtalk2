@@ -15,7 +15,7 @@
 $DESCRIPTION=Logtalk
 
 # variables
-$KEYWORDS(kwb)=regex([A-Z_]\w*)
+$KEYWORDS(kwb)=regex((?<!0')[A-Z_]\w*)
 
 # encapsulation directives
 $KEYWORDS(kwa)=regex(^\s*:-\s(category|protocol|object)(?=[(]), 1)
@@ -99,6 +99,8 @@ $KEYWORDS(kwc)=regex((repeat), 1)
 
 # Logtalk message sending operators
 $KEYWORDS(kwd)=regex((::|\^\^|<<|:))
+# Logtalk external-call control construct
+$KEYWORDS(kwd)=regex(([{}]))
 # Prolog operators
 $KEYWORDS(kwd)=regex((\\\+|->|=\.\.|;|!|:-|\^))
 # Prolog arithmetic operators
