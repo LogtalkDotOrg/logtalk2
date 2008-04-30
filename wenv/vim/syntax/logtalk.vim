@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	December 6, 2007
+" Last Change:	April 30, 2008
 
 
 " Quit when a syntax file was already loaded:
@@ -242,7 +242,7 @@ syn match	logtalkKeyword		"\<nl\>"
 syn match	logtalkKeyword		"\<read\(_term\)\?\ze("
 syn match	logtalkKeyword		"\<write\(q\|_\(canonical\|term\)\)\?\ze("
 syn match	logtalkKeyword		"\<\(current_\)\?op\ze("
-syn match	logtalkKeyword		"\<\(current\)\?char_conversion\ze("
+syn match	logtalkKeyword		"\<\(current_\)\?char_conversion\ze("
 
 
 " Logic and control

@@ -19,6 +19,9 @@ RELEASE NOTES
 	Corrected a bug in the SubEthaEdit syntax coloring support for the 
 	imports_category/2-3 built-in predicate.
 
+	Corrected a bug in the Vim syntax coloring support for the ISO Prolog 
+	built-in predicate current_char_conversion/2.
+
 	Added missing support for the syntax coloring of the external call 
 	Logtalk control construct, {}/1, to the TextMate text editor.
 
