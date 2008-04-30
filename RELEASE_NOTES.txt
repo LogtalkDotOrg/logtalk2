@@ -16,6 +16,9 @@ RELEASE NOTES
 	arithmetic functions to the SubEthaEdit, TextMate, Notepad++, jEdit, 
 	Vim, and Smultron text editors.
 
+	Corrected a bug in the SubEthaEdit syntax coloring support for the 
+	imports_category/2-3 built-in predicate.
+
 
 2.31.5 - April 29, 2008
 

@@ -98,7 +98,7 @@
 				<regex>\b(abolish_(object|protocol|category|events))\(</regex>
 				<regex>\b(complements_object)\(</regex>
 				<regex>\b(extends_(object|protocol|category))\(</regex>
-				<regex>\b(impl(ements_protocol|orts_category))\(</regex>
+				<regex>\b(imp(lements_protocol|orts_category))\(</regex>
 				<regex>\b((instantiat|specializ)es_class)\(</regex>
 				<regex>\b(define_events)\(</regex>
 				<regex>\b((se|curren)t_logtalk_flag)\(</regex>
