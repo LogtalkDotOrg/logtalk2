@@ -213,7 +213,7 @@
 			<keyword>((current_)?op)(?=[(])</keyword>
 			<keyword>((current_)?char_conversion)(?=[(])</keyword>
 			<!-- Logic and control -->
-			<keyword>(once)(?=[(])</keyword>
+			<keyword>(call|once)(?=[(])</keyword>
 			<keyword>(true|fail|repeat)(?![-!(^~])</keyword>
 			<!-- Atomic term processing -->
 			<keyword>(atom_(length|c(hars|o(ncat|des))))(?=[(])</keyword>
