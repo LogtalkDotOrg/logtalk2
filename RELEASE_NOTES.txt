@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.31.6 - May ??, 2008
 
+	Added support for the Pygments syntax highlighter (co-developed with 
+	Clara Dimene).
+
 	Added a new sample Logtalk source file for testing syntax coloring 
 	support.
 
