@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 
-<language name="Logtalk" version="2.0" kateversion="2.4" section="Sources" extensions="*.lgt;*.config" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
+<language name="Logtalk" version="2.1" kateversion="2.4" section="Sources" extensions="*.lgt;*.config" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
 
 	<highlighting>
 
@@ -167,6 +167,23 @@
 
 			<context name = "entityrelations" attribute = "Normal" lineEndContext = "#stay" >
 				<RegExpr String = "\b(complements|extends|i(nstantiates|mp(lements|orts))|specializes)(?=[(])" attribute = "Directive" context = "#stay" />
+				<!-- Variables -->
+				<RegExpr String = "\b[A-Z_]\w*" attribute = "Variable" context = "#stay" />
+				<!-- Comments -->
+				<DetectChar char = "%" attribute = "Comment" context = "single line comment" />
+				<Detect2Chars char = "/" char1 = "*" attribute = "Comment" context = "multiline comment" beginRegion = "Comment" />
+				<!-- Strings and quoted atoms -->
+				<DetectChar char = "&quot;" attribute = "String" context = "string" />
+				<DetectChar char = "'" attribute = "String" context = "atom" />
+				<!-- Numbers -->
+				<RegExpr String = "0'." attribute = "Number" context = "#stay" />
+				<RegExpr String = "0b[0-1]+" attribute = "Number" context = "#stay" />
+				<RegExpr String = "0o[0-7]+" attribute = "Number" context = "#stay" />
+				<RegExpr String = "0x[0-9a-fA-F]+" attribute = "Number" context = "#stay" />
+				<RegExpr String = "\d+(\.\d+)?([eE]([-+])?\d+)?" attribute = "Number" context = "#stay" />
+				<!-- Scope operator -->
+				<Detect2Chars char = ":" char1 = ":" attribute = "Operator" context = "#stay" />
+				<!-- End of entity-opening directive -->
 				<Detect2Chars attribute = "Normal" context = "normal" char = ")" char1 = "." />
 			</context>
 

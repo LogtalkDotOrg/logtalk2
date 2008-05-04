@@ -189,6 +189,8 @@ class LogtalkLexer(RegexLexer):
             (r'"(\\\\|\\"|[^"])*"', String),
             # End of entity-opening directive
             (r'([)]\.\n)', Text, 'root'),
+            # Scope operator
+            (r'(::)', Operator),
             # Ponctuation
             (r'[()\[\],.|]', Text),
             # Whitespace
