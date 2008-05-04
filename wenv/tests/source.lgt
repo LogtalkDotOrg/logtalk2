@@ -17,17 +17,17 @@ comment
 	imports(category),
 	extends(parent)).
 
- 	:- info([
+	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
-		date is 2003/12/18,
+		date is 2008/5/1,
 		comment is 'Sample prototype for testing syntax coloring.']).
 	:- threaded.
 	:- synchronized.
 	:- dynamic.
 	:- initialization(some_goal(X, Y)).
-    :- calls(some_other_protocol).
-    :- uses(another_object).
+	:- calls(some_other_protocol).
+	:- uses(another_object).
 
 	:- alias(set, member/2, set_member/2).
 	:- alias(words, singular//0, peculiar//0).
@@ -164,6 +164,12 @@ comment
 	direct_calls_of_category_predicates :-
 		:Goal.
 
+	if_then_else :-
+		(	If ->
+			Then
+		;	Else
+		).
+
 	numbers :-
 		X is 13,
 		Y is 13.13,
@@ -273,7 +279,8 @@ comment
 	logic_and_control :-
 		\+ Goal,
 		once(Goal),
-		repeat.
+		repeat,
+		!.
 
 	atomic_term_processing :-
 		atom_length(Atom, Length),
@@ -291,13 +298,17 @@ comment
 		halt(ExitCode),
 		halt.
 
+	number(C) --> "+", number(C).
+	number(C) --> "-", number(X), {C is -X}.
+	number(X) --> [C], {0'0 =< C, C =< 0'9, X is C - 0'0}.
+
 :- end_object.
 
 
 
 :- object(class,
-	implements(protocol),
-	imports(category),
+	implements(protected::protocol),
+	imports(private::category),
 	instantiates(metaclass),
 	specializes(superclass)).
 
@@ -306,10 +317,10 @@ comment
 
 
 
-:- object(parametric(_Par1, _Par2),
+:- object(parametric(Parameter, "String", 33.78),
 	implements(protocol),
 	imports(category),
-	extends(parent(_Par))).
+	extends(parent(Parameter))).
 
 
 :- end_object.

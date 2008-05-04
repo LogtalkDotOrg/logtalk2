@@ -7,7 +7,7 @@ Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 
 
 This directory contains the "logtalk.py" file that provides syntax 
-coloring support for Pygments:
+coloring support for Pygments (version 0.9 or later):
 
 	http://pygments.org/
 

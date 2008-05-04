@@ -41,6 +41,7 @@ RELEASE NOTES
 
 	Added missing support for the syntax coloring of the built-in predicate 
 	at_end_of_stream/0 and of the scope operator ::/2 to the Kate text editor.
+	Improved syntax coloring of parametric object opening directives.
 
 	Added missing support for the syntax coloring of the built-in predicate 
 	unify_with_occurs_check/2 to the Emacs text editor.
