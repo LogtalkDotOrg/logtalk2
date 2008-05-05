@@ -48,7 +48,8 @@ RELEASE NOTES
 	Improved syntax coloring of parametric object opening directives.
 
 	Added missing support for the syntax coloring of the built-in predicate 
-	unify_with_occurs_check/2 to the Emacs text editor.
+	unify_with_occurs_check/2 to the Emacs text editor. Corrected a bug in 
+	the syntax coloring of arithmetic comparison operators.
 
 	Added missing support for the syntax coloring of the built-in control 
 	construct call/1 to the GtkSourceView 2.x text widget.

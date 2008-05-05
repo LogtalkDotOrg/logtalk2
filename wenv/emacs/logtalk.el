@@ -4,8 +4,8 @@
 
 ;; Author: Paulo Moura <pmoura@logtalk.org>
 ;; Creation date: November 15, 2003
-;; Last modification date: April 30, 2008
-;; Version: 1.4
+;; Last modification date: May 5, 2008
+;; Version: 1.41
 
 ;; Installation:
 ;;
@@ -27,7 +27,7 @@
 
 ;; setup 
 
-(defvar logtalk-mode-version "1.4"
+(defvar logtalk-mode-version "1.41"
 	"Logtalk mode version number")
 
 (defvar logtalk-mode-hook nil)
@@ -161,8 +161,8 @@
 		;;
 		("\\<is\\>" 0 'logtalk-built-in-predicate-face)
 		;;
-		;; arithemtic comparison:
-		("=:=\\|@\\(?:=<\\|>=\\|[<>]\\)\\|\\\\==" 0 'logtalk-built-in-predicate-face)
+		;; arithmetic comparison:
+		("=:=\\|\\(?:=<\\|>=\\|[<>]\\)\\|\\\\==" 0 'logtalk-built-in-predicate-face)
 		;;
 		;; term unification:
 		;;
@@ -215,7 +215,7 @@
 		;;
 		;; bitwise functors:
 		;;
-		("/\\\\\\|<<\\|>>\\|\\\\/" 0 'logtalk-built-in-predicate-face)
+		("/\\\\|<<\\|>>\\|\\\\/" 0 'logtalk-built-in-predicate-face)
 		("\\\\" 0 'logtalk-built-in-predicate-face)
 	))
 
@@ -246,7 +246,7 @@
 		("\\<\\(0x[a-fA-F0-9]+\\)\\>" 1 'logtalk-number-face)
 		("\\<\\(0o[0-7]+\\)\\>" 1 'logtalk-number-face)
 		("\\<\\(0b[0-1]+\\)\\>" 1 'logtalk-number-face)
-		("\\<\\(0['][a-zA-Z0-9]\\)\\>" 1 'logtalk-number-face)
+		("\\<\\(0['].\\)\\>" 1 'logtalk-number-face)
 		("\\<\\([0-9]+\\([.][0-9]+\\)?\\([eE][+-][0-9]+\\)?\\)\\>" 1 'logtalk-number-face)
 	))
 
