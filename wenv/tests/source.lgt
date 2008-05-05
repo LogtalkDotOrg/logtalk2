@@ -302,6 +302,12 @@ comment
 	number(C) --> "-", number(X), {C is -X}.
 	number(X) --> [C], {0'0 =< C, C =< 0'9, X is C - 0'0}.
 
+	escape_sequences :-
+		write('Quoted atom with a quote ('') inside.'),
+		write('Quoted atom with control escape sequences: \a \b \r \f \t \n \v'),
+		write('Quoted atom with an octal escape sequence: \123\.'),
+		write('Quoted atom with an hexa-decimal escape sequence: \x123f\.').
+
 :- end_object.
 
 
