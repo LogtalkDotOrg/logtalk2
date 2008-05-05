@@ -33,8 +33,11 @@ RELEASE NOTES
 	at_end_of_stream/0 built-in predicates.
 
 	Added missing support for the syntax coloring of the external call 
-	Logtalk control construct, {}/1, to the TextMate text editor and to 
-	the Highlight package.
+	Logtalk control construct, {}/1, to the Highlight package.
+
+	Added missing support for the syntax coloring of the external call 
+	Logtalk control construct, {}/1, and for quoted atom escape sequences 
+	to the TextMate text editor.
 
 	Added missing support for the syntax coloring of the built-in predicate 
 	at_end_of_stream/0 to the Source-highlight package.
