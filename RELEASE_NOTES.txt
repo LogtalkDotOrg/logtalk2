@@ -26,7 +26,8 @@ RELEASE NOTES
 	imports_category/2-3 built-in predicate.
 
 	Corrected a bug in the Vim syntax coloring support for the ISO Prolog 
-	built-in predicate current_char_conversion/2.
+	built-in predicate current_char_conversion/2 and added missing support 
+	for for quoted atom escape sequences.
 
 	Corrected a bug in the jEdit syntax coloring support for hexadecimal 
 	numbers and added missing support for the extends_category/2-3 and 
