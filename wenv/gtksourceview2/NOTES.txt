@@ -7,8 +7,10 @@ Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 
 
 This directory contains files that provide syntax highlighting for 
-GtkSourceView 2.x, which is a text widget used in text editors and 
-IDEs such as recent versions of Gnome's Gedit and MonoDevelop:
+GtkSourceView 2.x, which is a text widget used in text editors such 
+as recent versions of Gnome's Gedit and in and IDEs such as Anjuta 
+and MonoDevelop. For more information, visit the GtkSourceView 
+website:
 
 	http://gtksourceview.sourceforge.net/
 
