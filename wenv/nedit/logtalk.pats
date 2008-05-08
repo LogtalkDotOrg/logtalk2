@@ -2,7 +2,7 @@
 !
 ! Author: Paulo Moura (pmoura at logtalk.org)
 !
-! Last changed in: December 6, 2007
+! Last changed in: May 8, 2008
 !
 !
 ! To install this patterns file:
@@ -30,20 +30,21 @@ nedit.highlightPatterns: Logtalk:1:0{\n\
 	Term testing:"(?<![+?@-])(var|atom|integer|float|atomic|compound|nonvar|number)(?=[(])":::Subroutine::\n\
 	Message sending operators:"::|\\^\\^":::Keyword::\n\
 	Category predicate direct call:":":::Keyword::\n\
+	External call:"[{}]":::Keyword::\n\
 	Control constructs:"!|;|\\-\\-\\>|\\-\\>|<(true|fail)>":::Subroutine::\n\
 	Control constructs:"<(call|catch|throw)(?=[(])":::Subroutine::\n\
 	Block comment:"/\\*":"\\*/"::Comment::\n\
 	Line comment:"%":"$"::Comment::\n\
-	Number:"0'[A-Za-z0-9]":::Numeric Const::\n\
+	Number:"0'.":::Numeric Const::\n\
 	Number:"0b[0-1]+":::Numeric Const::\n\
 	Number:"0o[0-7]+":::Numeric Const::\n\
 	Number:"0x[A-Fa-f0-9]+":::Numeric Const::\n\
 	Number:"[0-9]+(\.[0-9]+)?([eE][-+][0-9]+)?":::Numeric Const::\n\
 	String:"""":""""::String::\n\
 	String:"'":"'"::String::\n\
-	Built-in methods:"<(parameter|self|sender|this|current_predicate|predicate_property|abolish|asserta|assertz|retractall|retract|bagof|findall|forall|setof|before|after|expand_term|goal_expansion|term_expansion|phrase|threaded|threaded_call|threaded_once|threaded_ignore|threaded_exit|threaded_peek|threaded_wait|threaded_notify)(?=[(])":::Subroutine::\n\
+	Built-in methods:"<(parameter|self|sender|this|current_predicate|predicate_property|abolish|asserta|assertz|clause|retractall|retract|bagof|findall|forall|setof|before|after|expand_term|goal_expansion|term_expansion|phrase|threaded|threaded_call|threaded_once|threaded_ignore|threaded_exit|threaded_peek|threaded_wait|threaded_notify)(?=[(])":::Subroutine::\n\
 	Arithmetic operators:"<is>|\\+|\\*|\\-|/|=:=|=\\\\=|=\\<|\\>=|\\<|\\>":::Subroutine::\n\
-	Built-in predicates:"<(current_object|current_protocol|current_category|create_object|create_protocol|create_category|object_property|protocol_property|category_property|abolish_object|abolish_protocol|abolish_vategory|complements_object|extends_object|extends_protocol|extends_category|omplements_protocol|instantiates_class|specializes_class|imports_category|abolish_events|current_events|define_events|current_logtalk_flag|set_logtalk_flag|logtalk_compile|logtalk_load|logtalk_library_path|forall|retractall)(?=[(])":::Subroutine::\n\
+	Built-in predicates:"<(current_object|current_protocol|current_category|create_object|create_protocol|create_category|object_property|protocol_property|category_property|abolish_object|abolish_protocol|abolish_category|complements_object|extends_object|extends_protocol|extends_category|implements_protocol|instantiates_class|specializes_class|imports_category|abolish_events|current_event|define_events|current_logtalk_flag|set_logtalk_flag|logtalk_compile|logtalk_load|logtalk_library_path|forall|retractall)(?=[(])":::Subroutine::\n\
 	Term unification:"=|\\\\=":::Subroutine::\n\
 	Term unification:"<unify_with_occurs_check(?=[(])":::Subroutine::\n\
 	Term comparison:"@=\\<|==|\\\\==|@\\>=|@\\<|@\\>":::Subroutine::\n\
@@ -63,8 +64,10 @@ nedit.highlightPatterns: Logtalk:1:0{\n\
 	Implementation defined hooks:"<halt>":::Subroutine::\n\
 	Evaluable functors:"<(rem|mod|abs|sign|float_integer_part|float_fractional_part|float|floor|truncate|round|ceiling)(?=[(])":::Subroutine::\n\
 	Evaluable functors:"\\+|-|\\*|//|/":::Subroutine::\n\
-	Other arithemtic functors:"\\*\\*":::Subroutine::\n\
+	Other arithemtic functors:"\\*\\*|<rem>|<mod>":::Subroutine::\n\
 	Other arithemtic functors:"\\*\\*|<(sin|cos|atan|exp|log|sqrt)(?=[(])":::Subroutine::\n\
 	Bitwise functors:">>|<<|/\\\\|\\\\/|\\\\":::Subroutine::\n\
+	Atoms:"[a-z]\\w*":::Plain::\n\
+	Variables:"[A-Z_]\\w*":::Identifier::\n\
 }
 nedit.languageModes:	Logtalk: .lgt .config::::4:4:\n\
