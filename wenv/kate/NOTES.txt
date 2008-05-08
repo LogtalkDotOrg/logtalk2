@@ -8,7 +8,8 @@ Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 
 This directory contains files that provide support for code folding and 
 syntax highlighting for editing Logtalk source files with the KDE Kate 
-and KWrite text editors (http://kate.kde.org/).
+and KWrite text editors (http://kate.kde.org/) and with the KDevelop IDE 
+(http://www.kdevelop.org/).
 
 
 To install copy the file "logtalk.xml" to the directory:
