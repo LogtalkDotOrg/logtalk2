@@ -21,8 +21,9 @@
 nedit.fileVersion: 5.2
 
 nedit.highlightPatterns: Logtalk:1:0{\n\
-	Entity directives:"(?<=:\\-\\s)(object|protocol|category|module)(?=[(])":::Preprocessor::\n\
-	Entity directives:"(?<=:\\-\\s)(end_object|end_protocol|end_category)(?=[.])":::Preprocessor::\n\
+	Variables:"[A-Z_]\\w*":::Identifier2::\n\
+	Opening Entity directives:"(?<=:\\-\\s)(object|protocol|category|module)(?=[(])":::Preprocessor::\n\
+	Closing Entity directives:"(?<=:\\-\\s)(end_object|end_protocol|end_category)(?=[.])":::Preprocessor::\n\
 	Entity relations:"<(complements|instantiates|specializes|extends|imports|implements)(?=[(])":::Preprocessor::\n\
 	Directives:"(?<=:\\-\\s)(alias|synchronized|encoding|export|initialization|info|mode|dynamic|discontiguous|public|protected|private|meta_predicate|multifile|op|calls|uses|use_module)(?=[(])":::Preprocessor::\n\
 	Directives:"(?<=:\\-\\s)(dynamic|synchronized|threaded)>":::Preprocessor::\n\
@@ -68,6 +69,5 @@ nedit.highlightPatterns: Logtalk:1:0{\n\
 	Other arithemtic functors:"\\*\\*|<(sin|cos|atan|exp|log|sqrt)(?=[(])":::Subroutine::\n\
 	Bitwise functors:">>|<<|/\\\\|\\\\/|\\\\":::Subroutine::\n\
 	Atoms:"[a-z]\\w*":::Plain::\n\
-	Variables:"[A-Z_]\\w*":::Identifier::\n\
 }
 nedit.languageModes:	Logtalk: .lgt .config::::4:4:\n\

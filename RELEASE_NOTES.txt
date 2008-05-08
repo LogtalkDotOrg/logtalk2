@@ -57,10 +57,10 @@ RELEASE NOTES
 	construct call/1 to the GtkSourceView 2.x text widget.
 
 	Added missing support for the syntax coloring of the built-in method 
-	clause/2 and for the external call Logtalk control construct, {}/1, 
-	corrected a bug with 0'Char constants and some typos in the support 
-	for the built-in predicates current_event/2, implements_protocol/2-3, 
-	abolish_category/1 for the Nedit text editor.
+	clause/2, of the external call Logtalk control construct, {}/1, and 
+	of variables to the Nedit text editor. Corrected a bug with 0'Char 
+	constants and some typos in the support for the built-in predicates 
+	current_event/2, implements_protocol/2-3, abolish_category/1.
 
 
 2.31.5 - April 29, 2008
