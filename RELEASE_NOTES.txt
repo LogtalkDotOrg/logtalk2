@@ -54,15 +54,16 @@ RELEASE NOTES
 	unify_with_occurs_check/2 to the Emacs text editor. Corrected a bug in 
 	the syntax coloring of arithmetic comparison operators.
 
-	Added missing support for the syntax coloring of the built-in control 
-	construct call/1 to the GtkSourceView 2.x text widget.
+	Added missing support for the syntax coloring of quoted atom escape 
+	sequences and of the built-in control construct call/1 to the 
+	GtkSourceView 2.x text widget.
 
 	Added missing support for the syntax coloring of variables, of quoted 
 	atom escape sequences, of the built-in method clause/2, of the external 
 	call Logtalk control construct {}/1, and of variables to the Nedit text 
 	editor. Corrected a bug with 0'Char constants and corrected some typos 
-	in the support for the built-in predicates current_event/2, 
-	implements_protocol/2-3, abolish_category/1.
+	in the support for the current_event/2, implements_protocol/2-3, and 
+	abolish_category/1 built-in predicates.
 
 
 2.31.5 - April 29, 2008
