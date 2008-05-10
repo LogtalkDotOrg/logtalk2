@@ -1,13 +1,16 @@
 # highlighting for Logtalk source files (http://logtalk.org/)
 #
 #	written by Paulo Moura (pmoura@logtalk.org)
-#	last revised on 30 April 2008
+#	last revised on 10 May 2008
 
 comment start "%"
 comment delim "/*" "*/" multiline nested
 
 string delim "\"" "\"" escape "\\"
-string delim "'" "'"  escape "\\"
+
+environment string delim "'" "'" begin
+	specialchar = '\\([\\abfnrtv"\']|(x[a-fA-F0-9]+|[0-7]+)\\)'
+end
 
 keyword =	'\<(abolish|c(urrent|reate))_(object|protocol|category)(?=\()',
 			'\<(object|protocol|category)_property(?=\()',

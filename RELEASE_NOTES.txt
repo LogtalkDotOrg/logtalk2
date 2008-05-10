@@ -42,8 +42,9 @@ RELEASE NOTES
 	Logtalk control construct, {}/1, and for quoted atom escape sequences 
 	to the TextMate text editor.
 
-	Added missing support for the syntax coloring of the built-in predicate 
-	at_end_of_stream/0 to the Source-highlight package.
+	Added missing support for the syntax coloring of quoted atom escape 
+	sequences and of the built-in predicate at_end_of_stream/0 to the 
+	Source-highlight package.
 
 	Added missing support for the syntax coloring of the built-in predicate 
 	at_end_of_stream/0 and of the scope operator ::/2 to the Kate text editor.
