@@ -52,7 +52,9 @@ Prolog compilers that are expected to be compatible with the provided
 	* XSB
 
 Prolog compilers that imply editing the provided "libpaths.pl" file due 
-to the lack of support for expanding environment variables on paths:
+to the lack of support for expanding environment variables on paths (just 
+replace the environment variable LOGTALKUSER by the actual path to your 
+Logtalk user folder):
 
 	* Amzi! Prolog
 	* IF/Prolog
