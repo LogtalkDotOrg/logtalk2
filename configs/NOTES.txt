@@ -416,7 +416,7 @@ SICStus Prolog 4.0
 	beta version).
 
 
-SWI Prolog 5.6.23 and later versions
+SWI Prolog 5.6.43 and later versions
 
 	swi.config
 	swihook.pl
