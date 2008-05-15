@@ -12,8 +12,12 @@ RELEASE NOTES
 
 2.31.6 - May ??, 2008
 
-	Modified the YAP config file to check the availability of the built-in 
-	predicate forall/2.
+	Updated the YAP config file to check the availability of the built-in 
+	predicate forall/2. Added support for the proprietary if/1, else/0, 
+	elif/1, and endif/0 directives.
+
+	Updated the SWI-Prolog config file with support for the proprietary 
+	if/1, else/0, elif/1, and endif/0 directives.
 
 	Added support for the Pygments syntax highlighter (co-developed with 
 	Clara Dimene).
