@@ -14,7 +14,11 @@
 %  the context to "Obj"; call set_logtalk_context(user) to return to the 
 %  normal Logtak/Prolog top-level
 %
-%  last updated: April 16, 2007
+%  as of Logtalk version 2.30.1 you may use in alternative the <</2 control
+%  construct, which provides a more robust solution for making queries in 
+%  the context of objects other than "user"
+%
+%  last updated: May 18, 2008
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

@@ -9,14 +9,20 @@ Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 This file contains some notes about the config files provided. If you
 improve or correct some of these files, or write new ones for other
 Prolog compilers, please send me a copy. It is impossible for me to 
-individually test Logtalk under each Prolog listed here (or, for that 
-mater, to own a copy of each one of these compilers). For some of 
-these Prolog compilers I only have the manuals available on-line.
+individually test Logtalk under all combinations of compatible Prolog 
+versions and operating-system versions (or, for that mater, to own a 
+copy of each one of these compilers). For some of these Prolog compilers 
+I only have the manuals available on-line.
 
 As a general rule, always try to use the latest version of your Prolog 
-compiler of choice. Most Prolog compilers are moving towards better 
-ISO Standard compatibility and, as a consequence, improved Logtalk 
-compatibility.
+compiler of choice. For Prolog compilers with long release cycles, this 
+may imply use of development versions. Most Prolog compilers are moving 
+towards better ISO Standard compatibility and, as a consequence, improved 
+Logtalk compatibility.
+
+Most of the suggestions you will find in this file for integrating Logtalk 
+with specific Prolog compilers are already implemented and available in the 
+"integration" directory of the Logtalk distribution.
 
 
 template config file
@@ -25,7 +31,7 @@ template config file
 
 	If a config file for your favorite Prolog is not available, use this 
 	file as a template for writing one. For each predicate in the file, 
-	see if it is built-in in your Prolog, available in a library, or if 
+	check if it is built-in in your Prolog, available in a library, or if 
 	you can write a better definition.
 
 
@@ -450,7 +456,7 @@ SWI Prolog 5.6.43 and later versions
 	configs/xpcehook.pl file in order to support Logtalk message sending goals 
 	as XPCE call-back goals.
 
-	See the comments in the "swi_set_logtalk_context.pl" itself for a 
+	See the comments in the "swi_set_logtalk_context.pl" file itself for a 
 	description of its functionality.
 
 	With multi-threading support turned on, you may get an harmless message
@@ -468,7 +474,7 @@ XSB 3.1 and later versions
 	requires XSB CVS version.
 
 
-YAP 5.1.2 and later versions
+YAP 5.1.3 and later versions
 
 	yap.config
 
