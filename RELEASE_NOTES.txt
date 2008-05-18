@@ -12,8 +12,9 @@ RELEASE NOTES
 
 2.31.6 - May ??, 2008
 
-	Updated the YAP config file to check the availability of the built-in 
-	predicate forall/2. Added support for the proprietary if/1, else/0, 
+	Removed from the YAP config file the definition of the forall/2 
+	predicate, which have been added as a built-in predicate in YAP 
+	version 5.1.3. Added support for the proprietary if/1, else/0, 
 	elif/1, and endif/0 directives.
 
 	Updated the SWI-Prolog config file with support for the proprietary 

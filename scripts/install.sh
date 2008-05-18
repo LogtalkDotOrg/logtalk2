@@ -93,7 +93,7 @@ echo "* SWI-Prolog (version 5.6.43 or later):    swilgt"
 echo "* XSB (version 3.1 or later):              xsblgt     (first run must use sudo)"
 echo "* XSB MT (CVS version):                    xsbmtlgt   (first run must use sudo)"
 echo "* XSB MT 64 bits (CVS version):            xsbmt64lgt (first run must use sudo)"
-echo "* YAP (version 5.1.2 or later):            yaplgt"
+echo "* YAP (version 5.1.3 or later):            yaplgt"
 echo
 echo "The Prolog integration scripts can be found on \"$prefix/bin\"."
 echo "Make sure that the Prolog compilers are properly installed and available"
