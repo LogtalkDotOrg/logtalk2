@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+    <recognition>
+        <extension>lgt</extension>
+        <extension>config</extension>
+    </recognition>
+</settings>
