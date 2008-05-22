@@ -10,15 +10,22 @@ RELEASE NOTES
 =============
 
 
-2.31.6 - May ??, 2008
+2.31.6 - May 26, 2008
+
+	Fixed a Logtalk compiler bug when compiling a class that imports a  
+	category that extends other categories.  Thanks to Victor Noel for 
+	the bug report.
 
 	Removed from the YAP config file the definition of the forall/2 
 	predicate, which have been added as a built-in predicate in YAP 
-	version 5.1.3. Added support for the proprietary if/1, else/0, 
-	elif/1, and endif/0 directives.
+	version 5.1.3 (the current YAP CVS version must be used; the last 
+	stable version, 5.1.2, is broken on Windows). Added support for 
+	the proprietary if/1, else/0, elif/1, and endif/0 directives (when 
+	used outside Logtalk entities).
 
 	Updated the SWI-Prolog config file with support for the proprietary 
-	if/1, else/0, elif/1, and endif/0 directives.
+	if/1, else/0, elif/1, and endif/0 directives (when used outside 
+	Logtalk entities).
 
 	Added support for the Pygments syntax highlighter (co-developed with 
 	Clara Dimene).

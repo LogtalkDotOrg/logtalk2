@@ -9821,12 +9821,12 @@ current_logtalk_flag(version, version(2, 31, 6)).
 	'$lgt_pp_object_'(Obj, _, _, _, _, _, OIDef, _, _, PRnm, _),
 	'$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, _)),		% needed for parameter passing
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
-	Lookup =.. [CDef, Pred, Sender, Obj, Self, Call],
+	Lookup =.. [CDef, Pred, Sender, Obj, Self, Call, Ctn],
 	(	'$lgt_pp_alias_'(Ctg, _, _) ->
-		Head =.. [OIDef, Alias, Sender, Obj, Self, Call, Ctg],
+		Head =.. [OIDef, Alias, Sender, Obj, Self, Call, Ctn],
 		Rename =.. [PRnm, Ctg, Pred, Alias],
 		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
-	;	Head =.. [OIDef, Pred, Sender, Obj, Self, Call, Ctg],
+	;	Head =.. [OIDef, Pred, Sender, Obj, Self, Call, Ctn],
 		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
 	fail.
