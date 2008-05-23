@@ -25,7 +25,7 @@
 
 <pre>:Goal</pre>
 <p>
-Calls an imported category predicate without using the message sending mechanisms. The category predicate is called with the same execution context (<em>sender</em>, <em>this</em>, and <em>self</em>) as the predicate whose body contains the call. The lookup for both the predicate declaration and the predicate definition begins in <em>this</em> instead of <em>self</em>. Furthermore, the lookup of the predicate definition is restricted to the imported categories. As a consequence, any redeclaration or redefinition of the predicate in a descendant of the object containing the call will be ignored.
+Calls an inherited or imported predicate with the lookup for both the predicate declaration and the predicate definition beginning in <em>this</em> instead of <em>self</em>. As a consequence, any redeclaration or redefinition of the predicate in a descendant of the object containing the call will be ignored. The predicate is called with the same execution context (<em>sender</em>, <em>this</em>, and <em>self</em>) as the predicate whose body contains the call. When the predicate is defined in an imported category compiled using static binding, this control construct allows the predicate to be called with the same performance as a local object predicate.
 </p>
 
 <h4>Template and modes</h4>
@@ -39,7 +39,7 @@ Calls an imported category predicate without using the message sending mechanism
 		<dd><code>instantiation_error</code></dd>
 	<dt>Goal is neither a variable nor a callable term:</dt>
 		<dd><code>type_error(callable, Goal)</code></dd>
-	<dt>The object containing the call does not import any category:</dt>
+	<dt>The entity containing the call does not import or inherit from any entity:</dt>
 		<dd><code>existence_error(procedure, Goal)</code></dd>
 </dl>
 
@@ -58,7 +58,7 @@ Calls an imported category predicate without using the message sending mechanism
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: August 27, 2007</span>
+		<span>Last updated on: May 23, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="../index.html#constructs">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="../index.html#constructs">next</a></span><br/>

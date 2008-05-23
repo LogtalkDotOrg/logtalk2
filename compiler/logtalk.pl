@@ -3153,14 +3153,23 @@ current_logtalk_flag(version, version(2, 31, 6)).
 
 
 
-% '$lgt_call_ctg_pred'(+atom, +atom, +callable, +object_identifier, +object_identifier, +object_identifier)
+% '$lgt_call_pred_from_this'(+atom, +object_identifier, +atom, +atom, +callable, +object_identifier, +object_identifier, +object_identifier)
+% '$lgt_call_pred_from_this'(+atom, +category_identifier, +atom, +atom, +callable, +object_identifier, +object_identifier, +object_identifier)
 %
-% calls a category predicate directly, without using the message sending mechanism
+% calls a predicate from "this", without using the message sending mechanism
+% prevent loops by ensuring that we look for an inherited or imported definition
 
-'$lgt_call_ctg_pred'(Dcl, Def, Pred, Sender, This, Self) :-
+'$lgt_call_pred_from_this'(object, Obj, Dcl, Def, Pred, Sender, This, Self) :-
 	(	call_with_args(Dcl, Pred, _, _, _, _, _, _, _) ->
-		(	'$lgt_imports_category_'(This, Ctg, _),
-			call_with_args(Def, Pred, Sender, This, Self, Call, Ctg) ->
+		(	call_with_args(Def, Pred, Sender, This, Self, Call, Ctn), Obj \= Ctn ->
+			call(Call)
+		)
+	;	throw(error(existence_error(predicate_declaration, Pred), ':'(Pred), This))
+	).
+
+'$lgt_call_pred_from_this'(category, Ctg, Dcl, Def, Pred, Sender, This, Self) :-
+	(	call_with_args(Dcl, Pred, _, _, _, _, _, _) ->
+		(	call_with_args(Def, Pred, Sender, This, Self, Call, Ctn), Ctg \= Ctn ->
 			call(Call)
 		)
 	;	throw(error(existence_error(predicate_declaration, Pred), ':'(Pred), This))
@@ -6923,9 +6932,14 @@ current_logtalk_flag(version, version(2, 31, 6)).
 
 '$lgt_tr_body'(':'(Pred), _, _, _) :-
 	\+ '$lgt_pp_imported_category_'(_, _, _, _, _),
+	\+ '$lgt_pp_extended_category_'(_, _, _, _, _),
+	\+ '$lgt_pp_extended_object_'(_, _, _, _, _, _, _, _, _, _),
+	\+ '$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _),
+	\+ '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _),
 	throw(existence_error(procedure, Pred)).
 
 '$lgt_tr_body'(':'(Alias), TPred, '$lgt_dbg_goal'(':'(Alias), TPred, DbgCtx), Ctx) :-
+	'$lgt_pp_object_'(Obj, _, Dcl, Def, _, IDcl, IDef, _, _, _, _),
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
@@ -6937,11 +6951,25 @@ current_logtalk_flag(version, version(2, 31, 6)).
 		'$lgt_ctg_static_binding_cache'(Ctg, Pred, Sender, This, Self, TPred) ->
 		true
 	;	Pred = Alias,
-		'$lgt_pp_object_'(_, _, Dcl, Def, _, IDcl, _, _, _, _, _),
 		(	('$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _); '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _)) ->
-			TPred = '$lgt_call_ctg_pred'(IDcl, Def, Pred, Sender, This, Self)
-		;	TPred = '$lgt_call_ctg_pred'(Dcl, Def, Pred, Sender, This, Self)
+			TPred = '$lgt_call_pred_from_this'(object, Obj, IDcl, IDef, Pred, Sender, This, Self)
+		;	TPred = '$lgt_call_pred_from_this'(object, Obj, Dcl, Def, Pred, Sender, This, Self)
 		)
+	).
+
+'$lgt_tr_body'(':'(Alias), TPred, '$lgt_dbg_goal'(':'(Alias), TPred, DbgCtx), Ctx) :-
+	'$lgt_pp_category_'(Ctg, _, Dcl, Def, _, _),
+	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
+	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
+	(	'$lgt_pp_extended_category_'(Ctg2, _, _, _, _),
+		(	'$lgt_pp_alias_'(Ctg2, Pred, Alias) ->
+			true
+		;	Pred = Alias
+		),
+		'$lgt_ctg_static_binding_cache'(Ctg2, Pred, Sender, This, Self, TPred) ->
+		true
+	;	Pred = Alias,
+		TPred = '$lgt_call_pred_from_this'(category, Ctg, Dcl, Def, Pred, Sender, This, Self)
 	).
 
 
