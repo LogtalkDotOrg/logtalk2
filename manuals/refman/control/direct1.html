@@ -25,7 +25,7 @@
 
 <pre>:Goal</pre>
 <p>
-Calls an inherited or imported predicate with the lookup for both the predicate declaration and the predicate definition beginning in <em>this</em> instead of <em>self</em>. As a consequence, any redeclaration or redefinition of the predicate in a descendant of the object containing the call will be ignored. The predicate is called with the same execution context (<em>sender</em>, <em>this</em>, and <em>self</em>) as the predicate whose body contains the call. When the predicate is defined in an imported category compiled using static binding, this control construct allows the predicate to be called with the same performance as a local object predicate.
+Calls an <strong>imported</strong> predicate with the lookup for the predicate declaration beginning in <em>this</em> instead of <em>self</em> and with the lookup for the predicate definition restricted to the imported categories. As a consequence, any redeclaration or redefinition of the predicate in a descendant of the object containing the call will be ignored. The predicate is called with the same execution context (<em>sender</em>, <em>this</em>, and <em>self</em>) as the predicate whose body contains the call. When the predicate is defined in an imported category compiled using static binding, this control construct allows the predicate to be called with the same performance as a local object predicate.
 </p>
 
 <h4>Template and modes</h4>
@@ -39,7 +39,7 @@ Calls an inherited or imported predicate with the lookup for both the predicate 
 		<dd><code>instantiation_error</code></dd>
 	<dt>Goal is neither a variable nor a callable term:</dt>
 		<dd><code>type_error(callable, Goal)</code></dd>
-	<dt>The entity containing the call does not import or inherit from any entity:</dt>
+	<dt>The object containing the call does not import any category:</dt>
 		<dd><code>existence_error(procedure, Goal)</code></dd>
 </dl>
 

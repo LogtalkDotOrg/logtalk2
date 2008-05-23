@@ -12,8 +12,9 @@ RELEASE NOTES
 
 2.31.6 - May ??, 2008
 
-	Generalized the :/1 control construct to allow its use from within 
-	categories that extend other categories.
+	Fixed a Logtalk runtime bug when using the :/1 control construct to 
+	call a predicate defined in a category extended by a category that 
+	is imported by the object making the call.
 
 	Fixed a Logtalk compiler bug when compiling a class that imports a  
 	category that extends other categories.  Thanks to Victor Noel for 
