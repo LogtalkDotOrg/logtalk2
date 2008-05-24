@@ -95,7 +95,8 @@ dynpred
 
 encodings
 	very simple example of using the new, experimental encoding/1 
-	directive (requires Logtalk to be run with the SWI-Prolog compiler)
+	directive (requires Logtalk to be run with either YAP, SWI-Prolog,
+	CxProlog, or SICStus Prolog)
 
 engines
 	example of category composition (importation of categories by 
@@ -184,7 +185,7 @@ relations
 	constrained relations between objects; used by other examples
 
 roots
-	objects, protocols, and categories needed by most of the other 
+	objects, protocols, and categories used by some of the other 
 	examples; illustrates how you can define object creation and 
 	abolishing methods, complete with initialization and termination 
 	options

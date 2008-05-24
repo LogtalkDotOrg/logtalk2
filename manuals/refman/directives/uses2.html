@@ -44,8 +44,8 @@ uses(+object_identifier, +predicate_indicator_alias_list)</pre>
 
 foo :-
     ...,
-    findall(X, member(X, L), A),    % the same as: findall(X, list::member(X, L), A)
-    append(A, B, C),                % the same as: list::append(A, B, C)
+    findall(X, member(X, L), A),    % the same as findall(X, list::member(X, L), A)
+    append(A, B, C),                % the same as list::append(A, B, C)
     ...</pre>
 <p>
 Another example, using the extended notation that allows us to define predicate aliases:
@@ -55,8 +55,8 @@ Another example, using the extended notation that allows us to define predicate 
 
 btree_to_queue :-
     ...,
-    new_btree(Tree),     % the same as: btrees::new(Tree)
-    new_queue(Queue),    % the same as: queues::new(Queue)
+    new_btree(Tree),     % the same as btrees::new(Tree)
+    new_queue(Queue),    % the same as queues::new(Queue)
     ...</pre>
 
 <div class="footer">
