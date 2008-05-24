@@ -23,7 +23,7 @@
 
 <h4>Description</h4>
 
-<pre>:Goal</pre>
+<pre>:Predicate</pre>
 <p>
 Calls an <strong>imported</strong> predicate with the lookup for the predicate declaration beginning in <em>this</em> instead of <em>self</em> and with the lookup for the predicate definition restricted to the imported categories. As a consequence, any redeclaration or redefinition of the predicate in a descendant of the object containing the call will be ignored. The predicate is called with the same execution context (<em>sender</em>, <em>this</em>, and <em>self</em>) as the predicate whose body contains the call. When the predicate is defined in an imported category compiled using static binding, this control construct allows the predicate to be called with the same performance as a local object predicate.
 </p>
@@ -35,12 +35,12 @@ Calls an <strong>imported</strong> predicate with the lookup for the predicate d
 <h4>Errors</h4>
 
 <dl>
-	<dt>Goal is a variable:</dt>
+	<dt>Predicate is a variable:</dt>
 		<dd><code>instantiation_error</code></dd>
-	<dt>Goal is neither a variable nor a callable term:</dt>
-		<dd><code>type_error(callable, Goal)</code></dd>
-	<dt>The object containing the call does not import any category:</dt>
-		<dd><code>existence_error(procedure, Goal)</code></dd>
+	<dt>Predicate is neither a variable nor a callable term:</dt>
+		<dd><code>type_error(callable, Predicate)</code></dd>
+	<dt>Predicate is not declared:</dt>
+		<dd><code>existence_error(predicate_declaration, Predicate)</code></dd>
 </dl>
 
 <h4>Examples</h4>

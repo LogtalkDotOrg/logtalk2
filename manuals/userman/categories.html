@@ -57,7 +57,7 @@ A category may be defined as a composition of other categories by writing:
     ...
 :- end_category.</pre>
 <p>
-This feature should only be used when extending a category without breaking its functional cohesion (for example, when a modified version of a category is needed for importing on several unrelated objects). The prefered way of composing several categories is by importing them into an object.
+This feature should only be used when extending a category without breaking its functional cohesion (for example, when a modified version of a category is needed for importing on several unrelated objects). The preferred way of composing several categories is by importing them into an object. When a category overrides a predicate defined in an extended category, the overridden definition can still be used by using the <a title="Consult reference manual" href="../refman/directives/alias3.html"><code>alias/3</code></a> predicate directive.
 </p>
 <p>
 A category may explicitly complement one or more existing objects, thus providing functionality similar to Objective-C categories:
@@ -329,7 +329,7 @@ Using the message sending mechanisms, the predicate <code>out/1</code> can be ca
 This is the recommended way of calling category predicates as it supports the specialization/redefinition of the category predicate in a descendant object (as the predicate declaration and definition lookups will start from <em>self</em>). Messages to <em>self</em> usually imply the use of dynamic binding as the actual object that will receive the message is only known at runtime. This translates to a small performance penalty when compared with calls to local object predicates.
 </p>
 <p>
-It is also possible to call category predicates such that the predicate declaration and definition lookups will start from <em>this</em> instead of <em>self</em> by using the <a title="Consult reference manual" href="../refman/control/direct1.html"><code>:/1</code></a> control construct. For example:
+It is also possible to perform direct calls to predicates from imported categories without using the message sending mechanisms with the <a title="Consult reference manual" href="../refman/control/direct1.html"><code>:/1</code></a> control construct. For example:
 </p>
 <pre>:- object(worker,
     imports(output)).
