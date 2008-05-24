@@ -10,11 +10,14 @@ RELEASE NOTES
 =============
 
 
-2.31.6 - May ??, 2008
+2.31.6 - May 26, 2008
 
 	Fixed a Logtalk runtime bug when using the :/1 control construct to 
 	call a predicate defined in a category extended by a category that 
 	is imported by the object making the call.
+
+	Fixed a Logtalk compiler bug when compiling an alias/3 predicate 
+	directive within a category that extends other categories.
 
 	Fixed a Logtalk compiler bug when compiling a class that imports a  
 	category that extends other categories.  Thanks to Victor Noel for 

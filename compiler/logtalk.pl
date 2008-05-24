@@ -5471,6 +5471,7 @@ current_logtalk_flag(version, version(2, 31, 6)).
 '$lgt_tr_directive'(alias, [Entity, PI1, PI2], _, _) :-
 	(	'$lgt_pp_extended_protocol_'(Entity, _, _, _)
 	;	'$lgt_pp_implemented_protocol_'(Entity, _, _, _)
+	;	'$lgt_pp_extended_category_'(Entity, _, _, _, _)
 	;	'$lgt_pp_imported_category_'(Entity, _, _, _, _)
 	;	'$lgt_pp_extended_object_'(Entity, _, _, _, _, _, _, _, _, _)
 	;	'$lgt_pp_instantiated_class_'(Entity, _, _, _, _, _, _, _, _, _)
@@ -6938,9 +6939,10 @@ current_logtalk_flag(version, version(2, 31, 6)).
 		true
 	;	Pred = Alias,
 		'$lgt_pp_object_'(_, _, Dcl, _, _, IDcl, _, _, _, _, _),
-		(	('$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _); '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _)) ->
-			TPred = '$lgt_call_ctg_pred'(IDcl, Pred, Sender, This, Self)
-		;	TPred = '$lgt_call_ctg_pred'(Dcl, Pred, Sender, This, Self)
+		(	\+ '$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _),
+		 	\+ '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _) ->
+			TPred = '$lgt_call_ctg_pred'(Dcl, Pred, Sender, This, Self)
+		;	TPred = '$lgt_call_ctg_pred'(IDcl, Pred, Sender, This, Self)
 		)
 	).
 
