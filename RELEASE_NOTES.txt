@@ -34,6 +34,9 @@ RELEASE NOTES
 	if/1, else/0, elif/1, and endif/0 directives (when used outside 
 	Logtalk entities).
 
+	Improved the "complements" example, moving the category initialization 
+	goal to the beggining of the example source file.
+
 	Added support for the Pygments syntax highlighter (co-developed with 
 	Clara Dimene).
 
