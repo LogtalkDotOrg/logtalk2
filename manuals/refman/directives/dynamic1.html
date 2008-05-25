@@ -31,7 +31,7 @@ dynamic(Functor//Arity)
 dynamic(Functor1//Arity1, Functor2//Arity2, ...)
 dynamic([Functor1//Arity1, Functor2//Arity2, ...])</pre>
 <p>
-Declares dynamic predicates and dynamic grammar rule non-terminals. Note that an object can be static and have both static and dynamic predicates/non-terminals. Dynamic predicates cannot be declared as synchronized.
+Declares dynamic predicates and dynamic grammar rule non-terminals. Note that an object can be static and have both static and dynamic predicates/non-terminals. Dynamic predicates cannot be declared as synchronized. When the dynamic predicates are local to an object, declaring them also as private predicates allows the Logtalk compiler to generated optimized code for asserting and retracting predicate clauses.
 </p>
 
 <h4>Template and modes</h4>
@@ -51,7 +51,7 @@ dynamic(+non_terminal_indicator_term)</pre>
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: March 5, 2008</span>
+		<span>Last updated on: May 23, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="discontiguous1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="info2.html">next</a></span><br/>

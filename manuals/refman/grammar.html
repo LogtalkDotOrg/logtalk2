@@ -101,7 +101,8 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 	<dl>
 		<dt>category_relation ::=</dt>
 			<dd>implements_protocols |</dd>
-			<dd>extends_categories</dd>
+			<dd>extends_categories |</dd>
+			<dd>complements_objects</dd>
 	</dl>
 
 
@@ -151,6 +152,10 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 		<dt>specializes_classes ::=</dt>
 			<dd>"<code>specializes(</code>" specialized_objects "<code>)</code>"</dd>
 	</dl>
+	<dl>
+		<dt>complements_objects ::=</dt>
+			<dd>"<code>complements(</code>" complemented_objects "<code>)</code>"</dd>
+	</dl>
 
 	<h3 id="grammar_implemented_protocols">Implemented protocols</h3>
 		<dl>
@@ -173,7 +178,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>implemented_protocol_list ::=</dt>
 				<dd>"<code>[</code>" implemented_protocol_sequence "<code>]</code>"</dd>
 		</dl>
-	
+
 	<h3 id="grammar_extended_protocols">Extended protocols</h3>
 		<dl>
 			<dt>extended_protocols ::=</dt>
@@ -195,7 +200,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>extended_protocol_list ::=</dt>
 				<dd>"<code>[</code>" extended_protocol_sequence "<code>]</code>"</dd>
 		</dl>
-	
+
 	<h3 id="grammar_imported_categories">Imported categories</h3>
 		<dl>
 			<dt>imported_categories ::=</dt>
@@ -217,7 +222,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>imported_category_list ::=</dt>
 				<dd>"<code>[</code>" imported_category_sequence "<code>]</code>"</dd>
 		</dl>
-	
+
 	<h3 id="grammar_extended_objects">Extended objects</h3>
 		<dl>
 			<dt>extended_objects ::=</dt>
@@ -239,7 +244,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>extended_object_list ::=</dt>
 				<dd>"<code>[</code>" extended_object_sequence "<code>]</code>"</dd>
 		</dl>
-	
+
 	<h3 id="grammar_extended_categories">Extended categories</h3>
 		<dl>
 			<dt>extended_categories ::=</dt>
@@ -261,7 +266,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>extended_category_list ::=</dt>
 				<dd>"<code>[</code>" extended_category_sequence "<code>]</code>"</dd>
 		</dl>
-	
+
 	<h3 id="grammar_instantiated_objects">Instantiated objects</h3>
 		<dl>
 			<dt>instantiated_objects ::=</dt>
@@ -283,7 +288,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>instantiated_object_list ::=</dt>
 				<dd>"<code>[</code>" instantiated_object_sequence "<code>]</code>"</dd>
 		</dl>
-	
+
 	<h3 id="grammar_specialized_objects">Specialized objects</h3>
 		<dl>
 			<dt>specialized_objects ::=</dt>
@@ -305,7 +310,24 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>specialized_object_list ::=</dt>
 				<dd>"<code>[</code>" specialized_object_sequence "<code>]</code>"</dd>
 		</dl>
-	
+
+	<h3 id="grammar_complemented_objects">Complemented objects</h3>
+		<dl>
+			<dt>complemented_objects ::=</dt>
+				<dd>object_identifier |</dd>
+				<dd>complemented_object_sequence |</dd>
+				<dd>complemented_object_list</dd>
+		</dl>
+		<dl>
+			<dt>complemented_object_sequence ::=</dt>
+				<dd>object_identifier |</dd>
+				<dd>object_identifier "<code>,</code>" complemented_object_sequence</dd>
+		</dl>
+		<dl>
+			<dt>complemented_object_list ::=</dt>
+				<dd>"<code>[</code>" complemented_object_sequence "<code>]</code>"</dd>
+		</dl>
+
 	<h3 id="grammar_scope">Entity scope</h3>
 		<dl>
 			<dt>scope ::=</dt>
@@ -313,7 +335,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 				<dd>"<code>protected</code>" |</dd>
 				<dd>"<code>private</code>"</dd>
 		</dl>
-	
+
 
 <h2 id="grammar_entity_identifiers">Entity identifiers</h2>
 
