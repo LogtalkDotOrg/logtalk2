@@ -25,7 +25,7 @@
 
 <pre>create_object(Identifier, Relations, Directives, Clauses)</pre>
 <p>
-Creates a new, dynamic, object.
+Creates a new, dynamic object. The word <a class="glossary" title="Go to glossary definition" href="../../glossary.html#object"><em>object</em></a> is used here as a generic term. This predicate can be used to create new prototypes, instances, and classes. This predicate is often used as a primitive to implement object creation methods. 
 </p>
 
 <h4>Template and modes</h4>
@@ -53,12 +53,22 @@ Creates a new, dynamic, object.
 
 <h4>Examples</h4>
 
-<pre>| ?- create_object(foo, [extends(bar)], [public(foo/1)], [foo(1), foo(2)]).</pre>
+<dl>
+	<dt>Creating a simple, stand-alone object (a prototype):</dt>
+		<dd><code>| ?- create_object(translator, [], [public(int/2)], [int(0, zero)]).</code></dd>
+	<dt>Creating a new prototype derived from a parent prototype:</dt>
+		<dd><code>| ?- create_object(mickey, [extends(mouse)], [public(alias/1)], [alias(mortimer)]).</code></dd>
+	<dt>Creating a new class instance:</dt>
+		<dd><code>| ?- create_object(p1, [instantiates(person)], [], [name('Paulo Moura'), age(42)]).</code></dd>
+	<dt>Creating a new class as a specialization of another class:</dt>
+		<dd><code>| ?- create_object(hovercraft, [specializes(vehicle)], [propeller/2, fan/2], []).</code></dd>
+</dl>
+
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: October 26, 2006</span>
+		<span>Last updated on: May 23, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="create_category4.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="create_protocol3.html">next</a></span><br/>
