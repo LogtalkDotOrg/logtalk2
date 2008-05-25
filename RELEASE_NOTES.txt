@@ -38,7 +38,7 @@ RELEASE NOTES
 	Logtalk entities).
 
 	Improved the "complements" example, moving the category initialization 
-	goal to the beggining of the example source file.
+	goal to the beginning of the example source file.
 
 	Added support for the Pygments syntax highlighter (co-developed with 
 	Clara Dimene).
