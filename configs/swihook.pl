@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.31.6
+%  Release 2.31.7
 %
 %  integration code for SWI Prolog 3.3.x and later versions to compile and
 %  load Logtalk files using SWI Prolog consult/1 and to support edit/1 and
