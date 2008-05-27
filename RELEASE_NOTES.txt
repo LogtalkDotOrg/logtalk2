@@ -10,6 +10,13 @@ RELEASE NOTES
 =============
 
 
+2.31.7 - June ??, 2008
+
+	Updated the syntax coloring support for the Vim text editor to properly 
+	highlight quoted atoms and strings in the opening directives of parametric
+	objects.
+
+
 2.31.6 - May 26, 2008
 
 	Fixed a Logtalk runtime bug when using the :/1 control construct to 
