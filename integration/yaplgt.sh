@@ -70,4 +70,4 @@ else
 fi
 echo
 
-exec yap -s 49152 -h 16384 -t 1024 -l "$LOGTALKHOME/integration/logtalk_yap.pl" "$@"
+exec yap -l "$LOGTALKHOME/integration/logtalk_yap.pl" "$@"

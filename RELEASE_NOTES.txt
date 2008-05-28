@@ -12,6 +12,10 @@ RELEASE NOTES
 
 2.31.7 - June ??, 2008
 
+	Removed from the YAP POSIX integration script the command-line options 
+	setting the initial stack, heap, and tail data area sizes. These settings
+	are no longer necessary for recent YAP versions.
+
 	Updated the syntax coloring support for the Vim text editor to properly 
 	highlight quoted atoms and strings in the opening directives of parametric
 	objects.
