@@ -130,7 +130,7 @@ Name: "{group}\Logtalk - XSB"; Filename: "C:\XSB\config\x86-pc-windows\bin\xsb.e
 
 Name: "{group}\Logtalk - XSB-MT"; Filename: "C:\XSB\config\i686-pc-cygwin-mt\bin\xsb.exe"; Parameters: "--shared_predicates -l -e ""['%LOGTALKUSER%\\configs\\xsb.config', '%LOGTALKHOME%\\compiler\\logtalk.pl', '%LOGTALKUSER%\\libpaths\\libpaths.pl']."""; Comment: "Runs Logtalk with XSB-MT"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\xsb; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - YAP"; Filename: "C:\Yap\bin\yap.exe"; Parameters: "-l ""$LOGTALKHOME/integration/logtalk_yap.pl"""; Comment: "Runs Logtalk with YAP"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\yap; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - YAP"; Filename: "{code:GetYAPExePath}"; Parameters: "-l ""$LOGTALKHOME/integration/logtalk_yap.pl"""; Comment: "Runs Logtalk with YAP"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\yap; Flags: createonlyiffileexists
 
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"; Components: base
 
@@ -326,6 +326,16 @@ var
 begin
   if RegQueryStringValue(HKLM, 'Software\SWI\Prolog\', 'home', Home) then
     Result := Home + '\bin\plwin.exe'
+  else
+	Result := 'lgt_exe_does_not_exist'
+end;
+
+function GetYAPExePath(Param: String): String;
+var
+  Home: String;
+begin
+  if RegQueryStringValue(HKLM, 'Software\YAP\Prolog\', 'home', Home) then
+    Result := Home + '\bin\yap.exe'
   else
 	Result := 'lgt_exe_does_not_exist'
 end;
