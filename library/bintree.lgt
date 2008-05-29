@@ -14,7 +14,7 @@
 	:- mode(map(+atom, +tree, -tree, -callable), zero_or_one).
 
 	as_dictionary(Pairs, Dictionary) :-
-		empty(Empty),
+		new(Empty),
 		insert_all(Pairs, Empty, Dictionary).
 
 	as_list(Tree, List) :-
