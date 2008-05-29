@@ -16,6 +16,9 @@ RELEASE NOTES
 	setting the initial stack, heap, and tail data area sizes. These settings
 	are no longer necessary for recent YAP versions.
 
+	Added missing implementation of the predicate as_dictionary/2 to the 
+	"bintree" library object. Thanks to Victor Noel for the bug report.
+
 	Updated the syntax coloring support for the Vim text editor to properly 
 	highlight quoted atoms and strings in the opening directives of parametric
 	objects.
@@ -31,7 +34,7 @@ RELEASE NOTES
 	directive within a category that extends other categories.
 
 	Fixed a Logtalk compiler bug when compiling a class that imports a  
-	category that extends other categories.  Thanks to Victor Noel for 
+	category that extends other categories. Thanks to Victor Noel for 
 	the bug report.
 
 	Small performance improvement to the caching of category predicates 

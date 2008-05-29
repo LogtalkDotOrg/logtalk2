@@ -4,14 +4,18 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2008/2/11,
+		date is 2008/5/29,
 		comment is 'Dictionary protocol implemented using binary trees.']).
 
 	:- private(map/4).
 	:- meta_predicate(map(*, *, *, ::)).
 	:- mode(map(+atom, +tree, -tree, -callable), zero_or_one).
+
+	as_dictionary(Pairs, Dictionary) :-
+		empty(Empty),
+		insert_all(Pairs, Empty, Dictionary).
 
 	as_list(Tree, List) :-
 		as_list(Tree, [], List).
