@@ -12,6 +12,9 @@ RELEASE NOTES
 
 2.31.7 - June ??, 2008
 
+	Added a new default compiler option, multifile_directive, to all config 
+	files. Possible values are "supported" and "unsupported".
+
 	Removed from the YAP POSIX integration script the command-line options 
 	setting the initial stack, heap, and tail data area sizes. These settings
 	are no longer necessary for recent YAP versions.
