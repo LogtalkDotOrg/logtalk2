@@ -1785,7 +1785,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 31, 6)).
+current_logtalk_flag(version, version(2, 31, 7)).
 
 
 
@@ -13406,13 +13406,14 @@ current_logtalk_flag(version, version(2, 31, 6)).
 	),
 	write(', hook: '), write(Hook),
 	'$lgt_default_flag'(tmpdir, TmpDir), write(', tmpdir: '), write(TmpDir), nl,
-	write('Read-only compilation flags:'),
+	write('Read-only compilation flags:'), nl,
 	'$lgt_default_flag'(break_predicate, Break), write('  break_predicate: '), write(Break),
-	'$lgt_default_flag'(startup_message, Startup), write(', startup_message: '), write(Startup), nl,
-	'$lgt_default_flag'(altdirs, Altdirs), write('  altdirs: '), write(Altdirs),
+	'$lgt_default_flag'(startup_message, Startup), write(', startup_message: '), write(Startup),
+	'$lgt_default_flag'(altdirs, Altdirs), write(', altdirs: '), write(Altdirs), nl,
 	'$lgt_default_flag'(context_switching_calls, ContextCalls), write('  context_switching_calls: '), write(ContextCalls),
-	'$lgt_default_flag'(encoding_directive, Encodings), write(', encoding_directive: '), write(Encodings),
-	 '$lgt_default_flag'(threads, Threads), write(', threads: '), write(Threads), nl, nl.
+	 '$lgt_default_flag'(threads, Threads), write(', threads: '), write(Threads), nl,
+	'$lgt_default_flag'(encoding_directive, Encodings), write('  encoding_directive: '), write(Encodings),
+	'$lgt_default_flag'(multifile_directive, Multifile), write(', multifile_directive: '), write(Multifile), nl, nl.
 
 '$lgt_default_flags'(verbose) :-
 	write('Default lint compilation flags:'), nl,
@@ -13471,6 +13472,8 @@ current_logtalk_flag(version, version(2, 31, 6)).
 	write('  Context-switching calls (context_switching_calls):          '), write(ContextCalls), nl,
 	'$lgt_default_flag'(encoding_directive, Encodings),
 	write('  Support for encoding/1 directive (encoding_directive):      '), write(Encodings), nl,
+	'$lgt_default_flag'(multifile_directive, Multifile),
+	write('  Support for multifile/1 directive (multifile_directive):    '), write(Multifile), nl,
 	'$lgt_default_flag'(threads, Threads),
 	write('  Multi-threading programming support (threads):              '), write(Threads), nl, nl.
 
