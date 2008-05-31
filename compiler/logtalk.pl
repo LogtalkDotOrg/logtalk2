@@ -63,19 +63,39 @@
 
 % tables of loaded entities and respective relationships
 
-:- dynamic('$lgt_current_protocol_'/3).			% '$lgt_current_protocol_'(Ptc, Prefix, Type)
-:- dynamic('$lgt_current_category_'/6).			% '$lgt_current_category_'(Ctg, Prefix, Dcl, Def, Type, Synchronized)
-:- dynamic('$lgt_current_object_'/8).			% '$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, Type, Synchronized, Threaded)
+:- multifile('$lgt_current_protocol_'/3).		% '$lgt_current_protocol_'(Ptc, Prefix, Type)
+:- dynamic('$lgt_current_protocol_'/3).
+
+:- multifile('$lgt_current_category_'/6).		% '$lgt_current_category_'(Ctg, Prefix, Dcl, Def, Type, Synchronized)
+:- dynamic('$lgt_current_category_'/6).
+
+:- multifile('$lgt_current_object_'/8).			% '$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, Type, Synchronized, Threaded)
+:- dynamic('$lgt_current_object_'/8).
+
                                             	
-:- dynamic('$lgt_implements_protocol_'/3).		% '$lgt_implements_protocol_'(ObjOrCtg, Ptc, Scope)
-:- dynamic('$lgt_imports_category_'/3).			% '$lgt_imports_category_'(Obj, Ctg, Scope)
-:- dynamic('$lgt_instantiates_class_'/3).		% '$lgt_instantiates_class_'(Instance, Class, Scope)
-:- dynamic('$lgt_specializes_class_'/3).		% '$lgt_specializes_class_'(Class, Superclass, Scope)
-:- dynamic('$lgt_extends_category_'/3).			% '$lgt_extends_category_'(Ctg1, Ctg2, Scope)
-:- dynamic('$lgt_extends_object_'/3).			% '$lgt_extends_object_'(Prototype, Parent, Scope)
-:- dynamic('$lgt_extends_protocol_'/3).			% '$lgt_extends_protocol_'(Ptc1, Ptc2, Scope)
+:- multifile('$lgt_implements_protocol_'/3).	% '$lgt_implements_protocol_'(ObjOrCtg, Ptc, Scope)
+:- dynamic('$lgt_implements_protocol_'/3).
+
+:- multifile('$lgt_imports_category_'/3).		% '$lgt_imports_category_'(Obj, Ctg, Scope)
+:- dynamic('$lgt_imports_category_'/3).
+
+:- multifile('$lgt_instantiates_class_'/3).		% '$lgt_instantiates_class_'(Instance, Class, Scope)
+:- dynamic('$lgt_instantiates_class_'/3).
+
+:- multifile('$lgt_specializes_class_'/3).		% '$lgt_specializes_class_'(Class, Superclass, Scope)
+:- dynamic('$lgt_specializes_class_'/3).
+
+:- multifile('$lgt_extends_category_'/3).		% '$lgt_extends_category_'(Ctg1, Ctg2, Scope)
+:- dynamic('$lgt_extends_category_'/3).
+
+:- multifile('$lgt_extends_object_'/3).			% '$lgt_extends_object_'(Prototype, Parent, Scope)
+:- dynamic('$lgt_extends_object_'/3).
+
+:- multifile('$lgt_extends_protocol_'/3).		% '$lgt_extends_protocol_'(Ptc1, Ptc2, Scope)
+:- dynamic('$lgt_extends_protocol_'/3).
                                             	
-:- dynamic('$lgt_complemented_object_'/4).		% '$lgt_complemented_object_'(Obj, Ctg, Dcl, Def)
+:- multifile('$lgt_complemented_object_'/4).	% '$lgt_complemented_object_'(Obj, Ctg, Dcl, Def)
+:- dynamic('$lgt_complemented_object_'/4).
 
 
 % table of loaded files
@@ -85,6 +105,7 @@
 
 % debugger status and tables
 
+:- multifile('$lgt_debugging_'/1).				% '$lgt_debugging_'(Entity)
 :- dynamic('$lgt_debugging_'/1).				% '$lgt_debugging_'(Entity)
                                             	
 :- dynamic('$lgt_dbg_debugging_'/0).			% '$lgt_dbg_debugging_'
@@ -230,6 +251,8 @@
 
 :- dynamic('$lgt_pp_file_encoding_'/2).			% '$lgt_pp_file_encoding_'(LogtalkEncoding, PrologEncoding)))
 :- dynamic('$lgt_pp_file_bom_'/1).				% '$lgt_pp_file_bom_'(BOM)))
+
+:- dynamic('$lgt_pp_file_rclause_'/1).			% '$lgt_pp_file_rclause_'(Clause)
 
 
 
@@ -4405,6 +4428,7 @@ current_logtalk_flag(version, version(2, 31, 7)).
 	catch(
 		('$lgt_write_directives'(Output),						% write out any Prolog code that may occur
 		 '$lgt_write_prolog_clauses'(Output),					% after the last entity on the source file;
+		 '$lgt_write_runtime_clauses'(Output),					% write entity runtime directives and clauses;
 		 '$lgt_write_init_call'(Output)),						% write initialization/1 directive at the
 		OutputError,											% end of the file to improve compatibility 
 		'$lgt_compiler_error_handler'(Output, OutputError)),	% with non-ISO compliant Prolog compilers
@@ -4687,7 +4711,24 @@ current_logtalk_flag(version, version(2, 31, 7)).
 	'$lgt_write_tr_entity'(Stream),
 	'$lgt_write_entity_doc'(Entity),
 	'$lgt_restore_file_op_table',
+	'$lgt_save_entity_rclauses',
 	'$lgt_clean_pp_entity_clauses'.
+
+
+
+% save entity runtime clauses for Prolog compilers supporting the multifile/1 predicate 
+% directive; these clauses are written at the end of the generated Prolog file, just 
+% before the source file initialization goal
+
+'$lgt_save_entity_rclauses' :-
+	(	'$lgt_compiler_flag'(multifile_directive, supported) ->
+		(	'$lgt_pp_rclause'(Clause),
+			assertz('$lgt_pp_file_rclause_'(Clause)),
+			fail
+		;	true
+		)
+	;	true
+	).
 
 
 
@@ -4701,7 +4742,8 @@ current_logtalk_flag(version, version(2, 31, 7)).
 	retractall('$lgt_pp_file_init_'(_)),	
 	retractall('$lgt_pp_entity_init_'(_, _, _)),
 	retractall('$lgt_pp_file_encoding_'(_, _)),
-	retractall('$lgt_pp_file_bom_'(_)).
+	retractall('$lgt_pp_file_bom_'(_)),
+	retractall('$lgt_pp_file_rclause_'(_)).
 
 
 
@@ -8724,8 +8766,9 @@ current_logtalk_flag(version, version(2, 31, 7)).
 '$lgt_unknown_object'(Obj) :-
 	'$lgt_pp_referenced_object_'(Obj),
 	\+ '$lgt_current_object_'(Obj, _, _, _, _, _, _, _),		% not a currently loaded object
-	\+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _),	% not the object being compiled (self references)
+	\+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _),	% not the object being compiled (self reference)
 	\+ '$lgt_pp_entity_init_'(object, Obj, _),					% not an object defined in the source file being compiled
+	\+ '$lgt_pp_file_rclause_'('$lgt_current_object_'(Obj, _, _, _, _, _, _, _)),
 	\+ catch(current_module(Obj), _, fail).						% not a currently loaded module; use catch/3 to avoid 
 																% errors with Prolog compilers with no module support
 
@@ -8750,8 +8793,9 @@ current_logtalk_flag(version, version(2, 31, 7)).
 '$lgt_unknown_protocol'(Ptc) :-
 	'$lgt_pp_referenced_protocol_'(Ptc),
 	\+ '$lgt_current_protocol_'(Ptc, _, _),			% not a currently loaded protocol
-	\+ '$lgt_pp_protocol_'(Ptc, _, _, _, _),		% not the protocol being compiled (self references)
-	\+ '$lgt_pp_entity_init_'(protocol, Ptc, _).	% not a protocol defined in the source file being compiled
+	\+ '$lgt_pp_protocol_'(Ptc, _, _, _, _),		% not the protocol being compiled (self reference)
+	\+ '$lgt_pp_entity_init_'(protocol, Ptc, _),	% not a protocol defined in the source file being compiled
+	\+ '$lgt_pp_file_rclause_'('$lgt_current_protocol_'(Ptc, _, _)).
 
 
 
@@ -8775,8 +8819,9 @@ current_logtalk_flag(version, version(2, 31, 7)).
 '$lgt_unknown_category'(Ctg) :-
 	'$lgt_pp_referenced_category_'(Ctg),
 	\+ '$lgt_current_category_'(Ctg, _, _, _, _, _),	% not a currently loaded category
-	\+ '$lgt_pp_category_'(Ctg, _, _, _, _, _),			% not the category being compiled (self references)
-	\+ '$lgt_pp_entity_init_'(category, Ctg, _).		% not a category defined in the source file being compiled
+	\+ '$lgt_pp_category_'(Ctg, _, _, _, _, _),			% not the category being compiled (self reference)
+	\+ '$lgt_pp_entity_init_'(category, Ctg, _),		% not a category defined in the source file being compiled
+	\+ '$lgt_pp_file_rclause_'('$lgt_current_category_'(Ctg, _, _, _, _, _)).
 
 
 
@@ -10399,11 +10444,51 @@ current_logtalk_flag(version, version(2, 31, 7)).
 
 
 
+% '$lgt_write_runtime_clauses'(@stream)
+%
+% writes the entity runtime multifile and dynamic directives and the entity 
+% runtime clauses for all defined entities for Prolog compilers supporting
+% the multifile/1 predicate directive
+
+'$lgt_write_runtime_clauses'(Stream) :-
+	(	'$lgt_compiler_flag'(multifile_directive, supported) ->
+		'$lgt_write_runtime_clauses'(Stream, '$lgt_current_protocol_'/3),
+		'$lgt_write_runtime_clauses'(Stream, '$lgt_current_category_'/6),
+		'$lgt_write_runtime_clauses'(Stream, '$lgt_current_object_'/8),
+		'$lgt_write_runtime_clauses'(Stream, '$lgt_implements_protocol_'/3),
+		'$lgt_write_runtime_clauses'(Stream, '$lgt_imports_category_'/3),
+		'$lgt_write_runtime_clauses'(Stream, '$lgt_instantiates_class_'/3),
+		'$lgt_write_runtime_clauses'(Stream, '$lgt_specializes_class_'/3),
+		'$lgt_write_runtime_clauses'(Stream, '$lgt_extends_category_'/3),
+		'$lgt_write_runtime_clauses'(Stream, '$lgt_extends_object_'/3),
+		'$lgt_write_runtime_clauses'(Stream, '$lgt_extends_protocol_'/3),
+		'$lgt_write_runtime_clauses'(Stream, '$lgt_complemented_object_'/4),
+		'$lgt_write_runtime_clauses'(Stream, '$lgt_debugging_'/1)
+	;	true
+	).
+
+
+'$lgt_write_runtime_clauses'(Stream, Functor/Arity) :-
+	functor(Clause, Functor, Arity),
+	(	\+ \+ '$lgt_pp_file_rclause_'(Clause) ->
+		write_canonical(Stream, (:- multifile(Functor/Arity))), write(Stream, '.'), nl(Stream),
+		write_canonical(Stream, (:- dynamic(Functor/Arity))), write(Stream, '.'), nl(Stream),
+		(	'$lgt_pp_file_rclause_'(Clause),
+			write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
+			fail
+		;	true
+		)
+	;	true
+	).
+
+
+
 % '$lgt_write_init_call'(@stream)
 %
-% writes the initialization call for the compiled source file that will assert 
-% the relation clauses for all defined entities and call any declared entity 
-% initialization goals when the source file is loaded
+% writes the initialization goal for the compiled source file, a conjunction
+% of the initialization goals of the defined entities; for Prolog compilers
+% that don't support the multifile/1 predicate directive, the initialization
+% goal also asserts the relation clauses for all defined entities
 
 '$lgt_write_init_call'(Stream) :-
 	'$lgt_init_goal'(Goal),
@@ -10448,8 +10533,11 @@ current_logtalk_flag(version, version(2, 31, 7)).
 
 '$lgt_gen_entity_init_goal' :-
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, Compilation),
-	findall(Clause, '$lgt_pp_rclause'(Clause), Clauses),
-	Goal1 = '$lgt_assert_runtime_clauses'(Entity, Clauses),
+	(	'$lgt_compiler_flag'(multifile_directive, supported) ->
+		Goal1 = true
+	;	findall(Clause, '$lgt_pp_rclause'(Clause), Clauses),
+		Goal1 = '$lgt_assert_runtime_clauses'(Entity, Clauses)
+	),
 	(	setof(Mutex, Head^'$lgt_pp_synchronized_'(Head, Mutex), Mutexes) ->
 		Goal2 = (Goal1, '$lgt_create_mutexes'(Mutexes))
 	;	Goal2 = Goal1
@@ -10466,7 +10554,10 @@ current_logtalk_flag(version, version(2, 31, 7)).
 		Goal = (Goal5, '$lgt_add_static_binding_cache_entry'(Entity))
 	;	Goal = Goal5  
 	),
-	assertz('$lgt_pp_entity_init_'(Type, Entity, Goal)).
+	(	Goal == true ->
+		true
+	;	assertz('$lgt_pp_entity_init_'(Type, Entity, Goal))
+	).
 
 
 

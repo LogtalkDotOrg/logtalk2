@@ -12,6 +12,13 @@ RELEASE NOTES
 
 2.31.7 - June ??, 2008
 
+	Updated the Logtalk compiler and runtime to use multifile predicates for 
+	the runtime tables of loaded entities and entities relations. This is 
+	necessary to generate sensible intermediate Prolog code for large files 
+	with tens of thousands of objects. The workaround of using the directive 
+	initialization/1 is still available (for now) for Prolog compilers that 
+	fail to support the thirteen years old ISO Prolog standard.
+
 	Added a new default compiler option, multifile_directive, to all config 
 	files. Possible values are "supported" and "unsupported".
 
