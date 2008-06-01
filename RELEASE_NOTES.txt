@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.31.7
+Release 2.32.0
 
 Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 ================================================================
@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.31.7 - June ??, 2008
+2.32.0 - June ??, 2008
 
 	Updated the Logtalk compiler and runtime to use multifile predicates for 
 	the runtime tables of loaded entities and entities relations. This is 
@@ -21,6 +21,9 @@ RELEASE NOTES
 
 	Added a new default compiler option, multifile_directive, to all config 
 	files. Possible values are "supported" and "unsupported".
+
+	Added instructions on how to patch the Logtalk compiler in order to use 
+	Quintus Prolog as the back-end compiler.
 
 	Removed from the YAP POSIX integration script the command-line options 
 	setting the initial stack, heap, and tail data area sizes. These settings

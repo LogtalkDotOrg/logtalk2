@@ -2,7 +2,7 @@
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
-## Release 2.31.7
+## Release 2.32.0
 ##
 ## Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 ## ================================================================
@@ -16,17 +16,17 @@ chmod a+x scripts/cleandist.sh
 scripts/cleandist.sh
 
 cd ..
-cp -R logtalk/manuals man2317
-tar -czf man2317.tgz man2317
-mv logtalk lgt2317
-tar -cjf lgt2317.tar.bz2 lgt2317
+cp -R logtalk/manuals man2320
+tar -czf man2320.tgz man2320
+mv logtalk lgt2320
+tar -cjf lgt2320.tar.bz2 lgt2320
 
 mkdir -p debian/usr/bin
 mkdir -p debian/usr/share/doc/logtalk
 mkdir -p debian/usr/share/doc-base
 mkdir -p debian/usr/share/menu
 mkdir -p debian/DEBIAN
-cd lgt2317/scripts
+cd lgt2320/scripts
 ./install.sh $dir/debian/usr
 cp debian/logtalk.doc-base $dir/debian/usr/share/doc-base/logtalk-docs
 cp debian/menu $dir/debian/usr/share/menu/logtalk
@@ -44,28 +44,28 @@ cp debian/postinst $dir/debian/DEBIAN
 cp debian/prerm $dir/debian/DEBIAN
 cp debian/postrm $dir/debian/DEBIAN
 cd $dir
-dpkg-deb --build debian logtalk_2.31.7-1_all.deb
+dpkg-deb --build debian logtalk_2.32.0-1_all.deb
 
-md5="`md5 -q lgt2317.tar.bz2`"
+md5="`md5 -q lgt2320.tar.bz2`"
 sudo mkdir -p /opt/local/var/macports/distfiles/logtalk
-sudo cp -f lgt2317.tar.bz2 /opt/local/var/macports/distfiles/logtalk/lgt2317.tar.bz2
+sudo cp -f lgt2320.tar.bz2 /opt/local/var/macports/distfiles/logtalk/lgt2320.tar.bz2
 cd /opt/local/var/macports/sources/rsync.macports.org/release/ports/lang/logtalk/
 sudo cp -f Portfile Portfile.old
-sudo sed -e 's/^version.*/version 2.31.7/' -i '' Portfile
+sudo sed -e 's/^version.*/version 2.32.0/' -i '' Portfile
 sudo sed -e "s/^checksums.*/checksums md5 $md5/" -i '' Portfile
 sudo port clean --archive logtalk
 sudo port destroot logtalk
 sudo port pkg logtalk
-cp -R work/logtalk-2.31.7.pkg $dir
+cp -R work/logtalk-2.32.0.pkg $dir
 sudo port clean logtalk
 
 cd $dir
-mkdir manpdf2317
-cd man2317/userman
+mkdir manpdf2320
+cd man2320/userman
 ./userman.sh
-mv userman.pdf ../../manpdf2317
+mv userman.pdf ../../manpdf2320
 cd ../refman
 ./refman.sh
-mv refman.pdf ../../manpdf2317
+mv refman.pdf ../../manpdf2320
 cd ../..
-tar -czf manpdf2317.tgz manpdf2317
+tar -czf manpdf2320.tgz manpdf2320
