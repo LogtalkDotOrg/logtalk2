@@ -55,7 +55,7 @@ Name: "prolog\cxprolog"; Description: "CxProlog integration (version 0.96.1 or l
 Name: "prolog\eclipse"; Description: "ECLiPSe integration (version 5.10#26 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\gprolog"; Description: "GNU Prolog integration (version 1.2.16 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\plc"; Description: "K-Prolog integration (version 5.1.x)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\quintus"; Description: "Quintus Prolog integration (version 3.5)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\quintus"; Description: "Quintus Prolog integration (version 3.5; implies patching Logtalk)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\sicstus"; Description: "SICStus Prolog integration (versions 3.12.x, 4.0.x)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\swi"; Description: "SWI-Prolog integration (version 5.6.43 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\xsb"; Description: "XSB integration (version 3.1 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
