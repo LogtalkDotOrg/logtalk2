@@ -6224,7 +6224,7 @@ current_logtalk_flag(version, version(2, 32, 0)).
 % '$lgt_tr_clause'(+clause, @stream)
 
 '$lgt_tr_clause'(Clause, _) :-
-	\+ '$lgt_pp_entity'(_, _, _, _, _),			% all clause occuring before an opening entity directive
+	\+ '$lgt_pp_entity'(_, _, _, _, _),			% all clauses occuring before an opening entity directive
 	!,
 	assertz('$lgt_pp_ppclause_'(Clause)).		% are copied unchanged to the generated Prolog file
 
