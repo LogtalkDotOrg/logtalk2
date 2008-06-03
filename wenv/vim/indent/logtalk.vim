@@ -1,5 +1,5 @@
 "  Maintainer:	Paulo Moura <pmoura@logtalk.org>
-"  Revised on:	2006.10.22
+"  Revised on:	2008.06.02
 "  Language:	Logtalk
 
 " This Logtalk indent file is a modified version of the Prolog
@@ -50,7 +50,7 @@ function! GetLogtalkIndent()
 		let ind = ind - &sw
 	endif
 	" Check for opening conditional on previous line
-	if pline =~ '^\s*\([(;]\|->\)'
+	if pline =~ '^\s*\([(;]\|->\)' && pline !~ '\.\s*\(%.*\)\?$'
 		let ind = ind + &sw
 	endif
 	" Check for closing an unclosed paren, or middle ; or ->

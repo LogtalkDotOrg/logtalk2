@@ -7,8 +7,8 @@ Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 
 
 This directory contains files that provides syntax highlighting, code 
-folding, and code completion for editing Logtalk source files with the 
-text editor Vim 7.0 or later version:
+folding, code completion, and auto-indentation for editing Logtalk 
+source files with the text editor Vim 7.0 or later version:
 
 	http://www.vim.org/
 

@@ -37,7 +37,9 @@ RELEASE NOTES
 
 	Updated the syntax coloring support for the Vim text editor to properly 
 	highlight quoted atoms and strings in the opening directive of parametric
-	objects.
+	objects. Fixed an auto-indentation bug when opening and closing a 
+	conditional block in a single line in the last goal a predicate clause 
+	body. Thanks to Victor Noel for the bug report.
 
 
 2.31.6 - May 26, 2008
