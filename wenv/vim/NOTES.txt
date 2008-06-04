@@ -37,4 +37,8 @@ You may then perform code completion by typing CTRL-X, CTRL-K and then
 CTRL-P or CTRL-N to cycle between all the completion choices.
 
 4. Copy the file "indent/logtalk.vim" to the "indent" sub-directory in 
-your VIM installation directory (replacing any existing older file).
+your VIM installation directory (replacing any existing older file) and 
+add the following lines to your ~/.vimrc file:
+
+	syntax on
+	filetype indent on

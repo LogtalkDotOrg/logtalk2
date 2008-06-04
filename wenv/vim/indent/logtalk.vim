@@ -50,7 +50,7 @@ function! GetLogtalkIndent()
 		let ind = ind - &sw
 	endif
 	" Check for opening conditional on previous line
-	if pline =~ '^\s*\([(;]\|->\)' && pline !~ '\.\s*\(%.*\)\?$'
+	if pline =~ '^\s*\([(;]\|->\)' && pline !~ '\.\s*\(%.*\)\?$' && pline !~ '^.*\([)][,]\s*\(%.*\)\?$\)'
 		let ind = ind + &sw
 	endif
 	" Check for closing an unclosed paren, or middle ; or ->
