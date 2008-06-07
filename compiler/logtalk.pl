@@ -293,6 +293,18 @@ Obj<<Pred :-
 %
 % top-level runtime error handler
 
+'$lgt_runtime_error_handler'(Variable) :-
+	var(Variable),
+	throw(error(instantiation_error, throw(_))).
+
+'$lgt_runtime_error_handler'(error(Variable)) :-
+	var(Variable),
+	throw(error(instantiation_error, throw(_))).
+
+'$lgt_runtime_error_handler'(error(Variable, Sender)) :-
+	var(Variable),
+	throw(error(instantiation_error, throw(_), Sender)).
+
 '$lgt_runtime_error_handler'(error(existence_error(goal_thread, '$lgt_send_to_object_ne_nv'(Self, Goal, Sender)), _)) :-
 	(	Self == user ->
 		throw(error(existence_error(goal_thread, Goal), Sender))
@@ -380,6 +392,10 @@ Obj<<Pred :-
 	nl, write('    Debugging session aborted by user. Debugger still on.'), nl,
 	!,
 	fail.
+
+'$lgt_runtime_error_handler'(error(Variable, _, Sender)) :-
+	var(Variable),
+	throw(error(instantiation_error, throw(_), Sender)).
 
 '$lgt_runtime_error_handler'(error(Error, user::Goal, user)) :-
 	throw(error(Error, Goal)).
@@ -7491,9 +7507,9 @@ current_logtalk_flag(version, version(2, 32, 0)).
 	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs).
 
 
-'$lgt_tr_meta_arg'(*, Arg, _, Arg, Arg).
+'$lgt_tr_meta_arg'((*), Arg, _, Arg, Arg).
 
-'$lgt_tr_meta_arg'(::, Arg, Ctx, TArg, DArg) :-
+'$lgt_tr_meta_arg'((::), Arg, Ctx, TArg, DArg) :-
 	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
 
 

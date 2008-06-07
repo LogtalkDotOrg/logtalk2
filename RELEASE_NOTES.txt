@@ -19,6 +19,9 @@ RELEASE NOTES
 	initialization/1 is still available (for now) for Prolog compilers that 
 	fail to support the thirteen years old ISO Prolog standard.
 
+	Updated the Logtalk runtime error handler to test for non-instantiated 
+	exception terms. Thanks to Joerg Schuster for the bug report.
+
 	Added a new default compiler option, multifile_directive, to all config 
 	files. Possible values are "supported" and "unsupported".
 
