@@ -10567,12 +10567,13 @@ current_logtalk_flag(version, version(2, 32, 0)).
 	;	Goal5 = Goal3
 	),
 	(	Type \== protocol, Compilation == static, '$lgt_compiler_flag'(reload, skip) ->
-		Goal = (Goal5, '$lgt_add_static_binding_cache_entry'(Entity))
-	;	Goal = Goal5  
+		Goal6 = (Goal5, '$lgt_add_static_binding_cache_entry'(Entity))
+	;	Goal6 = Goal5  
 	),
-	(	Goal == true ->
+	(	Goal6 == true ->
 		true
-	;	assertz('$lgt_pp_entity_init_'(Type, Entity, Goal))
+	;	'$lgt_simplify_body'(Goal6, Goal),
+		assertz('$lgt_pp_entity_init_'(Type, Entity, Goal))
 	).
 
 
