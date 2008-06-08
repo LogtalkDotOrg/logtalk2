@@ -22,6 +22,10 @@ RELEASE NOTES
 	Updated the Logtalk runtime error handler to test for non-instantiated 
 	exception terms. Thanks to Joerg Schuster for the bug report.
 
+	Corrected a bug in the implementation of the built-in meta-predicate 
+	threaded/1 when canceling individual threads when one of them terminates 
+	with an exception or a failure.
+
 	Added a new default compiler option, multifile_directive, to all config 
 	files. Possible values are "supported" and "unsupported".
 
