@@ -25,13 +25,13 @@ Remarks:
 
 
 :- object(salt(_Acumulator, _Measure1, _Measure2),
-	instantiates(state_space)).
+	instantiates(heuristic_state_space)).
 
 	:- info([
 		version is 1.1,
 		author is 'Paula Marisa Sampaio',
 		date is 2008/6/9,
-		comment is 'Salt state-space search problem.']).
+		comment is 'Salt state-space search problem (updated from the original 1.0 version to support heuristics).']).
 
 	% each state is represented by a compound term with four arguments: (Acumulator, Measure1, Measure2, Step)
 	initial_state(initial, (0, 0, 0, all_empty)).
@@ -43,26 +43,26 @@ Remarks:
 	% state transitions:
 
 	% emptying a measure into the accumulator
-	next_state((Acc, X, Y, _), (NewAcc, 0, Y, transfer(m1, acc))) :-
+	next_state((Acc, X, Y, _), (NewAcc, 0, Y, transfer(m1, acc)), 1) :-
 		X > 0,
 		NewAcc is Acc + X.
-	next_state((Acc, X, Y, _), (NewAcc, X, 0, transfer(m2, acc))) :-
+	next_state((Acc, X, Y, _), (NewAcc, X, 0, transfer(m2, acc)), 1) :-
 		Y > 0,
 		NewAcc is Acc + Y.
 
 	% filling up of one of the measures
-	next_state((Acc, X, Y, Step), (Acc, MaxX, Y, fill(m1))) :-
+	next_state((Acc, X, Y, Step), (Acc, MaxX, Y, fill(m1)), 1) :-
 		parameter(2, MaxX),
 		X < MaxX,
 		Step \= empty(m1).
-	next_state((Acc, X, Y, Step), (Acc, X, MaxY, fill(m2))) :-
+	next_state((Acc, X, Y, Step), (Acc, X, MaxY, fill(m2)), 1) :-
 		parameter(3, MaxY),
 		Y < MaxY,
 		Step \= empty(m2).
 
 	% either pouring of a measure into the other till it is filled up
 	% or all content of a measure into the other one
-	next_state((Acc, X, Y, _), (Acc, W, Z, transfer(m2, m1))) :-
+	next_state((Acc, X, Y, _), (Acc, W, Z, transfer(m2, m1)), 1) :-
 		parameter(2, MaxX),
 		Y > 0,
 		X < MaxX,
@@ -73,7 +73,7 @@ Remarks:
 			W is X + Y,
 			Z = 0
 		 ).
-	next_state((Acc, X, Y, _), (Acc, W, Z, transfer(m1, m2))) :-
+	next_state((Acc, X, Y, _), (Acc, W, Z, transfer(m1, m2)), 1) :-
 		parameter(3, MaxY),
 		X > 0,
 		Y < MaxY,
@@ -86,12 +86,49 @@ Remarks:
 		 ).
 
 	% throwing out the contents of a measure; does not afect the accumulator
- 	next_state((Acc, X, Y, Step), (Acc, 0, Y, empty(m1))) :-
+ 	next_state((Acc, X, Y, Step), (Acc, 0, Y, empty(m1)), 1) :-
 		X > 0,
 		Step \= fill(m1).
- 	next_state((Acc, X, Y, Step), (Acc, X, 0, empty(m2))) :-
+ 	next_state((Acc, X, Y, Step), (Acc, X, 0, empty(m2)), 1) :-
 		Y > 0,
 		Step \= fill(m2).
+
+	heuristic((Acc, Acc, _, _), 0.1) :-
+		parameter(1, Acc),
+		!.
+	heuristic((Acc, _, Acc, _), 0.1) :-
+		parameter(1, Acc),
+		!.
+	heuristic((Acc, X, Y, _), 0.2) :-
+		parameter(1, Acc),
+		Acc is abs(X - Y),
+		!.
+	heuristic((Acc, X, _, _), 0.3) :-
+		parameter(1, Acc),
+		(	X mod Acc =:= 0 ->
+			Cost is X // Acc
+		;	Acc mod X =:= 0 ->
+			Cost is Acc // X
+		),
+		!.
+	heuristic((Acc, _, Y, _), 0.3) :-
+		parameter(1, Acc),
+		(	Y mod Acc =:= 0 ->
+			Cost is Y // Acc
+		;	Acc mod Y =:= 0 ->
+			Cost is Acc // Y
+		),
+		!.
+	heuristic((Acc, X, Y, _), 0.4) :-
+		parameter(1, Acc),
+		Diff is abs(X - Y),
+		(	Diff mod Acc =:= 0 ->
+			Cost is Diff // Acc
+		;	Acc mod Diff =:= 0 ->
+			Cost is Acc // Diff
+		),
+		!.
+	heuristic((_, _, _, _), 0.5).
 
 	member_path((Acc, X, Y, _), [(Acc, X, Y, _)| _]) :-
 		!.

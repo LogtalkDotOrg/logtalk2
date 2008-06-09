@@ -24,7 +24,7 @@ RELEASE NOTES
 
 	Corrected two bugs in the implementation of the built-in meta-predicate 
 	threaded/1 when canceling individual threads. The first bug resulted from 
-	out-of-order thread status messages. The second bug resultd from a leak 
+	out-of-order thread status messages. The second bug resulted from a leak 
 	of thread results between calls to the threaded/1 predicate.
 
 	Added a new default compiler option, multifile_directive, to all config 
@@ -46,7 +46,8 @@ RELEASE NOTES
 	Updated all the search methods in the "searching" example to delegate 
 	checking for cycles to the state space being searched (thus allowing 
 	state descriptions to carry additional information that should not be 
-	taken into account when comparing states).
+	taken into account when comparing states). Updated the "salt" example 
+	to support heuristics.
 
 	Updated the syntax coloring support for the Vim text editor to properly 
 	highlight quoted atoms and strings in the opening directive of parametric
