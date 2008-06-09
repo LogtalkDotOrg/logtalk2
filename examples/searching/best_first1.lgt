@@ -4,9 +4,9 @@
 
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2005/10/22,
+		date is 2008/6/9,
 		comment is 'Best first heuristic state space search strategy.',
 		source is 'Example adopted from the book "Prolog Programming for Artificial Intelligence" by Ivan Bratko.',
 		parnames is ['Threshold']]).
@@ -33,7 +33,7 @@
 	expand(Path, l(State,F/G), Threshold, Tree, Solved, Solution, Space, Cost) :-
 		F =< Threshold,
 		(bagof(Next/Cost2,
-			(Space::next_state(State, Next, Cost2), \+ member(Next, Path)),
+			(Space::next_state(State, Next, Cost2), \+ Space::member_path(Next, Path)),
 			Successors) ->
 				succlist(G, Successors, Trees, Threshold, Space),
 				bestf(Trees, F2, Threshold),

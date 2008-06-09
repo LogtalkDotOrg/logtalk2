@@ -27,55 +27,41 @@ Remarks:
 :- object(salt(_Acumulator, _Measure1, _Measure2),
 	instantiates(state_space)).
 
-
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paula Marisa Sampaio',
-		date is 2005/06/08,
+		date is 2008/6/9,
 		comment is 'Salt state-space search problem.']).
 
-
 	% each state is represented by a compound term with four arguments: (Acumulator, Measure1, Measure2, Step)
-
 	initial_state(initial, (0, 0, 0, all_empty)).
 
-
 	% the intended salt quantity must end up on the acumulator
-
 	goal_state(acumulator, (Acumulator, _, _, _)) :-
 		parameter(1, Acumulator).
 
-
 	% state transitions:
 
-
 	% emptying a measure into the accumulator
-
 	next_state((Acc, X, Y, _), (NewAcc, 0, Y, transfer(m1, acc))) :-
 		X > 0,
 		NewAcc is Acc + X.
-
 	next_state((Acc, X, Y, _), (NewAcc, X, 0, transfer(m2, acc))) :-
 		Y > 0,
 		NewAcc is Acc + Y.
-		
 
 	% filling up of one of the measures
-
 	next_state((Acc, X, Y, Step), (Acc, MaxX, Y, fill(m1))) :-
 		parameter(2, MaxX),
 		X < MaxX,
 		Step \= empty(m1).
-
 	next_state((Acc, X, Y, Step), (Acc, X, MaxY, fill(m2))) :-
 		parameter(3, MaxY),
 		Y < MaxY,
 		Step \= empty(m2).
 
-
 	% either pouring of a measure into the other till it is filled up
 	% or all content of a measure into the other one
-
 	next_state((Acc, X, Y, _), (Acc, W, Z, transfer(m2, m1))) :-
 		parameter(2, MaxX),
 		Y > 0,
@@ -87,7 +73,6 @@ Remarks:
 			W is X + Y,
 			Z = 0
 		 ).
-
 	next_state((Acc, X, Y, _), (Acc, W, Z, transfer(m1, m2))) :-
 		parameter(3, MaxY),
 		X > 0,
@@ -100,20 +85,20 @@ Remarks:
 			Z is X + Y
 		 ).
 
-
 	% throwing out the contents of a measure; does not afect the accumulator
- 
-	next_state((Acc, X, Y, Step), (Acc, 0, Y, empty(m1))) :-
+ 	next_state((Acc, X, Y, Step), (Acc, 0, Y, empty(m1))) :-
 		X > 0,
 		Step \= fill(m1).
- 
-	next_state((Acc, X, Y, Step), (Acc, X, 0, empty(m2))) :-
+ 	next_state((Acc, X, Y, Step), (Acc, X, 0, empty(m2))) :-
 		Y > 0,
 		Step \= fill(m2).
 
+	member_path((Acc, X, Y, _), [(Acc, X, Y, _)| _]) :-
+		!.
+	member_path(State, [_| Path]) :-
+		member_path(State, Path).
 
 	print_state((Acc, X, Y, Step)) :-
 		write('('), write((Acc, X, Y)), write(')	'), write(Step), nl.
-
 
 :- end_object.

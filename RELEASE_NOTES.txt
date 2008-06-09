@@ -43,6 +43,11 @@ RELEASE NOTES
 	Added missing implementation of the predicate as_dictionary/2 to the 
 	"bintree" library object. Thanks to Victor Noel for the bug report.
 
+	Updated all the search methods in the "searching" example to delegate 
+	checking for cycles to the state space being searched (thus allowing 
+	state descriptions to carry additional information that should not be 
+	taken into account when comparing states).
+
 	Updated the syntax coloring support for the Vim text editor to properly 
 	highlight quoted atoms and strings in the opening directive of parametric
 	objects. Fixed an auto-indentation bug when opening and closing a 

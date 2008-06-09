@@ -5,9 +5,9 @@
 
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 1998/3/23,
+		date is 2008/6/9,
 		comment is 'State space description predicates.']).
 
 
@@ -41,6 +41,12 @@
 		[comment is 'Named goal state.',
 		 argnames is ['Name', 'State']]).
 
+	:- public(member_path/2).
+	:- mode(member_path(+nonvar, +list), zero_or_one).
+	:- info(member_path/2,
+		[comment is 'True if a state is member of a list of states.',
+		 argnames is ['State', 'Path']]).
+
 	:- public(print_state/1).
 	:- mode(print_state(+nonvar), one).
 	:- info(print_state/1,
@@ -64,6 +70,12 @@
 
 	print_state(State) :-
 		writeq(State), nl.
+
+
+	member_path(State, [State| _]) :-
+		!.
+	member_path(State, [_| Path]) :-
+		member_path(State, Path).
 
 
 	print_path([]).

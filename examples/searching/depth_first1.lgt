@@ -4,9 +4,9 @@
 
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2005/10/22,
+		date is 2008/6/9,
 		comment is 'Depth first state space search strategy.',
 		parnames is ['Bound']]).
 
@@ -25,7 +25,7 @@
 	depth(Space, State, Bound, Path, Solution) :-
 		Bound > 0,
 		Space::next_state(State, Next),
-		\+ member(Next, [State| Path]),
+		\+ Space::member_path(Next, [State| Path]),
 		Bound2 is Bound - 1,
 		depth(Space, Next, Bound2, [State| Path], Solution).
 

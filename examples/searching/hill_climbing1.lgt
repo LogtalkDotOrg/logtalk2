@@ -4,17 +4,14 @@
 
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2004/8/15,
+		date is 2008/6/9,
 		comment is 'Hill climbing heuristic state space search strategy.',
 		parnames is ['Threshold']]).
 
 
-	:- uses(list,
-		[member/2, reverse/2, sort/2]).
-
-	:- private(hill/7).
+	:- uses(list, [member/2, reverse/2, sort/2]).
 
 
 	search(Space, State, Threshold, Solution, Cost) :-
@@ -29,7 +26,7 @@
 		findall(
 			(Estimate, Cost, Next),
 			(Space::next_state(State, Next, Cost),
-             \+ member(Next, [State| Path]),
+             \+ Space::member_path(Next, [State| Path]),
              Space::heuristic(Next, Guess),
              Estimate is Guess + Cost),
 			States),
