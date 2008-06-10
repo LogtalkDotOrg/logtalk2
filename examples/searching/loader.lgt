@@ -5,12 +5,12 @@
 	logtalk_load([
 		state_space,
 		water_jug,
-		salt3,
 		farmer,
 		heuristic_state_space,
 		bridge,
 		eight_puzzle,
 		miss_cann,
+		salt3,
 		search_strategy,
 		blind_search1,
 		breadth_first1,
