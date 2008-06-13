@@ -8,6 +8,8 @@
 		comment is 'Multi-threading benchmarks.',
 		parameters is ['Prolog'- 'Prolog backend compiler. Supported compilers are SWI-Prolog (swi), YAP (yap), and XSB (xsb).']]).
 
+	:- threaded.
+
 	:- uses(integer, [between/3]).
 
 	:- public(run/0).
@@ -173,7 +175,6 @@
 					)), nl
 			)), nl.
 
-
 	% integration benchmarks:
 	run(integration, N) :-
 		write('Numerical integration using recursive calls to threaded/1 (average of '), write(N), write(' runs)'), nl,
@@ -233,6 +234,45 @@
 						;	true
 						)
 					)), nl
+			)), nl.
+
+	% state-space search benchmarks:
+	run(search, N) :-
+		write('State-space search benchmarks (average of '), write(N), write(' runs)'), nl,
+		loop::forto(Liters, 1, 14,
+			(	put_char('\t'), write(Liters)
+			)), nl,
+		write('DF'), put_char('\t'),
+		loop::forto(Liters, 1, 14,
+			(	catch(run(depth_first(Liters, 5, 9, 14), N, Average), Error, write_error) ->
+				(	var(Error) ->
+					write_average(Average)
+				;	true
+				)
+			)), nl,
+		write('HF'), put_char('\t'),
+		loop::forto(Liters, 1, 14,
+			(	catch(run(hill_climbing(Liters, 5, 9, 14), N, Average), Error, write_error) ->
+				(	var(Error) ->
+					write_average(Average)
+				;	true
+				)
+			)), nl,
+		write('BF'), put_char('\t'),
+		loop::forto(Liters, 1, 14,
+			(	catch(run(breadth_first(Liters, 5, 9, 14), N, Average), Error, write_error) ->
+				(	var(Error) ->
+					write_average(Average)
+				;	true
+				)
+			)), nl,
+		write('COP'), put_char('\t'),
+		loop::forto(Liters, 1, 14,
+			(	catch(run(competitive(Liters, 5, 9, 14), N, Average), Error, write_error) ->
+				(	var(Error) ->
+					write_average(Average)
+				;	true
+				)
 			)), nl.
 
 	run(Id, N, Average) :-
@@ -307,6 +347,42 @@
 			quadsplit(Threads)::integrate(Function, Inf, Sup, 4, Epsilon, _),
 		fail.
 	do_benchmark(quadsplit(_, _, _, _, _), _).
+
+	do_benchmark(depth_first(Liters, Jug1, Jug2, MaxDepth), N) :-
+		Obj = salt(Liters, Jug1, Jug2),
+		Obj::initial_state(Initial),
+		repeat(N),
+			once(depth_first(MaxDepth)::solve(Obj, Initial, _)),
+		fail.
+	do_benchmark(depth_first(_, _, _, _), _).
+
+	do_benchmark(hill_climbing(Liters, Jug1, Jug2, MaxDepth), N) :-
+		Obj = salt(Liters, Jug1, Jug2),
+		Obj::initial_state(Initial),
+		repeat(N),
+			once(hill_climbing(MaxDepth)::solve(Obj, Initial, _, _)),
+		fail.
+	do_benchmark(hill_climbing(_, _, _, _), _).
+
+	do_benchmark(breadth_first(Liters, Jug1, Jug2, MaxDepth), N) :-
+		Obj = salt(Liters, Jug1, Jug2),
+		Obj::initial_state(Initial),
+		repeat(N),
+			once(breadth_first(MaxDepth)::solve(Obj, Initial, _)),
+		fail.
+	do_benchmark(breadth_first(_, _, _, _), _).
+
+	do_benchmark(competitive(Liters, Jug1, Jug2, MaxDepth), N) :-
+		Obj = salt(Liters, Jug1, Jug2),
+		Obj::initial_state(Initial),
+		repeat(N),
+			threaded((
+					depth_first(MaxDepth)::solve(Obj, Initial, _)
+				;	hill_climbing(MaxDepth)::solve(Obj, Initial, _, _)
+				;	breadth_first(MaxDepth)::solve(Obj, Initial, _)
+			)),
+		fail.
+	do_benchmark(competitive(_, _, _, _), _).
 
 	walltime_begin(Walltime) :-
 		parameter(1, Prolog),

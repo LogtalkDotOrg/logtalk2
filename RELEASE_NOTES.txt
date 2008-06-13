@@ -49,6 +49,10 @@ RELEASE NOTES
 	taken into account when comparing states). Updated the "salt" example 
 	to support heuristics.
 
+	Updated the "mtbatch" example to include a benchmark test for competitive 
+	or-parallelism applied to state-space search (using the resources from the
+	"searching" example). Improved the example documentation.
+
 	Updated the syntax coloring support for the Vim text editor to properly 
 	highlight quoted atoms and strings in the opening directive of parametric
 	objects. Fixed an auto-indentation bug when opening and closing a 
