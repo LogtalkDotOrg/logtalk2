@@ -31,12 +31,12 @@ For example:
 
 The following tests are available:
 
-	primes
-	msort
-	qsort
-	fib
-	hanoi
-	tak
-	fft
-	integration
-	search
+	primes			(independent and-parallelism)
+	msort			(independent and-parallelism)
+	qsort			(independent and-parallelism)
+	fib				(independent and-parallelism)
+	hanoi			(independent and-parallelism)
+	tak				(independent and-parallelism)
+	fft				(independent and-parallelism)
+	integration		(independent and-parallelism)
+	search			(competitive or-parallelism)

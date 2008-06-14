@@ -377,9 +377,9 @@
 		Obj::initial_state(Initial),
 		repeat(N),
 			threaded((
-					depth_first(MaxDepth)::solve(Obj, Initial, _)
-				;	hill_climbing(MaxDepth)::solve(Obj, Initial, _, _)
-				;	breadth_first(MaxDepth)::solve(Obj, Initial, _)
+					catch(depth_first(MaxDepth)::solve(Obj, Initial, _), _, fail)
+				;	catch(hill_climbing(MaxDepth)::solve(Obj, Initial, _, _), _, fail)
+				;	catch(breadth_first(MaxDepth)::solve(Obj, Initial, _), _, fail)
 			)),
 		fail.
 	do_benchmark(competitive(_, _, _, _), _).
