@@ -25,7 +25,9 @@ RELEASE NOTES
 	Corrected two bugs in the implementation of the built-in meta-predicate 
 	threaded/1 when canceling individual threads. The first bug resulted from 
 	out-of-order thread status messages. The second bug resulted from a leak 
-	of thread results between calls to the threaded/1 predicate.
+	of thread results between calls to the threaded/1 predicate. Changed the 
+	thread cancellation process to not automatically releasing any locks, 
+	leaving that task to a catcher associated to the thread goal.
 
 	Added a new default compiler option, multifile_directive, to all config 
 	files. Possible values are "supported" and "unsupported".

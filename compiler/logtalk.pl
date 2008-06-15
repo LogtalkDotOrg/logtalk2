@@ -13373,7 +13373,7 @@ current_logtalk_flag(version, version(2, 32, 0)).
 '$lgt_mt_threaded_call_abort'([Id| Ids]) :-
 	(	catch(thread_peek_message(Id, '$lgt_master'), _, fail) ->
 		catch(thread_send_message(Id, '$lgt_status'(_, terminate)), _, true)
-	;	catch(thread_signal(Id, '$lgt_mt_thread_abort'), _, true)
+	;	catch(thread_signal(Id, throw('$lgt_terminated')), _, true)
 	),
 	'$lgt_mt_threaded_call_abort'(Ids).
 
@@ -13392,11 +13392,6 @@ current_logtalk_flag(version, version(2, 32, 0)).
 	),
 	catch(thread_join(Id, _), _, true),
 	'$lgt_mt_threaded_call_join'(Ids, Results).
-
-
-'$lgt_mt_thread_abort' :-
-	mutex_unlock_all,
-	throw('$lgt_terminated').
 
 
 

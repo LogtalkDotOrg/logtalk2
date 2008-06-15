@@ -2,9 +2,9 @@
 :- object(mtbatch(_Prolog)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2008/03/04,
+		date is 2008/06/14,
 		comment is 'Multi-threading benchmarks.',
 		parameters is ['Prolog'- 'Prolog backend compiler. Supported compilers are SWI-Prolog (swi), YAP (yap), and XSB (xsb).']]).
 
