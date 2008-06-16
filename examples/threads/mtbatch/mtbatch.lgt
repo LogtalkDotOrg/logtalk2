@@ -152,7 +152,7 @@
 					write_average(Average)
 				;	true
 				)
-			)), nl.
+			)), nl, nl.
 
 	% fast Fourier transform benchmarks:
 	run(fft, N) :-
