@@ -88,6 +88,7 @@ rm -f yaplgt
 %doc /usr/local/share/lgt2320/README.txt
 %doc /usr/local/share/lgt2320/RELEASE_NOTES.txt
 %doc /usr/local/share/lgt2320/UPGRADING.txt
+/usr/local/share/lgt2320/VERSION.txt
 /usr/local/share/lgt2320/compiler
 /usr/local/share/lgt2320/configs
 /usr/local/share/lgt2320/contributions

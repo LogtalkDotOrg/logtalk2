@@ -62,6 +62,9 @@ RELEASE NOTES
 	block in a single line in the last goal a predicate clause body. Thanks 
 	to Victor Noel for the bug report.
 
+	Corrected missing installation of the "VERSION.txt" file when building 
+	Linux RPMs.
+
 
 2.31.6 - May 26, 2008
 
