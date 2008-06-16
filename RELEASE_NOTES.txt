@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.32.0 - June ??, 2008
+2.32.0 - June 16, 2008
 
 	Updated the Logtalk compiler and runtime to use multifile predicates for 
 	the runtime tables of loaded entities and entities relations. This is 
@@ -55,11 +55,12 @@ RELEASE NOTES
 	or-parallelism applied to state-space search (using the resources from the
 	"searching" example). Improved the example documentation.
 
-	Updated the syntax coloring support for the Vim text editor to properly 
-	highlight quoted atoms and strings in the opening directive of parametric
-	objects. Fixed an auto-indentation bug when opening and closing a 
-	conditional block in a single line in the last goal a predicate clause 
-	body. Thanks to Victor Noel for the bug report.
+	Added a filetype plugin for the Vim text editor. Updated the installation 
+	instructions. Updated the syntax coloring support to properly highlight 
+	quoted atoms and strings in the opening directive of parametric objects. 
+	Fixed an auto-indentation bug when opening and closing a conditional 
+	block in a single line in the last goal a predicate clause body. Thanks 
+	to Victor Noel for the bug report.
 
 
 2.31.6 - May 26, 2008
