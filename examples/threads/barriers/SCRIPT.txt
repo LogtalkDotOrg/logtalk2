@@ -17,6 +17,7 @@ Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 | ?- beatles::sing_along.
 
 hello(1)hello(4)hello(2)hello(3)
+Enough of hellos! Time for goodbyes!
 goodbye(2)goodbye(1)goodbye(3)goodbye(4)
 
 Yes
