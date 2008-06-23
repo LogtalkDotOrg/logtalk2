@@ -10,6 +10,13 @@ RELEASE NOTES
 =============
 
 
+2.32.1 - July ??, 2008
+
+	Updated the SWI-Prolog config file notes about possible compatibility 
+	issues with the default setting of the proprietary "iso" Prolog flag 
+	to "true".
+
+
 2.32.0 - June 16, 2008
 
 	Updated the Logtalk compiler and runtime to use multifile predicates for 
