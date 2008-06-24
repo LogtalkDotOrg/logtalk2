@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.32.0
+%  Release 2.32.1
 %
 %  Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 %
@@ -1824,7 +1824,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 32, 0)).
+current_logtalk_flag(version, version(2, 32, 1)).
 
 
 
