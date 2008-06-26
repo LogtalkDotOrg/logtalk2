@@ -12,6 +12,18 @@ RELEASE NOTES
 
 2.32.1 - July ??, 2008
 
+	Restored the redefined entity warnings for back-end Prolog compilers 
+	that support multifile predicates. Simplified updating of the runtime 
+	tables when compiling and loading with back-end Prolog compilers that 
+	don't support multifile predicates.
+
+	When loading a redefined object, also clean all entries in the event 
+	handlers table where the object plays the role of a monitor.
+
+	Modified the Logtalk runtime to clean all lookup caches when compiling 
+	and loading source files (instead of doing it only when the files 
+	redefine existing entities).
+
 	Updated the SWI-Prolog config file notes about possible compatibility 
 	issues with the default setting of the proprietary "iso" Prolog flag 
 	to "true".
