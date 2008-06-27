@@ -17,6 +17,11 @@ RELEASE NOTES
 	tables when compiling and loading with back-end Prolog compilers that 
 	don't support multifile predicates.
 
+	Changed the representation of the runtime tables for loaded entities 
+	in order to drop the need of a "functors clause" per entity. This avoids 
+	redundancy on the representation of entity functors and helps reducing 
+	the size of the generated Prolog files.
+
 	When loading a redefined object, also clean all entries in the event 
 	handlers table where the object plays the role of a monitor.
 
