@@ -262,7 +262,7 @@ function GetCxExePath(Param: String): String;
 var
   CxDir: String;
 begin
-  if RegQueryStringValue(HKLM, 'Software\CxProlog\', 'CXPROLOGDIR', CxDir) then
+  if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'CXPROLOG_DIR', CxDir) then
     Result := CxDir + '\cxprolog.exe'
   else
 	Result := 'lgt_exe_does_not_exist'
