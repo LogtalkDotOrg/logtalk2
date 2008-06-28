@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.32.1 - July ??, 2008
+2.32.1 - July 30, 2008
 
 	Restored the redefined entity warnings for back-end Prolog compilers 
 	that support multifile predicates. Simplified updating of the runtime 
@@ -19,8 +19,8 @@ RELEASE NOTES
 
 	Changed the representation of the runtime tables for loaded entities 
 	in order to drop the need of a "functors clause" per entity. This avoids 
-	redundancy on the representation of entity functors and helps reducing 
-	the size of the generated Prolog files.
+	some redundancy on the representation of entity functors and also helps 
+	reducing a bit the size of the generated Prolog files.
 
 	When loading a redefined object, also clean all entries in the event 
 	handlers table where the object plays the role of a monitor.
@@ -28,6 +28,13 @@ RELEASE NOTES
 	Modified the Logtalk runtime to clean all lookup caches when compiling 
 	and loading source files (instead of doing it only when the files 
 	redefine existing entities).
+
+	Updated the CxProlog config file to take advantage and require the new 
+	0.97.1 version (which implements some more ISO Prolog predicates and 
+	expands support for text encodings).
+
+	Updated the B-Prolog config file to take advantage and require the new 
+	7.1 version (which adds support for the multifile/1 predicate directive).
 
 	Updated the SWI-Prolog config file notes about possible compatibility 
 	issues with the default setting of the proprietary "iso" Prolog flag 
