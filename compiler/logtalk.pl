@@ -10560,10 +10560,10 @@ current_logtalk_flag(version, version(2, 32, 1)).
 		Goal6 = (Goal5, '$lgt_add_static_binding_cache_entry'(Entity))
 	;	Goal6 = Goal5  
 	),
-	(	Goal6 == true ->
+	'$lgt_simplify_body'(Goal6, Goal),
+	(	Goal == true ->
 		true
-	;	'$lgt_simplify_body'(Goal6, Goal),
-		assertz('$lgt_pp_entity_init_'(Type, Entity, Goal))
+	;	assertz('$lgt_pp_entity_init_'(Type, Entity, Goal))
 	).
 
 
