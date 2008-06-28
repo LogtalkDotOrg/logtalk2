@@ -14,8 +14,8 @@ RELEASE NOTES
 
 	Restored the redefined entity warnings for back-end Prolog compilers 
 	that support multifile predicates. Simplified updating of the runtime 
-	tables when compiling and loading with back-end Prolog compilers that 
-	don't support multifile predicates.
+	tables when compiling and loading source files with back-end Prolog 
+	compilers that don't support multifile predicates.
 
 	Changed the representation of the runtime tables for loaded entities 
 	in order to drop the need of a "functors clause" per entity. This avoids 
@@ -39,6 +39,11 @@ RELEASE NOTES
 	Updated the SWI-Prolog config file notes about possible compatibility 
 	issues with the default setting of the proprietary "iso" Prolog flag 
 	to "true".
+
+	Updated the SWI-Prolog hook file, "swihook.pl", to avoid hijacking the 
+	arguments of use_module/1-2 calls (which resulted in wrongly loading 
+	Logtalk libraries with the same name as the SWI-Prolog library modules 
+	we intended to load).
 
 
 2.32.0 - June 16, 2008
