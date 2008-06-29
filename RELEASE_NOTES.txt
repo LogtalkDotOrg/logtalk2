@@ -45,6 +45,10 @@ RELEASE NOTES
 	Logtalk libraries with the same name as the SWI-Prolog library modules 
 	we intended to load).
 
+	Renamed the SICStus Prolog 3 config file from "sicstus.config" to 
+	"sicstus3.config" to avoid being mistaken for the SICStus Prolog 4 
+	config file.
+
 	Updated the support for the Pygments syntax highlighter to avoid marking 
 	as errors non-standard directives.
 
