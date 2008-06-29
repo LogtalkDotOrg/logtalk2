@@ -397,7 +397,7 @@ Quintus Prolog 3.3~3.5
 
 SICStus Prolog 3.8~3.12.x
 
-	sicstus.config
+	sicstus3.config
 	
 	For versions 3.8.x~3.12.x. The config file sets the flag language to 
 	iso, but that is only recommended and should not be needed to run Logtalk.
@@ -410,19 +410,20 @@ SICStus Prolog 3.8~3.12.x
 	add the following lines to your ~/.sicstusrc or ~/.sicstus.ini initialization
 	file:
 	
-		:- compile('$LOGTALKUSER/configs/sicstus.config').
+		:- compile('$LOGTALKUSER/configs/sicstus3.config').
 		:- compile('$LOGTALKHOME/compiler/logtalk.pl').
+		:- compile('$LOGTALKUSER/libpaths/libpaths.pl').
 
     Consult the SICStus Prolog documentation for further information on the 
     ~/.sicstusrc and ~/.sicstus.ini user initialization files.
 
 
-SICStus Prolog 4.0
+SICStus Prolog 4.0.x
 
 	sicstus4.config
 
-	Config file for the SICStus Prolog 4.0 version (tested with the Windows 
-	beta version).
+	Config file for the SICStus Prolog 4.0 version (tested with the MacOS X 
+	version and the Windows beta version).
 
 
 SWI Prolog 5.6.43 and later versions
@@ -446,11 +447,13 @@ SWI Prolog 5.6.43 and later versions
 
 		:- ['drive:\\path to logtalk user folder\\configs\\swi.config'].
 		:- ['drive:\\path to logtalk installation\\compiler\\logtalk.pl'].
+		:- ['drive:\\path to logtalk installation\\libpaths\\libpaths.pl'].
 
 	 or to your .plrc (on MacOS X, Linux, Unix, and similar systems):
 	
 		:- ['$LOGTALKUSER/configs/swi.config'].
 		:- ['$LOGTALKHOME/compiler/logtalk.pl'].
+		:- ['$LOGTALKUSER/libpaths/libpaths.pl'].
 
 	See the SWI-Prolog documentation for further information on the .plrc 
 	and pl.ini user initialization files.
