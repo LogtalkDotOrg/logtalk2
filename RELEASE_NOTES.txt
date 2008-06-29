@@ -45,6 +45,9 @@ RELEASE NOTES
 	Logtalk libraries with the same name as the SWI-Prolog library modules 
 	we intended to load).
 
+	Updated the support for the Pygments syntax highlighter to avoid marking 
+	as errors non-standard directives.
+
 
 2.32.0 - June 16, 2008
 

@@ -164,12 +164,14 @@ class LogtalkLexer(RegexLexer):
             # Predicate scope directives
             (r'(public|protected|private)(?=[(])', Keyword, 'root'),
             # Other directives
-            (r'\be(ncoding|xport)(?=[(])', Keyword, 'root'),
-            (r'\bin(fo|itialization)(?=[(])', Keyword, 'root'),
-            (r'\b(dynamic|synchronized|threaded)[.]', Keyword, 'root'),
-            (r'\b(alias|d(ynamic|iscontiguous)|m(eta_predicate|ode|ultifile)|synchronized)(?=[(])', Keyword, 'root'),
-            (r'\bop(?=[(])', Keyword, 'root'),
-            (r'\b(calls|use(s|_module))(?=[(])', Keyword, 'root'),
+            (r'e(ncoding|xport)(?=[(])', Keyword, 'root'),
+            (r'in(fo|itialization)(?=[(])', Keyword, 'root'),
+            (r'(dynamic|synchronized|threaded)[.]', Keyword, 'root'),
+            (r'(alias|d(ynamic|iscontiguous)|m(eta_predicate|ode|ultifile)|synchronized)(?=[(])', Keyword, 'root'),
+            (r'op(?=[(])', Keyword, 'root'),
+            (r'(calls|use(s|_module))(?=[(])', Keyword, 'root'),
+            (r'[a-z][a-zA-Z0-9_]*(?=[(])', Text, 'root'),
+            (r'[a-z][a-zA-Z0-9_]*[.]', Text, 'root'),
         ],
 
         'entityrelations': [
