@@ -12,7 +12,8 @@ Copyright (c) 1998-2008 Paulo Moura.  All Rights Reserved.
 ...
 
 
-% some example queries:
+% some example queries for back-end Prolog compilers implementing the 
+% time/1 timing predicate (e.g. SWI-Prlog, YAP, or XSB):
 
 ?- time(ack::ack(2, 4, V)).
 % 195 inferences, 0.00 CPU in 0.00 seconds (0% CPU, Infinite Lips)
@@ -25,3 +26,18 @@ V = 61.
 ?- time(ack::ack(3, 4, V)).
 % 25,730 inferences, 0.01 CPU in 0.01 seconds (89% CPU, 2573000 Lips)
 V = 125.
+
+
+% some example queries for other back-end Prolog compilers:
+
+?- ack::ack(2, 4, V).
+V = 11
+yes
+
+?- ack::ack(3, 3, V).
+V = 61
+yes
+
+?- ack::ack(3, 4, V).
+V = 125
+yes
