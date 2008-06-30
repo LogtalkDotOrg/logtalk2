@@ -2,9 +2,9 @@
 :- protocol(randomp).
 
 	:- info([
-		version is 1.0,
+		version is 1.01,
 		author is 'Paulo Moura',
-		date is 2000/7/24,
+		date is 2008/6/30,
 		comment is 'Random number generator protocol.']).
 
 	:- public(random/1).
@@ -21,15 +21,15 @@
 		argnames is ['Lower', 'Upper', 'Random']]).
 
 	:- public(randseq/4).
-	:- mode(randseq(+integer, +integer, +integer, -list), zero_or_one).
-	:- mode(randseq(+integer, +float, +float, -list), zero_or_one).
+	:- mode(randseq(+integer, +integer, +integer, -list(integer)), zero_or_one).
+	:- mode(randseq(+integer, +float, +float, -list(float)), zero_or_one).
 	:- info(randseq/4, [
 		comment is 'Returns a list of Length random values in the interval [Lower, Upper[.',
 		argnames is ['Length', 'Lower', 'Upper', 'List']]).
 
 	:- public(randset/4).
-	:- mode(randset(+integer, +integer, +integer, -list), zero_or_one).
-	:- mode(randset(+integer, +float, +float, -list), zero_or_one).
+	:- mode(randset(+integer, +integer, +integer, -list(integer)), zero_or_one).
+	:- mode(randset(+integer, +float, +float, -list(float)), zero_or_one).
 	:- info(randset/4, [
 		comment is 'Returns an ordered set of Length random values in the interval [Lower, Upper[.',
 		argnames is ['Length', 'Lower', 'Upper', 'Set']]).
