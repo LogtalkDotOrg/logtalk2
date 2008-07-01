@@ -49,6 +49,9 @@ RELEASE NOTES
 	"sicstus3.config" to avoid being mistaken for the SICStus Prolog 4 
 	config file.
 
+	Improved the Prolog migration guide on converting code that makes use 
+	of multifile predicates.
+
 	Updated the support for the Pygments syntax highlighter to avoid marking 
 	as errors non-standard directives.
 

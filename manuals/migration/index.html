@@ -55,6 +55,70 @@ mp(A, B) :-      % imported clauses
 <p>
 By adding the <em>gateway</em> clause after or before the local clauses, you can choose if the local clauses should be used before or after the overridden clauses.
 </p>
+<p>
+A more complicated scenario is when you have several files containing clauses for a multifile predicate. For example, assume that a multifile predicate named <code>mp/2</code> is defined in two files. In this case, start by defining a protocol containing the declaration of the multifile predicate:
+</p>
+<pre>
+:- protocol(ptc). 
+
+    :- public(mp/1). 
+
+:- end_protocol. 
+</pre>
+<p>
+Second, for each file, define a category containing the corresponding clauses for the <code>mp/2</code> predicate: 
+</p>
+<pre>
+:- category(ctg1, 
+    implements(ptc)). 
+
+    mp(1).    % clauses from the first file
+    mp(2). 
+
+:- end_category. 
+
+
+:- category(ctg2, 
+    implements(ptc)).
+
+    mp(3).    % clauses from the first file
+    mp(4). 
+
+:- end_category. 
+</pre>
+<p>
+Next, define an object importing all the categories and defining aliases to the imported predicates:
+</p>
+<pre>
+:- object(obj, 
+    implements(ptc), 
+    imports(ctg1, ctg2)).
+
+    :- alias(ctg1, mp/1, ctg1_mp/1). 
+    :- alias(ctg2, mp/1, ctg2_mp/1). 
+
+    mp(X) :- 
+        ::ctg1_mp(X). 
+    mp(X) :- 
+        ::ctg2_mp(X). 
+
+:- end_ object. 
+</pre>
+<p>
+The predicate aliases above are needed to allow access to the overridded clauses of the <code>mp/1</code> predicate (by default, the clauses from  <code>ctg1</code> would override the clauses from the <code>ctg2</code> category as a consequence of the predicate lookup mechanism). 
+</p>
+<p>
+Compiling and loading the above Logtalk entities allows you to access all clauses of the former multifile predicate. For example: 
+</p>
+<pre>
+| ?- obj::mp(X).
+
+X = 1 ; 
+X = 2 ; 
+X = 3 ; 
+X = 4 
+yes 
+</pre>
 
 <h2>Converting Prolog modules into objects<a id="converting"></a></h2>
 
@@ -142,7 +206,7 @@ This feature is needed to properly support compilation of modules containing <co
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: June 6, 2007</span>
+		<span>Last updated on: July 1, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="../glossary.html">glossary</a></span><br/>
