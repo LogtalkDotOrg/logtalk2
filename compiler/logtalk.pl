@@ -10692,9 +10692,7 @@ current_logtalk_flag(version, version(2, 32, 1)).
 
 '$lgt_construct_object_functors'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm) :-
 	(	'$lgt_built_in_object'(Obj) ->
-		'$lgt_current_object_'(Obj, Prefix, _, _, _, _, _, _, _, _, _, _, _),
-		Call =.. [Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm],
-		once(Call)
+		'$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, _, _, _)
 	;	'$lgt_construct_entity_prefix'(Obj, Prefix),
 		atom_concat(Prefix, '_dcl', Dcl),
 		atom_concat(Prefix, '_def', Def),
