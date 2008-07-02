@@ -3178,18 +3178,19 @@ current_logtalk_flag(version, version(2, 32, 1)).
 
 
 
-% '$lgt_call_ctg_pred'(+atom, +callable, +object_identifier, +object_identifier, +object_identifier)
+% '$lgt_call_ctg_pred'(+atom, +atom, +callable, +object_identifier, +object_identifier, +object_identifier)
 %
 % calls a category predicate directly, without using the message sending mechanism
 
-'$lgt_call_ctg_pred'(Dcl, Pred, Sender, This, Self) :-
-	(	call_with_args(Dcl, Pred, _, _, _, _, _, _, _) ->
+'$lgt_call_ctg_pred'(Dcl, Rnm, Alias, Sender, This, Self) :-
+	(	call_with_args(Dcl, Alias, _, _, _, _, _, _, _) ->
+		call_with_args(Rnm, Ctg, Pred, Alias),
 		(	'$lgt_imports_category_'(This, Ctg, _),
 			'$lgt_current_category_'(Ctg, _, _, Def, _, _, _),
 			call_with_args(Def, Pred, Sender, This, Self, Call, _) ->
 			call(Call)
 		)
-	;	throw(error(existence_error(predicate_declaration, Pred), ':'(Pred), This))
+	;	throw(error(existence_error(predicate_declaration, Alias), ':'(Alias), This))
 	).
 
 
@@ -7010,11 +7011,11 @@ current_logtalk_flag(version, version(2, 32, 1)).
 		'$lgt_ctg_static_binding_cache'(Ctg, Pred, Sender, This, Self, TPred) ->
 		true
 	;	Pred = Alias,
-		'$lgt_pp_object_'(_, _, Dcl, _, _, IDcl, _, _, _, _, _),
+		'$lgt_pp_object_'(_, _, Dcl, _, _, IDcl, _, _, _, Rnm, _),
 		(	\+ '$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _),
 		 	\+ '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _) ->
-			TPred = '$lgt_call_ctg_pred'(Dcl, Pred, Sender, This, Self)
-		;	TPred = '$lgt_call_ctg_pred'(IDcl, Pred, Sender, This, Self)
+			TPred = '$lgt_call_ctg_pred'(Dcl, Rnm, Pred, Sender, This, Self)
+		;	TPred = '$lgt_call_ctg_pred'(IDcl, Rnm, Pred, Sender, This, Self)
 		)
 	).
 
