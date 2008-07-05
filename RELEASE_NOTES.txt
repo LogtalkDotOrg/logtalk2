@@ -10,7 +10,7 @@ RELEASE NOTES
 =============
 
 
-2.32.1 - July 30, 2008
+2.32.1 - July 7, 2008
 
 	Restored the redefined entity warnings for back-end Prolog compilers 
 	that support multifile predicates. Simplified updating of the runtime 
@@ -22,12 +22,15 @@ RELEASE NOTES
 	some redundancy on the representation of entity functors and also helps 
 	reducing a bit the size of the generated Prolog files.
 
-	When loading a redefined object, also clean all entries in the event 
-	handlers table where the object plays the role of a monitor.
+	When reloading an object, also clean all entries in the event handlers 
+	table where the object plays the role of a monitor.
 
 	Modified the Logtalk runtime to clean all lookup caches when compiling 
 	and loading source files (instead of doing it only when the files 
 	redefine existing entities).
+
+	Corrected a bug that prevented using predicate aliases with the :/1 
+	control construct without static binding.
 
 	Updated the CxProlog config file to take advantage and require the new 
 	0.97.1 version (which implements some more ISO Prolog predicates and 
@@ -44,6 +47,10 @@ RELEASE NOTES
 	arguments of use_module/1-2 calls (which resulted in wrongly loading 
 	Logtalk libraries with the same name as the SWI-Prolog library modules 
 	we intended to load).
+
+	Updated the "k6.config" config file for the K-Prolog 6.0.3 release.
+	Renamed the K-Prolog 5.1.x config file from "k.config" to "k5.config" 
+	to avoid being mistaken for the K-Prolog 6.0.x config file.
 
 	Renamed the SICStus Prolog 3 config file from "sicstus.config" to 
 	"sicstus3.config" to avoid being mistaken for the SICStus Prolog 4 
