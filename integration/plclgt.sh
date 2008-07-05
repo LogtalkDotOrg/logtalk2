@@ -57,7 +57,7 @@ if [ -d "$LOGTALKUSER" ]; then
 		cplgtdirs
 	else
 		current=`cat $LOGTALKUSER/VERSION.txt | sed 's/\.//g'`
-		if [ $current -lt 2313 ]; then
+		if [ $current -lt 2320 ]; then
 			echo "Logtalk user directory at $LOGTALKUSER is outdated!"
 			echo "Creating an up-to-date Logtalk user directory..."
 			cplgtdirs
@@ -70,4 +70,9 @@ else
 fi
 echo
 
-exec "$PLC"/plc -h 4096k -l 2048k -g 4096k -e "(consult('$LOGTALKHOME/integration/logtalk_plc.pl'), '\$root')." "$@"
+if plc -e "\$root, halt." 2>&1 | grep "K-Prolog Compiler version 6" 2>&1 >/dev/null; then
+	exec plc -h 4096k -l 2048k -g 4096k -e "(consult('$LOGTALKHOME/integration/logtalk_plc6.pl'), '\$root')." "$@"
+else
+	exec plc -h 4096k -l 2048k -g 4096k -e "(consult('$LOGTALKHOME/integration/logtalk_plc5.pl'), '\$root')." "$@"
+fi
+

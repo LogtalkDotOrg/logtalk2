@@ -197,5 +197,8 @@ Logtalk version 2.31.6 changes representation of loaded categories in order
 to correct a bug in the use of the :/1 control construct, therefore implying 
 recompilation of all categories.
 
+Logtalk 2.32.0 adds a new compiler option, multifile_directive, to all config 
+files. Older config files are incompatible with this new Logtalk version.
+
 Logtalk version 2.32.1 changes representation of loaded entities therefore 
 implying recompilation of all source files.

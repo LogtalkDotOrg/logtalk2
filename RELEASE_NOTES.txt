@@ -56,6 +56,10 @@ RELEASE NOTES
 	"sicstus3.config" to avoid being mistaken for the SICStus Prolog 4 
 	config file.
 
+	Updated the POSIX integration scripts and the Windows installer script 
+	to detect outdated versions of the Logtalk user folder (setting the 
+	compatibility version to 2.32.0 or later).
+
 	Improved the Prolog migration guide on converting code that makes use 
 	of multifile predicates.
 
