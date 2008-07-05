@@ -50,7 +50,9 @@ RELEASE NOTES
 
 	Updated the "k6.config" config file for the K-Prolog 6.0.3 release.
 	Renamed the K-Prolog 5.1.x config file from "k.config" to "k5.config" 
-	to avoid being mistaken for the K-Prolog 6.0.x config file.
+	to avoid being mistaken for the K-Prolog 6.0.x config file. Updated 
+	the "plclgt.sh" integration script to work with both K-Prolog 5.1.x 
+	and 6.0.x versions.
 
 	Renamed the SICStus Prolog 3 config file from "sicstus.config" to 
 	"sicstus3.config" to avoid being mistaken for the SICStus Prolog 4 
