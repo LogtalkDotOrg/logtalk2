@@ -466,8 +466,8 @@ object_property(user, built_in).
 object_property(debugger, built_in).
 object_property(logtalk, built_in).
 
-object_property(Obj, Prop) :-
-	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, Prop, _, _).		% static/dynamic property
+object_property(Obj, Prop) :-				% static/dynamic property
+	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, Prop, _, _).
 
 object_property(Obj, synchronized) :-
 	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _, yes, _).
@@ -509,7 +509,7 @@ protocol_property(Ptc, Prop) :-
 	\+ '$lgt_valid_protocol_property'(Prop),
 	throw(error(domain_error(protocol_property, Prop), protocol_property(Ptc, Prop))).
 
-protocol_property(Ptc, Prop) :-		% static/dynamic property
+protocol_property(Ptc, Prop) :-				% static/dynamic property
 	'$lgt_current_protocol_'(Ptc, _, _, _, Prop).
 
 
@@ -3223,7 +3223,7 @@ current_logtalk_flag(version, version(2, 32, 1)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  built-in entity table clauses
+%  built-in entity runtime table clauses
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -11325,31 +11325,36 @@ current_logtalk_flag(version, version(2, 32, 1)).
 %
 % true if the argument is a valid Logtalk flag name
 
+% documenting compilation flags:
 '$lgt_valid_flag'(xmldocs).
 '$lgt_valid_flag'(xslfile).
 '$lgt_valid_flag'(xmlspec).
 '$lgt_valid_flag'(xmlsref).
+'$lgt_valid_flag'(xmldir).
+% lint compilation flags:
 '$lgt_valid_flag'(unknown).
 '$lgt_valid_flag'(singletons).
 '$lgt_valid_flag'(misspelt).
 '$lgt_valid_flag'(lgtredef).
 '$lgt_valid_flag'(plredef).
+'$lgt_valid_flag'(underscore_variables).
 '$lgt_valid_flag'(portability).
+% other compilation flags:
 '$lgt_valid_flag'(report).
 '$lgt_valid_flag'(smart_compilation).
 '$lgt_valid_flag'(reload).
-'$lgt_valid_flag'(startup_message).
-'$lgt_valid_flag'(version).
-'$lgt_valid_flag'(underscore_variables).
+'$lgt_valid_flag'(tmpdir).
+'$lgt_valid_flag'(hook).
+'$lgt_valid_flag'(events).
 '$lgt_valid_flag'(code_prefix).
 '$lgt_valid_flag'(debug).
+% read-only compilation flags:
+'$lgt_valid_flag'(startup_message).
+'$lgt_valid_flag'(version).
 '$lgt_valid_flag'(break_predicate).
-'$lgt_valid_flag'(events).
 '$lgt_valid_flag'(altdirs).
-'$lgt_valid_flag'(tmpdir).
-'$lgt_valid_flag'(xmldir).
-'$lgt_valid_flag'(hook).
 '$lgt_valid_flag'(encoding_directive).
+'$lgt_valid_flag'(multifile_directive).
 '$lgt_valid_flag'(threads).
 '$lgt_valid_flag'(context_switching_calls).
 
@@ -11364,6 +11369,7 @@ current_logtalk_flag(version, version(2, 32, 1)).
 '$lgt_read_only_flag'(version).
 '$lgt_read_only_flag'(altdirs).
 '$lgt_read_only_flag'(encoding_directive).
+'$lgt_read_only_flag'(multifile_directive).
 '$lgt_read_only_flag'(threads).
 '$lgt_read_only_flag'(context_switching_calls).
 
