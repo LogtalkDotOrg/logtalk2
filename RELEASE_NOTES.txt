@@ -65,6 +65,10 @@ RELEASE NOTES
 	Improved the Prolog migration guide on converting code that makes use 
 	of multifile predicates.
 
+	Updated support for the Vim text editor (changed the Logtalk file type 
+	plug-in to set the path to the completion dictionary and updated the 
+	installation instructions).
+
 	Updated the support for the Pygments syntax highlighter to avoid marking 
 	as errors non-standard directives.
 

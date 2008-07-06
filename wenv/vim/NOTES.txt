@@ -28,22 +28,18 @@ au BufNewFile,BufRead *.lgt                     setf logtalk
 " Logtalk config files
 au BufNewFile,BufRead *.config                  setf logtalk
 
-3. Copy the file "completion/logtalk.dict" to some place convenient in 
-your home folder and then type e.g.
-	
-	:setlocal dict=</path/to/logtalk.dict>
-	
-You may then perform code completion by typing CTRL-X, CTRL-K and then 
-CTRL-P or CTRL-N to cycle between all the completion choices.
-
-4. Copy the file "indent/logtalk.vim" to the "indent" sub-directory in 
+3. Copy the file "indent/logtalk.vim" to the "indent" sub-directory in 
 your VIM installation directory (replacing any existing older file).
 
-5. Copy the file "ftplugin/logtalk.vim" to the "ftplugin" sub-directory in 
-your VIM installation directory (replacing any existing older file).
+4. Copy the files "completion/logtalk.dict" and "ftplugin/logtalk.vim" 
+to the "ftplugin" sub-directory in your Vim installation directory 
+(replacing any existing older files).
 
-6. Add the following lines to your ~/.vimrc file:
+5. Add the following lines to your ~/.vimrc file:
 
 	syntax on
 	filetype indent on
 	filetype plugin on
+
+You may then perform code completion by typing CTRL-X, CTRL-K and then 
+CTRL-P or CTRL-N to cycle between all the completion choices.
