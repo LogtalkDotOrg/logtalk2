@@ -1912,7 +1912,7 @@ current_logtalk_flag(version, version(2, 32, 1)).
 	throw(error(existence_error(object, Obj), Obj::predicate_property(Pred, Prop), Sender)).
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, Scope) :-
-	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, _, _, _, _, _, _),
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, Rnm, _, _, _),
 	call_with_args(Dcl, Pred, PScope, Type, Meta, NonTerminal, Synchronized, SCtn, TCtn),
 	!,
 	once((\+ \+ PScope = Scope; Sender = SCtn)),
@@ -1927,9 +1927,12 @@ current_logtalk_flag(version, version(2, 32, 1)).
 		Prop = non_terminal(Functor//Arity)
 	;	Synchronized \== no,
 		Prop = synchronized
-	;	'$lgt_current_object_'(TCtn, _, TCtnDcl, _, _, _, _, _, _, _, _, _, _),
+	;	once((	'$lgt_current_object_'(TCtn, _, TCtnDcl, _, _, _, _, _, _, _, _, _, _)
+			;	'$lgt_current_category_'(TCtn, _, TCtnDcl, _, _, _, _)
+			;	'$lgt_current_protocol_'(TCtn, _, TCtnDcl, _, _)
+		)),
 		\+ call_with_args(TCtnDcl, Pred, _, _, _, _, _),
-		'$lgt_alias_pred'(Obj, Prefix, Pred, Pred2),
+		'$lgt_alias_pred'(Obj, Rnm, Pred, Pred2),
 		Prop = alias_of(Pred2)
 	;	call_with_args(Def, Pred, _, _, _, _, DCtn) ->	% must be the last property checked because
 		Prop = defined_in(DCtn)							% of the implicit cut on the ->/2 call
@@ -1976,50 +1979,49 @@ current_logtalk_flag(version, version(2, 32, 1)).
 %
 % finds the predicate pointed by an alias
 
-'$lgt_alias_pred'(Obj, Prefix, Alias, Pred) :-
-	'$lgt_alias_pred'(Obj, Prefix, Alias, Pred, _).
+'$lgt_alias_pred'(Obj, Rnm, Alias, Pred) :-
+	'$lgt_alias_pred'(Obj, Rnm, Alias, Pred, _).
 
 
-'$lgt_alias_pred'(_, Prefix, Alias, Pred, _) :-
-	'$lgt_construct_alias_functor'(Prefix, Functor),
-	call_with_args(Functor, _, Pred, Alias) ->
+'$lgt_alias_pred'(_, Rnm, Alias, Pred, _) :-
+	call_with_args(Rnm, _, Pred, Alias) ->
 	Pred \= Alias,
 	!.
 
 '$lgt_alias_pred'(Obj, _, Alias, Pred, _) :-
 	'$lgt_implements_protocol_'(Obj, Ptc, _),
-	'$lgt_current_protocol_'(Ptc, Prefix, _, _, _),
-	'$lgt_alias_pred'(Ptc, Prefix, Alias, Pred, _).
+	'$lgt_current_protocol_'(Ptc, _, _, Rnm, _),
+	'$lgt_alias_pred'(Ptc, Rnm, Alias, Pred, _).
 
 '$lgt_alias_pred'(Ptc1, _, Alias, Pred, _) :-
 	'$lgt_extends_protocol_'(Ptc1, Ptc2, _),
-	'$lgt_current_protocol_'(Ptc2, Prefix, _, _, _),
-	'$lgt_alias_pred'(Ptc2, Prefix, Alias, Pred, _).
+	'$lgt_current_protocol_'(Ptc2, _, _, Rnm, _),
+	'$lgt_alias_pred'(Ptc2, Rnm, Alias, Pred, _).
 
 '$lgt_alias_pred'(Ctg1, _, Alias, Pred, _) :-
 	'$lgt_extends_category_'(Ctg1, Ctg2, _),
-	'$lgt_current_category_'(Ctg2, Prefix, _, _, _, _, _),
-	'$lgt_alias_pred'(Ctg2, Prefix, Alias, Pred, _).
+	'$lgt_current_category_'(Ctg2, _, _, _, Rnm, _, _),
+	'$lgt_alias_pred'(Ctg2, Rnm, Alias, Pred, _).
 
 '$lgt_alias_pred'(Obj, _, Alias, Pred, _) :-
 	'$lgt_imports_category_'(Obj, Ctg, _),
-	'$lgt_current_category_'(Ctg, Prefix, _, _, _, _, _),
-	'$lgt_alias_pred'(Ctg, Prefix, Alias, Pred, _).
+	'$lgt_current_category_'(Ctg, _, _, _, Rnm, _, _),
+	'$lgt_alias_pred'(Ctg, Rnm, Alias, Pred, _).
 
 '$lgt_alias_pred'(Obj, _, Alias, Pred, prototype) :-
 	'$lgt_extends_object_'(Obj, Parent, _),
-	'$lgt_current_object_'(Parent, Prefix, _, _, _, _, _, _, _, _, _, _, _),
-	'$lgt_alias_pred'(Parent, Prefix, Alias, Pred, prototype).
+	'$lgt_current_object_'(Parent, _, _, _, _, _, _, _, _, Rnm, _, _, _),
+	'$lgt_alias_pred'(Parent, Rnm, Alias, Pred, prototype).
 
 '$lgt_alias_pred'(Instance, _, Alias, Pred, instance) :-
 	'$lgt_instantiates_class_'(Instance, Class, _),
-	'$lgt_current_object_'(Class, Prefix, _, _, _, _, _, _, _, _, _, _, _),
-	'$lgt_alias_pred'(Class, Prefix, Alias, Pred, superclass).
+	'$lgt_current_object_'(Class, _, _, _, _, _, _, _, _, Rnm, _, _, _),
+	'$lgt_alias_pred'(Class, Rnm, Alias, Pred, superclass).
 
 '$lgt_alias_pred'(Class, _, Alias, Pred, superclass) :-
 	'$lgt_specializes_class_'(Class, Superclass, _),
-	'$lgt_current_object_'(Superclass, Prefix, _, _, _, _, _, _, _, _, _, _, _),
-	'$lgt_alias_pred'(Superclass, Prefix, Alias, Pred, superclass).
+	'$lgt_current_object_'(Superclass, _, _, _, _, _, _, _, _, Rnm, _, _, _),
+	'$lgt_alias_pred'(Superclass, Rnm, Alias, Pred, superclass).
 
 
 
@@ -9295,11 +9297,6 @@ current_logtalk_flag(version, version(2, 32, 1)).
 		Head =.. [Dcl, _, _, _, _, _, _, _],
 		assertz('$lgt_pp_dcl_'((Head:-fail)))
 	).
-
-
-
-'$lgt_construct_alias_functor'(Prefix, PRen) :-
-	atom_concat(Prefix, '_alias', PRen).
 
 
 
