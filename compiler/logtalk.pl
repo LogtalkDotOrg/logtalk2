@@ -10487,7 +10487,7 @@ current_logtalk_flag(version, version(2, 32, 1)).
 	(	\+ \+ '$lgt_pp_file_rclause_'(Clause) ->
 		write_canonical(Stream, (:- multifile(Functor/Arity))), write(Stream, '.'), nl(Stream),
 		write_canonical(Stream, (:- dynamic(Functor/Arity))), write(Stream, '.'), nl(Stream),
-		(	'$lgt_pp_file_rclause_'(Clause),
+		(	retract('$lgt_pp_file_rclause_'(Clause)),
 			write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
 			fail
 		;	true
