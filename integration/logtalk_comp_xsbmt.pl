@@ -41,6 +41,7 @@
 :- thread_shared('$lgt_specializes_class_'(_, _, _)).
 :- thread_shared('$lgt_extends_protocol_'(_, _, _)).
 :- thread_shared('$lgt_extends_object_'(_, _, _)).
+:- thread_shared('$lgt_complemented_object_'(_, _, _, _)).
 
 % table of loaded files
 :- thread_shared('$lgt_loaded_file_'(_, _)).

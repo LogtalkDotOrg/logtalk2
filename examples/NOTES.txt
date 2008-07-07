@@ -32,8 +32,8 @@ and "SCRIPT.txt" files inside each example folder.
 Some examples may redefine objects already loaded from other examples.
 You may want to restart Logtalk after trying each example.
 
-Some of the examples have been adopted from public available Prolog 
-code or from known Prolog text books and are copyrighted by the respective 
+Some of the examples have been adopted from public available Prolog code 
+or from known Prolog text books and are copyrighted by the respective 
 authors.
 
 These are programming examples, meaning that you should study the source 
@@ -49,7 +49,7 @@ folder for instructions on how to browse the XML files for on-line
 reading or how to convert the files to a print-ready format such as PDF.
 
 
-Here is a short description of each included example:
+Follows a short description of each included example:
 
 ack
 	implementation of the Ackermann function
