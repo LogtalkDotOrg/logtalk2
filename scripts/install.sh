@@ -80,9 +80,9 @@ ln -sf ../share/logtalk/integration/yaplgt.sh yaplgt
 echo "The following integration scripts are installed for running Logtalk"
 echo "with selected back-end Prolog compilers:"
 echo
-echo "* B-Prolog (version 7.0 or later):         bplgt      (first run must use sudo)"
+echo "* B-Prolog (version 7.1 or later):         bplgt      (first run must use sudo)"
 echo "* CIAO (version 1.10#5 or later):          ciaolgt    (first run must use sudo)"
-echo "* CxProlog (version 0.96.1 or later):      cxlgt"
+echo "* CxProlog (version 0.97.1 or later):      cxlgt"
 echo "* ECLiPSe (version 5.10#26 or later):      eclipselgt"
 echo "* GNU Prolog (version 1.2.16 or later):    gplgt"
 echo "* K-Prolog (version 5.1.2a or later):      plclgt"
