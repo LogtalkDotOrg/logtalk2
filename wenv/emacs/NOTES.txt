@@ -16,11 +16,14 @@ provided in the "LICENSE.txt" file.
 ================================================================
 
 
-This directory contains a logtalk.el file that provides syntax 
+This directory contains a "logtalk.el" file that provides syntax 
 highlighting for editing Logtalk source files with the Emacs text 
 editor:
 
 	http://www.gnu.org/software/emacs/emacs.html
+
+This support file is dual-licensed under the Artistic License 2.0 
+and the Emacs license.
 
 To install follow the instructions contained in the file itself.
 

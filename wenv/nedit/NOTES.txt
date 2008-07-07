@@ -22,6 +22,8 @@ or later version:
 
 	http://www.nedit.org/
 
+This support file is dual-licensed under the Artistic License 2.0 
+and the NEdit license.
 
 To install:
 

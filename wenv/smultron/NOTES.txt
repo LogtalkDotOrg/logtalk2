@@ -22,6 +22,9 @@ for editing Logtalk source files with the Smultron 2.2 text editor:
 
 	http://smultron.sourceforge.net/
 
+These support files are dual-licensed under the Artistic License 2.0 and 
+the Smultron license.
+
 To install:
 
 1. Copy the file "logtalk.plist" to the application bundle (ctrl-click on 

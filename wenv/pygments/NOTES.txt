@@ -21,6 +21,10 @@ coloring support for Pygments (version 0.9 or later):
 
 	http://pygments.org/
 
+
+This support file is dual-licensed under the Artistic License 2.0 and the 
+Pygments license.
+
 In order to check if your Pygments installation already includes support 
 for Logtalk, use the following command:
 
@@ -54,6 +58,3 @@ You may also use the Logtalk lexer with plain Prolog files by using the "-l"
 option. For example:
 
 	$ pygmentize -l logtalk -F whitespace:tabsize=4 -o source.html source.pl
-
-
-THIS SYNTAX COLORING FILE IS UNDER DEVELOPMENT.

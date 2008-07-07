@@ -24,6 +24,10 @@ website:
 
 	http://gtksourceview.sourceforge.net/
 
+
+These support files are dual-licensed under the Artistic License 2.0 
+and the GtkSourceView 2.x license.
+
 To install, copy the file "logtalk.lang" to the following system-wide
 directory:
 	

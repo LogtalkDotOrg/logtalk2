@@ -22,6 +22,9 @@ Notepad++ 3.9 or later version:
 
 	http://notepad-plus.sourceforge.net/
 
+These support files are dual-licensed under the Artistic License 2.0 
+and the Notepad++ license.
+
 Install the supporting files by performing the following steps:
 
 1.	Copy the file "userDefineLang.xml" to the folder "%APPDATA%\Notepad++".

@@ -22,6 +22,8 @@ Logtalk source files with the text editor jEdit 4.3 or later version:
 
 	http://www.jedit.org/
 
+These support files are dual-licensed under the Artistic License 2.0 and 
+the jEdit license.
 
 To install:
 

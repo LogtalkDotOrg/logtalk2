@@ -22,6 +22,10 @@ A detailed description on the Highlight package is available from:
 
 	http://www.andre-simon.de/
 
+
+These support files are dual-licensed under the Artistic License 2.0 and the 
+Highlight license.
+
 In order to check if your Highlight installation already includes support 
 for Logtalk, you may use the following command:
 

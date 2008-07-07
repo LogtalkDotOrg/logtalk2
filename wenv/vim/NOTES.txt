@@ -22,6 +22,9 @@ source files with the text editor Vim 7.0 or later version:
 
 	http://www.vim.org/
 
+These support files are dual-licensed under the Artistic License 2.0 
+and the Vim charityware license.
+
 Recent versions of Vim already contain support for Logtalk. However, 
 this directory may contain an updated syntax file. If that is the 
 case, install the syntax file by performing the following steps:
@@ -29,14 +32,11 @@ case, install the syntax file by performing the following steps:
 1. Copy the file "syntax/logtalk.vim" to the "syntax" sub-directory in 
 your VIM installation directory (replacing any existing older file).
 
-2. Add the following entries to the "filetype.vim" configuration file 
+2. Add the following entry to the "filetype.vim" configuration file 
 (only if not already present):
 
 " Logtalk source files
 au BufNewFile,BufRead *.lgt                     setf logtalk
-
-" Logtalk config files
-au BufNewFile,BufRead *.config                  setf logtalk
 
 3. Copy the file "indent/logtalk.vim" to the "indent" sub-directory in 
 your VIM installation directory (replacing any existing older file).

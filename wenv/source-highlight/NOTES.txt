@@ -23,6 +23,9 @@ available from:
 
 	http://www.gnu.org/software/src-highlite/
 
+These support files are dual-licensed under the Artistic License 2.0 
+and the source-highlight license.
+
 In order to check if your source-highlight installation already includes 
 support for Logtalk, use the following command:
 
