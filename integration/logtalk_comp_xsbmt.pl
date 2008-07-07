@@ -31,9 +31,9 @@
 :- thread_shared('$lgt_after_'(_, _, _, _, _)).
 
 % tables of loaded entities and respective relationships
-:- thread_shared('$lgt_current_protocol_'(_, _, _)).
-:- thread_shared('$lgt_current_category_'(_, _, _, _)).
-:- thread_shared('$lgt_current_object_'(_, _, _, _, _, _, _, _)).
+:- thread_shared('$lgt_current_protocol_'(_, _, _, _, _)).
+:- thread_shared('$lgt_current_category_'(_, _, _, _, _, _, _)).
+:- thread_shared('$lgt_current_object_'(_, _, _, _, _, _, _, _, _, _, _, _, _)).
 
 :- thread_shared('$lgt_implements_protocol_'(_, _, _)).
 :- thread_shared('$lgt_imports_category_'(_, _, _)).
