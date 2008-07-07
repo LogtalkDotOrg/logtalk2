@@ -27,3 +27,6 @@ file.
 For a detailed description of this XML parser, please see the comments 
 in the "xml.lgt" source file or convert the automatically generated 
 documentation to HTML or PDF.
+
+See the copyright and license information on the contributed files for 
+usage and distributions conditions.

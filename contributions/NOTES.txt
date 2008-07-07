@@ -34,3 +34,6 @@ xml_parser
 
 	This folder contains a Logtalk version of John Fletcher's 
 	Prolog XML parser (http://www.zen37763.zen.co.uk/xml.pl.html).
+
+See the copyright and license information on the contributed files for 
+usage and distributions conditions.
