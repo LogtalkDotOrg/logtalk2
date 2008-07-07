@@ -17,9 +17,9 @@ setlocal indentkeys-=:,0#
 setlocal indentkeys+=0%,-,0;,>,0)
 
 " Only define the function once.
-"if exists("*GetLogtalkIndent")
-"	finish
-"endif
+if exists("*GetLogtalkIndent")
+	finish
+endif
 
 function! GetLogtalkIndent()
 	" Find a non-blank line above the current line.
