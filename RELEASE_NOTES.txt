@@ -75,6 +75,11 @@ RELEASE NOTES
 	Improved the Prolog migration guide on converting code that makes use 
 	of multifile predicates.
 
+	Added note on licensing conditions to several files. Clarified copyright 
+	and license conditions for files on the "contributions" folder. Clarified 
+	dual-licensing conditions for text editor and syntax highlighter 
+	supporting files.
+
 	Updated support for the Vim text editor (changed the Logtalk file type 
 	plug-in to set the path to the completion dictionary and updated the 
 	installation instructions).
