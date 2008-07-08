@@ -2,7 +2,7 @@
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
-## Release 2.32.1
+## Release 2.32.2
 ##
 ## Copyright (c) 1998-2008 Paulo Moura. All Rights Reserved.
 ## 
@@ -50,7 +50,7 @@ if ! [ "$LOGTALKHOME" ]; then
 fi
 
 cd $LOGTALKHOME/..
-rm -rf lgt2321
+rm -rf lgt2322
 rm -f logtalk
 cd ../bin
 rm -f bplgt
