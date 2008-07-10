@@ -117,7 +117,7 @@ eval $xslt_proc -o methods/term_expansion2.section refman.xsl methods/term_expan
 eval $xslt_proc -o methods/goal_expansion2.section refman.xsl methods/goal_expansion2.html
 eval $xslt_proc -o control/to_object2.section refman.xsl control/to_object2.html
 eval $xslt_proc -o control/to_self1.section refman.xsl control/to_self1.html
-eval $xslt_proc -o control/to_super1.section refman.xsl control/to_super1.html
+eval $xslt_proc -o control/super1.section refman.xsl control/super1.html
 eval $xslt_proc -o control/external1.section refman.xsl control/external1.html
 eval $xslt_proc -o control/context2.section refman.xsl control/context2.html
 eval $xslt_proc -o control/direct1.section refman.xsl control/direct1.html
@@ -223,7 +223,7 @@ cat -s \
 	control.header \
 	control/to_object2.section \
 	control/to_self1.section \
-	control/to_super1.section \
+	control/super1.section \
 	control/external1.section \
 	control/context2.section \
 	control/direct1.section \

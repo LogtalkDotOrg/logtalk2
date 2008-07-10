@@ -106,7 +106,7 @@ However, we can explicitly program other behaviors. Let us see a few examples.
 <h4 id="inheritance_specialization">Specialization inheritance</h4>
 
 <p>
-Specialization of inherited definitions: the new definition uses the inherited definitions, adding to this new code. This is accomplished by calling the <a title="Consult reference manual" href="../refman/control/to_super1.html"><code>^^/1</code></a> operator in the new definition.
+Specialization of inherited definitions: the new definition uses the inherited definitions, adding to this new code. This is accomplished by calling the <a title="Consult reference manual" href="../refman/control/super1.html"><code>^^/1</code></a> operator in the new definition.
 </p>
 <pre>:- object(root).
 
@@ -138,7 +138,7 @@ yes</pre>
 <h4 id="inheritance_union">Union inheritance</h4>
 
 <p>
-Union of the new with the inherited definitions: all the definitions are taken into account, the calling order being defined by the inheritance mechanisms. This can be accomplished by writing a clause that just calls, using the <a title="Consult reference manual" href="../refman/control/to_super1.html"><code>^^/1</code></a> operator, the inherited definitions. The relative position of this clause among the other definition clauses sets the calling order for the local and inherited definitions.
+Union of the new with the inherited definitions: all the definitions are taken into account, the calling order being defined by the inheritance mechanisms. This can be accomplished by writing a clause that just calls, using the <a title="Consult reference manual" href="../refman/control/super1.html"><code>^^/1</code></a> operator, the inherited definitions. The relative position of this clause among the other definition clauses sets the calling order for the local and inherited definitions.
 </p>
 <pre>:- object(root).
 
@@ -171,7 +171,7 @@ no</pre>
 <h4 id="inheritance_selective">Selective inheritance</h4>
 
 <p>
-Hiding some of the inherited definitions, or differential inheritance: this form of inheritance is normally used in the representation of exceptions to generic definitions. Here we will need to use the <a title="Consult reference manual" href="../refman/control/to_super1.html"><code>^^/1</code></a> operator to test and possibly reject some of the inherited definitions.
+Hiding some of the inherited definitions, or differential inheritance: this form of inheritance is normally used in the representation of exceptions to generic definitions. Here we will need to use the <a title="Consult reference manual" href="../refman/control/super1.html"><code>^^/1</code></a> operator to test and possibly reject some of the inherited definitions.
 </p>
 <pre>:- object(bird).
 
