@@ -46,7 +46,10 @@ imported in two car models (sedan and coupe).
 	extends(classic)).
 
 	reference('M180.941').
-	horsepower_rpm(110, 5000).
+	horsepower_rpm(HP, RPM) :-
+		^^horsepower_rpm(ClassicHP, ClassicRPM),
+		SHP is truncate(ClassicHP*1.23),
+		SRPM is truncate(ClassicRPM*0.762).
 
 :- end_category.
 

@@ -13,6 +13,15 @@ RELEASE NOTES
 =============
 
 
+2.32.2 - July ??, 2008
+
+	Allow the ^^/1 control construct to be used within extended categories.
+	Updated the "engines" example to illustrates this new functionality.
+	Improved the runtime error checking for those rare cases where the 
+	argument of the ^^/1 control construct is not instantiated at compile 
+	time.
+
+
 2.32.1 - July 7, 2008
 
 	Restored the redefined entity warnings for back-end Prolog compilers 

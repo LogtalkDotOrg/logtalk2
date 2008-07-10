@@ -205,3 +205,7 @@ files. Older config files are incompatible with this new Logtalk version.
 
 Logtalk version 2.32.1 changes representation of loaded entities therefore 
 implying recompilation of all source files.
+
+Logtalk version 2.32.2 changes the internal predicate used in the processing 
+of "super" calls, therefore implying the recompilation o objects that use the 
+corresponding control construct.
