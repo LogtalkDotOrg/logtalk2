@@ -9293,7 +9293,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Ptc2, _, _) ->
 		Head =.. [PDcl1, Alias, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn],
 		Rename =.. [PRnm, Ptc2, Pred, Alias],
-		assertz('$lgt_pp_dcl_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
 	;	Head =.. [PDcl1, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
@@ -9359,7 +9359,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Ptc, _, _) ->
 		Head =.. [CDcl, Alias, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn],
 		Rename =.. [PRnm, Ptc, Pred, Alias],
-		assertz('$lgt_pp_dcl_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
 	;	Head =.. [CDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
@@ -9384,7 +9384,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Ctg, _, _) ->
 		Head =.. [CDcl, Alias, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn],
 		Rename =.. [PRnm, Ctg, Pred, Alias],
-		assertz('$lgt_pp_dcl_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
 	;	Head =.. [CDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
@@ -9435,7 +9435,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Ctg2, _, _) ->
 		Head =.. [Def, Alias, Sender, This, Self, Call, Ctn],
 		Rename =.. [PRnm, Ctg2, Pred, Alias],
-		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- Rename, Lookup)))
 	;	Head =.. [Def, Pred, Sender, This, Self, Call, Ctn],
 		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
@@ -9514,7 +9514,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Ptc, _, _) ->
 		Head =.. [ODcl, Alias, Scope, Compilation, Meta, NonTerminal, Synchronized, Obj, Ctn],
 		Rename =.. [PRnm, Ptc, Pred, Alias],
-		assertz('$lgt_pp_dcl_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
 	;	Head =.. [ODcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Obj, Ctn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
@@ -9539,7 +9539,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Ctg, _, _) ->
 		Head =.. [ODcl, Alias, Scope, Compilation, Meta, NonTerminal, Synchronized, Obj, Ctn],
 		Rename =.. [PRnm, Ctg, Pred, Alias],
-		assertz('$lgt_pp_dcl_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
 	;	Head =.. [ODcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Obj, Ctn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
@@ -9569,7 +9569,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Parent, _, _) ->
 		Head =.. [ODcl, Alias, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn],
 		Rename =.. [PRnm, Parent, Pred, Alias],
-		assertz('$lgt_pp_dcl_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
 	;	Head =.. [ODcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
@@ -9612,7 +9612,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Ctg, _, _) ->
 		Head =.. [ODef, Alias, Sender, Obj, Self, Call, Ctn],
 		Rename =.. [PRnm, Ctg, Pred, Alias],
-		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- Rename, Lookup)))
 	;	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
 		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
@@ -9634,7 +9634,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Parent, _, _) ->
 		Head =.. [ODef, Alias, Sender, Obj, Self, Call, Ctn],
 		Rename =.. [PRnm, Parent, Pred, Alias],
-		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- Rename, Lookup)))
 	;	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
 		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
@@ -9663,7 +9663,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Parent, _, _) ->
 		Head =.. [OSuper, Alias, Sender, Obj, Self, Call, Ctn],
 		Rename =.. [PRnm, Parent, Pred, Alias],
-		assertz('$lgt_pp_super_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_super_'((Head :- Rename, Lookup)))
 	;	Head =.. [OSuper, Pred, Sender, Obj, Self, Call, Ctn],
 		assertz('$lgt_pp_super_'((Head:-Lookup)))
 	),
@@ -9711,7 +9711,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Class, _, _) ->
 		Head =.. [ODcl, Alias, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn],
 		Rename =.. [PRnm, Class, Pred, Alias],
-		assertz('$lgt_pp_dcl_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
 	;	Head =.. [ODcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
@@ -9760,7 +9760,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Ptc, _, _) ->
 		Head =.. [OIDcl, Alias, Scope, Compilation, Meta, NonTerminal, Synchronized, Obj, Ctn],
 		Rename =.. [PRnm, Ptc, Pred, Alias],
-		assertz('$lgt_pp_dcl_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
 	;	Head =.. [OIDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Obj, Ctn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
@@ -9785,7 +9785,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Ctg, _, _) ->
 		Head =.. [OIDcl, Alias, Scope, Compilation, Meta, NonTerminal, Synchronized, Obj, Ctn],
 		Rename =.. [PRnm, Ctg, Pred, Alias],
-		assertz('$lgt_pp_dcl_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
 	;	Head =.. [OIDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Obj, Ctn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
@@ -9815,7 +9815,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Super, _, _) ->
 		Head =.. [CIDcl, Alias, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn],
 		Rename =.. [PRnm, Super, Pred, Alias],
-		assertz('$lgt_pp_dcl_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
 	;	Head =.. [CIDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
@@ -9859,7 +9859,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Ctg, _, _) ->
 		Head =.. [ODef, Alias, Sender, Obj, Self, Call, Ctn],
 		Rename =.. [PRnm, Ctg, Pred, Alias],
-		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- Rename, Lookup)))
 	;	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
 		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
@@ -9881,7 +9881,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Class, _, _) ->
 		Head =.. [ODef, Alias, Sender, Obj, Self, Call, Ctn],
 		Rename =.. [PRnm, Class, Pred, Alias],
-		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- Rename, Lookup)))
 	;	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
 		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
@@ -9919,7 +9919,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Ctg, _, _) ->
 		Head =.. [OIDef, Alias, Sender, Obj, Self, Call, Ctn],
 		Rename =.. [PRnm, Ctg, Pred, Alias],
-		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- Rename, Lookup)))
 	;	Head =.. [OIDef, Pred, Sender, Obj, Self, Call, Ctn],
 		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
@@ -9941,7 +9941,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Super, _, _) ->
 		Head =.. [CIDef, Alias, Sender, Class, Self, Call, Ctn],
 		Rename =.. [PRnm, Super, Pred, Alias],
-		assertz('$lgt_pp_fdef_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_fdef_'((Head :- Rename, Lookup)))
 	;	Head =.. [CIDef, Pred, Sender, Class, Self, Call, Ctn],
 		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	),
@@ -9971,7 +9971,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Class, _, _) ->
 		Head =.. [OSuper, Alias, Sender, Obj, Obj, Call, Ctn],
 		Rename =.. [PRnm, Class, Pred, Alias],
-		assertz('$lgt_pp_super_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_super_'((Head :- Rename, Lookup)))
 	;	Head =.. [OSuper, Pred, Sender, Obj, Obj, Call, Ctn],
 		assertz('$lgt_pp_super_'((Head:-Lookup)))
 	),
@@ -9987,7 +9987,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	(	'$lgt_pp_alias_'(Super, _, _) ->
 		Head =.. [CSuper, Alias, Sender, Class, Self, Call, Ctn],
 		Rename =.. [PRnm, Super, Pred, Alias],
-		assertz('$lgt_pp_super_'((Head :- var(Alias) -> Lookup, Rename; Rename, Lookup)))
+		assertz('$lgt_pp_super_'((Head :- Rename, Lookup)))
 	;	Head =.. [CSuper, Pred, Sender, Class, Self, Call, Ctn],
 		assertz('$lgt_pp_super_'((Head:-Lookup)))
 	),

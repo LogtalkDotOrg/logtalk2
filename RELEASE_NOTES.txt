@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.32.2 - July ??, 2008
 
+    Simplified and optimized handling of predicate aliases when looking up 
+    predicate declarations and predicate definitions.
+
     Optimized the implementation of the ^^/1 control construct. The Logtalk 
     compiler now requires an instantiated, callable argument that must have 
     the same functor and arity of the predicate being (re)defined.
