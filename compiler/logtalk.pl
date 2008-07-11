@@ -4841,6 +4841,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	retractall('$lgt_obj_lookup_cache_'(_, _, _, _)),
 	retractall('$lgt_self_lookup_cache_'(_, _, _, _)),
 	retractall('$lgt_super_lookup_cache_'(_, _, _, _, _)),
+	retractall('$lgt_super_lookup_cache_'(_, _, _, _, _, _)),
 	retractall('$lgt_db_lookup_cache_'(_, _, _, _, _)).
 
 
@@ -4853,6 +4854,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	retractall('$lgt_obj_lookup_cache_'(_, Pred, _, _)),
 	retractall('$lgt_self_lookup_cache_'(_, Pred, _, _)),
 	retractall('$lgt_super_lookup_cache_'(_, Pred, _, _, _)),
+	retractall('$lgt_super_lookup_cache_'(_, Pred, _, _, _, _)),
 	retractall('$lgt_db_lookup_cache_'(_, Pred, _, _, _)).
 
 
