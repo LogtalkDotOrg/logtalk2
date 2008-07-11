@@ -25,26 +25,17 @@
 
 <pre>^^Predicate</pre>
 <p>
-Calls a redefined/inherited predicate definition. This control construct may be used within objects (or categories) in the body of a predicate definition. The argument should match a public or protected predicate of <a class="glossary" title="Go to glossary definition" href="../../glossary.html#self"><em>self</em></a> or be within the scope of <a class="glossary" title="Go to glossary definition" href="../../glossary.html#this"><em>this</em></a>. When used within a category, the lookup for the overrided predicate definition is restricted to the extended categories. 
+Calls an inherited predicate definition. The call fails if there is no inherited predicate definition. This control construct may be used within objects (or categories) in the body of a predicate definition. When used within a category, the lookup for the overrided predicate definition is restricted to the extended categories. 
 </p>
 
 <h4>Template and modes</h4>
 
-<pre>^^+message</pre>
+<pre>^^+callable</pre>
 
 <h4>Errors</h4>
 
 <dl>
-	<dt>Predicate is a variable:</dt>
-		<dd><code>instantiation_error</code></dd>
-	<dt>Predicate is not a callable term:</dt>
-		<dd><code>type_error(callable, Predicate)</code></dd>
-	<dt>Predicate is declared private:</dt>
-		<dd><code>permission_error(access, private_predicate, Predicate)</code></dd>
-	<dt>Predicate is not declared:</dt>
-		<dd><code>existence_error(predicate_declaration, Predicate)</code></dd>
-	<dt>Container of the inherited predicate definition is the same object that contains the <code>^^/1</code> call:</dt>
-		<dd><code>endless_loop(Predicate)</code></dd>
+	<dt>(none)</dt>
 </dl>
 
 <h4>Examples</h4>
