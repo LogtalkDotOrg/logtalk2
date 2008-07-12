@@ -1979,6 +1979,31 @@ current_logtalk_flag(version, version(2, 32, 2)).
 
 
 
+% '$lgt_filter_scope'(+nonvar, -nonvar)
+%
+% filters predicate scope;
+% used in the implementation of protected-qualified relations between entities:
+% public predicates become protected predicates, protected and private predicates
+% are unaffected
+
+'$lgt_filter_scope'(p(_), p(p)).
+'$lgt_filter_scope'(p, p).
+
+
+
+% '$lgt_set_scope_container'(+nonvar, +object_identifier, +object_identifier, +object_identifier)
+%
+% sets predicate scope container;
+% used in the implementation of private-qualified relations between entities:
+% when the predicate is public or protected, the object inheriting the predicate
+% becomes the scope container; when the predicate is private, the scope container
+% is the inherited scope container
+
+'$lgt_set_scope_container'(p(_), _, SCtn, SCtn).
+'$lgt_set_scope_container'(p, SCtn, _, SCtn).
+
+
+
 % '$lgt_alias_pred'(+object_identifier, +atom, +callable, -callable)
 %
 % finds the predicate pointed by an alias
@@ -9285,7 +9310,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 		Lookup =.. [PDcl2, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn]
 	;	EntityScope == protected ->
 		Call =.. [PDcl2, Pred, Scope2, Compilation, Meta, NonTerminal, Synchronized, Ctn],
-		Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
 		Lookup =.. [PDcl2, Pred, _, Compilation, Meta, NonTerminal, Synchronized, Ctn]
 	),
@@ -9350,7 +9375,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn]
 	;	EntityScope == protected ->
 		Call =.. [PDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Synchronized, Ctn],
-		Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
 		Lookup =.. [PDcl, Pred, _, Compilation, Meta, NonTerminal, Synchronized, Ctn]
 	),
@@ -9374,7 +9399,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 		Lookup =.. [ECDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn]
 	;	EntityScope == protected ->
 		Call =.. [ECDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Synchronized, Ctn],
-		Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
 		Lookup =.. [ECDcl, Pred, _, Compilation, Meta, NonTerminal, Synchronized, Ctn]
 	),
@@ -9502,7 +9527,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn]
 	;	EntityScope == protected ->
 		Call =.. [PDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Synchronized, Ctn],
-		Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
 		Lookup =.. [PDcl, Pred, _, Compilation, Meta, NonTerminal, Synchronized, Ctn]
 	),
@@ -9526,7 +9551,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 		Lookup =.. [CDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn]
 	;	EntityScope == protected ->
 		Call =.. [CDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Synchronized, Ctn],
-		Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
 		Lookup =.. [CDcl, Pred, _, Compilation, Meta, NonTerminal, Synchronized, Ctn]
 	),
@@ -9554,10 +9579,10 @@ current_logtalk_flag(version, version(2, 32, 2)).
 		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn]
 	;	EntityScope == protected ->
 		Call =.. [PDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn],
-		Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
 		Call =.. [PDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Synchronized, SCtn2, TCtn],
-		Lookup = (Call, (Scope2 == p -> SCtn = SCtn2; SCtn = Obj))
+		Lookup = (Call, '$lgt_set_scope_container'(Scope2, SCtn2, Obj, SCtn))
 	),
 	(	'$lgt_pp_alias_'(Parent, _, _) ->
 		Head =.. [ODcl, Alias, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn],
@@ -9695,10 +9720,10 @@ current_logtalk_flag(version, version(2, 32, 2)).
 		Lookup =.. [CIDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn]
 	;	EntityScope == protected ->
 		Call =.. [CIDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn],
-		Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
 		Call =.. [CIDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Synchronized, SCtn2, TCtn],
-		Lookup = (Call, (Scope2 == p -> SCtn = SCtn2; SCtn = Obj))
+		Lookup = (Call, '$lgt_set_scope_container'(Scope2, SCtn2, Obj, SCtn))
 	),
 	(	'$lgt_pp_alias_'(Class, _, _) ->
 		Head =.. [ODcl, Alias, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn],
@@ -9744,7 +9769,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn]
 	;	EntityScope == protected ->
 		Call =.. [PDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Synchronized, Ctn],
-		Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
 		Lookup =.. [PDcl, Pred, _, Compilation, Meta, NonTerminal, Synchronized, Ctn]
 	),
@@ -9768,7 +9793,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 		Lookup =.. [CDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn]
 	;	EntityScope == protected ->
 		Call =.. [CDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Synchronized, Ctn],
-		Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
 		Lookup =.. [CDcl, Pred, _, Compilation, Meta, NonTerminal, Synchronized, Ctn]
 	),
@@ -9796,10 +9821,10 @@ current_logtalk_flag(version, version(2, 32, 2)).
 		Lookup =.. [SIDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn]
 	;	EntityScope == protected ->
 		Call =.. [SIDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn],
-		Lookup = (Call, (Scope2 == p -> Scope = p; Scope = p(p)))
+		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
 		Call =.. [SIDcl, Pred, Scope2, Compilation, Meta, NonTerminal, Synchronized, SCtn2, TCtn],
-		Lookup = (Call, (Scope2 == p -> SCtn = SCtn2; SCtn = Obj))
+		Lookup = (Call, '$lgt_set_scope_container'(Scope2, SCtn2, Obj, SCtn))
 	),
 	(	'$lgt_pp_alias_'(Super, _, _) ->
 		Head =.. [CIDcl, Alias, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn],

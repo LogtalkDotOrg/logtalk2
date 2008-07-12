@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.32.2 - July ??, 2008
 
+    Simplified the predicate linking clauses generated when compiling private 
+    and protected entity relations, resulting in a small runtime performance 
+    improvement when looking up non-cached predicate declarations.
+
     Simplified and optimized handling of predicate aliases when looking up 
     predicate declarations and predicate definitions.
 
