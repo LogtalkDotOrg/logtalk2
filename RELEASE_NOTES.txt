@@ -28,9 +28,11 @@ RELEASE NOTES
 
     Allow the ^^/1 control construct to be used within extended categories.
     Updated the "engines" example to illustrates this new functionality.
-    Improved the runtime error checking for those rare cases where the 
-    argument of the ^^/1 control construct is not instantiated at compile 
-    time.
+
+    Moved support for categories that complement existing objects from the 
+    code generated when compiling objects to the Logtalk runtime, making the 
+    implementation of this feature easier to maintain and contributing to 
+    smaller code sizes of the intermediate Prolog files.
 
 
 2.32.1 - July 7, 2008

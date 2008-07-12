@@ -15,6 +15,15 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ...
 
 
+% find categories that complement objects:
+
+| ?- complements_object(Category, Object).
+Category = logging,
+Object = employee.
+
+yes 
+
+
 % use the event handler defined in the "logging" category for the object "employee":
 
 | ?- employee::name(Name).

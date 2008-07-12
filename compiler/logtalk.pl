@@ -38,12 +38,12 @@
 :- op(200, fy, -).		% output argument (not instantiated)
 
 
-% bitwise left-shift operator (used as a predicate for unit test context-switching)
+% bitwise left-shift operator (used for unit test context-switching)
 
 :- op(400, yfx, <<).
 
 
-% imported/inherited predicate call operator
+% imported category predicate call operator
 
 :- op(600,  fy,  :).
 
@@ -1969,7 +1969,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 
 
 
-% '$lgt_scope'(?atom, ?term).
+% '$lgt_scope'(?atom, ?nonvar).
 %
 % converts between user and system scope terms
 
@@ -3212,6 +3212,31 @@ current_logtalk_flag(version, version(2, 32, 2)).
 		)
 	;	throw(error(existence_error(predicate_declaration, Alias), ':'(Alias), This))
 	).
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  support for categories that complement objects
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+% lookup predicate declarations in any category that complements the given object
+
+'$lgt_complemented_object'(This, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn) :-
+	'$lgt_complemented_object_'(This, _, Dcl, _),
+	call_with_args(Dcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn).
+
+
+
+% lookup predicate definitions in any category that complements the given object
+
+'$lgt_complemented_object'(Pred, Sender, This, Self, Call, Ctn) :-
+	'$lgt_complemented_object_'(This, _, _, Def),
+	call_with_args(Def, Pred, Sender, This, Self, Call, Ctn).
 
 
 
@@ -9567,7 +9592,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_gen_prototype_imports_dcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, ODcl, _, _, _, _, _, _, _, _),
 	Head =.. [ODcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Obj, Ctn],
-	Lookup = ('$lgt_complemented_object_'(Obj, _, CDcl, _), call_with_args(CDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn)),
+	Lookup = '$lgt_complemented_object'(Obj, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn),
 	assertz('$lgt_pp_dcl_'((Head:-Lookup))).
 
 
@@ -9639,7 +9664,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_gen_prototype_imports_def_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, _, _),
 	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-	Lookup = ('$lgt_complemented_object_'(Obj, _, _, CDef), call_with_args(CDef, Pred, Sender, Obj, Self, Call, Ctn)),
+	Lookup = '$lgt_complemented_object'(Pred, Sender, Obj, Self, Call, Ctn),
 	assertz('$lgt_pp_fdef_'((Head:-Lookup))).
 
 
@@ -9809,7 +9834,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_gen_ic_category_idcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, OIDcl, _, _, _, _, _),
 	Head =.. [OIDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Obj, Ctn],
-	Lookup = ('$lgt_complemented_object_'(Obj, _, CDcl, _), call_with_args(CDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn)),
+	Lookup = '$lgt_complemented_object'(Obj, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn),
 	assertz('$lgt_pp_dcl_'((Head:-Lookup))).
 
 
@@ -9882,7 +9907,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_gen_ic_imports_def_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, _, _),
 	Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-	Lookup = ('$lgt_complemented_object_'(Obj, _, _, CDef), call_with_args(CDef, Pred, Sender, Obj, Self, Call, Ctn)),
+	Lookup = '$lgt_complemented_object'(Pred, Sender, Obj, Self, Call, Ctn),
 	assertz('$lgt_pp_fdef_'((Head:-Lookup))).
 
 
@@ -9942,7 +9967,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_gen_ic_category_idef_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, _, OIDef, _, _, _, _),
 	Head =.. [OIDef, Pred, Sender, Obj, Self, Call, Ctn],
-	Lookup = ('$lgt_complemented_object_'(Obj, _, _, CDef), call_with_args(CDef, Pred, Sender, Obj, Self, Call, Ctn)),
+	Lookup = '$lgt_complemented_object'(Pred, Sender, Obj, Self, Call, Ctn),
 	assertz('$lgt_pp_fdef_'((Head:-Lookup))).
 
 
