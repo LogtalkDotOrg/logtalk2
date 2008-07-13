@@ -41,6 +41,9 @@ RELEASE NOTES
     to "supported" and "unsupported" for consistency with other read-only 
     compiler flags.
 
+    Updated the SWI-Prolog config file to set the Prolog flag "optimise" to 
+    true.
+
 
 2.32.1 - July 7, 2008
 
