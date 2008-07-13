@@ -172,10 +172,6 @@ yes</pre>
 			<dd>Allows message sending calls to be compiled with event-driven programming support turned off in order to improve performance. Possible option values are <code>on</code> and <code>off</code> (the usual default). Objects (and categories) compiled with this option set to <code>off</code> use optimized code for message-sending calls that does not trigger events. As such, this option can be used on a per-object (or per-category) basis. Note that turning on this option is of no consequence for objects and categories already compiled and loaded.</dd>
 	</dl>
 	<dl>
-		<dt><code>mutable(Option)</code></dt>
-			<dd>Allows objects to be compiled non-mutable. Possible option values are <code>on</code> (the usual default) and <code>off</code>. Objects compiled with this option set to <code>off</code> are optimized for predicate lookup performance and for memory footprint.</dd>
-	</dl>
-	<dl>
 		<dt><code>reload(Option)</code></dt>
 			<dd>Defines the reloading behavior for source files. Possible option values are <code>skip</code> (skip loading of already loaded files) and <code>always</code> (always reload files; the usual default). This option must not be used when recompiling source files in debug mode (see <code>debug/1</code> option above).</dd>
 	</dl>
@@ -518,7 +514,7 @@ The Logtalk compiler automatically removes any redundant calls to the built-in p
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: July 13, 2008</span>
+		<span>Last updated on: April 21, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="installing.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="programming.html">next</a></span><br/>
