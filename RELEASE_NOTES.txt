@@ -15,6 +15,12 @@ RELEASE NOTES
 
 2.32.2 - July ??, 2008
 
+    Added a new optimization compiler flag, "mutable", that allows objects to 
+    be compiled non-mutable, preventing the dynamic declaration and definition
+    of new predicates and the use of the built-in database methods to change 
+    object state. Setting this flag to "off" allows the Logtalk compiler to 
+    generate more compact and efficient code for non-mutable objects.
+
     Simplified the predicate linking clauses generated when compiling private 
     and protected entity relations, resulting in a small runtime performance 
     improvement when looking up non-cached predicate declarations.
