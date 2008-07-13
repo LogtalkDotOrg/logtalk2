@@ -34,6 +34,10 @@ RELEASE NOTES
     implementation of this feature easier to maintain and contributing to 
     smaller code sizes of the intermediate Prolog files.
 
+    Changed the valid values of the read-only compiler flag "break_predicate"
+    to "supported" and "unsupported" for consistency with other read-only 
+    compiler flags.
+
 
 2.32.1 - July 7, 2008
 

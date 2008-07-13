@@ -3922,7 +3922,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	fail.
 
 '$lgt_dbg_do_port_option'(b, _, _, _, _, _) :-
-	(	'$lgt_compiler_flag'(break_predicate, true) ->
+	(	'$lgt_compiler_flag'(break_predicate, supported) ->
 		'$lgt_dbg_suspend'(Tracing),
 		break,
 		'$lgt_dbg_resume'(Tracing)

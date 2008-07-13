@@ -207,5 +207,6 @@ Logtalk version 2.32.1 changes representation of loaded entities therefore
 implying recompilation of all source files.
 
 Logtalk version 2.32.2 changes the internal predicate used in the processing 
-of "super" calls and changes the implementation of complementing categories, 
+of "super" calls, changes the implementation of complementing categories, and 
+changes the possible values of the read-only compiler flag "break_predicate",
 therefore implying the recompilation of all objects.
