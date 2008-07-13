@@ -2170,8 +2170,8 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_asserta_rule_chk'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
 	(	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Type, _, _) ->
 		(	Type \== immutable ->
-			'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope),
-			(	Type == (dynamic) ->
+			'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Compilation, Meta, SCtn, DclScope),
+			(	Compilation == (dynamic) ->
 				(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
 					'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, _),
 					'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
@@ -2274,8 +2274,8 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_assertz_rule_chk'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
 	(	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Type, _, _) ->
 		(	Type \== immutable ->
-			'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope),
-			(	Type == (dynamic) ->
+			'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Compilation, Meta, SCtn, DclScope),
+			(	Compilation == (dynamic) ->
 				(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 					'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, _),
 					'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
@@ -2309,8 +2309,8 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_assertz_fact_chk'(Obj, Head, Sender, TestScope, DclScope) :-
 	(	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Type, _, _) ->
 		(	Type \== immutable ->
-			'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope),
-			(	Type == (dynamic) ->
+			'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Compilation, _, SCtn, DclScope),
+			(	Compilation == (dynamic) ->
 				(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 					'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, Update),
 					(	'$lgt_debugging_'(Obj) ->
@@ -2408,8 +2408,8 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_clause_chk'(Obj, Head, Body, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, _, _, _),
 	!,
-	(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
-		(	Type == (dynamic) ->
+	(	call_with_args(Dcl, Head, PScope, Compilation, _, _, _, SCtn, _) ->
+		(	Compilation == (dynamic) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 				(	(call_with_args(DDef, Head, _, _, _, Call); call_with_args(Def, Head, _, _, _, Call)) ->
 					clause(Call, TBody),
@@ -2481,8 +2481,8 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_retract_var_body_chk'(Obj, (Head:-Body), Sender, Scope) :-
 	(	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, Type, _, _) ->
 		(	Type \== immutable ->
-			(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
-				(	Type == (dynamic) ->
+			(	call_with_args(Dcl, Head, PScope, Compilation, _, _, _, SCtn, _) ->
+				(	Compilation == (dynamic) ->
 					(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 						(	call_with_args(DDef, Head, _, _, _, Call) ->
 							retract((Call :- TBody)),
@@ -2533,8 +2533,8 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_retract_rule_chk'(Obj, (Head:-Body), Sender, Scope) :-
 	(	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, Type, _, _) ->
 		(	Type \== immutable ->
-			(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
-				(	Type == (dynamic) ->
+			(	call_with_args(Dcl, Head, PScope, Compilation, _, _, _, SCtn, _) ->
+				(	Compilation == (dynamic) ->
 					(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 						(	call_with_args(DDef, Head, _, _, _, Call) ->
 							retract((Call :- ('$lgt_nop'(Body), _))),
@@ -2573,8 +2573,8 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_retract_fact_chk'(Obj, Head, Sender, Scope) :-
 	(	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, Type, _, _) ->
 		(	Type \== immutable ->
-			(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
-				(	Type == (dynamic) ->
+			(	call_with_args(Dcl, Head, PScope, Compilation, _, _, _, SCtn, _) ->
+				(	Compilation == (dynamic) ->
 					(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 						(	call_with_args(DDef, Head, _, _, _, Call) ->
 							(	'$lgt_debugging_'(Obj) ->
@@ -2639,8 +2639,8 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_retractall_chk'(Obj, Head, Sender, Scope) :-
 	(	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, Type, _, _) ->
 		(	Type \== immutable ->
-			(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
-				(	Type == (dynamic) ->
+			(	call_with_args(Dcl, Head, PScope, Compilation, _, _, _, SCtn, _) ->
+				(	Compilation == (dynamic) ->
 					(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 						(	call_with_args(DDef, Head, _, _, _, Call) ->
 							retractall(Call),
