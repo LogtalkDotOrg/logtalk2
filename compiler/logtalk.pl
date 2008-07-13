@@ -2318,12 +2318,12 @@ current_logtalk_flag(version, version(2, 32, 2)).
 			)
 		;	% predicate is not within the scope of the sender:
 			(	Scope == p ->
-				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta(Head), Sender))
-			;	throw(error(permission_error(modify, protected_predicate, Head), Obj::asserta(Head), Sender))
+				throw(error(permission_error(modify, private_predicate, Head), Obj::assertz(Head), Sender))
+			;	throw(error(permission_error(modify, protected_predicate, Head), Obj::assertz(Head), Sender))
 			)
 		)
 	;	% predicate is static:
-		throw(error(permission_error(modify, static_predicate, Head), Obj::asserta(Head), Sender))
+		throw(error(permission_error(modify, static_predicate, Head), Obj::assertz(Head), Sender))
 	).
 
 '$lgt_assertz_fact_chk'(Obj, Head, Sender, _, _) :-

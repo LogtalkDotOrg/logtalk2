@@ -34,6 +34,9 @@ RELEASE NOTES
     implementation of this feature easier to maintain and contributing to 
     smaller code sizes of the intermediate Prolog files.
 
+	Corrected a typo in the exception terms throw by the built-in method 
+	assertz/1 when an error occurs while trying to assert a fact.
+
     Changed the valid values of the read-only compiler flag "break_predicate"
     to "supported" and "unsupported" for consistency with other read-only 
     compiler flags.
