@@ -15,9 +15,10 @@ RELEASE NOTES
 
 2.32.2 - July ??, 2008
 
-    Simplified the predicate linking clauses generated when compiling private 
-    and protected entity relations, resulting in a small runtime performance 
-    improvement when looking up non-cached predicate declarations.
+    Simplified the predicate lookup linking clauses that are generated when 
+    compiling private and protected entity relations, resulting in a small 
+    runtime performance improvement when looking up non-cached predicate 
+    declarations.
 
     Simplified and optimized handling of predicate aliases when looking up 
     predicate declarations and predicate definitions.
@@ -27,7 +28,7 @@ RELEASE NOTES
     the same functor and arity of the predicate being (re)defined.
 
     Allow the ^^/1 control construct to be used within extended categories.
-    Updated the "engines" example to illustrates this new functionality.
+    Updated the "engines" example to illustrate this new functionality.
 
     Moved support for categories that complement existing objects from the 
     code generated when compiling objects to the Logtalk runtime, making the 
