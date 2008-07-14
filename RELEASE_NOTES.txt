@@ -38,6 +38,12 @@ RELEASE NOTES
 	Corrected a typo in the exception terms throw by the built-in method 
 	assertz/1 when an error occurs while trying to assert a fact.
 
+    Restored the redefined entity warnings for back-end Prolog compilers 
+    that support multifile predicates (broken in the final version of 2.32.1).
+
+    Changed the format of the Logtalk compiler informative messages for 
+    better readability.
+
     Changed the valid values of the read-only compiler flag "break_predicate"
     to "supported" and "unsupported" for consistency with other read-only 
     compiler flags.
