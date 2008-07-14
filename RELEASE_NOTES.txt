@@ -43,7 +43,7 @@ RELEASE NOTES
     compiler flags.
 
     Updated the SWI-Prolog config file to set the Prolog flag "optimise" to 
-    true.
+    true. Added declaration for the setup_and_call_cleanup/3 meta-predicate.
 
 
 2.32.1 - July 7, 2008
