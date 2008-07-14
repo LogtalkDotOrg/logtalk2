@@ -44,7 +44,8 @@ RELEASE NOTES
 
     Updated the SWI-Prolog config file to set the Prolog flag "optimise" to 
     true. Added declaration for the setup_and_call_cleanup/3 meta-predicate.
-    Oldest SWI-Prolog compatible version is now 5.6.44.
+    Removed setting of the deprecated "prompt_alternatives_no_bindings" 
+    Prolog flag. Oldest SWI-Prolog compatible version is now 5.6.44.
 
 
 2.32.1 - July 7, 2008
