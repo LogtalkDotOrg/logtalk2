@@ -44,6 +44,10 @@ RELEASE NOTES
     Changed the format of the Logtalk compiler informative messages for 
     better readability.
 
+    Corrected a bug in the config files hooks used in handling proprietary 
+    Prolog directives for the SWI-Prolog, B-Prolog YAP, SICStus, and XSB 
+    Prolog compilers.
+
     Added a new internal predicate for constructing predicate indicators for 
     compiled entity predicates that simplifies the config files hooks used in  
     handling proprietary Prolog directives.
