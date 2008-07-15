@@ -2345,7 +2345,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 
 % get or set (if doesn't exist) the compiled call for an asserted predicate
 
-'$lgt_assert_pred_def'(Obj, Def, DDef, EntityPrefix, Head, GSender, GThis, GSelf, Call, NeedsUpdate) :-
+'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, Call, NeedsUpdate) :-
 	(	% if a definition lookup entry alread exists on the object...
 		call_with_args(Def, Head, GSender, GThis, GSelf, Call, Obj) ->	
 		(	% then check if it's a dynamic one that implies an update goal...
@@ -2357,10 +2357,10 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	;	% else no definition lookup entry exists; construct and assert a dynamic one...
 		functor(Head, Functor, Arity),
 		functor(GHead, Functor, Arity),
-		'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
+		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
 		GHead =.. [_| GArgs],
 		'$lgt_append'(GArgs, [GSender, GThis, GSelf], TArgs),
-		THead =.. [PredPrefix| TArgs],
+		THead =.. [TFunctor| TArgs],
 		DDefClause =.. [DDef, GHead, GSender, GThis, GSelf, THead],
 		assertz(DDefClause),
 		'$lgt_clean_lookup_caches'(GHead),
@@ -7404,12 +7404,12 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	!,
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
-	'$lgt_ctx_ctx'(Ctx, Head, Sender, This, Self, EntityPrefix, MetaVars, _),
+	'$lgt_ctx_ctx'(Ctx, Head, Sender, This, Self, Prefix, MetaVars, _),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
-	'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
+	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
 	(	'$lgt_pp_synchronized_'(Pred, _), Functor/Arity \= Head ->
-		atom_concat(PredPrefix, '_sync', MPrefix)
-	;	MPrefix = PredPrefix
+		atom_concat(TFunctor, '_sync', STFunctor)
+	;	STFunctor = TFunctor
 	),
 	(	MetaVars == [] ->
 		% we're not compiling a clause to a meta-predicate, thus we have a local call
@@ -7429,12 +7429,12 @@ current_logtalk_flag(version, version(2, 32, 2)).
 		'$lgt_append'(Args, [MetaVars, Sender, This, Self], TArgs2),
 		DArgs2 = TArgs2
 	),
-	TPred =.. [MPrefix| TArgs2],
-	DPred =.. [MPrefix| DArgs2],
-	Arity4 is Arity + 4,
+	TPred =.. [STFunctor| TArgs2],
+	DPred =.. [STFunctor| DArgs2],
+	TArity is Arity + 4,
 	(	'$lgt_pp_calls_pred_'(Functor, Arity, _, _) ->
 		true
-	;	assertz('$lgt_pp_calls_pred_'(Functor, Arity, MPrefix, Arity4))
+	;	assertz('$lgt_pp_calls_pred_'(Functor, Arity, STFunctor, TArity))
 	).
 
 
@@ -7443,19 +7443,19 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, DbgCtx), Ctx) :-
 	Pred =.. [Functor| Args],
 	functor(Pred, Functor, Arity),
-	'$lgt_ctx_ctx'(Ctx, Head, Sender, This, Self, EntityPrefix, _, _),
+	'$lgt_ctx_ctx'(Ctx, Head, Sender, This, Self, Prefix, _, _),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
-	'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
+	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
 	(	'$lgt_pp_synchronized_'(Pred, _), Functor/Arity \= Head ->
-		atom_concat(PredPrefix, '_sync', MPrefix)
-	;	MPrefix = PredPrefix
+		atom_concat(TFunctor, '_sync', STFunctor)
+	;	STFunctor = TFunctor
 	),
-	'$lgt_append'(Args, [Sender, This, Self], Args2),
-	TPred =.. [MPrefix| Args2],
-	Arity3 is Arity + 3,
+	'$lgt_append'(Args, [Sender, This, Self], TArgs),
+	TPred =.. [STFunctor| TArgs],
+	TArity is Arity + 3,
 	(	'$lgt_pp_calls_pred_'(Functor, Arity, _, _) ->
 		true
-	;	assertz('$lgt_pp_calls_pred_'(Functor, Arity, MPrefix, Arity3))
+	;	assertz('$lgt_pp_calls_pred_'(Functor, Arity, STFunctor, TArity))
 	).
 
 
@@ -7616,10 +7616,10 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	;	'$lgt_pp_private_'(Functor, Arity)
 	), !,
 	Pred2 =.. [Functor| Args],
-	'$lgt_ctx_ctx'(Ctx, _, _, _, _, EntityPrefix, _, _),
-	'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
-	'$lgt_append'(Args, [_, _, _], Args2),
-	TPred =.. [PredPrefix| Args2].
+	'$lgt_ctx_ctx'(Ctx, _, _, _, _, Prefix, _, _),
+	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
+	'$lgt_append'(Args, [_, _, _], TArgs),
+	TPred =.. [TFunctor| TArgs].
 
 
 
@@ -8485,6 +8485,40 @@ current_logtalk_flag(version, version(2, 32, 2)).
 %
 % remove redundant calls to true/0 from a translated clause body
 
+'$lgt_simplify_body'(B, B) :-
+	var(B),
+	!.
+
+'$lgt_simplify_body'(catch(G, E, R), catch(SG, E, SR)) :-
+	!,
+	'$lgt_simplify_body'(G, SG),
+	'$lgt_simplify_body'(R, SR).
+
+'$lgt_simplify_body'(call(G), call(SG)) :-
+	!,
+	'$lgt_simplify_body'(G, SG).
+
+'$lgt_simplify_body'(once(G), once(SG)) :-
+	!,
+	'$lgt_simplify_body'(G, SG).
+
+'$lgt_simplify_body'(bagof(T, G, L), bagof(T, SG, L)) :-
+	!,
+	'$lgt_simplify_body'(G, SG).
+
+'$lgt_simplify_body'(setof(T, G, L), setof(T, SG, L)) :-
+	!,
+	'$lgt_simplify_body'(G, SG).
+
+'$lgt_simplify_body'(findall(T, G, L), findall(T, SG, L)) :-
+	!,
+	'$lgt_simplify_body'(G, SG).
+
+'$lgt_simplify_body'(forall(G, T), forall(SG, ST)) :-
+	!,
+	'$lgt_simplify_body'(G, SG),
+	'$lgt_simplify_body'(T, ST).
+
 '$lgt_simplify_body'((A;B), (SA;SB)) :-
 	!,
 	'$lgt_simplify_body'(A, SA),
@@ -8957,7 +8991,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	functor(HeadTemplate, Functor, Arity),
 	HeadTemplate =.. [_| HeadTemplateArgs],
 	Head =.. [_| HeadArgs],
-	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, EntityPrefix, _, MetaCallCtx),
+	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, Prefix, _, MetaCallCtx),
 	(	'$lgt_pp_meta_predicate_'(Meta) ->
 		'$lgt_pred_meta_vars'(HeadTemplate, Meta, MetaVars),
 		'$lgt_append'(HeadTemplateArgs, [MetaVars, Sender2, This2, Self2], HeadTemplateArgsDef),
@@ -8965,9 +8999,9 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	;	'$lgt_append'(HeadTemplateArgs, [Sender2, This2, Self2], HeadTemplateArgsDef),
 		'$lgt_append'(HeadArgs, [Sender, This, Self], HeadArgsDef)
 	),
-	'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
-	HeadTemplateDef =.. [PredPrefix| HeadTemplateArgsDef],
-	HeadDef =.. [PredPrefix| HeadArgsDef],
+	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
+	HeadTemplateDef =.. [TFunctor| HeadTemplateArgsDef],
+	HeadDef =.. [TFunctor| HeadArgsDef],
 	(	'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _) ->
 		true
 	;	'$lgt_pp_category_'(_, _, _, Def, _, _)
@@ -9001,7 +9035,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	functor(HeadTemplate, Functor, Arity),
 	HeadTemplate =.. [_| HeadTemplateArgs],
 	Head =.. [_| HeadArgs],
-	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, EntityPrefix, _, MetaCallCtx),
+	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, Prefix, _, MetaCallCtx),
 	(	'$lgt_pp_meta_predicate_'(Meta) ->
 		'$lgt_pred_meta_vars'(HeadTemplate, Meta, MetaVars),
 		'$lgt_append'(HeadTemplateArgs, [MetaVars, Sender2, This2, Self2], HeadTemplateArgsDef),
@@ -9009,9 +9043,9 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	;	'$lgt_append'(HeadTemplateArgs, [Sender2, This2, Self2], HeadTemplateArgsDef),
 		'$lgt_append'(HeadArgs, [Sender, This, Self], HeadArgsDef)
 	),
-	'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix),
-	HeadTemplateDef =.. [PredPrefix| HeadTemplateArgsDef],
-	HeadDef =.. [PredPrefix| HeadArgsDef],
+	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
+	HeadTemplateDef =.. [TFunctor| HeadTemplateArgsDef],
+	HeadDef =.. [TFunctor| HeadArgsDef],
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, DDef, _, _),
 	Clause =.. [DDef, HeadTemplate, Sender2, This2, Self2, HeadTemplateDef],
 	(	'$lgt_pp_ddef_'(Clause) ->
@@ -9172,12 +9206,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	assertz('$lgt_pp_directive_'(dynamic(DDcl/2))),
 	assertz('$lgt_pp_directive_'(dynamic(DDef/5))),
 	'$lgt_pp_dynamic_'(Functor, Arity),
-		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
-		functor(Meta, Functor, Arity),
-		(	'$lgt_pp_meta_predicate_'(Meta) ->
-			TArity is Arity + 4
-		;	TArity is Arity + 3
-		),
+		'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 		assertz('$lgt_pp_directive_'(dynamic(TFunctor/TArity))),
 	fail.
 
@@ -9188,12 +9217,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_gen_object_discontiguous_directives' :-
 	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _),
 	'$lgt_pp_discontiguous_'(Functor, Arity),
-		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
-		functor(Meta, Functor, Arity),
-		(	'$lgt_pp_meta_predicate_'(Meta) ->
-			TArity is Arity + 4
-		;	TArity is Arity + 3
-		),
+		'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 		assertz('$lgt_pp_directive_'(discontiguous(TFunctor/TArity))),
 	fail.
 
@@ -9217,12 +9241,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_gen_category_discontiguous_directives' :-
 	'$lgt_pp_category_'(_, Prefix, _, _, _, _),
 	'$lgt_pp_discontiguous_'(Functor, Arity),
-		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
-		functor(Meta, Functor, Arity),
-		(	'$lgt_pp_meta_predicate_'(Meta) ->
-			TArity is Arity + 4
-		;	TArity is Arity + 3
-		),
+		'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 		assertz('$lgt_pp_directive_'(discontiguous(TFunctor/TArity))),
 	fail.
 
@@ -9287,8 +9306,8 @@ current_logtalk_flag(version, version(2, 32, 2)).
 % (only necessary for objects as categories cannot contain clauses for dynamic predicates)
 
 '$lgt_gen_object_local_def_clauses' :-
-	'$lgt_pp_entity'(_, _, EntityPrefix, _, _),
-	'$lgt_ctx_prefix'(Ctx, EntityPrefix),
+	'$lgt_pp_entity'(_, _, Prefix, _, _),
+	'$lgt_ctx_prefix'(Ctx, Prefix),
 	'$lgt_pp_dynamic_'(Functor, Arity),
 	\+ '$lgt_pp_defs_pred_'(Functor, Arity),
 	functor(Head, Functor, Arity),
@@ -10818,16 +10837,34 @@ current_logtalk_flag(version, version(2, 32, 2)).
 
 
 
+% '$lgt_construct_predicate_indicator'(+atom, +predicate_indicator, -predicate_indicator)
+%
+% constructs the predicate indicator used for a compiled predicate
+
+'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity) :-
+	atom_concat(Prefix, Functor, Aux),
+	atom_concat(Aux, '_', Aux2),
+	number_codes(Arity, Codes),
+	atom_codes(Atom, Codes),
+	atom_concat(Aux2, Atom, TFunctor),
+	functor(Meta, Functor, Arity),
+	(	'$lgt_pp_meta_predicate_'(Meta) ->
+		TArity is Arity + 4
+	;	TArity is Arity + 3
+	).
+
+
+
 % '$lgt_construct_predicate_functor'(+atom, +atom, +integer, -atom)
 %
 % constructs the functor used for a compiled predicate
 
-'$lgt_construct_predicate_functor'(EntityPrefix, Functor, Arity, PredPrefix) :-
-	atom_concat(EntityPrefix, Functor, Aux),
+'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor) :-
+	atom_concat(Prefix, Functor, Aux),
 	atom_concat(Aux, '_', Aux2),
 	number_codes(Arity, Codes),
 	atom_codes(Atom, Codes),
-	atom_concat(Aux2, Atom, PredPrefix).
+	atom_concat(Aux2, Atom, TFunctor).
 
 
 
