@@ -143,11 +143,11 @@ As each Logtalk entity is compiled independently from other entities, this direc
 <h3 id="predicates_dynamic">Dynamic directive</h3>
 
 <p>
-An object (or category) predicate can be static or dynamic. By default, all object predicates are static. To declare a dynamic predicate we use the <a title="Consult reference manual" href="../refman/directives/dynamic1.html"><code>dynamic/1</code></a> directive:
+An object predicate can be static or dynamic. By default, all object predicates are static. To declare a dynamic predicate we use the <a title="Consult reference manual" href="../refman/directives/dynamic1.html"><code>dynamic/1</code></a> directive:
 </p>
 <pre>:- dynamic(foo/1).</pre>
 <p>
-This directive may also be used to declare dynamic grammar rule non-terminals. As each Logtalk entity is compiled independently from other entities, this directive must be included in every object or category that contains a definition for the described predicate (even if the predicate declaration is inherited from other entity). If we omit the dynamic declaration then the predicate definition will be compiled to static code. Note that any static object may declare and define dynamic predicates.
+This directive may also be used to declare dynamic grammar rule non-terminals. As each Logtalk entity is compiled independently from other entities, this directive must be included in every object that contains a definition for the described predicate (even if the predicate declaration is inherited from other object or imported from a category). If we omit the dynamic declaration then the predicate definition will be compiled to static code. Note that any static object may declare and define dynamic predicates.
 </p>
 
 <h3 id="predicates_op">Operator directive</h3>
@@ -675,7 +675,7 @@ Currently, there is no clean workaround for calling non-standard, Prolog built-i
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: April 21, 2008</span>
+		<span>Last updated on: July 15, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="categories.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="inheritance.html">next</a></span><br/>
