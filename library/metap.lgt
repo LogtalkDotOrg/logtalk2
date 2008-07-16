@@ -3,7 +3,7 @@
 
 	:- info([
 		version is 3.0,
-		date is 2006/9/17,
+		date is 2008/7/16,
 		author is 'Paulo Moura',
 		comment is 'Useful meta-predicates protocol.']).
 
@@ -31,8 +31,22 @@
 	:- meta_predicate(map(2, *, *)).
 	:- mode(map(+callable, ?list, ?list), zero_or_more).
 	:- info(map/3, [
-		comment is 'Maps a predicate over a list of elements.',
-		argnames is ['Predicate', 'In', 'Out']]).
+		comment is 'List mapping predicate taken arguments from two lists of elements.',
+		argnames is ['Predicate', 'List1', 'List2']]).
+
+	:- public(map/4).
+	:- meta_predicate(map(3, *, *, *)).
+	:- mode(map(+callable, ?list, ?list, ?list), zero_or_more).
+	:- info(map/4, [
+		comment is 'List mapping predicate taken arguments from three lists of elements.',
+		argnames is ['Predicate', 'List1', 'List2', 'List3']]).
+
+	:- public(map/5).
+	:- meta_predicate(map(4, *, *, *, *)).
+	:- mode(map(+callable, ?list, ?list, ?list, ?list), zero_or_more).
+	:- info(map/5, [
+		comment is 'List mapping predicate taken arguments from four lists of elements.',
+		argnames is ['Predicate', 'List1', 'List2', 'List3', 'List4']]).
 
 	:- public(succeeds/2).
 	:- meta_predicate(succeeds(1, *)).

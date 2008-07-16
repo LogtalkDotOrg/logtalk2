@@ -3,8 +3,8 @@
 	implements(metap)).
 
 	:- info([
-		version is 2.0,
-		date is 2006/9/17,
+		version is 2.1,
+		date is 2008/7/16,
 		author is 'Paulo Moura',
 		comment is 'Some useful meta-predicates.']).
 
@@ -31,9 +31,21 @@
 
 	:- meta_predicate(map(2, *, *)).
 	map(_, [], []).
-	map(Closure, [Old| Olds], [New| News]) :-
-		call(Closure, Old, New),
-		map(Closure, Olds, News).
+	map(Closure, [A| As], [B| Bs]) :-
+		call(Closure, A, B),
+		map(Closure, As, Bs).
+
+	:- meta_predicate(map(3, *, *, *)).
+	map(_, [], [], []).
+	map(Closure, [A| As], [B| Bs], [C| Cs]) :-
+		call(Closure, A, B, C),
+		map(Closure, As, Bs, Cs).
+
+	:- meta_predicate(map(4, *, *, *, *)).
+	map(_, [], [], [], []).
+	map(Closure, [A| As], [B| Bs], [C| Cs], [D| Ds]) :-
+		call(Closure, A, B, C, D),
+		map(Closure, As, Bs, Cs, Ds).
 
 	:- meta_predicate(succeeds(1, *)).
 	succeeds(_, []).
