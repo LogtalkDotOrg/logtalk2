@@ -7089,7 +7089,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 
 '$lgt_tr_body'(asserta(Pred), TCond, DCond, Ctx) :-
 	!,
-	(	'$lgt_optimizable_local_db_call'(Pred, Ctx, TPred) ->
+	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
 		TCond = asserta(TPred)
 	;	'$lgt_ctx_this'(Ctx, This),
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
@@ -7109,7 +7109,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 
 '$lgt_tr_body'(assertz(Pred), TCond, DCond, Ctx) :-
 	!,
-	(	'$lgt_optimizable_local_db_call'(Pred, Ctx, TPred) ->
+	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
 		TCond = assertz(TPred)
 	;	'$lgt_ctx_this'(Ctx, This),
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
@@ -7129,7 +7129,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 
 '$lgt_tr_body'(clause(Head, Body), TCond, DCond, Ctx) :-
 	!,
-	(	'$lgt_optimizable_local_db_call'(Head, Ctx, THead) ->
+	(	'$lgt_optimizable_local_db_call'(Head, THead) ->
 		TCond = (clause(THead, TBody), (TBody = ('$lgt_nop'(Body), _) -> true; TBody = Body))
 	;	'$lgt_ctx_this'(Ctx, This),
 		(	'$lgt_runtime_db_clause_chk'((Head :- Body)) ->
@@ -7143,7 +7143,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 
 '$lgt_tr_body'(retract(Pred), TCond, DCond, Ctx) :-
 	!,
-	(	'$lgt_optimizable_local_db_call'(Pred, Ctx, TPred) ->
+	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
 		TCond = retract(TPred)
 	;	'$lgt_ctx_this'(Ctx, This),
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
@@ -7165,7 +7165,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 
 '$lgt_tr_body'(retractall(Pred), TCond, DCond, Ctx) :-
 	!,
-	(	'$lgt_optimizable_local_db_call'(Pred, Ctx, TPred) ->
+	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
 		TCond = retractall(TPred)
 	;	'$lgt_ctx_this'(Ctx, This),
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
@@ -7596,27 +7596,26 @@ current_logtalk_flag(version, version(2, 32, 2)).
 
 
 
-% '$lgt_optimizable_local_db_call'(@term, @nonvar, -callable)
+% '$lgt_optimizable_local_db_call'(@term, -callable)
 %
 % checks if a call to a database built-in method can be optimized by direct
 % translation to a call to the corresponding Prolog built-in predicate
 
-'$lgt_optimizable_local_db_call'(Pred, Ctx, TPred) :-
-	'$lgt_compiler_flag'(debug, off),		% not debugging
-	callable(Pred),
-	(	Pred = (Head :- Body) ->			% only facts allowed
-		Body == true,
-		Pred2 = Head
-	;	Pred2 = Pred
+'$lgt_optimizable_local_db_call'(Pred, TPred) :-
+	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _),	% exclude categories
+	'$lgt_compiler_flag'(debug, off),							% not debugging
+	(	Pred = (Head :- Body) ->								% only facts allowed
+		Body == true
+	;	Head = Pred
 	),
-	functor(Pred2, Functor, Arity),
-	'$lgt_pp_dynamic_'(Functor, Arity),
-	(	'$lgt_pp_public_'(Functor, Arity)	% a scope directive must be present
-	;	'$lgt_pp_protected_'(Functor, Arity)
-	;	'$lgt_pp_private_'(Functor, Arity)
-	), !,
-	Pred2 =.. [Functor| Args],
-	'$lgt_ctx_ctx'(Ctx, _, _, _, _, Prefix, _, _),
+	callable(Head),
+	functor(Head, Functor, Arity),
+	'$lgt_pp_dynamic_'(Functor, Arity),				% a dynamic directive must be present
+	once((	'$lgt_pp_public_'(Functor, Arity)		% a scope directive must be present
+		;	'$lgt_pp_protected_'(Functor, Arity)
+		;	'$lgt_pp_private_'(Functor, Arity)
+	)),
+	Head =.. [Functor| Args],
 	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
 	'$lgt_append'(Args, [_, _, _], TArgs),
 	TPred =.. [TFunctor| TArgs].
