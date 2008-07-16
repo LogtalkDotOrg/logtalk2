@@ -2951,8 +2951,8 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _, _, _),
 	!,
-	(	call_with_args(Dcl, Pred, Scope, _, _, _, _, _, _) ->						% lookup declaration
-		(	Scope = p(p(_)) ->														% check scope
+	(	call_with_args(Dcl, Pred, Scope, _, _, _, _, SCtn, _) ->					% lookup declaration
+		(	(Scope = p(p(_)); Sender = SCtn) ->										% check scope
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
 			(	call_with_args(Def, GPred, GSender, GObj, GObj, GCall, _) ->		% lookup definition
@@ -3010,8 +3010,8 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_send_to_object_ne_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _, _, _),
 	!,
-	(	call_with_args(Dcl, Pred, Scope, _, _, _, _, _, _) ->					% lookup declaration
-		(	Scope = p(p(_)) ->													% check scope
+	(	call_with_args(Dcl, Pred, Scope, _, _, _, _, SCtn, _) ->				% lookup declaration
+		(	(Scope = p(p(_)); Sender = SCtn) ->									% check scope
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),	% construct object template
 			(	call_with_args(Def, GPred, GSender, GObj, GObj, GCall, _) ->	% lookup definition
@@ -7393,6 +7393,15 @@ current_logtalk_flag(version, version(2, 32, 2)).
 '$lgt_tr_body'(Pred, _, _, _) :-
 	\+ callable(Pred),
 	throw(type_error(callable, Pred)).
+
+
+% goal is an invalid call to a dynamic predicate within a category
+
+'$lgt_tr_body'(Pred, _, _, _) :-
+	'$lgt_pp_category_'(_, _, _, _, _, _),		% we're compiling a category
+	functor(Pred, Functor, Arity),
+	'$lgt_pp_dynamic_'(Functor, Arity),			% which declares the predicate dynamic
+	throw(permission_error(define, dynamic_predicate, Functor/Arity)).
 
 
 % goal is a call to a user meta-predicate

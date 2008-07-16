@@ -31,7 +31,7 @@
 Object::(Predicate1, Predicate2, ...)
 Object::(Predicate1; Predicate2; ...)</pre>
 <p>
-Sends a message to an object. The message argument must match a public predicate of the receiver object. We can also send the same message to either a conjunction or a disjunction of objects or send either a conjunction or disjunction of messages to the same object.
+Sends a message to an object. The message argument must match a public predicate of the receiver object. When the message corresponds to a protected or private predicate, the call is only valid if the <em>sender</em> matches the predicate scope container. We can also send the same message to either a conjunction or a disjunction of objects or send either a conjunction or disjunction of messages to the same object.
 </p>
 
 <h4>Template and modes</h4>
@@ -65,7 +65,7 @@ yes</pre>
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: May 23, 2008</span>
+		<span>Last updated on: July 17, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="../index.html#constructs">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="to_self1.html">next</a></span><br/>
