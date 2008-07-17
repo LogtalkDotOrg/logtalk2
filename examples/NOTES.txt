@@ -102,7 +102,7 @@ encodings
 	CxProlog, or SICStus Prolog)
 
 engines
-	example of category composition (importation of categories by 
+	example of category composition (extension of categories by 
 	other categories) using car engines
 
 errors
@@ -125,6 +125,10 @@ instmethods
 
 lo
 	examples adopted from the Francis G. McCabe L&O system
+
+logging
+	example of using a category to define a simple logging support for 
+	objects
 
 logic
 	example of a translator of first-order predicate logic propositions 
