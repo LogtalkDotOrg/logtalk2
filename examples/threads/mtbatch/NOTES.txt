@@ -42,4 +42,9 @@ The following tests are available:
 	tak				(independent and-parallelism)
 	fft				(independent and-parallelism)
 	integration		(independent and-parallelism)
+	integration2d	(independent and-parallelism)
 	search			(competitive or-parallelism)
+
+For the same back-end Prolog compiler, the benchmark results can show 
+significant variation depending on the operating-system and if you're 
+using a 32 bits or a 64 bits version.

@@ -9,6 +9,7 @@
 	logtalk_load(tak(loader)),
 	logtalk_load(fft(loader)),
 	logtalk_load(integration(loader)),
+	logtalk_load(integration2d(loader)),
 	logtalk_load(roots(loader), [reload(skip)]),
 	logtalk_load([
 		searching(state_space),

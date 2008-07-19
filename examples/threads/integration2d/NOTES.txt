@@ -1,0 +1,44 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.32.2
+
+Copyright (c) 1998-2008 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+To load this example and for sample queries, please see the SCRIPT file.
+
+This folder contains a multi-threading implementation of Recursive Gaussian 
+Quadrature Methods for Numerical Integration for functions of two variables.
+
+Adaptive quadrature methods are efficient techniques for numerical 
+integration as they compensate for functional variation along the 
+integral domain, effectively in regions with large function variations 
+a larger sampling of point are used.
+
+The objects (quad..2d) implement the integrate protocol for functions of 
+two variables.
+
+Integrate Protocol: integrate(Function, A, B, C, D, NP, Error, Integral)
+
+Find the integral of a function of two variables on the rectangular domain 
+[A,B][C,D] given a maximum approximation error. NP represents the method 
+to be used (0,1,2,3):
+
+For NP = 0 an adaptive trapezoidal rule is used.
+FOR NP=1,2,3 an adaptive gaussian quadrature of 1, 2, 3, or points is used.
+
+There are 2 versions, quadrec2d and quadsplit2d:
+
+For quadrec2d, the method used for the multithreading is simply to divide the 
+initial area amongst the number of threads available (a power of 4) and then 
+in each interval the recursive method is applied. The threaded/1 predicate 
+is used.
+
+For quadsplit2d, the method used is again division (split) of the original 
+area amongst the number of threads specified. This method has no restriction 
+on the number of threads and uses a spwan/collect idea for proving thread 
+goals and the predicates threaded_once/1 and threaded_exit/1 are used.

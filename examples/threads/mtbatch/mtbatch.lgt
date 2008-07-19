@@ -177,7 +177,7 @@
 
 	% integration benchmarks:
 	run(integration, N) :-
-		write('Numerical integration using recursive calls to threaded/1 (average of '), write(N), write(' runs)'), nl,
+		write('Numerical integration of functions of one variable using recursive calls to threaded/1 (average of '), write(N), write(' runs)'), nl,
 		loop::forto(T, 0, 4,
 			(	Threads is truncate(2**T),
 				put_char('\t'), write(Threads)
@@ -206,7 +206,7 @@
 						)
 					)), nl
 			)), nl,
-		write('Numerical integration using a thread for each integration sub-interval (average of '), write(N), write(' runs)'), nl,
+		write('Numerical integration of functions of one variable using a thread for each integration sub-interval (average of '), write(N), write(' runs)'), nl,
 		loop::forto(T, 0, 4,
 			(	Threads is truncate(2**T),
 				put_char('\t'), write(Threads)
@@ -229,6 +229,47 @@
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
 						catch(run(quadsplit(Threads, Function, Inf, Sup, Epsilon), N, Average), Error, write_error) ->
+						(	var(Error) ->
+							write_average(Average)
+						;	true
+						)
+					)), nl
+			)), nl.
+
+	% integration2d benchmarks:
+	run(integration2d, N) :-
+		write('Numerical integration of functions of two variables using recursive calls to threaded/1 (average of '), write(N), write(' runs)'), nl,
+		loop::forto(T, 0, 2,
+			(	Threads is truncate(4**T),
+				put_char('\t'), write(Threads)
+			)), nl,
+		forall(
+			(	Function = circle,	A =  -2, B = 0, C = -2, D = 0, NP = 2, Epsilon = 2.5e-10
+			;	Function = i15,		A =  -2, B = 2, C = -2, D = 2, NP = 2, Epsilon = 1.0e-4
+			),
+			(	write(Function),
+				loop::forto(T, 0, 2,
+					(	Threads is truncate(4**T),
+						catch(run(quadrec2d(Threads, Function, A, B, C, D, NP, Epsilon), N, Average), Error, write_error) ->
+						(	var(Error) ->
+							write_average(Average)
+						;	true
+						)
+					)), nl
+			)), nl,
+		write('Numerical integration of functions of two variables using a thread for each integration sub-interval (average of '), write(N), write(' runs)'), nl,
+		loop::forto(T, 0, 2,
+			(	Threads is truncate(4**T),
+				put_char('\t'), write(Threads)
+			)), nl,
+		forall(
+			(	Function = circle,	A =  -2, B = 0, C = -2, D = 0, NP = 2, Epsilon = 2.5e-10
+			;	Function = i15,		A =  -2, B = 2, C = -2, D = 2, NP = 2, Epsilon = 1.0e-4
+			),
+			(	write(Function),
+				loop::forto(T, 0, 2,
+					(	Threads is truncate(4**T),
+						catch(run(quadsplit2d(Threads, Function, A, B, C, D, NP, Epsilon), N, Average), Error, write_error) ->
 						(	var(Error) ->
 							write_average(Average)
 						;	true
@@ -347,6 +388,18 @@
 			quadsplit(Threads)::integrate(Function, Inf, Sup, 4, Epsilon, _),
 		fail.
 	do_benchmark(quadsplit(_, _, _, _, _), _).
+
+	do_benchmark(quadrec2d(Threads, Function, A, B, C, D, NP, Epsilon), N) :-
+		repeat(N),
+			quadrec2d(Threads)::integrate(Function, A, B, C, D, NP, Epsilon, _),
+		fail.
+	do_benchmark(quadrec2d(_, _, _, _, _, _, _, _), _).
+
+	do_benchmark(quadsplit2d(Threads, Function, A, B, C, D, NP, Epsilon), N) :-
+		repeat(N),
+			quadsplit2d(Threads)::integrate(Function,A, B, C, D, NP, Epsilon, _),
+		fail.
+	do_benchmark(quadsplit2d(_, _, _, _, _, _, _, _), _).
 
 	do_benchmark(depth_first(Liters, Jug1, Jug2, MaxDepth), N) :-
 		Obj = salt(Liters, Jug1, Jug2),

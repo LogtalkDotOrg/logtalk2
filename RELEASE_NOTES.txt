@@ -82,6 +82,10 @@ RELEASE NOTES
     predicates that handle a dynamic predicate in the context of "this" 
     (i.e. in the context of the objects importing the category).
 
+    Added a new multi-threading example, "integration2d", implementing methods
+    for numerical integration for functions of two variables, contributed by 
+    Paul Crocker.
+
     Updated the "integration" multi-threading example by bringing all example 
     functions under the same object in order to allow for static binding. This
     is essential for good results in operating-systems with poor mutex thread 
