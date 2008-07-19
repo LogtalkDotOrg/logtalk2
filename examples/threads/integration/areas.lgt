@@ -2,9 +2,9 @@
 :- category(areas).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paul Crocker',
-		date is 2008/03/21,
+		date is 2008/07/19,
 		comment is 'Interval and trapezium area predicates for quadrature methods.']).
 
 	:- private(interval_area/7).
@@ -16,7 +16,7 @@
 		c(NP, N, C),
 		w(NP, N, W),
 		XK is Left + (Right-Left)*C,
-		Function::eval(XK, Y),
+		functions::eval(Function, XK, Y),
 		N2 is N - 1,
 		Acc2 is Acc + W*Y,
 		interval_area(Function, Left, Right, N2, NP, Acc2, Area).

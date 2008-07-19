@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.32.2 - July ??, 2008
+2.32.2 - July 21, 2008
 
     Simplified the predicate lookup linking clauses that are generated when 
     compiling private and protected entity relations, resulting in a small 
@@ -81,6 +81,11 @@ RELEASE NOTES
     Added a new example, "logging", of using a category to define a set of 
     predicates that handle a dynamic predicate in the context of "this" 
     (i.e. in the context of the objects importing the category).
+
+    Updated the "integration" multi-threading example by bringing all example 
+    functions under the same object in order to allow for static binding. This
+    is essential for good results in operating-systems with poor mutex thread 
+    synchronization performance such as MacOS X.
 
 
 2.32.1 - July 7, 2008

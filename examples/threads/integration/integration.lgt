@@ -24,9 +24,9 @@
 	:- threaded.
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paul Crocker',
-		date is 2008/03/17,
+		date is 2008/07/19,
 		comment is 'Multi-threading implementation of Recursive Gaussian Quadrature Methods for Numerical Integration for functions of a single variable.',
 		parameters is ['Threads'- 'Number of threads to use.']]).
 
@@ -34,8 +34,8 @@
 		parameter(1, Threads),
 		Threads > 0,
 		(	NP =:= 0 ->
-			Function::eval(Left,  Fleft),
-			Function::eval(Right, Fright),
+			functions::eval(Function, Left,  Fleft),
+			functions::eval(Function, Right, Fright),
 			:trapezium_area(Left, Right, Fleft, Fright, InitialArea),
 			trapezium(Function, Threads, Left, Right, Fleft, Fright, InitialArea, Epsilon, Integral)
 		;	NP > 0,
@@ -65,7 +65,7 @@
 
 	trapezium(Function, Threads, Left, Right, Fleft, Fright, Area, Epsilon, Integral) :-
 		Middle is 0.5*(Right+Left),
-		Function::eval(Middle, Fmiddle),
+		functions::eval(Function, Middle, Fmiddle),
 		:trapezium_area(Left,   Middle, Fleft,   Fmiddle, Area1),
 		:trapezium_area(Middle, Right,  Fmiddle, Fright,  Area2),
 		Error is abs(Area-Area1-Area2),
@@ -95,9 +95,9 @@
 	:- threaded.
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paul Crocker',
-		date is 2008/03/17,
+		date is 2008/07/19,
 		comment is 'Multi-threading implementation of Recursive Gaussian Quadrature Methods for Numerical Integration for functions of a single variable.',
 		parameters is ['Threads'- 'Number of threads to use.']]).
 
@@ -142,8 +142,8 @@
 	% predicate that the threads will start	
 	start(Function, Left, Right, NP, Epsilon, Integral) :-
 		(	NP =:= 0 -> 
-			Function::eval(Left, Fleft),
-			Function::eval(Right,Fright),
+			functions::eval(Function, Left, Fleft),
+			functions::eval(Function, Right,Fright),
 			:trapezium_area(Left, Right, Fleft, Fright, InitialArea),
 			trapezium(Function, Left, Right, Fleft, Fright, InitialArea, Epsilon, Integral)
 		;	% NP > 0,
@@ -165,7 +165,7 @@
 
 	trapezium(Function, Left, Right, Fleft, Fright, Area, Epsilon, Integral) :-
 		Middle is 0.5*(Right+Left),
-		Function::eval(Middle, Fmiddle),
+		functions::eval(Function, Middle, Fmiddle),
 		:trapezium_area(Left,   Middle, Fleft,   Fmiddle, Area1),
 		:trapezium_area(Middle, Right,  Fmiddle, Fright,  Area2),
 		Error is abs(Area-Area1-Area2),	
