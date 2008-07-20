@@ -33,82 +33,81 @@
 		parameter(1, Threads),
 		Threads > 0,
 		(	NP =:= 0 ->
-			:trapezium_volume(Function, A, B, C, D, InitialArea),
-			trapezium(Threads, Function, A, B, C, D, InitialArea, Epsilon, Integral)
+			:trapezium_volume(Function, A, B, C, D, InitialVolume),
+			trapezium(Threads, Function, A, B, C, D, InitialVolume, Epsilon, Integral)
 		;	NP > 0, NP < 4,
-			:interval_volume(Function, A, B, C, D, NP, NP, 0.0, InitialArea),
-			quadrature(Threads, Function, A, B, C, D, InitialArea, NP, Epsilon, Integral)
+			:interval_volume(Function, A, B, C, D, NP, NP, 0.0, InitialVolume),
+			quadrature(Threads, Function, A, B, C, D, InitialVolume, NP, Epsilon, Integral)
 		).
 
-	quadrature(1, Function, A, B, C, D, Area, NP, Epsilon, Integral) :-	
+	quadrature(1, Function, A, B, C, D, Volume, NP, Epsilon, Integral) :-	
 		!,
 		MiddleX is 0.5 * (A + B),
 		MiddleY is 0.5 * (C + D),
-		:interval_volume(Function, A,       MiddleX, C,       MiddleY, NP, NP, 0.0, Area1),
-		:interval_volume(Function, MiddleX, B,       C,       MiddleY, NP, NP, 0.0, Area2),
-		:interval_volume(Function, A,       MiddleX, MiddleY, D,       NP, NP, 0.0, Area3),
-		:interval_volume(Function, MiddleX, B,       MiddleY, D,       NP, NP, 0.0, Area4),
-		Error is abs(Area-Area1-Area2-Area3-Area4),
+		:interval_volume(Function, A,       MiddleX, C,       MiddleY, NP, NP, 0.0, Volume1),
+		:interval_volume(Function, MiddleX, B,       C,       MiddleY, NP, NP, 0.0, Volume2),
+		:interval_volume(Function, A,       MiddleX, MiddleY, D,       NP, NP, 0.0, Volume3),
+		:interval_volume(Function, MiddleX, B,       MiddleY, D,       NP, NP, 0.0, Volume4),
+		Error is abs(Volume-Volume1-Volume2-Volume3-Volume4),
 		(	Error > Epsilon ->
 		    Epsilon4 is Epsilon/4.0,
-			quadrature(Threads, Function, A,       MiddleX,  C,       MiddleY,  Area1, NP, Epsilon4, I1),
-			quadrature(Threads, Function, MiddleX, B,        C,       MiddleY,  Area2, NP, Epsilon4, I2),
-			quadrature(Threads, Function, A,       MiddleX,  MiddleY, D,        Area3, NP, Epsilon4, I3),
-			quadrature(Threads, Function, MiddleX, B,        MiddleY, D,        Area4, NP, Epsilon4, I4),
+			quadrature(Threads, Function, A,       MiddleX,  C,       MiddleY, Volume1, NP, Epsilon4, I1),
+			quadrature(Threads, Function, MiddleX, B,        C,       MiddleY, Volume2, NP, Epsilon4, I2),
+			quadrature(Threads, Function, A,       MiddleX,  MiddleY, D,       Volume3, NP, Epsilon4, I3),
+			quadrature(Threads, Function, MiddleX, B,        MiddleY, D,       Volume4, NP, Epsilon4, I4),
 			Integral is I1 + I2 + I3 + I4
-		;	Integral is Area1 + Area2 + Area3 + Area4
+		;	Integral is Volume1 + Volume2 + Volume3 + Volume4
 		).
 
-	quadrature(Threads, Function, A, B, C, D, Area, NP, Epsilon, Integral) :-	
+	quadrature(Threads, Function, A, B, C, D, Volume, NP, Epsilon, Integral) :-	
 		Threads > 1,
 		MiddleX is 0.5 * (A + B),
 		MiddleY is 0.5 * (C + D),
-		:interval_volume(Function, A,       MiddleX, C,       MiddleY, NP, NP, 0.0, Area1),
-		:interval_volume(Function, MiddleX, B,       C,       MiddleY, NP, NP, 0.0, Area2),
-		:interval_volume(Function, A,       MiddleX, MiddleY, D,       NP, NP, 0.0, Area3),
-		:interval_volume(Function, MiddleX, B,       MiddleY, D,       NP, NP, 0.0, Area4),
-		Error is abs(Area-Area1-Area2-Area3-Area4),
+		:interval_volume(Function, A,       MiddleX, C,       MiddleY, NP, NP, 0.0, Volume1),
+		:interval_volume(Function, MiddleX, B,       C,       MiddleY, NP, NP, 0.0, Volume2),
+		:interval_volume(Function, A,       MiddleX, MiddleY, D,       NP, NP, 0.0, Volume3),
+		:interval_volume(Function, MiddleX, B,       MiddleY, D,       NP, NP, 0.0, Volume4),
+		Error is abs(Volume-Volume1-Volume2-Volume3-Volume4),
 		(	Error > Epsilon ->
 			Threads4 is Threads//4,
 			Epsilon4 is Epsilon/4.0,
 			threaded((
-				quadrature(Threads4, Function, A,       MiddleX,  C,       MiddleY,  Area1, NP, Epsilon4, I1),
-				quadrature(Threads4, Function, MiddleX, B,        C,       MiddleY,  Area2, NP, Epsilon4, I2),
-				quadrature(Threads4, Function, A,       MiddleX,  MiddleY, D,        Area3, NP, Epsilon4, I3),
-				quadrature(Threads4, Function, MiddleX, B,        MiddleY, D,        Area4, NP, Epsilon4, I4)
+				quadrature(Threads4, Function, A,       MiddleX,  C,       MiddleY, Volume1, NP, Epsilon4, I1),
+				quadrature(Threads4, Function, MiddleX, B,        C,       MiddleY, Volume2, NP, Epsilon4, I2),
+				quadrature(Threads4, Function, A,       MiddleX,  MiddleY, D,       Volume3, NP, Epsilon4, I3),
+				quadrature(Threads4, Function, MiddleX, B,        MiddleY, D,       Volume4, NP, Epsilon4, I4)
 			)),
 			Integral is I1 + I2 + I3 + I4
-		;	Integral is Area1 + Area2 + Area3 + Area4
+		;	Integral is Volume1 + Volume2 + Volume3 + Volume4
 		).
 
-	trapezium(Threads, Function, A, B, C, D, Area, Epsilon, Integral) :-
+	trapezium(Threads, Function, A, B, C, D, Volume, Epsilon, Integral) :-
 		MiddleX is 0.5 * (A + B),
 		MiddleY is 0.5 * (C + D),
-		:trapezium_volume(Function, A,       MiddleX, C,       MiddleY, Area1),
-		:trapezium_volume(Function, MiddleX, B,       C,       MiddleY, Area2),
-		:trapezium_volume(Function, A,       MiddleX, MiddleY, D,       Area3),
-		:trapezium_volume(Function, MiddleX, B,       MiddleY, D,       Area4),
-		Error is abs(Area-Area1-Area2-Area3-Area4),
+		:trapezium_volume(Function, A,       MiddleX, C,       MiddleY, Volume1),
+		:trapezium_volume(Function, MiddleX, B,       C,       MiddleY, Volume2),
+		:trapezium_volume(Function, A,       MiddleX, MiddleY, D,       Volume3),
+		:trapezium_volume(Function, MiddleX, B,       MiddleY, D,       Volume4),
+		Error is abs(Volume-Volume1-Volume2-Volume3-Volume4),
 		(	Error > Epsilon -> 
 			(	Threads =:= 1 ->
 				Epsilon4 is Epsilon/4.0,
-				trapezium(Function, 1, A,       MiddleX,  C,       MiddleY,  Area1, Epsilon4, I1),
-				trapezium(Function, 1, MiddleX, B,        C,       MiddleY,  Area2, Epsilon4, I2),
-				trapezium(Function, 1, A,       MiddleX,  MiddleY, D,        Area3, Epsilon4, I3),
-				trapezium(Function, 1, MiddleX, B,        MiddleY, D,        Area4, Epsilon4, I4)
+				trapezium(Function, 1, A,       MiddleX,  C,       MiddleY, Volume1, Epsilon4, I1),
+				trapezium(Function, 1, MiddleX, B,        C,       MiddleY, Volume2, Epsilon4, I2),
+				trapezium(Function, 1, A,       MiddleX,  MiddleY, D,       Volume3, Epsilon4, I3),
+				trapezium(Function, 1, MiddleX, B,        MiddleY, D,       Volume4, Epsilon4, I4)
 			;	% Threads > 1,
 				Threads4 is Threads//4,
 				Epsilon4 is Epsilon/4.0,
-				%write('Threads = '),write(Threads),write('multithreading next level threads ='),write(Threads4),nl,
 				threaded(( 	
-					trapezium(Threads4, Function, A,       MiddleX,  C,       MiddleY,  Area1, Epsilon4, I1), 
-					trapezium(Threads4, Function, MiddleX, B,        C,       MiddleY,  Area2, Epsilon4, I2),
-					trapezium(Threads4, Function, A,       MiddleX,  MiddleY, D,        Area3, Epsilon4, I3),
-					trapezium(Threads4, Function, MiddleX, B,        MiddleY, D,        Area4, Epsilon4, I4)
+					trapezium(Threads4, Function, A,       MiddleX,  C,       MiddleY, Volume1, Epsilon4, I1), 
+					trapezium(Threads4, Function, MiddleX, B,        C,       MiddleY, Volume2, Epsilon4, I2),
+					trapezium(Threads4, Function, A,       MiddleX,  MiddleY, D,       Volume3, Epsilon4, I3),
+					trapezium(Threads4, Function, MiddleX, B,        MiddleY, D,       Volume4, Epsilon4, I4)
 				))
 			),
 			Integral is I1 + I2 + I3 + I4
-		;	Integral is Area1 + Area2 + Area3 + Area4
+		;	Integral is Volume1 + Volume2 + Volume3 + Volume4
 		).
 
 :- end_object.
@@ -156,61 +155,61 @@
 
 	% initiate the thread calls
 	spawn([], _, _, _,_, _, []).
-	spawn([Left-Right| Intervals], Function, C, D, NP, Epsilon, [start(Function,Left,Right,C,D,NP,Epsilon,Subarea)| Goals]) :-
-		threaded_once(start(Function,Left,Right,C,D,NP,Epsilon,Subarea)),
+	spawn([Left-Right| Intervals], Function, C, D, NP, Epsilon, [start(Function,Left,Right,C,D,NP,Epsilon,SubVolume)| Goals]) :-
+		threaded_once(start(Function,Left,Right,C,D,NP,Epsilon,SubVolume)),
 		spawn(Intervals, Function, C,D, NP, Epsilon, Goals).
 
 	% wait for the threads to finish and then we will collect the results summing as we go
 	collect([], Integral, Integral).
-	collect([start(Function,Left,Right,C,D,NP,Epsilon,Subarea)| Goals], Acc, Integral) :-
-		threaded_exit(start(Function,Left,Right,C,D,NP,Epsilon,Subarea)),		
-		Acc2 is Acc + Subarea,
+	collect([start(Function,Left,Right,C,D,NP,Epsilon,SubVolume)| Goals], Acc, Integral) :-
+		threaded_exit(start(Function,Left,Right,C,D,NP,Epsilon,SubVolume)),		
+		Acc2 is Acc + SubVolume,
 		collect(Goals, Acc2, Integral).
 
     % predicate that the threads will start	
 	start(Function, A, B, C, D, NP, Epsilon, Integral) :-
 		(	NP =:= 0 -> 
-			:trapezium_volume(Function, A, B, C, D, InitialArea),
-			trapezium(Function, A, B, C, D, InitialArea, Epsilon, Integral)
+			:trapezium_volume(Function, A, B, C, D, InitialVolume),
+			trapezium(Function, A, B, C, D, InitialVolume, Epsilon, Integral)
 		;	% NP > 0,
-			:interval_volume(Function, A, B, C, D, NP, NP, 0.0, InitialArea),
-			quadrature(Function, A, B, C, D, InitialArea, NP, Epsilon, Integral)
+			:interval_volume(Function, A, B, C, D, NP, NP, 0.0, InitialVolume),
+			quadrature(Function, A, B, C, D, InitialVolume, NP, Epsilon, Integral)
 		).
 	
-	trapezium(Function, A, B, C, D, Area, Epsilon, Integral) :-
+	trapezium(Function, A, B, C, D, Volume, Epsilon, Integral) :-
 		MiddleX is 0.5*(A+B),
 		MiddleY is 0.5*(C+D),
-		:trapezium_volume(Function, A,       MiddleX, C,       MiddleY, Area1),
-		:trapezium_volume(Function, MiddleX, B,       C,       MiddleY, Area2),
-		:trapezium_volume(Function, A,       MiddleX, MiddleY, D,       Area3),
-		:trapezium_volume(Function, MiddleX, B,       MiddleY, D,       Area4),
-		Error is abs(Area - Area1 - Area2 - Area3 - Area4),
+		:trapezium_volume(Function, A,       MiddleX, C,       MiddleY, Volume1),
+		:trapezium_volume(Function, MiddleX, B,       C,       MiddleY, Volume2),
+		:trapezium_volume(Function, A,       MiddleX, MiddleY, D,       Volume3),
+		:trapezium_volume(Function, MiddleX, B,       MiddleY, D,       Volume4),
+		Error is abs(Volume - Volume1 - Volume2 - Volume3 - Volume4),
 		(	Error > Epsilon -> 
 			Epsilon4 is Epsilon/4.0,
-			trapezium(Function, A,       MiddleX,  C,       MiddleY,  Area1, Epsilon4, I1),
-			trapezium(Function, MiddleX, B,        C,       MiddleY,  Area2, Epsilon4, I2),
-			trapezium(Function, A,       MiddleX,  MiddleY, D,        Area3, Epsilon4, I3),
-			trapezium(Function, MiddleX, B,        MiddleY, D,        Area4, Epsilon4, I4),
+			trapezium(Function, A,       MiddleX,  C,       MiddleY, Volume1, Epsilon4, I1),
+			trapezium(Function, MiddleX, B,        C,       MiddleY, Volume2, Epsilon4, I2),
+			trapezium(Function, A,       MiddleX,  MiddleY, D,       Volume3, Epsilon4, I3),
+			trapezium(Function, MiddleX, B,        MiddleY, D,       Volume4, Epsilon4, I4),
 			Integral is I1 + I2 + I3 + I4
-		;	Integral is Area1 + Area2 + Area3 + Area4
+		;	Integral is Volume1 + Volume2 + Volume3 + Volume4
 		).
 
-	quadrature(Function, A,B,C,D, Area, NP, Epsilon, Integral) :-	
+	quadrature(Function, A,B,C,D, Volume, NP, Epsilon, Integral) :-	
 		MiddleX is 0.5*(A+B),
 		MiddleY is 0.5*(C+D),
-		:interval_volume(Function, A,       MiddleX, C,       MiddleY, NP, NP, 0.0, Area1),
-		:interval_volume(Function, MiddleX, B,       C,       MiddleY, NP, NP, 0.0, Area2),
-		:interval_volume(Function, A,       MiddleX, MiddleY, D,       NP, NP, 0.0, Area3),
-		:interval_volume(Function, MiddleX, B,       MiddleY, D,       NP, NP, 0.0, Area4),
-		Error is abs(Area - Area1 - Area2 - Area3 - Area4),
+		:interval_volume(Function, A,       MiddleX, C,       MiddleY, NP, NP, 0.0, Volume1),
+		:interval_volume(Function, MiddleX, B,       C,       MiddleY, NP, NP, 0.0, Volume2),
+		:interval_volume(Function, A,       MiddleX, MiddleY, D,       NP, NP, 0.0, Volume3),
+		:interval_volume(Function, MiddleX, B,       MiddleY, D,       NP, NP, 0.0, Volume4),
+		Error is abs(Volume - Volume1 - Volume2 - Volume3 - Volume4),
 		(	Error > Epsilon -> 	
 			Epsilon4 is Epsilon/4.0,
-			quadrature(Function, A,       MiddleX,  C,       MiddleY,  Area1, NP, Epsilon4, I1),
-			quadrature(Function, MiddleX, B,        C,       MiddleY,  Area2, NP, Epsilon4, I2),
-			quadrature(Function, A,       MiddleX,  MiddleY, D,        Area3, NP, Epsilon4, I3),
-			quadrature(Function, MiddleX, B,        MiddleY, D,        Area4, NP, Epsilon4, I4),
+			quadrature(Function, A,       MiddleX,  C,       MiddleY, Volume1, NP, Epsilon4, I1),
+			quadrature(Function, MiddleX, B,        C,       MiddleY, Volume2, NP, Epsilon4, I2),
+			quadrature(Function, A,       MiddleX,  MiddleY, D,       Volume3, NP, Epsilon4, I3),
+			quadrature(Function, MiddleX, B,        MiddleY, D,       Volume4, NP, Epsilon4, I4),
 			Integral is I1 + I2 + I3 + I4
-		;	Integral is Area1 + Area2 + Area3 + Area4
+		;	Integral is Volume1 + Volume2 + Volume3 + Volume4
 		).
 
 :- end_object.
