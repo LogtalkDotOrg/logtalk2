@@ -14,7 +14,6 @@
 		argnames is ['Function', 'X', 'Y', 'Fxy']]).
 
 	% [-2,2-2,2]
-	% A circle - f(x,y) = x*x+y*y - 4
 	% Integral = 21.33333
 	eval(circle, X, Y, Fxy) :-
 		Fxy is X*X + Y*Y - 2*2.
@@ -42,7 +41,7 @@
 		Fxy is sqrt(1.0 + (X-Y) * (X-Y)).
 
 	% [-1,1,-1,1]
-	% Integral is (4*log(2+sqrt(3))-2*pi/3)
+	% Integral is (4*log(2+sqrt(3))-2*pi/3).
 	% Integral = 3.17344.
 	eval(bailey3, X, Y, Fxy) :-
 		Fxy is 1.0 / sqrt(1.0 + (X*X) + (Y*Y)).
@@ -56,8 +55,8 @@
 		Fxy is log(2.0 - cos(X) - cos(Y)).
 
 	% [0,inf,0,inf] --> use a valor for infinite such as, inf=100, for example
-	% A note of interest valores much larger may give strange result due to floating point arithmetic 
-	% The actuak values which give strange values vary wrt to OS etc.
+	% A note of interest values much larger may give strange result due to floating point arithmetic 
+	% The actual values which give strange values vary wrt to OS etc.
 	% Integral is 1 + 3*log(3)/4.
 	% Integral = 1.82396.
 	eval(bailey5, X, Y, Fxy) :-
