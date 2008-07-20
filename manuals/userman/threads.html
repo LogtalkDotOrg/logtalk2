@@ -244,10 +244,16 @@ Declaring a set of predicates as synchronized can only ensure that they are not 
 Each notification posted by a call to the <code>threaded_notify/1</code> predicate is consumed by a single <code>threaded_wait/1</code> predicate call (i.e. these predicates implement a peer-to-peer mechanism). Care should be taken to avoid deadlocks when two (or more) threads both wait and post notifications to each other.
 </p>
 
+<h2 id="threads_performance">Multi-threading performance</h2>
+
+<p>
+The performance of multi-threading applications is highly dependent on the back-end Prolog compiler, on the operating-system, and on the use of dynamic binding and dynamic predicates. All compatible back-end Prolog compilers that support multi-threading features make use of POSIX threads or <em>pthreads</em>. The performance of the underlying pthreads implementation can exhibit significant differences between operating systems. An important point is synchronized access to dynamic predicates. As different threads may try to simultaneously access and update dynamic predicates, these operations must be protected by a lock, usually implemented using a mutex. Poor mutex lock operating-system performance, combined with a large number of collisions by several threads trying to acquire the same lock, often result in severe performance penalties. Thus, whenever possible, avoid using dynamic predicates and dynamic binding.
+</p>
+
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: March 5, 2008</span>
+		<span>Last updated on: July 20, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="events.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="errors.html">next</a></span><br/>
