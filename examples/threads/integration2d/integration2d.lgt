@@ -51,10 +51,10 @@
 		Error is abs(Volume-Volume1-Volume2-Volume3-Volume4),
 		(	Error > Epsilon ->
 		    Epsilon4 is Epsilon/4.0,
-			quadrature(Threads, Function, A,       MiddleX,  C,       MiddleY, Volume1, NP, Epsilon4, I1),
-			quadrature(Threads, Function, MiddleX, B,        C,       MiddleY, Volume2, NP, Epsilon4, I2),
-			quadrature(Threads, Function, A,       MiddleX,  MiddleY, D,       Volume3, NP, Epsilon4, I3),
-			quadrature(Threads, Function, MiddleX, B,        MiddleY, D,       Volume4, NP, Epsilon4, I4),
+			quadrature(Threads, Function, A,       MiddleX, C,       MiddleY, Volume1, NP, Epsilon4, I1),
+			quadrature(Threads, Function, MiddleX, B,       C,       MiddleY, Volume2, NP, Epsilon4, I2),
+			quadrature(Threads, Function, A,       MiddleX, MiddleY, D,       Volume3, NP, Epsilon4, I3),
+			quadrature(Threads, Function, MiddleX, B,       MiddleY, D,       Volume4, NP, Epsilon4, I4),
 			Integral is I1 + I2 + I3 + I4
 		;	Integral is Volume1 + Volume2 + Volume3 + Volume4
 		).
@@ -92,18 +92,18 @@
 		(	Error > Epsilon -> 
 			(	Threads =:= 1 ->
 				Epsilon4 is Epsilon/4.0,
-				trapezium(Function, 1, A,       MiddleX,  C,       MiddleY, Volume1, Epsilon4, I1),
-				trapezium(Function, 1, MiddleX, B,        C,       MiddleY, Volume2, Epsilon4, I2),
-				trapezium(Function, 1, A,       MiddleX,  MiddleY, D,       Volume3, Epsilon4, I3),
-				trapezium(Function, 1, MiddleX, B,        MiddleY, D,       Volume4, Epsilon4, I4)
+				trapezium(Function, 1, A,       MiddleX, C,       MiddleY, Volume1, Epsilon4, I1),
+				trapezium(Function, 1, MiddleX, B,       C,       MiddleY, Volume2, Epsilon4, I2),
+				trapezium(Function, 1, A,       MiddleX, MiddleY, D,       Volume3, Epsilon4, I3),
+				trapezium(Function, 1, MiddleX, B,       MiddleY, D,       Volume4, Epsilon4, I4)
 			;	% Threads > 1,
 				Threads4 is Threads//4,
 				Epsilon4 is Epsilon/4.0,
 				threaded(( 	
-					trapezium(Threads4, Function, A,       MiddleX,  C,       MiddleY, Volume1, Epsilon4, I1), 
-					trapezium(Threads4, Function, MiddleX, B,        C,       MiddleY, Volume2, Epsilon4, I2),
-					trapezium(Threads4, Function, A,       MiddleX,  MiddleY, D,       Volume3, Epsilon4, I3),
-					trapezium(Threads4, Function, MiddleX, B,        MiddleY, D,       Volume4, Epsilon4, I4)
+					trapezium(Threads4, Function, A,       MiddleX, C,       MiddleY, Volume1, Epsilon4, I1), 
+					trapezium(Threads4, Function, MiddleX, B,       C,       MiddleY, Volume2, Epsilon4, I2),
+					trapezium(Threads4, Function, A,       MiddleX, MiddleY, D,       Volume3, Epsilon4, I3),
+					trapezium(Threads4, Function, MiddleX, B,       MiddleY, D,       Volume4, Epsilon4, I4)
 				))
 			),
 			Integral is I1 + I2 + I3 + I4
@@ -186,10 +186,10 @@
 		Error is abs(Volume - Volume1 - Volume2 - Volume3 - Volume4),
 		(	Error > Epsilon -> 
 			Epsilon4 is Epsilon/4.0,
-			trapezium(Function, A,       MiddleX,  C,       MiddleY, Volume1, Epsilon4, I1),
-			trapezium(Function, MiddleX, B,        C,       MiddleY, Volume2, Epsilon4, I2),
-			trapezium(Function, A,       MiddleX,  MiddleY, D,       Volume3, Epsilon4, I3),
-			trapezium(Function, MiddleX, B,        MiddleY, D,       Volume4, Epsilon4, I4),
+			trapezium(Function, A,       MiddleX, C,       MiddleY, Volume1, Epsilon4, I1),
+			trapezium(Function, MiddleX, B,       C,       MiddleY, Volume2, Epsilon4, I2),
+			trapezium(Function, A,       MiddleX, MiddleY, D,       Volume3, Epsilon4, I3),
+			trapezium(Function, MiddleX, B,       MiddleY, D,       Volume4, Epsilon4, I4),
 			Integral is I1 + I2 + I3 + I4
 		;	Integral is Volume1 + Volume2 + Volume3 + Volume4
 		).
@@ -204,10 +204,10 @@
 		Error is abs(Volume - Volume1 - Volume2 - Volume3 - Volume4),
 		(	Error > Epsilon -> 	
 			Epsilon4 is Epsilon/4.0,
-			quadrature(Function, A,       MiddleX,  C,       MiddleY, Volume1, NP, Epsilon4, I1),
-			quadrature(Function, MiddleX, B,        C,       MiddleY, Volume2, NP, Epsilon4, I2),
-			quadrature(Function, A,       MiddleX,  MiddleY, D,       Volume3, NP, Epsilon4, I3),
-			quadrature(Function, MiddleX, B,        MiddleY, D,       Volume4, NP, Epsilon4, I4),
+			quadrature(Function, A,       MiddleX, C,       MiddleY, Volume1, NP, Epsilon4, I1),
+			quadrature(Function, MiddleX, B,       C,       MiddleY, Volume2, NP, Epsilon4, I2),
+			quadrature(Function, A,       MiddleX, MiddleY, D,       Volume3, NP, Epsilon4, I3),
+			quadrature(Function, MiddleX, B,       MiddleY, D,       Volume4, NP, Epsilon4, I4),
 			Integral is I1 + I2 + I3 + I4
 		;	Integral is Volume1 + Volume2 + Volume3 + Volume4
 		).

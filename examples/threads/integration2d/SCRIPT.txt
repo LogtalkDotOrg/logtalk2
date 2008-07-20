@@ -60,9 +60,9 @@ Integral = 7.73592.
 Integral = 7.73592.
 
 
-NOTE for Testing.
+% NOTE for Testing.
 
-Single Threaded - All Examples using the quadrec2d object
+% Single Threaded - All Examples using the quadrec2d object
 
 time(quadrec2d(1)::integrate( circle, 	-2, 2, -2, 2, 3, 1e-5, Integral)).
 time(quadrec2d(1)::integrate( i14,	 	-2, 2, -2, 2, 3, 1e-5, Integral)).
@@ -72,14 +72,15 @@ time(quadrec2d(1)::integrate( bailey1, 0.0, 1.0, 0.0, 1.0, 3, 1e-5, Integral)).
 time(quadrec2d(1)::integrate( bailey2, 0.0, 1.0, 0.0, 1.0, 3, 1e-5, Integral)).
 time(quadrec2d(1)::integrate( bailey3, -1.0, 1.0, -1.0, 1.0, 3, 1e-5, Integral)).
 
-More Difficult Cases :
+
+% more difficult cases:
 
 time(quadrec2d(1)::integrate( bailey4, 1.0e-6, pi, 0.0, pi,3, 1e-3, Integral)).
 
 time(quadrec2d(1)::integrate( bailey5, 0.0, 100, 0.0, 100, 3, 1e-6, Integral)).
 
 
-Single Threaded - All Examples using the quadsplit2d object
+% Single Threaded - All Examples using the quadsplit2d object
 
 time(quadsplit2d(1)::integrate( circle, 	-2, 2, -2, 2, 3, 1e-5, Integral)).
 time(quadsplit2d(1)::integrate( i14,	 	-2, 2, -2, 2, 3, 1e-5, Integral)).
@@ -89,8 +90,9 @@ time(quadsplit2d(1)::integrate( bailey1, 0.0, 1.0, 0.0, 1.0, 3, 1e-5, Integral))
 time(quadsplit2d(1)::integrate( bailey2, 0.0, 1.0, 0.0, 1.0, 3, 1e-5, Integral)).
 time(quadsplit2d(1)::integrate( bailey3, -1.0, 1.0, -1.0, 1.0, 3, 1e-5, Integral)).
 
-More Difficult Cases :
 
-time(quadsplit2d(1)::integrate( bailey4, 1.0e-6, pi, 0.0, pi,3, 1e-3, Integral)).
+% more difficult cases:
+
+time(quadsplit2d(1)::integrate( bailey4, 1.0e-6, pi, 0.0, pi, 3, 1e-3, Integral)).
 
 time(quadsplit2d(1)::integrate( bailey5, 0.0, 100, 0.0, 100, 3, 1e-6, Integral)).
