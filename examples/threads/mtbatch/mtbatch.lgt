@@ -238,14 +238,22 @@
 
 	% integration2d benchmarks:
 	run(integration2d, N) :-
-		write('Numerical integration of functions of two variables using recursive calls to threaded/1 (average of '), write(N), write(' runs)'), nl,
+		Method=2,
+		write('Numerical integration of functions of two variables, method='),write(Method),
+		write(' using recursive calls to threaded/1 (average of '), write(N), write(' runs)'), nl,
 		loop::forto(T, 0, 2,
 			(	Threads is truncate(4**T),
 				put_char('\t'), write(Threads)
 			)), nl,
 		forall(
-			(	Function = circle,	A =  -2, B = 0, C = -2, D = 0, NP = 2, Epsilon = 2.5e-10
-			;	Function = i15,		A =  -2, B = 2, C = -2, D = 2, NP = 2, Epsilon = 1.0e-4
+			(	Function = circle,	A =  -2, B = 0, C = -2, D = 2, NP = Method, Epsilon = 1.0e-10
+			;	Function = i14, 	A =  -2, B = 2, C = -2, D = 2, NP = Method, Epsilon = 1.0e-8
+			;	Function = i15,		A =  -2, B = 2, C = -2, D = 2, NP = Method, Epsilon = 1.0e-4
+			;	Function = bailey1,		A =  0, B = 1, C = 0, D = 1, NP = Method, Epsilon = 1.0e-10
+			;	Function = bailey2,		A =  0, B = 1, C = 0, D = 1, NP = Method, Epsilon = 1.0e-10
+			;	Function = bailey3,		A =  -1, B = 1, C = -1, D = 1, NP = Method, Epsilon = 1.0e-8
+			;	Function = bailey4,		A =  1.0e-6, B = pi, C = 0, D = pi, NP = Method, Epsilon = 1.0e-3
+			;	Function = bailey5,		A =  0, B = 100, C = 0, D = 100, NP = Method, Epsilon = 1.0e-6
 			),
 			(	write(Function),
 				loop::forto(T, 0, 2,
@@ -257,18 +265,26 @@
 						)
 					)), nl
 			)), nl,
-		write('Numerical integration of functions of two variables using a thread for each integration sub-interval (average of '), write(N), write(' runs)'), nl,
-		loop::forto(T, 0, 2,
-			(	Threads is truncate(4**T),
+		Method=2,
+		write('Numerical integration of functions of two variables, method='),write(Method),
+		write(' using a thread for each integration sub-interval (average of '), write(N), write(' runs)'), nl,
+		loop::forto(T, 0, 4,
+			(	Threads is truncate(2**T),
 				put_char('\t'), write(Threads)
 			)), nl,
 		forall(
-			(	Function = circle,	A =  -2, B = 0, C = -2, D = 0, NP = 2, Epsilon = 2.5e-10
-			;	Function = i15,		A =  -2, B = 2, C = -2, D = 2, NP = 2, Epsilon = 1.0e-4
+			(	Function = circle,	A =  -2, B = 0, C = -2, D = 2, NP = Method, Epsilon = 1.0e-10
+			;	Function = i14, 	A =  -2, B = 2, C = -2, D = 2, NP = Method, Epsilon = 1.0e-8
+			;	Function = i15,		A =  -2, B = 2, C = -2, D = 2, NP = Method, Epsilon = 1.0e-4
+			;	Function = bailey1,		A =  0, B = 1, C = 0, D = 1, NP = Method, Epsilon = 1.0e-10
+			;	Function = bailey2,		A =  0, B = 1, C = 0, D = 1, NP = Method, Epsilon = 1.0e-10
+			;	Function = bailey3,		A =  -1, B = 1, C = -1, D = 1, NP = Method, Epsilon = 1.0e-8
+			;	Function = bailey4,		A =  1.0e-6, B = pi, C = 0, D = pi, NP = Method, Epsilon = 1.0e-3
+			;	Function = bailey5,		A =  0, B = 100, C = 0, D = 100, NP = Method, Epsilon = 1.0e-6
 			),
 			(	write(Function),
-				loop::forto(T, 0, 2,
-					(	Threads is truncate(4**T),
+				loop::forto(T, 0, 4,
+					(	Threads is truncate(2**T),
 						catch(run(quadsplit2d(Threads, Function, A, B, C, D, NP, Epsilon), N, Average), Error, write_error) ->
 						(	var(Error) ->
 							write_average(Average)
