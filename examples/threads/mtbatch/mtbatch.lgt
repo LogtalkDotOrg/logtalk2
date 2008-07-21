@@ -177,7 +177,9 @@
 
 	% integration benchmarks:
 	run(integration, N) :-
-		write('Numerical integration of functions of one variable using recursive calls to threaded/1 (average of '), write(N), write(' runs)'), nl,
+		NP = 3,
+		write('Numerical integration of functions of one variable (average of '), write(N), write(' runs)'), nl,
+		write('using a recursive quadrature method with '), write(NP), write(' points'), nl,
 		loop::forto(T, 0, 4,
 			(	Threads is truncate(2**T),
 				put_char('\t'), write(Threads)
@@ -189,24 +191,25 @@
 			;	Function = sin,       Inf =  0.000, Sup = 6.283, Epsilon = 1.0e-10
 			;	Function = quiver,    Inf =  0.001, Sup = 0.999, Epsilon = 1.0e-10
 			;	Function = oscillate, Inf = -1.000, Sup = 1.000, Epsilon = 1.0e-10
-			;	Function = test01,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
-			;	Function = test02,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
-			;	Function = test03,    Inf =  0.000, Sup = 1.571, Epsilon = 1.0e-15
-			;	Function = test04,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
-			;	Function = test05,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
-			;	Function = test06,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
+			;	Function = test01,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-13
+			;	Function = test02,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-13
+			;	Function = test03,    Inf =  0.000, Sup = 1.571, Epsilon = 1.0e-13
+			;	Function = test04,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-13
+			;	Function = test05,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-13
+			;	Function = test06,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-13
 			),
 			(	write(Function),
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
-						catch(run(quadrec(Threads, Function, Inf, Sup, Epsilon), N, Average), Error, write_error) ->
+						catch(run(quadrec(Threads, Function, Inf, Sup, NP, Epsilon), N, Average), Error, write_error) ->
 						(	var(Error) ->
 							write_average(Average)
 						;	true
 						)
 					)), nl
 			)), nl,
-		write('Numerical integration of functions of one variable using a thread for each integration sub-interval (average of '), write(N), write(' runs)'), nl,
+		write('Numerical integration of functions of one variable (average of '), write(N), write(' runs)'), nl,
+		write('using a split/spawn/collect quadrature method with '), write(NP), write(' points'), nl,
 		loop::forto(T, 0, 4,
 			(	Threads is truncate(2**T),
 				put_char('\t'), write(Threads)
@@ -218,17 +221,17 @@
 			;	Function = sin,       Inf =  0.000, Sup = 6.283, Epsilon = 1.0e-10
 			;	Function = quiver,    Inf =  0.001, Sup = 0.999, Epsilon = 1.0e-10
 			;	Function = oscillate, Inf = -1.000, Sup = 1.000, Epsilon = 1.0e-10
-			;	Function = test01,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
-			;	Function = test02,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
-			;	Function = test03,    Inf =  0.000, Sup = 1.571, Epsilon = 1.0e-15
-			;	Function = test04,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
-			;	Function = test05,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
-			;	Function = test06,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-15
+			;	Function = test01,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-13
+			;	Function = test02,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-13
+			;	Function = test03,    Inf =  0.000, Sup = 1.571, Epsilon = 1.0e-13
+			;	Function = test04,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-13
+			;	Function = test05,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-13
+			;	Function = test06,    Inf =  0.000, Sup = 1.000, Epsilon = 1.0e-13
 			),
 			(	write(Function),
 				loop::forto(T, 0, 4,
 					(	Threads is truncate(2**T),
-						catch(run(quadsplit(Threads, Function, Inf, Sup, Epsilon), N, Average), Error, write_error) ->
+						catch(run(quadsplit(Threads, Function, Inf, Sup, NP, Epsilon), N, Average), Error, write_error) ->
 						(	var(Error) ->
 							write_average(Average)
 						;	true
@@ -238,22 +241,23 @@
 
 	% integration2d benchmarks:
 	run(integration2d, N) :-
-		Method=2,
-		write('Numerical integration of functions of two variables, method='),write(Method),
-		write(' using recursive calls to threaded/1 (average of '), write(N), write(' runs)'), nl,
+		NP = 3,
+		write('Numerical integration of functions of two variables (average of '), write(N), write(' runs)'), nl,
+		write('using a recursive quadrature method with '), write(NP), write(' points'), nl,
 		loop::forto(T, 0, 2,
 			(	Threads is truncate(4**T),
 				put_char('\t'), write(Threads)
 			)), nl,
 		forall(
-			(	Function = circle,	A =  -2, B = 0, C = -2, D = 2, NP = Method, Epsilon = 1.0e-10
-			;	Function = i14, 	A =  -2, B = 2, C = -2, D = 2, NP = Method, Epsilon = 1.0e-8
-			;	Function = i15,		A =  -2, B = 2, C = -2, D = 2, NP = Method, Epsilon = 1.0e-4
-			;	Function = bailey1,		A =  0, B = 1, C = 0, D = 1, NP = Method, Epsilon = 1.0e-10
-			;	Function = bailey2,		A =  0, B = 1, C = 0, D = 1, NP = Method, Epsilon = 1.0e-10
-			;	Function = bailey3,		A =  -1, B = 1, C = -1, D = 1, NP = Method, Epsilon = 1.0e-8
-			;	Function = bailey4,		A =  1.0e-6, B = pi, C = 0, D = pi, NP = Method, Epsilon = 1.0e-3
-			;	Function = bailey5,		A =  0, B = 100, C = 0, D = 100, NP = Method, Epsilon = 1.0e-6
+			(	Function = circle,	A = -2, B = 2, C = -2, D = 2, Epsilon = 1.0e-8
+			;	Function = poly6,	A = -2, B = 2, C = -2, D = 2, Epsilon = 1.0e-7
+			;	Function = i14, 	A = -2, B = 2, C = -2, D = 2, Epsilon = 1.0e-9
+			;	Function = i15,		A = -2, B = 2, C = -2, D = 2, Epsilon = 1.0e-6
+			;	Function = bailey1,	A =  0, B = 1, C =  0, D = 1, Epsilon = 1.0e-10
+			;	Function = bailey2,	A =  0, B = 1, C =  0, D = 1, Epsilon = 1.0e-10
+			;	Function = bailey3,	A = -1, B = 1, C = -1, D = 1, Epsilon = 1.0e-8
+			;	Function = bailey4,	A =  1.0e-6, B = pi, C = 0, D = pi, Epsilon = 1.0e-3
+			;	Function = bailey5,	A =  0, B = 100, C = 0, D = 100, Epsilon = 1.0e-6
 			),
 			(	write(Function),
 				loop::forto(T, 0, 2,
@@ -265,22 +269,22 @@
 						)
 					)), nl
 			)), nl,
-		Method=2,
-		write('Numerical integration of functions of two variables, method='),write(Method),
-		write(' using a thread for each integration sub-interval (average of '), write(N), write(' runs)'), nl,
+		write('Numerical integration of functions of two variables (average of '), write(N), write(' runs)'), nl,
+		write('using a split/spawn/collect quadrature method with '), write(NP), write(' points'), nl,
 		loop::forto(T, 0, 4,
 			(	Threads is truncate(2**T),
 				put_char('\t'), write(Threads)
 			)), nl,
 		forall(
-			(	Function = circle,	A =  -2, B = 0, C = -2, D = 2, NP = Method, Epsilon = 1.0e-10
-			;	Function = i14, 	A =  -2, B = 2, C = -2, D = 2, NP = Method, Epsilon = 1.0e-8
-			;	Function = i15,		A =  -2, B = 2, C = -2, D = 2, NP = Method, Epsilon = 1.0e-4
-			;	Function = bailey1,		A =  0, B = 1, C = 0, D = 1, NP = Method, Epsilon = 1.0e-10
-			;	Function = bailey2,		A =  0, B = 1, C = 0, D = 1, NP = Method, Epsilon = 1.0e-10
-			;	Function = bailey3,		A =  -1, B = 1, C = -1, D = 1, NP = Method, Epsilon = 1.0e-8
-			;	Function = bailey4,		A =  1.0e-6, B = pi, C = 0, D = pi, NP = Method, Epsilon = 1.0e-3
-			;	Function = bailey5,		A =  0, B = 100, C = 0, D = 100, NP = Method, Epsilon = 1.0e-6
+			(	Function = circle,	A = -2, B = 2, C = -2, D = 2, Epsilon = 1.0e-8
+			;	Function = poly6,	A = -2, B = 2, C = -2, D = 2, Epsilon = 1.0e-7
+			;	Function = i14, 	A = -2, B = 2, C = -2, D = 2, Epsilon = 1.0e-9
+			;	Function = i15,		A = -2, B = 2, C = -2, D = 2, Epsilon = 1.0e-6
+			;	Function = bailey1,	A =  0, B = 1, C =  0, D = 1, Epsilon = 1.0e-10
+			;	Function = bailey2,	A =  0, B = 1, C =  0, D = 1, Epsilon = 1.0e-10
+			;	Function = bailey3,	A = -1, B = 1, C = -1, D = 1, Epsilon = 1.0e-8
+			;	Function = bailey4,	A =  1.0e-6, B = pi, C = 0, D = pi, Epsilon = 1.0e-3
+			;	Function = bailey5,	A =  0, B = 100, C = 0, D = 100, Epsilon = 1.0e-6
 			),
 			(	write(Function),
 				loop::forto(T, 0, 4,
@@ -393,17 +397,17 @@
 		fail.
 	do_benchmark(fft(_, _, _), _).
 
-	do_benchmark(quadrec(Threads, Function, Inf, Sup, Epsilon), N) :-
+	do_benchmark(quadrec(Threads, Function, Inf, Sup, NP, Epsilon), N) :-
 		repeat(N),
-			quadrec(Threads)::integrate(Function, Inf, Sup, 4, Epsilon, _),
+			quadrec(Threads)::integrate(Function, Inf, Sup, NP, Epsilon, _),
 		fail.
-	do_benchmark(quadrec(_, _, _, _, _), _).
+	do_benchmark(quadrec(_, _, _, _, _, _), _).
 
-	do_benchmark(quadsplit(Threads, Function, Inf, Sup, Epsilon), N) :-
+	do_benchmark(quadsplit(Threads, Function, Inf, Sup, NP, Epsilon), N) :-
 		repeat(N),
-			quadsplit(Threads)::integrate(Function, Inf, Sup, 4, Epsilon, _),
+			quadsplit(Threads)::integrate(Function, Inf, Sup, NP, Epsilon, _),
 		fail.
-	do_benchmark(quadsplit(_, _, _, _, _), _).
+	do_benchmark(quadsplit(_, _, _, _, _, _), _).
 
 	do_benchmark(quadrec2d(Threads, Function, A, B, C, D, NP, Epsilon), N) :-
 		repeat(N),
