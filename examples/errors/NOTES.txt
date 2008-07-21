@@ -9,7 +9,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ================================================================
 
 
-To load this example, please see the SCRIPT file.
+To load this example, please see the SCRIPT.txt file.
 
 This folder contains examples of objects, categories, and protocols 
 containing errors that will trigger Logtalk compiler warnings and 

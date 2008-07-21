@@ -9,7 +9,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ================================================================
 
 
-To load this example and for sample queries, please see the SCRIPT file.
+To load this example and for sample queries, please see the SCRIPT.txt file.
 
 This folder provides a parametric object for running multi-threading 
 benchmarks. The object parameter must be instantiated with an atom 

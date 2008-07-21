@@ -9,7 +9,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ================================================================
 
 
-To load this example and for sample queries, please see the SCRIPT file.
+To load this example and for sample queries, please see the SCRIPT.txt file.
 
 This folder provides a multi-threading solution for calculating the Fast 
 Fourier Transform. This solution is mostly intended for benchmarking.

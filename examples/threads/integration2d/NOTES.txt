@@ -9,41 +9,47 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ================================================================
 
 
-To load this example and for sample queries, please see the SCRIPT file.
+To load this example and for sample queries, please see the SCRIPT.txt file.
 
 This folder contains a multi-threading implementation of Recursive Gaussian 
 Quadrature Methods for Numerical Integration for functions of two variables.
 
-Adaptive quadrature methods are efficient techniques for numerical 
-integration as they compensate for functional variation along the 
-integral domain, effectively in regions with large function variations 
-a larger sampling of point are used.
+Adaptive quadrature methods are efficient numerical integration techniques
+as they compensate for functional variation along the integral domain. This
+is accomplished by using a larger sampling of points in regions with large 
+function variations.
 
-The objects (quad..2d) implement the integrate protocol for functions of 
-two variables.
+Two objects, "quadrec2d" and "quadsplit2d", implement two versions of the 
+quadrature methods.
 
-Integrate Protocol: integrate(Function, A, B, C, D, NP, Error, Integral)
-Find the integral of a function of two variables on the rectangular domain 
-[A,B][C,D] given a maximum approximation error. NP represents the method 
-to be used (0,1,2,3):
+In the quadrec2d object, the multi-threading method used is to divide 
+the integral volume amongst the number of threads used (a power of 4) and 
+then recursively apply the same method in each interval. The implementation 
+uses the threaded/1 Logtalk built-in predicate.
 
-For NP = 0 an adaptive trapezoidal rule is used.
-FOR NP=1,2,3 an adaptive gaussian quadrature of 1, 2, 3, or points is used.
+In the quadsplit2d object, a divide and conquer approach is also used but 
+the original domain is split along a single dimension. A thread is spawned 
+for each sub-interval. This method can use any number of threads. However, 
+by splitting along a single dimension, this method may perform poorly for 
+functions where the splitting leaves must of work to just a few threads 
+(resulting in load balancing problems).
 
-There are 2 versions, quadrec2d and quadsplit2d:
+The split/spawn/collect of thread goals uses the Logtalk built-in predicates 
+threaded_once/1 and threaded_exit/1.
 
-For quadrec2d, the method used for the multithreading is simply to divide the 
-initial area amongst the number of threads available (a power of 4) and then 
-in each interval the recursive method is applied. The threaded/1 predicate 
-is used.
+Both objects implement the same protocol:
 
-For quadsplit2d, the method used is again division (split) of the original 
-area amongst the number of threads specified. This method has no restriction 
-on the number of threads and uses a spwan/collect idea for proving thread 
-goals and the predicates threaded_once/1 and threaded_exit/1 are used.
+    integrate(Function, A, B, C, D, NP, Error, Integral)
 
-The 2D recursive algorithm and the example functions i14 and i15 are from the
-following article:
+This predicate allows us to find the integral of a function of two variables 
+on the rectangular domain [A,B][C,D] given a maximum approximation error.
+NP represents the method to be used (0,1,2,3). For NP = 0, an adaptive 
+trapezoidal rule is used. For NP = 1, 2, 3 an adaptive gaussian quadrature of
+1, 2, or 3 points is used.
+
+
+The 2D recursive algorithm and the example functions i14 and i15 are described
+in the following article:
 
 Wilhelm M. Pieper, "Recursive Gauss integration",
 Communications in Numerical Methods in Engineering, Vol. 15(2) 1999, pp 77-90.

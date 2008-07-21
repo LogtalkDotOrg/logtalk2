@@ -11,4 +11,4 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 This example is an adaptation of the LPA Prolog++ timetables example.
 
-To load this example and for sample queries, please see the SCRIPT file.
+To load this example and for sample queries, please see the SCRIPT.txt file.

@@ -9,7 +9,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ================================================================
 
 
-To load this example and for sample queries, please see the SCRIPT file.
+To load this example and for sample queries, please see the SCRIPT.txt file.
 
 This is a very simple example of using the new, experimental encoding/1 
 directive, which is fully based on the directive with the same name found 
