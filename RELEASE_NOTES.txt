@@ -91,6 +91,10 @@ RELEASE NOTES
     is essential for good results in operating-systems with poor mutex thread 
     synchronization performance such as MacOS X.
 
+    Improved support for the Pygments syntax highlighter, correcting coloring 
+    bugs when there are single line comments in the same lines of an opening 
+    entity directive.
+
 
 2.32.1 - July 7, 2008
 
