@@ -15,7 +15,7 @@
 % dealing with non-empty lists is easy:
 
 :- object(.(_, _)).			% note that the [X, Y, ...] notation
- 							% is just syntactic sugar for ./2
+							% is just syntactic sugar for ./2
 	:- public(last/1).
 	:- mode(last(?term), zero_or_one).
 
