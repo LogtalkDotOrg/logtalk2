@@ -88,6 +88,9 @@ RELEASE NOTES
     Added list mapping predicates map/4 and map/5 to the "metap" library 
     protocol and the "meta" library object.
 
+    Added a proper definition for the predicate select/3 to the "varlist" 
+    library object.
+
     Added a new example, "logging", of using a category to define a set of 
     predicates that handle a dynamic predicate in the context of "this" 
     (i.e. in the context of the objects importing the category).
