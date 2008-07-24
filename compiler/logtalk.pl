@@ -2638,7 +2638,10 @@ current_logtalk_flag(version, version(2, 32, 2)).
 					retractall(Call),
 					'$lgt_update_ddef_table'(DDef, Head, Call)
 				;	call_with_args(Def, Head, _, _, _, Call) ->
-					'$lgt_add_db_lookup_cache_entry'(Obj, Head, PScope, Sender, Call),
+					(	'$lgt_debugging_'(Obj) ->
+						true
+					;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, PScope, Sender, Call)
+					),
 					retractall(Call)
 				;	true
 				)
@@ -2654,7 +2657,10 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	;	% local dynamic predicate with no scope declaration:
 		(	Obj = Sender,
 			call_with_args(DDef, Head, _, _, _, Call) ->
-			'$lgt_add_db_lookup_cache_entry'(Obj, Head, PScope, Sender, Call),
+			(	'$lgt_debugging_'(Obj) ->
+				true
+			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, PScope, Sender, Call)
+			),
 			retractall(Call)
 		;	throw(error(existence_error(predicate_declaration, Head), Obj::retractall(Head), Sender))
 		)
@@ -5004,12 +5010,12 @@ current_logtalk_flag(version, version(2, 32, 2)).
 %
 % returns runtime table clauses for the entity being compiled
 
-'$lgt_pp_rclause'(Clause) :-
-	'$lgt_pp_rclause_'(Clause).
-
 '$lgt_pp_rclause'('$lgt_debugging_'(Entity)) :-
 	'$lgt_compiler_flag'(debug, on),
 	'$lgt_pp_entity'(_, Entity, _, _, _).
+
+'$lgt_pp_rclause'(Clause) :-
+	'$lgt_pp_rclause_'(Clause).
 
 '$lgt_pp_rclause'('$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Mode, Synchronized, Threaded)) :-
 	'$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Mode),

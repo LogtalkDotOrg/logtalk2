@@ -60,11 +60,16 @@ RELEASE NOTES
     Corrected a bug that prevented asserting and retracting clauses in "this" 
     from within a category.
 
+    Corrected a bug in the implementation of the built-in database method 
+    retractall/1 when retracting clauses in an object compiled in debug mode.
+    Thanks to Parker Jones for the bug report.
+
     Updated all config files due to changes to the predicate used to declare 
     proprietary meta-predicates, '$lgt_pl_meta_predicate'/1. Added a second 
     argument to represent if the meta-predicate is either a built-in predicate 
     or a built-in control construct. This is necessary in order to properly 
     compile calls to these proprietary meta-predicates when in debug mode.
+    Thanks to Victor Noel for the bug report.
 
     Corrected a bug in the config files hooks used in handling proprietary 
     Prolog directives for the SWI-Prolog, B-Prolog YAP, SICStus, and XSB 
