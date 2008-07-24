@@ -60,6 +60,12 @@ RELEASE NOTES
     Corrected a bug that prevented asserting and retracting clauses in "this" 
     from within a category.
 
+    Updated all config files due to changes to the predicate used to declare 
+    proprietary meta-predicates, '$lgt_pl_meta_predicate'/1. Added a second 
+    argument to represent if the meta-predicate is either a built-in predicate 
+    or a built-in control construct. This is necessary in order to properly 
+    compile calls to these proprietary meta-predicates when in debug mode.
+
     Corrected a bug in the config files hooks used in handling proprietary 
     Prolog directives for the SWI-Prolog, B-Prolog YAP, SICStus, and XSB 
     Prolog compilers. Added a new internal predicate for constructing 
@@ -74,6 +80,10 @@ RELEASE NOTES
     true. Added declaration for the setup_and_call_cleanup/3 meta-predicate.
     Removed setting of the deprecated "prompt_alternatives_no_bindings" 
     Prolog flag. Oldest SWI-Prolog compatible version is now 5.6.44.
+
+    Updated the GNU-Prolog config file, adding a declaration for the 
+    call_det/2 proprietary meta-predicate. GNU-Prolog version 1.3.0 or 
+    later is now required.
 
     Added list mapping predicates map/4 and map/5 to the "metap" library 
     protocol and the "meta" library object.

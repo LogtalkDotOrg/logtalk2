@@ -3740,61 +3740,54 @@ current_logtalk_flag(version, version(2, 32, 2)).
 
 
 '$lgt_dbg_fact'(Fact, DbgCtx) :-
-	'$lgt_dbg_debugging_',
-	\+ '$lgt_dbg_skipping_',
-	!,
-	'$lgt_dbg_port'(fact, Fact, _, DbgCtx, Action),
-	call(Action).
-
-'$lgt_dbg_fact'(_, _).
+	(	'$lgt_dbg_debugging_', \+ '$lgt_dbg_skipping_' ->
+		'$lgt_dbg_port'(fact, Fact, _, DbgCtx, Action),
+		call(Action)
+	;	true
+	).
 
 
 '$lgt_dbg_head'(Head, DbgCtx) :-
-	'$lgt_dbg_debugging_',
-	\+ '$lgt_dbg_skipping_',
-	!,
-	'$lgt_dbg_port'(rule, Head, _, DbgCtx, Action),
-	call(Action).
-
-'$lgt_dbg_head'(_, _).
+	(	'$lgt_dbg_debugging_', \+ '$lgt_dbg_skipping_' ->
+		'$lgt_dbg_port'(rule, Head, _, DbgCtx, Action),
+		call(Action)
+	;	true
+	).
 
 
 '$lgt_dbg_goal'(Goal, TGoal, DbgCtx) :-
-	'$lgt_dbg_debugging_',
-	\+ '$lgt_dbg_skipping_',
-	!,
-	(	'$lgt_dbg_port'(call, Goal, _, DbgCtx, CAction),
-		(	CAction = skip ->
-			retractall('$lgt_dbg_skipping_'),
-			assertz('$lgt_dbg_skipping_'),
-			CAction2 = true
-		;	CAction2 = CAction
-		),
-		(	CAction2 = ignore ->
-			true
-		;	call(CAction2),
-			catch(
-				call(TGoal),
-				Error,
-				('$lgt_dbg_port'(exception, Goal, Error, DbgCtx, TAction), (TAction = fail -> fail; throw(Error)))),
-			(	'$lgt_dbg_port'(exit, Goal, _, DbgCtx, EAction),
-				call(EAction)
-			;	'$lgt_dbg_port'(redo, Goal, _, DbgCtx, RAction),
-				(	RAction = skip ->
-				 	retractall('$lgt_dbg_skipping_'),
-				 	assertz('$lgt_dbg_skipping_')
-				),
-				RAction = ignore
+	(	'$lgt_dbg_debugging_', \+ '$lgt_dbg_skipping_' ->
+		(	'$lgt_dbg_port'(call, Goal, _, DbgCtx, CAction),
+			(	CAction = skip ->
+				retractall('$lgt_dbg_skipping_'),
+				assertz('$lgt_dbg_skipping_'),
+				CAction2 = true
+			;	CAction2 = CAction
+			),
+			(	CAction2 = ignore ->
+				true
+			;	call(CAction2),
+				catch(
+					call(TGoal),
+					Error,
+					('$lgt_dbg_port'(exception, Goal, Error, DbgCtx, TAction), (TAction = fail -> fail; throw(Error)))),
+				(	'$lgt_dbg_port'(exit, Goal, _, DbgCtx, EAction),
+					call(EAction)
+				;	'$lgt_dbg_port'(redo, Goal, _, DbgCtx, RAction),
+					(	RAction = skip ->
+					 	retractall('$lgt_dbg_skipping_'),
+					 	assertz('$lgt_dbg_skipping_')
+					),
+					RAction = ignore
+				)
+				;
+				retractall('$lgt_dbg_skipping_'),
+				'$lgt_dbg_port'(fail, Goal, _, DbgCtx, _), fail
 			)
-			;
-			retractall('$lgt_dbg_skipping_'),
-			'$lgt_dbg_port'(fail, Goal, _, DbgCtx, _), fail
-		)
-	),
-	retractall('$lgt_dbg_skipping_').
-
-'$lgt_dbg_goal'(_, TGoal, _) :-
-	call(TGoal).
+		),
+		retractall('$lgt_dbg_skipping_')
+	;	call(TGoal)
+	).
 
 
 '$lgt_dbg_port'(exception, _, error(logtalk_debugger_aborted), _, true) :-
@@ -7359,14 +7352,14 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	assertz('$lgt_non_portable_call_'(Functor, Arity)),
 	fail.
 
-'$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, DPred, DbgCtx), Ctx) :-
+'$lgt_tr_body'(Pred, TPred, DPred, Ctx) :-
 	'$lgt_pl_built_in'(Pred),
 	functor(Pred, Functor, Arity),
 	\+ '$lgt_pp_public_'(Functor, Arity),		% not a
 	\+ '$lgt_pp_protected_'(Functor, Arity),	% redefined
 	\+ '$lgt_pp_private_'(Functor, Arity),		% built-in
 	functor(Meta, Functor, Arity), 
-	'$lgt_pl_meta_predicate'(Meta),
+	'$lgt_pl_meta_predicate'(Meta, Type),
 	!,
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
@@ -7374,8 +7367,12 @@ current_logtalk_flag(version, version(2, 32, 2)).
 		throw(domain_error(closure, Meta))
 	;	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
 		TPred =.. [Functor| TArgs],
-		DPred =.. [Functor| DArgs],
-		'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx)
+		DGoal =.. [Functor| DArgs]
+	),
+	(	Type == control_construct ->
+		DPred = DGoal
+	;	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
+		DPred = '$lgt_dbg_goal'(Pred, DGoal, DbgCtx)
 	).
 
 '$lgt_tr_body'(Pred, '$lgt_call_built_in'(Pred, Ctx), '$lgt_dbg_goal'(Pred, '$lgt_call_built_in'(Pred, Ctx), DbgCtx), Ctx) :-
@@ -10240,7 +10237,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	'$lgt_pl_built_in'(Pred),
 	functor(Pred, Functor, Arity),
 	functor(Meta, Functor, Arity), 
-	'$lgt_pl_meta_predicate'(Meta),
+	'$lgt_pl_meta_predicate'(Meta, _),
 	!,
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
@@ -11091,7 +11088,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	'$lgt_lgt_meta_predicate'(Meta).
 
 '$lgt_meta_predicate'(Meta) :-			% (non ISO Standard) Prolog meta-predicate
-	'$lgt_pl_meta_predicate'(Meta).		% specified in the config files
+	'$lgt_pl_meta_predicate'(Meta, _).	% specified in the config files
 
 
 

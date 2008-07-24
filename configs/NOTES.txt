@@ -205,7 +205,7 @@ ECLiPSe 5.10#26 or later versions
 	appended to the old ones instead of replacing them!
 
 
-GNU Prolog 1.2.14 and later versions
+GNU Prolog 1.3.0 and later versions
 
 	gnu.config
 
