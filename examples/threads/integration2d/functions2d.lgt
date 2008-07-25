@@ -13,10 +13,32 @@
 		comment is 'Calculates the function value.',
 		argnames is ['Function', 'X', 'Y', 'Fxy']]).
 
+	:- public(result/2).
+	:- mode(result(+atom, -float), one).
+	:- info(resul/2, [
+		comment is 'Shows the Correct Result of the Integral.',
+		argnames is ['Function', 'I']]).
+
+	result(circle, 21.33333).
+	result(poly6,  5.88698).
+	result(i14, 11.947778).
+	result(i15,	7.7359).
+	result(bailey1, 0.765196).
+	result(bailey2, 1.07664).
+	result(bailey3, 3.17344).
+	result(bailey4, 4.66927).
+	result(bailey5, 1.82396).
+
+
 	% [-2,2-2,2]
 	% Integral = 21.33333
 	eval(circle, X, Y, Fxy) :-
-		Fxy is X*X + Y*Y - 2*2.
+		Fxy is X*X + Y*Y - 2.0*2.0.
+		
+	% [-2,2-2,2]
+	% Integral =  5.88698
+	eval(poly6, X, Y, Fxy) :-
+		Fxy is X**6.0/200.0 - X*Y**5.0 - 0.1*X*X*Y*Y  + 0.5.
 
 	% [-2,2-2,2]
 	% Integral = 11.947778
@@ -26,7 +48,7 @@
 	% [-2,2-2,2]
 	% Integral = 7.7359
 	eval(i15, X, Y, Fxy) :-
-		F is sin(6*X*Y), Fxy is F*F.
+		F is sin(6.0*X*Y), Fxy is F*F.
 
 	% [0,1,0,1]   
 	% Integral is sqrt(2)/3 - log(2)/6 + log(2+sqrt(2))/3.
