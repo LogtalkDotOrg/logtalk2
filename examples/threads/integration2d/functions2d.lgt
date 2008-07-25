@@ -19,7 +19,7 @@
 		comment is 'Shows the Correct Result of the Integral.',
 		argnames is ['Function', 'I']]).
 
-	result(circle, 21.33333).
+	result(circle, -21.33333).
 	result(poly6,  5.88698).
 	result(i14, 11.947778).
 	result(i15,	7.7359).
