@@ -1,0 +1,23 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.32.2
+
+Copyright (c) 1998-2008 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+This directory contains files that provide syntax highlighting for 
+GeSHi:
+
+	http://geshi.org/
+
+These support files are dual-licensed under the Artistic License 2.0 
+and the GeSHi license.
+
+To install, copy the file "logtalk.php" to the GeSHi languages folder.
+
+
+THIS SYNTAX COLORING SUPPORT FILE IS UNDER DEVELOPMENT.

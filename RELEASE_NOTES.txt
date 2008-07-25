@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.32.2 - July 21, 2008
+2.32.2 - July 26, 2008
 
     Simplified the predicate lookup linking clauses that are generated when 
     compiling private and protected entity relations, resulting in a small 
@@ -45,8 +45,8 @@ RELEASE NOTES
     implementation of this feature easier to maintain and contributing to 
     smaller code sizes of the intermediate Prolog files.
 
-	Corrected a typo in the exception terms throw by the built-in method 
-	assertz/1 when an error occurs while trying to assert a fact.
+    Corrected a typo in the exception term throw by the built-in database 
+    method assertz/1 when an error occurs while trying to assert a fact.
 
     Restored the redefined entity warnings for back-end Prolog compilers 
     that support multifile predicates (broken in the final version of 2.32.1).
@@ -108,6 +108,9 @@ RELEASE NOTES
     functions under the same object in order to allow for static binding. This
     is essential for good results in operating-systems with poor mutex thread 
     synchronization performance such as MacOS X.
+
+    Added experimental support for the GeSHi syntax highlighter, contributed 
+    by Clara Dimene.
 
     Improved support for the Pygments syntax highlighter, correcting coloring 
     bugs when there are single line comments in the same lines of an opening 
