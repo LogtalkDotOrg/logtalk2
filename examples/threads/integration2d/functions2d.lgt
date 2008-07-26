@@ -13,22 +13,21 @@
 		comment is 'Calculates the function value.',
 		argnames is ['Function', 'X', 'Y', 'Fxy']]).
 
-	:- public(result/2).
-	:- mode(result(+atom, -float), one).
-	:- info(resul/2, [
-		comment is 'Shows the Correct Result of the Integral.',
-		argnames is ['Function', 'I']]).
+	:- public(integral/2).
+	:- mode(integral(+atom, -float), one).
+	:- info(integral/2, [
+		comment is 'Function integral.',
+		argnames is ['Function', 'Integral']]).
 
-	result(circle, -21.33333).
-	result(poly6,  5.88698).
-	result(i14, 11.947778).
-	result(i15,	7.7359).
-	result(bailey1, 0.765196).
-	result(bailey2, 1.07664).
-	result(bailey3, 3.17344).
-	result(bailey4, 4.66927).
-	result(bailey5, 1.82396).
-
+	integral(circle,  -21.33333).
+	integral(poly6,     5.88698).
+	integral(i14,      11.947778).
+	integral(i15,	      7.7359).
+	integral(bailey1,   0.765196).
+	integral(bailey2,   1.07664).
+	integral(bailey3,   3.17344).
+	integral(bailey4,   4.66927).
+	integral(bailey5,   1.82396).
 
 	% [-2,2-2,2]
 	% Integral = 21.33333
@@ -73,7 +72,7 @@
 	% G is Catalans Constant =  0.915965594177...  
 	% Integral is 4*pi*0.915965594177-pi*pi*log(2).
 	% Integral = 4.66927.
-		eval(bailey4, X, Y, Fxy) :-
+	eval(bailey4, X, Y, Fxy) :-
 		Fxy is log(2.0 - cos(X) - cos(Y)).
 
 	% [0,inf,0,inf] --> use a valor for infinite such as, inf=100, for example
