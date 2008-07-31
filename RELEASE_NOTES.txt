@@ -13,6 +13,13 @@ RELEASE NOTES
 =============
 
 
+2.33.0 - August ??, 2008
+
+    Added support for using Prolog use_module/2 directives in objects and 
+    categories. This allows module predicates to be called using implicit 
+    qualification, improving readability.
+
+
 2.32.2 - July 26, 2008
 
     Simplified the predicate lookup linking clauses that are generated when 

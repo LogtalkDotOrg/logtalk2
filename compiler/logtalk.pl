@@ -200,6 +200,7 @@
 
 :- dynamic('$lgt_pp_uses_'/1).					% '$lgt_pp_uses_'(Obj)
 :- dynamic('$lgt_pp_uses_'/3).					% '$lgt_pp_uses_'(Obj, Predicate, Alias)
+:- dynamic('$lgt_pp_use_module_'/3).			% '$lgt_pp_use_module_'(Module, Predicate, Alias)
 :- dynamic('$lgt_pp_calls_'/1).					% '$lgt_pp_calls_'(Entity)
 :- dynamic('$lgt_pp_info_'/1).					% '$lgt_pp_info_'(List)
 :- dynamic('$lgt_pp_info_'/2).					% '$lgt_pp_info_'(Functor/Arity, List) or '$lgt_pp_info_'(Functor//Args, List)
@@ -1825,7 +1826,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 32, 2)).
+current_logtalk_flag(version, version(2, 33, 0)).
 
 
 
@@ -4832,6 +4833,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	retractall('$lgt_pp_extended_category_'(_, _, _, _, _)),
 	retractall('$lgt_pp_uses_'(_)),
 	retractall('$lgt_pp_uses_'(_, _, _)),
+	retractall('$lgt_pp_use_module_'(_, _, _)),
 	retractall('$lgt_pp_calls_'(_)),
 	retractall('$lgt_pp_info_'(_)),
 	retractall('$lgt_pp_info_'(_, _)),
@@ -5444,12 +5446,23 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	assertz('$lgt_pp_uses_'(Obj)).
 
 
+'$lgt_tr_directive'(use_module, [Module, _], _, _) :-
+	var(Module),
+	throw(instantiation_error).
+
+'$lgt_tr_directive'(uses, [Module, _], _, _) :-
+	\+ callable(Module),
+	throw(type_error(module_identifier, Module)).
+
 '$lgt_tr_directive'(use_module, [Module, Preds], Input, Output) :-	% module directive
 	(	atom(Module) ->
 		Name = Module
 	;	arg(1, Module, Name)
 	),
-	'$lgt_tr_directive'(uses, [Name, Preds], Input, Output).
+	(	'$lgt_pp_module_'(_) ->										% we're compiling a module
+ 		'$lgt_tr_directive'(uses, [Name, Preds], Input, Output)		% as an object
+	;	'$lgt_tr_use_module_preds'(Preds, Name)
+	).
 
 
 '$lgt_tr_directive'(calls, Ptcs, _, _) :-
@@ -5895,13 +5908,56 @@ current_logtalk_flag(version, version(2, 32, 2)).
 		true
 	;	throw(domain_error(arity_mismatch(Original, Alias)))
 	),
-	(	\+ '$lgt_pp_uses_'(_, _, TAlias) ->
+	(	\+ '$lgt_pp_uses_'(_, _, TAlias),
+	 	\+ '$lgt_pp_use_module_'(_, _, TAlias) ->
 		TOriginal =.. [_| Args], TAlias =.. [_| Args],	% unify args of TOriginal and TAlias
 		assertz('$lgt_pp_uses_'(Obj, TOriginal, TAlias))
 	;	functor(TAlias, Functor, Arity),
 		throw(permission_error(modify, uses_object_predicate, Functor/Arity))
 	),
 	'$lgt_tr_uses_preds'(Preds, Obj).
+
+
+
+% '$lgt_tr_use_module_preds'(+list, +module_identifier)
+%
+% auxiliary predicate for translating use_module/2 directives in objects or categories
+
+'$lgt_tr_use_module_preds'([], _).
+
+'$lgt_tr_use_module_preds'([Pred| Preds], Module) :-
+	(	nonvar(Pred) ->
+		true
+	;	throw(instantiation_error)
+	),
+	(	Pred = (Original::Alias) ->
+		true
+	;	(Original, Alias) = (Pred, Pred)
+	),
+	(	(nonvar(Original), nonvar(Alias)) ->
+		true
+	;	throw(instantiation_error)
+	),
+	(	'$lgt_valid_pred_ind'(Original, OFunctor, OArity) ->
+		functor(TOriginal, OFunctor, OArity)
+	;	throw(type_error(predicate_indicator, Original))
+	),
+	(	'$lgt_valid_pred_ind'(Alias, AFunctor, AArity) ->
+		functor(TAlias, AFunctor, AArity)
+	;	throw(type_error(predicate_indicator, Alias))
+	),
+	(	OArity =:= AArity ->
+		true
+	;	throw(domain_error(arity_mismatch(Original, Alias)))
+	),
+	(	\+ '$lgt_pp_uses_'(_, _, TAlias),
+	 	\+ '$lgt_pp_use_module_'(_, _, TAlias) ->
+		TOriginal =.. [_| Args], TAlias =.. [_| Args],	% unify args of TOriginal and TAlias
+		assertz('$lgt_pp_use_module_'(Module, TOriginal, TAlias))
+	;	functor(TAlias, Functor, Arity),
+		throw(permission_error(modify, uses_module_predicate, Functor/Arity))
+	),
+	'$lgt_tr_use_module_preds'(Preds, Module).
 
 
 
@@ -6422,6 +6478,14 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	'$lgt_pp_uses_'(_, _, Alias),
 	functor(Alias, Functor, Arity),
 	throw(permission_error(modify, uses_object_predicate, Functor/Arity)).
+
+
+% conflict with a predicate specified in a use_module/2 directive
+
+'$lgt_tr_head'(Alias, _, _, _) :-
+	'$lgt_pp_use_module_'(_, _, Alias),
+	functor(Alias, Functor, Arity),
+	throw(permission_error(modify, uses_module_predicate, Functor/Arity)).
 
 
 % non-variable meta-argument in clause head of a user-defined meta-predicate
@@ -7314,6 +7378,13 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	'$lgt_tr_body'(Obj::Pred, TPred, DPred, Ctx).
 
 
+% predicates specified in use_module/2 directives
+
+'$lgt_tr_body'(Alias, ':'(Module, Pred), ':'(Module, Pred), _) :-
+	'$lgt_pp_use_module_'(Module, Pred, Alias),
+	!.
+
+
 % arithmetic predicates (portability checks)
 
 '$lgt_tr_body'(_ is Exp, _, _, _) :-
@@ -7345,7 +7416,7 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	fail.
 
 
-% Logtalk and Prolog built-in (meta-)predicates
+% remember non-portable predicate calls
 
 '$lgt_tr_body'(Pred, _, _, _) :-
 	'$lgt_pl_built_in'(Pred),
@@ -7357,6 +7428,9 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	\+ '$lgt_pp_private_'(Functor, Arity),		% built-in
 	assertz('$lgt_non_portable_call_'(Functor, Arity)),
 	fail.
+
+
+% Logtalk and Prolog built-in (meta-)predicates
 
 '$lgt_tr_body'(Pred, TPred, DPred, Ctx) :-
 	'$lgt_pl_built_in'(Pred),
@@ -10395,6 +10469,10 @@ current_logtalk_flag(version, version(2, 32, 2)).
 	\+ '$lgt_pp_defs_pred_'(Functor, Arity),
 	functor(Pred, Functor, Arity),
 	\+ '$lgt_pp_redefined_built_in_'(Pred, _, _, _, _).
+
+'$lgt_non_portable_call'(':'(Module, Functor/Arity)) :-
+	'$lgt_pp_use_module_'(Module, Pred, _),
+	functor(Pred, Functor, Arity).
 
 
 

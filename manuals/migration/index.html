@@ -194,19 +194,42 @@ In this case, although the directive is not copied to the generated Prolog file,
 </p>
 
 
-<h2>Calling Prolog module predicates using message sending<a id="calling"></a></h2>
+<h2>Calling Prolog module predicates<a id="calling"></a></h2>
 
 <p>
-Logtalk allows you to send a message to a module in order to call one of its predicates. This is usually not advised as it implies a performance penalty when compared to just using the <code>Module:Call</code> notation (encapsulating the call between curly brackets when sending the message from inside an object). Note that this only works if there is no object with the same name as the module you are targeting.
+Logtalk allows you to send a message to a module in order to call one of its predicates. This is usually not advised as it implies a performance penalty when compared to just using the <code>Module:Call</code> notation. Note that this only works if there is no object with the same name as the module you are targeting. This feature is needed to properly support compilation of modules containing <code>use_module/2</code> directives as objects. If the modules specified in the <code>use_module/2</code> directives are not compiled as objects but are instead loaded as-is by Prolog, the exported predicates would need to be called using the <code>Module:Call</code> notation but the converted module will be calling them through message sending. Thus, this feature ensures that, on a module compiled as an object, any predicate calling other module predicates will work as expected either these other modules are loaded as-is or also compiled as objects.
 </p>
 <p>
-This feature is needed to properly support compilation of modules containing <code>use_module/2</code> directives as objects. If the modules specified in the <code>use_module/2</code> directives are not compiled as objects but are instead loaded as-is by Prolog, the exported predicates would need to be called using the <code>Module:Call</code> notation but the converted module will be calling them through message sending. Thus, this feature ensures that, on a module compiled as an object, any predicate calling other module predicates will work as expected either these other modules are loaded as-is or also compiled as objects.
+Logtalk supports the use of <code>use_module/2</code> directives in object and categories. In this case, these directives are parsed in a similar way to Logtalk <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directives, with calls to the specified module predicates being automatically translated to <code>Module:Goal</code> calls. For example, assume a <code>clpfd</code> Prolog module implementing a finite domain constraint solver. You could write:
+</p>
+<pre>
+:- object(puzzle).
+
+    :- public(puzzle/1).
+
+    :- use_module(clpfd, [all_different/1, ins/2, label/1, (#=)/2, (#\=)/2]).
+
+    :- initialization((puzzle(As+Bs=Cs), label(As), write(As+Bs=Cs), nl)).
+
+    puzzle([S,E,N,D] + [M,O,R,E] = [M,O,N,E,Y]) :-
+        Vars = [S,E,N,D,M,O,R,Y],
+        Vars ins 0..9,
+        all_different(Vars),
+                  S*1000 + E*100 + N*10 + D +
+                  M*1000 + O*100 + R*10 + E #=
+        M*10000 + O*1000 + N*100 + E*10 + Y,
+        M #\= 0, S #\= 0.
+
+:- end_object.
+</pre>
+<p>
+As a general rule, the Prolog modules should be loaded (e.g. in the auxiliary Logtalk loader files) before compiling objects that make use of module predicates. This is mandatory whenever the module exports operator declarations that you want to use in your objects and categories (as in the example above).
 </p>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: July 1, 2008</span>
+		<span>Last updated on: July 31, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="../glossary.html">glossary</a></span><br/>
