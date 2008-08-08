@@ -311,7 +311,7 @@
 				;	true
 				)
 			)), nl,
-		write('HF'), put_char('\t'),
+		write('HC'), put_char('\t'),
 		loop::forto(Liters, 1, 14,
 			(	catch(run(hill_climbing(Liters, 5, 9, 14), N, Average), Error, write_error) ->
 				(	var(Error) ->
