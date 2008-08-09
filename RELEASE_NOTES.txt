@@ -19,6 +19,9 @@ RELEASE NOTES
     categories. This allows module predicates to be called using implicit 
     qualification, improving readability.
 
+    Updated the GNU Prolog config file to allow Logtalk to recognise as 
+    built-in predicates the finite domain solver built-in predicates.
+
 
 2.32.2 - July 26, 2008
 
