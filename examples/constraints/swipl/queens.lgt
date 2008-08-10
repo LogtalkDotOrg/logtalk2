@@ -9,7 +9,7 @@
 
 	:- use_module(clpfd, [ins/2, labeling/2, (#=)/2, (#\=)/2, (#<==>)/2]).
 
-	:- public(show/3).
+	:- public([n_queens/2, show/3]).
 
 	/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	   Constraint posting
@@ -77,18 +77,18 @@
 	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 	postscript -->
-	        "systemdict /.setlanguagelevel known { 2 .setlanguagelevel} if \
-	 /init {  /N exch def 322 N div dup scale -1 -1 translate \
+		"systemdict /.setlanguagelevel known { 2 .setlanguagelevel} if \
+	 	/init {  /N exch def 322 N div dup scale -1 -1 translate \
 	          /Palatino-Roman findfont 0.8 scalefont setfont \
 	          0 setlinewidth \
 	          1 1 N { 1 1 N { 1 index c } for pop } for } bind def \
-	 /showtext { 0.5 0.28 translate dup stringwidth pop -2 div 0 moveto \
+		/showtext { 0.5 0.28 translate dup stringwidth pop -2 div 0 moveto \
 	          1 setgray show} bind def \
-	 /i { gsave translate .5 setgray 0 0 1 1 4 copy rectfill 0 setgray rectstroke \
-	    grestore } bind def \
-	 /q { gsave translate 0 0 1 1 rectfill (Q) showtext grestore } bind def \
-	 /c { gsave translate 1 setgray 0 0 1 1 4 copy rectfill 0 setgray rectstroke \
-	    grestore } bind def\n".
+		/i { gsave translate .5 setgray 0 0 1 1 4 copy rectfill 0 setgray rectstroke \
+	    	grestore } bind def \
+		/q { gsave translate 0 0 1 1 rectfill (Q) showtext grestore } bind def \
+		/c { gsave translate 1 setgray 0 0 1 1 4 copy rectfill 0 setgray rectstroke \
+			grestore } bind def\n".
 
 
 	/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -96,29 +96,25 @@
 	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 	show(N, Options, Qs) :-
+		between(1, infinite, N),
 		open(pipe('gs -dNOPAUSE -g680x680 -dGraphicsAlphaBits=2 -r151 -q -'), write,
-		     Out, [buffer(false),alias(gs)]),
+			Out, [buffer(false),alias(gs)]),
 		tell(Out),
-		integer(N), N > 0,
 		phrase(postscript, Ps),
 		format(Ps),
 		format("~w init\n", [N]),
 		n_queens(N, Qs),
-		animate(Qs),
-		labeling(Options, Qs),
-		finish.
-	show(_, _, _) :- finish, close(gs), fail.
+		call_cleanup(((animate(Qs),labeling(Options, Qs),finish)), close(gs)).
 
 	finish :-
 		format("copypage\n"),
 		% fill the buffer to make 'gs' process all generated output
 		ignore((between(1,500,_),
-		        format("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"),
-		        fail)),
+				format("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"),
+				fail)),
 		flush_output.
 
-
-	%?- between(0, inf, N), show(N, [ff], Qs).
+	%?- show(N, [ff], Qs).
 
 	%?- show(8, [ff], Qs).
 	%@ Qs = [1, 5, 8, 6, 3, 7, 2, 4] .
