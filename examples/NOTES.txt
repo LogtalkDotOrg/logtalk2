@@ -73,13 +73,18 @@ bricks
 	example of representation and handling of relations using events;
 	illustrates how to use events to avoid breaking object encapsulation
 
+classvars
+	example of implementation of class variables
+	(as found in Smalltalk; i.e. shared instance variables)
+
 complements
 	example of using a category to explicitly complement an existing 
 	object
 
-classvars
-	example of implementation of class variables
-	(as found in Smalltalk; i.e. shared instance variables)
+constraints
+	several exampels of using constraints within objects ans categories
+	when using back-end Prolog compilers bundled with constraint domain 
+	solvers
 
 dcgs
 	examples of using DCG rules inside objects and categories
