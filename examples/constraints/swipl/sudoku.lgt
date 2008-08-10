@@ -93,13 +93,13 @@
 	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 	show(Options, Rows) :-
-		open(pipe('gs -dNOPAUSE -g680x680 -dGraphicsAlphaBits=2 -r150 -q -'), write, Out, [buffer(false),alias(gs)]),
+		sudoku(Rows),
+		open(pipe('gs -dNOPAUSE -g680x680 -dGraphicsAlphaBits=2 -r150 -q -'), write, Out, [buffer(false)]),
 		tell(Out),
 		phrase(postscript, Ps),
 		format(Ps),
-		sudoku(Rows),
 		append(Rows, Vs),
-		call_cleanup((animate(Rows),labeling(Options, Vs),finish), close(gs)).
+		call_cleanup((animate(Rows),labeling(Options, Vs),finish), close(Out)).
 
 	finish :-
 		format("copypage\n"),

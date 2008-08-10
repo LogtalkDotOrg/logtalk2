@@ -7,7 +7,7 @@
 
 :- object(queens).
 
-	:- use_module(clpfd, [ins/2, labeling/2, (#=)/2, (#\=)/2, (#<==>)/2]).
+	:- use_module(clpfd, [ins/2, labeling/2, (#=)/2, (#\=)/2, (#<==>)/2, (#>)/2]).
 
 	:- public([n_queens/2, show/3]).
 
@@ -96,15 +96,14 @@
 	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 	show(N, Options, Qs) :-
-		between(1, infinite, N),
+		N #> 0,
+		n_queens(N, Qs),
 		open(pipe('gs -dNOPAUSE -g680x680 -dGraphicsAlphaBits=2 -r151 -q -'), write,
-			Out, [buffer(false),alias(gs)]),
+			Out, [buffer(false)]),
 		tell(Out),
 		phrase(postscript, Ps),
-		format(Ps),
-		format("~w init\n", [N]),
-		n_queens(N, Qs),
-		call_cleanup(((animate(Qs),labeling(Options, Qs),finish)), close(gs)).
+		format("~s\n~w init\n", [Ps, N]),
+		call_cleanup(((animate(Qs),labeling(Options, Qs),finish)), close(Out)).
 
 	finish :-
 		format("copypage\n"),

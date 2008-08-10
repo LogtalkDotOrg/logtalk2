@@ -94,11 +94,11 @@
 	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 	show(Options, Rows) :-
+		sudoku(Rows),
 		popen('gs -dNOPAUSE -g680x680 -dGraphicsAlphaBits=2 -r150 -q -', write, Out),
 		tell(Out),
 		phrase(postscript, Ps),
 		format(Ps, []),
-		sudoku(Rows),
 		append(Rows, Vs),
 		call_cleanup((animate(Rows),labeling(Options, Vs),finish), close(Out)).
 
