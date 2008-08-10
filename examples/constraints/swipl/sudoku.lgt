@@ -75,41 +75,38 @@
 	   Col Row clear
 	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-	postscript("systemdict /.setlanguagelevel known { 2 .setlanguagelevel} if \
-	 /Palatino-Bold findfont 5 scalefont setfont \
-	 320 9 div dup scale 0 setlinewidth -0.9 -0.9 translate \
-	 /num { gsave 10 exch sub translate 0.5 0.25 translate 0.16 dup scale \
-	     dup stringwidth pop -2 div 0 moveto show grestore } bind def \
-	 /clear { gsave 10 exch sub translate 1 setgray 0.1 dup 0.8 dup rectfill \
-	     grestore } bind def \
-	 1 1 10 { gsave dup 1 moveto 10 lineto stroke grestore } for \
-	 1 1 10 { gsave dup 1 exch moveto 10 exch lineto stroke grestore } for \
-	 1 3 9 { 1 3 9 { 1 index gsave translate 0.05 setlinewidth
-	     0 0 3 3 rectstroke grestore } for pop } for\n").
+	postscript -->
+		"systemdict /.setlanguagelevel known { 2 .setlanguagelevel} if \
+		/Palatino-Bold findfont 5 scalefont setfont \
+		320 9 div dup scale 0 setlinewidth -0.9 -0.9 translate \
+		/num { gsave 10 exch sub translate 0.5 0.25 translate 0.16 dup scale \
+			dup stringwidth pop -2 div 0 moveto show grestore } bind def \
+		/clear { gsave 10 exch sub translate 1 setgray 0.1 dup 0.8 \
+			dup rectfill grestore } bind def \
+		1 1 10 { gsave dup 1 moveto 10 lineto stroke grestore } for \
+		1 1 10 { gsave dup 1 exch moveto 10 exch lineto stroke grestore } for \
+		1 3 9 { 1 3 9 { 1 index gsave translate 0.05 setlinewidth
+			0 0 3 3 rectstroke grestore } for pop } for\n".
 
 	/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	   Putting it all together: Set up communication with gs.
 	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 	show(Options, Rows) :-
-		open(pipe('gs -dNOPAUSE -g680x680 -r150 -q -'), write, Out,
-			[buffer(false),alias(gs)]),
+		open(pipe('gs -dNOPAUSE -g680x680 -dGraphicsAlphaBits=2 -r150 -q -'), write, Out, [buffer(false),alias(gs)]),
 		tell(Out),
-		postscript(Ps),
+		phrase(postscript, Ps),
 		format(Ps),
 		sudoku(Rows),
-		animate(Rows),
 		append(Rows, Vs),
-		labeling(Options, Vs),
-		finish.
-	show(_, _) :- finish, close(gs), fail.
+		call_cleanup((animate(Rows),labeling(Options, Vs),finish), close(gs)).
 
 	finish :-
 		format("copypage\n"),
 		% fill the buffer to make 'gs' process all generated output
 		ignore((between(1,500,_),
-			format("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"),
-			fail)),
+				format("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"),
+				fail)),
 		flush_output.
 
 	/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
