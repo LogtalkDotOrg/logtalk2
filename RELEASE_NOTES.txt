@@ -19,7 +19,10 @@ RELEASE NOTES
     categories. This allows module predicates to be called using implicit 
     qualification, improving readability.
 
-    Updated the GNU Prolog config file to allow Logtalk to recognise as 
+    Added support for meta-calls whose closure arguments are explicitly 
+    qualified (using either Object::Closure or Module:Closure).
+
+    Updated the GNU Prolog config file to allow Logtalk to recognize as 
     built-in predicates the finite domain solver built-in predicates.
 
     Added a new set of examples, "constraints", illustrating how to use the 

@@ -3120,6 +3120,26 @@ current_logtalk_flag(version, version(2, 33, 0)).
 	Pred =.. [Functor| FullArgs],
 	'$lgt_metacall_in_object'(Pred, local, Sender, This, Self).
 
+'$lgt_metacall_in_object'(Obj::Closure, ExtraArgs, _, _, This, _) :-
+	!,
+	Closure =.. [Functor| Args],
+	'$lgt_append'(Args, ExtraArgs, FullArgs),
+	Pred =.. [Functor| FullArgs],
+	'$lgt_tr_msg'(Pred, Obj, Call, This),
+	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
+		'$lgt_ctx_ctx'(Ctx, _, This, This, Obj, _, [], _),
+		'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
+		'$lgt_dbg_goal'(Obj::Pred, Call, DbgCtx)
+	;	call(Call)
+	).
+
+'$lgt_metacall_in_object'(':'(Module, Closure), ExtraArgs, _, _, _, _) :-
+	!,
+	Closure =.. [Functor| Args],
+	'$lgt_append'(Args, ExtraArgs, FullArgs),
+	Pred =.. [Functor| FullArgs],
+	':'(Module, Pred).
+
 '$lgt_metacall_in_object'(Closure, ExtraArgs, MetaVars, Sender, This, Self) :-
 	Closure =.. [Functor| Args],
 	'$lgt_append'(Args, ExtraArgs, FullArgs),
