@@ -1,5 +1,6 @@
 
-% code adapted from one of the examples distributed with GNU Prolog
+% code adapted to Logtalk by Paulo Moura from one of the examples distributed 
+% with GNU Prolog 1.3.0 (August 2008)
 
 /*-------------------------------------------------------------------------*/
 /* Benchmark (Finite Domain)                                               */

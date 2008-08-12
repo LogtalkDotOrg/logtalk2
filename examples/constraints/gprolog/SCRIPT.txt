@@ -10,7 +10,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 
 % loading the example runs an initialization query that solves an 
-% alphacipher puzzle:
+% alphacipher puzzle and an crypt-arithmetic puzzle:
 
 | ?- logtalk_load(clp_gprolog(loader)).
 ...

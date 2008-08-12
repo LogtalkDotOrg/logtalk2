@@ -1,3 +1,3 @@
 
 :- initialization(
-	logtalk_load(alpha)).
+	logtalk_load([alpha, donald])).

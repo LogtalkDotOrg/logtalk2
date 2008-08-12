@@ -16,7 +16,7 @@ dates_loader, types_loader, events_loader, metapredicates_loader, and
 hierarchies_loader. Alternatively, you can just load the library all_loader 
 file.
 
-Some of the code in this folder is adopted, with permission, from the book 
+Some of the code in this folder is adapted, with permission, from the book 
 "Prolog Programming for Artificial Intelligence" by Ivan Bratko.
 
 For a description of the search problems, please see a classical AI book 
