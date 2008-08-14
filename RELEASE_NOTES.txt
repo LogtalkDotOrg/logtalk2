@@ -22,6 +22,10 @@ RELEASE NOTES
     Added support for meta-calls whose closure arguments are explicitly 
     qualified (using either Object::Closure or Module:Closure).
 
+    Corrected a set of singleton variable bugs in the Logtalk compiler and 
+    runtime. Thanks to Joachim Schimpf and Kish Shen work on the improved 
+    singleton variable checking code found on the new ECLiPSe 6.0 compiler.
+
     Added ECLiPSe 6.0 config files. Modified the POSIX script "eclipselgt" 
     to test for both ECLiPSe 5.10 and 6.0 versions. Added Windows shortcut 
     to start Logtalk with ECLiPSe 6.0.

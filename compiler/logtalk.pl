@@ -2089,8 +2089,8 @@ current_logtalk_flag(version, version(2, 33, 0)).
 '$lgt_abolish_chk'(Obj, Functor/Arity, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, _, _, _, _, DDcl, DDef, _, _, _, _),
 	!,
-	(	functor(Pred, Functor, Arity),
-		call_with_args(Dcl, Pred, PScope, Compilation, _, _, _, SCtn, _) ->
+	functor(Pred, Functor, Arity),
+	(	call_with_args(Dcl, Pred, PScope, Compilation, _, _, _, SCtn, _) ->
 		(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 			(	Compilation == (dynamic) ->
 				(	call_with_args(DDcl, Pred, _) ->
@@ -2808,10 +2808,10 @@ current_logtalk_flag(version, version(2, 33, 0)).
 	'$lgt_append'([Head| Tail], Rest, Input).
 
 '$lgt_phrase'(Obj, NonTerminal, Input, Rest, Sender, Scope) :-
+	NonTerminal =.. [Functor| Args],
+	'$lgt_append'(Args, [Input, Rest], Args2),
+	Pred =.. [Functor| Args2],
 	(	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, _, _, _) ->
-		NonTerminal =.. [Functor| Args],
-		'$lgt_append'(Args, [Input, Rest], Args2),
-		Pred =.. [Functor| Args2],
 		(	call_with_args(Dcl, Pred, PScope, _, _, _, _, SCtn, _) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 				call_with_args(Def, Pred, Sender, Obj, Obj, Call, _) ->
@@ -8736,7 +8736,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 			'$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl, _),
 			assertz('$lgt_pp_implemented_protocol_'(Ptc, Prefix, Dcl, Scope)),
 			'$lgt_tr_implements_protocol'(Refs, ObjOrCtg)
-		;	throw(type_error(protocol_identifier, Ptc))
+		;	throw(type_error(protocol_identifier, Ref))
 		)
 	;	throw(type_error(scope, Ref))
 	).
@@ -8765,7 +8765,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 			'$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def, _),
 			assertz('$lgt_pp_imported_category_'(Ctg, Prefix, Dcl, Def, Scope)),
 			'$lgt_tr_imports_category'(Refs, Obj)
-		;	throw(type_error(category_identifier, Ctg))
+		;	throw(type_error(category_identifier, Ref))
 		)
 	;	throw(type_error(scope, Ref))
 	).
@@ -8794,7 +8794,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 			'$lgt_construct_object_functors'(Class, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, _),
 			assertz('$lgt_pp_instantiated_class_'(Class, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)),
 			'$lgt_tr_instantiates_class'(Refs, Obj)
-		;	throw(type_error(object_identifier, Class))
+		;	throw(type_error(object_identifier, Ref))
 		)
 	;	throw(type_error(scope, Ref))
 	).
@@ -8823,7 +8823,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 			'$lgt_construct_object_functors'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, _),
 			assertz('$lgt_pp_specialized_class_'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)),
 			'$lgt_tr_specializes_class'(Refs, Class)
-		;	throw(type_error(object_identifier, Superclass))
+		;	throw(type_error(object_identifier, Ref))
 		)
 	;	throw(type_error(scope, Ref))
 	).
@@ -8852,7 +8852,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 			'$lgt_construct_object_functors'(Parent, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, _),
 			assertz('$lgt_pp_extended_object_'(Parent, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)),
 			'$lgt_tr_extends_object'(Refs, Obj)
-		;	throw(type_error(object_identifier, Parent))
+		;	throw(type_error(object_identifier, Ref))
 		)
 	;	throw(type_error(scope, Ref))
 	).
@@ -8881,7 +8881,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 			'$lgt_construct_protocol_functors'(Ptc2, Prefix, Dcl, _),
 			assertz('$lgt_pp_extended_protocol_'(Ptc2, Prefix, Dcl, Scope)),
 			'$lgt_tr_extends_protocol'(Refs, Ptc1)
-		;	throw(type_error(protocol_identifier, Ptc2))
+		;	throw(type_error(protocol_identifier, Ref))
 		)
 	;	throw(type_error(scope, Ref))
 	).
@@ -8910,7 +8910,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 			'$lgt_construct_category_functors'(Ctg2, Prefix, Dcl, Def, _),
 			assertz('$lgt_pp_extended_category_'(Ctg2, Prefix, Dcl, Def, Scope)),
 			'$lgt_tr_extends_category'(Refs, Ctg1)
-		;	throw(type_error(category_identifier, Ctg2))
+		;	throw(type_error(category_identifier, Ref))
 		)
 	;	throw(type_error(scope, Ref))
 	).
