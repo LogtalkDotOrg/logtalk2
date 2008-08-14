@@ -13178,7 +13178,8 @@ current_logtalk_flag(version, version(2, 33, 0)).
 	(	catch(Goal, Error, (thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Tag, Error, DetId)), Flag = error)),
 		(	var(Flag) ->
 			thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Tag, success, DetId))
-		;	true
+		;	% Goal generated an exception, which was already reported
+			true
 		)
 	;	thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Tag, failure, DetId))
 	).
@@ -13195,16 +13196,16 @@ current_logtalk_flag(version, version(2, 33, 0)).
 	% signal that the thread running the goal is ready:
 	thread_send_message(Return, '$lgt_ready'(Goal, This, Self, call(Tag))),
 	(	catch(Goal, Error, (thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Tag, Error, NonDetId)), Flag = error)),
-		var(Flag),
-		thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Tag, success, NonDetId)),
-		thread_get_message(Message),
-		(	Message == '$lgt_next' ->
-			fail	% backtrack to the catch(Goal, ...) to try to find an alternative solution
-		;	true	% otherwise assume Message = '$lgt_exit' and terminate thread
+		(   var(Flag) ->
+		    thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Tag, success, NonDetId)),
+		    thread_get_message(Message),
+		    (	Message == '$lgt_next' ->
+			    fail	% backtrack to the catch(Goal, ...) to try to find an alternative solution
+		    ;	true	% otherwise assume Message = '$lgt_exit' and terminate thread
+		    )
+	    ;	% Goal generated an exception, which was already reported
+		    true
 		)
-	;	nonvar(Flag),
-		!,
-		true
 	;	thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Tag, failure, NonDetId))
 	).
 
