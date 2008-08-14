@@ -136,7 +136,7 @@ echo
 echo "* B-Prolog (version 7.1 or later):         bplgt      (first run must use sudo)"
 echo "* CIAO (version 1.10#5 or later):          ciaolgt    (first run must use sudo)"
 echo "* CxProlog (version 0.97.1 or later):      cxlgt"
-echo "* ECLiPSe (version 5.10#26 or later):      eclipselgt"
+echo "* ECLiPSe (versions 5.10, 6.0):            eclipselgt"
 echo "* GNU Prolog (version 1.3.0 or later):     gplgt"
 echo "* K-Prolog (version 5.1.x):                plclgt"
 echo "* Qu-Prolog (version 8.1 or later):        qplgt"

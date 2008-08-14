@@ -163,16 +163,16 @@ CxProlog 0.97.1 or later versions
 
 ECLiPSe 5.10#26 or later versions
 
-	eclipse.config
-	eclipseiso.config
+	eclipse5.config
+	eclipse5iso.config
 
 	There are two configs files for this compiler. The first one, named 
-	"eclipse.config", should be used when, for some reason, you don't want 
-	to load the "iso" library. The second file, "eclipseiso.config" contains 
+	"eclipse5.config", should be used when, for some reason, you don't want 
+	to load the "iso" library. The second file, "eclipse5iso.config" contains 
 	a call to load the "iso" library. Both config files may be used with
 	ECLiPSe 5.10#26 or later versions.
 
-	You should use the "eclipseiso.config" whenever possible. The alternative 
+	You should use the "eclipse5iso.config" whenever possible. The alternative 
 	config file may not contain all the needed definitions for ISO Prolog 
 	predicates that are needed for compiling Logtalk itself, the Logtalk 
 	library, or the Logtalk examples.
@@ -203,6 +203,14 @@ ECLiPSe 5.10#26 or later versions
 	and defining dynamic predicates. Due to the semantics of the ECLiPSe 
 	built-in predicate compile/1, new clauses for dynamic predicates are 
 	appended to the old ones instead of replacing them!
+
+
+ECLiPSe 6.0 or later versions
+
+	eclipse6.config
+	eclipse6iso.config
+
+	(see comments above about ECLiPSe 5.10 version)
 
 
 GNU Prolog 1.3.0 and later versions

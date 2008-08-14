@@ -54,7 +54,7 @@ Name: "prolog"; Description: "Prolog integration"; Types: full prolog custom; Fl
 Name: "prolog\bp"; Description: "B-Prolog integration (version 7.1 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\ciao"; Description: "Ciao Prolog integration (version 1.10#5 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\cxprolog"; Description: "CxProlog integration (version 0.97.1 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\eclipse"; Description: "ECLiPSe integration (version 5.10#26 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\eclipse"; Description: "ECLiPSe integration (versions 5.10, 6.0)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\gprolog"; Description: "GNU Prolog integration (version 1.3.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\plc"; Description: "K-Prolog integration (version 5.1.x)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\quintus"; Description: "Quintus Prolog integration (version 3.5; implies patching Logtalk)"; Types: full prolog custom; Flags: disablenouninstallwarning
@@ -114,7 +114,9 @@ Name: "{group}\Logtalk - Ciao Prolog"; Filename: "{code:GetCiaoExePath}"; Parame
 
 Name: "{group}\Logtalk - CxProlog"; Filename: "{code:GetCxExePath}"; Parameters: "--goal ""silent_consult('%LOGTALKHOME%/integration/logtalk_cx.pl')"""; Comment: "Runs Logtalk with CxProlog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\cxprolog; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - ECLiPSe"; Filename: "{code:GetEclipseExePath}"; Parameters: "-b ""%LOGTALKHOME%\integration\logtalk_eclipse.pl"""; Comment: "Runs Logtalk with ECLiPSe"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\eclipse; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - ECLiPSe 5"; Filename: "{code:GetEclipse5ExePath}"; Parameters: "-b ""%LOGTALKHOME%\integration\logtalk_eclipse5.pl"""; Comment: "Runs Logtalk with ECLiPSe 5"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\eclipse; Flags: createonlyiffileexists
+
+Name: "{group}\Logtalk - ECLiPSe 6"; Filename: "{code:GetEclipse6ExePath}"; Parameters: "-b ""%LOGTALKHOME%\integration\logtalk_eclipse6.pl"""; Comment: "Runs Logtalk with ECLiPSe 6"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\eclipse; Flags: createonlyiffileexists
 
 Name: "{group}\Logtalk - GNU Prolog"; Filename: "{code:GetGPExePath}"; Parameters: "--init-goal ""['$LOGTALKUSER/configs/gnu.config', '$LOGTALKHOME/integration/logtalk_gp.pl', '$LOGTALKUSER/libpaths/libpaths.pl']"""; Comment: "Runs Logtalk with GNU Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\gprolog; Flags: createonlyiffileexists
 
@@ -270,13 +272,21 @@ begin
 	Result := 'lgt_exe_does_not_exist'
 end;
 
-function GetEclipseExePath(Param: String): String;
+function GetEclipse5ExePath(Param: String): String;
 var
   ECLIPSEDIR: String;
 begin
-  if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\5.11\', 'ECLIPSEDIR', ECLIPSEDIR) then
+  if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\5.10\', 'ECLIPSEDIR', ECLIPSEDIR) then
     Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
-  else if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\5.10\', 'ECLIPSEDIR', ECLIPSEDIR) then
+  else
+	Result := 'lgt_exe_does_not_exist'
+end;
+
+function GetEclipse6ExePath(Param: String): String;
+var
+  ECLIPSEDIR: String;
+begin
+  if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\6.0\', 'ECLIPSEDIR', ECLIPSEDIR) then
     Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
   else
 	Result := 'lgt_exe_does_not_exist'
