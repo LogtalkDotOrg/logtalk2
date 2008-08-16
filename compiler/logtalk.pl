@@ -393,17 +393,16 @@ Obj<<Pred :-
 	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
-'$lgt_runtime_error_handler'(error(logtalk_debugger_aborted)) :-
-	nl, write('    Debugging session aborted by user. Debugger still on.'), nl,
-	!,
-	fail.
-
 '$lgt_runtime_error_handler'(error(Variable, _, Sender)) :-
 	var(Variable),
 	throw(error(instantiation_error, throw(_), Sender)).
 
 '$lgt_runtime_error_handler'(error(Error, user::Goal, user)) :-
 	throw(error(Error, Goal)).
+
+'$lgt_runtime_error_handler'(logtalk_debugger_aborted) :-
+	write('Debugging session aborted by user. Debugger still on.'), nl,
+    abort.
 
 '$lgt_runtime_error_handler'(Error) :-
 	throw(Error).
@@ -3785,31 +3784,18 @@ current_logtalk_flag(version, version(2, 33, 0)).
 '$lgt_dbg_goal'(Goal, TGoal, DbgCtx) :-
 	(	'$lgt_dbg_debugging_', \+ '$lgt_dbg_skipping_' ->
 		(	'$lgt_dbg_port'(call, Goal, _, DbgCtx, CAction),
-			(	CAction = skip ->
-				retractall('$lgt_dbg_skipping_'),
-				assertz('$lgt_dbg_skipping_'),
-				CAction2 = true
-			;	CAction2 = CAction
-			),
-			(	CAction2 = ignore ->
+			(	CAction == ignore ->
 				true
-			;	call(CAction2),
-				catch(
-					call(TGoal),
-					Error,
-					('$lgt_dbg_port'(exception, Goal, Error, DbgCtx, TAction), (TAction = fail -> fail; throw(Error)))),
+			;	call(CAction),
+				catch(TGoal, Error, '$lgt_dbg_exception'(Goal, Error, DbgCtx)),
 				(	'$lgt_dbg_port'(exit, Goal, _, DbgCtx, EAction),
 					call(EAction)
 				;	'$lgt_dbg_port'(redo, Goal, _, DbgCtx, RAction),
-					(	RAction = skip ->
-					 	retractall('$lgt_dbg_skipping_'),
-					 	assertz('$lgt_dbg_skipping_')
-					),
-					RAction = ignore
+					RAction == ignore
 				)
-				;
-				retractall('$lgt_dbg_skipping_'),
-				'$lgt_dbg_port'(fail, Goal, _, DbgCtx, _), fail
+			;	retractall('$lgt_dbg_skipping_'),
+				'$lgt_dbg_port'(fail, Goal, _, DbgCtx, _),
+				fail
 			)
 		),
 		retractall('$lgt_dbg_skipping_')
@@ -3817,8 +3803,16 @@ current_logtalk_flag(version, version(2, 33, 0)).
 	).
 
 
-'$lgt_dbg_port'(exception, _, error(logtalk_debugger_aborted), _, true) :-
-	!.
+'$lgt_dbg_exception'(_, logtalk_debugger_aborted, _) :-
+	throw(logtalk_debugger_aborted).
+
+'$lgt_dbg_exception'(Goal, Error, DbgCtx) :-
+    '$lgt_dbg_port'(exception, Goal, Error, DbgCtx, TAction),
+    (   TAction == fail ->
+        fail
+    ;   throw(Error)
+    ).
+
 
 '$lgt_dbg_port'(Port, Goal, Error, DbgCtx, Action) :-
 	'$lgt_dbg_debugging_',
@@ -3863,6 +3857,8 @@ current_logtalk_flag(version, version(2, 33, 0)).
 '$lgt_dbg_valid_port_option'(i, call, _).
 '$lgt_dbg_valid_port_option'(i, redo, _).
 '$lgt_dbg_valid_port_option'(f, call, _).
+'$lgt_dbg_valid_port_option'(f, fact, _).
+'$lgt_dbg_valid_port_option'(f, rule, _).
 '$lgt_dbg_valid_port_option'(f, redo, _).
 '$lgt_dbg_valid_port_option'(n, _, _).
 '$lgt_dbg_valid_port_option'(!, _, _).
@@ -3887,10 +3883,18 @@ current_logtalk_flag(version, version(2, 33, 0)).
 '$lgt_dbg_do_port_option'(l, _, _, _, _, true) :-
 	retractall('$lgt_dbg_tracing_').
 
-'$lgt_dbg_do_port_option'(s, Port, _, _, _, Action) :-
-	'$lgt_dbg_do_port_option_skip'(Port, Action).
+'$lgt_dbg_do_port_option'(s, call, _, _, _, true) :-
+    !,
+    retractall('$lgt_dbg_skipping_'),
+	assertz('$lgt_dbg_skipping_').
+'$lgt_dbg_do_port_option'(s, redo, _, _, _, fail) :-
+    !,
+    retractall('$lgt_dbg_skipping_'),
+	assertz('$lgt_dbg_skipping_').
+'$lgt_dbg_do_port_option'(s, _, _, _, _, true).
 
-'$lgt_dbg_do_port_option'(i, _, _, _, _, ignore).
+'$lgt_dbg_do_port_option'(i, call, _, _, _, ignore).
+'$lgt_dbg_do_port_option'(i, redo, _, _, _, ignore).
 
 '$lgt_dbg_do_port_option'(f, _, _, _, _, fail).
 
@@ -3946,12 +3950,13 @@ current_logtalk_flag(version, version(2, 33, 0)).
 		'$lgt_dbg_suspend'(Tracing),
 		break,
 		'$lgt_dbg_resume'(Tracing)
-	;	write('    break no supportd on this Prolog compiler.'), nl
+	;	write('    break no supportd by the back-end Prolog compiler.'), nl
 	),
 	fail.
 
 '$lgt_dbg_do_port_option'(a, _, _, _, _, _) :-
-	throw(error(logtalk_debugger_aborted)).
+    retractall('$lgt_dbg_skipping_'),
+	throw(logtalk_debugger_aborted).
 
 '$lgt_dbg_do_port_option'(q, _, _, _, _, _) :-
 	halt.
@@ -3976,8 +3981,8 @@ current_logtalk_flag(version, version(2, 33, 0)).
 	write('        c - creep (go on; you may use also the spacebar)'), nl,
 	write('        l - leap (continues execution until the next spy point is found)'), nl,
 	write('        s - skip (skips debugging for the current goal; only meaningful at call and redo ports)'), nl,
-	write('        i - ignore (ignores goal, assumes that it succeeded)'), nl,
-	write('        f - fail (forces backtracking)'), nl,
+	write('        i - ignore (ignores goal, assumes that it succeeded; only valid at call and redo ports)'), nl,
+	write('        f - fail (forces backtracking; may also be used to convert an exception into a failure)'), nl,
 	write('        n - nodebug (turns off debugging)'), nl,
 	write('        ! - command (reads and executes a query)'), nl,
 	write('        @ - command (reads and executes a query)'), nl,
@@ -3997,16 +4002,6 @@ current_logtalk_flag(version, version(2, 33, 0)).
 
 '$lgt_dbg_do_port_option'(?, Port, Goal, Error, DbgCtx, Action) :-
 	'$lgt_dbg_do_port_option'(h, Port, Goal, Error, DbgCtx, Action).
-
-
-
-'$lgt_dbg_do_port_option_skip'(exit, true).
-'$lgt_dbg_do_port_option_skip'(fail, true).
-'$lgt_dbg_do_port_option_skip'(fact, true).
-'$lgt_dbg_do_port_option_skip'(rule, true).
-'$lgt_dbg_do_port_option_skip'(exception, true).
-'$lgt_dbg_do_port_option_skip'(call, skip).
-'$lgt_dbg_do_port_option_skip'(redo, skip).
 
 
 
