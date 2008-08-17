@@ -73,7 +73,7 @@ else
 fi
 echo
 
-if eclipse -e "halt." 2>&1 | grep "Version 5.10" 2>&1 >/dev/null; then
+if eclipse -e "get_flag(version, Version), write(Version), halt." 2>&1 | grep "5.10" 2>&1 >/dev/null; then
 	exec eclipse -b "$LOGTALKHOME/integration/logtalk_eclipse5.pl" "$@"
 else
 	exec eclipse -b "$LOGTALKHOME/integration/logtalk_eclipse6.pl" "$@"
