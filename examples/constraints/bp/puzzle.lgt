@@ -1,5 +1,6 @@
 
-% code adapted from the B-Prolog documentation
+% code adapted to Logtalk by Paulo Moura from one of the examples
+% found on the B-Prolog 7.1 documentation (August 2008)
 
 :- object(puzzle).
 

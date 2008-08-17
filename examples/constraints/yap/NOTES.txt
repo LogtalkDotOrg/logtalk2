@@ -11,5 +11,5 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 To load this example and for sample queries, please see the SCRIPT.txt file.
 
-This folder contains a simple example illustrating how to use Markus Triska's
-CLP(FD) library distributed with YAP with Logtalk.
+This folder contains a set of simple examples illustrating how to use Markus 
+Triska's CLP(FD) library distributed with YAP with Logtalk.
