@@ -5945,7 +5945,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 		true
 	;	throw(instantiation_error)
 	),
-	(	Pred = (Original::Alias) ->
+	(	Pred = ':'(Original, Alias) ->
 		true
 	;	(Original, Alias) = (Pred, Pred)
 	),

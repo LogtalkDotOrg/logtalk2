@@ -17,7 +17,8 @@ RELEASE NOTES
 
     Added support for using Prolog use_module/2 directives in objects and 
     categories. This allows module predicates to be called using implicit 
-    qualification, improving readability.
+    qualification, improving readability. The use_module/2 directive supports
+    the declaration of predicate aliases using the notation Original:Alias.
 
     Added support for meta-calls whose closure arguments are explicitly 
     qualified (using either Object::Closure or Module:Closure).

@@ -225,11 +225,18 @@ Logtalk supports the use of <code>use_module/2</code> directives in object and c
 <p>
 As a general rule, the Prolog modules should be loaded (e.g. in the auxiliary Logtalk loader files) before compiling objects that make use of module predicates. This is mandatory whenever the module exports operator declarations that you want to use in your objects and categories (as in the example above).
 </p>
+<p>
+Logtalk supports the declaration of predicate aliases in <code>use_module/2</code> directives used within object and categories. For example, the ECLiPSe IC Constraint Solvers defines a <code>::/2</code> variable domain operator that clashes with the Logtalk <code>::/2</code> message sending operator. We can solve the conflict by writing:
+</p>
+<pre>:- use_module(ic, [alldifferent/1, (::)/2:ins/2, (#=)/2]).</pre>
+<p>
+With this directive, calls to the <code>ins/2</code> predicate alias will be automatically compiled by Logtalk to calls to the <code>::/2</code> predicate in the <code>ic</code> module.
+</p>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: July 31, 2008</span>
+		<span>Last updated on: August 16, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="../glossary.html">glossary</a></span><br/>
