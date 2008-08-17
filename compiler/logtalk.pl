@@ -2596,7 +2596,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 		(	call_with_args(DDef, Head, _, _, _, Call) ->
 			(	'$lgt_debugging_'(Obj) ->
 				retract((Call :- '$lgt_dbg_fact'(_, _)))
-			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, PScope, Sender, Call),
+			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, p, Sender, Call),
 				retract(Call)
 			)
 		;	throw(error(existence_error(predicate_declaration, Head), Obj::retract(Head), Sender))
@@ -2659,7 +2659,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 			call_with_args(DDef, Head, _, _, _, Call) ->
 			(	'$lgt_debugging_'(Obj) ->
 				true
-			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, PScope, Sender, Call)
+			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, p, Sender, Call)
 			),
 			retractall(Call)
 		;	throw(error(existence_error(predicate_declaration, Head), Obj::retractall(Head), Sender))
