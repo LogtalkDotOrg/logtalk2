@@ -1,3 +1,3 @@
 
 :- initialization((
-	logtalk_load([puzzle]))).
+	logtalk_load([clique, magic, puzzle, steiner]))).

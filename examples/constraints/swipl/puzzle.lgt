@@ -1,5 +1,7 @@
 
-% code adapted from one of the examples distributed with the CLP(FD) library
+% code adapted to Logtalk by Paulo Moura from one of the CLP(FD) examples
+% written by Markus Triska (August 2008)
+
 
 :- object(puzzle).
 

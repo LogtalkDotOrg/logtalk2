@@ -12,4 +12,9 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 To load this example and for sample queries, please see the SCRIPT.txt file.
 
 This folder contains a set of simple examples illustrating how to use Markus 
-Triska's CLP(FD) library distributed with YAP with Logtalk.
+Triska's CLP(FD) library distributed with YAP with Logtalk. These examples 
+are adapted with permission from the original author, Markus Triska.
+
+The CLP(FD) library is loaded from the "loader.lgt" auxiliary loader file.
+This library must always be loaded prior to compilation of the individual 
+example files.

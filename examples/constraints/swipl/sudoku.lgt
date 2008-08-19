@@ -1,3 +1,8 @@
+
+% code adapted to Logtalk by Paulo Moura from one of the CLP(FD) examples
+% written by Markus Triska (August 2008)
+
+
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    Sudoku CLP(FD) animation.
 
