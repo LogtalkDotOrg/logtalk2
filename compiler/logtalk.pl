@@ -5204,21 +5204,17 @@ current_logtalk_flag(version, version(2, 33, 0)).
 
 
 % '$lgt_tr_file_directive'(@nonvar)
+%
+% translates file-level directives, i.e. directives that are not encapsulated in a Logtalk entity
+% error-checking is delegated to the back-end Prolog compiler
 
-'$lgt_tr_file_directive'(op(Pr, Spec, Ops)) :-	% op/3 directives must be used during entity compilation
-	!,
-	(	'$lgt_valid_op_priority'(Pr) ->
-		(	'$lgt_valid_op_specifier'(Spec) ->
-			(	'$lgt_valid_op_names'(Ops) ->
-				assertz('$lgt_pp_directive_'(op(Pr, Spec, Ops))),
-				assertz('$lgt_pp_file_op_'(op(Pr, Spec, Ops))),
-				op(Pr, Spec, Ops)
-			;	throw(type_error(operator_name, Ops))
-			)
-		;	throw(type_error(operator_specifier, Spec))
-		)
-	;	throw(type_error(operator_priority, Pr))
-	).
+'$lgt_tr_file_directive'(encoding(_)) :-		% the encoding/1 directive is already processed 
+	!.
+
+'$lgt_tr_file_directive'(ensure_loaded(File)) :-
+    !,
+    ensure_loaded(File),                        % assume that ensure_loaded/1 is also a built-in predicate
+    assertz('$lgt_pp_directive_'(ensure_loaded(File))).
 
 '$lgt_tr_file_directive'(initialization(Goal)) :-
 	!,
@@ -5227,8 +5223,16 @@ current_logtalk_flag(version, version(2, 33, 0)).
 	;	throw(type_error(callable, Goal))
 	).
 
-'$lgt_tr_file_directive'(encoding(_)) :-		% the encoding/1 directive is already processed 
-	!.
+'$lgt_tr_file_directive'(op(Pr, Spec, Ops)) :-	% op/3 directives must be used during entity compilation
+	!,
+    op(Pr, Spec, Ops),
+    assertz('$lgt_pp_directive_'(op(Pr, Spec, Ops))),
+    assertz('$lgt_pp_file_op_'(op(Pr, Spec, Ops))).
+
+'$lgt_tr_file_directive'(set_prolog_flag(Flag, Value)) :-
+    !,
+    set_prolog_flag(Flag, Value),
+    assertz('$lgt_pp_directive_'(set_prolog_flag(Flag, Value))).
 
 '$lgt_tr_file_directive'(Dir) :-
 	assertz('$lgt_pp_directive_'(Dir)).			% directive will be copied to the generated Prolog file
