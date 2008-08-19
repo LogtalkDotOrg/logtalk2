@@ -172,10 +172,12 @@ ECLiPSe 5.10#26 or later versions
 	a call to load the "iso" library. Both config files may be used with
 	ECLiPSe 5.10#26 or later versions.
 
-	You should use the "eclipse5iso.config" whenever possible. The alternative 
-	config file may not contain all the needed definitions for ISO Prolog 
-	predicates that are needed for compiling Logtalk itself, the Logtalk 
-	library, or the Logtalk examples.
+	You should use the "eclipse5iso.config" config file whenever possible.
+	The "eclipse5.config" config file may not contain all the necessary 
+	definitions for ISO Prolog predicates that are needed for compiling 
+	Logtalk itself, the Logtalk library, or the Logtalk examples. On the 
+	other hand, some of the ECLiPSE features (e.g. array notation) are not 
+	available when using the "iso" library.
 
 	There is a clash between Logtalk and ECLiPSe regarding the ::/2 operator.
 	You may still use the ::/2 operator defined on the ECLiPSe constraint 
