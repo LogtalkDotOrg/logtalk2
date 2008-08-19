@@ -38,7 +38,7 @@ RELEASE NOTES
     the use of the command ignore at the redo port.
 
     Corrected a bug in the implementation of the built-in database predicates 
-    retract/1 and retractall/1 when adding a cachy entry for a local dynamic 
+    retract/1 and retractall/1 when adding a cache entry for a local dynamic 
     predicate with no scope declaration.
 
     Added ECLiPSe 6.0 config files. Modified the POSIX script "eclipselgt" 
