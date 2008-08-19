@@ -89,6 +89,12 @@ B-Prolog 7.1 and later versions
 	::/2 finite-domain built-in predicate (you may use the alternative 
 	in/2 predicate instead).
 
+	Some of the B-Prolog built-in predicates (e.g. set_to_list/2 or (@=)/2) 
+	are not core predicates and can be redefined by the user. The predicate 
+	predicate_property/2 does not return the property "built_in" for these 
+	predicates. The solution is to encapsulate calls to these predicates 
+	within objects and categories using the Logtalk {}/1 control construct.
+
 	You can generate a new Prolog top level that includes the config file, the
 	Logtalk compiler/runtime, and the library paths file by doing something 
 	like:
