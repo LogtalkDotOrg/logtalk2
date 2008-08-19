@@ -33,7 +33,7 @@
         Clique in {}..VSet,
         #Clique #= N,
         indomain(Clique),
-        {set_to_list(Clique,List)}, % list_to_set/2 is not declared built-in...
+        {set_to_list(Clique,List)}, % set_to_list/2 is not declared built-in...
         all_connected(List),
         write(Clique),nl.
     clique(Vs,N):-
