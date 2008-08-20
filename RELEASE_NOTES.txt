@@ -49,9 +49,9 @@ RELEASE NOTES
     built-in predicates the finite domain solver built-in predicates.
 
     Added a new set of examples, "constraints", illustrating how to use the 
-    Constraint Domain Solver libraries available with B-Prolog, GNU Prolog, 
-    SWI-Prolog, and YAP. Thanks to Markus Triska for his help with the YAP 
-    and SWI-Prolog CLP(FD) examples.
+    Constraint Domain Solver libraries available with B-Prolog, ECLiPSe, 
+    GNU Prolog, SWI-Prolog, and YAP. Thanks to Markus Triska for his help 
+    with the YAP and SWI-Prolog CLP(FD) examples.
 
 
 2.32.2 - July 26, 2008
