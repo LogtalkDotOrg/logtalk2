@@ -1,3 +1,8 @@
+
+% code adapted to Logtalk by Paulo Moura from one of the CLP(FD) examples
+% written by Markus Triska (August 2008)
+
+
 % Written 2006 by Markus Triska triska@gmx.at
 % Public domain code.
 
