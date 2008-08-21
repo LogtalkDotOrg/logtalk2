@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.33.0 - August ??, 2008
 
+    Applied several optimizations to the Logtalk compiler, mostly related to 
+    non-detected deterministic predicates due to calls to dynamic predicates 
+    or due to limitations in clause indexing by most Prolog compilers.
+
     Added support for using Prolog use_module/2 directives in objects and 
     categories. This allows module predicates to be called using implicit 
     qualification, improving readability. The use_module/2 directive supports
@@ -40,6 +44,10 @@ RELEASE NOTES
     Corrected a bug in the implementation of the built-in database predicates 
     retract/1 and retractall/1 when adding a cache entry for a local dynamic 
     predicate with no scope declaration.
+
+    Corrected a bug in the compilation of source file op/3 directives whose 
+    third argument is a list of operator specifiers instead of a single 
+    operator specifier.
 
     Added ECLiPSe 6.0 config files. Modified the POSIX script "eclipselgt" 
     to test for both ECLiPSe 5.10 and 6.0 versions. Added Windows shortcut 
