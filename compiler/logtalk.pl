@@ -10437,8 +10437,8 @@ current_logtalk_flag(version, version(2, 33, 0)).
 	throw(existence_error(predicate, Pred)).
 
 '$lgt_report_misspelt_calls' :-
-	(   '$lgt_compiler_flag'(misspelt, warning) ->
-	    setof(Pred, '$lgt_misspelt_call'(Pred), Preds),
+	(   '$lgt_compiler_flag'(misspelt, warning),
+	    setof(Pred, '$lgt_misspelt_call'(Pred), Preds) ->
 	    '$lgt_inc_compile_warnings_counter',
 	    nl,
 	    (	Preds = [_] ->
