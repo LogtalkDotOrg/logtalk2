@@ -5014,7 +5014,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 
 % '$lgt_pp_entity'(?atom, ?entity_identifier, ?atom, ?atom, ?atom)
 %
-% provides access to some common used data on the entity being compiled
+% provides deterministic access to some common used data on the entity being compiled
 
 '$lgt_pp_entity'(object, Entity, Prefix, Dcl, Mode) :-
 	'$lgt_pp_object_'(Entity, Prefix, Dcl, _, _, _, _, _, _, _, Mode),
@@ -7722,9 +7722,9 @@ current_logtalk_flag(version, version(2, 33, 0)).
 % translation to a call to the corresponding Prolog built-in predicate
 
 '$lgt_optimizable_local_db_call'(Pred, TPred) :-
-	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->	% exclude categories
-	'$lgt_compiler_flag'(debug, off),							% not debugging
-	(	Pred = (Head :- Body) ->								% only facts allowed
+    '$lgt_pp_entity'(object, _, Prefix, _, _),	    % only for objects
+	'$lgt_compiler_flag'(debug, off),			    % not debugging
+	(	Pred = (Head :- Body) ->					% only facts allowed
 		Body == true
 	;	Head = Pred
 	),
