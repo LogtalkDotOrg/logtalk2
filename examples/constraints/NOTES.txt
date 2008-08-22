@@ -10,6 +10,6 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 
 The examples in this folder illustrate how to use Constraint Domain Solvers 
-(such as the CLP(FD) library included with SWI-Prolog and YAP or the native 
-Finite Domain Solvers in GNU Prolog and B-Prolog) within Logtalk objects and 
-categories.
+(such as the CLP(FD) library included with ECLiPSe, SWI-Prolog, and YAP or 
+the native Finite Domain Solvers in GNU Prolog and B-Prolog) within Logtalk 
+objects and categories.

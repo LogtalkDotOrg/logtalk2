@@ -210,10 +210,10 @@ ECLiPSe 5.10#26 or later versions
 	With this Prolog compiler, avoid reloading Logtalk source files declaring 
 	and defining dynamic predicates. Due to the semantics of the ECLiPSe 
 	built-in predicate compile/1, new clauses for dynamic predicates are 
-	appended to the old ones instead of replacing them!
+	appended to the old ones instead of replacing them.
 
 
-ECLiPSe 6.0 or later versions
+ECLiPSe 6.0#33 or later versions
 
 	eclipse6.config
 	eclipse6iso.config
