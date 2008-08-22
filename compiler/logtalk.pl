@@ -13543,11 +13543,15 @@ current_logtalk_flag(version, version(2, 33, 0)).
 '$lgt_mt_threaded_call_abort'([]).
 
 '$lgt_mt_threaded_call_abort'([Id| Ids]) :-
-	(	catch(thread_peek_message(Id, '$lgt_master'), _, fail) ->
-		catch(thread_send_message(Id, '$lgt_result'(_, terminate)), _, true)
-	;	catch(thread_signal(Id, throw('$lgt_terminated')), _, true)
-	),
-	'$lgt_mt_threaded_call_abort'(Ids).
+    catch('$lgt_mt_abort_thread'(Id), _, true),
+    '$lgt_mt_threaded_call_abort'(Ids).
+
+
+'$lgt_mt_abort_thread'(Id) :-
+    (   thread_peek_message(Id, '$lgt_master') ->
+        thread_send_message(Id, '$lgt_result'(_, terminate))
+    ;   thread_signal(Id, throw('$lgt_terminated'))
+    ).
 
 
 '$lgt_mt_threaded_call_join'([], []).
