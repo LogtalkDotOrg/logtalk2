@@ -12952,10 +12952,13 @@ current_logtalk_flag(version, version(2, 33, 0)).
 '$lgt_iso_spec_pred'(fail).
 '$lgt_iso_spec_pred'(call(_)).
 '$lgt_iso_spec_pred'(!).
-'$lgt_iso_spec_pred'((_; _)).
+'$lgt_iso_spec_pred'((Goal; _)) :-
+    (   var(Goal) ->
+        true
+    ;   Goal \= '*->'(_, _)
+    ).
 '$lgt_iso_spec_pred'((_, _)).
 '$lgt_iso_spec_pred'((_ -> _)).
-%'$lgt_iso_spec_pred'((_ -> _; _)).
 '$lgt_iso_spec_pred'(catch(_, _, _)).
 '$lgt_iso_spec_pred'(throw(_)).
 

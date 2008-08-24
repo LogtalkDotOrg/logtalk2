@@ -45,6 +45,10 @@ RELEASE NOTES
     when using SWI-Prolog as the back-end compiler by making the lookup caches 
     thread local.
 
+    Corrected a bug in the verification of portable calls that would fail to 
+    flag the soft-cut control construct (_ *-> _; _) found on some Prolog 
+    compilers.
+
     Corrected a bug in the implementation of the built-in database predicates 
     retract/1 and retractall/1 when adding a cache entry for a local dynamic 
     predicate with no scope declaration.
