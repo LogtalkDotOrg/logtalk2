@@ -41,6 +41,10 @@ RELEASE NOTES
     standard Prolog built-in predicate abort/0. Corrected a bug that prevented
     the use of the command ignore at the redo port.
 
+    Improved performance of multi-threading applications (specially on MacOS X)
+    when using SWI-Prolog as the back-end compiler by making the lookup caches 
+    thread local.
+
     Corrected a bug in the implementation of the built-in database predicates 
     retract/1 and retractall/1 when adding a cache entry for a local dynamic 
     predicate with no scope declaration.

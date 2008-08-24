@@ -21,4 +21,11 @@
 :- op(200,  fy,  ?).
 :- op(200,  fy,  @).
 :- op(200,  fy,  -).
+:- if(current_prolog_flag(threads, true)).
+    :- thread_local('$lgt_obj_lookup_cache_'/4).
+    :- thread_local('$lgt_self_lookup_cache_'/4).
+    :- thread_local('$lgt_super_lookup_cache_'/5).
+    :- thread_local('$lgt_super_lookup_cache_'/6).
+    :- thread_local('$lgt_db_lookup_cache_'/5).
+:- endif.
 :- include('../compiler/logtalk.pl').
