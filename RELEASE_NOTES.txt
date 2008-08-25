@@ -71,6 +71,9 @@ RELEASE NOTES
     GNU Prolog, SWI-Prolog, and YAP. Thanks to Markus Triska for his help 
     with the YAP and SWI-Prolog CLP(FD) examples.
 
+    Updated the "mtbatch" example to provide multi-threading overhead data
+    for the competitive or-parallelism benchmark.
+
 
 2.32.2 - July 26, 2008
 

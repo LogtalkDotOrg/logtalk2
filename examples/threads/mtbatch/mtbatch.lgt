@@ -329,7 +329,15 @@
 			)), nl,
 		write('COP'), put_char('\t'),
 		loop::forto(Liters, 1, 14,
-			(	catch(run(competitive(Liters, 5, 9, 14), N, Average), Error, write_error) ->
+			(	catch(run(cop_search(Liters, 5, 9, 14), N, Average), Error, write_error) ->
+				(	var(Error) ->
+					write_average(Average)
+				;	true
+				)
+			)), nl,
+		write('DF+HC+BF'), put_char('\t'),
+		loop::forto(Liters, 1, 14,
+			(	catch(run(cop_overhead(Liters, 5, 9, 14), N, Average), Error, write_error) ->
 				(	var(Error) ->
 					write_average(Average)
 				;	true
@@ -445,7 +453,7 @@
 		fail.
 	do_benchmark(breadth_first(_, _, _, _), _).
 
-	do_benchmark(competitive(Liters, Jug1, Jug2, MaxDepth), N) :-
+	do_benchmark(cop_search(Liters, Jug1, Jug2, MaxDepth), N) :-
 		Obj = salt(Liters, Jug1, Jug2),
 		Obj::initial_state(Initial),
 		repeat(N),
@@ -455,7 +463,19 @@
 				;	catch(breadth_first(MaxDepth)::solve(Obj, Initial, _), _, fail)
 			)),
 		fail.
-	do_benchmark(competitive(_, _, _, _), _).
+	do_benchmark(cop_search(_, _, _, _), _).
+
+	do_benchmark(cop_overhead(Liters, Jug1, Jug2, MaxDepth), N) :-
+		Obj = salt(Liters, Jug1, Jug2),
+		Obj::initial_state(Initial),
+		repeat(N),
+			threaded((
+				catch(depth_first(MaxDepth)::solve(Obj, Initial, _), _, fail),
+				catch(hill_climbing(MaxDepth)::solve(Obj, Initial, _, _), _, fail),
+				catch(breadth_first(MaxDepth)::solve(Obj, Initial, _), _, fail)
+			)),
+		fail.
+	do_benchmark(cop_overhead(_, _, _, _), _).
 
 	walltime_begin(Walltime) :-
 		parameter(1, Prolog),
