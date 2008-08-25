@@ -75,7 +75,7 @@ This will not work as you might expect as the compiler options will only be used
 <h3 id="programming_libraries">Libraries of source files</h3>
 
 <p>
-Logtalk defines a <em>library</em> simply as a directory containing source files. Library locations can be specified by asserting clauses to the dynamic predicate <a title="Consult reference manual" href="../refman/builtins/logtalk_library_path2.html"><code>logtalk_library_path/2</code></a>. For example:
+Logtalk defines a <em>library</em> simply as a directory containing source files. Library locations can be specified by defining or asserting clauses for the dynamic and multifile predicate <a title="Consult reference manual" href="../refman/builtins/logtalk_library_path2.html"><code>logtalk_library_path/2</code></a>. For example:
 </p>
 <pre>| ?- assertz(logtalk_library_path(shapes, '$LOGTALKUSER/examples/shapes/')). </pre>
 <p>
@@ -162,7 +162,7 @@ Logtalk, being a superset of Prolog, shares with it the same preferred areas of 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: August 16, 2008</span>
+		<span>Last updated on: August 25, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="running.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>

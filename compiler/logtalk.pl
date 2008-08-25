@@ -146,7 +146,8 @@
 
 % table of library paths
 
-:- dynamic(logtalk_library_path/2).				% logtalk_library_path(Library, Path)
+:- multifile(logtalk_library_path/2).			% logtalk_library_path(Library, Path)
+:- dynamic(logtalk_library_path/2).
 
 
 % compiler hook term and goal expansion:

@@ -32,18 +32,20 @@ RELEASE NOTES
     read (thus affecting the compilation of the source code that follows) 
     and copied to the generated intermediate Prolog files.
 
-    Corrected a set of singleton variable bugs in the Logtalk compiler and 
-    runtime. Thanks to Joachim Schimpf and Kish Shen work on the improved 
+    Corrected a set of singleton variable related bugs in the Logtalk compiler
+    and runtime. Thanks to Joachim Schimpf and Kish Shen work on the improved 
     singleton variable checking code found on the new ECLiPSe 6.0 compiler.
 
     Simplified the implementation of the Logtalk built-in debugger. Changed 
     the implementation of the debugger abort command to use the de-facto 
     standard Prolog built-in predicate abort/0. Corrected a bug that prevented
-    the use of the command ignore at the redo port.
+    the use of the command "ignore" at the redo port.
 
     Improved performance of multi-threading applications (specially on MacOS X)
     when using SWI-Prolog as the back-end compiler by making the lookup caches 
     thread local.
+
+    Added a multifile/1 directive for the logtalk_library_path/2 predicate.
 
     Corrected a bug in the verification of portable calls that would fail to 
     flag the soft-cut control construct (_ *-> _; _) found on some Prolog 
