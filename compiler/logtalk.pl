@@ -13350,8 +13350,10 @@ current_logtalk_flag(version, version(2, 33, 0)).
 
 '$lgt_mt_threaded_call'(Goal, Queue) :-
 	thread_self(Id),
-	call(Goal),
-	thread_send_message(Queue, '$lgt_result'(Id, true(Goal))).
+	(   Goal ->
+	    thread_send_message(Queue, '$lgt_result'(Id, true(Goal)))
+	;   thread_send_message(Queue, '$lgt_result'(Id, false))
+	).
 
 
 
@@ -13363,15 +13365,12 @@ current_logtalk_flag(version, version(2, 33, 0)).
 % the worker thread
 
 '$lgt_mt_threaded_exit_handler'(Id, Queue) :-
-	thread_property(Id, status(Status)),
-	(	Status == true ->
-		true
-	;	catch(thread_send_message(Queue, '$lgt_result'(Id, Status)), _, thread_detach(Id))
-	).
+	thread_property(Id, status(exception(Error))),
+	catch(thread_send_message(Queue, '$lgt_result'(Id, exception(Error))), _, thread_detach(Id)).
 
 
 
-% '$lgt_mt_threaded_and_exit'(+callable, +list(thread_identifier), +list)
+% '$lgt_mt_threaded_and_exit'(+list(thread_identifier), +list)
 %
 % retrieves the result of proving a conjunction of goals using a threaded/1 predicate call
 % by collecting the individual thread results posted to the master thread message queue
@@ -13441,7 +13440,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 
 
 
-% '$lgt_mt_threaded_or_exit'(+callable, +list(thread_identifier), +list)
+% '$lgt_mt_threaded_or_exit'(+list(thread_identifier), +list)
 %
 % retrieves the result of proving a disjunction of goals using a threaded/1 predicate
 % call by collecting the individual thread results posted to the call message queue
@@ -13547,14 +13546,14 @@ current_logtalk_flag(version, version(2, 33, 0)).
 '$lgt_mt_threaded_call_abort'([]).
 
 '$lgt_mt_threaded_call_abort'([Id| Ids]) :-
-    catch('$lgt_mt_abort_thread'(Id), _, true),
+    catch(thread_signal(Id, '$lgt_mt_abort_thread'(Id)), _, true),
     '$lgt_mt_threaded_call_abort'(Ids).
 
 
 '$lgt_mt_abort_thread'(Id) :-
-    (   thread_peek_message(Id, '$lgt_master') ->
+    (   thread_peek_message('$lgt_master') ->
         thread_send_message(Id, '$lgt_result'(_, terminate))
-    ;   thread_signal(Id, throw('$lgt_terminated'))
+    ;   throw('$lgt_terminated')
     ).
 
 

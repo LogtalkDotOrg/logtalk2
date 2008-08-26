@@ -45,6 +45,9 @@ RELEASE NOTES
     when using SWI-Prolog as the back-end compiler by making the lookup caches 
     thread local.
 
+    Small performance improvement to the threaded/1 built-in multi-threading 
+    predicate.
+
     Added a multifile/1 directive for the logtalk_library_path/2 predicate.
 
     Corrected a bug in the verification of portable calls that would fail to 
