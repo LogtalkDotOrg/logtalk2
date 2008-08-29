@@ -7003,11 +7003,11 @@ current_logtalk_flag(version, version(2, 33, 0)).
 
 '$lgt_tr_body'(threaded_peek(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_peek(Goal, Tag), MTGoal, DbgCtx), Ctx) :-
 	!,
-	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
+	'$lgt_ctx_ctx'(Ctx, _, _, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, Sender, This, Self, Tag)
-	;	MTGoal = '$lgt_mt_peek_reply'(TGoal, Sender, This, Self, Tag)
+		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, This, Self, Tag)
+	;	MTGoal = '$lgt_mt_peek_reply'(TGoal, This, Self, Tag)
 	),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
@@ -7024,11 +7024,11 @@ current_logtalk_flag(version, version(2, 33, 0)).
 
 '$lgt_tr_body'(threaded_peek(Goal), MTGoal, '$lgt_dbg_goal'(threaded_peek(Goal), MTGoal, DbgCtx), Ctx) :-
 	!,
-	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
+	'$lgt_ctx_ctx'(Ctx, _, _, This, Self, _, _, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, Sender, This, Self, [])
-	;	MTGoal = '$lgt_mt_peek_reply'(TGoal, Sender, This, Self, [])
+		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, This, Self, [])
+	;	MTGoal = '$lgt_mt_peek_reply'(TGoal, This, Self, [])
 	),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
@@ -13225,21 +13225,21 @@ current_logtalk_flag(version, version(2, 33, 0)).
 
 
 
-% '$lgt_mt_peek_reply'(+callable, +object_identifier, +object_identifier, +object_identifier, @nonvar)
+% '$lgt_mt_peek_reply'(+callable, +object_identifier, +object_identifier, @nonvar)
 %
 % peeks a reply to a goal sent to the senders object message queue (this predicate is called from within categories)
 
-'$lgt_mt_peek_reply'(Goal, Sender, This, Self, Tag) :-
+'$lgt_mt_peek_reply'(Goal, This, Self, Tag) :-
 	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _, _, _, _, _, _) ->
-	'$lgt_mt_peek_reply'(Queue, Goal, Sender, This, Self, Tag).
+	'$lgt_mt_peek_reply'(Queue, Goal, This, Self, Tag).
 
 
 
-% '$lgt_mt_peek_reply'(+atom, +callable, +object_identifier, +object_identifier, +object_identifier, @nonvar)
+% '$lgt_mt_peek_reply'(+atom, +callable, +object_identifier, +object_identifier, @nonvar)
 %
 % peeks a reply to a goal sent to the senders object message queue
 
-'$lgt_mt_peek_reply'(Queue, Goal, _, This, Self, Tag) :-
+'$lgt_mt_peek_reply'(Queue, Goal, This, Self, Tag) :-
 	thread_peek_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, _, _)).
 
 
