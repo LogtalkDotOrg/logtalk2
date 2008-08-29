@@ -45,8 +45,8 @@ RELEASE NOTES
     when using SWI-Prolog as the back-end compiler by making the lookup caches 
     thread local.
 
-    Small performance improvement to the threaded/1 built-in multi-threading 
-    predicate.
+    Small performance improvement to the built-in multi-threading predicates 
+    threaded/1 and threaded_exit/1-2.
 
     Added a multifile/1 directive for the logtalk_library_path/2 predicate.
 

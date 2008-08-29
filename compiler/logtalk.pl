@@ -13290,27 +13290,20 @@ current_logtalk_flag(version, version(2, 33, 0)).
 		thread_peek_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)) ->
 		% answering thread exists; go ahead and retrieve the solution(s):
 		thread_get_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)),
-		call_cleanup(
-			'$lgt_mt_get_reply_aux'(Type, Queue, Goal, This, Self, Tag, Id),
-			(	Type == non_deterministic ->
-				(	thread_property(Id, status(running)) ->					% if the thread is still running, it's suspended waiting
+		(	Type == deterministic ->
+		    '$lgt_mt_det_reply'(Queue, Goal, This, Self, Tag, Id)           % detached thread
+		;   call_cleanup(
+			    '$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Tag, Id),
+				((	thread_property(Id, status(running)) ->					% if the thread is still running, it's suspended waiting
 					catch(thread_send_message(Id, '$lgt_exit'), _, true)	% for a request to an alternative proof; tell it to exit
-				;	true
-				),
-				thread_join(Id, _)
-			;	true
+				 ;	true
+				 ),
+				 thread_join(Id, _))
 			)
 		)
 	;	% answering thread does not exists; generate an exception (failing is not an option as it could simply mean goal failure)
 		throw(error(existence_error(goal_thread, Goal), Sender))
 	).
-
-
-'$lgt_mt_get_reply_aux'(deterministic, Queue, Goal, This, Self, Tag, Id) :-
-	'$lgt_mt_det_reply'(Queue, Goal, This, Self, Tag, Id).
-
-'$lgt_mt_get_reply_aux'(non_deterministic, Queue, Goal, This, Self, Tag, Id) :-
-	'$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Tag, Id).
 
 
 % return the solution found:
