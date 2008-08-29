@@ -41,6 +41,10 @@ RELEASE NOTES
     standard Prolog built-in predicate abort/0. Corrected a bug that prevented
     the use of the command "ignore" at the redo port.
 
+    Removed the Logtalk dispatcher thread used for dispatching asynchronous 
+    multi-threading calls, simplifying the implementation and improving the 
+    performance of the asynchronous built-in multi-threading predicates. 
+
     Improved performance of multi-threading applications (specially on MacOS X)
     when using SWI-Prolog as the back-end compiler by making the lookup caches 
     thread local.
