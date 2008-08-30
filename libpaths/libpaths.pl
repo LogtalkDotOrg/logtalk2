@@ -29,6 +29,7 @@
 	 assertz(logtalk_library_path(buffer, threads('buffer/'))),
 	 assertz(logtalk_library_path(classvars, examples('classvars/'))),
 	 assertz(logtalk_library_path(clp_bp, constraints('bp/'))),
+	 assertz(logtalk_library_path(clp_eclipse, constraints('eclipse/'))),
 	 assertz(logtalk_library_path(clp_gprolog, constraints('gprolog/'))),
 	 assertz(logtalk_library_path(clp_swipl, constraints('swipl/'))),
 	 assertz(logtalk_library_path(clp_yap, constraints('yap/'))),
