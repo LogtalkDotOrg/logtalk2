@@ -2,9 +2,9 @@
 :- object(mtbatch(_Prolog)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2008/06/14,
+		date is 2008/08/30,
 		comment is 'Multi-threading benchmarks.',
 		parameters is ['Prolog'- 'Prolog backend compiler. Supported compilers are SWI-Prolog (swi), YAP (yap), and XSB (xsb).']]).
 
@@ -271,8 +271,8 @@
 			)), nl,
 		write('Numerical integration of functions of two variables (average of '), write(N), write(' runs)'), nl,
 		write('using a split/spawn/collect quadrature method with '), write(NP), write(' points'), nl,
-		loop::forto(T, 0, 4,
-			(	Threads is truncate(2**T),
+		loop::forto(T, 1, 4,
+			(	Threads is T*T,
 				put_char('\t'), write(Threads)
 			)), nl,
 		forall(
@@ -287,8 +287,8 @@
 			;	Function = bailey5,	A =  0, B = 100, C = 0, D = 100, Epsilon = 1.0e-6
 			),
 			(	write(Function),
-				loop::forto(T, 0, 4,
-					(	Threads is truncate(2**T),
+				loop::forto(T, 1, 4,
+					(	Threads is T*T,
 						catch(run(quadsplit2d(Threads, Function, A, B, C, D, NP, Epsilon), N, Average), Error, write_error) ->
 						(	var(Error) ->
 							write_average(Average)
@@ -407,25 +407,37 @@
 
 	do_benchmark(quadrec(Threads, Function, Inf, Sup, NP, Epsilon), N) :-
 		repeat(N),
-			quadrec(Threads)::integrate(Function, Inf, Sup, NP, Epsilon, _),
+			(   quadrec(Threads)::integrate(Function, Inf, Sup, NP, Epsilon, _) ->
+			    true
+			;   throw(error(failure))
+            ),
 		fail.
 	do_benchmark(quadrec(_, _, _, _, _, _), _).
 
 	do_benchmark(quadsplit(Threads, Function, Inf, Sup, NP, Epsilon), N) :-
 		repeat(N),
-			quadsplit(Threads)::integrate(Function, Inf, Sup, NP, Epsilon, _),
+			(   quadsplit(Threads)::integrate(Function, Inf, Sup, NP, Epsilon, _) ->
+			    true
+			;   throw(error(failure))
+            ),
 		fail.
 	do_benchmark(quadsplit(_, _, _, _, _, _), _).
 
 	do_benchmark(quadrec2d(Threads, Function, A, B, C, D, NP, Epsilon), N) :-
 		repeat(N),
-			quadrec2d(Threads)::integrate(Function, A, B, C, D, NP, Epsilon, _),
+			(   quadrec2d(Threads)::integrate(Function, A, B, C, D, NP, Epsilon, _) ->
+			    true
+			;   throw(error(failure))
+            ),
 		fail.
 	do_benchmark(quadrec2d(_, _, _, _, _, _, _, _), _).
 
 	do_benchmark(quadsplit2d(Threads, Function, A, B, C, D, NP, Epsilon), N) :-
 		repeat(N),
-			quadsplit2d(Threads)::integrate(Function,A, B, C, D, NP, Epsilon, _),
+			(   quadsplit2d(Threads)::integrate(Function,A, B, C, D, NP, Epsilon, _) ->
+			    true
+			;   throw(error(failure))
+            ),
 		fail.
 	do_benchmark(quadsplit2d(_, _, _, _, _, _, _, _), _).
 

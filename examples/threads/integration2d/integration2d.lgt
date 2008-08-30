@@ -120,9 +120,9 @@
 	:- threaded.
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paul Crocker',
-		date is 2008/03/17,
+		date is 2008/08/30,
 		comment is 'Multi-threading implementation of Recursive Gaussian Quadrature Methods for Numerical Integration for functions of two real variables.',
 		parameters is ['Threads'- 'Number of threads to use.']]).
 
@@ -135,9 +135,11 @@
 		(	Threads =:= 1 ->
 			start(Function, A, B, C, D, NP, Epsilon, Integral)
 		;	% Threads > 1
+		    Threads2 is round(sqrt(Threads)),
 			Epsilon2 is Epsilon/Threads,
-			split(A, B, Threads, Intervals),
-			spawn(Intervals, Function, C, D, NP, Epsilon2, Goals),
+			split(A, B, Threads2, ABIntervals),
+			split(C, D, Threads2, CDIntervals),
+			spawn(ABIntervals, CDIntervals, Function, NP, Epsilon2, [], Goals),
 			collect(Goals, 0.0, Integral)
 		).
 
@@ -154,15 +156,20 @@
 		split(I2, N, Width, Sup, Next, Intervals).
 
 	% initiate the thread calls
-	spawn([], _, _, _,_, _, []).
-	spawn([Left-Right| Intervals], Function, C, D, NP, Epsilon, [start(Function,Left,Right,C,D,NP,Epsilon,SubVolume)| Goals]) :-
-		threaded_once(start(Function,Left,Right,C,D,NP,Epsilon,SubVolume)),
-		spawn(Intervals, Function, C,D, NP, Epsilon, Goals).
+	spawn([], _, _, _, _, Goals, Goals).
+	spawn([Left-Right| ABIntervals], CDIntervals, Function, NP, Epsilon, Acc, Goals) :-
+		spawn(CDIntervals, Left, Right, Function, NP, Epsilon, Acc, Acc2),
+		spawn(ABIntervals, CDIntervals, Function, NP, Epsilon, Acc2, Goals).
+
+	spawn([], _, _, _, _, _, Goals, Goals).
+	spawn([Bottom-Top| CDIntervals], Left, Right, Function, NP, Epsilon, Acc, Goals) :-
+		threaded_once(start(Function,Left,Right,Bottom,Top,NP,Epsilon,SubVolume)),
+		spawn(CDIntervals, Left, Right, Function, NP, Epsilon, [start(Function,Left,Right,Bottom,Top,NP,Epsilon,SubVolume)| Acc], Goals).
 
 	% wait for the threads to finish and then we will collect the results summing as we go
 	collect([], Integral, Integral).
-	collect([start(Function,Left,Right,C,D,NP,Epsilon,SubVolume)| Goals], Acc, Integral) :-
-		threaded_exit(start(Function,Left,Right,C,D,NP,Epsilon,SubVolume)),		
+	collect([start(Function,Left,Right,Bottom,Top,NP,Epsilon,SubVolume)| Goals], Acc, Integral) :-
+		threaded_exit(start(Function,Left,Right,Bottom,Top,NP,Epsilon,SubVolume)),		
 		Acc2 is Acc + SubVolume,
 		collect(Goals, Acc2, Integral).
 
