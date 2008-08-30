@@ -82,9 +82,8 @@ complements
 	object
 
 constraints
-	several exampels of using constraints within objects ans categories
-	when using back-end Prolog compilers bundled with constraint domain 
-	solvers
+	several exampels of using constraints within objects and categories
+	when using constraint domain solvers found in back-end Prolog compilers
 
 dcgs
 	examples of using DCG rules inside objects and categories

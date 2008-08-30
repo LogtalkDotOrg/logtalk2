@@ -13,7 +13,11 @@ This file contains detailed instructions for customizing your Logtalk
 installation and working environment. Customization is mostly done on a 
 per-user basis by editing configuration files on the Logtalk user folder 
 (whose path is stored on the LOGTALKUSER environment variable; this folder 
-can be (re)created by running the "cplgtdirs" shell command).
+can be (re)created by running the "cplgtdirs" shell command). The default 
+paths for the Logtalk user folder are:
+
+	POSIX systems: $HOME/logtalk
+	Windows: My Documents\Logtalk
 
 
 1. SETTING LIBRARY PATHS

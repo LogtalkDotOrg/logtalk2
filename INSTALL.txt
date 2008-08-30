@@ -68,10 +68,11 @@ You need to set two environment variables, LOGTALKHOME and LOGTALKUSER. The
 environment variable LOGTALKHOME should be set to the Logtalk installation 
 directory. The environment variable LOGTALKUSER should point to a directory 
 in your home directory where you want to store the user-specific Logtalk files
-(by default, ~/logtalk). Both environment variables may be set for all users 
-by a user with administration privileges. The two environment variables can 
-have the same value if you are the only Logtalk user on your computer and if 
-you have full permissions to the Logtalk installation directory.
+(by default, "$HOME/logtalk" on POSIX systems and "My Documents\Logtalk" on 
+Windows"). Both environment variables may be set for all users by a user with 
+administration privileges. The two environment variables can have the same 
+value if you are the only Logtalk user on your computer and if you have full 
+permissions to the Logtalk installation directory.
 
 >> POSIX systems:
 
