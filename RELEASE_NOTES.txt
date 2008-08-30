@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.33.0 - September ??, 2008
+2.33.0 - September 1, 2008
 
     Applied several optimizations to the Logtalk compiler, mostly related to 
     non-detected deterministic predicates due to calls to dynamic predicates 

@@ -124,7 +124,7 @@
 		author is 'Paul Crocker',
 		date is 2008/08/30,
 		comment is 'Multi-threading implementation of Recursive Gaussian Quadrature Methods for Numerical Integration for functions of two real variables.',
-		parameters is ['Threads'- 'Number of threads to use.']]).
+		parameters is ['Threads'- 'Number of threads to use (1, 4, 9, 16, 25, ...).']]).
 
 	integrate(Function, A, B, C, D, NP, Epsilon, Integral) :-
 		parameter(1, Threads),
@@ -143,7 +143,7 @@
 			collect(Goals, 0.0, Integral)
 		).
 
-	% split an interval into a list of intervals. -- doing a 1-dimensional split
+	% split an interval into a list of intervals
 	split(Inf, Sup, N, Intervals):-
 		Width is (Sup - Inf) / N,
 		split(1, N, Width, Sup, Inf, Intervals).
@@ -166,7 +166,7 @@
 		threaded_once(start(Function,Left,Right,Bottom,Top,NP,Epsilon,SubVolume)),
 		spawn(CDIntervals, Left, Right, Function, NP, Epsilon, [start(Function,Left,Right,Bottom,Top,NP,Epsilon,SubVolume)| Acc], Goals).
 
-	% wait for the threads to finish and then we will collect the results summing as we go
+	% wait for the threads to finish and then collect the results summing as we go
 	collect([], Integral, Integral).
 	collect([start(Function,Left,Right,Bottom,Top,NP,Epsilon,SubVolume)| Goals], Acc, Integral) :-
 		threaded_exit(start(Function,Left,Right,Bottom,Top,NP,Epsilon,SubVolume)),		
@@ -201,7 +201,7 @@
 		;	Integral is Volume1 + Volume2 + Volume3 + Volume4
 		).
 
-	quadrature(Function, A,B,C,D, Volume, NP, Epsilon, Integral) :-	
+	quadrature(Function, A, B, C, D, Volume, NP, Epsilon, Integral) :-	
 		MiddleX is 0.5*(A+B),
 		MiddleY is 0.5*(C+D),
 		:interval_volume(Function, A,       MiddleX, C,       MiddleY, NP, NP, 0.0, Volume1),
