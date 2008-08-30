@@ -13219,7 +13219,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 	thread_get_message(Queue, '$lgt_non_det_ready'(Goal, This, Self, Tag)).
 
 '$lgt_mt_dispatch_goal'(once, Queue, Goal, This, Self, Tag) :-
-	thread_create('$lgt_mt_det_goal'(Queue, Goal, This, Self, Tag), _, [detached(true)]),
+	thread_create('$lgt_mt_det_goal'(Queue, Goal, This, Self, Tag), _, [detached(false)]),
     % wait until the thread created for proving the goal is ready before proceeding:
 	thread_get_message(Queue, '$lgt_det_ready'(Goal, This, Self, Tag)).
 
@@ -13264,7 +13264,8 @@ current_logtalk_flag(version, version(2, 33, 0)).
 		% answering thread exists; go ahead and retrieve the solution(s):
 		thread_get_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)),
 		(	Type == once ->
-		    '$lgt_mt_det_reply'(Queue, Goal, This, Self, Tag, Id)           % detached thread
+		    '$lgt_mt_det_reply'(Queue, Goal, This, Self, Tag, Id),
+		    thread_join(Id, _)
 		;   call_cleanup(
 			    '$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Tag, Id),
 				((	thread_property(Id, status(running)) ->					% if the thread is still running, it's suspended waiting

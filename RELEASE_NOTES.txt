@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.33.0 - August ??, 2008
+2.33.0 - September ??, 2008
 
     Applied several optimizations to the Logtalk compiler, mostly related to 
     non-detected deterministic predicates due to calls to dynamic predicates 
@@ -43,7 +43,11 @@ RELEASE NOTES
 
     Removed the Logtalk dispatcher thread used for dispatching asynchronous 
     multi-threading calls, simplifying the implementation and improving the 
-    performance of the asynchronous built-in multi-threading predicates. 
+    performance of the asynchronous built-in multi-threading predicates.
+
+    Corrected a bug in the implementation of the threaded_once/1-2 built-in 
+    multi-threading predicates (use of detached threads could make the methods 
+    fail despite the success of the thread goals).
 
     Improved performance of multi-threading applications (specially on MacOS X)
     when using SWI-Prolog as the back-end compiler by making the lookup caches 
