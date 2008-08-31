@@ -60,6 +60,6 @@ yes
 
 Name = 'M180.941'
 Cylinders = 6
-HP = 110
-RPM = 5000 
+HP = 115
+RPM = 3657 
 yes
