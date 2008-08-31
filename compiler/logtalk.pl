@@ -7624,7 +7624,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 	'$lgt_tr_threaded_individual_goal'(TGoal, Queue, MTGoal, Id, Result).
 
 
-'$lgt_tr_threaded_individual_goal'(TGoal, Queue, thread_create('$lgt_mt_threaded_call'(TGoal, Queue), Id, [at_exit('$lgt_mt_threaded_exit_handler'(Id, Queue))]), Id, id(Id, TGoal, _)).
+'$lgt_tr_threaded_individual_goal'(TGoal, Queue, thread_create('$lgt_mt_threaded_call'(TGoal, Queue), Id, [at_exit('$lgt_mt_exit_handler'(Id, Queue))]), Id, id(Id, TGoal, _)).
 
 
 
@@ -13151,52 +13151,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 
 
 
-% '$lgt_mt_det_goal'(+atom, +callable, +object_identifier, +object_identifier, @nonvar)
-%
-% processes a deterministic message received by an object's message queue
-
-'$lgt_mt_det_goal'(Return, Goal, This, Self, Tag) :-
-	thread_self(DetId),
-	thread_send_message(Return, '$lgt_thread_id'(once, Goal, This, Self, Tag, DetId)),
-	% signal that the thread running the goal is ready:
-	thread_send_message(Return, '$lgt_det_ready'(Goal, This, Self, Tag)),
-	(	catch(Goal, Error, (thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Tag, Error, DetId)), Flag = error)) ->
-		(	var(Flag) ->
-			thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Tag, success, DetId))
-		;	% Goal generated an exception, which was already reported
-			true
-		)
-	;	thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Tag, failure, DetId))
-	).
-
-
-
-% '$lgt_mt_non_det_goal'(+atom, +callable, +object_identifier, +object_identifier, @nonvar)
-%
-% processes a non-deterministic message received by an object's message queue
-
-'$lgt_mt_non_det_goal'(Return, Goal, This, Self, Tag) :-
-	thread_self(NonDetId),
-	thread_send_message(Return, '$lgt_thread_id'(call, Goal, This, Self, Tag, NonDetId)),
-	% signal that the thread running the goal is ready:
-	thread_send_message(Return, '$lgt_non_det_ready'(Goal, This, Self, Tag)),
-	(	catch(Goal, Error, (thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Tag, Error, NonDetId)), Flag = error)),
-		(   var(Flag) ->
-		    thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Tag, success, NonDetId)),
-		    thread_get_message(Message),
-		    (	Message == '$lgt_next' ->
-			    fail	% backtrack to the catch(Goal, ...) to try to find an alternative solution
-		    ;	true	% otherwise assume Message = '$lgt_exit' and terminate thread
-		    )
-	    ;	% Goal generated an exception, which was already reported
-		    true
-		)
-	;	thread_send_message(Return, '$lgt_reply'(Goal, This, Self, Tag, failure, NonDetId))
-	).
-
-
-
-% '$lgt_mt_dispatch_goal'(+atom, +object_identifier, +object_identifier, @callable, @tag)
+% '$lgt_mt_dispatch_goal'(+atom, +object_identifier, +object_identifier, @callable, @nonvar)
 %
 % creates a thread for proving a goal (this predicate is called from within categories)
 
@@ -13206,7 +13161,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 
 
 
-% '$lgt_mt_dispatch_goal'(+atom, +message_queue, @callable, +object_identifier, +object_identifier, @tag)
+% '$lgt_mt_dispatch_goal'(+atom, +message_queue, @callable, +object_identifier, +object_identifier, @nonvar)
 %
 % creates a thread for proving a goal
 
@@ -13214,14 +13169,60 @@ current_logtalk_flag(version, version(2, 33, 0)).
 	thread_create(catch(Goal, _, true), _, [detached(true)]).
 
 '$lgt_mt_dispatch_goal'(call, Queue, Goal, This, Self, Tag) :-
-	thread_create('$lgt_mt_non_det_goal'(Queue, Goal, This, Self, Tag), _, [detached(false)]),
+	thread_create('$lgt_mt_non_det_goal'(Queue, Goal, This, Self, Tag), Id, []),
     % wait until the thread created for proving the goal is ready before proceeding:
-	thread_get_message(Queue, '$lgt_non_det_ready'(Goal, This, Self, Tag)).
+	thread_get_message(Queue, '$lgt_non_det_ready'(Id)).
 
 '$lgt_mt_dispatch_goal'(once, Queue, Goal, This, Self, Tag) :-
-	thread_create('$lgt_mt_det_goal'(Queue, Goal, This, Self, Tag), _, [detached(false)]),
+	thread_create('$lgt_mt_det_goal'(Queue, Goal, This, Self, Tag), Id, []),
     % wait until the thread created for proving the goal is ready before proceeding:
-	thread_get_message(Queue, '$lgt_det_ready'(Goal, This, Self, Tag)).
+	thread_get_message(Queue, '$lgt_det_ready'(Id)).
+
+
+
+% '$lgt_mt_det_goal'(+atom, +callable, +object_identifier, +object_identifier, @nonvar)
+%
+% processes a deterministic message received by an object's message queue
+
+'$lgt_mt_det_goal'(Queue, Goal, This, Self, Tag) :-
+	thread_self(Id),
+	thread_send_message(Queue, '$lgt_thread_id'(once, Goal, This, Self, Tag, Id)),
+	% signal that the thread running the goal is ready:
+	thread_send_message(Queue, '$lgt_det_ready'(Id)),
+	(	catch(Goal, Error, thread_send_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, Error, Id))) ->
+		(	var(Error) ->
+			thread_send_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, success, Id))
+		;	% Goal generated an exception, which was already reported
+			true
+		)
+	;	thread_send_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, failure, Id))
+	).
+
+
+
+% '$lgt_mt_non_det_goal'(+atom, +callable, +object_identifier, +object_identifier, @nonvar)
+%
+% processes a non-deterministic message received by an object's message queue
+
+'$lgt_mt_non_det_goal'(Queue, Goal, This, Self, Tag) :-
+	thread_self(Id),
+	thread_send_message(Queue, '$lgt_thread_id'(call, Goal, This, Self, Tag, Id)),
+	% signal that the thread running the goal is ready:
+	thread_send_message(Queue, '$lgt_non_det_ready'(Id)),
+	(	catch(Goal, Error, thread_send_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, Error, Id))),
+		(   var(Error) ->
+		    thread_send_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, success, Id)),
+		    thread_get_message(Message),
+		    (	Message == '$lgt_next' ->
+			    fail	% backtrack to the catch(Goal, ...) to try to find an alternative solution
+		    ;	true	% otherwise assume Message = '$lgt_exit' and terminate thread
+		    )
+	    ;	% Goal generated an exception, which was already reported
+		    true
+		)
+	;	% no (more) solutions
+	    thread_send_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, failure, Id))
+	).
 
 
 
@@ -13318,21 +13319,21 @@ current_logtalk_flag(version, version(2, 33, 0)).
 
 '$lgt_mt_threaded_call'(Goal, Queue) :-
 	thread_self(Id),
-	(   Goal ->
+	(   call(Goal) ->
 	    thread_send_message(Queue, '$lgt_result'(Id, true(Goal)))
 	;   thread_send_message(Queue, '$lgt_result'(Id, false))
 	).
 
 
 
-% '$lgt_mt_threaded_exit_handler'(@nonvar, +message_queue_identifier)
+% '$lgt_mt_exit_handler'(@nonvar, +message_queue_identifier)
 %
 % error handler for threaded/1 individual thread calls; an error generated 
 % by the thread_send_message/2 call is interpreted as meaning that the 
 % master/parent thread (Queue) no longer exists leading to the detaching of
 % the worker thread
 
-'$lgt_mt_threaded_exit_handler'(Id, Queue) :-
+'$lgt_mt_exit_handler'(Id, Queue) :-
 	thread_property(Id, status(exception(Error))),
 	catch(thread_send_message(Queue, '$lgt_result'(Id, exception(Error))), _, thread_detach(Id)).
 
