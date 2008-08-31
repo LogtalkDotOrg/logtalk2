@@ -13264,8 +13264,9 @@ current_logtalk_flag(version, version(2, 33, 0)).
 		% answering thread exists; go ahead and retrieve the solution(s):
 		thread_get_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)),
 		(	Type == once ->
-		    '$lgt_mt_det_reply'(Queue, Goal, This, Self, Tag, Id),
-		    thread_join(Id, _)
+		    call_cleanup(
+		        '$lgt_mt_det_reply'(Queue, Goal, This, Self, Tag, Id),
+		        thread_join(Id, _))
 		;   call_cleanup(
 			    '$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Tag, Id),
 				((	thread_property(Id, status(running)) ->					% if the thread is still running, it's suspended waiting
