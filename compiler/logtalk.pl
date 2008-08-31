@@ -13170,13 +13170,11 @@ current_logtalk_flag(version, version(2, 33, 0)).
 
 '$lgt_mt_dispatch_goal'(call, Queue, Goal, This, Self, Tag) :-
 	thread_create('$lgt_mt_non_det_goal'(Queue, Goal, This, Self, Tag), Id, []),
-    % wait until the thread created for proving the goal is ready before proceeding:
-	thread_get_message(Queue, '$lgt_non_det_ready'(Id)).
+    thread_send_message(Queue, '$lgt_thread_id'(call, Goal, This, Self, Tag, Id)).
 
 '$lgt_mt_dispatch_goal'(once, Queue, Goal, This, Self, Tag) :-
 	thread_create('$lgt_mt_det_goal'(Queue, Goal, This, Self, Tag), Id, []),
-    % wait until the thread created for proving the goal is ready before proceeding:
-	thread_get_message(Queue, '$lgt_det_ready'(Id)).
+    thread_send_message(Queue, '$lgt_thread_id'(once, Goal, This, Self, Tag, Id)).
 
 
 
@@ -13186,9 +13184,6 @@ current_logtalk_flag(version, version(2, 33, 0)).
 
 '$lgt_mt_det_goal'(Queue, Goal, This, Self, Tag) :-
 	thread_self(Id),
-	thread_send_message(Queue, '$lgt_thread_id'(once, Goal, This, Self, Tag, Id)),
-	% signal that the thread running the goal is ready:
-	thread_send_message(Queue, '$lgt_det_ready'(Id)),
 	(	catch(Goal, Error, thread_send_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, Error, Id))) ->
 		(	var(Error) ->
 			thread_send_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, success, Id))
@@ -13206,9 +13201,6 @@ current_logtalk_flag(version, version(2, 33, 0)).
 
 '$lgt_mt_non_det_goal'(Queue, Goal, This, Self, Tag) :-
 	thread_self(Id),
-	thread_send_message(Queue, '$lgt_thread_id'(call, Goal, This, Self, Tag, Id)),
-	% signal that the thread running the goal is ready:
-	thread_send_message(Queue, '$lgt_non_det_ready'(Id)),
 	(	catch(Goal, Error, thread_send_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, Error, Id))),
 		(   var(Error) ->
 		    thread_send_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, success, Id)),
