@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.33.0
+%  Release 2.33.1
 %  
 %  Copyright (c) 1998-2008 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
@@ -1830,7 +1830,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 33, 0)).
+current_logtalk_flag(version, version(2, 33, 1)).
 
 
 
@@ -13560,10 +13560,7 @@ current_logtalk_flag(version, version(2, 33, 0)).
 '$lgt_create_mutexes'([]).
 
 '$lgt_create_mutexes'([Mutex| Mutexes]) :-
-	(	'$lgt_predicate_property'(mutex_create(_, _), built_in) ->
-		catch(mutex_create(_, [alias(Mutex)]), _, true)
-	;	catch(mutex_create(Mutex), _, true)
-	),
+	catch(mutex_create(_, [alias(Mutex)]), _, true),
 	'$lgt_create_mutexes'(Mutexes).
 
 
@@ -13776,17 +13773,14 @@ current_logtalk_flag(version, version(2, 33, 0)).
 
 % '$lgt_start_runtime_threading'
 %
-% cretes the default "user" runtime thread when running on
-% Prolog compilers supporting multi-threading programming
+% cretes the message queue for the pseudo-object "user" and initializes the asynchronous 
+% threaded calls tag counter support for compilers supporting multi-threading programming
 
 '$lgt_start_runtime_threading' :-
 	(	'$lgt_default_flag'(threads, on),
 		'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _, _, _) ->
 		'$lgt_init_object_message_queue'(Prefix),
-		(	'$lgt_predicate_property'(mutex_create(_, _), built_in) ->
-			mutex_create(_, [alias('$lgt_threaded_tag')])
-		;	mutex_create('$lgt_threaded_tag')
-		),
+		mutex_create(_, [alias('$lgt_threaded_tag')]),
 		(	current_prolog_flag(bounded, true) ->		% initialization of threaded call tags;
 			current_prolog_flag(min_integer, Min),		% curently we use integers, which impose
 			assertz('$lgt_threaded_tag_counter'(Min))	% a limitation on the maximum number of tags

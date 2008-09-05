@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.33.0
+Release 2.33.1
 
 Copyright (c) 1998-2008 Paulo Moura.        All Rights Reserved.
 Logtalk is free software.  You can redistribute it and/or modify
@@ -11,6 +11,16 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 RELEASE NOTES
 =============
+
+
+2.33.1 - October ??, 2008
+
+    Removed supported for the deprecated mutex_create/1 Prolog built-in 
+    predicate.
+
+    Updated the XSB config file by switching off the use of multifile/1 
+    directives when compiling Logtalk source files as a workaround for know 
+    bugs in the implementation of this directive for dynamic predicates.
 
 
 2.33.0 - September 1, 2008
