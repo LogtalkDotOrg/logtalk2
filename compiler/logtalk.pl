@@ -4706,8 +4706,8 @@ current_logtalk_flag(version, version(2, 33, 1)).
 
 '$lgt_compiler_error_handler'(Input, Output, Error) :-
 	'$lgt_report_compiler_error'(Input, Error),
-	'$lgt_clean_pp_clauses',
 	'$lgt_restore_global_op_table',
+	'$lgt_clean_pp_clauses',
 	'$lgt_reset_warnings_counter',
 	catch(close(Input), _, true),
 	catch(close(Output), _, true),
@@ -4722,8 +4722,8 @@ current_logtalk_flag(version, version(2, 33, 1)).
 
 '$lgt_compiler_error_handler'(Stream, Error) :-
 	'$lgt_report_compiler_error'(Stream, Error),
-	'$lgt_clean_pp_clauses',
 	'$lgt_restore_global_op_table',
+	'$lgt_clean_pp_clauses',
 	'$lgt_reset_warnings_counter',
 	catch(close(Stream), _, true),
 	throw(Error).
@@ -4737,8 +4737,8 @@ current_logtalk_flag(version, version(2, 33, 1)).
 '$lgt_compiler_error_handler'(Error) :-
 	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
 	write('        ERROR!    '), writeq(Error), nl,
-	'$lgt_clean_pp_clauses',
 	'$lgt_restore_global_op_table',
+	'$lgt_clean_pp_clauses',
 	'$lgt_reset_warnings_counter',
 	throw(Error).
 
@@ -4804,7 +4804,6 @@ current_logtalk_flag(version, version(2, 33, 1)).
 	'$lgt_report_problems'(Type),
 	'$lgt_write_tr_entity'(Stream),
 	'$lgt_write_entity_doc'(Entity),
-	'$lgt_restore_file_op_table',
 	'$lgt_save_entity_rclauses',
 	'$lgt_clean_pp_entity_clauses'.
 
@@ -4831,6 +4830,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 	'$lgt_clean_pp_entity_clauses',
 	retractall('$lgt_pp_global_op_'(_, _, _)),
 	retractall('$lgt_pp_file_op_'(_, _, _)),
+	retractall('$lgt_pp_entity_op_'(_, _, _)),
 	retractall('$lgt_pp_file_init_'(_)),	
 	retractall('$lgt_pp_entity_init_'(_, _, _)),
 	retractall('$lgt_pp_file_encoding_'(_, _)),
@@ -4894,7 +4894,6 @@ current_logtalk_flag(version, version(2, 33, 1)).
 	retractall('$lgt_pp_referenced_object_'(_)),
 	retractall('$lgt_pp_referenced_protocol_'(_)),
 	retractall('$lgt_pp_referenced_category_'(_)),
-	retractall('$lgt_pp_entity_op_'(_, _, _)),
 	retractall('$lgt_pp_threaded_'),
 	retractall('$lgt_pp_synchronized_').
 
@@ -5275,13 +5274,14 @@ current_logtalk_flag(version, version(2, 33, 1)).
 
 '$lgt_tr_directive'(object, [Obj| Rels], _, _) :-
 	'$lgt_report_compiling_entity'(object, Obj),
+	'$lgt_save_file_op_table',
 	'$lgt_tr_object_id'(Obj, static),							% assume static object
-	'$lgt_tr_object_relations'(Rels, Obj),
-	'$lgt_save_file_op_table'.
+	'$lgt_tr_object_relations'(Rels, Obj).
 
 '$lgt_tr_directive'(end_object, [], _, Output) :-
 	(	'$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _) ->
 		'$lgt_tr_entity'(object, Obj, Output),
+	    '$lgt_restore_file_op_table',
 		'$lgt_report_compiled_entity'(object, Obj)
 	;	throw(closing_directive_mismatch)
 	).
@@ -5305,13 +5305,14 @@ current_logtalk_flag(version, version(2, 33, 1)).
 
 '$lgt_tr_directive'(protocol, [Ptc| Rels], _, _) :-
 	'$lgt_report_compiling_entity'(protocol, Ptc),
+	'$lgt_save_file_op_table',
 	'$lgt_tr_protocol_id'(Ptc, static),							% assume static protocol
-	'$lgt_tr_protocol_relations'(Rels, Ptc),
-	'$lgt_save_file_op_table'.
+	'$lgt_tr_protocol_relations'(Rels, Ptc).
 
 '$lgt_tr_directive'(end_protocol, [], _, Output) :-
 	(   '$lgt_pp_protocol_'(Ptc, _, _, _, _) ->
 		'$lgt_tr_entity'(protocol, Ptc, Output),
+	    '$lgt_restore_file_op_table',
 		'$lgt_report_compiled_entity'(protocol, Ptc)
 	;	throw(closing_directive_mismatch)
 	).
@@ -5336,13 +5337,14 @@ current_logtalk_flag(version, version(2, 33, 1)).
 
 '$lgt_tr_directive'(category, [Ctg| Rels], _, _) :-
 	'$lgt_report_compiling_entity'(category, Ctg),
+	'$lgt_save_file_op_table',
 	'$lgt_tr_category_id'(Ctg, static),							% assume static category
-	'$lgt_tr_category_relations'(Rels, Ctg),
-	'$lgt_save_file_op_table'.
+	'$lgt_tr_category_relations'(Rels, Ctg).
 
 '$lgt_tr_directive'(end_category, [], _, Output) :-
 	(	'$lgt_pp_category_'(Ctg, _, _, _, _, _) ->
 		'$lgt_tr_entity'(category, Ctg, Output),
+	    '$lgt_restore_file_op_table',
 		'$lgt_report_compiled_entity'(category, Ctg)
 	;	throw(closing_directive_mismatch)
 	).

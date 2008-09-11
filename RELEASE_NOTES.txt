@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.33.1 - October ??, 2008
 
+    Corrected a bug in the Logtalk compiler that would result in failure to 
+    restore the operator table in case of compilation error.
+
     Removed supported for the deprecated mutex_create/1 Prolog built-in 
     predicate.
 
