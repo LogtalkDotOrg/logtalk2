@@ -22,6 +22,9 @@ RELEASE NOTES
     directives when compiling Logtalk source files as a workaround for know 
     bugs in the implementation of this directive for dynamic predicates.
 
+    Updated the ECLiPSe 6.0 config files in order to switch on the use of 
+    multifile/1 directives.
+
 
 2.33.0 - September 1, 2008
 
