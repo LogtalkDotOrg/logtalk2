@@ -213,7 +213,7 @@ ECLiPSe 5.10#26 or later versions
 	appended to the old ones instead of replacing them.
 
 
-ECLiPSe 6.0#33 or later versions
+ECLiPSe 6.0#37 or later versions
 
 	eclipse6.config
 	eclipse6iso.config
