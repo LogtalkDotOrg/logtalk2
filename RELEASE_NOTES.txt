@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.33.1 - October ??, 2008
 
+    Added a syntax construct for easy access to parametric object proxies
+    represented as Prolog facts when sending a message ({Proxy}::Message).
+    Updated the "proxies" example to illustrate this new functionality.
+
     Corrected a bug in the Logtalk compiler that would result in failure to 
     restore the operator table in case of compilation error.
 

@@ -193,7 +193,15 @@ Both solutions are equally efficient because the runtime cost of the methods <co
 When storing a parametric object in its own source file, the convention is to name the file after the object, with the object arity appended. For instance, when defining an object named <code>sort(Type)</code>, we may save it in a <code>sort_1.lgt</code> text file. This way it is easy to avoid file name clashes when saving Logtalk entities that have the same functor but different arity.
 </p>
 <p>
-Compound terms with the same functor and (usually) the same number of arguments as a parametric object identifier may act as <em>proxies</em> to a parametric object. Proxies may be stored on the database as Prolog facts and be used to represent different instantiations of a parametric object identifier.
+Compound terms with the same functor and (usually) the same number of arguments as a parametric object identifier may act as <em>proxies</em> to a parametric object. Proxies may be stored on the database as Prolog facts and be used to represent different instantiations of a parametric object identifier. Logtalk provides a convenient notation for accessing proxies represented as Prolog facts when sending a message:
+</p>
+<pre>{Proxy}::Message</pre>
+<p>
+In this context, the proxy argument is proved as a plain Prolog goal. If successful, the message is sent to the corresponding parametric object. Typically, the proof allows retrieving of parameter instantiations. This notation supports backtracking over the Prolog facts that unify with the proxy term. When this behavior is unwanted, is possible to commit to the first unifying fact by writing:
+</p>
+<pre>{Proxy}::(!, Message)</pre>
+<p>
+In most cases, however, the use of cuts is not necessary as this construct is usually used with a proxy argument that is partially instantiated in order to unify with a single Prolog fact.
 </p>
 
 <h2 id="objects_finding">Finding defined objects</h2>
@@ -438,7 +446,7 @@ Logtalk defines an empty built-in object named <code>logtalk</code>, which can p
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: May 21, 2008</span>
+		<span>Last updated on: September 22, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="messages.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="protocols.html">next</a></span><br/>

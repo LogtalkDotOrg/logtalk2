@@ -2,20 +2,22 @@
 % we use a parametric object in order to give an interpretation to an 
 % object proxy arguments and to encapsulate relevant predicates:
 
-:- object(circle(_Radius, _Color)).
+:- object(circle(_Id, _Radius, _Color)).
 
 	:- public([
-		radius/1,
-		color/1,
-		area/1,
-		perimeter/1,
-		print/0]).
+	    id/1, radius/1, color/1,
+		area/1, perimeter/1,
+		print/0
+	]).
+
+	id(Id) :-
+		parameter(1, Id).
 
 	radius(Radius) :-
-		parameter(1, Radius).
+		parameter(2, Radius).
 
 	color(Color) :-
-		parameter(2, Color).
+		parameter(3, Color).
 
 	area(Area) :-
 		::radius(Radius),
@@ -26,14 +28,15 @@
 		Perimeter is 2*3.1415927*Radius.
 
 	print :-
-		area(Area), write('area: '), write(Area),
+	    id(Id), write('id: '), write(Id),
+		area(Area), write(', area: '), write(Area),
 		perimeter(Perimeter), write(', perimeter: '), write(Perimeter),
 		color(Color), write(', color: '), write(Color), nl.
 
 :- end_object.
 
 
-% parametric object proxies (with an extra argument to represent identity):
+% parametric object proxies:
 
 circle('#1', 1.23, blue).
 circle('#2', 3.71, yellow).
