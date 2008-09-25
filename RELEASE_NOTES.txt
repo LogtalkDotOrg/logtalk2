@@ -19,10 +19,10 @@ RELEASE NOTES
     represented as Prolog facts when sending a message ({Proxy}::Message).
     Updated the "proxies" example to illustrate this new functionality.
 
-    Corrected a bug in the Logtalk compiler that would result in failure to 
-    restore the operator table in case of compilation error.
+    Corrected a bug in the Logtalk compiler that would result in failure 
+    to restore the operator table in case of compilation error.
 
-    Removed supported for the deprecated mutex_create/1 Prolog built-in 
+    Removed support for the deprecated mutex_create/1 Prolog built-in 
     predicate.
 
     Updated the XSB config file by switching off the use of multifile/1 

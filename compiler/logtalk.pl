@@ -2941,15 +2941,10 @@ current_logtalk_flag(version, version(2, 33, 1)).
 '$lgt_send_to_object'(Obj, Pred, Sender) :-
 	var(Obj),
 	throw(error(instantiation_error, Obj::Pred, Sender)).
-	
+
 '$lgt_send_to_object'(Obj, Pred, Sender) :-
 	var(Pred),
 	throw(error(instantiation_error, Obj::Pred, Sender)).
-
-'$lgt_send_to_object'({Proxy}, Pred, Sender) :-
-    !,
-    call(Proxy),
-	'$lgt_send_to_object_nv'(Proxy, Pred, Sender).
 
 '$lgt_send_to_object'(Obj, Pred, Sender) :-
 	'$lgt_send_to_object_nv'(Obj, Pred, Sender).
@@ -3011,11 +3006,6 @@ current_logtalk_flag(version, version(2, 33, 1)).
 '$lgt_send_to_object_ne'(Obj, Pred, Sender) :-
 	var(Pred),
 	throw(error(instantiation_error, Obj::Pred, Sender)).
-
-'$lgt_send_to_object_ne'({Proxy}, Pred, Sender) :-
-    !,
-    call(Proxy),
-	'$lgt_send_to_object_ne_nv'(Proxy, Pred, Sender).
 
 '$lgt_send_to_object_ne'(Obj, Pred, Sender) :-
 	'$lgt_send_to_object_ne_nv'(Obj, Pred, Sender).
@@ -7894,11 +7884,17 @@ current_logtalk_flag(version, version(2, 33, 1)).
 
 % convenient access to parametric object proxies
 
-'$lgt_tr_msg'(Pred, Obj, (call(Proxy), TPred), This) :-
+'$lgt_tr_msg'(Pred, Obj, (catch(Proxy, error(Error, _), throw(error(Error, Obj::Pred, This))), TPred), This) :-
     nonvar(Obj),
     Obj = {Proxy},
     !,
-    '$lgt_tr_msg'(Pred, Proxy, TPred, This).
+    (   var(Proxy) ->
+       '$lgt_tr_msg'(Pred, Proxy, TPred, This)
+    ;   callable(Proxy) ->
+        '$lgt_tr_msg'(Pred, Proxy, TPred, This)
+    ;   throw(type_error(object_identifier, Proxy))
+    ).
+
 
 
 % translation performed at runtime
