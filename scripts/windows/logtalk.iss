@@ -120,7 +120,7 @@ Name: "{group}\Logtalk - ECLiPSe 6.0"; Filename: "{code:GetEclipse6ExePath}"; Pa
 
 Name: "{group}\Logtalk - GNU Prolog"; Filename: "{code:GetGPExePath}"; Parameters: "--init-goal ""['$LOGTALKUSER/configs/gnu.config', '$LOGTALKHOME/integration/logtalk_gp.pl', '$LOGTALKUSER/libpaths/libpaths.pl']"""; Comment: "Runs Logtalk with GNU Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\gprolog; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - K-Prolog"; Filename: "{code:GetKPExePath}"; Parameters: "-h 4096k -l 2048k -g 4096k -e ""(consult('$LOGTALKHOME/integration/logtalk_plc5.pl'), '$root')."""; Comment: "Runs Logtalk with K-Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\gprolog; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - K-Prolog"; Filename: "{code:GetKPExePath}"; Parameters: "-h 4096k -l 2048k -g 4096k -e ""(consult('$LOGTALKHOME/integration/logtalk_plc5.pl'), '$root')."""; Comment: "Runs Logtalk with K-Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\plc; Flags: createonlyiffileexists
 
 Name: "{group}\Logtalk - Quintus Prolog"; Filename: "{code:GetQuintusExePath}"; Parameters: "+l ""%LOGTALKHOME%\integration\logtalk_quintus.pl"" +z ""%LOGTALKHOME%"" ""%LOGTALKUSER%"""; Comment: "Runs Logtalk with Quintus Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\quintus; Flags: createonlyiffileexists
 
@@ -245,109 +245,169 @@ end;
 function GetBPExePath(Param: String): String;
 var
   BPDIR: String;
+  Warning: String;
 begin
   if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'BPDIR', BPDIR) then
     Result := BPDIR + '\bp.bat'
-  else
-	Result := 'lgt_exe_does_not_exist'
+  else begin
+    Warning := 'Failed to detect B-Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+	MsgBox(Warning, mbError, MB_OK);
+    Result := 'lgt_exe_does_not_exist'
+  end
 end;
 
 function GetCiaoExePath(Param: String): String;
 var
   CiaoDir: String;
+  Warning: String;
 begin
   if RegQueryStringValue(HKLM, 'Software\Ciao Prolog\', 'ciao_dir', CiaoDir) then
     Result := CiaoDir + '\shell\ciaosh.cpx'
-  else
-	Result := 'lgt_exe_does_not_exist'
+  else begin
+    Warning := 'Failed to detect Ciao Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+	MsgBox(Warning, mbError, MB_OK);
+    Result := 'lgt_exe_does_not_exist'
+  end
 end;
 
 function GetCxExePath(Param: String): String;
 var
   CxDir: String;
+  Warning: String;
 begin
-  if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'CXPROLOG_DIR', CxDir) then
+  if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'CXPROLOGDIR', CxDir) then
     Result := CxDir + '\cxprolog.exe'
-  else
-	Result := 'lgt_exe_does_not_exist'
+  else begin
+    Warning := 'Failed to detect CxProlog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+	MsgBox(Warning, mbError, MB_OK);
+    Result := 'lgt_exe_does_not_exist'
+  end
 end;
 
 function GetEclipse5ExePath(Param: String): String;
 var
   ECLIPSEDIR: String;
+  Warning: String;
 begin
   if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\5.10\', 'ECLIPSEDIR', ECLIPSEDIR) then
     Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
-  else
-	Result := 'lgt_exe_does_not_exist'
+  else begin
+    Warning := 'Failed to detect ECLiPSe Prolog 5 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+	MsgBox(Warning, mbError, MB_OK);
+    Result := 'lgt_exe_does_not_exist'
+  end
 end;
 
 function GetEclipse6ExePath(Param: String): String;
 var
   ECLIPSEDIR: String;
+  Warning: String;
 begin
   if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\6.0\', 'ECLIPSEDIR', ECLIPSEDIR) then
     Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
-  else
-	Result := 'lgt_exe_does_not_exist'
+  else begin
+    Warning := 'Failed to detect ECLiPSe Prolog 6 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+	MsgBox(Warning, mbError, MB_OK);
+    Result := 'lgt_exe_does_not_exist'
+  end
 end;
 
 function GetGPExePath(Param: String): String;
 var
   RootPath: String;
+  Warning: String;
 begin
   if RegQueryStringValue(HKCU, 'Software\GnuProlog\', 'RootPath', RootPath) then
     Result := RootPath + '\bin\gprolog.exe'
-  else
-	Result := 'lgt_exe_does_not_exist'
+  else begin
+    Warning := 'Failed to detect GNU Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+	MsgBox(Warning, mbError, MB_OK);
+    Result := 'lgt_exe_does_not_exist'
+  end
 end;
 
 function GetKPExePath(Param: String): String;
+var
+  Path: String;
+  Warning: String;
 begin
-    Result := GetEnv('PLC') + '\plc.exe'
+  Path := GetEnv('PLC') + '\plc.exe';
+  if FileExists(Path) then
+    Result := Path
+  else begin
+    Warning := 'Failed to detect K-Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+	MsgBox(Warning, mbError, MB_OK);
+    Result := 'lgt_exe_does_not_exist'
+  end
 end;
 
 function GetQuintusExePath(Param: String): String;
+var
+  Path: String;
+  Warning: String;
 begin
-    Result := GetEnv('Quintus') + '\bin\ix86\qpwin.exe'
+  Path := GetEnv('Quintus') + '\bin\ix86\qpwin.exe';
+  if FileExists(Path) then
+    Result := Path
+  else begin
+    Warning := 'Failed to detect Quintus Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+	MsgBox(Warning, mbError, MB_OK);
+    Result := 'lgt_exe_does_not_exist'
+  end
 end;
 
 function GetSP3ExePath(Param: String): String;
 var
   SP_PATH: String;
+  Warning: String;
 begin
   if RegQueryStringValue(HKLM, 'Software\SICS\SICStus3.12_win32\', 'SP_PATH', SP_PATH) then
     Result := SP_PATH + '\bin\spwin.exe'
-  else
-	Result := 'lgt_exe_does_not_exist'
+  else begin
+    Warning := 'Failed to detect SICStus Prolog 3 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+	MsgBox(Warning, mbError, MB_OK);
+    Result := 'lgt_exe_does_not_exist'
+  end
 end;
 
 function GetSP4ExePath(Param: String): String;
 var
   SP_PATH: String;
+  Warning: String;
 begin
   if RegQueryStringValue(HKLM, 'Software\SICS\SICStus4.0_win32\', 'SP_PATH', SP_PATH) then
     Result := SP_PATH + '\bin\spwin.exe'
-  else
-	Result := 'lgt_exe_does_not_exist'
+  else begin
+    Warning := 'Failed to detect SICStus Prolog 4 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+	MsgBox(Warning, mbError, MB_OK);
+    Result := 'lgt_exe_does_not_exist'
+  end
 end;
 
 function GetSWIExePath(Param: String): String;
 var
   Home: String;
+  Warning: String;
 begin
   if RegQueryStringValue(HKLM, 'Software\SWI\Prolog\', 'home', Home) then
     Result := Home + '\bin\plwin.exe'
-  else
-	Result := 'lgt_exe_does_not_exist'
+  else begin
+    Warning := 'Failed to detect SWI-Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+	MsgBox(Warning, mbError, MB_OK);
+    Result := 'lgt_exe_does_not_exist'
+  end
 end;
 
 function GetYAPExePath(Param: String): String;
 var
   Home: String;
+  Warning: String;
 begin
   if RegQueryStringValue(HKLM, 'Software\YAP\Prolog\', 'home', Home) then
     Result := Home + '\bin\yap.exe'
-  else
-	Result := 'lgt_exe_does_not_exist'
+  else begin
+    Warning := 'Failed to detect YAP installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+	MsgBox(Warning, mbError, MB_OK);
+    Result := 'lgt_exe_does_not_exist'
+  end
 end;

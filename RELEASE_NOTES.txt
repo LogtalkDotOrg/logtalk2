@@ -19,8 +19,8 @@ RELEASE NOTES
     represented as Prolog facts when sending a message ({Proxy}::Message).
     Updated the "proxies" example to illustrate this new functionality.
 
-    Corrected a bug in the Logtalk compiler that would result in failure 
-    to restore the operator table in case of compilation error.
+    Fixed a bug in the Logtalk compiler that would result in failure to 
+    restore the operator table in case of compilation error.
 
     Removed support for the deprecated mutex_create/1 Prolog built-in 
     predicate.
@@ -31,6 +31,11 @@ RELEASE NOTES
 
     Updated the ECLiPSe 6.0 config files in order to switch on the use of 
     multifile/1 directives.
+
+    Updated the Windows installer to warn the user when it fails to detect 
+    the installation of the selected Prolog compilers. Fixed a bug where the
+    creation of the K-Prolog integration shortcut could fail when performing
+    a custom installation.
 
 
 2.33.0 - September 1, 2008
