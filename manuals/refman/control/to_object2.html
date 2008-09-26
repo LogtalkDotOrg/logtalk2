@@ -24,7 +24,8 @@
 <h4>Description</h4>
 
 <pre>Object::Predicate
-	
+{Proxy}::Predicate
+
 (Object1, Object2, ...)::Predicate
 (Object1; Object2; ...)::Predicate
 
@@ -32,6 +33,9 @@ Object::(Predicate1, Predicate2, ...)
 Object::(Predicate1; Predicate2; ...)</pre>
 <p>
 Sends a message to an object. The message argument must match a public predicate of the receiver object. When the message corresponds to a protected or private predicate, the call is only valid if the <em>sender</em> matches the predicate scope container. We can also send the same message to either a conjunction or a disjunction of objects or send either a conjunction or disjunction of messages to the same object.
+</p>
+<p>
+The <code>{Proxy}::Predicate</code> syntax construct allows simplified access to parametric object <em>proxies</em>. Its operational semantics is equivalent to <code>once(Proxy), Proxy::Predicate</code> (however, exceptions thrown when proving <code>Proxy</code> are handled by the <code>::/2</code> control construct).
 </p>
 
 <h4>Template and modes</h4>
@@ -43,6 +47,8 @@ Sends a message to an object. The message argument must match a public predicate
 <dl>
 	<dt>Either Object or Predicate is a variable:</dt>
 		<dd><code>instantiation_error</code></dd>
+	<dt>Object is not a valid object identifier:</dt>
+		<dd><code>type_error(object_identifier, Object)</code></dd>
 	<dt>Predicate is declared private:</dt>
 		<dd><code>permission_error(access, private_predicate, Predicate)</code></dd>
 	<dt>Predicate is declared protected:</dt>
@@ -51,6 +57,14 @@ Sends a message to an object. The message argument must match a public predicate
 		<dd><code>existence_error(predicate_declaration, Predicate)</code></dd>
 	<dt>Object does not exist:</dt>
 		<dd><code>existence_error(object, Object)</code></dd>
+</dl>
+<dl>
+	<dt>Proxy is a variable:</dt>
+		<dd><code>instantiation_error</code></dd>
+	<dt>Proxy is not a valid object identifier:</dt>
+		<dd><code>type_error(object_identifier, Proxy)</code></dd>
+	<dt>The predicate Proxy does not exist in the <em>user</em> pseudo-object:</dt>
+		<dd><code>existence_error(procedure, ProxyFunctor/ProxyArity)</code></dd>
 </dl>
 
 <h4>Examples</h4>
@@ -65,7 +79,7 @@ yes</pre>
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: July 17, 2008</span>
+		<span>Last updated on: September 26, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="../index.html#constructs">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="to_self1.html">next</a></span><br/>
