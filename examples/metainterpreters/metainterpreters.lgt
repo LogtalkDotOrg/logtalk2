@@ -2,8 +2,8 @@
 :- category(solver).
 
 	:- info([
-		version is 1.0,
-		date is 2004/5/2,
+		version is 1.1,
+		date is 2008/10/2,
 		author is 'Paulo Moura',
 		comment is 'Simple meta-interpreter for pure Prolog with only conjunctions as clause bodies.']).
 
@@ -20,7 +20,7 @@
 		solve(A),
 		solve(B).
 	solve(A) :-
-		::clause(A, B),
+		clause(A, B),   % retrieves clauses in "this", i.e. in the database of the object importing the category
 		solve(B).
 
 :- end_category.
@@ -29,8 +29,8 @@
 :- category(proof_tree).
 
 	:- info([
-		version is 1.0,
-		date is 2004/5/2,
+		version is 1.1,
+		date is 2008/10/2,
 		author is 'Paulo Moura',
 		comment is 'Meta-interpreter for pure Prolog with only conjunctions as clause bodies.']).
 
@@ -47,7 +47,7 @@
 		proof_tree(A, PA),
 		proof_tree(B, PB).
 	proof_tree(A, (A :- PB)) :-
-		::clause(A, B),
+		clause(A, B),   % retrieves clauses in "this", i.e. in the database of the object importing the category
 		proof_tree(B, PB).
 
 :- end_category.
@@ -56,8 +56,8 @@
 :- category(tracer).
 
 	:- info([
-		version is 1.0,
-		date is 2004/5/5,
+		version is 1.1,
+		date is 2008/10/2,
 		author is 'Paulo Moura',
 		comment is 'A simple tracer meta-interpreter for pure Prolog with only conjunctions as clause bodies.']).
 
@@ -78,13 +78,13 @@
 		trace(B, Depth). 
 	trace(A, Depth) :-
 		write_trace(call, A, Depth),
-		clause(A, B),
+		clause(A, B),   % retrieves clauses in "this", i.e. in the database of the object importing the category
 		Depth2 is Depth + 1,
 		trace(B, Depth2),
 		(	write_trace(exit, A, Depth)
-			;
-			write_trace(redo, A, Depth),
-			fail).
+		;   write_trace(redo, A, Depth),
+			fail
+		).
 	trace(A, Depth) :-
 		write_trace(fail, A, Depth),
 		fail.

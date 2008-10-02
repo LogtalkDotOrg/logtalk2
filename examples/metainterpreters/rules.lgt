@@ -7,22 +7,19 @@
 	:- dynamic(if/1).
 
 	:- op(200,  fx, if).
-	:- op(100, xfx, then).
+	:- op(150, xfx, then).
+	:- op(100, xfy, &).
 
 	prove(true) :-
 		!.
-
-	prove([]) :-
-		!.
-	prove([Cond| Conds]) :-
+	prove(Cond & Conds) :-
 		!,
 		prove(Cond),
 		prove(Conds).
-
 	prove(Fact) :-
-		::clause(Fact, true).
+		clause(Fact, true).
 	prove(Conclusion) :-
-		::clause(if Conds then Conclusion, true),
+		clause(if Conds then Conclusion, true),
 		prove(Conds).
 
 :- end_category.
@@ -37,11 +34,12 @@
 	:- dynamic(if/1).
 
 	:- op(200,  fx, if).
-	:- op(100, xfx, then).
+	:- op(150, xfx, then).
+	:- op(100, xfy, &).
 
-	if [weather(sunny), weekday(weekend), time(day)] then goto(beach).
-	if [weather(raining), weekday(weekend), time(night)] then goto(cinema).
-	if [weekday(workday), time(day)] then goto(work).
+	if weather(sunny) & weekday(weekend) & time(day) then goto(beach).
+	if weather(raining) & weekday(weekend) & time(night) then goto(cinema).
+	if weekday(workday) & time(day) then goto(work).
 
 	weather(raining).
 	weekday(weekend).
