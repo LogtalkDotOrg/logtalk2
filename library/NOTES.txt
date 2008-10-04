@@ -54,6 +54,10 @@ own loader and notes files:
 		random_loader.lgt
 		random.notes
 
+	statistics
+		statistics_loader.lgt
+		statistics.notes
+
 	types
 		types_loader.lgt
 		types.notes

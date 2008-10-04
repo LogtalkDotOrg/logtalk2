@@ -9,5 +9,5 @@
 		library(lgtunit_loader),
 		library(metapredicates_loader),
 		library(random_loader),
-		library(types_loader)],
-		[reload(skip)])).	% allow for static binding
+		library(statistics_loader),
+		library(types_loader)])).
