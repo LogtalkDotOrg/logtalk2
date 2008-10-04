@@ -4,9 +4,9 @@
 	extends(list)).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2008/4/22,
+		date is 2008/9/15,
 		comment is 'List of numbers predicates.']).
 
 	average([], 0.0).
@@ -20,41 +20,41 @@
 		Sacc2 is Sacc + N,
 		average(Ns, Lacc2, Sacc2, Average).
 
-	min([N| Ns], Min) :-
-		min(Ns, N, Min).
+	min([X| Xs], Min) :-
+		min(Xs, X, Min).
 
 	min([], Min, Min).
-	min([N| Ns], Aux, Min) :-
-		(	N < Aux ->
-			min(Ns, N, Min)
-		;	min(Ns, Aux, Min)
+	min([X| Xs], Aux, Min) :-
+		(	X < Aux ->
+			min(Xs, X, Min)
+		;	min(Xs, Aux, Min)
 		).
 
-	max([N| Ns], Max) :-
-		max(Ns, N, Max).
+	max([X| Xs], Max) :-
+		max(Xs, X, Max).
 
 	max([], Max, Max).
-	max([N| Ns], Aux, Max) :-
-		(	N > Aux ->
-			max(Ns, N, Max)
-		;	max(Ns, Aux, Max)
+	max([X| Xs], Aux, Max) :-
+		(	X > Aux ->
+			max(Xs, X, Max)
+		;	max(Xs, Aux, Max)
 		).
 
-	product(List, Product) :-
-		product(List, 1, Product).
+	product([X| Xs], Product) :-
+		product(Xs, X, Product).
 
 	product([], Product, Product).
-	product([N| Ns], Acc, Product) :-
-		Acc2 is Acc * N,
-		product(Ns, Acc2, Product).
+	product([X| Xs], Acc, Product) :-
+		Acc2 is Acc * X,
+		product(Xs, Acc2, Product).
 
 	sum(List, Sum) :-
 		sum(List, 0, Sum).
 
 	sum([], Sum, Sum).
-	sum([N| Ns], Acc, Sum) :-
-		Acc2 is Acc + N,
-		sum(Ns, Acc2, Sum).
+	sum([X| Xs], Acc, Sum) :-
+		Acc2 is Acc + X,
+		sum(Xs, Acc2, Sum).
 
 	valid(-) :-		% catch variables and lists with unbound tails
 		!,

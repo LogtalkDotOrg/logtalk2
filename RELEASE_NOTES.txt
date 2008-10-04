@@ -42,6 +42,9 @@ RELEASE NOTES
     creation of the K-Prolog integration shortcut could fail when performing
     a custom installation. Fixed a bug in detecting a CxProlog installation.
 
+    Modified the implementation of the predicate product/2 in the library 
+    object "numberlist" to fail for empty lists.
+
     Improved "metainterpreters" example.
 
 

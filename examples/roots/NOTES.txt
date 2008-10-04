@@ -46,5 +46,5 @@ Short description of each example entity:
 		object used to represent a void reference
 
 Please note that the entities above are just example definitions. There is 
-nothing fundamental about either of them; they can and should be replaced 
-by definitions better fitted to the requirements of specific applications.
+nothing fundamental about any of them; they can and should be replaced by 
+definitions better fitted to the requirements of specific applications.
