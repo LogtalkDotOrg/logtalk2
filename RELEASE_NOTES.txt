@@ -32,6 +32,8 @@ RELEASE NOTES
     Updated the ECLiPSe 6.0 config files in order to switch on the use of 
     multifile/1 directives.
 
+    Update the CxProlog config file to work with and require version 0.97.2.
+
     Updated the Windows installer to warn the user when it fails to detect 
     the installation of the selected Prolog compilers. Fixed a bug where the
     creation of the K-Prolog integration shortcut could fail when performing
