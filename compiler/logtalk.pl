@@ -2183,7 +2183,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			(	'$lgt_debugging_'(Obj) ->
 				'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
-				asserta((THead :- ('$lgt_nop'(Body), '$lgt_dbg_head'(Head, DbgCtx), DBody)))
+				asserta((THead :- ('$lgt_nop'(Body), '$lgt_dbg_head'(Head, 0, DbgCtx), DBody)))
 			;	asserta((THead :- ('$lgt_nop'(Body), TBody)))
 			)
 		;	% predicate is not within the scope of the sender:
@@ -2215,7 +2215,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 			(	'$lgt_debugging_'(Obj) ->
 				'$lgt_ctx_ctx'(Ctx, _, GSender, GThis, GSelf, Prefix, [], _),
 				'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
-				asserta((THead :- '$lgt_dbg_fact'(Head, DbgCtx)))
+				asserta((THead :- '$lgt_dbg_fact'(Head, 0, DbgCtx)))
 			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, DclScope, Sender, THead, DDef, Update),
 				asserta(THead)
 			)
@@ -2285,7 +2285,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			(	'$lgt_debugging_'(Obj) ->
 				'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
-				assertz((THead :- ('$lgt_nop'(Body), '$lgt_dbg_head'(Head, DbgCtx), DBody)))
+				assertz((THead :- ('$lgt_nop'(Body), '$lgt_dbg_head'(Head, 0, DbgCtx), DBody)))
 			;	assertz((THead :- ('$lgt_nop'(Body), TBody)))
 			)
 		;	% predicate is not within the scope of the sender:
@@ -2317,7 +2317,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 			(	'$lgt_debugging_'(Obj) ->
 				'$lgt_ctx_ctx'(Ctx, _, GSender, GThis, GSelf, Prefix, [], _),
 				'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
-				assertz((THead :- '$lgt_dbg_fact'(Head, DbgCtx)))
+				assertz((THead :- '$lgt_dbg_fact'(Head, 0, DbgCtx)))
 			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, DclScope, Sender, THead, DDef, Update),
 				assertz(THead)
 			)
@@ -2400,7 +2400,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 	clause(Call, TBody),
 	(	TBody = ('$lgt_nop'(Body), _) ->	% rules (compiled both in normal and debug mode)
 		true
-	;	TBody = '$lgt_dbg_fact'(_, _) ->	% facts compiled in debug mode
+	;	TBody = '$lgt_dbg_fact'(_, _, _) ->	% facts compiled in debug mode
 		Body = true
 	;	TBody = Body						% facts compiled in normal mode
 	).
@@ -2415,7 +2415,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 					clause(Call, TBody),
 					(	TBody = ('$lgt_nop'(Body), _) ->
 						true
-					;	TBody = '$lgt_dbg_fact'(_, _) ->
+					;	TBody = '$lgt_dbg_fact'(_, _, _) ->
 						Body = true
 					;	TBody = Body
 					)
@@ -2434,7 +2434,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 			clause(Call, TBody),
 			(	TBody = ('$lgt_nop'(Body), _) ->
 				true
-			;	TBody = '$lgt_dbg_fact'(_, _) ->
+			;	TBody = '$lgt_dbg_fact'(_, _, _) ->
 				Body = true
 			;	TBody = Body
 			)
@@ -2488,7 +2488,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 					retract((Call :- TBody)),
 					(	TBody = ('$lgt_nop'(Body), _) ->
 						true
-					;	TBody = '$lgt_dbg_fact'(_, _) ->
+					;	TBody = '$lgt_dbg_fact'(_, _, _) ->
 						Body = true
 					;	TBody = Body
 					),
@@ -2497,7 +2497,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 					retract((Call :- TBody)),
 					(	TBody = ('$lgt_nop'(Body), _) ->
 						true
-					;	TBody = '$lgt_dbg_fact'(_, _) ->
+					;	TBody = '$lgt_dbg_fact'(_, _, _) ->
 						Body = true
 					;	TBody = Body
 					)
@@ -2517,7 +2517,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 			retract((Call :- TBody)),
 			(	TBody = ('$lgt_nop'(Body), _) ->
 				true
-			;	TBody = '$lgt_dbg_fact'(_, _) ->
+			;	TBody = '$lgt_dbg_fact'(_, _, _) ->
 				Body = true
 			;	TBody = Body
 			)
@@ -2576,14 +2576,14 @@ current_logtalk_flag(version, version(2, 33, 1)).
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 				(	call_with_args(DDef, Head, _, _, _, Call) ->
 					(	'$lgt_debugging_'(Obj) ->
-						retract((Call :- '$lgt_dbg_fact'(_, _)))
+						retract((Call :- '$lgt_dbg_fact'(_, _, _)))
 					;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, PScope, Sender, Call, DDef, true),
 						retract(Call)
 					),
 					'$lgt_update_ddef_table'(DDef, Head, Call)
 				;	call_with_args(Def, Head, _, _, _, Call) ->
 					(	'$lgt_debugging_'(Obj) ->
-						retract((Call :- '$lgt_dbg_fact'(_, _)))
+						retract((Call :- '$lgt_dbg_fact'(_, _, _)))
 					;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, PScope, Sender, Call),
 						retract(Call)
 					)
@@ -2600,7 +2600,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 	;	% local dynamic predicate with no scope declaration:
 		(	call_with_args(DDef, Head, _, _, _, Call) ->
 			(	'$lgt_debugging_'(Obj) ->
-				retract((Call :- '$lgt_dbg_fact'(_, _)))
+				retract((Call :- '$lgt_dbg_fact'(_, _, _)))
 			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, p, Sender, Call),
 				retract(Call)
 			)
@@ -3773,17 +3773,17 @@ current_logtalk_flag(version, version(2, 33, 1)).
 	\+ \+ '$lgt_dbg_spying_'(Sender, This, Self, Goal).
 
 
-'$lgt_dbg_fact'(Fact, DbgCtx) :-
+'$lgt_dbg_fact'(Fact, N, DbgCtx) :-
 	(	'$lgt_dbg_debugging_', \+ '$lgt_dbg_skipping_' ->
-		'$lgt_dbg_port'(fact, Fact, _, DbgCtx, Action),
+		'$lgt_dbg_port'(fact(N), Fact, _, DbgCtx, Action),
 		call(Action)
 	;	true
 	).
 
 
-'$lgt_dbg_head'(Head, DbgCtx) :-
+'$lgt_dbg_head'(Head, N, DbgCtx) :-
 	(	'$lgt_dbg_debugging_', \+ '$lgt_dbg_skipping_' ->
-		'$lgt_dbg_port'(rule, Head, _, DbgCtx, Action),
+		'$lgt_dbg_port'(rule(N), Head, _, DbgCtx, Action),
 		call(Action)
 	;	true
 	).
@@ -3842,10 +3842,16 @@ current_logtalk_flag(version, version(2, 33, 1)).
 '$lgt_dbg_port'(_, _, _, _, true).
 
 
-'$lgt_dbg_write_port_name'(fact) :-
-	write('   Fact: ').
-'$lgt_dbg_write_port_name'(rule) :-
-	write('   Rule: ').
+'$lgt_dbg_write_port_name'(fact(N)) :-
+    (   N =:= 0 ->
+	    write('   Fact: ')
+	;   write('   Fact('), write(N), write('): ')
+	).
+'$lgt_dbg_write_port_name'(rule(N)) :-
+    (   N =:= 0 ->
+	    write('   Rule: ')
+	;   write('   Rule('), write(N), write('): ')
+	).
 '$lgt_dbg_write_port_name'(call) :-
 	write('   Call: ').
 '$lgt_dbg_write_port_name'(exit) :-
@@ -6430,7 +6436,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 	\+ callable(Body),
 	throw(type_error(callable, Body)).
 
-'$lgt_tr_clause'((Head:-Body), (THead:-'$lgt_nop'(Body), SBody), (THead:-'$lgt_nop'(Body),'$lgt_dbg_head'(Head, DbgCtx),DBody), Ctx, Input) :-
+'$lgt_tr_clause'((Head:-Body), (THead:-'$lgt_nop'(Body), SBody), (THead:-'$lgt_nop'(Body),'$lgt_dbg_head'(Head, 0, DbgCtx),DBody), Ctx, Input) :-
 	functor(Head, Functor, Arity),
 	'$lgt_pp_dynamic_'(Functor, Arity),
 	!,
@@ -6441,7 +6447,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 	'$lgt_simplify_body'(TBody, SBody),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
 
-'$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_dbg_head'(Head, DbgCtx),DBody), Ctx, Input) :-
+'$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_dbg_head'(Head, N, DbgCtx),DBody), Ctx, Input) :-
 	!,
 	'$lgt_pred_meta_vars'(Head, MetaVars),
 	'$lgt_ctx_meta_vars'(Ctx, MetaVars),
@@ -6452,15 +6458,31 @@ current_logtalk_flag(version, version(2, 33, 1)).
 		TClause = THead
 	;	TClause = (THead:-SBody)
 	),
-	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
+	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
+	'$lgt_clause_number'(THead, N).
 
 '$lgt_tr_clause'(Fact, _, _, _, _) :-
 	\+ callable(Fact),
 	throw(type_error(callable, Fact)).
 
-'$lgt_tr_clause'(Fact, TFact, (TFact:-'$lgt_dbg_fact'(Fact, DbgCtx)), Ctx, Input) :-
+'$lgt_tr_clause'(Fact, TFact, (TFact:-'$lgt_dbg_fact'(Fact, N, DbgCtx)), Ctx, Input) :-
 	'$lgt_tr_head'(Fact, TFact, Ctx, Input),
-	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
+	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
+	'$lgt_clause_number'(TFact, N).
+
+
+'$lgt_clause_number'(THead, N) :-
+    functor(THead, TFunctor, TArity),
+    functor(Template, TFunctor, TArity), 
+    findall(1, ('$lgt_pp_eclause_'(Template); '$lgt_pp_eclause_'((Template :- _))), List),
+    '$lgt_length'(List, 0, Length),
+    N is Length + 1.
+
+'$lgt_length'([], Length, Length).
+'$lgt_length'([_| Tail], Acc, Length) :-
+	Acc2 is Acc + 1,
+	'$lgt_length'(Tail, Acc2, Length).
+
 
 
 

@@ -19,6 +19,9 @@ RELEASE NOTES
     represented as Prolog facts when sending a message ({Proxy}::Message).
     Updated the "proxies" example to illustrate this new functionality.
 
+	Improved the Logtalk built-in debugger to print clause numbers for static
+	predicates at the unification ports ("fact" and "rule").
+
     Fixed a bug in the Logtalk compiler that would result in failure to 
     restore the operator table in case of compilation error.
 
