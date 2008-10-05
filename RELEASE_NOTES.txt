@@ -19,8 +19,8 @@ RELEASE NOTES
     represented as Prolog facts when sending a message ({Proxy}::Message).
     Updated the "proxies" example to illustrate this new functionality.
 
-    Improved the Logtalk built-in debugger to print clause numbers for static
-    predicates at the unification ports ("fact" and "rule").
+    Improved the Logtalk built-in debugger to print clause numbers for 
+    static predicates at the unification ports ("fact" and "rule").
 
     Fixed a bug in the Logtalk compiler that would result in failure to 
     restore the operator table in case of compilation error.
@@ -49,6 +49,8 @@ RELEASE NOTES
     pairs (key-value terms).
 
     Added a predicate partition/4 to the library entities "metap" and "meta".
+
+    Added predicates plus/3 and succ/2 to the library object "integer".
 
     Modified the implementation of the predicate product/2 in the library 
     object "numberlist" to fail for empty lists.
