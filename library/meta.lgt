@@ -3,8 +3,8 @@
 	implements(metap)).
 
 	:- info([
-		version is 2.1,
-		date is 2008/7/16,
+		version is 2.2,
+		date is 2008/10/5,
 		author is 'Paulo Moura',
 		comment is 'Some useful meta-predicates.']).
 
@@ -15,12 +15,23 @@
 
 	:- meta_predicate(filter(1, *, *)).
 	filter(_, [], []) :- !.
-	filter(Closure, [Arg| Args], List) :-
+	filter(Closure, [Arg| Args], In) :-
 		(	call(Closure, Arg) ->
-			List = [Arg| Args2]
-		;	List = Args2
+			In = [Arg| RIn]
+		;	In = RIn
 		),
-		filter(Closure, Args, Args2).
+		filter(Closure, Args, RIn).
+
+	:- meta_predicate(partition(1, *, *, *)).
+    partition(_, [], [], []) :- !.
+    partition(Closure, [Arg| Args], In, Out) :-
+        (   call(Closure, Arg) ->
+	        In = [Arg| RIn],
+	        Out = ROut
+        ;   In = RIn,
+            Out = [Arg| ROut]
+        ),
+        partition(Closure, Args, RIn, ROut).
 
 	:- meta_predicate(ignore(::)).
 	ignore(Goal) :-
