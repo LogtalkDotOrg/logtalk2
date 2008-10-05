@@ -26,27 +26,27 @@
 		comment is 'Extracts a list of values from a list of pairs.',
 		argnames is ['Pairs', 'Values']]).
 
-    keys_values(Pairs, Keys, Values) :-
-    	(   nonvar(Pairs) ->
-    	    pairs_to_keys_values(Pairs, Keys, Values)
-    	;   nonvar(Keys), nonvar(Values) ->
-    	    keys_values_to_pairs(Keys, Values, Pairs)
-    	).
+	keys_values(Pairs, Keys, Values) :-
+		(	nonvar(Pairs) ->
+			pairs_to_keys_values(Pairs, Keys, Values)
+		;	nonvar(Keys), nonvar(Values) ->
+			keys_values_to_pairs(Keys, Values, Pairs)
+		).
 
-    pairs_to_keys_values([], [], []).
-    pairs_to_keys_values([Key-Value| Pairs], [Key| Keys], [Value| Values]) :-
-    	pairs_to_keys_values(Pairs, Keys, Values).
+	pairs_to_keys_values([], [], []).
+	pairs_to_keys_values([Key-Value| Pairs], [Key| Keys], [Value| Values]) :-
+		pairs_to_keys_values(Pairs, Keys, Values).
 
-    keys_values_to_pairs([], [], []).
-    keys_values_to_pairs([Key| Keys], [Value| Values], [Key-Value| Pairs]) :-
-    	keys_values_to_pairs(Keys, Values, Pairs).
+	keys_values_to_pairs([], [], []).
+	keys_values_to_pairs([Key| Keys], [Value| Values], [Key-Value| Pairs]) :-
+		keys_values_to_pairs(Keys, Values, Pairs).
 
-    keys([], []).
-    keys([Key-_| Pairs], [Key| Keys]) :-
-	    keys(Pairs, Keys).
+	keys([], []).
+	keys([Key-_| Pairs], [Key| Keys]) :-
+		keys(Pairs, Keys).
 
-    values([], []).
-    values([_-Value| Pairs], [Value| Values]) :-
-	    values(Pairs, Values).
+	values([], []).
+	values([_-Value| Pairs], [Value| Values]) :-
+		values(Pairs, Values).
 
 :- end_object.
