@@ -45,6 +45,9 @@ RELEASE NOTES
     Added a set of library entities for descriptive statistics. See the file 
     "library/statistics.notes" for details.
 
+    Added a new library object, "pairs", defining predicates over lists of 
+    pairs (key-value terms).
+
     Added a predicate partition/4 to the library entities "metap" and "meta".
 
     Modified the implementation of the predicate product/2 in the library 
