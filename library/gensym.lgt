@@ -48,7 +48,7 @@
 	gensym(Base, Unique) :-
 		(	retract(base_(Base, OldInt)) ->
 			NewInt is OldInt + 1
-		;	NewInt is 0
+		;	NewInt is 1
 		),
 		asserta(base_(Base, NewInt)),
 		number_codes(NewInt, NewCodes),
