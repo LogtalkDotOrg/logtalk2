@@ -1,5 +1,4 @@
 
-
 :- object(gensym).
 
 	:- info([
@@ -32,7 +31,7 @@
 	:- dynamic(base_/2).
 	:- mode(base_(?atom, ?integer), zero_or_more).
 	:- info(base_/2, [
-		comment is 'Table of gebnerator bases and respective counters.',
+		comment is 'Table of generator bases and respective counters.',
 		argnames is ['Base', 'Counter']]).
 
 	reset_gensym :-
