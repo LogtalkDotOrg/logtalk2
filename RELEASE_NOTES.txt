@@ -48,6 +48,9 @@ RELEASE NOTES
     Added a new library object, "pairs", defining predicates over lists of 
     pairs (key-value terms).
 
+    Added a new library object, "gensym", defining predicates for generating
+    unique atoms (object protocol based on the "gensym" module of SWI-Prolog).
+
     Added a predicate partition/4 to the library entities "metap" and "meta".
 
     Added predicates plus/3 and succ/2 to the library object "integer".
