@@ -55,8 +55,9 @@ RELEASE NOTES
 
     Added predicates plus/3 and succ/2 to the library object "integer".
 
-    Added predicates is_quote/1 and is_punctation/1 to the library entities 
-    "characterp" and "character".
+    Added predicates is_ascii/1, is_white_space/1, is_quote/1, is_period/1,
+    is_punctation/1, and parenthesis/2 to the library entities "characterp"
+    and "character".
 
     Modified the implementation of the predicate product/2 in the library 
     object "numberlist" to fail for empty lists.

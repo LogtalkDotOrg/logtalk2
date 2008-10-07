@@ -7,6 +7,12 @@
 		date is 2008/10/7,
 		comment is 'Character protocol.']).
 
+	:- public(is_ascii/1).
+	:- mode(is_ascii(+char), zero_or_one).
+	:- info(is_ascii/1, [
+		comment is 'True if the argument is an ASCII character.',
+		argnames is ['Char']]).
+
 	:- public(is_alphanumeric/1).
 	:- mode(is_alphanumeric(+char), zero_or_one).
 	:- info(is_alphanumeric/1, [
@@ -67,6 +73,12 @@
 		comment is 'True if the argument is a vowel.',
 		argnames is ['Char']]).
 
+	:- public(is_white_space/1).
+	:- mode(is_white_space(+char), zero_or_one).
+	:- info(is_white_space/1, [
+		comment is 'True if the argument is a white space character (a space or a tab) inside a line of characters.',
+		argnames is ['Char']]).
+
 	:- public(is_layout/1).
 	:- mode(is_layout(+char), zero_or_one).
 	:- info(is_layout/1, [
@@ -82,15 +94,29 @@
 	:- public(is_punctation/1).
 	:- mode(is_punctation(+char), zero_or_one).
 	:- info(is_punctation/1, [
-		comment is 'True if the argument is a punctation character.',
+		comment is 'True if the argument is a sentence punctation character.',
 		argnames is ['Char']]).
+
+	:- public(is_period/1).
+	:- mode(is_period(+char), zero_or_one).
+	:- info(is_period/1, [
+		comment is 'True if the argument is a character that ends a sentence.',
+		argnames is ['Char']]).
+
+	:- public(parenthesis/2).
+	:- mode(parenthesis(?char, ?char), zero_or_more).
+	:- mode(parenthesis(+char, ?char), zero_or_one).
+	:- mode(parenthesis(?char, +char), zero_or_one).
+	:- info(parenthesis/2, [
+		comment is 'Recognises and converts between open and close parenthesis.',
+		argnames is ['Char1', 'Char2']]).
 
 	:- public(lower_upper/2).
 	:- mode(lower_upper(?char, ?char), zero_or_more).
 	:- mode(lower_upper(+char, ?char), zero_or_one).
 	:- mode(lower_upper(?char, +char), zero_or_one).
 	:- info(lower_upper/2, [
-		comment is 'Converts between lower and upper case letters.',
+		comment is 'Recognises and converts between lower and upper case letters.',
 		argnames is ['Char1', 'Char2']]).
 
 :- end_protocol.

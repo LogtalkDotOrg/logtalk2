@@ -9,6 +9,11 @@
 		date is 2008/10/7,
 		comment is 'Character predicates.']).
 
+	is_ascii(Char) :-
+		char_code(Char, Code),
+		Code >= 0,
+		Code =< 127.
+
 	is_alpha('_').
 	is_alpha(Char) :-
 		is_letter(Char).
@@ -63,9 +68,15 @@
 	is_vowel('O').
 	is_vowel('U').
 
+	is_white_space(' ').
+	is_white_space('\t').
+
 	is_layout(' ').
 	is_layout('\t').
+	is_layout('\f').
+	is_layout('\r').
 	is_layout('\n').
+	is_layout('\v').
 
 	is_quote('''').
 	is_quote('"').
@@ -77,6 +88,14 @@
 	is_punctation('.').
 	is_punctation('?').
 	is_punctation('!').
+
+	is_period('.').
+	is_period('?').
+	is_period('!').
+
+	parenthesis('(', ')').
+	parenthesis('[', ']').
+	parenthesis('{', '}').
 
 	lower_upper(a, 'A').
 	lower_upper(b, 'B').
