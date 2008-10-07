@@ -4,9 +4,9 @@
 	extends(atom)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2000/7/24,
+		date is 2008/10/7,
 		comment is 'Character predicates.']).
 
 	is_alpha('_').
@@ -64,6 +64,19 @@
 	is_vowel('U').
 
 	is_layout(' ').
+	is_layout('\t').
+	is_layout('\n').
+
+	is_quote('''').
+	is_quote('"').
+	is_quote('`').
+
+	is_punctation(',').
+	is_punctation(';').
+	is_punctation(':').
+	is_punctation('.').
+	is_punctation('?').
+	is_punctation('!').
 
 	lower_upper(a, 'A').
 	lower_upper(b, 'B').
