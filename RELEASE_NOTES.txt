@@ -64,6 +64,9 @@ RELEASE NOTES
 
     Improved "metainterpreters" example.
 
+    Improved performance of the object initialization and release predicates
+    defined in the category "initialization" of the "roots" example.
+
 
 2.33.0 - September 1, 2008
 
