@@ -2,12 +2,10 @@
 :- category(initialization).
 
 	:- info([
-		version is 1.1,
+		version is 1.11,
 		author is 'Paulo Moura',
-		date is 2008/10/9,
+		date is 2008/10/10,
 		comment is 'Object initialization protocol.']).
-
-	:- uses(list, [select/3]).
 
 	:- public(init/1).
 	:- mode(init(+list), zero_or_one).
@@ -99,6 +97,8 @@
 		[comment is 'Constructs a complete list of options complementing the explicit options with the default ones.',
 		 argnames is ['Options', 'Defaults', 'Result']]).
 
+	:- uses(list, [select/3]).
+
 	init(Options) :-
 		valid_init_options(Options),
 		default_init_options(Defaults),
@@ -110,14 +110,14 @@
 
 	valid_init_options([]).
 	valid_init_options([Option| Options]) :-
-		::valid_init_option(Option),
+		::valid_init_option(Option) ->
 		valid_init_options(Options).
 
 	valid_init_option(_).
 
 	process_init_options([]).
 	process_init_options([Option| Options]) :-
-		once(::process_init_option(Option)),
+		::process_init_option(Option) ->
 		process_init_options(Options).
 
 	process_init_option(Option) :-
@@ -136,14 +136,14 @@
 
 	valid_free_options([]).
 	valid_free_options([Option| Options]) :-
-		::valid_free_option(Option),
+		::valid_free_option(Option) ->
 		valid_free_options(Options).
 
 	valid_free_option(_).
 
 	process_free_options([]).
 	process_free_options([Option| Options]) :-
-		once(::process_free_option(Option)),
+		::process_free_option(Option) ->
 		process_free_options(Options).
 
 	process_free_option(Option) :-
