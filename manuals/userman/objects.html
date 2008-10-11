@@ -217,7 +217,7 @@ An object can be dynamically created at runtime by using the <a title="Consult r
 </p>
 <pre>| ?- create_object(Object, Relations, Directives, Clauses).</pre>
 <p>
-The first argument, the name of the new object (a Prolog atom or compound term), should not match any existing entity name. The remaining three arguments correspond to the relations described in the opening object directive and to the object code contents (directives and clauses).
+The first argument should be either a variable or the name of the new object (a Prolog atom or compound term, which must not match any existing entity name). The remaining three arguments correspond to the relations described in the opening object directive and to the object code contents (directives and clauses).
 </p>
 <p>
 For instance, the call:
@@ -442,7 +442,7 @@ Logtalk defines an empty built-in object named <code>logtalk</code>, which can p
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: September 26, 2008</span>
+		<span>Last updated on: October 11, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="messages.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="protocols.html">next</a></span><br/>

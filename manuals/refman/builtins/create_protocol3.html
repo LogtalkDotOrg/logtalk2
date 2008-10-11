@@ -27,17 +27,20 @@
 <p>
 Creates a new, dynamic protocol. This predicate is often used as a primitive to implement high-level protocol creation methods.
 </p>
+<p>
+When using Logtalk multi-threaded features, predicates calling this built-in predicate may need to be declared synchronized in order to avoid race conditions. 
+</p>
 
 <h4>Template and modes</h4>
 
-<pre>create_protocol(+protocol_identifier, +list, +list)</pre>
+<pre>create_protocol(?protocol_identifier, +list, +list)</pre>
 
 <h4>Errors</h4>
 
 <dl>
-	<dt>One of the predicate arguments is a variable:</dt>
+	<dt>Either Relations or Directives is a variable:</dt>
 		<dd><code>instantiation_error</code></dd>
-	<dt>Identifier is not a valid protocol identifier:</dt>
+	<dt>Identifier is neither a variable nor a valid protocol identifier:</dt>
 		<dd><code>type_error(protocol_identifier, Identifier)</code></dd>
 	<dt>Identifier is already in use:</dt>
 		<dd><code>permission_error(replace, category, Identifier)</code></dd>
@@ -60,7 +63,7 @@ Creates a new, dynamic protocol. This predicate is often used as a primitive to 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: October 7, 2008</span>
+		<span>Last updated on: October 11, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="create_object4.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="../index.html#builtins">next</a></span><br/>

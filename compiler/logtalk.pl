@@ -523,25 +523,29 @@ protocol_property(Ptc, Prop) :-				% static/dynamic property
 
 
 
-% create_object(+object_identifier, +list, +list, +list)
+% create_object(?object_identifier, +list, +list, +list)
 
 create_object(Obj, Rels, Dirs, Clauses) :-
-	(var(Obj); var(Rels); var(Dirs); var(Clauses)),
+	(var(Rels); var(Dirs); var(Clauses)),
 	throw(error(instantiation_error, create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
+	nonvar(Obj),
 	\+ callable(Obj),
 	throw(error(type_error(object_identifier, Obj), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
+	nonvar(Obj),
 	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _, _, _),
 	throw(error(permission_error(modify, object, Obj), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
+	nonvar(Obj),
 	'$lgt_current_category_'(Obj, _, _, _, _, _, _),
 	throw(error(permission_error(modify, category, Obj), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
+	nonvar(Obj),
 	'$lgt_current_protocol_'(Obj, _, _, _, _),
 	throw(error(permission_error(modify, protocol, Obj), create_object(Obj, Rels, Dirs, Clauses))).
 
@@ -558,6 +562,10 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	throw(error(type_error(list, Clauses), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
+	(	var(Obj) ->
+		'$lgt_gen_entity_identifier'(0'o, Obj)
+	;	true
+	),
 	'$lgt_clean_pp_clauses',
 	'$lgt_tr_object_id'(Obj, (dynamic)),
 	'$lgt_tr_object_relations'(Rels, Obj),
@@ -573,25 +581,29 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 
 
 
-% create_category(+category_identifier, +list, +list, +list)
+% create_category(?category_identifier, +list, +list, +list)
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
-	(var(Ctg); var(Rels); var(Dirs); var(Clauses)),
+	(var(Rels); var(Dirs); var(Clauses)),
 	throw(error(instantiation_error, create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
+	nonvar(Ctg),
 	\+ atom(Ctg),
 	throw(error(type_error(category_identifier, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
+	nonvar(Ctg),
 	'$lgt_current_category_'(Ctg, _, _, _, _, _, _),
 	throw(error(permission_error(modify, category, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
+	nonvar(Ctg),
 	'$lgt_current_object_'(Ctg, _, _, _, _, _, _, _, _, _, _, _, _),
 	throw(error(permission_error(modify, object, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
+	nonvar(Ctg),
 	'$lgt_current_protocol_'(Ctg, _, _, _, _),
 	throw(error(permission_error(modify, protocol, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
 
@@ -608,6 +620,10 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	throw(error(type_error(list, Clauses), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
+	(	var(Ctg) ->
+		'$lgt_gen_entity_identifier'(0'c, Ctg)
+	;	true
+	),
 	'$lgt_clean_pp_clauses',
 	'$lgt_tr_category_id'(Ctg, (dynamic)),
 	'$lgt_tr_category_relations'(Rels, Ctg),
@@ -622,25 +638,29 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 
 
 
-% create_protocol(+protocol_identifier, +list, +list)
+% create_protocol(?protocol_identifier, +list, +list)
 
 create_protocol(Ptc, Rels, Dirs) :-
-	(var(Ptc); var(Rels); var(Dirs)),
+	(var(Rels); var(Dirs)),
 	throw(error(instantiation_error, create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
+	nonvar(Ptc),
 	\+ atom(Ptc),
 	throw(error(type_error(protocol_identifier, Ptc), create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
+	nonvar(Ptc),
 	'$lgt_current_protocol_'(Ptc, _, _, _, _),
 	throw(error(permission_error(modify, protocol, Ptc), create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
+	nonvar(Ptc),
 	'$lgt_current_object_'(Ptc, _, _, _, _, _, _, _, _, _, _, _, _),
 	throw(error(permission_error(modify, object, Ptc), create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
+	nonvar(Ptc),
 	'$lgt_current_category_'(Ptc, _, _, _, _, _, _),
 	throw(error(permission_error(modify, category, Ptc), create_protocol(Ptc, Rels, Dirs))).
 
@@ -653,6 +673,10 @@ create_protocol(Ptc, Rels, Dirs) :-
 	throw(error(type_error(list, Dirs), create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
+	(	var(Ptc) ->
+		'$lgt_gen_entity_identifier'(0'p, Ptc)
+	;	true
+	),
 	'$lgt_clean_pp_clauses',
 	'$lgt_tr_protocol_id'(Ptc, (dynamic)),
 	'$lgt_tr_protocol_relations'(Rels, Ptc),
@@ -661,6 +685,26 @@ create_protocol(Ptc, Rels, Dirs) :-
 	'$lgt_gen_protocol_directives',
 	'$lgt_assert_tr_entity',
 	'$lgt_clean_pp_clauses'.
+
+
+
+% '$lgt_gen_entity_identifier'(+char_code, -entity_identifier)
+
+'$lgt_gen_entity_identifier'(Base, Id) :-
+	repeat,
+		'$lgt_next_integer'(1, New),
+		number_codes(New, Codes),
+		atom_codes(Id, [Base| Codes]),
+	\+ '$lgt_current_protocol_'(Id, _, _, _, _),
+	\+ '$lgt_current_object_'(Id, _, _, _, _, _, _, _, _, _, _, _, _),
+	\+ '$lgt_current_category_'(Id, _, _, _, _, _, _),
+	!.
+
+
+'$lgt_next_integer'(I, I).
+'$lgt_next_integer'(I, J) :-
+	I2 is I + 1,
+	'$lgt_next_integer'(I2, J).
 
 
 

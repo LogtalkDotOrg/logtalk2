@@ -22,6 +22,10 @@ RELEASE NOTES
     Improved the Logtalk built-in debugger to print clause numbers for 
     static predicates at the unification ports ("fact" and "rule").
 
+    Modified the built-in methods create_category/4, create_object/4 and
+    create_protocol/3 to accept a variable as the first argument, which 
+    will be instantiated to the identifier generated for the new entity.
+
     Fixed a bug in the Logtalk compiler that would result in failure to 
     restore the operator table in case of compilation error.
 

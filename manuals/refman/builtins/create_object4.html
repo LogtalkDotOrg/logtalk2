@@ -27,17 +27,20 @@
 <p>
 Creates a new, dynamic object. The word <a class="glossary" title="Go to glossary definition" href="../../glossary.html#object"><em>object</em></a> is used here as a generic term. This predicate can be used to create new prototypes, instances, and classes. This predicate is often used as a primitive to implement high-level object creation methods. 
 </p>
+<p>
+When using Logtalk multi-threaded features, predicates calling this built-in predicate may need to be declared synchronized in order to avoid race conditions. 
+</p>
 
 <h4>Template and modes</h4>
 
-<pre>create_object(+object_identifier, +list, +list, +list)</pre>
+<pre>create_object(?object_identifier, +list, +list, +list)</pre>
 
 <h4>Errors</h4>
 
 <dl>
-	<dt>One of the predicate arguments is a variable:</dt>
+	<dt>Relations, Directives, or Clauses is a variable:</dt>
 		<dd><code>instantiation_error</code></dd>
-	<dt>Identifier is not a valid object identifier:</dt>
+	<dt>Identifier is neither a variable nor a valid object identifier:</dt>
 		<dd><code>type_error(object_identifier, Identifier)</code></dd>
 	<dt>Identifier is already in use:</dt>
 		<dd><code>permission_error(replace, category, Identifier)</code></dd>
@@ -68,7 +71,7 @@ Creates a new, dynamic object. The word <a class="glossary" title="Go to glossar
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: October 7, 2008</span>
+		<span>Last updated on: October 11, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="create_category4.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="create_protocol3.html">next</a></span><br/>
