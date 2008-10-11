@@ -169,34 +169,29 @@
 
 	instance_base_name(i).
 
-	instance_counter_(0).
+	instance_counter_(1).
 
 	valid_new_identifier(Identifier) :-
 		var(Identifier), !,
 		retract(instance_counter_(Last)),
 		::instance_base_name(Base),
-		functor(Base, Functor, Arity),
-		number_codes(Arity, Codes),
-		atom_codes(Atom, Codes),
 		repeat,
 			next_integer(Last, Next),
-			number_codes(Next, Codes2),
-			atom_codes(Atom2, Codes2),
-			atom_concat(Functor, Atom2, Identifier),
-			atom_concat(Identifier, Atom, Prefix),
-			\+ {current_predicate(Prefix/_)},
-			asserta(instance_counter_(Next)),
+			number_codes(Next, Codes),
+			atom_codes(Atom, Codes),
+			atom_concat(Base, Atom, Identifier),
+		\+ current_object(Identifier),
+		\+ current_category(Identifier),
+		\+ current_protocol(Identifier),
+		asserta(instance_counter_(Next)),
 		!.
 	valid_new_identifier(Identifier) :-
 		once((atom(Identifier); compound(Identifier))),
-		functor(Identifier, Functor, Arity),
-		number_codes(Arity, Codes),
-		atom_codes(Atom, Codes),
-		atom_concat(Functor, Atom, Prefix),
-		\+ {current_predicate(Prefix/_)}.
+		\+ current_object(Identifier),
+		\+ current_category(Identifier),
+		\+ current_protocol(Identifier).
 
-	next_integer(N, N1) :-
-		N1 is N + 1.
+	next_integer(N, N).
 	next_integer(N, N2) :-
 		N1 is N + 1,
 		next_integer(N1, N2).
