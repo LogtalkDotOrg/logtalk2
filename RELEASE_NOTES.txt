@@ -71,6 +71,9 @@ RELEASE NOTES
     Modified the implementation of the predicate product/2 in the library 
     object "numberlist" to fail for empty lists.
 
+    Added an example, "people", illustrating a simple implementation solution
+    for object constructors.
+
     Improved "metainterpreters" example.
 
     Improved performance of the object initialization and release predicates

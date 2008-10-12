@@ -167,6 +167,9 @@ operators
 parametric
 	simple example of parametric objects
 
+people
+	simple example of defining object constructors
+
 poem
 	examples adopted from the Ben Staveley-Taylor POEM system
 

@@ -69,6 +69,7 @@
 	 assertz(logtalk_library_path(nondet, threads('nondet/'))),
 	 assertz(logtalk_library_path(operators, examples('operators/'))),
 	 assertz(logtalk_library_path(parametric, examples('parametric/'))),
+	 assertz(logtalk_library_path(people, examples('people/'))),
 	 assertz(logtalk_library_path(philosophers, threads('philosophers/'))),
 	 assertz(logtalk_library_path(poem, examples('poem/'))),
 	 assertz(logtalk_library_path(points, examples('points/'))),
