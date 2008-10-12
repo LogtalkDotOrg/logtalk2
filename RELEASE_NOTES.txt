@@ -26,6 +26,11 @@ RELEASE NOTES
     create_protocol/3 to accept a variable as the first argument, which 
     will be instantiated to the identifier generated for the new entity.
 
+    Modified the database built-in methods to allow initialization of static
+    predicates for dynamic objects when the predicates are declared in "this".
+    These changes simplify the initialization of dynamic objects when writing
+    constructors. The dynamic objects must be descendants of "this".
+
     Fixed a bug in the Logtalk compiler that would result in failure to 
     restore the operator table in case of compilation error.
 

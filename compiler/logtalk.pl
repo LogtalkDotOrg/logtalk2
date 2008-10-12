@@ -2216,10 +2216,10 @@ current_logtalk_flag(version, version(2, 33, 1)).
 
 
 '$lgt_asserta_rule_chk'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
-	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, _, _, _),
+	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, ObjType, _, _),
 	!,
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope),
-	(	Type == (dynamic) ->
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PredType, Meta, SCtn, DclScope),
+	(	(PredType == (dynamic); ObjType == (dynamic), Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
 			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, _),
 			'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
@@ -2250,17 +2250,17 @@ current_logtalk_flag(version, version(2, 33, 1)).
 	asserta(THead).
 
 '$lgt_asserta_fact_chk'(Obj, Head, Sender, TestScope, DclScope) :-
-	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, _, _, _),
+	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, ObjType, _, _),
 	!,
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope),
-	(	Type == (dynamic) ->
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PredType, _, SCtn, DclScope),
+	(	(PredType == (dynamic); ObjType == (dynamic), Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, Update),
 			(	'$lgt_debugging_'(Obj) ->
 				'$lgt_ctx_ctx'(Ctx, _, GSender, GThis, GSelf, Prefix, [], _),
 				'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
 				asserta((THead :- '$lgt_dbg_fact'(Head, 0, DbgCtx)))
-			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, DclScope, Sender, THead, DDef, Update),
+			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, DclScope, PredType, Sender, THead, DDef, Update),
 				asserta(THead)
 			)
 		;	% predicate is not within the scope of the sender:
@@ -2318,10 +2318,10 @@ current_logtalk_flag(version, version(2, 33, 1)).
 
 
 '$lgt_assertz_rule_chk'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
-	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, _, _, _),
+	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, ObjType, _, _),
 	!,
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope),
-	(	Type == (dynamic) ->
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PredType, Meta, SCtn, DclScope),
+	(	(PredType == (dynamic); ObjType == (dynamic), Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, _),
 			'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
@@ -2352,17 +2352,17 @@ current_logtalk_flag(version, version(2, 33, 1)).
 	assertz(THead).
 
 '$lgt_assertz_fact_chk'(Obj, Head, Sender, TestScope, DclScope) :-
-	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, _, _, _),
+	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, ObjType, _, _),
 	!,
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope),
-	(	Type == (dynamic) ->
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PredType, _, SCtn, DclScope),
+	(	(PredType == (dynamic); ObjType == (dynamic), Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, Update),
 			(	'$lgt_debugging_'(Obj) ->
 				'$lgt_ctx_ctx'(Ctx, _, GSender, GThis, GSelf, Prefix, [], _),
 				'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
 				assertz((THead :- '$lgt_dbg_fact'(Head, 0, DbgCtx)))
-			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, DclScope, Sender, THead, DDef, Update),
+			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, DclScope, PredType, Sender, THead, DDef, Update),
 				assertz(THead)
 			)
 		;	% predicate is not within the scope of the sender:
@@ -2450,10 +2450,10 @@ current_logtalk_flag(version, version(2, 33, 1)).
 	).
 
 '$lgt_clause_chk'(Obj, Head, Body, Sender, Scope) :-
-	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, _, _, _),
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjType, _, _),
 	!,
-	(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
-		(	Type == (dynamic) ->
+	(	call_with_args(Dcl, Head, PScope, PredType, _, _, _, SCtn, _) ->
+		(	(PredType == (dynamic); ObjType == (dynamic), Sender = SCtn) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 				(	(call_with_args(DDef, Head, _, _, _, Call); call_with_args(Def, Head, _, _, _, Call)) ->
 					clause(Call, TBody),
@@ -2523,10 +2523,10 @@ current_logtalk_flag(version, version(2, 33, 1)).
 
 
 '$lgt_retract_var_body_chk'(Obj, (Head:-Body), Sender, Scope) :-
-	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, _, _, _),
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjType, _, _),
 	!,
-	(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
-		(	Type == (dynamic) ->
+	(	call_with_args(Dcl, Head, PScope, PredType, _, _, _, SCtn, _) ->
+		(	(PredType == (dynamic); ObjType == (dynamic), Sender = SCtn) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 				(	call_with_args(DDef, Head, _, _, _, Call) ->
 					retract((Call :- TBody)),
@@ -2574,10 +2574,10 @@ current_logtalk_flag(version, version(2, 33, 1)).
 
 
 '$lgt_retract_rule_chk'(Obj, (Head:-Body), Sender, Scope) :-
-	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, _, _, _),
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjType, _, _),
 	!,
-	(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
-		(	Type == (dynamic) ->
+	(	call_with_args(Dcl, Head, PScope, PredType, _, _, _, SCtn, _) ->
+		(	(PredType == (dynamic); ObjType == (dynamic), Sender = SCtn) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 				(	call_with_args(DDef, Head, _, _, _, Call) ->
 					retract((Call :- ('$lgt_nop'(Body), _))),
@@ -2613,22 +2613,22 @@ current_logtalk_flag(version, version(2, 33, 1)).
 	once(Update).
 
 '$lgt_retract_fact_chk'(Obj, Head, Sender, Scope) :-
-	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, _, _, _),
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjType, _, _),
 	!,
-	(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
-		(	Type == (dynamic) ->
+	(	call_with_args(Dcl, Head, PScope, PredType, _, _, _, SCtn, _) ->
+		(	(PredType == (dynamic); ObjType == (dynamic), Sender = SCtn) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 				(	call_with_args(DDef, Head, _, _, _, Call) ->
 					(	'$lgt_debugging_'(Obj) ->
 						retract((Call :- '$lgt_dbg_fact'(_, _, _)))
-					;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, PScope, Sender, Call, DDef, true),
+					;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, PScope, PredType, Sender, Call, DDef, true),
 						retract(Call)
 					),
 					'$lgt_update_ddef_table'(DDef, Head, Call)
 				;	call_with_args(Def, Head, _, _, _, Call) ->
 					(	'$lgt_debugging_'(Obj) ->
 						retract((Call :- '$lgt_dbg_fact'(_, _, _)))
-					;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, PScope, Sender, Call),
+					;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, PScope, PredType, Sender, Call),
 						retract(Call)
 					)
 				)
@@ -2645,7 +2645,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 		(	call_with_args(DDef, Head, _, _, _, Call) ->
 			(	'$lgt_debugging_'(Obj) ->
 				retract((Call :- '$lgt_dbg_fact'(_, _, _)))
-			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, p, Sender, Call),
+			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, p, PredType, Sender, Call),
 				retract(Call)
 			)
 		;	throw(error(existence_error(predicate_declaration, Head), Obj::retract(Head), Sender))
@@ -2678,10 +2678,10 @@ current_logtalk_flag(version, version(2, 33, 1)).
 	once(Update).
 
 '$lgt_retractall_chk'(Obj, Head, Sender, Scope) :-
-	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, _, _, _),
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjType, _, _),
 	!,
-	(	call_with_args(Dcl, Head, PScope, Type, _, _, _, SCtn, _) ->
-		(	Type == (dynamic) ->
+	(	call_with_args(Dcl, Head, PScope, PredType, _, _, _, SCtn, _) ->
+		(	(PredType == (dynamic); ObjType == (dynamic), Sender = SCtn) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 				(	call_with_args(DDef, Head, _, _, _, Call) ->
 					retractall(Call),
@@ -2689,7 +2689,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 				;	call_with_args(Def, Head, _, _, _, Call) ->
 					(	'$lgt_debugging_'(Obj) ->
 						true
-					;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, PScope, Sender, Call)
+					;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, PScope, PredType, Sender, Call)
 					),
 					retractall(Call)
 				;	true
@@ -2708,7 +2708,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 			call_with_args(DDef, Head, _, _, _, Call) ->
 			(	'$lgt_debugging_'(Obj) ->
 				true
-			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, p, Sender, Call)
+			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, p, PredType, Sender, Call)
 			),
 			retractall(Call)
 		;	throw(error(existence_error(predicate_declaration, Head), Obj::retractall(Head), Sender))
@@ -2729,11 +2729,11 @@ current_logtalk_flag(version, version(2, 33, 1)).
 
 
 
-% '$lgt_add_db_lookup_cache_entry'(@object_identifier, @callable, @callable, @object_identifier, @callable)
+% '$lgt_add_db_lookup_cache_entry'(@object_identifier, @callable, @callable, +atom, @object_identifier, @callable)
 %
 % adds a new database lookup cache entry (when an update goal is not needed)
 
-'$lgt_add_db_lookup_cache_entry'(Obj, Head, Scope, Sender, Call) :-
+'$lgt_add_db_lookup_cache_entry'(Obj, Head, Scope, Type, Sender, Call) :-
 	functor(Obj, OFunctor, OArity),
 	functor(GObj, OFunctor, OArity),
 	functor(Head, HFunctor, HArity),
@@ -2743,7 +2743,7 @@ current_logtalk_flag(version, version(2, 33, 1)).
 	GHead =.. [_| Args],
 	GCall =.. [_| ExtArgs],
 	'$lgt_unify_args'(Args, ExtArgs), 
-	(	Scope = p(p(p)) ->
+	(	(Scope = p(p(p)), Type == (dynamic)) ->
 		asserta('$lgt_db_lookup_cache_'(GObj, GHead, _, GCall, true))
 	;	functor(Sender, SFunctor, SArity),
 		functor(GSender, SFunctor, SArity),
@@ -2751,11 +2751,11 @@ current_logtalk_flag(version, version(2, 33, 1)).
 	).
 
 
-% '$lgt_add_db_lookup_cache_entry'(@object_identifier, @callable, @callable, @callable, @object_identifier, @callable, +atom, +atom)
+% '$lgt_add_db_lookup_cache_entry'(@object_identifier, @callable, @callable, @callable, +atom, @object_identifier, @callable, +atom, +atom)
 %
 % adds a new database lookup cache entry
 
-'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, Scope, Sender, Call, DDef, NeedsUpdate) :-
+'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, Scope, Type, Sender, Call, DDef, NeedsUpdate) :-
 	functor(Obj, OFunctor, OArity),
 	functor(GObj, OFunctor, OArity),
 	functor(Head, HFunctor, HArity),
@@ -2769,13 +2769,13 @@ current_logtalk_flag(version, version(2, 33, 1)).
 		functor(UHead, HFunctor, HArity),
 		functor(UCall, CFunctor, CArity),
 		UClause =.. [DDef, UHead, _, _, _, _],
-		(	Scope = p(p(p)) ->
+		(	(Scope = p(p(p)), Type == (dynamic)) ->
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, _, GCall, '$lgt_update_ddef_table_opt'(UHead, UCall, UClause)))
 		;	functor(Sender, SFunctor, SArity),
 			functor(GSender, SFunctor, SArity),
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GCall, '$lgt_update_ddef_table_opt'(UHead, UCall, UClause)))
 		)
-	;	(	Scope = p(p(p)) ->
+	;	(	(Scope = p(p(p)), Type == (dynamic)) ->
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, _, GCall, true))
 		;	functor(Sender, SFunctor, SArity),
 			functor(GSender, SFunctor, SArity),
