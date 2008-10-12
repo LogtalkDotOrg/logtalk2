@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.33.1 - October ??, 2008
+2.33.1 - October 12, 2008
 
     Added a syntax construct for easy access to parametric object proxies
     represented as Prolog facts when sending a message ({Proxy}::Message).
