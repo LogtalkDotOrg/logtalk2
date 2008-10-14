@@ -73,6 +73,10 @@ bricks
 	example of representation and handling of relations using events;
 	illustrates how to use events to avoid breaking object encapsulation
 
+classmethods
+	example of defining "class methods" as found on some class-based
+	object-oriented programming languages
+
 classvars
 	example of implementation of class variables
 	(as found in Smalltalk; i.e. shared instance variables)

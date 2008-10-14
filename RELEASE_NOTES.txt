@@ -18,6 +18,10 @@ RELEASE NOTES
     Added a simple example, "instvars", illustrating how to define instance
     variables, default variable values, and setter and getter methods.
 
+    Added a simple example, "classmethods", illustrating how to define 
+    "class methods" as found on class-based object-oriented programming
+    languages.
+
 
 2.33.1 - October 12, 2008
 
