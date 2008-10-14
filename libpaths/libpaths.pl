@@ -51,6 +51,7 @@
 	 assertz(logtalk_library_path(hooks, examples('hooks/'))),
 	 assertz(logtalk_library_path(inheritance, examples('inheritance/'))),
 	 assertz(logtalk_library_path(instmethods, examples('instmethods/'))),
+	 assertz(logtalk_library_path(instvars, examples('instvars/'))),
 	 assertz(logtalk_library_path(integration, threads('integration/'))),
 	 assertz(logtalk_library_path(integration2d, threads('integration2d/'))),
 	 assertz(logtalk_library_path(lo_planner, examples('lo/planner/'))),

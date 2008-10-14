@@ -127,6 +127,10 @@ instmethods
 	example of instance defined methods; also illustrates the use of 
 	"super calls" to call overridden method definitions
 
+instvars
+	example of defining instance variables, default variable values,
+	and setter and getter methods
+
 lo
 	examples adopted from the Francis G. McCabe L&O system
 
