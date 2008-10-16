@@ -15,6 +15,8 @@ RELEASE NOTES
 
 2.33.2 - October ??, 2008
 
+    Updated comparison between Logtalk and Java nomenclature.
+
     Added a simple example, "instvars", illustrating how to define instance
     variables, default variable values, and setter and getter methods.
 

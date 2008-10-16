@@ -22,7 +22,7 @@
 <h1 id="nomenclature_nomenclature">Nomenclature</h1>
 
 <p>
-Depending on your Object-oriented Programming background (or lack of it), you may find Logtalk nomenclature either familiar or at odds with the terms used in other languages. In addition, being a superset of Prolog, terms such as <em>predicate</em> and <em>method</em> are often used interchangeably. Logtalk inherits most of its nomenclature from Smalltalk, arguably (and somehow sadly!) not the most popular OOP language nowadays. In this section, we try to map nomenclatures from popular OOP languages such as C++ and Java to the Logtalk nomenclature.
+Depending on your Object-oriented Programming background (or lack of it), you may find Logtalk nomenclature either familiar or at odds with the terms used in other languages. In addition, being a superset of Prolog, terms such as <em>predicate</em> and <em>method</em> are often used interchangeably. Logtalk inherits most of its nomenclature from Smalltalk, arguably (and somehow sadly) not the most popular OOP language nowadays. In this section, we map nomenclatures from popular OOP languages such as C++ and Java to the Logtalk nomenclature.
 </p>
 
 <h2 id="nomenclature_cpp">C++ nomenclature</h2>
@@ -103,6 +103,10 @@ There are several Java glossaries available on the Internet. The list that follo
 		<dd>In Logtalk, you may simply declare a method (predicate) in a class without defining it, leaving its definition to some descendant sub-class.</dd>
 </dl>
 <dl>
+	<dt><strong>assertion</strong></dt>
+		<dd>There is no <code>assertion</code> keyword in Logtalk. Assertions are supported using Logtalk compilation hooks.</dd>
+</dl>
+<dl>
 	<dt><strong>extends</strong></dt>
 		<dd>There is no <code>extends</code> keyword in Logtalk. Class inheritance is indicated using <em>specialization</em> relations. Moreover, the <em>extends</em> relation is used in Logtalk to indicate protocol or prototype extension.</dd>
 </dl>
@@ -131,6 +135,10 @@ There are several Java glossaries available on the Internet. The list that follo
 		<dd>There is no <code>final</code> keyword in Logtalk; methods may always be redefined in subclasses (and instances!).</dd>
 </dl>
 <dl>
+	<dt><strong>inner class</strong></dt>
+		<dd>Inner classes are not supported in Logtalk.</dd>
+</dl>
+<dl>
 	<dt><strong>instance</strong></dt>
 		<dd>In Logtalk, an instance can be either created dynamically at runtime or defined statically in a source file in the same way as classes.</dd>
 </dl>
@@ -145,6 +153,14 @@ There are several Java glossaries available on the Internet. The list that follo
 <dl>
 	<dt><strong>method signature</strong></dt>
 		<dd>Logtalk selects the method/predicate to execute in order to answer a method call based only on the method name (functor) and number of arguments (arity). Logtalk (and Prolog) are not typed languages in the same sense as Java.</dd>
+</dl>
+<dl>
+	<dt><strong>reflection</strong></dt>
+		<dd>Logtalk supports both <em>structural reflection</em> (using a set of built-in predicates and built-in methods) and <em>behavioral reflection</em> (using event-driven programming).</dd>
+</dl>
+<dl>
+	<dt><strong>static</strong></dt>
+		<dd>There is no <code>static</code> keyword in Logtalk. See the entries on <em>class methods</em> and <em>class variables</em>.</dd>
 </dl>
 <dl>
 	<dt><strong>super</strong></dt>
@@ -162,7 +178,7 @@ There are several Java glossaries available on the Internet. The list that follo
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: December 9, 2007</span>
+		<span>Last updated on: October 16, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="features.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="messages.html">next</a></span><br/>
