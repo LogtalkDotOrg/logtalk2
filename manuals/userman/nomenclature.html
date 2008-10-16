@@ -72,6 +72,10 @@ There are several C++ glossaries available on the Internet. The list that follow
 		<dd>Logtalk uses predicates for representing both behavior and data.</dd>
 </dl>
 <dl>
+	<dt><strong>namespace</strong></dt>
+		<dd>Logtalk does not support multiple identifier namespaces. All Logtalk entity identifiers share the same namespace (Logtalk entities are objects, categories, and protocols).</dd>
+</dl>
+<dl>
 	<dt><strong>nested class</strong></dt>
 		<dd>Logtalk does not support nested classes.</dd>
 </dl>
@@ -85,7 +89,7 @@ There are several C++ glossaries available on the Internet. The list that follow
 </dl>
 <dl>
 	<dt><strong>virtual member function</strong></dt>
-		<dd>Logtalk allows any predicate defined in a class to be overridden on a descendant class. There is no <code>virtual</code> keyword in Logtalk.</dd>
+		<dd>There is no <code>virtual</code> keyword in Logtalk. By default, Logtalk uses dynamic binding for locating both method declarations and method definitions. Moreover, methods that are declared but not defined simply fail when called.</dd>
 </dl>
 
 <h2 id="nomenclature_java">Java nomenclature</h2>
