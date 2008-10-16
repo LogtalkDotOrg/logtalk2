@@ -22,6 +22,8 @@ RELEASE NOTES
     "class methods" as found on class-based object-oriented programming
     languages.
 
+    Improved the documentation of the "complements" and "hooks" examples.
+
 
 2.33.1 - October 12, 2008
 

@@ -15,7 +15,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ...
 
 % check the XML documenting file generated for "object"
-% for the results of term_expansion/2 calls
+% for the results of the term_expansion/2 calls
 
 
 % check the results of the goal_expansion/2 calls:

@@ -1,4 +1,5 @@
 
+% setup the object employee as a monitor for any message sent to itself:
 :- initialization(define_events(before, employee, _, _, employee)).
 
 
@@ -14,14 +15,14 @@
 
 
 :- category(logging,
-	implements(monitoring),
-	complements(employee)).
+	implements(monitoring),		% built-in protocol for event handler methods
+	complements(employee)).		% add the category predicates to the employee object
 
+	% define a "before" event handler for the complemented object:
 	before(_, Message, Sender) :-
 		write('Received message '), writeq(Message), write(' from '), writeq(Sender), nl.
 
-	% add a new method to the object:
-
+	% add a new method to the complemented object:
 	:- public(predicates/1).
 
 	predicates(Predicates) :-
