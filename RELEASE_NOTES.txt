@@ -15,8 +15,13 @@ RELEASE NOTES
 
 2.33.2 - October ??, 2008
 
-    Updated comparison between Logtalk nomenclature and C++ and Java
-    nomenclatures.
+    Implemented a more flexible internal representation of entity properties.
+    Added entity property file/1 for entities compiled and loaded from source 
+    files (for back-end Prolog compilers where the stream_property/2 built-in
+    predicate supports the file_name/1 property).
+
+    Updated the User Manual comparison between Logtalk nomenclature and C++
+    and Java nomenclatures.
 
     Added a simple example, "instvars", illustrating how to define instance
     variables, default variable values, and setter and getter methods.

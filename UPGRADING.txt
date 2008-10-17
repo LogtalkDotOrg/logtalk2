@@ -211,3 +211,6 @@ of "super" calls, changes the implementation of complementing categories,
 changes the possible values of the read-only compiler flag "break_predicate",
 and changes the way proprietary Prolog meta-predicates and control constructs 
 are declared, therefore implying the recompilation of all objects.
+
+Logtalk version 2.33.2 changes representation of entity properties therefore 
+implying recompilation of all source files.
