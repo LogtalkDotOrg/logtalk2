@@ -4255,6 +4255,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	retractall('$lgt_current_object_'(Entity, _, _, _, _, _, _, _, _, _, _)),
 	retractall('$lgt_current_protocol_'(Entity, _, _, _, _)),
 	retractall('$lgt_current_category_'(Entity, _, _, _, _, _)),
+	retractall('$lgt_entity_property_'(Entity, _)),
 	retractall('$lgt_implements_protocol_'(Entity, _, _)),
 	retractall('$lgt_imports_category_'(Entity, _, _)),
 	retractall('$lgt_instantiates_class_'(Entity, _, _)),
