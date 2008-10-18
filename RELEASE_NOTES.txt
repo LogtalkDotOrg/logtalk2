@@ -16,7 +16,7 @@ RELEASE NOTES
 2.33.2 - October ??, 2008
 
     Implemented a more flexible internal representation of entity properties.
-    Added entity property file/1 for entities compiled and loaded from source 
+    Added entity property file/2 for entities compiled and loaded from source 
     files.
 
     Updated the User Manual comparison between Logtalk nomenclature and C++
