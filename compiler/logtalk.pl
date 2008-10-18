@@ -4651,8 +4651,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_tr_file'(Term, Singletons, Input, Output) :-
 	'$lgt_report_singletons'(Singletons, Term, Input),
 	'$lgt_tr_term'(Term, Input, Output),
-	read_term(Input, Next, [singletons(NSingletons)]),
-	'$lgt_tr_file'(Next, NSingletons, Input, Output).
+	read_term(Input, Next, [singletons(NextSingletons)]),
+	'$lgt_tr_file'(Next, NextSingletons, Input, Output).
 
 
 
@@ -4674,35 +4674,34 @@ current_logtalk_flag(version, version(2, 33, 2)).
 %
 % reports the singleton variables found while compiling an entity term
 
-'$lgt_report_singletons'(TSingletons, Term, Input) :-
-	'$lgt_filter_dont_care_vars'(TSingletons, FSingletons),
-	'$lgt_singleton_var_names'(FSingletons, Names),
-	'$lgt_report_singletons_aux'(Names, Term, Input).
-
-
-'$lgt_report_singletons_aux'([], _, _) :-
-	!.	% cut needed to prevent problems with compilers with broken read_term/3
-
-'$lgt_report_singletons_aux'([Name| Names], Term, Stream) :-
+'$lgt_report_singletons'(Singletons, Term, Input) :-
 	(	'$lgt_compiler_flag'(singletons, warning),
 		'$lgt_compiler_flag'(report, on) ->
-		'$lgt_inc_compile_warnings_counter',
-		(	'$lgt_pp_entity'(_, _, _, _, _) ->
-			nl
-		; true
-		),
-		(	Names == [] ->
-			write('        WARNING!  Singleton variable ')
-		;	write('        WARNING!  Singleton variables ')
-		),
-		'lgt_report_singletons_term'(Term),
-		'$lgt_write_list'([Name| Names]),
-		nl, '$lgt_report_compiler_error_line_number'(Stream),
-		(	'$lgt_pp_entity'(_, _, _, _, _) ->
-			true
-		;	nl
-		)
+		'$lgt_filter_singletons'(Singletons, Names),
+		'$lgt_report_singleton_names'(Names, Term, Input)
 	;	true
+	).
+
+
+'$lgt_report_singleton_names'([], _, _) :-
+	!.	% cut needed to prevent problems with compilers with broken read_term/3 implementations
+
+'$lgt_report_singleton_names'([Name| Names], Term, Stream) :-
+	'$lgt_inc_compile_warnings_counter',
+	(	'$lgt_pp_entity'(_, _, _, _, _) ->
+		nl
+	; true
+	),
+	(	Names == [] ->
+		write('        WARNING!  Singleton variable ')
+	;	write('        WARNING!  Singleton variables ')
+	),
+	'lgt_report_singletons_term'(Term),
+	'$lgt_write_list'([Name| Names]),
+	nl, '$lgt_report_compiler_error_line_number'(Stream),
+	(	'$lgt_pp_entity'(_, _, _, _, _) ->
+		true
+	;	nl
 	).
 
 
@@ -4742,9 +4741,17 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 
 
-% '$lgt_singleton_var_names'(@list, -list)
+% '$lgt_filter_singletons'(+list, -list)
 %
-% colects singleton variable names into a list
+% filter variables whose name start with an underscore from a singletons list if 
+% the corresponding compiler flag sets their interpretation to don't care variables
+
+'$lgt_filter_singletons'(List, Result) :-
+	(	'$lgt_compiler_flag'(underscore_variables, dont_care) ->
+		'$lgt_filter_dont_care_vars'(List, Result)
+	;	'$lgt_singleton_var_names'(List, Result)
+	).
+
 
 '$lgt_singleton_var_names'([], []).
 
@@ -4752,26 +4759,13 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	'$lgt_singleton_var_names'(Singletons, Names).
 
 
+'$lgt_filter_dont_care_vars'([], []).
 
-% '$lgt_filter_dont_care_vars'(+list, -list)
-%
-% filter variables whose name start with an underscore from a singletons list if 
-% the corresponding compiler flag sets their interpretation to don't care variables
-
-'$lgt_filter_dont_care_vars'(List, Result) :-
-	(	'$lgt_compiler_flag'(underscore_variables, dont_care) ->
-		'$lgt_filter_dont_care_vars'(List, [], Result)
-	;	List = Result
-	).
-
-
-'$lgt_filter_dont_care_vars'([], Result, Result) :-
-	!.	% cut needed to prevent problems with compilers with broken read_term/3
-
-'$lgt_filter_dont_care_vars'([Atom = Var| List], Sofar, Result) :-
-	(	atom_concat('_', _, Atom) ->
-		'$lgt_filter_dont_care_vars'(List, Sofar, Result)
-	;	'$lgt_filter_dont_care_vars'(List, [Atom = Var| Sofar], Result)
+'$lgt_filter_dont_care_vars'([Name = _| Singletons], Names) :-
+	(	atom_concat('_', _, Name) ->
+		'$lgt_filter_dont_care_vars'(Singletons, Names)
+	;	Names = [Name| Rest],
+		'$lgt_filter_dont_care_vars'(Singletons, Rest)
 	).
 
 
