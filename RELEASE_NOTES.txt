@@ -17,8 +17,7 @@ RELEASE NOTES
 
     Implemented a more flexible internal representation of entity properties.
     Added entity property file/1 for entities compiled and loaded from source 
-    files (for back-end Prolog compilers where the stream_property/2 built-in
-    predicate supports the file_name/1 property).
+    files.
 
     Updated the User Manual comparison between Logtalk nomenclature and C++
     and Java nomenclatures.

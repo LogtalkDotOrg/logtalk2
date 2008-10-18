@@ -257,8 +257,9 @@
 :- dynamic('$lgt_pp_threaded_'/0).				% '$lgt_pp_threaded_'
 :- dynamic('$lgt_pp_synchronized_'/0).			% '$lgt_pp_synchronized_'
 
-:- dynamic('$lgt_pp_file_encoding_'/2).			% '$lgt_pp_file_encoding_'(LogtalkEncoding, PrologEncoding)))
-:- dynamic('$lgt_pp_file_bom_'/1).				% '$lgt_pp_file_bom_'(BOM)))
+:- dynamic('$lgt_pp_file_encoding_'/2).			% '$lgt_pp_file_encoding_'(LogtalkEncoding, PrologEncoding)
+:- dynamic('$lgt_pp_file_bom_'/1).				% '$lgt_pp_file_bom_'(BOM)
+:- dynamic('$lgt_pp_file_name_'/1).				% '$lgt_pp_file_name_'(File)
 
 :- dynamic('$lgt_pp_file_rclause_'/1).			% '$lgt_pp_file_rclause_'(Clause)
 
@@ -4559,6 +4560,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_tr_file'(File) :-
 	'$lgt_save_global_op_table',
 	'$lgt_file_name'(logtalk, File, Source),
+	asserta('$lgt_pp_file_name_'(Source)),
 	catch(
 		open(Source, read, Input),
 		OpenError,
@@ -4586,6 +4588,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 		OutputError,											% end of the file to improve compatibility 
 		'$lgt_compiler_error_handler'(Output, OutputError)),	% with non-ISO compliant Prolog compilers
 	close(Output),
+	retractall('$lgt_pp_file_name_'(_)),
 	'$lgt_restore_global_op_table'.
 
 
@@ -4656,15 +4659,13 @@ current_logtalk_flag(version, version(2, 33, 2)).
 %
 % adds entity properties related to the entity source file
 
-'$lgt_add_entity_file_properties'(Entity, Input) :-
+'$lgt_add_entity_file_properties'(Entity, _Input) :-
 %	(	catch('$lgt_stream_current_line_number'(Input, Line), _, fail) ->
 %		assertz('$lgt_pp_file_rclause_'('$lgt_entity_property_'(Entity, line_count(Line))))
 %	;	true
 %	),
-	(	catch(stream_property(Input, file_name(File)), _, fail) ->
-		assertz('$lgt_pp_rclause_'('$lgt_entity_property_'(Entity, file(File))))
-	;	true
-	).
+	'$lgt_pp_file_name_'(File) ->
+	assertz('$lgt_pp_rclause_'('$lgt_entity_property_'(Entity, file(File)))).
 
 
 
@@ -4910,6 +4911,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	retractall('$lgt_pp_entity_init_'(_, _, _)),
 	retractall('$lgt_pp_file_encoding_'(_, _)),
 	retractall('$lgt_pp_file_bom_'(_)),
+	retractall('$lgt_pp_file_name_'(_)),
 	retractall('$lgt_pp_file_rclause_'(_)).
 
 
