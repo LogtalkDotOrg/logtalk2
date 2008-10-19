@@ -213,4 +213,7 @@ and changes the way proprietary Prolog meta-predicates and control constructs
 are declared, therefore implying the recompilation of all objects.
 
 Logtalk version 2.33.2 changes representation of entity properties therefore 
-implying recompilation of all source files.
+implying recompilation of all source files. Moreover, all config files are 
+updated with a customized version of the read_term/3 predicate for returning
+the source file line number where a term starts. Older config files are 
+incompatible with this new Logtalk version.

@@ -198,7 +198,7 @@ begin
     InstalledVersion := 0
   else
     InstalledVersion := -1;
-  if IsAdminLoggedOn and (InstalledVersion >= 0) and (InstalledVersion < 2330) then
+  if IsAdminLoggedOn and (InstalledVersion >= 0) and (InstalledVersion < 2332) then
   begin
     Warning := 'You have an older version of Logtalk installed whose configuration files are incompatible with this new version (configuration files are stored in your Logtalk user data folder).'
                + Chr(13) + Chr(13)
