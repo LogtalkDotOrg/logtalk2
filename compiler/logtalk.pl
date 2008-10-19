@@ -478,11 +478,11 @@ object_property(user, built_in).
 object_property(debugger, built_in).
 object_property(logtalk, built_in).
 
-object_property(Obj, Prop) :-				% static/dynamic property
-	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, Prop).
-
 object_property(Obj, Prop) :-
-	'$lgt_entity_property_'(Obj, Prop).
+	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, Type),
+	(	Prop = Type							% static/dynamic property
+	;	'$lgt_entity_property_'(Obj, Prop)	% other properties
+	).
 
 
 
@@ -498,11 +498,11 @@ category_property(Ctg, Prop) :-
 	\+ '$lgt_valid_category_property'(Prop),
 	throw(error(domain_error(category_property, Prop), category_property(Ctg, Prop))).
 
-category_property(Ctg, Prop) :-				% static/dynamic property
-	'$lgt_current_category_'(Ctg, _, _, _, _, Prop).
-
 category_property(Ctg, Prop) :-
-	'$lgt_entity_property_'(Ctg, Prop).
+	'$lgt_current_category_'(Ctg, _, _, _, _, Type),
+	(	Prop = Type							% static/dynamic property
+	;	'$lgt_entity_property_'(Ctg, Prop)	% other properties
+	).
 
 
 
@@ -518,11 +518,11 @@ protocol_property(Ptc, Prop) :-
 	\+ '$lgt_valid_protocol_property'(Prop),
 	throw(error(domain_error(protocol_property, Prop), protocol_property(Ptc, Prop))).
 
-protocol_property(Ptc, Prop) :-				% static/dynamic property
-	'$lgt_current_protocol_'(Ptc, _, _, _, Prop).
-
 protocol_property(Ptc, Prop) :-
-	'$lgt_entity_property_'(Ptc, Prop).
+	'$lgt_current_protocol_'(Ptc, _, _, _, _, Type),
+	(	Prop = Type							% static/dynamic property
+	;	'$lgt_entity_property_'(Ptc, Prop)	% other properties
+	).
 
 
 
@@ -11635,6 +11635,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_valid_object_property'(static).
 '$lgt_valid_object_property'(synchronized).
 '$lgt_valid_object_property'(threaded).
+'$lgt_valid_object_property'(file(_, _)).
+'$lgt_valid_object_property'(lines(_, _)).
 
 
 
@@ -11643,6 +11645,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_valid_protocol_property'(built_in).
 '$lgt_valid_protocol_property'((dynamic)).
 '$lgt_valid_protocol_property'(static).
+'$lgt_valid_protocol_property'(file(_, _)).
+'$lgt_valid_protocol_property'(lines(_, _)).
 
 
 
@@ -11652,6 +11656,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_valid_category_property'((dynamic)).
 '$lgt_valid_category_property'(static).
 '$lgt_valid_category_property'(synchronized).
+'$lgt_valid_category_property'(file(_, _)).
+'$lgt_valid_category_property'(lines(_, _)).
 
 
 
