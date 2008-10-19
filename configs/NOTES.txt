@@ -153,6 +153,10 @@ CIAO Prolog 1.8p2 and later versions
 	"ciao_aux.config" is a bit of a hack, but should enable you to run the 
 	Logtalk companion examples and to try out your own Logtalk programs. 
 
+	You need to patch the Logtalk compiler (compiler/logtalk.pl) and comment
+	out the multifile declaration for the predicate logtalk_library_path/2 
+	in order to use library notation for loading library and example files.
+
 	Don't forget to call the cd/1 predicate to set the working directory 
 	before compiling the library or an example (you will need first to 
 	load the library system that exports the cd/1 predicate by calling the 
