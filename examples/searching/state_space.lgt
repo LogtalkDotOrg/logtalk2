@@ -3,13 +3,11 @@
 	instantiates(class),
 	specializes(object)).
 
-
 	:- info([
 		version is 1.1,
 		author is 'Paulo Moura',
 		date is 2008/6/9,
 		comment is 'State space description predicates.']).
-
 
 	:- public(initial_state/1).
 	:- mode(initial_state(?nonvar), one_or_more).
@@ -59,30 +57,23 @@
 		[comment is 'Pretty print a path (list of states).',
 		 argnames is ['Path']]).
 
-
 	initial_state(State) :-
 		::initial_state(_, State).
-
 
 	goal_state(State) :-
 		::goal_state(_, State).
 
-
 	print_state(State) :-
 		writeq(State), nl.
-
 
 	member_path(State, [State| _]) :-
 		!.
 	member_path(State, [_| Path]) :-
 		member_path(State, Path).
 
-
 	print_path([]).
-
 	print_path([State| States]) :-
 		::print_state(State),
 		print_path(States).
-
 
 :- end_object.

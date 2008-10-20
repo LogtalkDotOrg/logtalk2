@@ -15,8 +15,8 @@
 	:- meta_predicate(apply(1, *)).
 
 	apply(Closure, Arg) :-		% the Logtalk compiler verifies that any closure which is a
-		call(Closure, Arg).		% meta-argument is used within a call/N method that honors the
-								% meta-predicate directive (in this case, apply(1, *) => call/2)
+		call(Closure, Arg).		% meta-argument is used within a call/N method that complies with
+								% the meta-predicate directive (in this case, apply(1, *) => call/2)
 
 	:- public(test_this/0).		% simple predicate for testing calls to a local meta-predicate
 

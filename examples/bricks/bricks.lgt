@@ -81,7 +81,7 @@
 	add_tuple([A, B]) :-
 		B::position(Xb, Yb),
 		Ya2 is Yb + 1,
-		{A::move(Xb, Ya2)},
+		{A::move(Xb, Ya2)},		% this message must be compiled with event support
 		^^add_tuple([A, B]).
 
 	activ_points_(top, before, []).
@@ -93,15 +93,15 @@
 	propagate(after, move(X, Y), Top, top, [Top, Bottom]) :-
 		!,
 		Y2 is Y - 1,
-		(Bottom::position(X, Y2) ->
+		(	Bottom::position(X, Y2) ->
 			true
-			;
-			::remove_tuple([Top, Bottom])).
+		;	::remove_tuple([Top, Bottom])
+		).
 
 	propagate(after, move(X, Y), Bottom, bottom, [Top, Bottom]) :-
 		!,
 		Y2 is Y + 1,
-		{Top::move(X, Y2)}.
+		{Top::move(X, Y2)}.		% this message must be compiled with event support
 
 :- end_object.
 

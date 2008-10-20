@@ -19,14 +19,22 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 | ?- agent::(new(paul, 40, male), new(nathalie, 32, female)).
 
-Yes
+yes
 
 
 % make them friends:
 
 | ?- paul::new_friend(nathalie).
 
-Yes
+yes
+
+
+% turn event support on for messages sent at the command-line
+% (i.e. for messages sent from the pseudo-object "user"):
+
+| ?- set_logtalk_flag(events, on).
+
+yes
 
 
 % it's birthday for Nathalie:
@@ -37,8 +45,7 @@ Happy birthday from paul!
 Thanks! Here, have a slice of cake, paul.
 Thanks for the cake nathalie!
 Say goodbye to your 32's!
-
-Yes
+yes
 
 
 % ask Nathalie her age:
@@ -46,8 +53,7 @@ Yes
 | ?- nathalie::age(Age).
 
 Age = 33
-
-Yes
+yes
 
 
 % a year goes by...
@@ -58,5 +64,11 @@ Happy birthday from paul!
 Thanks! Here, have a slice of cake, paul.
 Thanks for the cake nathalie!
 Say goodbye to your 33's!
+yes
 
-Yes
+
+% turn event support off:
+
+| ?- set_logtalk_flag(events, off).
+
+yes

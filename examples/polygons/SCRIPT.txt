@@ -62,15 +62,9 @@ Ma = [concentric]
 yes
 
 
-% move triangle to a new position
+% move the triangle and the hexagon to new positions
 
-| ?- t::move(3, 3).
-yes
-
-
-% move the hexagon to a new position
-
-| ?- h::move(8, 4).
+| ?- t::move(3, 3), h::move(8, 4).
 yes
 
 

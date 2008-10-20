@@ -1,14 +1,12 @@
 
 :- object(msglog,
-	implements(monitoring)).
-
+	implements(monitoring)).	% built-in protocol for event handler methods
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2007/01/13,
+		date is 2008/10/20,
 		comment is 'Monitor for recording, replaying, and saving user messages.']).
-
 
 	:- public(record/0).
 	:- mode(record, one).
@@ -35,7 +33,6 @@
 	:- info(erase/0,
 		[comment is 'Erases recorded messages.']).
 
-
 	:- private(log_/2).
 	:- dynamic(log_/2).
 	:- mode(log_(+object, +nonvar), zero_or_more).
@@ -43,41 +40,36 @@
 		[comment is 'Table of recorded messages.',
 		 argnames is ['Object', 'Message']]).
 
-
 	record :-
 		self(Self),
 		abolish_events(_, _, _, _, Self),
-		define_events(before, _, _, user, Self).
-
+		define_events(before, _, _, user, Self),
+		set_logtalk_flag(events, on).
 
 	stop :-
+		set_logtalk_flag(events, off),
 		self(Self),
 		abolish_events(_, _, _, _, Self).
-
 
 	replay :-
 		self(Self),
 		abolish_events(_, _, _, _, Self),
 		forall(::log_(Object, Message), {Object::Message}).
 
-
 	print :-
 		forall(
 			::log_(Object, Message),
 			(writeq(Object), write('::'), writeq(Message), write('.'), nl)).
 
-
 	erase :-
 		::retractall(log_(_, _)).
 
-
 	before(Object, Message, _) :-
 		self(Self),
-		(Self = Object ->
+		(	Self = Object ->
 			true
-			;
-			::assertz(log_(Object, Message))).
-
+		;	::assertz(log_(Object, Message))
+		).
 
 :- end_object.
 

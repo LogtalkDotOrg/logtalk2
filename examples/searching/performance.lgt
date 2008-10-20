@@ -1,14 +1,12 @@
 
 :- object(performance,
-	implements(monitoring)).
-
+	implements(monitoring)).	% built-in protocol for event handler methods
 
 	:- info([
-		version is 1.3,
+		version is 1.4,
 		author is 'Paulo Moura',
-		date is 2006/12/14,
+		date is 2008/10/20,
 		comment is 'Performance monitor for state space searches.']).
-
 
 	:- uses(event_registry).
 	:- uses(before_event_registry).
@@ -17,7 +15,6 @@
 	:- uses(list, [length/2]).
 	:- uses(numberlist, [min/2, max/2, sum/2]).
 	:- uses(time, [cpu_time/1]).
-
 
 	:- private(transitions_/3).
 	:- dynamic(transitions_/3).
@@ -49,7 +46,6 @@
 	:- public(stop/0).
 	:- mode(stop, one).
 
-
 	report :-
 		solution_length_(Length),
 		transitions(Number),
@@ -71,17 +67,14 @@
 		asserta(time_(Start)),
 		fail.
 
-
 	transitions(Number) :-
 		findall(N, transitions_(_, _, N), List),
 		sum(List, Number).
-
 
 	time(Time) :-
 		cpu_time(End),
 		retract(time_(Start)),
 		Time is End - Start.
-
 
 	branching(Minimum, Average, Maximum) :-
 		findall(
@@ -96,7 +89,6 @@
 		length(Lengths, Length),
 		Average is Sum / Length.
 
-
 	init :-
 		self(Self),
 		event_registry::set_monitor(_, solve(_, _, _), _, Self),
@@ -105,14 +97,14 @@
 		after_event_registry::set_monitor(_, next_state(_, _, _), _, Self),
 		retractall(transitions_(_, _, _)),
 		retractall(time_(_)),
-		retractall(solution_length_(_)).
-
+		retractall(solution_length_(_)),
+		set_logtalk_flag(events, on).	% solve/3-4 messages are sent from "user"
 
 	stop :-
+		set_logtalk_flag(events, off),
 		self(Self),
 		before_event_registry::del_monitors(_, _, _, Self),
 		after_event_registry::del_monitors(_, _, _, Self).
-
 
 	before(_, solve(_, _, _), _) :-
 		!,
@@ -128,22 +120,21 @@
 		retractall(time_(_)),
 		asserta(time_(Start)).
 
-
 	after(_, next_state(S1, S2), _) :-
 		!,
-		(retract(transitions_(S1, S2, N)) ->
+		(	retract(transitions_(S1, S2, N)) ->
 			N2 is N + 1
-			;
-			N2 is 1),
-		 assertz(transitions_(S1, S2, N2)).
+		;	N2 is 1
+		),
+		assertz(transitions_(S1, S2, N2)).
 
 	after(_, next_state(S1, S2, _), _) :-
 		!,
-		(retract(transitions_(S1, S2, N)) ->
+		(	retract(transitions_(S1, S2, N)) ->
 			N2 is N + 1
-			;
-			N2 is 1),
-		 assertz(transitions_(S1, S2, N2)).
+		;	N2 is 1
+		),
+		assertz(transitions_(S1, S2, N2)).
 
 	after(_, solve(_, _, Solution), _) :-
 		!,
@@ -156,6 +147,5 @@
 		length(Solution, Length),
 		retractall(solution_length_(_)),
 		asserta(solution_length_(Length)).
-
 
 :- end_object.

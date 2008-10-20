@@ -2,7 +2,6 @@
 :- object(hill_climbing(Threshold),
 	instantiates(heuristic_search(Threshold))).
 
-
 	:- info([
 		version is 1.2,
 		author is 'Paulo Moura',
@@ -10,18 +9,14 @@
 		comment is 'Hill climbing heuristic state space search strategy.',
 		parnames is ['Threshold']]).
 
-
 	:- uses(list, [member/2, reverse/2, sort/2]).
-
 
 	search(Space, State, Threshold, Solution, Cost) :-
 		hill(Space, State, Threshold, [], Path, 0, Cost),
 		reverse(Path, Solution).
 
-
 	hill(Space, State, _, Path, [State| Path], Cost, Cost) :-
 		Space::goal_state(State).
-
 	hill(Space, State, Threshold, Path, Solution, SoFar, Total) :-
 		findall(
 			(Estimate, Cost, Next),
@@ -35,6 +30,5 @@
 		SoFar2 is SoFar + Cost2,
 		SoFar2 =< Threshold,
 		hill(Space, Next2, Threshold, [State| Path], Solution, SoFar2, Total).
-
 
 :- end_object.

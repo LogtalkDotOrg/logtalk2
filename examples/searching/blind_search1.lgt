@@ -3,7 +3,6 @@
 	instantiates(class),
 	specializes(search_strategy)).
 
-
 	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
@@ -11,13 +10,11 @@
 		comment is 'Blind search state space strategies.',
 		parnames is ['Bound']]).
 
-
 	:- public(bound/1).
 	:- mode(bound(?integer), zero_or_one).
 	:- info(bound/1,
 		[comment is 'Search depth bound.',
 		 argnames is ['Bound']]).
-
 
 	:- protected(search/4).
 	:- mode(search(+object, +nonvar, +integer, -list), zero_or_more).
@@ -25,14 +22,11 @@
 		[comment is 'State space search solution.',
 		 argnames is ['Space', 'State', 'Bound', 'Path']]).
 
-
 	bound(Bound) :-
 		parameter(1, Bound).
-
 
 	solve(Space, State, Path) :-
 		::bound(Bound),
 		::search(Space, State, Bound, Path).
-
 
 :- end_object.

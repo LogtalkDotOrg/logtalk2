@@ -44,7 +44,13 @@ RELEASE NOTES
     "class methods" as found on class-based object-oriented programming
     languages.
 
-    Improved the documentation of the "complements" and "hooks" examples.
+    Improved the documentation of the "complements", "hello_world", "hooks",
+    and "msglog" examples.
+
+    Updated all the examples that make use of event-driven programming
+    ("birthdays", "bricks", "complements", "msglog", "polygons", "profiling",
+    and "searching") to ensure correct functionality after fixing the bug in
+    cleaning compiler options after compilation of source files.
 
 
 2.33.1 - October 12, 2008

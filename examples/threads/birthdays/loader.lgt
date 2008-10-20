@@ -1,3 +1,3 @@
 
 :- initialization(
-	logtalk_load(birthdays, [events(on)])). 
+	logtalk_load(birthdays)). 

@@ -19,7 +19,8 @@
 	complements(employee)).		% add the category predicates to the employee object
 
 	% define a "before" event handler for the complemented object:
-	before(_, Message, Sender) :-
+	before(This, Message, Sender) :-
+		this(This),
 		write('Received message '), writeq(Message), write(' from '), writeq(Sender), nl.
 
 	% add a new method to the complemented object:

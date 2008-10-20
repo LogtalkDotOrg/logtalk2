@@ -13,10 +13,11 @@
 		salt3,
 		search_strategy,
 		blind_search1,
-		breadth_first1,
-		depth_first1,
 		heuristic_search1,
+		performance]),
+	logtalk_load([			% the actual search methods are compiled with
+		breadth_first1,		% the option events(on) to allow the use of
+		depth_first1,		% the "performance" monitor
 		best_first1,
-		hill_climbing1,
-		performance],
+		hill_climbing1],
 		[events(on)]))).

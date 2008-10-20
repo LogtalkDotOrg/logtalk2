@@ -15,6 +15,14 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ...
 
 
+% turn event support on for messages sent at the command-line
+% (i.e. for messages sent from the pseudo-object "user"):
+
+| ?- set_logtalk_flag(events, on).
+
+yes
+
+
 %% message_counter example
 
 
@@ -109,5 +117,12 @@ yes
 
 | ?- timer::timer(list::length([1, 2, 3], _), 1000, Time).
 Time = 0.00003
+
+yes
+
+
+% turn event support off:
+
+| ?- set_logtalk_flag(events, off).
 
 yes

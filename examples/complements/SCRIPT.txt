@@ -23,6 +23,14 @@ Object = employee.
 yes 
 
 
+% turn event support on for messages sent at the command-line
+% (i.e. for messages sent from the pseudo-object "user"):
+
+| ?- set_logtalk_flag(events, on).
+
+yes
+
+
 % use the event handler defined in the "logging" category for the object "employee":
 
 | ?- employee::name(Name).
@@ -46,4 +54,11 @@ Property = public ;
 Property = static ;
 Property = declared_in(logging) ;
 Property = defined_in(logging)
+yes
+
+
+% turn event support off:
+
+| ?- set_logtalk_flag(events, off).
+
 yes
