@@ -40,7 +40,7 @@
 
 % bitwise left-shift operator (used for unit test context-switching)
 
-:- op(400, yfx, <<).
+:- op(400, yfx, <<).	% some Prolog compilers don't declare this operator
 
 
 % imported category predicate call operator
@@ -1544,9 +1544,11 @@ logtalk_compile(Files, Flags) :-
 		 '$lgt_check_compiler_flags'(Flags),
 		 '$lgt_set_compiler_flags'(Flags),
 		 '$lgt_compile_files'(Files),
+		 '$lgt_clear_compiler_flags',
 		 '$lgt_report_warning_numbers'(logtalk_compile(Files, Flags))),
 		Error,
-		('$lgt_reset_warnings_counter',
+		('$lgt_clear_compiler_flags',
+		 '$lgt_reset_warnings_counter',
 		 throw(error(Error, logtalk_compile(Files, Flags))))).
 
 
@@ -1750,9 +1752,6 @@ logtalk_compile(Files, Flags) :-
 % sets the compiler flag options
 
 '$lgt_set_compiler_flags'(Flags) :-
-	retractall('$lgt_pp_compiler_flag_'(_, _)),						% retract old flag values
-	retractall('$lgt_pp_hook_term_expansion_'(_, _)),				% and any old term and
-	retractall('$lgt_pp_hook_goal_expansion_'(_, _)),				% goal expansion hooks
 	'$lgt_assert_compiler_flags'(Flags),
 	(	'$lgt_pp_compiler_flag_'(debug, on) ->						% debug flag on requires the
 		retractall('$lgt_pp_compiler_flag_'(smart_compilation, _)),	% smart_compilation flag to 
@@ -1779,6 +1778,17 @@ logtalk_compile(Files, Flags) :-
 	Flag =.. [Name, Value],
 	asserta('$lgt_pp_compiler_flag_'(Name, Value)),
 	'$lgt_assert_compiler_flags'(Flags).
+
+
+
+% '$lgt_clear_compiler_flags'(@list)
+%
+% clears the compiler flag options
+
+'$lgt_clear_compiler_flags' :-
+	retractall('$lgt_pp_compiler_flag_'(_, _)),			% retract flag values
+	retractall('$lgt_pp_hook_term_expansion_'(_, _)),	% and any term and
+	retractall('$lgt_pp_hook_goal_expansion_'(_, _)).	% goal expansion hooks
 
 
 
@@ -1809,9 +1819,11 @@ logtalk_load(Files, Flags) :-
 		 '$lgt_check_compiler_flags'(Flags),
 		 '$lgt_set_compiler_flags'(Flags),
 		 '$lgt_load_files'(Files),
+		 '$lgt_clear_compiler_flags',
 		 '$lgt_report_warning_numbers'(logtalk_load(Files, Flags))),
 		Error,
-		('$lgt_reset_warnings_counter',
+		('$lgt_clear_compiler_flags',
+		 '$lgt_reset_warnings_counter',
 		 throw(error(Error, logtalk_load(Files, Flags))))).
 
 
@@ -4742,7 +4754,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	writeq(Functor//Arity),
 	write(': ').
 
-'lgt_report_singletons_term'(Term) :-
+'lgt_report_singletons_term'(Term) :-	% facts
 	functor(Term, Functor, Arity),
 	write('in clause for predicate '),
 	writeq(Functor/Arity),
@@ -5213,20 +5225,20 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	var(Dir),
 	throw(error(instantiantion_error, directive(Dir))).
 
-'$lgt_tr_directive'(Dir, _, _, _) :-			% closing entity directive occurs before the opening
-	\+ '$lgt_pp_entity'(_, _, _, _, _),			% entity directive; the opening directive is probably
-	functor(Dir, Functor, Arity),				% missing or misspelt
+'$lgt_tr_directive'(Dir, _, _, _) :-					% closing entity directive occurs before the opening
+	\+ '$lgt_pp_entity'(_, _, _, _, _),					% entity directive; the opening directive is probably
+	functor(Dir, Functor, Arity),						% missing or misspelt
 	'$lgt_lgt_closing_directive'(Functor, Arity),
 	throw(error(unmatched_directive, directive(Dir))).
 
-'$lgt_tr_directive'(Dir, _, _, _) :-
-	\+ '$lgt_pp_entity'(_, _, _, _, _),			% directive occurs before opening entity directive
+'$lgt_tr_directive'(Dir, Line, Input, Output) :-
+	\+ '$lgt_pp_entity'(_, _, _, _, _),					% directive occurs before opening entity directive
 	functor(Dir, Functor, Arity),
 	\+ '$lgt_lgt_opening_directive'(Functor, Arity),
 	!,
-	'$lgt_tr_file_directive'(Dir).				% translate it as a source file-level directive
+	'$lgt_tr_file_directive'(Dir, Line, Input, Output).	% translate it as a source file-level directive
 
-'$lgt_tr_directive'(Dir, Line, Input, Output) :-	% entity closing directive
+'$lgt_tr_directive'(Dir, Line, Input, Output) :-		% entity closing directive
 	functor(Dir, Functor, Arity),
 	'$lgt_lgt_closing_directive'(Functor, Arity),
 	Dir =.. [Functor| Args],
@@ -5239,7 +5251,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 		)),
 	!.
 
-'$lgt_tr_directive'(Dir, Line, Input, Output) :-	% entity opening directive or entity directive
+'$lgt_tr_directive'(Dir, Line, Input, Output) :-		% entity opening directive or entity directive
 	functor(Dir, Functor, Arity),
 	'$lgt_lgt_directive'(Functor, Arity),
 	Dir =.. [Functor| Args],
@@ -5286,29 +5298,29 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 
 
-% '$lgt_tr_file_directive'(@nonvar)
+% '$lgt_tr_file_directive'(@nonvar, +integer, @stream, @stream)
 %
 % translates file-level directives, i.e. directives that are not encapsulated in a Logtalk entity
 % error-checking is delegated in most cases to the back-end Prolog compiler
 
-'$lgt_tr_file_directive'(encoding(_)) :-		% the encoding/1 directive is already processed 
+'$lgt_tr_file_directive'(encoding(_), _, _, _) :-		% the encoding/1 directive is already processed 
 	!.
 
-'$lgt_tr_file_directive'(ensure_loaded(File)) :-
+'$lgt_tr_file_directive'(ensure_loaded(File), _, _, _) :-
     !,
-    ensure_loaded(File),                        % assume that ensure_loaded/1 is also a built-in predicate
+    ensure_loaded(File),                        		% assume that ensure_loaded/1 is also a built-in predicate
     assertz('$lgt_pp_directive_'(ensure_loaded(File))).
 
-'$lgt_tr_file_directive'(initialization(Goal)) :-
+'$lgt_tr_file_directive'(initialization(Goal), _, _, _) :-
 	!,
 	(	callable(Goal) ->
 		assertz('$lgt_pp_file_init_'(Goal))
 	;	throw(type_error(callable, Goal))
 	).
 
-'$lgt_tr_file_directive'(op(Pr, Spec, Ops)) :-	% op/3 directives must be used during entity compilation
+'$lgt_tr_file_directive'(op(Pr, Spec, Ops), _, _, _) :-
 	!,
-    op(Pr, Spec, Ops),
+    op(Pr, Spec, Ops),									% op/3 directives must be used during entity compilation
     assertz('$lgt_pp_directive_'(op(Pr, Spec, Ops))),
     (   atom(Ops) ->
         assertz('$lgt_pp_file_op_'(Pr, Spec, Ops))
@@ -5316,13 +5328,13 @@ current_logtalk_flag(version, version(2, 33, 2)).
         forall('$lgt_member'(Op, Ops), assertz('$lgt_pp_file_op_'(Pr, Spec, Op)))
     ).
 
-'$lgt_tr_file_directive'(set_prolog_flag(Flag, Value)) :-
+'$lgt_tr_file_directive'(set_prolog_flag(Flag, Value), _, _, _) :-
     !,
     set_prolog_flag(Flag, Value),
     assertz('$lgt_pp_directive_'(set_prolog_flag(Flag, Value))).
 
-'$lgt_tr_file_directive'(Dir) :-
-	assertz('$lgt_pp_directive_'(Dir)).			% directive will be copied to the generated Prolog file
+'$lgt_tr_file_directive'(Dir, _, _, _) :-
+	assertz('$lgt_pp_directive_'(Dir)).					% directive will be copied to the generated Prolog file
 
 
 
@@ -5351,7 +5363,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	'$lgt_report_compiling_entity'(object, Obj),
 	'$lgt_add_entity_file_properties'(start(Line), Obj),
 	'$lgt_save_file_op_table',
-	'$lgt_tr_object_id'(Obj, static),							% assume static object
+	'$lgt_tr_object_id'(Obj, static),					% assume static object
 	'$lgt_tr_object_relations'(Rels, Obj).
 
 '$lgt_tr_directive'(end_object, [], Line, _, Output) :-
@@ -5384,7 +5396,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	'$lgt_report_compiling_entity'(protocol, Ptc),
 	'$lgt_add_entity_file_properties'(start(Line), Ptc),
 	'$lgt_save_file_op_table',
-	'$lgt_tr_protocol_id'(Ptc, static),							% assume static protocol
+	'$lgt_tr_protocol_id'(Ptc, static),					% assume static protocol
 	'$lgt_tr_protocol_relations'(Rels, Ptc).
 
 '$lgt_tr_directive'(end_protocol, [], Line, _, Output) :-
@@ -5418,7 +5430,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	'$lgt_report_compiling_entity'(category, Ctg),
 	'$lgt_add_entity_file_properties'(start(Line), Ctg),
 	'$lgt_save_file_op_table',
-	'$lgt_tr_category_id'(Ctg, static),							% assume static category
+	'$lgt_tr_category_id'(Ctg, static),					% assume static category
 	'$lgt_tr_category_relations'(Rels, Ctg).
 
 '$lgt_tr_directive'(end_category, [], Line, _, Output) :-
@@ -5446,9 +5458,9 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	throw(type_error(module_identifier, Module)).
 
 '$lgt_tr_directive'(module, [Module, ExportList], Line, Input, Output) :-
-	assertz('$lgt_pp_module_'(Module)),							% remeber we are compiling a module
+	assertz('$lgt_pp_module_'(Module)),								% remeber we are compiling a module
 	'$lgt_report_compiling_entity'(module, Module),
-	'$lgt_tr_object_id'(Module, static),						% assume static module/object
+	'$lgt_tr_object_id'(Module, static),							% assume static module/object
 	'$lgt_tr_directive'((public), ExportList, Line, Input, Output),	% make the export list public predicates
 	'$lgt_save_file_op_table'.
 

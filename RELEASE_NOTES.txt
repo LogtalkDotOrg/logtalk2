@@ -15,14 +15,19 @@ RELEASE NOTES
 
 2.33.2 - October ??, 2008
 
-    Improved reporting of line numbers for syntax errors when using Ciao, YAP,
-    or SWI-Prolog as the back-end compiler.
+    Improved reporting of line numbers for syntax warnings and errors when 
+    using Ciao, YAP, or SWI-Prolog as the back-end compiler.
 
     Implemented a more flexible internal representation of entity properties.
     Added entity properties file(File, Path) and lines(Start, End) for 
     entities compiled and loaded from source files. The property lines/2 is 
     only available when using Ciao, YAP, or SWI-Prolog as the back-end Prolog
     compiler.
+
+    Corrected a bug where compiler options are not cleared after compilation
+    of source files. This bug would result in wrong compilation of messages 
+    sent from the top-level interpreter (i.e. messages sent by the pseudo-
+    object "user") whenever events or hooks compiler options are used.
 
     Added a customized version of the read_term/2 predicate to all config 
     files that returns the line where a term starts for back-end Prolog 
