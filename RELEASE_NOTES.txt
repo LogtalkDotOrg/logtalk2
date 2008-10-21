@@ -29,6 +29,17 @@ RELEASE NOTES
     sent from the top-level interpreter (i.e. messages sent by the pseudo-
     object "user") whenever events or hooks compiler options are used.
 
+    Added an optimization and security compiler option, "complements", that 
+    allows objects to be compiled with support for complementing categories 
+    either enabled or disabled. The default value (set in the config files)
+    is "off" (disabled).
+
+    Added an optimization and security compiler option, "dynamic_declarations",
+    that allows objects to be compiled with support for dynamic declaration of
+    predicates (using the built-in database methods asserta/1 and assertz/1) 
+    either enabled or disabled. The default value (set in the config files) is
+    "off" (disabled).
+
     Added a customized version of the read_term/2 predicate to all config 
     files that returns the line where a term starts for back-end Prolog 
     compilers whose implementation of the read_term/2 predicate supports 
@@ -51,6 +62,10 @@ RELEASE NOTES
     ("birthdays", "bricks", "complements", "msglog", "polygons", "profiling",
     and "searching") to ensure correct functionality after fixing the bug in
     cleaning compiler options after compilation of source files.
+
+    Updated the "complements" example to use the new "complements" compiler 
+    option. Update the "dynpred" example to use the new "dynamic_declarations"
+    compiler option.
 
 
 2.33.1 - October 12, 2008

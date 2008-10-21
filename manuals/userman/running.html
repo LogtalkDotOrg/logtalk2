@@ -168,6 +168,14 @@ yes</pre>
 			<dd>Controls the compilation of source files in debug mode (the Logtalk built-in debugger can only be used with files compiled in this mode). Possible option values are <code>on</code> and <code>off</code> (the usual default).</dd>
 	</dl>
 	<dl>
+		<dt><code>complements(Option)</code></dt>
+			<dd>Allows objects to be compiled with support for complementing categories turned off in order to improve performance and security. Possible option values are <code>on</code> and <code>off</code> (the usual default). This option can be used on a per-object basis. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
+	</dl>
+	<dl>
+		<dt><code>dynamic_declarations(Option)</code></dt>
+			<dd>Allows objects to be compiled with support for dynamic declaration of new predicates turned off in order to improve performance and security. Possible option values are <code>on</code> and <code>off</code> (the usual default). This option can be used on a per-object basis. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
+	</dl>
+	<dl>
 		<dt><code>events(Option)</code></dt>
 			<dd>Allows message sending calls to be compiled with event-driven programming support turned off in order to improve performance. Possible option values are <code>on</code> and <code>off</code> (the usual default). Objects (and categories) compiled with this option set to <code>off</code> use optimized code for message-sending calls that does not trigger events. As such, this option can be used on a per-object (or per-category) basis. Note that turning on this option is of no consequence for objects and categories already compiled and loaded.</dd>
 	</dl>
@@ -520,7 +528,7 @@ The Logtalk compiler automatically removes any redundant calls to the built-in p
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: October 4, 2008</span>
+		<span>Last updated on: October 20, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="installing.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="programming.html">next</a></span><br/>

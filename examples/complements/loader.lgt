@@ -1,3 +1,3 @@
 
 :- initialization(
-	logtalk_load(complements)).
+	logtalk_load(complements, [complements(on)])).
