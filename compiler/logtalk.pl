@@ -3338,7 +3338,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	'$lgt_complemented_object_'(This, _, Dcl, _, Rnm),
 	(	call_with_args(Dcl, Alias, Scope, Compilation, Meta, NonTerminal, Synchronized, TCtn),
 		SCtn = This
-	;	call_with_args(Rnm, This, Pred, Alias),
+	;	% categories can define aliases for complemented object predicates:
+		call_with_args(Rnm, This, Pred, Alias),
 		Pred \= Alias,
 		call_with_args(ThisDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn)
 	).
@@ -3350,7 +3351,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_complemented_object'(ThisDef, Alias, Sender, This, Self, Call, Ctn) :-
 	'$lgt_complemented_object_'(This, _, _, Def, Rnm),
 	(	call_with_args(Def, Alias, Sender, This, Self, Call, Ctn)
-	;	call_with_args(Rnm, This, Pred, Alias),
+	;	% categories can define aliases for complemented object predicates:
+		call_with_args(Rnm, This, Pred, Alias),
 		Pred \= Alias,
 		call_with_args(ThisDef, Pred, Sender, This, Self, Call, Ctn)
 	).	
