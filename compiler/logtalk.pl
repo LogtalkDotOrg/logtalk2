@@ -13851,11 +13851,13 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	'$lgt_default_flag'(debug, Debug), write(', debug: '), writeq(Debug),
 	'$lgt_default_flag'(smart_compilation, Smart), write(', smart_compilation: '), write(Smart),
 	'$lgt_default_flag'(reload, Reload), write(', reload: '), write(Reload), nl,
-	'$lgt_default_flag'(events, Events), write('  events: '), write(Events),
+	'$lgt_default_flag'(complements, Complements), write('  complements: '), write(Complements),
+	'$lgt_default_flag'(dynamic_declarations, DynamicDeclarations), write(', dynamic_declarations: '), write(DynamicDeclarations),
+	'$lgt_default_flag'(events, Events), write(', events: '), write(Events), nl,
 	(	'$lgt_default_flag'(hook, Hook) -> true
 	;	Hook = '(none defined)'
 	),
-	write(', hook: '), write(Hook),
+	write('  hook: '), write(Hook),
 	'$lgt_default_flag'(tmpdir, TmpDir), write(', tmpdir: '), write(TmpDir), nl,
 	write('Read-only compilation flags:'), nl,
 	'$lgt_default_flag'(break_predicate, Break), write('  break_predicate: '), write(Break),
