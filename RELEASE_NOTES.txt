@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.33.2 - October ??, 2008
 
+    Allow a complementing category to define an alias for a predicate of the
+    complemented object.
+
     Improved reporting of line numbers for syntax warnings and errors when 
     using Ciao, YAP, or SWI-Prolog as the back-end compiler.
 

@@ -99,8 +99,8 @@
 :- multifile('$lgt_extends_protocol_'/3).		% '$lgt_extends_protocol_'(Ptc1, Ptc2, Scope)
 :- dynamic('$lgt_extends_protocol_'/3).
                                             	
-:- multifile('$lgt_complemented_object_'/4).	% '$lgt_complemented_object_'(Obj, Ctg, Dcl, Def)
-:- dynamic('$lgt_complemented_object_'/4).
+:- multifile('$lgt_complemented_object_'/5).	% '$lgt_complemented_object_'(Obj, Ctg, Dcl, Def, Rnm)
+:- dynamic('$lgt_complemented_object_'/5).
 
 
 % table of loaded files
@@ -215,6 +215,7 @@
 :- dynamic('$lgt_pp_specialized_class_'/10).	% '$lgt_pp_specialized_class_'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)
 :- dynamic('$lgt_pp_extended_protocol_'/4).		% '$lgt_pp_extended_protocol_'(Ptc, Prefix, Dcl, Scope)
 :- dynamic('$lgt_pp_extended_category_'/5).		% '$lgt_pp_extended_category_'(Ctg, Prefix, Dcl, Def, Scope)
+:- dynamic('$lgt_pp_complemented_object_'/1).	% '$lgt_pp_complemented_object_'(Obj)
 
 :- dynamic('$lgt_pp_file_init_'/1).				% '$lgt_pp_file_init_'(Goal)	
 :- dynamic('$lgt_pp_entity_init_'/3).			% '$lgt_pp_entity_init_'(Type, Entity, Goal)
@@ -1077,7 +1078,7 @@ complements_object(Category, Object) :-
 	throw(error(type_error(object_identifier, Object), complements_object(Category, Object))).
 
 complements_object(Category, Object) :-
-	'$lgt_complemented_object_'(Object, Category, _, _).
+	'$lgt_complemented_object_'(Object, Category, _, _, _).
 
 
 
@@ -2407,7 +2408,10 @@ current_logtalk_flag(version, version(2, 33, 2)).
 		(	DDcl == nil ->
 			% object doesn't supports dynamic declaration of new predicates:
 			throw(error(permission_error(modify, object_protocol, Pred), Goal, Sender))
-		;	'$lgt_assert_ddcl_clause'(DDcl, Pred, DclScope),
+		;	functor(Pred, Functor, Arity),
+			functor(DPred, Functor, Arity),
+			Clause =.. [DDcl, DPred, DclScope],
+			assertz(Clause),
 			(Scope, Type, Meta) = (DclScope, (dynamic), no)
 		)
 	).
@@ -3326,17 +3330,26 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 % lookup predicate declarations in any category that complements the given object
 
-'$lgt_complemented_object'(This, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn) :-
-	'$lgt_complemented_object_'(This, _, Dcl, _),
-	call_with_args(Dcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn).
+'$lgt_complemented_object'(This, ThisDcl, Alias, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn) :-
+	'$lgt_complemented_object_'(This, _, Dcl, _, Rnm),
+	(	call_with_args(Dcl, Alias, Scope, Compilation, Meta, NonTerminal, Synchronized, TCtn),
+		SCtn = This
+	;	call_with_args(Rnm, This, Pred, Alias),
+		Pred \= Alias,
+		call_with_args(ThisDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn)
+	).
 
 
 
 % lookup predicate definitions in any category that complements the given object
 
-'$lgt_complemented_object'(Pred, Sender, This, Self, Call, Ctn) :-
-	'$lgt_complemented_object_'(This, _, _, Def),
-	call_with_args(Def, Pred, Sender, This, Self, Call, Ctn).
+'$lgt_complemented_object'(ThisDef, Alias, Sender, This, Self, Call, Ctn) :-
+	'$lgt_complemented_object_'(This, _, _, Def, Rnm),
+	(	call_with_args(Def, Alias, Sender, This, Self, Call, Ctn)
+	;	call_with_args(Rnm, This, Pred, Alias),
+		Pred \= Alias,
+		call_with_args(ThisDef, Pred, Sender, This, Self, Call, Ctn)
+	).	
 
 
 
@@ -4280,7 +4293,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	retractall('$lgt_extends_protocol_'(Entity, _, _)),
 	retractall('$lgt_extends_object_'(Entity, _, _)),
 	retractall('$lgt_extends_category_'(Entity, _, _)),
-	retractall('$lgt_complemented_object_'(_, Entity, _, _)),
+	retractall('$lgt_complemented_object_'(_, Entity, _, _, _)),
 	retractall('$lgt_debugging_'(Entity)).
 
 
@@ -4956,6 +4969,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	retractall('$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _)),
 	retractall('$lgt_pp_extended_protocol_'(_, _, _, _)),
 	retractall('$lgt_pp_extended_category_'(_, _, _, _, _)),
+	retractall('$lgt_pp_complemented_object_'(_)),
 	retractall('$lgt_pp_uses_'(_)),
 	retractall('$lgt_pp_uses_'(_, _, _)),
 	retractall('$lgt_pp_use_module_'(_, _, _)),
@@ -5731,6 +5745,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	;	'$lgt_pp_extended_object_'(Entity, _, _, _, _, _, _, _, _, _)
 	;	'$lgt_pp_instantiated_class_'(Entity, _, _, _, _, _, _, _, _, _)
 	;	'$lgt_pp_specialized_class_'(Entity, _, _, _, _, _, _, _, _, _)
+	;	'$lgt_pp_complemented_object_'(Entity)
 	),
 	!,
 	'$lgt_tr_alias_directive'(Entity, PI1, PI2).
@@ -9056,21 +9071,22 @@ current_logtalk_flag(version, version(2, 33, 2)).
 % translates a "complements" relation between a category and a list of objects
 
 '$lgt_tr_complements_category'(Objs, Ctg) :-
-	'$lgt_pp_category_'(Ctg, _, Dcl, Def, _, _) ->
-	'$lgt_tr_complements_category'(Objs, Ctg, Dcl, Def).
+	'$lgt_pp_category_'(Ctg, _, Dcl, Def, Rnm, _) ->
+	'$lgt_tr_complements_category'(Objs, Ctg, Dcl, Def, Rnm).
 
 
-'$lgt_tr_complements_category'([], _, _, _).
+'$lgt_tr_complements_category'([], _, _, _, _).
 
-'$lgt_tr_complements_category'([Obj| _], _, _, _) :-
+'$lgt_tr_complements_category'([Obj| _], _, _, _, _) :-
 	var(Obj),
 	throw(instantiation_error).
 
-'$lgt_tr_complements_category'([Obj| Objs], Ctg, Dcl, Def) :-
+'$lgt_tr_complements_category'([Obj| Objs], Ctg, Dcl, Def, Rnm) :-
 	(	callable(Obj) ->
 		assertz('$lgt_pp_referenced_object_'(Obj)),
-		assertz('$lgt_pp_rclause_'('$lgt_complemented_object_'(Obj, Ctg, Dcl, Def))),
-		'$lgt_tr_complements_category'(Objs, Ctg, Dcl, Def)
+		assertz('$lgt_pp_complemented_object_'(Obj)),
+		assertz('$lgt_pp_rclause_'('$lgt_complemented_object_'(Obj, Ctg, Dcl, Def, Rnm))),
+		'$lgt_tr_complements_category'(Objs, Ctg, Dcl, Def, Rnm)
 	;	throw(type_error(object_identifier, Obj))
 	).
 
@@ -9338,18 +9354,6 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	;	retractall(Clause),
 		'$lgt_clean_lookup_caches'(Head)
 	).
-
-
-
-% '$lgt_assert_ddcl_clause'(+atom, +term, +term)
-%
-% asserts a dynamic predicate declaration
-
-'$lgt_assert_ddcl_clause'(DDcl, Pred, Scope) :-
-	functor(Pred, Functor, Arity),
-	functor(DPred, Functor, Arity),
-	Clause =.. [DDcl, DPred, Scope],
-	assertz(Clause).
 
 
 
@@ -9859,8 +9863,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_gen_prototype_imports_dcl_clauses' :-
 	(	'$lgt_compiler_flag'(complements, on) ->
 		'$lgt_pp_object_'(Obj, _, ODcl, _, _, _, _, _, _, _, _) ->
-		Head =.. [ODcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Obj, Ctn],
-		Lookup = '$lgt_complemented_object'(Obj, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn),
+		Head =.. [ODcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn],
+		Lookup = '$lgt_complemented_object'(Obj, ODcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn),
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	;	true
 	).
@@ -9938,7 +9942,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	(	'$lgt_compiler_flag'(complements, on) ->
 		'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, _, _) ->
 		Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-		Lookup = '$lgt_complemented_object'(Pred, Sender, Obj, Self, Call, Ctn),
+		Lookup = '$lgt_complemented_object'(ODef, Pred, Sender, Obj, Self, Call, Ctn),
 		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	;	true
 	).
@@ -10120,8 +10124,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_gen_ic_category_idcl_clauses' :-
 	(	'$lgt_compiler_flag'(complements, on) ->
 		'$lgt_pp_object_'(Obj, _, _, _, _, OIDcl, _, _, _, _, _) ->
-		Head =.. [OIDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Obj, Ctn],
-		Lookup = '$lgt_complemented_object'(Obj, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, Ctn),
+		Head =.. [OIDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn],
+		Lookup = '$lgt_complemented_object'(Obj, OIDcl, Pred, Scope, Compilation, Meta, NonTerminal, Synchronized, SCtn, TCtn),
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	;	true
 	).
@@ -10200,7 +10204,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	(	'$lgt_compiler_flag'(complements, on) ->
 		'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, _, _) ->
 		Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-		Lookup = '$lgt_complemented_object'(Pred, Sender, Obj, Self, Call, Ctn),
+		Lookup = '$lgt_complemented_object'(ODef, Pred, Sender, Obj, Self, Call, Ctn),
 		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	;	true
 	).
@@ -10266,7 +10270,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	(	'$lgt_compiler_flag'(complements, on) ->
 		'$lgt_pp_object_'(Obj, _, _, _, _, _, OIDef, _, _, _, _) ->
 		Head =.. [OIDef, Pred, Sender, Obj, Self, Call, Ctn],
-		Lookup = '$lgt_complemented_object'(Pred, Sender, Obj, Self, Call, Ctn),
+		Lookup = '$lgt_complemented_object'(OIDef, Pred, Sender, Obj, Self, Call, Ctn),
 		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	;	true
 	).
@@ -10830,7 +10834,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 		'$lgt_write_runtime_clauses'(Stream, '$lgt_extends_category_'/3),
 		'$lgt_write_runtime_clauses'(Stream, '$lgt_extends_object_'/3),
 		'$lgt_write_runtime_clauses'(Stream, '$lgt_extends_protocol_'/3),
-		'$lgt_write_runtime_clauses'(Stream, '$lgt_complemented_object_'/4),
+		'$lgt_write_runtime_clauses'(Stream, '$lgt_complemented_object_'/5),
 		'$lgt_write_runtime_clauses'(Stream, '$lgt_debugging_'/1)
 	;	true
 	).
