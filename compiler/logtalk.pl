@@ -2120,6 +2120,10 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	'$lgt_current_object_'(Superclass, _, _, _, _, _, _, _, _, Rnm, _),
 	'$lgt_alias_pred'(Superclass, Rnm, Alias, Pred, superclass).
 
+'$lgt_alias_pred'(Obj, _, Alias, Pred, _) :-
+	'$lgt_complemented_object_'(Obj, Ctg, _, _, Rnm),
+	'$lgt_alias_pred'(Ctg, Rnm, Alias, Pred, _).
+
 
 
 % abolish/1 built-in method
