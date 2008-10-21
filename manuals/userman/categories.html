@@ -67,7 +67,7 @@ A category may explicitly complement one or more existing objects, thus providin
     ...
 :- end_category.</pre>
 <p>
-This allows us to add new functionality to existing objects without requiring access or modifications to their source code. Common uses are adding logging or debugging functionality to a set of objects. Complemented objects need to be compiled with the <code>complements</code> compiler option switched on.
+This allows us to add new functionality to existing objects without requiring access or modifications to their source code. Common uses are adding logging or debugging predicates to a set of objects. Complementing categories may also be used to define aliases for complemented object predicates. Complemented objects need to be compiled with the <code>complements</code> compiler option switched on.
 </p>
 <p>
 When you want to use static binding with a <em>complemented</em> object, be sure to compile and load the <em>complementing</em> category before the object (otherwise the new functionality added by the category will be ignored by the object clients).
