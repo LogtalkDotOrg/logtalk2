@@ -15,7 +15,7 @@ RELEASE NOTES
 
 2.33.2 - October ??, 2008
 
-    Allow a complementing category to define an alias for a predicate of the
+    Allow a complementing category to define aliases for predicates of the
     complemented object.
 
     Improved reporting of line numbers for syntax warnings and errors when 
@@ -32,12 +32,12 @@ RELEASE NOTES
     sent from the top-level interpreter (i.e. messages sent by the pseudo-
     object "user") whenever events or hooks compiler options are used.
 
-    Added an optimization and security compiler option, "complements", that 
+    Added an optimization and safety compiler option, "complements", that 
     allows objects to be compiled with support for complementing categories 
     either enabled or disabled. The default value (set in the config files)
     is "off" (disabled).
 
-    Added an optimization and security compiler option, "dynamic_declarations",
+    Added an optimization and safety compiler option, "dynamic_declarations",
     that allows objects to be compiled with support for dynamic declaration of
     predicates (using the built-in database methods asserta/1 and assertz/1) 
     either enabled or disabled. The default value (set in the config files) is

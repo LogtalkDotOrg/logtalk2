@@ -165,11 +165,11 @@ Operators are local to the object (or category) where they are declared. This me
 <p>
 When the same operators are used on several entities within the same source file, the corresponding directives must appear before any entity that uses them. However, this results in a global scope for the operators. If you prefer the operators to be local to the source file, just <em>undefine</em> them at the end of the file. For example:
 </p>
-<pre>:- op(400, xfx, implies).  % before any entity that uses the operator
+<pre>:- op(400, xfx, results).  % before any entity that uses the operator
 
 ...
 
-:- op(0, xfx, implies).    % after all entities that used the operator</pre>
+:- op(0, xfx, results).    % after all entities that used the operator</pre>
 
 <h3 id="predicates_uses">Uses directive</h3>
 
@@ -518,7 +518,7 @@ to answer a message received by descendant
 that was sent by user
 yes</pre>
 <p>
-Note that the goals <code>self(Self)</code>, <code>sender(Sender)</code>, and <code>this(This)</code>, being translated to unifications with the clause head context arguments at compile time, are effectively removed from the clause body. This implies that a clause such as:
+Note that the goals <code>self(Self)</code>, <code>sender(Sender)</code>, and <code>this(This)</code>, being translated to unifications with the clause head context arguments at compile time, are effectively removed from the clause body. Therefore, a clause such as:
 </p>
 <pre>predicate(Arg) :-
     self(Self),
@@ -547,7 +547,7 @@ After compiling and loading these two objects, we can try the following goal:
 Color parameter value is blue
 yes</pre>
 <p>
-The method <code>parameter/2</code> is only translated to a compile time unification when used inside objects with its first argument instantiated at compile time. When the first argument is not known at compile time, or when the method is used inside categories, its call implies a call to the built-in Prolog predicate <code>arg/3</code>. Nevertheless, note that calls to <code>parameter/2</code> from inside categories are inherently problematic: a category may be implemented by several objects, both parametric (with different number of parameters) and non-parametric. Care must be taken to ensure that a parametric object importing such a category match the interpretation of its parameters used in the category.
+The method <code>parameter/2</code> is only translated to a compile time unification when used inside objects with its first argument instantiated at compile time. When the first argument is not known at compile time, or when the method is used inside categories, its call results in a call to the built-in Prolog predicate <code>arg/3</code>. Nevertheless, note that calls to <code>parameter/2</code> from inside categories are inherently problematic: a category may be implemented by several objects, both parametric (with different number of parameters) and non-parametric. Care must be taken to ensure that a parametric object importing such a category match the interpretation of its parameters used in the category.
 </p>
 
 <h3 id="predicates_database">Database methods</h3>
@@ -619,7 +619,7 @@ Possible predicate properties values are:
 The properties <code>declared_in/1</code> and <code>defined_in/1</code> do not apply to built-in methods and Logtalk or Prolog built-in predicates. Note that if a predicate is declared in a category imported by the object, it will be the category name &mdash; not the object name &mdash; that will be returned by the property <code>declared_in/1</code>. The same goes for protocol declared predicates.
 </p>
 <p>
-The predicate property <code>defined_in(Entity)</code> implies that definitions for the predicate are looked up in <code>Entity</code>. This does not necessarily implies that clauses for the predicate exist in <code>Entity</code>; the predicate can simply be false (closed world assumption).
+The predicate property <code>defined_in(Entity)</code> results in the definitions for the predicate being looked up in <code>Entity</code>. This does not necessarily implies that clauses for the predicate exist in <code>Entity</code>; the predicate can simply be false (closed world assumption).
 </p>
 <p>
 The property <code>non_terminal/1</code> only applies to predicates that result from the compilation of grammar rule non-terminals. 
@@ -678,7 +678,7 @@ Currently, there is no clean workaround for calling non-standard, Prolog built-i
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: October 11, 2008</span>
+		<span>Last updated on: October 20, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="categories.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="inheritance.html">next</a></span><br/>
