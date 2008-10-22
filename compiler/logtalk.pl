@@ -6721,6 +6721,20 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	fail.
 
 
+% definition of term and goal expansion predicates without reference to the "expanding" built-in protocol
+
+'$lgt_tr_head'(Head, _, _, Line, Input) :-
+	functor(Head, Functor, 2),
+	once((Functor == term_expansion; Functor == goal_expansion)),
+	\+ '$lgt_pp_implemented_protocol_'(expanding, _, _, _),
+	'$lgt_compiler_flag'(report, on),
+	'$lgt_inc_compile_warnings_counter',
+	nl, write('        WARNING!  Missing reference to the "expanding" built-in protocol: '),
+	writeq(Functor/3),
+	nl, '$lgt_report_compiler_error_line_number'(Line, Input),
+	fail.
+
+
 % translate the head of a clause of a user defined predicate
 
 '$lgt_tr_head'(Head, THead, Ctx, _, _) :-
