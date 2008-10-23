@@ -4266,7 +4266,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	(	'$lgt_entity_property_'(Entity, file(OldBase, OldPath)),
 		'$lgt_pp_file_rclause_'('$lgt_entity_property_'(Entity, file(NewBase, NewPath))),
 		(OldPath \== NewPath; OldBase \== NewBase) ->
-		atom_concat(OldPath, OldBase, File)
+		File = OldBase-OldPath
 	;	File = nil
 	).
 
@@ -4283,7 +4283,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 		current_output(Output), '$lgt_pretty_print_vars_quoted'(Output, Entity), nl,
 		(	File == nil ->
 			true
-		;	write('              loaded from file '), write(File), nl
+		;	File = Base-Path,
+			write('              loaded from file '), write(Base), write(' ('), write(Path), write(')'), nl
 		)
 	;	true
 	).
