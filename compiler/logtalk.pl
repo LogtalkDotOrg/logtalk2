@@ -4232,7 +4232,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 
 
-% '$lgt_check_redefined_entities'
+% '$lgt_check_redefined_entities'(+atom)
 %
 % check and print a warning for all entities that are about to be redefined;
 % also retract old runtime clauses for the entity being redefined for safety
@@ -4242,8 +4242,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	;	'$lgt_pp_file_rclause_'('$lgt_current_category_'(Entity, _, _, _, _, _))
 	;	'$lgt_pp_file_rclause_'('$lgt_current_object_'(Entity, _, _, _, _, _, _, _, _, _, _))
 	),
-	'$lgt_redefined_entity'(Entity, Type),
-	'$lgt_report_redefined_entity'(Type, Entity),
+	'$lgt_redefined_entity'(Entity, Type, File),
+	'$lgt_report_redefined_entity'(Type, Entity, File),
 	'$lgt_retract_old_runtime_clauses'(Entity),
 	fail.
 
@@ -4251,17 +4251,23 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 
 
-% '$lgt_redefined_entity'(@entity_identifier, -atom)
+% '$lgt_redefined_entity'(+atom, @entity_identifier, -atom, -atom)
 %
 % true if an entity of the same name is already loaded; returns entity type
 
-'$lgt_redefined_entity'(Entity, Type) :-
+'$lgt_redefined_entity'(Entity, Type, File) :-
 	(	'$lgt_current_object_'(Entity, _, _, _, _, _, _, _, _, _, _) ->
 		Type = object
 	;	'$lgt_current_protocol_'(Entity, _, _, _, _) ->
 		Type = protocol
 	;	'$lgt_current_category_'(Entity, _, _, _, _, _) ->
 		Type = category
+	),
+	(	'$lgt_entity_property_'(Entity, file(OldBase, OldPath)),
+		'$lgt_pp_file_rclause_'('$lgt_entity_property_'(Entity, file(NewBase, NewPath))),
+		(OldPath \== NewPath; OldBase \== NewBase) ->
+		atom_concat(OldPath, OldBase, File)
+	;	File = nil
 	).
 
 
@@ -4270,11 +4276,15 @@ current_logtalk_flag(version, version(2, 33, 2)).
 %
 % prints a warning for redefined entities
 
-'$lgt_report_redefined_entity'(Type, Entity) :-
+'$lgt_report_redefined_entity'(Type, Entity, File) :-
 	(	'$lgt_compiler_flag'(report, on) ->
 		'$lgt_inc_load_warnings_counter',
 		write('    WARNING!  Redefining '), write(Type), write(' '), 
-		current_output(Output), '$lgt_pretty_print_vars_quoted'(Output, Entity), nl
+		current_output(Output), '$lgt_pretty_print_vars_quoted'(Output, Entity), nl,
+		(	File == nil ->
+			true
+		;	write('              loaded from file '), write(File), nl
+		)
 	;	true
 	).
 

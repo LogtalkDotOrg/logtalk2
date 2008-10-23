@@ -36,6 +36,10 @@ RELEASE NOTES
     the built-in predicates term_expansion/2 and goal_expansion/2 without a
     reference to the built-in protocol "expanding".
 
+    Updated the Logtalk compiler to provide file information when printing
+    redefined entity warnings if the files of the new and the old definitions
+    are different (requires support for the file/2 entity property).
+
     Added an optimization and safety compiler option, "complements", that 
     allows objects to be compiled with support for complementing categories 
     either enabled or disabled. The default value (set in the config files)
