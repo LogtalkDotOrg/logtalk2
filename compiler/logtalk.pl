@@ -4232,7 +4232,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 
 
-% '$lgt_check_redefined_entities'(+atom)
+% '$lgt_check_redefined_entities'
 %
 % check and print a warning for all entities that are about to be redefined;
 % also retract old runtime clauses for the entity being redefined for safety
@@ -4251,7 +4251,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 
 
-% '$lgt_redefined_entity'(+atom, @entity_identifier, -atom, -atom)
+% '$lgt_redefined_entity'(@entity_identifier, -atom, -atom)
 %
 % true if an entity of the same name is already loaded; returns entity type
 
@@ -4263,16 +4263,18 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	;	'$lgt_current_category_'(Entity, _, _, _, _, _) ->
 		Type = category
 	),
-	(	'$lgt_entity_property_'(Entity, file(OldBase, OldPath)),
+	(	% check file information using the file/2 entity property, if available:
+		'$lgt_entity_property_'(Entity, file(OldBase, OldPath)),
 		'$lgt_pp_file_rclause_'('$lgt_entity_property_'(Entity, file(NewBase, NewPath))),
 		(OldPath \== NewPath; OldBase \== NewBase) ->
 		File = OldBase-OldPath
-	;	File = nil
+	;	% either no file/2 entity property or we're reloading the same file 
+		File = nil
 	).
 
 
 
-% '$lgt_report_redefined_entity'(+atom, @entity_identifier)
+% '$lgt_report_redefined_entity'(+atom, @entity_identifier, +atom)
 %
 % prints a warning for redefined entities
 
@@ -4283,7 +4285,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 		current_output(Output), '$lgt_pretty_print_vars_quoted'(Output, Entity), nl,
 		(	File == nil ->
 			true
-		;	File = Base-Path,
+		;	% we've conflicting entities coming from different source files:
+			File = Base-Path,
 			write('              loaded from file '), write(Base), write(' ('), write(Path), write(')'), nl
 		)
 	;	true
