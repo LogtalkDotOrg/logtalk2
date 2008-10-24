@@ -4927,7 +4927,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 			write('                  above line: '), write(Next)
 		;	true
 		)
-	;	write('                  in line: '), write(Line)
+	;	write('                  at line: '), write(Line)
 	).
 
 

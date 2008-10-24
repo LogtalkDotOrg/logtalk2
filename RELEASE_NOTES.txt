@@ -19,13 +19,12 @@ RELEASE NOTES
     complemented object.
 
     Improved reporting of line numbers for syntax warnings and errors when 
-    using the Ciao, YAP, and SWI-Prolog back-end compilers.
+    using YAP or SWI-Prolog as the back-end compilers.
 
     Implemented a more flexible internal representation of entity properties.
     Added entity properties file(File, Path) and lines(Start, End) for 
     entities compiled and loaded from source files. The property lines/2 is 
-    only available when using the Ciao, YAP, and SWI-Prolog back-end Prolog
-    compilers.
+    only available when using YAP or SWI-Prolog as the back-end compilers.
 
     Corrected a bug where compiler options are not cleared after compilation
     of source files. This bug would result in wrong compilation of messages 
