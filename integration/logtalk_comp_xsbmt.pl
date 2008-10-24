@@ -23,10 +23,12 @@
 :- thread_shared('$lgt_before_'(_, _, _, _, _)).
 :- thread_shared('$lgt_after_'(_, _, _, _, _)).
 
-% tables of loaded entities and respective relationships
+% tables of loaded entities, entity properties, and entity relations
 :- thread_shared('$lgt_current_protocol_'(_, _, _, _, _)).
-:- thread_shared('$lgt_current_category_'(_, _, _, _, _, _, _)).
-:- thread_shared('$lgt_current_object_'(_, _, _, _, _, _, _, _, _, _, _, _, _)).
+:- thread_shared('$lgt_current_category_'(_, _, _, _, _, _)).
+:- thread_shared('$lgt_current_object_'(_, _, _, _, _, _, _, _, _, _, _)).
+
+:- thread_shared('$lgt_entity_property_'(_, _)).
 
 :- thread_shared('$lgt_implements_protocol_'(_, _, _)).
 :- thread_shared('$lgt_imports_category_'(_, _, _)).
@@ -34,7 +36,7 @@
 :- thread_shared('$lgt_specializes_class_'(_, _, _)).
 :- thread_shared('$lgt_extends_protocol_'(_, _, _)).
 :- thread_shared('$lgt_extends_object_'(_, _, _)).
-:- thread_shared('$lgt_complemented_object_'(_, _, _, _)).
+:- thread_shared('$lgt_complemented_object_'(_, _, _, _, _)).
 
 % table of loaded files
 :- thread_shared('$lgt_loaded_file_'(_, _)).
