@@ -1597,14 +1597,14 @@ logtalk_compile(Files, Flags) :-
 		retract('$lgt_pp_load_warnings_counter_'(LCounter)) ->
 		(	'$lgt_compiler_flag'(report, on) ->
 			(	CCounter + LCounter =:= 0 ->							% no warnings
-				write('(0 warnings)'), nl
+				write('%  (0 warnings)'), nl
 			;	CCounter =:= 0 ->										% no compilation warnings 
-				write('('), write(LCounter), write(' loading '),
+				write('%  ('), write(LCounter), write(' loading '),
 				'$lgt_write_warnings_word'(LCounter), write(')'), nl
 			;	LCounter =:= 0 ->										% no loading warnings
-				write('('), write(CCounter), write(' compilation '),
+				write('%  ('), write(CCounter), write(' compilation '),
 				'$lgt_write_warnings_word'(CCounter), write(')'), nl
-			;	write('('), write(CCounter), write(' compilation '),	% both compilation and loading warnings
+			;	write('%  ('), write(CCounter), write(' compilation '),	% both compilation and loading warnings
 				'$lgt_write_warnings_word'(CCounter), write(' and '),
 				write(LCounter), write(' loading '),
 				'$lgt_write_warnings_word'(LCounter), write(')'), nl
@@ -4281,13 +4281,13 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_report_redefined_entity'(Type, Entity, File) :-
 	(	'$lgt_compiler_flag'(report, on) ->
 		'$lgt_inc_load_warnings_counter',
-		write('    WARNING!  Redefining '), write(Type), write(' '), 
+		write('%      WARNING!  Redefining '), write(Type), write(' '), 
 		current_output(Output), '$lgt_pretty_print_vars_quoted'(Output, Entity), nl,
 		(	File == nil ->
 			true
 		;	% we've conflicting entities coming from different source files:
 			File = Base-Path,
-			write('              loaded from file '), write(Base), write(' ('), write(Path), write(')'), nl
+			write('%                loaded from file '), write(Base), write(' ('), write(Path), write(')'), nl
 		)
 	;	true
 	).
@@ -4325,7 +4325,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_report_compiling_entity'(Type, Entity) :-
 	retractall('$lgt_pp_entity_warnings_flag_'),
 	(	'$lgt_compiler_flag'(report, on) ->
-		write('    compiling '), write(Type),	write(' '),
+		write('%      compiling '), write(Type),	write(' '),
 		current_output(Output), '$lgt_pretty_print_vars_quoted'(Output, Entity),
 		(	'$lgt_compiler_flag'(debug, on) ->
 			write(' in debug mode... ')
@@ -4343,7 +4343,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_report_compiled_entity'(_, _) :-
 	(	'$lgt_compiler_flag'(report, on) ->
 		(	'$lgt_pp_entity_warnings_flag_' ->
-			nl, write('    compiled'), nl
+			nl, write('%      compiled'), nl
 		;	write('compiled'), nl
 		)
 	;	true
@@ -4357,7 +4357,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 '$lgt_report_working_directory'(Directory) :-
 	(	'$lgt_compiler_flag'(report, on) ->
-		nl, write('+++ working on directory '), write(Directory), nl
+		nl, write('%  +++ working in directory '), write(Directory), nl
 	;	true
 	).
 
@@ -4369,7 +4369,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 '$lgt_report_compiling_file'(File) :-
 	(	'$lgt_compiler_flag'(report, on) ->
-		write('>>> compiling source file '), writeq(File),
+		write('%  >>> compiling source file '), writeq(File),
 		(	'$lgt_compiler_flag'(debug, on) ->
 			write(' in debug mode...')
 		;	write('...')
@@ -4386,7 +4386,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 '$lgt_report_up_to_date_file'(File) :-
 	(	'$lgt_compiler_flag'(report, on) ->
-		write('>>> compiling source file '), writeq(File), write('... up-to-date'), nl
+		write('%  >>> compiling source file '), writeq(File), write('... up-to-date'), nl
 	;	true
 	).
 
@@ -4398,7 +4398,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 '$lgt_report_compiled_file'(File) :-
 	(	'$lgt_compiler_flag'(report, on) ->
-		write('>>> '), writeq(File), write(' source file compiled'), nl
+		write('%  >>> '), writeq(File), write(' source file compiled'), nl
 	;	true
 	).
 
@@ -4410,7 +4410,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 '$lgt_report_loading_file'(File) :-
 	(	'$lgt_compiler_flag'(report, on) ->
-		write('<<< loading source file '), writeq(File), write('... '), nl
+		write('%  <<< loading source file '), writeq(File), write('... '), nl
 	;	true
 	).
 
@@ -4421,7 +4421,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 '$lgt_report_reloading_file'(File) :-
 	(	'$lgt_compiler_flag'(report, on) ->
-		write('<<< reloading source file '), writeq(File), write('... '), nl
+		write('%  <<< reloading source file '), writeq(File), write('... '), nl
 	;	true
 	).
 
@@ -4432,7 +4432,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 '$lgt_report_skipping_file'(File) :-
 	(	'$lgt_compiler_flag'(report, on) ->
-		write('<<< skipping loading of source file '), writeq(File), write(' (already loaded) '), nl
+		write('%  <<< skipping loading of source file '), writeq(File), write(' (already loaded) '), nl
 	;	true
 	).
 
@@ -4443,7 +4443,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 '$lgt_report_loaded_file'(File) :-
 	(	'$lgt_compiler_flag'(report, on) ->
-		write('<<< '), writeq(File), write(' source file loaded'), nl
+		write('%  <<< '), writeq(File), write(' source file loaded'), nl
 	;	true
 	).
 
@@ -4454,7 +4454,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 '$lgt_report_reloaded_file'(File) :-
 	(	'$lgt_compiler_flag'(report, on) ->
-		write('<<< '), writeq(File), write(' source file reloaded'), nl
+		write('%  <<< '), writeq(File), write(' source file reloaded'), nl
 	;	true
 	).
 
@@ -4751,8 +4751,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	; true
 	),
 	(	Names == [] ->
-		write('        WARNING!  Singleton variable ')
-	;	write('        WARNING!  Singleton variables ')
+		write('%          WARNING!  Singleton variable ')
+	;	write('%          WARNING!  Singleton variables ')
 	),
 	'lgt_report_singletons_term'(Term),
 	'$lgt_write_list'([Name| Names]),
@@ -4865,7 +4865,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 '$lgt_compiler_error_handler'(Error) :-
 	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
-	write('        ERROR!    '), writeq(Error), nl,
+	write('%          ERROR!    '), writeq(Error), nl,
 	'$lgt_restore_global_op_table',
 	'$lgt_clean_pp_clauses',
 	'$lgt_reset_warnings_counter',
@@ -4880,54 +4880,53 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_report_compiler_error'(Stream, Error) :-
 	'$lgt_report_compiler_error_message'(Error),
 	(	catch('$lgt_stream_current_line_number'(Stream, Line), _, fail) ->
-		write('                  above line: '), write(Line)
+		write('%                    above line: '), write(Line), nl
 	;	true
-	),
-	nl.
+	).
 
 
 '$lgt_report_compiler_error_message'(error(Error, entity(Type, Entity))) :-
 	!,
 	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
-	write('        ERROR!    '), writeq(Error), nl,
-	write('                  in '), write(Type), write(': '), writeq(Entity), nl.
+	write('%          ERROR!    '), writeq(Error), nl,
+	write('%                    in '), write(Type), write(': '), writeq(Entity), nl.
 
 '$lgt_report_compiler_error_message'(error(Error, directive(Directive))) :-
 	!,
 	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
-	write('        ERROR!    '), writeq(Error), nl,
-	write('                  in directive: '), writeq((:- Directive)), nl.
+	write('%          ERROR!    '), writeq(Error), nl,
+	write('%                    in directive: '), writeq((:- Directive)), nl.
 
 '$lgt_report_compiler_error_message'(error(Error, clause(Clause))) :-
 	!,
 	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
-	write('        ERROR!    '), writeq(Error), nl,
-	write('                  in clause: '), writeq(Clause), nl.
+	write('%          ERROR!    '), writeq(Error), nl,
+	write('%                    in clause: '), writeq(Clause), nl.
 
 '$lgt_report_compiler_error_message'(error(Error, dcgrule(Rule))) :-
 	!,
 	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
-	write('        ERROR!    '), writeq(Error), nl,
-	write('                  in grammar rule: '), writeq((Rule)), nl.
+	write('%          ERROR!    '), writeq(Error), nl,
+	write('%                    in grammar rule: '), writeq((Rule)), nl.
 
 '$lgt_report_compiler_error_message'(error(Error, Term)) :-
 	!,
 	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
-	write('        ERROR!    '), writeq(Error), nl,
-	write('                  in: '), writeq(Term), nl.
+	write('%          ERROR!    '), writeq(Error), nl,
+	write('%                    in: '), writeq(Term), nl.
 
 '$lgt_report_compiler_error_message'(Error) :-
 	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
-	write('        ERROR!    '), writeq(Error), nl.
+	write('%          ERROR!    '), writeq(Error), nl.
 
 
 '$lgt_report_compiler_error_line_number'(Line, Stream) :-
 	(	Line =:= -1 ->
 		(	catch('$lgt_stream_current_line_number'(Stream, Next), _, fail) ->
-			write('                  above line: '), write(Next)
+			write('%                    above line: '), write(Next)
 		;	true
 		)
-	;	write('                  at line: '), write(Line)
+	;	write('%                    at line: '), write(Line)
 	).
 
 
@@ -5303,7 +5302,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	'$lgt_ignore_pl_directive'(Dir),					% defined in the Prolog config files
 	!,
 	(	'$lgt_compiler_flag'(portability, warning) ->
-		nl, write('        WARNING!  Ignoring Prolog directive: '), writeq(Dir),
+		nl, write('%          WARNING!  Ignoring Prolog directive: '), writeq(Dir),
 		nl, '$lgt_report_compiler_error_line_number'(Line, Input)
 	;	true
 	).
@@ -5313,8 +5312,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	assertz('$lgt_pp_directive_'(RWDir)),
 	!,
 	(	'$lgt_compiler_flag'(portability, warning) ->
-		nl, write('        WARNING!  Rewriting Prolog directive:         '), writeq(Dir),
-		nl, write('                  Copying resulting Prolog directive: '), writeq(RWDir),
+		nl, write('%          WARNING!  Rewriting Prolog directive:         '), writeq(Dir),
+		nl, write('%                    Copying resulting Prolog directive: '), writeq(RWDir),
 		nl, '$lgt_report_compiler_error_line_number'(Line, Input)
 	;	true
 	).
@@ -5323,8 +5322,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	'$lgt_rewrite_and_recompile_pl_directive'(Dir, RWDir),	% defined in the Prolog config files
 	!,
 	(	'$lgt_compiler_flag'(portability, warning) ->
-		nl, write('        WARNING!  Rewriting Prolog directive:             '), writeq(Dir),
-		nl, write('                  Recompiling resulting Prolog directive: '), writeq(RWDir),
+		nl, write('%          WARNING!  Rewriting Prolog directive:             '), writeq(Dir),
+		nl, write('%                    Recompiling resulting Prolog directive: '), writeq(RWDir),
 		nl, '$lgt_report_compiler_error_line_number'(Line, Input)
 	;	true
 	),
@@ -5660,7 +5659,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 		(	'$lgt_pp_synchronized_' ->
 			'$lgt_pp_entity'(Type, _, _, _, _),
 			'$lgt_inc_compile_warnings_counter',
-			nl, write('        WARNING!  Ignoring synchronized predicate directive: '),
+			nl, write('%          WARNING!  Ignoring synchronized predicate directive: '),
 			write(Type), write(' already declared as synchronized!'),
 			nl, '$lgt_report_compiler_error_line_number'(Line, Input)
 		;	'$lgt_flatten_list'(Preds, Preds2),
@@ -6700,7 +6699,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	\+ '$lgt_pp_redefined_built_in_'(Head, _, _, _, _),		% not already reported?
 	functor(Head, Functor, Arity),
 	'$lgt_inc_compile_warnings_counter',
-	nl, write('        WARNING!  Redefining a Logtalk built-in predicate: '),
+	nl, write('%          WARNING!  Redefining a Logtalk built-in predicate: '),
 	writeq(Functor/Arity),
 	nl, '$lgt_report_compiler_error_line_number'(Line, Input),
 	fail.
@@ -6715,7 +6714,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	\+ '$lgt_pp_redefined_built_in_'(Head, _, _, _, _),		% not already reported?
 	functor(Head, Functor, Arity),
 	'$lgt_inc_compile_warnings_counter',
-	nl, write('        WARNING!  Redefining a Prolog built-in predicate: '),
+	nl, write('%          WARNING!  Redefining a Prolog built-in predicate: '),
 	writeq(Functor/Arity),
 	nl, '$lgt_report_compiler_error_line_number'(Line, Input),
 	fail.
@@ -6729,7 +6728,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	\+ '$lgt_pp_implemented_protocol_'(monitoring, _, _, _),
 	'$lgt_compiler_flag'(report, on),
 	'$lgt_inc_compile_warnings_counter',
-	nl, write('        WARNING!  Missing reference to the "monitoring" built-in protocol: '),
+	nl, write('%          WARNING!  Missing reference to the "monitoring" built-in protocol: '),
 	writeq(Functor/3),
 	nl, '$lgt_report_compiler_error_line_number'(Line, Input),
 	fail.
@@ -6743,7 +6742,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	\+ '$lgt_pp_implemented_protocol_'(expanding, _, _, _),
 	'$lgt_compiler_flag'(report, on),
 	'$lgt_inc_compile_warnings_counter',
-	nl, write('        WARNING!  Missing reference to the "expanding" built-in protocol: '),
+	nl, write('%          WARNING!  Missing reference to the "expanding" built-in protocol: '),
 	writeq(Functor/3),
 	nl, '$lgt_report_compiler_error_line_number'(Line, Input),
 	fail.
@@ -9174,8 +9173,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 		'$lgt_inc_compile_warnings_counter',
 		nl,
 		(	Objs = [_] ->
-			write('        WARNING!  Reference to unknown object:      ')
-		;	write('        WARNING!  References to unknown objects:    ')
+			write('%          WARNING!  Reference to unknown object:      ')
+		;	write('%          WARNING!  References to unknown objects:    ')
 		),
 		'$lgt_writeq_list'(Objs)
 	;	true
@@ -9201,8 +9200,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 		'$lgt_inc_compile_warnings_counter',
 		nl,
 		(	Ptcs = [_] ->
-			write('        WARNING!  Reference to unknown protocol:    ')
-		;	write('        WARNING!  References to unknown protocols:  ')
+			write('%          WARNING!  Reference to unknown protocol:    ')
+		;	write('%          WARNING!  References to unknown protocols:  ')
 		),
 		'$lgt_writeq_list'(Ptcs)
 	;	true
@@ -9227,8 +9226,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 		'$lgt_inc_compile_warnings_counter',
 		nl,
 		(	Ctgs = [_] ->
-			write('        WARNING!  Reference to unknown category:    ')
-		;	write('        WARNING!  References to unknown categories: ')
+			write('%          WARNING!  Reference to unknown category:    ')
+		;	write('%          WARNING!  References to unknown categories: ')
 		),
 		'$lgt_writeq_list'(Ctgs)
 	;	true
@@ -10593,8 +10592,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	'$lgt_inc_compile_warnings_counter',
 	nl,
 	(	Preds = [_] ->
-		write('        WARNING!  This declared static predicate is called but never defined: ')
-	;	write('        WARNING!  These declared static predicates are called but never defined: ')
+		write('%          WARNING!  This declared static predicate is called but never defined: ')
+	;	write('%          WARNING!  These declared static predicates are called but never defined: ')
 	),
 	'$lgt_writeq_list'(Preds),
 	!.
@@ -10643,8 +10642,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	    '$lgt_inc_compile_warnings_counter',
 	    nl,
 	    (	Preds = [_] ->
-		    write('        WARNING!  This predicate is called but never defined: ')
-	    ;	write('        WARNING!  These predicates are called but never defined: ')
+		    write('%          WARNING!  This predicate is called but never defined: ')
+	    ;	write('%          WARNING!  These predicates are called but never defined: ')
 	    ),
 	    '$lgt_writeq_list'(Preds)
 	;   true
@@ -10681,8 +10680,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	'$lgt_inc_compile_warnings_counter',
 	nl,
 	(	Preds = [_] ->
-		write('        WARNING!  Call to non-standard Prolog built-in predicate: ')
-	;	write('        WARNING!  Calls to non-standard Prolog built-in predicates: ')
+		write('%          WARNING!  Call to non-standard Prolog built-in predicate: ')
+	;	write('%          WARNING!  Calls to non-standard Prolog built-in predicates: ')
 	),
 	'$lgt_writeq_list'(Preds),
 	!.
@@ -10710,8 +10709,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	'$lgt_inc_compile_warnings_counter',
 	nl,
 	(	Functions = [_] ->
-		write('        WARNING!  Call to non-standard Prolog built-in arithmetic function: ')
-	;	write('        WARNING!  Calls to non-standard Prolog built-in arithmetic functions: ')
+		write('%          WARNING!  Call to non-standard Prolog built-in arithmetic function: ')
+	;	write('%          WARNING!  Calls to non-standard Prolog built-in arithmetic functions: ')
 	),
 	'$lgt_writeq_list'(Functions),
 	!.

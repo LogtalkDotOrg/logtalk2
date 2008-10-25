@@ -29,7 +29,7 @@ threaded_once(Goal, Tag)</pre>
 Proves <code>Goal</code> asynchronously using a new thread. Only the first goal solution is found. The argument can be a message sending goal. This call always succeeds. The result (success, failure, or exception) is sent back to the message queue of the object containing the call (<em>this</em>).
 </p>
 <p>
-The variant <code>threaded_once/2</code> returns a threaded call identifier tag that can be used with the <a title="Consult reference manual" href="threaded_exit1_2.html"><code>threaded_exit/2</code></a> predicate. Tags shall be considered as an opaque term; users shall not rely on its type.
+The variant <code>threaded_once/2</code> returns a threaded call identifier tag that can be used with the <a title="Consult reference manual" href="threaded_exit1_2.html"><code>threaded_exit/2</code></a> predicate. Tags shall be regarded as an opaque term; users shall not rely on its type.
 </p>
 
 <h4>Template and modes</h4>
@@ -62,7 +62,7 @@ threaded_once(@callable, -nonvar)</pre>
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: September 15, 2007</span>
+		<span>Last updated on: October 24, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="threaded_call1_2.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="threaded_ignore1.html">next</a></span><br/>

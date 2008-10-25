@@ -39,6 +39,10 @@ RELEASE NOTES
     redefined entity warnings if the files of the new and the old definitions
     are different (requires support for the file/2 entity property).
 
+    Updated the Logtalk compiler to prefix all informative messages with the
+    line comment character, "%", to make it easier to use interactive section
+    transcripts as scripts.
+
     Added an optimization and safety compiler option, "complements", that 
     allows objects to be compiled with support for complementing categories 
     either enabled or disabled. The default value (set in the config files)
