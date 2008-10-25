@@ -5301,19 +5301,22 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_tr_directive'(Dir, Line, Input, _) :-
 	'$lgt_ignore_pl_directive'(Dir),					% defined in the Prolog config files
 	!,
-	(	'$lgt_compiler_flag'(portability, warning) ->
+	(	'$lgt_compiler_flag'(portability, warning),
+		'$lgt_compiler_flag'(report, on) ->
+		'$lgt_inc_compile_warnings_counter',
 		nl, write('%          WARNING!  Ignoring Prolog directive: '), writeq(Dir),
 		nl, '$lgt_report_compiler_error_line_number'(Line, Input)
 	;	true
 	).
 
 '$lgt_tr_directive'(Dir, Line, Input, _) :-
-	'$lgt_rewrite_and_copy_pl_directive'(Dir, RWDir),	% defined in the Prolog config files
+	'$lgt_rewrite_and_copy_pl_directive'(Dir, RWDir),		% defined in the Prolog config files
 	assertz('$lgt_pp_directive_'(RWDir)),
 	!,
-	(	'$lgt_compiler_flag'(portability, warning) ->
-		nl, write('%          WARNING!  Rewriting Prolog directive:         '), writeq(Dir),
-		nl, write('%                    Copying resulting Prolog directive: '), writeq(RWDir),
+	(	'$lgt_compiler_flag'(portability, warning),
+		'$lgt_compiler_flag'(report, on) ->
+		'$lgt_inc_compile_warnings_counter',
+		nl, write('%          WARNING!  Rewriting and copying Prolog directive: '), writeq(Dir),
 		nl, '$lgt_report_compiler_error_line_number'(Line, Input)
 	;	true
 	).
@@ -5321,13 +5324,14 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_tr_directive'(Dir, Line, Input, Output) :-
 	'$lgt_rewrite_and_recompile_pl_directive'(Dir, RWDir),	% defined in the Prolog config files
 	!,
-	(	'$lgt_compiler_flag'(portability, warning) ->
-		nl, write('%          WARNING!  Rewriting Prolog directive:             '), writeq(Dir),
-		nl, write('%                    Recompiling resulting Prolog directive: '), writeq(RWDir),
+	(	'$lgt_compiler_flag'(portability, warning),
+		'$lgt_compiler_flag'(report, on) ->
+		'$lgt_inc_compile_warnings_counter',
+		nl, write('%          WARNING!  Rewriting and recompiling Prolog directive: '), writeq(Dir),
 		nl, '$lgt_report_compiler_error_line_number'(Line, Input)
 	;	true
 	),
-	'$lgt_tr_directive'(RWDir, Line, Input, Output).	% try to translate the rewritten directive
+	'$lgt_tr_directive'(RWDir, Line, Input, Output).		% try to translate the rewritten directive
 
 '$lgt_tr_directive'(Dir, _, _, _) :-
 	functor(Dir, Functor, Arity),
@@ -10676,6 +10680,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 '$lgt_report_non_portable_calls' :-
 	'$lgt_compiler_flag'(portability, warning),
+	'$lgt_compiler_flag'(report, on),
 	setof(Pred, '$lgt_non_portable_call'(Pred), Preds),
 	'$lgt_inc_compile_warnings_counter',
 	nl,
@@ -10705,6 +10710,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 '$lgt_report_non_portable_functions' :-
 	'$lgt_compiler_flag'(portability, warning),
+	'$lgt_compiler_flag'(report, on),
 	setof(Functor/Arity, '$lgt_non_portable_function_'(Functor, Arity), Functions),
 	'$lgt_inc_compile_warnings_counter',
 	nl,

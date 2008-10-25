@@ -43,6 +43,10 @@ RELEASE NOTES
     line comment character, "%", to make it easier to use interactive section
     transcripts as scripts.
 
+    Corrected a bug where portability warnings would be reported when the 
+    "report" compiler option is turned off. Corrected a bug where portability
+    warnings would not increment the warnings counter.
+
     Added an optimization and safety compiler option, "complements", that 
     allows objects to be compiled with support for complementing categories 
     either enabled or disabled. The default value (set in the config files)
