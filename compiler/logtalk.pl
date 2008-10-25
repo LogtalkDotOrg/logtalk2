@@ -9118,14 +9118,15 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	var(Obj),
 	throw(instantiation_error).
 
+'$lgt_tr_complements_category'([Obj| _], _, _, _, _) :-
+	\+ callable(Obj),
+	throw(type_error(object_identifier, Obj)).
+
 '$lgt_tr_complements_category'([Obj| Objs], Ctg, Dcl, Def, Rnm) :-
-	(	callable(Obj) ->
-		assertz('$lgt_pp_referenced_object_'(Obj)),
-		assertz('$lgt_pp_complemented_object_'(Obj)),
-		assertz('$lgt_pp_rclause_'('$lgt_complemented_object_'(Obj, Ctg, Dcl, Def, Rnm))),
-		'$lgt_tr_complements_category'(Objs, Ctg, Dcl, Def, Rnm)
-	;	throw(type_error(object_identifier, Obj))
-	).
+	assertz('$lgt_pp_referenced_object_'(Obj)),
+	assertz('$lgt_pp_complemented_object_'(Obj)),
+	assertz('$lgt_pp_rclause_'('$lgt_complemented_object_'(Obj, Ctg, Dcl, Def, Rnm))),
+	'$lgt_tr_complements_category'(Objs, Ctg, Dcl, Def, Rnm).
 
 
 
