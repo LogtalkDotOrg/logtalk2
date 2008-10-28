@@ -19,7 +19,7 @@ RELEASE NOTES
     complemented object.
 
     Improved reporting of line numbers for syntax warnings and errors when 
-    using YAP or SWI-Prolog as back-end compilers.
+    using YAP or SWI-Prolog as back-end compilers (requires YAP git version).
 
     Implemented a more flexible internal representation of entity properties.
     Added entity properties file(File, Path) and lines(Start, End) for 
@@ -43,7 +43,7 @@ RELEASE NOTES
     line comment character, "%", to make it easier to use interactive section
     transcripts as scripts.
 
-    Corrected a bug where portability warnings would be reported when the 
+    Corrected a bug where portability warnings would be reported even when the
     "report" compiler option is turned off. Corrected a bug where portability
     warnings would not increment the warnings counter.
 
@@ -76,14 +76,17 @@ RELEASE NOTES
     Improved the documentation of the "complements", "hello_world", "hooks",
     and "msglog" examples.
 
+    Added a new logic puzzle programming example, adapted with permission 
+    from Kevin Stone's BrainBashers website (http://www.brainbashers.com/).
+
     Updated all the examples that make use of event-driven programming
     ("birthdays", "bricks", "complements", "msglog", "polygons", "profiling",
     and "searching") to ensure correct functionality after fixing the bug in
     cleaning compiler options after compilation of source files.
 
-    Updated the "complements" example to use the new "complements" compiler 
-    option. Update the "dynpred" example to use the new "dynamic_declarations"
-    compiler option.
+    Updated the "dynpred" example to use the new "dynamic_declarations" 
+    compiler option. Updated the "complements" example to use the new 
+    "complements" compiler option. 
 
 
 2.33.1 - October 12, 2008
