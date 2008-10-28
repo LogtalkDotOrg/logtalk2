@@ -7,7 +7,7 @@
 		version is 1.0,
 		date is 2000/4/22,
 		comment is 'Expert system for automobile fault diagnosis.',
-		source is 'Example adopted from the LPA Prolog++ documentation.']).
+		source is 'Example adapted from the LPA Prolog++ documentation.']).
 
 	:- public(findall/0).
 	:- mode(findall, one).

@@ -11,7 +11,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 To load this example and for sample queries, please see the SCRIPT.txt file.
 
-Example adopted from the chapter "Classifying Prototype-Based Programming
+Example adapted from the chapter "Classifying Prototype-Based Programming
 Languages" by Christophe Dony, Jacques Malenfant, and Daniel Bardou, found 
 on the book "Prototype-Based Programming - Concepts, Languages, and 
 Applications" published by Springer.

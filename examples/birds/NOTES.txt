@@ -12,7 +12,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 To load this example and for sample queries, please see the SCRIPT.txt file.
 
 This folder contains an example of a bird identification expert system 
-adopted with permission from the book "Adventure in Prolog" by Amzi! inc. 
+adapted with permission from the book "Adventure in Prolog" by Amzi! inc. 
 The book is available on-line in HTML format at the URL:
 
 	http://www.amzi.com

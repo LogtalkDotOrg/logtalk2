@@ -31,7 +31,7 @@
 		date is 2000/4/22,
 		comment is 'Parametric object for representing geometric ellipses.',
 		parnames is ['RX', 'RY', 'Color'],
-		source is 'Example adopted from the SICStus Objects documentation.']).
+		source is 'Example adapted from the SICStus Objects documentation.']).
 
 	:- uses(math_constants).
 
@@ -97,7 +97,7 @@
 		date is 2000/4/22,
 		comment is 'Parametric object for representing geometric circles.',
 		parnames is ['Radius', 'Color'],
-		source is 'Example adopted from the SICStus Objects documentation.']).
+		source is 'Example adapted from the SICStus Objects documentation.']).
 
 	:- public(r/1).
 	:- mode(r(?number), zero_or_one).
@@ -136,7 +136,7 @@
 		date is 2000/4/22,
 		comment is 'Parametric object for representing geometric circles with radius = 1.',
 		parnames is ['Color'],
-		source is 'Example adopted from the SICStus Objects documentation.']).
+		source is 'Example adapted from the SICStus Objects documentation.']).
 
 	context :-
 		write(circle11), nl,
@@ -157,7 +157,7 @@
 		date is 2000/4/22,
 		comment is 'Parametric object for representing geometric red circles.',
 		parnames is ['Radius'],
-		source is 'Example adopted from the SICStus Objects documentation.']).
+		source is 'Example adapted from the SICStus Objects documentation.']).
 
 	context :-
 		write(red_circle1), nl,

@@ -8,7 +8,7 @@
 		version is 1.1,
 		date is 2005/3/6,
 		comment is 'Expert system for bird identification.',
-		source is 'Example adopted from an Amzi! Inc Prolog book.']).
+		source is 'Example adapted from an Amzi! Inc Prolog book.']).
 
 
 	:- public(identify/0).

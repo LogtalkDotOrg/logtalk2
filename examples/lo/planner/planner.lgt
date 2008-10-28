@@ -9,7 +9,7 @@
 		date is 2000/4/22,
 		comment is 'Air-line trip planner.',
 		parnames is ['Mode'],
-		source is 'Example adopted from the Francis G. McCabe L&O documentation.']).
+		source is 'Example adapted from the Francis G. McCabe L&O documentation.']).
 
 	:- public(from/3).
 	:- mode(from(+atom, +atom, -list), zero_or_more).

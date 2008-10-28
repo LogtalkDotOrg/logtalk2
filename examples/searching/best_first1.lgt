@@ -8,7 +8,7 @@
 		author is 'Paulo Moura',
 		date is 2008/6/9,
 		comment is 'Best first heuristic state space search strategy.',
-		source is 'Example adopted from the book "Prolog Programming for Artificial Intelligence" by Ivan Bratko.',
+		source is 'Example adapted from the book "Prolog Programming for Artificial Intelligence" by Ivan Bratko.',
 		parnames is ['Threshold']]).
 
 

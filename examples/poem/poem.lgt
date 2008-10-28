@@ -10,7 +10,7 @@
 		date is 2000/4/22,
 		comment is 'Parametric object for representing geometric points.',
 		parnames is ['X', 'Y'],
-		source is 'Example adopted from the POEM system by Ben Staveley-Taylor.']).
+		source is 'Example adapted from the POEM system by Ben Staveley-Taylor.']).
 
 	:- public(identical/1).
 	:- mode(identical(+nonvar), one).
@@ -47,7 +47,7 @@
 		date is 2000/4/22,
 		comment is 'Parametric object for representing geometric lines.',
 		parnames is ['Point1', 'Point2'],
-		source is 'Example adopted from the POEM system by Ben Staveley-Taylor.']).
+		source is 'Example adapted from the POEM system by Ben Staveley-Taylor.']).
 
 	:- public(length/1).
 	:- mode(length(-number), one).
@@ -130,7 +130,7 @@
 		date is 2000/4/22,
 		comment is 'Parametric object for representing geometric ellipses.',
 		parnames is ['Center', 'Rx', 'Ry'],
-		source is 'Example adopted from the POEM system by Ben Staveley-Taylor.']).
+		source is 'Example adapted from the POEM system by Ben Staveley-Taylor.']).
 
 	:- public(area/1).
 	:- mode(area(-number), one).
@@ -161,7 +161,7 @@
 		date is 2000/4/22,
 		comment is 'Parametric object for representing geometric circles.',
 		parnames is ['Center', 'Radius'],
-		source is 'Example adopted from the POEM system by Ben Staveley-Taylor.']).
+		source is 'Example adapted from the POEM system by Ben Staveley-Taylor.']).
 
 	:- public(circumference/1).
 	:- mode(circumference(-number), one).

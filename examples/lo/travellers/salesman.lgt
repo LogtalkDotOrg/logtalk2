@@ -6,7 +6,7 @@
 		version is 1.0,
 		date is 2000/4/22,
 		comment is '.',
-		source is 'Example adopted from the Francis G. McCabe L&O documentation.']).
+		source is 'Example adapted from the Francis G. McCabe L&O documentation.']).
 
 	:- public(route/2).
 	:- mode(route(+list, -nonvar), zero_or_more).
@@ -23,7 +23,7 @@
 		version is 1.0,
 		date is 2000/4/22,
 		comment is '.',
-		source is 'Example adopted from the Francis G. McCabe L&O documentation.']).
+		source is 'Example adapted from the Francis G. McCabe L&O documentation.']).
 
 	route([Town| Towns], Route) :-
 		route(Towns, Town-Town, Route).
@@ -81,7 +81,7 @@
 		version is 1.0,
 		date is 2000/4/22,
 		comment is '.',
-		source is 'Example adopted from the Francis G. McCabe L&O documentation.']).
+		source is 'Example adapted from the Francis G. McCabe L&O documentation.']).
 
 	route([Town| Towns], Route) :-
   		route(Towns, Town, Route).
@@ -154,7 +154,7 @@
 		version is 1.0,
 		date is 2000/4/22,
 		comment is '.',
-		source is 'Example adopted from the Francis G. McCabe L&O documentation.']).
+		source is 'Example adapted from the Francis G. McCabe L&O documentation.']).
 
 	:- uses(quick(_)).
 
@@ -191,7 +191,7 @@
 		version is 1.0,
 		date is 2000/4/22,
 		comment is '.',
-		source is 'Example adopted from the Francis G. McCabe L&O documentation.']).
+		source is 'Example adapted from the Francis G. McCabe L&O documentation.']).
 
 	route(Towns, Route) :-
 		presort::route(Towns, Presort), 
@@ -232,7 +232,7 @@
 		version is 1.0,
 		date is 2000/4/22,
 		comment is '.',
-		source is 'Example adopted from the Francis G. McCabe L&O documentation.']).
+		source is 'Example adapted from the Francis G. McCabe L&O documentation.']).
 
 	route(Towns, Route) :-
 		findall(

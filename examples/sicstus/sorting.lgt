@@ -7,7 +7,7 @@
 		date is 2000/4/22,
 		comment is 'List sorting parameterized by the type of the list elements.',
 		parnames is ['Type'],
-		source is 'Example adopted from the SICStus Objects documentation.']).
+		source is 'Example adapted from the SICStus Objects documentation.']).
 
 	:- uses(list).
 	:- calls(comparingp).

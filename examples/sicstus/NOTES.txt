@@ -9,6 +9,6 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ================================================================
 
 
-The examples in this folder are adopted from the SICStus Prolog manual.
+The examples in this folder are adapted from the SICStus Prolog manual.
 
 To load this example and for sample queries, please see the SCRIPT.txt file.

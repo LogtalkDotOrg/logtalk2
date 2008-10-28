@@ -9,7 +9,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ================================================================
 
 
-The examples in this folder are adopted from the Logic&Objects system
+The examples in this folder are adapted from the Logic&Objects system
 by Francis G. McCabe.   Detailed descriptions and the original source 
 code can be found on the McCabe's "Logic and Objects" book, published 
 by Prentice Hall. 

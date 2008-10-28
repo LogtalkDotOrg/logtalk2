@@ -41,7 +41,7 @@ case of bounded_point), or to recall the previous positions (in the
 case of history_point). This way, the class bounded_history_point could
 build its own versions of methods move/2 and print/0, adding to the
 inherited definitions of one of the superclasses the calling of the
-operation missing in the other superclass. This is the solution adopted
+operation missing in the other superclass. This is the solution adapted
 in the SICStus Objects. However, this solution also implies a few
 problems. Let's suppose that method move/2 is inherited from class
 history_point. Then, any changing operated in the definition of the same

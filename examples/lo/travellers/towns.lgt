@@ -7,7 +7,7 @@
 		date is 2000/4/22,
 		parnames is ['X', 'Y'],
 		comment is '.',
-		source is 'Example adopted from the Francis G. McCabe L&O documentation.']).
+		source is 'Example adapted from the Francis G. McCabe L&O documentation.']).
 
 	:- public(at/2).
 	:- mode(at(-integer, -integer), one).

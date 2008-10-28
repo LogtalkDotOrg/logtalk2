@@ -1,5 +1,5 @@
 
-% example adopted from:
+% example adapted from:
 % Programming Language Prolog Part 2, Modules
 % Committee Draft - January 14, 1998 X3J17/97/5
 
@@ -30,7 +30,7 @@
 :- end_object.
 
 
-% sort code adopted from an example on the SICStus Prolog User Manual
+% sort code adapted from an example on the SICStus Prolog User Manual
 % meta-predicate example taken from Prolog Part 2, Modules - Committee Draft
 
 :- object(sort(_Type)).

@@ -25,7 +25,7 @@ and "SCRIPT.txt" files inside each example folder.
 Some examples may redefine objects already loaded from other examples.
 You may want to restart Logtalk after trying each example.
 
-Some of the examples have been adopted from public available Prolog code 
+Some of the examples have been adapted from public available Prolog code 
 or from known Prolog text books and are copyrighted by the respective 
 authors.
 
@@ -64,7 +64,7 @@ benchmarks
 
 birds
 	bird identification expert system
-	(example adopted from the Adventure in Prolog Amzi! book)
+	(example adapted from the Adventure in Prolog Amzi! book)
 
 bottles
 	99 bottles of beer on the wall! Sing along!
@@ -136,7 +136,7 @@ instvars
 	and setter and getter methods
 
 lo
-	examples adopted from the Francis G. McCabe L&O system
+	examples adapted from the Francis G. McCabe L&O system
 
 logging
 	example of using a category to define a simple logging support for 
@@ -147,7 +147,7 @@ logic
 	to conjunctive normal form and to clausal form
 
 lpa
-	examples adopted from the LPA Prolog++ system
+	examples adapted from the LPA Prolog++ system
 
 metapredicates
 	example of using meta-predicates in Logtalk objects
@@ -179,10 +179,10 @@ people
 	simple example of defining object constructors
 
 poem
-	examples adopted from the Ben Staveley-Taylor POEM system
+	examples adapted from the Ben Staveley-Taylor POEM system
 
 points
-	example adopted from SICStus Objects documentation; defines 
+	example adapted from SICStus Objects documentation; defines 
 	a simple class hierarchy of points illustrating how to use 
 	categories as object components
 
@@ -214,7 +214,7 @@ roots
 
 searching
 	state-space searching framework
-	(example adopted from Ivan Bratko's "Prolog Programming for 
+	(example adapted from Ivan Bratko's "Prolog Programming for 
 	Artificial Intelligence" book)
 
 shapes
@@ -222,7 +222,7 @@ shapes
 	and a class hierarchy
 
 sicstus
-	examples adopted from SICStus Objects documentation
+	examples adapted from SICStus Objects documentation
 
 symdiff
 	example of using parametric objects to implement symbolic 
