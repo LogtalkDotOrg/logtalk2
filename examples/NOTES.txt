@@ -42,10 +42,10 @@ folder for instructions on how to browse the XML files for on-line
 reading or how to convert the files to a print-ready format such as PDF.
 
 
-Follows a short description of each included example:
+Follows a short description of each included example (in alphabetical order):
 
 ack
-	implementation of the Ackermann function
+	implementation of the Ackermann arithmetic function
 
 aliases
 	example of using the alias/3 predicate directive to provide 
@@ -107,7 +107,7 @@ dynpred
 encodings
 	very simple example of using the new, experimental encoding/1 
 	directive (requires Logtalk to be run with either YAP, SWI-Prolog,
-	CxProlog, or SICStus Prolog)
+	CxProlog, K-Prolog, or SICStus Prolog)
 
 engines
 	example of category composition (extension of categories by 
@@ -197,7 +197,7 @@ proxies
 	representation of objects with read-only state
 
 puzzles
-	several examples of logical puzzles
+	several examples of solving logical puzzles
 
 reflection
 	example of a simple class-based reflective system
@@ -230,6 +230,7 @@ symdiff
 
 tabling
 	simple example of using tabling directives within objects
+	(requires Logtalk to be run with either B-Prolog, XSB, or YAP)
 
 testing
 	some examples of writing unit tests

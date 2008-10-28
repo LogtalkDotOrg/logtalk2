@@ -3952,6 +3952,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	write('   Exception: ').
 
 
+'$lgt_dbg_valid_port_option'('\r', _, _) :- !.
+'$lgt_dbg_valid_port_option'('\n', _, _) :- !.
 '$lgt_dbg_valid_port_option'(' ', _, _) :- !.
 '$lgt_dbg_valid_port_option'(c, _, _) :- !.
 '$lgt_dbg_valid_port_option'(l, _, _) :- !.
@@ -3979,6 +3981,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_dbg_valid_port_option'(e, exception, _) :- !.
 
 
+'$lgt_dbg_do_port_option'('\r', _, _, _, _, true).
+'$lgt_dbg_do_port_option'('\n', _, _, _, _, true).
 '$lgt_dbg_do_port_option'(' ', _, _, _, _, true).
 '$lgt_dbg_do_port_option'(c, _, _, _, _, true).
 
@@ -4079,7 +4083,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 '$lgt_dbg_do_port_option'(h, _, _, _, _, _) :-
 	write('    Available options are:'), nl,
-	write('        c - creep (go on; you may use also the spacebar)'), nl,
+	write('        c - creep (go on; you may use also the spacebar, return, or enter keys)'), nl,
 	write('        l - leap (continues execution until the next spy point is found)'), nl,
 	write('        s - skip (skips debugging for the current goal; only meaningful at call and redo ports)'), nl,
 	write('        i - ignore (ignores goal, assumes that it succeeded; only valid at call and redo ports)'), nl,

@@ -58,6 +58,9 @@ RELEASE NOTES
     either enabled or disabled. The default value (set in the config files) is
     "off" (disabled).
 
+    Updated the Logtalk built-in debugger to accept the return and enter keys
+    as alternatives to the "c" key ("creep") when tracing.
+
     Added a customized version of the read_term/2 predicate to all config 
     files that returns the line where a term starts for back-end Prolog 
     compilers whose implementation of the read_term/2 predicate supports 
