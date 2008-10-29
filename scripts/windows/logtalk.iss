@@ -56,7 +56,7 @@ Name: "prolog\ciao"; Description: "Ciao Prolog integration (version 1.10#5 or la
 Name: "prolog\cxprolog"; Description: "CxProlog integration (version 0.97.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\eclipse"; Description: "ECLiPSe integration (versions 5.10, 6.0)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\gprolog"; Description: "GNU Prolog integration (version 1.3.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\plc"; Description: "K-Prolog integration (version 5.1.x)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\plc"; Description: "K-Prolog integration (version 6.0.4)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\quintus"; Description: "Quintus Prolog integration (version 3.5; implies patching Logtalk)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\sicstus"; Description: "SICStus Prolog integration (versions 3.12.x, 4.0.x)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\swi"; Description: "SWI-Prolog integration (version 5.6.44 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
@@ -120,7 +120,7 @@ Name: "{group}\Logtalk - ECLiPSe 6.0"; Filename: "{code:GetEclipse6ExePath}"; Pa
 
 Name: "{group}\Logtalk - GNU Prolog"; Filename: "{code:GetGPExePath}"; Parameters: "--init-goal ""['$LOGTALKUSER/configs/gnu.config', '$LOGTALKHOME/integration/logtalk_gp.pl', '$LOGTALKUSER/libpaths/libpaths.pl']"""; Comment: "Runs Logtalk with GNU Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\gprolog; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - K-Prolog"; Filename: "{code:GetKPExePath}"; Parameters: "-h 4096k -l 2048k -g 4096k -e ""(consult('$LOGTALKHOME/integration/logtalk_plc5.pl'), '$root')."""; Comment: "Runs Logtalk with K-Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\plc; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - K-Prolog"; Filename: "{code:GetKPExePath}"; Parameters: "-h 4096k -l 2048k -g 4096k -e ""(consult('$LOGTALKHOME/integration/logtalk_plc6.pl'), '$root')."""; Comment: "Runs Logtalk with K-Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\plc; Flags: createonlyiffileexists
 
 Name: "{group}\Logtalk - Quintus Prolog"; Filename: "{code:GetQuintusExePath}"; Parameters: "+l ""%LOGTALKHOME%\integration\logtalk_quintus.pl"" +z ""%LOGTALKHOME%"" ""%LOGTALKUSER%"""; Comment: "Runs Logtalk with Quintus Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\quintus; Flags: createonlyiffileexists
 

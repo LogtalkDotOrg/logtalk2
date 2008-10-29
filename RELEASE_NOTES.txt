@@ -66,6 +66,9 @@ RELEASE NOTES
     compilers whose implementation of the read_term/2 predicate supports 
     this information.
 
+    Updated the shortcut created by the Windows installer for integration with
+    K-Prolog to require version 6.0.4 of this compiler.
+
     Updated the User Manual comparison between Logtalk nomenclature and C++
     and Java nomenclatures.
 
