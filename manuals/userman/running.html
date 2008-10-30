@@ -272,7 +272,7 @@ In addition to the ports described above, Logtalk adds two more ports, <em>fact<
 		<dd>unification success between a goal and a rule head</dd>
 </dl>
 <p>
-For static predicates, the debugger prints the clause number at the unification ports: <code>fact(N)</code> or <code>rule(N)</code> indicates that clause <code>N</code> is being used for proving a goal.
+For static predicates, the debugger prints the clause number at the unification ports: <code>Fact #N</code> or <code>Rule #N</code> indicates that clause <code>N</code> is being used for proving a goal.
 </p>
 <p>
 The user may define for which ports the debugger should pause for user interaction by specifying a list of leashed ports. For example:
@@ -377,7 +377,7 @@ Logtalk allows tracing of execution for all objects compiled in debug mode. To s
 
 yes</pre>
 <p>
-Note that, when tracing, spy points will be ignored. While tracing, the debugger will pause for user input at each leashed port.
+Note that, when tracing, spy points will be ignored. While tracing, the debugger will pause for user input at each leashed port, printing an informative message with the port name and the current goal. After the port name, the debugger prints the goal invocation number (except for the unification ports). This invocation number is unique and can be used to correlate the port trace messages.
 </p>
 <p>
 To stop tracing and turning off the debugger, write:
@@ -528,7 +528,7 @@ The Logtalk compiler automatically removes any redundant calls to the built-in p
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: October 28, 2008</span>
+		<span>Last updated on: October 30, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="installing.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="programming.html">next</a></span><br/>
