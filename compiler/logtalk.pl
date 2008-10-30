@@ -119,6 +119,7 @@
 :- dynamic('$lgt_dbg_spying_'/2).				% '$lgt_dbg_spying_'(Functor, Arity)
 :- dynamic('$lgt_dbg_spying_'/4).				% '$lgt_dbg_spying_'(Sender, This, Self, Goal)
 :- dynamic('$lgt_dbg_leashing_'/1).				% '$lgt_dbg_leashing_'(Port)
+:- dynamic('$lgt_dbg_invocation_number_'/1).	% '$lgt_dbg_invocation_number_'(N)
 
 
 % runtime flags
@@ -278,6 +279,7 @@
 Obj::Pred :-
 	catch('$lgt_tr_msg'(Pred, Obj, Call, user), Error, '$lgt_runtime_error_handler'(error(Error, Obj::Pred, user))),
 	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
+		'$lgt_dbg_reset_invocation_number',
 		'$lgt_ctx_ctx'(Ctx, _, user, user, Obj, '$lgt_bio_user_0_', [], _),
 		'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
 		catch('$lgt_dbg_goal'(Obj::Pred, Call, DbgCtx), Error, '$lgt_runtime_error_handler'(Error))
@@ -291,6 +293,7 @@ Obj<<Pred :-
 		'$lgt_ctx_ctx'(Ctx, _, user, user, Obj, '$lgt_bio_user_0_', [], _),
 		catch('$lgt_tr_body'(Obj<<Pred, TPred, DPred, Ctx), Error, '$lgt_runtime_error_handler'(error(Error, Obj<<Pred, user))),
 		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
+			'$lgt_dbg_reset_invocation_number',
 			catch(DPred, Error, '$lgt_runtime_error_handler'(Error))
 		;	catch(TPred, Error, '$lgt_runtime_error_handler'(Error))
 		)
@@ -3597,7 +3600,8 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_dbg_reset' :-
 	'$lgt_dbg_nospyall',
 	'$lgt_dbg_leash'(full),
-	'$lgt_dbg_nodebug'.
+	'$lgt_dbg_nodebug',
+	'$lgt_dbg_reset_invocation_number'.
 
 
 '$lgt_dbg_debug' :-
@@ -3605,6 +3609,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 		write('Debugger is on: showing spy points for all objects compiled in debug mode.'), nl
 	;	assertz('$lgt_dbg_debugging_'),
 		retractall('$lgt_dbg_tracing_'),
+		'$lgt_dbg_reset_invocation_number',
 		write('Debugger switched on: showing spy points for all objects compiled in debug mode.'), nl
 	).
 
@@ -3643,6 +3648,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	;	assertz('$lgt_dbg_tracing_'),
 		retractall('$lgt_dbg_debugging_'),
 		assertz('$lgt_dbg_debugging_'),
+		'$lgt_dbg_reset_invocation_number',
 		write('Debugger switched on: tracing everything for all objects compiled in debug mode.'), nl
 	).
 
@@ -3863,7 +3869,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 '$lgt_dbg_fact'(Fact, N, DbgCtx) :-
 	(	'$lgt_dbg_debugging_', \+ '$lgt_dbg_skipping_' ->
-		'$lgt_dbg_port'(fact(N), Fact, _, DbgCtx, Action),
+		'$lgt_dbg_port'(fact(N), _, Fact, _, DbgCtx, Action),
 		call(Action)
 	;	true
 	).
@@ -3871,26 +3877,27 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 '$lgt_dbg_head'(Head, N, DbgCtx) :-
 	(	'$lgt_dbg_debugging_', \+ '$lgt_dbg_skipping_' ->
-		'$lgt_dbg_port'(rule(N), Head, _, DbgCtx, Action),
+		'$lgt_dbg_port'(rule(N), _, Head, _, DbgCtx, Action),
 		call(Action)
 	;	true
 	).
 
 
 '$lgt_dbg_goal'(Goal, TGoal, DbgCtx) :-
+	'$lgt_dbg_inc_invocation_number'(N),
 	(	'$lgt_dbg_debugging_', \+ '$lgt_dbg_skipping_' ->
-		(	'$lgt_dbg_port'(call, Goal, _, DbgCtx, CAction),
+		(	'$lgt_dbg_port'(call, N, Goal, _, DbgCtx, CAction),
 			(	CAction == ignore ->
 				true
 			;	call(CAction),
-				catch(TGoal, Error, '$lgt_dbg_exception'(Goal, Error, DbgCtx)),
-				(	'$lgt_dbg_port'(exit, Goal, _, DbgCtx, EAction),
+				catch(TGoal, Error, '$lgt_dbg_exception'(N, Goal, Error, DbgCtx)),
+				(	'$lgt_dbg_port'(exit, N, Goal, _, DbgCtx, EAction),
 					call(EAction)
-				;	'$lgt_dbg_port'(redo, Goal, _, DbgCtx, RAction),
+				;	'$lgt_dbg_port'(redo, N, Goal, _, DbgCtx, RAction),
 					RAction == ignore
 				)
 			;	retractall('$lgt_dbg_skipping_'),
-				'$lgt_dbg_port'(fail, Goal, _, DbgCtx, _),
+				'$lgt_dbg_port'(fail, N, Goal, _, DbgCtx, _),
 				fail
 			)
 		),
@@ -3899,57 +3906,63 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	).
 
 
-'$lgt_dbg_exception'(_, logtalk_debugger_aborted, _) :-
+'$lgt_dbg_exception'(_, _, logtalk_debugger_aborted, _) :-
 	throw(logtalk_debugger_aborted).
 
-'$lgt_dbg_exception'(Goal, Error, DbgCtx) :-
-    '$lgt_dbg_port'(exception, Goal, Error, DbgCtx, TAction),
+'$lgt_dbg_exception'(N, Goal, Error, DbgCtx) :-
+    '$lgt_dbg_port'(exception, N, Goal, Error, DbgCtx, TAction),
     (   TAction == fail ->
         fail
     ;   throw(Error)
     ).
 
 
-'$lgt_dbg_port'(Port, Goal, Error, DbgCtx, Action) :-
+'$lgt_dbg_port'(Port, N, Goal, Error, DbgCtx, Action) :-
 	'$lgt_dbg_debugging_',
 	!,
 	(	'$lgt_dbg_leashing'(Port, Goal, DbgCtx, Code) ->
 		repeat,
-			write(Code), '$lgt_dbg_write_port_name'(Port), writeq(Goal), write(' ? '),
+			write(Code), '$lgt_dbg_write_port_name'(Port), '$lgt_dbg_write_invocation_number'(Port, N), writeq(Goal), write(' ? '),
 			catch('$lgt_read_single_char'(Option), _, fail),
 		'$lgt_dbg_valid_port_option'(Option, Port, Code),
 		'$lgt_dbg_do_port_option'(Option, Port, Goal, Error, DbgCtx, Action),
 		!
 	;	(	'$lgt_dbg_tracing_' ->
-			write(' '), '$lgt_dbg_write_port_name'(Port), writeq(Goal), nl
+			write(' '), '$lgt_dbg_write_port_name'(Port), '$lgt_dbg_write_invocation_number'(Port, N), writeq(Goal), nl
 		;	true
 		),
 		Action = true
 	).
 
-'$lgt_dbg_port'(_, _, _, _, true).
+'$lgt_dbg_port'(_, _, _, _, _, true).
+
+
+'$lgt_dbg_write_invocation_number'(fact(_), _) :- !.
+'$lgt_dbg_write_invocation_number'(rule(_), _) :- !.
+'$lgt_dbg_write_invocation_number'(_, N) :-
+	write('('), write(N), write(') ').
 
 
 '$lgt_dbg_write_port_name'(fact(N)) :-
     (   N =:= 0 ->
-	    write('   Fact: ')
-	;   write('   Fact('), write(N), write('): ')
+	    write(' Fact: ')
+	;   write(' Fact #'), write(N), write(': ')
 	).
 '$lgt_dbg_write_port_name'(rule(N)) :-
     (   N =:= 0 ->
-	    write('   Rule: ')
-	;   write('   Rule('), write(N), write('): ')
+	    write(' Rule: ')
+	;   write(' Rule #'), write(N), write(': ')
 	).
 '$lgt_dbg_write_port_name'(call) :-
-	write('   Call: ').
+	write(' Call: ').
 '$lgt_dbg_write_port_name'(exit) :-
-	write('   Exit: ').
+	write(' Exit: ').
 '$lgt_dbg_write_port_name'(redo) :-
-	write('   Redo: ').
+	write(' Redo: ').
 '$lgt_dbg_write_port_name'(fail) :-
-	write('   Fail: ').
+	write(' Fail: ').
 '$lgt_dbg_write_port_name'(exception) :-
-	write('   Exception: ').
+	write(' Exception: ').
 
 
 '$lgt_dbg_valid_port_option'('\r', _, _) :- !.
@@ -4035,7 +4048,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_dbg_do_port_option'(*, _, Goal, _, _, _) :-
 	functor(Goal, Functor, Arity),
 	functor(CGoal, Functor, Arity),
-	write('    Enter a context spy point term formatted as (Sender, This, Self, Goal): '),
+	write('  Enter a context spy point term formatted as (Sender, This, Self, Goal): '),
 	read(Spypoint),
 	Spypoint = (Sender, This, Self, CGoal),
 	'$lgt_dbg_spy'(Sender, This, Self, CGoal),
@@ -4045,7 +4058,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	'$lgt_dbg_do_port_option'(@, Port, Goal, Error, DbgCtx, Action).
 
 '$lgt_dbg_do_port_option'(@, _, _, _, _, _) :-
-	write('    ?- '),
+	write('  ?- '),
 	read(Goal),
 	call(Goal) ->
 	fail.
@@ -4055,7 +4068,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 		'$lgt_dbg_suspend'(Tracing),
 		break,
 		'$lgt_dbg_resume'(Tracing)
-	;	write('    break no supportd by the back-end Prolog compiler.'), nl
+	;	write('  break no supportd by the back-end Prolog compiler.'), nl
 	),
 	fail.
 
@@ -4067,46 +4080,58 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	halt.
 
 '$lgt_dbg_do_port_option'(d, _, Goal, _, _, _) :-
-	write('    Current goal: '), write_term(Goal, [ignore_ops(true)]), nl,
+	write('  Current goal: '), write_term(Goal, [ignore_ops(true)]), nl,
 	fail.
 
 '$lgt_dbg_do_port_option'(x, _, _, _, DbgCtx, _) :-
 	'$lgt_dbg_ctx'(DbgCtx, Sender, This, Self),
-	write('    Sender: '), writeq(Sender), nl,
-	write('    This:   '), writeq(This), nl,
-	write('    Self:   '), writeq(Self), nl,
+	write('  Sender: '), writeq(Sender), nl,
+	write('  This:   '), writeq(This), nl,
+	write('  Self:   '), writeq(Self), nl,
 	fail.
 
 '$lgt_dbg_do_port_option'(e, _, _, Error, _, _) :-
-	write('    Exception term: '), writeq(Error), nl,
+	write('  Exception term: '), writeq(Error), nl,
 	fail.
 
 '$lgt_dbg_do_port_option'(h, _, _, _, _, _) :-
-	write('    Available options are:'), nl,
-	write('        c - creep (go on; you may use also the spacebar, return, or enter keys)'), nl,
-	write('        l - leap (continues execution until the next spy point is found)'), nl,
-	write('        s - skip (skips debugging for the current goal; only meaningful at call and redo ports)'), nl,
-	write('        i - ignore (ignores goal, assumes that it succeeded; only valid at call and redo ports)'), nl,
-	write('        f - fail (forces backtracking; may also be used to convert an exception into a failure)'), nl,
-	write('        n - nodebug (turns off debugging)'), nl,
-	write('        ! - command (reads and executes a query)'), nl,
-	write('        @ - command (reads and executes a query)'), nl,
-	write('        b - break (suspends execution and starts new interpreter; type end_of_file to terminate)'), nl,
-	write('        a - abort (returns to top level interpreter)'), nl,
-	write('        q - quit (quits Logtalk)'), nl,
-	write('        d - display (writes current goal without using operator notation)'), nl,
-	write('        x - context (prints execution context)'), nl,
-	write('        e - exception (prints exception term thrown by current goal)'), nl,
-	write('        = - debugging (prints debugging information)'), nl,
-	write('        * - add (adds a context spy point for current goal)'), nl,
-	write('        + - add (adds a predicate spy point for current goal)'), nl,
-	write('        - - remove (removes a predicate spy point for current goal)'), nl,
-	write('        h - help (prints this list of options)'), nl,
-	write('        ? - help (prints this list of options)'), nl,
+	write('  Available options are:'), nl,
+	write('      c - creep (go on; you may use also the spacebar, return, or enter keys)'), nl,
+	write('      l - leap (continues execution until the next spy point is found)'), nl,
+	write('      s - skip (skips debugging for the current goal; only meaningful at call and redo ports)'), nl,
+	write('      i - ignore (ignores goal, assumes that it succeeded; only valid at call and redo ports)'), nl,
+	write('      f - fail (forces backtracking; may also be used to convert an exception into a failure)'), nl,
+	write('      n - nodebug (turns off debugging)'), nl,
+	write('      ! - command (reads and executes a query)'), nl,
+	write('      @ - command (reads and executes a query)'), nl,
+	write('      b - break (suspends execution and starts new interpreter; type end_of_file to terminate)'), nl,
+	write('      a - abort (returns to top level interpreter)'), nl,
+	write('      q - quit (quits Logtalk)'), nl,
+	write('      d - display (writes current goal without using operator notation)'), nl,
+	write('      x - context (prints execution context)'), nl,
+	write('      e - exception (prints exception term thrown by current goal)'), nl,
+	write('      = - debugging (prints debugging information)'), nl,
+	write('      * - add (adds a context spy point for current goal)'), nl,
+	write('      + - add (adds a predicate spy point for current goal)'), nl,
+	write('      - - remove (removes a predicate spy point for current goal)'), nl,
+	write('      h - help (prints this list of options)'), nl,
+	write('      ? - help (prints this list of options)'), nl,
 	fail.
 
 '$lgt_dbg_do_port_option'(?, Port, Goal, Error, DbgCtx, Action) :-
 	'$lgt_dbg_do_port_option'(h, Port, Goal, Error, DbgCtx, Action).
+
+
+
+'$lgt_dbg_inc_invocation_number'(New) :-
+	retract('$lgt_dbg_invocation_number_'(Old)) ->
+	New is Old + 1,
+	asserta('$lgt_dbg_invocation_number_'(New)).
+
+
+'$lgt_dbg_reset_invocation_number' :-
+	retractall('$lgt_dbg_invocation_number_'(_)),
+	asserta('$lgt_dbg_invocation_number_'(0)).
 
 
 
