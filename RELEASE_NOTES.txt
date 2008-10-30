@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.33.2 - October ??, 2008
+2.33.2 - November 3, 2008
 
     Allow a complementing category to define aliases for predicates of the
     complemented object.
