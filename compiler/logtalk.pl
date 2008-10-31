@@ -1160,27 +1160,33 @@ define_events(Event, Obj, Msg, Sender, Monitor) :-
 define_events(Event, Obj, Msg, Sender, Monitor) :-
 	var(Event),
 	!,
-	'$lgt_current_object_'(Monitor, _, _, Def, _, _, _, _, _, _, _),
+	'$lgt_current_object_'(Monitor, _, _, Def, _, _, _, _, _, _, _) ->
 	(	call_with_args(Def, before(Obj, Msg, Sender), Monitor, Monitor, Monitor, BCall, _) ->
 		(	call_with_args(Def, after(Obj, Msg, Sender), Monitor, Monitor, Monitor, ACall, _) ->
 			retractall('$lgt_before_'(Obj, Msg, Sender, Monitor, _)),
 			assertz('$lgt_before_'(Obj, Msg, Sender, Monitor, BCall)),
 			retractall('$lgt_after_'(Obj, Msg, Sender, Monitor, _)),
 			assertz('$lgt_after_'(Obj, Msg, Sender, Monitor, ACall))
+		;	throw(error(existence_error(procedure, after/3), define_events(Event, Obj, Msg, Sender, Monitor)))
 		)
+	;	throw(error(existence_error(procedure, before/3), define_events(Event, Obj, Msg, Sender, Monitor)))
 	).
 
 define_events(before, Obj, Msg, Sender, Monitor) :-
-	'$lgt_current_object_'(Monitor, _, _, Def, _, _, _, _, _, _, _),
-	call_with_args(Def, before(Obj, Msg, Sender), Monitor, Monitor, Monitor, Call, _) ->
-	retractall('$lgt_before_'(Obj, Msg, Sender, Monitor, _)),
-	assertz('$lgt_before_'(Obj, Msg, Sender, Monitor, Call)).
+	'$lgt_current_object_'(Monitor, _, _, Def, _, _, _, _, _, _, _) ->
+	(	call_with_args(Def, before(Obj, Msg, Sender), Monitor, Monitor, Monitor, Call, _) ->
+		retractall('$lgt_before_'(Obj, Msg, Sender, Monitor, _)),
+		assertz('$lgt_before_'(Obj, Msg, Sender, Monitor, Call))
+	;	throw(error(existence_error(procedure, before/3), define_events(before, Obj, Msg, Sender, Monitor)))
+	).
 
 define_events(after, Obj, Msg, Sender, Monitor) :-
-	'$lgt_current_object_'(Monitor, _, _, Def, _, _, _, _, _, _, _),
-	call_with_args(Def, after(Obj, Msg, Sender), Monitor, Monitor, Monitor, Call, _) ->
-	retractall('$lgt_after_'(Obj, Msg, Sender, Monitor, _)),
-	assertz('$lgt_after_'(Obj, Msg, Sender, Monitor, Call)).
+	'$lgt_current_object_'(Monitor, _, _, Def, _, _, _, _, _, _, _) ->
+	(	call_with_args(Def, after(Obj, Msg, Sender), Monitor, Monitor, Monitor, Call, _) ->
+		retractall('$lgt_after_'(Obj, Msg, Sender, Monitor, _)),
+		assertz('$lgt_after_'(Obj, Msg, Sender, Monitor, Call))
+	;	throw(error(existence_error(procedure, after/3), define_events(after, Obj, Msg, Sender, Monitor)))
+	).
 
 
 

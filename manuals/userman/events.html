@@ -157,7 +157,7 @@ New events can be defined using the Logtalk built-in predicate <a title="Consult
 </p>
 <pre>| ?- define_events(Event, Object, Message, Sender, Monitor).</pre>
 <p>
-Note that if any of the arguments is a free variable or contains free variables, this call will define the <strong>set</strong> of matching events.
+Note that if any of the <code>Event</code>, <code>Object</code>, <code>Message</code>, and <code>Sender</code> arguments is a free variable or contains free variables, this call will define the <strong>set</strong> of matching events.
 </p>
 
 <h3 id="events_abolishing">Abolishing defined events</h3>
@@ -173,7 +173,7 @@ If called with free variables, this goal will remove all matching events.
 <h3 id="events_handlers">Defining event handlers</h3>
 
 <p>
-The <code>monitoring</code> built-in protocol declares two public predicates, <a title="Consult reference manual" href="../refman/methods/before3.html"><code>before/3</code></a> and <a title="Consult reference manual" href="../refman/methods/after3.html"><code>after/3</code></a>, that are automatically called to handle <code>before</code> and <code>after</code> events. Any object that plays the role of monitor should define one or both of these event handler methods: 
+The <code>monitoring</code> built-in protocol declares two public predicates, <a title="Consult reference manual" href="../refman/methods/before3.html"><code>before/3</code></a> and <a title="Consult reference manual" href="../refman/methods/after3.html"><code>after/3</code></a>, that are automatically called to handle <code>before</code> and <code>after</code> events. Any object that plays the role of monitor must define one or both of these event handler methods: 
 </p>
 <pre>before(Object, Message, Sender) :-
     ... .
@@ -183,7 +183,7 @@ after(Object, Message, Sender) :-
 <p>
 The arguments in both methods are instantiated by the message sending mechanisms when a spied event occurs. For example, assume that we want to define a monitor called <code>tracer</code> that will track any message sent to an object by printing a describing text to the standard output. Its definition could be something like:</p>
 <pre>:- object(tracer,
-    implements(monitoring)).
+    implements(monitoring)).    % built-in protocol for event handler methods
 
     before(Object, Message, Sender) :-
         write('call: '), writeq(Object), write(' &lt;-- '), writeq(Message),
@@ -247,7 +247,7 @@ This is necessary because the built-in predicate <code>define_events/5</code> ex
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: October 20, 2008</span>
+		<span>Last updated on: October 31, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="inheritance.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="threads.html">next</a></span><br/>
