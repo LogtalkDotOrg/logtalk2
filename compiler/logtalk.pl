@@ -8916,7 +8916,9 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_tr_protocol_id'(Ptc, Mode) :-
 	assertz('$lgt_pp_referenced_protocol_'(Ptc)),
 	'$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl, Rnm),
-	assertz('$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Mode)).
+	assertz('$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Mode)),
+	% needed in order to be able to save synchronized predicate properties:
+	asserta('$lgt_pp_pred_mutex_count_'(0)). 
 
 
 

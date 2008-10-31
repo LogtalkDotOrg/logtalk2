@@ -46,6 +46,9 @@ RELEASE NOTES
     line comment character, "%", to make it easier to use interactive section
     transcripts as scripts.
 
+    Corrected a bug that prevented using synchronized/1 predicate directives
+    within protocols.
+
     Corrected a bug where portability warnings would be reported even when the
     "report" compiler option is turned off. Corrected a bug where portability
     warnings would not increment the warnings counter.
