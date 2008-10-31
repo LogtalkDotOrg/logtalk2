@@ -21,6 +21,8 @@ RELEASE NOTES
     Improved reporting of line numbers for syntax warnings and errors when 
     using YAP or SWI-Prolog as back-end compilers (requires YAP git version).
 
+    Improved reporting of entity existence errors for top-level queries.
+
     Implemented a more flexible internal representation of entity properties.
     Added entity properties file(File, Path) and lines(Start, End) for 
     entities compiled and loaded from source files. The property lines/2 is 
@@ -105,6 +107,9 @@ RELEASE NOTES
     Updated the "dynpred" example to use the new "dynamic_declarations" 
     compiler option. Updated the "complements" example to use the new 
     "complements" compiler option. 
+
+    Corrected a Vim syntax coloring bug with line comments occurring within
+    entity opening directives.
 
 
 2.33.1 - October 12, 2008
