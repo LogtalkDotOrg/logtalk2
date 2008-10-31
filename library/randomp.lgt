@@ -2,18 +2,20 @@
 :- protocol(randomp).
 
 	:- info([
-		version is 1.01,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2008/6/30,
+		date is 2008/10/31,
 		comment is 'Random number generator protocol.']).
 
 	:- public(random/1).
+	:- synchronized(random/1).
 	:- mode(random(-float), one).
 	:- info(random/1, [
 		comment is 'Returns a new random float value in the interval [0.0, 1.0[.',
 		argnames is ['Random']]).
 
 	:- public(random/3).
+	:- synchronized(random/3).
 	:- mode(random(+integer, +integer, -integer), zero_or_one).
 	:- mode(random(+float, +float, -float), zero_or_one).
 	:- info(random/3, [
@@ -21,6 +23,7 @@
 		argnames is ['Lower', 'Upper', 'Random']]).
 
 	:- public(randseq/4).
+	:- synchronized(randseq/4).
 	:- mode(randseq(+integer, +integer, +integer, -list(integer)), zero_or_one).
 	:- mode(randseq(+integer, +float, +float, -list(float)), zero_or_one).
 	:- info(randseq/4, [
@@ -28,6 +31,7 @@
 		argnames is ['Length', 'Lower', 'Upper', 'List']]).
 
 	:- public(randset/4).
+	:- synchronized(randset/4).
 	:- mode(randset(+integer, +integer, +integer, -list(integer)), zero_or_one).
 	:- mode(randset(+integer, +float, +float, -list(float)), zero_or_one).
 	:- info(randset/4, [
@@ -35,11 +39,13 @@
 		argnames is ['Length', 'Lower', 'Upper', 'Set']]).
 
 	:- public(reset_seed/0).
+	:- synchronized(reset_seed/0).
 	:- mode(reset_seed, one).
 	:- info(reset_seed/0, [
 		comment is 'Resets the random seed to its default value.']).
 
 	:- public(set_seed/1).
+	:- synchronized(set_seed/1).
 	:- mode(set_seed(+integer), zero_or_one).
 	:- info(set_seed/1, [
 		comment is 'Sets the random seed to the given value.',
