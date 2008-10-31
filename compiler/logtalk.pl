@@ -342,23 +342,21 @@ Obj<<Pred :-
 	).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/8), _)) :-
-	once((  atom_concat(ObjArity, '__idcl', TFunctor)
-	    ;   atom_concat(ObjArity, '__dcl', TFunctor)
+	once((  atom_concat(Prefix, '_idcl', TFunctor)
+	    ;   atom_concat(Prefix, '_dcl', TFunctor)
 	)),
-	atom_chars(ObjArity, ObjArityChars),
-	'$lgt_append'(FunctorChars, ['_', ArityChar| ArityChars], ObjArityChars),
-	catch(number_chars(Arity, [ArityChar| ArityChars]), _, fail),
-	atom_chars(Functor, FunctorChars),
-	functor(Obj, Functor, Arity),
+	'$lgt_reverse_entity_prefix'(Prefix, Obj),
 	(	'$lgt_instantiates_class_'(_, Obj, _)
 	;	'$lgt_specializes_class_'(_, Obj, _)
 	;	'$lgt_extends_object_'(_, Obj, _)
+	;	'$lgt_complemented_object_'(Obj, _, _, _, _)
 	),
 	\+ '$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
 	throw(error(existence_error(object, Obj), _, _)).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/7), _)) :-
-	atom_concat(CtgOrPtc, '_0__dcl', TFunctor),
+	atom_concat(Prefix, '_dcl', TFunctor),
+	'$lgt_reverse_entity_prefix'(Prefix, CtgOrPtc),
 	(	'$lgt_implements_protocol_'(_, CtgOrPtc, _), \+ '$lgt_current_protocol_'(CtgOrPtc, _, _, _, _) ->
 		throw(error(existence_error(protocol, CtgOrPtc), _, _))
 	;	'$lgt_extends_protocol_'(_, CtgOrPtc, _), \+ '$lgt_current_protocol_'(CtgOrPtc, _, _, _, _) ->
@@ -11197,6 +11195,42 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	atom_concat(Aux1, '_', Aux2),
 	atom_concat(Aux2, ArityAtom, Aux3),
 	atom_concat(Aux3, '_', Prefix).
+
+
+
+% '$lgt_reverse_entity_prefix'(+atom, -entity_identifier)
+%
+% reverses the entity prefix used in the compiled code
+
+'$lgt_reverse_entity_prefix'(Prefix, Entity) :-
+	'$lgt_compiler_flag'(code_prefix, CodePrefix),
+	atom_concat(CodePrefix, NameUnderscoreArityUnderscore, Prefix),
+	atom_concat(NameUnderscoreArity, '_', NameUnderscoreArityUnderscore),
+	'$lgt_split_name_arity'(NameUnderscoreArity, Name, Arity),
+	functor(Entity, Name, Arity),
+	!.
+
+
+'$lgt_split_name_arity'(NameUnderscoreArity, Name, Arity) :-
+	atom_codes(NameUnderscoreArity, Codes),
+	'$lgt_reverse'(Codes, [], RCodes),
+	'$lgt_find_arity_codes'(RCodes, [], ArityCodes),
+	number_codes(Arity, ArityCodes),
+	atom_codes(ArityAtom, ArityCodes),
+	atom_concat(NameUnderscore, ArityAtom, NameUnderscoreArity),
+	atom_concat(Name, '_', NameUnderscore).
+
+
+'$lgt_find_arity_codes'([Code| Codes], Acc, ArityCodes) :-
+	(	char_code('_', Code) ->
+		ArityCodes = Acc
+	;	'$lgt_find_arity_codes'(Codes, [Code| Acc], ArityCodes)
+	).
+
+
+'$lgt_reverse'([], Reversed, Reversed).
+'$lgt_reverse'([Head| Tail], List, Reversed) :-
+	'$lgt_reverse'(Tail, [Head| List], Reversed).
 
 
 
