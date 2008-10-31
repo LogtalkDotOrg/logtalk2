@@ -478,10 +478,6 @@ object_property(Obj, Prop) :-
 	\+ '$lgt_valid_object_property'(Prop),
 	throw(error(domain_error(object_property, Prop), object_property(Obj, Prop))).
 
-object_property(user, built_in).
-object_property(debugger, built_in).
-object_property(logtalk, built_in).
-
 object_property(Obj, Prop) :-
 	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, Type),
 	(	Prop = Type							% static/dynamic property
@@ -523,7 +519,7 @@ protocol_property(Ptc, Prop) :-
 	throw(error(domain_error(protocol_property, Prop), protocol_property(Ptc, Prop))).
 
 protocol_property(Ptc, Prop) :-
-	'$lgt_current_protocol_'(Ptc, _, _, _, _, Type),
+	'$lgt_current_protocol_'(Ptc, _, _, _, Type),
 	(	Prop = Type							% static/dynamic property
 	;	'$lgt_entity_property_'(Ptc, Prop)	% other properties
 	).
@@ -3394,7 +3390,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  built-in entity runtime table clauses
+%  built-in entity runtime table clauses and properties
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -3409,7 +3405,12 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_current_protocol_'(monitoring, '$lgt_bip_monitoring_0_', '$lgt_bip_monitoring_0__dcl', '$lgt_bip_monitoring_0__alias', static).
 
 
+'$lgt_entity_property_'(logtalk, built_in).
+'$lgt_entity_property_'(user, built_in).
 '$lgt_entity_property_'(user, threaded).
+'$lgt_entity_property_'(debugger, built_in).
+'$lgt_entity_property_'(expanding, built_in).
+'$lgt_entity_property_'(monitoring, built_in).
 
 
 

@@ -26,6 +26,9 @@ RELEASE NOTES
     entities compiled and loaded from source files. The property lines/2 is 
     only available when using YAP or SWI-Prolog as back-end compilers.
 
+    Added missing "built_in" properties for the built-in protocols "expanding"
+    and "monitoring".
+
     Corrected a bug where compiler options are not cleared after compilation
     of source files. This bug would result in wrong compilation of messages 
     sent from the top-level interpreter (i.e. messages sent by the pseudo-
