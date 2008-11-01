@@ -5403,6 +5403,11 @@ current_logtalk_flag(version, version(2, 33, 2)).
         forall('$lgt_member'(Op, Ops), assertz('$lgt_pp_file_op_'(Pr, Spec, Op)))
     ).
 
+'$lgt_tr_file_directive'(set_logtalk_flag(Flag, Value), _, _, _) :-
+    !,
+	Option =.. [Flag, Value],
+	'$lgt_set_compiler_flags'([Option]).				% local scope (restricted to the source file being compiled)
+
 '$lgt_tr_file_directive'(set_prolog_flag(Flag, Value), _, _, _) :-
     !,
     set_prolog_flag(Flag, Value),

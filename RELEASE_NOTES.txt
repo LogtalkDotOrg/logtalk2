@@ -15,6 +15,11 @@ RELEASE NOTES
 
 2.33.2 - November 3, 2008
 
+    Added support for using the set_logtalk_flag/2 directive in source files.
+    This directive is executed when read (thus affecting the compilation
+    of the source code that follows) but its scope is restricted to the source
+    file being compiled.
+
     Allow a complementing category to define aliases for predicates of the
     complemented object.
 

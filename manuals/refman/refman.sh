@@ -26,6 +26,7 @@ rm -f *.section directives/*.section builtins/*.section methods/*.section contro
 eval $xslt_proc -o index.section refman.xsl index.html
 eval $xslt_proc -o grammar.section refman.xsl grammar.html
 eval $xslt_proc -o directives/encoding1.section refman.xsl directives/encoding1.html
+eval $xslt_proc -o directives/set_logtalk_flag2.section refman.xsl directives/set_logtalk_flag2.html
 eval $xslt_proc -o directives/calls1.section refman.xsl directives/calls1.html
 eval $xslt_proc -o directives/category1_3.section refman.xsl directives/category1_3.html
 eval $xslt_proc -o directives/dynamic0.section refman.xsl directives/dynamic0.html
@@ -129,6 +130,7 @@ cat -s \
 	grammar.section \
 	directives.header \
 	directives/encoding1.section \
+	directives/set_logtalk_flag2.section \
 	directives/calls1.section \
 	directives/category1_3.section \
 	directives/dynamic0.section \
