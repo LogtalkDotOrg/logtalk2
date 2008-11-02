@@ -149,7 +149,7 @@ If we also need the sender of the message to be other than the object containing
     {Self::Message},  % sender will be the pseudo-object user
     ... .</pre>
 <p>
-When events are not used, is possible to turn off event generation on a per object basis by using the <a title="Consult user manual" href="running.html#running_flags"><code>events/1</code></a> compiler option. See the session on <a href="events.html">event-driven programming</a> for more details.
+When events are not used, is possible to turn off event generation on a per object basis by using the <a title="Consult user manual" href="programming.html#programming_flags"><code>events/1</code></a> compiler option. See the session on <a href="events.html">event-driven programming</a> for more details.
 </p>
 
 <h2 id="messages_performance">Message sending performance</h2>
@@ -182,7 +182,7 @@ A message sent from a compiled object to another object translates to six predic
 		<dd>(one of them to the built-in predicate <code>\+/1</code>)</dd>
 </dl>
 <p>
-Given that events can be dynamically defined at runtime, there is no room for reducing the number of predicate calls without turning off support for event-driven programming. When events are defined, the number of predicate calls grows proportional to the number of events and event handlers (monitors). Event-driven programming support can be switched off for specific object using the compiler flag <a title="Consult compiler flag details" href="running.html#running_flags"><code>events/1</code></a>. Doing so, reduces the number of predicate calls from six to just two.
+Given that events can be dynamically defined at runtime, there is no room for reducing the number of predicate calls without turning off support for event-driven programming. When events are defined, the number of predicate calls grows proportional to the number of events and event handlers (monitors). Event-driven programming support can be switched off for specific object using the compiler flag <a title="Consult compiler flag details" href="programming.html#programming_flags"><code>events/1</code></a>. Doing so, reduces the number of predicate calls from six to just two.
 </p>
 <p>
 Messages to <em>self</em> and <em>super</em> calls are transparent regarding events and, as such, imply only two predicate calls (the cache lookup and the method call).

@@ -43,7 +43,7 @@ In a more pragmatically view, Logtalk objects provide Prolog with the possibilit
 
 <blockquote>
 <p>
-Event-driven programming enables the building of reactive systems, where computing which takes place at each moment is a result of the observation of occurring events. This integration complements object-oriented programming, in which each computing is initiated by the explicit sending of a message to an object. The user dynamically defines what events are to be observed and establishes monitors for these events. This is specially useful when representing relationships between objects that imply constraints in the state of participating objects <a href="../bibliography.html#Rumbaugh87">[Rumbaugh 87</a>, <a href="../bibliography.html#Rumbaugh88">Rumbaugh 88</a>, <a href="../bibliography.html#Fornarino89">Fornarino 89</a>, <a href="../bibliography.html#Razek92">Razek 92]</a>. Other common uses are reflective applications like code debugging or profiling <a href="../bibliography.html#Maes87">[Maes 87]</a>.
+Event-driven programming enables the building of reactive systems, where computing which takes place at each moment is a result of the observation of occurring events. This integration complements object-oriented programming, in which each computing is initiated by the explicit sending of a message to an object. The user dynamically defines what events are to be observed and establishes monitors for these events. This is specially useful when representing relationships between objects that imply constraints in the state of participating objects <a href="../bibliography.html#Rumbaugh87">[Rumbaugh 87</a>, <a href="../bibliography.html#Rumbaugh88">Rumbaugh 88</a>, <a href="../bibliography.html#Fornarino89">Fornarino 89</a>, <a href="../bibliography.html#Razek92">Razek 92]</a>. Other common uses are reflective applications like code debugging or profiling <a href="../bibliography.html#Maes87">[Maes 87]</a>. Predicates can be implicitly called when a spied event occurs, allowing programming solutions which minimize object coupling. In addition, events provide support for behavioral reflection and can be used to implement the concepts of <em>pointcut</em> and <em>advice</em> found on Aspect-Oriented Programming.</dd>
 </p>
 </blockquote>
 
@@ -51,7 +51,7 @@ Event-driven programming enables the building of reactive systems, where computi
 
 <blockquote>
 <p>
-Predicates can be encapsulated inside <em>categories</em> which can be imported by any object. A category is a first-class encapsulation entity, at the same level as objects and protocols, which can be used as a component when building new objects. Categories allows for code reuse between non-related objects, independent of hierarchy relations, in the same vein as protocols allow for interface reuse.
+Predicates can be encapsulated inside <em>categories</em> which can be imported by any object, without any code duplication and irrespective of object hierarchies. A category is a first-class encapsulation entity, at the same level as objects and protocols, which can be used as a component when building new objects. Thus, objects may be defined through composition of categories, which act as fine-grained units of code reuse. Categories may also extend existing objects. Categories can be used to implement <em>mixins</em> and <em>aspects</em>. Categories allows for code reuse between non-related objects, independent of hierarchy relations, in the same vein as protocols allow for interface reuse.
 </p>
 </blockquote>
 
@@ -99,7 +99,7 @@ Logtalk supports data hiding by implementing private, protected and public objec
 
 <blockquote>
 <p>
-Object names can be compound terms (instead of atoms), providing a way to parameterize object predicates. Parametric objects are implemented in a similar way to <code>L&amp;O</code> <a href="../bibliography.html#McCabe92">[McCabe 92]</a>, <code>OL(P)</code> <a href="../bibliography.html#Fromherz93">[Fromherz 93]</a> or <code>SICStus Objects</code> <a href="../bibliography.html#SICStus95">[SICStus 95]</a>. However, access to parameter values is done via a built-in method instead of making the parameters scope global over the whole object.
+Object names can be compound terms (instead of atoms), providing a way to parameterize object predicates. Parametric objects are implemented in a similar way to <code>L&amp;O</code> <a href="../bibliography.html#McCabe92">[McCabe 92]</a>, <code>OL(P)</code> <a href="../bibliography.html#Fromherz93">[Fromherz 93]</a> or <code>SICStus Objects</code> <a href="../bibliography.html#SICStus95">[SICStus 95]</a> (however, access to parameter values is done via a built-in method instead of making the parameters scope global over the whole object). Parametric objects allows us to treat any predicate clause as defining an <em>instantiation</em> of a parametric object. Thus, a parametric object allows us to  encapsulate and associate any number of predicates with a compound term.</dd>
 </p>
 </blockquote>
 
@@ -141,10 +141,40 @@ When dynamic binding is used, the Logtalk runtime engine implements caching of m
 </p>
 </blockquote>
 
+<h2 id="features_scope">Logtalk scope</h2>
+
+<p>
+Logtalk, being a superset of Prolog, shares with it the same preferred areas of application but also extends them with those areas where object-oriented features provide an advantage compared to plain Prolog. Among these areas we have:
+</p>
+<dl>
+	<dt><strong>Logic and object-oriented programming teaching and researching</strong></dt>
+		<dd>Logtalk smooth learning curve, combined with support for both prototype and class-based programming, protocols, components or aspects via category-based composition, and other advanced object-oriented features allow a smooth introduction to object-oriented programming to people with a background in Prolog programming. The distribution of Logtalk source code using an open-source license provides a framework for people to learn and then modify to try out new ideas on object-oriented programming research. In addition, the Logtalk distribution includes plenty of programming examples that can be used in the classroom for teaching logic and object-oriented programming concepts.</dd>
+</dl>
+<dl>
+	<dt><strong>Structured knowledge representations and knowledge-based systems</strong></dt>
+		<dd>Logtalk objects, coupled with event-driven programming features, enable easy implementation of frame-like systems and similar structured knowledge representations.</dd>
+</dl>
+<dl>
+	<dt><strong>Blackboard systems, agent-based systems and systems with complex object relationships</strong></dt>
+		<dd>Logtalk support for event-driven programming can provide a basis for the dynamic and reactive nature of blackboard type applications.</dd>
+</dl>
+<dl>
+	<dt><strong>Highly portable applications</strong></dt>
+		<dd>Logtalk is compatible with almost any modern Prolog compiler. Used as a way to provide Prolog with namespaces, it avoids the porting problems of most Prolog module systems. Platform, operating system, or compiler specific code can be isolated from the rest of the code by encapsulating it in objects with well defined interfaces.</dd>
+</dl>
+<dl>
+	<dt><strong>Alternative to a Prolog module system</strong></dt>
+		<dd>Logtalk can be used as an alternative to a Prolog compiler module system. Any Prolog application that use modules can be converted to a Logtalk application, improving portability across Prolog compilers and taking advantage of the stronger encapsulation and reuse framework provided by Logtalk object-oriented features.</dd>
+</dl>
+<dl>
+	<dt><strong>Integration with other programming languages</strong></dt>
+		<dd>Logtalk support for most key object-oriented features helps users integrating Prolog with object-oriented languages like C++, Java, or Smalltalk by providing an high-level mapping between the two languages.</dd>
+</dl>
+
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: June 8, 2007</span>
+		<span>Last updated on: October 31, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="index.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="messages.html">next</a></span><br/>

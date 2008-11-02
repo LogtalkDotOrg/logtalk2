@@ -36,7 +36,6 @@ eval $xslt_proc -o threads.section userman.xsl threads.html
 eval $xslt_proc -o errors.section userman.xsl errors.html
 eval $xslt_proc -o documenting.section userman.xsl documenting.html
 eval $xslt_proc -o installing.section userman.xsl installing.html
-eval $xslt_proc -o running.section userman.xsl running.html
 eval $xslt_proc -o programming.section userman.xsl programming.html
 
 cat -s \
@@ -46,7 +45,7 @@ cat -s \
 	features.section nomenclature.section messages.section \
 	objects.section protocols.section categories.section predicates.section \
 	inheritance.section events.section threads.section errors.section \
-	documenting.section installing.section running.section programming.section \
+	documenting.section installing.section programming.section \
 	userman.footer \
 	> userman.html
 
