@@ -253,7 +253,9 @@ GNU Prolog 1.3.0 and later versions
 	compilation of source files.
 
 	On startup, you may get a warning about a suspicious predicate, {}/1.
-	You may safely ignore this warning.
+	You may safely ignore this warning. Warnings may also be printed 
+	regarding multifile directives. You can also safely ignore these 
+	warnings.
 
 
 IF/Prolog 5.1 and later versions
