@@ -3892,7 +3892,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	'$lgt_dbg_inc_invocation_number'(N),
 	(	'$lgt_dbg_debugging_', \+ '$lgt_dbg_skipping_' ->
 		(	'$lgt_dbg_port'(call, N, Goal, _, DbgCtx, CAction),
-			(	CAction == ignore ->
+			(	(CAction == ignore; CAction == unify) ->
 				true
 			;	call(CAction),
 				catch(TGoal, Error, '$lgt_dbg_exception'(N, Goal, Error, DbgCtx)),
@@ -3982,6 +3982,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_dbg_valid_port_option'(f, fact, _) :- !.
 '$lgt_dbg_valid_port_option'(f, rule, _) :- !.
 '$lgt_dbg_valid_port_option'(f, redo, _) :- !.
+'$lgt_dbg_valid_port_option'(u, call, _) :- !.
 '$lgt_dbg_valid_port_option'(n, _, _) :- !.
 '$lgt_dbg_valid_port_option'(!, _, _) :- !.
 '$lgt_dbg_valid_port_option'(@, _, _) :- !.
@@ -4021,6 +4022,14 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_dbg_do_port_option'(i, _, _, _, _, ignore).
 
 '$lgt_dbg_do_port_option'(f, _, _, _, _, fail).
+
+'$lgt_dbg_do_port_option'(u, _, Goal, _, _, Result) :-
+	write('  |: '),
+	read(Term),
+	(	Goal = Term ->
+		Result = unify
+	;	Result = fail
+	).
 
 '$lgt_dbg_do_port_option'(t, _, _, _, _, _) :-
 	(	'$lgt_dbg_tracing_' ->
@@ -4111,6 +4120,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	write('      s - skip (skips debugging for the current goal; only meaningful at call and redo ports)'), nl,
 	write('      i - ignore (ignores goal, assumes that it succeeded; only valid at call and redo ports)'), nl,
 	write('      f - fail (forces backtracking; may also be used to convert an exception into a failure)'), nl,
+	write('      u - unify (reads and unifies a term with the current goal; only valid at the call port)'), nl,
 	write('      n - nodebug (turns off debugging)'), nl,
 	write('      ! - command (reads and executes a query)'), nl,
 	write('      @ - command (reads and executes a query)'), nl,
