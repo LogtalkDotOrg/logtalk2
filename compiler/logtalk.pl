@@ -3989,6 +3989,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 '$lgt_dbg_valid_port_option'(a, _, _) :- !.
 '$lgt_dbg_valid_port_option'(q, _, _) :- !.
 '$lgt_dbg_valid_port_option'(d, _, _) :- !.
+%'$lgt_dbg_valid_port_option'(w, _, _) :- !.
 '$lgt_dbg_valid_port_option'(x, _, _) :- !.
 '$lgt_dbg_valid_port_option'(h, _, _) :- !.
 '$lgt_dbg_valid_port_option'(?, _, _) :- !.
@@ -4085,8 +4086,12 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	halt.
 
 '$lgt_dbg_do_port_option'(d, _, Goal, _, _, _) :-
-	write('  Current goal: '), write_term(Goal, [ignore_ops(true)]), nl,
+	write('  Current goal: '), write_term(Goal, [quoted(false), ignore_ops(true), numbervars(false)]), nl,
 	fail.
+
+%'$lgt_dbg_do_port_option'(w, _, Goal, _, _, _) :-
+%	write('  Current goal: '), writeq(Goal), nl,
+%	fail.
 
 '$lgt_dbg_do_port_option'(x, _, _, _, DbgCtx, _) :-
 	'$lgt_dbg_ctx'(DbgCtx, Sender, This, Self),
@@ -4113,6 +4118,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	write('      a - abort (returns to top level interpreter)'), nl,
 	write('      q - quit (quits Logtalk)'), nl,
 	write('      d - display (writes current goal without using operator notation)'), nl,
+%	write('      w - write (writes current goal quoting atoms if necessary)'), nl,
 	write('      x - context (prints execution context)'), nl,
 	write('      e - exception (prints exception term thrown by current goal)'), nl,
 	write('      = - debugging (prints debugging information)'), nl,

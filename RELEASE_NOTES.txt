@@ -71,9 +71,10 @@ RELEASE NOTES
     either enabled or disabled. The default value (set in the config files) is
     "off" (disabled).
 
-    Updated the Logtalk built-in debugger to print goal invocation numbers
+    Updated the Logtalk built-in debugger to print goal invocation numbers 
     and to accept the return and enter keys as alternatives to the "c" key
-    ("creep") when tracing.
+    ("creep") when tracing. Updated the write options used by the "display"
+    command to match those used in most Prolog debuggers.
 
     Modified the implementation of the built-in predicate define_events/5 to
     throw an exception when the monitor object doesn't define the required
