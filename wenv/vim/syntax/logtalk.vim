@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	June 16, 2008
+" Last Change:	October 31, 2008
 
 
 " Quit when a syntax file was already loaded:
