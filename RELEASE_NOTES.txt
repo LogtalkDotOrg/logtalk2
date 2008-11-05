@@ -13,6 +13,12 @@ RELEASE NOTES
 =============
 
 
+2.33.3 - December ??, 2008
+
+    Simplified the implementation of the threaded/1 multi-threading built-in
+    predicate.
+
+
 2.33.2 - November 3, 2008
 
     Added support for using the set_logtalk_flag/2 directive in source files.
