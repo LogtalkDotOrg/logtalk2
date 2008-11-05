@@ -13462,10 +13462,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 % there is no standard predicate for testing message queue existence)
 
 '$lgt_init_object_message_queue'(ObjPrefix) :-
-	(	'$lgt_predicate_property'(message_queue_create(_, _), built_in) ->
-		catch(message_queue_create(_, [alias(ObjPrefix)]), _, true)
-	;	catch(message_queue_create(ObjPrefix), _, true)
-	).
+	catch(message_queue_create(_, [alias(ObjPrefix)]), _, true).
 
 
 
@@ -13822,6 +13819,11 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	'$lgt_mt_threaded_call_join'(Results).
 
 
+
+% '$lgt_mt_threaded_call_abort'(+list)
+%
+% signal all individual threads to abort; we must use catch/3 as some threads may no longer exist
+
 '$lgt_mt_threaded_call_abort'([]).
 
 '$lgt_mt_threaded_call_abort'([id(Id, _, _)| Ids]) :-
@@ -13831,8 +13833,10 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 '$lgt_mt_abort_thread'(Id) :-
     (   thread_peek_message('$lgt_master') ->
+		% master thread; send it a message to terminate its slave threads:
         thread_send_message(Id, '$lgt_result'(_, terminate))
-    ;   throw('$lgt_terminated')
+    ;   % slave(-only) thread:
+		throw('$lgt_terminated')
     ).
 
 
@@ -13863,7 +13867,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 
 
-% '$lgt_create_mutexes'(list(mutex_identifier))
+% '$lgt_create_mutexes'(+list(mutex_identifier))
 %
 % create entity mutexes (called when loading an entity);
 % use catch/2 as we may be reloading an entity

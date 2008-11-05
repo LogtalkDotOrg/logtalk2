@@ -18,6 +18,9 @@ RELEASE NOTES
     Simplified the implementation of the threaded/1 multi-threading built-in
     predicate.
 
+    Removed support for the deprecated message_queue_create/1 Prolog built-in
+    predicate.
+
 
 2.33.2 - November 3, 2008
 
