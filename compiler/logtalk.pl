@@ -7844,7 +7844,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 	'$lgt_tr_threaded_individual_goal'(TGoal, Queue, MTGoal, Result).
 
 
-'$lgt_tr_threaded_individual_goal'(TGoal, Queue, thread_create('$lgt_mt_threaded_call'(TGoal, Queue), [at_exit('$lgt_mt_exit_handler'(Id, Queue))]), Id, id(Id, TGoal, _)).
+'$lgt_tr_threaded_individual_goal'(TGoal, Queue, thread_create('$lgt_mt_threaded_call'(TGoal, Queue), Id, [at_exit('$lgt_mt_exit_handler'(Id, Queue))]), id(Id, TGoal, _)).
 
 
 
