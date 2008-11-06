@@ -335,7 +335,7 @@
 				;	true
 				)
 			)), nl,
-		write('DF+HC+BF'), put_char('\t'),
+		write('DF+HC+BF'), %put_char('\t'),
 		loop::forto(Liters, 1, 14,
 			(	catch(run(cop_overhead(Liters, 5, 9, 14), N, Average), Error, write_error) ->
 				(	var(Error) ->
