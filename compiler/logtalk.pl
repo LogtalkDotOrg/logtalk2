@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.33.2
+%  Release 2.33.3
 %  
 %  Copyright (c) 1998-2008 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
@@ -1897,7 +1897,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 33, 2)).
+current_logtalk_flag(version, version(2, 33, 3)).
 
 
 
@@ -8001,7 +8001,6 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 
 
-
 % '$lgt_runtime_db_pred_ind_chk'(@term)
 %
 % true if the argument forces runtime validity check
@@ -8047,7 +8046,6 @@ current_logtalk_flag(version, version(2, 33, 2)).
 % '$lgt_check_non_portable_functions'(@term)
 %
 % checks an arithmetic expression for calls to non-standard Prolog functions
-
 
 '$lgt_check_non_portable_functions'(Exp) :-
 	var(Exp),
@@ -13478,7 +13476,7 @@ current_logtalk_flag(version, version(2, 33, 2)).
 
 % '$lgt_mt_dispatch_goal'(+atom, +message_queue, @callable, +object_identifier, +object_identifier, @nonvar)
 %
-% creates a thread for proving a goal
+% creates a thread for proving a goal (this predicate is called from within objects)
 
 '$lgt_mt_dispatch_goal'(ignore, _, Goal, _, _, _) :-
 	thread_create(catch(Goal, _, true), _, [detached(true)]).

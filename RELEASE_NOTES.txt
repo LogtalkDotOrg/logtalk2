@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.33.2
+Release 2.33.3
 
 Copyright (c) 1998-2008 Paulo Moura.        All Rights Reserved.
 Logtalk is free software.  You can redistribute it and/or modify
@@ -15,8 +15,7 @@ RELEASE NOTES
 
 2.33.3 - December ??, 2008
 
-    Simplified the implementation of the threaded/1 multi-threading built-in
-    predicate.
+    Simplified the implementation of the threaded/1 built-in predicate.
 
     Removed support for the deprecated message_queue_create/1 Prolog built-in
     predicate.
