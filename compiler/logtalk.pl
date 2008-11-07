@@ -265,6 +265,10 @@
 
 :- dynamic('$lgt_pp_file_rclause_'/1).			% '$lgt_pp_file_rclause_'(Clause)
 
+:- dynamic('$lgt_pp_cc_if_found_'/0).			% '$lgt_pp_cc_if_found_'
+:- dynamic('$lgt_pp_cc_skipping_'/0).			% '$lgt_pp_cc_skipping_'
+:- dynamic('$lgt_pp_cc_mode_'/1).				% '$lgt_pp_cc_mode_'(Action)
+
 
 
 
@@ -4748,6 +4752,13 @@ current_logtalk_flag(version, version(2, 33, 3)).
 '$lgt_tr_file'(end_of_file, _, _, _, _) :-
 	!.
 
+'$lgt_tr_file'(Term, _, _, Input, Output) :-
+	'$lgt_pp_cc_skipping_',
+	\+ '$lgt_lgt_cc_directive'(Term),
+	!,
+	'$lgt_read_term'(Input, Next, [singletons(NextSingletons)], NextLine),
+	'$lgt_tr_file'(Next, NextSingletons, NextLine, Input, Output).
+
 '$lgt_tr_file'(Term, Singletons, Line, Input, Output) :-
 	'$lgt_report_singletons'(Singletons, Term, Line, Input),
 	'$lgt_tr_term'(Term, Line, Input, Output),
@@ -5021,7 +5032,10 @@ current_logtalk_flag(version, version(2, 33, 3)).
 	retractall('$lgt_pp_file_encoding_'(_, _)),
 	retractall('$lgt_pp_file_bom_'(_)),
 	retractall('$lgt_pp_file_path_'(_, _)),
-	retractall('$lgt_pp_file_rclause_'(_)).
+	retractall('$lgt_pp_file_rclause_'(_)),
+	retractall('$lgt_pp_cc_if_found_'),
+	retractall('$lgt_pp_cc_skipping_'),
+	retractall('$lgt_pp_cc_mode_'(_)).
 
 
 
@@ -5312,6 +5326,105 @@ current_logtalk_flag(version, version(2, 33, 3)).
 '$lgt_tr_directive'(Dir, _, _, _) :-
 	var(Dir),
 	throw(error(instantiantion_error, directive(Dir))).
+
+
+% conditional compilation directives
+
+'$lgt_tr_directive'(if(Goal), _, _, _) :-
+	var(Goal),
+	throw(error(instantiantion_error, directive(if(Goal)))).
+
+'$lgt_tr_directive'(if(Goal), _, _, _) :-
+	\+ callable(Goal),
+	throw(error(type_error(callable, Goal), directive(if(Goal)))).
+
+'$lgt_tr_directive'(if(Goal), _, Input, _) :-
+	'$lgt_pp_cc_mode_'(Value),					% not top-level if
+	!,
+	assertz('$lgt_pp_cc_if_found_'),
+	(	Value == seek ->						% we're looking for an else
+		asserta('$lgt_pp_cc_mode_'(ignore))		% so ignore this if ... endif 
+	;	% Value == skip ->
+		(	catch(Goal, Error, '$lgt_report_compiler_error'(Input, Error)) ->
+			asserta('$lgt_pp_cc_mode_'(skip))
+		;	asserta('$lgt_pp_cc_mode_'(seek)),
+			retractall('$lgt_pp_cc_skipping_'),
+			assertz('$lgt_pp_cc_skipping_')
+		)
+	).
+
+'$lgt_tr_directive'(if(Goal), _, _, _) :-
+	!,
+	assertz('$lgt_pp_cc_if_found_'),
+	(	call(Goal) ->
+		asserta('$lgt_pp_cc_mode_'(skip))
+	;	asserta('$lgt_pp_cc_mode_'(seek)),
+		retractall('$lgt_pp_cc_skipping_'),
+		assertz('$lgt_pp_cc_skipping_')
+	).
+
+'$lgt_tr_directive'(elif(Goal), _, _, _) :-
+	var(Goal),
+	throw(error(instantiantion_error, directive(elif(Goal)))).
+
+'$lgt_tr_directive'(elif(Goal), _, _, _) :-
+	\+ callable(Goal),
+	throw(error(type_error(callable, Goal), directive(elif(Goal)))).
+
+'$lgt_tr_directive'(elif(Goal), _, _, _) :-
+	\+ '$lgt_pp_cc_if_found_',
+	throw(error(unmatched_directive, directive(elif(Goal)))).
+
+'$lgt_tr_directive'(elif(Goal), _, Input, _) :-
+	retract('$lgt_pp_cc_mode_'(Value)),
+	(	Value == ignore ->						% we're inside an if ... endif 
+		true									% that we're ignoring; do nothing (continue skipping)
+	;	Value == skip ->						% the corresponding if is true
+		retractall('$lgt_pp_cc_skipping_'),		% so we must skip this elif
+		assertz('$lgt_pp_cc_skipping_'),
+		asserta('$lgt_pp_cc_mode_'(skip))
+	;	% Value == seek ->						% the corresponding if is false
+		(	catch(Goal, Error, '$lgt_compiler_error_handler'(Input, Error)) ->
+			retract('$lgt_pp_cc_skipping_'),
+			asserta('$lgt_pp_cc_mode_'(skip))
+		;	asserta('$lgt_pp_cc_mode_'(seek))
+		)
+	),
+	!.
+
+'$lgt_tr_directive'(else, _, _, _) :-
+	\+ '$lgt_pp_cc_if_found_',
+	throw(error(unmatched_directive, directive(else))).
+
+'$lgt_tr_directive'(else, _, _, _) :-
+	retract('$lgt_pp_cc_mode_'(Value)),
+	(	Value == ignore ->						% we're inside an if ... endif 
+		true									% that we're ignoring
+	;	Value == skip ->						% the corresponding if is true
+		retractall('$lgt_pp_cc_skipping_'),		% so we must skip this else
+		assertz('$lgt_pp_cc_skipping_'),
+		asserta('$lgt_pp_cc_mode_'(skip))
+	;	% Value == seek ->						% the corresponding if is false
+		retract('$lgt_pp_cc_skipping_'),
+		asserta('$lgt_pp_cc_mode_'(skip))
+	),
+	!.
+
+'$lgt_tr_directive'(endif, _, _, _) :-
+	\+ '$lgt_pp_cc_if_found_',
+	throw(error(unmatched_directive, directive(endif))).
+
+'$lgt_tr_directive'(endif, _, _, _) :-
+	retract('$lgt_pp_cc_if_found_'),
+	retract('$lgt_pp_cc_mode_'(Value)),
+	(	Value == ignore ->
+		true
+	;	retractall('$lgt_pp_cc_skipping_')
+	),
+	!.
+
+
+% remaining directives
 
 '$lgt_tr_directive'(Dir, _, _, _) :-					% closing entity directive occurs before the opening
 	\+ '$lgt_pp_entity'(_, _, _, _, _),					% entity directive; the opening directive is probably
@@ -11492,6 +11605,23 @@ current_logtalk_flag(version, version(2, 33, 3)).
 '$lgt_lgt_predicate_directive'(info, 2).
 
 '$lgt_lgt_predicate_directive'(alias, 3).
+
+
+
+% conditional compilation directives
+
+'$lgt_lgt_cc_directive'(Term) :-
+	nonvar(Term),
+	Term = (:- Directive),
+	nonvar(Directive),
+	functor(Directive, Functor, Arity),
+	'$lgt_lgt_cc_directive'(Functor, Arity).
+
+
+'$lgt_lgt_cc_directive'(if,    1).
+'$lgt_lgt_cc_directive'(elif,  1).
+'$lgt_lgt_cc_directive'(else,  0).
+'$lgt_lgt_cc_directive'(endif, 0).
 
 
 
