@@ -265,7 +265,7 @@
 
 :- dynamic('$lgt_pp_file_rclause_'/1).			% '$lgt_pp_file_rclause_'(Clause)
 
-:- dynamic('$lgt_pp_cc_if_found_'/0).			% '$lgt_pp_cc_if_found_'
+:- dynamic('$lgt_pp_cc_if_found_'/1).			% '$lgt_pp_cc_if_found_'(Goal)
 :- dynamic('$lgt_pp_cc_skipping_'/0).			% '$lgt_pp_cc_skipping_'
 :- dynamic('$lgt_pp_cc_mode_'/1).				% '$lgt_pp_cc_mode_'(Action)
 
@@ -4739,15 +4739,19 @@ current_logtalk_flag(version, version(2, 33, 3)).
 
 '$lgt_tr_file'(end_of_file, _, _, _, _) :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
-	throw(entity_ending_directive_missing(object, Obj)).
+	throw(directive_missing(end_object, object(Obj))).
 
 '$lgt_tr_file'(end_of_file, _, _, _, _) :-
 	'$lgt_pp_protocol_'(Ptc, _, _, _, _),
-	throw(entity_ending_directive_missing(protocol, Ptc)).
+	throw(directive_missing(end_protocol, protocol(Ptc))).
 
 '$lgt_tr_file'(end_of_file, _, _, _, _) :-
 	'$lgt_pp_category_'(Ctg, _, _, _, _, _),
-	throw(entity_ending_directive_missing(category, Ctg)).
+	throw(directive_missing(end_category, category(Ctg))).
+
+'$lgt_tr_file'(end_of_file, _, _, _, _) :-
+	'$lgt_pp_cc_if_found_'(Goal),
+	throw(directive_missing(endif, if(Goal))).
 
 '$lgt_tr_file'(end_of_file, _, _, _, _) :-
 	!.
@@ -5033,7 +5037,7 @@ current_logtalk_flag(version, version(2, 33, 3)).
 	retractall('$lgt_pp_file_bom_'(_)),
 	retractall('$lgt_pp_file_path_'(_, _)),
 	retractall('$lgt_pp_file_rclause_'(_)),
-	retractall('$lgt_pp_cc_if_found_'),
+	retractall('$lgt_pp_cc_if_found_'(_)),
 	retractall('$lgt_pp_cc_skipping_'),
 	retractall('$lgt_pp_cc_mode_'(_)).
 
@@ -5341,7 +5345,7 @@ current_logtalk_flag(version, version(2, 33, 3)).
 '$lgt_tr_directive'(if(Goal), _, Input, _) :-
 	'$lgt_pp_cc_mode_'(Value),					% not top-level if
 	!,
-	assertz('$lgt_pp_cc_if_found_'),
+	asserta('$lgt_pp_cc_if_found_'(Goal)),
 	(	Value == seek ->						% we're looking for an else
 		asserta('$lgt_pp_cc_mode_'(ignore))		% so ignore this if ... endif 
 	;	% Value == skip ->
@@ -5355,7 +5359,7 @@ current_logtalk_flag(version, version(2, 33, 3)).
 
 '$lgt_tr_directive'(if(Goal), _, _, _) :-
 	!,
-	assertz('$lgt_pp_cc_if_found_'),
+	asserta('$lgt_pp_cc_if_found_'(Goal)),
 	(	call(Goal) ->
 		asserta('$lgt_pp_cc_mode_'(skip))
 	;	asserta('$lgt_pp_cc_mode_'(seek)),
@@ -5372,7 +5376,7 @@ current_logtalk_flag(version, version(2, 33, 3)).
 	throw(error(type_error(callable, Goal), directive(elif(Goal)))).
 
 '$lgt_tr_directive'(elif(Goal), _, _, _) :-
-	\+ '$lgt_pp_cc_if_found_',
+	\+ '$lgt_pp_cc_if_found_'(_),
 	throw(error(unmatched_directive, directive(elif(Goal)))).
 
 '$lgt_tr_directive'(elif(Goal), _, Input, _) :-
@@ -5393,7 +5397,7 @@ current_logtalk_flag(version, version(2, 33, 3)).
 	!.
 
 '$lgt_tr_directive'(else, _, _, _) :-
-	\+ '$lgt_pp_cc_if_found_',
+	\+ '$lgt_pp_cc_if_found_'(_),
 	throw(error(unmatched_directive, directive(else))).
 
 '$lgt_tr_directive'(else, _, _, _) :-
@@ -5411,11 +5415,11 @@ current_logtalk_flag(version, version(2, 33, 3)).
 	!.
 
 '$lgt_tr_directive'(endif, _, _, _) :-
-	\+ '$lgt_pp_cc_if_found_',
+	\+ '$lgt_pp_cc_if_found_'(_),
 	throw(error(unmatched_directive, directive(endif))).
 
 '$lgt_tr_directive'(endif, _, _, _) :-
-	retract('$lgt_pp_cc_if_found_'),
+	retract('$lgt_pp_cc_if_found_'(_)),
 	retract('$lgt_pp_cc_mode_'(Value)),
 	(	Value == ignore ->
 		true
