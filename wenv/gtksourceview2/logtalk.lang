@@ -332,6 +332,7 @@
 				<context ref="close-comment-outside-comment"/>
 				<context ref="entity-directives"/>
 				<context ref="entity-relations"/>
+				<context ref="conditional-compilation-directives">
 				<context ref="predicate-directives"/>
 				<context ref="built-in-methods"/>
 				<context ref="built-in-predicates"/>
