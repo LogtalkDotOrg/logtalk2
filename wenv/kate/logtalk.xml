@@ -151,7 +151,7 @@
 
 			<context name = "directive" attribute = "Directive" lineEndContext = "#stay" >
 				<!-- Conditional compilation directives -->
-				<RegExpr String = "\b(el)?if(?=[(])" attribute = "Directive" context = "entityrelations" beginRegion = "Entity"/>
+				<RegExpr String = "\b(el)?if(?=[(])" attribute = "Directive" context = "#pop"/>
 				<RegExpr String = "\be(lse|ndif)[.]" attribute = "Directive" context = "#pop" />
 				<!-- Entity directives -->
 				<RegExpr String = "\b(category|object|protocol)(?=[(])" attribute = "Directive" context = "entityrelations" beginRegion = "Entity"/>
