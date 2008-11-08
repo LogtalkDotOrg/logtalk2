@@ -4757,8 +4757,8 @@ current_logtalk_flag(version, version(2, 33, 3)).
 	!.
 
 '$lgt_tr_file'(Term, _, _, Input, Output) :-
-	'$lgt_pp_cc_skipping_',
-	\+ '$lgt_lgt_cc_directive'(Term),
+	'$lgt_pp_cc_skipping_',				% we're performing conditional compilation and skipping terms 
+	\+ '$lgt_lgt_cc_directive'(Term),	% except for conditional compilation directives itself
 	!,
 	'$lgt_read_term'(Input, Next, [singletons(NextSingletons)], NextLine),
 	'$lgt_tr_file'(Next, NextSingletons, NextLine, Input, Output).
