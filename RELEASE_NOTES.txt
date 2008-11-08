@@ -18,6 +18,10 @@ RELEASE NOTES
     Added conditional compilation support, as found in some Prolog compilers,
     using the new directives if/1, elif/1, else/0, and endif/0.
 
+    Added a "prolog" read-only compiler flag whose value is the name of the
+    back-end Prolog compiler (an atom). This flag can be used for conditional
+    compilation of Prolog specific code.
+
     Simplified the implementation of the threaded/1 built-in predicate.
 
     Removed support for the deprecated message_queue_create/1 Prolog built-in

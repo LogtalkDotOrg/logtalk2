@@ -12015,6 +12015,7 @@ current_logtalk_flag(version, version(2, 33, 3)).
 '$lgt_valid_flag'(code_prefix).
 '$lgt_valid_flag'(debug).
 % read-only compilation flags:
+'$lgt_valid_flag'(prolog).
 '$lgt_valid_flag'(startup_message).
 '$lgt_valid_flag'(version).
 '$lgt_valid_flag'(break_predicate).
@@ -12030,6 +12031,7 @@ current_logtalk_flag(version, version(2, 33, 3)).
 %
 % true if the argument is a read only Logtalk flag name
 
+'$lgt_read_only_flag'(prolog).
 '$lgt_read_only_flag'(startup_message).
 '$lgt_read_only_flag'(break_predicate).
 '$lgt_read_only_flag'(version).
@@ -14127,10 +14129,11 @@ current_logtalk_flag(version, version(2, 33, 3)).
 	write('  hook: '), write(Hook),
 	'$lgt_default_flag'(tmpdir, TmpDir), write(', tmpdir: '), write(TmpDir), nl,
 	write('Read-only compilation flags:'), nl,
-	'$lgt_default_flag'(break_predicate, Break), write('  break_predicate: '), write(Break),
-	'$lgt_default_flag'(startup_message, Startup), write(', startup_message: '), write(Startup),
-	'$lgt_default_flag'(altdirs, Altdirs), write(', altdirs: '), write(Altdirs), nl,
-	'$lgt_default_flag'(context_switching_calls, ContextCalls), write('  context_switching_calls: '), write(ContextCalls),
+	'$lgt_default_flag'(prolog, Prolog), write('  prolog: '), write(Prolog),
+	'$lgt_default_flag'(break_predicate, Break), write(', break_predicate: '), write(Break),
+	'$lgt_default_flag'(startup_message, Startup), write(', startup_message: '), write(Startup), nl,
+	'$lgt_default_flag'(altdirs, Altdirs), write('  altdirs: '), write(Altdirs),
+	'$lgt_default_flag'(context_switching_calls, ContextCalls), write(', context_switching_calls: '), write(ContextCalls),
 	 '$lgt_default_flag'(threads, Threads), write(', threads: '), write(Threads), nl,
 	'$lgt_default_flag'(encoding_directive, Encodings), write('  encoding_directive: '), write(Encodings),
 	'$lgt_default_flag'(multifile_directive, Multifile), write(', multifile_directive: '), write(Multifile), nl, nl.
@@ -14186,6 +14189,8 @@ current_logtalk_flag(version, version(2, 33, 3)).
 	'$lgt_default_flag'(tmpdir, TmpDir),
 	write('  Directory for compiler generated temporary files (tmpdir):  '), write(TmpDir), nl,
 	write('Read-only compilation flags:'), nl,
+	'$lgt_default_flag'(prolog, Prolog),
+	write('  Name of the back-end Prolog compiler (prolog):              '), write(Prolog), nl,
 	'$lgt_default_flag'(break_predicate, Break),
 	write('  Support for break/0 predicate (break_predicate):            '), write(Break), nl,
 	'$lgt_default_flag'(startup_message, Startup),
