@@ -26,6 +26,10 @@
          );
     	EscapeCharacter = "\\";
     	Keywords = (
+			"if"
+			"elif"
+			"else"
+			"endif"
       		"category",
 			"end_category",
 			"end_object",

@@ -68,6 +68,12 @@ CharEsc = \
 
 [Keywords 2]
 
+; Logtalk conditional compilation directives
+if
+elif
+else
+endif
+
 ; Logtalk opening entity directives
 object
 protocol
