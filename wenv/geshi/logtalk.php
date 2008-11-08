@@ -4,15 +4,15 @@
  * logtalk.php
  * -----------
  * 
- * Author: Clara Dimene <c_dimene@hotmail.com>
+ * Authors: Clara Dimene <c_dimene@hotmail.com>, Paulo Moura <pmoura@logtalk.org>
  *
- * Copyright: (c) 2008 Clara Dimene
+ * Copyright: (c) 2008 Clara Dimene, Paulo Moura
  *
  * Logtalk language file for GeSHi.
  *
  *
  * Based on GeSHi release 1.0.7.21
- * Last Change:	July 18, 2008
+ * Last Change:	November 8, 2008
  *
  *************************************************************************************
  *
@@ -439,7 +439,7 @@ $language_data = array (
 
 			//Other directives
 		36 => array(
-					GESHI_SEARCH => '(\s*:-\s)(mode|alias|(e(ncoding|xport))|synchronized|alias|initialization|info|module|d(ynamic|iscontiguous)|op|(m(eta_predicate|ultifile))|calls|(use(s|_module)))(?=[(])',
+					GESHI_SEARCH => '(\s*:-\s)(mode|alias|(e(lif|ncoding|xport))|synchronized|alias|i(f|n(itialization|fo))|module|d(ynamic|iscontiguous)|op|(m(eta_predicate|ultifile))|calls|(use(s|_module)))(?=[(])',
 					GESHI_REPLACE => '\\2',
 					GESHI_MODIFIERS => '',
 					GESHI_BEFORE => '\\1',
@@ -448,7 +448,7 @@ $language_data = array (
 
 			//Entity directives			
 		37 => array(
-					GESHI_SEARCH => '(\s*:-\s)(end_(object|protocol|category)|threaded|synchronized|dynamic)(?=[.])',
+					GESHI_SEARCH => '(\s*:-\s)(e(lse|nd(if|_(object|protocol|category)))|threaded|synchronized|dynamic)(?=[.])',
 					GESHI_REPLACE => '\\2',
 					GESHI_MODIFIERS => '',
 					GESHI_BEFORE => '\\1',

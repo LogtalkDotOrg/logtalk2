@@ -51,7 +51,10 @@ current_protocol
 define_events
 discontiguous
 dynamic
+elif
+else
 encoding
+endif
 end_category
 end_object
 end_protocol
@@ -75,6 +78,7 @@ get_char
 get_code
 goal_expansion
 halt
+if
 implements
 implements_protocol
 imports

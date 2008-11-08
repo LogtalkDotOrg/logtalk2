@@ -4,8 +4,8 @@
 #
 #  Author: Paulo Moura
 #    Mail: pmoura@logtalk.org
-#    Date: 05.05.08
-# Version: 1.01
+#    Date: 08.11.08
+# Version: 1.1
 # ------------------------------------------
 # This file is a part of highlight, a free source code converter released under the GPL.
 #
@@ -16,6 +16,10 @@ $DESCRIPTION=Logtalk
 
 # variables
 $KEYWORDS(kwb)=regex((?<!0')[A-Z_]\w*)
+
+# conditional compilation directives
+$KEYWORDS(kwa)=regex(^\s*:-\s((el)?if)(?=[(]), 1)
+$KEYWORDS(kwa)=regex(^\s*:-\s(e(lse|ndif))(?=\.), 1)
 
 # encapsulation directives
 $KEYWORDS(kwa)=regex(^\s*:-\s(category|protocol|object)(?=[(]), 1)

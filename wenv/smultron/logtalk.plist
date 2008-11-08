@@ -4,6 +4,10 @@
 <dict>
 	<key>autocompleteWords</key>
 		<array>
+			<string>if</string>
+			<string>elif</string>
+			<string>else</string>
+			<string>endif</string>
 			<string>encoding</string>
 			<string>calls</string>
 			<string>category</string>

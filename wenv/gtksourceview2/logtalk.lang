@@ -2,7 +2,7 @@
 <!--
 
  Author: Paulo Moura <pmoura@logtalk.org>
- Copyright (C) 2007 Paulo Moura <pmoura@logtalk.org>
+ Copyright (C) 2007-2008 Paulo Moura <pmoura@logtalk.org>
 
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Library General Public
@@ -96,6 +96,12 @@
 			<keyword>(extends)(?=[(])</keyword>
 			<keyword>(i(mp(orts|lements)|nstantiates))(?=[(])</keyword>
 			<keyword>(specializes)(?=[(])</keyword>
+		</context>
+
+		<context id="conditional-compilation-directives" style-ref="directive">
+ 			<prefix>^\s*:-\s</prefix>
+			<keyword>(e(lse|ndif))(?=[.])</keyword>			
+			<keyword>((el)?if)(?=[(])</keyword>			
 		</context>
 
 		<context id="predicate-directives" style-ref="directive">

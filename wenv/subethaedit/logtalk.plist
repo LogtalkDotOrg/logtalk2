@@ -64,6 +64,10 @@
 			<false/>
 			<key>Regular Expressions</key>
 			<array>
+				<string>\:\-[[:space:]](if)\(</string>			
+				<string>\:\-[[:space:]](elif)\(</string>			
+				<string>\:\-[[:space:]](else)\.</string>			
+				<string>\:\-[[:space:]](endif)\.</string>			
 				<string>\:\-[[:space:]](object)\(</string>			
 				<string>\:\-[[:space:]](end_object)\.</string>			
 				<string>\:\-[[:space:]](protocol)\(</string>			

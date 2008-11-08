@@ -1,7 +1,7 @@
 # highlighting for Logtalk source files (http://logtalk.org/)
 #
 #	written by Paulo Moura (pmoura@logtalk.org)
-#	last revised on 10 May 2008
+#	last revised on 8 November 2008
 
 comment start "%"
 comment delim "/*" "*/" multiline nested
@@ -63,8 +63,8 @@ variable =	'\<[A-Z_][A-Za-z0-9_]*'
 
 cbracket =	"{|}"
 
-preproc =	'^[[:blank:]]*:-[[:blank:]](ca(lls|tegory)|p(ublic|r(ot(ocol|ected)|ivate))|e(ncoding|xports)|in(fo|itialization)|alias|d(ynamic|iscontiguous)|m(eta_predicate|od(e|ule)|ultifile)|synchronized|o(bject|p)|use(s|_module))(?=\()',
-			'^[[:blank:]]*:-[[:blank:]](end_(category|object|protocol)|dynamic|synchronized|threaded)\.'
+preproc =	'^[[:blank:]]*:-[[:blank:]](ca(lls|tegory)|p(ublic|r(ot(ocol|ected)|ivate))|e(l(if|se)|ncoding|xports)|i(f|n(fo|itialization))|alias|d(ynamic|iscontiguous)|m(eta_predicate|od(e|ule)|ultifile)|synchronized|o(bject|p)|use(s|_module))(?=\()',
+			'^[[:blank:]]*:-[[:blank:]](end(if|_(category|object|protocol))|dynamic|synchronized|threaded)\.'
 
 preproc =	'\<(complements|extends|i(nstantiates|mp(lements|orts))|specializes)(?=\()'
 

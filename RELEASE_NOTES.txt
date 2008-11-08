@@ -27,6 +27,9 @@ RELEASE NOTES
     Removed support for the deprecated message_queue_create/1 Prolog built-in
     predicate.
 
+    Added syntax coloring support for the new conditional compilation
+    directives to the supported text editors and syntax highlighters.
+
 
 2.33.2 - November 3, 2008
 
