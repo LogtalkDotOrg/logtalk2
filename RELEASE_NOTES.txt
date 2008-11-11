@@ -30,6 +30,9 @@ RELEASE NOTES
     Added syntax coloring support for the new conditional compilation
     directives to the supported text editors and syntax highlighters.
 
+    Fixed a block comment syntax coloring bug in the support for the Highlight
+    syntax highlighter with the help of André Simon.
+
 
 2.33.2 - November 3, 2008
 
