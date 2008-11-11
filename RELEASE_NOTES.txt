@@ -27,6 +27,10 @@ RELEASE NOTES
     Removed support for the deprecated message_queue_create/1 Prolog built-in
     predicate.
 
+    Modified the "statistics" library to use the variance stable algorithm to
+    calculate accurate values for the standard deviation for both samples and
+    populations. Thanks to Parker Jones for the bug report.
+
     Added syntax coloring support for the new conditional compilation
     directives to the supported text editors and syntax highlighters.
 
