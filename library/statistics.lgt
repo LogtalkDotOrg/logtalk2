@@ -82,6 +82,12 @@
 		Cacc2 is Cacc + (X - Mean) ** 3,
 		squares_and_cubes(Xs, Mean, Sacc2, Squares, Cacc2, Cubes).
 
+	squares_and_hypers([], _, Squares, Squares, Hypers, Hypers).
+	squares_and_hypers([X| Xs], Mean, Sacc, Squares, Hacc, Hypers) :-
+		Sacc2 is Sacc + (X - Mean) ** 2,
+		Hacc2 is Hacc + (X - Mean) ** 4,
+		squares_and_hypers(Xs, Mean, Sacc2, Squares, Hacc2, Hypers).
+
 	median([X| Xs], Median) :-
 		median([X| Xs], Median, _).
 

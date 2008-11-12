@@ -101,7 +101,13 @@
 	:- mode(skewness(+list(number), -float), zero_or_one).
 	:- info(skewness/2,
 		[comment is 'Calculates the skewness of a list of numbers. Fails if the list is empty.',
-		 argnames is ['List', 'Deviation']]).
+		 argnames is ['List', 'Skewness']]).
+
+	:- public(kurtosis/2).
+	:- mode(kurtosis(+list(number), -float), zero_or_one).
+	:- info(kurtosis/2,
+		[comment is 'Calculates the (excess) kurtosis of a list of numbers. Fails if the list is empty.',
+		 argnames is ['List', 'Kurtosis']]).
 
 	:- public(variance/2).
 	:- mode(variance(+list(number), -float), zero_or_one).
@@ -115,8 +121,9 @@
 		comment is 'Term is a closed list of numbers.',
 		argnames is ['Term']]).
 
-    :- private(arithmetic_mean/5).
-    :- private(squares_and_cubes/6).
+	:- private(arithmetic_mean/5).
+	:- private(squares_and_cubes/6).
+	:- private(squares_and_hypers/6).
 	:- private(variance/6).
 
 :- end_protocol.

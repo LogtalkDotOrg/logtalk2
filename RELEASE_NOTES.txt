@@ -29,7 +29,8 @@ RELEASE NOTES
 
     Modified the "statistics" library to use the variance stable algorithm to
     calculate accurate values for the standard deviation for both samples and
-    populations. Thanks to Parker Jones for the bug report.
+    populations. Thanks to Parker Jones for the bug report. Added calculation
+    of sample and population kurtosis.
 
     Added syntax coloring support for the new conditional compilation
     directives to the supported text editors and syntax highlighters.
