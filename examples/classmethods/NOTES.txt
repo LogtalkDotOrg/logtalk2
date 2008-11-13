@@ -12,9 +12,9 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 To load this example and for sample queries, please see the SCRIPT.txt file.
 
 This example illustrates how to define "class methods" as found on class-
-based object-oriented programming such as Java or Objective-C. Logtalk 
-classes are objects. Therefore, class methods are simply instance methods 
-defined in the class of the class, i.e. in its meta-class.
+based object-oriented programming languages such as Java or Objective-C.
+Logtalk classes are objects. Therefore, class methods are simply instance
+methods defined in the class of the class, i.e. in its meta-class.
 
 This example defines the following objects:
 

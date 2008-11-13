@@ -33,8 +33,8 @@
 	new(Person, Name, Birth) :-
 		self(Self),
 		create_object(Person, [extends(Self)], [], []),
-		Person::name(Name),
-		Person::birth(Birth).
+		Person::assertz(name(Name)),
+		Person::assertz(birth(Birth)).
 	*/
 
 	:- public(print/0).
@@ -71,8 +71,8 @@
 		argnames is ['Id', 'Name', 'Birth', 'Office']]).
 
 	new(Person, Name, Birth, Office) :-
-		::new(Person, Name, Birth),
-		Person::assertz(office(Office)).
+		::new(Person, Name, Birth),			% create a "generic" person and
+		Person::assertz(office(Office)).	% add "teacher" specific data
 
 	print :-
 		^^print,
@@ -103,8 +103,8 @@
 		argnames is ['Id', 'Name', 'Birth', 'Dorm']]).
 
 	new(Person, Name, Birth, Dorm) :-
-		::new(Person, Name, Birth),
-		Person::assertz(dorm(Dorm)).
+		::new(Person, Name, Birth),			% create a "generic" person and
+		Person::assertz(dorm(Dorm)).		% add "student" specific data
 
 	print :-
 		^^print,
