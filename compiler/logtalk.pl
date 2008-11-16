@@ -2000,7 +2000,10 @@ current_logtalk_flag(version, version(2, 33, 3)).
 	;	Prop = Type
 	;	Prop = declared_in(TCtn)
 	;	Meta \== no,
-		Prop = meta_predicate(Meta)
+		Meta =.. [_| MetaArgs],							% Pred can be an alias
+		functor(Pred, Functor, _),
+		Meta2 =.. [Functor| MetaArgs],
+		Prop = meta_predicate(Meta2)
 	;	NonTerminal \== no,
 		functor(Pred, Functor, Arity2),
 		Arity is Arity2 - 2,

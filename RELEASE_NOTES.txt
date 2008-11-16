@@ -27,6 +27,10 @@ RELEASE NOTES
     Removed support for the deprecated message_queue_create/1 Prolog built-in
     predicate.
 
+    Corrected a bug in the implementation of the predicate_property/2 built-in
+    method which would return wrong meta-predicate templates for predicate
+    aliases. 
+
     Modified the "statistics" library to use the variance stable algorithm to
     calculate accurate values for the standard deviation for both samples and
     populations. Thanks to Parker Jones for the bug report. Added calculation
