@@ -31,6 +31,9 @@ RELEASE NOTES
     method which would return wrong meta-predicate templates for predicate
     aliases. 
 
+    Corrected a bug in the compilation of meta-calls to predicates defined in
+    the pseudo-object "user".
+
     Modified the "statistics" library to use the variance stable algorithm to
     calculate accurate values for the standard deviation for both samples and
     populations. Thanks to Parker Jones for the bug report. Added calculation

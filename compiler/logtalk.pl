@@ -6988,6 +6988,15 @@ current_logtalk_flag(version, version(2, 33, 3)).
 % translates an entity clause body
 
 
+% calls in the context of the pseudo-object "user":
+
+'$lgt_tr_body'(Pred, Pred, '$lgt_dbg_goal'(Pred, Pred, DbgCtx), Ctx) :-
+	'$lgt_ctx_this'(Ctx, This),
+	This == user,
+	!,
+ 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
+
+
 % meta-calls
 
 '$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, DbgCtx), Ctx) :-
