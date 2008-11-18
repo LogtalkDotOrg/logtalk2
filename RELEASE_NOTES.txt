@@ -34,10 +34,15 @@ RELEASE NOTES
     Corrected a bug in the compilation of meta-calls to predicates defined in
     the pseudo-object "user".
 
-    Modified the "statistics" library to use the variance stable algorithm to
-    calculate accurate values for the standard deviation for both samples and
-    populations. Thanks to Parker Jones for the bug report. Added calculation
-    of sample and population kurtosis.
+    Modified the "statistics" library to use the variance numerically stable
+    algorithm to calculate accurate values for the standard deviation for both
+    samples and populations. Thanks to Parker Jones for the bug report. Added
+    calculation of sample and population kurtosis.
+
+    Added predicates included/3, excluded/3, fold_left/4, and fold_right/4
+    to the library entities "metap" and "meta" (requested by Paul Crocker).
+    Renamed the predicates filter/3 and succeeds/2 to included/3 and map/2,
+    respectively (older names are still available using aliases in "meta").
 
     Added syntax coloring support for the new conditional compilation
     directives to the supported text editors and syntax highlighters.
