@@ -44,6 +44,10 @@ RELEASE NOTES
     Renamed the predicates filter/3 and succeeds/2 to included/3 and map/2,
     respectively (older names are still available using aliases in "meta").
 
+    Updated the "metapredicates" example with Paul Crocker's contributions to
+    illustrate the use of some of the meta-predicates defined in the Logtalk
+    library.
+
     Added syntax coloring support for the new conditional compilation
     directives to the supported text editors and syntax highlighters.
 

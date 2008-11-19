@@ -15,7 +15,7 @@ This example shows the use of meta-predicates in Logtalk. Meta-predicates are
 predicates whose head contains arguments that will be called as goals in the 
 body of the predicate definition.
 
-This example defines two objects:
+This example defines the following objects:
 
 	sort(_)
 		this is a parametric object containing a method that implements the
@@ -25,3 +25,12 @@ This example defines two objects:
 	tracer
 		this object implements a meta-predicate that is used by sort(_) to 
 		trace the sorting algorithm steps
+
+	metapreds
+	descendant
+	test
+		objects used for illustrating the use of clusures as meta-arguments
+
+	predicates
+		object defining some predicates for testing meta-predicates defined 
+		in the Logtalk library

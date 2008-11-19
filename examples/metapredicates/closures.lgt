@@ -4,15 +4,15 @@
 */
 
 
-:- object(meta).
+:- object(metapreds).
 
 	% the meta_predicate/1 directive below changes the interpretation of meta-calls on apply/2
 	% clauses; the integer argument ("1") implies that the first argument is a closure that will 
 	% be used to construct a goal by appending exactly one additional argument
 
 	:- public(apply/2).
-	:- mode(apply(+callable, ?term), zero_or_more).
 	:- meta_predicate(apply(1, *)).
+	:- mode(apply(+callable, ?term), zero_or_more).
 
 	apply(Closure, Arg) :-		% the Logtalk compiler verifies that any closure which is a
 		call(Closure, Arg).		% meta-argument is used within a call/N method that complies with
@@ -22,23 +22,23 @@
 
 	test_this :-
 		apply(foo(X), Y),
-		write((X, Y)), nl.
+		writeq((X, Y)), nl.
 
-	foo(1, meta).
+	foo(1, metapreds).
 
 :- end_object.
 
 
-:- object(desc,
-	extends(meta)).	
+:- object(descendant,
+	extends(metapreds)).	
 
 	:- public(test_self/0).		% simple predicate for testing calls to a meta-predicate
 								% defined in an ancestor object
 	test_self :-
 		::apply(foo(X), Y),
-		write((X, Y)), nl.
+		writeq((X, Y)), nl.
 
-	foo(2, desc).
+	foo(2, descendant).
 
 :- end_object.
 
@@ -48,8 +48,8 @@
 	:- public(test_obj/0).		% simple predicate for testing calls to a meta-predicate
 								% defined in another object
 	test_obj :-
-		meta::apply(foo(X), Y),
-		write((X, Y)), nl.
+		metapreds::apply(foo(X), Y),
+		writeq((X, Y)), nl.
 
 	foo(3, test).
 
