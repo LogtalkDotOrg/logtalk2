@@ -27,6 +27,7 @@
 	 assertz(logtalk_library_path(bottles, examples('bottles/'))),
 	 assertz(logtalk_library_path(bricks, examples('bricks/'))),
 	 assertz(logtalk_library_path(buffer, threads('buffer/'))),
+	 assertz(logtalk_library_path(cc, examples('cc/'))),
 	 assertz(logtalk_library_path(classmethods, examples('classmethods/'))),
 	 assertz(logtalk_library_path(classvars, examples('classvars/'))),
 	 assertz(logtalk_library_path(clp_bp, constraints('bp/'))),

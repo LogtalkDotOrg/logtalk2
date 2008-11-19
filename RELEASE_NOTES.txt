@@ -48,6 +48,9 @@ RELEASE NOTES
     illustrate the use of some of the meta-predicates defined in the Logtalk
     library.
 
+    Added an example, "cc", of using conditional compilation directives to
+    implement a portable operating-system interface for some Prolog compilers.
+
     Added syntax coloring support for the new conditional compilation
     directives to the supported text editors and syntax highlighters.
 
