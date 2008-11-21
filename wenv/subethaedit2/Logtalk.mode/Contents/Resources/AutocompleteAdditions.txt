@@ -92,6 +92,7 @@ phrase(, , )
 goal_expansion(, )
 term_expansion(, )
 expand_term(, )
+expand_goal(, )
 
 unify_with_occurs_check(, )
 

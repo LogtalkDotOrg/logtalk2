@@ -147,6 +147,7 @@ comment
 
 	term_expansion_methods :-
 		expand_term(Term, Expanded),
+		expand_goal(Goal, Expanded),
 		term_expansion(Term, Expanded),
 		goal_expansion(Goal, Expanded).
 

@@ -4,8 +4,8 @@
 
 ;; Author: Paulo Moura <pmoura@logtalk.org>
 ;; Creation date: November 15, 2003
-;; Last modification date: November 8, 2008
-;; Version: 1.5
+;; Last modification date: November 21, 2008
+;; Version: 1.6
 
 ;; Installation:
 ;;
@@ -113,7 +113,7 @@
 		("\\<\\(a\\(?:bolish\\|ssert[az]\\)\\|clause\\|retract\\(?:all\\)?\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
 		("\\<\\(bagof\\|f\\(?:\\(?:ind\\|or\\)all\\)\\|setof\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
 		("\\<\\(after\\|before\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
-		("\\<\\(phrase\\|expand_term\\|\\(?:goal\\|term\\)_expansion\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
+		("\\<\\(phrase\\|expand_\\(?:goal\\|term\\)\\|\\(?:goal\\|term\\)_expansion\\)\\([(]\\)" 1 'logtalk-built-in-method-face)
 	))
 
 

@@ -23,6 +23,11 @@ RELEASE NOTES
     back-end Prolog compiler (an atom). This flag can be used for conditional
     compilation of Prolog specific code.
 
+    Added an expand_goal/2 built-in method to support explicit calls to the
+    goal_expansion/2 user-defined hook. Updated the term expansion mechanism
+    to allow the expansion to be a single term instead of a list of terms.
+    Improved the documentation of the term and goal expansion predicates.
+
     Simplified the implementation of the threaded/1 built-in predicate.
 
     Removed support for the deprecated message_queue_create/1 Prolog built-in
@@ -57,8 +62,9 @@ RELEASE NOTES
     implement a portable operating-system interface for selected back-end
     Prolog compilers.
 
-    Added syntax coloring support for the new conditional compilation
-    directives to the supported text editors and syntax highlighters.
+    Added syntax coloring support for the new expand_goal/2 method and for the
+    new conditional compilation directives to the supported text editors and 
+    syntax highlighters.
 
     Fixed a block comment syntax coloring bug in the support for the Highlight
     syntax highlighter with the help of André Simon.

@@ -4,8 +4,8 @@
 #
 #  Author: Paulo Moura
 #    Mail: pmoura@logtalk.org
-#    Date: 11.11.08
-# Version: 1.2
+#    Date: 21.11.08
+# Version: 1.3
 # ------------------------------------------
 # This file is a part of highlight, a free source code converter released under the GPL.
 #
@@ -37,7 +37,8 @@ $KEYWORDS(kwc)=regex((parameter|this|se(lf|nder))(?=[(]), 1)
 # reflection
 $KEYWORDS(kwc)=regex((current_predicate|predicate_property)(?=[(]), 1)
 # DCGs
-$KEYWORDS(kwc)=regex((expand_term|(?:goal|term)_expansion|phrase)(?=[(]), 1)
+$KEYWORDS(kwc)=regex((expand_(goal|term))(?=[(]), 1)
+$KEYWORDS(kwc)=regex(((?:goal|term)_expansion|phrase)(?=[(]), 1)
 # entity
 $KEYWORDS(kwc)=regex(((abolish|c(reate|urrent))_(object|protocol|category))(?=[(]), 1)
 $KEYWORDS(kwc)=regex(((object|protocol|category)_property)(?=[(]), 1)

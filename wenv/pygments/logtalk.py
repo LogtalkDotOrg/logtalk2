@@ -49,7 +49,7 @@ class LogtalkLexer(RegexLexer):
             # Reflection
             (r'(current_predicate|predicate_property)(?=[(])', Keyword),
             # DCGs and term expansion
-            (r'(expand_term|(goal|term)_expansion|phrase)(?=[(])', Keyword),
+            (r'(expand_(goal|term)|(goal|term)_expansion|phrase)(?=[(])', Keyword),
             # Entity
             (r'(abolish|c(reate|urrent))_(object|protocol|category)(?=[(])', Keyword),
             (r'(object|protocol|category)_property(?=[(])', Keyword),

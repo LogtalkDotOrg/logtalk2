@@ -59,6 +59,7 @@ end_category
 end_object
 end_protocol
 exp
+expand_goal
 expand_term
 extends
 extends_category

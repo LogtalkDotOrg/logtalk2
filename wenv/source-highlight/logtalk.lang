@@ -1,7 +1,7 @@
 # highlighting for Logtalk source files (http://logtalk.org/)
 #
 #	written by Paulo Moura (pmoura@logtalk.org)
-#	last revised on 8 November 2008
+#	last revised on 21 November 2008
 
 comment start "%"
 comment delim "/*" "*/" multiline nested
@@ -25,7 +25,7 @@ keyword =	'\<(abolish|c(urrent|reate))_(object|protocol|category)(?=\()',
 keyword =	'\<(after|before)(?=\()',
 			'\<(parameter|this|se(lf|nder))(?=\()',
 			'\<(current_predicate|predicate_property)(?=\()',
-			'\<(expand_term|(goal|term)_expansion|phrase)(?=\()',
+			'\<(expand_(goal|term)|(goal|term)_expansion|phrase)(?=\()',
 			'\<(clause|retract(all)?)(?=\()',
 			'\<a(bolish|ssert(a|z))(?=\()',
 			'\<(ca(ll|tch)|throw)(?=\()',

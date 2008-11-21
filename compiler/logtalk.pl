@@ -254,7 +254,7 @@
 :- dynamic('$lgt_pp_entity_warnings_flag_'/0).	% '$lgt_pp_entity_warnings_flag_'
 
 :- dynamic('$lgt_pp_hook_term_expansion_'/2).	% '$lgt_pp_hook_term_expansion_'(Term, Terms)
-:- dynamic('$lgt_pp_hook_goal_expansion_'/2).	% '$lgt_pp_hook_goal_expansion_'(Term, Terms)
+:- dynamic('$lgt_pp_hook_goal_expansion_'/2).	% '$lgt_pp_hook_goal_expansion_'(Goal, EGoal)
 
 :- dynamic('$lgt_pp_threaded_'/0).				% '$lgt_pp_threaded_'
 :- dynamic('$lgt_pp_synchronized_'/0).			% '$lgt_pp_synchronized_'
@@ -1771,12 +1771,12 @@ logtalk_compile(Files, Flags) :-
 	(	'$lgt_pp_compiler_flag_'(hook, Obj) ->						% pre-compile hooks in order 
 		(	Obj == user ->											% to speed up entity compilation
 			TermExpansionGoal = term_expansion(Term, Terms),
-			GoalExpansionGoal = goal_expansion(Term, Terms)
+			GoalExpansionGoal = goal_expansion(Goal, EGoal)
 		;	'$lgt_tr_msg'(term_expansion(Term, Terms), Obj, TermExpansionGoal, user),
-			'$lgt_tr_msg'(goal_expansion(Term, Terms), Obj, GoalExpansionGoal, user)
+			'$lgt_tr_msg'(goal_expansion(Goal, EGoal), Obj, GoalExpansionGoal, user)
 		),
 		assertz(('$lgt_pp_hook_term_expansion_'(Term, Terms) :- catch(TermExpansionGoal, _, fail))),
-		assertz(('$lgt_pp_hook_goal_expansion_'(Term, Terms) :- catch(GoalExpansionGoal, _, fail)))
+		assertz(('$lgt_pp_hook_goal_expansion_'(Goal, EGoal) :- catch(GoalExpansionGoal, _, fail)))
 	;	true
 	).
 
@@ -2944,6 +2944,7 @@ current_logtalk_flag(version, version(2, 33, 3)).
     ). 
 
 
+
 % '$lgt_term_expansion'(+object_identifier, ?term, ?term, +object_identifier, @scope)
 %
 % calls the term_expansion/2 user-defined predicate
@@ -2963,6 +2964,46 @@ current_logtalk_flag(version, version(2, 33, 3)).
 		(	call_with_args(Def, term_expansion(Term, Expansion), Obj, Obj, Obj, Call) ->
 			true
 		;	call_with_args(DDef, term_expansion(Term, Expansion), Obj, Obj, Obj, Call)
+		)
+	),
+	!,
+	once(Call).
+
+
+
+% '$lgt_expand_goal'(+object_identifier, ?term, ?term, +object_identifier, @scope)
+%
+% expand_goal/2 built-in method
+
+'$lgt_expand_goal'(Obj, Goal, Expansion, Sender, Scope) :-
+    (    var(Goal) ->
+         Expansion = Goal
+    ;    '$lgt_goal_expansion'(Obj, Goal, Expand, Sender, Scope) ->
+         Expansion = Expand
+    ;    Expansion = Goal
+    ). 
+
+
+
+% '$lgt_goal_expansion'(+object_identifier, ?term, ?term, +object_identifier, @scope)
+%
+% calls the goal_expansion/2 user-defined predicate
+%
+% if there is a scope directive, then the call fails if the sender is not within scope;
+% when there is no scope directive, then we call any local definition when the sender
+% and the target object are the same
+
+'$lgt_goal_expansion'(Obj, Goal, Expansion, Sender, Scope) :-
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, _),
+	(	(	call_with_args(Dcl, goal_expansion(_, _), PScope, _, _, _, _, SCtn, _) ->
+			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
+				call_with_args(Def, goal_expansion(Goal, Expansion), Sender, Obj, Obj, Call, _)
+			)
+		)
+	;	Obj = Sender,
+		(	call_with_args(Def, goal_expansion(Goal, Expansion), Obj, Obj, Obj, Call) ->
+			true
+		;	call_with_args(DDef, goal_expansion(Goal, Expansion), Obj, Obj, Obj, Call)
 		)
 	),
 	!,
@@ -5277,7 +5318,7 @@ current_logtalk_flag(version, version(2, 33, 3)).
 
 
 
-% '$lgt_tr_term'(+term, +integer, @stream, @stream)
+% '$lgt_tr_term'(@term, +integer, @stream, @stream)
 %
 % translates a source file term (clauses, directives, and grammar rules)
 
@@ -5294,15 +5335,21 @@ current_logtalk_flag(version, version(2, 33, 3)).
 
 
 
-% '$lgt_tr_expanded_terms'(+list, +integer, @stream, @stream)
+% '$lgt_tr_expanded_terms'(@term, +integer, @stream, @stream)
 %
-% translates a list of source file terms
+% translates the expanded terms (which can be a list of terms)
 
-'$lgt_tr_expanded_terms'([], _, _, _).
+'$lgt_tr_expanded_terms'([], _, _, _) :-
+	!.
 
 '$lgt_tr_expanded_terms'([Term| Terms], Line, Input, Output) :-
+	!,
 	'$lgt_tr_expanded_term'(Term, Line, Input, Output),
 	'$lgt_tr_expanded_terms'(Terms, Line, Input, Output).
+
+'$lgt_tr_expanded_terms'(Term, Line, Input, Output) :-
+	!,
+	'$lgt_tr_expanded_term'(Term, Line, Input, Output).
 
 
 
@@ -7654,12 +7701,20 @@ current_logtalk_flag(version, version(2, 33, 3)).
 	DCond = '$lgt_dbg_goal'(retractall(Pred), TCond, DbgCtx).
 
 
-% DCG predicates
+% term and goal expansion predicates
 
 '$lgt_tr_body'(expand_term(Term, Clause), '$lgt_expand_term'(This, Term, Clause, This, p(_)), '$lgt_dbg_goal'(expand_term(Term, Clause), '$lgt_expand_term'(This, Term, Clause, This, p(_)), DbgCtx), Ctx) :-
 	!,
 	'$lgt_ctx_this'(Ctx, This),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
+
+'$lgt_tr_body'(expand_goal(Goal, EGoal), '$lgt_expand_goal'(This, Goal, EGoal, This, p(_)), '$lgt_dbg_goal'(expand_goal(Goal, EGoal), '$lgt_expand_goal'(This, Goal, EGoal, This, p(_)), DbgCtx), Ctx) :-
+	!,
+	'$lgt_ctx_this'(Ctx, This),
+	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
+
+
+% DCG predicates
 
 '$lgt_tr_body'(phrase(GRBody, Input), '$lgt_phrase'(This, GRBody, Input, This, _), '$lgt_dbg_goal'(phrase(GRBody, Input), '$lgt_phrase'(This, GRBody, Input, This, _), DbgCtx), Ctx) :-
 	var(GRBody),
@@ -8444,10 +8499,16 @@ current_logtalk_flag(version, version(2, 33, 3)).
 	).
 
 
-% DCG predicates
+% term and goal expansion predicates
 
 '$lgt_tr_msg'(expand_term(Term, Clause), Obj, '$lgt_expand_term'(Obj, Term, Clause, This, p(p(p))), This) :-
 	!.
+
+'$lgt_tr_msg'(expand_goal(Goal, EGoal), Obj, '$lgt_expand_goal'(Obj, Goal, EGoal, This, p(p(p))), This) :-
+	!.
+
+
+% DCG predicates
 
 '$lgt_tr_msg'(phrase(GRBody, List), Obj, '$lgt_phrase'(Obj, GRBody, List, This, p(p(p))), This) :-
 	!.
@@ -8655,11 +8716,16 @@ current_logtalk_flag(version, version(2, 33, 3)).
 	).
 
 
-
-% DCG predicates
+% term and goal expansion predicates
 
 '$lgt_tr_self_msg'(expand_term(Term, Clause), '$lgt_expand_term'(Self, Term, Clause, This, p(_)), This, Self) :-
 	!.
+
+'$lgt_tr_self_msg'(expand_goal(Goal, EGoal), '$lgt_expand_goal'(Self, Goal, EGoal, This, p(_)), This, Self) :-
+	!.
+
+
+% DCG predicates
 
 '$lgt_tr_self_msg'(phrase(GRBody, List), '$lgt_phrase'(Self, GRBody, List, This, p(_)), This, Self) :-
 	!.
@@ -11556,6 +11622,8 @@ current_logtalk_flag(version, version(2, 33, 3)).
 '$lgt_built_in_method'(setof(_, _, _), p(p(p))).
 
 '$lgt_built_in_method'(expand_term(_, _), p(p(p))).
+'$lgt_built_in_method'(expand_goal(_, _), p(p(p))).
+
 '$lgt_built_in_method'(phrase(_, _), p(p(p))).
 '$lgt_built_in_method'(phrase(_, _, _), p(p(p))).
 

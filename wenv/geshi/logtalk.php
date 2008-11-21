@@ -12,7 +12,7 @@
  *
  *
  * Based on GeSHi release 1.0.7.21
- * Last Change:	November 8, 2008
+ * Last Change:	November 21, 2008
  *
  *************************************************************************************
  *
@@ -184,7 +184,7 @@ $language_data = array (
 
 			//DCGs and term expansion
 		7 => array(
-					GESHI_SEARCH => '(phrase|expand_term|((goal|term)_expansion))(?=[(])',
+					GESHI_SEARCH => '(phrase|expand_(goal|term)|((goal|term)_expansion))(?=[(])',
 					GESHI_REPLACE => '\\1',
 					GESHI_MODIFIERS => '',
 					GESHI_BEFORE => '',

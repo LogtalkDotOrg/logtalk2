@@ -73,6 +73,7 @@ before
 after
 phrase
 expand_term
+expand_goal
 goal_expansion
 term_expansion
 true
