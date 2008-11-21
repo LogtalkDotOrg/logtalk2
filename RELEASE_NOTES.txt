@@ -58,6 +58,9 @@ RELEASE NOTES
     to illustrate the use of some of the meta-predicates implemented in the
     Logtalk library.
 
+    Updated the "expansion" example to illustrate the new expand_goal/2
+    built-in method.
+
     Added an example, "cc", of using conditional compilation directives to
     implement a portable operating-system interface for selected back-end
     Prolog compilers.

@@ -2975,12 +2975,12 @@ current_logtalk_flag(version, version(2, 33, 3)).
 %
 % expand_goal/2 built-in method
 
-'$lgt_expand_goal'(Obj, Goal, Expansion, Sender, Scope) :-
+'$lgt_expand_goal'(Obj, Goal, EGoal, Sender, Scope) :-
     (    var(Goal) ->
-         Expansion = Goal
-    ;    '$lgt_goal_expansion'(Obj, Goal, Expand, Sender, Scope) ->
-         Expansion = Expand
-    ;    Expansion = Goal
+         EGoal = Goal
+    ;    '$lgt_goal_expansion'(Obj, Goal, Expanded, Sender, Scope) ->
+         '$lgt_expand_goal'(Obj, Expanded, EGoal, Sender, Scope)
+    ;    EGoal = Goal
     ). 
 
 

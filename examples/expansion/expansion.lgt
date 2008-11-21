@@ -13,15 +13,23 @@
 	term_expansion(8, eight).
 	term_expansion(9, nine).
 
+	goal_expansion(write(Term), writeq(Term)).
+	goal_expansion(writeq(Term), write_term(Term, [quoted(true)])).
+
 :- end_category.
 
 
 :- category(conversion_test).
 
-	:- public(test/2).
+	:- public(test_term/2).
 
-	test(Term, Expansion) :-
+	test_term(Term, Expansion) :-
 		expand_term(Term, Expansion).
+
+	:- public(test_goal/2).
+
+	test_goal(Goal, EGoal) :-
+		expand_goal(Goal, EGoal).
 
 :- end_category.
 

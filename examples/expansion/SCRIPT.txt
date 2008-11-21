@@ -15,34 +15,69 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ...
 
 
-% simple tests of the expand_term/2 built-in method:
+% simple tests of the expand_term/2 and expand_goal/2 built-in methods:
 
 | ?- exp_public::expand_term(8, Term).
 
 Term = eight 
 yes
 
+| ?- exp_public::expand_goal(write(Term), EGoal).
+
+EGoal = write_term(Term, [quoted(true)]).
+yes
+
+
 | ?- exp_protected::expand_term(8, Term).
 
 Term = 8 
 yes
+
+| ?- exp_protected::expand_goal(write(Term), EGoal).
+
+EGoal = write(Term).
+yes
+
 
 | ?- exp_private::expand_term(8, Term).
 
 Term = 8 
 yes
 
-| ?- desc_public::test(8, Term).
+| ?- exp_private::expand_goal(write(Term), EGoal).
+
+EGoal = write(Term).
+yes
+
+
+| ?- desc_public::test_term(8, Term).
 
 Term = eight 
 yes
 
-| ?- desc_protected::test(8, Term).
+| ?- desc_public::test_goal(write(Term), EGoal).
+
+EGoal = write_term(Term, [quoted(true)])
+yes
+
+
+| ?- desc_protected::test_term(8, Term).
 
 Term = eight 
 yes
 
-| ?- desc_private::test(8, Term).
+| ?- desc_protected::test_goal(write(Term), EGoal).
+
+EGoal = write_term(Term, [quoted(true)])
+yes
+
+
+| ?- desc_private::test_term(8, Term).
 
 Term = 8 
+yes
+
+| ?- desc_private::test_goal(write(Term), EGoal).
+
+EGoal = write(Term)
 yes
