@@ -5263,6 +5263,20 @@ current_logtalk_flag(version, version(2, 33, 3)).
 
 
 
+% '$lgt_tr_expand_goal'(+callable, -callable)
+%
+% expands a goal; fails if no goal expansion hook is defined
+
+'$lgt_tr_expand_goal'(Goal, EGoal) :-	% source-file specific compiler hook
+	'$lgt_pp_hook_goal_expansion_'(Goal, EGoal),
+	!.
+
+'$lgt_tr_expand_goal'(Goal, EGoal) :-	% default compiler hook
+	'$lgt_hook_goal_expansion_'(Goal, EGoal),
+	!.
+
+
+
 % '$lgt_tr_term'(+term, +integer, @stream, @stream)
 %
 % translates a source file term (clauses, directives, and grammar rules)
@@ -5345,6 +5359,11 @@ current_logtalk_flag(version, version(2, 33, 3)).
 	\+ callable(Goal),
 	throw(error(type_error(callable, Goal), directive(if(Goal)))).
 
+'$lgt_tr_directive'(if(Goal), Line, Input, Output) :-
+	'$lgt_tr_expand_goal'(Goal, EGoal),
+	!,
+	'$lgt_tr_directive'(if(EGoal), Line, Input, Output).
+
 '$lgt_tr_directive'(if(Goal), _, Input, _) :-
 	'$lgt_pp_cc_mode_'(Value),					% not top-level if
 	!,
@@ -5381,6 +5400,11 @@ current_logtalk_flag(version, version(2, 33, 3)).
 '$lgt_tr_directive'(elif(Goal), _, _, _) :-
 	\+ '$lgt_pp_cc_if_found_'(_),
 	throw(error(unmatched_directive, directive(elif(Goal)))).
+
+'$lgt_tr_directive'(elif(Goal), Line, Input, Output) :-
+	'$lgt_tr_expand_goal'(Goal, EGoal),
+	!,
+	'$lgt_tr_directive'(elif(EGoal), Line, Input, Output).
 
 '$lgt_tr_directive'(elif(Goal), _, Input, _) :-
 	retract('$lgt_pp_cc_mode_'(Value)),
@@ -5522,6 +5546,11 @@ current_logtalk_flag(version, version(2, 33, 3)).
     !,
     ensure_loaded(File),                        		% assume that ensure_loaded/1 is also a built-in predicate
     assertz('$lgt_pp_directive_'(ensure_loaded(File))).
+
+'$lgt_tr_file_directive'(initialization(Goal), Line, Input, Output) :-
+	'$lgt_tr_expand_goal'(Goal, EGoal),
+	!,
+	'$lgt_tr_file_directive'(initialization(EGoal), Line, Input, Output).
 
 '$lgt_tr_file_directive'(initialization(Goal), _, _, _) :-
 	!,

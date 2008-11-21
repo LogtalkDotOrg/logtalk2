@@ -16,7 +16,8 @@ RELEASE NOTES
 2.33.3 - December ??, 2008
 
     Added conditional compilation support, as found in some Prolog compilers,
-    using the new directives if/1, elif/1, else/0, and endif/0.
+    using the new directives if/1, elif/1, else/0, and endif/0. The arguments
+    of the if/1 and elif/1 directives are subjected to goal expansion.
 
     Added a "prolog" read-only compiler flag whose value is the name of the
     back-end Prolog compiler (an atom). This flag can be used for conditional
@@ -31,8 +32,11 @@ RELEASE NOTES
     method which would return wrong meta-predicate templates for predicate
     aliases. 
 
-    Corrected a bug in the compilation of meta-calls to predicates defined in
-    the pseudo-object "user".
+    Corrected a bug in the compilation of meta-calls to predicates defined
+    in the pseudo-object "user".
+
+    Corrected a bug that prevented goal expansion of source file initialization
+    goals (expressed using the initialization/1 directive).
 
     Modified the "statistics" library to use the variance numerically stable
     algorithm to calculate accurate values for the standard deviation for both
@@ -42,14 +46,16 @@ RELEASE NOTES
     Added predicates included/3, excluded/3, fold_left/4, and fold_right/4
     to the library entities "metap" and "meta" (requested by Paul Crocker).
     Renamed the predicates filter/3 and succeeds/2 to included/3 and map/2,
-    respectively (older names are still available using aliases in "meta").
+    respectively (the older names are still available using aliases defined
+    in "meta").
 
-    Updated the "metapredicates" example with Paul Crocker's contributions to
-    illustrate the use of some of the meta-predicates defined in the Logtalk
-    library.
+    Updated the "metapredicates" example with Paul Crocker's contributions
+    to illustrate the use of some of the meta-predicates implemented in the
+    Logtalk library.
 
     Added an example, "cc", of using conditional compilation directives to
-    implement a portable operating-system interface for some Prolog compilers.
+    implement a portable operating-system interface for selected back-end
+    Prolog compilers.
 
     Added syntax coloring support for the new conditional compilation
     directives to the supported text editors and syntax highlighters.
