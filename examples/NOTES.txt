@@ -196,6 +196,9 @@ polygons
 profiling
 	examples of using of events and monitors to implement profilers
 
+prototypes
+	example illustrating the concept of prototypes
+
 proxies
 	example of using parametric object proxies for an efficient 
 	representation of objects with read-only state

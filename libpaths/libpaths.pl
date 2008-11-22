@@ -79,6 +79,7 @@
 	 assertz(logtalk_library_path(polygons, examples('polygons/'))),
 	 assertz(logtalk_library_path(primes, threads('primes/'))),
 	 assertz(logtalk_library_path(profiling, examples('profiling/'))),
+	 assertz(logtalk_library_path(prototypes, examples('prototypes/'))),
 	 assertz(logtalk_library_path(proxies, examples('proxies/'))),
 	 assertz(logtalk_library_path(puzzles, examples('puzzles/'))),
 	 assertz(logtalk_library_path(reflection, examples('reflection/'))),
