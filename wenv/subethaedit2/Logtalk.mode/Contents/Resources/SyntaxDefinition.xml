@@ -18,31 +18,6 @@
 				<regex>\b([A-Z_][A-Za-z0-9_]*)</regex>
 			</keywords>
 
-			<keywords id="Directives" color="#881280" useforautocomplete="yes">
-				<regex>:-\s(object)\(</regex>
-				<regex>:-\s(protocol)\(</regex>
-				<regex>:-\s(category)\(</regex>
-				<regex>:-\s(end_(object|protocol|category))\.</regex>
-				<regex>:-\s(alias)\(</regex>
-				<regex>:-\s(e(ncoding|xport))\(</regex>
-				<regex>:-\s(initialization)\(</regex>
-				<regex>:-\s(info)\(</regex>
-				<regex>:-\s(mod(e|ule))\(</regex>
-				<regex>:-\s(dynamic)\(</regex>		
-				<regex>:-\s(dynamic)\.</regex>			
-				<regex>:-\s((el)?if)\(</regex>		
-				<regex>:-\s(e(lse|ndif))\.</regex>	
-				<regex>:-\s(discontiguous)\(</regex>			
-				<regex>:-\s(p(ublic|r(otected|ivate)))\(</regex>			
-				<regex>:-\s(m(eta_predicate|ultifile))\(</regex>			
-				<regex>:-\s(op)\(</regex>			
-				<regex>:-\s(calls)\(</regex>			
-				<regex>:-\s(use(s|_module))\(</regex>
-				<regex>:-\s(synchronized)\(</regex>
-				<regex>:-\s(synchronized)\.</regex>
-				<regex>:-\s(threaded)\.</regex>
-			</keywords>
-
 			<keywords id="Entity Relations" color="#881280" useforautocomplete="yes">
 				<regex>\b(complements)\(</regex>
 				<regex>\b(extends)\(</regex>
@@ -229,6 +204,31 @@
 			<keywords id="Metapredicate Operators" color="#0000ff" useforautocomplete="no">
 				<regex>(::)(?=(,|[)]))</regex>			
 				<regex>(\*)(?=(,|[)]))</regex>
+			</keywords>
+
+			<keywords id="Directives" color="#881280" useforautocomplete="yes">
+				<regex>:-\s(object)\(</regex>
+				<regex>:-\s(protocol)\(</regex>
+				<regex>:-\s(category)\(</regex>
+				<regex>:-\s(end_(object|protocol|category))\.</regex>
+				<regex>:-\s(alias)\(</regex>
+				<regex>:-\s(e(n(coding|sure_loaded)|xport))\(</regex>
+				<regex>:-\s(initialization)\(</regex>
+				<regex>:-\s(info)\(</regex>
+				<regex>:-\s(mod(e|ule))\(</regex>
+				<regex>:-\s(dynamic)\(</regex>
+				<regex>:-\s(dynamic)\.</regex>
+				<regex>:-\s((el)?if)\(</regex>
+				<regex>:-\s(e(lse|ndif))\.</regex>
+				<regex>:-\s(discontiguous)\(</regex>
+				<regex>:-\s(p(ublic|r(otected|ivate)))\(</regex>	
+				<regex>:-\s(m(eta_predicate|ultifile))\(</regex>		
+				<regex>:-\s(op)\(</regex>	
+				<regex>:-\s(calls)\(</regex>
+				<regex>:-\s(use(s|_module))\(</regex>
+				<regex>:-\s(s(et_(logtalk|prolog)_flag|ynchronized))\(</regex>
+				<regex>:-\s(synchronized)\.</regex>
+				<regex>:-\s(threaded)\.</regex>
 			</keywords>
 
 			<keywords id="Clause operator" color="#000000" useforautocomplete="no">

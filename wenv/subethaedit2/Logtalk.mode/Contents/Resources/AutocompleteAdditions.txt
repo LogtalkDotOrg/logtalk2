@@ -44,6 +44,7 @@ meta_predicate().
 op(, , ).
 initialization().
 encoding().
+ensure_loaded().
 synchronized(/).
 synchronized.
 threaded.

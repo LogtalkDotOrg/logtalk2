@@ -54,6 +54,7 @@ dynamic
 elif
 else
 encoding
+ensure_loaded
 endif
 end_category
 end_object

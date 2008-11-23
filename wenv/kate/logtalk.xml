@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 
-<language name="Logtalk" version="2.3" kateversion="2.4" section="Sources" extensions="*.lgt;*.config" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
+<language name="Logtalk" version="2.4" kateversion="2.4" section="Sources" extensions="*.lgt;*.config" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
 
 	<highlighting>
 
@@ -160,10 +160,10 @@
  				<!-- Predicate scope directives -->
 				<RegExpr String = "\bp(ublic|r(otected|ivate))(?=[(])" attribute = "Directive" context = "#pop" />
 				<!-- Other directives -->
-				<RegExpr String = "\be(ncoding|xport)(?=[(])" attribute = "Directive" context = "#pop" />
+				<RegExpr String = "\be(n(coding|sure_loaded)|xport)(?=[(])" attribute = "Directive" context = "#pop" />
 			   	<RegExpr String = "\bin(fo|itialization)(?=[(])" attribute = "Directive" context = "#pop" />
 				<RegExpr String = "\b(dynamic|synchronized|threaded)[.]" attribute = "Directive" context = "#pop" />
-				<RegExpr String = "\b(alias|d(ynamic|iscontiguous)|m(eta_predicate|ode|ultifile)|synchronized)(?=[(])" attribute = "Directive" context = "#pop" />
+				<RegExpr String = "\b(alias|d(ynamic|iscontiguous)|m(eta_predicate|ode|ultifile)|s(et_(logtalk|prolog)_flag|ynchronized))(?=[(])" attribute = "Directive" context = "#pop" />
 				<RegExpr String = "\bop(?=[(])" attribute = "Directive" context = "#pop" />
 				<RegExpr String = "\b(calls|use(s|_module))(?=[(])" attribute = "Directive" context = "#pop" />
 			</context>
@@ -209,7 +209,7 @@
 		<itemDatas>
 			<itemData name = "Normal" defStyleNum = "dsNormal" />
 			<itemData name = "Directive" defStyleNum = "dsKeyword" />
-			<itemData name = "Built-in" defStyleNum = "dsKeyword" />
+			<itemData name = "Built-in" defStyleNum = "dsFunction" />
 			<itemData name = "Operator" defStyleNum = "dsDataType" />
 			<itemData name = "Comment" defStyleNum = "dsComment" />
 			<itemData name = "Number" defStyleNum = "dsDecVal" />

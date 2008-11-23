@@ -40,7 +40,7 @@ and add the entry:
 
 Usage example for a "foo.lgt" Logtalk source file:
 
-	% source-highlight --out-format xhtml --input foo.lgt --output foo.html
+	% source-highlight --tab=4 --out-format xhtml --input foo.lgt --output foo.html
 
 Usually, Logtalk files are formatted using four-space tabs. You may want to 
 use the "--tab=4"option to keep you source code formatting choices.

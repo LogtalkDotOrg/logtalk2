@@ -76,6 +76,7 @@
 				<string>\:\-[[:space:]](end_category)\.</string>			
 				<string>\:\-[[:space:]](alias)\(</string>			
 				<string>\:\-[[:space:]](encoding)\(</string>			
+				<string>\:\-[[:space:]](ensure_loaded)\(</string>			
 				<string>\:\-[[:space:]](export)\(</string>			
 				<string>\:\-[[:space:]](initialization)\(</string>			
 				<string>\:\-[[:space:]](info)\(</string>			
@@ -93,6 +94,8 @@
 				<string>\:\-[[:space:]](calls)\(</string>			
 				<string>\:\-[[:space:]](uses)\(</string>			
 				<string>\:\-[[:space:]](use_module)\(</string>			
+				<string>\:\-[[:space:]](set_logtalk_flag)\(</string>			
+				<string>\:\-[[:space:]](set_prolog_flag)\(</string>			
 				<string>\:\-[[:space:]](synchronized)\(</string>			
 				<string>\:\-[[:space:]](synchronized)\.</string>			
 				<string>\:\-[[:space:]](threaded)\.</string>			

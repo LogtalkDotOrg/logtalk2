@@ -104,6 +104,12 @@
 			<keyword>((el)?if)(?=[(])</keyword>			
 		</context>
 
+		<context id="source-file-directives" style-ref="directive">
+ 			<prefix>^\s*:-\s</prefix>
+			<keyword>(en(coding|sure_loaded))(?=[(])</keyword>			
+			<keyword>(set_(logtalk|prolog)_flag)(?=[(])</keyword>			
+		</context>
+
 		<context id="predicate-directives" style-ref="directive">
  			<prefix>^\s*:-\s</prefix>
 			<!-- Scope directives -->
@@ -114,7 +120,7 @@
 			<keyword>(threaded)(?=[.])</keyword>			
 			<!-- Other directives -->
 			<keyword>(alias)(?=[(])</keyword>			
-			<keyword>(e(ncoding|xport))(?=[(])</keyword>			
+			<keyword>(export)(?=[(])</keyword>			
 			<keyword>(in(itialization|fo))(?=[(])</keyword>			
 			<keyword>(mod(e|ule))(?=[(])</keyword>			
 			<keyword>(dynamic)(?=[(])</keyword>			
@@ -333,6 +339,7 @@
 				<context ref="entity-directives"/>
 				<context ref="entity-relations"/>
 				<context ref="conditional-compilation-directives"/>
+				<context ref="source-file-directives"/>
 				<context ref="predicate-directives"/>
 				<context ref="built-in-methods"/>
 				<context ref="built-in-predicates"/>

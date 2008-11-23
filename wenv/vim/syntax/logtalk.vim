@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	November 21, 2008
+" Last Change:	November 22, 2008
 
 
 " Quit when a syntax file was already loaded:
@@ -94,10 +94,17 @@ syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- protected("		matchgrou
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- private("		matchgroup=logtalkDirTag	end=")\."	contains=ALL
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- meta_predicate("	matchgroup=logtalkDirTag	end=")\."	contains=ALL
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- op("			matchgroup=logtalkDirTag	end=")\."	contains=ALL
+syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- set_logtalk_flag("	matchgroup=logtalkDirTag	end=")\."	contains=ALL
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- synchronized("	matchgroup=logtalkDirTag	end=")\."	contains=ALL
 syn match	logtalkDirTag		":- synchronized\."
 syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- uses("		matchgroup=logtalkDirTag	end=")\."	contains=ALL
 syn match	logtalkDirTag		":- threaded\."
+
+
+" Prolog directives
+
+syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- ensure_loaded("	matchgroup=logtalkDirTag	end=")\."	contains=ALL
+syn region	logtalkDir		matchgroup=logtalkDirTag	start=":- set_prolog_flag("	matchgroup=logtalkDirTag	end=")\."	contains=ALL
 
 
 " Module directives

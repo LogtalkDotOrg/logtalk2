@@ -3,6 +3,7 @@ elif
 else
 endif
 encoding
+ensure_loaded
 calls
 category
 dynamic

@@ -12,7 +12,7 @@
  *
  *
  * Based on GeSHi release 1.0.7.21
- * Last Change:	November 21, 2008
+ * Last Change:	November 22, 2008
  *
  *************************************************************************************
  *
@@ -439,7 +439,7 @@ $language_data = array (
 
 			//Other directives
 		36 => array(
-					GESHI_SEARCH => '(\s*:-\s)(mode|alias|(e(lif|ncoding|xport))|synchronized|alias|i(f|n(itialization|fo))|module|d(ynamic|iscontiguous)|op|(m(eta_predicate|ultifile))|calls|(use(s|_module)))(?=[(])',
+					GESHI_SEARCH => '(\s*:-\s)(mode|alias|(e(lif|n(coding|sure_loaded)|xport))|synchronized|alias|i(f|n(itialization|fo))|module|d(ynamic|iscontiguous)|op|(m(eta_predicate|ultifile))|calls|(use(s|_module)))(?=[(])',
 					GESHI_REPLACE => '\\2',
 					GESHI_MODIFIERS => '',
 					GESHI_BEFORE => '\\1',
@@ -448,7 +448,7 @@ $language_data = array (
 
 			//Entity directives			
 		37 => array(
-					GESHI_SEARCH => '(\s*:-\s)(e(lse|nd(if|_(object|protocol|category)))|threaded|synchronized|dynamic)(?=[.])',
+					GESHI_SEARCH => '(\s*:-\s)(e(lse|nd(if|_(object|protocol|category)))|threaded|s(et_(logtalk|prolog)_flag|ynchronized)|dynamic)(?=[.])',
 					GESHI_REPLACE => '\\2',
 					GESHI_MODIFIERS => '',
 					GESHI_BEFORE => '\\1',
