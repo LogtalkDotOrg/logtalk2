@@ -73,4 +73,4 @@ else
 fi
 echo
 
-exec gprolog --init-goal "['$LOGTALKUSER/configs/gnu.config','$LOGTALKHOME/integration/logtalk_gp.pl','$LOGTALKUSER/libpaths/libpaths.pl']" "$@"
+exec gprolog --init-goal "['$LOGTALKUSER/configs/gnu.pl','$LOGTALKHOME/integration/logtalk_gp.pl','$LOGTALKUSER/libpaths/libpaths.pl']" "$@"

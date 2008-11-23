@@ -20,7 +20,7 @@ To install:
 	file "Logtalk.tcl" to the clip library folder (see the preferences pane 
 	from within the TextPad application for the folders location). Second, 
 	define a new document class for Logtalk source files (whose extension is 
-	.lgt) and for Prolog configuration files (whose extension is .config).
+	.lgt) and for Prolog configuration files (whose extension is .pl).
 
 
 THE SYNTAX FILE AND THE CLIP LIBRARY ARE UNDER DEVELOPMENT.

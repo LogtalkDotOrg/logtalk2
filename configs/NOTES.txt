@@ -30,7 +30,7 @@ with specific Prolog compilers are already implemented and available in the
 
 template config file
 
-	template.config
+	template.pl
 
 	If a config file for your favorite Prolog is not available, use this 
 	file as a template for writing one. For each predicate in the file, 
@@ -40,7 +40,7 @@ template config file
 
 ALS Prolog 3.1
 
-	als.config
+	als.pl
 
 	Only a few tests have been done with this compiler. One known problem: an
 	ALS bug in operator handling that make calls like "\+ ::Pred" be 
@@ -57,12 +57,12 @@ ALS Prolog 3.1
 
 Amzi! Prolog 7.6.1 and later versions
 
-	amzi.config
+	amzi.pl
 
 	For Amzi! Prolog 7.6.1 and later versions. You need to patch the Logtalk 
 	compiler (the "compiler/logtalk.pl" file) by searching for all calls of 
 	':'/2 and wrap them inside call/1. For better performance, use the Amzi! 
-	"acmp" command-line compiler to compile the files "configs/amzi.config",
+	"acmp" command-line compiler to compile the files "configs/amzi.pl",
 	"compiler/logtalk.pl", and "libpaths/libpaths.pl" and then load the 
 	resulting ".plm" files using the predicate load/1 (you will need first 
 	to change the extension of the config file to either ".pl" or ".pro" and 
@@ -81,7 +81,7 @@ Amzi! Prolog 7.6.1 and later versions
 
 B-Prolog 7.1 and later versions
 
-	b.config
+	b.pl
 
 	For B-Prolog 7.1 and later versions. Don't forget to use the chdir/1 
 	predicate to set the working directory before loading the library or 
@@ -101,9 +101,9 @@ B-Prolog 7.1 and later versions
 
 		| ?- set_prolog_flag(redefined, off).
 
-		| ?- compile(['configs/b.config', 'compiler/logtalk.pl', 'libpaths/libpaths.pl']).
+		| ?- compile(['configs/b.pl', 'compiler/logtalk.pl', 'libpaths/libpaths.pl']).
 	
-	These calls will result in the creation of three files, "b.config.out", 
+	These calls will result in the creation of three files, "b.out", 
 	"logtalk.out", and "libpaths.out". Place these files on the $BPDIR 
 	directory and then copy the "bp" script to a "bplgt" file and modify it 
 	by adding the names of the three *.out files after the "$BPDIR/bp.out" 
@@ -114,14 +114,14 @@ B-Prolog 7.1 and later versions
 
 Bin-Prolog 8.x~10.x
 
-	bin.config
+	bin.pl
 
 	Start BinProlog using "bp -l4". You will need to create project files to 
 	workaround the restriction of only one top-level file per interactive 
 	session. For instance, the project file for the "metapredicates" example
 	will look like (in the Unix version):
 	
-		:- ['$LOGTALKUSER/configs/bin.config'].
+		:- ['$LOGTALKUSER/configs/bin.pl'].
 		:- ['$LOGTALKHOME/compiler/logtalk.pl'].
 		
 		:- ['$LOGTALKUSER/examples/metapredicates/meta.pl'].
@@ -140,17 +140,17 @@ Bin-Prolog 8.x~10.x
 
 CIAO Prolog 1.8p2 and later versions
 
-	ciao.config
-	ciao_aux.config
+	ciao.pl
+	ciao_aux.pl
 
-	The "ciao.config" file is just a loader file containing two include/1 
-	directives which load the "ciao_aux.config" and the Logtalk compiler/
-	runtime. You must edit the contents of the file ciao.config to match 
+	The "ciao.pl" file is just a loader file containing two include/1 
+	directives which load the "ciao_aux.pl" and the Logtalk compiler/
+	runtime. You must edit the contents of the file "ciao.pl" to match 
 	your operating system (the include directive arguments are file paths 
 	that differ between operating systems).
 
 	The definition of the predicate '$lgt_predicate_property'/2 in the file 
-	"ciao_aux.config" is a bit of a hack, but should enable you to run the 
+	"ciao_aux.pl" is a bit of a hack, but should enable you to run the 
 	Logtalk companion examples and to try out your own Logtalk programs. 
 
 	You need to patch the Logtalk compiler (compiler/logtalk.pl) and comment
@@ -166,7 +166,7 @@ CIAO Prolog 1.8p2 and later versions
 
 CxProlog 0.97.2 or later versions
 
-	cx.config
+	cx.pl
 
 	Developed and tested with the help of the CxProlog author, Artur Miguel
 	Dias.
@@ -174,17 +174,17 @@ CxProlog 0.97.2 or later versions
 
 ECLiPSe 5.10#26 or later versions
 
-	eclipse5.config
-	eclipse5iso.config
+	eclipse5.pl
+	eclipse5iso.pl
 
 	There are two configs files for this compiler. The first one, named 
-	"eclipse5.config", should be used when, for some reason, you don't want 
-	to load the "iso" library. The second file, "eclipse5iso.config" contains 
+	"eclipse5.pl", should be used when, for some reason, you don't want 
+	to load the "iso" library. The second file, "eclipse5iso.pl" contains 
 	a call to load the "iso" library. Both config files may be used with
 	ECLiPSe 5.10#26 or later versions.
 
-	You should use the "eclipse5iso.config" config file whenever possible.
-	The "eclipse5.config" config file may not contain all the necessary 
+	You should use the "eclipse5iso.pl" config file whenever possible.
+	The "eclipse5.pl" config file may not contain all the necessary 
 	definitions for ISO Prolog predicates that are needed for compiling 
 	Logtalk itself, the Logtalk library, or the Logtalk examples. On the 
 	other hand, some of the ECLiPSE features (e.g. array notation) are not 
@@ -220,22 +220,21 @@ ECLiPSe 5.10#26 or later versions
 
 ECLiPSe 6.0#37 or later versions
 
-	eclipse6.config
-	eclipse6iso.config
+	eclipse6.pl
+	eclipse6iso.pl
 
 	(see comments above about ECLiPSe 5.10 version)
 
 
 GNU Prolog 1.3.0 and later versions
 
-	gnu.config
+	gnu.pl
 
 	GNU Prolog supports the ISO Prolog standard. No problems expected. You 
 	can generate a new Prolog top level that includes the config file and 
 	the Logtalk compiler/runtime by doing something like:
 
 		% cd $LOGTALKHOME
-		% mv configs/gnu.config configs/gnu.pl
 
 	Edit the compiler/logtalk.pl file and add the line ":- built_in." to 
 	the top. Then:
@@ -260,7 +259,7 @@ GNU Prolog 1.3.0 and later versions
 
 IF/Prolog 5.1 and later versions
 
-	if.config
+	if.pl
 
 	IF/Prolog 5.1 supports the ISO Prolog standard. No problems expected.
 	Don't forget to use the cd/1 predicate to set the working directory 
@@ -270,7 +269,7 @@ IF/Prolog 5.1 and later versions
 
 JIProlog 3.0.2-6 and later versions
 
-	ji.config
+	ji.pl
 
 	Written with the help of the JIProlog author (but if you find any Logtalk 
 	problem please report it to me). Don't forget to use the cd/1 predicate to 
@@ -281,7 +280,7 @@ JIProlog 3.0.2-6 and later versions
 
 K-Prolog 5.1.2a and and later 5.1.x versions
 
-	k5.config
+	k5.pl
 
 	K-Prolog 5.1.2a supports the ISO Prolog standard. No problems expected. 
 	Config file written and tested with the help of Nobukuni Kino. Don't 
@@ -292,7 +291,7 @@ K-Prolog 5.1.2a and and later 5.1.x versions
 
 K-Prolog 6.0.4 and later versions
 
-	k6.config
+	k6.pl
 
 	K-Prolog 6.0.4 supports the current ISO Prolog standard and features 
 	from the draft core revision proposal. Don't forget to use the cd/1 
@@ -302,7 +301,7 @@ K-Prolog 6.0.4 and later versions
 
 LPA MacProlog32 1.25
 
-	lpamac.config
+	lpamac.pl
 
 	This is my old Prolog development environment. Two known problems: (1) an
 	LPA bug in operator handling that make calls like "\+ ::Pred" be 
@@ -322,7 +321,7 @@ LPA MacProlog32 1.25
 
 LPA WinProlog32 4.0x
 
-	lpawin.config
+	lpawin.pl
 
 	Written with the help of the LPA support team. Of course, if you find any 
 	bugs please direct your flames to me ;-). Be aware that this configuration 
@@ -335,7 +334,7 @@ LPA WinProlog32 4.0x
 
 MasterProlog 4.1
 
-	master.config
+	master.pl
 
 	Written with the help of the MasterProlog support team (but if you find 
 	any Logtalk problem please report it to me). 
@@ -348,7 +347,7 @@ MasterProlog 4.1
 
 Open Prolog 1.1b5
 
-	open.config
+	open.pl
 
 	Limited test done. Please report any problems that you may find.
 	Don't forget to use the set_folder/1 predicate to set the working 
@@ -358,7 +357,7 @@ Open Prolog 1.1b5
 
 PrologII+ 4.5 and later versions
 
-	prologII.config
+	prologII.pl
 
 	Written and tested with the help of Claude Lai from PrologIA. You need
 	to apply the following patches to the Logtalk pre-processor/runtime:
@@ -373,19 +372,16 @@ PrologII+ 4.5 and later versions
 
 Qu-Prolog 8.1 and later versions
 
-	qu.config
+	qu.pl
 
 	In order to compile and load both the config file and the Logtalk compiler,
-	the following sequence of steps is advised. First make a copy of the config 
-	file:
+	the following sequence of steps is advised.
 
-		% cd $LOGTALKHOME/configs; cp qu.config qu.ql
-
-	Second, start Qu-Prolog using adequate switches. For example:
+	First, start Qu-Prolog using adequate switches. For example:
 
 		% qp -T 16 -s 2048 -d 1024 -h 2000
 
-	Third, compile and load the config file using:
+	Second, compile and load the config file using:
 
 		| ?- fcompile('qu.ql', [assemble_only(true)]), load(qu).
 
@@ -405,7 +401,7 @@ Qu-Prolog 8.1 and later versions
 
 Quintus Prolog 3.3~3.5
 
-	quintus.config
+	quintus.pl
 
 	Written and tested with help of a friend of mine, Paulo Urbano, for a 
 	previous version. Adopted (but not tested) for the current release by
@@ -419,7 +415,7 @@ Quintus Prolog 3.3~3.5
 
 SICStus Prolog 3.8~3.12.x
 
-	sicstus3.config
+	sicstus3.pl
 	
 	For versions 3.8.x~3.12.x. The config file sets the flag language to 
 	iso, but that is only recommended and should not be needed to run Logtalk.
@@ -432,7 +428,7 @@ SICStus Prolog 3.8~3.12.x
 	add the following lines to your ~/.sicstusrc or ~/.sicstus.ini initialization
 	file:
 	
-		:- compile('$LOGTALKUSER/configs/sicstus3.config').
+		:- compile('$LOGTALKUSER/configs/sicstus3.pl').
 		:- compile('$LOGTALKHOME/compiler/logtalk.pl').
 		:- compile('$LOGTALKUSER/libpaths/libpaths.pl').
 
@@ -442,7 +438,7 @@ SICStus Prolog 3.8~3.12.x
 
 SICStus Prolog 4.0.x
 
-	sicstus4.config
+	sicstus4.pl
 
 	Config file for the SICStus Prolog 4.0 version (tested with the MacOS X 
 	version and the Windows beta version).
@@ -450,7 +446,7 @@ SICStus Prolog 4.0.x
 
 SWI Prolog 5.6.44 and later versions
 
-	swi.config
+	swi.pl
 	swihook.pl
 	xpcehook.pl
 	swi_set_logtalk_context.pl
@@ -467,13 +463,13 @@ SWI Prolog 5.6.44 and later versions
 	If you want SWI-Prolog to automatically load Logtalk at startup, then 
 	add the following lines to your pl.ini (on Windows):
 
-		:- ['drive:\\path to logtalk user folder\\configs\\swi.config'].
+		:- ['drive:\\path to logtalk user folder\\configs\\swi.pl'].
 		:- ['drive:\\path to logtalk installation\\compiler\\logtalk.pl'].
 		:- ['drive:\\path to logtalk installation\\libpaths\\libpaths.pl'].
 
 	 or to your .plrc (on MacOS X, Linux, Unix, and similar systems):
 	
-		:- ['$LOGTALKUSER/configs/swi.config'].
+		:- ['$LOGTALKUSER/configs/swi.pl'].
 		:- ['$LOGTALKHOME/compiler/logtalk.pl'].
 		:- ['$LOGTALKUSER/libpaths/libpaths.pl'].
 
@@ -500,7 +496,7 @@ SWI Prolog 5.6.44 and later versions
 
 XSB 3.1 and later versions
 
-	xsb.config
+	xsb.pl
 
 	Don't forget to use the cd/1 predicate to set the working directory 
 	before loading the library or an example. Supports smart compilation 
@@ -510,7 +506,7 @@ XSB 3.1 and later versions
 
 YAP 5.1.3 and later versions
 
-	yap.config
+	yap.pl
 
 	Don't forget to use the cd/1 predicate to set the working directory 
 	before loading the library or an example. Supports smart compilation 

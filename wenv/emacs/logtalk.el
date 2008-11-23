@@ -4,8 +4,8 @@
 
 ;; Author: Paulo Moura <pmoura@logtalk.org>
 ;; Creation date: November 15, 2003
-;; Last modification date: November 22, 2008
-;; Version: 1.7
+;; Last modification date: November 23, 2008
+;; Version: 1.8
 
 ;; Installation:
 ;;
@@ -21,7 +21,6 @@
 ;;
 ;; (autoload 'logtalk-mode "logtalk" "Major mode for editing Logtalk programs." t)
 ;; (add-to-list 'auto-mode-alist '("\\.lgt\\'" . logtalk-mode))
-;; (add-to-list 'auto-mode-alist '("\\.config\\'" . logtalk-mode))
 
 
 

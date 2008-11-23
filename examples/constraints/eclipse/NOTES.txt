@@ -20,7 +20,7 @@ These examples are adapted with permission from the examples found at:
 
 The examples code was changed to avoid using ECLiPSe special features (e.g. 
 array notation or the do/2 loop operator) as they do not work when the "iso" 
-library is loaded (this library is loaded by the "eclipse*iso.config" config 
+library is loaded (this library is loaded by the "eclipse*iso.pl" config 
 file, which is used in the Logtalk integration scripts and shortcuts).
 
 The Constraint Solver libraries are loaded from the "loader.lgt" auxiliary 

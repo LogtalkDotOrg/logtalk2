@@ -13,6 +13,6 @@
 
 
 :- set_prolog_flag(redefined, off).
-:- cl('$LOGTALKUSER/configs/b.config').
+:- cl('$LOGTALKUSER/configs/b.pl').
 :- cl('$LOGTALKHOME/compiler/logtalk.pl').
 :- cl('$LOGTALKUSER/libpaths/libpaths.pl').

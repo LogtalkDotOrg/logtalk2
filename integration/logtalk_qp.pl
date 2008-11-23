@@ -12,8 +12,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-:- 	os(system('ln -sf $LOGTALKUSER/configs/qu.config $LOGTALKUSER/configs/qu.pl')),
-	fcompile('$LOGTALKUSER/configs/qu.pl', [assemble_only(true)]),
+:- 	fcompile('$LOGTALKUSER/configs/qu.pl', [assemble_only(true)]),
 	load('$LOGTALKUSER/configs/qu.qo'),
 	os(system('ln -sf $LOGTALKHOME/compiler/logtalk.pl $LOGTALKUSER/.logtalk.pl')),
 	fcompile('$LOGTALKUSER/.logtalk.pl', [assemble_only(true), object_file('$LOGTALKUSER/.logtalk.qo'), string_table(256)]),

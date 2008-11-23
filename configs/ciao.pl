@@ -18,13 +18,13 @@
 
 % Windows 2000/XP:
 
-% :- include('ciao_aux.config').
+% :- include('ciao_aux.pl').
 
 % :- include('..\\compiler\\logtalk.pl').
 
 
 % MacOS X/BSD/Linux/Unix:
 
-:- include('ciao_aux.config').
+:- include('ciao_aux.pl').
 
 :- include('../compiler/logtalk.pl').

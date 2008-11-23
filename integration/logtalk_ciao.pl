@@ -12,7 +12,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-:- ensure_loaded('$LOGTALKUSER/configs/ciao_aux.config').
+:- ensure_loaded('$LOGTALKUSER/configs/ciao_aux.pl').
 :- set_prolog_flag(multi_arity_warnings, off).
 :- ensure_loaded('$LOGTALKHOME/compiler/logtalk.pl').
 :- ensure_loaded('$LOGTALKUSER/libpaths/libpaths.pl').

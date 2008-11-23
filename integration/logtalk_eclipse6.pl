@@ -12,6 +12,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-:- compile('$LOGTALKUSER/configs/eclipse6iso.config').
+:- compile('$LOGTALKUSER/configs/eclipse6iso.pl').
 :- compile('$LOGTALKHOME/integration/logtalk_comp_eclipse.pl').
 :- compile('$LOGTALKUSER/libpaths/libpaths.pl').

@@ -71,4 +71,4 @@ nedit.highlightPatterns: Logtalk:1:0{\n\
 	Bitwise functors:">>|<<|/\\\\|\\\\/|\\\\":::Subroutine::\n\
 	Atoms:"[a-z]\\w*":::Plain::\n\
 }
-nedit.languageModes:	Logtalk: .lgt .config::::4:4:\n\
+nedit.languageModes:	Logtalk: .lgt ::::4:4:\n\

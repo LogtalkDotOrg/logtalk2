@@ -13,8 +13,8 @@
 
 
 :- set_prolog_flag(redefined, off).
-:- cl('$LOGTALKUSER/configs/b.config').
-%:- system('del %LOGTALKUSER%\\configs\\b.config.out').
+:- cl('$LOGTALKUSER/configs/b.pl').
+%:- system('del %LOGTALKUSER%\\configs\\b.pl.out').
 :- (expand_environment('$LOGTALKHOME/compiler/logtalk.pl.out', Expanded), exists(Expanded) -> load('$LOGTALKHOME/compiler/logtalk.pl'); cl('$LOGTALKHOME/compiler/logtalk.pl')).
 :- cl('$LOGTALKUSER/libpaths/libpaths.pl').
 %:- system('del %LOGTALKUSER%\\libpaths\\libpaths.pl.out').

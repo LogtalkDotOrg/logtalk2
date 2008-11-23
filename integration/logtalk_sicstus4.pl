@@ -12,7 +12,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-:- compile('$LOGTALKUSER/configs/sicstus4.config').
+:- compile('$LOGTALKUSER/configs/sicstus4.pl').
 :- asserta((
 	user:goal_expansion(CallWitArgs, Layout, _, Call, Layout) :-
 		CallWitArgs =.. [call_with_args| Args],

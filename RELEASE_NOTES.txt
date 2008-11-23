@@ -54,6 +54,7 @@ RELEASE NOTES
     respectively (the older names are still available using aliases defined
     in "meta").
 
+    Changed the file name extension of all config "*.config" files to "*.pl".
     Changed the file name extension of all library "*.notes" files to "*.txt".
 
     Updated the "metapredicates" example with Paul Crocker's contributions

@@ -12,6 +12,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-:- consult('$LOGTALKUSER/configs/k6.config').
+:- consult('$LOGTALKUSER/configs/k6.pl').
 :- consult('$LOGTALKHOME/compiler/logtalk.pl').
 :- consult('$LOGTALKUSER/libpaths/libpaths.pl').
