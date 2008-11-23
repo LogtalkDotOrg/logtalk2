@@ -24,43 +24,43 @@ own loader and notes files:
 
 	dates
 		dates_loader.lgt
-		dates.notes
+		dates.txt
 
 	debugging
 		debugging_loader.lgt
-		debugging.notes
+		debugging.txt
 
 	dependents
 		dependents_loader.lgt
-		dependents.notes
+		dependents.txt
 
 	events
 		events_loader.lgt
-		events.notes
+		events.txt
 
 	hierarchies
 		hierarchies_loader.lgt
-		hierarchies.notes
+		hierarchies.txt
 
 	lgtunit
 		lgtunit_loader.lgt
-		lgtunit.notes
+		lgtunit.txt
 
 	metapredicates
 		metapredicates_loader.lgt
-		metapredicates.notes
+		metapredicates.txt
 
 	random
 		random_loader.lgt
-		random.notes
+		random.txt
 
 	statistics
 		statistics_loader.lgt
-		statistics.notes
+		statistics.txt
 
 	types
 		types_loader.lgt
-		types.notes
+		types.txt
 
 There is also a file named all_loader.lgt that will load all entities in the 
 groups listed above. Simply type the goal:
@@ -68,7 +68,7 @@ groups listed above. Simply type the goal:
 	| ?- logtalk_load(library(all_loader)).
 
 Specific notes about each group of objects, categories, and protocols can be 
-found in the corresponding *.notes files.
+found in the corresponding *.txt files.
 
 Some of the files contained in this directory represent work in progress and 
 are not loaded by default by any loader utility file.
