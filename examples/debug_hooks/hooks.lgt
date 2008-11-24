@@ -1,6 +1,6 @@
 
 :- object(hook_debug,
-	implements(expanding)).
+	implements(expanding)).		% built-in protocol for term and goal expansion methods
 
 	:- info([
 		version is 1.0,
@@ -15,7 +15,7 @@
 
 
 :- object(hook_production,
-	implements(expanding)).
+	implements(expanding)).		% built-in protocol for term and goal expansion methods
 
 	:- info([
 		version is 1.0,

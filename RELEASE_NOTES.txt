@@ -62,7 +62,7 @@ RELEASE NOTES
     Logtalk library.
 
     Updated the "expansion" example to illustrate the new expand_goal/2
-    built-in method.
+    built-in method. Improved example documentation.
 
     Added an example, "cc", of using conditional compilation directives to
     implement a portable operating-system interface for selected back-end

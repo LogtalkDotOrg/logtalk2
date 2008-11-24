@@ -1,6 +1,6 @@
 
 :- category(number_conversion,
-	implements(expanding)).
+	implements(expanding)).		% built-in protocol for term and goal expansion methods
 
 	term_expansion(0, zero).
 	term_expansion(1, one).
@@ -21,21 +21,25 @@
 
 :- category(conversion_test).
 
-	:- public(test_term/2).
+	:- public(test_term_expansion/2).
 
-	test_term(Term, Expansion) :-
-		expand_term(Term, Expansion).
+	test_term_expansion(Term, Expansion) :-
+		expand_term(Term, Expansion).	% called in the context of "this"
 
-	:- public(test_goal/2).
+	:- public(test_goal_expansion/2).
 
 	test_goal(Goal, EGoal) :-
-		expand_goal(Goal, EGoal).
-
+		expand_goal(Goal, EGoal).		% i.e. from within the object
+										% importing the category
 :- end_category.
 
 
 :- object(exp_public,
 	imports(public::number_conversion)).
+
+	% the "expanding" protocol implemented by the imported category,
+	% "number_conversion", declares term_expansion/2 and goal_expansion/2
+	% as public predicates
 
 :- end_object.
 
@@ -50,6 +54,10 @@
 :- object(exp_protected,
 	imports(protected::number_conversion)).
 
+	% make the predicates term_expansion/2and goal_expansion/2,
+	% defined in the imported category "number_conversion",
+	% protected to this prototype and its descendents
+
 :- end_object.
 
 
@@ -62,6 +70,10 @@
 
 :- object(exp_private,
 	imports(private::number_conversion)).
+
+	% make the predicates term_expansion/2and goal_expansion/2,
+	% defined in the imported category "number_conversion",
+	% private to this prototype
 
 :- end_object.
 

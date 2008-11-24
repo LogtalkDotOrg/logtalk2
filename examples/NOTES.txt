@@ -121,6 +121,9 @@ errors
 	example showing the Logtalk compiler warning and error reporting
 	for common programming errors
 
+expansion
+	example illustrating the term and goal expansion mechanisms
+
 hello_world
 	the unavoidable "hello world" programming example
 
