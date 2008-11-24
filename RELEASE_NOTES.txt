@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.33.3
+Release 2.34.0
 
 Copyright (c) 1998-2008 Paulo Moura.        All Rights Reserved.
 Logtalk is free software.  You can redistribute it and/or modify
@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.33.3 - December ??, 2008
+2.34.0 - December ??, 2008
 
     Added conditional compilation support, as found in some Prolog compilers,
     using the new directives if/1, elif/1, else/0, and endif/0. The arguments

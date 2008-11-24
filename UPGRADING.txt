@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.33.3
+Release 2.34.0
 
 Copyright (c) 1998-2008 Paulo Moura.        All Rights Reserved.
 Logtalk is free software.  You can redistribute it and/or modify
@@ -219,6 +219,7 @@ and a customized version of the read_term/3 predicate for returning the source
 file line number where a term starts. Older config files are incompatible with
 this new Logtalk version.
 
-Logtalk 2.33.3 adds a new read-only compiler flag, "prolog", which is defined
-in the config files. Older config files are incompatible with this new Logtalk
-version.
+Logtalk 2.34.0 adds a new read-only compiler flag, "prolog", which is defined
+in the config files. In addition, the extension of all config, "*.config", 
+files is changed to "*.pl". Older config files are incompatible with this new
+Logtalk version.
