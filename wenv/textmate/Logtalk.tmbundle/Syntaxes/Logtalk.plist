@@ -265,12 +265,6 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b((set_prolog_flag)(?=[(])</string>
-			<key>name</key>
-			<string>support.function.prolog-flags.logtalk</string>
-		</dict>
-		<dict>
-			<key>match</key>
 			<string>\b(logtalk_(compile|l(ibrary_path|oad)))(?=[(])</string>
 			<key>name</key>
 			<string>support.function.compiling-and-loading.logtalk</string>
