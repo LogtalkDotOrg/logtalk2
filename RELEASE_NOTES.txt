@@ -68,6 +68,8 @@ RELEASE NOTES
     implement a portable operating-system interface for selected back-end
     Prolog compilers.
 
+    Added an example, "prototypes", illustrating the concept of "prototype".
+
     Added syntax coloring support for the new expand_goal/2 method and for
     the if/1, elif/1, else/0, endif/0, set_logtalk_flag/2, ensure_loaded/1
     and, set_prolog_flag/2 directives to the supported text editors and
