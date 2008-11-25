@@ -13,15 +13,15 @@ RELEASE NOTES
 =============
 
 
-2.34.0 - December ??, 2008
+2.34.0 - November 26, 2008
 
     Added conditional compilation support, as found in some Prolog compilers,
     using the new directives if/1, elif/1, else/0, and endif/0. The arguments
     of the if/1 and elif/1 directives are subjected to goal expansion.
 
     Added a "prolog" read-only compiler flag whose value is the name of the
-    back-end Prolog compiler (an atom). This flag can be used for conditional
-    compilation of Prolog specific code.
+    back-end Prolog compiler (an atom). This flag is defined in the config
+    files and can be used for conditional compilation of Prolog specific code.
 
     Added an expand_goal/2 built-in method to support explicit calls to the
     goal_expansion/2 user-defined hook. Updated the term expansion mechanism
@@ -71,8 +71,8 @@ RELEASE NOTES
     Added an example, "prototypes", illustrating the concept of "prototype".
 
     Added syntax coloring support for the new expand_goal/2 method and for
-    the if/1, elif/1, else/0, endif/0, set_logtalk_flag/2, ensure_loaded/1
-    and, set_prolog_flag/2 directives to the supported text editors and
+    the if/1, elif/1, else/0, endif/0, set_logtalk_flag/2, ensure_loaded/1,
+    and set_prolog_flag/2 directives to the supported text editors and
     syntax highlighters.
 
     Fixed a block comment syntax coloring bug in the support for the Highlight
