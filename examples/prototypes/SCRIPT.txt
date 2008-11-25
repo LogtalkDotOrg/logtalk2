@@ -26,3 +26,11 @@ name('Gordon Shumway')
 planet('Melmac')
 stomachs(8)
 yes
+
+
+% ask Rhonda about its love affairs:
+
+| ?- rhonda::boyfriend(Melmacian).
+
+Melmacian = alf
+yes
