@@ -27,10 +27,10 @@ eval $xslt_proc -o index.section refman.xsl index.html
 eval $xslt_proc -o grammar.section refman.xsl grammar.html
 eval $xslt_proc -o directives/encoding1.section refman.xsl directives/encoding1.html
 eval $xslt_proc -o directives/set_logtalk_flag2.section refman.xsl directives/set_logtalk_flag2.html
-eval $xslt_proc -o directives/directives/if1.section refman.xsl directives/if1.html
-eval $xslt_proc -o directives/directives/elif1.section refman.xsl directives/elif1.html
-eval $xslt_proc -o directives/directives/else0.section refman.xsl directives/else0.html
-eval $xslt_proc -o directives/directives/endif0.section refman.xsl directives/endif0.html
+eval $xslt_proc -o directives/if1.section refman.xsl directives/if1.html
+eval $xslt_proc -o directives/elif1.section refman.xsl directives/elif1.html
+eval $xslt_proc -o directives/else0.section refman.xsl directives/else0.html
+eval $xslt_proc -o directives/endif0.section refman.xsl directives/endif0.html
 eval $xslt_proc -o directives/calls1.section refman.xsl directives/calls1.html
 eval $xslt_proc -o directives/category1_3.section refman.xsl directives/category1_3.html
 eval $xslt_proc -o directives/dynamic0.section refman.xsl directives/dynamic0.html
