@@ -131,6 +131,10 @@ cat -s \
 	directives.header \
 	directives/encoding1.section \
 	directives/set_logtalk_flag2.section \
+	directives/if1.section \
+	directives/elif1.section \
+	directives/else0.section \
+	directives/endif0.section \
 	directives/calls1.section \
 	directives/category1_3.section \
 	directives/dynamic0.section \
@@ -221,6 +225,7 @@ cat -s \
 	methods/phrase3.section \
 	methods/expand_term2.section \
 	methods/term_expansion2.section \
+	methods/expand_goal2.section \
 	methods/goal_expansion2.section \
 	control.header \
 	control/to_object2.section \
