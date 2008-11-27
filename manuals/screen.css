@@ -1,8 +1,8 @@
 body {
-	color: #353535;
-	font-size: 11pt;
+	color: black;
+	font-size: 12pt;
 	font-family: verdana, arial, sans-serif;
-	background: #eee;
+	background: white;
 	margin: 12pt;
 }
 
@@ -61,18 +61,26 @@ body {
 
 a {
 	text-decoration: none;
-	color: navy;
+	color: #bb0000;
 	outline: none;
 }
 
 a:hover {
-	text-decoration: underline;
-	color: blue;
+	color: #bb0000;
+	background: #c8c7cc;
 }
 
+
 pre, code, .code, .codenp {
-	color: maroon;
+	color: black;
 	font-family: Monaco, 'Courier New', Courier, monospace;
+	font-size: 10pt;
+}
+
+a > code {
+	color: #bb0000;
+	font-family: Monaco, 'Courier New', Courier, monospace;
+	font-size: 10pt;
 }
 
 code {

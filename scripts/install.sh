@@ -2,7 +2,7 @@
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
-## Release 2.34.0
+## Release 2.34.1
 ## 
 ## Copyright (c) 1998-2008 Paulo Moura.        All Rights Reserved.
 ## Logtalk is free software.  You can redistribute it and/or modify
@@ -36,20 +36,20 @@ echo
 
 mkdir -p $prefix/share
 
-rm -rf $prefix/share/lgt2340
+rm -rf $prefix/share/lgt2341
 rm -f $prefix/share/logtalk
 
-mkdir $prefix/share/lgt2340
+mkdir $prefix/share/lgt2341
 
 cd ..
-cp -R * $prefix/share/lgt2340
+cp -R * $prefix/share/lgt2341
 
-cd $prefix/share/lgt2340
+cd $prefix/share/lgt2341
 chmod a+x scripts/cleandist.sh
 scripts/cleandist.sh
 
 cd ..
-ln -sf lgt2340 logtalk
+ln -sf lgt2341 logtalk
 
 mkdir -p $prefix/bin
 cd $prefix/bin

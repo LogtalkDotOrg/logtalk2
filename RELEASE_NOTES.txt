@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.34.0
+Release 2.34.1
 
 Copyright (c) 1998-2008 Paulo Moura.        All Rights Reserved.
 Logtalk is free software.  You can redistribute it and/or modify
@@ -11,6 +11,12 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 RELEASE NOTES
 =============
+
+
+2.34.1 - December ??, 2008
+
+    Fixed some broken links in the Logtalk XHTML documentation. Updated the
+    screen CSS file to match the new, lighter style of the Logtalk website.
 
 
 2.34.0 - November 26, 2008

@@ -1,11 +1,11 @@
 Name: logtalk
 Summary: Logtalk - Open source object-oriented logic programming language
-Version: 2.34.0
+Version: 2.34.1
 Release: 1
 License: Artistic License 2.0
 Group: Development/Languages
 Packager: Paulo Moura <pmoura@logtalk.org>
-Source: http://logtalk.org/files/lgt2340.tar.bz2
+Source: http://logtalk.org/files/lgt2341.tar.bz2
 BuildArchitectures: noarch
 URL: http://logtalk.org/
 Prefix: /usr/local
@@ -15,21 +15,21 @@ Logtalk is an open source object-oriented logic programming language that can us
 
 %prep
 
-%setup -n lgt2340
+%setup -n lgt2341
 
 %build
 
 %install
 mkdir -p /usr/local/share
-rm -rf /usr/local/share/lgt2340
+rm -rf /usr/local/share/lgt2341
 rm -f /usr/local/share/logtalk
-mkdir /usr/local/share/lgt2340
-cp -R * /usr/local/share/lgt2340
-cd /usr/local/share/lgt2340
+mkdir /usr/local/share/lgt2341
+cp -R * /usr/local/share/lgt2341
+cd /usr/local/share/lgt2341
 chmod a+x scripts/cleandist.sh
 scripts/cleandist.sh
 cd ..
-ln -sf lgt2340 logtalk
+ln -sf lgt2341 logtalk
 cd ..
 mkdir -p bin 
 cd bin
@@ -55,7 +55,7 @@ ln -sf ../share/logtalk/xml/lgt2txt.sh lgt2txt
 
 %clean
 cd /usr/local/share
-rm -rf lgt2340
+rm -rf lgt2341
 rm -f logtalk
 cd ../bin
 rm -f bplgt
@@ -80,27 +80,27 @@ rm -f yaplgt
 
 %files
 %defattr(-,root,root)
-%doc /usr/local/share/lgt2340/BIBLIOGRAPHY.bib
-%doc /usr/local/share/lgt2340/CUSTOMIZE.txt
-%doc /usr/local/share/lgt2340/INSTALL.txt
-%doc /usr/local/share/lgt2340/LICENSE.txt
-%doc /usr/local/share/lgt2340/QUICK_START.txt
-%doc /usr/local/share/lgt2340/README.txt
-%doc /usr/local/share/lgt2340/RELEASE_NOTES.txt
-%doc /usr/local/share/lgt2340/UPGRADING.txt
-/usr/local/share/lgt2340/VERSION.txt
-/usr/local/share/lgt2340/compiler
-/usr/local/share/lgt2340/configs
-/usr/local/share/lgt2340/contributions
-/usr/local/share/lgt2340/examples
-/usr/local/share/lgt2340/integration
-/usr/local/share/lgt2340/libpaths
-/usr/local/share/lgt2340/library
-%docdir /usr/local/share/lgt2340/manuals
-/usr/local/share/lgt2340/manuals
-/usr/local/share/lgt2340/scripts
-/usr/local/share/lgt2340/wenv
-/usr/local/share/lgt2340/xml
+%doc /usr/local/share/lgt2341/BIBLIOGRAPHY.bib
+%doc /usr/local/share/lgt2341/CUSTOMIZE.txt
+%doc /usr/local/share/lgt2341/INSTALL.txt
+%doc /usr/local/share/lgt2341/LICENSE.txt
+%doc /usr/local/share/lgt2341/QUICK_START.txt
+%doc /usr/local/share/lgt2341/README.txt
+%doc /usr/local/share/lgt2341/RELEASE_NOTES.txt
+%doc /usr/local/share/lgt2341/UPGRADING.txt
+/usr/local/share/lgt2341/VERSION.txt
+/usr/local/share/lgt2341/compiler
+/usr/local/share/lgt2341/configs
+/usr/local/share/lgt2341/contributions
+/usr/local/share/lgt2341/examples
+/usr/local/share/lgt2341/integration
+/usr/local/share/lgt2341/libpaths
+/usr/local/share/lgt2341/library
+%docdir /usr/local/share/lgt2341/manuals
+/usr/local/share/lgt2341/manuals
+/usr/local/share/lgt2341/scripts
+/usr/local/share/lgt2341/wenv
+/usr/local/share/lgt2341/xml
 /usr/local/share/logtalk
 /usr/local/bin/cplgtdirs
 /usr/local/bin/lgt2pdf
