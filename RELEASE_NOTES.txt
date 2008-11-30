@@ -21,6 +21,9 @@ RELEASE NOTES
     Added a set of double-clickable *.command Terminal files for starting
     Logtalk with selected back-end Prolog compilers on MacOS X.
 
+    Updated the MacOS X installer postflight script to open the Logtalk
+    installation folder and the "README.txt" file.
+
 
 2.34.0 - November 26, 2008
 

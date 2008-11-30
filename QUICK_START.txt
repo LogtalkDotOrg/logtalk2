@@ -53,9 +53,9 @@ scripts, consult the "configs/NOTES.txt" file for compatibility notes.
 3. Select the "Tutorial" link. This will provide you with a basic 
 understanding of the main Logtalk concepts.
 
-4. Go back to the "index.html" file, select the "User Manual" link, 
-then the "Installing Logtalk" and "Running and debugging Logtalk 
-programs" links. This will provide you with a basic understanding of 
+4. Go back to the "index.html" file, select the "User Manual" link, then
+the "Installing Logtalk" and "Writing, Running, and Debugging Logtalk
+Programs" links. This will provide you with a basic understanding of 
 how to start Logtalk as well as how to compile and load Logtalk code.
 
 
