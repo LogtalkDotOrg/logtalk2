@@ -30,5 +30,6 @@ chmod a+x scripts/debian/prerm
 chmod a+x scripts/debian/postrm
 chmod a+x scripts/linux/*.sh
 chmod a+x scripts/macosx/postflight
+chmod a+x scripts/macosx/command_files/*.command
 chmod a+x xml/*.sh
 chmod a-x xml/*.js
