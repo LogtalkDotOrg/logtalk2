@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.34.1 - December ??, 2008
 
+    Corrected a long-standing bug in the implementation of the Obj<<Pred
+    control construct, which failed to properly set the execution context
+    to the receiving object.
+
     Fixed some broken links in the Logtalk XHTML documentation. Updated the
     screen CSS file to match the new, lighter style of the Logtalk website.
 

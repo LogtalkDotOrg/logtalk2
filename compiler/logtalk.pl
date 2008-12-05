@@ -294,12 +294,15 @@ Obj::Pred :-
 
 Obj<<Pred :-
 	(	'$lgt_compiler_flag'(context_switching_calls, allow) ->
-		'$lgt_ctx_ctx'(Ctx, _, user, user, Obj, '$lgt_bio_user_0_', [], _),
-		catch('$lgt_tr_body'(Obj<<Pred, TPred, DPred, Ctx), Error, '$lgt_runtime_error_handler'(error(Error, Obj<<Pred, user))),
-		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
-			'$lgt_dbg_reset_invocation_number',
-			catch(DPred, Error, '$lgt_runtime_error_handler'(Error))
-		;	catch(TPred, Error, '$lgt_runtime_error_handler'(Error))
+		(	'$lgt_current_object_'(Obj, Prefix, _, _, _, _, _, _, _, _, _) ->
+			'$lgt_ctx_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _),
+			catch('$lgt_tr_body'(Obj<<Pred, TPred, DPred, Ctx), Error, '$lgt_runtime_error_handler'(error(Error, Obj<<Pred, user))),
+			(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
+				'$lgt_dbg_reset_invocation_number',
+				catch(DPred, Error, '$lgt_runtime_error_handler'(Error))
+			;	catch(TPred, Error, '$lgt_runtime_error_handler'(Error))
+			)
+		;	throw(error(existence_error(object, Obj), Obj<<Pred, user))
 		)
 	;	throw(error(resource_error(context_switching_calls), Obj<<Pred, user))
 	).
