@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.34.1 - December 8, 2008
 
+    Updated the Logtalk compiler to detect (and report as an error) the
+    definition of two entities with the same name in a source file.
+
     Corrected a long-standing bug in the implementation of the Obj<<Pred
     control construct, which failed to properly set the execution context
     to the receiving object. This bug, which results in a stack overflow 

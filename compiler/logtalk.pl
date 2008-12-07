@@ -5650,6 +5650,15 @@ current_logtalk_flag(version, version(2, 34, 1)).
 		throw(permission_error(modify, category, Obj))
 	).
 
+'$lgt_tr_directive'(object, [Obj| _], _, _, _) :-
+	(	'$lgt_pp_file_rclause_'('$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _)) ->
+		throw(permission_error(modify, object, Obj))
+	;	'$lgt_pp_file_rclause_'('$lgt_current_protocol_'(Obj, _, _, _, _)) ->
+		throw(permission_error(modify, protocol, Obj))
+	;	'$lgt_pp_file_rclause_'('$lgt_current_category_'(Obj, _, _, _, _, _)) ->
+		throw(permission_error(modify, category, Obj))
+	).
+
 '$lgt_tr_directive'(object, [Obj| Rels], Line, _, _) :-
 	'$lgt_report_compiling_entity'(object, Obj),
 	'$lgt_add_entity_file_properties'(start(Line), Obj),
@@ -5680,6 +5689,15 @@ current_logtalk_flag(version, version(2, 34, 1)).
 	;	'$lgt_built_in_protocol'(Ptc) ->
 		throw(permission_error(modify, protocol, Ptc))
 	;	'$lgt_built_in_category'(Ptc) ->
+		throw(permission_error(modify, category, Ptc))
+	).
+
+'$lgt_tr_directive'(protocol, [Ptc| _], _, _, _) :-
+	(	'$lgt_pp_file_rclause_'('$lgt_current_object_'(Ptc, _, _, _, _, _, _, _, _, _, _)) ->
+		throw(permission_error(modify, object, Ptc))
+	;	'$lgt_pp_file_rclause_'('$lgt_current_protocol_'(Ptc, _, _, _, _)) ->
+		throw(permission_error(modify, protocol, Ptc))
+	;	'$lgt_pp_file_rclause_'('$lgt_current_category_'(Ptc, _, _, _, _, _)) ->
 		throw(permission_error(modify, category, Ptc))
 	).
 
@@ -5714,6 +5732,15 @@ current_logtalk_flag(version, version(2, 34, 1)).
 	;	'$lgt_built_in_protocol'(Ctg) ->
 		throw(permission_error(modify, protocol, Ctg))
 	;	'$lgt_built_in_category'(Ctg) ->
+		throw(permission_error(modify, category, Ctg))
+	).
+
+'$lgt_tr_directive'(category, [Ctg| _], _, _, _) :-
+	(	'$lgt_pp_file_rclause_'('$lgt_current_object_'(Ctg, _, _, _, _, _, _, _, _, _, _)) ->
+		throw(permission_error(modify, object, Ctg))
+	;	'$lgt_pp_file_rclause_'('$lgt_current_protocol_'(Ctg, _, _, _, _)) ->
+		throw(permission_error(modify, protocol, Ctg))
+	;	'$lgt_pp_file_rclause_'('$lgt_current_category_'(Ctg, _, _, _, _, _)) ->
 		throw(permission_error(modify, category, Ctg))
 	).
 
