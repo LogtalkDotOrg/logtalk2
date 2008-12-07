@@ -293,18 +293,13 @@ Obj::Pred :-
 
 
 Obj<<Pred :-
-	(	'$lgt_compiler_flag'(context_switching_calls, allow) ->
-		(	'$lgt_current_object_'(Obj, Prefix, _, _, _, _, _, _, _, _, _) ->
-			'$lgt_ctx_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _),
-			catch('$lgt_tr_body'(Obj<<Pred, TPred, DPred, Ctx), Error, '$lgt_runtime_error_handler'(error(Error, Obj<<Pred, user))),
-			(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
-				'$lgt_dbg_reset_invocation_number',
-				catch(DPred, Error, '$lgt_runtime_error_handler'(Error))
-			;	catch(TPred, Error, '$lgt_runtime_error_handler'(Error))
-			)
-		;	throw(error(existence_error(object, Obj), Obj<<Pred, user))
-		)
-	;	throw(error(resource_error(context_switching_calls), Obj<<Pred, user))
+	catch('$lgt_tr_ctx_call'(Obj, Pred, Call, user), Error, '$lgt_runtime_error_handler'(error(Error, Obj<<Pred, user))),
+	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
+		'$lgt_dbg_reset_invocation_number',
+		'$lgt_ctx_ctx'(Ctx, _, user, user, Obj, '$lgt_bio_user_0_', [], _),
+		'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
+		catch('$lgt_dbg_goal'(Obj<<Pred, Call, DbgCtx), Error, '$lgt_runtime_error_handler'(Error))
+	;	catch(Call, Error, '$lgt_runtime_error_handler'(Error))
 	).
 
 
@@ -7529,26 +7524,11 @@ current_logtalk_flag(version, version(2, 34, 1)).
 
 % context-switching
 
-'$lgt_tr_body'(Obj<<_, _, _, _) :-
-	var(Obj),
-	throw(instantiation_error).
-
-'$lgt_tr_body'(_<<Pred, _, _, _) :-
-	var(Pred),
-	throw(instantiation_error).
-
-'$lgt_tr_body'(Obj<<_, _, _, _) :-
-	\+ callable(Obj),
-	throw(type_error(object_identifier, Obj)).
-
-'$lgt_tr_body'(_<<Pred, _, _, _) :-
-	\+ callable(Pred),
-	throw(type_error(callable, Pred)).
-
-'$lgt_tr_body'(Obj<<Pred, '$lgt_call_within_context'(Obj, Pred, This), '$lgt_dbg_goal'(Obj<<Pred, '$lgt_call_within_context'(Obj, Pred, This), DbgCtx), Ctx) :-
+'$lgt_tr_body'(Obj<<Pred, TPred, '$lgt_dbg_goal'(Obj<<Pred, TPred, DbgCtx), Ctx) :-
 	!,
 	'$lgt_ctx_this'(Ctx, This),
-	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx).
+	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
+	'$lgt_tr_ctx_call'(Obj, Pred, TPred, This).
 
 
 % calling category predicates directly
@@ -8795,6 +8775,30 @@ current_logtalk_flag(version, version(2, 34, 1)).
 	;	'$lgt_pp_category_'(Ctg, _, _, Def, _, _) ->
 	    TPred = '$lgt_ctg_super_call'(Ctg, Def, Pred, Sender, This, Self)
 	).
+
+
+
+% '$lgt_tr_ctx_call'(@term, @term, -callable, @object_identifier)
+%
+% translates context switching calls
+
+'$lgt_tr_ctx_call'(Obj, _, _, _) :-
+	var(Obj),
+	throw(instantiation_error).
+
+'$lgt_tr_ctx_call'(_, Pred, _, _) :-
+	var(Pred),
+	throw(instantiation_error).
+
+'$lgt_tr_ctx_call'(Obj, _, _, _) :-
+	\+ callable(Obj),
+	throw(type_error(object_identifier, Obj)).
+
+'$lgt_tr_ctx_call'(_, Pred, _, _) :-
+	\+ callable(Pred),
+	throw(type_error(callable, Pred)).
+
+'$lgt_tr_ctx_call'(Obj, Pred, '$lgt_call_within_context'(Obj, Pred, This), This).
 
 
 
