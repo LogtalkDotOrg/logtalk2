@@ -95,9 +95,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2007/09/15,
+		date is 2008/12/07,
 		comment is 'Tests dynamic objects and dynamic predicates.']).
 
 %	:- initialization(::run).
@@ -105,7 +105,10 @@
 	:- initialization(::run('results.txt', append)).
 
 	setup :-
-		create_object(dyn_test, [], [], []).
+		current_logtalk_flag(dynamic_declarations, Current),
+		set_logtalk_flag(dynamic_declarations, on),
+		create_object(dyn_test, [], [], []),
+		set_logtalk_flag(dynamic_declarations, Current).
 
 	succeeds(dyn, This << goal) :-
 		this(This).
