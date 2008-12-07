@@ -48,6 +48,12 @@ Prolog compilers are created on the "Start Menu/Programs/Logtalk" menu.
 If you get an unexpected failure when using one of the Prolog integration
 scripts, consult the "configs/NOTES.txt" file for compatibility notes.
 
+On MacOS X systems, shortcuts for running Logtalk with selected back-end 
+Prolog compilers are available on the "scripts/macosx/command_files" folder
+on the Logtalk installation folder (by default, /opt/local/share/logtalk).
+If you get an unexpected failure when using one of the Prolog integration
+scripts, consult the "configs/NOTES.txt" file for compatibility notes.
+
 2. Open the "manuals/index.html" file with a web browser.
 
 3. Select the "Tutorial" link. This will provide you with a basic 

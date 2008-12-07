@@ -13,16 +13,18 @@ RELEASE NOTES
 =============
 
 
-2.34.1 - December ??, 2008
+2.34.1 - December 8, 2008
 
     Corrected a long-standing bug in the implementation of the Obj<<Pred
     control construct, which failed to properly set the execution context
-    to the receiving object.
+    to the receiving object. This bug, which results in a stack overflow 
+    error, was uncovered by an unrelated bug fix in the previous Logtalk
+    version.
 
     Fixed some broken links in the Logtalk XHTML documentation. Updated the
     screen CSS file to match the new, lighter style of the Logtalk website.
 
-    Added a set of double-clickable *.command Terminal files for starting
+    Added a set of double-clickable *.command Terminal.app files for starting
     Logtalk with selected back-end Prolog compilers on MacOS X.
 
     Updated the MacOS X installer postflight script to open the Logtalk

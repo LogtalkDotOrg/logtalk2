@@ -39,6 +39,7 @@ echo ""
 echo "Creating a link to the Logtalk installation folder in the /Applications folder..."
 ln -sf /opt/local/share/logtalk /Applications/Logtalk
 open /Applications/Logtalk/
+open /Applications/Logtalk/scripts/macosx/command_files
 open /Applications/Logtalk/README.txt
 
 echo ""
