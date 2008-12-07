@@ -9318,11 +9318,14 @@ current_logtalk_flag(version, version(2, 34, 1)).
 '$lgt_tr_specializes_class'([Ref| Refs], Class) :-
 	(	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		(	'$lgt_valid_object_ref'(Ref, Superclass) ->
-			assertz('$lgt_pp_referenced_object_'(Superclass)),
-			assertz('$lgt_pp_rclause_'('$lgt_specializes_class_'(Class, Superclass, Scope))),
-			'$lgt_construct_object_functors'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, _),
-			assertz('$lgt_pp_specialized_class_'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)),
-			'$lgt_tr_specializes_class'(Refs, Class)
+			(	Class \= Superclass ->
+				assertz('$lgt_pp_referenced_object_'(Superclass)),
+				assertz('$lgt_pp_rclause_'('$lgt_specializes_class_'(Class, Superclass, Scope))),
+				'$lgt_construct_object_functors'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, _),
+				assertz('$lgt_pp_specialized_class_'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)),
+				'$lgt_tr_specializes_class'(Refs, Class)
+			;	throw(permission_error(specialize, Class))
+			)
 		;	throw(type_error(object_identifier, Ref))
 		)
 	;	throw(type_error(scope, Ref))
