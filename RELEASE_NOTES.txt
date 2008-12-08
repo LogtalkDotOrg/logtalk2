@@ -24,9 +24,9 @@ RELEASE NOTES
 
     Corrected a long-standing bug in the implementation of the Obj<<Pred
     control construct, which failed to properly set the execution context
-    to the receiving object. This bug, which results in a stack overflow 
-    error, was uncovered by an unrelated bug fix in the previous Logtalk
-    version.
+    to the receiving object for top-level queries. This bug, which results
+    in a stack overflow error, was uncovered by an unrelated bug fix in the
+    previous Logtalk version.
 
     Fixed some broken links in the Logtalk XHTML documentation. Updated the
     screen CSS file to match the new, lighter style of the Logtalk website.
