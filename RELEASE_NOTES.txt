@@ -13,14 +13,18 @@ RELEASE NOTES
 =============
 
 
-2.34.1 - December 8, 2008
+2.34.1 - December ??, 2008
+
+    Allow the ^^/1 control construct to be used for calling any inherited
+    predicate instead of being restricted to calling inherited predicates
+    in the context of their redefinitions.
 
     Updated the Logtalk compiler to detect (and report as an error) the
     definition of two entities with the same name in a source file.
 
     Updated the Logtalk compiler to detect (and report as an error) whenever
-    a class specializes itself (which could lead to predicate lookup endless
-    loops for class descendants).
+    a class specializes itself or a prototype extends itself (which could 
+    result in predicate lookup endless loops for the object descendants).
 
     Corrected a long-standing bug in the implementation of the Obj<<Pred
     control construct, which failed to properly set the execution context
