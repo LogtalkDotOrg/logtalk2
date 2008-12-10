@@ -110,7 +110,7 @@ The message must match a public or protected predicate declared for the receivin
 <h2 id="messages_super">Calling an overridden predicate definition</h2>
 
 <p>
-When redefining a predicate, sometimes we need to call the inherited definition in the new code. This functionality, introduced by the Smalltalk language through the <code>super</code> primitive, is available in Logtalk through the <a title="Consult reference manual" href="../refman/control/super1.html"><code>^^/1</code></a> control construct:
+When redefining a predicate, sometimes we need to call the inherited definition in the new code. This functionality, introduced by the Smalltalk language through the <code>super</code> primitive, is available in Logtalk using the <a title="Consult reference manual" href="../refman/control/super1.html"><code>^^/1</code></a> control construct:
 </p>
 <pre>^^Predicate</pre>
 <p>
@@ -120,6 +120,9 @@ Most of the time we will use this operator by instantiating the pattern:
     ...,            % do something
     ^^Predicate,    % call inherited definition
     ... .           % do something more</pre>
+<p>
+This control construct may be used to call any inherited predicate definition. This control construct may be used within objects and within categories that extend other categories. In the case of categories, the lookup for the overridden predicate definition is restricted to the extended categories.
+</p>
 
 <h2 id="messages_direct">Direct calls of imported predicates</h2>
 
@@ -242,7 +245,7 @@ It should be stressed that message sending is only one of the factors affecting 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: July 20, 2008</span>
+		<span>Last updated on: December 9, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="nomenclature.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="objects.html">next</a></span><br/>

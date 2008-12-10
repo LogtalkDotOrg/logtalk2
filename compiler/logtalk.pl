@@ -3177,14 +3177,14 @@ current_logtalk_flag(version, version(2, 34, 1)).
 
 
 
-% '$lgt_obj_super_call'(+atom, +callable, +object_identifier, +object_identifier, +object_identifier)
+% '$lgt_obj_super_call_same'(+atom, +callable, +object_identifier, +object_identifier, +object_identifier)
 
-'$lgt_obj_super_call'(_, Pred, Sender, This, Self) :-
+'$lgt_obj_super_call_same'(_, Pred, Sender, This, Self) :-
 	'$lgt_super_lookup_cache_'(Self, Pred, This, Sender, Call),
 	!,
 	call(Call).
 
-'$lgt_obj_super_call'(Super, Pred, Sender, This, Self) :-
+'$lgt_obj_super_call_same'(Super, Pred, Sender, This, Self) :-
 	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
 	functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),					% construct "this" template
 	functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),					% construct "self" template
@@ -3195,14 +3195,14 @@ current_logtalk_flag(version, version(2, 34, 1)).
 
 
 
-% '$lgt_ctg_super_call'(+category_identifier, +atom, +callable, +object_identifier, +object_identifier, +object_identifier)
+% '$lgt_ctg_super_call_same'(+category_identifier, +atom, +callable, +object_identifier, +object_identifier, +object_identifier)
 
-'$lgt_ctg_super_call'(Ctg, _, Pred, Sender, This, Self) :-
+'$lgt_ctg_super_call_same'(Ctg, _, Pred, Sender, This, Self) :-
 	'$lgt_super_lookup_cache_'(Ctg, Pred, Sender, This, Self, Call),
 	!,
 	call(Call).
 
-'$lgt_ctg_super_call'(Ctg, Def, Pred, Sender, This, Self) :-
+'$lgt_ctg_super_call_same'(Ctg, Def, Pred, Sender, This, Self) :-
 	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
 	functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),					% construct "this" template
 	functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),					% construct "self" template
@@ -3270,7 +3270,7 @@ current_logtalk_flag(version, version(2, 34, 1)).
 
 
 
-% '$lgt_ctg_super_call_other'(+category_identifier, +atom, +callable, +object_identifier, +object_identifier, +object_identifier)
+% '$lgt_ctg_super_call_other_nv'(+category_identifier, +atom, +callable, +object_identifier, +object_identifier, +object_identifier)
 
 '$lgt_ctg_super_call_other_nv'(Ctg, _, _, Pred, Sender, This, Self) :-
 	'$lgt_super_lookup_cache_'(Ctg, Pred, Sender, This, Self, Call),
@@ -8882,12 +8882,12 @@ current_logtalk_flag(version, version(2, 34, 1)).
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
-	    TPred = '$lgt_obj_super_call'(Super, Pred, Sender, This, Self)
+	    TPred = '$lgt_obj_super_call_same'(Super, Pred, Sender, This, Self)
 	;	'$lgt_pp_category_'(Ctg, _, _, Def, _, _) ->
-	    TPred = '$lgt_ctg_super_call'(Ctg, Def, Pred, Sender, This, Self)
+	    TPred = '$lgt_ctg_super_call_same'(Ctg, Def, Pred, Sender, This, Self)
 	).
 
-'$lgt_tr_super_call'(Pred, TPred, Ctx) :-		% "super" call to a predicate other than the being redefined
+'$lgt_tr_super_call'(Pred, TPred, Ctx) :-	% "super" call to a predicate other than the one being redefined
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, _, _),
 	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
 		(	var(Pred) ->
@@ -9329,11 +9329,14 @@ current_logtalk_flag(version, version(2, 34, 1)).
 '$lgt_tr_implements_protocol'([Ref| Refs], ObjOrCtg) :-
 	(	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		(	'$lgt_valid_protocol_ref'(Ref, Ptc) ->
-			assertz('$lgt_pp_referenced_protocol_'(Ptc)),
-			assertz('$lgt_pp_rclause_'('$lgt_implements_protocol_'(ObjOrCtg, Ptc, Scope))),
-			'$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl, _),
-			assertz('$lgt_pp_implemented_protocol_'(Ptc, Prefix, Dcl, Scope)),
-			'$lgt_tr_implements_protocol'(Refs, ObjOrCtg)
+			(	ObjOrCtg \= Ptc ->
+				assertz('$lgt_pp_referenced_protocol_'(Ptc)),
+				assertz('$lgt_pp_rclause_'('$lgt_implements_protocol_'(ObjOrCtg, Ptc, Scope))),
+				'$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl, _),
+				assertz('$lgt_pp_implemented_protocol_'(Ptc, Prefix, Dcl, Scope)),
+				'$lgt_tr_implements_protocol'(Refs, ObjOrCtg)
+			;	throw(permission_error(implement, ObjOrCtg))
+			)
 		;	throw(type_error(protocol_identifier, Ref))
 		)
 	;	throw(type_error(scope, Ref))
@@ -9358,11 +9361,14 @@ current_logtalk_flag(version, version(2, 34, 1)).
 '$lgt_tr_imports_category'([Ref| Refs], Obj) :-
 	(	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		(	'$lgt_valid_category_ref'(Ref, Ctg) ->
-			assertz('$lgt_pp_referenced_category_'(Ctg)),
-			assertz('$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, Scope))),
-			'$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def, _),
-			assertz('$lgt_pp_imported_category_'(Ctg, Prefix, Dcl, Def, Scope)),
-			'$lgt_tr_imports_category'(Refs, Obj)
+			(	Obj \= Ctg ->
+				assertz('$lgt_pp_referenced_category_'(Ctg)),
+				assertz('$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, Scope))),
+				'$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def, _),
+				assertz('$lgt_pp_imported_category_'(Ctg, Prefix, Dcl, Def, Scope)),
+				'$lgt_tr_imports_category'(Refs, Obj)
+			;	throw(permission_error(import, Obj))
+			)
 		;	throw(type_error(category_identifier, Ref))
 		)
 	;	throw(type_error(scope, Ref))
@@ -9480,11 +9486,14 @@ current_logtalk_flag(version, version(2, 34, 1)).
 '$lgt_tr_extends_protocol'([Ref| Refs], Ptc1) :-
 	(	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		(	'$lgt_valid_protocol_ref'(Ref, Ptc2) ->
-			assertz('$lgt_pp_referenced_protocol_'(Ptc2)),
-			assertz('$lgt_pp_rclause_'('$lgt_extends_protocol_'(Ptc1, Ptc2, Scope))),
-			'$lgt_construct_protocol_functors'(Ptc2, Prefix, Dcl, _),
-			assertz('$lgt_pp_extended_protocol_'(Ptc2, Prefix, Dcl, Scope)),
-			'$lgt_tr_extends_protocol'(Refs, Ptc1)
+			(	Ptc1 \= Ptc2 ->
+				assertz('$lgt_pp_referenced_protocol_'(Ptc2)),
+				assertz('$lgt_pp_rclause_'('$lgt_extends_protocol_'(Ptc1, Ptc2, Scope))),
+				'$lgt_construct_protocol_functors'(Ptc2, Prefix, Dcl, _),
+				assertz('$lgt_pp_extended_protocol_'(Ptc2, Prefix, Dcl, Scope)),
+				'$lgt_tr_extends_protocol'(Refs, Ptc1)
+			;	throw(permission_error(extend, Ptc1))
+			)
 		;	throw(type_error(protocol_identifier, Ref))
 		)
 	;	throw(type_error(scope, Ref))
@@ -9509,11 +9518,14 @@ current_logtalk_flag(version, version(2, 34, 1)).
 '$lgt_tr_extends_category'([Ref| Refs], Ctg1) :-
 	(	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		(	'$lgt_valid_category_ref'(Ref, Ctg2) ->
-			assertz('$lgt_pp_referenced_category_'(Ctg2)),
-			assertz('$lgt_pp_rclause_'('$lgt_extends_category_'(Ctg1, Ctg2, Scope))),
-			'$lgt_construct_category_functors'(Ctg2, Prefix, Dcl, Def, _),
-			assertz('$lgt_pp_extended_category_'(Ctg2, Prefix, Dcl, Def, Scope)),
-			'$lgt_tr_extends_category'(Refs, Ctg1)
+			(	Ctg1 \= Ctg2 ->
+				assertz('$lgt_pp_referenced_category_'(Ctg2)),
+				assertz('$lgt_pp_rclause_'('$lgt_extends_category_'(Ctg1, Ctg2, Scope))),
+				'$lgt_construct_category_functors'(Ctg2, Prefix, Dcl, Def, _),
+				assertz('$lgt_pp_extended_category_'(Ctg2, Prefix, Dcl, Def, Scope)),
+				'$lgt_tr_extends_category'(Refs, Ctg1)
+			;	throw(permission_error(extend, Ctg1))
+			)
 		;	throw(type_error(category_identifier, Ref))
 		)
 	;	throw(type_error(scope, Ref))
@@ -9539,6 +9551,10 @@ current_logtalk_flag(version, version(2, 34, 1)).
 '$lgt_tr_complements_category'([Obj| _], _, _, _, _) :-
 	\+ callable(Obj),
 	throw(type_error(object_identifier, Obj)).
+
+'$lgt_tr_complements_category'([Obj| _], Ctg, _, _, _) :-
+	Obj = Ctg,
+	throw(permission_error(complement, Obj)).
 
 '$lgt_tr_complements_category'([Obj| Objs], Ctg, Dcl, Def, Rnm) :-
 	assertz('$lgt_pp_referenced_object_'(Obj)),

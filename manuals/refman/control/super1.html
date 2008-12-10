@@ -25,7 +25,7 @@
 
 <pre>^^Predicate</pre>
 <p>
-Calls an inherited predicate definition. The call fails if there is no inherited predicate definition. This control construct may be used within objects (or categories) in the body of a predicate definition. When used within a category, the lookup for the overridden predicate definition is restricted to the extended categories. This control construct is optimized for the case where the inherited predicate being called is the same predicate being redefined.
+Calls an inherited predicate definition. The call fails if there is no inherited predicate definition. This control construct may be used within objects or categories in the body of a predicate definition. When used within a category, the lookup for the overridden predicate definition is restricted to the extended categories. This control construct is optimized for the case where the inherited predicate being called is the same predicate being redefined.
 </p>
 
 <h4>Template and modes</h4>
@@ -35,7 +35,12 @@ Calls an inherited predicate definition. The call fails if there is no inherited
 <h4>Errors</h4>
 
 <dl>
-	<dt>(none)</dt>
+	<dt>Predicate is a variable:</dt>
+		<dd><code>instantiation_error</code></dd>
+	<dt>Predicate is declared private:</dt>
+		<dd><code>permission_error(access, private_predicate, Predicate)</code></dd>
+	<dt>Predicate is not declared:</dt>
+		<dd><code>existence_error(predicate_declaration, Predicate)</code></dd>
 </dl>
 
 <h4>Examples</h4>

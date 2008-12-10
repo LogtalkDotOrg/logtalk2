@@ -22,9 +22,9 @@ RELEASE NOTES
     Updated the Logtalk compiler to detect (and report as an error) the
     definition of two entities with the same name in a source file.
 
-    Updated the Logtalk compiler to detect (and report as an error) whenever
-    a class specializes itself or a prototype extends itself (which could 
-    result in predicate lookup endless loops for the object descendants).
+    Updated the Logtalk compiler to detect (and report as an error) any
+    invalid relation between an entity and itself. In most cases, these
+    errors could result in predicate lookup endless loops.
 
     Corrected a long-standing bug in the implementation of the Obj<<Pred
     control construct, which failed to properly set the execution context
