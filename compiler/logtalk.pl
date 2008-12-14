@@ -3310,11 +3310,11 @@ current_logtalk_flag(version, version(2, 34, 1)).
 
 
 
-% '$lgt_metacall_in_object'(?term, ?term, ?term, +object_identifier, +object_identifier, +object_identifier)
+% '$lgt_metacall'(?term, ?term, ?term, +object_identifier, +object_identifier, +object_identifier)
 %
 % performs a meta-call constructed from a closure and a list of addtional arguments
 
-'$lgt_metacall_in_object'(Closure, Args, MetaCallCtx, Sender, This, _) :-
+'$lgt_metacall'(Closure, Args, MetaCallCtx, Sender, This, _) :-
 	var(Closure),
 	Goal =.. [call, Closure| Args],
 	(	atom(MetaCallCtx) ->
@@ -3322,7 +3322,7 @@ current_logtalk_flag(version, version(2, 34, 1)).
 	;	throw(error(instantiation_error, Sender::Goal, This))
 	).
 
-'$lgt_metacall_in_object'(Closure, Args, MetaCallCtx, Sender, This, _) :-
+'$lgt_metacall'(Closure, Args, MetaCallCtx, Sender, This, _) :-
 	\+ callable(Closure),
 	Goal =.. [call, Closure| Args],
 	(	atom(MetaCallCtx) ->
@@ -3330,14 +3330,14 @@ current_logtalk_flag(version, version(2, 34, 1)).
 	;	throw(error(type_error(callable, Closure), Sender::Goal, This))
 	).
 
-'$lgt_metacall_in_object'(Closure, ExtraArgs, local, Sender, This, Self) :-
+'$lgt_metacall'(Closure, ExtraArgs, local, Sender, This, Self) :-
 	!,
 	Closure =.. [Functor| Args],
 	'$lgt_append'(Args, ExtraArgs, FullArgs),
 	Pred =.. [Functor| FullArgs],
-	'$lgt_metacall_in_object'(Pred, local, Sender, This, Self).
+	'$lgt_metacall'(Pred, local, Sender, This, Self).
 
-'$lgt_metacall_in_object'(Obj::Closure, ExtraArgs, _, _, This, _) :-
+'$lgt_metacall'(Obj::Closure, ExtraArgs, _, _, This, _) :-
 	!,
 	Closure =.. [Functor| Args],
 	'$lgt_append'(Args, ExtraArgs, FullArgs),
@@ -3350,40 +3350,40 @@ current_logtalk_flag(version, version(2, 34, 1)).
 	;	call(Call)
 	).
 
-'$lgt_metacall_in_object'(':'(Module, Closure), ExtraArgs, _, _, _, _) :-
+'$lgt_metacall'(':'(Module, Closure), ExtraArgs, _, _, _, _) :-
 	!,
 	Closure =.. [Functor| Args],
 	'$lgt_append'(Args, ExtraArgs, FullArgs),
 	Pred =.. [Functor| FullArgs],
 	':'(Module, Pred).
 
-'$lgt_metacall_in_object'(Closure, ExtraArgs, MetaVars, Sender, This, Self) :-
+'$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	Closure =.. [Functor| Args],
 	'$lgt_append'(Args, ExtraArgs, FullArgs),
 	Pred =.. [Functor| FullArgs],
-	(	\+ '$lgt_member'(Closure, MetaVars) ->
-		'$lgt_metacall_in_object'(Pred, local, Sender, This, Self)
-	;	'$lgt_metacall_in_object'(Pred, [Pred], Sender, This, Self)
+	(	\+ '$lgt_member'(Closure, MetaCallCtx) ->
+		'$lgt_metacall'(Pred, local, Sender, This, Self)
+	;	'$lgt_metacall'(Pred, [Pred], Sender, This, Self)
 	).
 
 
 
-% '$lgt_metacall_in_object'(?term, ?term, +object_identifier, +object_identifier, +object_identifier)
+% '$lgt_metacall'(?term, ?term, +object_identifier, +object_identifier, +object_identifier)
 %
 % performs a meta-call at runtime
 
-'$lgt_metacall_in_object'(Pred, MetaCallCtx, Sender, This, _) :-
+'$lgt_metacall'(Pred, MetaCallCtx, Sender, This, _) :-
 	var(Pred),
 	(	atom(MetaCallCtx) ->
 		throw(error(instantiation_error, This::call(Pred), This))
 	;	throw(error(instantiation_error, Sender::call(Pred), This))
 	).
 
-'$lgt_metacall_in_object'(Pred, compiled, _, _, _) :-
+'$lgt_metacall'(Pred, compiled, _, _, _) :-
 	!,
 	call(Pred).
 
-'$lgt_metacall_in_object'(Pred, local, Sender, This, Self) :-
+'$lgt_metacall'(Pred, local, Sender, This, Self) :-
 	!,
 	'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _),
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _),
@@ -3394,8 +3394,8 @@ current_logtalk_flag(version, version(2, 34, 1)).
 	;	call(Call)
 	).
 
-'$lgt_metacall_in_object'(Pred, MetaVars, Sender, This, Self) :-
-	(	\+ '$lgt_member'(Pred, MetaVars) ->
+'$lgt_metacall'(Pred, MetaCallCtx, Sender, This, Self) :-
+	(	\+ '$lgt_member'(Pred, MetaCallCtx) ->
 		'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _),
 		'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _)
 	;	'$lgt_current_object_'(Sender, Prefix, _, _, _, _, _, _, _, _, _),
@@ -7194,8 +7194,8 @@ current_logtalk_flag(version, version(2, 34, 1)).
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
 	(	'$lgt_member_var'(Pred, MetaVars) ->
-		TPred = '$lgt_metacall_in_object'(Pred, MetaCallCtx, Sender, This, Self)
-	;	TPred = '$lgt_metacall_in_object'(Pred, local, Sender, This, Self)
+		TPred = '$lgt_metacall'(Pred, MetaCallCtx, Sender, This, Self)
+	;	TPred = '$lgt_metacall'(Pred, local, Sender, This, Self)
 	).
 
 
@@ -7302,8 +7302,8 @@ current_logtalk_flag(version, version(2, 34, 1)).
 	!,
 	'$lgt_ctx_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx),
 	(	'$lgt_member_var'(Closure, MetaVars) ->
-		TPred = '$lgt_metacall_in_object'(Closure, Args, MetaCallCtx, Sender, This, Self)
-	;	TPred = '$lgt_metacall_in_object'(Closure, Args, local, Sender, This, Self)
+		TPred = '$lgt_metacall'(Closure, Args, MetaCallCtx, Sender, This, Self)
+	;	TPred = '$lgt_metacall'(Closure, Args, local, Sender, This, Self)
 	),
 	'$lgt_ctx_dbg_ctx'(Ctx, DbgCtx),
 	DPred = '$lgt_dbg_goal'(CallN, TPred, DbgCtx).
@@ -8482,7 +8482,7 @@ current_logtalk_flag(version, version(2, 34, 1)).
 '$lgt_tr_msg'(CallN, Obj, TPred, This) :-
 	CallN =.. [call, Closure| Args],
 	!,
-	TPred = '$lgt_metacall_in_object'(Closure, Args, local, This, Obj, Obj).
+	TPred = '$lgt_metacall'(Closure, Args, local, This, Obj, Obj).
 
 '$lgt_tr_msg'(once(Pred), Obj, once(TPred), This) :-
 	!,
@@ -8699,7 +8699,7 @@ current_logtalk_flag(version, version(2, 34, 1)).
 '$lgt_tr_self_msg'(CallN, TPred, This, Self) :-
 	CallN =.. [call, Closure| Args],
 	!,
-	TPred = '$lgt_metacall_in_object'(Closure, Args, local, This, Self, Self).
+	TPred = '$lgt_metacall'(Closure, Args, local, This, Self, Self).
 
 '$lgt_tr_self_msg'(once(Pred), once(TPred), This, Self) :-
 	!,
