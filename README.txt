@@ -98,6 +98,9 @@ The file "RELEASE_NOTES.txt" contains descriptions of all Logtalk updates
 since the first public version. Read it carefully if you have been using a 
 previous Logtalk version.
 
+See the "library/NOTES.txt" for instructions on how to generate (X)HTML and
+PDF documentation for the Logtalk library.
+
 
 9. UPGRADING
 
