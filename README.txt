@@ -113,7 +113,7 @@ custom configuration files to run under this new version.
 
 If you find Logtalk useful, please include a citation on your publications.
 Consult the file "BIBLIOGRAPHY.bib" for bibliographic references in BibTeX 
-format (the Logtalk technical report published on 2000 or the 2003 PhD thesis 
+format (the Logtalk technical report published on 2000 and the 2003 PhD thesis
 on Logtalk are good choices).
 
 

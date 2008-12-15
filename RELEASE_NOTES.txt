@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.34.1 - December ??, 2008
+2.34.1 - December 15, 2008
 
     Allow the ^^/1 control construct to be used for calling any inherited
     predicate instead of being restricted to calling inherited predicates
@@ -42,7 +42,10 @@ RELEASE NOTES
     Logtalk with selected back-end Prolog compilers on MacOS X.
 
     Updated the MacOS X installer postflight script to open the Logtalk
-    installation folder and the "README.txt" file.
+    installation folder, the *.command files folder, and the "README.txt"
+    file.
+
+    Updated the "BIBLIOGRAPHY.bib" file with recent Logtalk publications.
 
 
 2.34.0 - November 26, 2008
