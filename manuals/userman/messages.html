@@ -161,7 +161,7 @@ When events are not used, is possible to turn off event generation on a per obje
 Logtalk supports both static binding and dynamic binding. Static binding is used whenever messages are sent (using <code>::/2</code>) to objects loaded separately using the <code>reload(skip)</code> compiler flag. When that is not the case (or when using <code>::/1</code>), Logtalk uses dynamic binding coupled with a caching mechanism that avoids repeated lookups of predicate declarations and predicate definitions. This is a solution common to other programming languages supporting dynamic binding. Message lookups are automatically cached the first time a message is sent. Cache entries are automatically removed when loading entities or using Logtalk dynamic features that invalidate the cached lookups.
 </p>
 <p>
-Whenever static binding is used, message sending performance is the same as a predicate call in plain Prolog. When discussing Logtalk dynamic binding performance, two distinct cases should be considered: messages sent by the user from the top-level interpreter and messages sent from compiled objects. In addition, the message declaration and definition lookups may, or may not be already cached by the runtime engine. In what follows, we will assume that the message lookups are already cached.
+Whenever static binding is used, message sending performance is roughly the same as a predicate call in plain Prolog. When discussing Logtalk dynamic binding performance, two distinct cases should be considered: messages sent by the user from the top-level interpreter and messages sent from compiled objects. In addition, the message declaration and definition lookups may, or may not be already cached by the runtime engine. In what follows, we will assume that the message lookups are already cached.
 </p>
 
 <h3 id="messages_inferences">Translating message processing to predicate calls</h3>
@@ -170,7 +170,7 @@ Whenever static binding is used, message sending performance is the same as a pr
 In order to better understand the performance tradeoffs of using Logtalk dynamic binding when compared to plain Prolog or to Prolog module systems, is useful to translate message processing in terms of predicate calls. However, in doing this, we should keep in mind that the number of predicate calls is not necessarily proportional to the time taken to execute them.
 </p>
 <p>
-A message sent from a compiled object to another object translates to six predicate calls:
+With event-suport turned on, a message sent from a compiled object to another object translates to six predicate calls:
 </p>
 <dl>
 	<dt>cache lookup</dt>
@@ -188,10 +188,10 @@ A message sent from a compiled object to another object translates to six predic
 Given that events can be dynamically defined at runtime, there is no room for reducing the number of predicate calls without turning off support for event-driven programming. When events are defined, the number of predicate calls grows proportional to the number of events and event handlers (monitors). Event-driven programming support can be switched off for specific object using the compiler flag <a title="Consult compiler flag details" href="programming.html#programming_flags"><code>events/1</code></a>. Doing so, reduces the number of predicate calls from six to just two.
 </p>
 <p>
-Messages to <em>self</em> and <em>super</em> calls are transparent regarding events and, as such, imply only two predicate calls (the cache lookup and the method call).
+Messages to <em>self</em> and <em>super</em> calls are transparent regarding events and, as such, imply only two predicate calls (the cache lookup and the method call itself).
 </p>
 <p>
-When a message is sent by the user from the top-level interpreter, Logtalk needs to perform a runtime translation of the message in order to prove the corresponding goal. For user-defined messages/predicates, the runtime translation overhead corresponds to seventeen predicate calls. Thus, while sending a message from a compiled object corresponds to six predicate calls, the same message sent by the user from the top-level interpreter results in twenty-three predicate calls. Considering the time taken for the user to type the goal, this overhead is of no practical consequence.
+When a message is sent by the user from the top-level interpreter, Logtalk needs to perform a runtime translation of the message term in order to prove the corresponding goal. Thus, while sending a message from a compiled object corresponds to either six predicate calls (event-support on) or two predicate calls (event-support off), the same message sent by the user from the top-level interpreter necessarily implies an overhead. Considering the time taken for the user to type the goal and read the reply, this overhead is of no practical consequence.
 </p>
 <p>
 When a message is not cached, the number of predicate calls depends on the number of steps needed for the Logtalk runtime engine to lookup the corresponding predicate scope declaration (to check if the message is valid) and then to lookup a predicate definition for answering the message.
@@ -239,13 +239,13 @@ For comparing message sending performance across several Prolog compilers, we wo
 For comparing message sending performance with predicate calls in plain Prolog and with calls to predicates encapsulated in modules, we should use exactly the same predicate definition in the three cases.
 </p>
 <p>
-It should be stressed that message sending is only one of the factors affecting the performance of a Logtalk application. The strengths and limitations of the chosen Prolog compiler play a crucial role on all aspects of the development, reliability, usability, and performance of a Logtalk application. It is advisable to take advantage of the Logtalk wide compatibility with most Prolog compilers to test for the best match for developing your Logtalk applications.
+It should be stressed that message sending is only one of the factors affecting the performance of a Logtalk application (and often not the most important one). The strengths and limitations of the chosen Prolog compiler play a crucial role on all aspects of the development, reliability, usability, and performance of a Logtalk application. It is advisable to take advantage of the Logtalk wide compatibility with most Prolog compilers to test for the best match for developing your Logtalk applications.
 </p>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: December 9, 2008</span>
+		<span>Last updated on: December 18, 2008</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="nomenclature.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="objects.html">next</a></span><br/>

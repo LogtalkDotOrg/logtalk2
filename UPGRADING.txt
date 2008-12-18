@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.34.1
+Release 2.35.0
 
 Copyright (c) 1998-2008 Paulo Moura.        All Rights Reserved.
 Logtalk is free software.  You can redistribute it and/or modify
@@ -223,3 +223,6 @@ Logtalk 2.34.0 adds a new read-only compiler flag, "prolog", which is defined
 in the config files. In addition, the extension of all config, "*.config", 
 files is changed to "*.pl". Older config files are incompatible with this new
 Logtalk version.
+
+Logtalk 2.35.0 changes how entities are compiled implying recompilation of all
+source code.
