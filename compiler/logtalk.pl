@@ -131,7 +131,7 @@
 
 :- dynamic('$lgt_static_binding_entity_'/1).	% '$lgt_static_binding_entity_'(Entity)
 :- dynamic('$lgt_obj_static_binding_cache_'/4).	% '$lgt_obj_static_binding_cache_'(Obj, Pred, Sender, Call)
-:- dynamic('$lgt_ctg_static_binding_cache_'/6).	% '$lgt_ctg_static_binding_cache_'(Ctg, Pred, Sender, This, Self, Call)
+:- dynamic('$lgt_ctg_static_binding_cache_'/4).	% '$lgt_ctg_static_binding_cache_'(Ctg, Pred, ExCtx, Call)
 
 
 % lookup caches for messages to an object, messages to self, and super calls
@@ -3164,7 +3164,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),	% construct object template
 			(	'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
-				call_with_args(Def, GPred, ExCtx, GCall, _) ->	% lookup definition
+				call_with_args(Def, GPred, ExCtx, GCall, _) ->					% lookup definition
 				asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),	% cache lookup result
 				(GObj, GPred, GSender) = (Obj, Pred, Sender),					% unify message arguments
 				call(GCall)														% call method
@@ -3435,7 +3435,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_call_built_in'(Pred, Ctx) :-
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, _),
 	'$lgt_current_object_'(This, _, _, Def, _, _, _, _, _, _, _) ->
-	(	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
+	(	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, []),
 		call_with_args(Def, Pred, ExCtx, Call) ->
 		call(Call)
 	;	call(Pred)
@@ -3467,12 +3467,12 @@ current_logtalk_flag(version, version(2, 35, 0)).
 %
 % calls a category predicate directly, without using the message sending mechanism
 
-'$lgt_call_ctg_pred'(Dcl, Rnm, Alias, Sender, This, Self) :-
+'$lgt_call_ctg_pred'(Dcl, Rnm, Alias, ExCtx) :-
 	(	call_with_args(Dcl, Alias, _, _, _, _, _, _, _) ->
 		call_with_args(Rnm, Ctg, Pred, Alias),
+		'$lgt_exec_ctx'(ExCtx, _, This, _, _),
 		(	'$lgt_imports_category_'(This, Ctg, _),
 			'$lgt_current_category_'(Ctg, _, _, Def, _, _),
-			'$lgt_exec_ctx'(ExCtx, Sender, This, Self, []),
 			call_with_args(Def, Pred, ExCtx, Call, _) ->
 			call(Call)
 		)
@@ -3506,8 +3506,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 
 % lookup predicate definitions in any category that complements the given object
 
-'$lgt_complemented_object'(ThisDef, Alias, Sender, This, Self, Call, Ctn) :-
-	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, []),
+'$lgt_complemented_object'(ThisDef, Alias, ExCtx, Call, Ctn) :-
+	'$lgt_exec_ctx'(ExCtx, _, This, _, []),
 	'$lgt_complemented_object_'(This, _, _, Def, Rnm),
 	(	call_with_args(Def, Alias, ExCtx, Call, Ctn)
 	;	% categories can define aliases for complemented object predicates:
@@ -7643,6 +7643,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
+	'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, _, This, _, _),
 	'$lgt_tr_msg'(Pred, Obj, TPred, This).
 
 '$lgt_tr_body'(::Pred, TPred, '$lgt_dbg_goal'(::Pred, TPred, DbgCtx), Ctx) :-
@@ -7656,7 +7658,12 @@ current_logtalk_flag(version, version(2, 35, 0)).
 
 '$lgt_tr_body'(^^Pred, TPred, '$lgt_dbg_goal'(^^Pred, TPred, DbgCtx), Ctx) :-
 	!,
+	'$lgt_comp_ctx_sender'(Ctx, Sender),
+	'$lgt_comp_ctx_this'(Ctx, This),
+	'$lgt_comp_ctx_self'(Ctx, Self),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
+	'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
 	'$lgt_tr_super_call'(Pred, TPred, Ctx).
 
 
@@ -7685,22 +7692,22 @@ current_logtalk_flag(version, version(2, 35, 0)).
 
 '$lgt_tr_body'(':'(Alias), TPred, '$lgt_dbg_goal'(':'(Alias), TPred, DbgCtx), Ctx) :-
     !,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, _),
+	'$lgt_comp_ctx_exec'(Ctx, ExCtx),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
 	(	'$lgt_pp_imported_category_'(Ctg, _, _, _, _),
 		(	'$lgt_pp_alias_'(Ctg, Pred, Alias) ->
 			true
 		;	Pred = Alias
 		),
-		'$lgt_ctg_static_binding_cache'(Ctg, Pred, Sender, This, Self, TPred) ->
+		'$lgt_ctg_static_binding_cache'(Ctg, Pred, ExCtx, TPred) ->
 		true
 	;	% must resort to dynamic binding
 	    Pred = Alias,
 		'$lgt_pp_object_'(_, _, Dcl, _, _, IDcl, _, _, _, Rnm, _) ->
 		(	\+ '$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _),
 		 	\+ '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _) ->
-			TPred = '$lgt_call_ctg_pred'(Dcl, Rnm, Pred, Sender, This, Self)
-		;	TPred = '$lgt_call_ctg_pred'(IDcl, Rnm, Pred, Sender, This, Self)
+			TPred = '$lgt_call_ctg_pred'(Dcl, Rnm, Pred, ExCtx)
+		;	TPred = '$lgt_call_ctg_pred'(IDcl, Rnm, Pred, ExCtx)
 		)
 	).
 
@@ -7869,12 +7876,16 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_body'(sender(Sender), true, '$lgt_dbg_goal'(sender(Temp), Sender=Temp, DbgCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_sender'(Ctx, Sender),
+	'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, Sender, _, _, _),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 '$lgt_tr_body'(this(This), true, '$lgt_dbg_goal'(this(Temp), This=Temp, DbgCtx), Ctx) :-
 	!,
-	(	'$lgt_comp_ctx_this'(Ctx, This) ->	% check for mismatches between the argument of
-		true							% this/1 and the parametric object identifier
+	(	'$lgt_comp_ctx_this'(Ctx, This),
+		'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+	 	'$lgt_exec_ctx'(ExCtx, _, This, _, _) ->	% check for mismatches between the argument of
+		true										% this/1 and the parametric object identifier
 	;	throw(domain_error(object_identifier, This))
 	),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx).
@@ -7882,11 +7893,15 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_body'(self(Self), true, '$lgt_dbg_goal'(self(Temp), Self=Temp, DbgCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_self'(Ctx, Self),
+	'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, _, _, Self, _),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 '$lgt_tr_body'(parameter(Arg, Value), TPred, '$lgt_dbg_goal'(parameter(Arg, Temp), DPred, DbgCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
+	'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, _, This, _, _),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
 	(	(var(This); var(Arg)) ->		% when using parameter/2 in categories
 		TPred = arg(Arg, This, Value),	% or when the first argument will only 
@@ -8904,7 +8919,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_super_call'(Pred, TPred, Ctx) :-	% translation performed at runtime
 	nonvar(Pred),
 	functor(Pred, Functor, Arity),
-	'$lgt_ctx_head'(Ctx, Functor/Arity),	% "super" call to the predicate being redefined
+	'$lgt_comp_ctx_head'(Ctx, Functor/Arity),	% "super" call to the predicate being redefined
 	!,
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, _),
 	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
@@ -10430,7 +10445,6 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, Rnm, _),
 	'$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, _)),			% needed for parameter passing
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
-	'$lgt_exec_ctx'(ExCtx, Obj, _),
 	Lookup =.. [CDef, Pred, ExCtx, Call, Ctn],
 	(	'$lgt_pp_alias_'(Ctg, _, _) ->
 		Head =.. [ODef, Alias, ExCtx, Call, Ctn],
@@ -10443,9 +10457,9 @@ current_logtalk_flag(version, version(2, 35, 0)).
 
 '$lgt_gen_prototype_imports_def_clauses' :-
 	(	'$lgt_compiler_flag'(complements, on) ->
-		'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, _, _) ->
-		Head =.. [ODef, Pred, Sender, Obj, Self, Call, Ctn],
-		Lookup = '$lgt_complemented_object'(ODef, Pred, Sender, Obj, Self, Call, Ctn),
+		'$lgt_pp_object_'(_, _, _, ODef, _, _, _, _, _, _, _) ->
+		Head =.. [ODef, Pred, ExCtx, Call, Ctn],
+		Lookup = '$lgt_complemented_object'(ODef, Pred, ExCtx, Call, Ctn),
 		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
 	;	true
 	).
@@ -10477,7 +10491,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_gen_prototype_super_clauses' :-
 	'$lgt_pp_object_'(_, _, _, _, OSuper, _, _, _, _, _, _),
 	\+ '$lgt_pp_extended_object_'(_, _, _, _, _, _, _, _, _, _),
-	Head =.. [OSuper, _, _, _, _, _, _],
+	Head =.. [OSuper, _, _, _, _],
 	assertz('$lgt_pp_super_'((Head:-fail))),
 	!.
 
@@ -10697,7 +10711,6 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, Rnm, _),
 	'$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, _)),		% needed for parameter passing
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
-	'$lgt_exec_ctx'(ExCtx, Obj, _),
 	Lookup =.. [CDef, Pred, ExCtx, Call, Ctn],
 	(	'$lgt_pp_alias_'(Ctg, _, _) ->
 		Head =.. [ODef, Alias, ExCtx, Call, Ctn],
@@ -10710,8 +10723,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 
 '$lgt_gen_ic_imports_def_clauses' :-
 	(	'$lgt_compiler_flag'(complements, on) ->
-		'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, _, _) ->
-		'$lgt_exec_ctx'(ExCtx, Obj, _),
+		'$lgt_pp_object_'(_, _, _, ODef, _, _, _, _, _, _, _) ->
 		Head =.. [ODef, Pred, ExCtx, Call, Ctn],
 		Lookup = '$lgt_complemented_object'(ODef, Pred, ExCtx, Call, Ctn),
 		assertz('$lgt_pp_fdef_'((Head:-Lookup)))
@@ -10816,7 +10828,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	'$lgt_pp_object_'(_, _, _, _, OSuper, _, _, _, _, _, _),
 	\+ '$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _),
 	\+ '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _),
-	Head =.. [OSuper, _, _, _, _, _, _],
+	Head =.. [OSuper, _, _, _, _],
 	assertz('$lgt_pp_super_'((Head:-fail))),
 	!.
 
@@ -10826,12 +10838,14 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	'$lgt_pp_object_'(Obj, _, _, _, OSuper, _, _, _, _, Rnm, _),
 	'$lgt_pp_rclause_'('$lgt_instantiates_class_'(Obj, Class, _)),		% needed for parameter passing
 	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, _, CIDef, _, _, _),
-	Lookup =.. [CIDef, Pred, Sender, Class, Obj, Call, Ctn],
+	'$lgt_exec_ctx'(CExCtx, Class, Ctx),
+	Lookup =.. [CIDef, Pred, CExCtx, Call, Ctn],
+	'$lgt_exec_ctx'(OExCtx, Obj, Ctx),
 	(	'$lgt_pp_alias_'(Class, _, _) ->
-		Head =.. [OSuper, Alias, Sender, Obj, Obj, Call, Ctn],
+		Head =.. [OSuper, Alias, OExCtx, Call, Ctn],
 		Rename =.. [Rnm, Class, Pred, Alias],
 		assertz('$lgt_pp_super_'((Head :- Rename, Lookup)))
-	;	Head =.. [OSuper, Pred, Sender, Obj, Obj, Call, Ctn],
+	;	Head =.. [OSuper, Pred, OExCtx, Call, Ctn],
 		assertz('$lgt_pp_super_'((Head:-Lookup)))
 	),
 	fail.
@@ -10842,12 +10856,14 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	'$lgt_pp_object_'(Class, _, _, _, CSuper, _, _, _, _, Rnm, _),
 	'$lgt_pp_rclause_'('$lgt_specializes_class_'(Class, Super, _)),		% needed for parameter passing
 	'$lgt_pp_specialized_class_'(Super, _, _, _, _, _, SIDef, _, _, _),
-	Lookup =.. [SIDef, Pred, Sender, Super, Self, Call, Ctn],
+	'$lgt_exec_ctx'(SExCtx, Super, Ctx),
+	Lookup =.. [SIDef, Pred, SExCtx, Call, Ctn],
+	'$lgt_exec_ctx'(CExCtx, Class, Ctx),
 	(	'$lgt_pp_alias_'(Super, _, _) ->
-		Head =.. [CSuper, Alias, Sender, Class, Self, Call, Ctn],
+		Head =.. [CSuper, Alias, CExCtx, Call, Ctn],
 		Rename =.. [Rnm, Super, Pred, Alias],
 		assertz('$lgt_pp_super_'((Head :- Rename, Lookup)))
-	;	Head =.. [CSuper, Pred, Sender, Class, Self, Call, Ctn],
+	;	Head =.. [CSuper, Pred, CExCtx, Call, Ctn],
 		assertz('$lgt_pp_super_'((Head:-Lookup)))
 	),
 	fail.
@@ -14351,18 +14367,17 @@ current_logtalk_flag(version, version(2, 35, 0)).
 
 
 
-'$lgt_ctg_static_binding_cache'(Ctg, Pred, Sender, This, Self, Call) :-
-	(	'$lgt_ctg_static_binding_cache_'(Ctg, Pred, Sender, This, Self, Call) ->
+'$lgt_ctg_static_binding_cache'(Ctg, Pred, ExCtx, Call) :-
+	(	'$lgt_ctg_static_binding_cache_'(Ctg, Pred, ExCtx, Call) ->
 		true
 	;	'$lgt_static_binding_entity_'(Ctg),
 		'$lgt_current_category_'(Ctg, _, Dcl, Def, _, _),
 		call_with_args(Dcl, Pred, _, static, _, _, _, DclCtn), !,
 		functor(Pred, PredFunctor, PredArity),
 		functor(GPred, PredFunctor, PredArity),
-		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
 		call_with_args(Def, GPred, ExCtx, GCall, DefCtn), !,
 		'$lgt_safe_static_binding_paths'(Ctg, DclCtn, DefCtn),
-		assertz('$lgt_ctg_static_binding_cache_'(Ctg, GPred, Sender, This, Self, GCall)),
+		assertz('$lgt_ctg_static_binding_cache_'(Ctg, GPred, ExCtx, GCall)),
 		(Pred, Call) = (GPred, GCall)
 	).
 
