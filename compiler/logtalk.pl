@@ -7214,11 +7214,13 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, DbgCtx), Ctx) :-
 	var(Pred),
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
 	(	'$lgt_member_var'(Pred, MetaVars) ->
-		TPred = '$lgt_metacall'(Pred, MetaCallCtx, Sender, This, Self)
-	;	TPred = '$lgt_metacall'(Pred, local, Sender, This, Self)
+		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaVars),
+		TPred = '$lgt_metacall'(Pred, MetaVars, Sender, This, Self)
+	;	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
+		TPred = '$lgt_metacall'(Pred, local, Sender, This, Self)
 	).
 
 
@@ -7323,10 +7325,12 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_body'(CallN, TPred, DPred, Ctx) :-
 	CallN =.. [call, Closure| Args],
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
 	(	'$lgt_member_var'(Closure, MetaVars) ->
-		TPred = '$lgt_metacall'(Closure, Args, MetaCallCtx, Sender, This, Self)
-	;	TPred = '$lgt_metacall'(Closure, Args, local, Sender, This, Self)
+		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaVars),
+		TPred = '$lgt_metacall'(Closure, Args, MetaVars, Sender, This, Self)
+	;	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
+		TPred = '$lgt_metacall'(Closure, Args, local, Sender, This, Self)
 	),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
 	DPred = '$lgt_dbg_goal'(CallN, TPred, DbgCtx).
@@ -7646,7 +7650,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
 	'$lgt_comp_ctx_exec'(Ctx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, _, This, _, _),
+	'$lgt_exec_ctx'(ExCtx, This, _),
 	'$lgt_tr_msg'(Pred, Obj, TPred, This).
 
 '$lgt_tr_body'(::Pred, TPred, '$lgt_dbg_goal'(::Pred, TPred, DbgCtx), Ctx) :-
@@ -7732,6 +7736,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_body'(abolish(Pred), TCond, DCond, Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
+		'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+		'$lgt_exec_ctx'(ExCtx, This, _),
 	(	'$lgt_runtime_db_pred_ind_chk'(Pred) ->
 		TCond = '$lgt_abolish'(This, Pred, This, p(_))
 	;	'$lgt_compiler_db_pred_ind_chk'(Pred),
@@ -7745,6 +7751,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
 		TCond = asserta(TPred)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
+		'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+		'$lgt_exec_ctx'(ExCtx, This, _),
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_asserta'(This, Pred, This, p(_), p)
 		;	'$lgt_compiler_db_clause_chk'(Pred),
@@ -7765,6 +7773,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
 		TCond = assertz(TPred)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
+		'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+		'$lgt_exec_ctx'(ExCtx, This, _),
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_assertz'(This, Pred, This, p(_), p)
 		;	'$lgt_compiler_db_clause_chk'(Pred),
@@ -7785,6 +7795,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	(	'$lgt_optimizable_local_db_call'(Head, THead) ->
 		TCond = (clause(THead, TBody), (TBody = ('$lgt_nop'(Body), _) -> true; TBody = Body))
 	;	'$lgt_comp_ctx_this'(Ctx, This),
+		'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+		'$lgt_exec_ctx'(ExCtx, This, _),
 		(	'$lgt_runtime_db_clause_chk'((Head :- Body)) ->
 			TCond = '$lgt_clause'(This, Head, Body, This, p(_))
 		;	'$lgt_compiler_db_clause_chk'((Head :- Body)),
@@ -7799,6 +7811,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
 		TCond = retract(TPred)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
+		'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+		'$lgt_exec_ctx'(ExCtx, This, _),
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_retract'(This, Pred, This, p(_))
 		;	'$lgt_compiler_db_clause_chk'(Pred),
@@ -7821,6 +7835,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
 		TCond = retractall(TPred)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
+		'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+		'$lgt_exec_ctx'(ExCtx, This, _),
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_retractall'(This, Pred, This, p(_))
 		;	'$lgt_compiler_db_clause_chk'(Pred),
@@ -7886,8 +7902,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	!,
 	(	'$lgt_comp_ctx_this'(Ctx, This),
 		'$lgt_comp_ctx_exec'(Ctx, ExCtx),
-	 	'$lgt_exec_ctx'(ExCtx, _, This, _, _) ->	% check for mismatches between the argument of
-		true										% this/1 and the parametric object identifier
+	 	'$lgt_exec_ctx'(ExCtx, This, _) ->		% check for mismatches between the argument of
+		true									% this/1 and the parametric object identifier
 	;	throw(domain_error(object_identifier, This))
 	),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx).
@@ -7903,11 +7919,11 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec'(Ctx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, _, This, _, _),
+	'$lgt_exec_ctx'(ExCtx, This, _),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
-	(	(var(This); var(Arg)) ->		% when using parameter/2 in categories
-		TPred = arg(Arg, This, Value),	% or when the first argument will only 
-		DPred = (TPred, Temp=Value)		% be instantiated at runtime
+	(	(var(This); var(Arg)) ->				% when using parameter/2 in categories
+		TPred = arg(Arg, This, Value),			% or when the first argument will only 
+		DPred = (TPred, Temp=Value)				% be instantiated at runtime
 	;	functor(This, _, Arity),
 		(	1 =< Arg, Arg =< Arity ->
 			arg(Arg, This, Value),
@@ -9757,22 +9773,12 @@ current_logtalk_flag(version, version(2, 35, 0)).
 % the translated clause head
 
 '$lgt_add_def_clause'(Head, Functor, Arity, HeadDef, Ctx) :-
-	functor(Meta, Functor, Arity),
 	functor(HeadTemplate, Functor, Arity),
 	HeadTemplate =.. [_| HeadTemplateArgs],
 	Head =.. [_| HeadArgs],
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, _, MetaCallCtx, ExCtx),
-	(	'$lgt_pp_meta_predicate_'(Meta) ->
-		'$lgt_pred_meta_vars'(HeadTemplate, Meta, MetaVars),
-		'$lgt_exec_ctx'(ExCtx2, _, _, _, MetaVars),
-		'$lgt_append'(HeadTemplateArgs, [ExCtx2], HeadTemplateArgsDef),
-		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
-		'$lgt_append'(HeadArgs, [ExCtx], HeadArgsDef)
-	;	% normal predicate
-		'$lgt_append'(HeadTemplateArgs, [ExCtx2], HeadTemplateArgsDef),
-		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
-		'$lgt_append'(HeadArgs, [ExCtx], HeadArgsDef)
-	),
+	'$lgt_comp_ctx'(Ctx, _, _, _, _, Prefix, _, _, ExCtx),
+	'$lgt_append'(HeadTemplateArgs, [ExCtx2], HeadTemplateArgsDef),
+	'$lgt_append'(HeadArgs, [ExCtx], HeadArgsDef),
 	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
 	HeadTemplateDef =.. [TFunctor| HeadTemplateArgsDef],
 	HeadDef =.. [TFunctor| HeadArgsDef],
@@ -9804,22 +9810,12 @@ current_logtalk_flag(version, version(2, 35, 0)).
 % the translated clause head
 
 '$lgt_add_ddef_clause'(Head, Functor, Arity, HeadDef, Ctx) :-
-	functor(Meta, Functor, Arity),
 	functor(HeadTemplate, Functor, Arity),
 	HeadTemplate =.. [_| HeadTemplateArgs],
 	Head =.. [_| HeadArgs],
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, _, MetaCallCtx, ExCtx),
-	(	'$lgt_pp_meta_predicate_'(Meta) ->
-		'$lgt_pred_meta_vars'(HeadTemplate, Meta, MetaVars),
-		'$lgt_exec_ctx'(ExCtx2, _, _, _, MetaVars),
-		'$lgt_append'(HeadTemplateArgs, [ExCtx2], HeadTemplateArgsDef),
-		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
-		'$lgt_append'(HeadArgs, [ExCtx], HeadArgsDef)
-	;	% normal predicate
-		'$lgt_append'(HeadTemplateArgs, [ExCtx2], HeadTemplateArgsDef),
-		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
-		'$lgt_append'(HeadArgs, [ExCtx], HeadArgsDef)
-	),
+	'$lgt_comp_ctx'(Ctx, _, _, _, _, Prefix, _, _, ExCtx),
+	'$lgt_append'(HeadTemplateArgs, [ExCtx2], HeadTemplateArgsDef),
+	'$lgt_append'(HeadArgs, [ExCtx], HeadArgsDef),
 	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
 	HeadTemplateDef =.. [TFunctor| HeadTemplateArgsDef],
 	HeadDef =.. [TFunctor| HeadArgsDef],
