@@ -18,6 +18,11 @@ RELEASE NOTES
     Improved compilation of source code resulting in smaller intermediate
     Prolog files and better performance for most back-end Prolog compilers.
 
+    Simplified compilation of meta-predicates.
+
+    Corrected a bug when compiling entities in debug mode that contain
+    initialization goals. Thanks to Parker Jones for the bug report.
+
 
 2.34.1 - December 15, 2008
 

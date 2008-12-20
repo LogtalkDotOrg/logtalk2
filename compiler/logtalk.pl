@@ -3348,13 +3348,6 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	;	throw(error(type_error(callable, Closure), Sender::Goal, This))
 	).
 
-'$lgt_metacall'(Closure, ExtraArgs, local, Sender, This, Self) :-
-	!,
-	Closure =.. [Functor| Args],
-	'$lgt_append'(Args, ExtraArgs, FullArgs),
-	Pred =.. [Functor| FullArgs],
-	'$lgt_metacall'(Pred, local, Sender, This, Self).
-
 '$lgt_metacall'(Obj::Closure, ExtraArgs, _, _, This, _) :-
 	!,
 	Closure =.. [Functor| Args],
@@ -3380,7 +3373,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	'$lgt_append'(Args, ExtraArgs, FullArgs),
 	Pred =.. [Functor| FullArgs],
 	(	\+ '$lgt_member'(Closure, MetaCallCtx) ->
-		'$lgt_metacall'(Pred, local, Sender, This, Self)
+		'$lgt_metacall'(Pred, [], Sender, This, Self)
 	;	'$lgt_metacall'(Pred, [Pred], Sender, This, Self)
 	).
 
@@ -3395,21 +3388,6 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	(	atom(MetaCallCtx) ->
 		throw(error(instantiation_error, This::call(Pred), This))
 	;	throw(error(instantiation_error, Sender::call(Pred), This))
-	).
-
-'$lgt_metacall'(Pred, compiled, _, _, _) :-
-	!,
-	call(Pred).
-
-'$lgt_metacall'(Pred, local, Sender, This, Self) :-
-	!,
-	'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _),
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, _),
-	'$lgt_tr_body'(Pred, Call, DCall, Ctx),
-	!,
-	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Sender) ->
-		call(DCall)
-	;	call(Call)
 	).
 
 '$lgt_metacall'(Pred, MetaCallCtx, Sender, This, Self) :-
@@ -7217,10 +7195,10 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
 	(	'$lgt_member_var'(Pred, MetaVars) ->
-		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaVars),
-		TPred = '$lgt_metacall'(Pred, MetaVars, Sender, This, Self)
-	;	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
-		TPred = '$lgt_metacall'(Pred, local, Sender, This, Self)
+		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
+		TPred = '$lgt_metacall'(Pred, MetaCallCtx, Sender, This, Self)
+	;	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, []),
+		TPred = '$lgt_metacall'(Pred, [], Sender, This, Self)
 	).
 
 
@@ -7327,10 +7305,10 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	!,
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
 	(	'$lgt_member_var'(Closure, MetaVars) ->
-		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaVars),
-		TPred = '$lgt_metacall'(Closure, Args, MetaVars, Sender, This, Self)
-	;	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
-		TPred = '$lgt_metacall'(Closure, Args, local, Sender, This, Self)
+		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
+		TPred = '$lgt_metacall'(Closure, Args, MetaCallCtx, Sender, This, Self)
+	;	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, []),
+		TPred = '$lgt_metacall'(Closure, Args, [], Sender, This, Self)
 	),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
 	DPred = '$lgt_dbg_goal'(CallN, TPred, DbgCtx).
@@ -8103,15 +8081,15 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	throw(permission_error(define, dynamic_predicate, Functor/Arity)).
 
 
-% goal is a call to a user meta-predicate
+% goal is a call to a user meta-predicate (but not a recursive call!)
 
-'$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, DPred, DbgCtx), Ctx) :-
+'$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, DbgCtx), Ctx) :-
 	functor(Pred, Functor, Arity),
+	\+ '$lgt_comp_ctx_head'(Ctx, Functor/Arity),
 	functor(Meta, Functor, Arity),
 	'$lgt_pp_meta_predicate_'(Meta),
 	!,
 	Pred =.. [_| Args],
-	Meta =.. [_| MArgs],
 	'$lgt_comp_ctx'(Ctx, Head, Sender, This, Self, Prefix, MetaVars, _, ExCtx),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
 	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
@@ -8122,26 +8100,14 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	(	MetaVars == [] ->
 		% we're not compiling a clause to a meta-predicate, thus we have a local call
 		% to a meta-predicate
-		(	'$lgt_member'(MArg, MArgs), integer(MArg) ->
-			% we're compiling a call to a meta-predicate that expects a closure...
-			'$lgt_exec_ctx'(ExCtx, Sender, This, Self, local),
-			'$lgt_append'(Args, [ExCtx], TArgs2),
-			DArgs2 = TArgs2
-		;	% we're compiling a call to a meta-predicate that does not use closures...
-			'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
-			'$lgt_exec_ctx'(ExCtx, Sender, This, Self, compiled),
-			'$lgt_append'(TArgs, [ExCtx], TArgs2),
-			'$lgt_append'(DArgs, [ExCtx], DArgs2)
-		)
+		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, [])
 	;	% we have a meta-predicate calling another meta-predicate, the meta-arguments
 		% to be called in the context of the sender will be the ones coming from the
 		% call to the predicate whose body we're compiling
-		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaVars),
-		'$lgt_append'(Args, [ExCtx], TArgs2),
-		DArgs2 = TArgs2
+		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaVars)
 	),
-	TPred =.. [STFunctor| TArgs2],
-	DPred =.. [STFunctor| DArgs2],
+	'$lgt_append'(Args, [ExCtx], TArgs),
+	TPred =.. [STFunctor| TArgs],
 	TArity is Arity + 1,
 	(	'$lgt_pp_calls_pred_'(Functor, Arity, _, _) ->
 		true
@@ -8541,7 +8507,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_msg'(CallN, Obj, TPred, This) :-
 	CallN =.. [call, Closure| Args],
 	!,
-	TPred = '$lgt_metacall'(Closure, Args, local, This, Obj, Obj).
+	TPred = '$lgt_metacall'(Closure, Args, [], This, Obj, Obj).
 
 '$lgt_tr_msg'(once(Pred), Obj, once(TPred), This) :-
 	!,
@@ -8758,7 +8724,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_self_msg'(CallN, TPred, This, Self) :-
 	CallN =.. [call, Closure| Args],
 	!,
-	TPred = '$lgt_metacall'(Closure, Args, local, This, Self, Self).
+	TPred = '$lgt_metacall'(Closure, Args, [], This, Self, Self).
 
 '$lgt_tr_self_msg'(once(Pred), once(TPred), This, Self) :-
 	!,
@@ -14571,7 +14537,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 
 
 
-:- initialization(('$lgt_startup_message', '$lgt_assert_default_hooks', '$lgt_start_runtime_threading')).
+:- initialization(('$lgt_startup_message', '$lgt_assert_default_hooks', '$lgt_start_runtime_threading', '$lgt_dbg_reset_invocation_number')).
 
 
 
