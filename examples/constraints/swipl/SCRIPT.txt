@@ -67,7 +67,7 @@ Qs = [1, 7, 4, 6, 8, 2, 5, 3] ;
 (etc)
 
 
-% the following query implies that Ghostscript is available from the command-line:
+% the following queries imply that Ghostscript is available from the command-line:
 
 | ?- queens::show(8, [ff], Qs).
 Qs = [1, 5, 8, 6, 3, 7, 2, 4] ;
