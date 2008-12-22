@@ -23,6 +23,10 @@ RELEASE NOTES
     Corrected a bug when compiling entities in debug mode that contain
     initialization goals. Thanks to Parker Jones for the bug report.
 
+    Corrected a bug in the library object "meta" where the deprecated
+    predicates filter/3 and succeeds/2 are declared (using aliases) but
+    not defined.
+
 
 2.34.1 - December 15, 2008
 

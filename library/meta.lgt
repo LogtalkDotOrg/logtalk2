@@ -3,8 +3,8 @@
 	implements(metap)).
 
 	:- info([
-		version is 2.3,
-		date is 2008/11/18,
+		version is 2.4,
+		date is 2008/12/22,
 		author is 'Paulo Moura',
 		comment is 'Some useful meta-predicates.']).
 
@@ -24,6 +24,10 @@
 		;	Included = Rest
 		),
 		include(Closure, Args, Rest).
+
+	:- meta_predicate(filter(1, *, *)).
+	filter(Closure, List, Included) :-
+		include(Closure, List, Included).
 
 	:- meta_predicate(exclude(1, *, *)).
 	exclude(_, [], []) :- !.
@@ -69,6 +73,10 @@
 	map(Closure, [Head| Tail]) :-
 		call(Closure, Head),
 		map(Closure, Tail).
+
+	:- meta_predicate(succeeds(1, *)).
+	succeeds(Closure, List) :-
+		map(Closure, List).
 
 	:- meta_predicate(map(2, *, *)).
 	map(_, [], []).
