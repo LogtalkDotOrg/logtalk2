@@ -7282,11 +7282,11 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_body'(CallN, _, _, _) :-
 	CallN =.. [call, Call| _],
 	nonvar(Call),
-	(	Call = _::Closure
-	;	Call = ::Closure
-	;	Call = ^^Closure
-	),
-	throw(domain_error(goal, Closure)).
+	(	\+ callable(Call) ->
+		throw(type_error(callable, Call))
+	;	(Call = _::Closure; Call = ::Closure; Call = ^^Closure) ->
+		throw(domain_error(goal, Closure))
+	).
 
 '$lgt_tr_body'(CallN, _, _, Ctx) :-
 	CallN =.. [call, Closure| _],
@@ -7627,7 +7627,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
-	'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, This, _),
 	'$lgt_tr_msg'(Pred, Obj, TPred, This).
 
@@ -7636,7 +7636,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_self'(Ctx, Self),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
-	'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
 	'$lgt_tr_self_msg'(Pred, TPred, This, Self).
 
@@ -7646,7 +7646,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_self'(Ctx, Self),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
-	'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
 	'$lgt_tr_super_call'(Pred, TPred, Ctx).
 
@@ -7676,7 +7676,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 
 '$lgt_tr_body'(':'(Alias), TPred, '$lgt_dbg_goal'(':'(Alias), TPred, DbgCtx), Ctx) :-
     !,
-	'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
 	(	'$lgt_pp_imported_category_'(Ctg, _, _, _, _),
 		(	'$lgt_pp_alias_'(Ctg, Pred, Alias) ->
@@ -7714,7 +7714,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_body'(abolish(Pred), TCond, DCond, Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
-		'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 		'$lgt_exec_ctx'(ExCtx, This, _),
 	(	'$lgt_runtime_db_pred_ind_chk'(Pred) ->
 		TCond = '$lgt_abolish'(This, Pred, This, p(_))
@@ -7729,7 +7729,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
 		TCond = asserta(TPred)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
-		'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 		'$lgt_exec_ctx'(ExCtx, This, _),
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_asserta'(This, Pred, This, p(_), p)
@@ -7751,7 +7751,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
 		TCond = assertz(TPred)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
-		'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 		'$lgt_exec_ctx'(ExCtx, This, _),
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_assertz'(This, Pred, This, p(_), p)
@@ -7773,7 +7773,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	(	'$lgt_optimizable_local_db_call'(Head, THead) ->
 		TCond = (clause(THead, TBody), (TBody = ('$lgt_nop'(Body), _) -> true; TBody = Body))
 	;	'$lgt_comp_ctx_this'(Ctx, This),
-		'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 		'$lgt_exec_ctx'(ExCtx, This, _),
 		(	'$lgt_runtime_db_clause_chk'((Head :- Body)) ->
 			TCond = '$lgt_clause'(This, Head, Body, This, p(_))
@@ -7789,7 +7789,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
 		TCond = retract(TPred)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
-		'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 		'$lgt_exec_ctx'(ExCtx, This, _),
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_retract'(This, Pred, This, p(_))
@@ -7813,7 +7813,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
 		TCond = retractall(TPred)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
-		'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 		'$lgt_exec_ctx'(ExCtx, This, _),
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_retractall'(This, Pred, This, p(_))
@@ -7872,14 +7872,14 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_body'(sender(Sender), true, '$lgt_dbg_goal'(sender(Temp), Sender=Temp, DbgCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_sender'(Ctx, Sender),
-	'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, Sender, _, _, _),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 '$lgt_tr_body'(this(This), true, '$lgt_dbg_goal'(this(Temp), This=Temp, DbgCtx), Ctx) :-
 	!,
 	(	'$lgt_comp_ctx_this'(Ctx, This),
-		'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	 	'$lgt_exec_ctx'(ExCtx, This, _) ->		% check for mismatches between the argument of
 		true									% this/1 and the parametric object identifier
 	;	throw(domain_error(object_identifier, This))
@@ -7889,14 +7889,14 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_body'(self(Self), true, '$lgt_dbg_goal'(self(Temp), Self=Temp, DbgCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_self'(Ctx, Self),
-	'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, _, _, Self, _),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 '$lgt_tr_body'(parameter(Arg, Value), TPred, '$lgt_dbg_goal'(parameter(Arg, Temp), DPred, DbgCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
-	'$lgt_comp_ctx_exec'(Ctx, ExCtx),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, This, _),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
 	(	(var(This); var(Arg)) ->				% when using parameter/2 in categories
@@ -11928,8 +11928,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 
 
 
-% utility predicates used during compilation of Logtalk entities to store 
-% and access context information which is represented by a compound term
+% utility predicates used during compilation of Logtalk entities to store and
+% access compilation context information (represented by a compound term)
 
 '$lgt_comp_ctx'(ctx(_, _, _, _, _, _, _, _)).
 
@@ -11949,35 +11949,26 @@ current_logtalk_flag(version, version(2, 35, 0)).
 
 '$lgt_comp_ctx_meta_call_ctx'(ctx(_, _, _, _, _, _, MetaCallCtx, _), MetaCallCtx).
 
-'$lgt_comp_ctx_exec'(ctx(_, _, _, _, _, _, _, ExCtx), ExCtx).
-
-
-
-% utility predicates used during debugging of Logtalk entities to store 
-% and access context information which is represented by a compound term
-
-'$lgt_dbg_ctx'(ctx(Sender, This, Self), Sender, This, Self).
-
-
-
-% utility predicates used during debugging of Logtalk entities to store 
-% and access context information which is represented by a compound term
-
-'$lgt_exec_ctx'([This| ctx(Self, Sender, MetaCallCtx)], Sender, This, Self, MetaCallCtx).
-
-'$lgt_exec_ctx'([This| Ctx], This, Ctx).
-
-
-
-% construct debug context
+'$lgt_comp_ctx_exec_ctx'(ctx(_, _, _, _, _, _, _, ExCtx), ExCtx).
 
 '$lgt_comp_ctx_dbg_ctx'(ctx(_, Sender, This, Self, _, _, _, _), ctx(Sender, This, Self)).
 
 
 
-% construct execution context
+% utility predicates used during debugging of Logtalk entities to store and
+% access debugging context information (represented by a compound term)
 
-'$lgt_comp_ctx_exec_ctx'(ctx(_, Sender, This, Self, _, _, MetaCallCtx, _), [This| ctx(Self, Sender, MetaCallCtx)]).
+'$lgt_dbg_ctx'(ctx(Sender, This, Self), Sender, This, Self).
+
+
+
+% utility predicates used to construct execution context terms (represented
+% by a compound term that optimizes access to "this" to improve predicate
+% lookup performance)
+
+'$lgt_exec_ctx'([This| ctx(Self, Sender, MetaCallCtx)], Sender, This, Self, MetaCallCtx).
+
+'$lgt_exec_ctx'([This| Ctx], This, Ctx).	% inheritance only implies updating "this"
 
 
 
