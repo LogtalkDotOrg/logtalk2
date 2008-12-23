@@ -3055,7 +3055,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
 			functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
-			(	'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
+			(	'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, []),
 				call_with_args(Def, GPred, ExCtx, GCall, _) ->						% lookup definition
 				asserta('$lgt_self_lookup_cache_'(GObj, GPred, GSender, GCall)),	% cache lookup result
 				(GObj, GPred, GSender) = (Obj, Pred, Sender),						% unify message arguments
@@ -3103,7 +3103,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 		(	(Scope = p(p(_)); Sender = SCtn) ->										% check scope
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
-			(	'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
+			functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
+			(	'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, []),
 				call_with_args(Def, GPred, ExCtx, GCall, _) ->						% lookup definition
 				asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
 				(GObj, GPred, GSender) = (Obj, Pred, Sender),						% unify message arguments
@@ -3159,15 +3160,16 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_send_to_object_ne_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
 	!,
-	(	call_with_args(Dcl, Pred, Scope, _, _, _, _, SCtn, _) ->				% lookup declaration
-		(	(Scope = p(p(_)); Sender = SCtn) ->									% check scope
-			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
-			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),	% construct object template
-			(	'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
-				call_with_args(Def, GPred, ExCtx, GCall, _) ->					% lookup definition
-				asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),	% cache lookup result
-				(GObj, GPred, GSender) = (Obj, Pred, Sender),					% unify message arguments
-				call(GCall)														% call method
+	(	call_with_args(Dcl, Pred, Scope, _, _, _, _, SCtn, _) ->					% lookup declaration
+		(	(Scope = p(p(_)); Sender = SCtn) ->										% check scope
+			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
+			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
+			functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
+			(	'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, []),
+				call_with_args(Def, GPred, ExCtx, GCall, _) ->						% lookup definition
+				asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
+				(GObj, GPred, GSender) = (Obj, Pred, Sender),						% unify message arguments
+				call(GCall)															% call method
 			)
 		;	% message is not within the scope of the sender:
 			(	Scope == p ->
@@ -6514,9 +6516,9 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_convert_meta_predicate_mode_spec'([], []).
 
 '$lgt_convert_meta_predicate_mode_spec'([Arg| Args], [Arg2| Args2]) :-
-	(	Arg == (:) -> Arg2 = (::)
-	;	Arg == (::) -> Arg2 = (::)	% just to be safe...
-	;	integer(Arg) -> Arg2 = Arg
+	(	Arg == (:) -> Arg2 = (::)	% Prolog to Logtalk notation
+	;	Arg == (::) -> Arg2 = (::)	% just to be safe if someone mixes the notations
+	;	integer(Arg) -> Arg2 = Arg	% closures
 	;	Arg2 = (*)
 	),
 	'$lgt_convert_meta_predicate_mode_spec'(Args, Args2).
@@ -11966,7 +11968,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 % by a compound term that optimizes access to "this" to improve predicate
 % lookup performance)
 
-'$lgt_exec_ctx'([This| ctx(Self, Sender, MetaCallCtx)], Sender, This, Self, MetaCallCtx).
+'$lgt_exec_ctx'([This| ctx(Sender, Self, MetaCallCtx)], Sender, This, Self, MetaCallCtx).
 
 '$lgt_exec_ctx'([This| Ctx], This, Ctx).	% inheritance only implies updating "this"
 

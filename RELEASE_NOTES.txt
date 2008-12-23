@@ -20,6 +20,9 @@ RELEASE NOTES
 
     Simplified compilation of meta-predicates.
 
+    Corrected a predicate scope checking bug when using the dynamic-binding
+    cache entries.
+
     Corrected a bug when compiling entities in debug mode that contain
     initialization goals. Thanks to Parker Jones for the bug report.
 
