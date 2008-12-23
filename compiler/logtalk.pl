@@ -7185,6 +7185,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_body'(Pred, Pred, '$lgt_dbg_goal'(Pred, Pred, DbgCtx), Ctx) :-
 	'$lgt_comp_ctx_this'(Ctx, This),
 	This == user,
+	\+ '$lgt_built_in'(Pred),
 	!,
  	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx).
 
@@ -14336,10 +14337,10 @@ current_logtalk_flag(version, version(2, 35, 0)).
 		call_with_args(Dcl, Pred, _, static, _, _, _, DclCtn), !,
 		functor(Pred, PredFunctor, PredArity),
 		functor(GPred, PredFunctor, PredArity),
-		call_with_args(Def, GPred, ExCtx, GCall, DefCtn), !,
+		call_with_args(Def, GPred, GExCtx, GCall, DefCtn), !,
 		'$lgt_safe_static_binding_paths'(Ctg, DclCtn, DefCtn),
-		assertz('$lgt_ctg_static_binding_cache_'(Ctg, GPred, ExCtx, GCall)),
-		(Pred, Call) = (GPred, GCall)
+		assertz('$lgt_ctg_static_binding_cache_'(Ctg, GPred, GExCtx, GCall)),
+		(Pred, ExCtx, Call) = (GPred, GExCtx, GCall)
 	).
 
 
