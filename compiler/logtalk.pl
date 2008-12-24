@@ -3458,7 +3458,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 			call_with_args(Def, Pred, ExCtx, Call, _) ->
 			call(Call)
 		)
-	;	throw(error(existence_error(predicate_declaration, Alias), ':'(Alias), This))
+	;	'$lgt_exec_ctx'(ExCtx, _, This, _, _),
+		throw(error(existence_error(predicate_declaration, Alias), ':'(Alias), This))
 	).
 
 
