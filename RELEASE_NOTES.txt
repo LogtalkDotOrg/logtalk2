@@ -18,6 +18,10 @@ RELEASE NOTES
     Improved compilation of source code resulting in smaller intermediate
     Prolog files and better performance for most back-end Prolog compilers.
 
+    Improved caching of message sending predicate lookups (by generating
+    more reusable cache entries for public predicates, improving lookup
+    performance and cache hits).
+
     Simplified compilation of meta-predicates.
 
     Corrected a predicate scope checking bug when using the dynamic-binding
