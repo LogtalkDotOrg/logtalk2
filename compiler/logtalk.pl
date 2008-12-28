@@ -130,7 +130,7 @@
 % static binding caches
 
 :- dynamic('$lgt_static_binding_entity_'/1).	% '$lgt_static_binding_entity_'(Entity)
-:- dynamic('$lgt_obj_static_binding_cache_'/4).	% '$lgt_obj_static_binding_cache_'(Obj, Pred, Sender, Call)
+:- dynamic('$lgt_obj_static_binding_cache_'/4).	% '$lgt_obj_static_binding_cache_'(Obj, Pred, ExCtx, Call)
 :- dynamic('$lgt_ctg_static_binding_cache_'/4).	% '$lgt_ctg_static_binding_cache_'(Ctg, Pred, ExCtx, Call)
 
 
@@ -7738,11 +7738,15 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_body'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, p(_)), '$lgt_dbg_goal'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, p(_)), DbgCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, This, _),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 '$lgt_tr_body'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, p(_)), '$lgt_dbg_goal'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, p(_)), DbgCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, This, _),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
@@ -7751,8 +7755,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_body'(abolish(Pred), TCond, DCond, Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
-		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-		'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, This, _),
 	(	'$lgt_runtime_db_pred_ind_chk'(Pred) ->
 		TCond = '$lgt_abolish'(This, Pred, This, p(_))
 	;	'$lgt_compiler_db_pred_ind_chk'(Pred),
@@ -7867,11 +7871,15 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_body'(expand_term(Term, Clause), '$lgt_expand_term'(This, Term, Clause, This, p(_)), '$lgt_dbg_goal'(expand_term(Term, Clause), '$lgt_expand_term'(This, Term, Clause, This, p(_)), DbgCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, This, _),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 '$lgt_tr_body'(expand_goal(Goal, EGoal), '$lgt_expand_goal'(This, Goal, EGoal, This, p(_)), '$lgt_dbg_goal'(expand_goal(Goal, EGoal), '$lgt_expand_goal'(This, Goal, EGoal, This, p(_)), DbgCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, This, _),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 
@@ -7881,6 +7889,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	var(GRBody),
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, This, _),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 '$lgt_tr_body'(phrase(GRBody, Input), TPred, '$lgt_dbg_goal'(phrase(GRBody, Input), TPred, DbgCtx), Ctx) :-
@@ -7894,6 +7904,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	var(GRBody),
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, This, _),
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 '$lgt_tr_body'(phrase(GRBody, Input, Rest), TPred, '$lgt_dbg_goal'(phrase(GRBody, Input, Rest), TPred, DbgCtx), Ctx) :-
