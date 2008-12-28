@@ -1158,7 +1158,7 @@ define_events(Event, Obj, Msg, Sender, Monitor) :-
 	var(Event),
 	!,
 	(	'$lgt_current_object_'(Monitor, _, _, Def, _, _, _, _, _, _, _) ->
-		(	'$lgt_exec_ctx'(ExCtx, Monitor, Monitor, Monitor, _),
+		(	'$lgt_exec_ctx'(ExCtx, Monitor, Monitor, Monitor, []),
 			call_with_args(Def, before(Obj, Msg, Sender), ExCtx, BCall, _) ->
 			(	call_with_args(Def, after(Obj, Msg, Sender), ExCtx, ACall, _) ->
 				retractall('$lgt_before_'(Obj, Msg, Sender, Monitor, _)),
@@ -1173,7 +1173,7 @@ define_events(Event, Obj, Msg, Sender, Monitor) :-
 
 define_events(before, Obj, Msg, Sender, Monitor) :-
 	'$lgt_current_object_'(Monitor, _, _, Def, _, _, _, _, _, _, _) ->
-	(	'$lgt_exec_ctx'(ExCtx, Monitor, Monitor, Monitor, _),
+	(	'$lgt_exec_ctx'(ExCtx, Monitor, Monitor, Monitor, []),
 		call_with_args(Def, before(Obj, Msg, Sender), ExCtx, Call, _) ->
 		retractall('$lgt_before_'(Obj, Msg, Sender, Monitor, _)),
 		assertz('$lgt_before_'(Obj, Msg, Sender, Monitor, Call))
@@ -1182,7 +1182,7 @@ define_events(before, Obj, Msg, Sender, Monitor) :-
 
 define_events(after, Obj, Msg, Sender, Monitor) :-
 	'$lgt_current_object_'(Monitor, _, _, Def, _, _, _, _, _, _, _) ->
-	(	'$lgt_exec_ctx'(ExCtx, Monitor, Monitor, Monitor, _),
+	(	'$lgt_exec_ctx'(ExCtx, Monitor, Monitor, Monitor, []),
 		call_with_args(Def, after(Obj, Msg, Sender), ExCtx, Call, _) ->
 		retractall('$lgt_after_'(Obj, Msg, Sender, Monitor, _)),
 		assertz('$lgt_after_'(Obj, Msg, Sender, Monitor, Call))
@@ -7300,11 +7300,11 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	'$lgt_tr_body'(Pred, TPred, DPred, Ctx).
 
 '$lgt_tr_body'(CallN, _, _, _) :-
-	CallN =.. [call, Call| _],
-	nonvar(Call),
-	(	\+ callable(Call) ->
-		throw(type_error(callable, Call))
-	;	(Call = _::Closure; Call = ::Closure; Call = ^^Closure) ->
+	CallN =.. [call, Closure| _],
+	nonvar(Closure),
+	(	\+ callable(Closure) ->
+		throw(type_error(callable, Closure))
+	;	(Closure = _::_; Closure = ::_; Closure = ^^_; Closure = _<<_) ->
 		throw(domain_error(goal, Closure))
 	).
 
@@ -7333,9 +7333,10 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
 	DPred = '$lgt_dbg_goal'(CallN, TPred, DbgCtx).
 
-'$lgt_tr_body'(once(Pred), once(TPred), once(DPred), Ctx) :-
+'$lgt_tr_body'(once(Pred), once(TPred), '$lgt_dbg_goal'(once(Pred), once(DPred), DbgCtx), Ctx) :-
 	!,
-	'$lgt_tr_body'(Pred, TPred, DPred, Ctx).
+	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
+	'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx).
 
 '$lgt_tr_body'(catch(Goal, Catcher, Recovery), catch(TGoal, Catcher, TRecovery), '$lgt_dbg_goal'(catch(Goal, Catcher, Recovery), catch(DGoal, Catcher, DRecovery), DbgCtx), Ctx) :-
 	!,

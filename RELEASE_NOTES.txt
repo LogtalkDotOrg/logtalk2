@@ -24,6 +24,12 @@ RELEASE NOTES
 
     Simplified compilation of meta-predicates.
 
+    Changed compilation of once/1 goals in debug mode in order to make them
+    explicit when tracing using the built-in debugger.
+
+    Corrected a bug in the compilation of top-level queries for the Logtalk
+    built-in predicates.
+
     Corrected a predicate scope checking bug when using the dynamic-binding
     cache entries.
 
