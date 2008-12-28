@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %
-%  last updated: November 7, 2008
+%  last updated: December 28, 2008
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -136,6 +136,7 @@ call_with_args(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_pl_meta_predicate'(notrace(::), predicate).
 '$lgt_pl_meta_predicate'(on_signal(*, *, ::), predicate).
 '$lgt_pl_meta_predicate'(time(::), predicate).
+'$lgt_pl_meta_predicate'(findall(*, ::, *, *), predicate).
 
 '$lgt_pl_meta_predicate'(thread_initialization(::), predicate).
 '$lgt_pl_meta_predicate'(thread_at_exit(::), predicate).
