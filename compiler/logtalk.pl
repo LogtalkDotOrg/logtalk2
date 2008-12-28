@@ -130,7 +130,7 @@
 % static binding caches
 
 :- dynamic('$lgt_static_binding_entity_'/1).	% '$lgt_static_binding_entity_'(Entity)
-:- dynamic('$lgt_obj_static_binding_cache_'/4).	% '$lgt_obj_static_binding_cache_'(Obj, Pred, ExCtx, Call)
+:- dynamic('$lgt_obj_static_binding_cache_'/4).	% '$lgt_obj_static_binding_cache_'(Obj, Pred, Sender, Call)
 :- dynamic('$lgt_ctg_static_binding_cache_'/4).	% '$lgt_ctg_static_binding_cache_'(Ctg, Pred, ExCtx, Call)
 
 
@@ -14357,8 +14357,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 
 
 '$lgt_obj_static_binding_cache'(Obj, Pred, Sender, Call) :-
-	'$lgt_exec_ctx'(ExCtx, Sender, Obj, Obj, []),
-	(	'$lgt_obj_static_binding_cache_'(Obj, Pred, ExCtx, Call) ->
+	(	'$lgt_obj_static_binding_cache_'(Obj, Pred, Sender, Call) ->
 		true
 	;	'$lgt_static_binding_entity_'(Obj),
 		'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
@@ -14367,10 +14366,11 @@ current_logtalk_flag(version, version(2, 35, 0)).
 		functor(GObj, ObjFunctor, ObjArity),
 		functor(Pred, PredFunctor, PredArity),
 		functor(GPred, PredFunctor, PredArity),
+		'$lgt_exec_ctx'(GExCtx, GSender, GObj, GObj, []),
 		call_with_args(Def, GPred, GExCtx, GCall, DefCtn), !,
 		'$lgt_safe_static_binding_paths'(GObj, DclCtn, DefCtn),
-		assertz('$lgt_obj_static_binding_cache_'(GObj, GPred, GExCtx, GCall)),
-		(Obj, Pred, ExCtx, Call) = (GObj, GPred, GExCtx, GCall)
+		assertz('$lgt_obj_static_binding_cache_'(GObj, GPred, GSender, GCall)),
+		(Obj, Pred, Sender, Call) = (GObj, GPred, GSender, GCall)
 	).
 
 
