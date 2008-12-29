@@ -731,7 +731,7 @@ abolish_object(Obj) :-
 			abolish(Dcl/8),
 			abolish(Def/3),
 			abolish(Def/4),
-			abolish(Super/6),
+			abolish(Super/4),
 			abolish(IDcl/8),
 			abolish(IDef/4),
 			abolish(DDcl/2),
@@ -3658,6 +3658,10 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_bio_user_0__def'(Pred, _, Pred, user).
 
 
+'$lgt_bio_user_0__super'(_, _, _, _) :-
+	fail.
+
+
 '$lgt_bio_user_0__alias'(_, Pred, Pred).
 
 
@@ -3752,6 +3756,10 @@ current_logtalk_flag(version, version(2, 35, 0)).
 
 '$lgt_bio_debugger_0__def'(Pred, ExCtx, Call, debugger) :-
 	'$lgt_bio_debugger_0__def'(Pred, ExCtx, Call).
+
+
+'$lgt_bio_debugger_0__super'(_, _, _, _) :-
+	fail.
 
 
 '$lgt_bio_debugger_0__alias'(_, Pred, Pred).
@@ -9957,7 +9965,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	assertz('$lgt_pp_directive_'(dynamic(Dcl/8))),
 	assertz('$lgt_pp_directive_'(dynamic(Def/3))),
 	assertz('$lgt_pp_directive_'(dynamic(Def/4))),
-	assertz('$lgt_pp_directive_'(dynamic(Super/6))),
+	assertz('$lgt_pp_directive_'(dynamic(Super/4))),
 	assertz('$lgt_pp_directive_'(dynamic(IDcl/8))),
 	assertz('$lgt_pp_directive_'(dynamic(IDef/4))),
 	(	'$lgt_compiler_flag'(dynamic_declarations, on) ->
