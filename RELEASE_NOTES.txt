@@ -41,7 +41,7 @@ RELEASE NOTES
     not defined.
 
     Added declaration for the proprietary findall/4 meta-predicate to the
-    SWI-Prolog config file.
+    SWI-Prolog and YAP config files.
 
 
 2.34.1 - December 15, 2008

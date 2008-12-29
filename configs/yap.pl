@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: November 7, 2008
+%  last updated: December 28, 2008
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -54,7 +54,7 @@
 		dynamic('$lgt_current_flag_'/2), hide_predicate('$lgt_current_flag_'/2),
 		dynamic('$lgt_static_binding_entity_'/1), hide_predicate('$lgt_static_binding_entity_'/1),
 		dynamic('$lgt_obj_static_binding_cache_'/4), hide_predicate('$lgt_obj_static_binding_cache_'/4),
-		dynamic('$lgt_ctg_static_binding_cache_'/6), hide_predicate('$lgt_ctg_static_binding_cache_'/6),
+		dynamic('$lgt_ctg_static_binding_cache_'/4), hide_predicate('$lgt_ctg_static_binding_cache_'/4),
 		dynamic('$lgt_obj_lookup_cache_'/4), hide_predicate('$lgt_obj_lookup_cache_'/4), 
 		dynamic('$lgt_self_lookup_cache_'/4), hide_predicate('$lgt_self_lookup_cache_'/4),
 		dynamic('$lgt_super_lookup_cache_'/5), hide_predicate('$lgt_super_lookup_cache_'/5),
@@ -64,7 +64,8 @@
 		dynamic('$lgt_pp_comp_warnings_counter_'/1), hide_predicate('$lgt_pp_comp_warnings_counter_'/1),
 		dynamic('$lgt_pp_load_warnings_counter_'/1), hide_predicate('$lgt_pp_load_warnings_counter_'/1),
 		dynamic('$lgt_hook_goal_'/2), hide_predicate('$lgt_hook_goal_'/2),
-		dynamic('$lgt_threaded_tag_counter'/1), hide_predicate('$lgt_threaded_tag_counter'/1)
+		dynamic('$lgt_threaded_tag_counter'/1), hide_predicate('$lgt_threaded_tag_counter'/1),
+		dynamic('$lgt_dbg_invocation_number_'/1), hide_predicate('$lgt_dbg_invocation_number_'/1)
 	;	true
 	).
 
@@ -166,6 +167,7 @@
 '$lgt_pl_meta_predicate'(freeze(*, ::), predicate).
 '$lgt_pl_meta_predicate'(time_out(::, *, *), predicate).
 '$lgt_pl_meta_predicate'(when(*, ::), predicate).
+'$lgt_pl_meta_predicate'(findall(*, ::, *, *), predicate).
 
 '$lgt_pl_meta_predicate'(thread_initialization(::), predicate).
 '$lgt_pl_meta_predicate'(thread_at_exit(::), predicate).
