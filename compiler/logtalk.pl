@@ -3055,7 +3055,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
 			functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
-			(	'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, []),
+			(	'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
 				call_with_args(Def, GPred, ExCtx, GCall, _) ->						% lookup definition
 				asserta('$lgt_self_lookup_cache_'(GObj, GPred, GSender, GCall)),	% cache lookup result
 				(GObj, GPred, GSender) = (Obj, Pred, Sender),						% unify message arguments
@@ -3103,7 +3103,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 		(	Scope = p(p(_)) ->														% check public scope
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
-			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, []),
+			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
 			(	call_with_args(Def, GPred, ExCtx, GCall, _) ->						% lookup definition
 				asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
 				(GObj, GPred, GSender) = (Obj, Pred, Sender),						% unify message arguments
@@ -3115,7 +3115,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
 			functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
-			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, []),
+			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
 			(	call_with_args(Def, GPred, ExCtx, GCall, _) ->						% lookup definition
 				asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
 				(GObj, GPred, GSender) = (Obj, Pred, Sender),						% unify message arguments
@@ -3175,7 +3175,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 		(	Scope = p(p(_)) ->														% check public scope
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
-			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, []),
+			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
 			(	call_with_args(Def, GPred, ExCtx, GCall, _) ->						% lookup definition
 				asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
 				(GObj, GPred, GSender) = (Obj, Pred, Sender),						% unify message arguments
@@ -3185,7 +3185,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
 			functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
-			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, []),
+			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
 			(	call_with_args(Def, GPred, ExCtx, GCall, _) ->						% lookup definition
 				asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
 				(GObj, GPred, GSender) = (Obj, Pred, Sender),						% unify message arguments
@@ -14375,7 +14375,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 		functor(GObj, ObjFunctor, ObjArity),
 		functor(Pred, PredFunctor, PredArity),
 		functor(GPred, PredFunctor, PredArity),
-		'$lgt_exec_ctx'(GExCtx, GSender, GObj, GObj, []),
+		'$lgt_exec_ctx'(GExCtx, GSender, GObj, GObj, _),
 		call_with_args(Def, GPred, GExCtx, GCall, DefCtn), !,
 		'$lgt_safe_static_binding_paths'(GObj, DclCtn, DefCtn),
 		assertz('$lgt_obj_static_binding_cache_'(GObj, GPred, GSender, GCall)),
