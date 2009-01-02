@@ -1251,29 +1251,8 @@ threaded(Goals) :-
 	throw(error(type_error(callable, Goals), threaded(Goals))).
 
 threaded(Goals) :-
-	'$lgt_comp_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _, _),
-	'$lgt_tr_threaded_wrap_calls'(Goals, WrappedGoals, threaded(Goals)),
-	catch('$lgt_tr_body'(threaded(WrappedGoals), MTGoals, _, Ctx), Error, throw(error(Error, threaded(Goals)))),
+	'$lgt_tr_threaded_call'(Goals, MTGoals),
 	catch(MTGoals, Error, '$lgt_runtime_error_handler'(Error)).
-
-
-'$lgt_tr_threaded_wrap_calls'(Goal, _, OriginalGoal) :-
-	var(Goal),
-	throw(error(instantiation_error, OriginalGoal)).
-
-'$lgt_tr_threaded_wrap_calls'(Goal, _, OriginalGoal) :-
-	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), OriginalGoal)).
-
-'$lgt_tr_threaded_wrap_calls'((Goal; Goals), ({Goal}; WrappedGoals), OriginalGoal) :-
-	!,
-	'$lgt_tr_threaded_wrap_calls'(Goals, WrappedGoals, OriginalGoal).
-
-'$lgt_tr_threaded_wrap_calls'((Goal, Goals), ({Goal}, WrappedGoals), OriginalGoal) :-
-	!,
-	'$lgt_tr_threaded_wrap_calls'(Goals, WrappedGoals, OriginalGoal).
-
-'$lgt_tr_threaded_wrap_calls'(Goal, {Goal}, _).
 
 
 
@@ -1296,9 +1275,10 @@ threaded_call(Goal, Tag) :-
 	throw(error(type_error(callable, Goal), threaded_call(Goal, Tag))).
 
 threaded_call(Goal, Tag) :-
-	'$lgt_comp_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _, _),
-	'$lgt_tr_body'(threaded_call({Goal}, Tag), TGoal, _, Ctx),
-	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
+	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _) ->
+	'$lgt_new_threaded_tag'(Tag),
+	catch('$lgt_mt_dispatch_goal'(call, Prefix, Goal, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
+
 
 
 % threaded_call(@callable)
@@ -1316,9 +1296,8 @@ threaded_call(Goal) :-
 	throw(error(type_error(callable, Goal), threaded_call(Goal))).
 
 threaded_call(Goal) :-
-	'$lgt_comp_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _, _),
-	'$lgt_tr_body'(threaded_call({Goal}), TGoal, _, Ctx),
-	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
+	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _) ->
+	catch('$lgt_mt_dispatch_goal'(call, Prefix, Goal, user, user, []), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_once(@callable, -nonvar)
@@ -1340,9 +1319,9 @@ threaded_once(Goal, Tag) :-
 	throw(error(type_error(callable, Goal), threaded_once(Goal, Tag))).
 
 threaded_once(Goal, Tag) :-
-	'$lgt_comp_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _, _),
-	'$lgt_tr_body'(threaded_once({Goal}, Tag), TGoal, _, Ctx),
-	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
+	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _) ->
+	'$lgt_new_threaded_tag'(Tag),
+	catch('$lgt_mt_dispatch_goal'(once, Prefix, Goal, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_once(@callable)
@@ -1360,9 +1339,8 @@ threaded_once(Goal) :-
 	throw(error(type_error(callable, Goal), threaded_once(Goal))).
 
 threaded_once(Goal) :-
-	'$lgt_comp_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _, _),
-	'$lgt_tr_body'(threaded_once({Goal}), TGoal, _, Ctx),
-	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
+	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _) ->
+	catch('$lgt_mt_dispatch_goal'(once, Prefix, Goal, user, user, []), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_ignore(@callable)
@@ -1380,9 +1358,8 @@ threaded_ignore(Goal) :-
 	throw(error(type_error(callable, Goal), threaded_ignore(Goal))).
 
 threaded_ignore(Goal) :-
-	'$lgt_comp_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _, _),
-	'$lgt_tr_body'(threaded_ignore({Goal}), TGoal, _, Ctx),
-	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
+	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _) ->
+	catch('$lgt_mt_dispatch_goal'(ignore, Prefix, Goal, user, user, _), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_exit(+callable, +nonvar)
@@ -1404,9 +1381,8 @@ threaded_exit(Goal, Tag) :-
 	throw(error(type_error(callable, Goal), threaded_exit(Goal, Tag))).
 
 threaded_exit(Goal, Tag) :-
-	'$lgt_comp_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _, _),
-	'$lgt_tr_body'(threaded_exit({Goal}, Tag), TGoal, _, Ctx),
-	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
+	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _) ->
+	catch('$lgt_mt_get_reply'(Prefix, Goal, user, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_exit(+callable)
@@ -1424,9 +1400,8 @@ threaded_exit(Goal) :-
 	throw(error(type_error(callable, Goal), threaded_exit(Goal))).
 
 threaded_exit(Goal) :-
-	'$lgt_comp_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _, _),
-	'$lgt_tr_body'(threaded_exit({Goal}), TGoal, _, Ctx),
-	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
+	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _) ->
+	catch('$lgt_mt_get_reply'(Prefix, Goal, user, user, user, []), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_peek(+callable, +nonvar)
@@ -1448,9 +1423,8 @@ threaded_peek(Goal, Tag) :-
 	throw(error(type_error(callable, Goal), threaded_peek(Goal, Tag))).
 
 threaded_peek(Goal, Tag) :-
-	'$lgt_comp_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _, _),
-	'$lgt_tr_body'(threaded_peek({Goal}, Tag), TGoal, _, Ctx),
-	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
+	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _) ->
+	catch('$lgt_mt_peek_reply'(Prefix, Goal, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_peek(+callable)
@@ -1468,9 +1442,8 @@ threaded_peek(Goal) :-
 	throw(error(type_error(callable, Goal), threaded_peek(Goal))).
 
 threaded_peek(Goal) :-
-	'$lgt_comp_ctx'(Ctx, _, user, user, user, '$lgt_bio_user_0_', [], _, _),
-	'$lgt_tr_body'(threaded_peek({Goal}), TGoal, _, Ctx),
-	catch(TGoal, Error, '$lgt_runtime_error_handler'(Error)).
+	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _) ->
+	catch('$lgt_mt_peek_reply'(Prefix, Goal, user, user, []), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_wait(?nonvar)

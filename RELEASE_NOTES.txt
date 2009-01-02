@@ -24,6 +24,10 @@ RELEASE NOTES
 
     Simplified compilation of meta-predicates.
 
+    Simplified and improved performance of the multi-threading built-in
+    predicates within the context of the pseudo-object "user" (e.g. for
+    top-level queries).
+
     Changed compilation of once/1 goals in debug mode in order to make them
     explicit when tracing using the built-in debugger.
 
