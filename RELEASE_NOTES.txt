@@ -22,7 +22,7 @@ RELEASE NOTES
     more reusable cache entries for public predicates, improving lookup
     performance and cache hits).
 
-    Improved caching of ^^1 calls (by generating more reusable cache entries,
+    Improved caching of ^^/1 calls (by generating more reusable cache entries,
     improving lookup performance and cache hits).
 
     Simplified compilation of meta-predicates. Allow meta-predicates to be
