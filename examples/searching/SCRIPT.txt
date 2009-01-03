@@ -203,7 +203,7 @@ yes
 (0, 100, 200)	transfer(m1, m2)
 (100, 0, 200)	transfer(m1, acc)
 solution length: 6
-state transitions (including past solutions): 405
+state transitions (including previous solutions): 405
 ratio solution length / state transitions: 0.0148148
 minimum branching degree: 1
 average branching degree: 4.06863
@@ -226,7 +226,7 @@ yes
 (0, 200, 550)	transfer(m1, m2)
 (200, 0, 550)	transfer(m1, acc)
 solution length: 8
-state transitions (including past solutions): 2475
+state transitions (including previous solutions): 2475
 ratio solution length / state transitions: 0.00323232
 minimum branching degree: 1
 average branching degree: 4.21042
@@ -253,7 +253,7 @@ yes
 (50, 250, 50)	transfer(m2, m1)
 (100, 250, 0)	transfer(m2, acc)
 solution length: 12
-state transitions (including past solutions): 189914
+state transitions (including previous solutions): 189914
 ratio solution length / state transitions: 6.31865e-05
 minimum branching degree: 1
 average branching degree: 4.47592

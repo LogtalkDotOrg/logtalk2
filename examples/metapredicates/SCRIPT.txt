@@ -99,8 +99,8 @@ Result = 34
 yes
 
 
-% use the fold_left/4 predicate with the atom_concat/3 Prolog built-in
-% predicate:
+% use the fold_left/4 and fold_right/4 predicates with the atom_concat/3
+% Prolog built-in predicate:
 
 | ?- meta::fold_left(atom_concat, 'PREFIX', [abc,def,ghi], Result).
 

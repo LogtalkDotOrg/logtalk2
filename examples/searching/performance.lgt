@@ -53,7 +53,7 @@
 		branching(Minimum, Average, Maximum),
 		time(Time),
 		write('solution length: '), write(Length), nl,
-		write('state transitions (including past solutions): '), write(Number), nl,
+		write('state transitions (including previous solutions): '), write(Number), nl,
 		write('ratio solution length / state transitions: '), write(Ratio), nl,
 		write('minimum branching degree: '), write(Minimum), nl,
 		write('average branching degree: '), write(Average), nl,
