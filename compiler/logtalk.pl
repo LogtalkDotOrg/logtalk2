@@ -3241,13 +3241,13 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	'$lgt_current_object_'(Self, _, Dcl, _, _, _, _, _, _, _, _),
 	call_with_args(Dcl, Pred, Scope, _, _, _, _, SCtn, _),
 	!,
-	(	(Scope = p(_); This = SCtn) ->											% check scope
-		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
-		functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),		% construct "this" template
-		call_with_args(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->		% lookup definition
-		asserta('$lgt_super_lookup_cache_'(GThis, GPred, GExCtx, GCall)),		% cache lookup result
-		(GPred, GExCtx) = (Pred, ExCtx),										% unify message arguments
-		call(GCall)																% call inherited definition
+	(	(Scope = p(_); This = SCtn) ->										% check scope
+		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
+		functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),	% construct "this" template
+		call_with_args(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->	% lookup definition
+		asserta('$lgt_super_lookup_cache_'(GThis, GPred, GExCtx, GCall)),	% cache lookup result
+		(GPred, GExCtx) = (Pred, ExCtx),									% unify message arguments
+		call(GCall)															% call inherited definition
 	;	% predicate is not within the scope of the sender:
 		throw(error(permission_error(access, private_predicate, Pred), ^^Pred, This))
 	).
@@ -3281,16 +3281,15 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_ctg_super_call_other_nv'(Ctg, Dcl, Def, Pred, ExCtx) :-
 	call_with_args(Dcl, Pred, Scope, _, _, _, _, _),
 	!,
-	(	Scope = p(_) ->															% check scope
-		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
-		call_with_args(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->			% lookup definition
-		asserta('$lgt_super_lookup_cache_'(Ctg, GPred, GExCtx, GCall)),			% cache lookup result
-		(GPred, GExCtx) = (Pred, ExCtx),										% unify message arguments
-		call(GCall)																% call inherited definition
+	(	Scope = p(_) ->														% check scope
+		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
+		call_with_args(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->		% lookup definition
+		asserta('$lgt_super_lookup_cache_'(Ctg, GPred, GExCtx, GCall)),		% cache lookup result
+		(GPred, GExCtx) = (Pred, ExCtx),									% unify message arguments
+		call(GCall)															% call inherited definition
 	;	% predicate is not within the scope of the sender:
 		throw(error(permission_error(access, private_predicate, Pred), ^^Pred, Ctg))
 	).
-
 
 '$lgt_ctg_super_call_other_nv'(Ctg, _, _, Pred, _) :-
 	(	'$lgt_built_in'(Pred) ->
@@ -3334,12 +3333,12 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	Closure =.. [Functor| Args],
 	'$lgt_append'(Args, ExtraArgs, FullArgs),
 	Pred =.. [Functor| FullArgs],
-	'$lgt_tr_msg'(Pred, Obj, Call, This),
+	'$lgt_tr_msg'(Pred, Obj, TPred, This),
 	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
 		'$lgt_comp_ctx'(Ctx, _, This, This, Obj, _, [], _, _),
 		'$lgt_comp_ctx_dbg_ctx'(Ctx, DbgCtx),
-		'$lgt_dbg_goal'(Obj::Pred, Call, DbgCtx)
-	;	call(Call)
+		'$lgt_dbg_goal'(Obj::Pred, TPred, DbgCtx)
+	;	call(TPred)
 	).
 
 '$lgt_metacall'(':'(Module, Closure), ExtraArgs, _, _, _, _) :-
@@ -3394,9 +3393,9 @@ current_logtalk_flag(version, version(2, 35, 0)).
 % needed for runtime translation of dynamic clauses
 
 '$lgt_call_built_in'(Pred, Ctx) :-
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, _),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, _, _),
 	'$lgt_current_object_'(This, _, _, Def, _, _, _, _, _, _, _) ->
-	(	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
+	(	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaVars),
 		call_with_args(Def, Pred, ExCtx, Call) ->
 		call(Call)
 	;	call(Pred)
