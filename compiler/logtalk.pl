@@ -8111,15 +8111,10 @@ current_logtalk_flag(version, version(2, 35, 0)).
 		atom_concat(TFunctor, '_sync', STFunctor)
 	;	STFunctor = TFunctor
 	),
-	(	MetaVars == [] ->
-		% we're not compiling a clause to a meta-predicate, thus we have a local call
-		% to a meta-predicate
-		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, [])
-	;	% we have a meta-predicate calling another meta-predicate, the meta-arguments
-		% to be called in the context of the sender will be the ones coming from the
-		% call to the predicate whose body we're compiling
-		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaVars)
-	),
+	% when calling a local meta-predicate, the meta-arguments to be
+	% called in the context of the sender will be the ones coming
+	% from the call to the predicate whose body we're compiling:
+	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaVars),
 	'$lgt_append'(Args, [ExCtx], TArgs),
 	TPred =.. [STFunctor| TArgs],
 	TArity is Arity + 1,
