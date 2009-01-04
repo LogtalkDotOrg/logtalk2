@@ -11348,20 +11348,15 @@ current_logtalk_flag(version, version(2, 35, 0)).
 
 '$lgt_init_goal'(Goal) :-
 	findall(EGoal, '$lgt_pp_entity_init_'(_, _, EGoal), EGoals),
-	(	'$lgt_pp_file_init_'(FGoal) ->
-		(	EGoals \== [] ->
-			'$lgt_list_to_conjunction'(EGoals, EGoals2),
-			Goal = (EGoals2, FGoal)
-		;	Goal = FGoal
-		)
-	;	(	EGoals \== [] ->
-			'$lgt_list_to_conjunction'(EGoals, Goal)
-		;	Goal = true
-		)
-	).
+	findall(FGoal, '$lgt_pp_file_init_'(FGoal), FGoals),
+	'$lgt_append'(EGoals, FGoals, Goals),
+	'$lgt_list_to_conjunction'(Goals, Goals2),
+	'$lgt_simplify_body'(Goals2, Goal).
 
 
 % converts a list of goals into a conjunction of goals
+
+'$lgt_list_to_conjunction'([], true) :- !.
 
 '$lgt_list_to_conjunction'([Goal], Goal) :- !.
 
@@ -11387,9 +11382,11 @@ current_logtalk_flag(version, version(2, 35, 0)).
 		Goal3 = (Goal2, '$lgt_init_object_message_queue'(Prefix))
 	;	Goal3 = Goal2
 	),
-	(	'$lgt_pp_fentity_init_'(Goal4) ->
-		Goal5 = (Goal3, Goal4)
-	;	Goal5 = Goal3
+	findall(EntityInitGoal, '$lgt_pp_fentity_init_'(EntityInitGoal), EntityInitGoals),
+	'$lgt_list_to_conjunction'(EntityInitGoals, Goal4),
+	(	Goal4 == true ->
+		Goal5 = Goal3
+	;	Goal5 = (Goal3, Goal4)
 	),
 	(	Type \== protocol, Compilation == static, '$lgt_compiler_flag'(reload, skip) ->
 		Goal6 = (Goal5, '$lgt_add_static_binding_cache_entry'(Entity))

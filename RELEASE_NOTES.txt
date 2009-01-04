@@ -35,6 +35,9 @@ RELEASE NOTES
     Changed compilation of once/1 goals in debug mode in order to make them
     explicit when tracing using the built-in debugger.
 
+    Added support for multiple source-level and entity-level initialization/1
+    directives (matching the ISO Prolog standard and current Prolog practice).
+
     Corrected a bug in the compilation of top-level queries for the Logtalk
     built-in predicates.
 
