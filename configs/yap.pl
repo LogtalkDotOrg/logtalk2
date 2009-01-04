@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: January 2, 2009
+%  last updated: January 4, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -548,11 +548,14 @@
 
 % '$lgt_ignore_pl_directive'(@callable)
 
-'$lgt_ignore_pl_directive'(load_foreign_files(Files,Libs,InitRoutine)) :-
-	load_foreign_files(Files,Libs,InitRoutine).
+'$lgt_ignore_pl_directive'(_) :-
+	fail.
 
 
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
+
+'$lgt_rewrite_and_copy_pl_directive'(load_foreign_files(Files, Libs, InitRoutine), initialization(load_foreign_files(Files, Libs, InitRoutine))) :-
+	load_foreign_files(Files, Libs, InitRoutine).
 
 '$lgt_rewrite_and_copy_pl_directive'(table(PIs), table(CPIs)) :-
 	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).

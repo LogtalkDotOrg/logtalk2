@@ -54,6 +54,9 @@ RELEASE NOTES
     Added declaration for the proprietary findall/4 meta-predicate to the
     SWI-Prolog and YAP config files.
 
+    Corrected processing of the proprietary load_foreign_files/3 directive
+    in the YAP config file.
+
 
 2.34.1 - December 15, 2008
 
