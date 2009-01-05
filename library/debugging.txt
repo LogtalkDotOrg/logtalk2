@@ -12,7 +12,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 To load all entities in this group load the debugging_loader.lgt utility 
 file:
 
-	| ?- logtalk_load(debugging_loader).
+	| ?- logtalk_load(library(debugging_loader)).
 
 You will need to load FIRST the events_loader.lgt file otherwise you will get 
 a runtime error.

@@ -12,7 +12,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 To load all entities in this library load the random_loader.lgt utility 
 file:
 
-	| ?- logtalk_load(random_loader).
+	| ?- logtalk_load(library(random_loader)).
 
 The object random implements a basic random number generators.
 

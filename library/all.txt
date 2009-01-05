@@ -13,4 +13,4 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 The all_loader.lgt file will load all the entities loaded by the other
 loader files:
 
-	| ?- logtalk_load(all_loader).
+	| ?- logtalk_load(library(all_loader)).

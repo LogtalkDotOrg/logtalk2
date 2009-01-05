@@ -11,7 +11,9 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 
 The "lgtunit.lgt" file contains a preliminary framework for defining 
-and running unit tests in Logtalk.
+and running unit tests in Logtalk. To compile and load it type:
+
+	| ?- logtalk_load(library(lgtunit)).
 
 The unit tests framework is inspired on the works of Joachim Schimpf 
 (ECLiPSe library "test_util") and Jan Wielemaker (SWI-Prolog "plunit" 

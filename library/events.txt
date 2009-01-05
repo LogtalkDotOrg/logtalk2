@@ -12,7 +12,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 To load all entities in this library load the events_loader.lgt utility 
 file:
 
-	| ?- logtalk_load(events_loader).
+	| ?- logtalk_load(library(events_loader)).
 
 The objects event_registry, before_event_registry, and after_event_registry 
 implement convenient predicates for registering before and after events.

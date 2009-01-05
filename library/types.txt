@@ -12,7 +12,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 To load all entities in this group load the types_loader.lgt utility 
 file:
 
-	| ?- logtalk_load(types_loader).
+	| ?- logtalk_load(library(types_loader)).
 
 These objects implement predicates over common Prolog terms and 
 structures such as lists, difference lists, binary trees, queues, 

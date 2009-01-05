@@ -12,7 +12,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 To load all entities in this group load the dates_loader.lgt utility 
 file:
 
-	| ?- logtalk_load(dates_loader).
+	| ?- logtalk_load(library(dates_loader)).
 
 The object date implements some useful calendar date predicates.
 

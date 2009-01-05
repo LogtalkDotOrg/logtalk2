@@ -12,7 +12,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 To load all entities in this group load the metapredicates_loader.lgt 
 utility file:
 
-	| ?- logtalk_load(metapredicates_loader).
+	| ?- logtalk_load(library(metapredicates_loader)).
 
 The object loop implements several kinds of loops typical of imperative 
 languages.

@@ -12,7 +12,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 To load all entities in this group load the dependents_loader.lgt 
 utility file:
 
-	| ?- logtalk_load(dependents_loader).
+	| ?- logtalk_load(library(dependents_loader)).
 
 The categories "observer" and "subject" implement the Smalltalk 
 dependent handling mechanism.
