@@ -51,6 +51,9 @@ RELEASE NOTES
     predicates filter/3 and succeeds/2 are declared (using aliases) but
     not defined.
 
+    Changed the formulas used for calculating sample skewness and sample
+    kurtosis to match the formulas used in statistical software such as R.
+
     Added declaration for the proprietary findall/4 meta-predicate to the
     SWI-Prolog and YAP config files.
 
