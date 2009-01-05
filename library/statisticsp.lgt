@@ -2,9 +2,9 @@
 :- protocol(statisticsp).
 
 	:- info([
-		version is 1.0,
+		version is 1.01,
 		author is 'Paulo Moura',
-		date is 2008/10/4,
+		date is 2009/1/5,
 		comment is 'Statistical calculations over a list of numbers protocol.']).
 
 	:- public(product/2).
@@ -100,7 +100,7 @@
 	:- public(skewness/2).
 	:- mode(skewness(+list(number), -float), zero_or_one).
 	:- info(skewness/2,
-		[comment is 'Calculates the skewness of a list of numbers. Fails if the list is empty.',
+		[comment is 'Calculates the (moment) skewness of a list of numbers. Fails if the list is empty.',
 		 argnames is ['List', 'Skewness']]).
 
 	:- public(kurtosis/2).
