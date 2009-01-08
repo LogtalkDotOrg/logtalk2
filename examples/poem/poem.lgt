@@ -29,7 +29,7 @@
 		/* finds the distance between argument and owner points.    */
 		parameter(1, X),
 		parameter(2, Y),
-		Distance is sqrt((X1-X)*(X1-X)+(Y1-Y)*(Y1-Y)).
+		Distance is sqrt((X1-X) * (X1-X) + (Y1-Y) * (Y1-Y)).
 
 :- end_object.
 
@@ -94,7 +94,7 @@
 		A is X2-X1,
 		B is Y1-Y2,
 		C is X1*Y2-X2*Y1,
-		Dist is (A*Y3+B*X3+C)/sqrt(A*A+B*B).
+		Dist is (A*Y3+B*X3+C) / sqrt(A*A+B*B).
 
 	distance(Point, Dist) :-
 		/* as 'signed_distance', but Dist always >= 0               */

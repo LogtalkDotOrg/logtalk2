@@ -73,7 +73,7 @@
 		Lacc2 is Lacc + 1,
 		Delta is X - Mean,
 		Mean2 is Mean + Delta/Lacc2,
-		M2acc2 is M2acc + Delta*(X - Mean2),
+		M2acc2 is M2acc + Delta * (X - Mean2),
 		variance(Xs, Lacc2, Length, Mean2, M2acc2, M2).
 
 	squares_and_cubes([], _, Squares, Squares, Cubes, Cubes).

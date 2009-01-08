@@ -70,7 +70,7 @@
 
 	partition([Head| Tail], Pivot, Small, Large) :-
 		parameter(1, Type),
-		(	Type::(Head < Pivot) ->
+		(	Type :: (Head < Pivot) ->
 			Small = [Head| Small1], Large = Large1
 		;	Small = Small1, Large = [Head| Large1]
 		),
