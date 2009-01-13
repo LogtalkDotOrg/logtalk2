@@ -9,9 +9,9 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for CIAO Prolog 1.8p2 and later versions
+%  configuration file for CIAO Prolog 1.8p2 to 1.10#8
 %
-%  last updated: November 7, 2008
+%  last updated: January 13, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -274,7 +274,7 @@ call_with_args(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_default_flag'(xmldir, 'xml_docs/').
 
 '$lgt_default_flag'(encoding_directive, unsupported).
-'$lgt_default_flag'(multifile_directive, supported).
+'$lgt_default_flag'(multifile_directive, unsupported).
 '$lgt_default_flag'(threads, unsupported).
 
 '$lgt_default_flag'(context_switching_calls, allow).

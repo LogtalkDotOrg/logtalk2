@@ -138,7 +138,7 @@ Bin-Prolog 8.x~10.x
 	Updated and tested with help of Arun Majumdar.
 
 
-CIAO Prolog 1.8p2 and later versions
+CIAO Prolog 1.8p2 to 1.10#8
 
 	ciao.pl
 	ciao_aux.pl

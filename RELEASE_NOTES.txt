@@ -60,6 +60,9 @@ RELEASE NOTES
     Corrected processing of the proprietary load_foreign_files/3 directive
     in the YAP config file.
 
+    Switched off use of multifile/1 directives for Ciao due to its buggy
+    implementation on this Prolog compiler.
+
 
 2.34.1 - December 15, 2008
 
