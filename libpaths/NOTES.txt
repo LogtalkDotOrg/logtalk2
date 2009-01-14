@@ -43,7 +43,7 @@ Prolog compilers that are expected to be compatible with the provided
 "libpaths.pl" file as is, across operating-systems:
 
 	* B-Prolog
-	* CIAO
+	* Ciao
 	* CxProlog
 	* ECLiPSe
 	* GNU-Prolog

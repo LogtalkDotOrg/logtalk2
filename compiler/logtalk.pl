@@ -381,7 +381,7 @@ Obj<<Pred :-
 	'$lgt_reverse_predicate_functor'(TFunctor2, TArity2, Entity, Type, Functor2, Arity2),
 	throw(error(existence_error(procedure, Functor1/Arity1), context(Type, Entity, Functor2/Arity2))).
 
-'$lgt_runtime_error_handler'(error(existence_error(procedure, ModTFunctor/TArity), _)) :-								% CIAO
+'$lgt_runtime_error_handler'(error(existence_error(procedure, ModTFunctor/TArity), _)) :-								% Ciao
 	atom_concat('user:', TFunctor, ModTFunctor),
 	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
@@ -3391,9 +3391,11 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, _, _),
 	'$lgt_current_object_'(This, _, _, Def, _, _, _, _, _, _, _) ->
 	(	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaVars),
-		call_with_args(Def, Pred, ExCtx, Call) ->
-		call(Call)
-	;	call(Pred)
+		call_with_args(Def, Pred, ExCtx, TPred) ->
+		% call the redefined built-in predicate
+		call(TPred)
+	;	% call the built-in predicate
+		call(Pred)
 	).
 
 
@@ -8005,7 +8007,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	fail.
 
 
-% Logtalk and Prolog built-in (meta-)predicates
+% Prolog proprietary, built-in meta-predicates
 
 '$lgt_tr_body'(Pred, TPred, DPred, Ctx) :-
 	'$lgt_pl_built_in'(Pred),
@@ -8029,6 +8031,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	;	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 		DPred = '$lgt_dbg_goal'(Pred, DGoal, ExCtx)
 	).
+
+% Logtalk and Prolog built-in predicates
 
 '$lgt_tr_body'(Pred, '$lgt_call_built_in'(Pred, Ctx), '$lgt_dbg_goal'(Pred, '$lgt_call_built_in'(Pred, Ctx), ExCtx), Ctx) :-
 	'$lgt_built_in'(Pred),
@@ -10984,7 +10988,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	TPred =.. [Functor| TArgs].
 
 '$lgt_fix_pred_calls'('$lgt_call_built_in'(Pred, Ctx), TPred) :-
-	!,									% calls to redefined Prolog built-in meta-predicates
+	!,									% calls to Logtalk and Prolog built-in predicates
 	'$lgt_comp_ctx'(Ctx, _, _, _, _, _, _, _, ExCtx),
 	(	'$lgt_pp_redefined_built_in_'(Pred, ExCtx, TPred) ->
 		true

@@ -9,7 +9,7 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  loader file for CIAO Prolog 1.8p2 to 1.10#8
+%  loader file for Ciao Prolog 1.8p2 to 1.10#8
 %
 %  last updated: January 13, 2008
 %
