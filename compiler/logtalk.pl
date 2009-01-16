@@ -5907,7 +5907,8 @@ current_logtalk_flag(version, version(2, 35, 0)).
 
 '$lgt_tr_directive'(initialization, [Goal], _, _, _) :-
 	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
-	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, _),
+	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, []),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
 	assertz('$lgt_pp_entity_init_'(TGoal)).
 
