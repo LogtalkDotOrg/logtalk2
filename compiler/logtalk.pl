@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.35.0
+%  Release 2.35.1
 %  
 %  Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
@@ -1873,7 +1873,7 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
-current_logtalk_flag(version, version(2, 35, 0)).
+current_logtalk_flag(version, version(2, 35, 1)).
 
 
 
@@ -6501,6 +6501,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_convert_meta_predicate_mode_spec'([Arg| Args], [Arg2| Args2]) :-
 	(	Arg == (:) -> Arg2 = (::)	% Prolog to Logtalk notation
 	;	Arg == (::) -> Arg2 = (::)	% just to be safe if someone mixes the notations
+	;	Arg == 0 -> Arg2 = (::)		% some Prolog compilers use zero for denoting goals
 	;	integer(Arg) -> Arg2 = Arg	% closures
 	;	Arg2 = (*)
 	),
@@ -7146,6 +7147,9 @@ current_logtalk_flag(version, version(2, 35, 0)).
 		MaxClosureSoFar2 is MaxClosureSoFar,
 		TotalNormalArgsAcc2 is TotalNormalArgsAcc + 1
 	;	MArg == (::) ->
+		MaxClosureSoFar2 is MaxClosureSoFar,
+		TotalNormalArgsAcc2 is TotalNormalArgsAcc
+	;	MArg == 0 ->
 		MaxClosureSoFar2 is MaxClosureSoFar,
 		TotalNormalArgsAcc2 is TotalNormalArgsAcc
 	;	(	MArg > MaxClosureSoFar ->
@@ -7956,6 +7960,23 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	'$lgt_tr_body'(Obj::Pred, TPred, DPred, Ctx).
 
 
+% meta-predicates specified in use_module/2 directives
+
+'$lgt_tr_body'(Alias, ':'(Module, TPred), ':'(Module, DPred), Ctx) :-
+	'$lgt_pp_use_module_'(Module, Pred, Alias),
+	'$lgt_predicate_property'(Pred, imported_from(Module)),
+	'$lgt_predicate_property'(Pred, meta_predicate(Meta)),
+	Pred =.. [Functor| Args],
+	Meta =.. [Functor| MArgs],
+	(	'$lgt_member'(MArg, MArgs), integer(MArg), MArg =\= 0 ->
+		throw(domain_error(closure, Meta))
+	;	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
+		TPred =.. [Functor| TArgs],
+		DPred =.. [Functor| DArgs]
+	),
+	!.
+
+
 % predicates specified in use_module/2 directives
 
 '$lgt_tr_body'(Alias, ':'(Module, Pred), ':'(Module, Pred), _) :-
@@ -8021,7 +8042,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	!,
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
-	(	'$lgt_member'(MArg, MArgs), integer(MArg) ->
+	(	'$lgt_member'(MArg, MArgs), integer(MArg), MArg =\= 0 ->
 		throw(domain_error(closure, Meta))
 	;	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
 		TPred =.. [Functor| TArgs],
@@ -8218,6 +8239,9 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_tr_meta_arg'((::), Arg, Ctx, TArg, DArg) :-
 	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
 
+'$lgt_tr_meta_arg'((0), Arg, Ctx, TArg, DArg) :-
+	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
+
 
 
 % '$lgt_same_meta_arg_extra_args'(@list(nonvar), @list(var), @var, +integer)
@@ -8232,6 +8256,10 @@ current_logtalk_flag(version, version(2, 35, 0)).
 	'$lgt_same_meta_arg_extra_args'(MetaArgs, MetaVars, Closure, ExtraArgs).
 
 '$lgt_same_meta_arg_extra_args'([(::)| MetaArgs], MetaVars, Closure, ExtraArgs) :-
+	!,
+	'$lgt_same_meta_arg_extra_args'(MetaArgs, MetaVars, Closure, ExtraArgs).
+
+'$lgt_same_meta_arg_extra_args'([0| MetaArgs], MetaVars, Closure, ExtraArgs) :-
 	!,
 	'$lgt_same_meta_arg_extra_args'(MetaArgs, MetaVars, Closure, ExtraArgs).
 
@@ -12123,7 +12151,7 @@ current_logtalk_flag(version, version(2, 35, 0)).
 '$lgt_valid_metapred_term_args'([]).
 
 '$lgt_valid_metapred_term_args'([Arg| Args]) :-
-	once((Arg == (::); Arg == (*); integer(Arg), Arg > 0)),
+	once((Arg == (::); Arg == (*); integer(Arg), Arg >= 0)),
 	'$lgt_valid_metapred_term_args'(Args).
 
 

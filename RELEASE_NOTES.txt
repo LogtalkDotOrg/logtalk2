@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.35.0
+Release 2.35.1
 
 Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
 Logtalk is free software.  You can redistribute it and/or modify
@@ -11,6 +11,17 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 RELEASE NOTES
 =============
+
+
+2.35.1 - January ??, 2009
+
+    Improved the Logtalk compiler compatibility with Prolog meta_predicate/1
+    directives that use the integer zero as an alternative to the atom ':' for
+    denoting meta-arguments that are goals.
+
+    Added limited support for calling Prolog meta-predicates defined in module
+    libraries (meta-arguments must be goals, not closures; the Logtalk compiler
+    assumes that an imported_from/1 property is defined for these predicates).
 
 
 2.35.0 - January 16, 2009
