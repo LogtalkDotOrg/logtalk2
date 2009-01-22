@@ -141,18 +141,25 @@ Most examples directories contain a Logtalk utility file that can be used to loa
 </p>
 <pre>| ?- logtalk_load(loader).</pre>
 <p>
-Usually these files contain a call to the Logtalk built-in predicates <a title="Consult reference manual" href="../refman/builtins/logtalk_load1.html"><code>logtalk_load/1</code></a> or <a title="Consult reference manual" href="../refman/builtins/logtalk_load2.html"><code>logtalk_load/2</code></a>, wrapped inside an <code>initialization/1</code> directive. For instance, if your code is split in three Logtalk source files named <code>source1.lgt</code>, <code>source2.lgt</code>, and <code>source3.lgt</code>, then the contents of your loader file could be:
+Usually these files contain a call to the Logtalk built-in predicates <a title="Consult reference manual" href="../refman/builtins/set_logtalk_flag2.html"><code>set_logtalk_flag/2</code></a> (e.g. for setting project-specific flags) and <a title="Consult reference manual" href="../refman/builtins/logtalk_load1.html"><code>logtalk_load/1</code></a> or <a title="Consult reference manual" href="../refman/builtins/logtalk_load2.html"><code>logtalk_load/2</code></a> (for loading project files), wrapped inside an <code>initialization/1</code> directive. For instance, if your code is split in three Logtalk source files named <code>source1.lgt</code>, <code>source2.lgt</code>, and <code>source3.lgt</code>, then the contents of your loader file could be:
 </p>
-<pre>:- initialization(
-    logtalk_load([
-        source1, source2, source3])). </pre>
+<pre>:- initialization((
+	set_logtalk_flag(events, on),              % set project-specific flags
+    logtalk_load([source1, source2, source3])  % load the project source files
+    )).</pre>
 <p>
-Another example of directives that are often used in a loader file would be <code>op/3</code> directives declaring global operators needed by your application. Loader files are also often used for setting compiler options for the source files (this is useful even when you only have a single source file if you always load it with using the same set of compiler options). For example:
+Another example of directives that are often used in a loader file would be <code>op/3</code> directives declaring global operators needed by your application. Loader files are also often used for setting source file-specific compiler options (this is useful even when you only have a single source file if you always load it with using the same set of compiler options). For example:
 </p>
-<pre>:- initialization(
+<pre>:- initialization((
+	set_logtalk_flag(underscore_variables, dont_care),
+	set_logtalk_flag(xmlspec, xsd),
     logtalk_load(
         [source1, source2, source3],
-        [underscore_variables(dont_care), portability(warning), xmlspec(xsd)])). </pre>
+        [portability(warning)]),               % source file-specific flags
+    logtalk_load(
+        [source4, source5],
+        [portability(silent)])                 % source file-specific flags
+    )).</pre>
 <p>
 To take the best advantage of loader files, assert a clause to the dynamic predicate <code>logtalk_library_path/2</code> for the directory containing your source files, as explained in the next section.
 </p>
@@ -646,7 +653,7 @@ The Logtalk compiler automatically removes any redundant calls to the built-in p
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: November 7, 2008</span>
+		<span>Last updated on: January 20, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="installing.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>
