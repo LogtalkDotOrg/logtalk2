@@ -53,7 +53,8 @@ md5="`md5 -q lgt2351.tar.bz2`"
 sudo mkdir -p /opt/local/var/macports/distfiles/logtalk
 sudo cp -f lgt2351.tar.bz2 /opt/local/var/macports/distfiles/logtalk/lgt2351.tar.bz2
 cd /opt/local/var/macports/sources/rsync.macports.org/release/ports/lang/logtalk/
-sudo cp -f Portfile Portfile.old
+sudo mv -f Portfile Portfile.old
+sudo cp $dir/lgt2351/scripts/macosx/Portfile .
 sudo sed -e 's/^version.*/version 2.35.1/' -i '' Portfile
 sudo sed -e "s/^checksums.*/checksums md5 $md5/" -i '' Portfile
 sudo port clean --archive logtalk

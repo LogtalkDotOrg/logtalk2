@@ -23,6 +23,11 @@ RELEASE NOTES
     libraries (meta-arguments must be goals, not closures; the Logtalk compiler
     assumes that an imported_from/1 property is defined for these predicates).
 
+    Updated the "BIBLIOGRAPHY.bib" file with recent Logtalk publications.
+
+    Updated the "build_release.sh" POSIX shell script steps for building the
+    MacOS X installer.
+
 
 2.35.0 - January 16, 2009
 
