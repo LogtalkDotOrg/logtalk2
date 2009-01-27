@@ -1,14 +1,12 @@
 
 :- category(descriptors).
 
-
 	:- info([
 		author is 'Paulo Moura',
 		version is 1.0,
 		date is 2000/2/18,
 		comment is 'Bird descriptors predicates.',
 		source is 'Example adapted from an Amzi! Inc Prolog book.']).
-
 
 	:- public([
 		bill/1,
@@ -33,7 +31,6 @@
 
 	:- public(descriptor/1).
 
-
 	descriptor(bill/1).
 	descriptor(cheek/1).
 	descriptor(color/1).
@@ -51,6 +48,5 @@
 	descriptor(throat/1).
 	descriptor(voice/1).
 	descriptor(wings/1).
-
 
 :- end_category.

@@ -112,7 +112,6 @@
 		cpu_time(Start),
 		retractall(time_(_)),
 		asserta(time_(Start)).
-
 	before(_, solve(_, _, _, _), _) :-
 		!,
 		retractall(transitions_(_, _, _)),
@@ -127,7 +126,6 @@
 		;	N2 is 1
 		),
 		assertz(transitions_(S1, S2, N2)).
-
 	after(_, next_state(S1, S2, _), _) :-
 		!,
 		(	retract(transitions_(S1, S2, N)) ->
@@ -135,13 +133,11 @@
 		;	N2 is 1
 		),
 		assertz(transitions_(S1, S2, N2)).
-
 	after(_, solve(_, _, Solution), _) :-
 		!,
 		length(Solution, Length),
 		retractall(solution_length_(_)),
 		asserta(solution_length_(Length)).
-
 	after(_, solve(_, _, Solution, _), _) :-
 		!,
 		length(Solution, Length),

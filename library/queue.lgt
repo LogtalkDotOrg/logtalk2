@@ -10,12 +10,12 @@
 		comment is 'Queue predicates implemented using difference lists.']).
 
 	as_list(Queue-Back, List) :-
-		Queue == Back ->
+		(	Queue == Back ->
 			List = []
-			;
-			List = [Head| Tail],
+		;	List = [Head| Tail],
 			Queue = [Head| Rest],
-			as_list(Rest-Back, Tail).
+			as_list(Rest-Back, Tail)
+		).
 
 	empty(Front-Back) :-
 		Front == Back.

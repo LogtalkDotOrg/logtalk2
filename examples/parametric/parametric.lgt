@@ -134,9 +134,9 @@
 
 	leap_year :-
 		parameter(1, Year),
-		(0 =:= mod(Year, 4), 0 =\= mod(Year, 100)
-		 ;
-		 0 =:= mod(Year, 400)),
+		(	0 =:= mod(Year, 4), 0 =\= mod(Year, 100)
+		;	0 =:= mod(Year, 400)
+		),
 		!.
 
 :- end_object.

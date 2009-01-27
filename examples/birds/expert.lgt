@@ -2,7 +2,6 @@
 :- object(expert,
 	imports(protected::descriptors)).
 
-
 	:- info([
 		author is 'Paulo Moura',
 		version is 1.1,
@@ -10,24 +9,17 @@
 		comment is 'Expert system for bird identification.',
 		source is 'Example adapted from an Amzi! Inc Prolog book.']).
 
-
 	:- public(identify/0).
-
 	:- mode(identify, one).
-
 	:- info(identify/0,
 		[comment is 'Starts a bird identification session.']).
 
-
 	:- private(known_/3).
 	:- dynamic(known_/3).
-
 	:- mode(known_(?nonvar, ?nonvar, ?nonvar), zero_or_more).
-
 	:- info(known_/3, [
 		comment is 'Table of already known facts.',
 		argnames is ['Answer', 'Attribute', 'Value']]).
-
 
 	identify :-
 		::retractall(known_(_, _, _)),
@@ -37,14 +29,12 @@
 			(nl, write('Possible identification: '), write(Bird), nl)),
 		nl, write('No (more) candidates found.').
 
-
 	check(Bird) :-
 		forall(
 			(::descriptor(Functor/Arity),
 			 functor(Predicate, Functor, Arity),
 			 Bird::Predicate),
 			call(Predicate)).
-
 
 	bill(X):-
 		ask(bill, X).
@@ -97,19 +87,15 @@
 	wings(X):-
 		ask(wings, X).
 
-
-	ask(Attribute,Value):-
+	ask(Attribute, Value):-
 		::known_(yes, Attribute, Value),
 		!.
-
-	ask(Attribute,Value):-
+	ask(Attribute, Value):-
 		::known_(_, Attribute, Value),
 		!, fail.
-
-	ask(Attribute,_):-
+	ask(Attribute, _):-
 		::known_(yes, Attribute, _),
 		!, fail.
-
 	ask(Attribute, Value):-
 		write(Attribute), write(': '), write(Value),
 		write('? (yes or no): '),
@@ -117,15 +103,12 @@
 		::asserta(known_(Answer, Attribute, Value)),
 		Answer = yes.
 
-
 	menuask(Attribute,Value, _):-
 		::known_(yes, Attribute, Value),
 		!.
-
 	menuask(Attribute, _, _):-
 		::known_(yes, Attribute, _),
 		!, fail.
-
 	menuask(Attribute, AskValue, Menu):-
 		nl, write('What is the value for '), write(Attribute), write('?'), nl,
 		display_menu(Menu),
@@ -135,33 +118,26 @@
 		::asserta(known_(yes,Attribute,AnswerValue)),
 		AskValue = AnswerValue.
 
-
 	display_menu(Menu):-
 		display_menu(Menu, 1).
 
-
 	display_menu([], _).
-
 	display_menu([Item| Rest], N):-
 		write(N), write(' : '), write(Item), nl,
 		NN is N + 1,
 		display_menu(Rest, NN).
 
-
 	pick_menu(N, Val, Menu):-
 		integer(N),
-		pic_menu(1, N, Val, Menu), !.
-
+		pic_menu(1, N, Val, Menu),
+		!.
 	pick_menu(Val, Val, _).
 
 
 	pic_menu(_, _, none_of_the_above, []).
-
 	pic_menu(N, N, Item, [Item| _]).
-
 	pic_menu(Ctr, N, Val, [_| Rest]):-
 		NextCtr is Ctr + 1,
 		pic_menu(NextCtr, N, Val, Rest).
-
 
 :- end_object.

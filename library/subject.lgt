@@ -54,10 +54,10 @@
 		findall(Dependent, ::dependent_(Dependent), Dependents).
 
 	addDependent(Dependent) :-
-		::dependent_(Dependent) ->
+		(	::dependent_(Dependent) ->
 			true
-			;
-			::asserta(dependent_(Dependent)).
+		;	::asserta(dependent_(Dependent))
+		).
 
 	removeDependent(Dependent) :-
 		::retract(dependent_(Dependent)).

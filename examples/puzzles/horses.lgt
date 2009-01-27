@@ -19,7 +19,6 @@ Published on the web:
 
 :- object(horses).
 
-
 	:- info([
 		version is 1.0,
 		date is 2004/5/1,
@@ -38,7 +37,6 @@ Published on the web:
 		comment is 'Pretty print solution to the puzzle.',
 		argnames is ['Solution']]).
 
-
 	horses(Solution) :-
 		template(Solution),
 		member(h(doc, _, _, _, 1), Solution),
@@ -56,13 +54,10 @@ Published on the web:
 		member(h(_, _, _, gopher, _), Solution),		
 		\+ member(h(N, _, _, N, _), Solution).
 
-
 	print([]).
-
 	print([Place| Places]) :-
 		print_place(Place),
 		print(Places).	
-	
 
 	print_place(h(H, S, C, R, P)) :-
 		write(P), write(' place: '),
@@ -72,18 +67,15 @@ Published on the web:
 	% h(Name, Sex, Color, Rider, Place)
 	template([h(_, _, _, _, 1), h(_, _, _, _, 2), h(_, _, _, _, 3), h(_, _, _, _, 4), h(_, _, _, _, 5)]).
 
-
 	member(A, [A, _, _, _, _]).
 	member(B, [_, B, _, _, _]).
 	member(C, [_, _, C, _, _]).
 	member(D, [_, _, _, D, _]).
 	member(E, [_, _, _, _, E]).
 
-
 	next(A, B, [A, B, _, _, _]).
 	next(B, C, [_, B, C, _, _]).
 	next(C, D, [_, _, C, D, _]).
 	next(D, E, [_, _, _, D, E]).
-
 
 :- end_object.

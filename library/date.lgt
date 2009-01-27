@@ -40,7 +40,10 @@
 
 	days_in_month( 1, _, 31).
 	days_in_month( 2, Year, Days) :-
-		leap_year(Year) -> Days = 29; Days = 28.
+		(	leap_year(Year) ->
+			Days = 29
+		; Days = 28
+		).
 	days_in_month( 3, _, 31).
 	days_in_month( 4, _, 30).
 	days_in_month( 5, _, 31).

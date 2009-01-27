@@ -1,7 +1,6 @@
 
 :- object(triple).
 
-
 	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
@@ -15,7 +14,6 @@
 
 	:- initialization(read_from_file).
 
-
 	read_from_file :-
 		open('triple.txt', read, Stream),
 		read(Stream, Term),
@@ -24,11 +22,9 @@
 	process(Stream, end_of_file) :-
 		close(Stream),
 		!.
-
 	process(Stream, Term) :-
 		assertz(Term),
 		read(Stream, Next),
 		process(Stream, Next).
-
 
 :- end_object.

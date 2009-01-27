@@ -59,12 +59,10 @@ imported in two car models (sedan and coupe).
 :- object(sedan,
 	imports(classic)).
 
-
 :- end_object.
 
 
 :- object(coupe,
 	imports(sport)).
-
 
 :- end_object.

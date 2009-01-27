@@ -13,7 +13,6 @@
 	member(Element, [_| Tail]) :-
 		member(Element, Tail).
 
-
 	memberchk(Element, [Head| Tail]) :-
 		(	Element == Head ->
 			true

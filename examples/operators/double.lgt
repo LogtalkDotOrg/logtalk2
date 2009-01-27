@@ -1,7 +1,6 @@
 
 :- object(double).
 
-
 	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
@@ -12,10 +11,8 @@
 
 	:- op(500, xfx, double).	% local object operators, not visible outside this object
 
-
 	1 double 2.
 	2 double 4.
 	3 double 6.
-
 
 :- end_object.

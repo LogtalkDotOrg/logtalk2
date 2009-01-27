@@ -56,7 +56,6 @@
 
 
 
-
 :- object(triangle,
 	instantiates(class),
 	specializes(polygon)).
@@ -72,7 +71,6 @@
 	instance_base_name(tri).
 
 :- end_object.
-
 
 
 
@@ -94,8 +92,6 @@
 
 
 
-
-
 :- object(pentagon,
 	instantiates(class),
 	specializes(polygon)).
@@ -114,7 +110,6 @@
 
 
 
-
 :- object(hexagon,
 	instantiates(class),
 	specializes(polygon)).
@@ -130,7 +125,6 @@
 	instance_base_name(hex).
 
 :- end_object.
-
 
 
 

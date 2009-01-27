@@ -268,10 +268,10 @@
 		nth1(Position, Tuple, Object),
 		nth1(Position, Descriptor, Role),
 		::domain(Role, Domain),
-		(Domain::strict_instance ->
+		(	Domain::strict_instance ->
 			\+ Domain::valid(Object)
-			;
-			\+ Object::ancestor(Domain)),
+		;	\+ Object::ancestor(Domain)
+		),
 		self(Self),
 		sender(Sender),
 		throw(error(breaks_domain(Object, Role, Domain), Self::add_tuple(Tuple), Sender)).
@@ -283,10 +283,10 @@
 
 	make_tuple_template([], [], _, []).
 	make_tuple_template([Object| Objects], [Role| Roles], Key, [Var| Rest]) :-
-		(member(Role, Key) ->
+		(	member(Role, Key) ->
 			Var = Object
-			;
-			true),
+		;	true
+		),
 	make_tuple_template(Objects, Roles, Key, Rest).
 
 	remove_tuple(Tuple) :-
@@ -527,7 +527,6 @@
 		::descriptor(Descriptor),
 		set_cardinalities(Cardinalities, Descriptor).
 
-
 	set_cardinalities([], []).
 	set_cardinalities([(Min, Max)| Cardinalities], [Role| Roles]) :-
 		::retractall(cardinality_(Role, _, _)),
@@ -554,21 +553,20 @@
 
 	set_monitors([]).
 	set_monitors([Object| Objects]) :-
-		(instantiates_class(Object, Class) ->
+		(	instantiates_class(Object, Class) ->
 			self(Self),
 			before_event_registry::set_monitor(Class, delete(Object, _), _, Self)
-			;
-			true),
+		;	true
+		),
 		set_monitors(Objects).
 
 	del_monitors([]).
 	del_monitors([Object| Objects]) :-
-		((instantiates_class(Object, Class),
-		  \+ (::tuple(Other), member(Object, Other))) ->
+		(	(instantiates_class(Object, Class), \+ (::tuple(Other), member(Object, Other))) ->
 			self(Self),
 			before_event_registry::del_monitors(Class, delete(Object, _), _, Self)
-			;
-			true),
+		;	true
+		),
 		del_monitors(Objects).
 
 	del_all_monitors :-
@@ -578,15 +576,14 @@
 
 	before(_, delete(Object, Options), _) :-
 		!,
-		((::delete_option(Role, restrict),
-		  ::plays_role_in_tuple(Object, Role, Tuple)) ->
+		(	(::delete_option(Role, restrict), ::plays_role_in_tuple(Object, Role, Tuple)) ->
 			self(Self),
 			sender(Sender),
 			throw(error(can_not_be_deleted(Tuple, Object, Role), Self::delete(Object, Options), Sender))
-			;
-			forall(
+		;	forall(
 				::plays_role_in_tuple(Object, Role, Tuple),
-				::remove_tuple(Tuple))).
+				::remove_tuple(Tuple))
+		).
 
 	before(_, _, _).
 
@@ -651,24 +648,24 @@
 
 	before(Object, Message, Sender) :-
 		self(Self),
-		(Self \= Sender ->
+		(	Self \= Sender ->
 			forall(
 				(::activ_point(Role, before, Message),
 				 ::plays_role_in_tuple(Object, Role, Tuple)),
 				::propagate(before, Message, Object, Role, Tuple))
-			;
-			true),
+		;	true
+		),
 		^^before(Object, Message, Sender).
 
 	after(Object, Message, Sender) :-
 		self(Self),
-		(Self \= Sender ->
+		(	Self \= Sender ->
 			forall(
 				(::activ_point(Role, after, Message),
 				 ::plays_role_in_tuple(Object, Role, Tuple)),
 				::propagate(after, Message, Object, Role, Tuple))
-			;
-			true),
+		;	true
+		),
 		^^after(Object, Message, Sender).
 
 	set_monitors(Tuple) :-
@@ -707,13 +704,13 @@
 		del_monitors(Objects, Roles).
 
 	del_object_monitors(Object, Role) :-
-		::plays_roles(Object, Roles) ->
-			(member(Role, Roles) ->
+		(	::plays_roles(Object, Roles) ->
+			(	member(Role, Roles) ->
 				true
-				;
-				del_object_monitors(Object, Role, Roles))
-			;
-			del_object_monitors(Object, Role, []).
+			;	del_object_monitors(Object, Role, Roles)
+			)
+		;	del_object_monitors(Object, Role, [])
+		).
 
 	del_object_monitors(Object, Role, Roles) :-
 		::unique_messages(Roles, Role, before, Messages1),

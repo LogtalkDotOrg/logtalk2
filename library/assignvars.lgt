@@ -83,10 +83,10 @@ version 2.1 (http://opensource.org/licenses/osl-2.1.php).
 		throw(error(instantiation_error, Self::Assig <= Value, Sender)).
 
 	[_| Tail] <= Value :-
-		nonvar(Tail) ->
+		(	nonvar(Tail) ->
 			Tail <= Value
-			;
-			Tail = [Value| _].
+		;	Tail = [Value| _]
+		).
 
 	Assig => Value :-
 		var(Assig),
@@ -95,9 +95,9 @@ version 2.1 (http://opensource.org/licenses/osl-2.1.php).
 		throw(error(instantiation_error, Self::Assig => Value, Sender)).
 
 	[Current| Tail] => Value :-
-		nonvar(Tail) ->
+		(	nonvar(Tail) ->
 			Tail => Value
-			;
-			Current = Value.
+		;	Current = Value
+		).
 
 :- end_category.

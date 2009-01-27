@@ -7,7 +7,6 @@ http://www.csci.csusb.edu/dick/cs320/prolog/Potions.htm
 
 :- object(potions).
 
-
 	:- info([
 		version is 1.2,
 		date is 2006/3/26,
@@ -21,7 +20,6 @@ http://www.csci.csusb.edu/dick/cs320/prolog/Potions.htm
 	:- info(potions/7, [
 		comment is 'Contents of the seven potions.',
 		argnames is ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7']]).
-
 
 	contents([wine, wine, poison, poison, poison, forward, backwards]).
 
@@ -39,7 +37,6 @@ http://www.csci.csusb.edu/dick/cs320/prolog/Potions.htm
 		select(P4, H6, H7),
 		select(P5, H7, []),
 		two_pairs_poison_wine([P1, P2, P3, P4, P5, P6, P7]).	% first clue
-	
 
 	two_pairs_poison_wine(S) :-
 		poison_wine_pair(S, R),
@@ -47,9 +44,7 @@ http://www.csci.csusb.edu/dick/cs320/prolog/Potions.htm
 
 	poison_wine_pair([poison, wine| R], R) :-
 		!.
-
 	poison_wine_pair([_| L], R) :-
 		poison_wine_pair(L, R).
-
 
 :- end_object.

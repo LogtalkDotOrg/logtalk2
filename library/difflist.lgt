@@ -177,10 +177,10 @@
 	min(List-Back, Aux, Min) :-
 		List \== Back,
 		List = [Head| Tail],
-		(Head @< Aux ->
+		(	Head @< Aux ->
 			min(Tail-Back, Head, Min)
-			;
-			min(Tail-Back, Aux, Min)).
+		;	min(Tail-Back, Aux, Min)
+		).
 
 	new(List) :-
 		unify_with_occurs_check(List, Back-Back).
@@ -267,11 +267,11 @@
 	subtract(List-Back, Ys, List2-Back) :-
 		List \== Back,
 		List = [Head| Tail],
-		(member(Head, Ys) ->
+		(	member(Head, Ys) ->
 			subtract(Tail-Back, Ys, List2-Back)
-			;
-			List2 = [Head| Tail2],
-			subtract(Tail-Back, Ys, Tail2-Back)).
+		;	List2 = [Head| Tail2],
+			subtract(Tail-Back, Ys, Tail2-Back)
+		).
 
 	suffix(Suffix, List) :-
 		unify_with_occurs_check(Suffix, List).

@@ -15,16 +15,13 @@
 		[comment is 'Converts a list to a difference list.',
 		 argnames is ['List', 'Diffist']]).
 
-
 	append([], List, List).
 	append([Head| Tail], List, [Head| Tail2]) :-
 		append(Tail, List, Tail2).
 
-
 	as_difflist([], Back-Back).
 	as_difflist([Head| Tail], [Head| Tail2]-Back) :-
 		as_difflist(Tail, Tail2-Back).
-
 
 	delete([], _, []).
 	delete([Head| Tail], Element, Remaining) :-
