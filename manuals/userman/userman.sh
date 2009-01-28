@@ -37,15 +37,17 @@ eval $xslt_proc -o errors.section userman.xsl errors.html
 eval $xslt_proc -o documenting.section userman.xsl documenting.html
 eval $xslt_proc -o installing.section userman.xsl installing.html
 eval $xslt_proc -o programming.section userman.xsl programming.html
+eval $xslt_proc -o migration.section userman.xsl migration.html
 
 cat -s \
 	userman.header \
 	index.section \
 	userman.body \
 	features.section nomenclature.section messages.section \
-	objects.section protocols.section categories.section predicates.section \
-	inheritance.section events.section threads.section errors.section \
-	documenting.section installing.section programming.section \
+	objects.section protocols.section categories.section \
+	predicates.section inheritance.section events.section \
+	threads.section errors.section documenting.section \
+	installing.section programming.section migration.section \
 	userman.footer \
 	> userman.html
 

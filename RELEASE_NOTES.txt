@@ -23,6 +23,8 @@ RELEASE NOTES
     libraries (meta-arguments must be goals, not closures; the Logtalk compiler
     assumes that an imported_from/1 property is defined for these predicates).
 
+    Moved the Prolog Integration and Migration Guide into the User Manual.
+
     Updated the "BIBLIOGRAPHY.bib" file with recent Logtalk publications.
 
     Updated the "build_release.sh" POSIX shell script steps for building the
