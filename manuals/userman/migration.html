@@ -6,7 +6,7 @@
 
 <head>
 	<meta http-equiv="content-type" content="application/xml+xhtml; charset=utf-8" />
-	<title>Logtalk: Prolog Integration and Migration Guide</title>
+	<title>Logtalk: Prolog integration and migration guide</title>
 	<link rel="stylesheet" href="../print.css" type="text/css" media="print"/>
 	<link rel="stylesheet" href="../screen.css" type="text/css" media="screen"/>
 </head>
@@ -39,7 +39,7 @@ Logtalk source files may contain plain Prolog code intermixed with Logtalk code.
 Most applications consist of several plain Prolog source files, each one defining a few top predicates and auxiliary predicates that are not meant to be directly called by the user. Encapsulating plain Prolog code in objects allows us to make clear the different roles of each predicate, to hide implementation details, and to take advantage of other Logtalk features.
 </p>
 <p>
-Encapsulating Prolog code using Logtalk objects is easy. First, for each source file, add an opening object directive, <a title="Consult reference manual" href="../refman/directives/object1_5.html"><code>object/1</code></a>, to the beginning of the file and an ending object directive, <a title="Consult reference manual" href="../refman/directives/end_object0.html"><code>end_object/0</code></a>, to end of the file. Choose an object name that reflects the purpose of source file code (this is a good opportunity to reorganize your code if needed). Second, add <a title="Consult reference manual" href="../refman/directives/public1.html">public predicate directives</a> for the top-level predicates that are used directly by the user or called from other source files. Third, we need to be able to call from inside an object a predicate defined in other source file/object. The easiest solution, which has the advantage of not implying any modification to the predicate clauses, is to use the <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directive. If your Prolog compiler supports cross-referencing tools, you may use them to help you make sure that all calls to predicates on other source files/objects are listed in the <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directives. Compiling the resulting objects with the Logtalk <code>portability</code> flag set to <code>warning</code> will help you locate calls to predicates defined on other converted source files.
+Encapsulating Prolog code using Logtalk objects is easy. First, for each source file, add an opening object directive, <a title="Consult reference manual" href="../refman/directives/object1_5.html"><code>object/1</code></a>, to the beginning of the file and an ending object directive, <a title="Consult reference manual" href="../refman/directives/end_object0.html"><code>end_object/0</code></a>, to end of the file. Choose an object name that reflects the purpose of source file code (this is a good opportunity to reorganize your code if needed). Second, add <a title="Consult reference manual" href="../refman/directives/public1.html">public predicate directives</a> for the top-level predicates that are used directly by the user or called from other source files. Third, we need to be able to call from inside an object a predicate defined in other source file/object. The easiest solution, which has the advantage of not implying any modification to the predicate clauses, is to use the <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directive. If your Prolog compiler supports cross-referencing tools, you may use them to help you make sure that all calls to predicates on other source files/objects are listed in the <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directives. Compiling the resulting objects with the Logtalk <code>misspelt</code> and <code>portability</code> flags set to <code>warning</code> will help you locate calls to predicates defined on other converted source files.
 </p>
 
 <h3 id="migration_multifile">Prolog multifile predicates</h3>
@@ -120,6 +120,26 @@ X = 3 ;
 X = 4 
 yes 
 </pre>
+<p>
+An alternative, possibly simpler, solution is to keep the clauses for the multifile predicates as plain Prolog code and define a parametric object to encapsulate all predicates working with the multifile predicate clauses. For example, assume the following <code>multifile/1</code> directive:
+</p>
+<pre>
+% city(Name, District, Population, Neighbors)
+:- multifile(city/4).
+</pre>
+<p>
+We can define a parametric object with <code>city/4</code> as its identifier:
+</p>
+<pre>
+:- object(city(_Name, _District, _Population, _Neighbors)).
+
+    % predicates for working with city/4 clauses
+
+:- end_object.
+</pre>
+<p>
+See the section on <a title="Consult user manual" href="objects.html#objects_parametric">parametric objects</a> for more details.
+</p>
 
 <h2 id="migration_converting">Converting Prolog modules into objects</h2>
 
@@ -246,7 +266,7 @@ With this directive, calls to the <code>ins/2</code> predicate alias will be aut
 		<span>Last updated on: January 28, 2009</span>
 	</div>
 	<div class="navbottom">
-		<span><a href="../glossary.html">glossary</a></span><br/>
+		<span><a href="programming.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>
 		<span><a href="http://validator.w3.org/check/referer">XHTML</a> + <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></span>
 	</div>
 </div>
