@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: January 4, 2009
+%  last updated: February 3, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -24,7 +24,8 @@
 	'$lgt_hide_predicates',
 	set_prolog_flag(language, iso),
 	set_prolog_flag(update_semantics, logical),
-	set_prolog_flag(unknown, error))).
+	set_prolog_flag(unknown, error),
+	set_prolog_flag(syntax_errors, error))).
 
 
 '$lgt_hide_predicates' :-
