@@ -6012,11 +6012,14 @@ current_logtalk_flag(version, version(2, 35, 1)).
 '$lgt_tr_directive'(synchronized, Preds, Line, Input, _) :-
 	(	'$lgt_default_flag'(threads, on) ->
 		(	'$lgt_pp_synchronized_' ->
-			'$lgt_pp_entity'(Type, _, _, _, _),
-			'$lgt_inc_compile_warnings_counter',
-			nl, write('%          WARNING!  Ignoring synchronized predicate directive: '),
-			write(Type), write(' already declared as synchronized!'),
-			nl, '$lgt_report_compiler_error_line_number'(Line, Input)
+			(	'$lgt_compiler_flag'(report, on) ->
+				'$lgt_pp_entity'(Type, _, _, _, _),
+				'$lgt_inc_compile_warnings_counter',
+				nl, write('%          WARNING!  Ignoring synchronized predicate directive: '),
+				write(Type), write(' already declared as synchronized!'),
+				nl, '$lgt_report_compiler_error_line_number'(Line, Input)
+			;	true
+			)
 		;	'$lgt_flatten_list'(Preds, Preds2),
 			'$lgt_tr_synchronized_directive'(Preds2)
 		)

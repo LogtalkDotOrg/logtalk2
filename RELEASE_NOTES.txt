@@ -23,6 +23,9 @@ RELEASE NOTES
     libraries (meta-arguments must be goals, not closures; the Logtalk compiler
     assumes that an imported_from/1 property is defined for these predicates).
 
+    Corrected a Logtalk compiler bug where warnings related to synchronized
+    predicates would be reported even with the "report" flag set to "off".
+
     Updated the YAP config file to ensure that the "syntax_errors" proprietary
     flag is set to "error".
 
