@@ -4459,8 +4459,10 @@ current_logtalk_flag(version, version(2, 35, 1)).
 	(	'$lgt_compiler_flag'(report, off) ->
 		true
 	;	(	'$lgt_pp_load_warnings_flag_' ->
+			% not the first warning so we're already in a new line
 			true
 		;	'$lgt_compiler_flag'(report, warnings) ->
+			% in "warnings" mode, print the first warning in a new line
 			nl
 		;	true
 		),
@@ -4471,7 +4473,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 			true
 		;	% we've conflicting entities coming from different source files:
 			File = Base-Path,
-			write('%                loaded from file '), write(Base), write(' ('), write(Path), write(')'), nl
+			write('%               loaded from file '), write(Base), write(' ('), write(Path), write(')'), nl
 		)
 	).
 
@@ -9633,6 +9635,10 @@ current_logtalk_flag(version, version(2, 35, 1)).
 
 
 
+% '$lgt_report_problems'(+atom, +entity_identifier, +atom)
+%
+% reports warning entity context when no line information is available 
+
 '$lgt_report_warning_entity_context'(Type, Entity, File) :-
 	(	'$lgt_compiler_flag'(report, warnings) ->
 		write('%         in '), write(Type), write(' '), writeq(Entity),
@@ -9642,6 +9648,10 @@ current_logtalk_flag(version, version(2, 35, 1)).
 	).
 
 
+
+% '$lgt_report_problems'(+atom, +integer, +stream)
+%
+% reports warning file context when no entity information is available 
 
 '$lgt_report_warning_file_context'(File, Line, Input) :-
 	(	'$lgt_compiler_flag'(report, warnings) ->
@@ -9656,9 +9666,13 @@ current_logtalk_flag(version, version(2, 35, 1)).
 		nl,
 		write('%')
 	;	true
-	).	
+	).
 
 
+
+% '$lgt_report_problems'(+atom, +entity_identifier, +atom, +integer, +stream)
+%
+% reports warning full context 
 
 '$lgt_report_warning_full_context'(Type, Entity, File, Line, Input) :-
 	(	'$lgt_compiler_flag'(report, warnings) ->
@@ -9674,16 +9688,23 @@ current_logtalk_flag(version, version(2, 35, 1)).
 		nl,
 		write('%')
 	;	true
-	).	
+	).
 
 
+
+% '$lgt_report_warning_in_new_line'
+%
+% reports warning full context 
 
 '$lgt_report_warning_in_new_line' :-
 	(	'$lgt_compiler_flag'(report, warnings) ->
+		% in "warnings" mode, only warnings are printed, one per line
 		nl
 	;	'$lgt_pp_entity_warnings_flag_' ->
+		% not the first entity warning so we're already in a new line
 		true
-	;	nl
+	;	% in "on" mode, change line before printing the first warning
+		nl
 	).
 
 
