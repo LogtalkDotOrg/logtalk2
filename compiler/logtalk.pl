@@ -4811,9 +4811,9 @@ current_logtalk_flag(version, version(2, 35, 1)).
 		OpenError,
 		'$lgt_compiler_error_handler'(NewInput, Output, OpenError)),
 	catch(
-		'$lgt_tr_file'(Term, Singletons, File, Line, NewInput, Output),
+		'$lgt_tr_file'(Term, Singletons, Source, Line, NewInput, Output),
 		Error,
-		'$lgt_compiler_error_handler'(NewInput, Output, Error)),
+		'$lgt_compiler_error_handler'(Source, NewInput, Output, Error)),
 	close(NewInput),
 	catch(
 		('$lgt_write_directives'(Output),						% write out any Prolog code that may occur
@@ -5020,13 +5020,30 @@ current_logtalk_flag(version, version(2, 35, 1)).
 
 
 
+% '$lgt_compiler_error_handler'(+atom, +integer, @stream, @stream, +term)
+%
+% closes the streams being used for reading and writing terms, restores
+% the operator table, and reports the compilation error found
+
+'$lgt_compiler_error_handler'(File, Input, Output, Error) :-
+	'$lgt_report_compiler_error_message'(Error),
+	'$lgt_report_error_context'(File, Input),
+	'$lgt_restore_global_op_table',
+	'$lgt_clean_pp_clauses',
+	'$lgt_reset_warnings_counter',
+	catch(close(Input), _, true),
+	catch(close(Output), _, true),
+	throw(Error).
+
+
+
 % '$lgt_compiler_error_handler'(@stream, @stream, +term)
 %
 % closes the streams being used for reading and writing terms, restores
 % the operator table, and reports the compilation error found
 
 '$lgt_compiler_error_handler'(Input, Output, Error) :-
-	'$lgt_report_compiler_error'(Input, Error),
+	'$lgt_report_compiler_error_message'(Error),
 	'$lgt_restore_global_op_table',
 	'$lgt_clean_pp_clauses',
 	'$lgt_reset_warnings_counter',
@@ -5042,7 +5059,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 % the operator table, and reports the compilation error found
 
 '$lgt_compiler_error_handler'(Stream, Error) :-
-	'$lgt_report_compiler_error'(Stream, Error),
+	'$lgt_report_compiler_error_message'(Error),
 	'$lgt_restore_global_op_table',
 	'$lgt_clean_pp_clauses',
 	'$lgt_reset_warnings_counter',
@@ -5065,17 +5082,28 @@ current_logtalk_flag(version, version(2, 35, 1)).
 
 
 
-% '$lgt_report_compiler_error'(@stream, +term)
+% '$lgt_report_error_context'(+atom, @stream)
 %
-% reports a compilation error
+% reports a compilation error context
 
-'$lgt_report_compiler_error'(Stream, Error) :-
-	'$lgt_report_compiler_error_message'(Error),
-	(	catch('$lgt_stream_current_line_number'(Stream, Line), _, fail) ->
-		write('%                   above line '), write(Line), nl
-	;	true
+'$lgt_report_error_context'(File, Input) :-
+	(	'$lgt_compiler_flag'(report, warnings) ->
+		write('%                   in file '), write(File),
+		(	catch('$lgt_stream_current_line_number'(Input, Line), _, fail) ->
+			write(', above line '), write(Line), nl
+		;	true
+		)
+	;	(	catch('$lgt_stream_current_line_number'(Input, Line), _, fail) ->
+			write('%                   above line '), write(Line), nl
+		;	true
+		)
 	).
 
+
+
+% '$lgt_report_compiler_error_message'(+nonvar)
+%
+% reports a compilation error message
 
 '$lgt_report_compiler_error_message'(error(Error, entity(Type, Entity))) :-
 	!,
@@ -5110,16 +5138,6 @@ current_logtalk_flag(version, version(2, 35, 1)).
 '$lgt_report_compiler_error_message'(Error) :-
 	('$lgt_pp_entity'(_, _, _, _, _) -> nl; true),
 	write('%         ERROR!    '), writeq(Error), nl.
-
-
-'$lgt_report_compiler_error_line_number'(Line, Stream) :-
-	(	Line =:= -1 ->
-		(	catch('$lgt_stream_current_line_number'(Stream, Next), _, fail) ->
-			write('%                   above line '), write(Next)
-		;	true
-		)
-	;	write('%                   at line '), write(Line)
-	).
 
 
 
@@ -5533,7 +5551,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 	!,
 	'$lgt_tr_directive'(elif(EGoal), File, Line, Input, Output).
 
-'$lgt_tr_directive'(elif(Goal), _, _, Input, _) :-
+'$lgt_tr_directive'(elif(Goal), File, Line, Input, _) :-
 	retract('$lgt_pp_cc_mode_'(Value)),
 	(	Value == ignore ->						% we're inside an if ... endif 
 		true									% that we're ignoring; do nothing (continue skipping)
@@ -5542,7 +5560,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 		assertz('$lgt_pp_cc_skipping_'),
 		asserta('$lgt_pp_cc_mode_'(skip))
 	;	% Value == seek ->						% the corresponding if is false
-		(	catch(Goal, Error, '$lgt_compiler_error_handler'(Input, Error)) ->
+		(	catch(Goal, Error, '$lgt_compiler_error_handler'(File, Line, Input, Error)) ->
 			retract('$lgt_pp_cc_skipping_'),
 			asserta('$lgt_pp_cc_mode_'(skip))
 		;	asserta('$lgt_pp_cc_mode_'(seek))
@@ -9635,13 +9653,13 @@ current_logtalk_flag(version, version(2, 35, 1)).
 
 
 
-% '$lgt_report_problems'(+atom, +entity_identifier, +atom)
+% '$lgt_report_warning_entity_context'(+atom, +entity_identifier, +atom)
 %
 % reports warning entity context when no line information is available 
 
 '$lgt_report_warning_entity_context'(Type, Entity, File) :-
 	(	'$lgt_compiler_flag'(report, warnings) ->
-		write('%         in '), write(Type), write(' '), writeq(Entity),
+		write('%                   in '), write(Type), write(' '), writeq(Entity),
 		write(', defined in file '), write(File), nl,
 		write('%')
 	;	true
@@ -9649,44 +9667,60 @@ current_logtalk_flag(version, version(2, 35, 1)).
 
 
 
-% '$lgt_report_problems'(+atom, +integer, +stream)
+% '$lgt_report_warning_file_context'(+atom, +integer, +stream)
 %
 % reports warning file context when no entity information is available 
 
 '$lgt_report_warning_file_context'(File, Line, Input) :-
 	(	'$lgt_compiler_flag'(report, warnings) ->
-		write('%         in file '), write(File),
-		(	Line =:= -1 ->
-			(	catch('$lgt_stream_current_line_number'(Input, Next), _, fail) ->
-				write(', above line '), write(Next)
-			;	true
-			)
-		;	write(', at line '), write(Line)
-		),		
-		nl,
+		write('%                   in file '), write(File),
+		'$lgt_report_warning_line_number'(Line, Input),
 		write('%')
+	;	'$lgt_compiler_flag'(report, on) ->
+		'$lgt_report_warning_line_number'(Line, Input)
 	;	true
 	).
 
 
 
-% '$lgt_report_problems'(+atom, +entity_identifier, +atom, +integer, +stream)
+% '$lgt_report_warning_full_context'(+atom, +entity_identifier, +atom, +integer, +stream)
 %
 % reports warning full context 
 
 '$lgt_report_warning_full_context'(Type, Entity, File, Line, Input) :-
 	(	'$lgt_compiler_flag'(report, warnings) ->
-		write('%         in '), write(Type), write(' '), writeq(Entity),
+		write('%                   in '), write(Type), write(' '), writeq(Entity),
 		write(', defined in file '), write(File),
+		'$lgt_report_warning_line_number'(Line, Input),
+		write('%')
+	;	'$lgt_compiler_flag'(report, on) ->
+		'$lgt_report_warning_line_number'(Line, Input)
+	;	true
+	).
+
+
+
+% '$lgt_report_warning_line_number'(+integer, +stream)
+%
+% reports warning line number (if possible) 
+
+'$lgt_report_warning_line_number'(Line, Input) :-
+	(	'$lgt_compiler_flag'(report, warnings) ->
 		(	Line =:= -1 ->
 			(	catch('$lgt_stream_current_line_number'(Input, Next), _, fail) ->
-				write(', above line '), write(Next)
-			;	true
+				write(', above line '), write(Next), nl
+			;	nl
 			)
-		;	write(', at line '), write(Line)
-		),		
-		nl,
-		write('%')
+		;	write(', at line '), write(Line), nl
+		)
+	;	'$lgt_compiler_flag'(report, on) ->
+		(	Line =:= -1 ->
+			(	catch('$lgt_stream_current_line_number'(Input, Next), _, fail) ->
+				write('%                   above line '), write(Next), nl
+			;	nl
+			)
+		;	write('%                   at line '), write(Line), nl
+		)
 	;	true
 	).
 
