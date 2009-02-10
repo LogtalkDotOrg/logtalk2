@@ -5882,9 +5882,9 @@ current_logtalk_flag(version, version(2, 35, 1)).
 	throw(type_error(module_identifier, Module)).
 
 '$lgt_tr_directive'(module, [Module, ExportList], File, Line, Input, Output) :-
-	assertz('$lgt_pp_module_'(Module)),								% remeber we are compiling a module
+	assertz('$lgt_pp_module_'(Module)),										% remeber we are compiling a module
 	'$lgt_report_compiling_entity'(module, Module),
-	'$lgt_tr_object_id'(Module, static),							% assume static module/object
+	'$lgt_tr_object_id'(Module, static),									% assume static module/object
 	'$lgt_tr_directive'((public), ExportList, File, Line, Input, Output),	% make the export list public predicates
 	'$lgt_save_file_op_table'.
 
@@ -8482,17 +8482,16 @@ current_logtalk_flag(version, version(2, 35, 1)).
 
 % convenient access to parametric object proxies
 
-'$lgt_tr_msg'(Pred, Obj, (catch(once(Proxy), error(Error, _), throw(error(Error, Obj::Pred, This))), TPred), This) :-
-    nonvar(Obj),
-    Obj = {Proxy},
-    !,
-    (   var(Proxy) ->
-       '$lgt_tr_msg'(Pred, Proxy, TPred, This)
-    ;   callable(Proxy) ->
-        '$lgt_tr_msg'(Pred, Proxy, TPred, This)
-    ;   throw(type_error(object_identifier, Proxy))
-    ).
-
+'$lgt_tr_msg'(Pred, Obj, (catch(Proxy, error(Error, _), throw(error(Error, Obj::Pred, This))), TPred), This) :-
+	nonvar(Obj),
+	Obj = {Proxy},
+	!,
+	(   var(Proxy) ->
+		'$lgt_tr_msg'(Pred, Proxy, TPred, This)
+	;   callable(Proxy) ->
+		'$lgt_tr_msg'(Pred, Proxy, TPred, This)
+	;   throw(type_error(object_identifier, Proxy))
+	).
 
 
 % translation performed at runtime

@@ -29,6 +29,10 @@ RELEASE NOTES
     Corrected a Logtalk compiler bug where warnings related to synchronized
     predicates would be reported even with the "report" flag set to "off".
 
+    Changed the semantics of the Logtalk notation for accessing object proxies
+    represented as Prolog facts when sending a message to allow backtracking 
+    over the proxy goal.
+
     Updated the YAP config file to ensure that the "syntax_errors" proprietary
     flag is set to "error".
 

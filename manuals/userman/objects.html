@@ -197,7 +197,7 @@ Compound terms with the same functor and (usually) the same number of arguments 
 </p>
 <pre>{Proxy}::Message</pre>
 <p>
-In this context, the proxy argument is proved as a plain, deterministic Prolog goal. If successful, the message is sent to the corresponding parametric object. Typically, the proof allows retrieving of parameter instantiations. This construct should be used with a proxy argument that is sufficiently instantiated in order to unify with a single Prolog fact.
+In this context, the proxy argument is proved as a plain Prolog goal. If successful, the message is sent to the corresponding parametric object. Typically, the proof allows retrieving of parameter instantiations. This construct can either be used with a proxy argument that is sufficiently instantiated in order to unify with a single Prolog fact or with a proxy argument that unifies with several facts on backtracking.
 </p>
 
 <h2 id="objects_finding">Finding defined objects</h2>
@@ -442,7 +442,7 @@ Logtalk defines an empty built-in object named <code>logtalk</code>, which can p
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: October 20, 2008</span>
+		<span>Last updated on: February 10, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="messages.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="protocols.html">next</a></span><br/>
