@@ -251,10 +251,11 @@ GNU Prolog 1.3.0 and later versions
 	directory before loading the library or an example. Supports smart 
 	compilation of source files.
 
-	On startup, you may get a warning about a suspicious predicate, {}/1.
-	You may safely ignore this warning. Warnings may also be printed 
-	regarding multifile directives. You can also safely ignore these 
-	warnings.
+	When using GNU Prolog 1.3.0, you may get a warning about a suspicious
+	predicate ({}/1) at startup. You may safely ignore this warning. 
+	Warnings may also be printed regarding multifile directives. You can 
+	also safely ignore these warnings. These warnings can be avoided by
+	upgrading to GNU Prolog 1.3.1 or later versions.
 
 
 IF/Prolog 5.1 and later versions
@@ -492,6 +493,13 @@ SWI Prolog 5.6.44 and later versions
 	With multi-threading support turned on, you may get an harmless message
 	when halting the system regarding threads that wouldn't die: you can 
 	suppress the message on POSIX systems by using "% swilgt 2> /dev/null".
+
+	The definition of the predicate {}/1 in the config file conflicts with 
+	the "clpq" and "clpr" SWI-Prolog constrain libraries. The {}/1 predicate
+	is used in Logtalk as a shortcut to the logtalk_load/1 built-in predicate.
+	Comment out the definition in the config file if necessary. Note that 
+	Logtalk also defines a {}/1 control construct but this is only used within
+	objects and categories.
 
 
 XSB 3.1 and later versions
