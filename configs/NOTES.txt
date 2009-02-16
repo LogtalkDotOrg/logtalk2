@@ -495,7 +495,7 @@ SWI Prolog 5.6.44 and later versions
 	suppress the message on POSIX systems by using "% swilgt 2> /dev/null".
 
 	The definition of the predicate {}/1 in the config file conflicts with 
-	the "clpq" and "clpr" SWI-Prolog constrain libraries. The {}/1 predicate
+	the "clpq" and "clpr" SWI-Prolog constraint libraries. The {}/1 predicate
 	is used in Logtalk as a shortcut to the logtalk_load/1 built-in predicate.
 	Comment out the definition in the config file if necessary. Note that 
 	Logtalk also defines a {}/1 control construct but this is only used within
