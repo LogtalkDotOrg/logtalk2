@@ -47,3 +47,10 @@ true.
 id: #2, area: 43.2412, perimeter: 23.3106, color: yellow
 R = 3.71,
 C = yellow.
+
+
+% construct a list with the areas of all cicles:
+
+| ?- findall(Area, {circle(_, _, _)}::area(Area), Areas).
+
+Areas = [4.75291, 43.2412, 0.477836, 103.508, 217.468].
