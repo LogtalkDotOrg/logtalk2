@@ -7143,7 +7143,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 	'$lgt_report_warning_in_new_line',
 	'$lgt_inc_compile_warnings_counter',
 	write('%         WARNING!  Missing reference to the "expanding" built-in protocol: '),
-	writeq(Functor/3), nl,
+	writeq(Functor/2), nl,
 	'$lgt_pp_entity'(Type, Entity, _, _, _),
 	'$lgt_report_warning_full_context'(Type, Entity, File, Line, Input),
 	fail.
