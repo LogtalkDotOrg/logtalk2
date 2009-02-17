@@ -18,3 +18,12 @@ and running unit tests in Logtalk. To compile and load it type:
 The unit tests framework is inspired on the works of Joachim Schimpf 
 (ECLiPSe library "test_util") and Jan Wielemaker (SWI-Prolog "plunit" 
 package).
+
+In order to write your own unit tests, define objects extending the 
+"lgtunit" object and use the <</2 context-switching call control 
+construct to write the tests. Make sure that the read-only compiler 
+flag "context_switching_calls" is set to "allow" in the config file 
+of your back-end Prolog compiler.
+
+For an example of how to write unit tests check the "testing" example 
+in the "examples" folder in the Logtalk distribution.
