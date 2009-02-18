@@ -11,7 +11,7 @@
 %
 %  configuration file for Amzi! Prolog 7.6.1 and later versions
 %
-%  last updated: November 7, 2008
+%  last updated: February 18, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -75,6 +75,9 @@ write_term(Stream, Term, _) :-
 
 
 % '$lgt_predicate_property'(+callable, ?predicate_property)
+
+'$lgt_predicate_property'(':'(_,_), built_in) :-
+	!.
 
 '$lgt_predicate_property'(Predicate, Property) :-
 	functor(Predicate, Functor, Arity),

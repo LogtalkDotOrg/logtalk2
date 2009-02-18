@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: February 8, 2009
+%  last updated: February 18, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -103,6 +103,9 @@
 
 
 % '$lgt_predicate_property'(+callable, ?predicate_property)
+
+'$lgt_predicate_property'(':'(_,_), built_in) :-
+	!.
 
 '$lgt_predicate_property'(Pred, Prop) :-
 	predicate_property(Pred, Prop).

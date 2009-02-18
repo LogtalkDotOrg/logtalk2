@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 5.10#26 and later versions
 %
-%  last updated: November 7, 2008
+%  last updated: February 18, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -55,6 +55,9 @@
 
 
 % '$lgt_predicate_property'(+callable, ?predicate_property)
+
+'$lgt_predicate_property'(':'(_,_), built_in) :-
+	!.
 
 '$lgt_predicate_property'(Predicate, built_in) :-
 	functor(Predicate, Functor, Arity),

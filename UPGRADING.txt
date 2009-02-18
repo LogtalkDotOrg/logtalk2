@@ -226,3 +226,7 @@ Logtalk version.
 
 Logtalk 2.35.0 changes how entities are compiled implying recompilation of all
 source code.
+
+Logtalk 2.35.1 changes the config files of all back-end Prolog compilers that
+support a module system in order to reliably support compilation of explicitly
+qualified module calls in the body of object (and category) predicate clauses.

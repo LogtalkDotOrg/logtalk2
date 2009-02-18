@@ -15,6 +15,15 @@ RELEASE NOTES
 
 2.35.1 - February ??, 2009
 
+    Allow explicitly qualified module calls in the body of category and object 
+    predicate clauses without requiring the calls to be wrapped within a {}/1
+    control construct to ensure successful compilation. This requires an hack
+    in the config files of most back-end Prolog compilers with module systems
+    as the implementations of the predicate_property/2 built-in predicate 
+    cannot be used to test if :/2 is a built-in control construct. Updated the
+    config files of Amzi! Prolog, Ciao, IF/Prolog, Quintus Prolog, SICStus 
+    Prolog, SWI-Prolog, XSB, and YAP.
+
     Improved the Logtalk compiler compatibility with Prolog meta_predicate/1
     directives that use the integer zero as an alternative to the atom ':' for
     denoting meta-arguments that are goals.

@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %
-%  last updated: December 28, 2008
+%  last updated: February 18, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -57,6 +57,9 @@ goal_expansion(CallWitArgs, Call) :-
 
 
 % '$lgt_predicate_property'(+callable, ?predicate_property)
+
+'$lgt_predicate_property'(':'(_,_), built_in) :-
+	!.
 
 '$lgt_predicate_property'(Pred, Prop) :-
 	predicate_property(Pred, Prop).

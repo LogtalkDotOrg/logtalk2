@@ -11,7 +11,7 @@
 %
 %  configuration file for Ciao Prolog 1.8p2 to 1.10#8
 %
-%  last updated: January 13, 2009
+%  last updated: February 18, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -65,6 +65,9 @@
 
 
 % '$lgt_predicate_property'(+callable, ?predicate_property)
+
+'$lgt_predicate_property'(':'(_,_), built_in) :-
+	!.
 
 '$lgt_predicate_property'(Pred, built_in) :-
 	functor(Pred, Functor, Arity),

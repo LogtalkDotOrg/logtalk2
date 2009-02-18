@@ -11,7 +11,7 @@
 %
 %  configuration file for Quintus Prolog 3.3~3.5
 %
-%  last updated: November 7, 2008
+%  last updated: February 18, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -101,6 +101,9 @@ throw(Ball) :-
 
 
 % '$lgt_predicate_property'(+callable, ?predicate_property)
+
+'$lgt_predicate_property'(':'(_,_), built_in) :-
+	!.
 
 '$lgt_predicate_property'(Pred, Prop) :-
 	predicate_property(Pred, Prop).
