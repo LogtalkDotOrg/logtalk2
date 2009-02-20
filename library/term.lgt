@@ -126,7 +126,7 @@
 
 	variables(Term, Vars) :-
 		vars(Term, [], List),
-		reverse(List, Vars).
+		reverse(List, [], Vars).
 
 	vars(Term, Acc, Vars) :-
 		(	var(Term) ->
