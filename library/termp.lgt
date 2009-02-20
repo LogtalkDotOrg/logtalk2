@@ -2,9 +2,9 @@
 :- protocol(termp).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2007/4/3,
+		date is 2009/2/19,
 		comment is 'Prolog term utility predicates protocol.']).
 
 	:- public(depth/2).
@@ -55,10 +55,16 @@
 		comment is 'Each term is a variant of the other (i.e. they are structurally equivalent).',
 		argnames is ['Term1', 'Term2']]).
 
-	:- public(vars/2).
-	:- mode(vars(@term, -list), one).
-	:- info(vars/2, [
-		comment is 'Returns a list of all term variables.',
+	:- public(variables/2).
+	:- mode(variables(@term, -list), one).
+	:- info(variables/2, [
+		comment is 'Returns a list of all term variables (ordered as found when doing a depth-first, left-to-right traversal of Term).',
 		argnames is ['Term', 'List']]).
+
+	:- public(singletons/2).
+	:- mode(singletons(@term, -list), one).
+	:- info(singletons/2, [
+		comment is 'Returns a list of all term singleton variables (ordered as found when doing a depth-first, left-to-right traversal of Term).',
+		argnames is ['Term', 'Singletons']]).
 
 :- end_protocol.

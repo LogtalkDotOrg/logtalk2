@@ -3,10 +3,12 @@
 	implements(termp)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2007/4/3,
+		date is 2009/2/19,
 		comment is 'Prolog term utility predicates.']).
+
+	:- alias(termp, variables/2, vars/2).
 
 	depth(Term, Depth) :-
 		depth(Term, 0, 0, Depth).
@@ -66,7 +68,7 @@
 		occurs(N2, Var, Term).
 
 	subsumes(General, Specific) :-
-		vars(Specific, Vars),
+		vars(Specific, [], Vars),
 		subsumes(General, Specific, Vars).
 
 	subsumes(General, Specific, Vars) :-
@@ -119,8 +121,12 @@
 		\+ \+ subsumes(Term1, Term2),
 		\+ \+ subsumes(Term2, Term1).
 
-	vars(Term, Vars) :-
-		vars(Term, [], Vars).
+	vars(Term, Vars) :-			% deprecated
+		variables(Term, Vars).
+
+	variables(Term, Vars) :-
+		vars(Term, [], List),
+		reverse(List, Vars).
 
 	vars(Term, Acc, Vars) :-
 		(	var(Term) ->
@@ -129,12 +135,45 @@
 			;	Vars = [Term| Acc]
 			)
 		;	Term =.. [_| Args],
-			var_list(Args, Acc, Vars)
+			vars_list(Args, Acc, Vars)
 		).
 
-	var_list([], Vars, Vars).
-	var_list([Term| Terms], Acc, Vars) :-
+	vars_list([], Vars, Vars).
+	vars_list([Term| Terms], Acc, Vars) :-
 		vars(Term, Acc, Acc2),
-		var_list(Terms, Acc2, Vars).
+		vars_list(Terms, Acc2, Vars).
+
+	reverse([], Reversed, Reversed).
+	reverse([Head| Tail], List, Reversed) :-
+		reverse(Tail, [Head| List], Reversed).
+
+	singletons(Term, Singletons) :-
+		term_to_vars(Term, [], Vars),
+		vars_to_singletons(Vars, [], [], Singletons).
+
+	term_to_vars(Term, Acc, Vars) :-
+		(	var(Term) ->
+			Vars = [Term| Acc]
+		;	Term =.. [_| Args],
+			term_to_vars_list(Args, Acc, Vars)
+		).
+
+	term_to_vars_list([], Vars, Vars).
+	term_to_vars_list([Term| Terms], Acc, Vars) :-
+		term_to_vars(Term, Acc, Acc2),
+		term_to_vars_list(Terms, Acc2, Vars).
+
+	vars_to_singletons([], _, Singletons, Singletons).
+	vars_to_singletons([Var| Vars], Repeated, Acc, Singletons) :-
+		(	var_member_chk(Var, Repeated) ->
+			Repeated2 = Repeated,
+			Acc2 = Acc
+		;	var_member_chk(Var, Vars) ->
+			Repeated2 = [Var| Repeated],
+			Acc2 = Acc
+		;	Repeated = Repeated2,
+			Acc2 = [Var| Acc]
+		),
+		vars_to_singletons(Vars, Repeated2, Acc2, Singletons).
 
 :- end_object.

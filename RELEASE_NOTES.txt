@@ -49,6 +49,12 @@ RELEASE NOTES
     later and turn off the flags "suspicious_warning" and "multifile_warning"
     while loading Logtalk. This avoids spurious warnings at Logtalk startup.
 
+    Updated the library object "term", adding a singletons/2 predicate and
+    renaming the predicate vars/2 to variables/2 (the old name is still
+    available but shall be considered deprecated). Both the variables/2 and
+    the singletons/2 predicates return variables ordered as found when doing
+    a depth-first, left-to-right term traversal.
+
     Moved the Prolog Integration and Migration Guide into the User Manual.
 
     Updated the "BIBLIOGRAPHY.bib" file with recent Logtalk publications.
