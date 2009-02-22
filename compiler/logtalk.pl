@@ -4901,6 +4901,44 @@ current_logtalk_flag(version, version(2, 35, 1)).
 
 
 
+% '$lgt_add_referenced_object'(@object_identifier)
+%
+% adds referenced object for cheking references to unknown objects
+
+'$lgt_add_referenced_object'(Obj) :-
+	(	'$lgt_pp_referenced_object_'(Obj) ->
+		true
+	;	functor(Obj, Functor, Arity),
+		functor(Template, Functor, Arity),
+		assertz('$lgt_pp_referenced_object_'(Template))
+	).
+
+
+
+% '$lgt_add_referenced_protocol'(@protocol_identifier)
+%
+% adds referenced protocol for cheking references to unknown protocols
+
+'$lgt_add_referenced_protocol'(Ptc) :-
+	(	'$lgt_pp_referenced_protocol_'(Ptc) ->
+		true
+	;	assertz('$lgt_pp_referenced_protocol_'(Ptc))
+	).
+
+
+
+% '$lgt_add_referenced_category'(@category_identifier)
+%
+% adds referenced category for cheking references to unknown categories
+
+'$lgt_add_referenced_category'(Ctg) :-
+	(	'$lgt_pp_referenced_category_'(Ctg) ->
+		true
+	;	assertz('$lgt_pp_referenced_category_'(Ctg))
+	).
+
+
+
 % '$lgt_add_entity_file_properties'(@nonvar, @entity_identifier)
 %
 % adds entity properties related to the entity source file
@@ -5981,7 +6019,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 
 '$lgt_tr_directive'(uses, [Obj, Preds], _, _, _, _) :-
 	!,
-	assertz('$lgt_pp_referenced_object_'(Obj)),
+	'$lgt_add_referenced_object'(Obj),
 	assertz('$lgt_pp_uses_'(Obj)),
 	'$lgt_tr_uses_preds'(Preds, Obj).
 
@@ -5995,7 +6033,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 	throw(type_error(object_identifier, Obj)).
 
 '$lgt_tr_directive'(uses, [Obj], _, _, _, _) :-
-	assertz('$lgt_pp_referenced_object_'(Obj)),
+	'$lgt_add_referenced_object'(Obj),
 	assertz('$lgt_pp_uses_'(Obj)).
 
 
@@ -6190,7 +6228,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 	throw(type_error(protocol_identifier, Ptc)).
 
 '$lgt_tr_calls_directive'([Ptc| Ptcs]) :-
-	assertz('$lgt_pp_referenced_protocol_'(Ptc)),
+	'$lgt_add_referenced_protocol'(Ptc),
 	assertz('$lgt_pp_calls_'(Ptc)),
 	'$lgt_tr_calls_directive'(Ptcs).
 
@@ -8474,7 +8512,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 	;	(	\+ callable(Obj) ->
 			throw(type_error(object_identifier, Obj))		% invalid object identifier
 		;	This \== user,									% not runtime message translation
-			assertz('$lgt_pp_referenced_object_'(Obj)),		% remember object receiving message
+			'$lgt_add_referenced_object'(Obj),				% remember object receiving message
 			fail
 		)
 	).
@@ -9332,7 +9370,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 % functor prefixes used in the compiled code clauses
 
 '$lgt_tr_object_id'(Obj, Mode) :-
-	assertz('$lgt_pp_referenced_object_'(Obj)),
+	'$lgt_add_referenced_object'(Obj),
 	'$lgt_construct_object_functors'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm),
 	assertz('$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Mode)),
 	asserta('$lgt_pp_pred_mutex_count_'(0)).
@@ -9345,7 +9383,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 % functor prefixes used in the compiled code clauses
 
 '$lgt_tr_category_id'(Ctg, Mode) :-
-	assertz('$lgt_pp_referenced_category_'(Ctg)),
+	'$lgt_add_referenced_category'(Ctg),
 	'$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def, Rnm),
 	assertz('$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Mode)),
 	asserta('$lgt_pp_pred_mutex_count_'(0)).
@@ -9358,7 +9396,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 % functor prefixes used in the compiled code clauses
 
 '$lgt_tr_protocol_id'(Ptc, Mode) :-
-	assertz('$lgt_pp_referenced_protocol_'(Ptc)),
+	'$lgt_add_referenced_protocol'(Ptc),
 	'$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl, Rnm),
 	assertz('$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Mode)),
 	% needed in order to be able to save synchronized predicate properties:
@@ -9400,7 +9438,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 	(	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		(	'$lgt_valid_protocol_ref'(Ref, Ptc) ->
 			(	ObjOrCtg \= Ptc ->
-				assertz('$lgt_pp_referenced_protocol_'(Ptc)),
+				'$lgt_add_referenced_protocol'(Ptc),
 				assertz('$lgt_pp_rclause_'('$lgt_implements_protocol_'(ObjOrCtg, Ptc, Scope))),
 				'$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl, _),
 				assertz('$lgt_pp_implemented_protocol_'(Ptc, Prefix, Dcl, Scope)),
@@ -9432,7 +9470,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 	(	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		(	'$lgt_valid_category_ref'(Ref, Ctg) ->
 			(	Obj \= Ctg ->
-				assertz('$lgt_pp_referenced_category_'(Ctg)),
+				'$lgt_add_referenced_category'(Ctg),
 				assertz('$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, Scope))),
 				'$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def, _),
 				assertz('$lgt_pp_imported_category_'(Ctg, Prefix, Dcl, Def, Scope)),
@@ -9463,7 +9501,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 '$lgt_tr_instantiates_class'([Ref| Refs], Obj) :-
 	(	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		(	'$lgt_valid_object_ref'(Ref, Class) ->
-			assertz('$lgt_pp_referenced_object_'(Class)),
+			'$lgt_add_referenced_object'(Class),
 			assertz('$lgt_pp_rclause_'('$lgt_instantiates_class_'(Obj, Class, Scope))),
 			'$lgt_construct_object_functors'(Class, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, _),
 			assertz('$lgt_pp_instantiated_class_'(Class, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)),
@@ -9493,7 +9531,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 	(	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		(	'$lgt_valid_object_ref'(Ref, Superclass) ->
 			(	Class \= Superclass ->
-				assertz('$lgt_pp_referenced_object_'(Superclass)),
+				'$lgt_add_referenced_object'(Superclass),
 				assertz('$lgt_pp_rclause_'('$lgt_specializes_class_'(Class, Superclass, Scope))),
 				'$lgt_construct_object_functors'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, _),
 				assertz('$lgt_pp_specialized_class_'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)),
@@ -9525,7 +9563,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 	(	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		(	'$lgt_valid_object_ref'(Ref, Parent) ->
 			(	Obj \= Parent ->
-				assertz('$lgt_pp_referenced_object_'(Parent)),
+				'$lgt_add_referenced_object'(Parent),
 				assertz('$lgt_pp_rclause_'('$lgt_extends_object_'(Obj, Parent, Scope))),
 				'$lgt_construct_object_functors'(Parent, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, _),
 				assertz('$lgt_pp_extended_object_'(Parent, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)),
@@ -9557,7 +9595,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 	(	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		(	'$lgt_valid_protocol_ref'(Ref, Ptc2) ->
 			(	Ptc1 \= Ptc2 ->
-				assertz('$lgt_pp_referenced_protocol_'(Ptc2)),
+				'$lgt_add_referenced_protocol'(Ptc2),
 				assertz('$lgt_pp_rclause_'('$lgt_extends_protocol_'(Ptc1, Ptc2, Scope))),
 				'$lgt_construct_protocol_functors'(Ptc2, Prefix, Dcl, _),
 				assertz('$lgt_pp_extended_protocol_'(Ptc2, Prefix, Dcl, Scope)),
@@ -9589,7 +9627,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 	(	'$lgt_valid_ref_scope'(Ref, Scope) ->
 		(	'$lgt_valid_category_ref'(Ref, Ctg2) ->
 			(	Ctg1 \= Ctg2 ->
-				assertz('$lgt_pp_referenced_category_'(Ctg2)),
+				'$lgt_add_referenced_category'(Ctg2),
 				assertz('$lgt_pp_rclause_'('$lgt_extends_category_'(Ctg1, Ctg2, Scope))),
 				'$lgt_construct_category_functors'(Ctg2, Prefix, Dcl, Def, _),
 				assertz('$lgt_pp_extended_category_'(Ctg2, Prefix, Dcl, Def, Scope)),
@@ -9627,7 +9665,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 	throw(permission_error(complement, Obj)).
 
 '$lgt_tr_complements_category'([Obj| Objs], Ctg, Dcl, Def, Rnm) :-
-	assertz('$lgt_pp_referenced_object_'(Obj)),
+	'$lgt_add_referenced_object'(Obj),
 	assertz('$lgt_pp_complemented_object_'(Obj)),
 	assertz('$lgt_pp_rclause_'('$lgt_complemented_object_'(Obj, Ctg, Dcl, Def, Rnm))),
 	'$lgt_tr_complements_category'(Objs, Ctg, Dcl, Def, Rnm).

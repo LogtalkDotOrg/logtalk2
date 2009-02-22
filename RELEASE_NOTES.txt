@@ -42,6 +42,9 @@ RELEASE NOTES
     represented as Prolog facts when sending a message to allow backtracking 
     over the proxy goal.
 
+    Updated the Logtalk compiler to avoid reporting multiples reference to the
+    same unknown parametric object.
+
     Updated the YAP config file to ensure that the "syntax_errors" proprietary
     flag is set to "error".
 
