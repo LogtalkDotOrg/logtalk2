@@ -3109,6 +3109,11 @@ current_logtalk_flag(version, version(2, 35, 1)).
 		)
 	).
 
+'$lgt_send_to_object_nv'({Proxy}, Pred, Sender) :-
+	!,
+	catch(Proxy, error(Error, _), throw(error(Error, {Proxy}::Pred, Sender))),
+	'$lgt_send_to_object_nv'(Proxy, Pred, Sender).
+
 '$lgt_send_to_object_nv'(Obj, Pred, _) :-		% allow Obj::Pred to be used as a shortcut
 	catch(current_module(Obj), _, fail),		% for calling module predicates
 	!,
@@ -3175,6 +3180,11 @@ current_logtalk_flag(version, version(2, 35, 1)).
 			call(Pred)
 		;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender)))
 	).
+
+'$lgt_send_to_object_ne_nv'({Proxy}, Pred, Sender) :-
+	!,
+	catch(Proxy, error(Error, _), throw(error(Error, {Proxy}::Pred, Sender))),
+	'$lgt_send_to_object_ne_nv'(Proxy, Pred, Sender).
 
 '$lgt_send_to_object_ne_nv'(Obj, Pred, _) :-	% allow Obj::Pred to be used as a shortcut
 	catch(current_module(Obj), _, fail),		% for calling module predicates

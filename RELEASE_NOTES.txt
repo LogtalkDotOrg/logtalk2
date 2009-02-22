@@ -38,9 +38,11 @@ RELEASE NOTES
     Corrected a Logtalk compiler bug where warnings related to synchronized
     predicates would be reported even with the "report" flag set to "off".
 
+    Added support to the message sending mechanisms for using the object proxy
+    access notation when the message receiver is only known at runtime.
+
     Changed the semantics of the Logtalk notation for accessing object proxies
-    represented as Prolog facts when sending a message to allow backtracking 
-    over the proxy goal.
+    when sending a message to allow backtracking over the proxy goal.
 
     Updated the Logtalk compiler to avoid reporting multiples reference to the
     same unknown parametric object.
