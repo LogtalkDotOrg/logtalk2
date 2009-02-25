@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.35.1 - February ??, 2009
+2.35.1 - March 1, 2009
 
     Allow explicitly qualified module calls in the body of category and object 
     predicate clauses without requiring the calls to be wrapped within a {}/1

@@ -188,7 +188,7 @@ This allows us to load a library source file without the need to first change th
 </p>
 <pre>| ?- logtalk_load(viewpoints(loader)). </pre>
 <p>
-The best way to take advantage of this feature is to load at startup a source file containing an <code>initialization/1</code> directive which asserts all the <code>logtalk_library_path/2</code> clauses needed for all available libraries. This allows us to load library source files or entire libraries without worrying about libraries paths, improving code portability. The directory paths on the second argument must always end with the path directory separator character. Most back-end Prolog compilers allows the use of environment variables in the second argument of the <code>logtalk_library_path/2</code> predicate. Use of POSIX relative paths (e.g. <code>'../'</code> or <code>'./'</code>) for top-level library directories (e.g. <code>lgtuser</code> in the example above) is not advised as different back-end Prolog compilers may start with different initial working directories, which may result in portability problems of your loader files.
+The best way to take advantage of this feature is to load at startup a source file containing an <code>initialization/1</code> directive which asserts all the <code>logtalk_library_path/2</code> clauses needed for all available libraries. This allows us to load library source files or entire libraries without worrying about libraries paths, improving code portability. The directory paths on the second argument <strong>must</strong> always end with the path directory separator character. Most back-end Prolog compilers allows the use of environment variables in the second argument of the <code>logtalk_library_path/2</code> predicate. Use of POSIX relative paths (e.g. <code>'../'</code> or <code>'./'</code>) for top-level library directories (e.g. <code>lgtuser</code> in the example above) is not advised as different back-end Prolog compilers may start with different initial working directories, which may result in portability problems of your loader files.
 </p>
 <p>
 Unfortunately, a few Prolog compilers do not support the <code>&lt;library&gt;(&lt;source file&gt;)</code> notation. In this case, you will need to set the working directory to be the one that contains the source file in order to load it. The library notation provides functionality similar to the <code>file_search_path/2</code> mechanism introduced by Quintus Prolog and later adopted by some other Prolog compilers.
@@ -305,7 +305,7 @@ Logtalk also implements a <a title="Consult reference manual" href="../refman/di
 	</dl>
 	<dl>
 		<dt><code>reload(Option)</code></dt>
-			<dd>Defines the reloading behavior for source files. Possible option values are <code>skip</code> (skip loading of already loaded files) and <code>always</code> (always reload files; the usual default). This option must not be used when recompiling source files in debug mode (see <code>debug/1</code> option above).</dd>
+			<dd>Defines the reloading behavior for source files. Possible option values are <code>skip</code> (skip loading of already loaded files; this value can be used to get similar functionality to the Prolog directive <code>ensure_loaded/1</code>) and <code>always</code> (always reload files; the usual default when developing). This option must not be used when recompiling source files in debug mode (see <code>debug/1</code> option above).</dd>
 	</dl>
 	<dl>
 		<dt><code>smart_compilation(Option)</code></dt>
@@ -653,7 +653,7 @@ The Logtalk compiler automatically removes any redundant calls to the built-in p
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: February 8, 2009</span>
+		<span>Last updated on: February 24, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="installing.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="migration.html">next</a></span><br/>
