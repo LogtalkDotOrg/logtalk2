@@ -58,7 +58,9 @@ RELEASE NOTES
     renaming the predicate vars/2 to variables/2 (the old name is still
     available but shall be considered deprecated). Both the variables/2 and
     the singletons/2 predicates return variables ordered as found when doing
-    a depth-first, left-to-right term traversal.
+    a depth-first, left-to-right term traversal. Optimized the implementation
+    of the predicates ground/1 and variables/2 to use the Prolog built-in 
+    versions of these predicates when available.
 
     Moved the Prolog Integration and Migration Guide into the User Manual.
 

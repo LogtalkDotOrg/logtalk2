@@ -5,7 +5,7 @@
 	:- info([
 		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2009/2/19,
+		date is 2009/2/24,
 		comment is 'Prolog term utility predicates.']).
 
 	:- alias(termp, variables/2, vars/2).
@@ -36,19 +36,32 @@
 		Term =.. [_| Args],
 		depth(Args, Acc2, MaxSoFar, Depth).
 
-	ground(Term) :-
-		nonvar(Term),
-		functor(Term, _, Arity),
-		ground(Arity, Term).
+	:- if((
+		current_logtalk_flag(prolog, Prolog),
+		(Prolog == b; Prolog == cx; Prolog == swi; Prolog == yap; Prolog == sicstus),
+		predicate_property(ground(_), built_in)
+	)).
 
-	ground(0, _) :-
-		!.
-	ground(N, Term) :-
-		N > 0,
-		arg(N, Term, Arg),
-		ground(Arg),
-		N2 is N - 1,
-		ground(N2, Term).
+		ground(Term) :-
+			{ground(Term)}.
+
+	:- else.
+
+		ground(Term) :-
+			nonvar(Term),
+			functor(Term, _, Arity),
+			ground(Arity, Term).
+
+		ground(0, _) :-
+			!.
+		ground(N, Term) :-
+			N > 0,
+			arg(N, Term, Arg),
+			ground(Arg),
+			N2 is N - 1,
+			ground(N2, Term).
+
+	:- endif.
 
 	occurs(Var, Term) :-
 		(	var(Term) ->
@@ -68,7 +81,7 @@
 		occurs(N2, Var, Term).
 
 	subsumes(General, Specific) :-
-		vars(Specific, [], Vars),
+		variables(Specific, Vars),
 		subsumes(General, Specific, Vars).
 
 	subsumes(General, Specific, Vars) :-
@@ -121,31 +134,47 @@
 		\+ \+ subsumes(Term1, Term2),
 		\+ \+ subsumes(Term2, Term1).
 
-	vars(Term, Vars) :-			% deprecated
-		variables(Term, Vars).
+	:- if((
+		current_logtalk_flag(prolog, Prolog),
+		(Prolog == swi; Prolog == yap),
+		predicate_property(term_variables(_,_), built_in)
+	)).
 
-	variables(Term, Vars) :-
-		vars(Term, [], List),
-		reverse(List, [], Vars).
+		vars(Term, Vars) :-			% deprecated
+			{term_variables(Term, Vars)}.
 
-	vars(Term, Acc, Vars) :-
-		(	var(Term) ->
-			(	var_member_chk(Term, Acc) ->
-				Vars = Acc
-			;	Vars = [Term| Acc]
-			)
-		;	Term =.. [_| Args],
-			vars_list(Args, Acc, Vars)
-		).
+		variables(Term, Vars) :-
+			{term_variables(Term, Vars)}.
 
-	vars_list([], Vars, Vars).
-	vars_list([Term| Terms], Acc, Vars) :-
-		vars(Term, Acc, Acc2),
-		vars_list(Terms, Acc2, Vars).
+	:- else.
 
-	reverse([], Reversed, Reversed).
-	reverse([Head| Tail], List, Reversed) :-
-		reverse(Tail, [Head| List], Reversed).
+		vars(Term, Vars) :-			% deprecated
+			variables(Term, Vars).
+
+		variables(Term, Vars) :-
+			vars(Term, [], List),
+			reverse(List, [], Vars).
+
+		vars(Term, Acc, Vars) :-
+			(	var(Term) ->
+				(	var_member_chk(Term, Acc) ->
+					Vars = Acc
+				;	Vars = [Term| Acc]
+				)
+			;	Term =.. [_| Args],
+				vars_list(Args, Acc, Vars)
+			).
+
+		vars_list([], Vars, Vars).
+		vars_list([Term| Terms], Acc, Vars) :-
+			vars(Term, Acc, Acc2),
+			vars_list(Terms, Acc2, Vars).
+
+		reverse([], Reversed, Reversed).
+		reverse([Head| Tail], List, Reversed) :-
+			reverse(Tail, [Head| List], Reversed).
+
+	:- endif.
 
 	singletons(Term, Singletons) :-
 		term_to_vars(Term, [], Vars),
