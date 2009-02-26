@@ -141,7 +141,7 @@ Most examples directories contain a Logtalk utility file that can be used to loa
 </p>
 <pre>| ?- logtalk_load(loader).</pre>
 <p>
-Usually these files contain a call to the Logtalk built-in predicates <a title="Consult reference manual" href="../refman/builtins/set_logtalk_flag2.html"><code>set_logtalk_flag/2</code></a> (e.g. for setting project-specific flags) and <a title="Consult reference manual" href="../refman/builtins/logtalk_load1.html"><code>logtalk_load/1</code></a> or <a title="Consult reference manual" href="../refman/builtins/logtalk_load2.html"><code>logtalk_load/2</code></a> (for loading project files), wrapped inside an <code>initialization/1</code> directive. For instance, if your code is split in three Logtalk source files named <code>source1.lgt</code>, <code>source2.lgt</code>, and <code>source3.lgt</code>, then the contents of your loader file could be:
+Usually these files contain a call to the Logtalk built-in predicates <a title="Consult reference manual" href="../refman/builtins/set_logtalk_flag2.html"><code>set_logtalk_flag/2</code></a> (e.g. for setting <em>project-specific</em> flag values) and <a title="Consult reference manual" href="../refman/builtins/logtalk_load1.html"><code>logtalk_load/1</code></a> or <a title="Consult reference manual" href="../refman/builtins/logtalk_load2.html"><code>logtalk_load/2</code></a> (for loading project files), wrapped inside an <code>initialization/1</code> directive. For instance, if your code is split in three Logtalk source files named <code>source1.lgt</code>, <code>source2.lgt</code>, and <code>source3.lgt</code>, then the contents of your loader file could be:
 </p>
 <pre>:- initialization((
 	set_logtalk_flag(events, on),              % set project-specific flags
