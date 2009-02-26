@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: February 18, 2009
+%  last updated: February 26, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -322,6 +322,14 @@
 
 '$lgt_file_exists'(File) :-
 	file_exists(File).
+
+
+% '$lgt_delete_file'(+atom)
+%
+% deletes a file in the current directory
+
+'$lgt_delete_file'(File) :-
+	delete_file(File).
 
 
 % '$lgt_directory_exists'(+atom)

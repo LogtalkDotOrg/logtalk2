@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0 and later versions
 %
-%  last updated: February 18, 2009
+%  last updated: February 26, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -255,6 +255,14 @@ call_with_args(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_file_exists'(File) :-
 	absolute_file_name(File, Path),
 	file_exists(Path).
+
+
+% '$lgt_delete_file'(+atom)
+%
+% deletes a file in the current directory
+
+'$lgt_delete_file'(File) :-
+	delete_file(File).
 
 
 % '$lgt_directory_exists'(+atom)

@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.1 or later version
 %
-%  last updated: February 18, 2009
+%  last updated: February 26, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -269,6 +269,15 @@ call_with_args(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_file_exists'(File) :-
 	expand_atom(File, Expanded),
 	path_sysop(exists, Expanded).
+
+
+% '$lgt_delete_file'(+atom)
+%
+% deletes a file in the current directory
+
+'$lgt_delete_file'(File) :-
+	expand_atom(File, Expanded),
+	path_sysop(rm, Expanded).
 
 
 % '$lgt_directory_exists'(+atom)

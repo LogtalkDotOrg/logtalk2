@@ -11,7 +11,7 @@
 %
 %  configuration file for PrologII+ 4.5 and later versions
 %
-%  last updated: November 7, 2008
+%  last updated: February 26, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -265,6 +265,14 @@ call_with_args(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 	nonvar(File),
 	catch(open(File, :read, Stream), _, fail),
 	close(Stream).
+
+
+% '$lgt_delete_file'(+atom)
+%
+% deletes a file in the current directory
+
+'$lgt_delete_file'(_) :-
+	fail.
 
 
 % '$lgt_directory_exists'(+atom)

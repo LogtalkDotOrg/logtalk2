@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.1
 %
-%  last updated: November 7, 2008
+%  last updated: February 26, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -250,6 +250,16 @@ call_with_args(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_file_exists'(File) :-
 	access(File, 4, 0).
+
+
+% '$lgt_delete_file'(+atom)
+%
+% deletes a file in the current directory
+
+'$lgt_delete_file'(File) :-
+	access(File, 4, 0),
+	atom_concat('rm ', File, Command),
+	os(system(Command)).
 
 
 % '$lgt_directory_exists'(+atom)

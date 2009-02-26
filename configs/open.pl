@@ -364,6 +364,14 @@ call_with_args(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 	exists(File).
 
 
+% '$lgt_delete_file'(+atom)
+%
+% deletes a file in the current directory
+
+'$lgt_delete_file'(_) :-
+	fail.
+
+
 % '$lgt_directory_exists'(+atom)
 %
 % checks if a directory exists

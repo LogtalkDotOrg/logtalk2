@@ -11,7 +11,7 @@
 %
 %  loader file for Ciao Prolog 1.8p2 to 1.10#8
 %
-%  last updated: January 13, 2008
+%  last updated: February 26, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

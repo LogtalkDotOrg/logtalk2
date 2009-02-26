@@ -47,6 +47,18 @@ RELEASE NOTES
     Updated the Logtalk compiler to avoid reporting multiples reference to the
     same unknown parametric object.
 
+    Corrected a bug in the implementation of the "smart_compilation" compiler
+    flag that would result in a misleading successful compilation of a source
+    file containing syntax errors after the first failed compilation when the 
+    errors are not corrected between compilations. Thanks to Joerg Schuster 
+    for the bug report.
+
+    Added a '$lgt_delete_file'/1 predicate to all config files. For back-end
+    Prolog compilers that don't support a built-in predicate for deleting 
+    files, the '$lgt_delete_file'/1 predicate simply fails. This predicate is
+    used by the Logtalk compiler to ensure correct behavior of the compiler
+    flag "smart_compilation".
+
     Updated the YAP config file to ensure that the "syntax_errors" proprietary
     flag is set to "error".
 

@@ -5081,6 +5081,9 @@ current_logtalk_flag(version, version(2, 35, 1)).
 	'$lgt_reset_warnings_counter',
 	catch(close(Input), _, true),
 	catch(close(Output), _, true),
+	'$lgt_file_name'(logtalk, Base, File),	% try to delete the intermediate Prolog file in order to
+	'$lgt_file_name'(prolog, Base, Prolog),	% avoid problems when using the "smart_compilation" flag
+	catch(('$lgt_delete_file'(Prolog) -> true; true), _, true),
 	throw(Error).
 
 

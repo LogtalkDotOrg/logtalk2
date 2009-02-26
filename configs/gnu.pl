@@ -11,7 +11,7 @@
 %
 %  configuration file for GNU Prolog 1.3.0 (and later versions)
 %
-%  last updated: November 7, 2008
+%  last updated: February 26, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -239,6 +239,14 @@ forall(Generate, Test) :-
 
 '$lgt_file_exists'(File) :-
 	file_exists(File).
+
+
+% '$lgt_delete_file'(+atom)
+%
+% deletes a file in the current directory
+
+'$lgt_delete_file'(File) :-
+	delete_file(File).
 
 
 % '$lgt_directory_exists'(+atom)

@@ -209,8 +209,8 @@ ECLiPSe 5.10#26 or later versions
 
 	Adopted from a config file written and tested with help of Taner Bilgic 
 	for Logtalk 1.x. Don't forget to use the cd/1 predicate to set the working 
-	directory before loading the library or an example. Supports smart 
-	compilation of source files.
+	directory before loading the library or an example. Smart compilation of 
+	source files is not supported.
 
 	With this Prolog compiler, avoid reloading Logtalk source files declaring 
 	and defining dynamic predicates. Due to the semantics of the ECLiPSe 

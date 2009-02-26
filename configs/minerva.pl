@@ -11,7 +11,7 @@
 %
 %  configuration file for Minerva 2.4
 %
-%  last updated: November 7, 2008
+%  last updated: February 26, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -264,6 +264,14 @@ call_with_args(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_file_exists'(Path) :-
 	fileCreate(Path, File),
 	fileCanRead(File).
+
+
+% '$lgt_delete_file'(+atom)
+%
+% deletes a file in the current directory
+
+'$lgt_delete_file'(File) :-
+	?????
 
 
 % '$lgt_directory_exists'(+atom)

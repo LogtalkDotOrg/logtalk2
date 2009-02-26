@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.1
 %
-%  last updated: November 7, 2008
+%  last updated: February 26, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -249,6 +249,14 @@ call_with_args(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_file_exists'(File) :-
 	file_exists(File).
+
+
+% '$lgt_delete_file'(+atom)
+%
+% deletes a file in the current directory
+
+'$lgt_delete_file'(File) :-
+	delete_file(File).
 
 
 % '$lgt_directory_exists'(+atom)

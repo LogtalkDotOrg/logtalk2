@@ -11,7 +11,7 @@
 %
 %  configuration file for IF/Prolog 5.1
 %
-%  last updated: February 18, 2009
+%  last updated: February 26, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -265,6 +265,14 @@ call_with_args(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_file_exists'(File) :-
 	file_test(File, read).
+
+
+% '$lgt_delete_file'(+atom)
+%
+% deletes a file in the current directory
+
+'$lgt_delete_file'(_) :-
+	fail.
 
 
 % '$lgt_directory_exists'(+atom)
