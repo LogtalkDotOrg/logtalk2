@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 5.10#26 and later versions
 %
-%  last updated: February 26, 2009
+%  last updated: February 27, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -515,7 +515,10 @@ callable(Term) :-
 % '$lgt_read_term'(@stream, -term, +list, -integer)
 
 '$lgt_read_term'(Stream, Term, Options, -1) :-
-	read_term(Stream, Term, Options).
+	(	read_term(Stream, Term, Options) ->
+		true
+	;	throw(syntax_error)
+	).
 
 
 

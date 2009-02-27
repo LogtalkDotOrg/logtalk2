@@ -4858,7 +4858,7 @@ current_logtalk_flag(version, version(2, 35, 1)).
 				BOM = [encoding_signature(Boolean)]
 			;	BOM = []
 			),
-			read_term(NewInput, _, [singletons(_)])				% throw away encoding/1 directive
+			'$lgt_read_term'(NewInput, _, [singletons(_)], _)	% throw away encoding/1 directive
 		;	throw(error(domain_error(directive, encoding/1), directive(encoding(LogtalkEncoding))))
 		)
 	;	throw(error(resource_error(text_encoding_support), directive(encoding(LogtalkEncoding))))

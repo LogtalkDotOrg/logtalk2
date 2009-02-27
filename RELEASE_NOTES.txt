@@ -66,6 +66,11 @@ RELEASE NOTES
     later and turn off the flags "suspicious_warning" and "multifile_warning"
     while loading Logtalk. This avoids spurious warnings at Logtalk startup.
 
+    Added a workaround to the ECLiPSE config files in order to support smart 
+    compilation of source files (due to the non-standard implementation of the
+    read_term/3 predicate that fails for syntax errors instead of throwing an
+    exception).
+
     Updated the library object "term", adding a singletons/2 predicate and
     renaming the predicate vars/2 to variables/2 (the old name is still
     available but shall be considered deprecated). Both the variables/2 and
