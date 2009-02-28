@@ -152,6 +152,9 @@ echo "The Prolog integration scripts can be found on \"$RPM_INSTALL_PREFIX/bin\"
 echo "Make sure that the Prolog compilers are properly installed and available"
 echo "on your execution path."
 echo
+echo "Integration with Ciao Prolog and Quintus Prolog require manual patches that"
+echo "render Logtalk incompatible with all the other compilers."
+echo
 echo "If you get an unexpected failure when using one of the Prolog integration"
 echo "scripts, consult the \"$RPM_INSTALL_PREFIX/share/logtalk/configs/NOTES.txt\" file"
 echo "for compatibility notes."

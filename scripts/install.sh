@@ -102,6 +102,9 @@ echo "The Prolog integration scripts can be found on \"$prefix/bin\"."
 echo "Make sure that the Prolog compilers are properly installed and available"
 echo "on your execution path."
 echo
+echo "Integration with Ciao Prolog and Quintus Prolog require manual patches that"
+echo "render Logtalk incompatible with all the other compilers."
+echo
 echo "Users should ensure that the environment variable LOGTALKHOME is set to"
 echo "\"$prefix/share/logtalk\" and then run the \"cplgtdirs\" shell script once"
 echo "before running the integration scripts."
