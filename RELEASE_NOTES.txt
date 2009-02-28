@@ -85,6 +85,11 @@ RELEASE NOTES
     Updated the "build_release.sh" POSIX shell script steps for building the
     MacOS X installer.
 
+    Updated the Windows installer to disable by default the installation of
+    the integration shortcuts for Ciao Prolog and Quintus Prolog as these 
+    compilers require patches that render Logtalk incompatible with the other
+    compilers.
+
 
 2.35.0 - January 16, 2009
 
