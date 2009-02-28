@@ -169,7 +169,9 @@ CxProlog 0.97.2 or later versions
 	cx.pl
 
 	Developed and tested with the help of the CxProlog author, Artur Miguel
-	Dias.
+	Dias. Don't forget to call the fs_cwd/1 predicate to set the working 
+	directory before compiling the library or an example. Supports smart 
+	compilation of source files.
 
 
 ECLiPSe 5.10#26 or later versions
@@ -280,8 +282,8 @@ K-Prolog 5.1.2a and and later 5.1.x versions
 	K-Prolog 5.1.2a supports the ISO Prolog standard. No problems expected. 
 	Config file written and tested with the help of Nobukuni Kino. Don't 
 	forget to use the cd/1 predicate to set the working directory before 
-	loading the library or an example. Supports smart compilation of source 
-	files.
+	loading the library or an example. Smart compilation of source files
+	is not supported on Windows.
 
 
 K-Prolog 6.0.4 and later versions
@@ -291,7 +293,8 @@ K-Prolog 6.0.4 and later versions
 	K-Prolog 6.0.4 supports the current ISO Prolog standard and features 
 	from the draft core revision proposal. Don't forget to use the cd/1 
 	predicate to set the working directory before loading the library or 
-	an example. Supports smart compilation of source files.
+	an example. Smart compilation of source files is not supported on 
+	Windows.
 
 
 LPA MacProlog32 1.25
