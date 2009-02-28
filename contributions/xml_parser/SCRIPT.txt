@@ -9,14 +9,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ================================================================
 
 
-% start by loading the necessary library support files (if not 
-% already loaded):
-
-| ?- logtalk_load(library(types_loader)).
-...
-
-
-% now you are ready for loading the XML parser:
+% start by loading the XML parser and the necessary library files:
 
 | ?- logtalk_load(xml_parser(loader)).
 ...
@@ -26,6 +19,13 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 | ?- logtalk_load(xml_parser(examples)).
 ...
+
+
+% change working directory to "$LOGTALKUSER/contributions/xml_parser";
+% (there is no standard predicate for changing the working directory)
+
+| ?- '$lgt_change_directory'('$LOGTALKUSER/contributions/xml_parser').
+
 
 |  ?- test(q1).
 ...

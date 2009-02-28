@@ -90,6 +90,10 @@ RELEASE NOTES
     compilers require patches that render Logtalk incompatible with the other
     compilers.
 
+    Simplified loading and testing instructions for the XML parser included
+    in the "contributions" directory. Added a missing logtalk_library_path/2
+    entry for XML parser directory.
+
 
 2.35.0 - January 16, 2009
 
