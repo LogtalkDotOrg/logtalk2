@@ -62,9 +62,8 @@ RELEASE NOTES
     Updated the YAP config file to ensure that the "syntax_errors" proprietary
     flag is set to "error".
 
-    Updated the GNU Prolog POSIX integration script to detect version 1.3.1 or
-    later and turn off the flags "suspicious_warning" and "multifile_warning"
-    while loading Logtalk. This avoids spurious warnings at Logtalk startup.
+    Integration with GNU Prolog now requires version 1.3.1 or later of this
+    compiler.
 
     Added a workaround to the ECLiPSE config files in order to support smart 
     compilation of source files (due to the non-standard implementation of the

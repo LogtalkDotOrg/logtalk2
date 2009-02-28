@@ -73,8 +73,5 @@ else
 fi
 echo
 
-if gprolog --version 2>&1 | grep "1.3.0" 2>&1 >/dev/null; then
-	exec gprolog --init-goal "['$LOGTALKUSER/configs/gnu.pl','$LOGTALKHOME/integration/logtalk_gp.pl','$LOGTALKUSER/libpaths/libpaths.pl']" "$@"
-else
-	exec gprolog --init-goal "set_prolog_flag(suspicious_warning, off), set_prolog_flag(multifile_warning, off), ['$LOGTALKUSER/configs/gnu.pl','$LOGTALKHOME/integration/logtalk_gp.pl','$LOGTALKUSER/libpaths/libpaths.pl'], set_prolog_flag(suspicious_warning, on), set_prolog_flag(multifile_warning, on)" "$@"
-fi
+exec gprolog --init-goal "set_prolog_flag(suspicious_warning, off), set_prolog_flag(multifile_warning, off), ['$LOGTALKUSER/configs/gnu.pl','$LOGTALKHOME/integration/logtalk_gp.pl','$LOGTALKUSER/libpaths/libpaths.pl'], set_prolog_flag(suspicious_warning, on), set_prolog_flag(multifile_warning, on)" "$@"
+

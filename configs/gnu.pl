@@ -9,9 +9,9 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for GNU Prolog 1.3.0 (and later versions)
+%  configuration file for GNU Prolog 1.3.1 (and later versions)
 %
-%  last updated: February 26, 2009
+%  last updated: February 28, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -492,6 +492,7 @@ forall(Generate, Test) :-
 %  the ISO Prolog standard regarding the definition of the {}/1 syntax
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 {File, Files} :-
 	!,

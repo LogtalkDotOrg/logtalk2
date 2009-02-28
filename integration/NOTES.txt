@@ -20,7 +20,7 @@ system path):
 * Ciao (version 1.10#5 or later):          ciaolgt    (first run must use sudo)
 * CxProlog (version 0.97.1 or later):      cxlgt
 * ECLiPSe (versions 5.10, 6.0):            eclipselgt
-* GNU Prolog (version 1.3.0 or later):     gplgt
+* GNU Prolog (version 1.3.1 or later):     gplgt
 * K-Prolog (version 5.1.2a or later):      plclgt
 * Qu-Prolog (version 8.1 or later):        qplgt
 * Quintus Prolog (version 3.5):            quintuslgt
