@@ -12,7 +12,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 This folder contains a Logtalk version of John Fletcher's Prolog XML 
 parser:
 
-	http://www.zen37763.zen.co.uk/xml.pl.html
+	http://www.binding-time.co.uk/xmlpl.html
 
 To load this XML parser and for sample queries, please see the SCRIPT 
 file.
