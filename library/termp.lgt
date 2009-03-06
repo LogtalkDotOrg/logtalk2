@@ -2,9 +2,9 @@
 :- protocol(termp).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2009/2/19,
+		date is 2009/3/6,
 		comment is 'Prolog term utility predicates protocol.']).
 
 	:- public(depth/2).
@@ -47,6 +47,12 @@
 	:- mode(valid(@nonvar), zero_or_one).
 	:- info(valid/1, [
 		comment is 'Term is valid.',
+		argnames is ['Term']]).
+
+	:- public(check/1).
+	:- mode(check(@nonvar), one).
+	:- info(check/1, [
+		comment is 'Checks if a term is valid. Throws an exception if the term is not valid.',
 		argnames is ['Term']]).
 
 	:- public(variant/2).

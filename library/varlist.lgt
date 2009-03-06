@@ -3,9 +3,9 @@
 	extends(list)).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2008/7/24,
+		date is 2009/3/6,
 		comment is 'List of variables predicates.']).
 
 	member(Element, [Head| _]) :-
@@ -36,5 +36,15 @@
 	valid([Element| List]) :-
 		var(Element),
 		valid(List).
+
+	check(Term) :-
+		this(This),
+		sender(Sender),
+		(	valid(Term) ->
+			true
+		;	var(Term) ->
+			throw(error(instantiation_error, This::check(Term), Sender))
+		;	throw(error(type_error(This, Term), This::check(Term), Sender))
+		).
 
 :- end_object.

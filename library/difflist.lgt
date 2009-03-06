@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2004/5/9,
+		date is 2009/3/6,
 		comment is 'Difference list predicates.']).
 
 	:- public(as_list/2).
@@ -291,5 +291,15 @@
 		nonvar(List),
 		List = [_| Tail],
 		valid2(Tail-Back).
+
+	check(Term) :-
+		this(This),
+		sender(Sender),
+		(	valid(Term) ->
+			true
+		;	var(Term) ->
+			throw(error(instantiation_error, This::check(Term), Sender))
+		;	throw(error(type_error(This, Term), This::check(Term), Sender))
+		).
 
 :- end_object.

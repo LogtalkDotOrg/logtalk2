@@ -3,9 +3,9 @@
 	implements(termp)).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2009/2/24,
+		date is 2009/3/6,
 		comment is 'Prolog term utility predicates.']).
 
 	:- alias(termp, variables/2, vars/2).
@@ -129,6 +129,8 @@
 		subterm(M, Sub, Term).
 
 	valid(_).
+
+	check(_).
 
 	variant(Term1, Term2) :-
 		\+ \+ subsumes(Term1, Term2),

@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2008/4/22,
+		date is 2009/3/6,
 		comment is 'Set predicates implemented using ordered lists. Uses ==/2 for element comparison and standard term ordering.']).
 
 	delete([], _, []).
@@ -194,5 +194,15 @@
 	check_order([Element2| Set], Element1) :-
 		Element2 @> Element1,
 		check_order(Set, Element2).
+
+	check(Term) :-
+		this(This),
+		sender(Sender),
+		(	valid(Term) ->
+			true
+		;	var(Term) ->
+			throw(error(instantiation_error, This::check(Term), Sender))
+		;	throw(error(type_error(This, Term), This::check(Term), Sender))
+		).
 
 :- end_object.

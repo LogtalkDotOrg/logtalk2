@@ -4,9 +4,9 @@
 	extends(atom)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2008/10/7,
+		date is 2009/3/6,
 		comment is 'Character predicates.']).
 
 	is_ascii(Char) :-
@@ -130,5 +130,15 @@
 	valid(Character) :-
 		atom(Character),
 		atom_length(Character, 1).
+
+	check(Term) :-
+		this(This),
+		sender(Sender),
+		(	atom(Term), atom_length(Term, 1) ->
+			true
+		;	var(Term) ->
+			throw(error(instantiation_error, This::check(Term), Sender))
+		;	throw(error(type_error(This, Term), This::check(Term), Sender))
+		).
 
 :- end_object.

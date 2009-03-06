@@ -15,7 +15,9 @@ RELEASE NOTES
 
 2.35.2 - April ??, 2009
 
-
+    Added a check/1 predicate to all objects in the "types" library. This 
+    predicate differs from the existing valid/1 predicate by throwing an
+    exception when the argument is not valid instead of failing.
 
 
 2.35.1 - March 1, 2009

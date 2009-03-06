@@ -3,9 +3,9 @@
 	extends(number)).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2008/10/5,
+		date is 2009/3/6,
 		comment is 'Integer data type predicates.']).
 
 	:- public(between/3).
@@ -74,5 +74,15 @@
 
 	valid(Integer) :-
 		integer(Integer).
+
+	check(Term) :-
+		this(This),
+		sender(Sender),
+		(	integer(Term) ->
+			true
+		;	var(Term) ->
+			throw(error(instantiation_error, This::check(Term), Sender))
+		;	throw(error(type_error(This, Term), This::check(Term), Sender))
+		).
 
 :- end_object.

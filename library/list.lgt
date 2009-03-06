@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.4,
+		version is 1.5,
 		author is 'Paulo Moura',
-		date is 2008/4/22,
+		date is 2009/3/6,
 		comment is 'List predicates.']).
 
 	:- public(as_difflist/2).
@@ -205,5 +205,15 @@
 	valid([]).
 	valid([_| List]) :-
 		valid(List).
+
+	check(Term) :-
+		this(This),
+		sender(Sender),
+		(	valid(Term) ->
+			true
+		;	var(Term) ->
+			throw(error(instantiation_error, This::check(Term), Sender))
+		;	throw(error(type_error(This, Term), This::check(Term), Sender))
+		).
 
 :- end_object.
