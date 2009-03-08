@@ -64,11 +64,10 @@ Amzi! Prolog 7.6.1 and later versions
 	':'/2 and wrap them inside call/1. For better performance, use the Amzi! 
 	"acmp" command-line compiler to compile the files "configs/amzi.pl",
 	"compiler/logtalk.pl", and "libpaths/libpaths.pl" and then load the 
-	resulting ".plm" files using the predicate load/1 (you will need first 
-	to change the extension of the config file to either ".pl" or ".pro" and 
-	to edit the "libpaths.pl" file by following the instructions on the 
+	resulting ".plm" files using the predicate load/1 (you will need to 
+	edit the "libpaths.pl" file by following the instructions on the 
 	"libpaths/NOTES.txt" file).
-	
+
 	One potential problem is that the compiler definition of the compare/3 
 	built-in predicate returns the atom == instead of = for identical terms 
 	(contrary to every other Prolog compiler!). Search the library files for 
