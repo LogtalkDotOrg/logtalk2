@@ -13194,11 +13194,15 @@ current_logtalk_flag(version, version(2, 35, 2)).
 
 
 '$lgt_write_xml_entity'(Stream) :-
-	'$lgt_pp_entity'(Type, Entity, _, _, Compilation),
+	'$lgt_pp_entity'(Type, Entity, _, _, Mode),
 	'$lgt_write_xml_open_tag'(Stream, entity, []),
 	'$lgt_entity_to_xml_term'(Entity),
 	'$lgt_write_xml_cdata_element'(Stream, name, [], Entity),
 	'$lgt_write_xml_element'(Stream, (type), [], Type),
+	(	Mode = static, '$lgt_pp_synchronized_' ->
+		Compilation = 'static, synchronized'
+	;	Compilation = Mode
+	),
 	'$lgt_write_xml_element'(Stream, compilation, [], Compilation),
 	(	'$lgt_pp_info_'(Info) ->
 		'$lgt_write_xml_entity_info'(Stream, Info)
@@ -13575,7 +13579,10 @@ current_logtalk_flag(version, version(2, 35, 2)).
 	'$lgt_write_xml_element'(Stream, scope, [], Scope),
 	(	('$lgt_pp_entity'(_, _, _, _, (dynamic)); '$lgt_pp_dynamic_'(Functor, Arity)) ->
 		Compilation = (dynamic)
-	;	Compilation = static
+	;	(	functor(Head, Functor, Arity), '$lgt_pp_synchronized_'(Head, _) ->
+			Compilation = static
+		;	Compilation = 'static, synchronized'
+		)
 	),
 	'$lgt_write_xml_element'(Stream, compilation, [], Compilation).
 
