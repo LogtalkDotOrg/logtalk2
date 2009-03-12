@@ -13,13 +13,5 @@
 
 
 :- compile('$LOGTALKUSER/configs/sicstus4.pl').
-:- asserta((
-	user:goal_expansion(CallWitArgs, Layout, _, Call, Layout) :-
-		CallWitArgs =.. [call_with_args| Args],
-		Call =.. [call| Args])).
 :- compile('$LOGTALKHOME/compiler/logtalk.pl').
-:- retract((
-	user:goal_expansion(CallWitArgs, Layout, _, Call, Layout) :-
-		CallWitArgs =.. [call_with_args| Args],
-		Call =.. [call| Args])).
 :- compile('$LOGTALKUSER/libpaths/libpaths.pl').

@@ -15,4 +15,16 @@
 		debug((write('Recursive case: '), writeq(append(Tail, List, Tail2)), nl)),
 		append(Tail, List, Tail2).
 
+	:- public(sum/2).
+
+	sum(List, Sum) :-
+		debug(list::check(List)),
+		sum(List, 0, Sum).
+
+	sum([], Sum, Sum).
+	sum([X| Xs], Acc, Sum) :-
+		debug(number::check(X)),
+		Acc2 is Acc + X,
+		sum(Xs, Acc2, Sum).
+
 :- end_object.

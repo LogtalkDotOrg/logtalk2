@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: February 26, 2009
+%  last updated: March 12, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -128,26 +128,7 @@
 % retractall(+callable) -- built-in
 
 
-% call_with_args/2-9
-%
-% use these definitions only if your compiler does
-% not provide call_with_args/2-9 as built-in predicates
-
-% call_with_args(F, A) -- built-in
-
-% call_with_args(F, A1, A2) -- built-in
-
-% call_with_args(F, A1, A2, A3) -- built-in
-
-% call_with_args(F, A1, A2, A3, A4) -- built-in
-
-% call_with_args(F, A1, A2, A3, A4, A5) -- built-in
-
-% call_with_args(F, A1, A2, A3, A4, A5, A6) -- built-in
-
-% call_with_args(F, A1, A2, A3, A4, A5, A6, A7) -- built-in
-
-% call_with_args(F, A1, A2, A3, A4, A5, A6, A7, A8) -- built-in
+% call/2-9 -- built-in
 
 
 

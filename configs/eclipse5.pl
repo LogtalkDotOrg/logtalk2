@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 5.10#26 and later versions
 %
-%  last updated: February 27, 2009
+%  last updated: March 12, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -198,40 +198,37 @@ retractall(Head) :-
 	retract_all(Head).
 
 
-% call_with_args/2-9
-%
-% use these definitions only if your compiler does
-% not provide call_with_args/2-9 as built-in predicates
+% call/2-9
 
-call_with_args(F, A) :-
+call(F, A) :-
 	Call =.. [F, A],
 	call(Call).
 
-call_with_args(F, A1, A2) :-
+call(F, A1, A2) :-
 	Call =.. [F, A1, A2],
 	call(Call).
 
-call_with_args(F, A1, A2, A3) :-
+call(F, A1, A2, A3) :-
 	Call =.. [F, A1, A2, A3],
 	call(Call).
 
-call_with_args(F, A1, A2, A3, A4) :-
+call(F, A1, A2, A3, A4) :-
 	Call =.. [F, A1, A2, A3, A4],
 	call(Call).
 
-call_with_args(F, A1, A2, A3, A4, A5) :-
+call(F, A1, A2, A3, A4, A5) :-
 	Call =.. [F, A1, A2, A3, A4, A5],
 	call(Call).
 
-call_with_args(F, A1, A2, A3, A4, A5, A6) :-
+call(F, A1, A2, A3, A4, A5, A6) :-
 	Call =.. [F, A1, A2, A3, A4, A5, A6],
 	call(Call).
 
-call_with_args(F, A1, A2, A3, A4, A5, A6, A7) :-
+call(F, A1, A2, A3, A4, A5, A6, A7) :-
 	Call =.. [F, A1, A2, A3, A4, A5, A6, A7],
 	call(Call).
 
-call_with_args(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
+call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 	Call =.. [F, A1, A2, A3, A4, A5, A6, A7, A8],
 	call(Call).
 

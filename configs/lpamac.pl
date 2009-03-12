@@ -11,7 +11,7 @@
 %
 %  configuration file for LPA MacProlog32 1.25
 %
-%  last updated: February 26, 2009
+%  last updated: March 12, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -188,33 +188,30 @@ call_cleanup(_, _) :-
 % retractall(+callable) -- built-in
 
 
-% call_with_args/2-9
-%
-% use these definitions only if your compiler does
-% not provide call_with_args/2-9 as built-in predicates
+% call/2-9
 
-call_with_args(F, A) :-
+call(F, A) :-
 	F(A).
 
-call_with_args(F, A1, A2) :-
+call(F, A1, A2) :-
 	F(A1, A2).
 
-call_with_args(F, A1, A2, A3) :-
+call(F, A1, A2, A3) :-
 	F(A1, A2, A3).
 
-call_with_args(F, A1, A2, A3, A4) :-
+call(F, A1, A2, A3, A4) :-
 	F(A1, A2, A3, A4).
 
-call_with_args(F, A1, A2, A3, A4, A5) :-
+call(F, A1, A2, A3, A4, A5) :-
 	F(A1, A2, A3, A4, A5).
 
-call_with_args(F, A1, A2, A3, A4, A5, A6) :-
+call(F, A1, A2, A3, A4, A5, A6) :-
 	F(A1, A2, A3, A4, A5, A6).
 
-call_with_args(F, A1, A2, A3, A4, A5, A6, A7) :-
+call(F, A1, A2, A3, A4, A5, A6, A7) :-
 	F(A1, A2, A3, A4, A5, A6, A7).
 
-call_with_args(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
+call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 	F(A1, A2, A3, A4, A5, A6, A7, A8).
 
 

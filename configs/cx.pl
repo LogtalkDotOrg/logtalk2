@@ -11,7 +11,7 @@
 %
 %  configuration file for CxProlog 0.97.2 or a later version
 %
-%  last updated: February 26, 2009
+%  last updated: March 12, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -76,41 +76,7 @@
 % retractall(+callable) -- built-in
 
 
-% lgt_call/2-9
-%
-% if your compiler provides call/1-9 as built-in 
-% predicates rewrite these definitions using call(...).
-
-call_with_args(F, A) :-
-	call(F, A).
-
-
-call_with_args(F, A1, A2) :-
-	call(F, A1, A2).
-
-
-call_with_args(F, A1, A2, A3) :-
-	call(F, A1, A2, A3).
-
-
-call_with_args(F, A1, A2, A3, A4) :-
-	call(F, A1, A2, A3, A4).
-
-
-call_with_args(F, A1, A2, A3, A4, A5) :-
-	call(F, A1, A2, A3, A4, A5).
-
-
-call_with_args(F, A1, A2, A3, A4, A5, A6) :-
-	call(F, A1, A2, A3, A4, A5, A6).
-
-
-call_with_args(F, A1, A2, A3, A4, A5, A6, A7) :-
-	call(F, A1, A2, A3, A4, A5, A6, A7).
-
-
-call_with_args(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
-	call(F, A1, A2, A3, A4, A5, A6, A7, A8).
+% call/2-9 -- built-in
 
 
 

@@ -19,6 +19,9 @@ RELEASE NOTES
     predicate differs from the existing valid/1 predicate by throwing an
     exception when the argument is not valid instead of failing.
 
+    Updated the Logtalk compiler and runtime and all the config files to use
+    the call/N predicates instead of the call_with_args/N predicates.
+
 
 2.35.1 - March 1, 2009
 

@@ -11,7 +11,7 @@
 %
 %  configuration file for JIProlog 3.0.2-6 or later versions
 %
-%  last updated: February 26, 2009
+%  last updated: March 12, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -79,43 +79,23 @@ call_cleanup(_, _) :-
 % retractall(+callable) -- built-in
 
 
-% lgt_call/2-9
-%
-% if your compiler provides call/1-9 as built-in 
-% predicates rewrite these definitions using call(...).
+% call/2-5 -- built-in
 
-call_with_args(F, A) :-
-	call(F, A).
+% call/6-9
 
-
-call_with_args(F, A1, A2) :-
-	call(F, A1, A2).
-
-
-call_with_args(F, A1, A2, A3) :-
-	call(F, A1, A2, A3).
-
-
-call_with_args(F, A1, A2, A3, A4) :-
-	call(F, A1, A2, A3, A4).
-
-
-call_with_args(F, A1, A2, A3, A4, A5) :-
+call(F, A1, A2, A3, A4, A5) :-
 	Call =.. [F, A1, A2, A3, A4, A5],
 	Call.
 
-
-call_with_args(F, A1, A2, A3, A4, A5, A6) :-
+call(F, A1, A2, A3, A4, A5, A6) :-
 	Call =.. [F, A1, A2, A3, A4, A5, A6],
 	Call.
 
-
-call_with_args(F, A1, A2, A3, A4, A5, A6, A7) :-
+call(F, A1, A2, A3, A4, A5, A6, A7) :-
 	Call =.. [F, A1, A2, A3, A4, A5, A6, A7],
 	Call.
 
-
-call_with_args(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
+call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 	Call =.. [F, A1, A2, A3, A4, A5, A6, A7, A8],
 	Call.
 
