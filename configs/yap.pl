@@ -66,6 +66,8 @@
 		dynamic('$lgt_pp_entity_warnings_flag_'/0), hide_predicate('$lgt_pp_entity_warnings_flag_'/0),
 		dynamic('$lgt_pp_load_warnings_flag_'/0), hide_predicate('$lgt_pp_load_warnings_flag_'/0),
 		dynamic('$lgt_hook_goal_'/2), hide_predicate('$lgt_hook_goal_'/2),
+		dynamic('$lgt_hook_term_expansion_'/2), hide_predicate('$lgt_hook_term_expansion_'/2),
+		dynamic('$lgt_hook_goal_expansion_'/2), hide_predicate('$lgt_hook_goal_expansion_'/2),
 		dynamic('$lgt_threaded_tag_counter'/1), hide_predicate('$lgt_threaded_tag_counter'/1),
 		dynamic('$lgt_dbg_invocation_number_'/1), hide_predicate('$lgt_dbg_invocation_number_'/1)
 	;	true
