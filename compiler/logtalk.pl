@@ -13199,16 +13199,13 @@ current_logtalk_flag(version, version(2, 35, 2)).
 	'$lgt_entity_to_xml_term'(Entity),
 	'$lgt_write_xml_cdata_element'(Stream, name, [], Entity),
 	'$lgt_write_xml_element'(Stream, (type), [], Type),
-	(	Mode = (dynamic) ->
-		Compilation = (dynamic)
-	;	% Mode = static
-		'$lgt_pp_threaded_', '$lgt_pp_synchronized_' ->
-		Compilation = 'static, threaded, synchronized'
+	(	'$lgt_pp_threaded_', '$lgt_pp_synchronized_' ->
+		atom_concat(Mode, ', threaded, synchronized', Compilation)
 	;	'$lgt_pp_threaded_' ->
-		Compilation = 'static, threaded'
+		atom_concat(Mode, ', threaded', Compilation)
 	;	'$lgt_pp_synchronized_' ->
-		Compilation = 'static, synchronized'
-	;	Compilation = static
+		atom_concat(Mode, ', synchronized', Compilation)
+	;	Compilation = Mode
 	),
 	'$lgt_write_xml_element'(Stream, compilation, [], Compilation),
 	(	'$lgt_pp_info_'(Info) ->
