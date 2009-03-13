@@ -27,6 +27,9 @@ RELEASE NOTES
     to set the default directory for temporary files depending on the host
     operating-system.
 
+    Removed the obsolete SWI-Prolog hook file "swi_set_logtalk_context.pl"
+    (the Logtalk control construct <</2 provides similar functionality).
+
     Added a check/1 predicate to all objects in the "types" library. This 
     predicate differs from the existing valid/1 predicate by throwing an
     exception when the argument is not valid instead of failing.

@@ -446,7 +446,6 @@ SWI Prolog 5.6.44 and later versions
 	swi.pl
 	swihook.pl
 	xpcehook.pl
-	swi_set_logtalk_context.pl
 
 	No problems expected. Please report any problem found (with a solution 
 	if possible). Don't forget to use the cd/1 predicate to set the working 
@@ -482,9 +481,6 @@ SWI Prolog 5.6.44 and later versions
 	If you intend to use Logtalk and XPCE at the same time, you may load the 
 	configs/xpcehook.pl file in order to support Logtalk message sending goals 
 	as XPCE call-back goals.
-
-	See the comments in the "swi_set_logtalk_context.pl" file itself for a 
-	description of its functionality.
 
 	With multi-threading support turned on, you may get an harmless message
 	when halting the system regarding threads that wouldn't die: you can 
