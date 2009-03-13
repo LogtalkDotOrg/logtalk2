@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#37 and later versions
 %
-%  last updated: March 12, 2009
+%  last updated: March 13, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -194,6 +194,7 @@ forall(Generate, Test) :-
 
 % call/2-9
 
+:- export call/2.	% avoid conflict with obsolete built-in predicate
 call(F, A) :-
 	Call =.. [F, A],
 	call(Call).

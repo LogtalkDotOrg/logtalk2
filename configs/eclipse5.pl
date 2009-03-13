@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 5.10#26 and later versions
 %
-%  last updated: March 12, 2009
+%  last updated: March 13, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -200,6 +200,7 @@ retractall(Head) :-
 
 % call/2-9
 
+:- export call/2.	% avoid conflict with obsolete built-in predicate
 call(F, A) :-
 	Call =.. [F, A],
 	call(Call).
