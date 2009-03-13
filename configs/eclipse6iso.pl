@@ -228,7 +228,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_default_flag'(altdirs, off).
 '$lgt_default_flag'(tmpdir, TmpDir) :-
-	(	get_flag(hostarch, i386_nt) ->
+	(	get_flag(hostarch, HostArch), atom_string(i386_nt, HostArch) ->
 		TmpDir = 'lgt_tmp/'
 	;	TmpDir = '.lgt_tmp/'
 	).
