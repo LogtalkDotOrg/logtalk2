@@ -29,7 +29,7 @@
 		<element name="entity">
 			<ref name="name"/>
 			<ref name="type"/>
-			<ref name="compilation"/>
+			<ref name="entity_compilation"/>
 			<optional>
 				<ref name="comment"/>
 			</optional>
@@ -76,10 +76,25 @@
 		</element>
 	</define>
 
-	<define name="compilation">
+	<define name="entity_compilation">
 		<element name="compilation">
 			<choice>
 				<value>static</value>
+				<value>static, threaded</value>
+				<value>static, synchronized</value>
+				<value>static, threaded, synchronized</value>
+				<value>dynamic</value>
+				<value>dynamic, threaded</value>
+				<value>dynamic, threaded, synchronized</value>
+			</choice>
+		</element>
+	</define>
+
+	<define name="predicate_compilation">
+		<element name="compilation">
+			<choice>
+				<value>static</value>
+				<value>static, synchronized</value>
 				<value>dynamic</value>
 			</choice>
 		</element>
@@ -300,7 +315,7 @@
 		<element name="predicate">
 			<ref name="name"/>
 			<ref name="scope"/>
-			<ref name="compilation"/>
+			<ref name="predicate_compilation"/>
 			<optional>
 				<ref name="meta"/>
 			</optional>

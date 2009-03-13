@@ -39,7 +39,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 	<xsd:sequence>
 		<xsd:element name="name"		type="xsd:string"/>
 		<xsd:element name="type"		type="type"/>
-		<xsd:element name="compilation"	type="compilation"/>
+		<xsd:element name="compilation"	type="entity_compilation"/>
 		<xsd:element name="comment"		type="xsd:string"	minOccurs="0"/>
 		<xsd:choice	minOccurs="0">
 			<xsd:element name="parnames"	type="xsd:string"/>
@@ -64,9 +64,23 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 </xsd:simpleType>
 
 
-<xsd:simpleType name="compilation">
+<xsd:simpleType name="entity_compilation">
 	<xsd:restriction base="xsd:string">
 		<xsd:enumeration value="static"/>
+		<xsd:enumeration value="static, threaded"/>
+		<xsd:enumeration value="static, synchronized"/>
+		<xsd:enumeration value="static, threaded, synchronized"/>
+		<xsd:enumeration value="dynamic"/>
+		<xsd:enumeration value="dynamic, threaded"/>
+		<xsd:enumeration value="dynamic, threaded, synchronized"/>
+	</xsd:restriction>
+</xsd:simpleType>
+
+
+<xsd:simpleType name="predicate_compilation">
+	<xsd:restriction base="xsd:string">
+		<xsd:enumeration value="static"/>
+		<xsd:enumeration value="static, synchronized"/>
 		<xsd:enumeration value="dynamic"/>
 	</xsd:restriction>
 </xsd:simpleType>
@@ -168,7 +182,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 	<xsd:sequence>
 		<xsd:element name="name"		type="xsd:string"/>
 		<xsd:element name="scope"		type="scope"/>
-		<xsd:element name="compilation"	type="compilation"/>
+		<xsd:element name="compilation"	type="predicate_compilation"/>
 		<xsd:element name="meta"		type="xsd:string"		minOccurs="0"/>
 		<xsd:element name="mode"		type="mode"				minOccurs="0" maxOccurs="unbounded"/>
 		<xsd:element name="comment"		type="xsd:string"		minOccurs="0"/>
