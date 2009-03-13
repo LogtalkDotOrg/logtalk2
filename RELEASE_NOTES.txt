@@ -18,9 +18,10 @@ RELEASE NOTES
     Updated the Logtalk compiler and runtime and all the config files to use
     the call/N predicates instead of the call_with_args/N predicates.
 
-    Improved the XML documentation automatically generated for synchronized
-    objects and synchronized predicates. The "synchronized" property is now
-    attached to the object/predicate compilation mode.
+    Improved the XML documentation automatically generated for threaded and
+    synchronized objects and synchronized predicates. The "synchronized" and
+    "threaded" properties are now appended to the object/predicate compilation
+    mode.
 
     Added a check/1 predicate to all objects in the "types" library. This 
     predicate differs from the existing valid/1 predicate by throwing an
