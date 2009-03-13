@@ -166,7 +166,12 @@ forall(Generate, Test) :-
 '$lgt_default_flag'(events, off).
 
 '$lgt_default_flag'(altdirs, off).
-'$lgt_default_flag'(tmpdir, 'lgt_tmp/').
+'$lgt_default_flag'(tmpdir, TmpDir) :-
+	os_version(Version),
+	(	atom_concat('Microsoft Windows', _, Version) ->
+		TmpDir = 'lgt_tmp/'
+	;	TmpDir = '.lgt_tmp/'
+	).
 '$lgt_default_flag'(xmldir, 'xml_docs/').
 
 '$lgt_default_flag'(encoding_directive, unsupported).

@@ -227,7 +227,11 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_default_flag'(events, off).
 
 '$lgt_default_flag'(altdirs, off).
-'$lgt_default_flag'(tmpdir, 'lgt_tmp/').
+'$lgt_default_flag'(tmpdir, TmpDir) :-
+	(	get_flag(hostarch, i386_nt) ->
+		TmpDir = 'lgt_tmp/'
+	;	TmpDir = '.lgt_tmp/'
+	).
 '$lgt_default_flag'(xmldir, 'xml_docs/').
 
 '$lgt_default_flag'(encoding_directive, unsupported).

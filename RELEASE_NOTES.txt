@@ -23,6 +23,10 @@ RELEASE NOTES
     "threaded" properties are now appended to the object/predicate compilation
     mode.
 
+    Updated the config files of the GNU Prolog, ECLiPSE, and XSB compilers
+    to set the default directory for temporary files depending on the host
+    operating-system.
+
     Added a check/1 predicate to all objects in the "types" library. This 
     predicate differs from the existing valid/1 predicate by throwing an
     exception when the argument is not valid instead of failing.
