@@ -13,7 +13,8 @@
 
 
 :- consult('$LOGTALKUSER/configs/swi.pl').
+:- (exists_file('settings.pl') -> consult('settings.pl'); true).
 :- consult('$LOGTALKHOME/integration/logtalk_comp_swi.pl').
 :- consult('$LOGTALKUSER/libpaths/libpaths.pl').
 :- consult('$LOGTALKUSER/configs/swihook.pl').
-:- absolute_file_name(library(pce), _, [file_type(prolog), access(read), file_errors(fail)]) -> consult('$LOGTALKUSER/configs/xpcehook.pl'); true.
+:- (absolute_file_name(library(pce), _, [file_type(prolog), access(read), file_errors(fail)]) -> consult('$LOGTALKUSER/configs/xpcehook.pl'); true).

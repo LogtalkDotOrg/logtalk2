@@ -15,13 +15,21 @@ RELEASE NOTES
 
 2.35.2 - April ??, 2009
 
+    Added experimental support for defining Logtalk startup directory specific
+    settings. By defining a "settings.pl" file containing clauses for the 
+    logtalk_flag/2 predicate, the user can override the default flag values 
+    defined in the back-end Prolog compiler config file. Requires running 
+    Logtalk with B-Prolog, CxProlog, ECLiPSE (POSIX-only), GNU Prolog, SICStus
+    Prolog (POSIX-only), SWI-Prolog, YAP, or XSB.
+
     Updated the Logtalk compiler and runtime and all the config files to use
-    the call/N predicates instead of the call_with_args/N predicates.
+    the more standard call/N predicates instead of the call_with_args/N 
+    predicates.
 
     Improved the XML documentation automatically generated for threaded and
     synchronized objects and synchronized predicates. The "synchronized" and
-    "threaded" properties are now appended to the object/predicate compilation
-    mode.
+    "threaded" properties are now appended to the compilation mode of object
+    and predicates.
 
     Updated the config files of the GNU Prolog, ECLiPSE, and XSB compilers
     to set the default directory for temporary files depending on the host

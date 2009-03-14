@@ -14,5 +14,6 @@
 
 :- set_prolog_flag(file_name_variables, true).
 :- silent_consult('$LOGTALKUSER/configs/cx.pl').
+:- (fs_exists_file('settings.pl') -> silent_consult('settings.pl'); true).
 :- silent_consult('$LOGTALKHOME/compiler/logtalk.pl').
 :- silent_consult('$LOGTALKUSER/libpaths/libpaths.pl').

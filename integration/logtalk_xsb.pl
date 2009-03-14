@@ -16,5 +16,5 @@
 
 :- expand_atom('$LOGTALKUSER/configs/xsb.pl', Config), reconsult(Config).
 :- (path_sysop(exists, 'settings.pl') -> reconsult('settings.pl'); true).
-:- expand_atom('$LOGTALKHOME/integration/logtalk_comp_xsbmt.pl', Compiler), reconsult(Compiler).
+:- expand_atom('$LOGTALKHOME/compiler/logtalk.pl', Compiler), reconsult(Compiler).
 :- expand_atom('$LOGTALKUSER/libpaths/libpaths.pl', Libpaths), reconsult(Libpaths).

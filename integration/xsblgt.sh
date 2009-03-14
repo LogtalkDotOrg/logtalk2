@@ -73,4 +73,4 @@ else
 fi
 echo
 
-exec xsb -l -e "['$LOGTALKUSER/configs/xsb.pl', '$LOGTALKHOME/compiler/logtalk.pl', '$LOGTALKUSER/libpaths/libpaths.pl']." "$@"
+exec xsb -l -e "['$LOGTALKHOME/integration/logtalk_xsb.pl']." "$@"

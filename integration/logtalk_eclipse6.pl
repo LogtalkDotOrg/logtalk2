@@ -13,5 +13,6 @@
 
 
 :- compile('$LOGTALKUSER/configs/eclipse6iso.pl').
+:- (atom_string('$PWD/settings.pl', String), canonical_path_name(String, File), exists(File) -> compile('$PWD/settings.pl'); true).
 :- compile('$LOGTALKHOME/integration/logtalk_comp_eclipse.pl').
 :- compile('$LOGTALKUSER/libpaths/libpaths.pl').

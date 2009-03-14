@@ -12,9 +12,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-:- set_prolog_flag(redefined, off).
-:- cl('$LOGTALKUSER/configs/b.pl').
-%:- system('del %LOGTALKUSER%\\configs\\b.pl.out').
-:- (expand_environment('$LOGTALKHOME/compiler/logtalk.pl.out', Expanded), exists(Expanded) -> load('$LOGTALKHOME/compiler/logtalk.pl'); cl('$LOGTALKHOME/compiler/logtalk.pl')).
-:- cl('$LOGTALKUSER/libpaths/libpaths.pl').
-%:- system('del %LOGTALKUSER%\\libpaths\\libpaths.pl.out').
+:- if(current_prolog_flag(system_options, threads)).
+    :- thread_local('$lgt_obj_lookup_cache_'/4).
+    :- thread_local('$lgt_self_lookup_cache_'/4).
+    :- thread_local('$lgt_super_lookup_cache_'/4).
+    :- thread_local('$lgt_db_lookup_cache_'/5).
+:- endif.
+:- include('../compiler/logtalk.pl').

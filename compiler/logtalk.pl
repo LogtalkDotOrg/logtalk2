@@ -1744,7 +1744,8 @@ logtalk_compile(Files, Flags) :-
 		asserta('$lgt_pp_compiler_flag_'(smart_compilation, off)),	% be off and 
 		retractall('$lgt_pp_compiler_flag_'(reload, _)),			% the reload flag to be set
 		asserta('$lgt_pp_compiler_flag_'(reload, always))			% to always
-	;	true),
+	;	true
+	),
 	(	'$lgt_pp_compiler_flag_'(hook, Obj) ->						% pre-compile hooks in order 
 		(	Obj == user ->											% to speed up entity compilation
 			TermExpansionGoal = term_expansion(Term, Terms),
@@ -14549,7 +14550,7 @@ current_logtalk_flag(version, version(2, 35, 2)).
 
 
 '$lgt_startup_message' :-
-	'$lgt_default_flag'(startup_message, Flag),
+	'$lgt_compiler_flag'(startup_message, Flag),
 	'$lgt_startup_message'(Flag).
 
 
@@ -14573,109 +14574,109 @@ current_logtalk_flag(version, version(2, 35, 2)).
 
 '$lgt_default_flags'(compact) :-
 	write('Default lint compilation flags: '), nl,
-	'$lgt_default_flag'(unknown, Unknown), write('  unknown: '), write(Unknown),
-	'$lgt_default_flag'(misspelt, Misspelt), write(', misspelt: '), write(Misspelt),
-	'$lgt_default_flag'(lgtredef, Lgtredef), write(', lgtredef: '), write(Lgtredef),
-	'$lgt_default_flag'(plredef, Plredef), write(', plredef: '), write(Plredef), nl,
-	'$lgt_default_flag'(portability, Portability), write('  portability: '), write(Portability),
-	'$lgt_default_flag'(singletons, Singletons), write(', singletons: '), write(Singletons),
-	'$lgt_default_flag'(underscore_variables, Underscore), write(', underscore_variables: '), write(Underscore), nl,
+	'$lgt_compiler_flag'(unknown, Unknown), write('  unknown: '), write(Unknown),
+	'$lgt_compiler_flag'(misspelt, Misspelt), write(', misspelt: '), write(Misspelt),
+	'$lgt_compiler_flag'(lgtredef, Lgtredef), write(', lgtredef: '), write(Lgtredef),
+	'$lgt_compiler_flag'(plredef, Plredef), write(', plredef: '), write(Plredef), nl,
+	'$lgt_compiler_flag'(portability, Portability), write('  portability: '), write(Portability),
+	'$lgt_compiler_flag'(singletons, Singletons), write(', singletons: '), write(Singletons),
+	'$lgt_compiler_flag'(underscore_variables, Underscore), write(', underscore_variables: '), write(Underscore), nl,
 	write('Default documenting compilation flags:'), nl,
-	'$lgt_default_flag'(xmldocs, XMLDocs), write('  xmldocs: '), write(XMLDocs),
-	'$lgt_default_flag'(xmldir, XMLDir), write(', xmldir: '), write(XMLDir),
-	'$lgt_default_flag'(xmlspec, XMLSpec), write(', xmlspec: '), write(XMLSpec),
-	'$lgt_default_flag'(xmlsref, XMLSRef), write(', xmlsref: '), write(XMLSRef),
-	'$lgt_default_flag'(xslfile, XSLFile), write(', xslfile: '), write(XSLFile), nl,
+	'$lgt_compiler_flag'(xmldocs, XMLDocs), write('  xmldocs: '), write(XMLDocs),
+	'$lgt_compiler_flag'(xmldir, XMLDir), write(', xmldir: '), write(XMLDir),
+	'$lgt_compiler_flag'(xmlspec, XMLSpec), write(', xmlspec: '), write(XMLSpec),
+	'$lgt_compiler_flag'(xmlsref, XMLSRef), write(', xmlsref: '), write(XMLSRef),
+	'$lgt_compiler_flag'(xslfile, XSLFile), write(', xslfile: '), write(XSLFile), nl,
 	write('Other default compilation flags:'), nl,
-	'$lgt_default_flag'(report, Report), write('  report: '), write(Report),
-	'$lgt_default_flag'(code_prefix, Code), write(', code_prefix: '), writeq(Code),
-	'$lgt_default_flag'(debug, Debug), write(', debug: '), writeq(Debug),
-	'$lgt_default_flag'(smart_compilation, Smart), write(', smart_compilation: '), write(Smart),
-	'$lgt_default_flag'(reload, Reload), write(', reload: '), write(Reload), nl,
-	'$lgt_default_flag'(complements, Complements), write('  complements: '), write(Complements),
-	'$lgt_default_flag'(dynamic_declarations, DynamicDeclarations), write(', dynamic_declarations: '), write(DynamicDeclarations),
-	'$lgt_default_flag'(events, Events), write(', events: '), write(Events), nl,
-	(	'$lgt_default_flag'(hook, Hook) -> true
+	'$lgt_compiler_flag'(report, Report), write('  report: '), write(Report),
+	'$lgt_compiler_flag'(code_prefix, Code), write(', code_prefix: '), writeq(Code),
+	'$lgt_compiler_flag'(debug, Debug), write(', debug: '), writeq(Debug),
+	'$lgt_compiler_flag'(smart_compilation, Smart), write(', smart_compilation: '), write(Smart),
+	'$lgt_compiler_flag'(reload, Reload), write(', reload: '), write(Reload), nl,
+	'$lgt_compiler_flag'(complements, Complements), write('  complements: '), write(Complements),
+	'$lgt_compiler_flag'(dynamic_declarations, DynamicDeclarations), write(', dynamic_declarations: '), write(DynamicDeclarations),
+	'$lgt_compiler_flag'(events, Events), write(', events: '), write(Events), nl,
+	(	'$lgt_compiler_flag'(hook, Hook) -> true
 	;	Hook = '(none defined)'
 	),
 	write('  hook: '), write(Hook),
-	'$lgt_default_flag'(tmpdir, TmpDir), write(', tmpdir: '), write(TmpDir), nl,
+	'$lgt_compiler_flag'(tmpdir, TmpDir), write(', tmpdir: '), write(TmpDir), nl,
 	write('Read-only compilation flags:'), nl,
-	'$lgt_default_flag'(prolog, Prolog), write('  prolog: '), write(Prolog),
-	'$lgt_default_flag'(break_predicate, Break), write(', break_predicate: '), write(Break),
-	'$lgt_default_flag'(startup_message, Startup), write(', startup_message: '), write(Startup), nl,
-	'$lgt_default_flag'(altdirs, Altdirs), write('  altdirs: '), write(Altdirs),
-	'$lgt_default_flag'(context_switching_calls, ContextCalls), write(', context_switching_calls: '), write(ContextCalls),
-	 '$lgt_default_flag'(threads, Threads), write(', threads: '), write(Threads), nl,
-	'$lgt_default_flag'(encoding_directive, Encodings), write('  encoding_directive: '), write(Encodings),
-	'$lgt_default_flag'(multifile_directive, Multifile), write(', multifile_directive: '), write(Multifile), nl, nl.
+	'$lgt_compiler_flag'(prolog, Prolog), write('  prolog: '), write(Prolog),
+	'$lgt_compiler_flag'(break_predicate, Break), write(', break_predicate: '), write(Break),
+	'$lgt_compiler_flag'(startup_message, Startup), write(', startup_message: '), write(Startup), nl,
+	'$lgt_compiler_flag'(altdirs, Altdirs), write('  altdirs: '), write(Altdirs),
+	'$lgt_compiler_flag'(context_switching_calls, ContextCalls), write(', context_switching_calls: '), write(ContextCalls),
+	 '$lgt_compiler_flag'(threads, Threads), write(', threads: '), write(Threads), nl,
+	'$lgt_compiler_flag'(encoding_directive, Encodings), write('  encoding_directive: '), write(Encodings),
+	'$lgt_compiler_flag'(multifile_directive, Multifile), write(', multifile_directive: '), write(Multifile), nl, nl.
 
 '$lgt_default_flags'(verbose) :-
 	write('Default lint compilation flags:'), nl,
-	'$lgt_default_flag'(unknown, Unknown),
+	'$lgt_compiler_flag'(unknown, Unknown),
 	write('  Unknown entities (unknown):                                 '), write(Unknown), nl,
-	'$lgt_default_flag'(misspelt, Misspelt),
+	'$lgt_compiler_flag'(misspelt, Misspelt),
 	write('  Misspelt predicate calls (misspelt):                        '), write(Misspelt), nl,
-	'$lgt_default_flag'(lgtredef, Lgtredef),
+	'$lgt_compiler_flag'(lgtredef, Lgtredef),
 	write('  Logtalk built-in predicates redefinition (lgtredef):        '), write(Lgtredef), nl,
-	'$lgt_default_flag'(plredef, Plredef),
+	'$lgt_compiler_flag'(plredef, Plredef),
 	write('  Prolog built-in predicates redefinition (plredef):          '), write(Plredef), nl,
-	'$lgt_default_flag'(portability, Portability),
+	'$lgt_compiler_flag'(portability, Portability),
 	write('  Non portable calls (portability):                           '), write(Portability), nl,
-	'$lgt_default_flag'(singletons, Singletons),
+	'$lgt_compiler_flag'(singletons, Singletons),
 	write('  Singletons variables (singletons):                          '), write(Singletons), nl,
-	'$lgt_default_flag'(underscore_variables, Underscore),
+	'$lgt_compiler_flag'(underscore_variables, Underscore),
 	write('  Underscore variables interpretation (underscore_variables): '), write(Underscore), nl,
 	write('Default documenting compilation flags:'), nl,
-	'$lgt_default_flag'(xmldocs, XMLDocs),
+	'$lgt_compiler_flag'(xmldocs, XMLDocs),
 	write('  XML documenting files (xmldocs):                            '), write(XMLDocs), nl,
-	'$lgt_default_flag'(xmldir, XMLDir),
+	'$lgt_compiler_flag'(xmldir, XMLDir),
 	write('  XML documenting files directory (xmldir):                   '), write(XMLDir), nl,
-	'$lgt_default_flag'(xmlspec, XMLSpec),
+	'$lgt_compiler_flag'(xmlspec, XMLSpec),
 	write('  XML specification file (xmlspec):                           '), write(XMLSpec), nl,
-	'$lgt_default_flag'(xmlsref, XMLSRef),
+	'$lgt_compiler_flag'(xmlsref, XMLSRef),
 	write('  XML specification reference (xmlsref):                      '), write(XMLSRef), nl,
-	'$lgt_default_flag'(xslfile, XSLFile),
+	'$lgt_compiler_flag'(xslfile, XSLFile),
 	write('  XSL stylesheet file (xslfile):                              '), write(XSLFile), nl,
 	write('Other default compilation flags:'), nl,
-	'$lgt_default_flag'(report, Report),
+	'$lgt_compiler_flag'(report, Report),
 	write('  Compilation report (report):                                '), write(Report), nl,
-	'$lgt_default_flag'(code_prefix, Code),
+	'$lgt_compiler_flag'(code_prefix, Code),
 	write('  Compiled code functors prefix (code_prefix):                '), writeq(Code), nl,
-	'$lgt_default_flag'(debug, Debug),
+	'$lgt_compiler_flag'(debug, Debug),
 	write('  Compile entities in debug mode (debug):                     '), writeq(Debug), nl,
-	'$lgt_default_flag'(complements, Complements),
+	'$lgt_compiler_flag'(complements, Complements),
 	write('  Complementing category support (complements):               '), write(Complements), nl,
-	'$lgt_default_flag'(dynamic_declarations, DynamicDeclarations),
+	'$lgt_compiler_flag'(dynamic_declarations, DynamicDeclarations),
 	write('  Dynamic declarations support (dynamic_declarations):        '), write(DynamicDeclarations), nl,
-	'$lgt_default_flag'(events, Events),
+	'$lgt_compiler_flag'(events, Events),
 	write('  Compile messages with event support (events):               '), write(Events), nl,
-	'$lgt_default_flag'(reload, Reload),
+	'$lgt_compiler_flag'(reload, Reload),
 	write('  Reloading of already loaded source files (reload):          '), write(Reload), nl,
-	'$lgt_default_flag'(smart_compilation, Smart),
+	'$lgt_compiler_flag'(smart_compilation, Smart),
 	write('  Smart compilation (smart_compilation):                      '), write(Smart), nl,
-	(	'$lgt_default_flag'(hook, Hook) -> true
+	(	'$lgt_compiler_flag'(hook, Hook) -> true
 	;	Hook = '(none defined)'
 	),
 	write('  Compiler hook object (hook):                                '), write(Hook), nl,
-	'$lgt_default_flag'(tmpdir, TmpDir),
+	'$lgt_compiler_flag'(tmpdir, TmpDir),
 	write('  Directory for compiler generated temporary files (tmpdir):  '), write(TmpDir), nl,
 	write('Read-only compilation flags:'), nl,
-	'$lgt_default_flag'(prolog, Prolog),
+	'$lgt_compiler_flag'(prolog, Prolog),
 	write('  Name of the back-end Prolog compiler (prolog):              '), write(Prolog), nl,
-	'$lgt_default_flag'(break_predicate, Break),
+	'$lgt_compiler_flag'(break_predicate, Break),
 	write('  Support for break/0 predicate (break_predicate):            '), write(Break), nl,
-	'$lgt_default_flag'(startup_message, Startup),
+	'$lgt_compiler_flag'(startup_message, Startup),
 	write('  Startup message (startup_message):                          '), write(Startup), nl,
-	'$lgt_default_flag'(altdirs, Altdirs),
+	'$lgt_compiler_flag'(altdirs, Altdirs),
 	write('  Alternative compilation directories (altdirs):              '), write(Altdirs), nl,
-	'$lgt_default_flag'(context_switching_calls, ContextCalls),
+	'$lgt_compiler_flag'(context_switching_calls, ContextCalls),
 	write('  Context-switching calls (context_switching_calls):          '), write(ContextCalls), nl,
-	'$lgt_default_flag'(encoding_directive, Encodings),
+	'$lgt_compiler_flag'(encoding_directive, Encodings),
 	write('  Support for encoding/1 directive (encoding_directive):      '), write(Encodings), nl,
-	'$lgt_default_flag'(multifile_directive, Multifile),
+	'$lgt_compiler_flag'(multifile_directive, Multifile),
 	write('  Support for multifile/1 directive (multifile_directive):    '), write(Multifile), nl,
-	'$lgt_default_flag'(threads, Threads),
+	'$lgt_compiler_flag'(threads, Threads),
 	write('  Multi-threading programming support (threads):              '), write(Threads), nl, nl.
 
 
@@ -14689,12 +14690,29 @@ current_logtalk_flag(version, version(2, 35, 2)).
 
 
 
+'$lgt_assert_startup_directory_flags' :-
+	catch(logtalk_flag(Flag, Value), _, fail),
+	retractall('$lgt_current_flag_'(Flag, _)),
+	assertz('$lgt_current_flag_'(Flag, Value)),
+	fail.
+
+'$lgt_assert_startup_directory_flags' :-	
+	(	'$lgt_current_flag_'(debug, on) ->						% debug flag on requires the
+		retractall('$lgt_current_flag_'(smart_compilation, _)),	% smart_compilation flag to 
+		asserta('$lgt_current_flag_'(smart_compilation, off)),	% be off and 
+		retractall('$lgt_current_flag_'(reload, _)),			% the reload flag to be set
+		asserta('$lgt_current_flag_'(reload, always))			% to always
+	;	true
+	).
+
+
+
 % '$lgt_assert_default_hooks'
 %
 % asserts the compiler hook goal specified on the config file
 
 '$lgt_assert_default_hooks' :-
-	(	'$lgt_default_flag'(hook, Hook) ->
+	(	'$lgt_compiler_flag'(hook, Hook) ->
 		'$lgt_compile_hooks'(Hook)
 	;	true
 	).
@@ -14707,7 +14725,7 @@ current_logtalk_flag(version, version(2, 35, 2)).
 % threaded calls tag counter support for compilers supporting multi-threading programming
 
 '$lgt_start_runtime_threading' :-
-	(	'$lgt_default_flag'(threads, on),
+	(	'$lgt_compiler_flag'(threads, on),
 		'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _) ->
 		'$lgt_init_object_message_queue'(Prefix),
 		mutex_create(_, [alias('$lgt_threaded_tag')]),
@@ -14721,7 +14739,13 @@ current_logtalk_flag(version, version(2, 35, 2)).
 
 
 
-:- initialization(('$lgt_startup_message', '$lgt_assert_default_hooks', '$lgt_start_runtime_threading', '$lgt_dbg_reset_invocation_number')).
+:- initialization((
+	'$lgt_assert_startup_directory_flags',
+	'$lgt_startup_message',
+	'$lgt_assert_default_hooks',
+	'$lgt_start_runtime_threading',
+	'$lgt_dbg_reset_invocation_number'
+	)).
 
 
 

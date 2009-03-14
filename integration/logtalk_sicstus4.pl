@@ -13,5 +13,6 @@
 
 
 :- compile('$LOGTALKUSER/configs/sicstus4.pl').
+:- (absolute_file_name('$PWD/settings.pl', File), file_exists(File) -> compile(File); true).
 :- compile('$LOGTALKHOME/compiler/logtalk.pl').
 :- compile('$LOGTALKUSER/libpaths/libpaths.pl').
