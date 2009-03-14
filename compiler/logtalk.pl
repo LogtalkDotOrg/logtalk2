@@ -14691,17 +14691,19 @@ current_logtalk_flag(version, version(2, 35, 2)).
 
 
 '$lgt_assert_startup_directory_flags' :-
-	catch(logtalk_flag(Flag, Value), _, fail),
-	retractall('$lgt_current_flag_'(Flag, _)),
-	assertz('$lgt_current_flag_'(Flag, Value)),
-	fail.
-
-'$lgt_assert_startup_directory_flags' :-	
-	(	'$lgt_current_flag_'(debug, on) ->						% debug flag on requires the
-		retractall('$lgt_current_flag_'(smart_compilation, _)),	% smart_compilation flag to 
-		asserta('$lgt_current_flag_'(smart_compilation, off)),	% be off and 
-		retractall('$lgt_current_flag_'(reload, _)),			% the reload flag to be set
-		asserta('$lgt_current_flag_'(reload, always))			% to always
+	(	current_predicate(logtalk_flag/2) ->
+		(	logtalk_flag(Flag, Value),
+			retractall('$lgt_current_flag_'(Flag, _)),
+			assertz('$lgt_current_flag_'(Flag, Value)),
+			fail
+		;	(	'$lgt_current_flag_'(debug, on) ->						% debug flag on requires the
+				retractall('$lgt_current_flag_'(smart_compilation, _)),	% smart_compilation flag to 
+				asserta('$lgt_current_flag_'(smart_compilation, off)),	% be off and 
+				retractall('$lgt_current_flag_'(reload, _)),			% the reload flag to be set
+				asserta('$lgt_current_flag_'(reload, always))			% to always
+			;	true
+			)
+		)
 	;	true
 	).
 
