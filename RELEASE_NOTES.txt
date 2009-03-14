@@ -19,8 +19,8 @@ RELEASE NOTES
     settings. By defining a "settings.pl" file containing clauses for the 
     logtalk_flag/2 predicate, the user can override the default flag values 
     defined in the back-end Prolog compiler config file. Requires running 
-    Logtalk with B-Prolog, CxProlog, ECLiPSE (POSIX-only), GNU Prolog, SICStus
-    Prolog (POSIX-only), SWI-Prolog, YAP, or XSB.
+    Logtalk with B-Prolog, CxProlog, ECLiPSE (POSIX-only), GNU Prolog, 
+    Qu-Prolog, SICStus Prolog (POSIX-only), SWI-Prolog, YAP, or XSB.
 
     Updated the Logtalk compiler and runtime and all the config files to use
     the more standard call/N predicates instead of the call_with_args/N 

@@ -14,6 +14,11 @@
 
 :- 	fcompile('$LOGTALKUSER/configs/qu.pl', [assemble_only(true)]),
 	load('$LOGTALKUSER/configs/qu.qo'),
+	(	access('settings.pl', 4, 0) ->
+		fcompile('settings.pl', [assemble_only(true)]),
+		load('settings.qo')
+	;	true
+	),
 	os(system('ln -sf $LOGTALKHOME/compiler/logtalk.pl $LOGTALKUSER/.logtalk.pl')),
 	fcompile('$LOGTALKUSER/.logtalk.pl', [assemble_only(true), object_file('$LOGTALKUSER/.logtalk.qo'), string_table(256)]),
 	load('$LOGTALKUSER/.logtalk.qo'),
