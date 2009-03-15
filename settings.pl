@@ -52,3 +52,12 @@
 % logtalk_flag(altdirs, on).
 % logtalk_flag(xmldocs, on).
 % logtalk_flag(xmldir, '/home/user/my_project_docs/').
+
+%  To develop portable Logtalk applications uncomment the following lines:
+% logtalk_flag(portability, warning).
+
+%  To maximize performance by turning off all optional features uncomment the
+%  following lines:
+% logtalk_flag(events, off).
+% logtalk_flag(complements, off).
+% logtalk_flag(dynamic_declarations, off).
