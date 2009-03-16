@@ -13,7 +13,7 @@
 
 
 :- compile('$LOGTALKUSER/configs/sicstus4.pl').
-:- (	absolute_file_name('$PWD/settings.pl', File), file_exists(File) ->
+:- (	current_directory(Directory), atom_concat(Directory, 'settings.pl', File), file_exists(File) ->
 		compile(File)
 	;	absolute_file_name('$LOGTALKUSER/settings.pl', File), file_exists(File) ->
 		compile(File)
