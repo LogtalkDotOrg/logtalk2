@@ -17,6 +17,9 @@
 	(	access('settings.pl', 4, 0) ->
 		fcompile('settings.pl', [assemble_only(true)]),
 		load('settings.qo')
+	;	access('$LOGTALKUSER/settings.pl', 4, 0) ->
+		fcompile('$LOGTALKUSER/settings.pl', [assemble_only(true)]),
+		load('$LOGTALKUSER/settings.qo')
 	;	true
 	),
 	os(system('ln -sf $LOGTALKHOME/compiler/logtalk.pl $LOGTALKUSER/.logtalk.pl')),

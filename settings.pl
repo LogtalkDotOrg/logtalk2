@@ -15,7 +15,7 @@
 %  This is a sample settings file for Logtalk that can be used to override
 %  the default flag values in the back-end Prolog compiler config files.
 %  Using setting files allows Logtalk to easily support project-specific
-%  settings. Note that the settings here can always be overriden by using
+%  settings. Note that the settings here can always be overridden by using
 %  the logtalk_compile/2 and logtalk_load/2 built-in predicates.
 %
 %  To use this feature, simply copy this file to the directory containing
@@ -41,8 +41,10 @@
 % logtalk_flag(debug, on).
 % logtalk_flag(smart_compilation, off).
 % logtalk_flag(reload, always).
+% logtalk_flag(unknown, warning).
+% logtalk_flag(misspelt, warning).
 
-%  To recude clutter in the directory containing your source files uncomment
+%  To reduce clutter in the directory containing your source files uncomment
 %  the following lines:
 % logtalk_flag(altdirs, on).
 

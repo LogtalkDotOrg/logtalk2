@@ -15,6 +15,11 @@
 :- import expand_atom/2 from standard.
 
 :- expand_atom('$LOGTALKUSER/configs/xsb.pl', Config), reconsult(Config).
-:- (path_sysop(exists, 'settings.pl') -> reconsult('settings.pl'); true).
+:- (	path_sysop(exists, 'settings.pl') ->
+		reconsult('settings.pl')
+	;	expand_atom('$LOGTALKUSER/settings.pl', File), path_sysop(exists, File) ->
+		reconsult(File)
+	;	true
+	).
 :- expand_atom('$LOGTALKHOME/integration/logtalk_comp_xsbmt.pl', Compiler), reconsult(Compiler).
 :- expand_atom('$LOGTALKUSER/libpaths/libpaths.pl', Libpaths), reconsult(Libpaths).
