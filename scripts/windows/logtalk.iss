@@ -115,9 +115,9 @@ Name: "{group}\Logtalk - Ciao Prolog"; Filename: "{code:GetCiaoExePath}"; Parame
 
 Name: "{group}\Logtalk - CxProlog"; Filename: "{code:GetCxExePath}"; Parameters: "--goal ""silent_consult('%LOGTALKHOME%/integration/logtalk_cx.pl')"""; Comment: "Runs Logtalk with CxProlog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\cxprolog; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - ECLiPSe 5.10"; Filename: "{code:GetEclipse5ExePath}"; Parameters: "-b ""%LOGTALKHOME%\integration\logtalk_eclipse5.pl"""; Comment: "Runs Logtalk with ECLiPSe 5.10"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\eclipse; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - ECLiPSe 5.10"; Filename: "{code:GetEclipse5ExePath}"; Parameters: "-e ""getcwd(CWD), setval(lgt_startup_dir, CWD), compile('$LOGTALKHOME/integration/logtalk_eclipse5.pl')"""; Comment: "Runs Logtalk with ECLiPSe 5.10"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\eclipse; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - ECLiPSe 6.0"; Filename: "{code:GetEclipse6ExePath}"; Parameters: "-b ""%LOGTALKHOME%\integration\logtalk_eclipse6.pl"""; Comment: "Runs Logtalk with ECLiPSe 6.0"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\eclipse; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - ECLiPSe 6.0"; Filename: "{code:GetEclipse6ExePath}"; Parameters: "-e ""getcwd(CWD), setval(lgt_startup_dir, CWD), compile('$LOGTALKHOME/integration/logtalk_eclipse6.pl')"""; Comment: "Runs Logtalk with ECLiPSe 6.0"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\eclipse; Flags: createonlyiffileexists
 
 Name: "{group}\Logtalk - GNU Prolog"; Filename: "{code:GetGPExePath}"; Parameters: "--init-goal ""set_prolog_flag(suspicious_warning, off), set_prolog_flag(multifile_warning, off), ['$LOGTALKHOME/integration/logtalk_gp.pl'], set_prolog_flag(suspicious_warning, on), set_prolog_flag(multifile_warning, on)"""; Comment: "Runs Logtalk with GNU Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\gprolog; Flags: createonlyiffileexists
 
