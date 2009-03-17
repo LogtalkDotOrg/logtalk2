@@ -15,12 +15,12 @@ RELEASE NOTES
 
 2.35.2 - April ??, 2009
 
-    Added experimental support for overriding the Logtalk compiler flags
-    specified in the back-end Prolog compiler config files. Logtalk will
-    load a "settings.pl" file in the startup directory. If this file is
-    not found, Logtalk will look for a "settings.pl" file in the Logtalk
+    Added experimental support for overriding the Logtalk default compiler
+    flags specified in the back-end Prolog compiler config files. Logtalk 
+    will load a "settings.pl" file in the startup directory. If this file 
+    is not found, Logtalk will look for a "settings.pl" file in the Logtalk
     user directory. The "settings.pl" file should define clauses for the
-    logtalk_flag/2 predicate. Requires running Logtalk with B-Prolog,
+    logtalk_flag/2 predicate. Requires running Logtalk with B-Prolog, Ciao,
     CxProlog, ECLiPSE (POSIX-only), GNU Prolog, Qu-Prolog, SICStus Prolog,
     SWI-Prolog, YAP, or XSB.
 

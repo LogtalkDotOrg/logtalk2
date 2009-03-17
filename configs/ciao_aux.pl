@@ -11,7 +11,7 @@
 %
 %  configuration file for Ciao Prolog 1.8p2 to 1.10#8
 %
-%  last updated: March 12, 2009
+%  last updated: March 17, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -592,6 +592,17 @@ forall(Generate, Test) :-
 	{Files}.
 {File} :-
 	logtalk_load(File).
+
+
+'$lgt_ciao_load_settings_file' :-
+	(	file_exists('settings.pl') ->
+		ensure_loaded('settings.pl')
+	;	file_exists('$LOGTALKUSER/settings.pl') ->
+		ensure_loaded('$LOGTALKUSER/settings.pl')
+	;	true
+	).
+
+:- initialization('$lgt_ciao_load_settings_file').
 
 
 
