@@ -11,7 +11,7 @@
 %
 %  configuration file for K-Prolog 6.0.4 and later versions
 %
-%  last updated: March 12, 2009
+%  last updated: March 18, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -114,6 +114,24 @@ call_cleanup(_, _) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
+%  back-end Prolog features
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_prolog_feature'(?atom, ?atom)
+%
+% back-end Prolog supported features
+
+'$lgt_prolog_feature'(break_predicate, supported).
+'$lgt_prolog_feature'(encoding_directive, source).
+'$lgt_prolog_feature'(multifile_directive, unsupported).
+'$lgt_prolog_feature'(threads, unsupported).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 %  default flag values
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -149,7 +167,6 @@ call_cleanup(_, _) :-
 '$lgt_default_flag'(code_prefix, '').
 
 '$lgt_default_flag'(debug, off).
-'$lgt_default_flag'(break_predicate, supported).
 
 '$lgt_default_flag'(complements, off).
 '$lgt_default_flag'(dynamic_declarations, off).
@@ -158,10 +175,6 @@ call_cleanup(_, _) :-
 '$lgt_default_flag'(altdirs, off).
 '$lgt_default_flag'(tmpdir, 'lgt_tmp/').
 '$lgt_default_flag'(xmldir, 'xml_docs/').
-
-'$lgt_default_flag'(encoding_directive, source).
-'$lgt_default_flag'(multifile_directive, unsupported).
-'$lgt_default_flag'(threads, unsupported).
 
 '$lgt_default_flag'(context_switching_calls, allow).
 

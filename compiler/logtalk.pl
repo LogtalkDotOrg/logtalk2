@@ -1237,7 +1237,7 @@ abolish_events(after, Obj, Msg, Sender, Monitor) :-
 % threaded(+callable)
 
 threaded(Goals) :-
-	\+ '$lgt_compiler_flag'(threads, on),
+	\+ '$lgt_prolog_feature'(threads, supported),
 	throw(error(resource_error(threads), threaded(Goals))).
 
 threaded(Goals) :-
@@ -1257,7 +1257,7 @@ threaded(Goals) :-
 % threaded_call(@callable, -nonvar)
 
 threaded_call(Goal, Tag) :-
-	\+ '$lgt_compiler_flag'(threads, on),
+	\+ '$lgt_prolog_feature'(threads, supported),
 	throw(error(resource_error(threads), threaded_call(Goal, Tag))).
 
 threaded_call(Goal, Tag) :-
@@ -1282,7 +1282,7 @@ threaded_call(Goal, Tag) :-
 % threaded_call(@callable)
 
 threaded_call(Goal) :-
-	\+ '$lgt_compiler_flag'(threads, on),
+	\+ '$lgt_prolog_feature'(threads, supported),
 	throw(error(resource_error(threads), threaded_call(Goal))).
 
 threaded_call(Goal) :-
@@ -1301,7 +1301,7 @@ threaded_call(Goal) :-
 % threaded_once(@callable, -nonvar)
 
 threaded_once(Goal, Tag) :-
-	\+ '$lgt_compiler_flag'(threads, on),
+	\+ '$lgt_prolog_feature'(threads, supported),
 	throw(error(resource_error(threads), threaded_once(Goal, Tag))).
 
 threaded_once(Goal, Tag) :-
@@ -1325,7 +1325,7 @@ threaded_once(Goal, Tag) :-
 % threaded_once(@callable)
 
 threaded_once(Goal) :-
-	\+ '$lgt_compiler_flag'(threads, on),
+	\+ '$lgt_prolog_feature'(threads, supported),
 	throw(error(resource_error(threads), threaded_once(Goal))).
 
 threaded_once(Goal) :-
@@ -1344,7 +1344,7 @@ threaded_once(Goal) :-
 % threaded_ignore(@callable)
 
 threaded_ignore(Goal) :-
-	\+ '$lgt_compiler_flag'(threads, on),
+	\+ '$lgt_prolog_feature'(threads, supported),
 	throw(error(resource_error(threads), threaded_ignore(Goal))).
 
 threaded_ignore(Goal) :-
@@ -1363,7 +1363,7 @@ threaded_ignore(Goal) :-
 % threaded_exit(+callable, +nonvar)
 
 threaded_exit(Goal, Tag) :-
-	\+ '$lgt_compiler_flag'(threads, on),
+	\+ '$lgt_prolog_feature'(threads, supported),
 	throw(error(resource_error(threads), threaded_exit(Goal, Tag))).
 
 threaded_exit(Goal, Tag) :-
@@ -1386,7 +1386,7 @@ threaded_exit(Goal, Tag) :-
 % threaded_exit(+callable)
 
 threaded_exit(Goal) :-
-	\+ '$lgt_compiler_flag'(threads, on),
+	\+ '$lgt_prolog_feature'(threads, supported),
 	throw(error(resource_error(threads), threaded_exit(Goal))).
 
 threaded_exit(Goal) :-
@@ -1405,7 +1405,7 @@ threaded_exit(Goal) :-
 % threaded_peek(+callable, +nonvar)
 
 threaded_peek(Goal, Tag) :-
-	\+ '$lgt_compiler_flag'(threads, on),
+	\+ '$lgt_prolog_feature'(threads, supported),
 	throw(error(resource_error(threads), threaded_peek(Goal, Tag))).
 
 threaded_peek(Goal, Tag) :-
@@ -1428,7 +1428,7 @@ threaded_peek(Goal, Tag) :-
 % threaded_peek(+callable)
 
 threaded_peek(Goal) :-
-	\+ '$lgt_compiler_flag'(threads, on),
+	\+ '$lgt_prolog_feature'(threads, supported),
 	throw(error(resource_error(threads), threaded_peek(Goal))).
 
 threaded_peek(Goal) :-
@@ -1447,7 +1447,7 @@ threaded_peek(Goal) :-
 % threaded_wait(?nonvar)
 
 threaded_wait(Message) :-
-	\+ '$lgt_compiler_flag'(threads, on),
+	\+ '$lgt_prolog_feature'(threads, supported),
 	throw(error(resource_error(threads), threaded_wait(Message))).
 
 threaded_wait(Message) :-
@@ -1463,7 +1463,7 @@ threaded_notify(Message) :-
 	throw(error(instantiation_error, threaded_notify(Message))).
 
 threaded_notify(Message) :-
-	\+ '$lgt_compiler_flag'(threads, on),
+	\+ '$lgt_prolog_feature'(threads, supported),
 	throw(error(resource_error(threads), threaded_notify(Message))).
 
 threaded_notify(Message) :-
@@ -4217,7 +4217,7 @@ current_logtalk_flag(version, version(2, 35, 2)).
 	fail.
 
 '$lgt_dbg_do_port_option'(b, _, _, _, _, _) :-
-	(	'$lgt_compiler_flag'(break_predicate, supported) ->
+	(	'$lgt_prolog_feature'(break_predicate, supported) ->
 		'$lgt_dbg_suspend'(Tracing),
 		break,
 		'$lgt_dbg_resume'(Tracing)
@@ -4847,7 +4847,7 @@ current_logtalk_flag(version, version(2, 35, 2)).
 
 '$lgt_check_for_encoding_directive'((:- encoding(LogtalkEncoding)), Source, Input, NewInput, [encoding(PrologEncoding)|BOM]) :-
 	!,
-	(	\+ '$lgt_compiler_flag'(encoding_directive, unsupported) ->
+	(	\+ '$lgt_prolog_feature'(encoding_directive, unsupported) ->
 		(	'$lgt_logtalk_prolog_encoding'(LogtalkEncoding, PrologEncoding, Input) ->		% defined in the config files
 			assertz('$lgt_pp_file_encoding_'(LogtalkEncoding, PrologEncoding)),
 			close(Input),
@@ -5944,7 +5944,7 @@ current_logtalk_flag(version, version(2, 35, 2)).
 % create a message queue at object initialization
 
 '$lgt_tr_directive'(threaded, [], _, _, _, _) :-
-	\+ '$lgt_compiler_flag'(threads, on),
+	\+ '$lgt_prolog_feature'(threads, supported),
 	throw(error(resource_error(threads), threaded/0)).
 
 '$lgt_tr_directive'(threaded, [], _, _, _, _) :-
@@ -5965,7 +5965,7 @@ current_logtalk_flag(version, version(2, 35, 2)).
 
 '$lgt_tr_directive'(synchronized, [], _, _, _, _) :-
 	!,
-	(	'$lgt_default_flag'(threads, on) ->
+	(	'$lgt_prolog_feature'(threads, supported) ->
 		'$lgt_pp_entity'(_, Entity, Prefix, _, _),
 		atom_concat(Prefix, 'mutex_', Mutex),
 		assertz('$lgt_pp_synchronized_'),
@@ -6095,7 +6095,7 @@ current_logtalk_flag(version, version(2, 35, 2)).
 
 
 '$lgt_tr_directive'(synchronized, Preds, File, Line, Input, _) :-
-	(	'$lgt_default_flag'(threads, on) ->
+	(	'$lgt_prolog_feature'(threads, supported) ->
 		(	'$lgt_pp_synchronized_' ->
 			(	'$lgt_compiler_flag'(report, off) ->
 				true
@@ -11030,7 +11030,7 @@ current_logtalk_flag(version, version(2, 35, 2)).
 % synchronized predicates are compiled as normal predicates
 
 '$lgt_fix_synchronized_preds' :-
-	\+ '$lgt_default_flag'(threads, on),
+	\+ '$lgt_prolog_feature'(threads, supported),
 	!,
 	(	retract('$lgt_pp_def_'(Def)),
 		assertz('$lgt_pp_fdef_'(Def)),
@@ -11386,7 +11386,7 @@ current_logtalk_flag(version, version(2, 35, 2)).
 % writes the directives; cumbersome due to the special processing of the encoding/1 directive
 
 '$lgt_write_directives'(Stream) :-
-	'$lgt_compiler_flag'(encoding_directive, full),
+	'$lgt_prolog_feature'(encoding_directive, full),
 	'$lgt_pp_file_encoding_'(_, Encoding),
 	write_canonical(Stream, (:- encoding(Encoding))),
 	write(Stream, '.'),
@@ -11517,7 +11517,7 @@ current_logtalk_flag(version, version(2, 35, 2)).
 % the multifile/1 predicate directive
 
 '$lgt_write_runtime_clauses'(Stream) :-
-	(	'$lgt_compiler_flag'(multifile_directive, supported) ->
+	(	'$lgt_prolog_feature'(multifile_directive, supported) ->
 		'$lgt_write_runtime_clauses'(Stream, '$lgt_current_protocol_'/5),
 		'$lgt_write_runtime_clauses'(Stream, '$lgt_current_category_'/6),
 		'$lgt_write_runtime_clauses'(Stream, '$lgt_current_object_'/11),
@@ -11595,7 +11595,7 @@ current_logtalk_flag(version, version(2, 35, 2)).
 
 '$lgt_gen_entity_init_goal' :-
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, Compilation),
-	(	'$lgt_compiler_flag'(multifile_directive, supported) ->
+	(	'$lgt_prolog_feature'(multifile_directive, supported) ->
 		Goal1 = true
 	;	findall(Clause, '$lgt_pp_rclause'(Clause), Clauses),
 		Goal1 = '$lgt_assert_runtime_clauses'(Clauses)
@@ -12478,11 +12478,7 @@ current_logtalk_flag(version, version(2, 35, 2)).
 '$lgt_valid_flag'(prolog).
 '$lgt_valid_flag'(startup_message).
 '$lgt_valid_flag'(version).
-'$lgt_valid_flag'(break_predicate).
 '$lgt_valid_flag'(altdirs).
-'$lgt_valid_flag'(encoding_directive).
-'$lgt_valid_flag'(multifile_directive).
-'$lgt_valid_flag'(threads).
 '$lgt_valid_flag'(context_switching_calls).
 
 
@@ -12493,12 +12489,8 @@ current_logtalk_flag(version, version(2, 35, 2)).
 
 '$lgt_read_only_flag'(prolog).
 '$lgt_read_only_flag'(startup_message).
-'$lgt_read_only_flag'(break_predicate).
 '$lgt_read_only_flag'(version).
 '$lgt_read_only_flag'(altdirs).
-'$lgt_read_only_flag'(encoding_directive).
-'$lgt_read_only_flag'(multifile_directive).
-'$lgt_read_only_flag'(threads).
 '$lgt_read_only_flag'(context_switching_calls).
 
 
@@ -14603,13 +14595,13 @@ current_logtalk_flag(version, version(2, 35, 2)).
 	'$lgt_compiler_flag'(tmpdir, TmpDir), write(', tmpdir: '), write(TmpDir), nl,
 	write('Read-only compilation flags:'), nl,
 	'$lgt_compiler_flag'(prolog, Prolog), write('  prolog: '), write(Prolog),
-	'$lgt_compiler_flag'(break_predicate, Break), write(', break_predicate: '), write(Break),
+	'$lgt_prolog_feature'(break_predicate, Break), write(', break_predicate: '), write(Break),
 	'$lgt_compiler_flag'(startup_message, Startup), write(', startup_message: '), write(Startup), nl,
 	'$lgt_compiler_flag'(altdirs, Altdirs), write('  altdirs: '), write(Altdirs),
 	'$lgt_compiler_flag'(context_switching_calls, ContextCalls), write(', context_switching_calls: '), write(ContextCalls),
-	 '$lgt_compiler_flag'(threads, Threads), write(', threads: '), write(Threads), nl,
-	'$lgt_compiler_flag'(encoding_directive, Encodings), write('  encoding_directive: '), write(Encodings),
-	'$lgt_compiler_flag'(multifile_directive, Multifile), write(', multifile_directive: '), write(Multifile), nl, nl.
+	 '$lgt_prolog_feature'(threads, Threads), write(', threads: '), write(Threads), nl,
+	'$lgt_prolog_feature'(encoding_directive, Encodings), write('  encoding_directive: '), write(Encodings),
+	'$lgt_prolog_feature'(multifile_directive, Multifile), write(', multifile_directive: '), write(Multifile), nl, nl.
 
 '$lgt_default_flags'(verbose) :-
 	write('Default lint compilation flags:'), nl,
@@ -14664,7 +14656,7 @@ current_logtalk_flag(version, version(2, 35, 2)).
 	write('Read-only compilation flags:'), nl,
 	'$lgt_compiler_flag'(prolog, Prolog),
 	write('  Name of the back-end Prolog compiler (prolog):              '), write(Prolog), nl,
-	'$lgt_compiler_flag'(break_predicate, Break),
+	'$lgt_prolog_feature'(break_predicate, Break),
 	write('  Support for break/0 predicate (break_predicate):            '), write(Break), nl,
 	'$lgt_compiler_flag'(startup_message, Startup),
 	write('  Startup message (startup_message):                          '), write(Startup), nl,
@@ -14672,11 +14664,11 @@ current_logtalk_flag(version, version(2, 35, 2)).
 	write('  Alternative compilation directories (altdirs):              '), write(Altdirs), nl,
 	'$lgt_compiler_flag'(context_switching_calls, ContextCalls),
 	write('  Context-switching calls (context_switching_calls):          '), write(ContextCalls), nl,
-	'$lgt_compiler_flag'(encoding_directive, Encodings),
+	'$lgt_prolog_feature'(encoding_directive, Encodings),
 	write('  Support for encoding/1 directive (encoding_directive):      '), write(Encodings), nl,
-	'$lgt_compiler_flag'(multifile_directive, Multifile),
+	'$lgt_prolog_feature'(multifile_directive, Multifile),
 	write('  Support for multifile/1 directive (multifile_directive):    '), write(Multifile), nl,
-	'$lgt_compiler_flag'(threads, Threads),
+	'$lgt_prolog_feature'(threads, Threads),
 	write('  Multi-threading programming support (threads):              '), write(Threads), nl, nl.
 
 
@@ -14727,7 +14719,7 @@ current_logtalk_flag(version, version(2, 35, 2)).
 % threaded calls tag counter support for compilers supporting multi-threading programming
 
 '$lgt_start_runtime_threading' :-
-	(	'$lgt_compiler_flag'(threads, on),
+	(	'$lgt_prolog_feature'(threads, supported),
 		'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _) ->
 		'$lgt_init_object_message_queue'(Prefix),
 		mutex_create(_, [alias('$lgt_threaded_tag')]),

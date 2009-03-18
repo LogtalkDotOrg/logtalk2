@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#37 and later versions
 %
-%  last updated: March 13, 2009
+%  last updated: March 18, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -185,6 +185,24 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
+%  back-end Prolog features
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_prolog_feature'(?atom, ?atom)
+%
+% back-end Prolog supported features
+
+'$lgt_prolog_feature'(break_predicate, supported).
+'$lgt_prolog_feature'(encoding_directive, unsupported).
+'$lgt_prolog_feature'(multifile_directive, unsupported).
+'$lgt_prolog_feature'(threads, unsupported).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 %  default flag values
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -220,7 +238,6 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_default_flag'(code_prefix, '').
 
 '$lgt_default_flag'(debug, off).
-'$lgt_default_flag'(break_predicate, supported).
 
 '$lgt_default_flag'(complements, off).
 '$lgt_default_flag'(dynamic_declarations, off).
@@ -233,10 +250,6 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 	;	TmpDir = '.lgt_tmp/'
 	).
 '$lgt_default_flag'(xmldir, 'xml_docs/').
-
-'$lgt_default_flag'(encoding_directive, unsupported).
-'$lgt_default_flag'(multifile_directive, supported).
-'$lgt_default_flag'(threads, unsupported).
 
 '$lgt_default_flag'(context_switching_calls, allow).
 

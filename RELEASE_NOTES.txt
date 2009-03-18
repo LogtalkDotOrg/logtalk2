@@ -33,6 +33,10 @@ RELEASE NOTES
     "threaded" properties are now appended to the compilation mode of object
     and predicates.
 
+    Added a new '$lgt_prolog_feature'/2 predicate to all config files, used 
+    for representing back-end Prolog supported features that are previously 
+    represented by read-only compiler flags.
+
     Updated the config files of the GNU Prolog, ECLiPSE, and XSB compilers
     to set the default directory for temporary files depending on the host
     operating-system.
