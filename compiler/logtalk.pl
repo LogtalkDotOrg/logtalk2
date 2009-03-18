@@ -1879,6 +1879,9 @@ current_logtalk_flag(Flag, Value) :-
 	'$lgt_default_flag'(Flag, Value),
 	\+ '$lgt_current_flag_'(Flag, _).
 
+current_logtalk_flag(Flag, Value) :-
+	'$lgt_prolog_feature'(Flag, Value).
+
 current_logtalk_flag(version, version(2, 35, 2)).
 
 
@@ -12480,6 +12483,11 @@ current_logtalk_flag(version, version(2, 35, 2)).
 '$lgt_valid_flag'(version).
 '$lgt_valid_flag'(altdirs).
 '$lgt_valid_flag'(context_switching_calls).
+% back-end Prolog features
+'$lgt_valid_flag'(break_predicate).
+'$lgt_valid_flag'(encoding_directive).
+'$lgt_valid_flag'(multifile_directive).
+'$lgt_valid_flag'(threads).
 
 
 
@@ -12492,6 +12500,11 @@ current_logtalk_flag(version, version(2, 35, 2)).
 '$lgt_read_only_flag'(version).
 '$lgt_read_only_flag'(altdirs).
 '$lgt_read_only_flag'(context_switching_calls).
+% back-end Prolog features
+'$lgt_read_only_flag'(break_predicate).
+'$lgt_read_only_flag'(encoding_directive).
+'$lgt_read_only_flag'(multifile_directive).
+'$lgt_read_only_flag'(threads).
 
 
 
