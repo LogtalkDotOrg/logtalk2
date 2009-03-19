@@ -141,11 +141,13 @@ forall(Generate, Test) :-
 
 % '$lgt_prolog_feature'(?atom, ?atom)
 %
-% back-end Prolog supported features
+% back-end Prolog compiler supported features
 
+'$lgt_prolog_feature'(prolog, xsb).
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
 '$lgt_prolog_feature'(multifile_directive, unsupported).
+'$lgt_prolog_feature'(tabling, supported).
 '$lgt_prolog_feature'(threads, Threads) :-
 	(	xsb_configuration(engine_mode, 'multi-threading') ->
 		Threads = supported
@@ -164,8 +166,6 @@ forall(Generate, Test) :-
 % '$lgt_default_flag'(?atom, ?atom)
 %
 % default values for all flags
-
-'$lgt_default_flag'(prolog, xsb).
 
 '$lgt_default_flag'(xmldocs, on).
 '$lgt_default_flag'(xslfile, 'lgtxml.xsl').

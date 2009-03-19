@@ -158,11 +158,12 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 % '$lgt_prolog_feature'(?atom, ?atom)
 %
-% back-end Prolog supported features
+% back-end Prolog compiler supported features
 
 '$lgt_prolog_feature'(break_predicate, ?????).
 '$lgt_prolog_feature'(encoding_directive, ?????).
 '$lgt_prolog_feature'(multifile_directive, ?????).
+'$lgt_prolog_feature'(tabling, ?????).
 '$lgt_prolog_feature'(threads, ?????).
 
 

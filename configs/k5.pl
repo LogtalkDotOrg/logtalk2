@@ -130,11 +130,13 @@ retractall(Head) :-
 
 % '$lgt_prolog_feature'(?atom, ?atom)
 %
-% back-end Prolog supported features
+% back-end Prolog compiler supported features
 
+'$lgt_prolog_feature'(prolog, k).
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
 '$lgt_prolog_feature'(multifile_directive, unsupported).
+'$lgt_prolog_feature'(tabling, unsupported).
 '$lgt_prolog_feature'(threads, unsupported).
 
 
@@ -149,8 +151,6 @@ retractall(Head) :-
 % '$lgt_default_flag'(?atom, ?atom)
 %
 % default values for all flags
-
-'$lgt_default_flag'(prolog, k).
 
 '$lgt_default_flag'(xmldocs, on).
 '$lgt_default_flag'(xslfile, 'lgtxml.xsl').

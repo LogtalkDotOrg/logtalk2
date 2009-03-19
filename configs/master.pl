@@ -188,11 +188,13 @@ forall(Generate, Test) :-
 
 % '$lgt_prolog_feature'(?atom, ?atom)
 %
-% back-end Prolog supported features
+% back-end Prolog compiler supported features
 
+'$lgt_prolog_feature'(prolog, master).
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
 '$lgt_prolog_feature'(multifile_directive, unsupported).
+'$lgt_prolog_feature'(tabling, unsupported).
 '$lgt_prolog_feature'(threads, unsupported).
 
 
@@ -207,8 +209,6 @@ forall(Generate, Test) :-
 % '$lgt_default_flag'(?atom, ?atom)
 %
 % default values for all flags
-
-'$lgt_default_flag'(prolog, master).
 
 '$lgt_default_flag'(xmldocs, on).
 '$lgt_default_flag'(xslfile, 'lgtxml.xsl').

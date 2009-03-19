@@ -147,11 +147,13 @@
 
 % '$lgt_prolog_feature'(?atom, ?atom)
 %
-% back-end Prolog supported features
+% back-end Prolog compiler supported features
 
+'$lgt_prolog_feature'(prolog, swi).
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, full).
 '$lgt_prolog_feature'(multifile_directive, supported).
+'$lgt_prolog_feature'(tabling, unsupported).
 '$lgt_prolog_feature'(threads, Threads) :-
 	(	current_prolog_flag(threads, true) ->
 		Threads = supported
@@ -170,8 +172,6 @@
 % '$lgt_default_flag'(?atom, ?atom)
 %
 % default values for all flags
-
-'$lgt_default_flag'(prolog, swi).
 
 '$lgt_default_flag'(xmldocs, on).
 '$lgt_default_flag'(xslfile, 'lgtxml.xsl').
