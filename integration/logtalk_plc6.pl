@@ -13,5 +13,16 @@
 
 
 :- consult('$LOGTALKUSER/configs/k6.pl').
+:- (	dir('.', Files, _),
+		'$lgt_member'(Name, Files),
+		fname(Name, 'settings.pl') ->
+		consult('settings.pl')
+	;	fname("$LOGTALKUSER", Directory),
+		dir(Directory, Files, _),
+		'$lgt_member'(Name, Files),
+		fname(Name, 'settings.pl') ->
+		consult('$LOGTALKUSER/settings.pl')
+	;	true
+	).
 :- consult('$LOGTALKHOME/compiler/logtalk.pl').
 :- consult('$LOGTALKUSER/libpaths/libpaths.pl').
