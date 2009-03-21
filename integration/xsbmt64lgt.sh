@@ -73,4 +73,6 @@ else
 fi
 echo
 
+export LOGTALK_STARTUP_DIRECTORY=`pwd`
+
 exec xsb-bits64-mt --shared_predicates -l -e "['$LOGTALKHOME/integration/logtalk_xsbmt.pl']." "$@"

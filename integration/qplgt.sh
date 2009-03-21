@@ -73,4 +73,6 @@ else
 fi
 echo
 
+export LOGTALK_STARTUP_DIRECTORY=`pwd`
+
 exec qp -s 3072 -d 1024 -h 2048 -g "['$LOGTALKHOME/integration/logtalk_qp.pl']." "$@"

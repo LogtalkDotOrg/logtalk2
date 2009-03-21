@@ -52,6 +52,9 @@ RELEASE NOTES
     to use the command-line option "-s" instead of "-f" in order to allow
     loading of SWI-Prolog initialization files.
 
+    Updated the POSIX integration scripts to export the environment variable
+    LOGTALK_STARTUP_DIRECTORY before starting Logtalk.
+
 
 2.35.1 - March 1, 2009
 

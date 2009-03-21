@@ -73,5 +73,6 @@ else
 fi
 echo
 
-exec gprolog --init-goal "set_prolog_flag(suspicious_warning, off), set_prolog_flag(multifile_warning, off), ['$LOGTALKHOME/integration/logtalk_gp.pl'], set_prolog_flag(suspicious_warning, on), set_prolog_flag(multifile_warning, on)" "$@"
+export LOGTALK_STARTUP_DIRECTORY=`pwd`
 
+exec gprolog --init-goal "set_prolog_flag(suspicious_warning, off), set_prolog_flag(multifile_warning, off), ['$LOGTALKHOME/integration/logtalk_gp.pl'], set_prolog_flag(suspicious_warning, on), set_prolog_flag(multifile_warning, on)" "$@"

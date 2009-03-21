@@ -73,4 +73,6 @@ else
 fi
 echo
 
+export LOGTALK_STARTUP_DIRECTORY=`pwd`
+
 exec xsb -l -e "['$LOGTALKHOME/integration/logtalk_xsb.pl']." "$@"

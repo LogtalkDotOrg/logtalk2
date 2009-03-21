@@ -73,4 +73,6 @@ else
 fi
 echo
 
+export LOGTALK_STARTUP_DIRECTORY=`pwd`
+
 exec yap -l "$LOGTALKHOME/integration/logtalk_yap.pl" "$@"

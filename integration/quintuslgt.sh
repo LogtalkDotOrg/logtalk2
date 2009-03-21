@@ -73,4 +73,6 @@ else
 fi
 echo
 
-exec prolog +l "$LOGTALKHOME/integration/logtalk_quintus.pl" +z "$LOGTALKHOME" "$LOGTALKUSER" "$@"
+export LOGTALK_STARTUP_DIRECTORY=`pwd`
+
+exec prolog +l "$LOGTALKHOME/integration/logtalk_quintus.pl" +z "$LOGTALKHOME" "$LOGTALKUSER" "$LOGTALK_STARTUP_DIRECTORY" "$@"

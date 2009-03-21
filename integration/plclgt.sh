@@ -73,6 +73,8 @@ else
 fi
 echo
 
+export LOGTALK_STARTUP_DIRECTORY=`pwd`
+
 if  plc </dev/null 2>&1 | grep -q "K-Prolog Compiler version 6" 2>&1 >/dev/null; then
 	exec plc -h 4096k -l 2048k -g 4096k -e "(consult('$LOGTALKHOME/integration/logtalk_plc6.pl'), '\$root')." "$@"
 else

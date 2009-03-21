@@ -73,4 +73,6 @@ else
 fi
 echo
 
+export LOGTALK_STARTUP_DIRECTORY=`pwd`
+
 exec ciaosh -l "$LOGTALKHOME/integration/logtalk_ciao.pl" "$@"

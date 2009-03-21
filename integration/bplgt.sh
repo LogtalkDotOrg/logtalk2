@@ -73,4 +73,6 @@ else
 fi
 echo
 
+export LOGTALK_STARTUP_DIRECTORY=`pwd`
+
 exec bp -g  "consult('$LOGTALKHOME/integration/logtalk_bp.pl'), \$bp_top_level" "$@"

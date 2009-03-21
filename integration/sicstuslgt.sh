@@ -73,6 +73,8 @@ else
 fi
 echo
 
+export LOGTALK_STARTUP_DIRECTORY=`pwd`
+
 if sicstus -f --goal "halt." 2>&1 | grep "SICStus 4" 2>&1 >/dev/null; then
 	exec sicstus -l "$LOGTALKHOME/integration/logtalk_sicstus4.pl" "$@"
 else
