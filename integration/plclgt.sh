@@ -2,7 +2,7 @@
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
-## Release 2.35.2
+## Release 2.36.0
 ## 
 ## Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
 ## Logtalk is free software.  You can redistribute it and/or modify
@@ -59,7 +59,7 @@ if [ -d "$LOGTALKUSER" ]; then
 		echo "pristine $LOGTALKUSER/settings.lgt file for upgrade instructions."
 	else
 		current=`cat $LOGTALKUSER/VERSION.txt | sed 's/\.//g'`
-		if [ $current -lt 2352 ]; then
+		if [ $current -lt 2360 ]; then
 			echo "Older Logtalk settings files are incompatible with this new version. See the"
 			echo "pristine $LOGTALKUSER/settings.lgt file for upgrade instructions."
 		fi

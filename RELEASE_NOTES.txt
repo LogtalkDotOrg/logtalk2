@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.35.2
+Release 2.36.0
 
 Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
 Logtalk is free software.  You can redistribute it and/or modify
@@ -13,15 +13,16 @@ RELEASE NOTES
 =============
 
 
-2.35.2 - April ??, 2009
+2.36.0 - March 31, 2009
 
-    Added experimental support for overriding the Logtalk default compiler
-    flags specified in the back-end Prolog compiler config files. Logtalk 
-    will load a "settings.lgt" file in the startup directory. If this file 
-    is not found, Logtalk will load a "settings.lgt" file in the Logtalk
-    user directory. Requires running Logtalk on a POSIX operating-system
-    and with a back-end Prolog compiler supporting access to environment
-    variables.
+    Added support for overriding Logtalk default compiler flags (specified
+    in the back-end Prolog compiler config files) using new settings files.
+    Logtalk will load a "settings.lgt" file in the startup directory. If 
+    this file is not found, Logtalk will load a "settings.lgt" file in the
+    Logtalk user directory. Requires running Logtalk with a back-end Prolog
+    compiler supporting access to environment variables. Loading of settings
+    files from the Logtalk startup directory is only available when running
+    on a POSIX operating-system.
 
     Updated the Logtalk compiler and runtime and all the config files to use
     the more standard call/N predicates instead of the call_with_args/N 
