@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %
-%  last updated: March 18, 2009
+%  last updated: March 21, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -336,6 +336,35 @@
 	time_file(File1, Time1),
 	time_file(File2, Time2),
 	compare(Result, Time1, Time2).
+
+
+% '$lgt_environment_variable'(?atom, ?atom)
+%
+% access to operating-system environment variables
+
+'$lgt_environment_variable'(Variable, Value) :-
+	getenv(Variable, Value).
+
+
+% '$lgt_startup_directory'(-atom)
+%
+% returns the Logtalk startup directory; fails if unknwon 
+
+'$lgt_startup_directory'(Directory) :-
+	(	getenv('LOGTALK_STARTUP_DIRECTORY', Directory) ->
+		true
+	;	current_prolog_flag(argv, Arguments),
+		'$lgt_append'(_, ['--logtalk_startup_directory', Directory| _], Arguments) ->
+		true
+	).
+
+
+% '$lgt_user_directory'(-atom)
+%
+% returns the Logtalk user directory; fails if unknwon
+
+'$lgt_user_directory'(Directory) :-
+	getenv('LOGTALKUSER', Directory).
 
 
 

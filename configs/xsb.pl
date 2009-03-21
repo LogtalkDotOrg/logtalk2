@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.1 or later version
 %
-%  last updated: March 18, 2009
+%  last updated: March 21, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -327,6 +327,34 @@ forall(Generate, Test) :-
 	path_sysop(modtime, File1, Time1),
 	path_sysop(modtime, File2, Time2),
 	compare(Result, Time1, Time2).
+
+
+% '$lgt_environment_variable'(?atom, ?atom)
+%
+% access to operating-system environment variables
+
+'$lgt_environment_variable'(Name, Value) :-
+	atom_concat('$', Name, Variable),
+	expand_atom(Variable, Value).
+
+
+% '$lgt_startup_directory'(-atom)
+%
+% returns the Logtalk startup directory; fails if unknwon 
+
+'$lgt_startup_directory'(Directory) :-
+	(	expand_atom('$LOGTALK_STARTUP_DIRECTORY', Directory) ->
+		true
+	;	fail
+	).
+
+
+% '$lgt_user_directory'(-atom)
+%
+% returns the Logtalk user directory; fails if unknwon
+
+'$lgt_user_directory'(Directory) :-
+	expand_atom('$LOGTALKUSER', Directory).
 
 
 

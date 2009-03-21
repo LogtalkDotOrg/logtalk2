@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#37 and later versions
 %
-%  last updated: March 18, 2009
+%  last updated: March 21, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -461,6 +461,35 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 	get_file_info(File1, mtime, Time1),
 	get_file_info(File2, mtime, Time2),
 	compare(Result, Time1, Time2).
+
+
+% '$lgt_environment_variable'(?atom, ?atom)
+%
+% access to operating-system environment variables
+
+'$lgt_environment_variable'(Variable, Value) :-
+	getenv(Variable, Value).
+
+
+% '$lgt_startup_directory'(-atom)
+%
+% returns the Logtalk startup directory; fails if unknwon 
+
+'$lgt_startup_directory'(Directory) :-
+	(	getenv('LOGTALK_STARTUP_DIRECTORY', Directory) ->
+		true
+	;	argv(all, Arguments),
+		'$lgt_append'(_, ['--logtalk_startup_directory', Directory| _], Arguments) ->
+		true
+	).
+
+
+% '$lgt_user_directory'(-atom)
+%
+% returns the Logtalk user directory; fails if unknwon
+
+'$lgt_user_directory'(Directory) :-
+	getenv('LOGTALKUSER', Directory).
 
 
 

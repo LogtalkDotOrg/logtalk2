@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.1
 %
-%  last updated: March 18, 2009
+%  last updated: March 21, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -300,6 +300,35 @@
 	file_property(File1, modification_time(Time1)),
 	file_property(File2, modification_time(Time2)),
 	compare(Result, Time1, Time2).
+
+
+% '$lgt_environment_variable'(?atom, ?atom)
+%
+% access to operating-system environment variables
+
+'$lgt_environment_variable'(Variable, Value) :-
+	environ(Variable, Value).
+
+
+% '$lgt_startup_directory'(-atom)
+%
+% returns the Logtalk startup directory; fails if unknwon 
+
+'$lgt_startup_directory'(Directory) :-
+	(	expand_environment('$LOGTALK_STARTUP_DIRECTORY', Directory) ->
+		true
+	;	get_main_args(Arguments),
+		'$lgt_append'(_, ['--logtalk_startup_directory', Directory| _], Arguments) ->
+		true
+	).
+
+
+% '$lgt_user_directory'(-atom)
+%
+% returns the Logtalk user directory; fails if unknwon
+
+'$lgt_user_directory'(Directory) :-
+	expand_environment('$LOGTALKUSER', Directory).
 
 
 

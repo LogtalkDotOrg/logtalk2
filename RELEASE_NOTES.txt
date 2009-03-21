@@ -17,12 +17,11 @@ RELEASE NOTES
 
     Added experimental support for overriding the Logtalk default compiler
     flags specified in the back-end Prolog compiler config files. Logtalk 
-    will load a "settings.pl" file in the startup directory. If this file 
-    is not found, Logtalk will load a "settings.pl" file in the Logtalk
-    user directory. The "settings.pl" file should define clauses for the
-    logtalk_flag/2 predicate. Requires running Logtalk with B-Prolog, Ciao,
-    CxProlog, ECLiPSE, GNU Prolog, K-Prolog, Qu-Prolog, SICStus Prolog,
-    SWI-Prolog, YAP, or XSB.
+    will load a "settings.lgt" file in the startup directory. If this file 
+    is not found, Logtalk will load a "settings.lgt" file in the Logtalk
+    user directory. Requires running Logtalk with B-Prolog, Ciao, CxProlog,
+    ECLiPSE, GNU Prolog, K-Prolog, Qu-Prolog, SICStus Prolog, SWI-Prolog,
+    YAP, or XSB.
 
     Updated the Logtalk compiler and runtime and all the config files to use
     the more standard call/N predicates instead of the call_with_args/N 
@@ -36,6 +35,9 @@ RELEASE NOTES
     Added a new '$lgt_prolog_feature'/2 predicate to all config files, used 
     for representing back-end Prolog supported features that are previously 
     represented by read-only compiler flags.
+
+    Added new '$lgt_environment_variable'/2, '$lgt_startup_directory'/1, and
+    '$lgt_user_directory'/1 predicates to all config files.
 
     Updated the config files of the GNU Prolog, ECLiPSE, and XSB compilers
     to set the default directory for temporary files depending on the host

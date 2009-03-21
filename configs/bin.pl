@@ -11,7 +11,7 @@
 %
 %  configuration file for BinProlog 8.x~10.x
 %
-%  last updated: March 18, 2009
+%  last updated: March 21, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -419,6 +419,30 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 		;	Result = '='
 		)
 	).
+
+
+% '$lgt_environment_variable'(?atom, ?atom)
+%
+% access to operating-system environment variables
+
+'$lgt_environment_variable'(Variable, Value) :-
+	unix_getenv(Variable, Value).
+
+
+% '$lgt_startup_directory'(-atom)
+%
+% returns the Logtalk startup directory; fails if unknwon 
+
+'$lgt_startup_directory'(Directory) :-
+	unix_getenv('LOGTALK_STARTUP_DIRECTORY', Directory).
+
+
+% '$lgt_user_directory'(-atom)
+%
+% returns the Logtalk user directory; fails if unknwon
+
+'$lgt_user_directory'(Directory) :-
+	unix_getenv('LOGTALKUSER', Directory).
 
 
 

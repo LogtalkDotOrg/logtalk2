@@ -11,7 +11,7 @@
 %
 %  configuration file for GNU Prolog 1.3.1 (and later versions)
 %
-%  last updated: March 18, 2009
+%  last updated: March 21, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -300,6 +300,35 @@ forall(Generate, Test) :-
 	file_property(File1, last_modification(Time1)),
 	file_property(File2, last_modification(Time2)),
 	compare(Result, Time1, Time2).
+
+
+% '$lgt_environment_variable'(?atom, ?atom)
+%
+% access to operating-system environment variables
+
+'$lgt_environment_variable'(Variable, Value) :-
+	environ(Variable, Value).
+
+
+% '$lgt_startup_directory'(-atom)
+%
+% returns the Logtalk startup directory; fails if unknwon 
+
+'$lgt_startup_directory'(Directory) :-
+	(	environ('LOGTALK_STARTUP_DIRECTORY', Directory) ->
+		true
+	;	argument_list(Arguments),
+		'$lgt_append'(_, ['--logtalk_startup_directory', Directory| _], Arguments) ->
+		true
+	).
+
+
+% '$lgt_user_directory'(-atom)
+%
+% returns the Logtalk user directory; fails if unknwon
+
+'$lgt_user_directory'(Directory) :-
+	environ('LOGTALKUSER', Directory).
 
 
 

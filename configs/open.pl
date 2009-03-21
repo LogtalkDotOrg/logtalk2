@@ -11,7 +11,7 @@
 %
 %  configuration file for Open Prolog 1.1b5
 %
-%  last updated: March 18, 2009
+%  last updated: March 21, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -433,6 +433,30 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 	op_oracle(file(Folder, File1), modification_date(Time1)),
 	op_oracle(file(Folder, File2), modification_date(Time2)),
 	compare(Result, Time1, Time2).
+
+
+% '$lgt_environment_variable'(?atom, ?atom)
+%
+% access to operating-system environment variables
+
+'$lgt_environment_variable'(_, _) :-
+	fail.
+
+
+% '$lgt_startup_directory'(-atom)
+%
+% returns the Logtalk startup directory; fails if unknwon 
+
+'$lgt_startup_directory'(Directory) :-
+	fail.
+
+
+% '$lgt_user_directory'(-atom)
+%
+% returns the Logtalk user directory; fails if unknwon
+
+'$lgt_user_directory'(_) :-
+	fail.
 
 
 

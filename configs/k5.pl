@@ -11,7 +11,7 @@
 %
 %  configuration file for K-Prolog 5.1.2a and later 5.1.x versions
 %
-%  last updated: March 18, 2009
+%  last updated: March 21, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -316,6 +316,30 @@ retractall(Head) :-
 	ftime(File1, _, Time1, _, Return1), Return1 = 0,
 	ftime(File2, _, Time2, _, Return2), Return2 = 0,
 	compare(Result, Time1, Time2).
+
+
+% '$lgt_environment_variable'(?atom, ?atom)
+%
+% access to operating-system environment variables
+
+'$lgt_environment_variable'(Variable, Value) :-
+	getenv(Variable, Value).
+
+
+% '$lgt_startup_directory'(-atom)
+%
+% returns the Logtalk startup directory; fails if unknwon 
+
+'$lgt_startup_directory'(Directory) :-
+	getenv('LOGTALK_STARTUP_DIRECTORY', Directory).
+
+
+% '$lgt_user_directory'(-atom)
+%
+% returns the Logtalk user directory; fails if unknwon
+
+'$lgt_user_directory'(Directory) :-
+	getenv('LOGTALKUSER', Directory).
 
 
 

@@ -11,7 +11,7 @@
 %
 %  configuration file for CxProlog 0.97.2 or a later version
 %
-%  last updated: March 18, 2009
+%  last updated: March 21, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -316,6 +316,35 @@
 	fs_property(File1, time, [_, Time1]),
 	fs_property(File2, time, [_, Time2]),
 	compare(Result, Time1, Time2).
+
+
+% '$lgt_environment_variable'(?atom, ?atom)
+%
+% access to operating-system environment variables
+
+'$lgt_environment_variable'(Variable, Value) :-
+	os_env(Variable, Value).
+
+
+% '$lgt_startup_directory'(-atom)
+%
+% returns the Logtalk startup directory; fails if unknwon 
+
+'$lgt_startup_directory'(Directory) :-
+	(	os_env('LOGTALK_STARTUP_DIRECTORY', Directory) ->
+		true
+	;	os_args(Arguments),
+		'$lgt_append'(_, ['--logtalk_startup_directory', Directory| _], Arguments) ->
+		true
+	).
+
+
+% '$lgt_user_directory'(-atom)
+%
+% returns the Logtalk user directory; fails if unknwon
+
+'$lgt_user_directory'(Directory) :-
+	os_env('LOGTALKUSER', Directory).
 
 
 

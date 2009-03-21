@@ -11,7 +11,7 @@
 %
 %  configuration file for Ciao Prolog 1.8p2 to 1.10#8
 %
-%  last updated: March 18, 2009
+%  last updated: March 21, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -383,6 +383,35 @@ forall(Generate, Test) :-
 	file_property(File1, mod_time(Time1)),
 	file_property(File2, mod_time(Time2)),
 	compare(Result, Time1, Time2).
+
+
+% '$lgt_environment_variable'(?atom, ?atom)
+%
+% access to operating-system environment variables
+
+'$lgt_environment_variable'(Variable, Value) :-
+	getenvstr(Variable, Value).
+
+
+% '$lgt_startup_directory'(-atom)
+%
+% returns the Logtalk startup directory; fails if unknwon 
+
+'$lgt_startup_directory'(Directory) :-
+	(	getenvstr('LOGTALK_STARTUP_DIRECTORY', Directory) ->
+		true
+	;	current_prolog_flag(argv, Arguments),
+		'$lgt_append'(_, ['--logtalk_startup_directory', Directory| _], Arguments) ->
+		true
+	).
+
+
+% '$lgt_user_directory'(-atom)
+%
+% returns the Logtalk user directory; fails if unknwon
+
+'$lgt_user_directory'(Directory) :-
+	getenvstr('LOGTALKUSER', Directory).
 
 
 

@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.1
 %
-%  last updated: March 18, 2009
+%  last updated: March 21, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -326,6 +326,32 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_compare_file_mtimes'(_, _, _) :-
 	fail.
+
+
+% '$lgt_environment_variable'(?atom, ?atom)
+%
+% access to operating-system environment variables
+
+'$lgt_environment_variable'(_, _) :-
+	fail.
+
+
+% '$lgt_startup_directory'(-atom)
+%
+% returns the Logtalk startup directory; fails if unknwon 
+
+'$lgt_startup_directory'(Directory) :-
+	working_directory(Current, '$LOGTALK_STARTUP_DIRECTORY'),
+	working_directory(Directory, Current).
+
+
+% '$lgt_user_directory'(-atom)
+%
+% returns the Logtalk user directory; fails if unknwon
+
+'$lgt_user_directory'(Directory) :-
+	working_directory(Current, '$LOGTALKUSER'),
+	working_directory(Directory, Current).
 
 
 
