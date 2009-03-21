@@ -88,7 +88,6 @@ WScript.Echo("");
 FSObject.CreateFolder(logtalk_user);
 
 WScript.Echo("Copying Logtalk files and directories...");
-FSObject.CopyFolder(logtalk_home + "\\configs", logtalk_user + "\\configs");
 FSObject.CopyFolder(logtalk_home + "\\contributions", logtalk_user + "\\contributions");
 FSObject.CopyFolder(logtalk_home + "\\examples", logtalk_user + "\\examples");
 FSObject.CopyFolder(logtalk_home + "\\libpaths", logtalk_user + "\\libpaths");
@@ -102,7 +101,12 @@ FSObject.DeleteFile(logtalk_user + "\\xml\\lgt2*.*");
 FSObject.DeleteFile(logtalk_user + "\\xml\\logtalk.dtd");
 FSObject.DeleteFile(logtalk_user + "\\xml\\logtalk.xsd");
 
-var link = WshShell.CreateShortcut(logtalk_user + "\\manuals.lnk");
+var link = WshShell.CreateShortcut(logtalk_user + "\\configs.lnk");
+link.Description = "Shortcut to Logtalk config files";
+link.TargetPath = logtalk_home + "\\configs";
+link.Save();
+
+link = WshShell.CreateShortcut(logtalk_user + "\\manuals.lnk");
 link.Description = "Shortcut to Logtalk documentation";
 link.TargetPath = logtalk_home + "\\manuals";
 link.Save();
@@ -157,9 +161,7 @@ WScript.Echo("to match your Prolog compiler and operating-system requirements or
 WScript.Echo("add your own library paths.");
 WScript.Echo("");
 WScript.Echo("You may want to customize the default Logtalk compiler flags by editing");
-WScript.Echo("the configuration file for your Prolog compiler found in the directory:");
-WScript.Echo("");
-WScript.Echo("  " + logtalk_user + "\\configs");
+WScript.Echo("the \"settings.lgt\" file found in the directory " + logtalk_user);
 WScript.Echo("");
 WScript.Echo("See the \%LOGTALKUSER\%\\CUSTOMIZE.txt file for details.");
 WScript.Echo("");

@@ -37,6 +37,11 @@ RELEASE NOTES
     their default values within "settings.lgt" files. Renamed the compiler
     flag "prolog" to "prolog_dialect".
 
+    Changed the "cplgtdirs.*" and installation scripts to no longer make a
+    copy of the "configs" directory in the Logtalk user directory. Updated
+    the customization instructions to advise users to edit the "settings.lgt"
+    file instead of editing the Prolog configuration files.
+
     Added a new '$lgt_prolog_feature'/2 predicate to all config files, used 
     for representing back-end Prolog supported features that are previously 
     represented by read-only compiler flags.

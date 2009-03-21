@@ -14,7 +14,7 @@
 
 %  This is a sample settings file for Logtalk that can be used to override
 %  the default flag values in the back-end Prolog compiler config files.
-%  Using setting files allows Logtalk to easily support project-specific
+%  Using settings files allows Logtalk to easily support project-specific
 %  settings. Note that the settings defined here can always be overridden
 %  by using the logtalk_compile/2 and logtalk_load/2 built-in predicates.
 %
@@ -23,6 +23,11 @@
 %  Note that, for setting Logtalk flags, we must use the set_logtalk_flag/2
 %  predicate (wrapped in an initialization/1 directive) as the scope of the
 %  set_logtalk_flag/2 directive is local to a source file.
+%
+%  If you use more than one back-end Prolog compiler and want to use
+%  different settings per compiler you will need to use the Logtak 
+%  conditional compilation directives and the "prolog_dialect" compiler
+%  flag. See the User and Reference Manuals for details. 
 %
 %  Unfortunately, limitations of the back-end Prolog compilers may prevent
 %  this feature to work. Consult the "configs/NOTES.txt" for details on

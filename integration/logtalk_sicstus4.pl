@@ -12,6 +12,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-:- compile('$LOGTALKUSER/configs/sicstus4.pl').
+:- compile('$LOGTALKHOME/configs/sicstus4.pl').
 :- compile('$LOGTALKHOME/compiler/logtalk.pl').
 :- compile('$LOGTALKUSER/libpaths/libpaths.pl').

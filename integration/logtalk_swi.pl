@@ -12,7 +12,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-:- consult('$LOGTALKUSER/configs/swi.pl').
+:- consult('$LOGTALKHOME/configs/swi.pl').
 :- consult('$LOGTALKHOME/integration/logtalk_comp_swi.pl').
 :- consult('$LOGTALKUSER/libpaths/libpaths.pl').
 :- consult('$LOGTALKUSER/configs/swihook.pl').

@@ -13,6 +13,6 @@
 
 
 :- initialization((
-	reconsult('$LOGTALKUSER/configs/yap.pl'),
+	reconsult('$LOGTALKHOME/configs/yap.pl'),
 	reconsult('$LOGTALKHOME/integration/logtalk_comp_yap.pl'),
 	reconsult('$LOGTALKUSER/libpaths/libpaths.pl'))).

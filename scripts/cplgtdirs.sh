@@ -65,13 +65,11 @@ then
 fi
 
 echo "Copying Logtalk files and directories..."
-mkdir -p "$LOGTALKUSER"/configs
 mkdir -p "$LOGTALKUSER"/contributions
 mkdir -p "$LOGTALKUSER"/examples
 mkdir -p "$LOGTALKUSER"/libpaths
 mkdir -p "$LOGTALKUSER"/library
 mkdir -p "$LOGTALKUSER"/xml
-cp -RL "$LOGTALKHOME"/configs "$LOGTALKUSER"/
 cp -RL "$LOGTALKHOME"/contributions "$LOGTALKUSER"/
 cp -RL "$LOGTALKHOME"/examples "$LOGTALKUSER"/
 cp -RL "$LOGTALKHOME"/libpaths "$LOGTALKUSER"/
@@ -92,6 +90,7 @@ ln -sf "$LOGTALKHOME"/QUICK_START.txt "$LOGTALKUSER"/QUICK_START.txt
 ln -sf "$LOGTALKHOME"/README.txt "$LOGTALKUSER"/README.txt
 ln -sf "$LOGTALKHOME"/RELEASE_NOTES.txt "$LOGTALKUSER"/RELEASE_NOTES.txt
 ln -sf "$LOGTALKHOME"/UPGRADING.txt "$LOGTALKUSER"/UPGRADING.txt
+ln -sf "$LOGTALKHOME"/configs "$LOGTALKUSER"/configs
 ln -sf "$LOGTALKHOME"/manuals "$LOGTALKUSER"/manuals
 ln -sf "$LOGTALKHOME"/wenv "$LOGTALKUSER"/wenv
 ln -sf "$LOGTALKHOME"/xml/lgt2html.sh "$LOGTALKUSER"/xml/lgt2html
@@ -108,8 +107,7 @@ echo "file to match your Prolog compiler and operating-system requirements or"
 echo "to add your own library paths."
 echo
 echo "You may want to customize the default Logtalk compiler flags by editing"
-echo "the configuration file for your Prolog compiler found in the directory"
-echo "\"$LOGTALKUSER/configs\"."
+echo "the \"settings.lgt\" file found in the directory \"$LOGTALKUSER/\"."
 echo "For more information on customizing Logtalk and your working environment,"
 echo "consult the \"$LOGTALKUSER/CUSTOMIZE.txt\" file."
 echo

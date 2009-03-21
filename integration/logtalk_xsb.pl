@@ -14,6 +14,6 @@
 
 :- import expand_atom/2 from standard.
 
-:- expand_atom('$LOGTALKUSER/configs/xsb.pl', Config), reconsult(Config).
+:- expand_atom('$LOGTALKHOME/configs/xsb.pl', Config), reconsult(Config).
 :- expand_atom('$LOGTALKHOME/compiler/logtalk.pl', Compiler), reconsult(Compiler).
 :- expand_atom('$LOGTALKUSER/libpaths/libpaths.pl', Libpaths), reconsult(Libpaths).

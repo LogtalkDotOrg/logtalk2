@@ -13,7 +13,7 @@
 
 
 :- initialization((
-	consult('$LOGTALKUSER/configs/gnu.pl'),
+	consult('$LOGTALKHOME/configs/gnu.pl'),
 	consult('$LOGTALKHOME/integration/logtalk_comp_gp.pl'),
 	consult('$LOGTALKUSER/libpaths/libpaths.pl')
 )).

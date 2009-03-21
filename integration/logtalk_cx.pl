@@ -13,6 +13,6 @@
 
 
 :- set_prolog_flag(file_name_variables, true).
-:- silent_consult('$LOGTALKUSER/configs/cx.pl').
+:- silent_consult('$LOGTALKHOME/configs/cx.pl').
 :- silent_consult('$LOGTALKHOME/compiler/logtalk.pl').
 :- silent_consult('$LOGTALKUSER/libpaths/libpaths.pl').
