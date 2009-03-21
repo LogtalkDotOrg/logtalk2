@@ -55,15 +55,13 @@ fi
 
 if [ -d "$LOGTALKUSER" ]; then
 	if ! [ -a "$LOGTALKUSER/VERSION.txt" ]; then
-		echo "Logtalk user directory at $LOGTALKUSER is outdated!"
-		echo "Creating an up-to-date Logtalk user directory..."
-		cplgtdirs
+		echo "Older Logtalk settings files are incompatible with this new version. See the"
+		echo "pristine $LOGTALKUSER/settings.lgt file for upgrade instructions."
 	else
 		current=`cat $LOGTALKUSER/VERSION.txt | sed 's/\.//g'`
 		if [ $current -lt 2352 ]; then
-			echo "Logtalk user directory at $LOGTALKUSER is outdated!"
-			echo "Creating an up-to-date Logtalk user directory..."
-			cplgtdirs
+			echo "Older Logtalk settings files are incompatible with this new version. See the"
+			echo "pristine $LOGTALKUSER/settings.lgt file for upgrade instructions."
 		fi
 	fi
 else
