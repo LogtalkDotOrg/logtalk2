@@ -13,13 +13,5 @@
 
 
 :- compile('$LOGTALKUSER/configs/eclipse5iso.pl').
-:- (	getval(lgt_startup_dir, Directory), atom_string('settings.pl', Settings), concat_strings(Directory, Settings, String), canonical_path_name(String, File), exists(File) ->
-		compile(File)
-	;	atom_string('$LOGTALKUSER/settings.pl', String), canonical_path_name(String, File), exists(File) ->
-		compile('$LOGTALKUSER/settings.pl')
-	;	true
-	).
 :- compile('$LOGTALKHOME/integration/logtalk_comp_eclipse.pl').
 :- compile('$LOGTALKUSER/libpaths/libpaths.pl').
-:- ensure_loaded(library(toplevel)).
-:- toplevel:toplevel_init(tty),toplevel:toplevel.

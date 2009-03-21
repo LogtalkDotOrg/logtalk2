@@ -133,7 +133,7 @@ forall(Generate, Test) :-
 %
 % back-end Prolog compiler supported features
 
-'$lgt_prolog_feature'(prolog, gnu).
+'$lgt_prolog_feature'(prolog_dialect, gnu).
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
 '$lgt_prolog_feature'(multifile_directive, unsupported).

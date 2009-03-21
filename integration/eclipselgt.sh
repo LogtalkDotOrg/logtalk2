@@ -76,7 +76,7 @@ echo
 export LOGTALK_STARTUP_DIRECTORY=`pwd`
 
 if eclipse -e "get_flag(version, Version), write(Version), halt." 2>&1 | grep "5.10" 2>&1 >/dev/null; then
-	exec eclipse -e "getcwd(CWD), setval(lgt_startup_dir, CWD), compile('$LOGTALKHOME/integration/logtalk_eclipse5.pl')" "$@"
+	exec eclipse -b "$LOGTALKHOME/integration/logtalk_eclipse5.pl" "$@"
 else
-	exec eclipse -e "getcwd(CWD), setval(lgt_startup_dir, CWD), compile('$LOGTALKHOME/integration/logtalk_eclipse6.pl')" "$@"
+	exec eclipse -b "$LOGTALKHOME/integration/logtalk_eclipse6.pl" "$@"
 fi

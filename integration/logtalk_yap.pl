@@ -14,11 +14,5 @@
 
 :- initialization((
 	reconsult('$LOGTALKUSER/configs/yap.pl'),
-	(	file_exists('settings.pl') ->
-		reconsult('settings.pl')
-	;	file_exists('$LOGTALKUSER/settings.pl') ->
-		reconsult('$LOGTALKUSER/settings.pl')
-	;	true
-	),
 	reconsult('$LOGTALKHOME/integration/logtalk_comp_yap.pl'),
 	reconsult('$LOGTALKUSER/libpaths/libpaths.pl'))).

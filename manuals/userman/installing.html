@@ -170,36 +170,28 @@ Logtalk already includes ready to use configuration files for most academic and 
 The configuration files specifies <em>default</em> values for all the Logtalk compiler flags. Most of these compiler flags are described in the <a href="programming.html#options">next</a> section. A few of these flags have read-only values which cannot be changed at runtime. These are:
 </p>
 <dl>
-	<dt><code>prolog</code></dt>
+	<dt><code>prolog_dialect</code></dt>
 		<dd>Name of the back-end Prolog compiler (an atom). This flag can be used for conditional compilation of Prolog specific code.</dd>
 </dl>
 <dl>
-	<dt><code>startup_message</code></dt>
-		<dd>Controls the messages printed by Logtalk at startup. Possible flag values are <code>flags(verbose)</code> (the usual default; prints the Logtalk banner and a list of all default compiler flags), <code>flags(compact)</code> (a more compact listing of the default compiler flags), <code>banner</code> (prints only the Logtalk banner), and <code>none</code> (suppress all startup messages; useful for batch processing).</dd>
-</dl>
-<dl>
-	<dt><code>altdirs</code></dt>
-		<dd>Allows the use of alternative directories for storing the Prolog files and the XML documenting files resulting from entity compilation. This flag can only be set for Prolog compilers providing the necessary operating-system access predicates for implementing this feature (specifically, a built-in predicate for creating new directories). Possible option values are <code>on</code> and <code>off</code> (the usual default). The names of the alternative directories are specified using the compiler flags <code>tmpdir</code> and <code>xmldir</code>, which are also defined in the configuration files. Make sure the directory names are valid for your operating system before setting this flag on.</dd>
-</dl>
-<dl>
 	<dt><code>break_predicate</code></dt>
-		<dd>Informs Logtalk if the Prolog compiler supports a <code>break/0</code> predicate (which can be used by the Logtalk built-in debugger). Possible flag values are <code>supported</code> and <code>unsupported</code>.</dd>
+		<dd>Informs Logtalk if the back-end Prolog compiler supports a <code>break/0</code> predicate (which can be used by the Logtalk built-in debugger). Possible flag values are <code>supported</code> and <code>unsupported</code>.</dd>
 </dl>
 <dl>
 	<dt><code>encoding_directive</code></dt>
-		<dd>Informs Logtalk if the Prolog compiler supports the <a title="Consult reference manual" href="../refman/directives/encoding1.html"><code>encoding/1</code></a> directive. This directive is used for declaring the text encoding of source files. Possible flag values are <code>unsupported</code>, <code>full</code> (can be used in both Logtalk source files and compiler generated Prolog files), and <code>source</code> (can be used only in Logtalk source files).</dd>
+		<dd>Informs Logtalk if the back-end Prolog compiler supports the <a title="Consult reference manual" href="../refman/directives/encoding1.html"><code>encoding/1</code></a> directive. This directive is used for declaring the text encoding of source files. Possible flag values are <code>unsupported</code>, <code>full</code> (can be used in both Logtalk source files and compiler generated Prolog files), and <code>source</code> (can be used only in Logtalk source files).</dd>
 </dl>
 <dl>
 	<dt><code>multifile_directive</code></dt>
-		<dd>Informs Logtalk if the Prolog compiler supports the ISO Prolog standard <code>multifile/1</code> predicate directive. Possible flag values are <code>unsupported</code> and <code>supported</code> (requires that multifile predicates can be either static or dynamic).</dd>
+		<dd>Informs Logtalk if the back-end Prolog compiler supports the ISO Prolog standard <code>multifile/1</code> predicate directive. Possible flag values are <code>unsupported</code> and <code>supported</code> (requires that multifile predicates can be either static or dynamic).</dd>
+</dl>
+<dl>
+	<dt><code>tabling</code></dt>
+		<dd>Informs Logtalk if the back-end Prolog compiler provides tabling programming support. Possible flag values are <code>unsupported</code> and <code>supported</code>.</dd>
 </dl>
 <dl>
 	<dt><code>threads</code></dt>
-		<dd>Informs Logtalk if the Prolog compiler provides suitable multi-threading programming support. Possible flag values are <code>unsupported</code>, <code>on</code>, and <code>off</code>. The default flag vale for compatible Prolog compilers is <code>off</code>, i.e. multi-threading programming support is disabled by default.</dd>
-</dl>
-<dl>
-	<dt><code>context_switching_calls</code></dt>
-		<dd>Allows context switching calls (<code>&lt;&lt;/2</code>) to be either allowed or forbidden. Possible flag values are <code>allow</code> and <code>forbid</code>. The default flag vale is <code>allow</code>.</dd>
+		<dd>Informs Logtalk if the Prolog compiler provides suitable multi-threading programming support. Possible flag values are <code>unsupported</code> and <code>supported</code>.</dd>
 </dl>
 
 <h3 id="installing_runtime">Logtalk compiler and runtime</h3>
@@ -229,7 +221,7 @@ Logtalk source files are text files containing entity definitions (objects, cate
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: February 24, 2009</span>
+		<span>Last updated on: March 21, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="documenting.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="programming.html">next</a></span><br/>

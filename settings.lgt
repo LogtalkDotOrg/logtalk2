@@ -15,51 +15,105 @@
 %  This is a sample settings file for Logtalk that can be used to override
 %  the default flag values in the back-end Prolog compiler config files.
 %  Using setting files allows Logtalk to easily support project-specific
-%  settings. Note that the settings here can always be overridden by using
-%  the logtalk_compile/2 and logtalk_load/2 built-in predicates.
+%  settings. Note that the settings defined here can always be overridden
+%  by using the logtalk_compile/2 and logtalk_load/2 built-in predicates.
 %
 %  To use this feature, simply copy this file to the directory containing
-%  your Logtalk source files and customize it by adding clauses for the
-%  logtalk_flag/2 predicate (see the examples below).
+%  your Logtalk source files and customize it (see the examples below).
+%  Note that, for setting Logtalk flags, we must use the set_logtalk_flag/2
+%  predicate (wrapped in an initialization/1 directive) as the scope of the
+%  set_logtalk_flag/2 directive is local to a source file.
 %
 %  Unfortunately, limitations of the back-end Prolog compilers may prevent
 %  this feature to work. Consult the "configs/NOTES.txt" for details on
 %  the supported back-end Prolog compiler and operating-systems.
 
+
+%  To define a "library" path for your project, customize and uncomment the
+%  following lines (the library path must end with a slash character):
+
+/*
+:- initialization((
+	assertz(logtalk_library_path(my_project, '$HOME/my_project/'))
+)).
+*/
+
+
 %  To make Logtalk completely silent for batch processing uncomment the
 %  following lines:
-% logtalk_flag(startup_message, none).
-% logtalk_flag(report, off).
+
+/*
+:- initialization((
+	set_logtalk_flag(startup_message, none),
+	set_logtalk_flag(report, off)
+)).
+*/
+
 
 %  To make Logtalk startup and compilation less verbose uncomment the
 %  following lines:
-% logtalk_flag(startup_message, flags(compact)).
-% logtalk_flag(report, warnings).
+
+/*
+:- initialization((
+	set_logtalk_flag(startup_message, flags(compact)),
+	set_logtalk_flag(report, warnings)
+)).
+*/
+
 
 %  To compile all your source files in debug mode uncomment the following
 %  lines:
-% logtalk_flag(debug, on).
-% logtalk_flag(smart_compilation, off).
-% logtalk_flag(reload, always).
-% logtalk_flag(unknown, warning).
-% logtalk_flag(misspelt, warning).
+
+/*
+:- initialization((
+	set_logtalk_flag(debug, on),
+	set_logtalk_flag(smart_compilation, off),
+	set_logtalk_flag(reload, always),
+	set_logtalk_flag(unknown, warning),
+	set_logtalk_flag(misspelt, warning)
+)).
+*/
+
 
 %  To reduce clutter in the directory containing your source files uncomment
 %  the following lines:
-% logtalk_flag(altdirs, on).
+
+/*
+:- initialization((
+	set_logtalk_flag(altdirs, on)
+)).
+*/
+
 
 %  To collect all XML documenting files in the same place for generating 
 %  (X)HTML or PDF documentation of your project uncomment the following
 %  lines:
-% logtalk_flag(altdirs, on).
-% logtalk_flag(xmldocs, on).
-% logtalk_flag(xmldir, '/home/user/my_project_docs/').
+
+/*
+:- initialization((
+	set_logtalk_flag(altdirs, on),
+	set_logtalk_flag(xmldocs, on),
+	set_logtalk_flag(xmldir, '/home/user/my_project_docs/')
+)).
+*/
+
 
 %  To develop portable Logtalk applications uncomment the following lines:
-% logtalk_flag(portability, warning).
+
+/*
+:- initialization((
+	set_logtalk_flag(portability, warning)
+)).
+*/
+
 
 %  To maximize performance by turning off all optional features uncomment the
 %  following lines:
-% logtalk_flag(events, off).
-% logtalk_flag(complements, off).
-% logtalk_flag(dynamic_declarations, off).
+
+/*
+:- initialization((
+	set_logtalk_flag(events, off),
+	set_logtalk_flag(complements, off),
+	set_logtalk_flag(dynamic_declarations, off)
+)).
+*/

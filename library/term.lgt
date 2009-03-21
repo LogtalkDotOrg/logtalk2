@@ -37,7 +37,7 @@
 		depth(Args, Acc2, MaxSoFar, Depth).
 
 	:- if((
-		current_logtalk_flag(prolog, Prolog),
+		current_logtalk_flag(prolog_dialect, Prolog),
 		(Prolog == b; Prolog == cx; Prolog == swi; Prolog == yap; Prolog == sicstus),
 		predicate_property(ground(_), built_in)
 	)).
@@ -137,7 +137,7 @@
 		\+ \+ subsumes(Term2, Term1).
 
 	:- if((
-		current_logtalk_flag(prolog, Prolog),
+		current_logtalk_flag(prolog_dialect, Prolog),
 		(Prolog == swi; Prolog == yap),
 		predicate_property(term_variables(_,_), built_in)
 	)).

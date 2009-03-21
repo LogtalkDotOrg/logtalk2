@@ -149,7 +149,7 @@
 %
 % back-end Prolog compiler supported features
 
-'$lgt_prolog_feature'(prolog, swi).
+'$lgt_prolog_feature'(prolog_dialect, swi).
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, full).
 '$lgt_prolog_feature'(multifile_directive, supported).

@@ -12478,11 +12478,11 @@ current_logtalk_flag(version, version(2, 35, 2)).
 '$lgt_valid_flag'(events).
 '$lgt_valid_flag'(code_prefix).
 '$lgt_valid_flag'(debug).
-% read-only compilation flags:
 '$lgt_valid_flag'(startup_message).
-'$lgt_valid_flag'(version).
 '$lgt_valid_flag'(altdirs).
 '$lgt_valid_flag'(context_switching_calls).
+% read-only compilation flags:
+'$lgt_valid_flag'(version).
 % back-end Prolog features
 '$lgt_valid_flag'(prolog).
 '$lgt_valid_flag'(break_predicate).
@@ -12496,10 +12496,8 @@ current_logtalk_flag(version, version(2, 35, 2)).
 %
 % true if the argument is a read only Logtalk flag name
 
-'$lgt_read_only_flag'(startup_message).
+% Logtalk version flag
 '$lgt_read_only_flag'(version).
-'$lgt_read_only_flag'(altdirs).
-'$lgt_read_only_flag'(context_switching_calls).
 % back-end Prolog features
 '$lgt_read_only_flag'(prolog).
 '$lgt_read_only_flag'(break_predicate).
@@ -12568,11 +12566,22 @@ current_logtalk_flag(version, version(2, 35, 2)).
 '$lgt_valid_flag_value'(dynamic_declarations, on) :- !.
 '$lgt_valid_flag_value'(dynamic_declarations, off) :- !.
 
+'$lgt_valid_flag_value'(context_switching_calls, on) :- !.
+'$lgt_valid_flag_value'(context_switching_calls, off) :- !.
+
 '$lgt_valid_flag_value'(events, on) :- !.
 '$lgt_valid_flag_value'(events, off) :- !.
 
+'$lgt_valid_flag_value'(startup_message, flags(compact)) :- !.
+'$lgt_valid_flag_value'(startup_message, flags(verbose)) :- !.
+'$lgt_valid_flag_value'(startup_message, banner) :- !.
+'$lgt_valid_flag_value'(startup_message, none) :- !.
+
 '$lgt_valid_flag_value'(hook, Obj) :-
 	callable(Obj).
+
+'$lgt_valid_flag_value'(altdirs, on) :- !.
+'$lgt_valid_flag_value'(altdirs, off) :- !.
 
 '$lgt_valid_flag_value'(xmldir, Directory) :-
 	atom(Directory).
@@ -14589,32 +14598,33 @@ current_logtalk_flag(version, version(2, 35, 2)).
 	'$lgt_compiler_flag'(underscore_variables, Underscore), write(', underscore_variables: '), write(Underscore), nl,
 	write('Default documenting compilation flags:'), nl,
 	'$lgt_compiler_flag'(xmldocs, XMLDocs), write('  xmldocs: '), write(XMLDocs),
-	'$lgt_compiler_flag'(xmldir, XMLDir), write(', xmldir: '), write(XMLDir),
 	'$lgt_compiler_flag'(xmlspec, XMLSpec), write(', xmlspec: '), write(XMLSpec),
 	'$lgt_compiler_flag'(xmlsref, XMLSRef), write(', xmlsref: '), write(XMLSRef),
 	'$lgt_compiler_flag'(xslfile, XSLFile), write(', xslfile: '), write(XSLFile), nl,
 	write('Other default compilation flags:'), nl,
-	'$lgt_compiler_flag'(report, Report), write('  report: '), write(Report),
-	'$lgt_compiler_flag'(code_prefix, Code), write(', code_prefix: '), writeq(Code),
-	'$lgt_compiler_flag'(debug, Debug), write(', debug: '), writeq(Debug),
+	'$lgt_compiler_flag'(startup_message, Startup), write('  startup_message: '), write(Startup),
+	'$lgt_compiler_flag'(report, Report), write(', report: '), write(Report), nl,
+	'$lgt_compiler_flag'(code_prefix, Code), write('  code_prefix: '), writeq(Code),
+	(	'$lgt_compiler_flag'(hook, Hook) -> true
+	;	Hook = '(none defined)'
+	),
+	write(', hook: '), write(Hook), nl,
+	'$lgt_compiler_flag'(debug, Debug), write('  debug: '), writeq(Debug),
 	'$lgt_compiler_flag'(smart_compilation, Smart), write(', smart_compilation: '), write(Smart),
 	'$lgt_compiler_flag'(reload, Reload), write(', reload: '), write(Reload), nl,
 	'$lgt_compiler_flag'(complements, Complements), write('  complements: '), write(Complements),
 	'$lgt_compiler_flag'(dynamic_declarations, DynamicDeclarations), write(', dynamic_declarations: '), write(DynamicDeclarations),
-	'$lgt_compiler_flag'(events, Events), write(', events: '), write(Events), nl,
-	(	'$lgt_compiler_flag'(hook, Hook) -> true
-	;	Hook = '(none defined)'
-	),
-	write('  hook: '), write(Hook),
-	'$lgt_compiler_flag'(tmpdir, TmpDir), write(', tmpdir: '), write(TmpDir), nl,
-	write('Read-only compilation flags:'), nl,
-	'$lgt_compiler_flag'(prolog, Prolog), write('  prolog: '), write(Prolog),
-	'$lgt_compiler_flag'(break_predicate, Break), write(', break_predicate: '), write(Break),
-	'$lgt_compiler_flag'(startup_message, Startup), write(', startup_message: '), write(Startup), nl,
-	'$lgt_compiler_flag'(altdirs, Altdirs), write('  altdirs: '), write(Altdirs),
 	'$lgt_compiler_flag'(context_switching_calls, ContextCalls), write(', context_switching_calls: '), write(ContextCalls),
-	 '$lgt_compiler_flag'(threads, Threads), write(', threads: '), write(Threads), nl,
-	'$lgt_compiler_flag'(encoding_directive, Encodings), write('  encoding_directive: '), write(Encodings),
+	'$lgt_compiler_flag'(events, Events), write(', events: '), write(Events), nl,
+	'$lgt_compiler_flag'(altdirs, Altdirs), write('  altdirs: '), write(Altdirs),
+	'$lgt_compiler_flag'(tmpdir, TmpDir), write(', tmpdir: '), write(TmpDir),
+	'$lgt_compiler_flag'(xmldir, XMLDir), write(', xmldir: '), write(XMLDir), nl,
+	write('Read-only compilation flags:'), nl,
+	'$lgt_compiler_flag'(prolog_dialect, Prolog), write('  prolog_dialect: '), write(Prolog),
+	'$lgt_compiler_flag'(break_predicate, Break), write(', break_predicate: '), write(Break),
+	'$lgt_compiler_flag'(tabling, Tabling), write(', tabling: '), write(Tabling), nl,
+	'$lgt_compiler_flag'(threads, Threads), write('  threads: '), write(Threads),
+	'$lgt_compiler_flag'(encoding_directive, Encodings), write(', encoding_directive: '), write(Encodings),
 	'$lgt_compiler_flag'(multifile_directive, Multifile), write(', multifile_directive: '), write(Multifile), nl, nl.
 
 '$lgt_default_flags'(verbose) :-
@@ -14667,21 +14677,23 @@ current_logtalk_flag(version, version(2, 35, 2)).
 	write('  Compiler hook object (hook):                                '), write(Hook), nl,
 	'$lgt_compiler_flag'(tmpdir, TmpDir),
 	write('  Directory for compiler generated temporary files (tmpdir):  '), write(TmpDir), nl,
-	write('Read-only compilation flags:'), nl,
-	'$lgt_compiler_flag'(prolog, Prolog),
-	write('  Name of the back-end Prolog compiler (prolog):              '), write(Prolog), nl,
-	'$lgt_compiler_flag'(break_predicate, Break),
-	write('  Support for break/0 predicate (break_predicate):            '), write(Break), nl,
 	'$lgt_compiler_flag'(startup_message, Startup),
 	write('  Startup message (startup_message):                          '), write(Startup), nl,
 	'$lgt_compiler_flag'(altdirs, Altdirs),
 	write('  Alternative compilation directories (altdirs):              '), write(Altdirs), nl,
 	'$lgt_compiler_flag'(context_switching_calls, ContextCalls),
 	write('  Context-switching calls (context_switching_calls):          '), write(ContextCalls), nl,
+	write('Read-only compilation flags:'), nl,
+	'$lgt_compiler_flag'(prolog_dialect, Prolog),
+	write('  Name of the back-end Prolog compiler (prolog_dialect):      '), write(Prolog), nl,
+	'$lgt_compiler_flag'(break_predicate, Break),
+	write('  Support for break/0 predicate (break_predicate):            '), write(Break), nl,
 	'$lgt_compiler_flag'(encoding_directive, Encodings),
 	write('  Support for encoding/1 directive (encoding_directive):      '), write(Encodings), nl,
 	'$lgt_compiler_flag'(multifile_directive, Multifile),
 	write('  Support for multifile/1 directive (multifile_directive):    '), write(Multifile), nl,
+	'$lgt_compiler_flag'(tabling, Tabling),
+	write('  Support for tabling (tabling):                              '), write(Tabling), nl,
 	'$lgt_compiler_flag'(threads, Threads),
 	write('  Multi-threading programming support (threads):              '), write(Threads), nl, nl.
 
@@ -14696,22 +14708,19 @@ current_logtalk_flag(version, version(2, 35, 2)).
 
 
 
-'$lgt_assert_startup_directory_flags' :-
-	(	current_predicate(logtalk_flag/2) ->
-		(	logtalk_flag(Flag, Value),
-			retractall('$lgt_current_flag_'(Flag, _)),
-			assertz('$lgt_current_flag_'(Flag, Value)),
-			fail
-		;	(	'$lgt_current_flag_'(debug, on) ->						% debug flag on requires the
-				retractall('$lgt_current_flag_'(smart_compilation, _)),	% smart_compilation flag to 
-				asserta('$lgt_current_flag_'(smart_compilation, off)),	% be off and 
-				retractall('$lgt_current_flag_'(reload, _)),			% the reload flag to be set
-				asserta('$lgt_current_flag_'(reload, always))			% to always
-			;	true
-			)
-		)
+'$lgt_load_settings_file' :-
+	'$lgt_current_directory'(Current),
+	(	'$lgt_startup_directory'(Startup),
+		'$lgt_change_directory'(Startup),
+		'$lgt_file_exists'('settings.lgt') ->
+		logtalk_load(settings, [report(off)])
+	;	'$lgt_user_directory'(User),
+		'$lgt_change_directory'(User),
+		'$lgt_file_exists'('settings.lgt') ->
+		logtalk_load(settings, [report(off)])
 	;	true
-	).
+	),
+	'$lgt_change_directory'(Current).
 
 
 
@@ -14748,7 +14757,7 @@ current_logtalk_flag(version, version(2, 35, 2)).
 
 
 :- initialization((
-	'$lgt_assert_startup_directory_flags',
+	'$lgt_load_settings_file',
 	'$lgt_startup_message',
 	'$lgt_assert_default_hooks',
 	'$lgt_start_runtime_threading',

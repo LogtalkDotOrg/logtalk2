@@ -13,11 +13,5 @@
 
 
 :- compile('$LOGTALKUSER/configs/sicstus3.pl').
-:- (	working_directory(Directory, Directory), atom_concat(Directory, 'settings.pl', File), file_exists(File) ->
-		compile(File)
-	;	absolute_file_name('$LOGTALKUSER/settings.pl', File), file_exists(File) ->
-		compile(File)
-	;	true
-	).
 :- compile('$LOGTALKHOME/compiler/logtalk.pl').
 :- compile('$LOGTALKUSER/libpaths/libpaths.pl').

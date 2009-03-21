@@ -14,12 +14,6 @@
 
 :- initialization((
 	consult('$LOGTALKUSER/configs/gnu.pl'),
-	(	file_exists('settings.pl') ->
-		consult('settings.pl')
-	;	file_exists('$LOGTALKUSER/settings.pl') ->
-		consult('$LOGTALKUSER/settings.pl')
-	;	true
-	),
 	consult('$LOGTALKHOME/integration/logtalk_comp_gp.pl'),
 	consult('$LOGTALKUSER/libpaths/libpaths.pl')
 )).

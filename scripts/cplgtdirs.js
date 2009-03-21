@@ -95,7 +95,7 @@ FSObject.CopyFolder(logtalk_home + "\\libpaths", logtalk_user + "\\libpaths");
 FSObject.CopyFile(logtalk_user + "\\libpaths\\libpaths.pl", logtalk_user + "\\libpaths\\libpaths_no_env_var.pl");
 FSObject.CopyFolder(logtalk_home + "\\library", logtalk_user + "\\library");
 FSObject.CopyFolder(logtalk_home + "\\xml", logtalk_user + "\\xml");
-FSObject.CopyFile(logtalk_home + "\\settings.pl", logtalk_user + "\\settings.pl");
+FSObject.CopyFile(logtalk_home + "\\settings.lgt", logtalk_user + "\\settings.lgt");
 FSObject.CopyFile(logtalk_home + "\\VERSION.txt", logtalk_user + "\\VERSION.txt");
 
 FSObject.DeleteFile(logtalk_user + "\\xml\\lgt2*.*");

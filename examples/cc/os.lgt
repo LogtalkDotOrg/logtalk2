@@ -8,7 +8,7 @@
 		date is 2008/11/19,
 		comment is 'Simple example of using conditional compilation to implement a portable operating-system interface for selected back-end Prolog compilers.']).
 
-	:- if(current_logtalk_flag(prolog, swi)).
+	:- if(current_logtalk_flag(prolog_dialect, swi)).
 
 		make_directory(Directory) :-
 			{make_directory(Directory)}.
@@ -56,7 +56,7 @@
 		cpu_time(Time) :-
 			{Time is cputime}.
 
-	:- elif(current_logtalk_flag(prolog, yap)).
+	:- elif(current_logtalk_flag(prolog_dialect, yap)).
 
 		make_directory(Directory) :-
 			{make_directory(Directory)}.
@@ -103,7 +103,7 @@
 		cpu_time(Time) :-
 			{Time is cputime}.
 
-	:- elif(current_logtalk_flag(prolog, xsb)).
+	:- elif(current_logtalk_flag(prolog_dialect, xsb)).
 
 		make_directory(Directory) :-
 			{standard:expand_atom(Directory, Expanded),
@@ -164,7 +164,7 @@
 		cpu_time(Time) :-
 			{cputime(Time)}.
 
-	:- elif(current_logtalk_flag(prolog, gnu)).
+	:- elif(current_logtalk_flag(prolog_dialect, gnu)).
 
 		make_directory(Directory) :-
 			{make_directory(Directory)}.
@@ -213,7 +213,7 @@
 			{cpu_time(Miliseconds),
 			 Time is Miliseconds/1000}.
 
-	:- elif(current_logtalk_flag(prolog, b)).
+	:- elif(current_logtalk_flag(prolog_dialect, b)).
 
 		make_directory(Directory) :-
 			{make_directory(Directory)}.
@@ -260,7 +260,7 @@
 		cpu_time(Time) :-
 			{cputime(Miliseconds), Time is Miliseconds/1000}.
 
-	:- elif(current_logtalk_flag(prolog, sicstus)).
+	:- elif(current_logtalk_flag(prolog_dialect, sicstus)).
 
 		make_directory(Directory) :-
 			{make_directory(Directory)}.
@@ -307,7 +307,7 @@
 		cpu_time(Time) :-
 			{statistics(runtime, [Miliseconds| _]), Time is Miliseconds/1000}.
 
-	:- elif(current_logtalk_flag(prolog, eclipse)).
+	:- elif(current_logtalk_flag(prolog_dialect, eclipse)).
 
 		:- use_module(library(calendar)).
 

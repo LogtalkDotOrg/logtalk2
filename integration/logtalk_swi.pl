@@ -13,12 +13,6 @@
 
 
 :- consult('$LOGTALKUSER/configs/swi.pl').
-:- (	exists_file('settings.pl') ->
-		consult('settings.pl')
-	;	expand_file_name('$LOGTALKUSER/settings.pl', [File]), exists_file(File) ->
-		consult('$LOGTALKUSER/settings.pl')
-	;	true
-	).
 :- consult('$LOGTALKHOME/integration/logtalk_comp_swi.pl').
 :- consult('$LOGTALKUSER/libpaths/libpaths.pl').
 :- consult('$LOGTALKUSER/configs/swihook.pl').

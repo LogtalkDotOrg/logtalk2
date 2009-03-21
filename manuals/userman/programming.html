@@ -304,6 +304,18 @@ Logtalk also implements a <a title="Consult reference manual" href="../refman/di
 			<dd>Allows message sending calls to be compiled with event-driven programming support turned off in order to improve performance. Possible option values are <code>on</code> and <code>off</code> (the usual default). Objects (and categories) compiled with this option set to <code>off</code> use optimized code for message-sending calls that does not trigger events. As such, this option can be used on a per-object (or per-category) basis. Note that turning on this option is of no consequence for objects and categories already compiled and loaded.</dd>
 	</dl>
 	<dl>
+		<dt><code>context_switching_calls</code></dt>
+			<dd>Allows context switching calls (<code>&lt;&lt;/2</code>) to be either allowed or forbidden. Possible flag values are <code>allow</code> and <code>forbid</code>. The default flag vale is <code>allow</code>.</dd>
+	</dl>
+	<dl>
+		<dt><code>startup_message</code></dt>
+			<dd>Controls the messages printed by Logtalk at startup. Possible flag values are <code>flags(verbose)</code> (the usual default; prints the Logtalk banner and a list of all default compiler flags), <code>flags(compact)</code> (a more compact listing of the default compiler flags), <code>banner</code> (prints only the Logtalk banner), and <code>none</code> (suppress all startup messages; useful for batch processing).</dd>
+	</dl>
+	<dl>
+		<dt><code>altdirs</code></dt>
+			<dd>Allows the use of alternative directories for storing the Prolog files and the XML documenting files resulting from entity compilation. This flag can only be set for Prolog compilers providing the necessary operating-system access predicates for implementing this feature (specifically, a built-in predicate for creating new directories). Possible option values are <code>on</code> and <code>off</code> (the usual default). The names of the alternative directories are specified using the compiler flags <code>tmpdir</code> and <code>xmldir</code>, which are also defined in the configuration files. Make sure the directory names are valid for your operating system before setting this flag on.</dd>
+	</dl>
+	<dl>
 		<dt><code>reload(Option)</code></dt>
 			<dd>Defines the reloading behavior for source files. Possible option values are <code>skip</code> (skip loading of already loaded files; this value can be used to get similar functionality to the Prolog directive <code>ensure_loaded/1</code>) and <code>always</code> (always reload files; the usual default when developing). This option must not be used when recompiling source files in debug mode (see <code>debug/1</code> option above).</dd>
 	</dl>
@@ -653,7 +665,7 @@ The Logtalk compiler automatically removes any redundant calls to the built-in p
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: February 24, 2009</span>
+		<span>Last updated on: March 21, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="installing.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="migration.html">next</a></span><br/>

@@ -19,9 +19,9 @@ RELEASE NOTES
     flags specified in the back-end Prolog compiler config files. Logtalk 
     will load a "settings.lgt" file in the startup directory. If this file 
     is not found, Logtalk will load a "settings.lgt" file in the Logtalk
-    user directory. Requires running Logtalk with B-Prolog, Ciao, CxProlog,
-    ECLiPSE, GNU Prolog, K-Prolog, Qu-Prolog, SICStus Prolog, SWI-Prolog,
-    YAP, or XSB.
+    user directory. Requires running Logtalk on a POSIX operating-system
+    and with a back-end Prolog compiler supporting access to environment
+    variables.
 
     Updated the Logtalk compiler and runtime and all the config files to use
     the more standard call/N predicates instead of the call_with_args/N 
@@ -31,6 +31,11 @@ RELEASE NOTES
     synchronized objects and synchronized predicates. The "synchronized" and
     "threaded" properties are now appended to the compilation mode of object
     and predicates.
+
+    The compiler flags "context_switching_calls", "startup_message", and
+    "altdirs" are no longer read-only flags in order to support changing
+    their default values within "settings.lgt" files. Renamed the compiler
+    flag "prolog" to "prolog_dialect".
 
     Added a new '$lgt_prolog_feature'/2 predicate to all config files, used 
     for representing back-end Prolog supported features that are previously 
