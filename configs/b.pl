@@ -315,7 +315,7 @@
 % returns the Logtalk startup directory; fails if unknwon 
 
 '$lgt_startup_directory'(Directory) :-
-	(	expand_environment('$LOGTALK_STARTUP_DIRECTORY', Directory) ->
+	(	environ('LOGTALK_STARTUP_DIRECTORY', Directory) ->
 		true
 	;	get_main_args(Arguments),
 		'$lgt_append'(_, ['--logtalk_startup_directory', Directory| _], Arguments) ->
@@ -328,7 +328,7 @@
 % returns the Logtalk user directory; fails if unknwon
 
 '$lgt_user_directory'(Directory) :-
-	expand_environment('$LOGTALKUSER', Directory).
+	environ('LOGTALKUSER', Directory).
 
 
 
