@@ -33,6 +33,9 @@ RELEASE NOTES
     "threaded" properties are now appended to the compilation mode of object
     and predicates.
 
+    Corrected a bug where the Logtalk compiler would report the number of
+    compilation warnings with the "report" compiler flag set to "off".
+
     The compiler flags "context_switching_calls", "startup_message", and
     "altdirs" are no longer read-only flags in order to support changing
     their default values within "settings.lgt" files. Renamed the compiler
