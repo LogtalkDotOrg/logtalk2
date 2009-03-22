@@ -15,8 +15,8 @@
 :- consult('$LOGTALKHOME/configs/swi.pl').
 :- consult('$LOGTALKHOME/integration/logtalk_comp_swi.pl').
 :- consult('$LOGTALKUSER/libpaths/libpaths.pl').
-:- consult('$LOGTALKUSER/configs/swihook.pl').
+:- consult('$LOGTALKHOME/configs/swihook.pl').
 :- (	absolute_file_name(library(pce), _, [file_type(prolog), access(read), file_errors(fail)]) ->
-		consult('$LOGTALKUSER/configs/xpcehook.pl')
+		consult('$LOGTALKHOME/configs/xpcehook.pl')
 	;	true
 	).

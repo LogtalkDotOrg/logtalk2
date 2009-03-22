@@ -79,6 +79,7 @@ Name: "{userdocs}\Logtalk uninstaller"
 
 [Files]
 Source: "{#MyBaseDir}\*"; Excludes: ".*,CVS"; DestDir: "{app}"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#MyBaseDir}\configs\amzi.pl"; DestDir: "{app}\configs"; DestName: "amzi.pro"; Components: base; Flags: ignoreversion uninsneveruninstall
 
 Source: "{#MyBaseDir}\contributions\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\contributions"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
 Source: "{#MyBaseDir}\examples\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\examples"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
@@ -88,7 +89,6 @@ Source: "{#MyBaseDir}\xml\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}
 
 Source: "{#MyBaseDir}\settings.lgt"; DestDir: "{code:GetLgtUserDir}"; DestName: "settings.lgt"; Components: user; Flags: ignoreversion uninsneveruninstall
 Source: "{#MyBaseDir}\VERSION.txt"; DestDir: "{code:GetLgtUserDir}"; DestName: "VERSION.txt"; Components: user; Flags: ignoreversion uninsneveruninstall
-Source: "{#MyBaseDir}\configs\amzi.pl"; DestDir: "{code:GetLgtUserDir}\configs"; DestName: "amzi.pro"; Components: user; Flags: ignoreversion uninsneveruninstall
 Source: "{#MyBaseDir}\libpaths\libpaths.pl"; DestDir: "{code:GetLgtUserDir}\libpaths"; DestName: "libpaths_no_env_var.pl"; Components: user; Flags: ignoreversion uninsneveruninstall
 
 Source: "{#MyBaseDir}\scripts\*.bat"; DestDir: "{win}"; Components: base; Flags: ignoreversion
@@ -138,6 +138,7 @@ Name: "{group}\Logtalk - YAP"; Filename: "{code:GetYAPExePath}"; Parameters: "-l
 
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"; Components: base
 
+Name: "{code:GetLgtUserDir}\configs"; Filename: "{app}\configs"; Components: user
 Name: "{code:GetLgtUserDir}\manuals"; Filename: "{app}\manuals"; Components: user
 Name: "{code:GetLgtUserDir}\wenv"; Filename: "{app}\wenv"; Components: user
 
