@@ -323,7 +323,8 @@ retractall(Head) :-
 % access to operating-system environment variables
 
 '$lgt_environment_variable'(Variable, Value) :-
-	getenv(Variable, Value).
+	getenv(Variable, Value),
+	Value \== [].
 
 
 % '$lgt_startup_directory'(-atom)
@@ -331,7 +332,8 @@ retractall(Head) :-
 % returns the Logtalk startup directory; fails if unknwon 
 
 '$lgt_startup_directory'(Directory) :-
-	getenv('LOGTALK_STARTUP_DIRECTORY', Directory).
+	getenv('LOGTALK_STARTUP_DIRECTORY', Directory),
+	Directory \== [].
 
 
 % '$lgt_user_directory'(-atom)
@@ -339,7 +341,8 @@ retractall(Head) :-
 % returns the Logtalk user directory; fails if unknwon
 
 '$lgt_user_directory'(Directory) :-
-	getenv('LOGTALKUSER', Directory).
+	getenv('LOGTALKUSER', Directory),
+	Directory \== [].
 
 
 
