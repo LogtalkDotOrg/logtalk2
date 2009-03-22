@@ -351,11 +351,11 @@
 % returns the Logtalk startup directory; fails if unknwon 
 
 '$lgt_startup_directory'(Directory) :-
-	(	getenv('LOGTALK_STARTUP_DIRECTORY', Directory) ->
-		true
+	(	getenv('LOGTALK_STARTUP_DIRECTORY', Path) ->
+		prolog_to_os_filename(Directory, Path)
 	;	current_prolog_flag(argv, Arguments),
-		'$lgt_append'(_, ['--logtalk_startup_directory', Directory| _], Arguments) ->
-		true
+		'$lgt_append'(_, ['--logtalk_startup_directory', Path| _], Arguments) ->
+		prolog_to_os_filename(Directory, Path)
 	).
 
 
@@ -364,7 +364,8 @@
 % returns the Logtalk user directory; fails if unknwon
 
 '$lgt_user_directory'(Directory) :-
-	getenv('LOGTALKUSER', Directory).
+	getenv('LOGTALKUSER', Path),
+	prolog_to_os_filename(Directory, Path).
 
 
 
