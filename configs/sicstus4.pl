@@ -136,6 +136,7 @@ forall(Generate, Test) :-
 % back-end Prolog compiler supported features
 
 '$lgt_prolog_feature'(prolog_dialect, sicstus).
+'$lgt_prolog_feature'(prolog_compatibility, version(4, 0, 0)).
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, source).
 '$lgt_prolog_feature'(multifile_directive, supported).

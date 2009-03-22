@@ -274,7 +274,7 @@ JIProlog 3.0.2-6 and later versions
 	Prolog standard compliance. Supports smart compilation of source files.
 
 
-K-Prolog 5.1.2a and and later 5.1.x versions
+K-Prolog 5.1.5 and and later 5.1.x versions
 
 	k5.pl
 

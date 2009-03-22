@@ -169,6 +169,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % back-end Prolog compiler supported features
 
 '$lgt_prolog_feature'(prolog_dialect, if).
+'$lgt_prolog_feature'(prolog_compatibility, version(5, 1, 0)).
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
 '$lgt_prolog_feature'(multifile_directive, unsupported).
