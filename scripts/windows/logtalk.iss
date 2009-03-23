@@ -163,7 +163,7 @@ Type: filesandordirs; Name: "{group}"; Components: base
 var
   LgtUserDirPage: TInputDirWizardPage;
   WarningPage: TOutputMsgWizardPage;
-  Explanation, Warning: String;
+  Explanation, Warning, BackupFolder: String;
 
 procedure InitializeWizard;
 var
@@ -236,9 +236,18 @@ begin
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
+var
+  NewFolder: String;
 begin
-  if (CurStep = ssInstall) and DirExists(LgtUserDirPage.Values[0]) and (pos('backup', WizardSelectedComponents(False)) > 0) then
-    RenameFile(LgtUserDirPage.Values[0], LgtUserDirPage.Values[0] + ' backup ' + GetDateTimeString('dddddd tt', '-', '-'))
+  NewFolder := LgtUserDirPage.Values[0];
+  if (CurStep = ssInstall) and DirExists(NewFolder) and (pos('backup', WizardSelectedComponents(False)) > 0) then begin
+    BackupFolder := NewFolder + '-backup-' + GetDateTimeString('yyyy-mm-dd-hhnnss', '-', ':');
+    RenameFile(NewFolder, BackupFolder)
+  end
+  else if (CurStep = ssPostInstall) and FileExists(BackupFolder + '\settings.lgt') then begin
+    RenameFile(NewFolder + '\settings.lgt', NewFolder + '\settings-pristine.lgt');
+    FileCopy(BackupFolder + '\settings.lgt', NewFolder + '\settings.lgt', False)
+  end
 end;
 
 function GetBPExePath(Param: String): String;
