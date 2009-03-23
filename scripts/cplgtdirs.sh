@@ -59,18 +59,31 @@ fi
 if [ -d "$LOGTALKUSER" ]
 then
 	date=`eval date \"+%Y-%m-%d-%H%M%S\"`
-	mv $LOGTALKUSER "$LOGTALKUSER backup $date"
-	echo "Created a backup of the existing \"$LOGTALKUSER\" directory."
+	mv $LOGTALKUSER "$LOGTALKUSER-backup-$date"
+	echo "Created a backup of the existing \"\$LOGTALKUSER\" directory:"
+	echo
+	echo "  $LOGTALKUSER-backup-$date"
+	echo
+	echo "Creating a new LOGTALKUSER directory:"
+	echo
+	echo "  $LOGTALKUSER"
+	echo
 	mkdir $LOGTALKUSER
-	if [ -f "$LOGTALKUSER backup $date"/settings.lgt ]
+	if [ -f "$LOGTALKUSER-backup-$date"/settings.lgt ]
 	then
-		cp "$LOGTALKUSER backup $date"/settings.lgt "$LOGTALKUSER"/
-		echo "Copied your old \"settings.lgt\" file to the new \"$LOGTALKUSER\""
-		echo "directory. The file \"settings-pristine.lgt\" file contains a pristine copy"
-		echo "of the \"settings.lgt\" file distributed with the currently installed Logtalk"
+		cp "$LOGTALKUSER-backup-$date"/settings.lgt "$LOGTALKUSER"/
+		echo "Copied your old \"settings.lgt\" file to the new \"\$LOGTALKUSER\" directory."
+		echo "The file \"settings-pristine.lgt\" file contains a pristine copy of the"
+		echo "\"settings.lgt\" file distributed with the currently installed Logtalk"
 		echo "version. Review this file for possible settings files update instructions."
 	fi
 	echo
+else
+	echo "Creating a new LOGTALKUSER directory:"
+	echo
+	echo "  $LOGTALKUSER"
+	echo
+	mkdir $LOGTALKUSER
 fi
 
 echo "Copying Logtalk files and directories..."
@@ -116,12 +129,12 @@ ln -sf "$LOGTALKHOME"/xml/logtalk.rng "$LOGTALKUSER"/xml/logtalk.rng
 ln -sf "$LOGTALKHOME"/xml/logtalk.xsd "$LOGTALKUSER"/xml/logtalk.xsd
 echo "Finished copying Logtalk files and directories."
 echo
-echo "You may need to edit the \"$LOGTALKUSER/libpaths/libpaths.pl\""
-echo "file to match your Prolog compiler and operating-system requirements or"
+echo "You may need to edit the \"\$LOGTALKUSER/libpaths/libpaths.pl\" file"
+echo "to match your Prolog compiler and operating-system requirements or"
 echo "to add your own library paths."
 echo
 echo "You may want to customize the default Logtalk compiler flags by editing"
-echo "the \"settings.lgt\" file found in the directory \"$LOGTALKUSER/\"."
-echo "For more information on customizing Logtalk and your working environment,"
-echo "consult the \"$LOGTALKUSER/CUSTOMIZE.txt\" file."
+echo "the \"settings.lgt\" file found in the directory \"\$LOGTALKUSER/\". For more "
+echo "information on customizing Logtalk and your working environment, consult"
+echo "the \"\$LOGTALKUSER/CUSTOMIZE.txt\" file."
 echo

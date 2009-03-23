@@ -75,26 +75,29 @@ if (FSObject.FolderExists(logtalk_user)) {
         mins = "0" + mins;
 	var secs = today.getSeconds();
 	date = year + "-" + month + "-" + day + "-" + hours + mins + secs;
-	FSObject.MoveFolder(logtalk_user, logtalk_user + " backup " + date);
-	WScript.Echo("Created a backup of the existing " + logtalk_user + " directory.");
+	FSObject.MoveFolder(logtalk_user, logtalk_user + "-backup-" + date);
+	WScript.Echo("Created a backup of the existing \%LOGTALKUSER\% directory.");
+	WScript.Echo("");
+	WScript.Echo("Creating a new LOGTALKUSER directory:");
+	WScript.Echo("");
+	WScript.Echo("  " + logtalk_user);
+	WScript.Echo("");
 	FSObject.CreateFolder(logtalk_user);
-	if (FSObject.FileExists(logtalk_user + " backup " + date + "\\settings.lgt")) {
-		FSObject.CopyFile(logtalk_user + " backup " + date + "\\settings.lgt", logtalk_user + "\\settings.lgt");
-		WScript.Echo("Copied your old \"settings.lgt\" file to the new \"$LOGTALKUSER\"");
-		WScript.Echo("directory. The file \"settings-pristine.lgt\" file contains a pristine copy");
-		WScript.Echo("of the \"settings.lgt\" file distributed with the currently installed Logtalk");
+	if (FSObject.FileExists(logtalk_user + "-backup-" + date + "\\settings.lgt")) {
+		FSObject.CopyFile(logtalk_user + "-backup-" + date + "\\settings.lgt", logtalk_user + "\\settings.lgt");
+		WScript.Echo("Copied your old \"settings.lgt\" file to the new \%LOGTALKUSER\% directory.");
+		WScript.Echo("The file \"settings-pristine.lgt\" file contains a pristine copy of the ");
+		WScript.Echo("\"settings.lgt\" file distributed with the currently installed Logtalk");
 		WScript.Echo("version. Review this file for possible settings files update instructions.");
 	}
 	WScript.Echo("");
-}
-
-WScript.Echo("Creating LOGTALKUSER directory:");
-WScript.Echo("");
-WScript.Echo("  " + logtalk_user);
-WScript.Echo("");
-
-if (!FSObject.FolderExists(logtalk_user))
+} else {
+	WScript.Echo("Creating a new LOGTALKUSER directory:");
+	WScript.Echo("");
+	WScript.Echo("  " + logtalk_user);
+	WScript.Echo("");
 	FSObject.CreateFolder(logtalk_user);
+}
 
 WScript.Echo("Copying Logtalk files and directories...");
 FSObject.CopyFolder(logtalk_home + "\\contributions", logtalk_user + "\\contributions");
@@ -173,7 +176,7 @@ WScript.Echo("to match your Prolog compiler and operating-system requirements or
 WScript.Echo("add your own library paths.");
 WScript.Echo("");
 WScript.Echo("You may want to customize the default Logtalk compiler flags by editing");
-WScript.Echo("the \"settings.lgt\" file found in the directory " + logtalk_user);
+WScript.Echo("the \"settings.lgt\" file found in the directory \%LOGTALKUSER\%.");
 WScript.Echo("");
 WScript.Echo("See the \%LOGTALKUSER\%\\CUSTOMIZE.txt file for details.");
 WScript.Echo("");
