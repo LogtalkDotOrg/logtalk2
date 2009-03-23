@@ -14708,16 +14708,21 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 
 
+% '$lgt_load_settings_file'
+%
+% loads any settings file defined by the user;
+% settings files are compiled and loaded silently, ignoring any errors
+
 '$lgt_load_settings_file' :-
 	'$lgt_current_directory'(Current),
-	(	'$lgt_startup_directory'(Startup),
-		'$lgt_change_directory'(Startup),
-		'$lgt_file_exists'('settings.lgt') ->
-		logtalk_load(settings, [report(off)])
-	;	'$lgt_user_directory'(User),
-		'$lgt_change_directory'(User),
-		'$lgt_file_exists'('settings.lgt') ->
-		logtalk_load(settings, [report(off)])
+	(	'$lgt_startup_directory'(Startup),		% first lookup for a 
+		'$lgt_change_directory'(Startup),		% settings file in the
+		'$lgt_file_exists'('settings.lgt') ->	% startup directory
+		catch(logtalk_load(settings, [report(off), smart_compilation(off)]), _, true)
+	;	'$lgt_user_directory'(User),			% if not found, lookup for
+		'$lgt_change_directory'(User),			% a settings file in the
+		'$lgt_file_exists'('settings.lgt') ->	% Logtalk user folder
+		catch(logtalk_load(settings, [report(off), smart_compilation(off)]), _, true)
 	;	true
 	),
 	'$lgt_change_directory'(Current).
@@ -14755,6 +14760,8 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	).
 
 
+
+% Logtalk runtime initialization goal
 
 :- initialization((
 	'$lgt_load_settings_file',
