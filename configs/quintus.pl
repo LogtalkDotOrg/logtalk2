@@ -406,8 +406,11 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %
 % returns the Logtalk user directory; fails if unknwon
 
-'$lgt_user_directory'(_) :-
-	fail.
+'$lgt_user_directory'(Directory) :-
+	absolute_file_name('.', Current),
+	unix(cd('$LOGTALKUSER')),
+	absolute_file_name('.', Directory),
+	unix(cd(Current)).
 
 
 
