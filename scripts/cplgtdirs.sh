@@ -64,7 +64,7 @@ then
 	echo
 	echo "  $LOGTALKUSER-backup-$date"
 	echo
-	echo "Creating a new LOGTALKUSER directory:"
+	echo "Creating a new \"\$LOGTALKUSER\" directory:"
 	echo
 	echo "  $LOGTALKUSER"
 	echo
@@ -79,7 +79,7 @@ then
 	fi
 	echo
 else
-	echo "Creating a new LOGTALKUSER directory:"
+	echo "Creating a new \"\$LOGTALKUSER\" directory:"
 	echo
 	echo "  $LOGTALKUSER"
 	echo
@@ -129,12 +129,12 @@ ln -sf "$LOGTALKHOME"/xml/logtalk.rng "$LOGTALKUSER"/xml/logtalk.rng
 ln -sf "$LOGTALKHOME"/xml/logtalk.xsd "$LOGTALKUSER"/xml/logtalk.xsd
 echo "Finished copying Logtalk files and directories."
 echo
-echo "You may need to edit the \"\$LOGTALKUSER/libpaths/libpaths.pl\" file"
-echo "to match your Prolog compiler and operating-system requirements or"
-echo "to add your own library paths."
+echo "You may need to edit the \"\$LOGTALKUSER/libpaths/libpaths.pl\" file to match"
+echo "your Prolog compiler and operating-system requirements or to add your own"
+echo "library paths."
 echo
 echo "You may want to customize the default Logtalk compiler flags by editing"
-echo "the \"settings.lgt\" file found in the directory \"\$LOGTALKUSER/\". For more "
+echo "the \"settings.lgt\" file found in the directory \"\$LOGTALKUSER\". For more "
 echo "information on customizing Logtalk and your working environment, consult"
 echo "the \"\$LOGTALKUSER/CUSTOMIZE.txt\" file."
 echo

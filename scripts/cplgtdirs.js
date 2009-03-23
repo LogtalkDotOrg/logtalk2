@@ -76,25 +76,25 @@ if (FSObject.FolderExists(logtalk_user)) {
 	var secs = today.getSeconds();
 	date = year + "-" + month + "-" + day + "-" + hours + mins + secs;
 	FSObject.MoveFolder(logtalk_user, logtalk_user + "-backup-" + date);
-	WScript.Echo("Created a backup of the existing \%LOGTALKUSER\% directory:");
+	WScript.Echo("Created a backup of the existing \"\%LOGTALKUSER\%\" directory:");
 	WScript.Echo("");
 	WScript.Echo("  " + logtalk_user + "-backup-" + date);
 	WScript.Echo("");
-	WScript.Echo("Creating a new LOGTALKUSER directory:");
+	WScript.Echo("Creating a new \"\%LOGTALKUSER\%\" directory:");
 	WScript.Echo("");
 	WScript.Echo("  " + logtalk_user);
 	WScript.Echo("");
 	FSObject.CreateFolder(logtalk_user);
 	if (FSObject.FileExists(logtalk_user + "-backup-" + date + "\\settings.lgt")) {
 		FSObject.CopyFile(logtalk_user + "-backup-" + date + "\\settings.lgt", logtalk_user + "\\settings.lgt");
-		WScript.Echo("Copied your old \"settings.lgt\" file to the new \%LOGTALKUSER\% directory.");
+		WScript.Echo("Copied your old \"settings.lgt\" file to the new \"\%LOGTALKUSER\%\" directory.");
 		WScript.Echo("The file \"settings-pristine.lgt\" file contains a pristine copy of the ");
 		WScript.Echo("\"settings.lgt\" file distributed with the currently installed Logtalk");
 		WScript.Echo("version. Review this file for possible settings files update instructions.");
 	}
 	WScript.Echo("");
 } else {
-	WScript.Echo("Creating a new LOGTALKUSER directory:");
+	WScript.Echo("Creating a new \"\%LOGTALKUSER\%\" directory:");
 	WScript.Echo("");
 	WScript.Echo("  " + logtalk_user);
 	WScript.Echo("");
@@ -170,17 +170,14 @@ link.Save();
 
 WScript.Echo("Finished copying Logtalk files and directories.");
 WScript.Echo("");
-WScript.Echo("You may need to edit the contents of the file:");
-WScript.Echo("");
-WScript.Echo("  " + logtalk_user + "\\libpaths\\libpaths.pl");
-WScript.Echo("");
-WScript.Echo("to match your Prolog compiler and operating-system requirements or to");
-WScript.Echo("add your own library paths.");
+WScript.Echo("You may need to edit the \"\%LOGTALKUSER\%\\libpaths\\libpaths.pl\" file to");
+WScript.Echo("match your Prolog compiler and operating-system requirements or to add your");
+WScript.Echo("own library paths.");
 WScript.Echo("");
 WScript.Echo("You may want to customize the default Logtalk compiler flags by editing");
-WScript.Echo("the \"settings.lgt\" file found in the directory \%LOGTALKUSER\%.");
-WScript.Echo("");
-WScript.Echo("See the \%LOGTALKUSER\%\\CUSTOMIZE.txt file for details.");
+WScript.Echo("the \"settings.lgt\" file found in the directory \"\%LOGTALKUSER\%\". For more");
+WScript.Echo("information on customizing Logtalk and your working environment, consult");
+WScript.Echo("the \"\%LOGTALKUSER\%\\CUSTOMIZE.txt\" file for details.");
 WScript.Echo("");
 
 WScript.Quit(0);
@@ -189,7 +186,7 @@ function usage_help() {
 	WScript.Echo("");
 	WScript.Echo("This script copies the Logtalk user-modifiable files and directories");
 	WScript.Echo("to the user home directory. The location can be set by the environment");
-	WScript.Echo("variable \%LOGTALKUSER\% (defaults to MyDocuments\\logtalk when the");
+	WScript.Echo("variable \"\%LOGTALKUSER\%\" (defaults to \"MyDocuments\\logtalk\" when the");
 	WScript.Echo("variable is not defined)");
 	WScript.Echo("");
 	WScript.Echo("Usage:");
