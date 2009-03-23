@@ -64,6 +64,8 @@ if (FSObject.FolderExists(logtalk_user)) {
 	var today = new Date();
 	var year  = today.getFullYear();
 	var month = today.getMonth() + 1;
+	if (month < 10)
+		month = "0" + month;
 	var day = today.getDate();
 	if (day < 10)
         day = "0" + day;
@@ -74,6 +76,8 @@ if (FSObject.FolderExists(logtalk_user)) {
 	if (mins < 10)
         mins = "0" + mins;
 	var secs = today.getSeconds();
+	if (secs < 10)
+		secs = "0" + secs;
 	date = year + "-" + month + "-" + day + "-" + hours + mins + secs;
 	FSObject.MoveFolder(logtalk_user, logtalk_user + "-backup-" + date);
 	WScript.Echo("Created a backup of the existing \"\%LOGTALKUSER\%\" directory:");
