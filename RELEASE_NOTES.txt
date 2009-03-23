@@ -24,6 +24,9 @@ RELEASE NOTES
     files from the Logtalk startup directory is only available when running
     on a POSIX operating-system.
 
+    Updated the "cplgtdirs.*" scripts to copy an existing "settings.lgt" file
+    from the backup of the Logtalk user folder to the new Logtalk user folder.
+
     Updated the Logtalk compiler and runtime and all the config files to use
     the more standard call/N predicates instead of the call_with_args/N 
     predicates.

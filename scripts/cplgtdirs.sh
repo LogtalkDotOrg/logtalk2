@@ -61,6 +61,15 @@ then
 	date=`eval date \"+%Y-%m-%d-%H%M%S\"`
 	mv $LOGTALKUSER "$LOGTALKUSER backup $date"
 	echo "Created a backup of the existing \"$LOGTALKUSER\" directory."
+	mkdir $LOGTALKUSER
+	if [ -f "$LOGTALKUSER backup $date"/settings.lgt ]
+	then
+		cp "$LOGTALKUSER backup $date"/settings.lgt "$LOGTALKUSER"/
+		echo "Copied your old \"settings.lgt\" file to the new \"$LOGTALKUSER\""
+		echo "directory. The file \"settings-pristine.lgt\" file contains a pristine copy"
+		echo "of the \"settings.lgt\" file distributed with the currently installed Logtalk"
+		echo "version. Review this file for possible settings files update instructions."
+	fi
 	echo
 fi
 
@@ -76,7 +85,12 @@ cp -RL "$LOGTALKHOME"/libpaths "$LOGTALKUSER"/
 sed 's_\$LOGTALKUSER_'$LOGTALKUSER'_' "$LOGTALKUSER"/libpaths/libpaths.pl > "$LOGTALKUSER"/libpaths/libpaths_no_env_var.pl
 cp -RL "$LOGTALKHOME"/library "$LOGTALKUSER"/
 cp -RL "$LOGTALKHOME"/xml "$LOGTALKUSER"/
-cp "$LOGTALKHOME"/settings.lgt "$LOGTALKUSER"/
+if [ -f "$LOGTALKUSER"/settings.lgt ]
+then
+	cp "$LOGTALKHOME"/settings.lgt "$LOGTALKUSER"/settings-pristine.lgt
+else
+	cp "$LOGTALKHOME"/settings.lgt "$LOGTALKUSER"/
+fi
 cp "$LOGTALKHOME"/VERSION.txt "$LOGTALKUSER"/
 chmod -R u+w "$LOGTALKUSER"
 rm -f "$LOGTALKUSER"/xml/lgt2*

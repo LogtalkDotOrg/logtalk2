@@ -77,6 +77,14 @@ if (FSObject.FolderExists(logtalk_user)) {
 	date = year + "-" + month + "-" + day + "-" + hours + mins + secs;
 	FSObject.MoveFolder(logtalk_user, logtalk_user + " backup " + date);
 	WScript.Echo("Created a backup of the existing " + logtalk_user + " directory.");
+	FSObject.CreateFolder(logtalk_user);
+	if (FSObject.FileExists(logtalk_user + " backup " + date + "\\settings.lgt")) {
+		FSObject.CopyFile(logtalk_user + " backup " + date + "\\settings.lgt", logtalk_user + "\\settings.lgt");
+		WScript.Echo("Copied your old \"settings.lgt\" file to the new \"$LOGTALKUSER\"");
+		WScript.Echo("directory. The file \"settings-pristine.lgt\" file contains a pristine copy");
+		WScript.Echo("of the \"settings.lgt\" file distributed with the currently installed Logtalk");
+		WScript.Echo("version. Review this file for possible settings files update instructions.");
+	}
 	WScript.Echo("");
 }
 
@@ -85,7 +93,8 @@ WScript.Echo("");
 WScript.Echo("  " + logtalk_user);
 WScript.Echo("");
 
-FSObject.CreateFolder(logtalk_user);
+if (!FSObject.FolderExists(logtalk_user))
+	FSObject.CreateFolder(logtalk_user);
 
 WScript.Echo("Copying Logtalk files and directories...");
 FSObject.CopyFolder(logtalk_home + "\\contributions", logtalk_user + "\\contributions");
@@ -94,7 +103,10 @@ FSObject.CopyFolder(logtalk_home + "\\libpaths", logtalk_user + "\\libpaths");
 FSObject.CopyFile(logtalk_user + "\\libpaths\\libpaths.pl", logtalk_user + "\\libpaths\\libpaths_no_env_var.pl");
 FSObject.CopyFolder(logtalk_home + "\\library", logtalk_user + "\\library");
 FSObject.CopyFolder(logtalk_home + "\\xml", logtalk_user + "\\xml");
-FSObject.CopyFile(logtalk_home + "\\settings.lgt", logtalk_user + "\\settings.lgt");
+if (FSObject.FileExists(logtalk_user + "\\settings.lgt"))
+	FSObject.CopyFile(logtalk_home + "\\settings.lgt", logtalk_user + "\\settings-pristine.lgt");
+else
+	FSObject.CopyFile(logtalk_home + "\\settings.lgt", logtalk_user + "\\settings.lgt");
 FSObject.CopyFile(logtalk_home + "\\VERSION.txt", logtalk_user + "\\VERSION.txt");
 
 FSObject.DeleteFile(logtalk_user + "\\xml\\lgt2*.*");
