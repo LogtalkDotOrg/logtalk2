@@ -108,33 +108,33 @@ Name: "{group}\Customization instructions"; Filename: "{app}\CUSTOMIZE.txt"; Com
 
 Name: "{group}\Web Site"; Filename: "{#MyAppUrl}"; Components: base
 
-Name: "{group}\Logtalk - B-Prolog"; Filename: "{code:GetBPExePath}"; Parameters: "-g ""consult('$LOGTALKHOME/integration/logtalk_bp.pl'), $bp_top_level"""; Comment: "Runs Logtalk with B-Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\bp; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - B-Prolog"; Filename: "{code:GetBPExePath}"; Parameters: "-g ""consult('$LOGTALKHOME/integration/logtalk_bp.pl'), $bp_top_level"""; Comment: "Runs Logtalk with B-Prolog"; WorkingDir: "%CD%"; Components: prolog\bp; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - Ciao Prolog"; Filename: "{code:GetCiaoExePath}"; Parameters: "-l ""$LOGTALKHOME/integration/logtalk_ciao.pl"""; Comment: "Runs Logtalk with Ciao Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\ciao; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - Ciao Prolog"; Filename: "{code:GetCiaoExePath}"; Parameters: "-l ""$LOGTALKHOME/integration/logtalk_ciao.pl"""; Comment: "Runs Logtalk with Ciao Prolog"; WorkingDir: "%CD%"; Components: prolog\ciao; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - CxProlog"; Filename: "{code:GetCxExePath}"; Parameters: "--goal ""silent_consult('%LOGTALKHOME%/integration/logtalk_cx.pl')"""; Comment: "Runs Logtalk with CxProlog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\cxprolog; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - CxProlog"; Filename: "{code:GetCxExePath}"; Parameters: "--goal ""silent_consult('%LOGTALKHOME%/integration/logtalk_cx.pl')"""; Comment: "Runs Logtalk with CxProlog"; WorkingDir: "%CD%"; Components: prolog\cxprolog; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - ECLiPSe 5.10"; Filename: "{code:GetEclipse5ExePath}"; Parameters: "-b ""$LOGTALKHOME/integration/logtalk_eclipse5.pl"""; Comment: "Runs Logtalk with ECLiPSe 5.10"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\eclipse; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - ECLiPSe 5.10"; Filename: "{code:GetEclipse5ExePath}"; Parameters: "-b ""$LOGTALKHOME/integration/logtalk_eclipse5.pl"""; Comment: "Runs Logtalk with ECLiPSe 5.10"; WorkingDir: "%CD%"; Components: prolog\eclipse; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - ECLiPSe 6.0"; Filename: "{code:GetEclipse6ExePath}"; Parameters: "-b ""$LOGTALKHOME/integration/logtalk_eclipse6.pl"""; Comment: "Runs Logtalk with ECLiPSe 6.0"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\eclipse; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - ECLiPSe 6.0"; Filename: "{code:GetEclipse6ExePath}"; Parameters: "-b ""$LOGTALKHOME/integration/logtalk_eclipse6.pl"""; Comment: "Runs Logtalk with ECLiPSe 6.0"; WorkingDir: "%CD%"; Components: prolog\eclipse; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - GNU Prolog"; Filename: "{code:GetGPExePath}"; Parameters: "--init-goal ""set_prolog_flag(suspicious_warning, off), set_prolog_flag(multifile_warning, off), ['$LOGTALKHOME/integration/logtalk_gp.pl'], set_prolog_flag(suspicious_warning, on), set_prolog_flag(multifile_warning, on)"""; Comment: "Runs Logtalk with GNU Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\gprolog; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - GNU Prolog"; Filename: "{code:GetGPExePath}"; Parameters: "--init-goal ""set_prolog_flag(suspicious_warning, off), set_prolog_flag(multifile_warning, off), ['$LOGTALKHOME/integration/logtalk_gp.pl'], set_prolog_flag(suspicious_warning, on), set_prolog_flag(multifile_warning, on)"""; Comment: "Runs Logtalk with GNU Prolog"; WorkingDir: "%CD%"; Components: prolog\gprolog; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - K-Prolog"; Filename: "{code:GetKPExePath}"; Parameters: "-h 4096k -l 2048k -g 4096k -e ""(consult('$LOGTALKHOME/integration/logtalk_plc6.pl'), '$root')."""; Comment: "Runs Logtalk with K-Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\plc; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - K-Prolog"; Filename: "{code:GetKPExePath}"; Parameters: "-h 4096k -l 2048k -g 4096k -e ""(consult('$LOGTALKHOME/integration/logtalk_plc6.pl'), '$root')."""; Comment: "Runs Logtalk with K-Prolog"; WorkingDir: "%CD%"; Components: prolog\plc; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - Quintus Prolog"; Filename: "{code:GetQuintusExePath}"; Parameters: "+l ""%LOGTALKHOME%\integration\logtalk_quintus.pl"" +z ""%LOGTALKHOME%"" ""%LOGTALKUSER%"""; Comment: "Runs Logtalk with Quintus Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\quintus; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - Quintus Prolog"; Filename: "{code:GetQuintusExePath}"; Parameters: "+l ""%LOGTALKHOME%\integration\logtalk_quintus.pl"" +z ""%LOGTALKHOME%"" ""%LOGTALKUSER%"""; Comment: "Runs Logtalk with Quintus Prolog"; WorkingDir: "%CD%"; Components: prolog\quintus; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - SICStus Prolog 3.12"; Filename: "{code:GetSP3ExePath}"; Parameters: "-l ""%LOGTALKHOME%\integration\logtalk_sicstus3.pl"""; Comment: "Runs Logtalk with SICStus Prolog 3.12"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\sicstus; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - SICStus Prolog 3.12"; Filename: "{code:GetSP3ExePath}"; Parameters: "-l ""%LOGTALKHOME%\integration\logtalk_sicstus3.pl"""; Comment: "Runs Logtalk with SICStus Prolog 3.12"; WorkingDir: "%CD%"; Components: prolog\sicstus; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - SICStus Prolog 4.0"; Filename: "{code:GetSP4ExePath}"; Parameters: "-l ""%LOGTALKHOME%\integration\logtalk_sicstus4.pl"""; Comment: "Runs Logtalk with SICStus Prolog 4.0"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\sicstus; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - SICStus Prolog 4.0"; Filename: "{code:GetSP4ExePath}"; Parameters: "-l ""%LOGTALKHOME%\integration\logtalk_sicstus4.pl"""; Comment: "Runs Logtalk with SICStus Prolog 4.0"; WorkingDir: "%CD%"; Components: prolog\sicstus; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - SWI-Prolog"; Filename: "{code:GetSWIExePath}"; Parameters: "-f ""%LOGTALKHOME%\integration\logtalk_swi.pl"""; Comment: "Runs Logtalk with SWI-Prolog"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\swi; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - SWI-Prolog"; Filename: "{code:GetSWIExePath}"; Parameters: "-f ""%LOGTALKHOME%\integration\logtalk_swi.pl"""; Comment: "Runs Logtalk with SWI-Prolog"; WorkingDir: "%CD%"; Components: prolog\swi; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - XSB"; Filename: "C:\XSB\config\x86-pc-windows\bin\xsb.exe"; Parameters: "-l -e ""['%LOGTALKHOME%\\integration\\logtalk_xsb.pl']."""; Comment: "Runs Logtalk with XSB"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\xsb; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - XSB"; Filename: "C:\XSB\config\x86-pc-windows\bin\xsb.exe"; Parameters: "-l -e ""['%LOGTALKHOME%\\integration\\logtalk_xsb.pl']."""; Comment: "Runs Logtalk with XSB"; WorkingDir: "%CD%"; Components: prolog\xsb; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - XSB-MT"; Filename: "C:\XSB\config\i686-pc-cygwin-mt\bin\xsb.exe"; Parameters: "--shared_predicates -l -e ""['%LOGTALKUSER%\\configs\\xsb.pl', '%LOGTALKHOME%\\compiler\\logtalk.pl', '%LOGTALKUSER%\\libpaths\\libpaths.pl']."""; Comment: "Runs Logtalk with XSB-MT"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\xsb; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - XSB-MT"; Filename: "C:\XSB\config\i686-pc-cygwin-mt\bin\xsb.exe"; Parameters: "--shared_predicates -l -e ""['%LOGTALKUSER%\\configs\\xsb.pl', '%LOGTALKHOME%\\compiler\\logtalk.pl', '%LOGTALKUSER%\\libpaths\\libpaths.pl']."""; Comment: "Runs Logtalk with XSB-MT"; WorkingDir: "%CD%"; Components: prolog\xsb; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - YAP"; Filename: "{code:GetYAPExePath}"; Parameters: "-l ""$LOGTALKHOME/integration/logtalk_yap.pl"""; Comment: "Runs Logtalk with YAP"; WorkingDir: "{code:GetLgtUserDir}"; Components: prolog\yap; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - YAP"; Filename: "{code:GetYAPExePath}"; Parameters: "-l ""$LOGTALKHOME/integration/logtalk_yap.pl"""; Comment: "Runs Logtalk with YAP"; WorkingDir: "%CD%"; Components: prolog\yap; Flags: createonlyiffileexists
 
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"; Components: base
 
