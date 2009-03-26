@@ -17,13 +17,13 @@
 %  Using settings files allows Logtalk to easily support per-project
 %  settings. Note that the settings defined here can always be overridden
 %  by using the logtalk_compile/2 and logtalk_load/2 built-in predicates
-%  or by using the set_logtalk_flag/2 directive in the source files.
+%  or by using the set_logtalk_flag/2 directive within the source files.
 %
 %  To use this feature, simply copy this file to the directory containing
-%  your Logtalk source files and customize it (see the examples below).
+%  your Logtalk project files and customize it (see the examples below).
 %  Note that, for setting Logtalk flags, we must use the set_logtalk_flag/2
 %  predicate (wrapped in an initialization/1 directive) as the scope of the
-%  set_logtalk_flag/2 directive is local to a source file.
+%  set_logtalk_flag/2 directive is always local to a source file.
 %
 %  If you use more than one back-end Prolog compiler and want to use
 %  different settings per compiler you will need to use the Logtalk 
@@ -39,12 +39,13 @@
 %  on non-POSIX operating systems such as Windows.
 
 
-%  To define a "library" path for your project, customize and uncomment the
-%  following lines (the library path must end with a slash character):
+%  To define a "library" path for your projects, customize and uncomment
+%  the following lines (the library path must end with a slash character):
 
 /*
 :- initialization((
-	assertz(logtalk_library_path(my_project, '$HOME/my_project/'))
+	assertz(logtalk_library_path(my_project_1, '$HOME/my_project_1/')),
+	assertz(logtalk_library_path(my_project_2, '$HOME/my_project_2/'))
 )).
 */
 
@@ -71,7 +72,7 @@
 */
 
 
-%  To compile all your source files in debug mode uncomment the following
+%  To compile all your source files for debugging uncomment the following
 %  lines:
 
 /*
