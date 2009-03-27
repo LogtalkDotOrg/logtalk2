@@ -270,7 +270,7 @@ var
   Warning: String;
 begin
   if RegQueryStringValue(HKLM, 'Software\Ciao Prolog\', 'ciao_dir', CiaoDir) then
-    Result := CiaoDir + '\shell\ciaosh.cpx'
+    Result := CiaoDir + '\shell\ciaosh.bat'
   else begin
     Warning := 'Failed to detect Ciao Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
 	MsgBox(Warning, mbError, MB_OK);
