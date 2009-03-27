@@ -334,9 +334,7 @@
 '$lgt_startup_directory'(Directory) :-
 	(	os_env('LOGTALK_STARTUP_DIRECTORY', Directory) ->
 		true
-	;	os_args(Arguments),
-		'$lgt_append'(_, ['--logtalk_startup_directory', Directory| _], Arguments) ->
-		true
+	;	fs_cwd(Directory)
 	).
 
 

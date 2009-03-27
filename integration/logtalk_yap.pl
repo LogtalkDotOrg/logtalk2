@@ -14,5 +14,5 @@
 
 :- initialization((
 	reconsult('$LOGTALKHOME/configs/yap.pl'),
-	reconsult('$LOGTALKHOME/integration/logtalk_comp_yap.pl'),
+	reconsult('$LOGTALKHOME/compiler/logtalk.pl'),
 	reconsult('$LOGTALKUSER/libpaths/libpaths.pl'))).

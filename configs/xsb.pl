@@ -346,7 +346,7 @@ forall(Generate, Test) :-
 '$lgt_startup_directory'(Directory) :-
 	(	expand_atom('$LOGTALK_STARTUP_DIRECTORY', Directory) ->
 		true
-	;	fail
+	;	path_sysop(cwd, Directory)
 	).
 
 

@@ -56,10 +56,6 @@
 		dynamic('$lgt_static_binding_entity_'/1), hide_predicate('$lgt_static_binding_entity_'/1),
 		dynamic('$lgt_obj_static_binding_cache_'/4), hide_predicate('$lgt_obj_static_binding_cache_'/4),
 		dynamic('$lgt_ctg_static_binding_cache_'/4), hide_predicate('$lgt_ctg_static_binding_cache_'/4),
-		dynamic('$lgt_obj_lookup_cache_'/4), hide_predicate('$lgt_obj_lookup_cache_'/4), 
-		dynamic('$lgt_self_lookup_cache_'/4), hide_predicate('$lgt_self_lookup_cache_'/4),
-		dynamic('$lgt_super_lookup_cache_'/4), hide_predicate('$lgt_super_lookup_cache_'/4),
-		dynamic('$lgt_db_lookup_cache_'/6), hide_predicate('$lgt_db_lookup_cache_'/6),
 		dynamic('$lgt_pp_warnings_top_argument_'/1), hide_predicate('$lgt_pp_warnings_top_argument_'/1),
 		dynamic('$lgt_pp_comp_warnings_counter_'/1), hide_predicate('$lgt_pp_comp_warnings_counter_'/1),
 		dynamic('$lgt_pp_load_warnings_counter_'/1), hide_predicate('$lgt_pp_load_warnings_counter_'/1),
@@ -68,7 +64,21 @@
 		dynamic('$lgt_hook_term_expansion_'/2), hide_predicate('$lgt_hook_term_expansion_'/2),
 		dynamic('$lgt_hook_goal_expansion_'/2), hide_predicate('$lgt_hook_goal_expansion_'/2),
 		dynamic('$lgt_threaded_tag_counter'/1), hide_predicate('$lgt_threaded_tag_counter'/1),
-		dynamic('$lgt_dbg_invocation_number_'/1), hide_predicate('$lgt_dbg_invocation_number_'/1)
+		dynamic('$lgt_dbg_invocation_number_'/1), hide_predicate('$lgt_dbg_invocation_number_'/1),
+		(	current_prolog_flag(system_options, threads) ->
+			thread_local('$lgt_obj_lookup_cache_'/4),
+			thread_local('$lgt_self_lookup_cache_'/4),
+			thread_local('$lgt_super_lookup_cache_'/4),
+			thread_local('$lgt_db_lookup_cache_'/5)
+		;	dynamic('$lgt_obj_lookup_cache_'/4),
+			dynamic('$lgt_self_lookup_cache_'/4),
+			dynamic('$lgt_super_lookup_cache_'/4),
+			dynamic('$lgt_db_lookup_cache_'/6)
+		),
+		hide_predicate('$lgt_obj_lookup_cache_'/4),
+		hide_predicate('$lgt_self_lookup_cache_'/4),
+		hide_predicate('$lgt_super_lookup_cache_'/4),
+		hide_predicate('$lgt_db_lookup_cache_'/6)
 	;	true
 	).
 
@@ -403,9 +413,7 @@
 '$lgt_startup_directory'(Directory) :-
 	(	environ('LOGTALK_STARTUP_DIRECTORY', Directory) ->
 		true
-	;	current_prolog_flag(argv, Arguments),
-		'$lgt_append'(_, ['--logtalk_startup_directory', Directory| _], Arguments) ->
-		true
+	;	getcwd(Directory)
 	).
 
 

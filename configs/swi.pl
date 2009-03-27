@@ -354,9 +354,7 @@
 '$lgt_startup_directory'(Directory) :-
 	(	getenv('LOGTALK_STARTUP_DIRECTORY', Path) ->
 		prolog_to_os_filename(Directory, Path)
-	;	current_prolog_flag(argv, Arguments),
-		'$lgt_append'(_, ['--logtalk_startup_directory', Path| _], Arguments) ->
-		prolog_to_os_filename(Directory, Path)
+	;	working_directory(Directory, Directory)
 	).
 
 

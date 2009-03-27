@@ -317,10 +317,10 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % makes a new directory; succeeds if the directory already exists
 
 '$lgt_make_directory'(Directory) :-
-	file_exists(Directory) ->
+	(	file_exists(Directory) ->
 		true
-		;
-		make_directory(Directory).
+	;	make_directory(Directory)
+	).
 
 
 % '$lgt_load_prolog_code'(+atom, +atom, +list)
@@ -357,9 +357,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_startup_directory'(Directory) :-
 	(	environ('LOGTALK_STARTUP_DIRECTORY', Directory) ->
 		true
-	;	current_prolog_flag(argv, Arguments),
-		'$lgt_append'(_, ['--logtalk_startup_directory', Directory| _], Arguments) ->
-		true
+	;	working_directory(Directory, Directory)
 	).
 
 

@@ -390,9 +390,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_startup_directory'(Directory) :-
 	(	getenv('LOGTALK_STARTUP_DIRECTORY', Directory) ->
 		true
-	;	argv(all, Arguments),
-		'$lgt_append'(_, ['--logtalk_startup_directory', Directory| _], Arguments) ->
-		true
+	;	getcwd(Directory)
 	).
 
 

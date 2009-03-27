@@ -25,7 +25,7 @@
 This page provides an overview of Logtalk installation requirements and instructions and a description of the files contained on the Logtalk distribution. For detailed, up-to-date installation and configuration instructions, please see the <code>README.txt</code>, <code>INSTALL.txt</code>, and <code>CUSTOMIZE.txt</code> files distributed with Logtalk. The broad compatibility of Logtalk, both with Prolog compilers and operating-systems, together with all the possible user scenarios, means that installation can vary from very simple by running an installer or a couple of scripts to the need of patching both Logtalk and Prolog compilers to workaround the lack of strong Prolog standards.
 </p>
 <p>
-The preferred installation scenario is to have Logtalk installed in a system-wide location, thus available for all users, and a local copy of user-modifiable files on each user home directory (even when you are the single user of your computer). This scenario allows each user to independently customize Logtalk and to freely modify the provided programming examples. Logtalk installers, installation shell scripts, and Prolog integration scripts favor this installation scenario, although alternative installation scenarios are always possible.
+The preferred installation scenario is to have Logtalk installed in a system-wide location, thus available for all users, and a local copy of user-modifiable files on each user home directory (even when you are the single user of your computer). This scenario allows each user to independently customize Logtalk and to freely modify the provided programming examples. Logtalk installers, installation shell scripts, and Prolog integration scripts favor this installation scenario, although alternative installation scenarios are always possible. The installers set two environment variables, <code>LOGTALKHOME</code> and <code>LOGTALKUSER</code>, pointing, respectively, to the Logtalk installation folder and to the Logtalk user folder.
 </p>
 
 <h2 id="installing_requirements">Hardware &amp; software requirements</h2>
@@ -197,6 +197,15 @@ The configuration files specifies <em>default</em> values for all the Logtalk co
 		<dd>Informs Logtalk if the Prolog compiler provides suitable multi-threading programming support. Possible flag values are <code>unsupported</code> and <code>supported</code>.</dd>
 </dl>
 
+<h3 id="installing_settings">Settings files</h3>
+
+<p>
+Although is always possible to edit the back-end Prolog compiler configuration files, the recommended solution to customize compiler flags is to edit the <code>settings.lgt</code> file in the Logtalk user folder. Depending on the back-end Prolog compiler and on the operating-system, is also possible to define per-project settings files by creating a <code>settings.lgt</code> file in the project directory and by starting Logtalk from this directory. At startup, Logtalk tries to load a <code>settings.lgt</code> file from the startup directory. If not found, Logtalk tries to load a <code>settings.lgt</code> file from the Logtalk user folder. If no settings files are found, Logtalk will use the default compiler flag values set on the back-end Prolog compiler configuration files. When limitations of the back-end Prolog compiler or on the operating-system prevent Logtalk from finding the settings files, these can always be loaded manually after Logtalk startup.
+</p>
+<p>
+Settings files are normal Logtalk source files (although when automatically loaded by Logtalk they are compiled silently with any errors being simply ignored). The usual contents is an <code>initialization/1</code> Prolog directive containing calls to the <a title="Consult reference manual" href="../refman/builtins/set_logtalk_flag2.html"><code>set_logtalk_flag/2</code></a> Logtalk built-in predicate and asserting clauses for the <a title="Consult reference manual" href="../refman/builtins/logtalk_library_path2.html"><code>logtalk_library_path/2</code></a> multifile dynamic predicate. Note that the <a title="Consult reference manual" href="../refman/directives/set_logtalk_flag2.html"><code>set_logtalk_flag/2</code></a> directive cannot be used as its scope is local to the source file being compiled.
+</p>
+
 <h3 id="installing_runtime">Logtalk compiler and runtime</h3>
 
 <p>
@@ -224,7 +233,7 @@ Logtalk source files are text files containing entity definitions (objects, cate
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: March 21, 2009</span>
+		<span>Last updated on: March 27, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="documenting.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="programming.html">next</a></span><br/>

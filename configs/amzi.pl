@@ -380,7 +380,10 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % returns the Logtalk startup directory; fails if unknwon 
 
 '$lgt_startup_directory'(Directory) :-
-	get_env_var('LOGTALK_STARTUP_DIRECTORY', Directory).
+	(	get_env_var('LOGTALK_STARTUP_DIRECTORY', Directory) ->
+		true
+	;	curdir(Directory)
+	).
 
 
 % '$lgt_user_directory'(-atom)

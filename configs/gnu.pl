@@ -318,9 +318,7 @@ forall(Generate, Test) :-
 '$lgt_startup_directory'(Directory) :-
 	(	environ('LOGTALK_STARTUP_DIRECTORY', Directory) ->
 		true
-	;	argument_list(Arguments),
-		'$lgt_append'(_, ['--logtalk_startup_directory', Directory| _], Arguments) ->
-		true
+	;	working_directory(Directory)
 	).
 
 

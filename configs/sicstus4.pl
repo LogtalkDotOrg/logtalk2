@@ -241,7 +241,7 @@ forall(Generate, Test) :-
 % checks if a file exist in the current directory
 
 '$lgt_file_exists'(File) :-
-	absolute_file_name(File, Path),
+	absolute_file_name(File, Path]),
 	file_exists(Path).
 
 
@@ -324,9 +324,7 @@ forall(Generate, Test) :-
 '$lgt_startup_directory'(Directory) :-
 	(	environ('LOGTALK_STARTUP_DIRECTORY', Directory) ->
 		true
-	;	current_prolog_flag(argv, Arguments),
-		'$lgt_append'(_, ['--logtalk_startup_directory', Directory| _], Arguments) ->
-		true
+	;	current_directory(Directory)
 	).
 
 

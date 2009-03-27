@@ -14,5 +14,4 @@
 
 :- pragma(system).
 :- pragma(nodebug).
-:- ensure_loaded(library(toplevel)).
 :- include('$LOGTALKHOME/compiler/logtalk.pl').

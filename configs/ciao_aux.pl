@@ -398,21 +398,16 @@ forall(Generate, Test) :-
 %
 % returns the Logtalk startup directory; fails if unknwon 
 
-'$lgt_startup_directory'(Directory) :-
-	(	getenvstr('LOGTALK_STARTUP_DIRECTORY', Directory) ->
-		true
-	;	current_prolog_flag(argv, Arguments),
-		'$lgt_append'(_, ['--logtalk_startup_directory', Directory| _], Arguments) ->
-		true
-	).
+'$lgt_startup_directory'(_) :-
+	fail.
 
 
 % '$lgt_user_directory'(-atom)
 %
 % returns the Logtalk user directory; fails if unknwon
 
-'$lgt_user_directory'(Directory) :-
-	getenvstr('LOGTALKUSER', Directory).
+'$lgt_user_directory'(_) :-
+	fail.
 
 
 

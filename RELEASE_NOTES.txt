@@ -22,7 +22,10 @@ RELEASE NOTES
     Logtalk user directory. Requires running Logtalk with a back-end Prolog
     compiler supporting access to environment variables. Loading of settings
     files from the Logtalk startup directory is only available when running
-    on a POSIX operating-system.
+    on Windows for B-Prolog, GNU Prolog, SWI-Prolog, XSB, and YAP. SICStus
+    Prolog is incompatible with this new feature requiring manual loading of
+    settings files after startup. Consult the "configs/NOTES.txt" file for
+    details.
 
     Updated the "cplgtdirs.*" scripts to copy an existing "settings.lgt" file
     from the backup of the Logtalk user folder to the new Logtalk user folder.
@@ -42,7 +45,8 @@ RELEASE NOTES
     The compiler flags "context_switching_calls", "startup_message", and
     "altdirs" are no longer read-only flags in order to support changing
     their default values within "settings.lgt" files. Renamed the compiler
-    flag "prolog" to "prolog_dialect".
+    flag "prolog" to "prolog_dialect". Added new "prolog_compatibility"
+    read-only flag.
 
     Changed the "cplgtdirs.*" and installation scripts to no longer make a
     copy of the "configs" directory in the Logtalk user directory. Updated
@@ -54,6 +58,9 @@ RELEASE NOTES
     dynamic environment variable. This allows a shortcut to be simply copied
     to a Logtalk project directory without requiring editing its properties
     in order to set the startup directory to the project directory.
+
+    Updated the XSB-MT integration scripts to make all lookup cache dynamic
+    predicates thread private.
 
     Added a new '$lgt_prolog_feature'/2 predicate to all config files, used 
     for representing back-end Prolog supported features that are previously 

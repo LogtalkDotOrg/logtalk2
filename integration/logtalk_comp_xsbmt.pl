@@ -60,12 +60,12 @@
 :- thread_shared('$lgt_ctg_static_binding_cache_'(_, _, _, _, _, _)).
 
 % lookup caches for messages to an object, messages to self, and super calls
-:- thread_shared('$lgt_obj_lookup_cache_'(_, _, _, _)).
-:- thread_shared('$lgt_self_lookup_cache_'(_, _, _, _)).
-:- thread_shared('$lgt_super_lookup_cache_'(_, _, _, _, _)).
+:- thread_private('$lgt_obj_lookup_cache_'(_, _, _, _)).
+:- thread_private('$lgt_self_lookup_cache_'(_, _, _, _)).
+:- thread_private('$lgt_super_lookup_cache_'(_, _, _, _, _)).
 
 % lookup cache for asserting and retracting dynamic facts
-:- thread_shared('$lgt_db_lookup_cache_'(_, _, _, _, _)).
+:- thread_private('$lgt_db_lookup_cache_'(_, _, _, _, _)).
 
 % table of library paths
 :- thread_shared(logtalk_library_path(_, _)).
