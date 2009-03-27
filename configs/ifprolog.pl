@@ -9,7 +9,7 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for IF/Prolog 5.1
+%  configuration file for IF/Prolog 5.3
 %
 %  last updated: March 21, 2009
 % 
@@ -52,8 +52,17 @@
 '$lgt_predicate_property'(':'(_,_), built_in) :-
 	!.
 
-'$lgt_predicate_property'(Pred, Prop) :-
-	predicate_property(Pred, Prop).
+'$lgt_predicate_property'(Pred, built_in) :-
+	functor(Pred, Functor, Arity),
+	predicate_type(Functor/Arity, builtin).
+
+'$lgt_predicate_property'(Pred, static) :-
+	functor(Pred, Functor, Arity),
+	predicate_type(Functor/Arity, compiled).
+
+'$lgt_predicate_property'(Pred, dynamic) :-
+	functor(Pred, Functor, Arity),
+	predicate_type(Functor/Arity, linear).
 
 
 
@@ -81,15 +90,12 @@ forall(Generate, Test) :-
 retractall(Head) :-
 	retract((Head :- _)),
 	fail.
-
 retractall(_).
 
 
 % call/2-9
 
-call(F, A) :-
-	Call =.. [F, A],
-	call(Call).
+% call(F, A) -- built-in
 
 call(F, A1, A2) :-
 	Call =.. [F, A1, A2],
@@ -152,7 +158,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % '$lgt_file_extension'(?atom, ?atom)
 
 '$lgt_file_extension'(logtalk, '.lgt').
-'$lgt_file_extension'(prolog, '.pl').
+'$lgt_file_extension'(prolog, '.pro').
 '$lgt_file_extension'(xml, '.xml').
 
 
@@ -169,10 +175,10 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % back-end Prolog compiler supported features
 
 '$lgt_prolog_feature'(prolog_dialect, if).
-'$lgt_prolog_feature'(prolog_compatibility, version(5, 1, 0)).
+'$lgt_prolog_feature'(prolog_compatibility, version(5, 3, 0)).
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
-'$lgt_prolog_feature'(multifile_directive, unsupported).
+'$lgt_prolog_feature'(multifile_directive, supported).
 '$lgt_prolog_feature'(tabling, unsupported).
 '$lgt_prolog_feature'(threads, unsupported).
 
@@ -275,7 +281,8 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % checks if a file exist in the current directory
 
 '$lgt_file_exists'(File) :-
-	file_test(File, read).
+	file_test(File, read),
+	get_file_info(File, mode, ifreg).
 
 
 % '$lgt_delete_file'(+atom)
@@ -308,7 +315,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % changes current working directory
 
 '$lgt_change_directory'(Directory) :-
-	cd(Directory).
+	chdir(Directory).
 
 
 % '$lgt_make_directory'(+atom)
@@ -325,7 +332,8 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % Logtalk source file, given a list of options
 
 '$lgt_load_prolog_code'(File, _, _) :-
-	reconsult(File).
+	compile(File),
+	load(File).
 
 
 % '$lgt_compare_file_mtimes'(?atom, +atom, +atom)
@@ -478,15 +486,11 @@ callable(Term) :-
 
 
 '$lgt_pretty_print_vars'(Stream, Term) :-
-	\+ \+ (
-		numbervars(Term, 0, _),
-		write_term(Stream, Term, [numbervars(true)])).
+	\+ \+ write_term(Stream, Term, [numbervars(true)]).
 
 
 '$lgt_pretty_print_vars_quoted'(Stream, Term) :-
-	\+ \+ (
-		numbervars(Term, 0, _),
-		write_term(Stream, Term, [numbervars(true), quoted(true)])).
+	\+ \+ write_term(Stream, Term, [numbervars(true), quoted(true)]).
 
 
 
