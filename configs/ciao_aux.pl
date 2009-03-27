@@ -391,23 +391,28 @@ forall(Generate, Test) :-
 % access to operating-system environment variables
 
 '$lgt_environment_variable'(Variable, Value) :-
-	getenvstr(Variable, Value).
+	getenvstr(Variable, String),
+	atom_codes(Value, String).
 
 
 % '$lgt_startup_directory'(-atom)
 %
 % returns the Logtalk startup directory; fails if unknwon 
 
-'$lgt_startup_directory'(_) :-
-	fail.
+'$lgt_startup_directory'(Directory) :-
+	(	getenvstr('LOGTALK_STARTUP_DIRECTORY', String) ->
+		atom_codes(Directory, String)
+	;	working_directory(Directory, Directory)
+	).
 
 
 % '$lgt_user_directory'(-atom)
 %
 % returns the Logtalk user directory; fails if unknwon
 
-'$lgt_user_directory'(_) :-
-	fail.
+'$lgt_user_directory'(Directory) :-
+	getenvstr('LOGTALKUSER', String),
+	atom_codes(Directory, String).
 
 
 
@@ -630,17 +635,6 @@ forall(Generate, Test) :-
 	{Files}.
 {File} :-
 	logtalk_load(File).
-
-
-'$lgt_ciao_load_settings_file' :-
-	(	file_exists('settings.pl') ->
-		ensure_loaded('settings.pl')
-	;	file_exists('$LOGTALKUSER/settings.pl') ->
-		ensure_loaded('$LOGTALKUSER/settings.pl')
-	;	true
-	).
-
-:- initialization('$lgt_ciao_load_settings_file').
 
 
 
