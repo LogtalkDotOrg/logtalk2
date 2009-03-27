@@ -398,7 +398,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %
 % returns the Logtalk startup directory; fails if unknwon 
 
-'$lgt_startup_directory'(Directory) :-
+'$lgt_startup_directory'(_) :-
 	fail.
 
 
@@ -406,11 +406,8 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %
 % returns the Logtalk user directory; fails if unknwon
 
-'$lgt_user_directory'(Directory) :-
-	absolute_file_name('.', Current),
-	unix(cd('$LOGTALKUSER')),
-	absolute_file_name('.', Directory),
-	unix(cd(Current)).
+'$lgt_user_directory'(_) :-
+	fail.
 
 
 
@@ -562,7 +559,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % '$lgt_read_term'(@stream, -term, +list, -integer)
 
 '$lgt_read_term'(Stream, Term, Options, -1) :-
-	read_term(Stream, Term, Options).
+	read_term(Stream, Options, Term).
 
 
 

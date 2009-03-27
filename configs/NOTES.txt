@@ -425,8 +425,8 @@ Quintus Prolog 3.3~3.5
 	predicates read_term/3 and open/4: for all calls of both predicates, 
 	exchange the last two arguments. Don't forget to use the unix(cd(Dir)) 
 	predicate to set the working directory before loading the library or an 
-	example. Supports smart compilation of source files. Support for settings
-	files not tested.
+	example. Supports smart compilation of source files. Settings files are 
+	not supported (must be manually loaded).
 
 
 SICStus Prolog 3.8~3.12.x
