@@ -69,9 +69,9 @@ RELEASE NOTES
     Added new '$lgt_environment_variable'/2, '$lgt_startup_directory'/1, and
     '$lgt_user_directory'/1 predicates to all config files.
 
-    Updated the config files of the GNU Prolog, ECLiPSE, and XSB compilers
-    to set the default directory for temporary files depending on the host
-    operating-system.
+    Updated the config files of the CxProlog, GNU Prolog, ECLiPSE, and XSB
+    compilers to set the default directory for temporary files depending on
+    the host operating-system.
 
     Removed the obsolete SWI-Prolog hook file "swi_set_logtalk_context.pl"
     (the Logtalk control construct <</2 provides similar functionality).
