@@ -269,7 +269,11 @@ forall(Generate, Test) :-
 '$lgt_default_flag'(events, off).
 
 '$lgt_default_flag'(altdirs, off).
-'$lgt_default_flag'(tmpdir, 'lgt_tmp/').
+'$lgt_default_flag'(tmpdir, TmpDir) :-
+	(	get_os(Name), (Name == 'LINUX'; Name == 'DARWIN'; Name == 'Solaris') ->
+		TmpDir = '.lgt_tmp/'
+	;	TmpDir = 'lgt_tmp/'
+	).
 '$lgt_default_flag'(xmldir, 'xml_docs/').
 
 '$lgt_default_flag'(context_switching_calls, allow).
