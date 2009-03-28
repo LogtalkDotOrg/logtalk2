@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %
-%  last updated: March 21, 2009
+%  last updated: March 28, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -150,7 +150,10 @@
 % back-end Prolog compiler supported features
 
 '$lgt_prolog_feature'(prolog_dialect, swi).
-'$lgt_prolog_feature'(prolog_compatibility, version(5, 6, 44)).
+'$lgt_prolog_feature'(prolog_version, Version) :-
+	current_prolog_flag(version_data, swi(Major, Minor, Patch, _)),
+	concat_atom([Major, Minor, Patch], '.', Version).
+
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, full).
 '$lgt_prolog_feature'(multifile_directive, supported).

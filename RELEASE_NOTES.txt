@@ -45,8 +45,8 @@ RELEASE NOTES
     The compiler flags "context_switching_calls", "startup_message", and
     "altdirs" are no longer read-only flags in order to support changing
     their default values within "settings.lgt" files. Renamed the compiler
-    flag "prolog" to "prolog_dialect". Added new "prolog_compatibility"
-    read-only flag.
+    flag "prolog" to "prolog_dialect". Added new "prolog_version" read-only
+    flag.
 
     Changed the "cplgtdirs.*" and installation scripts to no longer make a
     copy of the "configs" directory in the Logtalk user directory. Updated

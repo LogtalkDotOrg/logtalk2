@@ -11,7 +11,7 @@
 %
 %  configuration file for K-Prolog 5.1.5 and later 5.1.x versions
 %
-%  last updated: March 21, 2009
+%  last updated: March 28, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -133,7 +133,9 @@ retractall(Head) :-
 % back-end Prolog compiler supported features
 
 '$lgt_prolog_feature'(prolog_dialect, k).
-'$lgt_prolog_feature'(prolog_compatibility, version(5, 1, 5)).
+'$lgt_prolog_feature'(prolog_version, _) :-
+	fail.
+
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
 '$lgt_prolog_feature'(multifile_directive, unsupported).

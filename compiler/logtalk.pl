@@ -12485,7 +12485,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 '$lgt_valid_flag'(version).
 % back-end Prolog features
 '$lgt_valid_flag'(prolog_dialect).
-'$lgt_valid_flag'(prolog_compatibility).
+'$lgt_valid_flag'(prolog_version).
 '$lgt_valid_flag'(break_predicate).
 '$lgt_valid_flag'(encoding_directive).
 '$lgt_valid_flag'(multifile_directive).
@@ -12500,7 +12500,8 @@ current_logtalk_flag(version, version(2, 36, 0)).
 % Logtalk version flag
 '$lgt_read_only_flag'(version).
 % back-end Prolog features
-'$lgt_read_only_flag'(prolog).
+'$lgt_read_only_flag'(prolog_dialect).
+'$lgt_read_only_flag'(prolog_version).
 '$lgt_read_only_flag'(break_predicate).
 '$lgt_read_only_flag'(encoding_directive).
 '$lgt_read_only_flag'(multifile_directive).

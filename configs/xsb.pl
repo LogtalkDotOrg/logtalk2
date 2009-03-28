@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.1 or later version
 %
-%  last updated: March 21, 2009
+%  last updated: March 28, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -144,7 +144,14 @@ forall(Generate, Test) :-
 % back-end Prolog compiler supported features
 
 '$lgt_prolog_feature'(prolog_dialect, xsb).
-'$lgt_prolog_feature'(prolog_compatibility, version(3, 1, 0)).
+'$lgt_prolog_feature'(prolog_version, Version) :-
+	current_prolog_flag(version_data, xsb(Major, Minor, Patch, _)),
+	number_chars(Major, MajorChars), atom_chars(MajorAtom, MajorChars),
+	number_chars(Minor, MinorChars), atom_chars(MinorAtom, ['.'| MinorChars]),
+	number_chars(Patch, PatchChars), atom_chars(PatchAtom, ['.'| PatchChars]),
+	atom_concat(MajorAtom, MinorAtom, Aux),
+	atom_concat(Aux, PatchAtom, Version).
+
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
 '$lgt_prolog_feature'(multifile_directive, unsupported).

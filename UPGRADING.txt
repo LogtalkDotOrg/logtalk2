@@ -233,6 +233,7 @@ qualified module calls in the body of object (and category) predicate clauses.
 In addition, a '$lgt_delete_file'/1 predicate was added to all config files.
 
 Logtalk 2.36.0 replaces calls to the call_with_args/N predicate by calls to
-the more standard call/N predicates. This change resulted in updates to all
-config files and to the Logtalk compiler and runtime. Older config files
-are incompatible with this new Logtalk version.
+the more standard call/N predicates and renames the compiler flag "prolog"
+to "prolog_dialect". These changes resulted in updates to all config files
+and to the Logtalk compiler and runtime. Older config files are incompatible
+with this new Logtalk version.

@@ -11,7 +11,7 @@
 %
 %  configuration file for LPA MacProlog32 1.25
 %
-%  last updated: March 21, 2009
+%  last updated: March 28, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -264,7 +264,9 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % back-end Prolog compiler supported features
 
 '$lgt_prolog_feature'(prolog_dialect, lpa).
-'$lgt_prolog_feature'(prolog_compatibility, version(1, 25, 0)).
+'$lgt_prolog_feature'(prolog_version, _) :-
+	fail.
+
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
 '$lgt_prolog_feature'(multifile_directive, unsupported).

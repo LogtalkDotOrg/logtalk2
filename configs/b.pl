@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.1
 %
-%  last updated: March 21, 2009
+%  last updated: March 28, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -131,7 +131,9 @@
 % back-end Prolog compiler supported features
 
 '$lgt_prolog_feature'(prolog_dialect, b).
-'$lgt_prolog_feature'(prolog_compatibility, version(7, 1, 0)).
+'$lgt_prolog_feature'(prolog_version, _) :-
+	fail.
+
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
 '$lgt_prolog_feature'(multifile_directive, supported).

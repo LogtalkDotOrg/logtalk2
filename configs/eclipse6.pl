@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#37 and later versions
 %
-%  last updated: March 21, 2009
+%  last updated: March 28, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -284,7 +284,10 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % back-end Prolog compiler supported features
 
 '$lgt_prolog_feature'(prolog_dialect, eclipse).
-'$lgt_prolog_feature'(prolog_compatibility, version(6, 0, 37)).
+'$lgt_prolog_feature'(prolog_version, Version) :-
+	get_flag(version_as_list, [Major, Minor, Build]),
+	concat_atom([Major, '.', Minor, '.', Build], Version).
+
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
 '$lgt_prolog_feature'(multifile_directive, unsupported).
