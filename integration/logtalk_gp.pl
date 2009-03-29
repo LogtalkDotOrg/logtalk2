@@ -13,7 +13,11 @@
 
 
 :- initialization((
+	set_prolog_flag(suspicious_warning, off),
+	set_prolog_flag(multifile_warning, off),
 	consult('$LOGTALKHOME/configs/gnu.pl'),
 	consult('$LOGTALKHOME/integration/logtalk_comp_gp.pl'),
-	consult('$LOGTALKUSER/libpaths/libpaths.pl')
+	consult('$LOGTALKUSER/libpaths/libpaths.pl'),
+	set_prolog_flag(suspicious_warning, on),
+	set_prolog_flag(multifile_warning, on)
 )).
