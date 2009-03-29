@@ -80,6 +80,9 @@ RELEASE NOTES
     predicate differs from the existing valid/1 predicate by throwing an
     exception when the argument is not valid instead of failing.
 
+    Added multifile and dynamic declarations for the logtalk_library_path/2
+    Logtalk predicate to the "libpaths/libpaths.pl" file.
+
     Updated the POSIX integration scripts to export the environment variable
     LOGTALK_STARTUP_DIRECTORY before starting Logtalk.
 

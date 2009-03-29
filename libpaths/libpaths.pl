@@ -11,6 +11,10 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+:- multifile(logtalk_library_path/2).			% logtalk_library_path(Library, Path)
+:- dynamic(logtalk_library_path/2).
+
 :- initialization((
 	assertz(logtalk_library_path(lgtuser, '$LOGTALKUSER/')),
 	assertz(logtalk_library_path(contributions, lgtuser('contributions/'))),
