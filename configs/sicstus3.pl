@@ -27,7 +27,7 @@
 %  ISO Prolog Standard predicates that we must define because they are
 %  not built-in
 %
-%  add a clause for lgt_iso_predicate/1 declaring each ISO predicate that
+%  add a clause for '$lgt_iso_predicate'/1 declaring each ISO predicate that
 %  we must define; there must be at least one clause for this predicate
 %  whose call should fail if we don't define any ISO predicates
 %
