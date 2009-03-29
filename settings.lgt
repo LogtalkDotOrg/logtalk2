@@ -96,7 +96,8 @@ logtalk_library_path(my_project_2, '$HOME/my_project_2/').
 
 
 %  To reduce clutter in the directory containing your source files uncomment
-%  the following lines:
+%  the following lines (note that some Prolog compilers don't support this
+%  flag):
 
 /*
 :- initialization((

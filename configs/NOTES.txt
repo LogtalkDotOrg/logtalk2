@@ -297,7 +297,7 @@ K-Prolog 5.1.5 and and later 5.1.x versions
 	loading the library or an example. Smart compilation of source files
 	is not supported on Windows. Full support for settings files on POSIX
 	operating-systems. On Windows, only supports settings files on the 
-	Logtalk user folder.
+	Logtalk user folder. Does not support the "altdirs" compiler flag.
 
 
 K-Prolog 6.0.4 and later versions
@@ -310,6 +310,7 @@ K-Prolog 6.0.4 and later versions
 	an example. Smart compilation of source files is not supported on 
 	Windows. Full support for settings files on POSIX operating-systems.
 	On Windows, only supports settings files on the Logtalk user folder.
+	Does not support the "altdirs" compiler flag.
 
 
 LPA MacProlog32 1.25
