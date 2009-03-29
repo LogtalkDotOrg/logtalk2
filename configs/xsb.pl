@@ -9,7 +9,7 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for XSB 3.1 or later versions
+%  configuration file for XSB 3.2 or later versions
 %
 %  last updated: March 28, 2009
 %
@@ -58,9 +58,6 @@
 
 '$lgt_predicate_property'(Pred, Prop) :-
 	predicate_property(Pred, Prop).
-
-'$lgt_predicate_property'(Pred, built_in) :-
-	predicate_property(Pred, xsb_standard_predicate).
 
 
 

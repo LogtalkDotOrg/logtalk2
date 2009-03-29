@@ -60,7 +60,8 @@ RELEASE NOTES
     in order to set the startup directory to the project directory.
 
     Updated the XSB-MT integration scripts to make all lookup cache dynamic
-    predicates thread private.
+    predicates thread private. Updated the XSB config file for version 3.2,
+    which is now required for running Logtalk.
 
     Added a new '$lgt_prolog_feature'/2 predicate to all config files, used 
     for representing back-end Prolog supported features that are previously 

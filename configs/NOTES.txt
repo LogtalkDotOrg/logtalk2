@@ -287,11 +287,11 @@ JIProlog 3.0.2-6 and later versions
 	Settings files are not supported (must be manually loaded).
 
 
-K-Prolog 5.1.5 and and later 5.1.x versions
+K-Prolog 5.1.5 and later 5.1.x versions
 
 	k5.pl
 
-	K-Prolog 5.1.2a supports the ISO Prolog standard. No problems expected. 
+	K-Prolog 5.1.5 supports the ISO Prolog standard. No problems expected. 
 	Config file written and tested with the help of Nobukuni Kino. Don't 
 	forget to use the cd/1 predicate to set the working directory before 
 	loading the library or an example. Smart compilation of source files
@@ -521,14 +521,13 @@ SWI Prolog 5.6.44 and later versions
 	Full support for settings files.
 
 
-XSB 3.1 and later versions
+XSB 3.2 and later versions
 
 	xsb.pl
 
 	Don't forget to use the cd/1 predicate to set the working directory 
 	before loading the library or an example. Supports smart compilation 
-	of source files. Full support for settings files. Support for the 
-	Logtalk multi-threading features requires XSB CVS version.
+	of source files. Full support for settings files.
 
 
 YAP 5.1.3 and later versions
@@ -538,4 +537,4 @@ YAP 5.1.3 and later versions
 	Don't forget to use the cd/1 predicate to set the working directory 
 	before loading the library or an example. Supports smart compilation 
 	of source files. Full support for settings files. Support for the 
-	Logtalk multi-threading features requires YAP CVS version.
+	Logtalk multi-threading features requires YAP git version.
