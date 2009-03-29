@@ -17,6 +17,7 @@
 
 
 :- built_in.
+:- set_prolog_flag(strict_iso, on).
 
 
 
