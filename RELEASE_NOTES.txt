@@ -81,7 +81,9 @@ RELEASE NOTES
     exception when the argument is not valid instead of failing.
 
     Added multifile and dynamic declarations for the logtalk_library_path/2
-    Logtalk predicate to the "libpaths/libpaths.pl" file.
+    Logtalk predicate to the "libpaths/libpaths.pl" file. This change allows
+    use of Ciao as the back-end Prolog compiler without patching the Logtalk
+    compiler and runtime.
 
     Updated the POSIX integration scripts to export the environment variable
     LOGTALK_STARTUP_DIRECTORY before starting Logtalk.
