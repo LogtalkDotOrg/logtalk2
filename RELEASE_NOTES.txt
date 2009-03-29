@@ -25,7 +25,7 @@ RELEASE NOTES
     on Windows for B-Prolog, GNU Prolog, SWI-Prolog, XSB, and YAP. SICStus
     Prolog is incompatible with this new feature requiring manual loading of
     settings files after startup. Consult the "configs/NOTES.txt" file for
-    details.
+    compatibility details.
 
     Updated the "cplgtdirs.*" scripts to copy an existing "settings.lgt" file
     from the backup of the Logtalk user folder to the new Logtalk user folder.
@@ -72,6 +72,9 @@ RELEASE NOTES
     Updated the config files of the Ciao, CxProlog, GNU Prolog, ECLiPSE, and
     XSB compilers to set the default directory for temporary files depending
     on the host operating-system.
+
+    Updated the Ciao config file to workaround a weird bug in the read_term/3
+    predicate that prevented compilation of some Logtalk source files.
 
     Removed the obsolete SWI-Prolog hook file "swi_set_logtalk_context.pl"
     (the Logtalk control construct <</2 provides similar functionality).

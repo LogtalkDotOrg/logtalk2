@@ -613,7 +613,8 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_read_term'(Stream, Term, Options, -1) :-
 %	read_term(Stream, Term, [lines(Line, _)| Options]).	% buggy in 1.10 #8
-	read_term(Stream, Term, Options).
+	read_term(Stream, Term, Options),
+	!.
 
 
 
