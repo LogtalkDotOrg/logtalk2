@@ -162,7 +162,39 @@ forall(Generate, Test) :-
 % retractall(+callable) -- built-in
 
 
-% call/2-9 -- built-in
+% call/2-9
+
+call(F, A) :-
+	Call =.. [F, A],
+	call(Call).
+
+call(F, A1, A2) :-
+	Call =.. [F, A1, A2],
+	call(Call).
+
+call(F, A1, A2, A3) :-
+	Call =.. [F, A1, A2, A3],
+	call(Call).
+
+call(F, A1, A2, A3, A4) :-
+	Call =.. [F, A1, A2, A3, A4],
+	call(Call).
+
+call(F, A1, A2, A3, A4, A5) :-
+	Call =.. [F, A1, A2, A3, A4, A5],
+	call(Call).
+
+call(F, A1, A2, A3, A4, A5, A6) :-
+	Call =.. [F, A1, A2, A3, A4, A5, A6],
+	call(Call).
+
+call(F, A1, A2, A3, A4, A5, A6, A7) :-
+	Call =.. [F, A1, A2, A3, A4, A5, A6, A7],
+	call(Call).
+
+call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
+	Call =.. [F, A1, A2, A3, A4, A5, A6, A7, A8],
+	call(Call).
 
 
 
