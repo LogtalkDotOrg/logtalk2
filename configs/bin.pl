@@ -150,7 +150,7 @@ call_cleanup(_, _) :-
 
 % call/2-7 -- built-in
 
-% call/8-9 -- built-in
+% call/8-9
 
 call(F, A1, A2, A3, A4, A5, A6, A7) :-
 	Call =.. [F, A1, A2, A3, A4, A5, A6, A7],
