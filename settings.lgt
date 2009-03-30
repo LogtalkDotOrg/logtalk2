@@ -34,9 +34,10 @@
 %  Be sure to debug and test your settings files as normal Logtalk source
 %  files before using them.
 %
-%  Limitations of the back-end Prolog compilers prevent settings files to
+%  Limitations of the back-end Prolog compilers may prevent settings files to
 %  work from directories other than the Logtalk user directory when running
-%  on non-POSIX operating systems such as Windows.
+%  on non-POSIX operating systems such as Windows. See the "configs/NOTES.txt"
+%  file for compatibility details.
 
 
 %  To define a "library" path for your projects, customize and uncomment
@@ -97,7 +98,7 @@ logtalk_library_path(my_project_2, '$HOME/my_project_2/').
 
 %  To reduce clutter in the directory containing your source files uncomment
 %  the following lines (note that some Prolog compilers don't support this
-%  flag):
+%  feature):
 
 /*
 :- initialization((
@@ -114,7 +115,7 @@ logtalk_library_path(my_project_2, '$HOME/my_project_2/').
 :- initialization((
 	set_logtalk_flag(altdirs, on),
 	set_logtalk_flag(xmldocs, on),
-	set_logtalk_flag(xmldir, '/home/user/my_project_docs/')
+	set_logtalk_flag(xmldir, '$HOME/my_project_docs/')
 )).
 */
 

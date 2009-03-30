@@ -22,10 +22,10 @@ RELEASE NOTES
     Logtalk user directory. Requires running Logtalk with a back-end Prolog
     compiler supporting access to environment variables. Loading of settings
     files from the Logtalk startup directory is only available when running
-    on Windows for B-Prolog, GNU Prolog, SWI-Prolog, XSB, and YAP. SICStus
-    Prolog is incompatible with this new feature requiring manual loading of
-    settings files after startup. Consult the "configs/NOTES.txt" file for
-    compatibility details.
+    on Windows for B-Prolog, Ciao, GNU Prolog, SWI-Prolog, XSB, and YAP.
+    SICStus Prolog is incompatible with this new feature, requiring manual
+    loading of settings files after startup. Consult the "configs/NOTES.txt"
+    file for compatibility details for other Prolog compilers.
 
     Updated the "cplgtdirs.*" scripts to copy an existing "settings.lgt" file
     from the backup of the Logtalk user folder to the new Logtalk user folder.
