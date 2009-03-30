@@ -105,6 +105,7 @@ Name: "{group}\License"; Filename: "{app}\LICENSE.txt"; Components: base
 Name: "{group}\Release Notes"; Filename: "{app}\RELEASE_NOTES.txt"; Components: base
 Name: "{group}\Read Me"; Filename: "{app}\README.txt"; Components: base
 Name: "{group}\Customization instructions"; Filename: "{app}\CUSTOMIZE.txt"; Components: base
+Name: "{group}\Default settings"; Filename: "%LOGTALKUSER%\settings.lgt"; Components: base
 
 Name: "{group}\Web Site"; Filename: "{#MyAppUrl}"; Components: base
 
