@@ -4875,10 +4875,10 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 % '$lgt_tr_file'(+term, +list, +atom, +integer, @stream, @stream)
 
-'$lgt_tr_file'(end_of_file, _, _, _, _, Output) :-				% module definitions start with an opening
+'$lgt_tr_file'(end_of_file, _, File, _, _, Output) :-			% module definitions start with an opening
 	'$lgt_pp_module_'(Module),									% module/1-2 directive and are assumed to
 	'$lgt_pp_object_'(Module, _, _, _, _, _, _, _, _, _, _),	% end at the end of a source file; there is
-	'$lgt_tr_entity'(object, Module, Output),					% no module closing directive
+	'$lgt_tr_entity'(object, Module, File, Output),				% no module closing directive
 	'$lgt_report_compiled_entity'(module, Module),
 	!.
 
@@ -5197,7 +5197,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 
 
-% '$lgt_tr_entity'(+atom, @entity_identifier, @stream)
+% '$lgt_tr_entity'(+atom, @entity_identifier, +atom, @stream)
 
 '$lgt_tr_entity'(Type, Entity, File, Output) :-
 	'$lgt_generate_code'(Type),

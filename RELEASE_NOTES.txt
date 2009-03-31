@@ -39,6 +39,9 @@ RELEASE NOTES
     "threaded" properties are now appended to the compilation mode of object
     and predicates.
 
+    Corrected a bug (introduced in version 2.35.1) in the Logtalk compiler
+    that prevented compilation of Prolog modules as objects.
+
     Corrected a bug where the Logtalk compiler would report the number of
     compilation warnings with the "report" compiler flag set to "off".
 
