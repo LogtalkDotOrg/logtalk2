@@ -106,7 +106,7 @@
 
 	setup :-
 		current_logtalk_flag(dynamic_declarations, Current),
-		set_logtalk_flag(dynamic_declarations, on),
+		set_logtalk_flag(dynamic_declarations, allow),
 		create_object(dyn_test, [], [], []),
 		set_logtalk_flag(dynamic_declarations, Current).
 

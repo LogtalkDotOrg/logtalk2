@@ -8,4 +8,4 @@
 	% compile messages with event support and turn event support on in order to 
 	% allow the constrained relation "concentric" to perform its magic:
 	logtalk_load(polygons, [events(on)]),
-	set_logtalk_flag(events, on))).
+	set_logtalk_flag(events, allow))).

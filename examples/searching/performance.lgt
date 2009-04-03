@@ -98,10 +98,10 @@
 		retractall(transitions_(_, _, _)),
 		retractall(time_(_)),
 		retractall(solution_length_(_)),
-		set_logtalk_flag(events, on).	% solve/3-4 messages are sent from "user"
+		set_logtalk_flag(events, allow).	% solve/3-4 messages are sent from "user"
 
 	stop :-
-		set_logtalk_flag(events, off),
+		set_logtalk_flag(events, deny),
 		self(Self),
 		before_event_registry::del_monitors(_, _, _, Self),
 		after_event_registry::del_monitors(_, _, _, Self).

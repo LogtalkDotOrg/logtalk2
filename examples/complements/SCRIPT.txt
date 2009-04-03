@@ -26,7 +26,7 @@ yes
 % turn event support on for messages sent at the command-line
 % (i.e. for messages sent from the pseudo-object "user"):
 
-| ?- set_logtalk_flag(events, on).
+| ?- set_logtalk_flag(events, allow).
 
 yes
 
@@ -59,6 +59,6 @@ yes
 
 % turn event support off:
 
-| ?- set_logtalk_flag(events, off).
+| ?- set_logtalk_flag(events, deny).
 
 yes

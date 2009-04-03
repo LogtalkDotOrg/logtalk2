@@ -7,4 +7,4 @@
 	% both use the "stack_monitor" monitor for visualizing stack changes and to
 	% allow the constrained relation "brick_stack" to perform its magic:
 	logtalk_load(bricks, [events(on)]),
-	set_logtalk_flag(events, on))).
+	set_logtalk_flag(events, allow))).

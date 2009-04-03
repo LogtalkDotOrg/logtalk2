@@ -44,10 +44,10 @@
 		self(Self),
 		abolish_events(_, _, _, _, Self),
 		define_events(before, _, _, user, Self),
-		set_logtalk_flag(events, on).
+		set_logtalk_flag(events, allow).
 
 	stop :-
-		set_logtalk_flag(events, off),
+		set_logtalk_flag(events, deny),
 		self(Self),
 		abolish_events(_, _, _, _, Self).
 

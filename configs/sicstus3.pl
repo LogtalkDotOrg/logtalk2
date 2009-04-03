@@ -217,9 +217,9 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_default_flag'(debug, off).
 
-'$lgt_default_flag'(complements, off).
-'$lgt_default_flag'(dynamic_declarations, off).
-'$lgt_default_flag'(events, off).
+'$lgt_default_flag'(complements, deny).
+'$lgt_default_flag'(dynamic_declarations, deny).
+'$lgt_default_flag'(events, deny).
 
 '$lgt_default_flag'(altdirs, off).
 '$lgt_default_flag'(tmpdir, 'lgt_tmp/').

@@ -180,9 +180,9 @@ retractall(Head) :-
 
 '$lgt_default_flag'(debug, off).
 
-'$lgt_default_flag'(complements, off).
-'$lgt_default_flag'(dynamic_declarations, off).
-'$lgt_default_flag'(events, off).
+'$lgt_default_flag'(complements, deny).
+'$lgt_default_flag'(dynamic_declarations, deny).
+'$lgt_default_flag'(events, deny).
 
 '$lgt_default_flag'(altdirs, off).
 '$lgt_default_flag'(tmpdir, 'lgt_tmp/').

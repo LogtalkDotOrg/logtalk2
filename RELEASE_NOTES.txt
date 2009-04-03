@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.36.0 - March 31, 2009
+2.36.0 - April 6, 2009
 
     Added support for overriding Logtalk default compiler flags (specified
     in the back-end Prolog compiler config files) using new settings files.
@@ -47,9 +47,12 @@ RELEASE NOTES
 
     The compiler flags "context_switching_calls", "startup_message", and
     "altdirs" are no longer read-only flags in order to support changing
-    their default values within "settings.lgt" files. Renamed the compiler
-    flag "prolog" to "prolog_dialect". Added new "prolog_version" read-only
-    flag.
+    their default values within "settings.lgt" files. The possible values
+    for the compiler flags "dynamic_declarations", "context_switching_calls",
+    "complements", and "events" are now "allow" and "deny". Added a new 
+    read-only compiler flag "prolog_version". Renamed the compiler flag 
+    "prolog" to "prolog_dialect". Changed object compilation in order to
+    record the value of the "context_switching_calls" compiler flag.
 
     Changed the "cplgtdirs.*" and installation scripts to no longer make a
     copy of the "configs" directory in the Logtalk user directory. Updated

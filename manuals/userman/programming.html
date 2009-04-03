@@ -144,7 +144,7 @@ Most examples directories contain a Logtalk utility file that can be used to loa
 Usually these files contain a call to the Logtalk built-in predicates <a title="Consult reference manual" href="../refman/builtins/set_logtalk_flag2.html"><code>set_logtalk_flag/2</code></a> (e.g. for setting <em>project-specific</em> flag values) and <a title="Consult reference manual" href="../refman/builtins/logtalk_load1.html"><code>logtalk_load/1</code></a> or <a title="Consult reference manual" href="../refman/builtins/logtalk_load2.html"><code>logtalk_load/2</code></a> (for loading project files), wrapped inside an <code>initialization/1</code> directive. For instance, if your code is split in three Logtalk source files named <code>source1.lgt</code>, <code>source2.lgt</code>, and <code>source3.lgt</code>, then the contents of your loader file could be:
 </p>
 <pre>:- initialization((
-	set_logtalk_flag(events, on),              % set project-specific flags
+	set_logtalk_flag(events, allow),              % set project-specific flags
     logtalk_load([source1, source2, source3])  % load the project source files
     )).</pre>
 <p>
@@ -293,19 +293,19 @@ Logtalk also implements a <a title="Consult reference manual" href="../refman/di
 	</dl>
 	<dl>
 		<dt><code>complements(Option)</code></dt>
-			<dd>Allows objects to be compiled with support for complementing categories turned off in order to improve performance and security. Possible option values are <code>on</code> and <code>off</code> (the usual default). This option can be used on a per-object basis. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
+			<dd>Allows objects to be compiled with support for complementing categories turned off in order to improve performance and security. Possible option values are <code>allow</code> and <code>deny</code> (the usual default). This option can be used on a per-object basis. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
 	</dl>
 	<dl>
 		<dt><code>dynamic_declarations(Option)</code></dt>
-			<dd>Allows objects to be compiled with support for dynamic declaration of new predicates turned off in order to improve performance and security. Possible option values are <code>on</code> and <code>off</code> (the usual default). This option can be used on a per-object basis. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
+			<dd>Allows objects to be compiled with support for dynamic declaration of new predicates turned off in order to improve performance and security. Possible option values are <code>allow</code> and <code>deny</code> (the usual default). This option can be used on a per-object basis. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
 	</dl>
 	<dl>
 		<dt><code>events(Option)</code></dt>
-			<dd>Allows message sending calls to be compiled with event-driven programming support turned off in order to improve performance. Possible option values are <code>on</code> and <code>off</code> (the usual default). Objects (and categories) compiled with this option set to <code>off</code> use optimized code for message-sending calls that does not trigger events. As such, this option can be used on a per-object (or per-category) basis. Note that turning on this option is of no consequence for objects and categories already compiled and loaded.</dd>
+			<dd>Allows message sending calls to be compiled with event-driven programming support disable in order to improve performance. Possible option values are <code>allow</code> and <code>deny</code> (the usual default). Objects (and categories) compiled with this option set to <code>deny</code> use optimized code for message-sending calls that does not trigger events. As such, this option can be used on a per-object (or per-category) basis. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
 	</dl>
 	<dl>
 		<dt><code>context_switching_calls</code></dt>
-			<dd>Allows context switching calls (<code>&lt;&lt;/2</code>) to be either allowed or forbidden. Possible flag values are <code>allow</code> and <code>forbid</code>. The default flag vale is <code>allow</code>.</dd>
+			<dd>Allows context switching calls (<code>&lt;&lt;/2</code>) to be either allowed or denied. Possible flag values are <code>allow</code> and <code>deny</code>. The default flag vale is <code>allow</code>. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
 	</dl>
 	<dl>
 		<dt><code>startup_message</code></dt>

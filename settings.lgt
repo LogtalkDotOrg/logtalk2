@@ -135,8 +135,8 @@ logtalk_library_path(my_project_2, '$HOME/my_project_2/').
 
 /*
 :- initialization((
-	set_logtalk_flag(events, off),
-	set_logtalk_flag(complements, off),
-	set_logtalk_flag(dynamic_declarations, off)
+	set_logtalk_flag(events, deny),
+	set_logtalk_flag(complements, deny),
+	set_logtalk_flag(dynamic_declarations, deny)
 )).
 */
