@@ -1839,6 +1839,11 @@ set_logtalk_flag(Flag, Value) :-
 	throw(error(domain_error(valid_flag, Flag), set_logtalk_flag(Flag, Value))).
 
 set_logtalk_flag(Flag, Value) :-
+	atom(Flag),
+	'$lgt_private_flag'(Flag),
+	throw(error(domain_error(valid_flag, Flag), set_logtalk_flag(Flag, Value))).
+
+set_logtalk_flag(Flag, Value) :-
 	'$lgt_read_only_flag'(Flag),
 	throw(error(permission_error(modify, read_only_flag, Flag), set_logtalk_flag(Flag, Value))).
 
@@ -1871,6 +1876,11 @@ current_logtalk_flag(Flag, Value) :-
 current_logtalk_flag(Flag, Value) :-
 	atom(Flag),
 	\+ '$lgt_valid_flag'(Flag),
+	throw(error(domain_error(valid_flag, Flag), current_logtalk_flag(Flag, Value))).
+
+current_logtalk_flag(Flag, Value) :-
+	atom(Flag),
+	'$lgt_private_flag'(Flag),
 	throw(error(domain_error(valid_flag, Flag), current_logtalk_flag(Flag, Value))).
 
 current_logtalk_flag(Flag, Value) :-
@@ -4420,6 +4430,10 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	(	'$lgt_pp_file_encoding_'(_, Encoding) ->
 		'$lgt_load_prolog_code'(PrologFile, Source, [encoding(Encoding)])
 	;	'$lgt_load_prolog_code'(PrologFile, Source, [])
+	),
+	(	'$lgt_compiler_flag'(clean, on) ->
+		catch(('$lgt_delete_file'(PrologFile) -> true; true), _, true)
+	;	true
 	).
 
 
@@ -12464,7 +12478,6 @@ current_logtalk_flag(version, version(2, 36, 0)).
 '$lgt_valid_flag'(xslfile).
 '$lgt_valid_flag'(xmlspec).
 '$lgt_valid_flag'(xmlsref).
-'$lgt_valid_flag'(xmldir).
 % lint compilation flags:
 '$lgt_valid_flag'(unknown).
 '$lgt_valid_flag'(singletons).
@@ -12473,20 +12486,24 @@ current_logtalk_flag(version, version(2, 36, 0)).
 '$lgt_valid_flag'(plredef).
 '$lgt_valid_flag'(underscore_variables).
 '$lgt_valid_flag'(portability).
+% directories compilation flags:
+'$lgt_valid_flag'(altdirs).
+'$lgt_valid_flag'(tmpdir).
+'$lgt_valid_flag'(xmldir).
+% optional features compilation flags:
+'$lgt_valid_flag'(complements).
+'$lgt_valid_flag'(dynamic_declarations).
+'$lgt_valid_flag'(events).
+'$lgt_valid_flag'(context_switching_calls).
 % other compilation flags:
 '$lgt_valid_flag'(report).
 '$lgt_valid_flag'(smart_compilation).
 '$lgt_valid_flag'(reload).
-'$lgt_valid_flag'(tmpdir).
 '$lgt_valid_flag'(hook).
-'$lgt_valid_flag'(complements).
-'$lgt_valid_flag'(dynamic_declarations).
-'$lgt_valid_flag'(events).
 '$lgt_valid_flag'(code_prefix).
 '$lgt_valid_flag'(debug).
 '$lgt_valid_flag'(startup_message).
-'$lgt_valid_flag'(altdirs).
-'$lgt_valid_flag'(context_switching_calls).
+'$lgt_valid_flag'(clean).
 % read-only compilation flags:
 '$lgt_valid_flag'(version).
 % back-end Prolog features
@@ -12496,6 +12513,14 @@ current_logtalk_flag(version, version(2, 36, 0)).
 '$lgt_valid_flag'(encoding_directive).
 '$lgt_valid_flag'(multifile_directive).
 '$lgt_valid_flag'(threads).
+
+
+
+% '$lgt_private_flag'(@nonvar)
+%
+% true if the argument is a private Logtalk flag name
+
+'$lgt_private_flag'(clean).
 
 
 
@@ -12555,6 +12580,9 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 '$lgt_valid_flag_value'(smart_compilation, on) :- !.
 '$lgt_valid_flag_value'(smart_compilation, off) :- !.
+
+'$lgt_valid_flag_value'(clean, on) :- !.
+'$lgt_valid_flag_value'(clean, off) :- !.
 
 '$lgt_valid_flag_value'(reload, always) :- !.
 '$lgt_valid_flag_value'(reload, skip) :- !.
@@ -14730,11 +14758,11 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	(	'$lgt_startup_directory'(Startup),		% first lookup for a 
 		'$lgt_change_directory'(Startup),		% settings file in the
 		'$lgt_file_exists'('settings.lgt') ->	% startup directory
-		catch(logtalk_load(settings, [report(off), smart_compilation(off)]), _, true)
+		catch(logtalk_load(settings, [report(off), smart_compilation(off), clean(on)]), _, true)
 	;	'$lgt_user_directory'(User),			% if not found, lookup for
 		'$lgt_change_directory'(User),			% a settings file in the
 		'$lgt_file_exists'('settings.lgt') ->	% Logtalk user folder
-		catch(logtalk_load(settings, [report(off), smart_compilation(off)]), _, true)
+		catch(logtalk_load(settings, [report(off), smart_compilation(off), clean(on)]), _, true)
 	;	true
 	),
 	'$lgt_change_directory'(Current).
