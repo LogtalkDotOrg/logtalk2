@@ -11,7 +11,7 @@
 %
 %  configuration file for Quintus Prolog 3.3~3.5
 %
-%  last updated: March 28, 2009
+%  last updated: April 4, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -558,10 +558,12 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_read_term'(@stream, -term, +list, -integer)
+% '$lgt_read_term'(@stream, -term, +list, -position)
 
-'$lgt_read_term'(Stream, Term, Options, -1) :-
-	read_term(Stream, Options, Term).
+'$lgt_read_term'(Stream, Term, Options, LineBegin-LineEnd) :-
+	line_count(Stream, LineBegin),
+	read_term(Stream, Options, Term),
+	line_count(Stream, LineEnd).
 
 
 

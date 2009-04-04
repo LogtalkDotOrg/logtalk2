@@ -83,6 +83,10 @@ RELEASE NOTES
     XSB compilers to set the default directory for temporary files depending
     on the host operating-system.
 
+    Updated the config files of the Ciao, ECLiPSe, GNU Prolog, Qu-Prolog,
+    Quintus Prolog, and SICStus Prolog compilers to return term position
+    line numbers for reporting warnings and errors.
+
     Updated the Ciao config file to workaround a weird bug in the read_term/3
     predicate that prevented compilation of some Logtalk source files.
 

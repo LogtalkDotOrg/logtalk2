@@ -11,7 +11,7 @@
 %
 %  configuration file for GNU Prolog 1.3.1 (and later versions)
 %
-%  last updated: March 28, 2009
+%  last updated: April 4, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -480,7 +480,7 @@ forall(Generate, Test) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_read_term'(@stream, -term, +list, -integer)
+% '$lgt_read_term'(@stream, -term, +list, -position)
 
 '$lgt_read_term'(Stream, Term, Options, LineBegin-LineEnd) :-
 	line_count(Stream, LineBegin),

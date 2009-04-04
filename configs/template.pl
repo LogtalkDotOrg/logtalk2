@@ -501,7 +501,7 @@ callable(Term) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_read_term'(@stream, -term, +list, -integer)
+% '$lgt_read_term'(@stream, -term, +list, -position)
 
 '$lgt_read_term'(Stream, Term, Options, -1) :-
 	?????

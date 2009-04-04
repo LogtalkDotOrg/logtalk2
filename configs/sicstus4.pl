@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0 and later versions
 %
-%  last updated: March 28, 2009
+%  last updated: April 4, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -491,10 +491,12 @@ forall(Generate, Test) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_read_term'(@stream, -term, +list, -integer)
+% '$lgt_read_term'(@stream, -term, +list, -position)
 
-'$lgt_read_term'(Stream, Term, Options, -1) :-
-	read_term(Stream, Term, Options).
+'$lgt_read_term'(Stream, Term, Options, LineBegin-LineEnd) :-
+	'$lgt_stream_current_line_number'(Stream, LineBegin),
+	read_term(Stream, Term, Options),
+	'$lgt_stream_current_line_number'(Stream, LineEnd).
 
 
 
