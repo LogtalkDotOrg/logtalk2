@@ -79,7 +79,6 @@ Name: "{userdocs}\Logtalk uninstaller"
 
 [Files]
 Source: "{#MyBaseDir}\*"; Excludes: ".*,CVS"; DestDir: "{app}"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{#MyBaseDir}\configs\amzi.pl"; DestDir: "{app}\configs"; DestName: "amzi.pro"; Components: base; Flags: ignoreversion uninsneveruninstall
 
 Source: "{#MyBaseDir}\contributions\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\contributions"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
 Source: "{#MyBaseDir}\examples\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\examples"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall

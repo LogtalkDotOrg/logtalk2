@@ -87,6 +87,9 @@ RELEASE NOTES
     compilers to return term position line numbers for reporting warnings and
     errors.
 
+    Switched off use of multifile/1 directives for Amzi! Prolog due to its 
+    buggy implementation on this Prolog compiler.
+
     Updated the Ciao config file to workaround a weird bug in the read_term/3
     predicate that prevented compilation of some Logtalk source files.
 

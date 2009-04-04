@@ -61,12 +61,16 @@ Amzi! Prolog 7.6.1 and later versions
 
 	For Amzi! Prolog 7.6.1 and later versions. You need to patch the Logtalk 
 	compiler (the "compiler/logtalk.pl" file) by searching for all calls of 
-	':'/2 and wrap them inside call/1. For better performance, use the Amzi! 
-	"acmp" command-line compiler to compile the files "configs/amzi.pl",
-	"compiler/logtalk.pl", and "libpaths/libpaths.pl" and then load the 
-	resulting ".plm" files using the predicate load/1 (you will need to 
-	edit the "libpaths.pl" file by following the instructions on the 
-	"libpaths/NOTES.txt" file).
+	':'/2 and wrap them inside call/1 (search for the text "':'(" to locate
+	the calls). For better performance, use the Amzi! "acmp" command-line 
+	compiler to compile the files "configs/amzi.pl", "compiler/logtalk.pl", 
+	and "libpaths/libpaths.pl" and then load the resulting ".plm" files 
+	using the predicate load/1 (you will need to edit the "libpaths.pl" file 
+	by following the instructions on the "libpaths/NOTES.txt" file).
+
+	You will probably need to increase some of the default values (e.g. the 
+	"control" parameter) in the "amzi.cfg" file in order to be able to load 
+	some of the libraries or some of the examples.
 
 	One potential problem is that the compiler definition of the compare/3 
 	built-in predicate returns the atom == instead of = for identical terms 
