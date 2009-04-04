@@ -560,10 +560,8 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 % '$lgt_read_term'(@stream, -term, +list, -position)
 
-'$lgt_read_term'(Stream, Term, Options, LineBegin-LineEnd) :-
-	line_count(Stream, LineBegin),
-	read_term(Stream, Options, Term),
-	line_count(Stream, LineEnd).
+'$lgt_read_term'(Stream, Term, Options, -1) :-
+	read_term(Stream, Options, Term).
 
 
 

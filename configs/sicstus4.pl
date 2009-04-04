@@ -243,7 +243,7 @@ forall(Generate, Test) :-
 % checks if a file exist in the current directory
 
 '$lgt_file_exists'(File) :-
-	absolute_file_name(File, Path]),
+	absolute_file_name(File, Path),
 	file_exists(Path).
 
 
@@ -493,10 +493,8 @@ forall(Generate, Test) :-
 
 % '$lgt_read_term'(@stream, -term, +list, -position)
 
-'$lgt_read_term'(Stream, Term, Options, LineBegin-LineEnd) :-
-	'$lgt_stream_current_line_number'(Stream, LineBegin),
-	read_term(Stream, Term, Options),
-	'$lgt_stream_current_line_number'(Stream, LineEnd).
+'$lgt_read_term'(Stream, Term, Options, -1) :-
+	read_term(Stream, Term, Options).
 
 
 
