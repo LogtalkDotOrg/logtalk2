@@ -76,6 +76,9 @@ RELEASE NOTES
     Added new '$lgt_environment_variable'/2, '$lgt_startup_directory'/1, and
     '$lgt_user_directory'/1 predicates to all config files.
 
+    Changed the defaut value for the "startup_message" compiler flag to
+    "flags(compact)".
+
     Updated the config files of the Ciao, CxProlog, GNU Prolog, ECLiPSE, and
     XSB compilers to set the default directory for temporary files depending
     on the host operating-system.

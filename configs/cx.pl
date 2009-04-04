@@ -177,7 +177,7 @@
 '$lgt_default_flag'(smart_compilation, off).
 '$lgt_default_flag'(reload, always).
 
-'$lgt_default_flag'(startup_message, flags(verbose)).
+'$lgt_default_flag'(startup_message, flags(compact)).
 
 '$lgt_default_flag'(underscore_variables, singletons).
 

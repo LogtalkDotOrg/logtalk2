@@ -77,7 +77,7 @@ logtalk_library_path(my_project_2, '$HOME/my_project_2/').
 
 /*
 :- initialization((
-	set_logtalk_flag(startup_message, flags(compact)),
+	set_logtalk_flag(startup_message, banner),
 	set_logtalk_flag(report, warnings)
 )).
 */
