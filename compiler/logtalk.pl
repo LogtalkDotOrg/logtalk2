@@ -14660,10 +14660,10 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	write('Read-only compilation flags (back-end Prolog compiler features):'), nl,
 	'$lgt_compiler_flag'(prolog_dialect, Prolog), write('  prolog_dialect: '), write(Prolog),
 	'$lgt_compiler_flag'(break_predicate, Break), write(', break_predicate: '), write(Break),
-	'$lgt_compiler_flag'(tabling, Tabling), write(', tabling: '), write(Tabling), nl,
+	'$lgt_compiler_flag'(multifile_directive, Multifile), write(', multifile_directive: '), write(Multifile), nl,
 	'$lgt_compiler_flag'(threads, Threads), write('  threads: '), write(Threads),
 	'$lgt_compiler_flag'(encoding_directive, Encodings), write(', encoding_directive: '), write(Encodings),
-	'$lgt_compiler_flag'(multifile_directive, Multifile), write(', multifile_directive: '), write(Multifile), nl, nl.
+	'$lgt_compiler_flag'(tabling, Tabling), write(', tabling: '), write(Tabling), nl, nl.
 
 '$lgt_default_flags'(verbose) :-
 	write('Default lint compilation flags:'), nl,

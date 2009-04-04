@@ -482,8 +482,10 @@ forall(Generate, Test) :-
 
 % '$lgt_read_term'(@stream, -term, +list, -integer)
 
-'$lgt_read_term'(Stream, Term, Options, -1) :-
-	read_term(Stream, Term, Options).
+'$lgt_read_term'(Stream, Term, Options, LineBegin-LineEnd) :-
+	line_count(Stream, LineBegin),
+	read_term(Stream, Term, [syntax_error(error)| Options]),
+	line_count(Stream, LineEnd).
 
 
 
