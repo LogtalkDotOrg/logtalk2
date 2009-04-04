@@ -83,6 +83,9 @@ RELEASE NOTES
     Updated the Ciao config file to workaround a weird bug in the read_term/3
     predicate that prevented compilation of some Logtalk source files.
 
+    Updated the predicate comments in the library protocol "loopp" in order
+    to workaround the limitation on the maximum size of atoms in Qu-Prolog.
+
     Removed the obsolete SWI-Prolog hook file "swi_set_logtalk_context.pl"
     (the Logtalk control construct <</2 provides similar functionality).
 

@@ -46,7 +46,7 @@
 	:- meta_predicate(forto(*, *, *, *, ::)).
 	:- mode(forto(@var, +number, +number, +number, @callable), zero_or_one).
 	:- info(forto/5, [
-		comment is 'Call Goal counting up from First to Last and instantiating Count to each successive value. For convenience and clarity, First, Last, and Increment can be arithmetic expressions. The absolute value of Increment is used. This predicate fails iff the Goal fails.',
+		comment is 'Call Goal counting up from First to Last and instantiating Count to each successive value. For convenience and clarity, First, Last, and Increment can be arithmetic expressions (uses Increment absolute value). This predicate fails iff the Goal fails.',
 		argnames is ['Count', 'First', 'Last', 'Increment', 'Goal']]).
 
 	:- public(fordownto/3).
@@ -67,7 +67,7 @@
 	:- meta_predicate(fordownto(*, *, *, *, ::)).
 	:- mode(fordownto(@var, +number, +number, +number, @callable), zero_or_one).
 	:- info(fordownto/5, [
-		comment is 'Call Goal counting down from First to Last and instantiating Count to each successive value. For convenience and clarity, First, Last, and Decrement can be arithmetic expressions. The absolute value of Decrement is used. This predicate fails iff the Goal fails.',
+		comment is 'Call Goal counting down from First to Last and instantiating Count to each successive value. For convenience and clarity, First, Last, and Decrement can be arithmetic expressions (uses Decrement absolute value). This predicate fails iff the Goal fails.',
 		argnames is ['Count', 'First', 'Last', 'Decrement', 'Goal']]).
 
 :- end_protocol.
