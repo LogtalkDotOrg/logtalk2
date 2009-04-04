@@ -7,5 +7,5 @@
 	logtalk_load(relations(loader), [reload(skip)]),	% allow for static binding
 	% compile messages with event support and turn event support on in order to 
 	% allow the constrained relation "concentric" to perform its magic:
-	logtalk_load(polygons, [events(on)]),
+	logtalk_load(polygons, [events(allow)]),
 	set_logtalk_flag(events, allow))).

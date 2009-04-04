@@ -16,8 +16,8 @@
 		heuristic_search1,
 		performance]),
 	logtalk_load([			% the actual search methods are compiled with
-		breadth_first1,		% the option events(on) to allow the use of
+		breadth_first1,		% the option events(allow) to allow the use of
 		depth_first1,		% the "performance" monitor
 		best_first1,
 		hill_climbing1],
-		[events(on)]))).
+		[events(allow)]))).

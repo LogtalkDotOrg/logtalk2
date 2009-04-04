@@ -5,5 +5,5 @@
 :- initialization(
 	logtalk_load(
 		[category, objects, database, plain, benchmarks],
-		[events(on)])).		% compile messages with event support in order
+		[events(allow)])).	% compile messages with event support in order
 							% to measure the implicit overhead
