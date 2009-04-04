@@ -9405,8 +9405,8 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	'$lgt_add_referenced_object'(Obj),
 	'$lgt_construct_object_functors'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm),
 	(	'$lgt_compiler_flag'(context_switching_calls, allow) ->
-		Type =.. [Mode, locked| _]
-	;	Type =.. [Mode, open| _]
+		Type =.. [Mode, locked]
+	;	Type =.. [Mode, open]
 	),
 	assertz('$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Type)),
 	asserta('$lgt_pp_pred_mutex_count_'(0)).
