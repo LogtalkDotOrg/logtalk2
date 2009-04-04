@@ -92,7 +92,8 @@ logtalk_library_path(my_project_2, '$HOME/my_project_2/').
 	set_logtalk_flag(smart_compilation, off),
 	set_logtalk_flag(reload, always),
 	set_logtalk_flag(unknown, warning),
-	set_logtalk_flag(misspelt, warning)
+	set_logtalk_flag(misspelt, warning),
+	set_logtalk_flag(singletons, warning)
 )).
 */
 
@@ -125,18 +126,29 @@ logtalk_library_path(my_project_2, '$HOME/my_project_2/').
 
 /*
 :- initialization((
-	set_logtalk_flag(portability, warning)
+	set_logtalk_flag(portability, warning),
+	set_logtalk_flag(plredef, warning)
 )).
 */
 
 
-%  To maximize performance by turning off all optional features uncomment the
-%  following lines:
+%  To maximize performance by turning off relevant optional features
+%  uncomment the following lines:
 
 /*
 :- initialization((
 	set_logtalk_flag(events, deny),
 	set_logtalk_flag(complements, deny),
 	set_logtalk_flag(dynamic_declarations, deny)
+)).
+*/
+
+
+%  To prevent using the <</2 control construct to bypass object
+%  encapsulation rules uncomment the following lines:
+
+/*
+:- initialization((
+	set_logtalk_flag(context_switching_calls, deny)
 )).
 */
