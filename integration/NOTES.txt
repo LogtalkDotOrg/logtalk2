@@ -31,8 +31,8 @@ system path):
 * XSB MT 64 bits (version 3.2 or later):   xsbmt64lgt (first run must use sudo)
 * YAP (version 5.1.3 or later):            yaplgt
 
-Integration with Ciao Prolog and Quintus Prolog require manual patches that
-render Logtalk incompatible with all the other compilers.
+Integration with Quintus Prolog requires manual patches that render
+Logtalk incompatible with all the other compilers.
 
 On Windows systems, the Logtalk installer makes the Prolog integration 
 shortcuts available from the "Start Menu/Programs/Logtalk" menu.
