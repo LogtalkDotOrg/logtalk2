@@ -163,6 +163,11 @@
 :- dynamic('$lgt_threaded_tag_counter'/1).		% '$lgt_threaded_tag_counter'(Tag)
 
 
+% flag for recording loading of settings file
+
+:- dynamic('$lgt_settings_file_loaded'/1).		% '$lgt_settings_file_loaded'(Path)
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -14758,14 +14763,33 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	(	'$lgt_startup_directory'(Startup),		% first lookup for a 
 		'$lgt_change_directory'(Startup),		% settings file in the
 		'$lgt_file_exists'('settings.lgt') ->	% startup directory
-		catch(logtalk_load(settings, [report(off), smart_compilation(off), clean(on)]), _, true)
+		catch(logtalk_load(settings, [report(off), smart_compilation(off), clean(on)]), _, true),
+		assertz('$lgt_settings_file_loaded'(Startup))
 	;	'$lgt_user_directory'(User),			% if not found, lookup for
 		'$lgt_change_directory'(User),			% a settings file in the
 		'$lgt_file_exists'('settings.lgt') ->	% Logtalk user folder
-		catch(logtalk_load(settings, [report(off), smart_compilation(off), clean(on)]), _, true)
+		catch(logtalk_load(settings, [report(off), smart_compilation(off), clean(on)]), _, true),
+		assertz('$lgt_settings_file_loaded'(User))
 	;	true
 	),
 	'$lgt_change_directory'(Current).
+
+
+
+% '$lgt_load_settings_file'
+%
+% loads any settings file defined by the user;
+% settings files are compiled and loaded silently, ignoring any errors
+
+'$lgt_report_settings_file' :-
+	(	'$lgt_compiler_flag'(report, off) ->
+		true
+	;	(	'$lgt_settings_file_loaded'(Path) ->
+			write('Loaded settings file found on directory '), write(Path), write('.'), nl, nl
+		;	write('No settings file found or unable to load settings files due to limitations'),
+			write('of the back-end Prolog compiler.'), nl, nl
+		)
+	).
 
 
 
@@ -14808,7 +14832,8 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	'$lgt_startup_message',
 	'$lgt_assert_default_hooks',
 	'$lgt_start_runtime_threading',
-	'$lgt_dbg_reset_invocation_number'
+	'$lgt_dbg_reset_invocation_number',
+	'$lgt_report_settings_file'
 	)).
 
 
