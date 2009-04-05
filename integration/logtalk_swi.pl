@@ -12,6 +12,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+/*  uncomment the following query in order to load any existing SWI-Prolog
+    specific user initialization file before the Logtalk specific files:
+
 :- (	(	current_prolog_flag(windows, true) ->
 			Base = 'pl.ini'
 		;	Base = '.plrc'
@@ -21,6 +24,7 @@
 		;	true
 		)
 ).
+*/
 
 :- consult('$LOGTALKHOME/configs/swi.pl').
 :- consult('$LOGTALKHOME/integration/logtalk_comp_swi.pl').

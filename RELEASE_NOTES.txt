@@ -111,9 +111,10 @@ RELEASE NOTES
     Updated the POSIX integration scripts to export the environment variable
     LOGTALK_STARTUP_DIRECTORY before starting Logtalk.
 
-    Updated the SWI-Prolog integration script to load any existing user
-    initialization file (".plrc" on POSIX systems and "pl.ini" on Windows;
-    see the SWI-Prolog reference manual) before loading the Logtalk files.
+    Added the necessary code (commented out) to the SWI-Prolog integration 
+    script in order to load any existing user initialization file (".plrc"
+    on POSIX systems and "pl.ini" on Windows; see the SWI-Prolog reference
+    manual) before loading the Logtalk files.
 
 
 2.35.1 - March 1, 2009
