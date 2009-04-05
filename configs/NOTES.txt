@@ -11,7 +11,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 This file contains some notes about the config files provided. If you
 improve or correct some of these files, or write new ones for other
-Prolog compilers, please send me a copy. It is impossible for me to 
+Prolog compilers, please send me a copy. It is not feasible for me to 
 individually test Logtalk under all combinations of compatible Prolog 
 versions and operating-system versions (or, for that mater, to own a 
 copy of each one of these compilers). For some of these Prolog compilers 
@@ -126,7 +126,7 @@ Bin-Prolog 8.x~10.x
 	session. For instance, the project file for the "metapredicates" example
 	will look like (in the Unix version):
 	
-		:- ['$LOGTALKUSER/configs/bin.pl'].
+		:- ['$LOGTALKHOME/configs/bin.pl'].
 		:- ['$LOGTALKHOME/compiler/logtalk.pl'].
 		
 		:- ['$LOGTALKUSER/examples/metapredicates/meta.pl'].
@@ -152,12 +152,13 @@ CIAO Prolog 1.10#8
 	The "ciao.pl" file is just a loader file containing two include/1 
 	directives which load the "ciao_aux.pl" and the Logtalk compiler/
 	runtime. You must edit the contents of the file "ciao.pl" to match 
-	your operating system (the include directive arguments are file paths 
-	that differ between operating systems).
+	your operating system (the include directive arguments are file 
+	paths that differ between operating systems).
 
-	The definition of the predicate '$lgt_predicate_property'/2 in the file 
-	"ciao_aux.pl" is a bit of a hack, but should enable you to run the 
-	Logtalk companion examples and to try out your own Logtalk programs. 
+	The definition of the predicate '$lgt_predicate_property'/2 in the 
+	file "ciao_aux.pl" is a bit of a hack, but should enable you to run 
+	the Logtalk companion examples and to try out your own Logtalk 
+	programs. 
 
 	Don't forget to call the cd/1 predicate to set the working directory 
 	before compiling the library or an example (you will need first to 
@@ -176,7 +177,7 @@ CxProlog 0.97.2 or later versions
 	compilation of source files. Full support for settings files.
 
 
-ECLiPSe 5.10#26 or later versions
+ECLiPSe 5.10#26 or later 5.10 versions
 
 	eclipse5.pl
 	eclipse5iso.pl
@@ -260,7 +261,7 @@ GNU Prolog 1.3.1 and later versions
 
 	Don't forget to use the change_directory/1 predicate to set the working 
 	directory before loading the library or an example. Supports smart 
-	compilation of source files. Supports settings files.
+	compilation of source files. Full support for settings files.
 
 
 IF/Prolog 5.3 and later versions
@@ -284,7 +285,8 @@ JIProlog 3.0.2-6 and later versions
 	set the working directory before loading the library or an example. Some 
 	examples may not compile or run due to work in progress regarding ISO 
 	Prolog standard compliance. Supports smart compilation of source files.
-	Settings files are not supported (must be manually loaded).
+	Settings files are not supported (must be manually loaded after starting 
+	Logtalk).
 
 
 K-Prolog 5.1.5 and later 5.1.x versions
@@ -320,7 +322,7 @@ LPA MacProlog32 1.25
 	This is my old Prolog development environment. Two known problems: (1) an
 	LPA bug in operator handling that make calls like "\+ ::Pred" be 
 	interpreted like "::(\+ Pred)" instead of "\+ (::Pred)". A workaround is 
-	to replace all occurrences of "\+ ::Pred" by "\+ (::Pred)"; (2) If you call 
+	to replace all occurrences of "\+ ::Pred" by "\+ (::Pred)"; (2) If you call
 	the \+ operator in your code the writeq/1 built-in don't always output a 
 	space after the operator resulting in calls like "\+(...)". Because \+ is 
 	not defined as a predicate this will fail. Don't forget to use the dvol/1 
@@ -331,7 +333,7 @@ LPA MacProlog32 1.25
 	you may use in your own programs. You must be careful to not consult the 
 	config file twice. Supports smart compilation of source files. Does not 
 	support the "altdirs" compiler flag. Settings files are not supported 
-	(must be manually loaded).
+	(must be manually loaded after starting Logtalk).
 
 
 LPA WinProlog32 4.0x
@@ -339,7 +341,7 @@ LPA WinProlog32 4.0x
 	lpawin.pl
 
 	Written with the help of the LPA support team. Of course, if you find any 
-	bugs please direct your flames to me ;-). Be aware that this configuration 
+	bugs please direct your flames to me ;-). Be aware that this configuration
 	file redefines some built-ins that you may use in your programs. Don't 
 	forget to use the chdir/1 predicate to set the working directory before 
 	loading the library or an example. Be careful to not consult the config 
@@ -355,7 +357,7 @@ MasterProlog 4.1
 	Written with the help of the MasterProlog support team (but if you find 
 	any Logtalk problem please report it to me). 
 	If in the MasterProlog version that you are using the implementation of 
-	the close/1 predicate does not follow the ISO standard, you will have to 
+	the close/1 predicate does not follow the ISO standard, you will have to
 	apply the following patch to the Logtalk pre-processor: replace every 
 	call of close(...) with fclose(...).  Does not support the "altdirs" 
 	compiler flag. Support for settings files not tested.
@@ -385,7 +387,7 @@ PrologII+ 4.5 and later versions
 	Remember that you need to use the set_import_dir/1 built-in predicate to
 	set the working directory before loading the library or an example.
 	Does not support the "altdirs" compiler flag. Settings files are not 
-	supported (must be manually loaded).
+	supported (must be manually loaded after starting Logtalk).
 
 
 Qu-Prolog 8.1 and later versions
@@ -424,14 +426,14 @@ Quintus Prolog 3.3~3.5
 	quintus.pl
 
 	Written and tested with help of a friend of mine, Paulo Urbano, for a 
-	previous version. Adopted (but not tested) for the current release by
-	using information available on-line in the internet. You need to patch 
-	the Logtalk compiler due to the different argument order of the built-in 
-	predicates read_term/3 and open/4: for all calls of both predicates, 
-	exchange the last two arguments. Don't forget to use the unix(cd(Dir)) 
-	predicate to set the working directory before loading the library or an 
-	example. Supports smart compilation of source files. Settings files are 
-	not supported (must be manually loaded).
+	previous version. Adopted for the current release using the Windows 
+	version for testing. You must patch the Logtalk compiler due to the 
+	different argument order of the built-in predicates read_term/3 and 
+	open/4: for all calls of both predicates, exchange the last two 
+	arguments. Don't forget to use the unix(cd(Dir)) predicate to set the
+	working directory before loading the library or an example. Supports 
+	smart compilation of source files. Settings files are not supported 
+	(must be manually loaded after starting Logtalk).
 
 
 SICStus Prolog 3.8~3.12.x
@@ -443,13 +445,14 @@ SICStus Prolog 3.8~3.12.x
 	No problems expected although not fully tested. Don't forget to use the 
 	SICStus working_directory/2 predicate to set the working directory before 
 	loading the library or an example. Supports smart compilation of source 
-	files. Settings files are not supported (must be manually loaded).
+	files. Settings files are not supported (must be manually loaded after 
+	starting Logtalk).
 
-	If you want SICStus Prolog to automatically load Logtalk at startup, then 
-	add the following lines to your ~/.sicstusrc or ~/.sicstus.ini initialization
-	file:
-	
-		:- compile('$LOGTALKUSER/configs/sicstus3.pl').
+	If you want SICStus Prolog to automatically load Logtalk at startup, 
+	then add the following lines to your ~/.sicstusrc or ~/.sicstus.ini 
+	initialization file:
+
+		:- compile('$LOGTALKHOME/configs/sicstus3.pl').
 		:- compile('$LOGTALKHOME/compiler/logtalk.pl').
 		:- compile('$LOGTALKUSER/libpaths/libpaths.pl').
 
@@ -463,7 +466,8 @@ SICStus Prolog 4.0.x
 
 	Config file for the SICStus Prolog 4.0 version (tested with the MacOS X 
 	version and the Windows beta version). Supports smart compilation of 
-	source files. Settings files are not supported (must be manually loaded).
+	source files. Settings files are not supported (must be manually loaded 
+	after starting Logtalk).
 
 
 SWI Prolog 5.6.44 and later versions
@@ -490,7 +494,7 @@ SWI Prolog 5.6.44 and later versions
 
 	 or to your .plrc (on MacOS X, Linux, Unix, and similar systems):
 	
-		:- ['$LOGTALKUSER/configs/swi.pl'].
+		:- ['$LOGTALKHOME/configs/swi.pl'].
 		:- ['$LOGTALKHOME/compiler/logtalk.pl'].
 		:- ['$LOGTALKUSER/libpaths/libpaths.pl'].
 
@@ -504,7 +508,7 @@ SWI Prolog 5.6.44 and later versions
 	call if necessary.
 
 	If you intend to use Logtalk and XPCE at the same time, you may load the 
-	configs/xpcehook.pl file in order to support Logtalk message sending goals 
+	configs/xpcehook.pl file in order to support Logtalk message sending goals
 	as XPCE call-back goals.
 
 	With multi-threading support turned on, you may get an harmless message
