@@ -28,9 +28,9 @@ Remarks:
 	instantiates(heuristic_state_space)).
 
 	:- info([
-		version is 1.1,
+		version is 1.11,
 		author is 'Paula Marisa Sampaio',
-		date is 2008/6/9,
+		date is 2009/4/6,
 		comment is 'Salt state-space search problem (updated from the original 1.0 version to support heuristics).']).
 
 	% each state is represented by a compound term with four arguments: (Acumulator, Measure1, Measure2, Step)
@@ -136,6 +136,6 @@ Remarks:
 		member_path(State, Path).
 
 	print_state((Acc, X, Y, Step)) :-
-		write('('), write((Acc, X, Y)), write(')	'), write(Step), nl.
+		write('('), write((Acc, X, Y)), write(')    '), write(Step), nl.
 
 :- end_object.

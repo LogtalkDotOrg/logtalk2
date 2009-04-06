@@ -125,6 +125,9 @@ RELEASE NOTES
     on POSIX systems and "pl.ini" on Windows; see the SWI-Prolog reference
     manual) before loading the Logtalk files.
 
+    Workaround a compilation error in the object "salt/3" in the "searching"
+    example when using SICStus Prolog as a back-end compiler.
+
 
 2.35.1 - March 1, 2009
 
