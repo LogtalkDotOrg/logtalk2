@@ -4977,7 +4977,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 %
 % adds entity properties related to the entity source file
 
-'$lgt_add_entity_file_properties'(start(Lines), Entity) :- writeq(start(Lines)), nl,
+'$lgt_add_entity_file_properties'(start(Lines), Entity) :-
 	(	Lines == -1 ->
 		true
 	;	Lines = (Start - _),
@@ -4988,7 +4988,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	;	true
 	).
 
-'$lgt_add_entity_file_properties'(end(Lines), Entity) :- writeq(end(Lines)), nl,
+'$lgt_add_entity_file_properties'(end(Lines), Entity) :-
 	(	Lines == -1 ->
 		true
 	;	Lines = (_ - End),
@@ -14790,7 +14790,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 		true
 	;	'$lgt_settings_file_loaded'(Path) ->
 		write('Loaded settings file found on directory '), write(Path), write('.'), nl, nl
-	;	write('No settings file found or unable to load settings files due to limitations'),
+	;	write('No settings file found or unable to load settings files due to limitations'), nl,
 		write('of the back-end Prolog compiler.'), nl, nl
 	).
 
