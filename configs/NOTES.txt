@@ -269,7 +269,8 @@ IF/Prolog 5.3 and later versions
 	if.pl
 
 	IF/Prolog 5.3 supports the ISO Prolog standard. No problems expected
-	but not tested. Don't forget to use the chdir/1 predicate to set the 
+	but not tested (my email requests for an evaluation version were never
+	answered). Don't forget to use the chdir/1 predicate to set the 
 	working directory before loading the library or an example. Supports 
 	smart compilation of source files. Does not support the "altdirs" 
 	compiler flag. Full support for settings files on POSIX operating-

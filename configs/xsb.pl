@@ -511,7 +511,7 @@ forall(Generate, Test) :-
 %  where the term starts (needed for improved compiler error messages)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% '$lgt_read_term'(@stream, -term, +list, -position)
+
 
 % '$lgt_read_term'(@stream, -term, +list, -position)
 

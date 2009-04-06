@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 3.8 and later versions
 %
-%  last updated: April 4, 2009
+%  last updated: April 6, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -510,9 +510,12 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 % '$lgt_stream_current_line_number'(@stream, -integer)
 
+% '$lgt_stream_current_line_number'(@stream, -integer)
+
 '$lgt_stream_current_line_number'(Stream, Line) :-
 	stream_property(Stream, position(Position)),
-	stream_position_data(line_count, Position, Line).
+	stream_position_data(line_count, Position, LineCount),
+	Line is LineCount + 1.
 
 
 
@@ -526,8 +529,14 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 % '$lgt_read_term'(@stream, -term, +list, -position)
 
-'$lgt_read_term'(Stream, Term, Options, -1) :-
-	read_term(Stream, Term, Options).
+'$lgt_read_term'(Stream, Term, Options, LineBegin-LineEnd) :-
+	stream_position(Stream, PositionBegin),
+	stream_position_data(line_count, PositionBegin, LineCountBegin),
+	LineBegin is LineCountBegin + 1,
+	read_term(Stream, Term, Options),
+	stream_position(Stream, PositionEnd),
+	stream_position_data(line_count, PositionEnd, LineCountEnd),
+	LineEnd is LineCountEnd + 1.
 
 
 

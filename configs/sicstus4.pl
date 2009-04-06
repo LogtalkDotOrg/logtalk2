@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0 and later versions
 %
-%  last updated: April 4, 2009
+%  last updated: April 6, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -479,7 +479,8 @@ forall(Generate, Test) :-
 
 '$lgt_stream_current_line_number'(Stream, Line) :-
 	stream_property(Stream, position(Position)),
-	stream_position_data(line_count, Position, Line).
+	stream_position_data(line_count, Position, LineCount),
+	Line is LineCount + 1.
 
 
 
@@ -493,8 +494,14 @@ forall(Generate, Test) :-
 
 % '$lgt_read_term'(@stream, -term, +list, -position)
 
-'$lgt_read_term'(Stream, Term, Options, -1) :-
-	read_term(Stream, Term, Options).
+'$lgt_read_term'(Stream, Term, Options, LineBegin-LineEnd) :-
+	stream_position(Stream, PositionBegin),
+	stream_position_data(line_count, PositionBegin, LineCountBegin),
+	LineBegin is LineCountBegin + 1,
+	read_term(Stream, Term, Options),
+	stream_position(Stream, PositionEnd),
+	stream_position_data(line_count, PositionEnd, LineCountEnd),
+	LineEnd is LineCountEnd + 1.
 
 
 

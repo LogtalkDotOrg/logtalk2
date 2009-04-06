@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: March 28, 2009
+%  last updated: April 6, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -568,8 +568,8 @@
 % '$lgt_stream_current_line_number'(@stream, -integer)
 
 '$lgt_stream_current_line_number'(Stream, Line) :-
-	stream_property(Stream, position('$stream_position'(_, Last, _))),
-	Line is Last + 1.
+	stream_position(Stream, Position),
+	stream_position_data(line_count, Position, Line).
 
 
 
@@ -583,9 +583,11 @@
 
 % '$lgt_read_term'(@stream, -term, +list, -position)
 
-'$lgt_read_term'(Stream, Term, Options, Line) :-
-	read_term(Stream, Term, [term_position(Position)| Options]),
-	stream_position_data(line_count, Position, Line).
+'$lgt_read_term'(Stream, Term, Options, LineBegin-LineEnd) :-
+	read_term(Stream, Term, [term_position(PositionBegin)| Options]),
+	stream_position_data(line_count, PositionBegin, LineBegin),
+	stream_position(Stream, PositionEnd),
+	stream_position_data(line_count, PositionEnd, LineEnd).
 
 
 

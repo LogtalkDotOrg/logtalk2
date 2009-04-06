@@ -4835,7 +4835,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 		OpenError,
 		'$lgt_compiler_error_handler'(OpenError)),
 	catch(
-		'$lgt_read_term'(Input, Term, [singletons(Singletons)], Line),
+		'$lgt_read_term'(Input, Term, [singletons(Singletons)], Lines),
 		InputError,
 		'$lgt_compiler_error_handler'(Input, InputError)),
 	'$lgt_check_for_encoding_directive'(Term, Source, Input, NewInput, OutputOptions),	% the encoding/1 directive, when present, 
@@ -4845,7 +4845,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 		OpenError,
 		'$lgt_compiler_error_handler'(NewInput, Output, OpenError)),
 	catch(
-		'$lgt_tr_file'(Term, Singletons, Source, Line, NewInput, Output),
+		'$lgt_tr_file'(Term, Singletons, Source, Lines, NewInput, Output),
 		Error,
 		'$lgt_compiler_error_handler'(Source, NewInput, Output, Error)),
 	close(NewInput),
@@ -4924,14 +4924,14 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	'$lgt_pp_cc_skipping_',				% we're performing conditional compilation and skipping terms 
 	\+ '$lgt_lgt_cc_directive'(Term),	% except for conditional compilation directives itself
 	!,
-	'$lgt_read_term'(Input, Next, [singletons(NextSingletons)], NextLine),
-	'$lgt_tr_file'(Next, NextSingletons, File, NextLine, Input, Output).
+	'$lgt_read_term'(Input, Next, [singletons(NextSingletons)], NextLines),
+	'$lgt_tr_file'(Next, NextSingletons, File, NextLines, Input, Output).
 
-'$lgt_tr_file'(Term, Singletons, File, Line, Input, Output) :-
-	'$lgt_report_singletons'(Singletons, Term, File, Line, Input),
-	'$lgt_tr_term'(Term, File, Line, Input, Output),
-	'$lgt_read_term'(Input, Next, [singletons(NextSingletons)], NextLine),
-	'$lgt_tr_file'(Next, NextSingletons, File, NextLine, Input, Output).
+'$lgt_tr_file'(Term, Singletons, File, Lines, Input, Output) :-
+	'$lgt_report_singletons'(Singletons, Term, File, Lines, Input),
+	'$lgt_tr_term'(Term, File, Lines, Input, Output),
+	'$lgt_read_term'(Input, Next, [singletons(NextSingletons)], NextLines),
+	'$lgt_tr_file'(Next, NextSingletons, File, NextLines, Input, Output).
 
 
 
@@ -4977,21 +4977,23 @@ current_logtalk_flag(version, version(2, 36, 0)).
 %
 % adds entity properties related to the entity source file
 
-'$lgt_add_entity_file_properties'(start(Start), Entity) :-
-	(	Start =:= -1 ->
+'$lgt_add_entity_file_properties'(start(Lines), Entity) :- writeq(start(Lines)), nl,
+	(	Lines == -1 ->
 		true
-	;	assertz('$lgt_pp_file_rclause_'('$lgt_entity_property_'(Entity, lines(Start, _))))
+	;	Lines = (Start - _),
+		assertz('$lgt_pp_rclause_'('$lgt_entity_property_'(Entity, lines(Start, _))))
 	),
 	(	'$lgt_pp_file_path_'(File, Path) ->
 		assertz('$lgt_pp_rclause_'('$lgt_entity_property_'(Entity, file(File, Path))))
 	;	true
 	).
 
-'$lgt_add_entity_file_properties'(end(End), Entity) :-
-	(	End =:= -1 ->
+'$lgt_add_entity_file_properties'(end(Lines), Entity) :- writeq(end(Lines)), nl,
+	(	Lines == -1 ->
 		true
-	;	retract('$lgt_pp_file_rclause_'('$lgt_entity_property_'(Entity, lines(Start, _)))) ->
-		assertz('$lgt_pp_file_rclause_'('$lgt_entity_property_'(Entity, lines(Start, End))))
+	;	Lines = (_ - End),
+		retract('$lgt_pp_rclause_'('$lgt_entity_property_'(Entity, lines(Start, _)))) ->
+		assertz('$lgt_pp_rclause_'('$lgt_entity_property_'(Entity, lines(Start, End))))
 	).
 
 
@@ -5000,11 +5002,11 @@ current_logtalk_flag(version, version(2, 36, 0)).
 %
 % reports the singleton variables found while compiling an entity term
 
-'$lgt_report_singletons'(Singletons, Term, File, Line, Input) :-
+'$lgt_report_singletons'(Singletons, Term, File, Lines, Input) :-
 	(	'$lgt_compiler_flag'(singletons, warning),
 		\+ '$lgt_compiler_flag'(report, off) ->
 		'$lgt_filter_singletons'(Singletons, Names),
-		'$lgt_report_singleton_names'(Names, Term, File, Line, Input)
+		'$lgt_report_singleton_names'(Names, Term, File, Lines, Input)
 	;	true
 	).
 
@@ -5012,7 +5014,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 '$lgt_report_singleton_names'([], _, _, _, _) :-
 	!.	% cut needed to prevent problems with compilers with broken read_term/3 implementations
 
-'$lgt_report_singleton_names'([Name| Names], Term, File, Line, Input) :-
+'$lgt_report_singleton_names'([Name| Names], Term, File, Lines, Input) :-
 	'$lgt_report_warning_in_new_line',
 	'$lgt_inc_compile_warnings_counter',
 	(	Names == [] ->
@@ -5022,8 +5024,8 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	'lgt_report_singletons_term'(Term),
 	'$lgt_write_list'([Name| Names]), nl,
 	(	'$lgt_pp_entity'(Type, Entity, _, _, _) ->
-		'$lgt_report_warning_full_context'(Type, Entity, File, Line, Input)
-	;	'$lgt_report_warning_file_context'(File, Line, Input)
+		'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
+	;	'$lgt_report_warning_file_context'(File, Lines, Input)
 	).
 
 
@@ -5491,60 +5493,60 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 
 
-% '$lgt_tr_term'(@term, +atom, +integer, @stream, @stream)
+% '$lgt_tr_term'(@term, +atom, +position, @stream, @stream)
 %
 % translates a source file term (clauses, directives, and grammar rules)
 
-'$lgt_tr_term'(Term, File, Line, Input, Output) :-
+'$lgt_tr_term'(Term, File, Lines, Input, Output) :-
 	(	% source-file specific compiler hook:
 		'$lgt_pp_hook_term_expansion_'(Term, Terms) ->
-		'$lgt_tr_expanded_terms'(Terms, File, Line, Input, Output)
+		'$lgt_tr_expanded_terms'(Terms, File, Lines, Input, Output)
 	;	% default compiler hook:
 		'$lgt_hook_term_expansion_'(Term, Terms) ->
-		'$lgt_tr_expanded_terms'(Terms, File, Line, Input, Output)
+		'$lgt_tr_expanded_terms'(Terms, File, Lines, Input, Output)
 	;	% no compiler hook defined:
-		'$lgt_tr_expanded_term'(Term, File, Line, Input, Output)
+		'$lgt_tr_expanded_term'(Term, File, Lines, Input, Output)
 	).
 
 
 
-% '$lgt_tr_expanded_terms'(@term, +atom, +integer, @stream, @stream)
+% '$lgt_tr_expanded_terms'(@term, +atom, +position, @stream, @stream)
 %
 % translates the expanded terms (which can be a list of terms)
 
 '$lgt_tr_expanded_terms'([], _, _, _, _) :-
 	!.
 
-'$lgt_tr_expanded_terms'([Term| Terms], File, Line, Input, Output) :-
+'$lgt_tr_expanded_terms'([Term| Terms], File, Lines, Input, Output) :-
 	!,
-	'$lgt_tr_expanded_term'(Term, File, Line, Input, Output),
-	'$lgt_tr_expanded_terms'(Terms, File, Line, Input, Output).
+	'$lgt_tr_expanded_term'(Term, File, Lines, Input, Output),
+	'$lgt_tr_expanded_terms'(Terms, File, Lines, Input, Output).
 
-'$lgt_tr_expanded_terms'(Term, File, Line, Input, Output) :-
+'$lgt_tr_expanded_terms'(Term, File, Lines, Input, Output) :-
 	!,
-	'$lgt_tr_expanded_term'(Term, File, Line, Input, Output).
+	'$lgt_tr_expanded_term'(Term, File, Lines, Input, Output).
 
 
 
-% '$lgt_tr_expanded_term'(+term, +atom, +integer, @stream, @stream)
+% '$lgt_tr_expanded_term'(+term, +atom, +position, @stream, @stream)
 %
 % translates a source file term (clauses, directives, and grammar rules)
 
-'$lgt_tr_expanded_term'((Head :- Body), File, Line, Input, _) :-
+'$lgt_tr_expanded_term'((Head :- Body), File, Lines, Input, _) :-
 	!,
-	'$lgt_tr_clause'((Head :- Body), File, Line, Input).
+	'$lgt_tr_clause'((Head :- Body), File, Lines, Input).
 
-'$lgt_tr_expanded_term'((:- Directive), File, Line, Input, Output) :-
+'$lgt_tr_expanded_term'((:- Directive), File, Lines, Input, Output) :-
 	!,
-	'$lgt_tr_directive'(Directive, File, Line, Input, Output).
+	'$lgt_tr_directive'(Directive, File, Lines, Input, Output).
 
-'$lgt_tr_expanded_term'((Head --> Body), File, Line, Input, _) :-
+'$lgt_tr_expanded_term'((Head --> Body), File, Lines, Input, _) :-
 	!,
 	'$lgt_dcgrule_to_clause'((Head --> Body), Clause),
-	'$lgt_tr_clause'(Clause, File, Line, Input).
+	'$lgt_tr_clause'(Clause, File, Lines, Input).
 
-'$lgt_tr_expanded_term'(Fact, File, Line, Input, _) :-
-	'$lgt_tr_clause'(Fact, File, Line, Input).
+'$lgt_tr_expanded_term'(Fact, File, Lines, Input, _) :-
+	'$lgt_tr_clause'(Fact, File, Lines, Input).
 
 
 
@@ -5560,7 +5562,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 
 
-% '$lgt_tr_directive'(+term, +atom, +integer, @stream, @stream)
+% '$lgt_tr_directive'(+term, +atom, +position, @stream, @stream)
 %
 % translates a directive
 
@@ -5579,10 +5581,10 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	\+ callable(Goal),
 	throw(error(type_error(callable, Goal), directive(if(Goal)))).
 
-'$lgt_tr_directive'(if(Goal), File, Line, Input, Output) :-
+'$lgt_tr_directive'(if(Goal), File, Lines, Input, Output) :-
 	'$lgt_tr_expand_goal'(Goal, EGoal),
 	!,
-	'$lgt_tr_directive'(if(EGoal), File, Line, Input, Output).
+	'$lgt_tr_directive'(if(EGoal), File, Lines, Input, Output).
 
 '$lgt_tr_directive'(if(Goal), _, _, Input, _) :-
 	'$lgt_pp_cc_mode_'(Value),					% not top-level if
@@ -5621,12 +5623,12 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	\+ '$lgt_pp_cc_if_found_'(_),
 	throw(error(unmatched_directive, directive(elif(Goal)))).
 
-'$lgt_tr_directive'(elif(Goal), File, Line, Input, Output) :-
+'$lgt_tr_directive'(elif(Goal), File, Lines, Input, Output) :-
 	'$lgt_tr_expand_goal'(Goal, EGoal),
 	!,
-	'$lgt_tr_directive'(elif(EGoal), File, Line, Input, Output).
+	'$lgt_tr_directive'(elif(EGoal), File, Lines, Input, Output).
 
-'$lgt_tr_directive'(elif(Goal), File, Line, Input, _) :-
+'$lgt_tr_directive'(elif(Goal), File, Lines, Input, _) :-
 	retract('$lgt_pp_cc_mode_'(Value)),
 	(	Value == ignore ->						% we're inside an if ... endif 
 		true									% that we're ignoring; do nothing (continue skipping)
@@ -5635,7 +5637,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 		assertz('$lgt_pp_cc_skipping_'),
 		asserta('$lgt_pp_cc_mode_'(skip))
 	;	% Value == seek ->						% the corresponding if is false
-		(	catch(Goal, Error, '$lgt_compiler_error_handler'(File, Line, Input, Error)) ->
+		(	catch(Goal, Error, '$lgt_compiler_error_handler'(File, Lines, Input, Error)) ->
 			retract('$lgt_pp_cc_skipping_'),
 			asserta('$lgt_pp_cc_mode_'(skip))
 		;	asserta('$lgt_pp_cc_mode_'(seek))
@@ -5683,19 +5685,19 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	'$lgt_lgt_closing_directive'(Functor, Arity),
 	throw(error(unmatched_directive, directive(Dir))).
 
-'$lgt_tr_directive'(Dir, File, Line, Input, Output) :-
+'$lgt_tr_directive'(Dir, File, Lines, Input, Output) :-
 	\+ '$lgt_pp_entity'(_, _, _, _, _),					% directive occurs before opening entity directive
 	functor(Dir, Functor, Arity),
 	\+ '$lgt_lgt_opening_directive'(Functor, Arity),
 	!,
-	'$lgt_tr_file_directive'(Dir, File, Line, Input, Output).	% translate it as a source file-level directive
+	'$lgt_tr_file_directive'(Dir, File, Lines, Input, Output).	% translate it as a source file-level directive
 
-'$lgt_tr_directive'(Dir, File, Line, Input, Output) :-	% entity closing directive
+'$lgt_tr_directive'(Dir, File, Lines, Input, Output) :-	% entity closing directive
 	functor(Dir, Functor, Arity),
 	'$lgt_lgt_closing_directive'(Functor, Arity),
 	Dir =.. [Functor| Args],
 	catch(
-		'$lgt_tr_directive'(Functor, Args, File, Line, Input, Output),
+		'$lgt_tr_directive'(Functor, Args, File, Lines, Input, Output),
 		Error,
 		(	'$lgt_pp_entity'(Type, Entity, _, _, _) ->
 			throw(error(Error, entity(Type, Entity)))
@@ -5703,17 +5705,17 @@ current_logtalk_flag(version, version(2, 36, 0)).
 		)),
 	!.
 
-'$lgt_tr_directive'(Dir, File, Line, Input, Output) :-	% entity opening directive or entity directive
+'$lgt_tr_directive'(Dir, File, Lines, Input, Output) :-	% entity opening directive or entity directive
 	functor(Dir, Functor, Arity),
 	'$lgt_lgt_directive'(Functor, Arity),
 	Dir =.. [Functor| Args],
 	catch(
-		'$lgt_tr_directive'(Functor, Args, File, Line, Input, Output),
+		'$lgt_tr_directive'(Functor, Args, File, Lines, Input, Output),
 		Error,
 		throw(error(Error, directive(Dir)))),
 	!.
 
-'$lgt_tr_directive'(Dir, File, Line, Input, _) :-
+'$lgt_tr_directive'(Dir, File, Lines, Input, _) :-
 	'$lgt_ignore_pl_directive'(Dir),					% defined in the Prolog config files
 	!,
 	(	'$lgt_compiler_flag'(portability, warning),
@@ -5722,11 +5724,11 @@ current_logtalk_flag(version, version(2, 36, 0)).
 		'$lgt_inc_compile_warnings_counter',
 		write('%         WARNING!  Ignoring Prolog directive: '), writeq(Dir), nl,
 		'$lgt_pp_entity'(Type, Entity, _, _, _),
-		'$lgt_report_warning_full_context'(Type, Entity, File, Line, Input)
+		'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
 	;	true
 	).
 
-'$lgt_tr_directive'(Dir, File, Line, Input, _) :-
+'$lgt_tr_directive'(Dir, File, Lines, Input, _) :-
 	'$lgt_rewrite_and_copy_pl_directive'(Dir, RWDir),	% defined in the Prolog config files
 	assertz('$lgt_pp_directive_'(RWDir)),
 	!,
@@ -5736,11 +5738,11 @@ current_logtalk_flag(version, version(2, 36, 0)).
 		'$lgt_inc_compile_warnings_counter',
 		write('%         WARNING!  Rewriting and copying Prolog directive: '), writeq(Dir), nl,
 		'$lgt_pp_entity'(Type, Entity, _, _, _),
-		'$lgt_report_warning_full_context'(Type, Entity, File, Line, Input)
+		'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
 	;	true
 	).
 
-'$lgt_tr_directive'(Dir, File, Line, Input, Output) :-
+'$lgt_tr_directive'(Dir, File, Lines, Input, Output) :-
 	'$lgt_rewrite_and_recompile_pl_directive'(Dir, RWDir),	% defined in the Prolog config files
 	!,
 	(	'$lgt_compiler_flag'(portability, warning),
@@ -5749,10 +5751,10 @@ current_logtalk_flag(version, version(2, 36, 0)).
 		'$lgt_inc_compile_warnings_counter',
 		write('%         WARNING!  Rewriting and recompiling Prolog directive: '), writeq(Dir), nl,
 		'$lgt_pp_entity'(Type, Entity, _, _, _),
-		'$lgt_report_warning_full_context'(Type, Entity, File, Line, Input)
+		'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
 	;	true
 	),
-	'$lgt_tr_directive'(RWDir, File, Line, Input, Output).	% try to translate the rewritten directive
+	'$lgt_tr_directive'(RWDir, File, Lines, Input, Output).	% try to translate the rewritten directive
 
 '$lgt_tr_directive'(Dir, _, _, _, _) :-
 	functor(Dir, Functor, Arity),
@@ -5773,10 +5775,10 @@ current_logtalk_flag(version, version(2, 36, 0)).
     ensure_loaded(File),                        		% assume that ensure_loaded/1 is also a built-in predicate
     assertz('$lgt_pp_directive_'(ensure_loaded(File))).
 
-'$lgt_tr_file_directive'(initialization(Goal), File, Line, Input, Output) :-
+'$lgt_tr_file_directive'(initialization(Goal), File, Lines, Input, Output) :-
 	'$lgt_tr_expand_goal'(Goal, EGoal),
 	!,
-	'$lgt_tr_file_directive'(initialization(EGoal), File, Line, Input, Output).
+	'$lgt_tr_file_directive'(initialization(EGoal), File, Lines, Input, Output).
 
 '$lgt_tr_file_directive'(initialization(Goal), _, _, _, _) :-
 	!,
@@ -5840,19 +5842,19 @@ current_logtalk_flag(version, version(2, 36, 0)).
 		throw(permission_error(modify, category, Obj))
 	).
 
-'$lgt_tr_directive'(object, [Obj| Rels], _, Line, _, _) :-
+'$lgt_tr_directive'(object, [Obj| Rels], _, Lines, _, _) :-
 	'$lgt_report_compiling_entity'(object, Obj),
-	'$lgt_add_entity_file_properties'(start(Line), Obj),
+	'$lgt_add_entity_file_properties'(start(Lines), Obj),
 	'$lgt_save_file_op_table',
 	'$lgt_tr_object_id'(Obj, static),					% assume static object
 	'$lgt_tr_object_relations'(Rels, Obj).
 
-'$lgt_tr_directive'(end_object, [], File, Line, _, Output) :-
+'$lgt_tr_directive'(end_object, [], File, Lines, _, Output) :-
 	(	'$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _) ->
+		'$lgt_add_entity_file_properties'(end(Lines), Obj),
 		'$lgt_tr_entity'(object, Obj, File, Output),
 	    '$lgt_restore_file_op_table',
-		'$lgt_report_compiled_entity'(object, Obj),
-		'$lgt_add_entity_file_properties'(end(Line), Obj)
+		'$lgt_report_compiled_entity'(object, Obj)
 	;	throw(closing_directive_mismatch)
 	).
 
@@ -5882,19 +5884,19 @@ current_logtalk_flag(version, version(2, 36, 0)).
 		throw(permission_error(modify, category, Ptc))
 	).
 
-'$lgt_tr_directive'(protocol, [Ptc| Rels], _, Line, _, _) :-
+'$lgt_tr_directive'(protocol, [Ptc| Rels], _, Lines, _, _) :-
 	'$lgt_report_compiling_entity'(protocol, Ptc),
-	'$lgt_add_entity_file_properties'(start(Line), Ptc),
+	'$lgt_add_entity_file_properties'(start(Lines), Ptc),
 	'$lgt_save_file_op_table',
 	'$lgt_tr_protocol_id'(Ptc, static),					% assume static protocol
 	'$lgt_tr_protocol_relations'(Rels, Ptc).
 
-'$lgt_tr_directive'(end_protocol, [], File, Line, _, Output) :-
+'$lgt_tr_directive'(end_protocol, [], File, Lines, _, Output) :-
 	(   '$lgt_pp_protocol_'(Ptc, _, _, _, _) ->
+		'$lgt_add_entity_file_properties'(end(Lines), Ptc),
 		'$lgt_tr_entity'(protocol, Ptc, File, Output),
 	    '$lgt_restore_file_op_table',
-		'$lgt_report_compiled_entity'(protocol, Ptc),
-		'$lgt_add_entity_file_properties'(end(Line), Ptc)
+		'$lgt_report_compiled_entity'(protocol, Ptc)
 	;	throw(closing_directive_mismatch)
 	).
 
@@ -5925,28 +5927,28 @@ current_logtalk_flag(version, version(2, 36, 0)).
 		throw(permission_error(modify, category, Ctg))
 	).
 
-'$lgt_tr_directive'(category, [Ctg| Rels], _, Line, _, _) :-
+'$lgt_tr_directive'(category, [Ctg| Rels], _, Lines, _, _) :-
 	'$lgt_report_compiling_entity'(category, Ctg),
-	'$lgt_add_entity_file_properties'(start(Line), Ctg),
+	'$lgt_add_entity_file_properties'(start(Lines), Ctg),
 	'$lgt_save_file_op_table',
 	'$lgt_tr_category_id'(Ctg, static),					% assume static category
 	'$lgt_tr_category_relations'(Rels, Ctg).
 
-'$lgt_tr_directive'(end_category, [], File, Line, _, Output) :-
+'$lgt_tr_directive'(end_category, [], File, Lines, _, Output) :-
 	(	'$lgt_pp_category_'(Ctg, _, _, _, _, _) ->
+		'$lgt_add_entity_file_properties'(end(Lines), Ctg),
 		'$lgt_tr_entity'(category, Ctg, File, Output),
 	    '$lgt_restore_file_op_table',
-		'$lgt_report_compiled_entity'(category, Ctg),
-		'$lgt_add_entity_file_properties'(end(Line), Ctg)
+		'$lgt_report_compiled_entity'(category, Ctg)
 	;	throw(closing_directive_mismatch)
 	).
 
 
 % compile modules as objects
 
-'$lgt_tr_directive'(module, [Module], File, Line, Input, Output) :-
+'$lgt_tr_directive'(module, [Module], File, Lines, Input, Output) :-
 	!,
-	'$lgt_tr_directive'(module, [Module, []], File, Line, Input, Output).	% empty export list
+	'$lgt_tr_directive'(module, [Module, []], File, Lines, Input, Output).	% empty export list
 
 '$lgt_tr_directive'(module, [Module, ExportList], _, _, _, _) :-
 	(var(Module); var(ExportList)),
@@ -5956,11 +5958,11 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	\+ atom(Module),
 	throw(type_error(module_identifier, Module)).
 
-'$lgt_tr_directive'(module, [Module, ExportList], File, Line, Input, Output) :-
+'$lgt_tr_directive'(module, [Module, ExportList], File, Lines, Input, Output) :-
 	assertz('$lgt_pp_module_'(Module)),										% remeber we are compiling a module
 	'$lgt_report_compiling_entity'(module, Module),
 	'$lgt_tr_object_id'(Module, static),									% assume static module/object
-	'$lgt_tr_directive'((public), ExportList, File, Line, Input, Output),	% make the export list public predicates
+	'$lgt_tr_directive'((public), ExportList, File, Lines, Input, Output),	% make the export list public predicates
 	'$lgt_save_file_op_table'.
 
 
@@ -6082,13 +6084,13 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	\+ callable(Module),
 	throw(type_error(module_identifier, Module)).
 
-'$lgt_tr_directive'(use_module, [Module, Preds], File, Line, Input, Output) :-	% module directive
+'$lgt_tr_directive'(use_module, [Module, Preds], File, Lines, Input, Output) :-	% module directive
 	(	atom(Module) ->
 		Name = Module
 	;	arg(1, Module, Name)
 	),
 	(	'$lgt_pp_module_'(_) ->												% we're compiling a module
- 		'$lgt_tr_directive'(uses, [Name, Preds], File, Line, Input, Output)		% as an object
+ 		'$lgt_tr_directive'(uses, [Name, Preds], File, Lines, Input, Output)		% as an object
 	;	'$lgt_tr_use_module_preds'(Preds, Name)
 	).
 
@@ -6117,7 +6119,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	).
 
 
-'$lgt_tr_directive'(synchronized, Preds, File, Line, Input, _) :-
+'$lgt_tr_directive'(synchronized, Preds, File, Lines, Input, _) :-
 	(	'$lgt_compiler_flag'(threads, supported) ->
 		(	'$lgt_pp_synchronized_' ->
 			(	'$lgt_compiler_flag'(report, off) ->
@@ -6127,7 +6129,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 				'$lgt_inc_compile_warnings_counter',
 				write('%         WARNING!  Ignoring synchronized predicate directive: '),
 				write(Type), write(' already declared as synchronized!'), nl,
-				'$lgt_report_warning_full_context'(Type, Entity, File, Line, Input)
+				'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
 			)
 		;	'$lgt_flatten_list'(Preds, Preds2),
 			'$lgt_tr_synchronized_directive'(Preds2)
@@ -6166,8 +6168,8 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	'$lgt_tr_discontiguous_directive'(Preds2).
 
 
-'$lgt_tr_directive'(metapredicate, Preds, File, Line, Input, Output) :-	% depracated
-	'$lgt_tr_directive'(meta_predicate, Preds, File, Line, Input, Output).
+'$lgt_tr_directive'(metapredicate, Preds, File, Lines, Input, Output) :-	% depracated
+	'$lgt_tr_directive'(meta_predicate, Preds, File, Lines, Input, Output).
 
 '$lgt_tr_directive'(meta_predicate, Preds, _, _, _, _) :-
 	'$lgt_flatten_list'(Preds, Preds2),
@@ -6980,14 +6982,14 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 
 
-% '$lgt_tr_clause'(+clause, +atom, +integer, @stream)
+% '$lgt_tr_clause'(+clause, +atom, +position, @stream)
 
 '$lgt_tr_clause'(Clause, _, _, _) :-
 	\+ '$lgt_pp_entity'(_, _, _, _, _),			% all clauses occuring before an opening entity directive
 	!,
 	assertz('$lgt_pp_ppclause_'(Clause)).		% are copied unchanged to the generated Prolog file
 
-'$lgt_tr_clause'(Clause, File, Line, Input) :-
+'$lgt_tr_clause'(Clause, File, Lines, Input) :-
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, _),
 	(	Type == object, compound(Entity) ->		% if the entity is a parametric object we need
 		'$lgt_comp_ctx_this'(Ctx, Entity)		% "this" for inline compilation of parameter/2
@@ -6995,7 +6997,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	),
 	'$lgt_comp_ctx_prefix'(Ctx, Prefix),
 	catch(
-		'$lgt_tr_clause'(Clause, TClause, DClause, Ctx, File, Line, Input),
+		'$lgt_tr_clause'(Clause, TClause, DClause, Ctx, File, Lines, Input),
 		Error,
 		throw(error(Error, clause(Clause)))),
 	(	'$lgt_compiler_flag'(debug, on) ->
@@ -7009,7 +7011,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 
 
-% '$lgt_tr_clause'(+clause, -clause, -clause, +term, +atom, +integer, @stream)
+% '$lgt_tr_clause'(+clause, -clause, -clause, +term, +atom, +position, @stream)
 
 '$lgt_tr_clause'(Clause, _, _, _, _, _, _) :-
 	var(Clause),
@@ -7027,22 +7029,22 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	\+ callable(Body),
 	throw(type_error(callable, Body)).
 
-'$lgt_tr_clause'((Head:-Body), (THead:-'$lgt_nop'(Body), SBody), (THead:-'$lgt_nop'(Body),'$lgt_dbg_head'(Head, 0, ExCtx),DBody), Ctx, File, Line, Input) :-
+'$lgt_tr_clause'((Head:-Body), (THead:-'$lgt_nop'(Body), SBody), (THead:-'$lgt_nop'(Body),'$lgt_dbg_head'(Head, 0, ExCtx),DBody), Ctx, File, Lines, Input) :-
 	functor(Head, Functor, Arity),
 	'$lgt_pp_dynamic_'(Functor, Arity),
 	!,
 	'$lgt_pred_meta_vars'(Head, MetaVars),
 	'$lgt_comp_ctx_meta_vars'(Ctx, MetaVars),
-	'$lgt_tr_head'(Head, THead, Ctx, File, Line, Input),
+	'$lgt_tr_head'(Head, THead, Ctx, File, Lines, Input),
 	'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 	'$lgt_simplify_body'(TBody, SBody),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
-'$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_dbg_head'(Head, N, ExCtx),DBody), Ctx, File, Line, Input) :-
+'$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_dbg_head'(Head, N, ExCtx),DBody), Ctx, File, Lines, Input) :-
 	!,
 	'$lgt_pred_meta_vars'(Head, MetaVars),
 	'$lgt_comp_ctx_meta_vars'(Ctx, MetaVars),
-	'$lgt_tr_head'(Head, THead, Ctx, File, Line, Input),
+	'$lgt_tr_head'(Head, THead, Ctx, File, Lines, Input),
 	'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 	'$lgt_simplify_body'(TBody, SBody),
 	(	SBody == true ->
@@ -7056,8 +7058,8 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	\+ callable(Fact),
 	throw(type_error(callable, Fact)).
 
-'$lgt_tr_clause'(Fact, TFact, (TFact:-'$lgt_dbg_fact'(Fact, N, ExCtx)), Ctx, File, Line, Input) :-
-	'$lgt_tr_head'(Fact, TFact, Ctx, File, Line, Input),
+'$lgt_tr_clause'(Fact, TFact, (TFact:-'$lgt_dbg_fact'(Fact, N, ExCtx)), Ctx, File, Lines, Input) :-
+	'$lgt_tr_head'(Fact, TFact, Ctx, File, Lines, Input),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_clause_number'(TFact, N).
 
@@ -7076,7 +7078,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 
 
-% '$lgt_tr_head'(+callable, -callable, +term, +atom, +integer, @stream)
+% '$lgt_tr_head'(+callable, -callable, +term, +atom, +position, @stream)
 %
 % translates an entity clause head
 
@@ -7160,7 +7162,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 % redefinition of Logtalk built-in predicates
 
-'$lgt_tr_head'(Head, _, _, File, Line, Input) :-
+'$lgt_tr_head'(Head, _, _, File, Lines, Input) :-
 	'$lgt_lgt_built_in'(Head),
 	'$lgt_compiler_flag'(lgtredef, warning),
 	\+ '$lgt_compiler_flag'(report, off),
@@ -7171,13 +7173,13 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	write('%         WARNING!  Redefining a Logtalk built-in predicate: '),
 	writeq(Functor/Arity), nl,
 	'$lgt_pp_entity'(Type, Entity, _, _, _),
-	'$lgt_report_warning_full_context'(Type, Entity, File, Line, Input),
+	'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input),
 	fail.
 
 
 % redefinition of Prolog built-in predicates
 
-'$lgt_tr_head'(Head, _, _, File, Line, Input) :-
+'$lgt_tr_head'(Head, _, _, File, Lines, Input) :-
 	'$lgt_pl_built_in'(Head),
 	'$lgt_compiler_flag'(plredef, warning),
 	\+ '$lgt_compiler_flag'(report, off),
@@ -7188,13 +7190,13 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	write('%         WARNING!  Redefining a Prolog built-in predicate: '),
 	writeq(Functor/Arity), nl,
 	'$lgt_pp_entity'(Type, Entity, _, _, _),
-	'$lgt_report_warning_full_context'(Type, Entity, File, Line, Input),
+	'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input),
 	fail.
 
 
 % definition of event handlers without reference to the "monitoring" built-in protocol
 
-'$lgt_tr_head'(Head, _, _, File, Line, Input) :-
+'$lgt_tr_head'(Head, _, _, File, Lines, Input) :-
 	functor(Head, Functor, 3),
 	once((Functor == before; Functor == after)),
 	\+ '$lgt_pp_implemented_protocol_'(monitoring, _, _, _),
@@ -7204,13 +7206,13 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	write('%         WARNING!  Missing reference to the "monitoring" built-in protocol: '),
 	writeq(Functor/3), nl,
 	'$lgt_pp_entity'(Type, Entity, _, _, _),
-	'$lgt_report_warning_full_context'(Type, Entity, File, Line, Input),
+	'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input),
 	fail.
 
 
 % definition of term and goal expansion predicates without reference to the "expanding" built-in protocol
 
-'$lgt_tr_head'(Head, _, _, File, Line, Input) :-
+'$lgt_tr_head'(Head, _, _, File, Lines, Input) :-
 	functor(Head, Functor, 2),
 	once((Functor == term_expansion; Functor == goal_expansion)),
 	\+ '$lgt_pp_implemented_protocol_'(expanding, _, _, _),
@@ -7220,7 +7222,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	write('%         WARNING!  Missing reference to the "expanding" built-in protocol: '),
 	writeq(Functor/2), nl,
 	'$lgt_pp_entity'(Type, Entity, _, _, _),
-	'$lgt_report_warning_full_context'(Type, Entity, File, Line, Input),
+	'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input),
 	fail.
 
 
@@ -9747,59 +9749,59 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 
 
-% '$lgt_report_warning_file_context'(+atom, +integer, +stream)
+% '$lgt_report_warning_file_context'(+atom, +position, +stream)
 %
 % reports warning file context when no entity information is available 
 
-'$lgt_report_warning_file_context'(File, Line, Input) :-
+'$lgt_report_warning_file_context'(File, Lines, Input) :-
 	(	'$lgt_compiler_flag'(report, warnings) ->
 		write('%                   in file '), write(File),
-		'$lgt_report_warning_line_number'(Line, Input),
+		'$lgt_report_warning_line_number'(Lines, Input),
 		write('%')
 	;	'$lgt_compiler_flag'(report, on) ->
-		'$lgt_report_warning_line_number'(Line, Input)
+		'$lgt_report_warning_line_number'(Lines, Input)
 	;	true
 	).
 
 
 
-% '$lgt_report_warning_full_context'(+atom, +entity_identifier, +atom, +integer, +stream)
+% '$lgt_report_warning_full_context'(+atom, +entity_identifier, +atom, +position, +stream)
 %
 % reports warning full context 
 
-'$lgt_report_warning_full_context'(Type, Entity, File, Line, Input) :-
+'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input) :-
 	(	'$lgt_compiler_flag'(report, warnings) ->
 		write('%                   in '), write(Type), write(' '), writeq(Entity),
 		write(', defined in file '), write(File),
-		'$lgt_report_warning_line_number'(Line, Input),
+		'$lgt_report_warning_line_number'(Lines, Input),
 		write('%')
 	;	'$lgt_compiler_flag'(report, on) ->
-		'$lgt_report_warning_line_number'(Line, Input)
+		'$lgt_report_warning_line_number'(Lines, Input)
 	;	true
 	).
 
 
 
-% '$lgt_report_warning_line_number'(+integer, +stream)
+% '$lgt_report_warning_line_number'(+position, +stream)
 %
 % reports warning line number (if possible) 
 
-'$lgt_report_warning_line_number'(Line, Input) :-
+'$lgt_report_warning_line_number'(Lines, Input) :-
 	(	'$lgt_compiler_flag'(report, warnings) ->
-		(	Line =:= -1 ->
+		(	Lines == -1 ->
 			(	catch('$lgt_stream_current_line_number'(Input, Next), _, fail) ->
 				write(', above line '), write(Next), nl
 			;	nl
 			)
-		;	write(', at line '), write(Line), nl
+		;	write(', in lines '), write(Lines), nl
 		)
 	;	'$lgt_compiler_flag'(report, on) ->
-		(	Line =:= -1 ->
+		(	Lines == -1 ->
 			(	catch('$lgt_stream_current_line_number'(Input, Next), _, fail) ->
 				write('%                   above line '), write(Next), nl
 			;	nl
 			)
-		;	write('%                   at line '), write(Line), nl
+		;	write('%                   in lines '), write(Lines), nl
 		)
 	;	true
 	).

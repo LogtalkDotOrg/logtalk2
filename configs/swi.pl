@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %
-%  last updated: March 28, 2009
+%  last updated: April 6, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -520,9 +520,11 @@
 
 % '$lgt_read_term'(@stream, -term, +list, -position)
 
-'$lgt_read_term'(Stream, Term, Options, Line) :-
-	read_term(Stream, Term, [term_position(Position)| Options]),
-	stream_position_data(line_count, Position, Line).
+'$lgt_read_term'(Stream, Term, Options, LineBegin-LineEnd) :-
+	read_term(Stream, Term, [term_position(PositionBegin)| Options]),
+	stream_position_data(line_count, PositionBegin, LineBegin),
+	stream_property(Stream, position(PositionEnd)),
+	stream_position_data(line_count, PositionEnd, LineEnd).
 
 
 

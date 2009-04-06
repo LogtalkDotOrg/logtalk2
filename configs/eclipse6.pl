@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#37 and later versions
 %
-%  last updated: April 4, 2009
+%  last updated: April 6, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -290,7 +290,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
-'$lgt_prolog_feature'(multifile_directive, unsupported).
+'$lgt_prolog_feature'(multifile_directive, supported).
 '$lgt_prolog_feature'(tabling, unsupported).
 '$lgt_prolog_feature'(threads, unsupported).
 
