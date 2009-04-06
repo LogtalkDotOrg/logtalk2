@@ -14747,7 +14747,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  Logtalk startup initialization (compiler hooks and multi-threading support) 
+%  Logtalk startup initialization 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -14784,11 +14784,12 @@ current_logtalk_flag(version, version(2, 36, 0)).
 '$lgt_report_settings_file' :-
 	(	'$lgt_compiler_flag'(report, off) ->
 		true
-	;	(	'$lgt_settings_file_loaded'(Path) ->
-			write('Loaded settings file found on directory '), write(Path), write('.'), nl, nl
-		;	write('No settings file found or unable to load settings files due to limitations'),
-			write('of the back-end Prolog compiler.'), nl, nl
-		)
+	;	\+ '$lgt_compiler_flag'(startup_message, flags(_)) ->
+		true
+	;	'$lgt_settings_file_loaded'(Path) ->
+		write('Loaded settings file found on directory '), write(Path), write('.'), nl, nl
+	;	write('No settings file found or unable to load settings files due to limitations'),
+		write('of the back-end Prolog compiler.'), nl, nl
 	).
 
 
