@@ -129,10 +129,11 @@ RELEASE NOTES
     Updated the POSIX integration scripts to export the environment variable
     LOGTALK_STARTUP_DIRECTORY before starting Logtalk.
 
-    Changed the SWI-Prolog integration script and shortcut to use the option
-    "-s" instead of the option "-f" in order to allow loading of any existing
-    user initialization file (".plrc" on POSIX systems and "pl.ini" on Windows;
-    see the SWI-Prolog reference manual) before loading the Logtalk files.
+    Changed the SWI-Prolog POSIX integration script to use the option "-s"
+    instead of the option "-f" in order to allow loading of any existing
+    user initialization file (".plrc" on POSIX systems; see the SWI-Prolog
+    reference manual) before loading the Logtalk files. On Windows the use
+    of the "-s" results in a double initialization bug.
 
     Workaround a compilation error in the object "salt/3" in the "searching"
     example when using SICStus Prolog as a back-end compiler.
