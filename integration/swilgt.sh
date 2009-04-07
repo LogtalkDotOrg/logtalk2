@@ -77,8 +77,4 @@ if pl -t halt 2>&1 | grep "SWI-Prolog"; then
 	exec pl -s "$LOGTALKHOME/integration/logtalk_swi.pl" "$@"
 elif swipl -t halt 2>&1 | grep "SWI-Prolog"; then
 	exec swipl -s "$LOGTALKHOME/integration/logtalk_swi.pl" "$@"
-else case $( uname -s ) in
-	Darwin	) exec swipl -f "$LOGTALKHOME/integration/logtalk_swi.pl" "$@";;
-	*		) exec pl -f "$LOGTALKHOME/integration/logtalk_swi.pl" "$@";;
-esac
 fi
