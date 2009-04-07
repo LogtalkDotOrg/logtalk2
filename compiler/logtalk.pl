@@ -8347,9 +8347,9 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	!,
 	'$lgt_tr_threaded_or_call'((TGoal; TGoals), Queue, MTGoals, Results),
 	ThreadedCall = (	thread_self(Queue),
-						thread_send_message(Queue, '$lgt_master'),
+						thread_send_message(Queue, '$lgt_master'),	% needed for correct thread cancellation
 						MTGoals,
-						'$lgt_mt_threaded_or_exit'(Results),
+						'$lgt_mt_threaded_or_exit'(Results),		% collect results and terminate slave threads
 						thread_get_message(Queue, '$lgt_master')
 					).
 
@@ -8357,9 +8357,9 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	!,
 	'$lgt_tr_threaded_and_call'((TGoal, TGoals), Queue, MTGoals, Results),
 	ThreadedCall = (	thread_self(Queue),
-						thread_send_message(Queue, '$lgt_master'),
+						thread_send_message(Queue, '$lgt_master'),	% needed for correct thread cancellation
 						MTGoals,
-						'$lgt_mt_threaded_and_exit'(Results),
+						'$lgt_mt_threaded_and_exit'(Results),		% collect results and terminate slave threads
 						thread_get_message(Queue, '$lgt_master')
 					).
 

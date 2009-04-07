@@ -48,15 +48,19 @@ RELEASE NOTES
     "events". These properties are defined whenever the corresponding
     compiler flags are set to "allow" at the time of entity compilation.
 
-    Corrected a bug (introduced in version 2.35.1) in the Logtalk compiler
-    that prevented compilation of Prolog modules as objects.
-
-    Corrected a bug where the Logtalk compiler would report the number of
-    compilation warnings with the "report" compiler flag set to "off".
-
     Corrected a bug where some file-related entity properties would not be
     stored when using back-end Prolog compilers that don't support multifile
     predicates.
+
+    Corrected a bug (introduced in version 2.35.1) in the Logtalk compiler
+    that prevented compilation of Prolog modules as objects.
+
+    Corrected a bug in the implementation of the Logtalk built-in predicate
+    threaded/1 that would result in wasting space in the main thread message
+    queue with duplicated messages. Thanks to Rui Marques for the bug report.
+
+    Corrected a bug where the Logtalk compiler would report the number of
+    compilation warnings with the "report" compiler flag set to "off".
 
     The compiler flags "context_switching_calls", "startup_message", and
     "altdirs" are no longer read-only flags in order to support changing
