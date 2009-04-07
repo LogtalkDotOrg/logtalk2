@@ -13340,25 +13340,49 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 
 '$lgt_write_xml_entity'(Stream) :-
-	'$lgt_pp_entity'(Type, Entity, _, _, Mode),
+	'$lgt_pp_entity'(Type, Entity, _, _, _),
 	'$lgt_write_xml_open_tag'(Stream, entity, []),
 	'$lgt_entity_to_xml_term'(Entity),
 	'$lgt_write_xml_cdata_element'(Stream, name, [], Entity),
 	'$lgt_write_xml_element'(Stream, (type), [], Type),
-	(	'$lgt_pp_threaded_', '$lgt_pp_synchronized_' ->
-		atom_concat(Mode, ', threaded, synchronized', Compilation)
-	;	'$lgt_pp_threaded_' ->
-		atom_concat(Mode, ', threaded', Compilation)
-	;	'$lgt_pp_synchronized_' ->
-		atom_concat(Mode, ', synchronized', Compilation)
-	;	Compilation = Mode
-	),
+	'$lgt_xml_entity_compilation_text'(Compilation),
 	'$lgt_write_xml_element'(Stream, compilation, [], Compilation),
 	(	'$lgt_pp_info_'(Info) ->
 		'$lgt_write_xml_entity_info'(Stream, Info)
 	;	true
 	),
 	'$lgt_write_xml_close_tag'(Stream, entity).
+
+
+
+% '$lgt_xml_entity_compilation_text'(-atom)
+
+'$lgt_xml_entity_compilation_text'(Flags) :-
+	'$lgt_pp_entity'(_, _, _, _, Mode),
+	(	'$lgt_compiler_flag'(context_switching_calls, allow) ->
+		atom_concat(Mode, ', context_switching_calls', Flags1)
+	;	Flags1 = Mode
+	),
+	(	'$lgt_compiler_flag'(dynamic_declarations, allow) ->
+		atom_concat(Flags1, ', dynamic_declarations', Flags2)
+	;	Flags2 = Flags1
+	),
+	(	'$lgt_compiler_flag'(complements, allow) ->
+		atom_concat(Flags2, ', complements', Flags3)
+	;	Flags3 = Flags2
+	),
+	(	'$lgt_compiler_flag'(events, allow) ->
+		atom_concat(Flags3, ', events', Flags4)
+	;	Flags4 = Flags3
+	),
+	(	'$lgt_pp_threaded_' ->
+		atom_concat(Flags4, ', threaded', Flags5)
+	;	Flags5 = Flags4
+	),
+	(	'$lgt_pp_synchronized_' ->
+		atom_concat(Flags5, ', synchronized', Flags)
+	;	Flags = Flags5
+	).
 
 
 

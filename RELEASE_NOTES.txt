@@ -34,10 +34,11 @@ RELEASE NOTES
     the more standard call/N predicates instead of the call_with_args/N 
     predicates.
 
-    Improved the XML documentation automatically generated for threaded and
-    synchronized objects and synchronized predicates. The "synchronized" and
-    "threaded" properties are now appended to the compilation mode of object
-    and predicates.
+    Improved the XML documentation automatically generated for objects and
+    categories by appending to the compilation mode all the active optional
+    features and the "threaded" and "synchronized" properties. Improved the
+    XML documentation automatically generated for synchronized predicates by
+    appending the "synchronized" property to the predicate compilation mode.
 
     Improved Logtalk compiler error and warning reporting by printing,
     whenever possible, the range of lines where the problem was found
