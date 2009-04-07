@@ -65,20 +65,11 @@
 		dynamic('$lgt_hook_goal_expansion_'/2), hide_predicate('$lgt_hook_goal_expansion_'/2),
 		dynamic('$lgt_threaded_tag_counter'/1), hide_predicate('$lgt_threaded_tag_counter'/1),
 		dynamic('$lgt_dbg_invocation_number_'/1), hide_predicate('$lgt_dbg_invocation_number_'/1),
-		(	current_prolog_flag(system_options, threads) ->
-			thread_local('$lgt_obj_lookup_cache_'/4),
-			thread_local('$lgt_self_lookup_cache_'/4),
-			thread_local('$lgt_super_lookup_cache_'/4),
-			thread_local('$lgt_db_lookup_cache_'/5)
-		;	dynamic('$lgt_obj_lookup_cache_'/4),
-			dynamic('$lgt_self_lookup_cache_'/4),
-			dynamic('$lgt_super_lookup_cache_'/4),
-			dynamic('$lgt_db_lookup_cache_'/6)
-		),
-		hide_predicate('$lgt_obj_lookup_cache_'/4),
-		hide_predicate('$lgt_self_lookup_cache_'/4),
-		hide_predicate('$lgt_super_lookup_cache_'/4),
-		hide_predicate('$lgt_db_lookup_cache_'/6)
+		dynamic('$lgt_settings_file_loaded'/1), hide_predicate('$lgt_settings_file_loaded'/1),
+		dynamic('$lgt_obj_lookup_cache_'/4), hide_predicate('$lgt_obj_lookup_cache_'/4),
+		dynamic('$lgt_self_lookup_cache_'/4), hide_predicate('$lgt_self_lookup_cache_'/4),
+		dynamic('$lgt_super_lookup_cache_'/4), hide_predicate('$lgt_super_lookup_cache_'/4),
+		dynamic('$lgt_db_lookup_cache_'/6), hide_predicate('$lgt_db_lookup_cache_'/6)
 	;	true
 	).
 
