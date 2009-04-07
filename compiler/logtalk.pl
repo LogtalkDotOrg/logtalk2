@@ -13753,10 +13753,9 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	'$lgt_write_xml_element'(Stream, scope, [], Scope),
 	(	('$lgt_pp_entity'(_, _, _, _, (dynamic)); '$lgt_pp_dynamic_'(Functor, Arity)) ->
 		Compilation = (dynamic)
-	;	(	functor(Head, Functor, Arity), '$lgt_pp_synchronized_'(Head, _) ->
-			Compilation = static
-		;	Compilation = 'static, synchronized'
-		)
+	;	functor(Head, Functor, Arity), '$lgt_pp_synchronized_'(Head, _) ->
+		Compilation = 'static, synchronized'
+	;	Compilation = static
 	),
 	'$lgt_write_xml_element'(Stream, compilation, [], Compilation).
 
