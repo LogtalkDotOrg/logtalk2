@@ -11,7 +11,7 @@
 %
 %  configuration file for K-Prolog 6.0.4 and later versions
 %
-%  last updated: March 28, 2009
+%  last updated: April 7, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -241,7 +241,12 @@ call_cleanup(_, _) :-
 % deletes a file in the current directory
 
 '$lgt_delete_file'(File) :-
-	atom_concat('rm ', File, Command),
+	getenv(os, OS),
+	name(AOS, OS),
+	(	sub_atom(AOS, 0, 7, _, 'Windows') ->
+		atom_concat('del ', File, Command)
+	;	atom_concat('rm ', File, Command)
+	),	
 	system(Command).
 
 
@@ -315,8 +320,9 @@ call_cleanup(_, _) :-
 % access to operating-system environment variables
 
 '$lgt_environment_variable'(Variable, Value) :-
-	getenv(Variable, Value),
-	Value \== [].
+	getenv(Variable, String),
+	String \== [],
+	atom_codes(Value, String).
 
 
 % '$lgt_startup_directory'(-atom)
@@ -324,8 +330,9 @@ call_cleanup(_, _) :-
 % returns the Logtalk startup directory; fails if unknwon 
 
 '$lgt_startup_directory'(Directory) :-
-	getenv('LOGTALK_STARTUP_DIRECTORY', Directory),
-	Directory \== [].
+	getenv('LOGTALK_STARTUP_DIRECTORY', String),
+	String \== [],
+	atom_codes(Directory, String).
 
 
 % '$lgt_user_directory'(-atom)
@@ -333,8 +340,9 @@ call_cleanup(_, _) :-
 % returns the Logtalk user directory; fails if unknwon
 
 '$lgt_user_directory'(Directory) :-
-	getenv('LOGTALKUSER', Directory),
-	Directory \== [].
+	getenv('LOGTALKUSER', String),
+	String \== [],
+	atom_codes(Directory, String).
 
 
 

@@ -111,6 +111,9 @@ RELEASE NOTES
     Updated the Ciao config file to workaround a weird bug in the read_term/3
     predicate that prevented compilation of some Logtalk source files.
 
+    Updated the K-Prolog config files in order to make the definition of the
+    '$lgt_delete_file'/1 predicate compatible with Windows systems.
+
     Updated the predicate comments in the library protocol "loopp" in order
     to workaround the limitation on the maximum size of atoms in Qu-Prolog.
 
