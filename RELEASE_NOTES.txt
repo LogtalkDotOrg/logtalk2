@@ -43,6 +43,11 @@ RELEASE NOTES
     whenever possible, the range of lines where the problem was found
     instead of printing only the starting line.
 
+    Added new object properties "complements", "context_switching_calls",
+    "events", and "dynamic_declarations". Added new category property
+    "events". These properties are defined whenever the corresponding
+    compiler flags are set to "allow" at the time of entity compilation.
+
     Corrected a bug (introduced in version 2.35.1) in the Logtalk compiler
     that prevented compilation of Prolog modules as objects.
 
