@@ -64,7 +64,7 @@ RELEASE NOTES
     compilation warnings with the "report" compiler flag set to "off".
 
     Updated the Logtalk compiler in order to avoid unwanted backtracking
-    during source file compilation and when using the entity creation
+    during source file compilation and when calling the entity creation
     built-in predicates.
 
     The compiler flags "context_switching_calls", "startup_message", and

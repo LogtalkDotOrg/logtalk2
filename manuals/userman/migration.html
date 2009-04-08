@@ -187,7 +187,7 @@ Currently, Logtalk supports the following module directives:
 Logtalk supports the use of the <a title="Consult user manual" href="../userman/programming.html#programming_libraries"><em>library(name)</em> notation</a> on the <code>module/1-2</code> and <code>use_module/2</code> directives (assuming there is an entry for the library on the <a title="Consult reference manual" href="../refman/builtins/logtalk_library_path2.html"><code>logtalk_library_path/2</code></a> table).
 </p>
 <p>
-When compiling modules as objects, you probably don't need event support turned on. Thus, you may want to use the compiler option <code>events(off)</code> with the Logtalk compiling and loading built-in methods for a small performance gain for the compiled code.
+When compiling modules as objects, you probably don't need event support turned on. Thus, you may want to use the compiler option <code>events(deny)</code> with the Logtalk compiling and loading built-in methods for a small performance gain for the compiled code.
 </p>
 
 <h3 id="migration_limitations">Current limitations and workarounds</h3>
