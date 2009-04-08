@@ -40,6 +40,10 @@ RELEASE NOTES
     XML documentation automatically generated for synchronized predicates by
     appending the "synchronized" property to the predicate compilation mode.
 
+    Improved error handling for the built-in predicates logtalk_load/2,
+    logtalk_compile/2, current_logtalk_flag/2, and set_logtalk_flag/2
+    when checking flag names and values.
+
     Improved Logtalk compiler error and warning reporting by printing,
     whenever possible, the range of lines where the problem was found
     instead of printing only the starting line.

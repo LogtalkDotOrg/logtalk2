@@ -1740,17 +1740,43 @@ logtalk_compile(Files, Flags) :-
 '$lgt_check_compiler_flag_list'([]).
 
 '$lgt_check_compiler_flag_list'([Flag| Flags]) :-	
-	(	'$lgt_valid_compiler_flag'(Flag) ->
-		'$lgt_check_compiler_flag_list'(Flags)
-	;	throw(type_error(compiler_flag, Flag))
-	).
+	'$lgt_check_compiler_flag'(Flag),
+	'$lgt_check_compiler_flag_list'(Flags).
 
 
-'$lgt_valid_compiler_flag'(Flag) :-
-	compound(Flag),
+'$lgt_check_compiler_flag'(Flag) :-
+	var(Flag),
+	throw(instantiation_error).
+
+'$lgt_check_compiler_flag'(Flag) :-
+	\+ compound(Flag),
+	throw(type_error(logtalk_flag, Flag)).
+
+'$lgt_check_compiler_flag'(Flag) :-
+	\+ functor(Flag, _, 1),
+	throw(type_error(logtalk_flag, Flag)).
+
+'$lgt_check_compiler_flag'(Flag) :-
+	functor(Flag, Name, _),
+	\+ '$lgt_valid_flag'(Name),
+	throw(domain_error(logtalk_flag, Name)).
+
+'$lgt_check_compiler_flag'(Flag) :-
+	functor(Flag, Name, _),
+	'$lgt_read_only_flag'(Name),
+	throw(permission_error(modify, flag, Name)).
+
+'$lgt_check_compiler_flag'(Flag) :-
+	arg(1, Flag, Value),
+	var(Value),
+	throw(instantiation_error).
+
+'$lgt_check_compiler_flag'(Flag) :-
 	Flag =.. [Name, Value],
-	nonvar(Value),
-	'$lgt_valid_flag_value'(Name, Value).
+	\+ '$lgt_valid_flag_value'(Name, Value),
+	throw(domain_error(flag_value, Name + Value)).
+
+'$lgt_check_compiler_flag'(_).
 
 
 
@@ -1856,20 +1882,20 @@ set_logtalk_flag(Flag, Value) :-
 set_logtalk_flag(Flag, Value) :-
 	atom(Flag),
 	\+ '$lgt_valid_flag'(Flag),
-	throw(error(domain_error(valid_flag, Flag), set_logtalk_flag(Flag, Value))).
+	throw(error(domain_error(logtalk_flag, Flag), set_logtalk_flag(Flag, Value))).
 
 set_logtalk_flag(Flag, Value) :-
 	atom(Flag),
 	'$lgt_private_flag'(Flag),
-	throw(error(domain_error(valid_flag, Flag), set_logtalk_flag(Flag, Value))).
+	throw(error(domain_error(logtalk_flag, Flag), set_logtalk_flag(Flag, Value))).
 
 set_logtalk_flag(Flag, Value) :-
 	'$lgt_read_only_flag'(Flag),
-	throw(error(permission_error(modify, read_only_flag, Flag), set_logtalk_flag(Flag, Value))).
+	throw(error(permission_error(modify, flag, Flag), set_logtalk_flag(Flag, Value))).
 
 set_logtalk_flag(Flag, Value) :-
 	\+ '$lgt_valid_flag_value'(Flag, Value),
-	throw(error(domain_error(valid_flag_value, Value), set_logtalk_flag(Flag, Value))).
+	throw(error(domain_error(flag_value, Flag + Value), set_logtalk_flag(Flag, Value))).
 
 set_logtalk_flag(Flag, Value) :-
 	retractall('$lgt_current_flag_'(Flag, _)),
@@ -1896,12 +1922,12 @@ current_logtalk_flag(Flag, Value) :-
 current_logtalk_flag(Flag, Value) :-
 	atom(Flag),
 	\+ '$lgt_valid_flag'(Flag),
-	throw(error(domain_error(valid_flag, Flag), current_logtalk_flag(Flag, Value))).
+	throw(error(domain_error(logtalk_flag, Flag), current_logtalk_flag(Flag, Value))).
 
 current_logtalk_flag(Flag, Value) :-
 	atom(Flag),
 	'$lgt_private_flag'(Flag),
-	throw(error(domain_error(valid_flag, Flag), current_logtalk_flag(Flag, Value))).
+	throw(error(domain_error(logtalk_flag, Flag), current_logtalk_flag(Flag, Value))).
 
 current_logtalk_flag(Flag, Value) :-
 	'$lgt_current_flag_'(Flag, Value).
