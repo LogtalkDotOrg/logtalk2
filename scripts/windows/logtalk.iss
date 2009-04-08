@@ -201,11 +201,13 @@ begin
     InstalledVersion := -1;
   if IsAdminLoggedOn and (InstalledVersion >= 0) and (InstalledVersion < 2360) then
   begin
-    Warning := 'Older Logtalk settings files are incompatible with this new version. See the pristine "settings.lgt" file in your Logtalk user data folder for upgrade instructions.'
+    Warning := 'You have an older version of Logtalk installed whose configuration files are incompatible with this new version.'
                + Chr(13) + Chr(13)
-               + 'All aditional Logtalk users on your computer must also update their Logtalk settings files.';
+               + 'You must updade your Logtalk user data folder by performing a full installation.'
+               + Chr(13) + Chr(13)
+               + 'All aditional Logtalk users on your computer must also use this installer to update their Logtalk user data folders.';
     WarningPage := CreateOutputMsgPage(wpWelcome,
-  'Warning', 'Logtalk settings files update required.', Warning);
+  'Warning', 'Logtalk user data folder update required.', Warning);
   end
 end;
 
