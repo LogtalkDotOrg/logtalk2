@@ -2430,7 +2430,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	;	% no previous predicate declaration:
 		(	DDcl == nil ->
 			% object doesn't supports dynamic declaration of new predicates:
-			throw(error(permission_error(allow, dynamic_declarations, Pred), Goal, Sender))
+			throw(error(permission_error(create, predicate_declaration, Pred), Goal, Sender))
 		;	functor(Pred, Functor, Arity),
 			functor(DPred, Functor, Arity),
 			Clause =.. [DDcl, DPred, DclScope],
@@ -3462,7 +3462,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 				call(DGoal)
 			;	call(TGoal)
 			)
-		;	throw(error(permission_error(allow, context_switching_calls), Obj<<Goal, This))
+		;	throw(error(permission_error(access, predicate, Goal), Obj<<Goal, This))
 		)
 	;	throw(error(existence_error(object, Obj), Obj<<Goal, This))
 	).

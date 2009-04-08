@@ -65,12 +65,15 @@ RELEASE NOTES
 
     The compiler flags "context_switching_calls", "startup_message", and
     "altdirs" are no longer read-only flags in order to support changing
-    their default values within "settings.lgt" files. The possible values
-    for the compiler flags "dynamic_declarations", "context_switching_calls",
-    "complements", and "events" are now "allow" and "deny". Added a new 
-    read-only compiler flag "prolog_version". Renamed the compiler flag 
-    "prolog" to "prolog_dialect". Changed object compilation in order to
-    record the value of the "context_switching_calls" compiler flag.
+    their default values from within "settings.lgt" files. The possible
+    values for the compiler flags "dynamic_declarations", "complements",
+    "context_switching_calls", and "events" are now "allow" and "deny".
+    Added a new read-only compiler flag "prolog_version". Renamed the 
+    compiler flag "prolog" to "prolog_dialect".
+
+    Changed object compilation in order to restrict the use of the <</2
+    control construct to objects compiled with the "context_switching_calls"
+    compiler flag set to "allow".
 
     Changed the "cplgtdirs.*" and installation scripts to no longer make a
     copy of the "configs" directory in the Logtalk user directory. Updated
@@ -78,7 +81,7 @@ RELEASE NOTES
     file instead of editing the Prolog configuration files.
 
     Changed the Windows installer script in order to create Logtalk startup
-    scripts that start from the current directory as returned by the %CD% 
+    scripts that start from the current directory as returned by the "%CD%"
     dynamic environment variable. This allows a shortcut to be simply copied
     to a Logtalk project directory without requiring editing its properties
     in order to set the startup directory to the project directory.
@@ -94,7 +97,7 @@ RELEASE NOTES
     Added new '$lgt_environment_variable'/2, '$lgt_startup_directory'/1, and
     '$lgt_user_directory'/1 predicates to all config files.
 
-    Changed the defaut value for the "startup_message" compiler flag to the
+    Changed the default value for the "startup_message" compiler flag to the
     less verbose "flags(compact)".
 
     Updated the config files of the Ciao, CxProlog, GNU Prolog, ECLiPSE, and
@@ -137,7 +140,7 @@ RELEASE NOTES
     instead of the option "-f" in order to allow loading of any existing
     user initialization file (".plrc" on POSIX systems; see the SWI-Prolog
     reference manual) before loading the Logtalk files. On Windows the use
-    of the "-s" results in a double initialization bug.
+    of the "-s" results in a weird double initialization bug.
 
     Workaround a compilation error in the object "salt/3" in the "searching"
     example when using SICStus Prolog as a back-end compiler.
