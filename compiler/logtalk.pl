@@ -1493,7 +1493,7 @@ threaded_notify(Message) :-
 % compiling and loading built-in predicates
 
 
-% '$lgt_compiler_flag'(+atom, ?atom)
+% '$lgt_compiler_flag'(+atom, ?nonvar)
 %
 % gets/checks the current value of a compiler flag
 
@@ -1502,8 +1502,10 @@ threaded_notify(Message) :-
 		Value = Value2								% of the compiling and loading predicates
 	;	'$lgt_current_flag_'(Option, Value2) ->		% default value for the current Logtalk session,
 		Value = Value2								% set by calls to the set_logtalk_flag/2 predicate
-	;	'$lgt_default_flag'(Option, Value)			% default value, defined on the Prolog config files
-	;	'$lgt_prolog_feature'(Option, Value)		% back-end Prolog compiler features
+	;	'$lgt_default_flag'(Option, Value) ->		% default value, defined on the Prolog config files
+		true
+	;	'$lgt_prolog_feature'(Option, Value) ->		% back-end Prolog compiler features
+		true
 	).
 
 

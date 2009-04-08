@@ -63,6 +63,10 @@ RELEASE NOTES
     Corrected a bug where the Logtalk compiler would report the number of
     compilation warnings with the "report" compiler flag set to "off".
 
+    Updated the Logtalk compiler in order to avoid unwanted backtracking
+    during source file compilation and when using the entity creation
+    built-in predicates.
+
     The compiler flags "context_switching_calls", "startup_message", and
     "altdirs" are no longer read-only flags in order to support changing
     their default values from within "settings.lgt" files. The possible
