@@ -485,12 +485,15 @@ object_property(Obj, Prop) :-
 object_property(Obj, Prop) :-
 	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, Type),
 	(	Prop = Type							% static/dynamic property
-	;	'$lgt_entity_property_'(Obj, file(Base, Start, End, Path)),
-		(	Prop = file(Base, Path)
-		;	Start =\= -1, End =\= -1, Prop = lines(Start, End)
+	;	'$lgt_entity_property_'(Obj, Internal),
+		(	Internal = file(Base, Start, End, Path) ->
+			(	Prop = file(Base, Path)
+			;	Start =\= -1, End =\= -1, Prop = lines(Start, End)
+			)
+		;	Internal = flags(F1, F2, F3, F4, F5, F6) ->
+			'$lgt_object_flags'(Prop, flags(F1, F2, F3, F4, F5, F6))
+		;	Prop = Internal
 		)
-	;	'$lgt_entity_property_'(Obj, flags(F1, F2, F3, F4, F5, F6)),
-		'$lgt_object_flags'(Prop, flags(F1, F2, F3, F4, F5, F6))
 	).
 
 
@@ -510,12 +513,15 @@ category_property(Ctg, Prop) :-
 category_property(Ctg, Prop) :-
 	'$lgt_current_category_'(Ctg, _, _, _, _, Type),
 	(	Prop = Type							% static/dynamic property
-	;	'$lgt_entity_property_'(Ctg, file(Base, Start, End, Path)),
-		(	Prop = file(Base, Path)
-		;	Start =\= -1, End =\= -1, Prop = lines(Start, End)
+	;	'$lgt_entity_property_'(Ctg, Internal),
+		(	Internal = file(Base, Start, End, Path) ->
+			(	Prop = file(Base, Path)
+			;	Start =\= -1, End =\= -1, Prop = lines(Start, End)
+			)
+		;	Internal = flags(F1, F2) ->
+			'$lgt_category_flags'(Prop, flags(F1, F2))
+		;	Prop = Internal
 		)
-	;	'$lgt_entity_property_'(Ctg, flags(F1, F2)),
-		'$lgt_category_flags'(Prop, flags(F1, F2))
 	).
 
 
@@ -535,9 +541,12 @@ protocol_property(Ptc, Prop) :-
 protocol_property(Ptc, Prop) :-
 	'$lgt_current_protocol_'(Ptc, _, _, _, Type),
 	(	Prop = Type							% static/dynamic property
-	;	'$lgt_entity_property_'(Ptc, file(Base, Start, End, Path)),
-		(	Prop = file(Base, Path)
-		;	Start =\= -1, End =\= -1, Prop = lines(Start, End)
+	;	'$lgt_entity_property_'(Ptc, Internal),
+		(	Internal = file(Base, Start, End, Path) ->
+			(	Prop = file(Base, Path)
+			;	Start =\= -1, End =\= -1, Prop = lines(Start, End)
+			)
+		;	Prop = Internal
 		)
 	).
 
@@ -3486,7 +3495,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 '$lgt_call_within_context'(Obj, Goal, This) :-
 	(	'$lgt_current_object_'(Obj, Prefix, _, _, _, _, _, _, _, _, _) ->
-		(	'$lgt_entity_property_'(Obj, flags(csc, _, _, _, _, _)) ->
+		(	('$lgt_entity_property_'(Obj, built_in); '$lgt_entity_property_'(Obj, flags(csc, _, _, _, _, _))) ->
 			'$lgt_comp_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _, _),
 			'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 			(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
@@ -3598,8 +3607,11 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 
 '$lgt_entity_property_'(logtalk, built_in).
+'$lgt_entity_property_'(logtalk, threaded) :-
+	'$lgt_compiler_flag'(threads, supported).
 '$lgt_entity_property_'(user, built_in).
-'$lgt_entity_property_'(user, threaded).
+'$lgt_entity_property_'(user, threaded) :-
+	'$lgt_compiler_flag'(threads, supported).
 '$lgt_entity_property_'(debugger, built_in).
 '$lgt_entity_property_'(expanding, built_in).
 '$lgt_entity_property_'(monitoring, built_in).
