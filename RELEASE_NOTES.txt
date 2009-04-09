@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.36.0 - April 8, 2009
+2.36.0 - April 9, 2009
 
     Added support for overriding Logtalk default compiler flags (specified
     in the back-end Prolog compiler config files) using new settings files.
@@ -53,9 +53,13 @@ RELEASE NOTES
     "events". These properties are defined whenever the corresponding
     compiler flags are set to "allow" at the time of entity compilation.
 
-    Corrected a bug where some file-related entity properties would not be
-    stored when using back-end Prolog compilers that don't support multifile
-    predicates.
+    Corrected a bug where some file-related entity properties would not
+    be stored when using back-end Prolog compilers that don't support
+    multifile predicates.
+
+    Corrected a bug (introduced in version 2.35.0) in the compilation
+    and processing of "super" calls for objects that both instantiate
+    and specialize other objects.
 
     Corrected a bug (introduced in version 2.35.1) in the Logtalk compiler
     that prevented compilation of Prolog modules as objects.

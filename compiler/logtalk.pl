@@ -3257,17 +3257,19 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 
 
-% '$lgt_obj_super_call_same'(+atom, +object_identifier, +callable, +execution_context)
+% '$lgt_obj_super_call_same'(+atom, +object_identifier, +object_identifier, +callable, +execution_context)
 
-'$lgt_obj_super_call_same'(_, This, Pred, ExCtx) :-
+'$lgt_obj_super_call_same'(_, This, _, Pred, ExCtx) :-
 	'$lgt_super_lookup_cache_'(This, Pred, ExCtx, Call),
 	!,
 	call(Call).
 
-'$lgt_obj_super_call_same'(Super, This, Pred, ExCtx) :-
+'$lgt_obj_super_call_same'(Super, This, Self, Pred, ExCtx) :-
 	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
 	functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),		% construct "this" template
-	call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->		% lookup definition
+	functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),		% construct "self" template
+	'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _),
+	call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->					% lookup definition
 	asserta('$lgt_super_lookup_cache_'(GThis, GPred, GExCtx, GCall)),		% cache lookup result
 	(GPred, GExCtx) = (Pred, ExCtx),										% unify message arguments
 	call(GCall).															% call inherited definition
@@ -3283,40 +3285,41 @@ current_logtalk_flag(version, version(2, 36, 0)).
 
 '$lgt_ctg_super_call_same'(Ctg, Def, Pred, ExCtx) :-
 	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
-	call(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->			% lookup definition
+	call(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->						% lookup definition
 	asserta('$lgt_super_lookup_cache_'(Ctg, GPred, GExCtx, GCall)),			% cache lookup result
 	(GPred, GExCtx) = (Pred, ExCtx),										% unify message arguments
 	call(GCall).															% call inherited definition
 
 
 
-% '$lgt_obj_super_call_other'(+atom, +object_identifier, +callable, +execution_context)
+% '$lgt_obj_super_call_other'(+atom, +object_identifier, +object_identifier, +callable, +execution_context)
 
-'$lgt_obj_super_call_other'(_, This, Pred, _) :-
+'$lgt_obj_super_call_other'(_, This, _, Pred, _) :-
 	var(Pred),
 	throw(error(instantiation_error, ^^Pred, This)).
 
-'$lgt_obj_super_call_other'(Super, This, Pred, ExCtx) :-
-	'$lgt_obj_super_call_other_nv'(Super, This, Pred, ExCtx).
+'$lgt_obj_super_call_other'(Super, This, Self, Pred, ExCtx) :-
+	'$lgt_obj_super_call_other_nv'(Super, This, Self, Pred, ExCtx).
 
 
 
-% '$lgt_obj_super_call_other_nv'(+atom, +object_identifier, +callable, +execution_context)
+% '$lgt_obj_super_call_other_nv'(+atom, +object_identifier, +object_identifier, +callable, +execution_context)
 
-'$lgt_obj_super_call_other_nv'(_, This, Pred, ExCtx) :-
+'$lgt_obj_super_call_other_nv'(_, This, _, Pred, ExCtx) :-
 	'$lgt_super_lookup_cache_'(This, Pred, ExCtx, Call),
 	!,
 	call(Call).
 
-'$lgt_obj_super_call_other_nv'(Super, This, Pred, ExCtx) :-
-	'$lgt_exec_ctx'(ExCtx, _, _, Self, _),
+'$lgt_obj_super_call_other_nv'(Super, This, Self, Pred, ExCtx) :-
 	'$lgt_current_object_'(Self, _, Dcl, _, _, _, _, _, _, _, _),
 	call(Dcl, Pred, Scope, _, _, _, _, SCtn, _),
 	!,
 	(	(Scope = p(_); This = SCtn) ->										% check scope
 		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
 		functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),	% construct "this" template
-		call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->	% lookup definition
+		functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),	% construct "self" template
+		'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _),
+		call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->				% lookup definition
 		asserta('$lgt_super_lookup_cache_'(GThis, GPred, GExCtx, GCall)),	% cache lookup result
 		(GPred, GExCtx) = (Pred, ExCtx),									% unify message arguments
 		call(GCall)															% call inherited definition
@@ -3324,7 +3327,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 		throw(error(permission_error(access, private_predicate, Pred), ^^Pred, This))
 	).
 
-'$lgt_obj_super_call_other_nv'(_, This, Pred, _) :-
+'$lgt_obj_super_call_other_nv'(_, This, _, Pred, _) :-
 	(	'$lgt_built_in'(Pred) ->
 		call(Pred)
 	;	throw(error(existence_error(predicate_declaration, Pred), ^^Pred, This))
@@ -9121,43 +9124,47 @@ current_logtalk_flag(version, version(2, 36, 0)).
 %
 % translates calling of redefined predicates ("super" calls)
 
-'$lgt_tr_super_call'(Pred, _, _) :-			% invalid goal (not callable)
+'$lgt_tr_super_call'(Pred, _, _) :-				% invalid goal (not callable)
 	nonvar(Pred),
 	\+ callable(Pred),
 	throw(type_error(callable, Pred)).
 
-'$lgt_tr_super_call'(_, _, _) :-			% invalid goal (standalone object)
+'$lgt_tr_super_call'(_, _, _) :-				% invalid goal (standalone object)
 	'$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
 	\+ '$lgt_pp_extended_object_'(_, _, _, _, _, _, _, _, _, _),
 	\+ '$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _),
 	\+ '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _),
 	throw(existence_error(ancestor_object, Obj)).
 
-'$lgt_tr_super_call'(_, _, _) :-			% invalid goal (not an extended category)
+'$lgt_tr_super_call'(_, _, _) :-				% invalid goal (not an extended category)
 	'$lgt_pp_category_'(Ctg, _, _, _, _, _),
 	\+ '$lgt_pp_extended_category_'(_, _, _, _, _),
 	throw(existence_error(ancestor_category, Ctg)).
 
-'$lgt_tr_super_call'(Pred, TPred, Ctx) :-	% translation performed at runtime
+'$lgt_tr_super_call'(Pred, TPred, Ctx) :-		% translation performed at runtime
 	nonvar(Pred),
 	functor(Pred, Functor, Arity),
 	'$lgt_comp_ctx_head'(Ctx, Functor/Arity),	% "super" call to the predicate being redefined
 	!,
-	'$lgt_comp_ctx'(Ctx, _, _, This, _, _, _, _, ExCtx),
 	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
-	    TPred = '$lgt_obj_super_call_same'(Super, This, Pred, ExCtx)
+		'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx),
+		'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
+	    TPred = '$lgt_obj_super_call_same'(Super, This, Self, Pred, ExCtx)
 	;	'$lgt_pp_category_'(Ctg, _, _, Def, _, _) ->
+		'$lgt_comp_ctx'(Ctx, _, _, _, _, _, _, _, ExCtx),
 	    TPred = '$lgt_ctg_super_call_same'(Ctg, Def, Pred, ExCtx)
 	).
 
-'$lgt_tr_super_call'(Pred, TPred, Ctx) :-	% "super" call to a predicate other than the one being redefined
-	'$lgt_comp_ctx'(Ctx, _, _, This, _, _, _, _, ExCtx),
+'$lgt_tr_super_call'(Pred, TPred, Ctx) :-		% "super" call to a predicate other than the one being redefined
 	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
+		'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx),
+		'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
 		(	var(Pred) ->
-	    	TPred = '$lgt_obj_super_call_other'(Super, This, Pred, ExCtx)
-		;	TPred = '$lgt_obj_super_call_other_nv'(Super, This, Pred, ExCtx)
+	    	TPred = '$lgt_obj_super_call_other'(Super, This, Self, Pred, ExCtx)
+		;	TPred = '$lgt_obj_super_call_other_nv'(Super, This, Self, Pred, ExCtx)
 		)
 	;	'$lgt_pp_category_'(Ctg, _, Dcl, Def, _, _) ->
+		'$lgt_comp_ctx'(Ctx, _, _, _, _, _, _, _, ExCtx),
 		(	var(Pred) ->
 	    	TPred = '$lgt_ctg_super_call_other'(Ctg, Dcl, Def, Pred, ExCtx)
 		;	TPred = '$lgt_ctg_super_call_other_nv'(Ctg, Dcl, Def, Pred, ExCtx)
@@ -11132,7 +11139,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, _, CIDef, _, _, _),
 	'$lgt_exec_ctx'(CExCtx, Class, Ctx),
 	Lookup =.. [CIDef, Pred, CExCtx, Call, Ctn],
-	'$lgt_exec_ctx'(OExCtx, Obj, Ctx),
+	'$lgt_exec_ctx'(OExCtx, _, Obj, Obj, Ctx),
 	(	'$lgt_pp_alias_'(Class, _, _) ->
 		Head =.. [OSuper, Alias, OExCtx, Call, Ctn],
 		Rename =.. [Rnm, Class, Pred, Alias],
