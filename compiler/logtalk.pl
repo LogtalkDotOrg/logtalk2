@@ -11139,7 +11139,8 @@ current_logtalk_flag(version, version(2, 36, 0)).
 	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, _, CIDef, _, _, _),
 	'$lgt_exec_ctx'(CExCtx, Class, Ctx),
 	Lookup =.. [CIDef, Pred, CExCtx, Call, Ctn],
-	'$lgt_exec_ctx'(OExCtx, _, Obj, Obj, Ctx),
+	'$lgt_exec_ctx'(OExCtx, Obj, Ctx),
+	'$lgt_exec_ctx'(OExCtx, _, Obj, Obj, _),
 	(	'$lgt_pp_alias_'(Class, _, _) ->
 		Head =.. [OSuper, Alias, OExCtx, Call, Ctn],
 		Rename =.. [Rnm, Class, Pred, Alias],
