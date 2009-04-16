@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.36.0
+%  Release 2.36.1
 %  
 %  Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
@@ -1948,7 +1948,7 @@ current_logtalk_flag(Flag, Value) :-
 current_logtalk_flag(Flag, Value) :-
 	'$lgt_prolog_feature'(Flag, Value).
 
-current_logtalk_flag(version, version(2, 36, 0)).
+current_logtalk_flag(version, version(2, 36, 1)).
 
 
 
@@ -2065,7 +2065,7 @@ current_logtalk_flag(version, version(2, 36, 0)).
 		'$lgt_alias_pred'(Obj, Rnm, Pred, Pred2),
 		Prop = alias_of(Pred2)
 	;	call(Def, Pred, _, _, DCtn) ->	% must be the last property checked because
-		Prop = defined_in(DCtn)							% of the implicit cut on the ->/2 call
+		Prop = defined_in(DCtn)			% of the implicit cut on the ->/2 call
 	).
 
 '$lgt_predicate_property'(_, Pred, Prop, _, Scope) :-
