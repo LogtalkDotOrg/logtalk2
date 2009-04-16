@@ -13,7 +13,13 @@ RELEASE NOTES
 =============
 
 
-2.36.1 - April 9, 2009
+2.36.1 - May ??, 2009
+
+    Updated the Qu-Prolog config file in order to enable support for multifile
+    directives (version 8.9 or later is now required).
+
+
+2.36.0 - April 9, 2009
 
     Added support for overriding Logtalk default compiler flags (specified
     in the back-end Prolog compiler config files) using new settings files.
