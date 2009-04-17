@@ -22,10 +22,12 @@
 :- op(200,  fy,  @).
 :- op(200,  fy,  -).
 :- if(current_prolog_flag(threads, true)).
-    :- thread_local('$lgt_obj_lookup_cache_'/4).
-    :- thread_local('$lgt_self_lookup_cache_'/4).
-    :- thread_local('$lgt_super_lookup_cache_'/5).
-    :- thread_local('$lgt_super_lookup_cache_'/6).
+    :- thread_local('$lgt_send_to_obj_'/4).
+    :- thread_local('$lgt_send_to_self_'/4).
+    :- thread_local('$lgt_obj_super_call_same_'/4).
+    :- thread_local('$lgt_obj_super_call_other_'/4).
+    :- thread_local('$lgt_ctg_super_call_same_'/4).
+    :- thread_local('$lgt_ctg_super_call_other_'/4).
     :- thread_local('$lgt_db_lookup_cache_'/5).
 :- endif.
 :- include('../compiler/logtalk.pl').

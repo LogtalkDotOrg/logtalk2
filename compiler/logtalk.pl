@@ -136,9 +136,12 @@
 
 % lookup caches for messages to an object, messages to self, and super calls
 
-:- dynamic('$lgt_obj_lookup_cache_'/4).			% '$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Call)
-:- dynamic('$lgt_self_lookup_cache_'/4).		% '$lgt_self_lookup_cache_'(Obj, Pred, Sender, Call)
-:- dynamic('$lgt_super_lookup_cache_'/4).		% '$lgt_super_lookup_cache_'(ObjOrCtg, Pred, ExCtx, Call)
+:- dynamic('$lgt_send_to_obj_'/4).				% '$lgt_send_to_obj_'(Obj, Pred, Sender, Call)
+:- dynamic('$lgt_send_to_self_'/4).				% '$lgt_send_to_self_'(Obj, Pred, Sender, Mark)
+:- dynamic('$lgt_obj_super_call_same_'/4).		% '$lgt_obj_super_call_same_'(Obj, Pred, ExCtx, Mark)
+:- dynamic('$lgt_obj_super_call_other_'/4).		% '$lgt_obj_super_call_other_'(Obj, Pred, ExCtx, Mark)
+:- dynamic('$lgt_ctg_super_call_same_'/4).		% '$lgt_ctg_super_call_same_'(Obj, Pred, ExCtx, Mark)
+:- dynamic('$lgt_ctg_super_call_other_'/4).		% '$lgt_ctg_super_call_other_'(Obj, Pred, ExCtx, Mark)
 
 
 % lookup cache for asserting and retracting dynamic facts
@@ -3075,10 +3078,16 @@ current_logtalk_flag(version, version(2, 36, 1)).
 % '$lgt_send_to_self'(+object_identifier, ?term, +object_identifier)
 
 '$lgt_send_to_self'(Obj, Pred, Sender) :-
-	var(Pred),
-	throw(error(instantiation_error, Obj::Pred, Sender)).
+	(	var(Pred) ->
+		throw(error(instantiation_error, Obj::Pred, Sender))
+	;	'$lgt_send_to_self_'(Obj, Pred, Sender, _)
+	).
 
-'$lgt_send_to_self'(Obj, Pred, Sender) :-
+
+
+% '$lgt_send_to_self_'(+object_identifier, +term, +object_identifier, ?atom)
+
+'$lgt_send_to_self_'(Obj, Pred, Sender, fixed) :-
 	'$lgt_send_to_self_nv'(Obj, Pred, Sender).
 
 
@@ -3086,22 +3095,17 @@ current_logtalk_flag(version, version(2, 36, 1)).
 % '$lgt_send_to_self_nv'(+object_identifier, +term, +object_identifier)
 
 '$lgt_send_to_self_nv'(Obj, Pred, Sender) :-
-	'$lgt_self_lookup_cache_'(Obj, Pred, Sender, Call),
-	!,
-	call(Call).
-
-'$lgt_send_to_self_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
 	!,
-	(	call(Dcl, Pred, Scope, _, _, _, _, SCtn, _) ->					% lookup declaration
-		(	(Scope = p(_); Sender = SCtn) ->										% check scope
-			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
-			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
-			functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
+	(	call(Dcl, Pred, Scope, _, _, _, _, SCtn, _) ->											% lookup declaration
+		(	(Scope = p(_); Sender = SCtn) ->													% check scope
+			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
+			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),					% construct object template
+			functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),				% construct "sender" template
 			(	'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
-				call(Def, GPred, ExCtx, GCall, _) ->						% lookup definition
-				asserta('$lgt_self_lookup_cache_'(GObj, GPred, GSender, GCall)),	% cache lookup result
-				(GObj, GPred, GSender) = (Obj, Pred, Sender),						% unify message arguments
+				call(Def, GPred, ExCtx, GCall, _) ->											% lookup definition
+				asserta(('$lgt_send_to_self_'(GObj, GPred, GSender, volatile) :- !, GCall)),	% cache lookup result
+				(GObj, GPred, GSender) = (Obj, Pred, Sender),									% unify message arguments
 				call(GCall)
 			)
 		;	% message is not within the scope of the sender:
@@ -3113,6 +3117,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 		;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))
 		)
 	).
+
 
 
 % '$lgt_send_to_object'(@object_identifier, ?term, +object_identifier)
@@ -3133,7 +3138,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 % '$lgt_send_to_object_nv'(+object_identifier, +term, +object_identifier)
 
 '$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
-	'$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Call),
+	'$lgt_send_to_obj_'(Obj, Pred, Sender, Call),
 	!,
 	\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),				% call before event handlers
 	call(Call),																		% call method
@@ -3142,13 +3147,13 @@ current_logtalk_flag(version, version(2, 36, 1)).
 '$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
 	!,
-	(	call(Dcl, Pred, Scope, _, _, _, _, SCtn, _) ->					% lookup declaration
+	(	call(Dcl, Pred, Scope, _, _, _, _, SCtn, _) ->								% lookup declaration
 		(	Scope = p(p(_)) ->														% check public scope
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
 			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
-			(	call(Def, GPred, ExCtx, GCall, _) ->						% lookup definition
-				asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
+			(	call(Def, GPred, ExCtx, GCall, _) ->								% lookup definition
+				asserta('$lgt_send_to_obj_'(GObj, GPred, GSender, GCall)),			% cache lookup result
 				(GObj, GPred, GSender) = (Obj, Pred, Sender),						% unify message arguments
 				\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),	% call before event handlers
 				call(GCall),														% call method
@@ -3159,8 +3164,8 @@ current_logtalk_flag(version, version(2, 36, 1)).
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
 			functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
 			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
-			(	call(Def, GPred, ExCtx, GCall, _) ->						% lookup definition
-				asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
+			(	call(Def, GPred, ExCtx, GCall, _) ->								% lookup definition
+				asserta('$lgt_send_to_obj_'(GObj, GPred, GSender, GCall)),			% cache lookup result
 				(GObj, GPred, GSender) = (Obj, Pred, Sender),						% unify message arguments
 				\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),	% call before event handlers
 				call(GCall),														% call method
@@ -3212,7 +3217,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 % '$lgt_send_to_object_ne_nv'(+object_identifier, +term, +object_identifier)
 
 '$lgt_send_to_object_ne_nv'(Obj, Pred, Sender) :-
-	'$lgt_obj_lookup_cache_'(Obj, Pred, Sender, Call),
+	'$lgt_send_to_obj_'(Obj, Pred, Sender, Call),
 	!,
 	call(Call).
 
@@ -3225,7 +3230,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
 			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
 			(	call(Def, GPred, ExCtx, GCall, _) ->						% lookup definition
-				asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
+				asserta('$lgt_send_to_obj_'(GObj, GPred, GSender, GCall)),		% cache lookup result
 				(GObj, GPred, GSender) = (Obj, Pred, Sender),						% unify message arguments
 				call(GCall)															% call method
 			)
@@ -3235,7 +3240,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 			functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
 			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
 			(	call(Def, GPred, ExCtx, GCall, _) ->						% lookup definition
-				asserta('$lgt_obj_lookup_cache_'(GObj, GPred, GSender, GCall)),		% cache lookup result
+				asserta('$lgt_send_to_obj_'(GObj, GPred, GSender, GCall)),		% cache lookup result
 				(GObj, GPred, GSender) = (Obj, Pred, Sender),						% unify message arguments
 				call(GCall)															% call method
 			)
@@ -3266,116 +3271,128 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 
 
-% '$lgt_obj_super_call_same'(+atom, +object_identifier, +object_identifier, +callable, +execution_context)
+% '$lgt_super_call_same_'(+object_identifier, +callable, +execution_context, ?atom)
 
-'$lgt_obj_super_call_same'(_, This, _, Pred, ExCtx) :-
-	'$lgt_super_lookup_cache_'(This, Pred, ExCtx, Call),
-	!,
-	call(Call).
+'$lgt_obj_super_call_same_'(Super, Pred, ExCtx, fixed) :-
+	'$lgt_obj_super_call_same'(Super, Pred, ExCtx).
 
-'$lgt_obj_super_call_same'(Super, This, Self, Pred, ExCtx) :-
-	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
-	functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),		% construct "this" template
-	functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),		% construct "self" template
+
+
+% '$lgt_obj_super_call_same'(+atom, +callable, +execution_context)
+
+'$lgt_obj_super_call_same'(Super, Pred, ExCtx) :-
+	'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
+	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
+	functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),					% construct "this" template
+	functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),					% construct "self" template
 	'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _),
-	call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->					% lookup definition
-	asserta('$lgt_super_lookup_cache_'(GThis, GPred, GExCtx, GCall)),		% cache lookup result
-	(GPred, GExCtx) = (Pred, ExCtx),										% unify message arguments
-	call(GCall).															% call inherited definition
+	call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->								% lookup definition
+	asserta(('$lgt_obj_super_call_same_'(GThis, GPred, GExCtx, volatile) :- !, GCall)),	% cache lookup result
+	(GPred, GExCtx) = (Pred, ExCtx),													% unify message arguments
+	call(GCall).																		% call inherited definition
+
+
+
+% '$lgt_ctg_super_call_same_'(+category_identifier, +atom, +callable, +execution_context)
+
+'$lgt_ctg_super_call_same_'(Ctg, Pred, ExCtx, fixed) :-
+	'$lgt_ctg_super_call_same'(Ctg, Pred, ExCtx).
 
 
 
 % '$lgt_ctg_super_call_same'(+category_identifier, +atom, +callable, +execution_context)
 
-'$lgt_ctg_super_call_same'(Ctg, _, Pred, ExCtx) :-
-	'$lgt_super_lookup_cache_'(Ctg, Pred, ExCtx, Call),
-	!,
-	call(Call).
-
-'$lgt_ctg_super_call_same'(Ctg, Def, Pred, ExCtx) :-
-	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
-	call(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->						% lookup definition
-	asserta('$lgt_super_lookup_cache_'(Ctg, GPred, GExCtx, GCall)),			% cache lookup result
-	(GPred, GExCtx) = (Pred, ExCtx),										% unify message arguments
-	call(GCall).															% call inherited definition
+'$lgt_ctg_super_call_same'(Ctg, Pred, ExCtx) :-
+	'$lgt_pp_category_'(Ctg, _, _, Def, _, _) ->
+	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
+	call(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->									% lookup definition
+	asserta(('$lgt_ctg_super_call_same_'(Ctg, GPred, GExCtx, volatile) :- !, GCall)),	% cache lookup result
+	(GPred, GExCtx) = (Pred, ExCtx),													% unify message arguments
+	call(GCall).																		% call inherited definition
 
 
 
 % '$lgt_obj_super_call_other'(+atom, +object_identifier, +object_identifier, +callable, +execution_context)
 
-'$lgt_obj_super_call_other'(_, This, _, Pred, _) :-
-	var(Pred),
-	throw(error(instantiation_error, ^^Pred, This)).
+'$lgt_obj_super_call_other'(Super, Pred, ExCtx) :-
+	(	var(Pred) ->
+		'$lgt_exec_ctx'(ExCtx, This, _),
+		throw(error(instantiation_error, ^^Pred, This))
+	;	'$lgt_obj_super_call_other_'(Super, Pred, ExCtx, _)
+	).
 
-'$lgt_obj_super_call_other'(Super, This, Self, Pred, ExCtx) :-
-	'$lgt_obj_super_call_other_nv'(Super, This, Self, Pred, ExCtx).
+
+
+% '$lgt_obj_super_call_other_'(+atom, +object_identifier, +object_identifier, +callable, +execution_context)
+
+'$lgt_obj_super_call_other_'(Super, Pred, ExCtx, fixed) :-
+	'$lgt_obj_super_call_other_nv'(Super, Pred, ExCtx).
 
 
 
 % '$lgt_obj_super_call_other_nv'(+atom, +object_identifier, +object_identifier, +callable, +execution_context)
 
-'$lgt_obj_super_call_other_nv'(_, This, _, Pred, ExCtx) :-
-	'$lgt_super_lookup_cache_'(This, Pred, ExCtx, Call),
-	!,
-	call(Call).
-
-'$lgt_obj_super_call_other_nv'(Super, This, Self, Pred, ExCtx) :-
+'$lgt_obj_super_call_other_nv'(Super, Pred, ExCtx) :-
+	'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
 	'$lgt_current_object_'(Self, _, Dcl, _, _, _, _, _, _, _, _),
 	call(Dcl, Pred, Scope, _, _, _, _, SCtn, _),
 	!,
-	(	(Scope = p(_); This = SCtn) ->										% check scope
-		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
-		functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),	% construct "this" template
-		functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),	% construct "self" template
+	(	(Scope = p(_); This = SCtn) ->														% check scope
+		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
+		functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),					% construct "this" template
+		functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),					% construct "self" template
 		'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _),
-		call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->				% lookup definition
-		asserta('$lgt_super_lookup_cache_'(GThis, GPred, GExCtx, GCall)),	% cache lookup result
-		(GPred, GExCtx) = (Pred, ExCtx),									% unify message arguments
-		call(GCall)															% call inherited definition
+		call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->								% lookup definition
+		asserta(('$lgt_super_call_other_'(GThis, GPred, GExCtx, volatile) :- !, GCall)),	% cache lookup result
+		(GPred, GExCtx) = (Pred, ExCtx),													% unify message arguments
+		call(GCall)																			% call inherited definition
 	;	% predicate is not within the scope of the sender:
 		throw(error(permission_error(access, private_predicate, Pred), ^^Pred, This))
 	).
 
-'$lgt_obj_super_call_other_nv'(_, This, _, Pred, _) :-
+'$lgt_obj_super_call_other_nv'(_, Pred, ExCtx) :-
 	(	'$lgt_built_in'(Pred) ->
 		call(Pred)
-	;	throw(error(existence_error(predicate_declaration, Pred), ^^Pred, This))
+	;	'$lgt_exec_ctx'(ExCtx, This, _),
+		throw(error(existence_error(predicate_declaration, Pred), ^^Pred, This))
 	).
 
 
 
 % '$lgt_ctg_super_call_other'(+category_identifier, +atom, +callable, +object_identifier, +object_identifier, +object_identifier)
 
-'$lgt_ctg_super_call_other'(Ctg, _, _, Pred, _) :-
-	var(Pred),
-	throw(error(instantiation_error, ^^Pred, Ctg)).
+'$lgt_ctg_super_call_other'(Ctg, Pred, ExCtx) :-
+	(	var(Pred) ->
+		throw(error(instantiation_error, ^^Pred, Ctg))
+	;	'$lgt_ctg_super_call_other_'(Ctg, Pred, ExCtx, _)
+	).
 
-'$lgt_ctg_super_call_other'(Ctg, Dcl, Def, Pred, ExCtx) :-
-	'$lgt_ctg_super_call_other_nv'(Ctg, Dcl, Def, Pred, ExCtx).
+
+
+% '$lgt_ctg_super_call_other_'(+category_identifier, +atom, +callable, +object_identifier, +object_identifier, +object_identifier)
+
+'$lgt_ctg_super_call_other_'(Ctg, Pred, ExCtx, fixed) :-
+	'$lgt_ctg_super_call_other_nv'(Ctg, Pred, ExCtx).
 
 
 
 % '$lgt_ctg_super_call_other_nv'(+category_identifier, +atom, +callable, +object_identifier, +object_identifier, +object_identifier)
 
-'$lgt_ctg_super_call_other_nv'(Ctg, _, _, Pred, ExCtx) :-
-	'$lgt_super_lookup_cache_'(Ctg, Pred, ExCtx, Call),
-	!,
-	call(Call).
-
-'$lgt_ctg_super_call_other_nv'(Ctg, Dcl, Def, Pred, ExCtx) :-
+'$lgt_ctg_super_call_other_nv'(Ctg, Pred, ExCtx) :-
+	'$lgt_pp_category_'(Ctg, _, Dcl, Def, _, _),
 	call(Dcl, Pred, Scope, _, _, _, _, _),
 	!,
-	(	Scope = p(_) ->														% check scope
-		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),	% construct predicate template
-		call(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->		% lookup definition
-		asserta('$lgt_super_lookup_cache_'(Ctg, GPred, GExCtx, GCall)),		% cache lookup result
-		(GPred, GExCtx) = (Pred, ExCtx),									% unify message arguments
-		call(GCall)															% call inherited definition
+	(	Scope = p(_) ->																		% check scope
+		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
+		call(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->									% lookup definition
+		asserta(('$lgt_ctg_super_call_other_'(Ctg, GPred, GExCtx, volatile) :- !, GCall)),	% cache lookup result
+		(GPred, GExCtx) = (Pred, ExCtx),													% unify message arguments
+		call(GCall)																			% call inherited definition
 	;	% predicate is not within the scope of the sender:
 		throw(error(permission_error(access, private_predicate, Pred), ^^Pred, Ctg))
 	).
 
-'$lgt_ctg_super_call_other_nv'(Ctg, _, _, Pred, _) :-
+'$lgt_ctg_super_call_other_nv'(Ctg, Pred, _) :-
 	(	'$lgt_built_in'(Pred) ->
 		call(Pred)
 	;	throw(error(existence_error(predicate_declaration, Pred), ^^Pred, Ctg))
@@ -5461,9 +5478,12 @@ current_logtalk_flag(version, version(2, 36, 1)).
 % clean lookup caches
 
 '$lgt_clean_lookup_caches' :-
-	retractall('$lgt_obj_lookup_cache_'(_, _, _, _)),
-	retractall('$lgt_self_lookup_cache_'(_, _, _, _)),
-	retractall('$lgt_super_lookup_cache_'(_, _, _, _)),
+	retractall('$lgt_send_to_obj_'(_, _, _, _)),
+	retractall('$lgt_send_to_self_'(_, _, _, volatile)),
+	retractall('$lgt_obj_super_call_same_'(_, _, _, volatile)),
+	retractall('$lgt_obj_super_call_other_'(_, _, _, volatile)),
+	retractall('$lgt_ctg_super_call_same_'(_, _, _, volatile)),
+	retractall('$lgt_ctg_super_call_other_'(_, _, _, volatile)),
 	retractall('$lgt_db_lookup_cache_'(_, _, _, _, _)).
 
 
@@ -5473,9 +5493,12 @@ current_logtalk_flag(version, version(2, 36, 1)).
 % clean lookup caches for the matching predicate
 
 '$lgt_clean_lookup_caches'(Pred) :-
-	retractall('$lgt_obj_lookup_cache_'(_, Pred, _, _)),
-	retractall('$lgt_self_lookup_cache_'(_, Pred, _, _)),
-	retractall('$lgt_super_lookup_cache_'(_, Pred, _, _)),
+	retractall('$lgt_send_to_obj_'(_, Pred, _, _)),
+	retractall('$lgt_send_to_self_'(_, Pred, _, volatile)),
+	retractall('$lgt_obj_super_call_same_'(_, Pred, _, volatile)),
+	retractall('$lgt_obj_super_call_other_'(_, Pred, _, volatile)),
+	retractall('$lgt_ctg_super_call_same_'(_, Pred, _, volatile)),
+	retractall('$lgt_ctg_super_call_other_'(_, Pred, _, volatile)),
 	retractall('$lgt_db_lookup_cache_'(_, Pred, _, _, _)).
 
 
@@ -9113,7 +9136,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 % message is not a built-in control construct or a call to a built-in 
 % (meta-)predicate: translation performed at runtime
 
-'$lgt_tr_self_msg'(Pred, '$lgt_send_to_self_nv'(Self, Pred, This), This, Self) :-
+'$lgt_tr_self_msg'(Pred, '$lgt_send_to_self_'(Self, Pred, This, _), This, Self) :-
 	!.
 
 
@@ -9161,10 +9184,10 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
 		'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx),
 		'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
-	    TPred = '$lgt_obj_super_call_same'(Super, This, Self, Pred, ExCtx)
-	;	'$lgt_pp_category_'(Ctg, _, _, Def, _, _) ->
+	    TPred = '$lgt_obj_super_call_same_'(Super, Pred, ExCtx, _)
+	;	'$lgt_pp_category_'(Ctg, _, _, _, _, _) ->
 		'$lgt_comp_ctx'(Ctx, _, _, _, _, _, _, _, ExCtx),
-	    TPred = '$lgt_ctg_super_call_same'(Ctg, Def, Pred, ExCtx)
+	    TPred = '$lgt_ctg_super_call_same_'(Ctg, Pred, ExCtx, _)
 	).
 
 '$lgt_tr_super_call'(Pred, TPred, Ctx) :-		% "super" call to a predicate other than the one being redefined
@@ -9172,14 +9195,14 @@ current_logtalk_flag(version, version(2, 36, 1)).
 		'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx),
 		'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
 		(	var(Pred) ->
-	    	TPred = '$lgt_obj_super_call_other'(Super, This, Self, Pred, ExCtx)
-		;	TPred = '$lgt_obj_super_call_other_nv'(Super, This, Self, Pred, ExCtx)
+	    	TPred = '$lgt_obj_super_call_other'(Super, Pred, ExCtx)
+		;	TPred = '$lgt_obj_super_call_other_'(Super, Pred, ExCtx, _)
 		)
-	;	'$lgt_pp_category_'(Ctg, _, Dcl, Def, _, _) ->
+	;	'$lgt_pp_category_'(Ctg, _, _, _, _, _) ->
 		'$lgt_comp_ctx'(Ctx, _, _, _, _, _, _, _, ExCtx),
 		(	var(Pred) ->
-	    	TPred = '$lgt_ctg_super_call_other'(Ctg, Dcl, Def, Pred, ExCtx)
-		;	TPred = '$lgt_ctg_super_call_other_nv'(Ctg, Dcl, Def, Pred, ExCtx)
+	    	TPred = '$lgt_ctg_super_call_other'(Ctg, Pred, ExCtx)
+		;	TPred = '$lgt_ctg_super_call_other_'(Ctg, Pred, ExCtx, _)
 		)
 	).
 
