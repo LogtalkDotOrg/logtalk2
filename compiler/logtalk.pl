@@ -3155,15 +3155,15 @@ current_logtalk_flag(version, version(2, 36, 1)).
 			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
 			(	call(Def, GPred, ExCtx, GCall, _) ->											% lookup definition
 				GECall = (
-					\+ ('$lgt_before_'(GObj, GPred, GSender, _, BCall), \+ call(BCall)),
+					\+ ('$lgt_before_'(GObj, GPred, GSender, _, BCall), \+ BCall),
 					GCall,
-					\+ ('$lgt_after_'(GObj, GPred, GSender, _, ACall), \+ call(ACall))
+					\+ ('$lgt_after_'(GObj, GPred, GSender, _, ACall), \+ ACall)
 				),
 				asserta(('$lgt_send_to_obj_'(GObj, GPred, GSender, volatile) :- !, GECall)),	% cache lookup result
 				(GObj, GPred, GSender) = (Obj, Pred, Sender),									% unify message arguments
-				\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),				% call before event handlers
+				\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ BCall),						% call before event handlers
 				call(GCall),																	% call method
-				\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall))					% call after event handlers
+				\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ ACall)						% call after event handlers
 			)
 		;	Sender = SCtn ->																	% check scope container
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
@@ -3172,15 +3172,15 @@ current_logtalk_flag(version, version(2, 36, 1)).
 			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
 			(	call(Def, GPred, ExCtx, GCall, _) ->											% lookup definition
 				GECall = (
-					\+ ('$lgt_before_'(GObj, GPred, GSender, _, BCall), \+ call(BCall)),
+					\+ ('$lgt_before_'(GObj, GPred, GSender, _, BCall), \+ BCall),
 					GCall,
-					\+ ('$lgt_after_'(GObj, GPred, GSender, _, ACall), \+ call(ACall))
+					\+ ('$lgt_after_'(GObj, GPred, GSender, _, ACall), \+ ACall)
 				),			
 				asserta(('$lgt_send_to_obj_'(GObj, GPred, GSender, volatile) :- !, GECall)),	% cache lookup result
 				(GObj, GPred, GSender) = (Obj, Pred, Sender),									% unify message arguments
-				\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ call(BCall)),				% call before event handlers
+				\+ ('$lgt_before_'(Obj, Pred, Sender, _, BCall), \+ BCall),						% call before event handlers
 				call(GCall),																	% call method
-				\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ call(ACall))					% call after event handlers
+				\+ ('$lgt_after_'(Obj, Pred, Sender, _, ACall), \+ ACall)						% call after event handlers
 			)
 		;	% message is not within the scope of the sender:
 			(	Scope == p ->
@@ -8942,9 +8942,9 @@ current_logtalk_flag(version, version(2, 36, 1)).
 		)
 	;	(	'$lgt_compiler_flag'(events, allow) ->
 			(	'$lgt_obj_static_binding_cache'(Obj, Pred, This, Call) ->
-				TPred = (\+ ('$lgt_before_'(Obj, Pred, This, _, BCall), \+ call(BCall)),
+				TPred = (\+ ('$lgt_before_'(Obj, Pred, This, _, BCall), \+ BCall),
 						 Call,
-						 \+ ('$lgt_after_'(Obj, Pred, This, _, ACall), \+ call(ACall)))
+						 \+ ('$lgt_after_'(Obj, Pred, This, _, ACall), \+ ACall))
 			;	TPred = '$lgt_send_to_obj_'(Obj, Pred, This, _)
 			)
 		;	(	'$lgt_obj_static_binding_cache'(Obj, Pred, This, Call) ->
