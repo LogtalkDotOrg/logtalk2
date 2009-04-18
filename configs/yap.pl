@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: April 6, 2009
+%  last updated: April 18, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -66,10 +66,13 @@
 		dynamic('$lgt_threaded_tag_counter'/1), hide_predicate('$lgt_threaded_tag_counter'/1),
 		dynamic('$lgt_dbg_invocation_number_'/1), hide_predicate('$lgt_dbg_invocation_number_'/1),
 		dynamic('$lgt_settings_file_loaded'/1), hide_predicate('$lgt_settings_file_loaded'/1),
-		dynamic('$lgt_obj_lookup_cache_'/4), hide_predicate('$lgt_obj_lookup_cache_'/4),
-		dynamic('$lgt_self_lookup_cache_'/4), hide_predicate('$lgt_self_lookup_cache_'/4),
-		dynamic('$lgt_super_lookup_cache_'/4), hide_predicate('$lgt_super_lookup_cache_'/4),
-		dynamic('$lgt_db_lookup_cache_'/6), hide_predicate('$lgt_db_lookup_cache_'/6)
+		dynamic('$lgt_send_to_obj_'/4), hide_predicate('$lgt_send_to_obj_'/4),
+		dynamic('$lgt_send_to_self_'/4), hide_predicate('$lgt_send_to_self_'/4),
+		dynamic('$lgt_obj_super_call_same_'/4), hide_predicate('$lgt_obj_super_call_same_'/4),
+		dynamic('$lgt_obj_super_call_other_'/4), hide_predicate('$lgt_obj_super_call_other_'/4),
+		dynamic('$lgt_ctg_super_call_same_'/4), hide_predicate('$lgt_ctg_super_call_same_'/4),
+		dynamic('$lgt_ctg_super_call_other_'/4), hide_predicate('$lgt_ctg_super_call_other_'/4),
+		dynamic('$lgt_db_lookup_cache_'/5), hide_predicate('$lgt_db_lookup_cache_'/4)
 	;	true
 	).
 
