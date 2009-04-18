@@ -170,28 +170,24 @@ Whenever static binding is used, message sending performance is roughly the same
 In order to better understand the performance tradeoffs of using Logtalk dynamic binding when compared to plain Prolog or to Prolog module systems, is useful to translate message processing in terms of predicate calls. However, in doing this, we should keep in mind that the number of predicate calls is not necessarily proportional to the time taken to execute them.
 </p>
 <p>
-With event-suport turned on, a message sent from a compiled object to another object translates to six predicate calls:
+With event-suport turned on, a message sent from a compiled object to another object translates to three predicate calls:
 </p>
 <dl>
-	<dt>cache lookup</dt>
-		<dd>one predicate call to a dynamic table</dd>
 	<dt>checking for <em>before</em> events</dt>
-		<dd>two predicate calls assuming that no events are defined</dd>
-		<dd>(one of them to the built-in predicate <code>\+/1</code>)</dd>
-	<dt>method call</dt>
-		<dd>one predicate call</dd>
+		<dd>one call to the built-in predicate <code>\+/1</code>, assuming that no events are defined</dd>
+	<dt>method call using the cached lookup</dt>
+		<dd>one call to a dynamic predicate (the cache entry)</dd>
 	<dt>checking for <em>after</em> events</dt>
-		<dd>two predicate calls assuming that no events are defined</dd>
-		<dd>(one of them to the built-in predicate <code>\+/1</code>)</dd>
+		<dd>one call to the built-in predicate <code>\+/1</code>, assuming that no events are defined</dd>
 </dl>
 <p>
-Given that events can be dynamically defined at runtime, there is no room for reducing the number of predicate calls without turning off support for event-driven programming. When events are defined, the number of predicate calls grows proportional to the number of events and event handlers (monitors). Event-driven programming support can be switched off for specific object using the compiler flag <a title="Consult compiler flag details" href="programming.html#programming_flags"><code>events/1</code></a>. Doing so, reduces the number of predicate calls from six to just two.
+Given that events can be dynamically defined at runtime, there is no room for reducing the number of predicate calls without turning off support for event-driven programming. When events are defined, the number of predicate calls grows proportional to the number of events and event handlers (monitors). Event-driven programming support can be switched off for specific object using the compiler flag <a title="Consult compiler flag details" href="programming.html#programming_flags"><code>events/1</code></a>. Doing so, reduces the number of predicate calls from three to just one.
 </p>
 <p>
-Messages to <em>self</em> and <em>super</em> calls are transparent regarding events and, as such, imply only two predicate calls (the cache lookup and the method call itself).
+Messages to <em>self</em> and <em>super</em> calls are transparent regarding events and, as such, imply only one predicate call (to the cache entry, a dynamic predicate).
 </p>
 <p>
-When a message is sent by the user from the top-level interpreter, Logtalk needs to perform a runtime translation of the message term in order to prove the corresponding goal. Thus, while sending a message from a compiled object corresponds to either six predicate calls (event-support on) or two predicate calls (event-support off), the same message sent by the user from the top-level interpreter necessarily implies an overhead. Considering the time taken for the user to type the goal and read the reply, this overhead is of no practical consequence.
+When a message is sent by the user from the top-level interpreter, Logtalk needs to perform a runtime translation of the message term in order to prove the corresponding goal. Thus, while sending a message from a compiled object corresponds to either three predicate calls (event-support on) or one predicate call (event-support off), the same message sent by the user from the top-level interpreter necessarily implies an overhead. Considering the time taken for the user to type the goal and read the reply, this overhead is of no practical consequence.
 </p>
 <p>
 When a message is not cached, the number of predicate calls depends on the number of steps needed for the Logtalk runtime engine to lookup the corresponding predicate scope declaration (to check if the message is valid) and then to lookup a predicate definition for answering the message.
@@ -245,7 +241,7 @@ It should be stressed that message sending is only one of the factors affecting 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: December 18, 2008</span>
+		<span>Last updated on: April 18, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="nomenclature.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="objects.html">next</a></span><br/>

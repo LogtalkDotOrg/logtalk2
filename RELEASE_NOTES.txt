@@ -15,8 +15,10 @@ RELEASE NOTES
 
 2.36.1 - May ??, 2009
 
-    Improved dynamic binding performance by no longer using a meta-call for
-    cached predicate lookups.
+    Improved dynamic binding performance by making calls to the lookup caches
+    call the cached methods instead of simply returning the corresponding
+    callable terms, therefore no longer requiring a meta-call for executing
+    the methods.
 
     Updated the Qu-Prolog config file in order to enable support for multifile
     directives (version 8.9 or later is now required).
