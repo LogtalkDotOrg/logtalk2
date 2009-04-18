@@ -67,6 +67,7 @@
 		dynamic('$lgt_dbg_invocation_number_'/1), hide_predicate('$lgt_dbg_invocation_number_'/1),
 		dynamic('$lgt_settings_file_loaded'/1), hide_predicate('$lgt_settings_file_loaded'/1),
 		dynamic('$lgt_send_to_obj_'/4), hide_predicate('$lgt_send_to_obj_'/4),
+		dynamic('$lgt_send_to_obj_ne_'/4), hide_predicate('$lgt_send_to_obj_ne_'/4),
 		dynamic('$lgt_send_to_self_'/4), hide_predicate('$lgt_send_to_self_'/4),
 		dynamic('$lgt_obj_super_call_same_'/4), hide_predicate('$lgt_obj_super_call_same_'/4),
 		dynamic('$lgt_obj_super_call_other_'/4), hide_predicate('$lgt_obj_super_call_other_'/4),

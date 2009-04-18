@@ -61,6 +61,7 @@
 
 % lookup caches for messages to an object, messages to self, and super calls
 :- thread_private('$lgt_send_to_obj_'/4).
+:- thread_private('$lgt_send_to_obj_ne_'/4).
 :- thread_private('$lgt_send_to_self_'/4).
 :- thread_private('$lgt_obj_super_call_same_'/4).
 :- thread_private('$lgt_obj_super_call_other_'/4).

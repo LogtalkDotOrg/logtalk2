@@ -15,8 +15,8 @@ RELEASE NOTES
 
 2.36.1 - May ??, 2009
 
-    Improved dynamic binding performance for the ::/1 and ^^/1 control
-    constructs by no longer using a meta-call for cached predicate lookups. 
+    Improved dynamic binding performance by no longer using a meta-call for
+    cached predicate lookups.
 
     Updated the Qu-Prolog config file in order to enable support for multifile
     directives (version 8.9 or later is now required).
