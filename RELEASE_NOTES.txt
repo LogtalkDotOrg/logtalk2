@@ -20,6 +20,9 @@ RELEASE NOTES
     callable terms, therefore no longer requiring a meta-call for executing
     the methods.
 
+    Improved performance of the built-in database methods retractall/1 and
+    retract/1.
+
     Updated the Qu-Prolog config file in order to enable support for multifile
     directives (version 8.9 or later is now required).
 

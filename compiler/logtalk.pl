@@ -2700,8 +2700,11 @@ current_logtalk_flag(version, version(2, 36, 1)).
 '$lgt_retract_fact_chk'(Obj, Head, Sender, _) :-
 	'$lgt_db_lookup_cache_'(Obj, Head, Sender, THead, Update),
 	!,
-	retract(THead),
-	once(Update).
+	(	Update == true ->	% this apparently pointless
+		retract(THead)		% optimization allows up to
+	;	retract(THead),		% 20% performance increase
+		once(Update)		% with some Prolog compilers!
+	).
 
 '$lgt_retract_fact_chk'(Obj, Head, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjType),
@@ -2765,8 +2768,11 @@ current_logtalk_flag(version, version(2, 36, 1)).
 '$lgt_retractall_chk'(Obj, Head, Sender, _) :-
 	'$lgt_db_lookup_cache_'(Obj, Head, Sender, THead, Update),
 	!,
-	retractall(THead),
-	once(Update).
+	(	Update == true ->	% this apparently pointless
+		retractall(THead)   % optimization allows up to
+	;	retractall(THead),  % 20% performance increase
+		once(Update)		% with some Prolog compilers!
+	).
 
 '$lgt_retractall_chk'(Obj, Head, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjType),
@@ -2825,19 +2831,15 @@ current_logtalk_flag(version, version(2, 36, 1)).
 % adds a new database lookup cache entry (when an update goal is not needed)
 
 '$lgt_add_db_lookup_cache_entry'(Obj, Head, Scope, Type, Sender, THead) :-
-	functor(Obj, OFunctor, OArity),
-	functor(GObj, OFunctor, OArity),
-	functor(Head, HFunctor, HArity),
-	functor(GHead, HFunctor, HArity),
-	functor(THead, TFunctor, TArity),
-	functor(GTHead, TFunctor, TArity),
+	functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
+	functor(Head, HFunctor, HArity), functor(GHead, HFunctor, HArity),
+	functor(THead, TFunctor, TArity), functor(GTHead, TFunctor, TArity),
 	GHead =.. [_| Args],
 	GTHead =.. [_| ExtArgs],
 	'$lgt_unify_args'(Args, ExtArgs), 
 	(	(Scope = p(p(p)), Type == (dynamic)) ->
 		asserta('$lgt_db_lookup_cache_'(GObj, GHead, _, GTHead, true))
-	;	functor(Sender, SFunctor, SArity),
-		functor(GSender, SFunctor, SArity),
+	;	functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
 		asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GTHead, true))
 	).
 
@@ -2847,12 +2849,9 @@ current_logtalk_flag(version, version(2, 36, 1)).
 % adds a new database lookup cache entry
 
 '$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, Scope, Type, Sender, THead, DDef, NeedsUpdate) :-
-	functor(Obj, OFunctor, OArity),
-	functor(GObj, OFunctor, OArity),
-	functor(Head, HFunctor, HArity),
-	functor(GHead, HFunctor, HArity),
-	functor(THead, TFunctor, TArity),
-	functor(GTHead, TFunctor, TArity),
+	functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
+	functor(Head, HFunctor, HArity), functor(GHead, HFunctor, HArity),
+	functor(THead, TFunctor, TArity), functor(GTHead, TFunctor, TArity),
 	GHead =.. [_| Args],
 	GTHead =.. [_| ExtArgs],
 	'$lgt_unify_args'(Args, ExtArgs),
@@ -2862,18 +2861,15 @@ current_logtalk_flag(version, version(2, 36, 1)).
 		UClause =.. [DDef, UHead, _, _],
 		(	(Scope = p(p(p)), Type == (dynamic)) ->
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, _, GTHead, '$lgt_update_ddef_table_opt'(UHead, UTHead, UClause)))
-		;	functor(Sender, SFunctor, SArity),
-			functor(GSender, SFunctor, SArity),
+		;	functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GTHead, '$lgt_update_ddef_table_opt'(UHead, UTHead, UClause)))
 		)
 	;	(	(Scope = p(p(p)), Type == (dynamic)) ->
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, _, GTHead, true))
-		;	functor(Sender, SFunctor, SArity),
-			functor(GSender, SFunctor, SArity),
+		;	functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GTHead, true))
 		)
 	).
-
 
 
 '$lgt_unify_args'([], _).
