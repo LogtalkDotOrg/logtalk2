@@ -9,9 +9,9 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for SICStus Prolog 4.0 and later versions
+%  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: April 6, 2009
+%  last updated: April 19, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -139,6 +139,7 @@ forall(Generate, Test) :-
 '$lgt_prolog_feature'(prolog_dialect, sicstus).
 '$lgt_prolog_feature'(prolog_version, _) :-
 	fail.
+'$lgt_prolog_feature'(prolog_compatible_version, '@>='('4.0.3')).
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, source).

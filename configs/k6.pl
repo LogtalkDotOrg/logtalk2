@@ -11,7 +11,7 @@
 %
 %  configuration file for K-Prolog 6.0.4 and later versions
 %
-%  last updated: April 7, 2009
+%  last updated: April 19, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -126,6 +126,7 @@ call_cleanup(_, _) :-
 '$lgt_prolog_feature'(prolog_dialect, k).
 '$lgt_prolog_feature'(prolog_version, _) :-
 	fail.
+'$lgt_prolog_feature'(prolog_compatible_version, '@>='('6.0.4')).
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, source).

@@ -461,7 +461,7 @@ SICStus Prolog 3.8~3.12.x
     ~/.sicstusrc and ~/.sicstus.ini user initialization files.
 
 
-SICStus Prolog 4.0.x
+SICStus Prolog 4.0.3 and later versions
 
 	sicstus4.pl
 

@@ -163,6 +163,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_prolog_feature'(prolog_dialect, ?????).
 '$lgt_prolog_feature'(prolog_version, Version) :-
 	?????
+'$lgt_prolog_feature'(prolog_compatible_version, '@>='('?????')).
 
 '$lgt_prolog_feature'(break_predicate, ?????).
 '$lgt_prolog_feature'(encoding_directive, ?????).

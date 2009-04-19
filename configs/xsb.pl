@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.2 or later versions
 %
-%  last updated: March 28, 2009
+%  last updated: April 19, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -148,6 +148,7 @@ forall(Generate, Test) :-
 	number_chars(Patch, PatchChars), atom_chars(PatchAtom, ['.'| PatchChars]),
 	atom_concat(MajorAtom, MinorAtom, Aux),
 	atom_concat(Aux, PatchAtom, Version).
+'$lgt_prolog_feature'(prolog_compatible_version, '@>='('3.2.0')).
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).

@@ -11,7 +11,7 @@
 %
 %  configuration file for BinProlog 8.x~10.x
 %
-%  last updated: March 28, 2009
+%  last updated: April 19, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -247,6 +247,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_prolog_feature'(prolog_dialect, bin).
 '$lgt_prolog_feature'(prolog_version, _) :-
 	fail.
+'$lgt_prolog_feature'(prolog_compatible_version, '@>='('8')).
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).

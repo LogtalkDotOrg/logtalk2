@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 5.10#26 or later 5.10 versions
 %
-%  last updated: April 4, 2009
+%  last updated: April 19, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -293,6 +293,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_prolog_feature'(prolog_version, Version) :-
 	get_flag(version_as_list, [Major, Minor, Build]),
 	concat_atom([Major, '.', Minor, '.', Build], Version).
+'$lgt_prolog_feature'(prolog_compatible_version, '@>='('5.10.26')).
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).

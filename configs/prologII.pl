@@ -11,7 +11,7 @@
 %
 %  configuration file for PrologII+ 4.5 and later versions
 %
-%  last updated: March 28, 2009
+%  last updated: April 19, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -169,6 +169,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_prolog_feature'(prolog_dialect, prologII).
 '$lgt_prolog_feature'(prolog_version, _) :-
 	fail.
+'$lgt_prolog_feature'(prolog_compatible_version, '@>='('4.5')).
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).

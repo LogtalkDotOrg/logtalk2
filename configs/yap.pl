@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: April 18, 2009
+%  last updated: April 19, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -206,6 +206,7 @@
 '$lgt_prolog_feature'(prolog_version, Version) :-
 	current_prolog_flag(version_data, yap(Major, Minor, Patch, _)),
 	atomic_concat([Major, '.', Minor, '.', Patch], Version).
+'$lgt_prolog_feature'(prolog_compatible_version, '@>='('5.1.3')).
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, full).

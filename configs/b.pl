@@ -9,9 +9,9 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for B-Prolog 7.1
+%  configuration file for B-Prolog 7.1 and later versions
 %
-%  last updated: March 28, 2009
+%  last updated: April 19, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -133,6 +133,7 @@
 '$lgt_prolog_feature'(prolog_dialect, b).
 '$lgt_prolog_feature'(prolog_version, _) :-
 	fail.
+'$lgt_prolog_feature'(prolog_compatible_version, '@>='('7.1')).
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).

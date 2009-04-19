@@ -11,7 +11,7 @@
 %
 %  configuration file for Ciao Prolog 1.10#8
 %
-%  last updated: April 4, 2009
+%  last updated: April 19, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -251,6 +251,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 	number_chars(Major, MajorChars), atom_chars(MajorAtom, MajorChars),
 	number_chars(Patch, PatchChars), atom_chars(PatchAtom, ['.'| PatchChars]),
 	atom_concat(MajorAtom, PatchAtom, Version).
+'$lgt_prolog_feature'(prolog_compatible_version, '@>='('1.1.5')).
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).

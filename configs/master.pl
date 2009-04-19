@@ -11,7 +11,7 @@
 %
 %  configuration file for MasterProLog 4.1
 %
-%  last updated: March 28, 2009
+%  last updated: April 19, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -193,6 +193,7 @@ forall(Generate, Test) :-
 '$lgt_prolog_feature'(prolog_dialect, master).
 '$lgt_prolog_feature'(prolog_version, _) :-
 	fail.
+'$lgt_prolog_feature'(prolog_compatible_version, '=='('4.1')).
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
