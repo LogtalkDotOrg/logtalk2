@@ -2081,7 +2081,8 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	;	'$lgt_scope'(Prop, PScope)
 	;	functor(Pred, Functor, Arity),
 		functor(Meta, Functor, Arity),
-		('$lgt_meta_predicate'(Meta) -> Prop = meta_predicate(Meta))
+		'$lgt_meta_predicate'(Meta) ->
+		Prop = meta_predicate(Meta)
 	).
 
 '$lgt_predicate_property'(_, Pred, Prop, _, _) :-
@@ -2094,7 +2095,8 @@ current_logtalk_flag(version, version(2, 36, 1)).
 		)
 	;	functor(Pred, Functor, Arity),
 		functor(Meta, Functor, Arity),
-		('$lgt_meta_predicate'(Meta) -> Prop = meta_predicate(Meta))
+		'$lgt_meta_predicate'(Meta) ->
+		Prop = meta_predicate(Meta)
 	).
 
 
@@ -3133,6 +3135,9 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 
 % '$lgt_send_to_obj_'(+object_identifier, +term, +object_identifier, ?atom)
+%
+% the last clause of this cache predicate must never be retracted (hence the
+% "fixed" mark) and must call the predicate that generates a missing cache entry
 
 '$lgt_send_to_obj_'(Obj, Pred, Sender, fixed) :-
 	'$lgt_send_to_object_nv'(Obj, Pred, Sender).
@@ -3222,6 +3227,9 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 
 % '$lgt_send_to_obj_ne_'(+object_identifier, +term, +object_identifier, ?atom)
+%
+% the last clause of this cache predicate must never be retracted (hence the
+% "fixed" mark) and must call the predicate that generates a missing cache entry
 
 '$lgt_send_to_obj_ne_'(Obj, Pred, Sender, fixed) :-
 	'$lgt_send_to_object_ne_nv'(Obj, Pred, Sender).
@@ -3281,6 +3289,9 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 
 % '$lgt_super_call_same_'(+object_identifier, +callable, +execution_context, ?atom)
+%
+% the last clause of this cache predicate must never be retracted (hence the
+% "fixed" mark) and must call the predicate that generates a missing cache entry
 
 '$lgt_obj_super_call_same_'(Super, Pred, ExCtx, fixed) :-
 	'$lgt_obj_super_call_same'(Super, Pred, ExCtx).
@@ -3296,23 +3307,26 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),					% construct "self" template
 	'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _),
 	call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->								% lookup definition
-	asserta(('$lgt_obj_super_call_same_'(GThis, GPred, GExCtx, volatile) :- !, GCall)),	% cache lookup result
+	asserta(('$lgt_obj_super_call_same_'(Super, GPred, GExCtx, volatile) :- !, GCall)),	% cache lookup result
 	(GPred, GExCtx) = (Pred, ExCtx),													% unify message arguments
 	call(GCall).																		% call inherited definition
 
 
 
-% '$lgt_ctg_super_call_same_'(+category_identifier, +atom, +callable, +execution_context)
+% '$lgt_ctg_super_call_same_'(+category_identifier, +callable, +execution_context, ?atom)
+%
+% the last clause of this cache predicate must never be retracted (hence the
+% "fixed" mark) and must call the predicate that generates a missing cache entry
 
 '$lgt_ctg_super_call_same_'(Ctg, Pred, ExCtx, fixed) :-
 	'$lgt_ctg_super_call_same'(Ctg, Pred, ExCtx).
 
 
 
-% '$lgt_ctg_super_call_same'(+category_identifier, +atom, +callable, +execution_context)
+% '$lgt_ctg_super_call_same'(+category_identifier, +callable, +execution_context)
 
 '$lgt_ctg_super_call_same'(Ctg, Pred, ExCtx) :-
-	'$lgt_pp_category_'(Ctg, _, _, Def, _, _) ->
+	'$lgt_current_category_'(Ctg, _, _, Def, _, _) ->
 	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
 	call(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->									% lookup definition
 	asserta(('$lgt_ctg_super_call_same_'(Ctg, GPred, GExCtx, volatile) :- !, GCall)),	% cache lookup result
@@ -3321,7 +3335,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 
 
-% '$lgt_obj_super_call_other'(+atom, +object_identifier, +object_identifier, +callable, +execution_context)
+% '$lgt_obj_super_call_other'(+atom, +callable, +execution_context)
 
 '$lgt_obj_super_call_other'(Super, Pred, ExCtx) :-
 	(	var(Pred) ->
@@ -3332,14 +3346,17 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 
 
-% '$lgt_obj_super_call_other_'(+atom, +object_identifier, +object_identifier, +callable, +execution_context)
+% '$lgt_obj_super_call_other_'(+atom, +callable, +execution_context, ?atom)
+%
+% the last clause of this cache predicate must never be retracted (hence the
+% "fixed" mark) and must call the predicate that generates a missing cache entry
 
 '$lgt_obj_super_call_other_'(Super, Pred, ExCtx, fixed) :-
 	'$lgt_obj_super_call_other_nv'(Super, Pred, ExCtx).
 
 
 
-% '$lgt_obj_super_call_other_nv'(+atom, +object_identifier, +object_identifier, +callable, +execution_context)
+% '$lgt_obj_super_call_other_nv'(+atom, +callable, +execution_context)
 
 '$lgt_obj_super_call_other_nv'(Super, Pred, ExCtx) :-
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
@@ -3352,7 +3369,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 		functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),					% construct "self" template
 		'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _),
 		call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->								% lookup definition
-		asserta(('$lgt_super_call_other_'(GThis, GPred, GExCtx, volatile) :- !, GCall)),	% cache lookup result
+		asserta(('$lgt_super_call_other_'(Super, GPred, GExCtx, volatile) :- !, GCall)),	% cache lookup result
 		(GPred, GExCtx) = (Pred, ExCtx),													% unify message arguments
 		call(GCall)																			% call inherited definition
 	;	% predicate is not within the scope of the sender:
@@ -3368,7 +3385,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 
 
-% '$lgt_ctg_super_call_other'(+category_identifier, +atom, +callable, +object_identifier, +object_identifier, +object_identifier)
+% '$lgt_ctg_super_call_other'(+category_identifier, +callable, +execution_context)
 
 '$lgt_ctg_super_call_other'(Ctg, Pred, ExCtx) :-
 	(	var(Pred) ->
@@ -3378,17 +3395,20 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 
 
-% '$lgt_ctg_super_call_other_'(+category_identifier, +atom, +callable, +object_identifier, +object_identifier, +object_identifier)
+% '$lgt_ctg_super_call_other_'(+category_identifier, +callable, +execution_context, ?atom)
+%
+% the last clause of this cache predicate must never be retracted (hence the
+% "fixed" mark) and must call the predicate that generates a missing cache entry
 
 '$lgt_ctg_super_call_other_'(Ctg, Pred, ExCtx, fixed) :-
 	'$lgt_ctg_super_call_other_nv'(Ctg, Pred, ExCtx).
 
 
 
-% '$lgt_ctg_super_call_other_nv'(+category_identifier, +atom, +callable, +object_identifier, +object_identifier, +object_identifier)
+% '$lgt_ctg_super_call_other_nv'(+category_identifier, +callable, +execution_context)
 
 '$lgt_ctg_super_call_other_nv'(Ctg, Pred, ExCtx) :-
-	'$lgt_pp_category_'(Ctg, _, Dcl, Def, _, _),
+	'$lgt_current_category_'(Ctg, _, Dcl, Def, _, _),
 	call(Dcl, Pred, Scope, _, _, _, _, _),
 	!,
 	(	Scope = p(_) ->																		% check scope
