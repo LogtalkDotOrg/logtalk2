@@ -21,8 +21,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 true.
 
 
-| ?- puzzle::solve(Sum=Rs), label(Rs).
-[9, 5, 6, 7]+[1, 0, 8, 5]=[1, 0, 6, 5, 2]
+?- puzzle::solve(Sum=Rs).
 Sum = [9, 5, 6, 7]+[1, 0, 8, 5],
 Rs = [1, 0, 6, 5, 2] .
 

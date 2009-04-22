@@ -26,6 +26,10 @@ RELEASE NOTES
     Updated the Qu-Prolog config file in order to enable support for multifile
     directives (version 8.9 or later is now required).
 
+    Updated the "puzzle" constraint example for SWI-Prolog to avoid leaking
+    "clpfd" predicates in query binding results. Thanks to Ulrich Neumerkel
+    for reporting the problem.
+
 
 2.36.0 - April 9, 2009
 
