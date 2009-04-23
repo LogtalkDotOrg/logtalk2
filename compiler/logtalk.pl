@@ -3483,8 +3483,8 @@ current_logtalk_flag(version, version(2, 36, 1)).
 		Pred =.. [Functor| FullArgs]
 	),
 	(	\+ '$lgt_member'(Closure, MetaCallCtx) ->
-		'$lgt_metacall'(Pred, [], Sender, This, Self)
-	;	'$lgt_metacall'(Pred, [Pred], Sender, This, Self)
+		'$lgt_metacall_this'(Pred, Sender, This, Self)
+	;	'$lgt_metacall_sender'(Pred, Sender, This, Self)
 	).
 
 
@@ -3502,20 +3502,38 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 '$lgt_metacall'(Pred, MetaCallCtx, Sender, This, Self) :-
 	(	\+ '$lgt_member'(Pred, MetaCallCtx) ->
-		(	'$lgt_current_object_'(This, _, _, Def, _, _, _, _, DDef, _, _),
-			'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
-			(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
-			call(TPred)
-		;	functor(Pred, Functor, Arity),
-			throw(error(existence_error(procedure, Functor/Arity), Pred, This))
-		)
-	;	(	'$lgt_current_object_'(Sender, _, _, Def, _, _, _, _, DDef, _, _),
-			'$lgt_exec_ctx'(ExCtx, Sender, Sender, Self, _),
-			(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
-			call(TPred)
-		;	functor(Pred, Functor, Arity),
-			throw(error(existence_error(procedure, Functor/Arity), Pred, Sender))
-		)
+		'$lgt_metacall_this'(Pred, Sender, This, Self)
+	;	'$lgt_metacall_sender'(Pred, Sender, This, Self)
+	).
+
+
+
+% '$lgt_metacall_this'(+callable, +object_identifier, +object_identifier, +object_identifier)
+%
+% performs a meta-call in "this" at runtime
+
+'$lgt_metacall_this'(Pred, Sender, This, Self) :-
+	(	'$lgt_current_object_'(This, _, _, Def, _, _, _, _, DDef, _, _),
+		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
+		(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
+		call(TPred)
+	;	functor(Pred, Functor, Arity),
+		throw(error(existence_error(procedure, Functor/Arity), Pred, This))
+	).
+
+
+
+% '$lgt_metacall_sender'(+callable, +object_identifier, +object_identifier, +object_identifier)
+%
+% performs a meta-call in "sender" at runtime
+
+'$lgt_metacall_sender'(Pred, Sender, _, Self) :-
+	(	'$lgt_current_object_'(Sender, _, _, Def, _, _, _, _, DDef, _, _),
+		'$lgt_exec_ctx'(ExCtx, Sender, Sender, Self, _),
+		(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
+		call(TPred)
+	;	functor(Pred, Functor, Arity),
+		throw(error(existence_error(procedure, Functor/Arity), Pred, Sender))
 	).
 
 
@@ -7491,12 +7509,12 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	!,
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
 	(	'$lgt_member_var'(Pred, MetaVars) ->
-		% thus we're compiling a clause for a meta-predicate
+		% thus we're compiling a clause for a meta-predicate; therefore, we need
+		% to connect the excution context and the meta-call context arguments
 		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
 		TPred = '$lgt_metacall'(Pred, MetaCallCtx, Sender, This, Self)
 	;	% we're either compiling a clause for a normal predicate (i.e. MetaVars == [])
 		% or the meta-call should be local as it corresponds to a non meta-argument
-		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, []),
 		TPred = '$lgt_metacall'(Pred, [], Sender, This, Self)
 	).
 
