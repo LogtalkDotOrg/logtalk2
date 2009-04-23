@@ -23,6 +23,9 @@ RELEASE NOTES
     Improved performance of the built-in database methods retractall/1 and
     retract/1.
 
+    Corrected a bug where local calls to user meta-predicates would not be
+    visible to the built-in debugger.
+
     Updated the Qu-Prolog config file in order to enable support for multifile
     directives (version 8.9 or later is now required).
 

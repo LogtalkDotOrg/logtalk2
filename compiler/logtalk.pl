@@ -3438,21 +3438,21 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 
 
-% '$lgt_metacall'(?term, ?term, ?term, +object_identifier, +object_identifier, +object_identifier)
+% '$lgt_metacall'(?term, +list, ?term, +object_identifier, +object_identifier, +object_identifier)
 %
 % performs a meta-call constructed from a closure and a list of addtional arguments
 
-'$lgt_metacall'(Closure, Args, MetaCallCtx, Sender, This, _) :-
+'$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, _) :-
 	var(Closure),
-	Goal =.. [call, Closure| Args],
+	Goal =.. [call, Closure| ExtraArgs],
 	(	atom(MetaCallCtx) ->
 		throw(error(instantiation_error, This::Goal, This))
 	;	throw(error(instantiation_error, Sender::Goal, This))
 	).
 
-'$lgt_metacall'(Closure, Args, MetaCallCtx, Sender, This, _) :-
+'$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, _) :-
 	\+ callable(Closure),
-	Goal =.. [call, Closure| Args],
+	Goal =.. [call, Closure| ExtraArgs],
 	(	atom(MetaCallCtx) ->
 		throw(error(type_error(callable, Closure), This::Goal, This))
 	;	throw(error(type_error(callable, Closure), Sender::Goal, This))
@@ -3503,16 +3503,20 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	(	\+ '$lgt_member'(Pred, MetaCallCtx) ->
 		'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _),
 		'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, ExCtx),
-		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _)
+		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
+		'$lgt_tr_body'(Pred, Call, DCall, Ctx), !,
+		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(This) ->
+			call(DCall)
+		;	call(Call)
+		)
 	;	'$lgt_current_object_'(Sender, Prefix, _, _, _, _, _, _, _, _, _),
 		'$lgt_comp_ctx'(Ctx, _, Sender, Sender, Self, Prefix, [], _, ExCtx),
-		'$lgt_exec_ctx'(ExCtx, Sender, Sender, Self, _)
-	),
-	'$lgt_tr_body'(Pred, Call, DCall, Ctx),
-    !,
-	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Sender) ->
-		call(DCall)
-	;	call(Call)
+		'$lgt_exec_ctx'(ExCtx, Sender, Sender, Self, _),
+		'$lgt_tr_body'(Pred, Call, DCall, Ctx), !,
+		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Sender) ->
+			call(DCall)
+		;	call(Call)
+		)
 	).
 
 
