@@ -184,7 +184,7 @@ Currently, Logtalk supports the following module directives:
 		<dd>Module meta-predicates become object meta-predicates. Only predicate arguments marked as <code>:</code> are interpreted as meta-arguments. However, note that Prolog module meta-predicates and Logtalk meta-predicates don't share the same exact semantics; check results carefully.</dd>
 </dl>
 <p>
-Logtalk supports the use of the <a title="Consult user manual" href="../userman/programming.html#programming_libraries"><em>library(name)</em> notation</a> on the <code>module/1-2</code> and <code>use_module/2</code> directives (assuming there is an entry for the library on the <a title="Consult reference manual" href="../refman/builtins/logtalk_library_path2.html"><code>logtalk_library_path/2</code></a> table).
+Logtalk supports the use of the <a title="Consult user manual" href="../userman/programming.html#programming_libraries"><em>library(name)</em> notation</a> on the <code>use_module/2</code> directive (assuming there is an entry for the library on the <a title="Consult reference manual" href="../refman/builtins/logtalk_library_path2.html"><code>logtalk_library_path/2</code></a> table).
 </p>
 <p>
 When compiling modules as objects, you probably don't need event support turned on. Thus, you may want to use the compiler option <code>events(deny)</code> with the Logtalk compiling and loading built-in methods for a small performance gain for the compiled code.
@@ -245,8 +245,6 @@ Logtalk supports the use of <code>use_module/2</code> directives in object and c
 
     :- use_module(clpfd, [all_different/1, ins/2, label/1, (#=)/2, (#\=)/2]).
 
-    :- initialization((puzzle(As+Bs=Cs), label(As), write(As+Bs=Cs), nl)).
-
     puzzle([S,E,N,D] + [M,O,R,E] = [M,O,N,E,Y]) :-
         Vars = [S,E,N,D,M,O,R,Y],
         Vars ins 0..9,
@@ -254,7 +252,8 @@ Logtalk supports the use of <code>use_module/2</code> directives in object and c
                   S*1000 + E*100 + N*10 + D +
                   M*1000 + O*100 + R*10 + E #=
         M*10000 + O*1000 + N*100 + E*10 + Y,
-        M #\= 0, S #\= 0.
+        M #\= 0, S #\= 0,
+        label([M,O,N,E,Y]).
 
 :- end_object.
 </pre>
@@ -272,7 +271,7 @@ With this directive, calls to the <code>ins/2</code> predicate alias will be aut
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: February 24, 2009</span>
+		<span>Last updated on: April 23, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="programming.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>
