@@ -7509,7 +7509,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	!,
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
 	(	'$lgt_member_var'(Pred, MetaVars) ->
-		% thus we're compiling a clause for a meta-predicate; therefore, we need
+		% we're compiling a clause for a meta-predicate; therefore, we need
 		% to connect the excution context and the meta-call context arguments
 		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
 		TPred = '$lgt_metacall'(Pred, MetaCallCtx, Sender, This, Self)
@@ -7622,9 +7622,12 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	!,
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
 	(	'$lgt_member_var'(Closure, MetaVars) ->
+		% we're compiling a clause for a meta-predicate; therefore, we need
+		% to connect the excution context and the meta-call context arguments
 		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
 		TPred = '$lgt_metacall'(Closure, Args, MetaCallCtx, Sender, This, Self)
-	;	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, []),
+	;	% we're either compiling a clause for a normal predicate (i.e. MetaVars == [])
+		% or the meta-call should be local as it corresponds to a non meta-argument
 		TPred = '$lgt_metacall'(Closure, Args, [], Sender, This, Self)
 	),
 	DPred = '$lgt_dbg_goal'(CallN, TPred, ExCtx).
