@@ -3438,7 +3438,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 
 
-% '$lgt_metacall'(?term, +list, ?term, +object_identifier, +object_identifier, +object_identifier)
+% '$lgt_metacall'(?term, +list, @term, +object_identifier, +object_identifier, +object_identifier)
 %
 % performs a meta-call constructed from a closure and a list of addtional arguments
 
@@ -3463,11 +3463,9 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	Closure =.. [Functor| Args],
 	'$lgt_append'(Args, ExtraArgs, FullArgs),
 	Pred =.. [Functor| FullArgs],
-	'$lgt_tr_msg'(Pred, Obj, TPred, This),
-	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
-		'$lgt_exec_ctx'(ExCtx, This, This, Obj, []),
-		'$lgt_dbg_goal'(Obj::Pred, TPred, ExCtx)
-	;	call(TPred)
+	(	'$lgt_entity_property_'(This, flags(_, _, _, e, _, _)) ->
+		'$lgt_send_to_obj_ne_'(Obj, Pred, This, _)
+	;	'$lgt_send_to_obj_'(Obj, Pred, This, _)
 	).
 
 '$lgt_metacall'(':'(Module, Closure), ExtraArgs, _, _, _, _) :-
@@ -3478,9 +3476,12 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	':'(Module, Pred).
 
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
-	Closure =.. [Functor| Args],
-	'$lgt_append'(Args, ExtraArgs, FullArgs),
-	Pred =.. [Functor| FullArgs],
+	(	atom(Closure) ->
+		Pred =.. [Closure| ExtraArgs]
+	;	Closure =.. [Functor| Args],
+		'$lgt_append'(Args, ExtraArgs, FullArgs),
+		Pred =.. [Functor| FullArgs]
+	),
 	(	\+ '$lgt_member'(Closure, MetaCallCtx) ->
 		'$lgt_metacall'(Pred, [], Sender, This, Self)
 	;	'$lgt_metacall'(Pred, [Pred], Sender, This, Self)
@@ -3488,7 +3489,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 
 
-% '$lgt_metacall'(?term, ?term, +object_identifier, +object_identifier, +object_identifier)
+% '$lgt_metacall'(?term, @term, +object_identifier, +object_identifier, +object_identifier)
 %
 % performs a meta-call at runtime
 
@@ -3501,21 +3502,19 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 '$lgt_metacall'(Pred, MetaCallCtx, Sender, This, Self) :-
 	(	\+ '$lgt_member'(Pred, MetaCallCtx) ->
-		'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _),
-		'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, ExCtx),
-		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
-		'$lgt_tr_body'(Pred, Call, DCall, Ctx), !,
-		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(This) ->
-			call(DCall)
-		;	call(Call)
+		(	'$lgt_current_object_'(This, _, _, Def, _, _, _, _, DDef, _, _),
+			'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
+			(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
+			call(TPred)
+		;	functor(Pred, Functor, Arity),
+			throw(error(existence_error(procedure, Functor/Arity), Pred, This))
 		)
-	;	'$lgt_current_object_'(Sender, Prefix, _, _, _, _, _, _, _, _, _),
-		'$lgt_comp_ctx'(Ctx, _, Sender, Sender, Self, Prefix, [], _, ExCtx),
-		'$lgt_exec_ctx'(ExCtx, Sender, Sender, Self, _),
-		'$lgt_tr_body'(Pred, Call, DCall, Ctx), !,
-		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Sender) ->
-			call(DCall)
-		;	call(Call)
+	;	(	'$lgt_current_object_'(Sender, _, _, Def, _, _, _, _, DDef, _, _),
+			'$lgt_exec_ctx'(ExCtx, Sender, Sender, Self, _),
+			(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
+			call(TPred)
+		;	functor(Pred, Functor, Arity),
+			throw(error(existence_error(procedure, Functor/Arity), Pred, Sender))
 		)
 	).
 
