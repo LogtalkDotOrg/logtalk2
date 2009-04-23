@@ -20,44 +20,44 @@
 #include ../compiler/logtalk.pl
 
 % tables of defined events and monitors
-:- thread_shared('$lgt_before_'(_, _, _, _, _)).
-:- thread_shared('$lgt_after_'(_, _, _, _, _)).
+:- thread_shared('$lgt_before_'/5).
+:- thread_shared('$lgt_after_'/5).
 
 % tables of loaded entities, entity properties, and entity relations
-:- thread_shared('$lgt_current_protocol_'(_, _, _, _, _)).
-:- thread_shared('$lgt_current_category_'(_, _, _, _, _, _)).
-:- thread_shared('$lgt_current_object_'(_, _, _, _, _, _, _, _, _, _, _)).
+:- thread_shared('$lgt_current_protocol_'/5).
+:- thread_shared('$lgt_current_category_'/6).
+:- thread_shared('$lgt_current_object_'/11).
 
-:- thread_shared('$lgt_entity_property_'(_, _)).
+:- thread_shared('$lgt_entity_property_'/2).
 
-:- thread_shared('$lgt_implements_protocol_'(_, _, _)).
-:- thread_shared('$lgt_imports_category_'(_, _, _)).
-:- thread_shared('$lgt_instantiates_class_'(_, _, _)).
-:- thread_shared('$lgt_specializes_class_'(_, _, _)).
-:- thread_shared('$lgt_extends_protocol_'(_, _, _)).
-:- thread_shared('$lgt_extends_object_'(_, _, _)).
-:- thread_shared('$lgt_complemented_object_'(_, _, _, _, _)).
+:- thread_shared('$lgt_implements_protocol_'/3).
+:- thread_shared('$lgt_imports_category_'/3).
+:- thread_shared('$lgt_instantiates_class_'/3).
+:- thread_shared('$lgt_specializes_class_'/3).
+:- thread_shared('$lgt_extends_protocol_'/3).
+:- thread_shared('$lgt_extends_object_'/3).
+:- thread_shared('$lgt_complemented_object_'/5).
 
 % table of loaded files
-:- thread_shared('$lgt_loaded_file_'(_, _)).
+:- thread_shared('$lgt_loaded_file_'/2).
 
 % debugger status and tables
-:- thread_shared('$lgt_debugging_'(_)).
+:- thread_shared('$lgt_debugging_'/1).
 
 :- thread_shared('$lgt_dbg_debugging_').
 :- thread_shared('$lgt_dbg_tracing_').
 :- thread_shared('$lgt_dbg_skipping_').
-:- thread_shared('$lgt_dbg_spying_'(_, _)).
-:- thread_shared('$lgt_dbg_spying_'(_, _, _, _)).
-:- thread_shared('$lgt_dbg_leashing_'(_)).
+:- thread_shared('$lgt_dbg_spying_'/2).
+:- thread_shared('$lgt_dbg_spying_'/4).
+:- thread_shared('$lgt_dbg_leashing_'/1).
 
 % runtime flags
-:- thread_shared('$lgt_current_flag_'(_, _)).
+:- thread_shared('$lgt_current_flag_'/2).
 
 % static binding caches
-:- thread_shared('$lgt_static_binding_entity_'(_)).
-:- thread_shared('$lgt_obj_static_binding_cache_'(_, _, _, _)).
-:- thread_shared('$lgt_ctg_static_binding_cache_'(_, _, _, _, _, _)).
+:- thread_shared('$lgt_static_binding_entity_'/1).
+:- thread_shared('$lgt_obj_static_binding_cache_'/4).
+:- thread_shared('$lgt_ctg_static_binding_cache_'/4).
 
 % lookup caches for messages to an object, messages to self, and super calls
 :- thread_private('$lgt_send_to_obj_'/4).
@@ -67,17 +67,16 @@
 :- thread_private('$lgt_obj_super_call_other_'/4).
 :- thread_private('$lgt_ctg_super_call_same_'/4).
 :- thread_private('$lgt_ctg_super_call_other_'/4).
-:- thread_private('$lgt_db_lookup_cache_'/5).
 
 % lookup cache for asserting and retracting dynamic facts
-:- thread_private('$lgt_db_lookup_cache_'(_, _, _, _, _)).
+:- thread_private('$lgt_db_lookup_cache_'/5).
 
 % table of library paths
-:- thread_shared(logtalk_library_path(_, _)).
+:- thread_shared(logtalk_library_path/2).
 
 % compiler hook term and goal expansion:
-:- thread_shared('$lgt_hook_term_expansion_'(_, _)).
-:- thread_shared('$lgt_hook_goal_expansion_'(_, _)).
+:- thread_shared('$lgt_hook_term_expansion_'/2).
+:- thread_shared('$lgt_hook_goal_expansion_'/2).
 
 % multi-threading tags
-:- thread_shared('$lgt_threaded_tag_counter'(_)).
+:- thread_shared('$lgt_threaded_tag_counter'/1).
