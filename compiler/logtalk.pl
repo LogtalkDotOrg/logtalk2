@@ -3518,7 +3518,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 		(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
 		call(TPred)
 	;	functor(Pred, Functor, Arity),
-		throw(error(existence_error(procedure, Functor/Arity), Pred, This))
+		throw(error(existence_error(procedure, Functor/Arity), call(Pred), This))
 	).
 
 
@@ -3533,7 +3533,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 		(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
 		call(TPred)
 	;	functor(Pred, Functor, Arity),
-		throw(error(existence_error(procedure, Functor/Arity), Pred, Sender))
+		throw(error(existence_error(procedure, Functor/Arity), call(Pred), Sender))
 	).
 
 
@@ -8833,21 +8833,21 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 '$lgt_tr_msg'(call(Pred), Obj, TPred, This) :-
 	!,
-	TPred = '$lgt_metacall'(Pred, [], This, This, Obj).
+	TPred = '$lgt_metacall'(Pred, _, This, This, Obj).
 
 '$lgt_tr_msg'(CallN, Obj, TPred, This) :-
 	CallN =.. [call, Closure| Args],
 	!,
-	TPred = '$lgt_metacall'(Closure, Args, [], This, This, Obj).
+	TPred = '$lgt_metacall'(Closure, Args, _, This, This, Obj).
 
 '$lgt_tr_msg'(once(Pred), Obj, once(TPred), This) :-
 	!,
-	TPred = '$lgt_metacall'(Pred, [], This, This, Obj).
+	TPred = '$lgt_metacall'(Pred, _, This, This, Obj).
 
 '$lgt_tr_msg'(catch(Goal, Catcher, Recovery), Obj, catch(TGoal, Catcher, TRecovery), This) :-
 	!,
-	TGoal = '$lgt_metacall'(Goal, [], This, This, Obj),
-	TRecovery = '$lgt_metacall'(Recovery, [], This, This, Obj).
+	TGoal = '$lgt_metacall'(Goal, _, This, This, Obj),
+	TRecovery = '$lgt_metacall'(Recovery, _, This, This, Obj).
 
 '$lgt_tr_msg'(throw(Error), Obj, ('$lgt_obj_exists'(Obj, throw(Error), This), throw(Error)), This) :-
 	!.
@@ -8857,20 +8857,20 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 '$lgt_tr_msg'(bagof(Term, Pred, List), Obj, bagof(Term, TPred, List), This) :-
 	!,
-	TPred = '$lgt_metacall'(Pred, [], This, This, Obj).
+	TPred = '$lgt_metacall'(Pred, _, This, This, Obj).
 
 '$lgt_tr_msg'(findall(Term, Pred, List), Obj, findall(Term, TPred, List), This) :-
 	!,
-	TPred = '$lgt_metacall'(Pred, [], This, This, Obj).
+	TPred = '$lgt_metacall'(Pred, _, This, This, Obj).
 
 '$lgt_tr_msg'(forall(Gen, Test), Obj, forall(TGen, TTest), This) :-
 	!,
-	TGen = '$lgt_metacall'(Gen, [], This, This, Obj),
-	TTest = '$lgt_metacall'(Test, [], This, This, Obj).
+	TGen = '$lgt_metacall'(Gen, _, This, This, Obj),
+	TTest = '$lgt_metacall'(Test, _, This, This, Obj).
 
 '$lgt_tr_msg'(setof(Term, Pred, List), Obj, setof(Term, TPred, List), This) :-
 	!,
-	TPred = '$lgt_metacall'(Pred, [], This, This, Obj).
+	TPred = '$lgt_metacall'(Pred, _, This, This, Obj).
 
 
 % "reflection" built-in predicates
@@ -9050,21 +9050,21 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 '$lgt_tr_self_msg'(call(Pred), TPred, This, Self) :-
 	!,
-	TPred = '$lgt_metacall'(Pred, [], This, This, Self).
+	TPred = '$lgt_metacall'(Pred, _, This, This, Self).
 
 '$lgt_tr_self_msg'(CallN, TPred, This, Self) :-
 	CallN =.. [call, Closure| Args],
 	!,
-	TPred = '$lgt_metacall'(Closure, Args, [], This, This, Self).
+	TPred = '$lgt_metacall'(Closure, Args, _, This, This, Self).
 
 '$lgt_tr_self_msg'(once(Pred), once(TPred), This, Self) :-
 	!,
-	TPred = '$lgt_metacall'(Pred, [], This, This, Self).
+	TPred = '$lgt_metacall'(Pred, _, This, This, Self).
 
 '$lgt_tr_self_msg'(catch(Goal, Catcher, Recovery), catch(TGoal, Catcher, TRecovery), This, Self) :-
 	!,
-	TGoal = '$lgt_metacall'(Goal, [], This, This, Self),
-	TRecovery = '$lgt_metacall'(Recovery, [], This, This, Self).
+	TGoal = '$lgt_metacall'(Goal, _, This, This, Self),
+	TRecovery = '$lgt_metacall'(Recovery, _, This, This, Self).
 
 '$lgt_tr_self_msg'(throw(Error), throw(Error), _, _) :-
 	!.
@@ -9074,20 +9074,20 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 '$lgt_tr_self_msg'(bagof(Term, Pred, List), bagof(Term, TPred, List), This, Self) :-
 	!,
-	TPred = '$lgt_metacall'(Pred, [], This, This, Self).
+	TPred = '$lgt_metacall'(Pred, _, This, This, Self).
 
 '$lgt_tr_self_msg'(findall(Term, Pred, List), findall(Term, TPred, List), This, Self) :-
 	!,
-	TPred = '$lgt_metacall'(Pred, [], This, This, Self).
+	TPred = '$lgt_metacall'(Pred, _, This, This, Self).
 
 '$lgt_tr_self_msg'(forall(Gen, Test), forall(TGen, TTest), This, Self) :-
 	!,
-	TGen = '$lgt_metacall'(Gen, [], This, This, Self),
-	TTest = '$lgt_metacall'(Test, [], This, This, Self).
+	TGen = '$lgt_metacall'(Gen, _, This, This, Self),
+	TTest = '$lgt_metacall'(Test, _, This, This, Self).
 
 '$lgt_tr_self_msg'(setof(Term, Pred, List), setof(Term, TPred, List), This, Self) :-
 	!,
-	TPred = '$lgt_metacall'(Pred, [], This, This, Self).
+	TPred = '$lgt_metacall'(Pred, _, This, This, Self).
 
 
 % "reflection" built-in predicates
