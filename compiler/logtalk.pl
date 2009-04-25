@@ -1965,16 +1965,6 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 
 
-% checks if an object exists at runtime
-
-'$lgt_obj_exists'(Obj, Pred, Sender) :-
-	(	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _) ->
-		true
-	;	throw(error(existence_error(object, Obj), Obj::Pred, Sender))
-	).
-
-
-
 % current_predicate/1 built-in method
 
 '$lgt_current_predicate'(Obj, Pred, Sender, _) :-
@@ -3110,11 +3100,13 @@ current_logtalk_flag(version, version(2, 36, 1)).
 		;	% message is not within the scope of the sender:
 			throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
 		)
+	;	% no predicate declaration, check if it's a local built-in method:
+		'$lgt_built_in_local_method'(Pred) ->
+		throw(error(permission_error(access, local_predicate, Pred), Obj::Pred, Sender))
 	;	% no predicate declaration, check if it's a built-in predicate:
-		(	'$lgt_built_in'(Pred) ->
-			call(Pred)
-		;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))
-		)
+		'$lgt_built_in'(Pred) ->
+		call(Pred)
+	;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))
 	).
 
 
@@ -3189,11 +3181,13 @@ current_logtalk_flag(version, version(2, 36, 1)).
 			;	throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))
 			)
 		)
+	;	% no predicate declaration, check if it's a local built-in method:
+		'$lgt_built_in_local_method'(Pred) ->
+		throw(error(permission_error(access, local_predicate, Pred), Obj::Pred, Sender))
 	;	% no predicate declaration, check if it's a built-in predicate:
-		(	'$lgt_built_in'(Pred) ->
-			call(Pred)
-		;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))
-		)
+		'$lgt_built_in'(Pred) ->
+		call(Pred)
+	;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))
 	).
 
 '$lgt_send_to_object_nv'({Proxy}, Pred, Sender) :-
@@ -3267,10 +3261,13 @@ current_logtalk_flag(version, version(2, 36, 1)).
 			;	throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))
 			)
 		)
+	;	% no predicate declaration, check if it's a local built-in method:
+		'$lgt_built_in_local_method'(Pred) ->
+		throw(error(permission_error(access, local_predicate, Pred), Obj::Pred, Sender))
 	;	% no predicate declaration, check if it's a built-in predicate:
-		(	'$lgt_built_in'(Pred) ->
-			call(Pred)
-		;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender)))
+		'$lgt_built_in'(Pred) ->
+		call(Pred)
+	;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))
 	).
 
 '$lgt_send_to_object_ne_nv'({Proxy}, Pred, Sender) :-
@@ -3458,14 +3455,35 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	;	throw(error(type_error(callable, Closure), Sender::Goal, This))
 	).
 
+'$lgt_metacall'(::Closure, ExtraArgs, _, _, This, Self) :-
+	!,
+	(	var(Closure) ->
+		Goal =.. [call, ::Closure| ExtraArgs],
+		throw(error(instantiation_error, Goal, This))
+	;	\+ callable(Closure) ->
+		Goal =.. [call, ::Closure| ExtraArgs],
+		throw(error(type_error(callable, Closure), Goal, This))
+	;	Closure =.. [Functor| Args],
+		'$lgt_append'(Args, ExtraArgs, FullArgs),
+		Pred =.. [Functor| FullArgs],
+		'$lgt_send_to_self_'(Self, Pred, This, _)
+	).
+
 '$lgt_metacall'(Obj::Closure, ExtraArgs, _, _, This, _) :-
 	!,
-	Closure =.. [Functor| Args],
-	'$lgt_append'(Args, ExtraArgs, FullArgs),
-	Pred =.. [Functor| FullArgs],
-	(	'$lgt_entity_property_'(This, flags(_, _, _, e, _, _)) ->
-		'$lgt_send_to_obj_ne_'(Obj, Pred, This, _)
-	;	'$lgt_send_to_obj_'(Obj, Pred, This, _)
+	(	var(Closure) ->
+		Goal =.. [call, Obj::Closure| ExtraArgs],
+		throw(error(instantiation_error, Goal, This))
+	;	\+ callable(Closure) ->
+		Goal =.. [call, Obj::Closure| ExtraArgs],
+		throw(error(type_error(callable, Closure), Goal, This))
+	;	Closure =.. [Functor| Args],
+		'$lgt_append'(Args, ExtraArgs, FullArgs),
+		Pred =.. [Functor| FullArgs],
+		(	'$lgt_entity_property_'(This, flags(_, _, _, e, _, _)) ->
+			'$lgt_send_to_obj_ne_'(Obj, Pred, This, _)
+		;	'$lgt_send_to_obj_'(Obj, Pred, This, _)
+		)
 	).
 
 '$lgt_metacall'(':'(Module, Closure), ExtraArgs, _, _, _, _) :-
@@ -7316,6 +7334,35 @@ current_logtalk_flag(version, version(2, 36, 1)).
 '$lgt_tr_head'(':'(_), _, _, _, _, _) :-
 	throw(permission_error(modify, control_construct, (:)/1)).
 
+'$lgt_tr_head'((_, _), _, _, _, _, _) :-
+	throw(permission_error(modify, control_construct, (',')/2)).
+
+'$lgt_tr_head'((_; _), _, _, _, _, _) :-
+	throw(permission_error(modify, control_construct, (;)/2)).
+
+'$lgt_tr_head'((_ -> _), _, _, _, _, _) :-
+	throw(permission_error(modify, control_construct, (->)/2)).
+
+'$lgt_tr_head'(true, _, _, _, _, _) :-
+	throw(permission_error(modify, control_construct, true/0)).
+
+'$lgt_tr_head'(fail, _, _, _, _, _) :-
+	throw(permission_error(modify, control_construct, fail/0)).
+
+'$lgt_tr_head'(!, _, _, _, _, _) :-
+	throw(permission_error(modify, control_construct, !/0)).
+
+'$lgt_tr_head'(catch(_, _, _), _, _, _, _, _) :-
+	throw(permission_error(modify, control_construct, catch/3)).
+
+'$lgt_tr_head'(throw(_), _, _, _, _, _) :-
+	throw(permission_error(modify, control_construct, throw/1)).
+
+'$lgt_tr_head'(CallN, _, _, _, _, _) :-
+	functor(CallN, call, Arity),
+	Arity > 0,
+	throw(permission_error(modify, control_construct, call/Arity)).
+
 
 % redefinition of Logtalk built-in methods
 
@@ -7323,6 +7370,11 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	'$lgt_built_in_method'(Head, _),
 	functor(Head, Functor, Arity), 
 	throw(permission_error(modify, built_in_method, Functor/Arity)).
+
+'$lgt_tr_head'(Head, _, _, _, _, _) :-
+	'$lgt_built_in_local_method'(Head),
+	functor(Head, Functor, Arity), 
+	throw(permission_error(modify, built_in_local_method, Functor/Arity)).
 
 
 % conflict with a predicate specified in a uses/2 directive
@@ -7599,11 +7651,8 @@ current_logtalk_flag(version, version(2, 36, 1)).
 '$lgt_tr_body'(CallN, _, _, _) :-
 	CallN =.. [call, Closure| _],
 	nonvar(Closure),
-	(	\+ callable(Closure) ->
-		throw(type_error(callable, Closure))
-	;	(Closure = _::_; Closure = ::_; Closure = ^^_; Closure = _<<_) ->
-		throw(domain_error(goal, Closure))
-	).
+	\+ callable(Closure),
+	throw(type_error(callable, Closure)).
 
 '$lgt_tr_body'(CallN, _, _, Ctx) :-
 	CallN =.. [call, Closure| _],
@@ -8798,7 +8847,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	throw(type_error(callable, Pred)).
 
 
-% control constructs
+% broadcasting control constructs
 
 '$lgt_tr_msg'((Pred1, Pred2), Obj, (TPred1, TPred2), This) :-
 	!,
@@ -8814,63 +8863,6 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	!,
 	'$lgt_tr_msg'(Pred1, Obj, TPred1, This),
 	'$lgt_tr_msg'(Pred2, Obj, TPred2, This).
-
-'$lgt_tr_msg'(\+ Pred, Obj, \+ TPred, This) :-
-	!,
-	'$lgt_tr_msg'(Pred, Obj, TPred, This).
-
-'$lgt_tr_msg'(!, Obj, ('$lgt_obj_exists'(Obj, !, This), !), This) :-
-	!.
-
-'$lgt_tr_msg'(true, Obj, ('$lgt_obj_exists'(Obj, true, This), true), This) :-
-	!.
-
-'$lgt_tr_msg'(fail, Obj, ('$lgt_obj_exists'(Obj, fail, This), fail), This) :-
-	!.
-
-'$lgt_tr_msg'(repeat, Obj, ('$lgt_obj_exists'(Obj, repeat, This), repeat), This) :-
-	!.
-
-'$lgt_tr_msg'(call(Pred), Obj, TPred, This) :-
-	!,
-	TPred = '$lgt_metacall'(Pred, _, This, This, Obj).
-
-'$lgt_tr_msg'(CallN, Obj, TPred, This) :-
-	CallN =.. [call, Closure| Args],
-	!,
-	TPred = '$lgt_metacall'(Closure, Args, _, This, This, Obj).
-
-'$lgt_tr_msg'(once(Pred), Obj, once(TPred), This) :-
-	!,
-	TPred = '$lgt_metacall'(Pred, _, This, This, Obj).
-
-'$lgt_tr_msg'(catch(Goal, Catcher, Recovery), Obj, catch(TGoal, Catcher, TRecovery), This) :-
-	!,
-	TGoal = '$lgt_metacall'(Goal, _, This, This, Obj),
-	TRecovery = '$lgt_metacall'(Recovery, _, This, This, Obj).
-
-'$lgt_tr_msg'(throw(Error), Obj, ('$lgt_obj_exists'(Obj, throw(Error), This), throw(Error)), This) :-
-	!.
-
-
-% built-in meta-predicates
-
-'$lgt_tr_msg'(bagof(Term, Pred, List), Obj, bagof(Term, TPred, List), This) :-
-	!,
-	TPred = '$lgt_metacall'(Pred, _, This, This, Obj).
-
-'$lgt_tr_msg'(findall(Term, Pred, List), Obj, findall(Term, TPred, List), This) :-
-	!,
-	TPred = '$lgt_metacall'(Pred, _, This, This, Obj).
-
-'$lgt_tr_msg'(forall(Gen, Test), Obj, forall(TGen, TTest), This) :-
-	!,
-	TGen = '$lgt_metacall'(Gen, _, This, This, Obj),
-	TTest = '$lgt_metacall'(Test, _, This, This, Obj).
-
-'$lgt_tr_msg'(setof(Term, Pred, List), Obj, setof(Term, TPred, List), This) :-
-	!,
-	TPred = '$lgt_metacall'(Pred, _, This, This, Obj).
 
 
 % "reflection" built-in predicates
@@ -9015,7 +9007,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	throw(type_error(callable, Pred)).
 
 
-% control constructs
+% broadcasting control constructs
 
 '$lgt_tr_self_msg'((Pred1, Pred2), (TPred1, TPred2), This, Self) :-
 	!,
@@ -9031,63 +9023,6 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	!,
 	'$lgt_tr_self_msg'(Pred1, TPred1, This, Self),
 	'$lgt_tr_self_msg'(Pred2, TPred2, This, Self).
-
-'$lgt_tr_self_msg'(\+ Pred, \+ TPred, This, Self) :-
-	!,
-	'$lgt_tr_self_msg'(Pred, TPred, This, Self).
-
-'$lgt_tr_self_msg'(!, !, _, _) :-
-	!.
-
-'$lgt_tr_self_msg'(true, true, _, _) :-
-	!.
-
-'$lgt_tr_self_msg'(fail, fail, _, _) :-
-	!.
-
-'$lgt_tr_self_msg'(repeat, repeat, _, _) :-
-	!.
-
-'$lgt_tr_self_msg'(call(Pred), TPred, This, Self) :-
-	!,
-	TPred = '$lgt_metacall'(Pred, _, This, This, Self).
-
-'$lgt_tr_self_msg'(CallN, TPred, This, Self) :-
-	CallN =.. [call, Closure| Args],
-	!,
-	TPred = '$lgt_metacall'(Closure, Args, _, This, This, Self).
-
-'$lgt_tr_self_msg'(once(Pred), once(TPred), This, Self) :-
-	!,
-	TPred = '$lgt_metacall'(Pred, _, This, This, Self).
-
-'$lgt_tr_self_msg'(catch(Goal, Catcher, Recovery), catch(TGoal, Catcher, TRecovery), This, Self) :-
-	!,
-	TGoal = '$lgt_metacall'(Goal, _, This, This, Self),
-	TRecovery = '$lgt_metacall'(Recovery, _, This, This, Self).
-
-'$lgt_tr_self_msg'(throw(Error), throw(Error), _, _) :-
-	!.
-
-
-% built-in meta-predicates
-
-'$lgt_tr_self_msg'(bagof(Term, Pred, List), bagof(Term, TPred, List), This, Self) :-
-	!,
-	TPred = '$lgt_metacall'(Pred, _, This, This, Self).
-
-'$lgt_tr_self_msg'(findall(Term, Pred, List), findall(Term, TPred, List), This, Self) :-
-	!,
-	TPred = '$lgt_metacall'(Pred, _, This, This, Self).
-
-'$lgt_tr_self_msg'(forall(Gen, Test), forall(TGen, TTest), This, Self) :-
-	!,
-	TGen = '$lgt_metacall'(Gen, _, This, This, Self),
-	TTest = '$lgt_metacall'(Test, _, This, This, Self).
-
-'$lgt_tr_self_msg'(setof(Term, Pred, List), setof(Term, TPred, List), This, Self) :-
-	!,
-	TPred = '$lgt_metacall'(Pred, _, This, This, Self).
 
 
 % "reflection" built-in predicates
@@ -12182,20 +12117,37 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 
 
-% logtalk built-in methods
+% '$lgt_built_in_local_method'(+callable)
 %
-% '$lgt_built_in_method'(+callable, ?scope)
+% logtalk local built-in methods; these methods cannot be used as messages
 
-'$lgt_built_in_method'(Method, p(p(p))) :-  % call/N
+% meta-calls plus logic and control methods
+'$lgt_built_in_local_method'(\+ _).
+'$lgt_built_in_local_method'(Method) :-  % call/1-N
 	compound(Method),
 	functor(Method, call, Arity),
 	Arity > 0,
 	!.
+'$lgt_built_in_local_method'(once(_)).
+% exception handling methods
+'$lgt_built_in_local_method'(catch(_, _, _)).
+'$lgt_built_in_local_method'(throw(_)).
+% execution context methods
+'$lgt_built_in_local_method'(parameter(_, _)).
+'$lgt_built_in_local_method'(self(_)).
+'$lgt_built_in_local_method'(sender(_)).
+'$lgt_built_in_local_method'(this(_)).
+% all solutions methods
+'$lgt_built_in_local_method'(bagof(_, _, _)).
+'$lgt_built_in_local_method'(findall(_, _, _)).
+'$lgt_built_in_local_method'(forall(_, _)).
+'$lgt_built_in_local_method'(setof(_, _, _)).
 
-'$lgt_built_in_method'(parameter(_, _), p).
-'$lgt_built_in_method'(self(_), p).
-'$lgt_built_in_method'(sender(_), p).
-'$lgt_built_in_method'(this(_), p).
+
+
+% logtalk built-in methods
+%
+% '$lgt_built_in_method'(+callable, ?scope)
 
 '$lgt_built_in_method'(current_predicate(_), p(p(p))).
 '$lgt_built_in_method'(predicate_property(_, _), p(p(p))).
@@ -12206,11 +12158,6 @@ current_logtalk_flag(version, version(2, 36, 1)).
 '$lgt_built_in_method'(clause(_, _), p(p(p))).
 '$lgt_built_in_method'(retract(_), p(p(p))).
 '$lgt_built_in_method'(retractall(_), p(p(p))).
-
-'$lgt_built_in_method'(bagof(_, _, _), p(p(p))).
-'$lgt_built_in_method'(findall(_, _, _), p(p(p))).
-'$lgt_built_in_method'(forall(_, _), p(p(p))).
-'$lgt_built_in_method'(setof(_, _, _), p(p(p))).
 
 '$lgt_built_in_method'(expand_term(_, _), p(p(p))).
 '$lgt_built_in_method'(expand_goal(_, _), p(p(p))).

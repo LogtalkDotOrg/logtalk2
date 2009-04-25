@@ -25,15 +25,25 @@ RELEASE NOTES
 
     Improved performance of user-defined object and category meta-predicates.
 
+    Added support for meta-calls whose closure argument is ::Closure.
+
     Corrected a bug where local calls to user meta-predicates would not be
     visible to the built-in debugger.
 
-    Changed the compilation of the built-in meta-predicates when used as
-    messages in order to ensure the same semantics as user-defined object
-    and category meta-predicates.
+    Improved Logtalk compiler error checking for accidental redefinition of
+    control constructs.
+
+    Disallow using Logtalk built-in meta-predicates, exception handling
+    control constructs, and the call/1-N control construct as messages
+    in order to avoid conflicting semantics with user-defined object and
+    category meta-predicates.
 
     Updated the Qu-Prolog config file in order to enable support for multifile
     directives (version 8.9 or later is now required).
+
+    Corrected a bug in the implementation of the predicates nth0/3-4 and 
+    nth1/3-4 in the library object "varlist". Thanks to Victor Noel for the
+    bug report.
 
     Updated the "puzzle" constraint example for SWI-Prolog to avoid leaking
     "clpfd" predicates in query binding results. Thanks to Ulrich Neumerkel
