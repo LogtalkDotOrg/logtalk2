@@ -3,9 +3,9 @@
 	extends(list)).
 
 	:- info([
-		version is 1.3,
+		version is 1.4,
 		author is 'Paulo Moura',
-		date is 2009/3/6,
+		date is 2009/4/25,
 		comment is 'List of variables predicates.']).
 
 	member(Element, [Head| _]) :-
@@ -18,6 +18,33 @@
 			true
 		;	memberchk(Element, Tail)
 		).
+
+	nth0(Nth, List, Element) :-
+		nth(Element, List, 0, Nth, _).
+
+	nth0(Nth, List, Element, Tail) :-
+		nth(Element, List, 0, Nth, Tail).
+
+	nth1(Nth, List, Element) :-
+		nth(Element, List, 1, Nth, _).
+
+	nth1(Nth, List, Element, Tail) :-
+		nth(Element, List, 1, Nth, Tail).
+
+	nth(Element, List, Acc, Nth, Tail) :-
+		(	integer(Nth),
+			Nth >= Acc,
+			nth_aux(NthElement, List, Acc, Nth, Tail) ->
+			Element == NthElement
+		;	var(Nth),
+			nth_aux(Element, List, Acc, Nth, Tail)
+		).
+
+	nth_aux(Element, [Head| Tail], Position, Position, Tail) :-
+		Element == Head.
+	nth_aux(Element, [_| List], Count, Position, Tail) :-
+		Count2 is Count + 1,
+		nth_aux(Element, List, Count2, Position, Tail).
 
 	prefix([], _).
 	prefix([Head1| Tail1], [Head2| Tail2]) :-
