@@ -31,6 +31,16 @@
 		;	memberchk(Element, Tail)
 		).
 
+	nextto(X, Y, List) :-
+		(	var(List) ->
+			List = [X, Y| _]
+		;	List =  [XX, YY| _],
+			X == XX,
+			Y == YY
+		).
+	nextto(X, Y, [_| Tail]) :-
+		nextto(X, Y, Tail).
+
 	nth0(Nth, List, Element) :-
 		nth(Element, List, 0, Nth, _).
 
