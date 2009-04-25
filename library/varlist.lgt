@@ -8,6 +8,18 @@
 		date is 2009/4/25,
 		comment is 'List of variables predicates.']).
 
+	flatten(List, Flatted) :-
+		flatten(List, [], Flatted).
+
+	flatten(Var, Tail, [Var| Tail]) :-
+		var(Var),
+		!.
+	flatten([], Flatted, Flatted) :-
+		!.
+	flatten([Head| Tail], List, Flatted) :-
+		flatten(Tail, List, Aux),
+		flatten(Head, Aux, Flatted).
+
 	member(Element, [Head| _]) :-
 		Element == Head.
 	member(Element, [_| Tail]) :-
