@@ -69,12 +69,20 @@
 		nth_aux(Element, List, Count2, Position, Tail).
 
 	prefix([], _).
-	prefix([Head1| Tail1], [Head2| Tail2]) :-
-		Head1 == Head2,
+	prefix(Prefix, [Head2| Tail2]) :-
+		(	var(Prefix) ->
+			Prefix = [Head2| Tail1]
+		;	Prefix = [Head1| Tail1],
+			Head1 == Head2
+		),
 		prefix(Tail1, Tail2).
 
-	select(Element, [Head| Tail], Tail) :-
-		Element == Head.
+	select(Element, List, Tail) :-
+		(	var(List) ->
+			List = [Element| Tail]
+		;	List = [Head| Tail],
+			Element == Head
+		).
 	select(Element, [Head| Tail], [Head| Tail2]) :-
 		select(Element, Tail, Tail2).
 
