@@ -42,8 +42,8 @@ RELEASE NOTES
     directives (version 8.9 or later is now required).
 
     Corrected bugs in the implementation of the predicates nextto/3, nth0/3-4,
-    and nth1/3-4 in the library object "varlist". Added a simplified version
-    of the flatten/2 predicate. Thanks to Victor Noel for the bug report.
+    nth1/3-4, and sublist/2 in the library object "varlist". Thanks to Victor
+    Noel for the bug report.
 
     Updated the "puzzle" constraint example for SWI-Prolog to avoid leaking
     "clpfd" predicates in query binding results. Thanks to Ulrich Neumerkel

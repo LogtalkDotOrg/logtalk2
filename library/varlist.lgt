@@ -78,6 +78,32 @@
 	select(Element, [Head| Tail], [Head| Tail2]) :-
 		select(Element, Tail, Tail2).
 
+	sublist(Sublist, List) :-
+		equal(List, Sublist).
+	sublist(Sublist, [Head| Tail]) :-
+		sublist(Tail, Head, Sublist).
+
+	sublist(List, _, Sublist) :-
+		equal(List, Sublist).
+	sublist([Head| Tail], _, Sublist) :-
+		sublist(Tail, Head, Sublist).
+	sublist([Head| Tail], Element1, Sublist) :-
+		(	var(Sublist) ->
+			Sublist = [Element1| Subtail]		
+		;	Sublist = [Element2| Subtail],
+			Element1 == Element2
+		),
+		sublist(Tail, Head, Subtail).
+
+	equal([], []).
+	equal([Head| Tail], Sublist) :-
+		(	var(Sublist) ->
+			Sublist = [Head| Tail]
+		;	Sublist = [Subhead| Subtail],
+			Subhead == Head,
+			equal(Tail, Subtail)
+		).
+
 	valid(-) :-		% catch variables and lists with unbound tails
 		!,
 		fail.
