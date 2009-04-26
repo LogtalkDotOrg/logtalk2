@@ -3598,21 +3598,39 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 
 
-% '$lgt_call_ctg_pred'(+atom, +atom, +callable, +object_identifier, +object_identifier, +object_identifier)
+% '$lgt_call_ctg_pred'(+atom, +atom, ?term, +execution_context)
 %
 % calls a category predicate directly, without using the message sending mechanism
 
-'$lgt_call_ctg_pred'(Dcl, Rnm, Alias, ExCtx) :-
+'$lgt_call_ctg_pred'(_, _, Pred, ExCtx) :-
+	var(Pred),
+	'$lgt_exec_ctx'(ExCtx, This, _),
+	throw(error(instantiation_error, ':'(Pred), This)).
+
+'$lgt_call_ctg_pred'(_, _, Pred, ExCtx) :-
+	\+ callable(Pred),
+	'$lgt_exec_ctx'(ExCtx, This, _),
+	throw(error(type_error(callable, Pred), ':'(Pred), This)).
+
+'$lgt_call_ctg_pred'(Dcl, Rnm, Pred, ExCtx) :-
+	'$lgt_call_ctg_pred_nv'(Dcl, Rnm, Pred, ExCtx).
+
+
+
+% '$lgt_call_ctg_pred_nv'(+atom, +atom, +callable, +execution_context)
+%
+% calls a category predicate directly, without using the message sending mechanism
+
+'$lgt_call_ctg_pred_nv'(Dcl, Rnm, Alias, ExCtx) :-
+	'$lgt_exec_ctx'(ExCtx, This, _),
 	(	call(Dcl, Alias, _, _, _, _, _, _, _) ->
 		call(Rnm, Ctg, Pred, Alias),
-		'$lgt_exec_ctx'(ExCtx, _, This, _, _),
 		(	'$lgt_imports_category_'(This, Ctg, _),
 			'$lgt_current_category_'(Ctg, _, _, Def, _, _),
 			call(Def, Pred, ExCtx, Call, _) ->
 			call(Call)
 		)
-	;	'$lgt_exec_ctx'(ExCtx, _, This, _, _),
-		throw(error(existence_error(predicate_declaration, Alias), ':'(Alias), This))
+	;	throw(error(existence_error(predicate_declaration, Alias), ':'(Alias), This))
 	).
 
 
@@ -3643,7 +3661,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 % lookup predicate definitions in any category that complements the given object
 
 '$lgt_complemented_object'(ThisDef, Alias, ExCtx, Call, Ctn) :-
-	'$lgt_exec_ctx'(ExCtx, _, This, _, _),
+	'$lgt_exec_ctx'(ExCtx, This, _),
 	'$lgt_complemented_object_'(This, _, _, Def, Rnm),
 	(	call(Def, Alias, ExCtx, Call, Ctn)
 	;	% categories can define aliases for complemented object predicates:
@@ -8033,9 +8051,16 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 % calling category predicates directly
 
-'$lgt_tr_body'(':'(Pred), _, _, _) :-
+'$lgt_tr_body'(':'(Pred), TPred, '$lgt_dbg_goal'(':'(Pred), TPred, ExCtx), Ctx) :-
 	var(Pred),
-	throw(instantiation_error).
+	'$lgt_pp_object_'(_, _, Dcl, _, _, IDcl, _, _, _, Rnm, _),
+	!,
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	(	\+ '$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _),
+	 	\+ '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _) ->
+		TPred = '$lgt_call_ctg_pred'(Dcl, Rnm, Pred, ExCtx)
+	;	TPred = '$lgt_call_ctg_pred'(IDcl, Rnm, Pred, ExCtx)
+	).
 
 '$lgt_tr_body'(':'(Pred), _, _, _) :-
 	\+ callable(Pred),
@@ -8060,8 +8085,8 @@ current_logtalk_flag(version, version(2, 36, 1)).
 		'$lgt_pp_object_'(_, _, Dcl, _, _, IDcl, _, _, _, Rnm, _) ->
 		(	\+ '$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _),
 		 	\+ '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _) ->
-			TPred = '$lgt_call_ctg_pred'(Dcl, Rnm, Pred, ExCtx)
-		;	TPred = '$lgt_call_ctg_pred'(IDcl, Rnm, Pred, ExCtx)
+			TPred = '$lgt_call_ctg_pred_nv'(Dcl, Rnm, Pred, ExCtx)
+		;	TPred = '$lgt_call_ctg_pred_nv'(IDcl, Rnm, Pred, ExCtx)
 		)
 	).
 
@@ -12919,11 +12944,6 @@ current_logtalk_flag(version, version(2, 36, 1)).
 % '$lgt_lgt_built_in'(?callable)
 
 '$lgt_lgt_built_in'(_ :: _).
-'$lgt_lgt_built_in'(:: _).
-'$lgt_lgt_built_in'(: _).
-'$lgt_lgt_built_in'(^^ _).
-'$lgt_lgt_built_in'({_}).
-'$lgt_lgt_built_in'(_ << _).
 
 '$lgt_lgt_built_in'(forall(_, _)).
 '$lgt_lgt_built_in'(retractall(_)).

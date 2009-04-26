@@ -38,6 +38,9 @@ RELEASE NOTES
     in order to avoid conflicting semantics with user-defined object and
     category meta-predicates.
 
+    Added support for using the :/1 control construct with a non-instantiated
+    argument at compile-time (handled using dynamic binding at runtime).
+
     Updated the Qu-Prolog config file in order to enable support for multifile
     directives (version 8.9 or later is now required).
 
