@@ -120,6 +120,11 @@
 			equal(Tail, Subtail)
 		).
 
+	suffix(Sufix, List) :-
+		equal(List, Sufix).
+	suffix(Sufix, [_| Tail]) :-
+		suffix(Sufix, Tail).
+
 	valid(-) :-		% catch variables and lists with unbound tails
 		!,
 		fail.
