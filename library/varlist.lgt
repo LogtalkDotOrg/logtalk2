@@ -20,6 +20,14 @@
 		flatten(Tail, List, Aux),
 		flatten(Head, Aux, Flatted).
 
+	last([Head| Tail], Last) :-
+		last(Tail, Head, Last).
+
+	last([], Head, Last) :-
+		Head == Last.
+	last([Head| Tail], _, Last) :-
+		last(Tail, Head, Last).
+
 	member(Element, [Head| _]) :-
 		Element == Head.
 	member(Element, [_| Tail]) :-
@@ -31,15 +39,15 @@
 		;	memberchk(Element, Tail)
 		).
 
-	nextto(X, Y, List) :-
+	nextto(Element1, Element2, List) :-
 		(	var(List) ->
-			List = [X, Y| _]
-		;	List =  [XX, YY| _],
-			X == XX,
-			Y == YY
+			List = [Element1, Element2| _]
+		;	List = [Element11, Element22| _],
+			Element1 == Element11,
+			Element2 == Element22
 		).
-	nextto(X, Y, [_| Tail]) :-
-		nextto(X, Y, Tail).
+	nextto(Element1, Element2, [_| Tail]) :-
+		nextto(Element1, Element2, Tail).
 
 	nth0(Nth, List, Element) :-
 		nth(Element, List, 0, Nth, _).
