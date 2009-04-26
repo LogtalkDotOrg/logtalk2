@@ -3535,6 +3535,8 @@ current_logtalk_flag(version, version(2, 36, 1)).
 		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
 		(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
 		call(TPred)
+	;	'$lgt_built_in'(Pred) ->
+		call(Pred)
 	;	functor(Pred, Functor, Arity),
 		throw(error(existence_error(procedure, Functor/Arity), call(Pred), This))
 	).
@@ -3550,6 +3552,8 @@ current_logtalk_flag(version, version(2, 36, 1)).
 		'$lgt_exec_ctx'(ExCtx, Sender, Sender, Self, _),
 		(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
 		call(TPred)
+	;	'$lgt_built_in'(Pred) ->
+		call(Pred)
 	;	functor(Pred, Functor, Arity),
 		throw(error(existence_error(procedure, Functor/Arity), call(Pred), Sender))
 	).
@@ -7567,6 +7571,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 		TPred = '$lgt_metacall'(Pred, MetaCallCtx, Sender, This, Self)
 	;	% we're either compiling a clause for a normal predicate (i.e. MetaVars == [])
 		% or the meta-call should be local as it corresponds to a non meta-argument
+		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
 		TPred = '$lgt_metacall'(Pred, [], Sender, This, Self)
 	).
 
@@ -7677,6 +7682,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 		TPred = '$lgt_metacall'(Closure, Args, MetaCallCtx, Sender, This, Self)
 	;	% we're either compiling a clause for a normal predicate (i.e. MetaVars == [])
 		% or the meta-call should be local as it corresponds to a non meta-argument
+		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
 		TPred = '$lgt_metacall'(Closure, Args, [], Sender, This, Self)
 	),
 	DPred = '$lgt_dbg_goal'(CallN, TPred, ExCtx).
@@ -12912,7 +12918,12 @@ current_logtalk_flag(version, version(2, 36, 1)).
 %
 % '$lgt_lgt_built_in'(?callable)
 
-'$lgt_lgt_built_in'(::(_, _)).
+'$lgt_lgt_built_in'(_ :: _).
+'$lgt_lgt_built_in'(:: _).
+'$lgt_lgt_built_in'(: _).
+'$lgt_lgt_built_in'(^^ _).
+'$lgt_lgt_built_in'({_}).
+'$lgt_lgt_built_in'(_ << _).
 
 '$lgt_lgt_built_in'(forall(_, _)).
 '$lgt_lgt_built_in'(retractall(_)).
