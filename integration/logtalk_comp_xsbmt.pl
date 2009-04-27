@@ -66,6 +66,7 @@
 :- thread_private('$lgt_obj_super_call_same_'/4).
 :- thread_private('$lgt_obj_super_call_other_'/4).
 :- thread_private('$lgt_ctg_super_call_same_'/4).
+:- thread_private('$lgt_ctg_call_'/4).
 :- thread_private('$lgt_ctg_super_call_other_'/4).
 
 % lookup cache for asserting and retracting dynamic facts

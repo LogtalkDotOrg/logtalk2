@@ -29,6 +29,7 @@
     :- thread_local('$lgt_obj_super_call_other_'/4).
     :- thread_local('$lgt_ctg_super_call_same_'/4).
     :- thread_local('$lgt_ctg_super_call_other_'/4).
+    :- thread_local('$lgt_ctg_call_'/4).
     :- thread_local('$lgt_db_lookup_cache_'/5).
 :- endif.
 :- include('../compiler/logtalk.pl').

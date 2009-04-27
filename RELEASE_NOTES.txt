@@ -33,10 +33,14 @@ RELEASE NOTES
     Improved Logtalk compiler error checking for accidental redefinition of
     control constructs.
 
-    Disallow using Logtalk built-in meta-predicates, exception handling
-    control constructs, and the call/1-N control construct as messages
-    in order to avoid conflicting semantics with user-defined object and
-    category meta-predicates.
+    Disallow using ISO Prolog and Logtalk built-in meta-predicates (bagof/3,
+    findall/3, forall/3, setof/3, \+/1, and once/1), exception handling
+    control constructs (catch/3 and throw/1), and the call/1-N control 
+    constructs as messages in order to avoid conflicting semantics with
+    user-defined object and category meta-predicates.
+
+    Improved performance of the :/1 control construct when using dynamic
+    binding by adding a predicate lookup caching mechanism.
 
     Added support for using the :/1 control construct with a non-instantiated
     argument at compile-time (handled using dynamic binding at runtime).
