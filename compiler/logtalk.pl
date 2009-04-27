@@ -7273,8 +7273,8 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	var(Clause),
 	throw(instantiation_error).
 
-'$lgt_tr_clause'((Head:-Body), _, _, _, _, _, _) :-
-	(var(Head); var(Body)),
+'$lgt_tr_clause'((Head:-_), _, _, _, _, _, _) :-
+	var(Head),
 	throw(instantiation_error).
 
 '$lgt_tr_clause'((Head:-_), _, _, _, _, _, _) :-
@@ -7282,6 +7282,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	throw(type_error(callable, Head)).
 
 '$lgt_tr_clause'((_:-Body), _, _, _, _, _, _) :-
+	nonvar(Body),
 	\+ callable(Body),
 	throw(type_error(callable, Body)).
 

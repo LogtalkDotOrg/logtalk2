@@ -45,6 +45,11 @@ RELEASE NOTES
     Added support for using the :/1 control construct with a non-instantiated
     argument at compile-time (handled using dynamic binding at runtime).
 
+    Allow a variable clause body to be interpreted as a meta-call instead of
+    an instantiation error. Although is not recommended to use a variable as
+    a goal instead of using the call/1 control construct, this change allows
+    for uniform handling of variables as goals in clause bodies.
+
     Updated the Qu-Prolog config file in order to enable support for multifile
     directives (version 8.9 or later is now required).
 
