@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.5,
+		version is 1.6,
 		author is 'Paulo Moura',
-		date is 2009/3/6,
+		date is 2009/4/29,
 		comment is 'List predicates.']).
 
 	:- public(as_difflist/2).
@@ -189,7 +189,7 @@
 
 	subtract([], _, []).
 	subtract([Head| Tail], List, Rest) :-
-		(	::memberchk(Head, List) ->
+		(	memberchk(Head, List) ->
 			subtract(Tail, List, Rest)
 		;	Rest = [Head| Tail2],
 			subtract(Tail, List, Tail2)

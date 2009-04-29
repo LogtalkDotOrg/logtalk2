@@ -1,12 +1,27 @@
 
 :- object(varlist,
-	extends(list)).
+	implements(varlistp)).
 
 	:- info([
-		version is 1.4,
+		version is 1.5,
 		author is 'Paulo Moura',
 		date is 2009/4/25,
 		comment is 'List of variables predicates.']).
+
+	append([], List, List).
+	append([Head| Tail], List, [Head| Tail2]) :-
+		append(Tail, List, Tail2).
+
+	delete([], _, []).
+	delete([Head| Tail], Element, Remaining) :-
+		(	Head == Element ->
+			delete(Tail, Element, Remaining)
+		;	Remaining = [Head| Tail2],
+			delete(Tail, Element, Tail2)
+		).
+
+	empty(List) :-
+		List == [].
 
 	flatten(List, Flatted) :-
 		flatten(List, [], Flatted).
@@ -28,10 +43,13 @@
 	last([Head| Tail], _, Last) :-
 		last(Tail, Head, Last).
 
-	member(Element, [Head| _]) :-
-		Element == Head.
-	member(Element, [_| Tail]) :-
-		member(Element, Tail).
+	length(List, Length) :-
+		length(List, 0, Length).
+
+	length([], Length, Length).
+	length([_| Tail], Acc, Length) :-
+		Acc2 is Acc + 1,
+		length(Tail, Acc2, Length).
 
 	memberchk(Element, [Head| Tail]) :-
 		(	Element == Head ->
@@ -85,6 +103,17 @@
 		),
 		prefix(Tail1, Tail2).
 
+	reverse(List, Reversed) :-
+		reverse(List, [], Reversed, Reversed).
+
+	reverse([], Reversed, Reversed, []).
+	reverse([Head| Tail], List, Reversed, [_| Bound]) :-
+		reverse(Tail, [Head| List], Reversed, Bound).
+
+	same_length([], []).
+	same_length([_| Tail1], [_| Tail2]) :-
+		same_length(Tail1, Tail2).
+
 	select(Element, List, Tail) :-
 		(	var(List) ->
 			List = [Element| Tail]
@@ -118,6 +147,14 @@
 		;	Sublist = [Subhead| Subtail],
 			Subhead == Head,
 			equal(Tail, Subtail)
+		).
+
+	subtract([], _, []).
+	subtract([Head| Tail], List, Rest) :-
+		(	memberchk(Head, List) ->
+			subtract(Tail, List, Rest)
+		;	Rest = [Head| Tail2],
+			subtract(Tail, List, Tail2)
 		).
 
 	suffix(Sufix, List) :-

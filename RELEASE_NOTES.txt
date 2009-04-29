@@ -53,8 +53,11 @@ RELEASE NOTES
     Updated the Qu-Prolog config file in order to enable support for multifile
     directives (version 8.9 or later is now required).
 
-    Corrected several bugs in the implementation of the library object
-    "varlist" predicates. Thanks to Victor Noel for the bug report.
+    The library object "varlist" is no longer derived from "list" as several
+    of the "listp" predicates are not meaningful or cannot be used with the
+    same modes. Added a new library protocol "varlistp". Corrected several
+    bugs in the implementation of the library object "varlist" predicates.
+    Thanks to Victor Noel for the bug report.
 
     Updated the "puzzle" constraint example for SWI-Prolog to avoid leaking
     "clpfd" predicates in query binding results. Thanks to Ulrich Neumerkel
