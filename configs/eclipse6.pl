@@ -9,9 +9,9 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for ECLiPSe 6.0#37 and later versions
+%  configuration file for ECLiPSe 6.0#77 and later versions
 %
-%  last updated: April 19, 2009
+%  last updated: April 30, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -240,6 +240,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 % '$lgt_pl_meta_predicate'(?callable, ?atom).
 
+'$lgt_pl_meta_predicate'(*->(::, ::), control_construct).
 '$lgt_pl_meta_predicate'(block(::, *, ::), predicate).
 '$lgt_pl_meta_predicate'(call_priority(::, *), predicate).
 '$lgt_pl_meta_predicate'(coverof(*, ::, *), predicate).
@@ -287,7 +288,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_prolog_feature'(prolog_version, Version) :-
 	get_flag(version_as_list, [Major, Minor, Build]),
 	concat_atom([Major, '.', Minor, '.', Build], Version).
-'$lgt_prolog_feature'(prolog_compatible_version, '@>='('6.0.37')).
+'$lgt_prolog_feature'(prolog_compatible_version, '@>='('6.0.77')).
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).

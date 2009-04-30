@@ -226,7 +226,7 @@ ECLiPSe 5.10#26 or later 5.10 versions
 	only supports settings files on the Logtalk user folder.
 
 
-ECLiPSe 6.0#37 or later versions
+ECLiPSe 6.0#77 or later versions
 
 	eclipse6.pl
 	eclipse6iso.pl

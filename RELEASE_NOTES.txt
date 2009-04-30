@@ -48,7 +48,12 @@ RELEASE NOTES
     Allow a variable clause body to be interpreted as a meta-call instead of
     an instantiation error. Although is not recommended to use a variable as
     a goal instead of using the call/1 control construct, this change allows
-    for uniform handling of variables as goals in clause bodies.
+    for uniform handling of variables as goals in clause bodies. Thanks to
+    Victor Noel for the bug report.
+
+    Updated the ECLiPSe config files in order to support the non-standard 
+    *->/2 (aka "soft cut") control construct. Thanks to Victor Noel for the
+    bug report.
 
     Updated the Qu-Prolog config file in order to enable support for multifile
     directives (version 8.9 or later is now required).

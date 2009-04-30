@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 5.10#26 or later 5.10 versions
 %
-%  last updated: April 19, 2009
+%  last updated: April 30, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -246,6 +246,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 % '$lgt_pl_meta_predicate'(?callable, ?atom).
 
+'$lgt_pl_meta_predicate'(*->(::, ::), control_construct).
 '$lgt_pl_meta_predicate'(block(::, *, ::), predicate).
 '$lgt_pl_meta_predicate'(call_priority(::, *), predicate).
 '$lgt_pl_meta_predicate'(coverof(*, ::, *), predicate).
