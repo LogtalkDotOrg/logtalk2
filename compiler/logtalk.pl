@@ -301,12 +301,12 @@ Obj::Pred :-
 
 
 
-Obj<<Pred :-
-	catch('$lgt_tr_ctx_call'(Obj, Pred, Call, user), Error, '$lgt_runtime_error_handler'(error(Error, Obj<<Pred, user))),
+Obj<<Goal :-
+	catch('$lgt_tr_ctx_call'(Obj, Goal, Call, user), Error, '$lgt_runtime_error_handler'(error(Error, Obj<<Goal, user))),
 	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
 		'$lgt_dbg_reset_invocation_number',
 		'$lgt_exec_ctx'(ExCtx, user, user, Obj, []),
-		catch('$lgt_dbg_goal'(Obj<<Pred, Call, ExCtx), Error, '$lgt_runtime_error_handler'(Error))
+		catch('$lgt_dbg_goal'(Obj<<Goal, Call, ExCtx), Error, '$lgt_runtime_error_handler'(Error))
 	;	catch(Call, Error, '$lgt_runtime_error_handler'(Error))
 	).
 
@@ -9059,7 +9059,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	'$lgt_tr_self_msg'(Pred1, TPred1, This, Self),
 	'$lgt_tr_self_msg'(Pred2, TPred2, This, Self).
 
-'$lgt_tr_self_msg'(((Pred1; Pred2)), (TPred1; TPred2), This, Self) :-
+'$lgt_tr_self_msg'((Pred1; Pred2), (TPred1; TPred2), This, Self) :-
 	!,
 	'$lgt_tr_self_msg'(Pred1, TPred1, This, Self),
 	'$lgt_tr_self_msg'(Pred2, TPred2, This, Self).
@@ -9237,19 +9237,19 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	var(Obj),
 	throw(instantiation_error).
 
-'$lgt_tr_ctx_call'(_, Pred, _, _) :-
-	var(Pred),
+'$lgt_tr_ctx_call'(_, Goal, _, _) :-
+	var(Goal),
 	throw(instantiation_error).
 
 '$lgt_tr_ctx_call'(Obj, _, _, _) :-
 	\+ callable(Obj),
 	throw(type_error(object_identifier, Obj)).
 
-'$lgt_tr_ctx_call'(_, Pred, _, _) :-
-	\+ callable(Pred),
-	throw(type_error(callable, Pred)).
+'$lgt_tr_ctx_call'(_, Goal, _, _) :-
+	\+ callable(Goal),
+	throw(type_error(callable, Goal)).
 
-'$lgt_tr_ctx_call'(Obj, Pred, '$lgt_call_within_context'(Obj, Pred, This), This).
+'$lgt_tr_ctx_call'(Obj, Goal, '$lgt_call_within_context'(Obj, Goal, This), This).
 
 
 
