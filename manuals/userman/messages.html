@@ -54,40 +54,13 @@ The message must match a public predicate declared for the receiving object or a
 <h2 id="messages_broadcasting">Broadcasting</h2>
 
 <p>
-In the Logtalk context, broadcasting is interpreted as the sending of the same message to a group of objects or the sending of several messages to the same object. Both needs can be achieved by using the message sending method described above. However, for convenience, Logtalk implements an extended syntax for message sending (using the control constructs <code>(,)/2</code>, <code>(;)/2</code>, and <code>(->)/2</code>) that may improve program readibility in some cases.
-</p>
-<p>
-If we wish to send several messages to the same object, we can write:
+In the Logtalk context, broadcasting is interpreted as the sending of several messages to the same object. This can be achieved by using the message sending method described above. However, for convenience, Logtalk implements an extended syntax for message sending that may improve program readibility in some cases. If we wish to send several messages to the same object, we can write:
 </p>
 <pre>| ?- Object::(Message1, Message2, ...).</pre>
 <p>
 This is semantically equivalent to:
 </p>
 <pre>| ?- Object::Message1, Object::Message2, ... .</pre>
-<p>
-We can also write:
-</p>
-<pre>| ?- Object::(Message1; Message2; ...).</pre>
-<p>
-This will be semantically equivalent to writing:
-</p>
-<pre>| ?- Object::Message1; Object::Message2; ... .</pre>
-<p>
-To send the same message to a set of objects we can write:
-</p>
-<pre>| ?- (Object1, Object2, ...)::Message.</pre>
-<p>
-This will have the same semantics as:
-</p>
-<pre>| ?- Object1::Message, Object2::Message, ... .</pre>
-<p>
-If we want to use backtracking to try the same message over a set of objects we can write:
-</p>
-<pre>| ?- (Object1; Object2, ...)::Message.</pre>
-<p>
-This will be equivalent to:
-</p>
-<pre>| ?- Object1::Message; Object2::Message; ... .</pre>
 
 <h2>Sending a message to <em>self</em><a id="messages_self"></a></h2>
 
@@ -95,14 +68,6 @@ This will be equivalent to:
 While defining a predicate, we sometimes need to send a message to <em>self</em>, i.e., to the same object that has received the original message. This is done in Logtalk through the <a title="Consult reference manual" href="../refman/control/to_self1.html"><code>::/1</code></a> control construct:
 </p>
 <pre>::Message</pre>
-<p>
-We can also use the broadcasting constructs with this operator:
-</p>
-<pre>::(Message1, Message2, ...)</pre>
-<p>
-or:
-</p>
-<pre>::(Message1; Message2; ...)</pre>
 <p>
 The message must match a public or protected predicate declared for the receiving object, a private predicate within the scope of the <em>sender</em>, or a Logtalk/Prolog built-in predicate otherwise an error will be thrown (see the Reference Manual for details). If the message is sent from inside a category or if we are using private inheritance, then the message may also match a private predicate.
 </p>
@@ -241,7 +206,7 @@ It should be stressed that message sending is only one of the factors affecting 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: April 25, 2009</span>
+		<span>Last updated on: May 1, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="nomenclature.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="objects.html">next</a></span><br/>

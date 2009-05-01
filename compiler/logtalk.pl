@@ -3554,15 +3554,14 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 
 
-% '$lgt_call_built_in'(+term, +term)
+% '$lgt_call_built_in'(+callable, +execution_context)
 %
 % needed for runtime translation of dynamic clauses
 
-'$lgt_call_built_in'(Pred, Ctx) :-
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, _, _),
-	'$lgt_current_object_'(This, _, _, Def, _, _, _, _, _, _, _) ->
-	(	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaVars),
-		call(Def, Pred, ExCtx, TPred) ->
+'$lgt_call_built_in'(Pred, ExCtx) :-
+	(	'$lgt_exec_ctx'(ExCtx, This, _),
+		'$lgt_current_object_'(This, _, _, Def, _, _, _, _, DDef, _, _),
+		 (call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
 		% call the redefined built-in predicate
 		call(TPred)
 	;	% call the built-in predicate
@@ -8478,7 +8477,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 % Logtalk and Prolog built-in predicates
 
-'$lgt_tr_body'(Pred, '$lgt_call_built_in'(Pred, Ctx), '$lgt_dbg_goal'(Pred, '$lgt_call_built_in'(Pred, Ctx), ExCtx), Ctx) :-
+'$lgt_tr_body'(Pred, '$lgt_call_built_in'(Pred, ExCtx), '$lgt_dbg_goal'(Pred, '$lgt_call_built_in'(Pred, ExCtx), ExCtx), Ctx) :-
 	'$lgt_built_in'(Pred),
 	functor(Pred, Functor, Arity),
 	\+ '$lgt_pp_public_'(Functor, Arity),		% not a
@@ -8845,18 +8844,20 @@ current_logtalk_flag(version, version(2, 36, 1)).
 % translates the sending of a message to an object
 
 
-'$lgt_tr_msg'(Pred, Obj, TPred, This) :-
+% invalid object identifier
+		
+'$lgt_tr_msg'(_, Obj, _, _) :-
 	nonvar(Obj),
-	(	(Obj = (_, _); Obj = (_; _)) ->
-		!,
-		'$lgt_tr_msg_broadcasting'(Obj, Pred, TPred, This)	% message broadcasting
-	;	(	\+ callable(Obj) ->
-			throw(type_error(object_identifier, Obj))		% invalid object identifier
-		;	This \== user,									% not runtime message translation
-			'$lgt_add_referenced_object'(Obj),				% remember object receiving message
-			fail
-		)
-	).
+	\+ callable(Obj),
+	throw(type_error(object_identifier, Obj)).
+
+
+% not runtime message translation; remember object receiving message
+
+'$lgt_tr_msg'(_, Obj, _, This) :-
+	This \== user,									
+	'$lgt_add_referenced_object'(Obj),
+	fail.
 
 
 % convenient access to parametric object proxies
@@ -8891,19 +8892,9 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	throw(type_error(callable, Pred)).
 
 
-% broadcasting control constructs
+% broadcasting control construct
 
 '$lgt_tr_msg'((Pred1, Pred2), Obj, (TPred1, TPred2), This) :-
-	!,
-	'$lgt_tr_msg'(Pred1, Obj, TPred1, This),
-	'$lgt_tr_msg'(Pred2, Obj, TPred2, This).
-
-'$lgt_tr_msg'((Pred1; Pred2), Obj, (TPred1; TPred2), This) :-
-	!,
-	'$lgt_tr_msg'(Pred1, Obj, TPred1, This),
-	'$lgt_tr_msg'(Pred2, Obj, TPred2, This).
-
-'$lgt_tr_msg'((Pred1 -> Pred2), Obj, (TPred1 -> TPred2), This) :-
 	!,
 	'$lgt_tr_msg'(Pred1, Obj, TPred1, This),
 	'$lgt_tr_msg'(Pred2, Obj, TPred2, This).
@@ -9172,20 +9163,6 @@ current_logtalk_flag(version, version(2, 36, 1)).
 
 '$lgt_tr_self_msg'(Pred, '$lgt_send_to_self_'(Self, Pred, This, _), This, Self) :-
 	!.
-
-
-
-% message broadcasting (sending a message to several objects)
-
-'$lgt_tr_msg_broadcasting'((Obj1, Obj2), Pred, (TP1, TP2), This) :-
-	!,
-	'$lgt_tr_msg'(Pred, Obj1, TP1, This),
-	'$lgt_tr_msg'(Pred, Obj2, TP2, This).
-
-'$lgt_tr_msg_broadcasting'((Obj1; Obj2), Pred, (TP1; TP2), This) :-
-	!,
-	'$lgt_tr_msg'(Pred, Obj1, TP1, This),
-	'$lgt_tr_msg'(Pred, Obj2, TP2, This).
 
 
 
@@ -11416,9 +11393,8 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	'$lgt_fix_pred_calls_in_margs'(Args, MArgs, TArgs),
 	TPred =.. [Functor| TArgs].
 
-'$lgt_fix_pred_calls'('$lgt_call_built_in'(Pred, Ctx), TPred) :-
+'$lgt_fix_pred_calls'('$lgt_call_built_in'(Pred, ExCtx), TPred) :-
 	!,									% calls to Logtalk and Prolog built-in predicates
-	'$lgt_comp_ctx'(Ctx, _, _, _, _, _, _, _, ExCtx),
 	(	'$lgt_pp_redefined_built_in_'(Pred, ExCtx, TPred) ->
 		true
 	;	'$lgt_fix_pred_calls'(Pred, TPred)
