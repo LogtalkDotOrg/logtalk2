@@ -8892,9 +8892,19 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	throw(type_error(callable, Pred)).
 
 
-% broadcasting control construct
+% broadcasting control constructs
 
 '$lgt_tr_msg'((Pred1, Pred2), Obj, (TPred1, TPred2), This) :-
+	!,
+	'$lgt_tr_msg'(Pred1, Obj, TPred1, This),
+	'$lgt_tr_msg'(Pred2, Obj, TPred2, This).
+
+'$lgt_tr_msg'((Pred1; Pred2), Obj, (TPred1; TPred2), This) :-
+	!,
+	'$lgt_tr_msg'(Pred1, Obj, TPred1, This),
+	'$lgt_tr_msg'(Pred2, Obj, TPred2, This).
+
+'$lgt_tr_msg'((Pred1 -> Pred2), Obj, (TPred1 -> TPred2), This) :-
 	!,
 	'$lgt_tr_msg'(Pred1, Obj, TPred1, This),
 	'$lgt_tr_msg'(Pred2, Obj, TPred2, This).

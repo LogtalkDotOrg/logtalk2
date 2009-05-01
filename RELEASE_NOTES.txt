@@ -33,12 +33,13 @@ RELEASE NOTES
     Improved Logtalk compiler error checking for accidental redefinition of
     control constructs.
 
-    Disallow using ISO Prolog and Logtalk control constructs and built-in
-    meta-predicates as messages in order to avoid conflicting semantics with
-    user-defined object and category meta-predicates. The only exception is
-    the (,)/2 control construct, which is used for convenience when sending
-    a set of messages to an object. Removed support for seldom used message
-    sending broadcasting control constructs.
+    Specify \+/1, call/1-N, and once/1 as built-in local meta-predicates.
+
+    Disallow using Logtalk built-in meta-predicates as messages in order to
+    avoid conflicting semantics with user-defined object and category meta-
+    predicates. The Logtalk control constructs (,)/2, (;)/2, and (->)/2 may
+    still be used as syntatic sugar for sending a set of messages to a single
+    object.
 
     Improved performance of the :/1 control construct when using dynamic
     binding by adding a predicate lookup caching mechanism.
