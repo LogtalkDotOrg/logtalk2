@@ -92,50 +92,78 @@
 		scan_right(Closure, Acc, Args, [Acc2| Results]),
 		call(Closure, Arg, Acc2, Result).
 
-	:- meta_predicate(map(1, *)).
-	map(_, []).
-	map(Closure, [Head| Tail]) :-
+	:- meta_predicate(map_(*, 1)).
+	map_([], _).
+	map_([Head| Tail], Closure) :-
 		call(Closure, Head),
-		map(Closure, Tail).
+		map_(Tail, Closure).
+
+	:- meta_predicate(map(1, *)).
+	map(Closure, Tail) :-
+		map_(Tail, Closure).
 
 	:- meta_predicate(succeeds(1, *)).
 	succeeds(Closure, List) :-
-		map(Closure, List).
+		map_(List, Closure).
+
+	:- meta_predicate(map_(*, 2, *)).
+	map_([], _, []).
+	map_([A| As], Closure, [B| Bs]) :-
+		call(Closure, A, B),
+		map_(As, Closure, Bs).
 
 	:- meta_predicate(map(2, *, *)).
-	map(_, [], []).
-	map(Closure, [A| As], [B| Bs]) :-
-		call(Closure, A, B),
-		map(Closure, As, Bs).
+	map(Closure, As, Bs) :-
+		map_(As, Closure, Bs).
+
+	:- meta_predicate(map_(*, 3, *, *)).
+	map_([], _, [], []).
+	map_([A| As], Closure, [B| Bs], [C| Cs]) :-
+		call(Closure, A, B, C),
+		map_(As, Closure, Bs, Cs).
 
 	:- meta_predicate(map(3, *, *, *)).
-	map(_, [], [], []).
-	map(Closure, [A| As], [B| Bs], [C| Cs]) :-
-		call(Closure, A, B, C),
-		map(Closure, As, Bs, Cs).
+	map(Closure, As, Bs, Cs) :-
+		map_(As, Closure, Bs, Cs).
+
+	:- meta_predicate(map_(*, 4, *, *, *)).
+	map_([], _, [], [], []).
+	map_([A| As], Closure, [B| Bs], [C| Cs], [D| Ds]) :-
+		call(Closure, A, B, C, D),
+		map_(As, Closure, Bs, Cs, Ds).
 
 	:- meta_predicate(map(4, *, *, *, *)).
-	map(_, [], [], [], []).
-	map(Closure, [A| As], [B| Bs], [C| Cs], [D| Ds]) :-
-		call(Closure, A, B, C, D),
-		map(Closure, As, Bs, Cs, Ds).
+	map(Closure, As, Bs, Cs, Ds) :-
+		map_(As, Closure, Bs, Cs, Ds).
+
+	:- meta_predicate(map_(*, 5, *, *, *, *)).
+	map_([], _, [], [], [], []).
+	map_([A| As], Closure, [B| Bs], [C| Cs], [D| Ds], [E| Es]) :-
+		call(Closure, A, B, C, D, E),
+		map_(As, Closure, Bs, Cs, Ds, Es).
 
 	:- meta_predicate(map(5, *, *, *, *, *)).
-	map(_, [], [], [], [], []).
-	map(Closure, [A| As], [B| Bs], [C| Cs], [D| Ds], [E| Es]) :-
-		call(Closure, A, B, C, D, E),
-		map(Closure, As, Bs, Cs, Ds, Es).
+	map(Closure, As, Bs, Cs, Ds, Es) :-
+		map_(As, Closure, Bs, Cs, Ds, Es).
+
+	:- meta_predicate(map_(*, 6, *, *, *, *, *)).
+	map_([], _, [], [], [], [], []).
+	map_([A| As], Closure, [B| Bs], [C| Cs], [D| Ds], [E| Es], [F| Fs]) :-
+		call(Closure, A, B, C, D, E, F),
+		map_(As, Closure, Bs, Cs, Ds, Es, Fs).
 
 	:- meta_predicate(map(6, *, *, *, *, *, *)).
-	map(_, [], [], [], [], [], []).
-	map(Closure, [A| As], [B| Bs], [C| Cs], [D| Ds], [E| Es], [F| Fs]) :-
-		call(Closure, A, B, C, D, E, F),
-		map(Closure, As, Bs, Cs, Ds, Es, Fs).
+	map(Closure, As, Bs, Cs, Ds, Es, Fs) :-
+		map_(As, Closure, Bs, Cs, Ds, Es, Fs).
+
+	:- meta_predicate(map_(*, 7, *, *, *, *, *, *)).
+	map_([], _, [], [], [], [], [], []).
+	map_([A| As], Closure, [B| Bs], [C| Cs], [D| Ds], [E| Es], [F| Fs], [G| Gs]) :-
+		call(Closure, A, B, C, D, E, F, G),
+		map_(As, Closure, Bs, Cs, Ds, Es, Fs, Gs).
 
 	:- meta_predicate(map(7, *, *, *, *, *, *, *)).
-	map(_, [], [], [], [], [], [], []).
-	map(Closure, [A| As], [B| Bs], [C| Cs], [D| Ds], [E| Es], [F| Fs], [G| Gs]) :-
-		call(Closure, A, B, C, D, E, F, G),
-		map(Closure, As, Bs, Cs, Ds, Es, Fs, Gs).
+	map(Closure, As, Bs, Cs, Ds, Es, Fs, Gs) :-
+		map_(As, Closure, Bs, Cs, Ds, Es, Fs, Gs).
 
 :- end_object.
