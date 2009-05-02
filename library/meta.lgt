@@ -3,8 +3,8 @@
 	implements(metap)).
 
 	:- info([
-		version is 2.4,
-		date is 2008/12/22,
+		version is 2.5,
+		date is 2009/5/2,
 		author is 'Paulo Moura',
 		comment is 'Some useful meta-predicates.']).
 
@@ -95,5 +95,23 @@
 	map(Closure, [A| As], [B| Bs], [C| Cs], [D| Ds]) :-
 		call(Closure, A, B, C, D),
 		map(Closure, As, Bs, Cs, Ds).
+
+	:- meta_predicate(map(5, *, *, *, *, *)).
+	map(_, [], [], [], [], []).
+	map(Closure, [A| As], [B| Bs], [C| Cs], [D| Ds], [E| Es]) :-
+		call(Closure, A, B, C, D, E),
+		map(Closure, As, Bs, Cs, Ds, Es).
+
+	:- meta_predicate(map(6, *, *, *, *, *, *)).
+	map(_, [], [], [], [], [], []).
+	map(Closure, [A| As], [B| Bs], [C| Cs], [D| Ds], [E| Es], [F| Fs]) :-
+		call(Closure, A, B, C, D, E, F),
+		map(Closure, As, Bs, Cs, Ds, Es, Fs).
+
+	:- meta_predicate(map(7, *, *, *, *, *, *, *)).
+	map(_, [], [], [], [], [], [], []).
+	map(Closure, [A| As], [B| Bs], [C| Cs], [D| Ds], [E| Es], [F| Fs], [G| Gs]) :-
+		call(Closure, A, B, C, D, E, F, G),
+		map(Closure, As, Bs, Cs, Ds, Es, Fs, Gs).
 
 :- end_object.

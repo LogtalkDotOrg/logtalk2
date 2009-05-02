@@ -2,8 +2,8 @@
 :- protocol(metap).
 
 	:- info([
-		version is 3.2,
-		date is 2008/11/18,
+		version is 3.3,
+		date is 2009/5/2,
 		author is 'Paulo Moura',
 		comment is 'Useful meta-predicates protocol.']).
 
@@ -82,5 +82,26 @@
 	:- info(map/5, [
 		comment is 'List mapping predicate taken arguments from four lists of elements.',
 		argnames is ['Closure', 'List1', 'List2', 'List3', 'List4']]).
+
+	:- public(map/6).
+	:- meta_predicate(map(5, *, *, *, *, *)).
+	:- mode(map(+callable, ?list, ?list, ?list, ?list, ?list), zero_or_more).
+	:- info(map/6, [
+		comment is 'List mapping predicate taken arguments from four lists of elements.',
+		argnames is ['Closure', 'List1', 'List2', 'List3', 'List4', 'List5']]).
+
+	:- public(map/7).
+	:- meta_predicate(map(6, *, *, *, *, *, *)).
+	:- mode(map(+callable, ?list, ?list, ?list, ?list, ?list, ?list), zero_or_more).
+	:- info(map/7, [
+		comment is 'List mapping predicate taken arguments from four lists of elements.',
+		argnames is ['Closure', 'List1', 'List2', 'List3', 'List4', 'List5', 'List6']]).
+
+	:- public(map/8).
+	:- meta_predicate(map(7, *, *, *, *, *, *, *)).
+	:- mode(map(+callable, ?list, ?list, ?list, ?list, ?list, ?list, ?list), zero_or_more).
+	:- info(map/8, [
+		comment is 'List mapping predicate taken arguments from four lists of elements.',
+		argnames is ['Closure', 'List1', 'List2', 'List3', 'List4', 'List5', 'List6', 'List7']]).
 
 :- end_protocol.

@@ -66,6 +66,8 @@ RELEASE NOTES
     bugs in the implementation of the library object "varlist" predicates.
     Thanks to Victor Noel for the bug report.
 
+    Added meta-predicates map/6-8 to the library object "meta".
+
     Updated the "puzzle" constraint example for SWI-Prolog to avoid leaking
     "clpfd" predicates in query binding results. Thanks to Ulrich Neumerkel
     for reporting the problem.
