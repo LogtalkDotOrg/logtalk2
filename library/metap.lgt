@@ -48,12 +48,26 @@
 		comment is 'List folding (left associative).',
 		argnames is ['Closure', 'Accumulator', 'List', 'Result']]).
 
+	:- public(scan_left/4).
+	:- meta_predicate(scan_left(3, *, *, *)).
+	:- mode(scan_left(+callable, ?term, +list, ?list), zero_or_more).
+	:- info(scan_left/4, [
+		comment is 'List scanning; similar to folding but returns the intermediate and final results (left associative).',
+		argnames is ['Closure', 'Accumulator', 'List', 'Results']]).
+
 	:- public(fold_right/4).
 	:- meta_predicate(fold_right(3, *, *, *)).
 	:- mode(fold_right(+callable, ?term, +list, ?term), zero_or_more).
 	:- info(fold_right/4, [
 		comment is 'List folding (right associative).',
 		argnames is ['Closure', 'Accumulator', 'List', 'Result']]).
+
+	:- public(scan_right/4).
+	:- meta_predicate(scan_right(3, *, *, *)).
+	:- mode(scan_right(+callable, ?term, +list, ?list), zero_or_more).
+	:- info(scan_right/4, [
+		comment is 'List scanning; similar to folding but returns the intermediate and final results (right associative).',
+		argnames is ['Closure', 'Accumulator', 'List', 'Results']]).
 
 	:- public(map/2).
 	:- meta_predicate(map(1, *)).

@@ -62,10 +62,22 @@
 		call(Closure, Acc, Arg, Acc2),
 		fold_left(Closure, Acc2, Args, Result).
 
+	:- meta_predicate(scan_left(3, *, *, *)).
+	scan_left(_, Result, [], [Result]).
+	scan_left(Closure, Acc, [Arg| Args], [Acc| Results]) :-
+		call(Closure, Acc, Arg, Acc2),
+		scan_left(Closure, Acc2, Args, Results).
+
 	:- meta_predicate(fold_right(3, *, *, *)).
 	fold_right(_, Result, [], Result).
 	fold_right(Closure, Acc, [Arg| Args], Result) :-
 		fold_right(Closure, Acc, Args, Acc2),
+		call(Closure, Arg, Acc2, Result).
+
+	:- meta_predicate(scan_right(3, *, *, *)).
+	scan_right(_, Result, [], [Result]).
+	scan_right(Closure, Acc, [Arg| Args], [Result, Acc2| Results]) :-
+		scan_right(Closure, Acc, Args, [Acc2| Results]),
 		call(Closure, Arg, Acc2, Result).
 
 	:- meta_predicate(map(1, *)).
