@@ -38,7 +38,7 @@ RELEASE NOTES
     Disallow using Logtalk built-in meta-predicates as messages in order to
     avoid conflicting semantics with user-defined object and category meta-
     predicates. The Logtalk control constructs (,)/2, (;)/2, and (->)/2 may
-    still be used as syntatic sugar for sending a set of messages to a single
+    still be used as syntactic sugar for sending a set of messages to a single
     object.
 
     Improved performance of the :/1 control construct when using dynamic
@@ -49,9 +49,9 @@ RELEASE NOTES
 
     Allow a variable clause body to be interpreted as a meta-call instead of
     an instantiation error. Although is not recommended to use a variable as
-    a goal instead of using the call/1 control construct, this change allows
-    for uniform handling of variables as goals in clause bodies. Thanks to
-    Victor Noel for the bug report.
+    a goal instead of using the call/1 built-in meta-predicate, this change
+    allows for uniform handling of variables as goals in clause bodies. Thanks
+    to Victor Noel for the bug report.
 
     Updated the ECLiPSe config files in order to support the non-standard 
     *->/2 (aka "soft cut") control construct. Thanks to Victor Noel for the

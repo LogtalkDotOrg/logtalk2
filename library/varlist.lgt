@@ -94,6 +94,15 @@
 		Count2 is Count + 1,
 		nth_aux(Element, List, Count2, Position, Tail).
 
+	permutation(List, Permutation) :-
+		same_length(List, Permutation),
+		is_permutation(List, Permutation).
+
+	is_permutation([], []).
+	is_permutation([Head| Tail], Permutation) :-
+		select(Head, Permutation, Remaining) ->
+		is_permutation(Tail, Remaining).
+
 	prefix([], _).
 	prefix(Prefix, [Head2| Tail2]) :-
 		(	var(Prefix) ->

@@ -79,6 +79,12 @@
 		comment is 'Nth element of a list (counting from zero).',
 		argnames is ['Nth', 'List', 'Element', 'Residue']]).
 
+	:- public(permutation/2).
+	:- mode(permutation(@list, @list), zero_or_one).
+	:- info(permutation/2,
+		[comment is 'The two lists are a permutation of the same list.',
+		 argnames is ['List', 'Permutation']]).
+
 	:- public(prefix/2).
 	:- mode(prefix(?list, @list), zero_or_more).
 	:- info(prefix/2,
