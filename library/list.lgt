@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.6,
+		version is 1.7,
 		author is 'Paulo Moura',
-		date is 2009/4/29,
+		date is 2009/5/2,
 		comment is 'List predicates.']).
 
 	:- public(as_difflist/2).
@@ -173,6 +173,10 @@
 	select(Head, [Head| Tail], Tail).
 	select(Head, [Head2| Tail], [Head2| Tail2]) :-
 		select(Head, Tail, Tail2).
+
+	selectchk(Elem, List, Remaining) :-
+		select(Elem, List, Rest) ->
+		Remaining = Rest.
 
 	sort(List, Sorted) :-
 		{sort(List, Sorted)}.		

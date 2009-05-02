@@ -2,9 +2,9 @@
 :- protocol(listp).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2004/5/9,
+		date is 2009/5/2,
 		comment is 'List protocol.']).
 
 	:- public(append/3).
@@ -142,6 +142,12 @@
 	:- mode(select(?term, ?list, +list), zero_or_more).
 	:- info(select/3,
 		[comment is 'Selects an element from a list, returning the list of remaining elements.',
+		 argnames is ['Element', 'List', 'Remaining']]).
+
+	:- public(selectchk/3).
+	:- mode(selectchk(?term, +list, ?list), zero_or_one).
+	:- info(selectchk/3,
+		[comment is 'Checks that an element can be selected from a list, returning the list of remaining elements.',
 		 argnames is ['Element', 'List', 'Remaining']]).
 
 	:- public(sort/2).

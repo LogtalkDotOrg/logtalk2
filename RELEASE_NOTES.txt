@@ -68,6 +68,8 @@ RELEASE NOTES
 
     Added meta-predicates map/6-8 to the library object "meta".
 
+    Added predicate selectchk/3 to the library object "list".
+
     Updated the "puzzle" constraint example for SWI-Prolog to avoid leaking
     "clpfd" predicates in query binding results. Thanks to Ulrich Neumerkel
     for reporting the problem.
