@@ -68,29 +68,45 @@
 		;	true
 		).
 
-	:- meta_predicate(fold_left(3, *, *, *)).
-	fold_left(_, Result, [], Result).
-	fold_left(Closure, Acc, [Arg| Args], Result) :-
+	:- meta_predicate(fold_left_(*, 3, *, *)).
+	fold_left_([], _, Result, Result).
+	fold_left_([Arg| Args], Closure, Acc, Result) :-
 		call(Closure, Acc, Arg, Acc2),
-		fold_left(Closure, Acc2, Args, Result).
+		fold_left_(Args, Closure, Acc2, Result).
+
+	:- meta_predicate(fold_left(3, *, *, *)).
+	fold_left(Closure, Acc, List, Result) :-
+		fold_left_(List, Closure, Acc, Result).
+
+	:- meta_predicate(scan_left_(*, 3, *, *)).
+	scan_left_([], _, Result, [Result]).
+	scan_left_([Arg| Args], Closure, Acc, [Acc| Results]) :-
+		call(Closure, Acc, Arg, Acc2),
+		scan_left_(Args, Closure, Acc2, Results).
 
 	:- meta_predicate(scan_left(3, *, *, *)).
-	scan_left(_, Result, [], [Result]).
-	scan_left(Closure, Acc, [Arg| Args], [Acc| Results]) :-
-		call(Closure, Acc, Arg, Acc2),
-		scan_left(Closure, Acc2, Args, Results).
+	scan_left(Closure, Acc, List, Results) :-
+		scan_left_(List, Closure, Acc, Results).
+
+	:- meta_predicate(fold_right_(*, 3, *, *)).
+	fold_right_([], _, Result, Result).
+	fold_right_([Arg| Args], Closure, Acc, Result) :-
+		fold_right_(Args, Closure, Acc, Acc2),
+		call(Closure, Arg, Acc2, Result).
 
 	:- meta_predicate(fold_right(3, *, *, *)).
-	fold_right(_, Result, [], Result).
-	fold_right(Closure, Acc, [Arg| Args], Result) :-
-		fold_right(Closure, Acc, Args, Acc2),
+	fold_right(Closure, Acc, List, Result) :-
+		fold_right_(List, Closure, Acc, Result).
+
+	:- meta_predicate(scan_right_(*, 3, *, *)).
+	scan_right_([], _, Result, [Result]).
+	scan_right_([Arg| Args], Closure, Acc, [Result, Acc2| Results]) :-
+		scan_right_(Args, Closure, Acc, [Acc2| Results]),
 		call(Closure, Arg, Acc2, Result).
 
 	:- meta_predicate(scan_right(3, *, *, *)).
-	scan_right(_, Result, [], [Result]).
-	scan_right(Closure, Acc, [Arg| Args], [Result, Acc2| Results]) :-
-		scan_right(Closure, Acc, Args, [Acc2| Results]),
-		call(Closure, Arg, Acc2, Result).
+	scan_right(Closure, Acc, List, Results) :-
+		scan_right_(List, Closure, Acc, Results).
 
 	:- meta_predicate(map_(*, 1)).
 	map_([], _).

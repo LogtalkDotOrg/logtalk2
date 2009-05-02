@@ -68,7 +68,7 @@ RELEASE NOTES
 
     Added meta-predicates scan_left/4, scan_right/4, and map/6-8 to the
     library object "meta". Optimized performance of the meta-predicates
-    include/3, exclude/3, map/2-8, and partition/4.
+    fold_left/4, fold_right/4, include/3, exclude/3, map/2-8, and partition/4.
 
     Added predicate selectchk/3 to the library object "list".
 
