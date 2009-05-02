@@ -16,38 +16,50 @@
 		functor(Term, Functor, _),
 		atom(Functor).
 
-	:- meta_predicate(include(1, *, *)).
-	include(_, [], []) :- !.
-	include(Closure, [Arg| Args], Included) :-
+	:- meta_predicate(include_(*, 1, *)).
+	include_([], _, []).
+	include_([Arg| Args], Closure, Included) :-
 		(	call(Closure, Arg) ->
 			Included = [Arg| Rest]
 		;	Included = Rest
 		),
-		include(Closure, Args, Rest).
+		include_(Args, Closure, Rest).
+
+	:- meta_predicate(include(1, *, *)).
+	include(Closure, List, Included) :-
+		include_(List, Closure, Included).
 
 	:- meta_predicate(filter(1, *, *)).
 	filter(Closure, List, Included) :-
 		include(Closure, List, Included).
 
-	:- meta_predicate(exclude(1, *, *)).
-	exclude(_, [], []) :- !.
-	exclude(Closure, [Arg| Args], Excluded) :-
+	:- meta_predicate(exclude_(*, 1, *)).
+	exclude_([], _, []).
+	exclude_([Arg| Args], Closure, Excluded) :-
 		(	call(Closure, Arg) ->
 			Excluded = Rest
 		;	Excluded = [Arg| Rest]
 		),
-		exclude(Closure, Args, Rest).
+		exclude_(Args, Closure, Rest).
+
+	:- meta_predicate(exclude(1, *, *)).
+	exclude(Closure, List, Excluded) :-
+		exclude_(List, Closure, Excluded).
+
+	:- meta_predicate(partition_(*, 1, *, *)).
+	partition_([], _, [], []).
+	partition_([Arg| Args], Closure, Included, Excluded) :-
+		(   call(Closure, Arg) ->
+			Included = [Arg| RestIncluded],
+			Excluded = RestExcluded
+		;	Included = RestIncluded,
+			Excluded = [Arg| RestExcluded]
+		),
+		partition_(Args, Closure, RestIncluded, RestExcluded).
 
 	:- meta_predicate(partition(1, *, *, *)).
-    partition(_, [], [], []) :- !.
-    partition(Closure, [Arg| Args], Included, Excluded) :-
-        (   call(Closure, Arg) ->
-	        Included = [Arg| RestIncluded],
-	        Excluded = RestExcluded
-        ;   Included = RestIncluded,
-            Excluded = [Arg| RestExcluded]
-        ),
-        partition(Closure, Args, RestIncluded, RestExcluded).
+    partition(Closure, List, Included, Excluded) :-
+		partition_(List, Closure, Included, Excluded).
 
 	:- meta_predicate(ignore(::)).
 	ignore(Goal) :-

@@ -67,7 +67,8 @@ RELEASE NOTES
     Thanks to Victor Noel for the bug report.
 
     Added meta-predicates scan_left/4, scan_right/4, and map/6-8 to the
-    library object "meta".
+    library object "meta". Optimized performance of the meta-predicates
+    include/3, exclude/3, and partition/4.
 
     Added predicate selectchk/3 to the library object "list".
 
