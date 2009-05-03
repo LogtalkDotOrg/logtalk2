@@ -7386,17 +7386,6 @@ current_logtalk_flag(version, version(2, 36, 1)).
 '$lgt_tr_head'(!, _, _, _, _, _) :-
 	throw(permission_error(modify, control_construct, !/0)).
 
-'$lgt_tr_head'(catch(_, _, _), _, _, _, _, _) :-
-	throw(permission_error(modify, control_construct, catch/3)).
-
-'$lgt_tr_head'(throw(_), _, _, _, _, _) :-
-	throw(permission_error(modify, control_construct, throw/1)).
-
-'$lgt_tr_head'(CallN, _, _, _, _, _) :-
-	functor(CallN, call, Arity),
-	Arity > 0,
-	throw(permission_error(modify, control_construct, call/Arity)).
-
 
 % redefinition of Logtalk built-in methods
 
@@ -7408,7 +7397,7 @@ current_logtalk_flag(version, version(2, 36, 1)).
 '$lgt_tr_head'(Head, _, _, _, _, _) :-
 	'$lgt_built_in_local_method'(Head),
 	functor(Head, Functor, Arity), 
-	throw(permission_error(modify, built_in_local_method, Functor/Arity)).
+	throw(permission_error(modify, built_in_method, Functor/Arity)).
 
 
 % conflict with a predicate specified in a uses/2 directive
@@ -7688,6 +7677,16 @@ current_logtalk_flag(version, version(2, 36, 1)).
 	nonvar(Closure),
 	\+ callable(Closure),
 	throw(type_error(callable, Closure)).
+
+'$lgt_tr_body'(CallN, TPred, DPred, Ctx) :-
+	CallN =.. [call, Closure| Args],
+	nonvar(Closure),
+	Closure \= _::_,
+	Closure \= ::_,
+	Closure \= ':'(_, _),
+	!,
+	Pred =.. [Closure| Args],
+	'$lgt_tr_body'(Pred, TPred, DPred, Ctx).
 
 '$lgt_tr_body'(CallN, _, _, Ctx) :-
 	CallN =.. [call, Closure| _],

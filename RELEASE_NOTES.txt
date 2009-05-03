@@ -41,6 +41,10 @@ RELEASE NOTES
     still be used as syntactic sugar for sending a set of messages to a single
     object.
 
+    Updated the Logtalk compiler to ensure that calls to the built-in meta-
+    predicate call/2-N within a category have the same semantics as other
+    built-in meta-predicates whose meta-arguments are goals.
+
     Improved performance of the :/1 control construct when using dynamic
     binding by adding a predicate lookup caching mechanism.
 
