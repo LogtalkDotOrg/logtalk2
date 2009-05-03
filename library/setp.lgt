@@ -2,9 +2,9 @@
 :- protocol(setp).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2000/7/24,
+		date is 2009/5/3,
 		comment is 'Set protocol.']).
 
 	:- public(delete/3).
@@ -73,6 +73,12 @@
 	:- info(powerset/2,
 		[comment is 'Returns the power set of a set, represented as a list of sets.',
 		 argnames is ['Set', 'Powerset']]).
+
+	:- public(product/3).
+	:- mode(product(+set, +set, -set), one).
+	:- info(product/3,
+		[comment is 'Returns the cartesian product of two sets.',
+		 argnames is ['Set1', 'Set2', 'Product']]).
 
 	:- public(select/3).
 	:- mode(select(?term, +set, ?set), zero_or_more).

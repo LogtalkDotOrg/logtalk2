@@ -77,6 +77,8 @@ RELEASE NOTES
     Added predicates same_length/3, selectchk/3, and subsequence/3 to the
     library object "list".
 
+    Added predicate product/3 to the library object "set".
+
     Updated the "puzzle" constraint example for SWI-Prolog to avoid leaking
     "clpfd" predicates in query binding results. Thanks to Ulrich Neumerkel
     for reporting the problem.

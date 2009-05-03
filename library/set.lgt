@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2009/3/6,
+		date is 2009/5/3,
 		comment is 'Set predicates implemented using ordered lists. Uses ==/2 for element comparison and standard term ordering.']).
 
 	delete([], _, []).
@@ -116,6 +116,15 @@
 	powerset_2([], _, []).
 	powerset_2([Zs| Zss], X, [Zs, [X| Zs]| Yss]) :-
 		powerset_2(Zss, X, Yss).
+
+	product([], _, []).
+	product([A| As], Bs, Product) :-
+		product(Bs, A, Product, Tail),
+		product(As, Bs, Tail).
+
+	product([], _, Product, Product).
+	product([B| Bs], A, [A-B| ABs], Product) :-
+		product(Bs, A, ABs, Product).
 
 	reverse(List, Reversed) :-
 		reverse(List, [], Reversed).
