@@ -170,6 +170,30 @@
 	same_length([_| Tail1], [_| Tail2]) :-
 		same_length(Tail1, Tail2).
 
+	same_length(List1, List2, Length) :-
+		(	integer(Length) ->
+			same_length_length(Length, List1, List2)
+		;	var(List1) ->
+			same_length_list(List2, List1, 0, Length)
+		;	same_length_list(List1, List2, 0, Length)
+		).
+
+	same_length_length(Length, List1, List2) :-
+		(	Length =:= 0 ->
+			List1 = [],
+			List2 = []
+		;	Length > 0,
+			Length2 is Length - 1,
+			List1 = [_| Tail1],
+			List2 = [_| Tail2],
+			same_length_length(Length2, Tail1, Tail2)
+		).
+
+	same_length_list([], [], Length, Length).
+	same_length_list([_| Tail1], [_| Tail2], Acc, Length) :-
+		Acc2 is Acc + 1,
+		same_length_list(Tail1, Tail2, Acc2, Length).
+
 	select(Head, [Head| Tail], Tail).
 	select(Head, [Head2| Tail], [Head2| Tail2]) :-
 		select(Head, Tail, Tail2).

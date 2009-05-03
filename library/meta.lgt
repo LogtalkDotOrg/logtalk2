@@ -31,7 +31,7 @@
 
 	:- meta_predicate(filter(1, *, *)).
 	filter(Closure, List, Included) :-
-		include(Closure, List, Included).
+		include_(List, Closure, Included).
 
 	:- meta_predicate(exclude_(*, 1, *)).
 	exclude_([], _, []).
@@ -115,8 +115,8 @@
 		map_(Tail, Closure).
 
 	:- meta_predicate(map(1, *)).
-	map(Closure, Tail) :-
-		map_(Tail, Closure).
+	map(Closure, List) :-
+		map_(List, Closure).
 
 	:- meta_predicate(succeeds(1, *)).
 	succeeds(Closure, List) :-

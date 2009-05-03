@@ -74,8 +74,8 @@ RELEASE NOTES
     library object "meta". Optimized performance of the meta-predicates
     fold_left/4, fold_right/4, include/3, exclude/3, map/2-8, and partition/4.
 
-    Added predicates selectchk/3 and subsequence/3 to the library object
-    "list".
+    Added predicates same_length/3, selectchk/3, and subsequence/3 to the
+    library object "list".
 
     Updated the "puzzle" constraint example for SWI-Prolog to avoid leaking
     "clpfd" predicates in query binding results. Thanks to Ulrich Neumerkel

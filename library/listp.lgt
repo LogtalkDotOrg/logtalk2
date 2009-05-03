@@ -137,6 +137,14 @@
 		[comment is 'The two lists have the same length.',
 		 argnames is ['List1', 'List2']]).
 
+	:- public(same_length/3).
+	:- mode(same_length(+list, ?list, ?integer), zero_or_one).
+	:- mode(same_length(?list, +list, ?integer), zero_or_one).
+	:- mode(same_length(-list, -list, -integer), one_or_more).
+	:- info(same_length/3,
+		[comment is 'The two lists have the same length.',
+		 argnames is ['List1', 'List2', 'Length']]).
+
 	:- public(select/3).
 	:- mode(select(?term, +list, ?list), zero_or_more).
 	:- mode(select(?term, ?list, +list), zero_or_more).
