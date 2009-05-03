@@ -137,6 +137,10 @@
 	select(Head, [Head2| Tail], [Head2| Tail2]) :-
 		select(Head, Tail, Tail2).
 
+	selectchk(Elem, List, Remaining) :-
+		select(Elem, List, Rest) ->
+		Remaining = Rest.
+
 	subset([], _) :- !.
 	subset([Head1| Tail1], [Head2| Tail2]) :-
 		compare(Order, Head1, Head2),

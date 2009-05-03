@@ -86,6 +86,12 @@
 		[comment is 'Selects an element from a set, returning the set of remaining elements.',
 		 argnames is ['Element', 'Set', 'Remaining']]).
 
+	:- public(selectchk/3).
+	:- mode(selectchk(?term, +set, ?set), zero_or_one).
+	:- info(selectchk/3,
+		[comment is 'Checks that an element can be selected from a set, returning the set of remaining elements.',
+		 argnames is ['Element', 'Set', 'Remaining']]).
+
 	:- public(subset/2).
 	:- mode(subset(+set, +set), zero_or_one).
 	:- info(subset/2, [
