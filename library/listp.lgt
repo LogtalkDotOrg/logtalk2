@@ -162,6 +162,12 @@
 		[comment is 'The first list is a sublist of the second.',
 		 argnames is ['Sublist', 'List']]).
 
+	:- public(subsequence/3).
+	:- mode(subsequence(?list, ?list, ?list), zero_or_more).
+	:- info(subsequence/3,
+		[comment is 'List is an interleaving of Subsequence and Remaining. Element order is preserved.',
+		 argnames is ['List', 'Subsequence', 'Remaining']]).
+
 	:- public(subtract/3).
 	:- mode(subtract(+list, +list, -list), one).
 	:- info(subtract/3,

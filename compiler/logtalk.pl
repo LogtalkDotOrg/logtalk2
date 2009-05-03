@@ -7681,9 +7681,9 @@ current_logtalk_flag(version, version(2, 36, 1)).
 '$lgt_tr_body'(CallN, TPred, DPred, Ctx) :-
 	CallN =.. [call, Closure| Args],
 	nonvar(Closure),
-	Closure \= _::_,
-	Closure \= ::_,
-	Closure \= ':'(_, _),
+	Closure \= _::_,							% these three special cases
+	Closure \= ::_,								% are already handled by the
+	Closure \= ':'(_, _),						% '$lgt_metacall'/6 predicate
 	!,
 	Pred =.. [Closure| Args],
 	'$lgt_tr_body'(Pred, TPred, DPred, Ctx).

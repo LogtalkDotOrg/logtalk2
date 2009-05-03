@@ -191,6 +191,12 @@
 	sublist([Head| Tail], Element, [Element| Sublist]):-
 		sublist(Tail, Head, Sublist).
 
+	subsequence([], [], []).
+	subsequence([Head| Tail], Subsequence, [Head| Remaining]) :-
+		subsequence(Tail, Subsequence, Remaining).
+	subsequence([Head| Tail], [Head| Subsequence], Remaining) :-
+		subsequence(Tail, Subsequence, Remaining).
+
 	subtract([], _, []).
 	subtract([Head| Tail], List, Rest) :-
 		(	memberchk(Head, List) ->
