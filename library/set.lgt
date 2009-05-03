@@ -122,9 +122,9 @@
 		product(Bs, A, Product, Tail),
 		product(As, Bs, Tail).
 
-	product([], _, Product, Product).
-	product([B| Bs], A, [A-B| ABs], Product) :-
-		product(Bs, A, ABs, Product).
+	product([], _, Tail, Tail).
+	product([B| Bs], A, [A-B| ABs], Tail) :-
+		product(Bs, A, ABs, Tail).
 
 	reverse(List, Reversed) :-
 		reverse(List, [], Reversed).
