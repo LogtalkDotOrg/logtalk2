@@ -61,6 +61,9 @@ RELEASE NOTES
     *->/2 (aka "soft cut") control construct. Thanks to Victor Noel for the
     bug report.
 
+    Updated the Ciao config file in order to support the non-standard if/3
+    (aka "soft cut") control construct.
+
     Updated the Qu-Prolog config file in order to enable support for multifile
     directives (version 8.9 or later is now required).
 

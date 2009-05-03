@@ -11,7 +11,7 @@
 %
 %  configuration file for Ciao Prolog 1.10#8
 %
-%  last updated: April 19, 2009
+%  last updated: May 4, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -209,8 +209,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 % '$lgt_pl_meta_predicate'(?callable, ?atom).
 
-'$lgt_pl_meta_predicate'(_, _) :-
-	fail.
+'$lgt_pl_meta_predicate'(if(::, ::, ::), predicate).
 
 
 
