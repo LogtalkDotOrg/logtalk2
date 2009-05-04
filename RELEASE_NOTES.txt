@@ -78,7 +78,7 @@ RELEASE NOTES
     fold_left/4, fold_right/4, include/3, exclude/3, map/2-8, and partition/4.
 
     Added predicates same_length/3, selectchk/3, and subsequence/3 to the
-    library object "list".
+    library objects "difflist" and "list".
 
     Added predicates product/3 and selectchk/3 to the library object "set".
 

@@ -4,7 +4,7 @@
 	:- info([
 		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2009/5/2,
+		date is 2009/5/4,
 		comment is 'List protocol.']).
 
 	:- public(append/3).
@@ -153,7 +153,7 @@
 		 argnames is ['Element', 'List', 'Remaining']]).
 
 	:- public(selectchk/3).
-	:- mode(selectchk(?term, +list, ?list), zero_or_one).
+	:- mode(selectchk(+term, +list, ?list), zero_or_one).
 	:- info(selectchk/3,
 		[comment is 'Checks that an element can be selected from a list, returning the list of remaining elements.',
 		 argnames is ['Element', 'List', 'Remaining']]).

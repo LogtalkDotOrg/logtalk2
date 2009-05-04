@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2009/3/6,
+		date is 2009/5/4,
 		comment is 'Difference list predicates.']).
 
 	:- public(as_list/2).
@@ -228,6 +228,38 @@
 		List2 = [_| Tail2],
 		same_length(Tail1-Back1, Tail2-Back2).
 
+	same_length(List1, List2, Length) :-
+		(	integer(Length) ->
+			same_length_length(Length, List1, List2)
+		;	var(List1) ->
+			same_length_list(List2, List1, 0, Length)
+		;	same_length_list(List1, List2, 0, Length)
+		).
+
+	same_length_length(0, List1, List2) :-
+		!,
+		unify_with_occurs_check(List1, Back1-Back1),
+		unify_with_occurs_check(List2, Back2-Back2).
+	same_length_length(Length, List1-Back1, List2-Back2) :-
+		Length > 0,
+		Length2 is Length - 1,
+		List1 \== Back1,
+		List1 = [_| Tail1],
+		List2 \== Back2,
+		List2 = [_| Tail2],
+		same_length_length(Length2, Tail1-Back1, Tail2-Back2).
+
+	same_length_list(List1, List2, Length, Length) :-
+		unify_with_occurs_check(List1, Back1-Back1),
+		unify_with_occurs_check(List2, Back2-Back2).
+	same_length_list(List1-Back1, List2-Back2, Acc, Length) :-
+		List1 \== Back1,
+		List1 = [_| Tail1],
+		List2 \== Back2,
+		List2 = [_| Tail2],
+		Acc2 is Acc + 1,
+		same_length_list(Tail1-Back1, Tail2-Back2, Acc2, Length).
+
 	select(Head, List-Back, Tail-Back) :-
 		List \== Back,
 		List = [Head| Tail].
@@ -237,6 +269,10 @@
 		List2 \== Back,
 		List2 = [Other| Tail2],
 		select(Head, Tail-Back, Tail2-Back).
+
+	selectchk(Elem, List-Back, Remaining-Back) :-
+		select(Elem, List-Back, Rest-Back) ->
+		unify_with_occurs_check(Remaining, Rest).
 
 	sort(Difflist, Sorted) :-
 		as_list(Difflist, List),
@@ -260,6 +296,17 @@
 		List \== Back,
 		List = [Head| Tail],
 		sublist(Tail-Back, Head, Sublist-Back).
+
+	subsequence(List-Back, List-Back, List-Back) :-
+		List == Back.
+	subsequence(List-Back, Subsequence-Back, [Head| Remaining]-Back) :-
+		List \== Back,
+		List = [Head| Tail],
+		subsequence(Tail-Back, Subsequence-Back, Remaining-Back).
+	subsequence(List-Back, [Head| Subsequence]-Back, Remaining-Back) :-
+		List \== Back,
+		List = [Head| Tail],
+		subsequence(Tail-Back, Subsequence-Back, Remaining-Back).
 
 	subtract(List-Back, _, Result) :-
 		unify_with_occurs_check(Result, Back-Back),
