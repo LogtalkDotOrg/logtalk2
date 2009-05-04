@@ -73,8 +73,8 @@ RELEASE NOTES
     bugs in the implementation of the library object "varlist" predicates.
     Thanks to Victor Noel for the bug report.
 
-    Added meta-predicates scan_left/4, scan_right/4, and map/6-8 to the
-    library object "meta". Optimized performance of the meta-predicates
+    Added meta-predicates scan_left/4, scan_right/4, map/6-8, and partition/6
+    to the library object "meta". Optimized performance of the meta-predicates
     fold_left/4, fold_right/4, include/3, exclude/3, map/2-8, and partition/4.
 
     Added predicates partition/5, same_length/3, selectchk/3, and

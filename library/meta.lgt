@@ -61,6 +61,23 @@
     partition(Closure, List, Included, Excluded) :-
 		partition_(List, Closure, Included, Excluded).
 
+	:- meta_predicate(partition(*, 3, *, *, *, *)).
+	partition_([], _, _, [], [], []).
+	partition_([X| Xs], Closure, Y, Less, Equal, Greater) :-
+		call(Closure, Order, X, Y),
+		partition_(Order, X, Xs, Closure, Y, Less, Equal, Greater).
+	
+	partition_(<, X, Xs, Closure, Y, [X| Less], Equal, Greater) :-
+		partition_(Xs, Closure, Y, Less, Equal, Greater).
+	partition_(=, X, Xs, Closure, Y, Less, [X| Equal], Greater) :-
+		partition_(Xs, Closure, Y, Less, Equal, Greater).
+	partition_(>, X, Xs, Closure, Y, Less, Equal, [X| Greater]) :-
+		partition_(Xs, Closure, Y, Less, Equal, Greater).
+
+	:- meta_predicate(partition(3, *, *, *, *, *)).
+	partition(Closure, List, Value, Less, Equal, Greater) :-
+		partition_(List, Closure, Value, Less, Equal, Greater).
+
 	:- meta_predicate(ignore(::)).
 	ignore(Goal) :-
 		(	call(Goal) ->
