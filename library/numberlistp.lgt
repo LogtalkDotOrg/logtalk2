@@ -2,16 +2,10 @@
 :- protocol(numberlistp).
 
 	:- info([
-		version is 1.3,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2009/5/4,
+		date is 2008/9/15,
 		comment is 'List of numbers protocol.']).
-
-	:- public(partition/5).
-	:- mode(partition(+list(number), +number, -list(number), -list(number), -list(number)), one).
-	:- info(partition/5,
-		[comment is 'Partitions a list in lists with values less, equal, and greater than a given value.',
-		 argnames is ['List', 'Value', 'Less', 'Equal', 'Greater']]).
 
 	:- public(product/2).
 	:- mode(product(+list(number), ?number), zero_or_one).

@@ -109,6 +109,12 @@
 		comment is 'Nth element of a list (counting from zero).',
 		argnames is ['Nth', 'List', 'Element', 'Residue']]).
 
+	:- public(partition/5).
+	:- mode(partition(+list, +number, -list, -list, -list), one).
+	:- info(partition/5,
+		[comment is 'Partitions a list in lists with values less, equal, and greater than a given value (using standard order).',
+		 argnames is ['List', 'Value', 'Less', 'Equal', 'Greater']]).
+
 	:- public(permutation/2).
 	:- mode(permutation(?list, ?list), zero_or_more).
 	:- info(permutation/2,

@@ -146,6 +146,18 @@
 		Count2 is Count + 1,
 		nth_aux(Head, List, Count2, Position, Tail).
 
+	partition([], _, [], [], []).
+	partition([X| Xs], Y, Less, Equal, Greater) :-
+		compare(Order, X, Y),
+		partition(Order, X, Xs, Y, Less, Equal, Greater).
+	
+	partition(<, X, Xs, Y, [X| Less], Equal, Greater) :-
+		partition(Xs, Y, Less, Equal, Greater).
+	partition(=, X, Xs, Y, Less, [X| Equal], Greater) :-
+		partition(Xs, Y, Less, Equal, Greater).
+	partition(>, X, Xs, Y, Less, Equal, [X| Greater]) :-
+		partition(Xs, Y, Less, Equal, Greater).
+
 	permutation(List, Permutation) :-
 		same_length(List, Permutation),
 		permutation2(List, Permutation).

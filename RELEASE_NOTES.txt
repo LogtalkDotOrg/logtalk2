@@ -77,10 +77,8 @@ RELEASE NOTES
     library object "meta". Optimized performance of the meta-predicates
     fold_left/4, fold_right/4, include/3, exclude/3, map/2-8, and partition/4.
 
-    Added predicates same_length/3, selectchk/3, and subsequence/3 to the
-    library objects "difflist" and "list".
-
-    Added predicate partition/5 to the library object "numberlist".
+    Added predicates partition/5, same_length/3, selectchk/3, and
+    subsequence/3 to the library objects "difflist" and "list".
 
     Added predicates product/3 and selectchk/3 to the library object "set".
 

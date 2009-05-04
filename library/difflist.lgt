@@ -185,6 +185,25 @@
 	new(List) :-
 		unify_with_occurs_check(List, Back-Back).
 
+	partition(List, _, Less, Equal, Greater) :-
+		unify_with_occurs_check(List, Back-Back),
+		!,
+		unify_with_occurs_check(Less, LBack-LBack),
+		unify_with_occurs_check(Equal, EBack-EBack),
+		unify_with_occurs_check(Greater, GBack-GBack).
+	partition(List-Back, Y, Less, Equal, Greater) :-
+		List \== Back,
+		List =[X| Xs],
+		compare(Order, X, Y),
+		partition(Order, X, Xs-Back, Y, Less, Equal, Greater).
+	
+	partition(<, X, Xs-Back, Y, [X| Less]-LBack, Equal, Greater) :-
+		partition(Xs-Back, Y, Less-LBack, Equal, Greater).
+	partition(=, X, Xs-Back, Y, Less, [X| Equal]-EBack, Greater) :-
+		partition(Xs-Back, Y, Less, Equal-EBack, Greater).
+	partition(>, X, Xs-Back, Y, Less, Equal, [X| Greater]-GBack) :-
+		partition(Xs-Back, Y, Less, Equal, Greater-GBack).
+
 	permutation(List, Permutation) :-
 		same_length(List, Permutation),
 		permutation2(List, Permutation).
