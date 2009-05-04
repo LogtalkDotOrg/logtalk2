@@ -4,9 +4,9 @@
 	extends(list)).
 
 	:- info([
-		version is 1.4,
+		version is 1.5,
 		author is 'Paulo Moura',
-		date is 2009/3/6,
+		date is 2009/5/4,
 		comment is 'List of numbers predicates.']).
 
 	average([], 0.0).
@@ -39,6 +39,18 @@
 			max(Xs, X, Max)
 		;	max(Xs, Aux, Max)
 		).
+
+	partition([], _, [], [], []).
+	partition([X|Xs], Y, Less, Equal, Greater) :-
+		compare(Order, X, Y),
+		partition(Order, X, Xs, Y, Less, Equal, Greater).
+	
+	partition(<, X, Xs, Y, [X| Less], Equal, Greater) :-
+		partition(Xs, Y, Less, Equal, Greater).
+	partition(=, X, Xs, Y, Less, [X| Equal], Greater) :-
+		partition(Xs, Y, Less, Equal, Greater).
+	partition(>, X, Xs, Y, Less, Equal, [X| Greater]) :-
+		partition(Xs, Y, Less, Equal, Greater).
 
 	product([X| Xs], Product) :-
 		product(Xs, X, Product).

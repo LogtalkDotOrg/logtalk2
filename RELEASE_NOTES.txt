@@ -80,6 +80,8 @@ RELEASE NOTES
     Added predicates same_length/3, selectchk/3, and subsequence/3 to the
     library objects "difflist" and "list".
 
+    Added predicate partition/5 to the library object "numberlist".
+
     Added predicates product/3 and selectchk/3 to the library object "set".
 
     Updated the "puzzle" constraint example for SWI-Prolog to avoid leaking
