@@ -2,7 +2,7 @@
 
 PortSystem	1.0
 name		logtalk
-version 	2.36.1
+version 	2.37.0
 
 categories	lang
 maintainers	pmoura@logtalk.org
