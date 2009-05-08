@@ -33,6 +33,9 @@ RELEASE NOTES
     Improved Logtalk compiler error checking for accidental redefinition of
     control constructs.
 
+    Improved Logtalk runtime error checking for message sending and "super"
+    control constructs when the message is only bounded at runtime.
+
     Updated the exception terms thrown when sending messages to self in order
     to use the ::/1 control construct for the culprit goal instead of the ::/2
     control construct.

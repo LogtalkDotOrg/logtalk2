@@ -3080,7 +3080,9 @@ current_logtalk_flag(version, version(2, 37, 0)).
 '$lgt_send_to_self'(Obj, Pred, Sender) :-
 	(	var(Pred) ->
 		throw(error(instantiation_error, ::Pred, Sender))
-	;	'$lgt_send_to_self_'(Obj, Pred, Sender, _)
+	;	callable(Pred) ->
+		'$lgt_send_to_self_'(Obj, Pred, Sender, _)
+	;	throw(error(type_error(callable, Pred), ::Pred, Sender))
 	).
 
 
@@ -3125,15 +3127,14 @@ current_logtalk_flag(version, version(2, 37, 0)).
 % '$lgt_send_to_object'(@object_identifier, ?term, +object_identifier)
 
 '$lgt_send_to_object'(Obj, Pred, Sender) :-
-	var(Obj),
-	throw(error(instantiation_error, Obj::Pred, Sender)).
-
-'$lgt_send_to_object'(Obj, Pred, Sender) :-
-	var(Pred),
-	throw(error(instantiation_error, Obj::Pred, Sender)).
-
-'$lgt_send_to_object'(Obj, Pred, Sender) :-
-	'$lgt_send_to_obj_'(Obj, Pred, Sender, _).
+	(	var(Obj) ->
+		throw(error(instantiation_error, Obj::Pred, Sender))
+	;	var(Pred) ->
+		throw(error(instantiation_error, Obj::Pred, Sender))
+	;	callable(Pred) ->
+		'$lgt_send_to_obj_'(Obj, Pred, Sender, _)
+	;	throw(error(type_error(callable, Pred), Obj::Pred, Sender))
+	).
 
 
 
@@ -3219,15 +3220,14 @@ current_logtalk_flag(version, version(2, 37, 0)).
 % '$lgt_send_to_object_ne'(@object_identifier, ?term, +object_identifier)
 
 '$lgt_send_to_object_ne'(Obj, Pred, Sender) :-
-	var(Obj),
-	throw(error(instantiation_error, Obj::Pred, Sender)).
-	
-'$lgt_send_to_object_ne'(Obj, Pred, Sender) :-
-	var(Pred),
-	throw(error(instantiation_error, Obj::Pred, Sender)).
-
-'$lgt_send_to_object_ne'(Obj, Pred, Sender) :-
-	'$lgt_send_to_obj_ne_'(Obj, Pred, Sender, _).
+	(	var(Obj) ->
+		throw(error(instantiation_error, Obj::Pred, Sender))
+	;	var(Pred) ->
+		throw(error(instantiation_error, Obj::Pred, Sender))
+	;	callable(Pred) ->
+		'$lgt_send_to_obj_ne_'(Obj, Pred, Sender, _)
+	;	throw(error(type_error(callable, Pred), Obj::Pred, Sender))
+	).
 
 
 
@@ -3349,7 +3349,10 @@ current_logtalk_flag(version, version(2, 37, 0)).
 	(	var(Pred) ->
 		'$lgt_exec_ctx'(ExCtx, This, _),
 		throw(error(instantiation_error, ^^Pred, This))
-	;	'$lgt_obj_super_call_other_'(Super, Pred, ExCtx, _)
+	;	callable(Pred) ->
+		'$lgt_obj_super_call_other_'(Super, Pred, ExCtx, _)
+	;	'$lgt_exec_ctx'(ExCtx, This, _),
+		throw(error(type_error(callable, Pred), ^^Pred, This))
 	).
 
 
@@ -3382,7 +3385,11 @@ current_logtalk_flag(version, version(2, 37, 0)).
 		;	% predicate is not within the scope of the sender:
 			throw(error(permission_error(access, private_predicate, Pred), ^^Pred, This))
 		)
-	;	'$lgt_built_in'(Pred) ->
+	;	% no predicate declaration, check if it's a local built-in method or a Prolog built-in meta-predicate:
+		('$lgt_built_in_local_method'(Pred); '$lgt_pl_meta_predicate'(Pred, _)) ->
+		throw(error(permission_error(access, local_predicate, Pred), ^^Pred, This))
+	;	% no predicate declaration, check if it's a built-in predicate:
+		'$lgt_built_in'(Pred) ->
 		call(Pred)
 	;	throw(error(existence_error(predicate_declaration, Pred), ^^Pred, This))
 	).
@@ -3394,7 +3401,9 @@ current_logtalk_flag(version, version(2, 37, 0)).
 '$lgt_ctg_super_call_other'(Ctg, Pred, ExCtx) :-
 	(	var(Pred) ->
 		throw(error(instantiation_error, ^^Pred, Ctg))
-	;	'$lgt_ctg_super_call_other_'(Ctg, Pred, ExCtx, _)
+	;	callable(Pred) ->
+		'$lgt_ctg_super_call_other_'(Ctg, Pred, ExCtx, _)
+	;	throw(error(type_error(callable, Pred), ^^Pred, Ctg))
 	).
 
 
@@ -3423,7 +3432,11 @@ current_logtalk_flag(version, version(2, 37, 0)).
 		;	% predicate is not within the scope of the sender:
 			throw(error(permission_error(access, private_predicate, Pred), ^^Pred, Ctg))
 		)
-	;	'$lgt_built_in'(Pred) ->
+	;	% no predicate declaration, check if it's a local built-in method or a Prolog built-in meta-predicate:
+		('$lgt_built_in_local_method'(Pred); '$lgt_pl_meta_predicate'(Pred, _)) ->
+		throw(error(permission_error(access, local_predicate, Pred), ^^Pred, Ctg))
+	;	% no predicate declaration, check if it's a built-in predicate:
+		'$lgt_built_in'(Pred) ->
 		call(Pred)
 	;	throw(error(existence_error(predicate_declaration, Pred), ^^Pred, Ctg))
 	).
@@ -3464,13 +3477,13 @@ current_logtalk_flag(version, version(2, 37, 0)).
 	(	var(Closure) ->
 		Goal =.. [call, ::Closure| ExtraArgs],
 		throw(error(instantiation_error, Goal, This))
-	;	\+ callable(Closure) ->
-		Goal =.. [call, ::Closure| ExtraArgs],
-		throw(error(type_error(callable, Closure), Goal, This))
-	;	Closure =.. [Functor| Args],
+	;	callable(Closure) ->
+		Closure =.. [Functor| Args],
 		'$lgt_append'(Args, ExtraArgs, FullArgs),
 		Pred =.. [Functor| FullArgs],
 		'$lgt_send_to_self_'(Self, Pred, This, _)
+	;	Goal =.. [call, ::Closure| ExtraArgs],
+		throw(error(type_error(callable, Closure), Goal, This))
 	).
 
 '$lgt_metacall'(Obj::Closure, ExtraArgs, _, _, This, _) :-
@@ -3478,16 +3491,16 @@ current_logtalk_flag(version, version(2, 37, 0)).
 	(	var(Closure) ->
 		Goal =.. [call, Obj::Closure| ExtraArgs],
 		throw(error(instantiation_error, Goal, This))
-	;	\+ callable(Closure) ->
-		Goal =.. [call, Obj::Closure| ExtraArgs],
-		throw(error(type_error(callable, Closure), Goal, This))
-	;	Closure =.. [Functor| Args],
+	;	callable(Closure) ->
+		Closure =.. [Functor| Args],
 		'$lgt_append'(Args, ExtraArgs, FullArgs),
 		Pred =.. [Functor| FullArgs],
 		(	'$lgt_entity_property_'(This, flags(_, _, _, e, _, _)) ->
 			'$lgt_send_to_obj_ne_'(Obj, Pred, This, _)
 		;	'$lgt_send_to_obj_'(Obj, Pred, This, _)
 		)
+	;	Goal =.. [call, Obj::Closure| ExtraArgs],
+		throw(error(type_error(callable, Closure), Goal, This))
 	).
 
 '$lgt_metacall'(':'(Module, Closure), ExtraArgs, _, _, _, _) :-
@@ -3571,7 +3584,7 @@ current_logtalk_flag(version, version(2, 37, 0)).
 '$lgt_call_built_in'(Pred, ExCtx) :-
 	(	'$lgt_exec_ctx'(ExCtx, This, _),
 		'$lgt_current_object_'(This, _, _, Def, _, _, _, _, DDef, _, _),
-		 (call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
+		(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
 		% call the redefined built-in predicate
 		call(TPred)
 	;	% call the built-in predicate
@@ -3605,18 +3618,15 @@ current_logtalk_flag(version, version(2, 37, 0)).
 %
 % calls a category predicate directly, without using the message sending mechanism
 
-'$lgt_call_ctg_pred'(_, Pred, ExCtx) :-
-	var(Pred),
-	'$lgt_exec_ctx'(ExCtx, This, _),
-	throw(error(instantiation_error, ':'(Pred), This)).
-
-'$lgt_call_ctg_pred'(_, Pred, ExCtx) :-
-	\+ callable(Pred),
-	'$lgt_exec_ctx'(ExCtx, This, _),
-	throw(error(type_error(callable, Pred), ':'(Pred), This)).
-
 '$lgt_call_ctg_pred'(Dcl, Pred, ExCtx) :-
-	'$lgt_ctg_call_'(Dcl, Pred, ExCtx, _).
+	(	var(Pred) ->
+		'$lgt_exec_ctx'(ExCtx, This, _),
+		throw(error(instantiation_error, ':'(Pred), This))
+	;	callable(Pred) ->
+		'$lgt_ctg_call_'(Dcl, Pred, ExCtx, _)
+	;	'$lgt_exec_ctx'(ExCtx, This, _),
+		throw(error(type_error(callable, Pred), ':'(Pred), This))
+	).
 
 
 
