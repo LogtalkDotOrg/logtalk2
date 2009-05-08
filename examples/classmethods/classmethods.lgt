@@ -1,15 +1,20 @@
 
-:- object(metacircle,			% avoid infinite metaclass regression by
-	instantiates(metacircle)).	% making the class its own metaclass
+% avoid infinite metaclass regression by making "metacircle" its own metaclass;
+% another option would be to define "metacircle" as a subclass or instance of
+% the built-in object "logtalk", which can be used as root of both class and
+% prototype hierarchies
 
+:- object(metacircle,
+	instantiates(metacircle)).
+			
 	:- public(new/4).
 	:- mode(new(+float, +float, +float, -object_identifier), one).
 	:- info(new/4, [
 		comment is 'Creates a new circle in a given position and with a given radius.',
-		argnames is ['X', 'Y', 'Radius', 'Cicle']]).
+		argnames is ['X', 'Y', 'Radius', 'Circle']]).
 
-	new(Radius, X, Y, Circle) :-
-		self(Self),
+	new(Radius, X, Y, Circle) :-	% this would be a "constructor" in other languages 
+		self(Self),					% we may be instantiating a subclass of "circle"
 		create_object(Circle, [instantiates(Self)], [], [position(X, Y), radius(Radius)]).
 
 	:- public(area/2).
@@ -50,13 +55,13 @@
 		argnames is ['Area']]).
 
 	area(Area) :-
-		::radius(Radius),
+		::radius(Radius),	% ask the circle's instance that received the area/1 message its radius
 		Area is 4*atan(1.0)*Radius*Radius.
 
 :- end_object.
 
 
-:- object(c42,
+:- object(c42,				% a static instance of "circle"
 	instantiates(circle)).
 
 	position(3.7, 4.5).
