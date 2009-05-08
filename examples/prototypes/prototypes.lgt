@@ -1,5 +1,5 @@
 
-% Alf believes he is the only survivor of its species; no point in
+% Alf believes he is the only survivor of his species; no point in
 % defining a class if there is only going to be a single instance:
 
 :- object(alf).	% a prototype, which is also a stand-alone object

@@ -17,7 +17,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 % ask Alf about its attributes:
 
-| ?- alf::forall(current_predicate(F/A), (functor(P,F,A), call(P), writeq(P), nl)).
+| ?- forall(alf::current_predicate(F/A), (functor(P,F,A), alf::P, writeq(P), nl)).
 
 chases('Lucky')
 favorite_food(cats)
