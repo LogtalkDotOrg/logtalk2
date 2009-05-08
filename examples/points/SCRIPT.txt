@@ -17,7 +17,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 % let's start with a simple point:
 
-| ?- point::new(Point,[position-(1, 3)]), Point::(print, move(7, 4), print).
+| ?- point::new(Point, [position-(1, 3)]), Point::(print, move(7, 4), print).
 
 p1 @ (1, 3)
 p1 @ (7, 4)
@@ -29,7 +29,7 @@ yes
 
 % same problem but with bounds on coordinate values:
 
-| ?- bounded_point::new(Point,[position-(1, 3), bounds(x)-(0, 13), bounds(y)-(-7, 7)]), Point::(print, move(7, 4), print).
+| ?- bounded_point::new(Point, [position-(1, 3), bounds(x)-(0, 13), bounds(y)-(-7, 7)]), Point::(print, move(7, 4), print).
 
 bounds(x) : 0,13
 bounds(y) : -7,7
@@ -45,7 +45,7 @@ yes
 
 % same problem but storing the history of coordinate values:
 
-| ?- history_point::new(Point,[position-(1, 3)]), Point::(print, move(7, 4), print).
+| ?- history_point::new(Point, [position-(1, 3)]), Point::(print, move(7, 4), print).
 
 location history: []
 hp3 @ (1, 3)
@@ -59,7 +59,7 @@ yes
 
 % same problem but with bounds on coordinate values and storing past values:
 
-| ?- bounded_history_point::new(Point,[position-(1, 3), bounds(x)-(0, 13), bounds(y)-(-7, 7)]), Point::(print, move(7, 4), print).
+| ?- bounded_history_point::new(Point, [position-(1, 3), bounds(x)-(0, 13), bounds(y)-(-7, 7)]), Point::(print, move(7, 4), print).
 
 bounds(x) : 0,13
 bounds(y) : -7,7
@@ -77,5 +77,5 @@ yes
 
 % clean up instances:
 
-| ?- (point, bounded_point, history_point, bounded_history_point)::delete_all.
+| ?- point::delete_all, bounded_point::delete_all, history_point::delete_all, bounded_history_point::delete_all.
 yes

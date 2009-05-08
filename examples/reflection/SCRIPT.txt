@@ -17,7 +17,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 % print the (public and protected) interface of each class:
 
-| ?- (object, abstract_class, class)::print.
+| ?- object::print, abstract_class::print, class::print.
 
 Object: object
 

@@ -40,6 +40,10 @@ RELEASE NOTES
     to use the ::/1 control construct for the culprit goal instead of the ::/2
     control construct.
 
+    Simplified message sending implementation by removing the seldom used
+    control constructs that allowed sending the same message to a conjunction
+    or disjunction of objects.
+
     Specify \+/1, call/1-N, and once/1 as built-in local meta-predicates. 
 
     Disallow using Logtalk and Prolog built-in meta-predicates as messages in
