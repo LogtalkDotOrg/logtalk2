@@ -8854,6 +8854,7 @@ current_logtalk_flag(version, version(2, 37, 0)).
 % not runtime message translation; remember object receiving message
 
 '$lgt_tr_msg'(_, Obj, _, This) :-
+	nonvar(Obj),
 	This \== user,									
 	'$lgt_add_referenced_object'(Obj),
 	fail.
