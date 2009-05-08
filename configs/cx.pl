@@ -11,7 +11,7 @@
 %
 %  configuration file for CxProlog 0.97.2 or a later version
 %
-%  last updated: April 19, 2009
+%  last updated: May 8, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -180,7 +180,7 @@
 
 '$lgt_default_flag'(startup_message, flags(compact)).
 
-'$lgt_default_flag'(underscore_variables, singletons).
+'$lgt_default_flag'(underscore_variables, dont_care).
 
 '$lgt_default_flag'(code_prefix, '').
 

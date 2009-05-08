@@ -72,7 +72,8 @@ RELEASE NOTES
     directives (version 8.9 or later is now required).
 
     Updated the Windows installer in order to ensure compatibility with the
-    new CxProlog 0.97.3 version.
+    new CxProlog 0.97.3 version. Updated the CxProlog config file in order
+    to set the "underscore_variables" compiler flag to "dont_care".
 
     The library object "varlist" is no longer derived from "list" as several
     of the "listp" predicates are not meaningful or cannot be used with the
