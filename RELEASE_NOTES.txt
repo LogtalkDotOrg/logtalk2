@@ -67,6 +67,9 @@ RELEASE NOTES
     Updated the Qu-Prolog config file in order to enable support for multifile
     directives (version 8.9 or later is now required).
 
+    Updated the Windows installer in order to ensure compatibility with the
+    new CxProlog 0.97.3 version.
+
     The library object "varlist" is no longer derived from "list" as several
     of the "listp" predicates are not meaningful or cannot be used with the
     same modes. Added a new library protocol "varlistp". Corrected several
