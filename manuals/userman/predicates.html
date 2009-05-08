@@ -116,7 +116,7 @@ The predicate arguments in this directive have the following meaning:
 	<dt><code>::</code></dt>
 		<dd>Meta-argument that will be called as a goal.</dd>
 	<dt><code>N</code></dt>
-		<dd>Meta-argument that will be a closure used to construct a call by appending <code>N</code> arguments at the end. The value of <code>N</code> must be a positive integer.</dd>
+		<dd>Meta-argument that will be a closure used to construct a call by appending <code>N</code> arguments at the end. The value of <code>N</code> must be a non-negative integer.</dd>
 	<dt><code>*</code></dt>
 		<dd>Normal argument.</dd>
 </dl>
@@ -478,7 +478,7 @@ Logtalk defines a set of built-in object predicates or methods to access message
 <h3 id="predicates_context">Execution context methods</h3>
 
 <p>
-Logtalk defines four built-in methods to access an object execution context. These methods (with the possible exception of <code>parameter/2</code>) are translated to a single unification performed at compile time with a clause head context argument. Therefore, they can be freely used without worrying about performance penalties. When called from inside a category, these methods refer to the execution context of the object importing the category. These methods cannot be used as messages to objects.
+Logtalk defines four built-in local methods to access an object execution context. These methods (with the possible exception of <code>parameter/2</code>) are translated to a single unification performed at compile time with a clause head context argument. Therefore, they can be freely used without worrying about performance penalties. When called from inside a category, these methods refer to the execution context of the object importing the category. These methods cannot be used as messages to objects.
 </p>
 <p>
 To find the object that received the message under execution we may use the <a title="Consult reference manual" href="../refman/methods/self1.html"><code>self/1</code></a> method. We may also retrieve the object that has sent the message under execution using the <a title="Consult reference manual" href="../refman/methods/sender1.html"><code>sender/1</code></a> method.
@@ -562,13 +562,13 @@ When working with dynamic grammar rule non-terminals, you may use the built-in m
 <h3 id="predicates_metacalls">Meta-call methods</h3>
 
 <p>
-Logtalk supports the generalized <a title="Consult reference manual" href="../refman/methods/call1.html"><code>call/1-N</code></a> meta-predicate. This built-in meta-predicate must be used in the implementation of meta-predicates which work with closures instead of goals. In addition, Logtalk supports the control constructs and built-in meta-predicates <a title="Consult reference manual" href="../refman/methods/once1.html"><code>once/1</code></a> and <a title="Consult reference manual" href="../refman/methods/not1.html"><code>\+/1</code></a>. These methods cannot be used as messages to objects.
+Logtalk supports the generalized <a title="Consult reference manual" href="../refman/methods/call1.html"><code>call/1-N</code></a> meta-predicate. This built-in local meta-predicate must be used in the implementation of meta-predicates which work with closures instead of goals. In addition, Logtalk supports the built-in local meta-predicates <a title="Consult reference manual" href="../refman/methods/once1.html"><code>once/1</code></a> and <a title="Consult reference manual" href="../refman/methods/not1.html"><code>\+/1</code></a>. These methods cannot be used as messages to objects.
 </p>
 
 <h3 id="predicates_solutions">All solutions methods</h3>
 
 <p>
-The usual all solutions meta-predicates are pre-defined methods in Logtalk: <a title="Consult reference manual" href="../refman/methods/bagof3.html"><code>bagof/3</code></a>, <a title="Consult reference manual" href="../refman/methods/findall3.html"><code>findall/3</code></a>, and <a title="Consult reference manual" href="../refman/methods/setof3.html"><code>setof/3</code></a>. There is also a <a title="Consult reference manual" href="../refman/methods/forall2.html"><code>forall/2</code></a> method that implements generate and test loops. These methods cannot be used as messages to objects.
+The usual all solutions meta-predicates are built-in local methods in Logtalk: <a title="Consult reference manual" href="../refman/methods/bagof3.html"><code>bagof/3</code></a>, <a title="Consult reference manual" href="../refman/methods/findall3.html"><code>findall/3</code></a>, and <a title="Consult reference manual" href="../refman/methods/setof3.html"><code>setof/3</code></a>. There is also a <a title="Consult reference manual" href="../refman/methods/forall2.html"><code>forall/2</code></a> method that implements generate and test loops. These methods cannot be used as messages to objects.
 </p>
 
 <h3 id="predicates_reflection">Reflection methods</h3>
@@ -671,7 +671,7 @@ When calling non-standard Prolog built-in predicates or using non-standard Prolo
 <h3 id="predicates_prolog_meta">Calling Prolog non-standard meta-predicates</h3>
 
 <p>
-Compiling calls to non-standard, Prolog built-in meta-predicates can be tricky for two reasons: first, there is no standard way of checking if a built-in predicate is also a meta-predicate and finding out which are its meta-arguments; second, in some cases, the meta-arguments of a meta-predicate are not goals but closures, used for constructing goals. The way the goals are constructed is specific to the meta-predicate and cannot be reliable inferred by the Logtalk compiler. For meta-predicates whose meta-arguments are directly called as goals, the solution is to explicitly declare them in the corresponding Prolog configuration file using the predicate <code>'$lgt_pl_meta-predicate'/2</code>. For example:
+Prolog built-in meta-predicates may only be called locally within objects or categories, i.e. they cannot be used as messages. Compiling calls to non-standard, Prolog built-in meta-predicates can be tricky for two reasons: first, there is no standard way of checking if a built-in predicate is also a meta-predicate and finding out which are its meta-arguments; second, in some cases, the meta-arguments of a meta-predicate are not goals but closures, used for constructing goals. The way the goals are constructed is specific to the meta-predicate and cannot be reliable inferred by the Logtalk compiler. For meta-predicates whose meta-arguments are directly called as goals, the solution is to explicitly declare them in the corresponding Prolog configuration file using the predicate <code>'$lgt_pl_meta-predicate'/2</code>. For example:
 </p>
 <pre>'$lgt_pl_meta_predicate'(*->(::, ::), control_construct).
 '$lgt_pl_meta_predicate'(call_with_depth_limit(::, *, *), predicate).</pre>
@@ -682,7 +682,7 @@ Currently, there is no clean workaround for calling non-standard Prolog built-in
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: May 1, 2009</span>
+		<span>Last updated on: May 8, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="categories.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="inheritance.html">next</a></span><br/>

@@ -33,13 +33,17 @@ RELEASE NOTES
     Improved Logtalk compiler error checking for accidental redefinition of
     control constructs.
 
-    Specify \+/1, call/1-N, and once/1 as built-in local meta-predicates.
+    Updated the exception terms thrown when sending messages to self in order
+    to use the ::/1 control construct for the culprit goal instead of the ::/2
+    control construct.
 
-    Disallow using Logtalk built-in meta-predicates as messages in order to
-    avoid conflicting semantics with user-defined object and category meta-
-    predicates. The Logtalk control constructs (,)/2, (;)/2, and (->)/2 may
-    still be used as syntactic sugar for sending a set of messages to a single
-    object.
+    Specify \+/1, call/1-N, and once/1 as built-in local meta-predicates. 
+
+    Disallow using Logtalk and Prolog built-in meta-predicates as messages in
+    order to avoid conflicting semantics with user-defined object and category
+    meta-predicates. The Logtalk control constructs (,)/2, (;)/2, (->)/2, and
+    !/0 may still be used as syntactic sugar when sending a set of messages to
+    a single object.
 
     Updated the Logtalk compiler to ensure that calls to the built-in meta-
     predicate call/2-N within a category have the same semantics as other

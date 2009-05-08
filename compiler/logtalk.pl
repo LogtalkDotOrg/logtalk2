@@ -1966,6 +1966,16 @@ current_logtalk_flag(version, version(2, 37, 0)).
 
 
 
+% checks if an object exists at runtime
+
+'$lgt_obj_exists'(Obj, Pred, Sender) :-
+	(	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _) ->
+		true
+	;	throw(error(existence_error(object, Obj), Obj::Pred, Sender))
+	).
+
+
+
 % current_predicate/1 built-in method
 
 '$lgt_current_predicate'(Obj, Pred, Sender, _) :-
@@ -3069,7 +3079,7 @@ current_logtalk_flag(version, version(2, 37, 0)).
 
 '$lgt_send_to_self'(Obj, Pred, Sender) :-
 	(	var(Pred) ->
-		throw(error(instantiation_error, Obj::Pred, Sender))
+		throw(error(instantiation_error, ::Pred, Sender))
 	;	'$lgt_send_to_self_'(Obj, Pred, Sender, _)
 	).
 
@@ -3099,15 +3109,15 @@ current_logtalk_flag(version, version(2, 37, 0)).
 				call(GCall)
 			)
 		;	% message is not within the scope of the sender:
-			throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
+			throw(error(permission_error(access, private_predicate, Pred), ::Pred, Sender))
 		)
-	;	% no predicate declaration, check if it's a local built-in method:
-		'$lgt_built_in_local_method'(Pred) ->
-		throw(error(permission_error(access, local_predicate, Pred), Obj::Pred, Sender))
+	;	% no predicate declaration, check if it's a local built-in method or a Prolog built-in meta-predicate:
+		('$lgt_built_in_local_method'(Pred); '$lgt_pl_meta_predicate'(Pred, _)) ->
+		throw(error(permission_error(access, local_predicate, Pred), ::Pred, Sender))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
-	;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))
+	;	throw(error(existence_error(predicate_declaration, Pred), ::Pred, Sender))
 	).
 
 
@@ -3182,8 +3192,8 @@ current_logtalk_flag(version, version(2, 37, 0)).
 			;	throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))
 			)
 		)
-	;	% no predicate declaration, check if it's a local built-in method:
-		'$lgt_built_in_local_method'(Pred) ->
+	;	% no predicate declaration, check if it's a local built-in method or a Prolog built-in meta-predicate:
+		('$lgt_built_in_local_method'(Pred); '$lgt_pl_meta_predicate'(Pred, _)) ->
 		throw(error(permission_error(access, local_predicate, Pred), Obj::Pred, Sender))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
@@ -3262,9 +3272,9 @@ current_logtalk_flag(version, version(2, 37, 0)).
 			;	throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))
 			)
 		)
-	;	% no predicate declaration, check if it's a local built-in method:
-		'$lgt_built_in_local_method'(Pred) ->
-		throw(error(permission_error(access, local_predicate, Pred), Obj::Pred, Sender))
+	;	% no predicate declaration, check if it's a local built-in method or a Prolog built-in meta-predicate:
+		('$lgt_built_in_local_method'(Pred); '$lgt_pl_meta_predicate'(Pred, _)) ->
+		throw(error(permission_error(access, local_predicate, Pred), ::Pred, Sender))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
@@ -7377,12 +7387,6 @@ current_logtalk_flag(version, version(2, 37, 0)).
 '$lgt_tr_head'((_ -> _), _, _, _, _, _) :-
 	throw(permission_error(modify, control_construct, (->)/2)).
 
-'$lgt_tr_head'(true, _, _, _, _, _) :-
-	throw(permission_error(modify, control_construct, true/0)).
-
-'$lgt_tr_head'(fail, _, _, _, _, _) :-
-	throw(permission_error(modify, control_construct, fail/0)).
-
 '$lgt_tr_head'(!, _, _, _, _, _) :-
 	throw(permission_error(modify, control_construct, !/0)).
 
@@ -8910,6 +8914,21 @@ current_logtalk_flag(version, version(2, 37, 0)).
 	'$lgt_tr_msg'(Pred2, Obj, TPred2, This).
 
 
+% built-in methods that cannot be redefined
+
+'$lgt_tr_msg'(!, Obj, ('$lgt_obj_exists'(Obj, !, This), !), This) :-
+	!.
+
+'$lgt_tr_msg'(true, Obj, ('$lgt_obj_exists'(Obj, true, This), true), This) :-
+	!.
+
+'$lgt_tr_msg'(fail, Obj, ('$lgt_obj_exists'(Obj, fail, This), fail), This) :-
+	!.
+
+'$lgt_tr_msg'(repeat, Obj, ('$lgt_obj_exists'(Obj, repeat, This), repeat), This) :-
+	!.
+
+
 % "reflection" built-in predicates
 
 '$lgt_tr_msg'(current_predicate(Pred), Obj, '$lgt_current_predicate'(Obj, Pred, This, p(p(p))), This) :-
@@ -9068,6 +9087,21 @@ current_logtalk_flag(version, version(2, 37, 0)).
 	!,
 	'$lgt_tr_self_msg'(Pred1, TPred1, This, Self),
 	'$lgt_tr_self_msg'(Pred2, TPred2, This, Self).
+
+
+% built-in methods that cannot be redefined
+
+'$lgt_tr_self_msg'(!, !, _, _) :-
+	!.
+
+'$lgt_tr_self_msg'(true, true, _, _) :-
+	!.
+
+'$lgt_tr_self_msg'(fail, fail, _, _) :-
+	!.
+
+'$lgt_tr_self_msg'(repeat, repeat, _, _) :-
+	!.
 
 
 % "reflection" built-in predicates
