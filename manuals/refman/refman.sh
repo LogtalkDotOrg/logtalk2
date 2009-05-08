@@ -109,6 +109,10 @@ eval $xslt_proc -o methods/clause2.section refman.xsl methods/clause2.html
 eval $xslt_proc -o methods/retract1.section refman.xsl methods/retract1.html
 eval $xslt_proc -o methods/retractall1.section refman.xsl methods/retractall1.html
 eval $xslt_proc -o methods/call1.section refman.xsl methods/call1.html
+eval $xslt_proc -o methods/once1.section refman.xsl methods/once1.html
+eval $xslt_proc -o methods/not1.section refman.xsl methods/not1.html
+eval $xslt_proc -o methods/catch3.section refman.xsl methods/catch3.html
+eval $xslt_proc -o methods/throw1.section refman.xsl methods/throw1.html
 eval $xslt_proc -o methods/bagof3.section refman.xsl methods/bagof3.html
 eval $xslt_proc -o methods/findall3.section refman.xsl methods/findall3.html
 eval $xslt_proc -o methods/forall2.section refman.xsl methods/forall2.html
@@ -220,6 +224,10 @@ cat -s \
 	methods/retract1.section \
 	methods/retractall1.section \
 	methods/call1.section \
+	methods/once1.section \
+	methods/not1.section \
+	methods/catch3.section \
+	methods/throw1.section \
 	methods/bagof3.section \
 	methods/findall3.section \
 	methods/forall2.section \
