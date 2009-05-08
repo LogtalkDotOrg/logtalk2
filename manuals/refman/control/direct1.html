@@ -25,7 +25,7 @@
 
 <pre>:Predicate</pre>
 <p>
-Calls an <strong>imported</strong> predicate with the lookup for the predicate declaration beginning in <em>this</em> instead of <em>self</em> and with the lookup for the predicate definition restricted to the imported categories. As a consequence, any redeclaration or redefinition of the predicate in a descendant of the object containing the call will be ignored. The predicate is called with the same execution context (<em>sender</em>, <em>this</em>, and <em>self</em>) as the predicate whose body contains the call. When the predicate is defined in an imported category compiled using static binding, this control construct allows the predicate to be called with the same performance as a local object predicate.
+Calls an <strong>imported</strong> predicate with the lookup for the predicate declaration beginning in <a class="glossary" title="Go to glossary definition" href="../../glossary.html#this"><em>this</em></a> instead of <a class="glossary" title="Go to glossary definition" href="../../glossary.html#self"><em>self</em></a> and with the lookup for the predicate definition restricted to the imported categories. As a consequence, any redeclaration or redefinition of the predicate in a descendant of the object containing the call will be ignored. The predicate is called with the same execution context (<a class="glossary" title="Go to glossary definition" href="../../glossary.html#sender"><em>sender</em></a>, <em>this</em>, and <em>self</em>) as the predicate whose body contains the call. When the predicate is defined in an imported category compiled using static binding, this control construct allows the predicate to be called with the same performance as a local object predicate.
 </p>
 
 <h4>Template and modes</h4>

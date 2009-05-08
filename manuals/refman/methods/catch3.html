@@ -25,7 +25,7 @@
 
 <pre>catch(Goal, Catcher, Recovery)</pre>
 <p>
-Control construct for catching exceptions thrown by a goal. See the Prolog ISO standard definition. This built-in control construct cannot be used as a message to an object.
+Catches exceptions thrown by a goal. See the Prolog ISO standard definition. This built-in meta-predicate cannot be used as a message to an object.
 </p>
 
 <h4>Template and modes</h4>
@@ -37,7 +37,7 @@ Control construct for catching exceptions thrown by a goal. See the Prolog ISO s
 <dl>
 	<dt>Goal is a variable:</dt>
 		<dd><code>instantiation_error</code></dd>
-	<dt>Goal is neither a variable nor a callable term>
+	<dt>Goal is neither a variable nor a callable term:</dt>
 		<dd><code>type_error(callable, Goal)</code></dd>
 </dl>
 
@@ -50,7 +50,7 @@ Control construct for catching exceptions thrown by a goal. See the Prolog ISO s
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: April 25, 2009</span>
+		<span>Last updated on: May 8, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="../index.html#methods">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="throw1.html">next</a></span><br/>
