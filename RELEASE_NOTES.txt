@@ -18,7 +18,9 @@ RELEASE NOTES
     Improved dynamic binding performance by making calls to the lookup caches
     call the cached methods instead of simply returning the corresponding
     callable terms, therefore no longer requiring a meta-call for executing
-    the methods.
+    the methods. For multi-threaded back-end Prolog compilers, the new caching
+    mechanisms forces the lookup cache dynamic predicates to be declared
+    thread shared instead of thread local.
 
     Improved performance of the built-in database methods retractall/1 and
     retract/1.
