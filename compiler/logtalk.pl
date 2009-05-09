@@ -1966,7 +1966,12 @@ current_logtalk_flag(version, version(2, 37, 0)).
 
 
 
-% checks if an object exists at runtime
+% '$lgt_obj_exists'(+object_identifier, +callable, +object_identifier)
+%
+% checks if an object exists at runtime; this is necessary in order to
+% prevent trivial messages such as true/0 or repeat/0 from succeeding
+% when the target object doesn't exist; used in the translation of ::/2
+% calls
 
 '$lgt_obj_exists'(Obj, Pred, Sender) :-
 	(	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _) ->
@@ -3548,10 +3553,21 @@ current_logtalk_flag(version, version(2, 37, 0)).
 % performs a meta-call in "this" at runtime
 
 '$lgt_metacall_this'(Pred, Sender, This, Self) :-
-	(	'$lgt_current_object_'(This, _, _, Def, _, _, _, _, DDef, _, _),
-		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
+	'$lgt_current_object_'(This, Prefix, _, Def, _, _, _, _, DDef, _, _), !,
+	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
+	(	% in the most common case we're meta-calling a user defined predicate:
 		(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
-		call(TPred)
+		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(This) ->
+			'$lgt_dbg_goal'(Pred, TPred, ExCtx)
+		;	call(TPred)
+		)
+	;	% Pred may also be a call to a built-in local meta-predicate:
+		'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, ExCtx),
+		'$lgt_tr_body'(Pred, TPred, DPred, Ctx) ->
+		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(This) ->
+			call(DPred)
+		;	call(TPred)
+		)
 	;	'$lgt_built_in'(Pred) ->
 		call(Pred)
 	;	functor(Pred, Functor, Arity),
@@ -3565,10 +3581,21 @@ current_logtalk_flag(version, version(2, 37, 0)).
 % performs a meta-call in "sender" at runtime
 
 '$lgt_metacall_sender'(Pred, Sender, _, Self) :-
-	(	'$lgt_current_object_'(Sender, _, _, Def, _, _, _, _, DDef, _, _),
-		'$lgt_exec_ctx'(ExCtx, Sender, Sender, Self, _),
+	'$lgt_current_object_'(Sender, Prefix, _, Def, _, _, _, _, DDef, _, _), !,
+	'$lgt_exec_ctx'(ExCtx, Sender, Sender, Self, _),
+	(	% in the most common case we're meta-calling a user defined predicate:
 		(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
-		call(TPred)
+		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Sender) ->
+			'$lgt_dbg_goal'(Pred, TPred, ExCtx)
+		;	call(TPred)
+		)
+	;	% Pred may also be a call to a built-in local meta-predicate:
+		'$lgt_comp_ctx'(Ctx, _, Sender, Sender, Self, Prefix, [], _, ExCtx),
+		'$lgt_tr_body'(Pred, TPred, DPred, Ctx) ->
+		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Sender) ->
+			call(DPred)
+		;	call(TPred)
+		)
 	;	'$lgt_built_in'(Pred) ->
 		call(Pred)
 	;	functor(Pred, Functor, Arity),
@@ -3585,9 +3612,12 @@ current_logtalk_flag(version, version(2, 37, 0)).
 	(	'$lgt_exec_ctx'(ExCtx, This, _),
 		'$lgt_current_object_'(This, _, _, Def, _, _, _, _, DDef, _, _),
 		(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
-		% call the redefined built-in predicate
-		call(TPred)
-	;	% call the built-in predicate
+		% call the redefined built-in predicate:
+		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(This) ->
+			'$lgt_dbg_goal'(Pred, TPred, ExCtx)
+		;	call(TPred)
+		)
+	;	% call the built-in predicate:
 		call(Pred)
 	).
 
@@ -4626,10 +4656,12 @@ current_logtalk_flag(version, version(2, 37, 0)).
 	'$lgt_clean_lookup_caches',
 	'$lgt_check_redefined_entities',
 	(	'$lgt_pp_file_encoding_'(_, Encoding) ->
+		% use the same encoding as the original source file:
 		'$lgt_load_prolog_code'(PrologFile, Source, [encoding(Encoding)])
 	;	'$lgt_load_prolog_code'(PrologFile, Source, [])
 	),
 	(	'$lgt_compiler_flag'(clean, on) ->
+		% try to delete the intermediate Prolog ignoring any failure or error:
 		catch(('$lgt_delete_file'(PrologFile) -> true; true), _, true)
 	;	true
 	).
@@ -6364,8 +6396,8 @@ current_logtalk_flag(version, version(2, 37, 0)).
 		Name = Module
 	;	arg(1, Module, Name)
 	),
-	(	'$lgt_pp_module_'(_) ->												% we're compiling a module
- 		'$lgt_tr_directive'(uses, [Name, Preds], File, Lines, Input, Output)		% as an object
+	(	'$lgt_pp_module_'(_) ->													% we're compiling a module
+ 		'$lgt_tr_directive'(uses, [Name, Preds], File, Lines, Input, Output)	% as an object
 	;	'$lgt_tr_use_module_preds'(Preds, Name)
 	).
 
@@ -8923,11 +8955,11 @@ current_logtalk_flag(version, version(2, 37, 0)).
 	'$lgt_tr_msg'(Pred1, Obj, TPred1, This),
 	'$lgt_tr_msg'(Pred2, Obj, TPred2, This).
 
-
-% built-in methods that cannot be redefined
-
 '$lgt_tr_msg'(!, Obj, ('$lgt_obj_exists'(Obj, !, This), !), This) :-
 	!.
+
+
+% built-in methods that cannot be redefined
 
 '$lgt_tr_msg'(true, Obj, ('$lgt_obj_exists'(Obj, true, This), true), This) :-
 	!.
@@ -9098,11 +9130,11 @@ current_logtalk_flag(version, version(2, 37, 0)).
 	'$lgt_tr_self_msg'(Pred1, TPred1, This, Self),
 	'$lgt_tr_self_msg'(Pred2, TPred2, This, Self).
 
-
-% built-in methods that cannot be redefined
-
 '$lgt_tr_self_msg'(!, !, _, _) :-
 	!.
+
+
+% built-in methods that cannot be redefined
 
 '$lgt_tr_self_msg'(true, true, _, _) :-
 	!.
@@ -14770,15 +14802,18 @@ current_logtalk_flag(version, version(2, 37, 0)).
 
 '$lgt_mt_threaded_call_join'([id(Id, _, Result)| Results]) :-
 	(	var(Result) ->
-		thread_get_message('$lgt_result'(Id, _))	% don't leak thread results
-	;	true
+		thread_get_message('$lgt_result'(Id, _))	% don't leak thread results as
+	;	true										% threads may reuse identifiers
 	),
 	catch(thread_join(Id, _), _, true),
 	'$lgt_mt_threaded_call_join'(Results).
 
 
 
-% multi-threading tags
+% '$lgt_new_threaded_tag'(-integer)
+%
+% generates a new multi-threading tag; used in the built-in assynchronous
+% multi-threading predicates
 
 '$lgt_new_threaded_tag'(New) :-
 	with_mutex('$lgt_threaded_tag', 
@@ -14790,8 +14825,8 @@ current_logtalk_flag(version, version(2, 37, 0)).
 
 % '$lgt_create_mutexes'(+list(mutex_identifier))
 %
-% create entity mutexes (called when loading an entity);
-% use catch/2 as we may be reloading an entity
+% create entity mutexes (called when loading an entity); use catch/3 as
+% we may be reloading an entity and the mutex may be already created
 
 '$lgt_create_mutexes'([]).
 
@@ -15014,8 +15049,10 @@ current_logtalk_flag(version, version(2, 37, 0)).
 
 % '$lgt_load_settings_file'
 %
-% loads any settings file defined by the user;
-% settings files are compiled and loaded silently, ignoring any errors
+% loads any settings file defined by the user; settings files are compiled
+% and loaded silently, ignoring any errors; the intermediated Prolog files
+% are deleted using the clean/1 compiler flag in order to prevent problems
+% when switching between back-end Prolog compilers
 
 '$lgt_load_settings_file' :-
 	'$lgt_current_directory'(Current),
