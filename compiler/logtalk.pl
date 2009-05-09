@@ -3561,16 +3561,15 @@ current_logtalk_flag(version, version(2, 37, 0)).
 			'$lgt_dbg_goal'(Pred, TPred, ExCtx)
 		;	call(TPred)
 		)
-	;	% Pred may also be a call to a built-in local meta-predicate:
+	;	% in the worst case we need to compile the meta-call:
 		'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, ExCtx),
 		'$lgt_tr_body'(Pred, TPred, DPred, Ctx) ->
 		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(This) ->
 			call(DPred)
 		;	call(TPred)
 		)
-	;	'$lgt_built_in'(Pred) ->
-		call(Pred)
-	;	functor(Pred, Functor, Arity),
+	;	% of course, the meta-call may happen to be an unfortunate mistake:
+		functor(Pred, Functor, Arity),
 		throw(error(existence_error(procedure, Functor/Arity), call(Pred), This))
 	).
 
@@ -3589,16 +3588,15 @@ current_logtalk_flag(version, version(2, 37, 0)).
 			'$lgt_dbg_goal'(Pred, TPred, ExCtx)
 		;	call(TPred)
 		)
-	;	% Pred may also be a call to a built-in local meta-predicate:
+	;	% in the worst case we need to compile the meta-call:
 		'$lgt_comp_ctx'(Ctx, _, Sender, Sender, Self, Prefix, [], _, ExCtx),
 		'$lgt_tr_body'(Pred, TPred, DPred, Ctx) ->
 		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Sender) ->
 			call(DPred)
 		;	call(TPred)
 		)
-	;	'$lgt_built_in'(Pred) ->
-		call(Pred)
-	;	functor(Pred, Functor, Arity),
+	;	% of course, the meta-call may happen to be an unfortunate mistake:
+		functor(Pred, Functor, Arity),
 		throw(error(existence_error(procedure, Functor/Arity), call(Pred), Sender))
 	).
 
@@ -3606,7 +3604,8 @@ current_logtalk_flag(version, version(2, 37, 0)).
 
 % '$lgt_call_built_in'(+callable, +execution_context)
 %
-% needed for runtime translation of dynamic clauses
+% needed for runtime translation of dynamic clauses and for dealing
+% with meta-calls that turn out to be calls to built-in predicates
 
 '$lgt_call_built_in'(Pred, ExCtx) :-
 	(	'$lgt_exec_ctx'(ExCtx, This, _),
