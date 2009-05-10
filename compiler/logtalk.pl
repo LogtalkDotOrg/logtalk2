@@ -3104,12 +3104,13 @@ current_logtalk_flag(version, version(2, 37, 0)).
 '$lgt_send_to_self_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
 	!,
-	(	call(Dcl, Pred, Scope, _, _, _, _, SCtn, _) ->											% lookup declaration
+	(	call(Dcl, Pred, Scope, _, Meta, _, _, SCtn, _) ->										% lookup declaration
 		(	(Scope = p(_); Sender = SCtn) ->													% check scope
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),					% construct object template
 			functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),				% construct "sender" template
-			(	'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
+			(	'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),									% construct list of the meta-variables
+				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars),							% that will be called in the "sender"
 				call(Def, GPred, ExCtx, GCall, _) ->											% lookup definition
 				asserta(('$lgt_send_to_self_'(GObj, GPred, GSender, volatile) :- !, GCall)),	% cache lookup result
 				(GObj, GPred, GSender) = (Obj, Pred, Sender),									% unify message arguments
@@ -3158,11 +3159,12 @@ current_logtalk_flag(version, version(2, 37, 0)).
 '$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
 	!,
-	(	call(Dcl, Pred, Scope, _, _, _, _, SCtn, _) ->											% lookup declaration
+	(	call(Dcl, Pred, Scope, _, Meta, _, _, SCtn, _) ->										% lookup declaration
 		(	Scope = p(p(_)) ->																	% check public scope
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),					% construct object template
-			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
+			'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),										% construct list of the meta-variables
+			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars),								% that will be called in the "sender"
 			(	call(Def, GPred, ExCtx, GCall, _) ->											% lookup definition
 				GECall = (
 					\+ ('$lgt_before_'(GObj, GPred, GSender, _, BCall), \+ BCall),
@@ -3251,11 +3253,12 @@ current_logtalk_flag(version, version(2, 37, 0)).
 '$lgt_send_to_object_ne_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
 	!,
-	(	call(Dcl, Pred, Scope, _, _, _, _, SCtn, _) ->											% lookup declaration
+	(	call(Dcl, Pred, Scope, _, Meta, _, _, SCtn, _) ->										% lookup declaration
 		(	Scope = p(p(_)) ->																	% check public scope
 			functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
 			functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),					% construct object template
-			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
+			'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),										% construct list of the meta-variables
+			'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars),								% that will be called in the "sender"
 			(	call(Def, GPred, ExCtx, GCall, _) ->											% lookup definition
 				asserta(('$lgt_send_to_obj_ne_'(GObj, GPred, GSender, volatile) :- !, GCall)),	% cache lookup result
 				(GObj, GPred, GSender) = (Obj, Pred, Sender),									% unify message arguments
@@ -6090,7 +6093,9 @@ current_logtalk_flag(version, version(2, 37, 0)).
 
 '$lgt_tr_file_directive'(initialization(Goal), _, _, _, _) :-
 	!,
-	(	callable(Goal) ->
+	(	var(Goal) ->
+		throw(instantiation_error)
+	;	callable(Goal) ->
 		assertz('$lgt_pp_file_init_'(Goal))
 	;	throw(type_error(callable, Goal))
 	).
@@ -6324,7 +6329,7 @@ current_logtalk_flag(version, version(2, 37, 0)).
 '$lgt_tr_directive'(initialization, [Goal], _, _, _, _) :-
 	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
 	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, []),
+	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, []),		% MetaVars = [] as we're compiling a local call
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
 	assertz('$lgt_pp_entity_init_'(TGoal)).
 
@@ -8090,8 +8095,7 @@ current_logtalk_flag(version, version(2, 37, 0)).
 
 '$lgt_tr_body'(^^Pred, TPred, '$lgt_dbg_goal'(^^Pred, TPred, ExCtx), Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, _, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaVars),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_tr_super_call'(Pred, TPred, Ctx).
 
 
@@ -8545,34 +8549,6 @@ current_logtalk_flag(version, version(2, 37, 0)).
 	functor(Pred, Functor, Arity),
 	'$lgt_pp_dynamic_'(Functor, Arity),			% which declares the predicate dynamic
 	throw(permission_error(define, dynamic_predicate, Functor/Arity)).
-
-
-% goal is a call to a user meta-predicate (but not a recursive call!)
-
-'$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, ExCtx), Ctx) :-
-	functor(Pred, Functor, Arity),
-	\+ '$lgt_comp_ctx_head'(Ctx, Functor/Arity),
-	functor(Meta, Functor, Arity),
-	'$lgt_pp_meta_predicate_'(Meta),
-	!,
-	Pred =.. [_| Args],
-	'$lgt_comp_ctx'(Ctx, Head, Sender, This, Self, Prefix, MetaVars, _, ExCtx),
-	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
-	(	'$lgt_pp_synchronized_'(Pred, _), Functor/Arity \= Head ->
-		atom_concat(TFunctor, '_sync', STFunctor)
-	;	STFunctor = TFunctor
-	),
-	% when calling a local meta-predicate, the meta-arguments to be
-	% called in the context of the sender will be the ones coming
-	% from the call to the predicate whose body we're compiling:
-	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaVars),
-	'$lgt_append'(Args, [ExCtx], TArgs),
-	TPred =.. [STFunctor| TArgs],
-	TArity is Arity + 1,
-	(	'$lgt_pp_calls_pred_'(Functor, Arity, _, _) ->
-		true
-	;	assertz('$lgt_pp_calls_pred_'(Functor, Arity, STFunctor, TArity))
-	).
 
 
 % goal is a call to a user predicate
@@ -9287,15 +9263,13 @@ current_logtalk_flag(version, version(2, 37, 0)).
 	).
 
 '$lgt_tr_super_call'(Pred, TPred, Ctx) :-		% "super" call to a predicate other than the one being redefined
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
-		'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx),
-		'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
 		(	var(Pred) ->
 	    	TPred = '$lgt_obj_super_call_other'(Super, Pred, ExCtx)
 		;	TPred = '$lgt_obj_super_call_other_'(Super, Pred, ExCtx, _)
 		)
 	;	'$lgt_pp_category_'(Ctg, _, _, _, _, _) ->
-		'$lgt_comp_ctx'(Ctx, _, _, _, _, _, _, _, ExCtx),
 		(	var(Pred) ->
 	    	TPred = '$lgt_ctg_super_call_other'(Ctg, Pred, ExCtx)
 		;	TPred = '$lgt_ctg_super_call_other_'(Ctg, Pred, ExCtx, _)

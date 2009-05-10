@@ -29,6 +29,11 @@ RELEASE NOTES
 
     Added support for meta-calls whose closure argument is ::Closure.
 
+    Simplified compilation and improved performance of predicates that call
+    local user meta-predicates.
+
+    Corrected a bug where calls to local user meta-predicates would fail.
+   
     Corrected a bug where local calls to user meta-predicates would not be
     visible to the built-in debugger.
 
