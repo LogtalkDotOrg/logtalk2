@@ -11,4 +11,4 @@ Description: Open source object-oriented logic programming language.
  As a multi-paradigm language, Logtalk includes support for both 
  prototypes and classes, protocols, component-based programming 
  through category-based composition, event-driven programming, and 
- multi-threading programming.
+ high-level multi-threading programming.
