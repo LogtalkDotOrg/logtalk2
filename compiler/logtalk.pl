@@ -6311,12 +6311,14 @@ current_logtalk_flag(version, version(2, 37, 0)).
 	).
 
 
-% dynamic entity directive
+% dynamic/0 entity directive
 
 '$lgt_tr_directive'((dynamic), [], _, _, _, _) :-
 	!,
 	'$lgt_update_entity_comp_mode'.
 
+
+% initialization/1 entity directive
 
 '$lgt_tr_directive'(initialization, [Goal], _, _, _, _) :-
 	var(Goal),
@@ -6333,6 +6335,8 @@ current_logtalk_flag(version, version(2, 37, 0)).
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
 	assertz('$lgt_pp_entity_init_'(TGoal)).
 
+
+% op/3 entity directive (operators are local to entities)
 
 '$lgt_tr_directive'(op, [Pr, Spec, Ops], _, _, _, _) :-
 	(var(Pr); var(Spec); var(Ops)),
@@ -6448,6 +6452,8 @@ current_logtalk_flag(version, version(2, 37, 0)).
 	;	true
 	).
 
+
+% scope directives
 
 '$lgt_tr_directive'((public), Preds, _, _, _, _) :-
 	'$lgt_flatten_list'(Preds, Preds2),
