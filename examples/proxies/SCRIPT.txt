@@ -49,7 +49,7 @@ R = 3.71,
 C = yellow.
 
 
-% construct a list with the areas of all cicles:
+% construct a list with the areas of all circles:
 
 | ?- findall(Area, {circle(_, _, _)}::area(Area), Areas).
 
