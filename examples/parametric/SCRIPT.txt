@@ -49,7 +49,7 @@ Day = 15
 yes
 
 
-| ?- date(Year, _, _)::(today, \+ leap_year). 
+| ?- date(Year, _, _)::today, \+ date(Year, _, _)::leap_year.
 
 Year = 2002
 yes
@@ -63,7 +63,7 @@ Secs = 42
 yes
 
 
-| ?- R = rectangle(W, H, X, Y), R::init, R::move(3, 4, NR), NR::position(X2, Y2).
+| ?- rectangle(W, H, X, Y)::(init, move(3, 4, NR)), NR::position(X2, Y2).
 
 R = rectangle(2, 1, 0, 0)
 W = 2

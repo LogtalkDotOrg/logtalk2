@@ -111,6 +111,8 @@ RELEASE NOTES
     Corrected a bug in the "expansion" example that prevented some of the
     example queries from working.
 
+    Simplified running the "poem" example.
+
 
 2.36.0 - April 9, 2009
 
