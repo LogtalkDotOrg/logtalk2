@@ -3,9 +3,9 @@
 	implements(osp)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2008/11/19,
+		date is 2009/5/11,
 		comment is 'Simple example of using conditional compilation to implement a portable operating-system interface for selected back-end Prolog compilers.']).
 
 	:- if(current_logtalk_flag(prolog_dialect, swi)).
@@ -354,6 +354,10 @@
 
 		cpu_time(Time) :-
 			{cputime(Time)}.
+
+	:- else.
+
+		:- initialization((write('WARNING: back-end Prolog compiler not supported!'), nl)).
 
 	:- endif.
 

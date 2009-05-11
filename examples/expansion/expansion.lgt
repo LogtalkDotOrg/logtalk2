@@ -28,7 +28,7 @@
 
 	:- public(test_goal_expansion/2).
 
-	test_goal(Goal, EGoal) :-
+	test_goal_expansion(Goal, EGoal) :-
 		expand_goal(Goal, EGoal).		% i.e. from within the object
 										% importing the category
 :- end_category.

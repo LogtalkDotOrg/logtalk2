@@ -31,7 +31,7 @@ Yes
 
 % finite state machine example:
 
-| ?- fsm(T, I, F), fsm(T, I, F)::recognise([0,1,1,2,1,2,0]).
+| ?- {fsm(T, I, F)}::recognise([0,1,1,2,1,2,0]).
 
 red-0-red
 red-1-green
@@ -50,7 +50,7 @@ Yes
 
 % finite state machine example:
 
-| ?- fsm(T, I, F), !, fsm(T, I, F)::recognise([0,1,1,2,1,2,1,0]).
+| ?- {fsm(T, I, F)}::recognise([0,1,1,2,1,2,1,0]).
 
 red-0-red
 red-1-green

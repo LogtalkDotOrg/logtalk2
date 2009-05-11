@@ -108,6 +108,9 @@ RELEASE NOTES
     "clpfd" predicates in query binding results. Thanks to Ulrich Neumerkel
     for reporting the problem.
 
+    Corrected a bug in the "expansion" example that prevented some of the
+    example queries from working.
+
 
 2.36.0 - April 9, 2009
 

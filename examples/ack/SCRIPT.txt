@@ -16,18 +16,18 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 
 % some example queries for back-end Prolog compilers implementing the 
-% time/1 timing predicate (e.g. SWI-Prlog, YAP, or XSB):
+% time/1 timing predicate (e.g. SWI-Prolog, YAP, or XSB):
 
 ?- time(ack::ack(2, 4, V)).
-% 195 inferences, 0.00 CPU in 0.00 seconds (0% CPU, Infinite Lips)
+% 98 inferences, 0.00 CPU in 0.00 seconds (0% CPU, Infinite Lips)
 V = 11.
 
 ?- time(ack::ack(3, 3, V)).
-% 6,074 inferences, 0.00 CPU in 0.00 seconds (0% CPU, Infinite Lips)
+% 2,451 inferences, 0.00 CPU in 0.00 seconds (0% CPU, Infinite Lips)
 V = 61.
 
 ?- time(ack::ack(3, 4, V)).
-% 25,730 inferences, 0.01 CPU in 0.01 seconds (89% CPU, 2573000 Lips)
+% 10,326 inferences, 0.00 CPU in 0.00 seconds (0% CPU, Infinite Lips)
 V = 125.
 
 

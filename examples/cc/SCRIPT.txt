@@ -9,7 +9,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ================================================================
 
 
-% start by loading the example:
+% simply load the example:
 
 | ?- logtalk_load(cc(loader)).
 ...
