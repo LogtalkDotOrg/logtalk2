@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.37.0
+%  Release 2.37.1
 %
 %  Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
@@ -11,7 +11,7 @@
 %
 %  configuration file for Amzi! Prolog 7.6.1 and later versions
 %
-%  last updated: April 19, 2009
+%  last updated: May 12, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -593,6 +593,20 @@ callable(Term) :-
 	{Files}.
 {File} :-
 	logtalk_load(File).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% converts between Prolog stream encoding names and XML encoding names
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_logtalk_prolog_encoding'(?atom, ?atom, +stream)
+
+'$lgt_logtalk_prolog_encoding'(_, _, _) :-
+	fail.
 
 
 

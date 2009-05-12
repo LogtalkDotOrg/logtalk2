@@ -1,11 +1,11 @@
 Name: logtalk
 Summary: Logtalk - Open source object-oriented logic programming language
-Version: 2.37.0
+Version: 2.37.1
 Release: 1
 License: Artistic License 2.0
 Group: Development/Languages
 Packager: Paulo Moura <pmoura@logtalk.org>
-Source: http://logtalk.org/files/lgt2370.tar.bz2
+Source: http://logtalk.org/files/lgt2371.tar.bz2
 BuildArchitectures: noarch
 URL: http://logtalk.org/
 Prefix: /usr/local
@@ -15,21 +15,21 @@ Logtalk is an open source object-oriented logic programming language that can us
 
 %prep
 
-%setup -n lgt2370
+%setup -n lgt2371
 
 %build
 
 %install
 mkdir -p /usr/local/share
-rm -rf /usr/local/share/lgt2370
+rm -rf /usr/local/share/lgt2371
 rm -f /usr/local/share/logtalk
-mkdir /usr/local/share/lgt2370
-cp -R * /usr/local/share/lgt2370
-cd /usr/local/share/lgt2370
+mkdir /usr/local/share/lgt2371
+cp -R * /usr/local/share/lgt2371
+cd /usr/local/share/lgt2371
 chmod a+x scripts/cleandist.sh
 scripts/cleandist.sh
 cd ..
-ln -sf lgt2370 logtalk
+ln -sf lgt2371 logtalk
 cd ..
 mkdir -p bin 
 cd bin
@@ -55,7 +55,7 @@ ln -sf ../share/logtalk/xml/lgt2txt.sh lgt2txt
 
 %clean
 cd /usr/local/share
-rm -rf lgt2370
+rm -rf lgt2371
 rm -f logtalk
 cd ../bin
 rm -f bplgt
@@ -80,27 +80,27 @@ rm -f yaplgt
 
 %files
 %defattr(-,root,root)
-%doc /usr/local/share/lgt2370/BIBLIOGRAPHY.bib
-%doc /usr/local/share/lgt2370/CUSTOMIZE.txt
-%doc /usr/local/share/lgt2370/INSTALL.txt
-%doc /usr/local/share/lgt2370/LICENSE.txt
-%doc /usr/local/share/lgt2370/QUICK_START.txt
-%doc /usr/local/share/lgt2370/README.txt
-%doc /usr/local/share/lgt2370/RELEASE_NOTES.txt
-%doc /usr/local/share/lgt2370/UPGRADING.txt
-/usr/local/share/lgt2370/VERSION.txt
-/usr/local/share/lgt2370/compiler
-/usr/local/share/lgt2370/configs
-/usr/local/share/lgt2370/contributions
-/usr/local/share/lgt2370/examples
-/usr/local/share/lgt2370/integration
-/usr/local/share/lgt2370/libpaths
-/usr/local/share/lgt2370/library
-%docdir /usr/local/share/lgt2370/manuals
-/usr/local/share/lgt2370/manuals
-/usr/local/share/lgt2370/scripts
-/usr/local/share/lgt2370/wenv
-/usr/local/share/lgt2370/xml
+%doc /usr/local/share/lgt2371/BIBLIOGRAPHY.bib
+%doc /usr/local/share/lgt2371/CUSTOMIZE.txt
+%doc /usr/local/share/lgt2371/INSTALL.txt
+%doc /usr/local/share/lgt2371/LICENSE.txt
+%doc /usr/local/share/lgt2371/QUICK_START.txt
+%doc /usr/local/share/lgt2371/README.txt
+%doc /usr/local/share/lgt2371/RELEASE_NOTES.txt
+%doc /usr/local/share/lgt2371/UPGRADING.txt
+/usr/local/share/lgt2371/VERSION.txt
+/usr/local/share/lgt2371/compiler
+/usr/local/share/lgt2371/configs
+/usr/local/share/lgt2371/contributions
+/usr/local/share/lgt2371/examples
+/usr/local/share/lgt2371/integration
+/usr/local/share/lgt2371/libpaths
+/usr/local/share/lgt2371/library
+%docdir /usr/local/share/lgt2371/manuals
+/usr/local/share/lgt2371/manuals
+/usr/local/share/lgt2371/scripts
+/usr/local/share/lgt2371/wenv
+/usr/local/share/lgt2371/xml
 /usr/local/share/logtalk
 /usr/local/bin/cplgtdirs
 /usr/local/bin/lgt2pdf
