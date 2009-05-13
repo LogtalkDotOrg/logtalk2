@@ -23,3 +23,9 @@ documentation to HTML or PDF.
 
 See the copyright and license information on the contributed files for 
 usage and distributions conditions.
+
+When using GNU Prolog as the back-end compiler, you will need to patch
+the "xml.lgt" file. First, find all occurrences of "0''" and replace them
+by "0'''". Second, around line 1810, delete the new line after the double
+quote character in the second clause of the generated_doctype_literals//1
+grammar rule.
