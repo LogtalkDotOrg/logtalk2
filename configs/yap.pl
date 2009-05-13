@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: May 12, 2009
+%  last updated: May 14, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -74,7 +74,7 @@
 		dynamic('$lgt_ctg_super_call_same_'/4), hide_predicate('$lgt_ctg_super_call_same_'/4),
 		dynamic('$lgt_ctg_super_call_other_'/4), hide_predicate('$lgt_ctg_super_call_other_'/4),
 		dynamic('$lgt_ctg_call_'/4), hide_predicate('$lgt_ctg_call_'/4),
-		dynamic('$lgt_db_lookup_cache_'/5), hide_predicate('$lgt_db_lookup_cache_'/4)
+		dynamic('$lgt_db_lookup_cache_'/5), hide_predicate('$lgt_db_lookup_cache_'/5)
 	;	true
 	).
 
