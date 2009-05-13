@@ -25,7 +25,8 @@ See the copyright and license information on the contributed files for
 usage and distributions conditions.
 
 When using GNU Prolog as the back-end compiler, you will need to patch
-the "xml.lgt" file. First, find all occurrences of "0''" and replace them
-by "0'''". Second, around line 1810, delete the new line after the double
-quote character in the second clause of the generated_doctype_literals//1
-grammar rule.
+the "xml.lgt" file. First, find the occurrences of "0''" around lines
+723 and 908 and replace them by "0'''". Second, around lines 1783, 1792,
+1805, 1808, and 1853 delete the new line character after the double quote
+character. You may also need to use a larger default global stack size
+(see the GNU Prolog documentation on the environment variable GLOBALSZ).

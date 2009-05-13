@@ -19,7 +19,7 @@ RELEASE NOTES
     to the config files of all back-end Prolog compilers that don't support the
     encoding/1 directive.
 
-    Added a note on a workaround for a compatibility issue between GNU Prolog
+    Added a note on a workaround for compatibility issues between GNU Prolog
     and the contributed XML parser library. Thanks to Nicolas Pelletier for
     the bug report.
 
