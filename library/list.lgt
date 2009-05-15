@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.7,
+		version is 1.8,
 		author is 'Paulo Moura',
-		date is 2009/5/2,
+		date is 2009/5/15,
 		comment is 'List predicates.']).
 
 	:- public(as_difflist/2).
@@ -14,6 +14,11 @@
 	:- info(as_difflist/2,
 		[comment is 'Converts a list to a difference list.',
 		 argnames is ['List', 'Diffist']]).
+
+	append([], []).
+	append([List| Lists], Concatenation) :-
+		append(List, Tail, Concatenation),
+		append(Lists, Tail).
 
 	append([], List, List).
 	append([Head| Tail], List, [Head| Tail2]) :-

@@ -24,6 +24,8 @@ RELEASE NOTES
 
     Added predicate sequence/3 to the library object "integer".
 
+    Added predicate append/2 to the library object "list".
+
     Added a note on a workaround for compatibility issues between GNU Prolog
     and the contributed XML parser library. Thanks to Nicolas Pelletier for
     the bug report.

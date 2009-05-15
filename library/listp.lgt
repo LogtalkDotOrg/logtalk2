@@ -2,10 +2,16 @@
 :- protocol(listp).
 
 	:- info([
-		version is 1.3,
+		version is 1.4,
 		author is 'Paulo Moura',
-		date is 2009/5/4,
+		date is 2009/5/15,
 		comment is 'List protocol.']).
+
+	:- public(append/2).
+	:- mode(append(+list(list), ?list), zero_or_one).
+	:- info(append/2, [
+		comment is 'Appends all lists in a list of lists.',
+		argnames is ['Lists', 'Concatenation']]).
 
 	:- public(append/3).
 	:- mode(append(?list, ?list, ?list), zero_or_more).
