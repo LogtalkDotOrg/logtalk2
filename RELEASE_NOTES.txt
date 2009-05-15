@@ -30,6 +30,10 @@ RELEASE NOTES
     and the contributed XML parser library. Thanks to Nicolas Pelletier for
     the bug report.
 
+    Added a new example, "securemp", illustrating the safety rules used by
+    Logtalk in the compilation and execution of meta-predicates (as described
+    on the "Secure Implementation of Meta-predicates" PADL'09 paper).
+
 
 2.37.0 - May 11, 2009
 

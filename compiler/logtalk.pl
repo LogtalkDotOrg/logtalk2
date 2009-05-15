@@ -2966,7 +2966,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 				;	throw(error(permission_error(access, protected_non_terminal, NonTerminal), Obj::phrase(NonTerminal, Input, Rest), Sender))
 				)
 			)
-		;	% no declaration found for non-terninal:
+		;	% no declaration found for non-terminal:
 			Obj = Sender,
 			'$lgt_exec_ctx'(ExCtx, Obj, Obj, Obj, _),
 			(	call(Def, Pred, ExCtx, Call)

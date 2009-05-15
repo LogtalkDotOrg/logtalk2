@@ -227,6 +227,10 @@ searching
 	(example adapted from Ivan Bratko's "Prolog Programming for 
 	Artificial Intelligence" book)
 
+securemp
+	a set of source files for testing Logtalk secure
+	implementation of meta-predicates
+
 shapes
 	simple geometric shapes implemented as both a prototype hierarchy 
 	and a class hierarchy

@@ -90,6 +90,7 @@
 	assertz(logtalk_library_path(relations, examples('relations/'))),
 	assertz(logtalk_library_path(roots, examples('roots/'))),
 	assertz(logtalk_library_path(searching, examples('searching/'))),
+	assertz(logtalk_library_path(securemp, examples('securemp/'))),
 	assertz(logtalk_library_path(shapes_ch, examples('shapes/ch/'))),
 	assertz(logtalk_library_path(shapes_ph, examples('shapes/ph/'))),
 	assertz(logtalk_library_path(sicstus, examples('sicstus/'))),
