@@ -22,6 +22,8 @@ RELEASE NOTES
     to the config files of all back-end Prolog compilers that don't support the
     encoding/1 directive.
 
+    Added predicate sequence/3 to the library object "integer".
+
     Added a note on a workaround for compatibility issues between GNU Prolog
     and the contributed XML parser library. Thanks to Nicolas Pelletier for
     the bug report.

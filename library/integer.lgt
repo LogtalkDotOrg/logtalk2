@@ -3,9 +3,9 @@
 	extends(number)).
 
 	:- info([
-		version is 1.3,
+		version is 1.4,
 		author is 'Paulo Moura',
-		date is 2009/3/6,
+		date is 2009/5/14,
 		comment is 'Integer data type predicates.']).
 
 	:- public(between/3).
@@ -29,6 +29,12 @@
 	:- info(plus/2, [
 		comment is 'Successor of a natural number. At least one of the arguments must be instantiated to a natural number.',
 		argnames is ['I', 'J']]).
+
+	:- public(sequence/3).
+	:- mode(sequence(+integer, +integer, -list(integer)), zero_or_one).
+	:- info(sequence/3,
+		[comment is 'Generates a list with the sequence of all integers in the interval [Inf, Sup], assuming Inf =< Sup.',
+		 argnames is ['Inf', 'Sup', 'List']]).
 
 	between(Lower, Upper, Integer) :-
 		integer(Lower),
@@ -71,6 +77,17 @@
 		;	J > 0,
 			I is J - 1
 		).
+
+	sequence(Inf, Sup, List) :-
+        Inf =< Sup,
+        gen_sequence(Inf, Sup, List).
+
+	gen_sequence(Sup, Sup, List) :-
+		!,
+		List = [Sup].
+	gen_sequence(Inf, Sup, [Inf| List]) :-
+		Next is Inf + 1,
+		gen_sequence(Next, Sup, List).
 
 	valid(Integer) :-
 		integer(Integer).
