@@ -19,7 +19,10 @@ RELEASE NOTES
     where a redefinition of a built-in predicate would be ignored.
 
     Corrected a bug in the YAP config file that prevented setting the "unknown"
-    flag to "error" and the "language" flag to "iso".
+    flag to "error" and the "language" flag to "iso". Added declarations for
+    the proprietary built-in meta-predicates call_residue_vars/2, ignore/1, and
+    depth_bound_call/2. Remove declaration for the outdated meta-predicate
+    on_cleanup/1.
 
     Updated the GNU Prolog config file to recognize the foreign/1-2 proprietary
     directives. Added declarations for the proprietary built-in meta-predicates
