@@ -11,7 +11,7 @@
 %
 %  configuration file for GNU Prolog 1.3.1 (and later versions)
 %
-%  last updated: May 12, 2009
+%  last updated: May 16, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -100,6 +100,8 @@ forall(Generate, Test) :-
 % '$lgt_pl_meta_predicate'(?callable, ?atom).
 
 '$lgt_pl_meta_predicate'(call_det(::, *), predicate).
+'$lgt_pl_meta_predicate'(fd_minimize(::, *), predicate).
+'$lgt_pl_meta_predicate'(fd_maximize(::, *), predicate).
 
 
 
@@ -505,8 +507,8 @@ forall(Generate, Test) :-
 
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
-'$lgt_rewrite_and_copy_pl_directive'(_, _) :-
-	fail.
+'$lgt_rewrite_and_copy_pl_directive'(foreign(Template, Options), foreign(Template, Options)).
+'$lgt_rewrite_and_copy_pl_directive'(foreign(Template), foreign(Template)).
 
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)

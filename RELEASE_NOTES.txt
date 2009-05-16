@@ -21,6 +21,10 @@ RELEASE NOTES
     Corrected a bug in the YAP config file that prevented setting the "unknown"
     flag to "error" and the "language" flag to "iso".
 
+    Updated the GNU Prolog config file to recognize the foreign/1-2 proprietary
+    directives. Added declarations for the proprietary built-in meta-predicates
+    fd_minimize/2 and fd_maximize/2.
+
     Added a dummy definition for the predicate '$lgt_logtalk_prolog_encoding'/3
     to the config files of all back-end Prolog compilers that don't support the
     encoding/1 directive.
