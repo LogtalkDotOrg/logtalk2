@@ -3607,8 +3607,9 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 % '$lgt_call_built_in'(+callable, +execution_context)
 %
-% needed for runtime translation of dynamic clauses and for dealing
-% with meta-calls that turn out to be calls to built-in predicates
+% needed for runtime translation of dynamic clauses, for dealing
+% with meta-calls that turn out to be calls to built-in predicates,
+% and for dealing with <</2 calls to redefined built-in predicates
 
 '$lgt_call_built_in'(Pred, ExCtx) :-
 	(	'$lgt_exec_ctx'(ExCtx, This, _),

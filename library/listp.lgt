@@ -85,6 +85,12 @@
 		[comment is 'Determines the minimum value in a list using standard order. Fails if the list is empty.',
 		 argnames is ['List', 'Minimum']]).
 
+	:- public(msort/2).
+	:- mode(msort(+list, -list), one).
+	:- info(msort/2,
+		[comment is 'Sorts a list in ascending order (duplicated elements are not removed).',
+		 argnames is ['List', 'Sorted']]).
+
 	:- public(nextto/3).
 	:- mode(nextto(?term, ?term, ?list), zero_or_more).
 	:- info(nextto/3, [
