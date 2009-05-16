@@ -3557,7 +3557,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 '$lgt_metacall_this'(Pred, Sender, This, Self) :-
 	'$lgt_current_object_'(This, Prefix, _, Def, _, _, _, _, DDef, _, _), !,
-	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
+	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, []),
 	(	% in the most common case we're meta-calling a user defined predicate:
 		(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
 		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(This) ->
@@ -3584,7 +3584,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 '$lgt_metacall_sender'(Pred, Sender, _, Self) :-
 	'$lgt_current_object_'(Sender, Prefix, _, Def, _, _, _, _, DDef, _, _), !,
-	'$lgt_exec_ctx'(ExCtx, Sender, Sender, Self, _),
+	'$lgt_exec_ctx'(ExCtx, Sender, Sender, Self, []),
 	(	% in the most common case we're meta-calling a user defined predicate:
 		(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
 		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Sender) ->
@@ -3627,17 +3627,26 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 % '$lgt_call_within_context'(+object_identifier, +callable, +object_identifier)
 %
-% calls a goal within the context of the specified object; used for debugging
-% and for writing unit tests
+% calls a goal within the context of the specified object; used mostly for
+% debugging and for writing unit tests
 
 '$lgt_call_within_context'(Obj, Goal, This) :-
-	(	'$lgt_current_object_'(Obj, Prefix, _, _, _, _, _, _, _, _, _) ->
-		(	('$lgt_entity_property_'(Obj, built_in); '$lgt_entity_property_'(Obj, flags(csc, _, _, _, _, _))) ->
-			'$lgt_comp_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _, _),
-			'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-			(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
-				call(DGoal)
-			;	call(TGoal)
+	(	'$lgt_current_object_'(Obj, Prefix, _, Def, _, _, _, _, DDef, _, _) ->
+		(	('$lgt_entity_property_'(Obj, built_in); '$lgt_entity_property_'(Obj, flags(csc, _, _, _, _, _))) ->			
+			'$lgt_exec_ctx'(ExCtx, Obj, Obj, Obj, []),
+			(	% in the most common case we're calling a user defined predicate:
+				(call(Def, Goal, ExCtx, TGoal); call(DDef, Goal, ExCtx, TGoal)) ->
+				(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
+					'$lgt_dbg_goal'(Goal, TGoal, ExCtx)
+				;	call(TGoal)
+				)
+			;	% in the worst case we need to compile the goal:
+				'$lgt_comp_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _, ExCtx),
+				'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
+				(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
+					call(DGoal)
+				;	call(TGoal)
+				)
 			)
 		;	throw(error(permission_error(access, predicate, Goal), Obj<<Goal, This))
 		)

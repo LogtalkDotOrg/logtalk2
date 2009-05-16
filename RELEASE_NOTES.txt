@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.37.1 - May ??, 2009
 
+    Corrected a bug in the implementation of the Logtalk <</2 control construct
+    where a redefinition of a built-in predicate would be ignored.
+
     Corrected a bug in the YAP config file that prevented setting the "unknown"
     flag to "error" and the "language" flag to "iso".
 
