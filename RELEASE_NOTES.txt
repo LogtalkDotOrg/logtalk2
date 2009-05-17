@@ -27,6 +27,9 @@ RELEASE NOTES
     depth_bound_call/2. Removed declaration for the outdated meta-predicate
     on_cleanup/1.
 
+    Updated the B-Prolog config file with declarations for the proprietary
+    built-in meta-predicates fd_minimize/2 and fd_maximize/2.
+
     Updated the GNU Prolog config file in order to recognize the foreign/1-2
     proprietary directives. Added declarations for the proprietary built-in
     meta-predicates fd_minimize/2 and fd_maximize/2.
