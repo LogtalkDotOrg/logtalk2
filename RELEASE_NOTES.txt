@@ -24,12 +24,16 @@ RELEASE NOTES
     Corrected a bug in the YAP config file that prevented setting the "unknown"
     flag to "error" and the "language" flag to "iso". Added declarations for
     the proprietary built-in meta-predicates call_residue_vars/2, ignore/1, and
-    depth_bound_call/2. Remove declaration for the outdated meta-predicate
+    depth_bound_call/2. Removed declaration for the outdated meta-predicate
     on_cleanup/1.
 
-    Updated the GNU Prolog config file to recognize the foreign/1-2 proprietary
-    directives. Added declarations for the proprietary built-in meta-predicates
-    fd_minimize/2 and fd_maximize/2.
+    Updated the GNU Prolog config file in order to recognize the foreign/1-2
+    proprietary directives. Added declarations for the proprietary built-in
+    meta-predicates fd_minimize/2 and fd_maximize/2.
+
+    Updated the ECLiPSe config files with declarations for the proprietary
+    built-in control constructs and meta-predicates ~/1, not/1, and (-?->)/1
+    (the last one only for the non-ISO config files).
 
     Added a dummy definition for the predicate '$lgt_logtalk_prolog_encoding'/3
     to the config files of all back-end Prolog compilers that don't support the
