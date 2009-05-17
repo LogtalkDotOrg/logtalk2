@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %
-%  last updated: May 12, 2009
+%  last updated: May 17, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -100,6 +100,12 @@
 '$lgt_pl_meta_predicate'(call_cleanup(::, ::), predicate).
 '$lgt_pl_meta_predicate'(call_cleanup(::, *, ::), predicate).
 '$lgt_pl_meta_predicate'(setup_and_call_cleanup(::, ::, ::), predicate).
+:- if(predicate_property(setup_call_cleanup(_, _, _), built_in)).
+	'$lgt_pl_meta_predicate'(setup_call_cleanup(::, ::, ::), predicate).
+:- endif.
+:- if(predicate_property(setup_call_catcher_cleanup(_, _, _, _), built_in)).
+	'$lgt_pl_meta_predicate'(setup_call_catcher_cleanup(::, ::, *, ::), predicate).
+:- endif.
 '$lgt_pl_meta_predicate'(call_with_depth_limit(::, *, *), predicate).
 '$lgt_pl_meta_predicate'(dde_register_service(*, ::), predicate).
 '$lgt_pl_meta_predicate'(freeze(*, ::), predicate).
