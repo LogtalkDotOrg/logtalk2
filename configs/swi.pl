@@ -99,6 +99,14 @@
 '$lgt_pl_meta_predicate'(block(*, ::, *), predicate).
 '$lgt_pl_meta_predicate'(call_cleanup(::, ::), predicate).
 '$lgt_pl_meta_predicate'(call_cleanup(::, *, ::), predicate).
+'$lgt_pl_meta_predicate'(call_with_depth_limit(::, *, *), predicate).
+'$lgt_pl_meta_predicate'(dde_register_service(*, ::), predicate).
+'$lgt_pl_meta_predicate'(findall(*, ::, *, *), predicate).
+'$lgt_pl_meta_predicate'(freeze(*, ::), predicate).
+'$lgt_pl_meta_predicate'(ignore(::), predicate).
+'$lgt_pl_meta_predicate'(not(::), predicate).
+'$lgt_pl_meta_predicate'(notrace(::), predicate).
+'$lgt_pl_meta_predicate'(on_signal(*, *, ::), predicate).
 '$lgt_pl_meta_predicate'(setup_and_call_cleanup(::, ::, ::), predicate).
 :- if(predicate_property(setup_call_cleanup(_, _, _), built_in)).
 	'$lgt_pl_meta_predicate'(setup_call_cleanup(::, ::, ::), predicate).
@@ -106,21 +114,14 @@
 :- if(predicate_property(setup_call_catcher_cleanup(_, _, _, _), built_in)).
 	'$lgt_pl_meta_predicate'(setup_call_catcher_cleanup(::, ::, *, ::), predicate).
 :- endif.
-'$lgt_pl_meta_predicate'(call_with_depth_limit(::, *, *), predicate).
-'$lgt_pl_meta_predicate'(dde_register_service(*, ::), predicate).
-'$lgt_pl_meta_predicate'(freeze(*, ::), predicate).
-'$lgt_pl_meta_predicate'(ignore(::), predicate).
-'$lgt_pl_meta_predicate'(not(::), predicate).
-'$lgt_pl_meta_predicate'(notrace(::), predicate).
-'$lgt_pl_meta_predicate'(on_signal(*, *, ::), predicate).
 '$lgt_pl_meta_predicate'(time(::), predicate).
-'$lgt_pl_meta_predicate'(findall(*, ::, *, *), predicate).
-
 '$lgt_pl_meta_predicate'(thread_initialization(::), predicate).
 '$lgt_pl_meta_predicate'(thread_at_exit(::), predicate).
 '$lgt_pl_meta_predicate'(thread_create(::, *, *), predicate).
 '$lgt_pl_meta_predicate'(thread_signal(*, ::), predicate).
 '$lgt_pl_meta_predicate'(with_mutex(*, ::), predicate).
+'$lgt_pl_meta_predicate'(with_output_to(*, ::), predicate).
+'$lgt_pl_meta_predicate'(when(*, ::), predicate).
 
 
 
