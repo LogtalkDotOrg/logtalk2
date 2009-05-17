@@ -8516,37 +8516,40 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 % Prolog proprietary, built-in meta-predicates
 
-'$lgt_tr_body'(Pred, TPred, DPred, Ctx) :-
+'$lgt_tr_body'(Pred, '$lgt_call_built_in'(TPred, ExCtx), DPred, Ctx) :-
 	'$lgt_pl_built_in'(Pred),
 	functor(Pred, Functor, Arity),
-	\+ '$lgt_pp_public_'(Functor, Arity),		% not a
-	\+ '$lgt_pp_protected_'(Functor, Arity),	% redefined
-	\+ '$lgt_pp_private_'(Functor, Arity),		% built-in
+	\+ '$lgt_pp_public_'(Functor, Arity),			% not a redefined
+	\+ '$lgt_pp_protected_'(Functor, Arity),		% built-in... unless
+	\+ '$lgt_pp_private_'(Functor, Arity),			% the redefinition is
+	\+ '$lgt_pp_redefined_built_in_'(Pred, _, _),	% yet to be compiled
 	functor(Meta, Functor, Arity), 
 	'$lgt_pl_meta_predicate'(Meta, Type),
 	!,
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
 	(	'$lgt_member'(MArg, MArgs), integer(MArg), MArg =\= 0 ->
 		throw(domain_error(closure, Meta))
 	;	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
-		TPred =.. [Functor| TArgs],
-		DGoal =.. [Functor| DArgs]
+		TPred =.. [Functor| TArgs]
 	),
 	(	Type == control_construct ->
-		DPred = DGoal
-	;	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-		DPred = '$lgt_dbg_goal'(Pred, DGoal, ExCtx)
+		DGoal =.. [Functor| DArgs],
+		DPred = '$lgt_call_built_in'(DGoal, Ctx)
+	;	DPred = '$lgt_dbg_goal'(Pred, '$lgt_call_built_in'(TPred, ExCtx), ExCtx)
 	).
+
 
 % Logtalk and Prolog built-in predicates
 
 '$lgt_tr_body'(Pred, '$lgt_call_built_in'(Pred, ExCtx), '$lgt_dbg_goal'(Pred, '$lgt_call_built_in'(Pred, ExCtx), ExCtx), Ctx) :-
 	'$lgt_built_in'(Pred),
 	functor(Pred, Functor, Arity),
-	\+ '$lgt_pp_public_'(Functor, Arity),		% not a
-	\+ '$lgt_pp_protected_'(Functor, Arity),	% redefined
-	\+ '$lgt_pp_private_'(Functor, Arity),		% built-in
+	\+ '$lgt_pp_public_'(Functor, Arity),			% not a redefined
+	\+ '$lgt_pp_protected_'(Functor, Arity),		% built-in... unless
+	\+ '$lgt_pp_private_'(Functor, Arity),			% the redefinition is
+	\+ '$lgt_pp_redefined_built_in_'(Pred, _, _),   % yet to be compiled
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
@@ -11474,6 +11477,10 @@ current_logtalk_flag(version, version(2, 37, 1)).
 		true
 	;	'$lgt_fix_pred_calls'(Pred, TPred)
 	).
+
+'$lgt_fix_pred_calls'('$lgt_dbg_goal'(Pred, DPred, ExCtx), '$lgt_dbg_goal'(Pred, TPred, ExCtx)) :-
+	!,									% calls in debug mode
+	'$lgt_fix_pred_calls'(DPred, TPred).
 
 '$lgt_fix_pred_calls'(Pred, Pred).
 

@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.37.1 - May ??, 2009
 
+    Corrected a Logtalk compiler bug where a redefinition of a proprietary
+    built-in meta-predicate (declared in the config files) would be ignored.
+
     Corrected a bug in the implementation of the Logtalk <</2 control construct
     where a redefinition of a built-in predicate would be ignored.
 
