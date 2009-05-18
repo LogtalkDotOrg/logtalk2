@@ -59,6 +59,10 @@ RELEASE NOTES
     Logtalk in the compilation and execution of meta-predicates (as described
     on the "Secure Implementation of Meta-predicates" PADL'09 paper).
 
+    Added instructions on how to enable a source code browser for editing
+    Logtalk source files using the Vim text editor (using the Taglist Vim
+    plugin and Exuberant ctags).
+
 
 2.37.0 - May 11, 2009
 
