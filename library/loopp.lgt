@@ -2,9 +2,9 @@
 :- protocol(loopp).
 
 	:- info([
-		version is 1.2,
+		version is 1.21,
 		author is 'Paulo Moura',
-		date is 2008/2/16,
+		date is 2009/5/19,
 		comment is 'Loop control constructs protocol.']).
 
 	:- public(whiledo/2).
@@ -16,7 +16,7 @@
 
 	:- public(dowhile/2).
 	:- meta_predicate(dowhile(::, ::)).
-	:- mode(dowhile(+callable, @callable), zero_or_one).
+	:- mode(dowhile(@callable, +callable), zero_or_one).
 	:- info(dowhile/2, [
 		comment is 'Do Action while Condition is true.',
 		argnames is ['Action', 'Condition']]).
