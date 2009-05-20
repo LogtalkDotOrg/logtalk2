@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: May 16, 2009
+%  last updated: May 20, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -167,7 +167,12 @@
 '$lgt_pl_meta_predicate'(freeze(*, ::), predicate).
 '$lgt_pl_meta_predicate'(time_out(::, *, *), predicate).
 '$lgt_pl_meta_predicate'(when(*, ::), predicate).
-
+:- if(predicate_property(setup_call_cleanup(_, _, _), built_in)).
+	'$lgt_pl_meta_predicate'(setup_call_cleanup(::, ::, ::), predicate).
+:- endif.
+:- if(predicate_property(setup_call_catcher_cleanup(_, _, _, _), built_in)).
+	'$lgt_pl_meta_predicate'(setup_call_catcher_cleanup(::, ::, *, ::), predicate).
+:- endif.
 '$lgt_pl_meta_predicate'(thread_initialization(::), predicate).
 '$lgt_pl_meta_predicate'(thread_at_exit(::), predicate).
 '$lgt_pl_meta_predicate'(thread_create(::, *, *), predicate).
