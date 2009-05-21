@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.37.1 - May ??, 2009
 
+    Updated the Logtalk compiler to try to detect calls to proprietary built-in
+    meta-predicates not declared in the config files. Detection may fail due to
+    the lack of standardization of meta-predicate specifications.
+
     Corrected a Logtalk compiler bug where a redefinition of a proprietary
     built-in meta-predicate (declared in the config files) would be ignored.
 
@@ -23,9 +27,9 @@ RELEASE NOTES
 
     Corrected a bug in the YAP config file that prevented setting the "unknown"
     flag to "error" and the "language" flag to "iso". Added declarations for
-    the proprietary built-in meta-predicates call_residue_vars/2, ignore/1, and
-    depth_bound_call/2. Removed declaration for the outdated meta-predicate
-    on_cleanup/1.
+    the proprietary built-in meta-predicates call_residue_vars/2, ignore/1,
+    depth_bound_call/2, setup_call_cleanup/3, and setup_call_catcher_cleanup/4.
+    Removed declaration for the outdated meta-predicate on_cleanup/1.
 
     Updated the B-Prolog config file with declarations for the proprietary
     built-in meta-predicates fd_minimize/2 and fd_maximize/2.
@@ -49,7 +53,7 @@ RELEASE NOTES
     Added predicate sequence/3 to the library object "integer".
 
     Added predicates append/2 and msort/2 to the library object "list". Fixed
-    termination issues with the length/2 predicate on buggy input.
+    some termination issues with the length/2 predicate on buggy input.
 
     Added a note on a workaround for compatibility issues between GNU Prolog
     and the contributed XML parser library. Thanks to Nicolas Pelletier for

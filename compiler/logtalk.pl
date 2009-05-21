@@ -8524,7 +8524,14 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	\+ '$lgt_pp_private_'(Functor, Arity),			% the redefinition is
 	\+ '$lgt_pp_redefined_built_in_'(Pred, _, _),	% yet to be compiled
 	functor(Meta, Functor, Arity), 
-	'$lgt_pl_meta_predicate'(Meta, Type),
+	(	'$lgt_pl_meta_predicate'(Meta, Type) ->
+		% proprietary built-in meta-predicates declared in the config files
+		true
+	;	% non-declared proprietary built-in meta-predicates (fragile hack
+	 	% due to lack of standardization of meta-predicate specifications)
+		'$lgt_predicate_property'(Pred, meta_predicate(Meta)),
+		Type = predicate	% but it could be a control construct instead
+	),
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	Pred =.. [_| Args],
