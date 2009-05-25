@@ -6932,21 +6932,21 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	;	throw(instantiation_error)
 	),
 	Pred =.. [Functor| Args],
-	'$lgt_convert_meta_predicate_mode_spec'(Args, Args2),
+	'$lgt_convert_meta_predicate_mode_args'(Args, Args2),
 	Pred2 =.. [Functor| Args2],
 	'$lgt_normalize_meta_predicate_args'(Preds, Preds2).
 
 
-'$lgt_convert_meta_predicate_mode_spec'([], []).
+'$lgt_convert_meta_predicate_mode_args'([], []).
 
-'$lgt_convert_meta_predicate_mode_spec'([Arg| Args], [Arg2| Args2]) :-
+'$lgt_convert_meta_predicate_mode_args'([Arg| Args], [Arg2| Args2]) :-
 	(	Arg == (:) -> Arg2 = (::)	% Prolog to Logtalk notation
 	;	Arg == (::) -> Arg2 = (::)	% just to be safe if someone mixes the notations
 	;	Arg == 0 -> Arg2 = (::)		% some Prolog compilers use zero for denoting goals
-	;	integer(Arg) -> Arg2 = Arg	% closures
-	;	Arg2 = (*)
+	;	integer(Arg) -> Arg2 = Arg	% closures are denoted by integers >= 1
+	;	Arg2 = (*)					% non meta-arguments to Logtalk notation
 	),
-	'$lgt_convert_meta_predicate_mode_spec'(Args, Args2).
+	'$lgt_convert_meta_predicate_mode_args'(Args, Args2).
 
 
 
@@ -8455,7 +8455,8 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	Meta =.. [Functor| MArgs],
 	(	'$lgt_member'(MArg, MArgs), integer(MArg), MArg =\= 0 ->
 		throw(domain_error(closure, Meta))
-	;	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
+	;	'$lgt_convert_meta_predicate_mode_args'(MArgs, CMArgs),
+		'$lgt_tr_meta_args'(Args, CMArgs, Ctx, TArgs, DArgs),
 		TPred =.. [Functor| TArgs],
 		DPred =.. [Functor| DArgs]
 	),
@@ -8538,7 +8539,8 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	Meta =.. [_| MArgs],
 	(	'$lgt_member'(MArg, MArgs), integer(MArg), MArg =\= 0 ->
 		throw(domain_error(closure, Meta))
-	;	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
+	;	'$lgt_convert_meta_predicate_mode_args'(MArgs, CMArgs),
+		'$lgt_tr_meta_args'(Args, CMArgs, Ctx, TArgs, DArgs),
 		TPred =.. [Functor| TArgs]
 	),
 	(	Type == control_construct ->
@@ -8693,8 +8695,8 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 % '$lgt_tr_meta_args'(@list, @list, +term, -list, -list)
 %
-% translates the meta-arguments contained in the list of 
-% arguments of a call to a meta-predicate
+% translates the meta-arguments contained in the list of arguments of a
+% call to a meta-predicate (assumes Logtalk meta-predicate notation)
 
 '$lgt_tr_meta_args'([], [], _, [], []).
 
@@ -8718,7 +8720,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 % checks that the number of addtional arguments being appended to a closure
 % in a call/N call matches the corresponding meta-predicate declaration
 % (the relative ordering of the meta-vars is the same of the corresponding 
-% meta-arguments)
+% meta-arguments; assumes Logtalk meta-predicate notation)
 
 '$lgt_same_meta_arg_extra_args'([(*)| MetaArgs], MetaVars, Closure, ExtraArgs) :-
 	!,
