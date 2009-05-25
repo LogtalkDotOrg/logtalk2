@@ -58,6 +58,9 @@ RELEASE NOTES
     Added an experimental "logtalk_select.sh" POSIX shell script for switching
     between installed Logtalk versions.
 
+    Added a POSIX integration script, "xsb64lgt", for using Logtalk with the 
+    single-threaded, 64 bits version of XSB.
+
     Added a note on a workaround for compatibility issues between GNU Prolog
     and the contributed XML parser library. Thanks to Nicolas Pelletier for
     the bug report.

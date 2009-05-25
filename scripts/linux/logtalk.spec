@@ -44,6 +44,7 @@ ln -sf ../share/logtalk/integration/quintuslgt.sh quintuslgt
 ln -sf ../share/logtalk/integration/sicstuslgt.sh sicstuslgt
 ln -sf ../share/logtalk/integration/swilgt.sh swilgt
 ln -sf ../share/logtalk/integration/xsblgt.sh xsblgt
+ln -sf ../share/logtalk/integration/xsb64lgt.sh xsb64lgt
 ln -sf ../share/logtalk/integration/xsbmtlgt.sh xsbmtlgt
 ln -sf ../share/logtalk/integration/xsbmt64lgt.sh xsbmt64lgt
 ln -sf ../share/logtalk/integration/yaplgt.sh yaplgt
@@ -76,6 +77,7 @@ rm -f quintuslgt
 rm -f sicstuslgt
 rm -f swilgt
 rm -f xsblgt
+rm -f xsb64lgt
 rm -f xsbmtlgt
 rm -f xsbmt64lgt
 rm -f yaplgt
@@ -121,6 +123,7 @@ rm -f yaplgt
 /usr/local/bin/sicstuslgt
 /usr/local/bin/swilgt
 /usr/local/bin/xsblgt
+/usr/local/bin/xsb64lgt
 /usr/local/bin/xsbmtlgt
 /usr/local/bin/xsbmt64lgt
 /usr/local/bin/yaplgt
@@ -147,6 +150,7 @@ echo "* Quintus Prolog (version 3.5):            quintuslgt  (requires patching 
 echo "* SICStus Prolog (versions 3.12.x, 4.0.x): sicstuslgt"
 echo "* SWI-Prolog (version 5.6.44 or later):    swilgt"
 echo "* XSB (version 3.2 or later):              xsblgt     (first run must use sudo)"
+echo "* XSB 64 bits (version 3.2 or later):      xsb64lgt   (first run must use sudo)"
 echo "* XSB MT (version 3.2 or later):           xsbmtlgt   (first run must use sudo)"
 echo "* XSB MT 64 bits (version 3.2 or later):   xsbmt64lgt (first run must use sudo)"
 echo "* YAP (version 5.1.3 or later):            yaplgt"
