@@ -11,6 +11,9 @@
 ## ================================================================
 
 
+prefix=`dirname "$LOGTALKHOME"`
+
+
 print_version() {
 	echo "`basename $0` 0.1"
 	exit 1
@@ -19,7 +22,7 @@ print_version() {
 
 list_versions() {
     echo -n "Available versions: "
-	for file in $(ls -d "$LOGTALKHOME/../lgt*"); do
+	for file in $(ls -d "$prefix"/lgt*); do
 		echo -n "`basename $file` "
 	done
 	echo
@@ -56,7 +59,7 @@ usage_help() {
 
 
 valid_version() {
-    for version in $(ls -d "$LOGTALKHOME/../lgt*"); do
+    for version in $(ls -d "$prefix"/lgt*); do
         if [ "${1}" == "`basename ${version}`" ]; then
             return 0
         fi
@@ -71,7 +74,7 @@ switch_version() {
     	echo "Invalid version: \"${1}\"!"
     	exit 1
 	else
-		cd "$LOGTALKHOME/.."
+		cd "$prefix"
 		rm logtalk
 		ln -sf ${1} logtalk
 		exit 0
@@ -91,10 +94,14 @@ do
 done
 
 
-switch_version ${1}
-error=${?}
-if [ 0 != ${error} ]; then
-    echo "An error occurred when activating version \"${version}\"!"
-    exit 1
+if [ "${1}" == "" ]; then
+	usage_help
+else
+	switch_version ${1}
+	error=${?}
+	if [ 0 != ${error} ]; then
+		echo "An error occurred when activating version \"${version}\"!"
+		exit 1
+	fi
+	exit 0
 fi
-exit 0

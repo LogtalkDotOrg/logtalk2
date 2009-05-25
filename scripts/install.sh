@@ -55,11 +55,11 @@ mkdir -p $prefix/bin
 cd $prefix/bin
 
 ln -sf ../share/logtalk/scripts/cplgtdirs.sh cplgtdirs
+ln -sf ../share/logtalk/scripts/logtalk_select.sh logtalk_select
 ln -sf ../share/logtalk/xml/lgt2pdf.sh lgt2pdf
 ln -sf ../share/logtalk/xml/lgt2html.sh lgt2html
 ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
 ln -sf ../share/logtalk/xml/lgt2txt.sh lgt2txt
-ln -sf ../share/logtalk/xml/logtalk_select.sh logtalk_select
 
 echo "Links to the \"cplgtdirs\", \"lgt2pdf\", \"lgt2html\", \"lgt2xml\", and"
 echo "\"lgt2txt\" scripts have been created on \"$prefix/bin\";"

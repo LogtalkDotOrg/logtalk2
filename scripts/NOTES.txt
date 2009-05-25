@@ -40,7 +40,7 @@ uninstall.sh
 
 logtalk_select.sh
 	experimental shell script for switching between installed Logtalk for
-	POSIX operating-systems; works with version 2.37.0 or later; doesn't
+	POSIX operating-systems; works with version 2.37.1 or later; doesn't
 	change the Logtalk user folder
 
 debian
