@@ -52,6 +52,7 @@ ln -sf ../share/logtalk/xml/lgt2pdf.sh lgt2pdf
 ln -sf ../share/logtalk/xml/lgt2html.sh lgt2html
 ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
 ln -sf ../share/logtalk/xml/lgt2txt.sh lgt2txt
+ln -sf ../share/logtalk/xml/logtalk_select.sh logtalk_select
 
 %clean
 cd /usr/local/share
@@ -68,6 +69,7 @@ rm -f lgt2html
 rm -f lgt2pdf
 rm -f lgt2xml
 rm -f lgt2txt
+rm -f logtalk_select
 rm -f plclgt
 rm -f qplgt
 rm -f quintuslgt
@@ -107,6 +109,7 @@ rm -f yaplgt
 /usr/local/bin/lgt2html
 /usr/local/bin/lgt2xml
 /usr/local/bin/lgt2txt
+/usr/local/bin/logtalk_select
 /usr/local/bin/bplgt
 /usr/local/bin/ciaolgt
 /usr/local/bin/cxlgt
