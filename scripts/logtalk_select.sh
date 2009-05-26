@@ -11,9 +11,6 @@
 ## ================================================================
 
 
-prefix=`dirname "$LOGTALKHOME"`
-
-
 print_version() {
 	echo "`basename $0` 0.2"
 	exit 1
@@ -128,6 +125,8 @@ elif ! [ -d "$LOGTALKHOME" ]; then
 	exit 1
 fi
 export LOGTALKHOME
+
+prefix=`dirname "$LOGTALKHOME"`
 
 
 if [ "$1" == "" ]; then
