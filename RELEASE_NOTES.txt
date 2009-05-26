@@ -56,7 +56,7 @@ RELEASE NOTES
     some termination issues with the length/2 predicate on buggy input.
 
     Added an experimental "logtalk_select.sh" POSIX shell script for switching
-    between installed Logtalk versions.
+    between installed Logtalk stable versions.
 
     Added a POSIX integration script, "xsb64lgt", for using Logtalk with the 
     single-threaded, 64 bits version of XSB.

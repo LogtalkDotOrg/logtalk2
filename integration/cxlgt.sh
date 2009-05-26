@@ -36,6 +36,7 @@ if ! [ "$LOGTALKHOME" ]; then
 		exit 1
 	fi
 	echo
+	export LOGTALKHOME=$LOGTALKHOME
 elif ! [ -d "$LOGTALKHOME" ]; then
 	echo "The environment variable LOGTALKHOME points to a non-existing directory!"
 	echo "Its current value is: $LOGTALKHOME"
@@ -43,7 +44,6 @@ elif ! [ -d "$LOGTALKHOME" ]; then
 	echo
 	exit 1
 fi
-export LOGTALKHOME
 
 if ! [ "$LOGTALKUSER" ]; then
 	echo "The environment variable LOGTALKUSER should be defined first, pointing"
