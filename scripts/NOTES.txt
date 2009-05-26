@@ -41,7 +41,8 @@ uninstall.sh
 logtalk_select.sh
 	experimental shell script for switching between installed Logtalk for
 	POSIX operating-systems; works with version 2.37.1 or later; doesn't
-	change the Logtalk user folder
+	change the Logtalk user folder; this script is loosely based on the
+	python_select script
 
 debian
 	directory containing support files for building a Debian package

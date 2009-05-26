@@ -16,7 +16,7 @@ On POSIX systems, the Logtalk installers make the following integration
 scripts available from the command-line (you may need to adjust your 
 system path):
 
-* B-Prolog (version 7.1 or later):         bplgt      (first run must use sudo)
+* B-Prolog (version 7.1 or later):         bplgt
 * Ciao (version 1.10):                     ciaolgt    (first run must use sudo)
 * CxProlog (version 0.97.1 or later):      cxlgt
 * ECLiPSe (versions 5.10, 6.0):            eclipselgt
