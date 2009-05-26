@@ -12,20 +12,24 @@
 
 
 print_version() {
-	echo "`basename $0` 0.2"
+	echo "`basename $0` 0.3"
 	exit 1
 }
 
 
 list_versions() {
     echo -n "Available versions: "
-	for path in $(ls -d "$prefix"/lgt*); do
-		file=`basename $path`
-		if [ $file \> "lgt2351" ]; then
-			echo -n "$file "
-		fi
-	done
-	echo
+	if [ `(ls -d "$prefix"/lgt* | wc -l) 2> /dev/null` -gt 0 ]; then
+		for path in $(ls -d "$prefix"/lgt*); do
+			file=`basename $path`
+			if [ $file \> "lgt2351" ]; then
+				echo -n "$file "
+			fi
+		done
+		echo
+	else
+		echo "none"
+	fi
 	exit 1
 }
 
@@ -59,13 +63,15 @@ usage_help() {
 
 
 valid_version() {
-    for path in $(ls -d "$prefix"/lgt*); do
-		version=`basename $path`
-        if [ $1 == $version -a $1 \> "lgt2351" ]; then
-            return 0
-        fi
-    done
-    return 1
+	if [ `(ls -d "$prefix"/lgt* | wc -l) 2> /dev/null` -gt 0 ]; then
+	    for path in $(ls -d "$prefix"/lgt*); do
+			version=`basename $path`
+	        if [ $1 == $version -a $1 \> "lgt2351" ]; then
+	            return 0
+	        fi
+	    done
+	fi
+	return 1
 }
 
 
@@ -105,6 +111,7 @@ if ! [ "$LOGTALKHOME" ]; then
 		exit 1
 	fi
 	echo
+	export LOGTALKHOME=$LOGTALKHOME
 elif ! [ -d "$LOGTALKHOME" ]; then
 	echo "The environment variable LOGTALKHOME points to a non-existing directory!"
 	echo "Its current value is: $LOGTALKHOME"
@@ -112,7 +119,6 @@ elif ! [ -d "$LOGTALKHOME" ]; then
 	echo
 	exit 1
 fi
-export LOGTALKHOME=$LOGTALKHOME
 
 
 prefix=`dirname "$LOGTALKHOME"`
