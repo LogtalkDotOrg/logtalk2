@@ -98,7 +98,7 @@ do
 done
 
 
-if [ $1 == "" ]; then
+if [ "$1" == "" ]; then
 	usage_help
 else
 	switch_version $1
