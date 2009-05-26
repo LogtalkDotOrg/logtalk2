@@ -83,18 +83,6 @@ switch_version() {
 }
 
 
-while getopts "vlsh" Option
-do
-	case $Option in
-		v) print_version;;
-		l) list_versions;;
-		s) show_selected;;
-		h) usage_help;;
-		*) usage_help;;
-	esac
-done
-
-
 if ! [ "$LOGTALKHOME" ]; then
 	echo "The environment variable LOGTALKHOME should be defined first, pointing"
 	echo "to your Logtalk installation directory!"
@@ -124,9 +112,22 @@ elif ! [ -d "$LOGTALKHOME" ]; then
 	echo
 	exit 1
 fi
-export LOGTALKHOME
+export LOGTALKHOME=$LOGTALKHOME
+
 
 prefix=`dirname "$LOGTALKHOME"`
+
+
+while getopts "vlsh" Option
+do
+	case $Option in
+		v) print_version;;
+		l) list_versions;;
+		s) show_selected;;
+		h) usage_help;;
+		*) usage_help;;
+	esac
+done
 
 
 if [ "$1" == "" ]; then
