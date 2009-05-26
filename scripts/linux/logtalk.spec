@@ -49,7 +49,7 @@ ln -sf ../share/logtalk/integration/xsbmtlgt.sh xsbmtlgt
 ln -sf ../share/logtalk/integration/xsbmt64lgt.sh xsbmt64lgt
 ln -sf ../share/logtalk/integration/yaplgt.sh yaplgt
 ln -sf ../share/logtalk/scripts/cplgtdirs.sh cplgtdirs
-ln -sf ../share/logtalk/scripts/logtalk_select.sh logtalk_select
+cp -f ../share/logtalk/scripts/logtalk_select.sh logtalk_select
 ln -sf ../share/logtalk/xml/lgt2pdf.sh lgt2pdf
 ln -sf ../share/logtalk/xml/lgt2html.sh lgt2html
 ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
