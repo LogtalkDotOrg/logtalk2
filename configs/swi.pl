@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %
-%  last updated: May 17, 2009
+%  last updated: May 28, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -559,6 +559,7 @@
 	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(hash(Head), hash(THead)) :-
 	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
+'$lgt_rewrite_and_copy_pl_directive'(multifile(Module:Functor/Arity), multifile(Module:Functor/Arity)).
 
 
 '$lgt_rewrite_and_copy_pl_directive_pis'(PIs, _) :-

@@ -6495,7 +6495,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	'$lgt_tr_discontiguous_directive'(Preds2).
 
 
-'$lgt_tr_directive'(metapredicate, Preds, File, Lines, Input, Output) :-	% depracated
+'$lgt_tr_directive'(metapredicate, Preds, File, Lines, Input, Output) :-	% depracated directive name
 	'$lgt_tr_directive'(meta_predicate, Preds, File, Lines, Input, Output).
 
 '$lgt_tr_directive'(meta_predicate, Preds, _, _, _, _) :-
@@ -7526,6 +7526,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 '$lgt_tr_head'(Head, _, _, File, Lines, Input) :-
 	'$lgt_pl_built_in'(Head),
+	\+ functor(Head, ':', 2),							% workaround for the nasty habit of using multifile module predicates
 	'$lgt_compiler_flag'(plredef, warning),
 	\+ '$lgt_compiler_flag'(report, off),
 	\+ '$lgt_pp_redefined_built_in_'(Head, _, _),		% not already reported?
@@ -7569,6 +7570,35 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	'$lgt_pp_entity'(Type, Entity, _, _, _),
 	'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input),
 	fail.
+
+
+% translate the head of a clause of a module predicate (which we assume declared multifile)
+
+'$lgt_tr_head'(':'(Module, Head), ':'(Module, Head), _, File, Lines, Input) :-
+	'$lgt_pl_built_in'(':'(_, _)),
+	!,
+	(	var(Module) ->
+		throw(instantiation_error)
+	;	var(Head) ->
+		throw(instantiation_error)
+	;	\+ atom(Module) ->
+		throw(type_error(atom, Module))
+	;	\+ callable(Head) ->
+		throw(type_error(callable, Head))
+	;	functor(Head, Functor, Arity),
+		(	'$lgt_pp_directive_'(multifile(':'(Module,Functor/Arity))) ->
+			true
+		;	(	'$lgt_compiler_flag'(report, off) ->
+				true
+			;	'$lgt_report_warning_in_new_line',
+				'$lgt_inc_compile_warnings_counter',
+				write('%         WARNING!  Missing multifile directive for the predicate: '),
+				writeq(':'(Module,Functor/Arity)), nl,
+				'$lgt_pp_entity'(Type, Entity, _, _, _),
+				'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
+			)
+		)
+	).
 
 
 % translate the head of a clause of a user defined predicate
