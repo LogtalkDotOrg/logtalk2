@@ -75,6 +75,9 @@ RELEASE NOTES
     Logtalk in the compilation and execution of meta-predicates (as described
     on the "Secure Implementation of Meta-predicates" PADL'09 paper).
 
+    Extended the "constraints" example for SWI-Prolog and YAP illustrating the
+    definition of custom constraint propagators within objects.
+
     Added instructions on how to enable a source code browser when editing
     Logtalk source files with the Vim text editor (using the Taglist Vim
     plugin and Exuberant ctags).
