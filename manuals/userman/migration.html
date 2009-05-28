@@ -268,10 +268,44 @@ Logtalk supports the declaration of predicate aliases in <code>use_module/2</cod
 With this directive, calls to the <code>ins/2</code> predicate alias will be automatically compiled by Logtalk to calls to the <code>::/2</code> predicate in the <code>ic</code> module.
 </p>
 
+
+<h2 id="migration_module">Compiling Prolog module multifile predicates</h2>
+
+<p>
+Some Prolog module libraries, e.g. constraint packages, expect clauses for some library predicates to be defined in other modules. This is accomplished by declaring the library predicate <em>multifile</em> and by explicitly prefixing predicate clause heads with the library module identifier. For example:
+</p>
+<pre>
+:- object(...).
+
+    :- multifile(clpfd:run_propagator/2).
+
+    clpfd:run_propagator(..., ...) :-
+        ...
+
+:- end_object.
+</pre>
+<p>
+Logtalk supports the compilation of such clauses within objects and categories. While the clause head is compiled as-is, the clause body is compiled in the same way as a regular object or category predicate, thus allowing calls to local object or category predicates. The Prolog <code>multifile/1</code> directive can be used within objects and categories provided that the back-end Prolog config file supports it by defining a suitable clause for the <code>'$lgt_rewrite_and_copy_pl_directive'/2</code> user-defined predicate. Alternatively, the necessary <code>multifile/1</code> directive can be written in the same source file but outside any Logtalk entity:
+</p>
+<pre>
+:- multifile(clpfd:run_propagator/2).
+
+:- object(...).
+
+    clpfd:run_propagator(..., ...) :-
+        ...
+
+:- end_object.
+</pre>
+<p>
+Both solutions are equivalent. The Logtalk compiler will print a warning if the <code>multifile/1</code> directive is missing.
+</p>
+
+
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: April 23, 2009</span>
+		<span>Last updated on: May 28, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="programming.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>
