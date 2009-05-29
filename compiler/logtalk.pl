@@ -6607,6 +6607,10 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 
 
+% '$lgt_tr_synchronized_directive'(+list)
+%
+% auxiliary predicate for translating synchronized/1 directives
+
 '$lgt_tr_synchronized_directive'(Preds) :-
 	'$lgt_gen_pred_mutex'(Mutex),
 	'$lgt_tr_synchronized_directive'(Preds, Mutex).
@@ -6658,6 +6662,10 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 
 
+% '$lgt_tr_public_directive'(+list)
+%
+% auxiliary predicate for translating public/1 directives
+
 '$lgt_tr_public_directive'([]).
 
 '$lgt_tr_public_directive'([Pred| _]) :-
@@ -6689,6 +6697,10 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 
 
+% '$lgt_tr_protected_directive'(+list)
+%
+% auxiliary predicate for translating protected/1 directives
+
 '$lgt_tr_protected_directive'([]).
 
 '$lgt_tr_protected_directive'([Pred| _]) :-
@@ -6719,6 +6731,10 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	throw(type_error(predicate_indicator, Pred)).
 
 
+
+% '$lgt_tr_private_directive'(+list)
+%
+% auxiliary predicate for translating private/1 directives
 
 '$lgt_tr_private_directive'([]).
 
@@ -6760,11 +6776,54 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 
 
+% '$lgt_tr_dynamic_directive'(+list)
+%
+% auxiliary predicate for translating dynamic/1 directives
+
 '$lgt_tr_dynamic_directive'([]).
 
 '$lgt_tr_dynamic_directive'([Pred| _]) :-
 	var(Pred),
 	throw(instantiation_error).
+
+'$lgt_tr_dynamic_directive'([Entity::_| _]) :-
+	var(Entity),
+	throw(instantiation_error).
+
+'$lgt_tr_dynamic_directive'([':'(Module, _)| _]) :-
+	var(Module),
+	throw(instantiation_error).
+
+'$lgt_tr_dynamic_directive'([_::Pred| _]) :-
+	var(Pred),
+	throw(instantiation_error).
+
+'$lgt_tr_dynamic_directive'([':'(_, Pred)| _]) :-
+	var(Pred),
+	throw(instantiation_error).
+
+'$lgt_tr_dynamic_directive'([Entity::_| _]) :-
+	\+ callable(Entity),
+	throw(type_error(entity_identifier, Entity)).
+
+'$lgt_tr_dynamic_directive'([':'(Module, _)| _]) :-
+	\+ atom(Module),
+	throw(type_error(atom, Module)).
+
+'$lgt_tr_dynamic_directive'([Entity::Pred| Preds]) :-
+	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
+	!,
+	'$lgt_construct_entity_prefix'(Entity, Prefix),
+	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
+	TArity is Arity + 1,
+	assertz('$lgt_pp_directive_'(dynamic(TFunctor/TArity))),
+	'$lgt_tr_multifile_directive'(Preds).
+
+'$lgt_tr_dynamic_directive'([':'(Module, Pred)| Preds]) :-
+	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
+	!,
+	assertz('$lgt_pp_directive_'(dynamic(':'(Module, Functor/Arity)))),
+	'$lgt_tr_multifile_directive'(Preds).
 
 '$lgt_tr_dynamic_directive'([Pred| Preds]) :-
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
@@ -6795,6 +6854,10 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 
 
+% '$lgt_tr_discontiguous_directive'(+list)
+%
+% auxiliary predicate for translating discontiguous/1 directives
+
 '$lgt_tr_discontiguous_directive'([]).
 
 '$lgt_tr_discontiguous_directive'([Pred| _]) :-
@@ -6823,6 +6886,10 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 
 
+% '$lgt_tr_meta_predicate_directive'(+list)
+%
+% auxiliary predicate for translating meta_predicate/1 directives
+
 '$lgt_tr_meta_predicate_directive'([]).
 
 '$lgt_tr_meta_predicate_directive'([Pred| _]) :-
@@ -6844,6 +6911,10 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 
 
+% '$lgt_tr_multifile_directive'(+list)
+%
+% auxiliary predicate for translating multifile/1 directives
+
 '$lgt_tr_multifile_directive'([]).
 
 '$lgt_tr_multifile_directive'([Pred| _]) :-
@@ -6862,6 +6933,10 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	var(Pred),
 	throw(instantiation_error).
 
+'$lgt_tr_multifile_directive'([':'(_, Pred)| _]) :-
+	var(Pred),
+	throw(instantiation_error).
+
 '$lgt_tr_multifile_directive'([Entity::_| _]) :-
 	\+ callable(Entity),
 	throw(type_error(entity_identifier, Entity)).
@@ -6876,21 +6951,13 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	'$lgt_construct_entity_prefix'(Entity, Prefix),
 	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
 	TArity is Arity + 1,
-	(	'$lgt_pp_multifile_'(TFunctor, TArity) ->
-		true
-	;	assertz('$lgt_pp_multifile_'(TFunctor, TArity)),
-		assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity)))
-	),
+	assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity))),
 	'$lgt_tr_multifile_directive'(Preds).
 
 '$lgt_tr_multifile_directive'([':'(Module, Pred)| Preds]) :-
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
 	!,
-	(	'$lgt_pp_multifile_'(':'(Module,Functor), Arity) ->
-		true
-	;	assertz('$lgt_pp_multifile_'(':'(Module,Functor), Arity)),
-		assertz('$lgt_pp_directive_'(multifile(':'(Module, Pred))))
-	),
+	assertz('$lgt_pp_directive_'(multifile(':'(Module, Functor/Arity)))),
 	'$lgt_tr_multifile_directive'(Preds).
 
 '$lgt_tr_multifile_directive'([Pred| Preds]) :-
@@ -6899,11 +6966,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	'$lgt_pp_entity'(_, _, Prefix, _, _),
 	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
 	TArity is Arity + 1,
-	(	'$lgt_pp_multifile_'(TFunctor, TArity) ->
-		true
-	;	assertz('$lgt_pp_multifile_'(TFunctor, TArity)),
-		assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity)))
-	),
+	assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity))),
 	'$lgt_tr_multifile_directive'(Preds).
 
 '$lgt_tr_multifile_directive'([Pred| _]) :-
@@ -7665,14 +7728,14 @@ current_logtalk_flag(version, version(2, 37, 1)).
 		'$lgt_comp_ctx_head'(Ctx, TFunctor/TArity),
 		'$lgt_append'(HeadArgs, [ExCtx], HeadTArgs),
 		THead =.. [TFunctor| HeadTArgs],
-		(	'$lgt_pp_multifile_'(TFunctor, TArity) ->
+		(	'$lgt_pp_directive_'(multifile(TFunctor/TArity)) ->
 			true
 		;	(	'$lgt_compiler_flag'(report, off) ->
 				true
 			;	'$lgt_report_warning_in_new_line',
 				'$lgt_inc_compile_warnings_counter',
 				write('%         WARNING!  Missing multifile directive for the predicate: '),
-				writeq(Entity::Functor/Arity), nl,
+				writeq(Other::Functor/Arity), nl,
 				'$lgt_pp_entity'(Type, Entity, _, _, _),
 				'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
 			)
@@ -7694,7 +7757,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	;	\+ callable(Head) ->
 		throw(type_error(callable, Head))
 	;	functor(Head, Functor, Arity),
-		(	'$lgt_pp_multifile_'(':'(Module,Functor), Arity) ->
+		(	'$lgt_pp_directive_'(multifile(':'(Module, Functor/Arity))) ->
 			true
 		;	(	'$lgt_compiler_flag'(report, off) ->
 				true
