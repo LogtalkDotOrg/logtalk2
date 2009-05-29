@@ -559,6 +559,15 @@
 	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(hash(Head), hash(THead)) :-
 	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
+'$lgt_rewrite_and_copy_pl_directive'(thread_initialization(Goal), thread_initialization(CGoal)) :-
+	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
+	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, []),		% MetaVars = [] as we're compiling a local call
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
+	(	'$lgt_compiler_flag'(debug, on) ->
+		CGoal = DGoal
+	;	CGoal = TGoal
+	).
 
 
 '$lgt_rewrite_and_copy_pl_directive_pis'(PIs, _) :-
