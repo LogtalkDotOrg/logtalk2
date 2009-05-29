@@ -86,7 +86,7 @@ X = 3
 yes
 </pre>
 <p>
-The Logtalk compiler will print a warning if the <code>multifile/1</code> directive is missing.
+The Logtalk compiler will print a warning if the <code>multifile/1</code> directive is missing. These multifile predicates may also be declared dynamic using the same <code>Entity::Functor/Arity</code> notation.
 </p>
 <p>
 An alternative solution is to simply keep the clauses for the multifile predicates as plain Prolog code and define, if needed, a parametric object to encapsulate all predicates working with the multifile predicate clauses. For example, assume the following <code>multifile/1</code> directive:
@@ -106,7 +106,7 @@ We can define a parametric object with <code>city/4</code> as its identifier:
 :- end_object.
 </pre>
 <p>
-See the section on <a title="Consult user manual" href="objects.html#objects_parametric">parametric objects</a> for more details.
+This solution is preferred when the multifile predicates are used to represent large tables of data. See the section on <a title="Consult user manual" href="objects.html#objects_parametric">parametric objects</a> for more details.
 </p>
 
 <h2 id="migration_converting">Converting Prolog modules into objects</h2>
@@ -266,7 +266,7 @@ Logtalk supports the compilation of such clauses within objects and categories. 
 :- end_object.
 </pre>
 <p>
-The Logtalk compiler will print a warning if the <code>multifile/1</code> directive is missing.
+The Logtalk compiler will print a warning if the <code>multifile/1</code> directive is missing. These multifile predicates may also be declared dynamic using the same <code>Module:Functor/Arity</code> notation.
 </p>
 
 

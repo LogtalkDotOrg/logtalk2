@@ -545,6 +545,17 @@ forall(Generate, Test) :-
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)
 
 '$lgt_rewrite_and_recompile_pl_directive'(module(Module, Exports, _), module(Module, Exports)).
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Exports)) :-
+	nonvar(File),
+	(	File = library(Module) ->
+		true
+	;	atom(File) ->
+		File = Module
+	),
+	setof(				% this only succeedds for already loaded modules
+		Functor/Arity,
+		Predicate^(predicate_property(Module:Predicate, exported), functor(Predicate, Functor, Arity)),
+		Exports).
 
 
 

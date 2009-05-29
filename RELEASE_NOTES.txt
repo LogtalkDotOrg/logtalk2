@@ -19,7 +19,7 @@ RELEASE NOTES
     predicates. This new feature is primarily intended to facilitate migration
     of Prolog code to Logtalk and should be used with caution as multifile
     support is spotty among back-end Prolog compilers (easily leading to
-    portability problems).
+    portability problems). Multifile predicates can be both static or dynamic.
 
     Added support for compiling clauses for module multifile predicates within
     objects and categories in order to provide better integration with CLP(FD)
