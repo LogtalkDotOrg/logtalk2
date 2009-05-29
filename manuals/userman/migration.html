@@ -244,14 +244,9 @@ With this directive, calls to the <code>ins/2</code> predicate alias will be aut
 Some Prolog module libraries, e.g. constraint packages, expect clauses for some library predicates to be defined in other modules. This is accomplished by declaring the library predicate <em>multifile</em> and by explicitly prefixing predicate clause heads with the library module identifier. For example:
 </p>
 <pre>
-:- object(...).
-
-    :- multifile(clpfd:run_propagator/2).
-
-    clpfd:run_propagator(..., ...) :-
-        ...
-
-:- end_object.
+:- multifile(clpfd:run_propagator/2).
+clpfd:run_propagator(..., ...) :-
+    ...
 </pre>
 <p>
 Logtalk supports the compilation of such clauses within objects and categories. While the clause head is compiled as-is, the clause body is compiled in the same way as a regular object or category predicate, thus allowing calls to local object or category predicates. For example:
@@ -261,7 +256,7 @@ Logtalk supports the compilation of such clauses within objects and categories. 
 
 	:- multifile(clpfd:run_propagator/2).
     clpfd:run_propagator(..., ...) :-
-        ...
+        ...    % calls to local object predicates
 
 :- end_object.
 </pre>
