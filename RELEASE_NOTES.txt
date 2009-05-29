@@ -15,6 +15,12 @@ RELEASE NOTES
 
 2.37.1 - June 1, 2009
 
+    Added support for declaring and defining object and category multifile
+    predicates. This new feature is primarily intended to facilitate migration
+    of Prolog code to Logtalk and should be used with caution as multifile
+    support is spotty among back-end Prolog compilers (easily leading to
+    portability problems).
+
     Added support for compiling clauses for module multifile predicates within
     objects and categories in order to provide better integration with CLP(FD)
     and similar constraint packages.

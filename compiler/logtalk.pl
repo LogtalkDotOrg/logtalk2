@@ -204,6 +204,7 @@
 :- dynamic('$lgt_pp_meta_predicate_'/1).		% '$lgt_pp_meta_predicate_'(Pred)
 :- dynamic('$lgt_pp_alias_'/3).					% '$lgt_pp_alias_'(Entity, Pred, Alias)
 :- dynamic('$lgt_pp_non_terminal_'/3).			% '$lgt_pp_non_terminal_'(Functor, Args, Arity)
+:- dynamic('$lgt_pp_multifile_'/2).				% '$lgt_pp_multifile_'(Functor, Arity)
 
 :- dynamic('$lgt_pp_object_'/11).				% '$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Type)
 :- dynamic('$lgt_pp_category_'/6).				% '$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Type)
@@ -236,7 +237,7 @@
 :- dynamic('$lgt_pp_redefined_built_in_'/3).	% '$lgt_pp_redefined_built_in_'(Head, ExCtx, THead)
 
 :- dynamic('$lgt_pp_directive_'/1).				% '$lgt_pp_directive_'(Dir)
-:- dynamic('$lgt_pp_ppclause_'/1).				% '$lgt_pp_ppclause_'(Clause)
+:- dynamic('$lgt_pp_pclause_'/1).				% '$lgt_pp_pclause_'(Clause)
 :- dynamic('$lgt_pp_rclause_'/1).				% '$lgt_pp_rclause_'(Clause)
 :- dynamic('$lgt_pp_eclause_'/1).				% '$lgt_pp_eclause_'(Clause)
 :- dynamic('$lgt_pp_feclause_'/1).				% '$lgt_pp_feclause_'(Clause)
@@ -5571,7 +5572,8 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	retractall('$lgt_pp_file_rclause_'(_)),
 	retractall('$lgt_pp_cc_if_found_'(_)),
 	retractall('$lgt_pp_cc_skipping_'),
-	retractall('$lgt_pp_cc_mode_'(_)).
+	retractall('$lgt_pp_cc_mode_'(_)),
+	retractall('$lgt_pp_multifile_'(_, _)).
 
 
 
@@ -5617,7 +5619,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	retractall('$lgt_pp_ddef_'(_)),
 	retractall('$lgt_pp_fddef_'(_)),
 	retractall('$lgt_pp_super_'(_)),
-	retractall('$lgt_pp_ppclause_'(_)),
+	retractall('$lgt_pp_pclause_'(_)),
 	retractall('$lgt_pp_rclause_'(_)),
 	retractall('$lgt_pp_eclause_'(_)),
 	retractall('$lgt_pp_feclause_'(_)),
@@ -6520,6 +6522,11 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	assertz('$lgt_pp_mode_'(Mode, Solutions)).
 
 
+'$lgt_tr_directive'((multifile), Preds, _, _, _, _) :-
+	'$lgt_flatten_list'(Preds, Preds2),
+	'$lgt_tr_multifile_directive'(Preds2).
+
+
 '$lgt_tr_directive'(alias, [Entity, PI1, PI2], _, _, _, _) :-
 	(var(Entity); var(PI1); var(PI2)),
 	throw(instantiation_error).
@@ -6834,6 +6841,73 @@ current_logtalk_flag(version, version(2, 37, 1)).
 '$lgt_tr_meta_predicate_directive'([Pred| Preds]) :-
 	assertz('$lgt_pp_meta_predicate_'(Pred)),
 	'$lgt_tr_meta_predicate_directive'(Preds).
+
+
+
+'$lgt_tr_multifile_directive'([]).
+
+'$lgt_tr_multifile_directive'([Pred| _]) :-
+	var(Pred),
+	throw(instantiation_error).
+
+'$lgt_tr_multifile_directive'([Entity::_| _]) :-
+	var(Entity),
+	throw(instantiation_error).
+
+'$lgt_tr_multifile_directive'([':'(Module, _)| _]) :-
+	var(Module),
+	throw(instantiation_error).
+
+'$lgt_tr_multifile_directive'([_::Pred| _]) :-
+	var(Pred),
+	throw(instantiation_error).
+
+'$lgt_tr_multifile_directive'([Entity::_| _]) :-
+	\+ callable(Entity),
+	throw(type_error(entity_identifier, Entity)).
+
+'$lgt_tr_multifile_directive'([':'(Module, _)| _]) :-
+	\+ atom(Module),
+	throw(type_error(atom, Module)).
+
+'$lgt_tr_multifile_directive'([Entity::Pred| Preds]) :-
+	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
+	!,
+	'$lgt_construct_entity_prefix'(Entity, Prefix),
+	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
+	TArity is Arity + 1,
+	(	'$lgt_pp_multifile_'(TFunctor, TArity) ->
+		true
+	;	assertz('$lgt_pp_multifile_'(TFunctor, TArity)),
+		assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity)))
+	),
+	'$lgt_tr_multifile_directive'(Preds).
+
+'$lgt_tr_multifile_directive'([':'(Module, Pred)| Preds]) :-
+	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
+	!,
+	(	'$lgt_pp_multifile_'(':'(Module,Functor), Arity) ->
+		true
+	;	assertz('$lgt_pp_multifile_'(':'(Module,Functor), Arity)),
+		assertz('$lgt_pp_directive_'(multifile(':'(Module, Pred))))
+	),
+	'$lgt_tr_multifile_directive'(Preds).
+
+'$lgt_tr_multifile_directive'([Pred| Preds]) :-
+	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
+	!,
+	'$lgt_pp_entity'(_, _, Prefix, _, _),
+	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
+	TArity is Arity + 1,
+	(	'$lgt_pp_multifile_'(TFunctor, TArity) ->
+		true
+	;	assertz('$lgt_pp_multifile_'(TFunctor, TArity)),
+		assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity)))
+	),
+	'$lgt_tr_multifile_directive'(Preds).
+
+'$lgt_tr_multifile_directive'([Pred| _]) :-
+	throw(type_error(predicate_indicator, Pred)).
 
 
 
@@ -7314,7 +7388,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 '$lgt_tr_clause'(Clause, _, _, _) :-
 	\+ '$lgt_pp_entity'(_, _, _, _, _),			% all clauses occuring before an opening entity directive
 	!,
-	assertz('$lgt_pp_ppclause_'(Clause)).		% are copied unchanged to the generated Prolog file
+	assertz('$lgt_pp_pclause_'(Clause)).		% are copied unchanged to the generated Prolog file
 
 '$lgt_tr_clause'(Clause, File, Lines, Input) :-
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, _),
@@ -7422,9 +7496,6 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 % redefinition of Logtalk message sending and remaining control constructs
 
-'$lgt_tr_head'(_::_, _, _, _, _, _) :-
-	throw(permission_error(modify, control_construct, (::)/2)).
-
 '$lgt_tr_head'(::_, _, _, _, _, _) :-
 	throw(permission_error(modify, control_construct, (::)/1)).
 
@@ -7509,6 +7580,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 '$lgt_tr_head'(Head, _, _, File, Lines, Input) :-
 	'$lgt_lgt_built_in'(Head),
+	\+ functor(Head, '::', 2),							% workaround for the nasty habit of using multifile entity predicates
 	'$lgt_compiler_flag'(lgtredef, warning),
 	\+ '$lgt_compiler_flag'(report, off),
 	\+ '$lgt_pp_redefined_built_in_'(Head, _, _),		% not already reported?
@@ -7572,6 +7644,42 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	fail.
 
 
+% translate the head of a clause of another entity predicate (which we assume declared multifile)
+
+'$lgt_tr_head'(Other::Head, THead, _, File, Lines, Input) :-
+	!,
+	(	var(Other) ->
+		throw(instantiation_error)
+	;	var(Head) ->
+		throw(instantiation_error)
+	;	\+ callable(Other) ->
+		throw(type_error(entity_identifier, Other))
+	;	\+ callable(Head) ->
+		throw(type_error(callable, Head))
+	;	functor(Head, Functor, Arity),
+		'$lgt_construct_entity_prefix'(Other, Prefix),
+		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
+		TArity is Arity + 1,
+		Head =.. [Functor| HeadArgs],
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+		'$lgt_comp_ctx_head'(Ctx, TFunctor/TArity),
+		'$lgt_append'(HeadArgs, [ExCtx], HeadTArgs),
+		THead =.. [TFunctor| HeadTArgs],
+		(	'$lgt_pp_multifile_'(TFunctor, TArity) ->
+			true
+		;	(	'$lgt_compiler_flag'(report, off) ->
+				true
+			;	'$lgt_report_warning_in_new_line',
+				'$lgt_inc_compile_warnings_counter',
+				write('%         WARNING!  Missing multifile directive for the predicate: '),
+				writeq(Entity::Functor/Arity), nl,
+				'$lgt_pp_entity'(Type, Entity, _, _, _),
+				'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
+			)
+		)
+	).
+
+
 % translate the head of a clause of a module predicate (which we assume declared multifile)
 
 '$lgt_tr_head'(':'(Module, Head), ':'(Module, Head), _, File, Lines, Input) :-
@@ -7586,7 +7694,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	;	\+ callable(Head) ->
 		throw(type_error(callable, Head))
 	;	functor(Head, Functor, Arity),
-		(	'$lgt_pp_directive_'(multifile(':'(Module,Functor/Arity))) ->
+		(	'$lgt_pp_multifile_'(':'(Module,Functor), Arity) ->
 			true
 		;	(	'$lgt_compiler_flag'(report, off) ->
 				true
@@ -11724,7 +11832,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 % writes any Prolog clauses that appear before an entity opening directive
 
 '$lgt_write_prolog_clauses'(Stream) :-
-	'$lgt_pp_ppclause_'(Clause),
+	'$lgt_pp_pclause_'(Clause),
 		write_canonical(Stream, Clause),
 		write(Stream, '.'),
 		nl(Stream),
@@ -12397,6 +12505,8 @@ current_logtalk_flag(version, version(2, 37, 1)).
 '$lgt_lgt_predicate_directive'(info, 2).
 
 '$lgt_lgt_predicate_directive'(alias, 3).
+
+'$lgt_lgt_predicate_directive'((multifile), 1).
 
 
 

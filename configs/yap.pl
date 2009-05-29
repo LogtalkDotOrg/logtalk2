@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: May 28, 2009
+%  last updated: May 20, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -622,8 +622,6 @@
 
 '$lgt_rewrite_and_copy_pl_directive'(thread_local(PIs), thread_local(CPIs)) :-
 	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-
-'$lgt_rewrite_and_copy_pl_directive'(multifile(Module:Functor/Arity), multifile(Module:Functor/Arity)).
 
 
 '$lgt_rewrite_and_copy_pl_directive_pis'(PIs, _) :-

@@ -45,81 +45,49 @@ Encapsulating Prolog code using Logtalk objects is easy. First, for each source 
 <h3 id="migration_multifile">Prolog multifile predicates</h3>
 
 <p>
-Prolog multifile predicates are used when clauses for the same predicate are spread among several source files. When encapsulating plain Prolog code that uses multifile predicates, is often the case that the clauses of the multifile predicates get spread between different objects and categories. When calling such predicates, you often want to use not only local clauses but also clauses stored in ancestor objects or imported categories. However, these <em>inherited</em> clauses are overridden by the local ones. For ancestor objects, use the <em>super call</em> operator, <code>^^/1</code>, to get access to the overridden clauses. For imported categories, use the <em>message to self</em> operator, <code>::/1</code>, to get access to the overridden clauses. For example, assume a multifile predicate, <code>mp/2</code> with both local clauses and  clauses imported from a category. The solution is to add a local clause giving access to the imported clauses by using the <code>::/1</code> operator:
+Prolog <em>multifile</em> predicates are used when clauses for the same predicate are spread among several source files. When encapsulating plain Prolog code that uses multifile predicates, is often the case that the clauses of the multifile predicates get spread between different objects and categories. With the caveat that multifile support is only provided in some back-end Prolog compilers, conversion is straight-forward. In the main Logtalk object (or category) where the predicate is declared, add a <code>multifile/1</code> directive. In all other objects (or categories) defining clauses for the multifile predicate, add a <code>multifile/1</code> directive and predicate clauses using the format:
 </p>
 <pre>
-mp(..., ...).    % local clauses
-...
-mp(A, B) :-      % imported clauses
-    ::mp(A, B).
+:- multifile(Entity::Functor/Arity).
+
+Entity::Functor(...) :-
+    ...
 </pre>
 <p>
-By adding the <em>gateway</em> clause after or before the local clauses, you can choose if the local clauses should be used before or after the overridden clauses.
-</p>
-<p>
-A more complicated scenario is when you have several files containing clauses for a multifile predicate. For example, assume that a multifile predicate named <code>mp/2</code> is defined in two files. In this case, start by defining a protocol containing the declaration of the multifile predicate:
+For example:
 </p>
 <pre>
-:- protocol(ptc). 
+:- object(main).
 
-    :- public(mp/1). 
+	:- public(a/1).
+	:- multifile(a/1).
+	a(1).
 
-:- end_protocol. 
+:- end_object.
+
+
+:- object(other).
+
+	:- multifile(main::a/1).
+	main::a(2).
+	main::a(3).
+
+:- end_object.
 </pre>
 <p>
-Second, for each file, define a category containing the corresponding clauses for the <code>mp/2</code> predicate: 
+After compiling and loading the above objects, you can use queries such as:
 </p>
 <pre>
-:- category(ctg1, 
-    implements(ptc)). 
+| ?- main::a(X).
 
-    mp(1).    % clauses from the first file
-    mp(2). 
-
-:- end_category. 
-
-
-:- category(ctg2, 
-    implements(ptc)).
-
-    mp(3).    % clauses from the first file
-    mp(4). 
-
-:- end_category. 
+X = 1 ;
+X = 2 ;
+X = 3
+yes
 </pre>
 <p>
-Next, define an object importing all the categories and defining aliases to the imported predicates:
+The Logtalk compiler will print a warning if the <code>multifile/1</code> directive is missing.
 </p>
-<pre>
-:- object(obj, 
-    implements(ptc), 
-    imports(ctg1, ctg2)).
-
-    :- alias(ctg1, mp/1, ctg1_mp/1). 
-    :- alias(ctg2, mp/1, ctg2_mp/1). 
-
-    mp(X) :- 
-        ::ctg1_mp(X). 
-    mp(X) :- 
-        ::ctg2_mp(X). 
-
-:- end_ object. 
-</pre>
-<p>
-The predicate aliases above are needed to allow access to the overridded clauses of the <code>mp/1</code> predicate (by default, the clauses from  <code>ctg1</code> would override the clauses from the <code>ctg2</code> category as a consequence of the predicate lookup mechanism). 
-</p>
-<p>
-Compiling and loading the above Logtalk entities allows you to access all clauses of the former multifile predicate. For example: 
-</p>
-<pre>
-| ?- obj::mp(X).
-
-X = 1 ; 
-X = 2 ; 
-X = 3 ; 
-X = 4 
-yes 
-</pre>
 <p>
 An alternative solution is to simply keep the clauses for the multifile predicates as plain Prolog code and define, if needed, a parametric object to encapsulate all predicates working with the multifile predicate clauses. For example, assume the following <code>multifile/1</code> directive:
 </p>
@@ -154,9 +122,10 @@ Converting a Prolog module into an object is easy as long as the directives used
 	<li>Add a closing object directive, <a title="Consult reference manual" href="../refman/directives/end_object0.html"><code>end_object/0</code></a>, at the end of the module code.</li>
 	<li>Convert any <code>export/1</code> directives into <code>public/1</code> predicate directives.</li>
 	<li>Convert any <code>use_module/2</code> directives into Logtalk <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directives. Any <code>use_module/1</code> directives are also converted into Logtalk <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directives but you will need first to find out which predicates your module uses from the specified modules.</li>
-	<li>Convert any <code>meta_predicate/1</code> directives into Logtalk <a title="Consult reference manual" href="../refman/directives/meta_predicate1.html"><code>meta-predicate/1</code></a> directives by replacing the module meta-argument indicator, <code>:</code>, into the Logtalk meta-predicate indicator, <code>::</code>. Closures are represented using an integer denoting the number of additional arguments that will be appended to construct a goal. Arguments which are not meta-arguments are represented by the <code>*</code> character.</li>
+	<li>Convert any <code>meta_predicate/1</code> directives into Logtalk <a title="Consult reference manual" href="../refman/directives/meta_predicate1.html"><code>meta-predicate/1</code></a> directives by replacing the module meta-argument indicator, <code>:</code>, into the Logtalk meta-predicate indicator, <code>::</code>. Closures must be represented using an integer denoting the number of additional arguments that will be appended to construct a goal. Arguments which are not meta-arguments are represented by the <code>*</code> character.</li>
 	<li>Convert any explicit qualified calls to module predicates to messages by replacing the <code>:/2</code> operator with the <a title="Consult reference manual" href="../refman/control/to_object2.html"><code>::/2</code></a> message sending operator, assuming that the referenced modules are also being converted into objects. Calls in the pseudo-module <code>user</code> can simply be encapsulated using the <a title="Consult reference manual" href="../refman/control/external1.html"><code>{}/1</code></a> Logtalk control construct.</li>
 	<li>If your module uses the database built-in predicates to implement module local mutable state using dynamic predicates, add both <a title="Consult reference manual" href="../refman/directives/private1.html"><code>private/1</code></a> and <a title="Consult reference manual" href="../refman/directives/dynamic1.html"><code>dynamic/1</code></a> directives for each dynamic predicate.</li>
+	<li>If your module declares or defines clauses for multifile module predicates, replace the <code>:/2</code> functor by <code>::/2</code> in the <code>multifile/1</code> directives and in the clause heads (assuming that all modules defining the multifile predicates are converted into objects; if that is not the case, just keep the <code>multifile/1</code> directives and the clause heads as-is).</li>
 	<li>Compile the resulting objects with the Logtalk <code>misspelt</code> and <code>portability</code> flags set to <code>warning</code> to help you locate calls to proprietary Prolog built-in predicates and to predicates defined on other converted modules. In order to improve code portability, check the Logtalk library for possible alternatives to the use of proprietary Prolog built-in predicates.</li>
 </ol>
 
@@ -285,20 +254,19 @@ Some Prolog module libraries, e.g. constraint packages, expect clauses for some 
 :- end_object.
 </pre>
 <p>
-Logtalk supports the compilation of such clauses within objects and categories. While the clause head is compiled as-is, the clause body is compiled in the same way as a regular object or category predicate, thus allowing calls to local object or category predicates. The Prolog <code>multifile/1</code> directive can be used within objects and categories provided that the back-end Prolog config file supports it by defining a suitable clause for the <code>'$lgt_rewrite_and_copy_pl_directive'/2</code> user-defined predicate. Alternatively, the necessary <code>multifile/1</code> directive can be written in the same source file but outside any Logtalk entity:
+Logtalk supports the compilation of such clauses within objects and categories. While the clause head is compiled as-is, the clause body is compiled in the same way as a regular object or category predicate, thus allowing calls to local object or category predicates. For example:
 </p>
 <pre>
-:- multifile(clpfd:run_propagator/2).
-
 :- object(...).
 
+	:- multifile(clpfd:run_propagator/2).
     clpfd:run_propagator(..., ...) :-
         ...
 
 :- end_object.
 </pre>
 <p>
-Both solutions are equivalent. The Logtalk compiler will print a warning if the <code>multifile/1</code> directive is missing.
+The Logtalk compiler will print a warning if the <code>multifile/1</code> directive is missing.
 </p>
 
 
