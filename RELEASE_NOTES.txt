@@ -43,7 +43,8 @@ RELEASE NOTES
     flag to "error" and the "language" flag to "iso". Added declarations for
     the proprietary built-in meta-predicates call_residue_vars/2, ignore/1,
     depth_bound_call/2, setup_call_cleanup/3, and setup_call_catcher_cleanup/4.
-    Removed declaration for the outdated meta-predicate on_cleanup/1.
+    Removed declaration for the outdated meta-predicate on_cleanup/1. Added
+    support for the thread_initialization/1 proprietary directive.
 
     Updated the B-Prolog config file with declarations for the proprietary
     built-in meta-predicates fd_minimize/2 and fd_maximize/2.
