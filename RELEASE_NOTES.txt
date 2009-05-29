@@ -35,6 +35,10 @@ RELEASE NOTES
     Corrected a bug in the implementation of the Logtalk <</2 control construct
     where a redefinition of a built-in predicate would be ignored.
 
+    Corrected a Logtalk compiler bug where initialization/1 goals would be
+    compiled as normal code instead of as debug code when compiling a source
+    file in debug mode.
+
     Corrected a bug in the YAP config file that prevented setting the "unknown"
     flag to "error" and the "language" flag to "iso". Added declarations for
     the proprietary built-in meta-predicates call_residue_vars/2, ignore/1,

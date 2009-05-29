@@ -6344,8 +6344,11 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
 	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, []),		% MetaVars = [] as we're compiling a local call
-	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
-	assertz('$lgt_pp_entity_init_'(TGoal)).
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
+	(	'$lgt_compiler_flag'(debug, on) ->
+		assertz('$lgt_pp_entity_init_'(DGoal))
+	;	assertz('$lgt_pp_entity_init_'(TGoal))
+	).
 
 
 % op/3 entity directive (operators are local to entities)
