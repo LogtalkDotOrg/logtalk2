@@ -8653,8 +8653,8 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 '$lgt_tr_body'(Alias, ':'(Module, TPred), ':'(Module, DPred), Ctx) :-
 	'$lgt_pp_use_module_'(Module, Pred, Alias),
-	'$lgt_predicate_property'(Pred, imported_from(Module)),
-	'$lgt_predicate_property'(Pred, meta_predicate(Meta)),
+	catch('$lgt_predicate_property'(Pred, imported_from(Module)), _, fail),
+	catch('$lgt_predicate_property'(Pred, meta_predicate(Meta)), _, fail),
 	Pred =.. [Functor| Args],
 	Meta =.. [Functor| MArgs],
 	(	'$lgt_member'(MArg, MArgs), integer(MArg), MArg =\= 0 ->
@@ -8734,7 +8734,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 		true
 	;	% non-declared proprietary built-in meta-predicates (fragile hack
 	 	% due to lack of standardization of meta-predicate specifications)
-		'$lgt_predicate_property'(Pred, meta_predicate(Meta)),
+		catch('$lgt_predicate_property'(Pred, meta_predicate(Meta)), _, fail),
 		Type = predicate	% but it could be a control construct instead
 	),
 	!,

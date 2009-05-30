@@ -29,6 +29,10 @@ RELEASE NOTES
     meta-predicates not declared in the config files. Detection may fail due to
     the lack of standardization of meta-predicate specifications.
 
+    Updated the Logtalk compiler to avoid unexpected compilation errors when
+    querying predicate properties due to the lack of standardization of the
+    Prolog predicate_property/2 built-in predicate.
+
     Corrected a Logtalk compiler bug where a redefinition of a proprietary
     built-in meta-predicate (declared in the config files) would be ignored.
 
