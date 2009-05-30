@@ -67,7 +67,7 @@ RELEASE NOTES
     Updated the SWI-Prolog config files with declarations for the proprietary
     meta-predicates setup_call_cleanup/3, setup_call_catcher_cleanup/4, when/2,
     and with_output_to/2. Added support for the thread_initialization/1
-    proprietary directive.
+    proprietary directive. Improved parsing of use_module/1-2 directives.
 
     Added a dummy definition for the predicate '$lgt_logtalk_prolog_encoding'/3
     to the config files of all back-end Prolog compilers that don't support the

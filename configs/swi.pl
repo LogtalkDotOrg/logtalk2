@@ -598,16 +598,20 @@
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)
 
-'$lgt_rewrite_and_recompile_pl_directive'(use_module(Module), use_module(Module, Exports)) :-
-	'$lgt_pp_module_'(Source),	% module that is being compiled as an object
-	absolute_file_name(Module, Path, [file_type(prolog), access(read), file_errors(fail), relative_to(Source)]),
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(File, Exports), use_module(Module, Exports)) :-
+	compound(File),
+	File =.. [_Library, Module].
+
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Exports)) :-
+	'$lgt_pp_file_path_'(Source, _),
+	absolute_file_name(File, Path, [file_type(prolog), access(read), file_errors(fail), relative_to(Source)]),
 	open(Path, read, In),
 	(	peek_char(In, #) ->		% deal with #! script; if not present
 		skip(In, 10)			% assume that the module declaration
 	;	true					% is the first directive on the file
 	),
 	call_cleanup(read(In, ModuleDecl), close(In)),
-	ModuleDecl = (:- module(_, Exports)).
+	ModuleDecl = (:- module(Module, Exports)).
 
 '$lgt_rewrite_and_recompile_pl_directive'(encoding(Encoding1), encoding(Encoding2)) :-
 	nonvar(Encoding1),
