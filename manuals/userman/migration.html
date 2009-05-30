@@ -236,6 +236,9 @@ Logtalk supports the declaration of predicate aliases in <code>use_module/2</cod
 <p>
 With this directive, calls to the <code>ins/2</code> predicate alias will be automatically compiled by Logtalk to calls to the <code>::/2</code> predicate in the <code>ic</code> module.
 </p>
+<p>
+Module meta-predicates can only be called if all meta-arguments are goals, not closures. This restriction exists because module meta-predicates are not Logtalk-aware and thus are unable to properly construct calls to object or category predicates from closure arguments. The Logtalk compiler throws an error whenever a call to a module meta-predicate with a closure as meta-argument is detected. The Logtalk library provides implementations of common meta-predicates, which can be used in place of module meta-predicates.
+</p>
 
 
 <h2 id="migration_module">Compiling Prolog module multifile predicates</h2>
