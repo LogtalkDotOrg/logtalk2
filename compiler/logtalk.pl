@@ -3497,10 +3497,13 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 '$lgt_metacall'(Obj::Closure, ExtraArgs, _, _, This, _) :-
 	!,
-	(	var(Closure) ->
+	(	var(Obj) ->
 		Goal =.. [call, Obj::Closure| ExtraArgs],
 		throw(error(instantiation_error, Goal, This))
-	;	callable(Closure) ->
+	;	var(Closure) ->
+		Goal =.. [call, Obj::Closure| ExtraArgs],
+		throw(error(instantiation_error, Goal, This))
+	;	callable(Obj), callable(Closure) ->
 		Closure =.. [Functor| Args],
 		'$lgt_append'(Args, ExtraArgs, FullArgs),
 		Pred =.. [Functor| FullArgs],
@@ -3512,12 +3515,25 @@ current_logtalk_flag(version, version(2, 37, 1)).
 		throw(error(type_error(callable, Closure), Goal, This))
 	).
 
-'$lgt_metacall'(':'(Module, Closure), ExtraArgs, _, _, _, _) :-
+'$lgt_metacall'(':'(Module, Closure), ExtraArgs, _, _, This, _) :-
 	!,
-	Closure =.. [Functor| Args],
-	'$lgt_append'(Args, ExtraArgs, FullArgs),
-	Pred =.. [Functor| FullArgs],
-	':'(Module, Pred).
+	(	var(Module) ->
+		Goal =.. [call, ':'(Module, Closure)| ExtraArgs],
+		throw(error(instantiation_error, Goal, This))
+	;	var(Closure) ->
+		Goal =.. [call, ':'(Module, Closure)| ExtraArgs],
+		throw(error(instantiation_error, Goal, This))
+	;	atom(Module) ->
+		(	callable(Closure) ->
+			Closure =.. [Functor| Args],
+			'$lgt_append'(Args, ExtraArgs, FullArgs),
+			Pred =.. [Functor| FullArgs],
+			':'(Module, Pred)
+		;	Goal =.. [call, ':'(Module, Closure)| ExtraArgs],
+			throw(error(type_error(callable, Closure), Goal, This))
+		)
+	;	throw(type_error(atom, Module))
+	).
 
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	(	atom(Closure) ->
