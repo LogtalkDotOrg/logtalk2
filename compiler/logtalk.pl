@@ -6297,7 +6297,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 '$lgt_tr_directive'(module, [Module, _], _, _, _, _) :-
 	\+ atom(Module),
-	throw(type_error(module_identifier, Module)).
+	throw(type_error(atom, Module)).
 
 '$lgt_tr_directive'(module, [Module, ExportList], File, Lines, Input, Output) :-
 	assertz('$lgt_pp_module_'(Module)),										% remeber we are compiling a module
@@ -6428,16 +6428,20 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 '$lgt_tr_directive'(use_module, [Module, _], _, _, _, _) :-
 	\+ callable(Module),
-	throw(type_error(module_identifier, Module)).
+	throw(type_error(atom, Module)).
 
 '$lgt_tr_directive'(use_module, [Module, Preds], File, Lines, Input, Output) :-	% module directive
 	(	atom(Module) ->
 		Name = Module
-	;	arg(1, Module, Name)
+	;	% assume library notation
+		arg(1, Module, Name),
+		atom(Name)
 	),
-	(	'$lgt_pp_module_'(_) ->													% we're compiling a module
- 		'$lgt_tr_directive'(uses, [Name, Preds], File, Lines, Input, Output)	% as an object
-	;	'$lgt_tr_use_module_preds'(Preds, Name)
+	(	'$lgt_pp_module_'(_) ->
+		% we're compiling a module as an object; assume referenced modules are also compiled as objects
+ 		'$lgt_tr_directive'(uses, [Name, Preds], File, Lines, Input, Output)
+	;	% We're calling module predicates within an object or a category
+		'$lgt_tr_use_module_preds'(Preds, Name)
 	).
 
 
@@ -7035,7 +7039,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 
 
-% '$lgt_tr_use_module_preds'(+list, +module_identifier)
+% '$lgt_tr_use_module_preds'(+list, +atom)
 %
 % auxiliary predicate for translating use_module/2 directives in objects or categories
 
