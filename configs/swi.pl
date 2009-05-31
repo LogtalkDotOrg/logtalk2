@@ -598,10 +598,6 @@
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)
 
-'$lgt_rewrite_and_recompile_pl_directive'(use_module(File, Exports), use_module(Module, Exports)) :-
-	compound(File),
-	File =.. [_Library, Module].
-
 '$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Exports)) :-
 	'$lgt_pp_file_path_'(Source, _),
 	absolute_file_name(File, Path, [file_type(prolog), access(read), file_errors(fail), relative_to(Source)]),
