@@ -122,26 +122,39 @@
 		;	min(Ns, Aux, Min)
 		).
 
-	msort([], []) :- !.
-	msort([X], [X]) :- !.
-	msort([X, Y| Xs], Ys) :-
-		split([X, Y| Xs], X1s, X2s),
-		msort(X1s, Y1s),
-		msort(X2s, Y2s),
-		merge(Y1s, Y2s, Ys).
+	:- if((
+		current_logtalk_flag(prolog_dialect, Prolog),
+		(Prolog == cx; Prolog == swi; Prolog == yap),
+		predicate_property(msort(_, _), built_in)
+	)).
 
-	split([], [], []).
-	split([X| Xs], [X| Ys], Zs) :-
-		split(Xs, Zs, Ys).
+		msort(List, Sorted) :-
+			{msort(List, Sorted)}.
 
-	merge([X| Xs], [Y| Ys], [X| Zs]) :-
-		X @=< Y, !,
-		merge(Xs, [Y| Ys], Zs).
-	merge([X| Xs], [Y| Ys], [Y| Zs]) :-
-		X @> Y, !,
-		merge([X | Xs], Ys, Zs).
-	merge([], Xs, Xs) :- !.
-	merge(Xs, [], Xs).
+	:- else.
+
+		msort([], []) :- !.
+		msort([X], [X]) :- !.
+		msort([X, Y| Xs], Ys) :-
+			split([X, Y| Xs], X1s, X2s),
+			msort(X1s, Y1s),
+			msort(X2s, Y2s),
+			merge(Y1s, Y2s, Ys).
+
+		split([], [], []).
+		split([X| Xs], [X| Ys], Zs) :-
+			split(Xs, Zs, Ys).
+
+		merge([X| Xs], [Y| Ys], [X| Zs]) :-
+			X @=< Y, !,
+			merge(Xs, [Y| Ys], Zs).
+		merge([X| Xs], [Y| Ys], [Y| Zs]) :-
+			X @> Y, !,
+			merge([X | Xs], Ys, Zs).
+		merge([], Xs, Xs) :- !.
+		merge(Xs, [], Xs).
+
+	:- endif.
 
 	new([]).
 
