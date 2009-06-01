@@ -5758,19 +5758,19 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 
 
-% '$lgt_assert_entity_ops'(+integer, +operator_specifier, +atom_or_atom_list)
+% '$lgt_assert_entity_operators'(+integer, +operator_specifier, +atom_or_atom_list)
 %
 % asserts local entity operators
 
-'$lgt_assert_entity_ops'(_, _, []) :-
+'$lgt_assert_entity_operators'(_, _, []) :-
 	!.
 
-'$lgt_assert_entity_ops'(Pr, Spec, [Op| Ops]) :-
+'$lgt_assert_entity_operators'(Pr, Spec, [Op| Ops]) :-
 	!,
 	asserta('$lgt_pp_entity_op_'(Pr, Spec, Op)),
-	'$lgt_assert_entity_ops'(Pr, Spec, Ops).
+	'$lgt_assert_entity_operators'(Pr, Spec, Ops).
 
-'$lgt_assert_entity_ops'(Pr, Spec, Op) :-
+'$lgt_assert_entity_operators'(Pr, Spec, Op) :-
 	asserta('$lgt_pp_entity_op_'(Pr, Spec, Op)).
 
 
@@ -6128,14 +6128,14 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	;	throw(type_error(callable, Goal))
 	).
 
-'$lgt_tr_file_directive'(op(Pr, Spec, Ops), _, _, _, _) :-
+'$lgt_tr_file_directive'(op(Priority, Spec, Operators), _, _, _, _) :-
 	!,
-    op(Pr, Spec, Ops),									% op/3 directives must be used during entity compilation
-    assertz('$lgt_pp_directive_'(op(Pr, Spec, Ops))),
-    (   atom(Ops) ->
-        assertz('$lgt_pp_file_op_'(Pr, Spec, Ops))
-    ;   '$lgt_is_proper_list'(Ops) ->
-        forall('$lgt_member'(Op, Ops), assertz('$lgt_pp_file_op_'(Pr, Spec, Op)))
+	'$lgt_check_op_directive_args'(Priority, Spec, Operators),
+    op(Priority, Spec, Operators),						% op/3 directives must be used during entity compilation
+    assertz('$lgt_pp_directive_'(op(Priority, Spec, Operators))),
+    (   atom(Operators) ->
+        assertz('$lgt_pp_file_op_'(Priority, Spec, Operators))
+    ;   forall('$lgt_member'(Operator, Operators), assertz('$lgt_pp_file_op_'(Priority, Spec, Operator)))
     ).
 
 '$lgt_tr_file_directive'(set_logtalk_flag(Flag, Value), _, _, _, _) :-
@@ -6299,11 +6299,15 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	\+ atom(Module),
 	throw(type_error(atom, Module)).
 
-'$lgt_tr_directive'(module, [Module, ExportList], File, Lines, Input, Output) :-
+'$lgt_tr_directive'(module, [Module, Exports], File, Lines, Input, Output) :-
 	assertz('$lgt_pp_module_'(Module)),										% remeber we are compiling a module
 	'$lgt_report_compiling_entity'(module, Module),
 	'$lgt_tr_object_id'(Module, static),									% assume static module/object
-	'$lgt_tr_directive'((public), ExportList, File, Lines, Input, Output),	% make the export list public predicates
+	'$lgt_split_module_exports'(Exports, Preds, Ops),
+	forall(
+		'$lgt_member'(Op, Ops),
+		'$lgt_tr_file_directive'(Op, File, Lines, Input, Output)),
+	'$lgt_tr_directive'((public), Preds, File, Lines, Input, Output),	% make the export list public predicates
 	'$lgt_save_file_op_table'.
 
 
@@ -6369,26 +6373,13 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 % op/3 entity directive (operators are local to entities)
 
-'$lgt_tr_directive'(op, [Pr, Spec, Ops], _, _, _, _) :-
-	(var(Pr); var(Spec); var(Ops)),
-	throw(instantiation_error).
+'$lgt_tr_directive'(op, [Priority, Spec, Operators], _, _, _, _) :-
+	'$lgt_check_op_directive_args'(Priority, Spec, Operators),
+	op(Priority, Spec, Operators),
+	'$lgt_assert_entity_operators'(Priority, Spec, Operators).
 
-'$lgt_tr_directive'(op, [Pr, _, _], _, _, _, _) :-
-	\+ '$lgt_valid_op_priority'(Pr),
-	throw(type_error(operator_priority, Pr)).
 
-'$lgt_tr_directive'(op, [_, Spec, _], _, _, _, _) :-
-	\+ '$lgt_valid_op_specifier'(Spec),
-	throw(type_error(operator_specifier, Spec)).
-
-'$lgt_tr_directive'(op, [_, _, Ops], _, _, _, _) :-
-	\+ '$lgt_valid_op_names'(Ops),
-	throw(type_error(operator_name, Ops)).
-
-'$lgt_tr_directive'(op, [Pr, Spec, Ops], _, _, _, _) :-
-	op(Pr, Spec, Ops),
-	'$lgt_assert_entity_ops'(Pr, Spec, Ops).
-
+% uses/2 entity directive
 
 '$lgt_tr_directive'(uses, [Obj, Preds], _, _, _, _) :-
 	(var(Obj); var(Preds)),
@@ -6409,6 +6400,8 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	'$lgt_tr_uses_preds'(Preds, Obj).
 
 
+% uses/1 entity directive
+
 '$lgt_tr_directive'(uses, [Obj], _, _, _, _) :-
 	var(Obj),
 	throw(instantiation_error).
@@ -6422,6 +6415,8 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	assertz('$lgt_pp_uses_'(Obj)).
 
 
+% use_module/2 module directive
+
 '$lgt_tr_directive'(use_module, [Module, _], _, _, _, _) :-
 	var(Module),
 	throw(instantiation_error).
@@ -6430,7 +6425,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	\+ callable(Module),
 	throw(type_error(atom, Module)).
 
-'$lgt_tr_directive'(use_module, [Module, Preds], File, Lines, Input, Output) :-	% module directive
+'$lgt_tr_directive'(use_module, [Module, Preds], File, Lines, Input, Output) :-
 	(	atom(Module) ->
 		Name = Module
 	;	% assume library notation
@@ -6440,15 +6435,19 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
  		'$lgt_tr_directive'(uses, [Name, Preds], File, Lines, Input, Output)
-	;	% We're calling module predicates within an object or a category
+	;	% we're calling module predicates within an object or a category
 		'$lgt_tr_use_module_preds'(Preds, Name)
 	).
 
+
+% calls/1 entity directive
 
 '$lgt_tr_directive'(calls, Ptcs, _, _, _, _) :-
 	'$lgt_flatten_list'(Ptcs, Ptcs2),
 	'$lgt_tr_calls_directive'(Ptcs2).
 
+
+% info/1 entity directive
 
 '$lgt_tr_directive'(info, [List], _, _, _, _) :-
 	!,
@@ -6457,6 +6456,8 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	;	throw(type_error(entity_info_list, List))
 	).
 
+
+% info/2 predicate directive
 
 '$lgt_tr_directive'(info, [Pred, List], _, _, _, _) :-
 	(	nonvar(Pred) ->
@@ -6468,6 +6469,8 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	;	throw(instantiation_error)
 	).
 
+
+% synchronized/1 predicate directive
 
 '$lgt_tr_directive'(synchronized, Preds, File, Lines, Input, _) :-
 	(	'$lgt_compiler_flag'(threads, supported) ->
@@ -7456,6 +7459,25 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	).
 
 '$lgt_tr_pred_info_key_value'(_, _, _, _).
+
+
+
+% '$lgt_split_module_exports'(+list, -list, -list).
+%
+% module/2 export lists may contain both operator declarations and predicate indicators
+
+'$lgt_split_module_exports'([], [], []).
+
+'$lgt_split_module_exports'([Export| _], _, _) :-
+	var(Export),
+	throw(instantiation_error).
+
+'$lgt_split_module_exports'([op(Priority, Spec, Operator)| Exports], Preds, [op(Priority, Spec, Operator)| Ops]) :-
+	!,
+	'$lgt_split_module_exports'(Exports, Preds, Ops).
+
+'$lgt_split_module_exports'([Pred| Exports], [Pred| Preds], Ops) :-
+	'$lgt_split_module_exports'(Exports, Preds, Ops).
 
 
 
@@ -12781,51 +12803,77 @@ current_logtalk_flag(version, version(2, 37, 1)).
 
 
 
-% '$lgt_valid_op_priority'(@term)
-
-'$lgt_valid_op_priority'(Pr) :-
-	integer(Pr),
-	0 =< Pr, Pr =< 1200.
-
-
-
-% '$lgt_valid_op_specifier'(@term)
-
-'$lgt_valid_op_specifier'(Spec) :-
-	atom(Spec),
-	'$lgt_op_specifier'(Spec).
-
-
-
-% '$lgt_op_specifier'(+atom)
-
-'$lgt_op_specifier'(fx).
-'$lgt_op_specifier'(fy).
-'$lgt_op_specifier'(xfx).
-'$lgt_op_specifier'(xfy).
-'$lgt_op_specifier'(yfx).
-'$lgt_op_specifier'(xf).
-'$lgt_op_specifier'(yf).
-
-
-
-% '$lgt_valid_op_names'(@term)
+% '$lgt_check_op_directive_args'(@term, @term, @term)
 %
-% (an atom or a list of atoms)
+% checks that the arguments of a op/3 directive are valid
 
-'$lgt_valid_op_names'(Op) :-
-	atom(Op),
+'$lgt_check_op_directive_args'(Priority, _, _) :-
+	var(Priority),
+	throw(instantiation_error).
+
+'$lgt_check_op_directive_args'(_, Spec, _) :-
+	var(Spec),
+	throw(instantiation_error).
+
+'$lgt_check_op_directive_args'(_, _, Operators) :-
+	var(Operators),
+	throw(instantiation_error).
+
+'$lgt_check_op_directive_args'(Priority, _, _) :-
+	\+ integer(Priority),
+	throw(type_error(integer, Priority)).
+
+'$lgt_check_op_directive_args'(Priority, _, _) :-
+	(Priority < 0; Priority > 1200),
+	throw(domain_error(operator_priority, Priority)).
+
+'$lgt_check_op_directive_args'(_, Spec, _) :-
+	\+ atom(Spec),
+	throw(type_error(atom, Spec)).
+
+'$lgt_check_op_directive_args'(_, Spec, _) :-
+	Spec \== fx,
+	Spec \== fy,
+	Spec \== xfx,
+	Spec \== xfy,
+	Spec \== yfx,
+	Spec \== xf,
+	Spec \== yf,
+	throw(domain_error(operator_specifier, Spec)).
+
+'$lgt_check_op_directive_args'(_, _, ',') :-
+	throw(permission_error(modify, operator, ',')).
+
+'$lgt_check_op_directive_args'(_, _, Operators) :-
+	\+ atom(Operators),
+	\+ '$lgt_is_proper_list'(Operators),
+	throw(type_error(list, Operators)).
+
+'$lgt_check_op_directive_args'(_, _, Operators) :-
+	'$lgt_check_op_directive_operator_names'(Operators).
+
+
+'$lgt_check_op_directive_operator_names'(Operator) :-
+	var(Operator),
+	throw(instantiation_error).
+
+'$lgt_check_op_directive_operator_names'(',') :-
+	throw(permission_error(modify, operator, ',')).
+
+'$lgt_check_op_directive_operator_names'(Operator) :-
+	atom(Operator),
 	!.
 
-'$lgt_valid_op_names'(Ops) :-
-	'$lgt_valid_op_names_list'(Ops).
+'$lgt_check_op_directive_operator_names'([]) :-
+	!.
 
+'$lgt_check_op_directive_operator_names'([Operator| Operators]) :-
+	!,
+	'$lgt_check_op_directive_operator_names'(Operator),
+	'$lgt_check_op_directive_operator_names'(Operators).
 
-'$lgt_valid_op_names_list'([]).
-
-'$lgt_valid_op_names_list'([Op| Ops]) :-
-	atom(Op),
-	'$lgt_valid_op_names_list'(Ops).
+'$lgt_check_op_directive_operator_names'(Operator) :-
+	throw(type_error(atom, Operator)).
 
 
 

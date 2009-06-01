@@ -25,6 +25,11 @@ RELEASE NOTES
     objects and categories in order to provide better integration with CLP(FD)
     and similar constraint packages.
 
+    Added support for parsing module/2 directives whose export list contains
+    operator declarations.
+
+    Improved Logtalk compiler error-checking of file-level op/3 directives.
+
     Updated the Logtalk compiler to try to detect calls to proprietary built-in
     meta-predicates not declared in the config files. Detection may fail due to
     the lack of standardization of meta-predicate specifications.
