@@ -555,6 +555,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 				<dd>info_directive |</dd>
 				<dd>dynamic_directive |</dd>
 				<dd>discontiguous_directive |</dd>
+				<dd>multifile_directive |</dd>
 				<dd><i>operator_directive</i></dd>
 		</dl>
 		<dl>
@@ -597,7 +598,11 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>discontiguous_directive ::=</dt>
 				<dd>"<code>:- discontiguous(</code>" predicate_indicator_term | non_terminal_indicator_term "<code>).</code>" |</dd>
 		</dl>
-				<dl>
+		<dl>
+			<dt>multifile_directive ::=</dt>
+				<dd>"<code>:- multifile(</code>" predicate_indicator_term "<code>).</code>" |</dd>
+		</dl>
+		<dl>
 			<dt>predicate_indicator_term ::=</dt>
 				<dd><i>predicate_indicator</i> |</dd>
 				<dd>predicate_indicator_sequence |</dd>
@@ -829,7 +834,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: April 7, 2009</span>
+		<span>Last updated on: May 28, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="index.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>

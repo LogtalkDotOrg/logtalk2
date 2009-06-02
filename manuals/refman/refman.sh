@@ -39,6 +39,7 @@ eval $xslt_proc -o directives/end_object0.section refman.xsl directives/end_obje
 eval $xslt_proc -o directives/end_protocol0.section refman.xsl directives/end_protocol0.html
 eval $xslt_proc -o directives/info1.section refman.xsl directives/info1.html
 eval $xslt_proc -o directives/initialization1.section refman.xsl directives/initialization1.html
+eval $xslt_proc -o directives/multifile1.section refman.xsl directives/multifile1.html
 eval $xslt_proc -o directives/object1_5.section refman.xsl directives/object1_5.html
 eval $xslt_proc -o directives/protocol1_2.section refman.xsl directives/protocol1_2.html
 eval $xslt_proc -o directives/synchronized0.section refman.xsl directives/synchronized0.html
@@ -152,6 +153,7 @@ cat -s \
 	directives/end_protocol0.section \
 	directives/info1.section \
 	directives/initialization1.section \
+	directives/multifile1.section \
 	directives/object1_5.section \
 	directives/protocol1_2.section \
 	directives/synchronized0.section \
