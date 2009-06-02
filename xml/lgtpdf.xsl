@@ -323,6 +323,15 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 				</fo:block>
 				<xsl:apply-templates select="calls"/>
 			</xsl:if>
+			<xsl:if test="alias">
+				<fo:block
+						font-size="10pt"
+						font-family="serif" 
+						keep-with-next="always">
+					aliases:
+				</fo:block>
+				<xsl:apply-templates select="alias"/>
+			</xsl:if>
 		</xsl:when>
 		<xsl:otherwise>	
 			<fo:block
@@ -337,7 +346,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 </xsl:template>
 
 
-<xsl:template match="logtalk/relations/uses">
+<xsl:template match="logtalk/relations/uses" priority="1">
 	<fo:block
 			font-size="9pt"
 			font-family="monospace"
@@ -347,7 +356,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 </xsl:template>
 
 
-<xsl:template match="logtalk/relations/calls">
+<xsl:template match="logtalk/relations/calls" priority="1">
 	<fo:block
 			font-size="9pt"
 			font-family="monospace"
@@ -357,7 +366,18 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 </xsl:template>
 
 
-<xsl:template match="logtalk/relations/*">
+<xsl:template match="logtalk/relations/alias" priority="1">
+	<fo:block
+			font-size="9pt"
+			margin-left="10mm">
+		<fo:inline ><xsl:value-of select="name" /><xsl:text> </xsl:text><xsl:value-of select="original" /></fo:inline>
+		<fo:inline font-family="serif" font-style="italic"> aka </fo:inline>
+		<fo:inline font-family="monospace"><xsl:value-of select="alternative" /></fo:inline>
+	</fo:block>
+</xsl:template>
+
+
+<xsl:template match="logtalk/relations/*" priority="0">
 	<fo:block
 			font-size="9pt"
 			font-family="monospace"

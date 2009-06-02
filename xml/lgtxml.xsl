@@ -137,6 +137,10 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 			<dt class ="key">calls:</dt>
 				<xsl:apply-templates select="calls" />
 			</xsl:if>
+			<xsl:if test="alias">
+			<dt class ="key">aliases:</dt>
+				<xsl:apply-templates select="alias" />
+			</xsl:if>
 		</dl>
 		</xsl:when>
 		<xsl:otherwise>	
@@ -146,17 +150,22 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 </xsl:template>
 
 
-<xsl:template match="logtalk/relations/uses">
+<xsl:template match="logtalk/relations/uses" priority="1">
 	<dd class ="value"><code><a href="{file}.xml"><xsl:value-of select="name" /></a></code></dd>
 </xsl:template>
 
 
-<xsl:template match="logtalk/relations/calls">
+<xsl:template match="logtalk/relations/calls" priority="1">
 	<dd class ="value"><code><a href="{file}.xml"><xsl:value-of select="name" /></a></code></dd>
 </xsl:template>
 
 
-<xsl:template match="logtalk/relations/*">
+<xsl:template match="logtalk/relations/alias" priority="1">
+	<dd class ="value"><code><xsl:value-of select="name" /><xsl:text> </xsl:text><xsl:value-of select="original" /></code><em> aka </em><code><xsl:value-of select="alternative" /></code></dd>
+</xsl:template>
+
+
+<xsl:template match="logtalk/relations/*" priority="0">
 	<dd class ="value"><code><xsl:value-of select="scope" /><xsl:text> </xsl:text><a href="{file}.xml"><xsl:value-of select="name" /></a></code></dd>
 </xsl:template>
 

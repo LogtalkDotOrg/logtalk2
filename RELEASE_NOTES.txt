@@ -51,6 +51,10 @@ RELEASE NOTES
     compiled as normal code instead of as debug code when compiling a source
     file in debug mode.
 
+    Updated documentation support to include predicate alias information on
+    the automatically generated XML documenting files. Updated the sample XSLT
+    transformations to output alias information.
+
     Corrected a bug in the YAP config file that prevented setting the "unknown"
     flag to "error" and the "language" flag to "iso". Added declarations for
     the proprietary built-in meta-predicates call_residue_vars/2, ignore/1,

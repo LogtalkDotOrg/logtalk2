@@ -13757,7 +13757,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	'$lgt_xml_header_text'('1.0', Encoding, no, Text),
 	'$lgt_write_xml_open_tag'(Stream, Text, []),
 	(	XMLSpec == dtd ->
-		write(Stream, '<!DOCTYPE logtalk SYSTEM "http://logtalk.org/xml/1.5/logtalk.dtd">'), nl(Stream)
+		write(Stream, '<!DOCTYPE logtalk SYSTEM "http://logtalk.org/xml/1.6/logtalk.dtd">'), nl(Stream)
 	;	true
 	),
 	'$lgt_compiler_flag'(xslfile, XSL),
@@ -13768,7 +13768,7 @@ current_logtalk_flag(version, version(2, 37, 1)).
 		'$lgt_write_xml_open_tag'(Stream, logtalk, [])
 	;	'$lgt_write_xml_open_tag'(Stream, logtalk,
 			['xmlns:xsi'-'http://www.w3.org/2001/XMLSchema-instance',
-			 'xsi:noNamespaceSchemaLocation'-'http://logtalk.org/xml/1.5/logtalk.xsd'])
+			 'xsi:noNamespaceSchemaLocation'-'http://logtalk.org/xml/1.6/logtalk.xsd'])
 	).
 
 '$lgt_write_xml_header'(standalone, _, Stream) :-
@@ -14359,6 +14359,17 @@ current_logtalk_flag(version, version(2, 37, 1)).
 	'$lgt_pp_entity'(_, Entity, _, _, _),
 		'$lgt_pp_calls_'(Ptc),
 		'$lgt_write_xml_relation'(Stream, Entity, Ptc, calls),
+	fail.
+
+'$lgt_write_xml_relations'(Stream) :-
+	'$lgt_pp_alias_'(Entity, Pred, Alias),
+	functor(Pred, PFunctor, PArity),
+	functor(Alias, AFunctor, AArity),
+	'$lgt_write_xml_open_tag'(Stream, alias, []),
+	'$lgt_write_xml_cdata_element'(Stream, name, [], Entity),
+	'$lgt_write_xml_cdata_element'(Stream, original, [], PFunctor/PArity),
+	'$lgt_write_xml_cdata_element'(Stream, alternative, [], AFunctor/AArity),
+	'$lgt_write_xml_close_tag'(Stream, alias),
 	fail.
 
 '$lgt_write_xml_relations'(Stream) :-

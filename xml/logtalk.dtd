@@ -51,7 +51,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 <!ELEMENT value (#PCDATA)>
 
 
-<!ELEMENT relations (implements*, imports*, extends*, instantiates*, specializes*, uses*, calls*)>
+<!ELEMENT relations (implements*, imports*, extends*, instantiates*, specializes*, uses*, calls*, alias*)>
 
 <!ELEMENT implements (name, scope, file)>
 
@@ -67,10 +67,16 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 <!ELEMENT calls (name, file)>
 
+<!ELEMENT alias (name, original, alternative)>
+
 
 <!ELEMENT scope (#PCDATA)>
 
 <!ELEMENT file (#PCDATA)>
+
+<!ELEMENT original (#PCDATA)>
+
+<!ELEMENT alternative (#PCDATA)>
 
 
 <!ELEMENT predicates (public, protected, private)>

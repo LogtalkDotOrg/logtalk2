@@ -66,6 +66,18 @@
 		</element>
 	</define>
 
+	<define name="original">
+		<element name="original">
+			<text/>
+		</element>
+	</define>
+
+	<define name="alternative">
+		<element name="alternative">
+			<text/>
+		</element>
+	</define>
+
 	<define name="type">
 		<element name="type">
 			<choice>
@@ -205,6 +217,9 @@
 			<zeroOrMore>
 				<ref name="calls"/>
 			</zeroOrMore>
+			<zeroOrMore>
+				<ref name="alias"/>
+			</zeroOrMore>
 		</element>
 	</define>
 
@@ -259,6 +274,14 @@
 		<element name="calls">
 			<ref name="name"/>
 			<ref name="file"/>
+		</element>
+	</define>
+
+	<define name="alias">
+		<element name="alias">
+			<ref name="name"/>
+			<ref name="original"/>
+			<ref name="alternative"/>
 		</element>
 	</define>
 

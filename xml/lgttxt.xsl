@@ -124,6 +124,10 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 			<xsl:text>calls:</xsl:text><xsl:value-of select="$nl" />
 				<xsl:apply-templates select="calls" />
 			</xsl:if>
+			<xsl:if test="alias">
+			<dt class ="key">aliases:</dt>
+				<xsl:apply-templates select="alias" />
+			</xsl:if>
 		</xsl:when>
 		<xsl:otherwise>	
 			<xsl:text>(no dependencies on other files)</xsl:text><xsl:value-of select="$nl" />
@@ -133,17 +137,22 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 </xsl:template>
 
 
-<xsl:template match="logtalk/relations/uses">
+<xsl:template match="logtalk/relations/uses" priority="1">
 	<xsl:value-of select="$tab" /><xsl:value-of select="name" /><xsl:value-of select="$nl" />
 </xsl:template>
 
 
-<xsl:template match="logtalk/relations/calls">
+<xsl:template match="logtalk/relations/calls" priority="1">
 	<xsl:value-of select="$tab" /><xsl:value-of select="name" /><xsl:value-of select="$nl" />
 </xsl:template>
 
 
-<xsl:template match="logtalk/relations/*">
+<xsl:template match="logtalk/relations/alias" priority="1">
+	<xsl:value-of select="$tab" /><xsl:value-of select="name" /><xsl:text> </xsl:text><xsl:value-of select="original" /><xsl:text> aka </xsl:text><xsl:value-of select="alternative" />
+</xsl:template>
+
+
+<xsl:template match="logtalk/relations/*" priority="0">
 	<xsl:value-of select="$tab" /><xsl:value-of select="scope" /><xsl:text> </xsl:text><xsl:value-of select="name" /><xsl:value-of select="$nl" />
 </xsl:template>
 
