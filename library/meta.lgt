@@ -10,6 +10,10 @@
 
 	:- alias(metap, map/2, succeeds/2).
 	:- alias(metap, include/3, filter/3).
+	:- alias(metap, fold_left/4, foldl/4).
+	:- alias(metap, fold_right/4, foldr/4).
+	:- alias(metap, scan_left/4, scanl/4).
+	:- alias(metap, scan_right/4, scanr/4).
 
 	callable(Term) :-
 		nonvar(Term),
@@ -95,6 +99,10 @@
 	fold_left(Closure, Acc, List, Result) :-
 		fold_left_(List, Closure, Acc, Result).
 
+	:- meta_predicate(foldl(3, *, *, *)).
+	foldl(Closure, Acc, List, Result) :-
+		fold_left_(List, Closure, Acc, Result).
+
 	:- meta_predicate(scan_left_(*, 3, *, *)).
 	scan_left_([], _, Result, [Result]).
 	scan_left_([Arg| Args], Closure, Acc, [Acc| Results]) :-
@@ -103,6 +111,10 @@
 
 	:- meta_predicate(scan_left(3, *, *, *)).
 	scan_left(Closure, Acc, List, Results) :-
+		scan_left_(List, Closure, Acc, Results).
+
+	:- meta_predicate(scanl(3, *, *, *)).
+	scanl(Closure, Acc, List, Results) :-
 		scan_left_(List, Closure, Acc, Results).
 
 	:- meta_predicate(fold_right_(*, 3, *, *)).
@@ -115,6 +127,10 @@
 	fold_right(Closure, Acc, List, Result) :-
 		fold_right_(List, Closure, Acc, Result).
 
+	:- meta_predicate(foldr(3, *, *, *)).
+	foldr(Closure, Acc, List, Result) :-
+		fold_right_(List, Closure, Acc, Result).
+
 	:- meta_predicate(scan_right_(*, 3, *, *)).
 	scan_right_([], _, Result, [Result]).
 	scan_right_([Arg| Args], Closure, Acc, [Result, Acc2| Results]) :-
@@ -123,6 +139,10 @@
 
 	:- meta_predicate(scan_right(3, *, *, *)).
 	scan_right(Closure, Acc, List, Results) :-
+		scan_right_(List, Closure, Acc, Results).
+
+	:- meta_predicate(scanr(3, *, *, *)).
+	scanr(Closure, Acc, List, Results) :-
 		scan_right_(List, Closure, Acc, Results).
 
 	:- meta_predicate(map_(*, 1)).

@@ -83,6 +83,9 @@ RELEASE NOTES
     Added predicates append/2 and msort/2 to the library object "list". Fixed
     some termination issues with the length/2 predicate on buggy input.
 
+    Added aliases foldl/4, foldr/4, scanl/4, and scanr/4 to the library object
+    "meta".
+
     Added an experimental "logtalk_select.sh" POSIX shell script for switching
     between installed Logtalk stable versions.
 
