@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: May 20, 2009
+%  last updated: June 4, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -180,6 +180,9 @@
 '$lgt_pl_meta_predicate'(thread_create(::), predicate).
 '$lgt_pl_meta_predicate'(thread_signal(*, ::), predicate).
 '$lgt_pl_meta_predicate'(with_mutex(*, ::), predicate).
+% workaround broken meta-predicate declarations:
+'$lgt_pl_meta_predicate'(format(*, *), predicate).
+'$lgt_pl_meta_predicate'(format(*, *, *), predicate).
 
 
 

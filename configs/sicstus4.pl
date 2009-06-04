@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: May 12, 2009
+%  last updated: June 4, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -102,6 +102,9 @@ forall(Generate, Test) :-
 '$lgt_pl_meta_predicate'(on_exception(*, ::, ::), predicate).
 '$lgt_pl_meta_predicate'(undo(::), predicate).
 '$lgt_pl_meta_predicate'(when(*, ::), predicate).
+% workaround broken meta-predicate declarations:
+'$lgt_pl_meta_predicate'(format(*, *), predicate).
+'$lgt_pl_meta_predicate'(format(*, *, *), predicate).
 
 
 

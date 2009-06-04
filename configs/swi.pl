@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %
-%  last updated: May 17, 2009
+%  last updated: June 4, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -122,6 +122,9 @@
 '$lgt_pl_meta_predicate'(with_mutex(*, ::), predicate).
 '$lgt_pl_meta_predicate'(with_output_to(*, ::), predicate).
 '$lgt_pl_meta_predicate'(when(*, ::), predicate).
+% workaround broken meta-predicate declarations:
+'$lgt_pl_meta_predicate'(format(*, *), predicate).
+'$lgt_pl_meta_predicate'(format(*, *, *), predicate).
 
 
 
