@@ -15,11 +15,14 @@ RELEASE NOTES
 
 2.37.2 - June ??, 2009
 
-    Added support for using grammar rule non-terminal indicators in uses/2 and
-    multifile/1 Logtalk directives and in Prolog use_module/2 directive.
+    Added support for using grammar rule non-terminal indicators in the uses/2,
+    multifile/1, and use_module/2 directives.
 
     Added support for declaring and defining object and category multifile
     grammar rules.
+
+    Updated the SWI-Prolog config file in order to support the proprietary
+    predicate directives noprofile/1 and volatile/1.
 
     Updated the SICStus Prolog, SWI-Prolog, and YAP config files in order to
     workaround broken meta-predicate declarations for the built-in predicates

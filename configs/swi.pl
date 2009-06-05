@@ -562,6 +562,8 @@
 	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(hash(Head), hash(THead)) :-
 	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
+'$lgt_rewrite_and_copy_pl_directive'(noprofile(PIs), noprofile(CPIs)) :-
+	'$lgt_rewrite_and_copy_pl_directive_ch'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(thread_initialization(Goal), thread_initialization(CGoal)) :-
 	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
 	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx),
@@ -571,6 +573,8 @@
 		CGoal = DGoal
 	;	CGoal = TGoal
 	).
+'$lgt_rewrite_and_copy_pl_directive'(volatile(PIs), volatile(CPIs)) :-
+	'$lgt_rewrite_and_copy_pl_directive_ch'(PIs, CPIs).
 
 
 '$lgt_rewrite_and_copy_pl_directive_pis'(PIs, _) :-
