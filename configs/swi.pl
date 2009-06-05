@@ -554,6 +554,10 @@
 
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
+'$lgt_rewrite_and_copy_pl_directive'(format_predicate(Char, Head), format_predicate(Char, THead)) :-
+	functor(Head, Functor, Arity),
+	'$lgt_rewrite_and_copy_pl_directive_pis'(Functor/Arity, TFunctor/TArity),
+	functor(THead, TFunctor, TArity).
 '$lgt_rewrite_and_copy_pl_directive'(license(License), license(License)).
 '$lgt_rewrite_and_copy_pl_directive'(set_prolog_flag(generate_debug_info, false), set_prolog_flag(generate_debug_info, false)).
 '$lgt_rewrite_and_copy_pl_directive'(thread_local(PIs), thread_local(CPIs)) :-
