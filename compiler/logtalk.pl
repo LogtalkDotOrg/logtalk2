@@ -15576,13 +15576,21 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	(	'$lgt_startup_directory'(Startup),		% first lookup for a 
 		'$lgt_change_directory'(Startup),		% settings file in the
 		'$lgt_file_exists'('settings.lgt') ->	% startup directory
-		catch(logtalk_load(settings, [report(off), smart_compilation(off), clean(on)]), _, true),
-		assertz('$lgt_settings_file_loaded'(Startup))
+		catch((
+			logtalk_load(settings, [report(off), smart_compilation(off), clean(on)]),
+			assertz('$lgt_settings_file_loaded'(Startup))),
+			_,
+			true
+		)
 	;	'$lgt_user_directory'(User),			% if not found, lookup for
 		'$lgt_change_directory'(User),			% a settings file in the
 		'$lgt_file_exists'('settings.lgt') ->	% Logtalk user folder
-		catch(logtalk_load(settings, [report(off), smart_compilation(off), clean(on)]), _, true),
-		assertz('$lgt_settings_file_loaded'(User))
+		catch((
+			logtalk_load(settings, [report(off), smart_compilation(off), clean(on)]),
+			assertz('$lgt_settings_file_loaded'(Startup))),
+			_,
+			true
+		)
 	;	true
 	),
 	'$lgt_change_directory'(Current).
