@@ -619,8 +619,9 @@
 
 
 '$lgt_swi_list_of_exports'(File, Module, Exports) :-
-	'$lgt_pp_file_path_'(Source, _),
-	absolute_file_name(File, Path, [file_type(prolog), access(read), file_errors(fail), relative_to(Source)]),
+	(	absolute_file_name(File, Path, [file_type(prolog), access(read), file_errors(fail)])
+	;	absolute_file_name(File, Path, [extensions(['.lgt']), access(read), file_errors(fail)])
+	),
 	open(Path, read, In),
 	(	peek_char(In, #) ->		% deal with #! script; if not present
 		skip(In, 10)			% assume that the module declaration
