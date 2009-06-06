@@ -34,6 +34,9 @@ RELEASE NOTES
     workaround broken meta-predicate declarations for the built-in predicates
     format/2-3.
 
+    Updated the ECLiPSe and SWI-Prolog config files in order to support parsing
+    of reexport/1 module directives.
+
 
 2.37.1 - June 2, 2009
 

@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 5.10#26 or later 5.10 versions
 %
-%  last updated: May 17, 2009
+%  last updated: June 6, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -597,6 +597,12 @@ callable(Term) :-
 
 '$lgt_rewrite_and_recompile_pl_directive'(lib(Library), use_module(library(Library), Exports)) :-
 	'$lgt_eclipse_list_of_exports'(library(Library), Exports).
+
+'$lgt_rewrite_and_recompile_pl_directive'(reexport(Module), reexport(Module, Exports)) :-
+	atom(Module),
+	'$lgt_eclipse_list_of_exports'(Module, Exports).
+
+'$lgt_rewrite_and_recompile_pl_directive'(reexport(from(Exports, Module)), reexport(Module, Exports)).
 
 '$lgt_rewrite_and_recompile_pl_directive'(use_module(Library), use_module(Library, Exports)) :-
 		'$lgt_eclipse_list_of_exports'(Library, Exports).

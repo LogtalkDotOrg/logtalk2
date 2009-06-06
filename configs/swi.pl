@@ -607,7 +607,18 @@
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)
 
+'$lgt_rewrite_and_recompile_pl_directive'(reexport(File), reexport(Module, Exports)) :-
+	'$lgt_swi_list_of_exports'(File, Module, Exports).
+
 '$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Exports)) :-
+	'$lgt_swi_list_of_exports'(File, Module, Exports).
+
+'$lgt_rewrite_and_recompile_pl_directive'(encoding(Encoding1), encoding(Encoding2)) :-
+	nonvar(Encoding1),
+	'$lgt_rewrite_and_recompile_pl_encoding_directive'(Encoding1, Encoding2).
+
+
+'$lgt_swi_list_of_exports'(File, Module, Exports) :-
 	'$lgt_pp_file_path_'(Source, _),
 	absolute_file_name(File, Path, [file_type(prolog), access(read), file_errors(fail), relative_to(Source)]),
 	open(Path, read, In),
@@ -618,9 +629,6 @@
 	call_cleanup(read(In, ModuleDecl), close(In)),
 	ModuleDecl = (:- module(Module, Exports)).
 
-'$lgt_rewrite_and_recompile_pl_directive'(encoding(Encoding1), encoding(Encoding2)) :-
-	nonvar(Encoding1),
-	'$lgt_rewrite_and_recompile_pl_encoding_directive'(Encoding1, Encoding2).
 
 '$lgt_rewrite_and_recompile_pl_encoding_directive'(ascii, 'US-ASCII').
 '$lgt_rewrite_and_recompile_pl_encoding_directive'(iso_latin_1, 'ISO-8859-1').
