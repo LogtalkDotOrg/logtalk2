@@ -22,7 +22,8 @@ RELEASE NOTES
     grammar rules.
 
     Added support for parsing reexport/2 module directives when compiling
-    Prolog modules as Logtalk objects.
+    Prolog modules as Logtalk objects. The predicate renaming operator as/2
+    found on SWI-Prolog and YAP is also supported.
 
     Fixed a bug where a failed load of a settings file could be reported as
     successful.

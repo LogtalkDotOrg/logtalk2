@@ -7257,7 +7257,8 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 % '$lgt_tr_reexport_directive'(+list, +atom)
 %
-% auxiliary predicate for translating module reexport/2 directives
+% auxiliary predicate for translating module reexport/2 directives;
+% the predicate renaming operator as/2 found on SWI-Prolog and YAP is also supported
 
 '$lgt_tr_reexport_directive'([], _, _, _, _, _).
 
@@ -7265,18 +7266,42 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	var(Pred),
 	throw(instantiation_error).
 
+'$lgt_tr_reexport_directive'([as(Pred, NewFunctor)| Preds], Module, File, Lines, Input, Output) :-
+	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
+	atom(NewFunctor),
+	!,
+	'$lgt_tr_directive'((public), [NewFunctor/Arity], File, Lines, Input, Output),
+ 	'$lgt_tr_directive'(uses, [Module, [Pred]], File, Lines, Input, Output),
+	functor(NewHead, NewFunctor, Arity),
+	functor(Head, Functor, Arity),
+	'$lgt_tr_term'((NewHead :- Module::Head), File, Lines, Input, Output),
+	'$lgt_tr_reexport_directive'(Preds, Module, File, Lines, Input, Output).
+
 '$lgt_tr_reexport_directive'([Pred| Preds], Module, File, Lines, Input, Output) :-
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
 	!,
 	'$lgt_tr_directive'((public), [Pred], File, Lines, Input, Output),
+ 	'$lgt_tr_directive'(uses, [Module, [Pred]], File, Lines, Input, Output),
 	functor(Head, Functor, Arity),
 	'$lgt_tr_term'((Head :- Module::Head), File, Lines, Input, Output),
+	'$lgt_tr_reexport_directive'(Preds, Module, File, Lines, Input, Output).
+
+'$lgt_tr_reexport_directive'([as(NonTerminal, NewFunctor)| Preds], Module, File, Lines, Input, Output) :-
+	'$lgt_valid_gr_ind'(NonTerminal, Functor, Arity, _),
+	atom(NewFunctor),
+	!,
+	'$lgt_tr_directive'((public), [NewFunctor//Arity], File, Lines, Input, Output),
+ 	'$lgt_tr_directive'(uses, [Module, [NonTerminal]], File, Lines, Input, Output),
+	functor(NewHead, NewFunctor, Arity),
+	functor(Head, Functor, Arity),
+	'$lgt_tr_term'((NewHead --> Module::Head), File, Lines, Input, Output),
 	'$lgt_tr_reexport_directive'(Preds, Module, File, Lines, Input, Output).
 
 '$lgt_tr_reexport_directive'([NonTerminal| Preds], Module, File, Lines, Input, Output) :-
 	'$lgt_valid_gr_ind'(NonTerminal, Functor, Arity, _),
 	!,
 	'$lgt_tr_directive'((public), [NonTerminal], File, Lines, Input, Output),
+ 	'$lgt_tr_directive'(uses, [Module, [NonTerminal]], File, Lines, Input, Output),
 	functor(Head, Functor, Arity),
 	'$lgt_tr_term'((Head --> Module::Head), File, Lines, Input, Output),
 	'$lgt_tr_reexport_directive'(Preds, Module, File, Lines, Input, Output).
