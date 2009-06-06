@@ -555,9 +555,7 @@
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
 '$lgt_rewrite_and_copy_pl_directive'(format_predicate(Char, Head), format_predicate(Char, THead)) :-
-	functor(Head, Functor, Arity),
-	'$lgt_rewrite_and_copy_pl_directive_pis'(Functor/Arity, TFunctor/TArity),
-	functor(THead, TFunctor, TArity).
+	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(license(License), license(License)).
 '$lgt_rewrite_and_copy_pl_directive'(set_prolog_flag(generate_debug_info, false), set_prolog_flag(generate_debug_info, false)).
 '$lgt_rewrite_and_copy_pl_directive'(thread_local(PIs), thread_local(CPIs)) :-
@@ -567,7 +565,7 @@
 '$lgt_rewrite_and_copy_pl_directive'(hash(Head), hash(THead)) :-
 	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(noprofile(PIs), noprofile(CPIs)) :-
-	'$lgt_rewrite_and_copy_pl_directive_ch'(PIs, CPIs).
+	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(thread_initialization(Goal), thread_initialization(CGoal)) :-
 	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
 	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx),
@@ -578,7 +576,7 @@
 	;	CGoal = TGoal
 	).
 '$lgt_rewrite_and_copy_pl_directive'(volatile(PIs), volatile(CPIs)) :-
-	'$lgt_rewrite_and_copy_pl_directive_ch'(PIs, CPIs).
+	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
 
 
 '$lgt_rewrite_and_copy_pl_directive_pis'(PIs, _) :-
