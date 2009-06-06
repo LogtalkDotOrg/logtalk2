@@ -21,6 +21,9 @@ RELEASE NOTES
     Added support for declaring and defining object and category multifile
     grammar rules.
 
+    Added support for parsing reexport/2 module directives when compiling
+    Prolog modules as Logtalk objects.
+
     Fixed a bug where a failed load of a settings file could be reported as
     successful.
 

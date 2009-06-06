@@ -6432,7 +6432,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 '$lgt_tr_directive'(use_module, [Module, Preds], File, Lines, Input, Output) :-
 	(	atom(Module) ->
 		Name = Module
-	;	% assume library notation
+	;	% assume library notation and that the file name is also the module name
 		arg(1, Module, Name),
 		atom(Name)
 	),
@@ -6442,6 +6442,28 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	;	% we're calling module predicates within an object or a category
 		'$lgt_tr_use_module_directive'(Preds, Name)
 	).
+
+
+% reexport/2 module directive
+
+'$lgt_tr_directive'(reexport, [Module, _], _, _, _, _) :-
+	var(Module),
+	throw(instantiation_error).
+
+'$lgt_tr_directive'(reexport, [Module, _], _, _, _, _) :-
+	\+ callable(Module),
+	throw(type_error(atom, Module)).
+
+'$lgt_tr_directive'(reexport, [Module, Preds], File, Lines, Input, Output) :-
+	'$lgt_pp_module_'(_),
+	% we're compiling a module as an object; assume referenced modules are also compiled as objects
+	(	atom(Module) ->
+		Name = Module
+	;	% assume library notation and that the file name is also the module name
+		arg(1, Module, Name),
+		atom(Name)
+	),
+	'$lgt_tr_reexport_directive'(Preds, Name, File, Lines, Input, Output).
 
 
 % calls/1 entity directive
@@ -7230,6 +7252,37 @@ current_logtalk_flag(version, version(2, 37, 2)).
 		assertz('$lgt_pp_use_module_non_terminal_'(Obj, TOriginal, TAlias))
 	;	throw(permission_error(modify, uses_module_non_terminal, AFunctor//Arity))
 	).
+
+
+
+% '$lgt_tr_reexport_directive'(+list, +atom)
+%
+% auxiliary predicate for translating module reexport/2 directives
+
+'$lgt_tr_reexport_directive'([], _, _, _, _, _).
+
+'$lgt_tr_reexport_directive'([Pred| _], _, _, _, _, _) :-
+	var(Pred),
+	throw(instantiation_error).
+
+'$lgt_tr_reexport_directive'([Pred| Preds], Module, File, Lines, Input, Output) :-
+	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
+	!,
+	'$lgt_tr_directive'((public), [Pred], File, Lines, Input, Output),
+	functor(Head, Functor, Arity),
+	'$lgt_tr_term'((Head :- Module::Head), File, Lines, Input, Output),
+	'$lgt_tr_reexport_directive'(Preds, Module, File, Lines, Input, Output).
+
+'$lgt_tr_reexport_directive'([NonTerminal| Preds], Module, File, Lines, Input, Output) :-
+	'$lgt_valid_gr_ind'(NonTerminal, Functor, Arity, _),
+	!,
+	'$lgt_tr_directive'((public), [NonTerminal], File, Lines, Input, Output),
+	functor(Head, Functor, Arity),
+	'$lgt_tr_term'((Head --> Module::Head), File, Lines, Input, Output),
+	'$lgt_tr_reexport_directive'(Preds, Module, File, Lines, Input, Output).
+
+'$lgt_tr_reexport_directive'([Pred| _], _, _, _, _, _) :-
+	throw(type_error(predicate_indicator, Pred)).
 
 
 
@@ -12756,6 +12809,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	N >= 1.
 '$lgt_lgt_predicate_directive'((export), N) :-			% Prolog module directive
 	N >= 1.
+'$lgt_lgt_predicate_directive'(reexport, 2).			% Prolog module directive
 
 '$lgt_lgt_predicate_directive'((mode), 2).
 
@@ -15587,7 +15641,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 		'$lgt_file_exists'('settings.lgt') ->	% Logtalk user folder
 		catch((
 			logtalk_load(settings, [report(off), smart_compilation(off), clean(on)]),
-			assertz('$lgt_settings_file_loaded'(Startup))),
+			assertz('$lgt_settings_file_loaded'(User))),
 			_,
 			true
 		)
