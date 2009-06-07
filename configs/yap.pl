@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: June 4, 2009
+%  last updated: June 6, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -22,7 +22,7 @@
 :- initialization((
 	use_module(library(system)),
 	'$lgt_hide_predicates',
-	set_prolog_flag(language, iso),
+	set_prolog_flag(language, iso),		% comment out if you need to use YAP libraries that fail in "iso" mode!
 	set_prolog_flag(update_semantics, logical),
 	set_prolog_flag(unknown, error),
 	set_prolog_flag(syntax_errors, error))).
@@ -271,7 +271,7 @@
 
 '$lgt_default_flag'(underscore_variables, singletons).
 
-'$lgt_default_flag'(code_prefix, '').
+'$lgt_default_flag'(code_prefix, '$').
 
 '$lgt_default_flag'(debug, off).
 
