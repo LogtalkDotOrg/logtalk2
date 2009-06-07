@@ -38,6 +38,8 @@ RELEASE NOTES
     Updated the ECLiPSe and SWI-Prolog config files in order to support parsing
     of reexport/1 module directives.
 
+    Improved conversion guide for migrating Prolog module code to Logtalk.
+
 
 2.37.1 - June 2, 2009
 
