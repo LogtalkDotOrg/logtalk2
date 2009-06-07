@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#77 and later versions
 %
-%  last updated: June 6, 2009
+%  last updated: June 7, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -577,15 +577,22 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % '$lgt_ignore_pl_directive'(@callable)
 
 '$lgt_ignore_pl_directive'(mode(_)).
+'$lgt_ignore_pl_directive'(comment(_, _)).
 
 
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
-'$lgt_rewrite_and_copy_pl_directive'(_, _) :-
-	fail.
+'$lgt_rewrite_and_copy_pl_directive'(inline(PI1, PI2), inline(CPI1, CPI2)) :-
+	'$lgt_rewrite_and_copy_pl_directive_pis'(PI1, CPI1),
+	'$lgt_rewrite_and_copy_pl_directive_pis'(PI2, CPI2).
+
+'$lgt_rewrite_and_copy_pl_directive'(pragma(Pragma), pragma(Pragma)).
 
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)
+
+'$lgt_rewrite_and_recompile_pl_directive'(import(from(Conjunction, Module)), use_module(Module, Imports)) :-
+	'$lgt_flatten_list'([Conjunction], Imports).
 
 '$lgt_rewrite_and_recompile_pl_directive'(local(Functor/Arity), private(Functor/Arity)).
 
@@ -596,13 +603,32 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 	atom(Module),
 	'$lgt_eclipse_list_of_exports'(Module, Exports).
 
-'$lgt_rewrite_and_recompile_pl_directive'(reexport(from(Exports, Module)), reexport(Module, Exports)).
+'$lgt_rewrite_and_recompile_pl_directive'(reexport(from(Conjunction, Module)), reexport(Module, Exports)) :-
+	'$lgt_flatten_list'([Conjunction], Exports).
 
-'$lgt_rewrite_and_recompile_pl_directive'(use_module(Library), use_module(Library, Exports)) :-
-	'$lgt_eclipse_list_of_exports'(Library, Exports).
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(Library), use_module(Library, Imports)) :-
+	'$lgt_eclipse_list_of_exports'(Library, Imports).
 
 
-'$lgt_eclipse_list_of_exports'(Library, Exports) :-
+'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, _) :-
+	var(PIs),
+	throw(instantiation_error).
+'$lgt_rewrite_and_copy_pl_directive_pis'([], []) :-
+	!.
+'$lgt_rewrite_and_copy_pl_directive_pis'([PI| PIs], [CPI| CPIs]) :-
+	!,
+	'$lgt_rewrite_and_copy_pl_directive_pis'(PI, CPI),
+	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
+'$lgt_rewrite_and_copy_pl_directive_pis'((PI, PIs), (CPI, CPIs)) :-
+	!,
+	'$lgt_rewrite_and_copy_pl_directive_pis'(PI, CPI),
+	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
+'$lgt_rewrite_and_copy_pl_directive_pis'(Functor/Arity, TFunctor/TArity) :-
+	'$lgt_pp_entity'(_, _, Prefix, _, _),
+	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity).
+
+
+'$lgt_eclipse_list_of_exports'(Library, Exports) :-		% only works for already loaded modules
 	(	atom(Library) ->
 		Module = Library
 	;	Library =..[_, Module]
