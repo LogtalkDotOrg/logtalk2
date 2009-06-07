@@ -588,6 +588,9 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_rewrite_and_copy_pl_directive'(pragma(Pragma), pragma(Pragma)).
 
+'$lgt_rewrite_and_copy_pl_directive'(set_flag(PI, Flag, Value), set_flag(CPI, Flag, Value)) :-
+	'$lgt_rewrite_and_copy_pl_directive_pis'(PI, CPI).
+
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)
 

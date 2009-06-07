@@ -689,6 +689,9 @@ callable(Term) :-
 
 '$lgt_rewrite_and_copy_pl_directive'(pragma(Pragma), pragma(Pragma)).
 
+'$lgt_rewrite_and_copy_pl_directive'(set_flag(PI, Flag, Value), set_flag(CPI, Flag, Value)) :-
+	'$lgt_rewrite_and_copy_pl_directive_pis'(PI, CPI).
+
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)
 

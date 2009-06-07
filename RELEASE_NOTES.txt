@@ -42,7 +42,7 @@ RELEASE NOTES
     of reexport/1 module directives.
 
     Updated the ECLiPSe config files in order to support parsing of comment/2,
-    import/2, and inline/2 proprietary directives.
+    import/2, inline/2, and set_flag/3 proprietary directives.
 
     Improved conversion guide for migrating Prolog module code to Logtalk.
 
