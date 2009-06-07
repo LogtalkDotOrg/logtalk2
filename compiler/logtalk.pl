@@ -6454,7 +6454,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	\+ callable(Module),
 	throw(type_error(atom, Module)).
 
-'$lgt_tr_directive'(reexport, [Module, Preds], File, Lines, Input, Output) :-
+'$lgt_tr_directive'(reexport, [Module, Exports], File, Lines, Input, Output) :-
 	'$lgt_pp_module_'(_),
 	% we're compiling a module as an object; assume referenced modules are also compiled as objects
 	(	atom(Module) ->
@@ -6463,6 +6463,10 @@ current_logtalk_flag(version, version(2, 37, 2)).
 		arg(1, Module, Name),
 		atom(Name)
 	),
+	'$lgt_split_module_exports'(Exports, Preds, Ops),
+	forall(
+		'$lgt_member'(Op, Ops),
+		'$lgt_tr_file_directive'(Op, File, Lines, Input, Output)),
 	'$lgt_tr_reexport_directive'(Preds, Name, File, Lines, Input, Output).
 
 
@@ -6524,9 +6528,13 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	'$lgt_tr_public_directive'(Preds2).
 
 
-'$lgt_tr_directive'((export), Preds, _, _, _, _) :-	% module directive
-	'$lgt_flatten_list'(Preds, Preds2),
-	'$lgt_tr_public_directive'(Preds2).
+'$lgt_tr_directive'((export), Exports, File, Lines, Input, Output) :-	% module directive
+	'$lgt_flatten_list'(Exports, Exports2),
+	'$lgt_split_module_exports'(Exports2, Preds, Ops),
+	forall(
+		'$lgt_member'(Op, Ops),
+		'$lgt_tr_file_directive'(Op, File, Lines, Input, Output)),
+	'$lgt_tr_public_directive'(Preds).
 
 
 '$lgt_tr_directive'(protected, Preds, _, _, _, _) :-
