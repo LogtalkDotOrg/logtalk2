@@ -44,6 +44,9 @@ RELEASE NOTES
     Updated the ECLiPSe config files in order to support parsing of comment/2,
     import/2, inline/2, and set_flag/3 proprietary directives.
 
+    Updated the SICStus Prolog config files in order to support parsing of the
+    load_foreign_resource/1 proprietary directive.
+
     Improved conversion guide for migrating Prolog module code to Logtalk.
 
 

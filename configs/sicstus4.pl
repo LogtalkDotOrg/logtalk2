@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: June 4, 2009
+%  last updated: June 8, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -522,6 +522,9 @@ forall(Generate, Test) :-
 
 
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
+
+'$lgt_rewrite_and_copy_pl_directive'(load_foreign_resource(Resource), initialization(load_foreign_resource(Resource))) :-
+	load_foreign_resource(Resource).
 
 '$lgt_rewrite_and_copy_pl_directive'(volatile(PIs), volatile(CPIs)) :-
 	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
