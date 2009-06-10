@@ -11,12 +11,13 @@
 %
 %  configuration file for B-Prolog 7.1 and later versions
 %
-%  last updated: May 17, 2009
+%  last updated: June 10, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 :- set_prolog_flag(redefined, off).	% allow redefinition of predicate ::/2
+									% use the alternative in/2 predicate instead
 
 
 
@@ -90,6 +91,8 @@
 '$lgt_pl_meta_predicate'(call_cleanup(::, ::), predicate).
 '$lgt_pl_meta_predicate'(fd_minimize(::, *), predicate).
 '$lgt_pl_meta_predicate'(fd_maximize(::, *), predicate).
+'$lgt_pl_meta_predicate'(foreach(*, *, ::), predicate).		% added in B-Prolog 7.3
+'$lgt_pl_meta_predicate'(foreach(*, *, *, ::), predicate).	% added in B-Prolog 7.3
 '$lgt_pl_meta_predicate'(freeze(*, ::), predicate).
 '$lgt_pl_meta_predicate'(minof(::, *), predicate).
 '$lgt_pl_meta_predicate'(maxof(::, *), predicate).
@@ -507,6 +510,10 @@
 
 '$lgt_rewrite_and_copy_pl_directive'(eager_consume(PIs), eager_consume(CPIs)) :-
 	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
+'$lgt_rewrite_and_copy_pl_directive'(':'(table(Head), N), ':'(table(THead), N)) :-
+	'$lgt_rewrite_and_copy_pl_directive_head'(Head, THead).
+'$lgt_rewrite_and_copy_pl_directive'(table(Head), table(THead)) :-
+	'$lgt_rewrite_and_copy_pl_directive_head'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(table(PIs), table(CPIs)) :-
 	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(mode(Pred), mode(TPred)) :-
@@ -517,6 +524,20 @@
 	TPred =.. [TFunctor| TArgs],
 	append(Args, Context, TArgs),
 	'$lgt_b_prolog_mode_args'(Context).
+
+
+'$lgt_rewrite_and_copy_pl_directive_head'(Head, _) :-
+	var(Head),
+	throw(instantiation_error).
+'$lgt_rewrite_and_copy_pl_directive_head'(Head, THead) :-
+	functor(Head, Functor, Arity),
+	\+ (Functor == '/', Arity =:= 2),	% not a predicate indicator
+	'$lgt_pp_entity'(_, _, Prefix, _, _),
+	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
+	functor(THead, TFunctor, TArity),
+	Head =.. [_| Args],
+	THead =.. [_| TArgs],
+	append(Args, '?', TArgs).
 
 
 '$lgt_rewrite_and_copy_pl_directive_pis'(PIs, _) :-

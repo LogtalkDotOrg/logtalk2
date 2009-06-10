@@ -51,6 +51,9 @@ RELEASE NOTES
     Updated the SICStus Prolog config files in order to support parsing of the
     load_foreign_resource/1 proprietary directive.
 
+    Updated the B-Prolog config file in order to support the new foreach/3-4
+    meta-predicates and the new table mode directive in B-Prolog 7.3.
+
     Improved conversion guide for migrating Prolog module code to Logtalk.
 
 
