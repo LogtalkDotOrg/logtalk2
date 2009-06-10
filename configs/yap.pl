@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: June 6, 2009
+%  last updated: June 10, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -660,6 +660,29 @@
 '$lgt_rewrite_and_recompile_pl_directive'(encoding(Encoding1), encoding(Encoding2)) :-
 	nonvar(Encoding1),
 	'$lgt_rewrite_and_recompile_pl_encoding_directive'(Encoding1, Encoding2).
+
+'$lgt_rewrite_and_recompile_pl_directive'(ensure_loaded(File), use_module(File)) :-
+	'$lgt_pp_module_'(_).	% ensure_loaded/1 directive used within a module (sloppy replacement for the use_module/1 directive)
+
+'$lgt_rewrite_and_recompile_pl_directive'(reexport(File), reexport(Module, Exports)) :-
+	'$lgt_yap_list_of_exports'(File, Module, Exports).
+
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Exports)) :-
+	'$lgt_yap_list_of_exports'(File, Module, Exports).
+
+
+'$lgt_yap_list_of_exports'(File, Module, Exports) :-
+	(	absolute_file_name(File, Path, [file_type(prolog), access(read), file_errors(fail)])
+	;	absolute_file_name(File, Path, [extensions(['.lgt']), access(read), file_errors(fail)])
+	),
+	open(Path, read, In),
+	(	peek_char(In, #) ->		% deal with #! script; if not present
+		skip(In, 10)			% assume that the module declaration
+	;	true					% is the first directive on the file
+	),
+	call_cleanup(read(In, ModuleDecl), close(In)),
+	ModuleDecl = (:- module(Module, Exports)).
+
 
 '$lgt_rewrite_and_recompile_pl_encoding_directive'(ascii, 'US-ASCII').
 '$lgt_rewrite_and_recompile_pl_encoding_directive'(iso_latin_1, 'ISO-8859-1').

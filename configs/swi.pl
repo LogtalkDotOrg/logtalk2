@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %
-%  last updated: June 4, 2009
+%  last updated: June 10, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -607,15 +607,18 @@
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)
 
+'$lgt_rewrite_and_recompile_pl_directive'(encoding(Encoding1), encoding(Encoding2)) :-
+	nonvar(Encoding1),
+	'$lgt_rewrite_and_recompile_pl_encoding_directive'(Encoding1, Encoding2).
+
+'$lgt_rewrite_and_recompile_pl_directive'(ensure_loaded(File), use_module(File)) :-
+	'$lgt_pp_module_'(_).	% ensure_loaded/1 directive used within a module (sloppy replacement for the use_module/1 directive)
+
 '$lgt_rewrite_and_recompile_pl_directive'(reexport(File), reexport(Module, Exports)) :-
 	'$lgt_swi_list_of_exports'(File, Module, Exports).
 
 '$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Exports)) :-
 	'$lgt_swi_list_of_exports'(File, Module, Exports).
-
-'$lgt_rewrite_and_recompile_pl_directive'(encoding(Encoding1), encoding(Encoding2)) :-
-	nonvar(Encoding1),
-	'$lgt_rewrite_and_recompile_pl_encoding_directive'(Encoding1, Encoding2).
 
 
 '$lgt_swi_list_of_exports'(File, Module, Exports) :-

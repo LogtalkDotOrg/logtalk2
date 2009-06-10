@@ -36,10 +36,14 @@ RELEASE NOTES
 
     Updated the SICStus Prolog, SWI-Prolog, and YAP config files in order to
     workaround broken meta-predicate declarations for the built-in predicates
-    format/2-3.
+    format/2-3 and in order to support the sloppy use of the ensure_loaded/1
+    directive within modules, rewriting it to a use_module/1 directive.
 
-    Updated the ECLiPSe and SWI-Prolog config files in order to support parsing
-    of reexport/1 module directives.
+    Updated the ECLiPSe, SWI-Prolog, and YAP config files in order to support
+    parsing of reexport/1 module directives.
+
+    Updated the YAP config file in order to support parsing of the use_module/1
+    module directive.
 
     Updated the ECLiPSe config files in order to support parsing of comment/2,
     import/2, inline/2, and set_flag/3 proprietary directives.

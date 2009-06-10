@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: June 8, 2009
+%  last updated: June 10, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -550,7 +550,11 @@ forall(Generate, Test) :-
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)
 
+'$lgt_rewrite_and_recompile_pl_directive'(ensure_loaded(File), use_module(File)) :-
+	'$lgt_pp_module_'(_).	% ensure_loaded/1 directive used within a module (sloppy replacement for the use_module/1 directive)
+
 '$lgt_rewrite_and_recompile_pl_directive'(module(Module, Exports, _), module(Module, Exports)).
+
 '$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Exports)) :-
 	nonvar(File),
 	(	File = library(Module) ->
