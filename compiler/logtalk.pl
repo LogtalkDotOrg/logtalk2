@@ -8651,6 +8651,15 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	).
 
 
+% calling category predicates directly
+
+'$lgt_tr_body'(':'(Module, Pred), TPred, DPred, Ctx) :-
+	'$lgt_pl_built_in'(':'(Module, Pred)),				% back-end Prolog compiler supports modules
+	'$lgt_pp_module_'(_),								% we're compiling a module as an object
+	!,
+	'$lgt_tr_body'(Module::Pred, TPred, DPred, Ctx).	% assume referenced modules are also compiled as objects
+
+
 % "reflection" built-in predicates
 
 '$lgt_tr_body'(current_predicate(Term), TPred, DPred, Ctx) :-
