@@ -3880,6 +3880,11 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 % the following clauses correspond to a virtual compilation of the built-in pseudo-object "user"
 
+
+:- dynamic('$lgt_bio_user_0__ddcl'/2).
+:- dynamic('$lgt_bio_user_0__ddef'/3).
+
+
 '$lgt_bio_user_0__dcl'(Pred, p(p(p)), Type, no, no, no) :-
 	(	nonvar(Pred) ->
 		\+ '$lgt_built_in'(Pred),
@@ -8648,11 +8653,33 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 % "reflection" built-in predicates
 
+'$lgt_tr_body'(current_predicate(Term), TPred, DPred, Ctx) :-
+	nonvar(Term),
+	Term = ':'(Module, Pred),
+	!,
+	(	'$lgt_pp_module_'(_) ->
+		% we're compiling a module as an object; assume referenced modules are also compiled as objects
+		'$lgt_tr_body'(Module::current_predicate(Pred), TPred, DPred, Ctx)
+	;	% we're using modules together with objects
+		'$lgt_tr_body'(':'(Module, current_predicate(Pred)), TPred, DPred, Ctx)
+	).
+
 '$lgt_tr_body'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, p(_)), '$lgt_dbg_goal'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, p(_)), ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, This, _).
+
+'$lgt_tr_body'(predicate_property(Term, Prop), TPred, DPred, Ctx) :-
+	nonvar(Term),
+	Term = ':'(Module, Pred),
+	!,
+	(	'$lgt_pp_module_'(_) ->
+		% we're compiling a module as an object; assume referenced modules are also compiled as objects
+		'$lgt_tr_body'(Module::predicate_property(Pred, Prop), TPred, DPred, Ctx)
+	;	% we're using modules together with objects
+		'$lgt_tr_body'(':'(Module, predicate_property(Pred, Prop)), TPred, DPred, Ctx)
+	).
 
 '$lgt_tr_body'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, p(_)), '$lgt_dbg_goal'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, p(_)), ExCtx), Ctx) :-
 	!,
@@ -8662,6 +8689,17 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 
 % database handling built-in predicates
+
+'$lgt_tr_body'(abolish(Term), TCond, DCond, Ctx) :-
+	nonvar(Term),
+	Term = ':'(Module, Pred),
+	!,
+	(	'$lgt_pp_module_'(_) ->
+		% we're compiling a module as an object; assume referenced modules are also compiled as objects
+		'$lgt_tr_body'(Module::abolish(Pred), TCond, DCond, Ctx)
+	;	% we're using modules together with objects
+		'$lgt_tr_body'(':'(Module, abolish(Pred)), TCond, DCond, Ctx)
+	).
 
 '$lgt_tr_body'(abolish(Pred), TCond, DCond, Ctx) :-
 	!,
@@ -8674,6 +8712,17 @@ current_logtalk_flag(version, version(2, 37, 2)).
 		TCond = '$lgt_abolish_chk'(This, Pred, This, p(_))
 	),
 	DCond = '$lgt_dbg_goal'(abolish(Pred), TCond, ExCtx).
+
+'$lgt_tr_body'(asserta(Term), TCond, DCond, Ctx) :-
+	nonvar(Term),
+	Term = ':'(Module, Pred),
+	!,
+	(	'$lgt_pp_module_'(_) ->
+		% we're compiling a module as an object; assume referenced modules are also compiled as objects
+		'$lgt_tr_body'(Module::asserta(Pred), TCond, DCond, Ctx)
+	;	% we're using modules together with objects
+		'$lgt_tr_body'(':'(Module, asserta(Pred)), TCond, DCond, Ctx)
+	).
 
 '$lgt_tr_body'(asserta(Pred), TCond, DCond, Ctx) :-
 	!,
@@ -8696,6 +8745,17 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	),
 	DCond = '$lgt_dbg_goal'(asserta(Pred), TCond, ExCtx).
 
+'$lgt_tr_body'(assertz(Term), TCond, DCond, Ctx) :-
+	nonvar(Term),
+	Term = ':'(Module, Pred),
+	!,
+	(	'$lgt_pp_module_'(_) ->
+		% we're compiling a module as an object; assume referenced modules are also compiled as objects
+		'$lgt_tr_body'(Module::assertz(Pred), TCond, DCond, Ctx)
+	;	% we're using modules together with objects
+		'$lgt_tr_body'(':'(Module, assertz(Pred)), TCond, DCond, Ctx)
+	).
+
 '$lgt_tr_body'(assertz(Pred), TCond, DCond, Ctx) :-
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
@@ -8717,6 +8777,17 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	),
 	DCond = '$lgt_dbg_goal'(assertz(Pred), TCond, ExCtx).
 
+'$lgt_tr_body'(clause(Term, Body), TCond, DCond, Ctx) :-
+	nonvar(Term),
+	Term = ':'(Module, Head),
+	!,
+	(	'$lgt_pp_module_'(_) ->
+		% we're compiling a module as an object; assume referenced modules are also compiled as objects
+		'$lgt_tr_body'(Module::clause(Head, Body), TCond, DCond, Ctx)
+	;	% we're using modules together with objects
+		'$lgt_tr_body'(':'(Module, clause(Head, Body)), TCond, DCond, Ctx)
+	).
+
 '$lgt_tr_body'(clause(Head, Body), TCond, DCond, Ctx) :-
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
@@ -8731,6 +8802,17 @@ current_logtalk_flag(version, version(2, 37, 2)).
 		)
 	),
 	DCond = '$lgt_dbg_goal'(clause(Head, Body), TCond, ExCtx).
+
+'$lgt_tr_body'(retract(Term), TCond, DCond, Ctx) :-
+	nonvar(Term),
+	Term = ':'(Module, Pred),
+	!,
+	(	'$lgt_pp_module_'(_) ->
+		% we're compiling a module as an object; assume referenced modules are also compiled as objects
+		'$lgt_tr_body'(Module::retract(Pred), TCond, DCond, Ctx)
+	;	% we're using modules together with objects
+		'$lgt_tr_body'(':'(Module, retract(Pred)), TCond, DCond, Ctx)
+	).
 
 '$lgt_tr_body'(retract(Pred), TCond, DCond, Ctx) :-
 	!,
@@ -8754,6 +8836,17 @@ current_logtalk_flag(version, version(2, 37, 2)).
 		)
 	),
 	DCond = '$lgt_dbg_goal'(retract(Pred), TCond, ExCtx).
+
+'$lgt_tr_body'(retractall(Term), TCond, DCond, Ctx) :-
+	nonvar(Term),
+	Term = ':'(Module, Pred),
+	!,
+	(	'$lgt_pp_module_'(_) ->
+		% we're compiling a module as an object; assume referenced modules are also compiled as objects
+		'$lgt_tr_body'(Module::retractall(Pred), TCond, DCond, Ctx)
+	;	% we're using modules together with objects
+		'$lgt_tr_body'(':'(Module, retractall(Pred)), TCond, DCond, Ctx)
+	).
 
 '$lgt_tr_body'(retractall(Pred), TCond, DCond, Ctx) :-
 	!,
@@ -9400,6 +9493,13 @@ current_logtalk_flag(version, version(2, 37, 2)).
 		'$lgt_tr_msg'(Pred, Proxy, TPred, This)
 	;   throw(type_error(object_identifier, Proxy))
 	).
+
+
+% messages to the pseudo-object "user"
+
+'$lgt_tr_msg'(Pred, Obj, Pred, _) :-
+	Obj == user,
+	!.									
 
 
 % translation performed at runtime

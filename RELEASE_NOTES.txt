@@ -31,6 +31,15 @@ RELEASE NOTES
     Fixed a bug where a failed load of a settings file could be reported as
     successful.
 
+    Added missing dynamic directives in the definition of the pseudo-object
+    "user".
+
+    Eliminated message-sending overheads when sending messages to the pseudo-
+    object "user".
+
+    Added support for compiling module-qualified arguments in calls to Prolog
+    database and reflection built-in predicates.
+
     Updated the SWI-Prolog config file in order to support the proprietary
     predicate directives format_predicate/2, noprofile/1, and volatile/1.
 
