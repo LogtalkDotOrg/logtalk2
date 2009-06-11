@@ -6434,13 +6434,17 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	\+ callable(Module),
 	throw(type_error(atom, Module)).
 
-'$lgt_tr_directive'(use_module, [Module, Preds], File, Lines, Input, Output) :-
+'$lgt_tr_directive'(use_module, [Module, Exports], File, Lines, Input, Output) :-
 	(	atom(Module) ->
 		Name = Module
 	;	% assume library notation and that the file name is also the module name
 		arg(1, Module, Name),
 		atom(Name)
 	),
+	'$lgt_split_module_exports'(Exports, Preds, Ops),
+	forall(
+		'$lgt_member'(Op, Ops),
+		'$lgt_tr_directive'(Op, File, Lines, Input, Output)),
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
  		'$lgt_tr_directive'(uses, [Name, Preds], File, Lines, Input, Output)

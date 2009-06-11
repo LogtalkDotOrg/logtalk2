@@ -26,7 +26,7 @@ RELEASE NOTES
     found on SWI-Prolog and YAP is also supported.
 
     Added support for parsing operator declarations in the module/2, export/2,
-    and reexport/2 module directives.
+    reexport/2, and use_module/2 module directives.
 
     Fixed a bug where a failed load of a settings file could be reported as
     successful.
