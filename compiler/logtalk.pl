@@ -6491,7 +6491,11 @@ current_logtalk_flag(version, version(2, 37, 2)).
 '$lgt_tr_directive'(info, [List], _, _, _, _) :-
 	!,
 	(	'$lgt_valid_entity_info_list'(List) ->
-		assertz('$lgt_pp_info_'(List))
+		(	retract('$lgt_pp_info_'(Previous)) ->
+			'$lgt_append'(Previous, List, Info)
+		;	Info = List
+		),
+		assertz('$lgt_pp_info_'(Info))
 	;	throw(type_error(entity_info_list, List))
 	).
 
@@ -6502,7 +6506,11 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	(	nonvar(Pred) ->
 		(	'$lgt_valid_pred_or_gr_ind'(Pred, Functor, Arity) ->
 			'$lgt_tr_pred_info_list'(List, Functor, Arity),
-			assertz('$lgt_pp_info_'(Pred, List))
+			(	retract('$lgt_pp_info_'(Pred, Previous)) ->
+				'$lgt_append'(Previous, List, Info)
+			;	Info = List
+			),
+			assertz('$lgt_pp_info_'(Pred, Info))
 		;	throw(type_error(predicate_indicator, Pred))
 		)
 	;	throw(instantiation_error)
