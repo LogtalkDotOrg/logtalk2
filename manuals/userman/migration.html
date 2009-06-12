@@ -110,13 +110,13 @@ Currently, Logtalk supports the following module directives:
 	<dt><code>module/1</code></dt>
 		<dd>The module name becomes the object name.</dd>
 	<dt><code>module/2</code></dt>
-		<dd>The module name becomes the object name. The exported predicates become public object predicates. The exported operators become source-file level operators.</dd>
+		<dd>The module name becomes the object name. The exported predicates become public object predicates. The exported grammar rule non-terminals become public grammar rule non-terminals. The exported operators become source-file level operators.</dd>
 	<dt><code>use_module/2</code></dt>
-		<dd>This directive is compiled as a Logtalk <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directive in order to ensure correct compilation of the module predicate clauses. Note that the module specified in the first argument is not automatically loaded by Logtalk (as it would be when compiling the directive using Prolog instead of Logtalk; the programmer may also want the specified module to be compiled as an object). The second argument must be a predicate indicator (<code>Functor/Arity</code>), a grammar rule non-terminal indicator (<code>Functor//Arity</code>), or a list of predicate indicators and grammar rule non-terminal indicators. Referenced module meta-predicates working with closures are not supported. If that's the case, use the equivalent meta-predicates found on the Logtalk library.</dd>
+		<dd>This directive is compiled as a Logtalk <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directive in order to ensure correct compilation of the module predicate clauses. Note that the module specified in the first argument is not automatically loaded by Logtalk (as it would be when compiling the directive using Prolog instead of Logtalk; the programmer may also want the specified module to be compiled as an object). The second argument must be a predicate indicator (<code>Functor/Arity</code>), a grammar rule non-terminal indicator (<code>Functor//Arity</code>), a operator declaration, or a list of predicate indicators, grammar rule non-terminal indicators, and operator declarations. Referenced module meta-predicates working with closures are not supported. If that's the case, use the equivalent meta-predicates found on the Logtalk library.</dd>
 	<dt><code>export/1</code></dt>
-		<dd>Exported predicates are compiled as public object predicates. The argument must be a predicate indicator (<code>Functor/Arity</code>), a grammar rule non-terminal indicator (<code>Functor//Arity</code>), or a list of predicate indicators and grammar rule non-terminal indicators.</dd>
+		<dd>Exported predicates are compiled as public object predicates. The argument must be a predicate indicator (<code>Functor/Arity</code>), a grammar rule non-terminal indicator (<code>Functor//Arity</code>), a operator declaration, or a list of predicate indicators, grammar rule non-terminal indicators, and operator declarations.</dd>
 	<dt><code>reexport/2</code></dt>
-		<dd>Reexported predicates are compiled as public object predicates. The first argument is the module name. The second argument must be a predicate indicator (<code>Functor/Arity</code>), a grammar rule non-terminal indicator (<code>Functor//Arity</code>), or a list of predicate indicators and grammar rule non-terminal indicators.</dd>
+		<dd>Reexported predicates are compiled as public object predicates. The first argument is the module name. The second argument must be a predicate indicator (<code>Functor/Arity</code>), a grammar rule non-terminal indicator (<code>Functor//Arity</code>), a operator declaration, or a list of predicate indicators, grammar rule non-terminal indicators, and operator declarations.</dd>
 	<dt><code>meta_predicate/1</code></dt>
 		<dd>Module meta-predicates become object meta-predicates. Only predicate arguments marked as <code>:</code> are interpreted as meta-arguments. However, note that Prolog module meta-predicates and Logtalk meta-predicates don't share the same exact semantics; check results carefully.</dd>
 </dl>
@@ -225,7 +225,7 @@ Logtalk supports the compilation of such clauses within objects and categories. 
 <pre>
 :- object(...).
 
-	:- multifile(clpfd:run_propagator/2).
+    :- multifile(clpfd:run_propagator/2).
     clpfd:run_propagator(..., ...) :-
         ...    % calls to local object predicates
 

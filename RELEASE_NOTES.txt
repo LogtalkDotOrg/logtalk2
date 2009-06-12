@@ -22,7 +22,7 @@ RELEASE NOTES
     Added support for using grammar rule non-terminal indicators in the uses/2,
     multifile/1, reexport/2, and use_module/2 directives.
 
-    Added support for parsing operator declarations in the module/2, export/2,
+    Added support for parsing operator declarations in the module/2, export/1,
     reexport/2, and use_module/2 module directives.
 
     Added support for declaring and defining object and category multifile
