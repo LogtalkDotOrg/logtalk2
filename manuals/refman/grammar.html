@@ -726,6 +726,12 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 <h2 id="grammar_clauses">Clauses and goals</h2>
 
 	<dl>
+		<dt>clause ::=</dt>
+			<dd>object_identifier "<code>::</code>" <em>head</em> "<code>:-</code>" <em>body</em> |</dd>
+			<dd><em>head</em> :- <em>body</em> |</dd>
+			<dd><em>fact</em></dd>
+	</dl>
+	<dl>
 		<dt>goal ::=</dt>
 			<dd>message_call |</dd>
 			<dd>external_call |</dd>
@@ -839,7 +845,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: May 28, 2009</span>
+		<span>Last updated on: June 12, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="index.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>
