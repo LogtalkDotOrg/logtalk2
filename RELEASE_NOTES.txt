@@ -68,6 +68,9 @@ RELEASE NOTES
 
     Improved conversion guide for migrating Prolog module code to Logtalk.
 
+    Improved documentation and examples of using the term and goal expansion
+    mechanisms.
+
 
 2.37.1 - June 2, 2009
 
