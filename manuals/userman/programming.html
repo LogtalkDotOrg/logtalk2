@@ -329,7 +329,7 @@ Logtalk also implements a <a title="Consult reference manual" href="../refman/di
 	</dl>
 	<dl>
 		<dt><code>tmpdir(Directory)</code></dt>
-			<dd>Sets the directory to be used to store the temporary files generated when compiling Logtalk source files. The default value is <code>lgt_tmp</code>, a sub-directory of the source files directory. Use of this flag requires that the read-only flag <code>altdirs</code> be set to <code>on</code> (not supported in some back-end Prolog compilers).</dd>
+			<dd>Sets the directory to be used to store the temporary files generated when compiling Logtalk source files. The default value is a sub-directory of the source files directory, either <code>lgt_tmp</code> or <code>.lgt_tmp</code> (depending on the back-end Prolog compiler and operating-system). Use of this flag requires that the flag <code>altdirs</code> be set to <code>on</code> (not supported in some back-end Prolog compilers).</dd>
 	</dl>
 
 <h3 id="programming_smart">Reloading and smart compilation of source files</h3>
@@ -665,7 +665,7 @@ The Logtalk compiler automatically removes any redundant calls to the built-in p
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: May 1, 2009</span>
+		<span>Last updated on: June 12, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="installing.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="migration.html">next</a></span><br/>
