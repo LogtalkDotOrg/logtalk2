@@ -9697,16 +9697,8 @@ current_logtalk_flag(version, version(2, 37, 2)).
 		;	TPred = '$lgt_send_to_object_ne'(Obj, Pred, This)
 		)
 	;	(	'$lgt_compiler_flag'(events, allow) ->
-			(	'$lgt_obj_static_binding_cache'(Obj, Pred, This, Call) ->
-				TPred = (\+ ('$lgt_before_'(Obj, Pred, This, _, BCall), \+ BCall),
-						 Call,
-						 \+ ('$lgt_after_'(Obj, Pred, This, _, ACall), \+ ACall))
-			;	TPred = '$lgt_send_to_obj_'(Obj, Pred, This, _)
-			)
-		;	(	'$lgt_obj_static_binding_cache'(Obj, Pred, This, Call) ->
-				TPred = Call
-			;	TPred = '$lgt_send_to_obj_ne_'(Obj, Pred, This, _)
-			)
+			TPred = '$lgt_send_to_obj_'(Obj, Pred, This, _)
+		;	TPred = '$lgt_send_to_obj_ne_'(Obj, Pred, This, _)
 		)
 	).
 
@@ -12078,6 +12070,18 @@ current_logtalk_flag(version, version(2, 37, 2)).
 '$lgt_fix_pred_calls'('$lgt_dbg_goal'(OPred, Pred, ExCtx), '$lgt_dbg_goal'(OPred, TPred, ExCtx)) :-
 	!,
 	'$lgt_fix_pred_calls'(Pred, TPred).
+
+'$lgt_fix_pred_calls'('$lgt_send_to_obj_'(Obj, Pred, This, _), TPred) :-
+	'$lgt_obj_static_binding_cache'(Obj, Pred, This, Call),
+	!,
+	TPred = (\+ ('$lgt_before_'(Obj, Pred, This, _, BCall), \+ BCall),
+			Call,
+			\+ ('$lgt_after_'(Obj, Pred, This, _, ACall), \+ ACall)).
+
+'$lgt_fix_pred_calls'('$lgt_send_to_obj_ne_'(Obj, Pred, This, _), TPred) :-
+	'$lgt_obj_static_binding_cache'(Obj, Pred, This, Call),
+	!,
+	TPred = Call.
 
 '$lgt_fix_pred_calls'(Pred, fail) :-	% calls to static, declared but undefined predicates;
 	functor(Pred, Functor, Arity),		% must fail instead of throwing an exception
@@ -15640,8 +15644,10 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 '$lgt_tr_static_binding_meta_arg'((*), Arg, _, Arg, Arg).
 
-'$lgt_tr_static_binding_meta_arg'((::), Arg, Ctx, '$lgt_compiled'(TArg), '$lgt_compiled'(DArg)) :-
-	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
+'$lgt_tr_static_binding_meta_arg'((::), Arg, Ctx, '$lgt_compiled'(FTArg), '$lgt_compiled'(FDArg)) :-
+	'$lgt_tr_body'(Arg, TArg, DArg, Ctx),
+	'$lgt_fix_pred_calls'(TArg, FTArg),
+	'$lgt_fix_pred_calls'(DArg, FDArg).
 
 
 
