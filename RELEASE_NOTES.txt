@@ -43,6 +43,9 @@ RELEASE NOTES
     Added support for using multiple info/1 directives per entity and multiple
     info/2 directives per predicate (useful when compiling modules as objects). 
 
+    Optimized performance of meta-predicates whose meta-arguments are goals,
+    not closures, when using static binding.
+
     Updated the SWI-Prolog config file in order to support the proprietary
     predicate directives format_predicate/2, noprofile/1, and volatile/1.
 

@@ -239,7 +239,7 @@
 :- dynamic('$lgt_pp_redefined_built_in_'/3).	% '$lgt_pp_redefined_built_in_'(Head, ExCtx, THead)
 
 :- dynamic('$lgt_pp_directive_'/1).				% '$lgt_pp_directive_'(Dir)
-:- dynamic('$lgt_pp_pclause_'/1).				% '$lgt_pp_pclause_'(Clause)
+:- dynamic('$lgt_pp_pterm_'/1).					% '$lgt_pp_pterm_'(Clause)
 :- dynamic('$lgt_pp_rclause_'/1).				% '$lgt_pp_rclause_'(Clause)
 :- dynamic('$lgt_pp_eclause_'/1).				% '$lgt_pp_eclause_'(Clause)
 :- dynamic('$lgt_pp_feclause_'/1).				% '$lgt_pp_feclause_'(Clause)
@@ -3562,6 +3562,10 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	;	throw(error(instantiation_error, Sender::call(Pred), This))
 	).
 
+'$lgt_metacall'('$lgt_compiled'(Pred), _, _, _, _) :-
+	!,
+	call(Pred).
+
 '$lgt_metacall'(Pred, MetaCallCtx, Sender, This, Self) :-
 	(	\+ '$lgt_member'(Pred, MetaCallCtx) ->
 		'$lgt_metacall_this'(Pred, Sender, This, Self)
@@ -5020,8 +5024,8 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 '$lgt_write_tr_entity'(Stream) :-
 	catch(
-		('$lgt_write_directives'(Stream),
-		 '$lgt_write_prolog_clauses'(Stream),
+		('$lgt_write_prolog_terms'(Stream),
+		 '$lgt_write_logtalk_directives'(Stream),
 		 '$lgt_write_logtalk_clauses'(Stream)),
 		Error,
 		'$lgt_compiler_error_handler'(Stream, Error)).
@@ -5106,13 +5110,16 @@ current_logtalk_flag(version, version(2, 37, 2)).
 		OpenError,
 		'$lgt_compiler_error_handler'(NewInput, Output, OpenError)),
 	catch(
+		'$lgt_write_encoding_directive'(Output),
+		WriteError,
+		'$lgt_compiler_error_handler'(NewInput, Output, WriteError)),
+	catch(
 		'$lgt_tr_file'(Term, Singletons, Source, Lines, NewInput, Output),
 		Error,
 		'$lgt_compiler_error_handler'(Source, NewInput, Output, Error)),
 	close(NewInput),
 	catch(
-		('$lgt_write_directives'(Output),						% write out any Prolog code that may occur
-		 '$lgt_write_prolog_clauses'(Output),					% after the last entity on the source file;
+		('$lgt_write_prolog_terms'(Output),						% write out any Prolog code that may occur after the last entity on the source file;
 		 '$lgt_write_runtime_clauses'(Output),					% write entity runtime directives and clauses;
 		 '$lgt_write_init_call'(Output)),						% write initialization/1 directive at the
 		OutputError,											% end of the file to improve compatibility 
@@ -5644,7 +5651,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	retractall('$lgt_pp_ddef_'(_)),
 	retractall('$lgt_pp_fddef_'(_)),
 	retractall('$lgt_pp_super_'(_)),
-	retractall('$lgt_pp_pclause_'(_)),
+	retractall('$lgt_pp_pterm_'(_)),
 	retractall('$lgt_pp_rclause_'(_)),
 	retractall('$lgt_pp_eclause_'(_)),
 	retractall('$lgt_pp_feclause_'(_)),
@@ -6121,7 +6128,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 '$lgt_tr_file_directive'(ensure_loaded(File), _, _, _, _) :-
     !,
     ensure_loaded(File),                        		% assume that ensure_loaded/1 is also a built-in predicate
-    assertz('$lgt_pp_directive_'(ensure_loaded(File))).
+    assertz('$lgt_pp_pterm_'((:- ensure_loaded(File)))).
 
 '$lgt_tr_file_directive'(initialization(Goal), File, Lines, Input, Output) :-
 	'$lgt_tr_expand_goal'(Goal, EGoal),
@@ -6141,7 +6148,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	!,
 	'$lgt_check_op_directive_args'(Priority, Spec, Operators),
     op(Priority, Spec, Operators),						% op/3 directives must be used during entity compilation
-    assertz('$lgt_pp_directive_'(op(Priority, Spec, Operators))),
+    assertz('$lgt_pp_pterm_'((:- op(Priority, Spec, Operators)))),
     (   atom(Operators) ->
         assertz('$lgt_pp_file_op_'(Priority, Spec, Operators))
     ;   forall('$lgt_member'(Operator, Operators), assertz('$lgt_pp_file_op_'(Priority, Spec, Operator)))
@@ -6155,10 +6162,10 @@ current_logtalk_flag(version, version(2, 37, 2)).
 '$lgt_tr_file_directive'(set_prolog_flag(Flag, Value), _, _, _, _) :-
     !,
     set_prolog_flag(Flag, Value),
-    assertz('$lgt_pp_directive_'(set_prolog_flag(Flag, Value))).
+    assertz('$lgt_pp_pterm_'((:- set_prolog_flag(Flag, Value)))).
 
 '$lgt_tr_file_directive'(Dir, _, _, _, _) :-
-	assertz('$lgt_pp_directive_'(Dir)).					% directive will be copied to the generated Prolog file
+	assertz('$lgt_pp_pterm_'((:- Dir))).					% directive will be copied to the generated Prolog file
 
 
 
@@ -7746,7 +7753,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 '$lgt_tr_clause'(Clause, _, _, _) :-
 	\+ '$lgt_pp_entity'(_, _, _, _, _),			% all clauses occuring before an opening entity directive
 	!,
-	assertz('$lgt_pp_pclause_'(Clause)).		% are copied unchanged to the generated Prolog file
+	assertz('$lgt_pp_pterm_'(Clause)).		% are copied unchanged to the generated Prolog file
 
 '$lgt_tr_clause'(Clause, File, Lines, Input) :-
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, _),
@@ -12274,11 +12281,11 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 
 
-% '$lgt_write_directives'(@stream)
+% '$lgt_write_encoding_directive'(@stream)
 %
-% writes the directives; cumbersome due to the special processing of the encoding/1 directive
+% writes the encoding/1 directive; must be the first term in the file
 
-'$lgt_write_directives'(Stream) :-
+'$lgt_write_encoding_directive'(Stream) :-
 	'$lgt_compiler_flag'(encoding_directive, full),
 	'$lgt_pp_file_encoding_'(_, Encoding),
 	write_canonical(Stream, (:- encoding(Encoding))),
@@ -12286,29 +12293,37 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	nl(Stream),
 	fail.
 
-'$lgt_write_directives'(Stream) :-
+'$lgt_write_encoding_directive'(_).
+
+
+
+% '$lgt_write_logtalk_directives'(@stream)
+%
+% writes Logtalk directives
+
+'$lgt_write_logtalk_directives'(Stream) :-
 	'$lgt_pp_directive_'(Directive),
 	write_canonical(Stream, (:- Directive)),
 	write(Stream, '.'),
 	nl(Stream),
 	fail.
 
-'$lgt_write_directives'(_).
+'$lgt_write_logtalk_directives'(_).
 
 
 
-% '$lgt_write_prolog_clauses'(@stream)
+% '$lgt_write_prolog_terms'(@stream)
 %
 % writes any Prolog clauses that appear before an entity opening directive
 
-'$lgt_write_prolog_clauses'(Stream) :-
-	'$lgt_pp_pclause_'(Clause),
+'$lgt_write_prolog_terms'(Stream) :-
+	'$lgt_pp_pterm_'(Clause),
 		write_canonical(Stream, Clause),
 		write(Stream, '.'),
 		nl(Stream),
 	fail.
 
-'$lgt_write_prolog_clauses'(_).
+'$lgt_write_prolog_terms'(_).
 
 
 
@@ -15587,7 +15602,12 @@ current_logtalk_flag(version, version(2, 37, 2)).
 		true
 	;	'$lgt_static_binding_entity_'(Obj),
 		'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
-		call(Dcl, Pred, p(p(p)), static, _, _, _, _, DclCtn), !,
+		call(Dcl, Pred, p(p(p)), Type, Meta, _, _, _, DclCtn), !,
+		(	Type == static ->
+			true
+		;	% Type == dynamic
+			Obj = DclCtn
+		),
 		functor(Obj, ObjFunctor, ObjArity),
 		functor(GObj, ObjFunctor, ObjArity),
 		functor(Pred, PredFunctor, PredArity),
@@ -15595,9 +15615,33 @@ current_logtalk_flag(version, version(2, 37, 2)).
 		'$lgt_exec_ctx'(GExCtx, GSender, GObj, GObj, _),
 		call(Def, GPred, GExCtx, GCall, DefCtn), !,
 		'$lgt_safe_static_binding_paths'(GObj, DclCtn, DefCtn),
-		assertz('$lgt_obj_static_binding_cache_'(GObj, GPred, GSender, GCall)),
-		(Obj, Pred, Sender, Call) = (GObj, GPred, GSender, GCall)
+		(	Meta =.. [PredFunctor| MArgs],						% fails when Meta == no
+			Pred =.. [PredFunctor| Args],
+			\+ ('$lgt_member'(MArg, MArgs), integer(MArg)) ->	% closures cannot be optimized
+			'$lgt_pp_entity'(_, _, Prefix, _, _),
+			'$lgt_comp_ctx'(Ctx, _, Sender, Sender, Obj, Prefix, [], _, ExCtx),
+			'$lgt_exec_ctx'(ExCtx, Sender, Sender, Obj, []),
+			'$lgt_tr_static_binding_meta_args'(Args, MArgs, Ctx, TArgs, _),
+			TPred =.. [PredFunctor| TArgs],
+			(Obj, TPred, Sender, Call) = (GObj, GPred, GSender, GCall)
+		;	% cache only normal predicates
+			assertz('$lgt_obj_static_binding_cache_'(GObj, GPred, GSender, GCall)),
+			(Obj, Pred, Sender, Call) = (GObj, GPred, GSender, GCall)
+		)
 	).
+
+
+'$lgt_tr_static_binding_meta_args'([], [], _, [], []).
+
+'$lgt_tr_static_binding_meta_args'([Arg| Args], [MArg| MArgs], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
+	'$lgt_tr_static_binding_meta_arg'(MArg, Arg, Ctx, TArg, DArg),
+	'$lgt_tr_static_binding_meta_args'(Args, MArgs, Ctx, TArgs, DArgs).
+
+
+'$lgt_tr_static_binding_meta_arg'((*), Arg, _, Arg, Arg).
+
+'$lgt_tr_static_binding_meta_arg'((::), Arg, Ctx, '$lgt_compiled'(TArg), '$lgt_compiled'(DArg)) :-
+	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
 
 
 
