@@ -6111,6 +6111,11 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	),
 	'$lgt_tr_directive'(RWDir, File, Lines, Input, Output).	% try to translate the rewritten directive
 
+'$lgt_tr_directive'(Dir, File, Lines, Input, Output) :-
+	'$lgt_pp_module_'(_),									% we're compiling a module as an object
+	!,														% translate queries used as directives as initialization goals
+	'$lgt_tr_directive'(initialization, [Dir], File, Lines, Input, Output).
+
 '$lgt_tr_directive'(Dir, _, _, _, _) :-
 	functor(Dir, Functor, Arity),
 	throw(error(domain_error(directive, Functor/Arity), directive(Dir))).

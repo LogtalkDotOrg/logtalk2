@@ -43,6 +43,9 @@ RELEASE NOTES
     Added support for using multiple info/1 directives per entity and multiple
     info/2 directives per predicate (useful when compiling modules as objects). 
 
+    Added support for translating queries used as directives as initialization
+    goals when compiling a module as an object.
+
     Optimized performance of meta-predicates whose meta-arguments are goals,
     not closures, when using static binding.
 
