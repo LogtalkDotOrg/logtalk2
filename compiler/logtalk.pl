@@ -6114,6 +6114,15 @@ current_logtalk_flag(version, version(2, 37, 2)).
 '$lgt_tr_directive'(Dir, File, Lines, Input, Output) :-
 	'$lgt_pp_module_'(_),									% we're compiling a module as an object
 	!,														% translate queries used as directives as initialization goals
+	(	'$lgt_compiler_flag'(portability, warning),
+		\+ '$lgt_compiler_flag'(report, off) ->
+		'$lgt_report_warning_in_new_line',
+		'$lgt_inc_compile_warnings_counter',
+		write('%         WARNING!  Compiling query used as directive as an initialization goal: '), writeq(Dir), nl,
+		'$lgt_pp_entity'(Type, Entity, _, _, _),
+		'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
+	;	true
+	),
 	'$lgt_tr_directive'(initialization, [Dir], File, Lines, Input, Output).
 
 '$lgt_tr_directive'(Dir, _, _, _, _) :-
