@@ -50,7 +50,6 @@
 
 logtalk_library_path(my_project_1, '$HOME/my_project_1/').
 logtalk_library_path(my_project_2, '$HOME/my_project_2/').
-)).
 */
 
 /* For back-end Prolog compilers that don't support multifile predicates:
