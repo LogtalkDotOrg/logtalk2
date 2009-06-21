@@ -3964,6 +3964,9 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 % the following clauses correspond to a virtual compilation of the built-in object debugger
 
+:- dynamic('$lgt_bio_debugger_0__ddcl'/2).
+:- dynamic('$lgt_bio_debugger_0__ddef'/3).
+
 
 % debugger public protocol
 
@@ -3990,6 +3993,9 @@ current_logtalk_flag(version, version(2, 37, 2)).
 '$lgt_bio_debugger_0__dcl'(Pred, Scope, Type, Meta, NonTerminal, Synchronized, debugger, debugger) :-
 	'$lgt_bio_debugger_0__dcl'(Pred, Scope, Type, Meta, NonTerminal, Synchronized).
 
+'$lgt_bio_debugger_0__dcl'(Pred, Scope, (dynamic), no, no, no, debugger, debugger) :-
+	'$lgt_bio_debugger_0__ddcl'(Pred, Scope).
+
 
 '$lgt_bio_debugger_0__def'(reset, _, '$lgt_dbg_reset').
 
@@ -4013,6 +4019,17 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 '$lgt_bio_debugger_0__def'(Pred, ExCtx, Call, debugger) :-
 	'$lgt_bio_debugger_0__def'(Pred, ExCtx, Call).
+
+'$lgt_bio_debugger_0__def'(Pred, ExCtx, Call, debugger) :-
+	'$lgt_bio_debugger_0__ddef'(Pred, ExCtx, Call).
+
+
+'$lgt_bio_debugger_0__idcl'(Pred, Scope, (dynamic), no, no, no, debugger, debugger) :-
+	'$lgt_bio_debugger_0__ddcl'(Pred, Scope).
+
+
+'$lgt_bio_debugger_0__idef'(Pred, ExCtx, Call, debugger) :-
+	'$lgt_bio_debugger_0__ddef'(Pred, ExCtx, Call).
 
 
 '$lgt_bio_debugger_0__super'(_, _, _, _) :-

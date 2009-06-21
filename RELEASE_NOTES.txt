@@ -31,11 +31,14 @@ RELEASE NOTES
     Fixed a bug where a failed load of a settings file could be reported as
     successful.
 
-    Added missing dynamic directives in the definition of the pseudo-object
-    "user".
+    Added missing dynamic directives in the definition of the pseudo-objects
+    "debugger" and "user".
 
     Eliminated message-sending overheads when sending messages to the pseudo-
     object "user".
+
+    Allow the "debugger" built-in object to play the role of both a class and
+    a prototype when being specialized or extended.
 
     Added support for compiling module-qualified arguments in calls to Prolog
     database and reflection built-in predicates.
