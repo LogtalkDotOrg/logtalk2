@@ -6130,12 +6130,16 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 '$lgt_tr_directive'(Dir, File, Lines, Input, Output) :-
 	'$lgt_pp_module_'(_),									% we're compiling a module as an object
-	!,														% translate queries used as directives as initialization goals
+	(	functor(Dir, Functor, Arity), '$lgt_pp_defs_pred_'(Functor, Arity)
+	;	'$lgt_pp_uses_pred_'(_, _, Dir)						% directive is a query for a locally defined predicate
+ 	;	'$lgt_pp_use_module_pred_'(_, _, Dir)				% or a predicate referenced in a use_module/2 directive
+	),
+	!,														% translate query as an initialization goal
 	(	'$lgt_compiler_flag'(portability, warning),
 		\+ '$lgt_compiler_flag'(report, off) ->
 		'$lgt_report_warning_in_new_line',
 		'$lgt_inc_compile_warnings_counter',
-		write('%         WARNING!  Compiling query used as directive as an initialization goal: '), writeq(Dir), nl,
+		write('%         WARNING!  Compiling query as an initialization goal: '), writeq(Dir), nl,
 		'$lgt_pp_entity'(Type, Entity, _, _, _),
 		'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
 	;	true
