@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.2 or later versions
 %
-%  last updated: May 12, 2009
+%  last updated: June 22, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -152,7 +152,7 @@ forall(Generate, Test) :-
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
-'$lgt_prolog_feature'(multifile_directive, unsupported).
+'$lgt_prolog_feature'(multifile_directive, supported).
 '$lgt_prolog_feature'(tabling, supported).
 '$lgt_prolog_feature'(threads, Threads) :-
 	(	xsb_configuration(engine_mode, 'multi-threading') ->

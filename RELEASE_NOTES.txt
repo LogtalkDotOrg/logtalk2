@@ -74,7 +74,11 @@ RELEASE NOTES
     load_foreign_resource/1 proprietary directive.
 
     Updated the B-Prolog config file in order to support the new foreach/3-4
-    meta-predicates and the new table mode directive in B-Prolog 7.3.
+    meta-predicates and the new table mode directive in B-Prolog 7.3. Added
+    definition for the "prolog_version" read-only compiler flag.
+
+    Updated the XSB config file in order to enable support for multifile
+    directives (version 3.2 or later is required).
 
     Improved conversion guide for migrating Prolog module code to Logtalk.
 
