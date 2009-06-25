@@ -346,7 +346,7 @@ Obj<<Goal :-
 '$lgt_runtime_error_handler'(error(existence_error(goal_thread, TGoal), Sender)) :-
 	functor(TGoal, TFunctor, TArity),
 	TGoal =.. [_| TArgs],
-	'$lgt_reverse_predicate_functor'(TFunctor, TArity, _, _, Functor, _),
+	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, _, _, Functor/_),
 	'$lgt_append'(Args, ExCtx, TArgs),
 	'$lgt_exec_ctx'(ExCtx, _, _, Self, _),
 	Goal =.. [Functor| Args],
@@ -386,34 +386,34 @@ Obj<<Goal :-
 	'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), context(TFunctor2/TArity2, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), context(TFunctor2/TArity2, _))) :-	% SWI-Prolog
-	'$lgt_reverse_predicate_functor'(TFunctor1, TArity1, Entity, Type, Functor1, Arity1),
-	'$lgt_reverse_predicate_functor'(TFunctor2, TArity2, Entity, Type, Functor2, Arity2),
+	'$lgt_reverse_predicate_indicator'(TFunctor1/TArity1, Entity, Type, Functor1/Arity1),
+	'$lgt_reverse_predicate_indicator'(TFunctor2/TArity2, Entity, Type, Functor2/Arity2),
 	throw(error(existence_error(procedure, Functor1/Arity1), context(Type, Entity, Functor2/Arity2))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), TFunctor2/TArity2)) :-				% GNU Prolog and B-Prolog
-	'$lgt_reverse_predicate_functor'(TFunctor1, TArity1, Entity, Type, Functor1, Arity1),
-	'$lgt_reverse_predicate_functor'(TFunctor2, TArity2, Entity, Type, Functor2, Arity2),
+	'$lgt_reverse_predicate_indicator'(TFunctor1/TArity1, Entity, Type, Functor1/Arity1),
+	'$lgt_reverse_predicate_indicator'(TFunctor2/TArity2, Entity, Type, Functor2/Arity2),
 	throw(error(existence_error(procedure, Functor1/Arity1), context(Type, Entity, Functor2/Arity2))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ModTFunctor/TArity), _)) :-								% Ciao
 	atom_concat('user:', TFunctor, ModTFunctor),
-	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
+	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/TArity), _)) :-									% K-Prolog and YAP 5.1 or later
-	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
+	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ':'(_, TFunctor/TArity)), _)) :-
-	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
+	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(_, _, procedure, ':'(_, TFunctor/TArity), _), _)) :-					% Quintus, SICStus Prolog
-	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
+	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ':'(_, TFunctor/TArity)), _, _)) :-						% XSB
-	'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity),
+	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(Variable, _, Sender)) :-
@@ -2508,7 +2508,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	;	% else no definition lookup entry exists; construct and assert a dynamic one...
 		functor(Head, Functor, Arity),
 		functor(GHead, Functor, Arity),
-		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
+		'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/_),
 		GHead =.. [_| GArgs],
 		'$lgt_append'(GArgs, [ExCtx], TArgs),
 		THead =.. [TFunctor| TArgs],
@@ -6933,8 +6933,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
 	!,
 	'$lgt_construct_entity_prefix'(Entity, Prefix),
-	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
-	TArity is Arity + 1,
+	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 	assertz('$lgt_pp_directive_'(dynamic(TFunctor/TArity))),
 	'$lgt_tr_dynamic_directive'(Preds).
 
@@ -6960,8 +6959,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	'$lgt_valid_gr_ind'(Pred, Functor, _, ExtArity),
 	!,
 	'$lgt_construct_entity_prefix'(Entity, Prefix),
-	'$lgt_construct_predicate_functor'(Prefix, Functor, ExtArity, TFunctor),
-	TArity is ExtArity + 1,
+	'$lgt_construct_predicate_indicator'(Prefix, Functor/ExtArity, TFunctor/TArity),
 	assertz('$lgt_pp_directive_'(dynamic(TFunctor/TArity))),
 	'$lgt_tr_dynamic_directive'(Preds).
 
@@ -7083,8 +7081,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
 	!,
 	'$lgt_construct_entity_prefix'(Entity, Prefix),
-	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
-	TArity is Arity + 1,
+	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 	assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity))),
 	'$lgt_tr_multifile_directive'(Preds).
 
@@ -7092,8 +7089,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	'$lgt_valid_gr_ind'(Pred, Functor, _, ExtArity),
 	!,
 	'$lgt_construct_entity_prefix'(Entity, Prefix),
-	'$lgt_construct_predicate_functor'(Prefix, Functor, ExtArity, TFunctor),
-	TArity is ExtArity + 1,
+	'$lgt_construct_predicate_indicator'(Prefix, Functor/ExtArity, TFunctor/TArity),
 	assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity))),
 	'$lgt_tr_multifile_directive'(Preds).
 
@@ -7113,8 +7109,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
 	!,
 	'$lgt_pp_entity'(_, _, Prefix, _, _),
-	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
-	TArity is Arity + 1,
+	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 	assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity))),
 	'$lgt_tr_multifile_directive'(Preds).
 
@@ -7122,8 +7117,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	'$lgt_valid_gr_ind'(Pred, Functor, _, ExtArity),
 	!,
 	'$lgt_pp_entity'(_, _, Prefix, _, _),
-	'$lgt_construct_predicate_functor'(Prefix, Functor, ExtArity, TFunctor),
-	TArity is ExtArity + 1,
+	'$lgt_construct_predicate_indicator'(Prefix, Functor/ExtArity, TFunctor/TArity),
 	assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity))),
 	'$lgt_tr_multifile_directive'(Preds).
 
@@ -8058,8 +8052,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 		throw(type_error(callable, Head))
 	;	functor(Head, Functor, Arity),
 		'$lgt_construct_entity_prefix'(Other, Prefix),
-		'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
-		TArity is Arity + 1,
+		'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 		Head =.. [Functor| HeadArgs],
 		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 		'$lgt_comp_ctx_head'(Ctx, TFunctor/TArity),
@@ -9228,14 +9221,13 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	Pred =.. [Functor| Args],
 	functor(Pred, Functor, Arity),
 	'$lgt_comp_ctx'(Ctx, Head, _, _, _, Prefix, _, _, ExCtx),
-	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
+	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 	(	'$lgt_pp_synchronized_'(Pred, _), Functor/Arity \= Head ->
 		atom_concat(TFunctor, '_sync', STFunctor)
 	;	STFunctor = TFunctor
 	),
 	'$lgt_append'(Args, [ExCtx], TArgs),
 	TPred =.. [STFunctor| TArgs],
-	TArity is Arity + 1,
 	(	'$lgt_pp_calls_pred_'(Functor, Arity, _, _) ->
 		true
 	;	assertz('$lgt_pp_calls_pred_'(Functor, Arity, STFunctor, TArity))
@@ -9408,7 +9400,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 		;	'$lgt_pp_private_'(Functor, Arity)
 	)),
 	Head =.. [Functor| Args],
-	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
+	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/_),
 	'$lgt_append'(Args, [_], TArgs),
 	TPred =.. [TFunctor| TArgs].
 
@@ -10851,7 +10843,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	'$lgt_comp_ctx'(Ctx, _, _, _, _, Prefix, _, _, ExCtx),
 	'$lgt_append'(HeadTemplateArgs, [ExCtx2], HeadTemplateArgsDef),
 	'$lgt_append'(HeadArgs, [ExCtx], HeadArgsDef),
-	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
+	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/_),
 	HeadTemplateDef =.. [TFunctor| HeadTemplateArgsDef],
 	HeadDef =.. [TFunctor| HeadArgsDef],
 	once((  '$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _)
@@ -10888,7 +10880,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	'$lgt_comp_ctx'(Ctx, _, _, _, _, Prefix, _, _, ExCtx),
 	'$lgt_append'(HeadTemplateArgs, [ExCtx2], HeadTemplateArgsDef),
 	'$lgt_append'(HeadArgs, [ExCtx], HeadArgsDef),
-	'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor),
+	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/_),
 	HeadTemplateDef =.. [TFunctor| HeadTemplateArgsDef],
 	HeadDef =.. [TFunctor| HeadArgsDef],
 	once('$lgt_pp_object_'(_, _, _, _, _, _, _, _, DDef, _, _)),
@@ -12811,24 +12803,11 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 
 
-% '$lgt_construct_predicate_functor'(+atom, +atom, +integer, -atom)
+% '$lgt_reverse_predicate_indicator'(+predicate_indicator, -callable, -atom, -predicate_indicator)
 %
-% constructs the functor used for a compiled predicate
+% reverses the predicate indicator used for a compiled predicate; not completly realiable
 
-'$lgt_construct_predicate_functor'(Prefix, Functor, Arity, TFunctor) :-
-	atom_concat(Prefix, Functor, Aux),
-	atom_concat(Aux, '_', Aux2),
-	number_codes(Arity, Codes),
-	atom_codes(Atom, Codes),
-	atom_concat(Aux2, Atom, TFunctor).
-
-
-
-% '$lgt_reverse_predicate_functor'(+atom, +integer, -callable, -atom, -atom, -integer)
-%
-% reverses the functor used for a compiled predicate; not completly realiable
-
-'$lgt_reverse_predicate_functor'(TFunctor, TArity, Entity, Type, Functor, Arity) :-
+'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity) :-
 	(	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _, _, _, _),
 		Type = object
 	;	'$lgt_current_category_'(Entity, Prefix, _, _, _, _),
