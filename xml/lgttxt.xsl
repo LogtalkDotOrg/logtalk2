@@ -102,30 +102,30 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 			</xsl:if>
 			<xsl:if test="imports">
 				<xsl:text>imports:</xsl:text><xsl:value-of select="$nl" />
-					<xsl:apply-templates select="imports" />
+				<xsl:apply-templates select="imports" />
 			</xsl:if>
 			<xsl:if test="extends">
 				<xsl:text>extends:</xsl:text><xsl:value-of select="$nl" />
 				<xsl:apply-templates select="extends" />
 			</xsl:if>
 			<xsl:if test="instantiates">
-			<xsl:text>instantiates:</xsl:text><xsl:value-of select="$nl" />
+				<xsl:text>instantiates:</xsl:text><xsl:value-of select="$nl" />
 				<xsl:apply-templates select="instantiates" />
 			</xsl:if>
 			<xsl:if test="specializes">
-			<xsl:text>specializes:</xsl:text><xsl:value-of select="$nl" />
+				<xsl:text>specializes:</xsl:text><xsl:value-of select="$nl" />
 				<xsl:apply-templates select="specializes" />
 			</xsl:if>
 			<xsl:if test="uses">
-			<xsl:text>uses:</xsl:text><xsl:value-of select="$nl" />
+				<xsl:text>uses:</xsl:text><xsl:value-of select="$nl" />
 				<xsl:apply-templates select="uses" />
 			</xsl:if>
 			<xsl:if test="calls">
-			<xsl:text>calls:</xsl:text><xsl:value-of select="$nl" />
+				<xsl:text>calls:</xsl:text><xsl:value-of select="$nl" />
 				<xsl:apply-templates select="calls" />
 			</xsl:if>
 			<xsl:if test="alias">
-			<dt class ="key">aliases:</dt>
+				<xsl:text>aliases:</xsl:text><xsl:value-of select="$nl" />
 				<xsl:apply-templates select="alias" />
 			</xsl:if>
 		</xsl:when>

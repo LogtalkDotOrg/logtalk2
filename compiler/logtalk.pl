@@ -14790,37 +14790,37 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 '$lgt_write_xml_relations'(Stream) :-
 	'$lgt_pp_rclause_'('$lgt_implements_protocol_'(Entity, Ptc, Scope)),
-	'$lgt_write_xml_relation'(Stream, Entity, Ptc, implements, Scope),
+		'$lgt_write_xml_relation'(Stream, Entity, Ptc, implements, Scope),
 	fail.
 
 '$lgt_write_xml_relations'(Stream) :-
 	'$lgt_pp_rclause_'('$lgt_imports_category_'(Entity, Ctg, Scope)),
-	'$lgt_write_xml_relation'(Stream, Entity, Ctg, imports, Scope),
+		'$lgt_write_xml_relation'(Stream, Entity, Ctg, imports, Scope),
 	fail.
 
 '$lgt_write_xml_relations'(Stream) :-
 	'$lgt_pp_rclause_'('$lgt_extends_object_'(Entity, Parent, Scope)),
-	'$lgt_write_xml_relation'(Stream, Entity, Parent, extends, Scope),
+		'$lgt_write_xml_relation'(Stream, Entity, Parent, extends, Scope),
 	fail.
 
 '$lgt_write_xml_relations'(Stream) :-
 	'$lgt_pp_rclause_'('$lgt_instantiates_class_'(Entity, Class, Scope)),
-	'$lgt_write_xml_relation'(Stream, Entity, Class, instantiates, Scope),
+		'$lgt_write_xml_relation'(Stream, Entity, Class, instantiates, Scope),
 	fail.
 
 '$lgt_write_xml_relations'(Stream) :-
 	'$lgt_pp_rclause_'('$lgt_specializes_class_'(Entity, Superclass, Scope)),
-	'$lgt_write_xml_relation'(Stream, Entity, Superclass, specializes, Scope),
+		'$lgt_write_xml_relation'(Stream, Entity, Superclass, specializes, Scope),
 	fail.
 
 '$lgt_write_xml_relations'(Stream) :-
 	'$lgt_pp_rclause_'('$lgt_extends_protocol_'(Entity, Ptc, Scope)),
-	'$lgt_write_xml_relation'(Stream, Entity, Ptc, extends, Scope),
+		'$lgt_write_xml_relation'(Stream, Entity, Ptc, extends, Scope),
 	fail.
 
 '$lgt_write_xml_relations'(Stream) :-
 	'$lgt_pp_rclause_'('$lgt_extends_category_'(Entity, Ctg, Scope)),
-	'$lgt_write_xml_relation'(Stream, Entity, Ctg, extends, Scope),
+		'$lgt_write_xml_relation'(Stream, Entity, Ctg, extends, Scope),
 	fail.
 
 '$lgt_write_xml_relations'(Stream) :-
@@ -14837,13 +14837,15 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 '$lgt_write_xml_relations'(Stream) :-
 	'$lgt_pp_alias_'(Entity, Pred, Alias),
-	functor(Pred, PFunctor, PArity),
-	functor(Alias, AFunctor, AArity),
-	'$lgt_write_xml_open_tag'(Stream, alias, []),
-	'$lgt_write_xml_cdata_element'(Stream, name, [], Entity),
-	'$lgt_write_xml_cdata_element'(Stream, original, [], PFunctor/PArity),
-	'$lgt_write_xml_cdata_element'(Stream, alternative, [], AFunctor/AArity),
-	'$lgt_write_xml_close_tag'(Stream, alias),
+		Entity =.. [_| Args],				% take care of parametric entities
+		'$lgt_vars_to_underscore'(Args),
+		functor(Pred, PFunctor, PArity),
+		functor(Alias, AFunctor, AArity),
+		'$lgt_write_xml_open_tag'(Stream, alias, []),
+		'$lgt_write_xml_cdata_element'(Stream, name, [], Entity),
+		'$lgt_write_xml_cdata_element'(Stream, original, [], PFunctor/PArity),
+		'$lgt_write_xml_cdata_element'(Stream, alternative, [], AFunctor/AArity),
+		'$lgt_write_xml_close_tag'(Stream, alias),
 	fail.
 
 '$lgt_write_xml_relations'(Stream) :-
