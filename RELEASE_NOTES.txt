@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.37.2 - June ??, 2009
+2.37.2 - June 29, 2009
 
     Added support for parsing reexport/2 module directives when compiling
     Prolog modules as Logtalk objects. The predicate renaming operator as/2

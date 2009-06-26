@@ -224,7 +224,8 @@ ECLiPSe 5.10#26 or later 5.10 versions
 	appended to the old ones instead of replacing them.
 
 	Full support for settings files on POSIX operating-systems. On Windows,
-	only supports settings files on the Logtalk user folder.
+	only supports settings files on the Logtalk user folder. Doesn't support
+	the "altdirs" flag.
 
 
 ECLiPSe 6.0#77 or later versions

@@ -6617,9 +6617,9 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 
 '$lgt_tr_directive'(metapredicate, Preds, File, Lines, Input, Output) :-	% depracated directive name
-	'$lgt_tr_directive'(meta_predicate, Preds, File, Lines, Input, Output).
+	'$lgt_tr_directive'((meta_predicate), Preds, File, Lines, Input, Output).
 
-'$lgt_tr_directive'(meta_predicate, Preds, _, _, _, _) :-
+'$lgt_tr_directive'((meta_predicate), Preds, _, _, _, _) :-
 	'$lgt_flatten_list'(Preds, Preds2),
 	'$lgt_normalize_meta_predicate_args'(Preds2, Preds3),
 	'$lgt_tr_meta_predicate_directive'(Preds3).
