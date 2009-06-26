@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 5.10#26 or later 5.10 versions
 %
-%  last updated: June 7, 2009
+%  last updated: June 26, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -252,7 +252,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_default_flag'(dynamic_declarations, deny).
 '$lgt_default_flag'(events, deny).
 
-'$lgt_default_flag'(altdirs, off).
+'$lgt_default_flag'(altdirs, off).	% altdirs(on) not supported
 '$lgt_default_flag'(tmpdir, TmpDir) :-
 	(	get_flag(hostarch, HostArch), atom_string(i386_nt, HostArch) ->
 		TmpDir = 'lgt_tmp/'

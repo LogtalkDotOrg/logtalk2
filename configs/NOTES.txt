@@ -234,7 +234,9 @@ ECLiPSe 6.0#77 or later versions
 	eclipse6iso.pl
 
 	ECLiPSE 6.0#78 adds an alias in_set_range/2 for ::/2 that can be used
-	to avoid conflicts with Logtalk ::/2 message sending operator.
+	to avoid conflicts with Logtalk ::/2 message sending operator. Supports
+	the "altdirs" flag.
+
 	(see also the comments above about the ECLiPSe 5.10 version)
 
 
