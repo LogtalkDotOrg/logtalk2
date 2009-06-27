@@ -56,6 +56,9 @@ RELEASE NOTES
     Optimized performance of meta-predicates whose meta-arguments are goals,
     not closures, when using static binding.
 
+    Improved automatic generation of XML documenting files for parametric
+    objects when no parameter names are given.
+
     Updated the SWI-Prolog config file in order to support the proprietary
     predicate directives format_predicate/2, noprofile/1, and volatile/1.
 

@@ -14400,8 +14400,8 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 % '$lgt_entity_to_xml_term'(+entity)
 %
-% instantiates the parameters in a parametric object to
-% user defined names or to the atom '_'
+% instantiates the parameters in a parametric object to either  user-defined names or
+% to '$VAR(N)' atoms; at last resort, the parameters are instantiated to the atom '_'
 
 '$lgt_entity_to_xml_term'(Entity) :-
 	'$lgt_pp_info_'(List),
@@ -14413,6 +14413,10 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	!,
 	Entity =.. [_| Args],
 	'$lgt_vars_to_atoms'(Args, Args, Names).
+
+'$lgt_entity_to_xml_term'(Entity) :-
+	catch(numbervars(Entity, 0, _), _, fail),	% some back-end Prolog compilers may not
+	!.											% define this de facto standard predicate
 
 '$lgt_entity_to_xml_term'(Entity) :-
 	Entity =.. [_| Args],
