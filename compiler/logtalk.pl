@@ -14400,8 +14400,8 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 % '$lgt_entity_to_xml_term'(+entity)
 %
-% instantiates the parameters in a parametric object to either  user-defined names or
-% to '$VAR(N)' atoms; at last resort, the parameters are instantiated to the atom '_'
+% instantiates the parameters in a parametric object to either user-defined names or
+% to '$VAR'(N) terms; at last resort, the parameters are instantiated to the atom '_'
 
 '$lgt_entity_to_xml_term'(Entity) :-
 	'$lgt_pp_info_'(List),
