@@ -11,13 +11,15 @@
 %
 %  configuration file for ECLiPSe 5.10#26 or later 5.10 versions
 %
-%  last updated: June 26, 2009
+%  last updated: June 27, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 :- pragma(system).
 :- pragma(nodebug).
+
+:- use_module(library(numbervars)).
 
 
 

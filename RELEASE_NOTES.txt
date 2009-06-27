@@ -70,8 +70,9 @@ RELEASE NOTES
     Updated the YAP config file in order to support parsing of the use_module/1
     module directive.
 
-    Updated the ECLiPSe config files in order to support parsing of comment/2,
-    import/2, inline/2, and set_flag/3 proprietary directives.
+    Updated the ECLiPSe config files in order to make available the predicate
+    numbervars/3 and to support parsing of comment/2, import/2, inline/2, and
+    set_flag/3 proprietary directives.
 
     Updated the SICStus Prolog config files in order to support parsing of the
     load_foreign_resource/1 proprietary directive.

@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#77 and later versions
 %
-%  last updated: June 7, 2009
+%  last updated: June 27, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -19,6 +19,7 @@
 :- pragma(system).
 :- pragma(nodebug).
 
+:- use_module(library(numbervars)).
 :- use_module(library(multifile)).
 
 
