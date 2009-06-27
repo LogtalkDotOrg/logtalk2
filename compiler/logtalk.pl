@@ -3628,13 +3628,17 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 
 
-% '$lgt_call_built_in'(+callable, +execution_context)
+% '$lgt_call_built_in'(+callable, +callable, +execution_context)
 %
 % needed for runtime translation of dynamic clauses, for dealing
 % with meta-calls that turn out to be calls to built-in predicates,
 % and for dealing with <</2 calls to redefined built-in predicates
+%
+% the first argument, Pred, is the original predicate call, while the second
+% argument, MetaExPred, is equal to the first argument for normal predicates
+% but is meta-argument expanded for non-redefined built-in meta-predicates
 
-'$lgt_call_built_in'(Pred, ExCtx) :-
+'$lgt_call_built_in'(Pred, MetaExPred, ExCtx) :-
 	(	'$lgt_exec_ctx'(ExCtx, This, _),
 		'$lgt_current_object_'(This, _, _, Def, _, _, _, _, DDef, _, _),
 		(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
@@ -3644,7 +3648,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 		;	call(TPred)
 		)
 	;	% call the built-in predicate:
-		call(Pred)
+		call(MetaExPred)
 	).
 
 
@@ -9153,7 +9157,7 @@ current_logtalk_flag(version, version(2, 37, 2)).
 
 % Prolog proprietary, built-in meta-predicates
 
-'$lgt_tr_body'(Pred, '$lgt_call_built_in'(TPred, ExCtx), DPred, Ctx) :-
+'$lgt_tr_body'(Pred, '$lgt_call_built_in'(Pred, TPred, ExCtx), DPred, Ctx) :-
 	'$lgt_pl_built_in'(Pred),
 	functor(Pred, Functor, Arity),
 	\+ '$lgt_pp_public_'(Functor, Arity),			% not a redefined
@@ -9181,14 +9185,14 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	),
 	(	Type == control_construct ->
 		DGoal =.. [Functor| DArgs],
-		DPred = '$lgt_call_built_in'(DGoal, Ctx)
-	;	DPred = '$lgt_dbg_goal'(Pred, '$lgt_call_built_in'(TPred, ExCtx), ExCtx)
+		DPred = '$lgt_call_built_in'(Pred, DGoal, Ctx)
+	;	DPred = '$lgt_dbg_goal'(Pred, '$lgt_call_built_in'(Pred, TPred, ExCtx), ExCtx)
 	).
 
 
 % Logtalk and Prolog built-in predicates
 
-'$lgt_tr_body'(Pred, '$lgt_call_built_in'(Pred, ExCtx), '$lgt_dbg_goal'(Pred, '$lgt_call_built_in'(Pred, ExCtx), ExCtx), Ctx) :-
+'$lgt_tr_body'(Pred, '$lgt_call_built_in'(Pred, Pred, ExCtx), '$lgt_dbg_goal'(Pred, '$lgt_call_built_in'(Pred, Pred, ExCtx), ExCtx), Ctx) :-
 	'$lgt_built_in'(Pred),
 	functor(Pred, Functor, Arity),
 	\+ '$lgt_pp_public_'(Functor, Arity),			% not a redefined
@@ -12126,11 +12130,11 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	'$lgt_fix_pred_calls_in_margs'(Args, MArgs, TArgs),
 	TPred =.. [Functor| TArgs].
 
-'$lgt_fix_pred_calls'('$lgt_call_built_in'(Pred, ExCtx), TPred) :-
-	!,									% calls to Logtalk and Prolog built-in predicates
+'$lgt_fix_pred_calls'('$lgt_call_built_in'(Pred, MetaExPred, ExCtx), TPred) :-
+	!,									% calls to Logtalk and Prolog built-in (meta-)predicates
 	(	'$lgt_pp_redefined_built_in_'(Pred, ExCtx, TPred) ->
 		true
-	;	'$lgt_fix_pred_calls'(Pred, TPred)
+	;	'$lgt_fix_pred_calls'(MetaExPred, TPred)
 	).
 
 '$lgt_fix_pred_calls'('$lgt_dbg_goal'(Pred, DPred, ExCtx), '$lgt_dbg_goal'(Pred, TPred, ExCtx)) :-
@@ -12203,10 +12207,10 @@ current_logtalk_flag(version, version(2, 37, 2)).
 	'$lgt_pp_calls_nt_'(Functor, Arity),
 	\+ '$lgt_pp_defs_nt_'(Functor, Arity),					% non-terminal not defined in object/category and
 	ExtArity is Arity + 2,
-	\+ '$lgt_pp_defs_pred_'(Functor, ExtArity),		% no corresponding predicate is defined
-	\+ '$lgt_pp_dynamic_'(Functor, ExtArity),			% no dynamic directive for the corresponding predicate 
-	once((	'$lgt_pp_public_'(Functor, ExtArity)		% but there is a scope directive for the non-terminal 
-		;	'$lgt_pp_protected_'(Functor, ExtArity)	% or the corresponding predicate 
+	\+ '$lgt_pp_defs_pred_'(Functor, ExtArity),				% no corresponding predicate is defined
+	\+ '$lgt_pp_dynamic_'(Functor, ExtArity),				% no dynamic directive for the corresponding predicate 
+	once((	'$lgt_pp_public_'(Functor, ExtArity)			% but there is a scope directive for the non-terminal 
+		;	'$lgt_pp_protected_'(Functor, ExtArity)			% or the corresponding predicate 
 		;	'$lgt_pp_private_'(Functor, ExtArity)
 	)).
 

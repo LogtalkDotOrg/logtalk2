@@ -28,8 +28,11 @@ RELEASE NOTES
     Added support for declaring and defining object and category multifile
     grammar rules.
 
-    Fixed a bug where a failed load of a settings file could be reported as
-    successful.
+    Corrected a bug where a failed load of a settings file could be reported
+    as successful.
+
+    Corrected a bug when compiling an object or category normal predicate that
+    redefines a built-in Prolog meta-predicate.
 
     Added missing dynamic directives in the definition of the pseudo-objects
     "debugger" and "user".
