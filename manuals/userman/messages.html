@@ -22,7 +22,7 @@
 <h1 id="messages_messages">Message sending</h1>
 
 <p>
-Messages allows us to call object predicates. Logtalk uses the same nomenclature found in other object-oriented programming languages such as Smalltalk. Therefore, the terms <em>predicate</em> and <em>method</em> are often used interchangeably when refering to predicates defined inside objects and categories. A message must always match a predicate within the scope of the sender object.
+Messages allows us to call object predicates. Logtalk uses the same nomenclature found in other object-oriented programming languages such as Smalltalk. Therefore, the terms <em>predicate</em> and <em>method</em> are often used interchangeably when referring to predicates defined inside objects and categories. A message must always match a predicate within the scope of the sender object.
 </p>
 <p>
 Note that message sending is only the same as calling an object's predicate if the object does not inherit (or import) predicate definitions from other objects (or categories). Otherwise, the predicate definition that will be executed may depend on the relationships of the object with other Logtalk entities.
@@ -64,7 +64,7 @@ The message must match a public or protected predicate declared for the receivin
 <h2 id="messages_broadcasting">Broadcasting</h2>
 
 <p>
-In the Logtalk context, broadcasting is interpreted as the sending of several messages to the same object. This can be achieved by using the message sending method described above. However, for convenience, Logtalk implements an extended syntax for message sending that may improve program readibility in some cases. This extended syntax uses the <code>(,)/2</code>, <code>(;)/2</code>, and <code>(->)/2</code> control constructs. For example, if we wish to send several messages to the same object, we can write:
+In the Logtalk context, broadcasting is interpreted as the sending of several messages to the same object. This can be achieved by using the message sending method described above. However, for convenience, Logtalk implements an extended syntax for message sending that may improve program readability in some cases. This extended syntax uses the <code>(,)/2</code>, <code>(;)/2</code>, and <code>(-&gt;)/2</code> control constructs. For example, if we wish to send several messages to the same object, we can write:
 </p>
 <pre>| ?- Object::(Message1, Message2, ...).</pre>
 <p>
@@ -101,7 +101,7 @@ It is possible to call an imported category predicate without using the message 
 <h2 id="messages_events">Message sending and event generation</h2>
 
 <p>
-Every message sent using <a title="Consult reference manual" href="../refman/control/to_object2.html"><code>::/2</code></a> operator generates two events, allowe before and one after the message execution. Messages that are sent using the <a title="Consult reference manual" href="../refman/control/to_self1.html"><code>::/1</code></a> (message to <em>self</em>) operator or the <a title="Consult reference manual" href="../refman/control/super1.html"><code>^^/1</code></a> super mechanism described above do not generate any events. The rational behind this distinction is that messages to <em>self</em> and <em>super</em> calls are only used internally in the definition of methods or to execute additional messages with the same target object (represented by <em>self</em>). In other words, events are only generated when using an object's public interface; they cannot be used to break object encapsulation.
+Every message sent using the <a title="Consult reference manual" href="../refman/control/to_object2.html"><code>::/2</code></a> operator generates two events, one before and one after the message execution. Messages that are sent using the <a title="Consult reference manual" href="../refman/control/to_self1.html"><code>::/1</code></a> (message to <em>self</em>) operator or the <a title="Consult reference manual" href="../refman/control/super1.html"><code>^^/1</code></a> super mechanism described above do not generate any events. The rational behind this distinction is that messages to <em>self</em> and <em>super</em> calls are only used internally in the definition of methods or to execute additional messages with the same target object (represented by <em>self</em>). In other words, events are only generated when using an object's public interface; they cannot be used to break object encapsulation.
 </p>
 <p>
 If we need to generate events for a public message sent to <em>self</em>, then we just need to write something like:
@@ -138,7 +138,7 @@ Whenever static binding is used, message sending performance is roughly the same
 In order to better understand the performance tradeoffs of using Logtalk dynamic binding when compared to plain Prolog or to Prolog module systems, is useful to translate message processing in terms of predicate calls. However, in doing this, we should keep in mind that the number of predicate calls is not necessarily proportional to the time taken to execute them.
 </p>
 <p>
-With event-suport turned on, a message sent from a compiled object to another object translates to three predicate calls:
+With event-support turned on, a message sent from a compiled object to another object translates to three predicate calls:
 </p>
 <dl>
 	<dt>checking for <em>before</em> events</dt>
@@ -209,7 +209,7 @@ It should be stressed that message sending is only one of the factors affecting 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: May 1, 2009</span>
+		<span>Last updated on: June 30, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="nomenclature.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="objects.html">next</a></span><br/>

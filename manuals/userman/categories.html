@@ -108,7 +108,7 @@ The meta-arguments of built-in meta-predicates are called either in <em><a class
 <h2 id="categories_finding">Finding defined categories</h2>
 
 <p>
-We can find, by backtracking, all defined categories by using the <a title="Consult reference manual" href="../refman/builtins/current_category1.html"><code>current_category/1</code></a> Logtalk built-in predicate with an uninstantiated variable:
+We can find, by backtracking, all defined categories by using the <a title="Consult reference manual" href="../refman/builtins/current_category1.html"><code>current_category/1</code></a> Logtalk built-in predicate with a non-instantiated variable:
 </p>
 <pre>| ?- current_category(Category).</pre>
 <p>
@@ -229,7 +229,7 @@ or, if we want to know the implementation scope:
 </p>
 <pre>| ?- implements_protocol(Category, Protocol, Scope).</pre>
 <p>
-Note that, if we use an uninstantiated variable for the first argument, we will need to use the <a title="Consult reference manual" href="../refman/builtins/current_category1.html"><code>current_category/1</code></a> built-in predicate to ensure that the returned entity is a category and not an object.
+Note that, if we use a non-instantiated variable for the first argument, we will need to use the <a title="Consult reference manual" href="../refman/builtins/current_category1.html"><code>current_category/1</code></a> built-in predicate to ensure that the returned entity is a category and not an object.
 </p>
 <p>
 To find which objects import which categories we can use the 
@@ -354,7 +354,7 @@ This alternative should only be used when the user knows a priori that the categ
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: May 3, 2009</span>
+		<span>Last updated on: June 30, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="protocols.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="predicates.html">next</a></span><br/>
