@@ -4,8 +4,8 @@
 
 ;; Author: Paulo Moura <pmoura@logtalk.org>
 ;; Creation date: November 15, 2003
-;; Last modification date: November 23, 2008
-;; Version: 1.8
+;; Last modification date: July 1, 20089
+;; Version: 1.9
 
 ;; Installation:
 ;;
@@ -26,7 +26,7 @@
 
 ;; setup 
 
-(defvar logtalk-mode-version "1.7"
+(defvar logtalk-mode-version "1.9"
 	"Logtalk mode version number")
 
 (defvar logtalk-mode-hook nil)
@@ -99,7 +99,7 @@
 		("\\(:- \\)\\(\\(e\\(?:lse\\|nd\\(?:if\\|_\\(?:category\\|object\\|protocol\\)\\)\\)\\)\\)\\([\.]\\)" 2 'logtalk-directive-face)
 		("\\(:- \\)\\(category\\|object\\|protocol\\|module\\)\\([(]\\)" 2 'logtalk-directive-face)
 		("\\(:- \\)\\(p\\(?:r\\(?:ivate\\|otected\\)\\|ublic\\)\\)\\([(]\\)" 2 'logtalk-directive-face)
-		("\\(:- \\)\\(alias\\|calls\\|d\\(?:iscontiguous\\|ynamic\\)\\|e\\(?:lif\\|n\\(?:coding\\|sure_loaded\\)\\|xport\\)\\|i\\(?:f\\|n\\(?:fo\\|itialization\\)\\)\\|m\\(?:\\(?:eta_predicat\\|od\\)e\\)\\|op\\|use\\(?:s\\|_module\\)\\|synchronized\\)\\([(]\\)" 2 'logtalk-directive-face)
+		("\\(:- \\)\\(alias\\|calls\\|d\\(?:iscontiguous\\|ynamic\\)\\|e\\(?:lif\\|n\\(?:coding\\|sure_loaded\\)\\|xport\\)\\|i\\(?:f\\|n\\(?:fo\\|itialization\\)\\)\\|m\\(?:\\(?:eta_predicat\\|od\\|ultifil\\)e\\)\\|op\\|use\\(?:s\\|_module\\)\\|synchronized\\)\\([(]\\)" 2 'logtalk-directive-face)
 		("\\(:- \\)\\(dynamic\\|s\\(?:et_\\(?:logtalk\\|prolog\\)_flag\\|ynchronized\\)\\|threaded\\)\\([\.]\\)" 2 'logtalk-directive-face)
 		("\\<\\(\\(?:complement\\|extend\\|i\\(?:mp\\(?:\\(?:lemen\\|or\\)t\\)\\|nstantiate\\)\\|specialize\\)s\\)\\([(]\\)" 1 'logtalk-directive-face)
 	))

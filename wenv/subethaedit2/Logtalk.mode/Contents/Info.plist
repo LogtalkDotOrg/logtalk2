@@ -19,7 +19,6 @@
 	<key>TCMModeExtensions</key>
 	<array>
 	   <string>lgt</string>
-	   <string>config</string>
 	</array>
 </dict>
 </plist>

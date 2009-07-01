@@ -38,6 +38,12 @@ comment
 	:- uses(list, [append/3, member/2]).
 	:- uses(queues, [new/1::new_queue/1]).
 
+	:- multifile(zzz/1).
+	:- multifile(module:zzz/1).
+	:- multifile(object::zzz/1).
+
+	:- use_module(module, [xxx/1, yyy/2, zzz/3]).
+
 	:- public(aaa/2).
 	:- meta_predicate(aaa(::, *)).
 	:- discontiguous(aaa/2).

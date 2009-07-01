@@ -21,10 +21,12 @@ alias
 discontiguous
 meta_predicate
 mode
+multifile
 op
 private
 protected
 public
+use_module
 current_object
 current_protocol
 current_category

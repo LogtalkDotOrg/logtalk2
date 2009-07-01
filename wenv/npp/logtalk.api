@@ -97,6 +97,7 @@ logtalk_load
 meta_predicate
 mod
 mode
+multifile
 nl
 nonvar
 number
@@ -159,6 +160,7 @@ true
 truncate
 unify_with_occurs_check
 uses
+use_module
 var
 write
 writeq

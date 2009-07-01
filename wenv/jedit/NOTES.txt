@@ -26,7 +26,7 @@ To install:
 2.	Open the "catalog" file in the same subdirectory and add (if not 
 	present) the following entry:
 	
-	<MODE NAME="logtalk" FILE="logtalk.xml" FILE_NAME_GLOB="*.{lgt,config}" />
+	<MODE NAME="logtalk" FILE="logtalk.xml" FILE_NAME_GLOB="*.{lgt}" />
 
 3.	Install (or update if necessary) the jEdit plug-in Templates 4.0.0
 	or later version.

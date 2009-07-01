@@ -28,6 +28,7 @@ protected(/).
 private(/).
 uses(, [/]).
 uses().
+use_module(, [/]).
 calls().
 info([]).
 info(/, []).
@@ -37,6 +38,7 @@ mode(, zero_or_one).
 mode(, zero_or_more).
 mode(, one_or_more).
 mode(, error).
+multifile(/).
 dynamic(/).
 dynamic.
 discontiguous(/).
