@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.37.2
+%  Release 2.37.3
 %  
 %  Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
@@ -1956,7 +1956,7 @@ current_logtalk_flag(Flag, Value) :-
 current_logtalk_flag(Flag, Value) :-
 	'$lgt_prolog_feature'(Flag, Value).
 
-current_logtalk_flag(version, version(2, 37, 2)).
+current_logtalk_flag(version, version(2, 37, 3)).
 
 
 
