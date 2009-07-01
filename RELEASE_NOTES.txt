@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.37.3 - July ??, 2009
 
+    Corrected an optimization bug in the Logtalk compiler when processing
+    bagof/3 and setof/3 calls whose goal is existentially qualified (using
+    the ^/2 operator). Thanks to Joerg Schuster for the bug report.
+
     Updated text editor configuration files in order to remove references to
     the no longer used ".config" file name extension and to support syntax
     coloring and code completion of the multifile/1 and use_module/1-2

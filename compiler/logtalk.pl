@@ -12068,6 +12068,10 @@ current_logtalk_flag(version, version(2, 37, 3)).
 	!,
 	'$lgt_fix_pred_calls'(Pred, TPred).
 
+'$lgt_fix_pred_calls'(Var^Pred, Var^TPred) :-
+	!,
+	'$lgt_fix_pred_calls'(Pred, TPred).
+
 '$lgt_fix_pred_calls'(call(Pred), call(TPred)) :-
 	!,
 	'$lgt_fix_pred_calls'(Pred, TPred).
