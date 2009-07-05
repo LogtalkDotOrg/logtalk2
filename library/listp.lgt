@@ -2,9 +2,9 @@
 :- protocol(listp).
 
 	:- info([
-		version is 1.4,
+		version is 1.41,
 		author is 'Paulo Moura',
-		date is 2009/5/15,
+		date is 2009/7/5,
 		comment is 'List protocol.']).
 
 	:- public(append/2).
@@ -179,7 +179,7 @@
 	:- public(sort/2).
 	:- mode(sort(+list, -list), one).
 	:- info(sort/2,
-		[comment is 'Sorts a list in ascending order.',
+		[comment is 'Sorts a list in ascending order (duplicated elements are removed).',
 		 argnames is ['List', 'Sorted']]).
 
 	:- public(sublist/2).

@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.8,
+		version is 1.9,
 		author is 'Paulo Moura',
-		date is 2009/5/15,
+		date is 2009/7/5,
 		comment is 'List predicates.']).
 
 	:- public(as_difflist/2).
@@ -122,14 +122,15 @@
 		;	min(Ns, Aux, Min)
 		).
 
-	:- if((
-		current_logtalk_flag(prolog_dialect, Prolog),
-		(Prolog == cx; Prolog == swi; Prolog == yap),
-		predicate_property(msort(_, _), built_in)
-	)).
+	:- if(predicate_property(msort(_, _), built_in)).
 
 		msort(List, Sorted) :-
 			{msort(List, Sorted)}.
+
+	:- elif(current_logtalk_flag(prolog_dialect, gnu)).
+
+		msort(List, Sorted) :-
+			{sort0(List, Sorted)}.
 
 	:- else.
 
@@ -256,8 +257,17 @@
 		select(Elem, List, Rest) ->
 		Remaining = Rest.
 
-	sort(List, Sorted) :-
-		{sort(List, Sorted)}.		
+	:- if(predicate_property(sort(_, _), built_in)).
+
+		sort(List, Sorted) :-
+			{sort(List, Sorted)}.		
+
+	:- else.
+
+		sort(List, Sorted) :-
+			setof(Element, member(Element, List), Sorted).		
+
+	:- endif.
 
 	sublist(List, List).
 	sublist(Sublist, [Head| Tail]):-

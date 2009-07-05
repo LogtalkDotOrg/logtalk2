@@ -3,9 +3,9 @@
 	implements(termp)).
 
 	:- info([
-		version is 1.3,
+		version is 1.4,
 		author is 'Paulo Moura',
-		date is 2009/3/6,
+		date is 2009/7/5,
 		comment is 'Prolog term utility predicates.']).
 
 	:- alias(termp, variables/2, vars/2).
@@ -36,11 +36,7 @@
 		Term =.. [_| Args],
 		depth(Args, Acc2, MaxSoFar, Depth).
 
-	:- if((
-		current_logtalk_flag(prolog_dialect, Prolog),
-		(Prolog == b; Prolog == cx; Prolog == swi; Prolog == yap; Prolog == sicstus),
-		predicate_property(ground(_), built_in)
-	)).
+	:- if(predicate_property(ground(_), built_in)).
 
 		ground(Term) :-
 			{ground(Term)}.
@@ -80,32 +76,41 @@
 		N2 is N - 1,
 		occurs(N2, Var, Term).
 
-	subsumes(General, Specific) :-
-		variables(Specific, Vars),
-		subsumes(General, Specific, Vars).
+	:- if(predicate_property(subsumes(_, _), built_in)).
 
-	subsumes(General, Specific, Vars) :-
-		var(General),
-		!,
-		(	var_member_chk(General, Vars) ->
-			General == Specific
-		;	General = Specific
-		).
+		subsumes(General, Specific) :-
+			{subsumes(General, Specific)}.
 
-	subsumes(General, Specific, Vars) :-
-		nonvar(Specific),
-		functor(General, Functor, Arity),
-		functor(Specific, Functor, Arity),
-		subsumes(Arity, General, Specific, Vars).
+	:- else.
 
-	subsumes(0, _, _, _) :-
-		!.
-	subsumes(N, General, Specific, Vars) :-
-		arg(N, General,  GenArg),
-		arg(N, Specific, SpeArg),
-		subsumes(GenArg, SpeArg, Vars),
-		M is N-1, !,
-		subsumes(M, General, Specific, Vars).
+		subsumes(General, Specific) :-
+			variables(Specific, Vars),
+			subsumes(General, Specific, Vars).
+
+		subsumes(General, Specific, Vars) :-
+			var(General),
+			!,
+			(	var_member_chk(General, Vars) ->
+				General == Specific
+			;	General = Specific
+			).
+
+		subsumes(General, Specific, Vars) :-
+			nonvar(Specific),
+			functor(General, Functor, Arity),
+			functor(Specific, Functor, Arity),
+			subsumes(Arity, General, Specific, Vars).
+
+		subsumes(0, _, _, _) :-
+			!.
+		subsumes(N, General, Specific, Vars) :-
+			arg(N, General,  GenArg),
+			arg(N, Specific, SpeArg),
+			subsumes(GenArg, SpeArg, Vars),
+			M is N-1, !,
+			subsumes(M, General, Specific, Vars).
+
+	:- endif.
 
 	var_member_chk(Var, [Head| Tail]) :-
 		(	Var == Head ->
