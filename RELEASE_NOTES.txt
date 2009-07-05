@@ -28,6 +28,9 @@ RELEASE NOTES
     Updated the library object "list" to use the built-in predicates sort/2
     and msort/2 when available in the back-end Prolog compiler.
 
+    Updated the library object "integer" to use the built-in predicates plus/3,
+    between/3, and succ/2 when available in the back-end Prolog compiler.
+
     Updated text editor configuration files in order to remove references to
     the no longer used ".config" file name extension and to support syntax
     coloring and code completion of the multifile/1 and use_module/1-2
