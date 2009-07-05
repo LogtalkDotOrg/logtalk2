@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.37.3 - July ??, 2009
 
+    Added an workaround for the lack of standardization of the predicate
+    predicate_property/2 when using it in conditional compilation directives.
+
     Corrected an optimization bug in the Logtalk compiler when processing
     bagof/3 and setof/3 calls whose goal is existentially qualified (using
     the ^/2 operator). Thanks to Joerg Schuster for the bug report.

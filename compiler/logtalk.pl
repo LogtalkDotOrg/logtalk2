@@ -5962,6 +5962,10 @@ current_logtalk_flag(version, version(2, 37, 3)).
 	!,
 	'$lgt_tr_directive'(if(EGoal), File, Lines, Input, Output).
 
+'$lgt_tr_directive'(if(predicate_property(Pred, Prop)), File, Lines, Input, Output) :-
+	!,	% workaround lack of standardization of the predicate_property/2 predicate
+	'$lgt_tr_directive'(if('$lgt_predicate_property'(Pred, Prop)), File, Lines, Input, Output).
+
 '$lgt_tr_directive'(if(Goal), _, _, Input, _) :-
 	'$lgt_pp_cc_mode_'(Value),					% not top-level if
 	!,
@@ -6003,6 +6007,10 @@ current_logtalk_flag(version, version(2, 37, 3)).
 	'$lgt_tr_expand_goal'(Goal, EGoal),
 	!,
 	'$lgt_tr_directive'(elif(EGoal), File, Lines, Input, Output).
+
+'$lgt_tr_directive'(elif(predicate_property(Pred, Prop)), File, Lines, Input, Output) :-
+	!,	% workaround lack of standardization of the predicate_property/2 predicate
+	'$lgt_tr_directive'(elif('$lgt_predicate_property'(Pred, Prop)), File, Lines, Input, Output).
 
 '$lgt_tr_directive'(elif(Goal), File, Lines, Input, _) :-
 	retract('$lgt_pp_cc_mode_'(Value)),
