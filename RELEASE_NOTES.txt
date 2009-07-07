@@ -15,8 +15,8 @@ RELEASE NOTES
 
 2.37.3 - July ??, 2009
 
-    Added an workaround for the lack of standardization of the predicate
-    predicate_property/2 when using it in conditional compilation directives.
+    Added a workaround for the lack of standardization of the predicate
+    predicate_property/2 when used in conditional compilation directives.
 
     Corrected an optimization bug in the Logtalk compiler when processing
     bagof/3 and setof/3 calls whose goal is existentially qualified (using
@@ -33,8 +33,7 @@ RELEASE NOTES
 
     Updated text editor configuration files in order to remove references to
     the no longer used ".config" file name extension and to support syntax
-    coloring and code completion of the multifile/1 and use_module/1-2
-    directives.
+    coloring and code completion of multifile/1 and use_module/1-2 directives.
 
     Corrected some spelling and XHTML typos in the User and Reference Manuals.
 
