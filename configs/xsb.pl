@@ -68,7 +68,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% call_cleanup(+callable, +callble) -- built-in
+% call_cleanup(+callable, +callable) -- built-in
 
 
 % forall(+Generate, +Test)

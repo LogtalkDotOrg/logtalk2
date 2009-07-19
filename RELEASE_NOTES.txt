@@ -18,7 +18,7 @@ RELEASE NOTES
     Added a workaround for the lack of standardization of the predicate
     predicate_property/2 when used in conditional compilation directives.
 
-    Corrected an optimization bug in the Logtalk compiler when processing
+    Corrected an optimization bug in the Logtalk compiler when compiling
     bagof/3 and setof/3 calls whose goal is existentially qualified (using
     the ^/2 operator). Thanks to Joerg Schuster for the bug report.
 
@@ -36,6 +36,7 @@ RELEASE NOTES
     coloring and code completion of multifile/1 and use_module/1-2 directives.
 
     Corrected some spelling and XHTML typos in the User and Reference Manuals.
+    Corrected some BibTeX typos in the "BIBLIOGRAPHY.bib" file.
 
 
 2.37.2 - June 29, 2009

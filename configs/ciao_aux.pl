@@ -147,13 +147,13 @@ lgt_ciao_iso_builtin(put_char(_, _)).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% call_cleanup(+callable, +callble)
+% call_cleanup(+callable, +callable)
 
 call_cleanup(_, _) :-
 	throw(not_supported(call_cleanup/2)).
 
 
-% forall(+callable, +callble) -- built-in
+% forall(+callable, +callable)
 
 forall(Generate, Test) :-
 	\+ (Generate, \+ Test).

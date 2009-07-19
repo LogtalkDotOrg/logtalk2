@@ -71,10 +71,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% call_cleanup(+callable, +callble) -- built-in
+% call_cleanup(+callable, +callable) -- built-in
 
 
-% forall(+callable, +callble) -- built-in
+% forall(+callable, +callable) -- built-in
 
 
 % retractall(+callable) -- built-in

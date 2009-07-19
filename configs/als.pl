@@ -88,13 +88,13 @@ once(Goal) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% call_cleanup(+callable, +callble)
+% call_cleanup(+callable, +callable)
 
 call_cleanup(_, _) :-
 	throw(not_supported(call_cleanup/2)).
 
 
-% forall(+callable, +callble)
+% forall(+callable, +callable)
 
 forall(Generate, Test) :-
 	\+ (Generate, \+ Test).

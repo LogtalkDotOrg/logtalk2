@@ -7794,7 +7794,7 @@ current_logtalk_flag(version, version(2, 37, 3)).
 '$lgt_tr_clause'(Clause, _, _, _) :-
 	\+ '$lgt_pp_entity'(_, _, _, _, _),			% all clauses occuring before an opening entity directive
 	!,
-	assertz('$lgt_pp_pterm_'(Clause)).		% are copied unchanged to the generated Prolog file
+	assertz('$lgt_pp_pterm_'(Clause)).			% are copied unchanged to the generated Prolog file
 
 '$lgt_tr_clause'(Clause, File, Lines, Input) :-
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, _),
