@@ -4,16 +4,24 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.3,
+		version is 1.4,
 		author is 'Paulo Moura',
-		date is 2009/5/4,
+		date is 2009/7/24,
 		comment is 'Difference list predicates.']).
+
+	:- public(add/3).
+	:- mode(add(@term, +list, -list), one).
+	:- info(add/3,
+		[comment is 'Adds a term to the end of a difference list.',
+		 argnames is ['Term', 'DiffList', 'NewDiffList']]).
 
 	:- public(as_list/2).
 	:- mode(as_list(+list, -list), one).
 	:- info(as_list/2,
 		[comment is 'Converts a difference list to a normal list.',
-		 argnames is ['Diffist', 'List']]).
+		 argnames is ['DiffList', 'List']]).
+
+	add(Term, List-[Term| Back], List-Back).
 
 	append(List1-Back1, Back1-Back2, List1-Back2) :-
 		nonvar(List1),
@@ -81,7 +89,7 @@
 
 	keysort(Difflist, Sorted) :-
 		as_list(Difflist, List),
-		{keysort(List, List2)},
+		list::keysort(List, List2),
 		list::as_difflist(List2, Sorted).		
 
 	last(List-Back, Last) :-
@@ -145,6 +153,11 @@
 
 	memberchk(Element, List) :-
 		once(member(Element, List)).
+
+	msort(Difflist, Sorted) :-
+		as_list(Difflist, List),
+		list::msort(List, List2),
+		list::as_difflist(List2, Sorted).		
 
 	nth0(Position, List, Element) :-
 		nth(Element, List, 0, Position, _).
@@ -295,7 +308,7 @@
 
 	sort(Difflist, Sorted) :-
 		as_list(Difflist, List),
-		{sort(List, List2)},
+		list::sort(List, List2),
 		list::as_difflist(List2, Sorted).		
 
 	sublist(Sublist, List) :-
