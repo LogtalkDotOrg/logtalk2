@@ -23,4 +23,24 @@
 :- op(200,  fy,  -).
 :- op(400, yfx, <<).
 :- op(600,  fy,  :).
+:- noprofile((
+	'$lgt_before_'/5, '$lgt_after_'/5,
+	'$lgt_current_protocol_'/5, '$lgt_current_category_'/6, '$lgt_current_object_'/11,
+	'$lgt_compiler_flag'/2, '$lgt_default_flag'/2, '$lgt_current_flag_'/2, '$lgt_pp_compiler_flag_'/2,
+	'$lgt_prolog_feature'/2,
+	'$lgt_dbg_debugging_'/0,
+	'$lgt_exec_ctx'/5, '$lgt_pred_meta_vars'/3,
+	'$lgt_send_to_self_nv'/3, '$lgt_send_to_self'/3, '$lgt_send_to_self_'/4,
+	'$lgt_send_to_object'/3, '$lgt_send_to_obj_'/4,
+	'$lgt_send_to_object_nv'/3, '$lgt_send_to_object_ne_nv'/3,
+	'$lgt_send_to_object_ne'/3, '$lgt_send_to_obj_ne_'/4,
+	'$lgt_obj_super_call_same'/3, '$lgt_obj_super_call_same_'/4,
+	'$lgt_obj_super_call_other'/3, '$lgt_obj_super_call_other_'/4,
+	'$lgt_ctg_super_call_same'/3, '$lgt_ctg_super_call_same_'/4,
+	'$lgt_ctg_super_call_other'/3, '$lgt_ctg_super_call_other_'/4,
+	'$lgt_ctg_call_'/4,
+	'$lgt_db_lookup_cache_'/5,
+	'$lgt_metacall'/5, '$lgt_metacall'/6,
+	'$lgt_tr_msg'/4
+)).
 :- include('../compiler/logtalk.pl').

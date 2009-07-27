@@ -33,6 +33,9 @@ RELEASE NOTES
 
     Added a predicate add/3 to the library object "difflist".
 
+    Updated the SWI-Prolog integration support files in order to hide some of
+    the Logtalk internal predicates from the SWI-Prolog native profiler.
+
     Updated text editor configuration files in order to remove references to
     the no longer used ".config" file name extension and to support syntax
     coloring and code completion of multifile/1 and use_module/1-2 directives.
