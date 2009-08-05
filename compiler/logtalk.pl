@@ -129,7 +129,9 @@
 
 % static binding caches
 
-:- dynamic('$lgt_static_binding_entity_'/1).	% '$lgt_static_binding_entity_'(Entity)
+:- multifile('$lgt_static_binding_entity_'/1).	% '$lgt_static_binding_entity_'(Entity)
+:- dynamic('$lgt_static_binding_entity_'/1).
+
 :- dynamic('$lgt_obj_static_binding_cache_'/4).	% '$lgt_obj_static_binding_cache_'(Obj, Pred, Sender, Call)
 :- dynamic('$lgt_ctg_static_binding_cache_'/4).	% '$lgt_ctg_static_binding_cache_'(Ctg, Pred, ExCtx, Call)
 
@@ -5841,17 +5843,20 @@ current_logtalk_flag(version, version(2, 37, 3)).
 '$lgt_pp_rclause'(Clause) :-
 	'$lgt_pp_rclause_'(Clause).
 
-'$lgt_pp_rclause'('$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Mode)) :-
-	'$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Mode),
-	!.
+'$lgt_pp_rclause'(Clause) :-
+	(	'$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Mode) ->
+		Clause = '$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Mode)
+	;	'$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Mode) ->
+		Clause = '$lgt_current_protocol_'(Ptc, Prefix, Dcl, Rnm, Mode)
+	;	'$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Mode) ->
+		Clause = '$lgt_current_category_'(Ctg, Prefix, Dcl, Def, Rnm, Mode)
+	).
 
-'$lgt_pp_rclause'('$lgt_current_protocol_'(Ptc, Prefix, Dcl, Rnm, Mode)) :-
-	'$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Mode),
-	!.
-
-'$lgt_pp_rclause'('$lgt_current_category_'(Ctg, Prefix, Dcl, Def, Rnm, Mode)) :-
-	'$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Mode),
-	!.
+'$lgt_pp_rclause'('$lgt_static_binding_entity_'(Entity)) :-
+	'$lgt_pp_entity'(Type, Entity, _, _, Compilation),
+	Type \== protocol,
+	Compilation == static,
+	'$lgt_compiler_flag'(reload, skip).
 
 
 
@@ -12485,7 +12490,8 @@ current_logtalk_flag(version, version(2, 37, 3)).
 		'$lgt_write_runtime_clauses'(Stream, '$lgt_extends_object_'/3),
 		'$lgt_write_runtime_clauses'(Stream, '$lgt_extends_protocol_'/3),
 		'$lgt_write_runtime_clauses'(Stream, '$lgt_complemented_object_'/5),
-		'$lgt_write_runtime_clauses'(Stream, '$lgt_debugging_'/1)
+		'$lgt_write_runtime_clauses'(Stream, '$lgt_debugging_'/1),
+		'$lgt_write_runtime_clauses'(Stream, '$lgt_static_binding_entity_'/1)
 	;	true
 	).
 
@@ -12549,7 +12555,7 @@ current_logtalk_flag(version, version(2, 37, 3)).
 % generates and asserts the initialization goal for the entity being compiled
 
 '$lgt_gen_entity_init_goal' :-
-	'$lgt_pp_entity'(Type, Entity, Prefix, _, Compilation),
+	'$lgt_pp_entity'(Type, Entity, Prefix, _, _),
 	(	'$lgt_compiler_flag'(multifile_directive, supported) ->
 		Goal1 = true
 	;	findall(Clause, '$lgt_pp_rclause'(Clause), Clauses),
@@ -12569,11 +12575,7 @@ current_logtalk_flag(version, version(2, 37, 3)).
 		Goal5 = Goal3
 	;	Goal5 = (Goal3, Goal4)
 	),
-	(	Type \== protocol, Compilation == static, '$lgt_compiler_flag'(reload, skip) ->
-		Goal6 = (Goal5, '$lgt_add_static_binding_cache_entry'(Entity))
-	;	Goal6 = Goal5  
-	),
-	'$lgt_simplify_body'(Goal6, Goal),
+	'$lgt_simplify_body'(Goal5, Goal),
 	(	Goal == true ->
 		true
 	;	assertz('$lgt_pp_entity_init_'(Type, Entity, Goal))
@@ -15628,12 +15630,6 @@ current_logtalk_flag(version, version(2, 37, 3)).
 %  static binding supporting predicates
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-'$lgt_add_static_binding_cache_entry'(Entity) :-
-	retractall('$lgt_static_binding_entity_'(Entity)),
-	assertz('$lgt_static_binding_entity_'(Entity)).
 
 
 

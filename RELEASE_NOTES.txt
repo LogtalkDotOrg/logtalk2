@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.37.3 - July ??, 2009
+2.37.3 - August ??, 2009
 
     Added a workaround for the lack of standardization of the predicate
     predicate_property/2 when used in conditional compilation directives.
@@ -21,6 +21,9 @@ RELEASE NOTES
     Corrected an optimization bug in the Logtalk compiler when compiling
     bagof/3 and setof/3 calls whose goal is existentially qualified (using
     the ^/2 operator). Thanks to Joerg Schuster for the bug report.
+
+    Simplified compilation and improved performance of initialization/1 goals
+    for Prolog compilers supporting the multifile/1 predicate directive.
 
     Updated the library object "term" to use the built-in predicates ground/1
     and subsumes/2 when available in the back-end Prolog compiler.
