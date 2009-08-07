@@ -54,7 +54,7 @@ if ! [ "$LOGTALKUSER" ]; then
 fi
 
 if [ -d "$LOGTALKUSER" ]; then
-	if ! [ -a "$LOGTALKUSER/VERSION.txt" ]; then
+	if ! [ -f "$LOGTALKUSER/VERSION.txt" ]; then
 		echo "Cannot find version information in the Logtalk user directory at $LOGTALKUSER!"
 		echo "Creating an up-to-date Logtalk user directory..."
 		cplgtdirs

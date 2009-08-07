@@ -85,6 +85,7 @@ If you use a bash shell, add the following lines to your ~/.profile file:
 
 	LOGTALKHOME=/your/logtalk/installation/directory
 	LOGTALKUSER=$HOME/logtalk
+	export LOGTALKHOME LOGTALKUSER
 
 Don't use relative paths such as "../" or "./" in the definition of the 
 environment variables. Some Prolog compilers don't expand environment 
