@@ -18,6 +18,10 @@ RELEASE NOTES
     Added a workaround for the lack of standardization of the predicate
     predicate_property/2 when used in conditional compilation directives.
 
+    Added support for using file name paths containing environment variables
+    in the logtalk_library_path/2 predicate and in the "xmldir" and "tmpdir"
+    compiler flags when using selected back-end Prolog compilers.
+
     Corrected an optimization bug in the Logtalk compiler when compiling
     bagof/3 and setof/3 calls whose goal is existentially qualified (using
     the ^/2 operator). Thanks to Joerg Schuster for the bug report.
@@ -36,8 +40,16 @@ RELEASE NOTES
 
     Added a predicate add/3 to the library object "difflist".
 
+    Added a predicate '$lgt_expand_path'/2 to all config files in order to
+    expand file name paths that may contain e.g. environment variables or
+    relative paths into absolute file names (only supported in some back-end
+    Prolog compilers).
+
     Updated the SWI-Prolog integration support files in order to hide some of
     the Logtalk internal predicates from the SWI-Prolog native profiler.
+
+    Updated the ECLiPSe config files to ensure that attempts to create a
+    directory that already exists succeed instead of throwing an error.
 
     Updated text editor configuration files in order to remove references to
     the no longer used ".config" file name extension and to support syntax

@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.2 or later versions
 %
-%  last updated: June 22, 2009
+%  last updated: August 7, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -256,6 +256,14 @@ forall(Generate, Test) :-
 %  file predicates
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_expand_path'(+nonvar, -atom)
+%
+% checks if a file exist in the current directory
+
+'$lgt_expand_path'(Path, ExpandedPath) :-
+	expand_atom(Path, ExpandedPath).
 
 
 % '$lgt_file_exists'(+atom)

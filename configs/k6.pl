@@ -11,7 +11,7 @@
 %
 %  configuration file for K-Prolog 6.0.4 and later versions
 %
-%  last updated: May 12, 2009
+%  last updated: August 7, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -224,6 +224,14 @@ call_cleanup(_, _) :-
 %  file predicates
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_expand_path'(+nonvar, -atom)
+%
+% checks if a file exist in the current directory
+
+'$lgt_expand_path'(Path, ExpandedPath) :-
+	fname(Path, ExpandedPath).
 
 
 % '$lgt_file_exists'(+atom)

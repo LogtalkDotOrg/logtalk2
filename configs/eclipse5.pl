@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 5.10#26 or later 5.10 versions
 %
-%  last updated: June 27, 2009
+%  last updated: August 7, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -405,6 +405,16 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+% '$lgt_expand_path'(+nonvar, -atom)
+%
+% checks if a file exist in the current directory
+
+'$lgt_expand_path'(Path, ExpandedPath) :-
+	atom_string(Path, PathString),
+	canonical_path_name(PathString, ExpandedPathString),
+	atom_string(ExpandedPath, ExpandedPathString).
+
+
 % '$lgt_file_exists'(+atom)
 %
 % see if a file exist in the current directory
@@ -452,7 +462,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % makes a new directory; succeeds if the directory already exists
 
 '$lgt_make_directory'(Directory) :-
-	(	exists(Directory) ->
+	(	'$lgt_directory_exists'(Directory) ->
 		true
 	;	mkdir(Directory)
 	).

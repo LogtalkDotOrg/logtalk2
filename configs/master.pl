@@ -11,7 +11,7 @@
 %
 %  configuration file for MasterProLog 4.1
 %
-%  last updated: May 12, 2009
+%  last updated: August 7, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -295,6 +295,14 @@ forall(Generate, Test) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+% '$lgt_expand_path'(+nonvar, -atom)
+%
+% checks if a file exist in the current directory
+
+'$lgt_expand_path'(_, _) :-
+	fail.
+
+
 % '$lgt_file_exists'(+atom)
 %
 % checks if a file exist in the current directory
@@ -302,6 +310,10 @@ forall(Generate, Test) :-
 '$lgt_file_exists'(File) :-
 	exists(File).
 
+
+% '$lgt_delete_file'(+atom)
+%
+% deletes a file in the current directory
 
 '$lgt_delete_file'(_) :-
 	fail.

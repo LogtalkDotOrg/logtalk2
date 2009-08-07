@@ -5104,9 +5104,14 @@ current_logtalk_flag(version, version(2, 37, 3)).
 	(	'$lgt_compiler_flag'(altdirs, on), '$lgt_file_type_alt_directory'(Type, Directory) ->
 		'$lgt_make_directory'(Directory),			% succeeds when the directory already exists
 		atom_concat(Basename, Extension, Aux),
-		atom_concat(Directory, Aux, File)			% file on the alternate compilation directory
+		atom_concat(Directory, Aux, Path),			% file on the alternate compilation directory
+		(	'$lgt_expand_path'(Path, File) ->		% try to expand the file path
+			true
+		;	File = Path
+		)
 	;	atom_concat(Basename, Extension, File)		% file local to current working directory
 	).
+
 
 
 % '$lgt_tr_file'(+atom)

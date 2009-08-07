@@ -11,7 +11,7 @@
 %
 %  configuration file for PrologII+ 4.5 and later versions
 %
-%  last updated: May 12, 2009
+%  last updated: August 7, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -269,6 +269,14 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %  file predicates
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_expand_path'(+nonvar, -atom)
+%
+% checks if a file exist in the current directory
+
+'$lgt_expand_path'(_, _) :-
+	fail.
 
 
 % '$lgt_file_exists'(+atom)
