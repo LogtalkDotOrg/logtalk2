@@ -109,7 +109,6 @@ WScript.Echo("Copying Logtalk files and directories...");
 FSObject.CopyFolder(logtalk_home + "\\contributions", logtalk_user + "\\contributions");
 FSObject.CopyFolder(logtalk_home + "\\examples", logtalk_user + "\\examples");
 FSObject.CopyFolder(logtalk_home + "\\libpaths", logtalk_user + "\\libpaths");
-FSObject.CopyFile(logtalk_user + "\\libpaths\\libpaths.pl", logtalk_user + "\\libpaths\\libpaths_no_env_var.pl");
 FSObject.CopyFolder(logtalk_home + "\\library", logtalk_user + "\\library");
 FSObject.CopyFolder(logtalk_home + "\\xml", logtalk_user + "\\xml");
 if (FSObject.FileExists(logtalk_user + "\\settings.lgt"))

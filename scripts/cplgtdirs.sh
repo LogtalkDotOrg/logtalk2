@@ -95,7 +95,6 @@ mkdir -p "$LOGTALKUSER"/xml
 cp -RL "$LOGTALKHOME"/contributions "$LOGTALKUSER"/
 cp -RL "$LOGTALKHOME"/examples "$LOGTALKUSER"/
 cp -RL "$LOGTALKHOME"/libpaths "$LOGTALKUSER"/
-sed 's_\$LOGTALKUSER_'$LOGTALKUSER'_' "$LOGTALKUSER"/libpaths/libpaths.pl > "$LOGTALKUSER"/libpaths/libpaths_no_env_var.pl
 cp -RL "$LOGTALKHOME"/library "$LOGTALKUSER"/
 cp -RL "$LOGTALKHOME"/xml "$LOGTALKUSER"/
 if [ -f "$LOGTALKUSER"/settings.lgt ]

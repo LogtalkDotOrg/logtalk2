@@ -60,8 +60,9 @@ may want to change include:
 - for avoiding recompilation of unchanged source files
 
 Be sure to read the "configs/NOTES.txt" file for Prolog specific compatibility
-notes; some Prolog compilers do not support some of the possible compilation
-flags values.
+notes; some back-end Prolog compilers don't support all the possible compilation
+flags values. In addition, some back-end Prolog compilers provide limited or no
+support for settings files.
 
 
 3. CUSTOMIZING DOCUMENTATION PROCESSING SCRIPTS AND SUPPORTING FILES

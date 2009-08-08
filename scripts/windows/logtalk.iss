@@ -88,7 +88,6 @@ Source: "{#MyBaseDir}\xml\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}
 
 Source: "{#MyBaseDir}\settings.lgt"; DestDir: "{code:GetLgtUserDir}"; DestName: "settings.lgt"; Components: user; Flags: ignoreversion uninsneveruninstall
 Source: "{#MyBaseDir}\VERSION.txt"; DestDir: "{code:GetLgtUserDir}"; DestName: "VERSION.txt"; Components: user; Flags: ignoreversion uninsneveruninstall
-Source: "{#MyBaseDir}\libpaths\libpaths.pl"; DestDir: "{code:GetLgtUserDir}\libpaths"; DestName: "libpaths_no_env_var.pl"; Components: user; Flags: ignoreversion uninsneveruninstall
 
 Source: "{#MyBaseDir}\scripts\*.bat"; DestDir: "{win}"; Components: base; Flags: ignoreversion
 Source: "{#MyBaseDir}\xml\*.bat"; DestDir: "{win}"; Components: base; Flags: ignoreversion

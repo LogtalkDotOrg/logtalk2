@@ -30,6 +30,10 @@ RELEASE NOTES
     Simplified compilation and improved performance of initialization/1 goals
     for Prolog compilers supporting the multifile/1 predicate directive.
 
+    Added a "libpaths/libpaths_no_multifile.pl" file for pesky back-end Prolog
+    compilers that don't support the ISO Prolog standard multifile/1 predicate
+    directive (e.g. GNU Prolog and K-Prolog).
+
     Updated the library object "term" to use the built-in predicates ground/1
     and subsumes/2 when available in the back-end Prolog compiler.
 

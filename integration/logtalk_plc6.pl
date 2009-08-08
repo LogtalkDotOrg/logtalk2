@@ -14,4 +14,4 @@
 
 :- consult('$LOGTALKHOME/configs/k6.pl').
 :- consult('$LOGTALKHOME/compiler/logtalk.pl').
-:- consult('$LOGTALKUSER/libpaths/libpaths.pl').
+:- consult('$LOGTALKUSER/libpaths/libpaths_no_multifile.pl').
