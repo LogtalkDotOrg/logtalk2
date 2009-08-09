@@ -15,7 +15,7 @@
 % logtalk_library_path(Library, Path)
 
 :- initialization((
-	assertz(logtalk_library_path(lgtuser, '/Users/pmoura/logtalk/')),
+	assertz(logtalk_library_path(lgtuser, '$LOGTALKUSER/')),
 	assertz(logtalk_library_path(contributions, lgtuser('contributions/'))),
 	assertz(logtalk_library_path(examples, lgtuser('examples/'))),
 	assertz(logtalk_library_path(library, lgtuser('library/'))),
