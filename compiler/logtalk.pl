@@ -1958,7 +1958,7 @@ current_logtalk_flag(Flag, Value) :-
 current_logtalk_flag(Flag, Value) :-
 	'$lgt_prolog_feature'(Flag, Value).
 
-current_logtalk_flag(version, version(2, 37, 3)).
+current_logtalk_flag(version, version(2, 37, 4)).
 
 
 
