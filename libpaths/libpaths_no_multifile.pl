@@ -13,8 +13,13 @@
 
 
 % logtalk_library_path(Library, Path)
-
+% paths must always end with a "/"
+			
 :- initialization((
+	(	'$lgt_environment_variable'('HOME', _) ->	
+		assertz(logtalk_library_path(home, '$HOME/'))	% this definition only works for POSIX systems
+	;	true
+	),
 	assertz(logtalk_library_path(lgtuser, '$LOGTALKUSER/')),
 	assertz(logtalk_library_path(contributions, lgtuser('contributions/'))),
 	assertz(logtalk_library_path(examples, lgtuser('examples/'))),

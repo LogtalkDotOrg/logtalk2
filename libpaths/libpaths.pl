@@ -12,9 +12,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-:- multifile(logtalk_library_path/2).	% logtalk_library_path(Library, Path)
-:- dynamic(logtalk_library_path/2).
+:- multifile(logtalk_library_path/2).		% logtalk_library_path(Library, Path)
+:- dynamic(logtalk_library_path/2).			% paths must always end with a "/"
 
+logtalk_library_path(home, '$HOME/') :-		% this definition only works for POSIX systems
+	'$lgt_environment_variable'('HOME', _).
 logtalk_library_path(lgtuser, '$LOGTALKUSER/').
 logtalk_library_path(contributions, lgtuser('contributions/')).
 logtalk_library_path(examples, lgtuser('examples/')).
