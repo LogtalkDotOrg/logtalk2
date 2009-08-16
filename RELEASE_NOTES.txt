@@ -18,6 +18,9 @@ RELEASE NOTES
     Added a logtalk_library_path/2 entry for the library "home" (the user home
     directory) when running on POSIX operating-systems.
 
+    The library object "pairs" in now loaded by the "types_loader.lgt" loader
+    file.
+
 
 2.37.3 - August 10, 2009
 

@@ -7,6 +7,7 @@
 		characterp, character,
 		number, float, integer, natural,
 		compound,
+		pairs,
 		listp, list, list1,
 		difflist,
 		numberlistp, numberlist,
