@@ -33,7 +33,8 @@
 %
 %  Logtalk compiles and loads settings files silently, ignoring any errors.
 %  Be sure to debug and test your settings files as normal Logtalk source
-%  files before using them.
+%  files before using them (you may use the logtalk_compile/1-2 built-in
+%  predicates to compile the settings files without loading them).
 %
 %  Limitations of the back-end Prolog compilers may prevent settings files to
 %  work from directories other than the Logtalk user directory when running

@@ -14,5 +14,5 @@ installers using Inno Setup 5.1.11 (or a later version):
 
 	http://www.jrsoftware.org/isinfo.php
 
-The building script, "logtalk.iss", assumes that a local copy of Logtalk 
-exists in the "C:\lgtsvn" directory.
+The building script, "logtalk.iss", assumes that a checkout of the
+Logtalk repository exists in the "C:\lgtsvn" directory.

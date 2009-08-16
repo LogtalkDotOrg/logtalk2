@@ -27,7 +27,8 @@ the examples.
 
 On POSIX operating-systems, the following shell scripts are installed 
 by default for running Logtalk with selected back-end Prolog compilers 
-(which must be up-to-date and properly installed for running the scripts!):
+(which must be up-to-date and properly installed before running these
+scripts!):
 
 * B-Prolog:       bplgt
 * Ciao:           ciaolgt    (first run must use sudo)
@@ -48,16 +49,20 @@ by default for running Logtalk with selected back-end Prolog compilers
 Integration with Quintus Prolog requires manual patches that render 
 Logtalk incompatible with all the other compilers.
 
-On Windows systems, shortcuts for running Logtalk with selected back-end 
-Prolog compilers are created on the "Start Menu/Programs/Logtalk" menu.
 If you get an unexpected failure when using one of the Prolog integration
 scripts, consult the "configs/NOTES.txt" file for compatibility notes.
 
-On MacOS X systems, shortcuts for running Logtalk with selected back-end 
-Prolog compilers are available on the "scripts/macosx/command_files" folder
-on the Logtalk installation folder (by default, /opt/local/share/logtalk).
+On MacOS X systems, "/opt/local/bin" must be in your PATH to run the scripts.
+Terminal command files for running Logtalk with selected back-end Prolog 
+compilers are also available on the Logtalk installation folder (by default,
+"/opt/local/share/logtalk/scripts/macosx/command_files"; for easy access, the
+installer creates an alias to the Logtalk folder in the Applications folder.
+
+On Windows systems, shortcuts for running Logtalk with selected back-end 
+Prolog compilers are created on the "Start Menu/Programs/Logtalk" menu.
 If you get an unexpected failure when using one of the Prolog integration
-scripts, consult the "configs/NOTES.txt" file for compatibility notes.
+shortcuts, consult the "configs/NOTES.txt" file for compatibility notes.
+
 
 2. Open the "manuals/index.html" file with a web browser.
 

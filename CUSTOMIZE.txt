@@ -23,15 +23,18 @@ paths for the Logtalk user folder are:
 1. SETTING LIBRARY PATHS
 
 In Logtalk, a library is simply a directory containing source files. Library 
-paths can be declared using a dynamic predicate. This allows compiling and 
-loading of libraries and library files using the library names instead of the
-full library paths.
+paths can be declared using a dynamic, multifile predicate. This allows 
+compiling and loading of libraries and library files using the library names
+instead of the full library paths.
 
 Inside your Logtalk user folder, you will find a "libpaths" folder containing 
 a sample file which, when loaded, defines the library paths for the Logtalk 
 standard library and for all the supplied examples. This file may need to be 
 edited to match both your Logtalk installation and your Prolog compiler and 
 operating-system requirements. For details, see the "libpaths/NOTES.txt" file.
+
+Library paths for your own source files directories are preferably defined in
+settings files, described next.
 
 
 2. CUSTOMIZING LOGTALK SETTINGS
