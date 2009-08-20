@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.9 and later versions
 %
-%  last updated: August 7, 2009
+%  last updated: August 19, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -211,7 +211,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_default_flag'(events, deny).
 
 '$lgt_default_flag'(altdirs, off).
-'$lgt_default_flag'(tmpdir, 'lgt_tmp/').
+'$lgt_default_flag'(tmpdir, '.lgt_tmp/').
 '$lgt_default_flag'(xmldir, 'xml_docs/').
 
 '$lgt_default_flag'(context_switching_calls, allow).
