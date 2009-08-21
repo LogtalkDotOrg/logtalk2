@@ -21,6 +21,11 @@ RELEASE NOTES
     The library object "pairs" in now loaded by the "types_loader.lgt" loader
     file.
 
+    Updated the Qu-Prolog integration script to set a choice point stack of
+    256KB in order to support loading larger Logtalk applications. Updated the
+    Qu-Prolog config file in order to set the default value of the "tmpdir" to
+    '.lgt_tmp/'.
+
 
 2.37.3 - August 10, 2009
 
