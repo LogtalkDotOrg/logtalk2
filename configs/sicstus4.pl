@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: August 7, 2009
+%  last updated: August 21, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -193,7 +193,11 @@ forall(Generate, Test) :-
 '$lgt_default_flag'(events, deny).
 
 '$lgt_default_flag'(altdirs, off).
-'$lgt_default_flag'(tmpdir, 'lgt_tmp/').
+'$lgt_default_flag'(tmpdir, TmpDir) :-
+	(	environ('HOME', _) ->	% POSIX systems define this environment variable...
+		TmpDir = '.lgt_tmp/'
+	;	TmpDir = 'lgt_tmp/'		% ... but not Windows systems
+	).
 '$lgt_default_flag'(xmldir, 'xml_docs/').
 
 '$lgt_default_flag'(context_switching_calls, allow).
