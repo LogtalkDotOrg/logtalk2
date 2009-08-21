@@ -26,6 +26,10 @@ RELEASE NOTES
     Qu-Prolog config file in order to set the default value of the "tmpdir" to
     '.lgt_tmp/'.
 
+    Updated the B-Prolog config file in order to set the default value of the
+    "tmpdir" depending on the operating-system by checking for a POSIX-only
+    default environment variable.
+
 
 2.37.3 - August 10, 2009
 
