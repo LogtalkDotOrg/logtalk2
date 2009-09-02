@@ -4512,6 +4512,15 @@ current_logtalk_flag(version, version(2, 37, 4)).
 	'$lgt_dbg_spy'(Sender, This, Self, CGoal),
 	fail.
 
+'$lgt_dbg_do_port_option'(/, _, Goal, _, _, _) :-
+	functor(Goal, Functor, Arity),
+	functor(CGoal, Functor, Arity),
+	write('  Enter a context spy point term formatted as (Sender, This, Self, Goal): '),
+	read(Spypoint),
+	Spypoint = (Sender, This, Self, CGoal),
+	'$lgt_dbg_nospy'(Sender, This, Self, CGoal),
+	fail.
+
 '$lgt_dbg_do_port_option'(!, Port, Goal, Error, ExCtx, Action) :-
 	'$lgt_dbg_do_port_option'(@, Port, Goal, Error, ExCtx, Action).
 
@@ -4541,9 +4550,9 @@ current_logtalk_flag(version, version(2, 37, 4)).
 	write('  Current goal: '), write_term(Goal, [quoted(false), ignore_ops(true), numbervars(false)]), nl,
 	fail.
 
-%'$lgt_dbg_do_port_option'(w, _, Goal, _, _, _) :-
-%	write('  Current goal: '), writeq(Goal), nl,
-%	fail.
+'$lgt_dbg_do_port_option'(w, _, Goal, _, _, _) :-
+	write('  Current goal: '), write_term(Goal, [quoted(true), ignore_ops(false), numbervars(true)]), nl,
+	fail.
 
 '$lgt_dbg_do_port_option'(x, _, _, _, ExCtx, _) :-
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
@@ -4571,11 +4580,12 @@ current_logtalk_flag(version, version(2, 37, 4)).
 	write('      a - abort (returns to top level interpreter)'), nl,
 	write('      q - quit (quits Logtalk)'), nl,
 	write('      d - display (writes current goal without using operator notation)'), nl,
-%	write('      w - write (writes current goal quoting atoms if necessary)'), nl,
+	write('      w - write (writes current goal quoting atoms if necessary)'), nl,
 	write('      x - context (prints execution context)'), nl,
 	write('      e - exception (prints exception term thrown by current goal)'), nl,
 	write('      = - debugging (prints debugging information)'), nl,
 	write('      * - add (adds a context spy point for current goal)'), nl,
+	write('      / - remove (removes a context spy point for current goal)'), nl,
 	write('      + - add (adds a predicate spy point for current goal)'), nl,
 	write('      - - remove (removes a predicate spy point for current goal)'), nl,
 	write('      h - help (prints this list of options)'), nl,

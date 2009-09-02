@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.37.4 - September ??, 2009
 
+    Added two new commands to the Logtalk built-in debugger for writing the
+    current goal as a quoted term and for removing context spy points at
+    leashed ports.
+
     Added a logtalk_library_path/2 entry for the library "home" (the user home
     directory) when running on POSIX operating-systems.
 
