@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.37.4 - September ??, 2009
 
+    Updated the Logtalk runtime to avoid spurious type errors when using
+    ECLiPSe due to the weak ISO Prolog standard compliance of this compiler.
+
     Added two new commands to the Logtalk built-in debugger for writing the
     current goal as a quoted term and for removing context spy points at
     leashed ports.

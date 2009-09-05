@@ -371,7 +371,7 @@ In alternative, if we want to compile only some entities in debug mode, we may i
 </p>
 <pre>| ?- logtalk_load([file1, file2, ...], [debug(on)]).</pre>
 <p>
-The compiler flag <code>smart_compilation</code> is automatically turned off whenever the debug flag is turned on at runtime. This is necessary because debug code would not be generated for files previously compiled in normal mode if there is no changes to the source files. However, note that you should be careful to not turn both flags on at the same time in a config file.
+The compiler flag <code>smart_compilation</code> is automatically turned off whenever the debug flag is turned on at runtime. This is necessary because debug code would not be generated for files previously compiled in normal mode if there are no changes to the source files. Note, however, that you should be careful to not turn both flags on at the same time in a config or settings file.
 </p>
 <p>We may check or enumerate, by backtracking, all loaded entities compiled in debug mode as follows:
 </p>

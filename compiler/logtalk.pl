@@ -2981,7 +2981,7 @@ current_logtalk_flag(version, version(2, 37, 4)).
 			;	throw(error(existence_error(non_terminal_declaration, NonTerminal), Obj::phrase(NonTerminal, Input, Rest), Sender))
 		)
 	;	% not a current object:
-		(	catch(current_module(Obj), _, fail) ->
+		(	atom(Obj), catch(current_module(Obj), _, fail) ->
 			':'(Obj, Pred)
 		;	throw(error(existence_error(object, Obj), Obj::phrase(NonTerminal, Input, Rest), Sender))
 		)
@@ -3220,6 +3220,7 @@ current_logtalk_flag(version, version(2, 37, 4)).
 	'$lgt_send_to_obj_'(Proxy, Pred, Sender, _).
 
 '$lgt_send_to_object_nv'(Obj, Pred, _) :-		% allow Obj::Pred to be used as a shortcut
+	atom(Obj),
 	catch(current_module(Obj), _, fail),		% for calling module predicates
 	!,
 	':'(Obj, Pred).
@@ -3300,6 +3301,7 @@ current_logtalk_flag(version, version(2, 37, 4)).
 	'$lgt_send_to_obj_ne_'(Proxy, Pred, Sender, _).
 
 '$lgt_send_to_object_ne_nv'(Obj, Pred, _) :-	% allow Obj::Pred to be used as a shortcut
+	atom(Obj),
 	catch(current_module(Obj), _, fail),		% for calling module predicates
 	!,
 	':'(Obj, Pred).
@@ -10779,7 +10781,7 @@ current_logtalk_flag(version, version(2, 37, 4)).
 	\+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _),		% not the object being compiled (self reference)
 	\+ '$lgt_pp_entity_init_'(object, Obj, _),						% not an object defined in the source file being compiled
 	\+ '$lgt_pp_file_rclause_'('$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _)),
-	\+ catch(current_module(Obj), _, fail).							% not a currently loaded module; use catch/3 to avoid 
+	\+ (atom(Obj), catch(current_module(Obj), _, fail)).			% not a currently loaded module; use catch/3 to avoid 
 																	% errors with Prolog compilers with no module support
 
 
