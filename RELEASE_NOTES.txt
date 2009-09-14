@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.37.4 - September ??, 2009
 
+    Updated the Logtalk compiler to expand calls to the forall/2 and once/1
+    built-in predicates in order to improve performance.
+
     Updated the Logtalk runtime to avoid spurious type errors when working
     with parametric objects using ECLiPSe due to the weak ISO Prolog standard
     compliance of this compiler.

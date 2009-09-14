@@ -9,9 +9,5 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ================================================================
 
 
-This folder contains a preliminary framework for defining and running 
-unit tests in Logtalk.
-
-The unit tests framework is inspired on the works of Joachim Schimpf 
-(ECLiPSe library "test_util") and Jan Wielemaker (SWI-Prolog "plunit" 
-package).
+This folder contains an example of defining and running unit tests
+in Logtalk.

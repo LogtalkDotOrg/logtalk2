@@ -8347,7 +8347,7 @@ current_logtalk_flag(version, version(2, 37, 4)).
 	),
 	DPred = '$lgt_dbg_goal'(CallN, TPred, ExCtx).
 
-'$lgt_tr_body'(once(Pred), once(TPred), '$lgt_dbg_goal'(once(Pred), once(DPred), ExCtx), Ctx) :-
+'$lgt_tr_body'(once(Pred), (TPred -> true; fail), '$lgt_dbg_goal'(once(Pred), (DPred -> true; fail), ExCtx), Ctx) :-
 	!,
 	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
@@ -8375,7 +8375,7 @@ current_logtalk_flag(version, version(2, 37, 4)).
 	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
-'$lgt_tr_body'(forall(Gen, Test), forall(TGen, TTest), '$lgt_dbg_goal'(forall(Gen, Test), forall(DGen, DTest), ExCtx), Ctx) :-
+'$lgt_tr_body'(forall(Gen, Test), \+ (TGen, \+ TTest), '$lgt_dbg_goal'(forall(Gen, Test), \+ (DGen, \+ DTest), ExCtx), Ctx) :-
 	!,
 	'$lgt_tr_body'(Gen, TGen, DGen, Ctx),
 	'$lgt_tr_body'(Test, TTest, DTest, Ctx),
