@@ -8299,9 +8299,10 @@ current_logtalk_flag(version, version(2, 37, 4)).
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
-'$lgt_tr_body'(call(Pred), TPred, DPred, Ctx) :-
+'$lgt_tr_body'(call(Pred), call(TPred), '$lgt_dbg_goal'(call(Pred), call(DPred), ExCtx), Ctx) :-
 	!,
-	'$lgt_tr_body'(Pred, TPred, DPred, Ctx).
+	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
 '$lgt_tr_body'(CallN, _, _, _) :-
 	CallN =.. [call, Closure| _],
@@ -10271,6 +10272,11 @@ current_logtalk_flag(version, version(2, 37, 4)).
 	'$lgt_simplify_body'(G, SG),
 	'$lgt_simplify_body'(R, SR).
 
+'$lgt_simplify_body'(call(!), true) :-
+	!.
+'$lgt_simplify_body'(call(MetaCall), MetaCall) :-
+	functor(MetaCall, '$lgt_metacall', _),
+	!.
 '$lgt_simplify_body'(call(G), call(SG)) :-
 	!,
 	'$lgt_simplify_body'(G, SG).
