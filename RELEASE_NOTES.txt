@@ -40,9 +40,12 @@ RELEASE NOTES
     Qu-Prolog config file in order to set the default value of the "tmpdir" to
     '.lgt_tmp/'.
 
-    Updated the B-Prolog and SICStus Prolog config files in order to set the
-    default value of the "tmpdir" depending on the operating-system by checking
-    for a POSIX-only default environment variable.
+    Updated the B-Prolog and SICStus Prolog config files in order to set
+    the default value of the "tmpdir" depending on the operating-system by
+    checking for a POSIX-only default environment variable.
+
+    Added missing reference to the "settings.lgt" file to the spec file used
+    for building the Logtalk RPM installer.
 
 
 2.37.3 - August 10, 2009

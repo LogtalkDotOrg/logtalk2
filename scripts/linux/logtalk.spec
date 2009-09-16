@@ -11,7 +11,7 @@ URL: http://logtalk.org/
 Prefix: /usr/local
 AutoReqProv: no
 %description
-Logtalk is an open source object-oriented logic programming language that can use most Prolog implementations as a back-end compiler. As a multi-paradigm language, Logtalk includes support for both prototypes and classes, protocols, component-based programming through category-based composition, event-driven programming, and multi-threading programming.
+Logtalk is an object-oriented logic programming language that can use most Prolog implementations as a back-end compiler. As a multi-paradigm language, it includes support for both prototypes and classes, protocols (interfaces), component-based programming through category-based composition, event-driven programming, and high-level multi-threading programming.
 
 %prep
 
@@ -103,6 +103,7 @@ rm -f yaplgt
 %docdir /usr/local/share/lgt2374/manuals
 /usr/local/share/lgt2374/manuals
 /usr/local/share/lgt2374/scripts
+/usr/local/share/lgt2374/settings.lgt
 /usr/local/share/lgt2374/wenv
 /usr/local/share/lgt2374/xml
 /usr/local/share/logtalk
