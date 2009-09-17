@@ -15916,7 +15916,7 @@ current_logtalk_flag(version, version(2, 37, 4)).
 
 
 
-% '$lgt_load_settings_file'
+% '$lgt_report_settings_file'
 %
 % loads any settings file defined by the user;
 % settings files are compiled and loaded silently, ignoring any errors
@@ -15966,6 +15966,27 @@ current_logtalk_flag(version, version(2, 37, 4)).
 
 
 
+% '$lgt_check_prolog_version'
+%
+% checks for a compatible back-end Prolog compiler version
+
+'$lgt_check_prolog_version' :-
+	(	'$lgt_compiler_flag'(report,  off) ->
+		true
+	;	'$lgt_compiler_flag'(prolog_version, Current),
+		'$lgt_compiler_flag'(prolog_compatible_version, Check) ->
+		Check =.. [Operator, Compatible],
+		(	call(Operator, Current, Compatible) ->
+			true
+		;	write('%         WARNING!  Possibly incompatible Prolog version detected!'), nl,
+			write('%                   Running Prolog version: '), write(Current), nl,
+			write('%                   Advised Prolog version: '), write(Compatible), nl
+		)
+	;	true
+	).
+
+
+
 % Logtalk runtime initialization goal
 
 :- initialization((
@@ -15974,7 +15995,8 @@ current_logtalk_flag(version, version(2, 37, 4)).
 	'$lgt_assert_default_hooks',
 	'$lgt_start_runtime_threading',
 	'$lgt_dbg_reset_invocation_number',
-	'$lgt_report_settings_file'
+	'$lgt_report_settings_file',
+	'$lgt_check_prolog_version'
 	)).
 
 
