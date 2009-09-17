@@ -224,10 +224,10 @@ if [ `(grep -l "<logtalk>" *.xml | wc -l) 2> /dev/null` -gt 0 ] ; then
 	done
 	echo "conversion done"
 	echo
-	echo "generating index file..."
 	index_file="$directory/$index_file"
+	echo "generating $index_file file..."
 	create_index_file
-	echo "index file generated"
+	echo "index $index_file generated"
 	echo
 else
 	echo

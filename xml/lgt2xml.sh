@@ -180,9 +180,9 @@ fi
 
 if [ `(ls *.xml | wc -l) 2> /dev/null` -gt 0 ] ; then
 	echo
-	echo "generating index file..."
+	echo "generating $index_file file..."
 	create_index_file
-	echo "index file generated"
+	echo "$index_file file generated"
 	echo
 else
 	echo

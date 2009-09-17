@@ -13,12 +13,12 @@ RELEASE NOTES
 =============
 
 
-2.37.4 - September ??, 2009
+2.37.4 - September 18, 2009
 
     Updated the Logtalk compiler to expand calls to the forall/2 and once/1
     built-in predicates in order to improve performance.
 
-    Corrected a bug in the Logtalk compiler that resulted in calls to the
+    Corrected a bug in the Logtalk compiler that resulted in some calls to the
     built-in predicate call/1 being transparent to cuts in its goal argument.
 
     Updated the Logtalk runtime to avoid spurious type errors when working
@@ -35,10 +35,10 @@ RELEASE NOTES
     The library object "pairs" in now loaded by the "types_loader.lgt" loader
     file.
 
-    Updated the Qu-Prolog integration script to set a choice point stack of
-    256KB in order to support loading larger Logtalk applications. Updated the
-    Qu-Prolog config file in order to set the default value of the "tmpdir" to
-    '.lgt_tmp/'.
+    Updated the Qu-Prolog integration script in order to set the choice point
+    stack to 256KB in order to support loading larger Logtalk applications.
+    Updated the Qu-Prolog config file in order to set the default value of the
+    "tmpdir" to '.lgt_tmp/'.
 
     Updated the B-Prolog and SICStus Prolog config files in order to set
     the default value of the "tmpdir" depending on the operating-system by
