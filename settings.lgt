@@ -36,6 +36,11 @@
 %  files before using them (you may use the logtalk_compile/1-2 built-in
 %  predicates to compile the settings files without loading them).
 %
+%  Logtalk looks for a settings file first in the startup directory, If not
+%  found, Logtalk looks for a settings file in the Logtalk user directory.
+%  If no settings file is found, Logtalk will use the default flag values
+%  defined in the back-end Prolog compiler config file.
+%
 %  Limitations of the back-end Prolog compilers may prevent settings files to
 %  work from directories other than the Logtalk user directory when running
 %  on non-POSIX operating systems such as Windows. See the "configs/NOTES.txt"
@@ -95,7 +100,8 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 	set_logtalk_flag(reload, always),
 	set_logtalk_flag(unknown, warning),
 	set_logtalk_flag(misspelt, warning),
-	set_logtalk_flag(singletons, warning)
+	set_logtalk_flag(singletons, warning),
+	set_logtalk_flag(context_switching_calls, allow)
 )).
 */
 
@@ -112,8 +118,8 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 
 
 %  To collect all XML documenting files in the same place for generating 
-%  (X)HTML or PDF documentation of your project uncomment the following
-%  lines:
+%  (X)HTML or PDF documentation of your project edit and uncomment the
+%  following lines:
 
 /*
 :- initialization((
@@ -146,8 +152,8 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 */
 
 
-%  To prevent using the <</2 control construct to bypass object
-%  encapsulation rules uncomment the following lines:
+%  To prevent using the <</2 context-switching control construct to bypass
+%  object encapsulation rules uncomment the following lines:
 
 /*
 :- initialization((
