@@ -136,12 +136,9 @@
 % back-end Prolog compiler supported features
 
 '$lgt_prolog_feature'(prolog_dialect, b).
-'$lgt_prolog_feature'(prolog_version, Version) :-
-	bp_version(String),
-	char_code(' ', SpaceCode),
-	'$lgt_append'(VersionCodes, [SpaceCode| _], String),
-	atom_codes(Version, VersionCodes).
-'$lgt_prolog_feature'(prolog_compatible_version, '@>='('7.1')).
+'$lgt_prolog_feature'(prolog_version, _) :-
+	fail.
+'$lgt_prolog_feature'(prolog_compatible_version, '@>='+(7,1)).
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).

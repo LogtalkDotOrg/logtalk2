@@ -199,10 +199,9 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % back-end Prolog compiler supported features
 
 '$lgt_prolog_feature'(prolog_dialect, eclipse).
-'$lgt_prolog_feature'(prolog_version, Version) :-
-	get_flag(version_as_list, [Major, Minor, Build]),
-	concat_atom([Major, '.', Minor, '.', Build], Version).
-'$lgt_prolog_feature'(prolog_compatible_version, '@>='('6.0.77')).
+'$lgt_prolog_feature'(prolog_version, (Major, Minor, Build)) :-
+	get_flag(version_as_list, [Major, Minor, Build]).
+'$lgt_prolog_feature'(prolog_compatible_version, '@>='+(6,0,77)).
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
