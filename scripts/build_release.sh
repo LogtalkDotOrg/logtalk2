@@ -12,16 +12,15 @@
 
 dir=`PWD`
 
-svn export http://svn.logtalk.org/logtalk/trunk logtalk
+svn export http://svn.logtalk.org/logtalk/trunk lgt2374
 
-cd logtalk
+cd lgt2374
 chmod a+x scripts/cleandist.sh
 scripts/cleandist.sh
 
 cd ..
-cp -R logtalk/manuals man2374
+cp -R lgt2374/manuals man2374
 tar -czf man2374.tgz man2374
-mv logtalk lgt2374
 tar -cjf lgt2374.tar.bz2 lgt2374
 
 mkdir -p debian/usr/bin
