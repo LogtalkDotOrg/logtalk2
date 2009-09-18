@@ -247,7 +247,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_prolog_feature'(prolog_dialect, ciao).
 '$lgt_prolog_feature'(prolog_version, (Major, Patch)) :-
 	current_prolog_flag(version, ciao(Major, Patch)).
-'$lgt_prolog_feature'(prolog_compatible_version, '@>='+(1.1,5)).
+'$lgt_prolog_feature'(prolog_compatible_version, @>=((1.1,5))).
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).

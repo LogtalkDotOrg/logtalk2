@@ -15974,8 +15974,9 @@ current_logtalk_flag(version, version(2, 37, 4)).
 	(	'$lgt_compiler_flag'(report,  off) ->
 		true
 	;	'$lgt_compiler_flag'(prolog_version, Current),
-		'$lgt_compiler_flag'(prolog_compatible_version, Operator+Compatible) ->
-		(	call(Operator, Current, Compatible) ->
+		'$lgt_compiler_flag'(prolog_compatible_version, Check) ->
+		(	Check =.. [Operator, Compatible],
+			call(Operator, Current, Compatible) ->
 			true
 		;	write('%         WARNING!  Possibly incompatible Prolog version detected!'), nl,
 			write('%                   Running Prolog version: '), write(Current), nl,

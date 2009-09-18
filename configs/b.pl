@@ -138,7 +138,7 @@
 '$lgt_prolog_feature'(prolog_dialect, b).
 '$lgt_prolog_feature'(prolog_version, _) :-
 	fail.
-'$lgt_prolog_feature'(prolog_compatible_version, '@>='+(7,1)).
+'$lgt_prolog_feature'(prolog_compatible_version, @>=((7,1))).
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).

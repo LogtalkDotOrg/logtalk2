@@ -142,7 +142,7 @@ forall(Generate, Test) :-
 '$lgt_prolog_feature'(prolog_dialect, sicstus).
 '$lgt_prolog_feature'(prolog_version, _) :-
 	fail.
-'$lgt_prolog_feature'(prolog_compatible_version, '@>='+(4,0,3)).
+'$lgt_prolog_feature'(prolog_compatible_version, @>=((4,0,3))).
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, source).

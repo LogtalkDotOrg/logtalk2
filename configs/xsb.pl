@@ -143,7 +143,7 @@ forall(Generate, Test) :-
 '$lgt_prolog_feature'(prolog_dialect, xsb).
 '$lgt_prolog_feature'(prolog_version, (Major, Minor, Patch)) :-
 	current_prolog_flag(version_data, xsb(Major, Minor, Patch, _)).
-'$lgt_prolog_feature'(prolog_compatible_version, '@>='+(3,2,0)).
+'$lgt_prolog_feature'(prolog_compatible_version, @>=((3,2,0))).
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
