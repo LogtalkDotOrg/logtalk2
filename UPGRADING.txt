@@ -245,8 +245,8 @@ and to the Logtalk compiler and runtime. Older config files are incompatible
 with this new Logtalk version. Changes to object compilation require that all
 objects be recompiled.
 
-Logtalk version 2.37.0 changes predicate lookup caching mechanisms for 
-improved performance (requiring recompilation of all objects and categories)
+Logtalk version 2.37.0 changes predicate lookup caching mechanisms in order to 
+improve performance (requiring recompilation of all objects and categories)
 and makes several changes for harmonizing the semantics of built-in and user-
 defined meta-predicates. The seldom used support for sending the same message
 to a conjunction or disjunction of objects is removed in this version.
