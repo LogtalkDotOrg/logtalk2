@@ -50,6 +50,9 @@ RELEASE NOTES
     Added missing reference to the "settings.lgt" file to the spec file used
     for building the Logtalk RPM installer.
 
+    Modified the scripts used to generate the PDF versions of the User and
+    Reference manuals to use a local catalog file for the XHTML DTD files.
+
 
 2.37.3 - August 10, 2009
 

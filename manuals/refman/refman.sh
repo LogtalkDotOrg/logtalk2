@@ -20,6 +20,8 @@ xslt_proc=xsltproc
 fo_proc=xep
 # fo_proc=xinc
 
+catalog=file:///opt/local/share/xml/xhtml/catalog
+
 # rm -f refman.fo refman.html
 rm -f *.section directives/*.section builtins/*.section methods/*.section control/*.section
 
@@ -252,7 +254,7 @@ cat -s \
 	refman.footer \
 	> refman.html
 
-java -jar $css2xslfo refman.html -fo refman.fo
+java -jar $css2xslfo -c $catalog refman.html -fo refman.fo
 eval $fo_proc -fo refman.fo -pdf refman.pdf
 
 # rm refman.fo refman.html

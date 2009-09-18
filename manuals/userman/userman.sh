@@ -20,6 +20,8 @@ xslt_proc=xsltproc
 fo_proc=xep
 # fo_proc=xinc
 
+catalog=file:///opt/local/share/xml/xhtml/catalog
+
 rm -f userman.fo userman.html
 rm -fr *.section
 eval $xslt_proc -o index.section userman.xsl index.html
@@ -51,7 +53,7 @@ cat -s \
 	userman.footer \
 	> userman.html
 
-java -jar $css2xslfo userman.html -fo userman.fo
+java -jar $css2xslfo -c $catalog userman.html -fo userman.fo
 eval $fo_proc -fo userman.fo -pdf userman.pdf
 rm userman.fo userman.html
 rm -fr *.section
