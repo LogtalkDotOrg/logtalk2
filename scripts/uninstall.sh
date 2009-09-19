@@ -63,6 +63,7 @@ rm -f quintuslgt
 rm -f sicstuslgt
 rm -f swilgt
 rm -f xsblgt
+rm -f xsb64lgt
 rm -f xsbmtlgt
 rm -f xsbmt64lgt
 rm -f yaplgt
