@@ -59,7 +59,20 @@ details). Starting from the Logtalk directory, type:
 
 This installation script makes all files read-only for non-admin users in 
 order to avoid user tempering. This is a convenient setup for computer labs, 
-given that making directories world-writable is a security risk.
+given that making directories world-writable is a security risk. The install
+script accepts an installation prefix as argument. For example:
+
+	% sudo ./install.sh /opt/local
+
+If no prefix is given, the default installation prefix depends on the
+operating-system:
+
+	Mac OS X:				/opt/local
+	Debian distributions:	/usr
+	Other POSIX systems:	/usr/local		
+
+The script installs Logtalk in the "$prefix/share" directory with useful
+scripts written to the "$prefix/bin" directory, which should be in your path.
 
 
 2. SETTING LOGTALK ENVIRONMENT VARIABLES
