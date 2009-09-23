@@ -11,18 +11,14 @@
 ## ================================================================
 
 dir="$PWD"
-cd ..
 
-LOGTALKHOME=/usr/local/share/logtalk ./uninstall.sh
-./install.sh
-
-cd /usr/local/share
-tar -cjf lgt2375.tar.bz2 lgt2375
-mv lgt2375.tar.bz2 /usr/src/redhat/SOURCES
+cd ../..
+tar -cjf ~/rpmbuild/SOURCES/lgt2375.tar.bz2 .
+mkdir -p ~/rpmbuild/RPMS/noarch
 
 cd "$dir"
 rpmbuild -ba --target=noarch-*-linux logtalk.spec
 
-cd /usr/src/redhat/RPMS/noarch
+cd ~/rpmbuild/RPMS/noarch
 echo $PWD
 ls -l
