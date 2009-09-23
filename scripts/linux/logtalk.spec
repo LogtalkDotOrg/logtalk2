@@ -28,14 +28,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-/usr/local/share/lgt2375/BIBLIOGRAPHY.bib
-/usr/local/share/lgt2375/CUSTOMIZE.txt
-/usr/local/share/lgt2375/INSTALL.txt
-/usr/local/share/lgt2375/LICENSE.txt
-/usr/local/share/lgt2375/QUICK_START.txt
-/usr/local/share/lgt2375/README.txt
-/usr/local/share/lgt2375/RELEASE_NOTES.txt
-/usr/local/share/lgt2375/UPGRADING.txt
+%doc /usr/local/share/lgt2375/BIBLIOGRAPHY.bib
+%doc /usr/local/share/lgt2375/CUSTOMIZE.txt
+%doc /usr/local/share/lgt2375/INSTALL.txt
+%doc /usr/local/share/lgt2375/LICENSE.txt
+%doc /usr/local/share/lgt2375/QUICK_START.txt
+%doc /usr/local/share/lgt2375/README.txt
+%doc /usr/local/share/lgt2375/RELEASE_NOTES.txt
+%doc /usr/local/share/lgt2375/UPGRADING.txt
 /usr/local/share/lgt2375/VERSION.txt
 /usr/local/share/lgt2375/compiler
 /usr/local/share/lgt2375/configs
@@ -44,7 +44,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/lgt2375/integration
 /usr/local/share/lgt2375/libpaths
 /usr/local/share/lgt2375/library
-/usr/local/share/lgt2375/manuals
+%doc /usr/local/share/lgt2375/manuals
 /usr/local/share/lgt2375/scripts
 /usr/local/share/lgt2375/settings.lgt
 /usr/local/share/lgt2375/wenv
