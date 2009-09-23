@@ -10,5 +10,12 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 
 This directory contains files used when building Linux RPM packages.
-The "build_rpm.sh" shell script assumes that a ~/rpmbuild directory
-structure already exists.
+
+The "build_rpm.sh" shell script makes the following assumptions:
+
+(1) the "~/.rpmmacros" configuration file contains the definition:
+ 
+%_topdir      %(echo $HOME)/rpmbuild"
+
+(2) a "~/rpmbuild" directory structure already exists (the command
+"rpmdev-setuptree" can be used to create these structure).
