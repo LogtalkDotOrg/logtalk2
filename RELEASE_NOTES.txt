@@ -15,6 +15,11 @@ RELEASE NOTES
 
 2.37.5 - October ??, 2009
 
+    Updated the Logtalk multi-threading features, replacing all calls to
+    the call_cleanup/2 built-in predicate with calls to the more reliable
+    setup_call_cleanup/3 built-in predicate. This change requires recent
+    versions of SWI-Prolog, XSB, and YAP when writing multi-threaded code.
+
     Updated the RPM spec file and build script to no longer require root
     access. The RPM package built from these files is no longer relocatable.
 

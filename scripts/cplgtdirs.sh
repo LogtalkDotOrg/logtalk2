@@ -133,7 +133,7 @@ echo "your Prolog compiler and operating-system requirements or to add your own"
 echo "library paths."
 echo
 echo "You may want to customize the default Logtalk compiler flags by editing"
-echo "the \"settings.lgt\" file found in the directory \"\$LOGTALKUSER\". For more "
+echo "the \"settings.lgt\" file found in the directory \"\$LOGTALKUSER\". For more"
 echo "information on customizing Logtalk and your working environment, consult"
 echo "the \"\$LOGTALKUSER/CUSTOMIZE.txt\" file."
 echo

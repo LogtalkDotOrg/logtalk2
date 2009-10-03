@@ -9277,22 +9277,18 @@ current_logtalk_flag(version, version(2, 37, 5)).
 '$lgt_tr_threaded_call'((TGoal; TGoals), catch(ThreadedCall, '$lgt_terminated', fail)) :-
 	!,
 	'$lgt_tr_threaded_or_call'((TGoal; TGoals), Queue, MTGoals, Results),
-	ThreadedCall = (	thread_self(Queue),
-						thread_send_message(Queue, '$lgt_master'),	% needed for correct thread cancellation
-						MTGoals,
-						'$lgt_mt_threaded_or_exit'(Results),		% collect results and terminate slave threads
-						thread_get_message(Queue, '$lgt_master')
-					).
+	ThreadedCall = setup_call_cleanup(
+						(thread_self(Queue), thread_send_message(Queue, '$lgt_master')),	% needed for correct thread cancellation
+						(MTGoals, '$lgt_mt_threaded_or_exit'(Results)),						% collect results and terminate slave threads
+						thread_get_message(Queue, '$lgt_master')).
 
 '$lgt_tr_threaded_call'((TGoal, TGoals), catch(ThreadedCall, '$lgt_terminated', fail)) :-
 	!,
 	'$lgt_tr_threaded_and_call'((TGoal, TGoals), Queue, MTGoals, Results),
-	ThreadedCall = (	thread_self(Queue),
-						thread_send_message(Queue, '$lgt_master'),	% needed for correct thread cancellation
-						MTGoals,
-						'$lgt_mt_threaded_and_exit'(Results),		% collect results and terminate slave threads
-						thread_get_message(Queue, '$lgt_master')
-					).
+	ThreadedCall = setup_call_cleanup(
+						(thread_self(Queue), thread_send_message(Queue, '$lgt_master')),	% needed for correct thread cancellation
+						(MTGoals, '$lgt_mt_threaded_and_exit'(Results)),					% collect results and terminate slave threads
+						thread_get_message(Queue, '$lgt_master')).
 
 '$lgt_tr_threaded_call'(TGoal, once(TGoal)).
 
@@ -12020,7 +12016,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 			functor(Mode, Functor, Arity),
 			'$lgt_pp_mode_'(Mode, _),
 			forall('$lgt_pp_mode_'(Mode, Solutions), (Solutions \== zero_or_one, Solutions \== one, Solutions \== zero)) ->
-			assertz('$lgt_pp_feclause_'((MHead:-mutex_lock(Mutex), call_cleanup(THead, mutex_unlock(Mutex)))))
+			assertz('$lgt_pp_feclause_'((MHead:-mutex_lock(Mutex), setup_call_cleanup(true, THead, mutex_unlock(Mutex)))))
 		;	assertz('$lgt_pp_feclause_'((MHead:-with_mutex(Mutex, THead))))
 		)
 	;	assertz('$lgt_pp_fdef_'(Old))
@@ -12043,7 +12039,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 			functor(Mode, Functor, Arity),
 			'$lgt_pp_mode_'(Mode, _),
 			forall('$lgt_pp_mode_'(Mode, Solutions), (Solutions \== zero_or_one, Solutions \== one, Solutions \== zero)) ->
-			assertz('$lgt_pp_feclause_'((MHead:-mutex_lock(Mutex), call_cleanup(THead, mutex_unlock(Mutex)))))
+			assertz('$lgt_pp_feclause_'((MHead:-mutex_lock(Mutex), setup_call_cleanup(true, THead, mutex_unlock(Mutex)))))
 		;	assertz('$lgt_pp_feclause_'((MHead:-with_mutex(Mutex, THead))))
 		)
 	;	assertz('$lgt_pp_fddef_'(Old))
@@ -15336,10 +15332,12 @@ current_logtalk_flag(version, version(2, 37, 5)).
 		% answering thread exists; go ahead and retrieve the solution(s):
 		thread_get_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)),
 		(	Type == once ->
-		    call_cleanup(
+		    setup_call_cleanup(
+				true,
 		        '$lgt_mt_det_reply'(Queue, Goal, This, Self, Tag, Id),
 		        thread_join(Id, _))
-		;   call_cleanup(
+		;   setup_call_cleanup(
+				true,
 			    '$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Tag, Id),
 				((	thread_property(Id, status(running)) ->					% if the thread is still running, it's suspended waiting
 					catch(thread_send_message(Id, '$lgt_exit'), _, true)	% for a request to an alternative proof; tell it to exit
