@@ -12,7 +12,7 @@
 
 
 print_version() {
-	echo "`basename $0` 0.3"
+	echo "`basename $0` 0.4"
 	exit 1
 }
 
@@ -78,12 +78,13 @@ valid_version() {
 switch_version() {
 	valid_version $1
 	if [ 0 != ${?} ]; then
-    	echo "Invalid version: \"$1\"!"
+    	echo "Invalid version: $1"
     	exit 1
 	else
 		cd "$prefix"
 		rm -f logtalk
 		ln -sf $1 logtalk
+    	echo "Switched to version: $1"
 		exit 0
 	fi
 }
