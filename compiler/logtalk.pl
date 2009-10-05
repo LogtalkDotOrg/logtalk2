@@ -7898,13 +7898,12 @@ current_logtalk_flag(version, version(2, 37, 5)).
     functor(THead, TFunctor, TArity),
     functor(Template, TFunctor, TArity), 
     findall(1, ('$lgt_pp_eclause_'(Template); '$lgt_pp_eclause_'((Template :- _))), List),
-    '$lgt_length'(List, 0, Length),
-    N is Length + 1.
+    '$lgt_length'(List, 1, N).
 
 '$lgt_length'([], Length, Length).
-'$lgt_length'([_| Tail], Acc, Length) :-
-	Acc2 is Acc + 1,
-	'$lgt_length'(Tail, Acc2, Length).
+'$lgt_length'([_| Tail], Length0, Length) :-
+	Length1 is Length0 + 1,
+	'$lgt_length'(Tail, Length1, Length).
 
 
 
@@ -8174,23 +8173,23 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 '$lgt_insufficient_closure_args'([], MaxClosure, MaxClosure, TotalNormalArgs, TotalNormalArgs).
 
-'$lgt_insufficient_closure_args'([MArg| MArgs], MaxClosureSoFar, MaxClosure, TotalNormalArgsAcc, TotalNormalArgs) :-
+'$lgt_insufficient_closure_args'([MArg| MArgs], MaxClosure0, MaxClosure, TotalNormalArgs0, TotalNormalArgs) :-
 	(	MArg == (*) ->
-		MaxClosureSoFar2 is MaxClosureSoFar,
-		TotalNormalArgsAcc2 is TotalNormalArgsAcc + 1
+		MaxClosure1 is MaxClosure0,
+		TotalNormalArgs1 is TotalNormalArgs0 + 1
 	;	MArg == (::) ->
-		MaxClosureSoFar2 is MaxClosureSoFar,
-		TotalNormalArgsAcc2 is TotalNormalArgsAcc
+		MaxClosure1 is MaxClosure0,
+		TotalNormalArgs1 is TotalNormalArgs0
 	;	MArg == 0 ->
-		MaxClosureSoFar2 is MaxClosureSoFar,
-		TotalNormalArgsAcc2 is TotalNormalArgsAcc
-	;	(	MArg > MaxClosureSoFar ->
-			MaxClosureSoFar2 is MArg
-		;	MaxClosureSoFar2 is MaxClosureSoFar
+		MaxClosure1 is MaxClosure0,
+		TotalNormalArgs1 is TotalNormalArgs0
+	;	(	MArg > MaxClosure0 ->
+			MaxClosure1 is MArg
+		;	MaxClosure1 is MaxClosure0
 		),
-		TotalNormalArgsAcc2 is TotalNormalArgsAcc
+		TotalNormalArgs1 is TotalNormalArgs0
 	),
-	'$lgt_insufficient_closure_args'(MArgs, MaxClosureSoFar2, MaxClosure, TotalNormalArgsAcc2, TotalNormalArgs).
+	'$lgt_insufficient_closure_args'(MArgs, MaxClosure1, MaxClosure, TotalNormalArgs1, TotalNormalArgs).
 
 
 
@@ -15972,9 +15971,9 @@ current_logtalk_flag(version, version(2, 37, 5)).
 	(	'$lgt_compiler_flag'(report,  off) ->
 		true
 	;	'$lgt_compiler_flag'(prolog_version, Current),
-		'$lgt_compiler_flag'(prolog_compatible_version, Check) ->
-		(	Check =.. [Operator, Compatible],
-			call(Operator, Current, Compatible) ->
+		'$lgt_compiler_flag'(prolog_compatible_version, Check),
+		Check =.. [Operator, Compatible] ->
+		(	call(Operator, Current, Compatible) ->
 			true
 		;	write('%         WARNING!  Possibly incompatible Prolog version detected!'), nl,
 			write('%                   Running Prolog version: '), write(Current), nl,

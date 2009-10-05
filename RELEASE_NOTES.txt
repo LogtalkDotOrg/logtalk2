@@ -20,6 +20,9 @@ RELEASE NOTES
     setup_call_cleanup/3 built-in predicate. This change requires recent
     versions of SWI-Prolog, XSB, and YAP when writing multi-threaded code.
 
+    Corrected a bug in the Logtalk runtime when printing a compatibility
+    warning regarding the back-end Prolog compiler version being used.
+
     Updated the RPM spec file and build script to no longer require root
     access. The RPM package built from these files is no longer relocatable.
 
