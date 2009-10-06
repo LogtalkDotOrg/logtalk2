@@ -10,6 +10,8 @@
 ## The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ## ================================================================
 
+version=`cat ../VERSION.txt`
+
 if [ -z "$1" ]; then
 	if [ -f "/etc/debian_version" ]; then
 		prefix=/usr
@@ -31,7 +33,7 @@ if ! [ -d "$prefix" ]; then
 fi
 
 echo
-echo "Installing Logtalk on $prefix/share ..."
+echo "Installing Logtalk $version on $prefix/share ..."
 echo
 
 mkdir -p $prefix/share
@@ -116,5 +118,5 @@ echo "If you get an unexpected failure when using one of the Prolog integration"
 echo "scripts, consult the \"$prefix/share/logtalk/configs/NOTES.txt\" file"
 echo "for compatibility notes."
 echo
-echo "Logtalk basic installation completed."
+echo "Logtalk $version basic installation completed."
 echo

@@ -11,7 +11,7 @@
 ## ================================================================
 
 echo
-echo "Uninstalling Logtalk system-level files..."
+echo "Uninstalling Logtalk 2.37.5 system-level files..."
 echo
 
 if ! [ "$LOGTALKHOME" ]; then
@@ -68,6 +68,6 @@ rm -f xsbmtlgt
 rm -f xsbmt64lgt
 rm -f yaplgt
 
-echo "Logtalk system-level uninstall completed. For uninstalling user-level"
+echo "Logtalk 2.37.5 system-level uninstall completed. For uninstalling user-level"
 echo "Logtalk files simply delete the LOGTALKUSER directories."
 echo

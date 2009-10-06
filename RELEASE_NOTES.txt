@@ -26,6 +26,9 @@ RELEASE NOTES
     Updated the RPM spec file and build script to no longer require root
     access. The RPM package built from these files is no longer relocatable.
 
+    Updated the POSIX (un)install shell scripts to print the version number
+    of the Logtalk release being (un)installed.
+
 
 2.37.4 - September 18, 2009
 
