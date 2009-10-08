@@ -141,6 +141,13 @@ echo "different location for the Logtalk user files directory. This directory "
 echo "is created by running the \"cplgtdirs\" shell script, which must be run "
 echo "once by each user before using the integration scripts."
 echo
+if [ -x /usr/bin/update-mime-database ]; then
+	mkdir -p /usr/local/share/mime/packages
+	cp /usr/local/share/lgt2375/scripts/freedesktop/logtalk.xml /usr/local/share/mime/packages/logtalk.xml
+	update-mime-database /usr/local/share/mime
+	echo "Added the Logtalk mime-type to the Shared MIME-info Database."
+	echo
+fi
 echo "Logtalk basic installation completed."
 echo
 

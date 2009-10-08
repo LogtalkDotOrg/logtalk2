@@ -118,5 +118,14 @@ echo "If you get an unexpected failure when using one of the Prolog integration"
 echo "scripts, consult the \"$prefix/share/logtalk/configs/NOTES.txt\" file"
 echo "for compatibility notes."
 echo
+
+if [ `which update-mime-database` != '' ]; then
+	mkdir -p $prefix/share/mime/packages
+	cp $prefix/share/lgt2375/scripts/freedesktop/logtalk.xml $prefix/share/mime/packages/logtalk.xml
+	update-mime-database $prefix/share/mime
+	echo "Added the Logtalk mime-type to the Shared MIME-info Database."
+	echo
+fi
+
 echo "Logtalk $version basic installation completed."
 echo

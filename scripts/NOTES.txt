@@ -49,6 +49,10 @@ debian
 	directory containing support files for building a Debian package
 	(work in progress; experimental)
 
+freedesktop
+	directory containing support files for adding the Logtalk mime-type to
+	the freedesktop.org shared mime-info database
+
 linux
 	directory containing files used when building
 

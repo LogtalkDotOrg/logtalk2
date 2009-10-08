@@ -27,6 +27,9 @@ RELEASE NOTES
     Updated the definition of the monitors/1 and monitored/1 predicates
     in order to avoid using the non-standard predicate sort/2.
 
+    Added support for adding the Logtalk mime-type to systems supporting
+    the freedesktop.org shared mime-info database.
+
     Updated the RPM spec file and build script to no longer require root
     access. The RPM package built from these files is no longer relocatable.
 
