@@ -3,9 +3,9 @@
 	implements(monitorp)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2004/3/31,
+		date is 2009/10/8,
 		comment is 'Monitor predicates.']).
 
 	:- private(spy_point_/4).
@@ -17,7 +17,8 @@
 
 	monitor_activated :-
 		self(Self),
-		once(current_event(_, _, _, _, Self)).
+		current_event(_, _, _, _, Self) ->
+		true.
 
 	activate_monitor :-
 		self(Self),

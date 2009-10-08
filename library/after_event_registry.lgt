@@ -3,18 +3,25 @@
 	implements(event_registryp)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2000/7/24,
+		date is 2009/10/8,
 		comment is 'After events registry predicates.']).
 
+	monitor(Monitor) :-
+		current_event(after, _, _, _, Monitor).
+
 	monitors(Monitors) :-
-		findall(Monitor, current_event(after, _, _, _, Monitor), List),
-		{sort(List, Monitors)}.
+		(	setof(Monitor, monitor(Monitor), Monitors) ->
+			true
+		;	Monitors = []
+		).
 
 	monitored(Objects) :-
-		findall(Object, current_event(after, Object, _, _, _), List),
-		{sort(List, Objects)}.
+		(	setof(Object, Message^Sender^Monitor^current_event(after, Object, Message, Sender, Monitor), Objects) ->
+			true
+		;	Objects = []
+		).
 
 	monitor(Object, Message, Sender, Monitor) :-
 		current_event(after, Object, Message, Sender, Monitor).

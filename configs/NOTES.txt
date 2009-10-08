@@ -27,6 +27,11 @@ Most of the suggestions you will find in this file for integrating Logtalk
 with specific Prolog compilers are already implemented and available in the 
 "integration" directory of the Logtalk distribution.
 
+The config files include hacked definitions for missing ISO Prolog standard
+and de-facto standard built-in predicates. These definitions aim to fulfill
+the requirements of the Logtalk compiler and runtime but are not intended as
+a general replacement for missing functionality.
+
 
 template config file
 
