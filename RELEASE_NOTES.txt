@@ -30,6 +30,9 @@ RELEASE NOTES
     Added support for adding the Logtalk mime-type to systems supporting
     the freedesktop.org shared mime-info database.
 
+    Added support for adding the Logtalk mime-type and the file description
+    for Logtalk source files to the Windows installer.
+
     Updated the RPM spec file and build script to no longer require root
     access. The RPM package built from these files is no longer relocatable.
 
