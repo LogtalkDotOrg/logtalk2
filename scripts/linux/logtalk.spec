@@ -143,7 +143,7 @@ echo "once by each user before using the integration scripts."
 echo
 if [ -x /usr/bin/update-mime-database ]; then
 	mkdir -p /usr/share/mime/packages
-	cp /usr/local/share/lgt2375/scripts/freedesktop/logtalk.xml /usr/share/mime/packages/logtalk.xml
+	cp -f /usr/local/share/lgt2375/scripts/freedesktop/logtalk.xml /usr/share/mime/packages/logtalk.xml
 	update-mime-database /usr/share/mime
 	echo "Added the Logtalk mime-type to the Shared MIME-info Database."
 	echo

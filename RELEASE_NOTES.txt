@@ -18,7 +18,7 @@ RELEASE NOTES
     Updated the Logtalk multi-threading features, replacing all calls to
     the call_cleanup/2 built-in predicate with calls to the more reliable
     setup_call_cleanup/3 built-in predicate. This change requires recent
-    versions of SWI-Prolog, XSB, and YAP when writing multi-threaded code.
+    versions of SWI-Prolog, XSB, and YAP when writing multi-threading code.
 
     Corrected a bug in the Logtalk runtime when printing a compatibility
     warning regarding the back-end Prolog compiler version being used.

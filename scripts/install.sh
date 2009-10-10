@@ -121,7 +121,7 @@ echo
 
 if [ `which update-mime-database` != '' ]; then
 	mkdir -p $prefix/share/mime/packages
-	cp $prefix/share/lgt2375/scripts/freedesktop/logtalk.xml $prefix/share/mime/packages/logtalk.xml
+	cp -f $prefix/share/lgt2375/scripts/freedesktop/logtalk.xml $prefix/share/mime/packages/logtalk.xml
 	update-mime-database $prefix/share/mime
 	echo "Added the Logtalk mime-type to the Shared MIME-info Database."
 	echo
