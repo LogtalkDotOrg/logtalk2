@@ -8714,7 +8714,10 @@ current_logtalk_flag(version, version(2, 37, 5)).
 '$lgt_tr_body'(':'(Alias), TPred, '$lgt_dbg_goal'(':'(Alias), TPred, ExCtx), Ctx) :-
     !,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	(	'$lgt_pp_imported_category_'(Ctg, _, _, _, _),
+	(	% ensure that all imported categories are "static binding" entities
+		forall('$lgt_pp_imported_category_'(Ctg, _, _, _, _), '$lgt_static_binding_entity_'(Ctg)),
+		% find the first category in left-to-right import order that defines the predicate
+		'$lgt_pp_imported_category_'(Ctg, _, _, _, _),
 		(	'$lgt_pp_alias_'(Ctg, Pred, Alias) ->
 			true
 		;	Pred = Alias
@@ -8722,17 +8725,16 @@ current_logtalk_flag(version, version(2, 37, 5)).
 		'$lgt_ctg_static_binding_cache'(Ctg, Pred, ExCtx, TPred) ->
 		true
 	;	% must resort to dynamic binding
-	    Pred = Alias,
 		'$lgt_pp_object_'(_, _, Dcl, _, _, IDcl, _, _, _, _, _) ->
 		(	\+ '$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _),
 		 	\+ '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _) ->
-			TPred = '$lgt_ctg_call_'(Dcl, Pred, ExCtx, _)
-		;	TPred = '$lgt_ctg_call_'(IDcl, Pred, ExCtx, _)
+			TPred = '$lgt_ctg_call_'(Dcl, Alias, ExCtx, _)
+		;	TPred = '$lgt_ctg_call_'(IDcl, Alias, ExCtx, _)
 		)
 	).
 
 
-% calling category predicates directly
+% calling module predicates
 
 '$lgt_tr_body'(':'(Module, Pred), TPred, DPred, Ctx) :-
 	'$lgt_pl_built_in'(':'(_, _)),						% back-end Prolog compiler supports modules
@@ -9249,7 +9251,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 	throw(permission_error(define, dynamic_predicate, Functor/Arity)).
 
 
-% goal is a call to a user predicate
+% goal is a call to a local, user-defined predicate
 
 '$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, ExCtx), Ctx) :-
 	Pred =.. [Functor| Args],
