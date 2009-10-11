@@ -24,7 +24,10 @@ RELEASE NOTES
     warning regarding the back-end Prolog compiler version being used.
 
     Corrected a bug in the implementation of the :/1 control construct when
-    only some of the imported categories are compiled for static binding.
+    some but not all imported categories are compiled for static binding.
+
+    Corrected a event handling bug in the processing of meta-calls whose
+    meta-arguments have the format Object::Closure.
 
     Added a monitor/1 predicate to the library event registry objects.
     Updated the definition of the monitors/1 and monitored/1 predicates

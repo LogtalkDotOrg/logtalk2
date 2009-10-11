@@ -3514,8 +3514,8 @@ current_logtalk_flag(version, version(2, 37, 5)).
 		'$lgt_append'(Args, ExtraArgs, FullArgs),
 		Pred =.. [Functor| FullArgs],
 		(	'$lgt_entity_property_'(This, flags(_, _, _, e, _, _)) ->
-			'$lgt_send_to_obj_ne_'(Obj, Pred, This, _)
-		;	'$lgt_send_to_obj_'(Obj, Pred, This, _)
+			'$lgt_send_to_obj_'(Obj, Pred, This, _)
+		;	'$lgt_send_to_obj_ne_'(Obj, Pred, This, _)
 		)
 	;	Goal =.. [call, Obj::Closure| ExtraArgs],
 		throw(error(type_error(callable, Closure), Goal, This))
