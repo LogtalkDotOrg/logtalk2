@@ -2713,10 +2713,11 @@ current_logtalk_flag(version, version(2, 37, 5)).
 '$lgt_retract_fact_chk'(Obj, Head, Sender, _) :-
 	'$lgt_db_lookup_cache_'(Obj, Head, Sender, THead, Update),
 	!,
-	(	Update == true ->	% this apparently pointless
-		retract(THead)		% optimization allows up to
-	;	retract(THead),		% 20% performance increase
-		once(Update)		% with some Prolog compilers!
+	retract(THead),
+	(	Update == true ->
+		true
+	;	Update = '$lgt_update_ddef_table_opt'(UHead, UTHead, UClause),
+		'$lgt_update_ddef_table_opt'(UHead, UTHead, UClause)
 	).
 
 '$lgt_retract_fact_chk'(Obj, Head, Sender, Scope) :-
@@ -2781,10 +2782,11 @@ current_logtalk_flag(version, version(2, 37, 5)).
 '$lgt_retractall_chk'(Obj, Head, Sender, _) :-
 	'$lgt_db_lookup_cache_'(Obj, Head, Sender, THead, Update),
 	!,
-	(	Update == true ->	% this apparently pointless
-		retractall(THead)   % optimization allows up to
-	;	retractall(THead),  % 20% performance increase
-		once(Update)		% with some Prolog compilers!
+	retractall(THead),
+	(	Update == true ->
+		true
+	;	Update = '$lgt_update_ddef_table_opt'(UHead, UTHead, UClause),
+		'$lgt_update_ddef_table_opt'(UHead, UTHead, UClause)
 	).
 
 '$lgt_retractall_chk'(Obj, Head, Sender, Scope) :-
@@ -2849,7 +2851,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 	functor(THead, TFunctor, TArity), functor(GTHead, TFunctor, TArity),
 	GHead =.. [_| Args],
 	GTHead =.. [_| ExtArgs],
-	'$lgt_unify_args'(Args, ExtArgs), 
+	'$lgt_unify_head_thead_args'(Args, ExtArgs), 
 	(	(Scope = p(p(p)), Type == (dynamic)) ->
 		asserta('$lgt_db_lookup_cache_'(GObj, GHead, _, GTHead, true))
 	;	functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
@@ -2867,7 +2869,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 	functor(THead, TFunctor, TArity), functor(GTHead, TFunctor, TArity),
 	GHead =.. [_| Args],
 	GTHead =.. [_| ExtArgs],
-	'$lgt_unify_args'(Args, ExtArgs),
+	'$lgt_unify_head_thead_args'(Args, ExtArgs),
 	(	NeedsUpdate == true, Sender \= SCtn ->
 		functor(UHead, HFunctor, HArity),
 		functor(UTHead, TFunctor, TArity),
@@ -2885,10 +2887,12 @@ current_logtalk_flag(version, version(2, 37, 5)).
 	).
 
 
-'$lgt_unify_args'([], _).
+% translated clause heads use an extra argument for passing the execution context
 
-'$lgt_unify_args'([Arg| Args], [Arg| ExtArgs]) :-
-	'$lgt_unify_args'(Args, ExtArgs).
+'$lgt_unify_head_thead_args'([], [_]).
+
+'$lgt_unify_head_thead_args'([Arg| Args], [Arg| ExtArgs]) :-
+	'$lgt_unify_head_thead_args'(Args, ExtArgs).
 
 
 

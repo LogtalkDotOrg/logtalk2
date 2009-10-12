@@ -20,6 +20,10 @@ RELEASE NOTES
     setup_call_cleanup/3 built-in predicate. This change requires recent
     versions of SWI-Prolog, XSB, and YAP when writing multi-threading code.
 
+    Improved performance of the database built-in methods retractall/1 and
+    retract/1 whenever their use requires updating the internal predicate
+    definition lookup tables.
+
     Corrected a bug in the Logtalk runtime when printing a compatibility
     warning regarding the back-end Prolog compiler version being used.
 
