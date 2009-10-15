@@ -49,6 +49,9 @@ RELEASE NOTES
     Updated the POSIX (un)install shell scripts to print the version number
     of the Logtalk release being (un)installed.
 
+    Added information about using the Sublime Text Windows text editor for
+    editing Logtalk source files.
+
 
 2.37.4 - September 18, 2009
 
