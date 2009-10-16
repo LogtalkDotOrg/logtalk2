@@ -49,6 +49,11 @@ RELEASE NOTES
     Updated the POSIX (un)install shell scripts to print the version number
     of the Logtalk release being (un)installed.
 
+    Updated the "lgt2pdf.sh" and "lgt2txt.sh" POSIX shell scripts in order
+    to prevent accidental deletion of the "logtal.dtd" and "logtalk.xsd"
+    files in the Logtalk installation directory. Thanks to Michael Igler
+    for the bug report.
+
     Added information about using the Sublime Text Windows text editor for
     editing Logtalk source files.
 

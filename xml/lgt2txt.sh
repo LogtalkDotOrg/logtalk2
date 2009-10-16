@@ -144,7 +144,9 @@ else
 	echo
 fi
 
-rm -f logtalk.dtd
-rm -f logtalk.xsd
+if [ "$PWD" != "$LOGTALKHOME"/xml ] ; then
+	rm -f logtalk.dtd
+	rm -f logtalk.xsd
+fi
 
 exit 0
