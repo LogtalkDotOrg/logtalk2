@@ -145,8 +145,9 @@ else
 fi
 
 if [ "$PWD" != "$LOGTALKHOME"/xml ] ; then
-	rm -f logtalk.dtd
-	rm -f logtalk.xsd
+	rm -f ./logtalk.dtd
+	rm -f ./logtalk.xsd
+	rm -f ./custom.ent
 fi
 
 exit 0
