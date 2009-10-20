@@ -2144,7 +2144,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 
 
-% '$lgt_set_scope_container'(+nonvar, +object_identifier, +object_identifier, +object_identifier)
+% '$lgt_set_scope_container'(+nonvar, +object_identifier, +object_identifier, -object_identifier)
 %
 % sets predicate scope container;
 % used in the implementation of private-qualified relations between entities:
@@ -3690,7 +3690,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 '$lgt_call_within_context'(Obj, Goal, This) :-
 	(	'$lgt_current_object_'(Obj, Prefix, _, Def, _, _, _, _, DDef, _, _) ->
-		(	('$lgt_entity_property_'(Obj, built_in); '$lgt_entity_property_'(Obj, flags(csc, _, _, _, _, _))) ->			
+		(	'$lgt_entity_property_'(Obj, flags(csc, _, _, _, _, _)) ->			
 			'$lgt_exec_ctx'(ExCtx, Obj, Obj, Obj, []),
 			(	% in the most common case we're calling a user defined predicate:
 				(call(Def, Goal, ExCtx, TGoal); call(DDef, Goal, ExCtx, TGoal)) ->
@@ -3842,13 +3842,28 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 
 '$lgt_entity_property_'(logtalk, built_in).
-'$lgt_entity_property_'(logtalk, threaded) :-
-	'$lgt_compiler_flag'(threads, supported).
+'$lgt_entity_property_'(logtalk, flags(csc, dd, c, e, Threaded, ns)) :-
+	(	'$lgt_compiler_flag'(threads, supported) ->
+		Threaded = t
+	;	Threaded = nt
+	).
+
 '$lgt_entity_property_'(user, built_in).
-'$lgt_entity_property_'(user, threaded) :-
-	'$lgt_compiler_flag'(threads, supported).
+'$lgt_entity_property_'(user, flags(csc, dd, c, e, Threaded, ns)) :-
+	(	'$lgt_compiler_flag'(threads, supported) ->
+		Threaded = t
+	;	Threaded = nt
+	).
+
 '$lgt_entity_property_'(debugger, built_in).
+'$lgt_entity_property_'(debugger, flags(csc, dd, c, e, Threaded, ns)) :-
+	(	'$lgt_compiler_flag'(threads, supported) ->
+		Threaded = t
+	;	Threaded = nt
+	).
+
 '$lgt_entity_property_'(expanding, built_in).
+
 '$lgt_entity_property_'(monitoring, built_in).
 
 
@@ -5601,38 +5616,38 @@ current_logtalk_flag(version, version(2, 37, 5)).
 '$lgt_tr_entity_flags'(category, Ctg) :-
 	(	'$lgt_compiler_flag'(events, allow) ->
 		Events = e
-	;	Events = no
+	;	Events = ne
 	),
 	(	'$lgt_pp_synchronized_' ->
 		Synchronized = s
-	;	Synchronized = no
+	;	Synchronized = ns
 	),
 	assertz('$lgt_pp_rclause_'('$lgt_entity_property_'(Ctg, flags(Events, Synchronized)))).
 
 '$lgt_tr_entity_flags'(object, Obj) :-
 	(	'$lgt_compiler_flag'(context_switching_calls, allow) ->
 		ContextSwitchingCalls = csc
-	;	ContextSwitchingCalls = no
+	;	ContextSwitchingCalls = ncsc
 	),
 	(	'$lgt_compiler_flag'(dynamic_declarations, allow) ->
 		DynamicDeclarations = dd
-	;	DynamicDeclarations = no
+	;	DynamicDeclarations = ndd
 	),
 	(	'$lgt_compiler_flag'(complements, allow) ->
 		Complements = c
-	;	Complements = no
+	;	Complements = nc
 	),
 	(	'$lgt_compiler_flag'(events, allow) ->
 		Events = e
-	;	Events = no
+	;	Events = ne
 	),
 	(	'$lgt_pp_threaded_' ->
 		Threaded = t
-	;	Threaded = no
+	;	Threaded = nt
 	),
 	(	'$lgt_pp_synchronized_' ->
 		Synchronized = s
-	;	Synchronized = no
+	;	Synchronized = ns
 	),
 	assertz('$lgt_pp_rclause_'('$lgt_entity_property_'(Obj, flags(ContextSwitchingCalls, DynamicDeclarations, Complements, Events, Threaded, Synchronized)))).
 
