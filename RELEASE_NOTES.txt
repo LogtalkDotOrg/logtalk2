@@ -33,6 +33,9 @@ RELEASE NOTES
     Corrected a event handling bug in the processing of meta-calls whose
     meta-arguments have the format Object::Closure.
 
+    Corrected a bug in the runtime error handler for top-level message sending
+    calls where the reported exception term context argument would be unbound.
+
     Added a monitor/1 predicate to the library event registry objects.
     Updated the definition of the monitors/1 and monitored/1 predicates
     in order to avoid using the non-standard predicate sort/2.

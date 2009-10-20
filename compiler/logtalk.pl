@@ -422,7 +422,8 @@ Obj<<Goal :-
 	var(Variable),
 	throw(error(instantiation_error, throw(_), Sender)).
 
-'$lgt_runtime_error_handler'(error(Error, user::Goal, user)) :-
+'$lgt_runtime_error_handler'(error(Error, Object::Goal, user)) :-
+	Object == user,
 	throw(error(Error, Goal)).
 
 '$lgt_runtime_error_handler'(logtalk_debugger_aborted) :-
