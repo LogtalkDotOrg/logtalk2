@@ -10,13 +10,14 @@
 %
 %
 %  configuration file for SWI Prolog 5.6.44 and later versions
+%  (5.8.0 or later versions for using multi-threading features)
 %
 %  last updated: August 7, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-:- set_prolog_flag(iso, true).
+:- set_prolog_flag(iso, true).	% comment out if you need to use SWI-Prolog libraries that don't work in "iso" mode!
 :- set_prolog_flag(generate_debug_info, false).
 :- set_prolog_flag(optimise, true).
 :- system_module.

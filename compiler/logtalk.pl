@@ -1986,6 +1986,8 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 
 
+% '$lgt_current_predicate'(+object_identifier, +predicate_indicator, +object_identifier, +scope)
+%
 % current_predicate/1 built-in method
 
 '$lgt_current_predicate'(Obj, Pred, Sender, _) :-
@@ -2030,10 +2032,15 @@ current_logtalk_flag(version, version(2, 37, 5)).
 '$lgt_visible_predicate'(Obj, Pred, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, _, _, _, _, _, _, _, _) ->
 	call(Dcl, Pred, PScope, _, _, _, _, SCtn, _),
-	once((\+ \+ PScope = Scope; Sender = SCtn)).
+	(	\+ \+ PScope = Scope ->
+		true
+	;	Sender = SCtn
+	).
 
 
 
+% '$lgt_predicate_property'(+object_identifier, @callable, ?predicate_property, +object_identifier, +scope)
+%
 % predicate_property/2 built-in method
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, _) :-
@@ -2057,7 +2064,10 @@ current_logtalk_flag(version, version(2, 37, 5)).
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, Rnm, _),
 	call(Dcl, Pred, PScope, Type, Meta, NonTerminal, Synchronized, SCtn, TCtn),
 	!,
-	once((\+ \+ PScope = Scope; Sender = SCtn)),
+	(	\+ \+ PScope = Scope ->
+		true
+	;	Sender = SCtn
+	),
 	(	'$lgt_scope'(Prop, PScope)
 	;	Prop = Type
 	;	Prop = declared_in(TCtn)
@@ -2201,6 +2211,8 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 
 
+% '$lgt_abolish'(+object_identifier, +predicate_indicator, +object_identifier, +scope)
+%
 % abolish/1 built-in method
 
 '$lgt_abolish'(Obj, Pred, Sender, _) :-
@@ -2274,6 +2286,8 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 
 
+% '$lgt_asserta'(+object_identifier, @clause, +object_identifier, +scope, +scope)
+%
 % asserta/1 built-in method
 
 '$lgt_asserta'(Obj, Clause, Sender, _, _) :-
@@ -2375,6 +2389,8 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 
 
+% '$lgt_assertz'(+object_identifier, @clause, +object_identifier, +scope, +scope)
+%
 % assertz/1 built-in method
 
 '$lgt_assertz'(Obj, Clause, Sender, _, _) :-
@@ -2523,6 +2539,8 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 
 
+% '$lgt_clause'(+object_identifier, @callable, @callable, +object_identifier, +scope)
+%
 % clause/2 built-in method
 
 '$lgt_clause'(Obj, Head, Body, Sender, _) :-
@@ -2595,6 +2613,8 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 
 
+% '$lgt_retract'(+object_identifier, @clause, +object_identifier, +scope)
+%
 % retract/1 built-in method
 
 '$lgt_retract'(Obj, Clause, Sender, _) :-
@@ -2765,6 +2785,8 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 
 
+% '$lgt_retractall'(+object_identifier, @callable, +object_identifier, +scope)
+%
 % retractall/1 built-in method
 
 '$lgt_retractall'(Obj, Head, Sender, _) :-
@@ -11134,7 +11156,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 %
 % a (local) predicate declaration is only generated if there is a scope 
 % declaration for the predicate; the single argument returns the atom
-% "true" if there are local declaration clauses and the atom "fail" otherwise
+% "true" if there are local declaration clauses and the atom "false" otherwise
 
 '$lgt_gen_local_dcl_clauses'(_) :-
 	'$lgt_pp_entity'(_, _, _, Dcl, EntityCompilation),
@@ -11929,7 +11951,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 
 
-% we can have a root object where super have nowhere to go ...
+% we can have a root object where "super" have nowhere to go ...
 
 '$lgt_gen_ic_super_clauses' :-
 	'$lgt_pp_object_'(_, _, _, _, OSuper, _, _, _, _, _, _),
@@ -15231,7 +15253,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 
 
-% '$lgt_mt_dispatch_goal'(+atom, +object_identifier, +object_identifier, @callable, @nonvar)
+% '$lgt_mt_dispatch_goal'(+atom, @callable, +object_identifier, +object_identifier, @nonvar)
 %
 % creates a thread for proving a goal (this predicate is called from within categories)
 

@@ -203,7 +203,7 @@
 			'Day'- 'Day of month in which Easter Sunday falls for given year'],
 		examples is [
 			'Compute Easter Sunday for a particular year:' - easter_day(2006,Month,Day) - {Month=4, Day=16},
-			'Compute Easter Sunday for the current year:' - easter_day(Y,M,D) - {Y = 2005, M = 3, D = 27}
+			'Compute Easter Sunday for the current year:' - easter_day(Year,Month,Day) - {Year = 2005, Month = 3, Day = 27}
 			]]).
 
 

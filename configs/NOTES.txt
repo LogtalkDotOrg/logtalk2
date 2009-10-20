@@ -488,7 +488,7 @@ SICStus Prolog 4.0.3 and later versions
 
 
 SWI Prolog 5.6.44 and later versions
-          (5.7.6 or later versions for using multi-threading features)
+          (5.8.0 or later versions for using multi-threading features)
 
 	swi.pl
 	swihook.pl
@@ -539,6 +539,12 @@ SWI Prolog 5.6.44 and later versions
 	Comment out the definition in the config file if necessary. Note that 
 	Logtalk also defines a {}/1 control construct but this is only used within
 	objects and categories.
+
+	Logtalk doesn't rely on the SWI-Prolog auto-loading mechanism for library
+	predicates. Calls of these library predicates within objects and categories
+	must be explicitly qualified (you may also use use_module/2 directives).
+	Set the Logtalk "misspelt" and "portability" flags to "warning" in order
+	to detect unqualified calls to library predicates.
 
 	Full support for settings files.
 

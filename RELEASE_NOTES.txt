@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.37.5 - October ??, 2009
+2.37.5 - October 30, 2009
 
     Updated the Logtalk multi-threading features, replacing all calls to
     the call_cleanup/2 built-in predicate with calls to the more reliable
