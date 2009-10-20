@@ -7156,17 +7156,23 @@ current_logtalk_flag(version, version(2, 37, 5)).
 '$lgt_tr_multifile_directive'([Entity::Pred| Preds]) :-
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
 	!,
-	'$lgt_construct_entity_prefix'(Entity, Prefix),
-	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
-	assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity))),
+	(	Entity == user ->
+		assertz('$lgt_pp_directive_'(multifile(Functor/Arity)))
+	;	'$lgt_construct_entity_prefix'(Entity, Prefix),
+		'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
+		assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity)))
+	),
 	'$lgt_tr_multifile_directive'(Preds).
 
 '$lgt_tr_multifile_directive'([Entity::Pred| Preds]) :-
 	'$lgt_valid_gr_ind'(Pred, Functor, _, ExtArity),
 	!,
-	'$lgt_construct_entity_prefix'(Entity, Prefix),
-	'$lgt_construct_predicate_indicator'(Prefix, Functor/ExtArity, TFunctor/TArity),
-	assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity))),
+	(	Entity == user ->
+		assertz('$lgt_pp_directive_'(multifile(Functor/ExtArity)))
+	;	'$lgt_construct_entity_prefix'(Entity, Prefix),
+		'$lgt_construct_predicate_indicator'(Prefix, Functor/ExtArity, TFunctor/TArity),
+		assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity)))
+	),
 	'$lgt_tr_multifile_directive'(Preds).
 
 '$lgt_tr_multifile_directive'([':'(Module, Pred)| Preds]) :-
@@ -8115,36 +8121,57 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 % translate the head of a clause of another entity predicate (which we assume declared multifile)
 
-'$lgt_tr_head'(Other::Head, THead, _, File, Lines, Input) :-
+'$lgt_tr_head'(Other::_, _, _, _, _, _) :-
+	var(Other),
+	throw(instantiation_error).
+
+'$lgt_tr_head'(_::Head, _, _, _, _, _) :-
+	var(Head),
+	throw(instantiation_error).
+
+'$lgt_tr_head'(Other::_, _, _, _, _, _) :-
+	\+ callable(Other),
+	throw(type_error(entity_identifier, Other)).
+
+'$lgt_tr_head'(_::Head, _, _, _, _, _) :-
+	\+ callable(Head),
+	throw(type_error(callable, Head)).
+
+'$lgt_tr_head'(user::Head, Head, Ctx, File, Lines, Input) :-
 	!,
-	(	var(Other) ->
-		throw(instantiation_error)
-	;	var(Head) ->
-		throw(instantiation_error)
-	;	\+ callable(Other) ->
-		throw(type_error(entity_identifier, Other))
-	;	\+ callable(Head) ->
-		throw(type_error(callable, Head))
-	;	functor(Head, Functor, Arity),
-		'$lgt_construct_entity_prefix'(Other, Prefix),
-		'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
-		Head =.. [Functor| HeadArgs],
-		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-		'$lgt_comp_ctx_head'(Ctx, TFunctor/TArity),
-		'$lgt_append'(HeadArgs, [ExCtx], HeadTArgs),
-		THead =.. [TFunctor| HeadTArgs],
-		(	'$lgt_pp_directive_'(multifile(TFunctor/TArity)) ->
-			true
-		;	(	'$lgt_compiler_flag'(report, off) ->
-				true
-			;	'$lgt_report_warning_in_new_line',
-				'$lgt_inc_compile_warnings_counter',
-				write('%         WARNING!  Missing multifile directive for the predicate: '),
-				writeq(Other::Functor/Arity), nl,
-				'$lgt_pp_entity'(Type, Entity, _, _, _),
-				'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
-			)
-		)
+	functor(Head, Functor, Arity),
+	'$lgt_comp_ctx_head'(Ctx, Functor/Arity),
+	(	'$lgt_pp_directive_'(multifile(Functor/Arity)) ->
+		true
+	;	'$lgt_compiler_flag'(report, off) ->
+		true
+	;	'$lgt_report_warning_in_new_line',
+		'$lgt_inc_compile_warnings_counter',
+		write('%         WARNING!  Missing multifile directive for the predicate: '),
+		writeq(user::Functor/Arity), nl,
+		'$lgt_pp_entity'(Type, Entity, _, _, _),
+		'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
+	).
+
+'$lgt_tr_head'(Other::Head, THead, Ctx, File, Lines, Input) :-
+	!,
+	'$lgt_construct_entity_prefix'(Other, Prefix),
+	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
+	Head =.. [Functor| HeadArgs],
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_comp_ctx_head'(Ctx, TFunctor/TArity),
+	'$lgt_append'(HeadArgs, [ExCtx], HeadTArgs),
+	THead =.. [TFunctor| HeadTArgs],
+	(	'$lgt_pp_directive_'(multifile(TFunctor/TArity)) ->
+		true
+	;	'$lgt_compiler_flag'(report, off) ->
+		true
+	;	'$lgt_report_warning_in_new_line',
+		'$lgt_inc_compile_warnings_counter',
+		write('%         WARNING!  Missing multifile directive for the predicate: '),
+		writeq(Other::Functor/Arity), nl,
+		'$lgt_pp_entity'(Type, Entity, _, _, _),
+		'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
 	).
 
 
@@ -8164,15 +8191,14 @@ current_logtalk_flag(version, version(2, 37, 5)).
 	;	functor(Head, Functor, Arity),
 		(	'$lgt_pp_directive_'(multifile(':'(Module, Functor/Arity))) ->
 			true
-		;	(	'$lgt_compiler_flag'(report, off) ->
-				true
-			;	'$lgt_report_warning_in_new_line',
-				'$lgt_inc_compile_warnings_counter',
-				write('%         WARNING!  Missing multifile directive for the predicate: '),
-				writeq(':'(Module,Functor/Arity)), nl,
-				'$lgt_pp_entity'(Type, Entity, _, _, _),
-				'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
-			)
+		;	'$lgt_compiler_flag'(report, off) ->
+			true
+		;	'$lgt_report_warning_in_new_line',
+			'$lgt_inc_compile_warnings_counter',
+			write('%         WARNING!  Missing multifile directive for the predicate: '),
+			writeq(':'(Module,Functor/Arity)), nl,
+			'$lgt_pp_entity'(Type, Entity, _, _, _),
+			'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
 		)
 	).
 
