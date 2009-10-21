@@ -3,8 +3,8 @@
 	imports(solver, proof_tree, tracer)).
 
 	:- public(p/1).
-	:- private(q/2, r/1, s/1, t/2).
-	:- dynamic(p/1, q/2, r/1, s/1, t/2).
+	:- private([q/2, r/1, s/1, t/2]).
+	:- dynamic([p/1, q/2, r/1, s/1, t/2]).
 
 	p(X) :- q(X, Y), r(Y).
 

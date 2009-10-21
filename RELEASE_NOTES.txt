@@ -63,6 +63,9 @@ RELEASE NOTES
     Added information about using the Sublime Text Windows text editor for
     editing Logtalk source files.
 
+    Updated documentation in order to remove references to deprecated syntax
+    for sequences of predicate indicators in predicate directives.
+
 
 2.37.4 - September 18, 2009
 
