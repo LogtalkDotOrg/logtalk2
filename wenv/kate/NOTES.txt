@@ -17,13 +17,15 @@ and KWrite text editors (http://kate.kde.org/) and with the KDevelop IDE
 These support files are dual-licensed under the Artistic License 2.0 and 
 the KDE license.
 
-To install copy the file "logtalk.xml" to the directory:
+To install copy the file "logtalk.xml" to one of the directories:
 
-    $KDEDIR/share/apps/katepart/syntax/
+    KDE3:	$KDEDIR/share/apps/katepart/syntax/
+    KDE4:	$KDEDIR/share/kde4/apps/katepart/syntax/
 
 or:
     
-    ~/.kde/share/apps/katepart/syntax/
+    KDE3:	~/.kde/share/apps/katepart/syntax/
+    KDE4:	~/.kde/share/kde4/apps/katepart/syntax/
 
 and restart Kate and KWrite. Logtalk source files (including the programming 
 examples) are usually formatted using four-space tabs; you may set the tab 
