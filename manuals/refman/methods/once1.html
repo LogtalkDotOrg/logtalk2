@@ -44,18 +44,18 @@ This predicate behaves as <code>call(Goal)</code> but it is not re-executable. T
 <h4>Examples</h4>
 
 <dl>
-	<dt>Call a goal in <em><a class="glossary" title="Go to glossary definition" href="../../glossary.html#this">this</a></em>:</dt>
+	<dt>Call a goal deterministically in the context of the object or category containing the call:</dt>
 		<dd><code>once(Goal)</code></dd>
-	<dt>Call a goal in <em><a class="glossary" title="Go to glossary definition" href="../../glossary.html#self">self</a></em>:</dt>
+	<dt>To send a goal as a non-backtracable message to <em><a class="glossary" title="Go to glossary definition" href="../../glossary.html#self">self</a></em>:</dt>
 		<dd><code>once(::Goal)</code></dd>
-	<dt>Call a goal in an explicit object:</dt>
+	<dt>To send a goal as a non-backtracable message to an explicit object:</dt>
 		<dd><code>once(Object::Goal)</code></dd>
 </dl>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: April 29, 2009</span>
+		<span>Last updated on: October 22, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="call1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="not1.html">next</a></span><br/>

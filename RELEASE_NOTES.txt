@@ -64,7 +64,9 @@ RELEASE NOTES
     editing Logtalk source files.
 
     Updated documentation in order to remove references to deprecated syntax
-    for sequences of predicate indicators in predicate directives.
+    for sequences of predicate indicators in predicate directives. Updated 
+    documentation on built-in meta-predicates to correctly described their
+    semantics when used within categories.
 
 
 2.37.4 - September 18, 2009
