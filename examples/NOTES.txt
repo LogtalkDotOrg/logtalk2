@@ -176,6 +176,10 @@ msglog
 	example of using events and monitors for recording, replaying, 
 	and printing user messages
 
+multifile
+	example illustrates how to use multifile predicates within
+	Logtalk objects and categories
+
 operators
 	example of using operators local to objects and categories
 

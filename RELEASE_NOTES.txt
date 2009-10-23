@@ -36,8 +36,10 @@ RELEASE NOTES
     Corrected a bug in the runtime error handler for top-level message sending
     calls where the reported exception term context argument would be unbound.
 
-    Corrected a bug in the compilation of user multifile directives and user
-    multifile predicates within objects and categories.
+    Corrected a bug in the compilation of multifile directives and multifile
+    predicate clauses within objects and categories for the pseudo-object
+    "user". Corrected a bug in the compilation of multifile predicate clauses
+    for other objects and categories.
 
     Corrected a secure meta-predicate compilation bug when using static
     binding to optimize a call to a local meta-predicate made by a normal,
@@ -71,6 +73,9 @@ RELEASE NOTES
     for sequences of predicate indicators in predicate directives. Updated 
     documentation on built-in meta-predicates to correctly described their
     semantics when used within categories.
+
+    Added a simple example, "multifile", illustrating how to use multifile
+    predicates within Logtalk objects and categories.
 
 
 2.37.4 - September 18, 2009

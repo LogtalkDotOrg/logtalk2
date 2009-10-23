@@ -3496,7 +3496,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 % '$lgt_metacall'(?term, +list, @term, +object_identifier, +object_identifier, +object_identifier)
 %
-% performs a meta-call constructed from a closure and a list of addtional arguments
+% performs a meta-call constructed from a closure and a list of additional arguments
 
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, _) :-
 	var(Closure),
@@ -8155,6 +8155,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 '$lgt_tr_head'(Other::Head, THead, Ctx, File, Lines, Input) :-
 	!,
+	functor(Head, Functor, Arity),
 	'$lgt_construct_entity_prefix'(Other, Prefix),
 	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 	Head =.. [Functor| HeadArgs],
@@ -9452,7 +9453,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 % '$lgt_same_meta_arg_extra_args'(@list(nonvar), @list(var), @var, +integer)
 %
-% checks that the number of addtional arguments being appended to a closure
+% checks that the number of additional arguments being appended to a closure
 % in a call/N call matches the corresponding meta-predicate declaration
 % (the relative ordering of the meta-vars is the same of the corresponding 
 % meta-arguments; assumes Logtalk meta-predicate notation)
