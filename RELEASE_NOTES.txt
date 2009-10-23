@@ -41,9 +41,13 @@ RELEASE NOTES
     "user". Corrected a bug in the compilation of multifile predicate clauses
     for other objects and categories.
 
-    Corrected a secure meta-predicate compilation bug when using static
+    Corrected a safety meta-predicate compilation bug when using static
     binding to optimize a call to a local meta-predicate made by a normal,
     public predicate.
+
+    Corrected a safety meta-predicate compilation bug when using a meta-
+    predicate call in the body of a user-defined meta-predicate clause in
+    order to change the number of extra arguments of a closure.
 
     Added a monitor/1 predicate to the library event registry objects.
     Updated the definition of the monitors/1 and monitored/1 predicates
@@ -76,6 +80,9 @@ RELEASE NOTES
 
     Added a simple example, "multifile", illustrating how to use multifile
     predicates within Logtalk objects and categories.
+
+    Updated the "securemp" example in order to illustrate using a call to
+    a meta-predicate to change the number of extra arguments of a closure.
 
 
 2.37.4 - September 18, 2009

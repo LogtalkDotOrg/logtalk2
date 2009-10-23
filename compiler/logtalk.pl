@@ -8140,7 +8140,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 '$lgt_tr_head'(user::Head, Head, Ctx, File, Lines, Input) :-
 	!,
 	functor(Head, Functor, Arity),
-	'$lgt_comp_ctx_head'(Ctx, Functor/Arity),
+	'$lgt_comp_ctx_head'(Ctx, Head),
 	(	'$lgt_pp_directive_'(multifile(Functor/Arity)) ->
 		true
 	;	'$lgt_compiler_flag'(report, off) ->
@@ -8160,7 +8160,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 	Head =.. [Functor| HeadArgs],
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	'$lgt_comp_ctx_head'(Ctx, TFunctor/TArity),
+	'$lgt_comp_ctx_head'(Ctx, Head),
 	'$lgt_append'(HeadArgs, [ExCtx], HeadTArgs),
 	THead =.. [TFunctor| HeadTArgs],
 	(	'$lgt_pp_directive_'(multifile(TFunctor/TArity)) ->
@@ -8207,8 +8207,8 @@ current_logtalk_flag(version, version(2, 37, 5)).
 % translate the head of a clause of a user defined predicate
 
 '$lgt_tr_head'(Head, THead, Ctx, _, _, _) :-
+	'$lgt_comp_ctx_head'(Ctx, Head),
 	functor(Head, Functor, Arity),
-	'$lgt_comp_ctx_head'(Ctx, Functor/Arity),
 	(	'$lgt_pp_dynamic_'(Functor, Arity),
 		\+ '$lgt_pp_public_'(Functor, Arity),
 		\+ '$lgt_pp_protected_'(Functor, Arity),
@@ -8390,8 +8390,9 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 '$lgt_tr_body'(CallN, _, _, Ctx) :-
 	CallN =.. [call, Closure| _],
-	'$lgt_comp_ctx'(Ctx, HeadFunctor/HeadArity, _, _, _, _, MetaVars, _, _),
-	functor(Meta, HeadFunctor, HeadArity),
+	'$lgt_comp_ctx'(Ctx, Head, _, _, _, _, MetaVars, _, _),
+	functor(Head, Functor, Arity),
+	functor(Meta, Functor, Arity),
 	'$lgt_pp_meta_predicate_'(Meta),			% if we're compiling a clause for a meta-predicate
 	'$lgt_member_var'(Closure, MetaVars) ->		% and our closure is a meta-argument
 	functor(CallN, _, CallArity),				% then check that the call/N call complies with
@@ -8688,8 +8689,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 '$lgt_tr_body'(threaded_wait(Msg), MTPred, '$lgt_dbg_goal'(threaded_wait(Msg), MTPred, ExCtx), Ctx) :-
 	!,
 	'$lgt_pp_entity'(Type, _, EntityPrefix, _, _),
-	'$lgt_comp_ctx'(Ctx, Functor/Arity, _, _, _, EntityPrefix, _, _, ExCtx),
-	functor(Head, Functor, Arity),
+	'$lgt_comp_ctx'(Ctx, Head, _, _, _, EntityPrefix, _, _, ExCtx),
 	(	'$lgt_pp_synchronized_'(Head, Mutex) ->
 		(	Type == object ->
 			MTPred = (mutex_unlock(Mutex), '$lgt_thread_get_notifications'(Msg, EntityPrefix), mutex_lock(Mutex))
@@ -9186,6 +9186,42 @@ current_logtalk_flag(version, version(2, 37, 5)).
 	'$lgt_tr_body'(Obj::Pred, TPred, DPred, Ctx).
 
 
+% call to a meta-predicate from a user-defined meta-predicate:
+% must check the number of arguments for shared closures
+
+'$lgt_tr_body'(Pred, _, _, Ctx) :-
+	'$lgt_comp_ctx_meta_vars'(Ctx, MetaVars),
+	MetaVars \= [],
+	functor(Pred, PredFunctor, PredArity),
+	functor(PredMeta, PredFunctor, PredArity),
+	(	'$lgt_pp_meta_predicate_'(PredMeta) ->
+		% user-defined meta-predicate
+		true
+	;	'$lgt_pl_meta_predicate'(PredMeta, predicate) ->
+		% proprietary built-in meta-predicates declared in the config files
+		true
+	;	% non-declared proprietary built-in meta-predicates (fragile hack
+	 	% due to lack of standardization of meta-predicate specifications)
+		catch('$lgt_predicate_property'(Pred, meta_predicate(PredMeta)), _, fail) ->
+		true
+	;	% meta-predicates specified in use_module/2 directives
+		'$lgt_pp_use_module_pred_'(Module, Original, Pred),
+		catch('$lgt_predicate_property'(Original, imported_from(Module)), _, fail),
+		catch('$lgt_predicate_property'(Original, meta_predicate(PredMeta)), _, fail) ->
+		true
+	),
+	Pred =.. [_| PredArgs],
+	PredMeta =.. [_| PredMetaArgs],
+	'$lgt_comp_ctx_head'(Ctx, Head),
+	functor(Head, HeadFunctor, HeadArity),
+	functor(HeadMeta, HeadFunctor, HeadArity),
+	'$lgt_pp_meta_predicate_'(HeadMeta),
+	Head =.. [_| HeadArgs],
+	HeadMeta =.. [_| HeadMetaArgs],
+	'$lgt_same_number_of_closure_extra_args'(PredArgs, PredMetaArgs, HeadArgs, HeadMetaArgs),
+	fail.
+
+
 % meta-predicates specified in use_module/2 directives
 
 '$lgt_tr_body'(Alias, ':'(Module, TPred), ':'(Module, DPred), Ctx) :-
@@ -9323,14 +9359,15 @@ current_logtalk_flag(version, version(2, 37, 5)).
 % goal is a call to a local, user-defined predicate
 
 '$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, ExCtx), Ctx) :-
-	Pred =.. [Functor| Args],
 	functor(Pred, Functor, Arity),
 	'$lgt_comp_ctx'(Ctx, Head, _, _, _, Prefix, _, _, ExCtx),
 	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
-	(	'$lgt_pp_synchronized_'(Pred, _), Functor/Arity \= Head ->
+	(	'$lgt_pp_synchronized_'(Pred, _),
+		\+ functor(Head, Functor, Arity) ->			% not a recursive call
 		atom_concat(TFunctor, '_sync', STFunctor)
 	;	STFunctor = TFunctor
 	),
+	Pred =.. [Functor| Args],
 	'$lgt_append'(Args, [ExCtx], TArgs),
 	TPred =.. [STFunctor| TArgs],
 	(	'$lgt_pp_calls_pred_'(Functor, Arity, _, _) ->
@@ -9478,6 +9515,36 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 '$lgt_same_meta_arg_extra_args'([_| MetaArgs], [_| MetaVars], Closure, ExtraArgs) :-
 	'$lgt_same_meta_arg_extra_args'(MetaArgs, MetaVars, Closure, ExtraArgs).
+
+
+
+% '$lgt_same_number_of_closure_extra_args'(@list, @list, @list, @list)
+%
+% checks that the number of additional arguments being appended to a closure is kept
+% when passing a closure from the clause head to a meta-predicate call in the body
+
+'$lgt_same_number_of_closure_extra_args'([], _, _, _).
+
+'$lgt_same_number_of_closure_extra_args'([PredArg| PredArgs], [PredMetaArg| PredMetaArgs], HeadArgs, HeadMetaArgs) :-
+	(	var(PredArg),
+		integer(PredMetaArg), PredMetaArg > 0,
+		% argument is a closure
+		'$lgt_shared_closure_arg'(PredArg, HeadArgs, HeadMetaArgs, HeadMetaArg) ->
+		% shared closure argument
+		(	PredMetaArg = HeadMetaArg ->
+			% same number of closure extra args
+			'$lgt_same_number_of_closure_extra_args'(PredArgs, PredMetaArgs, HeadArgs, HeadMetaArgs)
+		;	throw(arity_mismatch(closure, PredMetaArg, HeadMetaArg))
+		)
+	;	'$lgt_same_number_of_closure_extra_args'(PredArgs, PredMetaArgs, HeadArgs, HeadMetaArgs)
+	).
+
+
+'$lgt_shared_closure_arg'(PredArg, [HeadArg| _], [HeadMetaArg| _], HeadMetaArg) :-
+	PredArg == HeadArg.
+
+'$lgt_shared_closure_arg'(PredArg, [_| HeadArgs], [_| HeadMetaArgs], HeadMetaArg) :-
+	'$lgt_shared_closure_arg'(PredArg, HeadArgs, HeadMetaArgs, HeadMetaArg).
 
 
 
@@ -10014,7 +10081,8 @@ current_logtalk_flag(version, version(2, 37, 5)).
 '$lgt_tr_super_call'(Pred, TPred, Ctx) :-		% translation performed at runtime
 	nonvar(Pred),
 	functor(Pred, Functor, Arity),
-	'$lgt_comp_ctx_head'(Ctx, Functor/Arity),	% "super" call to the predicate being redefined
+	functor(Head, Functor, Arity),
+	'$lgt_comp_ctx_head'(Ctx, Head),			% "super" call to the predicate being redefined
 	!,
 	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
 		'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx),
