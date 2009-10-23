@@ -1,12 +1,13 @@
 #!/bin/sh
 
 # [Gedit Tool]
-# Comment=Compile the current Logtalk source file
+# Comment=Generate (X)HTML documentation for the current Logtalk source file
 # Input=document
-# Name=Logtalk compile
+# Name=Logtalk: generate (X)HTML documentation
 # Applicability=titled
 # Output=output-panel
 
 cd "$GEDIT_CURRENT_DOCUMENT_DIR"
 FILE=`basename "$GEDIT_CURRENT_DOCUMENT_NAME" .lgt`
 yaplgt -g "logtalk_compile($FILE), halt."
+lgt2html
