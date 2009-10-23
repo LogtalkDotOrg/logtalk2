@@ -73,8 +73,9 @@ RELEASE NOTES
     Added information about using the Sublime Text Windows text editor for
     editing Logtalk source files.
 
-    Added a set of Logtalk source code snippets for the Gnome's Gedit Snippets
-    plugin (see folder "wenv/gedit" for details).
+    Added a set of Logtalk source code snippets and a set of compilation
+    and documenting tools for the Gnome's Gedit text editor (see the file 
+    "wenv/gedit/NOTES.txt" for details).
 
     Updated documentation in order to remove references to deprecated syntax
     for sequences of predicate indicators in predicate directives. Updated 

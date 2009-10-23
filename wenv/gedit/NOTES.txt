@@ -9,13 +9,15 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ================================================================
 
 
-This directory contains files that provide snippets for editing
-Logtalk source code using Gnome's Gedit text editor. For more 
-information, visit the Gedit Snippets plugin website:
+This directory contains files that provide snippets and tools for
+working with Logtalk source code using Gnome's Gedit text editor.
+For more information, visit the Gedit plugin websites:
 
 	http://live.gnome.org/Gedit/Plugins/Snippets
+	http://live.gnome.org/Gedit/ToolLauncherPlugin
 
 For syntax coloring support see the "../gtksourceview2" folder.
+
 
 To install the snippets support, copy the file "logtalk.xml" to 
 the following system-wide directory:
@@ -29,3 +31,21 @@ Alternatively, you can copy the "logtalk.xml" file to the following
 location on your home directory:
 
 	~/.gnome2/gedit/snippets/
+
+
+To install the tools support, copy the files in the "tools" directory
+to the following system-wide directory:
+	
+	${prefix}/share/gedit-2/plugins/tools
+
+The ${prefix} can be e.g. "/usr", "/usr/local", or "/opt", depending 
+on your system configuration.
+
+Alternatively, you can copy the "logtalk.xml" file to the following 
+location on your home directory:
+
+	~/.gnome2/gedit/tools/
+
+Before using the provided tools, edit and customize them in order to
+use your favorite back-end Prolog compiler and to set your choices
+for the (X)HTML and PDF generation scripts.

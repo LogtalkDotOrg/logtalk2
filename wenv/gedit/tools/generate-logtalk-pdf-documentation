@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# [Gedit Tool]
+# Comment=Generate PDF documentation for the current Logtalk source file
+# Input=nothing
+# Name=Generate Logtalk PDF documentation
+# Applicability=all
+# Output=output-panel
+
+cd "$GEDIT_CURRENT_DOCUMENT_DIR"
+FILE=`basename "$GEDIT_CURRENT_DOCUMENT_NAME" .lgt`
+yaplgt -g "logtalk_compile($FILE), halt."
+lgt2pdf
