@@ -1,0 +1,31 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.37.5
+
+Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+This directory contains files that provide snippets for editing
+Logtalk source code using Gnome's Gedit text editor. For more 
+information, visit the Gedit Snippets plugin website:
+
+	http://live.gnome.org/Gedit/Plugins/Snippets
+
+For syntax coloring support see the "../gtksourceview2" folder.
+
+To install the snippets support, copy the file "logtalk.xml" to 
+the following system-wide directory:
+	
+	${prefix}/share/gedit-2/plugins/snippets
+
+The ${prefix} can be e.g. "/usr", "/usr/local", or "/opt", depending 
+on your system configuration.
+
+Alternatively, you can copy the "logtalk.xml" file to the following 
+location on your home directory:
+
+	~/.gnome2/gedit/snippets/
