@@ -39,6 +39,10 @@ RELEASE NOTES
     Corrected a bug in the compilation of user multifile directives and user
     multifile predicates within objects and categories.
 
+    Corrected a secure meta-predicate compilation bug when using static
+    binding to optimize a call to a local meta-predicate made by a normal,
+    public predicate.
+
     Added a monitor/1 predicate to the library event registry objects.
     Updated the definition of the monitors/1 and monitored/1 predicates
     in order to avoid using the non-standard predicate sort/2.

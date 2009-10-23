@@ -3593,7 +3593,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 	;	throw(error(instantiation_error, Sender::call(Pred), This))
 	).
 
-'$lgt_metacall'('$lgt_compiled'(Pred), _, _, _, _) :-
+'$lgt_metacall'({Pred}, _, _, _, _) :-
 	!,
 	call(Pred).
 
@@ -8283,7 +8283,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
 	(	'$lgt_member_var'(Pred, MetaVars) ->
 		% we're compiling a clause for a meta-predicate; therefore, we need
-		% to connect the excution context and the meta-call context arguments
+		% to connect the execution context and the meta-call context arguments
 		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
 		TPred = '$lgt_metacall'(Pred, MetaCallCtx, Sender, This, Self)
 	;	% we're either compiling a clause for a normal predicate (i.e. MetaVars == [])
@@ -8405,7 +8405,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
 	(	'$lgt_member_var'(Closure, MetaVars) ->
 		% we're compiling a clause for a meta-predicate; therefore, we need
-		% to connect the excution context and the meta-call context arguments
+		% to connect the execution context and the meta-call context arguments
 		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
 		TPred = '$lgt_metacall'(Closure, Args, MetaCallCtx, Sender, This, Self)
 	;	% we're either compiling a clause for a normal predicate (i.e. MetaVars == [])
@@ -15738,7 +15738,8 @@ current_logtalk_flag(version, version(2, 37, 5)).
 		functor(GObj, ObjFunctor, ObjArity),
 		functor(Pred, PredFunctor, PredArity),
 		functor(GPred, PredFunctor, PredArity),
-		'$lgt_exec_ctx'(GExCtx, GSender, GObj, GObj, _),
+		'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),
+		'$lgt_exec_ctx'(GExCtx, GSender, GObj, GObj, GMetaVars),
 		call(Def, GPred, GExCtx, GCall, DefCtn), !,
 		'$lgt_safe_static_binding_paths'(GObj, DclCtn, DefCtn),
 		(	Meta =.. [PredFunctor| MArgs],						% fails when Meta == no
@@ -15766,7 +15767,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 '$lgt_tr_static_binding_meta_arg'((*), Arg, _, Arg, Arg).
 
-'$lgt_tr_static_binding_meta_arg'((::), Arg, Ctx, '$lgt_compiled'(FTArg), '$lgt_compiled'(FDArg)) :-
+'$lgt_tr_static_binding_meta_arg'((::), Arg, Ctx, {FTArg}, {FDArg}) :-
 	'$lgt_tr_body'(Arg, TArg, DArg, Ctx),
 	'$lgt_fix_pred_calls'(TArg, FTArg),
 	'$lgt_fix_pred_calls'(DArg, FDArg).
