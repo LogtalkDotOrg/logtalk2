@@ -8,7 +8,7 @@
 	<string>cd "$TM_DIRECTORY"
 FILE=`basename $TM_FILENAME .lgt`
 $LOGTALK_COMMAND "logtalk_compile($FILE), halt."
-lgt2html
+$LOGTALK_HTML_COMMAND
 open index.html
 </string>
 	<key>input</key>
