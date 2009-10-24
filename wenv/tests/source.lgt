@@ -8,6 +8,16 @@ comment
 */
 
 
+:- if(goal).
+	% conditional
+:- elif(goal).
+	% compilation
+:- else.
+	% directives
+:- endif.
+
+
+:- initialization(Goal).
 :- encoding(Encoding).
 :- op(Precedence, Associativity, Operator).
 :- ensure_loaded(File).
@@ -37,6 +47,9 @@ comment
 
 	:- uses(list, [append/3, member/2]).
 	:- uses(queues, [new/1::new_queue/1]).
+
+	:- use_module(module).
+	:- use_module(module, [append/3, member/2]).
 
 	:- multifile(zzz/1).
 	:- multifile(module:zzz/1).
