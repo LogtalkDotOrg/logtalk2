@@ -12,6 +12,7 @@
  *
  *
  * Based on GeSHi release 1.0.8.4
+ * Created on:  October 24, 2009
  * Last Change:	October 25, 2009
  *
  *************************************************************************************
@@ -40,12 +41,19 @@ $language_data = array(
 	'COMMENT_MULTI' => array('/*' => '*/'),
 	'COMMENT_REGEXP' => array(2 => "/0'./sim"),
 	'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
-	'QUOTEMARKS' => array('"'),
-    'HARDQUOTE' => array("'", "'"),
-    'HARDESCAPE' => array("'", "\\"),
-	'ESCAPE_CHAR' => array(),
-//    'NUMBERS' => GESHI_NEVER,
-	'NUMBERS' => GESHI_NUMBER_INT_BASIC | GESHI_NUMBER_FLT_SCI_ZERO,
+	'QUOTEMARKS' => array("'"),
+	'HARDQUOTE' => array('"', '"'),
+	'HARDESCAPE' => array(),
+	'ESCAPE_CHAR' => '',
+	'ESCAPE_REGEXP' => array(
+		//Simple Single Char Escapes
+		1 => "#\\\\[\\\\abfnrtv\'\"?\n]#i",
+		//Hexadecimal Char Specs
+		2 => "#\\\\x[\da-fA-F]+\\\\#",
+		//Octal Char Specs
+		3 => "#\\\\[0-7]+\\\\#"
+		),
+	'NUMBERS' => GESHI_NEVER,
 	'KEYWORDS' => array(
 		// Directives (with arguments)
 		1 => array(
@@ -172,67 +180,79 @@ $language_data = array(
 			),
 		),
     'SYMBOLS' => array(
-		// external call
-		'{', '}',
-		// arithemtic comparison
-		'=:=', '=\=', '<', '=<', '>=', '>',
-		// term comparison
-		'<<', '>>', '/\\', '\\/', '\\',
-		// bitwise functors
-		'==', '\==', '@<', '@=<', '@>=', '@>',
-		// evaluable functors	
-		'+', '-', '*', '/', '**',
-		// logic and control
-		'!', '\\+', ';',
-		// message sending operators	
-		'::', '^^', ':',
-		// clause and directive functors
-		'-->', '->', ':-',
-		// mode operators
-		'@', '?',
-		// term to list predicate
-		'=..',
-		// unification
-		'=', '\\='
+		0 => array(
+			// external call
+			'{', '}'
+			),
+		1 => array(
+			// arithemtic comparison
+			'=:=', '=\=', '<', '=<', '>=', '>',
+			// term comparison
+			'<<', '>>', '/\\', '\\/', '\\',
+			// bitwise functors
+			'==', '\==', '@<', '@=<', '@>=', '@>',
+			// evaluable functors	
+			'+', '-', '*', '/', '**',
+			// logic and control
+			'!', '\\+', ';',
+			// message sending operators	
+			'::', '^^', ':',
+			// grammar rule and conditional functors
+			'-->', '->',
+			// mode operators
+			'@', '?',
+			// term to list predicate
+			'=..',
+			// unification
+			'=', '\\='
+			),
+		2 => array(
+			// clause and directive functors
+			':-'
+			)
         ),
 	'CASE_SENSITIVE' => array(
 		GESHI_COMMENTS => false
 		),
 	'STYLES' => array(
         'KEYWORDS' => array(
-			1 => 'color: #186895;',
-			2 => 'color: #186895;',
-			3 => 'color: #186895;',
-			4 => 'color: #ff4e18;',
-			5 => 'color: #ff4e18;',
+			1 => 'color: #2e4dc9;',
+			2 => 'color: #2e4dc9;',
+			3 => 'color: #2e4dc9;',
+			4 => 'color: #9d4f37;',
+			5 => 'color: #9d4f37;',
 			6 => 'color: #9d4f37;',
 			7 => 'color: #9d4f37;'
 			),
 		'NUMBERS' => array(
-			0 => 'color: #40a070;'
+			0 => 'color: #430000;'
 			),
 		'COMMENTS' => array(
 			1 => 'color: #60a0b0; font-style: italic;',
-			2 => 'color: #40a070;',
+			2 => 'color: #430000;',
 			'MULTI' => 'color: #60a0b0; font-style: italic;'
 			),
-		'ESCAPE_CHAR' => array(
-            'HARD' => 'color: #0000ff; font-weight: bold;'
-			),
+        'ESCAPE_CHAR' => array(
+            0 => 'color: #9f0000; font-weight: bold;',
+            1 => 'color: #9f0000; font-weight: bold;',
+            2 => 'color: #9f0000; font-weight: bold;',
+            3 => 'color: #9f0000; font-weight: bold;',
+            'HARD' => '',
+            ),
 		'SYMBOLS' => array(
-			0 => 'color: #666666;font-weight: bold;'
-			),
-		'BRACKETS' => array(
+			0 => 'color: #666666;font-weight: bold;',
+			1 => 'color: #666666;font-weight: bold;',
+			2 => 'color: #000000;'
 			),
 		'STRINGS' => array(
-			0 => 'color: #0000ff;',
-            'HARD' => 'color: #0000ff;'
+			0 => 'color: #9f0000;',
+            'HARD' => 'color: #9f0000;'
 			),
 		'METHODS' => array(
 			),
 		'REGEXPS' => array(
-			0 => 'color: #40a070;',
-			1 => 'color: #45b3e6;'
+			0 => 'color: #430000;',
+			1 => 'color: #848484;'
 			),
 		'SCRIPT' => array()
 		),
@@ -243,14 +263,7 @@ $language_data = array(
 		),
 	'REGEXPS' => array(
 		// numbers (binary, octal, hexadecimal, and decimal)
-		0 => array(
-			GESHI_SEARCH => '(\b(0b[0-1]+|0o[0-7]+|0x[0-9a-fA-F]+))',
-//			GESHI_SEARCH => '(\b(0b[0-1]+|0o[0-7]+|0x[0-9a-fA-F]+|\d+\.?\d*((e|E)(\+|-)?\d+)?))',
-			GESHI_REPLACE => '\\1',
-			GESHI_MODIFIERS => '',
-			GESHI_BEFORE => '',
-			GESHI_AFTER => ''
-			),
+		0 => '(\b(0b[0-1]+|0o[0-7]+|0x[0-9a-fA-F]+|\d+(\.\d+((e|E)(\+|-)\d+)?)?))',
 		// variables
 		1 => '\b(?!(?:PIPE|SEMI|REG3XP\d*)[^a-zA-Z0-9_])[A-Z_][a-zA-Z0-9_]*(?![a-zA-Z0-9_])'
 		),
@@ -259,6 +272,9 @@ $language_data = array(
 	'HIGHLIGHT_STRICT_BLOCK' => array(),
     'TAB_WIDTH' => 4,
     'PARSER_CONTROL' => array(
+		'ENABLE_FLAGS' => array(
+			'BRACKETS' => GESHI_NEVER
+		),
         'KEYWORDS' => array(
             1 => array(
                 'DISALLOWED_BEFORE' => '(?<=:-\s)',
