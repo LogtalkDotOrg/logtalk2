@@ -165,7 +165,7 @@
 				<RegExpr String = "\b(dynamic|synchronized|threaded)[.]" attribute = "Directive" context = "#pop" />
 				<RegExpr String = "\b(alias|d(ynamic|iscontiguous)|m(eta_predicate|ode|ultifile)|s(et_(logtalk|prolog)_flag|ynchronized))(?=[(])" attribute = "Directive" context = "#pop" />
 				<RegExpr String = "\bop(?=[(])" attribute = "Directive" context = "#pop" />
-				<RegExpr String = "\b(calls|use(s|_module))(?=[(])" attribute = "Directive" context = "#pop" />
+				<RegExpr String = "\b(calls|reexport|use(s|_module))(?=[(])" attribute = "Directive" context = "#pop" />
 			</context>
 
 			<context name = "entityrelations" attribute = "Normal" lineEndContext = "#stay" >

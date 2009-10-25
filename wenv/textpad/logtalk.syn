@@ -1,7 +1,7 @@
 ; TextPad syntax definitions for Logtalk (http://logtalk.org/)
 ; 
 ; Author: 			Paulo Moura
-; Last changed in: 	December 6, 2007
+; Last changed in: 	October 25, 2009
 ;
 ; Tags used and sugested colors:
 ;   Keywords 1	message sending operators	blue
@@ -99,24 +99,25 @@ implements
 
 ; Logtalk directives
 alias
+calls
+discontiguous
+dynamic
 encoding
 export
 initialization
 info
 mode
-dynamic
-discontiguous
+meta_predicate
 multifile
 public
 protected
 private
-meta_predicate
 op
-calls
-uses
-use_module
+reexport
 synchronized
 threaded
+uses
+use_module
 
 
 [Keywords 4]

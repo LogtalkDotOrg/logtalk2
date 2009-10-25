@@ -4,8 +4,8 @@
 
 ;; Author: Paulo Moura <pmoura@logtalk.org>
 ;; Creation date: November 15, 2003
-;; Last modification date: July 1, 20089
-;; Version: 1.9
+;; Last modification date: October 25, 2009
+;; Version: 1.10
 
 ;; Installation:
 ;;
@@ -99,7 +99,7 @@
 		("\\(:- \\)\\(\\(e\\(?:lse\\|nd\\(?:if\\|_\\(?:category\\|object\\|protocol\\)\\)\\)\\)\\)\\([\.]\\)" 2 'logtalk-directive-face)
 		("\\(:- \\)\\(category\\|object\\|protocol\\|module\\)\\([(]\\)" 2 'logtalk-directive-face)
 		("\\(:- \\)\\(p\\(?:r\\(?:ivate\\|otected\\)\\|ublic\\)\\)\\([(]\\)" 2 'logtalk-directive-face)
-		("\\(:- \\)\\(alias\\|calls\\|d\\(?:iscontiguous\\|ynamic\\)\\|e\\(?:lif\\|n\\(?:coding\\|sure_loaded\\)\\|xport\\)\\|i\\(?:f\\|n\\(?:fo\\|itialization\\)\\)\\|m\\(?:\\(?:eta_predicat\\|od\\|ultifil\\)e\\)\\|op\\|use\\(?:s\\|_module\\)\\|synchronized\\)\\([(]\\)" 2 'logtalk-directive-face)
+		("\\(:- \\)\\(alias\\|calls\\|d\\(?:iscontiguous\\|ynamic\\)\\|e\\(?:lif\\|n\\(?:coding\\|sure_loaded\\)\\|xport\\)\\|i\\(?:f\\|n\\(?:fo\\|itialization\\)\\)\\|m\\(?:\\(?:eta_predicat\\|od\\|ultifil\\)e\\)\\|op\\|use\\(?:s\\|_module\\)\\|reexport\\|synchronized\\)\\([(]\\)" 2 'logtalk-directive-face)
 		("\\(:- \\)\\(dynamic\\|s\\(?:et_\\(?:logtalk\\|prolog\\)_flag\\|ynchronized\\)\\|threaded\\)\\([\.]\\)" 2 'logtalk-directive-face)
 		("\\<\\(\\(?:complement\\|extend\\|i\\(?:mp\\(?:\\(?:lemen\\|or\\)t\\)\\|nstantiate\\)\\|specialize\\)s\\)\\([(]\\)" 1 'logtalk-directive-face)
 	))

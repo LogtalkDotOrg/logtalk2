@@ -56,6 +56,8 @@ comment
 	:- multifile(object::zzz/1).
 
 	:- use_module(module, [xxx/1, yyy/2, zzz/3]).
+	:- export(bbb/3).
+	:- reexport(cccc/4).
 
 	:- public(aaa/2).
 	:- meta_predicate(aaa(::, *)).

@@ -78,6 +78,7 @@
 				<string>\:\-[[:space:]](encoding)\(</string>			
 				<string>\:\-[[:space:]](ensure_loaded)\(</string>			
 				<string>\:\-[[:space:]](export)\(</string>			
+				<string>\:\-[[:space:]](reexport)\(</string>			
 				<string>\:\-[[:space:]](initialization)\(</string>			
 				<string>\:\-[[:space:]](info)\(</string>			
 				<string>\:\-[[:space:]](mode)\(</string>			

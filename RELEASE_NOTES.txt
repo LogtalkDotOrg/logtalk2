@@ -79,6 +79,9 @@ RELEASE NOTES
 
     Replaced GeSHi support with a new language file written from scratch.
 
+    Added syntax coloring support for the module directive reexport/1 to
+    all supported text editors and syntax highlighters.
+
     Updated documentation in order to remove references to deprecated syntax
     for sequences of predicate indicators in predicate directives. Updated 
     documentation on built-in meta-predicates to correctly described their

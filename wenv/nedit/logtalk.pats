@@ -2,7 +2,7 @@
 !
 ! Author: Paulo Moura (pmoura at logtalk.org)
 !
-! Last changed in: November 22, 2008
+! Last changed in: October 25, 2009
 !
 !
 ! To install this patterns file:
@@ -25,7 +25,7 @@ nedit.highlightPatterns: Logtalk:1:0{\n\
 	Opening Entity directives:"(?<=:\\-\\s)(object|protocol|category|module)(?=[(])":::Preprocessor::\n\
 	Closing Entity directives:"(?<=:\\-\\s)(end_object|end_protocol|end_category)(?=[.])":::Preprocessor::\n\
 	Entity relations:"<(complements|instantiates|specializes|extends|imports|implements)(?=[(])":::Preprocessor::\n\
-	Directives:"(?<=:\\-\\s)(alias|set_logtalk_flag|set_prolog_flag|synchronized|elif|encoding|ensure_loaded|export|if|initialization|info|mode|dynamic|discontiguous|public|protected|private|meta_predicate|multifile|op|calls|uses|use_module)(?=[(])":::Preprocessor::\n\
+	Directives:"(?<=:\\-\\s)(alias|set_logtalk_flag|set_prolog_flag|synchronized|elif|encoding|ensure_loaded|export|if|initialization|info|mode|dynamic|discontiguous|public|protected|private|meta_predicate|multifile|op|calls|uses|use_module|reexport)(?=[(])":::Preprocessor::\n\
 	Directives:"(?<=:\\-\\s)(else|endif|dynamic|synchronized|threaded)>":::Preprocessor::\n\
 	Clause operators:":\\-|\\.|,":::Keyword::\n\
 	Term testing:"(?<![+?@-])(var|atom|integer|float|atomic|compound|nonvar|number)(?=[(])":::Subroutine::\n\

@@ -2,7 +2,7 @@
 <!--
 
  Author: Paulo Moura <pmoura@logtalk.org>
- Copyright (C) 2007-2008 Paulo Moura <pmoura@logtalk.org>
+ Copyright (C) 2007-2009 Paulo Moura <pmoura@logtalk.org>
 
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Library General Public
@@ -119,8 +119,8 @@
 			<keyword>(synchronized)(?=[.])</keyword>			
 			<keyword>(threaded)(?=[.])</keyword>			
 			<!-- Other directives -->
-			<keyword>(alias)(?=[(])</keyword>			
-			<keyword>(export)(?=[(])</keyword>			
+			<keyword>(alias)(?=[(])</keyword>
+			<keyword>((re)?export)(?=[(])</keyword>
 			<keyword>(in(itialization|fo))(?=[(])</keyword>			
 			<keyword>(mod(e|ule))(?=[(])</keyword>			
 			<keyword>(dynamic)(?=[(])</keyword>			

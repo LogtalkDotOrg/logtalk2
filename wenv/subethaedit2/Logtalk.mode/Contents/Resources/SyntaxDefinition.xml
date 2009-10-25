@@ -226,6 +226,7 @@
 				<regex>:-\s(op)\(</regex>	
 				<regex>:-\s(calls)\(</regex>
 				<regex>:-\s(use(s|_module))\(</regex>
+				<regex>:-\s(reexport)\(</regex>
 				<regex>:-\s(s(et_(logtalk|prolog)_flag|ynchronized))\(</regex>
 				<regex>:-\s(synchronized)\.</regex>
 				<regex>:-\s(threaded)\.</regex>
