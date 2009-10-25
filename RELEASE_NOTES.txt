@@ -77,6 +77,8 @@ RELEASE NOTES
     and documenting tools for the Gnome's Gedit text editor (see the file 
     "wenv/gedit/NOTES.txt" for details).
 
+    Replaced GeSHi support with a new language file written from scratch.
+
     Updated documentation in order to remove references to deprecated syntax
     for sequences of predicate indicators in predicate directives. Updated 
     documentation on built-in meta-predicates to correctly described their

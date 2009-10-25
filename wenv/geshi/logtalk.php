@@ -4,15 +4,15 @@
  * logtalk.php
  * -----------
  * 
- * Authors: Clara Dimene <c_dimene@hotmail.com>, Paulo Moura <pmoura@logtalk.org>
+ * Author: Paulo Moura <pmoura@logtalk.org>
  *
- * Copyright: (c) 2008 Clara Dimene, Paulo Moura
+ * Copyright: (c) 2009 Paulo Moura
  *
  * Logtalk language file for GeSHi.
  *
  *
- * Based on GeSHi release 1.0.7.21
- * Last Change:	November 22, 2008
+ * Based on GeSHi release 1.0.8.4
+ * Last Change:	October 25, 2009
  *
  *************************************************************************************
  *
@@ -34,522 +34,262 @@
  *
  ************************************************************************************/
  
-$language_data = array (
+$language_data = array(
 	'LANG_NAME' => 'Logtalk',
 	'COMMENT_SINGLE' => array(1 => '%'),
 	'COMMENT_MULTI' => array('/*' => '*/'),
+	'COMMENT_REGEXP' => array(2 => "/0'./sim"),
 	'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
 	'QUOTEMARKS' => array('"'),
-	'ESCAPE_CHAR' => '',
-	'KEYWORDS' => array(),
-	'SYMBOLS' => array('//'
+    'HARDQUOTE' => array("'", "'"),
+    'HARDESCAPE' => array("'", "\\"),
+	'ESCAPE_CHAR' => array(),
+//    'NUMBERS' => GESHI_NEVER,
+	'NUMBERS' => GESHI_NUMBER_INT_BASIC | GESHI_NUMBER_FLT_SCI_ZERO,
+	'KEYWORDS' => array(
+		// Directives (with arguments)
+		1 => array(
+			// file directives
+			'encoding', 'ensure_loaded',
+			// entity opening directives
+			'category', 'object', 'protocol',
+			// predicate scope directives
+			'public', 'protected', 'pivate',
+			// conditional compilation directives
+			'elif', 'if',
+			// entity directives
+			'calls', 'initialization', 'op', 'uses',
+			// predicate directives			
+			'alias', 'discontiguous', 'dynamic', 'mode', 'info', 'meta_predicate', 'multifile', 'synchronized',
+			// module directives
+			'export', 'module', 'reexport', 'use_module'
+			),
+		// Directives (no arguments)
+		2 => array(
+			// entity directives
+			'dynamic',
+			// multi-threading directives
+			'synchronized', 'threaded',
+			// entity closing directives
+			'end_category', 'end_object', 'end_protocol',
+			// conditional compilation directives
+			'else', 'endif',
+			// flag directives
+			'set_logtalk_flag', 'set_prolog_flag'
+			),
+		// Entity relations
+		3 => array(
+			'complements', 'extends', 'imports', 'implements','instantiates', 'specializes'
+			),
+		// Built-in predicates (with arguments)
+		4 => array(
+			// event handlers
+			'after', 'before',
+			// execution-context methods
+			'parameter', 'self', 'sender', 'this',
+			// predicate reflection
+			'current_predicate', 'predicate_property',
+			// DCGs and term expansion
+			'expand_goal', 'expand_term', 'goal_expansion', 'phrase', 'term_expansion',
+			// entity
+			'abolish_category', 'abolish_object', 'abolish_protocol',
+			'create_category', 'create_object', 'create_protocol',
+			'current_category', 'current_object', 'current_protocol',
+			'category_property', 'object_property', 'protocol_property',
+			// entity relations
+			'complements_object',
+			'extends_category', 'extends_object', 'extends_protocol',
+			'implements_protocol', 'imports_category',
+			'instantiates_class', 'specializes_class',
+			// events
+			'abolish_events', 'current_event', 'define_events',
+			// flags
+			'current_logtalk_flag', 'set_logtalk_flag',
+			'current_prolog_flag', 'set_prolog_flag',
+			// compiling, loading, and library path
+			'logtalk_compile', 'logtalk_library_path', 'logtalk_load',
+			// database
+			'abolish', 'asserta', 'assertz', 'clause', 'retract', 'retractall',
+			// control
+			'call', 'catch', 'once', 'throw',
+			// all solutions predicates
+			'bagof', 'findall', 'forall', 'setof',
+			// multi-threading meta-predicates
+			'threaded',
+			'threaded_call', 'threaded_once', 'threaded_ignore', 'threaded_exit', 'threaded_peek',
+			'threaded_wait', 'threaded_notify',
+			// term unification
+			'unify_with_occurs_check',
+			// atomic term processing 
+			'atom_chars', 'atom_codes', 'atom_concat', 'atom_length',
+			'number_chars', 'number_codes',
+			'char_code',
+			// term creation and decomposition
+			'arg', 'copy_term', 'functor',
+			// term testing
+			'atom', 'atomic', 'compound', 'float', 'integer', 'nonvar', 'number', 'sub_atom', 'var',
+			// stream selection and control
+			'current_input', 'current_output', 'set_input', 'set_output',
+			'open', 'close', 'flush_output', 'stream_property',
+			'at_end_of_stream', 'set_stream_position',
+			// stream selection and control predicates
+			'at_end_of_stream', 'flush_output',
+			// character and byte input/output predicates
+			'get_byte', 'get_char', 'get_code',
+			'peek_byte', 'peek_char', 'peek_code',
+			'put_byte', 'put_char', 'put_code',
+			'nl',
+			// term input/output predicates
+			'current_op', 'op',
+			'write', 'writeq', 'write_canonical', 'write_term',
+			'read', 'read_term',
+			'char_conversion', 'current_char_conversion',
+			//
+			'halt'
+			),
+		// Built-in predicates (no arguments)
+		5 => array(
+			// control
+			'fail', 'repeat', 'true',
+			// character and byte input/output predicates
+			'nl',
+			// implementation defined hooks functions 		
+			'halt',
+			// arithemtic evaluation
+			'is',
+			// stream selection and control
+			'at_end_of_stream', 'flush_output'
+			),
+		// Evaluable functors (with arguments)
+		6 => array(
+			'float_integer_part', 'float_fractional_part',
+			'rem', 'mod', 'abs', 'sign', 'floor', 'truncate', 'round', 'ceiling',
+			'cos', 'atan', 'exp', 'log', 'sin', 'sqrt'
+			),
+		// Evaluable functors (no arguments)
+		7 => array(
+			'mod', 'rem'
+			),
 		),
+    'SYMBOLS' => array(
+		// external call
+		'{', '}',
+		// arithemtic comparison
+		'=:=', '=\=', '<', '=<', '>=', '>',
+		// term comparison
+		'<<', '>>', '/\\', '\\/', '\\',
+		// bitwise functors
+		'==', '\==', '@<', '@=<', '@>=', '@>',
+		// evaluable functors	
+		'+', '-', '*', '/', '**',
+		// logic and control
+		'!', '\\+', ';',
+		// message sending operators	
+		'::', '^^', ':',
+		// clause and directive functors
+		'-->', '->', ':-',
+		// mode operators
+		'@', '?',
+		// term to list predicate
+		'=..',
+		// unification
+		'=', '\\='
+        ),
 	'CASE_SENSITIVE' => array(
 		GESHI_COMMENTS => false
 		),
 	'STYLES' => array(
-		'KEYWORDS' => array(
-		),
-		'COMMENTS' => array(
-			1 => 'color: #60a0b0; font-style: italic;',
-			'MULTI' => 'color: #60a0b0; font-style: italic;'
-			),
-		'ESCAPE_CHAR' => array(
-			0 => 'color: #000000;'
-			),	
-		'SYMBOLS' => array(
-			0 => 'color: #666666;font-weight: bold;'
-			),	
-		'BRACKETS' => array(),
-		'STRINGS' => array(
-			0 => 'color: #4070a0;'
+        'KEYWORDS' => array(
+			1 => 'color: #186895;',
+			2 => 'color: #186895;',
+			3 => 'color: #186895;',
+			4 => 'color: #ff4e18;',
+			5 => 'color: #ff4e18;',
+			6 => 'color: #9d4f37;',
+			7 => 'color: #9d4f37;'
 			),
 		'NUMBERS' => array(
 			0 => 'color: #40a070;'
 			),
+		'COMMENTS' => array(
+			1 => 'color: #60a0b0; font-style: italic;',
+			2 => 'color: #40a070;',
+			'MULTI' => 'color: #60a0b0; font-style: italic;'
+			),
+		'ESCAPE_CHAR' => array(
+            'HARD' => 'color: #0000ff; font-weight: bold;'
+			),
+		'SYMBOLS' => array(
+			0 => 'color: #666666;font-weight: bold;'
+			),
+		'BRACKETS' => array(
+			),
+		'STRINGS' => array(
+			0 => 'color: #0000ff;',
+            'HARD' => 'color: #0000ff;'
+			),
 		'METHODS' => array(
 			),
-
 		'REGEXPS' => array(
-		    1 => 'color: #bb60d5; font-weight: bold;',
-			2 => 'color: #40a070; font-weight: bold;', 
-			3 => 'color: #40a070; font-weight: bold;',
-			4 => 'color: #007020; font-weight: bold;',
-			5 => 'color: #007020; font-weight: bold;',
-			6 => 'color: #007020; font-weight: bold;',
-			7 => 'color: #007020; font-weight: bold;',
-			8 => 'color: #007020; font-weight: bold;',
-		    9 => 'color: #007020; font-weight: bold;',
-			10 => 'color: #007020; font-weight: bold;',
-		    11 => 'color: #007020; font-weight: bold;',
-			12 => 'color: #007020; font-weight: bold;',
-			13 => 'color: #007020; font-weight: bold;',
-		    14 => 'color: #007020; font-weight: bold;',
-		    15 => 'color: #007020; font-weight: bold;',
-		    16 => 'color: #007020; font-weight: bold;',
-		    17 => 'color: #007020; font-weight: bold;',	   
-		    18 => 'color: #007020; font-weight: bold;',
-		    19 => 'color: #007020; font-weight: bold;',
-		    20 => 'color: #007020; font-weight: bold;',
-		    21 => 'color: #007020; font-weight: bold;',
-		    22 => 'color: #007020; font-weight: bold;',
-		    23 => 'color: #007020; font-weight: bold;',
-		    24 => 'color: #007020; font-weight: bold;',
-		    25 => 'color: #007020; font-weight: bold;',
-		    26 => 'color: #007020; font-weight: bold;',
-		    27 => 'color: #007020; font-weight: bold;',
-		    28 => 'color: #007020; font-weight: bold;',
-		    29 => 'color: #007020; font-weight: bold;',
-		    30 => 'color: #007020; font-weight: bold;',
-	    	31 => 'color: #40a070; font-weight: bold;',
-	    	32 => 'color: #007020; font-weight: bold;',
-			33 => 'color: #007020; font-weight: bold;',
-			34 => 'color: #007020; font-weight: bold;',
-			35 => 'color: #007020; font-weight: bold;',
-			36 => 'color: #007020; font-weight: bold;',
-			37 => 'color: #007020; font-weight: bold;',
-			38 => 'color: #007020; font-weight: bold;',
-			39 => 'color: #40a070; font-weight: bold;',
-			40 => 'color: #666666; ',
-			41 => 'color: #007020; font-weight: bold;',
-			42 => 'color: #666666;',
-			43 => 'color: #666666;',
-			44 => 'color: #000000;',
-			45 => 'color: #666666;',
-			46 => 'color: #666666;',
-			47 => 'color: #666666;',
-		    ),
-		'SCRIPT' => array(
-		)
+			0 => 'color: #40a070;',
+			1 => 'color: #45b3e6;'
+			),
+		'SCRIPT' => array()
 		),
 	'URLS' => array(),
 	'OOLANG' => false,
-	'OBJECT_SPLITTERS' => array( 1 => '::'
-	),
-
-	'REGEXPS' => array( 
-
-			//variables
-		1 => array(
-					GESHI_SEARCH => "(?<!0'|')(\b[A-Z_]\w*)",
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => '\\2'
-					),
-
-			// Numbers
-		2 => array(
-					GESHI_SEARCH => "(0'.)",
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),	
-		
-			//Strings
-		3 => array(
-					GESHI_SEARCH => "('.*')",
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => '\\2'
-					),	
-			//Event handlers
-		4 => array(
-					GESHI_SEARCH => '(before|after)(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-		
-			//Execution-context methods
-		5 => array(
-					GESHI_SEARCH => '(this|se(lf|nder)|parameter)(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//Reflection
-		6 => array(
-					GESHI_SEARCH => '(predicate_property|current_predicate)(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//DCGs and term expansion
-		7 => array(
-					GESHI_SEARCH => '(phrase|expand_(goal|term)|((goal|term)_expansion))(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-		   //Entity
-		8 => array(
-					GESHI_SEARCH => '((abolish|c(reate|urrent))_(object|protocol|category)|(object|protocol|category)_property)(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//Entity relations
-		9 => array(
-					GESHI_SEARCH => '(complements_object|extends_(object|protocol|category)|imp(lements_protocol|orts_category)|((instantiat|specializ)es_class))(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//Events
-		10 => array(
-					GESHI_SEARCH => '(((abolish|define)_events)|current_event)(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//Flags
-		11 => array(
-					GESHI_SEARCH => '((set|current)_prolog_flag|((set|current)_logtalk_flag))(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//Compiling, loading, and library paths
-		12 => array(
-					GESHI_SEARCH => '(logtalk_(compile|l(oad|ibrary_path)))(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//Database
-		13 => array(
-					GESHI_SEARCH => '(abolish|clause|retract|retract(all)?|assert(a|z)|threaded_call)(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//Control Constructs
-		14 => array(
-					GESHI_SEARCH => '((ca(ll|tch)|throw))(?=[(])|(true|fail)',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//All solutions
-		15 => array(
-					GESHI_SEARCH => '(((bag|set)of)|(f(ind|or)all))(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),	
-
-			//Multi-threading meta-predicates
-		16 => array(
-					GESHI_SEARCH => '(threaded|threaded_once|threaded_ignore|threaded_exit|threaded_peek|threaded_wait|threaded_notify)(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//Term unification
-		17 => array(
-					GESHI_SEARCH => '(unify_with_occurs_check)(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),		
-
-			//Atomic term processing 
-		18 => array(
-					GESHI_SEARCH => '(atom_(length|c(hars|o(ncat|des)))|number_(c(har|ode)s)|char_code)(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-		19 => array(
-					GESHI_SEARCH => '(functor|arg|copy_term)(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//Evaluable functors
-		20 => array(
-					GESHI_SEARCH => '((float_(integer|fractional)_part)|rem|mod|abs|sign|(floor|truncate|round|ceiling))(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//Other arithmetic functors
-		21 => array(
-					GESHI_SEARCH => '(cos|atan|exp|log|s(in|qrt))(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//Term testing
-		22 => array(
-					GESHI_SEARCH => '(sub_atom|var|atom(ic)?|integer|float|compound|n(onvar|umber))(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//Stream selection and control
-		23 => array(
-					GESHI_SEARCH => '(((current|set)_(in|out)put)|open|close|flush_output|stream_property|at_end_of_stream|set_stream_position)(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-		24 => array(
-					GESHI_SEARCH => '\b(at_end_of_stream|flush_output)\b',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),	
-
-			//Character and byte input/output
-		25 => array(
-					GESHI_SEARCH => '((get|p(eek|ut))_(byte|c(har|ode))|nl)(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-		26 => array(
-					GESHI_SEARCH => '\b(nl)\b',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),	
-
-			// Implementation defined hooks functions 		
-		27 => array(
-					GESHI_SEARCH => '\b(halt)\b',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-		28  => array(
-					GESHI_SEARCH => '(halt)(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//Logic and control	
-		29 => array(
-					GESHI_SEARCH => '(once)(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),	
-
-		30 => array(
-					GESHI_SEARCH => '\b(repeat)\b',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//Arithemtic evaluation
-		31 => array(
-					GESHI_SEARCH => '\b(is)\b',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),	
-
-		32 => array(
-					GESHI_SEARCH => '\b(mod|rem)\b',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-		
-			//Term input/output		
-		33 => array(
-					GESHI_SEARCH => '((current_)?op|(write(q|_(canonical|term))?)|(read(_term)?)|((current_)?char_conversion))(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//Entity directives
-		34 => array(
-					GESHI_SEARCH => '(\s*:-\s)(protocol|category|object)(?=[(])',
-					GESHI_REPLACE => '\\2',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '\\1',
-					GESHI_AFTER => ''
-					),
-
-			//Predicate scope directives
-		35 => array(
-					GESHI_SEARCH => '(\s*:-\s)(p(ublic|r(otected|ivate)))(?=[(])',
-					GESHI_REPLACE => '\\2',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '\\1',
-					GESHI_AFTER => ''
-					),
-
-			//Other directives
-		36 => array(
-					GESHI_SEARCH => '(\s*:-\s)(mode|alias|(e(lif|n(coding|sure_loaded)|xport))|synchronized|alias|i(f|n(itialization|fo))|module|d(ynamic|iscontiguous)|op|(m(eta_predicate|ultifile))|calls|(use(s|_module)))(?=[(])',
-					GESHI_REPLACE => '\\2',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '\\1',
-					GESHI_AFTER => ''
-					),
-
-			//Entity directives			
-		37 => array(
-					GESHI_SEARCH => '(\s*:-\s)(e(lse|nd(if|_(object|protocol|category)))|threaded|s(et_(logtalk|prolog)_flag|ynchronized)|dynamic)(?=[.])',
-					GESHI_REPLACE => '\\2',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '\\1',
-					GESHI_AFTER => ''
-					),
-		
-			//Entity Relations
-		38 => array(
-					GESHI_SEARCH => '((i(mp(orts|lements)|nstantiates))|complements|extends|specializes)(?=[(])',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-					
-			// Numbers
-		39 => array(
-					GESHI_SEARCH => '(\b(0b[0-1]+|0o[0-7]+|0x[0-9a-fA-F]+|\d+\.?\d*((e|E)(\+|-)?\d+)?))',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => ''
-					),
-
-			//Message sending operators	
-		40 => array(
-					GESHI_SEARCH => '([^A-Z0-9]|[^a-z0-9])(::|:-|:|\^\^|//|/\\|--|-|\\\|\?)',
-					GESHI_REPLACE => '\\2',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '\\1',
-					GESHI_AFTER => ''
-					),
-
-			//External call		
-		41 => array(
-					GESHI_SEARCH => '([^a-zA-Z])(\{|\})',
-					GESHI_REPLACE => '\\2',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '\\1',
-					GESHI_AFTER => ''
-					),					
-
-			//Arithemtic comparison	
-		42 => array(
-					GESHI_SEARCH => '([^a-zA-Z])(,|;|=\.\.|=:=|=\\=|==|\\==|\\=|@|\*\*)',
-					GESHI_REPLACE => '\\2',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '\\1',
-					GESHI_AFTER => '\\3'
-					),
-
-			//Term comparison && Bitwise functors	
-		43 => array(
-					GESHI_SEARCH => '([^a-zA-Z])(&lt;&lt;|&gt;&gt;|&lt;|=&lt;|&gt;=|&gt;|@=&lt;|@&lt;|@&gt;=|@&gt;)',
-					GESHI_REPLACE => '\\2',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '\\1',
-					GESHI_AFTER => '\\3'
-					),
-
-			//Mode operators
-		44 => array(
-					GESHI_SEARCH => '(\[|\]|\(|\))',
-					GESHI_REPLACE => '\\1',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '',
-					GESHI_AFTER => '\\2'
-					),	
-
-			//Evaluable functors	
-		45 => array(
-					GESHI_SEARCH => '([^a-zA-Z0-9])([+*/-])',
-					GESHI_REPLACE => '\\2',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '\\1',
-					GESHI_AFTER => '\\3'
-					),
-
-			//Logic and control
-		46 => array(
-					GESHI_SEARCH => '([^a-zA-Z])(\\\+)',
-					GESHI_REPLACE => '\\2',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '\\1',
-					GESHI_AFTER => '\\3'
-					),
-
-			//Control constructs
-		47 => array(
-					GESHI_SEARCH => '([^\|])(!)([^\>])',
-					GESHI_REPLACE => '\\2',
-					GESHI_MODIFIERS => '',
-					GESHI_BEFORE => '\\1',
-					GESHI_AFTER => '\\3'
-					),
-
+	'OBJECT_SPLITTERS' => array(
+		1 => '::'
+		),
+	'REGEXPS' => array(
+		// numbers (binary, octal, hexadecimal, and decimal)
+		0 => array(
+			GESHI_SEARCH => '(\b(0b[0-1]+|0o[0-7]+|0x[0-9a-fA-F]+))',
+//			GESHI_SEARCH => '(\b(0b[0-1]+|0o[0-7]+|0x[0-9a-fA-F]+|\d+\.?\d*((e|E)(\+|-)?\d+)?))',
+			GESHI_REPLACE => '\\1',
+			GESHI_MODIFIERS => '',
+			GESHI_BEFORE => '',
+			GESHI_AFTER => ''
+			),
+		// variables
+		1 => '\b(?!(?:PIPE|SEMI|REG3XP\d*)[^a-zA-Z0-9_])[A-Z_][a-zA-Z0-9_]*(?![a-zA-Z0-9_])'
 		),
 	'STRICT_MODE_APPLIES' => GESHI_NEVER,
 	'SCRIPT_DELIMITERS' => array(),
-	'HIGHLIGHT_STRICT_BLOCK' => array(
-	)
+	'HIGHLIGHT_STRICT_BLOCK' => array(),
+    'TAB_WIDTH' => 4,
+    'PARSER_CONTROL' => array(
+        'KEYWORDS' => array(
+            1 => array(
+                'DISALLOWED_BEFORE' => '(?<=:-\s)',
+                'DISALLOWED_AFTER' => '(?=\s*\()'
+            ),
+            2 => array(
+                'DISALLOWED_BEFORE' => '(?<=:-\s)',
+                'DISALLOWED_AFTER' => '(?=\.)'
+            ),
+            3 => array(
+                'DISALLOWED_BEFORE' => '(?<=[^a-z])',
+                'DISALLOWED_AFTER' => '(?=\s*\()'
+            ),
+            4 => array(
+                'DISALLOWED_BEFORE' => '(?<=[^a-z])',
+                'DISALLOWED_AFTER' => '(?=\s*\()'
+            ),
+            5 => array(
+                'DISALLOWED_BEFORE' => '(?<=[^a-z])',
+                'DISALLOWED_AFTER' => '(?=[^a-z])'
+            ),
+            6 => array(
+                'DISALLOWED_BEFORE' => '',
+                'DISALLOWED_AFTER' => '(?=\s*\()'
+            ),
+            7 => array(
+                'DISALLOWED_BEFORE' => '(?<=[^a-z])',
+                'DISALLOWED_AFTER' => '(?=[^a-z])'
+            )
+        )
+    ),
 );
 
 ?>

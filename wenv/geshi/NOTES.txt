@@ -18,6 +18,3 @@ These support files are dual-licensed under the Artistic License 2.0
 and the GeSHi license.
 
 To install, copy the file "logtalk.php" to the GeSHi languages folder.
-
-
-THIS SYNTAX COLORING SUPPORT FILE IS UNDER DEVELOPMENT.
