@@ -54,7 +54,7 @@ $language_data = array(
 			// entity opening directives
 			'category', 'object', 'protocol',
 			// predicate scope directives
-			'public', 'protected', 'pivate',
+			'private', 'protected', 'public',
 			// conditional compilation directives
 			'elif', 'if',
 			// entity directives
