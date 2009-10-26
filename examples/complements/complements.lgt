@@ -1,7 +1,10 @@
 
 % setup the object employee as a monitor for any message sent to itself:
+
 :- initialization(define_events(before, employee, _, _, employee)).
 
+
+% define an innocent "employee" object, which is about to be complemented:
 
 :- object(employee).
 
@@ -13,6 +16,8 @@
 
 :- end_object.
 
+
+% define a category that adds new functionality to the "employee" object:
 
 :- category(logging,
 	implements(monitoring),		% built-in protocol for event handler methods

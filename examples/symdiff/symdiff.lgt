@@ -101,10 +101,10 @@
 	simplify(X, Y, S) :-
 		X::simplify(SX),
 		Y::simplify(SY),
-		(X + Y \= SX + SY ->
+		(	X + Y \= SX + SY ->
 			(SX + SY)::simplify(S)
-			;
-			S = SX + SY).
+		;	S = SX + SY
+		).
 
 :- end_object.
 
@@ -171,10 +171,10 @@
 	simplify(X, Y, S) :-
 		X::simplify(SX),
 		Y::simplify(SY),
-		(X - Y \= SX - SY ->
+		(	X - Y \= SX - SY ->
 			(SX - SY)::simplify(S)
-			;
-			S = SX - SY).
+		;	S = SX - SY
+		).
 
 :- end_object.
 

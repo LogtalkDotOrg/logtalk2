@@ -20,7 +20,6 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 | ?- (x**1 + x*0 - x*1)::simplify(S).
 
 S = 0
-
 yes
 
 
@@ -30,7 +29,6 @@ yes
 
 D = 2*(3*x**2*1)+2*x**1*1-4*1
 S = 2*(3*x**2)+2*x-4
-
 yes
 
 
@@ -40,5 +38,4 @@ yes
 
 D = (2*x**1*1+2*1)*(x**2+2*x-7)** -1+4*1
 S = (2*x+2)*(x**2+2*x-7)** -1+4
-
 yes

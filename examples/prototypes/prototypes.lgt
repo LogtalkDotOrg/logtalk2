@@ -17,6 +17,7 @@
 
 :- end_object.
 
+
 % later on, Alf finds out that his best friend, Skip, and his
 % girlfriend, Rhonda, also survived Melmac's explosion; as they
 % are all melmacians, they share most attributes (and add some

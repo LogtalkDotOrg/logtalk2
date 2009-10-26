@@ -16,7 +16,7 @@ explicitly complement an existing object (without modifying its source
 code), thus providing functionality similar to Objective-C categories.
 
 The complemented objects need to be compiled with the flag "complements" 
-switched on. This is a less than ideal solution that was adapted in order 
+set to "allow". This is a less than ideal solution that was adapted in order 
 to both improve performance of code that doesn't use complementing categories 
 and to provide a solution for preventing the use of complementing categories 
 to break object encapsulation.
