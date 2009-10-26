@@ -4,6 +4,7 @@
 % the built-in object "logtalk", which can be used as root of both class and
 % prototype hierarchies
 
+
 :- object(metacircle,
 	instantiates(metacircle)).
 			
@@ -13,12 +14,12 @@
 		comment is 'Creates a new circle in a given position and with a given radius.',
 		argnames is ['X', 'Y', 'Radius', 'Circle']]).
 
-	new(Radius, X, Y, Circle) :-	% this would be a "constructor" in other languages 
-		self(Self),					% we may be instantiating a subclass of "circle"
+	new(Radius, X, Y, Circle) :-		% this would be a "constructor" in other languages 
+		self(Self),						% we may be instantiating a subclass of "circle"
 		create_object(Circle, [instantiates(Self)], [], [position(X, Y), radius(Radius)]).
 
-	:- public(area/2).
-	:- mode(area(+float, -float), one).
+	:- public(area/2).					% this would be an utility class method, usable without
+	:- mode(area(+float, -float), one).	% being necessary to first instantiate the "circle" class
 	:- info(area/2, [
 		comment is 'Calculates the area of a circle given its radius.',
 		argnames is ['Radius', 'Area']]).
@@ -29,9 +30,9 @@
 :- end_object.
 
 
-:- object(circle,
-	instantiates(metacircle)).
-
+:- object(circle,						% "circle" is an instantiable class as it accepts
+	instantiates(metacircle)).			% messages for creating new objects (declared and
+										% defined in its metaclass, "metacircle")
 	:- public(position/2).
 	:- mode(position(?float, ?float), zero_or_one).
 	:- info(position/2, [
@@ -61,9 +62,9 @@
 :- end_object.
 
 
-:- object(c42,				% a static instance of "circle"
-	instantiates(circle)).
-
+:- object(c42,							% a static instance of "circle"; of course, you
+	instantiates(circle)).				% can also create dynamic instances at runtime
+										% by sending the new/4 message to "circle"
 	position(3.7, 4.5).
 	radius(2.8).
 
