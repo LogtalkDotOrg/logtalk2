@@ -29,6 +29,8 @@ private(/).
 uses(, [/]).
 uses().
 use_module(, [/]).
+export(/).
+reexport(/).
 calls().
 info([]).
 info(/, []).
