@@ -65,6 +65,8 @@ $language_data = array(
         1 => array(
             // file directives
             'encoding', 'ensure_loaded',
+            // flag directives
+            'set_logtalk_flag', 'set_prolog_flag',
             // entity opening directives
             'category', 'object', 'protocol',
             // predicate scope directives
@@ -87,9 +89,7 @@ $language_data = array(
             // entity closing directives
             'end_category', 'end_object', 'end_protocol',
             // conditional compilation directives
-            'else', 'endif',
-            // flag directives
-            'set_logtalk_flag', 'set_prolog_flag'
+            'else', 'endif'
             ),
         // Entity relations
         3 => array(
