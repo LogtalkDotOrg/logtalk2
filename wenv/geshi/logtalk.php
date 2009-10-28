@@ -1,19 +1,18 @@
 <?php
-
 /*************************************************************************************
  * logtalk.php
  * -----------
- * 
+ *
  * Author: Paulo Moura (pmoura@logtalk.org)
  * Copyright: (c) 2009 Paulo Moura (http://logtalk.org/)
- * Release Version: 1.0.8.4
+ * Release Version: 1.0.8.6
  * Date Started: 2009/10/24
  *
  * Logtalk language file for GeSHi.
  *
  * CHANGES
  * -------
- * 2009/10/27 (1.0.0)
+ * 2009/10/28 (1.0.0)
  *  -  First Release
  *
  *************************************************************************************
@@ -54,7 +53,13 @@ $language_data = array(
         //Octal Char Specs
         3 => "#\\\\[0-7]+\\\\#"
         ),
-    'NUMBERS' => GESHI_NEVER,
+    'NUMBERS' =>
+        GESHI_NUMBER_INT_BASIC |
+        GESHI_NUMBER_BIN_PREFIX_0B |
+        GESHI_NUMBER_OCT_PREFIX_0O |
+        GESHI_NUMBER_HEX_PREFIX |
+        GESHI_NUMBER_FLT_NONSCI |
+        GESHI_NUMBER_FLT_SCI_ZERO,
     'KEYWORDS' => array(
         // Directives (with arguments)
         1 => array(
@@ -68,7 +73,7 @@ $language_data = array(
             'elif', 'if',
             // entity directives
             'calls', 'initialization', 'op', 'uses',
-            // predicate directives         
+            // predicate directives
             'alias', 'discontiguous', 'dynamic', 'mode', 'info', 'meta_predicate', 'multifile', 'synchronized',
             // module directives
             'export', 'module', 'reexport', 'use_module'
@@ -129,7 +134,7 @@ $language_data = array(
             'threaded_wait', 'threaded_notify',
             // term unification
             'unify_with_occurs_check',
-            // atomic term processing 
+            // atomic term processing
             'atom_chars', 'atom_codes', 'atom_concat', 'atom_length',
             'number_chars', 'number_codes',
             'char_code',
@@ -160,7 +165,7 @@ $language_data = array(
             'fail', 'repeat', 'true',
             // character and byte input/output predicates
             'nl',
-            // implementation defined hooks functions       
+            // implementation defined hooks functions
             'halt',
             // arithemtic evaluation
             'is',
@@ -190,11 +195,11 @@ $language_data = array(
             '<<', '>>', '/\\', '\\/', '\\',
             // bitwise functors
             '==', '\==', '@<', '@=<', '@>=', '@>',
-            // evaluable functors   
+            // evaluable functors
             '+', '-', '*', '/', '**',
             // logic and control
             '!', '\\+', ';',
-            // message sending operators    
+            // message sending operators
             '::', '^^', ':',
             // grammar rule and conditional functors
             '-->', '->',
@@ -260,8 +265,7 @@ $language_data = array(
         'METHODS' => array(
             ),
         'REGEXPS' => array(
-            0 => 'color: #430000;',
-            1 => 'color: #848484;'
+            0 => 'color: #848484;'
             ),
         'SCRIPT' => array()
         ),
@@ -279,10 +283,8 @@ $language_data = array(
         1 => '::'
         ),
     'REGEXPS' => array(
-        // numbers (binary, octal, hexadecimal, and decimal)
-        0 => '(\b(0b[0-1]+|0o[0-7]+|0x[0-9a-fA-F]+|\d+(\.\d+((e|E)(\+|-)\d+)?)?))',
         // variables
-        1 => '\b(?!(?:PIPE|SEMI|REG3XP\d*)[^a-zA-Z0-9_])[A-Z_][a-zA-Z0-9_]*(?![a-zA-Z0-9_])'
+        0 => '\b(?!(?:PIPE|SEMI|REG3XP\d*)[^a-zA-Z0-9_])[A-Z_][a-zA-Z0-9_]*(?![a-zA-Z0-9_])'
         ),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(),
@@ -295,31 +297,31 @@ $language_data = array(
         'KEYWORDS' => array(
             1 => array(
                 'DISALLOWED_BEFORE' => '(?<=:-\s)',
-                'DISALLOWED_AFTER' => '(?=\s*\()'
+                'DISALLOWED_AFTER' => '(?=\()'
             ),
             2 => array(
                 'DISALLOWED_BEFORE' => '(?<=:-\s)',
                 'DISALLOWED_AFTER' => '(?=\.)'
             ),
             3 => array(
-                'DISALLOWED_BEFORE' => '(?<=[^a-z])',
-                'DISALLOWED_AFTER' => '(?=\s*\()'
+                'DISALLOWED_BEFORE' => '\b',
+                'DISALLOWED_AFTER' => '(?=\()'
             ),
             4 => array(
-                'DISALLOWED_BEFORE' => '(?<=[^a-z])',
-                'DISALLOWED_AFTER' => '(?=\s*\()'
+                'DISALLOWED_BEFORE' => '\b',
+                'DISALLOWED_AFTER' => '(?=\()'
             ),
             5 => array(
-                'DISALLOWED_BEFORE' => '(?<=[^a-z])',
-                'DISALLOWED_AFTER' => '(?=[^a-z])'
+                'DISALLOWED_BEFORE' => '\b',
+                'DISALLOWED_AFTER' => '\b'
             ),
             6 => array(
-                'DISALLOWED_BEFORE' => '',
-                'DISALLOWED_AFTER' => '(?=\s*\()'
+                'DISALLOWED_BEFORE' => '\b',
+                'DISALLOWED_AFTER' => '(?=\()'
             ),
             7 => array(
-                'DISALLOWED_BEFORE' => '(?<=[^a-z])',
-                'DISALLOWED_AFTER' => '(?=[^a-z])'
+                'DISALLOWED_BEFORE' => '\b',
+                'DISALLOWED_AFTER' => '\b'
             )
         )
     ),
