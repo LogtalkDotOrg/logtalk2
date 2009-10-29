@@ -71,6 +71,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/xsbmtlgt
 /usr/local/bin/xsbmt64lgt
 /usr/local/bin/yaplgt
+%exclude /usr/local/share/mime
 
 %post
 echo
