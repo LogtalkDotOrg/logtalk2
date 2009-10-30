@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.37.5
+%  Release 2.37.6
 %
 %  Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
@@ -12,7 +12,7 @@
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %  (5.8.0 or later versions for using multi-threading features)
 %
-%  last updated: August 7, 2009
+%  last updated: October 30, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -21,6 +21,14 @@
 :- set_prolog_flag(generate_debug_info, false).
 :- set_prolog_flag(optimise, true).
 :- system_module.
+
+
+:- multifile(message_hook/3).				% SWI-Prolog hook predicate
+:- dynamic(message_hook/3).
+
+message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
+	'$lgt_inc_load_warnings_counter',		% clauses warning; hack to increment
+	fail.									% the Logtalk warnings counter
 
 
 

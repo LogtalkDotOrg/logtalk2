@@ -2,25 +2,24 @@
 
 PortSystem	1.0
 name		logtalk
-version 	2.37.5
+version 	2.37.6
 
 categories	lang
-maintainers	pmoura@logtalk.org
+maintainers	logtalk.org:pmoura
 platforms	darwin freebsd linux
 description	Logtalk - Open source object-oriented logic programming language
 
 long_description	\
-		Logtalk is an open source object-oriented logic programming language	\
-		that can use most Prolog implementations as a back-end compiler.		\
-		As a multi-paradigm language, Logtalk includes support for both 		\
-		prototypes and classes, protocols, component-based programming 			\
-		through category-based composition, event-driven programming, and 		\
-		multi-threading programming.
+	Logtalk is an object-oriented logic programming language that can use most		\
+	Prolog implementations as a back-end compiler. As a multi-paradigm language,	\
+	it includes support for both prototypes and classes, protocols (interfaces),	\
+	component-based programming through category-based composition, event-driven	\
+	programming, and high-level multi-threading programming.
 
-homepage        http://logtalk.org/
+homepage		http://logtalk.org/
 master_sites	${homepage}files/
 
-checksums 		md5	dd4186355459fdd2dc1768d84bfa4be7
+checksums		md5	7d4bc2a1a5d4f404eb3bc21d178d37e7
 
 distname		lgt[strsed ${version} {g/\.//}]
 
