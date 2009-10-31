@@ -15,8 +15,18 @@ RELEASE NOTES
 
 2.37.6 - December ??, 2009
 
+    Updated the Logtalk compiler to workaround file path problems with
+    back-end Prolog compilers (e.g. SICStus Prolog) where calls to the
+    open/3-4 built-in predicate are not always relative to the current
+    working directory.
+
     Updated the SWI-Prolog config file to detect discontiguous predicate
     clause warnings and update the Logtalk warnings counter accordingly.
+
+    Updated the SICStus Prolog config files in order to support settings
+    files. Updated the SICStus Prolog 4.x config file in order to use the
+    new "version_data" flag and recognize the new do/2 meta-predicate added
+    in version 4.1.
 
 
 2.37.5 - October 29, 2009

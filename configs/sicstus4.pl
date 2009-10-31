@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: August 21, 2009
+%  last updated: October 31, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -96,6 +96,8 @@ forall(Generate, Test) :-
 
 '$lgt_pl_meta_predicate'(call_cleanup(::, ::), predicate).
 '$lgt_pl_meta_predicate'(call_residue_vars(::, *), predicate).
+'$lgt_pl_meta_predicate'(do(*, ::), predicate) :-
+	predicate_property(do(_, _), built_in).
 '$lgt_pl_meta_predicate'(findall(*, ::, *, *), predicate).
 '$lgt_pl_meta_predicate'(freeze(*, ::), predicate).
 '$lgt_pl_meta_predicate'(if(::, ::, ::), predicate).
@@ -140,8 +142,8 @@ forall(Generate, Test) :-
 % back-end Prolog compiler supported features
 
 '$lgt_prolog_feature'(prolog_dialect, sicstus).
-'$lgt_prolog_feature'(prolog_version, _) :-
-	fail.
+'$lgt_prolog_feature'(prolog_version, (Major, Minor, Patch)) :-
+	catch(current_prolog_flag(version_data, sicstus(Major, Minor, Patch, _, _)), _, fail).
 '$lgt_prolog_feature'(prolog_compatible_version, @>=((4,0,3))).
 
 '$lgt_prolog_feature'(break_predicate, supported).
@@ -251,7 +253,8 @@ forall(Generate, Test) :-
 % checks if a file exist in the current directory
 
 '$lgt_expand_path'(Path, ExpandedPath) :-
-	absolute_file_name(Path, ExpandedPath).
+	current_directory(Directory),
+	absolute_file_name(Path, ExpandedPath, [relative_to(Directory)]).
 
 
 % '$lgt_file_exists'(+atom)
@@ -259,7 +262,8 @@ forall(Generate, Test) :-
 % checks if a file exist in the current directory
 
 '$lgt_file_exists'(File) :-
-	absolute_file_name(File, Path),
+	current_directory(Directory),
+	absolute_file_name(File, Path, [relative_to(Directory)]),
 	file_exists(Path).
 
 

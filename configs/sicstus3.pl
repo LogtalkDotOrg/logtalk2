@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 3.8 and later versions
 %
-%  last updated: August 21, 2009
+%  last updated: October 31, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -286,7 +286,8 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % checks if a file exist in the current directory
 
 '$lgt_expand_path'(Path, ExpandedPath) :-
-	absolute_file_name(Path, ExpandedPath).
+	current_directory(Directory),
+	absolute_file_name(Path, ExpandedPath, [relative_to(Directory)]).
 
 
 % '$lgt_file_exists'(+atom)
@@ -294,7 +295,9 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % checks if a file exist in the current directory
 
 '$lgt_file_exists'(File) :-
-	file_exists(File).
+	current_directory(Directory),
+	absolute_file_name(File, Path, [relative_to(Directory)]),
+	file_exists(Path).
 
 
 % '$lgt_delete_file'(+atom)

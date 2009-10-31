@@ -1685,7 +1685,7 @@ logtalk_compile(Files, Flags) :-
 	throw(type_error(source_file_name, File)).
 
 '$lgt_check_source_file'(File) :-
-	'$lgt_file_name'(logtalk, File, FileWithExtension),
+	'$lgt_file_name'(logtalk, File, FileWithExtension, _),
 	\+ '$lgt_file_exists'(FileWithExtension),
 	throw(existence_error(file, File)).
 
@@ -4769,7 +4769,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 
 '$lgt_load_compiled_file'(Source) :-
-	'$lgt_file_name'(prolog, Source, PrologFile),
+	'$lgt_file_name'(prolog, Source, _, PrologFile),
 	'$lgt_clean_lookup_caches',
 	'$lgt_check_redefined_entities',
 	(	'$lgt_pp_file_encoding_'(_, Encoding) ->
@@ -5081,13 +5081,13 @@ current_logtalk_flag(version, version(2, 37, 5)).
 % source file needs recompilation
 
 '$lgt_needs_recompilation'(File) :-
-	'$lgt_file_name'(prolog, File, Object),
+	'$lgt_file_name'(prolog, File, Object, _),
 	\+ '$lgt_file_exists'(Object),
 	!.
 
 '$lgt_needs_recompilation'(File) :-
-	'$lgt_file_name'(logtalk, File, Source),
-	'$lgt_file_name'(prolog, File, Object),
+	'$lgt_file_name'(logtalk, File, _, Source),
+	'$lgt_file_name'(prolog, File, _, Object),
 	(	'$lgt_compare_file_mtimes'(Result, Source, Object) ->
 		Result == (>)
 	;	true
@@ -5144,26 +5144,28 @@ current_logtalk_flag(version, version(2, 37, 5)).
 	atom_codes(Atom, Codes),
 	atom_concat(Functor, '_', Aux),
 	atom_concat(Aux, Atom, Name),
-	'$lgt_file_name'(xml, Name, File).
+	'$lgt_file_name'(xml, Name, File, _).
 
 
 
-% '$lgt_file_name'(+atom, +atom, -atom)
+% '$lgt_file_name'(+atom, +atom, -atom, -atom)
 %
-% constructs a file name given the file type (logtalk, prolog, or xml)
-% and the file base name (file name may include a directory path)
+% constructs a file basename (name plus extension) and a file path given the file type
+% (logtalk, prolog, or xml) and the file name (file name may include a directory path)
 
-'$lgt_file_name'(Type, Basename, File) :-
+'$lgt_file_name'(Type, Name, Basename, Path) :-
 	'$lgt_file_extension'(Type, Extension),			% defined on the Prolog config files
-	(	'$lgt_compiler_flag'(altdirs, on), '$lgt_file_type_alt_directory'(Type, Directory) ->
+	atom_concat(Name, Extension, Basename),
+	(	'$lgt_compiler_flag'(altdirs, on),
+		'$lgt_file_type_alt_directory'(Type, Directory) ->
+		% file on the alternate compilation directory
 		'$lgt_make_directory'(Directory),			% succeeds when the directory already exists
-		atom_concat(Basename, Extension, Aux),
-		atom_concat(Directory, Aux, Path),			% file on the alternate compilation directory
-		(	'$lgt_expand_path'(Path, File) ->		% try to expand the file path
-			true
-		;	File = Path
-		)
-	;	atom_concat(Basename, Extension, File)		% file local to current working directory
+		atom_concat(Directory, Basename, Path)
+	;	% file local to current working directory
+		(	'$lgt_expand_path'(Basename, Path) ->	% try to expand the file path in order to
+			true									% prevent problems with Prolog compilers
+		;	Basename = Path							% where open/3-4 is not always relative to
+		)											% the current working directory
 	).
 
 
@@ -5174,9 +5176,9 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 '$lgt_tr_file'(File) :-
 	'$lgt_save_global_op_table',
-	'$lgt_file_name'(logtalk, File, Source),
+	'$lgt_file_name'(logtalk, File, Basename, Source),
 	'$lgt_current_directory'(Directory),
-	asserta('$lgt_pp_file_path_'(Source, Directory)),
+	asserta('$lgt_pp_file_path_'(Basename, Directory)),
 	catch(
 		open(Source, read, Input),
 		OpenError,
@@ -5186,7 +5188,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 		InputError,
 		'$lgt_compiler_error_handler'(Input, InputError)),
 	'$lgt_check_for_encoding_directive'(Term, Source, Input, NewInput, OutputOptions),	% the encoding/1 directive, when present, 
-	'$lgt_file_name'(prolog, File, Object),												% must be the first term on a source file
+	'$lgt_file_name'(prolog, File, _, Object),											% must be the first term on a source file
 	catch(
 		open(Object, write, Output, OutputOptions),
 		OpenError,
@@ -5447,7 +5449,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 
 
 
-% '$lgt_compiler_error_handler'(+atom, +integer, @stream, @stream, +term)
+% '$lgt_compiler_error_handler'(+atom, @stream, @stream, +term)
 %
 % closes the streams being used for reading and writing terms, restores
 % the operator table, and reports the compilation error found
@@ -5460,8 +5462,8 @@ current_logtalk_flag(version, version(2, 37, 5)).
 	'$lgt_reset_warnings_counter',
 	catch(close(Input), _, true),
 	catch(close(Output), _, true),
-	'$lgt_file_name'(logtalk, Base, File),	% try to delete the intermediate Prolog file in order to
-	'$lgt_file_name'(prolog, Base, Prolog),	% avoid problems when using the "smart_compilation" flag
+	'$lgt_file_name'(logtalk, Name, File, _),	% try to delete the intermediate Prolog file in order to
+	'$lgt_file_name'(prolog, Name, _, Prolog),	% avoid problems when using the "smart_compilation" flag
 	catch(('$lgt_delete_file'(Prolog) -> true; true), _, true),
 	throw(Error).
 
