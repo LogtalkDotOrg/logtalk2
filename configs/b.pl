@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.1 and later versions
 %
-%  last updated: August 21, 2009
+%  last updated: October 31, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -244,7 +244,7 @@
 
 % '$lgt_expand_path'(+nonvar, -atom)
 %
-% checks if a file exist in the current directory
+% expands a file path to a full path
 
 '$lgt_expand_path'(Path, ExpandedPath) :-
 	expand_environment(Path, ExpandedPath).

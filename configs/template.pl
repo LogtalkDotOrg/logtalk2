@@ -270,7 +270,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 % '$lgt_expand_path'(+nonvar, -atom)
 %
-% checks if a file exist in the current directory
+% expands a file path to a full path
 
 '$lgt_expand_path'(Path, ExpandedPath) :-
 	?????

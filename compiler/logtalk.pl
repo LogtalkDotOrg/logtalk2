@@ -5144,7 +5144,7 @@ current_logtalk_flag(version, version(2, 37, 5)).
 	atom_codes(Atom, Codes),
 	atom_concat(Functor, '_', Aux),
 	atom_concat(Aux, Atom, Name),
-	'$lgt_file_name'(xml, Name, File, _).
+	'$lgt_file_name'(xml, Name, _, File).
 
 
 
@@ -5160,12 +5160,13 @@ current_logtalk_flag(version, version(2, 37, 5)).
 		'$lgt_file_type_alt_directory'(Type, Directory) ->
 		% file on the alternate compilation directory
 		'$lgt_make_directory'(Directory),			% succeeds when the directory already exists
-		atom_concat(Directory, Basename, Path)
+		atom_concat(Directory, Basename, File)
 	;	% file local to current working directory
-		(	'$lgt_expand_path'(Basename, Path) ->	% try to expand the file path in order to
-			true									% prevent problems with Prolog compilers
-		;	Basename = Path							% where open/3-4 is not always relative to
-		)											% the current working directory
+		File = Basename
+	),
+	(	'$lgt_expand_path'(File, Path) ->			% try to expand the file path in order to
+		true										% prevent problems with Prolog compilers
+	;	File = Path									% where open/3-4 is not always relative to
 	).
 
 

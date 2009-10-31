@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.2 or later versions
 %
-%  last updated: August 7, 2009
+%  last updated: October 31, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -255,7 +255,7 @@ forall(Generate, Test) :-
 
 % '$lgt_expand_path'(+nonvar, -atom)
 %
-% checks if a file exist in the current directory
+% expands a file path to a full path
 
 '$lgt_expand_path'(Path, ExpandedPath) :-
 	expand_atom(Path, ExpandedPath).

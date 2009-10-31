@@ -11,7 +11,7 @@
 %
 %  configuration file for K-Prolog 5.1.5 and later 5.1.x versions
 %
-%  last updated: August 7, 2009
+%  last updated: October 31, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -239,7 +239,7 @@ retractall(Head) :-
 
 % '$lgt_expand_path'(+nonvar, -atom)
 %
-% checks if a file exist in the current directory
+% expands a file path to a full path
 
 '$lgt_expand_path'(Path, ExpandedPath) :-
 	fname(Path, ExpandedPath).

@@ -250,7 +250,7 @@ forall(Generate, Test) :-
 
 % '$lgt_expand_path'(+nonvar, -atom)
 %
-% checks if a file exist in the current directory
+% expands a file path to a full path
 
 '$lgt_expand_path'(Path, ExpandedPath) :-
 	current_directory(Directory),
