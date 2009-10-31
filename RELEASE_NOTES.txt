@@ -28,6 +28,9 @@ RELEASE NOTES
     new "version_data" flag and recognize the new do/2 meta-predicate added
     in version 4.1.
 
+    Updated the Logtalk Windows installer in order to detect the new SICStus
+    Prolog 4.1 version.
+
 
 2.37.5 - October 29, 2009
 

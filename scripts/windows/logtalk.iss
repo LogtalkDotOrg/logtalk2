@@ -59,7 +59,7 @@ Name: "prolog\eclipse"; Description: "ECLiPSe integration (versions 5.10, 6.0)";
 Name: "prolog\gprolog"; Description: "GNU Prolog integration (version 1.3.1 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\plc"; Description: "K-Prolog integration (version 6.0.4)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\quintus"; Description: "Quintus Prolog integration (version 3.5; requires patching Logtalk)"; Types: custom; Flags: disablenouninstallwarning
-Name: "prolog\sicstus"; Description: "SICStus Prolog integration (versions 3.12.x, 4.0.x)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\sicstus"; Description: "SICStus Prolog integration (versions 3.12.x, 4.x)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\swi"; Description: "SWI-Prolog integration (version 5.6.44 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\xsb"; Description: "XSB integration (version 3.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\yap"; Description: "YAP integration (version 5.1.3 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
@@ -389,7 +389,9 @@ var
   SP_PATH: String;
   Warning: String;
 begin
-  if RegQueryStringValue(HKLM, 'Software\SICS\SICStus4.0_win32\', 'SP_PATH', SP_PATH) then
+  if RegQueryStringValue(HKLM, 'Software\SICS\SICStus4.1_x86-win32-nt-4\', 'SP_PATH', SP_PATH) then
+    Result := SP_PATH + '\bin\spwin.exe'
+  else if RegQueryStringValue(HKLM, 'Software\SICS\SICStus4.0_win32\', 'SP_PATH', SP_PATH) then
     Result := SP_PATH + '\bin\spwin.exe'
   else begin
     Warning := 'Failed to detect SICStus Prolog 4 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
