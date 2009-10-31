@@ -462,8 +462,7 @@ SICStus Prolog 3.8~3.12.x
 	Logtalk. No problems expected although not fully tested. Don't forget
 	to use the SICStus working_directory/2 predicate to set the working
 	directory before loading the library or an example. Supports smart
-	compilation of source files. Settings files are not supported (must be
-	manually loaded after starting Logtalk).
+	compilation of source files. Full support for settings files.
 
 	If you want SICStus Prolog to automatically load Logtalk at startup, 
 	then add the following lines to your ~/.sicstusrc or ~/.sicstus.ini 
@@ -481,10 +480,8 @@ SICStus Prolog 4.0.3 and later versions
 
 	sicstus4.pl
 
-	Config file for the SICStus Prolog 4.0 version (tested with the MacOS X 
-	version and the Windows beta version). Supports smart compilation of 
-	source files. Settings files are not supported (must be manually loaded 
-	after starting Logtalk).
+	Config file for the SICStus Prolog 4.x version. Supports smart compilation
+	of source files. Full support for settings files.
 
 
 SWI Prolog 5.6.44 and later versions
