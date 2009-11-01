@@ -70,7 +70,7 @@
 % call_cleanup(+callable, +callable) -- built-in
 
 
-% forall(+callable, +callable) -- built-in
+% forall(+callable, +callable)
 
 forall(Generate, Test) :-
 	\+ (Generate, \+ Test).
