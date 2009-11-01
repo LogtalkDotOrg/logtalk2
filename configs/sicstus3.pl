@@ -21,6 +21,13 @@
 :- set_prolog_flag(language, iso). % recomended, but optional
 
 
+:- multifile(message_hook/3).							% SICStus Prolog hook predicate
+
+message_hook(warning, clauses_not_together(_), _) :-	% SICStus Prolog discontiguous predicate
+	'$lgt_inc_load_warnings_counter',					% clauses warning; hack to increment
+	fail.												% the Logtalk warnings counter
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
