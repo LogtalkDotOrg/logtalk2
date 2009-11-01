@@ -79,6 +79,14 @@
 	).
 
 
+:- multifile(message_hook/3).					% YAP hook predicate
+:- dynamic(message_hook/3).
+
+message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
+	'$lgt_inc_load_warnings_counter',			% clauses warning; hack to increment
+	fail.										% the Logtalk warnings counter
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %

@@ -20,8 +20,9 @@ RELEASE NOTES
     open/3-4 built-in predicate are not always relative to the current
     working directory.
 
-    Updated the SWI-Prolog config file to detect discontiguous predicate
-    clause warnings and update the Logtalk warnings counter accordingly.
+    Updated the SWI-Prolog and YAP config files to detect discontiguous
+    predicate clause warnings and update the Logtalk warnings counter
+    accordingly.
 
     Updated the SICStus Prolog config files in order to support settings
     files. Updated the SICStus Prolog 4.x config file in order to use the
@@ -29,7 +30,9 @@ RELEASE NOTES
     in version 4.1.
 
     Updated the Logtalk Windows installer in order to detect the new SICStus
-    Prolog 4.1 version.
+    Prolog 4.1 version. If both 4.0.x and 4.1.x versions are installed, the
+    installer creates a shortcut for using version 4.1.x as the back-end
+    Prolog compiler.
 
 
 2.37.5 - October 29, 2009
