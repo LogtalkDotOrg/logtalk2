@@ -20,9 +20,9 @@ RELEASE NOTES
     open/3-4 built-in predicate are not always relative to the current
     working directory.
 
-    Updated the SICStus Prolog, SWI-Prolog, and YAP config files to detect
-    discontiguous predicate clause warnings and update the Logtalk warnings
-    counter accordingly.
+    Updated the ECLiPSe, SICStus Prolog, SWI-Prolog, and YAP config files in
+    order to detect discontiguous predicate clause warnings and update the
+    Logtalk warnings counter accordingly.
 
     Updated the SICStus Prolog config files in order to support settings
     files. Updated the SICStus Prolog 4.x config file in order to use the

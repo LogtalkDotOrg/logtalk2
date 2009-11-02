@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 5.10#26 or later 5.10 versions
 %
-%  last updated: October 31, 2009
+%  last updated: November 2, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -20,6 +20,13 @@
 :- pragma(nodebug).
 
 :- use_module(library(numbervars)).
+
+
+:- set_event_handler(134, '$lgt_eclipse_discontiguous_predicate_handler'/2).
+
+'$lgt_eclipse_discontiguous_predicate_handler'(Err, Goal) :-
+	'$lgt_inc_load_warnings_counter',
+	error(default(Err), Goal).
 
 
 

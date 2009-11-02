@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#77 and later versions
 %
-%  last updated: October 31, 2009
+%  last updated: November 2, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -21,6 +21,13 @@
 
 :- use_module(library(numbervars)).
 :- use_module(library(multifile)).
+
+
+:- set_event_handler(134, '$lgt_eclipse_discontiguous_predicate_handler'/2).
+
+'$lgt_eclipse_discontiguous_predicate_handler'(Err, Goal) :-
+	'$lgt_inc_load_warnings_counter',
+	error(default(Err), Goal).
 
 
 
