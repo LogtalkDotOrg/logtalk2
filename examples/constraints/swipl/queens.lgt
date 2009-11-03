@@ -12,7 +12,9 @@
 
 :- object(queens).
 
-	:- use_module(clpfd, [ins/2, labeling/2, (#=)/2, (#\=)/2, (#<==>)/2, (#>)/2]).
+	:- use_module(clpfd, [
+					op(450, xfx, ..), op(700, xfx, #=), op(700, xfx, #\=), op(760, yfx, #<==>), op(700, xfx, #>), op(700, xfx, ins),
+					(#=)/2, (#\=)/2, (#<==>)/2, (#>)/2, (ins)/2, labeling/2]).
 
 	:- public([n_queens/2, show/3]).
 

@@ -12,7 +12,9 @@
 
 :- object(soduku).
 
-	:- use_module(clpfd, [all_different/1, ins/2, labeling/2]).
+	:- use_module(clpfd, [
+					op(450, xfx, ..), op(700, xfx, ins),
+					all_different/1, (ins)/2, labeling/2]).
 
 	:- uses(list, [append/2, length/2]).
 	:- uses(meta, [map/2::maplist/2]).

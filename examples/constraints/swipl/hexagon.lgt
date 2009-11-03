@@ -17,12 +17,16 @@ H   I   J   K   L
 
 :- object(hexagon).
 
-	:- use_module(clpfd, [all_different/1, ins/2, labeling/2, sum/3, (#=)/2]).
+	:- use_module(clpfd, [
+					op(450, xfx, ..), op(700, xfx, ins),
+					all_different/1, (ins)/2, labeling/2, sum/3]).
+
 	:- uses(meta, [map/2::maplist/2]).
 
 	:- public(mhex/1).
 
-	sum38(Vs) :- sum(Vs, #=, 38).
+	sum38(Vs) :-
+		sum(Vs, #=, 38).
 
 	mhex(Vs) :-
 		Vs = [A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S],
