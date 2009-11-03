@@ -34,6 +34,9 @@ RELEASE NOTES
     installer creates a shortcut for using version 4.1.x as the back-end
     Prolog compiler.
 
+    Added a Logtalk version of the "Closed Knight's Tour" SWI-Prolog CLP(FD)
+    example written by Markus Triska.
+
 
 2.37.5 - October 29, 2009
 
