@@ -79,13 +79,13 @@ Name: {code:GetLgtUserDir}; Components: user; Flags: uninsneveruninstall
 Name: "{userdocs}\Logtalk uninstaller"
 
 [Files]
-Source: "{#MyBaseDir}\*"; Excludes: ".*,CVS"; DestDir: "{app}"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#MyBaseDir}\*"; Excludes: ".*"; DestDir: "{app}"; Components: base; Flags: ignoreversion recursesubdirs createallsubdirs
 
-Source: "{#MyBaseDir}\contributions\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\contributions"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
-Source: "{#MyBaseDir}\examples\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\examples"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
-Source: "{#MyBaseDir}\libpaths\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\libpaths"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
-Source: "{#MyBaseDir}\library\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\library"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
-Source: "{#MyBaseDir}\xml\*"; Excludes: ".*,CVS"; DestDir: "{code:GetLgtUserDir}\xml"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "{#MyBaseDir}\contributions\*"; Excludes: ".*"; DestDir: "{code:GetLgtUserDir}\contributions"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "{#MyBaseDir}\examples\*"; Excludes: ".*"; DestDir: "{code:GetLgtUserDir}\examples"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "{#MyBaseDir}\libpaths\*"; Excludes: ".*"; DestDir: "{code:GetLgtUserDir}\libpaths"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "{#MyBaseDir}\library\*"; Excludes: ".*"; DestDir: "{code:GetLgtUserDir}\library"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "{#MyBaseDir}\xml\*"; Excludes: ".*"; DestDir: "{code:GetLgtUserDir}\xml"; Components: user; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
 
 Source: "{#MyBaseDir}\settings.lgt"; DestDir: "{code:GetLgtUserDir}"; DestName: "settings.lgt"; Components: user; Flags: ignoreversion uninsneveruninstall
 Source: "{#MyBaseDir}\VERSION.txt"; DestDir: "{code:GetLgtUserDir}"; DestName: "VERSION.txt"; Components: user; Flags: ignoreversion uninsneveruninstall
