@@ -64,7 +64,7 @@
 		label([DX, DY]).
 
 	/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   	Display.
+   	Text display.
 	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 	:- public(tour_enumeration/2).
@@ -83,6 +83,44 @@
 		nth1(V0, Vs, V1),
 		E1 #= E0 + 1,
 		vs_enumeration(Rest, Vs, V1, E1, Ls).
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   PostScript display. Requires Ghostscript ("gs").
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+	antescript -->
+		"/init {  5 5 translate  \
+		   /N exch def 500 N div dup /scalefactor exch def dup scale \
+		   2 scalefactor div setlinewidth 0 0 N N rectstroke  \
+		   1 1 N { dup 0 moveto N lineto stroke } for  \
+		   1 1 N { dup 0 exch moveto N exch lineto stroke } for \
+		   0 0 1 setrgbcolor -.5 dup translate 1 N moveto } bind def \
+		 /jump { N exch sub 1 add lineto gsave currentpoint newpath \
+		         4 scalefactor div 0 360 arc fill grestore } bind def".
+
+	tour_postscript(Ts) :-
+		phrase(antescript, As),
+		length(Ts, N),
+		format("~s ~w init\n", [As, N]),
+		append(Ts, Vs),
+		vs_postscript(Vs, Vs, N, 1),
+		format("stroke\n").
+
+	vs_postscript([], _, _, _).
+	vs_postscript([_| Rest], Vs, N, V0) :-
+		nth1(V0, Vs, V1),
+		n_x_y_k(N, X, Y, V1),
+		format("~w ~w jump\n", [X, Y]),
+		vs_postscript(Rest, Vs, N, V1).
+
+	:- public(show/1).
+
+	show(Ts) :-
+		setup_call_cleanup(
+			open(pipe('gs -dNOPROMPT -g510x510 -dGraphicsAlphaBits=2 -r72 -q'), write, Out, [buffer(false)]),
+			(tell(Out), tour_postscript(Ts), (Sol = yes; Sol = no), Sol == yes),
+			close(Out)
+		).
 
 	/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	Examples:
