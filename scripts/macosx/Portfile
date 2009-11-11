@@ -25,6 +25,8 @@ distname		lgt[strsed ${version} {g/\.//}]
 
 use_bzip2		yes
 
+depends_lib		port:shared-mime-info
+
 use_configure	no
 
 build			{}
