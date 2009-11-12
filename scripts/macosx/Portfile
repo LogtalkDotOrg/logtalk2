@@ -82,8 +82,9 @@ post-activate {
 	ui_msg "* on how to customize your working environment."
 	ui_msg "*"
 	system "rm -f ${prefix}/share/mime/packages/logtalk.xml"
+	system "mkdir -p ${prefix}/share/mime/packages"
 	system "cp ${prefix}/share/${distname}/scripts/freedesktop/logtalk.xml ${prefix}/share/mime/packages/logtalk.xml"
-	system "${prefix}/bin/update-mime-database ${prefix}/share/mime"
+	system "${prefix}/bin/update-mime-database ${prefix}/share/mime; true"
 	ui_msg "* Added the Logtalk mime-type to the Shared MIME-info Database."
 	ui_msg "****************************************************************************"
 }

@@ -38,8 +38,9 @@ RELEASE NOTES
     threaded and multi-threaded versions and to no longer create integration
     shortcuts for XSB versions older than 3.2.
 
-    Corrected a possible data loss bug with adding the Logtalk mime-type to
-    the Shared MIME-info Database when using Debian and MacOS X installers.
+    Corrected a possible data loss bug when using the Debian and MacOS X
+    installers where third-party mime-type associations might be lost when
+    adding the Logtalk mime-type to the Shared MIME-info Database.
 
     Added a Logtalk version of the "Closed Knight's Tour" SWI-Prolog CLP(FD)
     example written by Markus Triska.
