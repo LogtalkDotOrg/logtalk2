@@ -30,6 +30,7 @@ mkdir -p debian/usr/share/menu
 mkdir -p debian/DEBIAN
 cd lgt2376/scripts
 ./install.sh $dir/debian/usr
+rm -rf $dir/debian/usr/share/mime
 cp debian/logtalk.doc-base $dir/debian/usr/share/doc-base/logtalk-docs
 cp debian/menu $dir/debian/usr/share/menu/logtalk
 cp ../*.bib $dir/debian/usr/share/doc/logtalk
@@ -66,9 +67,9 @@ cd $dir
 mkdir manpdf2376
 cd man2376/userman
 ./userman.sh
-mv userman.pdf ../../manpdf2376
+mv userman.pdf ../../manpdf2376/lgtuserman2376.pdf
 cd ../refman
 ./refman.sh
-mv refman.pdf ../../manpdf2376
+mv refman.pdf ../../manpdf2376/lgtrefman2376.pdf
 cd ../..
 tar -czf manpdf2376.tgz manpdf2376

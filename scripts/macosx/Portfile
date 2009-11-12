@@ -37,6 +37,10 @@ destroot {
 	system "cd ${worksrcpath}/scripts && ./install.sh ${destroot}${prefix}"
 }
 
+post-destroot {
+	system "rm -rf ${destroot}${prefix}/share/mime"
+}
+
 post-pkg {
 	set resources ${workpath}/${name}-${version}.pkg/Contents/Resources/
 	file copy -force -- ${workpath}/${worksrcdir}/scripts/macosx/License.html ${resources}
@@ -76,5 +80,10 @@ post-activate {
 	ui_msg "* directory (usually ~/logtalk), which you must create by running the"
 	ui_msg "* command cplgtdirs. See the file \$LOGTALKHOME/CUSTOMIZE.txt for details"
 	ui_msg "* on how to customize your working environment."
+	ui_msg "****************************************************************************"
+	system "rm -f ${prefix}/share/mime/packages/logtalk.xml"
+	system "cp ${prefix}/share/${distname}/scripts/freedesktop/logtalk.xml ${prefix}/share/mime/packages/logtalk.xml"
+	system "${prefix}/bin/update-mime-database ${prefix}/share/mime"
+	ui_msg "* Added the Logtalk mime-type to the Shared MIME-info Database."
 	ui_msg "****************************************************************************"
 }
