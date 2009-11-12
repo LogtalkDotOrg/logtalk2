@@ -62,6 +62,7 @@ Name: "prolog\quintus"; Description: "Quintus Prolog integration (version 3.5; r
 Name: "prolog\sicstus"; Description: "SICStus Prolog integration (versions 3.12.x, 4.x)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\swi"; Description: "SWI-Prolog integration (version 5.6.44 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\xsb"; Description: "XSB integration (version 3.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\xsbmt"; Description: "XSB-MT integration (version 3.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\yap"; Description: "YAP integration (version 5.1.3 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 
 [Tasks]
@@ -126,13 +127,13 @@ Name: "{group}\Logtalk - Quintus Prolog"; Filename: "{code:GetQuintusExePath}"; 
 
 Name: "{group}\Logtalk - SICStus Prolog 3.12"; Filename: "{code:GetSP3ExePath}"; Parameters: "-l ""%LOGTALKHOME%\integration\logtalk_sicstus3.pl"""; Comment: "Runs Logtalk with SICStus Prolog 3.12"; WorkingDir: "%CD%"; Components: prolog\sicstus; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - SICStus Prolog 4.0"; Filename: "{code:GetSP4ExePath}"; Parameters: "-l ""%LOGTALKHOME%\integration\logtalk_sicstus4.pl"""; Comment: "Runs Logtalk with SICStus Prolog 4.0"; WorkingDir: "%CD%"; Components: prolog\sicstus; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - SICStus Prolog 4"; Filename: "{code:GetSP4ExePath}"; Parameters: "-l ""%LOGTALKHOME%\integration\logtalk_sicstus4.pl"""; Comment: "Runs Logtalk with SICStus Prolog 4"; WorkingDir: "%CD%"; Components: prolog\sicstus; Flags: createonlyiffileexists
 
 Name: "{group}\Logtalk - SWI-Prolog"; Filename: "{code:GetSWIExePath}"; Parameters: "-f ""%LOGTALKHOME%\integration\logtalk_swi.pl"""; Comment: "Runs Logtalk with SWI-Prolog"; WorkingDir: "%CD%"; Components: prolog\swi; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - XSB"; Filename: "C:\XSB\config\x86-pc-windows\bin\xsb.exe"; Parameters: "-l -e ""['%LOGTALKHOME%\\integration\\logtalk_xsb.pl']."""; Comment: "Runs Logtalk with XSB"; WorkingDir: "%CD%"; Components: prolog\xsb; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - XSB"; Filename: "{code:GetXSBExePath}"; Parameters: "-l -e ""['%LOGTALKHOME%\\integration\\logtalk_xsb.pl']."""; Comment: "Runs Logtalk with XSB"; WorkingDir: "%CD%"; Components: prolog\xsb; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - XSB-MT"; Filename: "C:\XSB\config\i686-pc-cygwin-mt\bin\xsb.exe"; Parameters: "--shared_predicates -l -e ""['%LOGTALKUSER%\\configs\\xsb.pl', '%LOGTALKHOME%\\compiler\\logtalk.pl', '%LOGTALKUSER%\\libpaths\\libpaths.pl']."""; Comment: "Runs Logtalk with XSB-MT"; WorkingDir: "%CD%"; Components: prolog\xsb; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - XSB-MT"; Filename: "{code:GetXSBMTExePath}"; Parameters: "-l -e ""['%LOGTALKHOME%\\integration\\logtalk_xsbmt.pl']."""; Comment: "Runs Logtalk with XSB-MT"; WorkingDir: "%CD%"; Components: prolog\xsbmt; Flags: createonlyiffileexists
 
 Name: "{group}\Logtalk - YAP"; Filename: "{code:GetYAPExePath}"; Parameters: "-l ""$LOGTALKHOME/integration/logtalk_yap.pl"""; Comment: "Runs Logtalk with YAP"; WorkingDir: "%CD%"; Components: prolog\yap; Flags: createonlyiffileexists
 
@@ -409,6 +410,34 @@ begin
     Result := Home + '\bin\plwin.exe'
   else begin
     Warning := 'Failed to detect SWI-Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+	MsgBox(Warning, mbError, MB_OK);
+    Result := 'lgt_exe_does_not_exist'
+  end
+end;
+
+function GetXSBExePath(Param: String): String;
+var
+  XSB_DIR: String;
+  Warning: String;
+begin
+  if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'XSB_DIR', XSB_DIR) then
+    Result := XSB_DIR + '\i686-pc-cygwin\bin\xsb.exe'
+  else begin
+    Warning := 'Failed to detect XSB installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+	MsgBox(Warning, mbError, MB_OK);
+    Result := 'lgt_exe_does_not_exist'
+  end
+end;
+
+function GetXSBMTExePath(Param: String): String;
+var
+  XSB_DIR: String;
+  Warning: String;
+begin
+  if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'XSB_DIR', XSB_DIR) then
+    Result := XSB_DIR + '\i686-pc-cygwin-mt\bin\xsb.exe'
+  else begin
+    Warning := 'Failed to detect XSB-MT installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
 	MsgBox(Warning, mbError, MB_OK);
     Result := 'lgt_exe_does_not_exist'
   end

@@ -34,6 +34,9 @@ RELEASE NOTES
     installer creates a shortcut for using version 4.1.x as the back-end
     Prolog compiler.
 
+    Updated the Logtalk Windows installer in order to detect both XSB single-
+    threaded and multi-threaded versions (version 3.2 or later).
+
     Added a Logtalk version of the "Closed Knight's Tour" SWI-Prolog CLP(FD)
     example written by Markus Triska.
 
