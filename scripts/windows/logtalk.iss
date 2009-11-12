@@ -421,7 +421,7 @@ var
   Warning: String;
 begin
   if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'XSB_DIR', XSB_DIR) then
-    Result := XSB_DIR + '\i686-pc-cygwin\bin\xsb.exe'
+    Result := XSB_DIR + '\config\i686-pc-cygwin\bin\xsb.exe'
   else begin
     Warning := 'Failed to detect XSB installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
 	MsgBox(Warning, mbError, MB_OK);
@@ -435,7 +435,7 @@ var
   Warning: String;
 begin
   if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'XSB_DIR', XSB_DIR) then
-    Result := XSB_DIR + '\i686-pc-cygwin-mt\bin\xsb.exe'
+    Result := XSB_DIR + '\config\i686-pc-cygwin-mt\bin\xsb.exe'
   else begin
     Warning := 'Failed to detect XSB-MT installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
 	MsgBox(Warning, mbError, MB_OK);
