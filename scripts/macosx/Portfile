@@ -81,9 +81,11 @@ post-activate {
 	ui_msg "* command cplgtdirs. See the file \$LOGTALKHOME/CUSTOMIZE.txt for details"
 	ui_msg "* on how to customize your working environment."
 	ui_msg "*"
-	system "rm -f ${prefix}/share/mime/packages/logtalk.xml"
-	system "mkdir -p ${prefix}/share/mime/packages"
-	system "cp ${prefix}/share/${distname}/scripts/freedesktop/logtalk.xml ${prefix}/share/mime/packages/logtalk.xml"
+	if {[file exists ${prefix}/share/mime/packages/logtalk.xml]} {
+	    delete ${prefix}/share/mime/packages/logtalk.xml
+	}
+	xinstall -d ${prefix}/share/mime/packages
+	xinstall -m 644 ${prefix}/share/${distname}/scripts/freedesktop/logtalk.xml ${prefix}/share/mime/packages
 	system "${prefix}/bin/update-mime-database ${prefix}/share/mime; true"
 	ui_msg "* Added the Logtalk mime-type to the Shared MIME-info Database."
 	ui_msg "****************************************************************************"
