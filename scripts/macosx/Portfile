@@ -80,7 +80,7 @@ post-activate {
 	ui_msg "* directory (usually ~/logtalk), which you must create by running the"
 	ui_msg "* command cplgtdirs. See the file \$LOGTALKHOME/CUSTOMIZE.txt for details"
 	ui_msg "* on how to customize your working environment."
-	ui_msg "****************************************************************************"
+	ui_msg "*"
 	system "rm -f ${prefix}/share/mime/packages/logtalk.xml"
 	system "cp ${prefix}/share/${distname}/scripts/freedesktop/logtalk.xml ${prefix}/share/mime/packages/logtalk.xml"
 	system "${prefix}/bin/update-mime-database ${prefix}/share/mime"
