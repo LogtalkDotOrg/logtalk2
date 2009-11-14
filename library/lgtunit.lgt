@@ -42,17 +42,24 @@
 	:- protected(setup/0).
 	:- mode(setup, zero_or_one).
 	:- info(setup/0, [
-		comment is 'Setup environment before running the test. Defaults to the goal true.']).
-
-	:- protected(test/0).
-	:- mode(test, zero_or_one).
-	:- info(test/0, [
-		comment is 'Executes the tests. By default, starts with the "succeeds" tests, followed by the "fails" tests, and than the "throws" tests.']).
+		comment is 'Setup environment before running the test set. Defaults to the goal true.']).
 
 	:- protected(cleanup/0).
 	:- mode(cleanup, zero_or_one).
 	:- info(cleanup/0, [
-		comment is 'Cleanup environment after running the test. Defaults to the goal true.']).
+		comment is 'Cleanup environment after running the test set. Defaults to the goal true.']).
+
+	:- private(passed_tests_/1).
+	:- dynamic(passed_tests_/1).
+	:- mode(passed_tests_(?integer), zero_or_one).
+	:- info(passed_tests_/1, [
+		comment is 'Counter for passed tests.']).
+
+	:- private(failed_tests_/1).
+	:- dynamic(failed_tests_/1).
+	:- mode(failed_tests_(?integer), zero_or_one).
+	:- info(failed_tests_/1, [
+		comment is 'Counter for failed tests.']).
 
 	% by default, no test setup is needed:
 	setup.
@@ -74,48 +81,55 @@
 		).
 
 	test_succeeds :-
+		self(Self),
 		forall(
 			(::succeeds(Test, Context, Goal), context_setup_cleanup(Context, Setup, Cleanup)),
-			setup_call_cleanup(::Setup, test_succeeds(Test, Goal), ::Cleanup)).
+			setup_call_cleanup(Self<<Setup, test_succeeds(Test, Goal), Self<<Cleanup)).
 
 	test_succeeds(Test, Goal) :-
 		(	catch({Goal}, _, fail) ->
-			passed_test(Test, Goal)
-		;	failed_test(Test, Goal)
+			passed_test(Test)
+		;	failed_test(Test)
 		).
 
 	test_fails :-
+		self(Self),
 		forall(
 			(::fails(Test, Context, Goal), context_setup_cleanup(Context, Setup, Cleanup)),
-			setup_call_cleanup(::Setup, test_fail(Test, Goal), ::Cleanup)).
+			setup_call_cleanup(Self<<Setup, test_fail(Test, Goal), Self<<Cleanup)).
 
 	test_fail(Test, Goal) :-
 		(	catch(\+ {Goal}, _, fail) ->
-			passed_test(Test, Goal)
-		;	failed_test(Test, Goal)
+			passed_test(Test)
+		;	failed_test(Test)
 		).
 
 	test_throws :-
+		self(Self),
 		forall(
 			(::throws(Test, Context, Goal, Error), context_setup_cleanup(Context, Setup, Cleanup)),
-			setup_call_cleanup(::Setup, test_throws(Test, Goal, Error), ::Cleanup)).
+			setup_call_cleanup(Self<<Setup, test_throws(Test, Goal, Error), Self<<Cleanup)).
 
 	test_throws(Test, Goal, Error) :-
-		(	catch({Goal}, Ball, ((subsumes(Error, Ball) -> passed_test(Test, Goal); failed_test(Test, Goal)), Flag = error)) ->
+		(	catch({Goal}, Ball, ((subsumes(Error, Ball) -> passed_test(Test); failed_test(Test)), Flag = error)) ->
 			(	var(Flag) ->
-				failed_test(Test, Goal)
+				failed_test(Test)
 			;	true
 			)
-		;	failed_test(Test, Goal)
+		;	failed_test(Test)
 		).
 
-	passed_test(Test, _Goal) :-
-		self(Self),
-		write('= passed test '), writeq(Test), write(' in object '), writeq(Self), nl.
+	passed_test(Test) :-
+		retract(passed_tests_(Old)) ->
+		New is Old + 1,
+		asserta(passed_tests_(New)),
+		writeq(Test), write(': passed'), nl.
 
-	failed_test(Test, _Goal) :-
-		self(Self),
-		write('= failed test '), writeq(Test), write(' in object '), writeq(Self), nl.
+	failed_test(Test) :-
+		retract(failed_tests_(Old)) ->
+		New is Old + 1,
+		asserta(failed_tests_(New)),
+		writeq(Test), write(': failed'), nl.
 
 	% by default, no test cleanup is needed:
 	cleanup.
@@ -129,13 +143,21 @@
 		close(Stream).
 
 	run :-
+		retractall(passed_tests_(_)),
+		asserta(passed_tests_(0)),
+		retractall(failed_tests_(_)),
+		asserta(failed_tests_(0)),
 		self(Self),
-		write('% running tests from object '), writeq(Self), nl, 
+		write('% running tests from object '), writeq(Self), nl,
 		(	catch(::setup, Error, (broken(setup, Error), fail)) ->
-			(	catch(::test, Error, (broken(test, Error), Flag = error)) ->
+			(	catch(test, Error, (broken(test, Error), Flag = error)) ->
 				do_cleanup,
 				(	var(Flag) ->
-					write('% completed tests from object '), writeq(Self), nl
+					passed_tests_(Passed),
+					failed_tests_(Failed),
+					Total is Passed + Failed,
+					write('% '), write(Total), write(' tests: '), write(Passed), write(' passed, '), write(Failed), write(' failed'), nl,
+					write('% completed tests from object '), writeq(Self), nl, nl
 				;	write('% test run failed'), nl
 				)
 			;	do_cleanup,

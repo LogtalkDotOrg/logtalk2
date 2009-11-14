@@ -36,8 +36,9 @@ RELEASE NOTES
     in version 4.1.
 
     Updated the library support for unit testing in order to allow per-test
-    setup and cleanup goals. Updated the "testing" example for the changes
-    to the unit test support.
+    setup and cleanup goals and to provide statistics on passed and failed
+    tests. Updated the "testing" example for the changes to the unit test
+    support.
 
     Updated the Logtalk Windows installer in order to detect the new SICStus
     Prolog 4.1 version. If both 4.0.x and 4.1.x versions are installed, the

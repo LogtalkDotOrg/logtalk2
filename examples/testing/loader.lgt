@@ -1,4 +1,4 @@
 
 :- initialization((
-	logtalk_load(library(lgtunit_loader), [reload(skip)]),		% allow for static binding
+	logtalk_load(library(lgtunit_loader)),
 	logtalk_load(testing))).

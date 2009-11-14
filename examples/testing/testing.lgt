@@ -54,6 +54,15 @@
 	succeeds(logtalk1, [], object_property(logtalk, built_in)).
 	succeeds(logtalk2, [], object_property(logtalk, static)).
 
+	succeeds(dynamic0, [setup(create_object(Obj, [], [], [])), cleanup(abolish_object(Obj))], current_object(Obj)).
+	succeeds(dynamic1, [setup(create(Obj)), cleanup(destroy(Obj))], object_property(Obj, (dynamic))).
+
+	create(Obj) :-
+		create_object(Obj, [], [], []).
+
+	destroy(Obj) :-
+		abolish_object(Obj).
+
 	throws(co0, [], current_object(1), error(type_error(object_identifier, 1), _)).
 
 :- end_object.
