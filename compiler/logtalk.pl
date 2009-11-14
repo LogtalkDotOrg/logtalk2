@@ -3684,12 +3684,31 @@ current_logtalk_flag(version, version(2, 37, 6)).
 
 
 
-% '$lgt_call_within_context'(+object_identifier, +callable, +object_identifier)
+% '$lgt_call_within_context'(?term, ?term, +object_identifier)
 %
 % calls a goal within the context of the specified object; used mostly for
 % debugging and for writing unit tests
 
 '$lgt_call_within_context'(Obj, Goal, This) :-
+	(	var(Obj) ->
+		throw(error(instantiation_error, Obj<<Goal, This))
+	;	var(Goal) ->
+		throw(error(instantiation_error, Obj<<Goal, This))
+	;	\+ callable(Obj) ->
+		throw(error(type_error(object_identifier, Obj), Obj<<Goal, This))
+	;	\+ callable(Goal) ->
+		throw(error(type_error(callable, Goal), Obj<<Goal, This))
+	;	'$lgt_call_within_context_nv'(Obj, Goal, This)
+	).
+
+
+
+% '$lgt_call_within_context_nv'(+object_identifier, +callable, +object_identifier)
+%
+% calls a goal within the context of the specified object; used mostly for
+% debugging and for writing unit tests
+
+'$lgt_call_within_context_nv'(Obj, Goal, This) :-
 	(	'$lgt_current_object_'(Obj, Prefix, _, Def, _, _, _, _, DDef, _, _) ->
 		(	'$lgt_entity_property_'(Obj, flags(csc, _, _, _, _, _)) ->			
 			'$lgt_exec_ctx'(ExCtx, Obj, Obj, Obj, []),
@@ -10117,22 +10136,22 @@ current_logtalk_flag(version, version(2, 37, 6)).
 % translates context switching calls
 
 '$lgt_tr_ctx_call'(Obj, _, _, _) :-
-	var(Obj),
-	throw(instantiation_error).
-
-'$lgt_tr_ctx_call'(_, Goal, _, _) :-
-	var(Goal),
-	throw(instantiation_error).
-
-'$lgt_tr_ctx_call'(Obj, _, _, _) :-
+	nonvar(Obj),
 	\+ callable(Obj),
 	throw(type_error(object_identifier, Obj)).
 
 '$lgt_tr_ctx_call'(_, Goal, _, _) :-
+	nonvar(Goal),
 	\+ callable(Goal),
 	throw(type_error(callable, Goal)).
 
-'$lgt_tr_ctx_call'(Obj, Goal, '$lgt_call_within_context'(Obj, Goal, This), This).
+'$lgt_tr_ctx_call'(Obj, Goal, '$lgt_call_within_context'(Obj, Goal, This), This) :-
+	(	var(Obj)
+	;	var(Goal)
+	),
+	!.
+
+'$lgt_tr_ctx_call'(Obj, Goal, '$lgt_call_within_context_nv'(Obj, Goal, This), This).
 
 
 

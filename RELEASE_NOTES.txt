@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.37.6 - December ??, 2009
 
+    Added support for runtime instantiation of the <</2 control construct
+    arguments.
+
     Corrected a bug (introduced in version 2.37.4) when simplifying calls
     to the {}/1 external call control construct with a variable argument.
 
