@@ -3,25 +3,25 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2007/04/17,
+		date is 2009/11/14,
 		comment is 'Tests <</2 built-in control construct.']).
 
 %	:- initialization(::run).
 %	:- initialization(::run('bios_tests.txt', write)).
 	:- initialization(::run('results.txt', write)).
 
-	throws(ctx1, _ << goal, error(instantiation_error, _, _)).
-	throws(ctx2, object << _, error(instantiation_error, _, _)).
-	throws(ctx3, 3 << goal, error(type_error(object_identifier, 3), _, _)).
-	throws(ctx4, object << 3, error(type_error(callable, 3), _, _)).
-	throws(ctx5, ctx_call_tests << goal, error(existence_error(procedure, goal/0), _)).
-	throws(ctx6, xpto << goal, error(existence_error(object, xpto), _, _)).
+	throws(ctx1, [], _ << goal, error(instantiation_error, _, _)).
+	throws(ctx2, [], object << _, error(instantiation_error, _, _)).
+	throws(ctx3, [], 3 << goal, error(type_error(object_identifier, 3), _, _)).
+	throws(ctx4, [], object << 3, error(type_error(callable, 3), _, _)).
+	throws(ctx5, [], ctx_call_tests << goal, error(existence_error(procedure, goal/0), _)).
+	throws(ctx6, [], xpto << goal, error(existence_error(object, xpto), _, _)).
 
-	succeeds(ctx7, user << true).
+	succeeds(ctx7, [], user << true).
 
-	fails(ctx8, user << fail).
+	fails(ctx8, [], user << fail).
 
 :- end_object.
 
@@ -31,30 +31,30 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2007/04/17,
+		date is 2009/11/14,
 		comment is 'Tests built-in objects.']).
 
 %	:- initialization(::run).
 %	:- initialization(::run('bios_tests.txt', write)).
 	:- initialization(::run('results.txt', append)).
 
-	succeeds(all, (setof(Obj, (current_object(Obj), object_property(Obj, built_in)), Objs), Objs == [debugger,logtalk,user])).
+	succeeds(all, [], (setof(Obj, (current_object(Obj), object_property(Obj, built_in)), Objs), Objs == [debugger,logtalk,user])).
 
-	succeeds(user0, current_object(user)).
-	succeeds(user1, object_property(user, built_in)).
-	succeeds(user2, object_property(user, static)).
+	succeeds(user0, [], current_object(user)).
+	succeeds(user1, [], object_property(user, built_in)).
+	succeeds(user2, [], object_property(user, static)).
 
-	succeeds(debugger0, current_object(debugger)).
-	succeeds(debugger1, object_property(debugger, built_in)).
-	succeeds(debugger2, object_property(debugger, static)).
+	succeeds(debugger0, [], current_object(debugger)).
+	succeeds(debugger1, [], object_property(debugger, built_in)).
+	succeeds(debugger2, [], object_property(debugger, static)).
 
-	succeeds(logtalk0, current_object(logtalk)).
-	succeeds(logtalk1, object_property(logtalk, built_in)).
-	succeeds(logtalk2, object_property(logtalk, static)).
+	succeeds(logtalk0, [], current_object(logtalk)).
+	succeeds(logtalk1, [], object_property(logtalk, built_in)).
+	succeeds(logtalk2, [], object_property(logtalk, static)).
 
-	throws(co0, current_object(1), error(type_error(object_identifier, 1), _)).
+	throws(co0, [], current_object(1), error(type_error(object_identifier, 1), _)).
 
 :- end_object.
 
@@ -64,9 +64,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2007/04/17,
+		date is 2009/11/14,
 		comment is 'Tests for the library object "list".']).
 
 %	:- initialization(::run).
@@ -80,12 +80,12 @@
 		set_logtalk_flag(report, Value),
 		^^setup.
 
-	fails(member0, list << member(_, [])).
+	fails(member0, [], list << member(_, [])).
 
-	succeeds(member1, list << member(1, [1,2,3])).
-	succeeds(member2, (findall(X, list << member(X, [1,2,3]), L), L == [1,2,3])).
+	succeeds(member1, [], list << member(1, [1,2,3])).
+	succeeds(member2, [], (findall(X, list << member(X, [1,2,3]), L), L == [1,2,3])).
 
-	succeeds(length, (list << length([1,2,3], Length), Length =:= 3)).
+	succeeds(length, [], (list << length([1,2,3], Length), Length =:= 3)).
 
 :- end_object.
 
@@ -95,9 +95,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2008/12/07,
+		date is 2009/11/14,
 		comment is 'Tests dynamic objects and dynamic predicates.']).
 
 %	:- initialization(::run).
@@ -110,7 +110,7 @@
 		create_object(dyn_test, [], [], []),
 		set_logtalk_flag(dynamic_declarations, Current).
 
-	succeeds(dyn, This << goal) :-
+	succeeds(dyn, [], This << goal) :-
 		this(This).
 
 	goal :-

@@ -2,30 +2,31 @@
 :- object(lgtunit).
 
 	:- info([
-		version is 0.3,
+		version is 0.4,
 		author is 'Paulo Moura',
-		date is 2008/04/25,
+		date is 2009/11/14,
 		comment is 'Logtalk unit test framework.']).
 
+	:- uses(list, [member/2]).
 	:- uses(term, [subsumes/2]).
 
-	:- public(succeeds/2).
-	:- mode(succeeds(+atom, @callable), zero_or_more).
-	:- info(succeeds/2, [
-		comment is 'Defines a test goal which is expected to succeed.',
-		argnames is ['Identifier', 'Goal']]).
+	:- public(succeeds/3).
+	:- mode(succeeds(+atom, +list(callable), @callable), zero_or_more).
+	:- info(succeeds/3, [
+		comment is 'Defines a test goal which is expected to succeed. The Context argument specifies optional setup and cleanup goals.',
+		argnames is ['Identifier', 'Context', 'Goal']]).
 
-	:- public(fails/2).
-	:- mode(fails(+atom, @callable), zero_or_more).
-	:- info(fails/2, [
-		comment is 'Defines a test goal which is expected to fail.',
-		argnames is ['Identifier', 'Goal']]).
+	:- public(fails/3).
+	:- mode(fails(+atom, +list(callable), @callable), zero_or_more).
+	:- info(fails/3, [
+		comment is 'Defines a test goal which is expected to fail. The Context argument specifies optional setup and cleanup goals.',
+		argnames is ['Identifier', 'Context', 'Goal']]).
 
-	:- public(throws/3).
-	:- mode(throws(+atom, @callable, @nonvar), zero_or_more).
-	:- info(throws/3, [
-		comment is 'Defines a test goal which is expected to throw an error.',
-		argnames is ['Identifier', 'Goal', 'Error']]).
+	:- public(throws/4).
+	:- mode(throws(+atom, +list(callable), @callable, @nonvar), zero_or_more).
+	:- info(throws/4, [
+		comment is 'Defines a test goal which is expected to throw an error. The Context argument specifies optional setup and cleanup goals.',
+		argnames is ['Identifier', 'Context', 'Goal', 'Error']]).
 
 	:- public(run/2).
 	:- mode(run(+atom, +atom), zero_or_one).
@@ -62,8 +63,20 @@
 		test_fails,
 		test_throws.
 
+	context_setup_cleanup(Context, Setup, Cleanup) :-
+		(	member(setup(Setup), Context) ->
+			true
+		;	Setup = true
+		),
+		(	member(cleanup(Cleanup), Context) ->
+			true
+		;	Cleanup = true
+		).
+
 	test_succeeds :-
-		forall(::succeeds(Test, Goal), test_succeeds(Test, Goal)).
+		forall(
+			(::succeeds(Test, Context, Goal), context_setup_cleanup(Context, Setup, Cleanup)),
+			setup_call_cleanup(::Setup, test_succeeds(Test, Goal), ::Cleanup)).
 
 	test_succeeds(Test, Goal) :-
 		(	catch({Goal}, _, fail) ->
@@ -72,7 +85,9 @@
 		).
 
 	test_fails :-
-		forall(::fails(Test, Goal), test_fail(Test, Goal)).
+		forall(
+			(::fails(Test, Context, Goal), context_setup_cleanup(Context, Setup, Cleanup)),
+			setup_call_cleanup(::Setup, test_fail(Test, Goal), ::Cleanup)).
 
 	test_fail(Test, Goal) :-
 		(	catch(\+ {Goal}, _, fail) ->
@@ -81,7 +96,9 @@
 		).
 
 	test_throws :-
-		forall(::throws(Test, Goal, Error), test_throws(Test, Goal, Error)).
+		forall(
+			(::throws(Test, Context, Goal, Error), context_setup_cleanup(Context, Setup, Cleanup)),
+			setup_call_cleanup(::Setup, test_throws(Test, Goal, Error), ::Cleanup)).
 
 	test_throws(Test, Goal, Error) :-
 		(	catch({Goal}, Ball, ((subsumes(Error, Ball) -> passed_test(Test, Goal); failed_test(Test, Goal)), Flag = error)) ->
