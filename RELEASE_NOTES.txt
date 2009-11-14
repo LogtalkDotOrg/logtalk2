@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.37.6 - December ??, 2009
 
+    Corrected a bug (introduced in version 2.37.4) when simplifying calls
+    to the {}/1 external call control construct with a variable argument.
+
     Updated the Logtalk compiler to workaround file path problems with
     back-end Prolog compilers (e.g. SICStus Prolog) where calls to the
     open/3-4 built-in predicate are not always relative to the current
@@ -39,8 +42,8 @@ RELEASE NOTES
     shortcuts for XSB versions older than 3.2.
 
     Corrected a possible data loss bug when using the Debian and MacOS X
-    installers where third-party mime-type associations might be lost when
-    adding the Logtalk mime-type to the Shared MIME-info Database.
+    installers where some third-party mime-type associations might be lost
+    when adding the Logtalk mime-type to the Shared MIME-info Database.
 
     Added a Logtalk version of the "Closed Knight's Tour" SWI-Prolog CLP(FD)
     example written by Markus Triska.

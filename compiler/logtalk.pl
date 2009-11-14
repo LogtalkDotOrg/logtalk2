@@ -10409,10 +10409,12 @@ current_logtalk_flag(version, version(2, 37, 6)).
 	'$lgt_simplify_body'(G, SG),
 	'$lgt_simplify_body'(R, SR).
 
-'$lgt_simplify_body'(call(!), true) :-
+'$lgt_simplify_body'(call(G), true) :-
+	G == !,
 	!.
-'$lgt_simplify_body'(call(MetaCall), MetaCall) :-
-	functor(MetaCall, '$lgt_metacall', _),
+'$lgt_simplify_body'(call(G), G) :-
+	nonvar(G),
+	functor(G, '$lgt_metacall', _),
 	!.
 '$lgt_simplify_body'(call(G), call(SG)) :-
 	!,
