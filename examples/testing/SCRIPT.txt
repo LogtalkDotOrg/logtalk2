@@ -15,4 +15,6 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ...
 
 
-% take a look at the "results.txt" file in the example directory
+% you may also edit the initialization directives in the objects
+% defined in the "testing.lgt" file in order to divert the test
+% results to a "results.txt" file in the example directory

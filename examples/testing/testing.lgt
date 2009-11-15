@@ -8,9 +8,9 @@
 		date is 2009/11/14,
 		comment is 'Tests <</2 built-in control construct.']).
 
-%	:- initialization(::run).
+	:- initialization(::run).
 %	:- initialization(::run('bios_tests.txt', write)).
-	:- initialization(::run('results.txt', write)).
+%	:- initialization(::run('results.txt', write)).
 
 	throws(ctx1, [], _ << goal, error(instantiation_error, _, _)).
 	throws(ctx2, [], object << _, error(instantiation_error, _, _)).
@@ -36,9 +36,9 @@
 		date is 2009/11/14,
 		comment is 'Tests built-in objects.']).
 
-%	:- initialization(::run).
+	:- initialization(::run).
 %	:- initialization(::run('bios_tests.txt', write)).
-	:- initialization(::run('results.txt', append)).
+%	:- initialization(::run('results.txt', append)).
 
 	succeeds(all, [], (setof(Obj, (current_object(Obj), object_property(Obj, built_in)), Objs), Objs == [debugger,logtalk,user])).
 
@@ -78,9 +78,9 @@
 		date is 2009/11/14,
 		comment is 'Tests for the library object "list".']).
 
-%	:- initialization(::run).
+	:- initialization(::run).
 %	:- initialization(::run('list_tests.txt', write)).
-	:- initialization(::run('results.txt', append)).
+%	:- initialization(::run('results.txt', append)).
 
 	setup :-
 		current_logtalk_flag(report, Value),
@@ -109,9 +109,9 @@
 		date is 2009/11/14,
 		comment is 'Tests dynamic objects and dynamic predicates.']).
 
-%	:- initialization(::run).
+	:- initialization(::run).
 %	:- initialization(::run('dyn_tests.txt', write)).
-	:- initialization(::run('results.txt', append)).
+%	:- initialization(::run('results.txt', append)).
 
 	setup :-
 		current_logtalk_flag(dynamic_declarations, Current),

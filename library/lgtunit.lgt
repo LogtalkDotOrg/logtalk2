@@ -25,7 +25,7 @@
 	:- public(throws/4).
 	:- mode(throws(+atom, +list(callable), @callable, @nonvar), zero_or_more).
 	:- info(throws/4, [
-		comment is 'Defines a test goal which is expected to throw an error. The Context argument specifies optional setup and cleanup goals.',
+		comment is 'Defines a test goal which is expected to throw a specific error. The Context argument specifies optional setup and cleanup goals.',
 		argnames is ['Identifier', 'Context', 'Goal', 'Error']]).
 
 	:- public(run/2).
@@ -76,6 +76,10 @@
 		asserta(failed_tests_(0)),
 		self(Self),
 		write('% running tests from object '), writeq(Self), nl,
+		(	object_property(Self, file(File, Directory)) ->
+			write('% file: '), writeq(File), write(' ('), writeq(Directory), write(')'), nl
+		;	true
+		),
 		(	catch(::setup, Error, (broken(setup, Error), fail)) ->
 			(	catch(run_tests, Error, (broken(test, Error), Flag = error)) ->
 				do_cleanup,
