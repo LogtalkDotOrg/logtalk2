@@ -74,6 +74,9 @@
 		asserta(passed_tests_(0)),
 		retractall(failed_tests_(_)),
 		asserta(failed_tests_(0)),
+		date::today(Year1, Month1, Day1),
+		time::now(Hours1, Minutes1, Seconds1),
+		write('% tests started at '), write(Year1/Month1/Day1), write(', '), write(Hours1), write(':'), write(Minutes1), write(':'), write(Seconds1), nl,
 		self(Self),
 		write('% running tests from object '), writeq(Self), nl,
 		(	object_property(Self, file(File, Directory)) ->
@@ -88,7 +91,7 @@
 					failed_tests_(Failed),
 					Total is Passed + Failed,
 					write('% '), write(Total), write(' tests: '), write(Passed), write(' passed, '), write(Failed), write(' failed'), nl,
-					write('% completed tests from object '), writeq(Self), nl, nl
+					write('% completed tests from object '), writeq(Self), nl
 				;	write('% test run failed'), nl
 				)
 			;	do_cleanup,
@@ -96,7 +99,10 @@
 				write('% test run failed'), nl
 			)
 		;	write('! test setup failed for object '), writeq(Self), nl
-		).
+		),
+		date::today(Year2, Month2, Day2),
+		time::now(Hours2, Minutes2, Seconds2),
+		write('% tests ended at '), write(Year2/Month2/Day2), write(', '), write(Hours2), write(':'), write(Minutes2), write(':'), write(Seconds2), nl, nl.
 
 	% by default, no test setup is needed:
 	setup.
