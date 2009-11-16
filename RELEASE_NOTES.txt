@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.37.6 - December ??, 2009
+2.37.6 - November 30, 2009
 
     Added support for runtime instantiation of the <</2 control construct
     arguments.
@@ -29,6 +29,10 @@ RELEASE NOTES
     Updated the ECLiPSe, SICStus Prolog, SWI-Prolog, and YAP config files
     in order to detect discontiguous predicate clause warnings and update
     the Logtalk warnings counter accordingly.
+
+    Updated the ECLiPSe config files to correct a bug in the definition of
+    the predicate '$lgt_current_time'/3 where the number of seconds would
+    be returned as a float instead of as an integer.
 
     Updated the SICStus Prolog config files in order to support settings
     files. Updated the SICStus Prolog 4.x config file in order to use the

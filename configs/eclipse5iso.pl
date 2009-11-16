@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 5.10#26 or later 5.10 versions
 %
-%  last updated: November 2, 2009
+%  last updated: November 16, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -473,7 +473,8 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_current_time'(Hours, Mins, Secs) :-
 	mjd_now(MJD),
-	mjd_to_time(MJD, Hours:Mins:Secs).
+	mjd_to_time(MJD, Hours:Mins:FloatSecs),
+	Secs is integer(floor(FloatSecs)).
 
 
 
