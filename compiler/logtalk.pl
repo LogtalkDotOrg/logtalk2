@@ -185,7 +185,8 @@
 
 
 
-:- dynamic('$lgt_pp_compiler_flag_'/2).			% '$lgt_pp_compiler_flag_'(Option, Value)
+:- dynamic('$lgt_pp_file_compiler_flag_'/2).	% '$lgt_pp_file_compiler_flag_'(Option, Value)
+:- dynamic('$lgt_pp_entity_compiler_flag_'/2).	% '$lgt_pp_entity_compiler_flag_'(Option, Value)
 
 :- dynamic('$lgt_pp_dcl_'/1).					% '$lgt_pp_dcl_'(Clause)
 :- dynamic('$lgt_pp_ddcl_'/1).					% '$lgt_pp_ddcl_'(Clause)
@@ -1521,13 +1522,15 @@ threaded_notify(Message) :-
 % gets/checks the current value of a compiler flag
 
 '$lgt_compiler_flag'(Option, Value) :-
-	(	'$lgt_pp_compiler_flag_'(Option, Value2) ->	% flag value as defined in the options argument
-		Value = Value2								% of the compiling and loading predicates
-	;	'$lgt_current_flag_'(Option, Value2) ->		% default value for the current Logtalk session,
-		Value = Value2								% set by calls to the set_logtalk_flag/2 predicate
-	;	'$lgt_default_flag'(Option, Value) ->		% default value, defined on the Prolog config files
-		true
-	;	'$lgt_prolog_feature'(Option, Value) ->		% back-end Prolog compiler features
+	(	'$lgt_pp_entity_compiler_flag_'(Option, Value2) ->	% flag value as defined within the entity being compiled
+		Value = Value2
+	;	'$lgt_pp_file_compiler_flag_'(Option, Value2) ->	% flag value as defined in the options argument of the
+		Value = Value2										% compiling and loading predicates or in the source file
+	;	'$lgt_current_flag_'(Option, Value2) ->				% default value for the current Logtalk session,
+		Value = Value2										% set by calls to the set_logtalk_flag/2 predicate
+	;	'$lgt_default_flag'(Option, Value2) ->				% default value, defined on the Prolog config files
+		Value = Value2
+	;	'$lgt_prolog_feature'(Option, Value) ->				% back-end Prolog compiler features
 		true
 	).
 
@@ -1748,58 +1751,71 @@ logtalk_compile(Files, Flags) :-
 %
 % check if the compiler flags are valid
 
-'$lgt_check_compiler_flags'(Flags) :-
-	var(Flags),
+'$lgt_check_compiler_flags'(Options) :-
+	var(Options),
 	throw(instantiation_error).
 
-'$lgt_check_compiler_flags'(Flags) :-
-	\+ '$lgt_is_proper_list'(Flags),
-	throw(type_error(list, Flags)).
+'$lgt_check_compiler_flags'(Options) :-
+	\+ '$lgt_is_proper_list'(Options),
+	throw(type_error(list, Options)).
 
-'$lgt_check_compiler_flags'(Flags) :-
-	'$lgt_check_compiler_flag_list'(Flags).
+'$lgt_check_compiler_flags'(Options) :-
+	'$lgt_check_compiler_flag_list'(Options).
 
 
 '$lgt_check_compiler_flag_list'([]).
 
-'$lgt_check_compiler_flag_list'([Flag| Flags]) :-	
-	'$lgt_check_compiler_flag'(Flag),
-	'$lgt_check_compiler_flag_list'(Flags).
+'$lgt_check_compiler_flag_list'([Option| Options]) :-	
+	'$lgt_check_compiler_flag'(Option),
+	'$lgt_check_compiler_flag_list'(Options).
 
 
-'$lgt_check_compiler_flag'(Flag) :-
+'$lgt_check_compiler_flag'(Option) :-
+	var(Option),
+	throw(instantiation_error).
+
+'$lgt_check_compiler_flag'(Option) :-
+	\+ compound(Option),
+	throw(type_error(flag, Option)).
+
+'$lgt_check_compiler_flag'(Option) :-
+	\+ functor(Option, _, 1),
+	throw(type_error(flag, Option)).
+
+'$lgt_check_compiler_flag'(Option) :-
+	Option =.. [Flag, Value],
+	'$lgt_check_compiler_flag'(Flag, Value).
+
+
+'$lgt_check_compiler_flag'(Flag, _) :-
 	var(Flag),
 	throw(instantiation_error).
 
-'$lgt_check_compiler_flag'(Flag) :-
-	\+ compound(Flag),
-	throw(type_error(logtalk_flag, Flag)).
-
-'$lgt_check_compiler_flag'(Flag) :-
-	\+ functor(Flag, _, 1),
-	throw(type_error(logtalk_flag, Flag)).
-
-'$lgt_check_compiler_flag'(Flag) :-
-	functor(Flag, Name, _),
-	\+ '$lgt_valid_flag'(Name),
-	throw(domain_error(logtalk_flag, Name)).
-
-'$lgt_check_compiler_flag'(Flag) :-
-	functor(Flag, Name, _),
-	'$lgt_read_only_flag'(Name),
-	throw(permission_error(modify, flag, Name)).
-
-'$lgt_check_compiler_flag'(Flag) :-
-	arg(1, Flag, Value),
+'$lgt_check_compiler_flag'(_, Value) :-
 	var(Value),
 	throw(instantiation_error).
 
-'$lgt_check_compiler_flag'(Flag) :-
-	Flag =.. [Name, Value],
-	\+ '$lgt_valid_flag_value'(Name, Value),
-	throw(domain_error(flag_value, Name + Value)).
+'$lgt_check_compiler_flag'(Flag, _) :-
+	\+ atom(Flag),
+	throw(type_error(atom, Flag)).
 
-'$lgt_check_compiler_flag'(_).
+'$lgt_check_compiler_flag'(Flag, _) :-
+	\+ '$lgt_valid_flag'(Flag),
+	throw(domain_error(logtalk_flag, Flag)).
+
+'$lgt_check_compiler_flag'(Flag, _) :-
+	'$lgt_private_flag'(Flag),
+	throw(domain_error(logtalk_flag, Flag)).
+
+'$lgt_check_compiler_flag'(Flag, _) :-
+	'$lgt_read_only_flag'(Flag),
+	throw(permission_error(modify, flag, Flag)).
+
+'$lgt_check_compiler_flag'(Flag, Value) :-
+	\+ '$lgt_valid_flag_value'(Flag, Value),
+	throw(domain_error(flag_value, Flag + Value)).
+
+'$lgt_check_compiler_flag'(_, _).
 
 
 
@@ -1809,15 +1825,15 @@ logtalk_compile(Files, Flags) :-
 
 '$lgt_set_compiler_flags'(Flags) :-
 	'$lgt_assert_compiler_flags'(Flags),
-	(	'$lgt_pp_compiler_flag_'(debug, on) ->						% debug flag on requires the
-		retractall('$lgt_pp_compiler_flag_'(smart_compilation, _)),	% smart_compilation flag to 
-		asserta('$lgt_pp_compiler_flag_'(smart_compilation, off)),	% be off and 
-		retractall('$lgt_pp_compiler_flag_'(reload, _)),			% the reload flag to be set
-		asserta('$lgt_pp_compiler_flag_'(reload, always))			% to always
+	(	'$lgt_pp_file_compiler_flag_'(debug, on) ->							% debug flag on requires the
+		retractall('$lgt_pp_file_compiler_flag_'(smart_compilation, _)),	% smart_compilation flag to 
+		asserta('$lgt_pp_file_compiler_flag_'(smart_compilation, off)),		% be off and 
+		retractall('$lgt_pp_file_compiler_flag_'(reload, _)),				% the reload flag to be set
+		asserta('$lgt_pp_file_compiler_flag_'(reload, always))				% to always
 	;	true
 	),
-	(	'$lgt_pp_compiler_flag_'(hook, Obj) ->						% pre-compile hooks in order 
-		(	Obj == user ->											% to speed up entity compilation
+	(	'$lgt_pp_file_compiler_flag_'(hook, Obj) ->							% pre-compile hooks in order 
+		(	Obj == user ->													% to speed up entity compilation
 			TermExpansionGoal = term_expansion(Term, Terms),
 			GoalExpansionGoal = goal_expansion(Goal, EGoal)
 		;	'$lgt_tr_msg'(term_expansion(Term, Terms), Obj, TermExpansionGoal, user),
@@ -1833,7 +1849,7 @@ logtalk_compile(Files, Flags) :-
 
 '$lgt_assert_compiler_flags'([Flag| Flags]) :-
 	Flag =.. [Name, Value],
-	asserta('$lgt_pp_compiler_flag_'(Name, Value)),
+	asserta('$lgt_pp_file_compiler_flag_'(Name, Value)),
 	'$lgt_assert_compiler_flags'(Flags).
 
 
@@ -1843,8 +1859,9 @@ logtalk_compile(Files, Flags) :-
 % clears the compiler flag options
 
 '$lgt_clear_compiler_flags' :-
-	retractall('$lgt_pp_compiler_flag_'(_, _)),			% retract flag values
-	retractall('$lgt_pp_hook_term_expansion_'(_, _)),	% and any term and
+	retractall('$lgt_pp_file_compiler_flag_'(_, _)),	% retract file and
+	retractall('$lgt_pp_entity_compiler_flag_'(_, _)),	% entity flag values
+	retractall('$lgt_pp_hook_term_expansion_'(_, _)),	% plus any term and
 	retractall('$lgt_pp_hook_goal_expansion_'(_, _)).	% goal expansion hooks
 
 
@@ -1890,37 +1907,7 @@ logtalk_load(Files, Flags) :-
 % sets a Logtalk flag
 
 set_logtalk_flag(Flag, Value) :-
-	var(Flag),
-	throw(error(instantiation_error, set_logtalk_flag(Flag, Value))).
-
-set_logtalk_flag(Flag, Value) :-
-	var(Value),
-	throw(error(instantiation_error, set_logtalk_flag(Flag, Value))).
-
-set_logtalk_flag(Flag, Value) :-
-	nonvar(Flag),
-	\+ atom(Flag),
-	throw(error(type_error(atom, Flag), set_logtalk_flag(Flag, Value))).
-
-set_logtalk_flag(Flag, Value) :-
-	atom(Flag),
-	\+ '$lgt_valid_flag'(Flag),
-	throw(error(domain_error(logtalk_flag, Flag), set_logtalk_flag(Flag, Value))).
-
-set_logtalk_flag(Flag, Value) :-
-	atom(Flag),
-	'$lgt_private_flag'(Flag),
-	throw(error(domain_error(logtalk_flag, Flag), set_logtalk_flag(Flag, Value))).
-
-set_logtalk_flag(Flag, Value) :-
-	'$lgt_read_only_flag'(Flag),
-	throw(error(permission_error(modify, flag, Flag), set_logtalk_flag(Flag, Value))).
-
-set_logtalk_flag(Flag, Value) :-
-	\+ '$lgt_valid_flag_value'(Flag, Value),
-	throw(error(domain_error(flag_value, Flag + Value), set_logtalk_flag(Flag, Value))).
-
-set_logtalk_flag(Flag, Value) :-
+	catch('$lgt_check_compiler_flag'(Flag, Value), Error, throw(error(Error, set_logtalk_flag(Flag, Value)))),
 	retractall('$lgt_current_flag_'(Flag, _)),
 	assertz('$lgt_current_flag_'(Flag, Value)),
 	(	Flag == debug ->
@@ -5717,6 +5704,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 % clean up all dynamic predicates used during entity compilation
 
 '$lgt_clean_pp_entity_clauses' :-
+	retractall('$lgt_pp_entity_compiler_flag_'(_, _)),
 	retractall('$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _)),
 	retractall('$lgt_pp_protocol_'(_, _, _, _, _)),
 	retractall('$lgt_pp_category_'(_, _, _, _, _, _)),
@@ -6301,7 +6289,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
     assertz('$lgt_pp_pterm_'((:- set_prolog_flag(Flag, Value)))).
 
 '$lgt_tr_file_directive'(Dir, _, _, _, _) :-
-	assertz('$lgt_pp_pterm_'((:- Dir))).					% directive will be copied to the generated Prolog file
+	assertz('$lgt_pp_pterm_'((:- Dir))).				% directive will be copied to the generated Prolog file
 
 
 
@@ -6459,8 +6447,15 @@ current_logtalk_flag(version, version(2, 37, 6)).
 	forall(
 		'$lgt_member'(Op, Ops),
 		'$lgt_tr_file_directive'(Op, File, Lines, Input, Output)),
-	'$lgt_tr_directive'((public), Preds, File, Lines, Input, Output),	% make the export list public predicates
+	'$lgt_tr_directive'((public), Preds, File, Lines, Input, Output),		% make the export list public predicates
 	'$lgt_save_file_op_table'.
+
+
+% set_logtalk_flag/1 entity directive
+
+'$lgt_tr_directive'(set_logtalk_flag, [Flag, Value], _, _, _, _) :-
+	'$lgt_check_compiler_flag'(Flag, Value),
+	assertz('$lgt_pp_entity_compiler_flag_'(Flag, Value)).
 
 
 % create a message queue at object initialization
@@ -13183,6 +13178,8 @@ current_logtalk_flag(version, version(2, 37, 6)).
 '$lgt_lgt_entity_directive'(synchronized, 0).
 
 '$lgt_lgt_entity_directive'(threaded, 0).
+
+'$lgt_lgt_entity_directive'(set_logtalk_flag, 2).
 
 
 '$lgt_lgt_predicate_directive'(synchronized, N) :-

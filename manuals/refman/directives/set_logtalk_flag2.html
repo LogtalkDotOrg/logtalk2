@@ -25,7 +25,7 @@
 
 <pre>set_logtalk_flag(Flag, Value)</pre>
 <p>
-Sets Logtalk flag values. The scope of this directive is the source file being compiled. For global scope, use the corresponding <a title="Consult reference manual" href="../builtins/set_logtalk_flag2.html"><code>set_logtalk_flag/2</code></a> built-in predicate within an initialization/1 directive.
+Sets Logtalk flag values. The scope of this directive is the entity containing it or the source file being compiled. For global scope, use the corresponding <a title="Consult reference manual" href="../builtins/set_logtalk_flag2.html"><code>set_logtalk_flag/2</code></a> built-in predicate within an initialization/1 directive.
 </p>
 
 <h4>Template and modes</h4>
@@ -42,11 +42,11 @@ Sets Logtalk flag values. The scope of this directive is the source file being c
 	<dt>Flag is not an atom:</dt>
 		<dd><code>type_error(atom, Flag)</code></dd>
 	<dt>Flag is neither a variable nor a valid flag:</dt>
-		<dd><code>domain_error(valid_flag, Flag)</code></dd>
+		<dd><code>domain_error(logtalk_flag, Flag)</code></dd>
 	<dt>Value is not a valid value for flag Flag:</dt>
-		<dd><code>domain_error(valid_flag_value, Value)</code></dd>
+		<dd><code>domain_error(flag_value, Flag + Value)</code></dd>
 	<dt>Flag is a read-only flag:</dt>
-		<dd><code>permission_error(modify, read_only_flag, Flag)</code></dd>
+		<dd><code>permission_error(modify, flag, Flag)</code></dd>
 </dl>
 
 <h4>Examples</h4>
@@ -56,7 +56,7 @@ Sets Logtalk flag values. The scope of this directive is the source file being c
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: January 24, 2009</span>
+		<span>Last updated on: November 19, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="encoding1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="../index.html#directives">next</a></span><br/>
