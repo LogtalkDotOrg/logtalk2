@@ -611,6 +611,7 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_tr_object_relations'(Rels, Obj),
 	'$lgt_tr_directives'(Dirs, user_input, _),
 	'$lgt_tr_clauses'(Clauses, user_input),
+	'$lgt_tr_entity_flags'(object, Obj),
 	'$lgt_gen_object_local_def_clauses',
 	'$lgt_fix_synchronized_preds',
 	'$lgt_fix_pred_calls',
@@ -669,6 +670,7 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_tr_category_relations'(Rels, Ctg),
 	'$lgt_tr_directives'(Dirs, user_input, _),
 	'$lgt_tr_clauses'(Clauses, user_input),
+	'$lgt_tr_entity_flags'(category, Ctg),
 	'$lgt_fix_synchronized_preds',
 	'$lgt_fix_pred_calls',
 	'$lgt_gen_category_clauses',
@@ -721,6 +723,7 @@ create_protocol(Ptc, Rels, Dirs) :-
 	'$lgt_tr_protocol_id'(Ptc, (dynamic)),
 	'$lgt_tr_protocol_relations'(Rels, Ptc),
 	'$lgt_tr_directives'(Dirs, user_input, _),
+	'$lgt_tr_entity_flags'(protocol, Ptc),
 	'$lgt_gen_protocol_clauses',
 	'$lgt_gen_protocol_directives',
 	'$lgt_assert_tr_entity',
@@ -12855,15 +12858,18 @@ current_logtalk_flag(version, version(2, 37, 6)).
 % call any defined initialization goal for a dynamically created entity
 
 '$lgt_assert_init' :-
+	(	setof(Mutex, Head^'$lgt_pp_synchronized_'(Head, Mutex), Mutexes) ->
+		'$lgt_create_mutexes'(Mutexes)
+	;	true
+	),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _),
 		'$lgt_pp_threaded_' ->
 		'$lgt_init_object_message_queue'(Prefix)
 	;	true 
 	),
-	(	'$lgt_pp_fentity_init_'(Goal) ->
-		once(Goal)
-	;	true
-	).
+	findall(Goal, '$lgt_pp_fentity_init_'(Goal), GoalList),
+	'$lgt_list_to_conjunction'(GoalList, Goals),
+	once(Goals).
 
 
 

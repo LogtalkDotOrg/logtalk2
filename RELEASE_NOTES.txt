@@ -18,6 +18,14 @@ RELEASE NOTES
     Added support for runtime instantiation of the <</2 control construct
     arguments.
 
+    Added support for specifying multiple initialization/1 directives when
+    using the create_object/4, create_category/4, and create_protocol/3
+    built-in predicates.
+
+    Corrected a bug where some entity properties would not be set when using
+    the create_object/4, create_category/4, and create_protocol/3 built-in
+    predicates.
+
     Corrected a bug (introduced in version 2.37.4) when simplifying calls
     to the {}/1 external call control construct with a variable argument.
 
@@ -30,9 +38,9 @@ RELEASE NOTES
     in order to detect discontiguous predicate clause warnings and update
     the Logtalk warnings counter accordingly.
 
-    Updated the ECLiPSe config files to correct a bug in the definition of
-    the predicate '$lgt_current_time'/3 where the number of seconds would
-    be returned as a float instead of as an integer.
+    Corrected a bug in the ECLiPSe config files in the definition of the
+    predicate '$lgt_current_time'/3 where the number of seconds would be
+    returned as a float instead of as an integer.
 
     Updated the SICStus Prolog config files in order to support settings
     files. Updated the SICStus Prolog 4.x config file in order to use the
