@@ -2321,7 +2321,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 '$lgt_asserta_rule_chk'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, ObjType),
 	!,
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PredType, Meta, SCtn, DclScope, Obj::asserta((Head:-Body)), Sender),
+	'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Head, Scope, PredType, Meta, SCtn, DclScope, Obj::asserta((Head:-Body)), Sender),
 	(	(PredType == (dynamic); ObjType == (dynamic), Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
 			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, _),
@@ -2355,7 +2355,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 '$lgt_asserta_fact_chk'(Obj, Head, Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, ObjType),
 	!,
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PredType, _, SCtn, DclScope, Obj::asserta(Head), Sender),
+	'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Head, Scope, PredType, _, SCtn, DclScope, Obj::asserta(Head), Sender),
 	(	(PredType == (dynamic); ObjType == (dynamic), Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, Update),
@@ -2424,7 +2424,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 '$lgt_assertz_rule_chk'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, ObjType),
 	!,
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PredType, Meta, SCtn, DclScope, Obj::assertz((Head:-Body)), Sender),
+	'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Head, Scope, PredType, Meta, SCtn, DclScope, Obj::assertz((Head:-Body)), Sender),
 	(	(PredType == (dynamic); ObjType == (dynamic), Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, _),
@@ -2458,7 +2458,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 '$lgt_assertz_fact_chk'(Obj, Head, Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, ObjType),
 	!,
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Head, Scope, PredType, _, SCtn, DclScope, Obj::assertz(Head), Sender),
+	'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Head, Scope, PredType, _, SCtn, DclScope, Obj::assertz(Head), Sender),
 	(	(PredType == (dynamic); ObjType == (dynamic), Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, Update),
@@ -2485,18 +2485,18 @@ current_logtalk_flag(version, version(2, 37, 6)).
 
 % get or set (if it doesn't exist) the declaration for an asserted predicate
 
-'$lgt_assert_pred_dcl'(Dcl, DDcl, Pred, Scope, Type, Meta, SCtn, DclScope, Goal, Sender) :-
+'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Pred, Scope, Type, Meta, SCtn, DclScope, Goal, Sender) :-
 	(	call(Dcl, Pred, Scope, Type, Meta, _, _, SCtn, _) ->
 		true
 	;	% no previous predicate declaration:
-		(	DDcl == nil ->
-			% object doesn't supports dynamic declaration of new predicates:
-			throw(error(permission_error(create, predicate_declaration, Pred), Goal, Sender))
-		;	functor(Pred, Functor, Arity),
+		(	'$lgt_entity_property_'(Obj, flags(_, dd, _, _, _, _)) ->
+			functor(Pred, Functor, Arity),
 			functor(DPred, Functor, Arity),
 			Clause =.. [DDcl, DPred, DclScope],
 			assertz(Clause),
 			(Scope, Type, Meta) = (DclScope, (dynamic), no)
+		;	% object doesn't supports dynamic declaration of new predicates:
+			throw(error(permission_error(create, predicate_declaration, Pred), Goal, Sender))
 		)
 	).
 
@@ -12896,10 +12896,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 		atom_concat(Prefix, '_super', Super),
 		atom_concat(Prefix, '_idcl', IDcl),
 		atom_concat(Prefix, '_idef', IDef),
-		(	'$lgt_compiler_flag'(dynamic_declarations, allow) ->
-			atom_concat(Prefix, '_ddcl', DDcl)
-		;	DDcl = nil
-		),
+		atom_concat(Prefix, '_ddcl', DDcl),
 		atom_concat(Prefix, '_ddef', DDef),
 		atom_concat(Prefix, '_alias', Rnm)
 	).
