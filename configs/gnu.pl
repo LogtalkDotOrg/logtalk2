@@ -11,7 +11,7 @@
 %
 %  configuration file for GNU Prolog 1.3.1 (and later versions)
 %
-%  last updated: October 31, 2009
+%  last updated: November 20, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -137,8 +137,8 @@ forall(Generate, Test) :-
 % back-end Prolog compiler supported features
 
 '$lgt_prolog_feature'(prolog_dialect, gnu).
-'$lgt_prolog_feature'(prolog_version, _) :-
-	fail.
+'$lgt_prolog_feature'(prolog_version, (Major, Minor, Patch)) :-
+	catch(current_prolog_flag(version_data, gprolog(Major, Minor, Patch, _)), _, fail).
 '$lgt_prolog_feature'(prolog_compatible_version, @>=((1,3,1))).
 
 '$lgt_prolog_feature'(break_predicate, supported).

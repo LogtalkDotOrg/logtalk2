@@ -53,6 +53,9 @@ RELEASE NOTES
     new "version_data" flag and recognize the new do/2 meta-predicate added
     in version 4.1.
 
+    Updated the GNU Prolog config file to make use of the new "version_data"
+    flag in the forthcoming 1.3.2 version.
+
     Updated the library support for unit testing in order to allow per-test
     setup and cleanup goals and to provide timing, testing file information,
     and statistics on passed and failed tests. Updated the "testing" example
