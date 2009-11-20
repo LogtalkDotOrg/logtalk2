@@ -71,6 +71,9 @@ RELEASE NOTES
     installers where some third-party mime-type associations might be lost
     when adding the Logtalk mime-type to the Shared MIME-info Database.
 
+    Corrected a harmless syntax error in the Logtalk POSIX install shell
+    script when the "update-mime-database" command is not available.
+
     Added a Logtalk version of the "Closed Knight's Tour" SWI-Prolog CLP(FD)
     example written by Markus Triska.
 

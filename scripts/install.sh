@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
@@ -119,7 +119,7 @@ echo "scripts, consult the \"$prefix/share/logtalk/configs/NOTES.txt\" file"
 echo "for compatibility notes."
 echo
 
-if [ `which update-mime-database` != '' ]; then
+if [ "`which update-mime-database`" != "" ]; then
 	mkdir -p $prefix/share/mime/packages
 	rm -f $prefix/share/mime/packages/logtalk.xml
 	cp $prefix/share/lgt2376/scripts/freedesktop/logtalk.xml $prefix/share/mime/packages/logtalk.xml
