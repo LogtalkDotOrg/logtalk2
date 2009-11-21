@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.37.6 - November 30, 2009
 
+    Simplified representation of the runtime execution context using a simple
+    list resulting in a small performance increase for some back-end Prolog
+    compilers such as B-Prolog.
+
     Added support for using the set_logtalk_flag/2 directive within Logtalk
     entities. This allows e.g. easy setting of entity properties such as
     "events" when creating new entities using the entity creation built-in

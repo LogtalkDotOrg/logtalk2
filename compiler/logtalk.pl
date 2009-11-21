@@ -3583,7 +3583,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 	;	throw(error(instantiation_error, Sender::call(Pred), This))
 	).
 
-'$lgt_metacall'({Pred}, _, _, _, _) :-
+'$lgt_metacall'({Pred}, _, _, _, _) :-	% pre-compiled metacalls
 	!,
 	call(Pred).
 
@@ -13288,7 +13288,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 % by a compound term that optimizes access to "this" to improve predicate
 % lookup performance)
 
-'$lgt_exec_ctx'([This| ctx(Sender, Self, MetaCallCtx)], Sender, This, Self, MetaCallCtx).
+'$lgt_exec_ctx'([This, Sender, Self, MetaCallCtx], Sender, This, Self, MetaCallCtx).
 
 '$lgt_exec_ctx'([This| Ctx], This, Ctx).	% inheritance only requires updating "this"
 
@@ -15816,6 +15816,8 @@ current_logtalk_flag(version, version(2, 37, 6)).
 
 
 
+% '$lgt_obj_static_binding_cache'(@object_identifier, @callable, @object_identifier -callable)
+
 '$lgt_obj_static_binding_cache'(Obj, Pred, Sender, Call) :-
 	(	'$lgt_obj_static_binding_cache_'(Obj, Pred, Sender, Call) ->
 		true
@@ -15824,7 +15826,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 		call(Dcl, Pred, p(p(p)), Type, Meta, _, _, _, DclCtn), !,
 		(	Type == static ->
 			true
-		;	% Type == dynamic
+		;	% Type == (dynamic)
 			Obj = DclCtn
 		),
 		functor(Obj, ObjFunctor, ObjArity),
@@ -15833,11 +15835,13 @@ current_logtalk_flag(version, version(2, 37, 6)).
 		functor(GPred, PredFunctor, PredArity),
 		'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),
 		'$lgt_exec_ctx'(GExCtx, GSender, GObj, GObj, GMetaVars),
-		call(Def, GPred, GExCtx, GCall, DefCtn), !,
+		call(Def, GPred, GExCtx, GCall, DefCtn),
+		!,	% found the predicate definition; use it only if it's safe
 		'$lgt_safe_static_binding_paths'(GObj, DclCtn, DefCtn),
 		(	Meta =.. [PredFunctor| MArgs],						% fails when Meta == no
 			Pred =.. [PredFunctor| Args],
 			\+ ('$lgt_member'(MArg, MArgs), integer(MArg)) ->	% closures cannot be optimized
+			% meta-predicates cannot be cached as they require translation of the meta-arguments
 			'$lgt_pp_entity'(_, _, Prefix, _, _),
 			'$lgt_comp_ctx'(Ctx, _, Sender, Sender, Obj, Prefix, [], _, ExCtx),
 			'$lgt_exec_ctx'(ExCtx, Sender, Sender, Obj, []),
@@ -15860,12 +15864,18 @@ current_logtalk_flag(version, version(2, 37, 6)).
 
 '$lgt_tr_static_binding_meta_arg'((*), Arg, _, Arg, Arg).
 
+'$lgt_tr_static_binding_meta_arg'(0, Arg, Ctx, TArg, DArg) :-
+	'$lgt_tr_static_binding_meta_arg'((::), Arg, Ctx, TArg, DArg).
+
 '$lgt_tr_static_binding_meta_arg'((::), Arg, Ctx, {FTArg}, {FDArg}) :-
+	% the {}/1 construct signals a pre-compiled metacall
 	'$lgt_tr_body'(Arg, TArg, DArg, Ctx),
 	'$lgt_fix_pred_calls'(TArg, FTArg),
 	'$lgt_fix_pred_calls'(DArg, FDArg).
 
 
+
+% '$lgt_ctg_static_binding_cache'(@category_identifier, @callable, @execution_context -callable)
 
 '$lgt_ctg_static_binding_cache'(Ctg, Pred, ExCtx, Call) :-
 	(	'$lgt_ctg_static_binding_cache_'(Ctg, Pred, ExCtx, Call) ->
@@ -15882,6 +15892,12 @@ current_logtalk_flag(version, version(2, 37, 6)).
 	).
 
 
+
+% '$lgt_safe_static_binding_paths'(@object_identifier, @object_identifier, @object_identifier)
+%
+% all entities in the inheritance-chain (from the object receiving the message
+% to both the declaration container and the definition container) should be
+% static-binding entities but this is not currently checked
 
 '$lgt_safe_static_binding_paths'(_, _, _).
 
