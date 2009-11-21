@@ -7990,6 +7990,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 
 
 % redefinition of Logtalk message sending and remaining control constructs
+% (note that ::/2 can be used in a clause head when defining multifile predicates)
 
 '$lgt_tr_head'(::_, _, _, _, _, _) :-
 	throw(permission_error(modify, control_construct, (::)/1)).
@@ -8240,6 +8241,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 
 
 % look for a non-variable meta-argument
+% (used when checking meta-predicate clause heads for errors)
 
 '$lgt_nonvar_meta_arg'([Arg| _], [(::)| _], Arg) :-
 	nonvar(Arg).
@@ -8254,6 +8256,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 
 
 % check if there are enough normal arguments for the closure with maximum arity
+% (used when checking meta-predicate clause heads for errors)
 
 '$lgt_insufficient_closure_args'(Args) :-
 	'$lgt_insufficient_closure_args'(Args, 0, MaxClosure, 0, TotalNormalArgs),
@@ -10415,7 +10418,9 @@ current_logtalk_flag(version, version(2, 37, 6)).
 
 % '$lgt_simplify_body'(+callable, -callable)
 %
-% remove redundant calls to true/0 from a translated clause body
+% remove redundant calls to true/0 from a translated clause body;
+% we must be careful with control constructs that are opaque to
+% cuts such as call/1 and once/1
 
 '$lgt_simplify_body'(B, B) :-
 	var(B),
@@ -10437,6 +10442,9 @@ current_logtalk_flag(version, version(2, 37, 6)).
 	!,
 	'$lgt_simplify_body'(G, SG).
 
+'$lgt_simplify_body'(once(G), true) :-
+	G == !,
+	!.
 '$lgt_simplify_body'(once(G), once(SG)) :-
 	!,
 	'$lgt_simplify_body'(G, SG).
@@ -10531,7 +10539,8 @@ current_logtalk_flag(version, version(2, 37, 6)).
 
 % '$lgt_update_entity_comp_mode'
 %
-% updates entity compilation mode to "dynamic" (entities are static by default)
+% updates entity compilation mode to "dynamic"
+% (entities are static by default but can be declared dynamic using the dynamic/0 entity directive)
 
 '$lgt_update_entity_comp_mode' :-
 	(   retract('$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, _)) ->
@@ -13285,7 +13294,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 
 
 % utility predicates used to construct execution context terms (represented
-% by a compound term that optimizes access to "this" to improve predicate
+% by a list that optimizes access to "this" in order to improve predicate
 % lookup performance)
 
 '$lgt_exec_ctx'([This, Sender, Self, MetaCallCtx], Sender, This, Self, MetaCallCtx).
