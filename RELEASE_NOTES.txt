@@ -84,6 +84,8 @@ RELEASE NOTES
     Added a Logtalk version of the "Closed Knight's Tour" SWI-Prolog CLP(FD)
     example written by Markus Triska.
 
+    Added a analyse_text() function to the Pygments syntax highlighter.
+
 
 2.37.5 - October 29, 2009
 

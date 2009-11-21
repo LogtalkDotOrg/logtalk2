@@ -206,3 +206,14 @@ class LogtalkLexer(RegexLexer):
             (r'\s+', Text),
         ]
     }
+
+    def analyse_text(text):
+        if ':- object(' in text:
+            return True
+        if ':- protocol(' in text:
+            return True
+        if ':- category(' in text:
+            return True
+        if ':-' in text:
+            return True
+        return False
