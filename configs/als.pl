@@ -11,7 +11,7 @@
 %
 %  configuration file for ALS Prolog 3.1
 %
-%  last updated: October 31, 2009
+%  last updated: November 22, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -222,40 +222,36 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %
 % default values for all flags
 
+% documenting compilation flags:
 '$lgt_default_flag'(xmldocs, on).
 '$lgt_default_flag'(xslfile, 'lgtxml.xsl').
 '$lgt_default_flag'(xmlspec, dtd).
 '$lgt_default_flag'(xmlsref, local).
-
+% lint compilation flags:
 '$lgt_default_flag'(unknown, warning).
 '$lgt_default_flag'(misspelt, warning).
 '$lgt_default_flag'(singletons, warning).
 '$lgt_default_flag'(lgtredef, warning).
 '$lgt_default_flag'(plredef, silent).
 '$lgt_default_flag'(portability, silent).
-
-'$lgt_default_flag'(report, on).
-
-'$lgt_default_flag'(smart_compilation, off).
-'$lgt_default_flag'(reload, always).
-
-'$lgt_default_flag'(startup_message, flags(compact)).
-
 '$lgt_default_flag'(underscore_variables, singletons).
-
-'$lgt_default_flag'(code_prefix, '').
-
-'$lgt_default_flag'(debug, off).
-
+% optional features compilation flags:
 '$lgt_default_flag'(complements, deny).
 '$lgt_default_flag'(dynamic_declarations, deny).
 '$lgt_default_flag'(events, deny).
-
+'$lgt_default_flag'(context_switching_calls, allow).
+% directories compilation flags:
 '$lgt_default_flag'(altdirs, off).
 '$lgt_default_flag'(tmpdir, 'lgt_tmp/').
 '$lgt_default_flag'(xmldir, 'xml_docs/').
-
-'$lgt_default_flag'(context_switching_calls, allow).
+% other compilation flags:
+'$lgt_default_flag'(report, on).
+'$lgt_default_flag'(clean, off).
+'$lgt_default_flag'(smart_compilation, off).
+'$lgt_default_flag'(reload, always).
+'$lgt_default_flag'(startup_message, flags(compact)).
+'$lgt_default_flag'(code_prefix, '').
+'$lgt_default_flag'(debug, off).
 
 
 

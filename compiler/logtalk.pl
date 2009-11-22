@@ -1804,10 +1804,6 @@ logtalk_compile(Files, Flags) :-
 	throw(domain_error(logtalk_flag, Flag)).
 
 '$lgt_check_compiler_flag'(Flag, _) :-
-	'$lgt_private_flag'(Flag),
-	throw(domain_error(logtalk_flag, Flag)).
-
-'$lgt_check_compiler_flag'(Flag, _) :-
 	'$lgt_read_only_flag'(Flag),
 	throw(permission_error(modify, flag, Flag)).
 
@@ -1932,11 +1928,6 @@ current_logtalk_flag(Flag, Value) :-
 current_logtalk_flag(Flag, Value) :-
 	atom(Flag),
 	\+ '$lgt_valid_flag'(Flag),
-	throw(error(domain_error(logtalk_flag, Flag), current_logtalk_flag(Flag, Value))).
-
-current_logtalk_flag(Flag, Value) :-
-	atom(Flag),
-	'$lgt_private_flag'(Flag),
 	throw(error(domain_error(logtalk_flag, Flag), current_logtalk_flag(Flag, Value))).
 
 current_logtalk_flag(Flag, Value) :-
@@ -13662,7 +13653,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 '$lgt_valid_flag'(clean).
 % read-only compilation flags:
 '$lgt_valid_flag'(version).
-% back-end Prolog features
+% back-end Prolog features:
 '$lgt_valid_flag'(prolog_dialect).
 '$lgt_valid_flag'(prolog_version).
 '$lgt_valid_flag'(break_predicate).
@@ -13672,21 +13663,13 @@ current_logtalk_flag(version, version(2, 37, 6)).
 
 
 
-% '$lgt_private_flag'(@nonvar)
-%
-% true if the argument is a private Logtalk flag name
-
-'$lgt_private_flag'(clean).
-
-
-
 % '$lgt_read_only_flag'(@nonvar)
 %
 % true if the argument is a read only Logtalk flag name
 
-% Logtalk version flag
+% Logtalk version flag:
 '$lgt_read_only_flag'(version).
-% back-end Prolog features
+% back-end Prolog features:
 '$lgt_read_only_flag'(prolog_dialect).
 '$lgt_read_only_flag'(prolog_version).
 '$lgt_read_only_flag'(break_predicate).
@@ -16078,7 +16061,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 
 '$lgt_load_settings_file' :-
 	'$lgt_current_directory'(Current),
-	(	'$lgt_startup_directory'(Startup),		% first lookup for a 
+	(	'$lgt_startup_directory'(Startup),		% first lookup for a
 		'$lgt_change_directory'(Startup),		% settings file in the
 		'$lgt_file_exists'('settings.lgt') ->	% startup directory
 		catch((

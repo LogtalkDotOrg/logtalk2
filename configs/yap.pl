@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: October 31, 2009
+%  last updated: November 22, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -257,35 +257,25 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 %
 % default values for all flags
 
+% documenting compilation flags:
 '$lgt_default_flag'(xmldocs, on).
 '$lgt_default_flag'(xslfile, 'lgtxml.xsl').
 '$lgt_default_flag'(xmlspec, dtd).
 '$lgt_default_flag'(xmlsref, local).
-
+% lint compilation flags:
 '$lgt_default_flag'(unknown, warning).
 '$lgt_default_flag'(misspelt, warning).
 '$lgt_default_flag'(singletons, warning).
 '$lgt_default_flag'(lgtredef, warning).
 '$lgt_default_flag'(plredef, silent).
 '$lgt_default_flag'(portability, silent).
-
-'$lgt_default_flag'(report, on).
-
-'$lgt_default_flag'(smart_compilation, off).
-'$lgt_default_flag'(reload, always).
-
-'$lgt_default_flag'(startup_message, flags(compact)).
-
 '$lgt_default_flag'(underscore_variables, singletons).
-
-'$lgt_default_flag'(code_prefix, '$').
-
-'$lgt_default_flag'(debug, off).
-
+% optional features compilation flags:
 '$lgt_default_flag'(complements, deny).
 '$lgt_default_flag'(dynamic_declarations, deny).
 '$lgt_default_flag'(events, deny).
-
+'$lgt_default_flag'(context_switching_calls, allow).
+% directories compilation flags:
 '$lgt_default_flag'(altdirs, off).
 '$lgt_default_flag'(tmpdir, TmpDir) :-
 	(	current_prolog_flag(unix, true) ->
@@ -293,8 +283,14 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 	;	TmpDir = 'lgt_tmp/'
 	).
 '$lgt_default_flag'(xmldir, 'xml_docs/').
-
-'$lgt_default_flag'(context_switching_calls, allow).
+% other compilation flags:
+'$lgt_default_flag'(report, on).
+'$lgt_default_flag'(clean, off).
+'$lgt_default_flag'(smart_compilation, off).
+'$lgt_default_flag'(reload, always).
+'$lgt_default_flag'(startup_message, flags(compact)).
+'$lgt_default_flag'(code_prefix, '$').
+'$lgt_default_flag'(debug, off).
 
 
 

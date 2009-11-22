@@ -275,10 +275,6 @@ Note that the scope of the <code>set_logtalk_flag/2</code> directive is local to
 			<dd>Controls the automatic generation of documenting files in XML format. Possible option values are <code>on</code> (the usual default) and <code>off</code>.</dd>
 	</dl>
 	<dl>
-		<dt><code>xmldir(Directory)</code></dt>
-			<dd>Sets the directory to be used to store the automatically generated XML documenting files. The default value is <code>xml_docs</code>, a sub-directory of the source files directory. Use of this flag requires that the read-only flag <code>altdirs</code> be set to <code>on</code> (not supported in some back-end Prolog compilers).</dd>
-	</dl>
-	<dl>
 		<dt><code>xmlspec(Option)</code></dt>
 			<dd>Defines the XML documenting files specification format. Possible option values are <code>dtd</code> (for the DTD specification; the usual default) and <code>xsd</code> (for the XML Schema specification). Most XSL processors support DTDs but only some of them support XML Schemas.</dd>
 	</dl>
@@ -289,6 +285,40 @@ Note that the scope of the <code>set_logtalk_flag/2</code> directive is local to
 	<dl>
 		<dt><code>xslfile(File)</code></dt>
 			<dd>Sets the XSLT file to be used with the automatically generated XML documenting files. The default value is <code>lgtxml.xsl</code>, which allows the XML files to be viewed by simply opening them with recent versions of web navigators which support XSLT transformations (after copying the <code>lgtxml.xsl</code> and of the <code>logtalk.css</code> files to the directory containing the XML files).</dd>
+	</dl>
+
+<h4>Directories compilation flags</h4>
+
+	<dl>
+		<dt><code>altdirs</code></dt>
+			<dd>Allows the use of alternative directories for storing the Prolog files and the XML documenting files resulting from entity compilation. This flag can only be set for Prolog compilers providing the necessary operating-system access predicates for implementing this feature (specifically, a built-in predicate for creating new directories). Possible option values are <code>on</code> and <code>off</code> (the usual default). The names of the alternative directories are specified using the compiler flags <code>tmpdir</code> and <code>xmldir</code>, which are also defined in the configuration files. Make sure the directory names are valid for your operating system before setting this flag on.</dd>
+	</dl>
+	<dl>
+		<dt><code>tmpdir(Directory)</code></dt>
+			<dd>Sets the directory to be used to store the temporary files generated when compiling Logtalk source files. The default value is a sub-directory of the source files directory, either <code>lgt_tmp</code> or <code>.lgt_tmp</code> (depending on the back-end Prolog compiler and operating-system). Use of this flag requires that the flag <code>altdirs</code> be set to <code>on</code> (not supported in some back-end Prolog compilers).</dd>
+	</dl>
+	<dl>
+		<dt><code>xmldir(Directory)</code></dt>
+			<dd>Sets the directory to be used to store the automatically generated XML documenting files. The default value is <code>xml_docs</code>, a sub-directory of the source files directory. Use of this flag requires that the read-only flag <code>altdirs</code> be set to <code>on</code> (not supported in some back-end Prolog compilers).</dd>
+	</dl>
+
+<h4>Optional features compilation flags</h4>
+
+	<dl>
+		<dt><code>complements(Option)</code></dt>
+			<dd>Allows objects to be compiled with support for complementing categories turned off in order to improve performance and security. Possible option values are <code>allow</code> and <code>deny</code> (the usual default). This option can be used on a per-object basis. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
+	</dl>
+	<dl>
+		<dt><code>dynamic_declarations(Option)</code></dt>
+			<dd>Allows objects to be compiled with support for dynamic declaration of new predicates turned off in order to improve performance and security. Possible option values are <code>allow</code> and <code>deny</code> (the usual default). This option can be used on a per-object basis. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
+	</dl>
+	<dl>
+		<dt><code>events(Option)</code></dt>
+			<dd>Allows message sending calls to be compiled with event-driven programming support disable in order to improve performance. Possible option values are <code>allow</code> and <code>deny</code> (the usual default). Objects (and categories) compiled with this option set to <code>deny</code> use optimized code for message-sending calls that does not trigger events. As such, this option can be used on a per-object (or per-category) basis. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
+	</dl>
+	<dl>
+		<dt><code>context_switching_calls</code></dt>
+			<dd>Allows context switching calls (<code>&lt;&lt;/2</code>) to be either allowed or denied. Possible flag values are <code>allow</code> and <code>deny</code>. The default flag vale is <code>allow</code>. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
 	</dl>
 
 <h4>Other flags</h4>
@@ -306,28 +336,8 @@ Note that the scope of the <code>set_logtalk_flag/2</code> directive is local to
 			<dd>Controls the compilation of source files in debug mode (the Logtalk built-in debugger can only be used with files compiled in this mode). Possible option values are <code>on</code> and <code>off</code> (the usual default).</dd>
 	</dl>
 	<dl>
-		<dt><code>complements(Option)</code></dt>
-			<dd>Allows objects to be compiled with support for complementing categories turned off in order to improve performance and security. Possible option values are <code>allow</code> and <code>deny</code> (the usual default). This option can be used on a per-object basis. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
-	</dl>
-	<dl>
-		<dt><code>dynamic_declarations(Option)</code></dt>
-			<dd>Allows objects to be compiled with support for dynamic declaration of new predicates turned off in order to improve performance and security. Possible option values are <code>allow</code> and <code>deny</code> (the usual default). This option can be used on a per-object basis. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
-	</dl>
-	<dl>
-		<dt><code>events(Option)</code></dt>
-			<dd>Allows message sending calls to be compiled with event-driven programming support disable in order to improve performance. Possible option values are <code>allow</code> and <code>deny</code> (the usual default). Objects (and categories) compiled with this option set to <code>deny</code> use optimized code for message-sending calls that does not trigger events. As such, this option can be used on a per-object (or per-category) basis. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
-	</dl>
-	<dl>
-		<dt><code>context_switching_calls</code></dt>
-			<dd>Allows context switching calls (<code>&lt;&lt;/2</code>) to be either allowed or denied. Possible flag values are <code>allow</code> and <code>deny</code>. The default flag vale is <code>allow</code>. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
-	</dl>
-	<dl>
 		<dt><code>startup_message</code></dt>
 			<dd>Controls the messages printed by Logtalk at startup. Possible flag values are <code>flags(verbose)</code> (the usual default; prints the Logtalk banner and a list of all default compiler flags), <code>flags(compact)</code> (a more compact listing of the default compiler flags), <code>banner</code> (prints only the Logtalk banner), and <code>none</code> (suppress all startup messages; useful for batch processing).</dd>
-	</dl>
-	<dl>
-		<dt><code>altdirs</code></dt>
-			<dd>Allows the use of alternative directories for storing the Prolog files and the XML documenting files resulting from entity compilation. This flag can only be set for Prolog compilers providing the necessary operating-system access predicates for implementing this feature (specifically, a built-in predicate for creating new directories). Possible option values are <code>on</code> and <code>off</code> (the usual default). The names of the alternative directories are specified using the compiler flags <code>tmpdir</code> and <code>xmldir</code>, which are also defined in the configuration files. Make sure the directory names are valid for your operating system before setting this flag on.</dd>
 	</dl>
 	<dl>
 		<dt><code>reload(Option)</code></dt>
@@ -342,8 +352,8 @@ Note that the scope of the <code>set_logtalk_flag/2</code> directive is local to
 			<dd>Allows the definition of compiler hooks that are called for each term read form a source file and for each compiled goal. This option specifies an object (which can be the pseudo-object <code>user</code>) implementing the <code>expanding</code> built-in protocol. The object is expected to define clauses for the <a title="Consult reference manual" href="../refman/methods/term_expansion2.html"><code>term_expansion/2</code></a> and <a title="Consult reference manual" href="../refman/methods/goal_expansion2.html"><code>goal_expansion/2</code></a> predicates. In the case of the <code>term_expansion/2</code> predicate, the first argument is the term read form the source file while the second argument returns a list of terms corresponding to the expansion of the first argument. In the case of the <code>goal_expansion/2</code> predicate, the second argument should be a goal resulting from the expansion of the goal in the first argument. The predicate <code>goal_expansion/2</code> is called on the expanded goals so care must be taken to avoid compilation loops.</dd>
 	</dl>
 	<dl>
-		<dt><code>tmpdir(Directory)</code></dt>
-			<dd>Sets the directory to be used to store the temporary files generated when compiling Logtalk source files. The default value is a sub-directory of the source files directory, either <code>lgt_tmp</code> or <code>.lgt_tmp</code> (depending on the back-end Prolog compiler and operating-system). Use of this flag requires that the flag <code>altdirs</code> be set to <code>on</code> (not supported in some back-end Prolog compilers).</dd>
+		<dt><code>clean(Option)</code></dt>
+			<dd>Controls cleaning of the intermediate Prolog files generated when compiling Logtalk source files. Possible option values are <code>on</code> and <code>off</code> (the usual default). This option is only supported in some Prolog compilers.</dd>
 	</dl>
 
 <h3 id="programming_smart">Reloading and smart compilation of source files</h3>
