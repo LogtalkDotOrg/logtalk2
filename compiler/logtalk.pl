@@ -407,11 +407,11 @@ Obj<<Goal :-
 	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
-'$lgt_runtime_error_handler'(error(existence_error(procedure, ':'(_, TFunctor/TArity)), _)) :-
+'$lgt_runtime_error_handler'(error(existence_error(procedure, ':'(_, TFunctor/TArity)), _)) :-							% SICStus Prolog 4.x
 	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
-'$lgt_runtime_error_handler'(error(existence_error(_, _, procedure, ':'(_, TFunctor/TArity), _), _)) :-					% Quintus, SICStus Prolog
+'$lgt_runtime_error_handler'(error(existence_error(_, _, procedure, ':'(_, TFunctor/TArity), _), _)) :-					% Quintus, SICStus Prolog 3.x
 	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 

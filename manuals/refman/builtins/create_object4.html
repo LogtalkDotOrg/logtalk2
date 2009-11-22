@@ -68,13 +68,17 @@ When using Logtalk multi-threaded features, predicates calling this built-in pre
 </dl>
 <dl>
 	<dt>Creating a new object and defining its initialization goal:</dt>
-		<dd><code>| ?- create_object(runner, [instantiates(runners)], [initialization(start)], [length(22), time(60)])]).</code></dd>
+		<dd><code>| ?- create_object(runner, [instantiates(runners)], [initialization(start)], [length(22), time(60)]).</code></dd>
+</dl>
+<dl>
+	<dt>Creating a new empty object with dynamic predicate declarations support:</dt>
+		<dd><code>| ?- create_object(database, [], [set_logtalk_flag(dynamic_declarations, allow)], []).</code></dd>
 </dl>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: June 18, 2009</span>
+		<span>Last updated on: November 19, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="create_category4.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="create_protocol3.html">next</a></span><br/>
