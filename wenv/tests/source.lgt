@@ -156,6 +156,10 @@ comment
 	meta_call_methods :-
 		call(Goal).
 
+	exception_methods :-
+		catch(Goal, Error, Catcher),
+		throw(Error).
+
 	all_solutions_methods :-
 		bagof(Term, Goal, List),
 		findall(Term, Goal, List),
@@ -196,9 +200,9 @@ comment
 		).
 
 	numbers :-
-		X is 13,
-		Y is 13.13,
-		Z is 13.13e-23,
+		X1 is 13, X2 is -13, X3 is +13,
+		Y1 is 13.13, Y2 is -13.13, Y3 is +13.13,
+		Z1 is 13.13e-23, Z2 is -13.13e-23, Z3 is +13.13e-23,
 		C1 is 0'A, C2 is 0'', C3 is 0'",
 		B is 0b1011101,
 		O is 0o1234560,

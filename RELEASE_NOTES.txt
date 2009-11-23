@@ -89,6 +89,12 @@ RELEASE NOTES
 
     Added a analyse_text() function to the Pygments syntax highlighter.
 
+    Updated the Logtalk mode for the SubEthaEdit text editor 3.5.x version
+    with the help of Martin Pittenauer.
+
+    Added some missing cases to the Logtalk source file used for testing
+    syntax highlight support.
+
 
 2.37.5 - October 29, 2009
 
