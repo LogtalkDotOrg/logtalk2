@@ -53,9 +53,10 @@ message to:
 
 with the following information:
 
-email address, full name, organization, organization type (education, 
-commercial, government, ...), prolog compilers used (optional), 
-platforms (mac, pc, unix,...) (optional)
+email address, first and last name, organization, organization type 
+(education, commercial, government, ...), Prolog compilers you use 
+(optional), platforms (mac, pc, unix,...) (optional), projects where 
+you intend to use Logtak (optional)
 
 
 4. SUPPORT
