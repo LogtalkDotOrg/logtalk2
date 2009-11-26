@@ -24,7 +24,7 @@
 %  from the project directory. Note that, for setting Logtalk flag values,
 %  you must use the set_logtalk_flag/2 predicate (wrapped in a directive
 %  initialization/1) as the scope of the set_logtalk_flag/2 directive is
-%  always local to a source file.
+%  always local to an entity or to a source file.
 %
 %  If you use more than one back-end Prolog compiler and want to use
 %  different settings per compiler you will need to use the Logtalk 
@@ -41,10 +41,11 @@
 %  If no settings file is found, Logtalk will use the default flag values
 %  defined in the back-end Prolog compiler config file.
 %
-%  Limitations of the back-end Prolog compilers may prevent settings files to
-%  work from directories other than the Logtalk user directory when running
-%  on non-POSIX operating systems such as Windows. See the "configs/NOTES.txt"
-%  file for compatibility details.
+%  Limitations of the back-end Prolog compilers may prevent settings files
+%  to work from directories other than the Logtalk user directory or from
+%  working at all, specially when running on non-POSIX operating systems
+%  such as Windows. Check the "configs/NOTES.txt" file for compatibility
+%  details.
 
 
 %  To define a "library" path for your projects, edit and uncomment the

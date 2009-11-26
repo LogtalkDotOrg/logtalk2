@@ -38,7 +38,7 @@
 :- op(200, fy, -).		% output argument (not instantiated)
 
 
-% bitwise left-shift operator (used for unit test context-switching)
+% bitwise left-shift operator (used for context-switching calls)
 
 :- op(400, yfx, <<).	% some Prolog compilers don't declare this operator
 
@@ -733,6 +733,8 @@ create_protocol(Ptc, Rels, Dirs) :-
 
 
 % '$lgt_gen_entity_identifier'(+char_code, -entity_identifier)
+%
+% generates a new, unique entity identifier by appending an integer to a base char
 
 '$lgt_gen_entity_identifier'(Base, Id) :-
 	repeat,
@@ -10413,8 +10415,8 @@ current_logtalk_flag(version, version(2, 37, 6)).
 % we must be careful with control constructs that are opaque to
 % cuts such as call/1 and once/1
 
-'$lgt_simplify_body'(B, B) :-
-	var(B),
+'$lgt_simplify_body'(G, G) :-
+	var(G),
 	!.
 
 '$lgt_simplify_body'(catch(G, E, R), catch(SG, E, SR)) :-
@@ -10457,12 +10459,12 @@ current_logtalk_flag(version, version(2, 37, 6)).
 	'$lgt_simplify_body'(G, SG),
 	'$lgt_simplify_body'(T, ST).
 
-'$lgt_simplify_body'((A;B), (SA;SB)) :-
+'$lgt_simplify_body'((A; B), (SA; SB)) :-
 	!,
 	'$lgt_simplify_body'(A, SA),
 	'$lgt_simplify_body'(B, SB).
 
-'$lgt_simplify_body'((A->B), (SA->SB)) :-
+'$lgt_simplify_body'((A -> B), (SA -> SB)) :-
 	!,
 	'$lgt_simplify_body'(A, SA),
 	'$lgt_simplify_body'(B, SB).
@@ -10480,11 +10482,11 @@ current_logtalk_flag(version, version(2, 37, 6)).
 	'$lgt_simplify_body'(A, SA),
 	'$lgt_simplify_body'(B, SB).
 
-'$lgt_simplify_body'(\+ A, \+ SA) :-
+'$lgt_simplify_body'(\+ G, \+ SG) :-
 	!,
-	'$lgt_simplify_body'(A, SA).
+	'$lgt_simplify_body'(G, SG).
 
-'$lgt_simplify_body'(B, B).
+'$lgt_simplify_body'(G, G).
 
 
 
