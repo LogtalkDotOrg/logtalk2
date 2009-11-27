@@ -1847,6 +1847,7 @@ logtalk_compile(Files, Flags) :-
 
 '$lgt_assert_compiler_flags'([Flag| Flags]) :-
 	Flag =.. [Name, Value],
+	retractall('$lgt_pp_file_compiler_flag_'(Name, _)),
 	asserta('$lgt_pp_file_compiler_flag_'(Name, Value)),
 	'$lgt_assert_compiler_flags'(Flags).
 
@@ -6448,6 +6449,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 
 '$lgt_tr_directive'(set_logtalk_flag, [Flag, Value], _, _, _, _) :-
 	'$lgt_check_compiler_flag'(Flag, Value),
+	retractall('$lgt_pp_entity_compiler_flag_'(Flag, _)),
 	assertz('$lgt_pp_entity_compiler_flag_'(Flag, Value)).
 
 
@@ -9304,6 +9306,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 	\+ '$lgt_pp_public_'(Functor, Arity),		% not a
 	\+ '$lgt_pp_protected_'(Functor, Arity),	% redefined
 	\+ '$lgt_pp_private_'(Functor, Arity),		% built-in
+	'$lgt_compiler_flag'(portability, warning),
 	assertz('$lgt_non_portable_call_'(Functor, Arity)),
 	fail.
 
@@ -9692,7 +9695,9 @@ current_logtalk_flag(version, version(2, 37, 6)).
 	functor(Exp, Functor, Arity),
 	(	'$lgt_non_portable_function_'(Functor, Arity) ->
 		true
-	;	assertz('$lgt_non_portable_function_'(Functor, Arity))
+	;	'$lgt_compiler_flag'(portability, warning) ->
+		assertz('$lgt_non_portable_function_'(Functor, Arity))
+	;	true
 	),
 	Exp =.. [_| Exps],
 	'$lgt_check_non_portable_function_args'(Exps).
@@ -12464,8 +12469,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 % report non-portable predicate calls in the body of object and category predicates
 
 '$lgt_report_non_portable_calls'(Type, Entity, File) :-
-	(	'$lgt_compiler_flag'(portability, warning),
-		setof(Pred, '$lgt_non_portable_call'(Pred), Preds) ->
+	(	setof(Pred, '$lgt_non_portable_call'(Pred), Preds) ->
 		'$lgt_report_warning_in_new_line',
 		'$lgt_inc_compile_warnings_counter',
 		(	Preds = [_] ->
@@ -12496,8 +12500,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 % report non-portable arithmetic function calls in the body of object and category predicates
 
 '$lgt_report_non_portable_functions'(Type, Entity, File) :-
-	(	'$lgt_compiler_flag'(portability, warning),
-		setof(Functor/Arity, '$lgt_non_portable_function_'(Functor, Arity), Functions) ->
+	(	setof(Functor/Arity, '$lgt_non_portable_function_'(Functor, Arity), Functions) ->
 		'$lgt_report_warning_in_new_line',
 		'$lgt_inc_compile_warnings_counter',
 		(	Functions = [_] ->
