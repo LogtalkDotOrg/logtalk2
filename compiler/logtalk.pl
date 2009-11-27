@@ -9240,9 +9240,16 @@ current_logtalk_flag(version, version(2, 37, 6)).
 	fail.
 
 
-% meta-predicates specified in use_module/2 directives
+% predicates specified in use_module/2 directives
 
-'$lgt_tr_body'(Alias, ':'(Module, TPred), ':'(Module, DPred), Ctx) :-
+'$lgt_tr_body'(Alias, ':'(Module, Pred), _, _) :-						% remember non-portable Prolog module predicate calls
+	'$lgt_pp_use_module_pred_'(Module, Pred, Alias),
+	'$lgt_compiler_flag'(portability, warning),
+	functor(Pred, Functor, Arity),
+	assertz('$lgt_non_portable_call_'(':'(Module, Functor), Arity)),
+	fail.
+
+'$lgt_tr_body'(Alias, ':'(Module, TPred), ':'(Module, DPred), Ctx) :-	% meta-predicates
 	'$lgt_pp_use_module_pred_'(Module, Pred, Alias),
 	catch('$lgt_predicate_property'(Pred, imported_from(Module)), _, fail),
 	catch('$lgt_predicate_property'(Pred, meta_predicate(Meta)), _, fail),
@@ -9257,10 +9264,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 	),
 	!.
 
-
-% predicates specified in use_module/2 directives
-
-'$lgt_tr_body'(Alias, ':'(Module, Pred), ':'(Module, Pred), _) :-
+'$lgt_tr_body'(Alias, ':'(Module, Pred), ':'(Module, Pred), _) :-		% normal predicates
 	'$lgt_pp_use_module_pred_'(Module, Pred, Alias),
 	!.
 
@@ -9296,7 +9300,7 @@ current_logtalk_flag(version, version(2, 37, 6)).
 	fail.
 
 
-% remember non-portable predicate calls
+% remember non-portable Prolog built-in predicate calls
 
 '$lgt_tr_body'(Pred, _, _, _) :-
 	'$lgt_pl_built_in'(Pred),
@@ -12490,10 +12494,6 @@ current_logtalk_flag(version, version(2, 37, 6)).
 	\+ '$lgt_pp_defs_pred_'(Functor, Arity),
 	functor(Pred, Functor, Arity),
 	\+ '$lgt_pp_redefined_built_in_'(Pred, _, _).
-
-'$lgt_non_portable_call'(':'(Module, Functor/Arity)) :-
-	'$lgt_pp_use_module_pred_'(Module, Pred, _),
-	functor(Pred, Functor, Arity).
 
 
 

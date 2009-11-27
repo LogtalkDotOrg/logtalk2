@@ -26,7 +26,7 @@ RELEASE NOTES
     entities. This allows e.g. easy setting of entity properties such as
     "events" when creating new entities using the entity creation built-in
     predicates. Updated documentation on the set_logtalk_flag/2 directive
-    and built-in predicate exceptions.
+    and the set_logtalk_flag/2 built-in predicate exceptions.
 
     Added support for runtime instantiation of the <</2 control construct
     arguments.
