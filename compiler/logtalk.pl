@@ -427,6 +427,12 @@ Obj<<Goal :-
 	Object == user,
 	throw(error(Error, Goal)).
 
+'$lgt_runtime_error_handler'(error(Error, Context)) :-																	% SWI-Prolog
+	nonvar(Context),
+	Context = context(TFunctor/TArity, _),
+	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
+	throw(error(Error, context(Type, Entity, Functor/Arity))).
+
 '$lgt_runtime_error_handler'(logtalk_debugger_aborted) :-
     !,
 	write('Debugging session aborted by user. Debugger still on.'), nl,
