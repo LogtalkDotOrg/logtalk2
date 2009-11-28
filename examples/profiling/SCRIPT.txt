@@ -94,9 +94,9 @@ yes
 
 | ?- list::length([1, 2, 3], Length).
 list <-- length([1,2,3],_277) from user
-STARTING at 755.75999999999999 seconds
+STARTING at 755.69000005 seconds
 list <-- length([1,2,3],3) from user
-ENDING at 755.69000000000005 seconds
+ENDING at 755.69000235 seconds
 
 Length = 3
 
