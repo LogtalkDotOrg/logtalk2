@@ -12,7 +12,7 @@
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %  (5.8.0 or later versions for using multi-threading features)
 %
-%  last updated: November 22, 2009
+%  last updated: November 28, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -282,7 +282,8 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 % expands a file path to a full path
 
 '$lgt_expand_path'(Path, ExpandedPath) :-
-	expand_file_name(Path, [ExpandedPath]).
+	working_directory(Current, Current),
+	absolute_file_name(Path, [expand(true), relative_to(Current)], ExpandedPath).
 
 
 % '$lgt_file_exists'(+atom)

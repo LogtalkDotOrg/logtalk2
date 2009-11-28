@@ -5169,14 +5169,14 @@ current_logtalk_flag(version, version(2, 37, 6)).
 		'$lgt_file_type_alt_directory'(Type, Directory) ->
 		% file on the alternate compilation directory
 		'$lgt_make_directory'(Directory),			% succeeds when the directory already exists
-		atom_concat(Directory, Basename, File)
+		atom_concat(Directory, Basename, File)		% alternate directories end with a slash
 	;	% file local to current working directory
 		File = Basename
 	),
 	(	'$lgt_expand_path'(File, Path) ->			% try to expand the file path in order to
 		true										% prevent problems with Prolog compilers
 	;	File = Path									% where open/3-4 is not always relative to
-	).
+	).												% the current working directory
 
 
 
