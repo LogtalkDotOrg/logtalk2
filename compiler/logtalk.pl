@@ -3569,7 +3569,7 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	'$lgt_lambda_metacall'(LambdaCopy, Goal, ExtraArgs),
 	'$lgt_metacall'(Goal, MetaCallCtx, Sender, This, Self).
 
-'$lgt_metacall'(Free +\ Lambda, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
+'$lgt_metacall'(+\(Free, Lambda), ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	!,
 	'$lgt_copy_term_without_constraints'(Free+Lambda, Free+LambdaCopy),
 	'$lgt_lambda_metacall'(LambdaCopy, Goal, ExtraArgs),
