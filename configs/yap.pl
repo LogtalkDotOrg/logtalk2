@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: November 22, 2009
+%  last updated: November 28, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -792,6 +792,20 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 	).
 '$lgt_logtalk_prolog_encoding'('UTF-16BE', unicode_be, _).		% BOM forbidden
 '$lgt_logtalk_prolog_encoding'('UTF-16LE', unicode_le, _).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% experimental lambda support predicates
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_copy_term_without_constraints'(@term, ?term)
+
+'$lgt_copy_term_without_constraints'(Term, Copy) :-
+	copy_term_nat(Term, Copy).
 
 
 

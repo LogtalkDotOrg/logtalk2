@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: November 22, 2009
+%  last updated: November 28, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -642,6 +642,20 @@ forall(Generate, Test) :-
 	).
 '$lgt_logtalk_prolog_encoding'('UTF-32BE', 'UTF-32BE', _).		% BOM forbidden
 '$lgt_logtalk_prolog_encoding'('UTF-32LE', 'UTF-32LE', _).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% experimental lambda support predicates
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_copy_term_without_constraints'(@term, ?term)
+
+'$lgt_copy_term_without_constraints'(Term, Copy) :-
+	copy_term(Term, Copy, _).
 
 
 

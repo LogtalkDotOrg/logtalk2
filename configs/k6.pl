@@ -11,7 +11,7 @@
 %
 %  configuration file for K-Prolog 6.0.4 and later versions
 %
-%  last updated: November 22, 2009
+%  last updated: November 28, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -562,6 +562,20 @@ call_cleanup(_, _) :-
 '$lgt_logtalk_prolog_encoding'('UTF-8', utf8, _).
 '$lgt_logtalk_prolog_encoding'('EUC-JP', eucjp, _).
 '$lgt_logtalk_prolog_encoding'('Shift_JIS', sjis, _).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% experimental lambda support predicates
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_copy_term_without_constraints'(@term, ?term)
+
+'$lgt_copy_term_without_constraints'(Term, Copy) :-
+	copy_term(Term, Copy).
 
 
 

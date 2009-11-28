@@ -48,6 +48,11 @@
 :- op(600,  fy,  :).
 
 
+% experimental lambda support
+
+:- op(201, xfx,  +\).
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -3558,6 +3563,18 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	;	throw(type_error(atom, Module))
 	).
 
+'$lgt_metacall'(\ Lambda, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
+	!,
+	'$lgt_copy_term_without_constraints'(Lambda, LambdaCopy),
+	'$lgt_lambda_metacall'(LambdaCopy, Goal, ExtraArgs),
+	'$lgt_metacall'(Goal, MetaCallCtx, Sender, This, Self).
+
+'$lgt_metacall'(Free +\ Lambda, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
+	!,
+	'$lgt_copy_term_without_constraints'(Free+Lambda, Free+LambdaCopy),
+	'$lgt_lambda_metacall'(LambdaCopy, Goal, ExtraArgs),
+	'$lgt_metacall'(Goal, MetaCallCtx, Sender, This, Self).
+
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	(	atom(Closure) ->
 		Pred =.. [Closure| ExtraArgs]
@@ -3569,6 +3586,13 @@ current_logtalk_flag(version, version(2, 38, 0)).
 		'$lgt_metacall_this'(Pred, Sender, This, Self)
 	;	'$lgt_metacall_sender'(Pred, Sender, This, Self)
 	).
+
+
+'$lgt_lambda_metacall'(Var^VarsClosure, Closure, [Var| Vars]) :-
+	!,
+	'$lgt_lambda_metacall'(VarsClosure, Closure, Vars).
+
+'$lgt_lambda_metacall'(Closure, Closure, []).
 
 
 

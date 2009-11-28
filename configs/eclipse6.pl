@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#77 and later versions
 %
-%  last updated: November 22, 2009
+%  last updated: November 28, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -782,6 +782,20 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_logtalk_prolog_encoding'(_, _, _) :-
 	fail.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% experimental lambda support predicates
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_copy_term_without_constraints'(@term, ?term)
+
+'$lgt_copy_term_without_constraints'(Term, Copy) :-
+	copy_term(Term, Copy, _).
 
 
 

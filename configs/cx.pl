@@ -11,7 +11,7 @@
 %
 %  configuration file for CxProlog 0.97.2 or a later version
 %
-%  last updated: November 22, 2009
+%  last updated: November 28, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -587,6 +587,20 @@
 	).
 '$lgt_logtalk_prolog_encoding'('UTF-32BE', utf32be, _).			% BOM forbidden
 '$lgt_logtalk_prolog_encoding'('UTF-32LE', utf32le, _).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% experimental lambda support predicates
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_copy_term_without_constraints'(@term, ?term)
+
+'$lgt_copy_term_without_constraints'(Term, Copy) :-
+	copy_term(Term, Copy).
 
 
 
