@@ -3588,11 +3588,11 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	).
 
 
-'$lgt_lambda_metacall'(Var^VarsClosure, Closure, [Var| Vars]) :-
+'$lgt_lambda_metacall'(Var^VarsGoal, Goal, [Var| Vars]) :-
 	!,
-	'$lgt_lambda_metacall'(VarsClosure, Closure, Vars).
+	'$lgt_lambda_metacall'(VarsGoal, Goal, Vars).
 
-'$lgt_lambda_metacall'(Closure, Closure, []).
+'$lgt_lambda_metacall'(Goal, Goal, []).
 
 
 
@@ -3610,6 +3610,10 @@ current_logtalk_flag(version, version(2, 38, 0)).
 '$lgt_metacall'({Pred}, _, _, _, _) :-	% pre-compiled metacalls
 	!,
 	call(Pred).
+
+'$lgt_metacall'(':'(Module, Goal), _, _, _, _) :-
+	!,
+	':'(Module, Goal).
 
 '$lgt_metacall'(Pred, MetaCallCtx, Sender, This, Self) :-
 	(	\+ '$lgt_member'(Pred, MetaCallCtx) ->
