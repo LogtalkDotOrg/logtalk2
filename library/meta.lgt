@@ -3,8 +3,8 @@
 	implements(metap)).
 
 	:- info([
-		version is 2.5,
-		date is 2009/5/2,
+		version is 2.6,
+		date is 2009/11/27,
 		author is 'Paulo Moura',
 		comment is 'Some useful meta-predicates.']).
 
@@ -15,10 +15,19 @@
 	:- alias(metap, scan_left/4, scanl/4).
 	:- alias(metap, scan_right/4, scanr/4).
 
-	callable(Term) :-
-		nonvar(Term),
-		functor(Term, Functor, _),
-		atom(Functor).
+	:- if(predicate_property(callable(_), built_in)).
+
+		callable(Term) :-
+			{callable(Term)}.
+
+	:- else.
+
+		callable(Term) :-
+			nonvar(Term),
+			functor(Term, Functor, _),
+			atom(Functor).
+
+	:- endif.
 
 	:- meta_predicate(include_(*, 1, *)).
 	include_([], _, []).

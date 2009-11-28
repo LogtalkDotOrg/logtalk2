@@ -320,7 +320,7 @@ Obj<<Goal :-
 
 % '$lgt_runtime_error_handler'(@term)
 %
-% top-level runtime error handler
+% top-level runtime error handler; an ugly mess due to the lack of Prolog standardization
 
 '$lgt_runtime_error_handler'(Variable) :-
 	var(Variable),
