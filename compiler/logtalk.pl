@@ -3570,7 +3570,13 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	 	throw(error(instantiation_error, \ Lambda, This))
 	;	'$lgt_copy_term_without_constraints'(Lambda, LambdaCopy),
 		'$lgt_lambda_metacall'(LambdaCopy, Goal, ExtraArgs) ->
-		'$lgt_metacall'(Goal, MetaCallCtx, Sender, This, Self)
+		(	callable(Goal) ->
+			(	\+ '$lgt_member'(Goal, MetaCallCtx) ->
+				'$lgt_metacall_this'(Goal, Sender, This, Self)
+			;	'$lgt_metacall_sender'(Goal, Sender, This, Self)
+			)
+		;	throw(error(type_error(callable, Goal), \ Lambda, This))
+		)
 	;	throw(error(representation_error(lambda_parameters), \ Lambda, This))
 	).
 
@@ -3580,7 +3586,13 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	 	throw(error(instantiation_error, +\(Free, Lambda), This))
 	;	'$lgt_copy_term_without_constraints'(Free+Lambda, Free+LambdaCopy),
 		'$lgt_lambda_metacall'(LambdaCopy, Goal, ExtraArgs) ->
-		'$lgt_metacall'(Goal, MetaCallCtx, Sender, This, Self)
+		(	callable(Goal) ->
+			(	\+ '$lgt_member'(Goal, MetaCallCtx) ->
+				'$lgt_metacall_this'(Goal, Sender, This, Self)
+			;	'$lgt_metacall_sender'(Goal, Sender, This, Self)
+			)
+		;	throw(error(type_error(callable, Goal), +\(Free, Lambda), This))
+		)
 	;	throw(error(representation_error(lambda_parameters), +\(Free, Lambda), This))
 	).
 
