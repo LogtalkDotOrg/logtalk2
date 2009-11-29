@@ -3568,22 +3568,20 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	!,
 	(	var(Lambda) ->
 	 	throw(error(instantiation_error, \ Lambda, This))
-	;	Lambda = (_ ^ Term), Term \= (_ ^ _) ->
-		throw(error(representation_error(lambda_parameters), \ Lambda, This))
 	;	'$lgt_copy_term_without_constraints'(Lambda, LambdaCopy),
-		'$lgt_lambda_metacall'(LambdaCopy, Goal, ExtraArgs),
+		'$lgt_lambda_metacall'(LambdaCopy, Goal, ExtraArgs) ->
 		'$lgt_metacall'(Goal, MetaCallCtx, Sender, This, Self)
+	;	throw(error(representation_error(lambda_parameters), \ Lambda, This))
 	).
 
 '$lgt_metacall'(+\(Free, Lambda), ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	!,
 	(	var(Lambda) ->
 	 	throw(error(instantiation_error, +\(Free, Lambda), This))
-	;	Lambda = (_ ^ Term), Term \= (_ ^ _) ->
-		throw(error(representation_error(lambda_parameters), +\(Free, Lambda), This))
 	;	'$lgt_copy_term_without_constraints'(Free+Lambda, Free+LambdaCopy),
-		'$lgt_lambda_metacall'(LambdaCopy, Goal, ExtraArgs),
+		'$lgt_lambda_metacall'(LambdaCopy, Goal, ExtraArgs) ->
 		'$lgt_metacall'(Goal, MetaCallCtx, Sender, This, Self)
+	;	throw(error(representation_error(lambda_parameters), +\(Free, Lambda), This))
 	).
 
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
@@ -3603,7 +3601,8 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	!,
 	'$lgt_lambda_metacall'(VarsGoal, Goal, Vars).
 
-'$lgt_lambda_metacall'(Goal, Goal, []).
+'$lgt_lambda_metacall'(Goal, Goal, []) :-
+	Goal \= (_ ^ _).
 
 
 
