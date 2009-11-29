@@ -3560,20 +3560,31 @@ current_logtalk_flag(version, version(2, 38, 0)).
 		;	Goal =.. [call, ':'(Module, Closure)| ExtraArgs],
 			throw(error(type_error(callable, Closure), Goal, This))
 		)
-	;	throw(type_error(atom, Module))
+	;	Goal =.. [call, ':'(Module, Closure)| ExtraArgs],
+		throw(error(type_error(atom, Module), Goal, This))
 	).
 
 '$lgt_metacall'(\ Lambda, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	!,
-	'$lgt_copy_term_without_constraints'(Lambda, LambdaCopy),
-	'$lgt_lambda_metacall'(LambdaCopy, Goal, ExtraArgs),
-	'$lgt_metacall'(Goal, MetaCallCtx, Sender, This, Self).
+	(	var(Lambda) ->
+	 	throw(error(instantiation_error, \ Lambda, This))
+	;	Lambda = (_ ^ Term), Term \= (_ ^ _) ->
+		throw(error(representation_error(lambda_parameters), \ Lambda, This))
+	;	'$lgt_copy_term_without_constraints'(Lambda, LambdaCopy),
+		'$lgt_lambda_metacall'(LambdaCopy, Goal, ExtraArgs),
+		'$lgt_metacall'(Goal, MetaCallCtx, Sender, This, Self)
+	).
 
 '$lgt_metacall'(+\(Free, Lambda), ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	!,
-	'$lgt_copy_term_without_constraints'(Free+Lambda, Free+LambdaCopy),
-	'$lgt_lambda_metacall'(LambdaCopy, Goal, ExtraArgs),
-	'$lgt_metacall'(Goal, MetaCallCtx, Sender, This, Self).
+	(	var(Lambda) ->
+	 	throw(error(instantiation_error, +\(Free, Lambda), This))
+	;	Lambda = (_ ^ Term), Term \= (_ ^ _) ->
+		throw(error(representation_error(lambda_parameters), +\(Free, Lambda), This))
+	;	'$lgt_copy_term_without_constraints'(Free+Lambda, Free+LambdaCopy),
+		'$lgt_lambda_metacall'(LambdaCopy, Goal, ExtraArgs),
+		'$lgt_metacall'(Goal, MetaCallCtx, Sender, This, Self)
+	).
 
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	(	atom(Closure) ->
@@ -3605,6 +3616,13 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	(	atom(MetaCallCtx) ->
 		throw(error(instantiation_error, This::call(Pred), This))
 	;	throw(error(instantiation_error, Sender::call(Pred), This))
+	).
+
+'$lgt_metacall'(Pred, MetaCallCtx, Sender, This, _) :-
+	\+ callable(Pred),
+	(	atom(MetaCallCtx) ->
+		throw(error(type_error(callable, Pred), This::call(Pred), This))
+	;	throw(error(type_error(callable, Pred), Sender::call(Pred), This))
 	).
 
 '$lgt_metacall'({Pred}, _, _, _, _) :-	% pre-compiled metacalls
@@ -8489,16 +8507,16 @@ current_logtalk_flag(version, version(2, 38, 0)).
 
 '$lgt_tr_body'(\ Lambda, TPred, DPred, Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, MetaCallCtx, ExCtx),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
-	TPred = '$lgt_metacall'(\ Lambda, [], MetaCallCtx, Sender, This, Self),
+	TPred = '$lgt_metacall'(\ Lambda, MetaVars, MetaCallCtx, Sender, This, Self),
 	DPred = '$lgt_dbg_goal'(\ Lambda, TPred, ExCtx).
 
 '$lgt_tr_body'(+\(Free, Lambda), TPred, DPred, Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, MetaCallCtx, ExCtx),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
-	TPred = '$lgt_metacall'(+\(Free, Lambda), [], MetaCallCtx, Sender, This, Self),
+	TPred = '$lgt_metacall'(+\(Free, Lambda), MetaVars, MetaCallCtx, Sender, This, Self),
 	DPred = '$lgt_dbg_goal'(+\(Free, Lambda), TPred, ExCtx).
 
 
