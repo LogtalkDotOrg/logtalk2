@@ -1,0 +1,57 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.38.0
+
+Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+% start by loading the example:
+
+| ?- logtalk_load(lambdas(loader)).
+...
+
+
+% some sample queries using the "metapredicates" library predicates:
+
+| ?- meta::map(\X^(X>3),[4,5,9]).
+yes
+
+| ?- meta::map(t+\X^Y^(X=A-B,Y=B-A), [1-a,2-b,3-c], Zs).
+Zs = [a-1,b-2,c-3]
+yes
+
+| ?- meta::map(\X^Y^(X=A-B,Y=B-A), [1-a,2-b,3-c], Zs).
+Zs = [a-1,b-2,c-3]
+yes
+
+| ?- meta::map(\X^(B-A)^(X=A-B), [1-a,2-b,3-c], Zs).
+Zs = [a-1,b-2,c-3]
+yes
+
+| ?- meta::map(\ (A-B)^(B-A)^true, [1-a,2-b,3-c], Zs).
+Zs = [a-1,b-2,c-3]
+yes
+
+
+% examples on symplifying setof/3 and similar predicates usage:
+
+| ?- countries::currencies_wrong(Currencies).
+Currencies = [pound_sterling] ;
+Currencies = [dinar] ;
+Currencies = [ringgit] ;
+Currencies = [euro] ;
+Currencies = [euro] ;
+Currencies = [dinar]
+yes
+
+| ?- countries::currencies_no_lambda(Currencies).
+Currencies = [dinar, euro, pound_sterling, ringgit].
+yes
+
+| ?- countries::currencies_lambda(Currencies).
+Currencies = [dinar, euro, pound_sterling, ringgit].
+yes

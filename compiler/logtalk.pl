@@ -8485,6 +8485,23 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
 
+% lambda expressions support predicates
+
+'$lgt_tr_body'(\ Lambda, TPred, DPred, Ctx) :-
+	!,
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, MetaCallCtx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
+	TPred = '$lgt_metacall'(\ Lambda, [], MetaCallCtx, Sender, This, Self),
+	DPred = '$lgt_dbg_goal'(\ Lambda, TPred, ExCtx).
+
+'$lgt_tr_body'(+\(Free, Lambda), TPred, DPred, Ctx) :-
+	!,
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, MetaCallCtx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
+	TPred = '$lgt_metacall'(+\(Free, Lambda), [], MetaCallCtx, Sender, This, Self),
+	DPred = '$lgt_dbg_goal'(+\(Free, Lambda), TPred, ExCtx).
+
+
 % built-in meta-predicates
 
 '$lgt_tr_body'(bagof(Term, Pred, List), bagof(Term, TPred, List), '$lgt_dbg_goal'(bagof(Term, Pred, List), bagof(Term, DPred, List), ExCtx), Ctx) :-

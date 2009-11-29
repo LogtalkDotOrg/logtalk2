@@ -16,7 +16,8 @@ RELEASE NOTES
 2.38.0 - November 30, 2009
 
     Experimental support for lambda expressions following Ulrich Neumerkel's
-    proposal.
+    proposal. Added an example, "lambdas", illustrating the use of lambda
+    expressions.
 
     Added a new compiler flag, "clean", for cleaning the intermediate Prolog
     files generated when compiling Logtalk source files.

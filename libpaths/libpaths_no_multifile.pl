@@ -64,6 +64,7 @@
 	assertz(logtalk_library_path(instvars, examples('instvars/'))),
 	assertz(logtalk_library_path(integration, threads('integration/'))),
 	assertz(logtalk_library_path(integration2d, threads('integration2d/'))),
+	assertz(logtalk_library_path(lambdas, examples('lambdas/'))),
 	assertz(logtalk_library_path(lo_planner, examples('lo/planner/'))),
 	assertz(logtalk_library_path(lo_travellers, examples('lo/travellers/'))),
 	assertz(logtalk_library_path(logging, examples('logging/'))),
