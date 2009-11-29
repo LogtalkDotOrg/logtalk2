@@ -3569,7 +3569,7 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	(	var(Lambda) ->
 	 	throw(error(instantiation_error, \ Lambda, This))
 	;	'$lgt_copy_term_without_constraints'(Lambda, LambdaCopy),
-		'$lgt_lambda_metacall'(LambdaCopy, Goal, ExtraArgs) ->
+		'$lgt_unify_lambda_parameters'(ExtraArgs, LambdaCopy, Goal) ->
 		(	callable(Goal) ->
 			(	\+ '$lgt_member'(Goal, MetaCallCtx) ->
 				'$lgt_metacall_this'(Goal, Sender, This, Self)
@@ -3585,7 +3585,7 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	(	var(Lambda) ->
 	 	throw(error(instantiation_error, +\(Free, Lambda), This))
 	;	'$lgt_copy_term_without_constraints'(Free+Lambda, Free+LambdaCopy),
-		'$lgt_lambda_metacall'(LambdaCopy, Goal, ExtraArgs) ->
+		'$lgt_unify_lambda_parameters'(ExtraArgs, LambdaCopy, Goal) ->
 		(	callable(Goal) ->
 			(	\+ '$lgt_member'(Goal, MetaCallCtx) ->
 				'$lgt_metacall_this'(Goal, Sender, This, Self)
@@ -3609,11 +3609,10 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	).
 
 
-'$lgt_lambda_metacall'(Var^VarsGoal, Goal, [Var| Vars]) :-
-	!,
-	'$lgt_lambda_metacall'(VarsGoal, Goal, Vars).
+'$lgt_unify_lambda_parameters'([Var| Vars], Var^VarsGoal, Goal) :-
+	'$lgt_unify_lambda_parameters'(Vars, VarsGoal, Goal).
 
-'$lgt_lambda_metacall'(Goal, Goal, []) :-
+'$lgt_unify_lambda_parameters'([], Goal, Goal) :-
 	Goal \= (_ ^ _).
 
 
