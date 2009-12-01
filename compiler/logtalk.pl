@@ -3564,20 +3564,16 @@ current_logtalk_flag(version, version(2, 38, 0)).
 		throw(error(type_error(atom, Module), Goal, This))
 	).
 
+'$lgt_metacall'(Term1^Term2, _, _, _, This, _) :-
+	throw(error(representation_error(lambda_parameters), Term1^Term2, This)).
+
 '$lgt_metacall'(\ Lambda, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	!,
 	(	var(Lambda) ->
 	 	throw(error(instantiation_error, \ Lambda, This))
 	;	'$lgt_copy_term_without_constraints'(Lambda, LambdaCopy),
-		'$lgt_unify_lambda_parameters'(ExtraArgs, LambdaCopy, Goal) ->
-		(	callable(Goal) ->
-			(	\+ '$lgt_member'(Goal, MetaCallCtx) ->
-				'$lgt_metacall_this'(Goal, Sender, This, Self)
-			;	'$lgt_metacall_sender'(Goal, Sender, This, Self)
-			)
-		;	throw(error(type_error(callable, Goal), \ Lambda, This))
-		)
-	;	throw(error(representation_error(lambda_parameters), \ Lambda, This))
+		'$lgt_unify_lambda_parameters'(ExtraArgs, LambdaCopy, Rest, Closure),
+		'$lgt_metacall'(Closure, Rest, MetaCallCtx, Sender, This, Self)
 	).
 
 '$lgt_metacall'(+\(Free, Lambda), ExtraArgs, MetaCallCtx, Sender, This, Self) :-
@@ -3585,15 +3581,8 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	(	var(Lambda) ->
 	 	throw(error(instantiation_error, +\(Free, Lambda), This))
 	;	'$lgt_copy_term_without_constraints'(Free+Lambda, Free+LambdaCopy),
-		'$lgt_unify_lambda_parameters'(ExtraArgs, LambdaCopy, Goal) ->
-		(	callable(Goal) ->
-			(	\+ '$lgt_member'(Goal, MetaCallCtx) ->
-				'$lgt_metacall_this'(Goal, Sender, This, Self)
-			;	'$lgt_metacall_sender'(Goal, Sender, This, Self)
-			)
-		;	throw(error(type_error(callable, Goal), +\(Free, Lambda), This))
-		)
-	;	throw(error(representation_error(lambda_parameters), +\(Free, Lambda), This))
+		'$lgt_unify_lambda_parameters'(ExtraArgs, LambdaCopy, Rest, Closure),
+		'$lgt_metacall'(Closure, Rest, MetaCallCtx, Sender, This, Self)
 	).
 
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
@@ -3609,11 +3598,11 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	).
 
 
-'$lgt_unify_lambda_parameters'([Var| Vars], Var^VarsGoal, Goal) :-
-	'$lgt_unify_lambda_parameters'(Vars, VarsGoal, Goal).
+'$lgt_unify_lambda_parameters'([Var| Vars], Var^VarsGoal, Rest, Closure) :-
+	!,
+	'$lgt_unify_lambda_parameters'(Vars, VarsGoal, Rest, Closure).
 
-'$lgt_unify_lambda_parameters'([], Goal, Goal) :-
-	Goal \= (_ ^ _).
+'$lgt_unify_lambda_parameters'(Vars, Closure, Vars, Closure).
 
 
 
@@ -4024,10 +4013,13 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	'$lgt_bio_user_0__dcl'(Pred, Scope, Type, Meta, NonTerminal, Synchronized).
 
 
-'$lgt_bio_user_0__def'(Pred, _, Pred).
+'$lgt_bio_user_0__def'(Pred, _, Pred) :-
+	functor(Pred, Functor, Arity),
+	current_predicate(Functor/Arity).
 
 
-'$lgt_bio_user_0__def'(Pred, _, Pred, user).
+'$lgt_bio_user_0__def'(Pred, _, Pred, user) :-
+	'$lgt_bio_user_0__def'(Pred, _, Pred).
 
 
 '$lgt_bio_user_0__super'(_, _, _, _) :-
@@ -8513,20 +8505,20 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
 
-% lambda expressions support predicates
+% lambda expression support predicates
 
 '$lgt_tr_body'(\ Lambda, TPred, DPred, Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, MetaCallCtx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
-	TPred = '$lgt_metacall'(\ Lambda, MetaVars, MetaCallCtx, Sender, This, Self),
+	TPred = '$lgt_metacall'(\ Lambda, [], MetaCallCtx, Sender, This, Self),
 	DPred = '$lgt_dbg_goal'(\ Lambda, TPred, ExCtx).
 
 '$lgt_tr_body'(+\(Free, Lambda), TPred, DPred, Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, MetaCallCtx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
-	TPred = '$lgt_metacall'(+\(Free, Lambda), MetaVars, MetaCallCtx, Sender, This, Self),
+	TPred = '$lgt_metacall'(+\(Free, Lambda), [], MetaCallCtx, Sender, This, Self),
 	DPred = '$lgt_dbg_goal'(+\(Free, Lambda), TPred, ExCtx).
 
 
