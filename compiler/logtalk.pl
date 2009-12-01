@@ -3567,10 +3567,10 @@ current_logtalk_flag(version, version(2, 38, 0)).
 '$lgt_metacall'(Term1^Term2, _, _, _, This, _) :-
 	throw(error(representation_error(lambda_parameters), Term1^Term2, This)).
 
-'$lgt_metacall'(\ Lambda, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
+'$lgt_metacall'(\(Lambda), ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	!,
 	(	var(Lambda) ->
-	 	throw(error(instantiation_error, \ Lambda, This))
+	 	throw(error(instantiation_error, \(Lambda), This))
 	;	'$lgt_copy_term_without_constraints'(Lambda, LambdaCopy),
 		'$lgt_unify_lambda_parameters'(ExtraArgs, LambdaCopy, Rest, Closure),
 		'$lgt_metacall'(Closure, Rest, MetaCallCtx, Sender, This, Self)
@@ -8451,24 +8451,32 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	throw(type_error(callable, Closure)).
 
 '$lgt_tr_body'(CallN, TPred, DPred, Ctx) :-
-	CallN =.. [call, Closure| Args],
+	CallN =.. [call, Closure| ExtraArgs],
 	nonvar(Closure),
-	Closure \= _::_,							% these three special cases
+	Closure \= _::_,							% these five special cases
 	Closure \= ::_,								% are already handled by the
 	Closure \= ':'(_, _),						% '$lgt_metacall'/6 predicate
+	Closure \= \(_),
+	Closure \= +\(_, _),
 	!,
-	Pred =.. [Closure| Args],
+	(	atom(Closure) ->
+		Pred =.. [Closure| ExtraArgs]
+	;	Closure =.. [Functor| Args],
+		'$lgt_append'(Args, ExtraArgs, FullArgs),
+		Pred =.. [Functor| FullArgs]
+	),
 	'$lgt_tr_body'(Pred, TPred, DPred, Ctx).
 
 '$lgt_tr_body'(CallN, _, _, Ctx) :-
 	CallN =.. [call, Closure| _],
+	var(Closure),
 	'$lgt_comp_ctx'(Ctx, Head, _, _, _, _, MetaVars, _, _),
 	functor(Head, Functor, Arity),
 	functor(Meta, Functor, Arity),
 	'$lgt_pp_meta_predicate_'(Meta),			% if we're compiling a clause for a meta-predicate
 	'$lgt_member_var'(Closure, MetaVars) ->		% and our closure is a meta-argument
-	functor(CallN, _, CallArity),				% then check that the call/N call complies with
-	ExtraArgs is CallArity - 1,					% the meta-predicate declaration
+	functor(CallN, _, CallNArity),				% then check that the call/N call complies with
+	ExtraArgs is CallNArity - 1,				% the meta-predicate declaration
 	Meta =.. [_| MetaArgs],
 	\+ '$lgt_same_meta_arg_extra_args'(MetaArgs, MetaVars, Closure, ExtraArgs),
 	throw(arity_mismatch(closure, CallN, Meta)).
@@ -8477,13 +8485,14 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	CallN =.. [call, Closure| Args],
 	!,
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
-	(	'$lgt_member_var'(Closure, MetaVars) ->
+	(	var(Closure), '$lgt_member_var'(Closure, MetaVars) ->
 		% we're compiling a clause for a meta-predicate; therefore, we need
 		% to connect the execution context and the meta-call context arguments
 		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
 		TPred = '$lgt_metacall'(Closure, Args, MetaCallCtx, Sender, This, Self)
 	;	% we're either compiling a clause for a normal predicate (i.e. MetaVars == [])
 		% or the meta-call should be local as it corresponds to a non meta-argument
+		% or the meta-call is an explicitly qualifed call (::/2, ::/1, :/2) or a lambda expression (\/1, or +\/2)
 		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
 		TPred = '$lgt_metacall'(Closure, Args, [], Sender, This, Self)
 	),
@@ -8505,21 +8514,23 @@ current_logtalk_flag(version, version(2, 38, 0)).
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
 
-% lambda expression support predicates
+% experimental lambda expression support predicates
 
-'$lgt_tr_body'(\ Lambda, TPred, DPred, Ctx) :-
+'$lgt_tr_body'(LambdaExpression, TPred, DPred, Ctx) :-
+	LambdaExpression =.. [(\), Lambda| Args],
 	!,
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, MetaCallCtx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
-	TPred = '$lgt_metacall'(\ Lambda, [], MetaCallCtx, Sender, This, Self),
-	DPred = '$lgt_dbg_goal'(\ Lambda, TPred, ExCtx).
+	TPred = '$lgt_metacall'(\(Lambda), Args, MetaCallCtx, Sender, This, Self),
+	DPred = '$lgt_dbg_goal'(LambdaExpression, TPred, ExCtx).
 
-'$lgt_tr_body'(+\(Free, Lambda), TPred, DPred, Ctx) :-
+'$lgt_tr_body'(LambdaExpression, TPred, DPred, Ctx) :-
+	LambdaExpression =.. [(+\), Free, Lambda| Args],
 	!,
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, MetaCallCtx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
-	TPred = '$lgt_metacall'(+\(Free, Lambda), [], MetaCallCtx, Sender, This, Self),
-	DPred = '$lgt_dbg_goal'(+\(Free, Lambda), TPred, ExCtx).
+	TPred = '$lgt_metacall'(+\(Free, Lambda), Args, MetaCallCtx, Sender, This, Self),
+	DPred = '$lgt_dbg_goal'(LambdaExpression, TPred, ExCtx).
 
 
 % built-in meta-predicates
