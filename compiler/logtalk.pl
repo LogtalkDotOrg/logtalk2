@@ -48,11 +48,6 @@
 :- op(600,  fy,  :).
 
 
-% experimental lambda support
-
-:- op(201, xfx,  +\).
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -3564,27 +3559,6 @@ current_logtalk_flag(version, version(2, 38, 0)).
 		throw(error(type_error(atom, Module), Goal, This))
 	).
 
-'$lgt_metacall'(Term1^Term2, _, _, _, This, _) :-
-	throw(error(representation_error(lambda_parameters), Term1^Term2, This)).
-
-'$lgt_metacall'(\(Lambda), ExtraArgs, MetaCallCtx, Sender, This, Self) :-
-	!,
-	(	var(Lambda) ->
-	 	throw(error(instantiation_error, \(Lambda), This))
-	;	'$lgt_copy_term_without_constraints'(Lambda, LambdaCopy),
-		'$lgt_unify_lambda_parameters'(ExtraArgs, LambdaCopy, Rest, Closure),
-		'$lgt_metacall'(Closure, Rest, MetaCallCtx, Sender, This, Self)
-	).
-
-'$lgt_metacall'(+\(Free, Lambda), ExtraArgs, MetaCallCtx, Sender, This, Self) :-
-	!,
-	(	var(Lambda) ->
-	 	throw(error(instantiation_error, +\(Free, Lambda), This))
-	;	'$lgt_copy_term_without_constraints'(Free+Lambda, Free+LambdaCopy),
-		'$lgt_unify_lambda_parameters'(ExtraArgs, LambdaCopy, Rest, Closure),
-		'$lgt_metacall'(Closure, Rest, MetaCallCtx, Sender, This, Self)
-	).
-
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	(	atom(Closure) ->
 		Pred =.. [Closure| ExtraArgs]
@@ -3596,13 +3570,6 @@ current_logtalk_flag(version, version(2, 38, 0)).
 		'$lgt_metacall_this'(Pred, Sender, This, Self)
 	;	'$lgt_metacall_sender'(Pred, Sender, This, Self)
 	).
-
-
-'$lgt_unify_lambda_parameters'([Var| Vars], Var^VarsGoal, Rest, Closure) :-
-	!,
-	'$lgt_unify_lambda_parameters'(Vars, VarsGoal, Rest, Closure).
-
-'$lgt_unify_lambda_parameters'(Vars, Closure, Vars, Closure).
 
 
 
@@ -8453,11 +8420,9 @@ current_logtalk_flag(version, version(2, 38, 0)).
 '$lgt_tr_body'(CallN, TPred, DPred, Ctx) :-
 	CallN =.. [call, Closure| ExtraArgs],
 	nonvar(Closure),
-	Closure \= _::_,							% these five special cases
+	Closure \= _::_,							% these three special cases
 	Closure \= ::_,								% are already handled by the
 	Closure \= ':'(_, _),						% '$lgt_metacall'/6 predicate
-	Closure \= \(_),
-	Closure \= +\(_, _),
 	!,
 	(	atom(Closure) ->
 		Pred =.. [Closure| ExtraArgs]
@@ -8492,7 +8457,7 @@ current_logtalk_flag(version, version(2, 38, 0)).
 		TPred = '$lgt_metacall'(Closure, Args, MetaCallCtx, Sender, This, Self)
 	;	% we're either compiling a clause for a normal predicate (i.e. MetaVars == [])
 		% or the meta-call should be local as it corresponds to a non meta-argument
-		% or the meta-call is an explicitly qualifed call (::/2, ::/1, :/2) or a lambda expression (\/1, or +\/2)
+		% or the meta-call is an explicitly qualifed call (::/2, ::/1, or :/2)
 		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
 		TPred = '$lgt_metacall'(Closure, Args, [], Sender, This, Self)
 	),
@@ -8512,25 +8477,6 @@ current_logtalk_flag(version, version(2, 38, 0)).
 '$lgt_tr_body'(throw(Error), throw(Error), '$lgt_dbg_goal'(throw(Error), throw(Error), ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
-
-
-% experimental lambda expression support predicates
-
-'$lgt_tr_body'(LambdaExpression, TPred, DPred, Ctx) :-
-	LambdaExpression =.. [(\), Lambda| Args],
-	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, MetaCallCtx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
-	TPred = '$lgt_metacall'(\(Lambda), Args, MetaCallCtx, Sender, This, Self),
-	DPred = '$lgt_dbg_goal'(LambdaExpression, TPred, ExCtx).
-
-'$lgt_tr_body'(LambdaExpression, TPred, DPred, Ctx) :-
-	LambdaExpression =.. [(+\), Free, Lambda| Args],
-	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, MetaCallCtx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
-	TPred = '$lgt_metacall'(+\(Free, Lambda), Args, MetaCallCtx, Sender, This, Self),
-	DPred = '$lgt_dbg_goal'(LambdaExpression, TPred, ExCtx).
 
 
 % built-in meta-predicates
