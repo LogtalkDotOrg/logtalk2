@@ -48,6 +48,11 @@
 :- op(600,  fy,  :).
 
 
+% bitwise left-shift operator (used for lambda expressions)
+
+:- op(400, yfx, >>).	% some Prolog compilers don't declare this operator
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -3559,6 +3564,36 @@ current_logtalk_flag(version, version(2, 38, 0)).
 		throw(error(type_error(atom, Module), Goal, This))
 	).
 
+'$lgt_metacall'(Free/Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
+	!,
+	(	var(Closure) ->
+	 	throw(error(instantiation_error, Free/Closure, This))
+	;	'$lgt_copy_term_without_constraints'(Free/Closure, Free/ClosureCopy),
+		'$lgt_metacall'(ClosureCopy, ExtraArgs, MetaCallCtx, Sender, This, Self)
+	).
+
+'$lgt_metacall'(Free/Parameters>>Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
+	!,
+	(	var(Closure) ->
+	 	throw(error(instantiation_error, Free/Parameters>>Closure, This))
+	;	\+ '$lgt_is_proper_list'(Parameters) ->
+		throw(error(type_error(list, Parameters), Parameters>>Closure, This))
+	;	'$lgt_copy_term_without_constraints'(Free/Parameters>>Closure, Free/ParametersCopy>>ClosureCopy),
+		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest),
+		'$lgt_metacall'(ClosureCopy, Rest, MetaCallCtx, Sender, This, Self)
+	).
+
+'$lgt_metacall'(Parameters>>Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
+	!,
+	(	var(Closure) ->
+	 	throw(error(instantiation_error, Parameters>>Closure, This))
+	;	\+ '$lgt_is_proper_list'(Parameters) ->
+		throw(error(type_error(list, Parameters), Parameters>>Closure, This))
+	;	'$lgt_copy_term_without_constraints'(Parameters>>Closure, ParametersCopy>>ClosureCopy),
+		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest),
+		'$lgt_metacall'(ClosureCopy, Rest, MetaCallCtx, Sender, This, Self)
+	).
+
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	(	atom(Closure) ->
 		Pred =.. [Closure| ExtraArgs]
@@ -3570,6 +3605,12 @@ current_logtalk_flag(version, version(2, 38, 0)).
 		'$lgt_metacall_this'(Pred, Sender, This, Self)
 	;	'$lgt_metacall_sender'(Pred, Sender, This, Self)
 	).
+
+
+'$lgt_unify_lambda_parameters'([], Vars, Vars).
+
+'$lgt_unify_lambda_parameters'([Parameter| Parameters], [Parameter| Vars], Rest) :-
+	'$lgt_unify_lambda_parameters'(Parameters, Vars, Rest).
 
 
 
@@ -8420,9 +8461,10 @@ current_logtalk_flag(version, version(2, 38, 0)).
 '$lgt_tr_body'(CallN, TPred, DPred, Ctx) :-
 	CallN =.. [call, Closure| ExtraArgs],
 	nonvar(Closure),
-	Closure \= _::_,							% these three special cases
+	Closure \= _::_,							% these four special cases
 	Closure \= ::_,								% are already handled by the
 	Closure \= ':'(_, _),						% '$lgt_metacall'/6 predicate
+	Closure \= _>>_,
 	!,
 	(	atom(Closure) ->
 		Pred =.. [Closure| ExtraArgs]
@@ -8457,7 +8499,7 @@ current_logtalk_flag(version, version(2, 38, 0)).
 		TPred = '$lgt_metacall'(Closure, Args, MetaCallCtx, Sender, This, Self)
 	;	% we're either compiling a clause for a normal predicate (i.e. MetaVars == [])
 		% or the meta-call should be local as it corresponds to a non meta-argument
-		% or the meta-call is an explicitly qualifed call (::/2, ::/1, or :/2)
+		% or the meta-call is an explicitly qualifed call (::/2, ::/1, :/2) or a lambda expression (>>\/2)
 		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
 		TPred = '$lgt_metacall'(Closure, Args, [], Sender, This, Self)
 	),
@@ -8477,6 +8519,30 @@ current_logtalk_flag(version, version(2, 38, 0)).
 '$lgt_tr_body'(throw(Error), throw(Error), '$lgt_dbg_goal'(throw(Error), throw(Error), ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
+
+
+% lambda expressions support predicates
+
+'$lgt_tr_body'(_/Goal, _, _, _) :-
+	nonvar(Goal),
+	\+ callable(Goal),
+	throw(type_error(callable, Goal)).
+
+'$lgt_tr_body'(Free/Goal, TPred, DPred, Ctx) :-
+	!,
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
+	(	var(Goal), '$lgt_member_var'(Goal, MetaVars) ->
+		% we're compiling a clause for a meta-predicate; therefore, we need
+		% to connect the execution context and the meta-call context arguments
+		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
+		TPred = '$lgt_metacall'(Free/Goal, [], MetaCallCtx, Sender, This, Self)
+	;	% we're either compiling a clause for a normal predicate (i.e. MetaVars == [])
+		% or the meta-call should be local as it corresponds to a non meta-argument
+		% or the meta-call is an explicitly qualifed call (::/2, ::/1, :/2)
+		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
+		TPred = '$lgt_metacall'(Free/Goal, [], [], Sender, This, Self)
+	),
+	DPred = '$lgt_dbg_goal'(Free/Goal, TPred, ExCtx).
 
 
 % built-in meta-predicates

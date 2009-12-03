@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.38.0 - December 3, 2009
 
+    Added lambda expression support. Added an example, "lambdas", illustrating
+    the use of lambda expressions.
+
     Added a new compiler flag, "clean", for cleaning the intermediate Prolog
     files generated when compiling Logtalk source files.
 
