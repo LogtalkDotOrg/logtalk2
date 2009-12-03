@@ -1,0 +1,177 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.38.0
+
+Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+% start by loading the example:
+
+| ?- logtalk_load(lambdas(loader)).
+...
+
+
+% some sample queries using the "metapredicates" library predicates:
+
+| ?- meta::map([X]>>(X>3),[4,5,9]).
+yes
+
+| ?- meta::map([X,Y]>>(X=A-B,Y=B-A), [1-a,2-b,3-c], Zs).
+Zs = [a-1,b-2,c-3]
+yes
+
+| ?- meta::map([X,B-A]>>(X=A-B), [1-a,2-b,3-c], Zs).
+Zs = [a-1,b-2,c-3]
+yes
+
+| ?- meta::map([A-B,B-A]>>true, [1-a,2-b,3-c], Zs).
+Zs = [a-1,b-2,c-3]
+yes
+
+| ?- meta::map([A-B]>>([B-A]>>true), [1-a,2-b,3-c], Zs).
+Zs = [a-1,b-2,c-3]
+yes
+
+| ?- meta::map([[X,Y],Z]>>(Z is X*X + Y*Y), [[1,2],[3,4],[5,6]], Result).
+Result = [5,25,61]
+yes
+
+| ?- meta::map([[X,Y]]>>([Z]>>(Z is X*X + Y*Y)), [[1,2],[3,4],[5,6]], Result).
+Result = [5,25,61]
+yes
+
+| ?- Xsss = [[[1,2,3],[4]],[[5]]], meta::map(meta::map(meta::map([X,Y]>>(Y is X+3))), Xsss,  Ysss).
+Xsss = [[[1,2,3],[4]],[[5]]]
+Ysss = [[[4,5,6],[7]],[[8]]]
+yes
+
+| ?- meta::map([X,[X]]>>true,[1,2],Ys).     
+Ys = [[1],[2]]
+yes
+
+| ?- meta::map([X,[X]]>>true,Xs,[[1],[2]]).
+Xs = [1,2] ? 
+yes
+
+| ?- meta::map([N,M]>>(list::length(L, N), list::length([_|L], M)), [999,123],R).
+R = [1000,124]
+yes
+
+| ?- meta::map([N]>>([M]>>(list::length(L, N), list::length([_|L], M))), [999,123],R).
+R = [1000,124]
+yes
+
+
+% some examples with constraints using GNU Prolog as the back-end compiler:
+
+| ?-  Xss= [[1,2],[3]], meta::map(meta::map([X,Y,Z]>>(X+Y#=Z)), Xss, Yss, Zss).
+
+Xss = [[1,2],[3]]
+Yss = [[_#3(0..268435454),_#54(0..268435453)],[_#105(0..268435452)]]
+Zss = [[_#22(1..268435455),_#73(2..268435455)],[_#124(3..268435455)]]
+
+(1 ms) yes
+| ?- Xss= [[1,2],[3]], meta::map(meta::map({Y}/[X,Z]>>(X+Y#=Z)), Xss, Zss).
+
+Xss = [[1,2],[3]]
+Y = _#3(0..268435452)
+Zss = [[_#22(1..268435453),_#66(2..268435454)],[_#110(3..268435455)]]
+
+yes
+
+
+% some examples with constraints using SWI-Prolog or YAP as the back-end compiler:
+
+| ?- use_module(library(clpfd)).
+
+| ?- Xs = [A,B], meta::map({Y}/[X,Z]>>(clpfd:(X+Y #= Z)), Xs, Zs).
+Xs = [A, B],
+Zs = [_G1114, _G1117],
+A+Y#=_G1114,
+B+Y#=_G1117.
+
+
+% some examples with constraints using B-Prolog as the back-end compiler:
+
+| ?- Xss= [[1,2],[3]], meta::map(meta::map([X,Y,Z]>>(X+Y#=Z)), Xss, Yss, Zss).
+Xss = [[1,2],[3]]
+Yss = [[_01acd0:[-268435455..268435455],_0348d0:[-268435455..268435455]],[_04e5dc:[-268435455..268435455]]]
+Zss = [[_01ac9c:[-268435455..268435455],_03489c:[-268435455..268435455]],[_04e5a8:[-268435455..268435455]]]
+yes
+
+| ?- Xss= [[1,2],[3]], meta::map(meta::map({Y}/[X,Z]>>(X+Y#=Z)), Xss, Zss).
+Xss = [[1,2],[3]]
+Zss = [[_01aca4:[-268435455..268435455],_0348cc:[-268435455..268435455]],[_04e5c4:[-268435455..268435455]]]
+yes
+
+
+% some examples with constraints using SICStus Prolog as the back-end compiler:
+
+| ?- use_module(library(clpfd)).
+
+| ?- Xss= [[1,2],[3]], meta::map(meta::map([X,Y,Z]>>(clpfd:(X+Y#=Z))), Xss, Yss, Zss).
+Xss = [[1,2],[3]],
+Yss = [[_A,_B],[_C]],
+Zss = [[_D,_E],[_F]],
+_D in inf..sup,
+_A in inf..sup,
+_E in inf..sup,
+_B in inf..sup,
+_F in inf..sup,
+_C in inf..sup ? 
+yes
+
+| ?- Xs = [A,B], meta::map({Y}/[X,Z]>>(clpfd:(X+Y #= Z)), Xs, Zs).
+Xs = [A,B],
+Zs = [_A,_B],
+A in inf..sup,
+Y in inf..sup,
+_A in inf..sup,
+B in inf..sup,
+_B in inf..sup ? 
+yes
+
+
+% examples on symplifying setof/3 and similar predicates usage:
+
+| ?- countries::currencies_wrong(Currencies).
+Currencies = [pound_sterling] ;
+Currencies = [dinar] ;
+Currencies = [ringgit] ;
+Currencies = [euro] ;
+Currencies = [euro] ;
+Currencies = [dinar]
+yes
+
+| ?- countries::currencies_no_lambda(Currencies).
+Currencies = [dinar, euro, pound_sterling, ringgit].
+yes
+
+| ?- countries::currencies_lambda(Currencies).
+Currencies = [dinar, euro, pound_sterling, ringgit].
+yes
+
+
+| ?- tests::common_prefix([1], Xs, Ys).
+
+Xs = []
+Ys = [] ? ;
+
+Xs = [A]
+Ys = [[1|A]] ? ;
+
+Xs = [A,B]
+Ys = [[1|A],[1|B]] ? ;
+
+Xs = [A,B,C]
+Ys = [[1|A],[1|B],[1|C]] ? 
+...
+
+
+| ?- tests::test.
+1234560
+yes
