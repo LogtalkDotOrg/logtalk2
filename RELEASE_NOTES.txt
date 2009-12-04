@@ -13,7 +13,14 @@ RELEASE NOTES
 =============
 
 
-2.38.1 - December 3, 2009
+2.38.1 - December ??, 2009
+
+    Updated the CxProlog config file in order to set write term and write list
+    limits that allow compilation of the Logtalk libraries and examples (the
+    default values are two low in some cases leading to compilation errors).
+
+
+2.38.0 - December 3, 2009
 
     Added lambda expression support. Added an example, "lambdas", illustrating
     the use of lambda expressions.

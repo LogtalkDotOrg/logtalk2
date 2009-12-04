@@ -11,7 +11,7 @@
 %
 %  configuration file for CxProlog 0.97.2 or a later version
 %
-%  last updated: November 28, 2009
+%  last updated: December 4, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -19,6 +19,8 @@
 :- set_prolog_flag(keep_source, false).
 :- set_prolog_flag(unknown, error).
 :- set_prolog_flag(file_name_variables, true).
+
+:- initialization(write_depth(1000, 1000)).
 
 
 
