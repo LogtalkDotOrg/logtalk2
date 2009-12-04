@@ -1,11 +1,11 @@
 Name: logtalk
 Summary: Logtalk - Open source object-oriented logic programming language
-Version: 2.38.0
+Version: 2.38.1
 Release: 1
 License: Artistic License 2.0
 Group: Development/Languages
 Packager: Paulo Moura <pmoura@logtalk.org>
-Source: http://logtalk.org/files/lgt2380.tar.bz2
+Source: http://logtalk.org/files/lgt2381.tar.bz2
 BuildArchitectures: noarch
 URL: http://logtalk.org/
 AutoReqProv: no
@@ -13,7 +13,7 @@ AutoReqProv: no
 Logtalk is an object-oriented logic programming language that can use most Prolog implementations as a back-end compiler. As a multi-paradigm language, it includes support for both prototypes and classes, protocols (interfaces), component-based programming through category-based composition, event-driven programming, and high-level multi-threading programming.
 
 %prep
-%setup -q -c lgt2380 -n lgt2380
+%setup -q -c lgt2381 -n lgt2381
 
 %build
 
@@ -28,27 +28,27 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc /usr/local/share/lgt2380/BIBLIOGRAPHY.bib
-%doc /usr/local/share/lgt2380/CUSTOMIZE.txt
-%doc /usr/local/share/lgt2380/INSTALL.txt
-%doc /usr/local/share/lgt2380/LICENSE.txt
-%doc /usr/local/share/lgt2380/QUICK_START.txt
-%doc /usr/local/share/lgt2380/README.txt
-%doc /usr/local/share/lgt2380/RELEASE_NOTES.txt
-%doc /usr/local/share/lgt2380/UPGRADING.txt
-/usr/local/share/lgt2380/VERSION.txt
-/usr/local/share/lgt2380/compiler
-/usr/local/share/lgt2380/configs
-/usr/local/share/lgt2380/contributions
-/usr/local/share/lgt2380/examples
-/usr/local/share/lgt2380/integration
-/usr/local/share/lgt2380/libpaths
-/usr/local/share/lgt2380/library
-%doc /usr/local/share/lgt2380/manuals
-/usr/local/share/lgt2380/scripts
-/usr/local/share/lgt2380/settings.lgt
-/usr/local/share/lgt2380/wenv
-/usr/local/share/lgt2380/xml
+%doc /usr/local/share/lgt2381/BIBLIOGRAPHY.bib
+%doc /usr/local/share/lgt2381/CUSTOMIZE.txt
+%doc /usr/local/share/lgt2381/INSTALL.txt
+%doc /usr/local/share/lgt2381/LICENSE.txt
+%doc /usr/local/share/lgt2381/QUICK_START.txt
+%doc /usr/local/share/lgt2381/README.txt
+%doc /usr/local/share/lgt2381/RELEASE_NOTES.txt
+%doc /usr/local/share/lgt2381/UPGRADING.txt
+/usr/local/share/lgt2381/VERSION.txt
+/usr/local/share/lgt2381/compiler
+/usr/local/share/lgt2381/configs
+/usr/local/share/lgt2381/contributions
+/usr/local/share/lgt2381/examples
+/usr/local/share/lgt2381/integration
+/usr/local/share/lgt2381/libpaths
+/usr/local/share/lgt2381/library
+%doc /usr/local/share/lgt2381/manuals
+/usr/local/share/lgt2381/scripts
+/usr/local/share/lgt2381/settings.lgt
+/usr/local/share/lgt2381/wenv
+/usr/local/share/lgt2381/xml
 /usr/local/share/logtalk
 /usr/local/bin/cplgtdirs
 /usr/local/bin/lgt2pdf
@@ -145,7 +145,7 @@ echo
 if [ -x /usr/bin/update-mime-database ]; then
 	mkdir -p /usr/share/mime/packages
 	rm -f /usr/share/mime/packages/logtalk.xml
-	cp /usr/local/share/lgt2380/scripts/freedesktop/logtalk.xml /usr/share/mime/packages/logtalk.xml
+	cp /usr/local/share/lgt2381/scripts/freedesktop/logtalk.xml /usr/share/mime/packages/logtalk.xml
 	update-mime-database /usr/share/mime
 	echo "Added the Logtalk mime-type to the Shared MIME-info Database."
 	echo

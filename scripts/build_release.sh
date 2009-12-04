@@ -2,7 +2,7 @@
 
 ## ================================================================
 ## Logtalk - Open source object-oriented logic programming language
-## Release 2.38.0
+## Release 2.38.1
 ## 
 ## Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
 ## Logtalk is free software.  You can redistribute it and/or modify
@@ -12,23 +12,23 @@
 
 dir=`PWD`
 
-svn export http://svn.logtalk.org/logtalk/trunk lgt2380
+svn export http://svn.logtalk.org/logtalk/trunk lgt2381
 
-cd lgt2380
+cd lgt2381
 chmod a+x scripts/cleandist.sh
 scripts/cleandist.sh
 
 cd ..
-cp -R lgt2380/manuals man2380
-tar -czf man2380.tgz man2380
-tar -cjf lgt2380.tar.bz2 lgt2380
+cp -R lgt2381/manuals man2381
+tar -czf man2381.tgz man2381
+tar -cjf lgt2381.tar.bz2 lgt2381
 
 mkdir -p debian/usr/bin
 mkdir -p debian/usr/share/doc/logtalk
 mkdir -p debian/usr/share/doc-base
 mkdir -p debian/usr/share/menu
 mkdir -p debian/DEBIAN
-cd lgt2380/scripts
+cd lgt2381/scripts
 ./install.sh $dir/debian/usr
 rm -rf $dir/debian/usr/share/mime
 cp debian/logtalk.doc-base $dir/debian/usr/share/doc-base/logtalk-docs
@@ -47,29 +47,29 @@ cp debian/postinst $dir/debian/DEBIAN
 cp debian/prerm $dir/debian/DEBIAN
 cp debian/postrm $dir/debian/DEBIAN
 cd $dir
-dpkg-deb --build debian logtalk_2.38.0-1_all.deb
+dpkg-deb --build debian logtalk_2.38.1-1_all.deb
 
-md5="`md5 -q lgt2380.tar.bz2`"
+md5="`md5 -q lgt2381.tar.bz2`"
 sudo mkdir -p /opt/local/var/macports/distfiles/logtalk
-sudo cp -f lgt2380.tar.bz2 /opt/local/var/macports/distfiles/logtalk/lgt2380.tar.bz2
+sudo cp -f lgt2381.tar.bz2 /opt/local/var/macports/distfiles/logtalk/lgt2381.tar.bz2
 cd /opt/local/var/macports/sources/rsync.macports.org/release/ports/lang/logtalk/
 sudo mv -f Portfile Portfile.old
-sudo cp $dir/lgt2380/scripts/macosx/Portfile .
-sudo sed -e 's/^version.*/version 2.38.0/' -i '' Portfile
+sudo cp $dir/lgt2381/scripts/macosx/Portfile .
+sudo sed -e 's/^version.*/version 2.38.1/' -i '' Portfile
 sudo sed -e "s/^checksums.*/checksums md5 $md5/" -i '' Portfile
 sudo port clean --archive logtalk
 sudo port destroot logtalk
 sudo port pkg logtalk
-cp -R work/logtalk-2.38.0.pkg $dir
+cp -R work/logtalk-2.38.1.pkg $dir
 sudo port clean logtalk
 
 cd $dir
-mkdir manpdf2380
-cd man2380/userman
+mkdir manpdf2381
+cd man2381/userman
 ./userman.sh
-mv userman.pdf ../../manpdf2380/lgtuserman2380.pdf
+mv userman.pdf ../../manpdf2381/lgtuserman2381.pdf
 cd ../refman
 ./refman.sh
-mv refman.pdf ../../manpdf2380/lgtrefman2380.pdf
+mv refman.pdf ../../manpdf2381/lgtrefman2381.pdf
 cd ../..
-tar -czf manpdf2380.tgz manpdf2380
+tar -czf manpdf2381.tgz manpdf2381

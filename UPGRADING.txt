@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.38.0
+Release 2.38.1
 
 Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
 Logtalk is free software.  You can redistribute it and/or modify
@@ -251,5 +251,5 @@ and makes several changes for harmonizing the semantics of built-in and user-
 defined meta-predicates. The seldom used support for sending the same message
 to a conjunction or disjunction of objects is removed in this version.
 
-Logtalk version 2.38.0 changes representation of the execution context in 
+Logtalk version 2.38.1 changes representation of the execution context in 
 compiled predicates, requiring recompilation of all objects and categories.
