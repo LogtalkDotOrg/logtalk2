@@ -1,0 +1,23 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.38.0
+
+Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+The example in this folder is an adaptation of an example of POEM, an 
+object-oriented extension to Prolog developed by Ben Staveley-Taylor.
+
+Original author contact:
+
+	Ben Staveley-Taylor,
+	Plessey Electronic Systems Research Ltd.,
+	Roke Manor,
+	ROMSEY,
+	Hants.    SO5 0ZN.
+
+	Tel. Romsey (0794) 515222 ext 311

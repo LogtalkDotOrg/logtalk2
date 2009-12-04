@@ -1,0 +1,40 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.38.0
+
+Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+% start by loading the example and the required library files:
+
+| ?- logtalk_load(roots(loader)).
+...
+
+
+% some queries dealing with instance/class hierarchies:
+
+| ?- object::ancestors(Ancestors).
+
+Ancestors = [class, abstract_class, object] 
+
+Yes
+
+
+| ?- class::instances(Instances).
+
+Instances = [object, abstract_class, class] 
+
+Yes
+
+
+| ?- class::superclass(Super).
+
+Super = abstract_class ;
+
+Super = object ;
+
+No

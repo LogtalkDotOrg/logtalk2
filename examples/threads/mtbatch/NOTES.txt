@@ -1,0 +1,50 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.38.0
+
+Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+To load this example and for sample queries, please see the SCRIPT.txt file.
+
+This folder provides a parametric object for running multi-threading 
+benchmarks. The object parameter must be instantiated with an atom 
+representing the back-end Prolog compiler being used:
+
+	SWI-Prolog: swi
+	YAP:        yap
+	XSB:        xsb
+
+This is necessary due to the different built-in predicates used by each 
+Prolog compiler for timing statistics.
+
+For example, the following goal will run all benchmark tests (assuming 
+we're using SWI-Prolog as the back-end compiler):
+
+	| ?- mtbatch(swi)::run.
+
+You may also run just a single benchmark test a given number of times.
+For example:
+
+	| ?- mtbatch(swi)::run(primes, 10).
+
+The following tests are available:
+
+	primes			(independent and-parallelism)
+	msort			(independent and-parallelism)
+	qsort			(independent and-parallelism)
+	fib				(independent and-parallelism)
+	hanoi			(independent and-parallelism)
+	tak				(independent and-parallelism)
+	fft				(independent and-parallelism)
+	integration		(independent and-parallelism)
+	integration2d	(independent and-parallelism)
+	search			(competitive or-parallelism)
+
+For the same back-end Prolog compiler, the benchmark results can show 
+significant variation depending on the operating-system and if you're 
+using a 32 bits or a 64 bits version.

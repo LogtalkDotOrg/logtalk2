@@ -1,0 +1,46 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.38.0
+
+Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+% load the example:
+
+| ?- logtalk_load(ack(loader)).
+...
+
+
+% some example queries for back-end Prolog compilers implementing the 
+% time/1 timing predicate (e.g. SWI-Prolog, YAP, or XSB):
+
+?- time(ack::ack(2, 4, V)).
+% 98 inferences, 0.00 CPU in 0.00 seconds (0% CPU, Infinite Lips)
+V = 11.
+
+?- time(ack::ack(3, 3, V)).
+% 2,451 inferences, 0.00 CPU in 0.00 seconds (0% CPU, Infinite Lips)
+V = 61.
+
+?- time(ack::ack(3, 4, V)).
+% 10,326 inferences, 0.00 CPU in 0.00 seconds (0% CPU, Infinite Lips)
+V = 125.
+
+
+% some example queries for other back-end Prolog compilers:
+
+?- ack::ack(2, 4, V).
+V = 11
+yes
+
+?- ack::ack(3, 3, V).
+V = 61
+yes
+
+?- ack::ack(3, 4, V).
+V = 125
+yes

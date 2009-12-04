@@ -1,0 +1,30 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.38.0
+
+Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+% start by loading the example and the required library files:
+
+| ?- logtalk_load(lpa_faults(loader)).
+...
+
+
+| ?- fault::findall.
+
+Please answer all questions with yes or no.
+
+The starter turns but the engine doesnt fire?   no.
+The engine has difficulty starting?     yes.
+The engine cuts out shortly after starting?     yes.
+
+Location      : distributor
+Possible Fault: Worn distributor brushes
+
+No (more) explanations found.
+yes.

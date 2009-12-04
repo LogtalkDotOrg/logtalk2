@@ -1,0 +1,23 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.38.0
+
+Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+To load this example and for sample queries, please see the SCRIPT.txt file.
+
+This folder contains an example of using a category to define a simple 
+logging support for objects. This example illustrates how to define in 
+a category a set of predicates that handle a dynamic predicate in the 
+context of "this". Although the database built-in methods, such as 
+assertz/1 or retractall/1, are straightforward to use, calling the 
+dynamic predicate must be performed using the message sending ::/2 
+control construct (note that a direct call to the dynamic predicate 
+would result in a compilation error as it would be interpreted as a 
+call to a local category predicate: categories cannot contain clauses 
+for dynamic predicates).

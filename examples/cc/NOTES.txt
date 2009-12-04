@@ -1,0 +1,19 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.38.0
+
+Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+To load this example and for sample queries, please see the SCRIPT.txt file.
+
+This folder contains an example of using conditional compilation to implement
+a portable operating-system interface for seven Prolog compilers: SWI-Prolog,
+YAP, XSB, GNU-Prolog, B-Prolog, SICStus Prolog, and ECLiPSe. For other back-
+end Prolog compilers, a warning is printed. Note that this is just an example
+of using the conditional compilation directives. This code should not be used
+without careful testing in a production environment.

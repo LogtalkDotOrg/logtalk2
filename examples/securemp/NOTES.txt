@@ -1,0 +1,32 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.38.0
+
+Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+To load this example and for sample queries, please see the SCRIPT.txt
+file.
+
+This folder contains a set of source files for testing Logtalk secure
+implementation of meta-predicates. For full details on this example 
+and on the safety rules used by Logtalk when compiling and executing
+meta-predicates, please see the paper:
+
+@inproceedings{pmoura09b,
+	author = {Paulo Moura},
+	title = "{Secure Implementation of Meta-predicates}",
+	booktitle = {Proceedings of the Eleventh International Symposium on Practical Aspects of Declarative Languages},
+	editor = "Andy Gill and Terrance Swift",
+	series = "Lecture Notes in Computer Science",
+	volume = "5418",
+	month = jan,
+	year = {2009},
+	pages = {269--283},
+	publisher = "Springer-Verlag",
+	address = "Berlin Heidelberg",
+}

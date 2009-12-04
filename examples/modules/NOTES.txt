@@ -1,0 +1,19 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.38.0
+
+Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+To load this example and for sample queries, please see the SCRIPT.txt file.
+
+This example illustrates compilation of Prolog module files as objects.
+
+Due to the lack of standardization of Prolog module systems, the module 
+files must use only a common subset of Prolog module directives. Consult 
+the "Prolog Integration and Migration Guide" in the Logtalk documentation 
+for details.

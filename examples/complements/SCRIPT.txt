@@ -1,0 +1,64 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.38.0
+
+Copyright (c) 1998-2009 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+% start by loading the example:
+
+| ?- logtalk_load(complements(loader)).
+...
+
+
+% find categories that complement objects:
+
+| ?- complements_object(Category, Object).
+Category = logging,
+Object = employee.
+yes 
+
+
+% turn event support on for messages sent at the command-line
+% (i.e. for messages sent from the pseudo-object "user"):
+
+| ?- set_logtalk_flag(events, allow).
+
+yes
+
+
+% use the event handler defined in the "logging" category for the object "employee":
+
+| ?- employee::name(Name).
+Received message name(_16) from user
+
+Name = john
+yes
+
+
+% check the protocol of the object "employee":
+
+| ?- employee::predicates(Predicates).
+Received message predicates(_G180) from user
+
+Predicates = [after/3, age/1, before/3, name/1, predicates/1, salary/1]
+yes
+
+| ?- employee::predicate_property(predicates(_), Property).
+
+Property = public ;
+Property = static ;
+Property = declared_in(logging) ;
+Property = defined_in(logging)
+yes
+
+
+% turn event support off:
+
+| ?- set_logtalk_flag(events, deny).
+
+yes
