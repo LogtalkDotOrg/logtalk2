@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 
-<language name="Logtalk" version="2.4" kateversion="2.4" section="Sources" extensions="*.lgt" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
+<language name="Logtalk" version="2.5" kateversion="2.4" section="Sources" extensions="*.lgt" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
 
 	<highlighting>
 
@@ -145,6 +145,8 @@
 				<AnyChar String = ":" attribute = "Operator" context = "#stay" />
 				<!-- Clause operator -->
 				<Detect2Chars char = ":" char1 = "-"  firstNonSpace = "false" attribute = "Normal" context = "#stay" />
+				<!-- Existential quantifier -->
+				<AnyChar String = "^" attribute = "Operator" context = "#stay" />
 				<!-- Atoms -->
 				<RegExpr String = "\b[a-z]\w*" attribute = "Normal" context = "#stay" />
 			</context>

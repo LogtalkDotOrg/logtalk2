@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	October 25, 2009
+" Last Change:	December 4, 2009
 
 
 " Quit when a syntax file was already loaded:
@@ -321,6 +321,11 @@ syn match	logtalkOperator		"\\"
 " Logtalk list operator
 
 syn match	logtalkOperator		"|"
+
+
+" Logtalk existential quantifier operator
+
+syn match	logtalkOperator		"\^"
 
 
 " Logtalk numbers 

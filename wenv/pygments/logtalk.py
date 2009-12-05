@@ -140,6 +140,8 @@ class LogtalkLexer(RegexLexer):
             (r'\\+', Operator),
             # Mode operators
             (r'[?@]', Operator),
+            # Existential quantifier
+            (r'\^', Operator),
             # Strings
             (r'"(\\\\|\\"|[^"])*"', String),
             # Ponctuation

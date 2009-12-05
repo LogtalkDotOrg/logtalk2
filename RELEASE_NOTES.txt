@@ -19,6 +19,9 @@ RELEASE NOTES
     limits that allow compilation of the Logtalk libraries and examples (the
     default values are two low in some cases leading to compilation errors).
 
+    Added syntax coloring support for the ^/2 existential quantifier operator
+    for most supported text editors and syntax highlighters.
+
 
 2.38.0 - December 3, 2009
 
