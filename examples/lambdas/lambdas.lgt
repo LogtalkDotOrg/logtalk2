@@ -15,7 +15,7 @@
 	currencies_no_lambda(Currencies) :-
 		setof(Currency, Country^Capital^Population^country(Country, Capital, Population, Currency), Currencies).
 
-	:- public(currencies_lambda/1).
+	:- public(currencies_lambda/1).		% adapted from a Ulrich Neumerkel's lambda proposal example
 	currencies_lambda(Currencies) :-
 		setof(Currency, {Currency}/country(_, _, _, Currency), Currencies).
 
@@ -65,26 +65,27 @@
 :- object(tests).
 
 	:- info([
-		version is 1.0,
-		date is 2009/11/28,
+		version is 1.1,
+		date is 2009/12/5,
 		author is 'Paulo Moura',
 		comment is 'Some tests for lambda expressions collected from public forums.']).
 
 	:- public(common_prefix/3).  
 
-	common_prefix(Front, Xs, Ys) :-
+	common_prefix(Front, Xs, Ys) :-		% adapted from a Richard O'Keefe example
 		meta::map({Front}/(list::append(Front)), Xs, Ys).
 
-	:- public(test/0).
+	:- public(run/0).
 
-	test :-
-		call(f, A1, A2), write(1),
-		call([X]>>f(X), A1, A2), write(2),
-		call([X,Y]>>f(X,Y), A1, A2), write(3),
-		call([X]>>({X}/[Y]>>f(X,Y)), A1, A2), write(4),
-		call(call(f, A1), A2), write(5),
-		call(f(A1), A2), write(6),
-		f(A1, A2), write(0).
+	run :-								% adapted from a Ulrich Neumerkel's lambda proposal example
+		f(X, Y),
+		write('This test should print '), write(f(X, Y)), write(' in all lines:'), nl,
+		call(f, A1, A2), write(f(A1, A2)), nl,
+		call([X]>>f(X), B1, B2), write(f(B1, B2)), nl,
+		call([X,Y]>>f(X,Y), C1, C2), write(f(C1, C2)), nl,
+		call([X]>>({X}/[Y]>>f(X,Y)), D1, D2), write(f(D1, D2)), nl,
+		call(call(f, E1), E2), write(f(E1, E2)), nl,
+		call(f(F1), F2), write(f(F1, F2)), nl.
 
 	f(x, y).
 
