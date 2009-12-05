@@ -5,9 +5,9 @@
 <!--	jEdit 4.3 Logtalk syntax file
 
 	written by		Paulo Moura
-	version			1.91
+	version			1.92
 	created on		5 May 2002
-	last revised	25 October 2009
+	last revised	5 December 2009
 
 	To install, copy this file to the "modes" subdirectory in jEdit 
 	directory installation.   Next, check the "catalog" file in the 
@@ -222,6 +222,9 @@
 		<SEQ TYPE="OPERATOR">-</SEQ>
 		<SEQ TYPE="OPERATOR">?</SEQ>
 		<SEQ TYPE="OPERATOR">@</SEQ>
+
+		<!-- Existential quantifier operator -->
+		<SEQ TYPE="OPERATOR">^</SEQ>	
 
 		<KEYWORDS AT_WORD_START="TRUE"> <!-- just for code completion to work! -->
 

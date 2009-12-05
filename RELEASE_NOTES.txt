@@ -22,7 +22,8 @@ RELEASE NOTES
     Expanded the "lambdas" example with a contribution by Artur Miguel Dias.
 
     Added syntax coloring support for the ^/2 existential quantifier operator
-    for most supported text editors and syntax highlighters.
+    for most supported text editors and syntax highlighters. Added sample code
+    using the ^/2 existential quantifier to the syntax coloring test file.
 
 
 2.38.0 - December 3, 2009

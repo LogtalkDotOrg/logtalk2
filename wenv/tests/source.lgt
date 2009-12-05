@@ -162,9 +162,11 @@ comment
 
 	all_solutions_methods :-
 		bagof(Term, Goal, List),
+		bagof(Term, Var^Goal, List),
 		findall(Term, Goal, List),
 		forall(Generate, Test),
-		setof(Term, Goal, List).
+		setof(Term, Goal, List),
+		setof(Term, Var1^Var2^Goal, List).
 
 	event_handler_methods :-
 		before(Object, Message, Sender),
