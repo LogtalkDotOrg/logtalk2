@@ -38,7 +38,7 @@ destroot {
 }
 
 post-destroot {
-	system "rm -rf ${destroot}${prefix}/share/mime"
+	delete ${destroot}${prefix}/share/mime
 }
 
 post-pkg {
