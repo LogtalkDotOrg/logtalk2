@@ -12,8 +12,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 To load this example and for sample queries, please see the SCRIPT 
 file.
 
-This folder contains examples of using the experimental support for
-lambda expressions, which is based on the syntax found on the Ulrich
-Neumerkel's proposal:
-
-http://www.complang.tuwien.ac.at/ulrich/Prolog-inedit/ISO-Hiord
+This folder contains examples of using Logtalk support for lambda
+expressions. Some of the examples and test queries are collected from
+public discussions on lambda expressions on the SWI-Prolog mailing list
+and on the comp.lang.prolog discussion group.

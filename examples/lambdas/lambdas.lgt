@@ -31,9 +31,46 @@
 
 
 
+:- object(sigma).
+
+	:- info([
+		version is 1.0,
+		author is 'Artur Miguel Dias',
+		date is 2009/12/04,
+		comment is 'Generic sum predicate for testing lambda expressions.']).
+
+	% note that is simple an example of using lambda expressions; Logtalk
+	% already includes a fold_left/4 predicate in its library that could
+	% easily be used for performing the same computations
+
+	:- public(sum/4).
+	:- meta_predicate(sum(2, *, *, *)).
+
+	sum(Closure, Inf, Sup, Result) :-
+		sum(Closure, Inf, Sup, 0, Result).
+
+	sum(Closure, Inf, Sup, Acc, Result) :-				
+		(	Inf =< Sup ->
+			call(Closure, Inf, Sum),
+			Acc2 is Acc + Sum,
+			Next is Inf + 1,
+			sum(Closure, Next, Sup, Acc2, Result)
+		;	Result = Acc
+		).
+
+:- end_object.
+
+
+
 :- object(tests).
 
-	:- public(common_prefix/3).
+	:- info([
+		version is 1.0,
+		date is 2009/11/28,
+		author is 'Paulo Moura',
+		comment is 'Some tests for lambda expressions collected from public forums.']).
+
+	:- public(common_prefix/3).  
 
 	common_prefix(Front, Xs, Ys) :-
 		meta::map({Front}/(list::append(Front)), Xs, Ys).

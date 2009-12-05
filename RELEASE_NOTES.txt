@@ -19,6 +19,8 @@ RELEASE NOTES
     limits that allow compilation of the Logtalk libraries and examples (the
     default values are two low in some cases leading to compilation errors).
 
+    Expanded the "lambdas" example with a contribution by Artur Miguel Dias.
+
     Added syntax coloring support for the ^/2 existential quantifier operator
     for most supported text editors and syntax highlighters.
 

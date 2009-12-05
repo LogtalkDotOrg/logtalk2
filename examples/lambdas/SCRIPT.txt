@@ -156,6 +156,23 @@ Currencies = [dinar, euro, pound_sterling, ringgit].
 yes
 
 
+% example of using a custom implementation of fold left in disguise:
+
+| ?- sigma::sum([X,Y]>>(Y is X), 0, 9, R).
+R = 45
+yes
+
+| ?- sigma::sum([X,Y]>>(Y is X*X), 0,9, R).
+R = 285
+yes
+
+| ?- sigma::sum([X,Y]>>sum([W,Z]>>(Z is W), X, 9, Y) , 0, 9, R).
+R = 330
+yes
+
+
+% unsorted tests of using lambda expressions:
+
 | ?- tests::common_prefix([1], Xs, Ys).
 
 Xs = []
