@@ -54,7 +54,7 @@ Name: "user\backup"; Description: "Backup current user data files"; Types: full 
 Name: "prolog"; Description: "Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\bp"; Description: "B-Prolog integration (version 7.1 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\ciao"; Description: "Ciao Prolog integration (version 1.10)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\cxprolog"; Description: "CxProlog integration (version 0.97.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\cxprolog"; Description: "CxProlog integration (version 0.97.4 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\eclipse"; Description: "ECLiPSe integration (versions 5.10, 6.0)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\gprolog"; Description: "GNU Prolog integration (version 1.3.1 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\plc"; Description: "K-Prolog integration (version 6.0.4)"; Types: full prolog custom; Flags: disablenouninstallwarning

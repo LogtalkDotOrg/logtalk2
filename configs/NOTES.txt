@@ -172,7 +172,7 @@ CIAO Prolog 1.10#8
 	source files. Full support for settings files.
 
 
-CxProlog 0.97.2 or later versions
+CxProlog 0.97.4 or later versions
 
 	cx.pl
 
