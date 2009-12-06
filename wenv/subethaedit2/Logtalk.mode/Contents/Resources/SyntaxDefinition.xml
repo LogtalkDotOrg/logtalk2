@@ -6,7 +6,7 @@
 		<name>Logtalk</name>
 		<charsintokens>
 			<![CDATA[_0987654321abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ{}-]]>
-		</charsintokens> 
+		</charsintokens>
 		<charsdelimitingtokens><![CDATA[ []()]]></charsdelimitingtokens>
 	</head>
 
@@ -26,16 +26,16 @@
 			</keywords>
 
 			<keywords id="Message Sending Operators" color="#0000ff" useforautocomplete="no">
-				<regex>(::)</regex>			
+				<regex>(::)</regex>
 				<regex>(\^\^)</regex>
 			</keywords>
 
 			<keywords id="Category predicate direct call" color="#0000ff" useforautocomplete="no">
-				<regex>(:)</regex>			
+				<regex>(:)</regex>
 			</keywords>
 
 			<keywords id="External Call" color="#0000ff" useforautocomplete="no">
-				<regex>(\{)</regex>			
+				<regex>(\{)</regex>
 				<regex>(\})</regex>
 			</keywords>
 
@@ -44,7 +44,7 @@
 				<regex>\b(throw)\(</regex>
 				<regex>\b(true)[^[(A-Za-z_]]</regex>
 				<regex>\b(fail)[^[(A-Za-z_]]</regex>
-				<regex>\s(--&gt;)\s</regex>			
+				<regex>\s(--&gt;)\s</regex>
 				<regex>\s(-&gt;)\s</regex>
 				<regex>(!)</regex>
 				<regex>(;)</regex>
@@ -187,10 +187,14 @@
 			</keywords>
 
 			<keywords id="Mode Operators" color="#0000ff" useforautocomplete="no">
-				<regex>(@)(?=(,|[:alpha:]))</regex>			
+				<regex>(@)(?=(,|[:alpha:]))</regex>
 				<regex>(\?)(?=(,|[:alpha:]))</regex>
 				<regex>(\+)(?=(,|[:alpha:]))</regex>
 				<regex>(-)(?=(,|[:alpha:]))</regex>
+			</keywords>
+
+			<keywords id="Existential Quantifier Operator" color="#0000ff" useforautocomplete="no">
+				<regex>(\^)</regex>
 			</keywords>
 
 			<keywords id="Numbers" color="#bf4b18" useforautocomplete="no">
@@ -202,7 +206,7 @@
 			</keywords>
 
 			<keywords id="Metapredicate Operators" color="#0000ff" useforautocomplete="no">
-				<regex>(::)(?=(,|[)]))</regex>			
+				<regex>(::)(?=(,|[)]))</regex>
 				<regex>(\*)(?=(,|[)]))</regex>
 			</keywords>
 
@@ -221,9 +225,9 @@
 				<regex>:-\s((?:el)?if)\(</regex>
 				<regex>:-\s(e(?:lse|ndif))\.</regex>
 				<regex>:-\s(discontiguous)\(</regex>
-				<regex>:-\s(p(?:ublic|r(?:otected|ivate)))\(</regex>	
-				<regex>:-\s(m(?:eta_predicate|ultifile))\(</regex>		
-				<regex>:-\s(op)\(</regex>	
+				<regex>:-\s(p(?:ublic|r(?:otected|ivate)))\(</regex>
+				<regex>:-\s(m(?:eta_predicate|ultifile))\(</regex>
+				<regex>:-\s(op)\(</regex>
 				<regex>:-\s(calls)\(</regex>
 				<regex>:-\s(use(?:s|_module))\(</regex>
 				<regex>:-\s(reexport)\(</regex>
