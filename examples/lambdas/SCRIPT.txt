@@ -15,6 +15,17 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ...
 
 
+% some sample queries using the call/N predicates:
+
+| ?- logtalk << call([X,Y]>>(Y is X*X), 5, R).
+R = 25
+yes
+
+| ?- logtalk << call([Z]>>(call([X,Y]>>(Y is X*X), 5, R), Z is R*R), T).
+T = 625
+yes
+
+
 % some sample queries using the "metapredicates" library predicates:
 
 | ?- meta::map([X]>>(X>3),[4,5,9]).
