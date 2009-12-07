@@ -3310,7 +3310,7 @@ current_logtalk_flag(version, version(2, 38, 1)).
 		)
 	;	% no predicate declaration, check if it's a local built-in method or a Prolog built-in meta-predicate:
 		('$lgt_built_in_local_method'(Pred); '$lgt_pl_meta_predicate'(Pred, _)) ->
-		throw(error(permission_error(access, local_predicate, Pred), ::Pred, Sender))
+		throw(error(permission_error(access, local_predicate, Pred), Obj::Pred, Sender))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
