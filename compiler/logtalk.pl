@@ -3566,7 +3566,11 @@ current_logtalk_flag(version, version(2, 38, 1)).
 
 '$lgt_metacall'(Free/Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	!,
-	(	var(Closure) ->
+	(	var(Free) ->
+	 	throw(error(instantiation_error, Free/Closure, This))
+	;	\+ (functor(Free, {}, Arity), Arity =< 1) ->
+		throw(error(type_error(curly_bracketed_term, Free), Free/Closure, This))
+	;	var(Closure) ->
 	 	throw(error(instantiation_error, Free/Closure, This))
 	;	'$lgt_copy_term_without_constraints'(Free/Closure, Free/ClosureCopy),
 		'$lgt_metacall'(ClosureCopy, ExtraArgs, MetaCallCtx, Sender, This, Self)
@@ -3574,10 +3578,14 @@ current_logtalk_flag(version, version(2, 38, 1)).
 
 '$lgt_metacall'(Free/Parameters>>Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	!,
-	(	var(Closure) ->
+	(	var(Free) ->
+	 	throw(error(instantiation_error, Free/Parameters>>Closure, This))
+	;	\+ (functor(Free, {}, Arity), Arity =< 1) ->
+		throw(error(type_error(curly_bracketed_term, Free), Free/Parameters>>Closure, This))
+	;	var(Closure) ->
 	 	throw(error(instantiation_error, Free/Parameters>>Closure, This))
 	;	\+ '$lgt_is_proper_list'(Parameters) ->
-		throw(error(type_error(list, Parameters), Parameters>>Closure, This))
+		throw(error(type_error(list, Parameters), Free/Parameters>>Closure, This))
 	;	'$lgt_copy_term_without_constraints'(Free/Parameters>>Closure, Free/ParametersCopy>>ClosureCopy),
 		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest) ->
 		'$lgt_metacall'(ClosureCopy, Rest, MetaCallCtx, Sender, This, Self)
@@ -8529,6 +8537,11 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	nonvar(Closure),
 	\+ callable(Closure),
 	throw(type_error(callable, Closure)).
+
+'$lgt_tr_body'(Free/_>>_, _, _, _) :-
+	nonvar(Free),
+	\+ (functor(Free, {}, Arity), Arity =< 1),
+	throw(type_error(curly_bracketed_term, Free)).
 
 '$lgt_tr_body'(_/Parameters>>_, _, _, _) :-
 	nonvar(Parameters),
