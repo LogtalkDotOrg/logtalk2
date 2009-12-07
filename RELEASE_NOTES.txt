@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.38.1 - December ??, 2009
 
+    Improved lambda expressions error-checking and added support for using a
+    (>>)/2 lambda expression as goal (not a closure).
+
     Updated the CxProlog config file in order to set write term and write list
     limits that allow compilation of the Logtalk libraries and examples (the
     default values are two low in some cases leading to compilation errors).

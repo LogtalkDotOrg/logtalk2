@@ -48,7 +48,7 @@
 :- op(600,  fy,  :).
 
 
-% bitwise left-shift operator (used for lambda expressions)
+% bitwise right-shift operator (used for lambda expressions)
 
 :- op(400, yfx, >>).	% some Prolog compilers don't declare this operator
 
@@ -3579,8 +3579,9 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	;	\+ '$lgt_is_proper_list'(Parameters) ->
 		throw(error(type_error(list, Parameters), Parameters>>Closure, This))
 	;	'$lgt_copy_term_without_constraints'(Free/Parameters>>Closure, Free/ParametersCopy>>ClosureCopy),
-		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest),
+		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest) ->
 		'$lgt_metacall'(ClosureCopy, Rest, MetaCallCtx, Sender, This, Self)
+	;	throw(error(representation_error(lambda_parameters), Free/Parameters>>Closure, This))
 	).
 
 '$lgt_metacall'(Parameters>>Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
@@ -3590,8 +3591,9 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	;	\+ '$lgt_is_proper_list'(Parameters) ->
 		throw(error(type_error(list, Parameters), Parameters>>Closure, This))
 	;	'$lgt_copy_term_without_constraints'(Parameters>>Closure, ParametersCopy>>ClosureCopy),
-		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest),
+		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest) ->
 		'$lgt_metacall'(ClosureCopy, Rest, MetaCallCtx, Sender, This, Self)
+	;	throw(error(representation_error(lambda_parameters), Parameters>>Closure, This))
 	).
 
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
@@ -8522,6 +8524,58 @@ current_logtalk_flag(version, version(2, 38, 1)).
 
 
 % lambda expressions support predicates
+
+'$lgt_tr_body'(_>>Closure, _, _, _) :-
+	nonvar(Closure),
+	\+ callable(Closure),
+	throw(type_error(callable, Closure)).
+
+'$lgt_tr_body'(_/Parameters>>_, _, _, _) :-
+	nonvar(Parameters),
+	\+ '$lgt_is_proper_list'(Parameters),
+	throw(type_error(list, Parameters)).
+
+'$lgt_tr_body'(Free/Parameters>>Closure, TPred, DPred, Ctx) :-
+	!,
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
+	(	var(Closure), '$lgt_member_var'(Closure, MetaVars) ->
+		% we're compiling a clause for a meta-predicate; therefore, we need
+		% to connect the execution context and the meta-call context arguments
+		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
+		TPred = '$lgt_metacall'(Free/Parameters>>Closure, [], MetaCallCtx, Sender, This, Self)
+	;	% we're either compiling a clause for a normal predicate (i.e. MetaVars == [])
+		% or the meta-call should be local as it corresponds to a non meta-argument
+		% or the meta-call is an explicitly qualifed call (::/2, ::/1, :/2)
+		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
+		TPred = '$lgt_metacall'(Free/Parameters>>Closure, [], [], Sender, This, Self)
+	),
+	DPred = '$lgt_dbg_goal'(Free/Parameters>>Closure, TPred, ExCtx).
+
+'$lgt_tr_body'(Parameters>>_, _, _, _) :-
+	nonvar(Parameters),
+	\+ '$lgt_is_proper_list'(Parameters),
+	throw(type_error(list, Parameters)).
+
+'$lgt_tr_body'(Parameters>>Goal, TPred, DPred, Ctx) :-
+	Parameters == [],
+	!,
+	'$lgt_tr_body'(Goal, TPred, DPred, Ctx).
+
+'$lgt_tr_body'(Parameters>>Closure, TPred, DPred, Ctx) :-
+	!,
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx),
+	(	var(Closure), '$lgt_member_var'(Closure, MetaVars) ->
+		% we're compiling a clause for a meta-predicate; therefore, we need
+		% to connect the execution context and the meta-call context arguments
+		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, MetaCallCtx),
+		TPred = '$lgt_metacall'(Parameters>>Closure, [], MetaCallCtx, Sender, This, Self)
+	;	% we're either compiling a clause for a normal predicate (i.e. MetaVars == [])
+		% or the meta-call should be local as it corresponds to a non meta-argument
+		% or the meta-call is an explicitly qualifed call (::/2, ::/1, :/2)
+		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
+		TPred = '$lgt_metacall'(Parameters>>Closure, [], [], Sender, This, Self)
+	),
+	DPred = '$lgt_dbg_goal'(Parameters>>Closure, TPred, ExCtx).
 
 '$lgt_tr_body'(_/Goal, _, _, _) :-
 	nonvar(Goal),

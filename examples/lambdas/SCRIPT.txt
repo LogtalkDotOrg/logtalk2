@@ -66,6 +66,33 @@ R = [1000,124]
 yes
 
 
+% some sample queries using lambda expressions as goals (not closures):
+
+| ?- logtalk<<([]>>true).
+yes
+
+| ?- logtalk<<({}/true). 
+yes
+
+| ?- logtalk<<({}/[]>>true).
+yes
+
+| ?- logtalk<<({X}/true).     
+yes
+
+
+% some error cases:
+
+| ?- logtalk << ({X}/[X]>>true).
+uncaught exception: error(representation_error(lambda_parameters),{_282}/[_282]>>true,logtalk)
+
+| ?- meta::map({X}/[X]>>char_code(X), [a,b,c], R).
+uncaught exception: error(representation_error(lambda_parameters),{a}/[a]>>char_code(a),meta)
+
+| ?- meta::map([X,Y,Z]>>char_code(X), [a,b,c], R).
+uncaught exception: error(representation_error(lambda_parameters),[_278,_280,_282]>>char_code(_278),meta)
+
+
 % some examples with constraints using GNU Prolog as the back-end compiler:
 
 | ?-  Xss= [[1,2],[3]], meta::map(meta::map([X,Y,Z]>>(X+Y#=Z)), Xss, Yss, Zss).
