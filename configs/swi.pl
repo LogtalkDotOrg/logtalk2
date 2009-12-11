@@ -12,7 +12,7 @@
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %  (5.8.0 or later versions for using multi-threading features)
 %
-%  last updated: November 28, 2009
+%  last updated: December 11, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -567,6 +567,15 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
+'$lgt_rewrite_and_copy_pl_directive'(at_halt(Goal), at_halt(CGoal)) :-
+	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
+	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, []),		% MetaVars = [] as we're compiling a local call
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
+	(	'$lgt_compiler_flag'(debug, on) ->
+		CGoal = DGoal
+	;	CGoal = TGoal
+	).
 '$lgt_rewrite_and_copy_pl_directive'(format_predicate(Char, Head), format_predicate(Char, THead)) :-
 	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(license(License), license(License)).

@@ -27,7 +27,11 @@ RELEASE NOTES
     In addition, take advantage of the new "version_data", thus requiring
     version 0.97.4 or a later version.
 
-    Expanded the "lambdas" example with a contribution by Artur Miguel Dias.
+    Updated the SWI-Prolog config file in order to recognize and compile the
+    proprietary directive at_halt/1.
+
+    Expanded the "lambdas" example with a contribution by Artur Miguel Dias
+    and with more sample queries (including non-deterministic ones).
 
     Added syntax coloring support for the ^/2 existential quantifier operator
     for most supported text editors and syntax highlighters. Added sample code
