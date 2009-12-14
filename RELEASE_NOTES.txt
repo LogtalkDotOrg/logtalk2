@@ -15,8 +15,16 @@ RELEASE NOTES
 
 2.38.1 - December ??, 2009
 
+    Code cleanup of meta-predicate directives compilation. Tighten checks of
+    meta-predicate directives and meta-predicate directive arguments.
+
+    Improved compilation of call/2-N goals.
+
+    Improved performance of the lambda expression Free/Goal, usually used in
+    bagof/3 and setof/3 calls.
+
     Improved lambda expressions error-checking and added support for using a
-    (>>)/2 lambda expression as goal (not a closure).
+    (>>)/2 lambda expression as a goal.
 
     Corrected a typo in the exception term generated when sending a message to
     an object corresponding to a built-in local method.
@@ -24,7 +32,7 @@ RELEASE NOTES
     Updated the CxProlog config file in order to set write term and write list
     limits that allow compilation of the Logtalk libraries and examples (the
     default values are two low in some cases leading to compilation errors).
-    In addition, take advantage of the new "version_data", thus requiring
+    In addition, take advantage of the new "version_data" flag, thus requiring
     version 0.97.4 or a later version.
 
     Updated the SWI-Prolog config file in order to recognize and compile the

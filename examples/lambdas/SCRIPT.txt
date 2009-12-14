@@ -120,7 +120,7 @@ uncaught exception: error(representation_error(lambda_parameters),[_278,_280,_28
 
 % some examples with constraints using GNU Prolog as the back-end compiler:
 
-| ?-  Xss= [[1,2],[3]], meta::map(meta::map([X,Y,Z]>>(X+Y#=Z)), Xss, Yss, Zss).
+| ?- Xss= [[1,2],[3]], meta::map(meta::map([X,Y,Z]>>(X+Y#=Z)), Xss, Yss, Zss).
 
 Xss = [[1,2],[3]]
 Yss = [[_#3(0..268435454),_#54(0..268435453)],[_#105(0..268435452)]]
