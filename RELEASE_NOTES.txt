@@ -26,6 +26,8 @@ RELEASE NOTES
     Improved lambda expression error-checking and added support for using a
     (>>)/2 lambda expression as a goal.
 
+    Corrected a bug in handling the meta-call context for lambda expressions.
+
     Corrected a typo in the exception term generated when sending a message to
     an object corresponding to a built-in local method.
 

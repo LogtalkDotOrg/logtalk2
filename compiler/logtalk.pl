@@ -3576,7 +3576,9 @@ current_logtalk_flag(version, version(2, 38, 1)).
 		throw(error(type_error(atom, Module), Goal, This))
 	).
 
-'$lgt_metacall'(Free/Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
+% lambda expressions are always called in the context of the sender
+
+'$lgt_metacall'(Free/Closure, ExtraArgs, _, Sender, This, Self) :-
 	!,
 	(	var(Free) ->
 	 	throw(error(instantiation_error, Free/Closure, This))
@@ -3585,10 +3587,10 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	;	var(Closure) ->
 	 	throw(error(instantiation_error, Free/Closure, This))
 	;	'$lgt_copy_term_without_constraints'(Free/Closure, Free/ClosureCopy),
-		'$lgt_metacall'(ClosureCopy, ExtraArgs, MetaCallCtx, Sender, This, Self)
+		'$lgt_metacall'(ClosureCopy, ExtraArgs, _, Sender, This, Self)
 	).
 
-'$lgt_metacall'(Free/Parameters>>Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
+'$lgt_metacall'(Free/Parameters>>Closure, ExtraArgs, _, Sender, This, Self) :-
 	!,
 	(	var(Free) ->
 	 	throw(error(instantiation_error, Free/Parameters>>Closure, This))
@@ -3598,17 +3600,17 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	 	throw(error(instantiation_error, Free/Parameters>>Closure, This))
 	;	'$lgt_copy_term_without_constraints'(Free/Parameters>>Closure, Free/ParametersCopy>>ClosureCopy),
 		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest, Free/Parameters>>Closure, This) ->
-		'$lgt_metacall'(ClosureCopy, Rest, MetaCallCtx, Sender, This, Self)
+		'$lgt_metacall'(ClosureCopy, Rest, _, Sender, This, Self)
 	;	throw(error(representation_error(lambda_parameters), Free/Parameters>>Closure, This))
 	).
 
-'$lgt_metacall'(Parameters>>Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
+'$lgt_metacall'(Parameters>>Closure, ExtraArgs, _, Sender, This, Self) :-
 	!,
 	(	var(Closure) ->
 	 	throw(error(instantiation_error, Parameters>>Closure, This))
 	;	'$lgt_copy_term_without_constraints'(Parameters>>Closure, ParametersCopy>>ClosureCopy),
 		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest, Parameters>>Closure, This) ->
-		'$lgt_metacall'(ClosureCopy, Rest, MetaCallCtx, Sender, This, Self)
+		'$lgt_metacall'(ClosureCopy, Rest, _, Sender, This, Self)
 	;	throw(error(representation_error(lambda_parameters), Parameters>>Closure, This))
 	).
 
