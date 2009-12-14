@@ -3596,10 +3596,8 @@ current_logtalk_flag(version, version(2, 38, 1)).
 		throw(error(type_error(curly_bracketed_term, Free), Free/Parameters>>Closure, This))
 	;	var(Closure) ->
 	 	throw(error(instantiation_error, Free/Parameters>>Closure, This))
-	;	\+ '$lgt_is_proper_list'(Parameters) ->
-		throw(error(type_error(list, Parameters), Free/Parameters>>Closure, This))
 	;	'$lgt_copy_term_without_constraints'(Free/Parameters>>Closure, Free/ParametersCopy>>ClosureCopy),
-		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest) ->
+		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest, Free/Parameters>>Closure, This) ->
 		'$lgt_metacall'(ClosureCopy, Rest, MetaCallCtx, Sender, This, Self)
 	;	throw(error(representation_error(lambda_parameters), Free/Parameters>>Closure, This))
 	).
@@ -3608,10 +3606,8 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	!,
 	(	var(Closure) ->
 	 	throw(error(instantiation_error, Parameters>>Closure, This))
-	;	\+ '$lgt_is_proper_list'(Parameters) ->
-		throw(error(type_error(list, Parameters), Parameters>>Closure, This))
 	;	'$lgt_copy_term_without_constraints'(Parameters>>Closure, ParametersCopy>>ClosureCopy),
-		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest) ->
+		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest, Parameters>>Closure, This) ->
 		'$lgt_metacall'(ClosureCopy, Rest, MetaCallCtx, Sender, This, Self)
 	;	throw(error(representation_error(lambda_parameters), Parameters>>Closure, This))
 	).
@@ -3629,10 +3625,14 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	).
 
 
-'$lgt_unify_lambda_parameters'([], Vars, Vars).
+'$lgt_unify_lambda_parameters'(-, _, _, Lambda, This) :-	% catch variables and lists with unbound tails 
+	(Lambda = _/Parameters>>_; Lambda = Parameters>>_),
+	throw(error(type_error(list, Parameters), Lambda, This)).
 
-'$lgt_unify_lambda_parameters'([Parameter| Parameters], [Parameter| Vars], Rest) :-
-	'$lgt_unify_lambda_parameters'(Parameters, Vars, Rest).
+'$lgt_unify_lambda_parameters'([], Vars, Vars, _, _).
+
+'$lgt_unify_lambda_parameters'([Parameter| Parameters], [Parameter| Vars], Rest, Lambda, This) :-
+	'$lgt_unify_lambda_parameters'(Parameters, Vars, Rest, Lambda, This).
 
 
 

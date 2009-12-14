@@ -23,7 +23,7 @@ RELEASE NOTES
     Improved performance of the lambda expression Free/Goal, usually used in
     bagof/3 and setof/3 calls.
 
-    Improved lambda expressions error-checking and added support for using a
+    Improved lambda expression error-checking and added support for using a
     (>>)/2 lambda expression as a goal.
 
     Corrected a typo in the exception term generated when sending a message to
