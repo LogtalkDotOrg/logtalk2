@@ -9452,7 +9452,7 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	assertz('$lgt_non_portable_call_'(':'(Module, Functor), Arity)),
 	fail.
 
-'$lgt_tr_body'(Alias, ':'(Module, TPred), ':'(Module, DPred), Ctx) :-	% meta-predicates
+'$lgt_tr_body'(Alias, ':'(Module, TPred), ':'(Module, DPred), Ctx) :-		% meta-predicates
 	'$lgt_pp_use_module_pred_'(Module, Pred, Alias),
 	catch('$lgt_predicate_property'(Pred, imported_from(Module)), _, fail),
 	catch('$lgt_predicate_property'(Pred, meta_predicate(Meta)), _, fail),
@@ -9461,7 +9461,7 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	(	'$lgt_member'(MArg, MArgs), integer(MArg), MArg =\= 0 ->
 		throw(domain_error(closure, Meta))
 	;	'$lgt_tr_module_meta_predicate_directives_args'(MArgs, CMArgs),
-		'$lgt_tr_meta_args'(Args, CMArgs, Ctx, TArgs, DArgs),
+		'$lgt_tr_module_meta_args'(Args, CMArgs, Ctx, TArgs, DArgs),
 		TPred =.. [Functor| TArgs],
 		DPred =.. [Functor| DArgs]
 	),
@@ -9710,6 +9710,30 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
 
 '$lgt_tr_meta_arg'((0), Arg, Ctx, TArg, DArg) :-
+	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
+
+
+
+% '$lgt_tr_module_meta_args'(@list, @list, +term, -list, -list)
+%
+% translates the meta-arguments contained in the list of arguments of a call
+% to a module meta-predicate (assumes Logtalk meta-predicate notation); due
+% to the module meta-predicate semantics, the meta-arguemnts must be explicitly
+% qualified as being called from the "user" module
+
+'$lgt_tr_module_meta_args'([], [], _, [], []).
+
+'$lgt_tr_module_meta_args'([Arg| Args], [MArg| MArgs], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
+	'$lgt_tr_module_meta_arg'(MArg, Arg, Ctx, TArg, DArg),
+	'$lgt_tr_module_meta_args'(Args, MArgs, Ctx, TArgs, DArgs).
+
+
+'$lgt_tr_module_meta_arg'((*), Arg, _, Arg, Arg).
+
+'$lgt_tr_module_meta_arg'((::), Arg, Ctx, ':'(user, TArg), ':'(user, DArg)) :-
+	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
+
+'$lgt_tr_module_meta_arg'((0), Arg, Ctx, ':'(user, TArg), ':'(user, DArg)) :-
 	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
 
 

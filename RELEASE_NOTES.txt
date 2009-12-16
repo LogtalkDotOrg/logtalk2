@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.38.1 - December ??, 2009
 
+    Workaround module meta-predicate semantics in order to support calls to
+    module meta-predicates specified in use_module/2 directives within objects
+    and categories.
+
     Code cleanup of meta-predicate directives compilation. Tighten checks of
     meta-predicate directives and meta-predicate directive arguments.
 
