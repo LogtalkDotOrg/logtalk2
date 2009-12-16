@@ -40,6 +40,9 @@ RELEASE NOTES
     Updated the SWI-Prolog config file in order to recognize and compile the
     proprietary directive at_halt/1.
 
+    Updated the B-Prolog config file in order to add a missing meta-predicate
+    declaration for the foreach/2 built-in predicate.
+
     Expanded the "lambdas" example with a contribution by Artur Miguel Dias
     and with more sample queries (including non-deterministic ones).
 

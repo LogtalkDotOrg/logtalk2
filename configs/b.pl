@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.1 and later versions
 %
-%  last updated: November 28, 2009
+%  last updated: December 16, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -91,6 +91,7 @@
 '$lgt_pl_meta_predicate'(call_cleanup(::, ::), predicate).
 '$lgt_pl_meta_predicate'(fd_minimize(::, *), predicate).
 '$lgt_pl_meta_predicate'(fd_maximize(::, *), predicate).
+'$lgt_pl_meta_predicate'(foreach(*, ::), predicate).		% added in B-Prolog 7.3
 '$lgt_pl_meta_predicate'(foreach(*, *, ::), predicate).		% added in B-Prolog 7.3
 '$lgt_pl_meta_predicate'(foreach(*, *, *, ::), predicate).	% added in B-Prolog 7.3
 '$lgt_pl_meta_predicate'(freeze(*, ::), predicate).
