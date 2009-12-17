@@ -28,6 +28,8 @@ RELEASE NOTES
 
     Improved compilation of call/2-N goals.
 
+    Improved performance of meta-calls that are compiled at runtime.
+
     Improved performance of the lambda expression Free/Goal, usually used in
     bagof/3 and setof/3 calls.
 
