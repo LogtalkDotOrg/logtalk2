@@ -19,6 +19,10 @@ RELEASE NOTES
     module meta-predicates specified in use_module/2 directives within objects
     and categories.
 
+    Added support for compiling calls to module meta-predicates that are
+    explicitly qualified (may require that the modules are loaded, depending
+    on the back-end Prolog compiler).
+
     Code cleanup of meta-predicate directives compilation. Tighten checks of
     meta-predicate directives and meta-predicate directive arguments.
 

@@ -3614,6 +3614,16 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	;	throw(error(representation_error(lambda_parameters), Parameters>>Closure, This))
 	).
 
+'$lgt_metacall'({Closure}, ExtraArgs, _, _, _, _) :-		% pre-compiled meta-closures
+	!,
+	(	atom(Closure) ->
+		Pred =.. [Closure| ExtraArgs]
+	;	Closure =.. [Functor| Args],
+		'$lgt_append'(Args, ExtraArgs, FullArgs),
+		Pred =.. [Functor| FullArgs]
+	),
+	call(Pred).
+
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	(	atom(Closure) ->
 		Pred =.. [Closure| ExtraArgs]
@@ -3656,7 +3666,7 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	;	throw(error(type_error(callable, Pred), Sender::call(Pred), This))
 	).
 
-'$lgt_metacall'({Pred}, _, _, _, _) :-	% pre-compiled metacalls
+'$lgt_metacall'({Pred}, _, _, _, _) :-						% pre-compiled meta-calls
 	!,
 	call(Pred).
 
@@ -9024,13 +9034,31 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	).
 
 
-% calling module predicates
+% calling explicitly qualified module predicates
 
 '$lgt_tr_body'(':'(Module, Pred), TPred, DPred, Ctx) :-
 	'$lgt_pl_built_in'(':'(_, _)),						% back-end Prolog compiler supports modules
-	'$lgt_pp_module_'(_),								% we're compiling a module as an object
 	!,
-	'$lgt_tr_body'(Module::Pred, TPred, DPred, Ctx).	% assume referenced modules are also compiled as objects
+	(	'$lgt_pp_module_'(_) ->
+		% we're compiling a module as an object; assume referenced modules are also compiled as objects
+		'$lgt_tr_body'(Module::Pred, TPred, DPred, Ctx)
+	;	catch('$lgt_predicate_property'(Pred, imported_from(Module)), _, fail),
+		catch('$lgt_predicate_property'(Pred, meta_predicate(Meta)), _, fail) ->
+		% we're compiling a call to a module meta-predicate
+		Pred =.. [Functor| Args],
+		Meta =.. [Functor| MArgs],
+		(	'$lgt_member'(MArg, MArgs), integer(MArg), MArg =\= 0 ->
+			throw(domain_error(closure, Meta))
+		;	'$lgt_tr_module_meta_predicate_directives_args'(MArgs, CMArgs),
+			'$lgt_tr_module_meta_args'(Args, CMArgs, Ctx, TArgs, DArgs),
+			TPred =.. [Functor| TArgs],
+			DPred =.. [Functor| DArgs]
+		)
+	;	% we're compiling a call to a module predicate
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+		TPred = ':'(Module, Pred),
+		DPred = '$lgt_dbg_goal'(':'(Module, Pred), ':'(Module, Pred), ExCtx)
+	).
 
 
 % "reflection" built-in predicates
@@ -9452,7 +9480,7 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	assertz('$lgt_non_portable_call_'(':'(Module, Functor), Arity)),
 	fail.
 
-'$lgt_tr_body'(Alias, ':'(Module, TPred), ':'(Module, DPred), Ctx) :-		% meta-predicates
+'$lgt_tr_body'(Alias, ':'(Module, TPred), ':'(Module, DPred), Ctx) :-	% meta-predicates
 	'$lgt_pp_use_module_pred_'(Module, Pred, Alias),
 	catch('$lgt_predicate_property'(Pred, imported_from(Module)), _, fail),
 	catch('$lgt_predicate_property'(Pred, meta_predicate(Meta)), _, fail),
@@ -9700,7 +9728,9 @@ current_logtalk_flag(version, version(2, 38, 1)).
 '$lgt_tr_meta_args'([], [], _, [], []).
 
 '$lgt_tr_meta_args'([Arg| Args], [MArg| MArgs], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
-	'$lgt_tr_meta_arg'(MArg, Arg, Ctx, TArg, DArg),
+	'$lgt_tr_meta_arg'(MArg, Arg, Ctx, TArg0, DArg0),
+	'$lgt_fix_pred_calls'(TArg0, TArg),
+	'$lgt_fix_pred_calls'(DArg0, DArg),
 	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs).
 
 
@@ -9724,7 +9754,9 @@ current_logtalk_flag(version, version(2, 38, 1)).
 '$lgt_tr_module_meta_args'([], [], _, [], []).
 
 '$lgt_tr_module_meta_args'([Arg| Args], [MArg| MArgs], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
-	'$lgt_tr_module_meta_arg'(MArg, Arg, Ctx, TArg, DArg),
+	'$lgt_tr_module_meta_arg'(MArg, Arg, Ctx, TArg0, DArg0),
+	'$lgt_fix_pred_calls'(TArg0, TArg),
+	'$lgt_fix_pred_calls'(DArg0, DArg),
 	'$lgt_tr_module_meta_args'(Args, MArgs, Ctx, TArgs, DArgs).
 
 
@@ -12563,6 +12595,26 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	Meta =.. [_| MArgs],
 	'$lgt_fix_pred_calls_in_margs'(Args, MArgs, TArgs),
 	TPred =.. [Functor| TArgs].
+
+'$lgt_fix_pred_calls'(':'(Module1, ':'(Module2, Pred)), ':'(Module1, ':'(Module2, TPred))) :-
+	!,									% calls to Prolog module meta-predicates
+	'$lgt_fix_pred_calls'(':'(Module2, Pred), ':'(Module2, TPred)).
+
+'$lgt_fix_pred_calls'(':'(Module, Pred), ':'(Module, TPred)) :-
+	functor(Pred, Functor, Arity),
+	functor(Meta, Functor, Arity), 
+	catch('$lgt_predicate_property'(Pred, imported_from(Module)), _, fail),
+	catch('$lgt_predicate_property'(Pred, meta_predicate(Meta)), _, fail),
+	!,									% calls to Prolog module meta-predicates
+	Pred =.. [_| Args],
+	Meta =.. [_| MArgs],
+	'$lgt_tr_module_meta_predicate_directives_args'(MArgs, CMArgs),
+	'$lgt_fix_pred_calls_in_margs'(Args, CMArgs, TArgs),
+	TPred =.. [Functor| TArgs].
+
+'$lgt_fix_pred_calls'(':'(Module, Pred), ':'(Module, TPred)) :-
+	!,
+	'$lgt_fix_pred_calls'(Pred, TPred).
 
 '$lgt_fix_pred_calls'('$lgt_call_built_in'(Pred, MetaExPred, ExCtx), TPred) :-
 	!,									% calls to Logtalk and Prolog built-in (meta-)predicates
