@@ -8655,6 +8655,11 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	),
 	DPred = '$lgt_dbg_goal'(Parameters>>Goal, TPred, ExCtx).
 
+'$lgt_tr_body'(Free/_, _, _, _) :-
+	nonvar(Free),
+	\+ (functor(Free, {}, Arity), Arity =< 1),
+	throw(type_error(curly_bracketed_term, Free)).
+
 '$lgt_tr_body'(_/Goal, _, _, _) :-
 	nonvar(Goal),
 	\+ callable(Goal),
