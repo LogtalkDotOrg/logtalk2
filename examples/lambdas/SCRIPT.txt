@@ -168,7 +168,7 @@ Zs = [_G1114, _G1117],
 A+Y#=_G1114,
 B+Y#=_G1117.
 
-?- meta::map({Z}/[X,Y]>>(clpfd:(Z#=X+Y)), Xs, Ys).
+| ?- meta::map({Z}/[X,Y]>>(clpfd:(Z#=X+Y)), Xs, Ys).
 Xs = [],
 Ys = [] ;
 Xs = [_G1369],

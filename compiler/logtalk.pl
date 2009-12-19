@@ -3507,73 +3507,87 @@ current_logtalk_flag(version, version(2, 38, 1)).
 
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, _) :-
 	var(Closure),
-	Goal =.. [call, Closure| ExtraArgs],
+	Call =.. [call, Closure| ExtraArgs],
 	(	atom(MetaCallCtx) ->
-		throw(error(instantiation_error, This::Goal, This))
-	;	throw(error(instantiation_error, Sender::Goal, This))
+		throw(error(instantiation_error, This::Call, This))
+	;	throw(error(instantiation_error, Sender::Call, This))
 	).
 
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, _) :-
 	\+ callable(Closure),
-	Goal =.. [call, Closure| ExtraArgs],
+	Call =.. [call, Closure| ExtraArgs],
 	(	atom(MetaCallCtx) ->
-		throw(error(type_error(callable, Closure), This::Goal, This))
-	;	throw(error(type_error(callable, Closure), Sender::Goal, This))
+		throw(error(type_error(callable, Closure), This::Call, This))
+	;	throw(error(type_error(callable, Closure), Sender::Call, This))
+	).
+
+'$lgt_metacall'({Closure}, ExtraArgs, _, _, _, _) :-		% pre-compiled closures or calls
+	!,														% in "user" (compiler bypass)
+	(	var(Closure) ->
+		Call =.. [call, {Closure}| ExtraArgs],
+		throw(error(instantiation_error, Call, This))
+	;	callable(Closure) ->
+		Closure =.. [Functor| Args],
+		'$lgt_append'(Args, ExtraArgs, FullArgs),
+		Goal =.. [Functor| FullArgs],
+		call(Goal)
+	;	Call =.. [call, {Closure}| ExtraArgs],
+		throw(error(type_error(callable, Closure), Call, This))
 	).
 
 '$lgt_metacall'(::Closure, ExtraArgs, _, _, This, Self) :-
 	!,
 	(	var(Closure) ->
-		Goal =.. [call, ::Closure| ExtraArgs],
-		throw(error(instantiation_error, Goal, This))
+		Call =.. [call, ::Closure| ExtraArgs],
+		throw(error(instantiation_error, Call, This))
 	;	callable(Closure) ->
 		Closure =.. [Functor| Args],
 		'$lgt_append'(Args, ExtraArgs, FullArgs),
-		Pred =.. [Functor| FullArgs],
-		'$lgt_send_to_self_'(Self, Pred, This, _)
-	;	Goal =.. [call, ::Closure| ExtraArgs],
-		throw(error(type_error(callable, Closure), Goal, This))
+		Goal =.. [Functor| FullArgs],
+		'$lgt_send_to_self_'(Self, Goal, This, _)
+	;	Call =.. [call, ::Closure| ExtraArgs],
+		throw(error(type_error(callable, Closure), Call, This))
 	).
 
 '$lgt_metacall'(Obj::Closure, ExtraArgs, _, _, This, _) :-
 	!,
 	(	var(Obj) ->
-		Goal =.. [call, Obj::Closure| ExtraArgs],
-		throw(error(instantiation_error, Goal, This))
+		Call =.. [call, Obj::Closure| ExtraArgs],
+		throw(error(instantiation_error, Call, This))
 	;	var(Closure) ->
-		Goal =.. [call, Obj::Closure| ExtraArgs],
-		throw(error(instantiation_error, Goal, This))
+		Call =.. [call, Obj::Closure| ExtraArgs],
+		throw(error(instantiation_error, Call, This))
 	;	callable(Obj), callable(Closure) ->
 		Closure =.. [Functor| Args],
 		'$lgt_append'(Args, ExtraArgs, FullArgs),
-		Pred =.. [Functor| FullArgs],
+		Goal =.. [Functor| FullArgs],
 		(	'$lgt_entity_property_'(This, flags(_, _, _, e, _, _)) ->
-			'$lgt_send_to_obj_'(Obj, Pred, This, _)
-		;	'$lgt_send_to_obj_ne_'(Obj, Pred, This, _)
+			'$lgt_send_to_obj_'(Obj, Goal, This, _)
+		;	'$lgt_send_to_obj_ne_'(Obj, Goal, This, _)
 		)
-	;	Goal =.. [call, Obj::Closure| ExtraArgs],
-		throw(error(type_error(callable, Closure), Goal, This))
+	;	Call =.. [call, Obj::Closure| ExtraArgs],
+		throw(error(type_error(callable, Closure), Call, This))
 	).
 
 '$lgt_metacall'(':'(Module, Closure), ExtraArgs, _, _, This, _) :-
 	!,
 	(	var(Module) ->
-		Goal =.. [call, ':'(Module, Closure)| ExtraArgs],
-		throw(error(instantiation_error, Goal, This))
+		Call =.. [call, ':'(Module, Closure)| ExtraArgs],
+		throw(error(instantiation_error, Call, This))
 	;	var(Closure) ->
-		Goal =.. [call, ':'(Module, Closure)| ExtraArgs],
-		throw(error(instantiation_error, Goal, This))
+		Call =.. [call, ':'(Module, Closure)| ExtraArgs],
+		throw(error(instantiation_error, Call, This))
 	;	atom(Module) ->
 		(	callable(Closure) ->
 			Closure =.. [Functor| Args],
 			'$lgt_append'(Args, ExtraArgs, FullArgs),
-			Pred =.. [Functor| FullArgs],
-			':'(Module, Pred)
-		;	Goal =.. [call, ':'(Module, Closure)| ExtraArgs],
-			throw(error(type_error(callable, Closure), Goal, This))
+			Goal =.. [Functor| FullArgs],
+			':'(Module, Goal)
+		;	Call =.. [call, ':'(Module, Closure)| ExtraArgs],
+			throw(error(type_error(callable, Closure), Call, This))
 		)
-	;	Goal =.. [call, ':'(Module, Closure)| ExtraArgs],
-		throw(error(type_error(atom, Module), Goal, This))
+	;	Call =.. [call, ':'(Module, Closure)| ExtraArgs],
+		throw(error(type_error(atom, Module), Call, This))
 	).
 
 % lambda expressions are always called in the context of the sender
@@ -3619,14 +3633,14 @@ current_logtalk_flag(version, version(2, 38, 1)).
 
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	(	atom(Closure) ->
-		Pred =.. [Closure| ExtraArgs]
+		Goal =.. [Closure| ExtraArgs]
 	;	Closure =.. [Functor| Args],
 		'$lgt_append'(Args, ExtraArgs, FullArgs),
-		Pred =.. [Functor| FullArgs]
+		Goal =.. [Functor| FullArgs]
 	),
 	(	\+ '$lgt_member'(Closure, MetaCallCtx) ->
-		'$lgt_metacall_this'(Pred, Sender, This, Self)
-	;	'$lgt_metacall_sender'(Pred, Sender, This, Self)
+		'$lgt_metacall_this'(Goal, Sender, This, Self)
+	;	'$lgt_metacall_sender'(Goal, Sender, This, Self)
 	).
 
 
@@ -3661,32 +3675,32 @@ current_logtalk_flag(version, version(2, 38, 1)).
 %
 % performs a meta-call at runtime
 
-'$lgt_metacall'(Pred, MetaCallCtx, Sender, This, _) :-
-	var(Pred),
+'$lgt_metacall'(Goal, MetaCallCtx, Sender, This, _) :-
+	var(Goal),
 	(	atom(MetaCallCtx) ->
-		throw(error(instantiation_error, This::call(Pred), This))
-	;	throw(error(instantiation_error, Sender::call(Pred), This))
+		throw(error(instantiation_error, This::call(Goal), This))
+	;	throw(error(instantiation_error, Sender::call(Goal), This))
 	).
 
-'$lgt_metacall'(Pred, MetaCallCtx, Sender, This, _) :-
-	\+ callable(Pred),
+'$lgt_metacall'(Goal, MetaCallCtx, Sender, This, _) :-
+	\+ callable(Goal),
 	(	atom(MetaCallCtx) ->
-		throw(error(type_error(callable, Pred), This::call(Pred), This))
-	;	throw(error(type_error(callable, Pred), Sender::call(Pred), This))
+		throw(error(type_error(callable, Goal), This::call(Goal), This))
+	;	throw(error(type_error(callable, Goal), Sender::call(Goal), This))
 	).
 
-'$lgt_metacall'({Pred}, _, _, _, _) :-						% pre-compiled meta-calls
-	!,
-	call(Pred).
+'$lgt_metacall'({Goal}, _, _, _, _) :-						% pre-compiled meta-calls or calls
+	!,														% in "user" (compiler bypass)
+	call(Goal).
 
 '$lgt_metacall'(':'(Module, Goal), _, _, _, _) :-
 	!,
 	':'(Module, Goal).
 
-'$lgt_metacall'(Pred, MetaCallCtx, Sender, This, Self) :-
-	(	\+ '$lgt_member'(Pred, MetaCallCtx) ->
-		'$lgt_metacall_this'(Pred, Sender, This, Self)
-	;	'$lgt_metacall_sender'(Pred, Sender, This, Self)
+'$lgt_metacall'(Goal, MetaCallCtx, Sender, This, Self) :-
+	(	\+ '$lgt_member'(Goal, MetaCallCtx) ->
+		'$lgt_metacall_this'(Goal, Sender, This, Self)
+	;	'$lgt_metacall_sender'(Goal, Sender, This, Self)
 	).
 
 

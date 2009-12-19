@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.38.1 - December 22, 2009
 
+    Added support for using the {}/1 compiler bypass Logtalk control construct
+    to wrap closures that should be executed within the context of the pseudo-
+    object "user" (e.g. calls to Prolog built-in predicates).
+
     Workaround module meta-predicate semantics in order to support calls to
     module meta-predicates specified in use_module/2 directives within objects
     and categories.
