@@ -3521,7 +3521,7 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	;	throw(error(type_error(callable, Closure), Sender::Call, This))
 	).
 
-'$lgt_metacall'({Closure}, ExtraArgs, _, _, _, _) :-		% pre-compiled closures or calls
+'$lgt_metacall'({Closure}, ExtraArgs, _, _, This, _) :-		% pre-compiled closures or calls
 	!,														% in "user" (compiler bypass)
 	(	var(Closure) ->
 		Call =.. [call, {Closure}| ExtraArgs],
