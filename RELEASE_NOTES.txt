@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.38.1 - December ??, 2009
+2.38.1 - December 22, 2009
 
     Workaround module meta-predicate semantics in order to support calls to
     module meta-predicates specified in use_module/2 directives within objects

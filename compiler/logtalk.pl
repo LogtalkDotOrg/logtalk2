@@ -3578,7 +3578,7 @@ current_logtalk_flag(version, version(2, 38, 1)).
 
 % lambda expressions are always called in the context of the sender
 
-'$lgt_metacall'(Free/Closure, ExtraArgs, _, Sender, This, Self) :-
+'$lgt_metacall'(Free/Closure, ExtraArgs, LambdaMetaCallCtx, Sender, This, Self) :-
 	!,
 	(	var(Free) ->
 	 	throw(error(instantiation_error, Free/Closure, This))
@@ -3586,11 +3586,12 @@ current_logtalk_flag(version, version(2, 38, 1)).
 		throw(error(type_error(curly_bracketed_term, Free), Free/Closure, This))
 	;	var(Closure) ->
 	 	throw(error(instantiation_error, Free/Closure, This))
-	;	'$lgt_copy_term_without_constraints'(Free/Closure, Free/ClosureCopy),
-		'$lgt_metacall'(ClosureCopy, ExtraArgs, _, Sender, This, Self)
+	;	'$lgt_reduce_lambda_meta_call_ctx'(LambdaMetaCallCtx, Free/Closure, MetaCallCtx),
+		'$lgt_copy_term_without_constraints'(Free/Closure+MetaCallCtx, Free/ClosureCopy+MetaCallCtxCopy),
+		'$lgt_metacall'(ClosureCopy, ExtraArgs, MetaCallCtxCopy, Sender, This, Self)
 	).
 
-'$lgt_metacall'(Free/Parameters>>Closure, ExtraArgs, _, Sender, This, Self) :-
+'$lgt_metacall'(Free/Parameters>>Closure, ExtraArgs, LambdaMetaCallCtx, Sender, This, Self) :-
 	!,
 	(	var(Free) ->
 	 	throw(error(instantiation_error, Free/Parameters>>Closure, This))
@@ -3598,19 +3599,21 @@ current_logtalk_flag(version, version(2, 38, 1)).
 		throw(error(type_error(curly_bracketed_term, Free), Free/Parameters>>Closure, This))
 	;	var(Closure) ->
 	 	throw(error(instantiation_error, Free/Parameters>>Closure, This))
-	;	'$lgt_copy_term_without_constraints'(Free/Parameters>>Closure, Free/ParametersCopy>>ClosureCopy),
+	;	'$lgt_reduce_lambda_meta_call_ctx'(LambdaMetaCallCtx, Free/Parameters>>Closure, MetaCallCtx),
+		'$lgt_copy_term_without_constraints'(Free/Parameters>>Closure+MetaCallCtx, Free/ParametersCopy>>ClosureCopy+MetaCallCtxCopy),
 		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest, Free/Parameters>>Closure, This) ->
-		'$lgt_metacall'(ClosureCopy, Rest, _, Sender, This, Self)
+		'$lgt_metacall'(ClosureCopy, Rest, MetaCallCtxCopy, Sender, This, Self)
 	;	throw(error(representation_error(lambda_parameters), Free/Parameters>>Closure, This))
 	).
 
-'$lgt_metacall'(Parameters>>Closure, ExtraArgs, _, Sender, This, Self) :-
+'$lgt_metacall'(Parameters>>Closure, ExtraArgs, LambdaMetaCallCtx, Sender, This, Self) :-
 	!,
 	(	var(Closure) ->
 	 	throw(error(instantiation_error, Parameters>>Closure, This))
-	;	'$lgt_copy_term_without_constraints'(Parameters>>Closure, ParametersCopy>>ClosureCopy),
+	;	'$lgt_reduce_lambda_meta_call_ctx'(LambdaMetaCallCtx, Parameters>>Closure, MetaCallCtx),
+		'$lgt_copy_term_without_constraints'(Parameters>>Closure+MetaCallCtx, ParametersCopy>>ClosureCopy+MetaCallCtxCopy),
 		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest, Parameters>>Closure, This) ->
-		'$lgt_metacall'(ClosureCopy, Rest, _, Sender, This, Self)
+		'$lgt_metacall'(ClosureCopy, Rest, MetaCallCtxCopy, Sender, This, Self)
 	;	throw(error(representation_error(lambda_parameters), Parameters>>Closure, This))
 	).
 
@@ -3635,6 +3638,22 @@ current_logtalk_flag(version, version(2, 38, 1)).
 
 '$lgt_unify_lambda_parameters'([Parameter| Parameters], [Parameter| Vars], Rest, Lambda, This) :-
 	'$lgt_unify_lambda_parameters'(Parameters, Vars, Rest, Lambda, This).
+
+
+'$lgt_reduce_lambda_meta_call_ctx'(-, _, _).
+
+'$lgt_reduce_lambda_meta_call_ctx'([], _, []).
+
+'$lgt_reduce_lambda_meta_call_ctx'([Meta| Metas], Lambda, Reduced) :-
+	'$lgt_reduce_lambda_meta_call_ctx'(Meta, Metas, Lambda, Reduced).
+
+
+'$lgt_reduce_lambda_meta_call_ctx'(Free/Closure, Metas, Free/Closure, [Closure| Metas]) :- !.
+
+'$lgt_reduce_lambda_meta_call_ctx'(Parameters>>Closure, Metas, Parameters>>Closure, [Closure| Metas]) :- !.
+
+'$lgt_reduce_lambda_meta_call_ctx'(_, Metas, Lambda, Reduced) :-
+	'$lgt_reduce_lambda_meta_call_ctx'(Metas, Lambda, Reduced).
 
 
 

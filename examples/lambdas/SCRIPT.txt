@@ -266,11 +266,11 @@ yes
 R = 45
 yes
 
-| ?- sigma::sum([X,Y]>>(Y is X*X), 0,9, R).
+| ?- sigma::sum([X,Y]>>(Y is X*X), 0, 9, R).
 R = 285
 yes
 
-| ?- sigma::sum([X,Y]>>sum([W,Z]>>(Z is W), X, 9, Y) , 0, 9, R).
+| ?- sigma::sum([X,Y]>>sum([W,Z]>>(Z is W), X, 9, Y), 0, 9, R).
 R = 330
 yes
 
