@@ -3521,16 +3521,6 @@ current_logtalk_flag(version, version(2, 38, 1)).
 	;	throw(error(type_error(callable, Closure), Sender::Goal, This))
 	).
 
-'$lgt_metacall'({Closure}, ExtraArgs, _, _, _, _) :-		% pre-compiled meta-closures
-	!,
-	(	atom(Closure) ->
-		Pred =.. [Closure| ExtraArgs]
-	;	Closure =.. [Functor| Args],
-		'$lgt_append'(Args, ExtraArgs, FullArgs),
-		Pred =.. [Functor| FullArgs]
-	),
-	call(Pred).
-
 '$lgt_metacall'(::Closure, ExtraArgs, _, _, This, Self) :-
 	!,
 	(	var(Closure) ->
