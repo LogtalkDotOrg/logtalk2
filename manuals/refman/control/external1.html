@@ -25,7 +25,10 @@
 
 <pre>{Goal}</pre>
 <p>
-Calls external Prolog code. Can be used to bypass the Logtalk compiler. The argument is called within the context of the pseudo-object <a class="glossary" title="Go to glossary definition" href="../../userman/objects.html#objects_user">user</a>. This control construct may also be used in place of an object identifier when sending a message. In this case, the result of proving its argument is used as an object identifier in the message sending call.
+Calls external Prolog code. Can be used to bypass the Logtalk compiler. The argument is called within the context of the pseudo-object <a class="glossary" title="Go to glossary definition" href="../../userman/objects.html#objects_user">user</a>. It is also possible to use <code>{Closure}</code> as the first argument of <code>call/2-N</code> calls. In this case, <code>Closure</code> will be extended with the remaining arguments of the <code>call/2-N</code> call in order to construct a goal that will be called within the context of <code>user</code>.
+</p>
+<p>
+This control construct may also be used in place of an object identifier when sending a message. In this case, the result of proving its argument is used as an object identifier in the message sending call.
 </p>
 
 <h4>Template and modes</h4>
@@ -49,7 +52,7 @@ Calls external Prolog code. Can be used to bypass the Logtalk compiler. The argu
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: September 26, 2008</span>
+		<span>Last updated on: December 19, 2009</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="../index.html#constructs">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="../index.html#constructs">next</a></span><br/>
