@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: November 28, 2009
+%  last updated: December 20, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -22,7 +22,7 @@
 :- initialization((
 	use_module(library(system)),
 	'$lgt_hide_predicates',
-	set_prolog_flag(language, iso),		% comment out if you need to use YAP libraries that fail in "iso" mode!
+%	set_prolog_flag(language, iso),		% commented due to all the YAP libraries that don't compile in "iso" mode!
 	set_prolog_flag(update_semantics, logical),
 	set_prolog_flag(unknown, error),
 	set_prolog_flag(syntax_errors, error))).
@@ -181,6 +181,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 :- if(predicate_property(setup_call_catcher_cleanup(_, _, _, _), built_in)).
 	'$lgt_pl_meta_predicate'(setup_call_catcher_cleanup(::, ::, *, ::), predicate).
 :- endif.
+'$lgt_pl_meta_predicate'(time(::), predicate).
 '$lgt_pl_meta_predicate'(thread_initialization(::), predicate).
 '$lgt_pl_meta_predicate'(thread_at_exit(::), predicate).
 '$lgt_pl_meta_predicate'(thread_create(::, *, *), predicate).

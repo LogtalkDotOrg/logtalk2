@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.2 or later versions
 %
-%  last updated: November 28, 2009
+%  last updated: December 20, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -100,6 +100,8 @@ forall(Generate, Test) :-
 '$lgt_pl_meta_predicate'(sk_not(::), predicate).
 '$lgt_pl_meta_predicate'(table_once(::), predicate).
 '$lgt_pl_meta_predicate'(tnot(::), predicate).
+
+'$lgt_pl_meta_predicate'(time(::), predicate).
 
 '$lgt_pl_meta_predicate'(thread_create(::, *, *), predicate).
 '$lgt_pl_meta_predicate'(thread_create(::, *), predicate).
