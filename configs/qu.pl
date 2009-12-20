@@ -9,9 +9,9 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for Qu-Prolog 8.9 and later versions
+%  configuration file for Qu-Prolog 8.10 and later versions
 %
-%  last updated: November 28, 2009
+%  last updated: December 20, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -63,6 +63,9 @@
 
 
 % call_cleanup(+callable, +callable) -- built-in
+
+
+% setup_call_cleanup(+callable, +callable, +callable) -- built-in
 
 
 % forall(+callable, +callable) -- built-in

@@ -63,7 +63,12 @@ RELEASE NOTES
     don't compile with this setting.
 
     Updated the XSB config file by adding a missing declaration for the time/1
-    proprietary built-in meta-predicate.
+    proprietary built-in meta-predicate and a definition for the predicate
+    setup_call_cleanup/3 (in order to restore compatibility with the Logtalk
+    multi-threading features).
+
+    Updated all config files with information on the availability of the
+    setup_call_cleanup/3 predicate.
 
     Expanded the "lambdas" example with a contribution by Artur Miguel Dias
     and with more sample queries (including non-deterministic ones).

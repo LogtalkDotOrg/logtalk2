@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 3.8 and later versions
 %
-%  last updated: November 28, 2009
+%  last updated: December 20, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -76,6 +76,13 @@ message_hook(warning, clauses_not_together(_), _) :-	% SICStus Prolog discontigu
 
 
 % call_cleanup(+callable, +callable) -- built-in
+
+
+% setup_call_cleanup(+callable, +callable, +callable)
+
+setup_call_cleanup(Setup, Call, Cleanup) :-
+	call(Setup),
+	call_cleanup(Call, Cleanup).
 
 
 % forall(+callable, +callable)

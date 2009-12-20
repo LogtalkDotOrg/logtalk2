@@ -11,7 +11,7 @@
 %
 %  configuration file for JIProlog 3.0.2-6 or later versions
 %
-%  last updated: November 28, 2009
+%  last updated: December 20, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -71,6 +71,12 @@ initialization(Goal) :-
 
 call_cleanup(_, _) :-
 	throw(not_supported(call_cleanup/2)).
+
+
+% setup_call_cleanup(+callable, +callable, +callable)
+
+setup_call_cleanup(_, _, _) :-
+	throw(not_supported(setup_call_cleanup/3)).
 
 
 % forall(+callable, +callable) -- built-in

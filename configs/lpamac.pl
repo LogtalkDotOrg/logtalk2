@@ -11,7 +11,7 @@
 %
 %  configuration file for LPA MacProlog32 1.25
 %
-%  last updated: November 28, 2009
+%  last updated: December 20, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -180,6 +180,12 @@ write_term(Stream, Term, _) :-
 
 call_cleanup(_, _) :-
 	throw(not_supported(call_cleanup/2)).
+
+
+% setup_call_cleanup(+callable, +callable, +callable)
+
+setup_call_cleanup(_, _, _) :-
+	throw(not_supported(setup_call_cleanup/3)).
 
 
 % forall(+callable, +callable) -- built-in

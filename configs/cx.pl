@@ -11,7 +11,7 @@
 %
 %  configuration file for CxProlog 0.97.4 or a later version
 %
-%  last updated: December 6, 2009
+%  last updated: December 20, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -70,6 +70,13 @@
 
 
 % call_cleanup(+callable, +callable) -- built-in
+
+
+% setup_call_cleanup(+callable, +callable, +callable)
+
+setup_call_cleanup(Setup, Call, Cleanup) :-
+	call(Setup),
+	call_cleanup(Call, Cleanup).
 
 
 % forall(+callable, +callable) -- built-in

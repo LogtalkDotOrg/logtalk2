@@ -11,7 +11,7 @@
 %
 %  configuration file for Ciao Prolog 1.10#8
 %
-%  last updated: November 28, 2009
+%  last updated: December 20, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -151,6 +151,12 @@ lgt_ciao_iso_builtin(put_char(_, _)).
 
 call_cleanup(_, _) :-
 	throw(not_supported(call_cleanup/2)).
+
+
+% setup_call_cleanup(+callable, +callable, +callable)
+
+setup_call_cleanup(_, _, _) :-
+	throw(not_supported(setup_call_cleanup/3)).
 
 
 % forall(+callable, +callable)

@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.1 and later versions
 %
-%  last updated: December 16, 2009
+%  last updated: December 20, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -65,6 +65,13 @@
 
 
 % call_cleanup(+callable, +callable) -- built-in
+
+
+% setup_call_cleanup(+callable, +callable, +callable)
+
+setup_call_cleanup(Setup, Call, Cleanup) :-
+	call(Setup),
+	call_cleanup(Call, Cleanup).
 
 
 % forall(+callable, +callable) -- built-in

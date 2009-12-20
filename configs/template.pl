@@ -66,6 +66,9 @@
 % call_cleanup(+callable, +callable) -- built-in ????
 
 
+% setup_call_cleanup(+callable, +callable, +callable) -- built-in ????
+
+
 % forall(+callable, +callable) -- built-in ????
 
 forall(Generate, Test) :-

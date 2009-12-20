@@ -71,6 +71,13 @@
 % call_cleanup(+callable, +callable) -- built-in
 
 
+% setup_call_cleanup(+callable, +callable, +callable)
+
+setup_call_cleanup(Setup, Call, Cleanup) :-
+	call(Setup),
+	call_cleanup(Call, Cleanup).
+
+
 % forall(+Generate, +Test)
 
 forall(Generate, Test) :-

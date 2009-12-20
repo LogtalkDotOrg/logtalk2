@@ -137,6 +137,9 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 % call_cleanup(+callable, +callable) -- built-in
 
 
+% setup_call_cleanup(+callable, +callable, +callable) -- built-in
+
+
 % forall(+callable, +callable) -- built-in
 
 

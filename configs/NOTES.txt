@@ -406,7 +406,7 @@ PrologII+ 4.5 and later versions
 	supported (must be manually loaded after starting Logtalk).
 
 
-Qu-Prolog 8.9 and later versions
+Qu-Prolog 8.10 and later versions
 
 	qu.pl
 

@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 5.10#26 or later 5.10 versions
 %
-%  last updated: November 28, 2009
+%  last updated: December 20, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -99,6 +99,12 @@
 
 call_cleanup(_, _) :-
 	throw(not_supported(call_cleanup/2)).
+
+
+% setup_call_cleanup(+callable, +callable, +callable)
+
+setup_call_cleanup(_, _, _) :-
+	throw(not_supported(setup_call_cleanup/3)).
 
 
 % forall(+callable, +callable)

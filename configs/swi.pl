@@ -12,7 +12,7 @@
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %  (5.8.0 or later versions for using multi-threading features)
 %
-%  last updated: December 11, 2009
+%  last updated: December 20, 2009
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -81,6 +81,9 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 
 
 % call_cleanup(+callable, +callable) -- built-in
+
+
+% setup_call_cleanup(+callable, +callable, +callable) -- built-in
 
 
 % forall(+callable, +callable) -- built-in

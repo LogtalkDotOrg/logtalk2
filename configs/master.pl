@@ -11,7 +11,7 @@
 %
 %  configuration file for MasterProLog 4.1
 %
-%  last updated: November 28, 2009
+%  last updated: December 20, 2009
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -128,6 +128,12 @@ write_term(Stream, Term, _) :-
 
 call_cleanup(_, _) :-
 	throw(not_supported(call_cleanup/2)).
+
+
+% setup_call_cleanup(+callable, +callable, +callable)
+
+setup_call_cleanup(_, _, _) :-
+	throw(not_supported(setup_call_cleanup/3)).
 
 
 % forall(+callable, +callable)
