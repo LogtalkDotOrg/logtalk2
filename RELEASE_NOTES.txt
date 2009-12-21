@@ -70,8 +70,9 @@ RELEASE NOTES
     Updated all config files with information on the availability of the
     setup_call_cleanup/3 predicate.
 
-    Expanded the "lambdas" example with a contribution by Artur Miguel Dias
-    and with more sample queries (including non-deterministic ones).
+    Expanded the "lambdas" example with a contribution by Artur Miguel Dias,
+    more sample queries (including non-deterministic ones), and some simple
+    benchmarks.
 
     Added syntax coloring support for the ^/2 existential quantifier operator
     for most supported text editors and syntax highlighters. Added sample code

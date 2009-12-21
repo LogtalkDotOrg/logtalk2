@@ -75,9 +75,9 @@
 	common_prefix(Front, Xs, Ys) :-		% adapted from a Richard O'Keefe example
 		meta::map({Front}/(list::append(Front)), Xs, Ys).
 
-	:- public(run/0).
+	:- public(call_n/0).
 
-	run :-								% adapted from a Ulrich Neumerkel's lambda proposal example
+	call_n :-								% adapted from a Ulrich Neumerkel's lambda proposal example
 		f(X, Y),
 		write('This test should print '), write(f(X, Y)), write(' in all lines:'), nl,
 		call(f, A1, A2), write(f(A1, A2)), nl,
@@ -89,4 +89,65 @@
 
 	f(x, y).
 
+	:- public(local/0).
+
+	local :-
+		integer::sequence(1, 100, List),
+		meta::map([X]>>less(0,X),List).
+
+	less(X, Y) :-
+		X < Y.
+
 :- end_object.
+
+
+
+:- if((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == swi; Dialect == xsb; Dialect == yap))).
+
+	:- object(lambda_benchmarks).
+	
+		:- public([bench1/0, bench2/0]).
+	
+		:- if(current_logtalk_flag(prolog_dialect, swi)).
+			:- use_module(prolog_statistics, [time/1]).
+		:- endif.
+	
+		:- uses(integer, [between/3, sequence/3]).
+		:- uses(meta, [map/2, map/3]).
+	
+		bench1 :-
+			sequence(1, 100000, List),
+			write('Using map/2 with a closure for testing less(0, X) with X in [1..100000]: '), nl,
+			time(map(less(0), List)),
+			write('Using map/2 with a lambda for testing less(0, X) with X in [1..100000]:  '), nl,
+			time(map([X]>>less(0,X), List)).
+		
+		less(X, Y) :-
+			X < Y.
+
+		% the second benchmark is based on code posted by Jan Wielemaker in the SWI-Prolog mailing list:
+
+		bench2 :-
+			sequence(1, 100000, List),
+			(   (   write('Adding 1 to every integer in the list [1..100000] using a local add1/2 predicate:'), nl,
+					time(forall(between(1, 100, _), add1(List, _)))
+				;	write('Adding 1 to every integer in the list [1..100000] using map/3 with the integer::plus/3 predicate:'), nl,
+					time(forall(between(1, 100, _), sum(List, _)))
+		    	;   write('Adding 1 to every integer in the list [1..100000] using map/3 with a lambda argument with a is/2 goal:'), nl,
+					time(forall(between(1, 100, _), map([X,Y]>>{Y is X+1}, List, _)))
+		    	),
+				fail
+			;   true
+		).
+	
+		sum(List1, List2) :-
+			map(integer::plus(1), List1, List2).
+	
+		add1([], []).
+		add1([H0| T0], [H| T]) :-
+			H is H0 + 1,
+			add1(T0, T).
+	
+	:- end_object.
+
+:- endif.
