@@ -13,7 +13,12 @@ RELEASE NOTES
 =============
 
 
-2.38.2 - December 21, 2009
+2.38.2 - January ??, 2010
+
+
+
+
+2.38.1 - December 21, 2009
 
     Added support for using the {}/1 compiler bypass Logtalk control construct
     to wrap closures that should be executed within the context of the pseudo-
