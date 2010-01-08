@@ -3,9 +3,9 @@
 	implements(termp)).
 
 	:- info([
-		version is 1.4,
+		version is 1.5,
 		author is 'Paulo Moura',
-		date is 2009/7/5,
+		date is 2010/1/8,
 		comment is 'Prolog term utility predicates.']).
 
 	:- alias(termp, variables/2, vars/2).
@@ -44,18 +44,17 @@
 	:- else.
 
 		ground(Term) :-
-			nonvar(Term),
-			functor(Term, _, Arity),
-			ground(Arity, Term).
+			(	atomic(Term) ->
+				true
+			;	nonvar(Term),
+				Term =.. [_| Args],
+				ground_args(Args)
+			).
 
-		ground(0, _) :-
-			!.
-		ground(N, Term) :-
-			N > 0,
-			arg(N, Term, Arg),
+		ground_args([]).
+		ground_args([Arg| Args]) :-
 			ground(Arg),
-			N2 is N - 1,
-			ground(N2, Term).
+			ground_args(Args).
 
 	:- endif.
 
