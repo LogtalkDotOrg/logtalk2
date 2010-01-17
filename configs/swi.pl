@@ -12,7 +12,7 @@
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %  (5.8.0 or later versions for using multi-threading features)
 %
-%  last updated: December 20, 2009
+%  last updated: January 17, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -587,6 +587,15 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(index(Head), index(THead)) :-
 	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
+'$lgt_rewrite_and_copy_pl_directive'(initialization(Goal, When), initialization(CGoal, When)) :-
+	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
+	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, []),		% MetaVars = [] as we're compiling a local call
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
+	(	'$lgt_compiler_flag'(debug, on) ->
+		CGoal = DGoal
+	;	CGoal = TGoal
+	).
 '$lgt_rewrite_and_copy_pl_directive'(hash(Head), hash(THead)) :-
 	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(noprofile(PIs), noprofile(CPIs)) :-

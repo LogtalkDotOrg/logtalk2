@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.38.2 - January ??, 2010
 
+    Added support for the proprietary directive initialization/2 to the config
+    files of SWI-Prolog and YAP.
+
     Updated the library object "term" with a (hopefully) faster implementation
     of the predicate ground/1, following advise by Lindsey Spratt on the GNU
     Prolog mailing list.
