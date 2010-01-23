@@ -22,6 +22,9 @@ RELEASE NOTES
     of the predicate ground/1, following advise by Lindsey Spratt on the GNU
     Prolog mailing list.
 
+    Corrected a validation (but harmless) bug in the Logtalk syntax coloring 
+    support for the jEdit text editor.
+
 
 2.38.1 - December 21, 2009
 
