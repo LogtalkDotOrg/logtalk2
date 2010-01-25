@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: January 17, 2010
+%  last updated: January 25, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -152,9 +152,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  Prolog built-in meta-predicates
-%
-%  (excluding ISO Prolog Standard meta-predicates)
+%  Prolog non-standard built-in meta-predicates
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

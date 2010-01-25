@@ -11,7 +11,7 @@
 %
 %  configuration file for K-Prolog 6.0.4 and later versions
 %
-%  last updated: December 20, 2009
+%  last updated: January 25, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -84,9 +84,7 @@ setup_call_cleanup(_, _, _) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  Prolog built-in meta-predicates
-%
-%  (excluding ISO Prolog Standard meta-predicates)
+%  Prolog non-standard built-in meta-predicates
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

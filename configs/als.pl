@@ -11,7 +11,7 @@
 %
 %  configuration file for ALS Prolog 3.1
 %
-%  last updated: December 20, 2009
+%  last updated: January 25, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -157,9 +157,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  Prolog built-in meta-predicates
-%
-%  (excluding ISO Prolog Standard meta-predicates)
+%  Prolog non-standard built-in meta-predicates
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

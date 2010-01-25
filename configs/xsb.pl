@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.2 or later versions
 %
-%  last updated: December 20, 2009
+%  last updated: January 25, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -93,9 +93,7 @@ forall(Generate, Test) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  Prolog built-in meta-predicates
-%
-%  (excluding ISO Prolog Standard meta-predicates)
+%  Prolog non-standard built-in meta-predicates
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -103,9 +101,11 @@ forall(Generate, Test) :-
 % '$lgt_pl_meta_predicate'(?callable, ?atom).
 
 '$lgt_pl_meta_predicate'(fail_if(::), predicate).
+'$lgt_pl_meta_predicate'(findall(*, ::, *, *), predicate).
 '$lgt_pl_meta_predicate'(not(::), predicate).
 '$lgt_pl_meta_predicate'(sk_not(::), predicate).
 '$lgt_pl_meta_predicate'(table_once(::), predicate).
+'$lgt_pl_meta_predicate'(tfindall(*, ::, *), predicate).
 '$lgt_pl_meta_predicate'(tnot(::), predicate).
 
 '$lgt_pl_meta_predicate'(time(::), predicate).

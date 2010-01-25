@@ -12,7 +12,7 @@
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %  (5.8.0 or later versions for using multi-threading features)
 %
-%  last updated: January 17, 2010
+%  last updated: January 25, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -98,9 +98,7 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  Prolog built-in meta-predicates
-%
-%  (excluding ISO Prolog Standard meta-predicates)
+%  Prolog non-standard built-in meta-predicates
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
