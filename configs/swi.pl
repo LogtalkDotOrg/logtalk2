@@ -576,45 +576,19 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
 '$lgt_rewrite_and_copy_pl_directive'(format_predicate(Char, Head), format_predicate(Char, THead)) :-
-	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
+	'$lgt_tr_predicate_head'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(license(License), license(License)).
 '$lgt_rewrite_and_copy_pl_directive'(set_prolog_flag(generate_debug_info, false), set_prolog_flag(generate_debug_info, false)).
 '$lgt_rewrite_and_copy_pl_directive'(thread_local(PIs), thread_local(CPIs)) :-
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
+	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(index(Head), index(THead)) :-
-	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
+	'$lgt_tr_predicate_head'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(hash(Head), hash(THead)) :-
-	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
+	'$lgt_tr_predicate_head'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(noprofile(PIs), noprofile(CPIs)) :-
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
+	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(volatile(PIs), volatile(CPIs)) :-
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-
-
-'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, _) :-
-	var(PIs),
-	throw(instantiation_error).
-'$lgt_rewrite_and_copy_pl_directive_pis'([], []) :-
-	!.
-'$lgt_rewrite_and_copy_pl_directive_pis'([PI| PIs], [CPI| CPIs]) :-
-	!,
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PI, CPI),
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-'$lgt_rewrite_and_copy_pl_directive_pis'((PI, PIs), (CPI, CPIs)) :-
-	!,
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PI, CPI),
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-'$lgt_rewrite_and_copy_pl_directive_pis'(Functor/Arity, TFunctor/TArity) :-
-	'$lgt_pp_entity'(_, _, Prefix, _, _),
-	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity).
-
-'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead) :-
-	functor(Head, Functor, Arity),
-	'$lgt_rewrite_and_copy_pl_directive_pis'(Functor/Arity, TFunctor/TArity),
-	functor(THead, TFunctor, TArity),
-	Head =.. [Functor| Args],
-	THead =.. [TFunctor| Targs],
-	'$lgt_append'(Args, _, Targs).
+	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)

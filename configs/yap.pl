@@ -639,27 +639,9 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 '$lgt_rewrite_and_copy_pl_directive'(load_foreign_files(Files, Libs, InitRoutine), initialization(load_foreign_files(Files, Libs, InitRoutine))) :-
 	load_foreign_files(Files, Libs, InitRoutine).
 '$lgt_rewrite_and_copy_pl_directive'(table(PIs), table(CPIs)) :-
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
+	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(thread_local(PIs), thread_local(CPIs)) :-
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-
-
-'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, _) :-
-	var(PIs),
-	throw(instantiation_error).
-'$lgt_rewrite_and_copy_pl_directive_pis'([], []) :-
-	!.
-'$lgt_rewrite_and_copy_pl_directive_pis'([PI| PIs], [CPI| CPIs]) :-
-	!,
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PI, CPI),
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-'$lgt_rewrite_and_copy_pl_directive_pis'((PI, PIs), (CPI, CPIs)) :-
-	!,
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PI, CPI),
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-'$lgt_rewrite_and_copy_pl_directive_pis'(Functor/Arity, TFunctor/TArity) :-
-	'$lgt_pp_entity'(_, _, Prefix, _, _),
-	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity).
+	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)

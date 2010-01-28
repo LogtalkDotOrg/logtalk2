@@ -591,25 +591,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 	load_foreign_resource(Resource).
 
 '$lgt_rewrite_and_copy_pl_directive'(volatile(PIs), volatile(CPIs)) :-
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-
-
-'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, _) :-
-	var(PIs),
-	throw(instantiation_error).
-'$lgt_rewrite_and_copy_pl_directive_pis'([], []) :-
-	!.
-'$lgt_rewrite_and_copy_pl_directive_pis'([PI| PIs], [CPI| CPIs]) :-
-	!,
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PI, CPI),
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-'$lgt_rewrite_and_copy_pl_directive_pis'((PI, PIs), (CPI, CPIs)) :-
-	!,
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PI, CPI),
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-'$lgt_rewrite_and_copy_pl_directive_pis'(Functor/Arity, TFunctor/TArity) :-
-	'$lgt_pp_entity'(_, _, Prefix, _, _),
-	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity).
+	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)

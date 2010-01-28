@@ -551,35 +551,17 @@ forall(Generate, Test) :-
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
 '$lgt_rewrite_and_copy_pl_directive'(index(PI, IS), index(CPI, IS)) :-
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PI, CPI).
+	'$lgt_tr_predicate_indicators'(PI, CPI).
 '$lgt_rewrite_and_copy_pl_directive'(table(PIs), table(CPIs)) :-
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
+	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(thread_private(PIs), thread_private(CPIs)) :-
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
+	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(thread_shared(PIs), thread_shared(CPIs)) :-
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
+	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(use_subsumptive_tabling(PIs), use_subsumptive_tabling(CPIs)) :-
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
+	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(use_variant_tabling(PIs), use_variant_tabling(CPIs)) :-
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-
-
-'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, _) :-
-	var(PIs),
-	throw(instantiation_error).
-'$lgt_rewrite_and_copy_pl_directive_pis'([], []) :-
-	!.
-'$lgt_rewrite_and_copy_pl_directive_pis'([PI| PIs], [CPI| CPIs]) :-
-	!,
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PI, CPI),
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-'$lgt_rewrite_and_copy_pl_directive_pis'((PI, PIs), (CPI, CPIs)) :-
-	!,
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PI, CPI),
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-'$lgt_rewrite_and_copy_pl_directive_pis'(Functor/Arity, TFunctor/TArity) :-
-	'$lgt_pp_entity'(_, _, Prefix, _, _),
-	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity).
+	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)

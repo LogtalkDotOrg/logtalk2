@@ -529,16 +529,16 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
 '$lgt_rewrite_and_copy_pl_directive'(eager_consume(PIs), eager_consume(CPIs)) :-
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
+	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(':'(table(Head), N), ':'(table(THead), N)) :-
 	'$lgt_rewrite_and_copy_pl_directive_head'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(table(Head), table(THead)) :-
 	'$lgt_rewrite_and_copy_pl_directive_head'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(table(PIs), table(CPIs)) :-
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
+	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(mode(Pred), mode(TPred)) :-
 	functor(Pred, Functor, Arity),
-	'$lgt_rewrite_and_copy_pl_directive_pis'(Functor/Arity, TFunctor/TArity),
+	'$lgt_tr_predicate_indicators'(Functor/Arity, TFunctor/TArity),
 	functor(TPred, TFunctor, TArity),
 	Pred =.. [Functor| Args],
 	TPred =.. [TFunctor| TArgs],
@@ -552,30 +552,11 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 '$lgt_rewrite_and_copy_pl_directive_head'(Head, THead) :-
 	functor(Head, Functor, Arity),
 	\+ (Functor == '/', Arity =:= 2),	% not a predicate indicator
-	'$lgt_pp_entity'(_, _, Prefix, _, _),
-	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
+	'lgt_tr_predicate_indicators'(Functor/Arity, TFunctor/TArity),
 	functor(THead, TFunctor, TArity),
 	Head =.. [_| Args],
 	THead =.. [_| TArgs],
 	append(Args, '?', TArgs).
-
-
-'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, _) :-
-	var(PIs),
-	throw(instantiation_error).
-'$lgt_rewrite_and_copy_pl_directive_pis'([], []) :-
-	!.
-'$lgt_rewrite_and_copy_pl_directive_pis'([PI| PIs], [CPI| CPIs]) :-
-	!,
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PI, CPI),
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-'$lgt_rewrite_and_copy_pl_directive_pis'((PI, PIs), (CPI, CPIs)) :-
-	!,
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PI, CPI),
-	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-'$lgt_rewrite_and_copy_pl_directive_pis'(Functor/Arity, TFunctor/TArity) :-
-	'$lgt_pp_entity'(_, _, Prefix, _, _),
-	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity).
 
 
 '$lgt_b_prolog_mode_args'([]).
