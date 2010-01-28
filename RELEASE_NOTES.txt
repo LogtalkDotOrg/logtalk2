@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.38.2 - January ??, 2010
 
+    Simplified declaration and handling of proprietary directives with meta-
+    arguments by defining a '$lgt_pl_meta_directive'/1 predicate in all config
+    files.
+
     Added support for the proprietary directive initialization/2 to the config
     files of SWI-Prolog and YAP.
 

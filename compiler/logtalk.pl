@@ -6290,6 +6290,32 @@ current_logtalk_flag(version, version(2, 38, 2)).
 	!.
 
 '$lgt_tr_directive'(Dir, File, Lines, Input, _) :-
+	functor(Dir, Functor, Arity),
+	functor(Meta, Functor, Arity),
+	'$lgt_pl_meta_directive'(Meta),							% defined in the Prolog config files
+	!,
+	(	'$lgt_compiler_flag'(portability, warning),
+		\+ '$lgt_compiler_flag'(report, off) ->
+		'$lgt_report_warning_in_new_line',
+		'$lgt_inc_compile_warnings_counter',
+		write('%         WARNING!  Compiling proprietary Prolog directive: '), writeq(Dir), nl,
+		'$lgt_pp_entity'(Type, Entity, _, _, _),
+		'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
+	;	true
+	),
+	Dir =.. [Functor| Args],
+	Meta =.. [Functor| MArgs],
+	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
+	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx, _),
+	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, []),		% MetaVars = [] as we're compiling a local call
+	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
+	(	'$lgt_compiler_flag'(debug, on) ->
+		Tdir =.. [Functor| TArgs]
+	;	Tdir =.. [Functor| DArgs]
+	),
+	assertz('$lgt_pp_directive_'(Tdir)).
+
+'$lgt_tr_directive'(Dir, File, Lines, Input, _) :-
 	'$lgt_ignore_pl_directive'(Dir),					% defined in the Prolog config files
 	!,
 	(	'$lgt_compiler_flag'(portability, warning),

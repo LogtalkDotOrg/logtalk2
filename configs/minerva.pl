@@ -11,7 +11,7 @@
 %
 %  configuration file for Minerva 2.4
 %
-%  last updated: January 25, 2010
+%  last updated: January 28, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -529,6 +529,12 @@ callable(Term) :-
 %  handling of Prolog-proprietary directives on Logtalk source files
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_pl_meta_directive'(@callable)
+
+'$lgt_pl_meta_directive'(_) :-
+	fail.
 
 
 % '$lgt_ignore_pl_directive'(@callable)

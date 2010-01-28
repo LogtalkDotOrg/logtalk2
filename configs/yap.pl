@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: January 25, 2010
+%  last updated: January 28, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -622,6 +622,12 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+% '$lgt_pl_meta_directive'(@callable)
+
+'$lgt_pl_meta_directive'(initialization(::, *)).
+'$lgt_pl_meta_directive'(thread_initialization(::)).
+
+
 % '$lgt_ignore_pl_directive'(@callable)
 
 '$lgt_ignore_pl_directive'(_) :-
@@ -630,34 +636,12 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
-'$lgt_rewrite_and_copy_pl_directive'(initialization(Goal, When), initialization(CGoal, When)) :-
-	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
-	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, []),		% MetaVars = [] as we're compiling a local call
-	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-	(	'$lgt_compiler_flag'(debug, on) ->
-		CGoal = DGoal
-	;	CGoal = TGoal
-	).
-
 '$lgt_rewrite_and_copy_pl_directive'(load_foreign_files(Files, Libs, InitRoutine), initialization(load_foreign_files(Files, Libs, InitRoutine))) :-
 	load_foreign_files(Files, Libs, InitRoutine).
-
 '$lgt_rewrite_and_copy_pl_directive'(table(PIs), table(CPIs)) :-
 	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-
 '$lgt_rewrite_and_copy_pl_directive'(thread_local(PIs), thread_local(CPIs)) :-
 	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-
-'$lgt_rewrite_and_copy_pl_directive'(thread_initialization(Goal), thread_initialization(CGoal)) :-
-	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
-	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, []),		% MetaVars = [] as we're compiling a local call
-	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-	(	'$lgt_compiler_flag'(debug, on) ->
-		CGoal = DGoal
-	;	CGoal = TGoal
-	).
 
 
 '$lgt_rewrite_and_copy_pl_directive_pis'(PIs, _) :-

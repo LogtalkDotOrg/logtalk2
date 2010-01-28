@@ -12,7 +12,7 @@
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %  (5.8.0 or later versions for using multi-threading features)
 %
-%  last updated: January 25, 2010
+%  last updated: January 28, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -560,6 +560,13 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+% '$lgt_pl_meta_directive'(@callable)
+
+'$lgt_pl_meta_directive'(at_halt(::)).
+'$lgt_pl_meta_directive'(initialization(::, *)).
+'$lgt_pl_meta_directive'(thread_initialization(::)).
+
+
 % '$lgt_ignore_pl_directive'(@callable)
 
 '$lgt_ignore_pl_directive'(style_check(Option)) :-
@@ -568,15 +575,6 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
-'$lgt_rewrite_and_copy_pl_directive'(at_halt(Goal), at_halt(CGoal)) :-
-	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
-	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, []),		% MetaVars = [] as we're compiling a local call
-	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-	(	'$lgt_compiler_flag'(debug, on) ->
-		CGoal = DGoal
-	;	CGoal = TGoal
-	).
 '$lgt_rewrite_and_copy_pl_directive'(format_predicate(Char, Head), format_predicate(Char, THead)) :-
 	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(license(License), license(License)).
@@ -585,28 +583,10 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(index(Head), index(THead)) :-
 	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
-'$lgt_rewrite_and_copy_pl_directive'(initialization(Goal, When), initialization(CGoal, When)) :-
-	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
-	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, []),		% MetaVars = [] as we're compiling a local call
-	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-	(	'$lgt_compiler_flag'(debug, on) ->
-		CGoal = DGoal
-	;	CGoal = TGoal
-	).
 '$lgt_rewrite_and_copy_pl_directive'(hash(Head), hash(THead)) :-
 	'$lgt_rewrite_and_copy_pl_directive_ch'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(noprofile(PIs), noprofile(CPIs)) :-
 	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
-'$lgt_rewrite_and_copy_pl_directive'(thread_initialization(Goal), thread_initialization(CGoal)) :-
-	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
-	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, []),		% MetaVars = [] as we're compiling a local call
-	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-	(	'$lgt_compiler_flag'(debug, on) ->
-		CGoal = DGoal
-	;	CGoal = TGoal
-	).
 '$lgt_rewrite_and_copy_pl_directive'(volatile(PIs), volatile(CPIs)) :-
 	'$lgt_rewrite_and_copy_pl_directive_pis'(PIs, CPIs).
 

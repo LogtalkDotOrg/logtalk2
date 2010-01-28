@@ -521,6 +521,12 @@ callable(Term) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+% '$lgt_pl_meta_directive'(@callable)
+
+'$lgt_pl_meta_directive'(_) :-
+	fail.
+
+
 % '$lgt_ignore_pl_directive'(@callable)
 
 '$lgt_ignore_pl_directive'(_) :-

@@ -11,7 +11,7 @@
 %
 %  configuration file for GNU Prolog 1.3.1 (and later versions)
 %
-%  last updated: January 25, 2010
+%  last updated: January 28, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -505,6 +505,12 @@ forall(Generate, Test) :-
 %  handling of Prolog-proprietary directives on Logtalk source files
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% '$lgt_pl_meta_directive'(@callable)
+
+'$lgt_pl_meta_directive'(_) :-
+	fail.
 
 
 % '$lgt_ignore_pl_directive'(@callable)
