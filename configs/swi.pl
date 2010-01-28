@@ -576,15 +576,15 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
 '$lgt_rewrite_and_copy_pl_directive'(format_predicate(Char, Head), format_predicate(Char, THead)) :-
-	'$lgt_tr_predicate_head'(Head, THead).
+	'$lgt_tr_predicate_heads'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(license(License), license(License)).
 '$lgt_rewrite_and_copy_pl_directive'(set_prolog_flag(generate_debug_info, false), set_prolog_flag(generate_debug_info, false)).
 '$lgt_rewrite_and_copy_pl_directive'(thread_local(PIs), thread_local(CPIs)) :-
 	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(index(Head), index(THead)) :-
-	'$lgt_tr_predicate_head'(Head, THead).
+	'$lgt_tr_predicate_heads'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(hash(Head), hash(THead)) :-
-	'$lgt_tr_predicate_head'(Head, THead).
+	'$lgt_tr_predicate_heads'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(noprofile(PIs), noprofile(CPIs)) :-
 	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(volatile(PIs), volatile(CPIs)) :-

@@ -23,6 +23,9 @@ RELEASE NOTES
     hook predicates to the Logtalk compiler in order to simplify handling
     of proprietary directives in config files.
 
+    Added support for the proprietary directive block/1 to the config files of
+    SICStus Prolog.
+
     Added support for the proprietary directive initialization/2 to the config
     files of SWI-Prolog and YAP.
 

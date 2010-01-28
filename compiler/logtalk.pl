@@ -13350,14 +13350,25 @@ current_logtalk_flag(version, version(2, 38, 2)).
 
 
 
-% '$lgt_tr_predicate_head'(@callable, -callable)
+% '$lgt_tr_predicate_heads'(@callable, -callable)
 %
-% translates a predicate head; used as a hook predicate in the config files
+% translates a single predicate head, a conjunction of predicate heads, or a
+% list of predicate heads; used as a hook predicate in the config files
 	
-'$lgt_tr_predicate_head'(Head, _) :-
+'$lgt_tr_predicate_heads'(Head, _) :-
 	var(Head),
 	throw(instantiation_error).
-'$lgt_tr_predicate_head'(Head, THead) :-
+'$lgt_tr_predicate_heads'([], []) :-
+	!.
+'$lgt_tr_predicate_heads'([Head| Heads], [THead| THeads]) :-
+	!,
+	'$lgt_tr_predicate_heads'(Head, THead),
+	'$lgt_tr_predicate_heads'(Heads, THeads).
+'$lgt_tr_predicate_heads'((Head, Heads), (THead, THeads)) :-
+	!,
+	'$lgt_tr_predicate_heads'(Head, THead),
+	'$lgt_tr_predicate_heads'(Heads, THeads).
+'$lgt_tr_predicate_heads'(Head, THead) :-
 	functor(Head, Functor, Arity),
 	'$lgt_pp_entity'(_, _, Prefix, _, _),
 	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
@@ -13371,7 +13382,7 @@ current_logtalk_flag(version, version(2, 38, 2)).
 % '$lgt_tr_predicate_indicators'(+list(predicate_indicator), -list(predicate_indicator))
 % '$lgt_tr_predicate_indicators'(+predicate_indicator, -predicate_indicator)
 %
-% translates a single predicate indicator, a conjunction of predicate indicators or a
+% translates a single predicate indicator, a conjunction of predicate indicators, or a
 % list of predicate indicators; used as a hook predicate in the config files
 
 '$lgt_tr_predicate_indicators'(PI, _) :-
@@ -13381,7 +13392,7 @@ current_logtalk_flag(version, version(2, 38, 2)).
 	!.
 '$lgt_tr_predicate_indicators'([PI| PIs], [TPI| TPIs]) :-
 	!,
-	'$lgt_tr_predicate_indicator'(PI, TPI),
+	'$lgt_tr_predicate_indicators'(PI, TPI),
 	'$lgt_tr_predicate_indicators'(PIs, TPIs).
 '$lgt_tr_predicate_indicators'((PI, PIs), (TPI, TPIs)) :-
 	!,
