@@ -15,16 +15,20 @@ RELEASE NOTES
 
 2.38.2 - January ??, 2010
 
+    Corrected a Logtalk compiler bug (introduced in version 2.38.1) where
+    redefinitions of Prolog built-in predicates would be ignored. Thanks
+    to Parker Jones for the bug report.
+
     Simplified declaration and handling of proprietary directives with
     meta-arguments by defining a '$lgt_pl_meta_directive'/1 predicate in
     all config files.
 
-    Added '$lgt_tr_predicate_head'/2 and '$lgt_tr_predicate_indicators'/2
+    Added '$lgt_tr_predicate_heads'/2 and '$lgt_tr_predicate_indicators'/2
     hook predicates to the Logtalk compiler in order to simplify handling
     of proprietary directives in config files.
 
-    Added support for the proprietary directive block/1 to the config files of
-    SICStus Prolog.
+    Added support for the proprietary directive block/1 to the config files
+    of SICStus Prolog.
 
     Added support for the proprietary directive initialization/2 to the config
     files of SWI-Prolog and YAP.

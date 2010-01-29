@@ -9615,12 +9615,13 @@ current_logtalk_flag(version, version(2, 38, 2)).
 	'$lgt_pl_built_in'(Pred),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	functor(Pred, Functor, Arity),
-	(	'$lgt_comp_ctx_mode'(Ctx, runtime) ->
-		true
-	;	\+ '$lgt_pp_public_'(Functor, Arity),			% not a redefined
+	(	'$lgt_comp_ctx_mode'(Ctx, compile) ->
+		\+ '$lgt_pp_defs_pred_'(Functor, Arity),
+		\+ '$lgt_pp_public_'(Functor, Arity),			% not a redefined
 		\+ '$lgt_pp_protected_'(Functor, Arity),		% built-in... unless
 		\+ '$lgt_pp_private_'(Functor, Arity),			% the redefinition is
 		\+ '$lgt_pp_redefined_built_in_'(Pred, _, _)	% yet to be compiled
+	;	true
 	),
 	functor(Meta, Functor, Arity), 
 	(	'$lgt_pl_meta_predicate'(Meta, Type) ->
@@ -9639,16 +9640,16 @@ current_logtalk_flag(version, version(2, 38, 2)).
 	;	'$lgt_tr_module_meta_predicate_directives_args'(MArgs, CMArgs),
 		'$lgt_tr_meta_args'(Args, CMArgs, Ctx, TArgs, DArgs),
 		TGoal =.. [Functor| TArgs],
-		(	'$lgt_comp_ctx_mode'(Ctx, runtime) ->
-			TPred = TGoal,
-			(	Type == control_construct ->
-				DPred =.. [Functor| DArgs]
-			;	DPred = '$lgt_dbg_goal'(Pred, TPred, ExCtx)
-			)
-		;	TPred = '$lgt_call_built_in'(Pred, TGoal, Ctx),
+		(	'$lgt_comp_ctx_mode'(Ctx, compile) ->
+			TPred = '$lgt_call_built_in'(Pred, TGoal, Ctx),
 			(	Type == control_construct ->
 				DGoal =.. [Functor| DArgs],
 				DPred = '$lgt_call_built_in'(Pred, DGoal, Ctx)
+			;	DPred = '$lgt_dbg_goal'(Pred, TPred, ExCtx)
+			)
+		;	TPred = TGoal,
+			(	Type == control_construct ->
+				DPred =.. [Functor| DArgs]
 			;	DPred = '$lgt_dbg_goal'(Pred, TPred, ExCtx)
 			)
 		)
@@ -9660,14 +9661,15 @@ current_logtalk_flag(version, version(2, 38, 2)).
 '$lgt_tr_body'(Pred, TPred, DPred, Ctx) :-
 	'$lgt_built_in'(Pred),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	(	'$lgt_comp_ctx_mode'(Ctx, runtime) ->
-		TPred = Pred
-	;	functor(Pred, Functor, Arity),
+	(	'$lgt_comp_ctx_mode'(Ctx, compile) ->
+		functor(Pred, Functor, Arity),
+		\+ '$lgt_pp_defs_pred_'(Functor, Arity),
 		\+ '$lgt_pp_public_'(Functor, Arity),			% not a redefined
 		\+ '$lgt_pp_protected_'(Functor, Arity),		% built-in... unless
 		\+ '$lgt_pp_private_'(Functor, Arity),			% the redefinition is
 		\+ '$lgt_pp_redefined_built_in_'(Pred, _, _),   % yet to be compiled
 		TPred = '$lgt_call_built_in'(Pred, Pred, ExCtx)
+	;	TPred = Pred
 	),
 	DPred = '$lgt_dbg_goal'(Pred, TPred, ExCtx),
 	!.
