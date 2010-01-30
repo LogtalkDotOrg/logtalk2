@@ -13,7 +13,12 @@ RELEASE NOTES
 =============
 
 
-2.38.2 - January ??, 2010
+2.38.2 - January 31, 2010
+
+    Added support for calling :/1 goals using the <</2 control construct.
+
+    Added support for calling non-redefined built-in predicates using the
+    :/1 control construct.
 
     Corrected a Logtalk compiler bug (introduced in version 2.38.1) where
     redefinitions of Prolog built-in predicates would be ignored. Thanks

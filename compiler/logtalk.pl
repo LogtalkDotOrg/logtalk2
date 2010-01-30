@@ -3878,6 +3878,9 @@ current_logtalk_flag(version, version(2, 38, 2)).
 		asserta(('$lgt_ctg_call_'(Dcl, GAlias, GExCtx, volatile) :- !, GCall)),	% cache lookup result
 		(GAlias, GExCtx) = (Alias, ExCtx),										% unify message arguments
 		call(GCall)																% call inherited definition
+	;	% no predicate declaration, check if it's a built-in predicate:
+		'$lgt_built_in'(Alias) ->
+		call(Alias)
 	;	throw(error(existence_error(predicate_declaration, Alias), ':'(Alias), This))
 	).
 
@@ -9045,6 +9048,18 @@ current_logtalk_flag(version, version(2, 38, 2)).
 
 
 % calling category predicates directly
+
+'$lgt_tr_body'(':'(Pred), TPred, '$lgt_dbg_goal'(':'(Pred), TPred, ExCtx), Ctx) :-
+	\+ '$lgt_comp_ctx_mode'(Ctx, compile),
+	'$lgt_comp_ctx_this'(Ctx, This),
+	'$lgt_current_object_'(This, _, Dcl, _, _, IDcl, _, _, _, _, _),
+	!,
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	(	\+ '$lgt_instantiates_class_'(_, _, _),
+	 	\+ '$lgt_specializes_class_'(_, _, _) ->
+		TPred = '$lgt_call_ctg_pred'(Dcl, Pred, ExCtx)
+	;	TPred = '$lgt_call_ctg_pred'(IDcl, Pred, ExCtx)
+	).
 
 '$lgt_tr_body'(':'(Pred), TPred, '$lgt_dbg_goal'(':'(Pred), TPred, ExCtx), Ctx) :-
 	var(Pred),
