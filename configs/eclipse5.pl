@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 5.10#26 or later 5.10 versions
 %
-%  last updated: January 28, 2010
+%  last updated: January 30, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -707,6 +707,9 @@ callable(Term) :-
 
 
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
+
+'$lgt_rewrite_and_copy_pl_directive'(demon(PIs), demon(CPIs)) :-
+	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 
 '$lgt_rewrite_and_copy_pl_directive'(inline(PI1, PI2), inline(CPI1, CPI2)) :-
 	'$lgt_tr_predicate_indicators'(PI1, CPI1),

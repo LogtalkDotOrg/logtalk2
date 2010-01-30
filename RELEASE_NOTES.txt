@@ -36,6 +36,9 @@ RELEASE NOTES
     file of B-Prolog and corrected bugs that prevented using the proprietary
     tabling directives mode/1 and (:)/2 within objects and categories.
 
+    Added support for the proprietary directive demon/1 to the config files
+    of ECLiPSe.
+
     Added support for the proprietary directive block/1 to the config files
     of SICStus Prolog.
 
