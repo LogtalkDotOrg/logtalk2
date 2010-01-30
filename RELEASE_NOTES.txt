@@ -32,6 +32,10 @@ RELEASE NOTES
     hook predicates to the Logtalk compiler in order to simplify handling
     of proprietary directives in config files.
 
+    Added support for the proprietary directive eager_consume/0 to the config
+    file of B-Prolog and corrected bugs that prevented using the proprietary
+    tabling directives mode/1 and (:)/2 within objects and categories.
+
     Added support for the proprietary directive block/1 to the config files
     of SICStus Prolog.
 

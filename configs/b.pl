@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.1 and later versions
 %
-%  last updated: January 28, 2010
+%  last updated: January 30, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -528,11 +528,10 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
+'$lgt_rewrite_and_copy_pl_directive'(eager_consume, eager_consume).
 '$lgt_rewrite_and_copy_pl_directive'(eager_consume(PIs), eager_consume(CPIs)) :-
 	'$lgt_tr_predicate_indicators'(PIs, CPIs).
-'$lgt_rewrite_and_copy_pl_directive'(':'(table(Head), N), ':'(table(THead), N)) :-
-	'$lgt_rewrite_and_copy_pl_directive_head'(Head, THead).
-'$lgt_rewrite_and_copy_pl_directive'(table(Head), table(THead)) :-
+'$lgt_rewrite_and_copy_pl_directive'(table(':'(Head, N)), table(':'(THead, N))) :-
 	'$lgt_rewrite_and_copy_pl_directive_head'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(table(PIs), table(CPIs)) :-
 	'$lgt_tr_predicate_indicators'(PIs, CPIs).
@@ -542,8 +541,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 	functor(TPred, TFunctor, TArity),
 	Pred =.. [Functor| Args],
 	TPred =.. [TFunctor| TArgs],
-	append(Args, Context, TArgs),
-	'$lgt_b_prolog_mode_args'(Context).
+	append(Args, ['?'], TArgs).
 
 
 '$lgt_rewrite_and_copy_pl_directive_head'(Head, _) :-
@@ -552,16 +550,11 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 '$lgt_rewrite_and_copy_pl_directive_head'(Head, THead) :-
 	functor(Head, Functor, Arity),
 	\+ (Functor == '/', Arity =:= 2),	% not a predicate indicator
-	'lgt_tr_predicate_indicators'(Functor/Arity, TFunctor/TArity),
+	'$lgt_tr_predicate_indicators'(Functor/Arity, TFunctor/TArity),
 	functor(THead, TFunctor, TArity),
 	Head =.. [_| Args],
 	THead =.. [_| TArgs],
-	append(Args, '?', TArgs).
-
-
-'$lgt_b_prolog_mode_args'([]).
-'$lgt_b_prolog_mode_args'([nv| Rest]) :-
-	'$lgt_b_prolog_mode_args'(Rest).
+	append(Args, ['-'], TArgs).
 
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)
