@@ -28,9 +28,9 @@ RELEASE NOTES
     meta-arguments by defining a '$lgt_pl_meta_directive'/1 predicate in
     all config files.
 
-    Added '$lgt_tr_predicate_heads'/2 and '$lgt_tr_predicate_indicators'/2
-    hook predicates to the Logtalk compiler in order to simplify handling
-    of proprietary directives in config files.
+    Added '$lgt_tr_predicate_indicators'/2, '$lgt_tr_predicate_heads'/2, and
+    '$lgt_tr_predicate_heads'/3 hook predicates to the Logtalk compiler in
+    order to simplify handling of proprietary directives in config files.
 
     Added support for the proprietary directive eager_consume/0 to the config
     file of B-Prolog and corrected bugs that prevented using the proprietary

@@ -582,10 +582,7 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 '$lgt_rewrite_and_copy_pl_directive'(thread_local(PIs), thread_local(CPIs)) :-
 	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(index(Head), index(THead)) :-
-	'$lgt_tr_predicate_heads'(Head, THead),
-	Head =..  [_|  Args],
-	THead =.. [_| TArgs],
-	'$lgt_append'(Args, [0], TArgs).
+	'$lgt_tr_predicate_heads'(Head, THead, 0).
 '$lgt_rewrite_and_copy_pl_directive'(hash(Head), hash(THead)) :-
 	'$lgt_tr_predicate_heads'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(noprofile(PIs), noprofile(CPIs)) :-
