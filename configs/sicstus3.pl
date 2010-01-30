@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 3.8 and later versions
 %
-%  last updated: January 28, 2010
+%  last updated: January 30, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -588,7 +588,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
 '$lgt_rewrite_and_copy_pl_directive'(block(Heads), block(THeads)) :-
-	'$lgt_tr_predicate_heads'(Heads, THeads).
+	'$lgt_tr_predicate_heads'(Heads, THeads, '?').
 
 '$lgt_rewrite_and_copy_pl_directive'(load_foreign_resource(Resource), initialization(load_foreign_resource(Resource))) :-
 	load_foreign_resource(Resource).
