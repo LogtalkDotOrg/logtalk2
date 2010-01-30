@@ -12,7 +12,7 @@
 %  configuration file for SWI Prolog 5.6.44 and later versions
 %  (5.8.0 or later versions for using multi-threading features)
 %
-%  last updated: January 28, 2010
+%  last updated: January 30, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -582,7 +582,10 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 '$lgt_rewrite_and_copy_pl_directive'(thread_local(PIs), thread_local(CPIs)) :-
 	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(index(Head), index(THead)) :-
-	'$lgt_tr_predicate_heads'(Head, THead).
+	'$lgt_tr_predicate_heads'(Head, THead),
+	Head =..  [_|  Args],
+	THead =.. [_| TArgs],
+	'$lgt_append'(Args, [0], TArgs).
 '$lgt_rewrite_and_copy_pl_directive'(hash(Head), hash(THead)) :-
 	'$lgt_tr_predicate_heads'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(noprofile(PIs), noprofile(CPIs)) :-

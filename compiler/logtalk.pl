@@ -355,7 +355,7 @@ Obj<<Goal :-
 	functor(TGoal, TFunctor, TArity),
 	TGoal =.. [_| TArgs],
 	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, _, _, Functor/_),
-	'$lgt_append'(Args, ExCtx, TArgs),
+	'$lgt_append'(Args, [ExCtx], TArgs),
 	'$lgt_exec_ctx'(ExCtx, _, _, Self, _),
 	Goal =.. [Functor| Args],
 	(	Self == user ->
@@ -13392,7 +13392,7 @@ current_logtalk_flag(version, version(2, 38, 2)).
 	functor(THead, TFunctor, TArity),
 	Head =.. [Functor| Args],
 	THead =.. [TFunctor| Targs],
-	'$lgt_append'(Args, _, Targs).
+	'$lgt_append'(Args, [_], Targs).
 
 
 
@@ -13416,7 +13416,7 @@ current_logtalk_flag(version, version(2, 38, 2)).
 	'$lgt_tr_predicate_indicators'(PI, TPI),
 	'$lgt_tr_predicate_indicators'(PIs, TPIs).
 '$lgt_tr_predicate_indicators'(PI, TFunctor/TArity) :-
-	(	'$lgt_valid_pred_ind'(Functor/Arity, Functor, Arity) ->
+	(	'$lgt_valid_pred_ind'(PI, Functor, Arity) ->
 		'$lgt_pp_entity'(_, _, Prefix, _, _),
 		'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity)
 	;	throw(type_error(predicate_indicator, PI))
