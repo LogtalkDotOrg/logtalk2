@@ -407,7 +407,15 @@ var
   Warning: String;
 begin
   if RegQueryStringValue(HKLM, 'Software\SWI\Prolog\', 'home', Home) then
-    Result := Home + '\bin\plwin.exe'
+    if FileExists(Home + '\bin\plwin.exe') then
+      Result := Home + '\bin\plwin.exe'
+    else if FileExists(Home + '\bin\swipl-win.exe') then
+      Result := Home + '\bin\swipl-win.exe'
+    else begin
+      Warning := 'Failed to detect SWI-Prolog executable.' + Chr(13) + 'Logtalk integration shortcut not created.';
+      MsgBox(Warning, mbError, MB_OK);
+      Result := 'lgt_exe_does_not_exist'
+    end
   else begin
     Warning := 'Failed to detect SWI-Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
 	MsgBox(Warning, mbError, MB_OK);

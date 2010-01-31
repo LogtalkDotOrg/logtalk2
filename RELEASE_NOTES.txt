@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.38.2
+Release 2.38.3
 
 Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
 Logtalk is free software.  You can redistribute it and/or modify
@@ -11,6 +11,13 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 RELEASE NOTES
 =============
+
+
+2.38.3 - February ??, 2010
+
+    Update the Windows installer script in order to check for the new
+    name of the SWI-Prolog executable (swipl-win.exe) when creating the
+    integrations shortcuts.
 
 
 2.38.2 - January 31, 2010
