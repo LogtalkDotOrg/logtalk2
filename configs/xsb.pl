@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.38.2
+%  Release 2.38.3
 %
 %  Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
@@ -78,10 +78,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 	call_cleanup(Call, Cleanup).
 
 
-% forall(+Generate, +Test)
-
-forall(Generate, Test) :-
-	\+ call((Generate, \+ call(Test))).
+% forall(+Generate, +Test) -- built-in
 
 
 % retractall(+callable) -- built-in
