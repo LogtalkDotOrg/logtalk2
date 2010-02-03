@@ -15,19 +15,18 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ...
 
 
-% run all tests using SWI-Prolog as the backend compiler:
+% run all tests:
 
-?- mtbatch(swi)::run.
+?- mtbatch::run.
 ...
 
 
-% run all tests using YAP as the backend compiler:
+% run all tests (average of 20 times for each test):
 
-?- mtbatch(yap)::run(20).
+?- mtbatch::run(20).
 ...
 
 
-% run the primes benchmark test using XSB as the backend compiler:
+% run the primes benchmark test (average of 10 times):
 
-?- mtbatch(xsb)::run(primes, 10).
-...
+?- mtbatch::run(primes, 10).

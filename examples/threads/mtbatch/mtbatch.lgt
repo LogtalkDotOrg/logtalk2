@@ -1,12 +1,11 @@
 
-:- object(mtbatch(_Prolog)).
+:- object(mtbatch).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2008/08/30,
-		comment is 'Multi-threading benchmarks.',
-		parameters is ['Prolog'- 'Prolog backend compiler. Supported compilers are SWI-Prolog (swi), YAP (yap), and XSB (xsb).']]).
+		date is 2010/02/01,
+		comment is 'Multi-threading benchmarks. Supports SWI-Prolog, XSB, and YAP.']).
 
 	:- threaded.
 
@@ -489,28 +488,54 @@
 		fail.
 	do_benchmark(cop_overhead(_, _, _, _), _).
 
-	walltime_begin(Walltime) :-
-		parameter(1, Prolog),
-		walltime_begin(Prolog, Walltime).
+	:- if(current_logtalk_flag(prolog_dialect, swi)).
 
-	walltime_begin(swi, Walltime) :-
-		get_time(Walltime).
-	walltime_begin(yap, 0.0) :-
-		statistics(walltime, _).
-	walltime_begin(xsb, Walltime) :-
-		walltime(Walltime).
+		walltime_begin(Walltime) :-
+			get_time(Walltime).
 
-	walltime_end(Walltime) :-
-		parameter(1, Prolog),
-		walltime_end(Prolog, Walltime).
+		walltime_end(Walltime) :-
+			get_time(Walltime).
 
-	walltime_end(swi, Walltime) :-
-		get_time(Walltime).
-	walltime_end(yap, Walltime) :-
-		statistics(walltime, [_, Time]),
-		Walltime is Time / 1000.
-	walltime_end(xsb, Walltime) :-
-		walltime(Walltime).
+		write_average(Average) :-
+			put_char('\t'),
+			format('~4f', [Average]),
+			flush_output.
+
+	:- elif(current_logtalk_flag(prolog_dialect, yap)).
+
+		walltime_begin(0.0) :-
+			statistics(walltime, _).
+
+		walltime_end(Walltime) :-
+			statistics(walltime, [_, Time]),
+			Walltime is Time / 1000.
+
+		write_average(Average) :-
+			put_char('\t'),
+			format('~4f', [Average]),
+			flush_output.
+
+	:- elif(current_logtalk_flag(prolog_dialect, xsb)).
+
+		walltime_begin(Walltime) :-
+			walltime(Walltime).
+
+		walltime_end(xsb, Walltime) :-
+			walltime(Walltime).
+
+		write_average(Average) :-
+			put_char('\t'),
+			fmt_write("%4f", Average),
+			flush_output.
+
+	:- else.
+
+		:- initialization((
+			write('Unsupported Prolog compiler for running Logtalk multi-threading features.'),
+			halt
+		)).
+
+	:- endif.
 
 	repeat(_).
 	repeat(N) :-
@@ -518,22 +543,9 @@
 		N2 is N - 1,
 		repeat(N2).
 
-	write_average(Average) :-
-		put_char('\t'),
-		parameter(1, Prolog),
-		write_average(Prolog, Average),
-		flush_output.
-
-	write_average(swi, Average) :-
-		format('~6f', [Average]).
-	write_average(yap, Average) :-
-		format('~6f', [Average]).
-	write_average(xsb, Average) :-
-		fmt_write("%6f", Average).
-
 	write_error :-
 		put_char('\t'),
-		write('*error!*'),
+		write('error!'),
 		flush_output.
 
 :- end_object.

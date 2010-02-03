@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.38.3 - February ??, 2010
 
+    Simplified usage of the "mtbatch" multi-threading benchmarks example
+    by using conditional compilation directives for the Prolog-specific
+    predicates instead of a parametric object.
+
     Update the Windows installer script in order to check for the new
     name of the SWI-Prolog executable (swipl-win.exe) when creating the
     integrations shortcuts.
