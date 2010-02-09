@@ -12,27 +12,34 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 Upgrading from Logtalk 1.x
 ==========================
 
-Logtalk 2.x is not compatible with programs written for Logtalk 1.x.
-However, you should be able to translate most programs to make them 
-run under Logtalk 2.x. Most of the examples provided with Logtalk 1.x 
-have been rewritten to run under Logtalk 2.x. You may use them as 
-translation examples.
+Logtalk 2.x is not compatible with programs written for Logtalk 1.x
+(note that Logtalk 2.x is the second generation of the Logtalk language,
+not an update to Logtalk 1.x). However, you should be able to translate
+most programs to make them run under Logtalk 2.x. Most of the examples
+provided with Logtalk 1.x have been rewritten to run under Logtalk 2.x.
+You may use them as translation examples.
 
 
 Upgrading from a previous Logtalk 2.x versions
 ==============================================
 
-Changes in the Logtalk compiler between releases may render Prolog config 
-files from older versions incompatible with new ones. You may need to update 
-your local Logtalk user files by running e.g. the "cplgtdirs" shell script.
+General remarks
+_______________
 
-If your Logtalk programs depend on some of the example files, it is
-advisable that you check your code against the new version before 
-throwing away the older release.
+Changes in the Logtalk compiler between releases may render some files from
+older versions incompatible with new ones. You may need to update your local
+Logtalk user files by running e.g. the "cplgtdirs" shell script.
+
+If your Logtalk programs depend on some of the example files, it is advisable
+that you check your code against the new version before throwing away the
+older release.
 
 It's usually a good idea to recompile your source files with the compiler flag
 "smart_compilation" turned off after upgrading to a new Logtalk release.
 
+
+Version-specific remarks
+________________________
 
 Logtalk source files will need to be recompiled because of the changes 
 done in the version 2.5.0 to improve message sending performance.
@@ -251,5 +258,5 @@ and makes several changes for harmonizing the semantics of built-in and user-
 defined meta-predicates. The seldom used support for sending the same message
 to a conjunction or disjunction of objects is removed in this version.
 
-Logtalk version 2.38.3 changes representation of the execution context in 
+Logtalk version 2.38.0 changes representation of the execution context in 
 compiled predicates, requiring recompilation of all objects and categories.
