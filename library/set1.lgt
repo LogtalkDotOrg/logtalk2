@@ -3,10 +3,11 @@
 	extends(set)).
 
 	:- info([
-		version is 1.2,
+		version is 1.21,
 		author is 'Paulo Moura',
-		date is 2009/3/6,
-		comment is 'Set predicates with elements constrained to a single type.']).
+		date is 2010/2/10,
+		comment is 'Set predicates with elements constrained to a single type.',
+		parnames is ['Type']]).
 
 	valid(-) :-				% catch variables
 		!,
