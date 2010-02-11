@@ -15,6 +15,11 @@ RELEASE NOTES
 
 2.38.3 - February ??, 2010
 
+    Added index/1 directives for the predicate lookup caching predicates to
+    the SWI-Prolog integration files (see "integration/logtalk_comp_swi.pl").
+    These directives may or may not improve performance, depending on your
+    application.
+
     Simplified usage of the "mtbatch" multi-threading benchmarks example
     by using conditional compilation directives for the Prolog-specific
     predicates instead of a parametric object.

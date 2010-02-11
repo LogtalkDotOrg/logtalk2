@@ -13,7 +13,9 @@
 
 
 :- set_prolog_flag(generate_debug_info, false).
+
 :- system_module.
+
 :- op(600, xfy, ::).
 :- op(600,  fy, ::).
 :- op(600,  fy, ^^).
@@ -23,6 +25,7 @@
 :- op(200,  fy,  -).
 :- op(400, yfx, <<).
 :- op(600,  fy,  :).
+
 :- noprofile((
 	'$lgt_before_'/5, '$lgt_after_'/5,
 	'$lgt_current_protocol_'/5, '$lgt_current_category_'/6, '$lgt_current_object_'/11,
@@ -43,4 +46,17 @@
 	'$lgt_metacall'/5, '$lgt_metacall'/6,
 	'$lgt_tr_msg'/4
 )).
+
+% the following index/1 directives may or may not improve performance
+% depending on your application; you can comment out them if necessary
+:- index('$lgt_send_to_self_'(1, 1, 0, 0)).
+:- index('$lgt_send_to_obj_'(1, 1, 0, 0)).
+:- index('$lgt_send_to_obj_ne_'(1, 1, 0, 0)).
+:- index('$lgt_obj_super_call_same_'(1, 1, 0, 0)).
+:- index('$lgt_obj_super_call_other_'(1, 1, 0, 0)).
+:- index('$lgt_ctg_super_call_same_'(1, 1, 0, 0)).
+:- index('$lgt_ctg_super_call_other_'(1, 1, 0, 0)).
+:- index('$lgt_ctg_call_'(1, 1, 0, 0)).
+:- index('$lgt_db_lookup_cache_'(1, 1, 0, 0, 0)).
+
 :- include('../compiler/logtalk.pl').
