@@ -3174,7 +3174,7 @@ current_logtalk_flag(version, version(2, 38, 3)).
 % '$lgt_send_to_obj_'(+object_identifier, +term, +object_identifier, ?atom)
 %
 % the last clause of this cache predicate must never be retracted (hence the
-% "fixed" mark) and must call the predicate that generates a missing cache entry
+% "fixed" mark) and must call the predicate that generates the missing cache entry
 
 '$lgt_send_to_obj_'(Obj, Pred, Sender, fixed) :-
 	'$lgt_send_to_object_nv'(Obj, Pred, Sender).
@@ -3269,7 +3269,7 @@ current_logtalk_flag(version, version(2, 38, 3)).
 % '$lgt_send_to_obj_ne_'(+object_identifier, +term, +object_identifier, ?atom)
 %
 % the last clause of this cache predicate must never be retracted (hence the
-% "fixed" mark) and must call the predicate that generates a missing cache entry
+% "fixed" mark) and must call the predicate that generates the missing cache entry
 
 '$lgt_send_to_obj_ne_'(Obj, Pred, Sender, fixed) :-
 	'$lgt_send_to_object_ne_nv'(Obj, Pred, Sender).
@@ -3336,7 +3336,7 @@ current_logtalk_flag(version, version(2, 38, 3)).
 % '$lgt_super_call_same_'(+object_identifier, +callable, +execution_context, ?atom)
 %
 % the last clause of this cache predicate must never be retracted (hence the
-% "fixed" mark) and must call the predicate that generates a missing cache entry
+% "fixed" mark) and must call the predicate that generates the missing cache entry
 
 '$lgt_obj_super_call_same_'(Super, Pred, ExCtx, fixed) :-
 	'$lgt_obj_super_call_same'(Super, Pred, ExCtx).
@@ -3361,7 +3361,7 @@ current_logtalk_flag(version, version(2, 38, 3)).
 % '$lgt_ctg_super_call_same_'(+category_identifier, +callable, +execution_context, ?atom)
 %
 % the last clause of this cache predicate must never be retracted (hence the
-% "fixed" mark) and must call the predicate that generates a missing cache entry
+% "fixed" mark) and must call the predicate that generates the missing cache entry
 
 '$lgt_ctg_super_call_same_'(Ctg, Pred, ExCtx, fixed) :-
 	'$lgt_ctg_super_call_same'(Ctg, Pred, ExCtx).
@@ -3397,7 +3397,7 @@ current_logtalk_flag(version, version(2, 38, 3)).
 % '$lgt_obj_super_call_other_'(+atom, +callable, +execution_context, ?atom)
 %
 % the last clause of this cache predicate must never be retracted (hence the
-% "fixed" mark) and must call the predicate that generates a missing cache entry
+% "fixed" mark) and must call the predicate that generates the missing cache entry
 
 '$lgt_obj_super_call_other_'(Super, Pred, ExCtx, fixed) :-
 	'$lgt_obj_super_call_other_nv'(Super, Pred, ExCtx).
@@ -3448,7 +3448,7 @@ current_logtalk_flag(version, version(2, 38, 3)).
 % '$lgt_ctg_super_call_other_'(+category_identifier, +callable, +execution_context, ?atom)
 %
 % the last clause of this cache predicate must never be retracted (hence the
-% "fixed" mark) and must call the predicate that generates a missing cache entry
+% "fixed" mark) and must call the predicate that generates the missing cache entry
 
 '$lgt_ctg_super_call_other_'(Ctg, Pred, ExCtx, fixed) :-
 	'$lgt_ctg_super_call_other_nv'(Ctg, Pred, ExCtx).
@@ -3852,7 +3852,7 @@ current_logtalk_flag(version, version(2, 38, 3)).
 % '$lgt_ctg_call_'(+atom, +callable, +execution_context, ?atom)
 %
 % the last clause of this cache predicate must never be retracted (hence the
-% "fixed" mark) and must call the predicate that generates a missing cache entry
+% "fixed" mark) and must call the predicate that generates the missing cache entry
 
 '$lgt_ctg_call_'(Dcl, Pred, ExCtx, fixed) :-
 	'$lgt_call_ctg_pred_nv'(Dcl, Pred, ExCtx).
@@ -5502,7 +5502,7 @@ current_logtalk_flag(version, version(2, 38, 3)).
 		write('%         WARNING!  Singleton variable ')
 	;	write('%         WARNING!  Singleton variables ')
 	),
-	'lgt_report_singletons_term'(Term),
+	'$lgt_report_singletons_term'(Term),
 	'$lgt_write_list'([Name| Names]), nl,
 	(	'$lgt_pp_entity'(Type, Entity, _, _, _) ->
 		'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
@@ -5510,35 +5510,35 @@ current_logtalk_flag(version, version(2, 38, 3)).
 	).
 
 
-'lgt_report_singletons_term'((:- Term)) :-
+'$lgt_report_singletons_term'((:- Term)) :-
 	!,
 	functor(Term, Functor, Arity),
 	write('in directive '),
 	writeq(Functor/Arity),
 	write(': ').
 
-'lgt_report_singletons_term'((Term :- _)) :-
+'$lgt_report_singletons_term'((Term :- _)) :-
 	!,
 	functor(Term, Functor, Arity),
 	write('in clause for predicate '),
 	writeq(Functor/Arity),
 	write(': ').
 	
-'lgt_report_singletons_term'((Term, _ --> _)) :-
+'$lgt_report_singletons_term'((Term, _ --> _)) :-
 	!,
 	functor(Term, Functor, Arity),
 	write('in grammar rule for non-terminal '),
 	writeq(Functor//Arity),
 	write(': ').
 
-'lgt_report_singletons_term'((Term --> _)) :-
+'$lgt_report_singletons_term'((Term --> _)) :-
 	!,
 	functor(Term, Functor, Arity),
 	write('in grammar rule for non-terminal '),
 	writeq(Functor//Arity),
 	write(': ').
 
-'lgt_report_singletons_term'(Term) :-	% facts
+'$lgt_report_singletons_term'(Term) :-	% facts
 	functor(Term, Functor, Arity),
 	write('in clause for predicate '),
 	writeq(Functor/Arity),
