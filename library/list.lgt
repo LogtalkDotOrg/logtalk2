@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.9,
+		version is 2.0,
 		author is 'Paulo Moura',
-		date is 2009/7/5,
+		date is 2010/2/16,
 		comment is 'List predicates.']).
 
 	:- public(as_difflist/2).
@@ -142,10 +142,6 @@
 			msort(X2s, Y2s),
 			merge(Y1s, Y2s, Ys).
 
-		split([], [], []).
-		split([X| Xs], [X| Ys], Zs) :-
-			split(Xs, Zs, Ys).
-
 		merge([X| Xs], [Y| Ys], [X| Zs]) :-
 			X @=< Y, !,
 			merge(Xs, [Y| Ys], Zs).
@@ -156,6 +152,38 @@
 		merge(Xs, [], Xs).
 
 	:- endif.
+
+	:- meta_predicate(msort(2+1, *, *)).
+	:- meta_predicate(msort_(*, 2+1, *)).
+	:- meta_predicate(merge_keep_dups(*, *, 2+1, *)).
+
+	msort(Compare, List, Sorted) :-
+		msort_(List, Compare, Sorted).
+
+	msort_([], _, []) :- !.
+	msort_([X], _, [X]) :- !.
+	msort_([X, Y| Xs], C, Ys) :-
+		split([X, Y| Xs], X1s, X2s),
+		msort_(X1s, C, Y1s),
+		msort_(X2s, C, Y2s),
+		merge_keep_dups(Y1s, Y2s, C, Ys).
+
+	split([], [], []).
+	split([X| Xs], [X| Ys], Zs) :-
+		split(Xs, Zs, Ys).
+
+	merge_keep_dups([], Xs, _, Xs) :- !.
+	merge_keep_dups(Xs, [], _, Xs) :- !.
+	merge_keep_dups([X| Xs], [Y| Ys], C, Zs) :-
+		call(C, R, X, Y),
+		merge_keep_dups(R, [X| Xs], [Y| Ys], C, Zs).
+
+	merge_keep_dups(<, [X| Xs], [Y| Ys], C, [X| Zs]) :-
+		merge_keep_dups(Xs, [Y| Ys], C, Zs).
+	merge_keep_dups(=, [X| Xs], [Y| Ys], C, [X| Zs]) :-
+		merge_keep_dups(Xs, [Y| Ys], C, Zs).
+	merge_keep_dups(>, [X| Xs], [Y| Ys], C, [Y| Zs]) :-
+		merge_keep_dups([X | Xs], Ys, C, Zs).
 
 	new([]).
 
@@ -268,6 +296,34 @@
 			setof(Element, member(Element, List), Sorted).		
 
 	:- endif.
+
+	:- meta_predicate(sort(2+1, *, *)).
+	:- meta_predicate(sort_(*, 2+1, *)).
+	:- meta_predicate(merge_no_dups(*, *, 2+1, *)).
+
+	sort(Compare, List, Sorted) :-
+		sort_(List, Compare, Sorted).
+
+	sort_([], _, []) :- !.
+	sort_([X], _, [X]) :- !.
+	sort_([X, Y| Xs], C, Ys) :-
+		split([X, Y| Xs], X1s, X2s),
+		sort_(X1s, C, Y1s),
+		sort_(X2s, C, Y2s),
+		merge_no_dups(Y1s, Y2s, C, Ys).
+
+	merge_no_dups([], Xs, _, Xs) :- !.
+	merge_no_dups(Xs, [], _, Xs) :- !.
+	merge_no_dups([X| Xs], [Y| Ys], C, Zs) :-
+		call(C, R, X, Y),
+		merge_no_dups(R, [X| Xs], [Y| Ys], C, Zs).
+
+	merge_no_dups(<, [X| Xs], [Y| Ys], C, [X| Zs]) :-
+		merge_no_dups(Xs, [Y| Ys], C, Zs).
+	merge_no_dups(=, [X| Xs], [_| Ys], C, [X| Zs]) :-
+		merge_no_dups(Xs, Ys, C, Zs).
+	merge_no_dups(>, [X| Xs], [Y| Ys], C, [Y| Zs]) :-
+		merge_no_dups([X | Xs], Ys, C, Zs).
 
 	sublist(List, List).
 	sublist(Sublist, [Head| Tail]):-

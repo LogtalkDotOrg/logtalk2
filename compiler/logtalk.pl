@@ -8394,6 +8394,9 @@ current_logtalk_flag(version, version(2, 38, 3)).
 '$lgt_nonvar_meta_arg'([Arg| _], [(::)| _], Arg) :-
 	nonvar(Arg).
 
+'$lgt_nonvar_meta_arg'([Arg| _], [_+_| _], Arg) :-
+	nonvar(Arg).
+
 '$lgt_nonvar_meta_arg'([Arg| _], [N| _], Arg) :-
 	integer(N),
 	nonvar(Arg).
@@ -8423,7 +8426,14 @@ current_logtalk_flag(version, version(2, 38, 3)).
 	;	MArg == 0 ->
 		MaxClosure1 is MaxClosure0,
 		TotalNormalArgs1 is TotalNormalArgs0
-	;	(	MArg > MaxClosure0 ->
+	;	MArg = Input+_ ->
+		(	Input > MaxClosure0 ->
+			MaxClosure1 is Input
+		;	MaxClosure1 is MaxClosure0
+		),
+		TotalNormalArgs1 is TotalNormalArgs0
+	;	integer(MArg) ->
+		(	MArg > MaxClosure0 ->
 			MaxClosure1 is MArg
 		;	MaxClosure1 is MaxClosure0
 		),
@@ -9886,6 +9896,13 @@ current_logtalk_flag(version, version(2, 38, 3)).
 	!,
 	'$lgt_same_meta_arg_extra_args'(MetaArgs, MetaVars, Closure, ExtraArgs).
 
+'$lgt_same_meta_arg_extra_args'([Input+Output| _], [MetaVar| _], Closure, ExtraArgs) :-
+	MetaVar == Closure,
+	!,
+	integer(Input),
+	integer(Output),
+	Input+Output =:= ExtraArgs.
+
 '$lgt_same_meta_arg_extra_args'([MetaArg| _], [MetaVar| _], Closure, ExtraArgs) :-
 	MetaVar == Closure,
 	!,
@@ -9906,7 +9923,9 @@ current_logtalk_flag(version, version(2, 38, 3)).
 
 '$lgt_same_number_of_closure_extra_args'([PredArg| PredArgs], [PredMetaArg| PredMetaArgs], HeadArgs, HeadMetaArgs) :-
 	(	var(PredArg),
-		integer(PredMetaArg), PredMetaArg > 0,
+		(	integer(PredMetaArg), PredMetaArg > 0
+		;	PredMetaArg = _+_
+		),
 		% argument is a closure
 		'$lgt_shared_closure_arg'(PredArg, HeadArgs, HeadMetaArgs, HeadMetaArg) ->
 		% shared closure argument
@@ -13956,7 +13975,12 @@ current_logtalk_flag(version, version(2, 38, 3)).
 '$lgt_valid_metapred_term_args'([]).
 
 '$lgt_valid_metapred_term_args'([Arg| Args]) :-
-	once((Arg == (::); Arg == (*); integer(Arg), Arg >= 0)),
+	once((
+			Arg == (::)
+		;	Arg == (*)
+		;	integer(Arg), Arg >= 0
+		;	Arg = Input+Output, integer(Input), integer(Output), Input >= 0, Output >= 0
+	)),
 	'$lgt_valid_metapred_term_args'(Args).
 
 

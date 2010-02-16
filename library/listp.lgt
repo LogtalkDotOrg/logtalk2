@@ -2,9 +2,9 @@
 :- protocol(listp).
 
 	:- info([
-		version is 1.41,
+		version is 1.5,
 		author is 'Paulo Moura',
-		date is 2009/7/5,
+		date is 2010/2/16,
 		comment is 'List protocol.']).
 
 	:- public(append/2).
@@ -22,7 +22,7 @@
 	:- public(delete/3).
 	:- mode(delete(@list, @term, ?list), one).
 	:- info(delete/3,
-		[comment is 'Deletes from a list all ocurrences of an element returning the list of remaining elements.',
+		[comment is 'Deletes from a list all occurrences of an element returning the list of remaining elements.',
 		 argnames is ['List', 'Element', 'Remaining']]).
 
 	:- public(delete_matches/3).
@@ -90,6 +90,13 @@
 	:- info(msort/2,
 		[comment is 'Sorts a list in ascending order (duplicated elements are not removed).',
 		 argnames is ['List', 'Sorted']]).
+
+	:- public(msort/3).
+	:- meta_predicate(msort(2+1, *, *)).
+	:- mode(msort(+callable, +list, -list), one).
+	:- info(msort/3,
+		[comment is 'Sorts a list using a user-specified comparison predicate modeled on the standard compare/3 predicate (duplicated elements are not removed).',
+		 argnames is ['Closure', 'List', 'Sorted']]).
 
 	:- public(nextto/3).
 	:- mode(nextto(?term, ?term, ?list), zero_or_more).
@@ -181,6 +188,13 @@
 	:- info(sort/2,
 		[comment is 'Sorts a list in ascending order (duplicated elements are removed).',
 		 argnames is ['List', 'Sorted']]).
+
+	:- public(sort/3).
+	:- meta_predicate(sort(2+1, *, *)).
+	:- mode(sort(+callable, +list, -list), one).
+	:- info(sort/3,
+		[comment is 'Sorts a list using a user-specified comparison predicate modeled on the standard compare/3 predicate (duplicated elements are removed).',
+		 argnames is ['Closure', 'List', 'Sorted']]).
 
 	:- public(sublist/2).
 	:- mode(sublist(?list, +list), zero_or_more).
