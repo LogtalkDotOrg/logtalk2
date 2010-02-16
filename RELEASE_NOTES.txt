@@ -15,19 +15,19 @@ RELEASE NOTES
 
 2.38.3 - February ??, 2010
 
-    Added experimental support for specifying closures in meta-predicate
-    directives as Input+Output in order to allow the definition of meta-
-    predicates where the number of normal arguments is equal to the number
-    of input arguments.
+    Removed the meta-predicate compilation safety rule that required the
+    number of normal arguments to be equal or greater than the number of
+    extra arguments required by a closure. This overly restrictive rule
+    prevented the definition of useful and safe meta-predicates.
 
     Added index/1 directives for the predicate lookup caching predicates to
     the SWI-Prolog integration files (see "integration/logtalk_comp_swi.pl").
     These directives may or may not improve performance, depending on your
     application.
 
-    Added experimental meta-predicates sort/3 and msort/3 to the library
-    object "list". These sorting predicates accept as first-argument a
-    closure to be used for comparing pairs of list terms when sorting.
+    Added meta-predicates sort/3 and msort/3 to the library object "list".
+    These sorting predicates accept as first-argument a closure to be used
+    for comparing pairs of list terms when sorting.
 
     Simplified usage of the "mtbatch" multi-threading benchmarks example
     by using conditional compilation directives for the Prolog-specific

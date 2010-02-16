@@ -92,7 +92,7 @@
 		 argnames is ['List', 'Sorted']]).
 
 	:- public(msort/3).
-	:- meta_predicate(msort(2+1, *, *)).
+	:- meta_predicate(msort(3, *, *)).
 	:- mode(msort(+callable, +list, -list), one).
 	:- info(msort/3,
 		[comment is 'Sorts a list using a user-specified comparison predicate modeled on the standard compare/3 predicate (duplicated elements are not removed).',
@@ -190,7 +190,7 @@
 		 argnames is ['List', 'Sorted']]).
 
 	:- public(sort/3).
-	:- meta_predicate(sort(2+1, *, *)).
+	:- meta_predicate(sort(3, *, *)).
 	:- mode(sort(+callable, +list, -list), one).
 	:- info(sort/3,
 		[comment is 'Sorts a list using a user-specified comparison predicate modeled on the standard compare/3 predicate (duplicated elements are removed).',

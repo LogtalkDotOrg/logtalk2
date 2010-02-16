@@ -8209,17 +8209,6 @@ current_logtalk_flag(version, version(2, 38, 3)).
 	throw(type_error(variable, Arg)).
 
 
-% number of extra-arguments less than the minimum required by a closure
-
-'$lgt_tr_head'(Head, _, _, _, _, _) :-
-	functor(Head, Functor, Arity),
-	functor(Meta, Functor, Arity),
-	'$lgt_pp_meta_predicate_'(Meta),
-	Meta =.. [_| MArgs],
-	'$lgt_insufficient_closure_args'(MArgs),
-	throw(arity_mismatch(closure, Meta)).
-
-
 % redefinition of Logtalk built-in predicates
 
 '$lgt_tr_head'(Head, _, _, File, Lines, Input) :-
@@ -8394,52 +8383,12 @@ current_logtalk_flag(version, version(2, 38, 3)).
 '$lgt_nonvar_meta_arg'([Arg| _], [(::)| _], Arg) :-
 	nonvar(Arg).
 
-'$lgt_nonvar_meta_arg'([Arg| _], [_+_| _], Arg) :-
-	nonvar(Arg).
-
 '$lgt_nonvar_meta_arg'([Arg| _], [N| _], Arg) :-
 	integer(N),
 	nonvar(Arg).
 
 '$lgt_nonvar_meta_arg'([_| Args], [_| MArgs], Arg) :-
 	'$lgt_nonvar_meta_arg'(Args, MArgs, Arg).
-
-
-
-% check if there are enough normal arguments for the closure with maximum arity
-% (used when checking meta-predicate clause heads for errors)
-
-'$lgt_insufficient_closure_args'(Args) :-
-	'$lgt_insufficient_closure_args'(Args, 0, MaxClosure, 0, TotalNormalArgs),
-	TotalNormalArgs < MaxClosure.
-
-
-'$lgt_insufficient_closure_args'([], MaxClosure, MaxClosure, TotalNormalArgs, TotalNormalArgs).
-
-'$lgt_insufficient_closure_args'([MArg| MArgs], MaxClosure0, MaxClosure, TotalNormalArgs0, TotalNormalArgs) :-
-	(	MArg == (*) ->
-		MaxClosure1 is MaxClosure0,
-		TotalNormalArgs1 is TotalNormalArgs0 + 1
-	;	MArg == (::) ->
-		MaxClosure1 is MaxClosure0,
-		TotalNormalArgs1 is TotalNormalArgs0
-	;	MArg == 0 ->
-		MaxClosure1 is MaxClosure0,
-		TotalNormalArgs1 is TotalNormalArgs0
-	;	MArg = Input+_ ->
-		(	Input > MaxClosure0 ->
-			MaxClosure1 is Input
-		;	MaxClosure1 is MaxClosure0
-		),
-		TotalNormalArgs1 is TotalNormalArgs0
-	;	integer(MArg) ->
-		(	MArg > MaxClosure0 ->
-			MaxClosure1 is MArg
-		;	MaxClosure1 is MaxClosure0
-		),
-		TotalNormalArgs1 is TotalNormalArgs0
-	),
-	'$lgt_insufficient_closure_args'(MArgs, MaxClosure1, MaxClosure, TotalNormalArgs1, TotalNormalArgs).
 
 
 
@@ -9896,13 +9845,6 @@ current_logtalk_flag(version, version(2, 38, 3)).
 	!,
 	'$lgt_same_meta_arg_extra_args'(MetaArgs, MetaVars, Closure, ExtraArgs).
 
-'$lgt_same_meta_arg_extra_args'([Input+Output| _], [MetaVar| _], Closure, ExtraArgs) :-
-	MetaVar == Closure,
-	!,
-	integer(Input),
-	integer(Output),
-	Input+Output =:= ExtraArgs.
-
 '$lgt_same_meta_arg_extra_args'([MetaArg| _], [MetaVar| _], Closure, ExtraArgs) :-
 	MetaVar == Closure,
 	!,
@@ -9923,9 +9865,7 @@ current_logtalk_flag(version, version(2, 38, 3)).
 
 '$lgt_same_number_of_closure_extra_args'([PredArg| PredArgs], [PredMetaArg| PredMetaArgs], HeadArgs, HeadMetaArgs) :-
 	(	var(PredArg),
-		(	integer(PredMetaArg), PredMetaArg > 0
-		;	PredMetaArg = _+_
-		),
+		integer(PredMetaArg), PredMetaArg > 0,
 		% argument is a closure
 		'$lgt_shared_closure_arg'(PredArg, HeadArgs, HeadMetaArgs, HeadMetaArg) ->
 		% shared closure argument
@@ -13975,12 +13915,7 @@ current_logtalk_flag(version, version(2, 38, 3)).
 '$lgt_valid_metapred_term_args'([]).
 
 '$lgt_valid_metapred_term_args'([Arg| Args]) :-
-	once((
-			Arg == (::)
-		;	Arg == (*)
-		;	integer(Arg), Arg >= 0
-		;	Arg = Input+Output, integer(Input), integer(Output), Input >= 0, Output >= 0
-	)),
+	once((Arg == (::); Arg == (*); integer(Arg), Arg >= 0)),
 	'$lgt_valid_metapred_term_args'(Args).
 
 

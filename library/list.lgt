@@ -153,9 +153,9 @@
 
 	:- endif.
 
-	:- meta_predicate(msort(2+1, *, *)).
-	:- meta_predicate(msort_(*, 2+1, *)).
-	:- meta_predicate(merge_keep_dups(*, *, 2+1, *)).
+	:- meta_predicate(msort(3, *, *)).
+	:- meta_predicate(msort_(*, 3, *)).
+	:- meta_predicate(merge_keep_dups(*, *, 3, *)).
 
 	msort(Compare, List, Sorted) :-
 		msort_(List, Compare, Sorted).
@@ -297,9 +297,9 @@
 
 	:- endif.
 
-	:- meta_predicate(sort(2+1, *, *)).
-	:- meta_predicate(sort_(*, 2+1, *)).
-	:- meta_predicate(merge_no_dups(*, *, 2+1, *)).
+	:- meta_predicate(sort(3, *, *)).
+	:- meta_predicate(sort_(*, 3, *)).
+	:- meta_predicate(merge_no_dups(*, *, 3, *)).
 
 	sort(Compare, List, Sorted) :-
 		sort_(List, Compare, Sorted).
