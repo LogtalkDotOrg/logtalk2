@@ -11,5 +11,4 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 To load this example and for sample queries, please see the SCRIPT.txt file.
 
-This folder contains some examples of parametric objects, dealing with 
-lists, time and date values, and rectangles.
+This folder contains some examples of parametric objects and categories.

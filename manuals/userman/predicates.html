@@ -576,7 +576,7 @@ Note that the goals <code>self(Self)</code>, <code>sender(Sender)</code>, and <c
 is compiled with the goal <code>atom(Arg)</code> as the first condition on the clause body. As such, the use of these context execution methods do not interfere with the optimizations that some Prolog compilers perform when the first clause body condition is a call to a built-in type-test predicate or a comparison operator. 
 </p>
 <p>
-For parametric objects, the method <a title="Consult reference manual" href="../refman/methods/parameter2.html"><code>parameter/2</code></a> enables us to retrieve current parameter values (see the session on <a href="objects.html#parametric">parametric objects</a> for a detailed description). For example:
+For parametric objects and categories, the method <a title="Consult reference manual" href="../refman/methods/parameter2.html"><code>parameter/2</code></a> enables us to retrieve current parameter values (see the session on <a href="objects.html#parametric">parametric objects</a> for a detailed description). For example:
 </p>
 <pre>:- object(block(_Color)).
 
@@ -595,7 +595,7 @@ After compiling and loading these two objects, we can try the following goal:
 Color parameter value is blue
 yes</pre>
 <p>
-The method <code>parameter/2</code> is only translated to a compile time unification when used inside objects with its first argument instantiated at compile time. When the first argument is not known at compile time, or when the method is used inside categories, its call results in a call to the built-in Prolog predicate <code>arg/3</code>. Nevertheless, note that calls to <code>parameter/2</code> from inside categories are inherently problematic: a category may be implemented by several objects, both parametric (with different number of parameters) and non-parametric. Care must be taken to ensure that a parametric object importing such a category match the interpretation of its parameters used in the category.
+The method <code>parameter/2</code> is only translated to a compile time unification for parametric objects. When the method is used in a parametric category, its call is translated to a call to the built-in Prolog predicate <code>arg/3</code>.
 </p>
 
 <h3 id="predicates_database">Database methods</h3>
@@ -733,7 +733,7 @@ Currently, there is no clean workaround for calling non-standard Prolog built-in
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: June 30, 2009</span>
+		<span>Last updated on: February 17, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="categories.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="inheritance.html">next</a></span><br/>

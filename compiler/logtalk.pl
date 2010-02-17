@@ -485,7 +485,7 @@ current_protocol(Ptc) :-
 
 current_category(Ctg) :-
 	nonvar(Ctg),
-	\+ atom(Ctg),
+	\+ callable(Ctg),
 	throw(error(type_error(category_identifier, Ctg), current_category(Ctg))).
 
 current_category(Ctg) :-
@@ -525,7 +525,7 @@ object_property(Obj, Prop) :-
 
 category_property(Ctg, Prop) :-
 	nonvar(Ctg),
-	\+ atom(Ctg),
+	\+ callable(Ctg),
 	throw(error(type_error(category_identifier, Ctg), category_property(Ctg, Prop))).
 
 category_property(Ctg, Prop) :-
@@ -642,7 +642,7 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
 	nonvar(Ctg),
-	\+ atom(Ctg),
+	\+ callable(Ctg),
 	throw(error(type_error(category_identifier, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
@@ -814,7 +814,7 @@ abolish_category(Ctg) :-
 	throw(error(instantiation_error, abolish_category(Ctg))).
 
 abolish_category(Ctg) :-
-	\+ atom(Ctg),
+	\+ callable(Ctg),
 	throw(error(type_error(category_identifier, Ctg), abolish_category(Ctg))).
 
 abolish_category(Ctg) :-
@@ -933,7 +933,7 @@ imports_category(Obj, Ctg, Scope) :-
 
 imports_category(Obj, Ctg, Scope) :-
 	nonvar(Ctg),
-	\+ atom(Ctg),
+	\+ callable(Ctg),
 	throw(error(type_error(category_identifier, Ctg), imports_category(Obj, Ctg, Scope))).
 
 imports_category(Obj, Ctg, Scope) :-
@@ -1030,12 +1030,12 @@ extends_category(Ctg1, Ctg2) :-
 
 extends_category(Ctg1, Ctg2, Scope) :-
 	nonvar(Ctg1),
-	\+ atom(Ctg1),
+	\+ callable(Ctg1),
 	throw(error(type_error(category_identifier, Ctg1), extends_category(Ctg1, Ctg2, Scope))).
 
 extends_category(Ctg1, Ctg2, Scope) :-
 	nonvar(Ctg2),
-	\+ atom(Ctg2),
+	\+ callable(Ctg2),
 	throw(error(type_error(category_identifier, Ctg2), extends_category(Ctg1, Ctg2, Scope))).
 
 extends_category(Ctg1, Ctg2, Scope) :-
@@ -1122,7 +1122,7 @@ extends_object(Prototype, Parent, Scope) :-
 
 complements_object(Category, Object) :-
 	nonvar(Category),
-	\+ atom(Category),
+	\+ callable(Category),
 	throw(error(type_error(category_identifier, Category), complements_object(Category, Object))).
 
 complements_object(Category, Object) :-
@@ -6529,7 +6529,7 @@ current_logtalk_flag(version, version(2, 38, 3)).
 	throw(instantiation_error).
 
 '$lgt_tr_directive'(category, [Ctg| _], _, _, _, _) :-
-	\+ atom(Ctg),
+	\+ callable(Ctg),
 	throw(type_error(category_identifier, Ctg)).
 
 '$lgt_tr_directive'(category, [Ctg| _], _, _, _, _) :-
@@ -7835,7 +7835,7 @@ current_logtalk_flag(version, version(2, 38, 3)).
 	(	'$lgt_is_proper_list'(Parameters) ->
 		(	'$lgt_member'(Parameter, Parameters), \+ '$lgt_valid_entity_parameter'(Parameter) ->
 			throw(type_error(parameter, Parameter))
-		;	(	('$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _), \+ \+ Obj =.. [_| Parameters]) ->
+		;	(	'$lgt_pp_entity'(_, Entity, _, _, _), \+ \+ Entity =.. [_| Parameters] ->
 			 	true
 			;	throw(length_error(parameters_list, Parameters))
 			)
@@ -7848,7 +7848,7 @@ current_logtalk_flag(version, version(2, 38, 3)).
 	(	'$lgt_is_proper_list'(Parnames) ->
 		(	'$lgt_member'(Name, Parnames), \+ atom(Name) ->
 			throw(type_error(atom, Name))
-		;	(	'$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _), \+ \+ Obj =.. [_| Parnames] ->
+		;	(	'$lgt_pp_entity'(_, Entity, _, _, _), \+ \+ Entity =.. [_| Parnames] ->
 			 	true
 			;	throw(length_error(parnames_list, Parnames))
 			)
@@ -9379,22 +9379,42 @@ current_logtalk_flag(version, version(2, 38, 3)).
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, _, _, Self, _).
 
+'$lgt_tr_body'(parameter(_, _), _, _, _) :-
+	'$lgt_pp_entity'(_, Entity, _, _, _),
+	\+ compound(Entity),
+	throw(type_error(parametric_entity, Entity)).
+
+'$lgt_tr_body'(parameter(Arg, _), _, _, _) :-
+	var(Arg),
+	throw(instantiation_error).
+
 '$lgt_tr_body'(parameter(Arg, Value), TPred, '$lgt_dbg_goal'(parameter(Arg, Temp), DPred, ExCtx), Ctx) :-
+	'$lgt_pp_entity'(object, _, _, _, _),
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, This, _),
-	(	(var(This); var(Arg)) ->				% when using parameter/2 in categories
-		TPred = arg(Arg, This, Value),			% or when the first argument will only 
-		DPred = (TPred, Temp=Value)				% be instantiated at runtime
-	;	functor(This, _, Arity),
-		(	1 =< Arg, Arg =< Arity ->
-			arg(Arg, This, Value),
-			TPred = true,
-			DPred = (Temp=Value)
-		;	throw(domain_error(out_of_range, Arg))
-		)
+	functor(This, _, Arity),
+	(	1 =< Arg, Arg =< Arity ->
+		arg(Arg, This, Value),
+		TPred = true,
+		DPred = (Temp=Value)
+	;	throw(domain_error(out_of_range, Arg))
 	).
+
+'$lgt_tr_body'(parameter(Arg, Value), TPred, '$lgt_dbg_goal'(parameter(Arg, Temp), DPred, ExCtx), Ctx) :-
+	'$lgt_pp_entity'(category, Ctg, _, _, _),
+	!,
+	'$lgt_comp_ctx_this'(Ctx, This),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, This, _),
+	functor(Ctg, _, Arity),
+	(	1 =< Arg, Arg =< Arity ->
+		TPred = '$lgt_ctg_parameter'(This, Ctg, Arg, Value),
+		DPred = (TPred, Temp=Value)
+	;	throw(domain_error(out_of_range, Arg))
+	).
+
 
 
 % term input predicates that need to be operator aware
@@ -13699,6 +13719,16 @@ current_logtalk_flag(version, version(2, 38, 3)).
 
 
 
+% '$lgt_ctg_parameter'(This, Ctg, Arg, Value)
+%
+% runtime access to category parameters
+
+'$lgt_ctg_parameter'(This, Ctg, Arg, Value) :-
+	'$lgt_imports_category_'(This, Ctg, _) ->
+	arg(Arg, Ctg, Value).
+
+
+
 % '$lgt_flatten_list'(+list, -list)
 %
 % flattens a list of terms
@@ -13799,7 +13829,7 @@ current_logtalk_flag(version, version(2, 38, 3)).
 		true
 	;	Ctg = Ref
 	),
-	atom(Ctg).
+	callable(Ctg).
 
 
 

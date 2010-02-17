@@ -15,6 +15,15 @@ RELEASE NOTES
 
 2.38.3 - February ??, 2010
 
+    Reintroduced parametric categories. Changed semantics of the parameter/2
+    built-in execution-context method when used in category predicates to
+    access the category parameters instead of the parameters of the object
+    importing the category. This change provides safer and more robust use
+    of parameter/2 calls in categories. 
+
+    Improved compile-time error-checking of calls to the parameter/2 built-in
+    execution-context method
+
     Removed the meta-predicate compilation safety rule that required the
     number of normal arguments to be equal or greater than the number of
     extra arguments required by a closure. This overly restrictive rule
@@ -28,6 +37,9 @@ RELEASE NOTES
     Added meta-predicates sort/3 and msort/3 to the library object "list".
     These sorting predicates accept as first-argument a closure to be used
     for comparing pairs of list terms when sorting.
+
+    Updated the "parametric" example to also illustrate the use of parametric
+    categories.
 
     Simplified usage of the "mtbatch" multi-threading benchmarks example
     by using conditional compilation directives for the Prolog-specific

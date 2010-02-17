@@ -89,3 +89,12 @@ yes
 
 NewId = employee(sally, 21, 1450) 
 yes
+
+
+% some queries with parametric categories:
+
+| ?- speech(winter, wedding)::advice.
+
+Clothes: [pants, sleeves, heavy]
+Speech:  [happy, jokes]
+yes

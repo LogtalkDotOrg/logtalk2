@@ -347,3 +347,70 @@
 		this(employee(Salary, Name, OldAge)).
 
 :- end_object.
+
+
+
+/*	The following entities illustrate the use of parametric categories.
+*/
+
+:- category(dress(_Season)).
+
+	:- info([
+		version is 1.0,
+		author is 'Paulo Moura',
+		date is 2010/02/17,
+		comment is 'Description',
+		parnames is ['Season']]).
+
+	:- public(clothes/1).
+
+	clothes(Clothes) :-
+		parameter(1, Season),
+		clothes(Season, Clothes).
+
+	clothes(winter, [pants, sleeves, heavy]).
+	clothes(spring, [shorts, sleeves, light]).
+	clothes(summer, [shorts, light, white]).
+	clothes(autumn, [pants, sleeves, light]).
+
+:- end_category.
+
+
+:- category(speech(_Event)).
+
+	:- info([
+		version is 1.0,
+		author is 'Paulo Moura',
+		date is 2010/02/17,
+		comment is 'Description',
+		parnames is ['Event']]).
+
+	:- public(speech/1).
+
+	speech(Speech) :-
+		parameter(1, Event),
+		speech(Event, Speech).
+
+	speech(wedding, [happy, jokes]).
+	speech(inauguration, [formal, long]).
+
+:- end_category.
+
+
+:- object(speech(Season, Event),
+	imports(dress(Season), speech(Event))).
+
+	:- info([
+		version is 1.0,
+		author is 'Paulo Moura',
+		date is 2010/02/17,
+		comment is 'Description',
+		parnames is ['Season', 'Event']]).
+
+	:- public(advice/0).
+
+	advice :-
+		:clothes(Clothes), write('Clothes: '), write(Clothes), nl,
+		:speech(Speech), write('Speech:  '), write(Speech), nl, nl.
+
+:- end_object.
