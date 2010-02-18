@@ -184,7 +184,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 '$lgt_default_flag'(events, deny).
 '$lgt_default_flag'(context_switching_calls, allow).
 % directories compilation flags:
-'$lgt_default_flag'(altdirs, off).
+'$lgt_default_flag'(altdirs, on).
 '$lgt_default_flag'(tmpdir, TmpDir) :-
 	(	environ('COMSPEC', _) ->	% Windows systems define this environment variable...
 		TmpDir = 'lgt_tmp/'
@@ -193,7 +193,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 '$lgt_default_flag'(xmldir, 'xml_docs/').
 % other compilation flags:
 '$lgt_default_flag'(report, on).
-'$lgt_default_flag'(clean, off).
+'$lgt_default_flag'(clean, on).
 '$lgt_default_flag'(smart_compilation, off).
 '$lgt_default_flag'(reload, always).
 '$lgt_default_flag'(startup_message, flags(compact)).

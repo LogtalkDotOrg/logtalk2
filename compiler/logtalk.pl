@@ -1920,7 +1920,7 @@ set_logtalk_flag(Flag, Value) :-
 	catch('$lgt_check_compiler_flag'(Flag, Value), Error, throw(error(Error, set_logtalk_flag(Flag, Value)))),
 	retractall('$lgt_current_flag_'(Flag, _)),
 	assertz('$lgt_current_flag_'(Flag, Value)),
-	(	Flag == debug ->
+	(	Flag == debug, Value == on ->
 		retractall('$lgt_current_flag_'(smart_compilation, _)),
 		assertz('$lgt_current_flag_'(smart_compilation, off))
 	;	Flag == hook ->

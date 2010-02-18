@@ -227,7 +227,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_default_flag'(events, deny).
 '$lgt_default_flag'(context_switching_calls, allow).
 % directories compilation flags:
-'$lgt_default_flag'(altdirs, off).
+'$lgt_default_flag'(altdirs, on).
 '$lgt_default_flag'(tmpdir, TmpDir) :-
 	(	environ('COMSPEC', _) ->	% Windows systems define this environment variable...
 		TmpDir = 'lgt_tmp/'
@@ -236,7 +236,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_default_flag'(xmldir, 'xml_docs/').
 % other compilation flags:
 '$lgt_default_flag'(report, on).
-'$lgt_default_flag'(clean, off).
+'$lgt_default_flag'(clean, on).
 '$lgt_default_flag'(smart_compilation, off).
 '$lgt_default_flag'(reload, always).
 '$lgt_default_flag'(startup_message, flags(compact)).
