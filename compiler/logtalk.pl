@@ -13096,16 +13096,12 @@ current_logtalk_flag(version, version(2, 39, 0)).
 	;	Goal1 = true
 	),
 	(	'$lgt_pp_threaded_' ->
-		Goal2 = (Goal1, '$lgt_init_object_message_queue'(Prefix))
-	;	Goal2 = Goal1
+		Goal2 = '$lgt_init_object_message_queue'(Prefix)
+	;	Goal2 = true
 	),
 	findall(EntityInitGoal, '$lgt_pp_fentity_init_'(EntityInitGoal), EntityInitGoals),
 	'$lgt_list_to_conjunction'(EntityInitGoals, Goal3),
-	(	Goal3 == true ->
-		Goal4 = Goal2
-	;	Goal4 = (Goal2, Goal3)
-	),
-	'$lgt_simplify_body'(Goal4, Goal),
+	'$lgt_simplify_body'((Goal1, Goal2, Goal3), Goal),
 	(	Goal == true ->
 		true
 	;	assertz('$lgt_pp_entity_init_'(Type, Entity, Goal))

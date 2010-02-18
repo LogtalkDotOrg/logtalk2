@@ -112,15 +112,7 @@ Name: "{group}\Logtalk - Ciao Prolog"; Filename: "{code:GetCiaoExePath}"; Parame
 
 Name: "{group}\Logtalk - CxProlog"; Filename: "{code:GetCxExePath}"; Parameters: "--goal ""os_env('LOGTALKHOME', Env), atom_concat(Env, '\\integration\\logtalk_cx.pl', Path), silent_consult(Path)"""; Comment: "Runs Logtalk with CxProlog"; WorkingDir: "%CD%"; Components: prolog\cxprolog; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - ECLiPSe 5.10"; Filename: "{code:GetEclipse5ExePath}"; Parameters: "-b ""$LOGTALKHOME/integration/logtalk_eclipse5.pl"""; Comment: "Runs Logtalk with ECLiPSe 5.10"; WorkingDir: "%CD%"; Components: prolog\eclipse; Flags: createonlyiffileexists
-
 Name: "{group}\Logtalk - ECLiPSe 6.0"; Filename: "{code:GetEclipse6ExePath}"; Parameters: "-b ""$LOGTALKHOME/integration/logtalk_eclipse6.pl"""; Comment: "Runs Logtalk with ECLiPSe 6.0"; WorkingDir: "%CD%"; Components: prolog\eclipse; Flags: createonlyiffileexists
-
-Name: "{group}\Logtalk - GNU Prolog"; Filename: "{code:GetGPExePath}"; Parameters: "--init-goal ""['$LOGTALKHOME/integration/logtalk_gp.pl']"""; Comment: "Runs Logtalk with GNU Prolog"; WorkingDir: "%CD%"; Components: prolog\gprolog; Flags: createonlyiffileexists
-
-Name: "{group}\Logtalk - K-Prolog"; Filename: "{code:GetKPExePath}"; Parameters: "-h 4096k -l 2048k -g 4096k -e ""(consult('$LOGTALKHOME/integration/logtalk_plc6.pl'), '$root')."""; Comment: "Runs Logtalk with K-Prolog"; WorkingDir: "%CD%"; Components: prolog\plc; Flags: createonlyiffileexists
-
-Name: "{group}\Logtalk - Quintus Prolog"; Filename: "{code:GetQuintusExePath}"; Parameters: "+l ""%LOGTALKHOME%\integration\logtalk_quintus.pl"" +z ""%LOGTALKHOME%"" ""%LOGTALKUSER%"""; Comment: "Runs Logtalk with Quintus Prolog"; WorkingDir: "%CD%"; Components: prolog\quintus; Flags: createonlyiffileexists
 
 Name: "{group}\Logtalk - SICStus Prolog 3.12"; Filename: "{code:GetSP3ExePath}"; Parameters: "-l ""%LOGTALKHOME%\integration\logtalk_sicstus3.pl"""; Comment: "Runs Logtalk with SICStus Prolog 3.12"; WorkingDir: "%CD%"; Components: prolog\sicstus; Flags: createonlyiffileexists
 
