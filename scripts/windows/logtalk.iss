@@ -55,10 +55,7 @@ Name: "prolog"; Description: "Prolog integration"; Types: full prolog custom; Fl
 Name: "prolog\bp"; Description: "B-Prolog integration (version 7.1 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\ciao"; Description: "Ciao Prolog integration (version 1.10)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\cxprolog"; Description: "CxProlog integration (version 0.97.4 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\eclipse"; Description: "ECLiPSe integration (versions 5.10, 6.0)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\gprolog"; Description: "GNU Prolog integration (version 1.3.1 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\plc"; Description: "K-Prolog integration (version 6.0.4)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\quintus"; Description: "Quintus Prolog integration (version 3.5; requires patching Logtalk)"; Types: custom; Flags: disablenouninstallwarning
+Name: "prolog\eclipse"; Description: "ECLiPSe integration (version 6.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\sicstus"; Description: "SICStus Prolog integration (versions 3.12.x, 4.x)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\swi"; Description: "SWI-Prolog integration (version 5.6.44 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\xsb"; Description: "XSB integration (version 3.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
@@ -299,20 +296,6 @@ begin
   end
 end;
 
-function GetEclipse5ExePath(Param: String): String;
-var
-  ECLIPSEDIR: String;
-  Warning: String;
-begin
-  if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\5.10\', 'ECLIPSEDIR', ECLIPSEDIR) then
-    Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
-  else begin
-    Warning := 'Failed to detect ECLiPSe Prolog 5 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	MsgBox(Warning, mbError, MB_OK);
-    Result := 'lgt_exe_does_not_exist'
-  end
-end;
-
 function GetEclipse6ExePath(Param: String): String;
 var
   ECLIPSEDIR: String;
@@ -322,50 +305,6 @@ begin
     Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
   else begin
     Warning := 'Failed to detect ECLiPSe Prolog 6 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	MsgBox(Warning, mbError, MB_OK);
-    Result := 'lgt_exe_does_not_exist'
-  end
-end;
-
-function GetGPExePath(Param: String): String;
-var
-  RootPath: String;
-  Warning: String;
-begin
-  if RegQueryStringValue(HKCU, 'Software\GnuProlog\', 'RootPath', RootPath) then
-    Result := RootPath + '\bin\gprolog.exe'
-  else begin
-    Warning := 'Failed to detect GNU Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	MsgBox(Warning, mbError, MB_OK);
-    Result := 'lgt_exe_does_not_exist'
-  end
-end;
-
-function GetKPExePath(Param: String): String;
-var
-  Path: String;
-  Warning: String;
-begin
-  Path := GetEnv('PLC') + '\plc.exe';
-  if FileExists(Path) then
-    Result := Path
-  else begin
-    Warning := 'Failed to detect K-Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	MsgBox(Warning, mbError, MB_OK);
-    Result := 'lgt_exe_does_not_exist'
-  end
-end;
-
-function GetQuintusExePath(Param: String): String;
-var
-  Path: String;
-  Warning: String;
-begin
-  Path := GetEnv('Quintus') + '\bin\ix86\qpwin.exe';
-  if FileExists(Path) then
-    Result := Path
-  else begin
-    Warning := 'Failed to detect Quintus Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
 	MsgBox(Warning, mbError, MB_OK);
     Result := 'lgt_exe_does_not_exist'
   end

@@ -30,7 +30,8 @@ RELEASE NOTES
     prevented the definition of useful and safe meta-predicates.
 
     Moved all config files for no longer supported Prolog compilers to the
-    "configs/unsupported" folder.
+    "configs/unsupported" folder. Moved all integration scripts for no longer
+    supported Prolog compilers to the "integration/unsupported" folder.
 
     Changed the default value of the compiler flags "altdirs" and "clean" to
     "on" for all supported Prolog compilers.

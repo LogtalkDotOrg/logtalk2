@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.1 and later versions
 %
-%  last updated: January 30, 2010
+%  last updated: February 18, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -148,7 +148,6 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
-'$lgt_prolog_feature'(multifile_directive, supported).
 '$lgt_prolog_feature'(tabling, supported).
 '$lgt_prolog_feature'(threads, unsupported).
 

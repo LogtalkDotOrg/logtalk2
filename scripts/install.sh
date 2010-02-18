@@ -90,9 +90,7 @@ echo
 echo "* B-Prolog (version 7.1 or later):       bplgt"
 echo "* Ciao (version 1.10):                   ciaolgt    (first run must use sudo)"
 echo "* CxProlog (version 0.97.4 or later):    cxlgt"
-echo "* ECLiPSe (versions 5.10, 6.0):          eclipselgt"
-echo "* GNU Prolog (version 1.3.1 or later):   gplgt"
-echo "* K-Prolog (versions 5.1.5, 6.0.4):      plclgt"
+echo "* ECLiPSe (version 6.0 or later):        eclipselgt"
 echo "* Qu-Prolog (version 8.10 or later):     qplgt"
 echo "* Quintus Prolog (version 3.5):          quintuslgt (requires patching Logtalk)"
 echo "* SICStus Prolog (versions 3.12.x, 4.x): sicstuslgt"
@@ -106,9 +104,6 @@ echo
 echo "The Prolog integration scripts can be found on \"$prefix/bin\"."
 echo "Make sure that the Prolog compilers are properly installed and available"
 echo "on your execution path."
-echo
-echo "Integration with Quintus Prolog requires manual patches that render"
-echo "Logtalk incompatible with all the other compilers."
 echo
 echo "Users should ensure that the environment variable LOGTALKHOME is set to"
 echo "\"$prefix/share/logtalk\" and then run the \"cplgtdirs\" shell script once"

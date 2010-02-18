@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: January 28, 2010
+%  last updated: February 18, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -234,7 +234,6 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, full).
-'$lgt_prolog_feature'(multifile_directive, supported).
 '$lgt_prolog_feature'(tabling, Tabling) :-
 	(	current_prolog_flag(system_options, tabling) ->
 		Tabling = supported

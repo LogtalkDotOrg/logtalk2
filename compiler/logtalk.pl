@@ -13012,27 +13012,23 @@ current_logtalk_flag(version, version(2, 39, 0)).
 % '$lgt_write_runtime_clauses'(@stream)
 %
 % writes the entity runtime multifile and dynamic directives and the entity 
-% runtime clauses for all defined entities for Prolog compilers supporting
-% the multifile/1 predicate directive
+% runtime clauses for all defined entities
 
 '$lgt_write_runtime_clauses'(Stream) :-
-	(	'$lgt_compiler_flag'(multifile_directive, supported) ->
-		'$lgt_write_runtime_clauses'(Stream, '$lgt_current_protocol_'/5),
-		'$lgt_write_runtime_clauses'(Stream, '$lgt_current_category_'/6),
-		'$lgt_write_runtime_clauses'(Stream, '$lgt_current_object_'/11),
-		'$lgt_write_runtime_clauses'(Stream, '$lgt_entity_property_'/2),
-		'$lgt_write_runtime_clauses'(Stream, '$lgt_implements_protocol_'/3),
-		'$lgt_write_runtime_clauses'(Stream, '$lgt_imports_category_'/3),
-		'$lgt_write_runtime_clauses'(Stream, '$lgt_instantiates_class_'/3),
-		'$lgt_write_runtime_clauses'(Stream, '$lgt_specializes_class_'/3),
-		'$lgt_write_runtime_clauses'(Stream, '$lgt_extends_category_'/3),
-		'$lgt_write_runtime_clauses'(Stream, '$lgt_extends_object_'/3),
-		'$lgt_write_runtime_clauses'(Stream, '$lgt_extends_protocol_'/3),
-		'$lgt_write_runtime_clauses'(Stream, '$lgt_complemented_object_'/5),
-		'$lgt_write_runtime_clauses'(Stream, '$lgt_debugging_'/1),
-		'$lgt_write_runtime_clauses'(Stream, '$lgt_static_binding_entity_'/1)
-	;	true
-	).
+	'$lgt_write_runtime_clauses'(Stream, '$lgt_current_protocol_'/5),
+	'$lgt_write_runtime_clauses'(Stream, '$lgt_current_category_'/6),
+	'$lgt_write_runtime_clauses'(Stream, '$lgt_current_object_'/11),
+	'$lgt_write_runtime_clauses'(Stream, '$lgt_entity_property_'/2),
+	'$lgt_write_runtime_clauses'(Stream, '$lgt_implements_protocol_'/3),
+	'$lgt_write_runtime_clauses'(Stream, '$lgt_imports_category_'/3),
+	'$lgt_write_runtime_clauses'(Stream, '$lgt_instantiates_class_'/3),
+	'$lgt_write_runtime_clauses'(Stream, '$lgt_specializes_class_'/3),
+	'$lgt_write_runtime_clauses'(Stream, '$lgt_extends_category_'/3),
+	'$lgt_write_runtime_clauses'(Stream, '$lgt_extends_object_'/3),
+	'$lgt_write_runtime_clauses'(Stream, '$lgt_extends_protocol_'/3),
+	'$lgt_write_runtime_clauses'(Stream, '$lgt_complemented_object_'/5),
+	'$lgt_write_runtime_clauses'(Stream, '$lgt_debugging_'/1),
+	'$lgt_write_runtime_clauses'(Stream, '$lgt_static_binding_entity_'/1).
 
 
 '$lgt_write_runtime_clauses'(Stream, Functor/Arity) :-
@@ -13095,26 +13091,21 @@ current_logtalk_flag(version, version(2, 39, 0)).
 
 '$lgt_gen_entity_init_goal' :-
 	'$lgt_pp_entity'(Type, Entity, Prefix, _, _),
-	(	'$lgt_compiler_flag'(multifile_directive, supported) ->
-		Goal1 = true
-	;	findall(Clause, '$lgt_pp_rclause'(Clause), Clauses),
-		Goal1 = '$lgt_assert_runtime_clauses'(Clauses)
-	),
 	(	setof(Mutex, Head^'$lgt_pp_synchronized_'(Head, Mutex), Mutexes) ->
-		Goal2 = (Goal1, '$lgt_create_mutexes'(Mutexes))
-	;	Goal2 = Goal1
+		Goal1 = '$lgt_create_mutexes'(Mutexes)
+	;	Goal1 = true
 	),
 	(	'$lgt_pp_threaded_' ->
-		Goal3 = (Goal2, '$lgt_init_object_message_queue'(Prefix))
-	;	Goal3 = Goal2
+		Goal2 = (Goal1, '$lgt_init_object_message_queue'(Prefix))
+	;	Goal2 = Goal1
 	),
 	findall(EntityInitGoal, '$lgt_pp_fentity_init_'(EntityInitGoal), EntityInitGoals),
-	'$lgt_list_to_conjunction'(EntityInitGoals, Goal4),
-	(	Goal4 == true ->
-		Goal5 = Goal3
-	;	Goal5 = (Goal3, Goal4)
+	'$lgt_list_to_conjunction'(EntityInitGoals, Goal3),
+	(	Goal3 == true ->
+		Goal4 = Goal2
+	;	Goal4 = (Goal2, Goal3)
 	),
-	'$lgt_simplify_body'(Goal5, Goal),
+	'$lgt_simplify_body'(Goal4, Goal),
 	(	Goal == true ->
 		true
 	;	assertz('$lgt_pp_entity_init_'(Type, Entity, Goal))
@@ -13225,20 +13216,6 @@ current_logtalk_flag(version, version(2, 39, 0)).
 	findall(Goal, '$lgt_pp_fentity_init_'(Goal), GoalList),
 	'$lgt_list_to_conjunction'(GoalList, Goals),
 	once(Goals).
-
-
-
-% '$lgt_assert_runtime_clauses'(+list)
-%
-% called when loading a compiled Logtalk entity in order to update
-% Logtalk internal runtime tables; this is mostly a workaround for 
-% the lack of support of multifile predicates in some Prolog compilers
-
-'$lgt_assert_runtime_clauses'([]).
-
-'$lgt_assert_runtime_clauses'([Clause| Clauses]) :-
-	assertz(Clause),
-	'$lgt_assert_runtime_clauses'(Clauses).
 
 
 
@@ -14093,7 +14070,6 @@ current_logtalk_flag(version, version(2, 39, 0)).
 '$lgt_valid_flag'(prolog_version).
 '$lgt_valid_flag'(break_predicate).
 '$lgt_valid_flag'(encoding_directive).
-'$lgt_valid_flag'(multifile_directive).
 '$lgt_valid_flag'(threads).
 
 
@@ -14109,7 +14085,6 @@ current_logtalk_flag(version, version(2, 39, 0)).
 '$lgt_read_only_flag'(prolog_version).
 '$lgt_read_only_flag'(break_predicate).
 '$lgt_read_only_flag'(encoding_directive).
-'$lgt_read_only_flag'(multifile_directive).
 '$lgt_read_only_flag'(threads).
 
 
@@ -16398,8 +16373,7 @@ current_logtalk_flag(version, version(2, 39, 0)).
 	'$lgt_compiler_flag'(reload, Reload), write(', reload: '), write(Reload), nl,
 	write('Read-only compilation flags (back-end Prolog compiler features):'), nl,
 	'$lgt_compiler_flag'(prolog_dialect, Prolog), write('  prolog_dialect: '), write(Prolog),
-	'$lgt_compiler_flag'(break_predicate, Break), write(', break_predicate: '), write(Break),
-	'$lgt_compiler_flag'(multifile_directive, Multifile), write(', multifile_directive: '), write(Multifile), nl,
+	'$lgt_compiler_flag'(break_predicate, Break), write(', break_predicate: '), write(Break), nl,
 	'$lgt_compiler_flag'(threads, Threads), write('  threads: '), write(Threads),
 	'$lgt_compiler_flag'(encoding_directive, Encodings), write(', encoding_directive: '), write(Encodings),
 	'$lgt_compiler_flag'(tabling, Tabling), write(', tabling: '), write(Tabling), nl, nl.
@@ -16469,8 +16443,6 @@ current_logtalk_flag(version, version(2, 39, 0)).
 	write('  Support for break/0 predicate (break_predicate):            '), write(Break), nl,
 	'$lgt_compiler_flag'(encoding_directive, Encodings),
 	write('  Support for encoding/1 directive (encoding_directive):      '), write(Encodings), nl,
-	'$lgt_compiler_flag'(multifile_directive, Multifile),
-	write('  Support for multifile/1 directive (multifile_directive):    '), write(Multifile), nl,
 	'$lgt_compiler_flag'(tabling, Tabling),
 	write('  Support for tabling (tabling):                              '), write(Tabling), nl,
 	'$lgt_compiler_flag'(threads, Threads),

@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.10 and later versions
 %
-%  last updated: January 28, 2010
+%  last updated: February 18, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -165,7 +165,6 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
-'$lgt_prolog_feature'(multifile_directive, supported).
 '$lgt_prolog_feature'(tabling, unsupported).
 '$lgt_prolog_feature'(threads, unsupported).
 

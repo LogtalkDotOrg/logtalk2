@@ -9,15 +9,10 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ================================================================
 
 
-This folder contains two Prolog files, "libpaths_no_multifile.pl" and
-"libpaths.pl". The first file is only used by back-end Prolog compilers
-that don't support the ISO Prolog standard predicate directive multifile/1
-(e.g. GNU Prolog). The documentation that follows applies to both files.
-
-The "libpaths.pl" file, when loaded, defines the library paths for the
-Logtalk standard library and for all the supplied examples. You may
-customize this file by adding the paths to your own "libraries" in order
-to easily load your own source code.
+This folder contains a Prolog file, "libpaths.pl" file, that when loaded
+defines the library paths for the Logtalk standard library and for all
+the supplied examples. You may customize this file by adding the paths
+to your own "libraries" in order to easily load your own source code.
 
 In order to easily compile and load library and example source files using 
 the notation <library>(<entity>), you will need to load the "libpaths.pl" 
@@ -38,30 +33,3 @@ end-user directory created by the "scripts/cplgtdirs.*" scripts. See the
 "INSTALL.txt" and "scripts/NOTES.txt" files for more details. Note that 
 some Prolog compilers do not support the <library>(<entity>) notation. 
 See the "configs/NOTES.txt" file for details.
-
-Prolog compilers that are expected to be compatible with the provided 
-"libpaths.pl" file as is, across operating-systems:
-
-	* B-Prolog
-	* Ciao
-	* CxProlog
-	* ECLiPSe
-	* GNU-Prolog
-	* K-Prolog
-	* Qu-Prolog
-	* SICStus Prolog
-	* SWI-Prolog
-	* YAP
-	* XSB
-
-Prolog compilers that imply editing the provided "libpaths.pl" file due 
-to the lack of support for expanding environment variables on paths (just 
-replace the environment variable LOGTALKUSER by the actual path to your 
-Logtalk user folder):
-
-	* Amzi! Prolog
-	* IF/Prolog
-	* JIProlog
-	* Quintus Prolog
-
-Feedback on other Prolog compilers is most appreciated.
