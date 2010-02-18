@@ -18,12 +18,7 @@ Starting up Logtalk
 
 1. Install Logtalk by using either the installer provided for your 
 operating-system (when available) or by following the instructions 
-on the "INSTALL.txt" file. Depending on your operating-system, working 
-environment, and favorite back-end Prolog compiler, you may already have 
-a script or a shortcut installed for easily running Logtalk with your 
-favorite Prolog compiler. In this case, skip the instructions below 
-for starting up Logtalk and go straight to the instructions on running 
-the examples.
+on the "INSTALL.txt" file.
 
 On POSIX operating-systems, the following shell scripts are installed 
 by default for running Logtalk with selected back-end Prolog compilers 
@@ -34,10 +29,7 @@ scripts!):
 * Ciao:           ciaolgt    (first run must use sudo)
 * CxProlog:       cxlgt
 * ECLiPSe:        eclipselgt
-* GNU Prolog:     gplgt
-* K-Prolog:       plclgt
 * Qu-Prolog:      qplgt
-* Quintus Prolog  quintuslgt (requires patching Logtalk)
 * SICStus Prolog: sicstuslgt
 * SWI-Prolog:     swilgt
 * XSB:            xsblgt     (first run must use sudo)
@@ -45,9 +37,6 @@ scripts!):
 * XSB MT:         xsbmtlgt   (first run must use sudo)
 * XSB MT 64 bits: xsbmt64lgt (first run must use sudo)
 * YAP:            yaplgt
-
-Integration with Quintus Prolog requires manual patches that render 
-Logtalk incompatible with all the other compilers.
 
 If you get an unexpected failure when using one of the Prolog integration
 scripts, consult the "configs/NOTES.txt" file for compatibility notes.
@@ -73,41 +62,6 @@ understanding of the main Logtalk concepts.
 the "Installing Logtalk" and "Writing, Running, and Debugging Logtalk
 Programs" links. This will provide you with a basic understanding of 
 how to start Logtalk as well as how to compile and load Logtalk code.
-
-
-In case a manual installation is necessary, and assuming that Logtalk 
-supports your Prolog compiler, apply the following steps:
-
-1. Read the "NOTES.txt" file in the "configs" sub-directory to check if 
-any patch or workaround is needed for your compiler.
-
-2. Start your Prolog compiler.
-
-3. Change the current working directory of your Prolog session to the 
-Logtalk installation directory. If you don't know which predicate to 
-use, check the "configs/NOTES.txt" file or your Prolog compiler reference 
-manual.
-
-4. Compile and load the config file for your Prolog compiler.
-
-5. Compile and load the Logtalk compiler/runtime found on the "compiler" 
-sub-directory.
-
-6. Adapt, if needed, the file "libpaths/libpaths.pl" to match your Logtalk 
-installation, Prolog compiler, operating-system, and then compile and 
-load it.
-
-Note that both the configuration files, the compiler/runtime files, and the 
-library paths file are Prolog files. The predicate used to load these files 
-depends on your Prolog compiler (consult your Prolog compiler documentation 
-or take a look at the definition of the predicate '$lgt_load_prolog_code'/3 
-in the config file. For most command-line compilers, you could type at the 
-Prolog prompt something like:
-
-	| ?- ['configs/foo.pl', 'compiler/logtalk.pl', 'libpaths/libpaths.pl'].
-
-Replace the file name "foo.pl" with the appropriate config file name for 
-your compiler.
 
 
 Running the examples
