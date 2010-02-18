@@ -51,21 +51,12 @@
 %  To define a "library" path for your projects, edit and uncomment the
 %  following lines (the library path must end with a slash character):
 
-%  For back-end Prolog compilers supporting multifile predicates:
 /*
 :- multifile(logtalk_library_path/2).
 :- dynamic(logtalk_library_path/2).
 
 logtalk_library_path(my_project, '$HOME/my_project/').
 logtalk_library_path(my_project_examples, my_project('examples/')).
-*/
-
-%  For back-end Prolog compilers that don't support multifile predicates:
-/*
-:- initialization((
-	assertz(logtalk_library_path(my_project, '$HOME/my_project/')),
-	assertz(logtalk_library_path(my_project_examples, my_project('examples/')))
-)).
 */
 
 

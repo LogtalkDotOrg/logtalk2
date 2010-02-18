@@ -298,7 +298,7 @@ A predicate can be declared <em>multifile</em> by using the <a title="Consult re
 </p>
 <pre>:- multifile(Functor/Arity).</pre>
 <p>
-This allows clauses for a predicate to be defined in several objects or categories. This is a directive that should be used with great care. Support for this directive have been added to Logtalk primarily to support migration of Prolog module code. Spreading clauses for a predicate among several Logtalk entities can be handy in special cases but can also make your code difficult to understand and may pose a safety risk (e.g. by allowing an entity to peek inside other entity, breaking scope rules). Moreover, multifile predicates are only fully supported by some back-end Prolog compilers, raising portability concerns.
+This allows clauses for a predicate to be defined in several objects or categories. This is a directive that should be used with great care. Support for this directive have been added to Logtalk primarily to support migration of Prolog module code. Spreading clauses for a predicate among several Logtalk entities can be handy in special cases but can also make your code difficult to understand and may pose a safety risk (e.g. by allowing an entity to peek inside other entity, breaking scope rules).
 </p>
 <p>
 Consider the following simple example:

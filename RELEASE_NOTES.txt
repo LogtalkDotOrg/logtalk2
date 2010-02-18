@@ -32,7 +32,12 @@ RELEASE NOTES
     Removed support for the following Prolog compilers: ALS Prolog, Amzi!
     Prolog, BinProlog, GNU Prolog, IF/Prolog, JIProlog, K-Prolog, LPA
     MacProlog, LPA WinProlog, MasterProlog, Open Prolog, Prolog II+, and
-    Quintus Prolog.
+    Quintus Prolog. Only Amzi! Prolog, GNU Prolog, and Quintus Prolog are
+    actively maintained. Amzi! Prolog ignores the official and de facto
+    Prolog standards. GNU Prolog is currently missing crucial support for
+    the standard directive multifile/1. Quintus Prolog is superseded by
+    SICStus Prolog (and required hacks to the Logtalk compiler that rendered
+    it incompatible with all the other Prolog compilers).
 
     Removed support for all Prolog compilers that don't support the ISO Prolog
     standard directive multifile/1. Removed the "multifile_directive" config
