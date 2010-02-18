@@ -29,6 +29,15 @@ RELEASE NOTES
     extra arguments required by a closure. This overly restrictive rule
     prevented the definition of useful and safe meta-predicates.
 
+    Removed support for the following Prolog compilers: ALS Prolog, Amzi!
+    Prolog, BinProlog, GNU Prolog, IF/Prolog, JIProlog, K-Prolog, LPA
+    MacProlog, LPA WinProlog, MasterProlog, Open Prolog, Prolog II+, and
+    Quintus Prolog.
+
+    Removed support for all Prolog compilers that don't support the ISO Prolog
+    standard directive multifile/1. Removed the "multifile_directive" config
+    flag from the config files of supported Prolog compilers.
+
     Moved all config files for no longer supported Prolog compilers to the
     "configs/unsupported" folder. Moved all integration scripts for no longer
     supported Prolog compilers to the "integration/unsupported" folder.
