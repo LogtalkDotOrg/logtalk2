@@ -51,8 +51,9 @@ RELEASE NOTES
     "on" for all supported Prolog compilers.
 
     Updated the Logtalk Windows installer in order to detect the ECLiPSe 6.1
-    version. If both 6.0 and 6.1 versions are installed, the installer creates
-    a shortcut for using version 6.1 as the back-end Prolog compiler.
+    version (both 32 and 64 bits versions). If both 6.0 and 6.1 versions are
+    installed, the installer creates a shortcut for using version 6.1 as the
+    back-end Prolog compiler.
 
     Added index/1 directives for the predicate lookup caching predicates to
     the SWI-Prolog integration files (see "integration/logtalk_comp_swi.pl").
