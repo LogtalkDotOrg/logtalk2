@@ -55,6 +55,9 @@ RELEASE NOTES
     installed, the installer creates a shortcut for using version 6.1 as the
     back-end Prolog compiler.
 
+    Updated the Logtalk Windows installer in order to detect SICStus Prolog
+    4.x installations when running on Windows 64 bits versions.
+
     Added index/1 directives for the predicate lookup caching predicates to
     the SWI-Prolog integration files (see "integration/logtalk_comp_swi.pl").
     These directives may or may not improve performance, depending on your

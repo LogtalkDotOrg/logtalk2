@@ -294,12 +294,11 @@ var
   Warning: String;
 begin
   if IsWin64 then
-    if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\6.1\', 'ECLIPSEDIR', ECLIPSEDIR) then
-      if DirExists(ECLIPSEDIR + '\lib\x86_64_nt\eclipse.exe') then
+    if RegQueryStringValue(HKLM64, 'Software\IC-Parc\Eclipse\6.1\', 'ECLIPSEDIR', ECLIPSEDIR) then
         Result := ECLIPSEDIR + '\lib\x86_64_nt\eclipse.exe'
-      else
+    else if RegQueryStringValue(HKLM32, 'Software\IC-Parc\Eclipse\6.1\', 'ECLIPSEDIR', ECLIPSEDIR) then
         Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
-    else if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\6.0\', 'ECLIPSEDIR', ECLIPSEDIR) then
+    else if RegQueryStringValue(HKLM32, 'Software\IC-Parc\Eclipse\6.0\', 'ECLIPSEDIR', ECLIPSEDIR) then
       Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
     else begin
       Warning := 'Failed to detect ECLiPSe Prolog 6 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
@@ -322,7 +321,7 @@ var
   SP_PATH: String;
   Warning: String;
 begin
-  if RegQueryStringValue(HKLM, 'Software\SICS\SICStus3.12_win32\', 'SP_PATH', SP_PATH) then
+  if RegQueryStringValue(HKLM32, 'Software\SICS\SICStus3.12_win32\', 'SP_PATH', SP_PATH) then
     Result := SP_PATH + '\bin\spwin.exe'
   else begin
     Warning := 'Failed to detect SICStus Prolog 3 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
@@ -336,9 +335,9 @@ var
   SP_PATH: String;
   Warning: String;
 begin
-  if RegQueryStringValue(HKLM, 'Software\SICS\SICStus4.1_x86-win32-nt-4\', 'SP_PATH', SP_PATH) then
+  if RegQueryStringValue(HKLM32, 'Software\SICS\SICStus4.1_x86-win32-nt-4\', 'SP_PATH', SP_PATH) then
     Result := SP_PATH + '\bin\spwin.exe'
-  else if RegQueryStringValue(HKLM, 'Software\SICS\SICStus4.0_win32\', 'SP_PATH', SP_PATH) then
+  else if RegQueryStringValue(HKLM32, 'Software\SICS\SICStus4.0_win32\', 'SP_PATH', SP_PATH) then
     Result := SP_PATH + '\bin\spwin.exe'
   else begin
     Warning := 'Failed to detect SICStus Prolog 4 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
