@@ -293,7 +293,9 @@ var
   ECLIPSEDIR: String;
   Warning: String;
 begin
-  if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\6.0\', 'ECLIPSEDIR', ECLIPSEDIR) then
+  if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\6.1\', 'ECLIPSEDIR', ECLIPSEDIR) then
+    Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
+  else if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\6.0\', 'ECLIPSEDIR', ECLIPSEDIR) then
     Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
   else begin
     Warning := 'Failed to detect ECLiPSe Prolog 6 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
