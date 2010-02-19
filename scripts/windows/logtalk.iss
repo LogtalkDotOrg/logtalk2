@@ -293,13 +293,23 @@ var
   ECLIPSEDIR: String;
   Warning: String;
 begin
-  if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\6.1\', 'ECLIPSEDIR', ECLIPSEDIR) then
-    if DirExists(ECLIPSEDIR + '\lib\x86_64_nt\eclipse.exe') then
-      Result := ECLIPSEDIR + '\lib\x86_64_nt\eclipse.exe'
-    else
+  if IsWin64 then
+    if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\6.1\', 'ECLIPSEDIR', ECLIPSEDIR) then
+      if DirExists(ECLIPSEDIR + '\lib\x86_64_nt\eclipse.exe') then
+        Result := ECLIPSEDIR + '\lib\x86_64_nt\eclipse.exe'
+      else
+        Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
+    else if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\6.0\', 'ECLIPSEDIR', ECLIPSEDIR) then
       Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
-  else if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\6.0\', 'ECLIPSEDIR', ECLIPSEDIR) then
-      Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
+    else begin
+      Warning := 'Failed to detect ECLiPSe Prolog 6 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+      MsgBox(Warning, mbError, MB_OK);
+      Result := 'lgt_exe_does_not_exist'
+    end
+  else if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\6.1\', 'ECLIPSEDIR', ECLIPSEDIR) then
+         Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
+       else if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\6.0\', 'ECLIPSEDIR', ECLIPSEDIR) then
+         Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
   else begin
     Warning := 'Failed to detect ECLiPSe Prolog 6 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
 	MsgBox(Warning, mbError, MB_OK);
