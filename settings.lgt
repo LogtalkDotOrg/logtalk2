@@ -29,7 +29,7 @@
 %  If you use more than one back-end Prolog compiler and want to use
 %  different settings per compiler you will need to use the Logtalk 
 %  conditional compilation directives and the "prolog_dialect" compiler
-%  flag. See the User and Reference Manuals for details. 
+%  flag. See the User and Reference Manuals for details.
 %
 %  Logtalk compiles and loads settings files silently, ignoring any errors.
 %  Be sure to debug and test your settings files as normal Logtalk source
@@ -99,12 +99,22 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 
 
 %  To reduce clutter in the directory containing your source files uncomment
-%  the following lines (note that some Prolog compilers don't support this
-%  feature):
+%  the following lines:
 
 /*
 :- initialization((
-	set_logtalk_flag(altdirs, on)
+	set_logtalk_flag(altdirs, on),
+	set_logtalk_flag(clean, on)
+)).
+*/
+
+
+%  To avoid recompilation of stable source files uncomment the following lines:
+
+/*
+:- initialization((
+	set_logtalk_flag(smart_compilation, on),
+	set_logtalk_flag(clean, off)
 )).
 */
 
