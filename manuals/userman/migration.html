@@ -45,7 +45,7 @@ Encapsulating Prolog code using Logtalk objects is easy. First, for each source 
 <h3 id="migration_multifile">Prolog multifile predicates</h3>
 
 <p>
-Prolog <em>multifile</em> predicates are used when clauses for the same predicate are spread among several source files. When encapsulating plain Prolog code that uses multifile predicates, is often the case that the clauses of the multifile predicates get spread between different objects and categories. With the caveat that multifile support is only provided in some back-end Prolog compilers, conversion is straight-forward. In the main Logtalk object (or category) where the predicate is declared, add a <code>multifile/1</code> directive. In all other objects (or categories) defining clauses for the multifile predicate, add a <code>multifile/1</code> directive and predicate clauses using the format:
+Prolog <em>multifile</em> predicates are used when clauses for the same predicate are spread among several source files. When encapsulating plain Prolog code that uses multifile predicates, is often the case that the clauses of the multifile predicates get spread between different objects and categories but conversion is straight-forward. In the main Logtalk object (or category) where the predicate is declared, add a <code>multifile/1</code> directive. In all other objects (or categories) defining clauses for the multifile predicate, add a <code>multifile/1</code> directive and predicate clauses using the format:
 </p>
 <pre>
 :- multifile(Entity::Functor/Arity).
@@ -245,7 +245,7 @@ The Logtalk compiler will print a warning if the <code>multifile/1</code> direct
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: June 21, 2009</span>
+		<span>Last updated on: February 17, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="programming.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>

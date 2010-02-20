@@ -15,6 +15,20 @@ RELEASE NOTES
 
 2.39.0 - February ??, 2010
 
+    Removed support for the following Prolog compilers: ALS Prolog, Amzi!
+    Prolog, BinProlog, GNU Prolog, IF/Prolog, JIProlog, K-Prolog, LPA
+    MacProlog, LPA WinProlog, MasterProlog, Open Prolog, Prolog II+, and
+    Quintus Prolog. Only Amzi! Prolog, GNU Prolog, and Quintus Prolog seem
+    to be actively maintained. Amzi! Prolog ignores the official and de
+    facto Prolog standards. GNU Prolog is currently missing crucial support
+    for the standard directive multifile/1. Quintus Prolog is superseded by
+    SICStus Prolog (and required hacks to the Logtalk compiler that rendered
+    it incompatible with all the other Prolog compilers).
+
+    Removed support for all Prolog compilers that don't support the ISO Prolog
+    standard directive multifile/1. Removed the "multifile_directive" config
+    flag from the config files of supported Prolog compilers.
+
     Reintroduced parametric categories. Changed semantics of the parameter/2
     built-in execution-context method when used in category predicates to
     access the category parameters instead of the parameters of the object
@@ -29,34 +43,12 @@ RELEASE NOTES
     extra arguments required by a closure. This overly restrictive rule
     prevented the definition of some useful and safe meta-predicates.
 
-    Removed support for the following Prolog compilers: ALS Prolog, Amzi!
-    Prolog, BinProlog, GNU Prolog, IF/Prolog, JIProlog, K-Prolog, LPA
-    MacProlog, LPA WinProlog, MasterProlog, Open Prolog, Prolog II+, and
-    Quintus Prolog. Only Amzi! Prolog, GNU Prolog, and Quintus Prolog seem
-    to be actively maintained. Amzi! Prolog ignores the official and de facto
-    Prolog standards. GNU Prolog is currently missing crucial support for
-    the standard directive multifile/1. Quintus Prolog is superseded by
-    SICStus Prolog (and required hacks to the Logtalk compiler that rendered
-    it incompatible with all the other Prolog compilers).
-
-    Removed support for all Prolog compilers that don't support the ISO Prolog
-    standard directive multifile/1. Removed the "multifile_directive" config
-    flag from the config files of supported Prolog compilers.
-
     Moved all config files for no longer supported Prolog compilers to the
     "configs/unsupported" folder. Moved all integration scripts for no longer
     supported Prolog compilers to the "integration/unsupported" folder.
 
     Changed the default value of the compiler flags "altdirs" and "clean" to
     "on" for all supported Prolog compilers.
-
-    Updated the Logtalk Windows installer in order to detect the ECLiPSe 6.1
-    version (both 32 and 64 bits versions). If both 6.0 and 6.1 versions are
-    installed, the installer creates a shortcut for using version 6.1 as the
-    back-end Prolog compiler.
-
-    Updated the Logtalk Windows installer in order to detect SICStus Prolog
-    4.x installations when running on Windows 64 bits versions.
 
     Added index/1 directives for the predicate lookup caching predicates to
     the SWI-Prolog integration files (see "integration/logtalk_comp_swi.pl").
@@ -73,6 +65,14 @@ RELEASE NOTES
     Simplified usage of the "mtbatch" multi-threading benchmarks example
     by using conditional compilation directives for the Prolog-specific
     predicates instead of a parametric object.
+
+    Updated the Logtalk Windows installer in order to detect the ECLiPSe 6.1
+    version (both 32 and 64 bits versions). If both 6.0 and 6.1 versions are
+    installed, the installer creates a shortcut for using version 6.1 as the
+    back-end Prolog compiler.
+
+    Updated the Logtalk Windows installer in order to detect SICStus Prolog
+    4.x installations when running on Windows 64 bits versions.
 
     Update the Windows installer script in order to check for the new
     name of the SWI-Prolog executable (swipl-win.exe) when creating the
