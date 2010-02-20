@@ -351,7 +351,7 @@ var
   Home: String;
   Warning: String;
 begin
-  if RegQueryStringValue(HKLM, 'Software\SWI\Prolog64\', 'home', Home) or RegQueryStringValue(HKLM, 'Software\SWI\Prolog64\', 'home', Home) then
+  if RegQueryStringValue(HKLM, 'Software\SWI\Prolog64\', 'home', Home) or RegQueryStringValue(HKLM, 'Software\SWI\Prolog\', 'home', Home) then
     if FileExists(Home + '\bin\plwin.exe') then
       Result := Home + '\bin\plwin.exe'
     else if FileExists(Home + '\bin\swipl-win.exe') then
