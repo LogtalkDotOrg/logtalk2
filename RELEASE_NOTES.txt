@@ -27,7 +27,7 @@ RELEASE NOTES
     Removed the meta-predicate compilation safety rule that required the
     number of normal arguments to be equal or greater than the number of
     extra arguments required by a closure. This overly restrictive rule
-    prevented the definition of useful and safe meta-predicates.
+    prevented the definition of some useful and safe meta-predicates.
 
     Removed support for the following Prolog compilers: ALS Prolog, Amzi!
     Prolog, BinProlog, GNU Prolog, IF/Prolog, JIProlog, K-Prolog, LPA
@@ -76,7 +76,7 @@ RELEASE NOTES
 
     Update the Windows installer script in order to check for the new
     name of the SWI-Prolog executable (swipl-win.exe) when creating the
-    integrations shortcuts.
+    integrations shortcuts and to detect SWI-Prolog 64 bits versions.
 
 
 2.38.2 - January 31, 2010
