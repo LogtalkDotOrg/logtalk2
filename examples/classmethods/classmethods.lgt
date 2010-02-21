@@ -2,7 +2,8 @@
 % avoid infinite metaclass regression by making "metacircle" its own metaclass;
 % another option would be to define "metacircle" as a subclass or instance of
 % the built-in object "logtalk", which can be used as root of both class and
-% prototype hierarchies
+% prototype hierarchies; this second option have the advantage of preventing
+% misuse of the new/4 method to create new intances of "metacircle"
 
 
 :- object(metacircle,

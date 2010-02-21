@@ -291,7 +291,7 @@ Note that the scope of the <code>set_logtalk_flag/2</code> directive is local to
 
 	<dl>
 		<dt><code>altdirs</code></dt>
-			<dd>Allows the use of alternative directories for storing the Prolog files and the XML documenting files resulting from entity compilation. This flag can only be set for Prolog compilers providing the necessary operating-system access predicates for implementing this feature (specifically, a built-in predicate for creating new directories). Possible option values are <code>on</code> and <code>off</code> (the usual default). The names of the alternative directories are specified using the compiler flags <code>tmpdir</code> and <code>xmldir</code>. The default values for these flags are defined in the configuration files. Make sure the directory names are valid for your operating system before setting this flag on.</dd>
+			<dd>Allows the use of alternative directories for storing the Prolog files and the XML documenting files resulting from entity compilation. This flag can only be set for Prolog compilers providing the necessary operating-system access predicates for implementing this feature (specifically, a built-in predicate for creating new directories). Possible option values are <code>off</code> and <code>on</code> (the usual default). The names of the alternative directories are specified using the compiler flags <code>tmpdir</code> and <code>xmldir</code>. The default values for these flags are defined in the configuration files. Make sure the directory names are valid for your operating system before setting this flag on.</dd>
 	</dl>
 	<dl>
 		<dt><code>tmpdir(Directory)</code></dt>
@@ -337,7 +337,7 @@ Note that the scope of the <code>set_logtalk_flag/2</code> directive is local to
 	</dl>
 	<dl>
 		<dt><code>startup_message</code></dt>
-			<dd>Controls the messages printed by Logtalk at startup. Possible flag values are <code>flags(verbose)</code> (the usual default; prints the Logtalk banner and a list of all default compiler flags), <code>flags(compact)</code> (a more compact listing of the default compiler flags), <code>banner</code> (prints only the Logtalk banner), and <code>none</code> (suppress all startup messages; useful for batch processing).</dd>
+			<dd>Controls the messages printed by Logtalk at startup. Possible flag values are <code>flags(verbose)</code> (prints the Logtalk banner and a verbose listing of the default compiler flags), <code>flags(compact)</code> (the usual default; prints the Logtalk banner and a compact listing of the default compiler flags), <code>banner</code> (prints only the Logtalk banner), and <code>none</code> (suppress all startup messages; useful for batch processing).</dd>
 	</dl>
 	<dl>
 		<dt><code>reload(Option)</code></dt>
@@ -353,7 +353,7 @@ Note that the scope of the <code>set_logtalk_flag/2</code> directive is local to
 	</dl>
 	<dl>
 		<dt><code>clean(Option)</code></dt>
-			<dd>Controls cleaning of the intermediate Prolog files generated when compiling Logtalk source files. Possible option values are <code>on</code> and <code>off</code> (the usual default).</dd>
+			<dd>Controls cleaning of the intermediate Prolog files generated when compiling Logtalk source files. Possible option values are <code>off</code> and <code>on</code> (the usual default).</dd>
 	</dl>
 
 <h3 id="programming_smart">Reloading and smart compilation of source files</h3>

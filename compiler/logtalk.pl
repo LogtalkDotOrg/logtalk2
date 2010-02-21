@@ -16365,6 +16365,7 @@ current_logtalk_flag(version, version(2, 39, 0)).
 	),
 	write(', hook: '), write(Hook), nl,
 	'$lgt_compiler_flag'(debug, Debug), write('  debug: '), writeq(Debug),
+	'$lgt_compiler_flag'(clean, Clean), write(', clean: '), writeq(Clean),
 	'$lgt_compiler_flag'(smart_compilation, Smart), write(', smart_compilation: '), write(Smart),
 	'$lgt_compiler_flag'(reload, Reload), write(', reload: '), write(Reload), nl,
 	write('Read-only compilation flags (back-end Prolog compiler features):'), nl,
@@ -16426,6 +16427,8 @@ current_logtalk_flag(version, version(2, 39, 0)).
 	write('  Compile entities in debug mode (debug):                     '), writeq(Debug), nl,
 	'$lgt_compiler_flag'(reload, Reload),
 	write('  Reloading of already loaded source files (reload):          '), write(Reload), nl,
+	'$lgt_compiler_flag'(clean, Clean),
+	write('  Cleaning of intermediate Prolog files (clean):              '), write(Clean), nl,
 	'$lgt_compiler_flag'(smart_compilation, Smart),
 	write('  Smart compilation (smart_compilation):                      '), write(Smart), nl,
 	(	'$lgt_compiler_flag'(hook, Hook) -> true
