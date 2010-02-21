@@ -10,11 +10,11 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 
 This file contains detailed instructions for customizing your Logtalk 
-installation and working environment. Customization is mostly done on a 
-per-user basis by editing configuration files on the Logtalk user folder 
+installation and working environment. Customization is mostly done on
+a per-user basis by editing a settings file on the Logtalk user folder 
 (whose path is stored on the LOGTALKUSER environment variable; this folder 
 can be (re)created by running the "cplgtdirs" shell command). The default 
-paths for the Logtalk user folder are:
+path for the Logtalk user folder is:
 
 	POSIX systems: $HOME/logtalk
 	Windows: My Documents\Logtalk
@@ -34,7 +34,7 @@ edited to match both your Logtalk installation and your Prolog compiler and
 operating-system requirements. For details, see the "libpaths/NOTES.txt" file.
 
 Library paths for your own source files directories are preferably defined in
-settings files, described next.
+your settings file, described next.
 
 
 2. CUSTOMIZING LOGTALK SETTINGS
