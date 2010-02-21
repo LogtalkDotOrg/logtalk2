@@ -1,13 +1,13 @@
 
-my_append([], X, X).
-my_append([X| Xs], Y, [X| Z]) :-
-	my_append(Xs, Y, Z).
+my_append([], List, List).
+my_append([Head| Tail], List, [Head| Tail2]) :-
+	my_append(Tail, List, Tail2).
 
 
 my_nrev([], []).
-my_nrev([X| Xs], Zs) :-
-	my_nrev(Xs, Ys),
-	my_append(Ys, [X], Zs).
+my_nrev([Head| Tail], Reversed) :-
+	my_nrev(Tail, ReversedTail),
+	my_append(ReversedTail, [Head], Reversed).
 
 
 my_length(List, Length) :-

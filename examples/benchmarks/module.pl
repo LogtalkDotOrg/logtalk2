@@ -4,15 +4,14 @@
 
 :- module(module, [mod_nrev/2, mod_length/2]).
 
-
-mod_append([], X, X).
-mod_append([X| Xs], Y, [X| Z]) :-
-	mod_append(Xs, Y, Z).
+mod_append([], List, List).
+mod_append([Head| Tail], List, [Head| Tail2]) :-
+	mod_append(Tail, List, Tail2).
 
 mod_nrev([], []).
-mod_nrev([X| Xs], Zs) :-
-	mod_nrev(Xs, Ys),
-	mod_append(Ys, [X], Zs).
+mod_nrev([Head| Tail], Reversed) :-
+	mod_nrev(Tail, ReversedTail),
+	mod_append(ReversedTail, [Head], Reversed).
 
 mod_length(List, Length) :-
 	(	integer(Length) ->

@@ -10,16 +10,16 @@
 
 	:- public(append/3).
 
-	append([], X, X).
-	append([X| Xs], Y,[X| Z]) :-
-		append(Xs, Y, Z).
+	append([], List, List).
+	append([Head| Tail], List, [Head| Tail2]) :-
+		append(Tail, List, Tail2).
 
 	:- public(nrev/2).
 
 	nrev([], []).
-	nrev([X| Xs], Zs) :-
-		nrev(Xs, Ys),
-		append(Ys, [X], Zs).
+	nrev([Head| Tail], Reversed) :-
+		nrev(Tail, ReversedTail),
+		append(ReversedTail, [Head], Reversed).
 
 	:- public(length/2).
 

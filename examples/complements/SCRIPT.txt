@@ -45,7 +45,7 @@ yes
 | ?- employee::predicates(Predicates).
 Received message predicates(_G180) from user
 
-Predicates = [after/3, age/1, before/3, name/1, predicates/1, salary/1]
+Predicates = [after/3, age/1, before/3, income/1, name/1, predicates/1, salary/1]
 yes
 
 | ?- employee::predicate_property(predicates(_), Property).
@@ -55,6 +55,14 @@ Property = static ;
 Property = declared_in(logging) ;
 Property = defined_in(logging)
 yes
+
+| ?- employee::predicate_property(income(_), Property).
+
+Property = public ;
+Property = static ;
+Property = declared_in(employee) ;
+Property = alias_of(salary(_70)) ;
+Property = defined_in(employee)
 
 
 % turn event support off:
