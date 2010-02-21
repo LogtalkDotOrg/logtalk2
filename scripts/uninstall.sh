@@ -51,15 +51,12 @@ rm -f ciaolgt
 rm -f cplgtdirs
 rm -f cxlgt
 rm -f eclipselgt
-rm -f gplgt
 rm -f lgt2html
 rm -f lgt2pdf
 rm -f lgt2xml
 rm -f lgt2txt
 rm -f logtalk_select
-rm -f plclgt
 rm -f qplgt
-rm -f quintuslgt
 rm -f sicstuslgt
 rm -f swilgt
 rm -f xsblgt

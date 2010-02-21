@@ -60,10 +60,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/ciaolgt
 /usr/local/bin/cxlgt
 /usr/local/bin/eclipselgt
-/usr/local/bin/gplgt
-/usr/local/bin/plclgt
 /usr/local/bin/qplgt
-/usr/local/bin/quintuslgt
 /usr/local/bin/sicstuslgt
 /usr/local/bin/swilgt
 /usr/local/bin/xsblgt
