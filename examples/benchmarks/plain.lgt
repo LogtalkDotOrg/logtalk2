@@ -1,4 +1,15 @@
 
+my_append([], X, X).
+my_append([X| Xs], Y, [X| Z]) :-
+	my_append(Xs, Y, Z).
+
+
+my_nrev([], []).
+my_nrev([X| Xs], Zs) :-
+	my_nrev(Xs, Ys),
+	my_append(Ys, [X], Zs).
+
+
 my_length(List, Length) :-
 	my_length(List, 0, Length).
 

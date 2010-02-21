@@ -3,10 +3,23 @@
 	imports(category)).
 
 	:- info([
-		version is 3.0,
+		version is 4.0,
 		author is 'Paulo Moura',
-		date is 2007/06/11,
+		date is 2010/02/21,
 		comment is 'Example object for benchmarking library predicate calls and imported category predicate calls.']).
+
+	:- public(append/3).
+
+	append([], X, X).
+	append([X| Xs], Y,[X| Z]) :-
+		append(Xs, Y, Z).
+
+	:- public(nrev/2).
+
+	nrev([], []).
+	nrev([X| Xs], Zs) :-
+		nrev(Xs, Ys),
+		append(Ys, [X], Zs).
 
 	:- public(length/2).
 

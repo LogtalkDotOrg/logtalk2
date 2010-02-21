@@ -41,6 +41,12 @@ Id = s1 ? ;
 Goal = object::length([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],_)
 Id = s2 ? ;
 
+Goal = my_nrev([0, 1, 2, 3, 4, 5, 6, 7|...], _G33)
+Id = s3 ? ;
+
+Goal = object::nrev([0, 1, 2, 3, 4, 5, 6|...], _G36)
+Id = s4 ? ;
+
 Goal = leaf::obj_local
 Id = c1 ? ;
 
@@ -74,8 +80,10 @@ yes
 ...
 
 
-% or run specific benchmark tests individually, for example:
+% or run specific pairs of benchmark tests, for example:
 
+| ?- benchmarks::run(s1, 1000000), benchmarks::run(s2, 1000000).
+...
 
-| ?- benchmarks::run(s1, 1000000).
+| ?- benchmarks::run(s3, 1000000), benchmarks::run(s4, 1000000).
 ...

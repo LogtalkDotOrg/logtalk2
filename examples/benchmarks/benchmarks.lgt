@@ -2,9 +2,9 @@
 :- object(benchmarks).
 
 	:- info([
-		version is 3.1,
+		version is 4.0,
 		author is 'Paulo Moura',
-		date is 2008/01/11,
+		date is 2010/02/21,
 		comment is 'Benchmark utility predicates and standard set of benchmarks.']).
 
 	:- public(run/0).
@@ -72,9 +72,13 @@
 
 	% some benchmark tests for static code:
 	benchmark(s1, my_length(List, _)) :-
-		{generate_list(20, List)}.
+		{generate_list(30, List)}.
 	benchmark(s2, object::length(List, _)) :-
-		{generate_list(20, List)}.
+		{generate_list(30, List)}.
+	benchmark(s3, my_nrev(List, _)) :-
+		{generate_list(30, List)}.
+	benchmark(s4, object::nrev(List, _)) :-
+		{generate_list(30, List)}.
 
 	% some benchmark tests for category predicate calls:
 	benchmark(c1, leaf::obj_local).
@@ -97,18 +101,32 @@
 	do_benchmark(empty_loop, _).
 
 	do_benchmark(s1, N) :-
-		{generate_list(20, List)},
+		{generate_list(30, List)},
 		{my_repeat(N)},
 			{my_length(List, _)},
 		fail.
 	do_benchmark(s1, _).
 
 	do_benchmark(s2, N) :-
-		{generate_list(20, List)},
+		{generate_list(30, List)},
 		{my_repeat(N)},
 			object::length(List, _),
 		fail.
 	do_benchmark(s2, _).
+
+	do_benchmark(s3, N) :-
+		{generate_list(30, List)},
+		{my_repeat(N)},
+			{my_nrev(List, _)},
+		fail.
+	do_benchmark(s3, _).
+
+	do_benchmark(s4, N) :-
+		{generate_list(30, List)},
+		{my_repeat(N)},
+			object::nrev(List, _),
+		fail.
+	do_benchmark(s4, _).
 
 	do_benchmark(c1, N) :-
 		{my_repeat(N)},

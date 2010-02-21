@@ -62,6 +62,9 @@ RELEASE NOTES
     Updated the "parametric" example to also illustrate the use of parametric
     categories.
 
+    Added the classical naive list reverse benchmark test to the "benchmarks"
+    example.
+
     Simplified usage of the "mtbatch" multi-threading benchmarks example
     by using conditional compilation directives for the Prolog-specific
     predicates instead of a parametric object.
