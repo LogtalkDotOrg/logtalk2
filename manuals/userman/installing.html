@@ -198,7 +198,11 @@ The configuration files specifies <em>default</em> values for all the Logtalk co
 </dl>
 <dl>
 	<dt><code>threads</code></dt>
-		<dd>Informs Logtalk if the Prolog compiler provides suitable multi-threading programming support. Possible flag values are <code>unsupported</code> and <code>supported</code>.</dd>
+		<dd>Informs Logtalk if the back-end Prolog compiler provides suitable multi-threading programming support. Possible flag values are <code>unsupported</code> and <code>supported</code>.</dd>
+</dl>
+<dl>
+	<dt><code>modules</code></dt>
+		<dd>Informs Logtalk if the back-end Prolog compiler provides suitable module support. Possible flag values are <code>unsupported</code> and <code>supported</code> (Logtalk provides limited support for compiling Prolog modules as objects).</dd>
 </dl>
 
 <h3 id="installing_settings">Settings files</h3>
@@ -262,7 +266,7 @@ Logtalk source files are text files containing entity definitions (objects, cate
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &ndash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: November 19, 2009</span>
+		<span>Last updated on: February 17, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="documenting.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="programming.html">next</a></span><br/>

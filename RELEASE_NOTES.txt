@@ -48,7 +48,8 @@ RELEASE NOTES
     supported Prolog compilers to the "integration/unsupported" folder.
 
     Changed the default value of the compiler flags "altdirs" and "clean" to
-    "on" for all supported Prolog compilers.
+    "on" for all supported Prolog compilers. Added a read-only compiler flag
+    "modules".
 
     Added index/1 directives for the predicate lookup caching predicates to
     the SWI-Prolog integration files (see "integration/logtalk_comp_swi.pl").

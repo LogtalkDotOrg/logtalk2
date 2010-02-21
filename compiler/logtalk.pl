@@ -14067,6 +14067,7 @@ current_logtalk_flag(version, version(2, 39, 0)).
 '$lgt_valid_flag'(break_predicate).
 '$lgt_valid_flag'(encoding_directive).
 '$lgt_valid_flag'(threads).
+'$lgt_valid_flag'(modules).
 
 
 
@@ -14082,6 +14083,7 @@ current_logtalk_flag(version, version(2, 39, 0)).
 '$lgt_read_only_flag'(break_predicate).
 '$lgt_read_only_flag'(encoding_directive).
 '$lgt_read_only_flag'(threads).
+'$lgt_read_only_flag'(modules).
 
 
 
@@ -16370,7 +16372,8 @@ current_logtalk_flag(version, version(2, 39, 0)).
 	'$lgt_compiler_flag'(reload, Reload), write(', reload: '), write(Reload), nl,
 	write('Read-only compilation flags (back-end Prolog compiler features):'), nl,
 	'$lgt_compiler_flag'(prolog_dialect, Prolog), write('  prolog_dialect: '), write(Prolog),
-	'$lgt_compiler_flag'(break_predicate, Break), write(', break_predicate: '), write(Break), nl,
+	'$lgt_compiler_flag'(break_predicate, Break), write(', break_predicate: '), write(Break),
+	'$lgt_compiler_flag'(modules, Modules), write(', modules: '), write(Modules), nl,
 	'$lgt_compiler_flag'(threads, Threads), write('  threads: '), write(Threads),
 	'$lgt_compiler_flag'(encoding_directive, Encodings), write(', encoding_directive: '), write(Encodings),
 	'$lgt_compiler_flag'(tabling, Tabling), write(', tabling: '), write(Tabling), nl, nl.
@@ -16440,6 +16443,8 @@ current_logtalk_flag(version, version(2, 39, 0)).
 	write('  Name of the back-end Prolog compiler (prolog_dialect):      '), write(Prolog), nl,
 	'$lgt_compiler_flag'(break_predicate, Break),
 	write('  Support for break/0 predicate (break_predicate):            '), write(Break), nl,
+	'$lgt_compiler_flag'(modules, Modules),
+	write('  Support for modules (modules):                              '), write(Modules), nl,
 	'$lgt_compiler_flag'(encoding_directive, Encodings),
 	write('  Support for encoding/1 directive (encoding_directive):      '), write(Encodings), nl,
 	'$lgt_compiler_flag'(tabling, Tabling),

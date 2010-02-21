@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.2 or later versions
 %
-%  last updated: February 18, 2010
+%  last updated: February 21, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -159,6 +159,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 		Threads = supported
 	;	Threads = unsupported
 	).
+'$lgt_prolog_feature'(modules, supported).
 
 
 

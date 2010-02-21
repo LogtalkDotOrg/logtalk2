@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 5.1.3 and later versions
 %
-%  last updated: February 18, 2010
+%  last updated: February 21, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -244,6 +244,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 		Threads = supported
 	;	Threads = unsupported
 	).
+'$lgt_prolog_feature'(modules, supported).
 
 
 
