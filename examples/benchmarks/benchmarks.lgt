@@ -102,8 +102,8 @@
 	benchmark(d5, database::obj_dyndb(_)).
 
 	% repeat a goal N times without using call/1 and using a failure-driven loop to 
-	% avoid the interference of Prolog compiler memory management mechanism (such as 
-	% garbage collection) on the results 
+	% try to avoid the interference of Prolog compiler memory management mechanism
+	% (such as garbage collection) on the results 
 	do_benchmark(empty_loop, N) :-
 		{my_repeat(N)},
 		fail.
