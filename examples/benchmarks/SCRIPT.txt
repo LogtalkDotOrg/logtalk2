@@ -80,10 +80,10 @@ yes
 ...
 
 
-% or run specific pairs of benchmark tests, for example:
+% or run specific sets of benchmark tests, for example:
 
-| ?- benchmarks::run(s1, 1000000), benchmarks::run(s2, 1000000).
+| ?- benchmarks::run(s11, 1000000), benchmarks::run(s12, 1000000), benchmarks::run(s13, 1000000).
 ...
 
-| ?- benchmarks::run(s3, 1000000), benchmarks::run(s4, 1000000).
+| ?- benchmarks::run(s21, 1000000), benchmarks::run(s22, 1000000), benchmarks::run(s23, 1000000).
 ...

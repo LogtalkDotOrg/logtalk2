@@ -71,13 +71,22 @@
 		nl.
 
 	% some benchmark tests for static code:
-	benchmark(s1, my_length(List, _)) :-
+	benchmark(s11, my_length(List, _)) :-
 		{generate_list(30, List)}.
-	benchmark(s2, object::length(List, _)) :-
+	:- if(current_logtalk_flag(modules, supported)).
+	benchmark(s12, ':'(module, mod_length(List, _))) :-
 		{generate_list(30, List)}.
-	benchmark(s3, my_nrev(List, _)) :-
+	:- endif.
+	benchmark(s13, object::length(List, _)) :-
 		{generate_list(30, List)}.
-	benchmark(s4, object::nrev(List, _)) :-
+
+	benchmark(s21, my_nrev(List, _)) :-
+		{generate_list(30, List)}.
+	:- if(current_logtalk_flag(modules, supported)).
+	benchmark(s22, ':'(module, mod_nrev(List, _))) :-
+		{generate_list(30, List)}.
+	:- endif.
+	benchmark(s23, object::nrev(List, _)) :-
 		{generate_list(30, List)}.
 
 	% some benchmark tests for category predicate calls:
@@ -100,33 +109,51 @@
 		fail.
 	do_benchmark(empty_loop, _).
 
-	do_benchmark(s1, N) :-
+	do_benchmark(s11, N) :-
 		{generate_list(30, List)},
 		{my_repeat(N)},
 			{my_length(List, _)},
 		fail.
-	do_benchmark(s1, _).
+	do_benchmark(s11, _).
 
-	do_benchmark(s2, N) :-
+	:- if(current_logtalk_flag(modules, supported)).
+	do_benchmark(s12, N) :-
+		{generate_list(30, List)},
+		{my_repeat(N)},
+			':'(module, mod_length(List, _)),
+		fail.
+	do_benchmark(s12, _).
+	:- endif.
+
+	do_benchmark(s13, N) :-
 		{generate_list(30, List)},
 		{my_repeat(N)},
 			object::length(List, _),
 		fail.
-	do_benchmark(s2, _).
+	do_benchmark(s13, _).
 
-	do_benchmark(s3, N) :-
+	do_benchmark(s21, N) :-
 		{generate_list(30, List)},
 		{my_repeat(N)},
 			{my_nrev(List, _)},
 		fail.
-	do_benchmark(s3, _).
+	do_benchmark(s21, _).
 
-	do_benchmark(s4, N) :-
+	:- if(current_logtalk_flag(modules, supported)).
+	do_benchmark(s22, N) :-
+		{generate_list(30, List)},
+		{my_repeat(N)},
+			':'(module, mod_nrev(List, _)),
+		fail.
+	do_benchmark(s22, _).
+	:- endif.
+
+	do_benchmark(s23, N) :-
 		{generate_list(30, List)},
 		{my_repeat(N)},
 			object::nrev(List, _),
 		fail.
-	do_benchmark(s4, _).
+	do_benchmark(s23, _).
 
 	do_benchmark(c1, N) :-
 		{my_repeat(N)},

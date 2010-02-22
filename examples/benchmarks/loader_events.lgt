@@ -1,6 +1,6 @@
 
-:- initialization(
-	logtalk_load(
-		[category, objects, database, plain, benchmarks],
-		[events(allow)])).	% compile messages with event support in order
-							% to measure the implicit overhead
+:- initialization((
+	% compile messages with event support in order to measure the implicit overhead
+	logtalk_load([category, objects, database, plain, benchmarks], [events(allow)]),
+	(current_logtalk_flag(modules, supported) -> ensure_loaded(module); true)
+)).
