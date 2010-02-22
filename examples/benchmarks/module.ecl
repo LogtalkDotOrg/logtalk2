@@ -1,7 +1,9 @@
 
-% benchmark test module for Ciao, SICStus Prolog, SWI-Prolog, XSB, and YAP
+% benchmark test module for ECLiPSe
 
-:- module(module, [mod_nrev/2, mod_length/2]).
+:- module(module).
+
+:- export(mod_nrev/2).
 
 mod_append([], List, List).
 mod_append([Head| Tail], List, [Head| Tail2]) :-
@@ -11,6 +13,8 @@ mod_nrev([], []).
 mod_nrev([Head| Tail], Reversed) :-
 	mod_nrev(Tail, ReversedTail),
 	mod_append(ReversedTail, [Head], Reversed).
+
+:- export(mod_length/2).
 
 mod_length(List, Length) :-
 	(	integer(Length) ->

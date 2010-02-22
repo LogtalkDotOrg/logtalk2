@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.39.0 - February ??, 2010
+2.39.0 - February 28, 2010
 
     Removed support for the following Prolog compilers: ALS Prolog, Amzi!
     Prolog, BinProlog, GNU Prolog, IF/Prolog, JIProlog, K-Prolog, LPA
@@ -64,7 +64,7 @@ RELEASE NOTES
     categories.
 
     Added the classical naive list reverse benchmark test to the "benchmarks"
-    example.
+    example. Added a version of the benchmark test module for ECLiPSe.
 
     Simplified usage of the "mtbatch" multi-threading benchmarks example
     by using conditional compilation directives for the Prolog-specific
