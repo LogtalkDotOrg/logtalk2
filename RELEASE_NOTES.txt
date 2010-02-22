@@ -64,7 +64,9 @@ RELEASE NOTES
     categories.
 
     Added the classical naive list reverse benchmark test to the "benchmarks"
-    example. Added a version of the benchmark test module for ECLiPSe.
+    example. Added a version of the benchmark test module for ECLiPSe. Updated
+    the "benchmarks" object in order to also run the module tests whenever the
+    back-end Prolog compiler supports modules.
 
     Simplified usage of the "mtbatch" multi-threading benchmarks example
     by using conditional compilation directives for the Prolog-specific
