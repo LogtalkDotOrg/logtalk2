@@ -9,7 +9,7 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for YAP Prolog 5.1.3 and later versions
+%  configuration file for YAP Prolog 6.0.0 and later versions
 %
 %  last updated: February 21, 2010
 %
@@ -230,7 +230,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 '$lgt_prolog_feature'(prolog_dialect, yap).
 '$lgt_prolog_feature'(prolog_version, (Major, Minor, Patch)) :-
 	current_prolog_flag(version_data, yap(Major, Minor, Patch, _)).
-'$lgt_prolog_feature'(prolog_compatible_version, @>=((5,1,3))).
+'$lgt_prolog_feature'(prolog_compatible_version, @>=((6,0,0))).
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, full).
