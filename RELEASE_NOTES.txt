@@ -63,6 +63,9 @@ RELEASE NOTES
     Updated the "parametric" example to also illustrate the use of parametric
     categories.
 
+    Updated the "metainterpreters" example, adding a new meta-interpreter for
+    counting the number of resolution steps when proving a goal.
+
     Added the classical naive list reverse benchmark test to the "benchmarks"
     example. Added a version of the benchmark test module for ECLiPSe. Updated
     the "benchmarks" object in order to also run the module tests whenever the

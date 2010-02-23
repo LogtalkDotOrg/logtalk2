@@ -4,26 +4,63 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.3,
+		version is 2.0,
 		author is 'Paulo Moura',
-		date is 2008/5/29,
+		date is 2010/02/23,
 		comment is 'Dictionary protocol implemented using binary trees.']).
+
+	:- public(preorder/2).
+	:- mode(preorder(@tree, -list), one).
+	:- info(preorder/2,
+		[comment is 'Preorder tree traversal.',
+		 argnames is ['Tree', 'List']]).
+
+	:- public(inorder/2).
+	:- mode(inorder(@tree, -list), one).
+	:- info(preorder/2,
+		[comment is 'Inorder tree traversal.',
+		 argnames is ['Tree', 'List']]).
+
+	:- public(postorder/2).
+	:- mode(postorder(@tree, -list), one).
+	:- info(preorder/2,
+		[comment is 'Postorder tree traversal.',
+		 argnames is ['Tree', 'List']]).
 
 	:- private(map/4).
 	:- meta_predicate(map(*, *, *, ::)).
 	:- mode(map(+atom, +tree, -tree, -callable), zero_or_one).
+
+	preorder(Tree, List) :-
+		preorder(Tree, [], List).
+
+	preorder(t, List, List).
+	preorder(t(Key, Value, Left, Right), Acc, [Key-Value| List]) :-
+		preorder(Right, Acc, Acc2),
+		preorder(Left, Acc2, List).
+
+	inorder(Tree, List) :-
+		inorder(Tree, [], List).
+
+	inorder(t, List, List).
+	inorder(t(Key, Value, Left, Right), Acc, List) :-
+		inorder(Right, Acc, Acc2),
+		inorder(Left, [Key-Value| Acc2], List).
+
+	postorder(Tree, List) :-
+		postorder(Tree, [], List).
+
+	postorder(t, List, List).
+	postorder(t(Key, Value, Left, Right), Acc, List) :-
+		postorder(Right, [Key-Value| Acc], Acc2),
+		postorder(Left, Acc2, List).
 
 	as_dictionary(Pairs, Dictionary) :-
 		new(Empty),
 		insert_all(Pairs, Empty, Dictionary).
 
 	as_list(Tree, List) :-
-		as_list(Tree, [], List).
-
-	as_list(t, List, List).
-	as_list(t(Key, Value, Left, Right), Acc, List) :-
-		as_list(Right, Acc, Acc2),
-		as_list(Left, [Key-Value| Acc2], List).
+		inorder(Tree, List).
 
 	empty(Tree) :-
 		Tree == t.

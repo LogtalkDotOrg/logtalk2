@@ -25,6 +25,10 @@ in Logtalk categories:
 		simple meta-interpreter for pure Prolog that traces proof 
 		construction
 
+	counter
+		simple meta-interpreter for counting the number of resolution
+		steps when proving a goal
+
 To use a meta-interpreter with an object, simply import the corresponding 
 category.
 

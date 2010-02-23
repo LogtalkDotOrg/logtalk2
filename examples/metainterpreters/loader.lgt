@@ -1,3 +1,3 @@
 
 :- initialization(
-	logtalk_load([metainterpreters, database, rules])). 
+	logtalk_load([metainterpreters, database, rules, lists])). 
