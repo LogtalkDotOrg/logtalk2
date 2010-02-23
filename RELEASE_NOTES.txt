@@ -72,6 +72,11 @@ RELEASE NOTES
     by using conditional compilation directives for the Prolog-specific
     predicates instead of a parametric object.
 
+    Updated the loader file for the "encodings" example in order to only load
+    the UTF-32 source file ("mythology.lgt") on Prolog compilers supporting
+    this encoding (currently, only CxProlog and SICStus Prolog). This avoids
+    misleading loading error messages in SWI-Prolog and YAP.
+
     Updated the Logtalk Windows installer in order to detect the ECLiPSe 6.1
     version (both 32 and 64 bits versions). If both 6.0 and 6.1 versions are
     installed, the installer creates a shortcut for using version 6.1 as the
