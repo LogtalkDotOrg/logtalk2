@@ -55,12 +55,13 @@ Name: "prolog"; Description: "Prolog integration"; Types: full prolog custom; Fl
 Name: "prolog\bp"; Description: "B-Prolog integration (version 7.1 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\ciao"; Description: "Ciao Prolog integration (version 1.10)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\cxprolog"; Description: "CxProlog integration (version 0.97.4 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\eclipse"; Description: "ECLiPSe integration (version 6.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\eclipse"; Description: "ECLiPSe integration (version 6.0#77 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\sicstus"; Description: "SICStus Prolog integration (versions 3.12.x, 4.x)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\swi"; Description: "SWI-Prolog integration (version 5.6.44 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\swicon"; Description: "SWI-Prolog (console) integration (version 5.8.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\swiwin"; Description: "SWI-Prolog (window) integration (version 5.8.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\xsb"; Description: "XSB integration (version 3.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\xsbmt"; Description: "XSB-MT integration (version 3.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\yap"; Description: "YAP integration (version 5.1.3 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\yap"; Description: "YAP integration (version 6.0.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 
 [Tasks]
 Name: registration; Description: "&Register {#MyAppName} (opens a web page; requires an Internet connection)"; Components: base user
@@ -118,7 +119,9 @@ Name: "{group}\Logtalk - SICStus Prolog 3.12"; Filename: "{code:GetSP3ExePath}";
 
 Name: "{group}\Logtalk - SICStus Prolog 4"; Filename: "{code:GetSP4ExePath}"; Parameters: "-l ""%LOGTALKHOME%\integration\logtalk_sicstus4.pl"""; Comment: "Runs Logtalk with SICStus Prolog 4"; WorkingDir: "%CD%"; Components: prolog\sicstus; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - SWI-Prolog"; Filename: "{code:GetSWIExePath}"; Parameters: "-f ""%LOGTALKHOME%\integration\logtalk_swi.pl"""; Comment: "Runs Logtalk with SWI-Prolog"; WorkingDir: "%CD%"; Components: prolog\swi; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - SWI-Prolog (console)"; Filename: "{code:GetSWIConExePath}"; Parameters: "-f ""%LOGTALKHOME%\integration\logtalk_swi.pl"""; Comment: "Runs Logtalk with SWI-Prolog"; WorkingDir: "%CD%"; Components: prolog\swicon; Flags: createonlyiffileexists
+
+Name: "{group}\Logtalk - SWI-Prolog (window)"; Filename: "{code:GetSWIWinExePath}"; Parameters: "-f ""%LOGTALKHOME%\integration\logtalk_swi.pl"""; Comment: "Runs Logtalk with SWI-Prolog"; WorkingDir: "%CD%"; Components: prolog\swiwin; Flags: createonlyiffileexists
 
 Name: "{group}\Logtalk - XSB"; Filename: "{code:GetXSBExePath}"; Parameters: "-l -e ""['%LOGTALKHOME%\\integration\\logtalk_xsb.pl']."""; Comment: "Runs Logtalk with XSB"; WorkingDir: "%CD%"; Components: prolog\xsb; Flags: createonlyiffileexists
 
@@ -346,7 +349,29 @@ begin
   end
 end;
 
-function GetSWIExePath(Param: String): String;
+function GetSWIConExePath(Param: String): String;
+var
+  Home: String;
+  Warning: String;
+begin
+  if RegQueryStringValue(HKLM, 'Software\SWI\Prolog64\', 'home', Home) or RegQueryStringValue(HKLM, 'Software\SWI\Prolog\', 'home', Home) then
+    if FileExists(Home + '\bin\plcon.exe') then
+      Result := Home + '\bin\plcon.exe'
+    else if FileExists(Home + '\bin\swipl.exe') then
+      Result := Home + '\bin\swipl.exe'
+    else begin
+      Warning := 'Failed to detect SWI-Prolog executable.' + Chr(13) + 'Logtalk integration shortcut not created.';
+      MsgBox(Warning, mbError, MB_OK);
+      Result := 'lgt_exe_does_not_exist'
+    end
+  else begin
+    Warning := 'Failed to detect SWI-Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+	MsgBox(Warning, mbError, MB_OK);
+    Result := 'lgt_exe_does_not_exist'
+  end
+end;
+
+function GetSWIWinExePath(Param: String): String;
 var
   Home: String;
   Warning: String;

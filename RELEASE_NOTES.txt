@@ -88,9 +88,10 @@ RELEASE NOTES
     Updated the Logtalk Windows installer in order to detect SICStus Prolog
     4.x installations when running on Windows 64 bits versions.
 
-    Update the Windows installer script in order to check for the new name of
-    the SWI-Prolog executable (swipl-win.exe) when creating the integrations
-    shortcuts and to detect SWI-Prolog 64 bits versions.
+    Update the Windows installer script in order to check for the new names of
+    the SWI-Prolog executables (swipl.exe and swipl-win.exe) when creating the
+    integrations shortcuts and to detect SWI-Prolog 64 bits versions. Morover,
+    create shortcuts for both console and window versions of SWI-Prolog.
 
     Updated the Windows installer to detect CxProlog 0.97.4 and later versions
     (which use a different registry entry from previous versions).
