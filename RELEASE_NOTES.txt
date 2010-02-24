@@ -92,6 +92,9 @@ RELEASE NOTES
     the SWI-Prolog executable (swipl-win.exe) when creating the integrations
     shortcuts and to detect SWI-Prolog 64 bits versions.
 
+    Updated the Windows installer to detect CxProlog 0.97.4 and later versions
+    (which use a different registry entry from previous versions).
+
 
 2.38.2 - January 31, 2010
 

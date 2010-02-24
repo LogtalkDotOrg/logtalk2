@@ -279,7 +279,7 @@ var
   CxDir: String;
   Warning: String;
 begin
-  if RegQueryStringValue(HKLM, 'SOFTWARE\CxProlog\', 'CXPROLOGDIR', CxDir) then
+  if RegQueryStringValue(HKLM, 'SOFTWARE\CxProlog\', 'CXPROLOG_DIR', CxDir) then
     Result := CxDir + '\cxprolog.exe'
   else begin
     Warning := 'Failed to detect CxProlog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
