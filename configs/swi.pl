@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: February 21, 2010
+%  last updated: February 24, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -105,7 +105,9 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 % '$lgt_pl_meta_predicate'(?callable, ?atom).
 
 '$lgt_pl_meta_predicate'(*->(::, ::), control_construct).
-'$lgt_pl_meta_predicate'(block(*, ::, *), predicate).
+:- if(predicate_property(block(_, _, _), built_in)).
+	'$lgt_pl_meta_predicate'(block(*, ::, *), predicate).
+:- endif.
 '$lgt_pl_meta_predicate'(call_cleanup(::, ::), predicate).
 '$lgt_pl_meta_predicate'(call_cleanup(::, *, ::), predicate).
 '$lgt_pl_meta_predicate'(call_with_depth_limit(::, *, *), predicate).
