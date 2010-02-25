@@ -6,8 +6,8 @@
 	:- info([
 		version is 2.0,
 		author is 'Paulo Moura',
-		date is 2010/02/23,
-		comment is 'Dictionary protocol implemented using binary trees.']).
+		date is 2010/02/25,
+		comment is 'Simple binary tree implementation of the dictionary protocol. Uses standard order to compare keys.']).
 
 	:- public(preorder/2).
 	:- mode(preorder(@tree, -list), one).
@@ -26,10 +26,6 @@
 	:- info(preorder/2,
 		[comment is 'Postorder tree traversal.',
 		 argnames is ['Tree', 'List']]).
-
-	:- private(map/4).
-	:- meta_predicate(map(*, *, *, ::)).
-	:- mode(map(+atom, +tree, -tree, -callable), zero_or_one).
 
 	preorder(Tree, List) :-
 		preorder(Tree, [], List).
@@ -131,15 +127,16 @@
 	join(t(Key, Value, Left, Right), Tree, t(Key, Value, Left, Right2)) :-
 		join(Right, Tree, Right2).
 
-	map(Pred, Old, New) :-
-		map(Pred, Old, New, _).
+	:- meta_predicate(map_(*, 2, *)).
+	map_(t(Key, Value1, Left1, Right1), Closure, t(Key, Value2, Left2, Right2)) :-
+		call(Closure, Key-Value1, Key-Value2),
+		map_(Left1, Closure, Left2),
+		map_(Right1, Closure, Right2).
+	map_(t, _, t).
 
-	map(Pred, t(Key1, Value1, Left1, Right1), t(Key2, Value2, Left2, Right2), Goal) :-
-		Goal =.. [Pred, Key1-Value1, Key2-Value2],
-		once(Goal),
-		map(Pred, Left1, Left2, _),
-		map(Pred, Right1, Right2, _).
-	map(_, t, t, _).
+	:- meta_predicate(map(2, *, *)).
+	map(Closure, Old, New) :-
+		map_(Old, Closure, New).
 
 	new(t).
 

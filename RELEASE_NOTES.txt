@@ -60,6 +60,12 @@ RELEASE NOTES
     These sorting predicates accept as first-argument a closure to be used
     for comparing pairs of list terms when sorting.
 
+    Added a missing meta-predicate directive for the predicate map/3 in the
+    "dictionaryp" library protocol. Improved predicate documentation.
+
+    Added predicates preorder/2, inorder/2, and postorder/2 to the library
+    object "bintree". Corrected broken definition of the meta-predicate map/3.
+
     Updated the "parametric" example to also illustrate the use of parametric
     categories.
 
@@ -88,10 +94,10 @@ RELEASE NOTES
     Updated the Logtalk Windows installer in order to detect SICStus Prolog
     4.x installations when running on Windows 64 bits versions.
 
-    Update the Windows installer script in order to check for the new names of
-    the SWI-Prolog executables (swipl.exe and swipl-win.exe) when creating the
-    integrations shortcuts and to detect SWI-Prolog 64 bits versions. Morover,
-    create shortcuts for both console and window versions of SWI-Prolog.
+    Update the Windows installer script in order create integration shortcuts
+    for both console and window versions of SWI-Prolog, to check for the new
+    names of the SWI-Prolog executables ("swipl.exe" and "swipl-win.exe") when
+    creating the shortcuts, and to detect SWI-Prolog 64 bits versions.
 
     Updated the Windows installer to detect CxProlog 0.97.4 and later versions
     (which use a different registry entry from previous versions).
