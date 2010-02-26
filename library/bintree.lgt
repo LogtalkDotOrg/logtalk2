@@ -222,7 +222,7 @@
 		apply_(Order, Key0, Value0, Left, Right, Key, Closure, NewTree).
 
 	apply_(=,    _, Value0, Left, Right, Key, Closure, t(Left,Key,Value,Right)) :-
-		call(Closure, Value0, Value).
+		call(Closure, Key-Value0, Key-Value).
 	apply_(>, Key0, Value0, Left, Right, Key, Closure, t(NewLeft,Key0,Value0,Right)) :-
 		apply_(Left, Key, Closure, NewLeft).
 	apply_(<, Key0, Value0, Left, Right, Key, Closure, t(Left,Key0,Value0,NewRight)) :-

@@ -194,8 +194,8 @@
 		compare(Order, Key0, Key),
 		apply_(Order, Left, Value0, Right, Key, Closure, t(NewLeft,Value,NewRight)).
 
-	apply_(=, Left, Value0, Right,   _, Closure, t(Left,Value,Right)) :-
-		call(Closure, Value0, Value).
+	apply_(=, Left, Value0, Right, Key, Closure, t(Left,Value,Right)) :-
+		call(Closure, Key-Value0, Key-Value).
 	apply_(>, Left, Value0, Right, Key, Closure, t(NewLeft,Value0,Right)) :-
 		apply_(Left, Key, Closure, NewLeft).
 	apply_(<, Left, Value0, Right, Key, Closure, t(Left,Value0,NewRight)) :-
@@ -528,7 +528,7 @@
 		map_(Left, Closure, NewLeft, Nil),
 		map_(Right, Closure, NewRight, Nil).
 	map_(black(Left,Key,Value,Right), Closure, black(NewLeft,Key,NewValue,NewRight), Nil) :-
-		call(Closure, Value, NewValue),
+		call(Closure, Key-Value, NewValue),
 		map_(Left, Closure, NewLeft, Nil),
 		map_(Right, Closure, NewRight, Nil).
 

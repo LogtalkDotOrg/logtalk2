@@ -116,7 +116,7 @@
 	:- meta_predicate(apply(2, *, *, *)).
 	:- mode(apply(+callable, +dictionary, +key, -dictionary), zero_or_one).
 	:- info(apply/4,
-		[comment is 'Applies a closure to a value associated with a key, returning the new dictionary. Fails if the key cannot be found.',
+		[comment is 'Applies a closure to a specific key-value pair, returning the new dictionary. Fails if the key cannot be found or if the mapped closure atempts to modify the key.',
 		 argnames is ['Closure', 'OldDictionary', 'Key', 'NewDictionary']]).
 
 	:- public(size/2).
