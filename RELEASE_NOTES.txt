@@ -60,11 +60,16 @@ RELEASE NOTES
     These sorting predicates accept as first-argument a closure to be used
     for comparing pairs of list terms when sorting.
 
-    Added a missing meta-predicate directive for the predicate map/3 in the
-    "dictionaryp" library protocol. Improved predicate documentation.
+    Added new predicate declarations to the "dictionaryp" library protocol:
+    previous/4, next/4, min/3, max/3, delete_min/3, delete_max/3, apply/4,
+    map/2, and update/4. Removed insert_all/3 predicate declaration. Added
+    a missing meta-predicate directive for the predicate map/3. Improved
+    predicate documentation.
 
-    Added predicates preorder/2, inorder/2, and postorder/2 to the library
+    Added new predicates preorder/2, inorder/2, and postorder/2 to the library
     object "bintree". Corrected broken definition of the meta-predicate map/3.
+    Added definitions for the new predicates in the updated "dictionaryp"
+    library protocol.
 
     Updated the "parametric" example to also illustrate the use of parametric
     categories.
