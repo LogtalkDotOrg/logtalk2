@@ -18,7 +18,7 @@
 		version is 1.0,
 		author is 'Vitor Santos Costa; adapted to Logtalk by Paulo Moura.',
 		date is 2010/02/25,
-		comment is 'Red-Black trees.']).
+		comment is 'Red-Black trees. Uses standard order to compare keys.']).
 
 	:- public(partial_map/4).
 	:- meta_predicate(partial_map(*, *, 2, *)).
