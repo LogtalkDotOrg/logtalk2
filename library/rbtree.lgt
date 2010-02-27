@@ -24,19 +24,19 @@
 	:- meta_predicate(partial_map(*, *, 2, *)).
 	:- mode(partial_map(+tree, +list, @closure, -tree), zero_or_one).
 	:- info(partial_map/4,
-		[comment is '.',
+		[comment is 'Applies a closure to the tree pairs identified by a set of keys.',
 		 argnames is ['Tree', 'Keys', 'Closure', 'NewTree']]).
 
 	:- public(clone/3).
 	:- mode(clone(+tree, -tree, -list(pairs)), one).
 	:- info(clone/3,
-		[comment is 'Clones Tree into NewTree using the same keys but with all values unbound. NewPairs is a list containing all new nodes as pairs Key-Value.',
+		[comment is 'Clones a tree using the same keys but with all values unbound and returning a list of all the pairs in the new tree.',
 		 argnames is ['Tree', 'NewTree', 'NewPairs']]).
 
 	:- public(clone/4).
 	:- mode(clone(+tree, -list(pairs), -tree, -list(pairs)), one).
 	:- info(clone/4,
-		[comment is 'Clones Tree into NewTree using the same keys but with all values unbound. NewPairs is a list containing all new nodes as pairs Key-Value.',
+		[comment is 'Clones a tree using the same keys but with all values unbound and returning the lists of all pairs in the cloned tree and in the new tree.',
 		 argnames is ['Tree', 'OldPairs', 'NewTree', 'NewPairs']]).
 
 	new(t(Nil, Nil)) :-
@@ -602,7 +602,7 @@
 			NewRight = Right, NewValue = Value, MapF = []
 		;	MapI = [K1| MapR],
 			(	Key == K1 ->
-		    	(	call(Closure, Value, NewValue) ->
+		    	(	call(Closure, Key-Value, Key-NewValue) ->
 					true
 				;	NewValue = Value
 				),
@@ -618,7 +618,7 @@
 			NewRight = Right, NewValue = Value, MapF = []
 		;	MapI = [K1| MapR],
 			(	Key == K1 ->
-				(	call(Closure, Value, NewValue) ->
+				(	call(Closure, Key-Value, Key-NewValue) ->
 					true
 				;	NewValue = Value
 				),
