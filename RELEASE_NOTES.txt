@@ -58,13 +58,13 @@ RELEASE NOTES
 
     Added meta-predicates sort/3 and msort/3 to the library object "list".
     These sorting predicates accept as first-argument a closure to be used
-    for comparing pairs of list terms when sorting.
+    for comparing list terms when sorting.
 
     Added new predicate declarations to the "dictionaryp" library protocol:
-    previous/4, next/4, min/3, max/3, delete_min/3, delete_max/3, apply/4,
-    map/2, and update/4. Removed insert_all/3 predicate declaration. Added
-    a missing meta-predicate directive for the predicate map/3. Improved
-    predicate documentation.
+    clone/3, clone/4, previous/4, next/4, min/3, max/3, apply/4, delete_min/3,
+    delete_max/3, map/2, and update/4. Removed the insert_all/3 predicate
+    declaration. Added a missing meta-predicate directive for the predicate
+    map/3. Improved predicate documentation.
 
     Added new predicates preorder/2, inorder/2, and postorder/2 to the library
     object "bintree". Corrected broken definition of the meta-predicate map/3.
@@ -72,7 +72,8 @@ RELEASE NOTES
     library protocol.
 
     Added a port of the Vítor Santos Costa implementation of Red-Black trees
-    (found on the YAP library "rbtrees"). Work in progress.
+    (found on the YAP library "rbtrees"). The port, "rbtree", implements the
+    "dictionaryp" library protocol. Work in progress.
 
     Added a port of the Richard O'Keefe implementation of heaps. This port
     provides both max-heap and min-heap implementations. Work in progress.
@@ -95,7 +96,7 @@ RELEASE NOTES
     Updated the loader file for the "encodings" example in order to only load
     the UTF-32 source file ("mythology.lgt") on Prolog compilers supporting
     this encoding (currently, only CxProlog and SICStus Prolog). This avoids
-    misleading loading error messages in SWI-Prolog and YAP.
+    misleading loading error messages when using SWI-Prolog or YAP.
 
     Updated the "cc" example with predicate definitions for Ciao and added a
     new predicate, expand_path/2, for all supported back-end Prolog compilers.

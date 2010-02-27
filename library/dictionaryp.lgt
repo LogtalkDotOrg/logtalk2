@@ -11,13 +11,25 @@
 	:- mode(as_dictionary(@list(pairs), -dictionary), one).
 	:- info(as_dictionary/2, [
 		comment is 'Converts a list of key-value pairs to a dictionary.',
-		argnames is ['List', 'Dictionary']]).
+		argnames is ['Pairs', 'Dictionary']]).
 
 	:- public(as_list/2).
 	:- mode(as_list(@dictionary, -list(pairs)), one).
 	:- info(as_list/2, [
 		comment is 'Converts a dictionary to a ordered list of key-value pairs.',
-		argnames is ['Dictionary', 'List']]).
+		argnames is ['Dictionary', 'Pairs']]).
+
+	:- public(clone/3).
+	:- mode(clone(+tree, -tree, -list(pairs)), one).
+	:- info(clone/3,
+		[comment is 'Clones a dictionary using the same keys but with all values unbound and returning a list of all the pairs in the new clone.',
+		 argnames is ['Dictionary', 'Clone', 'ClonePairs']]).
+
+	:- public(clone/4).
+	:- mode(clone(+tree, -list(pairs), -tree, -list(pairs)), one).
+	:- info(clone/4,
+		[comment is 'Clones a dictionary using the same keys but with all values unbound and returning the list of all pairs in the dictionary and in the clone.',
+		 argnames is ['Dictionary', 'Pairs', 'Clone', 'ClonePairs']]).
 
 	:- public(insert/4).
 	:- mode(insert(+dictionary, +ground, @term, -dictionary), one).

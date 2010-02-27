@@ -27,18 +27,6 @@
 		[comment is 'Applies a closure to the tree pairs identified by a set of keys.',
 		 argnames is ['Tree', 'Keys', 'Closure', 'NewTree']]).
 
-	:- public(clone/3).
-	:- mode(clone(+tree, -tree, -list(pairs)), one).
-	:- info(clone/3,
-		[comment is 'Clones a tree using the same keys but with all values unbound and returning a list of all the pairs in the new tree.',
-		 argnames is ['Tree', 'NewTree', 'NewPairs']]).
-
-	:- public(clone/4).
-	:- mode(clone(+tree, -list(pairs), -tree, -list(pairs)), one).
-	:- info(clone/4,
-		[comment is 'Clones a tree using the same keys but with all values unbound and returning the lists of all pairs in the cloned tree and in the new tree.',
-		 argnames is ['Tree', 'OldPairs', 'NewTree', 'NewPairs']]).
-
 	new(t(Nil, Nil)) :-
 		Nil = black('', _, _, '').
 

@@ -27,29 +27,29 @@
 		[comment is 'Postorder tree traversal.',
 		 argnames is ['Tree', 'List']]).
 
-	preorder(Tree, List) :-
-		preorder(Tree, [], List).
+	preorder(Tree, Pairs) :-
+		preorder(Tree, [], Pairs).
 
-	preorder(t, List, List).
-	preorder(t(Key, Value, Left, Right), Acc, [Key-Value| List]) :-
-		preorder(Right, Acc, Acc2),
-		preorder(Left, Acc2, List).
+	preorder(t, Pairs, Pairs).
+	preorder(t(Key, Value, Left, Right), Pairs0, [Key-Value| Pairs]) :-
+		preorder(Right, Pairs0, Pairs1),
+		preorder(Left, Pairs1, Pairs).
 
-	inorder(Tree, List) :-
-		inorder(Tree, [], List).
+	inorder(Tree, Pairs) :-
+		inorder(Tree, [], Pairs).
 
-	inorder(t, List, List).
-	inorder(t(Key, Value, Left, Right), Acc, List) :-
-		inorder(Right, Acc, Acc2),
-		inorder(Left, [Key-Value| Acc2], List).
+	inorder(t, Pairs, Pairs).
+	inorder(t(Key, Value, Left, Right), Pairs0, Pairs) :-
+		inorder(Left, [Key-Value| Pairs1], Pairs),
+		inorder(Right, Pairs0, Pairs1).
 
-	postorder(Tree, List) :-
-		postorder(Tree, [], List).
+	postorder(Tree, Pairs) :-
+		postorder(Tree, [], Pairs).
 
-	postorder(t, List, List).
-	postorder(t(Key, Value, Left, Right), Acc, List) :-
-		postorder(Right, [Key-Value| Acc], Acc2),
-		postorder(Left, Acc2, List).
+	postorder(t, Pairs, Pairs).
+	postorder(t(Key, Value, Left, Right), Pairs0, Pairs) :-
+		postorder(Right, [Key-Value| Pairs0], Pairs1),
+		postorder(Left, Pairs1, Pairs).
 
 	as_dictionary(Pairs, Tree) :-
 		new(Empty),
@@ -60,8 +60,24 @@
 		insert(Tree0, Key, Value, Tree1),
 		as_dictionary(Pairs, Tree1, Tree).
 
-	as_list(Tree, List) :-
-		inorder(Tree, List).
+	as_list(Tree, Pairs) :-
+		inorder(Tree, Pairs).
+
+	clone(Tree, Clone, Pairs) :-
+		clone_3(Tree, Clone, [], Pairs).
+
+	clone_3(t, t, Pairs, Pairs).
+	clone_3(t(Key, _, Left, Right), t(Key, NewValue, CloneLeft, CloneRight), Pairs0, Pairs) :-
+		clone_3(Left, CloneLeft, [Key-NewValue| Pairs1], Pairs),
+		clone_3(Right, CloneRight, Pairs0, Pairs1).
+
+	clone(Tree, Pairs, Clone, ClonePairs) :-
+		clone_4(Tree, [], Pairs, Clone, [], ClonePairs).
+
+	clone_4(t, Pairs, Pairs, t, ClonePairs, ClonePairs).
+	clone_4(t(Key, Value, Left, Right), Pairs0, Pairs, t(Key, NewValue, CloneLeft, CloneRight), ClonePairs0, ClonePairs) :-
+		clone_4(Left, [Key-Value| Pairs1], Pairs, CloneLeft, [Key-NewValue| ClonePairs1], ClonePairs),
+		clone_4(Right, Pairs0, Pairs1, CloneRight, ClonePairs0, ClonePairs1).
 
 	empty(Tree) :-
 		Tree == t.
