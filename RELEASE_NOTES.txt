@@ -97,6 +97,9 @@ RELEASE NOTES
     this encoding (currently, only CxProlog and SICStus Prolog). This avoids
     misleading loading error messages in SWI-Prolog and YAP.
 
+    Updated the "cc" example with predicate definitions for Ciao and added a
+    new predicate, expand_path/2, for all supported back-end Prolog compilers.
+
     Updated the Logtalk Windows installer in order to detect the ECLiPSe 6.1
     version (both 32 and 64 bits versions). If both 6.0 and 6.1 versions are
     installed, the installer creates a shortcut for using version 6.1 as the

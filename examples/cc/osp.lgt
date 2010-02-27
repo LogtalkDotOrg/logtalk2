@@ -2,10 +2,16 @@
 :- protocol(osp).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2008/11/19,
+		date is 2010/02/27,
 		comment is 'Portable operating-system access protocol.']).
+
+	:- public(expand_path/2).
+	:- mode(expand_path(+atom, -atom), one).
+	:- info(expand_path/2, [
+		comment is 'Expands a file path to a full file path.',
+		argnames is ['Path', 'ExpandedPath']]).
 
 	:- public(make_directory/1).
 	:- mode(make_directory(+atom), one).

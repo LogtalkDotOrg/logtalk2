@@ -3,12 +3,16 @@
 	implements(osp)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2009/5/11,
+		date is 2010/02/27,
 		comment is 'Simple example of using conditional compilation to implement a portable operating-system interface for selected back-end Prolog compilers.']).
 
 	:- if(current_logtalk_flag(prolog_dialect, swi)).
+
+		expand_path(Path, ExpandedPath) :-
+			{working_directory(Current, Current),
+			 absolute_file_name(Path, [expand(true), relative_to(Current)], ExpandedPath)}.
 
 		make_directory(Directory) :-
 			{make_directory(Directory)}.
@@ -58,6 +62,9 @@
 
 	:- elif(current_logtalk_flag(prolog_dialect, yap)).
 
+		expand_path(Path, ExpandedPath) :-
+			{absolute_file_name(Path, ExpandedPath)}.
+
 		make_directory(Directory) :-
 			{make_directory(Directory)}.
 
@@ -104,6 +111,9 @@
 			{Time is cputime}.
 
 	:- elif(current_logtalk_flag(prolog_dialect, xsb)).
+
+		expand_path(Path, ExpandedPath) :-
+			{standard:expand_atom(Path, ExpandedPath)}.
 
 		make_directory(Directory) :-
 			{standard:expand_atom(Directory, Expanded),
@@ -156,15 +166,18 @@
 			{expand_atom(Variable, Value)}.
 
 		time_stamp(Time) :-
-			{datime(Time)}.
+			{standard:datime(Time)}.
 
 		date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
-			{datime(datime(Year, Month, Day, Hours, Mins, Secs))}.
+			{standard:datime(datime(Year, Month, Day, Hours, Mins, Secs))}.
 
 		cpu_time(Time) :-
 			{cputime(Time)}.
 
 	:- elif(current_logtalk_flag(prolog_dialect, gnu)).
+
+		expand_path(Path, ExpandedPath) :-
+			{absolute_file_name(Path, ExpandedPath)}.
 
 		make_directory(Directory) :-
 			{make_directory(Directory)}.
@@ -215,6 +228,9 @@
 
 	:- elif(current_logtalk_flag(prolog_dialect, b)).
 
+		expand_path(Path, ExpandedPath) :-
+			{expand_environment(Path, ExpandedPath)}.
+
 		make_directory(Directory) :-
 			{make_directory(Directory)}.
 
@@ -261,6 +277,10 @@
 			{cputime(Miliseconds), Time is Miliseconds/1000}.
 
 	:- elif(current_logtalk_flag(prolog_dialect, sicstus)).
+
+		expand_path(Path, ExpandedPath) :-
+			{current_directory(Directory),
+			 absolute_file_name(Path, ExpandedPath, [relative_to(Directory)])}.
 
 		make_directory(Directory) :-
 			{make_directory(Directory)}.
@@ -311,6 +331,11 @@
 
 		:- use_module(library(calendar)).
 
+		expand_path(Path, ExpandedPath) :-
+			{atom_string(Path, PathString),
+			 canonical_path_name(PathString, ExpandedPathString),
+			 atom_string(ExpandedPath, ExpandedPathString)}.
+
 		make_directory(Directory) :-
 			{mkdir(Directory)}.
 
@@ -354,6 +379,61 @@
 
 		cpu_time(Time) :-
 			{cputime(Time)}.
+
+	:- elif(current_logtalk_flag(prolog_dialect, ciao)).
+
+		:- use_module(library(system)).
+
+		expand_path(Path, ExpandedPath) :-
+			{absolute_file_name(Path, ExpandedPath)}.
+
+		make_directory(Directory) :-
+			(	{file_exists(Directory)} ->
+				true
+			;	{make_directory(Directory)}
+			).
+
+		delete_directory(Directory) :-
+			{delete_directory(Directory)}.
+
+		change_directory(Directory) :-
+			{cd(Directory)}.
+
+		working_directory(Directory) :-
+			{working_directory(Directory, Directory)}.
+
+		directory_exists(Directory) :-
+			{file_exists(Directory),
+			 file_property(Directory, type(directory))}.
+
+		file_exists(File) :-
+			{file_exists(File)}.
+
+		file_modification_time(File, Time) :-
+			{file_property(File, mod_time(Time))}.
+
+		file_size(File, Size) :-
+			{file_property(File, size(Size))}.
+
+		delete_file(File) :-
+			{delete_file(File)}.
+
+		rename_file(Old, New) :-
+			{rename_file(Old, New)}.
+
+		environment_variable(Variable, Value) :-
+			{getenvstr(Variable, String)},
+			atom_codes(Value, String).
+
+		time_stamp(Time) :-
+			{time(Time)}.
+
+		date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
+			{datime(_, Year, Month, Day, Hours, Mins, Secs, _, _)}.
+
+		cpu_time(Time) :-
+			{statistics(runtime, [Miliseconds| _])},
+			Seconds is Miliseconds / 1000.
 
 	:- else.
 
