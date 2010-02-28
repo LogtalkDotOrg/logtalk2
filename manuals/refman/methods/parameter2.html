@@ -25,7 +25,7 @@
 
 <pre>parameter(Number, Term)</pre>
 <p>
-Used in <a class="glossary" title="Go to glossary definition" href="../../glossary.html#parametric">parametric objects</a> (or parametric categories), this method returns parameter values by using the parameter position in the object (category) identifier. Note that this predicate implies an unification between its second argument and the corresponding implicit context argument in the predicate containing the call. For parametric objects, this unification occurs at the clause head, not at the clause body. See also <a  href="this1.html"><code>this/1</code></a>.
+Used in <a class="glossary" title="Go to glossary definition" href="../../glossary.html#parametric">parametric objects</a> (and parametric categories), this method provides runtime access to parameter values by using the argument number in the object (or category) identifier. This predicate is implemented as an unification between its second argument and the corresponding implicit execution-context argument in the predicate containing the call. For parametric objects, this unification occurs at the clause head, not at the clause body. See also <a href="this1.html"><code>this/1</code></a>.
 </p>
 
 <h4>Template and modes</h4>
@@ -47,7 +47,7 @@ Used in <a class="glossary" title="Go to glossary definition" href="../../glossa
 
 <h4>Examples</h4>
 
-<pre>:- object(box(_color, _weight)).
+<pre>:- object(box(_Color, _Weight)).
 
     ...
     
