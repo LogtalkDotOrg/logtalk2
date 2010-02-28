@@ -71,7 +71,7 @@ RELEASE NOTES
     Added definitions for the new predicates in the updated "dictionaryp"
     library protocol.
 
-    Added a port of the Vítor Santos Costa implementation of Red-Black trees
+    Added a port of the Vitor Santos Costa implementation of Red-Black trees
     (found on the YAP library "rbtrees"). The port, "rbtree", implements the
     "dictionaryp" library protocol. Work in progress.
 
