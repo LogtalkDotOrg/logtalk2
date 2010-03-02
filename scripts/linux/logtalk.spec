@@ -1,11 +1,11 @@
 Name: logtalk
 Summary: Logtalk - Open source object-oriented logic programming language
-Version: 2.39.0
+Version: 2.39.1
 Release: 1
 License: Artistic License 2.0
 Group: Development/Languages
 Packager: Paulo Moura <pmoura@logtalk.org>
-Source: http://logtalk.org/files/lgt2390.tar.bz2
+Source: http://logtalk.org/files/lgt2391.tar.bz2
 BuildArchitectures: noarch
 URL: http://logtalk.org/
 AutoReqProv: no
@@ -13,7 +13,7 @@ AutoReqProv: no
 Logtalk is an object-oriented logic programming language that can use most Prolog implementations as a back-end compiler. As a multi-paradigm language, it includes support for both prototypes and classes, protocols (interfaces), component-based programming through category-based composition, event-driven programming, and high-level multi-threading programming.
 
 %prep
-%setup -q -c lgt2390 -n lgt2390
+%setup -q -c lgt2391 -n lgt2391
 
 %build
 
@@ -28,27 +28,27 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc /usr/local/share/lgt2390/BIBLIOGRAPHY.bib
-%doc /usr/local/share/lgt2390/CUSTOMIZE.txt
-%doc /usr/local/share/lgt2390/INSTALL.txt
-%doc /usr/local/share/lgt2390/LICENSE.txt
-%doc /usr/local/share/lgt2390/QUICK_START.txt
-%doc /usr/local/share/lgt2390/README.txt
-%doc /usr/local/share/lgt2390/RELEASE_NOTES.txt
-%doc /usr/local/share/lgt2390/UPGRADING.txt
-/usr/local/share/lgt2390/VERSION.txt
-/usr/local/share/lgt2390/compiler
-/usr/local/share/lgt2390/configs
-/usr/local/share/lgt2390/contributions
-/usr/local/share/lgt2390/examples
-/usr/local/share/lgt2390/integration
-/usr/local/share/lgt2390/libpaths
-/usr/local/share/lgt2390/library
-%doc /usr/local/share/lgt2390/manuals
-/usr/local/share/lgt2390/scripts
-/usr/local/share/lgt2390/settings.lgt
-/usr/local/share/lgt2390/wenv
-/usr/local/share/lgt2390/xml
+%doc /usr/local/share/lgt2391/BIBLIOGRAPHY.bib
+%doc /usr/local/share/lgt2391/CUSTOMIZE.txt
+%doc /usr/local/share/lgt2391/INSTALL.txt
+%doc /usr/local/share/lgt2391/LICENSE.txt
+%doc /usr/local/share/lgt2391/QUICK_START.txt
+%doc /usr/local/share/lgt2391/README.txt
+%doc /usr/local/share/lgt2391/RELEASE_NOTES.txt
+%doc /usr/local/share/lgt2391/UPGRADING.txt
+/usr/local/share/lgt2391/VERSION.txt
+/usr/local/share/lgt2391/compiler
+/usr/local/share/lgt2391/configs
+/usr/local/share/lgt2391/contributions
+/usr/local/share/lgt2391/examples
+/usr/local/share/lgt2391/integration
+/usr/local/share/lgt2391/libpaths
+/usr/local/share/lgt2391/library
+%doc /usr/local/share/lgt2391/manuals
+/usr/local/share/lgt2391/scripts
+/usr/local/share/lgt2391/settings.lgt
+/usr/local/share/lgt2391/wenv
+/usr/local/share/lgt2391/xml
 /usr/local/share/logtalk
 /usr/local/bin/cplgtdirs
 /usr/local/bin/lgt2pdf
@@ -136,7 +136,7 @@ echo
 if [ -x /usr/bin/update-mime-database ]; then
 	mkdir -p /usr/share/mime/packages
 	rm -f /usr/share/mime/packages/logtalk.xml
-	cp /usr/local/share/lgt2390/scripts/freedesktop/logtalk.xml /usr/share/mime/packages/logtalk.xml
+	cp /usr/local/share/lgt2391/scripts/freedesktop/logtalk.xml /usr/share/mime/packages/logtalk.xml
 	update-mime-database /usr/share/mime
 	echo "Added the Logtalk mime-type to the Shared MIME-info Database."
 	echo
