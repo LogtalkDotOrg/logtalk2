@@ -61,8 +61,7 @@ macosx
 	packages
 
 windows
-	directory containing files used when building Windows 2000/XP GUI 
-	installers
+	directory containing files used when building Windows GUI installers
 
 cplgtdirs.sh
 cplgtdirs.js
@@ -74,3 +73,5 @@ cplgtdirs.js
 	permissions for the copied files; the LOGTALKHOME environment 
 	variable must be defined (pointing to the Logtalk installation 
 	directory)
+cplgtdirs.bat
+    wrapper for the cplgtdirs.js script in order to simplify its use
