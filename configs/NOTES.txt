@@ -301,7 +301,7 @@ XSB 3.2 and later versions
 	of source files. Full support for settings files.
 
 
-YAP 6.0.0 and later versions
+YAP 6.0.2 and later versions
 
 	yap.pl
 

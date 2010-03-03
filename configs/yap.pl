@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.0 and later versions
 %
-%  last updated: March 2, 2010
+%  last updated: March 3, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -230,7 +230,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 '$lgt_prolog_feature'(prolog_dialect, yap).
 '$lgt_prolog_feature'(prolog_version, (Major, Minor, Patch)) :-
 	current_prolog_flag(version_data, yap(Major, Minor, Patch, _)).
-'$lgt_prolog_feature'(prolog_compatible_version, @>=((6,0,0))).
+'$lgt_prolog_feature'(prolog_compatible_version, @>=((6,0,2))).
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, full).
