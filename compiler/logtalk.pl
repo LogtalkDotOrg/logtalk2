@@ -5206,8 +5206,8 @@ current_logtalk_flag(version, version(2, 39, 1)).
 % source file needs recompilation
 
 '$lgt_needs_recompilation'(File) :-
-	'$lgt_file_name'(prolog, File, Object, _),
-	\+ '$lgt_file_exists'(Object),
+	'$lgt_file_name'(prolog, File, _, Path),
+	\+ '$lgt_file_exists'(Path),
 	!.
 
 '$lgt_needs_recompilation'(File) :-

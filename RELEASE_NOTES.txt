@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.39.1 - March ??, 2010
 
+    Corrected a bug in the Logtalk compiler that forced recompilation of
+    source files when the "smart_compilation" flag was set to "on".
+
     Updated the SWI-Prolog and YAP config files in order to recognize and
     compile the proprietary directive create_prolog_flag/3.
 
