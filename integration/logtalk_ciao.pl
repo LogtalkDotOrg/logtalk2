@@ -17,9 +17,12 @@
 :- ensure_loaded('$LOGTALKHOME/compiler/logtalk.pl').
 :- ensure_loaded('$LOGTALKUSER/libpaths/libpaths.pl').
 :- op(600, xfy, ::).
-:- op(600, fy, ::).
-:- op(600, fy, ^^).
-:- op(200, fy, +).
-:- op(200, fy, ?).
-:- op(200, fy, @).
-:- op(200, fy, -).
+:- op(600,  fy, ::).
+:- op(600,  fy, ^^).
+:- op(200,  fy,  +).
+:- op(200,  fy,  ?).
+:- op(200,  fy,  @).
+:- op(200,  fy,  -).
+:- op(400, yfx, <<).
+:- op(600,  fy,  :).
+:- op(400, yfx, >>).

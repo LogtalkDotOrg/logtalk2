@@ -25,6 +25,7 @@
 :- op(200,  fy,  -).
 :- op(400, yfx, <<).
 :- op(600,  fy,  :).
+:- op(400, yfx, >>).
 
 :- noprofile((
 	'$lgt_before_'/5, '$lgt_after_'/5,
