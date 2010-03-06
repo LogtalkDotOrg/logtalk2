@@ -78,8 +78,6 @@ B-Prolog 7.1 and later versions
 	the sizes of the code areas on the "bplgt" script if you run into 
 	out-of-memory errors with complex applications.
 
-	Full support for settings files.
-
 
 CIAO Prolog 1.10#8
 
@@ -100,8 +98,7 @@ CIAO Prolog 1.10#8
 	Don't forget to call the cd/1 predicate to set the working directory 
 	before compiling the library or an example (you will need first to 
 	load the library system that exports the cd/1 predicate by calling 
-	the goal use_module(library(system)). Supports smart compilation of 
-	source files. Full support for settings files.
+	the goal use_module(library(system)).
 
 
 CxProlog 0.97.4 or later versions
@@ -110,8 +107,7 @@ CxProlog 0.97.4 or later versions
 
 	Developed and tested with the help of the CxProlog author, Artur Miguel
 	Dias. Don't forget to call the fs_cwd/1 predicate to set the working 
-	directory before compiling the library or an example. Supports smart 
-	compilation of source files. Full support for settings files.
+	directory before compiling the library or an example.
 
 
 ECLiPSe 6.0#77 or later versions
@@ -155,17 +151,14 @@ ECLiPSe 6.0#77 or later versions
 
 	Adopted from a config file written and tested with help of Taner Bilgic 
 	for Logtalk 1.x. Don't forget to use the cd/1 predicate to set the 
-	working directory before loading the library or an example. Supports 
-	smart compilation of source files.
+	working directory before loading the library or an example.
 
 	With this Prolog compiler, avoid reloading Logtalk source files declaring
 	and defining dynamic predicates. Due to the semantics of the ECLiPSe 
 	built-in predicate compile/1, new clauses for dynamic predicates are 
 	appended to the old ones instead of replacing them.
 
-	Full support for settings files on POSIX operating-systems. On Windows,
-	only supports settings files on the Logtalk user folder. Supports the
-	"altdirs" flag.
+	On Windows, only supports settings files on the Logtalk user folder.
 
 
 Qu-Prolog 8.10 and later versions
@@ -194,9 +187,9 @@ Qu-Prolog 8.10 and later versions
 	Don't forget to use the chdir/1 predicate to set the working directory 
 	before loading the library or an example.
 
-	Written and tested with the help of Peter Robinson.
+    No support for smart compilation of source files.
 
-	Full support for settings files.
+	Written and tested with the help of Peter Robinson.
 
 
 SICStus Prolog 3.8~3.12.x
@@ -207,8 +200,7 @@ SICStus Prolog 3.8~3.12.x
 	"iso", but that is only recommended and should not be needed to run
 	Logtalk. No problems expected although not fully tested. Don't forget
 	to use the SICStus working_directory/2 predicate to set the working
-	directory before loading the library or an example. Supports smart
-	compilation of source files. Full support for settings files.
+	directory before loading the library or an example.
 
 	If you want SICStus Prolog to automatically load Logtalk at startup, 
 	then add the following lines to your ~/.sicstusrc or ~/.sicstus.ini 
@@ -226,8 +218,7 @@ SICStus Prolog 4.0.3 and later versions
 
 	sicstus4.pl
 
-	Config file for the SICStus Prolog 4.x version. Supports smart compilation
-	of source files. Full support for settings files.
+	Config file for the SICStus Prolog 4.x version.
 
 
 SWI Prolog 5.8.0 and later versions
@@ -238,13 +229,13 @@ SWI Prolog 5.8.0 and later versions
 
 	No problems expected. Please report any problem found (with a solution 
 	if possible). Don't forget to use the cd/1 predicate to set the working 
-	directory before loading the library or an example. Supports smart 
-	compilation of source files. To improve the integration between Logtalk 
-	and SWI-Prolog edit the compiler/logtalk.pl file and add the line 
-	":- system_module." to the top of the file. You may also load the file 
-	configs/swihook.pl in order to be able to load Logtalk entities using 
-	SWI-Prolog load_files/2 and consult/1 predicates and to support edit/1
-	and make/0.
+	directory before loading the library or an example.
+	
+	To improve the integration between Logtalk and SWI-Prolog edit the 
+	compiler/logtalk.pl file and add the line ":- system_module." to the top
+	of the file. You may also load the file configs/swihook.pl in order to be
+	able to load Logtalk entities using SWI-Prolog load_files/2 and consult/1
+	predicates and to support edit/1 and make/0.
 
 	If you want SWI-Prolog to automatically load Logtalk at startup, then 
 	add the following lines to your pl.ini (on Windows):
@@ -262,7 +253,7 @@ SWI Prolog 5.8.0 and later versions
 	See the SWI-Prolog documentation for further information on the .plrc 
 	and pl.ini user initialization files.
 
-	The config file sets the "iso" SWI-Prolog flag to "true". This setting 
+	The config file may set the "iso" SWI-Prolog flag to "true". This setting
 	may improve compatibility of Logtalk code across different back-end 
 	Prolog compilers buy may also cause compatibility problems with some 
 	SWI-Prolog libraries. Comment out the corresponding set_prolog_flag/2 
@@ -289,27 +280,23 @@ SWI Prolog 5.8.0 and later versions
 	Set the Logtalk "misspelt" and "portability" flags to "warning" in order
 	to detect unqualified calls to library predicates.
 
-	Full support for settings files.
-
 
 XSB 3.2 and later versions
 
 	xsb.pl
 
 	Don't forget to use the cd/1 predicate to set the working directory 
-	before loading the library or an example. Supports smart compilation 
-	of source files. Full support for settings files.
+	before loading the library or an example.
 
 
 YAP 6.0.2 and later versions
 
 	yap.pl
 
-	The config file sets the flag "language" to "iso", but that is only
+	The config file may set the flag "language" to "iso", but that is only
 	recommended and should not be needed to run Logtalk. Some of the YAP
 	libraries may not be compatible with this flag setting.
 
 	Don't forget to use the cd/1 predicate to set the working directory 
-	before loading the library or an example. Supports smart compilation 
-	of source files. Full support for settings files. Support for the 
-	Logtalk multi-threading features requires YAP git version.
+	before loading the library or an example. Support for the Logtalk 
+	multi-threading features mayrequire YAP git version.

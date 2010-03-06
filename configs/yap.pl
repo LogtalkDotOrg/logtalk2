@@ -9,7 +9,7 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for YAP Prolog 6.0.0 and later versions
+%  configuration file for YAP Prolog 6.0.2 and later versions
 %
 %  last updated: March 3, 2010
 %
