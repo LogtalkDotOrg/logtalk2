@@ -12,7 +12,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 CONTENTS
 
  1. License
- 2. Home of Logtalk package
+ 2. Logtalk web site
  3. Registration
  4. Support
  5. Installation
@@ -31,9 +31,9 @@ in the "LICENSE.txt" file in this directory. Logtalk follows the
 Artistic License 2.0. The copyright notice and license applies to all 
 files in this release (including sources, documentation, and examples) 
 unless otherwise explicitly stated.
+LOGTALK WEB SITE
 
-
-2. HOME OF LOGTALK PACKAGE
+2. LOGTALK WEB SITE
 
 The latest release of the Logtalk package is always available at the URL:
 
