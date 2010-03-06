@@ -41,7 +41,7 @@ UninstallFilesDir="{userdocs}\Logtalk uninstaller"
 MinVersion=0,5.0
 
 [Types]
-Name: "full"; Description: "Full installation (recommended)"
+Name: "full"; Description: "Full installation"
 Name: "base"; Description: "Base system installation"
 Name: "user"; Description: "User data files installation (must be run by all end-users)"
 Name: "prolog"; Description: "Prolog integration (see documentation for compatibility details)"
@@ -159,54 +159,8 @@ Type: filesandordirs; Name: "{group}"; Components: base
 [Code]
 var
   LgtUserDirPage: TInputDirWizardPage;
-  WarningPage: TOutputMsgWizardPage;
-  Explanation, Warning, BackupFolder: String;
-
-procedure InitializeWizard;
-var
-  Version, InstalledVersion: Cardinal;
-  LOGTALKHOME: String;
-begin
-  Explanation := 'Select the folder in which Setup should install Logtalk user data files, then click Next.'
-                 + Chr(13) + Chr(13)
-                 + 'These files allows each user to independently customize Logtalk and to freely modify the provided programming examples.'
-                 + Chr(13) + Chr(13)
-                 + 'A copy of these files must exist in the user home folder in order to use the Logtalk-Prolog integration scripts available from the Start Menu.'
-                 + Chr(13) + Chr(13)
-                 + 'Addtional end-users may use this installer to make a copy of these files on their home folders after a full installation of Logtalk.';
-  LgtUserDirPage := CreateInputDirPage(wpSelectDir,
-    'Select folder for Logtalk user data files', 'Where should Logtalk user data files be installed?',
-    Explanation,
-    False, 'New Folder');
-  LgtUserDirPage.Add('');
-  LgtUserDirPage.Values[0] := ExpandConstant('{#LOGTALKUSER}');
-  if not IsAdminLoggedOn then
-  begin
-    Warning := 'Full installation of Logtalk requires an administrative user.'
-               + Chr(13) + Chr(13)
-               + 'If the base Logtalk system is already installed, you may proceed in order to setup Logtalk for you as an end-user.'
-               + Chr(13) + Chr(13)
-               + 'If Logtalk is already set for you, this installer will make a backup copy of your current files (if you choose the same installation folder) and will restore all user data files to their default, pristine state.';
-    WarningPage := CreateOutputMsgPage(wpWelcome,
-  'Information', 'Please read the following important information before continuing.', Warning);
-  end;
-  if RegQueryDWordValue(HKLM, 'Software\Logtalk\', 'Version', Version) then
-    InstalledVersion := Version
-  else if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'LOGTALKHOME', LOGTALKHOME) and DirExists(LOGTALKHOME) then
-    InstalledVersion := 0
-  else
-    InstalledVersion := -1;
-  if IsAdminLoggedOn and (InstalledVersion >= 0) and (InstalledVersion < 2371) then
-  begin
-    Warning := 'You have an older version of Logtalk installed whose configuration files are incompatible with this new version.'
-               + Chr(13) + Chr(13)
-               + 'You must updade your Logtalk user data folder by performing a full installation.'
-               + Chr(13) + Chr(13)
-               + 'All aditional Logtalk users on your computer must also use this installer to update their Logtalk user data folders.';
-    WarningPage := CreateOutputMsgPage(wpWelcome,
-  'Warning', 'Logtalk user data folder update required.', Warning);
-  end
-end;
+  WarningPage, ErrorPage: TOutputMsgWizardPage;
+  Explanation, Warning, Error, BackupFolder: String;
 
 function GetLgtUserDir(Param: String): String;
 begin
@@ -249,52 +203,75 @@ begin
   end
 end;
 
-function GetBPExePath(Param: String): String;
+function BPExePath: String;
 var
   BPDIR: String;
-  Warning: String;
 begin
   if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'BPDIR', BPDIR) then
     Result := BPDIR + '\bp.bat'
-  else begin
+  else
+    Result := 'prolog_compiler_not_installed'
+end;
+
+function GetBPExePath(Param: String): String;
+var
+  Warning: String;
+begin
+  Result := BPExePath;
+  if Result = 'prolog_compiler_not_installed' then
+  begin
     Warning := 'Failed to detect B-Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	MsgBox(Warning, mbError, MB_OK);
-    Result := 'lgt_exe_does_not_exist'
+	  MsgBox(Warning, mbError, MB_OK);
   end
+end;
+
+function CiaoExePath: String;
+var
+  CiaoDir: String;
+begin
+  if RegQueryStringValue(HKLM, 'Software\Ciao Prolog\', 'ciao_dir', CiaoDir) then
+    Result := CiaoDir + '\shell\ciaosh.bat'
+  else
+    Result := 'prolog_compiler_not_installed'
 end;
 
 function GetCiaoExePath(Param: String): String;
 var
-  CiaoDir: String;
   Warning: String;
 begin
-  if RegQueryStringValue(HKLM, 'Software\Ciao Prolog\', 'ciao_dir', CiaoDir) then
-    Result := CiaoDir + '\shell\ciaosh.bat'
-  else begin
+  Result := CiaoExePath;
+  if Result = 'prolog_compiler_not_installed' then
+  begin
     Warning := 'Failed to detect Ciao Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	MsgBox(Warning, mbError, MB_OK);
-    Result := 'lgt_exe_does_not_exist'
+	  MsgBox(Warning, mbError, MB_OK);
   end
+end;
+
+function CxExePath: String;
+var
+  CxDir: String;
+begin
+  if RegQueryStringValue(HKLM, 'SOFTWARE\CxProlog\', 'CXPROLOG_DIR', CxDir) then
+    Result := CxDir + '\cxprolog.exe'
+  else
+    Result := 'prolog_compiler_not_installed'
 end;
 
 function GetCxExePath(Param: String): String;
 var
-  CxDir: String;
   Warning: String;
 begin
-  if RegQueryStringValue(HKLM, 'SOFTWARE\CxProlog\', 'CXPROLOG_DIR', CxDir) then
-    Result := CxDir + '\cxprolog.exe'
-  else begin
+  Result := CxExePath;
+  if Result = 'prolog_compiler_not_installed' then
+  begin
     Warning := 'Failed to detect CxProlog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	MsgBox(Warning, mbError, MB_OK);
-    Result := 'lgt_exe_does_not_exist'
+	  MsgBox(Warning, mbError, MB_OK);
   end
 end;
 
-function GetEclipse6ExePath(Param: String): String;
+function Eclipse6ExePath: String;
 var
   ECLIPSEDIR: String;
-  Warning: String;
 begin
   if IsWin64 then
     if RegQueryStringValue(HKLM64, 'Software\IC-Parc\Eclipse\6.1\', 'ECLIPSEDIR', ECLIPSEDIR) then
@@ -303,134 +280,259 @@ begin
         Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
     else if RegQueryStringValue(HKLM32, 'Software\IC-Parc\Eclipse\6.0\', 'ECLIPSEDIR', ECLIPSEDIR) then
       Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
-    else begin
-      Warning := 'Failed to detect ECLiPSe Prolog 6 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-      MsgBox(Warning, mbError, MB_OK);
-      Result := 'lgt_exe_does_not_exist'
-    end
+    else
+      Result := 'prolog_compiler_not_installed'
   else if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\6.1\', 'ECLIPSEDIR', ECLIPSEDIR) then
          Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
        else if RegQueryStringValue(HKLM, 'Software\IC-Parc\Eclipse\6.0\', 'ECLIPSEDIR', ECLIPSEDIR) then
          Result := ECLIPSEDIR + '\lib\i386_nt\eclipse.exe'
-  else begin
+       else
+         Result := 'prolog_compiler_not_installed'
+end;
+
+function GetEclipse6ExePath(Param: String): String;
+var
+  Warning: String;
+begin
+  Result := Eclipse6ExePath;
+  if Result = 'prolog_compiler_not_installed' then
+  begin
     Warning := 'Failed to detect ECLiPSe Prolog 6 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	MsgBox(Warning, mbError, MB_OK);
-    Result := 'lgt_exe_does_not_exist'
+    MsgBox(Warning, mbError, MB_OK);
   end
+end;
+
+function SP3ExePath: String;
+var
+  SP_PATH: String;
+begin
+  if RegQueryStringValue(HKLM32, 'Software\SICS\SICStus3.12_win32\', 'SP_PATH', SP_PATH) then
+    Result := SP_PATH + '\bin\spwin.exe'
+  else
+    Result := 'prolog_compiler_not_installed'
 end;
 
 function GetSP3ExePath(Param: String): String;
 var
-  SP_PATH: String;
   Warning: String;
 begin
-  if RegQueryStringValue(HKLM32, 'Software\SICS\SICStus3.12_win32\', 'SP_PATH', SP_PATH) then
-    Result := SP_PATH + '\bin\spwin.exe'
-  else begin
+  Result := SP3ExePath;
+  if Result = 'prolog_compiler_not_installed' then
+  begin
     Warning := 'Failed to detect SICStus Prolog 3 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	MsgBox(Warning, mbError, MB_OK);
-    Result := 'lgt_exe_does_not_exist'
+	  MsgBox(Warning, mbError, MB_OK);
   end
 end;
 
-function GetSP4ExePath(Param: String): String;
+function SP4ExePath: String;
 var
   SP_PATH: String;
-  Warning: String;
 begin
   if RegQueryStringValue(HKLM32, 'Software\SICS\SICStus4.1_x86-win32-nt-4\', 'SP_PATH', SP_PATH) then
     Result := SP_PATH + '\bin\spwin.exe'
   else if RegQueryStringValue(HKLM32, 'Software\SICS\SICStus4.0_win32\', 'SP_PATH', SP_PATH) then
     Result := SP_PATH + '\bin\spwin.exe'
-  else begin
+  else
+    Result := 'prolog_compiler_not_installed'
+end;
+
+function GetSP4ExePath(Param: String): String;
+var
+  Warning: String;
+begin
+  Result := SP4ExePath;
+  if Result = 'prolog_compiler_not_installed' then
+  begin
     Warning := 'Failed to detect SICStus Prolog 4 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	MsgBox(Warning, mbError, MB_OK);
-    Result := 'lgt_exe_does_not_exist'
+	  MsgBox(Warning, mbError, MB_OK);
   end
 end;
 
-function GetSWIConExePath(Param: String): String;
+function SWIConExePath: String;
 var
   Home: String;
-  Warning: String;
 begin
   if RegQueryStringValue(HKLM, 'Software\SWI\Prolog64\', 'home', Home) or RegQueryStringValue(HKLM, 'Software\SWI\Prolog\', 'home', Home) then
     if FileExists(Home + '\bin\plcon.exe') then
       Result := Home + '\bin\plcon.exe'
     else if FileExists(Home + '\bin\swipl.exe') then
       Result := Home + '\bin\swipl.exe'
-    else begin
-      Warning := 'Failed to detect SWI-Prolog executable.' + Chr(13) + 'Logtalk integration shortcut not created.';
-      MsgBox(Warning, mbError, MB_OK);
-      Result := 'lgt_exe_does_not_exist'
-    end
-  else begin
+    else
+      Result := 'prolog_compiler_not_installed'
+  else
+    Result := 'prolog_compiler_not_installed'
+end;
+
+function GetSWIConExePath(Param: String): String;
+var
+  Warning: String;
+begin
+  Result := SWIConExePath;
+  if Result = 'prolog_compiler_not_installed' then
+  begin
     Warning := 'Failed to detect SWI-Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	MsgBox(Warning, mbError, MB_OK);
-    Result := 'lgt_exe_does_not_exist'
+	  MsgBox(Warning, mbError, MB_OK)
   end
 end;
 
-function GetSWIWinExePath(Param: String): String;
+function SWIWinExePath: String;
 var
   Home: String;
-  Warning: String;
 begin
   if RegQueryStringValue(HKLM, 'Software\SWI\Prolog64\', 'home', Home) or RegQueryStringValue(HKLM, 'Software\SWI\Prolog\', 'home', Home) then
     if FileExists(Home + '\bin\plwin.exe') then
       Result := Home + '\bin\plwin.exe'
     else if FileExists(Home + '\bin\swipl-win.exe') then
       Result := Home + '\bin\swipl-win.exe'
-    else begin
-      Warning := 'Failed to detect SWI-Prolog executable.' + Chr(13) + 'Logtalk integration shortcut not created.';
-      MsgBox(Warning, mbError, MB_OK);
-      Result := 'lgt_exe_does_not_exist'
-    end
-  else begin
+    else
+      Result := 'prolog_compiler_not_installed'
+  else
+    Result := 'prolog_compiler_not_installed'
+end;
+
+function GetSWIWinExePath(Param: String): String;
+var
+  Warning: String;
+begin
+  Result := SWIWinExePath;
+  if Result = 'prolog_compiler_not_installed' then
+  begin
     Warning := 'Failed to detect SWI-Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	MsgBox(Warning, mbError, MB_OK);
-    Result := 'lgt_exe_does_not_exist'
+	  MsgBox(Warning, mbError, MB_OK)
   end
+end;
+
+function XSBExePath: String;
+var
+  XSB_DIR: String;
+begin
+  if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'XSB_DIR', XSB_DIR) then
+    Result := XSB_DIR + '\config\i686-pc-cygwin\bin\xsb.exe'
+  else
+    Result := 'prolog_compiler_not_installed'
 end;
 
 function GetXSBExePath(Param: String): String;
 var
-  XSB_DIR: String;
   Warning: String;
 begin
-  if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'XSB_DIR', XSB_DIR) then
-    Result := XSB_DIR + '\config\i686-pc-cygwin\bin\xsb.exe'
-  else begin
+  Result := XSBExePath;
+  if Result = 'prolog_compiler_not_installed' then
+  begin
     Warning := 'Failed to detect XSB installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	MsgBox(Warning, mbError, MB_OK);
-    Result := 'lgt_exe_does_not_exist'
+	  MsgBox(Warning, mbError, MB_OK);
   end
+end;
+
+function XSBMTExePath: String;
+var
+  XSB_DIR: String;
+begin
+  if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'XSB_DIR', XSB_DIR) then
+    Result := XSB_DIR + '\config\i686-pc-cygwin-mt\bin\xsb.exe'
+  else
+    Result := 'prolog_compiler_not_installed'
 end;
 
 function GetXSBMTExePath(Param: String): String;
 var
-  XSB_DIR: String;
   Warning: String;
 begin
-  if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'XSB_DIR', XSB_DIR) then
-    Result := XSB_DIR + '\config\i686-pc-cygwin-mt\bin\xsb.exe'
-  else begin
+  Result := XSBMTExePath;
+  if Result = 'prolog_compiler_not_installed' then
+  begin
     Warning := 'Failed to detect XSB-MT installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	MsgBox(Warning, mbError, MB_OK);
-    Result := 'lgt_exe_does_not_exist'
+	  MsgBox(Warning, mbError, MB_OK);
   end
+end;
+
+function YAPExePath: String;
+var
+  Home: String;
+begin
+  if RegQueryStringValue(HKLM, 'Software\YAP\Prolog\', 'home', Home) then
+    Result := Home + '\bin\yap.exe'
+  else
+    Result := 'prolog_compiler_not_installed'
 end;
 
 function GetYAPExePath(Param: String): String;
 var
-  Home: String;
   Warning: String;
 begin
-  if RegQueryStringValue(HKLM, 'Software\YAP\Prolog\', 'home', Home) then
-    Result := Home + '\bin\yap.exe'
-  else begin
+  Result := YAPExePath;
+  if Result = 'prolog_compiler_not_installed' then
+  begin
     Warning := 'Failed to detect YAP installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	MsgBox(Warning, mbError, MB_OK);
-    Result := 'lgt_exe_does_not_exist'
+	  MsgBox(Warning, mbError, MB_OK);
+  end
+end;
+
+function NoBackEndPrologCompilerInstalled: Boolean;
+begin
+    Result :=
+      (BPExePath = 'prolog_compiler_not_installed') and
+      (CiaoExePath = 'prolog_compiler_not_installed') and
+      (CxExePath = 'prolog_compiler_not_installed') and
+      (Eclipse6ExePath = 'prolog_compiler_not_installed') and
+      (SP3ExePath = 'prolog_compiler_not_installed') and
+      (SP4ExePath = 'prolog_compiler_not_installed') and
+      (SWIConExePath = 'prolog_compiler_not_installed') and
+      (SWIWinExePath = 'prolog_compiler_not_installed') and
+      (XSBExePath = 'prolog_compiler_not_installed') and
+      (XSBMTExePath = 'prolog_compiler_not_installed') and
+      (YAPExePath = 'prolog_compiler_not_installed')
+end;
+
+procedure InitializeWizard;
+var
+  Version, InstalledVersion: Cardinal;
+  LOGTALKHOME: String;
+begin
+  Explanation := 'Select the folder in which Setup should install Logtalk user data files, then click Next.'
+                 + Chr(13) + Chr(13)
+                 + 'These files allows each user to independently customize Logtalk and to freely modify the provided programming examples.'
+                 + Chr(13) + Chr(13)
+                 + 'A copy of these files must exist in the user home folder in order to use the Logtalk-Prolog integration scripts available from the Start Menu.'
+                 + Chr(13) + Chr(13)
+                 + 'Addtional end-users may use this installer to make a copy of these files on their home folders after a full installation of Logtalk.';
+  LgtUserDirPage := CreateInputDirPage(wpSelectDir,
+    'Select folder for Logtalk user data files', 'Where should Logtalk user data files be installed?',
+    Explanation,
+    False, 'New Folder');
+  LgtUserDirPage.Add('');
+  LgtUserDirPage.Values[0] := ExpandConstant('{#LOGTALKUSER}');
+  if not IsAdminLoggedOn then
+  begin
+    Warning := 'Full installation of Logtalk requires an administrative user.'
+               + Chr(13) + Chr(13)
+               + 'If the base Logtalk system is already installed, you may proceed in order to setup Logtalk for you as an end-user.'
+               + Chr(13) + Chr(13)
+               + 'If Logtalk is already set for you, this installer will make a backup copy of your current files (if you choose the same installation folder) and will restore all user data files to their default, pristine state.';
+    WarningPage := CreateOutputMsgPage(wpWelcome, 'Information', 'Please read the following important information before continuing.', Warning);
+  end;
+  if RegQueryDWordValue(HKLM, 'Software\Logtalk\', 'Version', Version) then
+    InstalledVersion := Version
+  else if RegQueryStringValue(HKLM, 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment\', 'LOGTALKHOME', LOGTALKHOME) and DirExists(LOGTALKHOME) then
+    InstalledVersion := 0
+  else
+    InstalledVersion := -1;
+  if IsAdminLoggedOn and (InstalledVersion >= 0) and (InstalledVersion < 2371) then
+  begin
+    Warning := 'You have an older version of Logtalk installed whose configuration files are incompatible with this new version.'
+               + Chr(13) + Chr(13)
+               + 'You must updade your Logtalk user data folder by performing a full installation.'
+               + Chr(13) + Chr(13)
+               + 'All aditional Logtalk users on your computer must also use this installer to update their Logtalk user data folders.';
+    WarningPage := CreateOutputMsgPage(wpWelcome, 'Warning', 'Logtalk user data folder update required.', Warning)
+  end;
+  if IsAdminLoggedOn and NoBackEndPrologCompilerInstalled then
+  begin
+    Error := 'No compatible Prolog compiler found!'
+             + Chr(13) + Chr(13)
+             + 'Logtalk requires a compatible Prolog compiler to be installed in order to run. Logtalk uses a Prolog compiler as a back-end compiler.'
+             + Chr(13) + Chr(13)
+             + 'You must rerun the Logtalk installer after installing a compatible Prolog compiler.';
+    ErrorPage := CreateOutputMsgPage(wpSelectDir, 'Warning', 'No compatible Prolog compiler found!', Error)
   end
 end;

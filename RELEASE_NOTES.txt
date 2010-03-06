@@ -21,6 +21,9 @@ RELEASE NOTES
     Updated the SWI-Prolog and YAP config files in order to recognize and
     compile the proprietary directive create_prolog_flag/3.
 
+    Updated the Windows installer in order to warn the user when no
+    compatible Prolog compiler can be found.
+
 
 2.39.0 - February 28, 2010
 
