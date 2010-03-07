@@ -17,7 +17,7 @@ CONTENTS
  4. Support
  5. Installation
  6. Customization
- 7. Quick start
+ 7. Running
  8. Documentation
  9. Upgrading
 10. Citations
@@ -83,7 +83,7 @@ The file "CUSTOMIZE.txt" provides detailed instructions for customizing the
 Logtalk installation and working environment.
 
 
-7. QUICK START
+7. RUNNING
 
 The file "QUICK_START.txt" provides quick instructions for those of you in 
 a hurry to run Logtalk, provided that your favorite Prolog compiler is 

@@ -28,8 +28,8 @@ Windows, Unix, and Unix-like operating-systems.
 
 Although you may customize this file by adding the paths to your own
 "libraries" (in order to easily load your own source code), this is
-best accomplished by customizing the settings file in the Logtalk user
-directory.
+preferably accomplished by customizing the settings file in the Logtalk
+user directory.
 
 When manually loading Logtalk (instead of using the provided integration
 scripts and shortcuts), you will need to load the "libpaths.pl" into your
