@@ -27,7 +27,9 @@ RELEASE NOTES
     bugs in expanding paths containing more than one environment variable.
 
     Updated the Windows installer in order to warn the user when no
-    compatible Prolog compiler can be found.
+    compatible Prolog compiler can be found. In addition, update the
+    installer in order to also create shortcuts to the main documentation
+    files on the Logtalk user folder.
 
 
 2.39.0 - February 28, 2010

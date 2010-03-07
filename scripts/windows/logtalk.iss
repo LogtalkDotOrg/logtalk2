@@ -131,6 +131,11 @@ Name: "{group}\Logtalk - YAP"; Filename: "{code:GetYAPExePath}"; Parameters: "-l
 
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"; Components: base
 
+Name: "{code:GetLgtUserDir}\Bibliography"; Filename: "{app}\BIBLIOGRAPHY.bib"; Components: user
+Name: "{code:GetLgtUserDir}\License"; Filename: "{app}\LICENSE.txt"; Components: user
+Name: "{code:GetLgtUserDir}\Release Notes"; Filename: "{app}\RELEASE_NOTES.txt"; Components: user
+Name: "{code:GetLgtUserDir}\Read Me"; Filename: "{app}\README.txt"; Components: user
+Name: "{code:GetLgtUserDir}\Customization instructions"; Filename: "{app}\CUSTOMIZE.txt"; Components: user
 Name: "{code:GetLgtUserDir}\configs"; Filename: "{app}\configs"; Components: user
 Name: "{code:GetLgtUserDir}\manuals"; Filename: "{app}\manuals"; Components: user
 Name: "{code:GetLgtUserDir}\wenv"; Filename: "{app}\wenv"; Components: user
@@ -493,7 +498,7 @@ begin
                  + Chr(13) + Chr(13)
                  + 'These files allows each user to independently customize Logtalk and to freely modify the provided libraries, programming examples, and other supporting files.'
                  + Chr(13) + Chr(13)
-                 + 'A copy of these files must exist in the user home folder in order to use the Logtalk-Prolog integration scripts available from the Start Menu.'
+                 + 'A copy of these files must exist in the user home folder in order to use the Logtalk-Prolog integration scripts available from the Start Menu program group "Logtalk".'
                  + Chr(13) + Chr(13)
                  + 'Addtional end-users may use this installer to make a copy of these files on their home folders after a full installation of Logtalk.';
   LgtUserDirPage := CreateInputDirPage(wpSelectDir,
