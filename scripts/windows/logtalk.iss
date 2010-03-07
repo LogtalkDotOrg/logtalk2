@@ -43,15 +43,15 @@ MinVersion=0,5.0
 [Types]
 Name: "full"; Description: "Full installation"
 Name: "base"; Description: "Base system installation"
-Name: "user"; Description: "User data files installation (must be run by all end-users)"
+Name: "user"; Description: "User files installation (must be run by all end-users)"
 Name: "prolog"; Description: "Prolog integration (see documentation for compatibility details)"
 Name: "custom"; Description: "Custom installation"; Flags: iscustom
 
 [Components]
-Name: "base"; Description: "Base system"; Types: full base custom; Flags: disablenouninstallwarning
-Name: "user"; Description: "User data files"; Types: full user custom; Flags: checkablealone disablenouninstallwarning
-Name: "user\backup"; Description: "Backup current user data files"; Types: full user custom; Flags: disablenouninstallwarning
-Name: "prolog"; Description: "Prolog integration"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "base"; Description: "Base system (compiler/runtime, Prolog integration files, manuals)"; Types: full base custom; Flags: disablenouninstallwarning
+Name: "user"; Description: "User files (libraries, examples, and other support files)"; Types: full user custom; Flags: checkablealone disablenouninstallwarning
+Name: "user\backup"; Description: "Backup current Logtalk user folder"; Types: full user custom; Flags: disablenouninstallwarning
+Name: "prolog"; Description: "Prolog integration (back-end compiler support)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\bp"; Description: "B-Prolog integration (version 7.1 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\ciao"; Description: "Ciao Prolog integration (version 1.10)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\cxprolog"; Description: "CxProlog integration (version 0.97.4 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
@@ -61,7 +61,7 @@ Name: "prolog\swicon"; Description: "SWI-Prolog (console) integration (version 5
 Name: "prolog\swiwin"; Description: "SWI-Prolog (window) integration (version 5.8.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\xsb"; Description: "XSB integration (version 3.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\xsbmt"; Description: "XSB-MT integration (version 3.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\yap"; Description: "YAP integration (version 6.0.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\yap"; Description: "YAP integration (version 6.0.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 
 [Tasks]
 Name: registration; Description: "&Register {#MyAppName} (opens a web page; requires an Internet connection)"; Components: base user
@@ -489,15 +489,15 @@ var
   Version, InstalledVersion: Cardinal;
   LOGTALKHOME: String;
 begin
-  Explanation := 'Select the folder in which Setup should install Logtalk user data files, then click Next.'
+  Explanation := 'Select the folder in which Setup should install Logtalk user files, then click Next.'
                  + Chr(13) + Chr(13)
-                 + 'These files allows each user to independently customize Logtalk and to freely modify the provided programming examples.'
+                 + 'These files allows each user to independently customize Logtalk and to freely modify the provided libraries, programming examples, and other supporting files.'
                  + Chr(13) + Chr(13)
                  + 'A copy of these files must exist in the user home folder in order to use the Logtalk-Prolog integration scripts available from the Start Menu.'
                  + Chr(13) + Chr(13)
                  + 'Addtional end-users may use this installer to make a copy of these files on their home folders after a full installation of Logtalk.';
   LgtUserDirPage := CreateInputDirPage(wpSelectDir,
-    'Select folder for Logtalk user data files', 'Where should Logtalk user data files be installed?',
+    'Select folder for Logtalk user files', 'Where should Logtalk user files be installed?',
     Explanation,
     False, 'New Folder');
   LgtUserDirPage.Add('');
@@ -508,7 +508,7 @@ begin
                + Chr(13) + Chr(13)
                + 'If the base Logtalk system is already installed, you may proceed in order to setup Logtalk for you as an end-user.'
                + Chr(13) + Chr(13)
-               + 'If Logtalk is already set for you, this installer will make a backup copy of your current files (if you choose the same installation folder) and will restore all user data files to their default, pristine state.';
+               + 'If Logtalk is already set for you, this installer will make a backup copy of your current files (if you choose the same installation folder) and will restore all user files to their default, pristine state.';
     WarningPage := CreateOutputMsgPage(wpWelcome, 'Information', 'Please read the following important information before continuing.', Warning);
   end;
   if RegQueryDWordValue(HKLM, 'Software\Logtalk\', 'Version', Version) then
@@ -521,10 +521,10 @@ begin
   begin
     Warning := 'You have an older version of Logtalk installed whose configuration files are incompatible with this new version.'
                + Chr(13) + Chr(13)
-               + 'You must updade your Logtalk user data folder by performing a full installation.'
+               + 'You must updade your Logtalk user folder by performing a full installation.'
                + Chr(13) + Chr(13)
-               + 'All aditional Logtalk users on your computer must also use this installer to update their Logtalk user data folders.';
-    WarningPage := CreateOutputMsgPage(wpWelcome, 'Warning', 'Logtalk user data folder update required.', Warning)
+               + 'All aditional Logtalk users on your computer must also use this installer to update their Logtalk user  folders.';
+    WarningPage := CreateOutputMsgPage(wpWelcome, 'Warning', 'Logtalk user folder update required.', Warning)
   end;
   if IsAdminLoggedOn and NoBackEndPrologCompilerInstalled then
   begin

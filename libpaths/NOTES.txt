@@ -23,8 +23,8 @@ reflect your Logtalk installation, Prolog compiler, and operating-system
 requirements.
 
 As defined, the provided "libpaths.pl" file is already compatible with 
-some of the most popular Prolog compilers, running on MacOS X, Linux, 
-Windows, Unix, and Unix-like operating-systems.
+the supported back-end Prolog compilers running on MacOS X, Windows,
+Linux, Unix, and Unix-like operating-systems.
 
 Although you may customize this file by adding the paths to your own
 "libraries" (in order to easily load your own source code), this is

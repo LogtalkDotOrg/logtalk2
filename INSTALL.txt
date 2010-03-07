@@ -102,8 +102,8 @@ If you use a bash shell, add the following lines to your ~/.profile file:
 
 Don't use relative paths such as "../" or "./" in the definition of the 
 environment variables. Some Prolog compilers don't expand environment 
-variables, resulting in "file not found" errors when attempting to use 
-the Logtalk integration scripts.
+variables in paths, resulting in "file not found" errors when attempting
+to use the Logtalk integration scripts.
 
 When using the provided shell script for installing Logtalk, a symbolic link 
 to the Logtalk installation directory is automatically created. The link is 
@@ -126,11 +126,10 @@ If you installed Logtalk on your home directory, then skip this step if you
 have set both Logtalk environment variables (LOGTALKHOME and LOGTALKUSER) to 
 point to the same directory.
 
-Each user must make a local copy of the Logtalk user-modifiable files to its 
-home directory. This setup allows each user to easily and independently 
-customize Logtalk to its needs. These copies can be easily made by instructing
-end-users to simply run the shell scripts "cplgtdirs.*" (which are described 
-in the "scripts/NOTES.txt" file).
+Each user must make a local copy of the Logtalk user-modifiable files
+(examples, libraries, and other supporting files) in his/her home directory.
+These copies can be easily made by running the shell script "cplgtdirs" (see
+the "scripts/NOTES.txt" file for details):
 
 >> POSIX systems:
 
@@ -144,8 +143,8 @@ The local copies made by the "cplgtdirs" scripts have both read and write
 permissions for the user running the script. When used with one of the 
 back-end Prolog compilers for which an integration script is provided on 
 the "integration" directory, this setup as the advantage of allowing each 
-end-user to independently customize default compilation options and library 
-paths.
+end-user to independently customize default compilation options, library 
+paths, and modify and experiment with the provided libraries and examples.
 
 Windows (non-admin) users may also use the Logtalk GUI installer to setup 
 their Logtalk user folder and the LOGTALKUSER environment variable.

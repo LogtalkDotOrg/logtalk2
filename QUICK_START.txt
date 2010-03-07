@@ -39,7 +39,8 @@ scripts!):
 * YAP:            yaplgt
 
 If you get an unexpected failure when using one of the Prolog integration
-scripts, consult the "configs/NOTES.txt" file for compatibility notes.
+scripts, consult the "configs/NOTES.txt" file in the Logtalk installation
+folder for compatibility notes.
 
 On MacOS X systems, "/opt/local/bin" must be in your PATH to run the scripts.
 Terminal command files for running Logtalk with selected back-end Prolog 
@@ -50,13 +51,13 @@ installer creates an alias to the Logtalk folder in the Applications folder.
 On Windows systems, shortcuts for running Logtalk with selected back-end 
 Prolog compilers are created on the "Start Menu/Programs/Logtalk" menu.
 If you get an unexpected failure when using one of the Prolog integration
-shortcuts, consult the "configs/NOTES.txt" file for compatibility notes.
-
+shortcuts, consult the "configs/NOTES.txt" file in the Logtalk installation
+folder for compatibility notes.
 
 2. Open the "manuals/index.html" file with a web browser.
 
 3. Select the "Tutorial" link. This will provide you with a basic 
-understanding of the main Logtalk concepts.
+understanding of some of the main Logtalk concepts.
 
 4. Go back to the "index.html" file, select the "User Manual" link, then
 the "Installing Logtalk" and "Writing, Running, and Debugging Logtalk
@@ -94,8 +95,9 @@ configuration files for popular text editors which enable syntax coloring
 and other text services when editing Logtalk source files.
 
 3. Create a sub-directory with a suitable name to hold all the files of 
-your application. You may want to add the directory path to the "libpaths.pl" 
-file mentioned above in order to easily load your application.
+your application. You may want to define the application directory path
+in a "settings.lgt" file in order to easily load your application (see 
+the file "CUSTOMIZE.txt" for details).
 
 4. Copy to this sub-directory a loader file from one of the example 
 directories and modify it to load your own source files.

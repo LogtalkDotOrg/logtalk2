@@ -128,9 +128,6 @@ ln -sf "$LOGTALKHOME"/xml/logtalk.rng "$LOGTALKUSER"/xml/logtalk.rng
 ln -sf "$LOGTALKHOME"/xml/logtalk.xsd "$LOGTALKUSER"/xml/logtalk.xsd
 echo "Finished copying Logtalk files and directories."
 echo
-echo "You may need to edit the \"\$LOGTALKUSER/libpaths/libpaths.pl\" file to match"
-echo "your Prolog compiler and operating-system requirements."
-echo
 echo "You may want to customize the default Logtalk compiler flags by editing"
 echo "the \"settings.lgt\" file found in the directory \"\$LOGTALKUSER\". For more"
 echo "information on customizing Logtalk and your working environment, consult"

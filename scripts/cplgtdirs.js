@@ -173,9 +173,6 @@ link.Save();
 
 WScript.Echo("Finished copying Logtalk files and directories.");
 WScript.Echo("");
-WScript.Echo("You may need to edit the \"\%LOGTALKUSER\%\\libpaths\\libpaths.pl\" file to");
-WScript.Echo("match your Prolog compiler and operating-system requirements.");
-WScript.Echo("");
 WScript.Echo("You may want to customize the default Logtalk compiler flags by editing");
 WScript.Echo("the \"settings.lgt\" file found in the directory \"\%LOGTALKUSER\%\". For more");
 WScript.Echo("information on customizing Logtalk and your working environment, consult");
