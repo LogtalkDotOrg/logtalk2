@@ -26,6 +26,9 @@ RELEASE NOTES
     this definition only works for some back-end Prolog compilers due to
     bugs in expanding paths containing more than one environment variable.
 
+    Updated the "types_loader.lgt" library loader file to load the "rbtree"
+    library object.
+
     Updated the Windows installer in order to warn the user when no
     compatible Prolog compiler can be found. In addition, update the
     installer in order to also create shortcuts to the main documentation

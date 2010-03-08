@@ -13,7 +13,7 @@
 		numberlistp, numberlist,
 		varlistp, varlist,
 		queuep, queue,
-		dictionaryp, bintree,
+		dictionaryp, bintree, rbtree,
 		setp, set, set1,
 		comparingp],
 		[reload(skip)])).	% allow for static binding

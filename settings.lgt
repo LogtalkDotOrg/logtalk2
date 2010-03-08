@@ -42,10 +42,9 @@
 %  defined in the back-end Prolog compiler config file.
 %
 %  Limitations of the back-end Prolog compilers may prevent settings files
-%  to work from directories other than the Logtalk user directory or from
-%  working at all, specially when running on non-POSIX operating systems
-%  such as Windows. Check the "configs/NOTES.txt" file for compatibility
-%  details.
+%  to work from directories other than the Logtalk user directory, specially
+%  when running on non-POSIX operating systems such as Windows. Check the 
+%  "configs/NOTES.txt" file for compatibility details.
 
 
 %  To define a "library" path for your projects, edit and uncomment the

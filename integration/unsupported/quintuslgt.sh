@@ -60,7 +60,7 @@ if [ -d "$LOGTALKUSER" ]; then
 		cplgtdirs
 	else
 		current=`cat $LOGTALKUSER/VERSION.txt | sed 's/\.//g'`
-		if [ $current -lt 2371 ]; then
+		if [ $current -lt 2391 ]; then
 			echo "Logtalk user directory at $LOGTALKUSER is outdated!"
 			echo "Creating an up-to-date Logtalk user directory..."
 			cplgtdirs
