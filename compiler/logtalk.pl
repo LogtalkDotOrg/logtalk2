@@ -3820,7 +3820,7 @@ current_logtalk_flag(version, version(2, 39, 1)).
 				)
 			;	% in the worst case we need to compile the goal:
 				'$lgt_comp_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _, ExCtx, runtime),
-				'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
+				catch('$lgt_tr_body'(Goal, TGoal, DGoal, Ctx), Error, throw(error(Error, Obj<<Goal, This))),
 				(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
 					call(DGoal)
 				;	call(TGoal)
@@ -8595,7 +8595,7 @@ current_logtalk_flag(version, version(2, 39, 1)).
 	!,
 	(	Parameters == [] ->
 		'$lgt_tr_body'(Free/Goal, TPred, DPred, Ctx)
-	;	throw(representation_error(lambda_parameters, Free/Parameters>>Goal))
+	;	throw(representation_error(lambda_parameters))
 	).
 
 '$lgt_tr_body'(Free/Parameters>>Goal, TPred, DPred, Ctx) :-
@@ -8624,7 +8624,7 @@ current_logtalk_flag(version, version(2, 39, 1)).
 	!,
 	(	Parameters == [] ->
 		'$lgt_tr_body'(Goal, TPred, DPred, Ctx)
-	;	throw(representation_error(lambda_parameters, Parameters>>Goal))
+	;	throw(representation_error(lambda_parameters))
 	).
 
 '$lgt_tr_body'(Parameters>>Goal, TPred, DPred, Ctx) :-
