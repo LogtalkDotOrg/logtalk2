@@ -33,6 +33,10 @@ RELEASE NOTES
     Updated the "types_loader.lgt" library loader file to load the "rbtree"
     library object.
 
+    Small improvement to the library object "lgtunit". Added test predicates
+    succeeds/2, fails/2, and throws/3 for defining simple test that don't
+    need setup or cleanup goals.
+
     Updated the Windows installer in order to warn the user when no
     compatible Prolog compiler can be found. In addition, update the
     installer in order to also create shortcuts to the main documentation

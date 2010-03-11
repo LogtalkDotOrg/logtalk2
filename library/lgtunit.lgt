@@ -2,13 +2,19 @@
 :- object(lgtunit).
 
 	:- info([
-		version is 0.4,
+		version is 0.5,
 		author is 'Paulo Moura',
-		date is 2009/11/14,
+		date is 2010/03/11,
 		comment is 'Logtalk unit test framework.']).
 
 	:- uses(list, [member/2]).
 	:- uses(term, [subsumes/2]).
+
+	:- public(succeeds/2).
+	:- mode(succeeds(+atom, @callable), zero_or_more).
+	:- info(succeeds/2, [
+		comment is 'Defines a test goal which is expected to succeed.',
+		argnames is ['Identifier', 'Goal']]).
 
 	:- public(succeeds/3).
 	:- mode(succeeds(+atom, +list(callable), @callable), zero_or_more).
@@ -16,11 +22,23 @@
 		comment is 'Defines a test goal which is expected to succeed. The Context argument specifies optional setup and cleanup goals.',
 		argnames is ['Identifier', 'Context', 'Goal']]).
 
+	:- public(fails/2).
+	:- mode(fails(+atom, @callable), zero_or_more).
+	:- info(fails/2, [
+		comment is 'Defines a test goal which is expected to fail.',
+		argnames is ['Identifier', 'Goal']]).
+
 	:- public(fails/3).
 	:- mode(fails(+atom, +list(callable), @callable), zero_or_more).
 	:- info(fails/3, [
 		comment is 'Defines a test goal which is expected to fail. The Context argument specifies optional setup and cleanup goals.',
 		argnames is ['Identifier', 'Context', 'Goal']]).
+
+	:- public(throws/3).
+	:- mode(throws(+atom, @callable, @nonvar), zero_or_more).
+	:- info(throws/3, [
+		comment is 'Defines a test goal which is expected to throw a specific error.',
+		argnames is ['Identifier', 'Goal', 'Error']]).
 
 	:- public(throws/4).
 	:- mode(throws(+atom, +list(callable), @callable, @nonvar), zero_or_more).
@@ -115,13 +133,22 @@
 		forall(fails_test(Test, Setup, Goal, Cleanup), run_fails_test(Test, Setup, Goal, Cleanup)),
 		forall(throws_test(Test, Setup, Goal, Error, Cleanup), run_throws_test(Test, Setup, Goal, Error, Cleanup)).
 
+	succeeds_test(Test, true, Goal, true) :-
+		::succeeds(Test, Goal).
+
 	succeeds_test(Test, Setup, Goal, Cleanup) :-
 		::succeeds(Test, Context, Goal),
 		context_setup_cleanup(Context, Setup, Cleanup).
 
+	fails_test(Test, true, Goal, true) :-
+		::fails(Test, Goal).
+
 	fails_test(Test, Setup, Goal, Cleanup) :-
 		::fails(Test, Context, Goal),
 		context_setup_cleanup(Context, Setup, Cleanup).
+
+	throws_test(Test, true, Goal, Error, true) :-
+		::throws(Test, Goal, Error).
 
 	throws_test(Test, Setup, Goal, Error, Cleanup) :-
 		::throws(Test, Context, Goal, Error),
