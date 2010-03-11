@@ -125,22 +125,22 @@ yes
 
 | ?- url::parse("http://logtalk.org", Components).
 
-Components = [protocol(http), address([www, logtalk, org]), path([]), file('')] 
+Components = [protocol(http), address([logtalk, org]), path([]), file('')] 
 yes
 
 | ?- url::parse("http://logtalk.org/", Components).
 
-Components = [protocol(http), address([www, logtalk, org]), path(['']), file('')] 
+Components = [protocol(http), address([logtalk, org]), path(['']), file('')] 
 yes
 
 | ?- url::parse("http://logtalk.org/cvs", Components).
 
-Components = [protocol(http), address([www, logtalk, org]), path([cvs]), file('')] 
+Components = [protocol(http), address([logtalk, org]), path([cvs]), file('')] 
 yes
 
 | ?- url::parse("http://logtalk.org/cvs.html", Components).
 
-Components = [protocol(http), address([www, logtalk, org]), path([]), file('cvs.html')] 
+Components = [protocol(http), address([logtalk, org]), path([]), file('cvs.html')] 
 yes
 
 | ?- url::parse("http://193.136.64.5/files/update", Components).
