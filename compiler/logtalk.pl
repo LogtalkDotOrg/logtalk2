@@ -6933,19 +6933,19 @@ current_logtalk_flag(version, version(2, 39, 1)).
 	;	'$lgt_pp_complemented_object_'(Entity)
 	),
 	!,
-	'$lgt_tr_alias_directive'(Entity, PI1, PI2).
+	'$lgt_tr_pred_alias_directive'(Entity, PI1, PI2).
 
 '$lgt_tr_directive'(alias, [Entity, _, _], _, _, _, _) :-
 	throw(reference_error(entity_identifier, Entity)).
 
 
 
-'$lgt_tr_alias_directive'(Entity, Functor1//Arity, Functor2//Arity) :-
+'$lgt_tr_pred_alias_directive'(Entity, Functor1//Arity, Functor2//Arity) :-
     !,
 	ExtArity is Arity + 2,
-	'$lgt_tr_alias_directive'(Entity, Functor1/ExtArity, Functor2/ExtArity).
+	'$lgt_tr_pred_alias_directive'(Entity, Functor1/ExtArity, Functor2/ExtArity).
 
-'$lgt_tr_alias_directive'(Entity, Functor1/Arity, Functor2/Arity) :-
+'$lgt_tr_pred_alias_directive'(Entity, Functor1/Arity, Functor2/Arity) :-
 	functor(Pred, Functor1, Arity),
 	Pred =.. [_| Args],
 	Alias =.. [Functor2| Args],
@@ -10067,7 +10067,8 @@ current_logtalk_flag(version, version(2, 39, 1)).
 
 '$lgt_tr_msg'(_, Obj, _, This) :-
 	nonvar(Obj),
-	This \== user,									
+	This \== user,
+	\+ functor(Obj, {}, 1),					
 	'$lgt_add_referenced_object'(Obj),
 	fail.
 
@@ -16238,9 +16239,9 @@ current_logtalk_flag(version, version(2, 39, 1)).
 		call(Def, GPred, GExCtx, GCall, DefCtn),
 		!,	% found the predicate definition; use it only if it's safe
 		'$lgt_safe_static_binding_paths'(GObj, DclCtn, DefCtn),
-		(	Meta =.. [PredFunctor| MArgs],						% fails when Meta == no
+		(	Meta =.. [PredFunctor| MArgs],								% fails when Meta == no
 			Pred =.. [PredFunctor| Args],
-			\+ ('$lgt_member'(MArg, MArgs), integer(MArg)) ->	% closures cannot be optimized
+			\+ ('$lgt_member'(MArg, MArgs), integer(MArg), MArg > 0) ->	% closures cannot be optimized
 			% meta-predicates cannot be cached as they require translation of the meta-arguments
 			'$lgt_pp_entity'(_, _, Prefix, _, _),
 			'$lgt_comp_ctx'(Ctx, _, Sender, Sender, Obj, Prefix, [], _, ExCtx, _),

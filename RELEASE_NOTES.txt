@@ -18,6 +18,10 @@ RELEASE NOTES
     Corrected a bug in the Logtalk compiler that forced recompilation of
     source files when the "smart_compilation" flag was set to "on".
 
+    Corrected an erroneous compiler warning when reporting referenced but
+    unknown objects when using the {Object}::Message notation. Thanks to
+    Parker Jones for the bug report.
+
     Updated the SWI-Prolog and YAP config files in order to recognize and
     compile the proprietary directive create_prolog_flag/3.
 
