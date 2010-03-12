@@ -19,29 +19,29 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 | ?- incremental::route([london, brighton, portsmouth, exeter, oxford, aberystwyth], Route).
 
-Route = oxford-london-portsmouth-brighton-exeter-aberystwyth ?
-yes
+Route = oxford-london-portsmouth-brighton-exeter-aberystwyth ;
+...
 
 
 % presort towns by geographical distance before using the incremental algorithm:
 
 | ?- presort::route([london, brighton, portsmouth, exeter, oxford, aberystwyth], Route).
 
-Route = brighton-london-oxford-portsmouth-exeter-aberystwyth ?
-yes
+Route = brighton-london-oxford-portsmouth-exeter-aberystwyth ;
+...
 
 
 % come home after the journey:
 
 | ?- circular::route([london, brighton, portsmouth, exeter, oxford, aberystwyth], Route).
 
-Route = london-brighton-portsmouth-exeter-aberystwyth-oxford-london ?
-yes
+Route = london-brighton-portsmouth-exeter-aberystwyth-oxford-london ;
+...
 
 
 % blind search by generating permutations of the list of towns:
 
 | ?- permute::route([london, brighton, portsmouth, exeter, oxford, aberystwyth], Route).
 
-Route = (aberystwyth-exeter-portsmouth-brighton-london-oxford,273.6237583942784) ? 
+Route = (aberystwyth-exeter-portsmouth-brighton-london-oxford,273.6237583942784)
 yes

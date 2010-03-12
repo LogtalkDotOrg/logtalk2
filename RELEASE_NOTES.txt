@@ -41,6 +41,11 @@ RELEASE NOTES
     succeeds/2, fails/2, and throws/3 for defining simple test that don't
     need setup or cleanup goals.
 
+    Added a missing file, "lists.lgt" to the "metainterpreters" example.
+
+    Corrected assorted typos on the sample queries of several examples.
+    Thanks to Parker Jones for the bug reports.
+
     Updated the Windows installer in order to warn the user when no
     compatible Prolog compiler can be found. In addition, update the
     installer in order to also create shortcuts to the main documentation
