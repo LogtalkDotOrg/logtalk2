@@ -15,6 +15,14 @@ RELEASE NOTES
 
 2.39.1 - March ??, 2010
 
+    Added a new entity directive, alias/2, supporting the definition of
+    compile-time object aliases. This directive may be used to abbreviate
+    long object names or to make it easier to switch between objects
+    providing alternative implementations of the same protocol.
+
+    Updated the Logtalk compiler to warn the user when finding deprecated
+    directives.
+
     Corrected a bug in the Logtalk compiler that forced recompilation of
     source files when the "smart_compilation" flag was set to "on".
 
