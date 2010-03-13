@@ -27,6 +27,9 @@
 <p>
 Declares object aliases. An object alias is an alternative name for an object that may be used to abbreviate long object names or to make it easier to switch between  objects providing alternative implementations for the same protocol (e.g. by using conditional compilation directives to select between alias directives). This directive may be used in objects and categories.
 </p>
+<p>
+Object aliases are replaced at compile-time in <code>Alias::Message</code> goals (as long as <code>Alias</code> is instantiated and the goals do not occur as arguments for user-defined meta-predicates or for non-standard Prolog meta-predicates not declared on the config files).
+</p>
 
 <h4>Template and modes</h4>
 

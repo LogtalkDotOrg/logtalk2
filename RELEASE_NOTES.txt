@@ -42,22 +42,22 @@ RELEASE NOTES
     this definition only works for some back-end Prolog compilers due to
     bugs in expanding paths containing more than one environment variable.
 
-    Updated the "types_loader.lgt" library loader file to load the "rbtree"
-    library object.
+    Updated the "types_loader.lgt" library loader file in order to load the
+    "rbtree" library object.
 
     Small improvement to the library object "lgtunit". Added test predicates
     succeeds/2, fails/2, and throws/3 for defining simple test that don't
     need setup or cleanup goals.
 
-    Added a missing file, "lists.lgt" to the "metainterpreters" example.
+    Added a missing file, "lists.lgt", to the "metainterpreters" example.
 
     Corrected assorted typos on the sample queries of several examples.
     Thanks to Parker Jones for the bug reports.
 
-    Updated the Windows installer in order to warn the user when no
-    compatible Prolog compiler can be found. In addition, update the
-    installer in order to also create shortcuts to the main documentation
-    files on the Logtalk user folder.
+    Updated the Windows installer in order to warn the user when no compatible
+    Prolog compiler can be found. In addition, update the installer in order
+    to also create shortcuts to the main documentation files on the Logtalk
+    user folder.
 
     Documentation cleanup, specially regarding installing, customizing, and
     running Logtalk. Simplified Prolog compatibility notes as the current set
