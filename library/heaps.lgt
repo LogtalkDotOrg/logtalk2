@@ -70,6 +70,8 @@
 	insert(1, N, Key, Value, L, R1, L, R2) :- !,
 		insert(N, Key, Value, R1, R2).
 
+	% sort/8 *assumes* the last four arguments are not instantiated;
+	% this holds when sort/8 is called from insert/5
 	sort(Key1, Value1, Key2, Value2, Key1, Value1, Key2, Value2) :-
 		parameter(1, Order),
 		compare(Order, Key1, Key2),
