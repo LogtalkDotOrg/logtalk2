@@ -3,8 +3,8 @@
 
 
 	:- info([
-		version is 1.0,
-		date is 2005/5/8,
+		version is 1.01,
+		date is 2010/03/18,
 		author is 'Example by LPA; adapted to Logtalk by Paulo Moura.',
 		comment is 'Set up & create a timetable satisfying all of the constraints.']).
 
@@ -42,7 +42,10 @@
 
 
 	print :-
-		(forms, periods, teachers, subjects)::print.
+		forms::print,
+		periods::print,
+		teachers::print,
+		subjects::print.
 
 
 	setup :-
