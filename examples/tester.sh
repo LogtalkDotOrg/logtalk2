@@ -89,6 +89,20 @@ do
 			name=$(echo $unit|sed 's|/|_|g')
 			$logtalk "logtalk_load(tester),halt." > "$results/$name.results" 2> "$results/$name.errors"
 		fi
+		for subunit in *
+		do
+			if [ -d $subunit ] ; then
+				cd $subunit
+				if [ -e "./tester.lgt" ] ; then
+					echo '*****************************************'
+					echo "***** Testing $unit/$subunit"
+					echo '*****************************************'
+					subname=$(echo $unit/$subunit|sed 's|/|_|g')
+					$logtalk "logtalk_load(tester),halt." > "$results/$subname.results" 2> "$results/$subname.errors"
+				fi
+				cd ..
+			fi
+		done
 		cd "$base"
 	fi
 done
