@@ -48,12 +48,18 @@ RELEASE NOTES
     Updated the "types_loader.lgt" library loader file in order to load the
     "rbtree" library object.
 
-    Small improvement to the library object "lgtunit". Added test predicates
-    succeeds/2, fails/2, and throws/3 for defining simple test that don't
-    need setup or cleanup goals.
-
     Corrected a predicate property name bug (alias/1 instead of alias_of/1)
     in the library object "listing".
+
+    Replaced the library object "lgtunit" with a new version supporting three
+    different dialects for specifying unit tests. See the example "testing"
+    and the library file "lgtuint.txt" for details.
+
+    Added unit tests for most examples, based on the sample queries found
+    on each example "SCRIPT.txt" files. The original tests, contributed by
+    Parker Jones, were rewritten to use the updated version of the "lgtunit"
+    library. Added a POSIX shell script, "examples/tester.sh" for automating
+    running the examples unit tests.
 
     Added a missing file, "lists.lgt", to the "metainterpreters" example.
 
