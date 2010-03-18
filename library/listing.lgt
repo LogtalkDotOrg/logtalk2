@@ -2,9 +2,9 @@
 :- category(listing).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2007/2/8,
+		date is 2010/03/12,
 		comment is 'Listing predicates.']).
 
 	:- public(listing/0).
@@ -90,7 +90,7 @@
 		write(':- synchronized('), writeq(Functor/Arity), write(').'), nl,
 		fail.
 	listing_properties(Head, Functor, Arity) :-
-		::predicate_property(Head, alias(OFunctor/OArity)),
+		::predicate_property(Head, alias_of(OFunctor/OArity)),
 		write(':- alias('), writeq(OFunctor/OArity), write(', '), writeq(Functor/Arity), write(').'), nl,
 		fail.
 	listing_properties(Head, _, _) :-

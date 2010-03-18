@@ -52,6 +52,9 @@ RELEASE NOTES
     succeeds/2, fails/2, and throws/3 for defining simple test that don't
     need setup or cleanup goals.
 
+    Corrected a predicate property name bug (alias/1 instead of alias_of/1)
+    in the library object "listing".
+
     Added a missing file, "lists.lgt", to the "metainterpreters" example.
 
     Corrected assorted typos on the sample queries of several examples.
