@@ -10,7 +10,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ================================================================
 
 
-The "lgtunit.lgt" file contains a preliminary framework for defining 
+The "lgtunit.lgt" file contains a simple framework for defining 
 and running unit tests in Logtalk. To compile and load it type:
 
 	| ?- logtalk_load(library(lgtunit)).
@@ -20,10 +20,14 @@ The unit tests framework is inspired on the works of Joachim Schimpf
 package).
 
 In order to write your own unit tests, define objects extending the 
-"lgtunit" object and use the <</2 context-switching call control 
-construct to write the tests. Make sure that the compiler flag
-"context_switching_calls" is set to "allow" for the entities you want
-to test.
+"lgtunit" object. These objects must be compiled using the compiler
+option hook(lgtunit). For example:
 
-For an example of how to write unit tests check the "testing" example 
+| ?- logtalk_load(my_tests, [hook(lgtunit)]).
+
+When using the <</2 control construct to access and test an object
+internal predicates, make sure that the "context_switching_calls" 
+compiler flag is set to "allow" for those objects.
+
+For examples of how to write unit tests check the "testing" example 
 in the "examples" folder in the Logtalk distribution.

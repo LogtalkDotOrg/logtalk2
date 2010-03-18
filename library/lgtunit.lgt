@@ -1,50 +1,33 @@
 
-:- object(lgtunit).
+:- object(lgtunit,
+	implements(expanding)).		% built-in protocol for term and goal expansion methods
 
 	:- info([
-		version is 0.5,
+		version is 1.0,
 		author is 'Paulo Moura',
-		date is 2010/03/11,
-		comment is 'Logtalk unit test framework.']).
+		date is 2010/03/16,
+		comment is 'A simple unit test framework.']).
 
 	:- uses(list, [member/2]).
 	:- uses(term, [subsumes/2]).
 
-	:- public(succeeds/2).
-	:- mode(succeeds(+atom, @callable), zero_or_more).
-	:- info(succeeds/2, [
-		comment is 'Defines a test goal which is expected to succeed.',
-		argnames is ['Identifier', 'Goal']]).
+	:- public(succeeds/1).
+	:- mode(succeeds(+atom), zero_or_more).
+	:- info(succeeds/1, [
+		comment is 'Defines a test which is expected to succeed.',
+		argnames is ['Identifier']]).
 
-	:- public(succeeds/3).
-	:- mode(succeeds(+atom, +list(callable), @callable), zero_or_more).
-	:- info(succeeds/3, [
-		comment is 'Defines a test goal which is expected to succeed. The Context argument specifies optional setup and cleanup goals.',
-		argnames is ['Identifier', 'Context', 'Goal']]).
+	:- public(fails/1).
+	:- mode(fails(+atom), zero_or_more).
+	:- info(fails/1, [
+		comment is 'Defines a test which is expected to fail.',
+		argnames is ['Identifier']]).
 
-	:- public(fails/2).
-	:- mode(fails(+atom, @callable), zero_or_more).
-	:- info(fails/2, [
-		comment is 'Defines a test goal which is expected to fail.',
-		argnames is ['Identifier', 'Goal']]).
-
-	:- public(fails/3).
-	:- mode(fails(+atom, +list(callable), @callable), zero_or_more).
-	:- info(fails/3, [
-		comment is 'Defines a test goal which is expected to fail. The Context argument specifies optional setup and cleanup goals.',
-		argnames is ['Identifier', 'Context', 'Goal']]).
-
-	:- public(throws/3).
-	:- mode(throws(+atom, @callable, @nonvar), zero_or_more).
-	:- info(throws/3, [
-		comment is 'Defines a test goal which is expected to throw a specific error.',
-		argnames is ['Identifier', 'Goal', 'Error']]).
-
-	:- public(throws/4).
-	:- mode(throws(+atom, +list(callable), @callable, @nonvar), zero_or_more).
-	:- info(throws/4, [
-		comment is 'Defines a test goal which is expected to throw a specific error. The Context argument specifies optional setup and cleanup goals.',
-		argnames is ['Identifier', 'Context', 'Goal', 'Error']]).
+	:- public(throws/2).
+	:- mode(throws(+atom, @nonvar), zero_or_more).
+	:- info(throws/2, [
+		comment is 'Defines a test which is expected to throw a specific error.',
+		argnames is ['Identifier', 'Error']]).
 
 	:- public(run/2).
 	:- mode(run(+atom, +atom), zero_or_one).
@@ -57,6 +40,17 @@
 	:- info(run/0, [
 		comment is 'Runs the unit tests, writing the results to the current output stream.']).
 
+	:- protected(run_tests/0).
+	:- mode(run, one).
+	:- info(run/0, [
+		comment is 'Runs all defined unit tests.']).
+
+	:- protected(run_tests/1).
+	:- mode(run_tests(+list(callable)), one).
+	:- info(run_tests/1, [
+		comment is 'Runs a list of defined tests.',
+		argnames is ['Tests']]).
+
 	:- protected(setup/0).
 	:- mode(setup, zero_or_one).
 	:- info(setup/0, [
@@ -67,16 +61,22 @@
 	:- info(cleanup/0, [
 		comment is 'Cleanup environment after running the test set. Defaults to the goal true.']).
 
-	:- private(passed_tests_/1).
-	:- dynamic(passed_tests_/1).
-	:- mode(passed_tests_(?integer), zero_or_one).
-	:- info(passed_tests_/1, [
+	:- private(test_/1).
+	:- dynamic(test_/1).
+	:- mode(test_(?integer), zero_or_more).
+	:- info(test_/1, [
+		comment is 'Table of defined tests.']).
+
+	:- private(passed_/1).
+	:- dynamic(passed_/1).
+	:- mode(passed_(?integer), zero_or_one).
+	:- info(passed_/1, [
 		comment is 'Counter for passed tests.']).
 
-	:- private(failed_tests_/1).
-	:- dynamic(failed_tests_/1).
-	:- mode(failed_tests_(?integer), zero_or_one).
-	:- info(failed_tests_/1, [
+	:- private(failed_/1).
+	:- dynamic(failed_/1).
+	:- mode(failed_(?callable), zero_or_one).
+	:- info(failed_/1, [
 		comment is 'Counter for failed tests.']).
 
 	run(File, Mode) :-
@@ -88,13 +88,11 @@
 		close(Stream).
 
 	run :-
-		retractall(passed_tests_(_)),
-		asserta(passed_tests_(0)),
-		retractall(failed_tests_(_)),
-		asserta(failed_tests_(0)),
-		date::today(Year1, Month1, Day1),
-		time::now(Hours1, Minutes1, Seconds1),
-		write('% tests started at '), write(Year1/Month1/Day1), write(', '), write(Hours1), write(':'), write(Minutes1), write(':'), write(Seconds1), nl,
+		retractall(passed_(_)),
+		asserta(passed_(0)),
+		retractall(failed_(_)),
+		asserta(failed_(0)),
+		tests_start_time,
 		self(Self),
 		write('% running tests from object '), writeq(Self), nl,
 		(	object_property(Self, file(File, Directory)) ->
@@ -102,25 +100,19 @@
 		;	true
 		),
 		(	catch(::setup, Error, (broken(setup, Error), fail)) ->
-			(	catch(run_tests, Error, (broken(test, Error), Flag = error)) ->
-				do_cleanup,
-				(	var(Flag) ->
-					passed_tests_(Passed),
-					failed_tests_(Failed),
-					Total is Passed + Failed,
-					write('% '), write(Total), write(' tests: '), write(Passed), write(' passed, '), write(Failed), write(' failed'), nl,
-					write('% completed tests from object '), writeq(Self), nl
-				;	write('% test run failed'), nl
-				)
-			;	do_cleanup,
-				write('! test run failed for object '), writeq(Self), nl,
-				write('% test run failed'), nl
-			)
+			::run_tests,
+			(	catch(::cleanup, Error, (broken(cleanup, Error), fail)) ->
+				true
+			;	write('! test cleanup failed for object '), writeq(Self), nl
+			),
+			passed_(Passed),
+			failed_(Failed),
+			Total is Passed + Failed,
+			write('% '), write(Total), write(' tests: '), write(Passed), write(' passed, '), write(Failed), write(' failed'), nl,
+			write('% completed tests from object '), writeq(Self), nl
 		;	write('! test setup failed for object '), writeq(Self), nl
 		),
-		date::today(Year2, Month2, Day2),
-		time::now(Hours2, Minutes2, Seconds2),
-		write('% tests ended at '), write(Year2/Month2/Day2), write(', '), write(Hours2), write(':'), write(Minutes2), write(':'), write(Seconds2), nl, nl.
+		tests_end_time.
 
 	% by default, no test setup is needed:
 	setup.
@@ -128,114 +120,61 @@
 	% by default, no test cleanup is needed:
 	cleanup.
 
+	run_tests([]).
+	run_tests([Test| Tests]) :-
+		run_test(Test),
+		run_tests(Tests).
+
+	% by default, no tests are defined:
 	run_tests :-
-		forall(succeeds_test(Test, Setup, Goal, Cleanup), run_succeeds_test(Test, Setup, Goal, Cleanup)),
-		forall(fails_test(Test, Setup, Goal, Cleanup), run_fails_test(Test, Setup, Goal, Cleanup)),
-		forall(throws_test(Test, Setup, Goal, Error, Cleanup), run_throws_test(Test, Setup, Goal, Error, Cleanup)).
+		run_tests([]).
 
-	succeeds_test(Test, true, Goal, true) :-
-		::succeeds(Test, Goal).
+	run_test(succeeds(Test)) :-
+		(	catch(::succeeds(Test), _, fail) ->
+			passed_test(Test)
+		;	failed_test(Test)
+		).
 
-	succeeds_test(Test, Setup, Goal, Cleanup) :-
-		::succeeds(Test, Context, Goal),
-		context_setup_cleanup(Context, Setup, Cleanup).
+	run_test(fails(Test)) :-
+		(	catch(\+ ::fails(Test), _, fail) ->
+			passed_test(Test)
+		;	failed_test(Test)
+		).
 
-	fails_test(Test, true, Goal, true) :-
-		::fails(Test, Goal).
-
-	fails_test(Test, Setup, Goal, Cleanup) :-
-		::fails(Test, Context, Goal),
-		context_setup_cleanup(Context, Setup, Cleanup).
-
-	throws_test(Test, true, Goal, Error, true) :-
-		::throws(Test, Goal, Error).
-
-	throws_test(Test, Setup, Goal, Error, Cleanup) :-
-		::throws(Test, Context, Goal, Error),
-		context_setup_cleanup(Context, Setup, Cleanup).
-
-	run_succeeds_test(Test, Setup, Goal, Cleanup) :-
-		self(Self),
-		(	catch(Self<<Setup, Error, (broken(setup(Test), Error), Flag = error)) ->
-			(	var(Flag) ->
-				(	catch({Goal}, _, fail) ->
-					passed_test(Test)
-				;	failed_test(Test)
-				),
-				(	catch(Self<<Cleanup, Error, broken(cleanup(Test), Error)) ->
-					true
-				;	failed(cleanup(Test))
-				)
+	run_test(throws(Test)) :-
+		(	catch(::throws(Test, Error), Ball, ((subsumes(Error, Ball) -> passed_test(Test); failed_test(Test)), Throw = true)) ->
+			(	var(Throw) ->
+				failed_test(Test)
 			;	true
 			)
-		;	failed(setup(Test))
+		;	failed_test(Test)
 		).
 
-	run_fails_test(Test, Setup, Goal, Cleanup) :-
-		self(Self),
-		(	catch(Self<<Setup, Error, (broken(setup(Test), Error), Flag = error)) ->
-			(	var(Flag) ->
-				(	catch(\+ {Goal}, _, fail) ->
-					passed_test(Test)
-				;	failed_test(Test)
-				),
-				(	catch(Self<<Cleanup, Error, broken(cleanup(Test), Error)) ->
-					true
-				;	failed(cleanup(Test))
-				)
-			;	true
-			)
-		;	failed(setup(Test))
-		).
+	tests_start_time :-
+		date::today(Year, Month, Day),
+		time::now(Hours, Minutes, Seconds),
+		write('% tests started at '), write(Year/Month/Day), write(', '),
+		write(Hours), write(':'), write(Minutes), write(':'), write(Seconds),
+		nl.
 
-	run_throws_test(Test, Setup, Goal, Error, Cleanup) :-
-		self(Self),
-		(	catch(Self<<Setup, Error, (broken(setup(Test), Error), Flag = error)) ->
-			(	var(Flag) ->
-				(	catch({Goal}, Ball, ((subsumes(Error, Ball) -> passed_test(Test); failed_test(Test)), Throw = true)) ->
-					(	var(Throw) ->
-						failed_test(Test)
-					;	true
-					)
-				;	failed_test(Test)
-				),
-				(	catch(Self<<Cleanup, Error, broken(cleanup(Test), Error)) ->
-					true
-				;	failed(cleanup(Test))
-				)
-			;	true
-			)
-		;	failed(setup(Test))
-		).
-
-	context_setup_cleanup(Context, Setup, Cleanup) :-
-		(	member(setup(Setup), Context) ->
-			true
-		;	Setup = true
-		),
-		(	member(cleanup(Cleanup), Context) ->
-			true
-		;	Cleanup = true
-		).
+	tests_end_time :-
+		date::today(Year, Month, Day),
+		time::now(Hours, Minutes, Seconds),
+		write('% tests ended at '), write(Year/Month/Day), write(', '),
+		write(Hours), write(':'), write(Minutes), write(':'), write(Seconds),
+		nl, nl.
 
 	passed_test(Test) :-
-		retract(passed_tests_(Old)) ->
+		retract(passed_(Old)) ->
 		New is Old + 1,
-		asserta(passed_tests_(New)),
-		writeq(Test), write(': passed'), nl.
+		asserta(passed_(New)),
+		writeq(Test), write(': success'), nl.
 
 	failed_test(Test) :-
-		retract(failed_tests_(Old)) ->
+		retract(failed_(Old)) ->
 		New is Old + 1,
-		asserta(failed_tests_(New)),
-		writeq(Test), write(': failed'), nl.
-
-	do_cleanup :-
-		self(Self),
-		(	catch(::cleanup, Error, (broken(cleanup, Error), fail)) ->
-			true
-		;	write('! test cleanup failed for object '), writeq(Self), nl
-		).
+		asserta(failed_(New)),
+		writeq(Test), write(': failure'), nl.
 
 	broken(Step, Error) :-
 		self(Self),
@@ -244,5 +183,23 @@
 	failed(Step) :-
 		self(Self),
 		write('! failed '), write(Step), write(' for object '), writeq(Self), nl.
+
+	term_expansion((:- object(Test, Relations)), [(:- object(Test, Relations)), (:- discontiguous(succeeds/1)), (:- discontiguous(fails/1)), (:- discontiguous(throws/2))]) :-
+		retractall(test_(_)).
+
+	term_expansion((test(Test) :- Goal), [(succeeds(Test) :- Goal)]) :-
+		assertz(test_(succeeds(Test))).
+
+	term_expansion((succeeds(Test) :- Goal), [(succeeds(Test) :- Goal)]) :-
+		assertz(test_(succeeds(Test))).
+
+	term_expansion((fails(Test) :- Goal), [(fails(Test) :- Goal)]) :-
+		assertz(test_(fails(Test))).
+
+	term_expansion((throws(Test, Error) :- Goal), [(throws(Test, Error) :- Goal)]) :-
+		assertz(test_(throws(Test))).
+
+	term_expansion((:- end_object), [(run_tests :- ::run_tests(Tests)), (:- end_object)]) :-
+		findall(Test, retract(test_(Test)), Tests).
 
 :- end_object.

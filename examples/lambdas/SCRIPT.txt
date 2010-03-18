@@ -275,9 +275,9 @@ R = 330
 yes
 
 
-% unsorted tests of using lambda expressions:
+% miscellaneous tests of using lambda expressions:
 
-| ?- tests::common_prefix([1], Xs, Ys).
+| ?- misc::common_prefix([1], Xs, Ys).
 
 Xs = []
 Ys = [] ? ;
@@ -293,7 +293,7 @@ Ys = [[1|A],[1|B],[1|C]] ?
 ...
 
 
-| ?- tests::call_n.
+| ?- misc::call_n.
 This test should print f(x,y) in all lines:
 f(x,y)
 f(x,y)
@@ -304,7 +304,7 @@ f(x,y)
 yes
 
 
-| ?- tests::local.
+| ?- misc::local.
 yes
 
 

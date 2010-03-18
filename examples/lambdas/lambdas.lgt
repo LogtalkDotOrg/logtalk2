@@ -62,13 +62,13 @@
 
 
 
-:- object(tests).
+:- object(misc).
 
 	:- info([
 		version is 1.1,
 		date is 2009/12/5,
 		author is 'Paulo Moura',
-		comment is 'Some tests for lambda expressions collected from public forums.']).
+		comment is 'Some miscellaneous tests for lambda expressions collected from public forums.']).
 
 	:- public(common_prefix/3).  
 
@@ -77,7 +77,7 @@
 
 	:- public(call_n/0).
 
-	call_n :-								% adapted from a Ulrich Neumerkel's lambda proposal example
+	call_n :-							% adapted from a Ulrich Neumerkel's lambda proposal example
 		f(X, Y),
 		write('This test should print '), write(f(X, Y)), write(' in all lines:'), nl,
 		call(f, A1, A2), write(f(A1, A2)), nl,
