@@ -14119,10 +14119,12 @@ current_logtalk_flag(version, version(2, 39, 1)).
 % back-end Prolog features:
 '$lgt_valid_flag'(prolog_dialect).
 '$lgt_valid_flag'(prolog_version).
+'$lgt_valid_flag'(prolog_compatible_version).
 '$lgt_valid_flag'(break_predicate).
 '$lgt_valid_flag'(encoding_directive).
 '$lgt_valid_flag'(threads).
 '$lgt_valid_flag'(modules).
+'$lgt_valid_flag'(tabling).
 
 
 

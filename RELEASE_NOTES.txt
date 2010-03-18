@@ -23,6 +23,9 @@ RELEASE NOTES
     Updated the Logtalk compiler to warn the user when finding deprecated
     directives.
 
+    Updated the Logtalk compiler to recognize "prolog_compatible_version"
+    and "tabling" as valid flags.
+
     Corrected a bug in the Logtalk compiler that forced recompilation of
     source files when the "smart_compilation" flag was set to "on".
 
