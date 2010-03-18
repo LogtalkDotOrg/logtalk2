@@ -55,7 +55,7 @@ elif [ "$p_arg" = "cx" ] ; then
 elif [ "$p_arg" = "eclipse" ] ; then
 	logtalk='eclipselgt -e'
 elif [ "$p_arg" = "qu" ] ; then
-	logtalk='qulgt -g'
+	logtalk='qplgt -g'
 elif [ "$p_arg" = "sicstus" ] ; then
 	logtalk='sicstuslgt --goal'
 elif [ "$p_arg" = "swi" ] ; then
@@ -116,4 +116,4 @@ grep -A1 'WARNING!' *.results | tee -a errors.all
 echo '*****************************************'
 echo "***** Failed tests"
 echo '*****************************************'
-grep -A1 -i failure *.results | tee -a errors.all
+grep -A1 -i ': failure' *.results | tee -a errors.all

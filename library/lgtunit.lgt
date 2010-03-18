@@ -11,32 +11,14 @@
 	:- uses(list, [member/2]).
 	:- uses(term, [subsumes/2]).
 
-	:- public(succeeds/1).
-	:- mode(succeeds(+atom), zero_or_more).
-	:- info(succeeds/1, [
-		comment is 'Defines a test which is expected to succeed.',
-		argnames is ['Identifier']]).
-
-	:- public(fails/1).
-	:- mode(fails(+atom), zero_or_more).
-	:- info(fails/1, [
-		comment is 'Defines a test which is expected to fail.',
-		argnames is ['Identifier']]).
-
-	:- public(throws/2).
-	:- mode(throws(+atom, @nonvar), zero_or_more).
-	:- info(throws/2, [
-		comment is 'Defines a test which is expected to throw a specific error.',
-		argnames is ['Identifier', 'Error']]).
-
 	:- public(run/2).
-	:- mode(run(+atom, +atom), zero_or_one).
+	:- mode(run(+atom, +atom), one).
 	:- info(run/2, [
 		comment is 'Runs the unit tests, writing the results to the specified file. Mode can be either "write" (to create a new file) or "append" (to add results to an existing file).',
 		argnames is ['File', 'Mode']]).
 
 	:- public(run/0).
-	:- mode(run, zero_or_one).
+	:- mode(run, one).
 	:- info(run/0, [
 		comment is 'Runs the unit tests, writing the results to the current output stream.']).
 
@@ -61,9 +43,15 @@
 	:- info(cleanup/0, [
 		comment is 'Cleanup environment after running the test set. Defaults to the goal true.']).
 
+	:- private(test/2).
+	:- mode(test(?atom, ?nonvar), zero_or_more).
+	:- info(test/2, [
+		comment is 'Specifies a unit test.',
+		argnames is ['Identifier', 'Outcome']]).
+
 	:- private(test_/1).
 	:- dynamic(test_/1).
-	:- mode(test_(?integer), zero_or_more).
+	:- mode(test_(?compound), zero_or_more).
 	:- info(test_/1, [
 		comment is 'Table of defined tests.']).
 
@@ -130,19 +118,19 @@
 		run_tests([]).
 
 	run_test(succeeds(Test)) :-
-		(	catch(::succeeds(Test), _, fail) ->
+		(	catch(::test(Test, _), _, fail) ->
 			passed_test(Test)
 		;	failed_test(Test)
 		).
 
 	run_test(fails(Test)) :-
-		(	catch(\+ ::fails(Test), _, fail) ->
+		(	catch(\+ ::test(Test, _), _, fail) ->
 			passed_test(Test)
 		;	failed_test(Test)
 		).
 
 	run_test(throws(Test)) :-
-		(	catch(::throws(Test, Error), Ball, ((subsumes(Error, Ball) -> passed_test(Test); failed_test(Test)), Throw = true)) ->
+		(	catch(::test(Test, Error), Ball, ((subsumes(Error, Ball) -> passed_test(Test); failed_test(Test)), Throw = true)) ->
 			(	var(Throw) ->
 				failed_test(Test)
 			;	true
@@ -187,16 +175,32 @@
 	term_expansion((:- object(Test, Relations)), [(:- object(Test, Relations))]) :-
 		retractall(test_(_)).
 
-	term_expansion((test(Test) :- Goal), [(succeeds(Test) :- Goal)]) :-
+	term_expansion((:- discontiguous(Functor/Arity)), []) :-
+		(	Functor/Arity == succeeds/1
+		;	Functor/Arity == fails/1
+		;	Functor/Arity == throws/2
+		),
+		!.
+
+	term_expansion((test(Test, Outcome) :- Goal), [(test(Test, Outcome) :- Goal)]) :-
+		(	Outcome == true ->
+			assertz(test_(succeeds(Test)))
+		;	Outcome == fail ->
+			assertz(test_(fails(Test)))
+		;	nonvar(Outcome) ->
+			assertz(test_(throws(Test)))
+		).
+
+	term_expansion((test(Test) :- Goal), [(test(Test, true) :- Goal)]) :-
 		assertz(test_(succeeds(Test))).
 
-	term_expansion((succeeds(Test) :- Goal), [(succeeds(Test) :- Goal)]) :-
+	term_expansion((succeeds(Test) :- Goal), [(test(Test, true) :- Goal)]) :-
 		assertz(test_(succeeds(Test))).
 
-	term_expansion((fails(Test) :- Goal), [(fails(Test) :- Goal)]) :-
+	term_expansion((fails(Test) :- Goal), [(test(Test, fail) :- Goal)]) :-
 		assertz(test_(fails(Test))).
 
-	term_expansion((throws(Test, Error) :- Goal), [(throws(Test, Error) :- Goal)]) :-
+	term_expansion((throws(Test, Error) :- Goal), [(test(Test, Error) :- Goal)]) :-
 		assertz(test_(throws(Test))).
 
 	term_expansion((:- end_object), [(run_tests :- ::run_tests(Tests)), (:- end_object)]) :-

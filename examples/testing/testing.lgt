@@ -5,7 +5,7 @@
 	:- info([
 		version is 2.0,
 		author is 'Paulo Moura',
-		date is 2010/03/16,
+		date is 2010/03/18,
 		comment is 'Tests for the <</2 built-in control construct.']).
 
 	:- initialization(::run).
@@ -139,7 +139,7 @@
 	setup :-
 		create_object(dyn_test, [], [set_logtalk_flag(dynamic_declarations, allow)], []).
 
-	succeeds(dyn) :-
+	test(dyn) :-
 		\+ dyn_test::current_predicate(_),
 		dyn_test::asserta(a(1)),
 		dyn_test::current_predicate(a/1),
@@ -164,13 +164,13 @@
 
 
 
-:- object(set_tests,
+:- object(operators_tests,
 	extends(lgtunit)).
 
 	:- set_logtalk_flag(unknown, silent).
 
 	:- initialization(::run).
-%	:- initialization(::run('pj.txt', write)).
+%	:- initialization(::run('operators.txt', write)).
 %	:- initialization(::run('results.txt', append)).
 
 	setup :-
@@ -187,7 +187,6 @@
 		findall(I-J, triple::triple(I, J), Solutions),
 		Solutions==[1-3,2-6,3-9].
 
-	% test 3.  % couldn't really test the interesting cases because of compilation errors
 	test(operators_3) :-
 		findall(N1-N2, graph1::edge(N1, N2), Solutions),
 		Solutions==[a-b,a-c,b-d,c-d].

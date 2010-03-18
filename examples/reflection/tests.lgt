@@ -10,10 +10,10 @@
 		date is 2010/03/16,
 		comment is 'Unit tests for the "reflection" example.']).
 
-	:- discontiguous(test/1).
+	:- discontiguous(succeeds/1).
 	:- discontiguous(throws/2).
 
-	test(reflection_1) :-
+	succeeds(reflection_1) :-
 		class::instances(Instances), 
 		class::metaclass,
 		list::msort(Instances,InstancesSorted),
@@ -25,13 +25,13 @@
 		ac::abstract_class,
 		ac::new(i).
 
-	test(reflection_3) :-
+	succeeds(reflection_3) :-
 		class::new(c),
 		c::new(i), 
 		c::instances(Instances),
 		Instances == [i].
 
-	test(reflection_4) :-
+	succeeds(reflection_4) :-
     	\+ i::current_predicate(_Predicate).
 
 :- end_object.

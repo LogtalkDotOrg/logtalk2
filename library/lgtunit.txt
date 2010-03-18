@@ -23,11 +23,33 @@ In order to write your own unit tests, define objects extending the
 "lgtunit" object. These objects must be compiled using the compiler
 option hook(lgtunit). For example:
 
-| ?- logtalk_load(my_tests, [hook(lgtunit)]).
+	| ?- logtalk_load(my_tests, [hook(lgtunit)]).
 
-When using the <</2 control construct to access and test an object
-internal predicates, make sure that the "context_switching_calls" 
+Unit tests can be written using any of the following dialects:
+
+1.	test(Test) :- Goal.
+
+This is the most simple dialect, allowing the specification of tests
+that are expected to succeed. However, tests that are expected to throw
+an error cannot be specified.
+
+2.	succeeds(Test) :- Goal.
+	fails(Test) :- Goal.
+	throws(Test, Error) :- Goal.
+
+This is a straightforward dialect where each kind of test specifies one
+of the possible test outcomes.
+
+3.	test(Test, Outcome) :- Goal.
+
+In this case, Outcome should be the atom "true", the atom "fail", or 
+the exception that the test is expected to throw.
+
+In all cases, "Test" is an atom, uniquely identifying a test.
+
+For examples of how to write unit tests check the "testing" example in
+the "examples" folder in the Logtalk distribution.
+
+Note: when using the <</2 control construct to access and test an
+object internal predicates, make sure that the "context_switching_calls" 
 compiler flag is set to "allow" for those objects.
-
-For examples of how to write unit tests check the "testing" example 
-in the "examples" folder in the Logtalk distribution.
