@@ -10,7 +10,7 @@
 
 	test(assignvars_1) :-
 		rectangle(2, 3, _)::(init, position(X0, Y0), move(3, 7), position(X1, Y1), move(2, 5), position(X2, Y2)),
-		X0==0, Y0==0, X1==3, Y1==7, X2==2, Y2==5.
+		X0 == 0, Y0 == 0, X1 == 3, Y1 == 7, X2 == 2, Y2 == 5.
 
 	test(assignvars_2) :-
 		findall(T-I-F, {fsm(T, I, F)}::recognise([0,1,1,2,1,2,0]), Solutions),

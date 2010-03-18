@@ -5,7 +5,7 @@
 	:- info([
 		version is 1.0,
 		author is 'Paulo Moura',
-		date is 2010/03/16,
+		date is 2010/03/18,
 		comment is 'A simple unit test framework.']).
 
 	:- uses(list, [member/2]).
@@ -184,7 +184,7 @@
 		self(Self),
 		write('! failed '), write(Step), write(' for object '), writeq(Self), nl.
 
-	term_expansion((:- object(Test, Relations)), [(:- object(Test, Relations)), (:- discontiguous(succeeds/1)), (:- discontiguous(fails/1)), (:- discontiguous(throws/2))]) :-
+	term_expansion((:- object(Test, Relations)), [(:- object(Test, Relations))]) :-
 		retractall(test_(_)).
 
 	term_expansion((test(Test) :- Goal), [(succeeds(Test) :- Goal)]) :-

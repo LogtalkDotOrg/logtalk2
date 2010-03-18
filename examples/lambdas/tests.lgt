@@ -8,6 +8,9 @@
 		date is 2010/03/16,
 		comment is 'Unit tests for the "lambdas" example.']).
 
+	:- discontiguous(test/1).
+	:- discontiguous(throws/2).
+
 	test(lambdas_1) :-
 		logtalk << call([X,Y]>>(Y is X*X), 5, R),
 		R == 25.

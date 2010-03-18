@@ -10,6 +10,9 @@
 		date is 2010/03/16,
 		comment is 'Unit tests for the "reflection" example.']).
 
+	:- discontiguous(test/1).
+	:- discontiguous(throws/2).
+
 	test(reflection_1) :-
 		class::instances(Instances), 
 		class::metaclass,

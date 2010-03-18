@@ -8,6 +8,9 @@
 		date is 2010/03/16,
 		comment is 'Unit tests for the "dynpred" example.']).
 
+	:- discontiguous(test/1).
+	:- discontiguous(throws/2).
+
 	test(dynpred_1) :-
 		findall(Value, descendant::p(Value), Solutions),
 		Solutions == [root].

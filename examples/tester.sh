@@ -14,10 +14,69 @@
 
 
 base="$PWD"
-mkdir -p "$base/unit_test_results"
-results="$base/unit_test_results"
-rm -f "$results/*.results"
-rm -f "$results/*.errors"
+results="$base/tester_results"
+backend=yap
+logtalk='yaplgt -g'
+
+usage_help()
+{
+	echo 
+	echo "This script automates running unit tests found on the sub-directories"
+	echo "of the directory containing this script."
+	echo
+	echo "Usage:"
+	echo "  $0 -p prolog -d results"
+	echo "  $0 -h"
+	echo
+	echo "Optional arguments:"
+	echo "  -p back-end Prolog compiler (default is $backend)"
+	echo "  -d name of the sub-directory to store the test results (default is tester_results)"
+	echo "  -h help"
+	echo
+	exit 1
+}
+
+while getopts "p:d:h" option
+do
+	case $option in
+		p) p_arg="$OPTARG";;
+		d) d_arg="$OPTARG";;
+		h) usage_help;;
+		*) usage_help;;
+	esac
+done
+
+if [ "$p_arg" = "b" ] ; then
+	logtalk='bplgt -g'
+elif [ "$p_arg" = "ciao" ] ; then
+	logtalk='ciaolgt -e'
+elif [ "$p_arg" = "cx" ] ; then
+	logtalk='cxlgt --goal'
+elif [ "$p_arg" = "eclipse" ] ; then
+	logtalk='eclipselgt -e'
+elif [ "$p_arg" = "qu" ] ; then
+	logtalk='qulgt -g'
+elif [ "$p_arg" = "sicstus" ] ; then
+	logtalk='sicstuslgt --goal'
+elif [ "$p_arg" = "swi" ] ; then
+	logtalk='swilgt -g'
+elif [ "$p_arg" = "xsb" ] ; then
+	logtalk='xsblgt -e'
+elif [ "$p_arg" = "yap" ] ; then
+	logtalk='yaplgt -g'
+elif [ "$p_arg" != "" ] ; then
+	echo "Error! Unsupported back-end Prolog compiler: $p_arg"
+	usage_help
+	exit 1
+fi
+
+if [ "$d_arg" != "" ] ; then
+	results="$base/$d_arg"
+fi
+
+mkdir -p "$results"
+rm -f "$results"/*.results
+rm -f "$results"/*.errors
 
 for unit in *
 do
@@ -28,7 +87,7 @@ do
 			echo "***** Testing $unit"
 			echo '*****************************************'
 			name=$(echo $unit|sed 's|/|_|g')
-			swilgt -g "logtalk_load(tester),halt" > "$results/$name.results" 2> "$results/$name.errors"
+			$logtalk "logtalk_load(tester),halt." > "$results/$name.results" 2> "$results/$name.errors"
 		fi
 		cd "$base"
 	fi
