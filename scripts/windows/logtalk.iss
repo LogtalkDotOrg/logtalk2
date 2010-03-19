@@ -111,7 +111,7 @@ Name: "{group}\Logtalk - B-Prolog"; Filename: "{code:GetBPExePath}"; Parameters:
 
 Name: "{group}\Logtalk - Ciao Prolog"; Filename: "{code:GetCiaoExePath}"; Parameters: "-l ""$LOGTALKHOME/integration/logtalk_ciao.pl"""; Comment: "Runs Logtalk with Ciao Prolog"; WorkingDir: "%CD%"; Components: prolog\ciao; Flags: createonlyiffileexists
 
-Name: "{group}\Logtalk - CxProlog"; Filename: "{code:GetCxExePath}"; Parameters: "--goal ""os_env('LOGTALKHOME', Env), atom_concat(Env, '\\integration\\logtalk_cx.pl', Path), silent_consult(Path)"""; Comment: "Runs Logtalk with CxProlog"; WorkingDir: "%CD%"; Components: prolog\cxprolog; Flags: createonlyiffileexists
+Name: "{group}\Logtalk - CxProlog"; Filename: "{code:GetCxExePath}"; Parameters: "--script ""%LOGTALKHOME%\\integration\\logtalk_cx.pl"""; Comment: "Runs Logtalk with CxProlog"; WorkingDir: "%CD%"; Components: prolog\cxprolog; Flags: createonlyiffileexists
 
 Name: "{group}\Logtalk - ECLiPSe 6"; Filename: "{code:GetEclipse6ExePath}"; Parameters: "-b ""$LOGTALKHOME/integration/logtalk_eclipse6.pl"""; Comment: "Runs Logtalk with ECLiPSe 6"; WorkingDir: "%CD%"; Components: prolog\eclipse; Flags: createonlyiffileexists
 

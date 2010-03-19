@@ -75,4 +75,4 @@ echo
 
 export LOGTALK_STARTUP_DIRECTORY=`pwd`
 
-exec cxprolog --goal "silent_consult('$LOGTALKHOME/integration/logtalk_cx.pl')" "$@"
+exec cxprolog --script "$LOGTALKHOME/integration/logtalk_cx.pl" "$@"

@@ -44,7 +44,9 @@ RELEASE NOTES
     predicate.
 
     Updated the CxProlog config file to workaround a wrong priority for the
-    standard **/2 operator ("xfx" instead of "xfy").
+    standard **/2 operator ("xfx" instead of "xfy"). Updated the CxProlog
+    integration scripts for both POSIX and Windows systems in order to use
+    the "--script" command-line option, thus freeing the "--goal" option.
 
     Added a logtalk_library_path/2 entry for the library "home" (the user
     home directory) when running on Windows operating-systems. However, 
