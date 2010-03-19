@@ -69,6 +69,10 @@ RELEASE NOTES
 
     Added a missing file, "lists.lgt", to the "metainterpreters" example.
 
+    Added an op/3 directive for the :/2 operator to the "logging" example in
+    order to avoid syntax errors when running on a back-end Prolog compilers
+    that don't define this operator.
+
     Corrected assorted typos on the sample queries of several examples.
     Thanks to Parker Jones for the bug reports.
 

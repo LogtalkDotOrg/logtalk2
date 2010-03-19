@@ -10,6 +10,8 @@
 	:- private(log_/2).
 	:- dynamic(log_/2).
 
+	:- op(600, xfy, :).
+
 	init_log :-
 		retractall(log_(_, _)),
 		add_log_entry(start).
