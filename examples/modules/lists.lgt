@@ -1,4 +1,4 @@
-:- module(list, [contained/2, notcontained/2]).
+:- module(lists, [contained/2, notcontained/2]).
 
 contained(H, [H| _]).
 contained(H, [_| T]) :-

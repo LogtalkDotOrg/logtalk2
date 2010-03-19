@@ -12,9 +12,8 @@
 		findall(Pred, exports::current_predicate(Pred), Solutions),
 		Solutions == [p/1].
 
-	% test 2.  % normally for a more robust unit test, the solutions should be sorted, but 'list' is already in use
 	test(modules_2) :-
-		findall(Prop, exports::predicate_property(p(_), Prop), Solutions),
+		setof(Prop, Pred^(exports::predicate_property(p(Pred), Prop)), Solutions),
 		Solutions == [public,static,declared_in(exports),defined_in(exports)].
 
 	test(modules_3) :-

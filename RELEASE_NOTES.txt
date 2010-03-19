@@ -73,8 +73,11 @@ RELEASE NOTES
     order to avoid syntax errors when running on a back-end Prolog compilers
     that don't define this operator.
 
-    Corrected assorted typos on the sample queries of several examples.
-    Thanks to Parker Jones for the bug reports.
+    Updated the "modules" example in order to avoid an object name conflict
+    with the library object "list".
+
+    Corrected assorted typos on the sample queries of several examples. Thanks
+    to Parker Jones for the bug reports.
 
     Updated the Windows installer in order to warn the user when no compatible
     Prolog compiler can be found. In addition, update the installer in order
