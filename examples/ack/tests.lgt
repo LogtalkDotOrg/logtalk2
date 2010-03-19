@@ -10,14 +10,14 @@
 
 	test(ack_1) :-
 		ack::ack(2, 4, Result),
-		Result=:=11.
+		Result == 11.
 
 	test(ack_2) :-
 		ack::ack(3, 3, Result),
-		Result =:= 61.
+		Result == 61.
 
 	test(ack_3) :-
 		ack::ack(3, 4, Result),
-		Result =:= 125.
+		Result == 125.
 
 :- end_object.

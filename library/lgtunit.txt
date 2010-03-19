@@ -37,19 +37,20 @@ an error cannot be specified.
 	fails(Test) :- Goal.
 	throws(Test, Error) :- Goal.
 
-This is a straightforward dialect where each kind of test specifies one
-of the possible test outcomes.
+This is a straightforward dialect. For succeeds/1 tests, Goal is expected
+to succeed. For fails/1 tests, Goal is expected to fail. For throws/2 tests,
+Goal is expected to throw Error.
 
 3.	test(Test, Outcome) :- Goal.
 
-In this case, Outcome should be the atom "true", the atom "fail", or 
-the exception that the test is expected to throw.
+In this case, Outcome can be the atom "true", the atom "fail", or the
+exception term that the test is expected to throw.
 
-In all cases, "Test" is an atom, uniquely identifying a test.
+In all cases, Test is an atom, uniquely identifying a test.
 
-For examples of how to write unit tests check the "testing" example in
-the "examples" folder in the Logtalk distribution.
+For examples of how to write unit tests check the "testing" example in the
+"examples" folder in the Logtalk distribution.
 
-Note: when using the <</2 control construct to access and test an
-object internal predicates, make sure that the "context_switching_calls" 
-compiler flag is set to "allow" for those objects.
+Note: when using the <</2 control construct to access and test an object
+internal predicates, make sure that the "context_switching_calls" compiler
+flag is set to "allow" for those objects.

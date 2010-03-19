@@ -77,6 +77,7 @@ fi
 mkdir -p "$results"
 rm -f "$results"/*.results
 rm -f "$results"/*.errors
+rm -f "$results"/errors.all
 
 for unit in *
 do
