@@ -43,6 +43,9 @@ RELEASE NOTES
     Updated the ECLiPSe config files to treat numbervars/3 as a built-in
     predicate.
 
+    Updated the CxProlog config file to workaround a wrong priority for the
+    standard **/2 operator ("xfx" instead of "xfy").
+
     Added a logtalk_library_path/2 entry for the library "home" (the user
     home directory) when running on Windows operating-systems. However, 
     this definition only works for some back-end Prolog compilers due to

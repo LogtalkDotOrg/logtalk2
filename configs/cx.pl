@@ -11,7 +11,7 @@
 %
 %  configuration file for CxProlog 0.97.4 or a later version
 %
-%  last updated: February 21, 2010
+%  last updated: March 19, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -21,6 +21,8 @@
 :- set_prolog_flag(file_name_variables, true).
 
 :- initialization(write_depth(1000, 1000)).
+
+:- op(200, xfy, **).	% fix priority bug in CxProlog 0.97.5 dev and earlier versions
 
 
 
