@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#77 and later versions
 %
-%  last updated: February 21, 2010
+%  last updated: March 19, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -67,6 +67,8 @@
 % '$lgt_predicate_property'(+callable, ?predicate_property)
 
 '$lgt_predicate_property'(':'(_,_), built_in) :-
+	!.
+'$lgt_predicate_property'(numbervars(_,_,_), built_in) :-
 	!.
 
 '$lgt_predicate_property'(Predicate, built_in) :-
