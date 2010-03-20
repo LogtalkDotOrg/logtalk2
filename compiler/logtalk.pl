@@ -4974,7 +4974,7 @@ current_logtalk_flag(version, version(2, 39, 1)).
 			true
 		;	% we've conflicting entities coming from different source files:
 			File = Base-Path,
-			write('%               loaded from file '), write(Base), write(' ('), write(Path), write(')'), nl
+			write('%                   loaded from file '), write(Base), write(' ('), write(Path), write(')'), nl
 		)
 	).
 
