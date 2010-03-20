@@ -109,7 +109,7 @@ do
 done
 
 echo '*****************************************'
-echo "***** Error and warnings"
+echo "***** Errors and warnings"
 echo '*****************************************'
 cd "$results"
 grep -A1 'ERROR:' *.errors | tee errors.all

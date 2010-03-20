@@ -3,12 +3,18 @@
 	implements(osp)).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2010/02/27,
+		date is 2010/03/20,
 		comment is 'Simple example of using conditional compilation to implement a portable operating-system interface for selected back-end Prolog compilers.']).
 
 	:- if(current_logtalk_flag(prolog_dialect, swi)).
+
+		shell(Command, Status) :-
+			{shell(Command, Status)}.
+
+		shell(Command) :-
+			{shell(Command)}.
 
 		expand_path(Path, ExpandedPath) :-
 			{working_directory(Current, Current),
@@ -62,6 +68,12 @@
 
 	:- elif(current_logtalk_flag(prolog_dialect, yap)).
 
+		shell(Command, Status) :-
+			{shell(Command, Status)}.
+
+		shell(Command) :-
+			{shell(Command)}.
+
 		expand_path(Path, ExpandedPath) :-
 			{absolute_file_name(Path, ExpandedPath)}.
 
@@ -111,6 +123,12 @@
 			{Time is cputime}.
 
 	:- elif(current_logtalk_flag(prolog_dialect, xsb)).
+
+		shell(Command, Status) :-
+			{shell(Command, Status)}.
+
+		shell(Command) :-
+			{shell(Command)}.
 
 		expand_path(Path, ExpandedPath) :-
 			{standard:expand_atom(Path, ExpandedPath)}.
@@ -176,6 +194,12 @@
 
 	:- elif(current_logtalk_flag(prolog_dialect, gnu)).
 
+		shell(Command, Status) :-
+			{shell(Command, Status)}.
+
+		shell(Command) :-
+			{shell(Command)}.
+
 		expand_path(Path, ExpandedPath) :-
 			{absolute_file_name(Path, ExpandedPath)}.
 
@@ -228,6 +252,12 @@
 
 	:- elif(current_logtalk_flag(prolog_dialect, b)).
 
+		shell(Command, Status) :-
+			{system(Command, Status)}.
+
+		shell(Command) :-
+			{system(Command)}.
+
 		expand_path(Path, ExpandedPath) :-
 			{expand_environment(Path, ExpandedPath)}.
 
@@ -277,6 +307,16 @@
 			{cputime(Miliseconds), Time is Miliseconds/1000}.
 
 	:- elif(current_logtalk_flag(prolog_dialect, sicstus)).
+
+		:- if(current_logtalk_flag(prolog_version, (4, _, _))).
+			:- use_module(library(system3)).
+		:- endif.
+
+		shell(Command, Status) :-
+			{shell(Command, Status)}.
+
+		shell(Command) :-
+			{shell(Command)}.
 
 		expand_path(Path, ExpandedPath) :-
 			{current_directory(Directory),
@@ -331,6 +371,17 @@
 
 		:- use_module(library(calendar)).
 
+		shell(Command, Status) :-	% code copied from the ECLiPSe libraries
+			{getenv('SHELL', Shell),
+			 concat_string([Shell, ' -c "', Command, '"'], String),
+			 exec(sh, [S], Pid),
+			 printf(S, '%w\nexit\n%b', String),
+			 close(S),
+			 wait(Pid, Status)}.
+
+		shell(Command) :-
+			{system(Command)}.
+
 		expand_path(Path, ExpandedPath) :-
 			{atom_string(Path, PathString),
 			 canonical_path_name(PathString, ExpandedPathString),
@@ -383,6 +434,12 @@
 	:- elif(current_logtalk_flag(prolog_dialect, ciao)).
 
 		:- use_module(library(system)).
+
+		shell(Command, Status) :-
+			{shell(Command, Status)}.
+
+		shell(Command) :-
+			{shell(Command)}.
 
 		expand_path(Path, ExpandedPath) :-
 			{absolute_file_name(Path, ExpandedPath)}.

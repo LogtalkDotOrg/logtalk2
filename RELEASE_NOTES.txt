@@ -75,6 +75,9 @@ RELEASE NOTES
 
     Added a missing file, "lists.lgt", to the "metainterpreters" example.
 
+    Added shell/1-2 predicates to the operating-system interface defined in
+    the "cc" example.
+
     Added an op/3 directive for the :/2 operator to the "logging" example in
     order to avoid syntax errors when running on a back-end Prolog compilers
     that don't define this operator.

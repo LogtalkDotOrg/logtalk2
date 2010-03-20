@@ -2,10 +2,22 @@
 :- protocol(osp).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2010/02/27,
+		date is 2010/03/20,
 		comment is 'Portable operating-system access protocol.']).
+
+	:- public(shell/2).
+	:- mode(shell(+atom, -integer), one).
+	:- info(shell/2, [
+		comment is 'Runs an operating-system shell command. Unifies Status with the exit status of Command.',
+		argnames is ['Command', 'Status']]).
+
+	:- public(shell/1).
+	:- mode(shell(+atom), one).
+	:- info(shell/1, [
+		comment is 'Runs an operating-system shell command.',
+		argnames is ['Command']]).
 
 	:- public(expand_path/2).
 	:- mode(expand_path(+atom, -atom), one).
