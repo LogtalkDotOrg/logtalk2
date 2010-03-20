@@ -136,9 +136,22 @@
 
 	check(_).
 
-	variant(Term1, Term2) :-
-		\+ \+ subsumes(Term1, Term2),
-		\+ \+ subsumes(Term2, Term1).
+	:- if((
+		current_logtalk_flag(prolog_dialect, Prolog),
+		(Prolog == swi; Prolog == yap),
+		predicate_property('=@='(_,_), built_in)
+	)).
+
+		variant(Term1, Term2) :-
+			'=@='(Term1, Term2).
+
+	:- else.
+
+		variant(Term1, Term2) :-
+			\+ \+ subsumes(Term1, Term2),
+			\+ \+ subsumes(Term2, Term1).
+
+	:- endif.
 
 	:- if((
 		current_logtalk_flag(prolog_dialect, Prolog),

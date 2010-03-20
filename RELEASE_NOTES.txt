@@ -56,6 +56,10 @@ RELEASE NOTES
     Updated the "types_loader.lgt" library loader file in order to load the
     "rbtree" library object.
 
+    Updated the library object "term" in order to implement the variant/2
+    predicate as a call to the =@=/2 proprietary built-in predicate when 
+    using either SWI-Prolog or YAP as the back-end Prolog compilers. 
+
     Corrected a predicate property name bug (alias/1 instead of alias_of/1)
     in the library object "listing".
 
