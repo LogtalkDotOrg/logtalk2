@@ -53,7 +53,10 @@
 :- end_object.
 
 
-:- object(natural).
+% the following object was named "natural" in the original code; renamed to avoid
+% a conflict with the library object "natural" when running the example unit tests
+
+:- object(ascend).
 
 	:- info([
 		author is 'Paulo Moura',
