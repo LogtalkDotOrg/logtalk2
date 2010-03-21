@@ -20,6 +20,7 @@ find . -name '.gdb*' -print0 | xargs -0 rm -f
 find . -type f -print0 | xargs -0 chmod 644
 find . -type d -print0 | xargs -0 chmod 755
 
+chmod a+x examples/*.sh
 chmod a+x integration/*.sh
 chmod a+x manuals/userman/*.sh
 chmod a+x manuals/refman/*.sh
