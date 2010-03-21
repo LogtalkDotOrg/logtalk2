@@ -16533,7 +16533,7 @@ current_logtalk_flag(version, version(2, 39, 1)).
 		'$lgt_change_directory'(Startup),		% settings file in the
 		'$lgt_file_exists'('settings.lgt') ->	% startup directory
 		catch((
-			logtalk_load(settings, [report(off), smart_compilation(off), clean(on)]),
+			logtalk_load(settings, [altdirs(off), report(off), smart_compilation(off), clean(on)]),
 			assertz('$lgt_settings_file_loaded'(Startup))),
 			_,
 			true
@@ -16542,7 +16542,7 @@ current_logtalk_flag(version, version(2, 39, 1)).
 		'$lgt_change_directory'(User),			% a settings file in the
 		'$lgt_file_exists'('settings.lgt') ->	% Logtalk user folder
 		catch((
-			logtalk_load(settings, [report(off), smart_compilation(off), clean(on)]),
+			logtalk_load(settings, [altdirs(off), report(off), smart_compilation(off), clean(on)]),
 			assertz('$lgt_settings_file_loaded'(User))),
 			_,
 			true

@@ -26,6 +26,11 @@ RELEASE NOTES
     Updated the Logtalk compiler to recognize "prolog_compatible_version"
     and "tabling" as valid flags.
 
+    Updated the Logtalk compiler to compile settings files with the compiler
+    flag "altdirs" turned off in order to avoid problems with directory
+    permissions for back-end Prolog compilers, such as Ciao and XSB, which
+    require the first run of Logtalk to be made by an administrative user.
+
     Corrected a bug in the Logtalk compiler that forced recompilation of
     source files when the "smart_compilation" flag was set to "on".
 
