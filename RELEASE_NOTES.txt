@@ -96,6 +96,9 @@ RELEASE NOTES
     Corrected assorted typos on the sample queries of several examples. Thanks
     to Parker Jones for the bug reports.
 
+    Updated several examples sample queries to workaround a XSB parsing bug
+    triggered by using message broadcasting syntax.
+
     Updated the Windows installer in order to warn the user when no compatible
     Prolog compiler can be found. In addition, update the installer in order
     to also create shortcuts to the main documentation files on the Logtalk

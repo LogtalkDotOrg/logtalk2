@@ -15,9 +15,9 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ...
 
 
-% rectangle example:
+% rectangle example (don't use message broadcasting syntax in order to workaround a XSB parser bug):
 
-?- rectangle(2, 3, _)::(init, position(X0, Y0), move(3, 7), position(X1, Y1), move(2, 5), position(X2, Y2)).
+| ?- rectangle(2, 3, S)::init, rectangle(2, 3, S)::position(X0, Y0), rectangle(2, 3, S)::move(3, 7), rectangle(2, 3, S)::position(X1, Y1), rectangle(2, 3, S)::move(2, 5), rectangle(2, 3, S)::position(X2, Y2).
 
 X0 = 0
 Y0 = 0

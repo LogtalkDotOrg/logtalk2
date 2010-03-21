@@ -86,10 +86,10 @@ Score = 0
 yes
 
 
-% but if we decide to increment the counter by sending the setScore/0 
-% message to a descendant:
+% but if we decide to increment the counter by sending the setScore/0 message to a descendant
+% (don't use message broadcasting syntax in order to workaround a XSB parser bug):
 
-| ?- joeChessPlayer::(setScore(2200), score(Score)).
+| ?- joeChessPlayer::setScore(2200), joeChessPlayer::score(Score).
 
 Score = 2200
 yes

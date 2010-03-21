@@ -26,7 +26,9 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
     user)
 
 
-| ?- q1::(color(Color), side(Side), position(X, Y)).
+% don't use message broadcasting syntax in order to workaround a XSB parser bug
+
+| ?- q1::color(Color), q1::side(Side), q1::position(X, Y).
 
 Color = red
 Side = 1
@@ -35,7 +37,9 @@ Y = 0
 yes
 
 
-| ?- q2::(side(Side), area(Area), perimeter(Perimeter)).
+% don't use message broadcasting syntax in order to workaround a XSB parser bug
+
+| ?- q2::side(Side), q2::area(Area), q2::perimeter(Perimeter).
 
 Side = 3
 Area = 9

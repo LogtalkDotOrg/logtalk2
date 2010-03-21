@@ -33,8 +33,9 @@
 		red_circle(3)::ancestors(As),
 		As = [circle(3, red), ellipse(3, 3, red)].
 
+	% don't use message broadcasting syntax in order to workaround a XSB parser bug
 	test(sicstus_7) :-
-		square(2)::(side(Side), width(Width), height(Height), area(Area)),
+		square(2)::side(Side), square(2)::width(Width), square(2)::height(Height), square(2)::area(Area),
 		Side == 2, Width == 2, Height == 2, Area == 4.
 
 	test(sicstus_8) :-

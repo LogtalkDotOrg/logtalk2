@@ -10,9 +10,15 @@
 		date is 2010/03/16,
 		comment is 'Unit tests for the "bricks" example.']).
 
+	% don't use message broadcasting syntax in order to workaround a XSB parser bug
 	test(bricks_1) :-
-		brick::(new(a, [position-(8, 1)]), new(b, [position-(6, 1)]), new(c, [position-(4, 1)]), new(d, [position-(2, 1)])),
-		brick_stack::(add_tuple([c,d]), add_tuple([b,c]), add_tuple([a,b])),
+		brick::new(a, [position-(8, 1)]),
+		brick::new(b, [position-(6, 1)]),
+		brick::new(c, [position-(4, 1)]),
+		brick::new(d, [position-(2, 1)]),
+		brick_stack::add_tuple([c,d]),
+		brick_stack::add_tuple([b,c]),
+		brick_stack::add_tuple([a,b]),
 		findall(Tuple, brick_stack::tuple(Tuple), Tuples),
 		list::msort(Tuples, TuplesSorted),
 		TuplesSorted = [[a,b], [b,c], [c,d]].

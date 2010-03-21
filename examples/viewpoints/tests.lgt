@@ -34,8 +34,9 @@
 		joeEmployee::score(Score),
 		Score == 0.
 
+	% don't use message broadcasting syntax in order to workaround a XSB parser bug
 	test(viewpoints_7) :-
-		joeChessPlayer::(setScore(2200), score(Score)),
+		joeChessPlayer::setScore(2200), joeChessPlayer::score(Score),
 		Score == 2200.
 
 	test(viewpoints_8) :-

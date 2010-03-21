@@ -24,7 +24,7 @@
 		\+ []::member(_).
 
 	test(parametric_5) :-
-		rectangle(W, H, X, Y)::(init, move(3, 4, NR)), NR::position(X2, Y2),
+		rectangle(W, H, X, Y)::init, rectangle(W, H, X, Y)::move(3, 4, NR), NR::position(X2, Y2),
 		W  == 2,
 		H  == 1,
 		X  == 0,

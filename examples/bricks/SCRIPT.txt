@@ -16,8 +16,9 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 
 % create four bricks, all standing on the "ground" (use your imagination... ;-)
+% (don't use message broadcasting syntax in order to workaround a XSB parser bug)
 
-| ?- brick::(new(a, [position-(8, 1)]), new(b, [position-(6, 1)]), new(c, [position-(4, 1)]), new(d, [position-(2, 1)])).
+| ?- brick::new(a, [position-(8, 1)]), brick::new(b, [position-(6, 1)]), brick::new(c, [position-(4, 1)]), brick::new(d, [position-(2, 1)]).
 yes
 
 % set up ascii stack monitor so we can watch the bricks moving
@@ -26,9 +27,9 @@ yes
 yes
 
 
-% make the stack
+% make the stack (don't use message broadcasting syntax in order to workaround a XSB parser bug)
 
-| ?- brick_stack::(add_tuple([c,d]), add_tuple([b,c]), add_tuple([a,b])).
+| ?- brick_stack::add_tuple([c,d]), brick_stack::add_tuple([b,c]), brick_stack::add_tuple([a,b]).
 |.c......
 |.d...b.a
 ---------
