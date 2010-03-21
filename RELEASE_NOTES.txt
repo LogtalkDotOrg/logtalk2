@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.39.1 - March ??, 2010
+2.39.1 - March 31, 2010
 
     Added a new entity directive, alias/2, supporting the definition of
     compile-time object aliases. This directive may be used to abbreviate

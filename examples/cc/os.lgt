@@ -341,7 +341,7 @@
 			{file_exists(File)}.
 
 		file_modification_time(File, Time) :-
-			{file_property(File, mod_time(Size))}.
+			{file_property(File, mod_time(Time))}.
 
 		file_size(File, Size) :-
 			{file_property(File, size(Size))}.

@@ -14,8 +14,8 @@ description of each example is included below.
 
 Each example folder contains a "NOTES.txt" file and a loader helper file 
 (usually "loader.lgt") that may be used to load all the example entities. 
-In addition, most examples contain a "SCRIPT.txt" file with instructions 
-on how to load the example and sample queries for your to try.
+Most examples also contain a "SCRIPT.txt" file with instructions on how 
+to load the example and sample queries for your to try.
 
 Most of these examples need objects, protocols, and categories that 
 are defined in the Logtalk standard library or in other examples. See 
@@ -40,6 +40,15 @@ By default, compiling an example generates a XML documenting file for
 each compiled entity (object, category, or protocol). See the "xml" 
 folder for instructions on how to browse the XML files for on-line 
 reading or how to convert the files to a print-ready format such as PDF.
+
+The example folders may contain two files, "tests.lgt" and "tester.lgt".
+The file "tests.lgt" contains unit tests for the example. These unit tests
+are based on the sample queries found on the example "SCRIPT.txt" file.
+The file "tester.lgt" is a loader file that, when loaded, will automatically
+run all example unit tests. The POSIX script "tester.sh", found on the
+"examples" folder, may be used to run all examples unit tests. This script
+works with all compatible back-end Prolog compilers except B-Prolog and
+Qu-Prolog due to limitations on the command-line options of these compilers.
 
 
 Follows a short description of each included example (in alphabetical order):

@@ -16,6 +16,7 @@
 base="$PWD"
 results="$base/tester_results"
 backend=yap
+prolog='YAP'
 logtalk='yaplgt -g'
 
 usage_help()
@@ -46,23 +47,32 @@ do
 	esac
 done
 
-if [ "$p_arg" = "b" ] ; then
-	logtalk='bplgt -g'
-elif [ "$p_arg" = "ciao" ] ; then
+#if [ "$p_arg" = "b" ] ; then
+#	prolog='B-Prolog'
+#	logtalk='bplgt -g'
+if [ "$p_arg" = "ciao" ] ; then
+	prolog='Ciao Prolog'
 	logtalk='ciaolgt -e'
 elif [ "$p_arg" = "cx" ] ; then
+	prolog='CxProlog'
 	logtalk='cxlgt --goal'
 elif [ "$p_arg" = "eclipse" ] ; then
+	prolog='ECLiPSe'
 	logtalk='eclipselgt -e'
-elif [ "$p_arg" = "qu" ] ; then
-	logtalk='qplgt -g'
+#elif [ "$p_arg" = "qu" ] ; then
+#	prolog='Qu-Prolog'
+#	logtalk='qplgt -g'
 elif [ "$p_arg" = "sicstus" ] ; then
+	prolog='SICStus Prolog'
 	logtalk='sicstuslgt --goal'
 elif [ "$p_arg" = "swi" ] ; then
+	prolog='SWI-Prolog'
 	logtalk='swilgt -g'
 elif [ "$p_arg" = "xsb" ] ; then
+	prolog='XSB'
 	logtalk='xsblgt -e'
 elif [ "$p_arg" = "yap" ] ; then
+	prolog='YAP'
 	logtalk='yaplgt -g'
 elif [ "$p_arg" != "" ] ; then
 	echo "Error! Unsupported back-end Prolog compiler: $p_arg"
@@ -79,6 +89,8 @@ rm -f "$results"/*.results
 rm -f "$results"/*.errors
 rm -f "$results"/errors.all
 
+echo '*****************************************'
+echo "***** Running unit tests with $prolog"
 for unit in *
 do
 	if [ -d $unit ] ; then
@@ -86,7 +98,6 @@ do
 		if [ -e "./tester.lgt" ] ; then
 			echo '*****************************************'
 			echo "***** Testing $unit"
-			echo '*****************************************'
 			name=$(echo $unit|sed 's|/|_|g')
 			$logtalk "logtalk_load(tester),halt." > "$results/$name.results" 2> "$results/$name.errors"
 		fi
@@ -97,7 +108,6 @@ do
 				if [ -e "./tester.lgt" ] ; then
 					echo '*****************************************'
 					echo "***** Testing $unit/$subunit"
-					echo '*****************************************'
 					subname=$(echo $unit/$subunit|sed 's|/|_|g')
 					$logtalk "logtalk_load(tester),halt." > "$results/$subname.results" 2> "$results/$subname.errors"
 				fi
@@ -118,3 +128,4 @@ echo '*****************************************'
 echo "***** Failed tests"
 echo '*****************************************'
 grep -A1 -i ': failure' *.results | tee -a errors.all
+echo '*****************************************'
