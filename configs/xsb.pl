@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.2 or later versions
 %
-%  last updated: February 21, 2010
+%  last updated: March 21, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -260,7 +260,8 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 % expands a file path to a full path
 
 '$lgt_expand_path'(Path, ExpandedPath) :-
-	expand_atom(Path, ExpandedPath).
+	expand_atom(Path, EnvVarExpandedPath),
+	path_sysop(expand, EnvVarExpandedPath, ExpandedPath).
 
 
 % '$lgt_file_exists'(+atom)
@@ -268,7 +269,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 % checks if a file exist in the current directory
 
 '$lgt_file_exists'(File) :-
-	expand_atom(File, Expanded),
+	'$lgt_expand_path'(File, Expanded),
 	path_sysop(exists, Expanded).
 
 
@@ -277,7 +278,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 % deletes a file in the current directory
 
 '$lgt_delete_file'(File) :-
-	expand_atom(File, Expanded),
+	'$lgt_expand_path'(File, Expanded),
 	path_sysop(rm, Expanded).
 
 
@@ -286,7 +287,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 % checks if a directory exists
 
 '$lgt_directory_exists'(Directory) :-
-	expand_atom(Directory, Expanded),
+	'$lgt_expand_path'(Directory, Expanded),
 	path_sysop(exists, Expanded),
 	path_sysop(isdir, Expanded).
 
@@ -304,7 +305,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 % changes current working directory
 
 '$lgt_change_directory'(Directory) :-
-	expand_atom(Directory, Expanded),
+	'$lgt_expand_path'(Directory, Expanded),
 	path_sysop(chdir, Expanded).
 
 
@@ -313,7 +314,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 % makes a new directory; succeeds if the directory already exists
 
 '$lgt_make_directory'(Directory) :-
-	expand_atom(Directory, Expanded),
+	'$lgt_expand_path'(Directory, Expanded),
 	(	path_sysop(exists, Expanded) ->
 		true
 	;	path_sysop(mkdir, Expanded)
@@ -326,7 +327,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 % Logtalk source file, given a list of options
 
 '$lgt_load_prolog_code'(File, _, _) :-
-	expand_atom(File, Expanded),
+	'$lgt_expand_path'(File, Expanded),
 	reconsult(Expanded, [optimize]).
 
 
