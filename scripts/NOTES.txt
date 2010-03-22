@@ -45,6 +45,12 @@ logtalk_select.sh
 	later; doesn't change the Logtalk user folder; this script is loosely
 	based on the python_select script
 
+logtalk_backend_select.sh
+	experimental shell script for defining an alias, logtalk, to a chosen
+	back-end Prolog integration script for POSIX operating-systems; the
+	alias is created in same directory where the *lgt integration scripts
+	are found
+
 debian
 	directory containing support files for building a Debian package
 	(work in progress; experimental)

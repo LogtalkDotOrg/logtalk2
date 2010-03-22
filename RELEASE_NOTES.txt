@@ -104,6 +104,10 @@ RELEASE NOTES
     to also create shortcuts to the main documentation files on the Logtalk
     user folder.
 
+    Added an experimental "logtalk_backend_select.sh" POSIX shell script for
+    defining an alias, "logtalk", to a chosen back-end Prolog integration
+    script. Suggested by Parker Jones.
+
     Documentation cleanup, specially regarding installing, customizing, and
     running Logtalk. Simplified Prolog compatibility notes as the current set
     of compatible Prolog compilers provide a more uniform experience.

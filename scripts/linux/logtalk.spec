@@ -56,6 +56,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/lgt2xml
 /usr/local/bin/lgt2txt
 /usr/local/bin/logtalk_select
+/usr/local/bin/logtalk_backend_select
 /usr/local/bin/bplgt
 /usr/local/bin/ciaolgt
 /usr/local/bin/cxlgt

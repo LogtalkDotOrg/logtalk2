@@ -56,6 +56,7 @@ rm -f lgt2pdf
 rm -f lgt2xml
 rm -f lgt2txt
 rm -f logtalk_select
+rm -f logtalk_backend_select
 rm -f qplgt
 rm -f sicstuslgt
 rm -f swilgt
