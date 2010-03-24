@@ -124,10 +124,10 @@ if ! [ -e "./logtalk.xsd" ] ; then
 	cp "$LOGTALKHOME"/xml/logtalk.xsd .
 fi
 
-if [ `(grep -l "<logtalk>" *.xml | wc -l) 2> /dev/null` -gt 0 ] ; then
+if [ `(grep -l "<logtalk" *.xml | wc -l) 2> /dev/null` -gt 0 ] ; then
 	echo
 	echo "converting XML files to text files..."
-	for file in `grep -l "<logtalk>" *.xml`; do
+	for file in `grep -l "<logtalk" *.xml`; do
 		echo "  converting $file"
 		name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
 		case "$processor" in

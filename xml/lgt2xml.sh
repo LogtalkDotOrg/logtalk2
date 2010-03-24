@@ -109,7 +109,7 @@ create_index_file()
 	echo "<h1>"$index_title"</h1>" >> "$index_file"
 	echo "<ul>" >> "$index_file"
 
-	for file in `grep -l "<logtalk>" *.xml`; do
+	for file in `grep -l "<logtalk" *.xml`; do
 		name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
 		entity=${name%_*}
 		pars=${name##*_}

@@ -112,6 +112,10 @@ RELEASE NOTES
     running Logtalk. Simplified Prolog compatibility notes as the current set
     of compatible Prolog compilers provide a more uniform experience.
 
+    Corrected a bug in the POSIX lgt2*.sh scripts that would prevent finding
+    the Logtalk documenting XML files when using a XML Schema specification.
+    Thanks to rbt for the bug report.
+
 
 2.39.0 - February 28, 2010
 
@@ -136,7 +140,7 @@ RELEASE NOTES
     of parameter/2 calls in categories. 
 
     Improved compile-time error-checking of calls to the parameter/2 built-in
-    execution-context method
+    execution-context method.
 
     Removed the meta-predicate compilation safety rule that required the
     number of normal arguments to be equal or greater than the number of

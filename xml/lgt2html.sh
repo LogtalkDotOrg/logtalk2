@@ -121,7 +121,7 @@ create_index_file()
 	echo "<h1>"$index_title"</h1>" >> "$index_file"
 	echo "<ul>" >> "$index_file"
 
-	for file in `grep -l "<logtalk>" *.xml`; do
+	for file in `grep -l "<logtalk" *.xml`; do
 		name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
 		entity=${name%_*}
 		pars=${name##*_}
@@ -210,10 +210,10 @@ if ! [ -e "$directory/logtalk.css" ] ; then
 	cp "$LOGTALKUSER"/xml/logtalk.css "$directory"
 fi
 
-if [ `(grep -l "<logtalk>" *.xml | wc -l) 2> /dev/null` -gt 0 ] ; then
+if [ `(grep -l "<logtalk" *.xml | wc -l) 2> /dev/null` -gt 0 ] ; then
 	echo
 	echo "converting XML files..."
-	for file in `grep -l "<logtalk>" *.xml`; do
+	for file in `grep -l "<logtalk" *.xml`; do
 		echo "  converting $file"
 		name="`expr "$file" : '\(.*\)\.[^./]*$' \| "$file"`"
 		case "$processor" in
