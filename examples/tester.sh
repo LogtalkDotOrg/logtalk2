@@ -89,14 +89,14 @@ rm -f "$results"/*.results
 rm -f "$results"/*.errors
 rm -f "$results"/errors.all
 
-echo '*****************************************'
+echo '********************************************'
 echo "***** Running unit tests with $prolog"
 for unit in *
 do
 	if [ -d $unit ] ; then
 		cd $unit
 		if [ -e "./tester.lgt" ] ; then
-			echo '*****************************************'
+			echo '********************************************'
 			echo "***** Testing $unit"
 			name=$(echo $unit|sed 's|/|_|g')
 			$logtalk "logtalk_load(tester),halt." > "$results/$name.results" 2> "$results/$name.errors"
@@ -106,7 +106,7 @@ do
 			if [ -d $subunit ] ; then
 				cd $subunit
 				if [ -e "./tester.lgt" ] ; then
-					echo '*****************************************'
+					echo '********************************************'
 					echo "***** Testing $unit/$subunit"
 					subname=$(echo $unit/$subunit|sed 's|/|_|g')
 					$logtalk "logtalk_load(tester),halt." > "$results/$subname.results" 2> "$results/$subname.errors"
@@ -118,14 +118,14 @@ do
 	fi
 done
 
-echo '*****************************************'
+echo '********************************************'
 echo "***** Errors and warnings"
-echo '*****************************************'
+echo '********************************************'
 cd "$results"
 grep -A1 'ERROR:' *.errors | tee errors.all
 grep -A1 'WARNING!' *.results | tee -a errors.all
-echo '*****************************************'
+echo '********************************************'
 echo "***** Failed tests"
-echo '*****************************************'
+echo '********************************************'
 grep -A1 -i ': failure' *.results | tee -a errors.all
-echo '*****************************************'
+echo '********************************************'
