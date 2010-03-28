@@ -618,7 +618,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>predicate_indicator_list ::=</dt>
 				<dd>"<code>[</code>" predicate_indicator_sequence "<code>]</code>"</dd>
 		</dl>
-				<dl>
+		<dl>
 			<dt>predicate_indicator_alias ::=</dt>
 				<dd><em>predicate_indicator</em> |</dd>
 				<dd><em>predicate_indicator</em> "<code>::</code>" <em>predicate_indicator</em></dd>
@@ -632,7 +632,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>predicate_indicator_alias_list ::=</dt>
 				<dd>"<code>[</code>" predicate_indicator_alias_sequence "<code>]</code>"</dd>
 		</dl>
-				<dl>
+		<dl>
 			<dt>non_terminal_indicator_term ::=</dt>
 				<dd>non_terminal_indicator |</dd>
 				<dd>non_terminal_indicator_sequence |</dd>
@@ -651,7 +651,21 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dt>non_terminal_indicator ::=</dt>
 				<dd><em>functor</em> "<code>//</code>" <em>arity</em></dd>
 		</dl>
-				<dl>
+		<dl>
+			<dt>non_terminal_indicator_alias ::=</dt>
+				<dd><em>non_terminal_indicator</em> |</dd>
+				<dd><em>non_terminal_indicator</em> "<code>::</code>" <em>non_terminal_indicator</em></dd>
+		</dl>
+		<dl>
+			<dt>non_terminal_indicator_alias_sequence ::=</dt>
+				<dd>non_terminal_indicator_alias |</dd>
+				<dd>non_terminal_indicator_alias "<code>,</code>" non_terminal_indicator_alias_sequence</dd>
+		</dl>
+		<dl>
+			<dt>non_terminal_indicator_alias_list ::=</dt>
+				<dd>"<code>[</code>" non_terminal_indicator_alias_sequence "<code>]</code>"</dd>
+		</dl>
+		<dl>
 			<dt>predicate_mode_term ::=</dt>
 				<dd><em>atom</em> "<code>(</code>" mode_terms "<code>)</code>"</dd>
 		</dl>
@@ -867,7 +881,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: February 17, 2010</span>
+		<span>Last updated on: March 28, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="index.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>

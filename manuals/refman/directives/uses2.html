@@ -25,8 +25,10 @@
 
 <pre>uses(Object, Predicates)
 uses(Object, PredicatesAndAliases)</pre>
+<pre>uses(Object, NonTerminals)
+uses(Object, NonTerminalsAndAliases)</pre>
 <p>
-Declares that all calls (made from predicates defined in the category or object containing the directive) to the specified predicates are to be interpreted as messages to the specified object. Thus, this directive may be used to simplify writing of predicate definitions by allowing the programmer to omit the <code>Object::</code> prefix when using the predicates listed in the directive (as long as the predicate calls do not occur as arguments for user-defined meta-predicates or for non-standard Prolog meta-predicates not declared on the config files).
+Declares that all calls (made from predicates defined in the category or object containing the directive) to the specified predicates are to be interpreted as messages to the specified object. Thus, this directive may be used to simplify writing of predicate definitions by allowing the programmer to omit the <code>Object::</code> prefix when using the predicates listed in the directive (as long as the predicate calls do not occur as arguments for non-standard Prolog meta-predicates not declared on the config files).
 </p>
 <p>
 It is possible to specify a predicate alias using the notation <code>Functor/Arity::Alias/Arity</code>. Aliases may be used either for avoiding conflicts between predicates specified in several <code>uses/2</code> directives or for giving more meaningful names considering the using context of the predicates.
@@ -36,6 +38,8 @@ It is possible to specify a predicate alias using the notation <code>Functor/Ari
 
 <pre>uses(+object_identifier, +predicate_indicator_list)
 uses(+object_identifier, +predicate_indicator_alias_list)</pre>
+<pre>uses(+object_identifier, +non_terminal_indicator_list)
+uses(+object_identifier, +non_terminal_indicator_alias_list)</pre>
 
 
 <h4>Examples</h4>
@@ -62,7 +66,7 @@ btree_to_queue :-
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: June 30, 2009</span>
+		<span>Last updated on: March 28, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="synchronized1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="../index.html#directives">next</a></span><br/>
