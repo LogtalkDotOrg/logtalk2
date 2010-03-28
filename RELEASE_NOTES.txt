@@ -20,6 +20,12 @@ RELEASE NOTES
     long object names or to make it easier to switch between objects
     providing alternative implementations of the same protocol.
 
+    Updated the implementation of the uses/2 directive in order to allow
+    safe use of the declared shortcuts at runtime.
+
+    Corrected a bug when using the use_mdule/2 directive that resulted in
+    a performance penalty when calling module predicates.
+
     Updated the Logtalk compiler to warn the user when finding deprecated
     directives.
 

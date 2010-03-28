@@ -7495,7 +7495,8 @@ current_logtalk_flag(version, version(2, 39, 1)).
 	\+ '$lgt_pp_uses_pred_'(_, _, TAlias),
  	\+ '$lgt_pp_use_module_pred_'(_, _, TAlias),
 	!,
-	TOriginal =.. [_| Args], TAlias =.. [_| Args],		% unify args of TOriginal and TAlias
+	TOriginal =.. [_| Args], TAlias =.. [_| Args],						% unify args of TOriginal and TAlias
+	'$lgt_tr_clause'((TAlias :- Obj::TOriginal), _, _, _),				% allow for runtime use
 	assertz('$lgt_pp_uses_pred_'(Obj, TOriginal, TAlias)).
 
 '$lgt_tr_uses_directive_pred'(_, AFunctor, Arity, _) :-
@@ -7510,7 +7511,9 @@ current_logtalk_flag(version, version(2, 39, 1)).
 	 	\+ '$lgt_pp_use_module_dcg_nt_'(_, _, TOriginal),
 	 	\+ '$lgt_pp_uses_pred_'(_, _, TPred),
 	 	\+ '$lgt_pp_use_module_pred_'(_, _, TPred) ->
-		TOriginal =.. [_| Args], TAlias =.. [_| Args],	% unify args of TOriginal and TAlias
+		TOriginal =.. [_| Args], TAlias =.. [_| Args],					% unify args of TOriginal and TAlias
+		'$lgt_dcgrule_to_clause'((TAlias --> Obj::TOriginal), Clause),	% allow for runtime use
+		'$lgt_tr_clause'(Clause, _, _, _),
 		assertz('$lgt_pp_uses_dcg_nt_'(Obj, TOriginal, TAlias))
 	;	throw(permission_error(modify, uses_object_non_terminal, AFunctor//Arity))
 	).
@@ -7531,37 +7534,37 @@ current_logtalk_flag(version, version(2, 39, 1)).
 	(var(Original); var(Alias)),
 	throw(instantiation_error).
 
-'$lgt_tr_use_module_directive'([':'(Original, Alias)| Preds], Obj) :-
+'$lgt_tr_use_module_directive'([':'(Original, Alias)| Preds], Module) :-
 	'$lgt_valid_pred_ind'(Original, OFunctor, OArity),
 	'$lgt_valid_pred_ind'(Alias, AFunctor, AArity),
 	!,
 	(	OArity =:= AArity ->
-		'$lgt_tr_uses_directive_pred'(OFunctor, AFunctor, OArity, Obj)
+		'$lgt_tr_use_module_directive_pred'(OFunctor, AFunctor, OArity, Module)
 	;	throw(domain_error(arity_mismatch(Original, Alias)))
 	),
-	'$lgt_tr_use_module_directive'(Preds, Obj).
+	'$lgt_tr_use_module_directive'(Preds, Module).
 
-'$lgt_tr_use_module_directive'([':'(Original, Alias)| Preds], Obj) :-
+'$lgt_tr_use_module_directive'([':'(Original, Alias)| Preds], Module) :-
 	'$lgt_valid_gr_ind'(Original, OFunctor, OArity, OExtArity),
 	'$lgt_valid_gr_ind'(Alias, AFunctor, AArity, _),
 	!,
 	(	OArity =:= AArity ->
-		'$lgt_tr_use_module_directive_nt'(OFunctor, AFunctor, OArity, OExtArity, Obj)
+		'$lgt_tr_use_module_directive_nt'(OFunctor, AFunctor, OArity, OExtArity, Module)
 	;	throw(domain_error(arity_mismatch(Original, Alias)))
 	),
-	'$lgt_tr_use_module_directive'(Preds, Obj).
+	'$lgt_tr_use_module_directive'(Preds, Module).
 
-'$lgt_tr_use_module_directive'([Pred| Preds], Obj) :-
+'$lgt_tr_use_module_directive'([Pred| Preds], Module) :-
 	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
 	!,
-	'$lgt_tr_use_module_directive_pred'(Functor, Functor, Arity, Obj),
-	'$lgt_tr_use_module_directive'(Preds, Obj).
+	'$lgt_tr_use_module_directive_pred'(Functor, Functor, Arity, Module),
+	'$lgt_tr_use_module_directive'(Preds, Module).
 
-'$lgt_tr_use_module_directive'([NonTerminal| Preds], Obj) :-
+'$lgt_tr_use_module_directive'([NonTerminal| Preds], Module) :-
 	'$lgt_valid_gr_ind'(NonTerminal, Functor, Arity, ExtArity),
 	!,
-	'$lgt_tr_use_module_directive_nt'(Functor, Functor, Arity, ExtArity, Obj),
-	'$lgt_tr_use_module_directive'(Preds, Obj).
+	'$lgt_tr_use_module_directive_nt'(Functor, Functor, Arity, ExtArity, Module),
+	'$lgt_tr_use_module_directive'(Preds, Module).
 
 '$lgt_tr_use_module_directive'([':'(Original, _)| _], _) :-
 	\+ '$lgt_valid_pred_ind'(Original, _, _),
@@ -7577,7 +7580,7 @@ current_logtalk_flag(version, version(2, 39, 1)).
 	throw(type_error(predicate_indicator, Pred)).
 
 
-'$lgt_tr_use_module_directive_pred'(OFunctor, AFunctor, Arity, Obj) :-
+'$lgt_tr_use_module_directive_pred'(OFunctor, AFunctor, Arity, Module) :-
 	functor(TOriginal, OFunctor, Arity),
 	functor(TAlias, AFunctor, Arity),
 	Arity2 is Arity - 2,
@@ -7590,14 +7593,15 @@ current_logtalk_flag(version, version(2, 39, 1)).
 	\+ '$lgt_pp_uses_pred_'(_, _, TAlias),
 	\+ '$lgt_pp_use_module_pred_'(_, _, TAlias),
 	!,
-	TOriginal =.. [_| Args], TAlias =.. [_| Args],		% unify args of TOriginal and TAlias
-	assertz('$lgt_pp_use_module_pred_'(Obj, TOriginal, TAlias)).
+	TOriginal =.. [_| Args], TAlias =.. [_| Args],								% unify args of TOriginal and TAlias
+	'$lgt_tr_clause'((TAlias :- ':'(Module, TOriginal)), _, _, _),				% allow for runtime use
+	assertz('$lgt_pp_use_module_pred_'(Module, TOriginal, TAlias)).
 
 '$lgt_tr_use_module_directive_pred'(_, AFunctor, Arity, _) :-
 	throw(permission_error(modify, uses_module_predicate, AFunctor/Arity)).
 
 
-'$lgt_tr_use_module_directive_nt'(OFunctor, AFunctor, Arity, ExtArity, Obj) :-
+'$lgt_tr_use_module_directive_nt'(OFunctor, AFunctor, Arity, ExtArity, Module) :-
 	functor(TOriginal, OFunctor, Arity),
 	functor(TAlias, AFunctor, Arity),
 	functor(TPred, AFunctor, ExtArity),
@@ -7605,8 +7609,9 @@ current_logtalk_flag(version, version(2, 39, 1)).
 	 	\+ '$lgt_pp_use_module_dcg_nt_'(_, _, TOriginal),
 	 	\+ '$lgt_pp_uses_pred_'(_, _, TPred),
 	 	\+ '$lgt_pp_use_module_pred_'(_, _, TPred) ->
-		TOriginal =.. [_| Args], TAlias =.. [_| Args],	% unify args of TOriginal and TAlias
-		assertz('$lgt_pp_use_module_non_terminal_'(Obj, TOriginal, TAlias))
+		TOriginal =.. [_| Args], TAlias =.. [_| Args],							% unify args of TOriginal and TAlias
+		'$lgt_dcgrule_to_clause'((TAlias --> ':'(Module, TOriginal)), Clause),	% allow for runtime use
+		assertz('$lgt_pp_use_module_non_terminal_'(Module, TOriginal, TAlias))
 	;	throw(permission_error(modify, uses_module_non_terminal, AFunctor//Arity))
 	).
 

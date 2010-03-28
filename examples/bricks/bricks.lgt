@@ -110,32 +110,31 @@
 	implements(monitoring)).
 
 	:- info([
-		version is 1.1,
-		date is 2006/12/14,
+		version is 1.2,
+		date is 2010/03/28,
 		author is 'Paulo Moura',
 		comment is 'Monitor for brick movements printing an ascii representation of each brick position.']).
 
-	:- uses(loop).
-	:- uses(list).
+	:- set_logtalk_flag(events, deny).
+
+	:- uses(loop, [forto/4, fordownto/4]).
+	:- uses(list, [member/2, last/2]).
 
 	after(_, move(_, _), _) :-
 		findall(
 			(Brick, X, Y),
 			(instantiates_class(Brick, brick), Brick::position(X, Y)),
 			Bricks),
-		setof(X, Brick^Y^ (list::member((Brick,X,Y), Bricks)), Xs),
-		list::last(Xs, Xmax),
-		setof(Y, Brick^X^ (list::member((Brick,X,Y), Bricks)), Ys),
-		list::last(Ys, Ymax),
-		loop::fordownto(Y, Ymax, 1,
+		setof(X, Brick^Y^ member((Brick,X,Y), Bricks), Xs),
+		last(Xs, Xmax),
+		setof(Y, Brick^X^ member((Brick,X,Y), Bricks), Ys),
+		last(Ys, Ymax),
+		fordownto(Y, Ymax, 1,
 			(write('|'),
-			 loop::forto(X, 1, Xmax,
-        		(list::member((Brick, X, Y), Bricks) ->
-            		write(Brick)
-            		;
-            		write('.'))),
+			 forto(X, 1, Xmax,
+				(member((Brick, X, Y), Bricks) -> write(Brick); write('.'))),
 			 nl)),
 		write('-'),
-		loop::forto(X, 1, Xmax, write('-')), nl.
+		forto(X, 1, Xmax, write('-')), nl.
 
 :- end_object.
