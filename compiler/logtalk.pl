@@ -7611,6 +7611,7 @@ current_logtalk_flag(version, version(2, 39, 1)).
 	 	\+ '$lgt_pp_use_module_pred_'(_, _, TPred) ->
 		TOriginal =.. [_| Args], TAlias =.. [_| Args],							% unify args of TOriginal and TAlias
 		'$lgt_dcgrule_to_clause'((TAlias --> ':'(Module, TOriginal)), Clause),	% allow for runtime use
+		'$lgt_tr_clause'(Clause, _, _, _),
 		assertz('$lgt_pp_use_module_non_terminal_'(Module, TOriginal, TAlias))
 	;	throw(permission_error(modify, uses_module_non_terminal, AFunctor//Arity))
 	).
