@@ -43,6 +43,11 @@ RELEASE NOTES
     reported without an error/3 wrapper. Thanks to Parker Jones for the
     bug report.
 
+    Corrected a predicate lookup caching bug for the ^^/1 control construct
+    (aka "super") that resulted in cached entries never being used when the
+    argument was a different predicate from the one being defined by the
+    clause containing the call (uncommon but possible).
+
     Updated the SWI-Prolog and YAP config files in order to recognize and
     compile the proprietary directive create_prolog_flag/3.
 

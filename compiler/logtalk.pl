@@ -3422,15 +3422,15 @@ current_logtalk_flag(version, version(2, 39, 1)).
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
 	(	'$lgt_current_object_'(Self, _, Dcl, _, _, _, _, _, _, _, _),
 		call(Dcl, Pred, Scope, _, _, _, _, SCtn, _) ->
-		(	(Scope = p(_); This = SCtn) ->															% check scope
-			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
-				functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),					% construct "this" template
-				functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),					% construct "self" template
+		(	(Scope = p(_); This = SCtn) ->																% check scope
+			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),						% construct predicate template
+				functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),						% construct "this" template
+				functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),						% construct "self" template
 				'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _),
-				call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->								% lookup definition
-				asserta(('$lgt_super_call_other_'(Super, GPred, GExCtx, volatile) :- !, GCall)),	% cache lookup result
-				(GPred, GExCtx) = (Pred, ExCtx),													% unify message arguments
-				call(GCall)																			% call inherited definition
+				call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->									% lookup definition
+				asserta(('$lgt_obj_super_call_other_'(Super, GPred, GExCtx, volatile) :- !, GCall)),	% cache lookup result
+				(GPred, GExCtx) = (Pred, ExCtx),														% unify message arguments
+				call(GCall)																				% call inherited definition
 			;	% closed-world assumption
 				fail
 			)
