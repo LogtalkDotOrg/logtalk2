@@ -15,11 +15,6 @@ RELEASE NOTES
 
 2.39.1 - March 31, 2010
 
-    Added a new entity directive, alias/2, supporting the definition of
-    compile-time object aliases. This directive may be used to abbreviate
-    long object names or to make it easier to switch between objects
-    providing alternative implementations of the same protocol.
-
     Updated the implementation of the uses/2 directive in order to allow
     safe use of the declared shortcuts at runtime.
 

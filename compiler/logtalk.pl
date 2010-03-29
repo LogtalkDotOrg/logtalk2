@@ -209,7 +209,6 @@
 :- dynamic('$lgt_pp_protected_'/2).				% '$lgt_pp_protected_'(Functor, Arity)
 :- dynamic('$lgt_pp_private_'/2).				% '$lgt_pp_private_'(Functor, Arity)
 :- dynamic('$lgt_pp_meta_predicate_'/1).		% '$lgt_pp_meta_predicate_'(Pred)
-:- dynamic('$lgt_pp_obj_alias_'/2).				% '$lgt_pp_obj_alias_'(Obj, Alias)
 :- dynamic('$lgt_pp_pred_alias_'/3).			% '$lgt_pp_pred_alias_'(Entity, Pred, Alias)
 :- dynamic('$lgt_pp_dcg_nt_'/3).				% '$lgt_pp_dcg_nt_'(Functor, Arity, ExtArity)
 :- dynamic('$lgt_pp_multifile_'/2).				% '$lgt_pp_multifile_'(Functor, Arity)
@@ -5870,7 +5869,6 @@ current_logtalk_flag(version, version(2, 39, 1)).
 	retractall('$lgt_pp_discontiguous_'(_, _)),
 	retractall('$lgt_pp_mode_'(_, _)),
 	retractall('$lgt_pp_meta_predicate_'(_)),
-	retractall('$lgt_pp_obj_alias_'(_, _)),
 	retractall('$lgt_pp_pred_alias_'(_, _, _)),
 	retractall('$lgt_pp_dcg_nt_'(_, _, _)),
 	retractall('$lgt_pp_entity_init_'(_)),
@@ -6915,35 +6913,8 @@ current_logtalk_flag(version, version(2, 39, 1)).
 	'$lgt_tr_multifile_directive'(Preds2).
 
 
-'$lgt_tr_directive'(alias, [Obj, Alias], _, _, _, _) :-
-	!,
-	'$lgt_tr_obj_alias_directive'(Obj, Alias).
-
-
 '$lgt_tr_directive'(alias, [Entity, Pred, Alias], _, _, _, _) :-
 	'$lgt_tr_pred_alias_directive'(Entity, Pred, Alias).
-
-
-
-'$lgt_tr_obj_alias_directive'(Obj, _) :-
-	var(Obj),
-	throw(instantiation_error).
-
-'$lgt_tr_obj_alias_directive'(_, Alias) :-
-	var(Alias),
-	throw(instantiation_error).
-
-'$lgt_tr_obj_alias_directive'(Obj, _) :-
-	\+ callable(Obj),
-	throw(type_error(object_identifier, Obj)).
-
-'$lgt_tr_obj_alias_directive'(_, Alias) :-
-	\+ callable(Alias),
-	throw(type_error(object_identifier, Alias)).
-
-'$lgt_tr_obj_alias_directive'(Obj, Alias) :-
-	'$lgt_add_referenced_object'(Obj),
-	assertz('$lgt_pp_obj_alias_'(Obj, Alias)).
 
 
 
@@ -10130,15 +10101,6 @@ current_logtalk_flag(version, version(2, 39, 1)).
 	throw(type_error(object_identifier, Obj)).
 
 
-% object aliases
-		
-'$lgt_tr_msg'(Pred, Alias, TPred, This) :-
-	nonvar(Alias),
-	'$lgt_pp_obj_alias_'(Obj, Alias),
-	!,
-	'$lgt_tr_msg'(Pred, Obj, TPred, This).
-
-
 % not runtime message translation; remember object receiving message
 
 '$lgt_tr_msg'(_, Obj, _, This) :-
@@ -11362,7 +11324,6 @@ current_logtalk_flag(version, version(2, 39, 1)).
 
 '$lgt_unknown_object'(Obj) :-
 	'$lgt_pp_referenced_object_'(Obj),
-	\+ '$lgt_pp_obj_alias_'(_, Obj),								% not an object alias
 	\+ '$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _),	% not a currently loaded object
 	\+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _),		% not the object being compiled (self reference)
 	\+ '$lgt_pp_entity_init_'(object, Obj, _),						% not an object defined in the source file being compiled
