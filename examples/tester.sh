@@ -100,6 +100,7 @@ do
 			echo "***** Testing $unit"
 			name=$(echo $unit|sed 's|/|_|g')
 			$logtalk "logtalk_load(tester),halt." > "$results/$name.results" 2> "$results/$name.errors"
+			grep 'tests:' "$results/$name.results" | sed 's/%/*****        /'
 		fi
 		for subunit in *
 		do
