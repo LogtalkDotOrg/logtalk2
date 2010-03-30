@@ -2,8 +2,8 @@
 :- object(dcgtest).
 
 	:- info([
-		version is 1.0,
-		date is 2004/9/27,
+		version is 1.01,
+		date is 2010/03/29,
 		author is 'Paulo Moura',
 		comment is 'Test cases for the Logtalk DCG translator.']).
 
@@ -93,7 +93,9 @@
 	gr_tr_test(610, (p --> [foo], {write(hello), nl}), success).
 
 	% "metacall" tests:
+	:- set_logtalk_flag(singletons, silent).
 	gr_tr_test(701, (p --> X), success).
+	:- set_logtalk_flag(singletons, warning).
 	gr_tr_test(702, (p --> _), success).
 
 	% non-terminals corresponding to "graphic" characters
