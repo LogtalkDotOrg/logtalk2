@@ -8,6 +8,8 @@
 		date is 2010/03/16,
 		comment is 'Unit tests for the "threads/birthdays" example.']).
 
+	:- set_logtalk_flag(unknown, silent).
+
 	test(birthdays_1) :-
 		agent::(new(paul, 40, male), new(nathalie, 32, female)).
 

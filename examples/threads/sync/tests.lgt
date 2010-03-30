@@ -16,8 +16,8 @@
 		threaded_call(nasty2::update_db(_)).
 
 	test(sync_2) :-
-		threaded_exit(nasty2::update_db(X)), X == 1,
-		threaded_exit(nasty2::update_db(Y)), Y == 2,
-		threaded_exit(nasty2::update_db(Z)), Z == 3.
+		threaded_exit(nasty2::update_db(X)),
+		threaded_exit(nasty2::update_db(Y)), X \== Y,
+		threaded_exit(nasty2::update_db(Z)), X \== Z, Y \== Z.
 
 :- end_object.
