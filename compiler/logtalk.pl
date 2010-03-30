@@ -338,19 +338,19 @@ Obj<<Goal :-
 	var(Variable),
 	throw(error(instantiation_error, throw(_), Sender)).
 
-'$lgt_runtime_error_handler'(error(existence_error(goal_thread, '$lgt_send_to_object_ne_nv'(Self, Goal, Sender)), _)) :-
+'$lgt_runtime_error_handler'(error(existence_error(goal_thread, '$lgt_send_to_object_ne_nv'(Self, Goal, Sender)), _, _)) :-
 	(	Self == user ->
 		throw(error(existence_error(goal_thread, Goal), Sender))
 	;	throw(error(existence_error(goal_thread, Self::Goal), Sender))
 	).
 
-'$lgt_runtime_error_handler'(error(existence_error(goal_thread, '$lgt_send_to_object_nv'(Self, Goal, Sender)), _)) :-
+'$lgt_runtime_error_handler'(error(existence_error(goal_thread, '$lgt_send_to_object_nv'(Self, Goal, Sender)), _, _)) :-
 	(	Self == user ->
 		throw(error(existence_error(goal_thread, Goal), Sender))
 	;	throw(error(existence_error(goal_thread, Self::Goal), Sender))
 	).
 
-'$lgt_runtime_error_handler'(error(existence_error(goal_thread, TGoal), Sender)) :-
+'$lgt_runtime_error_handler'(error(existence_error(goal_thread, TGoal), _, Sender)) :-
 	functor(TGoal, TFunctor, TArity),
 	TGoal =.. [_| TArgs],
 	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, _, _, Functor/_),
@@ -1476,7 +1476,7 @@ threaded_peek(Goal, Tag) :-
 
 threaded_peek(Goal, Tag) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _) ->
-	catch('$lgt_mt_peek_reply'(Prefix, Goal, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
+	catch('$lgt_mt_peek_reply'(Prefix, Goal, user, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_peek(+callable)
@@ -1495,7 +1495,7 @@ threaded_peek(Goal) :-
 
 threaded_peek(Goal) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _) ->
-	catch('$lgt_mt_peek_reply'(Prefix, Goal, user, user, []), Error, '$lgt_runtime_error_handler'(Error)).
+	catch('$lgt_mt_peek_reply'(Prefix, Goal, user, user, user, []), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_wait(?nonvar)
@@ -8879,10 +8879,6 @@ current_logtalk_flag(version, version(2, 39, 1)).
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads)).
 
-'$lgt_tr_body'(threaded_exit(_, Tag), _, _, _) :-
-	var(Tag),
-	throw(instantiation_error).
-
 '$lgt_tr_body'(threaded_exit(Goal, _), _, _, _) :-
 	nonvar(Goal),
 	\+ callable(Goal),
@@ -8925,10 +8921,6 @@ current_logtalk_flag(version, version(2, 39, 1)).
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads)).
 
-'$lgt_tr_body'(threaded_peek(_, Tag), _, _, _) :-
-	var(Tag),
-	throw(instantiation_error).
-
 '$lgt_tr_body'(threaded_peek(Goal, _), _, _, _) :-
 	nonvar(Goal),
 	\+ callable(Goal),
@@ -8936,11 +8928,11 @@ current_logtalk_flag(version, version(2, 39, 1)).
 
 '$lgt_tr_body'(threaded_peek(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_peek(Goal, Tag), MTGoal, ExCtx), Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, This, Self, Tag)
-	;	MTGoal = '$lgt_mt_peek_reply'(TGoal, This, Self, Tag)
+		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, Sender, This, Self, Tag)
+	;	MTGoal = '$lgt_mt_peek_reply'(TGoal, Sender, This, Self, Tag)
 	),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _).
 
@@ -8957,11 +8949,11 @@ current_logtalk_flag(version, version(2, 39, 1)).
 
 '$lgt_tr_body'(threaded_peek(Goal), MTGoal, '$lgt_dbg_goal'(threaded_peek(Goal), MTGoal, ExCtx), Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _),
 	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, This, Self, [])
-	;	MTGoal = '$lgt_mt_peek_reply'(TGoal, This, Self, [])
+		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, Sender, This, Self, [])
+	;	MTGoal = '$lgt_mt_peek_reply'(TGoal, Sender, This, Self, [])
 	),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _).
 
@@ -15896,22 +15888,25 @@ current_logtalk_flag(version, version(2, 39, 1)).
 
 
 
-% '$lgt_mt_peek_reply'(+callable, +object_identifier, +object_identifier, @nonvar)
+% '$lgt_mt_peek_reply'(+callable, +object_identifier, +object_identifier, +object_identifier, @nonvar)
 %
 % peeks a reply to a goal sent to the senders object message queue (this predicate is called from within categories)
 
-'$lgt_mt_peek_reply'(Goal, This, Self, Tag) :-
+'$lgt_mt_peek_reply'(Goal, Sender, This, Self, Tag) :-
 	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _, _, _, _) ->
-	'$lgt_mt_peek_reply'(Queue, Goal, This, Self, Tag).
+	'$lgt_mt_peek_reply'(Queue, Goal, Sender, This, Self, Tag).
 
 
 
-% '$lgt_mt_peek_reply'(+atom, +callable, +object_identifier, +object_identifier, @nonvar)
+% '$lgt_mt_peek_reply'(+atom, +callable, +object_identifier, +object_identifier, +object_identifier, @nonvar)
 %
 % peeks a reply to a goal sent to the senders object message queue
 
-'$lgt_mt_peek_reply'(Queue, Goal, This, Self, Tag) :-
-	thread_peek_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, _, _)).
+'$lgt_mt_peek_reply'(Queue, Goal, Sender, This, Self, Tag) :-
+	(	var(Tag) ->
+		throw(error(instantiation_error, This::threaded_peek(Goal, Tag), Sender))	
+	;	thread_peek_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, _, _))
+	).
 
 
 
@@ -15930,27 +15925,30 @@ current_logtalk_flag(version, version(2, 39, 1)).
 % gets a reply to a goal sent to the senders object message queue
 
 '$lgt_mt_get_reply'(Queue, Goal, Sender, This, Self, Tag) :-
-	(	% first check if there is a thread running for proving the goal before proceeding:
-		thread_peek_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)) ->
-		% answering thread exists; go ahead and retrieve the solution(s):
-		thread_get_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)),
-		(	Type == once ->
-		    setup_call_cleanup(
-				true,
-		        '$lgt_mt_det_reply'(Queue, Goal, This, Self, Tag, Id),
-		        thread_join(Id, _))
-		;   setup_call_cleanup(
-				true,
-			    '$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Tag, Id),
-				((	thread_property(Id, status(running)) ->					% if the thread is still running, it's suspended waiting
-					catch(thread_send_message(Id, '$lgt_exit'), _, true)	% for a request to an alternative proof; tell it to exit
-				 ;	true
-				 ),
-				 thread_join(Id, _))
+	(	var(Tag) ->
+		throw(error(instantiation_error, This::threaded_exit(Goal, Tag), Sender))	
+	;	(	% first check if there is a thread running for proving the goal before proceeding:
+			thread_peek_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)) ->
+			% answering thread exists; go ahead and retrieve the solution(s):
+			thread_get_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)),
+			(	Type == once ->
+			    setup_call_cleanup(
+					true,
+			        '$lgt_mt_det_reply'(Queue, Goal, This, Self, Tag, Id),
+			        thread_join(Id, _))
+			;   setup_call_cleanup(
+					true,
+				    '$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Tag, Id),
+					((	thread_property(Id, status(running)) ->					% if the thread is still running, it's suspended waiting
+						catch(thread_send_message(Id, '$lgt_exit'), _, true)	% for a request to an alternative proof; tell it to exit
+					 ;	true
+					 ),
+					 thread_join(Id, _))
+				)
 			)
+		;	% answering thread does not exists; generate an exception (failing is not an option as it could simply mean goal failure)
+			throw(error(existence_error(goal_thread, Goal), This::threaded_exit(Goal, Tag), Sender))
 		)
-	;	% answering thread does not exists; generate an exception (failing is not an option as it could simply mean goal failure)
-		throw(error(existence_error(goal_thread, Goal), Sender))
 	).
 
 

@@ -15,10 +15,16 @@ RELEASE NOTES
 
 2.39.1 - March 31, 2010
 
+    Updated the Logtalk compiler and runtime to support calls to the built-in
+    predicates threaded_peek/2 and threaded_exit/2 where the second argument
+    (thread tag) is only instantiated at runtime. Updated the exception term
+    thrown by threaded_exit/2 when the thread goal don't exist to use error/3
+    instead of error/2.
+
     Updated the implementation of the uses/2 directive in order to allow
     safe use of the declared shortcuts at runtime.
 
-    Corrected a bug when using the use_mdule/2 directive that resulted in
+    Corrected a bug when using the use_module/2 directive that resulted in
     a performance penalty when calling module predicates.
 
     Updated the Logtalk compiler to warn the user when finding deprecated
