@@ -49,10 +49,10 @@
 
 	% test 11.  % complicated because of comparison of floats
 	test(dcgs_11) :-
-		tokenizer::tokens(" We owe $1,048,576.24 to Agent 007 for Version 3.14159!  ", Tokens),
+		tokenizer::tokens(" We owe $1,048,576.24 to Agent 007 for Version 3.14159! ", Tokens),
 		Tokens = [Tok1,Tok2, Tok3, Number| Rest],
-		Error is abs(1048576.24-Number),   % Wow the error is huge (>3)
-		Tok1==we, Tok2==owe, Tok3=='$', Error < 5, Rest==[to,agent,7,for,version,3.14159,!].
+		Error is abs(1048576.24 - Number),	% Wow the error is huge (>3)
+		Tok1 == we, Tok2 == owe, Tok3 == '$', Error < 5, Rest == [to,agent,7,for,version,3.14159,!].
 
 	test(dcgs_12) :-
 		findall(Ending, walker::walk([n(5), e(4), s(2), nw(8), s(5), se(1), n(4)], Ending), Endings),
@@ -76,11 +76,11 @@
 
 	test(dcgs_16) :-
 		findall(Components, url::parse("http://logtalk.org/", Components), Solutions),
-		Solutions==[[protocol(http), address([logtalk, org]), path(['']), file('')]].
+		Solutions == [[protocol(http), address([logtalk, org]), path(['']), file('')]].
 
 	test(dcgs_17) :-
 		findall(Components, url::parse("http://logtalk.org/cvs", Components), Solutions),
-		Solutions==[[protocol(http), address([logtalk, org]), path([cvs]), file('')]].
+		Solutions == [[protocol(http), address([logtalk, org]), path([cvs]), file('')]].
 
 	test(dcgs_18) :-
 		findall(Components, url::parse("http://logtalk.org/cvs.html", Components), Solutions),

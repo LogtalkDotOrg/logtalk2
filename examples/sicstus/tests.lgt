@@ -26,7 +26,7 @@
 
 	test(sicstus_5) :-
 		red_circle(3)::area(Area),
-		Error is abs(28.274334-Area),
+		Error is abs(28.274334 - Area),
 		Error < 0.0001.
 
 	test(sicstus_6) :-

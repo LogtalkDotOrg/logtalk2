@@ -14,10 +14,10 @@
 
 	test(modules_2) :-
 		setof(Prop, Pred^(exports::predicate_property(p(Pred), Prop)), Solutions),
-		Solutions == [public,static,declared_in(exports),defined_in(exports)].
+		Solutions == [public, static, declared_in(exports), defined_in(exports)].
 
 	test(modules_3) :-
 		findall(N, exports::p(N), Solutions),
-		Solutions == [1,2,3].
+		Solutions == [1, 2, 3].
 
 :- end_object.

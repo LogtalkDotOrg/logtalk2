@@ -21,7 +21,7 @@
 	test(polygons_2) :-
 		findall(Tuple,concentric::tuple(Tuple),Solutions),
 		list::msort(Solutions,SolutionsSorted),
-		SolutionsSorted == [[p,h],[t,s]].
+		SolutionsSorted == [[p,h], [t,s]].
 
 	test(polygons_3) :-
 		t::position(Xt, Yt), s::position(Xs, Ys), p::position(Xp, Yp), h::position(Xh, Yh),
@@ -42,7 +42,7 @@
 		t::move(3, 3), h::move(8, 4),
 		findall(Tuple,concentric::tuple(Tuple),Solutions),
 		list::msort(Solutions,SolutionsSorted),
-		SolutionsSorted == [[p,h],[t,s]].
+		SolutionsSorted == [[p,h], [t,s]].
 
 	test(polygons_6) :-
 		t::position(Xt, Yt), s::position(Xs, Ys), p::position(Xp, Yp), h::position(Xh, Yh),
@@ -64,7 +64,7 @@
 		p::move(2, 7),
 		findall(Tuple,concentric::tuple(Tuple),Solutions),
 		list::msort(Solutions,SolutionsSorted),
-		SolutionsSorted == [[p,h],[t,p],[t,s]].
+		SolutionsSorted == [[p,h], [t,p], [t,s]].
 
 	test(polygons_9) :-
 		t::position(Xt, Yt), s::position(Xs, Ys), p::position(Xp, Yp), h::position(Xh, Yh),

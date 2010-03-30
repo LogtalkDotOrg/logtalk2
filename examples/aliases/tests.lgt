@@ -15,17 +15,17 @@
 
 	test(aliases_2) :-
 		square(2)::side(Side),
-		Side =:= 2.
+		Side == 2.
 
 	test(aliases_3) :-
 		findall(Property, square(2)::predicate_property(side(_), Property), PropertiesUnsorted),
 		list::msort(PropertiesUnsorted, PropertiesSorted),
-		PropertiesSorted = [public, static, alias_of(width(_)),declared_in(rectangle(_, _)),defined_in(rectangle(_, _))].
+		PropertiesSorted = [public, static, alias_of(width(_)), declared_in(rectangle(_, _)), defined_in(rectangle(_, _))].
 
 	test(aliases_4) :-
 		findall(Property, square(2)::predicate_property(width(_), Property), PropertiesUnsorted),
 		list::msort(PropertiesUnsorted, PropertiesSorted),
-		PropertiesSorted = [public, static, declared_in(rectangle(_, _)),defined_in(rectangle(_, _))].
+		PropertiesSorted = [public, static, declared_in(rectangle(_, _)), defined_in(rectangle(_, _))].
 
 	test(aliases_5) :-
 		findall(Predicate, circle(_)::current_predicate(Predicate), PredicatesUnsorted),
@@ -34,16 +34,16 @@
 
 	test(aliases_6) :-
 		circle(3)::r(Radius),
-		Radius =:= 3.
+		Radius == 3.
 
 	test(aliases_7) :-
 		findall(Property, circle(3)::predicate_property(r(_), Property), PropertiesUnsorted),
 		list::msort(PropertiesUnsorted, PropertiesSorted),
-		PropertiesSorted = [public, static, alias_of(rx(_)),declared_in(ellipse(_, _)),defined_in(ellipse(_, _))].
+		PropertiesSorted = [public, static, alias_of(rx(_)), declared_in(ellipse(_, _)), defined_in(ellipse(_, _))].
 
 	test(aliases_8) :-
 		findall(Property, circle(3)::predicate_property(rx(_), Property), PropertiesUnsorted),
 		list::msort(PropertiesUnsorted, PropertiesSorted),
-		PropertiesSorted = [public, static, declared_in(ellipse(_, _)),defined_in(ellipse(_, _))].
+		PropertiesSorted = [public, static, declared_in(ellipse(_, _)), defined_in(ellipse(_, _))].
 
 :- end_object.

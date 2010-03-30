@@ -10,7 +10,7 @@
 
 	test(complements_1) :-
 		complements_object(Category, Object),
-		Category==logging, Object==employee.
+		Category == logging, Object == employee.
 
 	test(complements_2) :-
 		employee::name(Name),

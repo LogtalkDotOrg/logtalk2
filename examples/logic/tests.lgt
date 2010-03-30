@@ -17,7 +17,7 @@
 		Y = f1(X), Cs = [cl([r(X, f1(X))], [p(X)]), cl([q(X), r(X, f1(X))], [])].
 
 	test(logic_3) :-
-		translator::step_by_step(all(X, men(X)  => mortal(X)), Cs),
+		translator::step_by_step(all(X, men(X) => mortal(X)), Cs),
 		Cs = [cl([mortal(X)], [men(X)])].
 
 :- end_object.

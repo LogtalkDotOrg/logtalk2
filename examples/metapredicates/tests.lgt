@@ -25,8 +25,8 @@
 		I mod 2 =:= 0.
 
 	test(metapredicates_1) :-
-		sort(user)::sort([3, 1, 4, 2, 9], Sorted),
-		Sorted == [1,2,3,4,9].
+		sort(user)::sort([3,1,4,2,9], Sorted),
+		Sorted == [1, 2, 3, 4, 9].
 
 	test(metapredicates_2) :-
 		meta::partition(even_integer, [1,2,3,4,5], Included, Excluded),
@@ -53,7 +53,7 @@
 		Result == 120.
 
 	test(metapredicates_8) :-
-		meta::fold_left(predicates::tuple, (0,0), [(1,2), (3,4), (6,4)], Result),
+		meta::fold_left(predicates::tuple, (0,0), [(1,2),(3,4),(6,4)], Result),
 		Result == (10, 10).
 
 	test(metapredicates_9) :-

@@ -24,19 +24,19 @@
 
 	succeeds(lambdas_4) :-
 		meta::map([X,Y]>>(X=A-B,Y=B-A), [1-a,2-b,3-c], Zs),
-		Zs == [a-1,b-2,c-3].
+		Zs == [a-1, b-2, c-3].
 
 	succeeds(lambdas_5) :-
 		meta::map([X,B-A]>>(X=A-B), [1-a,2-b,3-c], Zs),
-		Zs == [a-1,b-2,c-3].
+		Zs == [a-1, b-2, c-3].
 
 	succeeds(lambdas_6) :-
 		meta::map([A-B,B-A]>>true, [1-a,2-b,3-c], Zs),
-		Zs == [a-1,b-2,c-3].
+		Zs == [a-1, b-2, c-3].
 
 	succeeds(lambdas_7) :-
 		meta::map([A-B]>>([B-A]>>true), [1-a,2-b,3-c], Zs) ->
-		Zs == [a-1,b-2,c-3].
+		Zs == [a-1, b-2, c-3].
 
 	succeeds(lambdas_8) :-
 		Points = [(1,4),(2,5),(8,3)], meta::map([(X,Y),Z]>>(Z is sqrt(X*X + Y*Y)), Points, Distances),
@@ -56,31 +56,32 @@
 
 	succeeds(lambdas_10) :-
 		meta::map([[X,Y],Z]>>(Z is X*X + Y*Y), [[1,2],[3,4],[5,6]], Result),
-		Result == [5,25,61].
+		Result == [5, 25, 61].
 
 	succeeds(lambdas_11) :-
 		meta::map([[X,Y]]>>([Z]>>(Z is X*X + Y*Y)), [[1,2],[3,4],[5,6]], Result),
-		Result == [5,25,61].
+		Result == [5, 25, 61].
 
 	succeeds(lambdas_12) :-
-		Xsss = [[[1,2,3],[4]],[[5]]], meta::map(meta::map(meta::map([X,Y]>>(Y is X+3))), Xsss,  Ysss),
-		Xsss == [[[1,2,3],[4]],[[5]]], Ysss == [[[4,5,6],[7]],[[8]]].
+		Xsss = [[[1,2,3], [4]], [[5]]],
+		meta::map(meta::map(meta::map([X,Y]>>(Y is X+3))), Xsss,  Ysss),
+		Ysss == [[[4,5,6], [7]], [[8]]].
 
 	succeeds(lambdas_13) :-
 		meta::map([X,[X]]>>true,[1,2],Ys),
-		Ys == [[1],[2]].
+		Ys == [[1], [2]].
 
 	succeeds(lambdas_14) :-
 		meta::map([X,[X]]>>true,Xs,[[1],[2]]),!,         %%%% need to check whether there should be a choicepoint.
-		Xs == [1,2].
+		Xs == [1, 2].
 
 	succeeds(lambdas_15) :-
 		meta::map([N,M]>>(list::length(L, N), list::length([_|L], M)), [999,123],R),
-		R == [1000,124].
+		R == [1000, 124].
 
 	succeeds(lambdas_16) :-
 		meta::map([N]>>([M]>>(list::length(L, N), list::length([_|L], M))), [999,123],R),
-		R == [1000,124].
+		R == [1000, 124].
 
 	succeeds(lambdas_17) :-
 		logtalk << ([]>>true).
@@ -106,15 +107,15 @@
 	succeeds(lambdas_24) :-
 		findall(Currencies, countries::currencies_wrong(Currencies), Solutions),
 		list::msort(Solutions, SolutionsSorted),
-		SolutionsSorted==[[dinar], [dinar], [euro], [euro], [pound_sterling], [ringgit]].
+		SolutionsSorted == [[dinar], [dinar], [euro], [euro], [pound_sterling], [ringgit]].
 		
 	succeeds(lambdas_25) :-
 		countries::currencies_no_lambda(Currencies),
-		Currencies==[dinar, euro, pound_sterling, ringgit].
+		Currencies == [dinar, euro, pound_sterling, ringgit].
 
 	succeeds(lambdas_26) :-
 		countries::currencies_lambda(Currencies),
-		Currencies==[dinar, euro, pound_sterling, ringgit].
+		Currencies == [dinar, euro, pound_sterling, ringgit].
 
 	succeeds(lambdas_27) :-
 		sigma::sum([X,Y]>>(Y is X), 0, 9, R),

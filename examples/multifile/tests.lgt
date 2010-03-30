@@ -10,6 +10,6 @@
 
 	test(multifile_1) :-
 		findall(X, main::a(X), Solutions),
-		Solutions == [1,2,3,4,5].
+		Solutions == [1, 2, 3, 4, 5].
 
 :- end_object.

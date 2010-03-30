@@ -80,7 +80,7 @@ yes
 
 % translate a single logic proposition printing each translation step:
 
-| ?- translator::step_by_step(all(X, men(X)  => mortal(X)), Cs).
+| ?- translator::step_by_step(all(X, men(X) => mortal(X)), Cs).
 
 Processing proposition: all(X, men(X)=>mortal(X))
 

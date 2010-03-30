@@ -10,11 +10,11 @@
 
 	test(metainterpreters_1) :-
 		findall(X,database::p(X),Solutions),
-		Solutions == [1,2].
+		Solutions == [1, 2].
 
 	test(metainterpreters_2) :-
 		findall(X,database::solve(p(X)),Solutions),
-		Solutions == [1,2].
+		Solutions == [1, 2].
 
 	test(metainterpreters_3) :-
 		findall(X-Tree,database::proof_tree(p(X), Tree),Solutions),

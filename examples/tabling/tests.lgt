@@ -16,7 +16,7 @@
 
 		test(tabling_2) :-
 			fibonacci::fib(30, F),
-			F = 1346269.
+			F == 1346269.
 
 	:- endif.
 
