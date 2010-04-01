@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.39.1
+%  Release 2.39.2
 %
 %  Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#77 and later versions
 %
-%  last updated: March 19, 2010
+%  last updated: April 1, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -638,11 +638,11 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_rewrite_and_recompile_pl_directive'(reexport(from(Conjunction, Module)), reexport(Module, Exports)) :-
 	'$lgt_flatten_list'([Conjunction], Exports).
 
-'$lgt_rewrite_and_recompile_pl_directive'(use_module(Library), use_module(Library, Imports)) :-
-	'$lgt_eclipse_list_of_exports'(Library, Imports).
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(Library), use_module(Module, Imports)) :-
+	'$lgt_eclipse_list_of_exports'(Library, Module, Imports).
 
 
-'$lgt_eclipse_list_of_exports'(Library, Exports) :-		% only works for already loaded modules
+'$lgt_eclipse_list_of_exports'(Library, Module, Exports) :-		% only works for already loaded modules
 	(	atom(Library) ->
 		Module = Library
 	;	Library =..[_, Module]

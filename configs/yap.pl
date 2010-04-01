@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.39.1
+%  Release 2.39.2
 %
 %  Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: March 3, 2010
+%  last updated: April 1, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -656,6 +656,9 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 
 '$lgt_rewrite_and_recompile_pl_directive'(reexport(File), reexport(Module, Exports)) :-
 	'$lgt_yap_list_of_exports'(File, Module, Exports).
+
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(File, Exports), use_module(Module, Exports)) :-
+	'$lgt_yap_list_of_exports'(File, Module, _).
 
 '$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Exports)) :-
 	'$lgt_yap_list_of_exports'(File, Module, Exports).

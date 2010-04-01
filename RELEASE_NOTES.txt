@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.39.1
+Release 2.39.2
 
 Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
 Logtalk is free software.  You can redistribute it and/or modify
@@ -11,6 +11,19 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 RELEASE NOTES
 =============
+
+
+2.39.2 - April ??, 2010
+
+    Updated the Logtalk compiler in order to reject use_module/2 directives
+    where the first argument is not an atom (assumed to be the module name).
+    This change results in using the config files to find the module name from
+    the module file name when the first argument of the use_module/2 directive
+    is a compound term (as usual when using library notation).
+
+    Updated the ECLiPSe, SICStus Prolog, SWI-Prolog, and YAP config files in
+    order to preprocess the use_module/2 directive, converting the module file
+    name into the module name.
 
 
 2.39.1 - March 31, 2010

@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.39.1
+%  Release 2.39.2
 %
 %  Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 3.8 and later versions
 %
-%  last updated: February 21, 2010
+%  last updated: April 1, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -603,6 +603,26 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 	'$lgt_pp_module_'(_).	% ensure_loaded/1 directive used within a module (sloppy replacement for the use_module/1 directive)
 
 '$lgt_rewrite_and_recompile_pl_directive'(module(Module, Exports, _), module(Module, Exports)).
+
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(File, Exports), use_module(Module, Exports)) :-
+	nonvar(File),
+	(	File = library(Module) ->
+		true
+	;	atom(File) ->
+		File = Module
+	).
+
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Exports)) :-
+	nonvar(File),
+	(	File = library(Module) ->
+		true
+	;	atom(File) ->
+		File = Module
+	),
+	setof(				% this only succeedds for already loaded modules
+		Functor/Arity,
+		Predicate^(predicate_property(Module:Predicate, exported), functor(Predicate, Functor, Arity)),
+		Exports).
 
 
 
