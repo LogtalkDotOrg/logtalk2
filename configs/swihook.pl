@@ -9,7 +9,7 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  integration code for SWI Prolog 3.3.x and later versions to compile and
+%  integration code for SWI Prolog 5.8.0 and later versions to compile and
 %  load Logtalk files using SWI Prolog consult/1 and to support edit/1 and
 %  make/0
 %
@@ -40,7 +40,7 @@ user:prolog_load_file(_:Spec, Options) :-
 	file_name_extension(Entity, _, BaseName),
 	working_directory(Old, Dir),
 	'$lgt_filter_compiler_options'(Options, Options2),
-	call_cleanup(logtalk_load(Entity, Options2), working_directory(_, Old)).
+	setup_call_cleanup(true, logtalk_load(Entity, Options2), working_directory(_, Old)).
 
 
 '$lgt_filter_compiler_options'([], []).
