@@ -13,7 +13,7 @@
 %  load Logtalk files using SWI Prolog consult/1 and to support edit/1 and
 %  make/0
 %
-%  last updated: June 29, 2008
+%  last updated: April 2, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -24,10 +24,12 @@
 
 user:prolog_load_file(_:Spec, Options) :-
 	\+ '$lgt_member'(must_be_module(true), Options),	% exclude calls to use_module/1-2
+	\+ '$lgt_member'(if(not_loaded), Options),			% exclude calls to ensure_loaded/1
 	(	atom(Spec) ->
 		expand_file_name(Spec, [SpecExp]),
 		absolute_file_name(SpecExp, [extensions([lgt]), access(read), file_errors(fail)], Path)
 	;	Spec =.. [Library, File],
+		atom(File),										% no paths instead of a file name for Logtalk
 		'$lgt_expand_library_path'(Library, LibPath),
 		atom_concat(LibPath, File, Spec2),
 		expand_file_name(Spec2, [SpecExp]),

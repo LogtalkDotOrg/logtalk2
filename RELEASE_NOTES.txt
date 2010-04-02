@@ -25,6 +25,12 @@ RELEASE NOTES
     order to preprocess the use_module/2 directive, converting the module file
     name into the module name.
 
+    Updated the SWI-Prolog hooks file, "configs/swihook.pl", in order to avoid
+    intercepting Prolog ensure_loaded/1 calls by the prolog_load_file/2 hook
+    predicate. This change solves issues when calling Prolog module library
+    predicates from within Logtalk objects and categories. Thanks to Parker
+    Jones for the bug report.
+
     Updated the "examples/tester.sh" script in order to report an error when
     the default Prolog back-end compiler is not found. Thanks to Parker Jones
     for the bug report.
