@@ -25,6 +25,10 @@ RELEASE NOTES
     order to preprocess the use_module/2 directive, converting the module file
     name into the module name.
 
+    Updated the "examples/tester.sh" script in order to report an error when
+    the default Prolog back-end compiler is not found. Thanks to Parker Jones
+    for the bug report.
+
 
 2.39.1 - March 31, 2010
 

@@ -78,6 +78,12 @@ elif [ "$p_arg" != "" ] ; then
 	echo "Error! Unsupported back-end Prolog compiler: $p_arg"
 	usage_help
 	exit 1
+elif [ ! `which $backend` ] ; then
+    echo "Error! Default back-end Prolog compiler not found: $prolog"
+	usage_help
+    exit 1
+fi
+
 fi
 
 if [ "$d_arg" != "" ] ; then
