@@ -6602,7 +6602,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	assertz('$lgt_pp_module_'(Module)),										% remeber we are compiling a module
 	'$lgt_report_compiling_entity'(module, Module),
 	'$lgt_tr_object_id'(Module, static),									% assume static module/object
-	'$lgt_split_module_exports'(Exports, Preds, Ops),
+	'$lgt_split_ops_and_preds'(Exports, Preds, Ops),
 	forall(
 		'$lgt_member'(Op, Ops),
 		'$lgt_tr_file_directive'(Op, File, Lines, Input, Output)),
@@ -6688,22 +6688,24 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 % uses/2 entity directive
 
-'$lgt_tr_directive'(uses, [Obj, Preds], _, _, _, _) :-
-	(var(Obj); var(Preds)),
+'$lgt_tr_directive'(uses, [Obj, Elements], _, _, _, _) :-
+	(var(Obj); var(Elements)),
 	throw(instantiation_error).
 
 '$lgt_tr_directive'(uses, [Obj, _], _, _, _, _) :-
 	\+ callable(Obj),
 	throw(type_error(object_identifier, Obj)).
 
-'$lgt_tr_directive'(uses, [_, Preds], _, _, _, _) :-
-	\+ '$lgt_is_proper_list'(Preds),
-	throw(type_error(list, Preds)).
+'$lgt_tr_directive'(uses, [_, Elements], _, _, _, _) :-
+	\+ '$lgt_is_proper_list'(Elements),
+	throw(type_error(list, Elements)).
 
-'$lgt_tr_directive'(uses, [Obj, Preds], _, _, _, _) :-
+'$lgt_tr_directive'(uses, [Obj, Elements], File, Lines, Input, Output) :-
 	!,
 	'$lgt_add_referenced_object'(Obj),
 	assertz('$lgt_pp_uses_'(Obj)),
+	'$lgt_split_ops_and_preds'(Elements, Preds, Ops),
+	forall('$lgt_member'(Op, Ops), '$lgt_tr_directive'(Op, File, Lines, Input, Output)),
 	'$lgt_tr_uses_directive'(Preds, Obj).
 
 
@@ -6732,12 +6734,14 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	\+ callable(Module),
 	throw(type_error(atom, Module)).
 
-'$lgt_tr_directive'(use_module, [Module, Exports], File, Lines, Input, Output) :-
+'$lgt_tr_directive'(use_module, [_, Imports], _, _, _, _) :-
+	\+ '$lgt_is_proper_list'(Imports),
+	throw(type_error(list, Imports)).
+
+'$lgt_tr_directive'(use_module, [Module, Imports], File, Lines, Input, Output) :-
 	atom(Module),	% fail if using library notation in order to use the config files to find the module name
-	'$lgt_split_module_exports'(Exports, Preds, Ops),
-	forall(
-		'$lgt_member'(Op, Ops),
-		'$lgt_tr_directive'(Op, File, Lines, Input, Output)),
+	'$lgt_split_ops_and_preds'(Imports, Preds, Ops),
+	forall('$lgt_member'(Op, Ops), '$lgt_tr_directive'(Op, File, Lines, Input, Output)),
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
  		'$lgt_tr_directive'(uses, [Module, Preds], File, Lines, Input, Output)
@@ -6765,7 +6769,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		arg(1, Module, Name),
 		atom(Name)
 	),
-	'$lgt_split_module_exports'(Exports, Preds, Ops),
+	'$lgt_split_ops_and_preds'(Exports, Preds, Ops),
 	forall(
 		'$lgt_member'(Op, Ops),
 		'$lgt_tr_file_directive'(Op, File, Lines, Input, Output)),
@@ -6840,7 +6844,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 '$lgt_tr_directive'((export), Exports, File, Lines, Input, Output) :-	% module directive
 	'$lgt_flatten_list'(Exports, Exports2),
-	'$lgt_split_module_exports'(Exports2, Preds, Ops),
+	'$lgt_split_ops_and_preds'(Exports2, Preds, Ops),
 	forall(
 		'$lgt_member'(Op, Ops),
 		'$lgt_tr_file_directive'(Op, File, Lines, Input, Output)),
@@ -8031,22 +8035,22 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 
 
-% '$lgt_split_module_exports'(+list, -list, -list).
+% '$lgt_split_ops_and_preds'(+list, -list, -list).
 %
-% module/2 export lists may contain both operator declarations and predicate indicators
+% module/2 exports list and use_module/2 imports list may contain both operator declarations and predicate indicators
 
-'$lgt_split_module_exports'([], [], []).
+'$lgt_split_ops_and_preds'([], [], []).
 
-'$lgt_split_module_exports'([Export| _], _, _) :-
-	var(Export),
+'$lgt_split_ops_and_preds'([Element| _], _, _) :-
+	var(Element),
 	throw(instantiation_error).
 
-'$lgt_split_module_exports'([op(Priority, Spec, Operator)| Exports], Preds, [op(Priority, Spec, Operator)| Ops]) :-
+'$lgt_split_ops_and_preds'([op(Priority, Spec, Operator)| Elements], Preds, [op(Priority, Spec, Operator)| Ops]) :-
 	!,
-	'$lgt_split_module_exports'(Exports, Preds, Ops).
+	'$lgt_split_ops_and_preds'(Elements, Preds, Ops).
 
-'$lgt_split_module_exports'([Pred| Exports], [Pred| Preds], Ops) :-
-	'$lgt_split_module_exports'(Exports, Preds, Ops).
+'$lgt_split_ops_and_preds'([Pred| Elements], [Pred| Preds], Ops) :-
+	'$lgt_split_ops_and_preds'(Elements, Preds, Ops).
 
 
 

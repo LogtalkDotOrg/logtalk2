@@ -15,6 +15,8 @@ RELEASE NOTES
 
 2.39.2 - April ??, 2010
 
+    Added support for parsing operator declarations in the uses/2 directive.
+
     Updated the Logtalk compiler in order to reject use_module/2 directives
     where the first argument is not an atom (assumed to be the module name).
     This change results in using the config files to find the module name from

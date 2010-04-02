@@ -84,8 +84,6 @@ elif [ ! `which $backend` ] ; then
     exit 1
 fi
 
-fi
-
 if [ "$d_arg" != "" ] ; then
 	results="$base/$d_arg"
 fi
