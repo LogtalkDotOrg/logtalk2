@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 2.0,
-		author is 'Paulo Moura',
-		date is 2010/02/26,
+		version is 2.1,
+		author is 'Paulo Moura and Paul Fodor',
+		date is 2010/04/2,
 		comment is 'Simple binary tree implementation of the dictionary protocol. Uses standard order to compare keys.']).
 
 	:- public(preorder/2).
@@ -52,13 +52,27 @@
 		postorder(Left, Pairs1, Pairs).
 
 	as_dictionary(Pairs, Tree) :-
-		new(Empty),
-		as_dictionary(Pairs, Empty, Tree).
+		list::sort(Pairs, SortedPairs),
+		as_dictionary_(SortedPairs, Tree).
 
-	as_dictionary([], Tree, Tree).
-	as_dictionary([Key-Value| Pairs], Tree0, Tree) :-
-		insert(Tree0, Key, Value, Tree1),
-		as_dictionary(Pairs, Tree1, Tree).
+	as_dictionary_([], t) :-
+		!.
+	as_dictionary_([Key-Value], t(Key, Value, t, t)) :-
+		!.
+	as_dictionary_([Key1-Value1, Key2-Value2], t(Key1, Value1, t(Key2, Value2, t, t), t)) :-
+		!.
+	as_dictionary_(Pairs, t(Key, Value, Left, Right)) :-
+        list::length(Pairs, N),
+        N1 is floor(N/2),
+        split(Pairs, N1, Pairs1, [Key-Value| Pairs2]),
+        as_dictionary_(Pairs1, Left),
+        as_dictionary_(Pairs2, Right).
+
+	split(Pairs, 0, [], Pairs) :-
+		!.
+	split([Pair| Pairs], N, [Pair| Pairs1], Pairs2) :-
+		N1 is N - 1,
+		split(Pairs, N1, Pairs1, Pairs2).
 
 	as_list(Tree, Pairs) :-
 		inorder(Tree, Pairs).

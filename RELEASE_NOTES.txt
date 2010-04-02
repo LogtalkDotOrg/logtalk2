@@ -31,6 +31,10 @@ RELEASE NOTES
     predicates from within Logtalk objects and categories. Thanks to Parker
     Jones for the bug report.
 
+    Replaced the predicate as_dictionary/2 in the library object "bintree"
+    with a new implementation, contributed by Paul Fodor, that returns a
+    semi-balanced tree.
+
     Updated the "examples/tester.sh" script in order to report an error when
     the default Prolog back-end compiler is not found. Thanks to Parker Jones
     for the bug report.
