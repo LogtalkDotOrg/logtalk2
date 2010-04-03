@@ -608,24 +608,26 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 '$lgt_rewrite_and_recompile_pl_directive'(reexport(File, Exports), reexport(Module, Exports)) :-
 	'$lgt_swi_list_of_exports'(File, Module, _).
 
-'$lgt_rewrite_and_recompile_pl_directive'(use_module(File, Exports), use_module(Module, Exports)) :-
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(File, Imports), use_module(Module, Imports)) :-
 	'$lgt_swi_list_of_exports'(File, Module, _).
 
-'$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Exports)) :-
-	'$lgt_swi_list_of_exports'(File, Module, Exports).
-
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Imports)) :-
+	'$lgt_swi_list_of_exports'(File, Module, Imports).
 
 '$lgt_swi_list_of_exports'(File, Module, Exports) :-
-	(	absolute_file_name(File, Path, [file_type(prolog), access(read), file_errors(fail)])
-	;	absolute_file_name(File, Path, [extensions(['.lgt']), access(read), file_errors(fail)])
-	),
-	open(Path, read, In),
-	(	peek_char(In, #) ->		% deal with #! script; if not present
-		skip(In, 10)			% assume that the module declaration
-	;	true					% is the first directive on the file
-	),
-	call_cleanup(read(In, ModuleDecl), close(In)),
-	ModuleDecl = (:- module(Module, Exports)).
+	(	absolute_file_name(File, Path, [file_type(prolog)]),
+		module_property(Module, file(Path)),	% only succeeds for loaded modules
+		module_property(Module, exports(Exports)) ->
+		true
+	;	absolute_file_name(File, Path, [file_type(prolog), access(read), file_errors(fail)]),
+		open(Path, read, In),
+		(	peek_char(In, #) ->					% deal with #! script; if not present
+			skip(In, 10)						% assume that the module declaration
+		;	true								% is the first directive on the file
+		),
+		setup_call_cleanup(true, read(In, ModuleDecl), close(In)),
+		ModuleDecl = (:- module(Module, Exports))
+	).
 
 
 '$lgt_rewrite_and_recompile_pl_encoding_directive'(ascii, 'US-ASCII').
