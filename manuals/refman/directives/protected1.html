@@ -29,15 +29,18 @@ protected([Functor1/Arity1, Functor2/Arity2, ...])
 
 protected(Functor//Arity)
 protected((Functor1//Arity1, Functor2//Arity2, ...))
-protected([Functor1//Arity1, Functor2//Arity2, ...])</pre>
+protected([Functor1//Arity1, Functor2//Arity2, ...])
+
+protected(op(Precedence, Associativity, Operator))</pre>
 <p>
-Declares protected predicates and protected grammar rule non-terminals. A protected predicate can only be called from the object containing the directive or from an object that inherits the directive. A protected non-terminal can only be used as an argument in a <a title="Consult reference manual" href="../methods/phrase2.html"><code>phrase/2</code></a> and <a title="Consult reference manual" href="../methods/phrase3.html"><code>phrase/3</code></a> messages sent from the object containing the directive or from an object that inherits the directive.
+Declares protected predicates, protected grammar rule non-terminals, and protected operators. A protected predicate can only be called from the object containing the directive or from an object that inherits the directive. A protected non-terminal can only be used as an argument in a <a title="Consult reference manual" href="../methods/phrase2.html"><code>phrase/2</code></a> and <a title="Consult reference manual" href="../methods/phrase3.html"><code>phrase/3</code></a> messages sent from the object containing the directive or from an object that inherits the directive. Protected operators are not inherited but declaring them provides useful information for defining descendant objects.
 </p>
 
 <h4>Template and modes</h4>
 
 <pre>protected(+predicate_indicator_term)
-protected(+non_terminal_indicator_term)</pre>
+protected(+non_terminal_indicator_term)
+protected(+operator_declaration)</pre>
 
 
 <h4>Examples</h4>
@@ -51,7 +54,7 @@ protected(+non_terminal_indicator_term)</pre>
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: October 21, 2009</span>
+		<span>Last updated on: April 3, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="private1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="public1.html">next</a></span><br/>

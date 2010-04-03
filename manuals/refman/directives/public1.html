@@ -29,15 +29,18 @@ public([Functor1/Arity1, Functor2/Arity2, ...])
 
 public(Functor//Arity)
 public((Functor1//Arity1, Functor2//Arity2, ...))
-public([Functor1//Arity1, Functor2//Arity2, ...])</pre>
+public([Functor1//Arity1, Functor2//Arity2, ...])
+
+public(op(Precedence, Associativity, Operator))</pre>
 <p>
-Declares public predicates and public grammar rule non-terminals. A public predicate can be called from any object. A public non-terminal can be used as an argument in <a title="Consult reference manual" href="../methods/phrase2.html"><code>phrase/2</code></a> and <a title="Consult reference manual" href="../methods/phrase3.html"><code>phrase/3</code></a> messages sent from any object.
+Declares public predicates, public grammar rule non-terminals, and public operators. A public predicate can be called from any object. A public non-terminal can be used as an argument in <a title="Consult reference manual" href="../methods/phrase2.html"><code>phrase/2</code></a> and <a title="Consult reference manual" href="../methods/phrase3.html"><code>phrase/3</code></a> messages sent from any object. Public operators are not exported but declaring them provides useful information for defining client objects.
 </p>
 
 <h4>Template and modes</h4>
 
 <pre>public(+predicate_indicator_term)
-public(+non_terminal_indicator_term)</pre>
+public(+non_terminal_indicator_term)
+public(+operator_declaration)</pre>
 
 
 <h4>Examples</h4>
@@ -51,7 +54,7 @@ public(+non_terminal_indicator_term)</pre>
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: October 21, 2009</span>
+		<span>Last updated on: April 3, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="protected1.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="uses2.html">next</a></span><br/>

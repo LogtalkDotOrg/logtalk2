@@ -15,17 +15,14 @@ RELEASE NOTES
 
 2.39.2 - April ??, 2010
 
-    Added support for parsing operator declarations in the uses/2 directive.
+    Added support for parsing operator declarations in the uses/2, public/1,
+    protected/1, and private/1 directives.
 
     Updated the Logtalk compiler in order to reject use_module/2 directives
     where the first argument is not an atom (assumed to be the module name).
     This change results in using the config files to find the module name from
     the module file name when the first argument of the use_module/2 directive
     is a compound term (as usual when using library notation).
-
-    Updated the ECLiPSe, SICStus Prolog, SWI-Prolog, and YAP config files in
-    order to preprocess the use_module/2 directive, converting the module file
-    name into the module name.
 
     Updated the SWI-Prolog hooks file, "configs/swihook.pl", in order to avoid
     intercepting Prolog ensure_loaded/1 calls by the prolog_load_file/2 hook

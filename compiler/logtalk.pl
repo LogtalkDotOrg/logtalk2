@@ -6688,23 +6688,23 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 % uses/2 entity directive
 
-'$lgt_tr_directive'(uses, [Obj, Elements], _, _, _, _) :-
-	(var(Obj); var(Elements)),
+'$lgt_tr_directive'(uses, [Obj, Resources], _, _, _, _) :-
+	(var(Obj); var(Resources)),
 	throw(instantiation_error).
 
 '$lgt_tr_directive'(uses, [Obj, _], _, _, _, _) :-
 	\+ callable(Obj),
 	throw(type_error(object_identifier, Obj)).
 
-'$lgt_tr_directive'(uses, [_, Elements], _, _, _, _) :-
-	\+ '$lgt_is_proper_list'(Elements),
-	throw(type_error(list, Elements)).
+'$lgt_tr_directive'(uses, [_, Resources], _, _, _, _) :-
+	\+ '$lgt_is_proper_list'(Resources),
+	throw(type_error(list, Resources)).
 
-'$lgt_tr_directive'(uses, [Obj, Elements], File, Lines, Input, Output) :-
+'$lgt_tr_directive'(uses, [Obj, Resources], File, Lines, Input, Output) :-
 	!,
 	'$lgt_add_referenced_object'(Obj),
 	assertz('$lgt_pp_uses_'(Obj)),
-	'$lgt_split_ops_and_preds'(Elements, Preds, Ops),
+	'$lgt_split_ops_and_preds'(Resources, Preds, Ops),
 	forall('$lgt_member'(Op, Ops), '$lgt_tr_directive'(Op, File, Lines, Input, Output)),
 	'$lgt_tr_uses_directive'(Preds, Obj).
 
@@ -6761,7 +6761,10 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	throw(type_error(atom, Module)).
 
 '$lgt_tr_directive'(reexport, [Module, Exports], File, Lines, Input, Output) :-
+	% we must be compiling a module as an object
 	'$lgt_pp_module_'(_),
+	% fail if using library notation in order to use the config files to find the module name
+	atom(Module),
 	% we're compiling a module as an object; assume referenced modules are also compiled as objects
 	(	atom(Module) ->
 		Name = Module
@@ -6837,28 +6840,36 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 % scope directives
 
-'$lgt_tr_directive'((public), Preds, _, _, _, _) :-
-	'$lgt_flatten_list'(Preds, Preds2),
-	'$lgt_tr_public_directive'(Preds2).
+'$lgt_tr_directive'((public), Resources, File, Lines, Input, Output) :-
+	'$lgt_flatten_list'(Resources, ResourcesFlatted),
+	'$lgt_split_ops_and_preds'(ResourcesFlatted, Preds, Ops),
+	forall('$lgt_member'(Op, Ops), '$lgt_tr_directive'(Op, File, Lines, Input, Output)),
+	'$lgt_tr_public_directive'(Preds).
+
+'$lgt_tr_directive'(protected, Resources, File, Lines, Input, Output) :-
+	'$lgt_flatten_list'(Resources, ResourcesFlatted),
+	'$lgt_split_ops_and_preds'(ResourcesFlatted, Preds, Ops),
+	forall('$lgt_member'(Op, Ops), '$lgt_tr_directive'(Op, File, Lines, Input, Output)),
+	'$lgt_tr_protected_directive'(Preds).
+
+'$lgt_tr_directive'(private, Resources, File, Lines, Input, Output) :-
+	'$lgt_flatten_list'(Resources, ResourcesFlatted),
+	'$lgt_split_ops_and_preds'(ResourcesFlatted, Preds, Ops),
+	forall('$lgt_member'(Op, Ops), '$lgt_tr_directive'(Op, File, Lines, Input, Output)),
+	'$lgt_tr_private_directive'(Preds).
 
 
-'$lgt_tr_directive'((export), Exports, File, Lines, Input, Output) :-	% module directive
-	'$lgt_flatten_list'(Exports, Exports2),
-	'$lgt_split_ops_and_preds'(Exports2, Preds, Ops),
+% export/1 module directive
+
+'$lgt_tr_directive'((export), Exports, File, Lines, Input, Output) :-
+	% we must be compiling a module as an object
+	'$lgt_pp_module_'(_),
+	'$lgt_flatten_list'(Exports, ExportsFlatted),
+	'$lgt_split_ops_and_preds'(ExportsFlatted, Preds, Ops),
 	forall(
 		'$lgt_member'(Op, Ops),
 		'$lgt_tr_file_directive'(Op, File, Lines, Input, Output)),
 	'$lgt_tr_public_directive'(Preds).
-
-
-'$lgt_tr_directive'(protected, Preds, _, _, _, _) :-
-	'$lgt_flatten_list'(Preds, Preds2),
-	'$lgt_tr_protected_directive'(Preds2).
-
-
-'$lgt_tr_directive'(private, Preds, _, _, _, _) :-
-	'$lgt_flatten_list'(Preds, Preds2),
-	'$lgt_tr_private_directive'(Preds2).
 
 
 '$lgt_tr_directive'((dynamic), Preds, _, _, _, _) :-

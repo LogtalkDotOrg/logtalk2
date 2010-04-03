@@ -29,15 +29,18 @@ private([Functor1/Arity1, Functor2/Arity2, ...])
 
 private(Functor//Arity)
 private((Functor1//Arity1, Functor2//Arity2, ...))
-private([Functor1//Arity1, Functor2//Arity2, ...])</pre>
+private([Functor1//Arity1, Functor2//Arity2, ...])
+
+private(op(Precedence, Associativity, Operator))</pre>
 <p>
-Declares private predicates and private grammar rule non-terminals. A private predicate can only be called from the object containing the private directive. A private non-terminal can only be used in a call of the <a title="Consult reference manual" href="../methods/phrase2.html"><code>phrase/2</code></a> and <a title="Consult reference manual" href="../methods/phrase3.html"><code>phrase/3</code></a> methods from the object containing the private directive.
+Declares private predicates, private grammar rule non-terminals, and private operators. A private predicate can only be called from the object containing the private directive. A private non-terminal can only be used in a call of the <a title="Consult reference manual" href="../methods/phrase2.html"><code>phrase/2</code></a> and <a title="Consult reference manual" href="../methods/phrase3.html"><code>phrase/3</code></a> methods from the object containing the private directive.
 </p>
 
 <h4>Template and modes</h4>
 
 <pre>private(+predicate_indicator_term)
-private(+non_terminal_indicator_term)</pre>
+private(+non_terminal_indicator_term)
+private(+operator_declaration)</pre>
 
 <h4>Examples</h4>
 
@@ -50,7 +53,7 @@ private(+non_terminal_indicator_term)</pre>
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: October 21, 2009</span>
+		<span>Last updated on: April 3, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="op3.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="protected1.html">next</a></span><br/>
