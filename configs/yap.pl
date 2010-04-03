@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: April 1, 2010
+%  last updated: April 3, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -656,6 +656,9 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 
 '$lgt_rewrite_and_recompile_pl_directive'(reexport(File), reexport(Module, Exports)) :-
 	'$lgt_yap_list_of_exports'(File, Module, Exports).
+
+'$lgt_rewrite_and_recompile_pl_directive'(reexport(File, Exports), reexport(Module, Exports)) :-
+	'$lgt_yap_list_of_exports'(File, Module, _).
 
 '$lgt_rewrite_and_recompile_pl_directive'(use_module(File, Exports), use_module(Module, Exports)) :-
 	'$lgt_yap_list_of_exports'(File, Module, _).

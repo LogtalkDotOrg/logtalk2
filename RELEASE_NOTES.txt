@@ -33,6 +33,14 @@ RELEASE NOTES
     predicates from within Logtalk objects and categories. Thanks to Parker
     Jones for the bug report.
 
+    Updated the ECLiPSe, SICStus Prolog, SWI-Prolog, and YAP config files in
+    order to preprocess the use_module/2 directive, converting the module file
+    name into the module name.
+
+    Updated the SWI-Prolog and YAP config files in order to preprocess the
+    reexport/2 module directive, converting the module file name into the
+    module name.
+
     Added support for parsing use_module/3 directives to the SICStus Prolog
     config files.
 
