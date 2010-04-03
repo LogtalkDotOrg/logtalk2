@@ -604,25 +604,19 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_rewrite_and_recompile_pl_directive'(module(Module, Exports, _), module(Module, Exports)).
 
-'$lgt_rewrite_and_recompile_pl_directive'(use_module(File, Exports), use_module(Module, Exports)) :-
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(File, Imports), use_module(Module, Imports)) :-
 	nonvar(File),
-	(	File = library(Module) ->
-		true
-	;	atom(File) ->
-		File = Module
-	).
+	absolute_file_name(File, Path, [extensions(['.pl', '.pro'])]),
+	current_module(Module, Path).	% this only succeedds for already loaded modules
 
-'$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Exports)) :-
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Imports)) :-
 	nonvar(File),
-	(	File = library(Module) ->
-		true
-	;	atom(File) ->
-		File = Module
-	),
-	setof(				% this only succeedds for already loaded modules
+	absolute_file_name(File, Path, [extensions(['.pl', '.pro'])]),
+	current_module(Module, Path),	% this only succeedds for already loaded modules
+	setof(
 		Functor/Arity,
 		Predicate^(predicate_property(Module:Predicate, exported), functor(Predicate, Functor, Arity)),
-		Exports).
+		Imports).
 
 '$lgt_rewrite_and_recompile_pl_directive'(use_module(Module, File, Imports), Directive) :-
 	(	var(Module) ->
