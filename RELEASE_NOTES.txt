@@ -41,6 +41,9 @@ RELEASE NOTES
     the default Prolog back-end compiler is not found. Thanks to Parker Jones
     for the bug report.
 
+    Updated the "encodings" example unit test loader file to correctly detect
+    back-end Prolog compilers supporting the encoding/1 directive.
+
 
 2.39.1 - March 31, 2010
 

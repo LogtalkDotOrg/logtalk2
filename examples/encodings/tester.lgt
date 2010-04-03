@@ -1,5 +1,5 @@
 
-:- if(current_logtalk_flag(encoding_directive, supported)).
+:- if(\+ current_logtalk_flag(encoding_directive, unsupported)).
 
 	:- initialization((
 		set_logtalk_flag(report, warnings),
