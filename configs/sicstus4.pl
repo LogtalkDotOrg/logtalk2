@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: April 1, 2010
+%  last updated: April 3, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -570,7 +570,7 @@ forall(Generate, Test) :-
 
 '$lgt_rewrite_and_recompile_pl_directive'(module(Module, Exports, _), module(Module, Exports)).
 
-'$lgt_rewrite_and_recompile_pl_directive'(use_module(File, Exports), use_module(Module, Exports)) :-
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(File, Imports), use_module(Module, Imports)) :-
 	nonvar(File),
 	(	File = library(Module) ->
 		true
@@ -578,7 +578,7 @@ forall(Generate, Test) :-
 		File = Module
 	).
 
-'$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Exports)) :-
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Imports)) :-
 	nonvar(File),
 	(	File = library(Module) ->
 		true
@@ -588,7 +588,13 @@ forall(Generate, Test) :-
 	setof(				% this only succeedds for already loaded modules
 		Functor/Arity,
 		Predicate^(predicate_property(Module:Predicate, exported), functor(Predicate, Functor, Arity)),
-		Exports).
+		Imports).
+
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(Module, File, Imports), Directive) :-
+	(	var(Module) ->
+		'$lgt_rewrite_and_recompile_pl_directive'(use_module(File, Imports), Directive)
+	;	Directive = use_module(Module, Imports)
+	).
 
 
 

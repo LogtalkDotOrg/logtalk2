@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 3.8 and later versions
 %
-%  last updated: April 1, 2010
+%  last updated: April 3, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -623,6 +623,12 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 		Functor/Arity,
 		Predicate^(predicate_property(Module:Predicate, exported), functor(Predicate, Functor, Arity)),
 		Exports).
+
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(Module, File, Imports), Directive) :-
+	(	var(Module) ->
+		'$lgt_rewrite_and_recompile_pl_directive'(use_module(File, Imports), Directive)
+	;	Directive = use_module(Module, Imports)
+	).
 
 
 

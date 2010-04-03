@@ -33,6 +33,9 @@ RELEASE NOTES
     predicates from within Logtalk objects and categories. Thanks to Parker
     Jones for the bug report.
 
+    Added support for parsing use_module/3 directives to the SICStus Prolog
+    config files.
+
     Replaced the predicate as_dictionary/2 in the library object "bintree"
     with a new implementation, contributed by Paul Fodor, that returns a
     semi-balanced tree.
