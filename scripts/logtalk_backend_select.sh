@@ -13,8 +13,8 @@
 
 print_version() {
 	echo "Current `basename $0` version:"
-	echo "  0.1"
-	exit 1
+	echo "  0.2"
+	exit 0
 }
 
 
@@ -57,7 +57,7 @@ list_backends() {
 		echo -n "  yaplgt"
 	fi
 	echo
-	exit 1
+	exit 0
 }
 
 
@@ -69,7 +69,7 @@ show_selected() {
     else
         echo "  none"
     fi
-	exit 1
+	exit 0
 }
 
 
@@ -87,7 +87,7 @@ usage_help() {
 	echo "  -s show the currently selected Prolog integration script"
 	echo "  -h help"
 	echo
-	exit 1
+	exit 0
 }
 
 

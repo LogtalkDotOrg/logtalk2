@@ -12,6 +12,10 @@
 
 # based on a unit test automation script contributed by Parker Jones
 
+print_version() {
+	echo "`basename $0` 0.2"
+	exit 0
+}
 
 base="$PWD"
 results="$base/tester_results"
@@ -27,19 +31,22 @@ usage_help()
 	echo
 	echo "Usage:"
 	echo "  $0 -p prolog -d results"
+	echo "  $0 -v"
 	echo "  $0 -h"
 	echo
 	echo "Optional arguments:"
+	echo "  -v print version of `basename $0`"
 	echo "  -p back-end Prolog compiler (default is $backend)"
 	echo "  -d name of the sub-directory to store the test results (default is tester_results)"
 	echo "  -h help"
 	echo
-	exit 1
+	exit 0
 }
 
-while getopts "p:d:h" option
+while getopts "vp:d:h" option
 do
 	case $option in
+		v) print_version;;
 		p) p_arg="$OPTARG";;
 		d) d_arg="$OPTARG";;
 		h) usage_help;;
@@ -115,6 +122,7 @@ do
 					echo "***** Testing $unit/$subunit"
 					subname=$(echo $unit/$subunit|sed 's|/|_|g')
 					$logtalk "logtalk_load(tester),halt." > "$results/$subname.results" 2> "$results/$subname.errors"
+					grep 'tests:' "$results/$subname.results" | sed 's/%/*****        /'
 				fi
 				cd ..
 			fi

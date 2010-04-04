@@ -12,8 +12,8 @@
 
 
 print_version() {
-	echo "`basename $0` 0.4"
-	exit 1
+	echo "`basename $0` 0.5"
+	exit 0
 }
 
 
@@ -41,7 +41,7 @@ show_selected() {
     else
         echo "none"
     fi
-	exit 1
+	exit 0
 }
 
 
@@ -58,7 +58,7 @@ usage_help() {
 	echo "  -s show the currently selected version"
 	echo "  -h help"
 	echo
-	exit 1
+	exit 0
 }
 
 
