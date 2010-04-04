@@ -606,12 +606,12 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_rewrite_and_recompile_pl_directive'(use_module(File, Imports), use_module(Module, Imports)) :-
 	nonvar(File),
-	absolute_file_name(File, Path, [extensions(['.pl', '.pro'])]),
+	absolute_file_name(File, Path, [extensions(['.pl', '.pro']), access(read), file_errors(fail)]),
 	current_module(Module, Path).	% this only succeedds for already loaded modules
 
 '$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Imports)) :-
 	nonvar(File),
-	absolute_file_name(File, Path, [extensions(['.pl', '.pro'])]),
+	absolute_file_name(File, Path, [extensions(['.pl', '.pro']), access(read), file_errors(fail)]),
 	current_module(Module, Path),	% this only succeedds for already loaded modules
 	setof(
 		Functor/Arity,

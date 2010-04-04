@@ -176,12 +176,8 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 '$lgt_pl_meta_predicate'(freeze(*, ::), predicate).
 '$lgt_pl_meta_predicate'(time_out(::, *, *), predicate).
 '$lgt_pl_meta_predicate'(when(*, ::), predicate).
-:- if(predicate_property(setup_call_cleanup(_, _, _), built_in)).
-	'$lgt_pl_meta_predicate'(setup_call_cleanup(::, ::, ::), predicate).
-:- endif.
-:- if(predicate_property(setup_call_catcher_cleanup(_, _, _, _), built_in)).
-	'$lgt_pl_meta_predicate'(setup_call_catcher_cleanup(::, ::, *, ::), predicate).
-:- endif.
+'$lgt_pl_meta_predicate'(setup_call_cleanup(::, ::, ::), predicate).
+'$lgt_pl_meta_predicate'(setup_call_catcher_cleanup(::, ::, *, ::), predicate).
 '$lgt_pl_meta_predicate'(time(::), predicate).
 '$lgt_pl_meta_predicate'(thread_initialization(::), predicate).
 '$lgt_pl_meta_predicate'(thread_at_exit(::), predicate).
@@ -669,14 +665,15 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 
 '$lgt_yap_list_of_exports'(File, Module, Exports) :-
 	(	absolute_file_name(File, Path, [file_type(prolog), access(read), file_errors(fail)])
-	;	absolute_file_name(File, Path, [extensions(['.lgt']), access(read), file_errors(fail)])
+	;	% we may be compiling Prolog module files as Logtalk objects
+		absolute_file_name(File, Path, [extensions(['.lgt']), access(read), file_errors(fail)])
 	),
 	open(Path, read, In),
 	(	peek_char(In, #) ->		% deal with #! script; if not present
 		skip(In, 10)			% assume that the module declaration
 	;	true					% is the first directive on the file
 	),
-	call_cleanup(read(In, ModuleDecl), close(In)),
+	setup_call_cleanup(true, read(In, ModuleDecl), close(In)),
 	ModuleDecl = (:- module(Module, Exports)).
 
 

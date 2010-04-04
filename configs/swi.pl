@@ -616,17 +616,22 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 
 '$lgt_swi_list_of_exports'(File, Module, Exports) :-
 	absolute_file_name(File, Path, [file_type(prolog), access(read), file_errors(fail)]),
-	(	module_property(Module, file(Path)),	% only succeeds for loaded modules
-		module_property(Module, exports(Exports)) ->
-		true
-	;	open(Path, read, In),
-		(	peek_char(In, #) ->					% deal with #! script; if not present
-			skip(In, 10)						% assume that the module declaration
-		;	true								% is the first directive on the file
-		),
-		setup_call_cleanup(true, read(In, ModuleDecl), close(In)),
-		ModuleDecl = (:- module(Module, Exports))
-	).
+	module_property(Module, file(Path)),	% only succeeds for loaded modules
+	module_property(Module, exports(Exports)),
+	!.
+
+'$lgt_swi_list_of_exports'(File, Module, Exports) :-
+	(	absolute_file_name(File, Path, [file_type(prolog), access(read), file_errors(fail)])
+	;	% we may be compiling Prolog module files as Logtalk objects
+		absolute_file_name(File, Path, [extensions(['.lgt']), access(read), file_errors(fail)])
+	),
+	open(Path, read, In),
+	(	peek_char(In, #) ->					% deal with #! script; if not present
+		skip(In, 10)						% assume that the module declaration
+	;	true								% is the first directive on the file
+	),
+	setup_call_cleanup(true, read(In, ModuleDecl), close(In)),
+	ModuleDecl = (:- module(Module, Exports)).
 
 
 '$lgt_rewrite_and_recompile_pl_encoding_directive'(ascii, 'US-ASCII').
