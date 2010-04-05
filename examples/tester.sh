@@ -136,7 +136,7 @@ echo "***** Errors and warnings"
 echo '********************************************'
 cd "$results"
 grep -A1 'ERROR!' *.errors | tee errors.all
-grep -A1 'ERROR!' *.results | tee errors.all
+grep -A1 'ERROR!' *.results | tee -a errors.all
 grep -A1 'WARNING!' *.results | tee -a errors.all
 echo '********************************************'
 echo "***** Failed tests"
