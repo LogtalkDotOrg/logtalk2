@@ -28,4 +28,12 @@
 		test::test(Names),
 		Names == [paulo, carlos, helena].
 
+	test(modules_6) :-
+		client::names(Names),
+		Names == [paulo, carlos, helena].
+
+	test(modules_7) :-
+		client::test(Names),
+		Names == [paulo, carlos, helena].
+
 :- end_object.
