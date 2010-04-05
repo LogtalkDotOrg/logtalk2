@@ -20,4 +20,12 @@
 		findall(N, exports::p(N), Solutions),
 		Solutions == [1, 2, 3].
 
+	test(modules_4) :-
+		test::names(Names),
+		Names == [paulo, carlos, helena].
+
+	test(modules_5) :-
+		test::test(Names),
+		Names == [paulo, carlos, helena].
+
 :- end_object.

@@ -1,5 +1,5 @@
 
-:- module(test, [test/0, names/0]).
+:- module(test, [test/0, test/1, names/0, names/1]).
 
 :- use_module(lists, [contained/2]).
 :- use_module(meta, [meta/1]).
@@ -10,5 +10,11 @@ names :-
 	fail.
 names.
 
+names(Names) :-
+	findall(Name, contained(Name, [paulo, carlos, helena]), Names).
+
 test :-
 	meta(names).
+
+test(Names) :-
+	meta(names(Names)).
