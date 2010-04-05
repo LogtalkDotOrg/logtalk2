@@ -51,7 +51,8 @@ RELEASE NOTES
 
     Updated the "examples/tester.sh" script in order to report an error when
     the default Prolog back-end compiler is not found. Thanks to Parker Jones
-    for the bug report.
+    for the bug report. Updated the script to also report errors that are not
+    written to standard error.
 
     Updated the "encodings" example unit test loader file to correctly detect
     back-end Prolog compilers supporting the encoding/1 directive.
