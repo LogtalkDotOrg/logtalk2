@@ -520,7 +520,7 @@
 		walltime_begin(Walltime) :-
 			walltime(Walltime).
 
-		walltime_end(xsb, Walltime) :-
+		walltime_end(Walltime) :-
 			walltime(Walltime).
 
 		write_average(Average) :-

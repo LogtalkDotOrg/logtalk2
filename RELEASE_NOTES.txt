@@ -57,6 +57,9 @@ RELEASE NOTES
     Updated the "encodings" example unit test loader file to correctly detect
     back-end Prolog compilers supporting the encoding/1 directive.
 
+    Fixed a typo that prevented running the "mtbatch" example using XSB as the
+    back-end Prolog compiler. 
+
 
 2.39.1 - March 31, 2010
 
