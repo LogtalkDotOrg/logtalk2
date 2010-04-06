@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 3.8 and later versions
 %
-%  last updated: April 3, 2010
+%  last updated: April 6, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -605,24 +605,36 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_rewrite_and_recompile_pl_directive'(module(Module, Exports, _), module(Module, Exports)).
 
 '$lgt_rewrite_and_recompile_pl_directive'(use_module(File, Imports), use_module(Module, Imports)) :-
-	nonvar(File),
-	absolute_file_name(File, Path, [extensions(['.pl', '.pro']), access(read), file_errors(fail)]),
-	current_module(Module, Path).	% this only succeedds for already loaded modules
+	'$lgt_sicstus_list_of_exports'(File, Module, _).
 
 '$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Imports)) :-
-	nonvar(File),
-	absolute_file_name(File, Path, [extensions(['.pl', '.pro']), access(read), file_errors(fail)]),
-	current_module(Module, Path),	% this only succeedds for already loaded modules
-	setof(
-		Functor/Arity,
-		Predicate^(predicate_property(Module:Predicate, exported), functor(Predicate, Functor, Arity)),
-		Imports).
+	'$lgt_sicstus_list_of_exports'(File, Module, Imports).
 
 '$lgt_rewrite_and_recompile_pl_directive'(use_module(Module, File, Imports), Directive) :-
 	(	var(Module) ->
 		'$lgt_rewrite_and_recompile_pl_directive'(use_module(File, Imports), Directive)
 	;	Directive = use_module(Module, Imports)
 	).
+
+
+'$lgt_sicstus_list_of_exports'(File, Module, Exports) :-
+	nonvar(File),
+	absolute_file_name(File, Path, [extensions(['.pl', '.pro']), access(read), file_errors(fail)]),
+	current_module(Module, Path),	% this only succeedds for already loaded modules
+	findall(
+		Functor/Arity,
+		(predicate_property(Module:Predicate, exported), functor(Predicate, Functor, Arity)),
+		Exports),
+	!.
+
+'$lgt_sicstus_list_of_exports'(File, Module, Exports) :-
+	(	absolute_file_name(File, Path, [extensions(['.pl', '.pro']), access(read), file_errors(fail)])
+	;	% we may be compiling Prolog module files as Logtalk objects
+		absolute_file_name(File, Path, [extensions(['.lgt']), access(read), file_errors(fail)])
+	),
+	open(Path, read, In),
+	call_cleanup(read(In, ModuleDecl), close(In)),
+	ModuleDecl = (:- module(Module, Exports)).
 
 
 
