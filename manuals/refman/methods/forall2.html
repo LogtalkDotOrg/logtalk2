@@ -25,7 +25,7 @@
 
 <pre>forall(Generator, Test)</pre>
 <p>
-For all solutions of <code>Generator</code>, <code>Test</code> is true. This built-in meta-predicate cannot be used as a message to an object.
+For all solutions of <code>Generator</code>, <code>Test</code> is true. This built-in meta-predicate is declared as a private method and thus cannot be used as a message to an object.
 </p>
 
 <h4>Template and modes</h4>
@@ -50,14 +50,14 @@ For all solutions of <code>Generator</code>, <code>Test</code> is true. This bui
 		<dd><code>forall(Generator, Test)</code></dd>
 	<dt>To send both goals as messages to <em><a class="glossary" title="Go to glossary definition" href="../../glossary.html#self">self</a></em>:</dt>
 		<dd><code>forall(::Generator, ::Test)</code></dd>
-	<dt>To send both goals as messages to an explicit object:</dt>
-		<dd><code>forall(Object::Generator, Object::Test)</code></dd>
+	<dt>To send both goals as messages to explicit objects:</dt>
+		<dd><code>forall(Object1::Generator, Object2::Test)</code></dd>
 </dl>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: October 22, 2009</span>
+		<span>Last updated on: April 7, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="findall3.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="setof3.html">next</a></span><br/>
