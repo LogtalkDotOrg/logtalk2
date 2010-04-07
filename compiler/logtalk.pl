@@ -7523,6 +7523,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 % '$lgt_tr_use_module_directive'(+list, +atom)
 %
 % auxiliary predicate for translating use_module/2 directives in objects or categories
+% the predicate renaming operator as/2 found on SWI-Prolog and YAP is also supported
 
 '$lgt_tr_use_module_directive'([], _).
 
@@ -7552,6 +7553,20 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		'$lgt_tr_use_module_directive_nt'(OFunctor, AFunctor, OArity, OExtArity, Module)
 	;	throw(domain_error(arity_mismatch(Original, Alias)))
 	),
+	'$lgt_tr_use_module_directive'(Preds, Module).
+
+'$lgt_tr_use_module_directive'([as(Original, AFunctor)| Preds], Module) :-
+	'$lgt_valid_pred_ind'(Original, OFunctor, OArity),
+	atom(AFunctor),
+	!,
+	'$lgt_tr_use_module_directive_pred'(OFunctor, AFunctor, OArity, Module),
+	'$lgt_tr_use_module_directive'(Preds, Module).
+
+'$lgt_tr_use_module_directive'([as(Original, AFunctor)| Preds], Module) :-
+	'$lgt_valid_gr_ind'(Original, OFunctor, OArity, OExtArity),
+	atom(AFunctor),
+	!,
+	'$lgt_tr_use_module_directive_nt'(OFunctor, AFunctor, OArity, OExtArity, Module),
 	'$lgt_tr_use_module_directive'(Preds, Module).
 
 '$lgt_tr_use_module_directive'([Pred| Preds], Module) :-

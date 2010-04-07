@@ -24,6 +24,9 @@ RELEASE NOTES
     the module file name when the first argument of the use_module/2 directive
     is a compound term (as usual when using library notation).
 
+    Added support for the predicate renaming operator as/2 found on SWI-Prolog
+    and YAP when parsing use_module/2 directives.
+
     Updated the SWI-Prolog hooks file, "configs/swihook.pl", in order to avoid
     intercepting Prolog ensure_loaded/1 calls by the prolog_load_file/2 hook
     predicate. This change solves issues when calling Prolog module library
