@@ -1,4 +1,9 @@
 
+:- if((current_logtalk_flag(prolog_dialect, sicstus), current_logtalk_flag(prolog_version, (4, _, _)))).
+	:- use_module(library(system3), [shell/1, shell/2]).
+:- endif.
+
+
 :- object(os,
 	implements(osp)).
 
@@ -307,10 +312,6 @@
 			{cputime(Miliseconds), Time is Miliseconds/1000}.
 
 	:- elif(current_logtalk_flag(prolog_dialect, sicstus)).
-
-		:- if(current_logtalk_flag(prolog_version, (4, _, _))).
-			:- use_module(library(system3)).
-		:- endif.
 
 		shell(Command, Status) :-
 			{shell(Command, Status)}.

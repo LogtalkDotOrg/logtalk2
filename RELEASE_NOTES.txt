@@ -15,11 +15,14 @@ RELEASE NOTES
 
 2.39.2 - April ??, 2010
 
-    Changed the type of the built-in methods call/N, once/1, catch/3, throw/1,
-    bagof/3, findall/3, forall/2, setof/3, parameter/2, self/1, sender/1, and
-    this/1 from local predicates to private predicates. Corrected a bug in the
-    predicate_property/2 built-in method where some of those built-in methods
-    would be reported as public.
+    Changed the type of the built-in methods (\+)/1, call/N, once/1, catch/3,
+    throw/1, bagof/3, findall/3, forall/2, setof/3, self/1, sender/1, this/1
+    and parameter/2 from local predicates to private predicates. Corrected a
+    bug in the predicate_property/2 built-in method where some of those built-
+    in methods would be reported as public. These changes should only require
+    updating any application code that explicitly expected the exception term
+    permission_error(access, local_predicate, Pred), which have been changed
+    to permission_error(access, private_predicate, Pred).
 
     Added support for parsing operator declarations in the uses/2, public/1,
     protected/1, and private/1 directives.
@@ -68,6 +71,9 @@ RELEASE NOTES
 
     Fixed a typo that prevented running the "mtbatch" example using XSB as the
     back-end Prolog compiler. 
+
+    Updated the "cc" example in order to solve a predicate name conflict when
+    using SICStus Prolog 4.x as the back-end compiler.
 
 
 2.39.1 - March 31, 2010
