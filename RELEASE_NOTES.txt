@@ -67,7 +67,8 @@ RELEASE NOTES
     written to standard error.
 
     Updated the "encodings" example unit test loader file to correctly detect
-    back-end Prolog compilers supporting the encoding/1 directive.
+    back-end Prolog compilers supporting the encoding/1 directive. Added new
+    test files for each supported text encoding.
 
     Fixed a typo that prevented running the "mtbatch" example using XSB as the
     back-end Prolog compiler. 
