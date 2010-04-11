@@ -11,13 +11,14 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: April 6, 2010
+%  last updated: April 11, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 :- use_module(library(file_systems)).
 :- use_module(library(system)).
+:- use_module(library(system3), [shell/1, shell/2]).
 
 
 :- multifile(message_hook/3).							% SICStus Prolog hook predicate

@@ -1,9 +1,4 @@
 
-:- if((current_logtalk_flag(prolog_dialect, sicstus), current_logtalk_flag(prolog_version, (4, _, _)))).
-	:- use_module(library(system3), [shell/1, shell/2]).
-:- endif.
-
-
 :- object(os,
 	implements(osp)).
 

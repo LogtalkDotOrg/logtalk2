@@ -73,8 +73,9 @@ RELEASE NOTES
     Fixed a typo that prevented running the "mtbatch" example using XSB as the
     back-end Prolog compiler. 
 
-    Updated the "cc" example in order to solve a predicate name conflict when
-    using SICStus Prolog 4.x as the back-end compiler.
+    Simplified the "cc" example when using SICStus Prolog 4.x as the back-end
+    compiler by moving importing of the "system3" library shell/1-2 predicates
+    to the config file.
 
     Added unit test supporting files for the "constraints" example.
 
