@@ -76,6 +76,8 @@ RELEASE NOTES
     Updated the "cc" example in order to solve a predicate name conflict when
     using SICStus Prolog 4.x as the back-end compiler.
 
+    Added unit test supporting files for the "constraints" example.
+
 
 2.39.1 - March 31, 2010
 
