@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: April 3, 2010
+%  last updated: April 12, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -342,7 +342,8 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 % expands a file path to a full path
 
 '$lgt_expand_path'(Path, ExpandedPath) :-
-	absolute_file_name(Path, ExpandedPath).
+	working_directory(Current, Current),
+	absolute_file_name(Path, [access(none), file_type(txt), relative_to(Current)], ExpandedPath).
 
 
 % '$lgt_file_exists'(+atom)
@@ -380,7 +381,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 % gets current working directory
 
 '$lgt_current_directory'(Directory) :-
-	getcwd(Directory).
+	working_directory(Directory, Directory).
 
 
 % '$lgt_change_directory'(+atom)
@@ -388,7 +389,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 % changes current working directory
 
 '$lgt_change_directory'(Directory) :-
-	cd(Directory).
+	working_directory(_, Directory).
 
 
 % '$lgt_make_directory'(+atom)
@@ -436,7 +437,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 '$lgt_startup_directory'(Directory) :-
 	(	environ('LOGTALK_STARTUP_DIRECTORY', Directory) ->
 		true
-	;	getcwd(Directory)
+	;	working_directory(Directory, Directory)
 	).
 
 

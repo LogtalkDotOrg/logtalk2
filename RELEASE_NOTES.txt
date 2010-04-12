@@ -53,6 +53,9 @@ RELEASE NOTES
     Updated the SWI-Prolog config file with more robust and fast code for
     preprocessing module directives when the modules are already loaded.
 
+    Updated the YAP config file in order to use the more standard predicate
+    working_directory/2.
+
     Added support for parsing use_module/3 directives to the SICStus Prolog
     config files. Improved finding the module name from the module file name
     when preprocessing the directives use_module/1-2.
