@@ -109,7 +109,7 @@ do
 		if [ -e "./tester.lgt" ] ; then
 			echo '********************************************'
 			echo "***** Testing $unit"
-			name=$(echo $unit|sed 's|/|_|g')
+			name=$(echo $unit|sed 's|/|__|g')
 			$logtalk "logtalk_load(tester),halt." > "$results/$name.results" 2> "$results/$name.errors"
 			grep 'tests:' "$results/$name.results" | sed 's/%/*****        /'
 		fi
@@ -120,7 +120,7 @@ do
 				if [ -e "./tester.lgt" ] ; then
 					echo '********************************************'
 					echo "***** Testing $unit/$subunit"
-					subname=$(echo $unit/$subunit|sed 's|/|_|g')
+					subname=$(echo $unit/$subunit|sed 's|/|__|g')
 					$logtalk "logtalk_load(tester),halt." > "$results/$subname.results" 2> "$results/$subname.errors"
 					grep 'tests:' "$results/$subname.results" | sed 's/%/*****        /'
 				fi
@@ -141,5 +141,5 @@ grep -A2 'WARNING!' *.results | sed 's/.results//' | tee -a errors.all
 echo '********************************************'
 echo "***** Failed tests"
 echo '********************************************'
-grep ': failure' *.results | sed 's/: failure/ failed/' | sed 's/.results/:/' | tee -a errors.all
+grep ': failure' *.results | sed 's/: failure/ failed/' | sed 's/.results/:/' | sed 's|__|/|g' | tee -a errors.all
 echo '********************************************'
