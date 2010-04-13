@@ -135,11 +135,11 @@ echo '********************************************'
 echo "***** Errors and warnings"
 echo '********************************************'
 cd "$results"
-grep -A2 'ERROR!' *.errors | tee errors.all
-grep -A2 'ERROR!' *.results | tee -a errors.all
-grep -A2 'WARNING!' *.results | tee -a errors.all
+grep -A2 'ERROR!' *.errors | sed 's/.errors//' | tee errors.all
+grep -A2 'ERROR!' *.results | sed 's/.results//' | tee -a errors.all
+grep -A2 'WARNING!' *.results | sed 's/.results//' | tee -a errors.all
 echo '********************************************'
 echo "***** Failed tests"
 echo '********************************************'
-grep ': failure' *.results | tee -a errors.all
+grep ': failure' *.results | sed 's/: failure/ failed/' | sed 's/.results/:/' | tee -a errors.all
 echo '********************************************'
