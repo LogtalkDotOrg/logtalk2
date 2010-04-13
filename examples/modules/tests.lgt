@@ -28,12 +28,16 @@
 		test::test(Names),
 		Names == [paulo, carlos, helena].
 
-	test(modules_6) :-
-		client::names(Names),
-		Names == [paulo, carlos, helena].
+	:- if(current_object(client)).	% client for testing use_module/1 directives, which are
+									% only supported for some back-end Prolog compilers
+		test(modules_6) :-
+			client::names(Names),
+			Names == [paulo, carlos, helena].
 
-	test(modules_7) :-
-		client::test(Names),
-		Names == [paulo, carlos, helena].
+		test(modules_7) :-
+			client::test(Names),
+			Names == [paulo, carlos, helena].
+
+	:- endif.
 
 :- end_object.
