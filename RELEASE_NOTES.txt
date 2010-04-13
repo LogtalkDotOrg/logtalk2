@@ -60,6 +60,9 @@ RELEASE NOTES
     config files. Improved finding the module name from the module file name
     when preprocessing the directives use_module/1-2.
 
+    Updated the Qu-Prolog integration script, "qplgt.sh", in order to use
+    larger memory values for the code and environment areas.
+
     Replaced the predicate as_dictionary/2 in the library object "bintree"
     with a new implementation, contributed by Paul Fodor, that returns a
     semi-balanced tree.
