@@ -323,9 +323,9 @@ true.
 
 ?- lambda_benchmarks::bench2.
 Adding 1 to every integer in the list [1..100000] using a local add1/2 predicate:
-% 10,000,101 inferences, 1.940 CPU in 1.944 seconds (100% CPU, 5154691 Lips)
+% 100,000 inferences, 0.020 CPU in 0.022 seconds (90% CPU, 5000000 Lips)
 Adding 1 to every integer in the list [1..100000] using map/3 with the integer::plus/3 predicate:
-% 150,000,443 inferences, 38.040 CPU in 38.221 seconds (100% CPU, 3943229 Lips)
+% 1,500,045 inferences, 0.390 CPU in 0.391 seconds (100% CPU, 3846269 Lips)
 Adding 1 to every integer in the list [1..100000] using map/3 with a lambda argument with a is/2 goal:
-% 210,000,301 inferences, 74.010 CPU in 74.162 seconds (100% CPU, 2837458 Lips)
+% 2,100,002 inferences, 0.750 CPU in 0.753 seconds (100% CPU, 2800003 Lips)
 true.
