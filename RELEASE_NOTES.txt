@@ -34,7 +34,8 @@ RELEASE NOTES
     is a compound term (as usual when using library notation).
 
     Optimized meta-calls when using closures wrapped in the {}/1 control
-    construct.
+    construct. Removed redundant check for debugging mode when executing
+    meta-calls.
 
     Added support for the predicate renaming operator as/2 found on SWI-Prolog
     and YAP when parsing use_module/2 directives.

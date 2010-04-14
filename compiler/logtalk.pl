@@ -3734,19 +3734,16 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_metacall_this'(Pred, Sender, This, Self) :-
 	'$lgt_current_object_'(This, Prefix, _, Def, _, _, _, _, DDef, _, _), !,
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, []),
-	(	% in the most common case we're meta-calling a user defined predicate:
-		(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
-		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(This) ->
-			'$lgt_dbg_goal'(Pred, TPred, ExCtx)
-		;	call(TPred)
-		)
+	(	% in the most common case we're meta-calling a user defined static predicate:
+		call(Def, Pred, ExCtx, TPred) ->
+		call(TPred)
+	;	% or a user defined dynamic predicate:
+		call(DDef, Pred, ExCtx, TPred) ->
+		call(TPred)
 	;	% in the worst case we need to compile the meta-call:
 		'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, ExCtx, runtime),
-		'$lgt_tr_body'(Pred, TPred, DPred, Ctx) ->
-		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(This) ->
-			call(DPred)
-		;	call(TPred)
-		)
+		'$lgt_tr_body'(Pred, TPred, _, Ctx) ->
+		call(TPred)
 	;	% of course, the meta-call may happen to be an unfortunate mistake:
 		functor(Pred, Functor, Arity),
 		throw(error(existence_error(procedure, Functor/Arity), call(Pred), This))
@@ -3761,19 +3758,16 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_metacall_sender'(Pred, Sender, _, Self) :-
 	'$lgt_current_object_'(Sender, Prefix, _, Def, _, _, _, _, DDef, _, _), !,
 	'$lgt_exec_ctx'(ExCtx, Sender, Sender, Self, []),
-	(	% in the most common case we're meta-calling a user defined predicate:
-		(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
-		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Sender) ->
-			'$lgt_dbg_goal'(Pred, TPred, ExCtx)
-		;	call(TPred)
-		)
+	(	% in the most common case we're meta-calling a user defined static predicate:
+		call(Def, Pred, ExCtx, TPred) ->
+		call(TPred)
+	;	% or a user defined dynamic predicate:
+		call(DDef, Pred, ExCtx, TPred) ->
+		call(TPred)
 	;	% in the worst case we need to compile the meta-call:
 		'$lgt_comp_ctx'(Ctx, _, Sender, Sender, Self, Prefix, [], _, ExCtx, runtime),
-		'$lgt_tr_body'(Pred, TPred, DPred, Ctx) ->
-		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Sender) ->
-			call(DPred)
-		;	call(TPred)
-		)
+		'$lgt_tr_body'(Pred, TPred, _, Ctx) ->
+		call(TPred)
 	;	% of course, the meta-call may happen to be an unfortunate mistake:
 		functor(Pred, Functor, Arity),
 		throw(error(existence_error(procedure, Functor/Arity), call(Pred), Sender))
@@ -3792,15 +3786,15 @@ current_logtalk_flag(version, version(2, 39, 2)).
 % but is meta-argument expanded for non-redefined built-in meta-predicates
 
 '$lgt_call_built_in'(Pred, MetaExPred, ExCtx) :-
-	(	'$lgt_exec_ctx'(ExCtx, This, _),
-		'$lgt_current_object_'(This, _, _, Def, _, _, _, _, DDef, _, _),
-		(call(Def, Pred, ExCtx, TPred); call(DDef, Pred, ExCtx, TPred)) ->
-		% call the redefined built-in predicate:
-		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(This) ->
-			'$lgt_dbg_goal'(Pred, TPred, ExCtx)
-		;	call(TPred)
-		)
-	;	% call the built-in predicate:
+	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_current_object_'(This, _, _, Def, _, _, _, _, DDef, _, _), !,
+	(	call(Def, Pred, ExCtx, TPred) ->
+		% call a static redefinition of a built-in predicate:
+		call(TPred)
+	;	call(DDef, Pred, ExCtx, TPred) ->
+		% call a dynamic redefinition of a built-in predicate:
+		call(TPred)
+	;	% no redefinition; call the built-in predicate:
 		call(MetaExPred)
 	).
 
@@ -3834,19 +3828,16 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	(	'$lgt_current_object_'(Obj, Prefix, _, Def, _, _, _, _, DDef, _, _) ->
 		(	'$lgt_entity_property_'(Obj, flags(csc, _, _, _, _, _)) ->			
 			'$lgt_exec_ctx'(ExCtx, Obj, Obj, Obj, []),
-			(	% in the most common case we're calling a user defined predicate:
-				(call(Def, Goal, ExCtx, TGoal); call(DDef, Goal, ExCtx, TGoal)) ->
-				(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
-					'$lgt_dbg_goal'(Goal, TGoal, ExCtx)
-				;	call(TGoal)
-				)
+			(	% in the most common case we're calling a user defined static predicate:
+				call(Def, Goal, ExCtx, TGoal) ->
+				call(TGoal)
+				% or a user defined dynamic predicate:
+			;	call(DDef, Goal, ExCtx, TGoal) ->
+				call(TGoal)
 			;	% in the worst case we need to compile the goal:
 				'$lgt_comp_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _, ExCtx, runtime),
-				catch('$lgt_tr_body'(Goal, TGoal, DGoal, Ctx), Error, throw(error(Error, Obj<<Goal, This))),
-				(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
-					call(DGoal)
-				;	call(TGoal)
-				)
+				catch('$lgt_tr_body'(Goal, TGoal, _, Ctx), Error, throw(error(Error, Obj<<Goal, This))),
+				call(TGoal)
 			)
 		;	throw(error(permission_error(access, predicate, Goal), Obj<<Goal, This))
 		)
