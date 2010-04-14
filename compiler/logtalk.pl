@@ -4095,8 +4095,11 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 
 '$lgt_bio_user_0__def'(Pred, _, Pred) :-
-	functor(Pred, Functor, Arity),
-	current_predicate(Functor/Arity).
+	(	'$lgt_predicate_property'(Pred, built_in) ->
+		true
+	;	functor(Pred, Functor, Arity),
+		current_predicate(Functor/Arity)
+	).
 
 
 '$lgt_bio_user_0__def'(Pred, _, Pred, user) :-
