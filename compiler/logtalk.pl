@@ -3532,24 +3532,19 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	;	throw(error(instantiation_error, Sender::Call, This))
 	).
 
-'$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, _) :-
-	\+ callable(Closure),
-	Call =.. [call, Closure| ExtraArgs],
-	(	atom(MetaCallCtx) ->
-		throw(error(type_error(callable, Closure), This::Call, This))
-	;	throw(error(type_error(callable, Closure), Sender::Call, This))
-	).
-
 '$lgt_metacall'({Closure}, ExtraArgs, _, _, This, _) :-		% pre-compiled closures or calls
 	!,														% in "user" (compiler bypass)
-	(	var(Closure) ->
-		Call =.. [call, {Closure}| ExtraArgs],
-		throw(error(instantiation_error, Call, This))
-	;	callable(Closure) ->
+	(	atom(Closure) ->
+		Goal =.. [Closure| ExtraArgs],
+		call(Goal)
+	;	compound(Closure) ->
 		Closure =.. [Functor| Args],
 		'$lgt_append'(Args, ExtraArgs, FullArgs),
 		Goal =.. [Functor| FullArgs],
 		call(Goal)
+	;	var(Closure) ->
+		Call =.. [call, {Closure}| ExtraArgs],
+		throw(error(instantiation_error, Call, This))
 	;	Call =.. [call, {Closure}| ExtraArgs],
 		throw(error(type_error(callable, Closure), Call, This))
 	).
@@ -3648,6 +3643,14 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest, Parameters>>Closure, This) ->
 		'$lgt_metacall'(ClosureCopy, Rest, MetaCallCtxCopy, Sender, This, Self)
 	;	throw(error(representation_error(lambda_parameters), Parameters>>Closure, This))
+	).
+
+'$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, _) :-
+	\+ callable(Closure),
+	Call =.. [call, Closure| ExtraArgs],
+	(	atom(MetaCallCtx) ->
+		throw(error(type_error(callable, Closure), This::Call, This))
+	;	throw(error(type_error(callable, Closure), Sender::Call, This))
 	).
 
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
@@ -16291,19 +16294,19 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		call(Def, GPred, GExCtx, GCall, DefCtn),
 		!,	% found the predicate definition; use it only if it's safe
 		'$lgt_safe_static_binding_paths'(GObj, DclCtn, DefCtn),
-		(	Meta =.. [PredFunctor| MArgs],								% fails when Meta == no
+		(	Meta == no ->
+			% cache only normal predicates
+			assertz('$lgt_obj_static_binding_cache_'(GObj, GPred, GSender, GCall)),
+			(Obj, Pred, Sender, Call) = (GObj, GPred, GSender, GCall)
+		;	% meta-predicates cannot be cached as they require translation of the meta-arguments
+			Meta =.. [PredFunctor| MArgs],
 			Pred =.. [PredFunctor| Args],
-			\+ ('$lgt_member'(MArg, MArgs), integer(MArg), MArg > 0) ->	% closures cannot be optimized
-			% meta-predicates cannot be cached as they require translation of the meta-arguments
-			'$lgt_pp_entity'(_, _, Prefix, _, _),
+			'$lgt_current_object_'(Sender, Prefix, _, _, _, _, _, _, _, _, _), !,
 			'$lgt_comp_ctx'(Ctx, _, Sender, Sender, Obj, Prefix, [], _, ExCtx, _),
 			'$lgt_exec_ctx'(ExCtx, Sender, Sender, Obj, []),
 			'$lgt_tr_static_binding_meta_args'(Args, MArgs, Ctx, TArgs, _),
 			TPred =.. [PredFunctor| TArgs],
 			(Obj, TPred, Sender, Call) = (GObj, GPred, GSender, GCall)
-		;	% cache only normal predicates
-			assertz('$lgt_obj_static_binding_cache_'(GObj, GPred, GSender, GCall)),
-			(Obj, Pred, Sender, Call) = (GObj, GPred, GSender, GCall)
 		)
 	).
 
@@ -16314,6 +16317,14 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_tr_static_binding_meta_arg'(MArg, Arg, Ctx, TArg, DArg),
 	'$lgt_tr_static_binding_meta_args'(Args, MArgs, Ctx, TArgs, DArgs).
 
+
+'$lgt_tr_static_binding_meta_arg'(N, Arg, Ctx, {Arg}, {Arg}) :-
+	% the {}/1 construct signals a pre-compiled metacall
+	integer(N), N > 0,			% closure
+	!,
+	nonvar(Arg),				% not using the {}/1 control
+	\+ functor(Arg, {}, 1),		% construct already
+	'$lgt_comp_ctx_sender'(Ctx, Sender), Sender == user.
 
 '$lgt_tr_static_binding_meta_arg'((*), Arg, _, Arg, Arg).
 
