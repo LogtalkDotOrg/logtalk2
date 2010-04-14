@@ -270,7 +270,11 @@ yes
 R = 285
 yes
 
-| ?- sigma::sum([X,Y]>>sum([W,Z]>>(Z is W), X, 9, Y), 0, 9, R).
+
+% remember that closures are called in the context of the "sender" when
+% used as arguments to meta-predicates:
+
+| ?- sigma::sum([X,Y]>>(sigma::sum([W,Z]>>(Z is W), X, 9, Y)), 0, 9, R).
 R = 330
 yes
 
@@ -313,9 +317,9 @@ yes
 
 ?- lambda_benchmarks::bench1.
 Using map/2 with a closure for testing less(0, X) with X in [1..100000]: 
-% 1,500,027 inferences, 0.430 CPU in 0.431 seconds (100% CPU, 3488435 Lips)
+% 1,500,027 inferences, 0.440 CPU in 0.444 seconds (99% CPU, 3409152 Lips)
 Using map/2 with a lambda for testing less(0, X) with X in [1..100000]:  
-% 2,500,002 inferences, 0.870 CPU in 0.868 seconds (100% CPU, 2873566 Lips)
+% 2,300,002 inferences, 0.740 CPU in 0.742 seconds (100% CPU, 3108111 Lips)
 true.
 
 % the second benchmarks is based on code posted by Jan Wielemaker in
@@ -323,9 +327,9 @@ true.
 
 ?- lambda_benchmarks::bench2.
 Adding 1 to every integer in the list [1..100000] using a local add1/2 predicate:
-% 100,000 inferences, 0.020 CPU in 0.022 seconds (90% CPU, 5000000 Lips)
+% 100,000 inferences, 0.020 CPU in 0.021 seconds (97% CPU, 5000000 Lips)
 Adding 1 to every integer in the list [1..100000] using map/3 with the integer::plus/3 predicate:
-% 1,500,045 inferences, 0.390 CPU in 0.391 seconds (100% CPU, 3846269 Lips)
+% 1,500,045 inferences, 0.390 CPU in 0.389 seconds (100% CPU, 3846269 Lips)
 Adding 1 to every integer in the list [1..100000] using map/3 with a lambda argument with a is/2 goal:
-% 2,100,002 inferences, 0.750 CPU in 0.753 seconds (100% CPU, 2800003 Lips)
+% 1,900,002 inferences, 0.610 CPU in 0.612 seconds (100% CPU, 3114757 Lips)
 true.

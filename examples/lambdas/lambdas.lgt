@@ -45,6 +45,7 @@
 
 	:- public(sum/4).
 	:- meta_predicate(sum(2, *, *, *)).
+	:- meta_predicate(sum(2, *, *, *, *)).
 
 	sum(Closure, Inf, Sup, Result) :-
 		sum(Closure, Inf, Sup, 0, Result).

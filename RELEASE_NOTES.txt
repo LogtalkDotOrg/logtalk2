@@ -92,6 +92,9 @@ RELEASE NOTES
 
     Added unit test supporting files for the "constraints" example.
 
+    Corrected a bug in the "lambdas" example (a missing meta_predicate/1
+    directive in the object "sigma").
+
 
 2.39.1 - March 31, 2010
 

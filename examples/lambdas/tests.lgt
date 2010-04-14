@@ -108,7 +108,7 @@
 		findall(Currencies, countries::currencies_wrong(Currencies), Solutions),
 		list::msort(Solutions, SolutionsSorted),
 		SolutionsSorted == [[dinar], [dinar], [euro], [euro], [pound_sterling], [ringgit]].
-		
+
 	succeeds(lambdas_25) :-
 		countries::currencies_no_lambda(Currencies),
 		Currencies == [dinar, euro, pound_sterling, ringgit].
@@ -126,7 +126,7 @@
 		R == 285.
 
 	succeeds(lambdas_29) :-
-		sigma::sum([X,Y]>>sum([W,Z]>>(Z is W), X, 9, Y), 0, 9, R),
+		sigma::sum([X,Y]>>(sigma::sum([W,Z]>>(Z is W), X, 9, Y)), 0, 9, R),
 		R == 330.
 
 :- end_object.
