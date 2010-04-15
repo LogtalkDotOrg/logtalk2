@@ -22,6 +22,8 @@
 :- use_module(library(numbervars)).
 :- use_module(library(multifile)).
 
+:- export syntax_option(doubled_quote_is_quote).
+
 
 :- set_event_handler(134, '$lgt_eclipse_discontiguous_predicate_handler'/2).
 
@@ -137,9 +139,8 @@ throw(Ball) :-
 	exit_block(lgt_error).
 
 
-:- set_flag(occur_check, on).
-unify_with_occurs_check(X, X).
-:- set_flag(occur_check, off).
+unify_with_occurs_check(X, X) :-		% copied from the ECLiPSE "iso" library
+	acyclic_term(X).
 
 
 
