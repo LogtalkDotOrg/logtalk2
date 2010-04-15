@@ -112,14 +112,12 @@ CxProlog 0.97.4 or later versions
 
 ECLiPSe 6.0#77 or later versions
 
-	eclipse6.pl
 	eclipse6iso.pl
+	unsupported/eclipse6.pl
 
-	There are two configs files for this compiler. The first one, named 
-	"eclipse6.pl", should be used when, for some reason, you don't want 
-	to load the "iso" library. The second file, "eclipse6iso.pl" contains 
-	a call to load the "iso" library. Both config files may be used with
-	ECLiPSe 6.0#77 or later versions.
+	There are two configs files for this compiler. Only the first one, 
+	"eclipse6iso.pl", is supported. The second file, "eclipse6.pl" could
+	be used when, for some reason, you don't want to load the "iso" library.
 
 	You should use the "eclipse6iso.pl" config file whenever possible.
 	The "eclipse6.pl" config file may not contain all the necessary 

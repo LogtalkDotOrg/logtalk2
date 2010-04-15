@@ -40,9 +40,9 @@ RELEASE NOTES
     construct. Removed redundant check for debugging mode when executing
     meta-calls.
 
-    Corrected a potential bug in the Logtalk runtime while updating the meta-
-    call context for lambda expressions could result in losing part of the
-    context.
+    Corrected a potential bug in the Logtalk runtime when updating the meta-
+    call context for lambda expressions that could result in losing part of
+    the context.
 
     Added support for the predicate renaming operator as/2 found on SWI-Prolog
     and YAP when parsing use_module/2 directives.
@@ -70,6 +70,9 @@ RELEASE NOTES
     Added support for parsing use_module/3 directives to the SICStus Prolog
     config files. Improved finding the module name from the module file name
     when preprocessing the directives use_module/1-2.
+
+    Moved the "eclipse6.pl" config file to the "configs/unsupported" folder
+    as Logtalk only supports ECLiPSe using the "eclipse6iso.pl" config file.
 
     Updated the Qu-Prolog integration script, "qplgt.sh", in order to use
     larger memory values for the code and environment areas.
