@@ -3604,8 +3604,6 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		throw(error(type_error(atom, Module), Call, This))
 	).
 
-% lambda expressions are always called in the context of the sender
-
 '$lgt_metacall'(Free/Closure, ExtraArgs, LambdaMetaCallCtx, Sender, This, Self) :-
 	!,
 	(	var(Free) ->
@@ -3614,7 +3612,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		throw(error(type_error(curly_bracketed_term, Free), Free/Closure, This))
 	;	var(Closure) ->
 	 	throw(error(instantiation_error, Free/Closure, This))
-	;	'$lgt_reduce_lambda_meta_call_ctx'(LambdaMetaCallCtx, Free/Closure, MetaCallCtx),
+	;	'$lgt_reduce_lambda_metacall_ctx'(LambdaMetaCallCtx, Free/Closure, MetaCallCtx),
 		'$lgt_copy_term_without_constraints'(Free/Closure+MetaCallCtx, Free/ClosureCopy+MetaCallCtxCopy),
 		'$lgt_metacall'(ClosureCopy, ExtraArgs, MetaCallCtxCopy, Sender, This, Self)
 	).
@@ -3627,7 +3625,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		throw(error(type_error(curly_bracketed_term, Free), Free/Parameters>>Closure, This))
 	;	var(Closure) ->
 	 	throw(error(instantiation_error, Free/Parameters>>Closure, This))
-	;	'$lgt_reduce_lambda_meta_call_ctx'(LambdaMetaCallCtx, Free/Parameters>>Closure, MetaCallCtx),
+	;	'$lgt_reduce_lambda_metacall_ctx'(LambdaMetaCallCtx, Free/Parameters>>Closure, MetaCallCtx),
 		'$lgt_copy_term_without_constraints'(Free/Parameters>>Closure+MetaCallCtx, Free/ParametersCopy>>ClosureCopy+MetaCallCtxCopy),
 		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest, Free/Parameters>>Closure, This) ->
 		'$lgt_metacall'(ClosureCopy, Rest, MetaCallCtxCopy, Sender, This, Self)
@@ -3638,7 +3636,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	!,
 	(	var(Closure) ->
 	 	throw(error(instantiation_error, Parameters>>Closure, This))
-	;	'$lgt_reduce_lambda_meta_call_ctx'(LambdaMetaCallCtx, Parameters>>Closure, MetaCallCtx),
+	;	'$lgt_reduce_lambda_metacall_ctx'(LambdaMetaCallCtx, Parameters>>Closure, MetaCallCtx),
 		'$lgt_copy_term_without_constraints'(Parameters>>Closure+MetaCallCtx, ParametersCopy>>ClosureCopy+MetaCallCtxCopy),
 		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest, Parameters>>Closure, This) ->
 		'$lgt_metacall'(ClosureCopy, Rest, MetaCallCtxCopy, Sender, This, Self)
@@ -3676,20 +3674,23 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_unify_lambda_parameters'(Parameters, Vars, Rest, Lambda, This).
 
 
-'$lgt_reduce_lambda_meta_call_ctx'(-, _, _).
+% when using currying, the "inner" lambda expressions must be executed in the same context as the "outer"
+% lambda expressions; the same for the "inner" closure; this forces the update of the meta-call context
 
-'$lgt_reduce_lambda_meta_call_ctx'([], _, []).
+'$lgt_reduce_lambda_metacall_ctx'(-, _, _).
 
-'$lgt_reduce_lambda_meta_call_ctx'([Meta| Metas], Lambda, Reduced) :-
-	'$lgt_reduce_lambda_meta_call_ctx'(Meta, Metas, Lambda, Reduced).
+'$lgt_reduce_lambda_metacall_ctx'([], _, []).
+
+'$lgt_reduce_lambda_metacall_ctx'([Meta| Metas], Lambda, Reduced) :-
+	'$lgt_reduce_lambda_metacall_ctx'(Meta, Metas, Lambda, Reduced).
 
 
-'$lgt_reduce_lambda_meta_call_ctx'(Free/Closure, Metas, Free/Closure, [Closure| Metas]) :- !.
+'$lgt_reduce_lambda_metacall_ctx'(Free/Closure, Metas, Free/Closure, [Closure| Metas]) :- !.
 
-'$lgt_reduce_lambda_meta_call_ctx'(Parameters>>Closure, Metas, Parameters>>Closure, [Closure| Metas]) :- !.
+'$lgt_reduce_lambda_metacall_ctx'(Parameters>>Closure, Metas, Parameters>>Closure, [Closure| Metas]) :- !.
 
-'$lgt_reduce_lambda_meta_call_ctx'(_, Metas, Lambda, Reduced) :-
-	'$lgt_reduce_lambda_meta_call_ctx'(Metas, Lambda, Reduced).
+'$lgt_reduce_lambda_metacall_ctx'(Meta, Metas, Lambda, [Meta| Reduced]) :-
+	'$lgt_reduce_lambda_metacall_ctx'(Metas, Lambda, Reduced).
 
 
 

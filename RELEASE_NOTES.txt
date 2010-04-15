@@ -40,6 +40,10 @@ RELEASE NOTES
     construct. Removed redundant check for debugging mode when executing
     meta-calls.
 
+    Corrected a potential bug in the Logtalk runtime while updating the meta-
+    call context for lambda expressions could result in losing part of the
+    context.
+
     Added support for the predicate renaming operator as/2 found on SWI-Prolog
     and YAP when parsing use_module/2 directives.
 
