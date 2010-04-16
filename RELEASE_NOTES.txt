@@ -63,6 +63,8 @@ RELEASE NOTES
 
     Updated the SWI-Prolog config file with more robust and fast code for
     preprocessing module directives when the modules are already loaded.
+    Also added support for the new use_foreign_library/1-2 proprietary
+    directives.
 
     Updated the YAP config file in order to use the more standard predicate
     working_directory/2.

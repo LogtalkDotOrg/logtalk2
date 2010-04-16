@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: April 4, 2010
+%  last updated: April 16, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -589,6 +589,10 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 	'$lgt_tr_predicate_heads'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(noprofile(PIs), noprofile(CPIs)) :-
 	'$lgt_tr_predicate_indicators'(PIs, CPIs).
+'$lgt_rewrite_and_copy_pl_directive'(use_foreign_library(File), use_foreign_library(File)) :-
+	load_foreign_library(File).
+'$lgt_rewrite_and_copy_pl_directive'(use_foreign_library(File, Entry), use_foreign_library(File, Entry)) :-
+	load_foreign_library(File, Entry).
 '$lgt_rewrite_and_copy_pl_directive'(volatile(PIs), volatile(CPIs)) :-
 	'$lgt_tr_predicate_indicators'(PIs, CPIs).
 
