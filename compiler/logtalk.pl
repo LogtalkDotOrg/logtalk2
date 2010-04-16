@@ -6099,6 +6099,10 @@ current_logtalk_flag(version, version(2, 39, 2)).
 %
 % translates the expanded terms (which can be a list of terms)
 
+'$lgt_tr_expanded_terms'(Term, _, _, _, _) :-
+	var(Term),
+	throw(error(instantiantion_error, term_expansion/2)).
+
 '$lgt_tr_expanded_terms'([], _, _, _, _) :-
 	!.
 
