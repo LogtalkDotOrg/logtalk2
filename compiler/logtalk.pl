@@ -5322,16 +5322,22 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_file_name'(logtalk, File, Basename, Source),
 	'$lgt_current_directory'(Directory),
 	asserta('$lgt_pp_file_path_'(Basename, Directory)),
+	% open the Logtalk source code file for reading:
 	catch(
 		open(Source, read, Input),
 		OpenError,
 		'$lgt_compiler_error_handler'(OpenError)),
+	% look for an enconding/1 directive that, when present, must be the first term on a source file
 	catch(
 		'$lgt_read_term'(Input, Term, [singletons(Singletons)], Lines),
 		InputError,
 		'$lgt_compiler_error_handler'(Input, InputError)),
-	'$lgt_check_for_encoding_directive'(Term, Source, Input, NewInput, OutputOptions),	% the encoding/1 directive, when present, 
-	'$lgt_file_name'(prolog, File, _, Object),											% must be the first term on a source file
+	catch(
+		'$lgt_check_for_encoding_directive'(Term, Source, Input, NewInput, OutputOptions), 
+		FirstTermError,
+		'$lgt_compiler_error_handler'(NewInput, FirstTermError)),
+	% open a corresponding Prolog file for writing generated code using any found encoding/1 directive:
+	'$lgt_file_name'(prolog, File, _, Object),
 	catch(
 		open(Object, write, Output, OutputOptions),
 		OpenError,
@@ -5340,13 +5346,15 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		'$lgt_write_encoding_directive'(Output),
 		WriteError,
 		'$lgt_compiler_error_handler'(NewInput, Output, WriteError)),
+	% read and compile the remaining terms in the Logtalk source file:
 	catch(
 		'$lgt_tr_file'(Term, Singletons, Source, Lines, NewInput, Output),
 		Error,
 		'$lgt_compiler_error_handler'(Source, NewInput, Output, Error)),
 	close(NewInput),
+	% write out any Prolog code that may occur after the last entity on the source file:
 	catch(
-		('$lgt_write_prolog_terms'(Output),						% write out any Prolog code that may occur after the last entity on the source file;
+		('$lgt_write_prolog_terms'(Output),
 		 '$lgt_write_runtime_clauses'(Output),					% write entity runtime directives and clauses;
 		 '$lgt_write_init_call'(Output)),						% write initialization/1 directive at the
 		OutputError,											% end of the file to improve compatibility 
@@ -5357,11 +5365,19 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 
 
-% '$lgt_check_for_encoding_directive'(@nonvar, +atom, @stream, -stream, -list)
+% '$lgt_check_for_encoding_directive'(?term, +atom, @stream, -stream, -list)
 %
 % encoding/1 directives must be used during entity compilation and for the
 % encoding of the generated Prolog and XML files; BOM present in the source
 % file is inherited by the generated Prolog and XML files:
+
+'$lgt_check_for_encoding_directive'(Term, _, _, _, _) :-
+	var(Term),
+	throw(error(instantiation_error, term(Term))).
+
+'$lgt_check_for_encoding_directive'((:- Term), _, _, _, _) :-
+	var(Term),
+	throw(error(instantiation_error, directive(Term))).
 
 '$lgt_check_for_encoding_directive'((:- encoding(LogtalkEncoding)), Source, Input, NewInput, [encoding(PrologEncoding)|BOM]) :-
 	!,
@@ -5387,7 +5403,11 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 
 
-% '$lgt_tr_file'(+term, +list, +atom, +integer, @stream, @stream)
+% '$lgt_tr_file'(?term, +list, +atom, +integer, @stream, @stream)
+
+'$lgt_tr_file'(Term, _, _, _, _, _) :-
+	var(Term),
+	throw(instantiation_error).
 
 '$lgt_tr_file'(end_of_file, _, File, _, _, Output) :-			% module definitions start with an opening
 	'$lgt_pp_module_'(Module),									% module/1-2 directive and are assumed to
@@ -5529,37 +5549,52 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 '$lgt_report_singletons_term'((:- Term)) :-
 	!,
-	functor(Term, Functor, Arity),
-	write('in directive '),
-	writeq(Functor/Arity),
-	write(': ').
+	(	var(Term) ->
+		true
+	;	functor(Term, Functor, Arity),
+		write('in directive '),
+		writeq(Functor/Arity),
+		write(': ')
+	).
 
 '$lgt_report_singletons_term'((Term :- _)) :-
 	!,
-	functor(Term, Functor, Arity),
-	write('in clause for predicate '),
-	writeq(Functor/Arity),
-	write(': ').
+	(	var(Term) ->
+		true
+	;	functor(Term, Functor, Arity),
+		write('in clause for predicate '),
+		writeq(Functor/Arity),
+		write(': ')
+	).
 	
 '$lgt_report_singletons_term'((Term, _ --> _)) :-
 	!,
-	functor(Term, Functor, Arity),
-	write('in grammar rule for non-terminal '),
-	writeq(Functor//Arity),
-	write(': ').
+	(	var(Term) ->
+		true
+	;	functor(Term, Functor, Arity),
+		write('in grammar rule for non-terminal '),
+		writeq(Functor//Arity),
+		write(': ')
+	).
 
 '$lgt_report_singletons_term'((Term --> _)) :-
 	!,
-	functor(Term, Functor, Arity),
-	write('in grammar rule for non-terminal '),
-	writeq(Functor//Arity),
-	write(': ').
+	(	var(Term) ->
+		true
+	;	functor(Term, Functor, Arity),
+		write('in grammar rule for non-terminal '),
+		writeq(Functor//Arity),
+		write(': ')
+	).
 
 '$lgt_report_singletons_term'(Term) :-	% facts
-	functor(Term, Functor, Arity),
-	write('in clause for predicate '),
-	writeq(Functor/Arity),
-	write(': ').
+	(	var(Term) ->
+		true
+	;	functor(Term, Functor, Arity),
+		write('in clause for predicate '),
+		writeq(Functor/Arity),
+		write(': ')
+	).
 
 
 
@@ -6083,7 +6118,9 @@ current_logtalk_flag(version, version(2, 39, 2)).
 % translates a source file term (clauses, directives, and grammar rules)
 
 '$lgt_tr_term'(Term, File, Lines, Input, Output) :-
-	(	% source-file specific compiler hook:
+	(	var(Term) ->
+		throw(error(instantiantion_error, term(Term)))
+	;	% source-file specific compiler hook:
 		'$lgt_pp_hook_term_expansion_'(Term, Terms) ->
 		'$lgt_tr_expanded_terms'(Terms, File, Lines, Input, Output)
 	;	% default compiler hook:

@@ -36,6 +36,10 @@ RELEASE NOTES
     Updated the definition of the pseudo-object "user" in order to virtually
     contain the definition of all Prolog built-in predicates.
 
+    Corrected a bug in the Logtalk compiler where a misleading error would be
+    reported when a source file contains a clause or a directive that is a
+    plain variable.
+
     Corrected a bug in the Logtalk compiler where a broken term_expansion/2
     definition expanding a term to a variable would succeed instead of
     throwing an error.
