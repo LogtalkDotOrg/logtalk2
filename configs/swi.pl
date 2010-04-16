@@ -635,7 +635,12 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 	;	true								% is the first directive on the file
 	),
 	setup_call_cleanup(true, read(In, ModuleDecl), close(In)),
-	ModuleDecl = (:- module(Module, Exports)).
+	ModuleDecl = (:- module(Module, Exports)),
+	(	var(Module) ->
+		file_base_name(Path, Base),
+		file_name_extension(Module, _, Base)
+	;	true
+	).
 
 
 '$lgt_rewrite_and_recompile_pl_encoding_directive'(ascii, 'US-ASCII').
