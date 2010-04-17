@@ -12300,7 +12300,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		HeadDDcl =.. [IDcl, Pred, Scope, (dynamic), no, 000, Obj, Obj],
 		BodyDDcl =.. [DDcl, Pred, Scope],
 		assertz('$lgt_pp_dcl_'((HeadDDcl:-BodyDDcl)))
-	;	HeadDDcl =.. [IDcl, _, _, _, _, _, _, _, _],
+	;	HeadDDcl =.. [IDcl, _, _, _, _, _, _, _],
 		assertz('$lgt_pp_dcl_'((HeadDDcl:-fail)))
 	).
 
