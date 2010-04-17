@@ -265,3 +265,6 @@ Logtalk 2.39.0 changes the semantics of the parameter/2 built-in methods when
 used in categories and removes an overly restrictive safety rule used when
 compiling meta-predicates. Recompilation of all objects and categories is
 strongly recommended.
+
+Logtalk 2.39.2 changes the internal representation of predicate properties,
+thus requiring recompilation of all objects, protocols, and categories.
