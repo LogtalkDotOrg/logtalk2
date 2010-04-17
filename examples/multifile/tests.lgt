@@ -12,4 +12,9 @@
 		findall(X, main::a(X), Solutions),
 		Solutions == [1, 2, 3, 4, 5].
 
+	test(multifile_2) :-
+		main::current_predicate(a/1),
+		main::predicate_property(a(_), public),
+		main::predicate_property(a(_), multifile).
+
 :- end_object.

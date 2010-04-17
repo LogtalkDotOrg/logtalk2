@@ -14074,6 +14074,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_valid_pred_property'(meta_predicate(_)).
 '$lgt_valid_pred_property'(built_in).
 '$lgt_valid_pred_property'(alias_of(_)).
+'$lgt_valid_pred_property'((multifile)).
 '$lgt_valid_pred_property'(non_terminal(_)).
 '$lgt_valid_pred_property'(synchronized).
 
