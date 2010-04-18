@@ -512,8 +512,6 @@ object_property(Obj, Prop) :-
 			(	Prop = file(Base, Path)
 			;	Start =\= -1, End =\= -1, Prop = lines(Start, End)
 			)
-		;	Internal = flags(Flags) ->
-			'$lgt_object_flags'(Prop, Flags)
 		;	Prop = Internal
 		)
 	).
@@ -540,8 +538,6 @@ category_property(Ctg, Prop) :-
 			(	Prop = file(Base, Path)
 			;	Start =\= -1, End =\= -1, Prop = lines(Start, End)
 			)
-		;	Internal = flags(Flags) ->
-			'$lgt_category_flags'(Prop, Flags)
 		;	Prop = Internal
 		)
 	).
