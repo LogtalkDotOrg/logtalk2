@@ -15,9 +15,12 @@ RELEASE NOTES
 
 2.39.2 - April ??, 2010
 
+    Changed the internal representation of most entity properties to use a
+    more compact bit representation, stored in the tables of loaded entities.
+
     Changed the internal representation of non-critical predicate properties
     to use a more compact bit representation, which includes the "multifile"
-    predicate property.
+    predicate property, stored in the tables of entity declared predicates.
 
     Changed the type of the built-in methods (\+)/1, call/N, once/1, catch/3,
     throw/1, bagof/3, findall/3, forall/2, setof/3, self/1, sender/1, this/1
