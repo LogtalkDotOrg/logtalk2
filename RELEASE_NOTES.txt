@@ -110,6 +110,8 @@ RELEASE NOTES
     back-end Prolog compilers supporting the encoding/1 directive. Added new
     test files for each supported text encoding.
 
+    Added some more unit tests for the "reflection" example.
+
     Fixed a typo that prevented running the "mtbatch" example using XSB as the
     back-end Prolog compiler. 
 
