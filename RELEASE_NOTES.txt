@@ -74,7 +74,8 @@ RELEASE NOTES
 
     Updated the SWI-Prolog and YAP config files in order to preprocess the
     reexport/2 module directive, converting the module file name into the
-    module name.
+    module name, and in order to ignore the meta-predicate declaration of
+    the directives/predicates use_module/1-2.
 
     Updated the SWI-Prolog config file with more robust and fast code for
     preprocessing module directives when the modules are already loaded.

@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: April 16, 2010
+%  last updated: April 19, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -136,6 +136,8 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 % workaround broken meta-predicate declarations:
 '$lgt_pl_meta_predicate'(format(*, *), predicate).
 '$lgt_pl_meta_predicate'(format(*, *, *), predicate).
+'$lgt_pl_meta_predicate'(use_module(*), predicate).
+'$lgt_pl_meta_predicate'(use_module(*, *), predicate).
 
 
 
