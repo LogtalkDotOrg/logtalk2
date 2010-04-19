@@ -5,9 +5,9 @@
 	:- set_logtalk_flag(unknown, silent).
 
 	:- info([
-		version is 1.0,
+		version is 1.q,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2010/03/16,
+		date is 2010/04/19,
 		comment is 'Unit tests for the "reflection" example.']).
 
 	:- discontiguous(succeeds/1).
