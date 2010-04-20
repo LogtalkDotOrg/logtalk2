@@ -60,7 +60,8 @@ RELEASE NOTES
     the context.
 
     Added support for the predicate renaming operator as/2 found on SWI-Prolog
-    and YAP when parsing use_module/2 directives.
+    and YAP but only when parsing use_module/2 directives in modules that are
+    being compiled as objects.
 
     Updated the SWI-Prolog hooks file, "configs/swihook.pl", in order to avoid
     intercepting Prolog ensure_loaded/1 calls by the prolog_load_file/2 hook

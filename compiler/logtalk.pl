@@ -7628,7 +7628,11 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	),
 	'$lgt_tr_use_module_directive'(Preds, Module).
 
+% only accept the as/2 renaming operator (found e.g. on SWI-Prolog and YAP) when compiling
+% modules as objects:
+
 '$lgt_tr_use_module_directive'([as(Original, AFunctor)| Preds], Module) :-
+	'$lgt_pp_module_'(_),
 	'$lgt_valid_pred_ind'(Original, OFunctor, OArity),
 	atom(AFunctor),
 	!,
@@ -7636,6 +7640,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_tr_use_module_directive'(Preds, Module).
 
 '$lgt_tr_use_module_directive'([as(Original, AFunctor)| Preds], Module) :-
+	'$lgt_pp_module_'(_),
 	'$lgt_valid_gr_ind'(Original, OFunctor, OArity, OExtArity),
 	atom(AFunctor),
 	!,
@@ -7709,7 +7714,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 % '$lgt_tr_reexport_directive'(+list, +atom)
 %
 % auxiliary predicate for translating module reexport/2 directives;
-% the predicate renaming operator as/2 found on SWI-Prolog and YAP is also supported
+% the predicate renaming operator as/2 found on SWI-Prolog and YAP
+%is also supported (iff we're compiling a module as an object)
 
 '$lgt_tr_reexport_directive'([], _, _, _, _, _).
 
@@ -7765,11 +7771,11 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 '$lgt_tr_module_meta_predicate_directives'([], []).
 
-'$lgt_tr_module_meta_predicate_directives'([Dir| Dirs], [ConvertedDir| ConvertedDirs]) :-
-	Dir =.. [Functor| Args],
+'$lgt_tr_module_meta_predicate_directives'([Template| Templates], [ConvertedTemplate| ConvertedTemplates]) :-
+	Template =.. [Functor| Args],
 	'$lgt_tr_module_meta_predicate_directives_args'(Args, ConvertedArgs),
-	ConvertedDir =.. [Functor| ConvertedArgs],
-	'$lgt_tr_module_meta_predicate_directives'(Dirs, ConvertedDirs).
+	ConvertedTemplate =.. [Functor| ConvertedArgs],
+	'$lgt_tr_module_meta_predicate_directives'(Templates, ConvertedTemplates).
 
 
 '$lgt_tr_module_meta_predicate_directives_args'([], []).
@@ -9659,6 +9665,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	Pred =.. [Functor| Args],
 	Meta =.. [Functor| MArgs],
 	(	'$lgt_member'(MArg, MArgs), integer(MArg), MArg =\= 0 ->
+		% module meta-predicates that take closures are not supported:
 		throw(domain_error(closure, Meta))
 	;	'$lgt_tr_module_meta_predicate_directives_args'(MArgs, CMArgs),
 		'$lgt_tr_module_meta_args'(Args, CMArgs, Ctx, TArgs, DArgs),
