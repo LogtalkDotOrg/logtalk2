@@ -6954,12 +6954,14 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 
 '$lgt_tr_directive'(metapredicate, Preds, File, Lines, Input, Output) :-	% deprecated directive name
-	\+ '$lgt_compiler_flag'(report, off),
-	'$lgt_report_warning_in_new_line',
-	'$lgt_inc_compile_warnings_counter',
-	write('%         WARNING!  Deprecated directive: metapredicate/1 (use meta_predicate/1 instead)'), nl,
-	'$lgt_pp_entity'(Type, Entity, _, _, _),
-	'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input),
+	(	'$lgt_compiler_flag'(report, off) ->
+		true
+	;	'$lgt_report_warning_in_new_line',
+		'$lgt_inc_compile_warnings_counter',
+		write('%         WARNING!  Deprecated directive: metapredicate/1 (use meta_predicate/1 instead)'), nl,
+		'$lgt_pp_entity'(Type, Entity, _, _, _),
+		'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
+	),
 	'$lgt_tr_directive'((meta_predicate), Preds, File, Lines, Input, Output).
 
 '$lgt_tr_directive'((meta_predicate), Preds, _, _, _, _) :-
@@ -9283,6 +9285,10 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	),
 	DCond = '$lgt_dbg_goal'(abolish(Pred), TCond, ExCtx).
 
+'$lgt_tr_body'(assert(Term), TCond, DCond, Ctx) :-
+	!,
+	'$lgt_tr_body'(assertz(Term), TCond, DCond, Ctx).
+
 '$lgt_tr_body'(asserta(Term), TCond, DCond, Ctx) :-
 	nonvar(Term),
 	Term = ':'(Module, Pred),
@@ -10294,6 +10300,10 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		TPred = '$lgt_abolish_chk'(Obj, Pred, This, p(p(p)))
 	).
 
+'$lgt_tr_msg'(assert(Pred), Obj, TPred, This) :-
+	!,
+	'$lgt_tr_msg'(assertz(Pred), Obj, TPred, This).
+
 '$lgt_tr_msg'(asserta(Pred), Obj, TPred, This) :-
 	!,
 	(	'$lgt_runtime_db_clause_chk'(Pred) ->
@@ -10460,6 +10470,10 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	;	'$lgt_compiler_db_pred_ind_chk'(Pred),
 		TPred = '$lgt_abolish_chk'(Self, Pred, This, p(_))
 	).
+
+'$lgt_tr_self_msg'(assert(Pred), TPred, This, Self) :-
+	!,
+	'$lgt_tr_self_msg'(assertz(Pred), TPred, This, Self).
 
 '$lgt_tr_self_msg'(asserta(Pred), TPred, This, Self) :-
 	!,

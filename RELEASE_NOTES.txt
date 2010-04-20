@@ -34,6 +34,9 @@ RELEASE NOTES
     Added support for parsing operator declarations in the uses/2, public/1,
     protected/1, and private/1 directives.
 
+    Updated the Logtalk compiler to convert calls to the non-standard assert/1
+    built-in predicate as calls to the assertz/1 built-in predicate.
+
     Updated the Logtalk compiler in order to reject use_module/2 directives
     where the first argument is not an atom (assumed to be the module name).
     This change results in using the config files to find the module name from
