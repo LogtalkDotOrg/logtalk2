@@ -6722,10 +6722,22 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 
 % dynamic/0 entity directive
+%
+% (entities are static by default but can be declared dynamic using this directive)
 
 '$lgt_tr_directive'((dynamic), [], _, _, _, _) :-
 	!,
-	'$lgt_update_entity_comp_mode'.
+	% update entity compilation mode to "dynamic":
+	(   retract('$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags0)) ->
+		Flags is Flags0 \/ 2,
+	    assertz('$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags))
+	;   retract('$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags0)) ->
+		Flags is Flags0 \/ 2,
+	    assertz('$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags))
+	;   retract('$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags0)) ->
+		Flags is Flags0 \/ 2,
+	    assertz('$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags))
+	).
 
 
 % initialization/1 entity directive
@@ -9287,6 +9299,10 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 '$lgt_tr_body'(assert(Term), TCond, DCond, Ctx) :-
 	!,
+	(	'$lgt_non_portable_call_'(assert, 1) ->
+		true
+	;	assertz('$lgt_non_portable_call_'(assert, 1))
+	),
 	'$lgt_tr_body'(assertz(Term), TCond, DCond, Ctx).
 
 '$lgt_tr_body'(asserta(Term), TCond, DCond, Ctx) :-
@@ -9656,14 +9672,6 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 % predicates specified in use_module/2 directives
 
-'$lgt_tr_body'(Alias, ':'(Module, Pred), _, Ctx) :-						% remember non-portable Prolog module predicate calls
-	'$lgt_comp_ctx_mode'(Ctx, compile),
-	'$lgt_pp_use_module_pred_'(Module, Pred, Alias),
-	'$lgt_compiler_flag'(portability, warning),
-	functor(Pred, Functor, Arity),
-	assertz('$lgt_non_portable_call_'(':'(Module, Functor), Arity)),
-	fail.
-
 '$lgt_tr_body'(Alias, ':'(Module, TPred), ':'(Module, DPred), Ctx) :-	% meta-predicates
 	'$lgt_pp_use_module_pred_'(Module, Pred, Alias),
 	catch('$lgt_predicate_property'(Pred, imported_from(Module)), _, fail),
@@ -9727,6 +9735,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 '$lgt_tr_body'(Pred, _, _, Ctx) :-
 	'$lgt_comp_ctx_mode'(Ctx, compile),
+	'$lgt_compiler_flag'(portability, warning),
 	'$lgt_pl_built_in'(Pred),
 	\+ '$lgt_lgt_built_in'(Pred),
 	\+ '$lgt_iso_spec_pred'(Pred),
@@ -9734,7 +9743,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	\+ '$lgt_pp_public_'(Functor, Arity),		% not a
 	\+ '$lgt_pp_protected_'(Functor, Arity),	% redefined
 	\+ '$lgt_pp_private_'(Functor, Arity),		% built-in
-	'$lgt_compiler_flag'(portability, warning),
+	\+ '$lgt_non_portable_call_'(Functor, Arity),
 	assertz('$lgt_non_portable_call_'(Functor, Arity)),
 	fail.
 
@@ -11034,25 +11043,6 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	assertz('$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags)),
 	% needed in order to be able to save synchronized predicate properties:
 	asserta('$lgt_pp_pred_mutex_count_'(0)). 
-
-
-
-% '$lgt_update_entity_comp_mode'
-%
-% updates entity compilation mode to "dynamic"
-% (entities are static by default but can be declared dynamic using the dynamic/0 entity directive)
-
-'$lgt_update_entity_comp_mode' :-
-	(   retract('$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags0)) ->
-		Flags is Flags0 \/ 2,
-	    assertz('$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags))
-	;   retract('$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags0)) ->
-		Flags is Flags0 \/ 2,
-	    assertz('$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags))
-	;   retract('$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags0)) ->
-		Flags is Flags0 \/ 2,
-	    assertz('$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags))
-	).
 
 
 
