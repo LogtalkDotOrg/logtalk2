@@ -28,13 +28,13 @@
 		InstancesSorted == [abstract_class, class, object].
 
 	succeeds(reflection_3) :-
-		this(This),
 		abstract_class::new(ac),
 		ac::abstract_class,
 		setof(Predicate, ac::current_predicate(Predicate), Predicates),
 		Predicates == [abstract_class/0, metaclass/0, print/0, strict_instance/0].
 
 	throws(reflection_4, error(existence_error(predicate_declaration,new(i)),ac::new(i),This)) :-
+		this(This),
 		ac::new(i).
 
 	succeeds(reflection_5) :-
