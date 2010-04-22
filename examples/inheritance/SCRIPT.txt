@@ -118,7 +118,4 @@ yes
 
 | ?- instance3::interface.
 
-public/0 - private
-protected/0 - private
-
 yes

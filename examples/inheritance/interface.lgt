@@ -14,11 +14,11 @@ object predicates.
 
 	interface :-
 		forall(
-			(::current_predicate(Functor/Arity),
+			(current_predicate(Functor/Arity),	% find predicates visible in "this"
 			 functor(Pred, Functor, Arity),
 			 Pred \= interface),
-			(::predicate_property(Pred, Prop),
-			 scope_property(Prop),	% we are only interested on scope properties
+			(predicate_property(Pred, Prop),
+			 scope_property(Prop),				% we are only interested on scope properties
 			 writeq(Functor/Arity), write(' - '), writeq(Prop), nl)).
 
 	scope_property(public).

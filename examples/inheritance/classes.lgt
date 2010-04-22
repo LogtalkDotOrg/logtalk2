@@ -36,6 +36,7 @@ interface/0, for listing the object interface.
 
 
 :- object(instance1,
+	imports(interface),
 	instantiates(subclass1)).
 
 :- end_object.
@@ -51,6 +52,7 @@ interface/0, for listing the object interface.
 
 
 :- object(instance2,
+	imports(interface),
 	instantiates(subclass2)).
 
 :- end_object.
@@ -66,6 +68,7 @@ interface/0, for listing the object interface.
 
 
 :- object(instance3,
+	imports(interface),
 	instantiates(subclass3)).
 
 :- end_object.
