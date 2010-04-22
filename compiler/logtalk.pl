@@ -9264,7 +9264,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		'$lgt_tr_body'(':'(Module, predicate_property(Pred, Prop)), TPred, DPred, Ctx)
 	).
 
-'$lgt_tr_body'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, _), '$lgt_dbg_goal'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, _), ExCtx), Ctx) :-
+'$lgt_tr_body'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, p(_)), '$lgt_dbg_goal'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, _), ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),

@@ -62,6 +62,9 @@ RELEASE NOTES
     call context for lambda expressions that could result in losing part of
     the context.
 
+    Corrected a bug in the implementation of the predicate_property/2 built-in
+    predicate that allowed access to properties on non-visible predicates.
+
     Added support for the predicate renaming operator as/2 found on SWI-Prolog
     and YAP but only when parsing use_module/2 directives in modules that are
     being compiled as objects.
