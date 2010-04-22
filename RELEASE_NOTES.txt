@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.39.2 - April ??, 2010
+2.39.2 - April 28, 2010
 
     Changed the internal representation of most entity properties to use a
     more compact bit representation, stored in the tables of loaded entities.

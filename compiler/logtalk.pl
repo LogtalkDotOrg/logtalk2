@@ -12305,7 +12305,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_pp_object_'(_, _, ODcl, _, _, _, _, _, _, _, _),
 	\+ '$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _),
 	!,
-	Head =.. [ODcl, _, _, _, _, _, _, _, _],
+	Head =.. [ODcl, _, _, _, _, _, _, _],
 	assertz('$lgt_pp_dcl_'((Head:-fail))).
 
 '$lgt_gen_ic_hierarchy_dcl_clauses' :-
