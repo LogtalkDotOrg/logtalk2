@@ -4475,7 +4475,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 
 '$lgt_dbg_leashing'(Port, Goal, ExCtx, Code) :-
-	'$lgt_dbg_leashing_'(Port) ->
+	functor(Port, PortName, _),
+	'$lgt_dbg_leashing_'(PortName) ->
 	(	'$lgt_dbg_tracing_' ->
 		Code = ' '
 	;	'$lgt_dbg_spying'(Port, Goal, ExCtx, Code),
@@ -4575,12 +4576,12 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_dbg_write_port_name'(fact(N)) :-
     (   N =:= 0 ->
 	    write(' Fact: ')
-	;   write(' Fact #'), write(N), write(': ')
+	;   write(' Fact: (clause #'), write(N), write(') ')
 	).
 '$lgt_dbg_write_port_name'(rule(N)) :-
     (   N =:= 0 ->
 	    write(' Rule: ')
-	;   write(' Rule #'), write(N), write(': ')
+	;   write(' Rule: (clause #'), write(N), write(') ')
 	).
 '$lgt_dbg_write_port_name'(call) :-
 	write(' Call: ').

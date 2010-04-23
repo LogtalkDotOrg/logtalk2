@@ -67,6 +67,10 @@ RELEASE NOTES
     addition, updated this method to also generate meta-predicate templates
     for the call/2-N built-in methods.
 
+    Corrected a bug in the Logtalk built-in debugger that would prevent user
+    interaction at the "fact" and "rule" unification ports by always skipping
+    to the next port, ignoring leash settings.
+
     Added support for the predicate renaming operator as/2 found on SWI-Prolog
     and YAP but only when parsing use_module/2 directives in modules that are
     being compiled as objects.
