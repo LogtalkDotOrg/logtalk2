@@ -772,12 +772,12 @@ abolish_object(Obj) :-
 		(	Flags /\ 2 =:= 2 ->
 			'$lgt_abolish_entity_predicates'(Def),
 			'$lgt_abolish_entity_predicates'(DDef),
-			abolish(Dcl/5),
-			abolish(Dcl/7),
+			abolish(Dcl/4),
+			abolish(Dcl/6),
 			abolish(Def/3),
 			abolish(Def/4),
 			abolish(Super/4),
-			abolish(IDcl/7),
+			abolish(IDcl/6),
 			abolish(IDef/4),
 			abolish(DDcl/2),
 			abolish(DDef/3),
@@ -813,8 +813,8 @@ abolish_category(Ctg) :-
 	(	'$lgt_current_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags) ->
 		(	Flags /\ 2 =:= 2 ->
 			'$lgt_abolish_entity_predicates'(Def),
+			abolish(Dcl/4),
 			abolish(Dcl/5),
-			abolish(Dcl/6),
 			abolish(Def/3),
 			abolish(Rnm/3),
 			abolish(Prefix/3),
@@ -843,8 +843,8 @@ abolish_protocol(Ptc) :-
 abolish_protocol(Ptc) :-
 	(	'$lgt_current_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags) ->
 		(	Flags /\ 2 =:= 2 ->
+			abolish(Dcl/4),
 			abolish(Dcl/5),
-			abolish(Dcl/6),
 			abolish(Rnm/3),
 			abolish(Prefix/2),
 			retractall('$lgt_current_protocol_'(Ptc, _, _, _, _)),
@@ -2019,7 +2019,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 '$lgt_visible_predicate'(Obj, Pred, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, _, _, _, _, _, _, _, _) ->
-	call(Dcl, Pred, PScope, _, _, _, SCtn, _),
+	call(Dcl, Pred, PScope, _, _, SCtn, _),
 	(	\+ \+ PScope = Scope ->
 		true
 	;	Sender = SCtn
@@ -2050,33 +2050,36 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, Rnm, _),
-	call(Dcl, Pred, PScope, Type, Meta, Flags, SCtn, TCtn),
+	call(Dcl, Pred, PScope, Meta, Flags, SCtn, TCtn),
 	!,
 	(	\+ \+ PScope = Scope ->
 		true
 	;	Sender = SCtn
 	),
 	(	'$lgt_scope'(Prop, PScope)
-	;	Prop = Type
+	;	(	Flags /\ 2 =:= 2 ->
+			Prop = (dynamic)
+		;	Prop = static
+		)
 	;	Prop = declared_in(TCtn)
 	;	Meta \== no,
 		Meta =.. [_| MetaArgs],							% Pred can be an alias
 		functor(Pred, Functor, _),
 		Meta2 =.. [Functor| MetaArgs],
 		Prop = meta_predicate(Meta2)
-	;	Flags /\ 7 > 0,
+	;	Flags /\ 16 =:= 16,
 		Prop = (multifile)
-	;	Flags /\ 3 > 0,
+	;	Flags /\ 8 =:= 8,
 		functor(Pred, Functor, Arity2),
 		Arity is Arity2 - 2,
 		Prop = non_terminal(Functor//Arity)
-	;	Flags /\ 1 > 0,
+	;	Flags /\ 4 =:= 4,
 		Prop = synchronized
 	;	once((	'$lgt_current_object_'(TCtn, _, TCtnDcl, _, _, _, _, _, _, _, _)
 			;	'$lgt_current_category_'(TCtn, _, TCtnDcl, _, _, _)
 			;	'$lgt_current_protocol_'(TCtn, _, TCtnDcl, _, _)
 		)),
-		\+ call(TCtnDcl, Pred, _, _, _, _),
+		\+ call(TCtnDcl, Pred, _, _, _),
 		'$lgt_alias_pred'(Obj, Rnm, Pred, Pred2),
 		Prop = alias_of(Pred2)
 	;	call(Def, Pred, _, _, DCtn) ->	% must be the last property checked because
@@ -2239,9 +2242,9 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_current_object_'(Obj, _, Dcl, _, _, _, _, DDcl, DDef, _, _),
 	!,
 	functor(Pred, Functor, Arity),
-	(	call(Dcl, Pred, PScope, Compilation, _, _, SCtn, _) ->
+	(	call(Dcl, Pred, PScope, _, Flags, SCtn, _) ->
 		(	(\+ \+ PScope = Scope; Sender = SCtn) ->
-			(	Compilation == (dynamic) ->
+			(	Flags /\ 2 =:= 2 ->
 				(	call(DDcl, Pred, _) ->
 					Clause =.. [DDcl, Pred, _],
 					retractall(Clause),
@@ -2254,7 +2257,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 					;	true
 					)
 				;	% no dynamic predicate declaration:
-					(	call(Dcl, Pred, _, _, _, _) ->
+					(	call(Dcl, Pred, _, _, _) ->
 						throw(error(permission_error(modify, predicate_declaration, Pred), Obj::abolish(Functor/Arity), Sender))
 					;	throw(error(existence_error(predicate_declaration, Pred), Obj::abolish(Functor/Arity), Sender))
 					)
@@ -2322,7 +2325,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	!,
 	'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope, Obj::asserta((Head:-Body)), Sender),
-	(	(Type == (dynamic); Flags /\ 1 > 0, Sender = SCtn) ->
+	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
 			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, _),
 			'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
@@ -2356,7 +2359,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	!,
 	'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope, Obj::asserta(Head), Sender),
-	(	(Type == (dynamic); Flags /\ 1 > 0, Sender = SCtn) ->
+	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, Update),
 			(	'$lgt_debugging_'(Obj) ->
@@ -2425,7 +2428,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	!,
 	'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope, Obj::assertz((Head:-Body)), Sender),
-	(	(Type == (dynamic); Flags /\ 1 > 0, Sender = SCtn) ->
+	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, _),
 			'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
@@ -2459,7 +2462,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	!,
 	'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope, Obj::assertz(Head), Sender),
-	(	(Type == (dynamic); Flags /\ 1 > 0, Sender = SCtn) ->
+	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, Update),
 			(	'$lgt_debugging_'(Obj) ->
@@ -2486,10 +2489,13 @@ current_logtalk_flag(version, version(2, 39, 2)).
 % get or set (if it doesn't exist) the declaration for an asserted predicate
 
 '$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Pred, Scope, Type, Meta, SCtn, DclScope, Goal, Sender) :-
-	(	call(Dcl, Pred, Scope, Type, Meta, _, SCtn, _) ->
-		true
+	(	call(Dcl, Pred, Scope, Meta, PredFlags, SCtn, _) ->
+		(	PredFlags /\ 2 =:= 2 ->
+			Type = (dynamic)
+		;	Type = static
+		)
 	;	% no previous predicate declaration:
-		(	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, Flags), Flags /\ 64 =:= 64 ->
+		(	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, ObjFlags), ObjFlags /\ 64 =:= 64 ->
 			functor(Pred, Functor, Arity),
 			functor(DPred, Functor, Arity),
 			Clause =.. [DDcl, DPred, DclScope],
@@ -2563,10 +2569,10 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	).
 
 '$lgt_clause_chk'(Obj, Head, Body, Sender, Scope) :-
-	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, Flags),
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjFlags),
 	!,
-	(	call(Dcl, Head, PScope, Type, _, _, SCtn, _) ->
-		(	(Type == (dynamic); Flags /\ 1 > 0, Sender = SCtn) ->
+	(	call(Dcl, Head, PScope, _, PredFlags, SCtn, _) ->
+		(	(PredFlags /\ 2 =:= 2; ObjFlags /\ 2 =:= 2, Sender = SCtn) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 				(	(call(DDef, Head, _, THead); call(Def, Head, _, THead)) ->
 					clause(THead, TBody),
@@ -2638,10 +2644,10 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 
 '$lgt_retract_var_body_chk'(Obj, (Head:-Body), Sender, Scope) :-
-	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, Flags),
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjFlags),
 	!,
-	(	call(Dcl, Head, PScope, Type, _, _, SCtn, _) ->
-		(	(Type == (dynamic); Flags /\ 1 > 0, Sender = SCtn) ->
+	(	call(Dcl, Head, PScope, _, PredFlags, SCtn, _) ->
+		(	(PredFlags /\ 2 =:= 2; ObjFlags /\ 2 =:= 2, Sender = SCtn) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 				(	call(DDef, Head, _, THead) ->
 					retract((THead :- TBody)),
@@ -2689,10 +2695,10 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 
 '$lgt_retract_rule_chk'(Obj, (Head:-Body), Sender, Scope) :-
-	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, Flags),
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjFlags),
 	!,
-	(	call(Dcl, Head, PScope, Type, _, _, SCtn, _) ->
-		(	(Type == (dynamic); Flags /\ 1 > 0, Sender = SCtn) ->
+	(	call(Dcl, Head, PScope, _, PredFlags, SCtn, _) ->
+		(	(PredFlags /\ 2 =:= 2; ObjFlags /\ 2 =:= 2, Sender = SCtn) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 				(	call(DDef, Head, _, THead) ->
 					retract((THead :- ('$lgt_nop'(Body), _))),
@@ -2732,10 +2738,11 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	).
 
 '$lgt_retract_fact_chk'(Obj, Head, Sender, Scope) :-
-	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, Flags),
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjFlags),
 	!,
-	(	call(Dcl, Head, PScope, Type, _, _, SCtn, _) ->
-		(	(Type == (dynamic); Flags /\ 1 > 0, Sender = SCtn) ->
+	(	call(Dcl, Head, PScope, _, PredFlags, SCtn, _) ->
+		(	(PredFlags /\ 2 =:= 2; ObjFlags /\ 2 =:= 2, Sender = SCtn) ->
+			Type = (dynamic),
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 				(	call(DDef, Head, _, THead) ->
 					(	'$lgt_debugging_'(Obj) ->
@@ -2803,10 +2810,11 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	).
 
 '$lgt_retractall_chk'(Obj, Head, Sender, Scope) :-
-	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, Flags),
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjFlags),
 	!,
-	(	call(Dcl, Head, PScope, Type, _, _, SCtn, _) ->
-		(	(Type == (dynamic); Flags /\ 1 > 0, Sender = SCtn) ->
+	(	call(Dcl, Head, PScope, _, PredFlags, SCtn, _) ->
+		(	(PredFlags /\ 2 =:= 2; ObjFlags /\ 2 =:= 2, Sender = SCtn) ->
+			Type = (dynamic),
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 				(	call(DDef, Head, _, THead) ->
 					retractall(THead),
@@ -2977,7 +2985,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_append'(Args, [Input, Rest], Args2),
 	Pred =.. [Functor| Args2],
 	(	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, _) ->
-		(	call(Dcl, Pred, PScope, _, _, _, SCtn, _) ->
+		(	call(Dcl, Pred, PScope, _, _, SCtn, _) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 				'$lgt_exec_ctx'(ExCtx, Sender, Obj, Obj, _),
 				call(Def, Pred, ExCtx, Call, _) ->
@@ -3033,7 +3041,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 '$lgt_term_expansion'(Obj, Term, Expansion, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, _),
-	(	(	call(Dcl, term_expansion(_, _), PScope, _, _, _, SCtn, _) ->
+	(	(	call(Dcl, term_expansion(_, _), PScope, _, _, SCtn, _) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 				'$lgt_exec_ctx'(ExCtx, Sender, Obj, Obj, _),
 				call(Def, term_expansion(Term, Expansion), ExCtx, Call, _)
@@ -3075,7 +3083,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 '$lgt_goal_expansion'(Obj, Goal, Expansion, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, _),
-	(	(	call(Dcl, goal_expansion(_, _), PScope, _, _, _, SCtn, _) ->
+	(	(	call(Dcl, goal_expansion(_, _), PScope, _, _, SCtn, _) ->
 			(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 				'$lgt_exec_ctx'(ExCtx, Sender, Obj, Obj, _),
 				call(Def, goal_expansion(Goal, Expansion), ExCtx, Call, _)
@@ -3126,7 +3134,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_send_to_self_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
 	!,
-	(	call(Dcl, Pred, Scope, _, Meta, _, SCtn, _) ->											% lookup declaration
+	(	call(Dcl, Pred, Scope, Meta, _, SCtn, _) ->												% lookup declaration
 		(	(Scope = p(_); Sender = SCtn) ->													% check scope
 			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),				% construct predicate template
 				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),				% construct object template
@@ -3183,7 +3191,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
 	!,
-	(	call(Dcl, Pred, Scope, _, Meta, _, SCtn, _) ->											% lookup declaration
+	(	call(Dcl, Pred, Scope, Meta, _, SCtn, _) ->												% lookup declaration
 		(	Scope = p(p(_)) ->																	% check public scope
 			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),				% construct predicate template
 				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),				% construct object template
@@ -3279,7 +3287,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_send_to_object_ne_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
 	!,
-	(	call(Dcl, Pred, Scope, _, Meta, _, SCtn, _) ->											% lookup declaration
+	(	call(Dcl, Pred, Scope, Meta, _, SCtn, _) ->												% lookup declaration
 		(	Scope = p(p(_)) ->																	% check public scope
 			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),				% construct predicate template
 				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),				% construct object template
@@ -3417,7 +3425,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_obj_super_call_other_nv'(Super, Pred, ExCtx) :-
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
 	(	'$lgt_current_object_'(Self, _, Dcl, _, _, _, _, _, _, _, _),
-		call(Dcl, Pred, Scope, _, _, _, SCtn, _) ->
+		call(Dcl, Pred, Scope, _, _, SCtn, _) ->
 		(	(Scope = p(_); This = SCtn) ->																% check scope
 			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),						% construct predicate template
 				functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),						% construct "this" template
@@ -3470,7 +3478,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 '$lgt_ctg_super_call_other_nv'(Ctg, Pred, ExCtx) :-
 	(	'$lgt_current_category_'(Ctg, _, Dcl, Def, _, _),
-		call(Dcl, Pred, Scope, _, _, _, _) ->
+		call(Dcl, Pred, Scope, _, _, _) ->
 		(	Scope = p(_) ->																			% check scope
 			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
 				call(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->									% lookup definition
@@ -3875,7 +3883,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_call_ctg_pred_nv'(Dcl, Alias, ExCtx) :-
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
 	(	'$lgt_current_object_'(This, _, _, _, _, _, _, _, _, Rnm, _),
-		call(Dcl, Alias, _, _, _, _, _, _) ->
+		call(Dcl, Alias, _, _, _, _, _) ->
 		functor(Alias, PFunctor, PArity), functor(GAlias, PFunctor, PArity),	% construct predicate template
 		functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),		% construct "this" template
 		functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),		% construct "self" template
@@ -3906,14 +3914,14 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 % lookup predicate declarations in any category that complements the given object
 
-'$lgt_complemented_object'(This, ThisDcl, Alias, Scope, Compilation, Meta, Flags, SCtn, TCtn) :-
+'$lgt_complemented_object'(This, ThisDcl, Alias, Scope, Meta, Flags, SCtn, TCtn) :-
 	'$lgt_complemented_object_'(This, _, Dcl, _, Rnm),
-	(	call(Dcl, Alias, Scope, Compilation, Meta, Flags, TCtn),
+	(	call(Dcl, Alias, Scope, Meta, Flags, TCtn),
 		SCtn = This
 	;	% categories can define aliases for complemented object predicates:
 		call(Rnm, This, Pred, Alias),
 		Pred \= Alias,
-		call(ThisDcl, Pred, Scope, Compilation, Meta, Flags, SCtn, TCtn)
+		call(ThisDcl, Pred, Scope, Meta, Flags, SCtn, TCtn)
 	).
 
 
@@ -4011,7 +4019,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	fail.
 
 
-'$lgt_bio_logtalk_0__dcl'(Pred, Scope, (dynamic), no, 0, logtalk, logtalk) :-
+'$lgt_bio_logtalk_0__dcl'(Pred, Scope, no, 2, logtalk, logtalk) :-
 	'$lgt_bio_logtalk_0__ddcl'(Pred, Scope).
 
 
@@ -4027,7 +4035,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_bio_logtalk_0__ddef'(Pred, ExCtx, Call).
 
 
-'$lgt_bio_logtalk_0__idcl'(Pred, Scope, (dynamic), no, 0, logtalk, logtalk) :-
+'$lgt_bio_logtalk_0__idcl'(Pred, Scope, no, 2, logtalk, logtalk) :-
 	'$lgt_bio_logtalk_0__ddcl'(Pred, Scope).
 
 
@@ -4059,7 +4067,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 :- dynamic('$lgt_bio_user_0__ddef'/3).
 
 
-'$lgt_bio_user_0__dcl'(Pred, p(p(p)), Type, no, 000) :-
+'$lgt_bio_user_0__dcl'(Pred, p(p(p)), no, Flags) :-
 	(	nonvar(Pred) ->
 		\+ '$lgt_built_in'(Pred),
 		functor(Pred, Functor, Arity),
@@ -4070,13 +4078,13 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		\+ '$lgt_built_in'(Pred)
 	),
 	(	'$lgt_predicate_property'(Pred, (dynamic)) ->
-		Type = (dynamic)
-	;	Type = static
+		Flags = 2
+	;	Flags = 0
 	).
 
 
-'$lgt_bio_user_0__dcl'(Pred, Scope, Type, Meta, Flags, user, user) :-
-	'$lgt_bio_user_0__dcl'(Pred, Scope, Type, Meta, Flags).
+'$lgt_bio_user_0__dcl'(Pred, Scope, Meta, Flags, user, user) :-
+	'$lgt_bio_user_0__dcl'(Pred, Scope, Meta, Flags).
 
 
 '$lgt_bio_user_0__def'(Pred, _, Pred) :-
@@ -4146,30 +4154,30 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 % debugger public protocol
 
-'$lgt_bio_debugger_0__dcl'(reset, p(p(p)), static, no, 000).
+'$lgt_bio_debugger_0__dcl'(reset, p(p(p)), no, 0).
 
-'$lgt_bio_debugger_0__dcl'(debug, p(p(p)), static, no, 000).
-'$lgt_bio_debugger_0__dcl'(nodebug, p(p(p)), static, no, 000).
+'$lgt_bio_debugger_0__dcl'(debug, p(p(p)), no, 0).
+'$lgt_bio_debugger_0__dcl'(nodebug, p(p(p)), no, 0).
 
-'$lgt_bio_debugger_0__dcl'(debugging, p(p(p)), static, no, 000).
-'$lgt_bio_debugger_0__dcl'(debugging(_), p(p(p)), static, no, 000).
+'$lgt_bio_debugger_0__dcl'(debugging, p(p(p)), no, 0).
+'$lgt_bio_debugger_0__dcl'(debugging(_), p(p(p)), no, 0).
 
-'$lgt_bio_debugger_0__dcl'(trace, p(p(p)), static, no, 000).
-'$lgt_bio_debugger_0__dcl'(notrace, p(p(p)), static, no, 000).
+'$lgt_bio_debugger_0__dcl'(trace, p(p(p)), no, 0).
+'$lgt_bio_debugger_0__dcl'(notrace, p(p(p)), no, 0).
 
-'$lgt_bio_debugger_0__dcl'(spy(_), p(p(p)), static, no, 000).
-'$lgt_bio_debugger_0__dcl'(spy(_, _, _, _), p(p(p)), static, no, 000).
-'$lgt_bio_debugger_0__dcl'(nospy(_), p(p(p)), static, no, 000).
-'$lgt_bio_debugger_0__dcl'(nospy(_, _, _, _), p(p(p)), static, no, 000).
-'$lgt_bio_debugger_0__dcl'(nospyall, p(p(p)), static, no, 000).
+'$lgt_bio_debugger_0__dcl'(spy(_), p(p(p)), no, 0).
+'$lgt_bio_debugger_0__dcl'(spy(_, _, _, _), p(p(p)), no, 0).
+'$lgt_bio_debugger_0__dcl'(nospy(_), p(p(p)), no, 0).
+'$lgt_bio_debugger_0__dcl'(nospy(_, _, _, _), p(p(p)), no, 0).
+'$lgt_bio_debugger_0__dcl'(nospyall, p(p(p)), no, 0).
 
-'$lgt_bio_debugger_0__dcl'(leash(_), p(p(p)), static, no, 000).
+'$lgt_bio_debugger_0__dcl'(leash(_), p(p(p)), no, 0).
 
 
-'$lgt_bio_debugger_0__dcl'(Pred, Scope, Type, Meta, Flags, debugger, debugger) :-
-	'$lgt_bio_debugger_0__dcl'(Pred, Scope, Type, Meta, Flags).
+'$lgt_bio_debugger_0__dcl'(Pred, Scope, Meta, Flags, debugger, debugger) :-
+	'$lgt_bio_debugger_0__dcl'(Pred, Scope, Meta, Flags).
 
-'$lgt_bio_debugger_0__dcl'(Pred, Scope, (dynamic), no, 000, debugger, debugger) :-
+'$lgt_bio_debugger_0__dcl'(Pred, Scope, no, 2, debugger, debugger) :-
 	'$lgt_bio_debugger_0__ddcl'(Pred, Scope).
 
 
@@ -4200,7 +4208,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_bio_debugger_0__ddef'(Pred, ExCtx, Call).
 
 
-'$lgt_bio_debugger_0__idcl'(Pred, Scope, (dynamic), no, 000, debugger, debugger) :-
+'$lgt_bio_debugger_0__idcl'(Pred, Scope, no, 2, debugger, debugger) :-
 	'$lgt_bio_debugger_0__ddcl'(Pred, Scope).
 
 
@@ -4792,11 +4800,11 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 
 
-'$lgt_bip_expanding_0__dcl'(goal_expansion(_, _), p(p(p)), static, no, 000).
-'$lgt_bip_expanding_0__dcl'(term_expansion(_, _), p(p(p)), static, no, 000).
+'$lgt_bip_expanding_0__dcl'(goal_expansion(_, _), p(p(p)), no, 0).
+'$lgt_bip_expanding_0__dcl'(term_expansion(_, _), p(p(p)), no, 0).
 
-'$lgt_bip_expanding_0__dcl'(Pred, Scope, Type, Meta, Flags, expanding) :-
-	'$lgt_bip_expanding_0__dcl'(Pred, Scope, Type, Meta, Flags).
+'$lgt_bip_expanding_0__dcl'(Pred, Scope, Meta, Flags, expanding) :-
+	'$lgt_bip_expanding_0__dcl'(Pred, Scope, Meta, Flags).
 
 '$lgt_bip_expanding_0__alias'(_, Pred, Pred).
 
@@ -4815,11 +4823,11 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 
 
-'$lgt_bip_monitoring_0__dcl'(before(_, _, _), p(p(p)), static, no, 000).
-'$lgt_bip_monitoring_0__dcl'(after(_, _, _), p(p(p)), static, no, 000).
+'$lgt_bip_monitoring_0__dcl'(before(_, _, _), p(p(p)), no, 0).
+'$lgt_bip_monitoring_0__dcl'(after(_, _, _), p(p(p)), no, 0).
 
-'$lgt_bip_monitoring_0__dcl'(Pred, Scope, Type, Meta, Flags, monitoring) :-
-	'$lgt_bip_monitoring_0__dcl'(Pred, Scope, Type, Meta, Flags).
+'$lgt_bip_monitoring_0__dcl'(Pred, Scope, Meta, Flags, monitoring) :-
+	'$lgt_bip_monitoring_0__dcl'(Pred, Scope, Meta, Flags).
 
 '$lgt_bip_monitoring_0__alias'(_, Pred, Pred).
 
@@ -11680,8 +11688,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_gen_protocol_directives' :-
 	(	'$lgt_pp_protocol_'(_, Prefix, Dcl, Rnm, (dynamic)) ->
 		assertz('$lgt_pp_directive_'(dynamic(Prefix/2))),
+		assertz('$lgt_pp_directive_'(dynamic(Dcl/4))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/5))),
-		assertz('$lgt_pp_directive_'(dynamic(Dcl/6))),
 		assertz('$lgt_pp_directive_'(dynamic(Rnm/3)))
 	;	true
 	).
@@ -11699,12 +11707,12 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_gen_dynamic_object_dynamic_directives' :-
 	'$lgt_pp_object_'(_, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, _) ->
 	assertz('$lgt_pp_directive_'(dynamic(Prefix/8))),
-	assertz('$lgt_pp_directive_'(dynamic(Dcl/5))),
-	assertz('$lgt_pp_directive_'(dynamic(Dcl/7))),
+	assertz('$lgt_pp_directive_'(dynamic(Dcl/4))),
+	assertz('$lgt_pp_directive_'(dynamic(Dcl/6))),
 	assertz('$lgt_pp_directive_'(dynamic(Def/3))),
 	assertz('$lgt_pp_directive_'(dynamic(Def/4))),
 	assertz('$lgt_pp_directive_'(dynamic(Super/4))),
-	assertz('$lgt_pp_directive_'(dynamic(IDcl/7))),
+	assertz('$lgt_pp_directive_'(dynamic(IDcl/6))),
 	assertz('$lgt_pp_directive_'(dynamic(IDef/4))),
 	(	'$lgt_compiler_flag'(dynamic_declarations, allow) ->
 		assertz('$lgt_pp_directive_'(dynamic(DDcl/2)))
@@ -11757,8 +11765,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_gen_category_dynamic_directives' :-
 	(	'$lgt_pp_category_'(_, Prefix, Dcl, Def, Rnm, (dynamic)) ->
 		assertz('$lgt_pp_directive_'(dynamic(Prefix/3))),
+		assertz('$lgt_pp_directive_'(dynamic(Dcl/4))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/5))),
-		assertz('$lgt_pp_directive_'(dynamic(Dcl/6))),
 		assertz('$lgt_pp_directive_'(dynamic(Def/3))),
 		assertz('$lgt_pp_directive_'(dynamic(Rnm/3))),
 		'$lgt_gen_dynamic_entity_dynamic_predicate_directives'
@@ -11794,35 +11802,35 @@ current_logtalk_flag(version, version(2, 39, 2)).
 % "true" if there are local declaration clauses and the atom "false" otherwise
 
 '$lgt_gen_local_dcl_clauses'(_) :-
-	'$lgt_pp_entity'(_, _, _, Dcl, EntityCompilation),
+	'$lgt_pp_entity'(_, _, _, Dcl, Mode),
 	(	'$lgt_pp_public_'(Functor, Arity), Scope = p(p(p))
 	;	'$lgt_pp_protected_'(Functor, Arity), Scope = p(p)
 	;	'$lgt_pp_private_'(Functor, Arity), Scope = p
 	),
 	functor(Pred, Functor, Arity),
-	(	'$lgt_pp_dynamic_'(Functor, Arity) ->
-		Compilation = (dynamic)
-	;	Compilation = EntityCompilation
-	),
 	functor(Template, Functor, Arity),
 	(	'$lgt_pp_meta_predicate_'(Template) ->
 		Meta = Template
 	;	Meta = no
 	),
 	(	'$lgt_pp_multifile_'(Functor, Arity) ->
-		Multifile = 100
+		Multifile = 16					% 0b00010000
 	;	Multifile = 0
 	),
 	(	'$lgt_pp_dcg_nt_'(Functor, _, Arity) ->
-		NonTerminal = 10
+		NonTerminal = 8					% 0b00001000
 	;	NonTerminal = 0
 	),
 	(	'$lgt_pp_synchronized_'(Pred, _) ->
-		Synchronized = 1
+		Synchronized = 4				% 0b00000100
 	;	Synchronized = 0
 	),
-	Flags is Multifile + NonTerminal + Synchronized,
-	Fact =.. [Dcl, Pred, Scope, Compilation, Meta, Flags],
+	(	(Mode == (dynamic); '$lgt_pp_dynamic_'(Functor, Arity)) ->
+		Dynamic = 2						% 0b00000010
+	;	Dynamic = 0
+	),
+	Flags is Multifile + NonTerminal + Synchronized + Dynamic,
+	Fact =.. [Dcl, Pred, Scope, Meta, Flags],
 	assertz('$lgt_pp_dcl_'(Fact)),
 	fail.
 
@@ -11867,8 +11875,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 '$lgt_gen_protocol_linking_clauses'(true) :-
 	'$lgt_pp_protocol_'(Ptc, _, PDcl, _, _) ->
-	Head =.. [PDcl, Pred, Scope, Compilation, Meta, Flags, Ptc],
-	Body =.. [PDcl, Pred, Scope, Compilation, Meta, Flags],
+	Head =.. [PDcl, Pred, Scope, Meta, Flags, Ptc],
+	Body =.. [PDcl, Pred, Scope, Meta, Flags],
 	assertz('$lgt_pp_dcl_'((Head:-Body))).
 
 '$lgt_gen_protocol_linking_clauses'(false).
@@ -11879,18 +11887,18 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_pp_protocol_'(_, _, PDcl1, Rnm, _),
 	'$lgt_pp_extended_protocol_'(Ptc2, _, PDcl2, EntityScope),
 	(	EntityScope == (public) ->
-		Lookup =.. [PDcl2, Pred, Scope, Compilation, Meta, Flags, Ctn]
+		Lookup =.. [PDcl2, Pred, Scope, Meta, Flags, Ctn]
 	;	EntityScope == protected ->
-		Call =.. [PDcl2, Pred, Scope2, Compilation, Meta, Flags, Ctn],
+		Call =.. [PDcl2, Pred, Scope2, Meta, Flags, Ctn],
 		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
-		Lookup =.. [PDcl2, Pred, _, Compilation, Meta, Flags, Ctn]
+		Lookup =.. [PDcl2, Pred, _, Meta, Flags, Ctn]
 	),
 	(	'$lgt_pp_pred_alias_'(Ptc2, _, _) ->
-		Head =.. [PDcl1, Alias, Scope, Compilation, Meta, Flags, Ctn],
+		Head =.. [PDcl1, Alias, Scope, Meta, Flags, Ctn],
 		Rename =.. [Rnm, Ptc2, Pred, Alias],
 		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
-	;	Head =.. [PDcl1, Pred, Scope, Compilation, Meta, Flags, Ctn],
+	;	Head =.. [PDcl1, Pred, Scope, Meta, Flags, Ctn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
 	fail.
@@ -11909,7 +11917,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		true
 	;	% empty, standalone protocol 
 		'$lgt_pp_protocol_'(_, _, Dcl, _, _) ->
-		Head =.. [Dcl, _, _, _, _, _, _],
+		Head =.. [Dcl, _, _, _, _, _],
 		assertz('$lgt_pp_dcl_'((Head:-fail)))
 	).
 
@@ -11932,8 +11940,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 '$lgt_gen_category_linking_dcl_clauses'(true) :-
 	'$lgt_pp_category_'(Ctg, _, CDcl, _, _, _) ->
-	Head =.. [CDcl, Pred, Scope, Compilation, Meta, Flags, Ctg],
-	Body =.. [CDcl, Pred, Scope, Compilation, Meta, Flags],
+	Head =.. [CDcl, Pred, Scope, Meta, Flags, Ctg],
+	Body =.. [CDcl, Pred, Scope, Meta, Flags],
 	assertz('$lgt_pp_dcl_'((Head:-Body))).
 
 '$lgt_gen_category_linking_dcl_clauses'(false).
@@ -11944,18 +11952,18 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_pp_category_'(_, _, CDcl, _, Rnm, _),
 	'$lgt_pp_implemented_protocol_'(Ptc, _, PDcl, EntityScope),
 	(	EntityScope == (public) ->
-		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, Flags, Ctn]
+		Lookup =.. [PDcl, Pred, Scope, Meta, Flags, Ctn]
 	;	EntityScope == protected ->
-		Call =.. [PDcl, Pred, Scope2, Compilation, Meta, Flags, Ctn],
+		Call =.. [PDcl, Pred, Scope2, Meta, Flags, Ctn],
 		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
-		Lookup =.. [PDcl, Pred, _, Compilation, Meta, Flags, Ctn]
+		Lookup =.. [PDcl, Pred, _, Meta, Flags, Ctn]
 	),
 	(	'$lgt_pp_pred_alias_'(Ptc, _, _) ->
-		Head =.. [CDcl, Alias, Scope, Compilation, Meta, Flags, Ctn],
+		Head =.. [CDcl, Alias, Scope, Meta, Flags, Ctn],
 		Rename =.. [Rnm, Ptc, Pred, Alias],
 		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
-	;	Head =.. [CDcl, Pred, Scope, Compilation, Meta, Flags, Ctn],
+	;	Head =.. [CDcl, Pred, Scope, Meta, Flags, Ctn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
 	fail.
@@ -11968,18 +11976,18 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_pp_category_'(_, _, CDcl, _, Rnm, _),
 	'$lgt_pp_extended_category_'(Ctg, _, ECDcl, _, EntityScope),
 	(	EntityScope == (public) ->
-		Lookup =.. [ECDcl, Pred, Scope, Compilation, Meta, Flags, Ctn]
+		Lookup =.. [ECDcl, Pred, Scope, Meta, Flags, Ctn]
 	;	EntityScope == protected ->
-		Call =.. [ECDcl, Pred, Scope2, Compilation, Meta, Flags, Ctn],
+		Call =.. [ECDcl, Pred, Scope2, Meta, Flags, Ctn],
 		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
-		Lookup =.. [ECDcl, Pred, _, Compilation, Meta, Flags, Ctn]
+		Lookup =.. [ECDcl, Pred, _, Meta, Flags, Ctn]
 	),
 	(	'$lgt_pp_pred_alias_'(Ctg, _, _) ->
-		Head =.. [CDcl, Alias, Scope, Compilation, Meta, Flags, Ctn],
+		Head =.. [CDcl, Alias, Scope, Meta, Flags, Ctn],
 		Rename =.. [Rnm, Ctg, Pred, Alias],
 		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
-	;	Head =.. [CDcl, Pred, Scope, Compilation, Meta, Flags, Ctn],
+	;	Head =.. [CDcl, Pred, Scope, Meta, Flags, Ctn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
 	fail.
@@ -11998,7 +12006,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		true
 	;	% standalone category with no local predicate declarations
 		'$lgt_pp_category_'(_, _, Dcl, _, _, _) ->
-		Head =.. [Dcl, _, _, _, _, _, _],
+		Head =.. [Dcl, _, _, _, _, _],
 		assertz('$lgt_pp_dcl_'((Head:-fail)))
 	).
 
@@ -12048,7 +12056,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 '$lgt_gen_object_catchall_dcl_clauses'(false) :-
 	'$lgt_pp_object_'(_, _, Dcl, _, _, _, _, _, _, _, _) ->	% generate a catchall clause for
-	Head =.. [Dcl, _, _, _, _, _],							% objects that do not contain
+	Head =.. [Dcl, _, _, _, _],								% objects that do not contain
 	assertz('$lgt_pp_dcl_'((Head:-fail))).					% predicate declarations
 
 
@@ -12080,11 +12088,11 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 '$lgt_gen_prototype_linking_dcl_clauses'(true) :-
 	'$lgt_pp_object_'(Obj, _, Dcl, _, _, _, _, DDcl, _, _, _) ->
-	HeadDcl =.. [Dcl, Pred, Scope, Compilation, Meta, Flags, Obj, Obj],
-	BodyDcl =.. [Dcl, Pred, Scope, Compilation, Meta, Flags],
+	HeadDcl =.. [Dcl, Pred, Scope, Meta, Flags, Obj, Obj],
+	BodyDcl =.. [Dcl, Pred, Scope, Meta, Flags],
 	assertz('$lgt_pp_dcl_'((HeadDcl:-BodyDcl))),
 	(	'$lgt_compiler_flag'(dynamic_declarations, allow) ->
-		HeadDDcl =.. [Dcl, Pred, Scope, (dynamic), no, 000, Obj, Obj],
+		HeadDDcl =.. [Dcl, Pred, Scope, no, 2, Obj, Obj],
 		BodyDDcl =.. [DDcl, Pred, Scope],
 		assertz('$lgt_pp_dcl_'((HeadDDcl:-BodyDDcl)))
 	;	true
@@ -12093,10 +12101,10 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_gen_prototype_linking_dcl_clauses'(false) :-
 	'$lgt_pp_object_'(Obj, _, Dcl, _, _, _, _, DDcl, _, _, _) ->
 	(	'$lgt_compiler_flag'(dynamic_declarations, allow) ->
-		HeadDDcl =.. [Dcl, Pred, Scope, (dynamic), no, 000, Obj, Obj],
+		HeadDDcl =.. [Dcl, Pred, Scope, no, 2, Obj, Obj],
 		BodyDDcl =.. [DDcl, Pred, Scope],
 		assertz('$lgt_pp_dcl_'((HeadDDcl:-BodyDDcl)))
-	;	HeadDDcl =.. [Dcl, _, _, _, _, _, _, _],
+	;	HeadDDcl =.. [Dcl, _, _, _, _, _, _],
 		assertz('$lgt_pp_dcl_'((HeadDDcl:-fail)))
 	).
 
@@ -12106,18 +12114,18 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_pp_object_'(Obj, _, ODcl, _, _, _, _, _, _, Rnm, _),
 	'$lgt_pp_implemented_protocol_'(Ptc, _, PDcl, EntityScope),
 	(	EntityScope == (public) ->
-		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, Flags, Ctn]
+		Lookup =.. [PDcl, Pred, Scope, Meta, Flags, Ctn]
 	;	EntityScope == protected ->
-		Call =.. [PDcl, Pred, Scope2, Compilation, Meta, Flags, Ctn],
+		Call =.. [PDcl, Pred, Scope2, Meta, Flags, Ctn],
 		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
-		Lookup =.. [PDcl, Pred, _, Compilation, Meta, Flags, Ctn]
+		Lookup =.. [PDcl, Pred, _, Meta, Flags, Ctn]
 	),
 	(	'$lgt_pp_pred_alias_'(Ptc, _, _) ->
-		Head =.. [ODcl, Alias, Scope, Compilation, Meta, Flags, Obj, Ctn],
+		Head =.. [ODcl, Alias, Scope, Meta, Flags, Obj, Ctn],
 		Rename =.. [Rnm, Ptc, Pred, Alias],
 		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
-	;	Head =.. [ODcl, Pred, Scope, Compilation, Meta, Flags, Obj, Ctn],
+	;	Head =.. [ODcl, Pred, Scope, Meta, Flags, Obj, Ctn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
 	fail.
@@ -12130,18 +12138,18 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_pp_object_'(Obj, _, ODcl, _, _, _, _, _, _, Rnm, _),
 	'$lgt_pp_imported_category_'(Ctg, _, CDcl, _, EntityScope),
 	(	EntityScope == (public) ->
-		Lookup =.. [CDcl, Pred, Scope, Compilation, Meta, Flags, Ctn]
+		Lookup =.. [CDcl, Pred, Scope, Meta, Flags, Ctn]
 	;	EntityScope == protected ->
-		Call =.. [CDcl, Pred, Scope2, Compilation, Meta, Flags, Ctn],
+		Call =.. [CDcl, Pred, Scope2, Meta, Flags, Ctn],
 		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
-		Lookup =.. [CDcl, Pred, _, Compilation, Meta, Flags, Ctn]
+		Lookup =.. [CDcl, Pred, _, Meta, Flags, Ctn]
 	),
 	(	'$lgt_pp_pred_alias_'(Ctg, _, _) ->
-		Head =.. [ODcl, Alias, Scope, Compilation, Meta, Flags, Obj, Ctn],
+		Head =.. [ODcl, Alias, Scope, Meta, Flags, Obj, Ctn],
 		Rename =.. [Rnm, Ctg, Pred, Alias],
 		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
-	;	Head =.. [ODcl, Pred, Scope, Compilation, Meta, Flags, Obj, Ctn],
+	;	Head =.. [ODcl, Pred, Scope, Meta, Flags, Obj, Ctn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
 	fail.
@@ -12149,8 +12157,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_gen_prototype_imports_dcl_clauses' :-
 	(	'$lgt_compiler_flag'(complements, allow) ->
 		'$lgt_pp_object_'(Obj, _, ODcl, _, _, _, _, _, _, _, _) ->
-		Head =.. [ODcl, Pred, Scope, Compilation, Meta, Flags, SCtn, TCtn],
-		Lookup = '$lgt_complemented_object'(Obj, ODcl, Pred, Scope, Compilation, Meta, Flags, SCtn, TCtn),
+		Head =.. [ODcl, Pred, Scope, Meta, Flags, SCtn, TCtn],
+		Lookup = '$lgt_complemented_object'(Obj, ODcl, Pred, Scope, Meta, Flags, SCtn, TCtn),
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	;	true
 	).
@@ -12161,19 +12169,19 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_pp_object_'(Obj, _, ODcl, _, _, _, _, _, _, Rnm, _),
 	'$lgt_pp_extended_object_'(Parent, _, PDcl, _, _, _, _, _, _, EntityScope),
 	(	EntityScope == (public) ->
-		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, Flags, SCtn, TCtn]
+		Lookup =.. [PDcl, Pred, Scope, Meta, Flags, SCtn, TCtn]
 	;	EntityScope == protected ->
-		Call =.. [PDcl, Pred, Scope2, Compilation, Meta, Flags, SCtn, TCtn],
+		Call =.. [PDcl, Pred, Scope2, Meta, Flags, SCtn, TCtn],
 		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
-		Call =.. [PDcl, Pred, Scope2, Compilation, Meta, Flags, SCtn2, TCtn],
+		Call =.. [PDcl, Pred, Scope2, Meta, Flags, SCtn2, TCtn],
 		Lookup = (Call, '$lgt_set_scope_container'(Scope2, SCtn2, Obj, SCtn))
 	),
 	(	'$lgt_pp_pred_alias_'(Parent, _, _) ->
-		Head =.. [ODcl, Alias, Scope, Compilation, Meta, Flags, SCtn, TCtn],
+		Head =.. [ODcl, Alias, Scope, Meta, Flags, SCtn, TCtn],
 		Rename =.. [Rnm, Parent, Pred, Alias],
 		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
-	;	Head =.. [ODcl, Pred, Scope, Compilation, Meta, Flags, SCtn, TCtn],
+	;	Head =.. [ODcl, Pred, Scope, Meta, Flags, SCtn, TCtn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
 	fail.
@@ -12305,26 +12313,26 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_pp_object_'(_, _, ODcl, _, _, _, _, _, _, _, _),
 	\+ '$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _),
 	!,
-	Head =.. [ODcl, _, _, _, _, _, _, _],
+	Head =.. [ODcl, _, _, _, _, _, _],
 	assertz('$lgt_pp_dcl_'((Head:-fail))).
 
 '$lgt_gen_ic_hierarchy_dcl_clauses' :-
 	'$lgt_pp_object_'(Obj, _, ODcl, _, _, _, _, _, _, Rnm, _),
 	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, CIDcl, _, _, _, EntityScope),
 	(	EntityScope == (public) ->
-		Lookup =.. [CIDcl, Pred, Scope, Compilation, Meta, Flags, SCtn, TCtn]
+		Lookup =.. [CIDcl, Pred, Scope, Meta, Flags, SCtn, TCtn]
 	;	EntityScope == protected ->
-		Call =.. [CIDcl, Pred, Scope2, Compilation, Meta, Flags, SCtn, TCtn],
+		Call =.. [CIDcl, Pred, Scope2, Meta, Flags, SCtn, TCtn],
 		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
-		Call =.. [CIDcl, Pred, Scope2, Compilation, Meta, Flags, SCtn2, TCtn],
+		Call =.. [CIDcl, Pred, Scope2, Meta, Flags, SCtn2, TCtn],
 		Lookup = (Call, '$lgt_set_scope_container'(Scope2, SCtn2, Obj, SCtn))
 	),
 	(	'$lgt_pp_pred_alias_'(Class, _, _) ->
-		Head =.. [ODcl, Alias, Scope, Compilation, Meta, Flags, SCtn, TCtn],
+		Head =.. [ODcl, Alias, Scope, Meta, Flags, SCtn, TCtn],
 		Rename =.. [Rnm, Class, Pred, Alias],
 		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
-	;	Head =.. [ODcl, Pred, Scope, Compilation, Meta, Flags, SCtn, TCtn],
+	;	Head =.. [ODcl, Pred, Scope, Meta, Flags, SCtn, TCtn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
 	fail.
@@ -12345,11 +12353,11 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 '$lgt_gen_ic_linking_idcl_clauses'(true) :-
 	'$lgt_pp_object_'(Obj, _, Dcl, _, _, IDcl, _, DDcl, _, _, _) ->
-	HeadDcl =.. [IDcl, Pred, Scope, Compilation, Meta, Flags, Obj, Obj],
-	BodyDcl =.. [Dcl, Pred, Scope, Compilation, Meta, Flags],
+	HeadDcl =.. [IDcl, Pred, Scope, Meta, Flags, Obj, Obj],
+	BodyDcl =.. [Dcl, Pred, Scope, Meta, Flags],
 	assertz('$lgt_pp_dcl_'((HeadDcl:-BodyDcl))),
 	(	'$lgt_compiler_flag'(dynamic_declarations, allow) ->
-		HeadDDcl =.. [IDcl, Pred, Scope, (dynamic), no, 000, Obj, Obj],
+		HeadDDcl =.. [IDcl, Pred, Scope, no, 2, Obj, Obj],
 		BodyDDcl =.. [DDcl, Pred, Scope],
 		assertz('$lgt_pp_dcl_'((HeadDDcl:-BodyDDcl)))
 	;	true
@@ -12358,10 +12366,10 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_gen_ic_linking_idcl_clauses'(false) :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, IDcl, _, DDcl, _, _, _) ->
 	(	'$lgt_compiler_flag'(dynamic_declarations, allow) ->
-		HeadDDcl =.. [IDcl, Pred, Scope, (dynamic), no, 000, Obj, Obj],
+		HeadDDcl =.. [IDcl, Pred, Scope, no, 2, Obj, Obj],
 		BodyDDcl =.. [DDcl, Pred, Scope],
 		assertz('$lgt_pp_dcl_'((HeadDDcl:-BodyDDcl)))
-	;	HeadDDcl =.. [IDcl, _, _, _, _, _, _, _],
+	;	HeadDDcl =.. [IDcl, _, _, _, _, _, _],
 		assertz('$lgt_pp_dcl_'((HeadDDcl:-fail)))
 	).
 
@@ -12371,18 +12379,18 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_pp_object_'(Obj, _, _, _, _, OIDcl, _, _, _, Rnm, _),
 	'$lgt_pp_implemented_protocol_'(Ptc, _, PDcl, EntityScope),
 	(	EntityScope == (public) ->
-		Lookup =.. [PDcl, Pred, Scope, Compilation, Meta, Flags, Ctn]
+		Lookup =.. [PDcl, Pred, Scope, Meta, Flags, Ctn]
 	;	EntityScope == protected ->
-		Call =.. [PDcl, Pred, Scope2, Compilation, Meta, Flags, Ctn],
+		Call =.. [PDcl, Pred, Scope2, Meta, Flags, Ctn],
 		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
-		Lookup =.. [PDcl, Pred, _, Compilation, Meta, Flags, Ctn]
+		Lookup =.. [PDcl, Pred, _, Meta, Flags, Ctn]
 	),
 	(	'$lgt_pp_pred_alias_'(Ptc, _, _) ->
-		Head =.. [OIDcl, Alias, Scope, Compilation, Meta, Flags, Obj, Ctn],
+		Head =.. [OIDcl, Alias, Scope, Meta, Flags, Obj, Ctn],
 		Rename =.. [Rnm, Ptc, Pred, Alias],
 		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
-	;	Head =.. [OIDcl, Pred, Scope, Compilation, Meta, Flags, Obj, Ctn],
+	;	Head =.. [OIDcl, Pred, Scope, Meta, Flags, Obj, Ctn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
 	fail.
@@ -12395,18 +12403,18 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_pp_object_'(Obj, _, _, _, _, OIDcl, _, _, _, Rnm, _),
 	'$lgt_pp_imported_category_'(Ctg, _, CDcl, _, EntityScope),
 	(	EntityScope == (public) ->
-		Lookup =.. [CDcl, Pred, Scope, Compilation, Meta, Flags, Ctn]
+		Lookup =.. [CDcl, Pred, Scope, Meta, Flags, Ctn]
 	;	EntityScope == protected ->
-		Call =.. [CDcl, Pred, Scope2, Compilation, Meta, Flags, Ctn],
+		Call =.. [CDcl, Pred, Scope2, Meta, Flags, Ctn],
 		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
-		Lookup =.. [CDcl, Pred, _, Compilation, Meta, Flags, Ctn]
+		Lookup =.. [CDcl, Pred, _, Meta, Flags, Ctn]
 	),
 	(	'$lgt_pp_pred_alias_'(Ctg, _, _) ->
-		Head =.. [OIDcl, Alias, Scope, Compilation, Meta, Flags, Obj, Ctn],
+		Head =.. [OIDcl, Alias, Scope, Meta, Flags, Obj, Ctn],
 		Rename =.. [Rnm, Ctg, Pred, Alias],
 		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
-	;	Head =.. [OIDcl, Pred, Scope, Compilation, Meta, Flags, Obj, Ctn],
+	;	Head =.. [OIDcl, Pred, Scope, Meta, Flags, Obj, Ctn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
 	fail.
@@ -12414,8 +12422,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_gen_ic_category_idcl_clauses' :-
 	(	'$lgt_compiler_flag'(complements, allow) ->
 		'$lgt_pp_object_'(Obj, _, _, _, _, OIDcl, _, _, _, _, _) ->
-		Head =.. [OIDcl, Pred, Scope, Compilation, Meta, Flags, SCtn, TCtn],
-		Lookup = '$lgt_complemented_object'(Obj, OIDcl, Pred, Scope, Compilation, Meta, Flags, SCtn, TCtn),
+		Head =.. [OIDcl, Pred, Scope, Meta, Flags, SCtn, TCtn],
+		Lookup = '$lgt_complemented_object'(Obj, OIDcl, Pred, Scope, Meta, Flags, SCtn, TCtn),
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	;	true
 	).
@@ -12426,19 +12434,19 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	'$lgt_pp_object_'(Obj, _, _, _, _, CIDcl, _, _, _, Rnm, _),
 	'$lgt_pp_specialized_class_'(Super, _, _, _, _, SIDcl, _, _, _, EntityScope),
 	(	EntityScope == (public) ->
-		Lookup =.. [SIDcl, Pred, Scope, Compilation, Meta, Flags, SCtn, TCtn]
+		Lookup =.. [SIDcl, Pred, Scope, Meta, Flags, SCtn, TCtn]
 	;	EntityScope == protected ->
-		Call =.. [SIDcl, Pred, Scope2, Compilation, Meta, Flags, SCtn, TCtn],
+		Call =.. [SIDcl, Pred, Scope2, Meta, Flags, SCtn, TCtn],
 		Lookup = (Call, '$lgt_filter_scope'(Scope2, Scope))
 	;	Scope = p,
-		Call =.. [SIDcl, Pred, Scope2, Compilation, Meta, Flags, SCtn2, TCtn],
+		Call =.. [SIDcl, Pred, Scope2, Meta, Flags, SCtn2, TCtn],
 		Lookup = (Call, '$lgt_set_scope_container'(Scope2, SCtn2, Obj, SCtn))
 	),
 	(	'$lgt_pp_pred_alias_'(Super, _, _) ->
-		Head =.. [CIDcl, Alias, Scope, Compilation, Meta, Flags, SCtn, TCtn],
+		Head =.. [CIDcl, Alias, Scope, Meta, Flags, SCtn, TCtn],
 		Rename =.. [Rnm, Super, Pred, Alias],
 		assertz('$lgt_pp_dcl_'((Head :- Rename, Lookup)))
-	;	Head =.. [CIDcl, Pred, Scope, Compilation, Meta, Flags, SCtn, TCtn],
+	;	Head =.. [CIDcl, Pred, Scope, Meta, Flags, SCtn, TCtn],
 		assertz('$lgt_pp_dcl_'((Head:-Lookup)))
 	),
 	fail.
@@ -16386,8 +16394,9 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		true
 	;	'$lgt_static_binding_entity_'(Obj),
 		'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
-		call(Dcl, Pred, p(p(p)), Type, Meta, _, _, DclCtn), !,
-		(	Type == static ->
+		call(Dcl, Pred, p(p(p)), Meta, Flags, _, DclCtn), !,
+		(	Flags /\ 2 =:= 0 ->
+			% Type == static
 			true
 		;	% Type == (dynamic)
 			Obj = DclCtn
@@ -16453,7 +16462,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		true
 	;	'$lgt_static_binding_entity_'(Ctg),
 		'$lgt_current_category_'(Ctg, _, Dcl, Def, _, _),
-		call(Dcl, Pred, _, static, _, _, DclCtn), !,
+		call(Dcl, Pred, _, _, Flags, DclCtn), !,
+		Flags /\ 2 =:= 0,
 		functor(Pred, PredFunctor, PredArity),
 		functor(GPred, PredFunctor, PredArity),
 		call(Def, GPred, GExCtx, GCall, DefCtn), !,
