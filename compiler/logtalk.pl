@@ -2086,10 +2086,13 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		Prop = defined_in(DCtn)			% of the implicit cut on the ->/2 call
 	).
 
-'$lgt_predicate_property'(_, Pred, Prop, _, Scope) :-
+'$lgt_predicate_property'(Obj, Pred, Prop, Sender, Scope) :-
 	'$lgt_built_in_method'(Pred, PScope),
 	!,
-	\+ \+ PScope = Scope,
+	(	\+ \+ PScope = Scope ->
+		true
+	;	Sender = Obj
+	),
 	(	Prop = static
 	;	Prop = built_in
 	;	'$lgt_scope'(Prop, PScope)
@@ -13789,6 +13792,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 
 % built-in meta-predicates
+%
+% '$lgt_meta_predicate'(+compound)
 
 '$lgt_meta_predicate'(Meta) :-
 	(   '$lgt_lgt_meta_predicate'(Meta) ->
@@ -13802,18 +13807,26 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 % built-in Logtalk (and Prolog) meta-predicates
 
-'$lgt_lgt_meta_predicate'(catch(::, *, ::)).
+'$lgt_lgt_meta_predicate'(catch(::, *, ::)) :- !.
+'$lgt_lgt_meta_predicate'(bagof(*, ::, *)) :- !.
+'$lgt_lgt_meta_predicate'(setof(*, ::, *)) :- !.
+'$lgt_lgt_meta_predicate'(findall(*, ::, *)) :- !.
+'$lgt_lgt_meta_predicate'(forall(::, ::)) :- !.
+'$lgt_lgt_meta_predicate'(once(::)) :- !.
+'$lgt_lgt_meta_predicate'(\+ (::)) :- !.
+'$lgt_lgt_meta_predicate'(Meta) :-  % call/1-N
+	functor(Meta, call, Arity),
+	Arity > 0,
+	arg(1, Meta, ::),
+	'$lgt_lgt_meta_predicate_call_n_args'(Arity, Meta).
 
-'$lgt_lgt_meta_predicate'(bagof(*, ::, *)).
-'$lgt_lgt_meta_predicate'(setof(*, ::, *)).
-'$lgt_lgt_meta_predicate'(findall(*, ::, *)).
 
-'$lgt_lgt_meta_predicate'(forall(::, ::)).
-
-'$lgt_lgt_meta_predicate'(call(::)).
-'$lgt_lgt_meta_predicate'(once(::)).
-
-'$lgt_lgt_meta_predicate'(\+ (::)).
+'$lgt_lgt_meta_predicate_call_n_args'(1, _) :-
+	!.
+'$lgt_lgt_meta_predicate_call_n_args'(N, Meta) :-
+	arg(N, Meta, *),
+	N2 is N - 1,
+	'$lgt_lgt_meta_predicate_call_n_args'(N2, Meta).
 
 
 
