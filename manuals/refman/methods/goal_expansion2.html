@@ -28,7 +28,7 @@
 Defines an expansion for a goal. The first argument is the goal to be expanded. The expanded goal is returned in the second argument. This predicate is called recursively on the expanded goal. Thus, care must be taken to avoid compilation loops. This predicate, when defined, is automatically called by the <a href="expand_goal2.html"><code>expand_goal/2</code></a> method. Use of this predicate by the <code>expand_goal/2</code> method may be restricted by using a scope directive for it. This predicate is called when compiling source files, when dynamically creating new objects, and when asserting predicate clauses. 
 </p>
 <p>
-Goal expansion may be used either by calling the <code>expand_goal/2</code> method explicitly or by using <em><a class="glossary" title="Go to glossary definition" href="../../glossary.html#hook">hook objects</a></em>. Clauses for the <code>goal_expansion/2</code> predicate defined within an object or a category are never in the compilation of the object or the category itself.
+Goal expansion may be used either by calling the <code>expand_goal/2</code> method explicitly or by using <em><a class="glossary" title="Go to glossary definition" href="../../glossary.html#hook">hook objects</a></em>. Clauses for the <code>goal_expansion/2</code> predicate defined within an object or a category are never used in the compilation of the object or the category itself.
 </p>
 
 <h4>Template and modes</h4>

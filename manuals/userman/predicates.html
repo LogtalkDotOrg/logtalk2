@@ -526,7 +526,7 @@ Logtalk defines a set of built-in object predicates or methods to access message
 <h3 id="predicates_context">Execution context methods</h3>
 
 <p>
-Logtalk defines four built-in local methods to access an object execution context. These methods (with the possible exception of <code>parameter/2</code>) are translated to a single unification performed at compile time with a clause head context argument. Therefore, they can be freely used without worrying about performance penalties. When called from inside a category, these methods refer to the execution context of the object importing the category. These methods cannot be used as messages to objects.
+Logtalk defines four built-in private methods to access an object execution context. These methods (with the possible exception of <code>parameter/2</code>) are translated to a single unification performed at compile time with a clause head context argument. Therefore, they can be freely used without worrying about performance penalties. When called from inside a category, these methods refer to the execution context of the object importing the category. These methods cannot be used as messages to objects.
 </p>
 <p>
 To find the object that received the message under execution we may use the <a title="Consult reference manual" href="../refman/methods/self1.html"><code>self/1</code></a> method. We may also retrieve the object that has sent the message under execution using the <a title="Consult reference manual" href="../refman/methods/sender1.html"><code>sender/1</code></a> method.
@@ -610,13 +610,13 @@ When working with dynamic grammar rule non-terminals, you may use the built-in m
 <h3 id="predicates_metacalls">Meta-call methods</h3>
 
 <p>
-Logtalk supports the generalized <a title="Consult reference manual" href="../refman/methods/call1.html"><code>call/1-N</code></a> meta-predicate. This built-in local meta-predicate must be used in the implementation of meta-predicates which work with closures instead of goals. In addition, Logtalk supports the built-in local meta-predicates <a title="Consult reference manual" href="../refman/methods/once1.html"><code>once/1</code></a> and <a title="Consult reference manual" href="../refman/methods/not1.html"><code>\+/1</code></a>. These methods cannot be used as messages to objects.
+Logtalk supports the generalized <a title="Consult reference manual" href="../refman/methods/call1.html"><code>call/1-N</code></a> meta-predicate. This built-in private meta-predicate must be used in the implementation of meta-predicates which work with closures instead of goals. In addition, Logtalk supports the built-in private meta-predicates <a title="Consult reference manual" href="../refman/methods/once1.html"><code>once/1</code></a> and <a title="Consult reference manual" href="../refman/methods/not1.html"><code>\+/1</code></a>. These methods cannot be used as messages to objects.
 </p>
 
 <h3 id="predicates_solutions">All solutions methods</h3>
 
 <p>
-The usual all solutions meta-predicates are built-in local methods in Logtalk: <a title="Consult reference manual" href="../refman/methods/bagof3.html"><code>bagof/3</code></a>, <a title="Consult reference manual" href="../refman/methods/findall3.html"><code>findall/3</code></a>, and <a title="Consult reference manual" href="../refman/methods/setof3.html"><code>setof/3</code></a>. There is also a <a title="Consult reference manual" href="../refman/methods/forall2.html"><code>forall/2</code></a> method that implements generate and test loops. These methods cannot be used as messages to objects.
+The usual all solutions meta-predicates are built-in private methods in Logtalk: <a title="Consult reference manual" href="../refman/methods/bagof3.html"><code>bagof/3</code></a>, <a title="Consult reference manual" href="../refman/methods/findall3.html"><code>findall/3</code></a>, and <a title="Consult reference manual" href="../refman/methods/setof3.html"><code>setof/3</code></a>. There is also a <a title="Consult reference manual" href="../refman/methods/forall2.html"><code>forall/2</code></a> method that implements generate and test loops. These methods cannot be used as messages to objects.
 </p>
 
 <h3 id="predicates_reflection">Reflection methods</h3>
@@ -662,6 +662,7 @@ Possible predicate properties values are:
 	<li><code>public</code>, <code>protected</code>, <code>private</code></li>
 	<li><code>static</code>, <code>dynamic</code></li>
 	<li><code>built_in</code></li>
+	<li><code>multifile</code></li>
 	<li><code>meta_predicate(Mode)</code></li>
 	<li><code>declared_in(Entity)</code></li>
 	<li><code>defined_in(Entity)</code></li>
@@ -733,7 +734,7 @@ Currently, there is no clean workaround for calling non-standard Prolog built-in
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: February 17, 2010</span>
+		<span>Last updated on: April 17, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="categories.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="inheritance.html">next</a></span><br/>

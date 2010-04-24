@@ -768,7 +768,7 @@ abolish_object(Obj) :-
 	throw(error(type_error(object_identifier, Obj), abolish_object(Obj))).
 
 abolish_object(Obj) :-
-	(	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags) ->
+	(	'$lgt_current_object_'(Obj, _, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags) ->
 		(	Flags /\ 2 =:= 2 ->
 			'$lgt_abolish_entity_predicates'(Def),
 			'$lgt_abolish_entity_predicates'(DDef),
@@ -809,7 +809,7 @@ abolish_category(Ctg) :-
 	throw(error(type_error(category_identifier, Ctg), abolish_category(Ctg))).
 
 abolish_category(Ctg) :-
-	(	'$lgt_current_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags) ->
+	(	'$lgt_current_category_'(Ctg, _, Dcl, Def, Rnm, Flags) ->
 		(	Flags /\ 2 =:= 2 ->
 			'$lgt_abolish_entity_predicates'(Def),
 			abolish(Dcl/4),
@@ -839,7 +839,7 @@ abolish_protocol(Ptc) :-
 	throw(error(type_error(protocol_identifier, Ptc), abolish_protocol(Ptc))).
 
 abolish_protocol(Ptc) :-
-	(	'$lgt_current_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags) ->
+	(	'$lgt_current_protocol_'(Ptc, _, Dcl, Rnm, Flags) ->
 		(	Flags /\ 2 =:= 2 ->
 			abolish(Dcl/4),
 			abolish(Dcl/5),
@@ -4015,9 +4015,12 @@ current_logtalk_flag(version, version(2, 39, 2)).
 :- dynamic('$lgt_bio_logtalk_0__ddef'/3).
 
 
-'$lgt_bio_logtalk_0__dcl'(_, _, _, _, _, _) :-
+'$lgt_bio_logtalk_0__dcl'(_, _, _, _) :-
 	fail.
 
+
+'$lgt_bio_logtalk_0__dcl'(Pred, Scope, Meta, Flags, logtalk, Ctn) :-
+	'$lgt_bip_expanding_0__dcl'(Pred, Scope, Meta, Flags, Ctn).
 
 '$lgt_bio_logtalk_0__dcl'(Pred, Scope, no, 2, logtalk, logtalk) :-
 	'$lgt_bio_logtalk_0__ddcl'(Pred, Scope).
@@ -4801,8 +4804,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 
 
-'$lgt_bip_expanding_0__dcl'(goal_expansion(_, _), p(p(p)), no, 0).
-'$lgt_bip_expanding_0__dcl'(term_expansion(_, _), p(p(p)), no, 0).
+'$lgt_bip_expanding_0__dcl'(goal_expansion(_, _), p(p(p)), no, 18).		% dynamic + multifile
+'$lgt_bip_expanding_0__dcl'(term_expansion(_, _), p(p(p)), no, 18).		% dynamic + multifile
 
 '$lgt_bip_expanding_0__dcl'(Pred, Scope, Meta, Flags, expanding) :-
 	'$lgt_bip_expanding_0__dcl'(Pred, Scope, Meta, Flags).
