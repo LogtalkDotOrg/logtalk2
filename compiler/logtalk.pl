@@ -166,8 +166,8 @@
 
 % compiler hook term and goal expansion:
 
-:- dynamic('$lgt_hook_term_expansion_'/2).		% '$lgt_hook_term_expansion_'(Term, ExpandedTerm)
-:- dynamic('$lgt_hook_goal_expansion_'/2).		% '$lgt_hook_goal_expansion_'(Term, ExpandedTerm)
+:- dynamic('$lgt_hook_term_expansion_'/2).		% '$lgt_hook_term_expansion_'(Term, ExpandedTerms)
+:- dynamic('$lgt_hook_goal_expansion_'/2).		% '$lgt_hook_goal_expansion_'(Goal, ExpandedGoal)
 
 
 % multi-threading tags
@@ -782,7 +782,6 @@ abolish_object(Obj) :-
 			abolish(DDcl/2),
 			abolish(DDef/3),
 			abolish(Rnm/3),
-			abolish(Prefix/8),
 			retractall('$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _)),
 			retractall('$lgt_entity_property_'(Obj, _)),
 			retractall('$lgt_extends_object_'(Obj, _, _)),
@@ -817,7 +816,6 @@ abolish_category(Ctg) :-
 			abolish(Dcl/5),
 			abolish(Def/3),
 			abolish(Rnm/3),
-			abolish(Prefix/3),
 			retractall('$lgt_current_category_'(Ctg, _, _, _, _, _)),
 			retractall('$lgt_entity_property_'(Ctg, _)),
 			retractall('$lgt_extends_category_'(Ctg, _, _)),
@@ -846,7 +844,6 @@ abolish_protocol(Ptc) :-
 			abolish(Dcl/4),
 			abolish(Dcl/5),
 			abolish(Rnm/3),
-			abolish(Prefix/2),
 			retractall('$lgt_current_protocol_'(Ptc, _, _, _, _)),
 			retractall('$lgt_entity_property_'(Ptc, _)),
 			retractall('$lgt_extends_protocol_'(Ptc, _, _)),
@@ -9276,7 +9273,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		'$lgt_tr_body'(':'(Module, predicate_property(Pred, Prop)), TPred, DPred, Ctx)
 	).
 
-'$lgt_tr_body'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, p(_)), '$lgt_dbg_goal'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, _), ExCtx), Ctx) :-
+'$lgt_tr_body'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, p(_)), '$lgt_dbg_goal'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, p(_)), ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
