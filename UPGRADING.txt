@@ -266,5 +266,6 @@ used in categories and removes an overly restrictive safety rule used when
 compiling meta-predicates. Recompilation of all objects and categories is
 strongly recommended.
 
-Logtalk 2.39.2 changes the internal representation of predicate properties,
-thus requiring recompilation of all objects, protocols, and categories.
+Logtalk 2.39.2 changes the internal representation of entity and predicate
+properties, thus requiring recompilation of all objects, protocols, and 
+categories.
