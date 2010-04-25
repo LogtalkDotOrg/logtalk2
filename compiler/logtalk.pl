@@ -12008,7 +12008,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_gen_category_catchall_dcl_clauses' :-
 	(	'$lgt_pp_dcl_'(_) ->
 		true
-	;	% standalone category with no local predicate declarations
+	;	% standalone category with no local or inherited predicate declarations
 		'$lgt_pp_category_'(_, _, Dcl, _, _, _) ->
 		Head =.. [Dcl, _, _, _, _, _],
 		assertz('$lgt_pp_dcl_'((Head:-fail)))
@@ -12059,7 +12059,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_gen_object_catchall_dcl_clauses'(true).
 
 '$lgt_gen_object_catchall_dcl_clauses'(false) :-
-	'$lgt_pp_object_'(_, _, Dcl, _, _, _, _, _, _, _, _) ->	% generate a catchall clause for
+	'$lgt_pp_object_'(_, _, Dcl, _, _, _, _, _, _, _, _),	% generate a catchall clause for
 	Head =.. [Dcl, _, _, _, _],								% objects that do not contain
 	assertz('$lgt_pp_dcl_'((Head:-fail))).					% predicate declarations
 
@@ -12067,7 +12067,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_gen_object_catchall_def_clauses'(true).
 
 '$lgt_gen_object_catchall_def_clauses'(false) :-
-	'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _) ->	% generate a catchall clause
+	'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _),	% generate a catchall clause
 	Head =.. [Def, _, _, _],								% for objects that do not 
 	assertz('$lgt_pp_fdef_'((Head:-fail))).					% contain predicate definitions
 
@@ -12091,7 +12091,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 
 '$lgt_gen_prototype_linking_dcl_clauses'(true) :-
-	'$lgt_pp_object_'(Obj, _, Dcl, _, _, _, _, DDcl, _, _, _) ->
+	'$lgt_pp_object_'(Obj, _, Dcl, _, _, _, _, DDcl, _, _, _),
 	HeadDcl =.. [Dcl, Pred, Scope, Meta, Flags, Obj, Obj],
 	BodyDcl =.. [Dcl, Pred, Scope, Meta, Flags],
 	assertz('$lgt_pp_dcl_'((HeadDcl:-BodyDcl))),
@@ -12103,13 +12103,17 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	).
 
 '$lgt_gen_prototype_linking_dcl_clauses'(false) :-
-	'$lgt_pp_object_'(Obj, _, Dcl, _, _, _, _, DDcl, _, _, _) ->
+	'$lgt_pp_object_'(Obj, _, Dcl, _, _, _, _, DDcl, _, _, _),
 	(	'$lgt_compiler_flag'(dynamic_declarations, allow) ->
 		HeadDDcl =.. [Dcl, Pred, Scope, no, 2, Obj, Obj],
 		BodyDDcl =.. [DDcl, Pred, Scope],
 		assertz('$lgt_pp_dcl_'((HeadDDcl:-BodyDDcl)))
-	;	HeadDDcl =.. [Dcl, _, _, _, _, _, _],
+	;	\+ '$lgt_pp_implemented_protocol_'(_, _, _, _),
+		\+ '$lgt_pp_imported_category_'(_, _, _, _, _),
+		\+ '$lgt_pp_extended_object_'(_, _, _, _, _, _, _, _, _, _) ->
+		HeadDDcl =.. [Dcl, _, _, _, _, _, _],
 		assertz('$lgt_pp_dcl_'((HeadDDcl:-fail)))
+	;	true
 	).
 
 
@@ -12373,8 +12377,12 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		HeadDDcl =.. [IDcl, Pred, Scope, no, 2, Obj, Obj],
 		BodyDDcl =.. [DDcl, Pred, Scope],
 		assertz('$lgt_pp_dcl_'((HeadDDcl:-BodyDDcl)))
-	;	HeadDDcl =.. [IDcl, _, _, _, _, _, _],
+	;	\+ '$lgt_pp_implemented_protocol_'(_, _, _, _),
+		\+ '$lgt_pp_imported_category_'(_, _, _, _, _),
+		\+ '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _) ->
+		HeadDDcl =.. [IDcl, _, _, _, _, _, _],
 		assertz('$lgt_pp_dcl_'((HeadDDcl:-fail)))
+	;	true
 	).
 
 
