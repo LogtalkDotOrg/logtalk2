@@ -144,7 +144,8 @@ RELEASE NOTES
     compiler by moving importing of the "system3" library shell/1-2 predicates
     to the config file.
 
-    Added unit test supporting files for the "constraints" example.
+    Added unit test supporting files for the "constraints", "hooks", and
+    "miscellaneous" examples.
 
     Corrected a bug in the "lambdas" example (a missing meta_predicate/1
     directive in the object "sigma").
