@@ -15,4 +15,15 @@
 		write(x(A, A)), nl,
 		write(3), nl.
 
+	:- local_data(item/1).
+
+	item(zeta).
+	item(omega).
+	item(alpha).
+
+	:- public(items/1).
+
+	items(Items) :-
+		findall(Item, item(Item), Items).
+
 :- end_object.

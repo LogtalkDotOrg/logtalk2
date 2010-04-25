@@ -317,8 +317,8 @@ Note that the scope of the <code>set_logtalk_flag/2</code> directive is local to
 			<dd>Allows message sending calls to be compiled with event-driven programming support disable in order to improve performance. Possible option values are <code>allow</code> and <code>deny</code> (the usual default). Objects (and categories) compiled with this option set to <code>deny</code> use optimized code for message-sending calls that does not trigger events. As such, this option can be used on a per-object (or per-category) basis. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
 	</dl>
 	<dl>
-		<dt><code>context_switching_calls</code></dt>
-			<dd>Allows context switching calls (<code>&lt;&lt;/2</code>) to be either allowed or denied. Possible flag values are <code>allow</code> and <code>deny</code>. The default flag vale is <code>allow</code>. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
+		<dt><code>context_switching_calls(Option)</code></dt>
+			<dd>Allows context switching calls (<code>&lt;&lt;/2</code>) to be either allowed or denied. Possible option values are <code>allow</code> and <code>deny</code>. The default flag vale is <code>allow</code>. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
 	</dl>
 
 <h4>Other flags</h4>
