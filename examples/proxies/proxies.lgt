@@ -21,11 +21,11 @@
 
 	area(Area) :-
 		::radius(Radius),
-		Area is 3.1415927*Radius*Radius.
+		Area is 3.14159265358979*Radius*Radius.
 
 	perimeter(Perimeter) :-
 		::radius(Radius),
-		Perimeter is 2*3.1415927*Radius.
+		Perimeter is 2*3.14159265358979*Radius.
 
 	print :-
 	    id(Id), write('id: '), write(Id),
