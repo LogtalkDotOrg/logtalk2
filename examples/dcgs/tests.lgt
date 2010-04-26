@@ -3,10 +3,12 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2010/03/16,
+		date is 2010/04/26,
 		comment is 'Unit tests for the "dcgs" example.']).
+
+	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
 
 	test(dcgs_1) :-
 		findall(Result,calculator::parse("1+2-3*4", Result), Solutions),
@@ -51,16 +53,14 @@
 	test(dcgs_11) :-
 		tokenizer::tokens(" We owe $1,048,576.24 to Agent 007 for Version 3.14159! ", Tokens),
 		Tokens = [Tok1,Tok2, Tok3, Number| Rest],
-		Error is abs(1048576.24 - Number),	% Wow the error is huge (>3)
-		Tok1 == we, Tok2 == owe, Tok3 == '$', Error < 5, Rest == [to,agent,7,for,version,3.14159,!].
+		Number =~= 1048576.24,	% Wow the error is huge (>3)
+		Tok1 == we, Tok2 == owe, Tok3 == '$', Rest == [to,agent,7,for,version,3.14159,!].
 
 	test(dcgs_12) :-
 		findall(Ending, walker::walk([n(5), e(4), s(2), nw(8), s(5), se(1), n(4)], Ending), Endings),
 		Endings = [(A, B)], 
-		Error1 is abs(A - -0.94974746830583223), 
-		Error2 is abs(B - 6.9497474683058318),
-		Error1 < 0.00001, 
-		Error2 < 0.00001.
+		A =~= -0.94974746830583223, 
+		B =~=  6.9497474683058318.
 
 	test(dcgs_13) :-
 		findall(XML, xml::convert(word(child, children), word(singular, plural), XML), Solutions),

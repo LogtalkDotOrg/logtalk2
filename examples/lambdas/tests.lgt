@@ -3,10 +3,12 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2010/03/16,
+		date is 2010/04/26,
 		comment is 'Unit tests for the "lambdas" example.']).
+
+	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
 
 	:- discontiguous(succeeds/1).
 	:- discontiguous(throws/2).
@@ -41,18 +43,18 @@
 	succeeds(lambdas_8) :-
 		Points = [(1,4),(2,5),(8,3)], meta::map([(X,Y),Z]>>(Z is sqrt(X*X + Y*Y)), Points, Distances),
 		Distances = [Distance1, Distance2, Distance3],
-		Error1 is abs(Distance1 - 4.1231056256176606),
-		Error2 is abs(Distance2 - 5.3851648071345037),
-		Error3 is abs(Distance3 - 8.5440037453175304),
-		Error1 < 0.00001, Error2 < 0.00001, Error3 < 0.00001, Points == [(1,4),(2,5),(8,3)].
+		Distance1 =~= 4.1231056256176606,
+		Distance2 =~= 5.3851648071345037,
+		Distance3 =~= 8.5440037453175304,
+		Points == [(1,4),(2,5),(8,3)].
 
 	succeeds(lambdas_9) :-
 		Points = [(1,4),(2,5),(8,3)], meta::map([(X,Y)]>>([Z]>>(Z is sqrt(X*X + Y*Y))), Points, Distances),
 		Distances = [Distance1, Distance2, Distance3],
-		Error1 is abs(Distance1 - 4.1231056256176606),
-		Error2 is abs(Distance2 - 5.3851648071345037),
-		Error3 is abs(Distance3 - 8.5440037453175304),
-		Error1 < 0.00001, Error2 < 0.00001, Error3 < 0.00001, Points == [(1,4),(2,5),(8,3)].
+		Distance1 =~= 4.1231056256176606,
+		Distance2 =~= 5.3851648071345037,
+		Distance3 =~= 8.5440037453175304,
+		Points == [(1,4),(2,5),(8,3)].
 
 	succeeds(lambdas_10) :-
 		meta::map([[X,Y],Z]>>(Z is X*X + Y*Y), [[1,2],[3,4],[5,6]], Result),

@@ -3,9 +3,9 @@
 	implements(expanding)).		% built-in protocol for term and goal expansion methods
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2010/03/18,
+		date is 2010/04/26,
 		comment is 'A simple unit test framework.']).
 
 	:- uses(list, [member/2]).
@@ -21,6 +21,13 @@
 	:- mode(run, one).
 	:- info(run/0, [
 		comment is 'Runs the unit tests, writing the results to the current output stream.']).
+
+	:- public(op(700, xfx, '=~=')).
+	:- public('=~='/2).
+	:- mode('=~='(+float, +float), zero_or_one).
+	:- info('=~='/2, [
+		comment is 'Compares two float values for approximate equality.',
+		argnames is ['Result', 'ExpectedResult']]).
 
 	:- protected(run_tests/0).
 	:- mode(run, one).
@@ -205,5 +212,13 @@
 
 	term_expansion((:- end_object), [(run_tests :- ::run_tests(Tests)), (:- end_object)]) :-
 		findall(Test, retract(test_(Test)), Tests).
+
+	'=~='(Result, ExpectedResult) :-
+		(	% first test the absolute error, for meaningful results with numbers very close to zero:
+			abs(Result - ExpectedResult) < 0.0001 ->
+			true
+		;	% if that fails, test the relative error (protected by a catch/3 to avoid divide by zero errors):
+			catch(abs((Result - ExpectedResult) / ExpectedResult) < 0.0001, _, fail)
+		).
 
 :- end_object.

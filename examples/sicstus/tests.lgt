@@ -3,10 +3,12 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2010/03/16,
+		date is 2010/04/26,
 		comment is 'Unit tests for the "sicstus" example.']).
+
+	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
 
 	test(sicstus_1) :-
 		sort(rational)::sort([1/8, 2/7, 6/5, 2/9, 1/3], Sorted),
@@ -26,8 +28,7 @@
 
 	test(sicstus_5) :-
 		red_circle(3)::area(Area),
-		Error is abs(28.274334 - Area),
-		Error < 0.0001.
+		Area =~= 28.274334.
 
 	test(sicstus_6) :-
 		red_circle(3)::ancestors(As),

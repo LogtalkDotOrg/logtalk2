@@ -3,10 +3,12 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2010/03/16,
+		date is 2010/04/26,
 		comment is 'Unit tests for the "mi" example.']).
+
+	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
 
 	test(mi_1) :-
 		space_time::rotate(1, 2, 3),
@@ -24,13 +26,12 @@
                          xyzt(_,_,_,_)-4-space_time-xyzt].
 
 	test(mi_3) :-
-		space_time(2,3,4,7)::distance(D),
-		Error is abs(D - 5.385164807134504),
-		Error < 0.00001.
+		space_time(2,3,4,7)::distance(Distance),
+		Distance =~= 5.385164807134504.
 
 	test(mi_4) :-
-		space_time(2,3,4,7)::time(T),
-		T == 7.
+		space_time(2,3,4,7)::time(Time),
+		Time == 7.
 
 	test(mi_5) :-
 		findall(Pred-Arity-Object-Functor, space_time(2,3,4,7)::(current_predicate(Functor/Arity), functor(Pred, Functor, Arity), predicate_property(

@@ -126,6 +126,10 @@ RELEASE NOTES
     with a new implementation, contributed by Paul Fodor, that returns a
     semi-balanced tree.
 
+    Added a predicate and an operator definition, =~=/2, for comparing floats
+    for approximate equality to the library object "lgtunit". Updated the unit
+    tests of several examples to use this predicate.
+
     Updated the "examples/tester.sh" script in order to report an error when
     the default Prolog back-end compiler is not found. Thanks to Parker Jones
     for the bug report. Updated the script to also report errors that are not
