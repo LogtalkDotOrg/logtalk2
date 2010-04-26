@@ -17,7 +17,7 @@
 	% the goal_expansion/2 predicate is called for every goal in predicate clause
 	% bodies in the source file being compiled using this hook object:
 	goal_expansion(write(Term), (numbervars(Term, 0, _), write_term(Term, [quoted(true), numbervars(true)]))).
-	goal_expansion(findall(Term, Goal, List), setof(Term, Goal, List)).
+	goal_expansion(findall(Term, Goal, List), (setof(Term, Goal, List) -> true; List = [])).
 
 	expand_key_values([], []).
 	expand_key_values([Info| Infos], [ExpInfo| ExpInfos]) :-
