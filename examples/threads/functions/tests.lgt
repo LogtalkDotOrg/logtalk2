@@ -8,7 +8,7 @@
 		date is 2010/03/16,
 		comment is 'Unit tests for the "threads/functions" example.']).
 
-	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
+	:- uses(float, [op(700, xfx, '=~='), '=~='/2]).
 
 	:- discontiguous(succeeds/1).
 

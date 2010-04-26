@@ -8,7 +8,7 @@
 		date is 2010/04/26,
 		comment is 'Unit tests for the "sicstus" example.']).
 
-	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
+	:- uses(float, [op(700, xfx, '=~='), '=~='/2]).
 
 	test(sicstus_1) :-
 		sort(rational)::sort([1/8, 2/7, 6/5, 2/9, 1/3], Sorted),

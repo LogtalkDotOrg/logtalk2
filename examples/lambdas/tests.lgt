@@ -8,7 +8,7 @@
 		date is 2010/04/26,
 		comment is 'Unit tests for the "lambdas" example.']).
 
-	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
+	:- uses(float, [op(700, xfx, '=~='), '=~='/2]).
 
 	:- discontiguous(succeeds/1).
 	:- discontiguous(throws/2).

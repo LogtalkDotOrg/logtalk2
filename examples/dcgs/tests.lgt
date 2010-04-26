@@ -8,7 +8,7 @@
 		date is 2010/04/26,
 		comment is 'Unit tests for the "dcgs" example.']).
 
-	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
+	:- uses(float, [op(700, xfx, '=~='), '=~='/2]).
 
 	test(dcgs_1) :-
 		findall(Result,calculator::parse("1+2-3*4", Result), Solutions),
