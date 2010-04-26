@@ -4022,6 +4022,9 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_bio_logtalk_0__dcl'(Pred, Scope, Meta, Flags, logtalk, Ctn) :-
 	'$lgt_bip_expanding_0__dcl'(Pred, Scope, Meta, Flags, Ctn).
 
+'$lgt_bio_logtalk_0__dcl'(Pred, Scope, Meta, Flags, logtalk, Ctn) :-
+	'$lgt_bip_monitoring_0__dcl'(Pred, Scope, Meta, Flags, Ctn).
+
 '$lgt_bio_logtalk_0__dcl'(Pred, Scope, no, 2, logtalk, logtalk) :-
 	'$lgt_bio_logtalk_0__ddcl'(Pred, Scope).
 
