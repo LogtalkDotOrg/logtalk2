@@ -112,6 +112,7 @@ do
 			name=$(echo $unit|sed 's|/|__|g')
 			$logtalk "logtalk_load(tester),halt." > "$results/$name.results" 2> "$results/$name.errors"
 			grep 'tests:' "$results/$name.results" | sed 's/%/*****        /'
+			grep '(not applicable)' "$results/$name.results" | sed 's/(/*****         (/'
 		fi
 		for subunit in *
 		do
@@ -123,6 +124,7 @@ do
 					subname=$(echo $unit/$subunit|sed 's|/|__|g')
 					$logtalk "logtalk_load(tester),halt." > "$results/$subname.results" 2> "$results/$subname.errors"
 					grep 'tests:' "$results/$subname.results" | sed 's/%/*****        /'
+					grep '(not applicable)' "$results/$subname.results" | sed 's/(/*****         (/'
 				fi
 				cd ..
 			fi

@@ -29,4 +29,10 @@
 
 	:- endif.
 
+:- else.
+
+	:- initialization((
+		write('(not applicable)'), nl
+	)).
+
 :- endif.
