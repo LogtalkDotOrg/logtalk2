@@ -82,6 +82,10 @@ RELEASE NOTES
     interaction at the "fact" and "rule" unification ports by always skipping
     to the next port, ignoring leash settings.
 
+    Corrected a bug in the processing of the conditional directives that would
+    result in an hanging else/0 directive when the "then" block of a false "if"
+    was a "if...else...endif" block.
+
     Added support for the predicate renaming operator as/2 found on SWI-Prolog
     and YAP but only when parsing use_module/2 directives in modules that are
     being compiled as objects.
@@ -128,7 +132,7 @@ RELEASE NOTES
 
     Added a predicate and an operator definition, =~=/2, for comparing floats
     for approximate equality to the library object "float". Updated the unit
-    tests of several examples to use this predicate.
+    tests of several examples in order to use this predicate.
 
     Updated the "examples/tester.sh" script in order to report an error when
     the default Prolog back-end compiler is not found. Thanks to Parker Jones

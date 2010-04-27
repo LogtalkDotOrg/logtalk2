@@ -6311,7 +6311,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_tr_directive'(elif(Goal), File, Lines, Input, _) :-
 	retract('$lgt_pp_cc_mode_'(Value)),
 	(	Value == ignore ->						% we're inside an if ... endif 
-		true									% that we're ignoring; do nothing (continue skipping)
+		asserta('$lgt_pp_cc_mode_'(ignore))		% that we're ignoring
 	;	Value == skip ->						% the corresponding if is true
 		retractall('$lgt_pp_cc_skipping_'),		% so we must skip this elif
 		assertz('$lgt_pp_cc_skipping_'),
@@ -6330,16 +6330,14 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	throw(error(unmatched_directive, directive(else))).
 
 '$lgt_tr_directive'(else, _, _, _, _) :-
-	retract('$lgt_pp_cc_mode_'(Value)),
+	'$lgt_pp_cc_mode_'(Value),
 	(	Value == ignore ->						% we're inside an if ... endif 
 		true									% that we're ignoring
 	;	Value == skip ->						% the corresponding if is true
 		retractall('$lgt_pp_cc_skipping_'),		% so we must skip this else
-		assertz('$lgt_pp_cc_skipping_'),
-		asserta('$lgt_pp_cc_mode_'(skip))
+		assertz('$lgt_pp_cc_skipping_')
 	;	% Value == seek ->						% the corresponding if is false
-		retract('$lgt_pp_cc_skipping_'),
-		asserta('$lgt_pp_cc_mode_'(skip))
+		retract('$lgt_pp_cc_skipping_')
 	),
 	!.
 
