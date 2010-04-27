@@ -6262,14 +6262,16 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	!,	% workaround lack of standardization of the predicate_property/2 predicate
 	'$lgt_tr_directive'(if('$lgt_predicate_property'(Pred, Prop)), File, Lines, Input, Output).
 
-'$lgt_tr_directive'(if(Goal), _, _, Input, _) :-
+'$lgt_tr_directive'(if(Goal), _, _, Input, Output) :-
 	'$lgt_pp_cc_mode_'(Value),					% not top-level if
 	!,
 	asserta('$lgt_pp_cc_if_found_'(Goal)),
-	(	Value == seek ->						% we're looking for an else
+	(	Value == ignore ->
+		asserta('$lgt_pp_cc_mode_'(ignore))
+	;	Value == seek ->						% we're looking for an else
 		asserta('$lgt_pp_cc_mode_'(ignore))		% so ignore this if ... endif 
 	;	% Value == skip ->
-		(	catch(Goal, Error, '$lgt_report_compiler_error'(Input, Error)) ->
+		(	catch(Goal, Error, '$lgt_compiler_error_handler'(Input, Output, Error)) ->
 			asserta('$lgt_pp_cc_mode_'(skip))
 		;	asserta('$lgt_pp_cc_mode_'(seek)),
 			retractall('$lgt_pp_cc_skipping_'),
