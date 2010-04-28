@@ -131,7 +131,7 @@ RELEASE NOTES
     semi-balanced tree.
 
     Added a predicate and an operator definition, =~=/2, for comparing floats
-    for approximate equality to the library object "float". Updated the unit
+    for approximate equality to the library object "lgtunit". Updated the unit
     tests of several examples in order to use this predicate.
 
     Updated the "examples/tester.sh" script in order to report an error when

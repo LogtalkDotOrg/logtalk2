@@ -8,19 +8,19 @@
 		date is 2010/04/26,
 		comment is 'Unit tests for the "classmethods" example.']).
 
-	:- uses(float, [op(700, xfx, '=~='), '=~='/2]).
+	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
 
 	test(classmethods_1) :-
 		circle::area(1.0, Area),
-		Area =~= 3.14159.
+		Area =~= 3.14159265358979.
 
 	test(classmethods_2) :-
 		c42::area(Area),
-		Area =~= 24.6301.
+		Area =~= 24.630086404144.
 
 	test(classmethods_3) :-
 		circle::new(1.2, 7.9, 2.0, Circle),
 		Circle::area(Area),
-		Area =~= 4.52389.
+		Area =~= 4.5238934211693.
 
 :- end_object.

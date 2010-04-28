@@ -8,7 +8,7 @@
 		date is 2010/04/26,
 		comment is 'Unit tests for the "mi" example.']).
 
-	:- uses(float, [op(700, xfx, '=~='), '=~='/2]).
+	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
 
 	test(mi_1) :-
 		space_time::rotate(1, 2, 3),

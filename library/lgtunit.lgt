@@ -3,9 +3,9 @@
 	implements(expanding)).		% built-in protocol for term and goal expansion methods
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2010/03/16,
+		date is 2010/04/27,
 		comment is 'A simple unit test framework.']).
 
 	:- uses(list, [member/2]).
@@ -21,6 +21,13 @@
 	:- mode(run, one).
 	:- info(run/0, [
 		comment is 'Runs the unit tests, writing the results to the current output stream.']).
+
+	:- public(op(700, xfx, '=~=')).
+	:- public('=~='/2).
+	:- mode('=~='(+float, +float), zero_or_one).
+	:- info('=~='/2, [
+		comment is 'Compares two float values for approximate equality using 100*epsilon for the absolute error and, if that fails, 99.999% accuracy for the relative error. Altough handy when writing certain unit tests, the default precision values may not be adequate for all cases.',
+		argnames is ['Float1', 'Float2']]).
 
 	:- protected(run_tests/0).
 	:- mode(run, one).
@@ -205,5 +212,23 @@
 
 	term_expansion((:- end_object), [(run_tests :- ::run_tests(Tests)), (:- end_object)]) :-
 		findall(Test, retract(test_(Test)), Tests).
+
+	'=~='(Float1, Float2) :-
+		(	% first test the absolute error, for meaningful results with numbers very close to zero:
+			epsilon(Epsilon), abs(Float1 - Float2) < 100*Epsilon ->
+			true
+		;	% if that fails, test the relative error (protected by a catch/3 to avoid division errors)
+		 	% by using as the divisor the larger float in order to make argument order irrelevant:
+			abs(Float1) > abs(Float2) ->
+			catch(abs((Float1 - Float2) / Float1) < 0.00001, _, fail)	% 99.999% accuracy
+		;	catch(abs((Float1 - Float2) / Float2) < 0.00001, _, fail)
+		).
+
+	:- if((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == swi; Dialect == yap; Dialect == gnu; Dialect == bp))).
+		epsilon(Epsilon) :-
+			Epsilon is epsilon.
+	:- else.
+		epsilon(0.000000000001).
+	:- endif.
 
 :- end_object.
