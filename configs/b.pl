@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.1 and later versions
 %
-%  last updated: February 21, 2010
+%  last updated: April 30, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -91,22 +91,22 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_pl_meta_predicate'(?callable, ?atom).
+% '$lgt_pl_meta_predicate'(?callable, ?callable, ?atom).
 
-'$lgt_pl_meta_predicate'(call_cleanup(::, ::), predicate).
-'$lgt_pl_meta_predicate'(fd_minimize(::, *), predicate).
-'$lgt_pl_meta_predicate'(fd_maximize(::, *), predicate).
-'$lgt_pl_meta_predicate'(foreach(*, ::), predicate).		% added in B-Prolog 7.3
-'$lgt_pl_meta_predicate'(foreach(*, *, ::), predicate).		% added in B-Prolog 7.3
-'$lgt_pl_meta_predicate'(foreach(*, *, *, ::), predicate).	% added in B-Prolog 7.3
-'$lgt_pl_meta_predicate'(freeze(*, ::), predicate).
-'$lgt_pl_meta_predicate'(minof(::, *), predicate).
-'$lgt_pl_meta_predicate'(maxof(::, *), predicate).
-'$lgt_pl_meta_predicate'(not(::), predicate).
-'$lgt_pl_meta_predicate'(table_find_all(::, *), predicate).
-'$lgt_pl_meta_predicate'(table_find_one(::), predicate).
-'$lgt_pl_meta_predicate'(table_remove(::), predicate).
-'$lgt_pl_meta_predicate'(time_out(::, *, *), predicate).
+'$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(::, ::), predicate).
+'$lgt_pl_meta_predicate'(fd_minimize(_, _), fd_minimize(::, *), predicate).
+'$lgt_pl_meta_predicate'(fd_maximize(_, _), fd_maximize(::, *), predicate).
+'$lgt_pl_meta_predicate'(foreach(_, _), foreach(*, ::), predicate).				% added in B-Prolog 7.3
+'$lgt_pl_meta_predicate'(foreach(_, _, _), foreach(*, *, ::), predicate).		% added in B-Prolog 7.3
+'$lgt_pl_meta_predicate'(foreach(_, _, _, _), foreach(*, *, *, ::), predicate).	% added in B-Prolog 7.3
+'$lgt_pl_meta_predicate'(freeze(_, _), freeze(*, ::), predicate).
+'$lgt_pl_meta_predicate'(minof(_, _), minof(::, *), predicate).
+'$lgt_pl_meta_predicate'(maxof(_, _), maxof(::, *), predicate).
+'$lgt_pl_meta_predicate'(not(_), not(::), predicate).
+'$lgt_pl_meta_predicate'(table_find_all(_, _), table_find_all(::, *), predicate).
+'$lgt_pl_meta_predicate'(table_find_one(_), table_find_one(::), predicate).
+'$lgt_pl_meta_predicate'(table_remove(_), table_remove(::), predicate).
+'$lgt_pl_meta_predicate'(time_out(_, _, _), time_out(::, *, *), predicate).
 
 
 

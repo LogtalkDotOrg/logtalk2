@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.10 and later versions
 %
-%  last updated: February 21, 2010
+%  last updated: April 30, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -109,21 +109,21 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_pl_meta_predicate'(?callable, ?atom).
+% '$lgt_pl_meta_predicate'(?callable, ?callable, ?atom).
 
-'$lgt_pl_meta_predicate'(call_cleanup(::, ::), predicate).
-'$lgt_pl_meta_predicate'(delay(*, ::), predicate).
-'$lgt_pl_meta_predicate'(delay_until(*, ::), predicate).
-'$lgt_pl_meta_predicate'(message_choice(::), predicate).
-'$lgt_pl_meta_predicate'(retry_woken_delays(::), predicate).
-'$lgt_pl_meta_predicate'(thread_fork(*, ::), predicate).
-'$lgt_pl_meta_predicate'(thread_fork(*, ::, *), predicate).
-'$lgt_pl_meta_predicate'(thread_push_goal(*, ::), predicate).
-'$lgt_pl_meta_predicate'(thread_atomic_goal(::), predicate).
-'$lgt_pl_meta_predicate'(unwind_protect(::, ::), predicate).
-'$lgt_pl_meta_predicate'(thread_wait_on_goal(::), predicate).
-'$lgt_pl_meta_predicate'(thread_wait_on_goal(::, *), predicate).
-'$lgt_pl_meta_predicate'('??'(*, ::), predicate).
+'$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(::, ::), predicate).
+'$lgt_pl_meta_predicate'(delay(_, _), delay(*, ::), predicate).
+'$lgt_pl_meta_predicate'(delay_until(_, _), delay_until(*, ::), predicate).
+'$lgt_pl_meta_predicate'(message_choice(_), message_choice(::), predicate).
+'$lgt_pl_meta_predicate'(retry_woken_delays(_), retry_woken_delays(::), predicate).
+'$lgt_pl_meta_predicate'(thread_fork(_, _), thread_fork(*, ::), predicate).
+'$lgt_pl_meta_predicate'(thread_fork(_, _, _), thread_fork(*, ::, *), predicate).
+'$lgt_pl_meta_predicate'(thread_push_goal(_, _), thread_push_goal(*, ::), predicate).
+'$lgt_pl_meta_predicate'(thread_atomic_goal(_), thread_atomic_goal(::), predicate).
+'$lgt_pl_meta_predicate'(unwind_protect(_, _), unwind_protect(::, ::), predicate).
+'$lgt_pl_meta_predicate'(thread_wait_on_goal(_), thread_wait_on_goal(::), predicate).
+'$lgt_pl_meta_predicate'(thread_wait_on_goal(_, _), thread_wait_on_goal(::, *), predicate).
+'$lgt_pl_meta_predicate'('??'(_, _), '??'(*, ::), predicate).
 
 
 

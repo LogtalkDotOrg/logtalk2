@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: April 19, 2010
+%  last updated: April 30, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -102,42 +102,37 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_pl_meta_predicate'(?callable, ?atom).
+% '$lgt_pl_meta_predicate'(?callable, ?callable, ?atom).
 
-'$lgt_pl_meta_predicate'(*->(::, ::), control_construct).
+'$lgt_pl_meta_predicate'(*->(_, _), *->(::, ::), control_construct).
 :- if(predicate_property(block(_, _, _), built_in)).
-	'$lgt_pl_meta_predicate'(block(*, ::, *), predicate).
+	'$lgt_pl_meta_predicate'(block(_, _, _), block(*, ::, *), predicate).
 :- endif.
-'$lgt_pl_meta_predicate'(call_cleanup(::, ::), predicate).
-'$lgt_pl_meta_predicate'(call_cleanup(::, *, ::), predicate).
-'$lgt_pl_meta_predicate'(call_with_depth_limit(::, *, *), predicate).
-'$lgt_pl_meta_predicate'(dde_register_service(*, ::), predicate).
-'$lgt_pl_meta_predicate'(findall(*, ::, *, *), predicate).
-'$lgt_pl_meta_predicate'(freeze(*, ::), predicate).
-'$lgt_pl_meta_predicate'(ignore(::), predicate).
-'$lgt_pl_meta_predicate'(not(::), predicate).
-'$lgt_pl_meta_predicate'(notrace(::), predicate).
-'$lgt_pl_meta_predicate'(on_signal(*, *, ::), predicate).
-'$lgt_pl_meta_predicate'(setup_and_call_cleanup(::, ::, ::), predicate).
-:- if(predicate_property(setup_call_cleanup(_, _, _), built_in)).
-	'$lgt_pl_meta_predicate'(setup_call_cleanup(::, ::, ::), predicate).
-:- endif.
-:- if(predicate_property(setup_call_catcher_cleanup(_, _, _, _), built_in)).
-	'$lgt_pl_meta_predicate'(setup_call_catcher_cleanup(::, ::, *, ::), predicate).
-:- endif.
-'$lgt_pl_meta_predicate'(time(::), predicate).
-'$lgt_pl_meta_predicate'(thread_initialization(::), predicate).
-'$lgt_pl_meta_predicate'(thread_at_exit(::), predicate).
-'$lgt_pl_meta_predicate'(thread_create(::, *, *), predicate).
-'$lgt_pl_meta_predicate'(thread_signal(*, ::), predicate).
-'$lgt_pl_meta_predicate'(with_mutex(*, ::), predicate).
-'$lgt_pl_meta_predicate'(with_output_to(*, ::), predicate).
-'$lgt_pl_meta_predicate'(when(*, ::), predicate).
+'$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(::, ::), predicate).
+'$lgt_pl_meta_predicate'(call_cleanup(_, _,_), call_cleanup(::, *, ::), predicate).
+'$lgt_pl_meta_predicate'(call_with_depth_limit(_, _, _), call_with_depth_limit(::, *, *), predicate).
+'$lgt_pl_meta_predicate'(dde_register_service(_, _), dde_register_service(*, ::), predicate).
+'$lgt_pl_meta_predicate'(findall(_, _, _, _), findall(*, ::, *, *), predicate).
+'$lgt_pl_meta_predicate'(freeze(_, _), freeze(*, ::), predicate).
+'$lgt_pl_meta_predicate'(ignore(_), ignore(::), predicate).
+'$lgt_pl_meta_predicate'(not(_), not(::), predicate).
+'$lgt_pl_meta_predicate'(notrace(_), notrace(::), predicate).
+'$lgt_pl_meta_predicate'(on_signal(_, _, _), on_signal(*, *, ::), predicate).
+'$lgt_pl_meta_predicate'(setup_call_cleanup(_, _, _), setup_call_cleanup(::, ::, ::), predicate).
+'$lgt_pl_meta_predicate'(setup_call_catcher_cleanup(_, _, _, _), setup_call_catcher_cleanup(::, ::, *, ::), predicate).
+'$lgt_pl_meta_predicate'(time(_), time(::), predicate).
+'$lgt_pl_meta_predicate'(thread_initialization(_), thread_initialization(::), predicate).
+'$lgt_pl_meta_predicate'(thread_at_exit(_), thread_at_exit(::), predicate).
+'$lgt_pl_meta_predicate'(thread_create(_, _, _), thread_create(::, *, *), predicate).
+'$lgt_pl_meta_predicate'(thread_signal(_, _), thread_signal(*, ::), predicate).
+'$lgt_pl_meta_predicate'(with_mutex(_, _), with_mutex(*, ::), predicate).
+'$lgt_pl_meta_predicate'(with_output_to(_, _), with_output_to(*, ::), predicate).
+'$lgt_pl_meta_predicate'(when(_, _), when(*, ::), predicate).
 % workaround broken meta-predicate declarations:
-'$lgt_pl_meta_predicate'(format(*, *), predicate).
-'$lgt_pl_meta_predicate'(format(*, *, *), predicate).
-'$lgt_pl_meta_predicate'(use_module(*), predicate).
-'$lgt_pl_meta_predicate'(use_module(*, *), predicate).
+'$lgt_pl_meta_predicate'(format(_, _), format(*, *), predicate).
+'$lgt_pl_meta_predicate'(format(_, _, _), format(*, *, *), predicate).
+'$lgt_pl_meta_predicate'(use_module(_), use_module(*), predicate).
+'$lgt_pl_meta_predicate'(use_module(_, _), use_module(*, *), predicate).
 
 
 

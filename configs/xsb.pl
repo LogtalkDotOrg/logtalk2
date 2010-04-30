@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.2 or later versions
 %
-%  last updated: March 21, 2010
+%  last updated: April 30, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -95,23 +95,23 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_pl_meta_predicate'(?callable, ?atom).
+% '$lgt_pl_meta_predicate'(?callable, ?callable, ?atom).
 
-'$lgt_pl_meta_predicate'(fail_if(::), predicate).
-'$lgt_pl_meta_predicate'(findall(*, ::, *, *), predicate).
-'$lgt_pl_meta_predicate'(not(::), predicate).
-'$lgt_pl_meta_predicate'(sk_not(::), predicate).
-'$lgt_pl_meta_predicate'(table_once(::), predicate).
-'$lgt_pl_meta_predicate'(tfindall(*, ::, *), predicate).
-'$lgt_pl_meta_predicate'(tnot(::), predicate).
+'$lgt_pl_meta_predicate'(fail_if(_), fail_if(::), predicate).
+'$lgt_pl_meta_predicate'(findall(_, _, _, _), findall(*, ::, *, *), predicate).
+'$lgt_pl_meta_predicate'(not(_), not(::), predicate).
+'$lgt_pl_meta_predicate'(sk_not(_), sk_not(::), predicate).
+'$lgt_pl_meta_predicate'(table_once(_), table_once(::), predicate).
+'$lgt_pl_meta_predicate'(tfindall(_, _, _), tfindall(*, ::, *), predicate).
+'$lgt_pl_meta_predicate'(tnot(_), tnot(::), predicate).
 
-'$lgt_pl_meta_predicate'(time(::), predicate).
+'$lgt_pl_meta_predicate'(time(_), time(::), predicate).
 
-'$lgt_pl_meta_predicate'(thread_create(::, *, *), predicate).
-'$lgt_pl_meta_predicate'(thread_create(::, *), predicate).
-'$lgt_pl_meta_predicate'(thread_create(::), predicate).
-'$lgt_pl_meta_predicate'(thread_signal(*, ::), predicate).
-'$lgt_pl_meta_predicate'(with_mutex(*, ::), predicate).
+'$lgt_pl_meta_predicate'(thread_create(_, _, _), thread_create(::, *, *), predicate).
+'$lgt_pl_meta_predicate'(thread_create(_, _), thread_create(::, *), predicate).
+'$lgt_pl_meta_predicate'(thread_create(_), thread_create(::), predicate).
+'$lgt_pl_meta_predicate'(thread_signal(_, _), thread_signal(*, ::), predicate).
+'$lgt_pl_meta_predicate'(with_mutex(_, _), with_mutex(*, ::), predicate).
 
 
 

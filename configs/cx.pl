@@ -11,7 +11,7 @@
 %
 %  configuration file for CxProlog 0.97.4 or a later version
 %
-%  last updated: March 19, 2010
+%  last updated: April 30, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -98,17 +98,17 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_pl_meta_predicate'(?callable, ?atom).
+% '$lgt_pl_meta_predicate'(?callable, ?callable, ?atom).
 
-'$lgt_pl_meta_predicate'(catch(::, *, *, ::), predicate).
-'$lgt_pl_meta_predicate'(gen(::), predicate).
-'$lgt_pl_meta_predicate'(possible(::), predicate).
-'$lgt_pl_meta_predicate'(question(::, *), predicate).
-'$lgt_pl_meta_predicate'(not(::), predicate).
-'$lgt_pl_meta_predicate'(on_exception(*, ::, ::), predicate).
-'$lgt_pl_meta_predicate'(process_new(*, ::, ::), predicate).
-'$lgt_pl_meta_predicate'(thread_new(*, ::, ::), predicate).
-'$lgt_pl_meta_predicate'(try(::), predicate).
+'$lgt_pl_meta_predicate'(catch(_, _, _, _), catch(::, *, *, ::), predicate).
+'$lgt_pl_meta_predicate'(gen(_), gen(::), predicate).
+'$lgt_pl_meta_predicate'(possible(_), possible(::), predicate).
+'$lgt_pl_meta_predicate'(question(_, _), question(::, *), predicate).
+'$lgt_pl_meta_predicate'(not(_), not(::), predicate).
+'$lgt_pl_meta_predicate'(on_exception(_, _, _), on_exception(*, ::, ::), predicate).
+'$lgt_pl_meta_predicate'(process_new(_, _, _), process_new(*, ::, ::), predicate).
+'$lgt_pl_meta_predicate'(thread_new(_, _, _), thread_new(*, ::, ::), predicate).
+'$lgt_pl_meta_predicate'(try(_), try(::), predicate).
 
 
 

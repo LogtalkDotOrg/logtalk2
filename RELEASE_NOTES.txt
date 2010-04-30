@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.39.2 - April 28, 2010
+2.39.2 - May 4, 2010
 
     Changed the internal representation of most entity properties to use a
     more compact bit representation, stored in the tables of loaded entities.
@@ -76,7 +76,8 @@ RELEASE NOTES
     Corrected a bug in the implementation of the predicate_property/2 built-in
     method that allowed access to properties on non-visible predicates. In
     addition, updated this method to also generate meta-predicate templates
-    for the call/2-N built-in methods.
+    for the call/2-N built-in methods and to return "multifile" properties for
+    Prolog built-in predicates.
 
     Corrected a bug in the Logtalk built-in debugger that would prevent user
     interaction at the "fact" and "rule" unification ports by always skipping
@@ -95,6 +96,10 @@ RELEASE NOTES
     predicate. This change solves issues when calling Prolog module library
     predicates from within Logtalk objects and categories. Thanks to Parker
     Jones for the bug report.
+
+    Changed the predicate '$lgt_pl_meta_predicate'/2 in all supported config
+    files to '$lgt_pl_meta_predicate'/3 in order to simplify the handling of
+    proprietary built-in meta-predicates by the Logtalk compiler and runtime.
 
     Updated the ECLiPSe, SICStus Prolog, SWI-Prolog, and YAP config files in
     order to preprocess the use_module/2 directive, converting the module file

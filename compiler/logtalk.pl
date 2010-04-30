@@ -2084,34 +2084,47 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	).
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, Scope) :-
-	'$lgt_built_in_method'(Pred, PScope),
+	'$lgt_built_in_method'(Pred, PScope, Meta, Flags),
 	!,
 	(	\+ \+ PScope = Scope ->
 		true
 	;	Sender = Obj
 	),
-	(	Prop = static
-	;	Prop = built_in
-	;	'$lgt_scope'(Prop, PScope)
-	;	functor(Pred, Functor, Arity),
-		functor(Meta, Functor, Arity),
-		'$lgt_meta_predicate'(Meta) ->
+	(	'$lgt_scope'(Prop, PScope)
+	;	Flags /\ 1 =:= 1,		% just to help document predicate declaration bit patterns
+		Prop = built_in			% as this clause only deals with built-in predicates
+	;	(	Flags /\ 2 =:= 2 ->
+			Prop = (dynamic)
+		;	Prop = static
+		)
+	;	Meta \== no,
 		Prop = meta_predicate(Meta)
+	;	Flags /\ 16 =:= 16,
+		Prop = (multifile)
+	;	Flags /\ 8 =:= 8,
+		functor(Pred, Functor, Arity2),
+		Arity is Arity2 - 2,
+		Prop = non_terminal(Functor//Arity)
+	;	Flags /\ 4 =:= 4,
+		Prop = synchronized
 	).
 
 '$lgt_predicate_property'(_, Pred, Prop, _, _) :-
-	'$lgt_built_in'(Pred),
-	\+ '$lgt_built_in_method'(Pred, _),
-	(	Prop = (public)
+	'$lgt_pl_built_in'(Pred),
+	!,
+	(	(	'$lgt_pl_meta_predicate'(Pred, Meta, _) ->
+			(	Prop = private
+			;	Prop = meta_predicate(Meta)
+			)
+		;	Prop = (public)
+		)
 	;	Prop = built_in
 	;	(	'$lgt_predicate_property'(Pred, (dynamic)) ->
 			Prop = (dynamic)
 		;	Prop = static
 		)
-	;	functor(Pred, Functor, Arity),
-		functor(Meta, Functor, Arity),
-		'$lgt_meta_predicate'(Meta) ->
-		Prop = meta_predicate(Meta)
+	;	'$lgt_predicate_property'(Pred, (multifile)) ->
+		Prop = (multifile)
 	).
 
 
@@ -3152,7 +3165,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 			throw(error(permission_error(access, private_predicate, Pred), ::Pred, Sender))
 		)
 	;	% no predicate declaration, check if it's a private built-in method or a Prolog built-in meta-predicate:
-		('$lgt_built_in_method'(Pred, _); '$lgt_pl_meta_predicate'(Pred, _)) ->
+		('$lgt_built_in_method'(Pred, _, _, _); '$lgt_pl_meta_predicate'(Pred, _, _)) ->
 		throw(error(permission_error(access, private_predicate, Pred), ::Pred, Sender))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
@@ -3225,7 +3238,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 			)
 		)
 	;	% no predicate declaration, check if it's a private built-in method or a Prolog built-in meta-predicate:
-		('$lgt_built_in_method'(Pred, _); '$lgt_pl_meta_predicate'(Pred, _)) ->
+		('$lgt_built_in_method'(Pred, _, _, _); '$lgt_pl_meta_predicate'(Pred, _, _)) ->
 		throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
@@ -3319,7 +3332,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 			)
 		)
 	;	% no predicate declaration, check if it's a private built-in method or a Prolog built-in meta-predicate:
-		('$lgt_built_in_method'(Pred, _); '$lgt_pl_meta_predicate'(Pred, _)) ->
+		('$lgt_built_in_method'(Pred, _, _, _); '$lgt_pl_meta_predicate'(Pred, _, _)) ->
 		throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
@@ -3442,7 +3455,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 			throw(error(permission_error(access, private_predicate, Pred), ^^Pred, This))
 		)
 	;	% no predicate declaration, check if it's a private built-in method or a Prolog built-in meta-predicate:
-		('$lgt_built_in_method'(Pred, _); '$lgt_pl_meta_predicate'(Pred, _)) ->
+		('$lgt_built_in_method'(Pred, _, _, _); '$lgt_pl_meta_predicate'(Pred, _, _)) ->
 		throw(error(permission_error(access, private_predicate, Pred), ^^Pred, This))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
@@ -3492,7 +3505,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 			throw(error(permission_error(access, private_predicate, Pred), ^^Pred, Ctg))
 		)
 	;	% no predicate declaration, check if it's a private built-in method or a Prolog built-in meta-predicate:
-		('$lgt_built_in_method'(Pred, _); '$lgt_pl_meta_predicate'(Pred, _)) ->
+		('$lgt_built_in_method'(Pred, _, _, _); '$lgt_pl_meta_predicate'(Pred, _, _)) ->
 		throw(error(permission_error(access, private_predicate, Pred), ^^Pred, Ctg))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
@@ -8342,7 +8355,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 % redefinition of Logtalk built-in methods
 
 '$lgt_tr_head'(Head, _, _, _, _, _) :-
-	'$lgt_built_in_method'(Head, _),
+	'$lgt_built_in_method'(Head, _, _, Flags),
+	Flags /\ 2 =\= 2,	% static built-in predicate
 	functor(Head, Functor, Arity), 
 	throw(permission_error(modify, built_in_method, Functor/Arity)).
 
@@ -9655,33 +9669,33 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_tr_body'(Pred, _, _, Ctx) :-
 	'$lgt_comp_ctx_meta_vars'(Ctx, MetaVars),
 	MetaVars \= [],
-	functor(Pred, PredFunctor, PredArity),
-	functor(PredMeta, PredFunctor, PredArity),
-	(	'$lgt_pp_meta_predicate_'(PredMeta) ->
+	(	functor(Pred, Functor, Arity),
+		functor(Meta, Functor, Arity),
+		'$lgt_pp_meta_predicate_'(Meta) ->
 		% user-defined meta-predicate
 		true
-	;	'$lgt_pl_meta_predicate'(PredMeta, predicate) ->
+	;	'$lgt_pl_meta_predicate'(Pred, Meta, predicate) ->
 		% proprietary built-in meta-predicates declared in the config files
 		true
 	;	% non-declared proprietary built-in meta-predicates (fragile hack
 	 	% due to lack of standardization of meta-predicate specifications)
-		catch('$lgt_predicate_property'(Pred, meta_predicate(PredMeta)), _, fail) ->
+		catch('$lgt_predicate_property'(Pred, meta_predicate(Meta)), _, fail) ->
 		true
 	;	% meta-predicates specified in use_module/2 directives
 		'$lgt_pp_use_module_pred_'(Module, Original, Pred),
 		catch('$lgt_predicate_property'(Original, imported_from(Module)), _, fail),
-		catch('$lgt_predicate_property'(Original, meta_predicate(PredMeta)), _, fail) ->
+		catch('$lgt_predicate_property'(Original, meta_predicate(Meta)), _, fail) ->
 		true
 	),
 	Pred =.. [_| PredArgs],
-	PredMeta =.. [_| PredMetaArgs],
+	Meta =.. [_| MetaArgs],
 	'$lgt_comp_ctx_head'(Ctx, Head),
 	functor(Head, HeadFunctor, HeadArity),
 	functor(HeadMeta, HeadFunctor, HeadArity),
 	'$lgt_pp_meta_predicate_'(HeadMeta),
 	Head =.. [_| HeadArgs],
 	HeadMeta =.. [_| HeadMetaArgs],
-	'$lgt_same_number_of_closure_extra_args'(PredArgs, PredMetaArgs, HeadArgs, HeadMetaArgs),
+	'$lgt_same_number_of_closure_extra_args'(PredArgs, MetaArgs, HeadArgs, HeadMetaArgs),
 	fail.
 
 
@@ -9777,8 +9791,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		\+ '$lgt_pp_redefined_built_in_'(Pred, _, _)	% yet to be compiled
 	;	true
 	),
-	functor(Meta, Functor, Arity), 
-	(	'$lgt_pl_meta_predicate'(Meta, Type) ->
+	(	'$lgt_pl_meta_predicate'(Pred, Meta, Type) ->
 		% proprietary built-in meta-predicates declared in the config files
 		true
 	;	% non-declared proprietary built-in meta-predicates (fragile hack
@@ -12845,12 +12858,10 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 '$lgt_fix_pred_calls'(Pred, TPred) :-	% calls to non-standard Prolog built-in meta-predicates
 	'$lgt_pl_built_in'(Pred),
-	functor(Pred, Functor, Arity),
-	functor(Meta, Functor, Arity), 
-	'$lgt_pl_meta_predicate'(Meta, _),
+	'$lgt_pl_meta_predicate'(Pred, Meta, _),
 	!,
-	Pred =.. [_| Args],
-	Meta =.. [_| MArgs],
+	Pred =.. [Functor| Args],
+	Meta =.. [Functor| MArgs],
 	'$lgt_fix_pred_calls_in_margs'(Args, MArgs, TArgs),
 	TPred =.. [Functor| TArgs].
 
@@ -13646,45 +13657,56 @@ current_logtalk_flag(version, version(2, 39, 2)).
 
 % logtalk built-in methods
 %
-% '$lgt_built_in_method'(+callable, ?scope)
+% '$lgt_built_in_method'(+callable, ?scope, ?callable)
 
 % reflection methods
-'$lgt_built_in_method'(current_predicate(_), p(p(p))).
-'$lgt_built_in_method'(predicate_property(_, _), p(p(p))).
+'$lgt_built_in_method'(current_predicate(_), p(p(p)), no, 1) :- !.
+'$lgt_built_in_method'(predicate_property(_, _), p(p(p)), no, 1) :- !.
 % database methods
-'$lgt_built_in_method'(abolish(_), p(p(p))).
-'$lgt_built_in_method'(asserta(_), p(p(p))).
-'$lgt_built_in_method'(assertz(_), p(p(p))).
-'$lgt_built_in_method'(clause(_, _), p(p(p))).
-'$lgt_built_in_method'(retract(_), p(p(p))).
-'$lgt_built_in_method'(retractall(_), p(p(p))).
+'$lgt_built_in_method'(abolish(_), p(p(p)), no, 1) :- !.
+'$lgt_built_in_method'(asserta(_), p(p(p)), no, 1) :- !.
+'$lgt_built_in_method'(assertz(_), p(p(p)), no, 1) :- !.
+'$lgt_built_in_method'(clause(_, _), p(p(p)), no, 1) :- !.
+'$lgt_built_in_method'(retract(_), p(p(p)), no, 1) :- !.
+'$lgt_built_in_method'(retractall(_), p(p(p)), no, 1) :- !.
 % term expansion methods
-'$lgt_built_in_method'(expand_term(_, _), p(p(p))).
-'$lgt_built_in_method'(expand_goal(_, _), p(p(p))).
+'$lgt_built_in_method'(expand_term(_, _), p(p(p)), no, 1) :- !.
+'$lgt_built_in_method'(expand_goal(_, _), p(p(p)), no, 1) :- !.
 % DCGs methods
-'$lgt_built_in_method'(phrase(_, _), p(p(p))).
-'$lgt_built_in_method'(phrase(_, _, _), p(p(p))).
+'$lgt_built_in_method'(phrase(_, _), p(p(p)), no, 1) :- !.
+'$lgt_built_in_method'(phrase(_, _, _), p(p(p)), no, 1) :- !.
 % meta-calls plus logic and control methods
-'$lgt_built_in_method'(\+ _, p).
-'$lgt_built_in_method'(Method, p) :-  % call/1-N
+'$lgt_built_in_method'(\+ _, p, \+ (::), 1) :- !.
+'$lgt_built_in_method'(Method, p, Meta, 1) :-  % call/1-N
 	compound(Method),
 	functor(Method, call, Arity),
 	Arity > 0,
-	!.
-'$lgt_built_in_method'(once(_), p).
+	!,
+	arg(1, Meta, ::),
+	'$lgt_lgt_meta_predicate_call_n_args'(Arity, Meta).
+'$lgt_built_in_method'(once(_), p, once(::), 1) :- !.
 % exception handling methods
-'$lgt_built_in_method'(catch(_, _, _), p).
-'$lgt_built_in_method'(throw(_), p).
+'$lgt_built_in_method'(catch(_, _, _), p, catch(::, *, ::), 1) :- !.
+'$lgt_built_in_method'(throw(_), p, no, 1) :- !.
 % execution context methods
-'$lgt_built_in_method'(parameter(_, _), p).
-'$lgt_built_in_method'(self(_), p).
-'$lgt_built_in_method'(sender(_), p).
-'$lgt_built_in_method'(this(_), p).
+'$lgt_built_in_method'(parameter(_, _), p, no, 1) :- !.
+'$lgt_built_in_method'(self(_), p, no, 1) :- !.
+'$lgt_built_in_method'(sender(_), p, no, 1) :- !.
+'$lgt_built_in_method'(this(_), p, no, 1) :- !.
 % all solutions methods
-'$lgt_built_in_method'(bagof(_, _, _), p).
-'$lgt_built_in_method'(findall(_, _, _), p).
-'$lgt_built_in_method'(forall(_, _), p).
-'$lgt_built_in_method'(setof(_, _, _), p).
+'$lgt_built_in_method'(bagof(_, _, _), p, bagof(*, ::, *), 1) :- !.
+'$lgt_built_in_method'(findall(_, _, _), p, findall(*, ::, *), 1) :- !.
+'$lgt_built_in_method'(forall(_, _), p, forall(::, ::), 1) :- !.
+'$lgt_built_in_method'(setof(_, _, _), p, setof(*, ::, *), 1) :- !.
+
+
+'$lgt_lgt_meta_predicate_call_n_args'(1, _) :-
+	!.
+'$lgt_lgt_meta_predicate_call_n_args'(N, Meta) :-
+	arg(N, Meta, *),
+	N2 is N - 1,
+	'$lgt_lgt_meta_predicate_call_n_args'(N2, Meta).
+
 
 
 %'$lgt_lgt_directive'(+atom, +integer)
@@ -13800,45 +13822,6 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_lgt_cc_directive'(elif,  1).
 '$lgt_lgt_cc_directive'(else,  0).
 '$lgt_lgt_cc_directive'(endif, 0).
-
-
-
-% built-in meta-predicates
-%
-% '$lgt_meta_predicate'(+compound)
-
-'$lgt_meta_predicate'(Meta) :-
-	(   '$lgt_lgt_meta_predicate'(Meta) ->
-	    % Logtalk built-in meta-predicate
-	    true
-	;	% (non ISO Standard) Prolog meta-predicate specified in the config files
-	    '$lgt_pl_meta_predicate'(Meta, _)
-	).
-
-
-
-% built-in Logtalk (and Prolog) meta-predicates
-
-'$lgt_lgt_meta_predicate'(catch(::, *, ::)) :- !.
-'$lgt_lgt_meta_predicate'(bagof(*, ::, *)) :- !.
-'$lgt_lgt_meta_predicate'(setof(*, ::, *)) :- !.
-'$lgt_lgt_meta_predicate'(findall(*, ::, *)) :- !.
-'$lgt_lgt_meta_predicate'(forall(::, ::)) :- !.
-'$lgt_lgt_meta_predicate'(once(::)) :- !.
-'$lgt_lgt_meta_predicate'(\+ (::)) :- !.
-'$lgt_lgt_meta_predicate'(Meta) :-  % call/1-N
-	functor(Meta, call, Arity),
-	Arity > 0,
-	arg(1, Meta, ::),
-	'$lgt_lgt_meta_predicate_call_n_args'(Arity, Meta).
-
-
-'$lgt_lgt_meta_predicate_call_n_args'(1, _) :-
-	!.
-'$lgt_lgt_meta_predicate_call_n_args'(N, Meta) :-
-	arg(N, Meta, *),
-	N2 is N - 1,
-	'$lgt_lgt_meta_predicate_call_n_args'(N2, Meta).
 
 
 

@@ -11,7 +11,7 @@
 %
 %  configuration file for GNU Prolog 1.3.1 (and later versions)
 %
-%  last updated: January 28, 2010
+%  last updated: April 30, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -101,11 +101,11 @@ forall(Generate, Test) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_pl_meta_predicate'(?callable, ?atom).
+% '$lgt_pl_meta_predicate'(?callable, ?callable, ?atom).
 
-'$lgt_pl_meta_predicate'(call_det(::, *), predicate).
-'$lgt_pl_meta_predicate'(fd_minimize(::, *), predicate).
-'$lgt_pl_meta_predicate'(fd_maximize(::, *), predicate).
+'$lgt_pl_meta_predicate'(call_det(_, _), call_det(::, *), predicate).
+'$lgt_pl_meta_predicate'(fd_minimize(_, _), fd_minimize(::, *), predicate).
+'$lgt_pl_meta_predicate'(fd_maximize(_, _), fd_maximize(::, *), predicate).
 
 
 

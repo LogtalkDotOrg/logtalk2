@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#77 and later versions
 %
-%  last updated: April 15, 2010
+%  last updated: April 30, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -163,20 +163,20 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_pl_meta_predicate'(?callable, ?atom).
+% '$lgt_pl_meta_predicate'(?callable, ?callable, ?atom).
 
-'$lgt_pl_meta_predicate'(*->(::, ::), control_construct).
-'$lgt_pl_meta_predicate'(~(::), control_construct).
-'$lgt_pl_meta_predicate'(block(::, *, ::), predicate).
-'$lgt_pl_meta_predicate'(call_priority(::, *), predicate).
-'$lgt_pl_meta_predicate'(coverof(*, ::, *), predicate).
-'$lgt_pl_meta_predicate'(do(*, ::), predicate).
-'$lgt_pl_meta_predicate'(event_create(::, *, *), predicate).
-'$lgt_pl_meta_predicate'(make_suspension(::, *, *), predicate).
-'$lgt_pl_meta_predicate'(mutex(*, ::), predicate).
-'$lgt_pl_meta_predicate'(not(::), predicate).
-'$lgt_pl_meta_predicate'(suspend(::, *, *), predicate).
-'$lgt_pl_meta_predicate'(suspend(::, *, *, *), predicate).
+'$lgt_pl_meta_predicate'(*->(_, _), *->(::, ::), control_construct).
+'$lgt_pl_meta_predicate'(~(_), ~(::), control_construct).
+'$lgt_pl_meta_predicate'(block(_, _, _), block(::, *, ::), predicate).
+'$lgt_pl_meta_predicate'(call_priority(_, _), call_priority(::, *), predicate).
+'$lgt_pl_meta_predicate'(coverof(_, _, _), coverof(*, ::, *), predicate).
+'$lgt_pl_meta_predicate'(do(_, _), do(*, ::), predicate).
+'$lgt_pl_meta_predicate'(event_create(_, _, _), event_create(::, *, *), predicate).
+'$lgt_pl_meta_predicate'(make_suspension(_, _, _), make_suspension(::, *, *), predicate).
+'$lgt_pl_meta_predicate'(mutex(_, _), mutex(*, ::), predicate).
+'$lgt_pl_meta_predicate'(not(_), not(::), predicate).
+'$lgt_pl_meta_predicate'(suspend(_, _, _), suspend(::, *, *), predicate).
+'$lgt_pl_meta_predicate'(suspend(_, _, _, _), suspend(::, *, *, *), predicate).
 
 
 

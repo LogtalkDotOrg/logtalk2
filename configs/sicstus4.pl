@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: April 11, 2010
+%  last updated: April 30, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -105,21 +105,21 @@ forall(Generate, Test) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_pl_meta_predicate'(?callable, ?atom).
+% '$lgt_pl_meta_predicate'(?callable, ?callable, ?atom).
 
-'$lgt_pl_meta_predicate'(call_cleanup(::, ::), predicate).
-'$lgt_pl_meta_predicate'(call_residue_vars(::, *), predicate).
-'$lgt_pl_meta_predicate'(do(*, ::), predicate) :-
+'$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(::, ::), predicate).
+'$lgt_pl_meta_predicate'(call_residue_vars(_, _), call_residue_vars(::, *), predicate).
+'$lgt_pl_meta_predicate'(do(_, _), do(*, ::), predicate) :-
 	predicate_property(do(_, _), built_in).
-'$lgt_pl_meta_predicate'(findall(*, ::, *, *), predicate).
-'$lgt_pl_meta_predicate'(freeze(*, ::), predicate).
-'$lgt_pl_meta_predicate'(if(::, ::, ::), predicate).
-'$lgt_pl_meta_predicate'(on_exception(*, ::, ::), predicate).
-'$lgt_pl_meta_predicate'(undo(::), predicate).
-'$lgt_pl_meta_predicate'(when(*, ::), predicate).
+'$lgt_pl_meta_predicate'(findall(_, _, _, _), findall(*, ::, *, *), predicate).
+'$lgt_pl_meta_predicate'(freeze(_, _), freeze(*, ::), predicate).
+'$lgt_pl_meta_predicate'(if(_, _, _), if(::, ::, ::), predicate).
+'$lgt_pl_meta_predicate'(on_exception(_, _, _), on_exception(*, ::, ::), predicate).
+'$lgt_pl_meta_predicate'(undo(_), undo(::), predicate).
+'$lgt_pl_meta_predicate'(when(_, _), when(*, ::), predicate).
 % workaround broken meta-predicate declarations:
-'$lgt_pl_meta_predicate'(format(*, *), predicate).
-'$lgt_pl_meta_predicate'(format(*, *, *), predicate).
+'$lgt_pl_meta_predicate'(format(_, _), format(*, *), predicate).
+'$lgt_pl_meta_predicate'(format(_, _, _), format(*, *, *), predicate).
 
 
 
