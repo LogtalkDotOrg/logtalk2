@@ -73,6 +73,10 @@ RELEASE NOTES
     call context for lambda expressions that could result in losing part of
     the context.
 
+    Corrected a bug in the Logtalk runtime where errors generated when calling
+    the phrase/2 built-in method would be reported as resulting from calls to
+    the phrase/3 built-in method.
+
     Corrected a bug in the implementation of the predicate_property/2 built-in
     method that allowed access to properties on non-visible predicates. In
     addition, updated this method to also generate meta-predicate templates

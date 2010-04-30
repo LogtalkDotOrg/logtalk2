@@ -2937,7 +2937,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_phrase'(Obj, GRBody, Input, Sender, Scope) :-
 	catch(
 		'$lgt_phrase'(Obj, GRBody, Input, [], Sender, Scope),
-		error(Error, _),
+		error(Error, _, _),
 		throw(error(Error, Obj::phrase(GRBody, Input), Sender))).
 
 
