@@ -136,6 +136,10 @@ RELEASE NOTES
     Updated the "eclipse6iso.pl" config file with partial parsing solutions
     for some proprietary ECLiPSe directives.
 
+    Updated the ECLiPSe config file with more robust code for parsing
+    use_module/1 directives, capable of processing both ECLiPSe module/1
+    directives and the module/2 directives used by other Prolog compilers.
+
     Updated the Qu-Prolog integration script, "qplgt.sh", in order to use
     larger memory values for the code and environment areas.
 

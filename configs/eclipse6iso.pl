@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#77 and later versions
 %
-%  last updated: April 30, 2010
+%  last updated: May 1, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -649,21 +649,38 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_rewrite_and_recompile_pl_directive'(reexport(from(Conjunction, Module)), reexport(Module, Exports)) :-
 	'$lgt_flatten_list'([Conjunction], Exports).
 
-'$lgt_rewrite_and_recompile_pl_directive'(use_module(Library), use_module(Module, Imports)) :-
-	'$lgt_eclipse_list_of_exports'(Library, Module, Imports).
+'$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Imports)) :-
+	'$lgt_eclipse_list_of_exports'(File, Module, Imports).
 
 
-'$lgt_eclipse_list_of_exports'(Library, Module, Exports) :-		% only works for already loaded modules
-	(	atom(Library) ->
-		Module = Library
-	;	Library =..[_, Module]
+'$lgt_eclipse_list_of_exports'(File, Module, Exports) :-
+	(	get_flag(prolog_suffix, Suffixes), existing_file(File, Suffixes, [], ExtRel) ->
+		true
+	;	% we may be compiling Prolog module files as Logtalk objects
+		existing_file(File, [`.lgt`], [], ExtRel) ->
+		true
+	;	ExtRel = File
 	),
-	current_module(Module),
-	get_module_info(Module, interface, Interface),
-	'$lgt_eclipse_filter_exports'(Interface, Exports).
+	canonical_path_name(ExtRel, Path),
+	open(Path, read, In),
+	catch(read(In, ModuleDecl), _, (close(In), fail)),
+	(	ModuleDecl = (:- module(Module, Interface)) ->
+		true
+	;	ModuleDecl = (:- module(Module)) ->
+		(	current_module(Module) ->
+			true
+		;	ensure_loaded(File)
+		),
+		get_module_info(Module, interface, Interface)
+	),
+	'$lgt_eclipse_filter_exports'(Interface, Exports),
+	!.
 
 
 '$lgt_eclipse_filter_exports'([], []).
+
+'$lgt_eclipse_filter_exports'([Functor/Arity| Interface], [Functor/Arity| Exports]) :-
+	'$lgt_eclipse_filter_exports'(Interface, Exports).
 
 '$lgt_eclipse_filter_exports'([export(Predicate)| Interface], [Predicate| Exports]) :-
 	'$lgt_eclipse_filter_exports'(Interface, Exports).
