@@ -682,7 +682,13 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_eclipse_filter_exports'([Functor/Arity| Interface], [Functor/Arity| Exports]) :-
 	'$lgt_eclipse_filter_exports'(Interface, Exports).
 
-'$lgt_eclipse_filter_exports'([export(Predicate)| Interface], [Predicate| Exports]) :-
+'$lgt_eclipse_filter_exports'([op(Priority, Spec, Operators)| Interface], [op(Priority, Spec, Operators)| Exports]) :-
+	'$lgt_eclipse_filter_exports'(Interface, Exports).
+
+'$lgt_eclipse_filter_exports'([export(Functor/Arity)| Interface], [Functor/Arity| Exports]) :-
+	'$lgt_eclipse_filter_exports'(Interface, Exports).
+
+'$lgt_eclipse_filter_exports'([export(op(Priority, Spec, Operators))| Interface], [op(Priority, Spec, Operators)| Exports]) :-
 	'$lgt_eclipse_filter_exports'(Interface, Exports).
 
 
