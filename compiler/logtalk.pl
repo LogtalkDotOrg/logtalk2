@@ -2110,6 +2110,14 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	).
 
 '$lgt_predicate_property'(_, Pred, Prop, _, _) :-
+	'$lgt_lgt_built_in'(Pred),
+	!,
+	(	Prop = (public)
+	;	Prop = built_in
+	;	Prop = static
+	).
+
+'$lgt_predicate_property'(_, Pred, Prop, _, _) :-
 	'$lgt_pl_built_in'(Pred),
 	!,
 	(	(	'$lgt_pl_meta_predicate'(Pred, Meta, _) ->
