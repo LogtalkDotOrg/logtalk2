@@ -661,6 +661,7 @@ Possible predicate properties values are:
 <ul>
 	<li><code>public</code>, <code>protected</code>, <code>private</code></li>
 	<li><code>static</code>, <code>dynamic</code></li>
+	<li><code>logtalk</code>, <code>prolog</code></li>
 	<li><code>built_in</code></li>
 	<li><code>multifile</code></li>
 	<li><code>meta_predicate(Mode)</code></li>
@@ -670,6 +671,9 @@ Possible predicate properties values are:
 	<li><code>alias_of(Predicate)</code></li>
 	<li><code>synchronized</code></li>
 </ul>
+<p>
+The properties <code>logtalk</code> and <code>prolog</code> allows us to distinguish between predicates defined by Logtalk and predicates defined by the back-end Prolog compiler.
+</p>
 <p>
 The properties <code>declared_in/1</code> and <code>defined_in/1</code> do not apply to built-in methods and Logtalk or Prolog built-in predicates. Note that if a predicate is declared in a category imported by the object, it will be the category name &mdash; not the object name &mdash; that will be returned by the property <code>declared_in/1</code>. The same goes for protocol declared predicates.
 </p>

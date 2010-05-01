@@ -78,10 +78,14 @@ RELEASE NOTES
     the phrase/3 built-in method.
 
     Corrected a bug in the implementation of the predicate_property/2 built-in
-    method that allowed access to properties on non-visible predicates. In
-    addition, updated this method to also generate meta-predicate templates
-    for the call/2-N built-in methods and to return "multifile" properties for
-    Prolog built-in predicates.
+    method that allowed access to properties on non-visible predicates.
+
+    Updated the predicate_property/2 built-in method in order to generate
+    meta-predicate templates for the call/2-N built-in methods, to return
+    "multifile" properties for Prolog built-in predicates, and to support
+    two new properties, "logtalk" and "prolog", that allows us to distinguish
+    between predicates defined by Logtalk and predicates defined by the back-
+    end Prolog compiler.
 
     Corrected a bug in the Logtalk built-in debugger that would prevent user
     interaction at the "fact" and "rule" unification ports by always skipping

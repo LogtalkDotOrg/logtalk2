@@ -2053,7 +2053,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		true
 	;	Sender = SCtn
 	),
-	(	'$lgt_scope'(Prop, PScope)
+	(	Prop = logtalk
+	;	'$lgt_scope'(Prop, PScope)
 	;	(	Flags /\ 2 =:= 2 ->
 			Prop = (dynamic)
 		;	Prop = static
@@ -2090,7 +2091,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 		true
 	;	Sender = Obj
 	),
-	(	'$lgt_scope'(Prop, PScope)
+	(	Prop = logtalk
+	;	'$lgt_scope'(Prop, PScope)
 	;	Flags /\ 1 =:= 1,		% just to help document predicate declaration bit patterns
 		Prop = built_in			% as this clause only deals with built-in predicates
 	;	(	Flags /\ 2 =:= 2 ->
@@ -2112,7 +2114,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_predicate_property'(_, Pred, Prop, _, _) :-
 	'$lgt_lgt_built_in'(Pred),
 	!,
-	(	Prop = (public)
+	(	Prop = logtalk
+	;	Prop = (public)
 	;	Prop = built_in
 	;	Prop = static
 	).
@@ -2120,7 +2123,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_predicate_property'(_, Pred, Prop, _, _) :-
 	'$lgt_pl_built_in'(Pred),
 	!,
-	(	(	'$lgt_pl_meta_predicate'(Pred, Meta, _) ->
+	(	Prop = prolog
+	;	(	'$lgt_pl_meta_predicate'(Pred, Meta, _) ->
 			(	Prop = private
 			;	Prop = meta_predicate(Meta)
 			)
@@ -14155,6 +14159,8 @@ current_logtalk_flag(version, version(2, 39, 2)).
 '$lgt_valid_pred_property'(private).
 '$lgt_valid_pred_property'(static).
 '$lgt_valid_pred_property'((dynamic)).
+'$lgt_valid_pred_property'(logtalk).
+'$lgt_valid_pred_property'(prolog).
 '$lgt_valid_pred_property'(declared_in(_)).
 '$lgt_valid_pred_property'(defined_in(_)).
 '$lgt_valid_pred_property'(meta_predicate(_)).
