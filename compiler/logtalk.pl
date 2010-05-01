@@ -13690,6 +13690,7 @@ current_logtalk_flag(version, version(2, 39, 2)).
 	functor(Method, call, Arity),
 	Arity > 0,
 	!,
+	functor(Meta, call, Arity),
 	arg(1, Meta, ::),
 	'$lgt_lgt_meta_predicate_call_n_args'(Arity, Meta).
 '$lgt_built_in_method'(once(_), p, once(::), 1) :- !.
