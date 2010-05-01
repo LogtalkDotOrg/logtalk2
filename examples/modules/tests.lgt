@@ -3,9 +3,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2010/03/16,
+		date is 2010/05/01,
 		comment is 'Unit tests for the "modules" example.']).
 
 	test(modules_1) :-
@@ -14,7 +14,7 @@
 
 	test(modules_2) :-
 		setof(Prop, Pred^(exports::predicate_property(p(Pred), Prop)), Solutions),
-		Solutions == [public, static, declared_in(exports), defined_in(exports)].
+		Solutions == [logtalk, public, static, declared_in(exports), defined_in(exports)].
 
 	test(modules_3) :-
 		findall(N, exports::p(N), Solutions),
