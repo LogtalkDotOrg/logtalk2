@@ -93,12 +93,18 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 
 % '$lgt_pl_meta_predicate'(+callable, ?callable, ?atom).
 
+'$lgt_pl_meta_predicate'(ForEach, Meta, predicate) :-  % foreach/2-N
+	compound(ForEach),
+	functor(ForEach, foreach, Arity),
+	Arity >= 2,
+	!,
+	functor(Meta, foreach, Arity),
+	arg(Arity, Meta, ::),
+	N is Arity - 1,
+	'$lgt_bp_foreach_n_args'(N, Meta).
 '$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(::, ::), predicate).
 '$lgt_pl_meta_predicate'(fd_minimize(_, _), fd_minimize(::, *), predicate).
 '$lgt_pl_meta_predicate'(fd_maximize(_, _), fd_maximize(::, *), predicate).
-'$lgt_pl_meta_predicate'(foreach(_, _), foreach(*, ::), predicate).				% added in B-Prolog 7.3
-'$lgt_pl_meta_predicate'(foreach(_, _, _), foreach(*, *, ::), predicate).		% added in B-Prolog 7.3
-'$lgt_pl_meta_predicate'(foreach(_, _, _, _), foreach(*, *, *, ::), predicate).	% added in B-Prolog 7.3
 '$lgt_pl_meta_predicate'(freeze(_, _), freeze(*, ::), predicate).
 '$lgt_pl_meta_predicate'(minof(_, _), minof(::, *), predicate).
 '$lgt_pl_meta_predicate'(maxof(_, _), maxof(::, *), predicate).
@@ -108,6 +114,13 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 '$lgt_pl_meta_predicate'(table_remove(_), table_remove(::), predicate).
 '$lgt_pl_meta_predicate'(time_out(_, _, _), time_out(::, *, *), predicate).
 
+
+'$lgt_bp_foreach_n_args'(0, _) :-
+	!.
+'$lgt_bp_foreach_n_args'(N, Meta) :-
+	arg(N, Meta, *),
+	N2 is N - 1,
+	'$lgt_bp_foreach_n_args'(N2, Meta).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

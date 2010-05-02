@@ -140,6 +140,10 @@ RELEASE NOTES
     use_module/1 directives, capable of processing both ECLiPSe module/1
     directives and the module/2 directives used by other Prolog compilers.
 
+    Updated the B-Prolog config file in order to support foreach/2-N calls
+    for any valid value of N (previous versions of the config file only
+    supported foreach/2-4 calls).
+
     Updated the Qu-Prolog integration script, "qplgt.sh", in order to use
     larger memory values for the code and environment areas.
 
