@@ -3,9 +3,9 @@
 	instantiates(blind_search(Bound))).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2008/6/9,
+		date is 2010/05/02,
 		comment is 'Breadth first state space search strategy.',
 		source is 'Example adapted from the book "Prolog Programming for Artificial Intelligence" by Ivan Bratko.',
 		parnames is ['Bound']]).
@@ -18,7 +18,7 @@
 
 	breadt(Space, Tree, Bound, Solution) :-
 		expand([], Tree, Tree2, Solved, Solution, Space, Bound),
-		(	Solved ->
+		(	Solved == true ->
 			true
 		;	breadt(Space, Tree2, Bound, Solution)
 		).
@@ -36,7 +36,7 @@
 		(	Bound > 0,
 			Bound2 is Bound -1,
 			expand(Path, Tree, Tree2, Solved2, Solution, Space, Bound2),
-			(	Solved2 ->
+			(	Solved2 == true ->
 				Solved = true
 			;	expandall(Path, Trees, [Tree2| Trees2], Subs2, Solved, Solution, Space, Bound)
 			)

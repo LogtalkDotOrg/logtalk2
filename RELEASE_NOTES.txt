@@ -183,6 +183,9 @@ RELEASE NOTES
     Improved "inheritance" example in order to better illustrate inheritance
     semantics for classes and instances. Added a set of unit tests.
 
+    Updated the implementation of the best first heuristic state space search
+    method in the "searching" example in order to avoid unnecessary meta-calls.
+
 
 2.39.1 - March 31, 2010
 
