@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.1 and later versions
 %
-%  last updated: April 30, 2010
+%  last updated: May 2, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -91,7 +91,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_pl_meta_predicate'(?callable, ?callable, ?atom).
+% '$lgt_pl_meta_predicate'(+callable, ?callable, ?atom).
 
 '$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(::, ::), predicate).
 '$lgt_pl_meta_predicate'(fd_minimize(_, _), fd_minimize(::, *), predicate).

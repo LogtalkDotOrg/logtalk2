@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: April 30, 2010
+%  last updated: May 2, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -105,7 +105,7 @@ forall(Generate, Test) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_pl_meta_predicate'(?callable, ?callable, ?atom).
+% '$lgt_pl_meta_predicate'(+callable, ?callable, ?atom).
 
 '$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(::, ::), predicate).
 '$lgt_pl_meta_predicate'(call_residue_vars(_, _), call_residue_vars(::, *), predicate).

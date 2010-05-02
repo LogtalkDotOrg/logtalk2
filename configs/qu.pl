@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.10 and later versions
 %
-%  last updated: April 30, 2010
+%  last updated: May 2, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -109,7 +109,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_pl_meta_predicate'(?callable, ?callable, ?atom).
+% '$lgt_pl_meta_predicate'(+callable, ?callable, ?atom).
 
 '$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(::, ::), predicate).
 '$lgt_pl_meta_predicate'(delay(_, _), delay(*, ::), predicate).

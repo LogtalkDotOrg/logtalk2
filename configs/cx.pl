@@ -11,7 +11,7 @@
 %
 %  configuration file for CxProlog 0.97.4 or a later version
 %
-%  last updated: April 30, 2010
+%  last updated: May 2, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -98,7 +98,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_pl_meta_predicate'(?callable, ?callable, ?atom).
+% '$lgt_pl_meta_predicate'(+callable, ?callable, ?atom).
 
 '$lgt_pl_meta_predicate'(catch(_, _, _, _), catch(::, *, *, ::), predicate).
 '$lgt_pl_meta_predicate'(gen(_), gen(::), predicate).

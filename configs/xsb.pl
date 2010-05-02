@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.2 or later versions
 %
-%  last updated: April 30, 2010
+%  last updated: May 2, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -95,7 +95,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_pl_meta_predicate'(?callable, ?callable, ?atom).
+% '$lgt_pl_meta_predicate'(+callable, ?callable, ?atom).
 
 '$lgt_pl_meta_predicate'(fail_if(_), fail_if(::), predicate).
 '$lgt_pl_meta_predicate'(findall(_, _, _, _), findall(*, ::, *, *), predicate).
