@@ -75,4 +75,8 @@ echo
 
 export LOGTALK_STARTUP_DIRECTORY=`pwd`
 
-exec qp -s 3072 -d 3072 -h 2048 -e 256 -C 256 -g "['$LOGTALKHOME/integration/logtalk_qp.pl']." "$@"
+if qp -g "(current_prolog_flag(version,V),write(V),halt)." 2>&1 | grep "8.10" 2>&1 >/dev/null; then
+	exec qp -s 3072 -d 3072 -h 2048 -e 256 -C 256 -g "['$LOGTALKHOME/integration/logtalk_qp.pl']." "$@"
+else
+	exec qp -s 3072 -d 3072 -h 2048 -e 256 -C 256 -l "$LOGTALKHOME/integration/logtalk_qp.pl" "$@"
+fi

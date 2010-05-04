@@ -145,7 +145,8 @@ RELEASE NOTES
     supported foreach/2-4 calls).
 
     Updated the Qu-Prolog integration script, "qplgt.sh", in order to use
-    larger memory values for the code and environment areas.
+    larger memory values for the code and environment areas an in preparation
+    for its next release.
 
     Replaced the predicate as_dictionary/2 in the library object "bintree"
     with a new implementation, contributed by Paul Fodor, that returns a

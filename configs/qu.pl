@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.10 and later versions
 %
-%  last updated: May 2, 2010
+%  last updated: May 4, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -161,7 +161,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_prolog_feature'(prolog_dialect, qu).
 '$lgt_prolog_feature'(prolog_version, _) :-
 	fail.
-'$lgt_prolog_feature'(prolog_compatible_version, @>=((8,9))).
+'$lgt_prolog_feature'(prolog_compatible_version, @>=((8,10))).
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
