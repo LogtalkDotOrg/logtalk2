@@ -1,6 +1,6 @@
 // ================================================================
 // Logtalk - Open source object-oriented logic programming language
-// Release 2.39.2
+// Release 2.39.3
 //
 // Copyright (c) 1998-2010 Paulo Moura. All Rights Reserved.
 // 
