@@ -3,7 +3,7 @@
 	instantiates(blind_search(Bound))).
 
 	:- info([
-		version is 1.3,
+		version is 1.31,
 		author is 'Paulo Moura',
 		date is 2010/05/02,
 		comment is 'Breadth first state space search strategy.',
@@ -13,14 +13,14 @@
 	:- uses(list, [member/2, reverse/2]).
 
 	search(Space, State, Bound, Solution) :-
-		breadt(Space, l(State), Bound, Path),
+		breadth(Space, l(State), Bound, Path),
 		reverse(Path, Solution).
 
-	breadt(Space, Tree, Bound, Solution) :-
+	breadth(Space, Tree, Bound, Solution) :-
 		expand([], Tree, Tree2, Solved, Solution, Space, Bound),
 		(	Solved == true ->
 			true
-		;	breadt(Space, Tree2, Bound, Solution)
+		;	breadth(Space, Tree2, Bound, Solution)
 		).
 
 	expand(Path, l(State), _, true, [State| Path], Space, _) :-
