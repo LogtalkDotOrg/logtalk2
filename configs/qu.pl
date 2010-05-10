@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.10 and later versions
 %
-%  last updated: May 4, 2010
+%  last updated: May 10, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -398,7 +398,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_current_date'(Year, Month, Day) :-
 	realtime(Time),
-	gmtime(Time, gmt_time(Year2, Month2, Day, _, _, _)),
+	gmtime(Time, time(Year2, Month2, Day, _, _, _)),
 	Year is 1900 + Year2,
 	Month is Month2 + 1.
 
@@ -407,7 +407,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_current_time'(Hours, Mins, Secs) :-
 	realtime(Time),
-	gmtime(Time, gmt_time(_, _, _, Hours, Mins, Secs)).
+	gmtime(Time, time(_, _, _, Hours, Mins, Secs)).
 
 
 
