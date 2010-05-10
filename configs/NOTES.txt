@@ -159,7 +159,7 @@ ECLiPSe 6.0#77 or later versions
 	On Windows, only supports settings files on the Logtalk user folder.
 
 
-Qu-Prolog 8.10 and later versions
+Qu-Prolog 8.12 and later versions
 
 	qu.pl
 
@@ -168,7 +168,7 @@ Qu-Prolog 8.10 and later versions
 
 	First, start Qu-Prolog using adequate switches. For example:
 
-		% qp -T 16 -s 2048 -d 1024 -h 2000
+		% qp -s 3072 -d 3072 -h 2048 -e 256 -C 256
 
 	Second, compile and load the config file using:
 

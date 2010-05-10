@@ -16,7 +16,10 @@ RELEASE NOTES
 2.39.3 - June ??, 2010
 
     Corrected the definitions of the predicates '$lgt_current_date'/3 and
-    '$lgt_current_time'/3 in the Qu-Prolog config file.
+    '$lgt_current_time'/3 in the Qu-Prolog config file. Updated the minimum
+    required version to 8.12 and changed the value of the Logtalk flag
+    "prolog_dialect" from "qu" to "qp" in order to match the value of the
+    new Prolog flag "dialect" implemented in Qu-Prolog 8.12.
 
 
 2.39.2 - May 4, 2010

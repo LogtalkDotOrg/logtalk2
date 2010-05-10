@@ -9,7 +9,7 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for Qu-Prolog 8.10 and later versions
+%  configuration file for Qu-Prolog 8.12 and later versions
 %
 %  last updated: May 10, 2010
 %
@@ -158,10 +158,10 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %
 % back-end Prolog compiler supported features
 
-'$lgt_prolog_feature'(prolog_dialect, qu).
-'$lgt_prolog_feature'(prolog_version, _) :-
-	fail.
-'$lgt_prolog_feature'(prolog_compatible_version, @>=((8,10))).
+'$lgt_prolog_feature'(prolog_dialect, qp).
+'$lgt_prolog_feature'(prolog_version, (Major, Minor, Patch)) :-
+	current_prolog_flag(version_data, qp(Major, Minor, Patch, _)).
+'$lgt_prolog_feature'(prolog_compatible_version, @>=((8,12,0))).
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
