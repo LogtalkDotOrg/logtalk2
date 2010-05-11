@@ -8849,8 +8849,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	nonvar(Free),
 	nonvar(Goal),
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _),
-	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	TPred = '$lgt_lambda'(Free, TGoal),
 	DPred = '$lgt_dbg_goal'(Free/Goal, '$lgt_lambda'(Free, DGoal), ExCtx).
