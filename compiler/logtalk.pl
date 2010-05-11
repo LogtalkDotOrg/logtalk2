@@ -3168,7 +3168,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars),							% that will be called in the "sender"
 				call(Def, GPred, ExCtx, GCall, _) ->											% lookup definition
 				asserta(('$lgt_send_to_self_'(GObj, GPred, GSender, volatile) :- !, GCall)),	% cache lookup result
-				(GObj, GPred, GSender) = (Obj, Pred, Sender),									% unify message arguments
+				GObj = Obj, GPred = Pred, GSender = Sender,										% unify message arguments
 				call(GCall)
 			;	% closed-world assumption
 				fail
@@ -3225,7 +3225,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 				call(Def, GPred, ExCtx, GCall, _) ->											% lookup definition
 				GGCall = '$lgt_guarded_method_call'(GObj, GPred, GSender, GCall),
 				asserta(('$lgt_send_to_obj_'(GObj, GPred, GSender, volatile) :- !, GGCall)),	% cache lookup result
-				(GObj, GPred, GSender) = (Obj, Pred, Sender),									% unify message arguments
+				GObj = Obj, GPred = Pred, GSender = Sender,										% unify message arguments
 				'$lgt_guarded_method_call'(Obj, Pred, Sender, GCall)							% call method
 			;	% closed-world assumption
 				fail
@@ -3238,7 +3238,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 				call(Def, GPred, ExCtx, GCall, _) ->											% lookup definition
 				GGCall = '$lgt_guarded_method_call'(GObj, GPred, GSender, GCall),
 				asserta(('$lgt_send_to_obj_'(GObj, GPred, GSender, volatile) :- !, GGCall)),	% cache lookup result
-				(GObj, GPred, GSender) = (Obj, Pred, Sender),									% unify message arguments
+				GObj = Obj, GPred = Pred, GSender = Sender,										% unify message arguments
 				'$lgt_guarded_method_call'(Obj, Pred, Sender, GCall)							% call method
 			;	% closed-world assumption
 				fail
@@ -3320,7 +3320,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars),							% that will be called in the "sender"
 				call(Def, GPred, ExCtx, GCall, _) ->											% lookup definition
 				asserta(('$lgt_send_to_obj_ne_'(GObj, GPred, GSender, volatile) :- !, GCall)),	% cache lookup result
-				(GObj, GPred, GSender) = (Obj, Pred, Sender),									% unify message arguments
+				GObj = Obj, GPred = Pred, GSender = Sender,										% unify message arguments
 				call(GCall)																		% call method
 			;	% closed-world assumption
 				fail
@@ -3332,7 +3332,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _),
 				call(Def, GPred, ExCtx, GCall, _) ->											% lookup definition
 				asserta(('$lgt_send_to_obj_ne_'(GObj, GPred, GSender, volatile) :- !, GCall)),	% cache lookup result
-				(GObj, GPred, GSender) = (Obj, Pred, Sender),									% unify message arguments
+				GObj = Obj, GPred = Pred, GSender = Sender,										% unify message arguments
 				call(GCall)																		% call method
 			;	% closed-world assumption
 				fail
@@ -3388,7 +3388,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 		'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _),
 		call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->								% lookup definition
 		asserta(('$lgt_obj_super_call_same_'(Super, GPred, GExCtx, volatile) :- !, GCall)),	% cache lookup result
-		(GPred, GExCtx) = (Pred, ExCtx),													% unify message arguments
+		GPred = Pred, GExCtx = ExCtx,														% unify message arguments
 		call(GCall)																			% call inherited definition
 	;	% closed-world assumption
 		fail
@@ -3413,7 +3413,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
 		call(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->									% lookup definition
 		asserta(('$lgt_ctg_super_call_same_'(Ctg, GPred, GExCtx, volatile) :- !, GCall)),	% cache lookup result
-		(GPred, GExCtx) = (Pred, ExCtx),													% unify message arguments
+		GPred = Pred, GExCtx = ExCtx,														% unify message arguments
 		call(GCall)																			% call inherited definition
 	;	% closed-world assumption
 		fail
@@ -3458,7 +3458,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 				'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _),
 				call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->									% lookup definition
 				asserta(('$lgt_obj_super_call_other_'(Super, GPred, GExCtx, volatile) :- !, GCall)),	% cache lookup result
-				(GPred, GExCtx) = (Pred, ExCtx),														% unify message arguments
+				GPred = Pred, GExCtx = ExCtx,															% unify message arguments
 				call(GCall)																				% call inherited definition
 			;	% closed-world assumption
 				fail
@@ -3508,7 +3508,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),					% construct predicate template
 				call(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->									% lookup definition
 				asserta(('$lgt_ctg_super_call_other_'(Ctg, GPred, GExCtx, volatile) :- !, GCall)),	% cache lookup result
-				(GPred, GExCtx) = (Pred, ExCtx),													% unify message arguments
+				GPred = Pred, GExCtx = ExCtx,														% unify message arguments
 				call(GCall)																			% call inherited definition
 			;	% closed-world assumption
 				fail
