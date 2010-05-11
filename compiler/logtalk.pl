@@ -3909,17 +3909,20 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
 	(	'$lgt_current_object_'(This, _, _, _, _, _, _, _, _, Rnm, _),
 		call(Dcl, Alias, _, _, _, _, _) ->
-		functor(Alias, PFunctor, PArity), functor(GAlias, PFunctor, PArity),	% construct predicate template
-		functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),		% construct "this" template
-		functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),		% construct "self" template
-		call(Rnm, Ctg, GPred, GAlias),
-		'$lgt_imports_category_'(GThis, Ctg, _),
-		'$lgt_current_category_'(Ctg, _, _, Def, _, _),
-		'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _),
-		call(Def, GPred, GExCtx, GCall, _) ->
-		asserta(('$lgt_ctg_call_'(Dcl, GAlias, GExCtx, volatile) :- !, GCall)),	% cache lookup result
-		GAlias = Alias, GExCtx = ExCtx,											% unify message arguments
-		call(GCall)																% call inherited definition
+		(	functor(Alias, PFunctor, PArity), functor(GAlias, PFunctor, PArity),	% construct predicate template
+			functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),		% construct "this" template
+			functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),		% construct "self" template
+			call(Rnm, Ctg, GPred, GAlias),
+			'$lgt_imports_category_'(GThis, Ctg, _),
+			'$lgt_current_category_'(Ctg, _, _, Def, _, _),
+			'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _),
+			call(Def, GPred, GExCtx, GCall, _) ->
+			asserta(('$lgt_ctg_call_'(Dcl, GAlias, GExCtx, volatile) :- !, GCall)),	% cache lookup result
+			GAlias = Alias, GExCtx = ExCtx,											% unify message arguments
+			call(GCall)																% call inherited definition
+		;	% closed-world assumption
+			fail
+		)
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Alias) ->
 		call(Alias)
