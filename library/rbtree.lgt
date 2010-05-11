@@ -15,9 +15,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.0,
+		version is 1.01,
 		author is 'Vitor Santos Costa; adapted to Logtalk by Paulo Moura.',
-		date is 2010/02/25,
+		date is 2010/05/08,
 		comment is 'Red-Black trees. Uses standard order to compare keys.']).
 
 	:- public(partial_map/4).
@@ -202,7 +202,8 @@
 	%%	insert(+T0, +Key, ?Value, -TN)
 	%
 	%	Add an element with key Key and Value to the tree T0 creating a
-	%	new red-black tree TN. Duplicated elements are not allowed.
+	%	new red-black tree TN. If Key is a key in T0, the associated
+	%	value is replaced by Value.
 
 	insert(t(Nil, Tree0), Key, Value, t(Nil, Tree)) :-
 		insert(Tree0, Key, Value, Nil, Tree1, _),
@@ -540,8 +541,9 @@
 	map(Closure, t(_,Tree)) :-
 		map_(Tree, Closure).
 
-	clone(t(Nil,Tree), t(Nil,NewTree), Pairs) :-
-		clone(Tree, Nil, NewTree, [], Pairs).
+	clone(t(_,Tree), t(NewNil,NewTree), Pairs) :-
+		NewNil = black('', _, _, ''),
+		clone(Tree, NewNil, NewTree, [], Pairs).
 
 	clone(black('',_,_,''), Nil, Nil, Pairs, Pairs) :-
 		!.
