@@ -16435,7 +16435,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 		(	Meta == no ->
 			% cache only normal predicates
 			assertz('$lgt_obj_static_binding_cache_'(GObj, GPred, GSender, GCall)),
-			(Obj, Pred, Sender, Call) = (GObj, GPred, GSender, GCall)
+			Obj = GObj, Pred = GPred, Sender = GSender, Call = GCall
 		;	% meta-predicates cannot be cached as they require translation of the meta-arguments
 			Meta =.. [PredFunctor| MArgs],
 			Pred =.. [PredFunctor| Args],
@@ -16444,7 +16444,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 			'$lgt_exec_ctx'(ExCtx, Sender, Sender, Obj, []),
 			'$lgt_tr_static_binding_meta_args'(Args, MArgs, Ctx, TArgs, _),
 			TPred =.. [PredFunctor| TArgs],
-			(Obj, TPred, Sender, Call) = (GObj, GPred, GSender, GCall)
+			Obj = GObj, TPred = GPred, Sender = GSender, Call = GCall
 		)
 	).
 
@@ -16491,7 +16491,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 		call(Def, GPred, GExCtx, GCall, DefCtn), !,
 		'$lgt_safe_static_binding_paths'(Ctg, DclCtn, DefCtn),
 		assertz('$lgt_ctg_static_binding_cache_'(Ctg, GPred, GExCtx, GCall)),
-		(Pred, ExCtx, Call) = (GPred, GExCtx, GCall)
+		Pred = GPred, ExCtx = GExCtx, Call = GCall
 	).
 
 
