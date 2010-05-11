@@ -2525,7 +2525,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 			functor(DPred, Functor, Arity),
 			Clause =.. [DDcl, DPred, DclScope],
 			assertz(Clause),
-			(Scope, Type, Meta) = (DclScope, (dynamic), no)
+			Scope = DclScope, Type = (dynamic), Meta = no
 		;	% object doesn't supports dynamic declaration of new predicates:
 			throw(error(permission_error(create, predicate_declaration, Pred), Goal, Sender))
 		)
@@ -2556,7 +2556,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 		assertz(DDefClause),
 		'$lgt_clean_lookup_caches'(GHead),
 		NeedsUpdate = true,
-		(GHead, THead) = (Head, Call)
+		GHead = Head, THead = Call
 	).
 
 
@@ -3918,7 +3918,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 		'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _),
 		call(Def, GPred, GExCtx, GCall, _) ->
 		asserta(('$lgt_ctg_call_'(Dcl, GAlias, GExCtx, volatile) :- !, GCall)),	% cache lookup result
-		(GAlias, GExCtx) = (Alias, ExCtx),										% unify message arguments
+		GAlias = Alias, GExCtx = ExCtx,											% unify message arguments
 		call(GCall)																% call inherited definition
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Alias) ->
