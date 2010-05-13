@@ -47,8 +47,8 @@ are based on the sample queries found on the example "SCRIPT.txt" file.
 The file "tester.lgt" is a loader file that, when loaded, will automatically
 run all example unit tests. The POSIX script "tester.sh", found on the
 "examples" folder, may be used to run all examples unit tests. This script
-works with all compatible back-end Prolog compilers except B-Prolog and
-Qu-Prolog due to limitations on the command-line options of these compilers.
+works with all compatible back-end Prolog compilers except B-Prolog due to
+limitations on the command-line options of this compiler.
 
 
 Follows a short description of each included example (in alphabetical order):

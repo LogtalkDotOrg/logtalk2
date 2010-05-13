@@ -161,14 +161,14 @@ ECLiPSe 6.0#77 or later versions
 
 Qu-Prolog 8.12 and later versions
 
-	qu.pl
+	qp.pl
 
 	In order to compile and load both the config file and the Logtalk compiler,
 	the following sequence of steps is advised.
 
 	First, start Qu-Prolog using adequate switches. For example:
 
-		% qp -s 3072 -d 3072 -h 2048 -e 256 -C 256
+		% qp -s 3072 -d 3072 -h 2048 -e 256 -C 256 -H 1536
 
 	Second, compile and load the config file using:
 
