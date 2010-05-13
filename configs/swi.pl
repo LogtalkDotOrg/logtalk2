@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: May 2, 2010
+%  last updated: May 13, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -655,7 +655,7 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% thread_property(+atom, ?nonvar) -- see the goal_expansion/2 predicate definition
+% thread_property(+atom, ?nonvar) -- built-in
 
 
 % thread_self(?atom) -- built-in
