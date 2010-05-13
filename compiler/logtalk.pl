@@ -6177,13 +6177,16 @@ current_logtalk_flag(version, version(2, 39, 3)).
 %
 % expands a goal; fails if no goal expansion hook is defined
 
-'$lgt_tr_expand_goal'(Goal, EGoal) :-	% source-file specific compiler hook
-	'$lgt_pp_hook_goal_expansion_'(Goal, EGoal),
-	!.
-
-'$lgt_tr_expand_goal'(Goal, EGoal) :-	% default compiler hook
-	'$lgt_hook_goal_expansion_'(Goal, EGoal),
-	!.
+'$lgt_tr_expand_goal'(Goal, EGoal) :-
+	(	% source-file specific compiler hook:
+		'$lgt_pp_hook_goal_expansion_'(Goal, EGoal) ->
+		true
+	;	% default compiler hook:
+		'$lgt_hook_goal_expansion_'(Goal, EGoal) ->
+		true
+	;	% no compiler hook defined:
+		Goal = EGoal
+	).
 
 
 
@@ -6238,7 +6241,40 @@ current_logtalk_flag(version, version(2, 39, 3)).
 
 '$lgt_tr_expanded_term'((:- Directive), File, Lines, Input, Output) :-
 	!,
-	'$lgt_tr_directive'(Directive, File, Lines, Input, Output).
+	(	'$lgt_ignore_pl_directive'(Directive) ->								% defined in the Prolog config files
+		(	'$lgt_compiler_flag'(portability, warning),
+			\+ '$lgt_compiler_flag'(report, off) ->
+			'$lgt_report_warning_in_new_line',
+			'$lgt_inc_compile_warnings_counter',
+			write('%         WARNING!  Ignoring Prolog directive: '), writeq(Directive), nl,
+			'$lgt_pp_entity'(Type, Entity, _, _, _),
+			'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
+		;	true
+		)
+	;	'$lgt_rewrite_and_copy_pl_directive'(Directive, RDirective) ->			% defined in the Prolog config files
+		assertz('$lgt_pp_directive_'(RDirective)),
+		(	'$lgt_compiler_flag'(portability, warning),
+			\+ '$lgt_compiler_flag'(report, off) ->
+			'$lgt_report_warning_in_new_line',
+			'$lgt_inc_compile_warnings_counter',
+			write('%         WARNING!  Rewriting and copying Prolog directive: '), writeq(Directive), nl,
+			'$lgt_pp_entity'(Type, Entity, _, _, _),
+			'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
+		;	true
+		)
+	;	'$lgt_rewrite_and_recompile_pl_directive'(Directive, RDirective) ->		% defined in the Prolog config files
+		(	'$lgt_compiler_flag'(portability, warning),
+			\+ '$lgt_compiler_flag'(report, off) ->
+			'$lgt_report_warning_in_new_line',
+			'$lgt_inc_compile_warnings_counter',
+			write('%         WARNING!  Rewriting and recompiling Prolog directive: '), writeq(Directive), nl,
+			'$lgt_pp_entity'(Type, Entity, _, _, _),
+			'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
+		;	true
+		),
+		'$lgt_tr_directive'(RDirective, File, Lines, Input, Output)
+	;	'$lgt_tr_directive'(Directive, File, Lines, Input, Output)
+	).
 
 '$lgt_tr_expanded_term'((Head --> Body), File, Lines, Input, _) :-
 	!,
@@ -6426,7 +6462,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 '$lgt_tr_directive'(Dir, File, Lines, Input, _) :-
 	functor(Dir, Functor, Arity),
 	functor(Meta, Functor, Arity),
-	'$lgt_pl_meta_directive'(Meta),							% defined in the Prolog config files
+	'$lgt_pl_meta_directive'(Meta),						% defined in the Prolog config files
 	!,
 	(	'$lgt_compiler_flag'(portability, warning),
 		\+ '$lgt_compiler_flag'(report, off) ->
@@ -6448,47 +6484,6 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	;	Tdir =.. [Functor| DArgs]
 	),
 	assertz('$lgt_pp_directive_'(Tdir)).
-
-'$lgt_tr_directive'(Dir, File, Lines, Input, _) :-
-	'$lgt_ignore_pl_directive'(Dir),					% defined in the Prolog config files
-	!,
-	(	'$lgt_compiler_flag'(portability, warning),
-		\+ '$lgt_compiler_flag'(report, off) ->
-		'$lgt_report_warning_in_new_line',
-		'$lgt_inc_compile_warnings_counter',
-		write('%         WARNING!  Ignoring Prolog directive: '), writeq(Dir), nl,
-		'$lgt_pp_entity'(Type, Entity, _, _, _),
-		'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
-	;	true
-	).
-
-'$lgt_tr_directive'(Dir, File, Lines, Input, _) :-
-	'$lgt_rewrite_and_copy_pl_directive'(Dir, RWDir),	% defined in the Prolog config files
-	assertz('$lgt_pp_directive_'(RWDir)),
-	!,
-	(	'$lgt_compiler_flag'(portability, warning),
-		\+ '$lgt_compiler_flag'(report, off) ->
-		'$lgt_report_warning_in_new_line',
-		'$lgt_inc_compile_warnings_counter',
-		write('%         WARNING!  Rewriting and copying Prolog directive: '), writeq(Dir), nl,
-		'$lgt_pp_entity'(Type, Entity, _, _, _),
-		'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
-	;	true
-	).
-
-'$lgt_tr_directive'(Dir, File, Lines, Input, Output) :-
-	'$lgt_rewrite_and_recompile_pl_directive'(Dir, RWDir),	% defined in the Prolog config files
-	!,
-	(	'$lgt_compiler_flag'(portability, warning),
-		\+ '$lgt_compiler_flag'(report, off) ->
-		'$lgt_report_warning_in_new_line',
-		'$lgt_inc_compile_warnings_counter',
-		write('%         WARNING!  Rewriting and recompiling Prolog directive: '), writeq(Dir), nl,
-		'$lgt_pp_entity'(Type, Entity, _, _, _),
-		'$lgt_report_warning_full_context'(Type, Entity, File, Lines, Input)
-	;	true
-	),
-	'$lgt_tr_directive'(RWDir, File, Lines, Input, Output).	% try to translate the rewritten directive
 
 '$lgt_tr_directive'(Dir, File, Lines, Input, Output) :-
 	'$lgt_pp_module_'(_),									% we're compiling a module as an object

@@ -15,6 +15,12 @@ RELEASE NOTES
 
 2.39.3 - June ??, 2010
 
+    Updated the Logtalk compiler in order to preprocess proprietary Prolog
+    directives (using any defined config file hooks) after term-expansion
+    but before trying to compile the directives as Logtalk directives. This
+    change allows for simpler and more robust handling of Prolog proprietary
+    directives, specially module directives.
+
     Corrected the definitions of the predicates '$lgt_current_date'/3 and
     '$lgt_current_time'/3 in the Qu-Prolog config file and rename it to
     "qp.pl". Updated the minimum required version to 8.12 and changed the
