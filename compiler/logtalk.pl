@@ -6185,7 +6185,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 		'$lgt_hook_goal_expansion_'(Goal, EGoal) ->
 		true
 	;	% no compiler hook defined:
-		Goal = EGoal
+		fail
 	).
 
 
@@ -6241,7 +6241,9 @@ current_logtalk_flag(version, version(2, 39, 3)).
 
 '$lgt_tr_expanded_term'((:- Directive), File, Lines, Input, Output) :-
 	!,
-	(	'$lgt_ignore_pl_directive'(Directive) ->								% defined in the Prolog config files
+	(	var(Directive) ->
+		throw(error(instantiantion_error, directive(Directive)))
+	;	'$lgt_ignore_pl_directive'(Directive) ->								% defined in the Prolog config files
 		(	'$lgt_compiler_flag'(portability, warning),
 			\+ '$lgt_compiler_flag'(report, off) ->
 			'$lgt_report_warning_in_new_line',
