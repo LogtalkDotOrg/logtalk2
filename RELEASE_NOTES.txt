@@ -21,6 +21,14 @@ RELEASE NOTES
     change allows for simpler and more robust handling of Prolog proprietary
     directives, specially module directives.
 
+    Added an auxiliary predicate ::/4 in order to allow using the Prolog
+    built-in predicates phrase/2-3 with a Object::GrammarRuleBody in the
+    first argument. Assumes that the back-end Prolog compiler expands the
+    grammar rule non-terminals by adding two arguments.
+
+    Corrected a bug in the implementation of the phrase/2-3 built-in methods
+    that could allow access to non-visible grammar rules.
+
     Corrected the definitions of the predicates '$lgt_current_date'/3 and
     '$lgt_current_time'/3 in the Qu-Prolog config file and rename it to
     "qp.pl". Updated the minimum required version to 8.12 and changed the

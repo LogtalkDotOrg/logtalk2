@@ -322,6 +322,23 @@ Obj<<Goal :-
 
 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  hack to allow calling the Prolog built-in predicates phrase/2-3 with a
+%  Object::GRBody as the first argument; assumes that the grammar rule non-
+%  terminals are expanded by adding two arguments
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+'::'(Obj, GRBody, Input, Rest) :-
+	'$lgt_phrase'(Obj, GRBody, Input, Rest, user, p(p(p))).
+
+
+
+
 % '$lgt_runtime_error_handler'(@term)
 %
 % top-level runtime error handler; an ugly mess due to the lack of Prolog standardization
@@ -9518,7 +9535,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 
 % DCG predicates
 
-'$lgt_tr_body'(phrase(GRBody, Input), '$lgt_phrase'(This, GRBody, Input, This, _), '$lgt_dbg_goal'(phrase(GRBody, Input), '$lgt_phrase'(This, GRBody, Input, This, _), ExCtx), Ctx) :-
+'$lgt_tr_body'(phrase(GRBody, Input), '$lgt_phrase'(This, GRBody, Input, This, p(_)), '$lgt_dbg_goal'(phrase(GRBody, Input), '$lgt_phrase'(This, GRBody, Input, This, _), ExCtx), Ctx) :-
 	var(GRBody),
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
@@ -9532,7 +9549,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	TPred = (Input = S0, [] = S, Pred2),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
-'$lgt_tr_body'(phrase(GRBody, Input, Rest), '$lgt_phrase'(This, GRBody, Input, Rest, This, _), '$lgt_dbg_goal'(phrase(GRBody, Input, Rest), '$lgt_phrase'(This, GRBody, Input, Rest, This, _), ExCtx), Ctx) :-
+'$lgt_tr_body'(phrase(GRBody, Input, Rest), '$lgt_phrase'(This, GRBody, Input, Rest, This, p(_)), '$lgt_dbg_goal'(phrase(GRBody, Input, Rest), '$lgt_phrase'(This, GRBody, Input, Rest, This, _), ExCtx), Ctx) :-
 	var(GRBody),
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
