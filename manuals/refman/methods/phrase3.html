@@ -27,7 +27,7 @@
 phrase(::NonTerminal, Input, Rest)
 phrase(Object::NonTerminal, Input, Rest)</pre>
 <p>
-	True if the list <code>Input</code> can be parsed using the specified non-terminal <code>NonTerminal</code>. The list <code>Rest</code> is what remains of the list <code>Input</code> after parsing succeeded. This method also accepts grammar rule bodies in the first argument (with the limitation that cuts are only supported in local calls). This built-in method is declared private and thus cannot be used as a message to an object. When using a back-end Prolog compiler supporting a module system, calls in the format <code>phrase(Module:NonTerminal, Input, Rest)</code> may also be used.
+	True if the list <code>Input</code> of tokens can be parsed using the specified non-terminal <code>NonTerminal</code>. The list <code>Rest</code> is what remains of the list <code>Input</code> after parsing succeeded. This method also accepts grammar rule bodies in the first argument (with the limitation that cuts are only supported in local calls). This built-in method is declared private and thus cannot be used as a message to an object. When using a back-end Prolog compiler supporting a module system, calls in the format <code>phrase(Module:NonTerminal, Input, Rest)</code> may also be used.
 </p>
 
 <h4>Template and modes</h4>
@@ -56,11 +56,11 @@ phrase(Object::NonTerminal, Input, Rest)</pre>
 <h4>Examples</h4>
 
 <dl>
-	<dt>To parse a list using a non-terminal in the context of the object or category containing the call:</dt>
+	<dt>To parse a list of tokens using a local non-terminal:</dt>
 		<dd><code>phrase(NonTerminal, Input, Rest)</code></dd>
-	<dt>To parse a list using a non-terminal defined in <em><a class="glossary" title="Go to glossary definition" href="../../glossary.html#self">self</a></em>:</dt>
+	<dt>To parse a list of tokens using a non-terminal within the scope of <em><a class="glossary" title="Go to glossary definition" href="../../glossary.html#self">self</a></em>:</dt>
 		<dd><code>phrase(::NonTerminal, Input, Rest)</code></dd>
-	<dt>To parse a list using a non-terminal defined in an explicit object:</dt>
+	<dt>To parse a list of tokens using a public non-terminal of an explicit object:</dt>
 		<dd><code>phrase(Object::NonTerminal, Input, Rest)</code></dd>
 </dl>
 

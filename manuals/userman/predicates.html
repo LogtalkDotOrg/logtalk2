@@ -444,7 +444,7 @@ The predicate <a title="Consult reference manual" href="../refman/methods/phrase
 Result = -9
 yes</pre>
 <p>
-In most cases, the predicates resulting from the translation of the grammar rules to regular clauses are not declared. Instead, these predicates are usually called by using the built-in methods <code>phrase/2</code> and <code>phrase/3</code> as shown in the example above. When we want to send the messages <code>phrase/2</code> and <code>phrase/3</code> to <em>self</em> or to another object, the non-terminal used as first argument must be within the scope of the <em>sender</em>. For the above example, assuming that we want the predicate corresponding to the <code>expr//1</code> non-terminal to be public, the corresponding scope directive would be:
+In most cases, the predicates resulting from the translation of the grammar rules to regular clauses are not declared. Instead, these predicates are usually called by using the built-in methods <a title="Consult reference manual" href="../refman/methods/phrase2.html"><code>phrase/2</code></a> and <a title="Consult reference manual" href="../refman/methods/phrase3.html"><code>phrase/3</code></a> as shown in the example above. When we want to use the built-in methods <code>phrase/2</code> and <code>phrase/3</code>, the non-terminal used as first argument must be within the scope of the <em>sender</em>. For the above example, assuming that we want the predicate corresponding to the <code>expr//1</code> non-terminal to be public, the corresponding scope directive would be:
 </p>
 <pre>:- public(expr//1). </pre>
 <p>
