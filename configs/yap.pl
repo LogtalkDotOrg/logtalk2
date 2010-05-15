@@ -812,11 +812,11 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 
 user:goal_expansion(phrase(Rule, Input, Rest), '$lgt_phrase'(Obj, GRBody, Input, Rest, user, p(p(p)))) :-
 	nonvar(Rule),
-	Rule = '::'(Obj, GRBody)
+	Rule = '::'(Obj, GRBody),
 	!.
 user:goal_expansion(phrase(Rule, Input), '$lgt_phrase'(Obj, GRBody, Input, user, p(p(p)))) :-
 	nonvar(Rule),
-	Rule = '::'(Obj, GRBody)
+	Rule = '::'(Obj, GRBody),
 	!.
 
 
