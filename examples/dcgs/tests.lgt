@@ -18,7 +18,7 @@
 		macaddr::valid("00:1e:4a:ef:72:8b").
 
 	test(dcgs_3) :-
-		findall(Message, morse::phrase(morse(Message), "... --- ..."), Solutions),
+		findall(Message, logtalk << phrase(morse::morse(Message), "... --- ..."), Solutions),
 		Solutions == [[sos]].
 
 	test(dcgs_4) :-
@@ -91,6 +91,6 @@
 		Solutions == [[protocol(http), address([logtalk, org]), path([files,update]), file('')]].
 
 	test(dcgs_20) :-
-		bypass::phrase(foo, _, _).
+		logtalk << phrase(bypass::foo, _, _).
 
 :- end_object.

@@ -322,23 +322,6 @@ Obj<<Goal :-
 
 
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  hack to allow calling the Prolog built-in predicates phrase/2-3 with a
-%  Object::GRBody as the first argument; assumes that the grammar rule non-
-%  terminals are expanded by adding two arguments
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-'::'(Obj, GRBody, Input, Rest) :-
-	'$lgt_phrase'(Obj, GRBody, Input, Rest, user, p(p(p))).
-
-
-
-
 % '$lgt_runtime_error_handler'(@term)
 %
 % top-level runtime error handler; an ugly mess due to the lack of Prolog standardization
@@ -2967,7 +2950,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	catch(
 		'$lgt_phrase'(Obj, GRBody, Input, [], Sender, Scope),
 		error(Error, _, _),
-		throw(error(Error, Obj::phrase(GRBody, Input), Sender))).
+		throw(error(Error, phrase(Obj::GRBody, Input), Sender))).
 
 
 
@@ -2977,21 +2960,21 @@ current_logtalk_flag(version, version(2, 39, 3)).
 
 '$lgt_phrase'(Obj, GRBody, Input, Rest, Sender, _) :-
 	var(GRBody),
-	throw(error(instantiation_error, Obj::phrase(GRBody, Input, Rest), Sender)).
+	throw(error(instantiation_error, phrase(Obj::GRBody, Input, Rest), Sender)).
 
 '$lgt_phrase'(Obj, GRBody, Input, Rest, Sender, _) :-
 	\+ callable(GRBody),
-	throw(error(type_error(callable, GRBody), Obj::phrase(GRBody, Input, Rest), Sender)).
+	throw(error(type_error(callable, GRBody), phrase(Obj::GRBody, Input, Rest), Sender)).
 
 '$lgt_phrase'(Obj, GRBody, Input, Rest, Sender, _) :-
 	nonvar(Input),
 	\+ '$lgt_is_list'(Input),
-	throw(error(type_error(list, Input), Obj::phrase(GRBody, Input, Rest), Sender)).
+	throw(error(type_error(list, Input), phrase(Obj::GRBody, Input, Rest), Sender)).
 
 '$lgt_phrase'(Obj, GRBody, Input, Rest, Sender, _) :-
 	nonvar(Rest),
 	\+ '$lgt_is_list'(Rest),
-	throw(error(type_error(list, Rest), Obj::phrase(GRBody, Input, Rest), Sender)).
+	throw(error(type_error(list, Rest), phrase(Obj::GRBody, Input, Rest), Sender)).
 
 '$lgt_phrase'(Obj, (GRFirst, GRSecond), Input, Rest, Sender, Scope) :-
 	!,
@@ -3034,8 +3017,8 @@ current_logtalk_flag(version, version(2, 39, 3)).
 				call(Call)
 			;	% non-terminal is not within the scope of the sender:
 				(	PScope == p ->
-					throw(error(permission_error(access, private_non_terminal, NonTerminal), Obj::phrase(NonTerminal, Input, Rest), Sender))
-				;	throw(error(permission_error(access, protected_non_terminal, NonTerminal), Obj::phrase(NonTerminal, Input, Rest), Sender))
+					throw(error(permission_error(access, private_non_terminal, NonTerminal), phrase(Obj::NonTerminal, Input, Rest), Sender))
+				;	throw(error(permission_error(access, protected_non_terminal, NonTerminal), phrase(Obj::NonTerminal, Input, Rest), Sender))
 				)
 			)
 		;	% no declaration found for non-terminal:
@@ -3045,12 +3028,12 @@ current_logtalk_flag(version, version(2, 39, 3)).
 			;	call(DDef, Pred, ExCtx, Call)
 			)	->
 				call(Call)
-			;	throw(error(existence_error(non_terminal_declaration, NonTerminal), Obj::phrase(NonTerminal, Input, Rest), Sender))
+			;	throw(error(existence_error(non_terminal_declaration, NonTerminal), phrase(Obj::NonTerminal, Input, Rest), Sender))
 		)
 	;	% not a current object:
 		(	atom(Obj), catch(current_module(Obj), _, fail) ->
 			':'(Obj, Pred)
-		;	throw(error(existence_error(object, Obj), Obj::phrase(NonTerminal, Input, Rest), Sender))
+		;	throw(error(existence_error(object, Obj), phrase(Obj::NonTerminal, Input, Rest), Sender))
 		)
 	).
 
@@ -3746,15 +3729,15 @@ current_logtalk_flag(version, version(2, 39, 3)).
 '$lgt_metacall'(Goal, MetaCallCtx, Sender, This, _) :-
 	var(Goal),
 	(	atom(MetaCallCtx) ->
-		throw(error(instantiation_error, This::call(Goal), This))
-	;	throw(error(instantiation_error, Sender::call(Goal), This))
+		throw(error(instantiation_error, call(This::Goal), This))
+	;	throw(error(instantiation_error, call(Sender::Goal), This))
 	).
 
 '$lgt_metacall'(Goal, MetaCallCtx, Sender, This, _) :-
 	\+ callable(Goal),
 	(	atom(MetaCallCtx) ->
-		throw(error(type_error(callable, Goal), This::call(Goal), This))
-	;	throw(error(type_error(callable, Goal), Sender::call(Goal), This))
+		throw(error(type_error(callable, Goal), call(This::Goal), This))
+	;	throw(error(type_error(callable, Goal), call(Sender::Goal), This))
 	).
 
 '$lgt_metacall'({Goal}, _, _, _, _) :-						% pre-compiled meta-calls or calls
@@ -10439,15 +10422,6 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	!.
 
 
-% DCG predicates
-
-'$lgt_tr_msg'(phrase(GRBody, List), Obj, '$lgt_phrase'(Obj, GRBody, List, This, p(p(p))), This) :-
-	!.
-
-'$lgt_tr_msg'(phrase(GRBody, List, Rest), Obj, '$lgt_phrase'(Obj, GRBody, List, Rest, This, p(p(p))), This) :-
-	!.
-
-
 % message is not a built-in control construct or a call to a built-in 
 % (meta-)predicate: translation performed at runtime
 
@@ -10607,15 +10581,6 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	!.
 
 '$lgt_tr_self_msg'(expand_goal(Goal, EGoal), '$lgt_expand_goal'(Self, Goal, EGoal, This, p(_)), This, Self) :-
-	!.
-
-
-% DCG predicates
-
-'$lgt_tr_self_msg'(phrase(GRBody, List), '$lgt_phrase'(Self, GRBody, List, This, p(_)), This, Self) :-
-	!.
-
-'$lgt_tr_self_msg'(phrase(GRBody, List, Rest), '$lgt_phrase'(Self, GRBody, List, Rest, This, p(_)), This, Self) :-
 	!.
 
 
@@ -13701,8 +13666,8 @@ current_logtalk_flag(version, version(2, 39, 3)).
 '$lgt_built_in_method'(expand_term(_, _), p(p(p)), no, 1) :- !.
 '$lgt_built_in_method'(expand_goal(_, _), p(p(p)), no, 1) :- !.
 % DCGs methods
-'$lgt_built_in_method'(phrase(_, _), p(p(p)), no, 1) :- !.
-'$lgt_built_in_method'(phrase(_, _, _), p(p(p)), no, 1) :- !.
+'$lgt_built_in_method'(phrase(_, _), p, phrase(2, *), 1) :- !.
+'$lgt_built_in_method'(phrase(_, _, _), p, phrase(2, *, *), 1) :- !.
 % meta-calls plus logic and control methods
 '$lgt_built_in_method'(\+ _, p, \+ (::), 1) :- !.
 '$lgt_built_in_method'(Method, p, Meta, 1) :-  % call/1-N
@@ -14720,59 +14685,115 @@ current_logtalk_flag(version, version(2, 39, 3)).
 
 
 
-% '$lgt_dcg_msg'(@dcgbody, @var, @var, -body)
+% '$lgt_dcg_msg'(@dcgbody @object_identifier, @var, @var, -body)
 %
 % translates a grammar rule message to an object into a Prolog message:
 
-'$lgt_dcg_msg'(Var, S0, S, phrase(Var, S0, S)) :-
+'$lgt_dcg_msg'(Var, Obj, S0, S, phrase(Obj::Var, S0, S)) :-
     var(Var),
     !.
 
-'$lgt_dcg_msg'((GRIf -> GRThen), S0, S, (If -> Then)) :-
+'$lgt_dcg_msg'((GRIf -> GRThen), Obj, S0, S, (If -> Then)) :-
     !,
-    '$lgt_dcg_msg'(GRIf, S0, S1, If),
-    '$lgt_dcg_msg'(GRThen, S1, S, Then).
+    '$lgt_dcg_msg'(GRIf, Obj, S0, S1, If),
+    '$lgt_dcg_msg'(GRThen, Obj, S1, S, Then).
 
-'$lgt_dcg_msg'((GREither; GROr), S0, S, (Either; Or)) :-
+'$lgt_dcg_msg'((GREither; GROr), Obj, S0, S, (Either; Or)) :-
     !,
-    '$lgt_dcg_msg'(GREither, S0, S, Either),
-    '$lgt_dcg_msg'(GROr, S0, S, Or).
+    '$lgt_dcg_msg'(GREither, Obj, S0, S, Either),
+    '$lgt_dcg_msg'(GROr, Obj, S0, S, Or).
 
-'$lgt_dcg_msg'((GRFirst, GRSecond), S0, S, (First, Second)) :-
+'$lgt_dcg_msg'((GRFirst, GRSecond), Obj, S0, S, (First, Second)) :-
     !,
-    '$lgt_dcg_msg'(GRFirst, S0, S1, First),
-    '$lgt_dcg_msg'(GRSecond, S1, S, Second).
+    '$lgt_dcg_msg'(GRFirst, Obj, S0, S1, First),
+    '$lgt_dcg_msg'(GRSecond, Obj, S1, S, Second).
 
-'$lgt_dcg_msg'(!, S0, S, (!, S0 = S)) :-
+'$lgt_dcg_msg'(!, _, S0, S, (!, S0 = S)) :-
     !.
 
-'$lgt_dcg_msg'({}, S0, S, (S0 = S)) :-
+'$lgt_dcg_msg'({}, _, S0, S, (S0 = S)) :-
     !.
 
-'$lgt_dcg_msg'({Goal}, S0, S, (call(Goal), S0 = S)) :-
+'$lgt_dcg_msg'({Goal}, _, S0, S, (call(Goal), S0 = S)) :-
     var(Goal),
     !.
 
-'$lgt_dcg_msg'({Goal}, _, _, _) :-
+'$lgt_dcg_msg'({Goal}, _, _, _, _) :-
     \+ callable(Goal),
     throw(type_error(callable, Goal)).
 
-'$lgt_dcg_msg'({Goal}, S0, S, (Goal, S0 = S)) :-
+'$lgt_dcg_msg'({Goal}, _, S0, S, (Goal, S0 = S)) :-
     !.
 
-'$lgt_dcg_msg'(\+ GRBody, S0, S, (\+ Goal, S0 = S)) :-
+'$lgt_dcg_msg'(\+ GRBody, Obj, S0, S, (\+ Goal, S0 = S)) :-
     !,
-    '$lgt_dcg_msg'(GRBody, S0, S, Goal).
+    '$lgt_dcg_msg'(GRBody, Obj, S0, S, Goal).
 
-'$lgt_dcg_msg'([], S0, S, (S0=S)) :-
+'$lgt_dcg_msg'([], _, S0, S, (S0=S)) :-
     !.
 
-'$lgt_dcg_msg'([T| Ts], S0, S, Goal) :-
+'$lgt_dcg_msg'([T| Ts], _, S0, S, Goal) :-
     !,
     '$lgt_dcg_terminals'([T| Ts], S0, S, Goal).
 
-'$lgt_dcg_msg'(NonTerminal, S0, S, phrase(NonTerminal, S0, S)) :-
-    '$lgt_dcg_non_terminal'(NonTerminal, S0, S, _).		% just check validity
+'$lgt_dcg_msg'(NonTerminal, Obj, S0, S, Obj::Goal) :-
+    '$lgt_dcg_non_terminal'(NonTerminal, S0, S, Goal).
+
+
+
+% '$lgt_dcg_self_msg'(@dcgbody, @var, @var, -body)
+%
+% translates a grammar rule message to an object into a Prolog message:
+
+'$lgt_dcg_self_msg'(Var, S0, S, phrase(::Var, S0, S)) :-
+    var(Var),
+    !.
+
+'$lgt_dcg_self_msg'((GRIf -> GRThen), S0, S, (If -> Then)) :-
+    !,
+    '$lgt_dcg_self_msg'(GRIf, S0, S1, If),
+    '$lgt_dcg_self_msg'(GRThen, S1, S, Then).
+
+'$lgt_dcg_self_msg'((GREither; GROr), S0, S, (Either; Or)) :-
+    !,
+    '$lgt_dcg_self_msg'(GREither, S0, S, Either),
+    '$lgt_dcg_self_msg'(GROr, S0, S, Or).
+
+'$lgt_dcg_self_msg'((GRFirst, GRSecond), S0, S, (First, Second)) :-
+    !,
+    '$lgt_dcg_self_msg'(GRFirst, S0, S1, First),
+    '$lgt_dcg_self_msg'(GRSecond, S1, S, Second).
+
+'$lgt_dcg_self_msg'(!, S0, S, (!, S0 = S)) :-
+    !.
+
+'$lgt_dcg_self_msg'({}, S0, S, (S0 = S)) :-
+    !.
+
+'$lgt_dcg_self_msg'({Goal}, S0, S, (call(Goal), S0 = S)) :-
+    var(Goal),
+    !.
+
+'$lgt_dcg_self_msg'({Goal}, _, _, _) :-
+    \+ callable(Goal),
+    throw(type_error(callable, Goal)).
+
+'$lgt_dcg_self_msg'({Goal}, S0, S, (Goal, S0 = S)) :-
+    !.
+
+'$lgt_dcg_self_msg'(\+ GRBody, S0, S, (\+ Goal, S0 = S)) :-
+    !,
+    '$lgt_dcg_self_msg'(GRBody, S0, S, Goal).
+
+'$lgt_dcg_self_msg'([], S0, S, (S0=S)) :-
+    !.
+
+'$lgt_dcg_self_msg'([T| Ts], S0, S, Goal) :-
+    !,
+    '$lgt_dcg_terminals'([T| Ts], S0, S, Goal).
+
+'$lgt_dcg_self_msg'(NonTerminal, S0, S, ::Goal) :-
+    '$lgt_dcg_non_terminal'(NonTerminal, S0, S, Goal).
 
 
 
@@ -14784,17 +14805,16 @@ current_logtalk_flag(version, version(2, 39, 3)).
     var(Var),
     !.
 
-'$lgt_dcg_body'(::RGoal, S0, S, ::CGoal) :-
+'$lgt_dcg_body'(::RGoal, S0, S, CGoal) :-
 	!,
-	'$lgt_dcg_msg'(RGoal, S0, S, CGoal).
+	'$lgt_dcg_self_msg'(RGoal, S0, S, CGoal).
 
-'$lgt_dcg_body'(Object::RGoal, S0, S, Object::CGoal) :-
+'$lgt_dcg_body'(Obj::RGoal, S0, S, CGoal) :-
 	!,
-	'$lgt_dcg_msg'(RGoal, S0, S, CGoal).
+	'$lgt_dcg_msg'(RGoal, Obj, S0, S, CGoal).
 
-'$lgt_dcg_body'(':'(Module, RGoal), S0, S, ':'(Module, CGoal)) :-
-	!,
-	'$lgt_dcg_msg'(RGoal, S0, S, CGoal).
+'$lgt_dcg_body'(':'(Module, RGoal), S0, S, phrase(':'(Module, RGoal), S0, S)) :-
+	!.
 
 '$lgt_dcg_body'((GRIf -> GRThen), S0, S, (If -> Then)) :-
     !,

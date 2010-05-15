@@ -30,9 +30,11 @@ yes
 yes
 
 
-% decode Morse code messages:
+% decode Morse code messages (as phrase/2-3 are private methods, we use the
+% "logtalk" built-in object and the <</2 control construct to invoke the foo//0
+% public grammar rule non-terminal):
 
-?- morse::phrase(morse(Message), "... --- ...").
+?- logtalk << phrase(morse::morse(Message), "... --- ...").
 
 Message = [sos] 
 yes
@@ -166,9 +168,11 @@ enter command> exit
 yes
 
 
-% double bypass using the {}/1 control constructs of grammar rules and Logtalk:
+% double bypass using the {}/1 control constructs of grammar rules and Logtalk
+% (as phrase/2-3 are private methods, we use the "logtalk" built-in object and the
+% <</2 control construct to invoke the foo//0 public grammar rule non-terminal):
 
-| ?- bypass::phrase(foo, _, _).
+| ?- logtalk << phrase(bypass::foo, _, _).
 
 bar predicate called
 yes
