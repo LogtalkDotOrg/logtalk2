@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: May 2, 2010
+%  last updated: May 15, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -795,6 +795,29 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 
 '$lgt_copy_term_without_constraints'(Term, Copy) :-
 	copy_term_nat(Term, Copy).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  hack to allow calling the Prolog built-in predicates phrase/2-3 with a
+%  Object::GRBody as the first argument; assumes that the grammar rule non-
+%  terminals are expanded by adding two arguments
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+:- dynamic(user:goal_expansion/2).
+:- multifile(user:goal_expansion/2).
+
+user:goal_expansion(phrase(Rule, Input, Rest), '$lgt_phrase'(Obj, GRBody, Input, Rest, user, p(p(p)))) :-
+	nonvar(Rule),
+	Rule = '::'(Obj, GRBody)
+	!.
+user:goal_expansion(phrase(Rule, Input), '$lgt_phrase'(Obj, GRBody, Input, user, p(p(p)))) :-
+	nonvar(Rule),
+	Rule = '::'(Obj, GRBody)
+	!.
 
 
 
