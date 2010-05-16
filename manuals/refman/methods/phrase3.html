@@ -27,7 +27,7 @@
 phrase(::NonTerminal, Input, Rest)
 phrase(Object::NonTerminal, Input, Rest)</pre>
 <p>
-	True if the list <code>Input</code> of tokens can be parsed using the specified non-terminal <code>NonTerminal</code>. The list <code>Rest</code> is what remains of the list <code>Input</code> after parsing succeeded. This method also accepts grammar rule bodies in the first argument (with the limitation that cuts are only supported in local calls). This built-in method is declared private and thus cannot be used as a message to an object. When using a back-end Prolog compiler supporting a module system, calls in the format <code>phrase(Module:NonTerminal, Input, Rest)</code> may also be used.
+	True if the list <code>Input</code> of tokens can be parsed using the specified non-terminal <code>NonTerminal</code>. The list <code>Rest</code> is what remains of the list <code>Input</code> after parsing succeeded. This method also accepts grammar rule bodies in the first argument. This built-in method is declared private and thus cannot be used as a message to an object. When using a back-end Prolog compiler supporting a module system, calls in the format <code>phrase(Module:NonTerminal, Input, Rest)</code> may also be used.
 </p>
 
 <h4>Template and modes</h4>
