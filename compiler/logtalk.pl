@@ -14675,7 +14675,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
     '$lgt_dcg_msg'(GRFirst, Obj, S0, S1, First),
     '$lgt_dcg_msg'(GRSecond, Obj, S1, S, Second).
 
-'$lgt_dcg_msg'(!, Obj, S0, S, ('$lgt_obj_exists'(Obj, !, This), !, S0 = S)) :-
+'$lgt_dcg_msg'(!, _, S0, S, (!, S0 = S)) :-
     !.
 
 '$lgt_dcg_msg'(NonTerminal, Obj, S0, S, '$lgt_gr_obj_msg'(Obj, NonTerminal, S0, S, Goal)) :-
@@ -14939,7 +14939,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 '$lgt_gr_obj_msg_error_handler'(existence_error(object, Obj), Obj, NonTerminal, Input, Rest, _, Sender) :-
 	throw(error(existence_error(object, Obj), phrase(Obj::NonTerminal, Input, Rest), Sender)).
 
-'$lgt_gr_obj_msg_error_handler'(Error, Obj, NonTerminal, Input, Rest, Pred, Sender) :-
+'$lgt_gr_obj_msg_error_handler'(Error, Obj, NonTerminal, Input, Rest, _, Sender) :-
 	throw(error(Error, phrase(Obj::NonTerminal, Input, Rest), Sender)).
 
 
@@ -14960,7 +14960,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 '$lgt_gr_self_msg_error_handler'(existence_error(predicate_declaration, Pred), NonTerminal, Input, Rest, Pred, Sender) :-
 	throw(error(existence_error(non_terminal_declaration, NonTerminal), phrase(::NonTerminal, Input, Rest), Sender)).
 
-'$lgt_gr_self_msg_error_handler'(Error, NonTerminal, Input, Rest, Pred, Sender) :-
+'$lgt_gr_self_msg_error_handler'(Error, NonTerminal, Input, Rest, _, Sender) :-
 	throw(error(Error, phrase(::NonTerminal, Input, Rest), Sender)).
 
 
