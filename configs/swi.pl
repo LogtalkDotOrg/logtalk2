@@ -768,14 +768,16 @@ thread_sleep(Time) :-
 :- dynamic(user:goal_expansion/2).
 :- multifile(user:goal_expansion/2).
 
-user:goal_expansion(phrase(Rule, Input, Rest), '$lgt_phrase'(Obj, GRBody, Input, Rest, user, p(p(p)))) :-
+user:goal_expansion(phrase(Rule, Input, Rest), '$lgt_phrase'(Rule, Input, Rest, Ctx)) :-
 	nonvar(Rule),
-	Rule = '::'(Obj, GRBody),
-	!.
-user:goal_expansion(phrase(Rule, Input), '$lgt_phrase'(Obj, GRBody, Input, user, p(p(p)))) :-
+	functor(Rule, '::', 2),
+	!,
+	'$lgt_comp_ctx'(Ctx, _, user, user, user, _, [], _, _, runtime).
+user:goal_expansion(phrase(Rule, Input), '$lgt_phrase'(Rule, Input, Ctx)) :-
 	nonvar(Rule),
-	Rule = '::'(Obj, GRBody),
-	!.
+	functor(Rule, '::', 2),
+	!,
+	'$lgt_comp_ctx'(Ctx, _, user, user, user, _, [], _, _, runtime).
 
 
 

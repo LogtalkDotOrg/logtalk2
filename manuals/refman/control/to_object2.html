@@ -26,7 +26,7 @@
 <pre>Object::Predicate
 {Proxy}::Predicate</pre>
 <p>
-Sends a message to an object. The message argument must match a public predicate of the receiver object. When the message corresponds to a protected or private predicate, the call is only valid if the <em>sender</em> matches the predicate scope container.
+Sends a message to an object. The message argument must match a public predicate of the receiver object. When the message corresponds to a protected or private predicate, the call is only valid if the <em>sender</em> matches the predicate <em>scope container</em>.
 </p>
 <p>
 The <code>{Proxy}::Predicate</code> syntax construct allows simplified access to parametric object <em>proxies</em>. Its operational semantics is equivalent to the goal conjunction <code>({Proxy}, Proxy::Predicate)</code>. I.e. <code>Proxy</code> is proved as a plain Prolog goal and, if successful, the goal term is used as a parametric object identifier. Exceptions thrown when proving <code>Proxy</code> are handled by the <code>::/2</code> control construct. This syntax construct supports backtracking over the <code>{Proxy}</code> goal.
@@ -76,7 +76,7 @@ yes</pre>
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: May 8, 2009</span>
+		<span>Last updated on: May 15, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="../index.html#constructs">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="to_self1.html">next</a></span><br/>

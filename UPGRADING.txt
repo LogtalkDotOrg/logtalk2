@@ -266,6 +266,9 @@ used in categories and removes an overly restrictive safety rule used when
 compiling meta-predicates. Recompilation of all objects and categories is
 strongly recommended.
 
-Logtalk 2.39.3 changes the internal representation of entity and predicate
+Logtalk 2.39.2 changes the internal representation of entity and predicate
 properties, thus requiring recompilation of all objects, protocols, and 
 categories.
+
+Logtalk 2.39.3 changes the scope of the built-in methods phrase/2-3 from
+public to private, thus requiring rewriting calls to these methods.

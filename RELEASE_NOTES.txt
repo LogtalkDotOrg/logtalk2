@@ -21,6 +21,11 @@ RELEASE NOTES
     change allows for simpler and more robust handling of Prolog proprietary
     directives, specially module directives.
 
+    Improved the implementation of Definite Clause Grammars in order to
+    rewrite exceptions generated when processing Obj::NonTerminal and
+    ::NonTerminal goals in grammar rules to refer to non-terminals instead
+    of compiled predicate forms.
+
     Changed the scope of the built-in methods phrase/2-3 from public to
     private for consistent meta-predicate semantics. Updated the "dcgs"
     example and the corresponding unit tests in order to comply with the
