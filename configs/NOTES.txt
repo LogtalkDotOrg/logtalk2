@@ -185,8 +185,6 @@ Qu-Prolog 8.12 and later versions
 	Don't forget to use the chdir/1 predicate to set the working directory 
 	before loading the library or an example.
 
-    No support for smart compilation of source files.
-
 	Written and tested with the help of Peter Robinson.
 
 

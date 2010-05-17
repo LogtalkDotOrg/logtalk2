@@ -43,7 +43,8 @@ RELEASE NOTES
     "qp.pl". Updated the minimum required version to 8.12 and changed the
     value of the Logtalk flag "prolog_dialect" from "qu" to "qp" in order
     to match the value of the new Prolog flag "dialect" implemented in
-    Qu-Prolog 8.12.
+    Qu-Prolog 8.12. Added support for the "smart_compilation" compiler flag.
+    Improved startup time when using the "qplgt.sh" integration script. 
 
 
 2.39.2 - May 4, 2010

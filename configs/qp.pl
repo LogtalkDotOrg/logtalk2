@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.12 and later versions
 %
-%  last updated: May 10, 2010
+%  last updated: May 17, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -333,8 +333,10 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %
 % compare file modification times
 
-'$lgt_compare_file_mtimes'(_, _, _) :-
-	fail.
+'$lgt_compare_file_mtimes'(Result, File1, File2) :-
+	stat(File1, stat(Time1, _)),
+	stat(File2, stat(Time2, _)),
+	compare(Result, Time1, Time2).
 
 
 % '$lgt_environment_variable'(?atom, ?atom)
