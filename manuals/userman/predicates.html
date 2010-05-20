@@ -637,10 +637,10 @@ Logtalk supports two definite clause grammar parsing built-in private methods, <
 Logtalk supports a <a title="Consult reference manual" href="../refman/methods/expand_term2.html"><code>expand_term/2</code></a> built-in method for expanding a term into a list of terms. This method is mostly used to translate grammar rules into Prolog clauses. It can be customized, e.g. for bypassing the default Logtalk grammar rule translator, by defining clauses for the predicate <a title="Consult reference manual" href="../refman/methods/term_expansion2.html"><code>term_expansion/2</code></a>.
 </p>
 <p>
-Logtalk supports a <a title="Consult reference manual" href="../refman/methods/expand_goal2.html"><code>expand_goal/2</code></a> built-in method for expanding a goal. This method can be customized by defining clauses for the predicate <a title="Consult reference manual" href="../refman/methods/goal_expansion2.html"><code>goal_expansion/2</code></a>.
+Logtalk also supports a <a title="Consult reference manual" href="../refman/methods/expand_goal2.html"><code>expand_goal/2</code></a> built-in method for expanding a goal. This method can be customized by defining clauses for the predicate <a title="Consult reference manual" href="../refman/methods/goal_expansion2.html"><code>goal_expansion/2</code></a>.
 </p>
 <p>
-Term and goal expansion may be used either by calling the <code>expand_term/2</code> and <code>expand_goal/2</code> methods explicitly or by using <em><a class="glossary" title="Go to glossary definition" href="../glossary.html#hook">hook objects</a></em>. Clauses for the <code>term_expansion/2</code> and <code>goal_expansion/2</code> predicates defined within an object or a category are never in the compilation of the object or the category itself.
+Term and goal expansion may be performed either by calling the <code>expand_term/2</code> and <code>expand_goal/2</code> built-in methods explicitly or by using <em><a class="glossary" title="Go to glossary definition" href="../glossary.html#hook">hook objects</a></em>. Clauses for the <code>term_expansion/2</code> and <code>goal_expansion/2</code> predicates defined within an object or a category are never in the compilation of the object or the category itself.
 </p>
 
 <h2 id="predicates_properties">Predicate properties</h2>

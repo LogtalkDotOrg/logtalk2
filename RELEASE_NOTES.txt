@@ -15,6 +15,15 @@ RELEASE NOTES
 
 2.39.3 - June ??, 2010
 
+    Changed the implementation of the term and goal expansion mechanisms in
+    order to only be performed automatically by the Logtalk compiler when
+    compiling a source file. When dynamically creating entities at runtime
+    and asserting clauses, the term and goal expansion built-in methods must
+    be called explicitly.
+
+    Updated the Logtalk compiler implementation in order to simplify passing
+    of compilation context data.
+
     Updated the Logtalk compiler in order to preprocess proprietary Prolog
     directives (using any defined config file hooks) after term-expansion
     but before trying to compile the directives as Logtalk directives. This

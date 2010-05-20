@@ -30,6 +30,9 @@ Expands a goal.
 <p>
 The expansion works as follows: if the first argument is a variable, then it is unified with the second argument; if the first argument is not a variable and clauses for the <code>goal_expansion/2</code> predicate are within scope, then this predicate is called to provide an expansion that is then unified with the second argument; if the call to the <code>goal_expansion/2</code> predicate fails, the two arguments are unified.
 </p>
+<p>
+Goal expansion is only performed by the Logtalk compiler to expand the body of clauses read from a source file.
+</p>
 
 <h4>Template and modes</h4>
 
@@ -50,7 +53,7 @@ The expansion works as follows: if the first argument is a variable, then it is 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: November 21, 2008</span>
+		<span>Last updated on: May 18, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="term_expansion2.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="goal_expansion2.html">next</a></span><br/>
