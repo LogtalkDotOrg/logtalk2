@@ -31,9 +31,9 @@ RELEASE NOTES
     directives, specially module directives.
 
     Improved the implementation of Definite Clause Grammars in order to
-    rewrite exceptions generated when processing Obj::NonTerminal and
-    ::NonTerminal goals in grammar rules to refer to non-terminals instead
-    of compiled predicate forms when running in debug mode.
+    rewrite exceptions generated when processing NonTerminal, ::NonTerminal,
+    and Obj::NonTerminal goals in grammar rules to refer to non-terminals
+    instead of compiled predicate forms when running in debug mode.
 
     Changed the scope of the built-in methods phrase/2-3 from public to
     private for consistent meta-predicate semantics. Updated the "dcgs"

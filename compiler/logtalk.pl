@@ -9540,6 +9540,15 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	'$lgt_tr_self_msg'(Pred, TPred, This, Self),
 	DPred = '$lgt_gr_self_msg'(NonTerminal, Input, Rest, TPred, This).
 
+'$lgt_tr_body'('$lgt_gr_non_terminal'(NonTerminal, Input, Rest, Pred), TPred, '$lgt_dbg_goal'(phrase(NonTerminal, Input, Rest), DPred, ExCtx), Ctx) :-
+	!,
+	'$lgt_comp_ctx_this'(Ctx, This),
+	'$lgt_comp_ctx_prefix'(Ctx, Prefix),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_tr_body'(Pred, TPred, _, Ctx),
+	DPred = '$lgt_gr_non_terminal'(NonTerminal, Input, Rest, Prefix, TPred, This).
+
 
 % inline methods (usually translated to a single unification with the corresponding context argument)
 
@@ -14818,7 +14827,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	!,
 	'$lgt_dcg_body'(':'(Module, Original), S0, S, Goal).
 
-'$lgt_dcg_body'(NonTerminal, S0, S, Goal) :-
+'$lgt_dcg_body'(NonTerminal, S0, S, '$lgt_gr_non_terminal'(NonTerminal, S0, S, Goal)) :-
     '$lgt_dcg_non_terminal'(NonTerminal, S0, S, Goal),
 	functor(NonTerminal, Functor, Arity),
 	(	'$lgt_pp_calls_nt_'(Functor, Arity) ->
@@ -14995,6 +15004,28 @@ current_logtalk_flag(version, version(2, 39, 3)).
 '$lgt_gr_self_msg_error_handler'(Error, NonTerminal, Input, Rest, _, Sender) :-
 	throw(error(Error, phrase(::NonTerminal, Input, Rest), Sender)).
 
+
+
+% try to rewrite exceptions generated when processing NonTerminal goals in grammar
+% rules in order to refer to non-terminals instead of their compiled predicate form:
+
+'$lgt_gr_non_terminal'(NonTerminal, Input, Rest, Prefix, Goal, Sender) :-
+	catch(
+		Goal,
+		error(Error, _),
+		'$lgt_gr_non_terminal_error_handler'(Error, NonTerminal, Input, Rest, Prefix, Sender)).
+
+
+'$lgt_gr_non_terminal_error_handler'(existence_error(procedure, PFunctor/PArity), NonTerminal, Input, Rest, Prefix, Sender) :-
+	functor(NonTerminal, NTFunctor, NTArity),
+	ExtArity is NTArity + 2,
+	PArity is NTArity + 3,
+	'$lgt_construct_predicate_indicator'(Prefix, NTFunctor/ExtArity, PFunctor/PArity),
+	throw(error(existence_error(non_terminal, NTFunctor//NTArity), phrase(NonTerminal, Input, Rest), Sender)).
+
+'$lgt_gr_non_terminal_error_handler'(Error, NonTerminal, Input, Rest, _, Sender) :-
+	throw(error(Error, phrase(NonTerminal, Input, Rest), Sender)).
+	
 
 
 
