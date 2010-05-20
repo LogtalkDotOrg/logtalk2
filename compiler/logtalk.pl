@@ -9523,22 +9523,22 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	TPred = (Input = S0, Rest = S, TPred0),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
-'$lgt_tr_body'('$lgt_gr_obj_msg'(Obj, NonTerminal, Input, Rest, Pred), TPred, '$lgt_dbg_goal'(phrase(Obj::NonTerminal, Input, Rest), TPred, ExCtx), Ctx) :-
+'$lgt_tr_body'('$lgt_gr_obj_msg'(Obj, NonTerminal, Input, Rest, Pred), TPred, '$lgt_dbg_goal'(phrase(Obj::NonTerminal, Input, Rest), DPred, ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, This, _),
-	'$lgt_tr_msg'(Pred, Obj, TPred0, This),
-	TPred = '$lgt_gr_obj_msg'(Obj, NonTerminal, Input, Rest, TPred0, This).
+	'$lgt_tr_msg'(Pred, Obj, TPred, This),
+	DPred = '$lgt_gr_obj_msg'(Obj, NonTerminal, Input, Rest, TPred, This).
 
-'$lgt_tr_body'('$lgt_gr_self_msg'(NonTerminal, Input, Rest, Pred), TPred, '$lgt_dbg_goal'(phrase(::NonTerminal, Input, Rest), TPred, ExCtx), Ctx) :-
+'$lgt_tr_body'('$lgt_gr_self_msg'(NonTerminal, Input, Rest, Pred), TPred, '$lgt_dbg_goal'(phrase(::NonTerminal, Input, Rest), DPred, ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_self'(Ctx, Self),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
-	'$lgt_tr_self_msg'(Pred, TPred0, This, Self),
-	TPred = '$lgt_gr_self_msg'(NonTerminal, Input, Rest, TPred0, This).
+	'$lgt_tr_self_msg'(Pred, TPred, This, Self),
+	DPred = '$lgt_gr_self_msg'(NonTerminal, Input, Rest, TPred, This).
 
 
 % inline methods (usually translated to a single unification with the corresponding context argument)
