@@ -2949,10 +2949,10 @@ current_logtalk_flag(version, version(2, 39, 3)).
 %
 % phrase/2 built-in method
 
-'$lgt_phrase'(GRBody, Input, Ctx) :-
-	'$lgt_comp_ctx_this'(Ctx, This),
+'$lgt_phrase'(GRBody, Input, ExCtx) :-
+	'$lgt_exec_ctx'(ExCtx, This, _),
 	catch(
-		'$lgt_phrase'(GRBody, Input, [], Ctx),
+		'$lgt_phrase'(GRBody, Input, [], ExCtx),
 		error(Error, phrase(GRBody, Input, []), This),
 		throw(error(Error, phrase(GRBody, Input), This))).
 
@@ -2962,30 +2962,33 @@ current_logtalk_flag(version, version(2, 39, 3)).
 %
 % phrase/3 built-in method
 
-'$lgt_phrase'(GRBody, Input, Rest, Ctx) :-
+'$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
 	var(GRBody),
-	'$lgt_comp_ctx_this'(Ctx, This),
+	'$lgt_exec_ctx'(ExCtx, This, _),
 	throw(error(instantiation_error, phrase(GRBody, Input, Rest), This)).
 
-'$lgt_phrase'(GRBody, Input, Rest, Ctx) :-
+'$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
 	\+ callable(GRBody),
-	'$lgt_comp_ctx_this'(Ctx, This),
+	'$lgt_exec_ctx'(ExCtx, This, _),
 	throw(error(type_error(callable, GRBody), phrase(GRBody, Input, Rest), This)).
 
-'$lgt_phrase'(GRBody, Input, Rest, Ctx) :-
+'$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
 	nonvar(Input),
 	\+ '$lgt_is_list'(Input),
-	'$lgt_comp_ctx_this'(Ctx, This),
+	'$lgt_exec_ctx'(ExCtx, This, _),
 	throw(error(type_error(list, Input), phrase(GRBody, Input, Rest), This)).
 
-'$lgt_phrase'(GRBody, Input, Rest, Ctx) :-
+'$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
 	nonvar(Rest),
 	\+ '$lgt_is_list'(Rest),
-	'$lgt_comp_ctx_this'(Ctx, This),
+	'$lgt_exec_ctx'(ExCtx, This, _),
 	throw(error(type_error(list, Rest), phrase(GRBody, Input, Rest), This)).
 
-'$lgt_phrase'(GRBody, Input, Rest, Ctx) :-
+'$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
 	'$lgt_dcg_body'(GRBody, S0, S, Pred),
+	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
+	'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _), !,
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, ExCtx, runtime),
 	'$lgt_tr_body'(Pred, TPred0, _, Ctx),
 	TPred = (Input = S0, Rest = S, TPred0),
 	call(TPred).
@@ -9496,7 +9499,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 
 % DCG predicates
 
-'$lgt_tr_body'(phrase(GRBody, Input), '$lgt_phrase'(GRBody, Input, Ctx), '$lgt_dbg_goal'(phrase(GRBody, Input), '$lgt_phrase'(GRBody, Input, Ctx), ExCtx), Ctx) :-
+'$lgt_tr_body'(phrase(GRBody, Input), '$lgt_phrase'(GRBody, Input, ExCtx), '$lgt_dbg_goal'(phrase(GRBody, Input), '$lgt_phrase'(GRBody, Input, ExCtx), ExCtx), Ctx) :-
 	var(GRBody),
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
@@ -9508,7 +9511,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	TPred = (Input = S0, [] = S, TPred0),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
-'$lgt_tr_body'(phrase(GRBody, Input, Rest), '$lgt_phrase'(GRBody, Input, Rest, Ctx), '$lgt_dbg_goal'(phrase(GRBody, Input, Rest), '$lgt_phrase'(GRBody, Input, Rest, Ctx), ExCtx), Ctx) :-
+'$lgt_tr_body'(phrase(GRBody, Input, Rest), '$lgt_phrase'(GRBody, Input, Rest, ExCtx), '$lgt_dbg_goal'(phrase(GRBody, Input, Rest), '$lgt_phrase'(GRBody, Input, Rest, ExCtx), ExCtx), Ctx) :-
 	var(GRBody),
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
