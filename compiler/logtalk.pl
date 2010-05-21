@@ -14771,7 +14771,7 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	!,
 	'$lgt_dcg_msg'(RGoal, Obj, S0, S, CGoal).
 
-'$lgt_dcg_body'(':'(Module, RGoal), S0, S, phrase(':'(Module, RGoal), S0, S)) :-
+'$lgt_dcg_body'(':'(Module, RGoal), S0, S, ':'(Module, phrase(RGoal, S0, S))) :-
 	!.
 
 '$lgt_dcg_body'((GRIf -> GRThen), S0, S, (If -> Then)) :-

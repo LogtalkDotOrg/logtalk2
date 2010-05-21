@@ -43,6 +43,8 @@ RELEASE NOTES
     Corrected a bug in the implementation of the phrase/2-3 built-in methods
     that could allow access to non-visible grammar rules.
 
+    Improved performance of Module:NonTerminal goals in grammar rules.
+
     Added goal_expansion/2 clauses to the SWI-Prolog and YAP config files in
     order to allow calling the Prolog built-in predicates phrase/2-3 with a
     Object::GrammarRuleBody in the first argument.
