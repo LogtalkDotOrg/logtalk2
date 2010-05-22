@@ -2989,9 +2989,12 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
 	'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _), !,
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, ExCtx, runtime),
-	'$lgt_tr_body'(Pred, TPred0, _, Ctx),
-	TPred = (Input = S0, Rest = S, TPred0),
-	call(TPred).
+	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
+	Input = S0, Rest = S,
+	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(This) ->
+		call(DPred)
+	;	call(TPred)
+	).
 
 
 
@@ -3727,8 +3730,11 @@ current_logtalk_flag(version, version(2, 39, 3)).
 		call(TPred)
 	;	% in the worst case we need to compile the meta-call:
 		'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, ExCtx, runtime),
-		'$lgt_tr_body'(Pred, TPred, _, Ctx) ->
-		call(TPred)
+		'$lgt_tr_body'(Pred, TPred, DPred, Ctx) ->
+		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(This) ->
+			call(DPred)
+		;	call(TPred)
+		)
 	;	% of course, the meta-call may happen to be an unfortunate mistake:
 		functor(Pred, Functor, Arity),
 		throw(error(existence_error(procedure, Functor/Arity), call(Pred), This))
@@ -3751,8 +3757,11 @@ current_logtalk_flag(version, version(2, 39, 3)).
 		call(TPred)
 	;	% in the worst case we need to compile the meta-call:
 		'$lgt_comp_ctx'(Ctx, _, Sender, Sender, Self, Prefix, [], _, ExCtx, runtime),
-		'$lgt_tr_body'(Pred, TPred, _, Ctx) ->
-		call(TPred)
+		'$lgt_tr_body'(Pred, TPred, DPred, Ctx) ->
+		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Sender) ->
+			call(DPred)
+		;	call(TPred)
+		)
 	;	% of course, the meta-call may happen to be an unfortunate mistake:
 		functor(Pred, Functor, Arity),
 		throw(error(existence_error(procedure, Functor/Arity), call(Pred), Sender))
@@ -3821,8 +3830,11 @@ current_logtalk_flag(version, version(2, 39, 3)).
 				call(TGoal)
 			;	% in the worst case we need to compile the goal:
 				'$lgt_comp_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _, ExCtx, runtime),
-				catch('$lgt_tr_body'(Goal, TGoal, _, Ctx), Error, throw(error(Error, Obj<<Goal, This))),
-				call(TGoal)
+				catch('$lgt_tr_body'(Goal, TGoal, DGoal, Ctx), Error, throw(error(Error, Obj<<Goal, This))),
+				(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
+					call(DGoal)
+				;	call(TGoal)
+				)
 			)
 		;	throw(error(permission_error(access, predicate, Goal), Obj<<Goal, This))
 		)
@@ -8888,10 +8900,11 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	\+ callable(Goals),
 	throw(type_error(callable, Goals)).
 
-'$lgt_tr_body'(threaded(Goals), MTGoals, '$lgt_dbg_goal'(threaded(Goals), MTGoals, ExCtx), Ctx) :-
+'$lgt_tr_body'(threaded(Goals), MTGoals, '$lgt_dbg_goal'(threaded(Goals), MDGoals, ExCtx), Ctx) :-
 	!,
-	'$lgt_tr_body'(Goals, TGoals, _, Ctx),
+	'$lgt_tr_body'(Goals, TGoals, DGoals, Ctx),
 	'$lgt_tr_threaded_call'(TGoals, MTGoals),
+	'$lgt_tr_threaded_call'(DGoals, MDGoals),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
 
@@ -8909,13 +8922,15 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	\+ callable(Goal),
 	throw(type_error(callable, Goal)).
 
-'$lgt_tr_body'(threaded_call(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_call(Goal, Tag), MTGoal, ExCtx), Ctx) :-
+'$lgt_tr_body'(threaded_call(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_call(Goal, Tag), MDGoal, ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _),
-	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(call, Prefix, TGoal, This, Self, Tag))
-	;	MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(call, TGoal, This, Self, Tag))
+		MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(call, Prefix, TGoal, This, Self, Tag)),
+		MDGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(call, Prefix, DGoal, This, Self, Tag))
+	;	MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(call, TGoal, This, Self, Tag)),
+		MDGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(call, DGoal, This, Self, Tag))
 	),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _).
 
@@ -8930,13 +8945,15 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	\+ callable(Goal),
 	throw(type_error(callable, Goal)).
 
-'$lgt_tr_body'(threaded_call(Goal), MTGoal, '$lgt_dbg_goal'(threaded_call(Goal), MTGoal, ExCtx), Ctx) :-
+'$lgt_tr_body'(threaded_call(Goal), MTGoal, '$lgt_dbg_goal'(threaded_call(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _),
-	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_dispatch_goal'(call, Prefix, TGoal, This, Self, [])
-	;	MTGoal = '$lgt_mt_dispatch_goal'(call, TGoal, This, Self, [])
+		MTGoal = '$lgt_mt_dispatch_goal'(call, Prefix, TGoal, This, Self, []),
+		MDGoal = '$lgt_mt_dispatch_goal'(call, Prefix, DGoal, This, Self, [])
+	;	MTGoal = '$lgt_mt_dispatch_goal'(call, TGoal, This, Self, []),
+		MDGoal = '$lgt_mt_dispatch_goal'(call, DGoal, This, Self, [])
 	),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _).
 
@@ -8955,13 +8972,15 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	\+ callable(Goal),
 	throw(type_error(callable, Goal)).
 
-'$lgt_tr_body'(threaded_once(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_once(Goal, Tag), MTGoal, ExCtx), Ctx) :-
+'$lgt_tr_body'(threaded_once(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_once(Goal, Tag), MDGoal, ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _),
-	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(once, Prefix, TGoal, This, Self, Tag))
-	;	MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(once, TGoal, This, Self, Tag))
+		MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(once, Prefix, TGoal, This, Self, Tag)),
+		MDGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(once, Prefix, DGoal, This, Self, Tag))
+	;	MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(once, TGoal, This, Self, Tag)),
+		MDGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(once, DGoal, This, Self, Tag))
 	),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _).
 
@@ -8976,13 +8995,15 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	\+ callable(Goal),
 	throw(type_error(callable, Goal)).
 
-'$lgt_tr_body'(threaded_once(Goal), MTGoal, '$lgt_dbg_goal'(threaded_once(Goal), MTGoal, ExCtx), Ctx) :-
+'$lgt_tr_body'(threaded_once(Goal), MTGoal, '$lgt_dbg_goal'(threaded_once(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _),
-	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_dispatch_goal'(once, Prefix, TGoal, This, Self, [])
-	;	MTGoal = '$lgt_mt_dispatch_goal'(once, TGoal, This, Self, [])
+		MTGoal = '$lgt_mt_dispatch_goal'(once, Prefix, TGoal, This, Self, []),
+		MDGoal = '$lgt_mt_dispatch_goal'(once, Prefix, DGoal, This, Self, [])
+	;	MTGoal = '$lgt_mt_dispatch_goal'(once, TGoal, This, Self, []),
+		MDGoal = '$lgt_mt_dispatch_goal'(once, DGoal, This, Self, [])
 	),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _).
 
@@ -8997,13 +9018,15 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	\+ callable(Goal),
 	throw(type_error(callable, Goal)).
 
-'$lgt_tr_body'(threaded_ignore(Goal), MTGoal, '$lgt_dbg_goal'(threaded_ignore(Goal), MTGoal, ExCtx), Ctx) :-
+'$lgt_tr_body'(threaded_ignore(Goal), MTGoal, '$lgt_dbg_goal'(threaded_ignore(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _),
-	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_dispatch_goal'(ignore, Prefix, TGoal, This, Self, _)
-	;	MTGoal = '$lgt_mt_dispatch_goal'(ignore, TGoal, This, Self, _)
+		MTGoal = '$lgt_mt_dispatch_goal'(ignore, Prefix, TGoal, This, Self, _),
+		MDGoal = '$lgt_mt_dispatch_goal'(ignore, Prefix, DGoal, This, Self, _)
+	;	MTGoal = '$lgt_mt_dispatch_goal'(ignore, TGoal, This, Self, _),
+		MDGoal = '$lgt_mt_dispatch_goal'(ignore, DGoal, This, Self, _)
 	),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _).
 
@@ -9018,13 +9041,15 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	\+ callable(Goal),
 	throw(type_error(callable, Goal)).
 
-'$lgt_tr_body'(threaded_exit(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_exit(Goal, Tag), MTGoal, ExCtx), Ctx) :-
+'$lgt_tr_body'(threaded_exit(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_exit(Goal, Tag), MDGoal, ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _),
-	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_get_reply'(Prefix, TGoal, Sender, This, Self, Tag)
-	;	MTGoal = '$lgt_mt_get_reply'(TGoal, Sender, This, Self, Tag)
+		MTGoal = '$lgt_mt_get_reply'(Prefix, TGoal, Sender, This, Self, Tag),
+		MDGoal = '$lgt_mt_get_reply'(Prefix, DGoal, Sender, This, Self, Tag)
+	;	MTGoal = '$lgt_mt_get_reply'(TGoal, Sender, This, Self, Tag),
+		MDGoal = '$lgt_mt_get_reply'(DGoal, Sender, This, Self, Tag)
 	),
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _).
 
@@ -9039,13 +9064,15 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	\+ callable(Goal),
 	throw(type_error(callable, Goal)).
 
-'$lgt_tr_body'(threaded_exit(Goal), MTGoal, '$lgt_dbg_goal'(threaded_exit(Goal), MTGoal, ExCtx), Ctx) :-
+'$lgt_tr_body'(threaded_exit(Goal), MTGoal, '$lgt_dbg_goal'(threaded_exit(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _),
-	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_get_reply'(Prefix, TGoal, Sender, This, Self, [])
-	;	MTGoal = '$lgt_mt_get_reply'(TGoal, Sender, This, Self, [])
+		MTGoal = '$lgt_mt_get_reply'(Prefix, TGoal, Sender, This, Self, []),
+		MDGoal = '$lgt_mt_get_reply'(Prefix, DGoal, Sender, This, Self, [])
+	;	MTGoal = '$lgt_mt_get_reply'(TGoal, Sender, This, Self, []),
+		MDGoal = '$lgt_mt_get_reply'(DGoal, Sender, This, Self, [])
 	),
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _).
 
@@ -9060,13 +9087,15 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	\+ callable(Goal),
 	throw(type_error(callable, Goal)).
 
-'$lgt_tr_body'(threaded_peek(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_peek(Goal, Tag), MTGoal, ExCtx), Ctx) :-
+'$lgt_tr_body'(threaded_peek(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_peek(Goal, Tag), MDGoal, ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _),
-	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, Sender, This, Self, Tag)
-	;	MTGoal = '$lgt_mt_peek_reply'(TGoal, Sender, This, Self, Tag)
+		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, Sender, This, Self, Tag),
+		MDGoal = '$lgt_mt_peek_reply'(Prefix, DGoal, Sender, This, Self, Tag)
+	;	MTGoal = '$lgt_mt_peek_reply'(TGoal, Sender, This, Self, Tag),
+		MDGoal = '$lgt_mt_peek_reply'(DGoal, Sender, This, Self, Tag)
 	),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _).
 
@@ -9081,13 +9110,15 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	\+ callable(Goal),
 	throw(type_error(callable, Goal)).
 
-'$lgt_tr_body'(threaded_peek(Goal), MTGoal, '$lgt_dbg_goal'(threaded_peek(Goal), MTGoal, ExCtx), Ctx) :-
+'$lgt_tr_body'(threaded_peek(Goal), MTGoal, '$lgt_dbg_goal'(threaded_peek(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _),
-	'$lgt_tr_body'(Goal, TGoal, _, Ctx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, Sender, This, Self, [])
-	;	MTGoal = '$lgt_mt_peek_reply'(TGoal, Sender, This, Self, [])
+		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, Sender, This, Self, []),
+		MDGoal = '$lgt_mt_peek_reply'(Prefix, DGoal, Sender, This, Self, [])
+	;	MTGoal = '$lgt_mt_peek_reply'(TGoal, Sender, This, Self, []),
+		MDGoal = '$lgt_mt_peek_reply'(DGoal, Sender, This, Self, [])
 	),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _).
 
@@ -9504,11 +9535,12 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
-'$lgt_tr_body'(phrase(GRBody, Input), TPred, '$lgt_dbg_goal'(phrase(GRBody, Input), TPred, ExCtx), Ctx) :-
+'$lgt_tr_body'(phrase(GRBody, Input), TPred, '$lgt_dbg_goal'(phrase(GRBody, Input), DPred, ExCtx), Ctx) :-
 	!,
 	'$lgt_dcg_body'(GRBody, S0, S, Pred),
-	'$lgt_tr_body'(Pred, TPred0, _, Ctx),
+	'$lgt_tr_body'(Pred, TPred0, DPred0, Ctx),
 	TPred = (Input = S0, [] = S, TPred0),
+	DPred = (Input = S0, [] = S, DPred0),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
 '$lgt_tr_body'(phrase(GRBody, Input, Rest), '$lgt_phrase'(GRBody, Input, Rest, ExCtx), '$lgt_dbg_goal'(phrase(GRBody, Input, Rest), '$lgt_phrase'(GRBody, Input, Rest, ExCtx), ExCtx), Ctx) :-
@@ -9516,11 +9548,12 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
-'$lgt_tr_body'(phrase(GRBody, Input, Rest), TPred, '$lgt_dbg_goal'(phrase(GRBody, Input, Rest), TPred, ExCtx), Ctx) :-
+'$lgt_tr_body'(phrase(GRBody, Input, Rest), TPred, '$lgt_dbg_goal'(phrase(GRBody, Input, Rest), DPred, ExCtx), Ctx) :-
 	!,
 	'$lgt_dcg_body'(GRBody, S0, S, Pred),
-	'$lgt_tr_body'(Pred, TPred0, _, Ctx),
+	'$lgt_tr_body'(Pred, TPred0, DPred0, Ctx),
 	TPred = (Input = S0, Rest = S, TPred0),
+	DPred = (Input = S0, Rest = S, DPred0),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
 '$lgt_tr_body'('$lgt_gr_obj_msg'(Obj, NonTerminal, Input, Rest, Pred), TPred, '$lgt_dbg_goal'(phrase(Obj::NonTerminal, Input, Rest), DPred, ExCtx), Ctx) :-
@@ -9546,8 +9579,8 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	'$lgt_comp_ctx_prefix'(Ctx, Prefix),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, This, _),
-	'$lgt_tr_body'(Pred, TPred, _, Ctx),
-	DPred = '$lgt_gr_non_terminal'(NonTerminal, Input, Rest, Prefix, TPred, This).
+	'$lgt_tr_body'(Pred, TPred, DPred0, Ctx),
+	DPred = '$lgt_gr_non_terminal'(NonTerminal, Input, Rest, Prefix, DPred0, This).
 
 
 % inline methods (usually translated to a single unification with the corresponding context argument)
