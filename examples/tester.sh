@@ -22,6 +22,7 @@ results="$base/tester_results"
 backend=yap
 prolog='YAP'
 logtalk='yaplgt -g'
+mode='normal'
 
 usage_help()
 {
@@ -30,24 +31,28 @@ usage_help()
 	echo "of the directory containing this script."
 	echo
 	echo "Usage:"
-	echo "  $0 -p prolog -d results"
+	echo "  $0 -p prolog -m mode -d results"
 	echo "  $0 -v"
 	echo "  $0 -h"
 	echo
 	echo "Optional arguments:"
 	echo "  -v print version of `basename $0`"
 	echo "  -p back-end Prolog compiler (default is $backend)"
+	echo "     (possible values are ciao, cx, eclipse, qp, sicstus, swi, xsb, and yap)"
+	echo "  -m compilation mode (default is $mode)"
+	echo "     (possible values are normal, debug, and all)"
 	echo "  -d name of the sub-directory to store the test results (default is tester_results)"
 	echo "  -h help"
 	echo
 	exit 0
 }
 
-while getopts "vp:d:h" option
+while getopts "vp:m:d:h" option
 do
 	case $option in
 		v) print_version;;
 		p) p_arg="$OPTARG";;
+		m) m_arg="$OPTARG";;
 		d) d_arg="$OPTARG";;
 		h) usage_help;;
 		*) usage_help;;
@@ -91,6 +96,18 @@ elif [ ! `which $backend` ] ; then
     exit 1
 fi
 
+if [ "$m_arg" = "normal" ] ; then
+	mode='normal'
+elif [ "$m_arg" = "debug" ] ; then
+	mode='debug'
+elif [ "$m_arg" = "all" ] ; then
+	mode='all'
+elif [ "$m_arg" != "" ] ; then
+	echo "Error! Unknow compilation mode: $m_arg"
+	usage_help
+	exit 1
+fi
+
 if [ "$d_arg" != "" ] ; then
 	results="$base/$d_arg"
 fi
@@ -110,8 +127,14 @@ do
 			echo '********************************************'
 			echo "***** Testing $unit"
 			name=$(echo $unit|sed 's|/|__|g')
-			$logtalk "logtalk_load(tester),halt." > "$results/$name.results" 2> "$results/$name.errors"
-			grep 'tests:' "$results/$name.results" | sed 's/%/*****        /'
+			if [ $mode = 'normal' ] || [ $mode = 'all' ] ; then
+				$logtalk "logtalk_load(tester),halt." > "$results/$name.results" 2> "$results/$name.errors"
+				grep 'tests:' "$results/$name.results" | sed 's/%/*****        /'
+			fi
+			if [ $mode = 'debug' ] || [ $mode = 'all' ] ; then
+				$logtalk "set_logtalk_flag(debug,on),logtalk_load(tester),halt." > "$results/$name.results" 2> "$results/$name.errors"
+				grep 'tests:' "$results/$name.results" | sed 's/%/***** (debug)/'
+			fi
 			grep '(not applicable)' "$results/$name.results" | sed 's/(/*****         (/'
 		fi
 		for subunit in *
@@ -122,8 +145,14 @@ do
 					echo '********************************************'
 					echo "***** Testing $unit/$subunit"
 					subname=$(echo $unit/$subunit|sed 's|/|__|g')
-					$logtalk "logtalk_load(tester),halt." > "$results/$subname.results" 2> "$results/$subname.errors"
-					grep 'tests:' "$results/$subname.results" | sed 's/%/*****        /'
+					if [ $mode = 'normal' ] || [ $mode = 'all' ] ; then
+						$logtalk "logtalk_load(tester),halt." > "$results/$subname.results" 2> "$results/$subname.errors"
+						grep 'tests:' "$results/$subname.results" | sed 's/%/*****        /'
+					fi
+					if [ $mode = 'debug' ] || [ $mode = 'all' ] ; then
+						$logtalk "set_logtalk_flag(debug,on),logtalk_load(tester),halt." > "$results/$subname.results" 2> "$results/$subname.errors"
+						grep 'tests:' "$results/$subname.results" | sed 's/%/***** (debug)/'
+					fi
 					grep '(not applicable)' "$results/$subname.results" | sed 's/(/*****         (/'
 				fi
 				cd ..

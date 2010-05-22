@@ -61,6 +61,9 @@ RELEASE NOTES
     Qu-Prolog 8.12. Added support for the "smart_compilation" compiler flag.
     Improved startup time when using the "qplgt.sh" integration script. 
 
+    Improved the "examples/tester.sh" script in order to support running the
+    example unit tests compiled in debug mode.
+
 
 2.39.2 - May 4, 2010
 
