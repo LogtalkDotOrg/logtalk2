@@ -111,7 +111,7 @@ eval $xslt_proc -o methods/assertz1.section refman.xsl methods/assertz1.html
 eval $xslt_proc -o methods/clause2.section refman.xsl methods/clause2.html
 eval $xslt_proc -o methods/retract1.section refman.xsl methods/retract1.html
 eval $xslt_proc -o methods/retractall1.section refman.xsl methods/retractall1.html
-eval $xslt_proc -o methods/call1.section refman.xsl methods/call1.html
+eval $xslt_proc -o methods/callN.section refman.xsl methods/callN.html
 eval $xslt_proc -o methods/once1.section refman.xsl methods/once1.html
 eval $xslt_proc -o methods/not1.section refman.xsl methods/not1.html
 eval $xslt_proc -o methods/catch3.section refman.xsl methods/catch3.html
@@ -122,6 +122,7 @@ eval $xslt_proc -o methods/forall2.section refman.xsl methods/forall2.html
 eval $xslt_proc -o methods/setof3.section refman.xsl methods/setof3.html
 eval $xslt_proc -o methods/before3.section refman.xsl methods/before3.html
 eval $xslt_proc -o methods/after3.section refman.xsl methods/after3.html
+eval $xslt_proc -o methods/call1.section refman.xsl methods/call1.html
 eval $xslt_proc -o methods/phrase2.section refman.xsl methods/phrase2.html
 eval $xslt_proc -o methods/phrase3.section refman.xsl methods/phrase3.html
 eval $xslt_proc -o methods/expand_term2.section refman.xsl methods/expand_term2.html
@@ -227,7 +228,7 @@ cat -s \
 	methods/clause2.section \
 	methods/retract1.section \
 	methods/retractall1.section \
-	methods/call1.section \
+	methods/callN.section \
 	methods/once1.section \
 	methods/not1.section \
 	methods/catch3.section \
@@ -238,6 +239,7 @@ cat -s \
 	methods/setof3.section \
 	methods/before3.section \
 	methods/after3.section \
+	methods/call1.section \
 	methods/phrase2.section \
 	methods/phrase3.section \
 	methods/expand_term2.section \

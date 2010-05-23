@@ -398,7 +398,7 @@ A category may only contain clauses for static predicates. Nevertheless, as the 
 Meta-predicates may be defined inside objects (and categories) as any other predicate. A meta-predicate is declared using the <code>meta_predicate/1</code> directive as described earlier on this section. When defining a meta-predicate, the arguments in the clause heads corresponding to the meta-arguments must be variables. All meta-arguments are called in the context of the object calling the meta-predicate (either directly or through message sending).
 </p>
 <p>
-Some meta-predicates have meta-arguments which are not goals but closures. Logtalk supports the definition of meta-predicates that are called with closures instead of goals as long as the definition uses the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/methods/call1.html"><code>call/N</code></a> to call the closure with the additional arguments. For example:
+Some meta-predicates have meta-arguments which are not goals but closures. Logtalk supports the definition of meta-predicates that are called with closures instead of goals as long as the definition uses the Logtalk built-in predicate <a title="Consult reference manual" href="../refman/methods/callN.html"><code>call/N</code></a> to call the closure with the additional arguments. For example:
 </p>
 <pre>:- public(all_true/2).
 :- meta_predicate(all_true(1, *)).
@@ -610,7 +610,7 @@ When working with dynamic grammar rule non-terminals, you may use the built-in m
 <h3 id="predicates_metacalls">Meta-call methods</h3>
 
 <p>
-Logtalk supports the generalized <a title="Consult reference manual" href="../refman/methods/call1.html"><code>call/1-N</code></a> meta-predicate. This built-in private meta-predicate must be used in the implementation of meta-predicates which work with closures instead of goals. In addition, Logtalk supports the built-in private meta-predicates <a title="Consult reference manual" href="../refman/methods/once1.html"><code>once/1</code></a> and <a title="Consult reference manual" href="../refman/methods/not1.html"><code>\+/1</code></a>. These methods cannot be used as messages to objects.
+Logtalk supports the generalized <a title="Consult reference manual" href="../refman/methods/callN.html"><code>call/1-N</code></a> meta-predicate. This built-in private meta-predicate must be used in the implementation of meta-predicates which work with closures instead of goals. In addition, Logtalk supports the built-in private meta-predicates <a title="Consult reference manual" href="../refman/methods/once1.html"><code>once/1</code></a> and <a title="Consult reference manual" href="../refman/methods/not1.html"><code>\+/1</code></a>. These methods cannot be used as messages to objects.
 </p>
 
 <h3 id="predicates_solutions">All solutions methods</h3>

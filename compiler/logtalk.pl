@@ -14843,6 +14843,14 @@ current_logtalk_flag(version, version(2, 39, 3)).
     !,
     '$lgt_dcg_body'(GRBody, S0, S, Goal).
 
+'$lgt_dcg_body'(call(Closure), _, _, _) :-
+    nonvar(Closure),
+    \+ callable(Closure),
+    throw(type_error(callable, Closure)).
+
+'$lgt_dcg_body'(call(Closure), S0, S, call(Closure, S0, S)) :-
+	!.
+
 '$lgt_dcg_body'([], S0, S, (S0=S)) :-
     !.
 
