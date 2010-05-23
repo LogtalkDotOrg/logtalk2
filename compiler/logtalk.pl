@@ -14684,6 +14684,9 @@ current_logtalk_flag(version, version(2, 39, 3)).
 	!,
 	'$lgt_dcg_rule'((NonTerminal --> GRBody), S0, S, (Head :- Body)).
 
+'$lgt_dcg_rule'((call(_) --> _), _, _, _) :-
+	throw(permission_error(modify, built_in_non_terminal, call//1)).
+
 '$lgt_dcg_rule'((NonTerminal --> GRBody), S0, S, (Head :- Body)) :-
     !,
     '$lgt_dcg_non_terminal'(NonTerminal, S0, S, Head),
