@@ -59,7 +59,7 @@ post-activate {
 	ui_msg "* Ciao (version 1.10):                   ciaolgt    (first run must use sudo)"
 	ui_msg "* CxProlog (version 0.97.4 or later):    cxlgt"
 	ui_msg "* ECLiPSe (version 6.0 or later):        eclipselgt"
-	ui_msg "* Qu-Prolog (version 8.12 or later):     qplgt"
+	ui_msg "* Qu-Prolog (version 8.11 or later):     qplgt"
 	ui_msg "* SICStus Prolog (versions 3.12.x, 4.x): sicstuslgt"
 	ui_msg "* SWI-Prolog (version 5.6.44 or later):  swilgt"
 	ui_msg "* XSB (version 3.2 or later):            xsblgt     (first run must use sudo)"

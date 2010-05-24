@@ -9,7 +9,7 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for Qu-Prolog 8.12 and later versions
+%  configuration file for Qu-Prolog 8.11 and later versions
 %
 %  last updated: May 17, 2010
 %

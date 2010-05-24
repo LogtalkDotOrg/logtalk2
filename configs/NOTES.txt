@@ -159,7 +159,7 @@ ECLiPSe 6.0#77 or later versions
 	On Windows, only supports settings files on the Logtalk user folder.
 
 
-Qu-Prolog 8.12 and later versions
+Qu-Prolog 8.11 and later versions
 
 	qp.pl
 

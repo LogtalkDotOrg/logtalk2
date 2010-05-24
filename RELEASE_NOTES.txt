@@ -55,10 +55,10 @@ RELEASE NOTES
 
     Corrected the definitions of the predicates '$lgt_current_date'/3 and
     '$lgt_current_time'/3 in the Qu-Prolog config file and rename it to
-    "qp.pl". Updated the minimum required version to 8.12 and changed the
+    "qp.pl". Updated the minimum required version to 8.11 and changed the
     value of the Logtalk flag "prolog_dialect" from "qu" to "qp" in order
     to match the value of the new Prolog flag "dialect" implemented in
-    Qu-Prolog 8.12. Added support for the "smart_compilation" compiler flag.
+    Qu-Prolog 8.11. Added support for the "smart_compilation" compiler flag.
     Improved startup time when using the "qplgt.sh" integration script. 
 
     Improved the "examples/tester.sh" script in order to support running the
