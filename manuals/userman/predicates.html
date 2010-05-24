@@ -625,10 +625,13 @@ The usual all solutions meta-predicates are built-in private methods in Logtalk:
 Logtalk provides two built-in methods for inspecting object predicates: <a title="Consult reference manual" href="../refman/methods/predicate_property2.html"><code>predicate_property/2</code></a>, which returns predicate properties and <a title="Consult reference manual" href="../refman/methods/current_predicate1.html"><code>current_predicate/1</code></a>, which enables us to query about predicate definitions. See below for a more detailed description of both methods.
 </p>
 
-<h3 id="predicates_parsing">Definite clause grammar parsing methods</h3>
+<h3 id="predicates_parsing">Definite clause grammar parsing methods and non-terminals</h3>
 
 <p>
 Logtalk supports two definite clause grammar parsing built-in private methods, <a title="Consult reference manual" href="../refman/methods/phrase2.html"><code>phrase/2</code></a> and <a title="Consult reference manual" href="../refman/methods/phrase3.html"><code>phrase/3</code></a>, with definitions similar to the predicates with the same name found on most Prolog compilers that support definite clause grammars. These methods cannot be used as messages to objects.
+</p>
+<p>
+Logtalk also supports a <a title="Consult reference manual" href="../refman/methods/call1.html"><code>call//1</code></a> built-in non-terminal. This non-terminal takes a closure (which can be a lambda expression) and is processed by appending the input list of tokens and the list of remaining tokens to the arguments of the closure.
 </p>
 
 <h3 id="predicates_expanding">Term and goal expansion methods</h3>
@@ -738,7 +741,7 @@ Currently, there is no clean workaround for calling non-standard Prolog built-in
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: May 15, 2010</span>
+		<span>Last updated on: May 23, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="categories.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="inheritance.html">next</a></span><br/>

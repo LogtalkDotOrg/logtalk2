@@ -25,7 +25,7 @@
 
 <pre>call(Closure)</pre>
 <p>
-Calls a goal, constructed by appending the implicit grammar rule arguments to a closure. This built-in non-terminal is interpreted as a private non-terminal and thus cannot be used as a message to an object. When using a back-end Prolog compiler supporting a module system, calls in the format <code>call(Module:Closure)</code> may also be used.
+This non-terminal takes a closure and is processed by appending the input list of tokens and the list of remaining tokens to the arguments of the closure. This built-in non-terminal is interpreted as a private non-terminal and thus cannot be used as a message to an object. When using a back-end Prolog compiler supporting a module system, calls in the format <code>call(Module:Closure)</code> may also be used. By using as argument a lambda expression, this built-in non-terminal provides controlled access to the input list of tokens and to the list of the remaining tokens processed by the grammar rule containing the call.
 </p>
 
 <h4>Template and modes</h4>
@@ -45,11 +45,11 @@ Calls a goal, constructed by appending the implicit grammar rule arguments to a 
 <h4>Examples</h4>
 
 <dl>
-	<dt>Call a goal, constructed by appending additional arguments to a closure, in the context of the object or category containing the call:</dt>
+	<dt>Calls a goal, constructed by appending the input list of tokens and the list of remaining tokens to the arguments of the closure, in the context of the object or category containing the call:</dt>
 		<dd><code>call(Closure)</code></dd>
-	<dt>To send a goal, constructed by appending additional arguments to a closure, as a message to <em><a class="glossary" title="Go to glossary definition" href="../../glossary.html#self">self</a></em>:</dt>
+	<dt>To send a goal, constructed by appending the input list of tokens and the list of remaining tokens to the arguments of the closure, as a message to <em><a class="glossary" title="Go to glossary definition" href="../../glossary.html#self">self</a></em>:</dt>
 		<dd><code>call(::Closure)</code></dd>
-	<dt>To send a goal, constructed by appending additional arguments to a closure, as a message to an explicit object:</dt>
+	<dt>To send a goal, constructed by appending the input list of tokens and the list of remaining tokens to the arguments of the closure, as a message to an explicit object:</dt>
 		<dd><code>call(Object::Closure)</code></dd>
 </dl>
 
