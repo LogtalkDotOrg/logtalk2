@@ -3,9 +3,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2010/04/26,
+		date is 2010/05/24,
 		comment is 'Unit tests for the "dcgs" example.']).
 
 	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
@@ -92,5 +92,15 @@
 
 	test(dcgs_20) :-
 		logtalk << phrase(bypass::foo, _, _).
+
+	test(dcgs_21) :-
+		logtalk << phrase(call([[], []]>>true), [], []).
+
+	test(dcgs_22) :-
+		logtalk << phrase(call([[], []]>>true), Input, Rest),
+		Input == [], Rest == [].
+
+	test(dcgs_23) :-
+		logtalk << phrase(call([Input, Rest]>>(set::subtract(Input, Rest, [1]))), [1,2,3], [2,3]).
 
 :- end_object.
