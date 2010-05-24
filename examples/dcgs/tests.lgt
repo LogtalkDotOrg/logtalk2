@@ -93,6 +93,9 @@
 	test(dcgs_20) :-
 		logtalk << phrase(bypass::foo, _, _).
 
+	% test access to the grammar rule implicit list of tokens using the call//1 built-in
+	% non-terminal and lambda expressions:
+
 	test(dcgs_21) :-
 		logtalk << phrase(call([[], []]>>true), [], []).
 
@@ -102,5 +105,15 @@
 
 	test(dcgs_23) :-
 		logtalk << phrase(call([Input, Rest]>>(set::subtract(Input, Rest, [1]))), [1,2,3], [2,3]).
+
+	% cuts in the first argument of phrase/2-3 calls must be local and not extend outside:
+
+	test(dcgs_24) :-
+		findall(X, (list::member(X, [1,2,3]), logtalk << phrase(!, _)), Xs),
+		Xs == [1,2,3].
+
+	test(dcgs_25) :-
+		findall(X, (list::member(X, [1,2,3]), logtalk << phrase(!, _, _)), Xs),
+		Xs == [1,2,3].
 
 :- end_object.
