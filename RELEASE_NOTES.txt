@@ -64,6 +64,9 @@ RELEASE NOTES
     Improved the "examples/tester.sh" script in order to support running the
     example unit tests compiled in debug mode.
 
+    Added a a simple maze search problem using a depth-first strategy with
+    loop detection to the "benchmarks" example.
+
 
 2.39.2 - May 4, 2010
 

@@ -87,3 +87,6 @@ yes
 
 | ?- benchmarks::run(s21, 1000000), benchmarks::run(s22, 1000000), benchmarks::run(s23, 1000000).
 ...
+
+| ?- benchmarks::run(s31, 1000000), benchmarks::run(s32, 1000000), benchmarks::run(s33, 1000000).
+...

@@ -89,6 +89,13 @@
 	benchmark(s23, object::nrev(List, _)) :-
 		{generate_list(30, List)}.
 
+
+	benchmark(s31, maze_solve(1, 7, _)).
+	:- if(current_logtalk_flag(modules, supported)).
+	benchmark(s32, ':'(module, mod_solve(1, 7, _))).
+	:- endif.
+	benchmark(s33, maze::solve(1, 7, _)).
+
 	% some benchmark tests for category predicate calls:
 	benchmark(c1, leaf::obj_local).
 	benchmark(c2, leaf::ctg_direct).
@@ -154,6 +161,26 @@
 			object::nrev(List, _),
 		fail.
 	do_benchmark(s23, _).
+
+	do_benchmark(s31, N) :-
+		{my_repeat(N)},
+			({maze_solve(1, 7, _)} -> true),
+		fail.
+	do_benchmark(s31, _).
+
+	:- if(current_logtalk_flag(modules, supported)).
+	do_benchmark(s32, N) :-
+		{my_repeat(N)},
+			(':'(module, mod_solve(1, 7, _)) -> true),
+		fail.
+	do_benchmark(s32, _).
+	:- endif.
+
+	do_benchmark(s33, N) :-
+		{my_repeat(N)},
+			(maze::solve(1, 7, _) -> true),
+		fail.
+	do_benchmark(s33, _).
 
 	do_benchmark(c1, N) :-
 		{my_repeat(N)},

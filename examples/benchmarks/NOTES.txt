@@ -49,6 +49,9 @@ This example is made of four loader files and five source files:
 		contains a single predicate used when comparing performance of
 		calls to imported category predicates using direct calls and using 
 		messages to "self"
+	maze.lgt
+		contains a simple maze search problem using a depth-first strategy
+		with loop detection
 
 You may have noticed above that the benchmark predicates and the predicates 
 for plain Prolog testing are both encapsulated in Logtalk source files. The 

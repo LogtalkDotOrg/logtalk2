@@ -3,9 +3,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.01,
+		version is 1.1,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2010/04/28,
+		date is 2010/05/26,
 		comment is 'Unit tests for the "benchmarks" example.']).
 
 	test(s11) :-
@@ -25,6 +25,15 @@
 	:- endif.
 	test(s23) :-
 		benchmarks::run(s23, 20000).
+
+	test(s31) :-
+		benchmarks::run(s31, 20000).
+	:- if(current_logtalk_flag(modules, supported)).
+	test(s32) :-
+		benchmarks::run(s32, 20000).
+	:- endif.
+	test(s33) :-
+		benchmarks::run(s33, 20000).
 
 	test(c1) :-
 		benchmarks::run(c1, 20000).
