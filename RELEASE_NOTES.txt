@@ -30,6 +30,9 @@ RELEASE NOTES
     change allows for simpler and more robust handling of Prolog proprietary
     directives, specially module directives.
 
+    Added support for the built-in non-terminal call//1 specified in the ISO
+    Prolog standardization proposal for Definite Clause Grammars.
+
     Improved the implementation of Definite Clause Grammars in order to
     rewrite exceptions generated when processing NonTerminal, ::NonTerminal,
     and Obj::NonTerminal goals in grammar rules to refer to non-terminals

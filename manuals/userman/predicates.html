@@ -411,7 +411,7 @@ all_true(Closure, [Arg| Args]) :-
 Note that the meta-predicate directive specifies that the closure will be extended with exactly one extra argument.
 </p>
 
-<h3 id="predicates_dcgs">Definite clause grammars</h3>
+<h3 id="predicates_dcgs">Definite clause grammar rules</h3>
 
 <p>
 Definite clause grammar rules provide a convenient notation to represent the rewrite rules common of most grammars in Prolog. In Logtalk, definite clause grammar rules can be encapsulated in objects and categories. Currently, the ISO/IEC WG17 group is working on a draft specification for a definite clause grammars Prolog standard. Therefore, in the mean time, Logtalk follows the common practice of Prolog compilers supporting definite clause grammars, extending it to support calling grammar rules contained in categories and objects. A common example of a definite clause grammar is the definition of a set of rules for parsing simple arithmetic expressions:

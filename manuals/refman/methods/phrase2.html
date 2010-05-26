@@ -29,6 +29,9 @@ phrase(Object::NonTerminal, Input)</pre>
 <p>
 True if the list <code>Input</code> of tokens can be parsed using the specified non-terminal <code>NonTerminal</code>. This method also accepts grammar rule bodies in the first argument. This built-in method is declared private and thus cannot be used as a message to an object. When using a back-end Prolog compiler supporting a module system, calls in the format <code>phrase(Module:NonTerminal, Input)</code> may also be used.
 </p>
+<p>
+This method is opaque to cuts in the first argument.
+</p>
 
 <h4>Template and modes</h4>
 
