@@ -15,7 +15,7 @@ class LogtalkLexer(RegexLexer):
     """
     For `Logtalk <http://logtalk.org/>`_ source code.
 
-    :copyright: 2008-2009 by Paulo Moura, Clara Dimene.
+    :copyright: 2008-2010 by Paulo Moura, Clara Dimene.
     :license: BSD, see LICENSE for more details.
     """
 
@@ -180,7 +180,7 @@ class LogtalkLexer(RegexLexer):
         ],
 
         'entityrelations': [
-            (r'(extends|i(nstantiates|mp(lements|orts))|specializes)(?=[(])', Keyword),
+            (r'(complements|extends|i(nstantiates|mp(lements|orts))|specializes)(?=[(])', Keyword),
             # Numbers
             (r"0'.", Number),
             (r'0b[01]+', Number),

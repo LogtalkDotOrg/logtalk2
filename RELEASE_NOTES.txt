@@ -70,6 +70,9 @@ RELEASE NOTES
     Added a a simple maze search problem using a depth-first strategy with
     loop detection to the "benchmarks" example.
 
+    Added missing support for syntax coloring of the "complements" entity
+    relation to Pygments.
+
 
 2.39.2 - May 4, 2010
 
