@@ -2,7 +2,7 @@
 
 PortSystem	1.0
 name		logtalk
-version 	2.39.3
+version 	2.40.0
 
 categories	lang
 maintainers	logtalk.org:pmoura
