@@ -271,10 +271,10 @@ properties, thus requiring recompilation of all objects, protocols, and
 categories.
 
 Logtalk 2.40.0 changes the scope of the built-in methods phrase/2-3 from
-public to private, thus requiring rewriting calls to these methods. In
-addition, the term- and goal-expansion mechamism are now only performed 
-automatically by the Logtalk compiler when compiling a source file. Moreover,
-this version changes the representation of meta-arguments which are goals in
-meta-predicate directives from "::" to "0", requiring updating any existing
-meta-predicate declarations.
-
+public to private, thus requiring rewriting calls to these methods (you will
+need to change Object::phrase(...) to phrase(Object::...) and ::phrase(...)
+to phrase(::...)). In addition, the term- and goal-expansion mechamism are now
+only performed automatically by the Logtalk compiler when compiling a source
+file. Moreover, this version changes the representation of meta-arguments which
+are goals in meta-predicate directives from "::" to "0", requiring updating any
+existing meta-predicate declarations.
