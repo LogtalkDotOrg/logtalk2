@@ -7810,8 +7810,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 '$lgt_tr_module_meta_predicate_directives_args'([], []).
 
 '$lgt_tr_module_meta_predicate_directives_args'([Arg| Args], [Arg2| Args2]) :-
-	(	Arg == (:) -> Arg2 = (::)	% Prolog to Logtalk notation
-	;	Arg == (::) -> Arg2 = (::)	% just to be safe if someone mixes the notations
+	(	Arg == (:) -> Arg2 = (0)	% Prolog to Logtalk notation; this is fragile due to the lack of standardization
 	;	integer(Arg) -> Arg2 = Arg	% goals and closures are denoted by integers >= 0
 	;	Arg2 = (*)					% non meta-arguments (e.g. instantiation modes) to Logtalk notation
 	),
@@ -10056,9 +10055,6 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 '$lgt_tr_module_meta_arg'((*), Arg, _, Arg, Arg).
-
-'$lgt_tr_module_meta_arg'((::), Arg, Ctx, ':'(user, TArg), ':'(user, DArg)) :-
-	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
 
 '$lgt_tr_module_meta_arg'((0), Arg, Ctx, ':'(user, TArg), ':'(user, DArg)) :-
 	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
