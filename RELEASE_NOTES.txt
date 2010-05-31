@@ -56,13 +56,22 @@ RELEASE NOTES
 
     Improved performance of Module:NonTerminal goals in grammar rules.
 
-    Added goal_expansion/2 clauses to the SWI-Prolog and YAP config files in
-    order to allow calling the Prolog built-in predicates phrase/2-3 with a
-    Object::GrammarRuleBody in the first argument.
+    Corrected a bug in the implementation of the dynamic/0 directive where
+    the Logtalk compiler would fail to generate all the necessary dynamic/1
+    predicate directives. Bug introduced in the previous stable release.
+
+    Corrected a bug in the implementation of the clause/2 built-in method
+    where an error would be generated when trying to access clauses for
+    local dynamic predicates without a corresponding dynamic/1 directive
+    within objects and categories with a dynamic/0 directive.
 
     Corrected a bug in the compilation of meta-calls and the <</2 control
     construct in debug mode where the meta-arguments would not be compiled
     in debug mode.
+
+    Added goal_expansion/2 clauses to the SWI-Prolog and YAP config files in
+    order to allow calling the Prolog built-in predicates phrase/2-3 with a
+    Object::GrammarRuleBody in the first argument.
 
     Corrected the definitions of the predicates '$lgt_current_date'/3 and
     '$lgt_current_time'/3 in the Qu-Prolog config file and rename it to

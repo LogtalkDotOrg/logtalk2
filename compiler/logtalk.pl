@@ -213,9 +213,9 @@
 :- dynamic('$lgt_pp_dcg_nt_'/3).				% '$lgt_pp_dcg_nt_'(Functor, Arity, ExtArity)
 :- dynamic('$lgt_pp_multifile_'/2).				% '$lgt_pp_multifile_'(Functor, Arity)
 
-:- dynamic('$lgt_pp_object_'/11).				% '$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Type)
-:- dynamic('$lgt_pp_category_'/6).				% '$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Type)
-:- dynamic('$lgt_pp_protocol_'/5).				% '$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Type)
+:- dynamic('$lgt_pp_object_'/11).				% '$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags)
+:- dynamic('$lgt_pp_category_'/6).				% '$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags)
+:- dynamic('$lgt_pp_protocol_'/5).				% '$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags)
 
 :- dynamic('$lgt_pp_module_'/1).				% '$lgt_pp_module_'(Module)
 
@@ -2621,7 +2621,8 @@ current_logtalk_flag(version, version(2, 40, 0)).
 			throw(error(permission_error(access, static_predicate, Head), Obj::clause(Head, Body), Sender))
 		)
 	;	% local dynamic predicate with no scope declaration:
-		(	(Obj = Sender, call(DDef, Head, _, THead)) ->
+		(	Obj = Sender,
+			(call(DDef, Head, _, THead); call(Def, Head, _, THead)) ->
 			clause(THead, TBody),
 			(	TBody = ('$lgt_nop'(Body), _) ->
 				true
@@ -11732,7 +11733,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 '$lgt_gen_protocol_directives' :-
-	(	'$lgt_pp_protocol_'(_, Prefix, Dcl, Rnm, (dynamic)) ->
+	(	'$lgt_pp_protocol_'(_, Prefix, Dcl, Rnm, Flags), Flags /\ 2 =:= 2 ->
 		assertz('$lgt_pp_directive_'(dynamic(Prefix/2))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/4))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/5))),
@@ -11743,7 +11744,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 '$lgt_gen_object_dynamic_directives' :-
-	(	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, (dynamic)) ->
+	(	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, Flags),	Flags /\ 2 =:= 2 ->
 		'$lgt_gen_dynamic_object_dynamic_directives'
 	;	'$lgt_gen_static_object_dynamic_directives'
 	).
@@ -11809,7 +11810,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 '$lgt_gen_category_dynamic_directives' :-
-	(	'$lgt_pp_category_'(_, Prefix, Dcl, Def, Rnm, (dynamic)) ->
+	(	'$lgt_pp_category_'(_, Prefix, Dcl, Def, Rnm, Flags), Flags /\ 2 =:= 2 ->
 		assertz('$lgt_pp_directive_'(dynamic(Prefix/3))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/4))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/5))),
