@@ -12,7 +12,7 @@
 		comment is 'Tracer for a goal call, exit, and fail ports.']).
 
 	:- public(trace/1).
-	:- meta_predicate(trace(::)).	% changes interpretation of meta-calls on trace/1 clauses
+	:- meta_predicate(trace(0)).	% changes interpretation of meta-calls on trace/1 clauses
 	:- mode(trace(+callable), zero_or_more).
 	:- info(trace/1, [
 		comment is 'Traces goal execution.',

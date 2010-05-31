@@ -5,12 +5,12 @@
 :- object(library_b_1).
 
 	:- public(meta/2).
-	:- meta_predicate(meta(::, ::)).
+	:- meta_predicate(meta(0, 0)).
 	meta(Goal1, Goal2) :-
 		call(Goal1), call(Goal2).
 
 	:- public(meta/1).
-	:- meta_predicate(meta(::)).
+	:- meta_predicate(meta(0)).
 	meta(Goal1) :-
 		meta(Goal1, local).
 

@@ -107,16 +107,16 @@ forall(Generate, Test) :-
 
 % '$lgt_pl_meta_predicate'(+callable, ?callable, ?atom).
 
-'$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(::, ::), predicate).
-'$lgt_pl_meta_predicate'(call_residue_vars(_, _), call_residue_vars(::, *), predicate).
-'$lgt_pl_meta_predicate'(do(_, _), do(*, ::), predicate) :-
+'$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(0, 0), predicate).
+'$lgt_pl_meta_predicate'(call_residue_vars(_, _), call_residue_vars(0, *), predicate).
+'$lgt_pl_meta_predicate'(do(_, _), do(*, 0), predicate) :-
 	predicate_property(do(_, _), built_in).
-'$lgt_pl_meta_predicate'(findall(_, _, _, _), findall(*, ::, *, *), predicate).
-'$lgt_pl_meta_predicate'(freeze(_, _), freeze(*, ::), predicate).
-'$lgt_pl_meta_predicate'(if(_, _, _), if(::, ::, ::), predicate).
-'$lgt_pl_meta_predicate'(on_exception(_, _, _), on_exception(*, ::, ::), predicate).
-'$lgt_pl_meta_predicate'(undo(_), undo(::), predicate).
-'$lgt_pl_meta_predicate'(when(_, _), when(*, ::), predicate).
+'$lgt_pl_meta_predicate'(findall(_, _, _, _), findall(*, 0, *, *), predicate).
+'$lgt_pl_meta_predicate'(freeze(_, _), freeze(*, 0), predicate).
+'$lgt_pl_meta_predicate'(if(_, _, _), if(0, 0, 0), predicate).
+'$lgt_pl_meta_predicate'(on_exception(_, _, _), on_exception(*, 0, 0), predicate).
+'$lgt_pl_meta_predicate'(undo(_), undo(0), predicate).
+'$lgt_pl_meta_predicate'(when(_, _), when(*, 0), predicate).
 % workaround broken meta-predicate declarations:
 '$lgt_pl_meta_predicate'(format(_, _), format(*, *), predicate).
 '$lgt_pl_meta_predicate'(format(_, _, _), format(*, *, *), predicate).

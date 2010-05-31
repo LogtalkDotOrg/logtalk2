@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.40.0 - June ??, 2010
 
+    Changed the representation of meta-arguments which are goals in meta-
+    predicate directives from "::" to "0".
+
     Changed the implementation of the term and goal expansion mechanisms in
     order to only be performed automatically by the Logtalk compiler when
     compiling a source file. When dynamically creating entities at runtime or

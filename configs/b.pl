@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.1 and later versions
 %
-%  last updated: May 2, 2010
+%  last updated: May 31, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -99,20 +99,20 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 	Arity >= 2,
 	!,
 	functor(Meta, foreach, Arity),
-	arg(Arity, Meta, ::),
+	arg(Arity, Meta, 0),
 	N is Arity - 1,
 	'$lgt_bp_foreach_n_args'(N, Meta).
-'$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(::, ::), predicate).
-'$lgt_pl_meta_predicate'(fd_minimize(_, _), fd_minimize(::, *), predicate).
-'$lgt_pl_meta_predicate'(fd_maximize(_, _), fd_maximize(::, *), predicate).
-'$lgt_pl_meta_predicate'(freeze(_, _), freeze(*, ::), predicate).
-'$lgt_pl_meta_predicate'(minof(_, _), minof(::, *), predicate).
-'$lgt_pl_meta_predicate'(maxof(_, _), maxof(::, *), predicate).
-'$lgt_pl_meta_predicate'(not(_), not(::), predicate).
-'$lgt_pl_meta_predicate'(table_find_all(_, _), table_find_all(::, *), predicate).
-'$lgt_pl_meta_predicate'(table_find_one(_), table_find_one(::), predicate).
-'$lgt_pl_meta_predicate'(table_remove(_), table_remove(::), predicate).
-'$lgt_pl_meta_predicate'(time_out(_, _, _), time_out(::, *, *), predicate).
+'$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(0, 0), predicate).
+'$lgt_pl_meta_predicate'(fd_minimize(_, _), fd_minimize(0, *), predicate).
+'$lgt_pl_meta_predicate'(fd_maximize(_, _), fd_maximize(0, *), predicate).
+'$lgt_pl_meta_predicate'(freeze(_, _), freeze(*, 0), predicate).
+'$lgt_pl_meta_predicate'(minof(_, _), minof(0, *), predicate).
+'$lgt_pl_meta_predicate'(maxof(_, _), maxof(0, *), predicate).
+'$lgt_pl_meta_predicate'(not(_), not(0), predicate).
+'$lgt_pl_meta_predicate'(table_find_all(_, _), table_find_all(0, *), predicate).
+'$lgt_pl_meta_predicate'(table_find_one(_), table_find_one(0), predicate).
+'$lgt_pl_meta_predicate'(table_remove(_), table_remove(0), predicate).
+'$lgt_pl_meta_predicate'(time_out(_, _, _), time_out(0, *, *), predicate).
 
 
 '$lgt_bp_foreach_n_args'(0, _) :-

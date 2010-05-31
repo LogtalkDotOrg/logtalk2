@@ -11,7 +11,7 @@
 %
 %  configuration file for BinProlog 8.x~10.x
 %
-%  last updated: January 28, 2010
+%  last updated: May 31, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -177,43 +177,43 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 % '$lgt_pl_meta_predicate'(?callable, ?atom).
 
-'$lgt_pl_meta_predicate'(all_answers(*, ::, *), predicate).
-'$lgt_pl_meta_predicate'(all_but_at_least(*, *, ::, *), predicate).
-'$lgt_pl_meta_predicate'(answer_of(*, ::), predicate).
+'$lgt_pl_meta_predicate'(all_answers(*, 0, *), predicate).
+'$lgt_pl_meta_predicate'(all_but_at_least(*, *, 0, *), predicate).
+'$lgt_pl_meta_predicate'(answer_of(*, 0), predicate).
 
-'$lgt_pl_meta_predicate'(bg(::), predicate).
-'$lgt_pl_meta_predicate'(bg(::, *), predicate).
-'$lgt_pl_meta_predicate'(bg(::, *, *), predicate).
-'$lgt_pl_meta_predicate'(bg(::, *, *, *), predicate).
-'$lgt_pl_meta_predicate'(bg(::, *, *, *, *, *, *), predicate).
+'$lgt_pl_meta_predicate'(bg(0), predicate).
+'$lgt_pl_meta_predicate'(bg(0, *), predicate).
+'$lgt_pl_meta_predicate'(bg(0, *, *), predicate).
+'$lgt_pl_meta_predicate'(bg(0, *, *, *), predicate).
+'$lgt_pl_meta_predicate'(bg(0, *, *, *, *, *, *), predicate).
 
-'$lgt_pl_meta_predicate'(bp_only(::), predicate).
-'$lgt_pl_meta_predicate'(bp_only(::, ::), predicate).
+'$lgt_pl_meta_predicate'(bp_only(0), predicate).
+'$lgt_pl_meta_predicate'(bp_only(0, 0), predicate).
 
-'$lgt_pl_meta_predicate'(calls_cont(::), predicate).
-'$lgt_pl_meta_predicate'(call_ifdef(::, ::), predicate).
+'$lgt_pl_meta_predicate'(calls_cont(0), predicate).
+'$lgt_pl_meta_predicate'(call_ifdef(0, 0), predicate).
 
-'$lgt_pl_meta_predicate'(det_call(::), predicate).
+'$lgt_pl_meta_predicate'(det_call(0), predicate).
 
-'$lgt_pl_meta_predicate'(find_at_most(*, *, ::, *), predicate).
-'$lgt_pl_meta_predicate'(findall(*, ::, *, *), predicate).
+'$lgt_pl_meta_predicate'(find_at_most(*, *, 0, *), predicate).
+'$lgt_pl_meta_predicate'(findall(*, 0, *, *), predicate).
 
-'$lgt_pl_meta_predicate'(forall(::), predicate).
+'$lgt_pl_meta_predicate'(forall(0), predicate).
 
-'$lgt_pl_meta_predicate'(gc_call(::), predicate).
+'$lgt_pl_meta_predicate'(gc_call(0), predicate).
 
-'$lgt_pl_meta_predicate'(if_any(::, ::, ::), predicate).
+'$lgt_pl_meta_predicate'(if_any(0, 0, 0), predicate).
 
-'$lgt_pl_meta_predicate'(new_engine(::, *, *), predicate).
-'$lgt_pl_meta_predicate'(open_engine(::, *, *), predicate).
+'$lgt_pl_meta_predicate'(new_engine(0, *, *), predicate).
+'$lgt_pl_meta_predicate'(open_engine(0, *, *), predicate).
 
-'$lgt_pl_meta_predicate'(not(::), predicate).
+'$lgt_pl_meta_predicate'(not(0), predicate).
 
-'$lgt_pl_meta_predicate'(nth_answer(*, ::), predicate).
+'$lgt_pl_meta_predicate'(nth_answer(*, 0), predicate).
 
-'$lgt_pl_meta_predicate'(timed_call(*, ::, *, *), predicate).
+'$lgt_pl_meta_predicate'(timed_call(*, 0, *, *), predicate).
 
-'$lgt_pl_meta_predicate'(topcall(::), predicate).
+'$lgt_pl_meta_predicate'(topcall(0), predicate).
 
 
 

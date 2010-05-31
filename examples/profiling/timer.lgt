@@ -11,14 +11,14 @@
 	:- uses(loop, [forto/3]).
 
 	:- public(timer/2).
-	:- meta_predicate(timer(::, *)).
+	:- meta_predicate(timer(0, *)).
 	:- mode(timer(+callable, -number), one).
 	:- info(timer/2,
 		[comment is 'Returns time to execute a call.',
 		 argnames is ['Call', 'Time']]).
 
 	:- public(timer/3).
-	:- meta_predicate(timer(::, *, *)).
+	:- meta_predicate(timer(0, *, *)).
 	:- mode(timer(+callable, +integer, -float), one).
 	:- info(timer/3,
 		[comment is 'Returns the average time needed to to execute a call.',

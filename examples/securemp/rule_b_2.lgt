@@ -4,7 +4,7 @@
 
 :- object(library_b_2).
 
-	:- meta_predicate(meta(::)).
+	:- meta_predicate(meta(0)).
 	meta(Goal) :-
 		call(Goal).
 

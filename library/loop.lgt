@@ -8,7 +8,7 @@
 		date is 2008/2/16,
 		comment is 'Loop control structures predicates.']).
 
-	:- meta_predicate(whiledo(::, ::)).
+	:- meta_predicate(whiledo(0, 0)).
 	whiledo(Condition, Action) :-
 		(	call(Condition) ->
 			\+ \+ call(Action),
@@ -16,12 +16,12 @@
 		;	true
 		).
 
-	:- meta_predicate(dowhile(::, ::)).
+	:- meta_predicate(dowhile(0, 0)).
 	dowhile(Action, Condition) :-
 		\+ \+ call(Action),
 		whiledo(Condition, Action).
 
-	:- meta_predicate(foreach(*, *, ::)).
+	:- meta_predicate(foreach(*, *, 0)).
 	foreach(Count, List, Goal) :-
 		foreach_inv(List, Count, Goal).
 
@@ -30,7 +30,7 @@
 		\+ \+ (Count = Element, call(Goal)),
 		foreach_inv(List, Count, Goal).
 
-	:- meta_predicate(forto_aux(*, *, *, *, ::)).
+	:- meta_predicate(forto_aux(*, *, *, *, 0)).
 	forto_aux(Count, First, Last, Increment, Goal) :-
 		(	First =< Last ->
 			\+ \+ (Count = First, call(Goal)),
@@ -39,26 +39,26 @@
 		;	true
 		).
 
-	:- meta_predicate(forto(*, *, ::)).
+	:- meta_predicate(forto(*, *, 0)).
 	forto(FirstExp, LastExp, Goal) :-
 		First is FirstExp,
 		Last is LastExp,
 		forto_aux(_, First, Last, 1, Goal).
 
-	:- meta_predicate(forto(*, *, *, ::)).
+	:- meta_predicate(forto(*, *, *, 0)).
 	forto(Count, FirstExp, LastExp, Goal) :-
 		First is FirstExp,
 		Last is LastExp,
 		forto_aux(Count, First, Last, 1, Goal).
 
-	:- meta_predicate(forto(*, *, *, *, ::)).
+	:- meta_predicate(forto(*, *, *, *, 0)).
 	forto(Count, FirstExp, LastExp, IncrementExp, Goal) :-
 		First is FirstExp,
 		Last is LastExp,
 		Increment is abs(IncrementExp),
 		forto_aux(Count, First, Last, Increment, Goal).
 
-	:- meta_predicate(fordownto_aux(*, *, *, *, ::)).
+	:- meta_predicate(fordownto_aux(*, *, *, *, 0)).
 	fordownto_aux(Count, First, Last, Decrement, Goal) :-
 		(	First >= Last ->
 			\+ \+ (Count = First, call(Goal)),
@@ -67,19 +67,19 @@
 		;	true
 		).
 
-	:- meta_predicate(fordownto(*, *, ::)).
+	:- meta_predicate(fordownto(*, *, 0)).
 	fordownto(FirstExp, LastExp, Goal) :-
 		First is FirstExp,
 		Last is LastExp,
 		fordownto_aux(_, First, Last, 1, Goal).
 
-	:- meta_predicate(fordownto(*, *, *, ::)).
+	:- meta_predicate(fordownto(*, *, *, 0)).
 	fordownto(Count, FirstExp, LastExp, Goal) :-
 		First is FirstExp,
 		Last is LastExp,
 		fordownto_aux(Count, First, Last, 1, Goal).
 
-	:- meta_predicate(fordownto(*, *, *, *, ::)).
+	:- meta_predicate(fordownto(*, *, *, *, 0)).
 	fordownto(Count, FirstExp, LastExp, DecrementExp, Goal) :-
 		First is FirstExp,
 		Last is LastExp,

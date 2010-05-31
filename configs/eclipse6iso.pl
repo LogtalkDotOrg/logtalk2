@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#77 and later versions
 %
-%  last updated: May 2, 2010
+%  last updated: May 31, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -165,20 +165,20 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 % '$lgt_pl_meta_predicate'(+callable, ?callable, ?atom).
 
-'$lgt_pl_meta_predicate'(*->(_, _), *->(::, ::), control_construct).
-'$lgt_pl_meta_predicate'(~(_), ~(::), control_construct).
-'$lgt_pl_meta_predicate'(block(_, _, _), block(::, *, ::), predicate).
-'$lgt_pl_meta_predicate'(call_priority(_, _), call_priority(::, *), predicate).
-'$lgt_pl_meta_predicate'(coverof(_, _, _), coverof(*, ::, *), predicate).
-'$lgt_pl_meta_predicate'(do(_, _), do(*, ::), predicate).
-'$lgt_pl_meta_predicate'(event_create(_, _, _), event_create(::, *, *), predicate).
-'$lgt_pl_meta_predicate'(fail_if(_), fail_if(::), predicate).
-'$lgt_pl_meta_predicate'(make_suspension(_, _, _), make_suspension(::, *, *), predicate).
-'$lgt_pl_meta_predicate'(mutex(_, _), mutex(*, ::), predicate).
-'$lgt_pl_meta_predicate'(not(_), not(::), predicate).
-'$lgt_pl_meta_predicate'(subcall(_, _), subcall(::, *), predicate).
-'$lgt_pl_meta_predicate'(suspend(_, _, _), suspend(::, *, *), predicate).
-'$lgt_pl_meta_predicate'(suspend(_, _, _, _), suspend(::, *, *, *), predicate).
+'$lgt_pl_meta_predicate'(*->(_, _), *->(0, 0), control_construct).
+'$lgt_pl_meta_predicate'(~(_), ~(0), control_construct).
+'$lgt_pl_meta_predicate'(block(_, _, _), block(0, *, 0), predicate).
+'$lgt_pl_meta_predicate'(call_priority(_, _), call_priority(0, *), predicate).
+'$lgt_pl_meta_predicate'(coverof(_, _, _), coverof(*, 0, *), predicate).
+'$lgt_pl_meta_predicate'(do(_, _), do(*, 0), predicate).
+'$lgt_pl_meta_predicate'(event_create(_, _, _), event_create(0, *, *), predicate).
+'$lgt_pl_meta_predicate'(fail_if(_), fail_if(0), predicate).
+'$lgt_pl_meta_predicate'(make_suspension(_, _, _), make_suspension(0, *, *), predicate).
+'$lgt_pl_meta_predicate'(mutex(_, _), mutex(*, 0), predicate).
+'$lgt_pl_meta_predicate'(not(_), not(0), predicate).
+'$lgt_pl_meta_predicate'(subcall(_, _), subcall(0, *), predicate).
+'$lgt_pl_meta_predicate'(suspend(_, _, _), suspend(0, *, *), predicate).
+'$lgt_pl_meta_predicate'(suspend(_, _, _, _), suspend(0, *, *, *), predicate).
 
 
 

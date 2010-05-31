@@ -42,7 +42,7 @@
 		argnames is ['Closure', 'List', 'Value', 'Less', 'Equal', 'Greater']]).
 
 	:- public(ignore/1).
-	:- meta_predicate(ignore(::)).
+	:- meta_predicate(ignore(0)).
 	:- mode(ignore(@callable), one).
 	:- info(ignore/1, [
 		comment is 'Calls Goal once but always succeeds, even if Goal fails.',

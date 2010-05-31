@@ -13711,18 +13711,19 @@ current_logtalk_flag(version, version(2, 40, 0)).
 '$lgt_built_in_method'(phrase(_, _), p, phrase(2, *), 1) :- !.
 '$lgt_built_in_method'(phrase(_, _, _), p, phrase(2, *, *), 1) :- !.
 % meta-calls plus logic and control methods
-'$lgt_built_in_method'(\+ _, p, \+ (::), 1) :- !.
+'$lgt_built_in_method'(\+ _, p, \+ (0), 1) :- !.
 '$lgt_built_in_method'(Method, p, Meta, 1) :-  % call/1-N
 	compound(Method),
 	functor(Method, call, Arity),
 	Arity > 0,
 	!,
 	functor(Meta, call, Arity),
-	arg(1, Meta, ::),
+	Closure is Arity - 1,
+	arg(1, Meta, Closure),
 	'$lgt_lgt_meta_predicate_call_n_args'(Arity, Meta).
-'$lgt_built_in_method'(once(_), p, once(::), 1) :- !.
+'$lgt_built_in_method'(once(_), p, once(0), 1) :- !.
 % exception handling methods
-'$lgt_built_in_method'(catch(_, _, _), p, catch(::, *, ::), 1) :- !.
+'$lgt_built_in_method'(catch(_, _, _), p, catch(0, *, 0), 1) :- !.
 '$lgt_built_in_method'(throw(_), p, no, 1) :- !.
 % execution context methods
 '$lgt_built_in_method'(parameter(_, _), p, no, 1) :- !.
@@ -13730,10 +13731,10 @@ current_logtalk_flag(version, version(2, 40, 0)).
 '$lgt_built_in_method'(sender(_), p, no, 1) :- !.
 '$lgt_built_in_method'(this(_), p, no, 1) :- !.
 % all solutions methods
-'$lgt_built_in_method'(bagof(_, _, _), p, bagof(*, ::, *), 1) :- !.
-'$lgt_built_in_method'(findall(_, _, _), p, findall(*, ::, *), 1) :- !.
-'$lgt_built_in_method'(forall(_, _), p, forall(::, ::), 1) :- !.
-'$lgt_built_in_method'(setof(_, _, _), p, setof(*, ::, *), 1) :- !.
+'$lgt_built_in_method'(bagof(_, _, _), p, bagof(*, 0, *), 1) :- !.
+'$lgt_built_in_method'(findall(_, _, _), p, findall(*, 0, *), 1) :- !.
+'$lgt_built_in_method'(forall(_, _), p, forall(0, 0), 1) :- !.
+'$lgt_built_in_method'(setof(_, _, _), p, setof(*, 0, *), 1) :- !.
 
 
 '$lgt_lgt_meta_predicate_call_n_args'(1, _) :-

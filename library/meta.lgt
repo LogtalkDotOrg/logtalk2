@@ -91,7 +91,7 @@
 	partition(Closure, List, Value, Less, Equal, Greater) :-
 		partition_(List, Closure, Value, Less, Equal, Greater).
 
-	:- meta_predicate(ignore(::)).
+	:- meta_predicate(ignore(0)).
 	ignore(Goal) :-
 		(	call(Goal) ->
 			true
