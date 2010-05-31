@@ -7812,8 +7812,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 '$lgt_tr_module_meta_predicate_directives_args'([Arg| Args], [Arg2| Args2]) :-
 	(	Arg == (:) -> Arg2 = (::)	% Prolog to Logtalk notation
 	;	Arg == (::) -> Arg2 = (::)	% just to be safe if someone mixes the notations
-	;	Arg == 0 -> Arg2 = (::)		% some Prolog compilers use zero for denoting goals
-	;	integer(Arg) -> Arg2 = Arg	% closures are denoted by integers >= 1
+	;	integer(Arg) -> Arg2 = Arg	% goals and closures are denoted by integers >= 0
 	;	Arg2 = (*)					% non meta-arguments (e.g. instantiation modes) to Logtalk notation
 	),
 	'$lgt_tr_module_meta_predicate_directives_args'(Args, Args2).
@@ -13698,12 +13697,12 @@ current_logtalk_flag(version, version(2, 40, 0)).
 '$lgt_built_in_method'(current_predicate(_), p(p(p)), no, 1) :- !.
 '$lgt_built_in_method'(predicate_property(_, _), p(p(p)), no, 1) :- !.
 % database methods
-'$lgt_built_in_method'(abolish(_), p(p(p)), no, 1) :- !.
-'$lgt_built_in_method'(asserta(_), p(p(p)), no, 1) :- !.
-'$lgt_built_in_method'(assertz(_), p(p(p)), no, 1) :- !.
-'$lgt_built_in_method'(clause(_, _), p(p(p)), no, 1) :- !.
-'$lgt_built_in_method'(retract(_), p(p(p)), no, 1) :- !.
-'$lgt_built_in_method'(retractall(_), p(p(p)), no, 1) :- !.
+'$lgt_built_in_method'(abolish(_), p(p(p)), abolish(::), 1) :- !.
+'$lgt_built_in_method'(asserta(_), p(p(p)), asserta(::), 1) :- !.
+'$lgt_built_in_method'(assertz(_), p(p(p)), assertz(::), 1) :- !.
+'$lgt_built_in_method'(clause(_, _), p(p(p)), clause(::, *), 1) :- !.
+'$lgt_built_in_method'(retract(_), p(p(p)), retract(::), 1) :- !.
+'$lgt_built_in_method'(retractall(_), p(p(p)), retractall(::), 1) :- !.
 % term expansion methods
 '$lgt_built_in_method'(expand_term(_, _), p(p(p)), no, 1) :- !.
 '$lgt_built_in_method'(expand_goal(_, _), p(p(p)), no, 1) :- !.
