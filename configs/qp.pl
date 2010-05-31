@@ -325,7 +325,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_load_prolog_code'(File, _, _) :-
 	'$lgt_file_extension'(prolog, Extension),
 	atom_concat(Name, Extension, File),
-	fcompile(File, [assemble_only(true)]),
+	fcompile(File, [assemble_only(true), string_table(256)]),
 	load(Name).
 
 
