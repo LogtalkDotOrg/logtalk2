@@ -16,12 +16,12 @@ RELEASE NOTES
 2.40.0 - June ??, 2010
 
     Changed the representation of meta-argument which are goals in the
-    meta_predicate/1 directives from "::" to "0". When calling Prolog module
-    meta-predicates, the meta-argument indicator ":" is interpreted as "0",
-    which will work for most cases. Due to the lack of standardization of the
-    Prolog meta_predicate/1 directive, special care must taken when calling
-    both Prolog proprietary built-in meta-predicates and Prolog module meta-
-    predicates.
+    meta_predicate/1 directives from "::" to "0". When compiling calls
+    to Prolog module meta-predicates, the meta-argument indicator ":" is
+    interpreted as "0", which will work for most cases. Due to the lack of
+    standardization of the Prolog meta_predicate/1 directive, special care
+    must taken when calling both Prolog proprietary built-in meta-predicates
+    and Prolog module meta-predicates.
 
     Changed the implementation of the term and goal expansion mechanisms in
     order to only be performed automatically by the Logtalk compiler when
