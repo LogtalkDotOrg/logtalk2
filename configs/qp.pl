@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.11 and later versions
 %
-%  last updated: May 31, 2010
+%  last updated: June 3, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -375,8 +375,8 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 % '$lgt_keysort'(+list, -list)
 
-'$lgt_keysort'(_, _) :-
-	throw(error(not_implemented, keysort/2)).
+'$lgt_keysort'(List, Sorted) :-
+	keysort(List, Sorted).
 
 
 % '$lgt_sort'(+list, -list)
