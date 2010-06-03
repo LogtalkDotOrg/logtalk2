@@ -42,6 +42,10 @@ RELEASE NOTES
     change allows for simpler and more robust handling of Prolog proprietary
     directives, specially module directives.
 
+    Recognize callable/1 and compare/3 as Prolog standard built-in predicates.
+    Calls to these predicates will no longer be reported when the portability
+    flag is set to "warning".
+
     Added support for the built-in non-terminal call//1 specified in the ISO
     Prolog standardization proposal for Definite Clause Grammars.
 
