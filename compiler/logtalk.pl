@@ -2946,7 +2946,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 
-% '$lgt_phrase'(+grbody, ?list, +object_identifier, +object_identifier)
+% '$lgt_phrase'(+grbody, ?list, +execution_context)
 %
 % phrase/2 built-in method
 
@@ -2959,7 +2959,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 
-% '$lgt_phrase'(+grbody, +list, ?list, +object_identifier, +object_identifier)
+% '$lgt_phrase'(+grbody, ?list, ?list, +execution_context)
 %
 % phrase/3 built-in method
 
@@ -8342,6 +8342,9 @@ current_logtalk_flag(version, version(2, 40, 0)).
 '$lgt_tr_head'(_<<_, _, _) :-
 	throw(permission_error(modify, control_construct, (<<)/2)).
 
+'$lgt_tr_head'(_>>_, _, _) :-
+	throw(permission_error(modify, control_construct, (>>)/2)).
+
 '$lgt_tr_head'(':'(_), _, _) :-
 	throw(permission_error(modify, control_construct, (:)/1)).
 
@@ -13688,7 +13691,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 % logtalk built-in methods
 %
-% '$lgt_built_in_method'(+callable, ?scope, ?callable)
+% '$lgt_built_in_method'(+callable, ?scope, ?callable, ?integer)
 
 % reflection methods
 '$lgt_built_in_method'(current_predicate(_), p(p(p)), no, 1) :- !.

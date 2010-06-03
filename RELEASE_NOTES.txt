@@ -32,6 +32,10 @@ RELEASE NOTES
     Updated the Logtalk compiler implementation in order to simplify passing
     of compilation context data.
 
+    Updated the Logtalk compiler in order to throw a permission error if the
+    user attempts to define clauses for the (>>)/2 control construct used in
+    lambda expressions.
+
     Updated the Logtalk compiler in order to preprocess proprietary Prolog
     directives (using any defined config file hooks) after term-expansion
     but before trying to compile the directives as Logtalk directives. This

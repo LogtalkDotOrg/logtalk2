@@ -801,8 +801,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  hack to allow calling the Prolog built-in predicates phrase/2-3 with a
-%  Object::GRBody as the first argument; assumes that the grammar rule non-
-%  terminals are expanded by adding two arguments
+%  Object::GRBody as the first argument
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
