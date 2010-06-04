@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.40.0 - June ??, 2010
+2.40.0 - June 4, 2010
 
     Changed the representation of meta-argument which are goals in the
     meta_predicate/1 directives from "::" to "0". When compiling calls
