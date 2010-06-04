@@ -23,7 +23,7 @@
 	),
 	load('$LOGTALKUSER/.qp.qo'),
 	(	stat('$LOGTALKHOME/compiler/logtalk.pl', stat(TimeCompilerSource, _)),
-		stat('$LOGTALKUSER/.logtalk.pl', stat(TimeCompilerObject, _)) ->
+		stat('$LOGTALKUSER/.logtalk.qo', stat(TimeCompilerObject, _)) ->
 		(	TimeCompilerObject < TimeCompilerSource ->
 			fcompile('$LOGTALKUSER/.logtalk.pl', [assemble_only(true), object_file('$LOGTALKUSER/.logtalk.qo'), string_table(256)])
 		;	true
