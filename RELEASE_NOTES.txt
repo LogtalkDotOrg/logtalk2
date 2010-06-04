@@ -77,6 +77,10 @@ RELEASE NOTES
     construct in debug mode where the meta-arguments would not be compiled
     in debug mode.
 
+    Corrected a silly bug in the compilation of proprietary Prolog directives
+    where meta-arguments would be compiled in debug mode if the "debug" flag
+    as "off" and in normal mode of the "debug" flag was "on".
+
     Added goal_expansion/2 clauses to the SWI-Prolog and YAP config files in
     order to allow calling the Prolog built-in predicates phrase/2-3 with a
     Object::GrammarRuleBody in the first argument.

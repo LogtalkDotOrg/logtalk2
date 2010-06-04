@@ -6447,14 +6447,13 @@ current_logtalk_flag(version, version(2, 40, 0)).
 	Dir =.. [Functor| Args],
 	Meta =.. [Functor| MArgs],
 	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
-	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx, _),
-	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, []),		% MetaVars = [] as we're compiling a local call
+	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, _, _),	% MetaVars = [] as we're compiling a local call
 	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
 	(	'$lgt_compiler_flag'(debug, on) ->
-		Tdir =.. [Functor| TArgs]
-	;	Tdir =.. [Functor| DArgs]
+		TDir =.. [Functor| DArgs]
+	;	TDir =.. [Functor| TArgs]
 	),
-	assertz('$lgt_pp_directive_'(Tdir)).
+	assertz('$lgt_pp_directive_'(TDir)).
 
 '$lgt_tr_directive'(Dir, Ctx) :-
 	'$lgt_pp_module_'(_),									% we're compiling a module as an object
@@ -10033,9 +10032,6 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 '$lgt_tr_meta_arg'((*), Arg, _, Arg, Arg).
-
-'$lgt_tr_meta_arg'((::), Arg, Ctx, TArg, DArg) :-
-	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
 
 '$lgt_tr_meta_arg'((0), Arg, Ctx, TArg, DArg) :-
 	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
