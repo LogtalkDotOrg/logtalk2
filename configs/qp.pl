@@ -111,19 +111,10 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 % '$lgt_pl_meta_predicate'(+callable, ?callable, ?atom).
 
-'$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(0, 0), predicate).
-'$lgt_pl_meta_predicate'(delay(_, _), delay(*, 0), predicate).
-'$lgt_pl_meta_predicate'(delay_until(_, _), delay_until(*, 0), predicate).
-'$lgt_pl_meta_predicate'(message_choice(_), message_choice(0), predicate).
-'$lgt_pl_meta_predicate'(retry_woken_delays(_), retry_woken_delays(0), predicate).
-'$lgt_pl_meta_predicate'(thread_fork(_, _), thread_fork(*, 0), predicate).
-'$lgt_pl_meta_predicate'(thread_fork(_, _, _), thread_fork(*, 0, *), predicate).
-'$lgt_pl_meta_predicate'(thread_push_goal(_, _), thread_push_goal(*, 0), predicate).
-'$lgt_pl_meta_predicate'(thread_atomic_goal(_), thread_atomic_goal(0), predicate).
-'$lgt_pl_meta_predicate'(unwind_protect(_, _), unwind_protect(0, 0), predicate).
-'$lgt_pl_meta_predicate'(thread_wait_on_goal(_), thread_wait_on_goal(0), predicate).
-'$lgt_pl_meta_predicate'(thread_wait_on_goal(_, _), thread_wait_on_goal(0, *), predicate).
-'$lgt_pl_meta_predicate'('??'(_, _), '??'(*, 0), predicate).
+'$lgt_pl_meta_predicate'(Callable, Template, predicate) :-
+	predicate_property(Callable, built_in),
+	predicate_property(Callable, meta_predicate(Template)),
+	!.
 
 
 

@@ -30,10 +30,10 @@ Most of the suggestions you will find in this file for integrating Logtalk
 with specific Prolog compilers are already implemented and available in the 
 "integration" directory of the Logtalk distribution.
 
-The config files include hacked definitions for missing ISO Prolog standard
-and de-facto standard built-in predicates. These definitions aim to fulfill
-the requirements of the Logtalk compiler and runtime but are not intended as
-a full replacement for missing functionality.
+The config files may include hacked definitions for missing ISO Prolog
+standard and de-facto standard built-in predicates. These definitions aim
+to fulfill the requirements of the Logtalk compiler and runtime but are
+not intended as a full replacement for missing functionality.
 
 
 template config file
@@ -162,6 +162,9 @@ ECLiPSe 6.0#77 or later versions
 Qu-Prolog 8.11 and later versions
 
 	qp.pl
+
+	Know issue in Qu-Prolog 8.11: this version doesn't support static multifile
+	predicates. This limitation may be fixed in later versions.
 
 	In order to compile and load both the config file and the Logtalk compiler,
 	the following sequence of steps is advised.
