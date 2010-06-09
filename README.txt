@@ -31,7 +31,7 @@ in the "LICENSE.txt" file in this directory. Logtalk follows the
 Artistic License 2.0. The copyright notice and license applies to all 
 files in this release (including sources, documentation, and examples) 
 unless otherwise explicitly stated.
-LOGTALK WEB SITE
+
 
 2. LOGTALK WEB SITE
 
