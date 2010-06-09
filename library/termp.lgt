@@ -2,9 +2,9 @@
 :- protocol(termp).
 
 	:- info([
-		version is 1.3,
+		version is 1.31,
 		author is 'Paulo Moura',
-		date is 2009/3/6,
+		date is 2010/06/09,
 		comment is 'Prolog term utility predicates protocol.']).
 
 	:- public(depth/2).
@@ -32,7 +32,7 @@
 		argnames is ['Variable', 'Term']]).
 
 	:- public(subsumes/2).
-	:- mode(subsumes(@term, @term), zero_or_one).
+	:- mode(subsumes(?term, @term), zero_or_one).
 	:- info(subsumes/2, [
 		comment is 'The first term subsumes the second term.',
 		argnames is ['General', 'Specific']]).

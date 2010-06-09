@@ -99,7 +99,7 @@ complements
 	object
 
 constraints
-	several exampels of using constraints within objects and categories
+	several examples of using constraints within objects and categories
 	when using constraint domain solvers found in back-end Prolog compilers
 
 dcgs
@@ -119,7 +119,7 @@ dynpred
 
 encodings
 	very simple example of using the new, experimental encoding/1 
-	directive (requires Logtalk to be run with either YAP, SWI-Prolog,
+	directive (requires Logtalk to be run with YAP, SWI-Prolog,
 	CxProlog, K-Prolog, or SICStus Prolog)
 
 engines
@@ -260,7 +260,7 @@ symdiff
 
 tabling
 	simple example of using tabling directives within objects
-	(requires Logtalk to be run with either B-Prolog, XSB, or YAP)
+	(requires Logtalk to be run with B-Prolog, XSB, or YAP)
 
 testing
 	some examples of writing unit tests
@@ -268,7 +268,7 @@ testing
 threads
 	several simple examples of multi-threading programming, some of 
 	them intended only for benchmarking multi-threading Prolog compilers
-	(requires Logtalk to be run with either YAP, SWI-Prolog, or XSB)
+	(requires Logtalk to be run with YAP, SWI-Prolog, or XSB)
 
 viewpoints
 	example on how to implement property sharing and value sharing 
