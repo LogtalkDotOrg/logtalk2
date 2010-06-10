@@ -72,8 +72,8 @@ post-activate {
 	ui_msg "* the Logtalk distribution: ${prefix}/share/logtalk"
 	ui_msg "* and the environment variable LOGTALKUSER to your local configuration"
 	ui_msg "* directory (usually ~/logtalk), which you must create by running the"
-	ui_msg "* command cplgtdirs. See the file \$LOGTALKHOME/CUSTOMIZE.txt for details"
-	ui_msg "* on how to customize your working environment."
+	ui_msg "* command logtalk_user_setup. See the file \$LOGTALKHOME/CUSTOMIZE.txt"
+	ui_msg "* for details on how to customize your working environment."
 	ui_msg "*"
 	if {[file exists ${prefix}/share/mime/packages/logtalk.xml]} {
 	    delete ${prefix}/share/mime/packages/logtalk.xml

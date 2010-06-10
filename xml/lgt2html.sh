@@ -49,14 +49,14 @@ if ! [ "$LOGTALKUSER" ]; then
 	if [ -d "$LOGTALKUSER" ]; then		
 		echo "... using Logtalk user directory found at $LOGTALKUSER"
 	else
-		echo "... Logtalk user directory not found at default location. Creating a"
-		echo "new Logtalk user directory by running the \"cplgtdirs\" shell script:"
-		cplgtdirs
+		echo "... Logtalk user directory not found at default location. Creating a new"
+		echo "Logtalk user directory by running the \"logtalk_user_setup\" shell script:"
+		logtalk_user_setup
 	fi
 elif ! [ -d "$LOGTALKUSER" ]; then
 	echo "Cannot find \$LOGTALKUSER directory! Creating a new Logtalk user directory"
-	echo "by running the \"cplgtdirs\" shell script:"
-	cplgtdirs
+	echo "by running the \"logtalk_user_setup\" shell script:"
+	logtalk_user_setup
 fi
 echo
 

@@ -128,19 +128,19 @@ point to the same directory.
 
 Each user must make a local copy of the Logtalk user-modifiable files
 (examples, libraries, and other supporting files) in his/her home directory.
-These copies can be easily made by running the shell script "cplgtdirs" (see
-the "scripts/NOTES.txt" file for details):
+These copies can be easily made by running the "logtalk_user_setup" shell
+script  (see the "scripts/NOTES.txt" file for details):
 
 >> POSIX systems:
 
-	% cplgtdirs
+	% logtalk_user_setup
 
 >> Windows:
 
-	C:\> cplgtdirs
+	C:\> logtalk_user_setup
 
-The local copies made by the "cplgtdirs" scripts have both read and write 
-permissions for the user running the script. When used with one of the 
+The local copies made by the "logtalk_user_setup" scripts have both read and
+write permissions for the user running the script. When used with one of the 
 back-end Prolog compilers for which an integration script is provided on 
 the "integration" directory, this setup as the advantage of allowing each 
 end-user to independently customize default compilation options, library 

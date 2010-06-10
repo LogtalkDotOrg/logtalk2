@@ -56,7 +56,7 @@ ln -sf lgt2400 logtalk
 mkdir -p $prefix/bin
 cd $prefix/bin
 
-ln -sf ../share/logtalk/scripts/cplgtdirs.sh cplgtdirs
+ln -sf ../share/logtalk/scripts/logtalk_user_setup.sh logtalk_user_setup
 cp -f ../share/logtalk/scripts/logtalk_version_select.sh logtalk_version_select
 ln -sf ../share/logtalk/scripts/logtalk_backend_select.sh logtalk_backend_select
 ln -sf ../share/logtalk/xml/lgt2pdf.sh lgt2pdf
@@ -64,8 +64,8 @@ ln -sf ../share/logtalk/xml/lgt2html.sh lgt2html
 ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
 ln -sf ../share/logtalk/xml/lgt2txt.sh lgt2txt
 
-echo "Links to the \"cplgtdirs\", \"lgt2pdf\", \"lgt2html\", \"lgt2xml\", and"
-echo "\"lgt2txt\" scripts have been created on \"$prefix/bin\";"
+echo "Links to the \"logtalk_user_setup\", \"lgt2pdf\", \"lgt2html\", \"lgt2xml\","
+echo "and \"lgt2txt\" scripts have been created on \"$prefix/bin\";"
 echo "you may need to add this directory to your execution path."
 echo
 
@@ -103,8 +103,8 @@ echo "Make sure that the Prolog compilers are properly installed and available"
 echo "on your execution path."
 echo
 echo "Users should ensure that the environment variable LOGTALKHOME is set to"
-echo "\"$prefix/share/logtalk\" and then run the \"cplgtdirs\" shell script once"
-echo "before running the integration scripts."
+echo "\"$prefix/share/logtalk\" and then run the \"logtalk_user_setup\" shell script"
+echo "once before running the integration scripts."
 echo
 echo "If you get an unexpected failure when using one of the Prolog integration"
 echo "scripts, consult the \"$prefix/share/logtalk/configs/NOTES.txt\" file"

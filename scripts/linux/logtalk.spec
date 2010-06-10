@@ -50,7 +50,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/lgt2400/wenv
 /usr/local/share/lgt2400/xml
 /usr/local/share/logtalk
-/usr/local/bin/cplgtdirs
+/usr/local/bin/logtalk_user_setup
 /usr/local/bin/lgt2pdf
 /usr/local/bin/lgt2html
 /usr/local/bin/lgt2xml
@@ -75,8 +75,8 @@ rm -rf $RPM_BUILD_ROOT
 echo
 echo "Installed Logtalk on \"/usr/local/share\"."
 echo
-echo "Links to the \"cplgtdirs\", \"lgt2pdf\", \"lgt2html\", \"lgt2xml\", and"
-echo "\"lgt2txt\" scripts have been created on \"/usr/local/bin\";"
+echo "Links to the \"logtalk_user_setup\", \"lgt2pdf\", \"lgt2html\", \"lgt2xml\","
+echo "and \"lgt2txt\" scripts have been created on \"/usr/local/bin\";"
 echo " you may need to add this directoryto your execution path."
 echo
 echo "The following integration scripts are installed for running Logtalk"
@@ -131,8 +131,8 @@ echo
 echo "Users may change the default value of the LOGTALKUSER environment variable"
 echo "in their shell configuration files if they already use, or want to use, a "
 echo "different location for the Logtalk user files directory. This directory "
-echo "is created by running the \"cplgtdirs\" shell script, which must be run "
-echo "once by each user before using the integration scripts."
+echo "is created by running the \"logtalk_user_setup\" shell script, which must"
+echo " be run once by each user before using the integration scripts."
 echo
 if [ -x /usr/bin/update-mime-database ]; then
 	mkdir -p /usr/share/mime/packages

@@ -57,19 +57,19 @@ if [ -d "$LOGTALKUSER" ]; then
 	if ! [ -f "$LOGTALKUSER/VERSION.txt" ]; then
 		echo "Cannot find version information in the Logtalk user directory at $LOGTALKUSER!"
 		echo "Creating an up-to-date Logtalk user directory..."
-		cplgtdirs
+		logtalk_user_setup
 	else
 		current=`cat $LOGTALKUSER/VERSION.txt | sed 's/\.//g'`
 		if [ $current -lt 2391 ]; then
 			echo "Logtalk user directory at $LOGTALKUSER is outdated!"
 			echo "Creating an up-to-date Logtalk user directory..."
-			cplgtdirs
+			logtalk_user_setup
 		fi
 	fi
 else
 	echo "Cannot find \$LOGTALKUSER directory! Creating a new Logtalk user directory"
-	echo "by running the \"cplgtdirs\" shell script:"
-	cplgtdirs
+	echo "by running the \"logtalk_user_setup\" shell script:"
+	logtalk_user_setup
 fi
 echo
 

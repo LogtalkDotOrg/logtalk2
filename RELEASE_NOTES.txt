@@ -99,6 +99,7 @@ RELEASE NOTES
     Added man pages for the POSIX "*lgt" Prolog integration shell scripts.
 
     Renamed the "logtalk_select" shell script to "logtalk_version_select".
+    Renamed the "cplgtdirs.*" scripts to "logtalk_user_setup.*".
 
     Improved the "examples/tester.sh" script in order to support running the
     example unit tests compiled in debug mode.

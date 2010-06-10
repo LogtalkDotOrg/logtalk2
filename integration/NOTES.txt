@@ -40,8 +40,9 @@ account).
 The environment variables LOGTALKHOME and LOGTALKUSER should be defined 
 in order to run the integration scripts (see the "INSTALL.txt" file for 
 details on setting the variables). When the scripts detect an outdated 
-Logtalk user directory, they create a new one by running the "cplgtdirs.sh" 
-script (a backup is automatically made of the old directory).
+Logtalk user directory, they create a new one by running the script
+"logtalk_user_setup.sh" (a backup is automatically made of the old
+directory).
 
 Note that the integration scripts and shortcuts may fail if you use non-
 standard locations for your Prolog compilers.

@@ -48,7 +48,7 @@ rm -f logtalk
 cd ../bin
 rm -f bplgt
 rm -f ciaolgt
-rm -f cplgtdirs
+rm -f logtalk_user_setup
 rm -f cxlgt
 rm -f eclipselgt
 rm -f lgt2html

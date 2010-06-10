@@ -69,8 +69,8 @@ macosx
 windows
 	directory containing files used when building Windows GUI installers
 
-cplgtdirs.sh
-cplgtdirs.js
+logtalk_user_setup.sh
+logtalk_user_setup.js
 	end-user scripts for copying the Logtalk user-modifiable files and 
 	directories to the location pointed by the environment variable 
 	LOGTALKUSER (defaults to "~/logtalk" on POSIX operating-systems 
@@ -79,5 +79,6 @@ cplgtdirs.js
 	permissions for the copied files; the LOGTALKHOME environment 
 	variable must be defined (pointing to the Logtalk installation 
 	directory)
-cplgtdirs.bat
-    wrapper for the cplgtdirs.js script in order to simplify its use
+logtalk_user_setup.bat
+    wrapper for the logtalk_user_setup.js script in order to simplify
+	its use
