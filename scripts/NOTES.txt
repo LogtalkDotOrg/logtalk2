@@ -39,7 +39,7 @@ uninstall.sh
 	systems (must be run from this directory by a user with administration 
 	privileges)
 
-logtalk_select.sh
+logtalk_version_select.sh
 	experimental shell script for switching between installed Logtalk
 	versions for POSIX operating-systems; works with version 2.36.0 or
 	later; doesn't change the Logtalk user folder; this script is loosely

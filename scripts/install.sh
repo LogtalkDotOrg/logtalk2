@@ -57,7 +57,7 @@ mkdir -p $prefix/bin
 cd $prefix/bin
 
 ln -sf ../share/logtalk/scripts/cplgtdirs.sh cplgtdirs
-cp -f ../share/logtalk/scripts/logtalk_select.sh logtalk_select
+cp -f ../share/logtalk/scripts/logtalk_version_select.sh logtalk_version_select
 ln -sf ../share/logtalk/scripts/logtalk_backend_select.sh logtalk_backend_select
 ln -sf ../share/logtalk/xml/lgt2pdf.sh lgt2pdf
 ln -sf ../share/logtalk/xml/lgt2html.sh lgt2html
