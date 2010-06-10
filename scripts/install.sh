@@ -82,6 +82,7 @@ ln -sf ../share/logtalk/integration/xsbmtlgt.sh xsbmtlgt
 ln -sf ../share/logtalk/integration/xsbmt64lgt.sh xsbmt64lgt
 ln -sf ../share/logtalk/integration/yaplgt.sh yaplgt
 
+mkdir -p ../share/man/man1
 cd ../share/man/man1
 gzip --best ../../logtalk/man/man1/*.1
 for file in ../../logtalk/man/man1/*.1.gz ; do
