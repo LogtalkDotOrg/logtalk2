@@ -7,7 +7,7 @@ bplgt \- Logtalk integration script for B-Prolog
 .B bplgt
 
 .SH DESCRIPTION
-\f3bplgt\f1 is a Logtalk integration script for B-Prolog. It automatically loads the B-Prolog config file, the Logtalk compiler and runtime, and the Logtalk default table of library names and paths.
+\f3bplgt\f1 is a Logtalk integration script for B-Prolog. It automatically loads the B-Prolog config file, the Logtalk compiler and runtime,  the Logtalk default table of library names and paths, and any existing settings file found on the startup directory or in the Logtalk user directory.
 
 .SH ENVIRONMENT
 .TP
@@ -15,7 +15,7 @@ bplgt \- Logtalk integration script for B-Prolog
 Specifies the location of the Logtalk installation.
 .TP
 .B LOGTALKUSER
-Specifies the location of the Logtalk user folder.
+Specifies the location of the Logtalk user directory.
 
 .SH FILES
 .TP
@@ -30,6 +30,12 @@ The Logtalk compiler and runtime file.
 .TP
 .BI $LOGTALKUSER/libpaths/libpaths.pl
 The default table of library names and paths.
+.TP
+.BI ./settings.lgt
+Logtalk settings file (for overriding default settings in the config files). May not exist.
+.TP
+.BI $LOGTALKUSER/settings.lgt
+Logtalk settings file (for overriding default settings in the config files). May not exist.
 
 .SH "SEE ALSO"
 The Logtalk website at http://logtalk.org/
