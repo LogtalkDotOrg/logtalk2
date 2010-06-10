@@ -65,7 +65,7 @@ rm -f xsb64lgt
 rm -f xsbmtlgt
 rm -f xsbmt64lgt
 rm -f yaplgt
-cd ../man/man1
+cd ../share/man/man1
 rm -f bplgt.1.gz
 rm -f ciaolgt.1.gz
 rm -f cxlgt.1.gz
