@@ -1,0 +1,55 @@
+.TH qplgt 1 "June 10, 2010" "Logtalk 2.40.0" "Logtalk Documentation"
+
+.SH NAME
+qplgt \- Logtalk integration script for Qu-Prolog
+
+.SH SYNOPSIS
+.B qplgt
+[
+.BI \-g\ goal
+]
+
+.SH DESCRIPTION
+\f3qplgt\f1 is a Logtalk integration script for Qu-Prolog. It automatically loads the Qu-Prolog config file, the Logtalk compiler and runtime, and the Logtalk default table of library names and paths.
+
+.SH OPTIONS
+.TP
+.BI \-g\ goal
+Initialization goal, to be executed after Logtalk startup.
+
+.SH ENVIRONMENT
+.TP
+.B LOGTALKHOME
+Specifies the location of the Logtalk installation.
+.TP
+.B LOGTALKUSER
+Specifies the location of the Logtalk user folder.
+
+.SH FILES
+.TP
+.BI $LOGTALKHOME/integration/logtalk_qp.pl
+Prolog file used for loading the necessary files for starting Logtalk using Qu-Prolog as the back-end compiler.
+.TP
+.BI $LOGTALKHOME/configs/qp.pl
+The Qu-Prolog config file.
+.TP
+.BI $LOGTALKHOME/compiler/logtalk.pl
+The Logtalk compiler and runtime file.
+.TP
+.BI $LOGTALKUSER/libpaths/libpaths.pl
+The default table of library names and paths.
+
+.SH "SEE ALSO"
+The Logtalk website at http://logtalk.org/
+.PP
+The Logtalk User and Reference Manuals at $LOGTALKHOME/manuals/index.html
+.PP
+The Qu-Prolog website at http://www.itee.uq.edu.au/~pjr/HomePages/QuPrologHome.html
+.PP
+.BR cplgtdirs (1)
+
+.SH AUTHOR
+Paulo Moura <pmoura@logtalk.org>
+
+.SH COPYRIGHT
+Copyright (c) 1998-2010 Paulo Moura.

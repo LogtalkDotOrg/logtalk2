@@ -96,6 +96,8 @@ RELEASE NOTES
     Corrected a typo in the template of the predicate subsumes/2 in the
     library protocol "termp".
 
+    Added man pages for the POSIX "*lgt" Prolog integration shell scripts.
+
     Improved the "examples/tester.sh" script in order to support running the
     example unit tests compiled in debug mode.
 

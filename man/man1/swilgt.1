@@ -1,0 +1,61 @@
+.TH swilgt 1 "June 10, 2010" "Logtalk 2.40.0" "Logtalk Documentation"
+
+.SH NAME
+swilgt \- Logtalk integration script for SWI-Prolog
+
+.SH SYNOPSIS
+.B swilgt
+[
+.BI \-g\ goal
+]
+
+.SH DESCRIPTION
+\f3swilgt\f1 is a Logtalk integration script for SWI-Prolog. It automatically loads the SWI-Prolog config file, the Logtalk compiler and runtime, the Logtalk default table of library names and paths.
+
+.SH OPTIONS
+.TP
+.BI \-g\ goal
+Initialization goal, to be executed after Logtalk startup.
+
+.SH ENVIRONMENT
+.TP
+.B LOGTALKHOME
+Specifies the location of the Logtalk installation.
+.TP
+.B LOGTALKUSER
+Specifies the location of the Logtalk user folder.
+
+.SH FILES
+.TP
+.BI $LOGTALKHOME/integration/logtalk_swi.pl
+Prolog file used for loading the necessary files for starting Logtalk using SWI-Prolog as the back-end compiler.
+.TP
+.BI $LOGTALKHOME/configs/swi.pl
+The SWI-Prolog config file.
+.TP
+.BI $LOGTALKHOME/compiler/logtalk.pl
+The Logtalk compiler and runtime file.
+.TP
+.BI $LOGTALKUSER/libpaths/libpaths.pl
+The default table of library names and paths.
+.TP
+.BI $LOGTALKHOME/configs/swihook.pl
+Hooks file for supporting loading Logtalk entities using SWI-Prolog load_files/2 and consult/1 predicates and to support edit/1 and make/0.
+.TP
+.BI $LOGTALKHOME/configs/xpcehook.pl
+Hooks file for supporting Logtalk message sending goals as XPCE call-back goals.
+
+.SH "SEE ALSO"
+The Logtalk website at http://logtalk.org/
+.PP
+The Logtalk User and Reference Manuals at $LOGTALKHOME/manuals/index.html
+.PP
+The SWI-Prolog website at http://www.swi-prolog.org/
+.PP
+.BR cplgtdirs (1)
+
+.SH AUTHOR
+Paulo Moura <pmoura@logtalk.org>
+
+.SH COPYRIGHT
+Copyright (c) 1998-2010 Paulo Moura.
