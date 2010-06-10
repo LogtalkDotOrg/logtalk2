@@ -66,25 +66,25 @@ rm -f xsbmtlgt
 rm -f xsbmt64lgt
 rm -f yaplgt
 cd ../man/man1
-rm -f bplgt.1
-rm -f ciaolgt.1
-rm -f cxlgt.1
-rm -f eclipselgt.1
-rm -f lgt2html.1
-rm -f lgt2pdf.1
-rm -f lgt2txt.1
-rm -f lgt2xml.1
-rm -f logtalk_backend_select.1
-rm -f logtalk_user_setup.1
-rm -f logtalk_version_select.1
-rm -f qplgt.1
-rm -f sicstuslgt.1
-rm -f swilgt.1
-rm -f xsb64lgt.1
-rm -f xsblgt.1
-rm -f xsbmt64lgt.1
-rm -f xsbmtlgt.1
-rm -f yaplgt.1
+rm -f bplgt.1.gz
+rm -f ciaolgt.1.gz
+rm -f cxlgt.1.gz
+rm -f eclipselgt.1.gz
+rm -f lgt2html.1.gz
+rm -f lgt2pdf.1.gz
+rm -f lgt2txt.1.gz
+rm -f lgt2xml.1.gz
+rm -f logtalk_backend_select.1.gz
+rm -f logtalk_user_setup.1.gz
+rm -f logtalk_version_select.1.gz
+rm -f qplgt.1.gz
+rm -f sicstuslgt.1.gz
+rm -f swilgt.1.gz
+rm -f xsb64lgt.1.gz
+rm -f xsblgt.1.gz
+rm -f xsbmt64lgt.1.gz
+rm -f xsbmtlgt.1.gz
+rm -f yaplgt.1.gz
 
 
 echo "Logtalk 2.40.0 system-level uninstall completed. For uninstalling user-level"

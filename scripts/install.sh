@@ -82,9 +82,9 @@ ln -sf ../share/logtalk/integration/xsbmtlgt.sh xsbmtlgt
 ln -sf ../share/logtalk/integration/xsbmt64lgt.sh xsbmt64lgt
 ln -sf ../share/logtalk/integration/yaplgt.sh yaplgt
 
-cd ../man/man1
-gzip --best ../../../share/logtalk/man/man1/*.1
-for file in ../../../share/logtalk/man/man1/*.1.gz ; do
+cd ../share/man/man1
+gzip --best ../../logtalk/man/man1/*.1
+for file in ../../logtalk/man/man1/*.1.gz ; do
 	ln -sf $file `basename $file`
 done
 
