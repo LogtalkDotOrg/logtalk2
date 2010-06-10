@@ -96,7 +96,8 @@ RELEASE NOTES
     Corrected a typo in the template of the predicate subsumes/2 in the
     library protocol "termp".
 
-    Added man pages for the POSIX "*lgt" Prolog integration shell scripts.
+    Added man pages for the POSIX "*lgt" Prolog integration shell scripts
+    and for the Logtalk management shell scripts.
 
     Renamed the "logtalk_select" shell script to "logtalk_version_select".
     Renamed the "cplgtdirs.*" scripts to "logtalk_user_setup.*".
