@@ -29,11 +29,10 @@ RELEASE NOTES
     when asserting clauses, the term_expansion/2 and goal_expansion/2 built-in
     methods must be called explicitly.
 
-    Corrected a bug when sending messages to objects know at compile-time
-    from bagof/3 and setof/3 calls with existentially quantified variables.
-    This bug could result in missing alternative solutions when backtracking
-    to the bagof/3 and setof/3 calls. Thanks to Victor Lagerkvist for his help
-    in diagnosing the problem.
+    Corrected a bug when sending messages to objects from bagof/3 and setof/3
+    calls with existentially quantified variables. This bug could result in
+    missing alternative solutions when backtracking to the bagof/3 and setof/3
+    calls. Thanks to Victor Lagerkvist for his help in diagnosing the problem.
 
     Updated the Logtalk compiler implementation in order to simplify passing
     of compilation context data.

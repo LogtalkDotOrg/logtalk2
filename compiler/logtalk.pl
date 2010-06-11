@@ -3107,6 +3107,19 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 
+% '$lgt_send_to_self_'(+object_identifier, +term, +object_identifier)
+%
+% calls to this predicate are generated when compiling message sending calls;
+% we cannot call the '$lgt_send_to_self_'/4 predicate directly as the call
+% can be part of a bagof/3 or setof/3 goal, where the anonymous variable in
+% the last argument could lead to trouble if existentially quantified variables
+% are used
+
+'$lgt_send_to_self_'(Obj, Pred, Sender) :-
+	'$lgt_send_to_self_'(Obj, Pred, Sender, _).
+
+
+
 % '$lgt_send_to_self_'(+object_identifier, +term, +object_identifier, ?atom)
 
 '$lgt_send_to_self_'(Obj, Pred, Sender, fixed) :-
@@ -10644,7 +10657,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 % message is not a built-in control construct or a call to a built-in 
 % (meta-)predicate: translation performed at runtime
 
-'$lgt_tr_self_msg'(Pred, '$lgt_send_to_self_'(Self, Pred, This, _), This, Self) :-
+'$lgt_tr_self_msg'(Pred, '$lgt_send_to_self_'(Self, Pred, This), This, Self) :-
 	!.
 
 
