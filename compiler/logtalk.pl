@@ -3367,6 +3367,19 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 
+% '$lgt_obj_super_call_same_'(+object_identifier, +term, +object_identifier)
+%
+% calls to this predicate are generated when compiling message sending calls;
+% we cannot call the '$lgt_obj_super_call_same_'/4 predicate directly as the call
+% can be part of a bagof/3 or setof/3 goal, where the anonymous variable in
+% the last argument could lead to trouble if existentially quantified variables
+% are used
+
+'$lgt_obj_super_call_same_'(Super, Pred, ExCtx) :-
+	'$lgt_obj_super_call_same_'(Super, Pred, ExCtx, _).
+
+
+
 % '$lgt_super_call_same_'(+object_identifier, +callable, +execution_context, ?atom)
 %
 % the last clause of this cache predicate must never be retracted (hence the
@@ -3392,6 +3405,19 @@ current_logtalk_flag(version, version(2, 40, 0)).
 	;	% closed-world assumption
 		fail
 	).
+
+
+
+% '$lgt_ctg_super_call_same_'(+object_identifier, +term, +object_identifier)
+%
+% calls to this predicate are generated when compiling message sending calls;
+% we cannot call the '$lgt_obj_super_call_same_'/4 predicate directly as the call
+% can be part of a bagof/3 or setof/3 goal, where the anonymous variable in
+% the last argument could lead to trouble if existentially quantified variables
+% are used
+
+'$lgt_ctg_super_call_same_'(Ctg, Pred, ExCtx) :-
+	'$lgt_ctg_super_call_same_'(Ctg, Pred, ExCtx, _).
 
 
 
@@ -3431,6 +3457,19 @@ current_logtalk_flag(version, version(2, 40, 0)).
 	;	'$lgt_exec_ctx'(ExCtx, This, _),
 		throw(error(type_error(callable, Pred), ^^Pred, This))
 	).
+
+
+
+% '$lgt_obj_super_call_other_'(+object_identifier, +term, +object_identifier)
+%
+% calls to this predicate are generated when compiling message sending calls;
+% we cannot call the '$lgt_obj_super_call_other_'/4 predicate directly as the call
+% can be part of a bagof/3 or setof/3 goal, where the anonymous variable in
+% the last argument could lead to trouble if existentially quantified variables
+% are used
+
+'$lgt_obj_super_call_other_'(Super, Pred, ExCtx) :-
+	'$lgt_obj_super_call_other_'(Super, Pred, ExCtx, _).
 
 
 
@@ -3485,6 +3524,19 @@ current_logtalk_flag(version, version(2, 40, 0)).
 		'$lgt_ctg_super_call_other_'(Ctg, Pred, ExCtx, _)
 	;	throw(error(type_error(callable, Pred), ^^Pred, Ctg))
 	).
+
+
+
+% '$lgt_ctg_super_call_other_'(+object_identifier, +term, +object_identifier)
+%
+% calls to this predicate are generated when compiling message sending calls;
+% we cannot call the '$lgt_ctg_super_call_other_'/4 predicate directly as the call
+% can be part of a bagof/3 or setof/3 goal, where the anonymous variable in
+% the last argument could lead to trouble if existentially quantified variables
+% are used
+
+'$lgt_ctg_super_call_other_'(Ctg, Pred, ExCtx) :-
+	'$lgt_ctg_super_call_other_'(Ctg, Pred, ExCtx, _).
 
 
 
@@ -3896,6 +3948,19 @@ current_logtalk_flag(version, version(2, 40, 0)).
 	;	'$lgt_exec_ctx'(ExCtx, This, _),
 		throw(error(type_error(callable, Pred), ':'(Pred), This))
 	).
+
+
+
+% '$lgt_ctg_call_'(+object_identifier, +term, +object_identifier)
+%
+% calls to this predicate are generated when compiling message sending calls;
+% we cannot call the '$lgt_send_to_obj_'/4 predicate directly as the call
+% can be part of a bagof/3 or setof/3 goal, where the anonymous variable in
+% the last argument could lead to trouble if existentially quantified variables
+% are used
+
+'$lgt_ctg_call_'(Dcl, Pred, ExCtx) :-
+	'$lgt_ctg_call_'(Dcl, Pred, ExCtx, _).
 
 
 
@@ -9291,8 +9356,8 @@ current_logtalk_flag(version, version(2, 40, 0)).
 		'$lgt_pp_object_'(_, _, Dcl, _, _, IDcl, _, _, _, _, _) ->
 		(	\+ '$lgt_pp_instantiated_class_'(_, _, _, _, _, _, _, _, _, _),
 		 	\+ '$lgt_pp_specialized_class_'(_, _, _, _, _, _, _, _, _, _) ->
-			TPred = '$lgt_ctg_call_'(Dcl, Alias, ExCtx, _)
-		;	TPred = '$lgt_ctg_call_'(IDcl, Alias, ExCtx, _)
+			TPred = '$lgt_ctg_call_'(Dcl, Alias, ExCtx)
+		;	TPred = '$lgt_ctg_call_'(IDcl, Alias, ExCtx)
 		)
 	).
 
@@ -10692,10 +10757,10 @@ current_logtalk_flag(version, version(2, 40, 0)).
 	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
 		'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _),
 		'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
-	    TPred = '$lgt_obj_super_call_same_'(Super, Pred, ExCtx, _)
+	    TPred = '$lgt_obj_super_call_same_'(Super, Pred, ExCtx)
 	;	'$lgt_pp_category_'(Ctg, _, _, _, _, _) ->
 		'$lgt_comp_ctx'(Ctx, _, _, _, _, _, _, _, ExCtx, _),
-	    TPred = '$lgt_ctg_super_call_same_'(Ctg, Pred, ExCtx, _)
+	    TPred = '$lgt_ctg_super_call_same_'(Ctg, Pred, ExCtx)
 	).
 
 '$lgt_tr_super_call'(Pred, TPred, Ctx) :-		% "super" call to a predicate other than the one being redefined
@@ -10703,12 +10768,12 @@ current_logtalk_flag(version, version(2, 40, 0)).
 	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
 		(	var(Pred) ->
 	    	TPred = '$lgt_obj_super_call_other'(Super, Pred, ExCtx)
-		;	TPred = '$lgt_obj_super_call_other_'(Super, Pred, ExCtx, _)
+		;	TPred = '$lgt_obj_super_call_other_'(Super, Pred, ExCtx)
 		)
 	;	'$lgt_pp_category_'(Ctg, _, _, _, _, _) ->
 		(	var(Pred) ->
 	    	TPred = '$lgt_ctg_super_call_other'(Ctg, Pred, ExCtx)
-		;	TPred = '$lgt_ctg_super_call_other_'(Ctg, Pred, ExCtx, _)
+		;	TPred = '$lgt_ctg_super_call_other_'(Ctg, Pred, ExCtx)
 		)
 	).
 
