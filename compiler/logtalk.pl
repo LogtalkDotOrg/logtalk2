@@ -3161,6 +3161,19 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 
+% '$lgt_send_to_obj_'(+object_identifier, +term, +object_identifier)
+%
+% calls to this predicate are generated when compiling message sending calls;
+% we cannot call the '$lgt_send_to_obj_'/4 predicate directly as the call
+% can be part of a bagof/3 or setof/3 goal, where the anonymous variable in
+% the last argument could lead to trouble if existentially quantified variables
+% are used
+
+'$lgt_send_to_obj_'(Obj, Pred, Sender) :-
+	'$lgt_send_to_obj_'(Obj, Pred, Sender, _).
+
+
+
 % '$lgt_send_to_obj_'(+object_identifier, +term, +object_identifier, ?atom)
 %
 % the last clause of this cache predicate must never be retracted (hence the
@@ -3254,6 +3267,19 @@ current_logtalk_flag(version, version(2, 40, 0)).
 		'$lgt_send_to_obj_ne_'(Obj, Pred, Sender, _)
 	;	throw(error(type_error(callable, Pred), Obj::Pred, Sender))
 	).
+
+
+
+% '$lgt_send_to_obj_ne_'(+object_identifier, +term, +object_identifier)
+%
+% calls to this predicate are generated when compiling message sending calls;
+% we cannot call the '$lgt_send_to_obj_ne_'/4 predicate directly as the call
+% can be part of a bagof/3 or setof/3 goal, where the anonymous variable in
+% the last argument could lead to trouble if existentially quantified variables
+% are used
+
+'$lgt_send_to_obj_ne_'(Obj, Pred, Sender) :-
+	'$lgt_send_to_obj_ne_'(Obj, Pred, Sender, _).
 
 
 
@@ -10463,8 +10489,8 @@ current_logtalk_flag(version, version(2, 40, 0)).
 		;	TPred = '$lgt_send_to_object_ne'(Obj, Pred, This)
 		)
 	;	(	'$lgt_compiler_flag'(events, allow) ->
-			TPred = '$lgt_send_to_obj_'(Obj, Pred, This, _)
-		;	TPred = '$lgt_send_to_obj_ne_'(Obj, Pred, This, _)
+			TPred = '$lgt_send_to_obj_'(Obj, Pred, This)
+		;	TPred = '$lgt_send_to_obj_ne_'(Obj, Pred, This)
 		)
 	).
 
@@ -12867,12 +12893,12 @@ current_logtalk_flag(version, version(2, 40, 0)).
 	!,
 	'$lgt_fix_pred_calls'(Pred, TPred).
 
-'$lgt_fix_pred_calls'('$lgt_send_to_obj_'(Obj, Pred, This, _), TPred) :-
+'$lgt_fix_pred_calls'('$lgt_send_to_obj_'(Obj, Pred, This), TPred) :-
 	'$lgt_obj_static_binding_cache'(Obj, Pred, This, Call),
 	!,
 	TPred = '$lgt_guarded_method_call'(Obj, Pred, This, Call).
 
-'$lgt_fix_pred_calls'('$lgt_send_to_obj_ne_'(Obj, Pred, This, _), TPred) :-
+'$lgt_fix_pred_calls'('$lgt_send_to_obj_ne_'(Obj, Pred, This), TPred) :-
 	'$lgt_obj_static_binding_cache'(Obj, Pred, This, Call),
 	!,
 	TPred = Call.
