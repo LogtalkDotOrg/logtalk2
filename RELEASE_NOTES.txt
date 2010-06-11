@@ -87,6 +87,11 @@ RELEASE NOTES
     where meta-arguments would be compiled in debug mode if the "debug" flag
     as "off" and in normal mode of the "debug" flag was "on".
 
+    Corrected a bug in the processing of compiler options when recursively
+    calling the logtalk_load/2 and logtalk_compile/2 built-in predicates with
+    a list of source files which could result in failure to apply the compiler
+    options to the compilation of all files.
+
     Added goal_expansion/2 clauses to the SWI-Prolog and YAP config files in
     order to allow calling the Prolog built-in predicates phrase/2-3 with a
     Object::GrammarRuleBody in the first argument.

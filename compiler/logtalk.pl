@@ -1893,10 +1893,8 @@ logtalk_load(Files, Flags) :-
 		('$lgt_init_warnings_counter'(logtalk_load(Files, Flags)),
 		 '$lgt_check_source_files'(Files),
 		 '$lgt_check_compiler_flags'(Flags),
-		 '$lgt_set_compiler_flags'(Flags),
-		 '$lgt_load_files'(Files),
-		 '$lgt_report_warning_numbers'(logtalk_load(Files, Flags)),
-		 '$lgt_clear_compiler_flags'),
+		 '$lgt_load_files'(Files, Flags),
+		 '$lgt_report_warning_numbers'(logtalk_load(Files, Flags))),
 		Error,
 		('$lgt_clear_compiler_flags',
 		 '$lgt_reset_warnings_counter',
@@ -4950,24 +4948,28 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 
-% '$lgt_load_files'(@source_file_name)
-% '$lgt_load_files'(@source_file_name_list)
+% '$lgt_load_files'(@source_file_name, @list)
+% '$lgt_load_files'(@source_file_name_list, @list)
 %
 % compiles to disk and then loads to memory a source file or a list of source files
 
-'$lgt_load_files'([]) :-
-	!.
+'$lgt_load_files'([], _) :-
+	!,
+	'$lgt_clear_compiler_flags'.
 
-'$lgt_load_files'([File| Files]) :-
+'$lgt_load_files'([File| Files], Flags) :-
 	!,
 	'$lgt_clean_pp_clauses',
+	'$lgt_set_compiler_flags'(Flags),
 	'$lgt_load_file'(File),
 	'$lgt_clean_pp_clauses',
-	'$lgt_load_files'(Files).
+	'$lgt_load_files'(Files, Flags).
 
-'$lgt_load_files'(File) :-
+'$lgt_load_files'(File, Flags) :-
 	'$lgt_clean_pp_clauses',
+	'$lgt_set_compiler_flags'(Flags),
 	'$lgt_load_file'(File),
+	'$lgt_clear_compiler_flags',
 	'$lgt_clean_pp_clauses'.
 
 
