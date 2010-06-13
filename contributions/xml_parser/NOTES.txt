@@ -24,7 +24,7 @@ documentation to HTML or PDF.
 See the copyright and license information on the contributed files for 
 usage and distributions conditions.
 
-When using GNU Prolog as the back-end compiler, you will need to patch
+When using GNU Prolog as the back-end compiler, you may need to patch
 the "xml.lgt" file. First, find the occurrences of "0''" around lines
 723 and 908 and replace them by "0'''". Second, around lines 1783, 1792,
 1805, 1808, and 1853 delete the new line character after the double quote
