@@ -2,6 +2,12 @@
 :- object(bench_queens,
 	implements(databasep)).
 
+	:- info([
+		version is 1.0,
+		author is 'Victor Lagerkvist',
+		date is 2010/06/13,
+		comment is 'A simple database for solving the 4-queen puzzle.']).
+
 	%%Benchmark 7 - Solving the 4-queen puzzle.
 
 	queens(N,Qs) <-

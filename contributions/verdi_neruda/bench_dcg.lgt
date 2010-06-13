@@ -2,7 +2,11 @@
 :- object(bench_dcg, 
 	implements(databasep)).
 
-	%%Parsing natural language with a DCG.
+	:- info([
+		version is 1.0,
+		author is 'Victor Lagerkvist',
+		date is 2010/06/13,
+		comment is 'A simple database for parsing natural language using a compiled DCG.']).
 
 	sentence(A, C) <-
 		noun_phrase(A, B) &

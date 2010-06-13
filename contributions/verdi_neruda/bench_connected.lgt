@@ -2,6 +2,12 @@
 :- object(bench_connected,
 	implements(databasep)).
 
+	:- info([
+		version is 1.0,
+		author is 'Victor Lagerkvist',
+		date is 2010/06/13,
+		comment is 'A simple database with edges and a traversal predicate.']).
+
 	%%Simple edge/2 collection.
 	edge(1, 3) <- true.
 	edge(3, 5) <- true.

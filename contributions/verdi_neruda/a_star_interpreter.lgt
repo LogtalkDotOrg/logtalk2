@@ -6,14 +6,14 @@
 		version is 1.0,
 		author is 'Victor Lagerkvist',
 		date is 2010/06/13,
-		comment is 'A* interpreter for general logic programs. The parameter W is used to fine tune the behaviour. W = 0 gives us a breadth-first search and W = 1 gives us a greedy best-first search.',
+		comment is 'A* interpreter for general logic programs. The parameter W is used to fine tune the behaviour. W = 0 gives us a breadth-first search and W = 1 gives us a greedy best-first search. The default value for W is 0.5.',
 		parnames is ['W']]).
 
 	f(Length1, Length2, Depth, Cost) :-
 		parameter(1, W),
-		(	var(Increment) ->
+		(	var(W) ->
 			% use a default value
-			Increment = 0.5
+			W = 0.5
 		;	% use parameter value
 			true
 		),

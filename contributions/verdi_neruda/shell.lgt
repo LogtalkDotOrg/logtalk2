@@ -11,24 +11,26 @@
 	:- public(init/0).
 
 	init :-
-		write('Welcome, noble adventurer, your destiny awaits you.'), nl,
-		write('Type "help." for online help.'), nl,
+		write_release_information,
+		nl,
+		nl,
+		write_welcoming_message, 
 		repl.
 
 	repl :-
 		write('>> '),
 		flush_output,
-		read(Command),
-		user_reply(Command),
+		read_term(Command, [variable_names(VarNames)]),
+		user_reply(Command, VarNames),
 		repl.
 	repl :-
 		write('no'), nl,
 		flush_output,
 		repl.
 
-	user_reply(Command) :-
+	user_reply(Command, VarNames) :-
 		(	functor(Command, prove, _) ->
-			dispatch(Command),
+			dispatch(Command, VarNames),
 			write('Type "m." for more solutions or "e." to end proof:'), nl,
 			flush_output,
 			read(Reply),
@@ -36,7 +38,7 @@
 				fail
 			;	!
 			)
-		;	dispatch(Command)
+		;	dispatch(Command, VarNames)
 		).
 
 	command(halt, 'Shuts down the Prolog system.').
@@ -48,20 +50,20 @@
 	command(interpreters, 'Prints a list of the available meta-interpreters.').
 	command(prove('Interpreter', 'Goal', 'Database'), 'Proves Goal with Interpreter using the specified Database.').
 	command(prove('Interpreter', 'Goal', 'Limit', 'Database'), 'Proves Goal with Interpreter if Limit is not exceeded.').
-	command(benchmark_all('Database'), 'Benchmarks all interpreters. Benchmarks are stored in Database as bench_goal/1 clauses.').
+	command(benchmark_all('FileName', 'Database'), 'Benchmarks all interpreters. Benchmarks are stored in Database as bench_goal/1 clauses.').
 	command(benchmark('Interpreter', 'Goal', 'Database'), 'Benchmarks Interpreter with respect to Goal and prints the number of inferences.').
 	:- if(predicate_property(statistics(_,_), built_in)).
-		command(benchmark_all('Statistic', 'N', 'Database'), 'Benchmarks all interpreters with Statistic N times. Benchmarks are stored in the database as bench_goal/1 facts or rules.').
+		command(benchmark_all('FileName', 'Statistic', 'N', 'Database'), 'Benchmarks all interpreters with Statistic N times. Benchmarks are stored in the database as bench_goal/1 facts or rules.').
 		command(benchmark('Interpreter', 'Statistic', 'N', 'Goal', 'Database'), 'Benchmarks Interpreter with respect to Statistic, N and Goal.').
 	:- endif.
 
-	dispatch(halt) :-
+	dispatch(halt, _) :-
 		halt.
-	dispatch(help) :-
+	dispatch(help, _) :-
 		write_help_message.
-	dispatch(load(Database)) :-
+	dispatch(load(Database), _) :-
 		load_database(Database, rule_expansion(production)).
-	dispatch(listing(Database)) :-
+	dispatch(listing(Database), _) :-
 		findall(rule(Head, Body), 
 			    (
 				 Database::rule(Head, Body), 
@@ -69,35 +71,37 @@
 				), 
 			   Rules),
 		meta::map(write_rule, Rules).
-	dispatch(programs(Database)) :-
+	dispatch(programs(Database), _) :-
 		findall(
 			Functor/Arity,
 			(Database::rule(Head, _), functor(Head, Functor, Arity)),
 			Functors),
 		list::sort(Functors, SortedFunctors),
 		meta::map(writeln, SortedFunctors).
-	dispatch(databases) :-
+	dispatch(databases, _) :-
 		findall(Database, implements_protocol(Database, databasep), Databases),
 		meta::map(writeln, Databases).
-	dispatch(interpreters) :-
+	dispatch(interpreters, _) :-
 		this(shell(Interpreters0)),
 		pairs::keys(Interpreters0, Interpreters),
 		numbervars(Interpreters, 0, _),				   
 		meta::map(writeln, Interpreters).
-	dispatch(prove(Interpreter, Goal, Database)) :-
+	dispatch(prove(Interpreter, Goal, Database), VarNames) :-
 		valid_interpreter(Interpreter, Expander),						
 		load_database(Database, Expander),
-		prove(Interpreter, Goal, Database).
-	dispatch(prove(Interpreter, Goal, Limit, Database)) :-
+		prove(Interpreter, Goal, Database, VarNames).
+	dispatch(prove(Interpreter, Goal, Limit, Database), VarNames) :-
 		valid_interpreter(Interpreter, Expander),		
 		load_database(Database, Expander),
-		prove(Interpreter, Goal, Limit, Database).
+		prove(Interpreter, Goal, Limit, Database, VarNames).
 	
 	:- if(predicate_property(statistics(_,_), built_in)).
 
-		dispatch(benchmark_all(Statistic, N, Database)) :-
-			open('results.txt', append, Stream),
-			(	valid_interpreter(Interpreter, Expander),
+		dispatch(benchmark_all(Name, Statistic, N, Database), _) :-
+			open(Name, append, Stream),
+			(	this(shell(Interpreters)),
+				list::member(Interpreter-_, Interpreters),
+				valid_interpreter(Interpreter, Expander),
 				nl(Stream),
 				write(Stream, Interpreter),
 				write(Stream, ':'),
@@ -111,9 +115,11 @@
 
 	:- endif.
 
-	dispatch(benchmark_all(Database)) :-
-		open('results.txt', append, Stream),
-		(	valid_interpreter(Interpreter, Expander),
+	dispatch(benchmark_all(Name, Database), _) :-
+		open(Name, append, Stream),
+		(	this(shell(Interpreters)),
+			list::member(Interpreter-_, Interpreters),
+			valid_interpreter(Interpreter, Expander),
 			nl(Stream),
 			write(Stream, Interpreter),
 			write(Stream, ':'),
@@ -127,7 +133,7 @@
 
 	:- if(predicate_property(statistics(_,_), built_in)).
 
-		dispatch(benchmark(Interpreter, Statistic, N, Goal, Database)) :-
+		dispatch(benchmark(Interpreter, Statistic, N, Goal, Database), _) :-
 			valid_interpreter(Interpreter, Expander),
 			load_database(Database, Expander),
 			(	benchmark(Interpreter, Statistic, N, Goal, Res0, Database)
@@ -140,18 +146,18 @@
 
 	:- endif.	
 
-	dispatch(benchmark(Interpreter, Goal, Database)) :-
+	dispatch(benchmark(Interpreter, Goal, Database), _) :-
 		valid_interpreter(Interpreter, Expander),
 		load_database(Database, Expander),
 		current_output(Stream),
 		write(Stream, Interpreter),
 		write_benchmark(Stream, Interpreter, Goal, Database),
 		nl.
-	dispatch((Goal, Goals)) :-
-		dispatch(Goal),
-		dispatch(Goals).
-	dispatch(Goal) :-
-		prove(dfs_interpreter, Goal, demodb).
+	dispatch((Goal, Goals), VarNames) :-
+		dispatch(Goal, VarNames),
+		dispatch(Goals, VarNames).
+	dispatch(Goal, VarNames) :-
+		prove(dfs_interpreter, Goal, demodb, VarNames).
 
 	:- if(predicate_property(statistics(_,_), built_in)).
 		
@@ -184,13 +190,29 @@
 		\+ Interpreter::prove(Goal, 1000000, Database), !,
 		counter::value(Inferences).		
 
-	prove(Interpreter, Goal, Database) :-
+	prove(Interpreter, Goal, Database, VarNames) :-
 		Interpreter::prove(Goal, Database),
-		write(Goal), nl.
+		write_unifiers(VarNames).
 
-	prove(Interpreter, Goal, Limit, Database) :-
+	prove(Interpreter, Goal, Limit, Database, VarNames) :-
 		Interpreter::prove(Goal, Limit, Database),
-		write(Goal), nl.
+		write_unifiers(VarNames).
+
+	write_unifiers(VarNames) :-
+		unify_variable_names(VarNames),
+		(	VarNames = [] ->
+				write('true.'),
+				nl
+			;	meta::map(writeln, VarNames)
+		).
+		 
+	unify_variable_names([]).
+	unify_variable_names([Var = Name| VarNames]) :-
+		(	var(Var) ->
+			Var = Name
+		;	true
+		),
+		unify_variable_names(VarNames).
 
 	valid_interpreter(Interpreter, Expander) :-
 		this(shell(Interpreters)),
@@ -201,8 +223,20 @@
 	load_database(Database, Expander) :-
 		logtalk_load(Database, [hook(Expander), report(off), plredef(silent), unknown(silent), lgtredef(silent), startup_message(none)]). 
 
+	write_release_information :-
+		Version = '1.0',
+		Author = 'Victor Lagerkvist',
+		write('Verdi Neruda version '),
+		write(Version),
+		write(' by '), 
+		write(Author),
+		write('.').
+
+	write_welcoming_message :- 
+		 write('Welcome, noble adventurer, your destiny awaits you!'), nl,
+		 write('Type "help." for online help.'), nl.
+
 	write_statistics(Stream, Statistic, N, Res0) :-
-		debug((write(Stream, Statistic), write(Stream, ': '))),
 		Res1 is Res0/N,
 		Res is floor(Res1),
 		write(Stream, Res).
@@ -245,15 +279,18 @@
 		;	benchmark_failure(Interpreter, Statistic, N, Goal, Res, Database),
 			write(Stream, '(F) ')
 		),
+		write(Stream, Goal),
+		write(Stream, '-'),
 		write_statistics(Stream, Statistic, N, Res).
 		
 	write_benchmark(Stream, Interpreter, Goal, Database) :-
-		write(Stream, ' '), 
+		write(Stream, ' '),					
 		(	benchmark(Interpreter, Goal, Inferences, Database), !
 		;	benchmark_failure(Interpreter,  Goal, Inferences, Database),
 			write(Stream, '(F) ')
 		),
-		write('inferences: '),
+		write(Stream, Goal),
+		write(Stream, '-'),
 		write(Stream, Inferences).
 
 	writeln(X) :-

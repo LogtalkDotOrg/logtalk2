@@ -2,6 +2,12 @@
 :- object(bench_isotree,
 	implements(databasep)).
 
+	:- info([
+		version is 1.0,
+		author is 'Victor Lagerkvist',
+		date is 2010/06/13,
+		comment is 'A simple database for testing if two binary trees are isomorphic.']).
+
 	%% Determining whether two binary trees are isomorphic.
 
 	isotree(void, void) <- true.
