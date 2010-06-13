@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.40.0 - June 14, 2010
 
+    Bundled version 1.0 of Verdi Neruda, a meta-interpreter collection that
+    includes both top-down and bottom-up search strategies. Thanks to Victor
+    Lagerkvist for his contribution.
+
     Changed the representation of meta-argument which are goals in the
     meta_predicate/1 directives from "::" to "0". When compiling calls
     to Prolog module meta-predicates, the meta-argument indicator ":" is

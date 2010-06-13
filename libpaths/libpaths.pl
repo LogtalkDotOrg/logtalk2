@@ -107,5 +107,6 @@ logtalk_library_path(tabling, examples('tabling/')).
 logtalk_library_path(tak, threads('tak/')).
 logtalk_library_path(testing, examples('testing/')).
 logtalk_library_path(threads, examples('threads/')).
+logtalk_library_path(verdi_neruda, contributions('verdi_neruda/')).
 logtalk_library_path(viewpoints, examples('viewpoints/')).
 logtalk_library_path(xml_parser, contributions('xml_parser/')).
