@@ -115,7 +115,7 @@ echo "once before running the integration scripts."
 echo
 echo "If you get an unexpected failure when using one of the Prolog integration"
 echo "scripts, consult the \"$prefix/share/logtalk/configs/NOTES.txt\" file"
-echo "for compatibility notes."
+echo "for compatibility notes or consult the integration script man page."
 echo
 
 if [ "`which update-mime-database`" != "" ]; then

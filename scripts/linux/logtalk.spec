@@ -121,7 +121,7 @@ echo "on your execution path."
 echo
 echo "If you get an unexpected failure when using one of the Prolog integration"
 echo "scripts, consult the \"/usr/local/share/logtalk/configs/NOTES.txt\" file"
-echo "for compatibility notes."
+echo "for compatibility notes or consult the integration script man page."
 echo
 mkdir -p /etc/profile.d
 echo "# Logtalk environment setup" > /etc/profile.d/logtalk.sh

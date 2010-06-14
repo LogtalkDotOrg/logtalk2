@@ -40,7 +40,7 @@ scripts!):
 
 If you get an unexpected failure when using one of the Prolog integration
 scripts, consult the "configs/NOTES.txt" file in the Logtalk installation
-folder for compatibility notes.
+folder for compatibility notes or consult the integration script man page.
 
 On MacOS X systems, "/opt/local/bin" must be in your PATH to run the scripts.
 Terminal command files for running Logtalk with selected back-end Prolog 
