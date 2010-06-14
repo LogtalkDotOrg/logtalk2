@@ -338,13 +338,13 @@ Obj<<Goal :-
 	var(Variable),
 	throw(error(instantiation_error, throw(_), Sender)).
 
-'$lgt_runtime_error_handler'(error(existence_error(goal_thread, '$lgt_send_to_object_ne_nv'(Self, Goal, Sender)), _, _)) :-
+'$lgt_runtime_error_handler'(error(existence_error(goal_thread, '$lgt_send_to_obj_ne_nv'(Self, Goal, Sender)), _, _)) :-
 	(	Self == user ->
 		throw(error(existence_error(goal_thread, Goal), Sender))
 	;	throw(error(existence_error(goal_thread, Self::Goal), Sender))
 	).
 
-'$lgt_runtime_error_handler'(error(existence_error(goal_thread, '$lgt_send_to_object_nv'(Self, Goal, Sender)), _, _)) :-
+'$lgt_runtime_error_handler'(error(existence_error(goal_thread, '$lgt_send_to_obj_nv'(Self, Goal, Sender)), _, _)) :-
 	(	Self == user ->
 		throw(error(existence_error(goal_thread, Goal), Sender))
 	;	throw(error(existence_error(goal_thread, Self::Goal), Sender))
@@ -3094,6 +3094,9 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 % '$lgt_send_to_self'(+object_identifier, ?term, +object_identifier)
+%
+% runtime processing of a message sending call when the arguments are not
+% known at compile time
 
 '$lgt_send_to_self'(Obj, Pred, Sender) :-
 	(	var(Pred) ->
@@ -3119,6 +3122,9 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 % '$lgt_send_to_self_'(+object_identifier, +term, +object_identifier, ?atom)
+%
+% the last clause of this cache predicate must never be retracted (hence the
+% "fixed" mark) and must call the predicate that generates the missing cache entry
 
 '$lgt_send_to_self_'(Obj, Pred, Sender, fixed) :-
 	'$lgt_send_to_self_nv'(Obj, Pred, Sender).
@@ -3126,6 +3132,9 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 % '$lgt_send_to_self_nv'(+object_identifier, +term, +object_identifier)
+%
+% runtime processing of a message sending call when the arguments have already
+% been type-checked; generates a cache entry to speed up future calls
 
 '$lgt_send_to_self_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
@@ -3158,9 +3167,12 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 
-% '$lgt_send_to_object'(@object_identifier, ?term, +object_identifier)
+% '$lgt_send_to_obj'(@object_identifier, ?term, +object_identifier)
+%
+% runtime processing of an event-aware message sending call when the arguments
+% are not known at compile time
 
-'$lgt_send_to_object'(Obj, Pred, Sender) :-
+'$lgt_send_to_obj'(Obj, Pred, Sender) :-
 	(	var(Obj) ->
 		throw(error(instantiation_error, Obj::Pred, Sender))
 	;	var(Pred) ->
@@ -3191,13 +3203,16 @@ current_logtalk_flag(version, version(2, 40, 0)).
 % "fixed" mark) and must call the predicate that generates the missing cache entry
 
 '$lgt_send_to_obj_'(Obj, Pred, Sender, fixed) :-
-	'$lgt_send_to_object_nv'(Obj, Pred, Sender).
+	'$lgt_send_to_obj_nv'(Obj, Pred, Sender).
 
 
 
-% '$lgt_send_to_object_nv'(+object_identifier, +term, +object_identifier)
+% '$lgt_send_to_obj_nv'(+object_identifier, +term, +object_identifier)
+%
+% runtime processing of an event-aware message sending call when the arguments
+% have already been type-checked; generates a cache entry to speed up future calls
 
-'$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
+'$lgt_send_to_obj_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
 	!,
 	(	call(Dcl, Pred, Scope, Meta, _, SCtn, _) ->												% lookup declaration
@@ -3242,23 +3257,25 @@ current_logtalk_flag(version, version(2, 40, 0)).
 	;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))
 	).
 
-'$lgt_send_to_object_nv'({Proxy}, Pred, Sender) :-
+'$lgt_send_to_obj_nv'({Proxy}, Pred, Sender) :-
 	!,
 	catch(Proxy, error(Error, _), throw(error(Error, {Proxy}::Pred, Sender))),
 	'$lgt_send_to_obj_'(Proxy, Pred, Sender, _).
 
-'$lgt_send_to_object_nv'(Obj, Pred, _) :-		% allow Obj::Pred to be used as a shortcut
+'$lgt_send_to_obj_nv'(Obj, Pred, _) :-		% allow Obj::Pred to be used as a shortcut
 	atom(Obj),
-	catch(current_module(Obj), _, fail),		% for calling module predicates
+	catch(current_module(Obj), _, fail),	% for calling module predicates
 	!,
 	':'(Obj, Pred).
 
-'$lgt_send_to_object_nv'(Obj, Pred, Sender) :-
+'$lgt_send_to_obj_nv'(Obj, Pred, Sender) :-
 	throw(error(existence_error(object, Obj), Obj::Pred, Sender)).
 
 
 
 % '$lgt_guarded_method_call'(+object_identifier, +callable, +object_identifier, +callable)
+%
+% wrap the method call with the before and after event handler calls
 
 '$lgt_guarded_method_call'(Obj, Msg, Sender, Method) :-
 	\+ ('$lgt_before_'(Obj, Msg, Sender, _, Before), \+ Before),	% call before event handlers
@@ -3267,9 +3284,12 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 
-% '$lgt_send_to_object_ne'(@object_identifier, ?term, +object_identifier)
+% '$lgt_send_to_obj_ne'(@object_identifier, ?term, +object_identifier)
+%
+% runtime processing of an event-invisible message sending call when the arguments
+% are not known at compile time
 
-'$lgt_send_to_object_ne'(Obj, Pred, Sender) :-
+'$lgt_send_to_obj_ne'(Obj, Pred, Sender) :-
 	(	var(Obj) ->
 		throw(error(instantiation_error, Obj::Pred, Sender))
 	;	var(Pred) ->
@@ -3300,13 +3320,16 @@ current_logtalk_flag(version, version(2, 40, 0)).
 % "fixed" mark) and must call the predicate that generates the missing cache entry
 
 '$lgt_send_to_obj_ne_'(Obj, Pred, Sender, fixed) :-
-	'$lgt_send_to_object_ne_nv'(Obj, Pred, Sender).
+	'$lgt_send_to_obj_ne_nv'(Obj, Pred, Sender).
 
 
 
-% '$lgt_send_to_object_ne_nv'(+object_identifier, +term, +object_identifier)
+% '$lgt_send_to_obj_ne_nv'(+object_identifier, +term, +object_identifier)
+%
+% runtime processing of an event-invisible message sending call when the arguments
+% have already been type-checked; generates a cache entry to speed up future calls
 
-'$lgt_send_to_object_ne_nv'(Obj, Pred, Sender) :-
+'$lgt_send_to_obj_ne_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
 	!,
 	(	call(Dcl, Pred, Scope, Meta, _, SCtn, _) ->												% lookup declaration
@@ -3349,18 +3372,18 @@ current_logtalk_flag(version, version(2, 40, 0)).
 	;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))
 	).
 
-'$lgt_send_to_object_ne_nv'({Proxy}, Pred, Sender) :-
+'$lgt_send_to_obj_ne_nv'({Proxy}, Pred, Sender) :-
 	!,
 	catch(Proxy, error(Error, _), throw(error(Error, {Proxy}::Pred, Sender))),
 	'$lgt_send_to_obj_ne_'(Proxy, Pred, Sender, _).
 
-'$lgt_send_to_object_ne_nv'(Obj, Pred, _) :-	% allow Obj::Pred to be used as a shortcut
+'$lgt_send_to_obj_ne_nv'(Obj, Pred, _) :-	% allow Obj::Pred to be used as a shortcut
 	atom(Obj),
-	catch(current_module(Obj), _, fail),		% for calling module predicates
+	catch(current_module(Obj), _, fail),	% for calling module predicates
 	!,
 	':'(Obj, Pred).
 
-'$lgt_send_to_object_ne_nv'(Obj, Pred, Sender) :-
+'$lgt_send_to_obj_ne_nv'(Obj, Pred, Sender) :-
 	throw(error(existence_error(object, Obj), Obj::Pred, Sender)).
 
 
@@ -3389,6 +3412,9 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 % '$lgt_obj_super_call_same'(+atom, +callable, +execution_context)
+%
+% runtime processing of an object "super" call when the arguments have already
+% been type-checked; generates a cache entry to speed up future calls
 
 '$lgt_obj_super_call_same'(Super, Pred, ExCtx) :-
 	(	'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
@@ -3409,7 +3435,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 % '$lgt_ctg_super_call_same_'(+object_identifier, +term, +object_identifier)
 %
 % calls to this predicate are generated when compiling message sending calls;
-% we cannot call the '$lgt_obj_super_call_same_'/4 predicate directly as the call
+% we cannot call the '$lgt_ctg_super_call_same_'/4 predicate directly as the call
 % can be part of a bagof/3 or setof/3 goal, where the anonymous variable in
 % the last argument could lead to trouble if existentially quantified variables
 % are used
@@ -3430,6 +3456,9 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 % '$lgt_ctg_super_call_same'(+category_identifier, +callable, +execution_context)
+%
+% runtime processing of a category "super" call when the arguments have already
+% been type-checked; generates a cache entry to speed up future calls
 
 '$lgt_ctg_super_call_same'(Ctg, Pred, ExCtx) :-
 	(	'$lgt_current_category_'(Ctg, _, _, Def, _, _),
@@ -3445,6 +3474,9 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 % '$lgt_obj_super_call_other'(+atom, +callable, +execution_context)
+%
+% runtime processing of an object "super" call when the arguments are not
+% known at compile time
 
 '$lgt_obj_super_call_other'(Super, Pred, ExCtx) :-
 	(	var(Pred) ->
@@ -3482,6 +3514,9 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 % '$lgt_obj_super_call_other_nv'(+atom, +callable, +execution_context)
+%
+% runtime processing of an object "super" call when the arguments have already
+% been type-checked; generates a cache entry to speed up future calls
 
 '$lgt_obj_super_call_other_nv'(Super, Pred, ExCtx) :-
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
@@ -3514,6 +3549,9 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 % '$lgt_ctg_super_call_other'(+category_identifier, +callable, +execution_context)
+%
+% runtime processing of a category "super" call when the arguments are not
+% known at compile time
 
 '$lgt_ctg_super_call_other'(Ctg, Pred, ExCtx) :-
 	(	var(Pred) ->
@@ -3549,6 +3587,9 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 
 % '$lgt_ctg_super_call_other_nv'(+category_identifier, +callable, +execution_context)
+%
+% runtime processing of a category "super" call when the arguments have already
+% been type-checked; generates a cache entry to speed up future calls
 
 '$lgt_ctg_super_call_other_nv'(Ctg, Pred, ExCtx) :-
 	(	'$lgt_current_category_'(Ctg, _, Dcl, Def, _, _),
@@ -3861,7 +3902,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 % '$lgt_call_built_in'(+callable, +callable, +execution_context)
 %
-% needed for runtime translation of dynamic clauses, for dealing
+% necessary for runtime translation of dynamic clauses, for dealing
 % with meta-calls that turn out to be calls to built-in predicates,
 % and for dealing with <</2 calls to redefined built-in predicates
 %
@@ -10044,7 +10085,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 	!,
 	'$lgt_tr_threaded_or_call'((TGoal; TGoals), Queue, MTGoals, Results),
 	ThreadedCall = setup_call_cleanup(
-						(thread_self(Queue), thread_send_message(Queue, '$lgt_master')),	% needed for correct thread cancellation
+						(thread_self(Queue), thread_send_message(Queue, '$lgt_master')),	% necessary for correct thread cancellation
 						(MTGoals, '$lgt_mt_threaded_or_exit'(Results)),						% collect results and terminate slave threads
 						thread_get_message(Queue, '$lgt_master')).
 
@@ -10052,7 +10093,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 	!,
 	'$lgt_tr_threaded_and_call'((TGoal, TGoals), Queue, MTGoals, Results),
 	ThreadedCall = setup_call_cleanup(
-						(thread_self(Queue), thread_send_message(Queue, '$lgt_master')),	% needed for correct thread cancellation
+						(thread_self(Queue), thread_send_message(Queue, '$lgt_master')),	% necessary for correct thread cancellation
 						(MTGoals, '$lgt_mt_threaded_and_exit'(Results)),					% collect results and terminate slave threads
 						thread_get_message(Queue, '$lgt_master')).
 
@@ -10423,8 +10464,8 @@ current_logtalk_flag(version, version(2, 40, 0)).
 	var(Pred),
 	!,
 	(	'$lgt_compiler_flag'(events, allow) ->
-		TPred = '$lgt_send_to_object'(Obj, Pred, This)
-	;	TPred = '$lgt_send_to_object_ne'(Obj, Pred, This)
+		TPred = '$lgt_send_to_obj'(Obj, Pred, This)
+	;	TPred = '$lgt_send_to_obj_ne'(Obj, Pred, This)
 	).
 
 
@@ -10567,8 +10608,8 @@ current_logtalk_flag(version, version(2, 40, 0)).
 '$lgt_tr_msg'(Pred, Obj, TPred, This) :-
 	(	var(Obj) ->
 		(	'$lgt_compiler_flag'(events, allow) ->
-			TPred = '$lgt_send_to_object'(Obj, Pred, This)
-		;	TPred = '$lgt_send_to_object_ne'(Obj, Pred, This)
+			TPred = '$lgt_send_to_obj'(Obj, Pred, This)
+		;	TPred = '$lgt_send_to_obj_ne'(Obj, Pred, This)
 		)
 	;	(	'$lgt_compiler_flag'(events, allow) ->
 			TPred = '$lgt_send_to_obj_'(Obj, Pred, This)
@@ -12185,7 +12226,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 '$lgt_gen_category_extends_def_clauses' :-
 	'$lgt_pp_category_'(Ctg, _, _, Def, Rnm, _),
-	'$lgt_pp_rclause_'('$lgt_extends_category_'(Ctg, Ctg2, _)),		% needed for parameter passing
+	'$lgt_pp_rclause_'('$lgt_extends_category_'(Ctg, Ctg2, _)),		% necessary for parameter passing
 	'$lgt_pp_extended_category_'(Ctg2, _, _, Def2, _),
 	Lookup =.. [Def2, Pred, ExCtx, Call, Ctn],
 	(	'$lgt_pp_pred_alias_'(Ctg2, _, _) ->
@@ -12378,7 +12419,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 '$lgt_gen_prototype_imports_def_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, Rnm, _),
-	'$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, _)),			% needed for parameter passing
+	'$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, _)),			% necessary for parameter passing
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
 	Lookup =.. [CDef, Pred, ExCtx, Call, Ctn],
 	(	'$lgt_pp_pred_alias_'(Ctg, _, _) ->
@@ -12403,7 +12444,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 '$lgt_gen_prototype_extends_def_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, Rnm, _),
-	'$lgt_pp_rclause_'('$lgt_extends_object_'(Obj, Parent, _)),			% needed for parameter passing
+	'$lgt_pp_rclause_'('$lgt_extends_object_'(Obj, Parent, _)),			% necessary for parameter passing
 	'$lgt_pp_extended_object_'(Parent, _, _, PDef, _, _, _, _, _, _),
 	'$lgt_exec_ctx'(PExCtx, Parent, Ctx),
 	Lookup =.. [PDef, Pred, PExCtx, Call, Ctn],
@@ -12434,7 +12475,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 '$lgt_gen_prototype_super_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, OSuper, _, _, _, _, Rnm, _),
-	'$lgt_pp_rclause_'('$lgt_extends_object_'(Obj, Parent, _)),			% needed for parameter passing
+	'$lgt_pp_rclause_'('$lgt_extends_object_'(Obj, Parent, _)),			% necessary for parameter passing
 	'$lgt_pp_extended_object_'(Parent, _, _, PDef, _, _, _, _, _, _),
 	'$lgt_exec_ctx'(PExCtx, Parent, Ctx),
 	Lookup =.. [PDef, Pred, PExCtx, Call, Ctn],
@@ -12648,7 +12689,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 '$lgt_gen_ic_imports_def_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, Rnm, _),
-	'$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, _)),		% needed for parameter passing
+	'$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, _)),		% necessary for parameter passing
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
 	Lookup =.. [CDef, Pred, ExCtx, Call, Ctn],
 	(	'$lgt_pp_pred_alias_'(Ctg, _, _) ->
@@ -12673,7 +12714,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 '$lgt_gen_ic_hierarchy_def_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, Rnm, _),
-	'$lgt_pp_rclause_'('$lgt_instantiates_class_'(Obj, Class, _)),	% needed for parameter passing
+	'$lgt_pp_rclause_'('$lgt_instantiates_class_'(Obj, Class, _)),	% necessary for parameter passing
 	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, _, CIDef, _, _, _),
 	'$lgt_exec_ctx'(CExCtx, Class, Ctx),
 	Lookup =.. [CIDef, Pred, CExCtx, Call, Ctn],
@@ -12716,7 +12757,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 '$lgt_gen_ic_category_idef_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, _, _, OIDef, _, _, Rnm, _),
-	'$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, _)),		% needed for parameter passing
+	'$lgt_pp_rclause_'('$lgt_imports_category_'(Obj, Ctg, _)),		% necessary for parameter passing
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
 	'$lgt_exec_ctx'(ExCtx, Obj, _),
 	Lookup =.. [CDef, Pred, ExCtx, Call, Ctn],
@@ -12743,7 +12784,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 '$lgt_gen_ic_hierarchy_idef_clauses' :-
 	'$lgt_pp_object_'(Class, _, _, _, _, _, CIDef, _, _, Rnm, _),
-	'$lgt_pp_rclause_'('$lgt_specializes_class_'(Class, Super, _)),		% needed for parameter passing
+	'$lgt_pp_rclause_'('$lgt_specializes_class_'(Class, Super, _)),		% necessary for parameter passing
 	'$lgt_pp_specialized_class_'(Super, _, _, _, _, _, SIDef, _, _, _),
 	'$lgt_exec_ctx'(SExCtx, Super, Ctx),
 	Lookup =.. [SIDef, Pred, SExCtx, Call, Ctn],
@@ -12775,7 +12816,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 '$lgt_gen_ic_super_clauses' :-
 	'$lgt_pp_object_'(Obj, _, _, _, OSuper, _, _, _, _, Rnm, _),
-	'$lgt_pp_rclause_'('$lgt_instantiates_class_'(Obj, Class, _)),		% needed for parameter passing
+	'$lgt_pp_rclause_'('$lgt_instantiates_class_'(Obj, Class, _)),		% necessary for parameter passing
 	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, _, CIDef, _, _, _),
 	'$lgt_exec_ctx'(CExCtx, Class, Ctx),
 	Lookup =.. [CIDef, Pred, CExCtx, Call, Ctn],
@@ -12794,7 +12835,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 '$lgt_gen_ic_super_clauses' :-
 	'$lgt_pp_object_'(Class, _, _, _, CSuper, _, _, _, _, Rnm, _),
-	'$lgt_pp_rclause_'('$lgt_specializes_class_'(Class, Super, _)),		% needed for parameter passing
+	'$lgt_pp_rclause_'('$lgt_specializes_class_'(Class, Super, _)),		% necessary for parameter passing
 	'$lgt_pp_specialized_class_'(Super, _, _, _, _, _, SIDef, _, _, _),
 	'$lgt_exec_ctx'(SExCtx, Super, Ctx),
 	Lookup =.. [SIDef, Pred, SExCtx, Call, Ctn],
@@ -12989,6 +13030,17 @@ current_logtalk_flag(version, version(2, 40, 0)).
 	!,
 	'$lgt_fix_pred_calls'(Goal, TGoal).
 
+'$lgt_fix_pred_calls'('$lgt_call_built_in'(Pred, MetaExPred, ExCtx), TPred) :-
+	!,									% calls to Logtalk and Prolog built-in (meta-)predicates
+	(	'$lgt_pp_redefined_built_in_'(Pred, ExCtx, TPred) ->
+		true
+	;	'$lgt_fix_pred_calls'(MetaExPred, TPred)
+	).
+
+'$lgt_fix_pred_calls'('$lgt_dbg_goal'(Pred, DPred, ExCtx), '$lgt_dbg_goal'(Pred, TPred, ExCtx)) :-
+	!,									% calls in debug mode
+	'$lgt_fix_pred_calls'(DPred, TPred).
+
 '$lgt_fix_pred_calls'(Pred, fail) :-	% calls to static, declared but undefined predicates;
 	functor(Pred, Functor, Arity),		% must fail instead of throwing an exception
 	'$lgt_undef_pred_call'(_, Functor/Arity),
@@ -13022,17 +13074,6 @@ current_logtalk_flag(version, version(2, 40, 0)).
 '$lgt_fix_pred_calls'(':'(Module, Pred), ':'(Module, TPred)) :-
 	!,
 	'$lgt_fix_pred_calls'(Pred, TPred).
-
-'$lgt_fix_pred_calls'('$lgt_call_built_in'(Pred, MetaExPred, ExCtx), TPred) :-
-	!,									% calls to Logtalk and Prolog built-in (meta-)predicates
-	(	'$lgt_pp_redefined_built_in_'(Pred, ExCtx, TPred) ->
-		true
-	;	'$lgt_fix_pred_calls'(MetaExPred, TPred)
-	).
-
-'$lgt_fix_pred_calls'('$lgt_dbg_goal'(Pred, DPred, ExCtx), '$lgt_dbg_goal'(Pred, TPred, ExCtx)) :-
-	!,									% calls in debug mode
-	'$lgt_fix_pred_calls'(DPred, TPred).
 
 '$lgt_fix_pred_calls'(Pred, Pred).
 

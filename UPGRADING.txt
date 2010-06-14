@@ -275,6 +275,8 @@ public to private, thus requiring rewriting calls to these methods (you will
 need to change Object::phrase(...) to phrase(Object::...) and ::phrase(...)
 to phrase(::...)). In addition, the term- and goal-expansion mechamism are now
 only performed automatically by the Logtalk compiler when compiling a source
-file. Moreover, this version changes the representation of meta-arguments which
-are goals in meta-predicate directives from "::" to "0", requiring updating any
-existing meta-predicate declarations.
+file. Moreover, this version changes the representation of meta-arguments
+which are goals in meta-predicate directives from "::" to "0", requiring
+updating any existing meta-predicate declarations. The internal predicate
+names used in control constructs are also changed, requiring recompilation
+of all objects and categories.
