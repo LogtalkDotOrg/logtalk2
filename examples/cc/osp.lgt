@@ -2,9 +2,9 @@
 :- protocol(osp).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2010/03/20,
+		date is 2010/06/14,
 		comment is 'Portable operating-system access protocol.']).
 
 	:- public(shell/2).
@@ -91,11 +91,11 @@
 		comment is 'Deletes a file.',
 		argnames is ['File']]).
 
-	:- public(environment_variable/1).
-	:- mode(environment_variable(?atom), zero_or_more).
-	:- info(environment_variable/1, [
+	:- public(environment_variable/2).
+	:- mode(environment_variable(+atom, ?atom), zero_or_one).
+	:- info(environment_variable/2, [
 		comment is 'Argument is a currently defined environment variable. Fails if the variable does not exists.',
-		argnames is ['Variable']]).
+		argnames is ['Variable', 'Value']]).
 
 	:- public(time_stamp/1).
 	:- mode(time_stamp(-number), one).
