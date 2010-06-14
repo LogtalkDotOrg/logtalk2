@@ -6317,6 +6317,8 @@ current_logtalk_flag(version, version(2, 40, 0)).
 	!,
 	(	var(Directive) ->
 		throw(error(instantiantion_error, directive(Directive)))
+	;	\+ '$lgt_pp_entity'(_, _, _, _, _) ->
+		'$lgt_tr_directive'(Directive, Ctx)
 	;	'$lgt_ignore_pl_directive'(Directive) ->								% defined in the Prolog config files
 		(	'$lgt_compiler_flag'(portability, warning),
 			\+ '$lgt_compiler_flag'(report, off) ->
@@ -13049,7 +13051,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 '$lgt_fix_pred_calls_ins_in_marg'(*, Arg, Arg).
 
-'$lgt_fix_pred_calls_ins_in_marg'(::, Arg, TArg) :-
+'$lgt_fix_pred_calls_ins_in_marg'(0, Arg, TArg) :-
 	'$lgt_fix_pred_calls'(Arg, TArg).
 
 
@@ -16684,10 +16686,7 @@ current_logtalk_flag(version, version(2, 40, 0)).
 
 '$lgt_tr_static_binding_meta_arg'((*), Arg, _, Arg, Arg).
 
-'$lgt_tr_static_binding_meta_arg'(0, Arg, Ctx, TArg, DArg) :-
-	'$lgt_tr_static_binding_meta_arg'((::), Arg, Ctx, TArg, DArg).
-
-'$lgt_tr_static_binding_meta_arg'((::), Arg, Ctx, {FTArg}, {FDArg}) :-
+'$lgt_tr_static_binding_meta_arg'(0, Arg, Ctx, {FTArg}, {FDArg}) :-
 	% the {}/1 construct signals a pre-compiled metacall
 	'$lgt_tr_body'(Arg, TArg, DArg, Ctx),
 	'$lgt_fix_pred_calls'(TArg, FTArg),

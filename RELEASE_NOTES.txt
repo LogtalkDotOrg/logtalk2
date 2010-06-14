@@ -47,10 +47,10 @@ RELEASE NOTES
     lambda expressions.
 
     Updated the Logtalk compiler in order to preprocess proprietary Prolog
-    directives (using any defined config file hooks) after term-expansion
-    but before trying to compile the directives as Logtalk directives. This
-    change allows for simpler and more robust handling of Prolog proprietary
-    directives, specially module directives.
+    directives within entities (using any defined config file hooks) after
+    term-expansion but before trying to compile the directives as Logtalk
+    directives. This change allows for simpler and more robust handling of
+    Prolog proprietary directives, specially module directives.
 
     Recognize callable/1 and compare/3 as Prolog standard built-in predicates.
     Calls to these predicates will no longer be reported when the portability
