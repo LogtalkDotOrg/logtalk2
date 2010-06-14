@@ -96,6 +96,10 @@ RELEASE NOTES
     a list of source files which could result in failure to apply the compiler
     options to the compilation of all files.
 
+    Updated the ECLiPSe config file to always use atoms instead of strings in
+    the file-system access internal predicates. Corrected some bugs in the
+    processing of proprietary directives.
+
     Added goal_expansion/2 clauses to the SWI-Prolog and YAP config files in
     order to allow calling the Prolog built-in predicates phrase/2-3 with a
     Object::GrammarRuleBody in the first argument.

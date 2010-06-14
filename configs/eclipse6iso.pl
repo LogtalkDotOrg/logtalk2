@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#77 and later versions
 %
-%  last updated: May 31, 2010
+%  last updated: June 14, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -359,7 +359,8 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % gets current working directory
 
 '$lgt_current_directory'(Directory) :-
-	getcwd(Directory).
+	getcwd(DirectoryString),
+	atom_string(Directory, DirectoryString).
 
 
 % '$lgt_change_directory'(+atom)
@@ -408,7 +409,8 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % access to operating-system environment variables
 
 '$lgt_environment_variable'(Variable, Value) :-
-	getenv(Variable, Value).
+	getenv(Variable, ValueString),
+	atom_string(Value, ValueString).
 
 
 % '$lgt_startup_directory'(-atom)
@@ -416,10 +418,11 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % returns the Logtalk startup directory; fails if unknwon 
 
 '$lgt_startup_directory'(Directory) :-
-	(	getenv('LOGTALK_STARTUP_DIRECTORY', Directory) ->
+	(	getenv('LOGTALK_STARTUP_DIRECTORY', DirectoryString) ->
 		true
-	;	getcwd(Directory)
-	).
+	;	getcwd(DirectoryString)
+	),
+	atom_string(Directory, DirectoryString).
 
 
 % '$lgt_user_directory'(-atom)
@@ -427,7 +430,8 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % returns the Logtalk user directory; fails if unknwon
 
 '$lgt_user_directory'(Directory) :-
-	getenv('LOGTALKUSER', Directory).
+	getenv('LOGTALKUSER', DirectoryString),
+	atom_string(Directory, DirectoryString).
 
 
 
@@ -641,12 +645,12 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_rewrite_and_recompile_pl_directive'(local(Functor/Arity), private(Functor/Arity)).
 '$lgt_rewrite_and_recompile_pl_directive'(local(op(Priority, Spec, Operators)), op(Priority, Spec, Operators)).
 
-'$lgt_rewrite_and_recompile_pl_directive'(lib(Library), use_module(library(Library), Exports)) :-
-	'$lgt_eclipse_list_of_exports'(library(Library), Exports).
+'$lgt_rewrite_and_recompile_pl_directive'(lib(Library), use_module(Module, Exports)) :-
+	'$lgt_eclipse_list_of_exports'(library(Library), Module, Exports).
 
-'$lgt_rewrite_and_recompile_pl_directive'(reexport(Module), reexport(Module, Exports)) :-
-	atom(Module),
-	'$lgt_eclipse_list_of_exports'(Module, Exports).
+'$lgt_rewrite_and_recompile_pl_directive'(reexport(File), reexport(Module, Exports)) :-
+	atom(File),
+	'$lgt_eclipse_list_of_exports'(File, Module, Exports).
 
 '$lgt_rewrite_and_recompile_pl_directive'(reexport(from(Conjunction, Module)), reexport(Module, Exports)) :-
 	'$lgt_flatten_list'([Conjunction], Exports).
