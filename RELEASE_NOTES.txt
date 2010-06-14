@@ -115,6 +115,11 @@ RELEASE NOTES
     Corrected a typo in the template of the predicate subsumes/2 in the
     library protocol "termp".
 
+    The SWI-Prolog POSIX integration shell script, "swilgt", now tries
+    first to use a "swipl" executable and, if not found, tries to use
+    instead a "pl" executable (thus preferring a recent SWI-Prolog version
+    over an older one).
+
     Added man pages for the POSIX "*lgt" Prolog integration shell scripts,
     for the Logtalk management shell scripts, and for the XML documenting
     files processing scripts.
