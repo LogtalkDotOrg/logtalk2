@@ -1,4 +1,11 @@
 
+:- if(current_logtalk_flag(prolog_dialect, ciao)).
+	:- use_module(library(system)).
+:- elif(current_logtalk_flag(prolog_dialect, eclipse)).
+	:- use_module(library(calendar)).
+:- endif.
+
+
 :- object(os,
 	implements(osp)).
 
@@ -365,8 +372,6 @@
 
 	:- elif(current_logtalk_flag(prolog_dialect, eclipse)).
 
-		:- use_module(library(calendar)).
-
 		shell(Command, Status) :-	% code copied from the ECLiPSe libraries
 			{getenv('SHELL', Shell),
 			 concat_string([Shell, ' -c "', Command, '"'], String),
@@ -428,8 +433,6 @@
 			{cputime(Time)}.
 
 	:- elif(current_logtalk_flag(prolog_dialect, ciao)).
-
-		:- use_module(library(system)).
 
 		shell(Command, Status) :-
 			{shell(Command, Status)}.

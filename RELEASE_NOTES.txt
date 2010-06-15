@@ -138,7 +138,8 @@ RELEASE NOTES
     loop detection to the "benchmarks" example.
 
     Corrected a wrong declaration for the predicate environment_variable/2
-    in the "cc" example.
+    in the "cc" example. Solved portability issues with ECLiPSe and Ciao
+    Prolog.
 
     Added missing support for syntax coloring of the "complements" entity
     relation to Pygments.
