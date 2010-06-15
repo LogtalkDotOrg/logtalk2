@@ -14,9 +14,12 @@
 
 	help :-
 		write('On-line help is available for Logtalk built-in control constructs,'), nl,
-		write('built-in predicates, built-in non-terminals, and built-in methods:'), nl, nl,
+		write('built-in predicates, built-in non-terminals, built-in methods, and'), nl,
+		write('the standard library:'), nl, nl,
 		write('  Type help::Functor/Arity.'), nl,
-		write('  Or   help::Functor//Arity. '), nl, nl,
+		write('  Or   help::Functor//Arity. '), nl,
+		write('  Or   help::library.'), nl,
+		write('  Or   help::library(Entity).'), nl, nl,
 		write('The manual web page for the selected built-in feature will open in'), nl,
 		write('your default web browser.'), nl, nl.
 
@@ -153,6 +156,31 @@
 	control((:), 1, '/manuals/refman/control/', 'direct1.html').
 
 	built_in_non_terminal(call, 1, '/manuals/refman/methods/', 'call1.html').
+
+	:- public(library/0).
+	:- mode(library, one).
+	:- info(library/0, [
+		comment is 'Provides help on the standard Logtalk library.']).
+
+	library :-
+		open('/library/docs/', 'index.html').
+
+	:- public(library/1).
+	:- mode(library(+entity_identifier), zero_or_one).
+	:- info(library/1, [
+		comment is 'Provides help on the standard Logtalk library.',
+		argnames is ['Entity']]).
+
+	library(Entity) :-
+		nonvar(Entity),
+		callable(Entity),
+		functor(Entity, Functor, Arity),
+		atom_concat(Functor, '_', File0),
+		number_chars(Arity, ArityChars),
+		atom_chars(ArityAtom, ArityChars),
+		atom_concat(File0, ArityAtom, File1),
+		atom_concat(File1, '.html', File),
+		open('/library/docs/', File).
 
 	open(Path, File) :-
 		(	\+ os::environment_variable('LOGTALKHOME', _) ->
