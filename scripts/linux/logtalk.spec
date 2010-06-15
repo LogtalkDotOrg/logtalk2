@@ -44,7 +44,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/lgt2400/integration
 /usr/local/share/lgt2400/libpaths
 /usr/local/share/lgt2400/library
-%doc /usr/local/share/lgt2400/library/docs
 %doc /usr/local/share/lgt2400/manuals
 /usr/local/share/lgt2400/man
 /usr/local/share/lgt2400/scripts
