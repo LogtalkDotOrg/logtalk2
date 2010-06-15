@@ -5,9 +5,9 @@
 <!--	jEdit 4.3 Logtalk syntax file
 
 	written by		Paulo Moura
-	version			1.93
+	version			1.94
 	created on		5 May 2002
-	last revised	23 January 2010
+	last revised	15 June 2010
 
 	To install, copy this file to the "modes" subdirectory in jEdit 
 	directory installation.   Next, check the "catalog" file in the 
@@ -98,7 +98,9 @@
 		<!-- Other arithmetic functors -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(cos|atan|exp|log|s(in|qrt))(?=[(])</SEQ_REGEXP>
 		<!-- Term testing -->
-		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(var|atom(ic)?|integer|float|compound|n(onvar|umber))(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(var|atom(ic)?|integer|float|c(allable|ompound)|n(onvar|umber))(?=[(])</SEQ_REGEXP>
+		<!-- Term comparison -->
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bcompare(?=[(])</SEQ_REGEXP>
 		<!-- Stream selection and control -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(current|set)_(in|out)put(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(open|close)(?=[(])</SEQ_REGEXP>
@@ -248,6 +250,7 @@
 			<NULL>bagof</NULL>
 			<NULL>before</NULL>
 			<NULL>call</NULL>
+			<NULL>callable</NULL>
 			<NULL>calls</NULL>
 			<NULL>catch</NULL>
 			<NULL>category</NULL>
@@ -256,6 +259,7 @@
 			<NULL>char_conversion</NULL>
 			<NULL>clause</NULL>
 			<NULL>close</NULL>
+			<NULL>compare</NULL>
 			<NULL>complements</NULL>
 			<NULL>complements_object</NULL>
 			<NULL>compound</NULL>

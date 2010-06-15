@@ -4,8 +4,8 @@
 
 ;; Author: Paulo Moura <pmoura@logtalk.org>
 ;; Creation date: November 15, 2003
-;; Last modification date: October 25, 2009
-;; Version: 1.10
+;; Last modification date: June 15, 2010
+;; Version: 1.11
 
 ;; Installation:
 ;;
@@ -26,7 +26,7 @@
 
 ;; setup 
 
-(defvar logtalk-mode-version "1.9"
+(defvar logtalk-mode-version "1.11"
 	"Logtalk mode version number")
 
 (defvar logtalk-mode-hook nil)
@@ -145,11 +145,12 @@
 		;;
 		;; term testing:
 		;;
-		("\\<\\(atom\\(?:ic\\)?\\|compound\\|float\\|\\(?:intege\\|n\\(?:onva\\|umbe\\)\\|va\\)r\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(atom\\(?:ic\\)?\\|c\\(?:allable\\|ompound\\)\\|float\\|\\(?:intege\\|n\\(?:onva\\|umbe\\)\\|va\\)r\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; term comparison:
 		;;
 		("==\\|@\\(?:=<\\|>=\\|[<>]\\)\\|\\\\==" 0 'logtalk-built-in-predicate-face)
+		("\\<\\(compare\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; term creation and decomposition:
 		;;

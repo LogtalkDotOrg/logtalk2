@@ -318,10 +318,12 @@
 				<string>[^A-Za-z0-9_](integer)\(</string>
 				<string>[^A-Za-z0-9_](float)\(</string>
 				<string>[^A-Za-z0-9_](atomic)\(</string>
+				<string>[^A-Za-z0-9_](callable)\(</string>
 				<string>[^A-Za-z0-9_](compound)\(</string>
 				<string>[^A-Za-z0-9_](nonvar)\(</string>
 				<string>[^A-Za-z0-9_](number)\(</string>
 				<!-- Term comparison -->
+				<string>[^A-Za-z0-9_](compare)\(</string>
 				<string>[[:space:]]+(==)[[:space:]]+</string>
 				<string>[[:space:]]+(\\==)[[:space:]]+</string>
 				<string>[[:space:]]+(@=&lt;)[[:space:]]+</string>

@@ -105,10 +105,13 @@ atom()
 atomic()
 integer()
 float()
+callable()
 compound()
 nonvar()
 var()
 number()
+
+compare()
 
 current_object()
 current_protocol()

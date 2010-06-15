@@ -2,7 +2,7 @@
 !
 ! Author: Paulo Moura (pmoura at logtalk.org)
 !
-! Last changed in: October 25, 2009
+! Last changed in: June 15, 2010
 !
 !
 ! To install this patterns file:
@@ -28,7 +28,8 @@ nedit.highlightPatterns: Logtalk:1:0{\n\
 	Directives:"(?<=:\\-\\s)(alias|set_logtalk_flag|set_prolog_flag|synchronized|elif|encoding|ensure_loaded|export|if|initialization|info|mode|dynamic|discontiguous|public|protected|private|meta_predicate|multifile|op|calls|uses|use_module|reexport)(?=[(])":::Preprocessor::\n\
 	Directives:"(?<=:\\-\\s)(else|endif|dynamic|synchronized|threaded)>":::Preprocessor::\n\
 	Clause operators:":\\-|\\.|,":::Keyword::\n\
-	Term testing:"(?<![+?@-])(var|atom|integer|float|atomic|compound|nonvar|number)(?=[(])":::Subroutine::\n\
+	Term testing:"(?<![+?@-])(var|atom|integer|float|atomic|callable|compound|nonvar|number)(?=[(])":::Subroutine::\n\
+	Term comparison:"(?<![+?@-])(compare)(?=[(])":::Subroutine::\n\
 	Message sending operators:"::|\\^\\^":::Keyword::\n\
 	Category predicate direct call:":":::Keyword::\n\
 	External call:"[{}]":::Keyword::\n\

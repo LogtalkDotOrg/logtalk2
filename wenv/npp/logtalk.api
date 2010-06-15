@@ -20,6 +20,7 @@ at_end_of_stream
 bagof
 before
 call
+callable
 calls
 catch
 category
@@ -29,6 +30,7 @@ char_code
 char_conversion
 clause
 close
+compare
 complements
 complements_object
 compound

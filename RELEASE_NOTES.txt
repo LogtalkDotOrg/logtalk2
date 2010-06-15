@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.40.0 - June 14, 2010
+2.40.0 - June 16, 2010
 
     Bundled version 1.0 of Verdi Neruda, a meta-interpreter collection that
     includes both top-down and bottom-up search strategies. Thanks to Victor
@@ -58,7 +58,8 @@ RELEASE NOTES
 
     Recognize callable/1 and compare/3 as Prolog standard built-in predicates.
     Calls to these predicates will no longer be reported when the portability
-    flag is set to "warning".
+    flag is set to "warning". In addtion, added syntax coloring support for
+    these two predicates.
 
     Added support for the built-in non-terminal call//1 specified in the ISO
     Prolog standardization proposal for Definite Clause Grammars.

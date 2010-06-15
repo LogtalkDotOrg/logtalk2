@@ -2,7 +2,7 @@
 <!--
 
  Author: Paulo Moura <pmoura@logtalk.org>
- Copyright (C) 2007-2009 Paulo Moura <pmoura@logtalk.org>
+ Copyright (C) 2007-2010 Paulo Moura <pmoura@logtalk.org>
 
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Library General Public
@@ -185,7 +185,7 @@
 			<keyword>(atom(ic)?)(?=[(])</keyword>
 			<keyword>(integer)(?=[(])</keyword>
 			<keyword>(float)(?=[(])</keyword>
-			<keyword>(compound)(?=[(])</keyword>
+			<keyword>(c(allable|ompound))(?=[(])</keyword>
 			<keyword>((non)?var)(?=[(])</keyword>
 			<keyword>(number)(?=[(])</keyword>
 			<!-- Term creation and decomposition -->
@@ -255,6 +255,7 @@
 			<keyword>=</keyword>
 			<keyword>\\=</keyword>
 			<!-- Term comparison -->
+			<keyword>(compare)(?=[(])</keyword>
 			<keyword>==</keyword>
 			<keyword>\\==</keyword>
 			<keyword>@&lt;</keyword>

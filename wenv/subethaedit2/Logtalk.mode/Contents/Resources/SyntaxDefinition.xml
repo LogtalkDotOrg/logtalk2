@@ -94,10 +94,11 @@
 				<regex>\b(atom(ic)?)\(</regex>
 				<regex>\b(integer)\(</regex>
 				<regex>\b(float)\(</regex>
-				<regex>\b(compound)\(</regex>
+				<regex>\b(c(?:allable|ompound))\(</regex>
 				<regex>\b((?:non)?var)\(</regex>
 				<regex>\b(number)\(</regex>
 				<!-- Term comparison -->
+				<regex>\b(compare)\(</regex>
 				<regex>(==)</regex>
 				<regex>(\\==)</regex>
 				<regex>(@&lt;)</regex>

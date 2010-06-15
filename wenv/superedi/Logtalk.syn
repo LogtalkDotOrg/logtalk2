@@ -217,11 +217,13 @@ atom
 integer
 float
 atomic
+callable
 compound
 nonvar
 number
 
 ; Term comparison
+compare
 @=<
 ==
 \==

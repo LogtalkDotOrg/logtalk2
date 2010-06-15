@@ -4,8 +4,8 @@
 #
 #  Author: Paulo Moura
 #    Mail: pmoura@logtalk.org
-#    Date: 25.10.09
-# Version: 1.5
+#    Date: 2010.06.15
+# Version: 1.6
 # ------------------------------------------
 # This file is a part of highlight, a free source code converter released under the GPL.
 #
@@ -74,7 +74,9 @@ $KEYWORDS(kwc)=regex((floor|truncate|round|ceiling)(?=[(]), 1)
 # other arithmetic functors
 $KEYWORDS(kwc)=regex((cos|atan|exp|log|s(in|qrt))(?=[(]), 1)
 # term testing
-$KEYWORDS(kwc)=regex((var|atomic|atom|integer|float|compound|nonvar|number)(?=[(]), 1)
+$KEYWORDS(kwc)=regex((var|atomic|atom|integer|float|c(allable|ompound)|nonvar|number)(?=[(]), 1)
+# term comparison
+$KEYWORDS(kwc)=regex((callable)(?=[(]), 1)
 # stream selection and control
 $KEYWORDS(kwc)=regex(((curren|se)t_(in|out)put)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((open|close)(?=[(]), 1)

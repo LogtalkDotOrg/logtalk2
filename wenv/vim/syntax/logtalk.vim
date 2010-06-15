@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	December 4, 2009
+" Last Change:	June 15, 2010
 
 
 " Quit when a syntax file was already loaded:
@@ -194,12 +194,13 @@ syn match	logtalkKeyword		"\<var\ze("
 syn match	logtalkKeyword		"\<atom\(ic\)\?\ze("
 syn match	logtalkKeyword		"\<integer\ze("
 syn match	logtalkKeyword		"\<float\ze("
-syn match	logtalkKeyword		"\<compound\ze("
+syn match	logtalkKeyword		"\<c\(allable\|ompound\)\ze("
 syn match	logtalkKeyword		"\<n\(onvar\|umber\)\ze("
 
 
 " Term comparison
 
+syn match	logtalkKeyword		"\<compare\ze("
 syn match	logtalkOperator		"@=<"
 syn match	logtalkOperator		"=="
 syn match	logtalkOperator		"\\=="

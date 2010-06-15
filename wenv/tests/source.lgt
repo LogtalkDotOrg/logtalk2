@@ -236,12 +236,14 @@ comment
 		atomic(Atomic),
 		integer(Integer),
 		float(Float),
+		callable(Term),
 		compound(Term),
 		nonvar(Term),
 		var(Term),
 		number(Number).
 
 	term_comparison :-
+		compare(Order, Term1, Term2),
 		Term1 == Term2,
 		Term1 \== Term2,
 		Term1 @< Term2,

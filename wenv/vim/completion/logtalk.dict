@@ -92,9 +92,11 @@ atom
 integer
 float
 atomic
+callable
 compound
 nonvar
 number
+compare
 arg
 copy_term
 functor

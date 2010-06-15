@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 
-<language name="Logtalk" version="2.5" kateversion="2.4" section="Sources" extensions="*.lgt" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
+<language name="Logtalk" version="2.6" kateversion="2.4" section="Sources" extensions="*.lgt" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
 
 	<highlighting>
 
@@ -53,7 +53,9 @@
 				<!-- Other arithmetic functors -->
 				<RegExpr String = "\b(cos|atan|exp|log|s(in|qrt))(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Term testing -->
-				<RegExpr String = "\b(var|atom(ic)?|integer|float|compound|n(onvar|umber))(?=[(])" attribute = "Built-in" context = "#stay" />
+				<RegExpr String = "\b(var|atom(ic)?|integer|float|c(allable|ompound)|n(onvar|umber))(?=[(])" attribute = "Built-in" context = "#stay" />
+				<!-- Term comparison -->
+				<RegExpr String = "\bcompare(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Stream selection and control -->
 				<RegExpr String = "\b(curren|se)t_(in|out)put(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\b(open|close)(?=[(])" attribute = "Built-in" context = "#stay" />

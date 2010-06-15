@@ -136,6 +136,9 @@ expansion
 hello_world
 	the unavoidable "hello world" programming example
 
+help
+	experimental on-line help support
+
 hooks
 	simple example of using compiler hook objects and predicates
 

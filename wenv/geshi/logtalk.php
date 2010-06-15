@@ -4,7 +4,7 @@
  * -----------
  *
  * Author: Paulo Moura (pmoura@logtalk.org)
- * Copyright: (c) 2009 Paulo Moura (http://logtalk.org/)
+ * Copyright: (c) 2009-2010 Paulo Moura (http://logtalk.org/)
  * Release Version: 1.0.8.6
  * Date Started: 2009/10/24
  *
@@ -12,6 +12,8 @@
  *
  * CHANGES
  * -------
+ * 2010/05/15 (1.1.0)
+ *  -  Added syntax coloring of callable/1 and compare/3
  * 2009/10/28 (1.0.0)
  *  -  First Release
  *
@@ -141,7 +143,9 @@ $language_data = array(
             // term creation and decomposition
             'arg', 'copy_term', 'functor',
             // term testing
-            'atom', 'atomic', 'compound', 'float', 'integer', 'nonvar', 'number', 'sub_atom', 'var',
+            'atom', 'atomic', 'callable', 'compound', 'float', 'integer', 'nonvar', 'number', 'sub_atom', 'var',
+            // term comparison
+            'compare',
             // stream selection and control
             'current_input', 'current_output', 'set_input', 'set_output',
             'open', 'close', 'flush_output', 'stream_property',
