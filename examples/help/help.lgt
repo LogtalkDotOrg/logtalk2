@@ -198,13 +198,13 @@
 			% assume we're running on MacOS X
 			atom_concat('open "$LOGTALKHOME', Path, Command0),
 			atom_concat(Command0, File, Command1),
-			atom_concat(Command1, '"', Command),
+			atom_concat(Command1, '" > /dev/null 2>&1', Command),
 			os::shell(Command)
 		;	os::shell('uname -s | grep Linux 1> /dev/null') ->
 			% assume we're running on Linux
 			atom_concat('xdg-open "$LOGTALKHOME', Path, Command0),
 			atom_concat(Command0, File, Command1),
-			atom_concat(Command1, '"', Command),
+			atom_concat(Command1, '" > /dev/null 2>&1', Command),
 			os::shell(Command)
 		;	% we couldn't find which operating-system are we running on
 			write('Unsupported operating-system.'), nl
