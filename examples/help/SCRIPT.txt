@@ -19,3 +19,10 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 | ?- help::help.
 ...
+
+
+% when using ECLiPSe, you will need to write the object name "help" between
+% paranthesis to avoid a clash with the "help" built-in operator:
+
+| ?- (help)::help.
+
