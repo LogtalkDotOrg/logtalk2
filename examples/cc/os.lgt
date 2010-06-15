@@ -3,6 +3,8 @@
 	:- use_module(library(system)).
 :- elif(current_logtalk_flag(prolog_dialect, eclipse)).
 	:- use_module(library(calendar)).
+:- elif(current_logtalk_flag(prolog_dialect, xsb)).
+	:- import(from(/(expand_atom,2),standard)).
 :- endif.
 
 
@@ -138,30 +140,30 @@
 			{shell(Command)}.
 
 		expand_path(Path, ExpandedPath) :-
-			{standard:expand_atom(Path, ExpandedPath)}.
+			{expand_atom(Path, ExpandedPath)}.
 
 		make_directory(Directory) :-
-			{standard:expand_atom(Directory, Expanded),
+			{expand_atom(Directory, Expanded),
 			 path_sysop(mkdir, Expanded)}.
 
 		delete_directory(Directory) :-
-			{standard:expand_atom(Directory, Expanded),
+			{expand_atom(Directory, Expanded),
 			 path_sysop(rmdir, Expanded)}.
 
 		change_directory(Directory) :-
-			{standard:expand_atom(Directory, Expanded),
+			{expand_atom(Directory, Expanded),
 			 path_sysop(chdir, Expanded)}.
 
 		working_directory(Directory) :-
 			{path_sysop(cwd, Directory)}.
 
 		directory_exists(Directory) :-
-			{standard:expand_atom(Directory, Expanded),
+			{expand_atom(Directory, Expanded),
 			 path_sysop(exists, Expanded),
 			 path_sysop(isdir, Expanded)}.
 
 		file_exists(File) :-
-			{standard:expand_atom(File, Expanded),
+			{expand_atom(File, Expanded),
 			 path_sysop(exists, Expanded),
 			 path_sysop(isplain, Expanded)}.
 
