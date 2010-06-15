@@ -58,6 +58,7 @@ logtalk_library_path(fibonacci, threads('fibonacci/')).
 logtalk_library_path(functions, threads('functions/')).
 logtalk_library_path(hanoi, threads('hanoi/')).
 logtalk_library_path(hello_world, examples('hello_world/')).
+logtalk_library_path(help, examples('help/')).
 logtalk_library_path(hooks, examples('hooks/')).
 logtalk_library_path(inheritance, examples('inheritance/')).
 logtalk_library_path(instmethods, examples('instmethods/')).

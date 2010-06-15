@@ -19,6 +19,10 @@ RELEASE NOTES
     includes both top-down and bottom-up search strategies. Thanks to Victor
     Lagerkvist for his contribution.
 
+    Added experimental on-line help support using the new "help" example. See
+    the example "NOTES.txt" file for a list of current operating-system and
+    back-end Prolog compiler limitations.
+
     Changed the representation of meta-argument which are goals in the
     meta_predicate/1 directives from "::" to "0". When compiling calls
     to Prolog module meta-predicates, the meta-argument indicator ":" is

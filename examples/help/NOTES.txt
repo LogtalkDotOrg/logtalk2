@@ -1,0 +1,31 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.40.0
+
+Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+To load this example and for sample queries, please see the SCRIPT 
+file.
+
+This example provides basic on-line help for Logtalk when running in
+a limited set of operating-systems and back-end Prolog compilers.
+Currently, support is limited to:
+
+	Operating-systems:
+		Linux, MacOS X, and Windows
+	
+	Prolog compilers:
+		B-Prolog, Ciao Prolog, ECLiPSe, GNU Prolog,
+		SICStus Prolog, SWI-Prolog, XSB, and YAP
+
+On Windows, the "start" command must be available. On Linux, the
+"xdg-open" command must be available.
+
+The limited support for back-end Prolog compilers is due to the lack
+of portable access to the operating-system. This example relies on the
+"cc" example to provide a portable operating-system access abstraction.
