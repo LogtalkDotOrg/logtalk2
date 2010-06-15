@@ -188,7 +188,7 @@
 	reverse_slashes([], []).
 	reverse_slashes([Char| Chars], [ConvertedChar| ConvertedChars]) :-
 		(	Char == '/' ->
-			ConvertedChar = '\\'
+			ConvertedChar = ('\\')
 		;	ConvertedChar = Char
 		),
 		reverse_slashes(Chars, ConvertedChars).
