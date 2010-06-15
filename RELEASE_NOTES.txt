@@ -131,6 +131,9 @@ RELEASE NOTES
     Renamed the "logtalk_select" shell script to "logtalk_version_select".
     Renamed the "cplgtdirs.*" scripts to "logtalk_user_setup.*".
 
+    Include a XHTML version of the library documentation on the directory
+    "library/docs".
+
     Improved the "examples/tester.sh" script in order to support running the
     example unit tests compiled in debug mode.
 

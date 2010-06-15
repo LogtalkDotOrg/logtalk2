@@ -5,25 +5,25 @@
 		version is 0.1,
 		author is 'Paulo Moura',
 		date is 2010/06/15,
-		comment is 'Command-line help for Logtalk built-in predicates and methods.']).
+		comment is 'Command-line help for Logtalk built-in control constructs, predicates, non-terminals, and methods.']).
 
 	:- public(help/0).
 	:- mode(help, one).
 	:- info(help/0, [
-		comment is 'Description']).
+		comment is 'Prints instructions on how to use help.']).
 
 	help :-
 		write('On-line help is available for Logtalk built-in control constructs,'), nl,
-		write('built-in predicates, built-in non-terminals, and built-in methods.'), nl, nl,
+		write('built-in predicates, built-in non-terminals, and built-in methods:'), nl, nl,
 		write('  Type help::Functor/Arity.'), nl,
 		write('  Or   help::Functor//Arity. '), nl, nl,
-		write('  A web page for the selected built-in feature will open in your'), nl,
-		write('  default web browser.'), nl, nl.
+		write('The manual web page for the selected built-in feature will open in'), nl,
+		write('your default web browser.'), nl, nl.
 
 	:- public('/'/2).
 	:- mode('/'(+atom, +integer), zero_or_one).
 	:- info('/'/2, [
-		comment is 'Description',
+		comment is 'Provides help on the Functor/Arity built-in control construct, predicate, or method.',
 		argnames is ['Functor', 'Arity']]).
 
 	PredicateFunctor/Arity :-
@@ -39,7 +39,7 @@
 	:- public('//'/2).
 	:- mode('//'(+atom, +integer), zero_or_one).
 	:- info('//'/2, [
-		comment is 'Description',
+		comment is 'Provides help on the Functor/Arity built-in non-terminal.',
 		argnames is ['Functor', 'Arity']]).
 
 	NonTerminalFunctor//Arity :-

@@ -86,8 +86,10 @@ as PDF.
 
 All source files are formatted using four-space tabs.
 
-To generate documentation of the Logtalk libraries, start Logtalk with your
-favorite back-end Prolog compiler and type the query:
+This folder includes a XHTML version of the library documentation on the
+directory "docs". To regenerate documentation of the Logtalk libraries,
+start Logtalk with your favorite back-end Prolog compiler and type the
+query:
 
 | ?- {library(all_loader)}.
 
