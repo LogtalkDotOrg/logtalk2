@@ -14989,7 +14989,7 @@ current_logtalk_flag(version, version(2, 40, 1)).
 
 '$lgt_dcg_body'(\+ GRBody, S0, S, (\+ Goal, S0 = S)) :-
     !,
-    '$lgt_dcg_body'(GRBody, S0, S, Goal).
+    '$lgt_dcg_body'(GRBody, S0, _, Goal).
 
 '$lgt_dcg_body'(call(Closure), _, _, _) :-
     nonvar(Closure),
