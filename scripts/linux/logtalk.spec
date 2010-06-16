@@ -1,11 +1,11 @@
 Name: logtalk
 Summary: Logtalk - Open source object-oriented logic programming language
-Version: 2.40.0
+Version: 2.40.1
 Release: 1
 License: Artistic License 2.0
 Group: Development/Languages
 Packager: Paulo Moura <pmoura@logtalk.org>
-Source: http://logtalk.org/files/lgt2400.tar.bz2
+Source: http://logtalk.org/files/lgt2401.tar.bz2
 BuildArchitectures: noarch
 URL: http://logtalk.org/
 AutoReqProv: no
@@ -13,7 +13,7 @@ AutoReqProv: no
 Logtalk is an object-oriented logic programming language that can use most Prolog implementations as a back-end compiler. As a multi-paradigm language, it includes support for both prototypes and classes, protocols (interfaces), component-based programming through category-based composition, event-driven programming, and high-level multi-threading programming.
 
 %prep
-%setup -q -c lgt2400 -n lgt2400
+%setup -q -c lgt2401 -n lgt2401
 
 %build
 
@@ -28,28 +28,28 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc /usr/local/share/lgt2400/BIBLIOGRAPHY.bib
-%doc /usr/local/share/lgt2400/CUSTOMIZE.txt
-%doc /usr/local/share/lgt2400/INSTALL.txt
-%doc /usr/local/share/lgt2400/LICENSE.txt
-%doc /usr/local/share/lgt2400/QUICK_START.txt
-%doc /usr/local/share/lgt2400/README.txt
-%doc /usr/local/share/lgt2400/RELEASE_NOTES.txt
-%doc /usr/local/share/lgt2400/UPGRADING.txt
-/usr/local/share/lgt2400/VERSION.txt
-/usr/local/share/lgt2400/compiler
-/usr/local/share/lgt2400/configs
-/usr/local/share/lgt2400/contributions
-/usr/local/share/lgt2400/examples
-/usr/local/share/lgt2400/integration
-/usr/local/share/lgt2400/libpaths
-/usr/local/share/lgt2400/library
-%doc /usr/local/share/lgt2400/manuals
-/usr/local/share/lgt2400/man
-/usr/local/share/lgt2400/scripts
-/usr/local/share/lgt2400/settings.lgt
-/usr/local/share/lgt2400/wenv
-/usr/local/share/lgt2400/xml
+%doc /usr/local/share/lgt2401/BIBLIOGRAPHY.bib
+%doc /usr/local/share/lgt2401/CUSTOMIZE.txt
+%doc /usr/local/share/lgt2401/INSTALL.txt
+%doc /usr/local/share/lgt2401/LICENSE.txt
+%doc /usr/local/share/lgt2401/QUICK_START.txt
+%doc /usr/local/share/lgt2401/README.txt
+%doc /usr/local/share/lgt2401/RELEASE_NOTES.txt
+%doc /usr/local/share/lgt2401/UPGRADING.txt
+/usr/local/share/lgt2401/VERSION.txt
+/usr/local/share/lgt2401/compiler
+/usr/local/share/lgt2401/configs
+/usr/local/share/lgt2401/contributions
+/usr/local/share/lgt2401/examples
+/usr/local/share/lgt2401/integration
+/usr/local/share/lgt2401/libpaths
+/usr/local/share/lgt2401/library
+%doc /usr/local/share/lgt2401/manuals
+/usr/local/share/lgt2401/man
+/usr/local/share/lgt2401/scripts
+/usr/local/share/lgt2401/settings.lgt
+/usr/local/share/lgt2401/wenv
+/usr/local/share/lgt2401/xml
 /usr/local/share/logtalk
 /usr/local/bin/logtalk_user_setup
 /usr/local/bin/lgt2pdf
@@ -157,7 +157,7 @@ echo
 if [ -x /usr/bin/update-mime-database ]; then
 	mkdir -p /usr/share/mime/packages
 	rm -f /usr/share/mime/packages/logtalk.xml
-	cp /usr/local/share/lgt2400/scripts/freedesktop/logtalk.xml /usr/share/mime/packages/logtalk.xml
+	cp /usr/local/share/lgt2401/scripts/freedesktop/logtalk.xml /usr/share/mime/packages/logtalk.xml
 	update-mime-database /usr/share/mime
 	echo "Added the Logtalk mime-type to the Shared MIME-info Database."
 	echo
