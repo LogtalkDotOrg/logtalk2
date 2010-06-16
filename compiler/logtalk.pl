@@ -8811,9 +8811,10 @@ current_logtalk_flag(version, version(2, 40, 1)).
 	'$lgt_tr_body'(Pred1, TPred1, DPred1, Ctx),
 	'$lgt_tr_body'(Pred2, TPred2, DPred2, Ctx).
 
-'$lgt_tr_body'(\+ Pred, \+ TPred, \+ DPred, Ctx) :-
+'$lgt_tr_body'(\+ Pred, \+ TPred, '$lgt_dbg_goal'(\+ Pred, \+ DPred, ExCtx), Ctx) :-
 	!,
-	'$lgt_tr_body'(Pred, TPred, DPred, Ctx).
+	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
 '$lgt_tr_body'(!, !, ('$lgt_dbg_goal'(!, true, ExCtx), !), Ctx) :-
 	!,

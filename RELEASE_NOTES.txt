@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.40.1 - July ??, 2010
 
+    Improved the built-in debugger by making explicit the calls to the (\+)/1
+    built-in predicate.
+
     Corrected a bug in the compilation of (\+)//1 calls in grammar rules.
     Thanks to Bart Demoen, Ulrich Neumerkel, and Jan Burse for driving my
     attention to this bug.
