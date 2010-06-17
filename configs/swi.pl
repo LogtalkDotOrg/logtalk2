@@ -768,16 +768,16 @@ thread_sleep(Time) :-
 :- dynamic(user:goal_expansion/2).
 :- multifile(user:goal_expansion/2).
 
-user:goal_expansion(phrase(Rule, Input, Rest), '$lgt_phrase'(Rule, Input, Rest, Ctx)) :-
+user:goal_expansion(phrase(Rule, Input, Rest), '$lgt_phrase'(Rule, Input, Rest, ExCtx)) :-
 	nonvar(Rule),
 	functor(Rule, '::', 2),
 	!,
-	'$lgt_comp_ctx'(Ctx, _, user, user, user, _, [], _, _, runtime).
-user:goal_expansion(phrase(Rule, Input), '$lgt_phrase'(Rule, Input, Ctx)) :-
+	'$lgt_exec_ctx'(ExCtx, user, user, user, []).
+user:goal_expansion(phrase(Rule, Input), '$lgt_phrase'(Rule, Input, ExCtx)) :-
 	nonvar(Rule),
 	functor(Rule, '::', 2),
 	!,
-	'$lgt_comp_ctx'(Ctx, _, user, user, user, _, [], _, _, runtime).
+	'$lgt_exec_ctx'(ExCtx, user, user, user, []).
 
 
 

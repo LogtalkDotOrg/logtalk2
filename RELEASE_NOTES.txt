@@ -22,6 +22,11 @@ RELEASE NOTES
     Thanks to Bart Demoen, Ulrich Neumerkel, and Jan Burse for driving my
     attention to this bug.
 
+    Corrected a bug in the goal_expansion/2 clauses found on the SWI-Prolog
+    and YAP config files that are used for expanding calls to the Prolog
+    built-in predicates phrase/2-3 with a Object::GrammarRuleBody in the
+    first argument.
+
 
 2.40.0 - June 16, 2010
 
