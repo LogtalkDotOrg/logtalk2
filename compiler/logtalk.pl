@@ -13138,7 +13138,7 @@ current_logtalk_flag(version, version(2, 40, 1)).
 		;	'$lgt_pp_private_'(Functor, Arity)
 	)).
 
-'$lgt_undef_pred_call'(Functor//Arity, _) :-
+'$lgt_undef_pred_call'(Functor//Arity, TFunctor/TArity) :-
 	'$lgt_pp_calls_nt_'(Functor, Arity),
 	\+ '$lgt_pp_defs_nt_'(Functor, Arity),					% non-terminal not defined in object/category and
 	ExtArity is Arity + 2,
@@ -13147,7 +13147,8 @@ current_logtalk_flag(version, version(2, 40, 1)).
 	once((	'$lgt_pp_public_'(Functor, ExtArity)			% but there is a scope directive for the non-terminal 
 		;	'$lgt_pp_protected_'(Functor, ExtArity)			% or the corresponding predicate 
 		;	'$lgt_pp_private_'(Functor, ExtArity)
-	)).
+	)),
+	'$lgt_pp_calls_pred_'(Functor, ExtArity, TFunctor, TArity).
 
 
 

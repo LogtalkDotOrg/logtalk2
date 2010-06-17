@@ -18,6 +18,9 @@ RELEASE NOTES
     Improved the built-in debugger by making explicit the calls to the (\+)/1
     built-in predicate.
 
+    Corrected a bug where a call to a local predicate would always fail when
+    the object or entity contains a declared but not defined non-terminal.
+
     Corrected a bug in the compilation of (\+)//1 calls in grammar rules.
     Thanks to Bart Demoen, Ulrich Neumerkel, and Jan Burse for driving my
     attention to this bug.
