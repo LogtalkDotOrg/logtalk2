@@ -13773,6 +13773,9 @@ current_logtalk_flag(version, version(2, 40, 1)).
 	(	'$lgt_valid_pred_ind'(PI, Functor, Arity) ->
 		'$lgt_pp_entity'(_, _, Prefix, _, _),
 		'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity)
+	;	'$lgt_valid_gr_ind'(PI, Functor, _, ExtArity) ->
+		'$lgt_pp_entity'(_, _, Prefix, _, _),
+		'$lgt_construct_predicate_indicator'(Prefix, Functor/ExtArity, TFunctor/TArity)
 	;	throw(type_error(predicate_indicator, PI))
 	).
 

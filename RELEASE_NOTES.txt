@@ -30,6 +30,12 @@ RELEASE NOTES
     built-in predicates phrase/2-3 with a Object::GrammarRuleBody in the
     first argument.
 
+    Updated the internal hook predicate '$lgt_tr_predicate_indicators'/2,
+    used in the config files for processing proprietary Prolog directives,
+    in order to translate both grammar rule non-terminal indicators and
+    predicate indicators. A possible usage scenario is tabling grammar rule
+    non-terminals.
+
 
 2.40.0 - June 16, 2010
 
