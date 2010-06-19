@@ -39,6 +39,8 @@ RELEASE NOTES
     built-in predicates phrase/2-3 with a Object::GrammarRuleBody in the
     first argument.
 
+    Added a set of unit tests for the "securemp" example.
+
 
 2.40.0 - June 16, 2010
 
