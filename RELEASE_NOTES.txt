@@ -44,6 +44,9 @@ RELEASE NOTES
     Improved the "debug_hooks" example, showing how to use a parametric hook
     object in alternative to two simple hook objects.
 
+    Improved the "help" example by adding a helper predicate for quick access
+    to the Logtalk User and Reference manuals.
+
     Improved the "examples/tester.sh" script in order to print the current
     time and date, plus the Logtalk and back-end Prolog compiler versions.
 

@@ -2,9 +2,9 @@
 :- object(help).
 
 	:- info([
-		version is 0.1,
+		version is 0.2,
 		author is 'Paulo Moura',
-		date is 2010/06/15,
+		date is 2010/06/19,
 		comment is 'Command-line help for Logtalk built-in control constructs, predicates, non-terminals, and methods.']).
 
 	:- public(help/0).
@@ -21,7 +21,9 @@
 		write('  Or   help::library.'), nl,
 		write('  Or   help::library(Entity).'), nl, nl,
 		write('The manual web page for the selected built-in feature will open in'), nl,
-		write('your default web browser.'), nl, nl.
+		write('your default web browser. To consult the Logtalk User and Reference'), nl,
+		write('manuals:'), nl, nl,
+		write('  Type help::manuals.'), nl, nl.
 
 	:- public('/'/2).
 	:- mode('/'(+atom, +integer), zero_or_one).
@@ -181,6 +183,14 @@
 		atom_concat(File0, ArityAtom, File1),
 		atom_concat(File1, '.html', File),
 		open('/library/docs/', File).
+
+	:- public(manuals/0).
+	:- mode(manuals, one).
+	:- info(manuals/0, [
+		comment is 'Provides access to the Logtalk User and Reference manuals.']).
+
+	manuals :-
+		open('/manuals/', 'index.html').
 
 	open(Path, File) :-
 		(	\+ os::environment_variable('LOGTALKHOME', _) ->
