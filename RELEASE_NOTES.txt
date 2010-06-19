@@ -25,16 +25,19 @@ RELEASE NOTES
     Thanks to Bart Demoen, Ulrich Neumerkel, and Jan Burse for driving my
     attention to this bug.
 
-    Corrected a bug in the goal_expansion/2 clauses found on the SWI-Prolog
-    and YAP config files that are used for expanding calls to the Prolog
-    built-in predicates phrase/2-3 with a Object::GrammarRuleBody in the
-    first argument.
-
     Updated the internal hook predicate '$lgt_tr_predicate_indicators'/2,
     used in the config files for processing proprietary Prolog directives,
     in order to translate both grammar rule non-terminal indicators and
     predicate indicators. A possible usage scenario is tabling grammar rule
     non-terminals.
+
+    Updated the definition of the Logtalk flag "prolog_version" for Ciao in
+    order to compute major, minor, and patch version numbers.
+
+    Corrected a bug in the goal_expansion/2 clauses found on the SWI-Prolog
+    and YAP config files that are used for expanding calls to the Prolog
+    built-in predicates phrase/2-3 with a Object::GrammarRuleBody in the
+    first argument.
 
 
 2.40.0 - June 16, 2010

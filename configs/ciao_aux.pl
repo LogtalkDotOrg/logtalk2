@@ -11,7 +11,7 @@
 %
 %  configuration file for Ciao Prolog 1.10#8
 %
-%  last updated: May 31, 2010
+%  last updated: June 19, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -249,9 +249,11 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % back-end Prolog compiler supported features
 
 '$lgt_prolog_feature'(prolog_dialect, ciao).
-'$lgt_prolog_feature'(prolog_version, (Major, Patch)) :-
-	current_prolog_flag(version, ciao(Major, Patch)).
-'$lgt_prolog_feature'(prolog_compatible_version, @>=((1.1,5))).
+'$lgt_prolog_feature'(prolog_version, (Major, Minor, Patch)) :-
+	current_prolog_flag(version, ciao(Version, Patch)),
+	Major is truncate(float_integer_part(Version)),
+	Minor is truncate(float_fractional_part(Version)*100).
+'$lgt_prolog_feature'(prolog_compatible_version, @>=((1,10,5))).
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
