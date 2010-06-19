@@ -41,6 +41,9 @@ RELEASE NOTES
 
     Added a set of unit tests for the "securemp" example.
 
+    Improved the "debug_hooks" example, showing how to use a parametric hook
+    object in alternative to two simple hook objects.
+
 
 2.40.0 - June 16, 2010
 
