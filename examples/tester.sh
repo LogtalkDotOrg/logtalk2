@@ -116,9 +116,16 @@ mkdir -p "$results"
 rm -f "$results"/*.results
 rm -f "$results"/*.errors
 rm -f "$results"/errors.all
+rm -f "$results"/tester_versions.txt
+
+date=`eval date \"+%Y-%m-%d %H:%M:%S\"`
 
 echo '********************************************'
-echo "***** Running unit tests with $prolog"
+echo "***** Running unit tests"
+echo "*****         Date: $date"
+$logtalk "logtalk_load(tester_versions),halt." > "$results"/tester_versions.txt 2> /dev/null
+grep "Logtalk version:" "$results"/tester_versions.txt
+grep "Prolog version:" "$results"/tester_versions.txt | sed "s/Prolog/$prolog/"
 for unit in *
 do
 	if [ -d $unit ] ; then
