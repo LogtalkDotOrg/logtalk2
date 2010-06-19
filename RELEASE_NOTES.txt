@@ -45,7 +45,10 @@ RELEASE NOTES
     object in alternative to two simple hook objects.
 
     Improved the "help" example by adding a helper predicate for quick access
-    to the Logtalk User and Reference manuals.
+    to the Logtalk User and Reference manuals. Added support for CxProlog.
+
+    Added partial support for CxProlog to the "cc" example in order to support
+    the "help" example.
 
     Improved the "examples/tester.sh" script in order to print the current
     time and date, plus the Logtalk and back-end Prolog compiler versions.

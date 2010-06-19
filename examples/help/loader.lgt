@@ -1,7 +1,7 @@
 
 :- if((
 	current_logtalk_flag(prolog_dialect, Dialect),
-	(Dialect == swi; Dialect == yap; Dialect == xsb; Dialect == gnu;
+	(Dialect == swi; Dialect == yap; Dialect == xsb; Dialect == gnu; Dialect == cx;
 	 Dialect == b; Dialect == sicstus; Dialect == eclipse; Dialect == ciao)
 )).
 

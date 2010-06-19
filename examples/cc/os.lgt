@@ -12,9 +12,9 @@
 	implements(osp)).
 
 	:- info([
-		version is 1.3,
+		version is 1.4,
 		author is 'Paulo Moura',
-		date is 2010/03/20,
+		date is 2010/06/19,
 		comment is 'Simple example of using conditional compilation to implement a portable operating-system interface for selected back-end Prolog compilers.']).
 
 	:- if(current_logtalk_flag(prolog_dialect, swi)).
@@ -492,6 +492,62 @@
 		cpu_time(Time) :-
 			{statistics(runtime, [Miliseconds| _])},
 			Seconds is Miliseconds / 1000.
+
+	:- elif(current_logtalk_flag(prolog_dialect, cx)).
+
+		shell(Command, Status) :-
+			throw(not_available(shell/2)).
+
+		shell(Command) :-
+			{os_run(Command)}.
+
+		expand_path(Path, ExpandedPath) :-
+			throw(not_available(expand_path/2)).
+
+		make_directory(Directory) :-
+			(	{fs_exists_dir(Directory)} ->
+				true
+			;	{fs_mkdir(Directory)}
+			).
+
+		delete_directory(Directory) :-
+			throw(not_available(delete_directory/2)).
+
+		change_directory(Directory) :-
+			{fs_cwd(_, Directory)}.
+
+		working_directory(Directory) :-
+			{fs_cwd(Directory)}.
+
+		directory_exists(Directory) :-
+			{fs_exists_dir(Directory)}.
+
+		file_exists(File) :-
+			{fs_exists_file(File)}.
+
+		file_modification_time(File, Time) :-
+			{fs_property(File, time, [_, Time])}.
+
+		file_size(File, Size) :-
+			{file_property(File, size, Size)}.
+
+		delete_file(File) :-
+			{fs_delete(File)}.
+
+		rename_file(Old, New) :-
+			{fs_rename(Old, New)}.
+
+		environment_variable(Variable, Value) :-
+			{os_env(Variable, Value)}.
+
+		time_stamp(Time) :-
+			throw(not_available(time_stamp/7)).
+
+		date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
+			throw(not_available(date_time/7)).
+
+		cpu_time(Time) :-
+			{Time is cputime}.
 
 	:- else.
 
