@@ -3015,7 +3015,7 @@ current_logtalk_flag(version, version(2, 40, 1)).
 		;	Expansion = Clause
 		)
 	;	Expansion = Term
-	). 
+	).
 
 
 
@@ -10478,7 +10478,7 @@ current_logtalk_flag(version, version(2, 40, 1)).
 
 '$lgt_tr_msg'(Pred, Obj, Pred, _) :-
 	Obj == user,
-	!.									
+	!.
 
 
 % translation performed at runtime

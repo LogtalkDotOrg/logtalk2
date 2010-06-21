@@ -10,8 +10,8 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 
 This directory contains files that provide basic syntax highlighting 
-for editing Logtalk source files with the Bare Bones BBEdit 8.x or 
-TextWrangler 2.x text editors:
+for editing Logtalk source files with the Bare Bones BBEdit 8.5 (and
+later versions) or TextWrangler 2.x text editors:
 
 	http://www.barebones.com/
 

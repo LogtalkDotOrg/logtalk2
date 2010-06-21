@@ -30,7 +30,7 @@
 		{client_b_3::test(_)}.
 
 	succeeds(rule_b_3_variant) :-
-		logtalk_load(rule_b_3_variant),		% suspicious meta-predicate 
+		logtalk_load(rule_b_3_variant),		% suspicious meta-predicate
 		{client_b_3_variant::test(X)},		% definition but no error
 		X == 3.
 

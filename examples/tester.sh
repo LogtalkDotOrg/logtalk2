@@ -13,7 +13,7 @@
 # based on a unit test automation script contributed by Parker Jones
 
 print_version() {
-	echo "`basename $0` 0.2"
+	echo "`basename $0` 0.3"
 	exit 0
 }
 
@@ -71,6 +71,9 @@ elif [ "$p_arg" = "cx" ] ; then
 elif [ "$p_arg" = "eclipse" ] ; then
 	prolog='ECLiPSe'
 	logtalk='eclipselgt -e'
+#elif [ "$p_arg" = "gnu" ] ; then
+#	prolog='GNU Prolog'
+#	logtalk='gplgt --query-goal'
 elif [ "$p_arg" = "qp" ] ; then
 	prolog='Qu-Prolog'
 	logtalk='qplgt -g'
