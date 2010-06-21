@@ -4,25 +4,20 @@
 <dict>
 	<key>BBEditDocumentType</key>
 	<string>CodelessLanguageModule</string>
+	<key>BBLMLanguageDisplayName</key>
+	<string>Logtalk</string>
+	<key>BBLMLanguageCode</key>
+	<string>LGT2</string>
 	<key>BBLMColorsSyntax</key>
+	<true/>
+	<key>BBLMScansFunctions</key>
 	<true/>
 	<key>BBLMIsCaseSensitive</key>
 	<true/>
 	<key>BBLMKeywordList</key>
 	<array>
-		<string>:</string>
-		<string>&lt;&lt;</string>
-		<string>::</string>
-		<string>^^</string>
-		<string>{</string>
-		<string>}</string>
+		<string></string>
 	</array>
-	<key>BBLMLanguageCode</key>
-	<string>LGT2</string>
-	<key>BBLMLanguageDisplayName</key>
-	<string>Logtalk</string>
-	<key>BBLMScansFunctions</key>
-	<false/>
 	<key>BBLMSuffixMap</key>
 	<array>
 		<dict>
@@ -37,25 +32,22 @@
 			(?>	%			.*			$					) |
 			(?>  /\*    (?s:.*?)    (?>\*/)  )
 		)]]></string>
-	  
 		<key>Function Pattern</key>
 		<string><![CDATA[(?x:
-			:-\s(object|protocol|category)\([a-z][a-zA-Z_]+
-		)]]></string>
-	  
+			(?P<function>
+				:-\s(object|protocol|category)\(
+				(?P<function_name>
+					[a-z][a-zA-Z_]+
+		)))]]></string>
+		<key>Identifier and Keyword Character Class</key>
+		<string><![CDATA[a-zA-Z0-9_:{}^]]></string>
+		<key>Skip Pattern</key>
+		<string></string>
 		<key>String Pattern</key>
 		<string><![CDATA[(?x:
 			(?>	"			(?s: \\. | [^"] )*?		(?> " )		) |
 			(?>	'			(?s: \\. | [^'] )*?		(?> ' )		)
 		)]]></string>
-<!--		
-		<key>Skip Pattern</key>
-		<string><![CDATA[(?x:
-			<# GREP (regex) pattern for anything that should be ignored when scanning functions #>
-		)]]></string>
--->		
-		<key>Identifier and Keyword Character Class</key>
-		<string><![CDATA[a-zA-Z0-9_:{}^]]></string>
 	</dict> 
 </dict>
 </plist>
