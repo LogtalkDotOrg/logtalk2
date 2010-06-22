@@ -159,6 +159,33 @@ ECLiPSe 6.0#77 or later versions
 	On Windows, only supports settings files on the Logtalk user folder.
 
 
+GNU Prolog 1.4.0 and later versions
+
+	gnu.pl
+
+	GNU Prolog supports the ISO Prolog standard. No problems expected. 
+
+	You can generate a new Prolog top level that includes the config file
+	and the Logtalk compiler/runtime by doing something like:
+
+		% cd $LOGTALKHOME
+
+	Edit the compiler/logtalk.pl file and add the line ":- built_in." to 
+	the top. Then:
+
+		% gplc -o logtalk configs/gnu.pl compiler/logtalk.pl
+		% mv logtalk /usr/local/bin/
+
+	This way, every time you want to work with Logtalk you will just need 
+	to type:
+
+		% logtalk
+
+	Don't forget to use the change_directory/1 predicate to set the working 
+	directory before loading the library or an example. Supports smart 
+	compilation of source files.
+
+
 Qu-Prolog 8.11 and later versions
 
 	qp.pl

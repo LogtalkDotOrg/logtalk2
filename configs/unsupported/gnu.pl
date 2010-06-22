@@ -9,9 +9,9 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for GNU Prolog 1.3.1 (and later versions)
+%  configuration file for GNU Prolog 1.4.0 (and later versions)
 %
-%  last updated: May 31, 2010
+%  last updated: June 22, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -150,6 +150,7 @@ forall(Generate, Test) :-
 '$lgt_prolog_feature'(multifile_directive, unsupported).
 '$lgt_prolog_feature'(tabling, unsupported).
 '$lgt_prolog_feature'(threads, unsupported).
+'$lgt_prolog_feature'(modules, unsupported).
 
 
 
@@ -176,7 +177,7 @@ forall(Generate, Test) :-
 '$lgt_default_flag'(lgtredef, warning).
 '$lgt_default_flag'(plredef, silent).
 '$lgt_default_flag'(portability, silent).
-'$lgt_default_flag'(underscore_variables, singletons).
+'$lgt_default_flag'(underscore_variables, dont_care).
 % optional features compilation flags:
 '$lgt_default_flag'(complements, deny).
 '$lgt_default_flag'(dynamic_declarations, deny).

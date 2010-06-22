@@ -71,9 +71,9 @@ elif [ "$p_arg" = "cx" ] ; then
 elif [ "$p_arg" = "eclipse" ] ; then
 	prolog='ECLiPSe'
 	logtalk='eclipselgt -e'
-#elif [ "$p_arg" = "gnu" ] ; then
-#	prolog='GNU Prolog'
-#	logtalk='gplgt --query-goal'
+elif [ "$p_arg" = "gnu" ] ; then
+	prolog='GNU Prolog'
+	logtalk='gplgt --query-goal'
 elif [ "$p_arg" = "qp" ] ; then
 	prolog='Qu-Prolog'
 	logtalk='qplgt -g'
@@ -126,7 +126,7 @@ date=`eval date \"+%Y-%m-%d %H:%M:%S\"`
 echo '********************************************'
 echo "***** Running unit tests"
 echo "*****         Date: $date"
-$logtalk "logtalk_load(tester_versions),halt." > "$results"/tester_versions.txt 2> /dev/null
+$logtalk "logtalk_load(tester_versions),halt" > "$results"/tester_versions.txt 2> /dev/null
 grep "Logtalk version:" "$results"/tester_versions.txt
 grep "Prolog version:" "$results"/tester_versions.txt | sed "s/Prolog/$prolog/"
 for unit in *
@@ -138,11 +138,11 @@ do
 			echo "***** Testing $unit"
 			name=$(echo $unit|sed 's|/|__|g')
 			if [ $mode = 'normal' ] || [ $mode = 'all' ] ; then
-				$logtalk "logtalk_load(tester),halt." > "$results/$name.results" 2> "$results/$name.errors"
+				$logtalk "logtalk_load(tester),halt" > "$results/$name.results" 2> "$results/$name.errors"
 				grep 'tests:' "$results/$name.results" | sed 's/%/*****        /'
 			fi
 			if [ $mode = 'debug' ] || [ $mode = 'all' ] ; then
-				$logtalk "set_logtalk_flag(debug,on),logtalk_load(tester),halt." > "$results/$name.results" 2> "$results/$name.errors"
+				$logtalk "set_logtalk_flag(debug,on),logtalk_load(tester),halt" > "$results/$name.results" 2> "$results/$name.errors"
 				grep 'tests:' "$results/$name.results" | sed 's/%/***** (debug)/'
 			fi
 			grep '(not applicable)' "$results/$name.results" | sed 's/(/*****         (/'
@@ -156,11 +156,11 @@ do
 					echo "***** Testing $unit/$subunit"
 					subname=$(echo $unit/$subunit|sed 's|/|__|g')
 					if [ $mode = 'normal' ] || [ $mode = 'all' ] ; then
-						$logtalk "logtalk_load(tester),halt." > "$results/$subname.results" 2> "$results/$subname.errors"
+						$logtalk "logtalk_load(tester),halt" > "$results/$subname.results" 2> "$results/$subname.errors"
 						grep 'tests:' "$results/$subname.results" | sed 's/%/*****        /'
 					fi
 					if [ $mode = 'debug' ] || [ $mode = 'all' ] ; then
-						$logtalk "set_logtalk_flag(debug,on),logtalk_load(tester),halt." > "$results/$subname.results" 2> "$results/$subname.errors"
+						$logtalk "set_logtalk_flag(debug,on),logtalk_load(tester),halt" > "$results/$subname.results" 2> "$results/$subname.errors"
 						grep 'tests:' "$results/$subname.results" | sed 's/%/***** (debug)/'
 					fi
 					grep '(not applicable)' "$results/$subname.results" | sed 's/(/*****         (/'

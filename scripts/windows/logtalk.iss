@@ -56,6 +56,7 @@ Name: "prolog\bp"; Description: "B-Prolog integration (version 7.1 or later)"; T
 Name: "prolog\ciao"; Description: "Ciao Prolog integration (version 1.10)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\cxprolog"; Description: "CxProlog integration (version 0.97.4 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\eclipse"; Description: "ECLiPSe integration (version 6.0#77 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\gprolog"; Description: "GNU Prolog integration (version 1.4.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\sicstus"; Description: "SICStus Prolog integration (versions 3.12.x, 4.x)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\swicon"; Description: "SWI-Prolog (console) integration (version 5.8.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\swiwin"; Description: "SWI-Prolog (window) integration (version 5.8.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
@@ -114,6 +115,8 @@ Name: "{group}\Logtalk - Ciao Prolog"; Filename: "{code:GetCiaoExePath}"; Parame
 Name: "{group}\Logtalk - CxProlog"; Filename: "{code:GetCxExePath}"; Parameters: "--script ""%LOGTALKHOME%\\integration\\logtalk_cx.pl"""; Comment: "Runs Logtalk with CxProlog"; WorkingDir: "%CD%"; Components: prolog\cxprolog; Flags: createonlyiffileexists
 
 Name: "{group}\Logtalk - ECLiPSe 6"; Filename: "{code:GetEclipse6ExePath}"; Parameters: "-b ""$LOGTALKHOME/integration/logtalk_eclipse6.pl"""; Comment: "Runs Logtalk with ECLiPSe 6"; WorkingDir: "%CD%"; Components: prolog\eclipse; Flags: createonlyiffileexists
+
+Name: "{group}\Logtalk - GNU Prolog"; Filename: "{code:GetGPExePath}"; Parameters: "--init-goal ""['$LOGTALKHOME/integration/logtalk_gp.pl']"""; Comment: "Runs Logtalk with GNU Prolog"; WorkingDir: "%CD%"; Components: prolog\gprolog; Flags: createonlyiffileexists
 
 Name: "{group}\Logtalk - SICStus Prolog 3.12"; Filename: "{code:GetSP3ExePath}"; Parameters: "-l ""%LOGTALKHOME%\integration\logtalk_sicstus3.pl"""; Comment: "Runs Logtalk with SICStus Prolog 3.12"; WorkingDir: "%CD%"; Components: prolog\sicstus; Flags: createonlyiffileexists
 
@@ -248,7 +251,7 @@ begin
   if Result = 'prolog_compiler_not_installed' then
   begin
     Warning := 'Failed to detect Ciao Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	  MsgBox(Warning, mbError, MB_OK);
+	MsgBox(Warning, mbError, MB_OK);
   end
 end;
 
@@ -270,7 +273,7 @@ begin
   if Result = 'prolog_compiler_not_installed' then
   begin
     Warning := 'Failed to detect CxProlog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	  MsgBox(Warning, mbError, MB_OK);
+	MsgBox(Warning, mbError, MB_OK);
   end
 end;
 
@@ -307,6 +310,30 @@ begin
   end
 end;
 
+function GPExePath: String;
+var
+  ECLIPSEDIR: String;
+begin
+  if RegQueryStringValue(HKCU, 'Software\GnuProlog\', 'RootPath', RootPath) then
+    Result := RootPath + '\bin\gprolog.exe'
+  else
+    Result := 'prolog_compiler_not_installed'
+  end
+end;
+
+function GetGPExePath(Param: String): String;
+var
+  RootPath: String;
+  Warning: String;
+begin
+  Result := GPExePath;
+  if Result = 'prolog_compiler_not_installed' then
+  begin
+    Warning := 'Failed to detect GNU Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
+    MsgBox(Warning, mbError, MB_OK);
+  end
+end;
+
 function SP3ExePath: String;
 var
   SP_PATH: String;
@@ -325,7 +352,7 @@ begin
   if Result = 'prolog_compiler_not_installed' then
   begin
     Warning := 'Failed to detect SICStus Prolog 3 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	  MsgBox(Warning, mbError, MB_OK);
+	MsgBox(Warning, mbError, MB_OK);
   end
 end;
 
@@ -349,7 +376,7 @@ begin
   if Result = 'prolog_compiler_not_installed' then
   begin
     Warning := 'Failed to detect SICStus Prolog 4 installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	  MsgBox(Warning, mbError, MB_OK);
+	MsgBox(Warning, mbError, MB_OK);
   end
 end;
 
@@ -376,7 +403,7 @@ begin
   if Result = 'prolog_compiler_not_installed' then
   begin
     Warning := 'Failed to detect SWI-Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	  MsgBox(Warning, mbError, MB_OK)
+	MsgBox(Warning, mbError, MB_OK)
   end
 end;
 
@@ -403,7 +430,7 @@ begin
   if Result = 'prolog_compiler_not_installed' then
   begin
     Warning := 'Failed to detect SWI-Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	  MsgBox(Warning, mbError, MB_OK)
+	MsgBox(Warning, mbError, MB_OK)
   end
 end;
 
@@ -425,7 +452,7 @@ begin
   if Result = 'prolog_compiler_not_installed' then
   begin
     Warning := 'Failed to detect XSB installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	  MsgBox(Warning, mbError, MB_OK);
+	MsgBox(Warning, mbError, MB_OK);
   end
 end;
 
@@ -447,7 +474,7 @@ begin
   if Result = 'prolog_compiler_not_installed' then
   begin
     Warning := 'Failed to detect XSB-MT installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	  MsgBox(Warning, mbError, MB_OK);
+	MsgBox(Warning, mbError, MB_OK);
   end
 end;
 
@@ -469,7 +496,7 @@ begin
   if Result = 'prolog_compiler_not_installed' then
   begin
     Warning := 'Failed to detect YAP installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	  MsgBox(Warning, mbError, MB_OK);
+	MsgBox(Warning, mbError, MB_OK);
   end
 end;
 
@@ -480,6 +507,7 @@ begin
       (CiaoExePath = 'prolog_compiler_not_installed') and
       (CxExePath = 'prolog_compiler_not_installed') and
       (Eclipse6ExePath = 'prolog_compiler_not_installed') and
+      (GPExePath = 'prolog_compiler_not_installed') and
       (SP3ExePath = 'prolog_compiler_not_installed') and
       (SP4ExePath = 'prolog_compiler_not_installed') and
       (SWIConExePath = 'prolog_compiler_not_installed') and

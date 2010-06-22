@@ -73,6 +73,7 @@ ln -sf ../share/logtalk/integration/bplgt.sh bplgt
 ln -sf ../share/logtalk/integration/ciaolgt.sh ciaolgt
 ln -sf ../share/logtalk/integration/cxlgt.sh cxlgt
 ln -sf ../share/logtalk/integration/eclipselgt.sh eclipselgt
+ln -sf ../share/logtalk/integration/gplgt.sh gplgt
 ln -sf ../share/logtalk/integration/qplgt.sh qplgt
 ln -sf ../share/logtalk/integration/sicstuslgt.sh sicstuslgt
 ln -sf ../share/logtalk/integration/swilgt.sh swilgt
@@ -96,6 +97,7 @@ echo "* B-Prolog (version 7.1 or later):       bplgt"
 echo "* Ciao (version 1.10):                   ciaolgt    (first run must use sudo)"
 echo "* CxProlog (version 0.97.4 or later):    cxlgt"
 echo "* ECLiPSe (version 6.0 or later):        eclipselgt"
+echo "* GNU Prolog (version 1.4.0 or later):   gplgt"
 echo "* Qu-Prolog (version 8.11 or later):     qplgt"
 echo "* SICStus Prolog (versions 3.12.x, 4.x): sicstuslgt"
 echo "* SWI-Prolog (version 5.6.44 or later):  swilgt"

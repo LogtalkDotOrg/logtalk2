@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.40.1 - July ??, 2010
 
+    Restored support for GNU Prolog. Requires GNU Prolog version 1.4.0 (or
+    later), which provides support for the ISO Prolog predicate directive
+    multifile/1.
+
     Improved the built-in debugger by making explicit the calls to the (\+)/1
     built-in predicate.
 

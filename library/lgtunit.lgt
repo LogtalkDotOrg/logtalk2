@@ -22,10 +22,10 @@
 	:- info(run/0, [
 		comment is 'Runs the unit tests, writing the results to the current output stream.']).
 
-	:- public(op(700, xfx, '=~=')).
-	:- public('=~='/2).
+	:- public(op(700, xfx, ('=~='))).
+	:- public(('=~=')/2).
 	:- mode('=~='(+float, +float), zero_or_one).
-	:- info('=~='/2, [
+	:- info(('=~=')/2, [
 		comment is 'Compares two float values for approximate equality using 100*epsilon for the absolute error and, if that fails, 99.999% accuracy for the relative error. Altough handy when writing certain unit tests, the default precision values may not be adequate for all cases.',
 		argnames is ['Float1', 'Float2']]).
 
