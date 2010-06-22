@@ -54,6 +54,10 @@ RELEASE NOTES
     Added partial support for CxProlog to the "cc" example in order to support
     the "help" example.
 
+    Updated the "multifile" example in order to avoid compilation errors when
+    using a back-end Prolog compiler (such as B-Prolog) that doesn't support
+    discontiguous predicates.
+
     Improved the "examples/tester.sh" script in order to print the current
     time and date, plus the Logtalk and back-end Prolog compiler versions.
 

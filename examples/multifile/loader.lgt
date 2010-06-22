@@ -1,2 +1,2 @@
 
-:- initialization(logtalk_load(multifile)).
+:- initialization(logtalk_load([main, other, more])).
