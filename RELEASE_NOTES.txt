@@ -59,7 +59,9 @@ RELEASE NOTES
     discontiguous predicates.
 
     Improved the "examples/tester.sh" script in order to print the current
-    time and date, plus the Logtalk and back-end Prolog compiler versions.
+    time and date, plus the Logtalk and back-end Prolog compiler versions,
+    and to abstract the different syntax requirements for initialization
+    goals used by Prolog compilers.
 
 
 2.40.0 - June 16, 2010
