@@ -495,13 +495,13 @@
 
 	:- elif(current_logtalk_flag(prolog_dialect, cx)).
 
-		shell(Command, Status) :-
+		shell(_, _) :-
 			throw(not_available(shell/2)).
 
 		shell(Command) :-
 			{os_run(Command)}.
 
-		expand_path(Path, ExpandedPath) :-
+		expand_path(_, _) :-
 			throw(not_available(expand_path/2)).
 
 		make_directory(Directory) :-
@@ -510,7 +510,7 @@
 			;	{fs_mkdir(Directory)}
 			).
 
-		delete_directory(Directory) :-
+		delete_directory(_) :-
 			throw(not_available(delete_directory/2)).
 
 		change_directory(Directory) :-
@@ -540,10 +540,10 @@
 		environment_variable(Variable, Value) :-
 			{os_env(Variable, Value)}.
 
-		time_stamp(Time) :-
+		time_stamp(_) :-
 			throw(not_available(time_stamp/7)).
 
-		date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
+		date_time(_, _, _, _, _, _, _) :-
 			throw(not_available(date_time/7)).
 
 		cpu_time(Time) :-
