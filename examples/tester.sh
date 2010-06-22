@@ -13,7 +13,7 @@
 # based on a unit test automation script contributed by Parker Jones
 
 print_version() {
-	echo "`basename $0` 0.3"
+	echo "`basename $0` 0.4"
 	exit 0
 }
 
@@ -23,6 +23,15 @@ backend=yap
 prolog='YAP'
 logtalk='yaplgt -g'
 mode='normal'
+
+versions_goal="logtalk_load(tester_versions),halt"
+versions_goal_dot="logtalk_load(tester_versions),halt."
+
+tester_goal="logtalk_load(tester),halt"
+tester_goal_dot="logtalk_load(tester),halt."
+
+tester_debug_goal="set_logtalk_flag(debug,on),logtalk_load(tester),halt"
+tester_debug_goal_dot="set_logtalk_flag(debug,on),logtalk_load(tester),halt."
 
 usage_help()
 {
@@ -77,6 +86,9 @@ elif [ "$p_arg" = "gnu" ] ; then
 elif [ "$p_arg" = "qp" ] ; then
 	prolog='Qu-Prolog'
 	logtalk='qplgt -g'
+	versions_goal=$versions_goal_dot
+	tester_goal=$tester_goal_dot
+	tester_debug_goal=$tester_debug_goal_dot
 elif [ "$p_arg" = "sicstus" ] ; then
 	prolog='SICStus Prolog'
 	logtalk='sicstuslgt --goal'
@@ -126,7 +138,7 @@ date=`eval date \"+%Y-%m-%d %H:%M:%S\"`
 echo '********************************************'
 echo "***** Running unit tests"
 echo "*****         Date: $date"
-$logtalk "logtalk_load(tester_versions),halt" > "$results"/tester_versions.txt 2> /dev/null
+$logtalk $versions_goal > "$results"/tester_versions.txt 2> /dev/null
 grep "Logtalk version:" "$results"/tester_versions.txt
 grep "Prolog version:" "$results"/tester_versions.txt | sed "s/Prolog/$prolog/"
 for unit in *
@@ -138,11 +150,11 @@ do
 			echo "***** Testing $unit"
 			name=$(echo $unit|sed 's|/|__|g')
 			if [ $mode = 'normal' ] || [ $mode = 'all' ] ; then
-				$logtalk "logtalk_load(tester),halt" > "$results/$name.results" 2> "$results/$name.errors"
+				$logtalk $tester_goal > "$results/$name.results" 2> "$results/$name.errors"
 				grep 'tests:' "$results/$name.results" | sed 's/%/*****        /'
 			fi
 			if [ $mode = 'debug' ] || [ $mode = 'all' ] ; then
-				$logtalk "set_logtalk_flag(debug,on),logtalk_load(tester),halt" > "$results/$name.results" 2> "$results/$name.errors"
+				$logtalk $tester_debug_goal > "$results/$name.results" 2> "$results/$name.errors"
 				grep 'tests:' "$results/$name.results" | sed 's/%/***** (debug)/'
 			fi
 			grep '(not applicable)' "$results/$name.results" | sed 's/(/*****         (/'
@@ -156,11 +168,11 @@ do
 					echo "***** Testing $unit/$subunit"
 					subname=$(echo $unit/$subunit|sed 's|/|__|g')
 					if [ $mode = 'normal' ] || [ $mode = 'all' ] ; then
-						$logtalk "logtalk_load(tester),halt" > "$results/$subname.results" 2> "$results/$subname.errors"
+						$logtalk $tester_goal > "$results/$subname.results" 2> "$results/$subname.errors"
 						grep 'tests:' "$results/$subname.results" | sed 's/%/*****        /'
 					fi
 					if [ $mode = 'debug' ] || [ $mode = 'all' ] ; then
-						$logtalk "set_logtalk_flag(debug,on),logtalk_load(tester),halt" > "$results/$subname.results" 2> "$results/$subname.errors"
+						$logtalk $tester_debug_goal > "$results/$subname.results" 2> "$results/$subname.errors"
 						grep 'tests:' "$results/$subname.results" | sed 's/%/***** (debug)/'
 					fi
 					grep '(not applicable)' "$results/$subname.results" | sed 's/(/*****         (/'

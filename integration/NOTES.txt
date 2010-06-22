@@ -38,6 +38,10 @@ user with administrative rights (on POSIX systems, run them once as root
 or using sudo; in Windows systems run them once from an administrative 
 account).
 
+The GNU Prolog integration script provides adequate performance for 
+development. For production environments, improved performance may be 
+achieved by generating a new GNU-Prolog top-level that includes Logtalk.
+
 The environment variables LOGTALKHOME and LOGTALKUSER should be defined 
 in order to run the integration scripts (see the "INSTALL.txt" file for 
 details on setting the variables). When the scripts detect an outdated 
