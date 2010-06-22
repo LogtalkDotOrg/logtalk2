@@ -312,18 +312,16 @@ end;
 
 function GPExePath: String;
 var
-  ECLIPSEDIR: String;
+  RootPath: String;
 begin
   if RegQueryStringValue(HKCU, 'Software\GnuProlog\', 'RootPath', RootPath) then
     Result := RootPath + '\bin\gprolog.exe'
   else
     Result := 'prolog_compiler_not_installed'
-  end
 end;
 
 function GetGPExePath(Param: String): String;
 var
-  RootPath: String;
   Warning: String;
 begin
   Result := GPExePath;
