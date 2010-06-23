@@ -3,11 +3,11 @@
 	instantiates(heuristic_search(Threshold))).
 
 	:- info([
-		version is 1.2,
-		author is 'Paulo Moura',
-		date is 2008/6/9,
+		version is 1.3,
+		author is 'Ivan Bratko; adapted to Logtalk by Paulo Moura.',
+		date is 2010/6/23,
 		comment is 'Best first heuristic state space search strategy.',
-		source is 'Example adapted from the book "Prolog Programming for Artificial Intelligence" by Ivan Bratko.',
+		source is 'Code adapted from the book "Prolog Programming for Artificial Intelligence" by Ivan Bratko.',
 		parnames is ['Threshold']]).
 
 	:- uses(list, [member/2, reverse/2]).

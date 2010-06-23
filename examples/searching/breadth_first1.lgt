@@ -3,11 +3,11 @@
 	instantiates(blind_search(Bound))).
 
 	:- info([
-		version is 1.31,
-		author is 'Paulo Moura',
-		date is 2010/05/02,
+		version is 1.4,
+		author is 'Ivan Bratko; adapted to Logtalk by Paulo Moura.',
+		date is 2010/06/23,
 		comment is 'Breadth first state space search strategy.',
-		source is 'Example adapted from the book "Prolog Programming for Artificial Intelligence" by Ivan Bratko.',
+		source is 'Code adapted from the book "Prolog Programming for Artificial Intelligence" by Ivan Bratko.',
 		parnames is ['Bound']]).
 
 	:- uses(list, [member/2, reverse/2]).
