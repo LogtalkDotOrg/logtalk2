@@ -29,6 +29,11 @@ RELEASE NOTES
     Thanks to Bart Demoen, Ulrich Neumerkel, and Jan Burse for driving my
     attention to this bug.
 
+    Recognize e/0 and pi/0 as de facto Prolog standard built-in arithmetic
+    functions. Calls to these functions will no longer be reported when the
+    portability flag is set to "warning". In addition, added syntax coloring
+    support for these two functions.
+
     Updated the internal hook predicate '$lgt_tr_predicate_indicators'/2,
     used in the config files for processing proprietary Prolog directives,
     in order to translate both grammar rule non-terminal indicators and
@@ -109,7 +114,7 @@ RELEASE NOTES
 
     Recognize callable/1 and compare/3 as Prolog standard built-in predicates.
     Calls to these predicates will no longer be reported when the portability
-    flag is set to "warning". In addtion, added syntax coloring support for
+    flag is set to "warning". In addition, added syntax coloring support for
     these two predicates.
 
     Added support for the built-in non-terminal call//1 specified in the ISO

@@ -195,6 +195,8 @@
 			<!-- Arithemtic evaluation -->
 			<keyword>is</keyword>
 			<!-- Evaluable functors -->
+			<keyword>e</keyword>
+			<keyword>pi</keyword>
 			<keyword>(rem)(?=[(])</keyword>
 			<keyword>rem</keyword>
 			<keyword>(mod)(?=[(])</keyword>

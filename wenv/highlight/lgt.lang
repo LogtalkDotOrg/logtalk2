@@ -4,8 +4,8 @@
 #
 #  Author: Paulo Moura
 #    Mail: pmoura@logtalk.org
-#    Date: 2010.06.15
-# Version: 1.6
+#    Date: 2010.06.23
+# Version: 1.7
 # ------------------------------------------
 # This file is a part of highlight, a free source code converter released under the GPL.
 #
@@ -111,7 +111,7 @@ $KEYWORDS(kwd)=regex(([{}]))
 # Prolog operators
 $KEYWORDS(kwd)=regex((\\\+|->|=\.\.|;|!|:-|\^))
 # Prolog arithmetic operators
-$KEYWORDS(kwd)=regex((is|mod|rem|//|[+\-]|/(?!\*)|(?<=\*)/|[*][*]))
+$KEYWORDS(kwd)=regex((e|pi|is|mod|rem|//|[+\-]|/(?!\*)|(?<=\*)/|[*][*]))
 # Prolog arithmetic comparison operators
 $KEYWORDS(kwd)=regex((=<|<|=:=|=\\=|>=|>))
 # Prolog term comparison operators

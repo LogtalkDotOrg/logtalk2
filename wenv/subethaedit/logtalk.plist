@@ -350,6 +350,8 @@
 				<string>[[:space:]]+(\*)[[:space:]]+</string>
 				<string>[[:space:]]+(//)[[:space:]]+</string>
 				<string>[[:space:]]+(/)[[:space:]]+</string>
+				<string>[[:space:]]+(e)[[:space:]]+</string>
+				<string>[[:space:]]+(pi)[[:space:]]+</string>
 				<string>[[:space:]]+(rem)[[:space:]]+</string>
 				<string>[[:space:]]+(mod)[[:space:]]+</string>
 				<string>[^A-Za-z0-9_](rem)\(</string>

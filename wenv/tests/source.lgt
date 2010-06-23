@@ -31,9 +31,9 @@ comment
 	extends(parent)).
 
 	:- info([
-		version is 1.0,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2008/5/1,
+		date is 2010/06/23,
 		comment is 'Sample prototype for testing syntax coloring.']).
 	:- threaded.
 	:- synchronized.
@@ -215,7 +215,7 @@ comment
 		B is sign(-12) * abs(35/78),
 		C is truncate(3.14) + round(-7.8) - ceiling(111.88),
 		D is exp(3.8) - log(123.98) / sqrt(33) * 23 ** 4,
-		E is rem(3, 2) + mod(5, 3) * 2 rem 2 // 5 mod 3,
+		E is rem(3, 2) + mod(5, 3) * 2 rem 2 // 5 mod 3 + pi * e,
 		F is float_fractional_part(3.14) + float_integer_part(3.14),
 		G is float(33) + floor(99.99).
 

@@ -12,6 +12,8 @@
  *
  * CHANGES
  * -------
+ * 2010/06/23 (1.1.1)
+ *  -  Added syntax coloring of e/0 and pi/0
  * 2010/05/15 (1.1.0)
  *  -  Added syntax coloring of callable/1 and compare/3
  * 2009/10/28 (1.0.0)
@@ -184,7 +186,7 @@ $language_data = array(
             ),
         // Evaluable functors (no arguments)
         7 => array(
-            'mod', 'rem'
+            'e', 'pi', 'mod', 'rem'
             ),
         ),
     'SYMBOLS' => array(

@@ -16193,12 +16193,13 @@ current_logtalk_flag(version, version(2, 40, 1)).
 '$lgt_iso_spec_pred'(halt).
 '$lgt_iso_spec_pred'(halt(_)).
 
-% the following predicate are not part of the ISO/IEC 13211-1 Prolog standard
+% the following predicates are not part of the ISO/IEC 13211-1 Prolog standard
 % but can be found on the Core Revision standardization proposal; more important,
-% these predicates are built-in predicates in all supported Prolog compilers
+% these predicates are built-in predicates in most, if not all, supported Prolog
+% compilers
 
 '$lgt_iso_spec_pred'(callable(_)).
-'$lgt_iso_spec_pred'(compare(_)).
+'$lgt_iso_spec_pred'(compare(_,  _, _)).
 
 
 
@@ -16243,6 +16244,14 @@ current_logtalk_flag(version, version(2, 40, 1)).
 '$lgt_iso_spec_function'(truncate(_)).
 '$lgt_iso_spec_function'(float_fractional_part(_)).
 '$lgt_iso_spec_function'(float_integer_part(_)).
+
+% the following functions are not part of the ISO/IEC 13211-1 Prolog standard
+% but can be found on the Core Revision standardization proposal; more important,
+% these functions are built-in functions in most, if not all, supported Prolog
+% compilers
+
+'$lgt_iso_spec_function'(pi).
+'$lgt_iso_spec_function'(e).
 
 
 

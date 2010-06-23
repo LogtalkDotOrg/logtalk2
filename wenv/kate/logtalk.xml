@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 
-<language name="Logtalk" version="2.6" kateversion="2.4" section="Sources" extensions="*.lgt" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
+<language name="Logtalk" version="2.7" kateversion="2.4" section="Sources" extensions="*.lgt" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
 
 	<highlighting>
 
@@ -131,7 +131,7 @@
 				<!-- Evaluable functors -->
 				<Detect2Chars char = "/" char1 = "/" attribute = "Operator" context = "#stay" />
 				<AnyChar String = "+-*/" attribute = "Operator" context = "#stay" />
-				<RegExpr String = "\b(mod|rem)\b" attribute = "Operator" context = "#stay" />
+				<RegExpr String = "\b(e|pi|mod|rem)\b" attribute = "Operator" context = "#stay" />
 				<!-- Other arithemtic functors -->
 				<Detect2Chars char = "*" char1 = "*" attribute = "Operator" context = "#stay" />
 				<!-- DCG rules -->

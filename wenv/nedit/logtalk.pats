@@ -2,7 +2,7 @@
 !
 ! Author: Paulo Moura (pmoura at logtalk.org)
 !
-! Last changed in: June 15, 2010
+! Last changed in: June 23, 2010
 !
 !
 ! To install this patterns file:
@@ -67,7 +67,7 @@ nedit.highlightPatterns: Logtalk:1:0{\n\
 	Implementation defined hooks:"<halt>":::Subroutine::\n\
 	Evaluable functors:"<(rem|mod|abs|sign|float_integer_part|float_fractional_part|float|floor|truncate|round|ceiling)(?=[(])":::Subroutine::\n\
 	Evaluable functors:"\\+|-|\\*|//|/":::Subroutine::\n\
-	Other arithemtic functors:"\\*\\*|<rem>|<mod>":::Subroutine::\n\
+	Other arithemtic functors:"\\*\\*|<e>|<pi>|<rem>|<mod>":::Subroutine::\n\
 	Other arithemtic functors:"\\*\\*|<(sin|cos|atan|exp|log|sqrt)(?=[(])":::Subroutine::\n\
 	Bitwise functors:">>|<<|/\\\\|\\\\/|\\\\":::Subroutine::\n\
 	Atoms:"[a-z]\\w*":::Plain::\n\

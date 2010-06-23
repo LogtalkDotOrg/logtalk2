@@ -4,8 +4,8 @@
 
 ;; Author: Paulo Moura <pmoura@logtalk.org>
 ;; Creation date: November 15, 2003
-;; Last modification date: June 15, 2010
-;; Version: 1.11
+;; Last modification date: June 23, 2010
+;; Version: 1.12
 
 ;; Installation:
 ;;
@@ -26,7 +26,7 @@
 
 ;; setup 
 
-(defvar logtalk-mode-version "1.11"
+(defvar logtalk-mode-version "1.12"
 	"Logtalk mode version number")
 
 (defvar logtalk-mode-hook nil)
@@ -179,7 +179,7 @@
 		("//\\|[*/]" 0 'logtalk-built-in-predicate-face)
 		("\\([^eE]\\)\\([+]\\)" 2 'logtalk-built-in-predicate-face)
 		("\\([^:eE]\\)\\([-]\\)" 2 'logtalk-built-in-predicate-face)
-		("\\<\\(rem\\|mod\\)\\>" 0 'logtalk-built-in-predicate-face)
+		("\\<\\(e\\|pi\\|rem\\|mod\\)\\>" 0 'logtalk-built-in-predicate-face)
 		;;
 		;; other arithemtic functors:
 		;;

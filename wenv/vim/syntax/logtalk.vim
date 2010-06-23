@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	June 15, 2010
+" Last Change:	June 23, 2010
 
 
 " Quit when a syntax file was already loaded:
@@ -290,6 +290,8 @@ syn match	logtalkOperator		"\*"
 syn match	logtalkOperator		"//"
 syn match	logtalkOperator		"/"
 syn match	logtalkKeyword		"\<r\(ound\|em\)\ze("
+syn match	logtalkKeyword		"\<e\>"
+syn match	logtalkKeyword		"\<pi\>"
 syn match	logtalkKeyword		"\<rem\>"
 syn match	logtalkKeyword		"\<mod\ze("
 syn match	logtalkKeyword		"\<mod\>"

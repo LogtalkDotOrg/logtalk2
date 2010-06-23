@@ -168,7 +168,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(mod|rem)\b(?![-!(^~])</string>
+			<string>\b(e|pi|mod|rem)\b(?![-!(^~])</string>
 			<key>name</key>
 			<string>keyword.operator.evaluable.logtalk</string>
 		</dict>

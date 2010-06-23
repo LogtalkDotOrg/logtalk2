@@ -7,7 +7,7 @@
 	written by		Paulo Moura
 	version			1.94
 	created on		5 May 2002
-	last revised	15 June 2010
+	last revised	23 June 2010
 
 	To install, copy this file to the "modes" subdirectory in jEdit 
 	directory installation.   Next, check the "catalog" file in the 
@@ -95,6 +95,7 @@
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(rem|mod|abs|sign)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bfloat(_(integer|fractional)_part)?(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(floor|truncate|round|ceiling)(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(e|pi|rem|mod)\b</SEQ_REGEXP>
 		<!-- Other arithmetic functors -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(cos|atan|exp|log|s(in|qrt))(?=[(])</SEQ_REGEXP>
 		<!-- Term testing -->
@@ -384,6 +385,8 @@
 			<NULL>float_integer_part</NULL>
 			<NULL>floor</NULL>
 			<NULL>log</NULL>
+			<NULL>e</NULL>
+			<NULL>pi</NULL>
 			<NULL>mod</NULL>
 			<NULL>rem</NULL>
 			<NULL>round</NULL>
