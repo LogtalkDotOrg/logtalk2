@@ -45,7 +45,7 @@
 				<!-- Term unification -->
 				<RegExpr String = "\bunify_with_occurs_check(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Term creation and decomposition -->
-				<RegExpr String = "\b(functor|arg|copy_term)(?=[(])" attribute = "Built-in" context = "#stay" />
+				<RegExpr String = "\b(functor|arg|copy_term|numbervars)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Evaluable functors -->
 				<RegExpr String = "\b(rem|mod|abs|sign)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\bfloat(_(integer|fractional)_part)?(?=[(])" attribute = "Built-in" context = "#stay" />
@@ -53,7 +53,7 @@
 				<!-- Other arithmetic functors -->
 				<RegExpr String = "\b(cos|atan|exp|log|s(in|qrt))(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Term testing -->
-				<RegExpr String = "\b(var|atom(ic)?|integer|float|c(allable|ompound)|n(onvar|umber))(?=[(])" attribute = "Built-in" context = "#stay" />
+				<RegExpr String = "\b(var|atom(ic)?|integer|float|c(allable|ompound)|n(onvar|umber)|ground)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Term comparison -->
 				<RegExpr String = "\bcompare(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Stream selection and control -->
@@ -78,6 +78,8 @@
 				<RegExpr String = "\b(se|curren)t_prolog_flag(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\bhalt\b" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\bhalt(?=[(])" attribute = "Built-in" context = "#stay" />
+				<!-- Sorting -->
+				<RegExpr String = "\b(key)?sort(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Variables -->
 				<RegExpr String = "\b[A-Z_]\w*" attribute = "Variable" context = "#stay" />
 				<!-- Comments -->

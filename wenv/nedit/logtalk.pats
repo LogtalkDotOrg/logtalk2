@@ -28,7 +28,7 @@ nedit.highlightPatterns: Logtalk:1:0{\n\
 	Directives:"(?<=:\\-\\s)(alias|set_logtalk_flag|set_prolog_flag|synchronized|elif|encoding|ensure_loaded|export|if|initialization|info|mode|dynamic|discontiguous|public|protected|private|meta_predicate|multifile|op|calls|uses|use_module|reexport)(?=[(])":::Preprocessor::\n\
 	Directives:"(?<=:\\-\\s)(else|endif|dynamic|synchronized|threaded)>":::Preprocessor::\n\
 	Clause operators:":\\-|\\.|,":::Keyword::\n\
-	Term testing:"(?<![+?@-])(var|atom|integer|float|atomic|callable|compound|nonvar|number)(?=[(])":::Subroutine::\n\
+	Term testing:"(?<![+?@-])(var|atom|integer|float|atomic|callable|compound|nonvar|number|ground)(?=[(])":::Subroutine::\n\
 	Term comparison:"(?<![+?@-])(compare)(?=[(])":::Subroutine::\n\
 	Message sending operators:"::|\\^\\^":::Keyword::\n\
 	Category predicate direct call:":":::Keyword::\n\
@@ -51,7 +51,7 @@ nedit.highlightPatterns: Logtalk:1:0{\n\
 	Term unification:"=|\\\\=":::Subroutine::\n\
 	Term unification:"<unify_with_occurs_check(?=[(])":::Subroutine::\n\
 	Term comparison:"@=\\<|==|\\\\==|@\\>=|@\\<|@\\>":::Subroutine::\n\
-	Term creation and decomposition:"<(functor|arg|copy_term)(?=[(])":::Subroutine::\n\
+	Term creation and decomposition:"<(functor|arg|copy_term|numbervars)(?=[(])":::Subroutine::\n\
 	Term creation and decomposition:"=\\.\\.":::Subroutine::\n\
 	Mode operators:"\\?|@":::Subroutine::\n\
 	Stream selection and control:"<(current_input|current_output|set_input|set_output|open|close|flush_output|stream_property|at_end_of_stream|set_stream_position)(?=[(])":::Subroutine::\n\
@@ -65,6 +65,7 @@ nedit.highlightPatterns: Logtalk:1:0{\n\
 	Atomic term processing:"<(atom_length|atom_concat|sub_atom|atom_chars|atom_codes|char_code|number_chars|number_codes)(?=[(])":::Subroutine::\n\
 	Implementation defined hooks:"<(set_prolog_flag|current_prolog_flag|halt)(?=[(])":::Subroutine::\n\
 	Implementation defined hooks:"<halt>":::Subroutine::\n\
+	Sorting:"<(keysort|sort)(?=[(])":::Subroutine::\n\
 	Evaluable functors:"<(rem|mod|abs|sign|float_integer_part|float_fractional_part|float|floor|truncate|round|ceiling)(?=[(])":::Subroutine::\n\
 	Evaluable functors:"\\+|-|\\*|//|/":::Subroutine::\n\
 	Other arithemtic functors:"\\*\\*|<e>|<pi>|<rem>|<mod>":::Subroutine::\n\

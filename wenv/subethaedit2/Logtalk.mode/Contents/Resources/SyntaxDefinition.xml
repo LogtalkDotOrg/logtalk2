@@ -97,6 +97,7 @@
 				<regex>\b(c(?:allable|ompound))\(</regex>
 				<regex>\b((?:non)?var)\(</regex>
 				<regex>\b(number)\(</regex>
+				<regex>\b(ground)\(</regex>
 				<!-- Term comparison -->
 				<regex>\b(compare)\(</regex>
 				<regex>(==)</regex>
@@ -110,6 +111,7 @@
 				<regex>\b(arg)\(</regex>
 				<regex>(=\.\.)</regex>
 				<regex>\b(copy_term)\(</regex>
+				<regex>\b(numbervars)\(</regex>
 				<!-- Arithemtic evaluation -->
 				<regex>\s(is)\s</regex>
 				<!-- Arithemtic comparison -->
@@ -187,6 +189,8 @@
 				<regex>\b((?:se|curren)t_prolog_flag)\(</regex>
 				<regex>\b(halt)\(</regex>
 				<regex>\b(halt)[^[(A-Za-z_]]</regex>
+				<!-- Sorting -->
+				<regex>\b((?:key)?sort)\(</regex>
 			</keywords>
 
 			<keywords id="Mode Operators" color="#0000ff" useforautocomplete="no">

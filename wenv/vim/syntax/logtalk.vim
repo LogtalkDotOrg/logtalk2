@@ -196,6 +196,7 @@ syn match	logtalkKeyword		"\<integer\ze("
 syn match	logtalkKeyword		"\<float\ze("
 syn match	logtalkKeyword		"\<c\(allable\|ompound\)\ze("
 syn match	logtalkKeyword		"\<n\(onvar\|umber\)\ze("
+syn match	logtalkKeyword		"\<ground\ze("
 
 
 " Term comparison
@@ -215,6 +216,7 @@ syn match	logtalkKeyword		"\<functor\ze("
 syn match	logtalkKeyword		"\<arg\ze("
 syn match	logtalkOperator		"=\.\."
 syn match	logtalkKeyword		"\<copy_term\ze("
+syn match	logtalkKeyword		"\<numbervars\ze("
 
 
 " Arithemtic evaluation
@@ -280,6 +282,11 @@ syn match	logtalkKeyword		"\<number_c\(har\|ode\)s\ze("
 syn match	logtalkKeyword		"\<\(curren\|se\)t_prolog_flag\ze("
 syn match	logtalkKeyword		"\<halt\ze("
 syn match	logtalkKeyword		"\<halt\>"
+
+
+" Sorting
+
+syn match	logtalkKeyword		"\<\(key\)\?sort\ze("
 
 
 " Evaluable functors

@@ -110,6 +110,7 @@ compound()
 nonvar()
 var()
 number()
+ground()
 
 compare()
 
@@ -222,6 +223,14 @@ number_codes(, )
 
 set_prolog_flag(, )
 current_prolog_flag(, )
+
+arg(, , )
+copy_term(, )
+functor(, , )
+numbervars(, , )
+
+keysort(, )
+sort(, )
 
 halt().
 halt.

@@ -240,7 +240,8 @@ comment
 		compound(Term),
 		nonvar(Term),
 		var(Term),
-		number(Number).
+		number(Number),
+		ground(Term).
 
 	term_comparison :-
 		compare(Order, Term1, Term2),
@@ -255,7 +256,8 @@ comment
 		functor(Term, Functor, Arity),
 		arg(N, Term, Arg),
 		Term =.. [Functor| Args],
-		copy_term(Term, Copy).
+		copy_term(Term, Copy),
+		numbervars(Term, Start, End).
 
 	arithemtic_evaluation :-
 		X is Expression.
@@ -330,6 +332,10 @@ comment
 		set_prolog_flag(Flag, Value),
 		halt(ExitCode),
 		halt.
+
+	sorting :-
+		keysort(List, Sorted),
+		sort(List, Sorted).
 
 	number(C) --> "+", number(C).
 	number(C) --> "-", number(X), {C is -X}.

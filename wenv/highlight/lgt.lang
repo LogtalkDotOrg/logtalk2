@@ -66,7 +66,7 @@ $KEYWORDS(kwc)=regex((threaded(_(call|once|ignore|exit|peek|wait|notify))?)(?=[(
 # term unification
 $KEYWORDS(kwc)=regex((unify_with_occurs_check)(?=[(]), 1)
 # term creation and decomposition
-$KEYWORDS(kwc)=regex((functor|arg|copy_term)(?=[(]), 1)
+$KEYWORDS(kwc)=regex((functor|arg|copy_term|numbervars)(?=[(]), 1)
 # evaluable functors
 $KEYWORDS(kwc)=regex((rem|mod|abs|sign)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((float(_(integer|fractional)_part)?)(?=[(]), 1)
@@ -74,7 +74,7 @@ $KEYWORDS(kwc)=regex((floor|truncate|round|ceiling)(?=[(]), 1)
 # other arithmetic functors
 $KEYWORDS(kwc)=regex((cos|atan|exp|log|s(in|qrt))(?=[(]), 1)
 # term testing
-$KEYWORDS(kwc)=regex((var|atomic|atom|integer|float|c(allable|ompound)|nonvar|number)(?=[(]), 1)
+$KEYWORDS(kwc)=regex((var|atomic|atom|integer|float|c(allable|ompound)|n(onvar|umber)|ground)(?=[(]), 1)
 # term comparison
 $KEYWORDS(kwc)=regex((callable)(?=[(]), 1)
 # stream selection and control
@@ -103,6 +103,8 @@ $KEYWORDS(kwc)=regex((halt)(?=[(]), 1)
 # logic and control
 $KEYWORDS(kwc)=regex((once)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((repeat), 1)
+# sorting
+$KEYWORDS(kwc)=regex(((key)?sort)(?=[(]), 1)
 
 # Logtalk message sending operators
 $KEYWORDS(kwd)=regex((::|\^\^|<<|:))

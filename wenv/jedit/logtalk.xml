@@ -90,7 +90,7 @@
 		<!-- Term unification -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bunify_with_occurs_check(?=[(])</SEQ_REGEXP>
 		<!-- Term creation and decomposition -->
-		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(functor|arg|copy_term)(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(functor|arg|copy_term|numbervars)(?=[(])</SEQ_REGEXP>
 		<!-- Evaluable functors -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(rem|mod|abs|sign)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bfloat(_(integer|fractional)_part)?(?=[(])</SEQ_REGEXP>
@@ -99,7 +99,7 @@
 		<!-- Other arithmetic functors -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(cos|atan|exp|log|s(in|qrt))(?=[(])</SEQ_REGEXP>
 		<!-- Term testing -->
-		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(var|atom(ic)?|integer|float|c(allable|ompound)|n(onvar|umber))(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(var|atom(ic)?|integer|float|c(allable|ompound)|n(onvar|umber)|ground)(?=[(])</SEQ_REGEXP>
 		<!-- Term comparison -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bcompare(?=[(])</SEQ_REGEXP>
 		<!-- Stream selection and control -->
@@ -127,6 +127,8 @@
 		<!-- Logic and control -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bonce(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\brepeat\b</SEQ_REGEXP>
+		<!-- Sorting -->
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(key)?sort(?=[(])</SEQ_REGEXP>
 
 		<!-- Variables -->
 		<SEQ_REGEXP HASH_CHARS="_ABCDEFGHIJKLMNOPQRSTUVWXYZ" AT_WORD_START="TRUE" TYPE="MARKUP">[_A-Z]+[a-zA-Z0-9]*</SEQ_REGEXP>
@@ -300,6 +302,7 @@
 			<NULL>get_byte</NULL>
 			<NULL>get_char</NULL>
 			<NULL>get_code</NULL>
+			<NULL>ground</NULL>
 			<NULL>halt</NULL>
 			<NULL>implements</NULL>
 			<NULL>implements_protocol</NULL>
@@ -310,6 +313,7 @@
 			<NULL>instantiates</NULL>
 			<NULL>instantiates_class</NULL>
 			<NULL>integer</NULL>
+			<NULL>keysort</NULL>
 			<NULL>logtalk_compile</NULL>
 			<NULL>logtalk_library_path</NULL>
 			<NULL>logtalk_load</NULL>
@@ -320,6 +324,7 @@
 			<NULL>number</NULL>
 			<NULL>number_chars</NULL>
 			<NULL>number_codes</NULL>
+			<NULL>numbervars</NULL>
 			<NULL>object</NULL>
 			<NULL>object_property</NULL>
 			<NULL>once</NULL>
@@ -352,6 +357,7 @@
 			<NULL>set_output</NULL>
 			<NULL>set_prolog_flag</NULL>
 			<NULL>set_stream_position</NULL>
+			<NULL>sort</NULL>
 			<NULL>specializes</NULL>
 			<NULL>specializes_class</NULL>
 			<NULL>stream_property</NULL>

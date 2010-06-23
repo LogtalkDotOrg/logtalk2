@@ -16061,6 +16061,7 @@ current_logtalk_flag(version, version(2, 40, 1)).
 
 
 
+% control constructs
 '$lgt_iso_spec_pred'(true).
 '$lgt_iso_spec_pred'(fail).
 '$lgt_iso_spec_pred'(call(_)).
@@ -16074,11 +16075,11 @@ current_logtalk_flag(version, version(2, 40, 1)).
 '$lgt_iso_spec_pred'((_ -> _)).
 '$lgt_iso_spec_pred'(catch(_, _, _)).
 '$lgt_iso_spec_pred'(throw(_)).
-
+% term unification
 '$lgt_iso_spec_pred'((_ = _)).
 '$lgt_iso_spec_pred'((_ \= _)).
 '$lgt_iso_spec_pred'(unify_with_occurs_check(_, _)).
-
+% term testing
 '$lgt_iso_spec_pred'(var(_)).
 '$lgt_iso_spec_pred'(nonvar(_)).
 '$lgt_iso_spec_pred'(atom(_)).
@@ -16087,40 +16088,39 @@ current_logtalk_flag(version, version(2, 40, 1)).
 '$lgt_iso_spec_pred'(integer(_)).
 '$lgt_iso_spec_pred'(float(_)).
 '$lgt_iso_spec_pred'(compound(_)).
-
+% term comparison
 '$lgt_iso_spec_pred'((_ @=< _)).
 '$lgt_iso_spec_pred'((_ @< _)).
 '$lgt_iso_spec_pred'((_ @>= _)).
 '$lgt_iso_spec_pred'((_ @> _)).
 '$lgt_iso_spec_pred'((_ == _)).
 '$lgt_iso_spec_pred'((_ \== _)).
-
+% term creation and decomposition
 '$lgt_iso_spec_pred'(functor(_, _, _)).
 '$lgt_iso_spec_pred'(arg(_, _, _)).
 '$lgt_iso_spec_pred'(_ =.. _).
 '$lgt_iso_spec_pred'(copy_term(_, _)).
-
+% arithmetic evaluation
 '$lgt_iso_spec_pred'(_ is _).
-
+% arithmetic comparison
 '$lgt_iso_spec_pred'((_ =< _)).
 '$lgt_iso_spec_pred'((_ < _)).
 '$lgt_iso_spec_pred'((_ >= _)).
 '$lgt_iso_spec_pred'((_ > _)).
 '$lgt_iso_spec_pred'((_ =:= _)).
 '$lgt_iso_spec_pred'((_ =\= _)).
-
+% database
 '$lgt_iso_spec_pred'(clause(_, _)).
 '$lgt_iso_spec_pred'(current_predicate(_)).
-
 '$lgt_iso_spec_pred'(asserta(_)).
 '$lgt_iso_spec_pred'(assertz(_)).
 '$lgt_iso_spec_pred'(retract(_)).
 '$lgt_iso_spec_pred'(abolish(_)).
-
+% all solutions
 '$lgt_iso_spec_pred'(findall(_, _, _)).
 '$lgt_iso_spec_pred'(bagof(_, _, _)).
 '$lgt_iso_spec_pred'(setof(_, _, _)).
-
+% stream selection and control
 '$lgt_iso_spec_pred'(current_input(_)).
 '$lgt_iso_spec_pred'(current_output(_)).
 '$lgt_iso_spec_pred'(set_input(_)).
@@ -16135,7 +16135,7 @@ current_logtalk_flag(version, version(2, 40, 1)).
 '$lgt_iso_spec_pred'(at_end_of_stream).
 '$lgt_iso_spec_pred'(at_end_of_stream(_)).
 '$lgt_iso_spec_pred'(set_stream_position(_, _)).
-
+% character and byte input/output
 '$lgt_iso_spec_pred'(get_char(_, _)).
 '$lgt_iso_spec_pred'(get_char(_)).
 '$lgt_iso_spec_pred'(get_code(_, _)).
@@ -16150,14 +16150,13 @@ current_logtalk_flag(version, version(2, 40, 1)).
 '$lgt_iso_spec_pred'(put_code(_)).
 '$lgt_iso_spec_pred'(nl).
 '$lgt_iso_spec_pred'(nl(_)).
-
 '$lgt_iso_spec_pred'(get_byte(_, _)).
 '$lgt_iso_spec_pred'(get_byte(_)).
 '$lgt_iso_spec_pred'(peek_byte(_, _)).
 '$lgt_iso_spec_pred'(peek_byte(_)).
 '$lgt_iso_spec_pred'(put_byte(_, _)).
 '$lgt_iso_spec_pred'(put_byte(_)).
-
+% term input/output
 '$lgt_iso_spec_pred'(read_term(_, _, _)).
 '$lgt_iso_spec_pred'(read_term(_, _)).
 '$lgt_iso_spec_pred'(read(_)).
@@ -16174,11 +16173,11 @@ current_logtalk_flag(version, version(2, 40, 1)).
 '$lgt_iso_spec_pred'(current_op(_, _, _)).
 '$lgt_iso_spec_pred'(char_conversion(_, _)).
 '$lgt_iso_spec_pred'(current_char_conversion(_, _)).
-
+% logic and control
 '$lgt_iso_spec_pred'(\+ _).
 '$lgt_iso_spec_pred'(once(_)).
 '$lgt_iso_spec_pred'(repeat).
-
+% atomic term processing
 '$lgt_iso_spec_pred'(atom_length(_, _)).
 '$lgt_iso_spec_pred'(atom_concat(_, _, _)).
 '$lgt_iso_spec_pred'(sub_atom(_, _, _, _, _)).
@@ -16187,7 +16186,7 @@ current_logtalk_flag(version, version(2, 40, 1)).
 '$lgt_iso_spec_pred'(char_code(_, _)).
 '$lgt_iso_spec_pred'(number_chars(_, _)).
 '$lgt_iso_spec_pred'(number_codes(_, _)).
-
+% implementation defined hooks functions
 '$lgt_iso_spec_pred'(set_prolog_flag(_, _)).
 '$lgt_iso_spec_pred'(current_prolog_flag(_, _)).
 '$lgt_iso_spec_pred'(halt).
@@ -16198,8 +16197,18 @@ current_logtalk_flag(version, version(2, 40, 1)).
 % these predicates are built-in predicates in most, if not all, supported Prolog
 % compilers
 
+% database
+'$lgt_iso_spec_pred'(retractall(_)).
+% term testing
 '$lgt_iso_spec_pred'(callable(_)).
-'$lgt_iso_spec_pred'(compare(_,  _, _)).
+'$lgt_iso_spec_pred'(ground(_)).
+% term comparison
+'$lgt_iso_spec_pred'(compare(_, _, _)).
+% sorting
+'$lgt_iso_spec_pred'(keysort(_, _)).
+'$lgt_iso_spec_pred'(sort(_, _)).
+% term creation and decomposition
+'$lgt_iso_spec_pred'(numbervars(_, _, _)).
 
 
 

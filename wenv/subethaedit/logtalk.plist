@@ -322,6 +322,7 @@
 				<string>[^A-Za-z0-9_](compound)\(</string>
 				<string>[^A-Za-z0-9_](nonvar)\(</string>
 				<string>[^A-Za-z0-9_](number)\(</string>
+				<string>[^A-Za-z0-9_](ground)\(</string>
 				<!-- Term comparison -->
 				<string>[^A-Za-z0-9_](compare)\(</string>
 				<string>[[:space:]]+(==)[[:space:]]+</string>
@@ -335,6 +336,7 @@
 				<string>[^A-Za-z0-9_](arg)\(</string>
 				<string>[[:space:]]+(=\.\.)[[:space:]]+</string>
 				<string>[^A-Za-z0-9_](copy_term)\(</string>
+				<string>[^A-Za-z0-9_](numbervars)\(</string>
 				<!-- Arithemtic evaluation -->
 				<string>[[:space:]]+(is)[[:space:]]+</string>
 				<!-- Arithemtic comparison -->
@@ -429,6 +431,9 @@
 				<string>[^A-Za-z0-9_](set_prolog_flag)\(</string>
 				<string>[^A-Za-z0-9_](current_prolog_flag)\(</string>
 				<string>[^A-Za-z0-9_](halt)\(</string>
+				<!-- Sorting -->
+				<string>[^A-Za-z0-9_](keysort)\(</string>
+				<string>[^A-Za-z0-9_](sort)\(</string>
 			</array>
 			<key>Plain Strings</key>
 			<array>

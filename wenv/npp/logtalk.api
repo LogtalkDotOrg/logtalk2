@@ -82,6 +82,7 @@ get_byte
 get_char
 get_code
 goal_expansion
+ground
 halt
 if
 implements
@@ -93,6 +94,7 @@ initialization
 instantiates
 instantiates_class
 integer
+keysort
 log
 logtalk_compile
 logtalk_library_path
@@ -106,6 +108,7 @@ nonvar
 number
 number_chars
 number_codes
+numbervars
 object
 object_property
 once
@@ -143,6 +146,7 @@ set_prolog_flag
 set_stream_position
 sign
 sin
+sort
 specializes
 specializes_class
 sqrt

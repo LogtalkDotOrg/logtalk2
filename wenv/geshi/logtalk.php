@@ -14,6 +14,7 @@
  * -------
  * 2010/06/23 (1.1.1)
  *  -  Added syntax coloring of e/0 and pi/0
+ *  -  Added syntax coloring of ground/1, numbervars/3, keysort/2, and sort/2
  * 2010/05/15 (1.1.0)
  *  -  Added syntax coloring of callable/1 and compare/3
  * 2009/10/28 (1.0.0)
@@ -143,9 +144,9 @@ $language_data = array(
             'number_chars', 'number_codes',
             'char_code',
             // term creation and decomposition
-            'arg', 'copy_term', 'functor',
+            'arg', 'copy_term', 'functor', 'numbervars',
             // term testing
-            'atom', 'atomic', 'callable', 'compound', 'float', 'integer', 'nonvar', 'number', 'sub_atom', 'var',
+            'atom', 'atomic', 'callable', 'compound', 'float', 'ground', 'integer', 'nonvar', 'number', 'sub_atom', 'var',
             // term comparison
             'compare',
             // stream selection and control
@@ -162,8 +163,10 @@ $language_data = array(
             'write', 'writeq', 'write_canonical', 'write_term',
             'read', 'read_term',
             'char_conversion', 'current_char_conversion',
-            //
-            'halt'
+            // hooks
+            'halt',
+            // sorting
+            'keysort', 'sort'
             ),
         // Built-in predicates (no arguments)
         5 => array(

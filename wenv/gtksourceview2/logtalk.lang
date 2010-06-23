@@ -188,10 +188,12 @@
 			<keyword>(c(allable|ompound))(?=[(])</keyword>
 			<keyword>((non)?var)(?=[(])</keyword>
 			<keyword>(number)(?=[(])</keyword>
+			<keyword>(ground)(?=[(])</keyword>
 			<!-- Term creation and decomposition -->
 			<keyword>(functor)(?=[(])</keyword>
 			<keyword>(arg)(?=[(])</keyword>
 			<keyword>(copy_term)(?=[(])</keyword>
+			<keyword>(numbervars)(?=[(])</keyword>
 			<!-- Arithemtic evaluation -->
 			<keyword>is</keyword>
 			<!-- Evaluable functors -->
@@ -248,6 +250,8 @@
 			<keyword>((set|current)_prolog_flag)(?=[(])</keyword>
 			<keyword>(halt)(?=[(])</keyword>
 			<keyword>halt</keyword>
+			<!-- Sorting -->
+			<keyword>((key)?sort)(?=[(])</keyword>
 		</context>
 
 		<context id="built-in-operators" style-ref="built-in">

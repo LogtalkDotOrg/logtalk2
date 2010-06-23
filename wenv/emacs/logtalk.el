@@ -145,7 +145,7 @@
 		;;
 		;; term testing:
 		;;
-		("\\<\\(atom\\(?:ic\\)?\\|c\\(?:allable\\|ompound\\)\\|float\\|\\(?:intege\\|n\\(?:onva\\|umbe\\)\\|va\\)r\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(atom\\(?:ic\\)?\\|c\\(?:allable\\|ompound\\)\\|float\\|ground\\|\\(?:intege\\|n\\(?:onva\\|umbe\\)\\|va\\)r\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; term comparison:
 		;;
@@ -154,7 +154,7 @@
 		;;
 		;; term creation and decomposition:
 		;;
-		("\\<\\(arg\\|copy_term\\|functor\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(arg\\|copy_term\\|functor\\|numbervars\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("=\\.\\." 0 'logtalk-built-in-predicate-face)
 		;;
 		;; arithemtic evaluation:
@@ -212,6 +212,10 @@
 		;; atomic term processing:
 		;;
 		("\\<\\(atom_\\(?:c\\(?:hars\\|o\\(?:des\\|ncat\\)\\)\\|length\\)\\|char_code\\|number_c\\(?:\\(?:har\\|ode\\)s\\)\\|sub_atom\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		;;
+		;; sorting
+		;;
+		("\\<\\(keysort\\|sort\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
 		;; bitwise functors:
 		;;

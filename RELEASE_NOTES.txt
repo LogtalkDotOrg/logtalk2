@@ -22,12 +22,17 @@ RELEASE NOTES
     Improved the built-in debugger by making explicit the calls to the (\+)/1
     built-in predicate.
 
-    Corrected a bug where a call to a local predicate would always fails when
-    the object or category contains a declared but not defined non-terminal.
+    Corrected a bug where a call to a local predicate would always fail when
+    an object or category contains a declared but not defined non-terminal.
 
     Corrected a bug in the compilation of (\+)//1 calls in grammar rules.
     Thanks to Bart Demoen, Ulrich Neumerkel, and Jan Burse for driving my
     attention to this bug.
+
+    Recognize retractall/1, ground/1, keysort/2, sort/2, and numbervars/3 as
+    de facto Prolog standard built-in predicates. Calls to these predicates
+    will no longer be reported when the portability flag is set to "warning".
+    In addition, added syntax coloring support for these predicates.
 
     Recognize e/0 and pi/0 as de facto Prolog standard built-in arithmetic
     functions. Calls to these functions will no longer be reported when the

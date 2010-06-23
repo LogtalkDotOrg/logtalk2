@@ -67,7 +67,7 @@ class LogtalkLexer(RegexLexer):
             # Database
             (r'(clause|retract(all)?)(?=[(])', Keyword),
             (r'a(bolish|ssert(a|z))(?=[(])', Keyword),
-            # Control
+            # Control constructs
             (r'(ca(ll|tch)|throw)(?=[(])', Keyword),
             (r'(fail|true)\b', Keyword),
             # All solutions
@@ -77,7 +77,7 @@ class LogtalkLexer(RegexLexer):
             # Term unification
             (r'unify_with_occurs_check(?=[(])', Keyword),
             # Term creation and decomposition
-            (r'(functor|arg|copy_term)(?=[(])', Keyword),
+            (r'(functor|arg|copy_term|numbervars)(?=[(])', Keyword),
             # Evaluable functors
             (r'(rem|mod|abs|sign)(?=[(])', Keyword),
             (r'float(_(integer|fractional)_part)?(?=[(])', Keyword),
@@ -85,7 +85,7 @@ class LogtalkLexer(RegexLexer):
             # Other arithmetic functors
             (r'(cos|atan|exp|log|s(in|qrt))(?=[(])', Keyword),
             # Term testing
-            (r'(var|atom(ic)?|integer|float|c(allable|ompound)|n(onvar|umber))(?=[(])', Keyword),
+            (r'(var|atom(ic)?|integer|float|c(allable|ompound)|n(onvar|umber)|ground)(?=[(])', Keyword),
             # Term comparison
             (r'compare(?=[(])', Keyword),
             # Stream selection and control
@@ -117,6 +117,8 @@ class LogtalkLexer(RegexLexer):
             # Logic and control
             (r'\bonce(?=[(])', Keyword),
             (r'\brepeat\b', Keyword),
+            # Sorting
+            (r'(key)?sort(?=[(])', Keyword),
             # Bitwise functors
             (r'(>>|<<|/\\|\\\\|\\)', Operator),
             # Arithemtic evaluation

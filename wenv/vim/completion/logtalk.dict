@@ -97,9 +97,11 @@ compound
 nonvar
 number
 compare
+ground
 arg
 copy_term
 functor
+numbervars
 current_predicate
 predicate_property
 abolish
@@ -158,6 +160,8 @@ number_codes
 set_prolog_flag
 current_prolog_flag
 halt
+keysort
+sort
 abs
 atan
 ceiling
