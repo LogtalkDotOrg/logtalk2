@@ -47,7 +47,7 @@ usage_help()
 	echo "Optional arguments:"
 	echo "  -v print version of `basename $0`"
 	echo "  -p back-end Prolog compiler (default is $backend)"
-	echo "     (possible values are ciao, cx, eclipse, qp, sicstus, swi, xsb, and yap)"
+	echo "     (possible values are ciao, cx, eclipse, gnu, qp, sicstus, swi, xsb, and yap)"
 	echo "  -m compilation mode (default is $mode)"
 	echo "     (possible values are normal, debug, and all)"
 	echo "  -d name of the sub-directory to store the test results (default is tester_results)"

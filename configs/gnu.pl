@@ -11,7 +11,7 @@
 %
 %  configuration file for GNU Prolog 1.4.0 (and later versions)
 %
-%  last updated: June 22, 2010
+%  last updated: June 24, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -81,10 +81,7 @@ setup_call_cleanup(_, _, _) :-
 	throw(not_supported(setup_call_cleanup/3)).
 
 
-% forall(+callable, +callable)
-
-forall(Generate, Test) :-
-	\+ (Generate, \+ Test).
+% forall(+callable, +callable) -- built-in
 
 
 % retractall(+callable) -- built-in
