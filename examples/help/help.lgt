@@ -4,7 +4,7 @@
 	:- info([
 		version is 0.2,
 		author is 'Paulo Moura',
-		date is 2010/06/19,
+		date is 2010/06/24,
 		comment is 'Command-line help for Logtalk built-in control constructs, predicates, non-terminals, and methods.']).
 
 	:- public(help/0).
@@ -25,9 +25,9 @@
 		write('manuals:'), nl, nl,
 		write('  Type help::manuals.'), nl, nl.
 
-	:- public('/'/2).
+	:- public(('/')/2).
 	:- mode('/'(+atom, +integer), zero_or_one).
-	:- info('/'/2, [
+	:- info(('/')/2, [
 		comment is 'Provides help on the Functor/Arity built-in control construct, predicate, or method.',
 		argnames is ['Functor', 'Arity']]).
 
@@ -41,9 +41,9 @@
 		),
 		open(Path, File).
 
-	:- public('//'/2).
+	:- public(('//')/2).
 	:- mode('//'(+atom, +integer), zero_or_one).
-	:- info('//'/2, [
+	:- info(('//')/2, [
 		comment is 'Provides help on the Functor/Arity built-in non-terminal.',
 		argnames is ['Functor', 'Arity']]).
 
@@ -227,7 +227,7 @@
 
 	reverse_slashes([], []).
 	reverse_slashes([Char| Chars], [ConvertedChar| ConvertedChars]) :-
-		(	Char == '/' ->
+		(	Char == ('/') ->
 			ConvertedChar = ('\\')
 		;	ConvertedChar = Char
 		),
