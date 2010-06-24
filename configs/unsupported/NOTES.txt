@@ -84,16 +84,6 @@ Bin-Prolog 8.x~10.x
 	Updated and tested with help of Arun Majumdar.
 
 
-CxProlog 0.97.4 or later versions
-
-	cx.pl
-
-	Developed and tested with the help of the CxProlog author, Artur Miguel
-	Dias. Don't forget to call the fs_cwd/1 predicate to set the working 
-	directory before compiling the library or an example. Supports smart 
-	compilation of source files. Full support for settings files.
-
-
 ECLiPSe 5.10#26 or later 5.10 versions
 
 	eclipse5.pl
@@ -143,36 +133,6 @@ ECLiPSe 5.10#26 or later 5.10 versions
 	Full support for settings files on POSIX operating-systems. On Windows,
 	only supports settings files on the Logtalk user folder. Doesn't support
 	the "altdirs" flag.
-
-
-GNU Prolog 1.3.1 and later versions
-
-	gnu.pl
-
-	GNU Prolog supports the ISO Prolog standard except for the multifile/1
-	directive (forcing the use of the "libpaths/libpaths_no_multifile.pl"
-	file). No problems expected. 
-
-	You can generate a new Prolog top level that includes the config file
-	and the Logtalk compiler/runtime by doing something like:
-
-		% cd $LOGTALKHOME
-
-	Edit the compiler/logtalk.pl file and add the line ":- built_in." to 
-	the top. Then:
-
-		% gplc -o logtalk configs/gnu.pl compiler/logtalk.pl
-		% mv logtalk /usr/local/bin/
-
-	This way, every time you want to work with Logtalk you will just need 
-	to type:
-
-		% logtalk
-
-	Don't forget to use the change_directory/1 predicate to set the working 
-	directory before loading the library or an example. Supports smart 
-	compilation of source files. Full support for settings files. Multifile
-	predicates and grammar rules are not supported.
 
 
 IF/Prolog 5.3 and later versions
