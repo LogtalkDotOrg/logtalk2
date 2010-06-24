@@ -53,7 +53,7 @@ RELEASE NOTES
     built-in predicates phrase/2-3 with a Object::GrammarRuleBody in the
     first argument.
 
-    Added a set of unit tests for the "securemp" example.
+    Added unit tests for the "securemp" and "constraints/gprolog" examples.
 
     Improved the "debug_hooks" example, showing how to use a parametric hook
     object in alternative to two simple hook objects.

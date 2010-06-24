@@ -30,9 +30,14 @@
 
 	:- initialization(q).
 
-	q :-
+	:- public(q/2).
+
+	q(LD, Y) :-
 		get_fd_labeling(Lab), statistics(runtime,_),
-		donald(LD, Lab), statistics(runtime,[_,Y]),
+		donald(LD, Lab), statistics(runtime,[_,Y]).
+
+	q :-
+		q(LD, Y),
 		write(LD), nl,
 		write('time : '), write(Y), nl.
 
