@@ -1,5 +1,5 @@
 
-:- if(current_logtalk_flag(prolog_dialect, bp)).
+:- if(current_logtalk_flag(prolog_dialect, b)).
 
 	:- initialization((
 		set_logtalk_flag(report, warnings),
