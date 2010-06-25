@@ -11,7 +11,7 @@
 %
 %  configuration file for GNU Prolog 1.4.0 (and later versions)
 %
-%  last updated: June 24, 2010
+%  last updated: June 25, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -181,7 +181,7 @@ setup_call_cleanup(_, _, _) :-
 '$lgt_default_flag'(events, deny).
 '$lgt_default_flag'(context_switching_calls, allow).
 % directories compilation flags:
-'$lgt_default_flag'(altdirs, off).
+'$lgt_default_flag'(altdirs, on).
 '$lgt_default_flag'(tmpdir, TmpDir) :-
 	os_version(Version),
 	(	atom_concat('Microsoft Windows', _, Version) ->
@@ -191,7 +191,7 @@ setup_call_cleanup(_, _, _) :-
 '$lgt_default_flag'(xmldir, 'xml_docs/').
 % other compilation flags:
 '$lgt_default_flag'(report, on).
-'$lgt_default_flag'(clean, off).
+'$lgt_default_flag'(clean, on).
 '$lgt_default_flag'(smart_compilation, off).
 '$lgt_default_flag'(reload, always).
 '$lgt_default_flag'(startup_message, flags(compact)).
