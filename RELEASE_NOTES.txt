@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.40.1 - July ??, 2010
+2.40.1 - June 30, 2010
 
     Restored support for GNU Prolog. Requires GNU Prolog version 1.4.0 (or
     later), which provides support for the ISO Prolog predicate directive
