@@ -62,6 +62,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/ciaolgt
 /usr/local/bin/cxlgt
 /usr/local/bin/eclipselgt
+/usr/local/bin/gplgt
 /usr/local/bin/qplgt
 /usr/local/bin/sicstuslgt
 /usr/local/bin/swilgt
@@ -74,6 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/share/man/man1/ciaolgt.1.gz
 /usr/local/share/man/man1/cxlgt.1.gz
 /usr/local/share/man/man1/eclipselgt.1.gz
+/usr/local/share/man/man1/gplgt.1.gz
 /usr/local/share/man/man1/lgt2html.1.gz
 /usr/local/share/man/man1/lgt2pdf.1.gz
 /usr/local/share/man/man1/lgt2txt.1.gz
