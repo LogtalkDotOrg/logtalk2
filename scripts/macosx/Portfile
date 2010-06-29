@@ -55,7 +55,7 @@ post-activate {
 	ui_msg "* back-end Prolog compilers (which must be properly installed for running"
 	ui_msg "* the scripts!):"
 	ui_msg "*"
-	ui_msg "* B-Prolog (version 7.1 or later):       bplgt"
+	ui_msg "* B-Prolog (version 7.4 or later):       bplgt"
 	ui_msg "* Ciao (version 1.10):                   ciaolgt    (first run must use sudo)"
 	ui_msg "* CxProlog (version 0.97.4 or later):    cxlgt"
 	ui_msg "* ECLiPSe (version 6.0 or later):        eclipselgt"
