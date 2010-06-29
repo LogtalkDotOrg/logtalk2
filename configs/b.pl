@@ -9,9 +9,9 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for B-Prolog 7.1 and later versions
+%  configuration file for B-Prolog 7.4 and later versions
 %
-%  last updated: May 31, 2010
+%  last updated: June 29, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -52,6 +52,8 @@
 
 % '$lgt_predicate_property'(+callable, ?predicate_property)
 
+'$lgt_predicate_property'(setup_call_cleanup(_,_,_), built_in) :-	% workaround for B-Prolog 7.4 bug
+	!.
 '$lgt_predicate_property'(Pred, Prop) :-
 	predicate_property(Pred, Prop).
 
@@ -67,11 +69,7 @@
 % call_cleanup(+callable, +callable) -- built-in
 
 
-% setup_call_cleanup(+callable, +callable, +callable)
-
-setup_call_cleanup(Setup, Call, Cleanup) :-
-	call(Setup),
-	call_cleanup(Call, Cleanup).
+% setup_call_cleanup(+callable, +callable, +callable) -- built-in
 
 
 % forall(+callable, +callable) -- built-in
@@ -102,6 +100,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 	arg(Arity, Meta, 0),
 	N is Arity - 1,
 	'$lgt_bp_foreach_n_args'(N, Meta).
+'$lgt_pl_meta_predicate'(setup_call_cleanup(_, _, _), setup_call_cleanup(0, 0, 0), predicate).
 '$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(0, 0), predicate).
 '$lgt_pl_meta_predicate'(fd_minimize(_, _), fd_minimize(0, *), predicate).
 '$lgt_pl_meta_predicate'(fd_maximize(_, _), fd_maximize(0, *), predicate).
@@ -157,7 +156,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 '$lgt_prolog_feature'(prolog_dialect, b).
 '$lgt_prolog_feature'(prolog_version, _) :-
 	fail.
-'$lgt_prolog_feature'(prolog_compatible_version, @>=((7,1))).
+'$lgt_prolog_feature'(prolog_compatible_version, @>=((7,4,0))).
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).

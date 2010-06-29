@@ -53,6 +53,10 @@ RELEASE NOTES
     built-in predicates phrase/2-3 with a Object::GrammarRuleBody in the
     first argument.
 
+    Updated the B-Prolog config file to require version 7.4 or later and
+    to workaround a missing "built_in" property for the built-in predicate
+    setup_call_cleanup/3.
+
     Added unit tests for the "securemp" and "constraints/gprolog" examples.
 
     Improved the "debug_hooks" example, showing how to use a parametric hook
