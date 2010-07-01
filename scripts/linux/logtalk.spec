@@ -1,6 +1,6 @@
 Name: logtalk
 Summary: Logtalk - Open source object-oriented logic programming language
-Version: 2.40.1
+Version: 2.40.2
 Release: 1
 License: Artistic License 2.0
 Group: Development/Languages

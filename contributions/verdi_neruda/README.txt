@@ -89,7 +89,7 @@ http://joelbyte.github.com/verdi-neruda/
 
 4. INSTALLATION AND RUNNING
 
-Verdi Neruda requires Logtalk 2.40.1 or a later version.
+Verdi Neruda requires Logtalk 2.40.2 or a later version.
 
 To use the snapshot of Verdi Neruda bundled with Logtalk:
 * Start Logtalk.

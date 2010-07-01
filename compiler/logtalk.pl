@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.40.1
+%  Release 2.40.2
 %  
 %  Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
@@ -362,7 +362,7 @@ Obj<<Goal :-
 	;	throw(error(existence_error(goal_thread, Self::Goal), Sender))
 	).
 
-'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/8), _)) :-
+'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/6), _)) :-
 	once((  atom_concat(Prefix, '_idcl', TFunctor)
 	    ;   atom_concat(Prefix, '_dcl', TFunctor)
 	)),
@@ -375,7 +375,7 @@ Obj<<Goal :-
 	\+ '$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
 	throw(error(existence_error(object, Obj), _, _)).
 
-'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/7), _)) :-
+'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/5), _)) :-
 	atom_concat(Prefix, '_dcl', TFunctor),
 	'$lgt_reverse_entity_prefix'(Prefix, CtgOrPtc),
 	(	'$lgt_implements_protocol_'(_, CtgOrPtc, _), \+ '$lgt_current_protocol_'(CtgOrPtc, _, _, _, _) ->
@@ -1944,7 +1944,7 @@ current_logtalk_flag(Flag, Value) :-
 current_logtalk_flag(Flag, Value) :-
 	'$lgt_prolog_feature'(Flag, Value).
 
-current_logtalk_flag(version, version(2, 40, 1)).
+current_logtalk_flag(version, version(2, 40, 2)).
 
 
 
