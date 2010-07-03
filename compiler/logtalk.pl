@@ -4122,13 +4122,11 @@ current_logtalk_flag(version, version(2, 40, 2)).
 		Flags = 249		% 0b11111001
 	;	Flags = 241		% 0b11110001
 	).
-
 '$lgt_current_object_'(user, '$lgt_bio_user_0_', '$lgt_bio_user_0__dcl', '$lgt_bio_user_0__def', '$lgt_bio_user_0__super', '$lgt_bio_user_0__idcl', '$lgt_bio_user_0__idef', '$lgt_bio_user_0__ddcl', '$lgt_bio_user_0__ddef', '$lgt_bio_user_0__alias', Flags) :-
 	(	'$lgt_compiler_flag'(threads, supported) ->
 		Flags = 249		% 0b11111001
 	;	Flags = 241		% 0b11110001
 	).
-
 '$lgt_current_object_'(debugger, '$lgt_bio_debugger_0_', '$lgt_bio_debugger_0__dcl', '$lgt_bio_debugger_0__def', '$lgt_bio_debugger_0__super', '$lgt_bio_debugger_0__idcl', '$lgt_bio_debugger_0__idef', '$lgt_bio_debugger_0__ddcl', '$lgt_bio_debugger_0__ddef', '$lgt_bio_debugger_0__alias', Flags) :-
 	(	'$lgt_compiler_flag'(threads, supported) ->
 		Flags = 249		% 0b11111001
@@ -4137,8 +4135,11 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 
 '$lgt_current_protocol_'(expanding, '$lgt_bip_expanding_0_', '$lgt_bip_expanding_0__dcl', '$lgt_bip_expanding_0__alias', 1).		% 0b00000001
-
 '$lgt_current_protocol_'(monitoring, '$lgt_bip_monitoring_0_', '$lgt_bip_monitoring_0__dcl', '$lgt_bip_monitoring_0__alias', 1).	% 0b00000001
+
+
+'$lgt_implements_protocol_'(logtalk, expanding, (public)).
+'$lgt_implements_protocol_'(logtalk, monitoring, (public)).
 
 
 

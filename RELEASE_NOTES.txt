@@ -18,6 +18,10 @@ RELEASE NOTES
     Corrected a bug in the runtime error handler that would result in entity
     existence error being reported as (internal) predicate existence errors.
 
+    Corrected a bug where the protocols implemented by the built-in object
+    "logtalk" would not be returned by the implements_protocol/2-3 built-in
+    predicates.
+
 
 2.40.1 - June 30, 2010
 
