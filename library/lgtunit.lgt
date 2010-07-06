@@ -3,9 +3,9 @@
 	implements(expanding)).		% built-in protocol for term and goal expansion methods
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2010/04/27,
+		date is 2010/07/06,
 		comment is 'A simple unit test framework.']).
 
 	:- uses(list, [member/2]).
@@ -224,7 +224,7 @@
 		;	catch(abs((Float1 - Float2) / Float2) < 0.00001, _, fail)
 		).
 
-	:- if((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == swi; Dialect == yap; Dialect == gnu; Dialect == bp))).
+	:- if((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == swi; Dialect == yap; Dialect == gnu; Dialect == bp; Dialect == cx))).
 		epsilon(Epsilon) :-
 			Epsilon is epsilon.
 	:- else.

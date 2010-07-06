@@ -54,7 +54,7 @@ Name: "user\backup"; Description: "Backup current Logtalk user folder"; Types: f
 Name: "prolog"; Description: "Prolog integration (back-end compiler support)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\bp"; Description: "B-Prolog integration (version 7.4 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\ciao"; Description: "Ciao Prolog integration (version 1.10)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\cxprolog"; Description: "CxProlog integration (version 0.97.4 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\cxprolog"; Description: "CxProlog integration (version 0.97.5 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\eclipse"; Description: "ECLiPSe integration (version 6.0#77 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\gprolog"; Description: "GNU Prolog integration (version 1.4.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\sicstus"; Description: "SICStus Prolog integration (versions 3.12.x, 4.x)"; Types: full prolog custom; Flags: disablenouninstallwarning

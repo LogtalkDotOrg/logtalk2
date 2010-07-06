@@ -22,6 +22,10 @@ RELEASE NOTES
     "logtalk" would not be returned by the implements_protocol/2-3 built-in
     predicates.
 
+    Updated the CxProlog config file to require version 0.97.5 or later. This
+    version adds the epsilon/0 arithmetic constant that is used in the library
+    unit test support.
+
 
 2.40.1 - June 30, 2010
 

@@ -106,7 +106,7 @@ echo "with selected back-end Prolog compilers:"
 echo
 echo "* B-Prolog (version 7.4 or later):       bplgt"
 echo "* Ciao (version 1.10):                   ciaolgt    (first run must use sudo)"
-echo "* CxProlog (version 0.97.4 or later):    cxlgt"
+echo "* CxProlog (version 0.97.5 or later):    cxlgt"
 echo "* ECLiPSe (version 6.0 or later):        eclipselgt"
 echo "* GNU Prolog (version 1.4.0 or later):   gplgt"
 echo "* Qu-Prolog (version 8.11 or later):     qplgt"

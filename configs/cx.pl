@@ -9,9 +9,9 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for CxProlog 0.97.4 or a later version
+%  configuration file for CxProlog 0.97.5 or a later version
 %
-%  last updated: May 31, 2010
+%  last updated: July 6, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -146,7 +146,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 '$lgt_prolog_feature'(prolog_dialect, cx).
 '$lgt_prolog_feature'(prolog_version, (Major, Minor, Patch)) :-
 	catch(current_prolog_flag(version_data, cxprolog(Major, Minor, Patch, _)), _, fail).
-'$lgt_prolog_feature'(prolog_compatible_version, @>=((0,97,4))).
+'$lgt_prolog_feature'(prolog_compatible_version, @>=((0,97,5))).
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, source).
