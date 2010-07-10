@@ -3,9 +3,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.2,
+		version is 1.21,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2010/05/24,
+		date is 2010/07/10,
 		comment is 'Unit tests for the "dcgs" example.']).
 
 	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
@@ -52,14 +52,14 @@
 	% test 11.  % complicated because of comparison of floats
 	test(dcgs_11) :-
 		tokenizer::tokens(" We owe $1,048,576.24 to Agent 007 for Version 3.14159! ", Tokens),
-		Tokens = [Tok1,Tok2, Tok3, Number| Rest],
+		Tokens = [Tok1, Tok2, Tok3, Number| Rest],
 		Number =~= 1048576.24,	% Wow the error is huge (>3)
-		Tok1 == we, Tok2 == owe, Tok3 == '$', Rest == [to,agent,7,for,version,3.14159,!].
+		Tok1 == we, Tok2 == owe, Tok3 == ('$'), Rest == [to,agent,7,for,version,3.14159,!].
 
 	test(dcgs_12) :-
 		findall(Ending, walker::walk([n(5), e(4), s(2), nw(8), s(5), se(1), n(4)], Ending), Endings),
-		Endings = [(A, B)], 
-		A =~= -0.94974746830583223, 
+		Endings = [(A, B)],
+		A =~= -0.94974746830583223,
 		B =~=  6.9497474683058318.
 
 	test(dcgs_13) :-

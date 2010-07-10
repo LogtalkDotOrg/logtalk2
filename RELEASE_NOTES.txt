@@ -30,6 +30,10 @@ RELEASE NOTES
     generated when loading the CLP(FD) library with the SWI-Prolog "iso" flag
     set to "true".
 
+    Updated the "dcgs" example unit tests to avoid a compilation error when
+    using SWI-Prolog 5.11.3 and later versions due to changes in this compiler
+    parser for stricter ISO Prolog syntax.
+
 
 2.40.1 - June 30, 2010
 
