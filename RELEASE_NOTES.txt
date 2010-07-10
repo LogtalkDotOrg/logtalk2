@@ -26,6 +26,10 @@ RELEASE NOTES
     version adds the epsilon/0 arithmetic constant that is used in the library
     unit test support.
 
+    Updated the "constraints/swipl/loader.lgt" helper file to avoid the errors
+    generated when loading the CLP(FD) library with the SWI-Prolog "iso" flag
+    set to "true".
+
 
 2.40.1 - June 30, 2010
 
