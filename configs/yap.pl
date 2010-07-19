@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: June 17, 2010
+%  last updated: July 19, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -640,6 +640,8 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
 '$lgt_rewrite_and_copy_pl_directive'(create_prolog_flag(Key, Value, Options), create_prolog_flag(Key, Value, Options)).
+'$lgt_rewrite_and_copy_pl_directive'(expects_dialect(Dialect), expects_dialect(Dialect)) :-
+	'$expects_dialect'(Dialect).
 '$lgt_rewrite_and_copy_pl_directive'(load_foreign_files(Files, Libs, InitRoutine), initialization(load_foreign_files(Files, Libs, InitRoutine))) :-
 	load_foreign_files(Files, Libs, InitRoutine).
 '$lgt_rewrite_and_copy_pl_directive'(table(PIs), table(CPIs)) :-

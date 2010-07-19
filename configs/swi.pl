@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: June 17, 2010
+%  last updated: July 19, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -574,6 +574,8 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
 '$lgt_rewrite_and_copy_pl_directive'(create_prolog_flag(Key, Value, Options), create_prolog_flag(Key, Value, Options)).
+'$lgt_rewrite_and_copy_pl_directive'(expects_dialect(Dialect), expects_dialect(Dialect)) :-
+	expects_dialect(Dialect).
 '$lgt_rewrite_and_copy_pl_directive'(format_predicate(Char, Head), format_predicate(Char, THead)) :-
 	'$lgt_tr_predicate_heads'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(license(License), license(License)).

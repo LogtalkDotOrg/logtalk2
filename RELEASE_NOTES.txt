@@ -26,6 +26,9 @@ RELEASE NOTES
     version adds the epsilon/0 arithmetic constant that is used in the library
     unit test support.
 
+    Updated the SWI-Prolog and YAP config files in order to support the
+    expects_dialect/1 proprietary directive.
+
     Updated the "constraints/swipl/loader.lgt" helper file to avoid the errors
     generated when loading the CLP(FD) library with the SWI-Prolog "iso" flag
     set to "true".
