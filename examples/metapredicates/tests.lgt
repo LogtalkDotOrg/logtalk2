@@ -1,18 +1,55 @@
 
+:- object(library).
+
+	:- public(my_call/1).
+	:- meta_predicate(my_call(0)).
+
+	my_call(Goal) :-
+		call(Goal).
+
+	a(library).
+
+:- end_object.
+
+
+
+:- object(client).
+
+	:- public(test1/1).
+
+	test1(L) :-
+		library::my_call(setof(E, a(E), L)).
+
+	:- public(test2/1).
+
+	test2(L) :-
+		library::my_call(setof(E, call(a, E), L)).
+
+	:- public(test3/1).
+
+	test3(L) :-
+		library::my_call(call(setof, E, call(a, E), L)).
+
+	a(1). a(2). a(3).
+
+:- end_object.
+
+
+
 :- object(tests,
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2010/03/16,
+		date is 2010/07/19,
 		comment is 'Unit tests for the "metapredicates" example.']).
 
 	% This example defines a plain Prolog predicate even_integer/1. As the
 	% definition is in the pseudo-object "user", moving the call to another object
 	% switches the calling context to that object, so even_integer/1 is no longer
 	% found.  To solve, copy the definition of even_integer/1 and sum_squares/3 are
-	% copied the testing object. from predicates.lgt.
+	% copied the testing object from "predicates.lgt".
 
 	% some simple predicates to use with library meta-predicates (e.g. fold_left/4
 	% and partition/4) compiled as plain Prolog code and thus defined in the "user"
@@ -60,15 +97,29 @@
 		meta::scan_left(sum_squares, 0, [1,2,3], Result),
 		Result == [0, 1, 5, 34].
 
-	test(metapredicates_3) :-
+	test(metapredicates_10) :-
 		meta::scan_right(predicates::sum, 5, [1,2,3,4], Result),
 		Result == [15, 14, 12, 9, 5].
 
-	test(metapredicates_10) :-
+	test(metapredicates_11) :-
 		meta::map(integer, [1,2,3,4,5]).
 
-	test(metapredicates_11) :-
+	test(metapredicates_12) :-
 		meta::map(char_code, [a,b,c,d,e], Codes),
 		Codes == [97, 98, 99, 100, 101].
+
+	% tests for calling meta-predicates with other meta-predicates as meta-arguments
+
+	test(metapredicates_13) :-
+		client::test1(L),
+		L == [1, 2, 3].
+
+	test(metapredicates_14) :-
+		client::test1(L),
+		L == [1, 2, 3].
+
+	test(metapredicates_15) :-
+		client::test1(L),
+		L == [1, 2, 3].
 
 :- end_object.
