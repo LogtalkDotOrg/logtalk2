@@ -1,0 +1,68 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.40.2
+
+Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+% start by loading the example:
+
+| ?- logtalk_load(coinduction(loader)).
+...
+
+
+% the following goal is true for any cyclic list containing only ones:
+
+| ?- L = [1| L], ones::p(L).
+L = [1|**] .
+
+
+% infinite streams example:
+
+| ?- streams::stream([0, s(0), s(s(0))| T]).
+T = [s(s(0))|**] .
+
+
+% list membership example:
+
+| ?- X = [0, s(0), s(s(0))| X], comember::comember(s(0), X).
+X = [0, s(0), s(s(0))|**] .
+
+
+% list append example:
+
+| ?- Y = [4,5,6| Y], lists::append([1,2,3], Y, Z).
+Y = [4, 5, 6|**],
+Z = [1, 2, 3, 4, 5, 6|**].
+
+| ?- X = [1,2,3| X], Y = [3,4| Y], lists::append(X, Y, Z).
+X = [1, 2, 3|**],
+Y = [3, 4|**],
+Z = [1, 2, 3|**] .
+
+| ?- Z = [1,2| Z], lists::append(X, Y, Z).
+Z = [1, 2|**],
+X = [],
+Y = [1, 2|**] ;
+Z = [1, 2|**],
+X = [1],
+Y = [2, 1|**] ;
+Z = [1, 2|**],
+X = [1, 2],
+Y = [1, 2|**] ;
+Z = [1, 2|**],
+X = [1, 2, 1],
+Y = [2, 1|**] ;
+Z = [1, 2|**],
+X = [1, 2, 1, 2],
+Y = [1, 2|**] ;
+Z = [1, 2|**],
+X = [1, 2, 1, 2, 1],
+Y = [2, 1|**] ;
+Z = [1, 2|**],
+X = [1, 2, 1, 2, 1, 2],
+Y = [1, 2|**] .

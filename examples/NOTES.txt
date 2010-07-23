@@ -94,6 +94,10 @@ classvars
 	example of implementation of class variables
 	(as found in Smalltalk; i.e. shared instance variables)
 
+coinduction
+	experimental support for using coinduction code in objects and
+	categories (requires SWI-Prolog 5.10.1 or a later version)
+
 complements
 	example of using a category to explicitly complement an existing 
 	object

@@ -1,0 +1,30 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.40.2
+
+Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+To load this example and for sample queries, please see the SCRIPT.txt file.
+
+This folder contains an experimental wrapper for the SWI-Prolog "coinduction"
+library. This wrapper supports using coinductive code in Logtalk objects when
+used as a hook object. Requires SWI-Prolog 5.10.1 or a later version.
+
+For more information see:
+
+@inproceedings{1778186,
+	author = {Gupta, Gopal and Bansal, Ajay and Min, Richard and Simon, Luke and Mallya, Ajay},
+	title = {Coinductive logic programming and its applications},
+	booktitle = {ICLP'07: Proceedings of the 23rd international conference on Logic programming},
+	year = {2007},
+	isbn = {3-540-74608-0, 978-3-540-74608-9},
+	pages = {27--44},
+	location = {Porto, Portugal},
+	publisher = {Springer-Verlag},
+	address = {Berlin, Heidelberg},
+}

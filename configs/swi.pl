@@ -109,7 +109,7 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 	'$lgt_pl_meta_predicate'(block(_, _, _), block(*, 0, *), predicate).
 :- endif.
 '$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(0, 0), predicate).
-'$lgt_pl_meta_predicate'(call_cleanup(_, _,_), call_cleanup(0, *, 0), predicate).
+'$lgt_pl_meta_predicate'(call_cleanup(_, _, _), call_cleanup(0, *, 0), predicate).
 '$lgt_pl_meta_predicate'(call_with_depth_limit(_, _, _), call_with_depth_limit(0, *, *), predicate).
 '$lgt_pl_meta_predicate'(dde_register_service(_, _), dde_register_service(*, 0), predicate).
 '$lgt_pl_meta_predicate'(findall(_, _, _, _), findall(*, 0, *, *), predicate).

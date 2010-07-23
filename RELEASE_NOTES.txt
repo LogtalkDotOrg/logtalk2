@@ -29,6 +29,10 @@ RELEASE NOTES
     Updated the SWI-Prolog and YAP config files in order to support the
     expects_dialect/1 proprietary directive.
 
+    Added an experimental example of coinduction when using SWI-Prolog as
+    the back-end Prolog compiler by leveraging this compiler "coinduction"
+    library (requires SWI-Prolog 5.10.1 or a later version).
+
     Updated the "constraints/swipl/loader.lgt" helper file to avoid the errors
     generated when loading the CLP(FD) library with the SWI-Prolog "iso" flag
     set to "true".
