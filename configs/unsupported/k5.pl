@@ -143,7 +143,6 @@ retractall(Head) :-
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
-'$lgt_prolog_feature'(multifile_directive, unsupported).
 '$lgt_prolog_feature'(tabling, unsupported).
 '$lgt_prolog_feature'(threads, unsupported).
 
