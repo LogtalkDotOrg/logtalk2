@@ -29,6 +29,9 @@ RELEASE NOTES
     Updated the SWI-Prolog and YAP config files in order to support the
     expects_dialect/1 proprietary directive.
 
+    Removed the definitions of the no longer necessary '$lgt_keysort'/2 and
+    '$lgt_sort'/2 internal predicates from the supported config files.
+
     Added an experimental example of coinduction when using SWI-Prolog as
     the back-end Prolog compiler by leveraging this compiler "coinduction"
     library (requires SWI-Prolog 5.10.1 or a later version).

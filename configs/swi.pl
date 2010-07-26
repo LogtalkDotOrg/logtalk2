@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: July 19, 2010
+%  last updated: July 26, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -391,26 +391,6 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 '$lgt_user_directory'(Directory) :-
 	getenv('LOGTALKUSER', Path),
 	prolog_to_os_filename(Directory, Path).
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  sorting predicates
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% '$lgt_keysort'(+list, -list)
-
-'$lgt_keysort'(List, Sorted) :-
-	keysort(List, Sorted).
-
-
-% '$lgt_sort'(+list, -list)
-
-'$lgt_sort'(List, Sorted) :-
-	sort(List, Sorted).
 
 
 

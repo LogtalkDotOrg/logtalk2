@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: July 19, 2010
+%  last updated: July 26, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -453,26 +453,6 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 
 '$lgt_user_directory'(Directory) :-
 	environ('LOGTALKUSER', Directory).
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  sorting predicates
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% '$lgt_keysort'(+list, -list)
-
-'$lgt_keysort'(List, Sorted) :-
-	keysort(List, Sorted).
-
-
-% '$lgt_sort'(+list, -list)
-
-'$lgt_sort'(List, Sorted) :-
-	sort(List, Sorted).
 
 
 

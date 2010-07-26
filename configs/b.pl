@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.4 and later versions
 %
-%  last updated: June 29, 2010
+%  last updated: July 26, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -362,26 +362,6 @@
 
 '$lgt_user_directory'(Directory) :-
 	environ('LOGTALKUSER', Directory).
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  sorting predicates
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% '$lgt_keysort'(+list, -list)
-
-'$lgt_keysort'(List, Sorted) :-
-	keysort(List, Sorted).
-
-
-% '$lgt_sort'(+list, -list)
-
-'$lgt_sort'(List, Sorted) :-
-	sort(List, Sorted).
 
 
 

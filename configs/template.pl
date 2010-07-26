@@ -359,29 +359,6 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  sorting predicates
-%
-%  note that sort/2 and keysort/2 are buitl-in predicates in most Prolog 
-%  compilers
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% '$lgt_keysort'(+list, -list)
-
-'$lgt_keysort'(List, Sorted) :-
-	?????
-
-
-% '$lgt_sort'(+list, -list)
-
-'$lgt_sort'(List, Sorted) :-
-	?????
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
 %  time and date predicates
 %
 %  if your Prolog compiler does not provide access to the operating system 

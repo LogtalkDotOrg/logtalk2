@@ -11,7 +11,7 @@
 %
 %  configuration file for GNU Prolog 1.4.0 (and later versions)
 %
-%  last updated: July 1, 2010
+%  last updated: July 26, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -339,26 +339,6 @@ setup_call_cleanup(_, _, _) :-
 
 '$lgt_user_directory'(Directory) :-
 	environ('LOGTALKUSER', Directory).
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  sorting predicates
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% '$lgt_keysort'(+list, -list)
-
-'$lgt_keysort'(List, Sorted) :-
-	keysort(List, Sorted).
-
-
-% '$lgt_sort'(+list, -list)
-
-'$lgt_sort'(List, Sorted) :-
-	sort(List, Sorted).
 
 
 

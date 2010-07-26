@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 3.8 and later versions
 %
-%  last updated: May 31, 2010
+%  last updated: July 26, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -396,26 +396,6 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_user_directory'(Directory) :-
 	environ('LOGTALKUSER', Directory).
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  sorting predicates
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% '$lgt_keysort'(+list, -list)
-
-'$lgt_keysort'(List, Sorted) :-
-	keysort(List, Sorted).
-
-
-% '$lgt_sort'(+list, -list)
-
-'$lgt_sort'(List, Sorted) :-
-	sort(List, Sorted).
 
 
 

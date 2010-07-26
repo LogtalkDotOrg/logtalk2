@@ -11,7 +11,7 @@
 %
 %  configuration file for CxProlog 0.97.5 or a later version
 %
-%  last updated: July 6, 2010
+%  last updated: July 26, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -364,29 +364,6 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 
 '$lgt_user_directory'(Directory) :-
 	os_env('LOGTALKUSER', Directory).
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  sorting predicates
-%
-%  note that sort/2 and keysort/2 are buitl-in predicates in most Prolog 
-%  compilers
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% '$lgt_keysort'(+list, -list)
-
-'$lgt_keysort'(List, Sorted) :-
-	keysort(List, Sorted).
-
-
-% '$lgt_sort'( +List, -Sorted )
-
-'$lgt_sort'(List, Sorted) :-
-	sort(List, Sorted).
 
 
 
