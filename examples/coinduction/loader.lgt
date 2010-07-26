@@ -8,7 +8,7 @@
 		logtalk_load(ones, [hook(coinduction)]),
 		logtalk_load(streams, [hook(coinduction)]),
 		logtalk_load(lists, [hook(coinduction)]),
-		logtalk_load(sieve, [hook(coinduction)])
+		logtalk_load(automata, [hook(coinduction)])
 	)).
 
 :- endif.
