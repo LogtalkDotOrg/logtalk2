@@ -53,13 +53,13 @@
 
 	:- public(in_stack/2).
 
-	in_stack(G, [R| _]) :-
-		copy_term_nat(G-R, GC-RC),
-		GC = RC.
-	in_stack(G, [_| T]) :-
-		in_stack(G, T).
-
 	:- if(current_logtalk_flag(prolog_dialect, eclipse)).
+
+		in_stack(G, [R| _]) :-
+			copy_term(G-R, GC-RC, _),
+			GC = RC.
+		in_stack(G, [_| T]) :-
+			in_stack(G, T).
 
 		%goal_expansion(getval(Name, Value), getval(Name, Value)).
 		%goal_expansion(setval(Name, Value), setval(Name, Value)).
@@ -67,15 +67,13 @@
 		initval(Name, Value) :-
 			{setval(Name, Value)}.
 
-	:- elif(current_logtalk_flag(prolog_dialect, swi)).
+	:- else.	% assume either SWI-Prolog or YAP
 
-		goal_expansion(getval(Name, Value), b_getval(Name, Value)).
-		goal_expansion(setval(Name, Value), b_setval(Name, Value)).
-
-		initval(Name, Value) :-
-			{nb_setval(Name, Value)}.
-
-	:- elif(current_logtalk_flag(prolog_dialect, yap)).
+		in_stack(G, [R| _]) :-
+			copy_term_nat(G-R, GC-RC),
+			GC = RC.
+		in_stack(G, [_| T]) :-
+			in_stack(G, T).
 
 		goal_expansion(getval(Name, Value), b_getval(Name, Value)).
 		goal_expansion(setval(Name, Value), b_setval(Name, Value)).

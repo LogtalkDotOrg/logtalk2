@@ -5,7 +5,7 @@
 		version is 0.1,
 		author is 'Gopal Gupta et al. Adapted to Logtalk by Paulo Moura.',
 		date is 2010/07/23,
-		comment is 'Coinduction automata example.']).
+		comment is 'Coinduction omega-automaton example.']).
 
 	:- public(automata/2).
 	:- coinductive(automata/2).
