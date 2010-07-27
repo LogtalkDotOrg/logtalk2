@@ -7,17 +7,25 @@
 		date is 2010/07/23,
 		comment is 'Coinduction infinite streams example.']).
 
-	% A stream of numbers.
-	:- public(stream/1).
-	:- coinductive(stream/1).
+	:- public(nat_stream/1).
+	:- coinductive(nat_stream/1).
 
-	stream([H| T]) :-
-		num(H),
-		stream(T).
+	nat_stream([H| T]) :-
+		nat(H),
+		nat_stream(T).
 
-	% A number.
-	num(0).
-	num(s(N)) :-
-		num(N).
+	nat(0).
+	nat(s(N)) :-
+		nat(N).
+
+	:- public(bit_stream/1).
+	:- coinductive(bit_stream/1).
+
+	bit_stream([H| T]) :-
+		bit(H),
+		bit_stream(T).
+
+	bit(0).
+	bit(1).
 
 :- end_object.

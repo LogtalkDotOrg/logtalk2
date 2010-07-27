@@ -11,9 +11,10 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 To load this example and for sample queries, please see the SCRIPT.txt file.
 
-This folder contains an experimental wrapper for the SWI-Prolog "coinduction"
-library. This wrapper supports using coinductive code in Logtalk objects when
-used as a hook object. Requires SWI-Prolog 5.10.1 or a later version.
+This folder contains an experimental adaptation of Ajay Bansal implementation
+of coinduction for YAP and an experimental wrapper for the SWI-Prolog "coinduction"
+library (this wrapper supports using coinductive code in Logtalk objects when
+used as a hook object; requires SWI-Prolog 5.10.1 or a later version).
 
 For more information see:
 

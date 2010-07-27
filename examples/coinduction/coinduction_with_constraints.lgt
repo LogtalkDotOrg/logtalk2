@@ -1,5 +1,5 @@
 
-:- object(coinduction,
+:- object(coinduction_with_constraints,
 	implements(expanding)).
 
 	:- info([
@@ -28,7 +28,7 @@
 
 	term_expansion(H, NH) :-
 		inductive(H, _F, _N, NH), !.
-		
+
 	coinductive(F/N, Clauses) :-
 		this(This),
 		functor(S, F, N),
@@ -53,8 +53,10 @@
 
 	:- public(in_stack/2).
 
-	in_stack(G, [G| _]).
-	in_stack(G, [_| T]) :- %writeq(G), nl, writeq(T), nl, get_code(_),
+	in_stack(G, [R| _]) :-
+		copy_term_nat(G-R, GC-RC),
+		GC = RC.
+	in_stack(G, [_| T]) :-
 		in_stack(G, T).
 
 	:- if(current_logtalk_flag(prolog_dialect, eclipse)).

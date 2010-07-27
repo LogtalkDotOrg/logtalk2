@@ -6859,6 +6859,17 @@ current_logtalk_flag(version, version(2, 40, 2)).
 	assertz('$lgt_pp_entity_compiler_flag_'(Flag, Value)).
 
 
+% set_prolog_flag/2 entity directive
+
+'$lgt_tr_directive'(set_prolog_flag, [Flag, Value], _) :-
+	% we must be compiling a module as an object
+	'$lgt_pp_module_'(_),
+	current_prolog_flag(Flag, Current),
+    set_prolog_flag(Flag, Value),
+	assertz('$lgt_pp_eclause_'((:- set_prolog_flag(Flag, Value)))),
+    assertz('$lgt_pp_file_init_'(set_prolog_flag(Flag, Current))).
+
+
 % create a message queue at object initialization
 
 '$lgt_tr_directive'(threaded, [], _) :-
@@ -13981,6 +13992,8 @@ current_logtalk_flag(version, version(2, 40, 2)).
 '$lgt_lgt_entity_directive'(threaded, 0).
 
 '$lgt_lgt_entity_directive'(set_logtalk_flag, 2).
+
+'$lgt_lgt_entity_directive'(set_prolog_flag, 2).
 
 
 '$lgt_lgt_predicate_directive'(synchronized, N) :-
