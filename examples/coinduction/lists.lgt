@@ -37,6 +37,7 @@
 	% Drop some prefix of arg2 upto an "occurrence" of arg1 from arg2,
 	% yielding arg3.
 	% ("Occurrence" of X = something unifiable with X.)
+	%:- table(drop/3).	% not working; needs tabling supporting cyclic terms!
 	drop(H, [H| T], T).
 	drop(H, [_| T], T1) :-
 		drop(H, T, T1).

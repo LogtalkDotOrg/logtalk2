@@ -78,7 +78,7 @@ X = [a, b, e|**] .
 
 % module 4 counter example:
 
-| ?- counter::verify.
+| ?- counter::verify.	% not working; needs tabling supporting cyclic terms!
 true .
 
 
