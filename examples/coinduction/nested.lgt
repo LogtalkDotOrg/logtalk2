@@ -5,7 +5,7 @@
 		version is 0.1,
 		author is 'Gopal Gupta et al. Adapted to Logtalk by Paulo Moura.',
 		date is 2010/07/23,
-		comment is 'Nested automata example.']).
+		comment is 'Nested automaton example.']).
 
 	:- public(state/2).
 	:- coinductive(state/2).

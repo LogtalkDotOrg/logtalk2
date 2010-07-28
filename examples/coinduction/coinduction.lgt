@@ -11,23 +11,14 @@
 	:- private(coinductive/4).
 	:- dynamic(coinductive/4).
 
-	:- private(inductive/4).
-	:- dynamic(inductive/4).
-
 	term_expansion((:- coinductive(Spec)), Clauses) :-
 		coinductive(Spec, Clauses).
 
 	term_expansion((H:-B), (NH:-B)) :-
 		coinductive(H, _F, _N, NH), !.
 
-	term_expansion((H:-B), (NH:-B)) :-
-		inductive(H, _F, _N, NH), !.
-
 	term_expansion(H, NH) :-
 		coinductive(H, _F, _N, NH), !.
-
-	term_expansion(H, NH) :-
-		inductive(H, _F, _N, NH), !.
 		
 	coinductive(F/N, Clauses) :-
 		this(This),
@@ -54,7 +45,7 @@
 	:- public(in_stack/2).
 
 	in_stack(G, [G| _]).
-	in_stack(G, [_| T]) :- %writeq(G), nl, writeq(T), nl, get_code(_),
+	in_stack(G, [_| T]) :-
 		in_stack(G, T).
 
 	:- if(current_logtalk_flag(prolog_dialect, eclipse)).
@@ -65,15 +56,7 @@
 		initval(Name, Value) :-
 			{setval(Name, Value)}.
 
-	:- elif(current_logtalk_flag(prolog_dialect, swi)).
-
-		goal_expansion(getval(Name, Value), b_getval(Name, Value)).
-		goal_expansion(setval(Name, Value), b_setval(Name, Value)).
-
-		initval(Name, Value) :-
-			{nb_setval(Name, Value)}.
-
-	:- elif(current_logtalk_flag(prolog_dialect, yap)).
+	:- else.	% assume either SWI-Prolog or YAP
 
 		goal_expansion(getval(Name, Value), b_getval(Name, Value)).
 		goal_expansion(setval(Name, Value), b_setval(Name, Value)).

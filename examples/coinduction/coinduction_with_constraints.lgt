@@ -11,23 +11,14 @@
 	:- private(coinductive/4).
 	:- dynamic(coinductive/4).
 
-	:- private(inductive/4).
-	:- dynamic(inductive/4).
-
 	term_expansion((:- coinductive(Spec)), Clauses) :-
 		coinductive(Spec, Clauses).
 
 	term_expansion((H:-B), (NH:-B)) :-
 		coinductive(H, _F, _N, NH), !.
 
-	term_expansion((H:-B), (NH:-B)) :-
-		inductive(H, _F, _N, NH), !.
-
 	term_expansion(H, NH) :-
 		coinductive(H, _F, _N, NH), !.
-
-	term_expansion(H, NH) :-
-		inductive(H, _F, _N, NH), !.
 
 	coinductive(F/N, Clauses) :-
 		this(This),
@@ -55,9 +46,7 @@
 
 	:- if(current_logtalk_flag(prolog_dialect, eclipse)).
 
-		in_stack(G, [R| _]) :-
-			copy_term(G-R, GC-RC, _),
-			GC = RC.
+		in_stack(G, [G| _]).
 		in_stack(G, [_| T]) :-
 			in_stack(G, T).
 
