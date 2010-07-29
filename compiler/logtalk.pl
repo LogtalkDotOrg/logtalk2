@@ -1902,6 +1902,48 @@ logtalk_load(Files, Flags) :-
 
 
 
+% logtalk_load_context(?atom, ?nonvar)
+%
+% provides access to the compilation/loading context
+
+logtalk_load_context(file, File) :-
+	'$lgt_pp_file_path_'(File, _).
+
+logtalk_load_context(directory, Directory) :-
+	'$lgt_pp_file_path_'(_, Directory).
+
+logtalk_load_context(entity_name, Entity) :-
+	(	'$lgt_pp_object_'(Entity, _, _, _, _, _, _, _, _, _, _) ->
+		true
+	;	'$lgt_pp_protocol_'(Entity, _, _, _, _) ->
+		true
+	;	'$lgt_pp_category_'(Entity, _, _, _, _, _) ->
+		true
+	).
+
+logtalk_load_context(entity_prefix, Prefix) :-
+	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
+		true
+	;	'$lgt_pp_protocol_'(_, Prefix, _, _, _) ->
+		true
+	;	'$lgt_pp_category_'(_, Prefix, _, _, _, _) ->
+		true
+	).
+
+logtalk_load_context(entity_type, Type) :-
+	(	'$lgt_pp_module_'(_) ->
+		Type = module
+	;	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _) ->
+		Type = object
+	;	'$lgt_pp_protocol_'(_, _, _, _, _) ->
+		Type = protocol
+	;	'$lgt_pp_category_'(_, _, _, _, _, _) ->
+		Type = category
+	).
+
+
+
+
 % set_logtalk_flag(+atom, +nonvar)
 %
 % sets a Logtalk flag
@@ -14685,6 +14727,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 '$lgt_lgt_built_in'(logtalk_compile(_, _)).
 '$lgt_lgt_built_in'(logtalk_load(_)).
 '$lgt_lgt_built_in'(logtalk_load(_, _)).
+'$lgt_lgt_built_in'(logtalk_load_context(_, _)).
 
 '$lgt_lgt_built_in'(protocol_property(_, _)).
 '$lgt_lgt_built_in'(category_property(_, _)).
