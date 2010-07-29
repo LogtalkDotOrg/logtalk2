@@ -18,13 +18,38 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 % an elementary coinduction predicate:
 
 | ?- simple::p.
-true .
+true ;
+false.
+
+% 
+
+| ?- simple::p(hoho).
+true ;
+false.
 
 
 % the following goal is true for any cyclic list containing only ones:
 
-| ?- L = [1| L], ones::p(L).
+| ?- L = [1| L], binary::p(L).
 L = [1|**] .
+
+% ... or zeros:
+
+| ?- L = [0| L], binary::p(L).
+L = [0|**] .
+
+% or a repetition of a pattern of ones and zeros:
+
+| ?- L = [1,0,1| L], binary::p(L).
+L = [1, 0, 1|**] ;
+false.
+
+% but not all solutions can be returned:
+
+| ?- binary::p(X).
+X = [0|**] ;
+X = [1|**] ;
+false.
 
 
 % infinite streams example:

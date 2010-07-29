@@ -10,7 +10,15 @@
 	:- public(p/0).
 	:- coinductive(p/0).
 
-	p :-
-		p.
+	p :- p.
+
+	:- public(p/1).
+	:- coinductive(p/1).
+
+	p(X) :- q(X).
+
+	q(X) :- r(X).
+
+	r(X) :- p(X).
 
 :- end_object.
