@@ -57,6 +57,16 @@
 		goal_expansion(getval(Name, Value), global_heap_get(Name, Value)).
 		goal_expansion(setval(Name, Value), global_heap_set(Name, Value)).
 
+	:- elif(current_logtalk_flag(prolog_dialect, cx)).
+
+		in_stack(G, [G| _]).
+		in_stack(G, [_| T]) :-
+			in_stack(G, T).
+
+		goal_expansion(initval(Name, Value), ':='(Name, Value)).
+		goal_expansion(getval(Name, Value), '=:'(Name, Value)).
+		goal_expansion(setval(Name, Value), '&:='(Name, Value)).
+
 	:- elif(current_logtalk_flag(prolog_dialect, eclipse)).
 
 		in_stack(G, [G| _]).

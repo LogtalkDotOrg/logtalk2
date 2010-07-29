@@ -57,6 +57,12 @@
 		goal_expansion(getval(Name, Value), global_heap_get(Name, Value)).
 		goal_expansion(setval(Name, Value), global_heap_set(Name, Value)).
 
+	:- elif(current_logtalk_flag(prolog_dialect, cx)).
+
+		goal_expansion(initval(Name, Value), ':='(Name, Value)).
+		goal_expansion(getval(Name, Value), '=:'(Name, Value)).
+		goal_expansion(setval(Name, Value), '&:='(Name, Value)).
+
 	:- elif(current_logtalk_flag(prolog_dialect, eclipse)).
 
 		goal_expansion(initval(Name, Value), local(reference(Name, Value))).

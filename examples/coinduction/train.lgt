@@ -117,6 +117,10 @@
 
 	:- end_object.
 
+:- elif(current_logtalk_flag(prolog_dialect, cx)).
+
+	% CxProlog doesn't support constraints
+
 :- else.	% assume either SWI-Prolog or YAP
 
 	:- use_module(library(clpr), []).
