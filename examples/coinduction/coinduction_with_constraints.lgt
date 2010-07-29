@@ -26,12 +26,15 @@
 		atom_concat(coinductive_, F, NF),
 		functor(NS, NF, N),
 		match_args(N, S, NS),
-		atom_concat(stack_, F, SFn),
+		logtalk_load_context(entity_prefix, Prefix),
+		atom_concat(Prefix, stack_, SPrefix),
+		atom_concat(SPrefix, F, SFn),
 		number_chars(N, NChars),
 		atom_chars(NAtom, NChars),
 		atom_concat(SFn, NAtom, SF),
-		initval(SF, []),
-		Clauses = [(S :- getval(SF,L), (This::in_stack(S,L); \+ This::in_stack(S,L), setval(SF,[S|L]), NS))],
+		Clauses = [
+			(:- initialization(initval(SF, []))),
+			(S :- getval(SF,L), (This::in_stack(S,L); \+ This::in_stack(S,L), setval(SF,[S|L]), NS))],
 		assertz(coinductive(S,F,N,NS)).
 
 	match_args(0, _, _) :-
@@ -44,17 +47,35 @@
 
 	:- public(in_stack/2).
 
-	:- if(current_logtalk_flag(prolog_dialect, eclipse)).
+	:- if(current_logtalk_flag(prolog_dialect, b)).
 
 		in_stack(G, [G| _]).
 		in_stack(G, [_| T]) :-
 			in_stack(G, T).
 
+		goal_expansion(initval(Name, Value), global_set(Name, Value)).
+		goal_expansion(getval(Name, Value), global_heap_get(Name, Value)).
+		goal_expansion(setval(Name, Value), global_heap_set(Name, Value)).
+
+	:- elif(current_logtalk_flag(prolog_dialect, eclipse)).
+
+		in_stack(G, [G| _]).
+		in_stack(G, [_| T]) :-
+			in_stack(G, T).
+
+		goal_expansion(initval(Name, Value), local(reference(Name, Value))).
 		%goal_expansion(getval(Name, Value), getval(Name, Value)).
 		%goal_expansion(setval(Name, Value), setval(Name, Value)).
 
-		initval(Name, Value) :-
-			{setval(Name, Value)}.
+	:- elif(current_logtalk_flag(prolog_dialect, gnu)).
+
+		in_stack(G, [G| _]).
+		in_stack(G, [_| T]) :-
+			in_stack(G, T).
+
+		goal_expansion(initval(Name, Value), g_assign(Name, Value)).
+		goal_expansion(getval(Name, Value), g_read(Name, Value)).
+		goal_expansion(setval(Name, Value), g_assignb(Name, Value)).
 
 	:- else.	% assume either SWI-Prolog or YAP
 
@@ -64,11 +85,9 @@
 		in_stack(G, [_| T]) :-
 			in_stack(G, T).
 
+		goal_expansion(initval(Name, Value), nb_setval(Name, Value)).
 		goal_expansion(getval(Name, Value), b_getval(Name, Value)).
 		goal_expansion(setval(Name, Value), b_setval(Name, Value)).
-
-		initval(Name, Value) :-
-			{nb_setval(Name, Value)}.
 
 	:- endif.
 

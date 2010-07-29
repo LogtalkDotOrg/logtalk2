@@ -41,7 +41,7 @@ X = [0, 1, 1, 0|**] .
 
 % list membership example:
 
-| ?- X = [0, s(0), s(s(0))| X], comember::comember(s(0), X).
+| ?- X = [0, s(0), s(s(0))| X], lists::comember(s(0), X).
 T = [s(s(0))|**] ;
 T = [s(0), s(s(0))|**] ;
 T = [0, s(0), s(s(0))|**] .
@@ -77,8 +77,9 @@ X = [a, b, e|**] .
 
 
 % module 4 counter example:
+% (not working; needs a tabling implementation supporting cyclic terms!)
 
-| ?- counter::verify.	% not working; needs tabling supporting cyclic terms!
+| ?- counter::verify.
 true .
 
 
