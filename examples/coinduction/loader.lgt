@@ -13,6 +13,7 @@
 		logtalk_load(automata, [hook(coinduction)]),
 		logtalk_load(counter, [hook(coinduction)]),
 		logtalk_load(nested, [hook(coinduction)]),
+		logtalk_load(pta, [hook(coinduction_with_constraints)]),
 		logtalk_load(train, [hook(coinduction_with_constraints)])
 	)).
 
