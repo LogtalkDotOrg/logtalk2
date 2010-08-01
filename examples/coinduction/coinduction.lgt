@@ -3,7 +3,7 @@
 	implements(expanding)).
 
 	:- info([
-		version is 0.1,
+		version is 0.2,
 		author is 'Ajay Bansal. Adapted to Logtalk by Paulo Moura.',
 		date is 2010/07/26,
 		comment is 'Supports coinductive code in Logtalk objects when used as a hook object.']).
@@ -13,6 +13,9 @@
 
 	term_expansion((:- coinductive(Spec)), Clauses) :-
 		coinductive(Spec, Clauses).
+
+	term_expansion((:- coinductive1(Spec)), Clauses) :-
+		coinductive1(Spec, Clauses).
 
 	term_expansion((H:-B), (NH:-B)) :-
 		coinductive(H, _F, _N, NH), !.
@@ -33,8 +36,25 @@
 		atom_chars(NAtom, NChars),
 		atom_concat(SFn, NAtom, SF),
 		Clauses = [
-			(:- initialization(initval(SF, []))),
-			(S :- getval(SF,L), (This::in_stack(S,L); \+ This::in_stack(S,L), setval(SF,[S|L]), NS))],
+			(:- initialization(init_stack(SF, []))),
+			(S :- get_stack(SF,L), (This::in_stack(S,L); set_stack(SF,[S|L]), NS))],
+		assertz(coinductive(S,F,N,NS)).
+
+	coinductive1(F/N, Clauses) :-
+		this(This),
+		functor(S, F, N),
+		atom_concat(coinductive_, F, NF),
+		functor(NS, NF, N),
+		match_args(N, S, NS),
+		logtalk_load_context(entity_prefix, Prefix),
+		atom_concat(Prefix, stack_, SPrefix),
+		atom_concat(SPrefix, F, SFn),
+		number_chars(N, NChars),
+		atom_chars(NAtom, NChars),
+		atom_concat(SFn, NAtom, SF),
+		Clauses = [
+			(:- initialization(init_stack(SF, []))),
+			(S :- get_stack(SF,L), (This::in_stack(S,L); \+ This::in_stack(S,L), set_stack(SF,[S|L]), NS))],
 		assertz(coinductive(S,F,N,NS)).
 
 	match_args(0, _, _) :-
@@ -53,33 +73,37 @@
 
 	:- if(current_logtalk_flag(prolog_dialect, b)).
 
-		goal_expansion(initval(Name, Value), global_set(Name, Value)).
-		goal_expansion(getval(Name, Value), global_heap_get(Name, Value)).
-		goal_expansion(setval(Name, Value), global_heap_set(Name, Value)).
+		goal_expansion(init_stack(Name, Value), global_set(Name, Value)).
+		goal_expansion(get_stack(Name, Value), global_heap_get(Name, Value)).
+		goal_expansion(set_stack(Name, Value), global_heap_set(Name, Value)).
 
 	:- elif(current_logtalk_flag(prolog_dialect, cx)).
 
-		goal_expansion(initval(Name, Value), ':='(Name, Value)).
-		goal_expansion(getval(Name, Value), '=:'(Name, Value)).
-		goal_expansion(setval(Name, Value), '&:='(Name, Value)).
+		goal_expansion(init_stack(Name, Value), ':='(Name, Value)).
+		goal_expansion(get_stack(Name, Value), '=:'(Name, Value)).
+		goal_expansion(set_stack(Name, Value), '&:='(Name, Value)).
 
 	:- elif(current_logtalk_flag(prolog_dialect, eclipse)).
 
-		goal_expansion(initval(Name, Value), local(reference(Name, Value))).
-		%goal_expansion(getval(Name, Value), getval(Name, Value)).
-		%goal_expansion(setval(Name, Value), setval(Name, Value)).
+		goal_expansion(init_stack(Name, Value), local(reference(Name, Value))).
+		goal_expansion(get_stack(Name, Value), getval(Name, Value)).
+		goal_expansion(set_stack(Name, Value), setval(Name, Value)).
 
 	:- elif(current_logtalk_flag(prolog_dialect, gnu)).
 
-		goal_expansion(initval(Name, Value), g_assign(Name, Value)).
-		goal_expansion(getval(Name, Value), g_read(Name, Value)).
-		goal_expansion(setval(Name, Value), g_assignb(Name, Value)).
+		goal_expansion(init_stack(Name, Value), g_assign(Name, Value)).
+		goal_expansion(get_stack(Name, Value), g_read(Name, Value)).
+		goal_expansion(set_stack(Name, Value), g_assignb(Name, Value)).
 
-	:- else.	% assume either SWI-Prolog or YAP
+	:- elif((current_logtalk_flag(prolog_dialect, swi); current_logtalk_flag(prolog_dialect, yap))).
 
-		goal_expansion(initval(Name, Value), nb_setval(Name, Value)).
-		goal_expansion(getval(Name, Value), b_getval(Name, Value)).
-		goal_expansion(setval(Name, Value), b_setval(Name, Value)).
+		goal_expansion(init_stack(Name, Value), nb_setval(Name, Value)).
+		goal_expansion(get_stack(Name, Value), b_getval(Name, Value)).
+		goal_expansion(set_stack(Name, Value), b_setval(Name, Value)).
+
+	:- else.
+
+		:- initialization((write('ERROR: coinduction not supported!'), nl)).
 
 	:- endif.
 

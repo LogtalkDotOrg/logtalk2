@@ -8,7 +8,7 @@
 		comment is 'Coinduction infinite streams example.']).
 
 	:- public(nat_stream/1).
-	:- coinductive(nat_stream/1).
+	:- coinductive1(nat_stream/1).
 
 	nat_stream([H| T]) :-
 		nat(H),
@@ -19,7 +19,7 @@
 		nat(N).
 
 	:- public(bit_stream/1).
-	:- coinductive(bit_stream/1).
+	:- coinductive1(bit_stream/1).
 
 	bit_stream([H| T]) :-
 		bit(H),

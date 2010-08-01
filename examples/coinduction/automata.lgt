@@ -8,7 +8,7 @@
 		comment is 'Coinduction omega-automaton example.']).
 
 	:- public(automata/2).
-	:- coinductive(automata/2).
+	:- coinductive1(automata/2).
 
 	automata([X| T], St) :-
 		trans(St, X, NewSt),

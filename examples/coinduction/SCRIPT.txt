@@ -21,7 +21,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 true ;
 false.
 
-% 
+% similar:
 
 | ?- simple::p(hoho).
 true ;
@@ -59,12 +59,14 @@ T = [s(s(0))|**] ;
 T = [s(0), s(s(0))|**] ;
 T = [0, s(0), s(s(0))|**] .
 
-
 |?- X = [0, 1, 1, 0| X], streams::bit_stream(X).
 X = [0, 1, 1, 0|**] .
 
 
 % list membership example:
+
+| ?- X = [0, s(0), s(s(0))], lists::comember(s(0), X).
+false.
 
 | ?- X = [0, s(0), s(s(0))| X], lists::comember(s(0), X).
 T = [s(s(0))|**] ;
@@ -116,10 +118,9 @@ true .
 % timed automata example:
 
 | ?- train::driver(s0, s0, s0, T, Ta, Tb, Tc, X, R).
-
-X = [approach, lower, down, in, out, exit, raise, up|_G25699],
-R = [ (approach, T), (lower, _G25717), (down, _G25723), (in, _G25729), (out, _G25735), (exit, _G25741), (raise, _G25747), (up, _G25753)|_G25750],
-{_G25763>0.0, _G25772=... - ... + _G25788+_G25785+_G25782+_G25779+_G25763, _G25802=... + ... - _G25791+_G25788+_G25785+_G25782, _G25779>1.0, _G25779<2.0, _G25753=... + ... + _G25779, _G25871=... + ..., ... > ..., ..., ...} ;
 X = [approach, lower, down, in, out, exit, raise, approach, up|...],
-R = [ (approach, T), (lower, _G15069), (down, _G15075), (in, _G15081), (out, _G15087), (exit, _G15093), (raise, _G15099), (approach, _G15105), (..., ...)|...] ;
+R = [ (approach, T), (lower, _G7491), (down, _G7497), (in, _G7503), (out, _G7509), (exit, _G7515), (raise, _G7521), (approach, _G7527), (..., ...)|...] ;
+X = [approach, lower, down, in, out, exit, raise, up|_G26549],
+R = [ (approach, T), (lower, _G26567), (down, _G26573), (in, _G26579), (out, _G26585), (exit, _G26591), (raise, _G26597), (up, _G26603)|_G26600],
+{_G26613>0.0, _G26622=... - ... + _G26638+_G26635+_G26632+_G26629+_G26613, _G26652=... + ... - _G26641+_G26638+_G26635+_G26632, _G26629>1.0, _G26629<2.0, _G26603=... + ... + _G26629, _G26721=... + ..., ... > ..., ..., ...} ;
 false.

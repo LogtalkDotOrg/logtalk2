@@ -8,7 +8,7 @@
 		comment is 'Coinduction list membership example.']).
 
 	:- public(append/3).
-	:- coinductive(append/3).
+	:- coinductive1(append/3).
 
 	append([], X, X).
 	append([H| T], Y, [H| Z]) :-
@@ -28,7 +28,7 @@
 
 	% Are there infinitely many "occurrences" of arg1 in arg2?
 	:- public(comember/2).
-	:- coinductive(comember/2).
+	:- coinductive1(comember/2).
 
 	comember(X, L) :-
 		drop(X, L, L1),
