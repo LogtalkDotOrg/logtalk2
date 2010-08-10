@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	June 23, 2010
+" Last Change:	August 10, 2010
 
 
 " Quit when a syntax file was already loaded:
@@ -131,7 +131,7 @@ syn match	logtalkBuiltIn		"\<current_event\ze("
 
 syn match	logtalkBuiltIn		"\<\(curren\|se\)t_logtalk_flag\ze("
 
-syn match	logtalkBuiltIn		"\<logtalk_\(compile\|l\(ibrary_path\|oad\)\)\ze("
+syn match	logtalkBuiltIn		"\<logtalk_\(compile\|l\(ibrary_path\|oad\|oad_context\)\)\ze("
 
 syn match	logtalkBuiltIn		"\<\(for\|retract\)all\ze("
 

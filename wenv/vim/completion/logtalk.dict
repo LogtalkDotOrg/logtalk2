@@ -61,6 +61,7 @@ define_events
 logtalk_load
 logtalk_compile
 logtalk_library_path
+logtalk_load_context
 current_logtalk_flag
 set_logtalk_flag
 threaded_call

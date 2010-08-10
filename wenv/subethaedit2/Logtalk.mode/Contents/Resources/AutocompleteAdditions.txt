@@ -157,6 +157,8 @@ logtalk_compile(, [])
 logtalk_compile()
 logtalk_load(, [])
 logtalk_load()
+logtalk_library_path(, )
+logtalk_load_context(, )
 
 current_input()
 current_output()

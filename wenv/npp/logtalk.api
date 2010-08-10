@@ -99,6 +99,7 @@ log
 logtalk_compile
 logtalk_library_path
 logtalk_load
+logtalk_load_context
 meta_predicate
 mod
 mode
