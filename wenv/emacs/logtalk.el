@@ -1,11 +1,11 @@
 ;; logtalk.el -- font lock support for Logtalk (http://logtalk.org/)
 
-;; Copyright (C) 2003-2008 Paulo Moura
+;; Copyright (C) 2003-2010 Paulo Moura
 
 ;; Author: Paulo Moura <pmoura@logtalk.org>
 ;; Creation date: November 15, 2003
-;; Last modification date: June 23, 2010
-;; Version: 1.12
+;; Last modification date: August 10, 2010
+;; Version: 1.13
 
 ;; Installation:
 ;;
@@ -26,7 +26,7 @@
 
 ;; setup 
 
-(defvar logtalk-mode-version "1.12"
+(defvar logtalk-mode-version "1.13"
 	"Logtalk mode version number")
 
 (defvar logtalk-mode-hook nil)
@@ -124,7 +124,7 @@
 		("\\<\\(complements_object\\|extends_\\(?:object\\|protocol\\|category\\)\\|i\\(?:mp\\(?:lements_protocol\\|orts_category\\)\\|nstantiates_class\\)\\|specializes_class\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("\\<\\(\\(?:abolish\\|define\\)_events\\|current_event\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("\\<\\(\\(?:curren\\|se\\)t_logtalk_flag\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
-		("\\<\\(logtalk_\\(?:compile\\|load\\|version\\|library_path\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(logtalk_\\(?:compile\\|load\\|library_path\\)\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("\\<\\(forall\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("\\<\\(retractall\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		;;
