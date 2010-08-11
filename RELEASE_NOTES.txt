@@ -38,9 +38,8 @@ RELEASE NOTES
     Removed the definitions of the no longer necessary '$lgt_keysort'/2 and
     '$lgt_sort'/2 internal predicates from the supported config files.
 
-    Added an experimental example of coinduction when using SWI-Prolog as
-    the back-end Prolog compiler by leveraging this compiler "coinduction"
-    library (requires SWI-Prolog 5.10.1 or a later version).
+    Added an experimental example of coinduction when using ECLiPSe, YAP, or
+    SWI-Prolog as the back-end Prolog compiler.
 
     Updated the "constraints/swipl/loader.lgt" helper file to avoid the errors
     generated when loading the CLP(FD) library with the SWI-Prolog "iso" flag

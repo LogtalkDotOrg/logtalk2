@@ -15,7 +15,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ...
 
 
-% an elementary coinduction predicate:
+% an elementary coinductive predicate:
 
 | ?- simple::p.
 true ;
@@ -104,7 +104,7 @@ X = [a, b, e|**] .
 
 
 % module 4 counter example:
-% (not working; needs a tabling implementation supporting cyclic terms!)
+% (not working; needs a Prolog tabling implementation supporting cyclic terms!)
 
 | ?- counter::verify.
 true .
@@ -117,10 +117,10 @@ true .
 
 % timed automata example:
 
-| ?- train::driver(s0, s0, s0, T, Ta, Tb, Tc, X, R).
+| ?- train::driver(s0, s0, s0, X, R).
 X = [approach, lower, down, in, out, exit, raise, approach, up|...],
-R = [ (approach, T), (lower, _G7491), (down, _G7497), (in, _G7503), (out, _G7509), (exit, _G7515), (raise, _G7521), (approach, _G7527), (..., ...)|...] ;
-X = [approach, lower, down, in, out, exit, raise, up|_G26549],
-R = [ (approach, T), (lower, _G26567), (down, _G26573), (in, _G26579), (out, _G26585), (exit, _G26591), (raise, _G26597), (up, _G26603)|_G26600],
-{_G26613>0.0, _G26622=... - ... + _G26638+_G26635+_G26632+_G26629+_G26613, _G26652=... + ... - _G26641+_G26638+_G26635+_G26632, _G26629>1.0, _G26629<2.0, _G26603=... + ... + _G26629, _G26721=... + ..., ... > ..., ..., ...} ;
+R = [ (approach, 0), (lower, 1.0), (down, _G7790), (in, _G7796), (out, _G7802), (exit, _G7808), (raise, _G7814), (approach, _G7820), (..., ...)|...] ;
+X = [approach, lower, down, in, out, exit, raise, up|**],
+R = [ (approach, 0), (lower, 1.0), (down, _G7678), (in, _G7684), (out, _G7690), (exit, _G7696), (raise, _G7702), (up, _G7708)|**],
+{_G7718>0.0, _G7727=_G7684+_G7743+_G7740+_G7737+_G7734+_G7718, _G7748=_G7684+_G7743+_G7740+_G7737, _G7734>1.0, _G7734<2.0, _G7708=... + ... + _G7734, _G7799=... + ..., ... > ..., ..., ...} ;
 false.

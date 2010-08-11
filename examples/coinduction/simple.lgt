@@ -8,12 +8,12 @@
 		comment is 'Elementary coinduction predicate example.']).
 
 	:- public(p/0).
-	:- coinductive(p/0).
+	:- coinductive1(p/0).
 
 	p :- p.
 
 	:- public(p/1).
-	:- coinductive(p/1).
+	:- coinductive1(p/1).
 
 	p(X) :- q(X).
 
