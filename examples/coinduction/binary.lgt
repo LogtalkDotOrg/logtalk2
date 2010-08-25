@@ -8,7 +8,7 @@
 		comment is 'Coinduction example.']).
 
 	:- public(p/1).
-	:- coinductive1(p/1).
+	:- coinductive(p/1).
 
 	p([0| T]) :- p(T).
 	p([1| T]) :- p(T).

@@ -3,26 +3,29 @@
 	implements(expanding)).
 
 	:- info([
-		version is 0.3,
+		version is 0.4,
 		author is 'Ajay Bansal and Vitor Santos Costa. Adapted to Logtalk by Paulo Moura.',
 		date is 2010/07/26,
 		comment is 'Supports coinductive code in Logtalk objects when used as a hook object.']).
 
-	:- private(coinductive/4).
-	:- dynamic(coinductive/4).
+	:- private(coinductive/5).
+	:- dynamic(coinductive/5).
 
 	term_expansion((:- coinductive(Spec)), Clauses) :-
 		coinductive(Spec, Clauses).
 
-	term_expansion((:- coinductive1(Spec)), Clauses) :-
-		coinductive1(Spec, Clauses).
-
-	term_expansion((H:-B), (NH:-B)) :-
-		coinductive(H, _F, _N, NH), !.
+	term_expansion((H:-B), (NH:-NB)) :-
+		this(This),
+		coinductive(H, _F, _N, NH, SF), !,
+		NB = (get_stack(SF,L), \+ This::in_stack(H,L), set_stack(SF,[H|L]), B).
+%		NB = (get_stack(SF,L), \+ This::in_stack(H,L), set_stack(SF,[H|L]), writeq(stack-H-L), nl, B).
 
 	term_expansion(H, NH) :-
-		coinductive(H, _F, _N, NH), !.
-		
+		coinductive(H, _F, _N, NH, _), !.
+
+	term_expansion((:- end_object), [(:- end_object)]) :-
+		retractall(coinductive(_, _, _, _, _)).
+
 	coinductive(F/N, Clauses) :-
 		this(This),
 		functor(S, F, N),
@@ -37,25 +40,8 @@
 		atom_concat(SFn, NAtom, SF),
 		Clauses = [
 			(:- initialization(init_stack(SF, []))),
-			(S :- get_stack(SF,L), (This::in_stack(S,L); set_stack(SF,[S|L]), NS))],
-		assertz(coinductive(S,F,N,NS)).
-
-	coinductive1(F/N, Clauses) :-
-		this(This),
-		functor(S, F, N),
-		atom_concat(coinductive_, F, NF),
-		functor(NS, NF, N),
-		match_args(N, S, NS),
-		logtalk_load_context(entity_prefix, Prefix),
-		atom_concat(Prefix, stack_, SPrefix),
-		atom_concat(SPrefix, F, SFn),
-		number_chars(N, NChars),
-		atom_chars(NAtom, NChars),
-		atom_concat(SFn, NAtom, SF),
-		Clauses = [
-			(:- initialization(init_stack(SF, []))),
-			(S :- get_stack(SF,L), (This::in_stack(S,L) *-> true; set_stack(SF,[S|L]), NS))],
-		assertz(coinductive(S,F,N,NS)).
+			(S :- (get_stack(SF,L), This::in_stack(S,L); NS))],
+		assertz(coinductive(S,F,N,NS,SF)).
 
 	match_args(0, _, _) :-
 		!.

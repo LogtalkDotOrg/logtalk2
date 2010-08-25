@@ -31,12 +31,14 @@ false.
 % the following goal is true for any cyclic list containing only ones:
 
 | ?- L = [1| L], binary::p(L).
-L = [1|**] .
+L = [1|**] ;
+false.
 
 % ... or zeros:
 
 | ?- L = [0| L], binary::p(L).
-L = [0|**] .
+L = [0|**] ;
+false.
 
 % or a repetition of a pattern of ones and zeros:
 
@@ -47,8 +49,12 @@ false.
 % but not all solutions can be returned:
 
 | ?- binary::p(X).
-X = [0|**] ;
-X = [1|**] ;
+X = [0, 0|**] ;
+X = [0, 1, 1|**] ;
+X = [0, 1, 0|**] ;
+X = [1, 1|**] ;
+X = [1, 0, 0|**] ;
+X = [1, 0, 1|**] ;
 false.
 
 
@@ -57,10 +63,12 @@ false.
 | ?- streams::nat_stream([0, s(0), s(s(0))| T]).
 T = [s(s(0))|**] ;
 T = [s(0), s(s(0))|**] ;
-T = [0, s(0), s(s(0))|**] .
+T = [0, s(0), s(s(0))|**] ;
+false.
 
 |?- X = [0, 1, 1, 0| X], streams::bit_stream(X).
-X = [0, 1, 1, 0|**] .
+X = [0, 1, 1, 0|**] ;
+false.
 
 
 % list membership example:
@@ -69,10 +77,10 @@ X = [0, 1, 1, 0|**] .
 false.
 
 | ?- X = [0, s(0), s(s(0))| X], lists::comember(s(0), X).
-T = [s(s(0))|**] ;
-T = [s(0), s(s(0))|**] ;
-T = [0, s(0), s(s(0))|**] .
-
+X = [0, s(0), s(s(0))|**] ;
+X = [0, s(0), s(s(0))|**] ;
+X = [0, s(0), s(s(0))|**] ;
+...
 
 % list append example:
 
@@ -83,7 +91,8 @@ Z = [1, 2, 3, 4, 5, 6|**].
 | ?- X = [1,2,3| X], Y = [3,4| Y], lists::append(X, Y, Z).
 X = [1, 2, 3|**],
 Y = [3, 4|**],
-Z = [1, 2, 3|**] .
+Z = [1, 2, 3, 1|**] ;
+false.
 
 | ?- Z = [1,2| Z], lists::append(X, Y, Z).
 Z = [1, 2|**],
@@ -93,14 +102,19 @@ Z = [1, 2|**],
 X = [1],
 Y = [2, 1|**] ;
 Z = [1, 2|**],
-X = [1, 2|**] .
+X = [1, 2, 1|**] ;
+Z = [1, 2|**],
+X = [1, 2],
+Y = [1, 2|**] ;
+false.
 
 
 % omega-automaton example:
 
 | ?- automata::automata(X, s0).
-X = [a, b, c, d|**] ;
-X = [a, b, e|**] .
+X = [a, b, c, d, a|**] ;
+X = [a, b, e, a|**] ;
+false.
 
 
 % module 4 counter example:
@@ -119,8 +133,8 @@ true .
 
 | ?- train::driver(s0, s0, s0, X, R).
 X = [approach, lower, down, in, out, exit, raise, approach, up|...],
-R = [ (approach, 0), (lower, 1.0), (down, _G7790), (in, _G7796), (out, _G7802), (exit, _G7808), (raise, _G7814), (approach, _G7820), (..., ...)|...] ;
-X = [approach, lower, down, in, out, exit, raise, up|**],
-R = [ (approach, 0), (lower, 1.0), (down, _G7678), (in, _G7684), (out, _G7690), (exit, _G7696), (raise, _G7702), (up, _G7708)|**],
-{_G7718>0.0, _G7727=_G7684+_G7743+_G7740+_G7737+_G7734+_G7718, _G7748=_G7684+_G7743+_G7740+_G7737, _G7734>1.0, _G7734<2.0, _G7708=... + ... + _G7734, _G7799=... + ..., ... > ..., ..., ...} ;
+R = [ (approach, 0), (lower, 1.0), (down, _G7855), (in, _G7861), (out, _G7867), (exit, _G7873), (raise, _G7879), (approach, _G7885), (..., ...)|...] ;
+X = [approach, lower, down, in, out, exit, raise, up, approach|...],
+R = [ (approach, 0), (lower, 1.0), (down, _G7737), (in, _G7743), (out, _G7749), (exit, _G7755), (raise, _G7761), (up, _G7767), (..., ...)|...],
+{_G7783>0.0, _G7792=_G7743+_G7808+_G7805+_G7802+_G7799+_G7783, _G7813=_G7743+_G7808+_G7805+_G7802, _G7799>1.0, _G7799<2.0, _G7767=... + ... + _G7799, _G7864=... + ..., ... > ..., ..., ...} ;
 false.

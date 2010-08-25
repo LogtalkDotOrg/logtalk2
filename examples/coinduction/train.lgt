@@ -20,7 +20,7 @@
 			setval(controller_clock, 0).
 
 		:- public(driver/5).
-		:- coinductive1(driver/5).
+		:- coinductive(driver/5).
 	
 		driver(S0, S1, S2, [X| Rest], [(X,T)| R]) :-
 			getval(wall_clock, T),
@@ -97,7 +97,7 @@
 			nb_setval(controller_clock, 0).
 
 		:- public(driver/5).
-		:- coinductive1(driver/5).
+		:- coinductive(driver/5).
 	
 		driver(S0, S1, S2, [X| Rest], [(X,T)| R]) :-
 			b_getval(wall_clock, T),
