@@ -83,7 +83,7 @@ X = [1, 2, 3|**] ;
 false.
 
 % lack of Prolog support for tabling of rational terms prevents getting
-% the three recurring members (1, 2, and 3) in the following query:
+% the three recurring list members (1, 2, and 3) in the following query:
 
 | ?- X = [1, 2, 3| X], lists::comember(Y, X).
 X = [1, 2, 3|**],
@@ -130,6 +130,22 @@ Y = [1, 2|**] ;
 false.
 
 
+% list non-smembership example:
+
+| ?- X = [1,2,3], lists::absent(2, X).
+false.
+
+| ?- X = [1,2,3], lists::absent(4, X).
+false.
+
+| ?- X = [1,2,3| X], lists::absent(4, X).
+X = [1, 2, 3|**] ;
+false.
+
+| ?- X = [1,2,3| X], lists::absent(2, X).
+false.
+
+
 % omega-automaton example:
 
 | ?- automata::automata(X, s0).
@@ -142,12 +158,16 @@ false.
 % (not working; needs a Prolog tabling implementation supporting cyclic terms!)
 
 | ?- counter::verify.
-true .
+true.
 
 
 % nested automata example:
+% (partially working; needs a Prolog tabling implementation supporting cyclic terms!)
 
-| ?- 
+| ?- nested::state(s0, X), lists::absent(s2, X).
+X = [s0, s1, s1|**] ;
+X = [s0, s3|**] ;
+false.
 
 
 % timed automata example:

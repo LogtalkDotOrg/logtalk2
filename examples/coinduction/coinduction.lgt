@@ -3,9 +3,9 @@
 	implements(expanding)).
 
 	:- info([
-		version is 0.4,
+		version is 0.5,
 		author is 'Ajay Bansal and Vitor Santos Costa. Adapted to Logtalk by Paulo Moura.',
-		date is 2010/07/26,
+		date is 2010/08/27,
 		comment is 'Supports coinductive code in Logtalk objects when used as a hook object.']).
 
 	:- private(coinductive/5).
@@ -17,8 +17,9 @@
 	term_expansion((H:-B), (NH:-NB)) :-
 		this(This),
 		coinductive(H, _F, _N, NH, SF), !,
-		NB = (get_stack(SF,L), \+ This::in_stack(H,L), set_stack(SF,[H|L]), B).
-%		NB = (get_stack(SF,L), \+ This::in_stack(H,L), set_stack(SF,[H|L]), writeq(stack-H-L), nl, B).
+		NB = (get_stack(SF,L), \+ This::in_stack(H,L), set_stack(SF,[H|L]), B).		% experimental-style coinduction
+%		NB = (get_stack(SF,L), set_stack(SF,[H|L]), B).								% both old- and new-style coinduction
+%		NB = (get_stack(SF,L), \+ This::in_stack(H,L), set_stack(SF,[H|L]), writeq(stack-H-L), nl, get_code(_), B).
 
 	term_expansion(H, NH) :-
 		coinductive(H, _F, _N, NH, _), !.
@@ -40,7 +41,8 @@
 		atom_concat(SFn, NAtom, SF),
 		Clauses = [
 			(:- initialization(init_stack(SF, []))),
-			(S :- (get_stack(SF,L), This::in_stack(S,L); NS))],
+			(S :- (get_stack(SF,L), This::in_stack(S,L); NS))],				% old- and experimental-style coinduction
+%			(S :- (get_stack(SF,L), This::in_stack(S,L) *-> true; NS))],	% new-style coinduction
 		assertz(coinductive(S,F,N,NS,SF)).
 
 	match_args(0, _, _) :-

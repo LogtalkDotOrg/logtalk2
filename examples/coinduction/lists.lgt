@@ -42,6 +42,13 @@
 	drop(H, [_| T], T1) :-
 		drop(H, T, T1).
 
+	:- public(absent/2).
+	:- coinductive(absent/2).
+
+	absent(X, [Y| T]) :-
+		X \= Y,
+		absent(X, T).
+
 :- end_object.
 
 
