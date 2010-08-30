@@ -27,6 +27,10 @@ false.
 true ;
 false.
 
+| ?- simple::p(hoho, X).
+X = hoho ;
+false.
+
 
 % the following goal is true for any cyclic list containing only ones:
 

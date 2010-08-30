@@ -19,6 +19,9 @@ wrapper for the SWI-Prolog "coinduction" library (this wrapper supports
 using coinductive code in Logtalk objects when used as a hook object;
 requires SWI-Prolog 5.10.1 or a later version).
 
+The individual examples are adapted from the coinduction papers and from the
+Feliks Kluzniak's DRA interpreter.
+
 For more information see:
 
 @inproceedings{1778186,

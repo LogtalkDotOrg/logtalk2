@@ -5,7 +5,7 @@
 		version is 0.2,
 		author is 'Gopal Gupta et al. Adapted to Logtalk by Paulo Moura.',
 		date is 2010/07/23,
-		comment is 'Coinduction example.']).
+		comment is 'Infinite lists of binary digits coinductive example.']).
 
 	:- public(p/1).
 	:- coinductive(p/1).
