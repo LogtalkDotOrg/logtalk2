@@ -515,8 +515,8 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  customized version of the read_term/3 predicate for returning the line
-%  where the term starts (needed for improved compiler error messages)
+%  customized version of the read_term/3 predicate for returning the term
+%  position (start and end lines; needed for improved error messages)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

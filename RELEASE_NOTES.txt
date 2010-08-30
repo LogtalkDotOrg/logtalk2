@@ -19,10 +19,12 @@ RELEASE NOTES
     to the prolog_load_context/2 built-in predicate found in several Prolog
     compilers, in order to provide access to the compilation/loading context.
     The initial set of supported context keys is {entity_name, entity_prefix,
-    entity_type, file, directory}.
+    entity_type, file, directory, term_position}. The term_position key is
+    only supported in back-end Prolog compilers that provide the start and
+    end lines of a read term.
 
     Corrected a bug in the runtime error handler that would result in entity
-    existence error being reported as (internal) predicate existence errors.
+    existence errors being reported as (internal) predicate existence errors.
 
     Corrected a bug where the protocols implemented by the built-in object
     "logtalk" would not be returned by the implements_protocol/2-3 built-in

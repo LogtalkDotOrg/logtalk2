@@ -604,8 +604,8 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  customized version of the read_term/3 predicate for returning the line
-%  where the term starts (needed for improved compiler error messages)
+%  customized version of the read_term/3 predicate for returning the term
+%  position (start and end lines; needed for improved error messages)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
