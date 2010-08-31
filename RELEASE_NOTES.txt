@@ -30,6 +30,9 @@ RELEASE NOTES
     "logtalk" would not be returned by the implements_protocol/2-3 built-in
     predicates.
 
+    Corrected a bug where multifile/1 directives would only accept a single
+    predicate indicator as argument.
+
     Updated the CxProlog config file to require version 0.97.5 or later. This
     version adds the epsilon/0 arithmetic constant that is used in the library
     unit test support.

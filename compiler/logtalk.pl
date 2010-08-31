@@ -14071,7 +14071,8 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_lgt_predicate_directive'(alias, 3).
 
-'$lgt_lgt_predicate_directive'((multifile), 1).
+'$lgt_lgt_predicate_directive'((multifile), N) :-
+	N >= 1.
 
 
 
