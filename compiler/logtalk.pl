@@ -2114,7 +2114,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 		Meta2 =.. [Functor| MetaArgs],
 		Prop = meta_predicate(Meta2)
 	;	Flags /\ 32 =:= 32,
-		Prop = coinductive
+		Prop = (coinductive)
 	;	Flags /\ 16 =:= 16,
 		Prop = (multifile)
 	;	Flags /\ 8 =:= 8,
@@ -7240,7 +7240,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 	'$lgt_tr_multifile_directive'(Preds2).
 
 
-'$lgt_tr_directive'(coinductive, Preds, Ctx) :-
+'$lgt_tr_directive'((coinductive), Preds, Ctx) :-
 	'$lgt_flatten_list'(Preds, Preds2),
 	'$lgt_tr_coinductive_directive'(Preds2, Ctx).
 
@@ -14175,7 +14175,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 '$lgt_lgt_predicate_directive'((multifile), N) :-
 	N >= 1.
 
-'$lgt_lgt_predicate_directive'(coinductive, N) :-
+'$lgt_lgt_predicate_directive'((coinductive), N) :-
 	N >= 1.
 
 

@@ -16,9 +16,10 @@ RELEASE NOTES
 2.40.2 - September ??, 2010
 
     Added experimental support for coinductive predicates to the Logtalk
-    compiler using a coinductive/1 directive. Added a new read-only flag,
-    "coinduction". Requires a back-end Prolog compiler providing adequate
-    support for cyclic terms (currently, ECLiPSe, SWI-Prolog, and YAP).
+    compiler using a coinductive/1 directive. Requires a back-end Prolog
+    compiler providing minimal support for cyclic terms (currently, YAP,
+    CxProlog, ECLiPSe, SICStus Prolog, and SWI-Prolog). Added a "coinductive"
+    predicate property. Added a "coinduction" read-only flag.
 
     Added a new Logtalk built-in predicate, logtalk_load_context/2, similar
     to the prolog_load_context/2 built-in predicate found in several Prolog
