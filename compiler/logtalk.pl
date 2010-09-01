@@ -212,6 +212,7 @@
 :- dynamic('$lgt_pp_pred_alias_'/3).			% '$lgt_pp_pred_alias_'(Entity, Pred, Alias)
 :- dynamic('$lgt_pp_dcg_nt_'/3).				% '$lgt_pp_dcg_nt_'(Functor, Arity, ExtArity)
 :- dynamic('$lgt_pp_multifile_'/2).				% '$lgt_pp_multifile_'(Functor, Arity)
+:- dynamic('$lgt_pp_coinductive_'/4).			% '$lgt_pp_coinductive_'(Head, CoinductiveHead, Stack, First)
 
 :- dynamic('$lgt_pp_object_'/11).				% '$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags)
 :- dynamic('$lgt_pp_category_'/6).				% '$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags)
@@ -2108,10 +2109,12 @@ current_logtalk_flag(version, version(2, 40, 2)).
 		)
 	;	Prop = declared_in(TCtn)
 	;	Meta \== no,
-		Meta =.. [_| MetaArgs],							% Pred can be an alias
+		Meta =.. [_| MetaArgs],			% Pred can be an alias
 		functor(Pred, Functor, _),
 		Meta2 =.. [Functor| MetaArgs],
 		Prop = meta_predicate(Meta2)
+	;	Flags /\ 32 =:= 32,
+		Prop = coinductive
 	;	Flags /\ 16 =:= 16,
 		Prop = (multifile)
 	;	Flags /\ 8 =:= 8,
@@ -2401,7 +2404,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 		(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
 			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, _),
 			'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
-			'$lgt_comp_ctx'(Ctx, _, GSender, GThis, GSelf, Prefix, MetaVars, _, _, runtime),
+			'$lgt_comp_ctx'(Ctx, _, GSender, GThis, GSelf, Prefix, MetaVars, _, _, runtime, _),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			(	'$lgt_debugging_'(Obj) ->
 				'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
@@ -2504,7 +2507,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, _),
 			'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
-			'$lgt_comp_ctx'(Ctx, _, GSender, GThis, GSelf, Prefix, MetaVars, _, _, runtime),
+			'$lgt_comp_ctx'(Ctx, _, GSender, GThis, GSelf, Prefix, MetaVars, _, _, runtime, _),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			(	'$lgt_debugging_'(Obj) ->
 				'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
@@ -3033,7 +3036,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 	'$lgt_dcg_body'(GRBody, S0, S, Pred, LPred),
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _),
 	'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _), !,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, ExCtx, runtime),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, ExCtx, runtime, _),
 	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(This) ->
 		'$lgt_tr_body'(LPred, _, DPred, Ctx),
 		Input = S0, Rest = S,
@@ -3911,7 +3914,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 		call(DDef, Pred, ExCtx, TPred) ->
 		call(TPred)
 	;	% in the worst case we need to compile the meta-call:
-		'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, ExCtx, runtime),
+		'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, ExCtx, runtime, _),
 		'$lgt_tr_body'(Pred, TPred, DPred, Ctx) ->
 		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(This) ->
 			call(DPred)
@@ -3938,7 +3941,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 		call(DDef, Pred, ExCtx, TPred) ->
 		call(TPred)
 	;	% in the worst case we need to compile the meta-call:
-		'$lgt_comp_ctx'(Ctx, _, Sender, Sender, Self, Prefix, [], _, ExCtx, runtime),
+		'$lgt_comp_ctx'(Ctx, _, Sender, Sender, Self, Prefix, [], _, ExCtx, runtime, _),
 		'$lgt_tr_body'(Pred, TPred, DPred, Ctx) ->
 		(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Sender) ->
 			call(DPred)
@@ -4011,7 +4014,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 			;	call(DDef, Goal, ExCtx, TGoal) ->
 				call(TGoal)
 			;	% in the worst case we need to compile the goal:
-				'$lgt_comp_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _, ExCtx, runtime),
+				'$lgt_comp_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _, ExCtx, runtime, _),
 				catch('$lgt_tr_body'(Goal, TGoal, DGoal, Ctx), Error, throw(error(Error, Obj<<Goal, This))),
 				(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
 					call(DGoal)
@@ -6142,6 +6145,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 	retractall('$lgt_pp_dynamic_'(_, _)),
 	retractall('$lgt_pp_discontiguous_'(_, _)),
 	retractall('$lgt_pp_multifile_'(_, _)),
+	retractall('$lgt_pp_coinductive_'(_, _, _, _)),
 	retractall('$lgt_pp_mode_'(_, _)),
 	retractall('$lgt_pp_meta_predicate_'(_)),
 	retractall('$lgt_pp_pred_alias_'(_, _, _)),
@@ -6660,7 +6664,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 	Dir =.. [Functor| Args],
 	Meta =.. [Functor| MArgs],
 	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
-	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, _, _),	% MetaVars = [] as we're compiling a local call
+	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, _, _, _),	% MetaVars = [] as we're compiling a local call
 	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
 	(	'$lgt_compiler_flag'(debug, on) ->
 		TDir =.. [Functor| DArgs]
@@ -6980,7 +6984,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_directive'(initialization, [Goal], Ctx) :-
 	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
-	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx, _, _),
 	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, []),		% MetaVars = [] as we're compiling a local call
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_compiler_flag'(debug, on) ->
@@ -7234,6 +7238,11 @@ current_logtalk_flag(version, version(2, 40, 2)).
 '$lgt_tr_directive'((multifile), Preds, _) :-
 	'$lgt_flatten_list'(Preds, Preds2),
 	'$lgt_tr_multifile_directive'(Preds2).
+
+
+'$lgt_tr_directive'(coinductive, Preds, Ctx) :-
+	'$lgt_flatten_list'(Preds, Preds2),
+	'$lgt_tr_coinductive_directive'(Preds2, Ctx).
 
 
 '$lgt_tr_directive'(alias, [Entity, Pred, Alias], _) :-
@@ -7734,6 +7743,52 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_multifile_directive'([Pred| _]) :-
 	throw(type_error(predicate_indicator, Pred)).
+
+
+
+% '$lgt_tr_coinductive_directive'(+list, +ctx)
+%
+% auxiliary predicate for translating coinductive/1 directives
+
+'$lgt_tr_coinductive_directive'([], _).
+
+'$lgt_tr_coinductive_directive'([Pred| _], _) :-
+	var(Pred),
+	throw(instantiation_error).
+
+'$lgt_tr_coinductive_directive'([Pred| _], _) :-
+	functor(Pred, Functor, Arity),
+	'$lgt_pp_calls_pred_'(Functor, Arity, _, _),
+	throw(permission_error(modify, predicate_interpretation, Pred)).
+
+'$lgt_tr_coinductive_directive'([Pred| Preds], Ctx) :-
+	'$lgt_valid_pred_ind'(Pred, Functor, Arity),
+	!,
+	functor(Head, Functor, Arity),
+	atom_concat(coinductive_, Functor, CoinductiveFunctor),
+	CoinductiveArity is Arity + 1,
+	functor(CoinductiveHead, CoinductiveFunctor, CoinductiveArity),
+	'$lgt_match_args'(Arity, Head, CoinductiveHead),
+	arg(CoinductiveArity, CoinductiveHead, []),
+	'$lgt_tr_clause'((Head :- CoinductiveHead), Ctx),
+	functor(CoinductiveHeadTemplate, CoinductiveFunctor, CoinductiveArity),
+	'$lgt_match_args'(Arity, Head, CoinductiveHeadTemplate),
+	arg(CoinductiveArity, CoinductiveHeadTemplate, Stack),
+	assertz('$lgt_pp_coinductive_'(Head, CoinductiveHeadTemplate, Stack, true)),
+	'$lgt_tr_coinductive_directive'(Preds, Ctx).
+
+'$lgt_tr_coinductive_directive'([Pred| _], _) :-
+	throw(type_error(predicate_indicator, Pred)).
+
+
+'$lgt_match_args'(0, _, _) :-
+	!.
+
+'$lgt_match_args'(I, S1, S2) :-
+	arg(I, S1, A),
+	arg(I, S2, A),
+    I1 is I - 1,
+	'$lgt_match_args'(I1, S1, S2).
 
 
 
@@ -8486,6 +8541,23 @@ current_logtalk_flag(version, version(2, 40, 2)).
 	\+ callable(Body),
 	throw(type_error(callable, Body)).
 
+'$lgt_tr_clause'((Head:-Body), TClause, DClause, Ctx) :-
+	retract('$lgt_pp_coinductive_'(Head, CoinductiveHead, Stack, First)),
+	!,
+	functor(Head, Functor, Arity),
+	functor(HeadTemplate, Functor, Arity),
+	functor(CoinductiveHead, CoinductiveFunctor, CoinductiveArity),
+	functor(CoinductiveHeadTemplate, CoinductiveFunctor, CoinductiveArity),
+	'$lgt_match_args'(Arity, HeadTemplate, CoinductiveHeadTemplate),
+	arg(CoinductiveArity, CoinductiveHeadTemplate, StackTemplate),
+	asserta('$lgt_pp_coinductive_'(HeadTemplate, CoinductiveHeadTemplate, StackTemplate, false)),
+	(	First == true ->
+		'$lgt_tr_clause'((CoinductiveHeadTemplate :- {'$lgt_member'(HeadTemplate, StackTemplate)}), Ctx)
+	;	true
+	),
+	'$lgt_comp_ctx_stack'(Ctx, NewStack),
+	'$lgt_tr_clause'((CoinductiveHead :- \+ {'$lgt_member'(Head, Stack)}, NewStack = [Head| Stack], Body), TClause, DClause, Ctx).
+
 '$lgt_tr_clause'((Head:-Body), (THead:-'$lgt_nop'(Body), SBody), (THead:-'$lgt_nop'(Body),'$lgt_dbg_head'(Head, 0, ExCtx),DBody), Ctx) :-
 	functor(Head, Functor, Arity),
 	'$lgt_pp_dynamic_'(Functor, Arity),
@@ -8514,6 +8586,22 @@ current_logtalk_flag(version, version(2, 40, 2)).
 '$lgt_tr_clause'(Fact, _, _, _) :-
 	\+ callable(Fact),
 	throw(type_error(callable, Fact)).
+
+'$lgt_tr_clause'(Fact, TFact, DFact, Ctx) :-
+	retract('$lgt_pp_coinductive_'(Fact, CoinductiveFact, _, First)),
+	!,
+	functor(Fact, Functor, Arity),
+	functor(FactTemplate, Functor, Arity),
+	functor(CoinductiveFact, CoinductiveFunctor, CoinductiveArity),
+	functor(CoinductiveFactTemplate, CoinductiveFunctor, CoinductiveArity),
+	'$lgt_match_args'(Arity, FactTemplate, CoinductiveFactTemplate),
+	arg(CoinductiveArity, CoinductiveFactTemplate, StackTemplate),
+	asserta('$lgt_pp_coinductive_'(FactTemplate, CoinductiveFactTemplate, StackTemplate, false)),
+	(	First == true ->
+		'$lgt_tr_clause'((CoinductiveFactTemplate :- {'$lgt_member'(FactTemplate, StackTemplate)}), Ctx)
+	;	true
+	),
+	'$lgt_tr_clause'(CoinductiveFact, TFact, DFact, Ctx).
 
 '$lgt_tr_clause'(Fact, TFact, (TFact:-'$lgt_dbg_fact'(Fact, N, ExCtx)), Ctx) :-
 	'$lgt_tr_head'(Fact, TFact, Ctx),
@@ -8821,7 +8909,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 '$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, ExCtx), Ctx) :-
 	var(Pred),
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx, _, _),
 	(	'$lgt_member_var'(Pred, MetaVars) ->
 		% we're compiling a clause for a meta-predicate; therefore, we need
 		% to connect the execution context and the meta-call context arguments
@@ -8938,7 +9026,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_body'('$lgt_callN'(Closure, ExtraArgs), _, _, Ctx) :-
 	var(Closure),
-	'$lgt_comp_ctx'(Ctx, Head, _, _, _, _, MetaVars, _, _, _),
+	'$lgt_comp_ctx'(Ctx, Head, _, _, _, _, MetaVars, _, _, _, _),
 	functor(Head, Functor, Arity),
 	functor(Meta, Functor, Arity),
 	'$lgt_pp_meta_predicate_'(Meta),			% if we're compiling a clause for a meta-predicate and
@@ -8951,7 +9039,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_body'('$lgt_callN'(Closure, ExtraArgs), TPred, DPred, Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx, _, _),
 	(	var(Closure), '$lgt_member_var'(Closure, MetaVars) ->
 		% we're compiling a clause for a meta-predicate; therefore, we need
 		% to connect the execution context and the meta-call context arguments
@@ -9009,7 +9097,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_body'(Free/Parameters>>Goal, TPred, DPred, Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx, _, _),
 	(	var(Goal), '$lgt_member_var'(Goal, MetaVars) ->
 		% we're compiling a clause for a meta-predicate; therefore, we need
 		% to connect the execution context and the meta-call context arguments
@@ -9038,7 +9126,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_body'(Parameters>>Goal, TPred, DPred, Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx, _, _),
 	(	var(Goal), '$lgt_member_var'(Goal, MetaVars) ->
 		% we're compiling a clause for a meta-predicate; therefore, we need
 		% to connect the execution context and the meta-call context arguments
@@ -9073,7 +9161,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_body'(Free/Goal, TPred, DPred, Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, MetaVars, MetaCallCtx, ExCtx, _, _),
 	(	var(Goal), '$lgt_member_var'(Goal, MetaVars) ->
 		% we're compiling a clause for a meta-predicate; therefore, we need
 		% to connect the execution context and the meta-call context arguments
@@ -9148,7 +9236,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_body'(threaded_call(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_call(Goal, Tag), MDGoal, ExCtx), Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
 		MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(call, Prefix, TGoal, This, Self, Tag)),
@@ -9171,7 +9259,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_body'(threaded_call(Goal), MTGoal, '$lgt_dbg_goal'(threaded_call(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
 		MTGoal = '$lgt_mt_dispatch_goal'(call, Prefix, TGoal, This, Self, []),
@@ -9198,7 +9286,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_body'(threaded_once(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_once(Goal, Tag), MDGoal, ExCtx), Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
 		MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(once, Prefix, TGoal, This, Self, Tag)),
@@ -9221,7 +9309,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_body'(threaded_once(Goal), MTGoal, '$lgt_dbg_goal'(threaded_once(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
 		MTGoal = '$lgt_mt_dispatch_goal'(once, Prefix, TGoal, This, Self, []),
@@ -9244,7 +9332,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_body'(threaded_ignore(Goal), MTGoal, '$lgt_dbg_goal'(threaded_ignore(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
 		MTGoal = '$lgt_mt_dispatch_goal'(ignore, Prefix, TGoal, This, Self, _),
@@ -9267,7 +9355,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_body'(threaded_exit(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_exit(Goal, Tag), MDGoal, ExCtx), Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
 		MTGoal = '$lgt_mt_get_reply'(Prefix, TGoal, Sender, This, Self, Tag),
@@ -9290,7 +9378,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_body'(threaded_exit(Goal), MTGoal, '$lgt_dbg_goal'(threaded_exit(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
 		MTGoal = '$lgt_mt_get_reply'(Prefix, TGoal, Sender, This, Self, []),
@@ -9313,7 +9401,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_body'(threaded_peek(Goal, Tag), MTGoal, '$lgt_dbg_goal'(threaded_peek(Goal, Tag), MDGoal, ExCtx), Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
 		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, Sender, This, Self, Tag),
@@ -9336,7 +9424,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_body'(threaded_peek(Goal), MTGoal, '$lgt_dbg_goal'(threaded_peek(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
 		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, Sender, This, Self, []),
@@ -9355,7 +9443,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 '$lgt_tr_body'(threaded_wait(Msg), MTPred, '$lgt_dbg_goal'(threaded_wait(Msg), MTPred, ExCtx), Ctx) :-
 	!,
 	'$lgt_pp_entity'(Type, _, EntityPrefix, _, _),
-	'$lgt_comp_ctx'(Ctx, Head, _, _, _, EntityPrefix, _, _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, Head, _, _, _, EntityPrefix, _, _, ExCtx, _, _),
 	(	'$lgt_pp_synchronized_'(Head, Mutex) ->
 		(	Type == object ->
 			MTPred = (mutex_unlock(Mutex), '$lgt_thread_get_notifications'(Msg, EntityPrefix), mutex_lock(Mutex))
@@ -9382,7 +9470,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 '$lgt_tr_body'(threaded_notify(Msg), MTPred, '$lgt_dbg_goal'(threaded_notify(Msg), MTPred, ExCtx), Ctx) :-
 	!,
 	'$lgt_pp_entity'(Type, _, EntityPrefix, _, _),
-	'$lgt_comp_ctx'(Ctx, _, _, _, _, EntityPrefix, _, _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, _, _, _, EntityPrefix, _, _, ExCtx, _, _),
 	(	Type == object ->
 		MTPred = '$lgt_thread_send_notifications'(Msg, EntityPrefix)
 	;	% we're compiling a category predicate
@@ -10138,11 +10226,20 @@ current_logtalk_flag(version, version(2, 40, 2)).
 	throw(permission_error(define, dynamic_predicate, Functor/Arity)).
 
 
+% goal is a call to a local, user-define coinductive predicate
+
+'$lgt_tr_body'(Pred, TPred, DPred, Ctx) :-
+	'$lgt_pp_coinductive_'(Pred, CoinductivePred, Stack, _),
+	!,
+	'$lgt_comp_ctx_stack'(Ctx, Stack),
+	'$lgt_tr_body'(CoinductivePred, TPred, DPred, Ctx).
+
+
 % goal is a call to a local, user-defined predicate
 
 '$lgt_tr_body'(Pred, TPred, '$lgt_dbg_goal'(Pred, TPred, ExCtx), Ctx) :-
 	functor(Pred, Functor, Arity),
-	'$lgt_comp_ctx'(Ctx, Head, _, _, _, Prefix, _, _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, Head, _, _, _, Prefix, _, _, ExCtx, _, _),
 	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 	(	'$lgt_pp_synchronized_'(Pred, _),
 		\+ functor(Head, Functor, Arity) ->			% not a recursive call
@@ -10882,11 +10979,11 @@ current_logtalk_flag(version, version(2, 40, 2)).
 	'$lgt_comp_ctx_head'(Ctx, Head),			% "super" call to the predicate being redefined
 	!,
 	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
-		'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _),
+		'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _, _),
 		'$lgt_exec_ctx'(ExCtx, _, This, Self, _),
 	    TPred = '$lgt_obj_super_call_same_'(Super, Pred, ExCtx)
 	;	'$lgt_pp_category_'(Ctg, _, _, _, _, _) ->
-		'$lgt_comp_ctx'(Ctx, _, _, _, _, _, _, _, ExCtx, _),
+		'$lgt_comp_ctx'(Ctx, _, _, _, _, _, _, _, ExCtx, _, _),
 	    TPred = '$lgt_ctg_super_call_same_'(Ctg, Pred, ExCtx)
 	).
 
@@ -11823,7 +11920,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 	functor(HeadTemplate, Functor, Arity),
 	HeadTemplate =.. [_| HeadTemplateArgs],
 	Head =.. [_| HeadArgs],
-	'$lgt_comp_ctx'(Ctx, _, _, _, _, Prefix, _, _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, _, _, _, Prefix, _, _, ExCtx, _, _),
 	'$lgt_append'(HeadTemplateArgs, [ExCtx2], HeadTemplateArgsDef),
 	'$lgt_append'(HeadArgs, [ExCtx], HeadArgsDef),
 	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/_),
@@ -11860,7 +11957,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 	functor(HeadTemplate, Functor, Arity),
 	HeadTemplate =.. [_| HeadTemplateArgs],
 	Head =.. [_| HeadArgs],
-	'$lgt_comp_ctx'(Ctx, _, _, _, _, Prefix, _, _, ExCtx, _),
+	'$lgt_comp_ctx'(Ctx, _, _, _, _, Prefix, _, _, ExCtx, _, _),
 	'$lgt_append'(HeadTemplateArgs, [ExCtx2], HeadTemplateArgsDef),
 	'$lgt_append'(HeadArgs, [ExCtx], HeadArgsDef),
 	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/_),
@@ -12090,6 +12187,10 @@ current_logtalk_flag(version, version(2, 40, 2)).
 		Meta = Template
 	;	Meta = no
 	),
+	(	'$lgt_pp_coinductive_'(Pred, _, _, _) ->
+		Coinductive = 32				% 0b00100000
+	;	Coinductive = 0
+	),
 	(	'$lgt_pp_multifile_'(Functor, Arity) ->
 		Multifile = 16					% 0b00010000
 	;	Multifile = 0
@@ -12106,7 +12207,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 		Dynamic = 2						% 0b00000010
 	;	Dynamic = 0
 	),
-	Flags is Multifile + NonTerminal + Synchronized + Dynamic,
+	Flags is Coinductive + Multifile + NonTerminal + Synchronized + Dynamic,
 	Fact =.. [Dcl, Pred, Scope, Meta, Flags],
 	assertz('$lgt_pp_dcl_'(Fact)),
 	fail.
@@ -14074,6 +14175,9 @@ current_logtalk_flag(version, version(2, 40, 2)).
 '$lgt_lgt_predicate_directive'((multifile), N) :-
 	N >= 1.
 
+'$lgt_lgt_predicate_directive'(coinductive, N) :-
+	N >= 1.
+
 
 
 % conditional compilation directives
@@ -14096,27 +14200,29 @@ current_logtalk_flag(version, version(2, 40, 2)).
 % utility predicates used during compilation of Logtalk entities to store and
 % access compilation context information (represented by a compound term)
 
-'$lgt_comp_ctx'(ctx(_, _, _, _, _, _, _, _, _)).
+'$lgt_comp_ctx'(ctx(_, _, _, _, _, _, _, _, _, _)).
 
-'$lgt_comp_ctx'(ctx(Head, Sender, This, Self, Prefix, MetaVars, MetaCallCtx, ExCtx, Mode), Head, Sender, This, Self, Prefix, MetaVars, MetaCallCtx, ExCtx, Mode).
+'$lgt_comp_ctx'(ctx(Head, Sender, This, Self, Prefix, MetaVars, MetaCallCtx, ExCtx, Mode, Stack), Head, Sender, This, Self, Prefix, MetaVars, MetaCallCtx, ExCtx, Mode, Stack).
 
-'$lgt_comp_ctx_head'(ctx(Head, _, _, _, _, _, _, _, _), Head).
+'$lgt_comp_ctx_head'(ctx(Head, _, _, _, _, _, _, _, _, _), Head).
 
-'$lgt_comp_ctx_sender'(ctx(_, Sender, _, _, _, _, _, _, _), Sender).
+'$lgt_comp_ctx_sender'(ctx(_, Sender, _, _, _, _, _, _, _, _), Sender).
 
-'$lgt_comp_ctx_this'(ctx(_, _, This, _, _, _, _, _, _), This).
+'$lgt_comp_ctx_this'(ctx(_, _, This, _, _, _, _, _, _, _), This).
 
-'$lgt_comp_ctx_self'(ctx(_, _, _, Self, _, _, _, _, _), Self).
+'$lgt_comp_ctx_self'(ctx(_, _, _, Self, _, _, _, _, _, _), Self).
 
-'$lgt_comp_ctx_prefix'(ctx(_, _, _, _, Prefix, _, _, _, _), Prefix).
+'$lgt_comp_ctx_prefix'(ctx(_, _, _, _, Prefix, _, _, _, _, _), Prefix).
 
-'$lgt_comp_ctx_meta_vars'(ctx(_, _, _, _, _, MetaVars, _, _, _), MetaVars).
+'$lgt_comp_ctx_meta_vars'(ctx(_, _, _, _, _, MetaVars, _, _, _, _), MetaVars).
 
-'$lgt_comp_ctx_meta_call_ctx'(ctx(_, _, _, _, _, _, MetaCallCtx, _, _), MetaCallCtx).
+'$lgt_comp_ctx_meta_call_ctx'(ctx(_, _, _, _, _, _, MetaCallCtx, _, _, _), MetaCallCtx).
 
-'$lgt_comp_ctx_exec_ctx'(ctx(_, _, _, _, _, _, _, ExCtx, _), ExCtx).
+'$lgt_comp_ctx_exec_ctx'(ctx(_, _, _, _, _, _, _, ExCtx, _, _), ExCtx).
 
-'$lgt_comp_ctx_mode'(ctx(_, _, _, _, _, _, _, _, Mode), Mode).
+'$lgt_comp_ctx_mode'(ctx(_, _, _, _, _, _, _, _, Mode, _), Mode).
+
+'$lgt_comp_ctx_stack'(ctx(_, _, _, _, _, _, _, _, _, Stack), Stack).
 
 
 
@@ -14511,6 +14617,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 '$lgt_valid_flag'(threads).
 '$lgt_valid_flag'(modules).
 '$lgt_valid_flag'(tabling).
+'$lgt_valid_flag'(coinduction).
 
 
 
@@ -16811,7 +16918,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 			Meta =.. [PredFunctor| MArgs],
 			Pred =.. [PredFunctor| Args],
 			'$lgt_current_object_'(Sender, Prefix, _, _, _, _, _, _, _, _, _), !,
-			'$lgt_comp_ctx'(Ctx, _, Sender, Sender, Obj, Prefix, [], _, ExCtx, _),
+			'$lgt_comp_ctx'(Ctx, _, Sender, Sender, Obj, Prefix, [], _, ExCtx, _, _),
 			'$lgt_exec_ctx'(ExCtx, Sender, Sender, Obj, []),
 			'$lgt_tr_static_binding_meta_args'(Args, MArgs, Ctx, TArgs, _),
 			TPred =.. [PredFunctor| TArgs],
@@ -16947,7 +17054,8 @@ current_logtalk_flag(version, version(2, 40, 2)).
 	'$lgt_compiler_flag'(modules, Modules), write(', modules: '), write(Modules), nl,
 	'$lgt_compiler_flag'(threads, Threads), write('  threads: '), write(Threads),
 	'$lgt_compiler_flag'(encoding_directive, Encodings), write(', encoding_directive: '), write(Encodings),
-	'$lgt_compiler_flag'(tabling, Tabling), write(', tabling: '), write(Tabling), nl, nl.
+	'$lgt_compiler_flag'(tabling, Tabling), write(', tabling: '), write(Tabling), nl,
+	'$lgt_compiler_flag'(coinduction, Coinduction), write('  coinduction: '), write(Coinduction), nl, nl.
 
 '$lgt_default_flags'(verbose) :-
 	write('Default lint compilation flags:'), nl,
@@ -17021,7 +17129,9 @@ current_logtalk_flag(version, version(2, 40, 2)).
 	'$lgt_compiler_flag'(tabling, Tabling),
 	write('  Support for tabling (tabling):                              '), write(Tabling), nl,
 	'$lgt_compiler_flag'(threads, Threads),
-	write('  Multi-threading programming support (threads):              '), write(Threads), nl, nl.
+	write('  Multi-threading programming support (threads):              '), write(Threads), nl,
+	'$lgt_compiler_flag'(coinduction, Coinduction),
+	write('  Support for coinductive predicates (coinduction):           '), write(Coinduction), nl, nl.
 
 
 

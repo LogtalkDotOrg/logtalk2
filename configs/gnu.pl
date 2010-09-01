@@ -11,7 +11,7 @@
 %
 %  configuration file for GNU Prolog 1.4.0 (and later versions)
 %
-%  last updated: July 26, 2010
+%  last updated: August 31, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -147,6 +147,7 @@ setup_call_cleanup(_, _, _) :-
 '$lgt_prolog_feature'(tabling, unsupported).
 '$lgt_prolog_feature'(threads, unsupported).
 '$lgt_prolog_feature'(modules, unsupported).
+'$lgt_prolog_feature'(coinduction, unsupported).
 
 
 

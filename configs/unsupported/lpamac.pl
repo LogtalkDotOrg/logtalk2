@@ -11,7 +11,7 @@
 %
 %  configuration file for LPA MacProlog32 1.25
 %
-%  last updated: January 28, 2010
+%  last updated: August 31, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -276,6 +276,8 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_prolog_feature'(encoding_directive, unsupported).
 '$lgt_prolog_feature'(tabling, unsupported).
 '$lgt_prolog_feature'(threads, unsupported).
+'$lgt_prolog_feature'(modules, unsupported).
+'$lgt_prolog_feature'(coinduction, unsupported).
 
 
 

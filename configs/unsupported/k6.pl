@@ -11,7 +11,7 @@
 %
 %  configuration file for K-Prolog 6.0.4 and later versions
 %
-%  last updated: January 28, 2010
+%  last updated: August 31, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -136,6 +136,8 @@ setup_call_cleanup(_, _, _) :-
 '$lgt_prolog_feature'(encoding_directive, source).
 '$lgt_prolog_feature'(tabling, unsupported).
 '$lgt_prolog_feature'(threads, unsupported).
+'$lgt_prolog_feature'(modules, unsupported).
+'$lgt_prolog_feature'(coinduction, unsupported).
 
 
 

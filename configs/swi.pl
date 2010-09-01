@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: July 26, 2010
+%  last updated: August 31, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -181,6 +181,7 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 	;	Threads = unsupported
 	).
 '$lgt_prolog_feature'(modules, supported).
+'$lgt_prolog_feature'(coinduction, supported).
 
 
 

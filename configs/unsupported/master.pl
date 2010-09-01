@@ -11,7 +11,7 @@
 %
 %  configuration file for MasterProLog 4.1
 %
-%  last updated: January 28, 2010
+%  last updated: August 31, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -203,6 +203,8 @@ forall(Generate, Test) :-
 '$lgt_prolog_feature'(encoding_directive, unsupported).
 '$lgt_prolog_feature'(tabling, unsupported).
 '$lgt_prolog_feature'(threads, unsupported).
+'$lgt_prolog_feature'(modules, unsupported).
+'$lgt_prolog_feature'(coinduction, unsupported).
 
 
 

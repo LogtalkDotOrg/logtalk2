@@ -11,16 +11,11 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 To load this example and for sample queries, please see the SCRIPT.txt file.
 This example requires a recent version of ECLiPSE, SWI-Prolog, or YAP as the
-back-end Prolog compiler.
+back-end Prolog compiler. Note that Logtalk support for coinduction is still
+experimental.
 
-This folder contains an experimental adaptation of Ajay Bansal and Vitor
-Santos Costa implementation of coinduction for YAP and an experimental
-wrapper for the SWI-Prolog "coinduction" library (this wrapper supports
-using coinductive code in Logtalk objects when used as a hook object;
-requires SWI-Prolog 5.10.1 or a later version).
-
-The individual examples are adapted from the coinduction papers and from the
-Feliks Kluzniak's DRA interpreter.
+This folder contains several examples of coinductive predicates, adapted from
+the coinduction papers and from the Feliks Kluzniak's DRA interpreter.
 
 For more information see:
 
@@ -44,14 +39,14 @@ For more information see:
 	location = {Pasadena, California, USA}
 }
 
-@InProceedings{saeedloei_et_al:LIPIcs:2010:2599,
+@inproceedings{saeedloei_et_al:LIPIcs:2010:2599,
 	author ={Neda Saeedloei and Gopal Gupta},
 	title ={Timed Definite Clause Omega-Grammars},
 	booktitle ={Technical Communications of the 26th International Conference on Logic Programming},
 	pages ={212--221},
 	series ={Leibniz International Proceedings in Informatics (LIPIcs)},
-	ISBN ={978-3-939897-17-0},
-	ISSN ={1868-8969},
+	isbn ={978-3-939897-17-0},
+	issn ={1868-8969},
 	year ={2010},
 	volume ={7},
 	editor ={Manuel Hermenegildo and Torsten Schaub},
