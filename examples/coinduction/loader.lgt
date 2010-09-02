@@ -6,14 +6,12 @@
 	:- endif.
 
 	:- if((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == eclipse; Dialect == swi; Dialect == yap))).
-		:- initialization((
-			logtalk_load(coinduction, [reload(skip)]),
-			logtalk_load([simple, pta, train], [hook(coinduction)])
-		)).
+		:- initialization(logtalk_load([pta, train])).
 	:- endif.
 
 	:- initialization(
 		logtalk_load([
+			simple,
 			binary,
 			streams,
 			lists,
