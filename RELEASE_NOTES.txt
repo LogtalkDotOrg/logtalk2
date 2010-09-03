@@ -1,6 +1,6 @@
 ================================================================
 Logtalk - Open source object-oriented logic programming language
-Release 2.40.2
+Release 2.41.0
 
 Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
 Logtalk is free software.  You can redistribute it and/or modify
@@ -13,12 +13,14 @@ RELEASE NOTES
 =============
 
 
-2.40.2 - September ??, 2010
+2.41.0 - September ??, 2010
 
     Added experimental support for coinductive predicates to the Logtalk
     compiler using a coinductive/1 directive. Requires a back-end Prolog
     compiler providing minimal support for cyclic terms (currently, YAP,
-    CxProlog, ECLiPSe, SICStus Prolog, and SWI-Prolog).
+    CxProlog, ECLiPSe, SICStus Prolog, and SWI-Prolog). Thanks to Gopal
+    Gupta, Neda Saeedloei, Feliks Kluzniak, Ajay Bansal, and Vitor Santos
+    Costa for feedback and implementation suggestions.
 
     Added a "coinductive" predicate property.
 

@@ -341,6 +341,16 @@ The Logtalk compiler will print a warning if the <code>multifile/1</code> direct
 When a clause of a multifile predicate is a rule, its body is compiled within the context of the object or category containing the clause. This allows clauses for multifile predicates to call local object or category predicates.
 </p>
 
+<h3 id="predicates_multifile">Coinductive directive</h3>
+
+<p>
+A predicate can be declared <em>coinductive</em> by using the <a title="Consult reference manual" href="../refman/directives/coinductive1.html"><code>coinductive/1</code></a> directive:
+</p>
+<pre>:- coinductive(Functor/Arity).</pre>
+<p>
+Logtalk support for coinductive predicates is experimental and requires a back-end Prolog compiler with minimal support for cyclic terms.
+</p>
+
 <h2 id="predicates_defining">Defining predicates</h2>
 
 <h3 id="predicates_objects">Object predicates</h3>
@@ -746,7 +756,7 @@ Currently, there is no clean workaround for calling non-standard Prolog built-in
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: August 10, 2010</span>
+		<span>Last updated on: September 4, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="categories.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="inheritance.html">next</a></span><br/>
