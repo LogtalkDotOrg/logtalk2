@@ -13,7 +13,7 @@
 dir="$PWD"
 
 cd ../..
-tar -cjf ~/rpmbuild/SOURCES/lgt2401.tar.bz2 .
+tar -cjf ~/rpmbuild/SOURCES/lgt2402.tar.bz2 .
 mkdir -p ~/rpmbuild/RPMS/noarch
 
 cd "$dir"

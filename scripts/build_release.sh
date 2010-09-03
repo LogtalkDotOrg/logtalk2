@@ -12,23 +12,23 @@
 
 dir=`PWD`
 
-svn export http://svn.logtalk.org/logtalk/trunk lgt2401
+svn export http://svn.logtalk.org/logtalk/trunk lgt2402
 
-cd lgt2401
+cd lgt2402
 chmod a+x scripts/cleandist.sh
 scripts/cleandist.sh
 
 cd ..
-cp -R lgt2401/manuals man2401
-tar -czf man2401.tgz man2401
-tar -cjf lgt2401.tar.bz2 lgt2401
+cp -R lgt2402/manuals man2402
+tar -czf man2402.tgz man2402
+tar -cjf lgt2402.tar.bz2 lgt2402
 
 mkdir -p debian/usr/bin
 mkdir -p debian/usr/share/doc/logtalk
 mkdir -p debian/usr/share/doc-base
 mkdir -p debian/usr/share/menu
 mkdir -p debian/DEBIAN
-cd lgt2401/scripts
+cd lgt2402/scripts
 ./install.sh $dir/debian/usr
 rm -rf $dir/debian/usr/share/mime
 cp debian/logtalk.doc-base $dir/debian/usr/share/doc-base/logtalk-docs
@@ -49,12 +49,12 @@ cp debian/postrm $dir/debian/DEBIAN
 cd $dir
 dpkg-deb --build debian logtalk_2.40.2-1_all.deb
 
-md5="`md5 -q lgt2401.tar.bz2`"
+md5="`md5 -q lgt2402.tar.bz2`"
 sudo mkdir -p /opt/local/var/macports/distfiles/logtalk
-sudo cp -f lgt2401.tar.bz2 /opt/local/var/macports/distfiles/logtalk/lgt2401.tar.bz2
+sudo cp -f lgt2402.tar.bz2 /opt/local/var/macports/distfiles/logtalk/lgt2402.tar.bz2
 cd /opt/local/var/macports/sources/rsync.macports.org/release/ports/lang/logtalk/
 sudo mv -f Portfile Portfile.old
-sudo cp $dir/lgt2401/scripts/macosx/Portfile .
+sudo cp $dir/lgt2402/scripts/macosx/Portfile .
 sudo sed -e 's/^version.*/version 2.40.2/' -i '' Portfile
 sudo sed -e "s/^checksums.*/checksums md5 $md5/" -i '' Portfile
 sudo port clean --archive logtalk
@@ -64,12 +64,12 @@ cp -R work/logtalk-2.40.2.pkg $dir
 sudo port clean logtalk
 
 cd $dir
-mkdir manpdf2401
-cd man2401/userman
+mkdir manpdf2402
+cd man2402/userman
 ./userman.sh
-mv userman.pdf ../../manpdf2401/lgtuserman2401.pdf
+mv userman.pdf ../../manpdf2402/lgtuserman2402.pdf
 cd ../refman
 ./refman.sh
-mv refman.pdf ../../manpdf2401/lgtrefman2401.pdf
+mv refman.pdf ../../manpdf2402/lgtrefman2402.pdf
 cd ../..
-tar -czf manpdf2401.tgz manpdf2401
+tar -czf manpdf2402.tgz manpdf2402

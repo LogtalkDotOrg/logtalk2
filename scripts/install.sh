@@ -38,20 +38,20 @@ echo
 
 mkdir -p $prefix/share
 
-rm -rf $prefix/share/lgt2401
+rm -rf $prefix/share/lgt2402
 rm -f $prefix/share/logtalk
 
-mkdir $prefix/share/lgt2401
+mkdir $prefix/share/lgt2402
 
 cd ..
-cp -R * $prefix/share/lgt2401
+cp -R * $prefix/share/lgt2402
 
-cd $prefix/share/lgt2401
+cd $prefix/share/lgt2402
 chmod a+x scripts/cleandist.sh
 scripts/cleandist.sh
 
 cd ..
-ln -sf lgt2401 logtalk
+ln -sf lgt2402 logtalk
 
 mkdir -p $prefix/bin
 cd $prefix/bin
@@ -123,7 +123,7 @@ echo
 if [ "`which update-mime-database`" != "" ]; then
 	mkdir -p $prefix/share/mime/packages
 	rm -f $prefix/share/mime/packages/logtalk.xml
-	cp $prefix/share/lgt2401/scripts/freedesktop/logtalk.xml $prefix/share/mime/packages/logtalk.xml
+	cp $prefix/share/lgt2402/scripts/freedesktop/logtalk.xml $prefix/share/mime/packages/logtalk.xml
 	update-mime-database $prefix/share/mime
 	echo "Added the Logtalk mime-type to the Shared MIME-info Database."
 	echo

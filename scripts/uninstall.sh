@@ -43,7 +43,7 @@ if ! [ "$LOGTALKHOME" ]; then
 fi
 
 cd $LOGTALKHOME/..
-rm -rf lgt2401
+rm -rf lgt2402
 rm -f logtalk
 cd ../bin
 rm -f bplgt
