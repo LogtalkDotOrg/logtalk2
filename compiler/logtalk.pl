@@ -8085,12 +8085,12 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_module_meta_predicate_directives_args'([], []).
 
-'$lgt_tr_module_meta_predicate_directives_args'([Arg| Args], [Arg2| Args2]) :-
-	(	Arg == (:) -> Arg2 = (0)	% Prolog to Logtalk notation; this is fragile due to the lack of standardization
-	;	integer(Arg) -> Arg2 = Arg	% goals and closures are denoted by integers >= 0
-	;	Arg2 = (*)					% non meta-arguments (e.g. instantiation modes) to Logtalk notation
+'$lgt_tr_module_meta_predicate_directives_args'([Arg| Args], [TArg| TArgs]) :-
+	(	Arg == (:) -> TArg = (0)	% Prolog to Logtalk notation; this is fragile due to the lack of standardization
+	;	integer(Arg) -> TArg = Arg	% goals and closures are denoted by integers >= 0
+	;	TArg = (*)					% non meta-arguments (e.g. instantiation modes) to Logtalk notation
 	),
-	'$lgt_tr_module_meta_predicate_directives_args'(Args, Args2).
+	'$lgt_tr_module_meta_predicate_directives_args'(Args, TArgs).
 
 
 
@@ -10386,7 +10386,7 @@ current_logtalk_flag(version, version(2, 40, 2)).
 %
 % translates the meta-arguments contained in the list of arguments of a call
 % to a module meta-predicate (assumes Logtalk meta-predicate notation); due
-% to the module meta-predicate semantics, the meta-arguemnts must be explicitly
+% to the module meta-predicate semantics, the meta-arguments must be explicitly
 % qualified as being called from the "user" module
 
 '$lgt_tr_module_meta_args'([], [], _, [], []).
@@ -10400,8 +10400,16 @@ current_logtalk_flag(version, version(2, 40, 2)).
 
 '$lgt_tr_module_meta_arg'((*), Arg, _, Arg, Arg).
 
-'$lgt_tr_module_meta_arg'((0), Arg, Ctx, ':'(user, TArg), ':'(user, DArg)) :-
-	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
+'$lgt_tr_module_meta_arg'((0), Arg, Ctx, TArg, DArg) :-
+	(	nonvar(Arg), functor(Arg, ':', 2) ->
+		% explicit-qualified meta-argument
+		TArg = Arg,
+		DArg = Arg
+	;	% non-qualified meta-argument
+		'$lgt_tr_body'(Arg, TArg0, DArg0, Ctx),
+		TArg = ':'(user, TArg0),
+		DArg = ':'(user, DArg0)
+	).
 
 
 
@@ -13253,6 +13261,10 @@ current_logtalk_flag(version, version(2, 40, 2)).
 	Meta =.. [Functor| MArgs],
 	'$lgt_fix_pred_calls_in_margs'(Args, MArgs, TArgs),
 	TPred =.. [Functor| TArgs].
+
+'$lgt_fix_pred_calls'(':'(Module, Pred), ':'(Module, Pred)) :-
+	var(Pred),
+	!.
 
 '$lgt_fix_pred_calls'(':'(Module1, ':'(Module2, Pred)), ':'(Module1, ':'(Module2, TPred))) :-
 	!,									% calls to Prolog module meta-predicates
