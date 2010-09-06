@@ -64,7 +64,8 @@ ln -sf ../share/logtalk/xml/lgt2html.sh lgt2html
 ln -sf ../share/logtalk/xml/lgt2xml.sh lgt2xml
 ln -sf ../share/logtalk/xml/lgt2txt.sh lgt2txt
 
-echo "Links to the \"logtalk_user_setup\", \"lgt2pdf\", \"lgt2html\", \"lgt2xml\","
+echo "Links to the \"logtalk_user_setup\", \"logtalk_backend_select\","
+echo "\"logtalk_version_select\", \"lgt2pdf\", \"lgt2html\", \"lgt2xml\","
 echo "and \"lgt2txt\" scripts have been created on \"$prefix/bin\";"
 echo "you may need to add this directory to your execution path."
 echo

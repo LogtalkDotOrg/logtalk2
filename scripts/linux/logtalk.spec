@@ -97,9 +97,11 @@ rm -rf $RPM_BUILD_ROOT
 echo
 echo "Installed Logtalk on \"/usr/local/share\"."
 echo
-echo "Links to the \"logtalk_user_setup\", \"lgt2pdf\", \"lgt2html\", \"lgt2xml\","
+
+echo "Links to the \"logtalk_user_setup\", \"logtalk_backend_select\","
+echo "\"logtalk_version_select\", \"lgt2pdf\", \"lgt2html\", \"lgt2xml\","
 echo "and \"lgt2txt\" scripts have been created on \"/usr/local/bin\";"
-echo " you may need to add this directoryto your execution path."
+echo "you may need to add this directoryto your execution path."
 echo
 echo "The following integration scripts are installed for running Logtalk"
 echo "with selected back-end Prolog compilers:"

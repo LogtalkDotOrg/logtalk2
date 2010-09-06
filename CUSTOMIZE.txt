@@ -20,7 +20,14 @@ default path for the Logtalk user folder is:
 	Windows: My Documents\Logtalk
 
 
-1. SETTING LIBRARY PATHS
+1. DEFINING A DEFAULT PROLOG BACK-END COMPILER FOR LOGTALK
+
+Users of POSIX systems may use the "logtalk_backend_select" shell command
+to define an alias, "logtalk", for a one of the provided back-end Prolog
+compiler integration scripts.
+
+
+2. SETTING LIBRARY PATHS
 
 In Logtalk, a library is simply a directory containing source files. Library 
 paths can be declared using a dynamic, multifile predicate. This allows 
@@ -37,7 +44,7 @@ Library paths for your own source files directories are preferably defined in
 your settings file, described next.
 
 
-2. CUSTOMIZING LOGTALK SETTINGS
+3. CUSTOMIZING LOGTALK SETTINGS
 
 Logtalk interfaces with a specific Prolog compiler using a configuration file 
 that can be found on the "configs" folder in the Logtalk installation folder.
@@ -71,7 +78,7 @@ You may also use the "settings.lgt" file in the Logtalk user folder to define
 your own library paths. See the provided "settings.lgt" file for details.
 
 
-3. CUSTOMIZING DOCUMENTATION PROCESSING SCRIPTS AND SUPPORTING FILES
+4. CUSTOMIZING DOCUMENTATION PROCESSING SCRIPTS AND SUPPORTING FILES
 
 Inside your Logtalk user folder, you will find a "xml" folder containing a 
 set of shell scripts, CSS and XSLT style-sheets, and DTD and XML Schema files 
@@ -84,7 +91,7 @@ data that can be used on Logtalk documenting directives. For details, see the
 "xml/NOTES.txt" file.
 
 
-4. ADDING SUPPORT FOR EDITING LOGTALK SOURCE FILES TO TEXT EDITORS
+5. ADDING SUPPORT TO TEXT EDITORS FOR EDITING LOGTALK SOURCE FILES
 
 Inside your Logtalk user folder, you will find a "wenv" folder, containing 
 configuration files for several text editors, which add support for syntax 

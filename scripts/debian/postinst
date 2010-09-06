@@ -33,7 +33,8 @@ if [ -x /usr/bin/update-menus ] ; then
 fi
 
 echo
-echo "Links to the \"logtalk_user_setup\", \"lgt2pdf\", \"lgt2html\", \"lgt2xml\","
+echo "Links to the \"logtalk_user_setup\", \"logtalk_backend_select\","
+echo "\"logtalk_version_select\", \"lgt2pdf\", \"lgt2html\", \"lgt2xml\","
 echo "and \"lgt2txt\" scripts have been created on \"/usr/bin\"."
 echo
 echo "The following integration scripts are installed for running Logtalk"
