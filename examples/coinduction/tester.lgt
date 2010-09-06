@@ -1,5 +1,5 @@
 
-:- if(current_logtalk_flag(prolog_dialect, swi)).
+:- if(current_logtalk_flag(coinduction, supported)).
 
 	:- initialization((
 		logtalk_load(library(lgtunit_loader)),
