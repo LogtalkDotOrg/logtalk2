@@ -568,7 +568,7 @@ forall(Generate, Test) :-
 '$lgt_sicstus_list_of_exports'(File, Module, Exports) :-
 	nonvar(File),
 	absolute_file_name(File, Path, [extensions(['.pl', '.pro']), access(read), file_errors(fail)]),
-	current_module(Module, Path),	% this only succeedds for already loaded modules
+	current_module(Module, Path),	% this only succeeds for already loaded modules
 	findall(
 		Functor/Arity,
 		(predicate_property(Module:Predicate, exported), functor(Predicate, Functor, Arity)),
