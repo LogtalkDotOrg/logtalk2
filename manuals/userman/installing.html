@@ -151,7 +151,7 @@ In the Logtalk installation directory, you will find the following files and dir
 </dl>
 <dl>
 	<dt><code>wenv</code></dt>
-		<dd><code>NOTES.txt</code> &ndash; notes on the text editor syntax configuration files providing syntax coloring for editing Logtalk source files</dd>
+		<dd><code>NOTES.txt</code> &ndash; notes on syntax highlighter and text editor configuration files providing syntax coloring for publishing and editing Logtalk source code</dd>
 		<dd><code>...</code> &ndash; syntax coloring configuration files</dd>
 </dl>
 <dl>
@@ -207,6 +207,10 @@ The configuration files specifies <em>default</em> values for all the Logtalk co
 <dl>
 	<dt><code>modules</code></dt>
 		<dd>Informs Logtalk if the back-end Prolog compiler provides suitable module support. Possible flag values are <code>unsupported</code> and <code>supported</code> (Logtalk provides limited support for compiling Prolog modules as objects).</dd>
+</dl>
+<dl>
+	<dt><code>coinduction</code></dt>
+		<dd>Informs Logtalk if the back-end Prolog compiler provides the minimal support for cyclic terms necessary for working with coinductive predicates. Possible flag values are <code>unsupported</code> and <code>supported</code>.</dd>
 </dl>
 
 <h3 id="installing_settings">Settings files</h3>
@@ -270,7 +274,7 @@ Logtalk source files are text files containing entity definitions (objects, cate
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &ndash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: June 10, 2010</span>
+		<span>Last updated on: September 4, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="documenting.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="programming.html">next</a></span><br/>
