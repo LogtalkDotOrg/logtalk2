@@ -12,12 +12,12 @@
 
 css2xslfo=/Applications/XML/CSSToXSLFO/css2xslfo1_6_2.jar
 
-xslt_proc=xsltproc
+xslt_proc="xsltproc -path /opt/local/share/xml/xhtml -nonet"
 # xslt_proc=xalan
 # xslt_proc=sabcmd
 
-#fo_proc=fop
-fo_proc=xep
+fo_proc=fop
+#fo_proc=xep
 # fo_proc=xinc
 
 catalog=file:///opt/local/share/xml/xhtml/catalog

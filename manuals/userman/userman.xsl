@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet
 	version="1.0"
+	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:xhtml="http://www.w3.org/1999/xhtml">
+	xmlns:xhtml="http://www.w3.org/1999/xhtml"
+	exclude-result-prefixes="#default">
 
 <xsl:output
 	method="xml"
@@ -17,14 +19,14 @@
 </xsl:template>
 
 <xsl:template match="xhtml:html">
-		<xsl:apply-templates select="node()|@*"/>
+		<xsl:apply-templates select="node()"/>
 </xsl:template>
 
 <xsl:template match="xhtml:head">
 </xsl:template>
 
 <xsl:template match="xhtml:body">
-		<xsl:apply-templates select="node()|@*"/>
+		<xsl:apply-templates select="node()"/>
 </xsl:template>
 
 <xsl:template match="xhtml:div[@class='top-right']">
