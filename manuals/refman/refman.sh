@@ -10,7 +10,7 @@
 ## The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ## ================================================================
 
-css2xslfo=/Applications/XML/CSSToXSLFO/css2xslfo1_6_1.jar
+css2xslfo=/Applications/XML/CSSToXSLFO/css2xslfo1_6_2.jar
 
 xslt_proc=xsltproc
 # xslt_proc=xalan
@@ -48,6 +48,7 @@ eval $xslt_proc -o directives/synchronized0.section refman.xsl directives/synchr
 eval $xslt_proc -o directives/threaded0.section refman.xsl directives/threaded0.html
 eval $xslt_proc -o directives/uses1.section refman.xsl directives/uses1.html
 eval $xslt_proc -o directives/alias3.section refman.xsl directives/alias3.html
+eval $xslt_proc -o directives/coinductive1.section refman.xsl directives/coinductive1.html
 eval $xslt_proc -o directives/discontiguous1.section refman.xsl directives/discontiguous1.html
 eval $xslt_proc -o directives/dynamic1.section refman.xsl directives/dynamic1.html
 eval $xslt_proc -o directives/info2.section refman.xsl directives/info2.html
@@ -95,6 +96,7 @@ eval $xslt_proc -o builtins/logtalk_compile2.section refman.xsl builtins/logtalk
 eval $xslt_proc -o builtins/logtalk_load1.section refman.xsl builtins/logtalk_load1.html
 eval $xslt_proc -o builtins/logtalk_load2.section refman.xsl builtins/logtalk_load2.html
 eval $xslt_proc -o builtins/logtalk_library_path2.section refman.xsl builtins/logtalk_library_path2.html
+eval $xslt_proc -o builtins/logtalk_load_context2.section refman.xsl builtins/logtalk_load_context2.html
 eval $xslt_proc -o builtins/current_logtalk_flag2.section refman.xsl builtins/current_logtalk_flag2.html
 eval $xslt_proc -o builtins/set_logtalk_flag2.section refman.xsl builtins/set_logtalk_flag2.html
 eval $xslt_proc -o builtins/forall2.section refman.xsl builtins/forall2.html
@@ -163,6 +165,7 @@ cat -s \
 	directives/threaded0.section \
 	directives/uses1.section \
 	directives/alias3.section \
+	directives/coinductive1.section \
 	directives/discontiguous1.section \
 	directives/dynamic1.section \
 	directives/info2.section \
@@ -211,6 +214,7 @@ cat -s \
 	builtins/logtalk_load1.section \
 	builtins/logtalk_load2.section \
 	builtins/logtalk_library_path2.section \
+	builtins/logtalk_load_context2.section \
 	builtins/current_logtalk_flag2.section \
 	builtins/set_logtalk_flag2.section \
 	builtins/forall2.section \

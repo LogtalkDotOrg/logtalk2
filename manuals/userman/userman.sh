@@ -10,7 +10,7 @@
 ## The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ## ================================================================
 
-css2xslfo=/Applications/XML/CSSToXSLFO/css2xslfo1_6_1.jar
+css2xslfo=/Applications/XML/CSSToXSLFO/css2xslfo1_6_2.jar
 
 xslt_proc=xsltproc
 # xslt_proc=xalan
