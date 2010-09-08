@@ -59,9 +59,8 @@ RELEASE NOTES
     '$lgt_sort'/2 internal predicates from the supported config files.
 
     Updated the shell scripts used for generating the PDF versions of the
-    Logtalk User and Reference Manuals in order to use (by default) the Apache
-    FOP XSL:FO processor (version 0.95 or later) and to provide compatibility
-    with recent versions of the xsltproc XSLT processor.
+    Logtalk User and Reference Manuals for better performance and to fix an
+    incompatibility with recent versions of the xsltproc XSLT processor.
 
     Added an experimental example of coinduction when using ECLiPSe, YAP, or
     SWI-Prolog as the back-end Prolog compiler.
