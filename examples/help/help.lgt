@@ -2,9 +2,9 @@
 :- object(help).
 
 	:- info([
-		version is 0.2,
+		version is 0.3,
 		author is 'Paulo Moura',
-		date is 2010/06/24,
+		date is 2010/09/09,
 		comment is 'Command-line help for Logtalk built-in control constructs, predicates, non-terminals, and methods.']).
 
 	:- public(help/0).
@@ -107,6 +107,7 @@
 	built_in_predicate(logtalk_load, 1, '/manuals/refman/builtins/', 'logtalk_load1.html').
 	built_in_predicate(logtalk_load, 2, '/manuals/refman/builtins/', 'logtalk_load2.html').
 	built_in_predicate(logtalk_library_path, 2, '/manuals/refman/builtins/', 'logtalk_library_path2.html').
+	built_in_predicate(logtalk_load_context, 2, '/manuals/refman/builtins/', 'logtalk_load_context2.html').
 
 	built_in_predicate(current_logtalk_flag, 2, '/manuals/refman/builtins/', 'current_logtalk_flag2.html').
 	built_in_predicate(set_logtalk_flag, 2, '/manuals/refman/builtins/', 'set_logtalk_flag2.html').

@@ -20,7 +20,7 @@ Currently, support is limited to:
 		Linux, MacOS X, and Windows
 	
 	Prolog compilers:
-		B-Prolog, Ciao Prolog, ECLiPSe, GNU Prolog,
+		B-Prolog, Ciao Prolog, CxProlog, ECLiPSe, GNU Prolog,
 		SICStus Prolog, SWI-Prolog, XSB, and YAP
 
 On Windows, the "start" command must be available. On Linux, the
