@@ -14,8 +14,8 @@
 
 	help :-
 		write('On-line help is available for Logtalk built-in control constructs,'), nl,
-		write('built-in predicates, built-in non-terminals, built-in methods, and'), nl,
-		write('the standard library:'), nl, nl,
+		write('built-in directives, built-in predicates, built-in non-terminals,'), nl,
+		write('built-in methods, and the standard library:'), nl, nl,
 		write('  Type help::Functor/Arity.'), nl,
 		write('  Or   help::Functor//Arity. '), nl,
 		write('  Or   help::library.'), nl,
@@ -31,12 +31,14 @@
 		comment is 'Provides help on the Functor/Arity built-in control construct, predicate, or method.',
 		argnames is ['Functor', 'Arity']]).
 
-	PredicateFunctor/Arity :-
-		(	built_in_method(PredicateFunctor, Arity, Path, File) ->
+	Functor/Arity :-
+		(	built_in_directive(Functor, Arity, Path, File) ->
 			true
-		;	built_in_predicate(PredicateFunctor, Arity, Path, File) ->
+		;	built_in_method(Functor, Arity, Path, File) ->
 			true
-		;	control(PredicateFunctor, Arity, Path, File) ->
+		;	built_in_predicate(Functor, Arity, Path, File) ->
+			true
+		;	control(Functor, Arity, Path, File) ->
 			true
 		),
 		open(Path, File).
@@ -52,6 +54,48 @@
 			open(Path, File)
 		;	fail
 		).
+
+	built_in_directive(encoding, 1, '/manuals/refman/directives/', 'encoding1.html').
+	built_in_directive(initialization, 1, '/manuals/refman/directives/', 'initialization1.html').
+	built_in_directive(op, 3, '/manuals/refman/directives/', 'op3.html').
+	built_in_directive(set_logtalk_flag, 2, '/manuals/refman/directives/', 'set_logtalk_flag2.html').
+
+	built_in_directive(if, 1, '/manuals/refman/directives/', 'if1.html').
+	built_in_directive(elif, 1, '/manuals/refman/directives/', 'elif1.html').
+	built_in_directive(else, 0, '/manuals/refman/directives/', 'else0.html').
+	built_in_directive(endif, 0, '/manuals/refman/directives/', 'endif0.html').
+
+	built_in_directive(calls, 1, '/manuals/refman/directives/', 'calls1.html').
+	built_in_directive(category, N, '/manuals/refman/directives/', 'category1.html') :-
+		N >= 1, N =< 3.
+	built_in_directive(dynamic, 0, '/manuals/refman/directives/', 'dynamic0.html').
+	built_in_directive(end_category, 0, '/manuals/refman/directives/', 'end_category0.html').
+	built_in_directive(end_object, 0, '/manuals/refman/directives/', 'end_object0.html').
+	built_in_directive(end_protocol, 0, '/manuals/refman/directives/', 'end_protocol0.html').
+	built_in_directive(info, 1, '/manuals/refman/directives/', 'info1.html').
+	built_in_directive(initialization, 1, '/manuals/refman/directives/', 'initialization1.html').
+	built_in_directive(object, N, '/manuals/refman/directives/', 'object1.html') :-
+		N >= 1, N =< 5.
+	built_in_directive(protocol, N, '/manuals/refman/directives/', 'protocol1.html') :-
+		N >= 1, N =< 2.
+	built_in_directive(synchronized, 0, '/manuals/refman/directives/', 'synchronized0.html').
+	built_in_directive(threaded, 0, '/manuals/refman/directives/', 'threaded0.html').
+	built_in_directive(uses, 1, '/manuals/refman/directives/', 'uses1.html').
+
+	built_in_directive(alias, 3, '/manuals/refman/directives/', 'alias3.html').
+	built_in_directive(coinductive, 1, '/manuals/refman/directives/', 'coinductive1.html').
+	built_in_directive(discontiguous, 1, '/manuals/refman/directives/', 'discontiguous1.html').
+	built_in_directive(dynamic, 1, '/manuals/refman/directives/', 'dynamic1.html').
+	built_in_directive(info, 2, '/manuals/refman/directives/', 'info2.html').
+	built_in_directive(meta_predicate, 1, '/manuals/refman/directives/', 'meta_predicate1.html').
+	built_in_directive(mode, 2, '/manuals/refman/directives/', 'mode2.html').
+	built_in_directive(multifile, 1, '/manuals/refman/directives/', 'multifile1.html').
+	built_in_directive(op, 3, '/manuals/refman/directives/', 'op3.html').
+	built_in_directive(private, 1, '/manuals/refman/directives/', 'private1.html').
+	built_in_directive(protected, 1, '/manuals/refman/directives/', 'protected1.html').
+	built_in_directive(public, 1, '/manuals/refman/directives/', 'public1.html').
+	built_in_directive(synchronized, 1, '/manuals/refman/directives/', 'synchronized1.html').
+	built_in_directive(uses, 2, '/manuals/refman/directives/', 'uses2.html').
 
 	built_in_predicate(current_category, 1, '/manuals/refman/builtins/', 'current_category1.html').
 	built_in_predicate(current_object, 1, '/manuals/refman/builtins/', 'current_object1.html').
