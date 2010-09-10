@@ -73,6 +73,9 @@ RELEASE NOTES
     using SWI-Prolog 5.11.3 and later versions due to changes in this compiler
     parser for stricter ISO Prolog syntax.
 
+    Updated the "help" example in order to provide help for Logtalk built-in
+    directives.
+
     Added support for the SHJS syntax highlighter.
 
 

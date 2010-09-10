@@ -5642,16 +5642,18 @@ current_logtalk_flag(version, version(2, 41, 0)).
 	'$lgt_pp_cc_skipping_',				% we're performing conditional compilation and skipping terms 
 	\+ '$lgt_lgt_cc_directive'(Term),	% except for conditional compilation directives itself
 	!,
-	'$lgt_comp_ctx_mode'(Ctx, compile(_, Input, _)),
+	'$lgt_comp_ctx_mode'(Ctx, compile(Source, Input, Output)),
 	'$lgt_read_term'(Input, Next, [singletons(NextSingletons)]),
-	'$lgt_tr_file'(Next, NextSingletons, Ctx).
+	'$lgt_comp_ctx_mode'(NextCtx, compile(Source, Input, Output)),
+	'$lgt_tr_file'(Next, NextSingletons, NextCtx).
 
 '$lgt_tr_file'(Term, Singletons, Ctx) :-
 	'$lgt_report_singletons'(Singletons, Term, Ctx),
 	'$lgt_tr_term'(Term, Ctx),
-	'$lgt_comp_ctx_mode'(Ctx, compile(_, Input, _)),
+	'$lgt_comp_ctx_mode'(Ctx, compile(Source, Input, Output)),
 	'$lgt_read_term'(Input, Next, [singletons(NextSingletons)]),
-	'$lgt_tr_file'(Next, NextSingletons, Ctx).
+	'$lgt_comp_ctx_mode'(NextCtx, compile(Source, Input, Output)),
+	'$lgt_tr_file'(Next, NextSingletons, NextCtx).
 
 
 
