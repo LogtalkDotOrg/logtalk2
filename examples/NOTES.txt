@@ -56,6 +56,9 @@ Follows a short description of each included example (in alphabetical order):
 ack
 	implementation of the Ackermann arithmetic function
 
+adventure
+    some simple examples of text adventures
+
 aliases
 	example of using the alias/3 predicate directive to provide 
 	alternative names to inherited predicates in order to improve 

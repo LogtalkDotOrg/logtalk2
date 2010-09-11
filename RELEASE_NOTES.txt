@@ -69,6 +69,9 @@ RELEASE NOTES
     generated when loading the CLP(FD) library with the SWI-Prolog "iso" flag
     set to "true".
 
+    Added an example, "adventure", with Logtalk adaptations of Prolog text
+    adventures originally written by David Matuszek and Dan Cliburn.
+
     Updated the "dcgs" example unit tests to avoid a compilation error when
     using SWI-Prolog 5.11.3 and later versions due to changes in this compiler
     parser for stricter ISO Prolog syntax.

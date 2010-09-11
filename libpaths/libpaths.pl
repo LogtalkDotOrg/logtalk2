@@ -25,6 +25,7 @@ logtalk_library_path(contributions, lgtuser('contributions/')).
 logtalk_library_path(examples, lgtuser('examples/')).
 logtalk_library_path(library, lgtuser('library/')).
 logtalk_library_path(ack, examples('ack/')).
+logtalk_library_path(adventure, examples('adventure/')).
 logtalk_library_path(aliases, examples('aliases/')).
 logtalk_library_path(assignvars, examples('assignvars/')).
 logtalk_library_path(barriers, threads('barriers/')).
