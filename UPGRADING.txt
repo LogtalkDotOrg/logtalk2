@@ -280,3 +280,6 @@ which are goals in meta-predicate directives from "::" to "0", requiring
 updating any existing meta-predicate declarations. The internal predicate
 names used in control constructs are also changed, requiring recompilation
 of all objects and categories.
+
+Logtalk version 2.41.0 changes representation of the execution context in 
+compiled predicates, requiring recompilation of all objects and categories.
