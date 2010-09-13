@@ -62,15 +62,15 @@ RELEASE NOTES
     Logtalk User and Reference Manuals for better performance and to fix an
     incompatibility with recent versions of the xsltproc XSLT processor.
 
-    Added an experimental example of coinduction when using ECLiPSe, YAP, or
-    SWI-Prolog as the back-end Prolog compiler.
+    Added an example, "adventure", with Logtalk adaptations of Prolog text
+    adventures originally written by David Matuszek and Dan Cliburn.
+
+    Added an experimental example of coinduction when using CxProlog, ECLiPSe,
+    SICStus Prolog, SWI-Prolog, or YAP as the back-end Prolog compiler.
 
     Updated the "constraints/swipl/loader.lgt" helper file to avoid the errors
     generated when loading the CLP(FD) library with the SWI-Prolog "iso" flag
     set to "true".
-
-    Added an example, "adventure", with Logtalk adaptations of Prolog text
-    adventures originally written by David Matuszek and Dan Cliburn.
 
     Updated the "dcgs" example unit tests to avoid a compilation error when
     using SWI-Prolog 5.11.3 and later versions due to changes in this compiler
