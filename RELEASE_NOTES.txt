@@ -85,6 +85,9 @@ RELEASE NOTES
     Updated the "help" example in order to provide help for Logtalk built-in
     directives.
 
+    Updated the "examples/tester.sh" script in order to fix a compatibility
+    issue with XSB.
+
     Added support for the SHJS syntax highlighter.
 
 
