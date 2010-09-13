@@ -55,7 +55,7 @@ Name: "prolog"; Description: "Prolog integration (back-end compiler support)"; T
 Name: "prolog\bp"; Description: "B-Prolog integration (version 7.4 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\ciao"; Description: "Ciao Prolog integration (version 1.10)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\cxprolog"; Description: "CxProlog integration (version 0.97.5 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\eclipse"; Description: "ECLiPSe integration (version 6.0#77 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\eclipse"; Description: "ECLiPSe integration (version 6.0#141 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\gprolog"; Description: "GNU Prolog integration (version 1.4.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\sicstus"; Description: "SICStus Prolog integration (versions 3.12.x, 4.x)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\swicon"; Description: "SWI-Prolog (console) integration (version 5.8.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning

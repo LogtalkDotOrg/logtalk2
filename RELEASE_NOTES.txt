@@ -34,6 +34,8 @@ RELEASE NOTES
     only supported in back-end Prolog compilers that provide the start and
     end lines of a read term.
 
+    Simplified the Logtalk compiler by using stream aliases.
+
     Corrected a bug in the runtime error handler that would result in entity
     existence errors being reported as (internal) predicate existence errors.
 
@@ -47,6 +49,10 @@ RELEASE NOTES
     Corrected a bug where compiling an explicit module-qualified module meta-
     argument would result in a compilation loop when the qualified goal is a
     variable.
+
+    ECLiPSe 6.0#141 or a later version is now required when using this
+    back-end Prolog compiler due to use of stream aliases in the Logtalk
+    compiler.
 
     Updated the CxProlog config file to require version 0.97.5 or later. This
     version adds the epsilon/0 arithmetic constant that is used in the library

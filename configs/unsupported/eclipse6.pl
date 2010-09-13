@@ -9,7 +9,7 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for ECLiPSe 6.0#77 and later versions
+%  configuration file for ECLiPSe 6.0#141 and later versions
 %
 %  last updated: August 31, 2010
 %

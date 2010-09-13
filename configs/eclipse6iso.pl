@@ -9,9 +9,9 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for ECLiPSe 6.0#77 and later versions
+%  configuration file for ECLiPSe 6.0#141 and later versions
 %
-%  last updated: August 31, 2010
+%  last updated: September 13, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -216,7 +216,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_prolog_feature'(prolog_dialect, eclipse).
 '$lgt_prolog_feature'(prolog_version, (Major, Minor, Build)) :-
 	get_flag(version_as_list, [Major, Minor, Build]).
-'$lgt_prolog_feature'(prolog_compatible_version, @>=((6,0,77))).
+'$lgt_prolog_feature'(prolog_compatible_version, @>=((6,0,141))).
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).

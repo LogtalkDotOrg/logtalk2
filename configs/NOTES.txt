@@ -110,7 +110,7 @@ CxProlog 0.97.5 or later versions
 	directory before compiling the library or an example.
 
 
-ECLiPSe 6.0#77 or later versions
+ECLiPSe 6.0#141 or later versions
 
 	eclipse6iso.pl
 	unsupported/eclipse6.pl
