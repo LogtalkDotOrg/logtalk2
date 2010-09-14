@@ -68,6 +68,10 @@ RELEASE NOTES
     Logtalk User and Reference Manuals for better performance and to fix an
     incompatibility with recent versions of the xsltproc XSLT processor.
 
+    Updated the "library/lgtunit_loader.lgt" helper file to avoid entity
+    redefinition warnings when loading the "library/all_loader.lgt" helper
+    file from the "library" directory itself.
+
     Added an example, "adventure", with Logtalk adaptations of Prolog text
     adventures originally written by David Matuszek and Dan Cliburn.
 
