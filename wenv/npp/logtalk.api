@@ -104,6 +104,7 @@ meta_predicate
 mod
 mode
 multifile
+coinductive
 nl
 nonvar
 number

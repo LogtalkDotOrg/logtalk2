@@ -12,6 +12,8 @@
  *
  * CHANGES
  * -------
+ * 2010/09/14 (1.1.2)
+ *  -  Added syntax coloring of coinductive/1
  * 2010/06/23 (1.1.1)
  *  -  Added syntax coloring of e/0 and pi/0
  *  -  Added syntax coloring of ground/1, numbervars/3, keysort/2, and sort/2
@@ -81,7 +83,7 @@ $language_data = array(
             // entity directives
             'calls', 'initialization', 'op', 'uses',
             // predicate directives
-            'alias', 'discontiguous', 'dynamic', 'mode', 'info', 'meta_predicate', 'multifile', 'synchronized',
+            'alias', 'coinductive', 'discontiguous', 'dynamic', 'mode', 'info', 'meta_predicate', 'multifile', 'synchronized',
             // module directives
             'export', 'module', 'reexport', 'use_module'
             ),

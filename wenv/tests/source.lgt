@@ -31,9 +31,9 @@ comment
 	extends(parent)).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2010/06/23,
+		date is 2010/09/14,
 		comment is 'Sample prototype for testing syntax coloring.']).
 
 	:- threaded.
@@ -55,6 +55,8 @@ comment
 	:- multifile(zzz/1).
 	:- multifile(module:zzz/1).
 	:- multifile(object::zzz/1).
+
+	:- coinductive(comember/1).
 
 	:- use_module(module, [xxx/1, yyy/2, zzz/3]).
 	:- export(bbb/3).

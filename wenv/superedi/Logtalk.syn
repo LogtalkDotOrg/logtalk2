@@ -108,6 +108,7 @@ mode
 dynamic
 discontiguous
 multifile
+coinductive
 public
 protected
 private

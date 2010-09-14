@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
 
-<language name="Logtalk" version="2.7" kateversion="2.4" section="Sources" extensions="*.lgt" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
+<language name="Logtalk" version="2.8" kateversion="2.4" section="Sources" extensions="*.lgt" mimetype="text/x-logtalk" author="Paulo Moura (pmoura@logtalk.org)" license="Artistic License 2.0">
 
 	<highlighting>
 
@@ -171,7 +171,7 @@
 				<RegExpr String = "\b(dynamic|synchronized|threaded)[.]" attribute = "Directive" context = "#pop" />
 				<RegExpr String = "\b(alias|d(ynamic|iscontiguous)|m(eta_predicate|ode|ultifile)|s(et_(logtalk|prolog)_flag|ynchronized))(?=[(])" attribute = "Directive" context = "#pop" />
 				<RegExpr String = "\bop(?=[(])" attribute = "Directive" context = "#pop" />
-				<RegExpr String = "\b(calls|reexport|use(s|_module))(?=[(])" attribute = "Directive" context = "#pop" />
+				<RegExpr String = "\b(c(alls|oinductive)|reexport|use(s|_module))(?=[(])" attribute = "Directive" context = "#pop" />
 			</context>
 
 			<context name = "entityrelations" attribute = "Normal" lineEndContext = "#stay" >

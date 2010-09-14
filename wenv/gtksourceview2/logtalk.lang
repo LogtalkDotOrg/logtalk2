@@ -128,7 +128,7 @@
 			<keyword>(discontiguous)(?=[(])</keyword>			
 			<keyword>(m(eta_predicate|ultifile))(?=[(])</keyword>			
 			<keyword>(op)(?=[(])</keyword>			
-			<keyword>(calls)(?=[(])</keyword>			
+			<keyword>(c(alls|oinductive))(?=[(])</keyword>			
 			<keyword>(use(s|_module))(?=[(])</keyword>			
 		</context>
 

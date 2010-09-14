@@ -41,6 +41,7 @@ mode(, zero_or_more).
 mode(, one_or_more).
 mode(, error).
 multifile(/).
+coinductive(/).
 dynamic(/).
 dynamic.
 discontiguous(/).

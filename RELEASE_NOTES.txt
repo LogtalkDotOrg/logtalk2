@@ -94,6 +94,9 @@ RELEASE NOTES
 
     Added support for the SHJS syntax highlighter.
 
+    Added syntax coloring support for the new coinductive/1 predicate
+    directive to all supported text editors and syntax highlighters.
+
 
 2.40.1 - June 30, 2010
 

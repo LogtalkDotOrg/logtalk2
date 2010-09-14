@@ -178,7 +178,7 @@ class LogtalkLexer(RegexLexer):
             (r'(dynamic|synchronized|threaded)[.]', Keyword, 'root'),
             (r'(alias|d(ynamic|iscontiguous)|m(eta_predicate|ode|ultifile)|s(et_(logtalk|prolog)_flag|ynchronized))(?=[(])', Keyword, 'root'),
             (r'op(?=[(])', Keyword, 'root'),
-            (r'(calls|reexport|use(s|_module))(?=[(])', Keyword, 'root'),
+            (r'(c(alls|oinductive)|reexport|use(s|_module))(?=[(])', Keyword, 'root'),
             (r'[a-z][a-zA-Z0-9_]*(?=[(])', Text, 'root'),
             (r'[a-z][a-zA-Z0-9_]*[.]', Text, 'root'),
         ],

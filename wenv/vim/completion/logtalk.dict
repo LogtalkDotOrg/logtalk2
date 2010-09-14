@@ -22,6 +22,7 @@ discontiguous
 meta_predicate
 mode
 multifile
+coinductive
 op
 private
 protected

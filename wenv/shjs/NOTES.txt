@@ -25,3 +25,7 @@ distribution, just replace the file "sh_logtalk.js" in the SHJS distribution
 The file "source.html" is a test file based on the "../tests/source.lgt"
 file. To use this test file, copy it to the root of your SHJS distribution
 directory and open it in your favorite web browser.
+
+SHJS expects the source code to be wrapped in "pre" tags and doesn't seem to
+provide any control over tab settings. Therefore, for best results, convert
+the tabs in your source code to spaces before copying it to your HTML files.

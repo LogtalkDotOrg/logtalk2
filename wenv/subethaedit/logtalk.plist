@@ -91,6 +91,7 @@
 				<string>\:\-[[:space:]](private)\(</string>			
 				<string>\:\-[[:space:]](meta_predicate)\(</string>			
 				<string>\:\-[[:space:]](multifile)\(</string>			
+				<string>\:\-[[:space:]](coinductive)\(</string>			
 				<string>\:\-[[:space:]](op)\(</string>			
 				<string>\:\-[[:space:]](calls)\(</string>			
 				<string>\:\-[[:space:]](uses)\(</string>			
