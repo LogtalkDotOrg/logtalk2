@@ -620,9 +620,9 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_clean_pp_clauses',
 	'$lgt_tr_object_id'(Obj, (dynamic)),
 	'$lgt_tr_object_relations'(Rels, Obj),
-	'$lgt_comp_ctx_mode'(Ctx, runtime),
-	'$lgt_tr_directives'(Dirs, Ctx),
-	'$lgt_tr_clauses'(Clauses, Ctx),
+	'$lgt_comp_ctx_mode'(Ctx, runtime),	% set the initial compilation context for compiling
+	'$lgt_tr_directives'(Dirs, Ctx),	% the object directives and clauses
+	'$lgt_tr_terms'(Clauses, Ctx),		% the list of clauses may also include grammar rules
 	'$lgt_gen_object_local_def_clauses',
 	'$lgt_fix_synchronized_preds',
 	'$lgt_fix_pred_calls',
@@ -679,9 +679,9 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_clean_pp_clauses',
 	'$lgt_tr_category_id'(Ctg, (dynamic)),
 	'$lgt_tr_category_relations'(Rels, Ctg),
-	'$lgt_comp_ctx_mode'(Ctx, runtime),
-	'$lgt_tr_directives'(Dirs, Ctx),
-	'$lgt_tr_clauses'(Clauses, Ctx),
+	'$lgt_comp_ctx_mode'(Ctx, runtime),	% set the initial compilation context for compiling
+	'$lgt_tr_directives'(Dirs, Ctx),	% the category directives and clauses
+	'$lgt_tr_terms'(Clauses, Ctx),		% the list of clauses may also include grammar rules
 	'$lgt_fix_synchronized_preds',
 	'$lgt_fix_pred_calls',
 	'$lgt_gen_category_clauses',
@@ -733,8 +733,8 @@ create_protocol(Ptc, Rels, Dirs) :-
 	'$lgt_clean_pp_clauses',
 	'$lgt_tr_protocol_id'(Ptc, (dynamic)),
 	'$lgt_tr_protocol_relations'(Rels, Ptc),
-	'$lgt_comp_ctx_mode'(Ctx, runtime),
-	'$lgt_tr_directives'(Dirs, Ctx),
+	'$lgt_comp_ctx_mode'(Ctx, runtime),	% set the initial compilation context
+	'$lgt_tr_directives'(Dirs, Ctx),	% for compiling the protocol directives
 	'$lgt_gen_protocol_clauses',
 	'$lgt_gen_protocol_directives',
 	'$lgt_assert_tr_entity',
@@ -5644,8 +5644,8 @@ current_logtalk_flag(version, version(2, 41, 0)).
 
 '$lgt_tr_file'(Term, Singletons, Input) :-
 	'$lgt_report_singletons'(Singletons, Term),
-	'$lgt_comp_ctx_mode'(Ctx, compile),
-	'$lgt_tr_term'(Term, Ctx),
+	'$lgt_comp_ctx_mode'(Ctx, compile),	% set the initial compilation context
+	'$lgt_tr_term'(Term, Ctx),			% for compiling the read term
 	'$lgt_read_term'(Input, Next, [singletons(NextSingletons)]),
 	'$lgt_tr_file'(Next, NextSingletons, Input).
 
@@ -6370,13 +6370,29 @@ current_logtalk_flag(version, version(2, 41, 0)).
 
 
 
+% '$lgt_tr_terms'(+list(term), +ctx)
+%
+% translates a list of terms (clauses, directives, or grammar rules)
+
+'$lgt_tr_terms'([], _).
+'$lgt_tr_terms'([Term| Terms], Ctx) :-
+	'$lgt_comp_ctx_mode'(Ctx, Mode),			% only the compilation context mode should
+	'$lgt_comp_ctx_mode'(NewCtx, Mode),			% be shared between different terms
+	'$lgt_tr_term'(Term, NewCtx),
+	'$lgt_tr_terms'(Terms, Ctx).
+
+
+
 % '$lgt_tr_term'(@term, +ctx)
 %
-% translates a source file term (clauses, directives, and grammar rules)
+% translates a source term (clause, directive, or grammar rule)
 
 '$lgt_tr_term'(Term, Ctx) :-
 	(	var(Term) ->
 		throw(error(instantiantion_error, term(Term)))
+	;	% runtime creation of new entities; no expansion:
+		'$lgt_comp_ctx_mode'(Ctx, runtime) ->
+		'$lgt_tr_expanded_term'(Term, Ctx)
 	;	% source-file specific compiler hook:
 		'$lgt_pp_hook_term_expansion_'(Term, Terms) ->
 		'$lgt_tr_expanded_terms'(Terms, Ctx)
@@ -6423,6 +6439,8 @@ current_logtalk_flag(version, version(2, 41, 0)).
 	!,
 	(	var(Directive) ->
 		throw(error(instantiantion_error, directive(Directive)))
+	;	'$lgt_comp_ctx_mode'(Ctx, runtime) ->
+		'$lgt_tr_directive'(Directive, Ctx)
 	;	\+ '$lgt_pp_entity'(_, _, _, _, _) ->
 		'$lgt_tr_directive'(Directive, Ctx)
 	;	'$lgt_ignore_pl_directive'(Directive) ->								% defined in the Prolog config files
@@ -6476,7 +6494,9 @@ current_logtalk_flag(version, version(2, 41, 0)).
 '$lgt_tr_directives'([], _).
 
 '$lgt_tr_directives'([Dir| Dirs], Ctx) :-
-	'$lgt_tr_directive'(Dir, Ctx),
+	'$lgt_comp_ctx_mode'(Ctx, Mode),			% only the compilation context mode should
+	'$lgt_comp_ctx_mode'(NewCtx, Mode),			% be shared between different directives
+	'$lgt_tr_directive'(Dir, NewCtx),
 	'$lgt_tr_directives'(Dirs, Ctx).
 
 
@@ -6501,7 +6521,7 @@ current_logtalk_flag(version, version(2, 41, 0)).
 	throw(error(type_error(callable, Goal), directive(if(Goal)))).
 
 '$lgt_tr_directive'(if(Goal), Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, compile),
+	'$lgt_comp_ctx_mode'(Ctx, compile),			% only expand goals when compiling a source file
 	'$lgt_tr_expand_goal'(Goal, EGoal),
 	!,
 	'$lgt_tr_directive'(if(EGoal), Ctx).
@@ -6550,7 +6570,7 @@ current_logtalk_flag(version, version(2, 41, 0)).
 	throw(error(unmatched_directive, directive(elif(Goal)))).
 
 '$lgt_tr_directive'(elif(Goal), Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, compile),
+	'$lgt_comp_ctx_mode'(Ctx, compile),			% only expand goals when compiling a source file
 	'$lgt_tr_expand_goal'(Goal, EGoal),
 	!,
 	'$lgt_tr_directive'(elif(EGoal), Ctx).
@@ -6707,7 +6727,7 @@ current_logtalk_flag(version, version(2, 41, 0)).
     assertz('$lgt_pp_pterm_'((:- ensure_loaded(File)))).
 
 '$lgt_tr_file_directive'(initialization(Goal), Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, compile),
+	'$lgt_comp_ctx_mode'(Ctx, compile),					% only expand goals when compiling a source file
 	'$lgt_tr_expand_goal'(Goal, EGoal),
 	!,
 	'$lgt_tr_file_directive'(initialization(EGoal), Ctx).
@@ -8482,7 +8502,9 @@ current_logtalk_flag(version, version(2, 41, 0)).
 '$lgt_tr_clauses'([], _).
 
 '$lgt_tr_clauses'([Clause| Clauses], Ctx) :-
-	'$lgt_tr_clause'(Clause, Ctx),
+	'$lgt_comp_ctx_mode'(Ctx, Mode),			% only the compilation context mode should
+	'$lgt_comp_ctx_mode'(NewCtx, Mode),			% be shared between different clauses
+	'$lgt_tr_clause'(Clause, NewCtx),
 	'$lgt_tr_clauses'(Clauses, Ctx).
 
 
@@ -8490,8 +8512,8 @@ current_logtalk_flag(version, version(2, 41, 0)).
 % '$lgt_tr_clause'(+clause, +ctx)
 
 '$lgt_tr_clause'(Clause, Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, Mode),			% only the compilation context mode should be shared
-	'$lgt_comp_ctx_mode'(NewCtx, Mode),			% between different clauses
+	'$lgt_comp_ctx_mode'(Ctx, Mode),			% only the compilation context mode should
+	'$lgt_comp_ctx_mode'(NewCtx, Mode),			% be shared between different clauses
 	'$lgt_tr_clause'(Clause, NewCtx, NewCtx).	% assume for now that the head and the body compilation contexts are the same
 
 
@@ -8962,7 +8984,7 @@ current_logtalk_flag(version, version(2, 41, 0)).
 % goal expansion (only applied at compile time)
 
 '$lgt_tr_body'(Pred, TPred, DPred, Ctx) :-
-	\+ '$lgt_comp_ctx_mode'(Ctx, runtime),
+	'$lgt_comp_ctx_mode'(Ctx, compile),
 	'$lgt_tr_expand_goal'(Pred, EPred),
 	!,
 	'$lgt_tr_body'(EPred, TPred, DPred, Ctx).
@@ -10112,36 +10134,36 @@ current_logtalk_flag(version, version(2, 41, 0)).
 % arithmetic predicates (portability checks)
 
 '$lgt_tr_body'(_ is Exp, _, _, Ctx) :-
-	\+ '$lgt_comp_ctx_mode'(Ctx, runtime),
+	'$lgt_comp_ctx_mode'(Ctx, compile),
 	'$lgt_check_non_portable_functions'(Exp),
 	fail.
 '$lgt_tr_body'(Exp1 =:= Exp2, _, _, Ctx) :-
-	\+ '$lgt_comp_ctx_mode'(Ctx, runtime),
+	'$lgt_comp_ctx_mode'(Ctx, compile),
 	'$lgt_check_non_portable_functions'(Exp1),
 	'$lgt_check_non_portable_functions'(Exp2),
 	fail.
 '$lgt_tr_body'(Exp1 =\= Exp2, _, _, Ctx) :-
-	\+ '$lgt_comp_ctx_mode'(Ctx, runtime),
+	'$lgt_comp_ctx_mode'(Ctx, compile),
 	'$lgt_check_non_portable_functions'(Exp1),
 	'$lgt_check_non_portable_functions'(Exp2),
 	fail.
 '$lgt_tr_body'(Exp1 < Exp2, _, _, Ctx) :-
-	\+ '$lgt_comp_ctx_mode'(Ctx, runtime),
+	'$lgt_comp_ctx_mode'(Ctx, compile),
 	'$lgt_check_non_portable_functions'(Exp1),
 	'$lgt_check_non_portable_functions'(Exp2),
 	fail.
 '$lgt_tr_body'(Exp1 =< Exp2, _, _, Ctx) :-
-	\+ '$lgt_comp_ctx_mode'(Ctx, runtime),
+	'$lgt_comp_ctx_mode'(Ctx, compile),
 	'$lgt_check_non_portable_functions'(Exp1),
 	'$lgt_check_non_portable_functions'(Exp2),
 	fail.
 '$lgt_tr_body'(Exp1 > Exp2, _, _, Ctx) :-
-	\+ '$lgt_comp_ctx_mode'(Ctx, runtime),
+	'$lgt_comp_ctx_mode'(Ctx, compile),
 	'$lgt_check_non_portable_functions'(Exp1),
 	'$lgt_check_non_portable_functions'(Exp2),
 	fail.
 '$lgt_tr_body'(Exp1 >= Exp2, _, _, Ctx) :-
-	\+ '$lgt_comp_ctx_mode'(Ctx, runtime),
+	'$lgt_comp_ctx_mode'(Ctx, compile),
 	'$lgt_check_non_portable_functions'(Exp1),
 	'$lgt_check_non_portable_functions'(Exp2),
 	fail.
@@ -10150,7 +10172,7 @@ current_logtalk_flag(version, version(2, 41, 0)).
 % remember non-portable Prolog built-in predicate calls
 
 '$lgt_tr_body'(Pred, _, _, Ctx) :-
-	\+ '$lgt_comp_ctx_mode'(Ctx, runtime),
+	'$lgt_comp_ctx_mode'(Ctx, compile),
 	'$lgt_compiler_flag'(portability, warning),
 	'$lgt_pl_built_in'(Pred),
 	\+ '$lgt_lgt_built_in'(Pred),
@@ -10239,7 +10261,7 @@ current_logtalk_flag(version, version(2, 41, 0)).
 % goal is an invalid call to a dynamic predicate within a category
 
 '$lgt_tr_body'(Pred, _, _, Ctx) :-
-	\+ '$lgt_comp_ctx_mode'(Ctx, runtime),
+	'$lgt_comp_ctx_mode'(Ctx, compile),
 	'$lgt_pp_category_'(_, _, _, _, _, _),		% we're compiling a category
 	functor(Pred, Functor, Arity),
 	'$lgt_pp_dynamic_'(Functor, Arity),			% which declares the predicate dynamic

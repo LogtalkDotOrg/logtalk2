@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.41.0 - September 13, 2010
+2.41.0 - September 15, 2010
 
     Added experimental support for coinductive predicates to the Logtalk
     compiler using a coinductive/1 directive. Requires a back-end Prolog
@@ -35,6 +35,10 @@ RELEASE NOTES
     end lines of a read term.
 
     Simplified the Logtalk compiler by using stream aliases.
+
+    Updated the implementation of the create_object/4 and create_category/4
+    built-in predicates in order to also support the definition of an initial
+    set of grammar rules.
 
     Corrected a bug in the runtime error handler that would result in entity
     existence errors being reported as (internal) predicate existence errors.
