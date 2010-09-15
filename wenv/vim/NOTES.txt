@@ -20,7 +20,8 @@ and the Vim charityware license.
 
 Recent versions of Vim already contain support for Logtalk. However, 
 this directory may contain an updated syntax file. If that is the 
-case, install the syntax file by performing the following steps:
+case, install the Logtalk support files by performing the following
+steps:
 
 1. Copy the file "syntax/logtalk.vim" to the "syntax" sub-directory in 
 your VIM installation directory (replacing any existing older file).
@@ -36,7 +37,9 @@ your VIM installation directory (replacing any existing older file).
 
 4. Copy the files "completion/logtalk.dict" and "ftplugin/logtalk.vim" 
 to the "ftplugin" sub-directory in your Vim installation directory 
-(replacing any existing older files).
+(replacing any existing files; current Vim versions are distributed
+with a "ftplugin/logtalk.vim" that comments out some of the necessary
+settings despite their local scope!).
 
 5. Add the following lines to your ~/.vimrc file:
 

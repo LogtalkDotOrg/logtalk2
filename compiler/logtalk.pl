@@ -5729,7 +5729,7 @@ current_logtalk_flag(version, version(2, 41, 0)).
 
 
 '$lgt_report_singleton_names'([], _) :-
-	!.	% cut needed to prevent problems with compilers with broken read_term/3 implementations
+	!.	% cut necessary to prevent problems with compilers with broken read_term/3 implementations
 
 '$lgt_report_singleton_names'([Name| Names], Term) :-
 	'$lgt_report_warning_in_new_line',
@@ -6690,12 +6690,12 @@ current_logtalk_flag(version, version(2, 41, 0)).
 	assertz('$lgt_pp_directive_'(TDir)).
 
 '$lgt_tr_directive'(Dir, Ctx) :-
-	'$lgt_pp_module_'(_),									% we're compiling a module as an object
+	'$lgt_pp_module_'(_),								% we're compiling a module as an object
 	(	functor(Dir, Functor, Arity), '$lgt_pp_defs_pred_'(Functor, Arity)
-	;	'$lgt_pp_uses_pred_'(_, _, Dir)						% directive is a query for a locally defined predicate
- 	;	'$lgt_pp_use_module_pred_'(_, _, Dir)				% or a predicate referenced in a use_module/2 directive
+	;	'$lgt_pp_uses_pred_'(_, _, Dir)					% directive is a query for a locally defined predicate
+ 	;	'$lgt_pp_use_module_pred_'(_, _, Dir)			% or a predicate referenced in a use_module/2 directive
 	),
-	!,														% translate query as an initialization goal
+	!,													% translate query as an initialization goal
 	(	'$lgt_compiler_flag'(portability, warning),
 		\+ '$lgt_compiler_flag'(report, off) ->
 		'$lgt_report_warning_in_new_line',
@@ -6902,7 +6902,7 @@ current_logtalk_flag(version, version(2, 41, 0)).
 
 '$lgt_tr_directive'(module, [Module], Ctx) :-
 	!,
-	'$lgt_tr_directive'(module, [Module, []], Ctx).	% empty export list
+	'$lgt_tr_directive'(module, [Module, []], Ctx).		% empty export list
 
 '$lgt_tr_directive'(module, [Module, ExportList], _) :-
 	(var(Module); var(ExportList)),
@@ -6913,14 +6913,14 @@ current_logtalk_flag(version, version(2, 41, 0)).
 	throw(type_error(atom, Module)).
 
 '$lgt_tr_directive'(module, [Module, Exports], Ctx) :-
-	assertz('$lgt_pp_module_'(Module)),										% remeber we are compiling a module
+	assertz('$lgt_pp_module_'(Module)),					% remeber we are compiling a module
 	'$lgt_report_compiling_entity'(module, Module),
-	'$lgt_tr_object_id'(Module, static),									% assume static module/object
+	'$lgt_tr_object_id'(Module, static),				% assume static module/object
 	'$lgt_split_ops_and_preds'(Exports, Preds, Ops),
 	forall(
 		'$lgt_member'(Op, Ops),
 		'$lgt_tr_file_directive'(Op, Ctx)),
-	'$lgt_tr_directive'((public), Preds, Ctx),		% make the export list public predicates
+	'$lgt_tr_directive'((public), Preds, Ctx),			% make the export list public predicates
 	'$lgt_save_file_op_table'.
 
 
@@ -7186,6 +7186,8 @@ current_logtalk_flag(version, version(2, 41, 0)).
 
 
 % export/1 module directive
+%
+% module exported predicates are compiled as object public predicates
 
 '$lgt_tr_directive'((export), Exports, Ctx) :-
 	% we must be compiling a module as an object
