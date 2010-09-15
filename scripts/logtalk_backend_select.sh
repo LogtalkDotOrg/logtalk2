@@ -13,7 +13,7 @@
 
 print_version() {
 	echo "Current `basename $0` version:"
-	echo "  0.2"
+	echo "  0.3"
 	exit 0
 }
 
@@ -22,9 +22,6 @@ list_backends() {
     echo "Available back-end Prolog compilers:"
 	if [ -e `which bplgt` ]  && [ "`which bp`" != "" ] ; then
 		echo -n "  bplgt"
-	fi
-	if [ -e `which ciaolgt` ]  && [ "`which ciaosh`" != "" ] ; then
-		echo -n "  ciaolgt"
 	fi
 	if [ -e `which cxlgt` ]  && [ "`which cxprolog`" != "" ] ; then
 		echo -n "  cxlgt"
@@ -93,8 +90,6 @@ usage_help() {
 
 valid_backend() {
 	if [ "$1" == "bplgt" ] && [ -e `which bplgt` ]  && [ "`which bp`" != "" ] ; then
-		return 0
-	elif [ "$1" == "ciaolgt" ] && [ -e `which ciaolgt` ]  && [ "`which ciaosh`" != "" ] ; then
 		return 0
 	elif [ "$1" == "cxlgt" ] && [ -e `which cxlgt` ]  && [ "`which cxprolog`" != "" ] ; then
 		return 0

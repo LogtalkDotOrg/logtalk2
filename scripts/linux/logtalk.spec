@@ -59,7 +59,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/logtalk_version_select
 /usr/local/bin/logtalk_backend_select
 /usr/local/bin/bplgt
-/usr/local/bin/ciaolgt
 /usr/local/bin/cxlgt
 /usr/local/bin/eclipselgt
 /usr/local/bin/gplgt
@@ -72,7 +71,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/local/bin/xsbmt64lgt
 /usr/local/bin/yaplgt
 /usr/local/share/man/man1/bplgt.1.gz
-/usr/local/share/man/man1/ciaolgt.1.gz
 /usr/local/share/man/man1/cxlgt.1.gz
 /usr/local/share/man/man1/eclipselgt.1.gz
 /usr/local/share/man/man1/gplgt.1.gz
@@ -107,7 +105,6 @@ echo "The following integration scripts are installed for running Logtalk"
 echo "with selected back-end Prolog compilers:"
 echo
 echo "* B-Prolog (version 7.4 or later):       bplgt"
-echo "* Ciao (version 1.10):                   ciaolgt    (first run must use sudo)"
 echo "* CxProlog (version 0.97.5 or later):    cxlgt"
 echo "* ECLiPSe (version 6.0#141 or later):    eclipselgt"
 echo "* GNU Prolog (version 1.4.0 or later):   gplgt"

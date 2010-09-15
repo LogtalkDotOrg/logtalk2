@@ -54,6 +54,11 @@ RELEASE NOTES
     argument would result in a compilation loop when the qualified goal is a
     variable.
 
+    Ciao Prolog 1.10 is no longer supported as this compiler fails to provide
+    support for ISO Prolog standard stream aliases and the stream_property/2
+    built-in predicate. Support for this Prolog compiler will be reevaluated
+    when a new stable version becomes available.
+
     ECLiPSe 6.0#141 or a later version is now required when using this
     back-end Prolog compiler due to use of stream aliases in the Logtalk
     compiler.

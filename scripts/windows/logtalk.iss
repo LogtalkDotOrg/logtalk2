@@ -53,7 +53,6 @@ Name: "user"; Description: "User files (libraries, examples, and other support f
 Name: "user\backup"; Description: "Backup current Logtalk user folder"; Types: full user custom; Flags: disablenouninstallwarning
 Name: "prolog"; Description: "Prolog integration (back-end compiler support)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\bp"; Description: "B-Prolog integration (version 7.4 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\ciao"; Description: "Ciao Prolog integration (version 1.10)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\cxprolog"; Description: "CxProlog integration (version 0.97.5 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\eclipse"; Description: "ECLiPSe integration (version 6.0#141 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\gprolog"; Description: "GNU Prolog integration (version 1.4.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
@@ -109,8 +108,6 @@ Name: "{group}\Default settings"; Filename: "%LOGTALKUSER%\settings.lgt"; Compon
 Name: "{group}\Web Site"; Filename: "{#MyAppUrl}"; Components: base
 
 Name: "{group}\Logtalk - B-Prolog"; Filename: "{code:GetBPExePath}"; Parameters: "-g ""consult('$LOGTALKHOME/integration/logtalk_bp.pl'), $bp_top_level"""; Comment: "Runs Logtalk with B-Prolog"; WorkingDir: "%CD%"; Components: prolog\bp; Flags: createonlyiffileexists
-
-Name: "{group}\Logtalk - Ciao Prolog"; Filename: "{code:GetCiaoExePath}"; Parameters: "-l ""$LOGTALKHOME/integration/logtalk_ciao.pl"""; Comment: "Runs Logtalk with Ciao Prolog"; WorkingDir: "%CD%"; Components: prolog\ciao; Flags: createonlyiffileexists
 
 Name: "{group}\Logtalk - CxProlog"; Filename: "{code:GetCxExePath}"; Parameters: "--script ""%LOGTALKHOME%\\integration\\logtalk_cx.pl"""; Comment: "Runs Logtalk with CxProlog"; WorkingDir: "%CD%"; Components: prolog\cxprolog; Flags: createonlyiffileexists
 
@@ -230,28 +227,6 @@ begin
   begin
     Warning := 'Failed to detect B-Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
 	  MsgBox(Warning, mbError, MB_OK);
-  end
-end;
-
-function CiaoExePath: String;
-var
-  CiaoDir: String;
-begin
-  if RegQueryStringValue(HKLM, 'Software\Ciao Prolog\', 'ciao_dir', CiaoDir) then
-    Result := CiaoDir + '\shell\ciaosh.bat'
-  else
-    Result := 'prolog_compiler_not_installed'
-end;
-
-function GetCiaoExePath(Param: String): String;
-var
-  Warning: String;
-begin
-  Result := CiaoExePath;
-  if Result = 'prolog_compiler_not_installed' then
-  begin
-    Warning := 'Failed to detect Ciao Prolog installation.' + Chr(13) + 'Logtalk integration shortcut not created.';
-	MsgBox(Warning, mbError, MB_OK);
   end
 end;
 
@@ -502,7 +477,6 @@ function NoBackEndPrologCompilerInstalled: Boolean;
 begin
     Result :=
       (BPExePath = 'prolog_compiler_not_installed') and
-      (CiaoExePath = 'prolog_compiler_not_installed') and
       (CxExePath = 'prolog_compiler_not_installed') and
       (Eclipse6ExePath = 'prolog_compiler_not_installed') and
       (GPExePath = 'prolog_compiler_not_installed') and

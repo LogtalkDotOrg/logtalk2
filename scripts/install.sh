@@ -71,7 +71,6 @@ echo "you may need to add this directory to your execution path."
 echo
 
 ln -sf ../share/logtalk/integration/bplgt.sh bplgt
-ln -sf ../share/logtalk/integration/ciaolgt.sh ciaolgt
 ln -sf ../share/logtalk/integration/cxlgt.sh cxlgt
 ln -sf ../share/logtalk/integration/eclipselgt.sh eclipselgt
 ln -sf ../share/logtalk/integration/gplgt.sh gplgt
@@ -95,7 +94,6 @@ echo "The following integration scripts are installed for running Logtalk"
 echo "with selected back-end Prolog compilers:"
 echo
 echo "* B-Prolog (version 7.4 or later):       bplgt"
-echo "* Ciao (version 1.10):                   ciaolgt    (first run must use sudo)"
 echo "* CxProlog (version 0.97.5 or later):    cxlgt"
 echo "* ECLiPSe (version 6.0#141 or later):    eclipselgt"
 echo "* GNU Prolog (version 1.4.0 or later):   gplgt"

@@ -79,28 +79,6 @@ B-Prolog 7.4 and later versions
 	out-of-memory errors with complex applications.
 
 
-CIAO Prolog 1.10#8
-
-	ciao.pl
-	ciao_aux.pl
-
-	The "ciao.pl" file is just a loader file containing two include/1 
-	directives which load the "ciao_aux.pl" and the Logtalk compiler/
-	runtime. You must edit the contents of the file "ciao.pl" to match 
-	your operating system (the include directive arguments are file 
-	paths that differ between operating systems).
-
-	The definition of the predicate '$lgt_predicate_property'/2 in the 
-	file "ciao_aux.pl" is a bit of a hack, but should enable you to run 
-	the Logtalk companion examples and to try out your own Logtalk 
-	programs. 
-
-	Don't forget to call the cd/1 predicate to set the working directory 
-	before compiling the library or an example (you will need first to 
-	load the library system that exports the cd/1 predicate by calling 
-	the goal use_module(library(system)).
-
-
 CxProlog 0.97.5 or later versions
 
 	cx.pl

@@ -47,7 +47,6 @@ rm -rf lgt2410
 rm -f logtalk
 cd ../bin
 rm -f bplgt
-rm -f ciaolgt
 rm -f logtalk_user_setup
 rm -f cxlgt
 rm -f eclipselgt
@@ -67,7 +66,6 @@ rm -f xsbmt64lgt
 rm -f yaplgt
 cd ../share/man/man1
 rm -f bplgt.1.gz
-rm -f ciaolgt.1.gz
 rm -f cxlgt.1.gz
 rm -f eclipselgt.1.gz
 rm -f lgt2html.1.gz

@@ -17,7 +17,6 @@ scripts available from the command-line (you may need to adjust your
 system path):
 
 * B-Prolog (version 7.4 or later):       bplgt
-* Ciao (version 1.10):                   ciaolgt    (first run must use sudo)
 * CxProlog (version 0.97.5 or later):    cxlgt
 * ECLiPSe (version 6.0#141 or later):    eclipselgt
 * GNU Prolog (version 1.4.0 or later):   gplgt
@@ -33,10 +32,9 @@ system path):
 On Windows systems, the Logtalk installer makes the Prolog integration 
 shortcuts available from the "Start Menu/Programs/Logtalk" menu.
 
-The first run of the Ciao and XSB integration scripts must be made by an 
-user with administrative rights (on POSIX systems, run them once as root 
-or using sudo; in Windows systems run them once from an administrative 
-account).
+The first run of the XSB integration scripts must be made by an user with
+administrative rights (on POSIX systems, run them once as root or using
+sudo; in Windows systems run them once from an administrative account).
 
 The GNU Prolog integration script provides adequate performance for 
 development. For production environments, improved performance may be 
