@@ -10,5 +10,5 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 
 The "e" Windows text editor (http://www.e-texteditor.com/) supports 
-the TextMate 1.x text editor syntax configuration files; for details, 
-see the ../textmate folder.
+the TextMate 1.x text editor language bundles; for details, see the
+../textmate folder.

@@ -101,6 +101,10 @@ RELEASE NOTES
     Added syntax coloring support for the new coinductive/1 predicate
     directive to all supported text editors and syntax highlighters.
 
+    Updated the TextMate commands used for generating (X)HTML, PDF, and TXT
+    documentation in order to be independent of the default settings for the
+    "altdirs" and "xmldir" compiler flags.
+
 
 2.40.1 - June 30, 2010
 

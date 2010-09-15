@@ -38,6 +38,9 @@ LOGTALK_HTML_COMMAND
 LOGTALK_PDF_COMMAND
 	set to the name of the shell script you use to generate the PDF 
 	documentation (e.g. lgt2pdf)
+LOGTALK_TXT_COMMAND
+	set to the name of the shell script you use to generate the TXT 
+	documentation (e.g. lgt2txt)
 
 Logtalk source files (including the programming examples) are usually 
 formatted using four-space tabs; you may set the tab width on the 
