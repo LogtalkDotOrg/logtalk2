@@ -2,11 +2,13 @@
 
 PortSystem	1.0
 name		logtalk
-version 	2.41.0
+version 	2.41.1
 
 categories	lang
 maintainers	logtalk.org:pmoura
 platforms	darwin freebsd linux
+supported_archs noarch
+
 description	Logtalk - Open source object-oriented logic programming language
 
 long_description	\
@@ -19,7 +21,10 @@ long_description	\
 homepage		http://logtalk.org/
 master_sites	${homepage}files/
 
-checksums		md5	7d4bc2a1a5d4f404eb3bc21d178d37e7
+checksums       \
+    md5     6c967d26f394e2d6584978f038ffd8a4 \
+    sha1    8cb811c0a6e0c203b274e96edf74d8e56986bdef \
+    rmd160  bbf614c0450def4164b185b35d0f4b54c397dd0d
 
 distname		lgt[strsed ${version} {g/\.//}]
 
