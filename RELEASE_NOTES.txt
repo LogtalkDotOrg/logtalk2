@@ -19,6 +19,11 @@ RELEASE NOTES
     resulted in failed compilations whenever the body of a grammar rule was
     equivalent to fail/0. Thanks to Ulrich Neumerkel for the bug report.
 
+    Corrected an optimization bug in the compilation of grammar rules that
+    resulted in incorrect compilations when folding pairs of consecutive
+    variable unifications generated as a by-product of the translation of
+    grammar rules into clauses. Thanks to Ulrich Neumerkel for the bug report.
+
 
 2.41.0 - September 15, 2010
 

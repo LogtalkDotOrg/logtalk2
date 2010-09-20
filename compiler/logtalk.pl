@@ -9920,6 +9920,9 @@ current_logtalk_flag(version, version(2, 41, 1)).
 		DPred = (Input = S0, Rest = S, DPred0)
 	).
 
+'$lgt_tr_body'('$lgt_gr_pair'(Pred), Pred, Pred, _) :-
+	!.
+
 '$lgt_tr_body'('$lgt_gr_obj_msg'(Obj, NonTerminal, Input, Rest, Pred), TPred, '$lgt_dbg_goal'(phrase(Obj::NonTerminal, Input, Rest), DPred, ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
@@ -15155,7 +15158,7 @@ current_logtalk_flag(version, version(2, 41, 1)).
     '$lgt_dcg_msg'(GRFirst, Obj, S0, S1, First, LFirst),
     '$lgt_dcg_msg'(GRSecond, Obj, S1, S, Second, LSecond).
 
-'$lgt_dcg_msg'(!, _, S0, S, (!, S0 = S), (!, S0 = S)) :-
+'$lgt_dcg_msg'(!, _, S0, S, (!, '$lgt_gr_pair'(S0 = S)), (!, '$lgt_gr_pair'(S0 = S))) :-
     !.
 
 '$lgt_dcg_msg'(NonTerminal, Obj, S0, S, Obj::Pred, '$lgt_gr_obj_msg'(Obj, NonTerminal, S0, S, Pred)) :-
@@ -15186,7 +15189,7 @@ current_logtalk_flag(version, version(2, 41, 1)).
     '$lgt_dcg_self_msg'(GRFirst, S0, S1, First, LFirst),
     '$lgt_dcg_self_msg'(GRSecond, S1, S, Second, LSecond).
 
-'$lgt_dcg_self_msg'(!, S0, S, (!, S0 = S), (!, S0 = S)) :-
+'$lgt_dcg_self_msg'(!, S0, S, (!, '$lgt_gr_pair'(S0 = S)), (!, '$lgt_gr_pair'(S0 = S))) :-
     !.
 
 '$lgt_dcg_self_msg'(NonTerminal, S0, S, ::Pred, '$lgt_gr_self_msg'(NonTerminal, S0, S, Pred)) :-
@@ -15228,13 +15231,13 @@ current_logtalk_flag(version, version(2, 41, 1)).
     '$lgt_dcg_body'(GRFirst, S0, S1, First, LFirst),
     '$lgt_dcg_body'(GRSecond, S1, S, Second, LSecond).
 
-'$lgt_dcg_body'(!, S0, S, (!, S0 = S), (!, S0 = S)) :-
+'$lgt_dcg_body'(!, S0, S, (!, '$lgt_gr_pair'(S0 = S)), (!, '$lgt_gr_pair'(S0 = S))) :-
     !.
 
-'$lgt_dcg_body'({}, S0, S, (S0 = S), (S0 = S)) :-
+'$lgt_dcg_body'({}, S0, S, '$lgt_gr_pair'(S0 = S), '$lgt_gr_pair'(S0 = S)) :-
     !.
 
-'$lgt_dcg_body'({Goal}, S0, S, (call(Goal), S0 = S), (call(Goal), S0 = S)) :-
+'$lgt_dcg_body'({Goal}, S0, S, (call(Goal), '$lgt_gr_pair'(S0 = S)), (call(Goal), '$lgt_gr_pair'(S0 = S))) :-
     var(Goal),
     !.
 
@@ -15242,10 +15245,10 @@ current_logtalk_flag(version, version(2, 41, 1)).
     \+ callable(Goal),
     throw(type_error(callable, Goal)).
 
-'$lgt_dcg_body'({Goal}, S0, S, (Goal, S0 = S), (Goal, S0 = S)) :-
+'$lgt_dcg_body'({Goal}, S0, S, (Goal, '$lgt_gr_pair'(S0 = S)), (Goal, '$lgt_gr_pair'(S0 = S))) :-
     !.
 
-'$lgt_dcg_body'(\+ GRBody, S0, S, (\+ Goal, S0 = S), (\+ LGoal, S0 = S)) :-
+'$lgt_dcg_body'(\+ GRBody, S0, S, (\+ Goal, '$lgt_gr_pair'(S0 = S)), (\+ LGoal, '$lgt_gr_pair'(S0 = S))) :-
     !,
     '$lgt_dcg_body'(GRBody, S0, _, Goal, LGoal).
 
@@ -15257,7 +15260,7 @@ current_logtalk_flag(version, version(2, 41, 1)).
 '$lgt_dcg_body'(call(Closure), S0, S, call(Closure, S0, S), call(Closure, S0, S)) :-
 	!.
 
-'$lgt_dcg_body'([], S0, S, (S0=S), (S0=S)) :-
+'$lgt_dcg_body'([], S0, S, '$lgt_gr_pair'(S0 = S), '$lgt_gr_pair'(S0 = S)) :-
     !.
 
 '$lgt_dcg_body'([T| Ts], S0, S, Goal, Goal) :-
@@ -15289,9 +15292,9 @@ current_logtalk_flag(version, version(2, 41, 1)).
 % simplifies the clause resulting from a grammar rule translation:
 
 '$lgt_dcg_simplify'((Head :- Body), _, _, Clause) :-
-    '$lgt_dcg_conjunctions'(Body, Flatted),
-    '$lgt_dcg_fold_left'(Flatted, FoldedLeft),
-    '$lgt_dcg_fold_pairs'(FoldedLeft, FoldedPairs),
+    '$lgt_dcg_flatten_conjunctions'(Body, Flatted),
+    '$lgt_dcg_fold_left_unifications'(Flatted, Folded),
+    '$lgt_dcg_fold_pairs'(Folded, FoldedPairs),
     (    FoldedPairs == true ->
          Clause = Head
     ;    Clause = (Head :- FoldedPairs)
@@ -15299,78 +15302,79 @@ current_logtalk_flag(version, version(2, 41, 1)).
 
 
 
-% '$lgt_dcg_conjunctions'(+goal, -goal)
+% '$lgt_dcg_flatten_conjunctions'(+goal, -goal)
 %
 % removes redundant calls to true/0 and flattens conjunction of goals:
 
-'$lgt_dcg_conjunctions'((Goal1 -> Goal2), (SGoal1 -> SGoal2)) :-
+'$lgt_dcg_flatten_conjunctions'((Goal1 -> Goal2), (SGoal1 -> SGoal2)) :-
     !,
-    '$lgt_dcg_conjunctions'(Goal1, SGoal1),
-    '$lgt_dcg_conjunctions'(Goal2, SGoal2).
+    '$lgt_dcg_flatten_conjunctions'(Goal1, SGoal1),
+    '$lgt_dcg_flatten_conjunctions'(Goal2, SGoal2).
 
-'$lgt_dcg_conjunctions'((Goal1; Goal2), (SGoal1; SGoal2)) :-
+'$lgt_dcg_flatten_conjunctions'((Goal1; Goal2), (SGoal1; SGoal2)) :-
     !,
-    '$lgt_dcg_conjunctions'(Goal1, SGoal1),
-    '$lgt_dcg_conjunctions'(Goal2, SGoal2).
+    '$lgt_dcg_flatten_conjunctions'(Goal1, SGoal1),
+    '$lgt_dcg_flatten_conjunctions'(Goal2, SGoal2).
 
-'$lgt_dcg_conjunctions'(((Goal1, Goal2), Goal3), Body) :-
+'$lgt_dcg_flatten_conjunctions'(((Goal1, Goal2), Goal3), Body) :-
     !,
-    '$lgt_dcg_conjunctions'((Goal1, (Goal2, Goal3)), Body).
+    '$lgt_dcg_flatten_conjunctions'((Goal1, (Goal2, Goal3)), Body).
 
-'$lgt_dcg_conjunctions'((true, Goal), Body) :-
+'$lgt_dcg_flatten_conjunctions'((true, Goal), Body) :-
     !,
-    '$lgt_dcg_conjunctions'(Goal, Body).
+    '$lgt_dcg_flatten_conjunctions'(Goal, Body).
 
-'$lgt_dcg_conjunctions'((Goal, true), Body) :-
+'$lgt_dcg_flatten_conjunctions'((Goal, true), Body) :-
     !,
-    '$lgt_dcg_conjunctions'(Goal, Body).
+    '$lgt_dcg_flatten_conjunctions'(Goal, Body).
 
-'$lgt_dcg_conjunctions'((Goal1, Goal2), (Goal1, Goal3)) :-
+'$lgt_dcg_flatten_conjunctions'((Goal1, Goal2), (Goal1, Goal3)) :-
     !,
-    '$lgt_dcg_conjunctions'(Goal2, Goal3).
+    '$lgt_dcg_flatten_conjunctions'(Goal2, Goal3).
 
-'$lgt_dcg_conjunctions'(\+ Goal, \+ SGoal) :-
+'$lgt_dcg_flatten_conjunctions'(\+ Goal, \+ SGoal) :-
     !,
-    '$lgt_dcg_conjunctions'(Goal, SGoal).
+    '$lgt_dcg_flatten_conjunctions'(Goal, SGoal).
 
-'$lgt_dcg_conjunctions'(::Goal, ::SGoal) :-
+'$lgt_dcg_flatten_conjunctions'(::Goal, ::SGoal) :-
 	!,
-	'$lgt_dcg_conjunctions'(Goal, SGoal).
+	'$lgt_dcg_flatten_conjunctions'(Goal, SGoal).
 
-'$lgt_dcg_conjunctions'(Object::Goal, Object::SGoal) :-
+'$lgt_dcg_flatten_conjunctions'(Object::Goal, Object::SGoal) :-
 	!,
-	'$lgt_dcg_conjunctions'(Goal, SGoal).
+	'$lgt_dcg_flatten_conjunctions'(Goal, SGoal).
 
-'$lgt_dcg_conjunctions'(Goal, Goal).
+'$lgt_dcg_flatten_conjunctions'(Goal, Goal).
 
 
 
-% '$lgt_dcg_fold_left'(+goal, -goal)
+% '$lgt_dcg_fold_left_unifications'(+goal, -goal)
 %
 % folds left unifications; right unifications cannot
 % be folded otherwise we might loose steadfastness
 
-'$lgt_dcg_fold_left'((Term1 = Term2), Folded) :-
+'$lgt_dcg_fold_left_unifications'((Term1 = Term2), Folded) :-
 	!,
 	(	Term1 = Term2 ->
 		Folded = true
 	;	Folded = fail
 	).
 
-'$lgt_dcg_fold_left'(((Term1 = Term2), Goal), Folded) :-
+'$lgt_dcg_fold_left_unifications'(((Term1 = Term2), Goal), Folded) :-
 	!,
 	(	Term1 = Term2 ->
-		'$lgt_dcg_fold_left'(Goal, Folded)
+		'$lgt_dcg_fold_left_unifications'(Goal, Folded)
 	;	Folded = fail
 	).
 
-'$lgt_dcg_fold_left'(Goal, Goal).
+'$lgt_dcg_fold_left_unifications'(Goal, Goal).
 
 
 
 % '$lgt_dcg_fold_pairs'(+goal, -goal)
 %
-% folds pairs of consecutive unifications (T1 = T2, T2 = T3):
+% folds pairs of consecutive variable unifications (Var1 = Var2, Var2 = Var3)
+% that are generated as a by-product of the compilation of grammar rules
 
 '$lgt_dcg_fold_pairs'((Goal1 -> Goal2), (SGoal1 -> SGoal2)) :-
     !,
@@ -15382,14 +15386,18 @@ current_logtalk_flag(version, version(2, 41, 1)).
     '$lgt_dcg_fold_pairs'(Goal1, SGoal1),
     '$lgt_dcg_fold_pairs'(Goal2, SGoal2).
 
-'$lgt_dcg_fold_pairs'(((T1 = T2a), (T2b = T3)), (T1 = T3)) :-
-	T2a == T2b,
-    !.
+'$lgt_dcg_fold_pairs'(('$lgt_gr_pair'(Var1 = Var2a), '$lgt_gr_pair'(Var2b = Var3), Goal), SGoal) :-
+	Var2a == Var2b,
+    '$lgt_dcg_fold_pairs'(('$lgt_gr_pair'(Var1 = Var3), Goal), SGoal),
+	!.
 
-'$lgt_dcg_fold_pairs'(((T1 = T2a), (T2b = T3), Goal), ((T1 = T3), Goal2)) :-
-	T2a == T2b,
-    !,
-    '$lgt_dcg_fold_pairs'(Goal, Goal2).
+'$lgt_dcg_fold_pairs'(('$lgt_gr_pair'(Var1 = Var2a), '$lgt_gr_pair'(Var2b = Var3)), (Var1 = Var3)) :-
+	Var2a == Var2b,
+	!.
+
+'$lgt_dcg_fold_pairs'(('$lgt_gr_pair'(Var1 = Var2), Goal), (Var1 = Var2, SGoal)) :-
+	!,
+    '$lgt_dcg_fold_pairs'(Goal, SGoal).
 
 '$lgt_dcg_fold_pairs'((Goal1, Goal2), (Goal1, Goal3)) :-
     !,
@@ -15406,6 +15414,9 @@ current_logtalk_flag(version, version(2, 41, 1)).
 '$lgt_dcg_fold_pairs'(Object::Goal, Object::SGoal) :-
 	!,
 	'$lgt_dcg_fold_pairs'(Goal, SGoal).
+
+'$lgt_dcg_fold_pairs'('$lgt_gr_pair'(Var1 = Var2), (Var1 = Var2)) :-
+	!.
 
 '$lgt_dcg_fold_pairs'(Goal, Goal).
 
