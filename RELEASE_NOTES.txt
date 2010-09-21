@@ -24,6 +24,8 @@ RELEASE NOTES
     variable unifications generated as a by-product of the translation of
     grammar rules into clauses. Thanks to Ulrich Neumerkel for the bug report.
 
+    Removed some unused files from the "coinduction" example.
+
 
 2.41.0 - September 15, 2010
 
