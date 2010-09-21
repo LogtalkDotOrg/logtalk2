@@ -16477,7 +16477,7 @@ current_logtalk_flag(version, version(2, 41, 1)).
 '$lgt_iso_spec_function'(mod(_, _)).
 '$lgt_iso_spec_function'('/\\'(_, _)).
 '$lgt_iso_spec_function'('\\/'(_, _)).
-'$lgt_iso_spec_function'('\\'(_, _)).
+'$lgt_iso_spec_function'('\\'(_)).
 '$lgt_iso_spec_function'('<<'(_, _)).
 '$lgt_iso_spec_function'('>>'(_, _)).
 '$lgt_iso_spec_function'('**'(_, _)).

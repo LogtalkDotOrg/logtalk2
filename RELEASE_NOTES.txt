@@ -24,6 +24,10 @@ RELEASE NOTES
     variable unifications generated as a by-product of the translation of
     grammar rules into clauses. Thanks to Ulrich Neumerkel for the bug report.
 
+    Corrected a bug in the table of ISO Prolog specified arithmetic functions
+    that is used by the Logtalk compiler when checking arithmetic expressions
+    for portability (wrong arity of the bitwise complement function).
+
     Removed some unused files from the "coinduction" example.
 
 
