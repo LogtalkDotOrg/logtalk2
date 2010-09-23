@@ -28,6 +28,9 @@ RELEASE NOTES
     that is used by the Logtalk compiler when checking arithmetic expressions
     for portability (wrong arity of the bitwise complement function).
 
+    Corrected a bug in the compilation of proprietary Prolog directives that
+    prevented rewritten directives of being recompiled. 
+
     Removed some unused files from the "coinduction" example.
 
 

@@ -55,3 +55,14 @@
 		dtproblog:dtproblog_solve(A, B).
 
 :- end_category.
+
+
+
+:- category(problog_learning).
+
+	:- public(do_learning/1).
+
+	do_learning(A) :-
+		learning:do_learning(A).
+
+:- end_category.
