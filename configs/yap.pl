@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: August 31, 2010
+%  last updated: September 23, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -654,7 +654,8 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 
 
 '$lgt_yap_list_of_exports'(File, Module, Exports) :-
-	(	absolute_file_name(File, Path, [file_type(prolog), access(read), file_errors(fail)])
+	(	absolute_file_name(File, Path, [file_type(prolog), access(read), file_errors(fail)]),
+		file_property(Path, type(regular))
 	;	% we may be compiling Prolog module files as Logtalk objects
 		absolute_file_name(File, Path, [extensions(['.lgt']), access(read), file_errors(fail)])
 	),
