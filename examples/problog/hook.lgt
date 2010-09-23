@@ -1,6 +1,7 @@
 
 :- use_module(library(problog), []).
 :- use_module(library(dtproblog), []).
+:- use_module(library(problog_learning), []).
 
 :- op(600, xfx, #).
 :- op(550, yfx, =>).
