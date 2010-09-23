@@ -28,6 +28,9 @@ RELEASE NOTES
     that is used by the Logtalk compiler when checking arithmetic expressions
     for portability (wrong arity of the bitwise complement function).
 
+    Corrected a bug in the compilation of calls to Prolog proprietary built-in
+    meta-predicates that are redefined within an object or category.
+
     Updated the SICStus Prolog, SWI-Prolog, and YAP config files in order
     to correct a bug in the compilation of the ensure_loaded/1 directive
     when used within a Prolog module being compiled as an object.

@@ -10227,10 +10227,10 @@ current_logtalk_flag(version, version(2, 41, 1)).
 				DPred =.. [Functor| DArgs]
 			;	DPred = '$lgt_dbg_goal'(Pred, TPred, ExCtx)
 			)
-		;	TPred = '$lgt_call_built_in'(Pred, TGoal, Ctx),
+		;	TPred = '$lgt_call_built_in'(Pred, TGoal, ExCtx),
 			(	Type == control_construct ->
 				DGoal =.. [Functor| DArgs],
-				DPred = '$lgt_call_built_in'(Pred, DGoal, Ctx)
+				DPred = '$lgt_call_built_in'(Pred, DGoal, ExCtx)
 			;	DPred = '$lgt_dbg_goal'(Pred, TPred, ExCtx)
 			)
 		)
