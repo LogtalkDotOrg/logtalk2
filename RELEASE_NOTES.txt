@@ -28,9 +28,6 @@ RELEASE NOTES
     that is used by the Logtalk compiler when checking arithmetic expressions
     for portability (wrong arity of the bitwise complement function).
 
-    Corrected a bug in the compilation of proprietary Prolog directives that
-    prevented rewritten directives of being recompiled. 
-
     Updated the YAP config file to workaround a bug in the built-in predicate
     absolute_file_name/3 where a directory can be returned when looking for a
     regular file.

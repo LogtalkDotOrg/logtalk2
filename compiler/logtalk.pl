@@ -6474,7 +6474,7 @@ current_logtalk_flag(version, version(2, 41, 1)).
 			'$lgt_report_warning_full_context'(Type, Entity)
 		;	true
 		),
-		'$lgt_tr_expanded_term'((:- RDirective), Ctx)
+		'$lgt_tr_directive'(RDirective, Ctx)
 	;	'$lgt_tr_directive'(Directive, Ctx)
 	).
 
