@@ -308,7 +308,7 @@ Obj::Pred :-
 	catch('$lgt_tr_msg'(Pred, Obj, Call, user), Error, '$lgt_runtime_error_handler'(error(Error, Obj::Pred, user))),
 	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
 		'$lgt_dbg_reset_invocation_number',
-		'$lgt_exec_ctx'(ExCtx, user, user, Obj, [], _),
+		'$lgt_exec_ctx'(ExCtx, user, user, Obj, [], []),
 		catch('$lgt_dbg_goal'(Obj::Pred, Call, ExCtx), Error, '$lgt_runtime_error_handler'(Error))
 	;	catch(Call, Error, '$lgt_runtime_error_handler'(Error))
 	).
@@ -319,7 +319,7 @@ Obj<<Goal :-
 	catch('$lgt_tr_ctx_call'(Obj, Goal, Call, user), Error, '$lgt_runtime_error_handler'(error(Error, Obj<<Goal, user))),
 	(	'$lgt_dbg_debugging_', '$lgt_debugging_'(Obj) ->
 		'$lgt_dbg_reset_invocation_number',
-		'$lgt_exec_ctx'(ExCtx, user, user, Obj, [], _),
+		'$lgt_exec_ctx'(ExCtx, user, user, Obj, [], []),
 		catch('$lgt_dbg_goal'(Obj<<Goal, Call, ExCtx), Error, '$lgt_runtime_error_handler'(Error))
 	;	catch(Call, Error, '$lgt_runtime_error_handler'(Error))
 	).
@@ -3200,7 +3200,7 @@ current_logtalk_flag(version, version(2, 41, 1)).
 				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),				% construct object template
 				functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),			% construct "sender" template
 				'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),									% construct list of the meta-variables
-				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, _),						% that will be called in the "sender"
+				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, []),						% that will be called in the "sender"
 				call(Def, GPred, ExCtx, GCall, _) ->											% lookup definition
 				asserta(('$lgt_send_to_self_'(GObj, GPred, GSender, volatile) :- !, GCall)),	% cache lookup result
 				GObj = Obj, GPred = Pred, GSender = Sender,										% unify message arguments
@@ -3275,7 +3275,7 @@ current_logtalk_flag(version, version(2, 41, 1)).
 			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),				% construct predicate template
 				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),				% construct object template
 				'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),									% construct list of the meta-variables
-				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, _),						% that will be called in the "sender"
+				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, []),						% that will be called in the "sender"
 				call(Def, GPred, ExCtx, GCall, _) ->											% lookup definition
 				GGCall = '$lgt_guarded_method_call'(GObj, GPred, GSender, GCall),
 				asserta(('$lgt_send_to_obj_'(GObj, GPred, GSender, volatile) :- !, GGCall)),	% cache lookup result
@@ -3288,7 +3288,7 @@ current_logtalk_flag(version, version(2, 41, 1)).
 			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),				% construct predicate template
 				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),				% construct object template
 				functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),			% construct "sender" template
-				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _, _),
+				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _, []),
 				call(Def, GPred, ExCtx, GCall, _) ->											% lookup definition
 				GGCall = '$lgt_guarded_method_call'(GObj, GPred, GSender, GCall),
 				asserta(('$lgt_send_to_obj_'(GObj, GPred, GSender, volatile) :- !, GGCall)),	% cache lookup result
@@ -3392,7 +3392,7 @@ current_logtalk_flag(version, version(2, 41, 1)).
 			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),				% construct predicate template
 				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),				% construct object template
 				'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),									% construct list of the meta-variables
-				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, _),						% that will be called in the "sender"
+				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, []),						% that will be called in the "sender"
 				call(Def, GPred, ExCtx, GCall, _) ->											% lookup definition
 				asserta(('$lgt_send_to_obj_ne_'(GObj, GPred, GSender, volatile) :- !, GCall)),	% cache lookup result
 				GObj = Obj, GPred = Pred, GSender = Sender,										% unify message arguments
@@ -3404,7 +3404,7 @@ current_logtalk_flag(version, version(2, 41, 1)).
 			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),				% construct predicate template
 				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),				% construct object template
 				functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),			% construct "sender" template
-				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _, _),
+				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _, []),
 				call(Def, GPred, ExCtx, GCall, _) ->											% lookup definition
 				asserta(('$lgt_send_to_obj_ne_'(GObj, GPred, GSender, volatile) :- !, GCall)),	% cache lookup result
 				GObj = Obj, GPred = Pred, GSender = Sender,										% unify message arguments
