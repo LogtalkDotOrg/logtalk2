@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: August 31, 2010
+%  last updated: September 23, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -583,8 +583,9 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 	nonvar(Encoding1),
 	'$lgt_rewrite_and_recompile_pl_encoding_directive'(Encoding1, Encoding2).
 
-'$lgt_rewrite_and_recompile_pl_directive'(ensure_loaded(File), use_module(File)) :-
-	'$lgt_pp_module_'(_).	% ensure_loaded/1 directive used within a module (sloppy replacement for the use_module/1 directive)
+'$lgt_rewrite_and_recompile_pl_directive'(ensure_loaded(File), use_module(Module, Imports)) :-
+	'$lgt_pp_module_'(_),	% ensure_loaded/1 directive used within a module (sloppy replacement for the use_module/1-2 directives)
+	'$lgt_swi_list_of_exports'(File, Module, Imports).
 
 '$lgt_rewrite_and_recompile_pl_directive'(reexport(File), reexport(Module, Exports)) :-
 	'$lgt_swi_list_of_exports'(File, Module, Exports).
