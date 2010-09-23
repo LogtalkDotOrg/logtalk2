@@ -223,6 +223,10 @@ points
 polygons
 	example of representation and handling of relations using events
 
+problog
+	experimental example of ProbLog integration
+	(requires Logtalk to be run with YAP)
+
 profiling
 	examples of using of events and monitors to implement profilers
 
