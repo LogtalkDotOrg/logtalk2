@@ -15,6 +15,13 @@ RELEASE NOTES
 
 2.41.1 - September ??, 2010
 
+    Added support for the blackboard built-in predicates (bb_put/2, bb_get/2,
+    bb_delete/2, and bb_update/3) found on some Prolog compilers such as YAP
+    and SICStus Prolog. Note that a Prolog compiler natively supporting these
+    predicates is required. This support aims to facilitate porting of Prolog
+    applications using the blackboard; it should not be used when writing
+    portable Logtalk applications.
+
     Corrected an optimization bug in the compilation of grammar rules that
     resulted in failed compilations whenever the body of a grammar rule was
     equivalent to fail/0. Thanks to Ulrich Neumerkel for the bug report.

@@ -10191,6 +10191,65 @@ current_logtalk_flag(version, version(2, 41, 1)).
 	fail.
 
 
+% blackboard predicates (requires a back-end Prolog compiler natively supporting these built-in predicates)
+
+'$lgt_tr_body'(bb_put(Key, Term), TPred, DPred, Ctx) :-
+	'$lgt_pl_built_in'(bb_put(_, _)),
+	!,
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_comp_ctx_prefix'(Ctx, Prefix),
+	(	atomic(Key) ->
+		'$lgt_tr_bb_key'(Key, Prefix, TKey),
+		TPred = '$lgt_call_built_in'(bb_put(Key, Term), bb_put(TKey, Term), ExCtx),
+		DPred = '$lgt_dbg_goal'(bb_put(Key, Term), TPred, ExCtx)
+	;	% runtime key translation
+		TPred = '$lgt_call_built_in'(bb_put(Key, Term), ('$lgt_tr_bb_key'(Key, Prefix, TKey), bb_put(TKey, Term)), ExCtx),
+		DPred = '$lgt_dbg_goal'(bb_put(Key, Term), TPred, ExCtx)
+	).
+
+'$lgt_tr_body'(bb_get(Key, Term), TPred, DPred, Ctx) :-
+	'$lgt_pl_built_in'(bb_get(_, _)),
+	!,
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_comp_ctx_prefix'(Ctx, Prefix),
+	(	atomic(Key) ->
+		'$lgt_tr_bb_key'(Key, Prefix, TKey),
+		TPred = '$lgt_call_built_in'(bb_get(Key, Term), bb_get(TKey, Term), ExCtx),
+		DPred = '$lgt_dbg_goal'(bb_get(Key, Term), TPred, ExCtx)
+	;	% runtime key translation
+		TPred = '$lgt_call_built_in'(bb_get(Key, Term), ('$lgt_tr_bb_key'(Key, Prefix, TKey), bb_get(TKey, Term)), ExCtx),
+		DPred = '$lgt_dbg_goal'(bb_get(Key, Term), TPred, ExCtx)
+	).
+
+'$lgt_tr_body'(bb_delete(Key, Term), TPred, DPred, Ctx) :-
+	'$lgt_pl_built_in'(bb_delete(_, _)),
+	!,
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_comp_ctx_prefix'(Ctx, Prefix),
+	(	atomic(Key) ->
+		'$lgt_tr_bb_key'(Key, Prefix, TKey),
+		TPred = '$lgt_call_built_in'(bb_delete(Key, Term), bb_delete(TKey, Term), ExCtx),
+		DPred = '$lgt_dbg_goal'(bb_delete(Key, Term), TPred, ExCtx)
+	;	% runtime key translation
+		TPred = '$lgt_call_built_in'(bb_delete(Key, Term), ('$lgt_tr_bb_key'(Key, Prefix, TKey), bb_delete(TKey, Term)), ExCtx),
+		DPred = '$lgt_dbg_goal'(bb_delete(Key, Term), TPred, ExCtx)
+	).
+
+'$lgt_tr_body'(bb_update(Key, Term, New), TPred, DPred, Ctx) :-
+	'$lgt_pl_built_in'(bb_update(_, _, _)),
+	!,
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_comp_ctx_prefix'(Ctx, Prefix),
+	(	atomic(Key) ->
+		'$lgt_tr_bb_key'(Key, Prefix, TKey),
+		TPred = '$lgt_call_built_in'(bb_update(Key, Term, New), bb_update(TKey, Term, New), ExCtx),
+		DPred = '$lgt_dbg_goal'(bb_update(Key, Term, New), TPred, ExCtx)
+	;	% runtime key translation
+		TPred = '$lgt_call_built_in'(bb_update(Key, Term, New), ('$lgt_tr_bb_key'(Key, Prefix, TKey), bb_update(TKey, Term, New)), ExCtx),
+		DPred = '$lgt_dbg_goal'(bb_update(Key, Term, New), TPred, ExCtx)
+	).
+
+
 % Prolog proprietary, built-in meta-predicates
 
 '$lgt_tr_body'(Pred, TPred, DPred, Ctx) :-
@@ -10298,6 +10357,22 @@ current_logtalk_flag(version, version(2, 41, 1)).
 	(	'$lgt_pp_calls_pred_'(Functor, Arity, _, _) ->
 		true
 	;	assertz('$lgt_pp_calls_pred_'(Functor, Arity, STFunctor, TArity))
+	).
+
+
+
+% '$lgt_tr_bb_key'(@term, +atom, -atom)
+%
+% translates a black-board key
+
+'$lgt_tr_bb_key'(Key, Prefix, TKey) :-
+	(	atom(Key) ->
+		atom_concat(Prefix, Key, TKey)
+	;	integer(Key) ->
+		number_codes(Key, KeyCodes),
+		atom_codes(AtomKey, KeyCodes),
+		atom_concat(Prefix, AtomKey, TKey)
+	;	throw(type_error(atomic, Key))
 	).
 
 
