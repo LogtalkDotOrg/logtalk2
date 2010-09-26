@@ -46,6 +46,10 @@ RELEASE NOTES
     absolute_file_name/3 where a directory can be returned when looking for a
     regular file.
 
+    Restored the hacks in the SWI-Prolog and YAP config files, broken in
+    the previous release, that allow calling the Prolog built-in predicates
+    phrase/2-3 with a Object::GRBody goal in the first argument.
+
     Added predicates intersection/4 and union/4 to the library support for
     ordered sets (protocol "setp" and object "set").
 

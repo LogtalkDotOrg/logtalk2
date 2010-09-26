@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: September 23, 2010
+%  last updated: September 26, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -798,12 +798,12 @@ user:goal_expansion(phrase(Rule, Input, Rest), '$lgt_phrase'(Rule, Input, Rest, 
 	nonvar(Rule),
 	functor(Rule, '::', 2),
 	!,
-	'$lgt_exec_ctx'(ExCtx, user, user, user, []).
+	'$lgt_exec_ctx'(ExCtx, user, user, user, [], []).
 user:goal_expansion(phrase(Rule, Input), '$lgt_phrase'(Rule, Input, ExCtx)) :-
 	nonvar(Rule),
 	functor(Rule, '::', 2),
 	!,
-	'$lgt_exec_ctx'(ExCtx, user, user, user, []).
+	'$lgt_exec_ctx'(ExCtx, user, user, user, [], []).
 
 
 
