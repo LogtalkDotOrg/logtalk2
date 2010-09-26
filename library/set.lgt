@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.3,
-		author is 'Paulo Moura',
-		date is 2009/5/3,
+		version is 1.4,
+		author is 'Richard O''Keefe; adapted to Logtalk by Paulo Moura.',
+		date is 2010/9/26,
 		comment is 'Set predicates implemented using ordered lists. Uses ==/2 for element comparison and standard term ordering.']).
 
 	delete([], _, []).
@@ -63,7 +63,6 @@
 
 	intersection(_, [], []) :- !.
 	intersection([], _, []) :- !.
-
 	intersection([Head1| Tail1], [Head2| Tail2], Intersection) :-
 		compare(Order, Head1, Head2),
 		intersection(Order, Head1, Tail1, Head2, Tail2, Intersection).
@@ -74,6 +73,19 @@
 		intersection(Tail1, [Head2| Tail2], Intersection).
 	intersection(>, Head1, Tail1, _,     Tail2, Intersection) :-
 		intersection([Head1|Tail1], Tail2, Intersection).
+
+	intersection([], Set, [], Set) :- !.
+	intersection([_| _], [], [], []) :- !.
+	intersection([Head1|Tail1], [Head2|Tail2], Intersection, Difference) :-
+		compare(Order, Head1, Head2),
+		intersection(Order, Head1, Tail1, Head2, Tail2, Intersection, Difference).
+
+	intersection(=, Head1, Tail1, _, Tail2, [Head1|Tail], Difference) :-
+		intersection(Tail1, Tail2, Tail, Difference).
+	intersection(<, _, Tail1, Head2, Tail2, Intersection, Difference) :-
+		intersection(Tail1, [Head2| Tail2], Intersection, Difference).
+	intersection(>, Head1, Tail1, Head2, Tail2, Intersection, [Head2| TailDifference]) :-
+		intersection([Head1| Tail1], Tail2, Intersection, TailDifference).
 
 	length(Set, Length) :-
 		length(Set, 0, Length).
@@ -190,6 +202,19 @@
 		union(Tail1, [Head2| Tail2], Union).
 	union(>, Head1, Tail1, Head2, Tail2, [Head2| Union]) :-
 		union([Head1| Tail1], Tail2, Union).
+
+	union(Set1, [], Set1, []) :- !.
+	union([], Set2, Set2, Set2) :- !.
+	union([Head1| Tail1], [Head2| Tail2], Union, Difference) :-
+		compare(Order, Head1, Head2),
+		union(Order, Head1, Tail1, Head2, Tail2, Union, Difference).
+
+	union(=, Head,  Tail1, _,  Tail2, [Head| Union], Difference) :-
+		union(Tail1, Tail2, Union, Difference).
+	union(<, Head1, Tail1, Head2, Tail2, [Head1| Union], Difference) :-
+		union(Tail1, [Head2| Tail2], Union, Difference).
+	union(>, Head1, Tail1, Head2, Tail2, [Head2| Union], [Head2| Difference]) :-
+		union([Head1| Tail1], Tail2, Union, Difference).
 
 	valid(-) :-				% catch variables
 		!,

@@ -19,7 +19,7 @@ RELEASE NOTES
     bb_delete/2, and bb_update/3) found on some Prolog compilers such as YAP
     and SICStus Prolog. Note that a Prolog compiler natively supporting these
     predicates is required. This support aims to facilitate porting of Prolog
-    applications using the blackboard; it should not be used when writing
+    applications using the blackboard; it should be avoided used when writing
     portable Logtalk applications.
 
     Corrected an optimization bug in the compilation of grammar rules that
@@ -45,6 +45,9 @@ RELEASE NOTES
     Updated the YAP config file to workaround a bug in the built-in predicate
     absolute_file_name/3 where a directory can be returned when looking for a
     regular file.
+
+    Added predicates intersection/4 and union/4 to the library support for
+    ordered sets (protocol "setp" and object "set").
 
     Removed some unused files from the "coinduction" example.
 

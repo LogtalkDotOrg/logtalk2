@@ -2,9 +2,9 @@
 :- protocol(setp).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2009/5/3,
+		date is 2010/9/26,
 		comment is 'Set protocol.']).
 
 	:- public(delete/3).
@@ -54,6 +54,12 @@
 	:- info(intersection/3, [
 		comment is 'Returns the intersection of Set1 and Set2.',
 		argnames is ['Set1', 'Set2', 'Intersection']]).
+
+	:- public(intersection/4).
+	:- mode(intersection(+set, +set, ?set, ?set), zero_or_one).
+	:- info(intersection/4, [
+		comment is 'True if Intersection is the intersection of Set1 and Set2 and Difference is the difference between Set2 and Set1.',
+		argnames is ['Set1', 'Set2', 'Intersection', 'Difference']]).
 
 	:- public(length/2).
 	:- mode(length(+set, ?integer), zero_or_one).
@@ -115,5 +121,11 @@
 	:- info(union/3, [
 		comment is 'True if Union is the union of Set1 and Set2.',
 		argnames is ['Set1', 'Set2', 'Union']]).
+
+	:- public(union/4).
+	:- mode(union(+set, +set, ?set, ?set), zero_or_one).
+	:- info(union/4, [
+		comment is 'True if Union is the union of Set1 and Set2 and Difference is the difference between Set2 and Set1.',
+		argnames is ['Set1', 'Set2', 'Union', 'Difference']]).
 
 :- end_protocol.

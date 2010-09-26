@@ -17409,7 +17409,7 @@ current_logtalk_flag(version, version(2, 41, 1)).
 	'$lgt_dbg_reset_invocation_number',
 	'$lgt_report_settings_file',
 	'$lgt_check_prolog_version'
-	)).
+)).
 
 
 

@@ -1,4 +1,4 @@
-%   code adopted from:
+%   code adapted from:
 
 %   File   : HEAPS.PL
 %   Author : R.A.O'Keefe
