@@ -50,6 +50,10 @@ RELEASE NOTES
     the previous release, that allow calling the Prolog built-in predicates
     phrase/2-3 with a Object::GRBody goal in the first argument.
 
+    Updated the SWI-Prolog config file in order to use the numbervars/3 option
+    singleton(true) in the auxiliary predicates for pretty printing non-ground
+    terms.
+
     Added predicates intersection/4 and union/4 to the library support for
     ordered sets (protocol "setp" and object "set").
 
