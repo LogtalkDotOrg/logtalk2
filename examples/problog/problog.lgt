@@ -11,7 +11,17 @@
 
 	problog_max(A,B,C) :-
 		this(This),
-		problog:problog_max(This::A,B,C).
+		problog:problog_max(This::A,B,TC),
+		decompile_facts(TC, C).
+
+	decompile_facts([], []).
+	decompile_facts([TFact| TFacts], [Fact| Facts]) :-
+		TFact =.. [TFunctor| Args],
+		this(This),
+		{'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _)},
+		atom_concat(Prefix, Functor, TFunctor),
+		Fact =.. [Functor| Args],
+		decompile_facts(TFacts, Facts).
 
 	:- public(problog_kbest/4).
 
