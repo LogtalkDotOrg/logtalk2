@@ -19,9 +19,8 @@ These support files are dual-licensed under the Artistic License 2.0
 and the Vim charityware license.
 
 Recent versions of Vim already contain support for Logtalk. However, 
-this directory may contain an updated syntax file. If that is the 
-case, install the Logtalk support files by performing the following
-steps:
+this directory may contain updated support files. If that is the case,
+install the Logtalk support files by performing the following steps:
 
 1. Copy the file "syntax/logtalk.vim" to the "syntax" sub-directory in 
 your VIM installation directory (replacing any existing older file).
