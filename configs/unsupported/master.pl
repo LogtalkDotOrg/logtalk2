@@ -11,7 +11,7 @@
 %
 %  configuration file for MasterProLog 4.1
 %
-%  last updated: August 31, 2010
+%  last updated: October 2, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -247,7 +247,7 @@ forall(Generate, Test) :-
 '$lgt_default_flag'(smart_compilation, off).
 '$lgt_default_flag'(reload, always).
 '$lgt_default_flag'(startup_message, flags(compact)).
-'$lgt_default_flag'(code_prefix, '').
+'$lgt_default_flag'(code_prefix, '$').
 '$lgt_default_flag'(debug, off).
 
 

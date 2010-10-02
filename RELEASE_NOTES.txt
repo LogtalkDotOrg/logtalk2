@@ -41,6 +41,9 @@ RELEASE NOTES
     Corrected a bug in the compilation of calls to Prolog proprietary built-in
     meta-predicates that are redefined within an object or category.
 
+    Set the default value for the Logtalk flag "code_prefix" to '$' for all
+    supported back-end Prolog compilers.
+
     Updated the SICStus Prolog, SWI-Prolog, and YAP config files in order
     to correct a bug in the compilation of the ensure_loaded/1 directive
     when used within a Prolog module being compiled as an object.

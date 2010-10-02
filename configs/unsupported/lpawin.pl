@@ -11,7 +11,7 @@
 %
 %  configuration file for LPA WinProlog 4.00
 %
-%  last updated: August 31, 2010
+%  last updated: October 2, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -349,7 +349,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_default_flag'(smart_compilation, off).
 '$lgt_default_flag'(reload, always).
 '$lgt_default_flag'(startup_message, flags(compact)).
-'$lgt_default_flag'(code_prefix, '').
+'$lgt_default_flag'(code_prefix, '$').
 '$lgt_default_flag'(debug, off).
 
 
