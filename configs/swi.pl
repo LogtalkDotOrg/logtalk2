@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: September 27, 2010
+%  last updated: October 2, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -487,13 +487,13 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 
 '$lgt_pretty_print_vars'(Stream, Term) :-
 	\+ \+ (
-		numbervars(Term, 0, _, [singleton(true)]),
+		numbervars(Term, 0, _, [singletons(true)]),
 		write_term(Stream, Term, [numbervars(true)])).
 
 
 '$lgt_pretty_print_vars_quoted'(Stream, Term) :-
 	\+ \+ (
-		numbervars(Term, 0, _, [singleton(true)]),
+		numbervars(Term, 0, _, [singletons(true)]),
 		write_term(Stream, Term, [numbervars(true), quoted(true)])).
 
 
