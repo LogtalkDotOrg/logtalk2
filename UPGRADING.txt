@@ -283,3 +283,6 @@ of all objects and categories.
 
 Logtalk version 2.41.0 changes representation of the execution context in 
 compiled predicates, requiring recompilation of all objects and categories.
+
+Logtalk version 2.41.1 changes the internal representation of compiled
+predicates, requiring recompilation of all entities.

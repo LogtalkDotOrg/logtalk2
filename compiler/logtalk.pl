@@ -13966,12 +13966,15 @@ current_logtalk_flag(version, version(2, 41, 1)).
 '$lgt_construct_entity_prefix'(Entity, Prefix) :-
 	'$lgt_compiler_flag'(code_prefix, CodePrefix),
 	functor(Entity, Functor, Arity),
-	atom_concat(CodePrefix, Functor, Aux1),
-	number_codes(Arity, ArityCodes),
-	atom_codes(ArityAtom, ArityCodes),
-	atom_concat(Aux1, '_', Aux2),
-	atom_concat(Aux2, ArityAtom, Aux3),
-	atom_concat(Aux3, '_', Prefix).
+	atom_concat(CodePrefix, Functor, Prefix0),
+	atom_concat(Prefix0, '.', Prefix1),
+	(	Arity =:= 0 ->
+		Prefix = Prefix1
+	;	number_codes(Arity, ArityCodes),
+		atom_codes(ArityAtom, ArityCodes),
+		atom_concat(Prefix1, ArityAtom, Prefix2),
+		atom_concat(Prefix2, '.', Prefix)
+	).
 
 
 
@@ -13981,33 +13984,16 @@ current_logtalk_flag(version, version(2, 41, 1)).
 
 '$lgt_reverse_entity_prefix'(Prefix, Entity) :-
 	'$lgt_compiler_flag'(code_prefix, CodePrefix),
-	atom_concat(CodePrefix, NameUnderscoreArityUnderscore, Prefix),
-	atom_concat(NameUnderscoreArity, '_', NameUnderscoreArityUnderscore),
-	'$lgt_split_name_arity'(NameUnderscoreArity, Name, Arity),
-	functor(Entity, Name, Arity),
-	!.
-
-
-'$lgt_split_name_arity'(NameUnderscoreArity, Name, Arity) :-
-	atom_codes(NameUnderscoreArity, Codes),
-	'$lgt_reverse'(Codes, [], RCodes),
-	'$lgt_find_arity_codes'(RCodes, [], ArityCodes),
-	number_codes(Arity, ArityCodes),
-	atom_codes(ArityAtom, ArityCodes),
-	atom_concat(NameUnderscore, ArityAtom, NameUnderscoreArity),
-	atom_concat(Name, '_', NameUnderscore).
-
-
-'$lgt_find_arity_codes'([Code| Codes], Acc, ArityCodes) :-
-	(	char_code('_', Code) ->
-		ArityCodes = Acc
-	;	'$lgt_find_arity_codes'(Codes, [Code| Acc], ArityCodes)
-	).
-
-
-'$lgt_reverse'([], Reversed, Reversed).
-'$lgt_reverse'([Head| Tail], List, Reversed) :-
-	'$lgt_reverse'(Tail, [Head| List], Reversed).
+	atom_concat(CodePrefix, Entity0, Prefix),
+	atom_concat(Entity1, '.', Entity0),
+	(	atom_concat(FunctorDolar, ArityAtom, Entity1),
+		atom_concat(Functor, '.', FunctorDolar) ->
+		atom_codes(ArityAtom, ArityCodes),
+		number_codes(Arity, ArityCodes)
+	;	Functor = Prefix,
+		Arity = 0
+	),
+	functor(Entity, Functor, Arity).
 
 
 
@@ -14082,12 +14068,8 @@ current_logtalk_flag(version, version(2, 41, 1)).
 % constructs the predicate indicator used for a compiled predicate
 
 '$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity) :-
-	atom_concat(Prefix, Functor, Aux),
-	atom_concat(Aux, '_', Aux2),
-	number_codes(Arity, Codes),
-	atom_codes(Atom, Codes),
-	atom_concat(Aux2, Atom, TFunctor),
-	TArity is Arity + 1.
+	atom_concat(Prefix, Functor, TFunctor),
+	TArity is Arity + 1.		% add execution context argument
 
 
 
@@ -14101,14 +14083,8 @@ current_logtalk_flag(version, version(2, 41, 1)).
 	;	'$lgt_current_category_'(Entity, Prefix, _, _, _, _),
 		Type = category
 	),
-	atom_concat(Prefix, PredPart, TFunctor),
-	Arity is TArity - 1,		% subtract execution context argument
-	Arity >= 0,
-	number_codes(Arity, Codes),
-	atom_codes(Atom, Codes),
-	atom_concat('_', Atom, Aux),
-	atom_concat(Functor, Aux, PredPart),
-	!.
+	atom_concat(Prefix, Functor, TFunctor),
+	Arity is TArity - 1.		% subtract execution context argument
 
 
 

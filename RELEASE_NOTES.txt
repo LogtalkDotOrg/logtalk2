@@ -19,8 +19,11 @@ RELEASE NOTES
     bb_delete/2, and bb_update/3) found on some Prolog compilers such as YAP
     and SICStus Prolog. Note that a Prolog compiler natively supporting these
     predicates is required. This support aims to facilitate porting of Prolog
-    applications using the blackboard; it should be avoided used when writing
-    portable Logtalk applications.
+    applications using the blackboard; these predicates should be avoided when
+    writing portable Logtalk applications.
+
+    Simplified the internal representation of entity prefixes and entity
+    predicate functors. The new representation is also a bit more compact.
 
     Corrected an optimization bug in the compilation of grammar rules that
     resulted in failed compilations whenever the body of a grammar rule was
@@ -44,7 +47,7 @@ RELEASE NOTES
 
     Updated the YAP config file to workaround a bug in the built-in predicate
     absolute_file_name/3 where a directory can be returned when looking for a
-    regular file.
+    regular file (fixed in the current beta of the 6.0.7 version).
 
     Restored the hacks in the SWI-Prolog and YAP config files, broken in
     the previous release, that allow calling the Prolog built-in predicates
