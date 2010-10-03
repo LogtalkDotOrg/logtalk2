@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.41.1 - September ??, 2010
+2.41.1 - October ??, 2010
 
     Added support for the blackboard built-in predicates (bb_put/2, bb_get/2,
     bb_delete/2, and bb_update/3) found on some Prolog compilers such as YAP
@@ -40,6 +40,9 @@ RELEASE NOTES
 
     Corrected a bug in the compilation of calls to Prolog proprietary built-in
     meta-predicates that are redefined within an object or category.
+
+    Corrected a race condition bug when running multi-threaded code compiled
+    in debug mode that could result in bogus failures.
 
     Set the default value for the Logtalk flag "code_prefix" to '$' for all
     supported back-end Prolog compilers.

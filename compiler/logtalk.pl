@@ -4978,10 +4978,25 @@ current_logtalk_flag(version, version(2, 41, 1)).
 
 
 
+% '$lgt_dbg_inc_invocation_number'(-integer)
+%
+% we should have used '$lgt_compiler_flag'/2 instead of directly calling
+% '$lgt_prolog_feature'/2 but we want to minimize the performance penalty
+% while avoiding race conditions when running multi-threaded code compiled
+% in debug mode
+
 '$lgt_dbg_inc_invocation_number'(New) :-
-	retract('$lgt_dbg_invocation_number_'(Old)) ->
-	New is Old + 1,
-	asserta('$lgt_dbg_invocation_number_'(New)).
+	(	'$lgt_prolog_feature'(threads, supported) ->
+		with_mutex('$lgt_threaded_dbg',
+			(retract('$lgt_dbg_invocation_number_'(Old)),
+			 New is Old + 1,
+			 asserta('$lgt_dbg_invocation_number_'(New)))
+		)
+	;	retract('$lgt_dbg_invocation_number_'(Old)),
+		New is Old + 1,
+		asserta('$lgt_dbg_invocation_number_'(New))
+	).
+
 
 
 '$lgt_dbg_reset_invocation_number' :-
@@ -16985,7 +17000,7 @@ current_logtalk_flag(version, version(2, 41, 1)).
 % multi-threading predicates
 
 '$lgt_new_threaded_tag'(New) :-
-	with_mutex('$lgt_threaded_tag', 
+	with_mutex('$lgt_threaded_tag',
 		(retract('$lgt_threaded_tag_counter'(Old)),
 		 New is Old + 1,
 		 asserta('$lgt_threaded_tag_counter'(New)))).
