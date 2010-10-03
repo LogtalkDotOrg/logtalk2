@@ -4,20 +4,16 @@
 :- object(vm,
 	imports(dtproblog)).
 
-	:- probabilistic(marketed/1).
-	:- probabilistic(buy_from_marketing/1).
-	:- probabilistic(buy_from_trust/2).
-
 	% Decisions
-	? # marketed(P) :- person(P).
+	(?) ~ marketed(P) :- person(P).
 
 	% Utility attributes
 	buys(P) => 5 :- person(P).
 	marketed(P) => -2 :- person(P).
 
 	% Probabilistic facts
-	0.2 # buy_from_marketing(_).
-	0.3 # buy_from_trust(_,_).
+	0.2 ~ buy_from_marketing(_).
+	0.3 ~ buy_from_trust(_,_).
 
 	% Background knowledge
 	person(bernd).
@@ -58,7 +54,7 @@
 	        buys(Y, [Y|Visited]).
 
 	absent(_,[]).
-	absent(X,[Y|Z]):-X \= Y, absent(X,Z).
+	absent(X,[Y|Z]) :-X \= Y, absent(X,Z).
 
 :- end_object.
 

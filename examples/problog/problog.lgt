@@ -16,7 +16,10 @@
 
 	decompile_facts([], []).
 	decompile_facts([TFact| TFacts], [Fact| Facts]) :-
-		TFact =.. [TFunctor| Args],
+		functor(TFact, TFunctor, TArity),
+		Arity is TArity - 1,
+		TFact =.. [TFunctor| TArgs],
+		list::append(Args, [_], TArgs),
 		this(This),
 		{'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _)},
 		atom_concat(Prefix, Functor, TFunctor),
@@ -63,6 +66,23 @@
 
 	dtproblog_solve(A, B) :-
 		dtproblog:dtproblog_solve(A, B).
+
+	:- public(dtproblog_ev/2).
+
+	dtproblog_ev(A, B) :-
+		compile_facts(A, TA),
+		dtproblog:dtproblog_ev(TA, B).
+
+	compile_facts([], []).
+	compile_facts([Fact| Facts], [TFact| TFacts]) :-
+		functor(Fact, Functor, Arity),
+		Fact =.. [Functor| Args0],
+		list::append(Args0, [_], Args),
+		this(This),
+		{'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _)},
+		atom_concat(Prefix, Functor, TFunctor),
+		TFact =.. [TFunctor| Args],
+		compile_facts(Facts, TFacts).
 
 :- end_category.
 

@@ -7,14 +7,12 @@
 %
 % training and test examples are included at the end of the file
 % 
-% query ?- do_learning(20). 
+% query ?- learn_graph::do_learning(20).
 % will run 20 iterations of learning with default settings 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 :- object(learn_graph,
 	imports(problog_learning)).
-
-	:- probabilistic(dir_edge/2).
 
 	%%%%
 	% background knowledge
@@ -42,14 +40,14 @@
 	% - probability represented by t/1 term means learnable parameter
 	% - argument of t/1 is real value (used to compare against in evaluation when known), use t(_) if unknown
 	%%%%
-	t(0.9)#dir_edge(1,2).
-	t(0.8)#dir_edge(2,3).
-	t(0.6)#dir_edge(3,4).
-	t(0.7)#dir_edge(1,6).
-	t(0.5)#dir_edge(2,6).
-	t(0.4)#dir_edge(6,5).
-	t(0.7)#dir_edge(5,3).
-	t(0.2)#dir_edge(5,4).
+	t(0.9) ~ dir_edge(1,2).
+	t(0.8) ~ dir_edge(2,3).
+	t(0.6) ~ dir_edge(3,4).
+	t(0.7) ~ dir_edge(1,6).
+	t(0.5) ~ dir_edge(2,6).
+	t(0.4) ~ dir_edge(6,5).
+	t(0.7) ~ dir_edge(5,3).
+	t(0.2) ~ dir_edge(5,4).
 
 	%%%%%%%%%%%%%%
 	% training examples of form example(ID,Query,DesiredProbability) 

@@ -18,3 +18,7 @@ examples are adaptations of the examples distributed with ProbLog.
 For details on ProbLog see:
     
     http://dtai.cs.kuleuven.be/problog
+
+ProbLog defines a ::/2 operator for probabilistic clauses that conflicts with
+Logtalk ::/2 message sending operator. As a workaround, the Logtalk versions
+of the ProbLog examples use a ~/2 operator for probabilistic clauses.
