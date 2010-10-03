@@ -63,6 +63,9 @@ RELEASE NOTES
     Added predicates intersection/4 and union/4 to the library support for
     ordered sets (protocol "setp" and object "set").
 
+    Updated the "multifile" example to illustrate how the body of clauses for
+    multifile predicates is compiled.
+
     Removed some unused files from the "coinduction" example.
 
 
