@@ -224,8 +224,9 @@ polygons
 	example of representation and handling of relations using events
 
 problog
-	experimental example of ProbLog integration
-	(requires Logtalk to be run with YAP)
+	highly experimental example of ProbLog integration
+	(requires Logtalk to be run with YAP; it may require a patched
+	version of the ProbLog distribution)
 
 profiling
 	examples of using of events and monitors to implement profilers

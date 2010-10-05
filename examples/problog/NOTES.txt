@@ -11,9 +11,10 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 To load this example and for sample queries, please see the SCRIPT.txt file.
 
-This experimental example requires the use of YAP as the back-end compiler,
-with a working installation of the optional ProbLog package. The individual
-examples are adaptations of the examples distributed with ProbLog.
+This highly experimental example requires the use of YAP as the back-end
+compiler, with a working installation of the optional ProbLog package.
+The individual examples are adaptations of the examples distributed with
+ProbLog.
 
 For details on ProbLog see:
     

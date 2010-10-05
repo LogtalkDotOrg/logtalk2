@@ -72,6 +72,10 @@ RELEASE NOTES
     Added predicates intersection/4 and union/4 to the library support for
     ordered sets (protocol "setp" and object "set").
 
+    Added a highly experimental example of ProbLog integration. Requires
+    Logtalk to be run with YAP; it may also require a patched version of
+    the ProbLog distribution.
+
     Updated the "multifile" example to illustrate how the body of clauses for
     multifile predicates is compiled.
 
