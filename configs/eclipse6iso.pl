@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#141 and later versions
 %
-%  last updated: October 2, 2010
+%  last updated: October 5, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -609,7 +609,12 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_rewrite_and_copy_pl_directive'(pragma(Pragma), pragma(Pragma)).
 
-'$lgt_rewrite_and_copy_pl_directive'(set_event_handler(Event, Handler), set_event_handler(Event, Handler)).
+'$lgt_rewrite_and_copy_pl_directive'(set_error_handler(Event, Functor/Arity), set_error_handler(Event, CFunctor/CArity)) :-
+	'$lgt_tr_predicate_indicators'(Functor/Arity, CFunctor/CArity).
+'$lgt_rewrite_and_copy_pl_directive'(set_event_handler(Event, defers(Functor/Arity)), set_event_handler(Event, defers(CFunctor/CArity))) :-
+	'$lgt_tr_predicate_indicators'(Functor/Arity, CFunctor/CArity).
+'$lgt_rewrite_and_copy_pl_directive'(set_event_handler(Event, Functor/Arity), set_event_handler(Event, CFunctor/CArity)) :-
+	'$lgt_tr_predicate_indicators'(Functor/Arity, CFunctor/CArity).
 
 '$lgt_rewrite_and_copy_pl_directive'(set_flag(PI, Flag, Value), set_flag(CPI, Flag, Value)) :-
 	'$lgt_tr_predicate_indicators'(PI, CPI).
