@@ -4241,6 +4241,12 @@ current_logtalk_flag(version, version(2, 41, 1)).
 '$lgt_logtalk._idcl'(Pred, Scope, no, 2, logtalk, logtalk) :-
 	'$lgt_logtalk._ddcl'(Pred, Scope).
 
+'$lgt_logtalk._idcl'(Pred, Scope, Meta, Flags, logtalk, Ctn) :-
+	'$lgt_expanding._dcl'(Pred, Scope, Meta, Flags, Ctn).
+
+'$lgt_logtalk._idcl'(Pred, Scope, Meta, Flags, logtalk, Ctn) :-
+	'$lgt_monitoring._dcl'(Pred, Scope, Meta, Flags, Ctn).
+
 
 '$lgt_logtalk._idef'(Pred, ExCtx, Call, logtalk) :-
 	'$lgt_logtalk._ddef'(Pred, ExCtx, Call).

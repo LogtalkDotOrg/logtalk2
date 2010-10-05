@@ -44,6 +44,10 @@ RELEASE NOTES
     Corrected a race condition bug when running multi-threaded code compiled
     in debug mode that could result in bogus failures.
 
+    Corrected a bug in the definition of the built-in object "logtalk" when
+    used as a root for a class hierarchy (two missing linking clauses for the
+    implemented protocols).
+
     Set the default value for the Logtalk flag "code_prefix" to '$' for all
     supported back-end Prolog compilers.
 
