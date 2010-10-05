@@ -12618,7 +12618,13 @@ current_logtalk_flag(version, version(2, 41, 1)).
 	'$lgt_gen_prototype_implements_dcl_clauses',
 	'$lgt_gen_prototype_imports_dcl_clauses',
 	'$lgt_gen_prototype_extends_dcl_clauses',
-	'$lgt_gen_object_catchall_dcl_clauses'(Local).
+	'$lgt_gen_object_catchall_dcl_clauses'(Local),
+	(	\+ '$lgt_pp_extended_object_'(_, _, _, _, _, _, _, _, _, _) ->
+		% stand-alone object; add the necessary clauses for using it as
+		% root of a class hierarchy
+		'$lgt_gen_ic_idcl_clauses'(Local)
+	;	true
+	).
 
 
 
@@ -12738,7 +12744,13 @@ current_logtalk_flag(version, version(2, 41, 1)).
 	'$lgt_gen_prototype_linking_def_clauses'(Local),
 	'$lgt_gen_prototype_imports_def_clauses',
 	'$lgt_gen_prototype_extends_def_clauses',
-	'$lgt_gen_object_catchall_def_clauses'(Local).
+	'$lgt_gen_object_catchall_def_clauses'(Local),
+		(	\+ '$lgt_pp_extended_object_'(_, _, _, _, _, _, _, _, _, _) ->
+		% stand-alone object; add the necessary clauses for using it as
+		% root of a class hierarchy
+		'$lgt_gen_ic_idef_clauses'(Local)
+	;	true
+	).
 
 
 

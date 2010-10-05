@@ -6,8 +6,7 @@
 % being modified); this makes it trivial to define instance methods
 
 
-:- object(root,				% avoid infinite metaclass regression by
-	instantiates(root)).	% making the class its own metaclass
+:- object(root).
 
 	:- public(method/0).
 

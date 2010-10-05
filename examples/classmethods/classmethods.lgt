@@ -1,13 +1,5 @@
 
-% avoid infinite metaclass regression by making "metacircle" its own metaclass;
-% another option would be to define "metacircle" as a subclass or instance of
-% the built-in object "logtalk", which can be used as root of both class and
-% prototype hierarchies; this second option have the advantage of preventing
-% misuse of the new/4 method to create new intances of "metacircle"
-
-
-:- object(metacircle,
-	instantiates(metacircle)).
+:- object(metacircle).
 			
 	:- public(new/4).
 	:- mode(new(+float, +float, +float, -object_identifier), one).
@@ -40,7 +32,7 @@
 		comment is 'Circle position.',
 		argnames is ['X', 'Y']]).
 
-	position(0.0, 0.0).		% default position
+	position(0.0, 0.0).					% default position
 
 	:- public(radius/1).
 	:- mode(radius(?float), zero_or_one).
@@ -48,7 +40,7 @@
 		comment is 'Circle radius.',
 		argnames is ['Radius']]).
 
-	radius(1.0).			% default radius
+	radius(1.0).						% default radius
 
 	:- public(area/1).
 	:- mode(area(-float), one).
@@ -57,7 +49,7 @@
 		argnames is ['Area']]).
 
 	area(Area) :-
-		::radius(Radius),	% ask the circle's instance that received the area/1 message its radius
+		::radius(Radius),				% ask the circle's instance that received the area/1 message its radius
 		Area is 4*atan(1.0)*Radius*Radius.
 
 :- end_object.

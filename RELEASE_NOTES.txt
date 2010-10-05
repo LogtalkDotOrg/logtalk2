@@ -15,6 +15,11 @@ RELEASE NOTES
 
 2.41.1 - October 6, 2010
 
+    Modified the compilation of objects that don't instantiate, specialize,
+    or extend other objects in order to allow their use as roots of either
+    class hierarchies or prototype hierarchies. This change simplifies the
+    definition of class hierarchies when reflexive designs are not required.
+
     Added support for the blackboard built-in predicates (bb_put/2, bb_get/2,
     bb_delete/2, and bb_update/3) found on some Prolog compilers such as YAP
     and SICStus Prolog. Note that a Prolog compiler natively supporting these

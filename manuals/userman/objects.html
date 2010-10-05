@@ -31,7 +31,7 @@ In Logtalk, the only pre-defined objects are the built-in objects <code>user</co
 <h2 id="objects_kind">Objects, prototypes, classes, and instances</h2>
 
 <p>
-There are only three kinds of encapsulation entities in Logtalk: objects, protocols, and categories. Logtalk uses the term <em>object</em> in a broad sense. The terms <em>prototype</em>, <em>parent</em>, <em>class</em>, <em>subclass</em>, <em>superclass</em>, <em>metaclass</em>, and <em>instance</em> always designate an object. Different names are used to emphasize the <em>role</em> played by an object in a particular context. I.e. we use a term other than object when we want to make the relationship with other objects explicit. For example, an object with an <em>instantiation</em> relation with other object plays the role of an <em>instance</em>, while the instantiated object plays the role of a <em>class</em>; an object with a <em>specialization</em> relation other object plays the role of a <em>subclass</em>, while the specialized object plays the role of a <em>superclass</em>; an object with an <em>extension</em> relation with other object plays the role of a <em>prototype</em>, the same for the extended object. A <em>stand-alone</em> object, i.e. an object with no relations with other objects, is always interpreted as a prototype. In Logtalk, entity relations essentially define <em>patterns</em> of code reuse. An entity is compiled accordingly to the roles it plays.
+There are only three kinds of encapsulation entities in Logtalk: objects, protocols, and categories. Logtalk uses the term <em>object</em> in a broad sense. The terms <em>prototype</em>, <em>parent</em>, <em>class</em>, <em>subclass</em>, <em>superclass</em>, <em>metaclass</em>, and <em>instance</em> always designate an object. Different names are used to emphasize the <em>role</em> played by an object in a particular context. I.e. we use a term other than object when we want to make the relationship with other objects explicit. For example, an object with an <em>instantiation</em> relation with other object plays the role of an <em>instance</em>, while the instantiated object plays the role of a <em>class</em>; an object with a <em>specialization</em> relation other object plays the role of a <em>subclass</em>, while the specialized object plays the role of a <em>superclass</em>; an object with an <em>extension</em> relation with other object plays the role of a <em>prototype</em>, the same for the extended object. A <em>stand-alone object</em>, i.e. an object with no relations with other objects and not extended, instantiated, or specialized by other objects, is interpreted as a prototype. In Logtalk, entity relations essentially define <em>patterns</em> of code reuse. An entity is compiled accordingly to the roles it plays.
 </p>
 <p>
 Logtalk allows you to work from standalone objects to any kind of hierarchy, either class-based or prototype-based. You may use single or multiple inheritance, use or forgo metaclasses, implement reflective designs, use parametric objects, and take advantage of protocols and categories (think components).
@@ -118,7 +118,20 @@ If we are defining a reflexive system where every class is also an instance, we 
 In short, an object can be a <em>stand-alone</em> object or be part of an object hierarchy. The hierarchy can be prototype-based (defined by extending other objects) or class-based (with instantiation and specialization relations). An object may also implement one or more protocols or import one or more categories.
 </p>
 <p>
-A <em>stand-alone</em> object (i.e. an object with no extension, instantiation, or specialization relations with other objects) is always compiled as a prototype, that is, a self-describing object. If we want to use classes and instances, then we will need to specify at least one instantiation or specialization relation. The best way to do this is to define a set of objects that provide the basis of a reflective system <a href="../bibliography.html#Cointe87">[Cointe 87</a>, <a href="../bibliography.html#Moura94">Moura 94]</a>. For example:
+A <em>stand-alone</em> object (i.e. an object not participating in extension, instantiation, or specialization relations with other objects) is compiled as a prototype, i.e. a self-describing object. If we want to use classes and instances, then we will need to specify at least one instantiation or specialization relation. The most simple solution is to define an object that will play the role of root of a class hierarchy. For example:
+</p>
+<pre>:- object(root).
+    ...
+:- end_object.
+
+
+:- object(subclass,
+    specializes(root)).
+    ...
+:- end_object.
+</pre>
+<p>
+A more sophisticated solution is to define a set of objects that provide the basis of a reflective system <a href="../bibliography.html#Cointe87">[Cointe 87</a>, <a href="../bibliography.html#Moura94">Moura 94]</a>. For example:
 </p>
 <pre>:- object(object,               % default root of the inheritance graph
     instantiates(class)).       % predicates common to all objects
@@ -146,13 +159,6 @@ When a full-blown reflective system solution is not needed, the above scheme can
 </p>
 <pre>:- object(class,
     instantiates(class)).
-    ...
-:- end_object.</pre>
-<p>
-A third alternative is to use neither metaclasses or reflective designs but instead to take advantage of the built-in object <code>logtalk</code>. This empty object can be used as a dummy root superclass. For example:
-</p>
-<pre>:- object(class,
-    specializes(logtalk)).
     ...
 :- end_object.</pre>
 <p>
@@ -436,13 +442,13 @@ Logtalk defines a built-in object named <code>debugger</code> which implements t
 <h3 id="objects_logtalk">The built-in object <em>logtalk</em></h3>
 
 <p>
-Logtalk defines an empty built-in object named <code>logtalk</code>, which can play the role of both a class and a prototype. It may be used to define class hierarchies without forcing the use of metaclasses or reflective designs, as illustrated above. This object implements the built-in protocols <a href="protocols.html#protocols_expanding"><code>expanding</code></a> and <a href="protocols.html#protocols_monitoring"><code>monitoring</code></a>. It also supports the dynamic declaration and definition of predicates (using the dynamic database built-in methods).
+Logtalk defines an empty built-in object named <code>logtalk</code>, which can play the role of both a class and a prototype. It may be used e.g. as a root of class hierarchies. This object implements the built-in protocols <a href="protocols.html#protocols_expanding"><code>expanding</code></a> and <a href="protocols.html#protocols_monitoring"><code>monitoring</code></a>. It also supports the dynamic declaration and definition of predicates (using the dynamic database built-in methods).
 </p>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: April 17, 2009</span>
+		<span>Last updated on: October 5, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="messages.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="protocols.html">next</a></span><br/>

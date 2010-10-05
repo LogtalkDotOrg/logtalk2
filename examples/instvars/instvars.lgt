@@ -1,8 +1,7 @@
 
-:- object(root,					% define "root" as class by specializing the built-in object
-	specializes(logtalk)).		% "logtalk", which can be used as root of both class and 
-								% prototype hierarchies; an alternative would be for "root"
-	:- private(ivar_/1).		% to instantiate itself
+:- object(root).
+
+	:- private(ivar_/1).
 	:- dynamic(ivar_/1).
 	:- mode(ivar_(?integer), zero_or_one).
 
