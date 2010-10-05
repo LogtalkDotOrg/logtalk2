@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 3.8 and later versions
 %
-%  last updated: October 2, 2010
+%  last updated: October 5, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -137,7 +137,11 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_pl_meta_predicate'(+callable, ?callable, ?atom).
+% '$lgt_pl_meta_predicate'(+callable, ?callable, ?atom)
+%
+% table of meta-predicate patterns for proprietary built-in predicates;
+% the third argument, which must be either "predicate" or "control_construct",
+% is used to guide the compilation of these meta-predicates in debug mode
 
 '$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(0, 0), predicate).
 '$lgt_pl_meta_predicate'(call_residue(_, _), call_residue(0, *), predicate).

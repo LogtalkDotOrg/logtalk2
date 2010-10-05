@@ -11,7 +11,7 @@
 %
 %  configuration file for CxProlog 0.97.5 or a later version
 %
-%  last updated: October 2, 2010
+%  last updated: October 5, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -98,7 +98,11 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_pl_meta_predicate'(+callable, ?callable, ?atom).
+% '$lgt_pl_meta_predicate'(+callable, ?callable, ?atom)
+%
+% table of meta-predicate patterns for proprietary built-in predicates;
+% the third argument, which must be either "predicate" or "control_construct",
+% is used to guide the compilation of these meta-predicates in debug mode
 
 '$lgt_pl_meta_predicate'(catch(_, _, _, _), catch(0, *, *, 0), predicate).
 '$lgt_pl_meta_predicate'(gen(_), gen(0), predicate).

@@ -11,7 +11,7 @@
 %
 %  configuration file for GNU Prolog 1.4.0 (and later versions)
 %
-%  last updated: August 31, 2010
+%  last updated: October 5, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -98,7 +98,11 @@ setup_call_cleanup(_, _, _) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_pl_meta_predicate'(+callable, ?callable, ?atom).
+% '$lgt_pl_meta_predicate'(+callable, ?callable, ?atom)
+%
+% table of meta-predicate patterns for proprietary built-in predicates;
+% the third argument, which must be either "predicate" or "control_construct",
+% is used to guide the compilation of these meta-predicates in debug mode
 
 '$lgt_pl_meta_predicate'(call_det(_, _), call_det(0, *), predicate).
 '$lgt_pl_meta_predicate'(fd_minimize(_, _), fd_minimize(0, *), predicate).
