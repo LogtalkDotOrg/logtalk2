@@ -96,20 +96,20 @@
 	test_example(34,path(6,4),0.51).
 	test_example(35,path(6,5),0.69).
 
-	:- multifile(user:example/3).
-	user:example(A, B, C) :-
+	:- multifile(user::example/3).
+	user::example(A, B, C) :-
 		example(A, B, C).
 
-	:- multifile(user:test_example/3).
-	user:test_example(A, B, C) :-
+	:- multifile(user::test_example/3).
+	user::test_example(A, B, C) :-
 		test_example(A, B, C).
 
-	:- multifile(user:path/2).
-	user:path(A, B) :-
+	:- multifile(user::path/2).
+	user::path(A, B) :-
 		path(A, B).
 
-	:- multifile(user:dir_edge/2).
-	user:dir_edge(A, B) :-
+	:- multifile(user::dir_edge/2).
+	user::dir_edge(A, B) :-
 		dir_edge(A, B).
 
 :- end_object.
