@@ -100,7 +100,13 @@
 	:- public(dtproblog_utility_facts/1).
 
 	dtproblog_utility_facts(Facts) :-
-		dtproblog:dtproblog_utility_facts(Facts).
+		dtproblog:dtproblog_utility_facts(TFacts),
+		decompile_imp_facts(TFacts, Facts).
+
+	decompile_imp_facts([], []).
+	decompile_imp_facts(['=>'(TFact,Value)| TFacts], ['=>'(Fact,Value)| Facts]) :-
+		::decompile_facts([TFact], [Fact]),
+		decompile_imp_facts(TFacts, Facts).
 
 	:- public(dtproblog_decisions/1).
 

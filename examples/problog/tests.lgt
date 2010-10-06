@@ -62,4 +62,35 @@
 		Prob =~= 0.01517076,
 		Status == ok.
 
+	test(problog_vm_1) :-
+		vm::dtproblog_solve(Strategy,ExpectedValue),
+		ExpectedValue =~= 3.21097,
+		Strategy == [marketed(martijn),marketed(guy),marketed(theo),marketed(ingo)].
+
+	test(problog_vm_2) :-
+		vm::dtproblog_ev([marketed(martijn),marketed(laura)],ExpectedValue),
+		ExpectedValue =~= 2.35771065.
+
+	test(problog_vm_3) :-
+		flags:set_problog_flag(optimization, local), vm::dtproblog_solve(Strategy,ExpectedValue),
+		ExpectedValue =~= 3.19528,
+		Strategy == [marketed(martijn),marketed(laura),marketed(guy),marketed(ingo)].
+
+	test(problog_vm_4) :-
+		vm::dtproblog_utility_facts(Facts),
+		Facts == [buys(bernd)=>5,buys(ingo)=>5,buys(theo)=>5,buys(angelika)=>5,buys(guy)=>5,buys(martijn)=>5,buys(laura)=>5,buys(kurt)=>5,marketed(bernd)=> -2,marketed(ingo)=> -2,marketed(theo)=> -2,marketed(angelika)=> -2,marketed(guy)=> -2,marketed(martijn)=> -2,marketed(laura)=> -2,marketed(kurt)=> -2].
+
+	test(problog_vm_5) :-
+		vm::dtproblog_decisions(Decisions),
+		Decisions == [marketed(angelika),marketed(theo),marketed(kurt),marketed(ingo),marketed(laura),marketed(martijn),marketed(guy),marketed(bernd)].
+
+	test(problog_vm_6) :-
+		flags:set_problog_flag(inference,20-best), vm::dtproblog_solve(Strategy,ExpectedValue),
+		ExpectedValue =~= 2.62531,
+		Strategy = [marketed(martijn),marketed(guy),marketed(ingo),marketed(laura)].
+
+	test(problog_vm_7) :-
+		flags:set_problog_flag(inference,exact), vm::dtproblog_ev([marketed(martijn), marketed(guy), marketed(ingo), marketed(laura)], ExpectedValue),
+		ExpectedValue =~= 3.1952798.
+
 :- end_object.

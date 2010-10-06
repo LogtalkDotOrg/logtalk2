@@ -10,12 +10,13 @@
 :- object(hook,
 	implements(expanding)).
 
-	term_expansion(('=>'(Head,N) :- Body), [(:- multifile(user::'=>'/2)), (user::'=>'(THead,N) :- Body)]) :-
-		{'$lgt_tr_predicate_heads'(Head, THead)}.
+	term_expansion(('=>'(Head,N) :- Body), [(:- multifile(user::'=>'/2)), (user::'=>'(THead,N) :- {TBody})]) :-
+		{'$lgt_tr_predicate_heads'(Head, THead, context)},
+		{'$lgt_tr_predicate_heads'(Body, TBody, context)}.
 
 	term_expansion((Prob~Head :- Body), [ExpandedClause]) :-
-		{'$lgt_tr_predicate_heads'(Head, THead)},
-		{'$lgt_tr_predicate_heads'(Body, TBody)},
+		{'$lgt_tr_predicate_heads'(Head, THead, context)},
+		{'$lgt_tr_predicate_heads'(Body, TBody, context)},
 		problog:term_expansion_intern((Prob::THead :- TBody), user, ExpandedClause).
 
 	term_expansion(Prob~Fact, []) :-
