@@ -33,7 +33,7 @@
 	% approximation using monte carlo, to reach 95%-confidence interval width 0.01
 	test(problog_graph_4) :-
 		graph::problog_montecarlo(path(1,4),0.01,Prob),
-		Prob =~= 0.536475.
+		abs(Prob - 0.536475) =< 0.05.
 
 	% upper and lower bound using iterative deepening, final interval width 0.01
 	test(problog_graph_5) :-
