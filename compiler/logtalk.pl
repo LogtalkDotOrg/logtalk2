@@ -8877,7 +8877,10 @@ current_logtalk_flag(version, version(2, 41, 1)).
 		writeq(user::Functor/Arity), nl,
 		'$lgt_pp_entity'(Type, Entity, _, _, _),
 		'$lgt_report_warning_full_context'(Type, Entity)
-	).
+	),
+	'$lgt_pp_entity'(_, This, _, _, _),
+	'$lgt_comp_ctx'(Ctx, _, user, This, This, _, _, [], ExCtx, _, []),
+	'$lgt_exec_ctx'(ExCtx, user, This, This, [], []).
 
 '$lgt_tr_head'(Other::Head, THead, Ctx) :-
 	!,

@@ -30,6 +30,10 @@ RELEASE NOTES
     Simplified the internal representation of entity prefixes and entity
     predicate functors. The new representation is also a bit more compact.
 
+    Corrected a bug in the compilation of clauses for multifile predicates
+    defined in the pseudo-object "user" where the execution context for the
+    clause body goals would be undefined.
+
     Corrected an optimization bug in the compilation of grammar rules that
     resulted in failed compilations whenever the body of a grammar rule was
     equivalent to fail/0. Thanks to Ulrich Neumerkel for the bug report.
