@@ -1,18 +1,20 @@
 
-:- category(problog).
+:- category(utilities).
 
-	:- public(problog_exact/3).
+	:- private(compile_facts/2).
 
-	problog_exact(A,B,C) :-
+	compile_facts([], []).
+	compile_facts([Fact| Facts], [TFact| TFacts]) :-
+		functor(Fact, Functor, Arity),
+		Fact =.. [Functor| Args0],
+		list::append(Args0, [_], Args),
 		this(This),
-		problog:problog_exact(This::A,B,C).
+		{'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _)},
+		atom_concat(Prefix, Functor, TFunctor),
+		TFact =.. [TFunctor| Args],
+		compile_facts(Facts, TFacts).
 
-	:- public(problog_max/3).
-
-	problog_max(A,B,C) :-
-		this(This),
-		problog:problog_max(This::A,B,TC),
-		decompile_facts(TC, C).
+	:- private(decompile_facts/2).
 
 	decompile_facts([], []).
 	decompile_facts([TFact| TFacts], [Fact| Facts]) :-
@@ -25,6 +27,26 @@
 		atom_concat(Prefix, Functor, TFunctor),
 		Fact =.. [Functor| Args],
 		decompile_facts(TFacts, Facts).
+
+:- end_category.
+
+
+
+:- category(problog,
+	extends(utilities)).
+
+	:- public(problog_exact/3).
+
+	problog_exact(A,B,C) :-
+		this(This),
+		problog:problog_exact(This::A,B,C).
+
+	:- public(problog_max/3).
+
+	problog_max(A,B,C) :-
+		this(This),
+		problog:problog_max(This::A,B,TC),
+		::decompile_facts(TC, C).
 
 	:- public(problog_kbest/4).
 
@@ -60,29 +82,31 @@
 
 
 
-:- category(dtproblog).
+:- category(dtproblog,
+	extends(utilities)).
 
 	:- public(dtproblog_solve/2).
 
-	dtproblog_solve(A, B) :-
-		dtproblog:dtproblog_solve(A, B).
+	dtproblog_solve(Strategy, ExpectedValue) :-
+		dtproblog:dtproblog_solve(TStrategy, ExpectedValue),
+		::decompile_facts(TStrategy, Strategy).
 
 	:- public(dtproblog_ev/2).
 
 	dtproblog_ev(A, B) :-
-		compile_facts(A, TA),
+		::compile_facts(A, TA),
 		dtproblog:dtproblog_ev(TA, B).
 
-	compile_facts([], []).
-	compile_facts([Fact| Facts], [TFact| TFacts]) :-
-		functor(Fact, Functor, Arity),
-		Fact =.. [Functor| Args0],
-		list::append(Args0, [_], Args),
-		this(This),
-		{'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _)},
-		atom_concat(Prefix, Functor, TFunctor),
-		TFact =.. [TFunctor| Args],
-		compile_facts(Facts, TFacts).
+	:- public(dtproblog_utility_facts/1).
+
+	dtproblog_utility_facts(Facts) :-
+		dtproblog:dtproblog_utility_facts(Facts).
+
+	:- public(dtproblog_decisions/1).
+
+	dtproblog_decisions(Decisions) :-
+		dtproblog:dtproblog_decisions(TDecisions),
+		::decompile_facts(TDecisions, Decisions).
 
 :- end_category.
 

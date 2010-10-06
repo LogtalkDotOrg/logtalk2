@@ -79,7 +79,7 @@
 %
 % Find a locally optimal strategy.
 %
-% ?- set_problog_flag(optimization, local), vm::dtproblog_solve(Strategy,ExpectedValue).
+% ?- flags:set_problog_flag(optimization, local), vm::dtproblog_solve(Strategy,ExpectedValue).
 % ExpectedValue = 3.19528,
 % Strategy = [marketed(martijn),marketed(laura),marketed(guy),marketed(ingo)]
 %
@@ -102,7 +102,7 @@
 % Set the inference method to K-best to limit the complexity. This means that only the K most likely proofs for each utility attribute are considered as an underestimate of the probabilities and utilities. In the viral marketing example, this means that the probability that someone buys the product only depends on a limited number of other people in the social network,  regardless of the size of the social network.
 % Finding the globally optimal strategy under these simplifying assumptions yields a good but suboptimal strategy.
 %
-% ?- set_problog_flag(inference,20-best), vm::dtproblog_solve(Strategy,ExpectedValue).
+% ?- flags:set_problog_flag(inference,20-best), vm::dtproblog_solve(Strategy,ExpectedValue).
 % ExpectedValue = 2.62531,
 % Strategy = [marketed(martijn),marketed(guy),marketed(ingo),marketed(laura)]
 %
@@ -110,7 +110,7 @@
 %
 % The expected value returned in the previous example is an underestimate of the real expected value of the strategy found, which can be computed as
 %
-% ?- set_problog_flag(inference,exact), vm::dtproblog_ev([marketed(martijn), marketed(guy), marketed(ingo), marketed(laura)], ExpectedValue).
+% ?- flags:set_problog_flag(inference,exact), vm::dtproblog_ev([marketed(martijn), marketed(guy), marketed(ingo), marketed(laura)], ExpectedValue).
 % ExpectedValue = 3.1952798
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
