@@ -6457,6 +6457,13 @@ current_logtalk_flag(version, version(2, 41, 2)).
 %
 % translates a source file term (clauses, directives, and grammar rules)
 
+'$lgt_tr_expanded_term'({Term}, _) :-	% bypass control construct; expanded term is final
+	!,
+	(	var(Term) ->
+		throw(error(instantiantion_error, {Term}))
+	;	assertz('$lgt_pp_feclause_'(Term))
+	).
+
 '$lgt_tr_expanded_term'((Head :- Body), Ctx) :-
 	!,
 	'$lgt_tr_clause'((Head :- Body), Ctx).

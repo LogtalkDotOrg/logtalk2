@@ -15,7 +15,10 @@ RELEASE NOTES
 
 2.41.2 - November ??, 2010
 
-    
+    Updated the term-expansion mechanism implementation in order to support
+    the use of the {}/1 compiler bypass control construct within the list of
+    expanded terms returned by the term_expansion/2 built-in method when used
+    in hook objects.
 
 
 2.41.1 - October 6, 2010
