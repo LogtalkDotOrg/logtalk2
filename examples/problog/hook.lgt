@@ -3,12 +3,17 @@
 :- use_module(library(dtproblog), []).
 :- use_module(library(problog_learning), []).
 
-:- op(550, yfx, ~).
+:- op(550, yfx, ~).		% alternative to ProbLog (::)/2 operator
 :- op(550, yfx, =>).
 
 
 :- object(hook,
 	implements(expanding)).
+
+	term_expansion((:- set_problog_flag(Flag, Value)), [{(:- problog:set_problog_flag(Flag, Value))}]).
+
+	term_expansion((:- problog_table(PI)), [{(:- problog:problog_table(user:TPI))}]) :-
+		{'$lgt_tr_predicate_indicators'(PI, TPI)}.
 
 	term_expansion(('=>'(Head,N) :- Body), [(:- multifile(user::'=>'/2)), (user::'=>'(THead,N) :- {TBody})]) :-
 		{'$lgt_tr_predicate_heads'(Head, THead, context)},
