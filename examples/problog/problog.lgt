@@ -37,6 +37,10 @@
 
 	:- public(problog_exact/3).
 
+	problog_exact(problog_neg(A),B,C) :-
+		!,
+		this(This),
+		problog:problog_exact(tabling:problog_neg(This::A),B,C).
 	problog_exact(A,B,C) :-
 		this(This),
 		problog:problog_exact(This::A,B,C).

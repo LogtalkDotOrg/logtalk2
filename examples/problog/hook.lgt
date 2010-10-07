@@ -10,9 +10,9 @@
 :- object(hook,
 	implements(expanding)).
 
-	term_expansion((:- set_problog_flag(Flag, Value)), [{(:- problog:set_problog_flag(Flag, Value))}]).
+	term_expansion((:- set_problog_flag(Flag, Value)), [{(:- flags:set_problog_flag(Flag, Value))}]).
 
-	term_expansion((:- problog_table(PI)), [{(:- problog:problog_table(user:TPI))}]) :-
+	term_expansion((:- problog_table(PI)), [{(:- tabling:problog_table(user:TPI))}]) :-
 		{'$lgt_tr_predicate_indicators'(PI, TPI)}.
 
 	term_expansion(('=>'(Head,N) :- Body), [(:- multifile(user::'=>'/2)), (user::'=>'(THead,N) :- {TBody})]) :-

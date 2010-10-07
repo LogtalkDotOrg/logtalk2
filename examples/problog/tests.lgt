@@ -10,6 +10,8 @@
 
 	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
 
+	:- if(current_object(graph)).
+
 	% explanation probability (and facts involved)
 	test(problog_graph_1) :-
 		graph::problog_max(path(1,4),Prob,FactsUsed),
@@ -57,10 +59,18 @@
 		Bound_low =~= 0.432,
 		Status == ok.
 
+	:- endif.
+
+	:- if(current_object(office)).
+
 	test(problog_office_1) :-
 		office::problog_exact(room_has_window, Prob, Status),
 		Prob =~= 0.01517076,
 		Status == ok.
+
+	:- endif.
+
+	:- if(current_object(vm)).
 
 	test(problog_vm_1) :-
 		vm::dtproblog_solve(Strategy,ExpectedValue),
@@ -92,5 +102,58 @@
 	test(problog_vm_7) :-
 		flags:set_problog_flag(inference,exact), vm::dtproblog_ev([marketed(martijn), marketed(guy), marketed(ingo), marketed(laura)], ExpectedValue),
 		ExpectedValue =~= 3.1952798.
+
+	:- endif.
+
+	:- if(current_object(graph_tabled)).
+
+	% success probability
+	test(problog_graph_tabled_1) :-
+		graph_tabled::problog_exact(path(1,4),Prob,Status),
+		Prob =~= 0.53864,
+		Status == ok.
+
+	% approximation using monte carlo, to reach 95%-confidence interval width 0.01
+	test(problog_graph_tabled_2) :-
+		graph_tabled::problog_montecarlo(path(1,4),0.01,Prob),
+		abs(Prob - 0.537525) =< 0.05.
+
+	% success probability of negation
+	test(problog_graph_tabled_3) :-
+		graph_tabled::problog_exact(problog_neg(path(1,4)),Prob,Status),
+		Prob =~= 0.46136,
+		Status == ok.
+
+	:- endif.
+
+	:- if(current_object(vmt)).
+
+	test(problog_vmt_1) :-
+		vmt::dtproblog_solve(Strategy,ExpectedValue),
+		ExpectedValue =~= 3.21097,
+		Strategy == [marketed(martijn),marketed(guy),marketed(theo),marketed(ingo)].
+
+	% Compute the expected value for a given strategy.
+	test(problog_vmt_2) :-
+		vmt::dtproblog_ev([marketed(martijn),marketed(laura)],ExpectedValue),
+		ExpectedValue =~= 2.35771065.
+
+	% Find a locally optimal strategy.
+	test(problog_vmt_3) :-
+		flags:set_problog_flag(optimization, local), vmt::dtproblog_solve(Strategy,ExpectedValue),
+		ExpectedValue =~= 3.19528,
+		Strategy == [marketed(martijn),marketed(laura),marketed(guy),marketed(ingo)].
+
+	% Find all ground utility facts in the theory.
+	test(problog_vmt_4) :-
+		vmt::dtproblog_utility_facts(Facts),
+		Facts == [buys(bernd)=>5, buys(ingo)=>5, buys(theo)=>5, buys(angelika)=>5, buys(guy)=>5, buys(martijn)=>5, buys(laura)=>5, buys(kurt)=>5, marketed(bernd)=> -2, marketed(ingo)=> -2, marketed(theo)=> -2, marketed(angelika)=> -2, marketed(guy)=> -2, marketed(martijn)=> -2, marketed(laura)=> -2, marketed(kurt)=> -2].
+
+	% Find all ground decisions relevant to the utility attributes.
+	test(problog_vmt_5) :-
+		vmt::dtproblog_decisions(Decisions),
+		Decisions == [marketed(angelika), marketed(theo), marketed(kurt), marketed(ingo), marketed(laura), marketed(martijn), marketed(guy), marketed(bernd)].
+
+	:- endif.
 
 :- end_object.
