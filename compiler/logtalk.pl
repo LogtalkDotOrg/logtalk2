@@ -6461,7 +6461,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	!,
 	(	var(Term) ->
 		throw(error(instantiantion_error, {Term}))
-	;	assertz('$lgt_pp_feclause_'(Term))
+	;	assertz('$lgt_pp_eclause_'({Term}))
 	).
 
 '$lgt_tr_expanded_term'((Head :- Body), Ctx) :-
@@ -13297,7 +13297,9 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 '$lgt_fix_pred_calls' :-
 	retract('$lgt_pp_eclause_'(Clause)),
-	(	Clause = (Head:-Body) ->
+	(	Clause = {Term} ->
+		assertz('$lgt_pp_feclause_'(Term))
+	;	Clause = (Head:-Body) ->
 		'$lgt_fix_pred_calls'(Body, FBody),
 		assertz('$lgt_pp_feclause_'((Head:-FBody)))
 	;	assertz('$lgt_pp_feclause_'(Clause))
