@@ -255,8 +255,8 @@
 
 :- dynamic('$lgt_pp_defs_pred_'/2).					% '$lgt_pp_defs_pred_'(Functor, Arity)
 :- dynamic('$lgt_pp_calls_pred_'/4).				% '$lgt_pp_calls_pred_'(Functor, Arity, TFunctor, TArity)
-:- dynamic('$lgt_non_portable_call_'/2).			% '$lgt_non_portable_call_'(Functor, Arity)
-:- dynamic('$lgt_non_portable_function_'/2).		% '$lgt_non_portable_function_'(Functor, Arity)
+:- dynamic('$lgt_pp_non_portable_call_'/2).			% '$lgt_pp_non_portable_call_'(Functor, Arity)
+:- dynamic('$lgt_pp_non_portable_function_'/2).		% '$lgt_pp_non_portable_function_'(Functor, Arity)
 
 :- dynamic('$lgt_pp_defs_nt_'/2).					% '$lgt_pp_defs_nt_'(Functor, Arity)
 :- dynamic('$lgt_pp_calls_nt_'/2).					% '$lgt_pp_calls_nt_'(Functor, Arity)
@@ -285,7 +285,7 @@
 :- dynamic('$lgt_pp_file_bom_'/1).					% '$lgt_pp_file_bom_'(BOM)
 :- dynamic('$lgt_pp_file_path_'/2).					% '$lgt_pp_file_path_'(File, Path)
 
-:- dynamic('$lgt_pp_file_rclause_'/1).				% '$lgt_pp_file_rclause_'(Clause)
+:- dynamic('$lgt_pp_file_relation_clause_'/1).		% '$lgt_pp_file_relation_clause_'(Clause)
 
 :- dynamic('$lgt_pp_cc_if_found_'/1).				% '$lgt_pp_cc_if_found_'(Goal)
 :- dynamic('$lgt_pp_cc_skipping_'/0).				% '$lgt_pp_cc_skipping_'
@@ -5158,9 +5158,9 @@ current_logtalk_flag(version, version(2, 41, 2)).
 % also retract old runtime clauses for the entity being redefined for safety
 
 '$lgt_check_redefined_entities' :-
-	(	'$lgt_pp_file_rclause_'('$lgt_current_protocol_'(Entity, _, _, _, _))
-	;	'$lgt_pp_file_rclause_'('$lgt_current_category_'(Entity, _, _, _, _, _))
-	;	'$lgt_pp_file_rclause_'('$lgt_current_object_'(Entity, _, _, _, _, _, _, _, _, _, _))
+	(	'$lgt_pp_file_relation_clause_'('$lgt_current_protocol_'(Entity, _, _, _, _))
+	;	'$lgt_pp_file_relation_clause_'('$lgt_current_category_'(Entity, _, _, _, _, _))
+	;	'$lgt_pp_file_relation_clause_'('$lgt_current_object_'(Entity, _, _, _, _, _, _, _, _, _, _))
 	),
 	'$lgt_redefined_entity'(Entity, Type, File),
 	'$lgt_report_redefined_entity'(Type, Entity, File),
@@ -5185,7 +5185,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	),
 	(	% check file information using the file/2 entity property, if available:
 		'$lgt_entity_property_'(Entity, file(OldBase, _, _, OldPath)),
-		'$lgt_pp_file_rclause_'('$lgt_entity_property_'(Entity, file(NewBase, _, _, NewPath))),
+		'$lgt_pp_file_relation_clause_'('$lgt_entity_property_'(Entity, file(NewBase, _, _, NewPath))),
 		(OldPath \== NewPath; OldBase \== NewBase) ->
 		File = OldBase-OldPath
 	;	% either no file/2 entity property or we're reloading the same file 
@@ -6105,7 +6105,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 '$lgt_save_entity_rclauses' :-
 	'$lgt_pp_relation_clause'(Clause),
-	assertz('$lgt_pp_file_rclause_'(Clause)),
+	assertz('$lgt_pp_file_relation_clause_'(Clause)),
 	fail.
 
 '$lgt_save_entity_rclauses'.
@@ -6126,7 +6126,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	retractall('$lgt_pp_file_encoding_'(_, _)),
 	retractall('$lgt_pp_file_bom_'(_)),
 	retractall('$lgt_pp_file_path_'(_, _)),
-	retractall('$lgt_pp_file_rclause_'(_)),
+	retractall('$lgt_pp_file_relation_clause_'(_)),
 	retractall('$lgt_pp_cc_if_found_'(_)),
 	retractall('$lgt_pp_cc_skipping_'),
 	retractall('$lgt_pp_cc_mode_'(_)),
@@ -6188,8 +6188,8 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	retractall('$lgt_pp_redefined_built_in_'(_, _, _)),
 	retractall('$lgt_pp_defs_pred_'(_, _)),
 	retractall('$lgt_pp_calls_pred_'(_, _, _, _)),
-	retractall('$lgt_non_portable_call_'(_, _)),
-	retractall('$lgt_non_portable_function_'(_, _)),
+	retractall('$lgt_pp_non_portable_call_'(_, _)),
+	retractall('$lgt_pp_non_portable_function_'(_, _)),
 	retractall('$lgt_pp_defs_nt_'(_, _)),
 	retractall('$lgt_pp_calls_nt_'(_, _)),
 	retractall('$lgt_pp_referenced_object_'(_)),
@@ -6821,11 +6821,11 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	).
 
 '$lgt_tr_directive'(object, [Obj| _], _) :-
-	(	'$lgt_pp_file_rclause_'('$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _)) ->
+	(	'$lgt_pp_file_relation_clause_'('$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _)) ->
 		throw(permission_error(modify, object, Obj))
-	;	'$lgt_pp_file_rclause_'('$lgt_current_protocol_'(Obj, _, _, _, _)) ->
+	;	'$lgt_pp_file_relation_clause_'('$lgt_current_protocol_'(Obj, _, _, _, _)) ->
 		throw(permission_error(modify, protocol, Obj))
-	;	'$lgt_pp_file_rclause_'('$lgt_current_category_'(Obj, _, _, _, _, _)) ->
+	;	'$lgt_pp_file_relation_clause_'('$lgt_current_category_'(Obj, _, _, _, _, _)) ->
 		throw(permission_error(modify, category, Obj))
 	).
 
@@ -6863,11 +6863,11 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	).
 
 '$lgt_tr_directive'(protocol, [Ptc| _], _) :-
-	(	'$lgt_pp_file_rclause_'('$lgt_current_object_'(Ptc, _, _, _, _, _, _, _, _, _, _)) ->
+	(	'$lgt_pp_file_relation_clause_'('$lgt_current_object_'(Ptc, _, _, _, _, _, _, _, _, _, _)) ->
 		throw(permission_error(modify, object, Ptc))
-	;	'$lgt_pp_file_rclause_'('$lgt_current_protocol_'(Ptc, _, _, _, _)) ->
+	;	'$lgt_pp_file_relation_clause_'('$lgt_current_protocol_'(Ptc, _, _, _, _)) ->
 		throw(permission_error(modify, protocol, Ptc))
-	;	'$lgt_pp_file_rclause_'('$lgt_current_category_'(Ptc, _, _, _, _, _)) ->
+	;	'$lgt_pp_file_relation_clause_'('$lgt_current_category_'(Ptc, _, _, _, _, _)) ->
 		throw(permission_error(modify, category, Ptc))
 	).
 
@@ -6906,11 +6906,11 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	).
 
 '$lgt_tr_directive'(category, [Ctg| _], _) :-
-	(	'$lgt_pp_file_rclause_'('$lgt_current_object_'(Ctg, _, _, _, _, _, _, _, _, _, _)) ->
+	(	'$lgt_pp_file_relation_clause_'('$lgt_current_object_'(Ctg, _, _, _, _, _, _, _, _, _, _)) ->
 		throw(permission_error(modify, object, Ctg))
-	;	'$lgt_pp_file_rclause_'('$lgt_current_protocol_'(Ctg, _, _, _, _)) ->
+	;	'$lgt_pp_file_relation_clause_'('$lgt_current_protocol_'(Ctg, _, _, _, _)) ->
 		throw(permission_error(modify, protocol, Ctg))
-	;	'$lgt_pp_file_rclause_'('$lgt_current_category_'(Ctg, _, _, _, _, _)) ->
+	;	'$lgt_pp_file_relation_clause_'('$lgt_current_category_'(Ctg, _, _, _, _, _)) ->
 		throw(permission_error(modify, category, Ctg))
 	).
 
@@ -9743,9 +9743,9 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 '$lgt_tr_body'(assert(Term), TCond, DCond, Ctx) :-
 	!,
-	(	'$lgt_non_portable_call_'(assert, 1) ->
+	(	'$lgt_pp_non_portable_call_'(assert, 1) ->
 		true
-	;	assertz('$lgt_non_portable_call_'(assert, 1))
+	;	assertz('$lgt_pp_non_portable_call_'(assert, 1))
 	),
 	'$lgt_tr_body'(assertz(Term), TCond, DCond, Ctx).
 
@@ -10222,8 +10222,8 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	\+ '$lgt_pp_public_'(Functor, Arity),		% not a
 	\+ '$lgt_pp_protected_'(Functor, Arity),	% redefined
 	\+ '$lgt_pp_private_'(Functor, Arity),		% built-in
-	\+ '$lgt_non_portable_call_'(Functor, Arity),
-	assertz('$lgt_non_portable_call_'(Functor, Arity)),
+	\+ '$lgt_pp_non_portable_call_'(Functor, Arity),
+	assertz('$lgt_pp_non_portable_call_'(Functor, Arity)),
 	fail.
 
 
@@ -10740,10 +10740,10 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 '$lgt_check_non_portable_functions'(Exp) :-
 	functor(Exp, Functor, Arity),
-	(	'$lgt_non_portable_function_'(Functor, Arity) ->
+	(	'$lgt_pp_non_portable_function_'(Functor, Arity) ->
 		true
 	;	'$lgt_compiler_flag'(portability, warning) ->
-		assertz('$lgt_non_portable_function_'(Functor, Arity))
+		assertz('$lgt_pp_non_portable_function_'(Functor, Arity))
 	;	true
 	),
 	Exp =.. [_| Exps],
@@ -11994,7 +11994,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	\+ '$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _),	% not a currently loaded object
 	\+ '$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _),		% not the object being compiled (self reference)
 	\+ '$lgt_pp_entity_init_'(object, Obj, _),						% not an object defined in the source file being compiled
-	\+ '$lgt_pp_file_rclause_'('$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _)),
+	\+ '$lgt_pp_file_relation_clause_'('$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _)),
 	\+ (atom(Obj), catch(current_module(Obj), _, fail)).			% not a currently loaded module; use catch/3 to avoid 
 																	% errors with Prolog compilers with no module support
 
@@ -12022,7 +12022,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	\+ '$lgt_current_protocol_'(Ptc, _, _, _, _),	% not a currently loaded protocol
 	\+ '$lgt_pp_protocol_'(Ptc, _, _, _, _),		% not the protocol being compiled (self reference)
 	\+ '$lgt_pp_entity_init_'(protocol, Ptc, _),	% not a protocol defined in the source file being compiled
-	\+ '$lgt_pp_file_rclause_'('$lgt_current_protocol_'(Ptc, _, _, _, _)).
+	\+ '$lgt_pp_file_relation_clause_'('$lgt_current_protocol_'(Ptc, _, _, _, _)).
 
 
 
@@ -12049,7 +12049,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	\+ '$lgt_current_category_'(Ctg, _, _, _, _, _),	% not a currently loaded category
 	\+ '$lgt_pp_category_'(Ctg, _, _, _, _, _),			% not the category being compiled (self reference)
 	\+ '$lgt_pp_entity_init_'(category, Ctg, _),		% not a category defined in the source file being compiled
-	\+ '$lgt_pp_file_rclause_'('$lgt_current_category_'(Ctg, _, _, _, _, _)).
+	\+ '$lgt_pp_file_relation_clause_'('$lgt_current_category_'(Ctg, _, _, _, _, _)).
 
 
 
@@ -13587,7 +13587,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 '$lgt_non_portable_call'(Functor/Arity) :-
-	'$lgt_non_portable_call_'(Functor, Arity),
+	'$lgt_pp_non_portable_call_'(Functor, Arity),
 	\+ '$lgt_pp_defs_pred_'(Functor, Arity),
 	functor(Pred, Functor, Arity),
 	\+ '$lgt_pp_redefined_built_in_'(Pred, _, _).
@@ -13597,7 +13597,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 % report non-portable arithmetic function calls in the body of object and category predicates
 
 '$lgt_report_non_portable_functions'(Type, Entity) :-
-	(	setof(Functor/Arity, '$lgt_non_portable_function_'(Functor, Arity), Functions) ->
+	(	setof(Functor/Arity, '$lgt_pp_non_portable_function_'(Functor, Arity), Functions) ->
 		'$lgt_report_warning_in_new_line',
 		'$lgt_inc_compile_warnings_counter',
 		(	Functions = [_] ->
@@ -13775,10 +13775,10 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 '$lgt_write_runtime_clauses'(Stream, Functor/Arity) :-
 	functor(Clause, Functor, Arity),
-	(	\+ \+ '$lgt_pp_file_rclause_'(Clause) ->
+	(	\+ \+ '$lgt_pp_file_relation_clause_'(Clause) ->
 		write_canonical(Stream, (:- multifile(Functor/Arity))), write(Stream, '.'), nl(Stream),
 		write_canonical(Stream, (:- dynamic(Functor/Arity))), write(Stream, '.'), nl(Stream),
-		(	'$lgt_pp_file_rclause_'(Clause),
+		(	'$lgt_pp_file_relation_clause_'(Clause),
 			write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
 			fail
 		;	true
