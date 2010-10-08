@@ -14793,10 +14793,13 @@ current_logtalk_flag(version, version(2, 41, 2)).
 % back-end Prolog features:
 '$lgt_read_only_flag'(prolog_dialect).
 '$lgt_read_only_flag'(prolog_version).
+'$lgt_read_only_flag'(prolog_compatible_version).
 '$lgt_read_only_flag'(break_predicate).
 '$lgt_read_only_flag'(encoding_directive).
 '$lgt_read_only_flag'(threads).
 '$lgt_read_only_flag'(modules).
+'$lgt_read_only_flag'(tabling).
+'$lgt_read_only_flag'(coinduction).
 
 
 

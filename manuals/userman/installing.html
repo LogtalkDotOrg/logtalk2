@@ -185,16 +185,16 @@ The configuration files specifies <em>default</em> values for all the Logtalk co
 		<dd>Version of the back-end Prolog compiler (a compound term, <code>(Major, Minor, Patch)</code>, whose arguments are integers). This flag availability depends on the Prolog compiler. Checking the value of this flag fails for any Prolog compiler that does not provide access to version data.</dd>
 </dl>
 <dl>
+	<dt><code>prolog_compatible_version</code></dt>
+		<dd>Compatible version of the back-end Prolog compiler (a compound term, usually with the format <code>@>=((Major, Minor, Patch))</code>, whose arguments are integers). This flag availability depends on the Prolog compiler. Checking the value of this flag fails for any Prolog compiler that does not provide access to version data.</dd>
+</dl>
+<dl>
 	<dt><code>break_predicate</code></dt>
 		<dd>Informs Logtalk if the back-end Prolog compiler supports a <code>break/0</code> predicate (which can be used by the Logtalk built-in debugger). Possible flag values are <code>supported</code> and <code>unsupported</code>.</dd>
 </dl>
 <dl>
 	<dt><code>encoding_directive</code></dt>
 		<dd>Informs Logtalk if the back-end Prolog compiler supports the <a title="Consult reference manual" href="../refman/directives/encoding1.html"><code>encoding/1</code></a> directive. This directive is used for declaring the text encoding of source files. Possible flag values are <code>unsupported</code>, <code>full</code> (can be used in both Logtalk source files and compiler generated Prolog files), and <code>source</code> (can be used only in Logtalk source files).</dd>
-</dl>
-<dl>
-	<dt><code>multifile_directive</code></dt>
-		<dd>Informs Logtalk if the back-end Prolog compiler supports the ISO Prolog standard <code>multifile/1</code> predicate directive. Possible flag values are <code>unsupported</code> and <code>supported</code> (requires that multifile predicates can be either static or dynamic).</dd>
 </dl>
 <dl>
 	<dt><code>tabling</code></dt>
@@ -274,7 +274,7 @@ Logtalk source files are text files containing entity definitions (objects, cate
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &ndash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: September 4, 2010</span>
+		<span>Last updated on: October 8, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="documenting.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="programming.html">next</a></span><br/>

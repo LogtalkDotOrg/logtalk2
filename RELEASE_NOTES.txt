@@ -20,6 +20,10 @@ RELEASE NOTES
     expanded terms returned by the term_expansion/2 built-in method when used
     in hook objects.
 
+    Interpret "prolog_compatible_version", "tabling", and "coinduction" as
+    read-only flags. Removed documentation on the deleted "multifile_directive"
+    flag. Added missing documentation on the "prolog_compatible_version" flag.
+
 
 2.41.1 - October 6, 2010
 
