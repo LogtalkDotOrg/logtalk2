@@ -27,6 +27,9 @@ RELEASE NOTES
     Updated the library "types_loader.lgt" file to also load the heaps library
     files.
 
+    Updated the "cc" example, correcting the declaration of the predicate
+    shell/1 and adding an operating_system_type/1 predicate.
+
 
 2.41.1 - October 6, 2010
 

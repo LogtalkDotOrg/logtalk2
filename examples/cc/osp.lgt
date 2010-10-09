@@ -2,9 +2,9 @@
 :- protocol(osp).
 
 	:- info([
-		version is 1.3,
+		version is 1.4,
 		author is 'Paulo Moura',
-		date is 2010/06/14,
+		date is 2010/10/09,
 		comment is 'Portable operating-system access protocol.']).
 
 	:- public(shell/2).
@@ -14,7 +14,7 @@
 		argnames is ['Command', 'Status']]).
 
 	:- public(shell/1).
-	:- mode(shell(+atom), one).
+	:- mode(shell(+atom), zero_or_one).
 	:- info(shell/1, [
 		comment is 'Runs an operating-system shell command.',
 		argnames is ['Command']]).
@@ -114,5 +114,11 @@
 	:- info(cpu_time/1, [
 		comment is 'System cpu time in seconds.',
 		argnames is ['Time']]).
+
+	:- public(operating_system_type/1).
+	:- mode(operating_system_type(?atom), one).
+	:- info(operating_system_type/1, [
+		comment is 'Operating system type. Possible values are "unix", "windows", and "unknown".',
+		argnames is ['Type']]).
 
 :- end_protocol.
