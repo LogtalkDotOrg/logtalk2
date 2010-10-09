@@ -15,11 +15,11 @@
 	term_expansion((:- problog_table(PI)), [{(:- tabling:problog_table(user:TPI))}]) :-
 		{'$lgt_tr_predicate_indicators'(PI, TPI)}.
 
-	term_expansion(('=>'(Head,N) :- Body), [(:- multifile(user::'=>'/2)), (user::'=>'(THead,N) :- {TBody})]) :-
+	term_expansion(('=>'(Head,N) :- Body), [{(:- multifile('=>'/2))}, {('=>'(THead,N) :- TBody)}]) :-
 		{'$lgt_tr_predicate_heads'(Head, THead, context)},
 		{'$lgt_tr_predicate_heads'(Body, TBody, context)}.
 
-	term_expansion((Prob~Head :- Body), [ExpandedClause]) :-
+	term_expansion((Prob~Head :- Body), [{ExpandedClause}]) :-
 		{'$lgt_tr_predicate_heads'(Head, THead, context)},
 		{'$lgt_tr_predicate_heads'(Body, TBody, context)},
 		problog:term_expansion_intern((Prob::THead :- TBody), user, ExpandedClause).

@@ -9,5 +9,5 @@
 		viralmarketing,
 		graph_tabled,
 		viralmarketing_tabled
-	], [hook(hook)])
+	], [hook(hook), misspelt(silent)])
 )).
