@@ -219,33 +219,37 @@ The configuration files specifies <em>default</em> values for all the Logtalk co
 Although is always possible to edit the back-end Prolog compiler configuration files, the recommended solution to customize compiler flags is to edit the <code>settings.lgt</code> file in the Logtalk user folder. Depending on the back-end Prolog compiler and on the operating-system, is also possible to define per-project settings files by creating a <code>settings.lgt</code> file in the project directory and by starting Logtalk from this directory. At startup, Logtalk tries to load a <code>settings.lgt</code> file from the startup directory. If not found, Logtalk tries to load a <code>settings.lgt</code> file from the Logtalk user folder. If no settings files are found, Logtalk will use the default compiler flag values set on the back-end Prolog compiler configuration files. When limitations of the back-end Prolog compiler or on the operating-system prevent Logtalk from finding the settings files, these can always be loaded manually after Logtalk startup.
 </p>
 <p>
-Settings files are normal Logtalk source files (although when automatically loaded by Logtalk they are compiled silently with any errors being simply ignored). The usual contents is an <code>initialization/1</code> Prolog directive containing calls to the <a title="Consult reference manual" href="../refman/builtins/set_logtalk_flag2.html"><code>set_logtalk_flag/2</code></a> Logtalk built-in predicate and asserting clauses for the <a title="Consult reference manual" href="../refman/builtins/logtalk_library_path2.html"><code>logtalk_library_path/2</code></a> multifile dynamic predicate. Note that the <a title="Consult reference manual" href="../refman/directives/set_logtalk_flag2.html"><code>set_logtalk_flag/2</code></a> directive cannot be used as its scope is local to the source file being compiled. For example, one of the troubles of writing portable applications is the different feature sets of Prolog compilers. A typical issue is the lack of support for multifile directives. Using the Logtalk support for conditional compilation you could write:
+Settings files are normal Logtalk source files (although when automatically loaded by Logtalk they are compiled silently with any errors being simply ignored). The usual contents is an <code>initialization/1</code> Prolog directive containing calls to the <a title="Consult reference manual" href="../refman/builtins/set_logtalk_flag2.html"><code>set_logtalk_flag/2</code></a> Logtalk built-in predicate and asserting clauses for the <a title="Consult reference manual" href="../refman/builtins/logtalk_library_path2.html"><code>logtalk_library_path/2</code></a> multifile dynamic predicate. Note that the <a title="Consult reference manual" href="../refman/directives/set_logtalk_flag2.html"><code>set_logtalk_flag/2</code></a> directive cannot be used as its scope is local to the source file being compiled. For example, one of the troubles of writing portable applications is the different feature sets of Prolog compilers. A typical issue is the lack of support for tabling. Using the Logtalk support for conditional compilation you could write:
 </p>
 <pre>
-:- if(current_logtalk_flag(multifile_directive, supported)).
+:- if(current_logtalk_flag(tabling, supported)).
 
-    :- multifile(logtalk_library_path/2).
-    :- dynamic(logtalk_library_path/2).
-    logtalk_library_path(my_project, '$HOME/my_project_dir/').
-
-    :- initialization((
-        set_logtalk_flag(altdirs, on),
-        set_logtalk_flag(smart_compilation, on)
-    )).
-
-:- else.
-
-    :- initialization((
-        assertz(logtalk_library_path(my_project, '$HOME/my_project_dir/')),
-        set_logtalk_flag(altdirs, on),
-        set_logtalk_flag(smart_compilation, on)
-    )).
+    % add tabling directives to the source code
+    :- table(foo/1).
+    :- table(bar/2).
 
 :- endif.
 </pre>
 <p>
-The Logtalk flag <code>prolog_dialect</code> may also be used with the conditional compilation directives in order to define a single settings file that can be used with several back-end Prolog compilers.
+The Logtalk flag <code>prolog_dialect</code> may also be used with the conditional compilation directives in order to define a single settings file that can be used with several back-end Prolog compilers. For example:
 </p>
+<pre>
+:- if(current_logtalk_flag(prolog_dialect, yap)).
+
+    % YAP specific settings
+    ...
+
+:- elif(current_logtalk_flag(prolog_dialect, gnu)).
+
+    % GNU Prolog specific settings
+    ...
+
+:- else.
+
+    % generic Prolog settings
+
+:- endif.
+</pre>
 
 <h3 id="installing_runtime">Logtalk compiler and runtime</h3>
 
