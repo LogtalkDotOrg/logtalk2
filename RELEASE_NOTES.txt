@@ -24,6 +24,9 @@ RELEASE NOTES
     read-only flags. Removed documentation on the deleted "multifile_directive"
     flag. Added missing documentation on the "prolog_compatible_version" flag.
 
+    Updated the library "types_loader.lgt" file to also load the heaps library
+    files.
+
 
 2.41.1 - October 6, 2010
 
