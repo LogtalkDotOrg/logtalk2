@@ -1945,6 +1945,9 @@ logtalk_load_context(entity_type, Type) :-
 		Type = category
 	).
 
+logtalk_load_context(stream, Stream) :-
+	stream_property(Stream, alias('$lgt_input')), !.
+
 logtalk_load_context(term_position, Position) :-
 	'$lgt_pp_term_position_'(Position).
 

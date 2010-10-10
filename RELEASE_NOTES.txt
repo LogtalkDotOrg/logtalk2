@@ -24,6 +24,9 @@ RELEASE NOTES
     read-only flags. Removed documentation on the deleted "multifile_directive"
     flag. Added missing documentation on the "prolog_compatible_version" flag.
 
+    Added support for accessing the compiler input stream using the built-in
+    predicate logtalk_load_context/2 with the key "stream".
+
     Updated the library "types_loader.lgt" file to also load the heaps library
     files.
 
