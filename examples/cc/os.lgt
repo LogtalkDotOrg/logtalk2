@@ -4,7 +4,8 @@
 :- elif(current_logtalk_flag(prolog_dialect, eclipse)).
 	:- use_module(library(calendar)).
 :- elif(current_logtalk_flag(prolog_dialect, xsb)).
-	:- import(from(/(expand_atom,2),standard)).
+	:- import(from(/(expand_atom,2), standard)).
+	:- import(from(/(xsb_configuration,2), xsb_configuration)).
 :- endif.
 
 
