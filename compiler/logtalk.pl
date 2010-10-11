@@ -10241,9 +10241,11 @@ current_logtalk_flag(version, version(2, 41, 2)).
 		'$lgt_tr_bb_key'(Key, Prefix, TKey),
 		TPred = '$lgt_call_built_in'(bb_put(Key, Term), bb_put(TKey, Term), ExCtx),
 		DPred = '$lgt_debugger.goal'(bb_put(Key, Term), TPred, ExCtx)
-	;	% runtime key translation
-		TPred = '$lgt_call_built_in'(bb_put(Key, Term), ('$lgt_tr_bb_key'(Key, Prefix, TKey), bb_put(TKey, Term)), ExCtx),
+	;	var(Key) ->
+		% runtime key translation
+		TPred = '$lgt_call_built_in'(bb_put(Key, Term), ('$lgt_tr_bb_key'(Key, Prefix, TKey, bb_put(Key, Term)), bb_put(TKey, Term)), ExCtx),
 		DPred = '$lgt_debugger.goal'(bb_put(Key, Term), TPred, ExCtx)
+	;	throw(type_error(atomic, Key))
 	).
 
 '$lgt_tr_body'(bb_get(Key, Term), TPred, DPred, Ctx) :-
@@ -10255,9 +10257,11 @@ current_logtalk_flag(version, version(2, 41, 2)).
 		'$lgt_tr_bb_key'(Key, Prefix, TKey),
 		TPred = '$lgt_call_built_in'(bb_get(Key, Term), bb_get(TKey, Term), ExCtx),
 		DPred = '$lgt_debugger.goal'(bb_get(Key, Term), TPred, ExCtx)
-	;	% runtime key translation
-		TPred = '$lgt_call_built_in'(bb_get(Key, Term), ('$lgt_tr_bb_key'(Key, Prefix, TKey), bb_get(TKey, Term)), ExCtx),
+	;	var(Key) ->
+		% runtime key translation
+		TPred = '$lgt_call_built_in'(bb_get(Key, Term), ('$lgt_tr_bb_key'(Key, Prefix, TKey, bb_get(Key, Term)), bb_get(TKey, Term)), ExCtx),
 		DPred = '$lgt_debugger.goal'(bb_get(Key, Term), TPred, ExCtx)
+	;	throw(type_error(atomic, Key))
 	).
 
 '$lgt_tr_body'(bb_delete(Key, Term), TPred, DPred, Ctx) :-
@@ -10269,9 +10273,11 @@ current_logtalk_flag(version, version(2, 41, 2)).
 		'$lgt_tr_bb_key'(Key, Prefix, TKey),
 		TPred = '$lgt_call_built_in'(bb_delete(Key, Term), bb_delete(TKey, Term), ExCtx),
 		DPred = '$lgt_debugger.goal'(bb_delete(Key, Term), TPred, ExCtx)
-	;	% runtime key translation
-		TPred = '$lgt_call_built_in'(bb_delete(Key, Term), ('$lgt_tr_bb_key'(Key, Prefix, TKey), bb_delete(TKey, Term)), ExCtx),
+	;	var(Key) ->
+		% runtime key translation
+		TPred = '$lgt_call_built_in'(bb_delete(Key, Term), ('$lgt_tr_bb_key'(Key, Prefix, TKey, bb_delete(Key, Term)), bb_delete(TKey, Term)), ExCtx),
 		DPred = '$lgt_debugger.goal'(bb_delete(Key, Term), TPred, ExCtx)
+	;	throw(type_error(atomic, Key))
 	).
 
 '$lgt_tr_body'(bb_update(Key, Term, New), TPred, DPred, Ctx) :-
@@ -10283,9 +10289,11 @@ current_logtalk_flag(version, version(2, 41, 2)).
 		'$lgt_tr_bb_key'(Key, Prefix, TKey),
 		TPred = '$lgt_call_built_in'(bb_update(Key, Term, New), bb_update(TKey, Term, New), ExCtx),
 		DPred = '$lgt_debugger.goal'(bb_update(Key, Term, New), TPred, ExCtx)
-	;	% runtime key translation
-		TPred = '$lgt_call_built_in'(bb_update(Key, Term, New), ('$lgt_tr_bb_key'(Key, Prefix, TKey), bb_update(TKey, Term, New)), ExCtx),
+	;	var(Key) ->
+		% runtime key translation
+		TPred = '$lgt_call_built_in'(bb_update(Key, Term, New), ('$lgt_tr_bb_key'(Key, Prefix, TKey, bb_update(Key, Term, New)), bb_update(TKey, Term, New)), ExCtx),
 		DPred = '$lgt_debugger.goal'(bb_update(Key, Term, New), TPred, ExCtx)
+	;	throw(type_error(atomic, Key))
 	).
 
 
@@ -10402,7 +10410,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_tr_bb_key'(@term, +atom, -atom)
 %
-% translates a black-board key
+% compile-time translatation of a black-board key
 
 '$lgt_tr_bb_key'(Key, Prefix, TKey) :-
 	(	atom(Key) ->
@@ -10411,7 +10419,20 @@ current_logtalk_flag(version, version(2, 41, 2)).
 		number_codes(Key, KeyCodes),
 		atom_codes(AtomKey, KeyCodes),
 		atom_concat(Prefix, AtomKey, TKey)
-	;	throw(type_error(atomic, Key))
+	).
+
+
+
+% '$lgt_tr_bb_key'(@term, +atom, -atom, @callable)
+%
+% translates a black-board key
+
+'$lgt_tr_bb_key'(Key, Prefix, TKey, Goal) :-
+	(	'$lgt_tr_bb_key'(Key, Prefix, TKey) ->
+		true
+	;	var(Key) ->
+		throw(error(instantiation_error, Goal))
+	;	throw(error(type_error(atomic, Key), Goal))
 	).
 
 

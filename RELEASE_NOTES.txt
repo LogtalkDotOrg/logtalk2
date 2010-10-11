@@ -27,6 +27,9 @@ RELEASE NOTES
     Added support for accessing the compiler input stream using the built-in
     predicate logtalk_load_context/2 with the key "stream".
 
+    Improved compile-time and runtime error handling for the blackboard
+    built-in predicates.
+
     Updated the library "types_loader.lgt" file to also load the heaps library
     files.
 
