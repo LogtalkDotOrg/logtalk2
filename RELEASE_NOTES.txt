@@ -35,6 +35,10 @@ RELEASE NOTES
     an explicit message to an object where the receiver instead of the sender
     would be tested for events support.
 
+    Corrected a static binding bug where meta-predicates called within other
+    meta-predicates would not be correctly compiled. This bug prevented the
+    "mtbatch" from running.
+
     Updated the library "types_loader.lgt" file to also load the heaps library
     files.
 
