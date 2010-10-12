@@ -19,7 +19,7 @@ RELEASE NOTES
     the use of the {}/1 compiler bypass control construct within the list of
     expanded terms returned by the term_expansion/2 built-in method when used
     in hook objects. In addition, detect and throw an instantiation error when
-    the term-expansion generates a list containing a variable.
+    term-expansion generates a list containing a variable.
 
     Interpret "prolog_compatible_version", "tabling", and "coinduction" as
     read-only flags. Removed documentation on the deleted "multifile_directive"
@@ -30,6 +30,10 @@ RELEASE NOTES
 
     Improved compile-time and runtime error handling for the blackboard
     built-in predicates.
+
+    Corrected a bug in the processing of meta-calls when the called goal is
+    an explicit message to an object where the receiver instead of the sender
+    would be tested for events support.
 
     Updated the library "types_loader.lgt" file to also load the heaps library
     files.

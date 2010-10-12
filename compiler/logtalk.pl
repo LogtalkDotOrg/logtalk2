@@ -3751,7 +3751,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 		Closure =.. [Functor| Args],
 		'$lgt_append'(Args, ExtraArgs, FullArgs),
 		Goal =.. [Functor| FullArgs],
-		(	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, Flags), Flags /\ 16 =:= 16 ->
+		(	'$lgt_current_object_'(This, _, _, _, _, _, _, _, _, _, Flags), Flags /\ 16 =:= 16 ->
 			'$lgt_send_to_obj_'(Obj, Goal, This, _)
 		;	'$lgt_send_to_obj_ne_'(Obj, Goal, This, _)
 		)
