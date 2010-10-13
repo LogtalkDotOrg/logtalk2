@@ -16,10 +16,11 @@ RELEASE NOTES
 2.41.2 - November ??, 2010
 
     Updated the term-expansion mechanism implementation in order to support
-    the use of the {}/1 compiler bypass control construct within the list of
-    expanded terms returned by the term_expansion/2 built-in method when used
-    in hook objects. In addition, detect and throw an instantiation error when
-    term-expansion generates a list containing a variable.
+    the use of the {}/1 compiler bypass control construct to wrap elements in
+    the list of expanded terms (returned by the term_expansion/2 built-in
+    method when used in hook objects), to allow expansion of the end_of_file
+    term, and to throw an instantiation error when term-expansion generates a
+    list containing a variable.
 
     Interpret "prolog_compatible_version", "tabling", and "coinduction" as
     read-only flags. Removed documentation on the deleted "multifile_directive"

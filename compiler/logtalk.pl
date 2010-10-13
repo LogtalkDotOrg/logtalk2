@@ -5638,10 +5638,12 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	var(Term),
 	throw(instantiation_error).
 
-'$lgt_tr_file'(end_of_file, _, _) :-							% module definitions start with an opening
-	'$lgt_pp_module_'(Module),									% module/1-2 directive and are assumed to
-	'$lgt_pp_object_'(Module, _, _, _, _, _, _, _, _, _, _),	% end at the end of a source file; there is
-	'$lgt_tr_entity'(object, Module),							% no module closing directive
+'$lgt_tr_file'(end_of_file, _, _) :-							% module definitions start with an opening module/1-2
+	'$lgt_pp_module_'(Module),									% directive and are assumed to end at the end of a 
+	'$lgt_pp_object_'(Module, _, _, _, _, _, _, _, _, _, _),	% source file; there is no module closing directive
+	'$lgt_comp_ctx_mode'(Ctx, compile),							% set the initial compilation context
+	'$lgt_tr_term'(end_of_file, Ctx),							% for compiling the end_of_file term
+	'$lgt_tr_entity'(object, Module),
 	'$lgt_report_compiled_entity'(module, Module),
 	!.
 
@@ -5661,7 +5663,9 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	'$lgt_pp_cc_if_found_'(Goal),
 	throw(directive_missing(endif, if(Goal))).
 
-'$lgt_tr_file'(end_of_file, _, _) :-
+'$lgt_tr_file'(end_of_file, _, _) :-	% allow for term-expansion
+	'$lgt_comp_ctx_mode'(Ctx, compile),	% set the initial compilation context
+	'$lgt_tr_term'(end_of_file, Ctx),	% for compiling the end_of_file term
 	!.
 
 '$lgt_tr_file'(Term, _, Input) :-
@@ -6464,11 +6468,18 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	var(Term),
 	throw(error(instantiantion_error, term_expansion/2)).
 
+'$lgt_tr_expanded_term'(end_of_file, _) :-
+	!.
+
 '$lgt_tr_expanded_term'({Term}, _) :-	% bypass control construct; expanded term is final
 	!,
 	(	var(Term) ->
 		throw(error(instantiantion_error, {Term}))
-	;	assertz('$lgt_pp_entity_clause_'({Term}))
+	;	'$lgt_pp_entity'(_, _, _, _, _) ->
+		% ensure that the relative order of the entity terms is kept
+		assertz('$lgt_pp_entity_clause_'({Term}))
+	;	% non-entity terms
+		assertz('$lgt_pp_prolog_term_'(Term))
 	).
 
 '$lgt_tr_expanded_term'((Head :- Body), Ctx) :-
