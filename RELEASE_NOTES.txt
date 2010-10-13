@@ -45,6 +45,9 @@ RELEASE NOTES
     Updated the "cc" example, correcting the declaration of the predicate
     shell/1 and adding an operating_system_type/1 predicate.
 
+    Updated the "build_release.sh" script in order to calculate all the
+    necessary checksums when building the MacOS X installer package.
+
 
 2.41.1 - October 6, 2010
 

@@ -50,13 +50,17 @@ cd $dir
 dpkg-deb --build debian logtalk_2.41.2-1_all.deb
 
 md5="`md5 -q lgt2412.tar.bz2`"
+sha1="`openssl sha1 -r lgt2412.tar.bz2 | xargs -L 1 | sed 's/*lgt2412.tar.bz2//g'`"
+rmd160="`openssl rmd160 -r lgt2412.tar.bz2 | xargs -L 1 | sed 's/*lgt2412.tar.bz2//g'`"
 sudo mkdir -p /opt/local/var/macports/distfiles/logtalk
 sudo cp -f lgt2412.tar.bz2 /opt/local/var/macports/distfiles/logtalk/lgt2412.tar.bz2
 cd /opt/local/var/macports/sources/rsync.macports.org/release/ports/lang/logtalk/
 sudo mv -f Portfile Portfile.old
 sudo cp $dir/lgt2412/scripts/macosx/Portfile .
 sudo sed -e 's/^version.*/version 2.41.2/' -i '' Portfile
-sudo sed -e "s/^checksums.*/checksums md5 $md5/" -i '' Portfile
+sudo sed -e "s/md5.*/md5 $md5 \\\/" -i '' Portfile
+sudo sed -e "s/sha1.*/sha1 $sha1 \\\/" -i '' Portfile
+sudo sed -e "s/rmd160.*/rmd160 $rmd160/" -i '' Portfile
 sudo port clean --archive logtalk
 sudo port destroot logtalk
 sudo port pkg logtalk
