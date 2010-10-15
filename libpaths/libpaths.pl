@@ -49,6 +49,7 @@ logtalk_library_path(complements, examples('complements/')).
 logtalk_library_path(constraints, examples('constraints/')).
 logtalk_library_path(dcgs, examples('dcgs/')).
 logtalk_library_path(debug_hooks, examples('debug_hooks/')).
+logtalk_library_path(delegates, examples('delegates/')).
 logtalk_library_path(diamonds, examples('diamonds/')).
 logtalk_library_path(dynpred, examples('dynpred/')).
 logtalk_library_path(encodings, examples('encodings/')).

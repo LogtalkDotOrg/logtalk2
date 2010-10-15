@@ -117,6 +117,9 @@ debug_hooks
 	simple example of using compilation hooks and term expansion for 
 	conditional compilation of debug statements
 
+delegates
+	simple implementation of the delegation design pattern
+
 diamonds
 	examples of problems and solutions for the "diamond problem"
 	(multi-inheritance conflicts and ambiguities)
