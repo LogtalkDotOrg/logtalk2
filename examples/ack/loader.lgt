@@ -1,3 +1,4 @@
 
 :- initialization(
-	logtalk_load(ack, [reload(skip)])).
+	logtalk_load(ack)
+).
