@@ -20,8 +20,8 @@
 #include ../compiler/logtalk.pl
 
 % tables of defined events and monitors
-:- thread_shared('$lgt_before_'/5).
-:- thread_shared('$lgt_after_'/5).
+:- thread_shared('$lgt_before_event_'/5).
+:- thread_shared('$lgt_after_event_'/5).
 
 % tables of loaded entities, entity properties, and entity relations
 :- thread_shared('$lgt_current_protocol_'/5).
@@ -42,14 +42,14 @@
 :- thread_shared('$lgt_loaded_file_'/2).
 
 % debugger status and tables
-:- thread_shared('$lgt_debugging_'/1).
+:- thread_shared('$lgt_debugging_entity_'/1).
 
-:- thread_shared('$lgt_dbg_debugging_').
-:- thread_shared('$lgt_dbg_tracing_').
-:- thread_shared('$lgt_dbg_skipping_').
-:- thread_shared('$lgt_dbg_spying_'/2).
-:- thread_shared('$lgt_dbg_spying_'/4).
-:- thread_shared('$lgt_dbg_leashing_'/1).
+:- thread_shared('$lgt_debugger.debugging_'/0).
+:- thread_shared('$lgt_debugger.tracing_'/0).
+:- thread_shared('$lgt_debugger.skipping_'/0).
+:- thread_shared('$lgt_debugger.spying_'/2).
+:- thread_shared('$lgt_debugger.spying_'/4).
+:- thread_shared('$lgt_debugger.leashing_'/1).
 
 % runtime flags
 :- thread_shared('$lgt_current_flag_'/2).
@@ -80,4 +80,5 @@
 :- thread_shared('$lgt_hook_goal_expansion_'/2).
 
 % multi-threading tags
-:- thread_shared('$lgt_threaded_tag_counter'/1).
+:- thread_shared('$lgt_threaded_tag_counter_'/1).
+:- thread_shared('$lgt_settings_file_loaded_'/1).
