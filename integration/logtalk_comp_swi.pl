@@ -28,7 +28,7 @@
 :- op(400, yfx, >>).
 
 :- noprofile((
-	'$lgt_before_'/5, '$lgt_after_'/5,
+	'$lgt_before_event_'/5, '$lgt_after_event_'/5,
 	'$lgt_current_protocol_'/5, '$lgt_current_category_'/6, '$lgt_current_object_'/11,
 	'$lgt_compiler_flag'/2, '$lgt_default_flag'/2, '$lgt_current_flag_'/2, '$lgt_pp_compiler_flag_'/2,
 	'$lgt_prolog_feature'/2,

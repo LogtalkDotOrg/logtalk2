@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: October 8, 2010
+%  last updated: October 16, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -30,8 +30,8 @@
 
 '$lgt_hide_predicates' :-
 	(	predicate_property(hide_predicate(_), built_in) ->
-		dynamic('$lgt_before_'/5), hide_predicate('$lgt_before_'/5),
-		dynamic('$lgt_after_'/5), hide_predicate('$lgt_after_'/5),
+		dynamic('$lgt_before_event_'/5), hide_predicate('$lgt_before_event_'/5),
+		dynamic('$lgt_after_event_'/5), hide_predicate('$lgt_after_event_'/5),
 		dynamic('$lgt_current_protocol_'/5), hide_predicate('$lgt_current_protocol_'/5),
 		dynamic('$lgt_current_category_'/6), hide_predicate('$lgt_current_category_'/6),
 		dynamic('$lgt_current_object_'/11), hide_predicate('$lgt_current_object_'/11),
