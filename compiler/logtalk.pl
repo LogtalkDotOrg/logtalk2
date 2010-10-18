@@ -14171,9 +14171,12 @@ current_logtalk_flag(version, version(2, 41, 2)).
 		Type = object
 	;	'$lgt_current_category_'(Entity, Prefix, _, _, _, _),
 		Type = category
+	;	'$lgt_current_protocol_'(Entity, Prefix, _, _, _),
+		Type = protocol
 	),
 	atom_concat(Prefix, Functor, TFunctor),
-	Arity is TArity - 1.		% subtract execution context argument
+	Arity is TArity - 1,		% subtract execution context argument
+	!.
 
 
 
