@@ -13,14 +13,14 @@
 %  load Logtalk files using SWI Prolog consult/1 and to support edit/1 and
 %  make/0
 %
-%  last updated: April 2, 2010
+%  last updated: October 18, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
-:- dynamic(prolog_load_file/2).
-:- multifile(prolog_load_file/2).
+:- multifile(user:prolog_load_file/2).
+:- dynamic(user:prolog_load_file/2).
 
 user:prolog_load_file(_:Spec, Options) :-
 	\+ '$lgt_member'(must_be_module(true), Options),	% exclude calls to use_module/1-2
@@ -67,3 +67,20 @@ prolog_edit:locate(Name, source_file(Source), [file(Source)]) :-
 	file_name_extension(Plain, 'lgt', Source),
 	exists_file(Source),
 	!.
+
+
+
+:- multifile(user:prolog_predicate_name/2).
+
+user:prolog_predicate_name(Goal, Label) :-
+	(	Goal = Module:THead ->
+		Module == user
+	;	Goal = THead
+	),
+	functor(THead, TFunctor, TArity),
+	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
+	(	atom(Entity) ->
+		atomic_list_concat([Entity, '::', Functor, '/', Arity], Label)
+	;	functor(Entity, EFunctor, EArity),
+		atomic_list_concat([EFunctor, '/', EArity, '::', Functor, '/', Arity], Label)
+	).

@@ -239,7 +239,7 @@ SWI Prolog 5.8.0 and later versions
 	compiler/logtalk.pl file and add the line ":- system_module." to the top
 	of the file. You may also load the file configs/swihook.pl in order to be
 	able to load Logtalk entities using SWI-Prolog load_files/2 and consult/1
-	predicates and to support edit/1 and make/0.
+	predicates and to support edit/1, make/0, and the XPCE profiler.
 
 	If you want SWI-Prolog to automatically load Logtalk at startup, then 
 	add the following lines to your pl.ini (on Windows):
