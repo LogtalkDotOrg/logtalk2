@@ -228,8 +228,8 @@ SICStus Prolog 4.0.3 and later versions
 SWI Prolog 5.8.0 and later versions
 
 	swi.pl
-	swihook.pl
-	xpcehook.pl
+	swihooks.pl
+	xpcehooks.pl
 
 	No problems expected. Please report any problem found (with a solution 
 	if possible). Don't forget to use the cd/1 predicate to set the working 
@@ -237,7 +237,7 @@ SWI Prolog 5.8.0 and later versions
 	
 	To improve the integration between Logtalk and SWI-Prolog edit the 
 	compiler/logtalk.pl file and add the line ":- system_module." to the top
-	of the file. You may also load the file configs/swihook.pl in order to be
+	of the file. You may also load the file configs/swihooks.pl in order to be
 	able to load Logtalk entities using SWI-Prolog load_files/2 and consult/1
 	predicates and to support edit/1, make/0, and the XPCE profiler.
 
@@ -264,8 +264,8 @@ SWI Prolog 5.8.0 and later versions
 	call if necessary.
 
 	If you intend to use Logtalk and XPCE at the same time, you may load the 
-	configs/xpcehook.pl file in order to support Logtalk message sending goals
-	as XPCE call-back goals.
+	configs/xpcehooks.pl file in order to support Logtalk message sending
+	goals as XPCE call-back goals.
 
 	With multi-threading support turned on, you may get an harmless message
 	when halting the system regarding threads that wouldn't die: you can 

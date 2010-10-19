@@ -40,8 +40,11 @@ RELEASE NOTES
     meta-predicates would not be correctly compiled. This bug prevented the
     "mtbatch" from running.
 
+    Renamed the SWI-Prolog integration files, "swihook.pl" and "xpcehook.pl"
+    to, respectively,  "swihooks.pl" and "xpcehooks.pl".
+
     Added a definition for the hook predicate user:prolog_predicate_name/2 to
-    the SWI-Prolog hook file, "swihook.pl". This hook predicate allows a more
+    the SWI-Prolog hook file, "swihooks.pl". This hook predicate allows a more
     user-friendly experience when using the SWI-Prolog profiler with Logtalk.
     Requires SWI-Prolog 5.10.2 (stable) or 5.11.8 (development) or later
     versions.
