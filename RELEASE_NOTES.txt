@@ -61,6 +61,9 @@ RELEASE NOTES
     Updated the library "types_loader.lgt" file to also load the heaps library
     files.
 
+    Added an example, "profilers", featuring simple wrappers for the SICStus
+    Prolog 4 profiler and the YAP count profiler.
+
     Added an example, "delegates", illustrating an implementation of the
     delegation design pattern.
 

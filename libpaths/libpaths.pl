@@ -93,6 +93,7 @@ logtalk_library_path(points, examples('points/')).
 logtalk_library_path(polygons, examples('polygons/')).
 logtalk_library_path(primes, threads('primes/')).
 logtalk_library_path(problog, examples('problog/')).
+logtalk_library_path(profilers, examples('profilers/')).
 logtalk_library_path(profiling, examples('profiling/')).
 logtalk_library_path(prototypes, examples('prototypes/')).
 logtalk_library_path(proxies, examples('proxies/')).

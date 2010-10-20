@@ -231,6 +231,10 @@ problog
 	(requires Logtalk to be run with YAP; it may require a patched
 	version of the ProbLog distribution)
 
+profilers
+	simple wrappers for Prolog profiler tools
+	(requires Logtalk to be run with either SICStus Prolog or YAP)
+
 profiling
 	examples of using of events and monitors to implement profilers
 
