@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.41.2 - November ??, 2010
 
+    Defined a set of hook predicates, available from the "logtalk" built-in
+    object. Consult the User Manual for details on the hook predicates.
+
     Updated the term-expansion mechanism implementation in order to support
     the use of the {}/1 compiler bypass control construct to wrap elements in
     the list of expanded terms (returned by the term_expansion/2 built-in

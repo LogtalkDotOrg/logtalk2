@@ -10,22 +10,28 @@
 :- object(hook,
 	implements(expanding)).
 
+	:- info([
+		version is 0.2,
+		author is 'Paulo Moura',
+		date is 2010/10/20,
+		comment is 'Hook object for compiling objects and categories containing ProbLog code.']).
+
 	term_expansion((:- set_problog_flag(Flag, Value)), [{(:- flags:set_problog_flag(Flag, Value))}]).
 
 	term_expansion((:- problog_table(PI)), [{(:- tabling:problog_table(user:TPI))}]) :-
-		{'$lgt_tr_predicate_indicators'(PI, TPI)}.
+		logtalk::translate_predicate_indicators(PI, TPI).
 
 	term_expansion(('=>'(Head,N) :- Body), [{(:- multifile('=>'/2))}, {('=>'(THead,N) :- TBody)}]) :-
-		{'$lgt_tr_predicate_heads'(Head, THead, context)},
-		{'$lgt_tr_predicate_heads'(Body, TBody, context)}.
+		logtalk::translate_predicate_heads(Head, THead, context),
+		logtalk::translate_predicate_heads(Body, TBody, context).
 
 	term_expansion((Prob~Head :- Body), [{ExpandedClause}]) :-
-		{'$lgt_tr_predicate_heads'(Head, THead, context)},
-		{'$lgt_tr_predicate_heads'(Body, TBody, context)},
+		logtalk::translate_predicate_heads(Head, THead, context),
+		logtalk::translate_predicate_heads(Body, TBody, context),
 		problog:term_expansion_intern((Prob::THead :- TBody), user, ExpandedClause).
 
 	term_expansion(Prob~Fact, []) :-
-		{'$lgt_tr_predicate_heads'(Fact, TFact)},
+		logtalk::translate_predicate_heads(Fact, TFact),
 		problog:problog_assert((Prob::TFact)).
 
 :- end_object.

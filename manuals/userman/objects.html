@@ -442,13 +442,24 @@ Logtalk defines a built-in object named <code>debugger</code> which implements t
 <h3 id="objects_logtalk">The built-in object <em>logtalk</em></h3>
 
 <p>
-Logtalk defines an empty built-in object named <code>logtalk</code>, which can play the role of both a class and a prototype. It may be used e.g. as a root of class hierarchies. This object implements the built-in protocols <a href="protocols.html#protocols_expanding"><code>expanding</code></a> and <a href="protocols.html#protocols_monitoring"><code>monitoring</code></a>. It also supports the dynamic declaration and definition of predicates (using the dynamic database built-in methods).
+Logtalk defines a built-in object named <code>logtalk</code>, which defines a set of hook predicates. This object implements the built-in protocols <a href="protocols.html#protocols_expanding"><code>expanding</code></a> and <a href="protocols.html#protocols_monitoring"><code>monitoring</code></a>. It also supports the dynamic declaration and definition of predicates (using the dynamic database built-in methods).
+</p>
+<p>
+The following hook predicates are defined:
+</p>
+<pre>translate_predicate_heads(Heads, TranslatedHeads)
+translate_predicate_heads(Heads, TranslatedHeads, ContextArgument)
+translate_predicate_indicators(PredicateIndicators, TranslatedPredicateIndicators)
+reverse_predicate_indicator(TranslatedPredicateIndicator, Entity, EntityType, PredicateIndicator)
+expand_library_path(Library, Path)</pre>
+<p>
+In order to use these hook predicates, simply send the corresponding message to the <code>logtalk</code> object. 
 </p>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: October 5, 2010</span>
+		<span>Last updated on: October 20, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="messages.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="protocols.html">next</a></span><br/>

@@ -4201,8 +4201,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 %
 %  "logtalk" built-in object
 %
-%  empty object, optionally used as root for both prototype and class-based 
-%  hierarchies
+%  defines Logtalk hook predicates
 %
 %  its clauses correspond to a virtual compilation of the object using a
 %  "code_prefix" flag set to '$lgt_'
@@ -4215,9 +4214,17 @@ current_logtalk_flag(version, version(2, 41, 2)).
 :- dynamic('$lgt_logtalk._ddef'/3).
 
 
-'$lgt_logtalk._dcl'(_, _, _, _) :-
-	fail.
+'$lgt_logtalk._dcl'(expand_library_path(_, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(translate_predicate_heads(_, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(translate_predicate_heads(_, _, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(translate_predicate_indicators(_, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(reverse_predicate_indicator(_, _, _, _), p(p(p)), no, 0).
 
+'$lgt_logtalk._dcl'(Pred, Scope, Meta, Flags, logtalk, logtalk) :-
+	'$lgt_logtalk._dcl'(Pred, Scope, Meta, Flags).
+
+'$lgt_logtalk._dcl'(Pred, Scope, no, 2, logtalk, logtalk) :-
+	'$lgt_logtalk._ddcl'(Pred, Scope).
 
 '$lgt_logtalk._dcl'(Pred, Scope, Meta, Flags, logtalk, Ctn) :-
 	'$lgt_expanding._dcl'(Pred, Scope, Meta, Flags, Ctn).
@@ -4225,12 +4232,12 @@ current_logtalk_flag(version, version(2, 41, 2)).
 '$lgt_logtalk._dcl'(Pred, Scope, Meta, Flags, logtalk, Ctn) :-
 	'$lgt_monitoring._dcl'(Pred, Scope, Meta, Flags, Ctn).
 
-'$lgt_logtalk._dcl'(Pred, Scope, no, 2, logtalk, logtalk) :-
-	'$lgt_logtalk._ddcl'(Pred, Scope).
 
-
-'$lgt_logtalk._def'(_, _, _) :-
-	fail.
+'$lgt_logtalk._def'(expand_library_path(Library, Path), _, '$lgt_expand_library_path'(Library, Path)).
+'$lgt_logtalk._def'(translate_predicate_heads(Heads, THeads), _, '$lgt_tr_predicate_heads'(Heads, THeads)).
+'$lgt_logtalk._def'(translate_predicate_heads(Heads, THeads, Ctx), _, '$lgt_tr_predicate_heads'(Heads, THeads, Ctx)).
+'$lgt_logtalk._def'(translate_predicate_indicators(PIs, TPIs), _, '$lgt_tr_predicate_indicators'(PIs, TPIs)).
+'$lgt_logtalk._def'(reverse_predicate_indicator(TPI, Entity, Type, PI), _, '$lgt_reverse_predicate_indicator'(TPI, Entity, Type, PI)).
 
 
 '$lgt_logtalk._super'(_, _, _, _) :-
@@ -4238,8 +4245,14 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 '$lgt_logtalk._def'(Pred, ExCtx, Call, logtalk) :-
+	'$lgt_logtalk._def'(Pred, ExCtx, Call).
+
+'$lgt_logtalk._def'(Pred, ExCtx, Call, logtalk) :-
 	'$lgt_logtalk._ddef'(Pred, ExCtx, Call).
 
+
+'$lgt_logtalk._idcl'(Pred, Scope, Meta, Flags, logtalk, logtalk) :-
+	'$lgt_logtalk._dcl'(Pred, Scope, Meta, Flags).
 
 '$lgt_logtalk._idcl'(Pred, Scope, no, 2, logtalk, logtalk) :-
 	'$lgt_logtalk._ddcl'(Pred, Scope).
@@ -4250,6 +4263,9 @@ current_logtalk_flag(version, version(2, 41, 2)).
 '$lgt_logtalk._idcl'(Pred, Scope, Meta, Flags, logtalk, Ctn) :-
 	'$lgt_monitoring._dcl'(Pred, Scope, Meta, Flags, Ctn).
 
+
+'$lgt_logtalk._idef'(Pred, ExCtx, Call, logtalk) :-
+	'$lgt_logtalk._def'(Pred, ExCtx, Call).
 
 '$lgt_logtalk._idef'(Pred, ExCtx, Call, logtalk) :-
 	'$lgt_logtalk._ddef'(Pred, ExCtx, Call).
@@ -4422,9 +4438,15 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	'$lgt_debugger._ddef'(Pred, ExCtx, Call).
 
 
+'$lgt_debugger._idcl'(Pred, Scope, Meta, Flags, debugger, debugger) :-
+	'$lgt_debugger._dcl'(Pred, Scope, Meta, Flags).
+
 '$lgt_debugger._idcl'(Pred, Scope, no, 2, debugger, debugger) :-
 	'$lgt_debugger._ddcl'(Pred, Scope).
 
+
+'$lgt_debugger._idef'(Pred, ExCtx, Call, debugger) :-
+	'$lgt_debugger._def'(Pred, ExCtx, Call).
 
 '$lgt_debugger._idef'(Pred, ExCtx, Call, debugger) :-
 	'$lgt_debugger._ddef'(Pred, ExCtx, Call).
