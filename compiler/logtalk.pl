@@ -4195,6 +4195,12 @@ current_logtalk_flag(version, version(2, 41, 2)).
 '$lgt_implements_protocol_'(logtalk, monitoring, (public)).
 
 
+'$lgt_static_binding_entity_'(logtalk).
+'$lgt_static_binding_entity_'(debugger).
+'$lgt_static_binding_entity_'(expanding).
+'$lgt_static_binding_entity_'(monitoring).
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -6401,8 +6407,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	).
 
 '$lgt_pp_relation_clause'('$lgt_static_binding_entity_'(Entity)) :-
-	'$lgt_pp_entity'(Type, Entity, _, _, Compilation),
-	Type \== protocol,
+	'$lgt_pp_entity'(_, Entity, _, _, Compilation),
 	Compilation == static,
 	'$lgt_compiler_flag'(reload, skip).
 
