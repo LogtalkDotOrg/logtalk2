@@ -237,8 +237,8 @@ SWI Prolog 5.8.0 and later versions
 	
 	To improve the integration between Logtalk and SWI-Prolog edit the 
 	compiler/logtalk.pl file and add the line ":- system_module." to the top
-	of the file. You may also load the file configs/swihooks.pl in order to be
-	able to load Logtalk entities using SWI-Prolog load_files/2 and consult/1
+	of the file. You may also load the file swihooks.pl in order to be able
+	to load Logtalk entities using SWI-Prolog load_files/2 and consult/1
 	predicates and to support edit/1, make/0, and the XPCE profiler.
 
 	If you want SWI-Prolog to automatically load Logtalk at startup, then 
@@ -264,8 +264,8 @@ SWI Prolog 5.8.0 and later versions
 	call if necessary.
 
 	If you intend to use Logtalk and XPCE at the same time, you may load the 
-	configs/xpcehooks.pl file in order to support Logtalk message sending
-	goals as XPCE call-back goals.
+	xpcehooks.pl file in order to support Logtalk message sending goals as
+	XPCE call-back goals.
 
 	With multi-threading support turned on, you may get an harmless message
 	when halting the system regarding threads that wouldn't die: you can 
@@ -296,10 +296,14 @@ XSB 3.2 and later versions
 YAP 6.0.2 and later versions
 
 	yap.pl
+	yaphooks.pl
 
 	The config file may set the flag "language" to "iso", but that is only
 	recommended and should not be needed to run Logtalk. Some of the YAP
 	libraries may not be compatible with this flag setting.
+
+	The yaphooks.pl file defines YAP hook predicates for improving the
+	integration between Logtalk and YAP.
 
 	Don't forget to use the cd/1 predicate to set the working directory 
 	before loading the library or an example. Support for the Logtalk 

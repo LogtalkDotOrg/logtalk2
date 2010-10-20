@@ -12,9 +12,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-:- initialization((
-	reconsult('$LOGTALKHOME/configs/yap.pl'),
-	reconsult('$LOGTALKHOME/compiler/logtalk.pl'),
-	reconsult('$LOGTALKUSER/libpaths/libpaths.pl'),
-	reconsult('$LOGTALKHOME/configs/yaphooks.pl')
-)).
+:- op(600, xfy, ::).	% message-sending operator
+
+
+:- multifile(user:prolog_predicate_name/2).
+
+user:prolog_predicate_name(Goal, Label) :-
+	(	Goal = Module:THead ->
+		Module == user
+	;	Goal = THead
+	),
+	functor(THead, TFunctor, TArity),
+	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
+	(	atom(Entity) ->
+		atomic_list_concat([Entity, '::', Functor, '/', Arity], Label)
+	;	functor(Entity, EFunctor, EArity),
+		atomic_list_concat([EFunctor, '/', EArity, '::', Functor, '/', Arity], Label)
+	).
