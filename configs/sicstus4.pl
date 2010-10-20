@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: October 5, 2010
+%  last updated: October 20, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -552,7 +552,8 @@ forall(Generate, Test) :-
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)
 
 '$lgt_rewrite_and_recompile_pl_directive'(ensure_loaded(File), use_module(Module, Imports)) :-
-	'$lgt_pp_module_'(_),	% ensure_loaded/1 directive used within a module (sloppy replacement for the use_module/1-2 directives)
+	logtalk_load_context(entity_type, module),
+	% ensure_loaded/1 directive used within a module (sloppy replacement for the use_module/1-2 directives)
 	'$lgt_sicstus_list_of_exports'(File, Module, Imports).
 
 '$lgt_rewrite_and_recompile_pl_directive'(module(Module, Exports, _), module(Module, Exports)).
