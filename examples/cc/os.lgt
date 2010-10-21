@@ -13,9 +13,9 @@
 	implements(osp)).
 
 	:- info([
-		version is 1.5,
+		version is 1.51,
 		author is 'Paulo Moura',
-		date is 2010/10/09,
+		date is 2010/10/20,
 		comment is 'Simple example of using conditional compilation to implement a portable operating-system interface for selected back-end Prolog compilers.']).
 
 	:- if(current_logtalk_flag(prolog_dialect, swi)).
@@ -345,7 +345,7 @@
 			{cputime(Miliseconds), Time is Miliseconds/1000}.
 
 		operating_system_type(Type) :-
-			(	environ('COMSPEC', _) ->
+			(	{environ('COMSPEC', _)} ->
 				Type = windows
 			;	Type = unix
 			).
@@ -408,7 +408,7 @@
 			{statistics(runtime, [Miliseconds| _]), Time is Miliseconds/1000}.
 
 		operating_system_type(Type) :-
-			(	environ('COMSPEC', _) ->
+			(	{environ('COMSPEC', _)} ->
 				Type = windows
 			;	Type = unix
 			).
