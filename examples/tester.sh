@@ -18,7 +18,7 @@ print_version() {
 }
 
 if [ "$LOGTALKHOME" != "" ] && [ "$LOGTALKUSER" != "" ] && [ "$LOGTALKHOME" = "$LOGTALKUSER" ] ; then
-	# assume that we're running a development version of Logtalk
+	# assume that we're running Logtalk without using the installer scripts
 	extension='.sh'
 else
 	extension=''

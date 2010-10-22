@@ -286,3 +286,7 @@ compiled predicates, requiring recompilation of all objects and categories.
 
 Logtalk version 2.41.1 changes the internal representation of compiled
 predicates, requiring recompilation of all entities.
+
+Logtalk version 2.41.2 changes the internal predicates used to implement
+message-sending and other control constructs, requiring recompilation of
+all entities.

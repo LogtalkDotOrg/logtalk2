@@ -3168,8 +3168,8 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_send_to_self_'(+object_identifier, +term, +object_identifier)
 %
-% the last clause of this cache predicate must never be retracted (hence the
-% "fixed" mark) and must call the predicate that generates the missing cache entry
+% the last clause of this cache predicate must always exist and must
+% call the predicate that generates the missing cache entry
 
 '$lgt_send_to_self_'(Obj, Pred, Sender) :-
 	'$lgt_send_to_self_nv'(Obj, Pred, Sender).
@@ -3335,8 +3335,8 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_send_to_obj_ne_'(+object_identifier, +term, +object_identifier)
 %
-% the last clause of this cache predicate must never be retracted (hence the
-% "fixed" mark) and must call the predicate that generates the missing cache entry
+% the last clause of this cache predicate must always exist and must
+% call the predicate that generates the missing cache entry
 
 '$lgt_send_to_obj_ne_'(Obj, Pred, Sender) :-
 	'$lgt_send_to_obj_ne_nv'(Obj, Pred, Sender).
@@ -3409,8 +3409,8 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_obj_super_call_same_'(+object_identifier, +term, +object_identifier)
 %
-% the last clause of this cache predicate must never be retracted (hence the
-% "fixed" mark) and must call the predicate that generates the missing cache entry
+% the last clause of this cache predicate must always exist and must
+% call the predicate that generates the missing cache entry
 
 '$lgt_obj_super_call_same_'(Super, Pred, ExCtx) :-
 	'$lgt_obj_super_call_same'(Super, Pred, ExCtx).
@@ -3440,8 +3440,8 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_ctg_super_call_same_'(+object_identifier, +term, +object_identifier)
 %
-% the last clause of this cache predicate must never be retracted (hence the
-% "fixed" mark) and must call the predicate that generates the missing cache entry
+% the last clause of this cache predicate must always exist and must
+% call the predicate that generates the missing cache entry
 
 '$lgt_ctg_super_call_same_'(Ctg, Pred, ExCtx) :-
 	'$lgt_ctg_super_call_same'(Ctg, Pred, ExCtx).
@@ -3485,8 +3485,8 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_obj_super_call_other_'(+object_identifier, +term, +object_identifier)
 %
-% the last clause of this cache predicate must never be retracted (hence the
-% "fixed" mark) and must call the predicate that generates the missing cache entry
+% the last clause of this cache predicate must always exist and must
+% call the predicate that generates the missing cache entry
 
 '$lgt_obj_super_call_other_'(Super, Pred, ExCtx) :-
 	'$lgt_obj_super_call_other_nv'(Super, Pred, ExCtx).
@@ -3545,8 +3545,8 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_ctg_super_call_other_'(+object_identifier, +term, +object_identifier)
 %
-% the last clause of this cache predicate must never be retracted (hence the
-% "fixed" mark) and must call the predicate that generates the missing cache entry
+% the last clause of this cache predicate must always exist and must
+% call the predicate that generates the missing cache entry
 
 '$lgt_ctg_super_call_other_'(Ctg, Pred, ExCtx) :-
 	'$lgt_ctg_super_call_other_nv'(Ctg, Pred, ExCtx).
@@ -3959,8 +3959,8 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_ctg_call_'(+object_identifier, +term, +object_identifier)
 %
-% the last clause of this cache predicate must never be retracted (hence the
-% "fixed" mark) and must call the predicate that generates the missing cache entry
+% the last clause of this cache predicate must always exist and must
+% call the predicate that generates the missing cache entry
 
 '$lgt_ctg_call_'(Dcl, Pred, ExCtx) :-
 	'$lgt_call_ctg_pred_nv'(Dcl, Pred, ExCtx).
