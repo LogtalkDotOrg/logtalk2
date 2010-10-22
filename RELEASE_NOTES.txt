@@ -18,6 +18,9 @@ RELEASE NOTES
     Defined a set of hook predicates, available from the "logtalk" built-in
     object. Consult the User Manual for details on the hook predicates.
 
+    Simplified and improved the performance of the predicate lookup caching
+    code.
+
     Updated the built-in objects, "logtalk" and "debugger", and the built-in
     protocols, "expanding" and "monitoring", to support static binding.
 

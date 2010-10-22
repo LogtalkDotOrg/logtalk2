@@ -48,7 +48,7 @@
 :- thread_shared('$lgt_debugger.tracing_'/0).
 :- thread_shared('$lgt_debugger.skipping_'/0).
 :- thread_shared('$lgt_debugger.spying_'/2).
-:- thread_shared('$lgt_debugger.spying_'/4).
+:- thread_shared('$lgt_debugger.spying_'/3).
 :- thread_shared('$lgt_debugger.leashing_'/1).
 
 % runtime flags
@@ -56,18 +56,18 @@
 
 % static binding caches
 :- thread_shared('$lgt_static_binding_entity_'/1).
-:- thread_shared('$lgt_obj_static_binding_cache_'/4).
-:- thread_shared('$lgt_ctg_static_binding_cache_'/4).
+:- thread_shared('$lgt_obj_static_binding_cache_'/3).
+:- thread_shared('$lgt_ctg_static_binding_cache_'/3).
 
 % lookup caches for messages to an object, messages to self, and super calls
-:- thread_shared('$lgt_send_to_obj_'/4).
-:- thread_shared('$lgt_send_to_obj_ne_'/4).
-:- thread_shared('$lgt_send_to_self_'/4).
-:- thread_shared('$lgt_obj_super_call_same_'/4).
-:- thread_shared('$lgt_obj_super_call_other_'/4).
-:- thread_shared('$lgt_ctg_super_call_same_'/4).
-:- thread_shared('$lgt_ctg_call_'/4).
-:- thread_shared('$lgt_ctg_super_call_other_'/4).
+:- thread_shared('$lgt_send_to_obj_'/3).
+:- thread_shared('$lgt_send_to_obj_ne_'/3).
+:- thread_shared('$lgt_send_to_self_'/3).
+:- thread_shared('$lgt_obj_super_call_same_'/3).
+:- thread_shared('$lgt_obj_super_call_other_'/3).
+:- thread_shared('$lgt_ctg_super_call_same_'/3).
+:- thread_shared('$lgt_ctg_super_call_other_'/3).
+:- thread_shared('$lgt_ctg_call_'/3).
 
 % lookup cache for asserting and retracting dynamic facts
 :- thread_shared('$lgt_db_lookup_cache_'/5).
