@@ -13,15 +13,22 @@
 # based on a unit test automation script contributed by Parker Jones
 
 print_version() {
-	echo "`basename $0` 0.4"
+	echo "`basename $0` 0.5"
 	exit 0
 }
+
+if [ "$LOGTALKHOME" != "" ] && [ "$LOGTALKUSER" != "" ] && [ "$LOGTALKHOME" = "$LOGTALKUSER" ] ; then
+	# assume that we're running a development version of Logtalk
+	extension='.sh'
+else
+	extension=''
+fi
 
 base="$PWD"
 results="$base/tester_results"
 backend=yap
 prolog='YAP'
-logtalk='yaplgt -g'
+logtalk="yaplgt$extension -g"
 mode='normal'
 
 versions_goal="logtalk_load(tester_versions),halt"
@@ -70,37 +77,37 @@ done
 
 if [ "$p_arg" = "cx" ] ; then
 	prolog='CxProlog'
-	logtalk='cxlgt --goal'
+	logtalk="cxlgt$extension --goal"
 elif [ "$p_arg" = "eclipse" ] ; then
 	prolog='ECLiPSe'
-	logtalk='eclipselgt -e'
+	logtalk="eclipselgt$extension -e"
 elif [ "$p_arg" = "gnu" ] ; then
 	prolog='GNU Prolog'
-	logtalk='gplgt --query-goal'
+	logtalk="gplgt$extension --query-goal"
 elif [ "$p_arg" = "qp" ] ; then
 	prolog='Qu-Prolog'
-	logtalk='qplgt -g'
+	logtalk="qplgt$extension -g"
 	versions_goal=$versions_goal_dot
 	tester_goal=$tester_goal_dot
 	tester_debug_goal=$tester_debug_goal_dot
 elif [ "$p_arg" = "sicstus" ] ; then
 	prolog='SICStus Prolog'
-	logtalk='sicstuslgt --goal'
+	logtalk="sicstuslgt$extension --goal"
 	versions_goal=$versions_goal_dot
 	tester_goal=$tester_goal_dot
 	tester_debug_goal=$tester_debug_goal_dot
 elif [ "$p_arg" = "swi" ] ; then
 	prolog='SWI-Prolog'
-	logtalk='swilgt -g'
+	logtalk="swilgt$extension -g"
 elif [ "$p_arg" = "xsb" ] ; then
 	prolog='XSB'
-	logtalk='xsblgt -e'
+	logtalk="xsblgt$extension -e"
 	versions_goal=$versions_goal_dot
 	tester_goal=$tester_goal_dot
 	tester_debug_goal=$tester_debug_goal_dot
 elif [ "$p_arg" = "yap" ] ; then
 	prolog='YAP'
-	logtalk='yaplgt -g'
+	logtalk="yaplgt$extension -g"
 elif [ "$p_arg" != "" ] ; then
 	echo "Error! Unsupported back-end Prolog compiler: $p_arg"
 	usage_help
