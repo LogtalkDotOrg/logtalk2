@@ -10,10 +10,10 @@
 %
 %
 %  integration code for SWI Prolog 5.8.0 and later versions to compile and
-%  load Logtalk files using SWI Prolog consult/1 and to support edit/1 and
-%  make/0
+%  load Logtalk files using SWI Prolog consult/1, to support edit/1 and
+%  make/0, and to improve usability when using the XPCE profiler
 %
-%  last updated: October 18, 2010
+%  last updated: October 19, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -39,20 +39,20 @@ user:prolog_load_file(_:Spec, Options) :-
 	file_base_name(Path, BaseName),
 	file_name_extension(Entity, _, BaseName),
 	working_directory(Old, Dir),
-	'$lgt_filter_compiler_options'(Options, Options2),
+	'$lgt_swi_filter_compiler_options'(Options, Options2),
 	setup_call_cleanup(true, logtalk_load(Entity, Options2), working_directory(_, Old)).
 
 
-'$lgt_filter_compiler_options'([], []).
+'$lgt_swi_filter_compiler_options'([], []).
 
-'$lgt_filter_compiler_options'([Option| Options], [Option| Options2]) :-
+'$lgt_swi_filter_compiler_options'([Option| Options], [Option| Options2]) :-
 	functor(Option, Functor, 1),
-	'$lgt_valid_flag'(Functor),
+	current_logtalk_flag(Functor, _),	% hack for testing for a valid flag
 	!,
-	'$lgt_filter_compiler_options'(Options, Options2).
+	'$lgt_swi_filter_compiler_options'(Options, Options2).
 
-'$lgt_filter_compiler_options'([_| Options], Options2) :-
-	'$lgt_filter_compiler_options'(Options, Options2).
+'$lgt_swi_filter_compiler_options'([_| Options], Options2) :-
+	'$lgt_swi_filter_compiler_options'(Options, Options2).
 
 
 
@@ -71,6 +71,24 @@ prolog_edit:locate(Name, source_file(Source), [file(Source)]) :-
 
 
 :- multifile(user:prolog_predicate_name/2).
+
+user:prolog_predicate_name(user:'$lgt_send_to_obj_'(_, _, _), '::/2 (cached; event-aware)') :- !.
+user:prolog_predicate_name(user:'$lgt_send_to_obj_ne_'(_, _, _), '::/2 (cached; not event-aware)') :- !.
+user:prolog_predicate_name(user:'$lgt_send_to_self_'(_, _, _), '::/1 (cached)') :- !.
+user:prolog_predicate_name(user:'$lgt_obj_super_call_same_'(_, _, _), '^^/2 (cached; from obj; same pred)') :- !.
+user:prolog_predicate_name(user:'$lgt_obj_super_call_other_'(_, _, _), '^^/2 (cached; from obj; diff pred)') :- !.
+user:prolog_predicate_name(user:'$lgt_ctg_super_call_same_'(_, _, _), '^^/2 (cached; from ctg; same pred)') :- !.
+user:prolog_predicate_name(user:'$lgt_ctg_super_call_other_'(_, _, _), '^^/2 (cached; from ctg; diff pred)') :- !.
+user:prolog_predicate_name(user:'$lgt_ctg_call_'(_, _, _), ':/1 (cached)') :- !.
+
+user:prolog_predicate_name(user:'$lgt_send_to_obj'(_, _, _), '::/2 (not cached; event-aware)') :- !.
+user:prolog_predicate_name(user:'$lgt_send_to_obj_ne'(_, _, _), '::/2 (not cached; not event-aware)') :- !.
+user:prolog_predicate_name(user:'$lgt_send_to_self'(_, _, _), '::/1 (not cached)') :- !.
+user:prolog_predicate_name(user:'$lgt_obj_super_call_same'(_, _, _), '^^/2 (not cached; from obj; same pred)') :- !.
+user:prolog_predicate_name(user:'$lgt_obj_super_call_other'(_, _, _), '^^/2 (not cached; from obj; diff pred)') :- !.
+user:prolog_predicate_name(user:'$lgt_ctg_super_call_same'(_, _, _), '^^/2 (not cached; from ctg; same pred)') :- !.
+user:prolog_predicate_name(user:'$lgt_ctg_super_call_other'(_, _, _), '^^/2 (not cached; from ctg; diff pred)') :- !.
+user:prolog_predicate_name(user:'$lgt_ctg_call'(_, _, _), ':/1 (not cached)') :- !.
 
 user:prolog_predicate_name(Goal, Label) :-
 	(	Goal = Module:THead ->
