@@ -5,27 +5,16 @@
 
 	compile_facts([], []).
 	compile_facts([Fact| Facts], [TFact| TFacts]) :-
-		functor(Fact, Functor, Arity),
-		Fact =.. [Functor| Args0],
-		list::append(Args0, [_], Args),
-		this(This),
-		{'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _)},
-		atom_concat(Prefix, Functor, TFunctor),
-		TFact =.. [TFunctor| Args],
+		this(This),		
+		logtalk::compile_predicate_heads(Fact, This, TFact, _),
 		compile_facts(Facts, TFacts).
 
 	:- private(decompile_facts/2).
 
 	decompile_facts([], []).
 	decompile_facts([TFact| TFacts], [Fact| Facts]) :-
-		functor(TFact, TFunctor, TArity),
-		Arity is TArity - 1,
-		TFact =.. [TFunctor| TArgs],
-		list::append(Args, [_], TArgs),
-		this(This),
-		{'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _)},
-		atom_concat(Prefix, Functor, TFunctor),
-		Fact =.. [Functor| Args],
+		this(This),		
+		logtalk::decompile_predicate_head(TFact, This, _, Fact),
 		decompile_facts(TFacts, Facts).
 
 :- end_category.

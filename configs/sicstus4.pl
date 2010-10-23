@@ -540,13 +540,13 @@ forall(Generate, Test) :-
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
 '$lgt_rewrite_and_copy_pl_directive'(block(Heads), block(THeads)) :-
-	'$lgt_tr_predicate_heads'(Heads, THeads, '?').
+	'$lgt_compile_predicate_heads'(Heads, THeads, '?').
 
 '$lgt_rewrite_and_copy_pl_directive'(load_foreign_resource(Resource), initialization(load_foreign_resource(Resource))) :-
 	load_foreign_resource(Resource).
 
 '$lgt_rewrite_and_copy_pl_directive'(volatile(PIs), volatile(CPIs)) :-
-	'$lgt_tr_predicate_indicators'(PIs, CPIs).
+	'$lgt_compile_predicate_indicators'(PIs, CPIs).
 
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)

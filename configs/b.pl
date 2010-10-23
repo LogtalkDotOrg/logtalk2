@@ -531,14 +531,14 @@
 
 '$lgt_rewrite_and_copy_pl_directive'(eager_consume, eager_consume).
 '$lgt_rewrite_and_copy_pl_directive'(eager_consume(PIs), eager_consume(CPIs)) :-
-	'$lgt_tr_predicate_indicators'(PIs, CPIs).
+	'$lgt_compile_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(table(':'(Head, N)), table(':'(THead, N))) :-
 	!,
-	'$lgt_tr_predicate_heads'(Head, THead, '-').
+	'$lgt_compile_predicate_heads'(Head, THead, '-').
 '$lgt_rewrite_and_copy_pl_directive'(table(PIs), table(CPIs)) :-
-	'$lgt_tr_predicate_indicators'(PIs, CPIs).
+	'$lgt_compile_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(mode(Head), mode(THead)) :-
-	'$lgt_tr_predicate_heads'(Head, THead, '?').
+	'$lgt_compile_predicate_heads'(Head, THead, '?').
 
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)

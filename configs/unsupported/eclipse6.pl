@@ -701,16 +701,16 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
 '$lgt_rewrite_and_copy_pl_directive'(demon(PIs), demon(CPIs)) :-
-	'$lgt_tr_predicate_indicators'(PIs, CPIs).
+	'$lgt_compile_predicate_indicators'(PIs, CPIs).
 
 '$lgt_rewrite_and_copy_pl_directive'(inline(PI1, PI2), inline(CPI1, CPI2)) :-
-	'$lgt_tr_predicate_indicators'(PI1, CPI1),
-	'$lgt_tr_predicate_indicators'(PI2, CPI2).
+	'$lgt_compile_predicate_indicators'(PI1, CPI1),
+	'$lgt_compile_predicate_indicators'(PI2, CPI2).
 
 '$lgt_rewrite_and_copy_pl_directive'(pragma(Pragma), pragma(Pragma)).
 
 '$lgt_rewrite_and_copy_pl_directive'(set_flag(PI, Flag, Value), set_flag(CPI, Flag, Value)) :-
-	'$lgt_tr_predicate_indicators'(PI, CPI).
+	'$lgt_compile_predicate_indicators'(PI, CPI).
 
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)

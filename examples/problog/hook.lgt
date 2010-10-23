@@ -19,19 +19,19 @@
 	term_expansion((:- set_problog_flag(Flag, Value)), [{(:- flags:set_problog_flag(Flag, Value))}]).
 
 	term_expansion((:- problog_table(PI)), [{(:- tabling:problog_table(user:TPI))}]) :-
-		logtalk::translate_predicate_indicators(PI, TPI).
+		logtalk::compile_predicate_indicators(PI, TPI).
 
 	term_expansion(('=>'(Head,N) :- Body), [{(:- multifile('=>'/2))}, {('=>'(THead,N) :- TBody)}]) :-
-		logtalk::translate_predicate_heads(Head, THead, context),
-		logtalk::translate_predicate_heads(Body, TBody, context).
+		logtalk::compile_predicate_heads(Head, THead, context),
+		logtalk::compile_predicate_heads(Body, TBody, context).
 
 	term_expansion((Prob~Head :- Body), [{ExpandedClause}]) :-
-		logtalk::translate_predicate_heads(Head, THead, context),
-		logtalk::translate_predicate_heads(Body, TBody, context),
+		logtalk::compile_predicate_heads(Head, THead, context),
+		logtalk::compile_predicate_heads(Body, TBody, context),
 		problog:term_expansion_intern((Prob::THead :- TBody), user, ExpandedClause).
 
 	term_expansion(Prob~Fact, []) :-
-		logtalk::translate_predicate_heads(Fact, TFact),
+		logtalk::compile_predicate_heads(Fact, TFact),
 		problog:problog_assert((Prob::TFact)).
 
 :- end_object.

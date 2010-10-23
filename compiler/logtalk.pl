@@ -357,7 +357,7 @@ Obj<<Goal :-
 '$lgt_runtime_error_handler'(error(existence_error(goal_thread, TGoal), _, Sender)) :-
 	functor(TGoal, TFunctor, TArity),
 	TGoal =.. [_| TArgs],
-	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, _, _, Functor/_),
+	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, _, _, Functor/_),
 	'$lgt_append'(Args, [ExCtx], TArgs),
 	'$lgt_exec_ctx'(ExCtx, _, _, Self, _, _),
 	Goal =.. [Functor| Args],
@@ -397,34 +397,34 @@ Obj<<Goal :-
 	'$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), context(TFunctor2/TArity2, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), context(TFunctor2/TArity2, _))) :-	% SWI-Prolog
-	'$lgt_reverse_predicate_indicator'(TFunctor1/TArity1, Entity, Type, Functor1/Arity1),
-	'$lgt_reverse_predicate_indicator'(TFunctor2/TArity2, Entity, Type, Functor2/Arity2),
+	'$lgt_decompile_predicate_indicator'(TFunctor1/TArity1, Entity, Type, Functor1/Arity1),
+	'$lgt_decompile_predicate_indicator'(TFunctor2/TArity2, Entity, Type, Functor2/Arity2),
 	throw(error(existence_error(procedure, Functor1/Arity1), context(Type, Entity, Functor2/Arity2))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), TFunctor2/TArity2)) :-				% GNU Prolog and B-Prolog
-	'$lgt_reverse_predicate_indicator'(TFunctor1/TArity1, Entity, Type, Functor1/Arity1),
-	'$lgt_reverse_predicate_indicator'(TFunctor2/TArity2, Entity, Type, Functor2/Arity2),
+	'$lgt_decompile_predicate_indicator'(TFunctor1/TArity1, Entity, Type, Functor1/Arity1),
+	'$lgt_decompile_predicate_indicator'(TFunctor2/TArity2, Entity, Type, Functor2/Arity2),
 	throw(error(existence_error(procedure, Functor1/Arity1), context(Type, Entity, Functor2/Arity2))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ModTFunctor/TArity), _)) :-								% Ciao
 	atom_concat('user:', TFunctor, ModTFunctor),
-	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
+	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/TArity), _)) :-									% K-Prolog and YAP 5.1 or later
-	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
+	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ':'(_, TFunctor/TArity)), _)) :-							% SICStus Prolog 4.x
-	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
+	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(_, _, procedure, ':'(_, TFunctor/TArity), _), _)) :-					% Quintus, SICStus Prolog 3.x
-	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
+	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ':'(_, TFunctor/TArity)), _, _)) :-						% XSB
-	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
+	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
 '$lgt_runtime_error_handler'(error(Variable, _, Sender)) :-
@@ -438,7 +438,7 @@ Obj<<Goal :-
 '$lgt_runtime_error_handler'(error(Error, Context)) :-																	% SWI-Prolog
 	nonvar(Context),
 	Context = context(TFunctor/TArity, _),
-	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
+	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
 	throw(error(Error, context(Type, Entity, Functor/Arity))).
 
 '$lgt_runtime_error_handler'(logtalk_debugger_aborted) :-
@@ -4117,10 +4117,13 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 '$lgt_logtalk._dcl'(expand_library_path(_, _), p(p(p)), no, 0).
-'$lgt_logtalk._dcl'(translate_predicate_heads(_, _), p(p(p)), no, 0).
-'$lgt_logtalk._dcl'(translate_predicate_heads(_, _, _), p(p(p)), no, 0).
-'$lgt_logtalk._dcl'(translate_predicate_indicators(_, _), p(p(p)), no, 0).
-'$lgt_logtalk._dcl'(reverse_predicate_indicator(_, _, _, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(compile_predicate_heads(_, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(compile_predicate_heads(_, _, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(compile_predicate_heads(_, _, _, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(compile_predicate_indicators(_, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(compile_predicate_indicators(_, _, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(decompile_predicate_indicator(_, _, _, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(decompile_predicate_head(_, _, _, _), p(p(p)), no, 0).
 
 '$lgt_logtalk._dcl'(Pred, Scope, Meta, Flags, logtalk, logtalk) :-
 	'$lgt_logtalk._dcl'(Pred, Scope, Meta, Flags).
@@ -4136,11 +4139,13 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 '$lgt_logtalk._def'(expand_library_path(Library, Path), _, '$lgt_expand_library_path'(Library, Path)).
-'$lgt_logtalk._def'(translate_predicate_heads(Heads, THeads), _, '$lgt_tr_predicate_heads'(Heads, THeads)).
-'$lgt_logtalk._def'(translate_predicate_heads(Heads, THeads, Ctx), _, '$lgt_tr_predicate_heads'(Heads, THeads, Ctx)).
-'$lgt_logtalk._def'(translate_predicate_indicators(PIs, TPIs), _, '$lgt_tr_predicate_indicators'(PIs, TPIs)).
-'$lgt_logtalk._def'(reverse_predicate_indicator(TPI, Entity, Type, PI), _, '$lgt_reverse_predicate_indicator'(TPI, Entity, Type, PI)).
-
+'$lgt_logtalk._def'(compile_predicate_heads(Heads, THeads), _, '$lgt_compile_predicate_heads'(Heads, THeads)).
+'$lgt_logtalk._def'(compile_predicate_heads(Heads, THeads, Ctx), _, '$lgt_compile_predicate_heads'(Heads, THeads, Ctx)).
+'$lgt_logtalk._def'(compile_predicate_heads(Heads, Entity, THeads, Ctx), _, '$lgt_compile_predicate_heads'(Heads, Entity, THeads, Ctx)).
+'$lgt_logtalk._def'(compile_predicate_indicators(PIs, TPIs), _, '$lgt_compile_predicate_indicators'(PIs, TPIs)).
+'$lgt_logtalk._def'(compile_predicate_indicators(PIs, Entity, TPIs), _, '$lgt_compile_predicate_indicators'(PIs, Entity, TPIs)).
+'$lgt_logtalk._def'(decompile_predicate_indicator(TPI, Entity, Type, PI), _, '$lgt_decompile_predicate_indicator'(TPI, Entity, Type, PI)).
+'$lgt_logtalk._def'(decompile_predicate_head(THead, Entity, Type, Head), _, '$lgt_decompile_predicate_head'(THead, Entity, Type, Head)).
 
 '$lgt_logtalk._super'(_, _, _, _) :-
 	fail.
@@ -14017,69 +14022,119 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 
-% '$lgt_tr_predicate_heads'(@callable, -callable, @term)
+% '$lgt_compile_predicate_heads'(@callable, ?entity_identifier, -callable, @term)
 %
-% translates a single predicate head, a conjunction of predicate heads, or
-% a list of predicate heads; used mainly as a hook predicate in the config
-% files for processing proprietary directives
+% translates a single predicate head, a conjunction of predicate heads, or a list of
+% predicate heads; used mainly in config files for processing proprietary directives
 
-'$lgt_tr_predicate_heads'(Head, _, _) :-
+'$lgt_compile_predicate_heads'(Head, _, _, _) :-
 	var(Head),
 	throw(instantiation_error).
-'$lgt_tr_predicate_heads'([], [], _) :-
+'$lgt_compile_predicate_heads'(_, Entity, _, _) :-
+	nonvar(Entity),
+	\+ callable(Entity),
+	throw(type_error(entity_identifier, Entity)).
+'$lgt_compile_predicate_heads'([], _, [], _) :-
 	!.
-'$lgt_tr_predicate_heads'([Head| Heads], [THead| THeads], Context) :-
+'$lgt_compile_predicate_heads'([Head| Heads], Entity, [THead| THeads], Ctx) :-
 	!,
-	'$lgt_tr_predicate_heads'(Head, THead, Context),
-	'$lgt_tr_predicate_heads'(Heads, THeads, Context).
-'$lgt_tr_predicate_heads'((Head, Heads), (THead, THeads), Context) :-
+	'$lgt_compile_predicate_heads'(Head, Entity, THead, Ctx),
+	'$lgt_compile_predicate_heads'(Heads, Entity, THeads, Ctx).
+'$lgt_compile_predicate_heads'((Head, Heads), Entity, (THead, THeads), Ctx) :-
 	!,
-	'$lgt_tr_predicate_heads'(Head, THead, Context),
-	'$lgt_tr_predicate_heads'(Heads, THeads, Context).
-'$lgt_tr_predicate_heads'(Head, THead, Context) :-
+	'$lgt_compile_predicate_heads'(Head, Entity, THead, Ctx),
+	'$lgt_compile_predicate_heads'(Heads, Entity, THeads, Ctx).
+'$lgt_compile_predicate_heads'(Head, Entity, THead, Ctx) :-
+	(	var(Entity) ->
+		'$lgt_pp_entity'(_, Entity, Prefix, _, _)
+	;	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _, _, _, _) ->
+		true
+	;	'$lgt_current_category_'(Entity, Prefix, _, _, _, _) ->
+		true
+	;	'$lgt_current_protocol_'(Entity, Prefix, _, _, _) ->
+		true
+	),
 	functor(Head, Functor, Arity),
-	'$lgt_pp_entity'(_, _, Prefix, _, _),
 	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 	functor(THead, TFunctor, TArity),
 	Head =.. [Functor| Args],
 	THead =.. [TFunctor| Targs],
-	'$lgt_append'(Args, [Context], Targs).
+	'$lgt_append'(Args, [Ctx], Targs).
 
 
-'$lgt_tr_predicate_heads'(Heads, THeads) :-
-	'$lgt_tr_predicate_heads'(Heads, THeads, _).
+'$lgt_compile_predicate_heads'(Heads, THeads) :-
+	'$lgt_compile_predicate_heads'(Heads, _, THeads, _).
+
+
+'$lgt_compile_predicate_heads'(Heads, THeads, Ctx) :-
+	'$lgt_compile_predicate_heads'(Heads, _, THeads, Ctx).
 
 
 
-% '$lgt_tr_predicate_indicators'(+list(predicate_indicator), -list(predicate_indicator))
-% '$lgt_tr_predicate_indicators'(+predicate_indicator, -predicate_indicator)
+% '$lgt_decompile_predicate_head'(+callable, -callable, -atom, -callable)
 %
-% translates a single predicate indicator, a conjunction of predicate indicators, or
-% a list of predicate indicators; used mainly as a hook predicate in the config files
-% for processing proprietary directives
+% decompiles the predicate head used for a compiled predicate; not completly realiable
 
-'$lgt_tr_predicate_indicators'(PI, _) :-
+'$lgt_decompile_predicate_head'(THead, Entity, Type, Head) :-
+	functor(THead, TFunctor, TArity),
+	(	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _, _, _, _),
+		Type = object
+	;	'$lgt_current_category_'(Entity, Prefix, _, _, _, _),
+		Type = category
+	;	'$lgt_current_protocol_'(Entity, Prefix, _, _, _),
+		Type = protocol
+	),
+	atom_concat(Prefix, Functor, TFunctor),
+	Arity is TArity - 1,		% subtract execution context argument
+	functor(Head, Functor, Arity),
+	'$lgt_match_args'(Arity, THead, Head),
+	!.
+
+
+
+% '$lgt_compile_predicate_indicators'(+list(predicate_indicator), ?entity_identifier, -list(predicate_indicator))
+% '$lgt_compile_predicate_indicators'(+predicate_indicator, ?entity_identifier, -predicate_indicator)
+%
+% translates a single predicate indicator, a conjunction of predicate indicators, or a list
+% of predicate indicators; used mainly in config files for processing proprietary directives
+
+'$lgt_compile_predicate_indicators'(PI, _, _) :-
 	var(PI),
 	throw(instantiation_error).
-'$lgt_tr_predicate_indicators'([], []) :-
+'$lgt_compile_predicate_indicators'(_, Entity, _) :-
+	nonvar(Entity),
+	\+ callable(Entity),
+	throw(type_error(entity_identifier, Entity)).
+'$lgt_compile_predicate_indicators'([], _, []) :-
 	!.
-'$lgt_tr_predicate_indicators'([PI| PIs], [TPI| TPIs]) :-
+'$lgt_compile_predicate_indicators'([PI| PIs], Entity, [TPI| TPIs]) :-
 	!,
-	'$lgt_tr_predicate_indicators'(PI, TPI),
-	'$lgt_tr_predicate_indicators'(PIs, TPIs).
-'$lgt_tr_predicate_indicators'((PI, PIs), (TPI, TPIs)) :-
+	'$lgt_compile_predicate_indicators'(PI, Entity, TPI),
+	'$lgt_compile_predicate_indicators'(PIs, Entity, TPIs).
+'$lgt_compile_predicate_indicators'((PI, PIs), Entity, (TPI, TPIs)) :-
 	!,
-	'$lgt_tr_predicate_indicators'(PI, TPI),
-	'$lgt_tr_predicate_indicators'(PIs, TPIs).
-'$lgt_tr_predicate_indicators'(PI, TFunctor/TArity) :-
+	'$lgt_compile_predicate_indicators'(PI, Entity, TPI),
+	'$lgt_compile_predicate_indicators'(PIs, Entity, TPIs).
+'$lgt_compile_predicate_indicators'(PI, Entity, TFunctor/TArity) :-
+	(	var(Entity) ->
+		'$lgt_pp_entity'(_, Entity, Prefix, _, _)
+	;	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _, _, _, _) ->
+		true
+	;	'$lgt_current_category_'(Entity, Prefix, _, _, _, _) ->
+		true
+	;	'$lgt_current_protocol_'(Entity, Prefix, _, _, _) ->
+		true
+	),
 	(	'$lgt_valid_pred_ind'(PI, Functor, Arity) ->
-		'$lgt_pp_entity'(_, _, Prefix, _, _),
 		'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity)
 	;	'$lgt_valid_gr_ind'(PI, Functor, _, ExtArity) ->
-		'$lgt_pp_entity'(_, _, Prefix, _, _),
 		'$lgt_construct_predicate_indicator'(Prefix, Functor/ExtArity, TFunctor/TArity)
 	;	throw(type_error(predicate_indicator, PI))
 	).
+
+
+'$lgt_compile_predicate_indicators'(Heads, THeads) :-
+	'$lgt_compile_predicate_indicators'(Heads, _, THeads).
 
 
 
@@ -14093,11 +14148,11 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 
-% '$lgt_reverse_predicate_indicator'(+predicate_indicator, -callable, -atom, -predicate_indicator)
+% '$lgt_decompile_predicate_indicator'(+predicate_indicator, -callable, -atom, -predicate_indicator)
 %
 % reverses the predicate indicator used for a compiled predicate; not completly realiable
 
-'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity) :-
+'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity) :-
 	(	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _, _, _, _),
 		Type = object
 	;	'$lgt_current_category_'(Entity, Prefix, _, _, _, _),

@@ -54,7 +54,7 @@
 		predicate_label(user:TFunctor/TArity, Label).
 	predicate_label(Module:TFunctor/TArity, Label) :-
 		(	Module == user,
-			logtalk::reverse_predicate_indicator(TFunctor/TArity, Entity, _, Functor/Arity) ->
+			logtalk::decompile_predicate_indicator(TFunctor/TArity, Entity, _, Functor/Arity) ->
 			(	atom(Entity) ->
 				atomic_list_concat([Entity, '::', Functor, '/', Arity], Label)
 			;	functor(Entity, EntityFunctor, EntityArity),
@@ -76,7 +76,7 @@
 			Module == user
 		;	Term = TFunctor/TArity
 		),
-		logtalk::reverse_predicate_indicator(TFunctor/TArity, Entity, _, Functor/Arity),
+		logtalk::decompile_predicate_indicator(TFunctor/TArity, Entity, _, Functor/Arity),
 		{profile_data(Term, retries, Retries)},
 		Predicate = Functor/Arity.
 

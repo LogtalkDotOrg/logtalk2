@@ -96,7 +96,7 @@ user:prolog_predicate_name(Goal, Label) :-
 	;	Goal = THead
 	),
 	functor(THead, TFunctor, TArity),
-	'$lgt_reverse_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
+	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
 	(	atom(Entity) ->
 		atomic_list_concat([Entity, '::', Functor, '/', Arity], Label)
 	;	functor(Entity, EFunctor, EArity),

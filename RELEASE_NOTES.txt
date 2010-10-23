@@ -13,10 +13,11 @@ RELEASE NOTES
 =============
 
 
-2.41.2 - November ??, 2010
+2.41.2 - November 2, 2010
 
-    Defined a set of hook predicates, available from the "logtalk" built-in
-    object. Consult the User Manual for details on the hook predicates.
+    Defined a set of low-level utility predicates, available as public methods
+    from the "logtalk" built-in object. Consult the User Manual for details on
+    these predicates.
 
     Simplified and improved the performance of the predicate lookup caching
     code.
