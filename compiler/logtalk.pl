@@ -2325,13 +2325,13 @@ current_logtalk_flag(version, version(2, 41, 2)).
 		(	(\+ \+ PScope = Scope; Sender = SCtn) ->
 			(	Flags /\ 2 =:= 2 ->
 				(	call(DDcl, Pred, _) ->
-					Clause =.. [DDcl, Pred, _],
-					retractall(Clause),
+					DDclClause =.. [DDcl, Pred, _],
+					retractall(DDclClause),
 					(	call(DDef, Pred, _, Call) ->
 						functor(Call, CFunctor, CArity),
 						abolish(CFunctor/CArity),
-						Clause2 =.. [DDef, Pred, _, Call],
-						retractall(Clause2),
+						DDefClause =.. [DDef, Pred, _, Call],
+						retractall(DDefClause),
 						'$lgt_clean_lookup_caches'(Pred)
 					;	true
 					)
@@ -12126,7 +12126,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 
-% '$lgt_update_ddef_table'(+atom, +callable, +callable)
+% '$lgt_update_ddef_table'(+atom, @callable, @callable)
 %
 % retracts a dynamic "ddef clause" (used to translate a predicate call)
 % if there are no more clauses for the predicate otherwise does nothing
@@ -12138,11 +12138,9 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	functor(GTHead, TFunctor, TArity),
 	(	clause(GTHead, _) ->
 		true
-	;	functor(Head, Functor, Arity),
-		functor(GHead, Functor, Arity),
-		Clause =.. [DDef, GHead, _, _],
-		retractall(Clause),
-		'$lgt_clean_lookup_caches'(GHead)
+	;	DDefClause =.. [DDef, Head, _, _],
+		retractall(DDefClause),
+		'$lgt_clean_lookup_caches'(Head)
 	).
 
 
@@ -14073,7 +14071,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_decompile_predicate_head'(+callable, -callable, -atom, -callable)
 %
-% decompiles the predicate head used for a compiled predicate; not completly realiable
+% decompiles the predicate head used for a compiled predicate
 
 '$lgt_decompile_predicate_head'(THead, Entity, Type, Head) :-
 	functor(THead, TFunctor, TArity),
@@ -14150,7 +14148,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_decompile_predicate_indicator'(+predicate_indicator, -callable, -atom, -predicate_indicator)
 %
-% reverses the predicate indicator used for a compiled predicate; not completly realiable
+% reverses the predicate indicator used for a compiled predicate
 
 '$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity) :-
 	(	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _, _, _, _),
