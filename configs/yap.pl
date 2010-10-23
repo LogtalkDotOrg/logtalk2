@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: October 22, 2010
+%  last updated: October 23, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -141,9 +141,6 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 
 
 % forall(+callable, +callable) -- built-in
-
-
-% retractall(+callable) -- built-in
 
 
 % call/2-9 -- built-in
@@ -499,32 +496,6 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 '$lgt_cpu_time'(Seconds) :-
 	statistics(cputime, [Miliseconds, _]),
 	Seconds is Miliseconds/1000.
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  comparison predicate
-%
-%  the usual compare/3 definition
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% compare(?atom, @term, @term) -- built-in
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  callable predicate
-%
-%  the usual callable/1 definition
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% callable(@term) -- built-in
 
 
 

@@ -11,7 +11,7 @@
 %
 %  configuration file for Ciao Prolog 1.10#8
 %
-%  last updated: October 5, 2010
+%  last updated: October 23, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -163,9 +163,6 @@ setup_call_cleanup(_, _, _) :-
 
 forall(Generate, Test) :-
 	\+ (Generate, \+ Test).
-
-
-% retractall(+callable) -- built-in
 
 
 % call/2-9
@@ -507,32 +504,6 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_cpu_time'(Seconds) :-
 	statistics(runtime, [Miliseconds| _]),
 	Seconds is Miliseconds / 1000.
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  comparison predicate
-%
-%  the usual compare/3 definition
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% compare(?atom, @term, @term) -- built-in
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  callable predicate
-%
-%  the usual callable/1 definition
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% callable(@term) -- built-in
 
 
 

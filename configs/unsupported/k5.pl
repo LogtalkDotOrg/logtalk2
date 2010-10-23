@@ -11,7 +11,7 @@
 %
 %  configuration file for K-Prolog 5.1.5 and later 5.1.x versions
 %
-%  last updated: October 2, 2010
+%  last updated: October 23, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -424,19 +424,6 @@ retractall(Head) :-
 
 '$lgt_cpu_time'(Seconds) :-
 	Seconds is time.
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  comparison predicate
-%
-%  the usual compare/3 definition
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% compare(?atom, @term, @term) -- built-in
 
 
 

@@ -118,9 +118,6 @@ forall(Generate, Test) :-
 	\+ (Generate, \+ Test).
 
 
-% retractall(+callable) -- built-in
-
-
 % call/2-9
 
 call(F, A) :-

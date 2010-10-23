@@ -11,7 +11,7 @@
 %
 %  configuration file for ALS Prolog 3.1
 %
-%  last updated: October 2, 2010
+%  last updated: October 23, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -464,19 +464,6 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_cpu_time'(Seconds) :-
 	Seconds is cputime.
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  comparison predicate
-%
-%  the usual compare/3 definition
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% compare(?atom, @term, @term) -- built-in
 
 
 

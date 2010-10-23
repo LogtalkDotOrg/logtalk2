@@ -11,7 +11,7 @@
 %
 %  configuration file for MasterProLog 4.1
 %
-%  last updated: October 2, 2010
+%  last updated: October 23, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -140,9 +140,6 @@ setup_call_cleanup(_, _, _) :-
 
 forall(Generate, Test) :-
 	\+ (Generate, \+ Test).
-
-
-% retractall(+callable) -- built-in
 
 
 % call/2-9 -- built-in
@@ -464,19 +461,6 @@ master_init :-
 	error_message(115 /* Possible erroneous use of nil */ , off).
         
 ?- master_init.   
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  comparison predicate
-%
-%  the usual compare/3 definition
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% compare(?atom, @term, @term) -- built-in
 
 
 

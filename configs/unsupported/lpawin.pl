@@ -11,7 +11,7 @@
 %
 %  configuration file for LPA WinProlog 4.00
 %
-%  last updated: October 2, 2010
+%  last updated: October 23, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -218,9 +218,6 @@ setup_call_cleanup(_, _, _) :-
 
 
 % forall(+callable, +callable) -- built-in
-
-
-% retractall(+callable) -- built-in
 
 
 % call/2-9
@@ -560,32 +557,6 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 	ticks(Ticks),
 	AbsTicks is Ticks mod 2^32,
 	Seconds is AbsTicks / 4660.
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  comparison predicate
-%
-%  the usual compare/3 definition
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% compare(?atom, @term, @term) -- built-in
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%  callable predicate
-%
-%  the usual callable/1 definition
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% callable(@term) -- built-in
 
 
 

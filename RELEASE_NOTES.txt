@@ -50,6 +50,10 @@ RELEASE NOTES
     meta-predicates would not be correctly compiled. This bug prevented the
     "mtbatch" from running.
 
+    Removed references to the de facto standard predicates retractall/1,
+    compare/3, and callable/1 from all the config files of Prolog compilers
+    where these predicates are built-in.
+
     Added a YAP integration file, "yaphooks.pl", defining the hook predicate
     user:prolog_predicate_name/2.
 
