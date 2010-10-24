@@ -336,8 +336,18 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %
 % access to operating-system environment variables
 
-'$lgt_environment_variable'(_, _) :-
-	fail.
+'$lgt_environment_variable'(Variable, Value) :-
+	os(mktemp('XXXXXXlgt_qp_env_var', File)),
+	atom_concat('echo "var(\'$', Variable, WriteCommand0),
+	atom_concat(WriteCommand0, '\')." > ', WriteCommand1),
+	atom_concat(WriteCommand1, File, WriteCommand),
+	os(system(WriteCommand)),
+	open(File, read, Stream),
+	catch(read(Stream, var(Value)), _, Value = ''),
+	close(Stream),
+	atom_concat('rm ', File, EraseCommand),
+	os(system(EraseCommand, _)),
+	Value \== ''.
 
 
 % '$lgt_startup_directory'(-atom)
