@@ -13,9 +13,9 @@
 	implements(osp)).
 
 	:- info([
-		version is 1.51,
+		version is 1.6,
 		author is 'Paulo Moura',
-		date is 2010/10/20,
+		date is 2010/10/24,
 		comment is 'Simple example of using conditional compilation to implement a portable operating-system interface for selected back-end Prolog compilers.']).
 
 	:- if(current_logtalk_flag(prolog_dialect, swi)).
@@ -608,6 +608,85 @@
 				Type = unix
 			;	Type = unknown
 			).
+
+	:- elif(current_logtalk_flag(prolog_dialect, qp)).
+
+		shell(Command, Status) :-
+			{os(system(Command, Status))}.
+
+		shell(Command) :-
+			{os(system(Command))}.
+
+		expand_path(_, _) :-
+			throw(not_available(expand_path/2)).
+
+		make_directory(Directory) :-
+			(	{access(Directory, 4, 0)} ->
+				true
+			;	atom_concat('mkdir ', Directory, Command),
+				{os(system(Command))}
+			).
+
+		delete_directory(Directory) :-
+			atom_concat('rmdir ', Directory, Command),
+			{os(system(Command))}.
+
+		change_directory(Directory) :-
+			{chdir(_, Directory)}.
+
+		working_directory(Directory) :-
+			{getcwd(Directory)}.
+
+		directory_exists(Directory) :-
+			{access(Directory, 4, 0)}.
+
+		file_exists(File) :-
+			{access(File, 4, 0)}.
+
+		file_modification_time(File, Time) :-
+			{stat(File, stat(Time, _))}.
+
+		file_size(File, Size) :-
+			{stat(File, stat(_, Size))}.
+
+		delete_file(File) :-
+			{access(File, 4, 0)},
+			atom_concat('rm ', File, Command),
+			{os(system(Command))}.
+
+		rename_file(Old, New) :-
+			atom_concat('mv ', Old, Command0),
+			atom_concat(Command0, ' ', Command1),
+			atom_concat(Command1, New, Command),
+			{os(system(Command))}.
+
+		environment_variable(Variable, Value) :-
+			{os(mktemp('XXXXXXlgt_qp_env_var', File))},
+			atom_concat('echo "var(\'$', Variable, WriteCommand0),
+			atom_concat(WriteCommand0, '\')." > ', WriteCommand1),
+			atom_concat(WriteCommand1, File, WriteCommand),
+			{os(system(WriteCommand))},
+			open(File, read, Stream),
+			catch(read(Stream, var(Value)), _, Value = ''),
+			close(Stream),
+			atom_concat('rm ', File, EraseCommand),
+			{os(system(EraseCommand, _))},
+			Value \== ''.
+
+		time_stamp(_) :-
+			throw(not_available(time_stamp/7)).
+
+		date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
+			{realtime(Time)},
+			{localtime(Time, time(Year2, Month2, Day, Hours, Mins, Secs, _))},
+			Year is 1900 + Year2,
+			Month is Month2 + 1.
+
+		cpu_time(Time) :-
+			{statistics(runtime, [Start,_])},
+			Time is Start/1000.
+
+		operating_system_type(unix).
 
 	:- else.
 
