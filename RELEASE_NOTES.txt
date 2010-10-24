@@ -86,6 +86,9 @@ RELEASE NOTES
     correcting the declaration of the predicate shell/1 and adding an
     operating_system_type/1 predicate.
 
+    Updated the "help" example, allowing it to be loaded when using any
+    back-end Prolog compiler.
+
     Updated the "examples/tester.sh" script in order to work when running
     Logtalk without using the installer scripts.
 

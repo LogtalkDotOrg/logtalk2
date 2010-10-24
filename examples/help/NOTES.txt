@@ -21,7 +21,7 @@ Currently, support is limited to:
 	
 	Prolog compilers:
 		B-Prolog, Ciao Prolog, CxProlog, ECLiPSe, GNU Prolog,
-		SICStus Prolog, SWI-Prolog, XSB, and YAP
+		Qu-Prolog, SICStus Prolog, SWI-Prolog, XSB, and YAP
 
 On Windows, the "start" command must be available. On Linux, the
 "xdg-open" command must be available.

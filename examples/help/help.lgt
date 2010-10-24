@@ -2,10 +2,12 @@
 :- object(help).
 
 	:- info([
-		version is 0.3,
+		version is 0.4,
 		author is 'Paulo Moura',
-		date is 2010/09/09,
+		date is 2010/10/24,
 		comment is 'Command-line help for Logtalk built-in control constructs, predicates, non-terminals, and methods.']).
+
+	:- initialization((nl, write('For help on Logtalk, type help::help.'), nl)).
 
 	:- public(help/0).
 	:- mode(help, one).
