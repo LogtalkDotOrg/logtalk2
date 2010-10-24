@@ -54,6 +54,10 @@ RELEASE NOTES
     compare/3, and callable/1 from all the config files of Prolog compilers
     where these predicates are built-in.
 
+    Updated the GNU Prolog config file in order to support the built_in_fd/0,
+    built_in_fd/1, built_in/0, built_in/1, and ensure_linked/1 proprietary
+    directives.
+
     Added a YAP integration file, "yaphooks.pl", defining the hook predicate
     user:prolog_predicate_name/2.
 

@@ -474,6 +474,14 @@ setup_call_cleanup(_, _, _) :-
 
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
+'$lgt_rewrite_and_copy_pl_directive'(built_in, built_in).
+'$lgt_rewrite_and_copy_pl_directive'(built_in(PIs), built_in(CPIs)) :-
+	'$lgt_compile_predicate_indicators'(PIs, CPIs).
+'$lgt_rewrite_and_copy_pl_directive'(built_in_fd, built_in_fd).
+'$lgt_rewrite_and_copy_pl_directive'(built_in_fd(PIs), built_in_fd(CPIs)) :-
+	'$lgt_compile_predicate_indicators'(PIs, CPIs).
+'$lgt_rewrite_and_copy_pl_directive'(ensure_linked(PIs), ensure_linked(CPIs)) :-
+	'$lgt_compile_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(foreign(Template, Options), foreign(Template, Options)).
 '$lgt_rewrite_and_copy_pl_directive'(foreign(Template), foreign(Template)).
 
