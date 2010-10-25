@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.4 and later versions
 %
-%  last updated: October 23, 2010
+%  last updated: October 25, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -52,6 +52,8 @@
 
 % '$lgt_predicate_property'(+callable, ?predicate_property)
 
+'$lgt_predicate_property'(callable(_), built_in) :-					% workaround for B-Prolog 7.4 bug
+	!.
 '$lgt_predicate_property'(setup_call_cleanup(_,_,_), built_in) :-	% workaround for B-Prolog 7.4 bug
 	!.
 '$lgt_predicate_property'(Pred, Prop) :-

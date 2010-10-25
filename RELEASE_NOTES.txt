@@ -61,6 +61,9 @@ RELEASE NOTES
     built_in_fd/1, built_in/0, built_in/1, and ensure_linked/1 proprietary
     directives.
 
+    Workaround a B-Prolog 7.4 bug where the built-in predicate callable/1 is
+    missing the property "built_in".
+
     Added a YAP integration file, "yaphooks.pl", defining the hook predicate
     user:prolog_predicate_name/2.
 
