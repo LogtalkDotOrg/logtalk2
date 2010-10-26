@@ -25,11 +25,11 @@
 	(	stat('$LOGTALKHOME/compiler/logtalk.pl', stat(TimeCompilerSource, _)),
 		stat('$LOGTALKUSER/.logtalk.qo', stat(TimeCompilerObject, _)) ->
 		(	TimeCompilerObject < TimeCompilerSource ->
-			fcompile('$LOGTALKUSER/.logtalk.pl', [assemble_only(true), object_file('$LOGTALKUSER/.logtalk.qo'), string_table(256)])
+			fcompile('$LOGTALKUSER/.logtalk.pl', [assemble_only(true), object_file('$LOGTALKUSER/.logtalk.qo'), compiler_heap(1024), string_table(256)])
 		;	true
 		)
 	;	os(system('ln -sf $LOGTALKHOME/compiler/logtalk.pl $LOGTALKUSER/.logtalk.pl')),
-		fcompile('$LOGTALKUSER/.logtalk.pl', [assemble_only(true), object_file('$LOGTALKUSER/.logtalk.qo'), string_table(256)])
+		fcompile('$LOGTALKUSER/.logtalk.pl', [assemble_only(true), object_file('$LOGTALKUSER/.logtalk.qo'), compiler_heap(1024), string_table(256)])
 	),
 	load('$LOGTALKUSER/.logtalk.qo'),
 

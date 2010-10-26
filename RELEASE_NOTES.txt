@@ -64,6 +64,9 @@ RELEASE NOTES
     Workaround a B-Prolog 7.4 bug where the built-in predicate callable/1 is
     missing the property "built_in".
 
+    Updated the Qu-Prolog integration files in order to avoid a segmentation
+    fault when using a 32 bits compilation of Qu-Prolog.
+
     Added a YAP integration file, "yaphooks.pl", defining the hook predicate
     user:prolog_predicate_name/2.
 
