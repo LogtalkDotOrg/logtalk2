@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.4 and later versions
 %
-%  last updated: October 25, 2010
+%  last updated: October 26, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -146,6 +146,7 @@
 '$lgt_file_extension'(logtalk, '.lgt').
 '$lgt_file_extension'(prolog, '.pl').
 '$lgt_file_extension'(xml, '.xml').
+'$lgt_file_extension'(tmp, '.out').
 
 
 

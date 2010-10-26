@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.11 and later versions
 %
-%  last updated: October 23, 2010
+%  last updated: October 26, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -136,6 +136,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_file_extension'(logtalk, '.lgt').
 '$lgt_file_extension'(prolog, '.ql').
 '$lgt_file_extension'(xml, '.xml').
+'$lgt_file_extension'(tmp, '.qo').
 
 
 

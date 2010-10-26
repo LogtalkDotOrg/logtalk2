@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.2 or later versions
 %
-%  last updated: October 23, 2010
+%  last updated: October 26, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -78,7 +78,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 	call_cleanup(Call, Cleanup).
 
 
-% forall(+Generate, +Test) -- built-in
+% forall(+callable, +callable) -- built-in
 
 
 % call/2-9 -- built-in
@@ -133,6 +133,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 '$lgt_file_extension'(logtalk, '.lgt').
 '$lgt_file_extension'(prolog, '.pl').
 '$lgt_file_extension'(xml, '.xml').
+'$lgt_file_extension'(tmp, '.xwam').
 
 
 

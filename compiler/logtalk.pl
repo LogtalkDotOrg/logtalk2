@@ -1554,7 +1554,10 @@ threaded_notify(Message) :-
 
 '$lgt_file_type_alt_directory'(prolog, Directory) :-
 	'$lgt_compiler_flag'(tmpdir, Directory).
-	
+
+'$lgt_file_type_alt_directory'(tmp, Directory) :-
+	'$lgt_compiler_flag'(tmpdir, Directory).
+
 
 
 % logtalk_compile(@source_file_name)
@@ -5078,7 +5081,10 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	),
 	(	'$lgt_compiler_flag'(clean, on) ->
 		% try to delete the intermediate Prolog ignoring any failure or error:
-		catch(('$lgt_delete_file'(PrologFile) -> true; true), _, true)
+		catch(('$lgt_delete_file'(PrologFile) -> true; true), _, true),
+		forall(
+			'$lgt_file_name'(tmp, Source, _, TmpFile),
+			catch(('$lgt_delete_file'(TmpFile) -> true; true), _, true))
 	;	true
 	).
 
@@ -5807,7 +5813,10 @@ current_logtalk_flag(version, version(2, 41, 2)).
 		catch(close(Output), _, true),
 		'$lgt_file_name'(logtalk, Name, File, _),	% try to delete the intermediate Prolog file in order to
 		'$lgt_file_name'(prolog, Name, _, Prolog),	% avoid problems when using the "smart_compilation" flag
-		catch(('$lgt_delete_file'(Prolog) -> true; true), _, true)
+		catch(('$lgt_delete_file'(Prolog) -> true; true), _, true),
+		forall(
+			'$lgt_file_name'(tmp, Name, _, TmpFile),
+			catch(('$lgt_delete_file'(TmpFile) -> true; true), _, true))
 	;	true
 	),
 	throw(Error).
