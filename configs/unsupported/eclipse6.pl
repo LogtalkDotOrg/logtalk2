@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#141 and later versions
 %
-%  last updated: October 23, 2010
+%  last updated: October 26, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -474,10 +474,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % Logtalk source file, given a list of options
 
 '$lgt_load_prolog_code'(File, _, _) :-
-	get_flag(debug_compile, Current),
-	set_flag(debug_compile, off),
-	compile(File),
-	set_flag(debug_compile, Current).
+	compile(File, [debug:off]).
 
 
 % '$lgt_compare_file_mtimes'(?atom, +atom, +atom)
