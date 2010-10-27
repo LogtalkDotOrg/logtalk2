@@ -661,17 +661,11 @@
 			{os(system(Command))}.
 
 		environment_variable(Variable, Value) :-
-			{os(mktemp('XXXXXXlgt_qp_env_var', File))},
-			atom_concat('echo "var(\'$', Variable, WriteCommand0),
-			atom_concat(WriteCommand0, '\')." > ', WriteCommand1),
-			atom_concat(WriteCommand1, File, WriteCommand),
-			{os(system(WriteCommand))},
-			open(File, read, Stream),
-			catch(read(Stream, var(Value)), _, Value = ''),
-			close(Stream),
-			atom_concat('rm ', File, EraseCommand),
-			{os(system(EraseCommand, _))},
-			Value \== ''.
+			(	{predicate_property(getenv(_, _), built_in)} ->
+				{getenv(Variable, Value)}
+			;	{predicate_property(env_getenv(_, _), built_in)} ->
+				{env_getenv(Variable, Value)}
+			).
 
 		time_stamp(_) :-
 			throw(not_available(time_stamp/7)).

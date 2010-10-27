@@ -62,7 +62,7 @@ RELEASE NOTES
     by the Prolog compilers themselves to the config files of B-Prolog, Ciao,
     Qu-Prolog, and XSB.
 
-    Added an ugly hack to the Qu-Prolog config file for accessing environment
+    Updated the Qu-Prolog config file with support for accessing environment
     variables.
 
     Updated the GNU Prolog config file in order to support the built_in_fd/0,

@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.11 and later versions
 %
-%  last updated: October 26, 2010
+%  last updated: October 27, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -338,17 +338,11 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % access to operating-system environment variables
 
 '$lgt_environment_variable'(Variable, Value) :-
-	os(mktemp('XXXXXXlgt_qp_env_var', File)),
-	atom_concat('echo "var(\'$', Variable, WriteCommand0),
-	atom_concat(WriteCommand0, '\')." > ', WriteCommand1),
-	atom_concat(WriteCommand1, File, WriteCommand),
-	os(system(WriteCommand)),
-	open(File, read, Stream),
-	catch(read(Stream, var(Value)), _, Value = ''),
-	close(Stream),
-	atom_concat('rm ', File, EraseCommand),
-	os(system(EraseCommand, _)),
-	Value \== ''.
+	(	predicate_property(getenv(_, _), built_in) ->
+		getenv(Variable, Value)
+	;	predicate_property(env_getenv(_, _), built_in) ->
+		env_getenv(Variable, Value)
+	).
 
 
 % '$lgt_startup_directory'(-atom)
