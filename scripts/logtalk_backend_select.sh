@@ -13,7 +13,7 @@
 
 print_version() {
 	echo "Current `basename $0` version:"
-	echo "  0.3"
+	echo "  0.4"
 	exit 0
 }
 
@@ -28,6 +28,9 @@ list_backends() {
 	fi
 	if [ -e `which eclipselgt` ]  && [ "`which eclipse`" != "" ] ; then
 		echo -n "  eclipselgt"
+	fi
+	if [ -e `which gplgt` ]  && [ "`which gprolog`" != "" ] ; then
+		echo -n "  gplgt"
 	fi
 	if [ -e `which qplgt` ]  && [ "`which qp`" != "" ] ; then
 		echo -n "  qplgt"
