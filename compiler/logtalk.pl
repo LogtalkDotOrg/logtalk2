@@ -155,7 +155,7 @@
 
 % lookup cache for asserting and retracting dynamic facts
 
-:- dynamic('$lgt_db_lookup_cache_'/5).				% '$lgt_db_lookup_cache_'(Obj, Pred, Sender, Call, UpdateGoal)
+:- dynamic('$lgt_db_lookup_cache_'/5).				% '$lgt_db_lookup_cache_'(Obj, Fact, Sender, TFact, UpdateGoal)
 
 
 % table of library paths
@@ -2371,9 +2371,9 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	throw(error(instantiation_error, Obj::asserta(Clause), Sender)).
 
 '$lgt_asserta'(Obj, Clause, Sender, _, _) :-
-	'$lgt_db_lookup_cache_'(Obj, Clause, Sender, Call, _),
+	'$lgt_db_lookup_cache_'(Obj, Clause, Sender, TClause, _),
 	!,
-	asserta(Call).
+	asserta(TClause).
 
 '$lgt_asserta'(Obj, (Head:-Body), Sender, _, _) :-
 	var(Head),
@@ -2409,12 +2409,11 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope, Obj::asserta((Head:-Body)), Sender),
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
-			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, _),
+			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, _),
 			'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
-			'$lgt_comp_ctx'(Ctx, _, GSender, GThis, GSelf, Prefix, MetaVars, _, _, runtime, _),
+			'$lgt_comp_ctx'(Ctx, _, _, _, _, Prefix, MetaVars, _, ExCtx, runtime, _),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			(	'$lgt_debugging_entity_'(Obj) ->
-				'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 				asserta((THead :- ('$lgt_nop'(Body), '$lgt_debugger.head'(Head, 0, ExCtx), DBody)))
 			;	asserta((THead :- ('$lgt_nop'(Body), TBody)))
 			)
@@ -2443,9 +2442,8 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope, Obj::asserta(Head), Sender),
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
-			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, Update),
+			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, Update),
 			(	'$lgt_debugging_entity_'(Obj) ->
-				'$lgt_exec_ctx'(ExCtx, GSender, GThis, GSelf, [], _),
 				asserta((THead :- '$lgt_debugger.fact'(Head, 0, ExCtx)))
 			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, DclScope, Type, Sender, THead, DDef, Update),
 				asserta(THead)
@@ -2474,9 +2472,9 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	throw(error(instantiation_error, Obj::assertz(Clause), Sender)).
 
 '$lgt_assertz'(Obj, Clause, Sender, _, _) :-
-	'$lgt_db_lookup_cache_'(Obj, Clause, Sender, Call, _),
+	'$lgt_db_lookup_cache_'(Obj, Clause, Sender, TClause, _),
 	!,
-	assertz(Call).
+	assertz(TClause).
 
 '$lgt_assertz'(Obj, (Head:-Body), Sender, _, _) :-
 	var(Head),
@@ -2512,12 +2510,11 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope, Obj::assertz((Head:-Body)), Sender),
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
-			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, _),
+			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, _),
 			'$lgt_pred_meta_vars'(Head, Meta, MetaVars),
-			'$lgt_comp_ctx'(Ctx, _, GSender, GThis, GSelf, Prefix, MetaVars, _, _, runtime, _),
+			'$lgt_comp_ctx'(Ctx, _, _, _, _, Prefix, MetaVars, _, ExCtx, runtime, _),
 			'$lgt_tr_body'(Body, TBody, DBody, Ctx),
 			(	'$lgt_debugging_entity_'(Obj) ->
-				'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 				assertz((THead :- ('$lgt_nop'(Body), '$lgt_debugger.head'(Head, 0, ExCtx), DBody)))
 			;	assertz((THead :- ('$lgt_nop'(Body), TBody)))
 			)
@@ -2546,9 +2543,8 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope, Obj::assertz(Head), Sender),
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
-			'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, THead, Update),
+			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, Update),
 			(	'$lgt_debugging_entity_'(Obj) ->
-				'$lgt_exec_ctx'(ExCtx, GSender, GThis, GSelf, [], _),
 				assertz((THead :- '$lgt_debugger.fact'(Head, 0, ExCtx)))
 			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, DclScope, Type, Sender, THead, DDef, Update),
 				assertz(THead)
@@ -2592,17 +2588,14 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % get or set (if it doesn't exist) the compiled call for an asserted predicate
 
-'$lgt_assert_pred_def'(Obj, Def, DDef, Prefix, Head, GSender, GThis, GSelf, Call, NeedsUpdate) :-
-	'$lgt_exec_ctx'(ExCtx, GSender, GThis, GSelf, _, _),
-	(	% if a definition lookup entry alread exists on the object...
-		call(Def, Head, ExCtx, Call, Obj) ->	
-		(	% then check if it's a dynamic one that implies an update goal...
-			call(DDef, Head, ExCtx, Call) ->
-			NeedsUpdate = true
-		;	% or a static one...
-			NeedsUpdate = false
-		)
-	;	% else no definition lookup entry exists; construct and assert a dynamic one...
+'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, NeedsUpdate) :-
+	(	call(Def, Head, ExCtx, THead) ->
+		% static definition lookup entries don't require update goals
+		NeedsUpdate = false
+	;	call(DDef, Head, ExCtx, THead) ->
+		% dynamic definition lookup entry always require update goals
+		NeedsUpdate = true
+	;	% no definition lookup entry exists; construct and assert a dynamic one 
 		functor(Head, Functor, Arity),
 		functor(GHead, Functor, Arity),
 		'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/_),
@@ -2613,7 +2606,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 		assertz(DDefClause),
 		'$lgt_clean_lookup_caches'(GHead),
 		NeedsUpdate = true,
-		GHead = Head, THead = Call
+		GHead = Head
 	).
 
 
