@@ -15,7 +15,7 @@
 	:- info([
 		version is 1.6,
 		author is 'Paulo Moura',
-		date is 2010/10/24,
+		date is 2010/10/28,
 		comment is 'Simple example of using conditional compilation to implement a portable operating-system interface for selected back-end Prolog compilers.']).
 
 	:- if(current_logtalk_flag(prolog_dialect, swi)).
@@ -617,18 +617,23 @@
 		shell(Command) :-
 			{os(system(Command))}.
 
-		expand_path(_, _) :-
-			throw(not_available(expand_path/2)).
+		expand_path(Path, ExpandedPath) :-
+			(	{predicate_property(absolute_file_name(_, _), built_in)} ->
+				{absolute_file_name(Path, ExpandedPath)}
+			;	throw(not_available(expand_path/2))
+			).
 
 		make_directory(Directory) :-
 			(	{access(Directory, 4, 0)} ->
 				true
-			;	atom_concat('mkdir ', Directory, Command),
+			;	atom_concat('mkdir "', Directory, Command0),
+				atom_concat(Command0, '"', Command),
 				{os(system(Command))}
 			).
 
 		delete_directory(Directory) :-
-			atom_concat('rmdir ', Directory, Command),
+			atom_concat('rmdir "', Directory, Command0),
+			atom_concat(Command0, '"', Command),
 			{os(system(Command))}.
 
 		change_directory(Directory) :-
@@ -651,13 +656,15 @@
 
 		delete_file(File) :-
 			{access(File, 4, 0)},
-			atom_concat('rm ', File, Command),
+			atom_concat('rm "', File, Command0),
+			atom_concat(Command0, '"', Command),
 			{os(system(Command))}.
 
 		rename_file(Old, New) :-
-			atom_concat('mv ', Old, Command0),
-			atom_concat(Command0, ' ', Command1),
-			atom_concat(Command1, New, Command),
+			atom_concat('mv "', Old, Command0),
+			atom_concat(Command0, '" "', Command1),
+			atom_concat(Command1, New, Command2),
+			atom_concat(Command2, '"', Command),
 			{os(system(Command))}.
 
 		environment_variable(Variable, Value) :-
