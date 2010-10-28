@@ -63,7 +63,8 @@ RELEASE NOTES
     Qu-Prolog, and XSB.
 
     Updated the Qu-Prolog config file with support for accessing environment
-    variables.
+    variables and updated definitions of file-system access predicates that
+    avoid issues with file paths containing spaces.
 
     Updated the GNU Prolog config file in order to support the built_in_fd/0,
     built_in_fd/1, built_in/0, built_in/1, and ensure_linked/1 proprietary

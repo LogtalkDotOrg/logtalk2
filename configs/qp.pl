@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.11 and later versions
 %
-%  last updated: October 27, 2010
+%  last updated: October 28, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -253,8 +253,9 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %
 % expands a file path to a full path
 
-'$lgt_expand_path'(_, _) :-
-	fail.
+'$lgt_expand_path'(Path, ExpandedPath) :-
+	predicate_property(absolute_file_name(_, _), built_in),
+	absolute_file_name(Path, ExpandedPath).
 
 
 % '$lgt_file_exists'(+atom)
@@ -271,7 +272,8 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 '$lgt_delete_file'(File) :-
 	access(File, 4, 0),
-	atom_concat('rm ', File, Command),
+	atom_concat('rm "', File, Command0),
+	atom_concat(Command0, '"', Command),
 	os(system(Command)).
 
 
@@ -306,7 +308,8 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_make_directory'(Directory) :-
 	(	access(Directory, 4, 0) ->
 		true
-	;	atom_concat('mkdir ', Directory, Command),
+	;	atom_concat('mkdir "', Directory, Command0),
+		atom_concat(Command0, '"', Command),
 		os(system(Command))
 	).
 
