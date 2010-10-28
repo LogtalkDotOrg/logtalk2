@@ -2406,7 +2406,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 '$lgt_asserta_rule_chk'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	!,
-	'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope, Obj::asserta((Head:-Body)), Sender),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Flags, Head, Scope, Type, Meta, SCtn, DclScope, Obj::asserta((Head:-Body)), Sender),
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
 			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, _),
@@ -2439,7 +2439,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 '$lgt_asserta_fact_chk'(Obj, Head, Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	!,
-	'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope, Obj::asserta(Head), Sender),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Flags, Head, Scope, Type, _, SCtn, DclScope, Obj::asserta(Head), Sender),
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, Update),
@@ -2507,7 +2507,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 '$lgt_assertz_rule_chk'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	!,
-	'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Head, Scope, Type, Meta, SCtn, DclScope, Obj::assertz((Head:-Body)), Sender),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Flags, Head, Scope, Type, Meta, SCtn, DclScope, Obj::assertz((Head:-Body)), Sender),
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, _),
@@ -2540,7 +2540,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 '$lgt_assertz_fact_chk'(Obj, Head, Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	!,
-	'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Head, Scope, Type, _, SCtn, DclScope, Obj::assertz(Head), Sender),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, Flags, Head, Scope, Type, _, SCtn, DclScope, Obj::assertz(Head), Sender),
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, Update),
@@ -2566,14 +2566,14 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % get or set (if it doesn't exist) the declaration for an asserted predicate
 
-'$lgt_assert_pred_dcl'(Obj, Dcl, DDcl, Pred, Scope, Type, Meta, SCtn, DclScope, Goal, Sender) :-
+'$lgt_assert_pred_dcl'(Dcl, DDcl, ObjFlags, Pred, Scope, Type, Meta, SCtn, DclScope, Goal, Sender) :-
 	(	call(Dcl, Pred, Scope, Meta, PredFlags, SCtn, _) ->
 		(	PredFlags /\ 2 =:= 2 ->
 			Type = (dynamic)
 		;	Type = static
 		)
 	;	% no previous predicate declaration:
-		(	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, ObjFlags), ObjFlags /\ 64 =:= 64 ->
+		(	ObjFlags /\ 64 =:= 64 ->
 			functor(Pred, Functor, Arity),
 			functor(DPred, Functor, Arity),
 			Clause =.. [DDcl, DPred, DclScope],
