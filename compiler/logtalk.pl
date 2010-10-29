@@ -155,7 +155,7 @@
 
 % lookup cache for asserting and retracting dynamic facts
 
-:- dynamic('$lgt_db_lookup_cache_'/5).				% '$lgt_db_lookup_cache_'(Obj, Fact, Sender, TFact, UpdateGoal)
+:- dynamic('$lgt_db_lookup_cache_'/5).				% '$lgt_db_lookup_cache_'(Obj, Fact, Sender, TFact, UClause)
 
 
 % table of library paths
@@ -2633,7 +2633,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 '$lgt_clause_chk'(Obj, Head, Body, Sender, _) :-
-	'$lgt_db_lookup_cache_'(Obj, Head, Sender, THead, _),	
+	'$lgt_db_lookup_cache_'(Obj, Head, Sender, THead, _),
 	!,
 	clause(THead, TBody),
 	(	TBody = ('$lgt_nop'(Body), _) ->	% rules (compiled both in normal and debug mode)
@@ -2804,14 +2804,10 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 '$lgt_retract_fact_chk'(Obj, Head, Sender, _) :-
-	'$lgt_db_lookup_cache_'(Obj, Head, Sender, THead, Update),
+	'$lgt_db_lookup_cache_'(Obj, Head, Sender, THead, UClause),
 	!,
 	retract(THead),
-	(	Update == true ->
-		true
-	;	Update = '$lgt_update_ddef_table_opt'(UHead, UTHead, UClause),
-		'$lgt_update_ddef_table_opt'(UHead, UTHead, UClause)
-	).
+	'$lgt_update_ddef_table_opt'(UClause).
 
 '$lgt_retract_fact_chk'(Obj, Head, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjFlags),
@@ -2876,14 +2872,10 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 '$lgt_retractall_chk'(Obj, Head, Sender, _) :-
-	'$lgt_db_lookup_cache_'(Obj, Head, Sender, THead, Update),
+	'$lgt_db_lookup_cache_'(Obj, Head, Sender, THead, UClause),
 	!,
 	retractall(THead),
-	(	Update == true ->
-		true
-	;	Update = '$lgt_update_ddef_table_opt'(UHead, UTHead, UClause),
-		'$lgt_update_ddef_table_opt'(UHead, UTHead, UClause)
-	).
+	'$lgt_update_ddef_table_opt'(UClause).
 
 '$lgt_retractall_chk'(Obj, Head, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjFlags),
@@ -2970,11 +2962,11 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	(	NeedsUpdate == true, Sender \= SCtn ->
 		functor(UHead, HFunctor, HArity),
 		functor(UTHead, TFunctor, TArity),
-		UClause =.. [DDef, UHead, _, _],
+		UClause =.. [DDef, UHead, _, UTHead],
 		(	(Scope = p(p(p)), Type == (dynamic)) ->
-			asserta('$lgt_db_lookup_cache_'(GObj, GHead, _, GTHead, '$lgt_update_ddef_table_opt'(UHead, UTHead, UClause)))
+			asserta('$lgt_db_lookup_cache_'(GObj, GHead, _, GTHead, UClause))
 		;	functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
-			asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GTHead, '$lgt_update_ddef_table_opt'(UHead, UTHead, UClause)))
+			asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GTHead, UClause))
 		)
 	;	(	(Scope = p(p(p)), Type == (dynamic)) ->
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, _, GTHead, true))
@@ -12147,17 +12139,21 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 
-% '$lgt_update_ddef_table_opt'(+callable, +callable, +callable)
+% '$lgt_update_ddef_table_opt'(+callable)
 %
 % retracts a dynamic "ddef clause" (used to translate a predicate call)
 % if there are no more clauses for the predicate otherwise does nothing
 %
 % this is needed in order to allow definitions in ancestors to be found
 
-'$lgt_update_ddef_table_opt'(Head, THead, Clause) :-
-	(	clause(THead, _) ->
+'$lgt_update_ddef_table_opt'(UClause) :-
+	(	UClause == true ->
 		true
-	;	retractall(Clause),
+	;	arg(3, UClause, THead),
+		clause(THead, _) ->
+		true
+	;	retractall(UClause),
+		arg(1, UClause, Head),
 		'$lgt_clean_lookup_caches'(Head)
 	).
 
