@@ -108,6 +108,9 @@ RELEASE NOTES
     Updated the "help" example, allowing it to be loaded when using any
     back-end Prolog compiler.
 
+    Updated the "benchmarks" example in order to use more realistic tests for
+    the database built-in predicates and methods assertz/1 and retract/1.
+
     Updated the "examples/tester.sh" script in order to work when running
     Logtalk without using the installer scripts.
 

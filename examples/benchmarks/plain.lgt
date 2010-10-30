@@ -19,11 +19,11 @@ my_length([_| Tail], Acc, Length) :-
 	my_length(Tail, Acc2, Length).
 
 
-:- dynamic(pred_plain/1).
+:- dynamic(pred_plain/4).
 
 plain_dyndb(N) :-
-	assertz(pred_plain(N)),
-	retract(pred_plain(N)).
+	assertz(pred_plain(N, _, a, 3.14)),
+	retract(pred_plain(N, _, _,    _)).
 
 
 my_between(Lower, _, Lower).
