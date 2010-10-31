@@ -13948,12 +13948,13 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 '$lgt_construct_entity_prefix'(Entity, Prefix) :-
 	'$lgt_compiler_flag'(code_prefix, CodePrefix),
-	functor(Entity, Functor, Arity),
-	atom_concat(CodePrefix, Functor, Prefix0),
-	atom_concat(Prefix0, '.', Prefix1),
-	(	Arity =:= 0 ->
-		Prefix = Prefix1
-	;	number_codes(Arity, ArityCodes),
+	(	atom(Entity) ->
+		atom_concat(CodePrefix, Entity, Prefix0),
+		atom_concat(Prefix0, '.', Prefix)
+	;	functor(Entity, Functor, Arity),
+		atom_concat(CodePrefix, Functor, Prefix0),
+		atom_concat(Prefix0, '.', Prefix1),
+		number_codes(Arity, ArityCodes),
 		atom_codes(ArityAtom, ArityCodes),
 		atom_concat(Prefix1, ArityAtom, Prefix2),
 		atom_concat(Prefix2, '.', Prefix)
