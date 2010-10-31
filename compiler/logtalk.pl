@@ -582,23 +582,15 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 
 create_object(Obj, Rels, Dirs, Clauses) :-
 	nonvar(Obj),
-	\+ callable(Obj),
-	throw(error(type_error(object_identifier, Obj), create_object(Obj, Rels, Dirs, Clauses))).
-
-create_object(Obj, Rels, Dirs, Clauses) :-
-	nonvar(Obj),
-	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
-	throw(error(permission_error(modify, object, Obj), create_object(Obj, Rels, Dirs, Clauses))).
-
-create_object(Obj, Rels, Dirs, Clauses) :-
-	nonvar(Obj),
-	'$lgt_current_category_'(Obj, _, _, _, _, _),
-	throw(error(permission_error(modify, category, Obj), create_object(Obj, Rels, Dirs, Clauses))).
-
-create_object(Obj, Rels, Dirs, Clauses) :-
-	nonvar(Obj),
-	'$lgt_current_protocol_'(Obj, _, _, _, _),
-	throw(error(permission_error(modify, protocol, Obj), create_object(Obj, Rels, Dirs, Clauses))).
+	(	\+ callable(Obj) ->
+		throw(error(type_error(object_identifier, Obj), create_object(Obj, Rels, Dirs, Clauses)))
+	;	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
+		throw(error(permission_error(modify, object, Obj), create_object(Obj, Rels, Dirs, Clauses)))
+	;	'$lgt_current_category_'(Obj, _, _, _, _, _),
+		throw(error(permission_error(modify, category, Obj), create_object(Obj, Rels, Dirs, Clauses)))
+	;	'$lgt_current_protocol_'(Obj, _, _, _, _),
+		throw(error(permission_error(modify, protocol, Obj), create_object(Obj, Rels, Dirs, Clauses)))
+	).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
 	\+ '$lgt_is_proper_list'(Rels),
@@ -641,23 +633,15 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
 	nonvar(Ctg),
-	\+ callable(Ctg),
-	throw(error(type_error(category_identifier, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
-
-create_category(Ctg, Rels, Dirs, Clauses) :-
-	nonvar(Ctg),
-	'$lgt_current_category_'(Ctg, _, _, _, _, _),
-	throw(error(permission_error(modify, category, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
-
-create_category(Ctg, Rels, Dirs, Clauses) :-
-	nonvar(Ctg),
-	'$lgt_current_object_'(Ctg, _, _, _, _, _, _, _, _, _, _),
-	throw(error(permission_error(modify, object, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
-
-create_category(Ctg, Rels, Dirs, Clauses) :-
-	nonvar(Ctg),
-	'$lgt_current_protocol_'(Ctg, _, _, _, _),
-	throw(error(permission_error(modify, protocol, Ctg), create_category(Ctg, Rels, Dirs, Clauses))).
+	(	\+ callable(Ctg) ->
+		throw(error(type_error(category_identifier, Ctg), create_category(Ctg, Rels, Dirs, Clauses)))
+	;	'$lgt_current_category_'(Ctg, _, _, _, _, _) ->
+		throw(error(permission_error(modify, category, Ctg), create_category(Ctg, Rels, Dirs, Clauses)))
+	;	'$lgt_current_object_'(Ctg, _, _, _, _, _, _, _, _, _, _) ->
+		throw(error(permission_error(modify, object, Ctg), create_category(Ctg, Rels, Dirs, Clauses)))
+	;	'$lgt_current_protocol_'(Ctg, _, _, _, _) ->
+		throw(error(permission_error(modify, protocol, Ctg), create_category(Ctg, Rels, Dirs, Clauses)))
+	).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
 	\+ '$lgt_is_proper_list'(Rels),
@@ -699,23 +683,15 @@ create_protocol(Ptc, Rels, Dirs) :-
 
 create_protocol(Ptc, Rels, Dirs) :-
 	nonvar(Ptc),
-	\+ atom(Ptc),
-	throw(error(type_error(protocol_identifier, Ptc), create_protocol(Ptc, Rels, Dirs))).
-
-create_protocol(Ptc, Rels, Dirs) :-
-	nonvar(Ptc),
-	'$lgt_current_protocol_'(Ptc, _, _, _, _),
-	throw(error(permission_error(modify, protocol, Ptc), create_protocol(Ptc, Rels, Dirs))).
-
-create_protocol(Ptc, Rels, Dirs) :-
-	nonvar(Ptc),
-	'$lgt_current_object_'(Ptc, _, _, _, _, _, _, _, _, _, _),
-	throw(error(permission_error(modify, object, Ptc), create_protocol(Ptc, Rels, Dirs))).
-
-create_protocol(Ptc, Rels, Dirs) :-
-	nonvar(Ptc),
-	'$lgt_current_category_'(Ptc, _, _, _, _, _),
-	throw(error(permission_error(modify, category, Ptc), create_protocol(Ptc, Rels, Dirs))).
+	(	\+ atom(Ptc) ->
+		throw(error(type_error(protocol_identifier, Ptc), create_protocol(Ptc, Rels, Dirs)))
+	;	'$lgt_current_protocol_'(Ptc, _, _, _, _),
+		throw(error(permission_error(modify, protocol, Ptc), create_protocol(Ptc, Rels, Dirs)))
+	;	'$lgt_current_object_'(Ptc, _, _, _, _, _, _, _, _, _, _),
+		throw(error(permission_error(modify, object, Ptc), create_protocol(Ptc, Rels, Dirs)))
+	;	'$lgt_current_category_'(Ptc, _, _, _, _, _),
+		throw(error(permission_error(modify, category, Ptc), create_protocol(Ptc, Rels, Dirs)))
+	).
 
 create_protocol(Ptc, Rels, Dirs) :-
 	\+ '$lgt_is_proper_list'(Rels),
@@ -5611,6 +5587,8 @@ current_logtalk_flag(version, version(2, 41, 2)).
 '$lgt_add_referenced_object'(Obj) :-
 	(	'$lgt_pp_referenced_object_'(Obj) ->
 		true
+	;	atom(Obj) ->
+		assertz('$lgt_pp_referenced_object_'(Obj))
 	;	functor(Obj, Functor, Arity),
 		functor(Template, Functor, Arity),
 		assertz('$lgt_pp_referenced_object_'(Template))
@@ -5972,16 +5950,18 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 
-% '$lgt_tr_entity_flags'(+atom, @entity_identifier)
+% '$lgt_tr_entity_flags'(+atom, +atom, -integer)
+%
+% defines the entity flags value when creating a new entity
 
-'$lgt_tr_entity_flags'(protocol, Flags) :-
-	(	'$lgt_pp_entity'(_, _, _, _, (dynamic)) ->
+'$lgt_tr_entity_flags'(protocol, Mode, Flags) :-
+	(	Mode == (dynamic) ->
 		Dynamic = 2						% 0b00000010
 	;	Dynamic = 0
 	),
 	Flags is Dynamic.
 
-'$lgt_tr_entity_flags'(category, Flags) :-
+'$lgt_tr_entity_flags'(category, Mode, Flags) :-
 	(	'$lgt_compiler_flag'(events, allow) ->
 		Events = 16						% 0b0001000
 	;	Events = 0
@@ -5990,13 +5970,13 @@ current_logtalk_flag(version, version(2, 41, 2)).
 		Synchronized = 4				% 0b00000100
 	;	Synchronized = 0
 	),
-	(	'$lgt_pp_entity'(_, _, _, _, (dynamic)) ->
+	(	Mode == (dynamic) ->
 		Dynamic = 2						% 0b00000010
 	;	Dynamic = 0
 	),
 	Flags is Events + Synchronized + Dynamic.
 
-'$lgt_tr_entity_flags'(object, Flags) :-
+'$lgt_tr_entity_flags'(object, Mode, Flags) :-
 	(	'$lgt_compiler_flag'(context_switching_calls, allow) ->
 		ContextSwitchingCalls = 128		% 0b10000000
 	;	ContextSwitchingCalls = 0
@@ -6021,7 +6001,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 		Synchronized = 4				% 0b00000100
 	;	Synchronized = 0
 	),
-	(	'$lgt_pp_entity'(_, _, _, _, (dynamic)) ->
+	(	Mode == (dynamic) ->
 		Dynamic = 2						% 0b00000010
 	;	Dynamic = 0
 	),
@@ -11510,12 +11490,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 '$lgt_tr_object_id'(Obj, Mode) :-
 	'$lgt_add_referenced_object'(Obj),
 	'$lgt_construct_object_functors'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm),
-	'$lgt_tr_entity_flags'(object, Flags0),
-	(	Mode = (dynamic) ->
-		Flags is Flags0 \/ 2
-	;	% Mode = static
-		Flags is Flags0 /\ 253
-	),
+	'$lgt_tr_entity_flags'(object, Mode, Flags),
 	assertz('$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags)),
 	asserta('$lgt_pp_pred_mutex_count_'(0)).
 
@@ -11529,12 +11504,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 '$lgt_tr_category_id'(Ctg, Mode) :-
 	'$lgt_add_referenced_category'(Ctg),
 	'$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def, Rnm),
-	'$lgt_tr_entity_flags'(category, Flags0),
-	(	Mode = (dynamic) ->
-		Flags is Flags0 \/ 2
-	;	% Mode = static
-		Flags is Flags0 /\ 253
-	),
+	'$lgt_tr_entity_flags'(category, Mode, Flags),
 	assertz('$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags)),
 	asserta('$lgt_pp_pred_mutex_count_'(0)).
 
@@ -11548,14 +11518,9 @@ current_logtalk_flag(version, version(2, 41, 2)).
 '$lgt_tr_protocol_id'(Ptc, Mode) :-
 	'$lgt_add_referenced_protocol'(Ptc),
 	'$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl, Rnm),
-	'$lgt_tr_entity_flags'(protocol, Flags0),
-	(	Mode = (dynamic) ->
-		Flags is Flags0 \/ 2
-	;	% Mode = static
-		Flags is Flags0 /\ 253
-	),
+	'$lgt_tr_entity_flags'(protocol, Mode, Flags),
 	assertz('$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags)),
-	% needed in order to be able to save synchronized predicate properties:
+	% necessary in order to be able to save synchronized predicate properties:
 	asserta('$lgt_pp_pred_mutex_count_'(0)). 
 
 
@@ -13930,12 +13895,11 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_construct_object_functors'(+object_identifier, -atom, -atom, -atom, -atom, -atom, -atom, -atom, -atom, -atom)
 %
-% constructs functors used in the compiled code of an object;
-% built-in objects use a fixed set of functors that do not depend on the code_prefix/1 compiler flag
+% constructs functors used in the compiled code of an object
 
 '$lgt_construct_object_functors'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm) :-
-	(	'$lgt_built_in_object'(Obj) ->
-		once('$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, _))
+	(	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, _) ->
+		true
 	;	'$lgt_construct_entity_prefix'(Obj, Prefix),
 		atom_concat(Prefix, '_dcl', Dcl),
 		atom_concat(Prefix, '_def', Def),
@@ -13951,12 +13915,11 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_construct_protocol_functors'(+protocol_identifier, -atom, -atom, -atom)
 %
-% constructs functors used in the compiled code of a protocol;
-% built-in protocols use a fixed set of functors that do not depend on the code_prefix/1 compiler flag
+% constructs functors used in the compiled code of a protocol
 
 '$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl, Rnm) :-
-	(	'$lgt_built_in_protocol'(Ptc) ->
-		once('$lgt_current_protocol_'(Ptc, Prefix, Dcl, Rnm, _))
+	(	'$lgt_current_protocol_'(Ptc, Prefix, Dcl, Rnm, _) ->
+		true
 	;	'$lgt_construct_entity_prefix'(Ptc, Prefix),
 		atom_concat(Prefix, '_dcl', Dcl),
 		atom_concat(Prefix, '_alias', Rnm)
@@ -13966,12 +13929,11 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_construct_category_functors'(+category_identifier, -atom, -atom, -atom, -atom)
 %
-% constructs functors used in the compiled code of a category;
-% built-in categories use a fixed set of functors that do not depend on the code_prefix/1 compiler flag
+% constructs functors used in the compiled code of a category
 
 '$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def, Rnm) :-
-	(	'$lgt_built_in_category'(Ctg) ->
-		once('$lgt_current_category_'(Ctg, Prefix, Dcl, Def, Rnm, _))
+	(	'$lgt_current_category_'(Ctg, Prefix, Dcl, Def, Rnm, _) ->
+		true
 	;	'$lgt_construct_entity_prefix'(Ctg, Prefix),
 		atom_concat(Prefix, '_dcl', Dcl),
 		atom_concat(Prefix, '_def', Def),
