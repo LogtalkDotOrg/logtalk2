@@ -164,7 +164,7 @@
 :- dynamic(logtalk_library_path/2).
 
 
-% compiler hook term and goal expansion:
+% term and goal expansion compiler hooks:
 
 :- dynamic('$lgt_hook_term_expansion_'/2).			% '$lgt_hook_term_expansion_'(Term, ExpandedTerms)
 :- dynamic('$lgt_hook_goal_expansion_'/2).			% '$lgt_hook_goal_expansion_'(Goal, ExpandedGoal)
@@ -184,7 +184,9 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  pre-processor directives (used for source file compilation)
+%  pre-processor directives
+%
+% (used for source file compilation and runtime creation of new entities)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -803,6 +805,7 @@ abolish_category(Ctg) :-
 			retractall('$lgt_entity_property_'(Ctg, _)),
 			retractall('$lgt_extends_category_'(Ctg, _, _)),
 			retractall('$lgt_implements_protocol_'(Ctg, _, _)),
+			retractall('$lgt_debugging_entity_'(Ctg)),
 			'$lgt_clean_lookup_caches'
 		;	throw(error(permission_error(modify, static_category, Ctg), abolish_category(Ctg)))
 		)
@@ -830,6 +833,7 @@ abolish_protocol(Ptc) :-
 			retractall('$lgt_current_protocol_'(Ptc, _, _, _, _)),
 			retractall('$lgt_entity_property_'(Ptc, _)),
 			retractall('$lgt_extends_protocol_'(Ptc, _, _)),
+			retractall('$lgt_debugging_entity_'(Ptc)),
 			'$lgt_clean_lookup_caches'
 		;	throw(error(permission_error(modify, static_protocol, Ptc), abolish_protocol(Ptc)))
 		)
@@ -1280,7 +1284,6 @@ threaded(Goals) :-
 	catch(MTGoals, Error, '$lgt_runtime_error_handler'(Error)).
 
 
-
 % threaded_call(@callable, -nonvar)
 
 threaded_call(Goal, Tag) :-
@@ -1303,7 +1306,6 @@ threaded_call(Goal, Tag) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _) ->
 	'$lgt_new_threaded_tag'(Tag),
 	catch('$lgt_mt_dispatch_goal'(call, Prefix, Goal, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
-
 
 
 % threaded_call(@callable)
@@ -1480,7 +1482,6 @@ threaded_wait(Message) :-
 threaded_wait(Message) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _) ->
 	'$lgt_thread_get_notifications'(Message, Prefix).
-
 
 
 % threaded_notify(@term)
@@ -1737,7 +1738,7 @@ logtalk_compile(Files, Flags) :-
 
 % '$lgt_check_compiler_flags'(@list)
 %
-% check if the compiler flags are valid
+% checks if the compiler flags are valid
 
 '$lgt_check_compiler_flags'(Options) :-
 	var(Options),
@@ -2046,7 +2047,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 % checks/returns object predicates visible/within the scope of the sender 
 
 '$lgt_visible_predicate'(Obj, Pred, Sender, Scope) :-
-	'$lgt_current_object_'(Obj, _, Dcl, _, _, _, _, _, _, _, _) ->
+	'$lgt_current_object_'(Obj, _, Dcl, _, _, _, _, _, _, _, _),
 	call(Dcl, Pred, PScope, _, _, SCtn, _),
 	(	\+ \+ PScope = Scope ->
 		true
@@ -2540,7 +2541,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 
-% get or set (if it doesn't exist) the declaration for an asserted predicate
+% gets or sets (if it doesn't exist) the declaration for an asserted predicate
 
 '$lgt_assert_pred_dcl'(Dcl, DDcl, ObjFlags, Pred, Scope, Type, Meta, SCtn, DclScope, Goal, Sender) :-
 	(	call(Dcl, Pred, Scope, Meta, PredFlags, SCtn, _) ->
@@ -2562,7 +2563,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 
-% get or set (if it doesn't exist) the compiled call for an asserted predicate
+% gets or sets (if it doesn't exist) the compiled call for an asserted predicate
 
 '$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, NeedsUpdate) :-
 	(	call(Def, Head, ExCtx, THead) ->
@@ -2612,11 +2613,11 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	'$lgt_db_lookup_cache_'(Obj, Head, Sender, THead, _),
 	!,
 	clause(THead, TBody),
-	(	TBody = ('$lgt_nop'(Body), _) ->	% rules (compiled both in normal and debug mode)
+	(	TBody = ('$lgt_nop'(Body), _) ->			% rules (compiled both in normal and debug mode)
 		true
 	;	TBody = '$lgt_debugger.fact'(_, _, _) ->	% facts compiled in debug mode
 		Body = true
-	;	TBody = Body						% facts compiled in normal mode
+	;	TBody = Body								% facts compiled in normal mode
 	).
 
 '$lgt_clause_chk'(Obj, Head, Body, Sender, Scope) :-
@@ -3271,7 +3272,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_guarded_method_call'(+object_identifier, +callable, +object_identifier, +callable)
 %
-% wrap the method call with the before and after event handler calls
+% wraps the method call with the before and after event handler calls
 
 '$lgt_guarded_method_call'(Obj, Msg, Sender, Method) :-
 	\+ ('$lgt_before_event_'(Obj, Msg, Sender, _, Before), \+ Before),	% call before event handlers
@@ -3282,7 +3283,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_send_to_obj_ne'(@object_identifier, ?term, +object_identifier)
 %
-% runtime processing of an event-invisible message sending call when the arguments
+% runtime processing of an event-transparent message sending call when the arguments
 % are not known at compile time
 
 '$lgt_send_to_obj_ne'(Obj, Pred, Sender) :-
@@ -3309,7 +3310,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_send_to_obj_ne_nv'(+object_identifier, +term, +object_identifier)
 %
-% runtime processing of an event-invisible message sending call when the arguments
+% runtime processing of an event-transparent message sending call when the arguments
 % have already been type-checked; generates a cache entry to speed up future calls
 
 '$lgt_send_to_obj_ne_nv'(Obj, Pred, Sender) :-
@@ -5053,7 +5054,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_check_redefined_entities'
 %
-% check and print a warning for all entities that are about to be redefined;
+% checks and prints a warning for all entities that are about to be redefined;
 % also retract old runtime clauses for the entity being redefined for safety
 
 '$lgt_check_redefined_entities' :-
@@ -5123,7 +5124,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_retract_old_runtime_clauses'(@entity_identifier)
 %
-% clean all references to an entity that is about to be redefined from the 
+% cleans all references to an entity that is about to be redefined from the 
 % runtime tables
 
 '$lgt_retract_old_runtime_clauses'(Entity) :-
@@ -5730,7 +5731,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_filter_singletons'(+list, -list)
 %
-% filter variables whose name start with an underscore from a singletons list if 
+% filters variables whose name start with an underscore from a singletons list if 
 % the corresponding compiler flag sets their interpretation to don't care variables
 
 '$lgt_filter_singletons'(List, Result) :-
@@ -6009,7 +6010,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 
-% save entity runtime clauses in order to be able to check for redefined 
+% saves entity runtime clauses in order to be able to check for redefined 
 % entities when loading the intermediate Prolog files generated by the 
 % Logtalk compiler
 
@@ -6022,7 +6023,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 
-% clean up all dynamic predicates used during source file compilation
+% cleans up all dynamic predicates used during source file compilation
 % (except any user-defined compiler options specified on the compiling 
 % and loading predicates)
 
@@ -6044,7 +6045,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 
-% clean up all dynamic predicates used during entity compilation
+% cleans up all dynamic predicates used during entity compilation
 
 '$lgt_clean_pp_entity_clauses' :-
 	retractall('$lgt_pp_entity_compiler_flag_'(_, _)),
@@ -8483,7 +8484,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_tr_clause'(+clause, +ctx, +ctx)
 %
-% translate a clause using different compilation contexts for the head and for the body;
+% translates a clause using different compilation contexts for the head and for the body;
 % this is required in order to correctly compile clauses for e.g. coinductive predicates
 
 '$lgt_tr_clause'(Clause, _, _) :-
@@ -8517,7 +8518,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_tr_clause'(+clause, -clause, -clause, +ctx, +ctx)
 %
-% translate a clause (using different compilation contexts for the
+% translates a clause (using different compilation contexts for the
 %  head and for the body) into a normal clause and a debug clause
 
 '$lgt_tr_clause'(Clause, _, _, _, _) :-
@@ -11350,7 +11351,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_save_operators'(@list, -list)
 %
-% save currently defined operators that might be
+% saves currently defined operators that might be
 % redefined when a list of operators is added
 
 '$lgt_save_operators'([], []).
@@ -11379,7 +11380,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_remove_operators'(@list)
 %
-% remove operators from the global operator table
+% removes operators from the global operator table
 
 '$lgt_remove_operators'([]).
 
@@ -11403,7 +11404,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_simplify_body'(+callable, -callable)
 %
-% remove redundant calls to true/0 from a translated clause body;
+% removes redundant calls to true/0 from a translated clause body;
 % we must be careful with control constructs that are opaque to
 % cuts such as call/1 and once/1
 
@@ -11907,7 +11908,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_report_unknown_objects'(+atom, +entity_identifier)
 %
-% report any unknown referenced objects found while compiling an entity
+% reports any unknown referenced objects found while compiling an entity
 
 '$lgt_report_unknown_objects'(Type, Entity) :-
 	(	setof(Obj, '$lgt_unknown_object'(Obj), Objs) ->
@@ -11935,7 +11936,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_report_unknown_protocols'(+atom, +entity_identifier)
 %
-% report any unknown referenced protocols found while compiling an entity
+% reports any unknown referenced protocols found while compiling an entity
 
 '$lgt_report_unknown_protocols'(Type, Entity) :-
 	(	setof(Ptc, '$lgt_unknown_protocol'(Ptc), Ptcs) ->
@@ -11962,7 +11963,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_report_unknown_categories'(+atom, +entity_identifier)
 %
-% report any unknown referenced categories found while compiling an entity
+% reports any unknown referenced categories found while compiling an entity
 
 '$lgt_report_unknown_categories'(Type, Entity) :-
 	(	setof(Ctg, '$lgt_unknown_category'(Ctg), Ctgs) ->
@@ -13154,7 +13155,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_fix_synchronized_preds'
 %
-% add mutex wrappers for calling synchronized predicates;
+% adds mutex wrappers for calling synchronized predicates;
 % for Prolog compilers that do not support multi-threading,
 % synchronized predicates are compiled as normal predicates
 
@@ -13229,7 +13230,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_fix_pred_calls'
 %
-% fix predicate calls in entity clauses and initialization goals
+% fixes predicate calls in entity clauses and initialization goals
 
 '$lgt_fix_pred_calls' :-
 	retract('$lgt_pp_entity_clause_'(Clause)),
@@ -13254,7 +13255,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_fix_pred_calls'(+body, -body)
 %
-% fix predicate calls in a clause body
+% fixes predicate calls in a clause body
 
 '$lgt_fix_pred_calls'(Pred, Pred) :-
 	var(Pred),
@@ -13386,7 +13387,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_fix_pred_calls_in_margs'(@list, @list, -list)
 %
-% fix predicate calls in non-standard meta-predicate arguments
+% fixes predicate calls in non-standard meta-predicate arguments
 
 '$lgt_fix_pred_calls_in_margs'([], [], []).
 
@@ -13402,7 +13403,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 
-% report calls to declared, static but undefined predicates in the body of object and category predicates
+% reports calls to declared, static but undefined predicates in the body of object and category predicates
 
 '$lgt_report_undef_pred_calls'(_, _) :-
 	'$lgt_compiler_flag'(misspelt, error),
@@ -13456,7 +13457,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 
-% report possible misspelt predicate calls in the body of object and category predicates
+% reports possible misspelt predicate calls in the body of object and category predicates
 
 '$lgt_report_misspelt_calls'(_, _) :-
 	'$lgt_compiler_flag'(misspelt, error),
@@ -13503,7 +13504,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 
-% report non-portable predicate calls in the body of object and category predicates
+% reports non-portable predicate calls in the body of object and category predicates
 
 '$lgt_report_non_portable_calls'(Type, Entity) :-
 	(	setof(Pred, '$lgt_non_portable_call'(Pred), Preds) ->
@@ -13530,7 +13531,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 
-% report non-portable arithmetic function calls in the body of object and category predicates
+% reports non-portable arithmetic function calls in the body of object and category predicates
 
 '$lgt_report_non_portable_functions'(Type, Entity) :-
 	(	setof(Functor/Arity, '$lgt_pp_non_portable_function_'(Functor, Arity), Functions) ->
@@ -13875,7 +13876,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_assert_init_goal'
 %
-% call any defined initialization goal for a dynamically created entity
+% calls any defined initialization goal for a dynamically created entity
 
 '$lgt_assert_init_goal' :-
 	(	setof(Mutex, Head^'$lgt_pp_synchronized_'(Head, Mutex), Mutexes) ->
@@ -16984,7 +16985,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_mt_threaded_call_abort'(+list)
 %
-% signal all individual threads to abort; we must use catch/3 as some threads may no longer exist
+% signals all individual threads to abort; we must use catch/3 as some threads may no longer exist
 
 '$lgt_mt_threaded_call_abort'([]).
 
@@ -17005,7 +17006,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_mt_threaded_call_join'(+list)
 %
-% join all individual threads; we must use catch/3 as some threads may no longer exist
+% joins all individual threads; we must use catch/3 as some threads may no longer exist
 
 '$lgt_mt_threaded_call_join'([]).
 
@@ -17034,7 +17035,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_create_mutexes'(+list(mutex_identifier))
 %
-% create entity mutexes (called when loading an entity); use catch/3 as
+% creates entity mutexes (called when loading an entity); use catch/3 as
 % we may be reloading an entity and the mutex may be already created
 
 '$lgt_create_mutexes'([]).
@@ -17378,7 +17379,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 % '$lgt_start_runtime_threading'
 %
-% cretes the message queue for the pseudo-object "user" and initializes the asynchronous 
+% creates the message queue for the pseudo-object "user" and initializes the asynchronous 
 % threaded calls tag counter support for compilers supporting multi-threading programming
 
 '$lgt_start_runtime_threading' :-

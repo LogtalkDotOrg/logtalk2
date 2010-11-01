@@ -50,6 +50,10 @@ RELEASE NOTES
     Improved compile-time and runtime error handling for the blackboard
     built-in predicates.
 
+    Corrected a bug where abolishing a dynamic category or a dynamic protocol
+    compiled in debug mode would fail to update the internal table of entities
+    compiled in debug mode.
+
     Corrected a bug in the processing of meta-calls when the called goal is
     an explicit message to an object where the receiver instead of the sender
     would be tested for events support.
