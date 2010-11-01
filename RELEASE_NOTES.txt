@@ -116,6 +116,9 @@ RELEASE NOTES
     Updated the "benchmarks" example in order to use more realistic tests for
     the database built-in predicates and methods assertz/1 and retract/1.
 
+    Updated the "operators" example in order to avoid a unit test failure
+    when reloading the "triple.lgt" source file.
+
     Updated the "examples/tester.sh" script in order to work when running
     Logtalk without using the installer scripts.
 
