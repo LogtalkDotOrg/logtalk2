@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.41.2
+%  Release 2.42.0
 %
 %  Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
@@ -74,7 +74,7 @@
 		dynamic('$lgt_ctg_super_call_same_'/3), hide_predicate('$lgt_ctg_super_call_same_'/3),
 		dynamic('$lgt_ctg_super_call_other_'/3), hide_predicate('$lgt_ctg_super_call_other_'/3),
 		dynamic('$lgt_ctg_call_'/3), hide_predicate('$lgt_ctg_call_'/3),
-		dynamic('$lgt_db_lookup_cache_'/5), hide_predicate('$lgt_db_lookup_cache_'/5)
+		dynamic('$lgt_db_lookup_cache_'/7), hide_predicate('$lgt_db_lookup_cache_'/7)
 	;	true
 	).
 

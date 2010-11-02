@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.41.2
+%  Release 2.42.0
 %  
 %  Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
@@ -50,7 +50,7 @@
 	'$lgt_ctg_super_call_same'/3, '$lgt_ctg_super_call_same_'/3,
 	'$lgt_ctg_super_call_other'/3, '$lgt_ctg_super_call_other_'/3,
 	'$lgt_ctg_call'/3, '$lgt_ctg_call_'/3,
-	'$lgt_db_lookup_cache_'/5,
+	'$lgt_db_lookup_cache_'/7,
 	'$lgt_hook_term_expansion_'/2, '$lgt_hook_goal_expansion_'/2,
 	'$lgt_threaded_tag_counter_'/1,
 	'$lgt_metacall'/5, '$lgt_metacall'/6
@@ -66,6 +66,6 @@
 :- index('$lgt_ctg_super_call_same_'(1, 1, 0)).
 :- index('$lgt_ctg_super_call_other_'(1, 1, 0)).
 :- index('$lgt_ctg_call_'(1, 1, 0)).
-:- index('$lgt_db_lookup_cache_'(1, 1, 0, 0, 0)).
+:- index('$lgt_db_lookup_cache_'(1, 1, 0, 0, 0, 0, 0)).
 
 :- include('../compiler/logtalk.pl').
