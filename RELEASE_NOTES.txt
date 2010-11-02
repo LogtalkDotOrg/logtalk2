@@ -126,6 +126,11 @@ RELEASE NOTES
     Updated the "operators" example in order to avoid a unit test failure
     when reloading the "triple.lgt" source file.
 
+    Updated the "modules" example in order to use the use_module/2 directive
+    (which is supported by Logtalk) instead of the use_module/1 directive
+    (which is only supported for some back-end Prolog compilers) in the
+    "client" module.
+
     Updated the "examples/tester.sh" script in order to work when running
     Logtalk without using the installer scripts.
 

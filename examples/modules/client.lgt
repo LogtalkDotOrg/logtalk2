@@ -1,8 +1,8 @@
 
 :- module(client, [test/0, test/1, names/0, names/1]).
 
-:- use_module(lists).	% not all back-end Prolog compilers allow the
-:- use_module(meta).	% use_module/1 directive to be supported
+:- use_module(lists, [contained/2]).
+:- use_module(meta, [meta/1]).
 
 names :-
 	contained(P, [paulo, carlos, helena]),
