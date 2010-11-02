@@ -607,11 +607,17 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	throw(error(type_error(list, Clauses), create_object(Obj, Rels, Dirs, Clauses))).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
+	catch(
+		'$lgt_create_object'(Obj, Rels, Dirs, Clauses),
+		Error,
+		('$lgt_clean_pp_clauses', throw(error(Error, create_object(Obj, Rels, Dirs, Clauses))))).
+
+
+'$lgt_create_object'(Obj, Rels, Dirs, Clauses) :-
 	(	var(Obj) ->
 		'$lgt_gen_entity_identifier'(0'o, Obj)
 	;	true
 	),
-	'$lgt_clean_pp_clauses',
 	'$lgt_tr_object_id'(Obj, (dynamic)),
 	'$lgt_tr_object_relations'(Rels, Obj),
 	'$lgt_comp_ctx_mode'(Ctx, runtime),	% set the initial compilation context for compiling
@@ -658,11 +664,17 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	throw(error(type_error(list, Clauses), create_category(Ctg, Rels, Dirs, Clauses))).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
+	catch(
+		'$lgt_create_category'(Ctg, Rels, Dirs, Clauses),
+		Error,
+		('$lgt_clean_pp_clauses', throw(error(Error, create_category(Ctg, Rels, Dirs, Clauses))))).
+
+
+'$lgt_create_category'(Ctg, Rels, Dirs, Clauses) :-
 	(	var(Ctg) ->
 		'$lgt_gen_entity_identifier'(0'c, Ctg)
 	;	true
 	),
-	'$lgt_clean_pp_clauses',
 	'$lgt_tr_category_id'(Ctg, (dynamic)),
 	'$lgt_tr_category_relations'(Rels, Ctg),
 	'$lgt_comp_ctx_mode'(Ctx, runtime),	% set the initial compilation context for compiling
@@ -704,11 +716,17 @@ create_protocol(Ptc, Rels, Dirs) :-
 	throw(error(type_error(list, Dirs), create_protocol(Ptc, Rels, Dirs))).
 
 create_protocol(Ptc, Rels, Dirs) :-
+	catch(
+		'$lgt_create_protocol'(Ptc, Rels, Dirs),
+		Error,
+		('$lgt_clean_pp_clauses', throw(error(Error, create_protocol(Ptc, Rels, Dirs))))).
+
+
+'$lgt_create_protocol'(Ptc, Rels, Dirs) :-
 	(	var(Ptc) ->
 		'$lgt_gen_entity_identifier'(0'p, Ptc)
 	;	true
 	),
-	'$lgt_clean_pp_clauses',
 	'$lgt_tr_protocol_id'(Ptc, (dynamic)),
 	'$lgt_tr_protocol_relations'(Rels, Ptc),
 	'$lgt_comp_ctx_mode'(Ctx, runtime),	% set the initial compilation context
@@ -1560,12 +1578,12 @@ logtalk_compile(Files, Flags) :-
 		('$lgt_init_warnings_counter'(logtalk_compile(Files, Flags)),
 		 '$lgt_check_source_files'(Files),
 		 '$lgt_check_compiler_flags'(Flags),
-		 '$lgt_set_compiler_flags'(Flags),
-		 '$lgt_compile_files'(Files),
+		 '$lgt_compile_files'(Files, Flags),
 		 '$lgt_report_warning_numbers'(logtalk_compile(Files, Flags)),
 		 '$lgt_clear_compiler_flags'),
 		Error,
 		('$lgt_clear_compiler_flags',
+		 '$lgt_clean_pp_clauses',
 		 '$lgt_reset_warnings_counter',
 		 throw(error(Error, logtalk_compile(Files, Flags))))).
 
@@ -1845,8 +1863,7 @@ logtalk_compile(Files, Flags) :-
 % clears the compiler flag options
 
 '$lgt_clear_compiler_flags' :-
-	retractall('$lgt_pp_file_compiler_flag_'(_, _)),	% retract file and
-	retractall('$lgt_pp_entity_compiler_flag_'(_, _)),	% entity flag values
+	retractall('$lgt_pp_file_compiler_flag_'(_, _)),	% retract file flag values
 	retractall('$lgt_pp_hook_term_expansion_'(_, _)),	% plus any term and
 	retractall('$lgt_pp_hook_goal_expansion_'(_, _)).	% goal expansion hooks
 
@@ -1881,6 +1898,7 @@ logtalk_load(Files, Flags) :-
 		 '$lgt_report_warning_numbers'(logtalk_load(Files, Flags))),
 		Error,
 		('$lgt_clear_compiler_flags',
+		 '$lgt_clean_pp_clauses',
 		 '$lgt_reset_warnings_counter',
 		 throw(error(Error, logtalk_load(Files, Flags))))).
 
@@ -4975,14 +4993,14 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 '$lgt_load_files'([], _) :-
 	!,
-	'$lgt_clear_compiler_flags'.
+	'$lgt_clear_compiler_flags',
+	'$lgt_clean_pp_clauses'.
 
 '$lgt_load_files'([File| Files], Flags) :-
 	!,
 	'$lgt_clean_pp_clauses',
 	'$lgt_set_compiler_flags'(Flags),
 	'$lgt_load_file'(File),
-	'$lgt_clean_pp_clauses',
 	'$lgt_load_files'(Files, Flags).
 
 '$lgt_load_files'(File, Flags) :-
@@ -5288,24 +5306,28 @@ current_logtalk_flag(version, version(2, 41, 2)).
 
 
 
-% '$lgt_compile_files'(@source_file_name)
-% '$lgt_compile_files'(@source_file_name_list)
+% '$lgt_compile_files'(@source_file_name, @list)
+% '$lgt_compile_files'(@source_file_name_list, @list)
 %
 % compiles to disk a source file or a list of source files
 
-'$lgt_compile_files'([]) :-
-	!.
+'$lgt_compile_files'([], _) :-
+	!,
+	'$lgt_clear_compiler_flags',
+	'$lgt_clean_pp_clauses'.
 
-'$lgt_compile_files'([File| Files]) :-
+'$lgt_compile_files'([File| Files], Flags) :-
 	!,
 	'$lgt_clean_pp_clauses',
+	'$lgt_set_compiler_flags'(Flags),
 	'$lgt_compile_file'(File),
-	'$lgt_clean_pp_clauses',
-	'$lgt_compile_files'(Files).
+	'$lgt_compile_files'(Files, Flags).
 
-'$lgt_compile_files'(File) :-
+'$lgt_compile_files'(File, Flags) :-
 	'$lgt_clean_pp_clauses',
+	'$lgt_set_compiler_flags'(Flags),
 	'$lgt_compile_file'(File),
+	'$lgt_clear_compiler_flags',
 	'$lgt_clean_pp_clauses'.
 
 
@@ -6032,7 +6054,7 @@ current_logtalk_flag(version, version(2, 41, 2)).
 	retractall('$lgt_pp_global_op_'(_, _, _)),
 	retractall('$lgt_pp_file_op_'(_, _, _)),
 	retractall('$lgt_pp_entity_op_'(_, _, _)),
-	retractall('$lgt_pp_file_init_'(_)),	
+	retractall('$lgt_pp_file_init_'(_)),
 	retractall('$lgt_pp_entity_init_'(_, _, _)),
 	retractall('$lgt_pp_file_encoding_'(_, _)),
 	retractall('$lgt_pp_file_bom_'(_)),
