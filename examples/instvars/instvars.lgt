@@ -1,5 +1,6 @@
 
-:- object(root).
+:- object(root,					% avoid infinite metaclass regression by
+	instantiates(root)).		% making the class its own metaclass
 
 	:- private(ivar_/1).
 	:- dynamic(ivar_/1).

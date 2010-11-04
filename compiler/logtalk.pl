@@ -4144,26 +4144,6 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	'$lgt_logtalk._ddef'(Pred, ExCtx, Call).
 
 
-'$lgt_logtalk._idcl'(Pred, Scope, Meta, Flags, logtalk, logtalk) :-
-	'$lgt_logtalk._dcl'(Pred, Scope, Meta, Flags).
-
-'$lgt_logtalk._idcl'(Pred, Scope, no, 2, logtalk, logtalk) :-
-	'$lgt_logtalk._ddcl'(Pred, Scope).
-
-'$lgt_logtalk._idcl'(Pred, Scope, Meta, Flags, logtalk, Ctn) :-
-	'$lgt_expanding._dcl'(Pred, Scope, Meta, Flags, Ctn).
-
-'$lgt_logtalk._idcl'(Pred, Scope, Meta, Flags, logtalk, Ctn) :-
-	'$lgt_monitoring._dcl'(Pred, Scope, Meta, Flags, Ctn).
-
-
-'$lgt_logtalk._idef'(Pred, ExCtx, Call, logtalk) :-
-	'$lgt_logtalk._def'(Pred, ExCtx, Call).
-
-'$lgt_logtalk._idef'(Pred, ExCtx, Call, logtalk) :-
-	'$lgt_logtalk._ddef'(Pred, ExCtx, Call).
-
-
 '$lgt_logtalk._alias'(_, Pred, Pred).
 
 
@@ -4328,20 +4308,6 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	'$lgt_debugger._def'(Pred, ExCtx, Call).
 
 '$lgt_debugger._def'(Pred, ExCtx, Call, debugger) :-
-	'$lgt_debugger._ddef'(Pred, ExCtx, Call).
-
-
-'$lgt_debugger._idcl'(Pred, Scope, Meta, Flags, debugger, debugger) :-
-	'$lgt_debugger._dcl'(Pred, Scope, Meta, Flags).
-
-'$lgt_debugger._idcl'(Pred, Scope, no, 2, debugger, debugger) :-
-	'$lgt_debugger._ddcl'(Pred, Scope).
-
-
-'$lgt_debugger._idef'(Pred, ExCtx, Call, debugger) :-
-	'$lgt_debugger._def'(Pred, ExCtx, Call).
-
-'$lgt_debugger._idef'(Pred, ExCtx, Call, debugger) :-
 	'$lgt_debugger._ddef'(Pred, ExCtx, Call).
 
 
@@ -12597,13 +12563,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	'$lgt_gen_prototype_implements_dcl_clauses',
 	'$lgt_gen_prototype_imports_dcl_clauses',
 	'$lgt_gen_prototype_extends_dcl_clauses',
-	'$lgt_gen_object_catchall_dcl_clauses'(Local),
-	(	\+ '$lgt_pp_extended_object_'(_, _, _, _, _, _, _, _, _, _) ->
-		% stand-alone object; add the necessary clauses for also using
-		% it as root of a class hierarchy
-		'$lgt_gen_ic_idcl_clauses'(Local)
-	;	true
-	).
+	'$lgt_gen_object_catchall_dcl_clauses'(Local).
 
 
 
@@ -12723,13 +12683,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	'$lgt_gen_prototype_linking_def_clauses'(Local),
 	'$lgt_gen_prototype_imports_def_clauses',
 	'$lgt_gen_prototype_extends_def_clauses',
-	'$lgt_gen_object_catchall_def_clauses'(Local),
-		(	\+ '$lgt_pp_extended_object_'(_, _, _, _, _, _, _, _, _, _) ->
-		% stand-alone object; add the necessary clauses for also using
-		% it as root of a class hierarchy
-		'$lgt_gen_ic_idef_clauses'(Local)
-	;	true
-	).
+	'$lgt_gen_object_catchall_def_clauses'(Local).
 
 
 

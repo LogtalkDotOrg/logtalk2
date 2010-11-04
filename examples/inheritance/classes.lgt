@@ -19,7 +19,8 @@ interface/0, for listing the object interface.
 
 
 :- object(root,
-	imports(predicates, interface)).
+	imports(predicates, interface),
+	instantiates(root)).
 
 
 :- end_object.

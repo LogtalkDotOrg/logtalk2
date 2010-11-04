@@ -1,6 +1,7 @@
+ 
+:- object(metacircle,					% avoid infinite metaclass regression by
+	instantiates(metacircle)).			% making "metacircle" its own metaclass
 
-:- object(metacircle).
-			
 	:- public(new/4).
 	:- mode(new(+float, +float, +float, -object_identifier), one).
 	:- info(new/4, [

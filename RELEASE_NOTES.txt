@@ -13,11 +13,15 @@ RELEASE NOTES
 =============
 
 
-2.42.0 - November 3, 2010
+2.42.0 - November 4, 2010
+
+    Reverted the changes in the previous release that allowed a stand-alone
+    object to (also) be used as root of class hierarchies.
 
     Defined a set of low-level utility predicates, available as public methods
-    from the "logtalk" built-in object. Consult the User Manual for details on
-    these predicates.
+    from the "logtalk" built-in object (consult the User Manual for details on
+    these predicates). In addition, modified the (virtual) compilation of this
+    object in order to always interpret it as a prototype.
 
     Simplified and improved the performance of the predicate lookup caching
     code. Simplified and improved the performance of the built-in methods

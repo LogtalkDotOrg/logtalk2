@@ -289,4 +289,5 @@ predicates, requiring recompilation of all entities.
 
 Logtalk version 2.42.0 changes the internal predicates used to implement
 message-sending and other control constructs, requiring recompilation of
-all entities.
+all entities. In addition, this release modifies the role of the "logtalk"
+object (now always interpreted as a prototype).
