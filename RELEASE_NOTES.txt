@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.42.0 - November 2, 2010
+2.42.0 - November 3, 2010
 
     Defined a set of low-level utility predicates, available as public methods
     from the "logtalk" built-in object. Consult the User Manual for details on
@@ -29,9 +29,9 @@ RELEASE NOTES
     Improved the performance of source file compilation by avoiding redundant
     cleaning of auxiliar compilation predicates.
 
-    Updated the implementation of the built-in predicate logtalk_compile/2 in
-    order to ensure the same compiler options semantics for compiled code as
-    the built-in predicate logtalk_load/2.
+    Updated the implementation of the built-in predicate logtalk_compile/2
+    in order to ensure the same compiler options semantics for compiled code
+    as the built-in predicate logtalk_load/2.
 
     Corrected a error handling issue in the implementation of the built-in
     predicates logtalk_compile/2 and logtalk_load/2 where the error terms
@@ -45,11 +45,11 @@ RELEASE NOTES
     protocols, "expanding" and "monitoring", to support static binding.
 
     Updated the term-expansion mechanism implementation in order to support
-    the use of the {}/1 compiler bypass control construct to wrap elements in
-    the list of expanded terms (returned by the term_expansion/2 built-in
+    the use of the {}/1 compiler bypass control construct to wrap elements
+    in the list of expanded terms (returned by the term_expansion/2 built-in
     method when used in hook objects), to allow expansion of the end_of_file
-    term, and to throw an instantiation error when term-expansion generates a
-    list containing an element that is a variable.
+    term, and to throw an instantiation error when term-expansion generates
+    a list containing an element that is a variable.
 
     Interpret "prolog_compatible_version", "tabling", and "coinduction" as
     read-only flags. Removed documentation on the deleted "multifile_directive"
@@ -83,7 +83,8 @@ RELEASE NOTES
 
     Updated the Qu-Prolog config file with support for accessing environment
     variables and updated definitions of file-system access predicates that
-    avoid issues with file paths containing spaces.
+    avoid issues with file paths containing spaces. Logtalk now requires
+    Qu-Prolog 8.12 or a later version.
 
     Updated the GNU Prolog config file in order to support the built_in_fd/0,
     built_in_fd/1, built_in/0, built_in/1, and ensure_linked/1 proprietary

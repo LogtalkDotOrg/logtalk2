@@ -9,9 +9,9 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for Qu-Prolog 8.11 and later versions
+%  configuration file for Qu-Prolog 8.12 and later versions
 %
-%  last updated: October 28, 2010
+%  last updated: November 4, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -154,7 +154,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_prolog_feature'(prolog_dialect, qp).
 '$lgt_prolog_feature'(prolog_version, (Major, Minor, Patch)) :-
 	current_prolog_flag(version_data, qp(Major, Minor, Patch, _)).
-'$lgt_prolog_feature'(prolog_compatible_version, @>=((8,11,0))).
+'$lgt_prolog_feature'(prolog_compatible_version, @>=((8,12,0))).
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
@@ -254,7 +254,6 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % expands a file path to a full path
 
 '$lgt_expand_path'(Path, ExpandedPath) :-
-	predicate_property(absolute_file_name(_, _), built_in),
 	absolute_file_name(Path, ExpandedPath).
 
 
@@ -341,11 +340,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % access to operating-system environment variables
 
 '$lgt_environment_variable'(Variable, Value) :-
-	(	predicate_property(getenv(_, _), built_in) ->
-		getenv(Variable, Value)
-	;	predicate_property(env_getenv(_, _), built_in) ->
-		env_getenv(Variable, Value)
-	).
+	getenv(Variable, Value).
 
 
 % '$lgt_startup_directory'(-atom)
@@ -353,8 +348,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % returns the Logtalk startup directory; fails if unknwon 
 
 '$lgt_startup_directory'(Directory) :-
-	working_directory(Current, '$LOGTALK_STARTUP_DIRECTORY'),
-	working_directory(Directory, Current).
+	getenv('LOGTALK_STARTUP_DIRECTORY', Directory).
 
 
 % '$lgt_user_directory'(-atom)
@@ -362,8 +356,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % returns the Logtalk user directory; fails if unknwon
 
 '$lgt_user_directory'(Directory) :-
-	working_directory(Current, '$LOGTALKUSER'),
-	working_directory(Directory, Current).
+	getenv('LOGTALKUSER', Directory).
 
 
 

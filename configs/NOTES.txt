@@ -164,11 +164,11 @@ GNU Prolog 1.4.0 and later versions
 	compilation of source files.
 
 
-Qu-Prolog 8.11 and later versions
+Qu-Prolog 8.12 and later versions
 
 	qp.pl
 
-	Know issue in Qu-Prolog 8.11: this version doesn't support static multifile
+	Know issue in Qu-Prolog 8.12: this version doesn't support static multifile
 	predicates. This limitation may be fixed in later versions.
 
 	In order to compile and load both the config file and the Logtalk compiler,
