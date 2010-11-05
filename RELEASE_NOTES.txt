@@ -33,6 +33,10 @@ RELEASE NOTES
     Improved the performance of source file compilation by avoiding redundant
     cleaning of auxiliar compilation predicates.
 
+    Improved compiler error checking for entity relations, detecting and
+    reporting most incorrect attempts to extend, instantiate, specialize,
+    import, implement, or complement the wrong kind of entities.
+
     Corrected a bug where the compilation (or dynamic creation) of parametric
     objects or parametric categories with instantiated parameters would fail
     to discard the parameter values in the runtime tables of defined entities.
