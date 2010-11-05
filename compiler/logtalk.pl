@@ -11487,10 +11487,12 @@ current_logtalk_flag(version, version(2, 42, 0)).
 % functor prefixes used in the compiled code clauses
 
 '$lgt_tr_object_id'(Obj, Mode) :-
-	'$lgt_add_referenced_object'(Obj),
-	'$lgt_construct_object_functors'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm),
+	functor(Obj, Functor, Arity),
+	functor(GObj, Functor, Arity),
+	'$lgt_add_referenced_object'(GObj),
+	'$lgt_construct_object_functors'(GObj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm),
 	'$lgt_tr_entity_flags'(object, Mode, Flags),
-	assertz('$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags)),
+	assertz('$lgt_pp_object_'(GObj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags)),
 	asserta('$lgt_pp_pred_mutex_count_'(0)).
 
 
@@ -11501,10 +11503,12 @@ current_logtalk_flag(version, version(2, 42, 0)).
 % functor prefixes used in the compiled code clauses
 
 '$lgt_tr_category_id'(Ctg, Mode) :-
-	'$lgt_add_referenced_category'(Ctg),
-	'$lgt_construct_category_functors'(Ctg, Prefix, Dcl, Def, Rnm),
+	functor(Ctg, Functor, Arity),
+	functor(GCtg, Functor, Arity),
+	'$lgt_add_referenced_category'(GCtg),
+	'$lgt_construct_category_functors'(GCtg, Prefix, Dcl, Def, Rnm),
 	'$lgt_tr_entity_flags'(category, Mode, Flags),
-	assertz('$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags)),
+	assertz('$lgt_pp_category_'(GCtg, Prefix, Dcl, Def, Rnm, Flags)),
 	asserta('$lgt_pp_pred_mutex_count_'(0)).
 
 

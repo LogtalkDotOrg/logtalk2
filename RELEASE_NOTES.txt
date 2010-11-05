@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.42.0 - November 4, 2010
+2.42.0 - November 5, 2010
 
     Reverted the changes in the previous release that allowed a stand-alone
     object to (also) be used as root of class hierarchies.
@@ -32,6 +32,10 @@ RELEASE NOTES
 
     Improved the performance of source file compilation by avoiding redundant
     cleaning of auxiliar compilation predicates.
+
+    Corrected a bug where the compilation (or dynamic creation) of parametric
+    objects or parametric categories with instantiated parameters would fail
+    to discard the parameter values in the runtime tables of defined entities.
 
     Updated the implementation of the built-in predicate logtalk_compile/2
     in order to ensure the same compiler options semantics for compiled code
