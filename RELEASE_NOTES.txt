@@ -33,6 +33,11 @@ RELEASE NOTES
     Improved the performance of source file compilation by avoiding redundant
     cleaning of auxiliar compilation predicates.
 
+    Modified the Logtalk compiler in order to interpret occurrences of":" in
+    module meta-predicate directives as equivalent to "::" instead of "0" in
+    Logtalk meta-predicate directives. This change follows the current trend
+    for de facto standardization for meta-predicate directives.
+
     Improved compiler error checking for entity relations, detecting and
     reporting most incorrect attempts to extend, instantiate, specialize,
     import, implement, or complement the wrong kind of entities.

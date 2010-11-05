@@ -8062,7 +8062,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_tr_module_meta_predicate_directives_args'([], []).
 
 '$lgt_tr_module_meta_predicate_directives_args'([Arg| Args], [TArg| TArgs]) :-
-	(	Arg == (:) -> TArg = (0)	% Prolog to Logtalk notation; this is fragile due to the lack of standardization
+	(	Arg == (:) -> TArg = (::)	% Prolog to Logtalk notation; this is fragile due to the lack of standardization
 	;	integer(Arg) -> TArg = Arg	% goals and closures are denoted by integers >= 0
 	;	TArg = (*)					% non meta-arguments (e.g. instantiation modes) to Logtalk notation
 	),
