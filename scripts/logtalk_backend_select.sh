@@ -98,6 +98,8 @@ valid_backend() {
 		return 0
 	elif [ "$1" == "eclipselgt" ] && [ -e `which eclipselgt` ]  && [ "`which eclipse`" != "" ] ; then
 		return 0
+	elif [ "$1" == "gplgt" ] && [ -e `which gplgt` ]  && [ "`which gprolog`" != "" ] ; then
+		return 0
 	elif [ "$1" == "qplgt" ] && [ -e `which qplgt` ]  && [ "`which qp`" != "" ] ; then
 		return 0
 	elif [ "$1" == "sicstuslgt" ] && [ -e `which sicstuslgt` ]  && [ "`which sicstus`" != "" ] ; then

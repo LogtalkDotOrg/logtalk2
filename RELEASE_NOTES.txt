@@ -159,6 +159,9 @@ RELEASE NOTES
     Updated the "build_release.sh" script in order to calculate all the
     necessary checksums when building the MacOS X installer package.
 
+    Corrected a bug in the "logtalk_backend_select" shell script that
+    prevented selecting GNU Prolog as the default back-end Prolog compiler.
+
 
 2.41.1 - October 6, 2010
 
