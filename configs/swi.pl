@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: October 23, 2010
+%  last updated: November 6, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -126,10 +126,12 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 '$lgt_pl_meta_predicate'(thread_at_exit(_), thread_at_exit(0), predicate).
 '$lgt_pl_meta_predicate'(thread_create(_, _, _), thread_create(0, *, *), predicate).
 '$lgt_pl_meta_predicate'(thread_signal(_, _), thread_signal(*, 0), predicate).
+'$lgt_pl_meta_predicate'(trace(_), trace(0), predicate).
+'$lgt_pl_meta_predicate'(trace(_, _), trace(0, *), predicate).
 '$lgt_pl_meta_predicate'(with_mutex(_, _), with_mutex(*, 0), predicate).
 '$lgt_pl_meta_predicate'(with_output_to(_, _), with_output_to(*, 0), predicate).
 '$lgt_pl_meta_predicate'(when(_, _), when(*, 0), predicate).
-% workaround broken meta-predicate declarations:
+% workaround problematic meta-predicate declarations:
 '$lgt_pl_meta_predicate'(format(_, _), format(*, *), predicate).
 '$lgt_pl_meta_predicate'(format(_, _, _), format(*, *, *), predicate).
 '$lgt_pl_meta_predicate'(use_module(_), use_module(*), predicate).
