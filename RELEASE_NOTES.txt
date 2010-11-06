@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.42.0 - November 5, 2010
+2.42.0 - November 10, 2010
 
     Reverted the changes in the previous release that allowed a stand-alone
     object to (also) be used as root of class hierarchies.

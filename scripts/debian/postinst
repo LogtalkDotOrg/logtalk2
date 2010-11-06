@@ -53,7 +53,7 @@ echo "* XSB MT (version 3.2 or later):         xsbmtlgt   (first run must use su
 echo "* XSB MT 64 bits (version 3.2 or later): xsbmt64lgt (first run must use sudo)"
 echo "* YAP (version 6.0.2 or later):          yaplgt"
 echo
-echo "The Prolog integration scripts can be found on \"/usr/bin\"."
+echo "Links to the Prolog integration scripts can be found on \"/usr/bin\"."
 echo "Make sure that the Prolog compilers are properly installed and available"
 echo "on your execution path."
 echo
