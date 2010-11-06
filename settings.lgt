@@ -47,6 +47,16 @@
 %  "configs/NOTES.txt" file for compatibility details.
 
 
+%  To load the "help" example at startup, which provides basic on-line help
+%  for Logtalk, uncomment the following lines:
+
+/*
+:- initialization(
+	logtalk_load(help(loader), [report(off)])
+).
+*/
+
+
 %  To define a "library" path for your projects, edit and uncomment the
 %  following lines (the library path must end with a slash character):
 
