@@ -78,6 +78,10 @@ RELEASE NOTES
     Improved compile-time and runtime error handling for the blackboard
     built-in predicates.
 
+    Updated the implementation of the built-in predicate set_logtalk_flag/2
+    in order to switch off the clean (smart_compilation) flag when switching
+    on the smart_compilation (clean) flag.
+
     Corrected a bug where abolishing a dynamic category or a dynamic protocol
     compiled in debug mode would fail to update the internal table of entities
     compiled in debug mode.

@@ -1965,6 +1965,12 @@ set_logtalk_flag(Flag, Value) :-
 	(	Flag == debug, Value == on ->
 		retractall('$lgt_current_flag_'(smart_compilation, _)),
 		assertz('$lgt_current_flag_'(smart_compilation, off))
+	;	Flag == smart_compilation, Value == on ->
+		retractall('$lgt_current_flag_'(clean, _)),
+		assertz('$lgt_current_flag_'(clean, off))
+	;	Flag == clean, Value == on ->
+		retractall('$lgt_current_flag_'(smart_compilation, _)),
+		assertz('$lgt_current_flag_'(smart_compilation, off))
 	;	Flag == hook ->
 		'$lgt_compile_hooks'(Value)
 	;	true
