@@ -7843,8 +7843,8 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	\+ '$lgt_pp_uses_pred_'(_, _, TAlias),
  	\+ '$lgt_pp_use_module_pred_'(_, _, TAlias),
 	!,
-	TOriginal =.. [_| Args], TAlias =.. [_| Args],						% unify args of TOriginal and TAlias
-	'$lgt_tr_clause'((TAlias :- Obj::TOriginal), Ctx),					% allow for runtime use
+	TOriginal =.. [_| Args], TAlias =.. [_| Args],									% unify args of TOriginal and TAlias
+	'$lgt_tr_clause'((TAlias :- Obj::TOriginal), Ctx),								% allow for runtime use
 	assertz('$lgt_pp_uses_pred_'(Obj, TOriginal, TAlias)).
 
 '$lgt_tr_uses_directive_pred'(_, AFunctor, Arity, _, _) :-
@@ -7859,7 +7859,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	 	\+ '$lgt_pp_use_module_dcg_nt_'(_, _, TOriginal),
 	 	\+ '$lgt_pp_uses_pred_'(_, _, TPred),
 	 	\+ '$lgt_pp_use_module_pred_'(_, _, TPred) ->
-		TOriginal =.. [_| Args], TAlias =.. [_| Args],							% unify args of TOriginal and TAlias
+		TOriginal =.. [_| Args], TAlias =.. [_| Args],								% unify args of TOriginal and TAlias
 		'$lgt_dcg_rule_to_clause'((TAlias --> Obj::TOriginal), Clause, LClause),	% allow for runtime use
 		(	'$lgt_compiler_flag'(debug, on) ->
 			'$lgt_tr_clause'(LClause, Ctx)
@@ -7964,8 +7964,8 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	\+ '$lgt_pp_uses_pred_'(_, _, TAlias),
 	\+ '$lgt_pp_use_module_pred_'(_, _, TAlias),
 	!,
-	TOriginal =.. [_| Args], TAlias =.. [_| Args],								% unify args of TOriginal and TAlias
-	'$lgt_tr_clause'((TAlias :- ':'(Module, TOriginal)), Ctx),	% allow for runtime use
+	TOriginal =.. [_| Args], TAlias =.. [_| Args],											% unify args of TOriginal and TAlias
+	'$lgt_tr_clause'((TAlias :- ':'(Module, TOriginal)), Ctx),								% allow for runtime use
 	assertz('$lgt_pp_use_module_pred_'(Module, TOriginal, TAlias)).
 
 '$lgt_tr_use_module_directive_pred'(_, AFunctor, Arity, _, _) :-
@@ -7980,7 +7980,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	 	\+ '$lgt_pp_use_module_dcg_nt_'(_, _, TOriginal),
 	 	\+ '$lgt_pp_uses_pred_'(_, _, TPred),
 	 	\+ '$lgt_pp_use_module_pred_'(_, _, TPred) ->
-		TOriginal =.. [_| Args], TAlias =.. [_| Args],									% unify args of TOriginal and TAlias
+		TOriginal =.. [_| Args], TAlias =.. [_| Args],										% unify args of TOriginal and TAlias
 		'$lgt_dcg_rule_to_clause'((TAlias --> ':'(Module, TOriginal)), Clause, LClause),	% allow for runtime use
 		(	'$lgt_compiler_flag'(debug, on) ->
 			'$lgt_tr_clause'(LClause, Ctx)
@@ -8080,7 +8080,8 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	(	var(Relation) ->
 		throw(instantiation_error)
 	;	Relation =.. [Functor| Args],
-		'$lgt_tr_object_relation'(Functor, Args, Obj) ->
+		'$lgt_flatten_list'(Args, FlattenedArgs),
+		'$lgt_tr_object_relation'(Functor, FlattenedArgs, Obj) ->
 		true
 	;	functor(Relation, Functor, Arity),
 		throw(domain_error(object_relation, Functor/Arity))
@@ -8094,24 +8095,19 @@ current_logtalk_flag(version, version(2, 42, 0)).
 % translates a relation between an object (the last argument) with other entities
 
 '$lgt_tr_object_relation'(implements, Ptcs, Obj) :-
-	'$lgt_flatten_list'(Ptcs, List),
-	'$lgt_tr_implements_protocol'(List, Obj).
+	'$lgt_tr_implements_protocol'(Ptcs, Obj).
 
 '$lgt_tr_object_relation'(imports, Ctgs, Obj) :-
-	'$lgt_flatten_list'(Ctgs, List),
-	'$lgt_tr_imports_category'(List, Obj).
+	'$lgt_tr_imports_category'(Ctgs, Obj).
 
-'$lgt_tr_object_relation'(instantiates, Classes, Obj) :-
-	'$lgt_flatten_list'(Classes, List),
-	'$lgt_tr_instantiates_class'(List, Obj).
+'$lgt_tr_object_relation'(instantiates, Classes, Instance) :-
+	'$lgt_tr_instantiates_class'(Classes, Instance).
 
 '$lgt_tr_object_relation'(specializes, Superclasses, Class) :-
-	'$lgt_flatten_list'(Superclasses, List),
-	'$lgt_tr_specializes_class'(List, Class).
+	'$lgt_tr_specializes_class'(Superclasses, Class).
 
 '$lgt_tr_object_relation'(extends, Parents, Prototype) :-
-	'$lgt_flatten_list'(Parents, List),
-	'$lgt_tr_extends_object'(List, Prototype).
+	'$lgt_tr_extends_object'(Parents, Prototype).
 
 
 
@@ -8125,7 +8121,8 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	(	var(Relation) ->
 		throw(instantiation_error)
 	;	Relation =.. [Functor| Args],
-		'$lgt_tr_protocol_relation'(Functor, Args, Ptc) ->
+		'$lgt_flatten_list'(Args, FlattenedArgs),
+		'$lgt_tr_protocol_relation'(Functor, FlattenedArgs, Ptc) ->
 		true
 	;	functor(Relation, Functor, Arity),
 		throw(domain_error(protocol_relation, Functor/Arity))
@@ -8139,8 +8136,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 % translates a relation between a protocol (the last argument) with other entities
 
 '$lgt_tr_protocol_relation'(extends, Ptcs, Ptc) :-
-	'$lgt_flatten_list'(Ptcs, List),
-	'$lgt_tr_extends_protocol'(List, Ptc).
+	'$lgt_tr_extends_protocol'(Ptcs, Ptc).
 
 
 
@@ -8154,7 +8150,8 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	(	var(Relation) ->
 		throw(instantiation_error)
 	;	Relation =.. [Functor| Args],
-		'$lgt_tr_category_relation'(Functor, Args, Ctg) ->
+		'$lgt_flatten_list'(Args, FlattenedArgs),
+		'$lgt_tr_category_relation'(Functor, FlattenedArgs, Ctg) ->
 		true
 	;	functor(Relation, Functor, Arity),
 		throw(domain_error(category_relation, Functor/Arity))
@@ -8168,16 +8165,13 @@ current_logtalk_flag(version, version(2, 42, 0)).
 % translates a relation between a category (the last argument) with other entities
 
 '$lgt_tr_category_relation'(implements, Ptcs, Ctg) :-
-	'$lgt_flatten_list'(Ptcs, List),
-	'$lgt_tr_implements_protocol'(List, Ctg).
+	'$lgt_tr_implements_protocol'(Ptcs, Ctg).
 
 '$lgt_tr_category_relation'(extends, Ctgs, Ctg) :-
-	'$lgt_flatten_list'(Ctgs, List),
-	'$lgt_tr_extends_category'(List, Ctg).
+	'$lgt_tr_extends_category'(Ctgs, Ctg).
 
 '$lgt_tr_category_relation'(complements, Objs, Ctg) :-
-	'$lgt_flatten_list'(Objs, List),
-	'$lgt_tr_complements_category'(List, Ctg).
+	'$lgt_tr_complements_category'(Objs, Ctg).
 
 
 
