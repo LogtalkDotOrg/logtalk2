@@ -1,14 +1,6 @@
 
 :- category(utilities).
 
-	:- private(compile_facts/2).
-
-	compile_facts([], []).
-	compile_facts([Fact| Facts], [TFact| TFacts]) :-
-		this(This),		
-		logtalk::compile_predicate_heads(Fact, This, TFact, _),
-		compile_facts(Facts, TFacts).
-
 	:- private(decompile_facts/2).
 
 	decompile_facts([], []).
@@ -87,7 +79,8 @@
 	:- public(dtproblog_ev/2).
 
 	dtproblog_ev(A, B) :-
-		::compile_facts(A, TA),
+		this(This),		
+		logtalk::compile_predicate_heads(A, This, TA, _),
 		dtproblog:dtproblog_ev(TA, B).
 
 	:- public(dtproblog_utility_facts/1).
