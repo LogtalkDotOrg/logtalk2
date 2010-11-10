@@ -3,9 +3,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2010/03/16,
+		date is 2010/11/09,
 		comment is 'Unit tests for the "problog" example.']).
 
 	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
@@ -82,7 +82,9 @@
 		ExpectedValue =~= 2.35771065.
 
 	test(problog_vm_3) :-
-		flags:set_problog_flag(optimization, local), vm::dtproblog_solve(Strategy,ExpectedValue),
+		flags:set_problog_flag(optimization, local),
+		vm::dtproblog_solve(Strategy,ExpectedValue),
+		flags:set_problog_flag(optimization, global),
 		ExpectedValue =~= 3.19528,
 		Strategy == [marketed(martijn),marketed(laura),marketed(guy),marketed(ingo)].
 

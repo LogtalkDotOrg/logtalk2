@@ -211,6 +211,8 @@
 :- dynamic('$lgt_pp_protected_'/2).					% '$lgt_pp_protected_'(Functor, Arity)
 :- dynamic('$lgt_pp_private_'/2).					% '$lgt_pp_private_'(Functor, Arity)
 :- dynamic('$lgt_pp_meta_predicate_'/1).			% '$lgt_pp_meta_predicate_'(Pred)
+:- dynamic('$lgt_pp_head_annotation_'/4).			% '$lgt_pp_head_annotation_'(Annotation, Functor, Value, Head)
+:- dynamic('$lgt_pp_fact_annotation_'/4).			% '$lgt_pp_fact_annotation_'(Annotation, Functor, Left, Right)
 :- dynamic('$lgt_pp_pred_alias_'/3).				% '$lgt_pp_pred_alias_'(Entity, Pred, Alias)
 :- dynamic('$lgt_pp_dcg_nt_'/3).					% '$lgt_pp_dcg_nt_'(Functor, Arity, ExtArity)
 :- dynamic('$lgt_pp_multifile_'/2).					% '$lgt_pp_multifile_'(Functor, Arity)
@@ -6086,6 +6088,8 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	retractall('$lgt_pp_coinductive_flag_'(_)),
 	retractall('$lgt_pp_mode_'(_, _)),
 	retractall('$lgt_pp_meta_predicate_'(_)),
+	retractall('$lgt_pp_head_annotation_'(_, _, _, _)),
+	retractall('$lgt_pp_fact_annotation_'(_, _, _, _)),
 	retractall('$lgt_pp_pred_alias_'(_, _, _)),
 	retractall('$lgt_pp_dcg_nt_'(_, _, _)),
 	retractall('$lgt_pp_entity_init_'(_)),
@@ -7196,6 +7200,44 @@ current_logtalk_flag(version, version(2, 42, 0)).
 		Preds2 = Preds3
 	),
 	'$lgt_tr_meta_predicate_directive'(Preds3).
+
+
+'$lgt_tr_directive'(annotation, [Annotation], _) :-
+	var(Annotation),
+	throw(instantiation_error).
+
+'$lgt_tr_directive'(annotation, [Annotation], _) :-
+	\+ callable(Annotation),
+	throw(type_error(callable, Annotation)).
+
+'$lgt_tr_directive'(annotation, [Annotation], _) :-
+	functor(Annotation, Functor, Arity),
+	functor(GAnnotation, Functor, Arity),
+	(	Arity =\= 2 ->
+		throw(domain_error(annotation, Annotation))
+	;	arg(1, Annotation, (*)), arg(2, Annotation, 0) ->
+		arg(1, GAnnotation, Value),
+		arg(2, GAnnotation, Head),
+		(	'$lgt_pp_head_annotation_'(GAnnotation, Functor, Value, Head) ->
+			true
+		;	assertz('$lgt_pp_head_annotation_'(GAnnotation, Functor, Value, Head))
+		)
+	;	arg(1, Annotation, 0), arg(2, Annotation, (*)) ->
+		arg(1, GAnnotation, Head),
+		arg(2, GAnnotation, Value),
+		(	'$lgt_pp_head_annotation_'(GAnnotation, Functor, Value, Head) ->
+			true
+		;	assertz('$lgt_pp_head_annotation_'(GAnnotation, Functor, Value, Head))
+		)
+	;	arg(1, Annotation, 0), arg(2, Annotation, 0) ->
+		arg(1, GAnnotation, Left),
+		arg(2, GAnnotation, Right),
+		(	'$lgt_pp_fact_annotation_'(GAnnotation, Functor, Left, Right) ->
+			true
+		;	assertz('$lgt_pp_fact_annotation_'(GAnnotation, Functor, Left, Right))
+		)
+	;	throw(domain_error(annotation, Annotation))
+	).
 
 
 '$lgt_tr_directive'((mode), [Mode, Solutions], _) :-
@@ -8536,6 +8578,19 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	\+ callable(Body),
 	throw(type_error(callable, Body)).
 
+'$lgt_tr_clause'((Annotation:-Body), TClause, DClause, HeadCtx, BodyCtx) :-
+	'$lgt_pp_head_annotation_'(Annotation, Functor, Value, Head),
+	!,
+	'$lgt_tr_clause'((Head:-Body), TClause0, DClause, HeadCtx, BodyCtx),
+	functor(TAnnotation, Functor, 2),
+	(	TClause0 = (THead :- TBody) ->
+		'$lgt_pp_head_annotation_'(TAnnotation, Functor, Value, THead),
+		TClause = (TAnnotation :- TBody)
+	;	TClause0 = THead ->
+		'$lgt_pp_head_annotation_'(TAnnotation, Functor, Value, THead),
+		TClause = TAnnotation
+	).
+
 '$lgt_tr_clause'((Head:-Body), TClause, DClause, HeadCtx, BodyCtx) :-
 	'$lgt_pp_coinductive_'(Head, CoinductiveHead),
 	!,
@@ -8587,6 +8642,25 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_tr_clause'(Fact, _, _, _, _) :-
 	\+ callable(Fact),
 	throw(type_error(callable, Fact)).
+
+'$lgt_tr_clause'(Annotation, TFact, DFact, _, BodyCtx) :-
+	'$lgt_pp_head_annotation_'(Annotation, Functor, Value, Body),
+	!,
+	'$lgt_tr_body'(Body, TBody, DBody, BodyCtx),
+	functor(TFact, Functor, 2),
+	'$lgt_pp_head_annotation_'(TFact, Functor, Value, TBody),
+	functor(DFact, Functor, 2),
+	'$lgt_pp_head_annotation_'(DFact, Functor, Value, DBody).
+
+'$lgt_tr_clause'(Annotation, TFact, DFact, _, BodyCtx) :-
+	'$lgt_pp_fact_annotation_'(Annotation, Functor, Left, Right),
+	!,
+	'$lgt_tr_body'(Left, TLeft, DLeft, BodyCtx),
+	'$lgt_tr_body'(Right, TRight, DRight, BodyCtx),
+	functor(TFact, Functor, 2),
+	'$lgt_pp_fact_annotation_'(TFact, Functor, TLeft, TRight),
+	functor(DFact, Functor, 2),
+	'$lgt_pp_fact_annotation_'(DFact, Functor, DLeft, DRight).
 
 '$lgt_tr_clause'(Fact, TFact, DFact, HeadCtx, BodyCtx) :-
 	'$lgt_pp_coinductive_'(Fact, CoinductiveFact),
@@ -10097,6 +10171,24 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_tr_body'(Alias, ':'(Module, Pred), ':'(Module, Pred), _) :-		% normal predicates
 	'$lgt_pp_use_module_pred_'(Module, Pred, Alias),
 	!.
+
+
+% annotations
+
+'$lgt_tr_body'(Annotation, TAnnotation, DAnnotation, Ctx) :-
+	'$lgt_pp_head_annotation_'(Annotation, Functor, Value, Pred),
+	!,
+	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
+	'$lgt_pp_head_annotation_'(TAnnotation, Functor, Value, TPred),
+	'$lgt_pp_head_annotation_'(DAnnotation, Functor, Value, DPred).
+
+'$lgt_tr_body'(Annotation, TAnnotation, DAnnotation, Ctx) :-
+	'$lgt_pp_fact_annotation_'(Annotation, Functor, Pred1, Pred2),
+	!,
+	'$lgt_tr_body'(Pred1, TPred1, DPred1, Ctx),
+	'$lgt_tr_body'(Pred2, TPred2, DPred2, Ctx),
+	'$lgt_pp_fact_annotation_'(TAnnotation, Functor, TPred1, TPred2),
+	'$lgt_pp_fact_annotation_'(DAnnotation, Functor, DPred1, DPred2).
 
 
 % arithmetic predicates (portability checks)
@@ -13362,6 +13454,15 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	;	Clause = (Head:-Body) ->
 		'$lgt_fix_pred_calls'(Body, FBody),
 		assertz('$lgt_pp_final_entity_clause_'((Head:-FBody)))
+	;	'$lgt_pp_head_annotation_'(Clause, Functor, Value, Body) ->
+		'$lgt_fix_pred_calls'(Body, FBody),
+		'$lgt_pp_head_annotation_'(FClause, Functor, Value, FBody),
+		assertz('$lgt_pp_final_entity_clause_'(FClause))
+	;	'$lgt_pp_fact_annotation_'(Clause, Functor, Body1, Body2) ->
+		'$lgt_fix_pred_calls'(Body1, FBody1),
+		'$lgt_fix_pred_calls'(Body2, FBody2),
+		'$lgt_pp_fact_annotation_'(FClause, Functor, FBody1, FBody2),
+		assertz('$lgt_pp_final_entity_clause_'(FClause))
 	;	assertz('$lgt_pp_final_entity_clause_'(Clause))
 	),
 	fail.
@@ -13470,6 +13571,19 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	functor(Pred, Functor, Arity),		% must fail instead of throwing an exception
 	'$lgt_undef_pred_call'(_, Functor/Arity),
 	!.
+
+'$lgt_fix_pred_calls'(Pred, TPred) :-
+	'$lgt_pp_head_annotation_'(Pred, Functor, Value, Goal),
+	!,
+	'$lgt_fix_pred_calls'(Goal, TGoal),
+	'$lgt_pp_head_annotation_'(TPred, Functor, Value, TGoal).
+
+'$lgt_fix_pred_calls'(Pred, TPred) :-
+	'$lgt_pp_fact_annotation_'(Pred, Functor, Goal1, Goal2),
+	!,
+	'$lgt_fix_pred_calls'(Goal1, TGoal1),
+	'$lgt_fix_pred_calls'(Goal2, TGoal2),
+	'$lgt_pp_fact_annotation_'(TPred, Functor, TGoal1, TGoal2).
 
 '$lgt_fix_pred_calls'(Pred, TPred) :-	% calls to non-standard Prolog built-in meta-predicates
 	'$lgt_pl_built_in'(Pred),
@@ -14450,6 +14564,8 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 '$lgt_lgt_predicate_directive'((coinductive), N) :-
 	N >= 1.
+
+'$lgt_lgt_predicate_directive'(annotation, 1).
 
 
 

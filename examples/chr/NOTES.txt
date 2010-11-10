@@ -9,11 +9,12 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ================================================================
 
 
-% start by loading the example and the required library files:
+To load this example and for sample queries, please see the SCRIPT.txt file.
 
-| ?- logtalk_load(problog(loader)).
-...
+This highly experimental example requires the use of a back-end Prolog
+compiler with a working installation of the optional CHR package. The
+individual examples are adaptations of the examples distributed with CHR.
 
-
-% for sample queries see the comments in the individual example
-% files or the unit tests in the "tests.lgt" file
+For details on CHR see:
+    
+    http://people.cs.kuleuven.be/~tom.schrijvers/CHR/

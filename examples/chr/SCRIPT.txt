@@ -11,9 +11,21 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 % start by loading the example and the required library files:
 
-| ?- logtalk_load(problog(loader)).
+| ?- logtalk_load(chr(loader)).
 ...
 
 
-% for sample queries see the comments in the individual example
-% files or the unit tests in the "tests.lgt" file
+% 
+
+| ?- dom::dom(A, [1,2,3]), dom::dom(A, [3,4,5]).
+A = 3 .
+
+
+%
+
+| ?- leq::leq(X,Y), leq::leq(Y,Z).
+leq::leq(Y,Z)
+leq::leq(X,Y)
+true .
+leq::leq(Y,Z)
+leq::leq(X,Y)

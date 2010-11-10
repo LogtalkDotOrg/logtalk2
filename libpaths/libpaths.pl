@@ -37,6 +37,7 @@ logtalk_library_path(bottles, examples('bottles/')).
 logtalk_library_path(bricks, examples('bricks/')).
 logtalk_library_path(buffer, threads('buffer/')).
 logtalk_library_path(cc, examples('cc/')).
+logtalk_library_path(chr, examples('chr/')).
 logtalk_library_path(classmethods, examples('classmethods/')).
 logtalk_library_path(classvars, examples('classvars/')).
 logtalk_library_path(clp_bp, constraints('bp/')).

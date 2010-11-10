@@ -13,7 +13,10 @@ RELEASE NOTES
 =============
 
 
-2.42.0 - November 10, 2010
+2.42.0 - November ??, 2010
+
+    Added an experimental directive, annotation/1, for supporting Logtalk
+    integration with other languages such as ProbLog and CHR.
 
     Reverted the changes in the previous release that allowed a stand-alone
     object to (also) be used as root of class hierarchies.
@@ -139,6 +142,9 @@ RELEASE NOTES
     Added an example, "delegates", illustrating an implementation of the
     delegation design pattern.
 
+    Added a highly experimental example, "chr", of CHR integration. Currently
+    requires using either SWI-Prolog and YAP as the back-end Prolog compiler.
+
     Updated the "cc" example, adding partial support for Qu-Prolog and
     correcting the declaration of the predicate shell/1 and adding an
     operating_system_type/1 predicate.
@@ -156,6 +162,9 @@ RELEASE NOTES
     (which is supported by Logtalk) instead of the use_module/1 directive
     (which is only supported for some back-end Prolog compilers) in the
     "client" module.
+
+    Updated the "problog" example. Logtalk integration with ProbLog is
+    improved it requires but the latest development version of ProbLog.
 
     Updated the "examples/tester.sh" script in order to work when running
     Logtalk without using the installer scripts.

@@ -25,7 +25,7 @@ Logtalk ::/2 message sending operator. As a workaround, the Logtalk versions
 of the ProbLog examples use a ~/2 operator for probabilistic clauses.
 
 Bugs and limitations on the current ProbLog version (which is under heavy
-development) results in lack of independence between queries and between
-examples. Until these problems are solved, the loader file may need to be
-edit to load a single example at a time. Moreover, the Logtalk session may
-need to be restarted between queries.
+development) result in lack of independence between examples. Until these 
+problems are solved, the loader file may need to be edit to load a single 
+example at a time. Moreover, the Logtalk session may need to be restarted 
+between queries.

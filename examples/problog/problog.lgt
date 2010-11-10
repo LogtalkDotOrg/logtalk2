@@ -1,80 +1,85 @@
 
-:- category(utilities).
+:- category(problog).
 
-	:- private(decompile_facts/2).
-
-	decompile_facts([], []).
-	decompile_facts([TFact| TFacts], [Fact| Facts]) :-
-		this(This),		
-		logtalk::decompile_predicate_head(TFact, This, _, Fact),
-		decompile_facts(TFacts, Facts).
-
-:- end_category.
-
-
-
-:- category(problog,
-	extends(utilities)).
+	:- info([
+		version is 0.3,
+		author is 'Paulo Moura',
+		date is 2010/11/09,
+		comment is 'Interface predicates for ProbLog integration.']).
 
 	:- public(problog_exact/3).
 
-	problog_exact(problog_neg(A),B,C) :-
+	problog_exact(problog_neg(A), B, C) :-
 		!,
 		this(This),
-		problog:problog_exact(tabling:problog_neg(This::A),B,C).
-	problog_exact(A,B,C) :-
+		logtalk::compile_predicate_heads(A, This, TA, _),
+		problog:problog_exact(tabling:problog_neg(user:TA), B, C).
+	problog_exact(A, B, C) :-
 		this(This),
-		problog:problog_exact(This::A,B,C).
+		logtalk::compile_predicate_heads(A, This, TA, _),
+		problog:problog_exact(TA, B, C).
 
 	:- public(problog_max/3).
 
 	problog_max(A,B,C) :-
 		this(This),
-		problog:problog_max(This::A,B,TC),
-		::decompile_facts(TC, C).
+		logtalk::compile_predicate_heads(A, This, TA, _),
+		problog:problog_max(TA, B, TC),
+		problog_utilities::decompile_facts(TC, This, C).
 
 	:- public(problog_kbest/4).
 
 	problog_kbest(A, B, C, D) :-
 		this(This),
-		problog:problog_kbest(This::A, B, C, D).
+		logtalk::compile_predicate_heads(A, This, TA, _),
+		problog:problog_kbest(TA, B, C, D).
 
 	:- public(problog_montecarlo/3).
 
-	problog_montecarlo(A,B,C) :-
+	problog_montecarlo(A, B, C) :-
 		this(This),
-		problog:problog_montecarlo(This::A,B,C).
+		logtalk::compile_predicate_heads(A, This, TA, _),
+		problog:problog_montecarlo(TA, B, C).
 
 	:- public(problog_delta/5).
 
 	problog_delta(A, B, C, D, E) :-
 		this(This),
-		problog:problog_delta(This::A, B, C, D, E).
+		logtalk::compile_predicate_heads(A, This, TA, _),
+		problog:problog_delta(TA, B, C, D, E).
 
 	:- public(problog_threshold/5).
 
 	problog_threshold(A, B, C, D, E) :-
 		this(This),
-		problog:problog_threshold(This::A, B, C, D, E).
+		logtalk::compile_predicate_heads(A, This, TA, _),
+		problog:problog_threshold(TA, B, C, D, E).
 
 	:- public(problog_low/4).
 
 	problog_low(A, B, C, D) :-
 		this(This),
-		problog:problog_low(This::A, B, C, D).
+		logtalk::compile_predicate_heads(A, This, TA, _),
+		problog:problog_low(TA, B, C, D).
 
 :- end_category.
 
 
 
-:- category(dtproblog,
-	extends(utilities)).
+:- category(dtproblog).
+
+	:- info([
+		version is 0.3,
+		author is 'Paulo Moura',
+		date is 2010/11/09,
+		comment is 'Interface predicates for ProbLog integration.']).
 
 	:- public(dtproblog_solve/2).
 
 	dtproblog_solve(Strategy, ExpectedValue) :-
+		this(This),
 		dtproblog:dtproblog_solve(TStrategy, ExpectedValue),
-		::decompile_facts(TStrategy, Strategy).
+		problog_utilities::decompile_facts(TStrategy, This, Strategy).
 
 	:- public(dtproblog_ev/2).
 
@@ -91,20 +96,28 @@
 
 	decompile_imp_facts([], []).
 	decompile_imp_facts(['=>'(TFact,Value)| TFacts], ['=>'(Fact,Value)| Facts]) :-
-		::decompile_facts([TFact], [Fact]),
+		this(This),
+		problog_utilities::decompile_facts([TFact], This, [Fact]),
 		decompile_imp_facts(TFacts, Facts).
 
 	:- public(dtproblog_decisions/1).
 
 	dtproblog_decisions(Decisions) :-
+		this(This),
 		dtproblog:dtproblog_decisions(TDecisions),
-		::decompile_facts(TDecisions, Decisions).
+		problog_utilities::decompile_facts(TDecisions, This, Decisions).
 
 :- end_category.
 
 
 
 :- category(problog_learning).
+
+	:- info([
+		version is 0.3,
+		author is 'Paulo Moura',
+		date is 2010/11/09,
+		comment is 'Interface predicates for ProbLog integration.']).
 
 	:- public(do_learning/1).
 
