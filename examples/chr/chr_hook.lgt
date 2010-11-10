@@ -23,7 +23,7 @@
 		functor(Directive, Functor, Arity),
 		(	Functor == object, Arity =< 5 ->
 			true
-		;	Functor == categories, Arity =< 3
+		;	Functor == category, Arity =< 3
 		),
 		chr_annotations(Annotations).
 
