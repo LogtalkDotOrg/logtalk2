@@ -21,6 +21,7 @@
 	term_expansion((:- Directive), [(:- Directive)| Annotations]) :-
 		nonvar(Directive),
 		functor(Directive, Functor, Arity),
+		Arity >= 1,
 		(	Functor == object, Arity =< 5 ->
 			true
 		;	Functor == category, Arity =< 3
