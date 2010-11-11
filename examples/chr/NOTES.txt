@@ -9,12 +9,16 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ================================================================
 
 
-To load this example and for sample queries, please see the SCRIPT.txt file.
+To load this example and for sample queries, please see the SCRIPT.txt
+file.
 
 This highly experimental example requires the use of a back-end Prolog
-compiler with a working installation of the optional CHR package. The
-individual examples are adaptations of the examples distributed with CHR.
+compiler with support for CHR. Tested with Qu-Prolog, SWI-Prolog, and
+YAP. The individual examples are adaptations of examples distributed
+with CHR.
 
-For details on CHR see:
-    
-    http://people.cs.kuleuven.be/~tom.schrijvers/CHR/
+An issue with the implementation of CHR found on SWI-Prolog and YAP
+prevents loading more than one Logtalk object or category containing
+CHR code. For details on this CHR implementation see:
+
+	http://people.cs.kuleuven.be/~tom.schrijvers/CHR/

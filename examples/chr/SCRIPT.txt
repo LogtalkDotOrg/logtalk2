@@ -24,8 +24,10 @@ A = 3 .
 %
 
 | ?- leq::leq(X,Y), leq::leq(Y,Z).
-leq::leq(Y,Z)
-leq::leq(X,Y)
+leq::leq(_G11112,_G11119)
+leq::leq(_G11113,_G11119)
+leq::leq(_G11112,_G11113)
 true .
-leq::leq(Y,Z)
-leq::leq(X,Y)
+leq::leq(_G11112,_G11119)
+leq::leq(_G11113,_G11119)
+leq::leq(_G11112,_G11113)

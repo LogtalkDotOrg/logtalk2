@@ -3,15 +3,26 @@
 
 	:- public(dom/2).
 
-	:- use_module(library(lists), [intersection/3, memberchk/2]).
-
-	:- chr_type list(T) ---> [] ; [T| list(T)].
-
-	:- chr_constraint(dom(?int, +list(int))).
+	:- chr_constraint(dom/2).
 
 	dom(_, []) <=> fail.
 	dom(X, [Y]) <=> X = Y.
 	dom(X, L) <=> nonvar(X) | memberchk(X, L).
 	dom(X, L1), dom(X, L2) <=> intersection(L1, L2, L3), dom(X, L3).
+
+	memberchk(H, [H| _]) :-
+		!.
+	memberchk(H, [_| T]) :-
+		memberchk(H, T).
+
+	intersection([], _, []) :-
+		!.
+	intersection([H| T], L, I) :-
+		memberchk(H, L),
+		!,
+		I = [H| R],
+		intersection(T, L, R).
+	intersection([_| T], L, R) :-
+		intersection(T, L, R).
 
 :- end_object.
