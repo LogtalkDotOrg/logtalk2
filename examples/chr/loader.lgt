@@ -16,6 +16,7 @@
 	:- initialization((
 		logtalk_load(chr_hook, [reload(skip)]),	% allow for static binding
 		logtalk_load(dom, [hook(chr_hook)])
+%		logtalk_load(family, [hook(chr_hook)])
 %		logtalk_load(fib, [hook(chr_hook)])
 %		logtalk_load(fibonacci, [hook(chr_hook)])
 %		logtalk_load(gcd, [hook(chr_hook)])
@@ -26,6 +27,7 @@
 	:- initialization((
 		logtalk_load(chr_hook, [reload(skip)]),	% allow for static binding
 		logtalk_load(dom, [hook(chr_hook)]),
+		logtalk_load(family, [hook(chr_hook)]),
 		logtalk_load(fib, [hook(chr_hook)]),
 		logtalk_load(fibonacci, [hook(chr_hook)]),
 		logtalk_load(gcd, [hook(chr_hook)]),

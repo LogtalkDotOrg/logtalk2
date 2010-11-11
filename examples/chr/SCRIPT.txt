@@ -15,10 +15,31 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ...
 
 
-% 
+% simple finite domain constraint solver:
 
 | ?- dom::dom(A, [1,2,3]), dom::dom(A, [3,4,5]).
 A = 3 .
+
+
+% Slim Abdennadher and Henning Christiansen family relations program:
+
+?- family::start, family::sibling(peter,mary).
+family::person(paul,male)
+family::person(jane,female)
+family::person(peter,male)
+family::person(mary,female)
+family::person(john,male)
+family::father(john,peter)
+family::father(john,mary)
+family::mother(jane,mary)
+family::diff(peter,mary)
+true .
+
+?- family::start, family::sibling(paul,mary).
+false.
+
+?- family::father(X,Y), family::mother(X,Y).
+false.
 
 
 % computing Fibonacci numbers:

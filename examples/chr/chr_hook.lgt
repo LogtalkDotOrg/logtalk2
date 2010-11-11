@@ -8,8 +8,8 @@
 		date is 2010/11/09,
 		comment is 'Hook object for compiling objects and categories containing CHR code.']).
 
-	term_expansion((:- chr_constraint(F/A)), [{(:- chr_constraint(TF/TA))}, (:- dynamic(F/A))]) :-
-		logtalk::compile_predicate_indicators(F/A, TF/TA).
+	term_expansion((:- chr_constraint(PIs)), [{(:- chr_constraint(TPIs))}, (:- dynamic(PIs))]) :-
+		logtalk::compile_predicate_indicators(PIs, TPIs).
 
 	term_expansion((:- chr_constraint(H)), [{(:- chr_constraint(TH))}, (:- dynamic(F/A))]) :-
 		functor(H, F, A),

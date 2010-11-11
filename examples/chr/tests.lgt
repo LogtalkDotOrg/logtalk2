@@ -14,6 +14,17 @@
 		A =:= 3.
 	:- endif.
 
+	:- if(current_object(family)).
+		test(chr_family_1) :-
+			family::start, family::sibling(peter,mary).
+
+		test(chr_family_2) :-
+			\+ (family::start, family::sibling(paul,mary)).
+
+		test(chr_family_3) :-
+			\+ (family::father(X,Y), family::mother(X,Y)).
+	:- endif.
+
 	:- if(current_object(fib)).
 	test(chr_fib_1) :-
 		fib::fib(5, M),
