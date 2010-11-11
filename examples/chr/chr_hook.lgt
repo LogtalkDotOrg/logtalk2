@@ -17,6 +17,8 @@
 
 	% for now, CHR type declarations are global
 	term_expansion((:- chr_type(T)), [{(:- chr_type(T))}]).
+	% the same for CHR options
+	term_expansion((:- chr_option(Option, Value)), [{(:- chr_option(Option, Value))}]).
 
 	term_expansion((:- Directive), [(:- Directive)| Annotations]) :-
 		nonvar(Directive),
@@ -36,10 +38,11 @@
 		(:- annotation('\\'(0,0)))
 	]).
 
-	:- if((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == swi; Dialect == yap))).
+	:- if((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == swi; Dialect == yap; Dialect == sicstus))).
 		:- multifile(user:portray/1).
 		:- dynamic(user:portray/1).
 		user:portray(THead) :-
+			callable(THead),
 			logtalk::decompile_predicate_head(THead, Entity, _, Head),
 			writeq(Entity::Head).
 	:- endif.

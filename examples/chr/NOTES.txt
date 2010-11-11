@@ -13,12 +13,13 @@ To load this example and for sample queries, please see the SCRIPT.txt
 file.
 
 This highly experimental example requires the use of a back-end Prolog
-compiler with support for CHR. Tested with Qu-Prolog, SWI-Prolog, and
-YAP. The individual examples are adaptations of examples distributed
-with CHR.
+compiler with support for CHR. Tested with Qu-Prolog, SICStus Prolog,
+SWI-Prolog, and YAP. The individual examples are adaptations of examples
+distributed with CHR.
 
-An issue with the implementation of CHR found on SWI-Prolog and YAP
-prevents loading more than one Logtalk object or category containing
-CHR code. For details on this CHR implementation see:
+An issue with the implementations of CHR found on SICStus Prolog,
+SWI-Prolog, and YAP prevents loading more than one Logtalk object
+or category containing CHR code at a time. For details on these
+CHR implementations see:
 
 	http://people.cs.kuleuven.be/~tom.schrijvers/CHR/

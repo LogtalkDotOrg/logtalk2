@@ -143,7 +143,8 @@ RELEASE NOTES
     delegation design pattern.
 
     Added a highly experimental example, "chr", of CHR integration. Currently
-    requires using either SWI-Prolog and YAP as the back-end Prolog compiler.
+    requires the use of Qu-Prolog, SWI-Prolog, or YAP as the back-end Prolog
+    compiler.
 
     Updated the "cc" example, adding partial support for Qu-Prolog and
     correcting the declaration of the predicate shell/1 and adding an
