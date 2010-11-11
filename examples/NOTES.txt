@@ -91,7 +91,8 @@ cc
 
 chr
 	highly experimental example of CHR integration
-	(requires Logtalk to be run with either SWI-Prolog or YAP)
+	(requires Logtalk to be run with either Qu-Prolog, SICStus Prolog,
+	SWI-Prolog, or YAP)
 
 classmethods
 	example of defining "class methods" as found on some class-based
