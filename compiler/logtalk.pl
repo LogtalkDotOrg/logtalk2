@@ -14241,21 +14241,13 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_compile_predicate_heads'(Head, _, _, _) :-
 	var(Head),
 	throw(instantiation_error).
+
 '$lgt_compile_predicate_heads'(_, Entity, _, _) :-
 	nonvar(Entity),
 	\+ callable(Entity),
 	throw(type_error(entity_identifier, Entity)).
-'$lgt_compile_predicate_heads'([], _, [], _) :-
-	!.
-'$lgt_compile_predicate_heads'([Head| Heads], Entity, [THead| THeads], Ctx) :-
-	!,
-	'$lgt_compile_predicate_heads'(Head, Entity, THead, Ctx),
-	'$lgt_compile_predicate_heads'(Heads, Entity, THeads, Ctx).
-'$lgt_compile_predicate_heads'((Head, Heads), Entity, (THead, THeads), Ctx) :-
-	!,
-	'$lgt_compile_predicate_heads'(Head, Entity, THead, Ctx),
-	'$lgt_compile_predicate_heads'(Heads, Entity, THeads, Ctx).
-'$lgt_compile_predicate_heads'(Head, Entity, THead, Ctx) :-
+
+'$lgt_compile_predicate_heads'(Heads, Entity, THeads, Ctx) :-
 	(	var(Entity) ->
 		'$lgt_pp_entity'(_, Entity, Prefix, _, _)
 	;	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _, _, _, _) ->
@@ -14265,16 +14257,38 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	;	'$lgt_current_protocol_'(Entity, Prefix, _, _, _) ->
 		true
 	),
-	functor(Head, Functor, Arity),
-	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
-	functor(THead, TFunctor, TArity),
-	Head =.. [Functor| Args],
-	THead =.. [TFunctor| Targs],
-	'$lgt_append'(Args, [Ctx], Targs).
+	'$lgt_compile_predicate_heads_aux'(Heads, Prefix, THeads, Ctx).
+
+
+'$lgt_compile_predicate_heads_aux'([], _, [], _) :-
+	!.
+
+'$lgt_compile_predicate_heads_aux'([Head| Heads], Prefix, [THead| THeads], Ctx) :-
+	!,
+	'$lgt_compile_predicate_heads_aux'(Head, Prefix, THead, Ctx),
+	'$lgt_compile_predicate_heads_aux'(Heads, Prefix, THeads, Ctx).
+
+'$lgt_compile_predicate_heads_aux'((Head, Heads), Prefix, (THead, THeads), Ctx) :-
+	!,
+	'$lgt_compile_predicate_heads_aux'(Head, Prefix, THead, Ctx),
+	'$lgt_compile_predicate_heads_aux'(Heads, Prefix, THeads, Ctx).
+
+'$lgt_compile_predicate_heads_aux'(Head, Prefix, THead, Ctx) :-
+	(	callable(Head) ->
+		functor(Head, Functor, Arity),
+		'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
+		functor(THead, TFunctor, TArity),
+		Head =.. [Functor| Args],
+		THead =.. [TFunctor| Targs],
+		'$lgt_append'(Args, [Ctx], Targs)
+	;	throw(type_error(callable, Head))
+	).
+
 
 
 '$lgt_compile_predicate_heads'(Heads, THeads) :-
 	'$lgt_compile_predicate_heads'(Heads, _, THeads, _).
+
 
 
 '$lgt_compile_predicate_heads'(Heads, THeads, Ctx) :-
@@ -14287,6 +14301,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 % decompiles the predicate head used for a compiled predicate
 
 '$lgt_decompile_predicate_head'(THead, Entity, Type, Head) :-
+	callable(THead),
 	functor(THead, TFunctor, TArity),
 	(	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _, _, _, _),
 		Type = object
@@ -14312,21 +14327,13 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_compile_predicate_indicators'(PI, _, _) :-
 	var(PI),
 	throw(instantiation_error).
+
 '$lgt_compile_predicate_indicators'(_, Entity, _) :-
 	nonvar(Entity),
 	\+ callable(Entity),
 	throw(type_error(entity_identifier, Entity)).
-'$lgt_compile_predicate_indicators'([], _, []) :-
-	!.
-'$lgt_compile_predicate_indicators'([PI| PIs], Entity, [TPI| TPIs]) :-
-	!,
-	'$lgt_compile_predicate_indicators'(PI, Entity, TPI),
-	'$lgt_compile_predicate_indicators'(PIs, Entity, TPIs).
-'$lgt_compile_predicate_indicators'((PI, PIs), Entity, (TPI, TPIs)) :-
-	!,
-	'$lgt_compile_predicate_indicators'(PI, Entity, TPI),
-	'$lgt_compile_predicate_indicators'(PIs, Entity, TPIs).
-'$lgt_compile_predicate_indicators'(PI, Entity, TFunctor/TArity) :-
+
+'$lgt_compile_predicate_indicators'(PIs, Entity, TPIs) :-
 	(	var(Entity) ->
 		'$lgt_pp_entity'(_, Entity, Prefix, _, _)
 	;	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _, _, _, _) ->
@@ -14336,12 +14343,30 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	;	'$lgt_current_protocol_'(Entity, Prefix, _, _, _) ->
 		true
 	),
+	'$lgt_compile_predicate_indicators_aux'(PIs, Prefix, TPIs).
+
+
+'$lgt_compile_predicate_indicators_aux'([], _, []) :-
+	!.
+
+'$lgt_compile_predicate_indicators_aux'([PI| PIs], Prefix, [TPI| TPIs]) :-
+	!,
+	'$lgt_compile_predicate_indicators_aux'(PI, Prefix, TPI),
+	'$lgt_compile_predicate_indicators_aux'(PIs, Prefix, TPIs).
+
+'$lgt_compile_predicate_indicators_aux'((PI, PIs), Prefix, (TPI, TPIs)) :-
+	!,
+	'$lgt_compile_predicate_indicators_aux'(PI, Prefix, TPI),
+	'$lgt_compile_predicate_indicators_aux'(PIs, Prefix, TPIs).
+
+'$lgt_compile_predicate_indicators_aux'(PI, Prefix, TFunctor/TArity) :-
 	(	'$lgt_valid_predicate_indicator'(PI, Functor, Arity) ->
 		'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity)
 	;	'$lgt_valid_non_terminal_indicator'(PI, Functor, _, ExtArity) ->
 		'$lgt_construct_predicate_indicator'(Prefix, Functor/ExtArity, TFunctor/TArity)
 	;	throw(type_error(predicate_indicator, PI))
 	).
+
 
 
 '$lgt_compile_predicate_indicators'(Heads, THeads) :-
