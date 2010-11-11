@@ -1,8 +1,15 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% simple constraint solver for inequalities between variables
+%% thom fruehwirth ECRC 950519, LMU 980207, 980311
+%%
+%% ported to hProlog by Tom Schrijvers 
+%% 
+%% ported to Logtalk by Paulo Moura
 
 :- object(leq).
 
 	:- public(leq/2).
-
 	:- chr_constraint(leq/2).
 
 	reflexivity  @ leq(X,X) <=> true.
