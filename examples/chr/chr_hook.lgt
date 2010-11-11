@@ -35,7 +35,9 @@
 		(:- annotation('==>'(0,0))),
 		(:- annotation('<=>'(0,0))),
 		(:- annotation('|'(0,0))),
-		(:- annotation('\\'(0,0)))
+		(:- annotation('\\'(0,0))),
+		(:- annotation('#'(0,*))),
+		(:- annotation(pragma(0,*)))
 	]).
 
 	:- if((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == swi; Dialect == yap; Dialect == sicstus))).

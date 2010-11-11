@@ -21,7 +21,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 A = 3 .
 
 
-%
+% computing Fibonacci numbers:
 
 | ?- fib::fib(5, M),
 fib::fib(1,1)
@@ -33,12 +33,23 @@ fib::fib(5,8)
 M = 8 .
 
 
-%
+%  Bart Demoen and Tom Schrijvers version of the fibonacci program:
+
+| ?- fibonacci::fibonacci(5, M).
+fibonacci::fibonacci(0,1)
+fibonacci::fibonacci(1,1)
+fibonacci::fibonacci(2,2)
+fibonacci::fibonacci(3,3)
+fibonacci::fibonacci(4,5)
+fibonacci::fibonacci(5,8)
+M = 8 .
+
+
+% finding the greatest common divisor between two positive integers:
 
 | ?- gcd::gcd(2), gcd::gcd(3).
 gcd::gcd(1)
 true .
-
 
 | ?- X is 37*11*11*7*3, Y is 11*7*5*3, Z is 37*11*5, gcd::gcd(X), gcd::gcd(Y), gcd::gcd(Z).
 gcd::gcd(11)
@@ -47,7 +58,7 @@ Y = 1155,
 Z = 2035 .
 
 
-%
+% using a simple constraint solver for inequalities between variables:
 
 | ?- leq::leq(X,Y), leq::leq(Y,Z).
 leq::leq(_G11112,_G11119)
@@ -56,7 +67,7 @@ leq::leq(_G11112,_G11113)
 true .
 
 
-%
+% using an implementation of the Sieve of Eratosthenes to compute primes:
 
 | ?- primes::candidate(29).
 primes::prime(2)

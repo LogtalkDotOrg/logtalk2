@@ -20,6 +20,12 @@
 		M =:= 8.
 	:- endif.
 
+	:- if(current_object(fibonacci)).
+	test(chr_fibonacci_1) :-
+		fibonacci::fibonacci(5, M),
+		M =:= 8.
+	:- endif.
+
 	:- if(current_object(gcd)).
 	test(chr_gcd_1) :-
 		gcd::gcd(2), gcd::gcd(3).
