@@ -10,7 +10,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 :- object(office,
-	imports(problog)).
+	imports(problog_inference)).
 
 	:- public(room_has_window/0).
 

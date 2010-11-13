@@ -5,7 +5,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 :- object(graph,
-	imports(problog)).
+	imports(problog_inference)).
 
 	:- public(path/2).
 

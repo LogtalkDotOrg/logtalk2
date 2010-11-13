@@ -1,10 +1,10 @@
 
-:- category(problog).
+:- category(problog_inference).
 
 	:- info([
-		version is 0.3,
+		version is 0.4,
 		author is 'Paulo Moura',
-		date is 2010/11/09,
+		date is 2010/11/13,
 		comment is 'Interface predicates for ProbLog integration.']).
 
 	:- public(problog_exact/3).
@@ -66,12 +66,12 @@
 
 
 
-:- category(dtproblog).
+:- category(problog_decision_theory).
 
 	:- info([
-		version is 0.3,
+		version is 0.4,
 		author is 'Paulo Moura',
-		date is 2010/11/09,
+		date is 2010/11/13,
 		comment is 'Interface predicates for ProbLog integration.']).
 
 	:- public(dtproblog_solve/2).
@@ -114,9 +114,9 @@
 :- category(problog_learning).
 
 	:- info([
-		version is 0.3,
+		version is 0.4,
 		author is 'Paulo Moura',
-		date is 2010/11/09,
+		date is 2010/11/13,
 		comment is 'Interface predicates for ProbLog integration.']).
 
 	:- public(do_learning/1).
