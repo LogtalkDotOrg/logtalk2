@@ -2,22 +2,22 @@
 :- protocol(heapp).
 
 	:- info([
-		version is 1.0,
+		version is 1.01,
 		author is 'Richard O''Keefe; adapted to Logtalk by Paulo Moura and Victor Lagerkvist.',
-		date is 2010/02/19,
+		date is 2010/11/13,
 		comment is 'Heap protocol.']).
 
 	:- public(insert/4).
 	:- mode(insert(+key, +value, +heap, -heap), one).
 	:- info(insert/4, [
 		comment is 'Inserts the new Key-Value pair into a heap, returning the updated heap.',
-		argnames is ['OldHeap', 'Key', 'Value', 'NewHeap']]).
+		argnames is ['Key', 'Value', 'Heap', 'NewHeap']]).
 
 	:- public(insert_all/3).
 	:- mode(insert_all(@list(pairs), +heap, -heap), one).
 	:- info(insert_all/3, [
 		comment is 'Inserts a list of Key-Value pairs into a heap, returning the updated heap.',
-		argnames is ['List', 'OldHeap', 'NewHeap']]).
+		argnames is ['List', 'Heap', 'NewHeap']]).
 
 	:- public(delete/4).
 	:- mode(delete(+heap, ?key, ?value, -heap), zero_or_one).
