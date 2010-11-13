@@ -22,16 +22,15 @@ RELEASE NOTES
     object to (also) be used as root of class hierarchies.
 
     Defined a set of low-level utility predicates, available as public methods
-    from the "logtalk" built-in object (consult the User Manual for details on
-    these predicates). In addition, modified the (virtual) compilation of this
-    object in order to always interpret it as a prototype.
+    from the "logtalk" built-in object. Modified the (virtual) compilation of
+    this object in order to always interpret it as a prototype.
 
     Simplified and improved the performance of the predicate lookup caching
     code. Simplified and improved the performance of the built-in methods
     asserta/1 and assertz/1 when asserting a clause for a new predicate.
     Simplified the updating of the internal table for dynamically defined
     predicates when using the built-in methods retract/1 and retractall/1.
-    Simplified compiler code used when creating new entities.
+    Simplified the compiler code used when creating new entities.
 
     Improved the performance of source file compilation by avoiding redundant
     cleaning of auxiliar compilation predicates.
@@ -115,7 +114,8 @@ RELEASE NOTES
     directives.
 
     Workaround a B-Prolog 7.4 bug where the built-in predicate callable/1 is
-    missing the property "built_in".
+    missing the property "built_in". Declared the predicates and/3, equiv/3,
+    and or/3 as built-in predicates.
 
     Updated the Qu-Prolog integration files in order to avoid a segmentation
     fault when using a 32 bits compilation of Qu-Prolog. Thanks to Peter
@@ -146,15 +146,15 @@ RELEASE NOTES
     requires the use of Qu-Prolog, SICStus Prolog, SWI-Prolog, or YAP as the
     back-end Prolog compiler.
 
-    Updated the "cc" example, adding partial support for Qu-Prolog and
-    correcting the declaration of the predicate shell/1 and adding an
-    operating_system_type/1 predicate.
+    Updated the "cc" example, adding support for Qu-Prolog, adding an
+    operating_system_type/1 predicate, and correcting the declaration
+    of the predicate shell/1.
 
     Updated the "help" example, allowing it to be loaded when using any
     supported back-end Prolog compiler.
 
     Updated the "benchmarks" example in order to use more realistic tests for
-    the database built-in predicates and methods assertz/1 and retract/1.
+    the database built-in predicates and the methods assertz/1 and retract/1.
 
     Updated the "operators" example in order to avoid a unit test failure
     when reloading the "triple.lgt" source file.
@@ -167,8 +167,8 @@ RELEASE NOTES
     Updated the "problog" example. Logtalk integration with ProbLog is
     improved it requires but the latest development version of ProbLog.
 
-    Updated the "examples/tester.sh" script in order to work when running
-    Logtalk without using the installer scripts.
+    Updated the "examples/tester.sh" script in order to also work when
+    running Logtalk without using the installer packages or scripts.
 
     Updated the "build_release.sh" script in order to calculate all the
     necessary checksums when building the MacOS X installer package.
