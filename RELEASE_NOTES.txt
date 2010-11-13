@@ -146,6 +146,9 @@ RELEASE NOTES
     requires the use of Qu-Prolog, SICStus Prolog, SWI-Prolog, or YAP as the
     back-end Prolog compiler.
 
+    Added individual examples of using B-Prolog Action Rules within objects
+    to the "constraints/bp" example.
+
     Updated the "cc" example, adding support for Qu-Prolog, adding an
     operating_system_type/1 predicate, and correcting the declaration
     of the predicate shell/1.

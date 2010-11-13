@@ -17,8 +17,11 @@ from the original author, Neng-Fa Zhou.
 
 The B-Prolog ::/2 finite-domain built-in predicate clashes with the Logtalk 
 ::/2 message sending operator. The solution is to use instead the alternative
-in/2 predicate.
+B-Prolog in/2 built-in predicate.
 
 The built-in predicate_property/2 predicate fails to report some of the 
 constraint predicates as built-in predicates. The solution is to encapsulate
 calls to these predicates using the {}/1 Logtalk control construct.
+
+When compiling objects and categories making use of B-Prolog Action Rules, the
+object "action_rules_hook" must be used as a hook object.
