@@ -10565,8 +10565,8 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 '$lgt_tr_meta_args'([Arg| Args], [MArg| MArgs], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
 	'$lgt_tr_meta_arg'(MArg, Arg, Ctx, TArg0, DArg0),
-	'$lgt_fix_predicate_calls'(TArg0, TArg),
-	'$lgt_fix_predicate_calls'(DArg0, DArg),
+	'$lgt_fix_predicate_calls'(TArg0, TArg, false),
+	'$lgt_fix_predicate_calls'(DArg0, DArg, false),
 	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs).
 
 
@@ -10588,8 +10588,8 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 '$lgt_tr_module_meta_args'([Arg| Args], [MArg| MArgs], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
 	'$lgt_tr_module_meta_arg'(MArg, Arg, Ctx, TArg0, DArg0),
-	'$lgt_fix_predicate_calls'(TArg0, TArg),
-	'$lgt_fix_predicate_calls'(DArg0, DArg),
+	'$lgt_fix_predicate_calls'(TArg0, TArg, false),
+	'$lgt_fix_predicate_calls'(DArg0, DArg, false),
 	'$lgt_tr_module_meta_args'(Args, MArgs, Ctx, TArgs, DArgs).
 
 
@@ -12029,7 +12029,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 		true
 	;	Type == protocol ->
 		'$lgt_report_unknown_entities'(Type, Entity)
-	;	'$lgt_report_undef_pred_calls'(Type, Entity),
+	;	'$lgt_report_undefined_predicate_calls'(Type, Entity),
 		'$lgt_report_misspelt_calls'(Type, Entity),
 		'$lgt_report_non_portable_calls'(Type, Entity),
 		'$lgt_report_non_portable_functions'(Type, Entity),
@@ -13466,15 +13466,15 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	(	Clause = {Term} ->
 		assertz('$lgt_pp_final_entity_clause_'(Term))
 	;	Clause = (Head:-Body) ->
-		'$lgt_fix_predicate_calls'(Body, FBody),
+		'$lgt_fix_predicate_calls'(Body, FBody, false),
 		assertz('$lgt_pp_final_entity_clause_'((Head:-FBody)))
 	;	'$lgt_pp_value_annotation_'(Clause, Functor, Value, Body) ->
-		'$lgt_fix_predicate_calls'(Body, FBody),
+		'$lgt_fix_predicate_calls'(Body, FBody, true),
 		'$lgt_pp_value_annotation_'(FClause, Functor, Value, FBody),
 		assertz('$lgt_pp_final_entity_clause_'(FClause))
 	;	'$lgt_pp_goal_annotation_'(Clause, Functor, Body1, Body2) ->
-		'$lgt_fix_predicate_calls'(Body1, FBody1),
-		'$lgt_fix_predicate_calls'(Body2, FBody2),
+		'$lgt_fix_predicate_calls'(Body1, FBody1, true),
+		'$lgt_fix_predicate_calls'(Body2, FBody2, true),
 		'$lgt_pp_goal_annotation_'(FClause, Functor, FBody1, FBody2),
 		assertz('$lgt_pp_final_entity_clause_'(FClause))
 	;	assertz('$lgt_pp_final_entity_clause_'(Clause))
@@ -13483,7 +13483,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 '$lgt_fix_predicate_calls' :-
 	retract('$lgt_pp_entity_init_'(Call)),
-	'$lgt_fix_predicate_calls'(Call, Fixed),
+	'$lgt_fix_predicate_calls'(Call, Fixed, false),
 	assertz('$lgt_pp_final_entity_init_'(Fixed)),
 	fail.
 
@@ -13491,115 +13491,119 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 
 
-% '$lgt_fix_predicate_calls'(+body, -body)
+% '$lgt_fix_predicate_calls'(+body, -body, +atom)
 %
-% fixes predicate calls in a clause body
+% fixes predicate calls in a clause body;
+% the third argument is the atom "true" if we are fixing an annotated body
 
-'$lgt_fix_predicate_calls'(Pred, Pred) :-
+'$lgt_fix_predicate_calls'(Pred, Pred, _) :-
 	var(Pred),
 	!.
 
-'$lgt_fix_predicate_calls'((Pred1, Pred2), (TPred1, TPred2)) :-
-	!,
-	'$lgt_fix_predicate_calls'(Pred1, TPred1),
-	'$lgt_fix_predicate_calls'(Pred2, TPred2).
+'$lgt_fix_predicate_calls'({Pred}, {Pred}, _) :-
+	!.
 
-'$lgt_fix_predicate_calls'((Pred1; Pred2), (TPred1; TPred2)) :-
+'$lgt_fix_predicate_calls'((Pred1, Pred2), (TPred1, TPred2), Annotation) :-
 	!,
-	'$lgt_fix_predicate_calls'(Pred1, TPred1),
-	'$lgt_fix_predicate_calls'(Pred2, TPred2).
+	'$lgt_fix_predicate_calls'(Pred1, TPred1, Annotation),
+	'$lgt_fix_predicate_calls'(Pred2, TPred2, Annotation).
 
-'$lgt_fix_predicate_calls'((Pred1 -> Pred2), (TPred1 -> TPred2)) :-
+'$lgt_fix_predicate_calls'((Pred1; Pred2), (TPred1; TPred2), Annotation) :-
 	!,
-	'$lgt_fix_predicate_calls'(Pred1, TPred1),
-	'$lgt_fix_predicate_calls'(Pred2, TPred2).
+	'$lgt_fix_predicate_calls'(Pred1, TPred1, Annotation),
+	'$lgt_fix_predicate_calls'(Pred2, TPred2, Annotation).
 
-'$lgt_fix_predicate_calls'(\+ Pred, \+ TPred) :-
+'$lgt_fix_predicate_calls'((Pred1 -> Pred2), (TPred1 -> TPred2), Annotation) :-
 	!,
-	'$lgt_fix_predicate_calls'(Pred, TPred).
+	'$lgt_fix_predicate_calls'(Pred1, TPred1, Annotation),
+	'$lgt_fix_predicate_calls'(Pred2, TPred2, Annotation).
 
-'$lgt_fix_predicate_calls'(Var^Pred, Var^TPred) :-
+'$lgt_fix_predicate_calls'(\+ Pred, \+ TPred, Annotation) :-
 	!,
-	'$lgt_fix_predicate_calls'(Pred, TPred).
+	'$lgt_fix_predicate_calls'(Pred, TPred, Annotation).
 
-'$lgt_fix_predicate_calls'(call(Pred), call(TPred)) :-
+'$lgt_fix_predicate_calls'(Var^Pred, Var^TPred, Annotation) :-
 	!,
-	'$lgt_fix_predicate_calls'(Pred, TPred).
+	'$lgt_fix_predicate_calls'(Pred, TPred, Annotation).
 
-'$lgt_fix_predicate_calls'(once(Pred), once(TPred)) :-
+'$lgt_fix_predicate_calls'(call(Pred), call(TPred), Annotation) :-
 	!,
-	'$lgt_fix_predicate_calls'(Pred, TPred).
+	'$lgt_fix_predicate_calls'(Pred, TPred, Annotation).
 
-'$lgt_fix_predicate_calls'(catch(Goal, Catcher, Recovery), catch(TGoal, Catcher, TRecovery)) :-
+'$lgt_fix_predicate_calls'(once(Pred), once(TPred), Annotation) :-
 	!,
-	'$lgt_fix_predicate_calls'(Goal, TGoal),
-	'$lgt_fix_predicate_calls'(Recovery, TRecovery).
+	'$lgt_fix_predicate_calls'(Pred, TPred, Annotation).
 
-'$lgt_fix_predicate_calls'(bagof(Term, Pred, List), bagof(Term, TPred, List)) :-
+'$lgt_fix_predicate_calls'(catch(Goal, Catcher, Recovery), catch(TGoal, Catcher, TRecovery), Annotation) :-
 	!,
-	'$lgt_fix_predicate_calls'(Pred, TPred).
+	'$lgt_fix_predicate_calls'(Goal, TGoal, Annotation),
+	'$lgt_fix_predicate_calls'(Recovery, TRecovery, Annotation).
 
-'$lgt_fix_predicate_calls'(findall(Term, Pred, List), findall(Term, TPred, List)) :-
+'$lgt_fix_predicate_calls'(bagof(Term, Pred, List), bagof(Term, TPred, List), Annotation) :-
 	!,
-	'$lgt_fix_predicate_calls'(Pred, TPred).
+	'$lgt_fix_predicate_calls'(Pred, TPred, Annotation).
 
-'$lgt_fix_predicate_calls'(forall(Gen, Test), forall(TGen, TTest)) :-
+'$lgt_fix_predicate_calls'(findall(Term, Pred, List), findall(Term, TPred, List), Annotation) :-
 	!,
-	'$lgt_fix_predicate_calls'(Gen, TGen),
-	'$lgt_fix_predicate_calls'(Test, TTest).
+	'$lgt_fix_predicate_calls'(Pred, TPred, Annotation).
 
-'$lgt_fix_predicate_calls'(setof(Term, Pred, List), setof(Term, TPred, List)) :-
+'$lgt_fix_predicate_calls'(forall(Gen, Test), forall(TGen, TTest), Annotation) :-
 	!,
-	'$lgt_fix_predicate_calls'(Pred, TPred).
+	'$lgt_fix_predicate_calls'(Gen, TGen, Annotation),
+	'$lgt_fix_predicate_calls'(Test, TTest, Annotation).
 
-'$lgt_fix_predicate_calls'('$lgt_debugger.goal'(OPred, Pred, ExCtx), '$lgt_debugger.goal'(OPred, TPred, ExCtx)) :-
+'$lgt_fix_predicate_calls'(setof(Term, Pred, List), setof(Term, TPred, List), Annotation) :-
 	!,
-	'$lgt_fix_predicate_calls'(Pred, TPred).
+	'$lgt_fix_predicate_calls'(Pred, TPred, Annotation).
 
-'$lgt_fix_predicate_calls'('$lgt_send_to_obj_'(Obj, Pred, This), TPred) :-
+'$lgt_fix_predicate_calls'('$lgt_debugger.goal'(OPred, Pred, ExCtx), '$lgt_debugger.goal'(OPred, TPred, ExCtx), Annotation) :-
+	!,
+	'$lgt_fix_predicate_calls'(Pred, TPred, Annotation).
+
+'$lgt_fix_predicate_calls'('$lgt_send_to_obj_'(Obj, Pred, This), TPred, _) :-
 	'$lgt_obj_static_binding_cache'(Obj, Pred, This, Call),
 	!,
 	TPred = '$lgt_guarded_method_call'(Obj, Pred, This, Call).
 
-'$lgt_fix_predicate_calls'('$lgt_send_to_obj_ne_'(Obj, Pred, This), TPred) :-
+'$lgt_fix_predicate_calls'('$lgt_send_to_obj_ne_'(Obj, Pred, This), TPred, _) :-
 	'$lgt_obj_static_binding_cache'(Obj, Pred, This, Call),
 	!,
 	TPred = Call.
 
-'$lgt_fix_predicate_calls'('$lgt_gr_obj_msg'(Obj, NonTerminal, Input, Rest, Goal, Sender), '$lgt_gr_obj_msg'(Obj, NonTerminal, Input, Rest, TGoal, Sender)) :-
+'$lgt_fix_predicate_calls'('$lgt_gr_obj_msg'(Obj, NonTerminal, Input, Rest, Goal, Sender), '$lgt_gr_obj_msg'(Obj, NonTerminal, Input, Rest, TGoal, Sender), Annotation) :-
 	!,
-	'$lgt_fix_predicate_calls'(Goal, TGoal).
+	'$lgt_fix_predicate_calls'(Goal, TGoal, Annotation).
 
-'$lgt_fix_predicate_calls'('$lgt_call_built_in'(Pred, MetaExPred, ExCtx), TPred) :-
-	!,									% calls to Logtalk and Prolog built-in (meta-)predicates
+'$lgt_fix_predicate_calls'('$lgt_call_built_in'(Pred, MetaExPred, ExCtx), TPred, _) :-
+	!,												% calls to Logtalk and Prolog built-in (meta-)predicates
 	(	'$lgt_pp_redefined_built_in_'(Pred, ExCtx, TPred) ->
 		true
-	;	'$lgt_fix_predicate_calls'(MetaExPred, TPred)
+	;	'$lgt_fix_predicate_calls'(MetaExPred, TPred, false)
 	).
 
-'$lgt_fix_predicate_calls'('$lgt_debugger.goal'(Pred, DPred, ExCtx), '$lgt_debugger.goal'(Pred, TPred, ExCtx)) :-
-	!,										% calls in debug mode
-	'$lgt_fix_predicate_calls'(DPred, TPred).
+'$lgt_fix_predicate_calls'('$lgt_debugger.goal'(Pred, DPred, ExCtx), '$lgt_debugger.goal'(Pred, TPred, ExCtx), Annotation) :-
+	!,												% calls in debug mode
+	'$lgt_fix_predicate_calls'(DPred, TPred, Annotation).
 
-'$lgt_fix_predicate_calls'(Pred, fail) :-	% calls to static, declared but undefined predicates;
-	functor(Pred, Functor, Arity),			% must fail instead of throwing an exception
-	'$lgt_undef_pred_call'(_, Functor/Arity),
+'$lgt_fix_predicate_calls'(Pred, fail, false) :-	% calls to static, declared but undefined predicates;
+	functor(Pred, Functor, Arity),					% must fail instead of throwing an exception
+	'$lgt_undefined_predicate_call'(_, Functor/Arity),
 	!.
 
-'$lgt_fix_predicate_calls'(Pred, TPred) :-
+'$lgt_fix_predicate_calls'(Pred, TPred, _) :-
 	'$lgt_pp_value_annotation_'(Pred, Functor, Value, Goal),
 	!,
-	'$lgt_fix_predicate_calls'(Goal, TGoal),
+	'$lgt_fix_predicate_calls'(Goal, TGoal, true),
 	'$lgt_pp_value_annotation_'(TPred, Functor, Value, TGoal).
 
-'$lgt_fix_predicate_calls'(Pred, TPred) :-
+'$lgt_fix_predicate_calls'(Pred, TPred, _) :-
 	'$lgt_pp_goal_annotation_'(Pred, Functor, Goal1, Goal2),
 	!,
-	'$lgt_fix_predicate_calls'(Goal1, TGoal1),
-	'$lgt_fix_predicate_calls'(Goal2, TGoal2),
+	'$lgt_fix_predicate_calls'(Goal1, TGoal1, true),
+	'$lgt_fix_predicate_calls'(Goal2, TGoal2, true),
 	'$lgt_pp_goal_annotation_'(TPred, Functor, TGoal1, TGoal2).
 
-'$lgt_fix_predicate_calls'(Pred, TPred) :-	% calls to non-standard Prolog built-in meta-predicates
+'$lgt_fix_predicate_calls'(Pred, TPred, _) :-		% calls to non-standard Prolog built-in meta-predicates
 	'$lgt_pl_built_in'(Pred),
 	'$lgt_pl_meta_predicate'(Pred, Meta, _),
 	!,
@@ -13608,31 +13612,31 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	'$lgt_fix_pred_calls_in_margs'(Args, MArgs, TArgs),
 	TPred =.. [Functor| TArgs].
 
-'$lgt_fix_predicate_calls'(':'(Module, Pred), ':'(Module, Pred)) :-
+'$lgt_fix_predicate_calls'(':'(Module, Pred), ':'(Module, Pred), _) :-
 	var(Pred),
 	!.
 
-'$lgt_fix_predicate_calls'(':'(Module1, ':'(Module2, Pred)), ':'(Module1, ':'(Module2, TPred))) :-
-	!,									% calls to Prolog module meta-predicates
-	'$lgt_fix_predicate_calls'(':'(Module2, Pred), ':'(Module2, TPred)).
+'$lgt_fix_predicate_calls'(':'(Module1, ':'(Module2, Pred)), ':'(Module1, ':'(Module2, TPred)), _) :-
+	!,												% calls to Prolog module meta-predicates
+	'$lgt_fix_predicate_calls'(':'(Module2, Pred), ':'(Module2, TPred), false).
 
-'$lgt_fix_predicate_calls'(':'(Module, Pred), ':'(Module, TPred)) :-
+'$lgt_fix_predicate_calls'(':'(Module, Pred), ':'(Module, TPred), _) :-
 	functor(Pred, Functor, Arity),
 	functor(Meta, Functor, Arity), 
 	catch('$lgt_predicate_property'(Pred, imported_from(Module)), _, fail),
 	catch('$lgt_predicate_property'(Pred, meta_predicate(Meta)), _, fail),
-	!,									% calls to Prolog module meta-predicates
+	!,												% calls to Prolog module meta-predicates
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
 	'$lgt_tr_module_meta_predicate_directives_args'(MArgs, CMArgs),
 	'$lgt_fix_pred_calls_in_margs'(Args, CMArgs, TArgs),
 	TPred =.. [Functor| TArgs].
 
-'$lgt_fix_predicate_calls'(':'(Module, Pred), ':'(Module, TPred)) :-
+'$lgt_fix_predicate_calls'(':'(Module, Pred), ':'(Module, TPred), _) :-
 	!,
-	'$lgt_fix_predicate_calls'(Pred, TPred).
+	'$lgt_fix_predicate_calls'(Pred, TPred, false).
 
-'$lgt_fix_predicate_calls'(Pred, Pred).
+'$lgt_fix_predicate_calls'(Pred, Pred, _).
 
 
 
@@ -13650,20 +13654,20 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_fix_pred_calls_ins_in_marg'(*, Arg, Arg).
 
 '$lgt_fix_pred_calls_ins_in_marg'(0, Arg, TArg) :-
-	'$lgt_fix_predicate_calls'(Arg, TArg).
+	'$lgt_fix_predicate_calls'(Arg, TArg, false).
 
 
 
 % reports calls to declared, static but undefined predicates in the body of object and category predicates
 
-'$lgt_report_undef_pred_calls'(_, _) :-
+'$lgt_report_undefined_predicate_calls'(_, _) :-
 	'$lgt_compiler_flag'(misspelt, error),
-	'$lgt_undef_pred_call'(Pred),
+	'$lgt_undefined_predicate_call'(Pred),
 	throw(existence_error(procedure, Pred)).
 
-'$lgt_report_undef_pred_calls'(Type, Entity) :-
+'$lgt_report_undefined_predicate_calls'(Type, Entity) :-
 	(	'$lgt_compiler_flag'(misspelt, warning),
-		setof(Pred, '$lgt_undef_pred_call'(Pred), Preds) ->
+		setof(Pred, '$lgt_undefined_predicate_call'(Pred), Preds) ->
 		'$lgt_report_warning_in_new_line',
 		'$lgt_inc_compile_warnings_counter',
 		(	Preds = [_] ->
@@ -13679,11 +13683,11 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	).
 
 
-'$lgt_undef_pred_call'(Pred) :-
-	'$lgt_undef_pred_call'(Pred, _).
+'$lgt_undefined_predicate_call'(Pred) :-
+	'$lgt_undefined_predicate_call'(Pred, _).
 
 
-'$lgt_undef_pred_call'(Functor/Arity, TFunctor/TArity) :-
+'$lgt_undefined_predicate_call'(Functor/Arity, TFunctor/TArity) :-
 	'$lgt_pp_calls_predicate_'(Functor, Arity, TFunctor, TArity),
 	\+ '$lgt_pp_defines_predicate_'(Functor, Arity),		% predicate not defined in object/category and
 	\+ '$lgt_pp_dynamic_'(Functor, Arity),					% predicate not declared dynamic in in object/category
@@ -13694,7 +13698,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 		;	'$lgt_pp_private_'(Functor, Arity)
 	)).
 
-'$lgt_undef_pred_call'(Functor//Arity, TFunctor/TArity) :-
+'$lgt_undefined_predicate_call'(Functor//Arity, TFunctor/TArity) :-
 	'$lgt_pp_calls_non_terminal_'(Functor, Arity),
 	\+ '$lgt_pp_defines_non_terminal_'(Functor, Arity),		% non-terminal not defined in object/category and
 	ExtArity is Arity + 2,
@@ -13721,8 +13725,14 @@ current_logtalk_flag(version, version(2, 42, 0)).
 		'$lgt_report_warning_in_new_line',
 		'$lgt_inc_compile_warnings_counter',
 		(	Preds = [_] ->
-			write('%         WARNING!  This predicate is called but never defined: ')
-		;	write('%         WARNING!  These predicates are called but never defined: ')
+			(	('$lgt_pp_value_annotation_'(_, _, _, _); '$lgt_pp_goal_annotation_'(_, _, _, _)) ->
+				write('%         WARNING!  This predicate is called but may not be defined: ')
+			;	write('%         WARNING!  This predicate is called but never defined: ')
+			)
+		;	(	('$lgt_pp_value_annotation_'(_, _, _, _); '$lgt_pp_goal_annotation_'(_, _, _, _)) ->
+				write('%         WARNING!  These predicates are called but may not be defined: ')
+			;	write('%         WARNING!  These predicates are called but never defined: ')
+			)
 		),
 		'$lgt_writeq_list'(Preds), nl,
 		(	'$lgt_compiler_flag'(report, warnings) ->
@@ -17413,8 +17423,8 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_tr_static_binding_meta_arg'(0, Arg, Ctx, {FTArg}, {FDArg}) :-
 	% the {}/1 construct signals a pre-compiled metacall
 	'$lgt_tr_body'(Arg, TArg, DArg, Ctx),
-	'$lgt_fix_predicate_calls'(TArg, FTArg),
-	'$lgt_fix_predicate_calls'(DArg, FDArg).
+	'$lgt_fix_predicate_calls'(TArg, FTArg, false),
+	'$lgt_fix_predicate_calls'(DArg, FDArg, false).
 
 
 
