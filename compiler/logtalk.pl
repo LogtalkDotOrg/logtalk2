@@ -626,7 +626,7 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	'$lgt_comp_ctx_mode'(Ctx, runtime),	% set the initial compilation context for compiling
 	'$lgt_tr_directives'(Dirs, Ctx),	% the object directives and clauses
 	'$lgt_tr_terms'(Clauses, Ctx),		% the list of clauses may also include grammar rules
-	'$lgt_gen_object_local_def_clauses',
+	'$lgt_gen_local_def_clauses',
 	'$lgt_fix_synchronized_predicates',
 	'$lgt_fix_predicate_calls',
 	'$lgt_gen_object_clauses',
@@ -684,6 +684,7 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	'$lgt_comp_ctx_mode'(Ctx, runtime),	% set the initial compilation context for compiling
 	'$lgt_tr_directives'(Dirs, Ctx),	% the category directives and clauses
 	'$lgt_tr_terms'(Clauses, Ctx),		% the list of clauses may also include grammar rules
+	'$lgt_gen_local_def_clauses',
 	'$lgt_fix_synchronized_predicates',
 	'$lgt_fix_predicate_calls',
 	'$lgt_gen_category_clauses',
@@ -12371,13 +12372,13 @@ current_logtalk_flag(version, version(2, 42, 0)).
 % generates code for the entity being compiled
 
 '$lgt_generate_code'(protocol) :-
-	'$lgt_fix_predicate_calls',		% needed because of possible initialization goal
+	'$lgt_fix_predicate_calls',		% necessary because of possible initialization goal
 	'$lgt_gen_protocol_clauses',
 	'$lgt_gen_protocol_directives',
 	'$lgt_gen_entity_init_goal'.
 
 '$lgt_generate_code'(object) :-
-	'$lgt_gen_object_local_def_clauses',
+	'$lgt_gen_local_def_clauses',
 	'$lgt_fix_synchronized_predicates',
 	'$lgt_fix_predicate_calls',
 	'$lgt_gen_object_clauses',
@@ -12385,6 +12386,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	'$lgt_gen_entity_init_goal'.
 
 '$lgt_generate_code'(category) :-
+	'$lgt_gen_local_def_clauses',
 	'$lgt_fix_synchronized_predicates',
 	'$lgt_fix_predicate_calls',
 	'$lgt_gen_category_clauses',
@@ -12566,13 +12568,14 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 
 
-% '$lgt_gen_object_local_def_clauses'
+% '$lgt_gen_local_def_clauses'
 %
-% generates local def clauses for undefined but declared (via scope or dynamic directives) predicates
-% (only necessary for objects as categories cannot contain clauses for dynamic predicates)
+% generates local def clauses for undefined but declared (using scope or dynamic
+% directives) predicates
 
-'$lgt_gen_object_local_def_clauses' :-
-	'$lgt_pp_entity'(_, _, Prefix, _, _),
+'$lgt_gen_local_def_clauses' :-
+	% categories cannot contain clauses for dynamic predicates:
+	'$lgt_pp_entity'(object, _, Prefix, _, _),
 	'$lgt_comp_ctx_prefix'(Ctx, Prefix),
 	'$lgt_pp_dynamic_'(Functor, Arity),
 	\+ '$lgt_pp_defines_predicate_'(Functor, Arity),
@@ -12585,7 +12588,24 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	),
 	fail.
 
-'$lgt_gen_object_local_def_clauses'.
+'$lgt_gen_local_def_clauses' :-
+	% annotations *may* result in the definition of predicates:
+	once((	'$lgt_pp_value_annotation_'(_, _, _, _)
+		 ;	'$lgt_pp_goal_annotation_'(_, _, _, _)
+	)),
+	'$lgt_pp_entity'(_, _, Prefix, _, _),
+	'$lgt_comp_ctx_prefix'(Ctx, Prefix),
+	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _),
+	\+ '$lgt_pp_defines_predicate_'(Functor, Arity),
+	once((	'$lgt_pp_public_'(Functor, Arity)
+		 ;	'$lgt_pp_protected_'(Functor, Arity)
+		 ;	'$lgt_pp_private_'(Functor, Arity)
+	)),
+	functor(Head, Functor, Arity),
+	'$lgt_add_def_clause'(Head, Functor, Arity, _, Ctx),
+	fail.
+
+'$lgt_gen_local_def_clauses'.
 
 
 
@@ -13670,9 +13690,16 @@ current_logtalk_flag(version, version(2, 42, 0)).
 		setof(Pred, '$lgt_undefined_predicate_call'(Pred), Preds) ->
 		'$lgt_report_warning_in_new_line',
 		'$lgt_inc_compile_warnings_counter',
+
 		(	Preds = [_] ->
-			write('%         WARNING!  This declared static predicate is called but never defined: ')
-		;	write('%         WARNING!  These declared static predicates are called but never defined: ')
+			(	('$lgt_pp_value_annotation_'(_, _, _, _); '$lgt_pp_goal_annotation_'(_, _, _, _)) ->
+				write('%         WARNING!  This declared static predicate is called but may not be defined: ')
+			;	write('%         WARNING!  This declared static predicate is called but never defined: ')
+			)
+		;	(	('$lgt_pp_value_annotation_'(_, _, _, _); '$lgt_pp_goal_annotation_'(_, _, _, _)) ->
+				write('%         WARNING!  These declared static predicates are called but may not be defined: ')
+			;	write('%         WARNING!  These declared static predicates are called but never defined: ')
+			)
 		),
 		'$lgt_writeq_list'(Preds), nl,
 		(	'$lgt_compiler_flag'(report, warnings) ->
