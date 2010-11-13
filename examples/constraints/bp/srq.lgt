@@ -32,6 +32,8 @@
 		write('no more solutions '),
 		write('time all: '),write(Y), nl.
 
+	:- private(iff/3).		% avoid spurious compilation warnings
+
 	srq(L):-
 		L=[A,B,C,D,E],
 

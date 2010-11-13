@@ -14,12 +14,11 @@
 		N=96,
 		top(N).
 
-	:- public(go/0).
-	go:-
-		write('N=?'),read(N),queens(N).
+	:- public(go/1).
+	go(N) :-
+		queens(N).
 
-%	:- private(constrain_queen/3).
-%	:- dynamic(constrain_queen/3).
+	:- private(constrain_queen/3).	% avoid spurious compilation warnings
 
 	queens(N):-
 		statistics(runtime,[Start|_]),
