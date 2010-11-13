@@ -13,6 +13,7 @@
 	:- public(candidate/1).
 	:- chr_constraint(candidate/1).
 
+	:- private(prime/1).
 	:- chr_constraint(prime/1).
 
 	candidate(1) <=> true.
