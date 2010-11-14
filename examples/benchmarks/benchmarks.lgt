@@ -2,9 +2,9 @@
 :- object(benchmarks).
 
 	:- info([
-		version is 4.0,
+		version is 5.0,
 		author is 'Paulo Moura',
-		date is 2010/02/21,
+		date is 2010/11/14,
 		comment is 'Benchmark utility predicates and standard set of benchmarks.']).
 
 	:- public(run/0).
@@ -89,12 +89,17 @@
 	benchmark(s23, object::nrev(List, _)) :-
 		{generate_list(30, List)}.
 
-
 	benchmark(s31, maze_solve(1, 7, _)).
 	:- if(current_logtalk_flag(modules, supported)).
-	benchmark(s32, ':'(module, mod_solve(1, 7, _))).
+	benchmark(s32, ':'(module, mod_maze_solve(1, 7, _))).
 	:- endif.
 	benchmark(s33, maze::solve(1, 7, _)).
+
+	benchmark(s41, graph_path(0, 4, _)).
+	:- if(current_logtalk_flag(modules, supported)).
+	benchmark(s42, ':'(module, mod_graph_path(0, 4, _))).
+	:- endif.
+	benchmark(s43, graph::path(0, 4, _)).
 
 	% some benchmark tests for category predicate calls:
 	benchmark(c1, leaf::obj_local).
@@ -171,7 +176,7 @@
 	:- if(current_logtalk_flag(modules, supported)).
 	do_benchmark(s32, N) :-
 		{my_repeat(N)},
-			(':'(module, mod_solve(1, 7, _)) -> true),
+			(':'(module, mod_maze_solve(1, 7, _)) -> true),
 		fail.
 	do_benchmark(s32, _).
 	:- endif.
@@ -181,6 +186,26 @@
 			(maze::solve(1, 7, _) -> true),
 		fail.
 	do_benchmark(s33, _).
+
+	do_benchmark(s41, N) :-
+		{my_repeat(N)},
+			{graph_path(0, 4, _)},
+		fail.
+	do_benchmark(s41, _).
+
+	:- if(current_logtalk_flag(modules, supported)).
+	do_benchmark(s42, N) :-
+		{my_repeat(N)},
+			':'(module, mod_graph_path(0, 4, _)),
+		fail.
+	do_benchmark(s42, _).
+	:- endif.
+
+	do_benchmark(s43, N) :-
+		{my_repeat(N)},
+			graph::path(0, 4, _),
+		fail.
+	do_benchmark(s43, _).
 
 	do_benchmark(c1, N) :-
 		{my_repeat(N)},

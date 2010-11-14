@@ -19,6 +19,11 @@ my_length([_| Tail], Acc, Length) :-
 	my_length(Tail, Acc2, Length).
 
 
+my_member(Element, [Element| _]).
+my_member(Element, [_| List]) :-
+	my_member(Element, List).
+
+
 :- dynamic(pred_plain/4).
 
 plain_dyndb(N) :-
@@ -61,7 +66,7 @@ maze_solve(Start, Destination, Steps) :-
 maze_path(Destination, Destination, Path, Path).
 maze_path(Node, Destination, Path0, Path) :- 
 	maze_link(Node, Next),
-	\+ maze_member(Next, Path0),
+	\+ my_member(Next, Path0),
 	maze_path(Next, Destination, [Next | Path0], Path).
 
 maze_link(Node1, Node2 ) :-
@@ -74,10 +79,6 @@ maze_arc(2, 9).
 maze_arc(3, 6).
 maze_arc(4, 5). maze_arc(4, 7).
 maze_arc(5, 8).
-
-maze_member(Element, [Element| _]).
-maze_member(Element, [_| List]) :-
-	maze_member(Element, List).
     
 maze_reverse(List, Reversed) :-
 	maze_reverse(List, [], Reversed, Reversed).
@@ -85,3 +86,34 @@ maze_reverse(List, Reversed) :-
 maze_reverse([], Reversed, Reversed, []).
 maze_reverse([Head| Tail], List, Reversed, [_| Bound]) :-
 	maze_reverse(Tail, [Head| List], Reversed, Bound).
+
+
+
+graph_path(X, Y, L):-
+	graph_path(X, Y, [X], L).
+
+graph_path(X, Y, L, [Y| L]):-
+	\+ my_member(Y, L),
+	graph_edge(X, Y).
+graph_path(X, Y, L, R):-
+	graph_edge(X, Z),
+	Z =\= Y,
+	\+ my_member(Z, L),
+	graph_path(Z, Y, [Z| L], R).
+
+graph_edge(X, Y):-
+	graph_node(X),
+	graph_node(Y),
+	X =\= Y.
+
+graph_node(0).
+graph_node(1).
+graph_node(2).
+graph_node(3).
+graph_node(4).
+%graph_node(5).
+%graph_node(6).
+%graph_node(7).
+%graph_node(8).
+%graph_node(9).
+%graph_node(10).

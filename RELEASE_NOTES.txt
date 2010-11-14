@@ -170,6 +170,9 @@ RELEASE NOTES
     Updated the "problog" example. Logtalk integration with ProbLog is
     improved it requires but the latest development version of ProbLog.
 
+    Added a fully connected graph path search problem, contributed by
+    Theofrastos Mantadelis, to the "benchmarks" example.
+
     Updated the "examples/tester.sh" script in order to also work when
     running Logtalk without using the installer packages or scripts.
 

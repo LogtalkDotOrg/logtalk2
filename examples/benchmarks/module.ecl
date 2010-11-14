@@ -14,6 +14,7 @@ mod_nrev([Head| Tail], Reversed) :-
 	mod_nrev(Tail, ReversedTail),
 	mod_append(ReversedTail, [Head], Reversed).
 
+
 :- export(mod_length/2).
 
 mod_length(List, Length) :-
@@ -34,9 +35,10 @@ mod_length([_| Tail], Acc, Length) :-
 	Acc2 is Acc + 1,
 	mod_length(Tail, Acc2, Length).
 
-:- export(mod_solve/3).
 
-mod_solve(Start, Destination, Steps) :- 
+:- export(mod_maze_solve/3).
+
+mod_maze_solve(Start, Destination, Steps) :- 
 	mod_path(Start, Destination, [Start], Path),
 	mod_reverse(Path, Steps).
 
@@ -67,3 +69,35 @@ mod_reverse(List, Reversed) :-
 mod_reverse([], Reversed, Reversed, []).
 mod_reverse([Head| Tail], List, Reversed, [_| Bound]) :-
 	mod_reverse(Tail, [Head| List], Reversed, Bound).
+
+
+:- export(mod_graph_path/3).
+
+mod_graph_path(X, Y, L):-
+	mod_graph_path(X, Y, [X], L).
+
+mod_graph_path(X, Y, L, [Y| L]):-
+	\+ mod_member(Y, L),
+	mod_graph_edge(X, Y).
+mod_graph_path(X, Y, L, R):-
+	mod_graph_edge(X, Z),
+	Z =\= Y,
+	\+ mod_member(Z, L),
+	mod_graph_path(Z, Y, [Z| L], R).
+
+mod_graph_edge(X, Y):-
+	mod_graph_node(X),
+	mod_graph_node(Y),
+	X =\= Y.
+
+mod_graph_node(0).
+mod_graph_node(1).
+mod_graph_node(2).
+mod_graph_node(3).
+mod_graph_node(4).
+%mod_graph_node(5).
+%mod_graph_node(6).
+%mod_graph_node(7).
+%mod_graph_node(8).
+%mod_graph_node(9).
+%mod_graph_node(10).
