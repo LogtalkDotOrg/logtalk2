@@ -44,7 +44,7 @@ false.
 
 % computing Fibonacci numbers:
 
-| ?- fib::fib(5, M),
+| ?- fib::fib(5, M).
 fib::fib(1,1)
 fib::fib(0,1)
 fib::fib(2,2)

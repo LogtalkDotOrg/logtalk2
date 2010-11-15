@@ -12,7 +12,6 @@
 		logtalk::compile_predicate_indicators(PIs, TPIs).
 
 	term_expansion((:- chr_constraint(H)), [{(:- chr_constraint(TH))}]) :-
-		functor(H, F, A),
 		logtalk::compile_predicate_heads(H, TH, '?'(any)).
 
 	% for now, CHR type declarations are global
@@ -44,6 +43,13 @@
 		:- multifile(user:portray/1).
 		:- dynamic(user:portray/1).
 		user:portray(THead) :-
+			callable(THead),
+			logtalk::decompile_predicate_head(THead, Entity, _, Head),
+			writeq(Entity::Head).
+	:- elif(current_logtalk_flag(prolog_dialect, qp)).
+		:- multifile(portray/1).
+		:- dynamic(portray/1).
+		portray(THead) :-
 			callable(THead),
 			logtalk::decompile_predicate_head(THead, Entity, _, Head),
 			writeq(Entity::Head).
