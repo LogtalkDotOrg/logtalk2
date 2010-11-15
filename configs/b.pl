@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.4 and later versions
 %
-%  last updated: November 13, 2010
+%  last updated: November 14, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -505,13 +505,18 @@
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
 '$lgt_rewrite_and_copy_pl_directive'(eager_consume, eager_consume).
-'$lgt_rewrite_and_copy_pl_directive'(eager_consume(PIs), eager_consume(CPIs)) :-
-	'$lgt_compile_predicate_indicators'(PIs, CPIs).
+'$lgt_rewrite_and_copy_pl_directive'(eager_consume(PIs), eager_consume(TPIs)) :-
+	'$lgt_compile_predicate_indicators'(PIs, TPIs).
 '$lgt_rewrite_and_copy_pl_directive'(table(':'(Head, N)), table(':'(THead, N))) :-
-	!,
 	'$lgt_compile_predicate_heads'(Head, THead, '-').
-'$lgt_rewrite_and_copy_pl_directive'(table(PIs), table(CPIs)) :-
-	'$lgt_compile_predicate_indicators'(PIs, CPIs).
+'$lgt_rewrite_and_copy_pl_directive'(table(F/A), table(TF/TA)) :-
+	'$lgt_compile_predicate_indicators'(F/A, TF/TA).
+'$lgt_rewrite_and_copy_pl_directive'(table([F/A| PIs]), table(TPIs)) :-
+	'$lgt_compile_predicate_indicators'([F/A| PIs], TPIs).
+'$lgt_rewrite_and_copy_pl_directive'(table((F/A, PIs)), table(TPIs)) :-
+	'$lgt_compile_predicate_indicators'((F/A, PIs), TPIs).
+'$lgt_rewrite_and_copy_pl_directive'(table(Head), table(THead)) :-
+	'$lgt_compile_predicate_heads'(Head, THead).
 '$lgt_rewrite_and_copy_pl_directive'(mode(Head), mode(THead)) :-
 	'$lgt_compile_predicate_heads'(Head, THead, '?').
 

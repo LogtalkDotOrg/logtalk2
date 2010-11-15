@@ -115,7 +115,8 @@ RELEASE NOTES
 
     Workaround a B-Prolog 7.4 bug where the built-in predicate callable/1 is
     missing the property "built_in". Declared the predicates and/3, equiv/3,
-    and or/3 as built-in predicates.
+    and or/3 as built-in predicates. Added support for table/1 directives
+    whose argument is predicate template with the cardinality limit omitted.
 
     Updated the Qu-Prolog integration files in order to avoid a segmentation
     fault when using a 32 bits compilation of Qu-Prolog. Thanks to Peter
