@@ -46,13 +46,17 @@
 			callable(THead),
 			logtalk::decompile_predicate_head(THead, Entity, _, Head),
 			writeq(Entity::Head).
-	:- elif(current_logtalk_flag(prolog_dialect, qp)).
-		:- multifile(portray/1).
-		:- dynamic(portray/1).
-		portray(THead) :-
-			callable(THead),
-			logtalk::decompile_predicate_head(THead, Entity, _, Head),
-			writeq(Entity::Head).
 	:- endif.
 
 :- end_object.
+
+
+
+:- if(current_logtalk_flag(prolog_dialect, qp)).
+	:- multifile(portray/1).
+	:- dynamic(portray/1).
+	portray(THead) :-
+		callable(THead),
+		logtalk::decompile_predicate_head(THead, Entity, _, Head),
+		writeq(Entity::Head).
+:- endif.
