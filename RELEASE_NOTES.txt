@@ -32,8 +32,15 @@ RELEASE NOTES
     predicates when using the built-in methods retract/1 and retractall/1.
     Simplified the compiler code used when creating new entities.
 
+    Changed the semantics of the "dynamic_declarations" flag so that it is
+    only checked when sending an asserta/1 or assertz/1 message to an object.
+    Local asserting of clauses for new predicates is now always allowed.
+
+    Updated the implementation of the built-in method abolish/1 in order to
+    also support abolishing of local dynamic predicates.
+
     Improved the performance of source file compilation by avoiding redundant
-    cleaning of auxiliar compilation predicates.
+    cleaning of auxiliary compilation predicates.
 
     Modified the Logtalk compiler in order to interpret occurrences of":" in
     module meta-predicate directives as equivalent to "::" instead of "0" in

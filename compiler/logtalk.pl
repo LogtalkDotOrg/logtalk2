@@ -2337,19 +2337,16 @@ current_logtalk_flag(version, version(2, 42, 0)).
 				(	call(DDcl, Pred, _) ->
 					DDclClause =.. [DDcl, Pred, _],
 					retractall(DDclClause),
-					(	call(DDef, Pred, _, Call) ->
-						functor(Call, CFunctor, CArity),
-						abolish(CFunctor/CArity),
-						DDefClause =.. [DDef, Pred, _, Call],
+					(	call(DDef, Pred, _, TPred) ->
+						functor(TPred, TFunctor, TArity),
+						abolish(TFunctor/TArity),
+						DDefClause =.. [DDef, Pred, _, TPred],
 						retractall(DDefClause),
 						'$lgt_clean_lookup_caches'(Pred)
 					;	true
 					)
-				;	% no dynamic predicate declaration:
-					(	call(Dcl, Pred, _, _, _) ->
-						throw(error(permission_error(modify, predicate_declaration, Pred), Obj::abolish(Functor/Arity), Sender))
-					;	throw(error(existence_error(predicate_declaration, Pred), Obj::abolish(Functor/Arity), Sender))
-					)
+				;	% static predicate declaration:
+					throw(error(permission_error(modify, predicate_declaration, Pred), Obj::abolish(Functor/Arity), Sender))
 				)
 			;	% predicate is static:
 				throw(error(permission_error(modify, static_predicate, Pred), Obj::abolish(Functor/Arity), Sender))
@@ -2360,6 +2357,13 @@ current_logtalk_flag(version, version(2, 42, 0)).
 			;	throw(error(permission_error(modify, protected_predicate, Pred), Obj::abolish(Functor/Arity), Sender))
 			)
 		)
+	;	call(DDef, Pred, _, TPred) ->
+		% local dynamic predicate:
+		functor(TPred, TFunctor, TArity),
+		abolish(TFunctor/TArity),
+		DDefClause =.. [DDef, Pred, _, TPred],
+		retractall(DDefClause),
+		'$lgt_clean_lookup_caches'(Pred)
 	;	% no predicate declaration:
 		throw(error(existence_error(predicate_declaration, Pred), Obj::abolish(Functor/Arity), Sender))
 	).
@@ -2413,7 +2417,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_asserta_rule_chk'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	!,
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Flags, Head, Scope, Type, Meta, SCtn, DclScope, Obj::asserta((Head:-Body)), Sender),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, DDef, Flags, Head, Scope, Type, Meta, SCtn, DclScope, Obj::asserta((Head:-Body)), Sender),
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn) ->
 			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, _),
@@ -2446,7 +2450,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_asserta_fact_chk'(Obj, Head, Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	!,
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Flags, Head, Scope, Type, _, SCtn, DclScope, Obj::asserta(Head), Sender),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, DDef, Flags, Head, Scope, Type, _, SCtn, DclScope, Obj::asserta(Head), Sender),
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, Update),
@@ -2514,7 +2518,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_assertz_rule_chk'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	!,
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Flags, Head, Scope, Type, Meta, SCtn, DclScope, Obj::assertz((Head:-Body)), Sender),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, DDef, Flags, Head, Scope, Type, Meta, SCtn, DclScope, Obj::assertz((Head:-Body)), Sender),
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, _),
@@ -2547,7 +2551,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_assertz_fact_chk'(Obj, Head, Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	!,
-	'$lgt_assert_pred_dcl'(Dcl, DDcl, Flags, Head, Scope, Type, _, SCtn, DclScope, Obj::assertz(Head), Sender),
+	'$lgt_assert_pred_dcl'(Dcl, DDcl, DDef, Flags, Head, Scope, Type, _, SCtn, DclScope, Obj::assertz(Head), Sender),
 	(	(Type == (dynamic); Flags /\ 2 =:= 2, Sender = SCtn) ->
 		(	(\+ \+ Scope = TestScope; Sender = SCtn)  ->
 			'$lgt_assert_pred_def'(Def, DDef, Prefix, Head, ExCtx, THead, Update),
@@ -2571,24 +2575,28 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 
 
-% gets or sets (if it doesn't exist) the declaration for an asserted predicate
+% gets or sets (if it doesn't exist) the declaration for an asserted predicate (but we must
+% not add a scope declaration when asserting clauses for a *local* dynamic predicate)
 
-'$lgt_assert_pred_dcl'(Dcl, DDcl, ObjFlags, Pred, Scope, Type, Meta, SCtn, DclScope, Goal, Sender) :-
-	(	call(Dcl, Pred, Scope, Meta, PredFlags, SCtn, _) ->
+'$lgt_assert_pred_dcl'(Dcl, DDcl, DDef, ObjFlags, Pred, Scope, Type, Meta, SCtn, DclScope, Goal, Sender) :-
+	(	% check for predicate declaration:
+		call(Dcl, Pred, Scope, Meta, PredFlags, SCtn, _) ->
 		(	PredFlags /\ 2 =:= 2 ->
 			Type = (dynamic)
 		;	Type = static
 		)
-	;	% no previous predicate declaration:
-		(	ObjFlags /\ 64 =:= 64 ->
-			functor(Pred, Functor, Arity),
-			functor(DPred, Functor, Arity),
-			Clause =.. [DDcl, DPred, DclScope],
-			assertz(Clause),
-			Scope = DclScope, Type = (dynamic), Meta = no
-		;	% object doesn't supports dynamic declaration of new predicates:
-			throw(error(permission_error(create, predicate_declaration, Pred), Goal, Sender))
-		)
+	;	% no predicate declaration; check for a local dynamic predicate if we're asserting locally:
+		(DclScope == p, call(DDef, Pred, _, _)) ->
+		Scope = DclScope, Type = (dynamic), Meta = no
+	;	% not a local dynamic predicate; check if dynamic declaration of new predicates is allowed:
+		(DclScope == p; ObjFlags /\ 64 =:= 64) ->
+		functor(Pred, Functor, Arity),
+		functor(DPred, Functor, Arity),
+		Clause =.. [DDcl, DPred, DclScope],
+		assertz(Clause),
+		Scope = DclScope, Type = (dynamic), Meta = no
+	;	% object doesn't allow dynamic declaration of new predicates:
+		throw(error(permission_error(create, predicate_declaration, Pred), Goal, Sender))
 	).
 
 

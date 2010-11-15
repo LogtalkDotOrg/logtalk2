@@ -310,7 +310,7 @@ Note that the scope of the <code>set_logtalk_flag/2</code> directive is local to
 	</dl>
 	<dl>
 		<dt><code>dynamic_declarations(Option)</code></dt>
-			<dd>Allows objects to be compiled with support for dynamic declaration of new predicates turned off in order to improve performance and security. Possible option values are <code>allow</code> and <code>deny</code> (the usual default). This option can be used on a per-object basis. Note that changing this option is of no consequence for objects already compiled and loaded.</dd>
+			<dd>Allows objects to be compiled with support for dynamic declaration of new predicates turned off in order to improve performance and security. Possible option values are <code>allow</code> and <code>deny</code> (the usual default). This option can be used on a per-object basis. Note that changing this option is of no consequence for objects already compiled and loaded. This option is only checked when sending an <code>asserta/1</code> or <code>assertz/1</code> message to an object. Local asserting of new predicates is always allowed.</dd>
 	</dl>
 	<dl>
 		<dt><code>events(Option)</code></dt>
@@ -699,7 +699,7 @@ When objects or categories containing grammar rules are compiled in debug mode, 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: June 17, 2010</span>
+		<span>Last updated on: November 15, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="installing.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="migration.html">next</a></span><br/>
