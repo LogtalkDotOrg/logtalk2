@@ -69,6 +69,19 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 */
 
 
+%  To define a common directory for Logtalk compiler generated temporary
+%  files and for Logtalk automatically generated documentation files for
+%  compiled entities, edit and uncomment the following lines (the library
+%  paths must end with a slash character):
+
+/*
+:- initialization((
+	set_logtalk_flag(tmpdir, '$HOME/logtalk/.lgt_tmp/'),
+	set_logtalk_flag(xmldir, '$HOME/logtalk/xml_docs/'),
+)).
+*/
+
+
 %  To make Logtalk completely silent for batch processing uncomment the
 %  following lines:
 
