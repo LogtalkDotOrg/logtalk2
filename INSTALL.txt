@@ -42,6 +42,31 @@ simply running one of the provided scripts.
 In the case of a single user with no administrative rights, the Logtalk 
 directory may simply be copied to the user home directory.
 
+For POSIX systems, if you use a bash shell, add the following lines to your
+~/.profile file:
+
+	LOGTALKHOME=$HOME/lgtsvn
+	LOGTALKUSER=$HOME/lgtsvn
+	PATH=$PATH:$LOGTALKHOME/xml:$LOGTALKHOME/scripts:$LOGTALKHOME/integration
+	MANPATH=$MANPATH:$LOGTALKHOME/man
+	export LOGTALKHOME LOGTALKUSER PATH MANPATH
+
+If you use instead a csh shell, add the following line to your ~/.cshrc file:
+
+	setenv LOGTALKHOME $HOME/lgtsvn
+	setenv LOGTALKUSER $HOME/lgtsvn
+	setenv PATH $PATH:$LOGTALKHOME/xml:$LOGTALKHOME/scripts:$LOGTALKHOME/integration
+	setenv MANPATH $MANPATH:$LOGTALKHOME/man
+
+If your lgtsvn directory is not in your home directory, adjust the paths above
+accordingly. Don't use relative paths such as ../ or ./ in the definition of
+the environment variables. Some Prolog compilers don't expand environment
+variables, resulting in "file not found" errors when attempting to use the
+Logtalk integration scripts.
+
+If you're using Windows, you can setup both the LOGTALKHOME and LOGTALKUSER
+environment variables using the "System" control panel.
+
 
 * Installing for one or more users by a user with administrative rights:
 
