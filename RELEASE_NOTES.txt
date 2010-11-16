@@ -143,6 +143,10 @@ RELEASE NOTES
     Added a YAP integration file, "yaphooks.pl", defining the hook predicate
     user:prolog_predicate_name/2.
 
+    Commented out the setting of the proprietary Prolog flag "iso" to "true"
+    in the SWI-Prolog config file due to all the module libraries that fail
+    to compile/work in "iso" mode.
+
     Renamed the SWI-Prolog integration files, "swihook.pl" and "xpcehook.pl"
     to, respectively, "swihooks.pl" and "xpcehooks.pl".
 

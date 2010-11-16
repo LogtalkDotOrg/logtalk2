@@ -1,8 +1,13 @@
 
 :- if(current_logtalk_flag(prolog_dialect, swi)).
 
-	:- set_prolog_flag(iso, false).		% workaround CHR ISO compliance issues
-	:- ensure_loaded(library(chr)).
+	:- if(current_prolog_flag(iso, true)).
+		:- set_prolog_flag(iso, false).		% workaround CHR ISO compliance issues
+		:- ensure_loaded(library(chr)).
+		:- set_prolog_flag(iso, true).
+	:- else.
+		:- ensure_loaded(library(chr)).
+	:- endif.
 
 :- elif(current_logtalk_flag(prolog_dialect, yap)).
 
