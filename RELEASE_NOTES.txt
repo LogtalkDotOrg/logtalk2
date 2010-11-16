@@ -55,6 +55,14 @@ RELEASE NOTES
     objects or parametric categories with instantiated parameters would fail
     to discard the parameter values in the runtime tables of defined entities.
 
+    Updated the implementation of the directives dynamic/1, discontiguous/1,
+    and multifile/1 in order to remove explicit module qualification from the
+    predicate indicator arguments when the module is "user".
+
+    Updated the compilation of clause heads for module multifile predicates
+    in order to remove the explicit module qualification when the module is
+    "user".
+
     Updated the implementation of the built-in predicate logtalk_compile/2
     in order to ensure the same compiler options semantics for compiled code
     as the built-in predicate logtalk_load/2.
@@ -101,7 +109,7 @@ RELEASE NOTES
 
     Corrected a static binding bug where meta-predicates called within other
     meta-predicates would not be correctly compiled. This bug prevented the
-    "mtbatch" from running.
+    "mtbatch" example from running.
 
     Removed references to the de facto standard predicates retractall/1,
     compare/3, and callable/1 from all the config files of Prolog compilers
