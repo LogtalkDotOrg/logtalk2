@@ -42,10 +42,13 @@ RELEASE NOTES
     Improved the performance of source file compilation by avoiding redundant
     cleaning of auxiliary compilation predicates.
 
-    Modified the Logtalk compiler in order to interpret occurrences of":" in
+    Modified the Logtalk compiler in order to interpret occurrences of ":" in
     module meta-predicate directives as equivalent to "::" instead of "0" in
     Logtalk meta-predicate directives. This change follows the current trend
-    for de facto standardization for meta-predicate directives.
+    for de facto standardization for meta-predicate directives but is still
+    problematic for some Prolog compilers. Logtalk will throw an exception
+    when compiling calls to Prolog built-in meta-predicates or Prolog module
+    meta-predicates whose template includes a ":" meta-argument specifier.
 
     Improved compiler error checking for entity relations, detecting and
     reporting most incorrect attempts to extend, instantiate, specialize,

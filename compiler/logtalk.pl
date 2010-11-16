@@ -9779,8 +9779,13 @@ current_logtalk_flag(version, version(2, 42, 0)).
 		% we're compiling a call to a module meta-predicate
 		Pred =.. [Functor| Args],
 		Meta =.. [Functor| MArgs],
+
 		(	'$lgt_member'(MArg, MArgs), integer(MArg), MArg =\= 0 ->
+			% module meta-predicates that take closures are not supported:
 			throw(domain_error(closure, Meta))
+		;	'$lgt_member'(MArg, MArgs), MArg == (':') ->
+			% the meta-argument specifier ':' is ambiguous:
+			throw(domain_error(meta_argument_specifier, Meta))
 		;	'$lgt_tr_module_meta_predicate_directives_args'(MArgs, CMArgs),
 			'$lgt_tr_module_meta_args'(Args, CMArgs, Ctx, TArgs, DArgs),
 			TPred =.. [Functor| TArgs],
@@ -10277,6 +10282,9 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	(	'$lgt_member'(MArg, MArgs), integer(MArg), MArg =\= 0 ->
 		% module meta-predicates that take closures are not supported:
 		throw(domain_error(closure, Meta))
+	;	'$lgt_member'(MArg, MArgs), MArg == (':') ->
+		% the meta-argument specifier ':' is ambiguous:
+		throw(domain_error(meta_argument_specifier, Meta))
 	;	'$lgt_tr_module_meta_predicate_directives_args'(MArgs, CMArgs),
 		'$lgt_tr_module_meta_args'(Args, CMArgs, Ctx, TArgs, DArgs),
 		TPred =.. [Functor| TArgs],
@@ -10455,7 +10463,11 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
 	(	'$lgt_member'(MArg, MArgs), integer(MArg), MArg =\= 0 ->
+		% module meta-predicates that take closures are not supported:
 		throw(domain_error(closure, Meta))
+	;	'$lgt_member'(MArg, MArgs), MArg == (':') ->
+		% the meta-argument specifier ':' is ambiguous:
+		throw(domain_error(meta_argument_specifier, Meta))
 	;	'$lgt_tr_module_meta_predicate_directives_args'(MArgs, CMArgs),
 		'$lgt_tr_meta_args'(Args, CMArgs, Ctx, TArgs, DArgs),
 		TGoal =.. [Functor| TArgs],
