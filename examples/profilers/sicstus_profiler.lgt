@@ -108,7 +108,7 @@
 		write_entity_profile_data_rows(Rest).
 
 	reset :-
-		profile_reset(_:_).
+		{profile_reset(_:_)}.
 
 	atomic_list_concat(List, Atom) :-
 		atomic_list_concat(List, '', Atom).
