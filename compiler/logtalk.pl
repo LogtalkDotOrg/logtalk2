@@ -8265,6 +8265,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 '$lgt_tr_module_meta_predicate_directives_args'([Arg| Args], [TArg| TArgs]) :-
 	(	Arg == (:) -> TArg = (::)	% Prolog to Logtalk notation; this is fragile due to the lack of standardization
+	;	Arg == (::) -> TArg = (::)	% mixed-up notation or overriding meta-predicate template being used
 	;	integer(Arg) -> TArg = Arg	% goals and closures are denoted by integers >= 0
 	;	TArg = (*)					% non meta-arguments (e.g. instantiation modes) to Logtalk notation
 	),
@@ -9819,8 +9820,15 @@ current_logtalk_flag(version, version(2, 42, 0)).
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
 		'$lgt_tr_body'(Module::Pred, TPred, DPred, Ctx)
 	;	catch('$lgt_predicate_property'(Pred, imported_from(Module)), _, fail),
-		catch('$lgt_predicate_property'(Pred, meta_predicate(Meta)), _, fail) ->
-		% we're compiling a call to a module meta-predicate
+		catch('$lgt_predicate_property'(Pred, meta_predicate(OriginalMeta)), _, fail) ->
+		% we're compiling a call to a module meta-predicate:
+		functor(Pred, Functor, Arity),
+		functor(OverridingMeta, Functor, Arity),
+		(	'$lgt_pp_meta_predicate_'(':'(Module, OverridingMeta)) ->
+			% we're overriding the original meta-predicate template:
+			Meta = OverridingMeta
+		;	Meta = OriginalMeta
+		),
 		Pred =.. [Functor| Args],
 		Meta =.. [Functor| MArgs],
 
@@ -10320,7 +10328,14 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_tr_body'(Alias, ':'(Module, TPred), ':'(Module, DPred), Ctx) :-	% meta-predicates
 	'$lgt_pp_use_module_predicate_'(Module, Pred, Alias),
 	catch('$lgt_predicate_property'(Pred, imported_from(Module)), _, fail),
-	catch('$lgt_predicate_property'(Pred, meta_predicate(Meta)), _, fail),
+	catch('$lgt_predicate_property'(Pred, meta_predicate(OriginalMeta)), _, fail),
+	functor(Pred, Functor, Arity),
+	functor(OverridingMeta, Functor, Arity),
+	(	'$lgt_pp_meta_predicate_'(':'(Module, OverridingMeta)) ->
+		% we're overriding the original meta-predicate template:
+		Meta = OverridingMeta
+	;	Meta = OriginalMeta
+	),
 	Pred =.. [Functor| Args],
 	Meta =.. [Functor| MArgs],
 	(	'$lgt_member'(MArg, MArgs), integer(MArg), MArg =\= 0 ->
@@ -10500,10 +10515,18 @@ current_logtalk_flag(version, version(2, 42, 0)).
 		true
 	;	% non-declared proprietary built-in meta-predicates (fragile hack
 	 	% due to lack of standardization of meta-predicate specifications)
-		catch('$lgt_predicate_property'(Pred, meta_predicate(Meta)), _, fail),
+		catch('$lgt_predicate_property'(Pred, meta_predicate(OriginalMeta)), _, fail),
 		Type = predicate	% but it could be a control construct instead... no way to know it!
 	),
 	!,
+	% we're compiling a call to a module meta-predicate:
+	functor(Pred, Functor, Arity),
+	functor(OverridingMeta, Functor, Arity),
+	(	'$lgt_pp_meta_predicate_'(OverridingMeta) ->
+		% we're overriding the original meta-predicate template:
+		Meta = OverridingMeta
+	;	Meta = OriginalMeta
+	),
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
 	(	'$lgt_member'(MArg, MArgs), integer(MArg), MArg =\= 0 ->
