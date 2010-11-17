@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.42.0 - November ??, 2010
+2.42.0 - November 17, 2010
 
     Added an experimental directive, annotation/1, for supporting Logtalk
     integration with other languages such as ProbLog and CHR.
@@ -57,6 +57,9 @@ RELEASE NOTES
     Corrected a bug where the compilation (or dynamic creation) of parametric
     objects or parametric categories with instantiated parameters would fail
     to discard the parameter values in the runtime tables of defined entities.
+
+    Added support for using explicit object qualification and explicit module
+    qualification in meta_predicate/1 directives.
 
     Updated the implementation of the directives dynamic/1, discontiguous/1,
     and multifile/1 in order to remove explicit module qualification from the

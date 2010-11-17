@@ -7720,6 +7720,38 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	\+ callable(Pred),
 	throw(type_error(callable, Pred)).
 
+'$lgt_tr_meta_predicate_directive'([Entity::_| _]) :-
+	var(Entity),
+	throw(instantiation_error).
+
+'$lgt_tr_meta_predicate_directive'([':'(Module, _)| _]) :-
+	var(Module),
+	throw(instantiation_error).
+
+'$lgt_tr_meta_predicate_directive'([_::Pred| _]) :-
+	var(Pred),
+	throw(instantiation_error).
+
+'$lgt_tr_meta_predicate_directive'([':'(_, Pred)| _]) :-
+	var(Pred),
+	throw(instantiation_error).
+
+'$lgt_tr_meta_predicate_directive'([Entity::_| _]) :-
+	\+ callable(Entity),
+	throw(type_error(entity_identifier, Entity)).
+
+'$lgt_tr_meta_predicate_directive'([':'(Module, _)| _]) :-
+	\+ atom(Module),
+	throw(type_error(atom, Module)).
+
+'$lgt_tr_meta_predicate_directive'([Entity::Pred| _]) :-
+	\+ '$lgt_valid_meta_predicate_template'(Pred),
+	throw(type_error(meta_predicate_template, Entity::Pred)).
+
+'$lgt_tr_meta_predicate_directive'([':'(Module, Pred)| _]) :-
+	\+ '$lgt_valid_meta_predicate_template'(Pred),
+	throw(type_error(meta_predicate_template, ':'(Module, Pred))).
+
 '$lgt_tr_meta_predicate_directive'([Pred| _]) :-
 	\+ '$lgt_valid_meta_predicate_template'(Pred),
 	throw(type_error(meta_predicate_template, Pred)).
@@ -7728,6 +7760,16 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	functor(Pred, Functor, Arity),
 	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _),
 	throw(permission_error(modify, predicate_interpretation, Pred)).
+
+'$lgt_tr_meta_predicate_directive'([Entity::Pred| Preds]) :-
+	!,
+	assertz('$lgt_pp_meta_predicate_'(Entity::Pred)),
+	'$lgt_tr_meta_predicate_directive'(Preds).
+
+'$lgt_tr_meta_predicate_directive'([':'(Module, Pred)| Preds]) :-
+	!,
+	assertz('$lgt_pp_meta_predicate_'(':'(Module, Pred))),
+	'$lgt_tr_meta_predicate_directive'(Preds).
 
 '$lgt_tr_meta_predicate_directive'([Pred| Preds]) :-
 	assertz('$lgt_pp_meta_predicate_'(Pred)),
