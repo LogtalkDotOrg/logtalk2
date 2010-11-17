@@ -9038,12 +9038,14 @@ current_logtalk_flag(version, version(2, 42, 0)).
 		throw(type_error(atom, Module))
 	;	\+ callable(Head) ->
 		throw(type_error(callable, Head))
-	;	(	Module == user ->
+	;	functor(Head, Functor, Arity),
+		(	Module == user ->
 			THead = Head
 		;	THead = ':'(Module, Head)
 		),
-		functor(Head, Functor, Arity),
-		(	'$lgt_pp_directive_'(multifile(':'(Module, Functor/Arity))) ->
+		(	Module == user, '$lgt_pp_directive_'(multifile(Functor/Arity)) ->
+			true
+		;	'$lgt_pp_directive_'(multifile(':'(Module, Functor/Arity))) ->
 			true
 		;	'$lgt_compiler_flag'(report, off) ->
 			true
