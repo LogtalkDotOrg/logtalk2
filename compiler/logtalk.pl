@@ -7744,36 +7744,31 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	\+ atom(Module),
 	throw(type_error(atom, Module)).
 
-'$lgt_tr_meta_predicate_directive'([Entity::Pred| _]) :-
-	\+ '$lgt_valid_meta_predicate_template'(Pred),
-	throw(type_error(meta_predicate_template, Entity::Pred)).
+'$lgt_tr_meta_predicate_directive'([Entity::Pred| Preds]) :-
+	'$lgt_valid_meta_predicate_template'(Pred),
+	!,
+	assertz('$lgt_pp_meta_predicate_'(Entity::Pred)),
+	'$lgt_tr_meta_predicate_directive'(Preds).
 
-'$lgt_tr_meta_predicate_directive'([':'(Module, Pred)| _]) :-
-	\+ '$lgt_valid_meta_predicate_template'(Pred),
-	throw(type_error(meta_predicate_template, ':'(Module, Pred))).
-
-'$lgt_tr_meta_predicate_directive'([Pred| _]) :-
-	\+ '$lgt_valid_meta_predicate_template'(Pred),
-	throw(type_error(meta_predicate_template, Pred)).
+'$lgt_tr_meta_predicate_directive'([':'(Module, Pred)| Preds]) :-
+	'$lgt_valid_meta_predicate_template'(Pred),
+	!,
+	assertz('$lgt_pp_meta_predicate_'(':'(Module, Pred))),
+	'$lgt_tr_meta_predicate_directive'(Preds).
 
 '$lgt_tr_meta_predicate_directive'([Pred| _]) :-
 	functor(Pred, Functor, Arity),
 	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _),
 	throw(permission_error(modify, predicate_interpretation, Pred)).
 
-'$lgt_tr_meta_predicate_directive'([Entity::Pred| Preds]) :-
-	!,
-	assertz('$lgt_pp_meta_predicate_'(Entity::Pred)),
-	'$lgt_tr_meta_predicate_directive'(Preds).
-
-'$lgt_tr_meta_predicate_directive'([':'(Module, Pred)| Preds]) :-
-	!,
-	assertz('$lgt_pp_meta_predicate_'(':'(Module, Pred))),
-	'$lgt_tr_meta_predicate_directive'(Preds).
-
 '$lgt_tr_meta_predicate_directive'([Pred| Preds]) :-
+	'$lgt_valid_meta_predicate_template'(Pred),
+	!,
 	assertz('$lgt_pp_meta_predicate_'(Pred)),
 	'$lgt_tr_meta_predicate_directive'(Preds).
+
+'$lgt_tr_meta_predicate_directive'([Pred| _]) :-
+	throw(type_error(meta_predicate_template, Pred)).
 
 
 
@@ -9831,7 +9826,6 @@ current_logtalk_flag(version, version(2, 42, 0)).
 		),
 		Pred =.. [Functor| Args],
 		Meta =.. [Functor| MArgs],
-
 		(	'$lgt_member'(MArg, MArgs), integer(MArg), MArg =\= 0 ->
 			% module meta-predicates that take closures are not supported:
 			throw(domain_error(closure, Meta))
@@ -10520,7 +10514,6 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	),
 	!,
 	% we're compiling a call to a module meta-predicate:
-	functor(Pred, Functor, Arity),
 	functor(OverridingMeta, Functor, Arity),
 	(	'$lgt_pp_meta_predicate_'(OverridingMeta) ->
 		% we're overriding the original meta-predicate template:
