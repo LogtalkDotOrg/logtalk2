@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: October 23, 2010
+%  last updated: November 17, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -506,6 +506,8 @@ forall(Generate, Test) :-
 % '$lgt_ignore_pl_directive'(@callable)
 
 '$lgt_ignore_pl_directive'(mode(_)).
+'$lgt_ignore_pl_directive'(public(_)) :-	% used to provide info to the cross-referencer
+	'$lgt_pp_module_'(_).					% only when we're compiling a module as an object!
 
 
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)

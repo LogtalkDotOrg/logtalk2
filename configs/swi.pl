@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: November 16, 2010
+%  last updated: November 17, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -525,6 +525,8 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 
 % '$lgt_ignore_pl_directive'(@callable)
 
+'$lgt_ignore_pl_directive'(public(_)) :-	% used to provide info to the cross-referencer
+	'$lgt_pp_module_'(_).					% only when we're compiling a module as an object!
 '$lgt_ignore_pl_directive'(style_check(Option)) :-
 	style_check(Option).
 

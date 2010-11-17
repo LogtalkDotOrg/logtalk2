@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: October 23, 2010
+%  last updated: November 17, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -600,6 +600,9 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 	'$expects_dialect'(Dialect).
 '$lgt_rewrite_and_copy_pl_directive'(load_foreign_files(Files, Libs, InitRoutine), initialization(load_foreign_files(Files, Libs, InitRoutine))) :-
 	load_foreign_files(Files, Libs, InitRoutine).
+'$lgt_rewrite_and_copy_pl_directive'(public(PIs), public(CPIs)) :-	% used to make clause/2 work with static predicates
+	'$lgt_pp_module_'(_),											% only when we're compiling a module as an object!
+	'$lgt_compile_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(table(PIs), table(CPIs)) :-
 	'$lgt_compile_predicate_indicators'(PIs, CPIs).
 '$lgt_rewrite_and_copy_pl_directive'(thread_local(PIs), thread_local(CPIs)) :-

@@ -125,6 +125,10 @@ RELEASE NOTES
     by the Prolog compilers themselves to the config files of B-Prolog, Ciao,
     Qu-Prolog, and XSB.
 
+    Updated the config files of SICStus Prolog, SWI-Prolog, and YAP in order
+    to parse the Prolog proprietary directive public/1 (whose semantics depend
+    on the Prolog compiler).
+
     Updated the Qu-Prolog config file with support for accessing environment
     variables and updated definitions of file-system access predicates that
     avoid issues with file paths containing spaces. Logtalk now requires
