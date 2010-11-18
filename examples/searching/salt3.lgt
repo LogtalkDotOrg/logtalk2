@@ -28,10 +28,11 @@ Remarks:
 	instantiates(heuristic_state_space)).
 
 	:- info([
-		version is 1.11,
+		version is 1.12,
 		author is 'Paula Marisa Sampaio',
-		date is 2009/4/6,
-		comment is 'Salt state-space search problem (updated from the original 1.0 version to support heuristics).']).
+		date is 2010/11/18,
+		comment is 'Salt state-space search problem (updated from the original 1.0 version to support heuristics).',
+		parnames is ['Acumulator', 'Measure1', 'Measure2']]).
 
 	% each state is represented by a compound term with four arguments: (Acumulator, Measure1, Measure2, Step)
 	initial_state(initial, (0, 0, 0, all_empty)).
