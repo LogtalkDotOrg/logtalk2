@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: November 17, 2010
+%  last updated: November 18, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -286,7 +286,10 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 
 '$lgt_expand_path'(Path, ExpandedPath) :-
 	working_directory(Current, Current),
-	absolute_file_name(Path, [expand(true), relative_to(Current)], ExpandedPath).
+	(	absolute_file_name(Path, [expand(true), relative_to(Current), file_errors(fail)], ExpandedPath) ->
+		true
+	;	absolute_file_name(Path, [expand(true), relative_to(Current), file_type(directory), file_errors(fail)], ExpandedPath)
+	).
 
 
 % '$lgt_file_exists'(+atom)

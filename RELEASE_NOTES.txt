@@ -152,7 +152,8 @@ RELEASE NOTES
 
     Commented out the setting of the proprietary Prolog flag "iso" to "true"
     in the SWI-Prolog config file due to all the module libraries that fail
-    to compile/work in "iso" mode.
+    to compile/work in "iso" mode. Updated the implementation of the internal
+    predicate '$lgt_expand_path'/2 in order to also expand directory paths.
 
     Renamed the SWI-Prolog integration files, "swihook.pl" and "xpcehook.pl"
     to, respectively, "swihooks.pl" and "xpcehooks.pl".
