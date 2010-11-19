@@ -513,7 +513,7 @@ object_property(Obj, Prop) :-
 	throw(error(domain_error(object_property, Prop), object_property(Obj, Prop))).
 
 object_property(Obj, Prop) :-
-	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, Flags),
+	'$lgt_current_object_'(Obj, _, Dcl, _, _, _, _, DDcl, _, _, Flags),
 	(	'$lgt_object_flags'(Prop, Flags)
 	;	'$lgt_entity_property_'(Obj, Internal),
 		(	Internal = file(Base, Start, End, Path) ->
@@ -522,6 +522,19 @@ object_property(Obj, Prop) :-
 			)
 		;	Prop = Internal
 		)
+	;	(	Flags /\ 64 =:= 64 ->
+			findall(
+				Functor/Arity,
+				((call(Dcl, Predicate, p(p(p)), _, _); call(DDcl, Predicate, p(p(p)))),
+				 functor(Predicate, Functor, Arity)),
+				Predicates)
+		;	findall(
+				Functor/Arity,
+				(call(Dcl, Predicate, p(p(p)), _, _),
+				 functor(Predicate, Functor, Arity)),
+				Predicates)
+		),
+		Prop = public(Predicates)
 	).
 
 
@@ -539,7 +552,7 @@ category_property(Ctg, Prop) :-
 	throw(error(domain_error(category_property, Prop), category_property(Ctg, Prop))).
 
 category_property(Ctg, Prop) :-
-	'$lgt_current_category_'(Ctg, _, _, _, _, Flags),
+	'$lgt_current_category_'(Ctg, _, Dcl, _, _, Flags),
 	(	'$lgt_category_flags'(Prop, Flags)
 	;	'$lgt_entity_property_'(Ctg, Internal),
 		(	Internal = file(Base, Start, End, Path) ->
@@ -548,6 +561,11 @@ category_property(Ctg, Prop) :-
 			)
 		;	Prop = Internal
 		)
+	;	findall(
+			Functor/Arity,
+			(call(Dcl, Predicate, p(p(p)), _, _, Ctg), functor(Predicate, Functor, Arity)),
+			Predicates),
+		Prop = public(Predicates)
 	).
 
 
@@ -565,7 +583,7 @@ protocol_property(Ptc, Prop) :-
 	throw(error(domain_error(protocol_property, Prop), protocol_property(Ptc, Prop))).
 
 protocol_property(Ptc, Prop) :-
-	'$lgt_current_protocol_'(Ptc, _, _, _, Flags),
+	'$lgt_current_protocol_'(Ptc, _, Dcl, _, Flags),
 	(	'$lgt_protocol_flags'(Prop, Flags)
 	;	'$lgt_entity_property_'(Ptc, Internal),
 		(	Internal = file(Base, Start, End, Path) ->
@@ -574,6 +592,11 @@ protocol_property(Ptc, Prop) :-
 			)
 		;	Prop = Internal
 		)
+	;	findall(
+			Functor/Arity,
+			(call(Dcl, Predicate, p(p(p)), _, _, Ptc), functor(Predicate, Functor, Arity)),
+			Predicates),
+		Prop = public(Predicates)
 	).
 
 
@@ -7100,7 +7123,19 @@ current_logtalk_flag(version, version(2, 42, 0)).
 			'$lgt_append'(Previous, List, Info)
 		;	Info = List
 		),
-		assertz('$lgt_pp_info_'(Info))
+		assertz('$lgt_pp_info_'(Info)),
+		'$lgt_pp_entity'(_, Entity, _, _, _),
+		(	compound(Entity) ->
+			(	'$lgt_member'(parnames is Names, Info) ->
+				true
+			;	'$lgt_member'(parameters is Parameters, Info) ->
+				findall(Name, '$lgt_member'(Name - _, Parameters), Names)
+			;	Entity =.. [_| Names],
+				'$lgt_vars_to_underscore'(Names)
+			),
+			assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, parameter_names(Names))))
+		;	true
+		)
 	;	throw(type_error(entity_info_list, List))
 	).
 
@@ -15201,6 +15236,8 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_valid_object_property'(dynamic_declarations).
 '$lgt_valid_object_property'(events).
 '$lgt_valid_object_property'(complements).
+'$lgt_valid_object_property'(public(_)).
+'$lgt_valid_object_property'(parameter_names(_)).
 
 
 
@@ -15211,6 +15248,8 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_valid_protocol_property'(static).
 '$lgt_valid_protocol_property'(file(_, _)).
 '$lgt_valid_protocol_property'(lines(_, _)).
+'$lgt_valid_protocol_property'(public(_)).
+'$lgt_valid_protocol_property'(parameter_names(_)).
 
 
 
@@ -15223,6 +15262,8 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_valid_category_property'(file(_, _)).
 '$lgt_valid_category_property'(lines(_, _)).
 '$lgt_valid_category_property'(events).
+'$lgt_valid_category_property'(public(_)).
+'$lgt_valid_category_property'(parameter_names(_)).
 
 
 
