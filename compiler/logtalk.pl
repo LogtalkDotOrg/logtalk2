@@ -1763,8 +1763,13 @@ logtalk_compile(Files, Flags) :-
 % converts a library alias into its corresponding path; uses a depth
 % bound to prevent loops (inspired by similar code in SWI-Prolog)
 
-'$lgt_expand_library_path'(Library, Path) :-
-	'$lgt_expand_library_path'(Library, Path, 16).
+'$lgt_expand_library_path'(Library, ExpandedPath) :-
+	'$lgt_expand_library_path'(Library, Path, 16),
+	(	'$lgt_expand_path'(Path, ExpandedPath) ->
+		true
+	;	% some Prolog compilers don't provide the necessary support for expanding paths
+		ExpandedPath = Path
+	).
 
 
 '$lgt_expand_library_path'(Library, Path, N) :-
