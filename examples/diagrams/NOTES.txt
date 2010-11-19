@@ -18,10 +18,15 @@ diagrams.
 
 The diagrams .dot files are created on the current directory. These files
 can be easily converted into a printable format such as Postscript or PDF.
-For example, on POSIx systems we can simply type:
+For example, using the dot command-line executable we can simply type:
 
-	$ dot -Tpdf points.dot > points.pdf 
+	dot -Tpdf points.dot > points.pdf 
 
 For more information on the DOT language and related tools see:
 
 	http://www.graphviz.org/
+
+When using Windows, there are know issues with some Prolog compilers due
+to the internal representation of paths. If you encounter problems with a
+specific back-end Prolog compiler, try to use another supported back-end
+Prolog compiler when generating diagrams.
