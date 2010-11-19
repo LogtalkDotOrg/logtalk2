@@ -170,6 +170,10 @@ RELEASE NOTES
     Updated the library "types_loader.lgt" file to also load the heaps library
     files.
 
+    Added an example, "diagrams", illustrating how to generate entity diagrams
+    for a source file and for a library of source files using Logtalk reflection
+    features and the DOT language.
+
     Added an example, "profilers", featuring simple wrappers for the SICStus
     Prolog 4 profiler and the YAP count profiler.
 

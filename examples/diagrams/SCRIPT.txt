@@ -1,0 +1,37 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.42.0
+
+Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+% start by loading the example:
+
+| ?- logtalk_load(diagrams(loader)).
+...
+
+
+% load an example for testing:
+
+| ?- logtalk_load(points(loader)).
+...
+
+% generating an entity diagram for a source file:
+
+| ?- diagram::file(points).
+yes
+
+
+% load another example for testing:
+
+| ?- logtalk_load(searching(loader)).
+...
+
+% generating an entity diagram for all source files in a library:
+
+| ?- diagram::library(searching).
+yes

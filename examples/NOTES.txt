@@ -129,6 +129,10 @@ diamonds
 	examples of problems and solutions for the "diamond problem"
 	(multi-inheritance conflicts and ambiguities)
 
+diagrams
+	examples of how to generated entity diagrams using reflection
+	and the DOT language
+
 dynpred
 	example of using some of the built-in database handling methods 
 	in order to implement dynamic object state

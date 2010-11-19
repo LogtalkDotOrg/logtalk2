@@ -1,0 +1,27 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.42.0
+
+Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+To load this example and for sample queries, please see the SCRIPT file.
+
+This example illustrates how to generate entity diagrams for source files
+and for libraries of source files using the Logtalk reflection features to
+collect the relevant information and the DOT language for representing the
+diagrams.
+
+The diagrams .dot files are created on the current directory. These files
+can be easily converted into a printable format such as Postscript or PDF.
+For example, on POSIx systems we can simply type:
+
+	$ dot -Tpdf points.dot > points.pdf 
+
+For more information on the DOT language and related tools see:
+
+	http://www.graphviz.org/

@@ -52,6 +52,7 @@ logtalk_library_path(dcgs, examples('dcgs/')).
 logtalk_library_path(debug_hooks, examples('debug_hooks/')).
 logtalk_library_path(delegates, examples('delegates/')).
 logtalk_library_path(diamonds, examples('diamonds/')).
+logtalk_library_path(diagrams, examples('diagrams/')).
 logtalk_library_path(dynpred, examples('dynpred/')).
 logtalk_library_path(encodings, examples('encodings/')).
 logtalk_library_path(engines, examples('engines/')).

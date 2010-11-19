@@ -5034,8 +5034,8 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	Term =.. [Library, File],
 	'$lgt_expand_library_path'(Library, Path),
 	'$lgt_current_directory'(Current),
-	'$lgt_change_directory'(Path),
-	'$lgt_current_directory'(ExpandedPath),
+	'$lgt_change_directory'(Path),				% a little trick necessary to support Prolog compilers that
+	'$lgt_current_directory'(ExpandedPath),		% don't provide the necessary support for expanding paths
 	(	Current \== ExpandedPath ->
 		'$lgt_report_working_directory'(ExpandedPath),
 		'$lgt_load_file'(File),
@@ -5357,8 +5357,8 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	Term =.. [Library, File],
 	'$lgt_expand_library_path'(Library, Path),
 	'$lgt_current_directory'(Current),
-	'$lgt_change_directory'(Path),
-	'$lgt_current_directory'(ExpandedPath),
+	'$lgt_change_directory'(Path),				% a little trick necessary to support Prolog compilers that
+	'$lgt_current_directory'(ExpandedPath),		% don't provide the necessary support for expanding paths
 	(	Current \== ExpandedPath ->
 		'$lgt_report_working_directory'(ExpandedPath),
 		'$lgt_compile_file'(File),
