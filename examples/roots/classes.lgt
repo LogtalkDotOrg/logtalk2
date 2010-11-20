@@ -2,9 +2,9 @@
 :- protocol(abstract_classp).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2000/7/24,
+		date is 2010/11/20,
 		comment is 'Default protocol for all abstract classes.']).
 
 	:- public(metaclass/0).
@@ -27,7 +27,7 @@
 	specializes(object)).
 
 	:- info([
-		version is 2,
+		version is 2.0,
 		author is 'Paulo Moura',
 		date is 2000/7/24,
 		comment is 'Default metaclass for all abstract classes.']).
@@ -159,8 +159,10 @@
 
 	delete_all(Options) :-
 		::instance(Instance),
-		object_property(Instance, (dynamic)),
-		::delete(Instance, Options),
+		(	object_property(Instance, (dynamic)) ->
+			::delete(Instance, Options)
+		;	true
+		),
 		fail.
 
 	delete_all(_) :-

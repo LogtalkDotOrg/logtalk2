@@ -217,6 +217,10 @@ RELEASE NOTES
     Added a fully connected graph path search problem, contributed by
     Theofrastos Mantadelis, to the "benchmarks" example.
 
+    Corrected a bug in the use of the built-in predicate object_property/2
+    in the "roots" example that would result in errors when deleting dynamic
+    objects.
+
     Updated the "examples/tester.sh" script in order to also work when
     running Logtalk without using the installer packages or scripts.
 
