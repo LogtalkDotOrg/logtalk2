@@ -23,7 +23,14 @@
 
 <h4>Description</h4>
 
-<pre>meta_predicate(MetaPredicate)</pre>
+<pre>meta_predicate(MetaPredicateTemplate)
+meta_predicate((MetaPredicateTemplate1, MetaPredicateTemplate2, ...))
+meta_predicate([MetaPredicateTemplate1, MetaPredicateTemplate2, ...])
+
+meta_predicate(Entity::MetaPredicateTemplate)
+meta_predicate((Entity1::MetaPredicateTemplate1, Entity2::MetaPredicateTemplate2, ...))
+meta_predicate([Entity1::MetaPredicateTemplate1, Entity2::MetaPredicateTemplate2, ...])
+</pre>
 <p>
 Declares meta-predicates, i.e., predicates that have arguments that will be called as goals. An argument may also be a <em>closure</em> instead of a goal if the meta-predicate uses the <a title="Consult reference manual" href="../methods/callN.html"><code>call/N</code></a> Logtalk built-in methods to construct and call the actual goal from the closure and the additional arguments.
 </p>
@@ -33,7 +40,9 @@ Meta-arguments which are goals are represented by the integer <code>0</code>. Me
 
 <h4>Template and modes</h4>
 
-<pre>meta_predicate(+meta_predicate_mode_indicator)</pre>
+<pre>meta_predicate(+meta_predicate_template_term)
+meta_predicate(+object_identifier::+meta_predicate_template_term)
+meta_predicate(+category_identifier::+meta_predicate_template_term)</pre>
 
 
 <h4>Examples</h4>
@@ -42,12 +51,12 @@ Meta-arguments which are goals are represented by the integer <code>0</code>. Me
 
 :- meta_predicate(forall(0, 0)).
 
-:- meta_predicate(maplist(2, *, *))</pre>
+:- meta_predicate(maplist(2, *, *)).</pre>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: May 23, 2010</span>
+		<span>Last updated on: November 20, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="info2.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="mode2.html">next</a></span><br/>
