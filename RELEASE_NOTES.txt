@@ -76,6 +76,10 @@ RELEASE NOTES
     in order to ensure the same compiler options semantics for compiled code
     as the built-in predicate logtalk_load/2.
 
+    Avoid a spurious choice-point created when reporting singleton variables
+    during source file compilation with some back-end Prolog compilers such
+    as ECLiPSe and SWI-Prolog.
+
     Corrected a error handling issue in the implementation of the built-in
     predicates logtalk_compile/2 and logtalk_load/2 where the error terms
     would be wrapped in an extra error/2 term.

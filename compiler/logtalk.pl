@@ -1977,11 +1977,12 @@ logtalk_load_context(entity_type, Type) :-
 		Type = category
 	).
 
-logtalk_load_context(stream, Stream) :-
-	stream_property(Stream, alias('$lgt_input')), !.
-
 logtalk_load_context(term_position, Position) :-
 	'$lgt_pp_term_position_'(Position).
+
+logtalk_load_context(stream, Stream) :-
+	stream_property(Stream, alias('$lgt_input')),
+	!.	% avoid a spurious choice-point with some Prolog compilers
 
 
 
@@ -12273,6 +12274,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 '$lgt_report_warning_file_context' :-
 	stream_property(Input, alias('$lgt_input')),
+	!,	% avoid a spurious choice-point with some Prolog compilers
 	(	'$lgt_compiler_flag'(report, warnings) ->
 		'$lgt_pp_file_path_'(File, _),
 		write('%                   in file '), write(File),
@@ -12292,6 +12294,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_report_warning_full_context'(Type, Entity) :-
 	'$lgt_pp_file_path_'(File, _),
 	stream_property(Input, alias('$lgt_input')),
+	!,	% avoid a spurious choice-point with some Prolog compilers
 	(	'$lgt_compiler_flag'(report, warnings) ->
 		write('%                   in '), write(Type), write(' '), writeq(Entity),
 		write(', defined in file '), write(File),
