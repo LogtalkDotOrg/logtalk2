@@ -161,6 +161,8 @@ RELEASE NOTES
     in the SWI-Prolog config file due to all the module libraries that fail
     to compile/work in "iso" mode. Updated the implementation of the internal
     predicate '$lgt_expand_path'/2 in order to also expand directory paths.
+    Added a workaround for ignoring the new operator public/1 introduced in
+    SWI-Prolog 5.11.9 while compiling Logtalk source files.
 
     Renamed the SWI-Prolog integration files, "swihook.pl" and "xpcehook.pl"
     to, respectively, "swihooks.pl" and "xpcehooks.pl".

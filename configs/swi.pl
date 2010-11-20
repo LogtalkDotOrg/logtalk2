@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: November 18, 2010
+%  last updated: November 20, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -504,11 +504,22 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 
 % '$lgt_read_term'(@stream, -term, +list, -position)
 
-'$lgt_read_term'(Stream, Term, Options, LineBegin-LineEnd) :-
-	read_term(Stream, Term, [term_position(PositionBegin)| Options]),
-	stream_position_data(line_count, PositionBegin, LineBegin),
-	stream_property(Stream, position(PositionEnd)),
-	stream_position_data(line_count, PositionEnd, LineEnd).
+:- if(current_op(_, _, (public))).	% workaround SWI-Prolog 5.11.9 operator clash
+	'$lgt_read_term'(Stream, Term, Options, LineBegin-LineEnd) :-
+		current_op(Priority, Specifier, (public)), !,
+		op(0, Specifier, (public)),
+		read_term(Stream, Term, [term_position(PositionBegin)| Options]),
+		op(Priority, Specifier, (public)),
+		stream_position_data(line_count, PositionBegin, LineBegin),
+		stream_property(Stream, position(PositionEnd)),
+		stream_position_data(line_count, PositionEnd, LineEnd).
+:- else.
+	'$lgt_read_term'(Stream, Term, Options, LineBegin-LineEnd) :-
+		read_term(Stream, Term, [term_position(PositionBegin)| Options]),
+		stream_position_data(line_count, PositionBegin, LineBegin),
+		stream_property(Stream, position(PositionEnd)),
+		stream_position_data(line_count, PositionEnd, LineEnd).
+:- endif.
 
 
 
