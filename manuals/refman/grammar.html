@@ -553,6 +553,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 				<dd>scope_directive |</dd>
 				<dd>mode_directive |</dd>
 				<dd>meta_predicate_directive |</dd>
+				<dd>annotation_directive |</dd>
 				<dd>info_directive |</dd>
 				<dd>dynamic_directive |</dd>
 				<dd>discontiguous_directive |</dd>
@@ -587,6 +588,10 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 		<dl>
 			<dt>meta_predicate_directive ::=</dt>
 				<dd>"<code>:- meta_predicate(</code>" meta_predicate_template_term "<code>).</code>"</dd>
+		</dl>
+		<dl>
+			<dt>annotation_directive ::=</dt>
+				<dd>"<code>:- annotation(</code>" annotation_template_term "<code>).</code>"</dd>
 		</dl>
 		<dl>
 			<dt>info_directive ::=</dt>
@@ -741,6 +746,34 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 		<dl>
 			<dt>meta_predicate_term ::=</dt>
 				<dd>"<code>::</code>" | "<code>*</code>" | <em>integer</em></dd>
+		</dl>
+		<dl>
+			<dt>annotation_template_term ::=</dt>
+				<dd><em>annotation_template</em> |</dd>
+				<dd>annotation_template_sequence |</dd>
+				<dd>annotation_template_list</dd>
+		</dl>
+		<dl>
+			<dt>annotation_template_sequence ::=</dt>
+				<dd><em>annotation_template</em> |</dd>
+				<dd><em>annotation_template</em> "<code>,</code>" annotation_template_sequence</dd>
+		</dl>
+		<dl>
+			<dt>annotation_template_list ::=</dt>
+				<dd>"<code>[</code>" annotation_template_sequence "<code>]</code>"</dd>
+		</dl>
+		<dl id="grammar_annotation_template">
+			<dt>annotation_template ::=</dt>
+				<dd><em>atom</em> "<code>(</code>" annotation_terms "<code>)</code>"</dd>
+		</dl>
+		<dl id="grammar_annotation_terms">
+			<dt>annotation_terms ::=</dt>
+				<dd>annotation_term |</dd>
+				<dd>annotation_term "<code>,</code>" annotation_terms</dd>
+		</dl>
+		<dl>
+			<dt>annotation_term ::=</dt>
+				<dd>"<code>0</code>" | "<code>*</code>"</dd>
 		</dl>
 				<dl>
 			<dt>info_list ::=</dt>
