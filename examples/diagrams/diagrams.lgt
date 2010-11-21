@@ -7,6 +7,28 @@
 		date is 2010/11/18,
 		comment is 'Generates entity diagram DOT files for source files and libraries.']).
 
+	:- public(rlibrary/1).
+	:- mode(rlibrary(+atom), one).
+	:- info(rlibrary/1, [
+		comment is 'Creates a diagram for all entities in a library (recursive).',
+		argnames is ['Library']]).
+
+	rlibrary(Library) :-
+		logtalk::expand_library_path(Library, TopPath),
+		atom_concat(Library, '.dot', DotFile),
+		open(DotFile, write, Stream),
+		write(Stream, 'digraph G {\nrankdir=BT'), nl(Stream),
+		forall(
+			find_path(TopPath, Path),
+			process(Stream, _, Path)),
+		write(Stream, '}'), nl(Stream),
+		close(Stream).
+
+	find_path(TopPath, Path) :-
+		logtalk_library_path(Library, _),
+		logtalk::expand_library_path(Library, Path),
+		atom_concat(TopPath, _, Path).
+
 	:- public(library/1).
 	:- mode(library(+atom), one).
 	:- info(library/1, [
