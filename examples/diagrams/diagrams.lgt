@@ -154,7 +154,7 @@
 		complements_object(Category, Object),
 		print_name(category, Category, CategoryName),
 		print_name(object, Object, ObjectName),
-		arrow(Stream, CategoryName, ObjectName, complements),
+		arrow(Stream, ObjectName, CategoryName, complements),
 		fail.
 	output_category_relations(_, _).
 
@@ -172,7 +172,7 @@
 		nl(Stream).
 
 	entity_shape(prototype, box).
-	entity_shape(instance_or_class, tab).
+	entity_shape(instance_or_class, box).
 	entity_shape(protocol, note).
 	entity_shape(category, component).
 
@@ -189,12 +189,12 @@
 		write(Stream, '"]'),
 		nl(Stream).
 
-	label_arrowhead(extends, normal).
+	label_arrowhead(extends, vee).
 	label_arrowhead(instantiates, normal).
-	label_arrowhead(specializes, normal).
-	label_arrowhead(implements, normal).
-	label_arrowhead(imports, normal).
-	label_arrowhead(complements, normal).
+	label_arrowhead(specializes, onormal).
+	label_arrowhead(implements, dot).
+	label_arrowhead(imports, box).
+	label_arrowhead(complements, obox).
 
 	predicate_list_to_atom(List, Atom) :-
 		predicate_list_to_atom(List, '', Atom).
