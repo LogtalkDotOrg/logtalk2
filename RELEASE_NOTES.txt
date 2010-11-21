@@ -112,6 +112,9 @@ RELEASE NOTES
     in order to switch off the clean (smart_compilation) flag when switching
     on the smart_compilation (clean) flag.
 
+    Recognize logtalk_library_path/2 as a Logtalk built-in predicate when
+    compiling source files.
+
     Corrected a bug where abolishing a dynamic category or a dynamic protocol
     compiled in debug mode would fail to update the internal table of entities
     compiled in debug mode.

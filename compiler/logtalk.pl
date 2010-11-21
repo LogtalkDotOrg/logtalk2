@@ -15559,6 +15559,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_lgt_built_in'(logtalk_load(_)).
 '$lgt_lgt_built_in'(logtalk_load(_, _)).
 '$lgt_lgt_built_in'(logtalk_load_context(_, _)).
+'$lgt_lgt_built_in'(logtalk_library_path(_, _)).
 
 '$lgt_lgt_built_in'(protocol_property(_, _)).
 '$lgt_lgt_built_in'(category_property(_, _)).
