@@ -9,7 +9,7 @@
 
 	:- public(library/1).
 	:- mode(library(+atom), one).
-	:- info(file/1, [
+	:- info(library/1, [
 		comment is 'Creates a diagram for all entities in a library.',
 		argnames is ['Library']]).
 
