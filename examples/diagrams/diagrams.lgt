@@ -17,11 +17,11 @@
 		logtalk::expand_library_path(Library, TopPath),
 		atom_concat(Library, '.dot', DotFile),
 		open(DotFile, write, Stream),
-		write(Stream, 'digraph G {\nrankdir=BT'), nl(Stream),
+		dot_header(Stream, local),
 		forall(
 			find_path(TopPath, Path),
 			process(Stream, _, Path)),
-		write(Stream, '}'), nl(Stream),
+		dot_footer(Stream),
 		close(Stream).
 
 	find_path(TopPath, Path) :-
@@ -39,9 +39,9 @@
 		logtalk::expand_library_path(Library, Path),
 		atom_concat(Library, '.dot', DotFile),
 		open(DotFile, write, Stream),
-		write(Stream, 'digraph G {\nrankdir=BT'), nl(Stream),
+		dot_header(Stream, local),
 		process(Stream, _, Path),
-		write(Stream, '}'), nl(Stream),
+		dot_footer(Stream),
 		close(Stream).
 
 	:- public(file/1).
@@ -54,11 +54,52 @@
 		atom_concat(Source, '.lgt', File),
 		atom_concat(Source, '.dot', DotFile),
 		open(DotFile, write, Stream),
-		write(Stream, 'digraph G {\nrankdir=BT'), nl(Stream),
+		dot_header(Stream, none),
 		process(Stream, File, _),
-		write(Stream, '}'), nl(Stream),
+		dot_footer(Stream),
 		close(Stream).
 
+	dot_header(Stream, ClusterRank) :-
+		write(Stream, 'digraph G {'),
+		write(Stream, '\nrankdir=BT'),
+		write(Stream, '\nranksep=1.25'),
+		write(Stream, '\ncompound=true'),
+		write(Stream, '\nclusterrank='),
+		write(Stream, ClusterRank),
+		write(Stream, '\nlabeljust=l'),
+		write(Stream, '\nfontname="Courier"'),
+		write(Stream, '\nfontsize=12'),
+		write(Stream, '\nfontcolor=snow4'),
+		%write(Stream, '\npage="8.3,11.7"'),
+		%write(Stream, '\npagedir=TL'),
+		write(Stream, '\nnode [fontname="Courier",fontsize=11]'),
+		write(Stream, '\nedge [fontname="Courier",fontsize=11]'),
+		nl(Stream).
+
+	dot_footer(Stream) :-
+		write(Stream, '}'),
+		nl(Stream).
+
+	process(Stream, File, _) :-
+		nonvar(File),
+		write(Stream, 'subgraph "cluster_'),
+		write(Stream, File),
+		write(Stream, '" {\n'),
+		write(Stream, 'bgcolor=snow1\nlabel="'),
+		write(Stream, File),
+		write(Stream, '"'),
+		nl(Stream),
+		fail.
+	process(Stream, _, Path) :-
+		nonvar(Path),
+		write(Stream, 'subgraph "cluster_'),
+		write(Stream, Path),
+		write(Stream, '" {\n'),
+		write(Stream, 'bgcolor=snow1\nlabel="'),
+		write(Stream, Path),
+		write(Stream, '"'),
+		nl(Stream),
+		fail.
 	process(Stream, File, Path) :-
 		protocol_property(Protocol, file(File, Path)),
 		output_protocol(Stream, Protocol),
@@ -71,7 +112,9 @@
 		category_property(Category, file(File, Path)),
 		output_category(Stream, Category),
 		fail.
-	process(_, _, _).
+	process(Stream, _, _) :-
+		write(Stream, '}\n'),
+		nl(Stream).
 
 	output_protocol(Stream, Protocol) :-
 		print_name(protocol, Protocol, Name),
