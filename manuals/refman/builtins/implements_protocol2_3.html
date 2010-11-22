@@ -29,7 +29,7 @@ implements_protocol(Category, Protocol)
 implements_protocol(Object, Protocol, Scope)
 implements_protocol(Category, Protocol, Scope)</pre>
 <p>
-Enumerates, by backtracking, all pairs of entities such that an object or a category implements a protocol. The relation scope is represented by the atoms <code>public</code>, <code>protected</code>, and <code>private</code>.
+Enumerates, by backtracking, all pairs of entities such that an object or a category implements a protocol. The relation scope is represented by the atoms <code>public</code>, <code>protected</code>, and <code>private</code>. This predicate only returns direct implementation relations; it does not implement a transitive closure.
 </p>
 
 <h4>Template and modes</h4>
@@ -62,7 +62,7 @@ implements_protocol(?category_identifier, ?protocol_identifier, ?scope)</pre>
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: October 26, 2006</span>
+		<span>Last updated on: November 22, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="extends_category2_3.html">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="imports_category2_3.html">next</a></span><br/>
