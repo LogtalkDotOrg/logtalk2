@@ -55,7 +55,7 @@
 		atom_concat(Source, '.dot', DotFile),
 		open(DotFile, write, Stream),
 		dot_header(Stream, none),
-		process(Stream, File, _, File),
+		process(Stream, File, File, _),
 		dot_footer(Stream),
 		close(Stream).
 
