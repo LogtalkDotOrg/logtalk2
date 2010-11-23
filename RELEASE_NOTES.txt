@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.42.0 - November 17, 2010
+2.42.0 - November ??, 2010
 
     Added an experimental directive, annotation/1, for supporting Logtalk
     integration with other languages such as ProbLog and CHR.

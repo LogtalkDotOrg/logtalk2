@@ -4149,6 +4149,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 
 '$lgt_logtalk._dcl'(expand_library_path(_, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(loaded_file(_, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(compile_predicate_heads(_, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(compile_predicate_heads(_, _, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(compile_predicate_heads(_, _, _, _), p(p(p)), no, 0).
@@ -4171,6 +4172,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 
 '$lgt_logtalk._def'(expand_library_path(Library, Path), _, '$lgt_expand_library_path'(Library, Path)).
+'$lgt_logtalk._def'(loaded_file(File, Directory), _, '$lgt_loaded_file_'(File, Directory)).
 '$lgt_logtalk._def'(compile_predicate_heads(Heads, THeads), _, '$lgt_compile_predicate_heads'(Heads, THeads)).
 '$lgt_logtalk._def'(compile_predicate_heads(Heads, THeads, Ctx), _, '$lgt_compile_predicate_heads'(Heads, THeads, Ctx)).
 '$lgt_logtalk._def'(compile_predicate_heads(Heads, Entity, THeads, Ctx), _, '$lgt_compile_predicate_heads'(Heads, Entity, THeads, Ctx)).
@@ -5037,33 +5039,34 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_load_file'(Term) :-
 	compound(Term),
 	!,
-	Term =.. [Library, File],
+	Term =.. [Library, Source],
 	'$lgt_expand_library_path'(Library, Path),
 	'$lgt_current_directory'(Current),
 	'$lgt_change_directory'(Path),				% a little trick necessary to support Prolog compilers that
 	'$lgt_current_directory'(ExpandedPath),		% don't provide the necessary support for expanding paths
 	(	Current \== ExpandedPath ->
 		'$lgt_report_working_directory'(ExpandedPath),
-		'$lgt_load_file'(File),
+		'$lgt_load_file'(Source),
 		'$lgt_change_directory'(Current),
 		'$lgt_report_working_directory'(Current)
-	;	'$lgt_load_file'(File)
+	;	'$lgt_load_file'(Source)
 	).
 
-'$lgt_load_file'(File) :-
+'$lgt_load_file'(Source) :-
 	'$lgt_current_directory'(Directory),
+	'$lgt_file_name'(logtalk, Source, File, _),
 	(	'$lgt_loaded_file_'(File, Directory) ->
 		(	'$lgt_compiler_flag'(reload, skip) ->
-			'$lgt_report_skipping_file'(File)
-		;	'$lgt_report_reloading_file'(File),
-			'$lgt_compile_file'(File),
-			'$lgt_load_compiled_file'(File),
-			'$lgt_report_reloaded_file'(File)
+			'$lgt_report_skipping_file'(Source)
+		;	'$lgt_report_reloading_file'(Source),
+			'$lgt_compile_file'(Source),
+			'$lgt_load_compiled_file'(Source),
+			'$lgt_report_reloaded_file'(Source)
 		)
-	;	'$lgt_report_loading_file'(File),
-		'$lgt_compile_file'(File),
-		'$lgt_load_compiled_file'(File),
-		'$lgt_report_loaded_file'(File),
+	;	'$lgt_report_loading_file'(Source),
+		'$lgt_compile_file'(Source),
+		'$lgt_load_compiled_file'(Source),
+		'$lgt_report_loaded_file'(Source),
 		assertz('$lgt_loaded_file_'(File, Directory))
 	).
 
