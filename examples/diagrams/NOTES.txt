@@ -20,7 +20,13 @@ The diagrams .dot files are created on the current directory. These files
 can be easily converted into a printable format such as Postscript or PDF.
 For example, using the dot command-line executable we can simply type:
 
-	dot -Tpdf points.dot > points.pdf 
+	dot -Tpdf diagram.dot > diagram.pdf 
+
+When generating diagrams for libraries, is possible to split a diagram with
+several disconnected entity graphs using the ccomps command-line executable.
+For example:
+
+	ccomps -x -o subdiagram.dot diagram.dot
 
 For more information on the DOT language and related tools see:
 
