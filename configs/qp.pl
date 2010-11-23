@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.12 and later versions
 %
-%  last updated: November 4, 2010
+%  last updated: November 23, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -71,31 +71,7 @@
 % forall(+callable, +callable) -- built-in
 
 
-% call/2-9
-
-call(F, A) :-
-	call_predicate(F(A)).
-
-call(F, A1, A2) :-
-	call_predicate(F(A1, A2)).
-
-call(F, A1, A2, A3) :-
-	call_predicate(F(A1, A2, A3)).
-
-call(F, A1, A2, A3, A4) :-
-	call_predicate(F(A1, A2, A3, A4)).
-
-call(F, A1, A2, A3, A4, A5) :-
-	call_predicate(F(A1, A2, A3, A4, A5)).
-
-call(F, A1, A2, A3, A4, A5, A6) :-
-	call_predicate(F(A1, A2, A3, A4, A5, A6)).
-
-call(F, A1, A2, A3, A4, A5, A6, A7) :-
-	call_predicate(F(A1, A2, A3, A4, A5, A6, A7)).
-
-call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
-	call_predicate(F(A1, A2, A3, A4, A5, A6, A7, A8)).
+% call/2-9 -- built-in
 
 
 
