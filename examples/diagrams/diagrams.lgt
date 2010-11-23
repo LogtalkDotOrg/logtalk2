@@ -17,12 +17,24 @@
 		logtalk::expand_library_path(Library, TopPath),
 		atom_concat(Library, '.dot', DotFile),
 		open(DotFile, write, Stream),
-		dot_header(Stream, local),
-		forall(
-			find_path(TopPath, RelativePath, Path),
-			process(Stream, _, RelativePath, Path)),
+		dot_header(Stream),
+		output_rlibrary(Stream, TopPath),
 		dot_footer(Stream),
 		close(Stream).
+
+	output_rlibrary(Stream, TopPath) :-
+		write(Stream, 'subgraph "cluster_'),
+		write(Stream, TopPath),
+		write(Stream, '" {\n'),
+		write(Stream, 'bgcolor=snow3\nlabel="'),
+		write(Stream, TopPath),
+		write(Stream, '"'),
+		nl(Stream),
+		forall(
+			find_path(TopPath, RelativePath, Path),
+			output_library(Stream, RelativePath, Path)),
+		write(Stream, '}\n'),
+		nl(Stream).
 
 	find_path(TopPath, RelativePath, Path) :-
 		logtalk_library_path(Library, _),
@@ -39,10 +51,24 @@
 		logtalk::expand_library_path(Library, Path),
 		atom_concat(Library, '.dot', DotFile),
 		open(DotFile, write, Stream),
-		dot_header(Stream, local),
-		process(Stream, _, Path, Path),
+		dot_header(Stream),
+		output_library(Stream, Path, Path),
 		dot_footer(Stream),
 		close(Stream).
+
+	output_library(Stream, RelativePath, Path) :-
+		write(Stream, 'subgraph "cluster_'),
+		write(Stream, RelativePath),
+		write(Stream, '" {\n'),
+		write(Stream, 'bgcolor=snow2\nlabel="'),
+		write(Stream, RelativePath),
+		write(Stream, '"'),
+		nl(Stream),
+		forall(
+			logtalk::loaded_file(File, Path),
+			output_file(Stream, File, Path)),
+		write(Stream, '}\n'),
+		nl(Stream).
 
 	:- public(file/1).
 	:- mode(file(+atom), one).
@@ -50,22 +76,46 @@
 		comment is 'Creates a diagram for all entities in a loaded source file.',
 		argnames is ['File']]).
 
-	file(Source) :-
+	file(Spec) :-
+		compound(Spec),
+		Spec =.. [Library, Source],
+		logtalk::expand_library_path(Library, Path),
 		atom_concat(Source, '.lgt', File),
 		atom_concat(Source, '.dot', DotFile),
 		open(DotFile, write, Stream),
-		dot_header(Stream, local),
-		process(Stream, File, File, _),
+		dot_header(Stream),
+		output_file(Stream, File, Path),
 		dot_footer(Stream),
 		close(Stream).
 
-	dot_header(Stream, ClusterRank) :-
+	file(Source) :-
+		atom(Source),
+		atom_concat(Source, '.lgt', File),
+		atom_concat(Source, '.dot', DotFile),
+		open(DotFile, write, Stream),
+		dot_header(Stream),
+		output_file(Stream, File, _),
+		dot_footer(Stream),
+		close(Stream).
+
+	output_file(Stream, File, Path) :-
+		write(Stream, 'subgraph "cluster_'),
+		write(Stream, File),
+		write(Stream, '" {\n'),
+		write(Stream, 'bgcolor=snow\nlabel="'),
+		write(Stream, File),
+		write(Stream, '"'),
+		nl(Stream),
+		process(Stream, File, Path),
+		write(Stream, '}\n'),
+		nl(Stream).
+
+	dot_header(Stream) :-
 		write(Stream, 'digraph G {'),
 		write(Stream, '\nrankdir=BT'),
 		write(Stream, '\nranksep=1.25'),
 		write(Stream, '\ncompound=true'),
-		write(Stream, '\nclusterrank='),
-		write(Stream, ClusterRank),
+		write(Stream, '\nclusterrank=local'),
 		write(Stream, '\nlabeljust=l'),
 		write(Stream, '\nfontname="Courier"'),
 		write(Stream, '\nfontsize=12'),
@@ -73,7 +123,7 @@
 		write(Stream, '\npencolor=snow4'),
 		%write(Stream, '\npage="8.3,11.7"'),
 		%write(Stream, '\npagedir=TL'),
-		write(Stream, '\nnode [fontname="Courier",fontsize=11]'),
+		write(Stream, '\nnode [style=filled,fillcolor=white,fontname="Courier",fontsize=11]'),
 		write(Stream, '\nedge [fontname="Courier",fontsize=11]'),
 		nl(Stream).
 
@@ -81,41 +131,19 @@
 		write(Stream, '}'),
 		nl(Stream).
 
-	process(Stream, File, _, _) :-
-		nonvar(File),
-		write(Stream, 'subgraph "cluster_'),
-		write(Stream, File),
-		write(Stream, '" {\n'),
-		write(Stream, 'bgcolor=snow\nlabel="'),
-		write(Stream, File),
-		write(Stream, '"'),
-		nl(Stream),
-		fail.
-	process(Stream, _, RelativePath, Path) :-
-		nonvar(Path),
-		write(Stream, 'subgraph "cluster_'),
-		write(Stream, Path),
-		write(Stream, '" {\n'),
-		write(Stream, 'bgcolor=snow\nlabel="'),
-		write(Stream, RelativePath),
-		write(Stream, '"'),
-		nl(Stream),
-		fail.
-	process(Stream, File, _, Path) :-
+	process(Stream, File, Path) :-
 		protocol_property(Protocol, file(File, Path)),
 		output_protocol(Stream, Protocol),
 		fail.
-	process(Stream, File, _, Path) :-
+	process(Stream, File, Path) :-
 		object_property(Object, file(File, Path)),
 		output_object(Stream, Object),
 		fail.
-	process(Stream, File, _, Path) :-
+	process(Stream, File, Path) :-
 		category_property(Category, file(File, Path)),
 		output_category(Stream, Category),
 		fail.
-	process(Stream, _, _, _) :-
-		write(Stream, '}\n'),
-		nl(Stream).
+	process(_, _, _).
 
 	output_protocol(Stream, Protocol) :-
 		print_name(protocol, Protocol, Name),
