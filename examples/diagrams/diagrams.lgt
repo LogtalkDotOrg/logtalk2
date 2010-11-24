@@ -133,7 +133,8 @@
 			write(Stream, '\nlabel="Generated on '),
 			write(Stream, Year/Month/Day),
 			write(Stream, ', '),
-			write(Stream, Hours:Mins:Secs)
+			write(Stream, Hours:Mins:Secs),
+			write(Stream, '"'),
 		;	true
 		).
 
