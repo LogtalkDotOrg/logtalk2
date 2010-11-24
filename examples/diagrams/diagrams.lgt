@@ -131,10 +131,14 @@
 	output_date(Stream) :-
 		(	catch(os::date_time(Year, Month, Day, Hours, Mins, Secs, _), _, fail) ->
 			write(Stream, '\nlabel="Generated on '),
-			write(Stream, Year/Month/Day),
+			write(Stream, Year), write(Stream, '/'),
+			write(Stream, Month), write(Stream, '/'),
+			write(Stream, Day),
 			write(Stream, ', '),
-			write(Stream, Hours:Mins:Secs),
-			write(Stream, '"'),
+			write(Stream, Hours), write(Stream, ':'),
+			write(Stream, Mins), write(Stream, ':'),
+			write(Stream, Secs),
+			write(Stream, '"')
 		;	true
 		).
 
