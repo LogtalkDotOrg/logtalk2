@@ -201,7 +201,9 @@ RELEASE NOTES
     of the predicate shell/1.
 
     Updated the "help" example, allowing it to be loaded when using any
-    supported back-end Prolog compiler.
+    supported back-end Prolog compiler. In addition, when help is requested
+    for a functor that is both a built-in directive and a built-in predicate,
+    both web pages will be open.
 
     Updated the "benchmarks" example in order to use more realistic tests for
     the database built-in predicates and the methods assertz/1 and retract/1.

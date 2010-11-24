@@ -2,9 +2,9 @@
 :- object(help).
 
 	:- info([
-		version is 0.4,
+		version is 0.5,
 		author is 'Paulo Moura',
-		date is 2010/10/24,
+		date is 2010/11/24,
 		comment is 'Command-line help for Logtalk built-in control constructs, predicates, non-terminals, and methods.']).
 
 	:- initialization((nl, write('For help on Logtalk, type help::help.'), nl)).
@@ -34,16 +34,14 @@
 		argnames is ['Functor', 'Arity']]).
 
 	Functor/Arity :-
-		(	built_in_directive(Functor, Arity, Path, File) ->
-			true
-		;	built_in_method(Functor, Arity, Path, File) ->
-			true
-		;	built_in_predicate(Functor, Arity, Path, File) ->
-			true
-		;	control(Functor, Arity, Path, File) ->
-			true
-		),
-		open(Path, File).
+		forall(
+			(	built_in_directive(Functor, Arity, Path, File)
+			;	built_in_method(Functor, Arity, Path, File)
+			;	built_in_predicate(Functor, Arity, Path, File)
+			;	control(Functor, Arity, Path, File)
+			),
+			open(Path, File)
+		).
 
 	:- public(('//')/2).
 	:- mode('//'(+atom, +integer), zero_or_one).
@@ -52,9 +50,9 @@
 		argnames is ['Functor', 'Arity']]).
 
 	NonTerminalFunctor//Arity :-
-		(	built_in_non_terminal(NonTerminalFunctor, Arity, Path, File) ->
+		forall(
+			built_in_non_terminal(NonTerminalFunctor, Arity, Path, File),
 			open(Path, File)
-		;	fail
 		).
 
 	built_in_directive(encoding, 1, '/manuals/refman/directives/', 'encoding1.html').
