@@ -13842,6 +13842,14 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	'$lgt_fix_predicate_calls'(Goal2, TGoal2, true),
 	'$lgt_pp_goal_annotation_'(TPred, Functor, TGoal1, TGoal2).
 
+'$lgt_fix_predicate_calls'(Pred, Pred, _) :-
+	'$lgt_lgt_built_in'(Pred),
+	!.
+
+'$lgt_fix_predicate_calls'(Pred, Pred, _) :-
+	'$lgt_built_in_method'(Pred, _, _, _),
+	!.
+
 '$lgt_fix_predicate_calls'(Pred, TPred, _) :-		% calls to non-standard Prolog built-in meta-predicates
 	'$lgt_pl_built_in'(Pred),
 	'$lgt_pl_meta_predicate'(Pred, Meta, _),

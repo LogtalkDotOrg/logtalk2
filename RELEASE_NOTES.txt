@@ -127,6 +127,11 @@ RELEASE NOTES
     meta-predicates would not be correctly compiled. This bug prevented the
     "mtbatch" example from running.
 
+    Corrected a bug in the Logtalk compiler second pass where processing
+    calls to non-standard Prolog built-in meta-predicates would fail to
+    test for Logtalk built-in predicates and Logtalk built-in methods with
+    the same predicate indicator.
+
     Removed references to the de facto standard predicates retractall/1,
     compare/3, and callable/1 from all the config files of Prolog compilers
     where these predicates are built-in.
