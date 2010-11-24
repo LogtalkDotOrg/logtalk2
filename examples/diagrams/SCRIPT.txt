@@ -35,3 +35,8 @@ yes
 
 | ?- diagram::library(searching).
 yes
+
+
+% it's also possible to generate an entity diagram for a library and
+% all its sub-libraries using the rlibrary/1 method instead of the
+% library/1 method

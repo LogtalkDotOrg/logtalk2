@@ -31,12 +31,12 @@
 		write(Stream, '"'),
 		nl(Stream),
 		forall(
-			find_path(TopPath, RelativePath, Path),
+			sub_library(TopPath, RelativePath, Path),
 			output_library(Stream, RelativePath, Path)),
 		write(Stream, '}\n'),
 		nl(Stream).
 
-	find_path(TopPath, RelativePath, Path) :-
+	sub_library(TopPath, RelativePath, Path) :-
 		logtalk_library_path(Library, _),
 		logtalk::expand_library_path(Library, Path),
 		atom_concat(TopPath, RelativePath, Path).
@@ -73,7 +73,7 @@
 	:- public(file/1).
 	:- mode(file(+atom), one).
 	:- info(file/1, [
-		comment is 'Creates a diagram for all entities in a loaded source file.',
+		comment is 'Creates a diagram for all entities in a loaded source file. Supports library notation.',
 		argnames is ['File']]).
 
 	file(Spec) :-
