@@ -30,7 +30,7 @@
 	:- public(('/')/2).
 	:- mode('/'(+atom, +integer), zero_or_one).
 	:- info(('/')/2, [
-		comment is 'Provides help on the Functor/Arity built-in control construct, predicate, or method.',
+		comment is 'Provides help on the Functor/Arity built-in control construct, directive, predicate, or method.',
 		argnames is ['Functor', 'Arity']]).
 
 	Functor/Arity :-
@@ -46,7 +46,7 @@
 	:- public(('//')/2).
 	:- mode('//'(+atom, +integer), zero_or_one).
 	:- info(('//')/2, [
-		comment is 'Provides help on the Functor/Arity built-in non-terminal.',
+		comment is 'Provides help on the Functor//Arity built-in non-terminal.',
 		argnames is ['Functor', 'Arity']]).
 
 	NonTerminalFunctor//Arity :-
@@ -83,6 +83,7 @@
 	built_in_directive(uses, 1, '/manuals/refman/directives/', 'uses1.html').
 
 	built_in_directive(alias, 3, '/manuals/refman/directives/', 'alias3.html').
+	built_in_directive(annotation, 1, '/manuals/refman/directives/', 'annotation1.html').
 	built_in_directive(coinductive, 1, '/manuals/refman/directives/', 'coinductive1.html').
 	built_in_directive(discontiguous, 1, '/manuals/refman/directives/', 'discontiguous1.html').
 	built_in_directive(dynamic, 1, '/manuals/refman/directives/', 'dynamic1.html').
