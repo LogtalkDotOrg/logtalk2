@@ -125,7 +125,17 @@
 		%write(Stream, '\npagedir=TL'),
 		write(Stream, '\nnode [style=filled,fillcolor=white,fontname="Courier",fontsize=11]'),
 		write(Stream, '\nedge [fontname="Courier",fontsize=11]'),
+		output_date(Stream),
 		nl(Stream).
+
+	output_date(Stream) :-
+		(	catch(os::date_time(Year, Month, Day, Hours, Mins, Secs, _), _, fail) ->
+			write(Stream, '\nlabel="Generated on '),
+			write(Stream, Year/Month/Day),
+			write(Stream, ', '),
+			write(Stream, Hours:Mins:Secs)
+		;	true
+		).
 
 	dot_footer(Stream) :-
 		write(Stream, '}'),
