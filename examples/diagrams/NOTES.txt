@@ -16,9 +16,10 @@ and for libraries of source files using the Logtalk reflection features to
 collect the relevant information and the DOT language for representing the
 diagrams.
 
-The diagrams .dot files are created on the current directory. These files
-can be easily converted into a printable format such as Postscript or PDF.
-For example, using the dot command-line executable we can simply type:
+The diagrams .dot files are created on the current directory by default.
+These files can be easily converted into a printable format such as PDF
+or Postscript. For example, using the dot command-line executable we can
+simply type:
 
 	dot -Tpdf diagram.dot > diagram.pdf 
 

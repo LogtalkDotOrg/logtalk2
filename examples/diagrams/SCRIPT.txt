@@ -15,12 +15,19 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ...
 
 
+% check the default list of options used when generating a diagram:
+
+| ?- diagram::default_options(DefaultOptions).
+DefaultOptions = ...
+yes
+
+
 % load an example for testing:
 
 | ?- logtalk_load(points(loader)).
 ...
 
-% generating an entity diagram for a source file:
+% generating an entity diagram for a source file using default options:
 
 | ?- diagram::file(points).
 yes
@@ -31,7 +38,7 @@ yes
 | ?- logtalk_load(searching(loader)).
 ...
 
-% generating an entity diagram for all source files in a library:
+% generating an entity diagram for all source files in a library using default options:
 
 | ?- diagram::library(searching).
 yes
@@ -40,3 +47,7 @@ yes
 % it's also possible to generate an entity diagram for a library and
 % all its sub-libraries using the rlibrary/1 method instead of the
 % library/1 method
+
+
+% the methods rlibrary/2, library/2, and file/2 allows the specification
+% of the options to be used when generating a diagram

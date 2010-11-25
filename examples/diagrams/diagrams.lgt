@@ -7,274 +7,337 @@
 		date is 2010/11/18,
 		comment is 'Generates entity diagram DOT files for source files and libraries.']).
 
+	:- public(rlibrary/2).
+	:- mode(rlibrary(+atom, +list), one).
+	:- info(rlibrary/2, [
+		comment is 'Creates a diagram for all entities in a library (recursive) using the specified options.',
+		argnames is ['Library', 'Options']]).
+
 	:- public(rlibrary/1).
 	:- mode(rlibrary(+atom), one).
 	:- info(rlibrary/1, [
-		comment is 'Creates a diagram for all entities in a library (recursive).',
+		comment is 'Creates a diagram for all entities in a library (recursive) using default options.',
 		argnames is ['Library']]).
 
-	rlibrary(Library) :-
+	rlibrary(Library, UserOptions) :-
+		merge_options(UserOptions, Options),
 		logtalk::expand_library_path(Library, TopPath),
 		atom_concat(Library, '.dot', DotFile),
-		open(DotFile, write, Stream),
-		dot_header(Stream),
-		output_rlibrary(Stream, TopPath),
-		dot_footer(Stream),
+		open(DotFile, write, Stream, [alias(dot_file)]),
+		dot_header(Options),
+		output_rlibrary(TopPath, Options),
+		dot_footer(Options),
 		close(Stream).
 
-	output_rlibrary(Stream, TopPath) :-
-		write(Stream, 'subgraph "cluster_'),
-		write(Stream, TopPath),
-		write(Stream, '" {\n'),
-		write(Stream, 'bgcolor=snow3\nlabel="'),
-		write(Stream, TopPath),
-		write(Stream, '"'),
-		nl(Stream),
-		forall(
-			sub_library(TopPath, RelativePath, Path),
-			output_library(Stream, RelativePath, Path)),
-		write(Stream, '}\n'),
-		nl(Stream).
+	rlibrary(Library) :-
+		rlibrary(Library, []).
 
-	sub_library(TopPath, RelativePath, Path) :-
+	output_rlibrary(TopPath, Options) :-
+		write(dot_file, 'subgraph "cluster_'),
+		write(dot_file, TopPath),
+		write(dot_file, '" {\n'),
+		write(dot_file, 'bgcolor=snow3\nlabel="'),
+		write(dot_file, TopPath),
+		write(dot_file, '"'),
+		nl(dot_file),
+		member(exclude_paths(ExcludePaths), Options),
+		forall(
+			sub_library(TopPath, ExcludePaths, RelativePath, Path),
+			output_library(RelativePath, Path, Options)),
+		write(dot_file, '}\n'),
+		nl(dot_file).
+
+	sub_library(TopPath, ExcludePaths, RelativePath, Path) :-
 		logtalk_library_path(Library, _),
 		logtalk::expand_library_path(Library, Path),
-		atom_concat(TopPath, RelativePath, Path).
+		atom_concat(TopPath, RelativePath, Path),
+		\+ member(RelativePath, ExcludePaths).
+
+	:- public(library/2).
+	:- mode(library(+atom, +list), one).
+	:- info(library/2, [
+		comment is 'Creates a diagram for all entities in a library using default options.',
+		argnames is ['Library', 'Options']]).
 
 	:- public(library/1).
 	:- mode(library(+atom), one).
 	:- info(library/1, [
-		comment is 'Creates a diagram for all entities in a library.',
+		comment is 'Creates a diagram for all entities in a library using default options.',
 		argnames is ['Library']]).
 
-	library(Library) :-
+	library(Library, UserOptions) :-
+		merge_options(UserOptions, Options),
 		logtalk::expand_library_path(Library, Path),
 		atom_concat(Library, '.dot', DotFile),
-		open(DotFile, write, Stream),
-		dot_header(Stream),
-		output_library(Stream, Path, Path),
-		dot_footer(Stream),
+		open(DotFile, write, Stream, [alias(dot_file)]),
+		dot_header(Options),
+		output_library(Path, Path, Options),
+		dot_footer(Options),
 		close(Stream).
 
-	output_library(Stream, RelativePath, Path) :-
-		write(Stream, 'subgraph "cluster_'),
-		write(Stream, RelativePath),
-		write(Stream, '" {\n'),
-		write(Stream, 'bgcolor=snow2\nlabel="'),
-		write(Stream, RelativePath),
-		write(Stream, '"'),
-		nl(Stream),
-		forall(
-			logtalk::loaded_file(File, Path),
-			output_file(Stream, File, Path)),
-		write(Stream, '}\n'),
-		nl(Stream).
+	library(Library) :-
+		library(Library, []).
+
+	output_library(RelativePath, Path, Options) :-
+		(	member(library_paths(true), Options) ->
+			write(dot_file, 'subgraph "cluster_'),
+			write(dot_file, RelativePath),
+			write(dot_file, '" {\n'),
+			write(dot_file, 'bgcolor=snow2\nlabel="'),
+			write(dot_file, RelativePath),
+			write(dot_file, '"'),
+			nl(dot_file),
+			output_library_files(Path, Options),
+			write(dot_file, '}\n'),
+			nl(dot_file)
+		;	output_library_files(Path, Options)
+		).
+
+	output_library_files(Path, Options) :-
+		member(exclude_files(ExcludeFiles), Options),
+		logtalk::loaded_file(File, Path),
+		\+ member(File, ExcludeFiles),
+		output_file(File, Path, Options),
+		fail.
+	output_library_files(_, _).
+
+	:- public(file/2).
+	:- mode(file(+atom, +list), one).
+	:- info(file/2, [
+		comment is 'Creates a diagram for all entities in a loaded source file using the specified options. Supports library notation.',
+		argnames is ['File', 'Options']]).
 
 	:- public(file/1).
 	:- mode(file(+atom), one).
 	:- info(file/1, [
-		comment is 'Creates a diagram for all entities in a loaded source file. Supports library notation.',
+		comment is 'Creates a diagram for all entities in a loaded source file using default options. Supports library notation.',
 		argnames is ['File']]).
 
-	file(Spec) :-
+	file(Spec, UserOptions) :-
+		merge_options(UserOptions, Options),
 		compound(Spec),
 		Spec =.. [Library, Source],
 		logtalk::expand_library_path(Library, Path),
 		atom_concat(Source, '.lgt', File),
 		atom_concat(Source, '.dot', DotFile),
-		open(DotFile, write, Stream),
-		dot_header(Stream),
-		output_file(Stream, File, Path),
-		dot_footer(Stream),
+		open(DotFile, write, Stream, [alias(dot_file)]),
+		dot_header(Options),
+		output_file(File, Path, Options),
+		dot_footer(Options),
 		close(Stream).
 
-	file(Source) :-
+	file(Source, UserOptions) :-
+		merge_options(UserOptions, Options),
 		atom(Source),
 		atom_concat(Source, '.lgt', File),
 		atom_concat(Source, '.dot', DotFile),
-		open(DotFile, write, Stream),
-		dot_header(Stream),
-		output_file(Stream, File, _),
-		dot_footer(Stream),
+		open(DotFile, write, Stream, [alias(dot_file)]),
+		dot_header(Options),
+		output_file(File, _, Options),
+		dot_footer(Options),
 		close(Stream).
 
-	output_file(Stream, File, Path) :-
-		write(Stream, 'subgraph "cluster_'),
-		write(Stream, File),
-		write(Stream, '" {\n'),
-		write(Stream, 'bgcolor=snow\nlabel="'),
-		write(Stream, File),
-		write(Stream, '"'),
-		nl(Stream),
-		process(Stream, File, Path),
-		write(Stream, '}\n'),
-		nl(Stream).
+	file(Source) :-
+		file(Source, []).
 
-	dot_header(Stream) :-
-		write(Stream, 'digraph G {'),
-		write(Stream, '\nrankdir=BT'),
-		write(Stream, '\nranksep=1.25'),
-		write(Stream, '\ncompound=true'),
-		write(Stream, '\nclusterrank=local'),
-		write(Stream, '\nlabeljust=l'),
-		write(Stream, '\nfontname="Courier"'),
-		write(Stream, '\nfontsize=12'),
-		write(Stream, '\nfontcolor=snow4'),
-		write(Stream, '\npencolor=snow4'),
-		%write(Stream, '\npage="8.3,11.7"'),
-		%write(Stream, '\npagedir=TL'),
-		write(Stream, '\nnode [style=filled,fillcolor=white,fontname="Courier",fontsize=11]'),
-		write(Stream, '\nedge [fontname="Courier",fontsize=11]'),
-		output_date(Stream),
-		nl(Stream).
+	output_file(File, Path, Options) :-
+		(	member(file_names(true), Options) ->
+			write(dot_file, 'subgraph "cluster_'),
+			write(dot_file, File),
+			write(dot_file, '" {\n'),
+			write(dot_file, 'bgcolor=snow'),
+			write(dot_file, '\nlabel="'),
+			write(dot_file, File),
+			write(dot_file, '"'),
+			nl(dot_file),
+			process(File, Path, Options),
+			write(dot_file, '}\n'),
+			nl(dot_file)
+		;	process(File, Path, Options)
+		).
 
-	output_date(Stream) :-
-		(	catch(os::date_time(Year, Month, Day, Hours, Mins, Secs, _), _, fail) ->
-			write(Stream, '\nlabel="Generated on '),
-			write(Stream, Year), write(Stream, '/'),
-			write(Stream, Month), write(Stream, '/'),
-			write(Stream, Day),
-			write(Stream, ', '),
-			write(Stream, Hours), write(Stream, ':'),
-			write(Stream, Mins), write(Stream, ':'),
-			write(Stream, Secs),
-			write(Stream, '"')
+	dot_header(Options) :-
+		write(dot_file, 'digraph G {'),
+		write(dot_file, '\nrankdir=BT'),
+		write(dot_file, '\nranksep=1.25'),
+		write(dot_file, '\ncompound=true'),
+		write(dot_file, '\nclusterrank=local'),
+		write(dot_file, '\nlabeljust=l'),
+		write(dot_file, '\nfontname="Courier"'),
+		write(dot_file, '\nfontsize=10'),
+		write(dot_file, '\nfontcolor=snow4'),
+		write(dot_file, '\npencolor=snow4'),
+		member(pages(Pages), Options),
+		(	Pages == a4 ->
+			write(dot_file, '\npage="8.2677,11.6929"'),
+			write(dot_file, '\npagedir=TL')
+		;	Pages == us ->
+			write(dot_file, '\npage="8.5,11.0"'),
+			write(dot_file, '\npagedir=TL')
+		;	true
+		),
+		write(dot_file, '\nnode [style=filled,fillcolor=white,fontname="Courier",fontsize=9]'),
+		write(dot_file, '\nedge [fontname="Courier",fontsize=9]'),
+		output_date(Options),
+		nl(dot_file).
+
+	output_date(Options) :-
+		(	member(date(true), Options),
+			catch(os::date_time(Year, Month, Day, Hours, Mins, Secs, _), _, fail) ->
+			write(dot_file, '\nlabel="Generated on '),
+			write(dot_file, Year), write(dot_file, '/'),
+			write(dot_file, Month), write(dot_file, '/'),
+			write(dot_file, Day),
+			write(dot_file, ', '),
+			write(dot_file, Hours), write(dot_file, ':'),
+			write(dot_file, Mins), write(dot_file, ':'),
+			write(dot_file, Secs),
+			write(dot_file, '"')
 		;	true
 		).
 
-	dot_footer(Stream) :-
-		write(Stream, '}'),
-		nl(Stream).
+	dot_footer(_) :-
+		write(dot_file, '}'),
+		nl(dot_file).
 
-	process(Stream, File, Path) :-
+	process(File, Path, Options) :-
 		protocol_property(Protocol, file(File, Path)),
-		output_protocol(Stream, Protocol),
+		output_protocol(Protocol, Options),
 		fail.
-	process(Stream, File, Path) :-
+	process(File, Path, Options) :-
 		object_property(Object, file(File, Path)),
-		output_object(Stream, Object),
+		output_object(Object, Options),
 		fail.
-	process(Stream, File, Path) :-
+	process(File, Path, Options) :-
 		category_property(Category, file(File, Path)),
-		output_category(Stream, Category),
+		output_category(Category, Options),
 		fail.
 	process(_, _, _).
 
-	output_protocol(Stream, Protocol) :-
+	output_protocol(Protocol, Options) :-
 		print_name(protocol, Protocol, Name),
-		protocol_property(Protocol, public(Predicates)),
-		predicate_list_to_atom(Predicates, PredicateText),
-		box(Stream, Name, PredicateText, protocol),
-		output_protocol_relations(Stream, Protocol).
+		(	member(interface(true), Options) ->
+			protocol_property(Protocol, public(Predicates)),
+			predicate_list_to_atom(Predicates, PredicateText)
+		;	PredicateText = ''
+		),
+		box(Name, PredicateText, protocol),
+		output_protocol_relations(Protocol, Options).
 
-	output_object(Stream, Object) :-
+	output_object(Object, Options) :-
 		print_name(object, Object, Name),
-		object_property(Object, public(Predicates)),
-		predicate_list_to_atom(Predicates, PredicateText),
+		(	member(interface(true), Options) ->
+			object_property(Object, public(Predicates)),
+			predicate_list_to_atom(Predicates, PredicateText)
+		;	PredicateText = ''
+		),
 		(	\+ instantiates_class(Object, _),
 			\+ specializes_class(Object, _) ->
-			box(Stream, Name, PredicateText, prototype)
-		;	box(Stream, Name, PredicateText, instance_or_class)	
+			box(Name, PredicateText, prototype)
+		;	box(Name, PredicateText, instance_or_class)	
 		),
-		output_object_relations(Stream, Object).
+		output_object_relations(Object, Options).
 
-	output_category(Stream, Category) :-
+	output_category(Category, Options) :-
 		print_name(category, Category, Name),
-		category_property(Category, public(Predicates)),
-		predicate_list_to_atom(Predicates, PredicateText),
-		box(Stream, Name, PredicateText, category),
-		output_category_relations(Stream, Category).
+		(	member(interface(true), Options) ->
+			category_property(Category, public(Predicates)),
+			predicate_list_to_atom(Predicates, PredicateText)
+		;	PredicateText = ''
+		),
+		box(Name, PredicateText, category),
+		output_category_relations(Category, Options).
 
-	output_protocol_relations(Stream, Protocol) :-
+	output_protocol_relations(Protocol, _) :-
 		extends_protocol(Protocol, ExtendedProtocol),
 		print_name(protocol, Protocol, ProtocolName),
 		print_name(protocol, ExtendedProtocol, ExtendedProtocolName),
-		arrow(Stream, ProtocolName, ExtendedProtocolName, extends),
+		arrow(ProtocolName, ExtendedProtocolName, extends),
 		fail.
 	output_protocol_relations(_, _).
 
-	output_object_relations(Stream, Object) :-
+	output_object_relations(Object, _) :-
 		implements_protocol(Object, Protocol),
 		print_name(object, Object, ObjectName),
 		print_name(protocol, Protocol, ProtocolName),
-		arrow(Stream, ObjectName, ProtocolName, implements),
+		arrow(ObjectName, ProtocolName, implements),
 		fail.
-	output_object_relations(Stream, Instance) :-
+	output_object_relations(Instance, _) :-
 		print_name(object, Instance, InstanceName),
 		instantiates_class(Instance, Class),
 		print_name(object, Class, ClassName),
-		arrow(Stream, InstanceName, ClassName, instantiates),
+		arrow(InstanceName, ClassName, instantiates),
 		fail.
-	output_object_relations(Stream, Class) :-
+	output_object_relations(Class, _) :-
 		print_name(object, Class, ClassName),
 		specializes_class(Class, SuperClass),
 		print_name(object, SuperClass, SuperClassName),
-		arrow(Stream, ClassName, SuperClassName, specializes),
+		arrow(ClassName, SuperClassName, specializes),
 		fail.
-	output_object_relations(Stream, Prototype) :-
+	output_object_relations(Prototype, _) :-
 		print_name(object, Prototype, PrototypeName),
 		extends_object(Prototype, Parent),
 		print_name(object, Parent, ParentName),
-		arrow(Stream, PrototypeName, ParentName, extends),
+		arrow(PrototypeName, ParentName, extends),
 		fail.
-	output_object_relations(Stream, Object) :-
+	output_object_relations(Object, _) :-
 		print_name(object, Object, ObjectName),
 		imports_category(Object, Category),
 		print_name(category, Category, CategoryName),
-		arrow(Stream, ObjectName, CategoryName, imports),
+		arrow(ObjectName, CategoryName, imports),
 		fail.
 	output_object_relations(_, _).
 
-	output_category_relations(Stream, Category) :-
+	output_category_relations(Category, _) :-
 		extends_category(Category, ExtendedCategory),
 		print_name(category, Category, CategoryName),
 		print_name(category, ExtendedCategory, ExtendedCategoryName),
-		arrow(Stream, CategoryName, ExtendedCategoryName, extends),
+		arrow(CategoryName, ExtendedCategoryName, extends),
 		fail.
-	output_category_relations(Stream, Category) :-
+	output_category_relations(Category, _) :-
 		implements_protocol(Category, Protocol),
 		print_name(category, Category, CategoryName),
 		print_name(protocol, Protocol, ProtocolName),
-		arrow(Stream, CategoryName, ProtocolName, implements),
+		arrow(CategoryName, ProtocolName, implements),
 		fail.
-	output_category_relations(Stream, Category) :-
+	output_category_relations(Category, _) :-
 		complements_object(Category, Object),
 		print_name(category, Category, CategoryName),
 		print_name(object, Object, ObjectName),
-		arrow(Stream, ObjectName, CategoryName, complements),
+		arrow(ObjectName, CategoryName, complements),
 		fail.
 	output_category_relations(_, _).
 
-	box(Stream, Name, PredicateText, Entity) :-
+	box(Name, PredicateText, Entity) :-
 		entity_shape(Entity, Shape),
-		write(Stream, '"'),
-		write(Stream, Name),
-		write(Stream, '" [shape='),
-		write(Stream, Shape),
-		write(Stream, ',label="'),
-		write(Stream, Name),
-		write(Stream, '\\n'),
-		write(Stream, PredicateText),
-		write(Stream, '"]'),
-		nl(Stream).
+		write(dot_file, '"'),
+		write(dot_file, Name),
+		write(dot_file, '" [shape='),
+		write(dot_file, Shape),
+		write(dot_file, ',label="'),
+		write(dot_file, Name),
+		write(dot_file, '\\n'),
+		write(dot_file, PredicateText),
+		write(dot_file, '"]'),
+		nl(dot_file).
 
 	entity_shape(prototype, box).
 	entity_shape(instance_or_class, box).
 	entity_shape(protocol, note).
 	entity_shape(category, component).
 
-	arrow(Stream, Start, End, Label) :-
+	arrow(Start, End, Label) :-
 		label_arrowhead(Label, ArrowHead),
-		write(Stream, '"'),
-		write(Stream, Start),
-		write(Stream, '" -> "'),
-		write(Stream, End),
-		write(Stream, '" [arrowhead='),
-		write(Stream, ArrowHead),
-		write(Stream, ',label="'),
-		write(Stream, Label),
-		write(Stream, '"]'),
-		nl(Stream).
+		write(dot_file, '"'),
+		write(dot_file, Start),
+		write(dot_file, '" -> "'),
+		write(dot_file, End),
+		write(dot_file, '" [arrowhead='),
+		write(dot_file, ArrowHead),
+		write(dot_file, ',label="'),
+		write(dot_file, Label),
+		write(dot_file, '"]'),
+		nl(dot_file).
 
 	label_arrowhead(extends, vee).
 	label_arrowhead(instantiates, normal).
@@ -311,5 +374,62 @@
 			Category =.. [Functor| _],
 			CategoryName =.. [Functor| Names]
 		).
+
+	merge_options(UserOptions, Options) :-
+		(	member(library_paths(LibraryPaths), UserOptions) ->
+			true
+		;	LibraryPaths = true					% print library paths
+		),
+		(	member(file_names(FileNames), UserOptions) ->
+			true
+		;	FileNames = true					% print file names
+		),
+		(	member(date(Date), UserOptions) ->
+			true
+		;	Date = true							% print current date
+		),
+		(	member(interface(Interface), UserOptions) ->
+			true
+		;	Interface = true					% print public interface
+		),
+		(	member(output_path(OutputPath), UserOptions) ->
+			true
+		;	os::working_directory(OutputPath)	% write diagram to the current directory
+		),
+		(	member(pages(Pages), UserOptions) ->
+			true
+		;	Pages = single						% generate a single page diagram
+		),
+		(	member(exclude_files(ExcludeFiles), UserOptions) ->
+			true
+		;	ExcludeFiles = []					% don't exclude any source files
+		),
+		(	member(exclude_paths(ExcludePaths), UserOptions) ->
+			true
+		;	ExcludePaths = []					% don't exclude any sub-directories
+		),
+		(	member(exclude_entities(ExcludeEntities), UserOptions) ->
+			true
+		;	ExcludeEntities = []				% don't exclude any entities
+		),
+		Options = [
+			library_paths(LibraryPaths), file_names(FileNames), date(Date), interface(Interface),
+			output_path(OutputPath),
+			pages(Pages),
+			exclude_files(ExcludeFiles), exclude_paths(ExcludePaths), exclude_entities(ExcludeEntities)].
+
+	:- public(default_options/1).
+	:- mode(default_options(-list), one).
+	:- info(default_options/1, [
+		comment is 'Returns a list of the default options used when generating a diagram.',
+		argnames is ['DefaultOptions']]).
+
+	default_options(DefaultOptions) :-
+		merge_options([], DefaultOptions).
+
+	member(Option, [Option| _]) :-
+		!.
+	member(Option, [_| Options]) :-
+		member(Option, Options).
 
 :- end_object.
