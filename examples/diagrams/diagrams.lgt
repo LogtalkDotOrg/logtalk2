@@ -183,13 +183,22 @@
 		write(dot_file, '\nfontsize=10'),
 		write(dot_file, '\nfontcolor=snow4'),
 		write(dot_file, '\npencolor=snow4'),
-		member(pages(Pages), Options),
-		(	Pages == a4 ->
-			write(dot_file, '\npage="8.2677,11.6929"'),
-			write(dot_file, '\npagedir=TL')
-		;	Pages == us ->
-			write(dot_file, '\npage="8.5,11.0"'),
-			write(dot_file, '\npagedir=TL')
+		(	member(pages(multiple), Options),
+			member(format(Format), Options) ->
+			(	Format == a4 ->
+				write(dot_file, '\npage="8.3,11.7"'),
+				write(dot_file, '\npagedir=TL')
+			;	Format == a3 ->
+				write(dot_file, '\npage="11.7,16.5"'),
+				write(dot_file, '\npagedir=TL')
+			;	Format == letter ->
+				write(dot_file, '\npage="8.5,11.0"'),
+				write(dot_file, '\npagedir=TL')
+			;	Format == ledger ->
+				write(dot_file, '\npage="11.0,17.0"'),
+				write(dot_file, '\npagedir=TL')
+			;	true
+			)
 		;	true
 		),
 		write(dot_file, '\nnode [style=filled,fillcolor=white,fontname="Courier",fontsize=9]'),

@@ -41,13 +41,23 @@ Prolog compiler when generating diagrams.
 A set of options are available to specify the details to include in the
 generated diagrams:
 
-	date(Boolean) - print/omit current date
-	library_paths(Boolean) - print/omit library paths
-	file_names(Boolean) - print/omit source file names
-	interface(Boolean) - print/omit public predicates
-	output_path(OutputPath) - directory for the .dot files (an atom)
-	pages(Pages) - single/multiple pages diagram (single or multiple)
-	format(Format) - paper format for multiple pages diagram (a4 or us)
-	exclude_files(Files) - list of source files to exclude
-	exclude_paths(Paths) - list of relative paths to exclude
-	exclude_entities(Entities) - list of entities to exclude
+date(Boolean)
+	print/omit current date (true or false; default true)
+library_paths(Boolean)
+	print/omit library paths (true or false; default true)
+file_names(Boolean)
+	print/omit source file names (true or false; default true)
+interface(Boolean)
+	print/omit public predicates (true or false; default true)
+output_path(OutputPath)
+	directory for the .dot files (an atom; default '.')
+pages(Pages)
+	single/multiple pages diagram (single or multiple; default single)
+format(Format)
+	paper format for multiple pages diagram (a4, a3, letter, or ledger; default a4)
+exclude_files(Files)
+	list of source files to exclude (default [])
+exclude_paths(Paths)
+	list of relative paths to exclude (default [])
+exclude_entities(Entities)
+	list of entities to exclude (default [])
