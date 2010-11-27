@@ -37,3 +37,17 @@ When using Windows, there are know issues with some Prolog compilers due
 to the internal representation of paths. If you encounter problems with a
 specific back-end Prolog compiler, try to use another supported back-end
 Prolog compiler when generating diagrams.
+
+A set of options are available to specify the details to include in the
+generated diagrams:
+
+	date(Boolean) - print/omit current date
+	library_paths(Boolean) - print/omit library paths
+	file_names(Boolean) - print/omit source file names
+	interface(Boolean) - print/omit public predicates
+	output_path(OutputPath) - directory for the .dot files (an atom)
+	pages(Pages) - single/multiple pages diagram (single or multiple)
+	format(Format) - paper format for multiple pages diagram (a4 or us)
+	exclude_files(Files) - list of source files to exclude
+	exclude_paths(Paths) - list of relative paths to exclude
+	exclude_entities(Entities) - list of entities to exclude

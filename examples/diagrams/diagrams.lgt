@@ -23,11 +23,15 @@
 		merge_options(UserOptions, Options),
 		logtalk::expand_library_path(Library, TopPath),
 		atom_concat(Library, '.dot', DotFile),
+		member(output_path(Directory), Options),
+		os::working_directory(Current),
+		os::change_directory(Directory),
 		open(DotFile, write, Stream, [alias(dot_file)]),
 		dot_header(Options),
 		output_rlibrary(TopPath, Options),
 		dot_footer(Options),
-		close(Stream).
+		close(Stream),
+		os::change_directory(Current).
 
 	rlibrary(Library) :-
 		rlibrary(Library, []).
@@ -69,11 +73,15 @@
 		merge_options(UserOptions, Options),
 		logtalk::expand_library_path(Library, Path),
 		atom_concat(Library, '.dot', DotFile),
+		member(output_path(Directory), Options),
+		os::working_directory(Current),
+		os::change_directory(Directory),
 		open(DotFile, write, Stream, [alias(dot_file)]),
 		dot_header(Options),
 		output_library(Path, Path, Options),
 		dot_footer(Options),
-		close(Stream).
+		close(Stream),
+		os::change_directory(Current).
 
 	library(Library) :-
 		library(Library, []).
@@ -120,22 +128,30 @@
 		logtalk::expand_library_path(Library, Path),
 		atom_concat(Source, '.lgt', File),
 		atom_concat(Source, '.dot', DotFile),
+		member(output_path(Directory), Options),
+		os::working_directory(Current),
+		os::change_directory(Directory),
 		open(DotFile, write, Stream, [alias(dot_file)]),
 		dot_header(Options),
 		output_file(File, Path, Options),
 		dot_footer(Options),
-		close(Stream).
+		close(Stream),
+		os::change_directory(Current).
 
 	file(Source, UserOptions) :-
 		merge_options(UserOptions, Options),
 		atom(Source),
 		atom_concat(Source, '.lgt', File),
 		atom_concat(Source, '.dot', DotFile),
+		member(output_path(Directory), Options),
+		os::working_directory(Current),
+		os::change_directory(Directory),
 		open(DotFile, write, Stream, [alias(dot_file)]),
 		dot_header(Options),
 		output_file(File, _, Options),
 		dot_footer(Options),
-		close(Stream).
+		close(Stream),
+		os::change_directory(Current).
 
 	file(Source) :-
 		file(Source, []).
@@ -400,6 +416,10 @@
 			true
 		;	Pages = single						% generate a single page diagram
 		),
+		(	member(format(Format), UserOptions) ->
+			true
+		;	Format = a4							% paper format for multiple pages diagram
+		),
 		(	member(exclude_files(ExcludeFiles), UserOptions) ->
 			true
 		;	ExcludeFiles = []					% don't exclude any source files
@@ -414,8 +434,7 @@
 		),
 		Options = [
 			library_paths(LibraryPaths), file_names(FileNames), date(Date), interface(Interface),
-			output_path(OutputPath),
-			pages(Pages),
+			output_path(OutputPath), pages(Pages), format(Format),
 			exclude_files(ExcludeFiles), exclude_paths(ExcludePaths), exclude_entities(ExcludeEntities)].
 
 	:- public(default_options/1).
