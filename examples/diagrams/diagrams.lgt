@@ -2,7 +2,7 @@
 :- object(diagram).
 
 	:- info([
-		version is 0.1,
+		version is 1.0,
 		author is 'Paulo Moura',
 		date is 2010/11/29,
 		comment is 'Generates entity diagram DOT files for source files and libraries.']).
@@ -104,7 +104,8 @@
 	output_library_files(Path, Options) :-
 		member(exclude_files(ExcludeFiles), Options),
 		logtalk::loaded_file(File, Path),
-		\+ member(File, ExcludeFiles),
+		atom_concat(Source, '.lgt', File),
+		\+ member(Source, ExcludeFiles),
 		output_file(File, Path, Options),
 		fail.
 	output_library_files(_, _).
