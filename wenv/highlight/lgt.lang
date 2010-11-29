@@ -43,7 +43,7 @@ $KEYWORDS(kwc)=regex(((?:goal|term)_expansion|phrase)(?=[(]), 1)
 $KEYWORDS(kwc)=regex(((abolish|c(reate|urrent))_(object|protocol|category))(?=[(]), 1)
 $KEYWORDS(kwc)=regex(((object|protocol|category)_property)(?=[(]), 1)
 # entity relations
-$KEYWORDS(kwc)=regex((complements_object)(?=[(]), 1)
+$KEYWORDS(kwc)=regex((co(mplements_object|nforms_to_protocol))(?=[(]), 1)
 $KEYWORDS(kwc)=regex((extends_(object|protocol|category))(?=[(]), 1)
 $KEYWORDS(kwc)=regex((imp(lements_protocol|orts_category))(?=[(]), 1)
 $KEYWORDS(kwc)=regex(((instantiat|specializ)es_class)(?=[(]), 1)

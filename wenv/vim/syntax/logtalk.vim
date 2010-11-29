@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	September 14, 2010
+" Last Change:	November 28, 2010
 
 
 " Quit when a syntax file was already loaded:
@@ -122,7 +122,7 @@ syn match	logtalkBuiltIn		"\<\(abolish\|c\(reate\|urrent\)\)_\(object\|protocol\
 
 syn match	logtalkBuiltIn		"\<\(object\|protocol\|category\)_property\ze("
 
-syn match	logtalkBuiltIn		"\<complements_object\ze("
+syn match	logtalkBuiltIn		"\<co\(mplements_object\|nforms_to_protocol\)\ze("
 syn match	logtalkBuiltIn		"\<extends_\(object\|protocol\|category\)\ze("
 syn match	logtalkBuiltIn		"\<imp\(orts_category\|lements_protocol\)\ze("
 syn match	logtalkBuiltIn		"\<\(instantiat\|specializ\)es_class\ze("

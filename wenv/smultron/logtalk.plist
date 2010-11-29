@@ -46,6 +46,7 @@
 			<string>abolish_protocol</string>
 			<string>abolish_category</string>
 			<string>complements_object</string>
+			<string>conforms_to_protocol</string>
 			<string>export</string>
 			<string>reexport</string>
 			<string>extends_object</string>

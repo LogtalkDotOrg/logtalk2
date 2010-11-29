@@ -137,6 +137,7 @@ abolish_object
 abolish_protocol
 abolish_category
 complements_object
+conforms_to_protocol
 extends_object
 extends_protocol
 extends_category

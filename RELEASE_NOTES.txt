@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.42.0 - December 1, 2010
 
+    Added a new pair of built-in predicates, conforms_to_protocol/2-3,
+    implementing the transitive closure of the protocol implementation
+    relation.
+
     Added an experimental directive, annotation/1, for supporting Logtalk
     integration with other languages such as ProbLog and CHR.
 

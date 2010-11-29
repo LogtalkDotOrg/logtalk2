@@ -1158,6 +1158,123 @@ complements_object(Category, Object) :-
 
 
 
+% conforms_to_protocol(?object_identifier, ?protocol_identifier)
+% conforms_to_protocol(?category_identifier, ?protocol_identifier)
+
+conforms_to_protocol(ObjOrCtg, Protocol) :-
+	catch(
+		conforms_to_protocol(ObjOrCtg, Protocol, _),
+		error(Error, _),
+		throw(error(Error, conforms_to_protocol(ObjOrCtg, Protocol)))).
+
+
+
+% conforms_to_protocol(?object_identifier, ?protocol_identifier, ?atom)
+% conforms_to_protocol(?category_identifier, ?protocol_identifier, ?atom)
+
+conforms_to_protocol(ObjOrCtg, Protocol, Scope) :-
+	nonvar(Prototype),
+	\+ callable(Prototype),
+	throw(error(type_error(object_identifier, Prototype), conforms_to_protocol(ObjOrCtg, Protocol, Scope))).
+
+conforms_to_protocol(ObjOrCtg, Protocol, Scope) :-
+	nonvar(Parent),
+	\+ callable(Parent),
+	throw(error(type_error(object_identifier, Parent), conforms_to_protocol(ObjOrCtg, Protocol, Scope))).
+
+conforms_to_protocol(ObjOrCtg, Protocol, Scope) :-
+	nonvar(Scope),
+	Scope \== (public),
+	Scope \== protected,
+	Scope \== private,
+	throw(error(type_error(scope, Scope), conforms_to_protocol(ObjOrCtg, Protocol, Scope))).
+
+conforms_to_protocol(Object, Protocol, Scope) :-
+	'$lgt_current_object_'(Object, _, _, _, _, _, _, _, _, _, _),
+	(	\+ '$lgt_instantiates_class_'(Object, _, _),
+		\+ '$lgt_specializes_class_'(Object, _, _) ->
+		'$lgt_prototye_conforms_to_protocol'(Object, Protocol, Scope)
+	;	'$lgt_instance_conforms_to_protocol'(Object, Protocol, Scope)
+	).
+
+conforms_to_protocol(Category, Protocol, Scope) :-
+	'$lgt_current_category_'(Category, _, _, _, _, _),
+	'$lgt_category_conforms_to_protocol'(Category, Protocol, Scope).
+
+
+'$lgt_prototye_conforms_to_protocol'(Prototype, Protocol, Scope) :-
+	'$lgt_implements_protocol_'(Prototype, Protocol0, ImplementationScope),
+	(	Protocol = Protocol0,
+		Scope = ImplementationScope
+	;	'$lgt_protocol_conforms_to_protocol'(Protocol0, Protocol, InheritedScope),
+		'$lgt_filter_scope'(ImplementationScope, InheritedScope, Scope)
+	).
+
+'$lgt_prototye_conforms_to_protocol'(Prototype, Protocol, Scope) :-
+	'$lgt_imports_category_'(Prototype, Category, ImportScope),
+	'$lgt_category_conforms_to_protocol'(Category, Protocol, InheritedScope),
+	'$lgt_filter_scope'(ImportScope, InheritedScope, Scope).
+
+'$lgt_prototye_conforms_to_protocol'(Prototype, Protocol, Scope) :-
+	'$lgt_extends_object_'(Prototype, Parent, ExtensionScope),
+	'$lgt_prototye_conforms_to_protocol'(Parent, Protocol, InheritedScope),
+	'$lgt_filter_scope'(ExtensionScope, InheritedScope, Scope).
+
+
+'$lgt_instance_conforms_to_protocol'(Instance, Protocol, Scope) :-
+	'$lgt_instantiates_class_'(Instance, Class, InstantiationScope),
+	'$lgt_class_conforms_to_protocol'(Class, Protocol, InheritedScope),
+	'$lgt_filter_scope'(InstantiationScope, InheritedScope, Scope).
+
+
+'$lgt_class_conforms_to_protocol'(Class, Protocol, Scope) :-
+	'$lgt_implements_protocol_'(Class, Protocol0, ImplementationScope),
+	(	Protocol = Protocol0,
+		Scope = ImplementationScope
+	;	'$lgt_protocol_conforms_to_protocol'(Protocol0, Protocol, InheritedScope),
+		'$lgt_filter_scope'(ImplementationScope, InheritedScope, Scope)
+	).
+
+'$lgt_class_conforms_to_protocol'(Class, Protocol, Scope) :-
+	'$lgt_imports_category_'(Class, Category, ImportScope),
+	'$lgt_category_conforms_to_protocol'(Category, Protocol, InheritedScope),
+	'$lgt_filter_scope'(ImportScope, InheritedScope, Scope).
+
+'$lgt_class_conforms_to_protocol'(Class, Protocol, Scope) :-
+	'$lgt_specializes_class_'(Class, Superclass, SpecializationScope),
+	'$lgt_class_conforms_to_protocol'(Superclass, Protocol, InheritedScope),
+	'$lgt_filter_scope'(SpecializationScope, InheritedScope, Scope).
+
+
+'$lgt_protocol_conforms_to_protocol'(Protocol0, Protocol, Scope) :-
+	'$lgt_extends_protocol_'(Protocol0, Protocol1, ExtensionScope),
+	(	Protocol = Protocol1,
+		Scope = ExtensionScope
+	;	'$lgt_protocol_conforms_to_protocol'(Protocol1, Protocol, InheritedScope),
+		'$lgt_filter_scope'(ExtensionScope, InheritedScope, Scope)
+	).
+
+
+'$lgt_category_conforms_to_protocol'(Category, Protocol, Scope) :-
+	'$lgt_implements_protocol_'(Category, Protocol0, ImplementationScope),
+	(	Protocol = Protocol0,
+		Scope = ImplementationScope
+	;	'$lgt_protocol_conforms_to_protocol'(Protocol0, Protocol, InheritedScope),
+		'$lgt_filter_scope'(ImplementationScope, InheritedScope, Scope)
+	).
+
+'$lgt_category_conforms_to_protocol'(Category, Protocol, Scope) :-
+	'$lgt_extends_category_'(Category, ExtendedCategory, ExtensionScope),
+	'$lgt_category_conforms_to_protocol'(ExtendedCategory, Protocol, InheritedScope),
+	'$lgt_filter_scope'(ExtensionScope, InheritedScope, Scope).
+
+
+'$lgt_filter_scope'((public), Scope, Scope).
+'$lgt_filter_scope'(protected, Scope, protected) :-
+	Scope \= private.
+
+
+
 % current_event(?event, ?object_identifier, ?callable, ?object_identifier, ?object_identifier)
 
 current_event(Event, Obj, Msg, Sender, Monitor) :-
@@ -15603,6 +15720,9 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_lgt_built_in'(extends_category(_, _)).
 '$lgt_lgt_built_in'(extends_category(_, _, _)).
 '$lgt_lgt_built_in'(complements_object(_, _)).
+
+'$lgt_lgt_built_in'(conforms_to_protocol(_, _)).
+'$lgt_lgt_built_in'(conforms_to_protocol(_, _, _)).
 
 '$lgt_lgt_built_in'(abolish_events(_, _, _, _, _)).
 '$lgt_lgt_built_in'(define_events(_, _, _, _, _)).

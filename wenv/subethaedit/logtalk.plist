@@ -276,6 +276,7 @@
 				<string>[^A-Za-z0-9_](abolish_protocol)\(</string>
 				<string>[^A-Za-z0-9_](abolish_category)\(</string>
 				<string>[^A-Za-z0-9_](complements_object)\(</string>
+				<string>[^A-Za-z0-9_](conforms_to_protocol)\(</string>
 				<string>[^A-Za-z0-9_](extends_object)\(</string>
 				<string>[^A-Za-z0-9_](extends_protocol)\(</string>
 				<string>[^A-Za-z0-9_](extends_category)\(</string>

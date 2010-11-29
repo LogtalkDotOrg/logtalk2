@@ -67,7 +67,7 @@
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(abolish|c(reate|urrent))_(object|protocol|category)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(object|protocol|category)_property(?=[(])</SEQ_REGEXP>
 		<!-- Entity relations -->
-		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bcomplements_object(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bco(mplements_object|nforms_to_protocol)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bextends_(object|protocol|category)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bimp(lements_protocol|orts_category)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(instantiat|specializ)es_class(?=[(])</SEQ_REGEXP>
@@ -267,6 +267,7 @@
 			<NULL>complements</NULL>
 			<NULL>complements_object</NULL>
 			<NULL>compound</NULL>
+			<NULL>conforms_to_protocol</NULL>
 			<NULL>copy_term</NULL>
 			<NULL>create_category</NULL>
 			<NULL>create_object</NULL>

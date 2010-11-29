@@ -12,6 +12,8 @@
  *
  * CHANGES
  * -------
+ * 2010/11/28 (1.1.3)
+ *  -  Added syntax coloring of conforms_to_protocol/2-3
  * 2010/09/14 (1.1.2)
  *  -  Added syntax coloring of coinductive/1
  * 2010/06/23 (1.1.1)
@@ -118,7 +120,7 @@ $language_data = array(
             'current_category', 'current_object', 'current_protocol',
             'category_property', 'object_property', 'protocol_property',
             // entity relations
-            'complements_object',
+            'complements_object', 'conforms_to_protocol',
             'extends_category', 'extends_object', 'extends_protocol',
             'implements_protocol', 'imports_category',
             'instantiates_class', 'specializes_class',

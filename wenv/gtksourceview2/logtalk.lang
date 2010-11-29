@@ -161,7 +161,7 @@
 			<keyword>((abolish|c(reate|urrent))_(object|protocol|category))(?=[(])</keyword>
 			<keyword>((object|protocol|category)_property)(?=[(])</keyword>
 			<!-- Entity relations -->
-			<keyword>(complements_object)(?=[(])</keyword>
+			<keyword>(co(mplements_object|nforms_to_protocol))(?=[(])</keyword>
 			<keyword>(extends_(object|protocol|category))(?=[(])</keyword>
 			<keyword>(imp(lements_protocol|orts_category))(?=[(])</keyword>
 			<keyword>((instantiat|specializ)es_class)(?=[(])</keyword>

@@ -31,9 +31,9 @@ comment
 	extends(parent)).
 
 	:- info([
-		version is 1.3,
+		version is 1.4,
 		author is 'Paulo Moura',
-		date is 2010/09/14,
+		date is 2010/11/28,
 		comment is 'Sample prototype for testing syntax coloring.']).
 
 	:- threaded.
@@ -112,7 +112,8 @@ comment
 		imports_category(Object, Category, Scope),
 		instantiates_class(Instance, Class, Scope),
 		specializes_class(Class, Superclass, Scope),
-		complements_object(Category, Object).
+		complements_object(Category, Object),
+		conforms_to_protocol(ObjOrCtg, Protocol, Scope).
 
 	event_handling :-
 		abolish_events(Event, Object, Message, Sender, Monitor),

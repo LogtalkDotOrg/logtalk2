@@ -1,7 +1,7 @@
 # highlighting for Logtalk source files (http://logtalk.org/)
 #
 #	written by Paulo Moura (pmoura@logtalk.org)
-#	last revised on September 14, 2010
+#	last revised on November 28, 2010
 
 comment start "%"
 comment delim "/*" "*/" multiline nested
@@ -14,7 +14,7 @@ end
 
 keyword =	'\<(abolish|c(urrent|reate))_(object|protocol|category)(?=\()',
 			'\<(object|protocol|category)_property(?=\()',
-			'\<complements_object(?=\()',
+			'\<co(mplements_object|nforms_to_protocol)(?=\()',
 			'\<extends_(object|protocol|category)(?=\()',
 			'\<imp(lements_protocol|orts_category)(?=\()',
 			'\<(instantiat|specializ)es_class(?=\()',

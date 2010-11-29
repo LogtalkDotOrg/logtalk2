@@ -26,6 +26,8 @@ Upgrading from a previous Logtalk 2.x versions
 General remarks
 _______________
 
+Always read carefully the release notes when updating to a new version.
+
 Changes in the Logtalk compiler between releases may render some files from
 older versions incompatible with new ones. You may need to update your local
 Logtalk user files by running e.g. the "cplgtdirs" shell script.

@@ -22,7 +22,7 @@
 				<RegExpr String = "\b(abolish|c(reate|urrent))_(object|protocol|category)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\b(object|protocol|category)_property(?=[(])" attribute = "Built-in" context = "#stay" />
 				<!-- Entity relations -->
-				<RegExpr String = "\bcomplements_object(?=[(])" attribute = "Built-in" context = "#stay" />
+				<RegExpr String = "\bco(mplements_object|nforms_to_protocol)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\bextends_(object|protocol|category)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\bimp(lements_protocol|orts_category)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\b(instantiat|specializ)es_class(?=[(])" attribute = "Built-in" context = "#stay" />

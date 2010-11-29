@@ -54,7 +54,7 @@ class LogtalkLexer(RegexLexer):
             (r'(abolish|c(reate|urrent))_(object|protocol|category)(?=[(])', Keyword),
             (r'(object|protocol|category)_property(?=[(])', Keyword),
             # Entity relations
-            (r'complements_object(?=[(])', Keyword),
+            (r'co(mplements_object|nforms_to_protocol)(?=[(])', Keyword),
             (r'extends_(object|protocol|category)(?=[(])', Keyword),
             (r'imp(lements_protocol|orts_category)(?=[(])', Keyword),
             (r'(instantiat|specializ)es_class(?=[(])', Keyword),

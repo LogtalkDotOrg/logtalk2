@@ -73,7 +73,7 @@
 				<regex>\b(create_(?:object|protocol|category))\(</regex>
 				<regex>\b((?:object|protocol|category)_property)\(</regex>
 				<regex>\b(abolish_(?:object|protocol|category|events))\(</regex>
-				<regex>\b(complements_object)\(</regex>
+				<regex>\b(co(?:mplements_object|nforms_to_protocol))\(</regex>
 				<regex>\b(extends_(?:object|protocol|category))\(</regex>
 				<regex>\b(imp(?:lements_protocol|orts_category))\(</regex>
 				<regex>\b((?:instantiat|specializ)es_class)\(</regex>
