@@ -221,13 +221,13 @@ See the <a href="documenting.html">documenting Logtalk programs</a> session for 
 Logtalk provides two sets of built-in predicates that enable us to query the system about the possible relationships that a category can have with other entities.
 </p>
 <p>
-The built-in predicates <a title="Consult reference manual" href="../refman/builtins/implements_protocol2_3.html"><code>implements_protocol/2</code></a> and <a title="Consult reference manual" href="../refman/builtins/implements_protocol2_3.html"><code>implements_protocol/3</code></a> find which categories implements which protocols:
-</p>
-<pre>| ?- implements_protocol(Category, Protocol).</pre>
-<p>
-or, if we want to know the implementation scope:
+The built-in predicates <a title="Consult reference manual" href="../refman/builtins/implements_protocol2_3.html"><code>implements_protocol/2-3</code></a> and <a title="Consult reference manual" href="../refman/builtins/conforms_to_protocol2_3.html"><code>conforms_to_protocol/2-3</code></a> allows us to find which categories implements which protocols:
 </p>
 <pre>| ?- implements_protocol(Category, Protocol, Scope).</pre>
+<p>
+or, if we also want inherited protocols:
+</p>
+<pre>| ?- conforms_to_protocol(Category, Protocol, Scope).</pre>
 <p>
 Note that, if we use a non-instantiated variable for the first argument, we will need to use the <a title="Consult reference manual" href="../refman/builtins/current_category1.html"><code>current_category/1</code></a> built-in predicate to ensure that the returned entity is a category and not an object.
 </p>

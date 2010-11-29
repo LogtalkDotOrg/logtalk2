@@ -378,13 +378,13 @@ or, if we want to know the importation scope:
 </p>
 <pre>| ?- imports_category(Object, Category, Scope).</pre>
 <p>
-To find which objects implements which protocols we can use the <a title="Consult reference manual" href="../refman/builtins/implements_protocol2_3.html"><code>implements_protocol/2</code></a> or the <a title="Consult reference manual" href="../refman/builtins/implements_protocol2_3.html"><code>implements_protocol/3</code></a> built-in predicates:
-</p>
-<pre>| ?- implements_protocol(Object, Protocol).</pre>
-<p>
-or, if we want to know the implementation scope:
+To find which objects implements which protocols we can use the <a title="Consult reference manual" href="../refman/builtins/implements_protocol2_3.html"><code>implements_protocol/2-3</code></a> and <a title="Consult reference manual" href="../refman/builtins/conforms_to_protocol2_3.html"><code>conforms_to_protocol/2-3</code></a> built-in predicates:
 </p>
 <pre>| ?- implements_protocol(Object, Protocol, Scope).</pre>
+<p>
+or, if we also want inherited protocols:
+</p>
+<pre>| ?- conforms_to_protocol(Object, Protocol, Scope).</pre>
 <p>
 Note that, if we use a non-instantiated variable for the first argument, we will need to use the <a title="Consult reference manual" href="../refman/builtins/current_object1.html"><code>current_object/1</code></a> built-in predicate to ensure that the entity returned is an object and not a category.
 </p>
@@ -461,7 +461,7 @@ In order to use these predicates, simply send the corresponding message to the <
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: November 23, 2010</span>
+		<span>Last updated on: November 29, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="messages.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="protocols.html">next</a></span><br/>
