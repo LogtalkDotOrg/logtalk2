@@ -4,7 +4,7 @@
 	:- info([
 		version is 0.1,
 		author is 'Paulo Moura',
-		date is 2010/11/18,
+		date is 2010/11/29,
 		comment is 'Generates entity diagram DOT files for source files and libraries.']).
 
 	:- public(rlibrary/2).
@@ -179,28 +179,11 @@
 		write(dot_file, '\ncompound=true'),
 		write(dot_file, '\nclusterrank=local'),
 		write(dot_file, '\nlabeljust=l'),
+		write(dot_file, '\nmargin=1.0'),
 		write(dot_file, '\nfontname="Courier"'),
 		write(dot_file, '\nfontsize=10'),
 		write(dot_file, '\nfontcolor=snow4'),
 		write(dot_file, '\npencolor=snow4'),
-		(	member(pages(multiple), Options),
-			member(format(Format), Options) ->
-			(	Format == a4 ->
-				write(dot_file, '\npage="8.3,11.7"'),
-				write(dot_file, '\npagedir=TL')
-			;	Format == a3 ->
-				write(dot_file, '\npage="11.7,16.5"'),
-				write(dot_file, '\npagedir=TL')
-			;	Format == letter ->
-				write(dot_file, '\npage="8.5,11.0"'),
-				write(dot_file, '\npagedir=TL')
-			;	Format == ledger ->
-				write(dot_file, '\npage="11.0,17.0"'),
-				write(dot_file, '\npagedir=TL')
-			;	true
-			)
-		;	true
-		),
 		write(dot_file, '\nnode [style=filled,fillcolor=white,fontname="Courier",fontsize=9]'),
 		write(dot_file, '\nedge [fontname="Courier",fontsize=9]'),
 		output_date(Options),
@@ -421,14 +404,6 @@
 			true
 		;	os::working_directory(OutputPath)	% write diagram to the current directory
 		),
-		(	member(pages(Pages), UserOptions) ->
-			true
-		;	Pages = single						% generate a single page diagram
-		),
-		(	member(format(Format), UserOptions) ->
-			true
-		;	Format = a4							% paper format for multiple pages diagram
-		),
 		(	member(exclude_files(ExcludeFiles), UserOptions) ->
 			true
 		;	ExcludeFiles = []					% don't exclude any source files
@@ -443,7 +418,7 @@
 		),
 		Options = [
 			library_paths(LibraryPaths), file_names(FileNames), date(Date), interface(Interface),
-			output_path(OutputPath), pages(Pages), format(Format),
+			output_path(OutputPath),
 			exclude_files(ExcludeFiles), exclude_paths(ExcludePaths), exclude_entities(ExcludeEntities)].
 
 	:- public(default_options/1).

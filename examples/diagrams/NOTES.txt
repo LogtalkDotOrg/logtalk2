@@ -38,6 +38,10 @@ to the internal representation of paths. If you encounter problems with a
 specific back-end Prolog compiler, try to use another supported back-end
 Prolog compiler when generating diagrams.
 
+For printing large diagrams, you will need to either use a tool to slice
+the diagram in page-sized pieces or, preferably, use software capable of
+tiled printing (e.g. Adobe Reader).
+
 A set of options are available to specify the details to include in the
 generated diagrams:
 
@@ -51,10 +55,6 @@ interface(Boolean)
 	print/omit public predicates (true or false; default true)
 output_path(OutputPath)
 	directory for the .dot files (an atom; default '.')
-pages(Pages)
-	single/multiple pages diagram (single or multiple; default single)
-format(Format)
-	paper format for multiple pages diagram (a4, a3, letter, or ledger; default a4)
 exclude_files(Files)
 	list of source files to exclude (default [])
 exclude_paths(Paths)
