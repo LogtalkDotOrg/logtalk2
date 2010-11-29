@@ -44,18 +44,18 @@
 		write(dot_file, TopPath),
 		write(dot_file, '"'),
 		nl(dot_file),
-		member(exclude_paths(ExcludePaths), Options),
+		member(exclude_paths(ExcludedPaths), Options),
 		forall(
-			sub_library(TopPath, ExcludePaths, RelativePath, Path),
+			sub_library(TopPath, ExcludedPaths, RelativePath, Path),
 			output_library(RelativePath, Path, Options)),
 		write(dot_file, '}\n'),
 		nl(dot_file).
 
-	sub_library(TopPath, ExcludePaths, RelativePath, Path) :-
+	sub_library(TopPath, ExcludedPaths, RelativePath, Path) :-
 		logtalk_library_path(Library, _),
 		logtalk::expand_library_path(Library, Path),
 		atom_concat(TopPath, RelativePath, Path),
-		\+ member(RelativePath, ExcludePaths).
+		\+ member(RelativePath, ExcludedPaths).
 
 	:- public(library/2).
 	:- mode(library(+atom, +list), one).
@@ -102,10 +102,10 @@
 		).
 
 	output_library_files(Path, Options) :-
-		member(exclude_files(ExcludeFiles), Options),
+		member(exclude_files(ExcludedFiles), Options),
 		logtalk::loaded_file(File, Path),
 		atom_concat(Source, '.lgt', File),
-		\+ member(Source, ExcludeFiles),
+		\+ member(Source, ExcludedFiles),
 		output_file(File, Path, Options),
 		fail.
 	output_library_files(_, _).
@@ -210,15 +210,21 @@
 		nl(dot_file).
 
 	process(File, Path, Options) :-
+		member(exclude_entities(ExcludedEntities), Options),
 		protocol_property(Protocol, file(File, Path)),
+		\+ member(Protocol, ExcludedEntities),
 		output_protocol(Protocol, Options),
 		fail.
 	process(File, Path, Options) :-
+		member(exclude_entities(ExcludedEntities), Options),
 		object_property(Object, file(File, Path)),
+		\+ member(Object, ExcludedEntities),
 		output_object(Object, Options),
 		fail.
 	process(File, Path, Options) :-
+		member(exclude_entities(ExcludedEntities), Options),
 		category_property(Category, file(File, Path)),
+		\+ member(Category, ExcludedEntities),
 		output_category(Category, Options),
 		fail.
 	process(_, _, _).
@@ -385,42 +391,26 @@
 		).
 
 	merge_options(UserOptions, Options) :-
-		(	member(library_paths(LibraryPaths), UserOptions) ->
-			true
-		;	LibraryPaths = true					% print library paths
-		),
-		(	member(file_names(FileNames), UserOptions) ->
-			true
-		;	FileNames = true					% print file names
-		),
-		(	member(date(Date), UserOptions) ->
-			true
-		;	Date = true							% print current date
-		),
-		(	member(interface(Interface), UserOptions) ->
-			true
-		;	Interface = true					% print public interface
-		),
-		(	member(output_path(OutputPath), UserOptions) ->
-			true
-		;	os::working_directory(OutputPath)	% write diagram to the current directory
-		),
-		(	member(exclude_files(ExcludeFiles), UserOptions) ->
-			true
-		;	ExcludeFiles = []					% don't exclude any source files
-		),
-		(	member(exclude_paths(ExcludePaths), UserOptions) ->
-			true
-		;	ExcludePaths = []					% don't exclude any sub-directories
-		),
-		(	member(exclude_entities(ExcludeEntities), UserOptions) ->
-			true
-		;	ExcludeEntities = []				% don't exclude any entities
-		),
+		% by default, print library paths:
+		(member(library_paths(LibraryPaths), UserOptions) -> true; LibraryPaths = true),
+		% by default, print file names:
+		(member(file_names(FileNames), UserOptions) -> true; FileNames = true),
+		% by default, print current date:
+		(member(date(Date), UserOptions) -> true; Date = true),
+		% by default, print public interface:
+		(member(interface(Interface), UserOptions) -> true; Interface = true),
+		% by default, write diagram to the current directory:
+		(member(output_path(OutputPath), UserOptions) -> true; os::working_directory(OutputPath)),
+		% by default, don't exclude any source files:
+		(member(exclude_files(ExcludedFiles), UserOptions) -> true; ExcludedFiles = []),
+		% by default, don't exclude any library sub-directories:
+		(member(exclude_paths(ExcludedPaths), UserOptions) -> true; ExcludedPaths = []),
+		% by default, don't exclude any entities:
+		(member(exclude_entities(ExcludedEntities), UserOptions) -> true; ExcludedEntities = []),
 		Options = [
 			library_paths(LibraryPaths), file_names(FileNames), date(Date), interface(Interface),
 			output_path(OutputPath),
-			exclude_files(ExcludeFiles), exclude_paths(ExcludePaths), exclude_entities(ExcludeEntities)].
+			exclude_files(ExcludedFiles), exclude_paths(ExcludedPaths), exclude_entities(ExcludedEntities)].
 
 	:- public(default_options/1).
 	:- mode(default_options(-list), one).
