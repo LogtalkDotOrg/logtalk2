@@ -887,11 +887,11 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dd>"<code>dynamic</code>" |</dd>
 			<dd>"<code>built_in</code>" |</dd>
 			<dd>"<code>synchronized</code>" |</dd>
-			<dd>"<code>file(File, Path)</code>" |</dd>
-			<dd>"<code>lines(Start, End)</code>" |</dd>
+			<dd>"<code>file(</code>" <em>atom</em> "<code>,</code>" <em>atom</em> "<code>)</code>" |</dd>
+			<dd>"<code>lines(</code>" <em>integer</em> "<code>,</code>" <em>integer</em> "<code>)</code>" |</dd>
 			<dd>"<code>events</code>" |</dd>
-			<dd>"<code>public(Predicates)</code>" |</dd>
-			<dd>"<code>parameter_names(Names)</code>"</dd>
+			<dd>"<code>public(</code>" predicate_indicator_list "<code>)</code>" |</dd>
+			<dd>"<code>parameter_names(</code>" <em>list of atoms</em> "<code>)</code>"</dd>
 	</dl>
 	<dl id="grammar_object_property">
 		<dt>object_property ::=</dt>
@@ -900,22 +900,23 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dd>"<code>built_in</code>" |</dd>
 			<dd>"<code>synchronized</code>" |</dd>
 			<dd>"<code>threaded</code>" |</dd>
-			<dd>"<code>file(File, Path)</code>" |</dd>
-			<dd>"<code>lines(Start, End)</code>" |</dd>
+			<dd>"<code>file(</code>" <em>atom</em> "<code>,</code>" <em>atom</em> "<code>)</code>" |</dd>
+			<dd>"<code>lines(</code>" <em>integer</em> "<code>,</code>" <em>integer</em> "<code>)</code>" |</dd>
 			<dd>"<code>context_switching_calls</code>" |</dd>
 			<dd>"<code>dynamic_declarations</code>" |</dd>
 			<dd>"<code>events</code>" |</dd>
 			<dd>"<code>complements</code>" |</dd>
-			<dd>"<code>public(Predicates)</code>" |</dd>
-			<dd>"<code>parameter_names(Names)</code>"</dd>
+			<dd>"<code>public(</code>" predicate_indicator_list "<code>)</code>" |</dd>
+			<dd>"<code>parameter_names(</code>" <em>list of atoms</em> "<code>)</code>"</dd>
 	</dl>
 	<dl id="grammar_protocol_property">
 		<dt>protocol_property ::=</dt>
 			<dd>"<code>static</code>" |</dd>
 			<dd>"<code>dynamic</code>" |</dd>
 			<dd>"<code>built_in</code>" |</dd>
-			<dd>"<code>file(File, Path)</code>" |</dd>
-			<dd>"<code>lines(Start, End)</code>"</dd>
+			<dd>"<code>file(</code>" <em>atom</em> "<code>,</code>" <em>atom</em> "<code>)</code>" |</dd>
+			<dd>"<code>lines(</code>" <em>integer</em> "<code>,</code>" <em>integer</em> "<code>)</code>" |</dd>
+			<dd>"<code>public(</code>" predicate_indicator_list "<code>)</code>"</dd>
 	</dl>
 
 
@@ -940,7 +941,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: November 20, 2010</span>
+		<span>Last updated on: November 29, 2010</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="index.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>

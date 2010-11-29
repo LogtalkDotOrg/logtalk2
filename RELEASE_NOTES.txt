@@ -30,11 +30,12 @@ RELEASE NOTES
     this object in order to always interpret it as a prototype.
 
     Simplified and improved the performance of the predicate lookup caching
-    code. Simplified and improved the performance of the built-in methods
-    asserta/1 and assertz/1 when asserting a clause for a new predicate.
-    Simplified the updating of the internal table for dynamically defined
-    predicates when using the built-in methods retract/1 and retractall/1.
-    Simplified the compiler code used when creating new entities.
+    code, resulting in improved dynamic binding performance. Simplified and
+    improved the performance of the built-in methods asserta/1 and assertz/1
+    when asserting a clause for a new predicate. Simplified the updating of
+    the internal table for dynamically defined predicates when using the
+    built-in methods retract/1 and retractall/1. Simplified the compiler code
+    used when creating new entities.
 
     Changed the semantics of the "dynamic_declarations" flag so that it is
     only checked when sending an asserta/1 or assertz/1 message to an object.
@@ -58,8 +59,9 @@ RELEASE NOTES
     reporting most incorrect attempts to extend, instantiate, specialize,
     import, implement, or complement the wrong kind of entities.
 
-    Added support for object and category properties parameter_names/1 and
-    public/1.
+    Implemented a parameter_names/1 property for parametric categories and
+    parametric objects. Implemented a public/1 property for objecs, protocols,
+    and categories.
 
     Corrected a bug where the compilation (or dynamic creation) of parametric
     objects or parametric categories with instantiated parameters would fail
@@ -226,7 +228,7 @@ RELEASE NOTES
     "client" module.
 
     Updated the "problog" example. Logtalk integration with ProbLog is
-    improved it requires but the latest development version of ProbLog.
+    improved but requires the latest development version of ProbLog.
 
     Added a fully connected graph path search problem, contributed by
     Theofrastos Mantadelis, to the "benchmarks" example.
