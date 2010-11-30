@@ -60,6 +60,7 @@ logtalk_library_path(errors, examples('errors/')).
 logtalk_library_path(expansion, examples('expansion/')).
 logtalk_library_path(fft, threads('fft/')).
 logtalk_library_path(fibonacci, threads('fibonacci/')).
+logtalk_library_path(flags, contributions('flags/')).
 logtalk_library_path(functions, threads('functions/')).
 logtalk_library_path(hanoi, threads('hanoi/')).
 logtalk_library_path(hello_world, examples('hello_world/')).
