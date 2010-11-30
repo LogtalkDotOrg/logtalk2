@@ -11,6 +11,12 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 This folder contains code contributions from Logtalk users. Follows 
 a short description of each included contribution:
 
+flags
+	Contributed by: Theofrastos Mantadelis	
+
+	This folder contains an implementation of persistent object
+	flags. Includes usage examples.
+
 iso8601.lgt
 	Contributed by: Daniel L. Dudley	
 

@@ -14692,6 +14692,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	),
 	atom_concat(Prefix, Functor, TFunctor),
 	Arity is TArity - 1,		% subtract execution context argument
+	Arity >= 0,
 	functor(Head, Functor, Arity),
 	'$lgt_match_args'(Arity, THead, Head),
 	!.
@@ -14778,6 +14779,7 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	),
 	atom_concat(Prefix, Functor, TFunctor),
 	Arity is TArity - 1,		% subtract execution context argument
+	Arity >= 0,
 	!.
 
 
