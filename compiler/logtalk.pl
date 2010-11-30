@@ -15313,10 +15313,10 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 % '$lgt_pred_arg_instantiation_mode'(@nonvar)
 
-'$lgt_pred_arg_instantiation_mode'(?).
-'$lgt_pred_arg_instantiation_mode'(+).
-'$lgt_pred_arg_instantiation_mode'(-).
-'$lgt_pred_arg_instantiation_mode'(@).
+'$lgt_pred_arg_instantiation_mode'(?).	% unspecified, can be input, output or both input and output
+'$lgt_pred_arg_instantiation_mode'(+).	% instantiated on predicate call, can be further instantiated by the predicate call
+'$lgt_pred_arg_instantiation_mode'(-).	% non-instantiated (i.e. a variable) on predicate call
+'$lgt_pred_arg_instantiation_mode'(@).	% not modified (i.e. not further instantiated) by the predicate call
 
 
 
@@ -15341,65 +15341,65 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 % '$lgt_valid_predicate_property'(@nonvar)
 
-'$lgt_valid_predicate_property'((public)).
-'$lgt_valid_predicate_property'(protected).
-'$lgt_valid_predicate_property'(private).
-'$lgt_valid_predicate_property'(static).
-'$lgt_valid_predicate_property'((dynamic)).
-'$lgt_valid_predicate_property'(logtalk).
-'$lgt_valid_predicate_property'(prolog).
-'$lgt_valid_predicate_property'(declared_in(_)).
-'$lgt_valid_predicate_property'(defined_in(_)).
-'$lgt_valid_predicate_property'(meta_predicate(_)).
-'$lgt_valid_predicate_property'(built_in).
-'$lgt_valid_predicate_property'(alias_of(_)).
-'$lgt_valid_predicate_property'((multifile)).
-'$lgt_valid_predicate_property'(non_terminal(_)).
-'$lgt_valid_predicate_property'(synchronized).
+'$lgt_valid_predicate_property'((public)).				% public predicate
+'$lgt_valid_predicate_property'(protected).				% protected predicate
+'$lgt_valid_predicate_property'(private).				% private predicate
+'$lgt_valid_predicate_property'((dynamic)).				% dynamic predicate
+'$lgt_valid_predicate_property'(static).				% static predicate
+'$lgt_valid_predicate_property'(logtalk).				% predicate is defined in Logtalk
+'$lgt_valid_predicate_property'(prolog).				% predicate is defined in Prolog
+'$lgt_valid_predicate_property'(declared_in(_)).		% entity containing the predicate scope directive
+'$lgt_valid_predicate_property'(defined_in(_)).			% object or category containing the predicate definition
+'$lgt_valid_predicate_property'(meta_predicate(_)).		% meta-predicate template
+'$lgt_valid_predicate_property'(built_in).				% built-in predicate
+'$lgt_valid_predicate_property'(alias_of(_)).			% predicate is an alias of another predicate
+'$lgt_valid_predicate_property'((multifile)).			% clauses for the predicate can be defined within multiple entities
+'$lgt_valid_predicate_property'(non_terminal(_)).		% predicate version of a non-terminal
+'$lgt_valid_predicate_property'(synchronized).			% calls to the predicate are synchronized
 
 
 
 % '$lgt_valid_object_property'(@nonvar)
 
-'$lgt_valid_object_property'(built_in).
-'$lgt_valid_object_property'((dynamic)).
-'$lgt_valid_object_property'(static).
-'$lgt_valid_object_property'(synchronized).
-'$lgt_valid_object_property'(threaded).
-'$lgt_valid_object_property'(file(_, _)).
-'$lgt_valid_object_property'(lines(_, _)).
-'$lgt_valid_object_property'(context_switching_calls).
-'$lgt_valid_object_property'(dynamic_declarations).
-'$lgt_valid_object_property'(events).
-'$lgt_valid_object_property'(complements).
-'$lgt_valid_object_property'(public(_)).
-'$lgt_valid_object_property'(parameter_names(_)).
+'$lgt_valid_object_property'(built_in).					% built-in object
+'$lgt_valid_object_property'((dynamic)).				% dynamic object (can be abolished at runtime)
+'$lgt_valid_object_property'(static).					% static object
+'$lgt_valid_object_property'(synchronized).				% all object predicates are synchronized (using the same mutex)
+'$lgt_valid_object_property'(threaded).					% object contains calls to the built-in multi-threading predicates
+'$lgt_valid_object_property'(file(_, _)).				% source file name plus file directory 
+'$lgt_valid_object_property'(lines(_, _)).				% start and end lines in a source file
+'$lgt_valid_object_property'(context_switching_calls).	% object allows the use of the <</2 control construct
+'$lgt_valid_object_property'(dynamic_declarations).		% object supports dynamic declaration of new predicates
+'$lgt_valid_object_property'(events).					% messages sent from the object using the ::/2 control construct generate events
+'$lgt_valid_object_property'(complements).				% object can be complemented by categories
+'$lgt_valid_object_property'(public(_)).				% list of predicate indicators
+'$lgt_valid_object_property'(parameter_names(_)).		% list of atoms
 
 
 
 % '$lgt_valid_protocol_property'(@nonvar)
 
-'$lgt_valid_protocol_property'(built_in).
-'$lgt_valid_protocol_property'((dynamic)).
-'$lgt_valid_protocol_property'(static).
-'$lgt_valid_protocol_property'(file(_, _)).
-'$lgt_valid_protocol_property'(lines(_, _)).
-'$lgt_valid_protocol_property'(public(_)).
-'$lgt_valid_protocol_property'(parameter_names(_)).
+'$lgt_valid_protocol_property'(built_in).				% built-in protocol
+'$lgt_valid_protocol_property'((dynamic)).				% dynamic protocol (can be abolished at runtime)
+'$lgt_valid_protocol_property'(static).					% static protocol
+'$lgt_valid_protocol_property'(file(_, _)).				% source file name plus file directory
+'$lgt_valid_protocol_property'(lines(_, _)).			% start and end lines in a source file
+'$lgt_valid_protocol_property'(public(_)).				% list of predicate indicators
+'$lgt_valid_protocol_property'(parameter_names(_)).		% list of atoms
 
 
 
 % '$lgt_valid_category_property'(@nonvar)
 
-'$lgt_valid_category_property'(built_in).
-'$lgt_valid_category_property'((dynamic)).
-'$lgt_valid_category_property'(static).
-'$lgt_valid_category_property'(synchronized).
-'$lgt_valid_category_property'(file(_, _)).
-'$lgt_valid_category_property'(lines(_, _)).
-'$lgt_valid_category_property'(events).
-'$lgt_valid_category_property'(public(_)).
-'$lgt_valid_category_property'(parameter_names(_)).
+'$lgt_valid_category_property'(built_in).				% built-in category
+'$lgt_valid_category_property'((dynamic)).				% dynamic category (can be abolished at runtime)
+'$lgt_valid_category_property'(static).					% static category
+'$lgt_valid_category_property'(synchronized).			% all category predicates are synchronized (using the same mutex)
+'$lgt_valid_category_property'(file(_, _)).				% source file name plus file directory
+'$lgt_valid_category_property'(lines(_, _)).			% start and end lines in a source file
+'$lgt_valid_category_property'(events).					% messages sent from the category using the ::/2 control construct generate events
+'$lgt_valid_category_property'(public(_)).				% list of predicate indicators
+'$lgt_valid_category_property'(parameter_names(_)).		% list of atoms
 
 
 
