@@ -13986,9 +13986,14 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 '$lgt_fix_predicate_calls'(':'(Module, Pred), ':'(Module, TPred), _) :-
 	functor(Pred, Functor, Arity),
-	functor(Meta, Functor, Arity), 
 	catch('$lgt_predicate_property'(Pred, imported_from(Module)), _, fail),
-	catch('$lgt_predicate_property'(Pred, meta_predicate(Meta)), _, fail),
+	catch('$lgt_predicate_property'(Pred, meta_predicate(OriginalMeta)), _, fail),
+	functor(OverridingMeta, Functor, Arity),
+	(	'$lgt_pp_meta_predicate_'(':'(Module, OverridingMeta)) ->
+		% we're overriding the original meta-predicate template:
+		Meta = OverridingMeta
+	;	Meta = OriginalMeta
+	),
 	!,												% calls to Prolog module meta-predicates
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
