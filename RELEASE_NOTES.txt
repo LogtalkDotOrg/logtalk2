@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.42.0 - December 1, 2010
 
+    Bundled an implementation of persistent object flags, contributed by
+    Theofrastos Mantadelis.
+
     Added a new pair of built-in predicates, conforms_to_protocol/2-3,
     implementing the transitive closure of the protocol implementation
     relation.

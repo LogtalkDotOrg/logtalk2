@@ -10,13 +10,13 @@
 	:- public(rlibrary/2).
 	:- mode(rlibrary(+atom, +list), one).
 	:- info(rlibrary/2, [
-		comment is 'Creates a diagram for all entities in a library (recursive) using the specified options.',
+		comment is 'Creates a diagram for all entities in a library its sub-libraries using the specified options.',
 		argnames is ['Library', 'Options']]).
 
 	:- public(rlibrary/1).
 	:- mode(rlibrary(+atom), one).
 	:- info(rlibrary/1, [
-		comment is 'Creates a diagram for all entities in a library (recursive) using default options.',
+		comment is 'Creates a diagram for all entities in a library and its sub-libraries using default options.',
 		argnames is ['Library']]).
 
 	rlibrary(Library, UserOptions) :-
@@ -397,7 +397,7 @@
 		(member(file_names(FileNames), UserOptions) -> true; FileNames = true),
 		% by default, print current date:
 		(member(date(Date), UserOptions) -> true; Date = true),
-		% by default, print public interface:
+		% by default, print entity public predicates:
 		(member(interface(Interface), UserOptions) -> true; Interface = true),
 		% by default, write diagram to the current directory:
 		(member(output_path(OutputPath), UserOptions) -> true; os::working_directory(OutputPath)),
