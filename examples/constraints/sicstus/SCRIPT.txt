@@ -1,0 +1,63 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.42.0
+
+Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+% start by loading the example:
+
+| ?- logtalk_load(clp_sicstus(loader)).
+...
+
+
+| ?- squares::squares(dual,card).
+[1,1,5,7,7,9,9,9]
+[1,7,7,1,5,5,7,9]
+yes
+
+
+| ?- squares::squares(dual,spec).
+[1,7,7,1,7,9,5,5]
+[1,1,5,7,9,9,7,9]
+yes
+
+
+| ?- squares::squares(dual,wcd).
+no
+
+
+| ?- squares::squares(dual,disjoint).
+[1,1,5,7,7,9,9,9]
+[1,7,7,1,5,5,7,9]
+yes
+
+
+| ?- torpedo::torpedo(id113).
++----------+
+| #  #     |
+| #    ## #|
+| # ##     |
+| #     ## |
+|   # #    |
+|     # ###|
+|     #    |
+| #        |
+|          |
+|          |
++----------+
+yes
+
+
+| ?- smm::smm([leftmost],value).
+[9,5,6,7,1,0,8,2]
+yes
+
+
+| ?- smm::smm_ix([leftmost],value).
+[9,5,6,7,1,0,8,2]
+yes

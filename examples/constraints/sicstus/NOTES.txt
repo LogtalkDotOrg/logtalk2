@@ -9,7 +9,13 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 ================================================================
 
 
-The examples in this folder illustrate how to use Constraint Domain Solvers 
-(such as the CLP(FD) library included with ECLiPSe, SICStus Prolog, SWI-Prolog,
-and YAP or the native Finite Domain Solvers in GNU Prolog and B-Prolog) within
-Logtalk objects and categories.
+To load this example and for sample queries, please see the SCRIPT.txt file.
+
+This folder contains a set of experimental examples illustrating how to use
+the CLP(FD) library distributed with SICStus Prolog 4.x with Logtalk.
+
+The CLP(FD) library is loaded from the "loader.lgt" auxiliary loader file.
+This library must always be loaded prior to compilation of the individual 
+example files.
+
+Support for indexicals is not yet fully operational.

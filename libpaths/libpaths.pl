@@ -43,6 +43,7 @@ logtalk_library_path(classvars, examples('classvars/')).
 logtalk_library_path(clp_bp, constraints('bp/')).
 logtalk_library_path(clp_eclipse, constraints('eclipse/')).
 logtalk_library_path(clp_gprolog, constraints('gprolog/')).
+logtalk_library_path(clp_sicstus, constraints('sicstus/')).
 logtalk_library_path(clp_swipl, constraints('swipl/')).
 logtalk_library_path(clp_yap, constraints('yap/')).
 logtalk_library_path(coinduction, examples('coinduction/')).
