@@ -14185,17 +14185,16 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 % '$lgt_write_encoding_directive'(@stream)
 %
-% writes the encoding/1 directive; must be the first term in the file
+% writes the encoding/1 directive (if it exists); must be the first term in the file
 
 '$lgt_write_encoding_directive'(Stream) :-
-	'$lgt_compiler_flag'(encoding_directive, full),
-	'$lgt_pp_file_encoding_'(_, Encoding),
-	write_canonical(Stream, (:- encoding(Encoding))),
-	write(Stream, '.'),
-	nl(Stream),
-	fail.
-
-'$lgt_write_encoding_directive'(_).
+	(	'$lgt_compiler_flag'(encoding_directive, full),
+		'$lgt_pp_file_encoding_'(_, Encoding) ->
+		write_canonical(Stream, (:- encoding(Encoding))),
+		write(Stream, '.'),
+		nl(Stream)
+	;	true
+	).
 
 
 
@@ -14906,63 +14905,44 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 '$lgt_lgt_opening_directive'(object, N) :-
 	N >= 1, N =< 5.
-
 '$lgt_lgt_opening_directive'(category, N) :-
 	N >= 1, N =< 3.
-
 '$lgt_lgt_opening_directive'(protocol, N) :-
 	N >= 1, N =< 2.
-
 '$lgt_lgt_opening_directive'(module, N) :-				% Prolog module directives; module/3 directives
 	N >= 1, N =< 3.										% are not supported but must be recognized as 
 														% entity opening directives
 
 '$lgt_lgt_closing_directive'(end_object, 0).
-
 '$lgt_lgt_closing_directive'(end_category, 0).
-
 '$lgt_lgt_closing_directive'(end_protocol, 0).
 
 
-'$lgt_lgt_entity_directive'(alias, 2).
-
 '$lgt_lgt_entity_directive'(encoding, 1).
-
 '$lgt_lgt_entity_directive'(calls, N) :-
 	N >= 1.
 '$lgt_lgt_entity_directive'(uses, N) :-
 	N >= 1, N =< 2.
 '$lgt_lgt_entity_directive'(use_module, 2).				% Prolog module directive
-
 '$lgt_lgt_entity_directive'((initialization), 1).
-
 '$lgt_lgt_entity_directive'((dynamic), 0).
-
 '$lgt_lgt_entity_directive'(op, 3).
-
 '$lgt_lgt_entity_directive'(info, 1).
-
 '$lgt_lgt_entity_directive'(synchronized, 0).
-
 '$lgt_lgt_entity_directive'(threaded, 0).
-
 '$lgt_lgt_entity_directive'(set_logtalk_flag, 2).
 
 
 '$lgt_lgt_predicate_directive'(synchronized, N) :-
 	N >= 1.
-
 '$lgt_lgt_predicate_directive'((dynamic), N) :-
 	N >= 1.
-
 '$lgt_lgt_predicate_directive'(metapredicate, N) :-		% deprecated Logtalk directive
 	N >= 1.
 '$lgt_lgt_predicate_directive'((meta_predicate), N) :-	% Logtalk directive
 	N >= 1.
-
 '$lgt_lgt_predicate_directive'((discontiguous), N) :-
 	N >= 1.
-
 '$lgt_lgt_predicate_directive'((public), N) :-
 	N >= 1.
 '$lgt_lgt_predicate_directive'(protected, N) :-
@@ -14972,19 +14952,13 @@ current_logtalk_flag(version, version(2, 42, 0)).
 '$lgt_lgt_predicate_directive'((export), N) :-			% Prolog module directive
 	N >= 1.
 '$lgt_lgt_predicate_directive'(reexport, 2).			% Prolog module directive
-
 '$lgt_lgt_predicate_directive'((mode), 2).
-
 '$lgt_lgt_predicate_directive'(info, 2).
-
 '$lgt_lgt_predicate_directive'(alias, 3).
-
 '$lgt_lgt_predicate_directive'((multifile), N) :-
 	N >= 1.
-
 '$lgt_lgt_predicate_directive'((coinductive), N) :-
 	N >= 1.
-
 '$lgt_lgt_predicate_directive'(annotation, N) :-		% experimental directive
 	N >= 1.
 
@@ -15287,9 +15261,9 @@ current_logtalk_flag(version, version(2, 42, 0)).
 	'$lgt_valid_annotation_template_args'(Arg1, Arg2).
 
 
-'$lgt_valid_annotation_template_args'(*, 0).
-'$lgt_valid_annotation_template_args'(0, *).
-'$lgt_valid_annotation_template_args'(0, 0).
+'$lgt_valid_annotation_template_args'(*, 0).			% right annotation operand is a goal
+'$lgt_valid_annotation_template_args'(0, *).			% left annotation operand is a goal
+'$lgt_valid_annotation_template_args'(0, 0).			% both annotation operands are goals
 
 
 
@@ -15313,10 +15287,10 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 % '$lgt_pred_arg_instantiation_mode'(@nonvar)
 
-'$lgt_pred_arg_instantiation_mode'(?).	% unspecified, can be input, output or both input and output
-'$lgt_pred_arg_instantiation_mode'(+).	% instantiated on predicate call, can be further instantiated by the predicate call
-'$lgt_pred_arg_instantiation_mode'(-).	% non-instantiated (i.e. a variable) on predicate call
-'$lgt_pred_arg_instantiation_mode'(@).	% not modified (i.e. not further instantiated) by the predicate call
+'$lgt_pred_arg_instantiation_mode'(?).					% unspecified, can be input, output or both input and output
+'$lgt_pred_arg_instantiation_mode'(+).					% instantiated on predicate call, can be further instantiated by the predicate call
+'$lgt_pred_arg_instantiation_mode'(-).					% non-instantiated (i.e. a variable) on predicate call
+'$lgt_pred_arg_instantiation_mode'(@).					% not modified (i.e. not further instantiated) by the predicate call
 
 
 
@@ -15330,12 +15304,12 @@ current_logtalk_flag(version, version(2, 42, 0)).
 
 % '$lgt_pred_number_of_solutions'(+atom)
 
-'$lgt_pred_number_of_solutions'(zero).
-'$lgt_pred_number_of_solutions'(one).
-'$lgt_pred_number_of_solutions'(zero_or_one).
-'$lgt_pred_number_of_solutions'(zero_or_more).
-'$lgt_pred_number_of_solutions'(one_or_more).
-'$lgt_pred_number_of_solutions'(error).
+'$lgt_pred_number_of_solutions'(zero).					% calling the predicate using the specified mode always fails
+'$lgt_pred_number_of_solutions'(one).					% calling the predicate using the specified mode always succeeds once
+'$lgt_pred_number_of_solutions'(zero_or_one).			% calling the predicate using the specified mode may succeed once or fail
+'$lgt_pred_number_of_solutions'(zero_or_more).			% calling the predicate using the specified mode may fail or succeed multiple times
+'$lgt_pred_number_of_solutions'(one_or_more).			% calling the predicate using the specified mode always succeed at least once
+'$lgt_pred_number_of_solutions'(error).					% calling the predicate using the specified mode throws an error
 
 
 
@@ -15581,12 +15555,12 @@ current_logtalk_flag(version, version(2, 42, 0)).
 %
 % valid predicate allocation on info/2 directive
 
-'$lgt_valid_predicate_allocation'(container).
-'$lgt_valid_predicate_allocation'(descendants).
-'$lgt_valid_predicate_allocation'(instances).
-'$lgt_valid_predicate_allocation'(classes).
-'$lgt_valid_predicate_allocation'(subclasses).
-'$lgt_valid_predicate_allocation'(any).
+'$lgt_valid_predicate_allocation'(container).			% predicate defined in the object containing its scope directive 
+'$lgt_valid_predicate_allocation'(descendants).			% predicate should be defined in the descendant objects 
+'$lgt_valid_predicate_allocation'(instances).			% predicate should be defined in the class instances
+'$lgt_valid_predicate_allocation'(classes).				% predicate should be defined in the class and its subclasses
+'$lgt_valid_predicate_allocation'(subclasses).			% predicate should be defined in the class subclasses
+'$lgt_valid_predicate_allocation'(any).					% no restrictions on where the predicate should be defined
 
 
 
@@ -15594,11 +15568,11 @@ current_logtalk_flag(version, version(2, 42, 0)).
 %
 % valid predicate redefinition on info/2 directive
 
-'$lgt_valid_predicate_redefinition'(never).
-'$lgt_valid_predicate_redefinition'(free).
-'$lgt_valid_predicate_redefinition'(specialize).
-'$lgt_valid_predicate_redefinition'(call_super_first).
-'$lgt_valid_predicate_redefinition'(call_super_last).
+'$lgt_valid_predicate_redefinition'(never).				% predicate should not be redefined
+'$lgt_valid_predicate_redefinition'(free).				% predicate can be freely redefined
+'$lgt_valid_predicate_redefinition'(specialize).		% predicate redefinition must call the inherited definition
+'$lgt_valid_predicate_redefinition'(call_super_first).	% predicate redefinition must call the inherited definition as the first body goal
+'$lgt_valid_predicate_redefinition'(call_super_last).	% predicate redefinition must call the inherited definition as the last body goal
 
 
 
