@@ -188,7 +188,8 @@ RELEASE NOTES
     the SWI-Prolog hook file, "swihooks.pl". This hook predicate allows a more
     user-friendly experience when using the SWI-Prolog profiler with Logtalk.
     Requires SWI-Prolog 5.10.2 (stable) or 5.11.8 (development) or later
-    versions.
+    versions. Thanks to Jan Wielemaker for his support on improving the usage
+    of the user:prolog_predicate_name/2 hook on the SWI-Prolog profiler.
 
     Updated the library "types_loader.lgt" file to also load the heaps library
     files.
@@ -233,8 +234,9 @@ RELEASE NOTES
     (which is only supported for some back-end Prolog compilers) in the
     "client" module.
 
-    Updated the "problog" example. Logtalk integration with ProbLog is
-    improved but requires the latest development version of ProbLog.
+    Updated the "problog" example. Logtalk integration with ProbLog is much
+    improved but requires the latest development version of ProbLog. Thanks
+    to Theofrastos Mantadelis for his support on ProbLog.
 
     Added a fully connected graph path search problem, contributed by
     Theofrastos Mantadelis, to the "benchmarks" example.
