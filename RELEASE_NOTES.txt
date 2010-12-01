@@ -37,8 +37,8 @@ RELEASE NOTES
     improved the performance of the built-in methods asserta/1 and assertz/1
     when asserting a clause for a new predicate. Simplified the updating of
     the internal table for dynamically defined predicates when using the
-    built-in methods retract/1 and retractall/1. Simplified the compiler code
-    used when creating new entities.
+    built-in methods retract/1 and retractall/1. Simplified the compiler
+    code used when creating new entities.
 
     Changed the semantics of the "dynamic_declarations" flag so that it is
     only checked when sending an asserta/1 or assertz/1 message to an object.
@@ -62,9 +62,9 @@ RELEASE NOTES
     reporting most incorrect attempts to extend, instantiate, specialize,
     import, implement, or complement the wrong kind of entities.
 
-    Implemented a parameter_names/1 property for parametric categories and
-    parametric objects. Implemented a public/1 property for objecs, protocols,
-    and categories.
+    Implemented a parameter_names/1 property for parametric categories
+    and parametric objects. Implemented a public/1 property for objects,
+    protocols, and categories.
 
     Corrected a bug where the compilation (or dynamic creation) of parametric
     objects or parametric categories with instantiated parameters would fail

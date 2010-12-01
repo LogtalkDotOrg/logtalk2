@@ -81,6 +81,7 @@ eval $xslt_proc -o builtins/imports_category2_3.section refman.xsl builtins/impo
 eval $xslt_proc -o builtins/instantiates_class2_3.section refman.xsl builtins/instantiates_class2_3.html
 eval $xslt_proc -o builtins/specializes_class2_3.section refman.xsl builtins/specializes_class2_3.html
 eval $xslt_proc -o builtins/complements_object2.section refman.xsl builtins/complements_object2.html
+eval $xslt_proc -o builtins/conforms_to_protocol2_3.section refman.xsl builtins/conforms_to_protocol2_3.html
 eval $xslt_proc -o builtins/abolish_events5.section refman.xsl builtins/abolish_events5.html
 eval $xslt_proc -o builtins/current_event5.section refman.xsl builtins/current_event5.html
 eval $xslt_proc -o builtins/define_events5.section refman.xsl builtins/define_events5.html
@@ -200,6 +201,7 @@ cat -s \
 	builtins/instantiates_class2_3.section \
 	builtins/specializes_class2_3.section \
 	builtins/complements_object2.section \
+	builtins/conforms_to_protocol2_3.section \
 	builtins/abolish_events5.section \
 	builtins/current_event5.section \
 	builtins/define_events5.section \
