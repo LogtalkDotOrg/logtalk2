@@ -17,9 +17,9 @@ user:problog_user_ground(THead) :-
 	implements(expanding)).
 
 	:- info([
-		version is 0.3,
+		version is 0.4,
 		author is 'Paulo Moura',
-		date is 2010/11/10,
+		date is 2010/12/02,
 		comment is 'Hook object for compiling objects and categories containing ProbLog code.']).
 
 	term_expansion((:- set_problog_flag(Flag, Value)), [{(:- flags:set_problog_flag(Flag, Value))}]).
@@ -39,7 +39,8 @@ user:problog_user_ground(THead) :-
 
 	problog_annotations([
 		(:- annotation('=>'(0, *))),
-		(:- annotation('~'(*, 0)))
+		(:- annotation('~'(*, 0))),
+		(:- annotation('<--'(0, 0)))
 	]).
 
 	:- multifile(user:term_expansion/2).
