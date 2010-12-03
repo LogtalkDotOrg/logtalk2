@@ -206,7 +206,7 @@
 		version is 1.0,
 		author is 'Theofrastos Mantadelis',
 		date is 2010/11/27,
-		comment is 'Flag validation protocol. Must be implmeented by validator objects.']).
+		comment is 'Flag validation protocol. Must be implemented by validator objects.']).
 
 	:- public(validate/0).
 	:- mode(print_flags, zero_or_one).
