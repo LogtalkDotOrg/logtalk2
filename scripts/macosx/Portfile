@@ -36,8 +36,6 @@ use_configure	no
 
 build			{}
 
-universal_variant	no
-
 destroot {
 	system "cd ${worksrcpath}/scripts && ./install.sh ${destroot}${prefix}"
 }
@@ -62,7 +60,7 @@ post-activate {
 	ui_msg "*"
 	ui_msg "* B-Prolog (version 7.4 or later):       bplgt"
 	ui_msg "* CxProlog (version 0.97.5 or later):    cxlgt"
-	ui_msg "* ECLiPSe (version 6.0#141 or later):     eclipselgt"
+	ui_msg "* ECLiPSe (version 6.0#141 or later):    eclipselgt"
 	ui_msg "* GNU Prolog (version 1.4.0 or later):   gplgt"
 	ui_msg "* Qu-Prolog (version 8.12 or later):     qplgt"
 	ui_msg "* SICStus Prolog (versions 3.12.x, 4.x): sicstuslgt"
