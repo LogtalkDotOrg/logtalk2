@@ -13,7 +13,7 @@
 %  load Logtalk files using SWI Prolog consult/1, to support edit/1 and
 %  make/0, and to improve usability when using the XPCE profiler
 %
-%  last updated: October 19, 2010
+%  last updated: December 7, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -47,7 +47,7 @@ user:prolog_load_file(_:Spec, Options) :-
 
 '$lgt_swi_filter_compiler_options'([Option| Options], [Option| Options2]) :-
 	functor(Option, Functor, 1),
-	current_logtalk_flag(Functor, _),	% hack for testing for a valid flag
+	'$lgt_valid_flag'(Functor),
 	!,
 	'$lgt_swi_filter_compiler_options'(Options, Options2).
 

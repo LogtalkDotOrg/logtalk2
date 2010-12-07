@@ -13,6 +13,13 @@ RELEASE NOTES
 =============
 
 
+2.42.1 - December ??, 2010
+
+    Corrected a nasty bug in the SWI-Prolog "swihooks.lgt" file that resulted
+    in bogus error messages about Logtalk flags when consulting plain Prolog
+    or Prolog module files.    
+
+
 2.42.0 - December 1, 2010
 
     Added an implementation of persistent object flags, contributed by
