@@ -15,9 +15,13 @@ RELEASE NOTES
 
 2.42.1 - December ??, 2010
 
-    Corrected a nasty bug in the SWI-Prolog "swihooks.lgt" file that resulted
-    in bogus error messages about Logtalk flags when consulting plain Prolog
-    or Prolog module files.    
+    Corrected a bug in the SWI-Prolog "swihooks.lgt" file that resulted in
+    a bogus error message about an invalid Logtalk flag when consulting a
+    Prolog file when there is a Logtalk source file with the same name in
+    the same directory.
+
+    Updated the "problog" example, adding preliminary support for the new
+    annotated disjunctions syntax.
 
 
 2.42.0 - December 1, 2010
