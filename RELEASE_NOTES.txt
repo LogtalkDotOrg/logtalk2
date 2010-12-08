@@ -23,6 +23,9 @@ RELEASE NOTES
     Updated the "problog" example, adding preliminary support for the new
     annotated disjunctions syntax.
 
+    Added a "magic" element to the Logtalk mime-type file for the
+    freedesktop.org shared mime-info database.
+
 
 2.42.0 - December 1, 2010
 

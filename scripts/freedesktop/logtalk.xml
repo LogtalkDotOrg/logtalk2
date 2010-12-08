@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
 	<mime-type type="text/x-logtalk">
-		<sub-class-of type="text/plain"/>
 		<comment>Logtalk source code</comment>
 		<comment xml:lang="be@latin">Kryničny kod Logtalk</comment>
 		<comment xml:lang="bg">Изходен код — Logtalk</comment>
@@ -37,6 +36,12 @@
 		<comment xml:lang="vi">Mã nguồn Logtalk</comment>
 		<comment xml:lang="zh_CN">Logtalk 源代码</comment>
 		<comment xml:lang="zh_TW">Logtalk 源代碼</comment>
+		<sub-class-of type="text/plain"/>
+		<magic priority="50">
+			<match value=":- object(" type="string" offset="0"/>
+			<match value=":- protocol(" type="string" offset="0"/>
+			<match value=":- category(" type="string" offset="0"/>
+		</magic>
 		<glob pattern="*.lgt"/>
 	</mime-type>
 </mime-info>
