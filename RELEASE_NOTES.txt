@@ -20,6 +20,10 @@ RELEASE NOTES
     Prolog file when there is a Logtalk source file with the same name in
     the same directory.
 
+    Updated the SICStus Prolog, SWI-Prolog, and YAP config files in order to
+    override the meta-predicate templates for the consult/1 and load_files/2
+    built-in predicates.
+
     Updated the "problog" example, adding preliminary support for the new
     annotated disjunctions syntax.
 

@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: November 17, 2010
+%  last updated: December 9, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -118,9 +118,14 @@ forall(Generate, Test) :-
 '$lgt_pl_meta_predicate'(on_exception(_, _, _), on_exception(*, 0, 0), predicate).
 '$lgt_pl_meta_predicate'(undo(_), undo(0), predicate).
 '$lgt_pl_meta_predicate'(when(_, _), when(*, 0), predicate).
-% workaround broken meta-predicate declarations:
+% workaround problematic meta-predicate declarations:
+'$lgt_pl_meta_predicate'(consult(_), consult(*), predicate).
 '$lgt_pl_meta_predicate'(format(_, _), format(*, *), predicate).
 '$lgt_pl_meta_predicate'(format(_, _, _), format(*, *, *), predicate).
+'$lgt_pl_meta_predicate'(load_files(_, _), load_files(*, *), predicate).
+'$lgt_pl_meta_predicate'(load_foreign_resource(_), load_foreign_resource(*), predicate).
+'$lgt_pl_meta_predicate'(use_module(_), use_module(*), predicate).
+'$lgt_pl_meta_predicate'(use_module(_, _), use_module(*, *), predicate).
 
 
 

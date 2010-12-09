@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: November 17, 2010
+%  last updated: December 9, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -191,7 +191,8 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 :- if(predicate_property(with_output_to(_, _), built_in)).
 	'$lgt_pl_meta_predicate'(with_output_to(_, _), with_output_to(*, 0), predicate).
 :- endif.
-% workaround broken meta-predicate declarations:
+% workaround problematic meta-predicate declarations:
+'$lgt_pl_meta_predicate'(consult(_), consult(*), predicate).
 '$lgt_pl_meta_predicate'(format(_, _), format(*, *), predicate).
 '$lgt_pl_meta_predicate'(format(_, _, _), format(*, *, *), predicate).
 '$lgt_pl_meta_predicate'(use_module(_), use_module(*), predicate).
