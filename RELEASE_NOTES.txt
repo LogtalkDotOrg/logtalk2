@@ -15,6 +15,10 @@ RELEASE NOTES
 
 2.42.1 - December ??, 2010
 
+    Corrected a bug in the Logtalk compiler when checking meta-predicate
+    clause heads for errors where the "::" meta-argument mode indicator
+    was still be interpreted as "0".
+
     Corrected a bug in the SWI-Prolog "swihooks.lgt" file that resulted in
     a bogus error message about an invalid Logtalk flag when consulting a
     Prolog file when there is a Logtalk source file with the same name in

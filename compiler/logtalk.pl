@@ -9274,10 +9274,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 
 
 % look for a non-variable meta-argument
-% (used when checking meta-predicate clause heads for errors)
-
-'$lgt_nonvar_meta_arg'([Arg| _], [(::)| _], Arg) :-
-	nonvar(Arg).
+% (used when checking meta-predicate clause heads for meta-argument unification errors)
 
 '$lgt_nonvar_meta_arg'([Arg| _], [N| _], Arg) :-
 	integer(N),
