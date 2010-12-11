@@ -15,9 +15,13 @@ RELEASE NOTES
 
 2.42.1 - December ??, 2010
 
+    Added support for new meta-predicate template mode indicators: (/) for a
+    predicate indicator, [/] for a list of predicate indicators, and [0] for
+    a list of goals.
+
     Corrected a bug in the Logtalk compiler when checking meta-predicate
     clause heads for errors where the "::" meta-argument mode indicator
-    was still be interpreted as "0".
+    was still being interpreted as "0".
 
     Corrected a bug in the SWI-Prolog "swihooks.lgt" file that resulted in
     a bogus error message about an invalid Logtalk flag when consulting a

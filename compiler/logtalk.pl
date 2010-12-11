@@ -8420,10 +8420,13 @@ current_logtalk_flag(version, version(2, 42, 1)).
 '$lgt_tr_module_meta_predicate_directives_args'([], []).
 
 '$lgt_tr_module_meta_predicate_directives_args'([Arg| Args], [TArg| TArgs]) :-
-	(	Arg == (:) -> TArg = (::)	% Prolog to Logtalk notation; this is fragile due to the lack of standardization
-	;	Arg == (::) -> TArg = (::)	% mixed-up notation or overriding meta-predicate template being used
-	;	integer(Arg) -> TArg = Arg	% goals and closures are denoted by integers >= 0
-	;	TArg = (*)					% non meta-arguments (e.g. instantiation modes) to Logtalk notation
+	(	Arg == (:) -> TArg = (::)				% Prolog to Logtalk notation; this is fragile due to the lack of standardization
+	;	Arg == (::) -> TArg = (::)				% mixed-up notation or overriding meta-predicate template being used
+	;	integer(Arg) -> TArg = Arg				% goals and closures are denoted by integers >= 0
+	;	Arg == (/) -> TArg = Arg				% predicate indicator
+	;	Arg = [N], integer(N) -> TArg = Arg		% list of goals/closures
+	;	Arg == [/] -> TArg = Arg				% list of predicate indicators
+	;	TArg = (*)								% non meta-arguments (e.g. instantiation modes) to Logtalk notation
 	),
 	'$lgt_tr_module_meta_predicate_directives_args'(Args, TArgs).
 
@@ -10648,11 +10651,9 @@ current_logtalk_flag(version, version(2, 42, 1)).
 	).
 
 
-% Prolog proprietary, built-in meta-predicates
+% Prolog proprietary built-in meta-predicates (must be declared in the config files)
 
 '$lgt_tr_body'(Pred, TPred, DPred, Ctx) :-
-	'$lgt_pl_built_in'(Pred),
-	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	functor(Pred, Functor, Arity),
 	(	'$lgt_comp_ctx_mode'(Ctx, runtime) ->
 		true
@@ -10662,45 +10663,24 @@ current_logtalk_flag(version, version(2, 42, 1)).
 		\+ '$lgt_pp_private_'(Functor, Arity),			% the redefinition is
 		\+ '$lgt_pp_redefined_built_in_'(Pred, _, _)	% yet to be compiled
 	),
-	(	'$lgt_pl_meta_predicate'(Pred, Meta, Type) ->
-		% proprietary built-in meta-predicates declared in the config files
-		true
-	;	% non-declared proprietary built-in meta-predicates (fragile hack
-	 	% due to lack of standardization of meta-predicate specifications)
-		catch('$lgt_predicate_property'(Pred, meta_predicate(OriginalMeta)), _, fail),
-		Type = predicate	% but it could be a control construct instead... no way to know it!
-	),
-	!,
-	% we're compiling a call to a module meta-predicate:
-	functor(OverridingMeta, Functor, Arity),
-	(	'$lgt_pp_meta_predicate_'(OverridingMeta) ->
-		% we're overriding the original meta-predicate template:
-		Meta = OverridingMeta
-	;	Meta = OriginalMeta
-	),
+	'$lgt_pl_meta_predicate'(Pred, Meta, Type),
 	Pred =.. [_| Args],
 	Meta =.. [_| MArgs],
-	(	'$lgt_member'(MArg, MArgs), integer(MArg), MArg =\= 0 ->
-		% module meta-predicates that take closures are not supported:
-		throw(domain_error(closure, Meta))
-	;	'$lgt_member'(MArg, MArgs), MArg == (':') ->
-		% the meta-argument specifier ':' is ambiguous:
-		throw(domain_error(meta_argument_specifier, Meta))
-	;	'$lgt_tr_module_meta_predicate_directives_args'(MArgs, CMArgs),
-		'$lgt_tr_meta_args'(Args, CMArgs, Ctx, TArgs, DArgs),
-		TGoal =.. [Functor| TArgs],
-		(	'$lgt_comp_ctx_mode'(Ctx, runtime) ->
-			TPred = TGoal,
-			(	Type == control_construct ->
-				DPred =.. [Functor| DArgs]
-			;	DPred = '$lgt_debugger.goal'(Pred, TPred, ExCtx)
-			)
-		;	TPred = '$lgt_call_built_in'(Pred, TGoal, ExCtx),
-			(	Type == control_construct ->
-				DGoal =.. [Functor| DArgs],
-				DPred = '$lgt_call_built_in'(Pred, DGoal, ExCtx)
-			;	DPred = '$lgt_debugger.goal'(Pred, TPred, ExCtx)
-			)
+	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
+	!,
+	TGoal =.. [Functor| TArgs],
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	(	'$lgt_comp_ctx_mode'(Ctx, runtime) ->
+		TPred = TGoal,
+		(	Type == control_construct ->
+			DPred =.. [Functor| DArgs]
+		;	DPred = '$lgt_debugger.goal'(Pred, TPred, ExCtx)
+		)
+	;	TPred = '$lgt_call_built_in'(Pred, TGoal, ExCtx),
+		(	Type == control_construct ->
+			DGoal =.. [Functor| DArgs],
+			DPred = '$lgt_call_built_in'(Pred, DGoal, ExCtx)
+		;	DPred = '$lgt_debugger.goal'(Pred, TPred, ExCtx)
 		)
 	).
 
@@ -10907,6 +10887,19 @@ current_logtalk_flag(version, version(2, 42, 1)).
 '$lgt_tr_meta_arg'((0), Arg, Ctx, TArg, DArg) :-
 	'$lgt_tr_body'(Arg, TArg, DArg, Ctx).
 
+'$lgt_tr_meta_arg'([0], [], _, [], []) :- !.
+'$lgt_tr_meta_arg'([0], [Arg| Args], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
+	'$lgt_tr_meta_arg'((0), Arg, Ctx, TArg, DArg),
+	'$lgt_tr_meta_arg'([0], Args, Ctx, TArgs, DArgs).
+
+'$lgt_tr_meta_arg'((/), Arg, _, TArg, TArg) :-
+	'$lgt_compile_predicate_indicators'(Arg, TArg).
+
+'$lgt_tr_meta_arg'([/], [], _, [], []) :- !.
+'$lgt_tr_meta_arg'([/], [Arg| Args], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
+	'$lgt_tr_meta_arg'((/), Arg, Ctx, TArg, DArg),
+	'$lgt_tr_meta_arg'([/], Args, Ctx, TArgs, DArgs).
+
 
 
 % '$lgt_tr_module_meta_args'(@list, @list, +term, -list, -list)
@@ -10937,6 +10930,27 @@ current_logtalk_flag(version, version(2, 42, 1)).
 		TArg = ':'(user, TArg0),
 		DArg = ':'(user, DArg0)
 	).
+
+'$lgt_tr_module_meta_arg'([0], [], _, [], []) :- !.
+'$lgt_tr_module_meta_arg'([0], [Arg| Args], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
+	'$lgt_tr_module_meta_arg'((0), Arg, Ctx, TArg, DArg),
+	'$lgt_tr_module_meta_arg'([0], Args, Ctx, TArgs, DArgs).
+
+'$lgt_tr_module_meta_arg'((/), Arg, _, TArg, DArg) :-
+	(	nonvar(Arg), functor(Arg, ':', 2) ->
+		% explicit-qualified meta-argument
+		TArg = Arg,
+		DArg = Arg
+	;	% non-qualified meta-argument
+		'$lgt_compile_predicate_indicators'(Arg, TArg0),
+		TArg = ':'(user, TArg0),
+		DArg = ':'(user, TArg0)
+	).
+
+'$lgt_tr_module_meta_arg'([/], [], _, [], []) :- !.
+'$lgt_tr_module_meta_arg'([/], [Arg| Args], Ctx, [TArg| TArgs], [DArg| DArgs]) :-
+	'$lgt_tr_module_meta_arg'((/), Arg, Ctx, TArg, DArg),
+	'$lgt_tr_module_meta_arg'([/], Args, Ctx, TArgs, DArgs).
 
 
 
@@ -14017,10 +14031,19 @@ current_logtalk_flag(version, version(2, 42, 1)).
 	'$lgt_fix_pred_calls_in_margs'(Args, MArgs, TArgs).
 
 
-'$lgt_fix_pred_calls_ins_in_marg'(*, Arg, Arg).
-
 '$lgt_fix_pred_calls_ins_in_marg'(0, Arg, TArg) :-
+	!,
 	'$lgt_fix_predicate_calls'(Arg, TArg, false).
+
+'$lgt_fix_pred_calls_ins_in_marg'([0], [Arg| Args], [TArg| TArgs]) :-
+	!,
+	'$lgt_fix_predicate_calls'(Arg, TArg, false),
+	'$lgt_fix_pred_calls_ins_in_marg'([0], Args, TArgs).
+
+'$lgt_fix_pred_calls_ins_in_marg'([0], [], []) :-
+	!.
+
+'$lgt_fix_pred_calls_ins_in_marg'(_, Arg, Arg).
 
 
 
@@ -15251,7 +15274,14 @@ current_logtalk_flag(version, version(2, 42, 1)).
 '$lgt_valid_meta_predicate_template_args'([]).
 
 '$lgt_valid_meta_predicate_template_args'([Arg| Args]) :-
-	once((Arg == (::); Arg == (*); integer(Arg), Arg >= 0)),
+	once((
+		Arg == (::)						% meta-argument but not called
+	;	Arg == (*)						% non meta-argument
+	;	integer(Arg), Arg >= 0			% goal or closure
+	;	Arg == (/)						% predicate indicator
+	;	Arg = [N], integer(N), N >= 0	% list of goals/closures
+	;	Arg == [/]						% list of predicate indicators
+	)),
 	'$lgt_valid_meta_predicate_template_args'(Args).
 
 
