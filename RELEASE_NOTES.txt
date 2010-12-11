@@ -28,6 +28,16 @@ RELEASE NOTES
     Prolog file when there is a Logtalk source file with the same name in
     the same directory.
 
+    Added missing support for built-in tabling meta-predicates to the YAP
+    config file.
+
+    Added missing support for the proprietary built-in meta-predicates
+    compile_predicates/1 and win_insert_menu_item/4 to the SWI-Prolog
+    config file.
+
+    Added missing support for the proprietary built-in meta-predicate
+    save_predicates/2 to the SICStus Prolog config files.
+
     Updated the SICStus Prolog, SWI-Prolog, and YAP config files in order to
     override the meta-predicate templates for the consult/1 and load_files/2
     built-in predicates.

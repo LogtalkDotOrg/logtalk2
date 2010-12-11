@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: December 9, 2010
+%  last updated: December 11, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -191,6 +191,17 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 :- if(predicate_property(with_output_to(_, _), built_in)).
 	'$lgt_pl_meta_predicate'(with_output_to(_, _), with_output_to(*, 0), predicate).
 :- endif.
+% tabling meta-predicates:
+'$lgt_pl_meta_predicate'(abolish_table(_), abolish_table(/), predicate).
+'$lgt_pl_meta_predicate'(abolish_table(_), abolish_table([/]), predicate).
+'$lgt_pl_meta_predicate'(is_tabled(_), is_tabled(/), predicate).
+'$lgt_pl_meta_predicate'(is_tabled(_), is_tabled([/]), predicate).
+'$lgt_pl_meta_predicate'(table_statistics(_), table_statistics(/), predicate).
+'$lgt_pl_meta_predicate'(table_statistics(_), table_statistics([/]), predicate).
+'$lgt_pl_meta_predicate'(tabling_mode(_, _), tabling_mode(/, *), predicate).
+'$lgt_pl_meta_predicate'(tabling_mode(_, _), tabling_mode([/], *), predicate).
+'$lgt_pl_meta_predicate'(show_table(_), show_table(/), predicate).
+'$lgt_pl_meta_predicate'(show_table(_), show_table([/]), predicate).
 % workaround problematic meta-predicate declarations:
 '$lgt_pl_meta_predicate'(consult(_), consult(*), predicate).
 '$lgt_pl_meta_predicate'(format(_, _), format(*, *), predicate).

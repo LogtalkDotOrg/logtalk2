@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: December 9, 2010
+%  last updated: December 11, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -112,6 +112,7 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 '$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(0, 0), predicate).
 '$lgt_pl_meta_predicate'(call_cleanup(_, _, _), call_cleanup(0, *, 0), predicate).
 '$lgt_pl_meta_predicate'(call_with_depth_limit(_, _, _), call_with_depth_limit(0, *, *), predicate).
+'$lgt_pl_meta_predicate'(compile_predicates(_), compile_predicates([/]), predicate).
 '$lgt_pl_meta_predicate'(dde_register_service(_, _), dde_register_service(*, 0), predicate).
 '$lgt_pl_meta_predicate'(findall(_, _, _, _), findall(*, 0, *, *), predicate).
 '$lgt_pl_meta_predicate'(freeze(_, _), freeze(*, 0), predicate).
@@ -128,6 +129,9 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 '$lgt_pl_meta_predicate'(thread_signal(_, _), thread_signal(*, 0), predicate).
 '$lgt_pl_meta_predicate'(trace(_), trace(0), predicate).
 '$lgt_pl_meta_predicate'(trace(_, _), trace(0, *), predicate).
+:- if(predicate_property(win_insert_menu_item(_, _, _, _), built_in)).
+	'$lgt_pl_meta_predicate'(win_insert_menu_item(_, _, _, _), win_insert_menu_item(*, *, *, 0), predicate).
+:- endif.
 '$lgt_pl_meta_predicate'(with_mutex(_, _), with_mutex(*, 0), predicate).
 '$lgt_pl_meta_predicate'(with_output_to(_, _), with_output_to(*, 0), predicate).
 '$lgt_pl_meta_predicate'(when(_, _), when(*, 0), predicate).

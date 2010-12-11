@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 3.8 and later versions
 %
-%  last updated: December 9, 2010
+%  last updated: December 11, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -146,6 +146,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_pl_meta_predicate'(freeze(_, _), freeze(*, 0), predicate).
 '$lgt_pl_meta_predicate'(if(_, _, _), if(0, 0, 0), predicate).
 '$lgt_pl_meta_predicate'(on_exception(_, _, _), on_exception(*, 0, 0), predicate).
+'$lgt_pl_meta_predicate'(save_predicates(_, _), save_predicates([/], *), predicate).
 '$lgt_pl_meta_predicate'(undo(_), undo(0), predicate).
 '$lgt_pl_meta_predicate'(when(_, _), when(*, 0), predicate).
 % workaround problematic meta-predicate declarations:
