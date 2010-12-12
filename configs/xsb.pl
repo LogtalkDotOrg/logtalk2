@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.2 or later versions
 %
-%  last updated: October 26, 2010
+%  last updated: December 12, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -107,6 +107,11 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 '$lgt_pl_meta_predicate'(tnot(_), tnot(0), predicate).
 
 '$lgt_pl_meta_predicate'(time(_), time(0), predicate).
+
+'$lgt_pl_meta_predicate'(abolish_table_call(_), abolish_table_call(0), predicate).
+'$lgt_pl_meta_predicate'(abolish_table_call(_, _), abolish_table_call(0, *), predicate).
+'$lgt_pl_meta_predicate'(abolish_table_pred(_), abolish_table_pred(0), predicate).
+'$lgt_pl_meta_predicate'(abolish_table_pred(_, _), abolish_table_pred(0, *), predicate).
 
 '$lgt_pl_meta_predicate'(thread_create(_, _, _), thread_create(0, *, *), predicate).
 '$lgt_pl_meta_predicate'(thread_create(_, _), thread_create(0, *), predicate).
