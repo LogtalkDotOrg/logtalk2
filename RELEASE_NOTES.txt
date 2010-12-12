@@ -38,6 +38,9 @@ RELEASE NOTES
     Added missing support for the proprietary built-in meta-predicate
     save_predicates/2 to the SICStus Prolog config files.
 
+    Added missing support for the proprietary built-in meta-predicate
+    table_cardinality_limit/2 to the B-Prolog config file.
+
     Updated the SICStus Prolog, SWI-Prolog, and YAP config files in order to
     override the meta-predicate templates for the consult/1 and load_files/2
     built-in predicates.

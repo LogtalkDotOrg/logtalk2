@@ -11,7 +11,7 @@
 %
 %  configuration file for B-Prolog 7.4 and later versions
 %
-%  last updated: November 14, 2010
+%  last updated: December 12, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -116,6 +116,7 @@
 '$lgt_pl_meta_predicate'(minof(_, _), minof(0, *), predicate).
 '$lgt_pl_meta_predicate'(maxof(_, _), maxof(0, *), predicate).
 '$lgt_pl_meta_predicate'(not(_), not(0), predicate).
+'$lgt_pl_meta_predicate'(table_cardinality_limit(_, _), table_cardinality_limit(/, *), predicate).
 '$lgt_pl_meta_predicate'(table_find_all(_, _), table_find_all(0, *), predicate).
 '$lgt_pl_meta_predicate'(table_find_one(_), table_find_one(0), predicate).
 '$lgt_pl_meta_predicate'(table_remove(_), table_remove(0), predicate).
