@@ -206,6 +206,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 '$lgt_pl_meta_predicate'(consult(_), consult(*), predicate).
 '$lgt_pl_meta_predicate'(format(_, _), format(*, *), predicate).
 '$lgt_pl_meta_predicate'(format(_, _, _), format(*, *, *), predicate).
+'$lgt_pl_meta_predicate'(reconsult(_), reconsult(*), predicate).
 '$lgt_pl_meta_predicate'(use_module(_), use_module(*), predicate).
 '$lgt_pl_meta_predicate'(use_module(_, _), use_module(*, *), predicate).
 
