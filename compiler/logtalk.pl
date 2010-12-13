@@ -10654,6 +10654,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 % Prolog proprietary built-in meta-predicates (must be declared in the config files)
 
 '$lgt_tr_body'(Pred, TPred, DPred, Ctx) :-
+	'$lgt_pl_meta_predicate'(Pred, _, _),
 	functor(Pred, Functor, Arity),
 	(	'$lgt_comp_ctx_mode'(Ctx, runtime) ->
 		true
@@ -10663,25 +10664,29 @@ current_logtalk_flag(version, version(2, 42, 1)).
 		\+ '$lgt_pp_private_'(Functor, Arity),			% the redefinition is
 		\+ '$lgt_pp_redefined_built_in_'(Pred, _, _)	% yet to be compiled
 	),
-	'$lgt_pl_meta_predicate'(Pred, Meta, Type),
-	Pred =.. [_| Args],
-	Meta =.. [_| MArgs],
-	'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs),
 	!,
-	TGoal =.. [Functor| TArgs],
-	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	(	'$lgt_comp_ctx_mode'(Ctx, runtime) ->
-		TPred = TGoal,
-		(	Type == control_construct ->
-			DPred =.. [Functor| DArgs]
-		;	DPred = '$lgt_debugger.goal'(Pred, TPred, ExCtx)
+	(	'$lgt_pl_meta_predicate'(Pred, Meta, Type),		% we can have multiple templates for
+		Pred =.. [_| Args],								% the same meta-predicate; look for
+		Meta =.. [_| MArgs],							% one that matches the predicate call
+		'$lgt_tr_meta_args'(Args, MArgs, Ctx, TArgs, DArgs) ->
+		TGoal =.. [Functor| TArgs],
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+		(	'$lgt_comp_ctx_mode'(Ctx, runtime) ->
+			TPred = TGoal,
+			(	Type == control_construct ->
+				DPred =.. [Functor| DArgs]
+			;	DPred = '$lgt_debugger.goal'(Pred, TPred, ExCtx)
+			)
+		;	TPred = '$lgt_call_built_in'(Pred, TGoal, ExCtx),
+			(	Type == control_construct ->
+				DGoal =.. [Functor| DArgs],
+				DPred = '$lgt_call_built_in'(Pred, DGoal, ExCtx)
+			;	DPred = '$lgt_debugger.goal'(Pred, TPred, ExCtx)
+			)
 		)
-	;	TPred = '$lgt_call_built_in'(Pred, TGoal, ExCtx),
-		(	Type == control_construct ->
-			DGoal =.. [Functor| DArgs],
-			DPred = '$lgt_call_built_in'(Pred, DGoal, ExCtx)
-		;	DPred = '$lgt_debugger.goal'(Pred, TPred, ExCtx)
-		)
+	;	% none of the templates is usable, report as an error the first one:
+		'$lgt_pl_meta_predicate'(Pred, Meta, _),
+		throw(domain_error(meta_predicate_template, Meta))
 	).
 
 
@@ -10893,6 +10898,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 	'$lgt_tr_meta_arg'([0], Args, Ctx, TArgs, DArgs).
 
 '$lgt_tr_meta_arg'((/), Arg, _, TArg, TArg) :-
+	'$lgt_valid_predicate_indicator'(Arg, _, _),
 	'$lgt_compile_predicate_indicators'(Arg, TArg).
 
 '$lgt_tr_meta_arg'([/], [], _, [], []) :- !.
