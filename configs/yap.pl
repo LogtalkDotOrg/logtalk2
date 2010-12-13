@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: December 11, 2010
+%  last updated: December 13, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -161,6 +161,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 % is used to guide the compilation of these meta-predicates in debug mode
 
 '$lgt_pl_meta_predicate'(*->(_, _), *->(0, 0), control_construct).
+'$lgt_pl_meta_predicate'(alarm(_, _, _), alarm(*, 0, *), predicate).
 '$lgt_pl_meta_predicate'(all(_, _, _), all(*, 0, *), predicate).
 '$lgt_pl_meta_predicate'(call_cleanup(_, _), call_cleanup(0, 0), predicate).
 '$lgt_pl_meta_predicate'(call_cleanup(_, _,_), call_cleanup(0, *, 0), predicate).
@@ -175,6 +176,8 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 '$lgt_pl_meta_predicate'(ignore(_), ignore(0), predicate).
 '$lgt_pl_meta_predicate'(findall(_, _, _, _), findall(*, 0, *, *), predicate).
 '$lgt_pl_meta_predicate'(freeze(_, _), freeze(*, 0), predicate).
+'$lgt_pl_meta_predicate'(hide_predicate(_), hide_predicate(/), predicate).
+'$lgt_pl_meta_predicate'(incore(_), incore(0), predicate).
 '$lgt_pl_meta_predicate'(not(_), not(0), predicate).
 '$lgt_pl_meta_predicate'(time_out(_, _, _), time_out(0, *, *), predicate).
 '$lgt_pl_meta_predicate'(when(_, _), when(*, 0), predicate).
@@ -203,9 +206,12 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 '$lgt_pl_meta_predicate'(show_table(_), show_table(/), predicate).
 '$lgt_pl_meta_predicate'(show_table(_), show_table([/]), predicate).
 % workaround problematic meta-predicate declarations:
+'$lgt_pl_meta_predicate'(compile(_), compile(*), predicate).
 '$lgt_pl_meta_predicate'(consult(_), consult(*), predicate).
+'$lgt_pl_meta_predicate'(ensure_loaded(_), ensure_loaded(*), predicate).
 '$lgt_pl_meta_predicate'(format(_, _), format(*, *), predicate).
 '$lgt_pl_meta_predicate'(format(_, _, _), format(*, *, *), predicate).
+'$lgt_pl_meta_predicate'(load_files(_, _), load_files(*, *), predicate).
 '$lgt_pl_meta_predicate'(reconsult(_), reconsult(*), predicate).
 '$lgt_pl_meta_predicate'(use_module(_), use_module(*), predicate).
 '$lgt_pl_meta_predicate'(use_module(_, _), use_module(*, *), predicate).
