@@ -23,6 +23,12 @@ RELEASE NOTES
     clause heads for errors where the "::" meta-argument mode indicator
     was still being interpreted as "0".
 
+    Corrected a bug in the handling of closures (in meta-calls) that are
+    used to construct calls to control constructs or built-in predicates
+    which could result in calling some meta-arguments in the wrong context.
+    Thanks to Ulrich Neumerkel for the illustrating example in the SWI-Prolog
+    mailing list.
+
     Corrected a bug in the SWI-Prolog "swihooks.lgt" file that resulted in
     a bogus error message about an invalid Logtalk flag when consulting a
     Prolog file when there is a Logtalk source file with the same name in
