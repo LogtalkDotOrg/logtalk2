@@ -40,9 +40,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.1,
+		version is 1.11,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2010/07/19,
+		date is 2010/12/14,
 		comment is 'Unit tests for the "metapredicates" example.']).
 
 	% This example defines a plain Prolog predicate even_integer/1. As the
@@ -115,11 +115,11 @@
 		L == [1, 2, 3].
 
 	test(metapredicates_14) :-
-		client::test1(L),
+		client::test2(L),
 		L == [1, 2, 3].
 
 	test(metapredicates_15) :-
-		client::test1(L),
+		client::test3(L),
 		L == [1, 2, 3].
 
 :- end_object.
