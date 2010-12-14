@@ -3968,7 +3968,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 
 '$lgt_metacall_this'(Pred, Sender, This, Self) :-
 	'$lgt_current_object_'(This, Prefix, _, Def, _, _, _, _, DDef, _, _), !,
-	'$lgt_exec_ctx'(ExCtx, Sender, Sender, Self, [], _),
+	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, [], _),
 	(	% in the most common case we're meta-calling a user defined static predicate:
 		call(Def, Pred, ExCtx, TPred) ->
 		call(TPred)
