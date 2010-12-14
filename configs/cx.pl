@@ -11,7 +11,7 @@
 %
 %  configuration file for CxProlog 0.97.5 or a later version
 %
-%  last updated: October 23, 2010
+%  last updated: December 14, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -110,6 +110,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 '$lgt_pl_meta_predicate'(process_new(_, _, _), process_new(*, 0, 0), predicate).
 '$lgt_pl_meta_predicate'(thread_new(_, _, _), thread_new(*, 0, 0), predicate).
 '$lgt_pl_meta_predicate'(try(_), try(0), predicate).
+'$lgt_pl_meta_predicate'(with_ivar(_, _, _), with_ivar(*, *, 0), predicate).
 
 
 
