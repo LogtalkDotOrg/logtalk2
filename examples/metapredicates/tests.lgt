@@ -36,6 +36,35 @@
 
 
 
+% the follwing two objects, "m2" and "m1", implement a Logtalk version
+% of a Ulrich Neumerkel example posted in the SWI-Prolog mailing list
+% on December 7, 2010 on the " Should var/1 be module-aware?" thread
+
+:- object(m2).
+
+	:- public(p/2).
+	:- meta_predicate(p(*, 1)).
+	p(X, Cont) :-
+		call(Cont, g(X)).
+
+	g(m2).
+
+:- end_object.
+
+
+
+:- object(m1).
+
+	:- public(r/2).
+	r(X, Y) :-
+		m2::p(Y, ','(g(X))).
+
+	g(m1).
+
+:- end_object.
+
+
+
 :- object(tests,
 	extends(lgtunit)).
 
@@ -121,5 +150,9 @@
 	test(metapredicates_15) :-
 		client::test3(L),
 		L == [1, 2, 3].
+
+	test(metapredicates_16) :-
+		m1::r(X, Y),
+		X == m1, Y == m2.
 
 :- end_object.
