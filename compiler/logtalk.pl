@@ -8961,6 +8961,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 '$lgt_tr_clause'(Annotation, TFact, DFact, _, BodyCtx) :-
 	'$lgt_pp_value_annotation_'(Annotation, Functor, Value, Body),
 	!,
+	'$lgt_comp_ctx_meta_vars'(BodyCtx, []),
 	'$lgt_tr_body'(Body, TBody, DBody, BodyCtx),
 	functor(TFact, Functor, 2),
 	'$lgt_pp_value_annotation_'(TFact, Functor, Value, TBody),
@@ -8970,6 +8971,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 '$lgt_tr_clause'(Annotation, TFact, DFact, _, BodyCtx) :-
 	'$lgt_pp_goal_annotation_'(Annotation, Functor, Left, Right),
 	!,
+	'$lgt_comp_ctx_meta_vars'(BodyCtx, []),
 	'$lgt_tr_body'(Left, TLeft, DLeft, BodyCtx),
 	'$lgt_tr_body'(Right, TRight, DRight, BodyCtx),
 	functor(TFact, Functor, 2),
