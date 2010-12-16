@@ -9191,7 +9191,6 @@ current_logtalk_flag(version, version(2, 42, 1)).
 '$lgt_tr_head'(user::Head, Head, Ctx) :-
 	!,
 	functor(Head, Functor, Arity),
-	'$lgt_comp_ctx_head'(Ctx, Head),
 	(	'$lgt_pp_directive_'(multifile(Functor/Arity)) ->
 		true
 	;	'$lgt_compiler_flag'(report, off) ->
@@ -9203,9 +9202,8 @@ current_logtalk_flag(version, version(2, 42, 1)).
 		'$lgt_pp_entity'(Type, Entity, _, _, _),
 		'$lgt_report_warning_full_context'(Type, Entity)
 	),
-	'$lgt_pp_entity'(_, This, _, _, _),
-	'$lgt_comp_ctx'(Ctx, _, user, This, This, _, _, [], ExCtx, _, []),
-	'$lgt_exec_ctx'(ExCtx, user, This, This, [], []).
+	'$lgt_comp_ctx'(Ctx, Head, Sender, user, user, _, _, [], ExCtx, _, []),
+	'$lgt_exec_ctx'(ExCtx, Sender, user, user, [], []).
 
 '$lgt_tr_head'(Other::Head, THead, Ctx) :-
 	!,
@@ -9232,7 +9230,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 
 % translate the head of a clause of a module predicate (which we assume declared multifile)
 
-'$lgt_tr_head'(':'(Module, Head), THead, _) :-
+'$lgt_tr_head'(':'(Module, Head), THead, Ctx) :-
 	'$lgt_pl_built_in'(':'(_, _)),
 	!,
 	(	var(Module) ->
@@ -9260,7 +9258,9 @@ current_logtalk_flag(version, version(2, 42, 1)).
 			writeq(':'(Module,Functor/Arity)), nl,
 			'$lgt_pp_entity'(Type, Entity, _, _, _),
 			'$lgt_report_warning_full_context'(Type, Entity)
-		)
+		),
+		'$lgt_comp_ctx'(Ctx, Head, Sender, user, user, _, _, [], ExCtx, _, []),
+		'$lgt_exec_ctx'(ExCtx, Sender, user, user, [], [])
 	).
 
 
@@ -9301,6 +9301,9 @@ current_logtalk_flag(version, version(2, 42, 1)).
 '$lgt_tr_body'(Pred, Pred, '$lgt_debugger.goal'(Pred, Pred, ExCtx), Ctx) :-
 	'$lgt_comp_ctx_this'(Ctx, This),
 	This == user,
+	'$lgt_comp_ctx_head'(Ctx, Head),					% make sure that we're not translating
+	functor(Head, Functor, Arity),						% the body of a "user" multifile 
+	\+ '$lgt_pp_directive_'(multifile(Functor/Arity)),	% predicate
 	!,
  	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
