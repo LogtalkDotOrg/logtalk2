@@ -2,9 +2,9 @@
 :- protocol(osp).
 
 	:- info([
-		version is 1.4,
+		version is 1.5,
 		author is 'Paulo Moura',
-		date is 2010/10/09,
+		date is 2010/12/16,
 		comment is 'Portable operating-system access protocol.']).
 
 	:- public(shell/2).
@@ -120,5 +120,11 @@
 	:- info(operating_system_type/1, [
 		comment is 'Operating system type. Possible values are "unix", "windows", and "unknown".',
 		argnames is ['Type']]).
+
+	:- public(command_line_arguments/1).
+	:- mode(command_line_arguments(-list(atom)), one).
+	:- info(command_line_arguments/1, [
+		comment is 'Returns a list with the command line arguments that occur after "--".',
+		argnames is ['Arguments']]).
 
 :- end_protocol.

@@ -13,9 +13,9 @@
 	implements(osp)).
 
 	:- info([
-		version is 1.6,
+		version is 1.7,
 		author is 'Paulo Moura',
-		date is 2010/10/28,
+		date is 2010/12/16,
 		comment is 'Simple example of using conditional compilation to implement a portable operating-system interface for selected back-end Prolog compilers.']).
 
 	:- if(current_logtalk_flag(prolog_dialect, swi)).
@@ -84,6 +84,16 @@
 			;	Type = unknown
 			).
 
+		command_line_arguments(Arguments) :-
+			current_prolog_flag(argv, Arguments0),
+			find_arguments(Arguments0, Arguments).
+
+		find_arguments([], []).
+		find_arguments(['--'| Arguments], Arguments) :-
+			!.
+		find_arguments([_| Arguments0], Arguments) :-
+			find_arguments(Arguments0, Arguments).
+
 	:- elif(current_logtalk_flag(prolog_dialect, yap)).
 
 		shell(Command, Status) :-
@@ -147,6 +157,9 @@
 				Type = unix
 			;	Type = unknown
 			).
+
+		command_line_arguments(Arguments) :-
+			current_prolog_flag(argv, Arguments).
 
 	:- elif(current_logtalk_flag(prolog_dialect, xsb)).
 
@@ -224,6 +237,9 @@
 			;	Type = unix
 			).
 
+		command_line_arguments(Arguments) :-
+			throw(not_available(command_line_arguments/1)).
+
 	:- elif(current_logtalk_flag(prolog_dialect, gnu)).
 
 		shell(Command, Status) :-
@@ -288,6 +304,9 @@
 			;	Type = unix
 			).
 
+		command_line_arguments(Arguments) :-
+			argument_list(Arguments).
+
 	:- elif(current_logtalk_flag(prolog_dialect, b)).
 
 		shell(Command, Status) :-
@@ -349,6 +368,9 @@
 				Type = windows
 			;	Type = unix
 			).
+
+		command_line_arguments(Arguments) :-
+			throw(not_available(command_line_arguments/1)).
 
 	:- elif(current_logtalk_flag(prolog_dialect, sicstus)).
 
@@ -412,6 +434,9 @@
 				Type = windows
 			;	Type = unix
 			).
+
+		command_line_arguments(Arguments) :-
+			current_prolog_flag(argv, Arguments).
 
 	:- elif(current_logtalk_flag(prolog_dialect, eclipse)).
 
@@ -482,6 +507,10 @@
 			;	Type = unix
 			).
 
+		command_line_arguments(Arguments) :-
+			argv(all, Arguments0),
+			findall(Argument, (member(Argument0, Arguments0), atom_string(Argument, Argument0)), [_| Arguments]).
+
 	:- elif(current_logtalk_flag(prolog_dialect, ciao)).
 
 		shell(Command, Status) :-
@@ -543,6 +572,9 @@
 
 		operating_system_type(_) :-
 			throw(not_available(operating_system_type/1)).
+
+		command_line_arguments(Arguments) :-
+			throw(not_available(command_line_arguments/1)).
 
 	:- elif(current_logtalk_flag(prolog_dialect, cx)).
 
@@ -608,6 +640,16 @@
 				Type = unix
 			;	Type = unknown
 			).
+
+		command_line_arguments(Arguments) :-
+			os_args(Arguments0),
+			find_arguments(Arguments0, Arguments).
+
+		find_arguments([], []).
+		find_arguments(['--'| Arguments], Arguments) :-
+			!.
+		find_arguments([_| Arguments0], Arguments) :-
+			find_arguments(Arguments0, Arguments).
 
 	:- elif(current_logtalk_flag(prolog_dialect, qp)).
 
@@ -688,6 +730,9 @@
 			Time is Start/1000.
 
 		operating_system_type(unix).
+
+		command_line_arguments(Arguments) :-
+			get_args(Arguments).
 
 	:- else.
 

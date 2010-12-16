@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.42.1 - December ??, 2010
+2.42.1 - December 22, 2010
 
     Added support for new meta-predicate template mode indicators: (/) for a
     predicate indicator, [/] for a list of predicate indicators, and [0] for
@@ -53,6 +53,9 @@ RELEASE NOTES
     Updated the SICStus Prolog, SWI-Prolog, and YAP config files in order to
     override the meta-predicate templates for the consult/1 and load_files/2
     built-in predicates.
+
+    Added an implementation of a command_line_arguments/1 predicate to the
+    "cc" example.
 
     Updated the "problog" example, adding preliminary support for the new
     annotated disjunctions syntax.
