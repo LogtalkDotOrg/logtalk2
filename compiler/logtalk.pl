@@ -10476,6 +10476,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 	Pred =.. [_| PredArgs],
 	Meta =.. [_| MetaArgs],
 	'$lgt_comp_ctx_head'(Ctx, Head),
+	nonvar(Head),
 	functor(Head, HeadFunctor, HeadArity),
 	functor(HeadMeta, HeadFunctor, HeadArity),
 	'$lgt_pp_meta_predicate_'(HeadMeta),
@@ -11564,9 +11565,10 @@ current_logtalk_flag(version, version(2, 42, 1)).
 
 '$lgt_tr_super_call'(Pred, TPred, Ctx) :-		% translation performed at runtime
 	nonvar(Pred),
+	'$lgt_comp_ctx_head'(Ctx, Head),
+	nonvar(Head),
 	functor(Pred, Functor, Arity),
-	functor(Head, Functor, Arity),
-	'$lgt_comp_ctx_head'(Ctx, Head),			% "super" call to the predicate being redefined
+	functor(Head, Functor, Arity),				% "super" call to the predicate being redefined
 	!,
 	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
 		'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _, _),
