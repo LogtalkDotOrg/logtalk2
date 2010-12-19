@@ -16,8 +16,8 @@
 	nth(N, F) :-
 		meta::fold_left(next, 0-[0,1], _, N-[F, _]).
 
-	next(N-[F1, F2], _, N2-[F2, F3]) :-
+	next(N1-[F1, F2], _, N2-[F2, F3]) :-
 		F3 is F1 + F2,
-		N2 is N + 1.
+		N2 is N1 + 1.
 
 :- end_object.

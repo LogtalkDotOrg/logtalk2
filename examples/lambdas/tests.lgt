@@ -131,4 +131,8 @@
 		sigma::sum([X,Y]>>(sigma::sum([W,Z]>>(Z is W), X, 9, Y)), 0, 9, R),
 		R == 330.
 
+	succeeds(lambdas_30) :-
+		meta::fold_left([N1-[F1,F2],_,N2-[F2,F3]]>>(F3 is F1+F2, N2 is N1+1), 0-[0,1], _, 10-[F, _]),
+		F == 55.
+
 :- end_object.

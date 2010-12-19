@@ -57,8 +57,8 @@ RELEASE NOTES
     Added an implementation of a command_line_arguments/1 predicate to the
     "cc" example.
 
-    Updated the "metapredicates" example, showing how to calculate Fibonacci
-    numbers using a fold left meta-predicate.
+    Updated the "lambdas" and "metapredicates" examples, illustrating how to
+    calculate Fibonacci numbers using a fold left meta-predicate.
 
     Updated the "problog" example, adding preliminary support for the new
     annotated disjunctions syntax.
