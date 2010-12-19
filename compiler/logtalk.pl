@@ -9301,9 +9301,10 @@ current_logtalk_flag(version, version(2, 42, 1)).
 '$lgt_tr_body'(Pred, Pred, '$lgt_debugger.goal'(Pred, Pred, ExCtx), Ctx) :-
 	'$lgt_comp_ctx_this'(Ctx, This),
 	This == user,
-	'$lgt_comp_ctx_head'(Ctx, Head),					% make sure that we're not translating
-	functor(Head, Functor, Arity),						% the body of a "user" multifile 
-	\+ '$lgt_pp_directive_'(multifile(Functor/Arity)),	% predicate
+	'$lgt_comp_ctx_head'(Ctx, Head),					% make sure that we're
+	nonvar(Head),										% not translating the
+	functor(Head, Functor, Arity),						% body of a "user"
+	\+ '$lgt_pp_directive_'(multifile(Functor/Arity)),	% multifile predicate
 	!,
  	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
