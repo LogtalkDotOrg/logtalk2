@@ -80,7 +80,7 @@ yes
 yes
 
 
-% use the partition/4 predicate with a predicate defined in the
+% use the partition/4 meta-predicate with a predicate defined in the
 % pseudo-object "user":
 
 | ?- meta::partition(even_integer, [1,2,3,4,5], Included, Excluded).
@@ -90,7 +90,7 @@ Excluded = [1, 3, 5]
 yes
 
 
-% use the fold_left/4 predicate with a predicate defined in the
+% use the fold_left/4 meta-predicate with a predicate defined in the
 % pseudo-object "user":
 
 | ?- meta::fold_left(sum_squares, 0, [1,2,3], Result).
@@ -99,7 +99,7 @@ Result = 34
 yes
 
 
-% use the fold_left/4 and fold_right/4 predicates with the atom_concat/3
+% use the fold_left/4 and fold_right/4 meta-predicates with the atom_concat/3
 % Prolog built-in predicate:
 
 | ?- meta::fold_left(atom_concat, 'PREFIX', [abc,def,ghi], Result).
@@ -113,7 +113,7 @@ Result = abcdefghiSUFIX
 yes
 
 
-% use the fold_left/4 predicate with predicates defined in the object
+% use the fold_left/4 meta-predicate with predicates defined in the object
 % "predicates":
 
 | ?- meta::fold_left(predicates::sum, 0, [1,2,3,4,5], Result).
@@ -132,7 +132,7 @@ Result = (10, 10)
 yes
 
 
-% use the scan_left/4 and scan_right/4 predicates with predicates
+% use the scan_left/4 and scan_right/4 meta-predicates with predicates
 % defined in the object "predicates":
 
 | ?- meta::scan_left(sum_squares, 0, [1,2,3], Result).
@@ -144,7 +144,7 @@ Result = [15, 14, 12, 9, 5]
 yes
 
 
-% use the map/2-3 predicates with some Prolog built-in predicates:
+% use the map/2-3 meta-predicates with some Prolog built-in predicates:
 
 | ?- meta::map(integer, [1,2,3,4,5]).
 
@@ -154,3 +154,32 @@ yes
 
 Codes = [97, 98, 99, 100, 101]
 yes
+
+
+% use the fold_left/4 meta-predicate to calculate Fibonacci numbers:
+
+| ?- fibonacci::nth(10, Fib).
+
+Fib = 55
+yes
+
+| ?- fibonacci::nth(Nth, Fib).
+
+Fib = 0
+Nth = 0 ? ;
+
+Fib = 1
+Nth = 1 ? ;
+
+Fib = 1
+Nth = 2 ? ;
+
+Fib = 2
+Nth = 3 ? ;
+
+Fib = 3
+Nth = 4 ? ;
+
+Fib = 5
+Nth = 5 ? 
+...
