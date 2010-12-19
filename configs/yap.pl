@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: December 13, 2010
+%  last updated: December 18, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -179,6 +179,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 '$lgt_pl_meta_predicate'(hide_predicate(_), hide_predicate(/), predicate).
 '$lgt_pl_meta_predicate'(incore(_), incore(0), predicate).
 '$lgt_pl_meta_predicate'(not(_), not(0), predicate).
+'$lgt_pl_meta_predicate'(on_exception(_, _, _), on_exception(*, 0, 0), predicate).
 '$lgt_pl_meta_predicate'(time_out(_, _, _), time_out(0, *, *), predicate).
 '$lgt_pl_meta_predicate'(when(_, _), when(*, 0), predicate).
 '$lgt_pl_meta_predicate'(setup_call_cleanup(_, _, _), setup_call_cleanup(0, 0, 0), predicate).
@@ -215,6 +216,7 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 '$lgt_pl_meta_predicate'(reconsult(_), reconsult(*), predicate).
 '$lgt_pl_meta_predicate'(use_module(_), use_module(*), predicate).
 '$lgt_pl_meta_predicate'(use_module(_, _), use_module(*, *), predicate).
+'$lgt_pl_meta_predicate'(use_module(_, _, _), use_module(*, *, *), predicate).
 
 
 

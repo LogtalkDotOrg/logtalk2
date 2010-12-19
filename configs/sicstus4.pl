@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: December 13, 2010
+%  last updated: December 18, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -130,6 +130,7 @@ forall(Generate, Test) :-
 '$lgt_pl_meta_predicate'(load_foreign_resource(_), load_foreign_resource(*), predicate).
 '$lgt_pl_meta_predicate'(use_module(_), use_module(*), predicate).
 '$lgt_pl_meta_predicate'(use_module(_, _), use_module(*, *), predicate).
+'$lgt_pl_meta_predicate'(use_module(_, _, _), use_module(*, *, *), predicate).
 
 
 
