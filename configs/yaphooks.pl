@@ -1,14 +1,19 @@
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
 %  Release 2.42.1
-%  
+%
 %  Copyright (c) 1998-2010 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
 %  it under the terms of the "Artistic License 2.0" as published by 
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
+%
+%  integration code for YAP 6.0.2 and later versions to improve
+%  usability when using the YAP profilers
+%
+%  last updated: December 19, 2010
+% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -36,6 +41,7 @@ user:prolog_predicate_name(user:'$lgt_ctg_super_call_other'(_, _, _), '^^/2 (not
 user:prolog_predicate_name(user:'$lgt_ctg_call'(_, _, _), ':/1 (not cached)') :- !.
 
 user:prolog_predicate_name(Goal, Label) :-
+	Goal \= _::_,
 	(	Goal = Module:THead ->
 		Module == user
 	;	Goal = THead
