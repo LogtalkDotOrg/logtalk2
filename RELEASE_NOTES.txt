@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.42.1 - December 22, 2010
 
+    Added support to the Logtalk compiler for detecting and reporting
+    (possibly) missing dynamic/1 predicate directives.
+
     Added support for new meta-predicate template mode indicators: (/) for a
     predicate indicator, [/] for a list of predicate indicators, and [0] for
     a list of goals.

@@ -261,6 +261,7 @@
 :- dynamic('$lgt_pp_calls_predicate_'/4).			% '$lgt_pp_calls_predicate_'(Functor, Arity, TFunctor, TArity)
 :- dynamic('$lgt_pp_non_portable_call_'/2).			% '$lgt_pp_non_portable_call_'(Functor, Arity)
 :- dynamic('$lgt_pp_non_portable_function_'/2).		% '$lgt_pp_non_portable_function_'(Functor, Arity)
+:- dynamic('$lgt_pp_missing_dynamic_predicate_'/2).	% '$lgt_pp_missing_dynamic_predicate_'(Functor, Arity)
 
 :- dynamic('$lgt_pp_defines_non_terminal_'/2).		% '$lgt_pp_defines_non_terminal_'(Functor, Arity)
 :- dynamic('$lgt_pp_calls_non_terminal_'/2).		% '$lgt_pp_calls_non_terminal_'(Functor, Arity)
@@ -6266,6 +6267,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 	retractall('$lgt_pp_calls_predicate_'(_, _, _, _)),
 	retractall('$lgt_pp_non_portable_call_'(_, _)),
 	retractall('$lgt_pp_non_portable_function_'(_, _)),
+	retractall('$lgt_pp_missing_dynamic_predicate_'(_, _)),
 	retractall('$lgt_pp_defines_non_terminal_'(_, _)),
 	retractall('$lgt_pp_calls_non_terminal_'(_, _)),
 	retractall('$lgt_pp_referenced_object_'(_)),
@@ -10055,6 +10057,11 @@ current_logtalk_flag(version, version(2, 42, 1)).
 
 % database handling built-in predicates
 
+'$lgt_tr_body'(abolish(Term), _, _, Ctx) :-
+	'$lgt_comp_ctx_mode'(Ctx, compile),
+	'$lgt_check_dynamic_directive'(Term),
+	fail.
+
 '$lgt_tr_body'(abolish(Term), TCond, DCond, Ctx) :-
 	nonvar(Term),
 	Term = ':'(Module, Pred),
@@ -10079,6 +10086,11 @@ current_logtalk_flag(version, version(2, 42, 1)).
 	),
 	DCond = '$lgt_debugger.goal'(abolish(Pred), TCond, ExCtx).
 
+'$lgt_tr_body'(assert(Term), _, _, Ctx) :-
+	'$lgt_comp_ctx_mode'(Ctx, compile),
+	'$lgt_check_dynamic_directive'(Term),
+	fail.
+
 '$lgt_tr_body'(assert(Term), TCond, DCond, Ctx) :-
 	!,
 	(	'$lgt_pp_non_portable_call_'(assert, 1) ->
@@ -10086,6 +10098,11 @@ current_logtalk_flag(version, version(2, 42, 1)).
 	;	assertz('$lgt_pp_non_portable_call_'(assert, 1))
 	),
 	'$lgt_tr_body'(assertz(Term), TCond, DCond, Ctx).
+
+'$lgt_tr_body'(asserta(Term), _, _, Ctx) :-
+	'$lgt_comp_ctx_mode'(Ctx, compile),
+	'$lgt_check_dynamic_directive'(Term),
+	fail.
 
 '$lgt_tr_body'(asserta(Term), TCond, DCond, Ctx) :-
 	nonvar(Term),
@@ -10120,6 +10137,11 @@ current_logtalk_flag(version, version(2, 42, 1)).
 	),
 	DCond = '$lgt_debugger.goal'(asserta(Pred), TCond, ExCtx).
 
+'$lgt_tr_body'(assertz(Term), _, _, Ctx) :-
+	'$lgt_comp_ctx_mode'(Ctx, compile),
+	'$lgt_check_dynamic_directive'(Term),
+	fail.
+
 '$lgt_tr_body'(assertz(Term), TCond, DCond, Ctx) :-
 	nonvar(Term),
 	Term = ':'(Module, Pred),
@@ -10153,6 +10175,11 @@ current_logtalk_flag(version, version(2, 42, 1)).
 	),
 	DCond = '$lgt_debugger.goal'(assertz(Pred), TCond, ExCtx).
 
+'$lgt_tr_body'(clause(Term, _), _, _, Ctx) :-
+	'$lgt_comp_ctx_mode'(Ctx, compile),
+	'$lgt_check_dynamic_directive'(Term),
+	fail.
+
 '$lgt_tr_body'(clause(Term, Body), TCond, DCond, Ctx) :-
 	nonvar(Term),
 	Term = ':'(Module, Head),
@@ -10179,6 +10206,11 @@ current_logtalk_flag(version, version(2, 42, 1)).
 		)
 	),
 	DCond = '$lgt_debugger.goal'(clause(Head, Body), TCond, ExCtx).
+
+'$lgt_tr_body'(retract(Term), _, _, Ctx) :-
+	'$lgt_comp_ctx_mode'(Ctx, compile),
+	'$lgt_check_dynamic_directive'(Term),
+	fail.
 
 '$lgt_tr_body'(retract(Term), TCond, DCond, Ctx) :-
 	nonvar(Term),
@@ -10214,6 +10246,11 @@ current_logtalk_flag(version, version(2, 42, 1)).
 		)
 	),
 	DCond = '$lgt_debugger.goal'(retract(Pred), TCond, ExCtx).
+
+'$lgt_tr_body'(retractall(Term), _, _, Ctx) :-
+	'$lgt_comp_ctx_mode'(Ctx, compile),
+	'$lgt_check_dynamic_directive'(Term),
+	fail.
 
 '$lgt_tr_body'(retractall(Term), TCond, DCond, Ctx) :-
 	nonvar(Term),
@@ -11039,6 +11076,49 @@ current_logtalk_flag(version, version(2, 42, 1)).
 
 '$lgt_shared_closure_arg'(PredArg, [_| HeadArgs], [_| HeadMetaArgs], HeadMetaArg) :-
 	'$lgt_shared_closure_arg'(PredArg, HeadArgs, HeadMetaArgs, HeadMetaArg).
+
+
+
+% '$lgt_check_dynamic_directive'(@term)
+%
+% checks for a dynamic directive for a predicate that is an argument to the
+% database built-in methods
+
+'$lgt_check_dynamic_directive'(Term) :-						% runtime argument
+	var(Term),
+	!.
+
+'$lgt_check_dynamic_directive'((':'(Module, Head) :- _)) :-	% module explicit qualification
+	!,
+	(	'$lgt_pp_module_'(Module) ->						% same module we're compiling
+		'$lgt_check_dynamic_directive'(Head)
+	;	true
+	).
+
+'$lgt_check_dynamic_directive'(':'(Module, Term)) :-		% module explicit qualification
+	!,
+	(	'$lgt_pp_module_'(Module) ->						% same module we're compiling
+		'$lgt_check_dynamic_directive'(Term)
+	;	true
+	).
+
+'$lgt_check_dynamic_directive'((Head:-_)) :-				% clause rule
+	!,
+	'$lgt_check_dynamic_directive'(Head).
+
+'$lgt_check_dynamic_directive'(Term) :-						% predicate indicator
+	'$lgt_valid_predicate_indicator'(Term, Functor, Arity),
+	!,
+	\+ '$lgt_pp_dynamic_'(Functor, Arity),					% dynamic directive not (yet) found
+	\+ '$lgt_pp_missing_dynamic_predicate_'(Functor, Arity),
+	assertz('$lgt_pp_missing_dynamic_predicate_'(Functor, Arity)).
+
+'$lgt_check_dynamic_directive'(Head) :-						% clause fact
+	nonvar(Head),
+	functor(Head, Functor, Arity),
+	\+ '$lgt_pp_dynamic_'(Functor, Arity),					% dynamic directive not (yet) found
+	\+ '$lgt_pp_missing_dynamic_predicate_'(Functor, Arity),
+	assertz('$lgt_pp_missing_dynamic_predicate_'(Functor, Arity)).
 
 
 
@@ -12405,6 +12485,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 	;	Type == protocol ->
 		'$lgt_report_unknown_entities'(Type, Entity)
 	;	'$lgt_report_undefined_predicate_calls'(Type, Entity),
+		'$lgt_report_missing_dynamic_directives'(Type, Entity),
 		'$lgt_report_misspelt_calls'(Type, Entity),
 		'$lgt_report_non_portable_calls'(Type, Entity),
 		'$lgt_report_non_portable_functions'(Type, Entity),
@@ -14134,6 +14215,37 @@ current_logtalk_flag(version, version(2, 42, 1)).
 		;	'$lgt_pp_private_'(Functor, ExtArity)
 	)),
 	'$lgt_pp_calls_predicate_'(Functor, ExtArity, TFunctor, TArity).
+
+
+
+% reports possibly missing dynamic directives
+
+'$lgt_report_missing_dynamic_directives'(Type, Entity) :-
+	(   setof(Pred, '$lgt_missing_dynamic_predicate'(Pred), Preds) ->
+		'$lgt_report_warning_in_new_line',
+		'$lgt_inc_compile_warnings_counter',
+		(	Preds = [_] ->
+			(	('$lgt_pp_value_annotation_'(_, _, _, _); '$lgt_pp_goal_annotation_'(_, _, _, _); \+ '$lgt_pp_module_'(_)) ->
+				write('%         WARNING!  Possibly missing dynamic/1 directive for the predicate: ')
+			;	write('%         WARNING!  Missing dynamic/1 directive for the predicate: ')
+			)
+		;	(	('$lgt_pp_value_annotation_'(_, _, _, _); '$lgt_pp_goal_annotation_'(_, _, _, _); \+ '$lgt_pp_module_'(_)) ->
+				write('%         WARNING!  Possibly missing dynamic/1 directives for the predicates: ')
+			;	write('%         WARNING!  Missing dynamic/1 directives for the predicates: ')
+			)
+		),
+		'$lgt_writeq_list'(Preds), nl,
+		(	'$lgt_compiler_flag'(report, warnings) ->
+			'$lgt_report_warning_entity_context'(Type, Entity)
+		;	true
+		)
+	;	true
+	).
+
+
+'$lgt_missing_dynamic_predicate'(Functor/Arity) :-
+	'$lgt_pp_missing_dynamic_predicate_'(Functor, Arity),
+	\+ '$lgt_pp_dynamic_'(Functor, Arity).		% check for out-of-place dynamic/1 directive
 
 
 
