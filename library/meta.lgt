@@ -3,8 +3,8 @@
 	implements(metap)).
 
 	:- info([
-		version is 2.6,
-		date is 2009/11/27,
+		version is 2.7,
+		date is 2010/12/20,
 		author is 'Paulo Moura',
 		comment is 'Some useful meta-predicates.']).
 
@@ -227,5 +227,16 @@
 	:- meta_predicate(map(7, *, *, *, *, *, *, *)).
 	map(Closure, As, Bs, Cs, Ds, Es, Fs, Gs) :-
 		map_(As, Closure, Bs, Cs, Ds, Es, Fs, Gs).
+
+	:- meta_predicate(mapreduce_(*, 2, 3, *, *)).
+	mapreduce_([], _, _, Result, Result).
+	mapreduce_([Arg| Args], Map, Reduce, Acc, Result) :-
+		call(Map, Arg, Arg2),
+		call(Reduce, Acc, Arg2, Acc2),
+		mapreduce_(Args, Map, Reduce, Acc2, Result).
+
+	:- meta_predicate(mapreduce(2, 3, *, *, *)).
+	mapreduce(Map, Reduce, Acc, List, Result) :-
+		mapreduce_(List, Map, Reduce, Acc, Result).
 
 :- end_object.

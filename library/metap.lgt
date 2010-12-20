@@ -2,8 +2,8 @@
 :- protocol(metap).
 
 	:- info([
-		version is 3.31,
-		date is 2009/11/28,
+		version is 3.4,
+		date is 2010/12/20,
 		author is 'Paulo Moura',
 		comment is 'Useful meta-predicates protocol.']).
 
@@ -124,5 +124,12 @@
 	:- info(map/8, [
 		comment is 'List mapping predicate taken arguments from seven lists of elements.',
 		argnames is ['Closure', 'List1', 'List2', 'List3', 'List4', 'List5', 'List6', 'List7']]).
+
+	:- public(mapreduce/5).
+	:- meta_predicate(mapreduce(2, 3, *, *, *)).
+	:- mode(mapreduce(+callable, +callable, +term, ?list, ?term), zero_or_more).
+	:- info(map/5, [
+		comment is 'List mapping predicate taken arguments from four lists of elements.',
+		argnames is ['Map', 'Reduce', 'Accumulator', 'List', 'Result']]).
 
 :- end_protocol.
