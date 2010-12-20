@@ -9141,6 +9141,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 % definition of event handlers without reference to the "monitoring" built-in protocol
 
 '$lgt_tr_head'(Head, _, _) :-
+	\+ '$lgt_pp_module_'(_),
 	functor(Head, Functor, 3),
 	once((Functor == before; Functor == after)),
 	\+ '$lgt_pp_implemented_protocol_'(monitoring, _, _, _),
@@ -9157,6 +9158,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 % definition of term and goal expansion predicates without reference to the "expanding" built-in protocol
 
 '$lgt_tr_head'(Head, _, _) :-
+	\+ '$lgt_pp_module_'(_),
 	functor(Head, Functor, 2),
 	once((Functor == term_expansion; Functor == goal_expansion)),
 	\+ '$lgt_pp_implemented_protocol_'(expanding, _, _, _),
