@@ -125,11 +125,11 @@
 		comment is 'List mapping predicate taken arguments from seven lists of elements.',
 		argnames is ['Closure', 'List1', 'List2', 'List3', 'List4', 'List5', 'List6', 'List7']]).
 
-	:- public(mapreduce/5).
-	:- meta_predicate(mapreduce(2, 3, *, *, *)).
-	:- mode(mapreduce(+callable, +callable, +term, ?list, ?term), zero_or_more).
+	:- public(map_reduce/5).
+	:- meta_predicate(map_reduce(2, 3, *, *, *)).
+	:- mode(map_reduce(+callable, +callable, +term, ?list, ?term), zero_or_more).
 	:- info(map/5, [
-		comment is 'List mapping predicate taken arguments from four lists of elements.',
+		comment is 'Map a list and apply a fold left (reduce) to the resulting list.',
 		argnames is ['Map', 'Reduce', 'Accumulator', 'List', 'Result']]).
 
 :- end_protocol.

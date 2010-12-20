@@ -54,7 +54,7 @@ RELEASE NOTES
     override the meta-predicate templates for the consult/1 and load_files/2
     built-in predicates.
 
-    Added an implementation of a mapreduce/5 meta-predicate to the library
+    Added an implementation of a map_reduce/5 meta-predicate to the library
     object "meta".
 
     Added an implementation of a command_line_arguments/1 predicate to the

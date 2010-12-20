@@ -228,15 +228,15 @@
 	map(Closure, As, Bs, Cs, Ds, Es, Fs, Gs) :-
 		map_(As, Closure, Bs, Cs, Ds, Es, Fs, Gs).
 
-	:- meta_predicate(mapreduce_(*, 2, 3, *, *)).
-	mapreduce_([], _, _, Result, Result).
-	mapreduce_([Arg| Args], Map, Reduce, Acc, Result) :-
+	:- meta_predicate(map_reduce_(*, 2, 3, *, *)).
+	map_reduce_([], _, _, Result, Result).
+	map_reduce_([Arg| Args], Map, Reduce, Acc, Result) :-
 		call(Map, Arg, Arg2),
 		call(Reduce, Acc, Arg2, Acc2),
-		mapreduce_(Args, Map, Reduce, Acc2, Result).
+		map_reduce_(Args, Map, Reduce, Acc2, Result).
 
-	:- meta_predicate(mapreduce(2, 3, *, *, *)).
-	mapreduce(Map, Reduce, Acc, List, Result) :-
-		mapreduce_(List, Map, Reduce, Acc, Result).
+	:- meta_predicate(map_reduce(2, 3, *, *, *)).
+	map_reduce(Map, Reduce, Acc, List, Result) :-
+		map_reduce_(List, Map, Reduce, Acc, Result).
 
 :- end_object.
