@@ -61,7 +61,9 @@ RELEASE NOTES
     "cc" example.
 
     Updated the "lambdas" and "metapredicates" examples, illustrating how to
-    calculate Fibonacci numbers using a fold left meta-predicate.
+    calculate Fibonacci numbers using a fold left meta-predicate. Updated the
+    "metapredicates" example with an usage example of the map_reduce/5 meta-
+    predicate.
 
     Updated the "problog" example, adding preliminary support for the new
     annotated disjunctions syntax.

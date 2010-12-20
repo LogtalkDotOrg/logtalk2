@@ -183,3 +183,20 @@ Nth = 4 ? ;
 Fib = 5
 Nth = 5 ? 
 ...
+
+
+% use the map_reduce/5 meta-predicate to give bad news to a company employees:
+
+| ?- company::(company(C1), get_salary(company(C1),S1)).
+
+C1 = [topdept(name('Human Resources'),manager(name('Lisa'),salary(123456)),[]),topdept(name('Development'),manager(name('Anders'),salary(43210)),[subdept(name('Visual Basic'),manager(name('Amanda'),salary(8888)),[]),subdept(name('Visual C#'),manager(name('Erik'),salary(4444)),[])])]
+S1 = 179998
+yes
+
+
+| ?- company::(company(C1), cut_salary(company(C1), C2), get_salary(C2, S2)).
+
+C1 = [topdept(name('Human Resources'),manager(name('Lisa'),salary(123456)),[]),topdept(name('Development'),manager(name('Anders'),salary(43210)),[subdept(name('Visual Basic'),manager(name('Amanda'),salary(8888)),[]),subdept(name('Visual C#'),manager(name('Erik'),salary(4444)),[])])]
+C2 = company([topdept(name('Human Resources'),manager(name('Lisa'),salary(61728)),[]),topdept(name('Development'),manager(name('Anders'),salary(21605)),[subdept(name('Visual Basic'),manager(name('Amanda'),salary(4444)),[]),subdept(name('Visual C#'),manager(name('Erik'),salary(2222)),[])])])
+S2 = 89999
+yes

@@ -159,4 +159,12 @@
 		fibonacci::nth(10, Nth),
 		Nth == 55.
 
+	test(metapredicates_18) :-
+		company::(company(C1), get_salary(company(C1), S1)),
+		S1 == 179998.
+
+	test(metapredicates_19) :-
+		company::(company(C1), cut_salary(company(C1), C2), get_salary(C2, S2)),
+		S2 == 89999.
+
 :- end_object.

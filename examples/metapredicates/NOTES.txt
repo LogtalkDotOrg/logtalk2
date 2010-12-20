@@ -17,6 +17,13 @@ body of the predicate definition.
 
 This example defines the following objects:
 
+    company
+        usage example of the map_reduce/5 meta-predicate
+
+    fibonacci
+        example of calculating Fibonacci numbers using the fold_left/4
+        meta-predicate
+
 	sort(_)
 		this is a parametric object containing a method that implements the
 		quicksort sorting algorithm; the parameter is interpreted as the type
