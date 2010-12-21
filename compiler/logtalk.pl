@@ -192,111 +192,113 @@
 
 
 
-:- dynamic('$lgt_pp_file_compiler_flag_'/2).		% '$lgt_pp_file_compiler_flag_'(Option, Value)
-:- dynamic('$lgt_pp_entity_compiler_flag_'/2).		% '$lgt_pp_entity_compiler_flag_'(Option, Value)
+:- dynamic('$lgt_pp_file_compiler_flag_'/2).				% '$lgt_pp_file_compiler_flag_'(Option, Value)
+:- dynamic('$lgt_pp_entity_compiler_flag_'/2).				% '$lgt_pp_entity_compiler_flag_'(Option, Value)
 
-:- dynamic('$lgt_pp_dcl_'/1).						% '$lgt_pp_dcl_'(Clause)
-:- dynamic('$lgt_pp_def_'/1).						% '$lgt_pp_def_'(Clause)
-:- dynamic('$lgt_pp_final_def_'/1).					% '$lgt_pp_final_def_'(Clause)
-:- dynamic('$lgt_pp_ddef_'/1).						% '$lgt_pp_ddef_'(Clause)
-:- dynamic('$lgt_pp_final_ddef_'/1).				% '$lgt_pp_final_ddef_'(Clause)
-:- dynamic('$lgt_pp_super_'/1).						% '$lgt_pp_super_'(Clause)
+:- dynamic('$lgt_pp_dcl_'/1).								% '$lgt_pp_dcl_'(Clause)
+:- dynamic('$lgt_pp_def_'/1).								% '$lgt_pp_def_'(Clause)
+:- dynamic('$lgt_pp_final_def_'/1).							% '$lgt_pp_final_def_'(Clause)
+:- dynamic('$lgt_pp_ddef_'/1).								% '$lgt_pp_ddef_'(Clause)
+:- dynamic('$lgt_pp_final_ddef_'/1).						% '$lgt_pp_final_ddef_'(Clause)
+:- dynamic('$lgt_pp_super_'/1).								% '$lgt_pp_super_'(Clause)
 
-:- dynamic('$lgt_pp_synchronized_'/2).				% '$lgt_pp_synchronized_'(Pred, Mutex)
-:- dynamic('$lgt_pp_predicate_mutex_counter_'/1).	% '$lgt_pp_predicate_mutex_counter_'(Count)
-:- dynamic('$lgt_pp_dynamic_'/2).					% '$lgt_pp_dynamic_'(Functor, Arity)
-:- dynamic('$lgt_pp_discontiguous_'/2).				% '$lgt_pp_discontiguous_'(Functor, Arity)
-:- dynamic('$lgt_pp_mode_'/2).						% '$lgt_pp_mode_'(Mode, Determinism)
-:- dynamic('$lgt_pp_public_'/2).					% '$lgt_pp_public_'(Functor, Arity)
-:- dynamic('$lgt_pp_protected_'/2).					% '$lgt_pp_protected_'(Functor, Arity)
-:- dynamic('$lgt_pp_private_'/2).					% '$lgt_pp_private_'(Functor, Arity)
-:- dynamic('$lgt_pp_meta_predicate_'/1).			% '$lgt_pp_meta_predicate_'(Pred)
-:- dynamic('$lgt_pp_value_annotation_'/4).			% '$lgt_pp_value_annotation_'(Annotation, Functor, Value, Goal)
-:- dynamic('$lgt_pp_goal_annotation_'/4).			% '$lgt_pp_goal_annotation_'(Annotation, Functor, LeftGoal, RightGoal)
-:- dynamic('$lgt_pp_predicate_alias_'/3).			% '$lgt_pp_predicate_alias_'(Entity, Pred, Alias)
-:- dynamic('$lgt_pp_non_terminal_'/3).				% '$lgt_pp_non_terminal_'(Functor, Arity, ExtArity)
-:- dynamic('$lgt_pp_multifile_'/2).					% '$lgt_pp_multifile_'(Functor, Arity)
-:- dynamic('$lgt_pp_coinductive_'/2).				% '$lgt_pp_coinductive_'(Pred, CoinductivePred)
-:- dynamic('$lgt_pp_coinductive_flag_'/1).			% '$lgt_pp_coinductive_flag_'(Pred)
+:- dynamic('$lgt_pp_synchronized_'/2).						% '$lgt_pp_synchronized_'(Pred, Mutex)
+:- dynamic('$lgt_pp_predicate_mutex_counter_'/1).			% '$lgt_pp_predicate_mutex_counter_'(Count)
+:- dynamic('$lgt_pp_dynamic_'/2).							% '$lgt_pp_dynamic_'(Functor, Arity)
+:- dynamic('$lgt_pp_discontiguous_'/2).						% '$lgt_pp_discontiguous_'(Functor, Arity)
+:- dynamic('$lgt_pp_mode_'/2).								% '$lgt_pp_mode_'(Mode, Determinism)
+:- dynamic('$lgt_pp_public_'/2).							% '$lgt_pp_public_'(Functor, Arity)
+:- dynamic('$lgt_pp_protected_'/2).							% '$lgt_pp_protected_'(Functor, Arity)
+:- dynamic('$lgt_pp_private_'/2).							% '$lgt_pp_private_'(Functor, Arity)
+:- dynamic('$lgt_pp_meta_predicate_'/1).					% '$lgt_pp_meta_predicate_'(Pred)
+:- dynamic('$lgt_pp_value_annotation_'/4).					% '$lgt_pp_value_annotation_'(Annotation, Functor, Value, Goal)
+:- dynamic('$lgt_pp_goal_annotation_'/4).					% '$lgt_pp_goal_annotation_'(Annotation, Functor, LeftGoal, RightGoal)
+:- dynamic('$lgt_pp_predicate_alias_'/3).					% '$lgt_pp_predicate_alias_'(Entity, Pred, Alias)
+:- dynamic('$lgt_pp_non_terminal_'/3).						% '$lgt_pp_non_terminal_'(Functor, Arity, ExtArity)
+:- dynamic('$lgt_pp_multifile_'/2).							% '$lgt_pp_multifile_'(Functor, Arity)
+:- dynamic('$lgt_pp_coinductive_'/2).						% '$lgt_pp_coinductive_'(Pred, CoinductivePred)
+:- dynamic('$lgt_pp_coinductive_flag_'/1).					% '$lgt_pp_coinductive_flag_'(Pred)
 
-:- dynamic('$lgt_pp_object_'/11).					% '$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags)
-:- dynamic('$lgt_pp_category_'/6).					% '$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags)
-:- dynamic('$lgt_pp_protocol_'/5).					% '$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags)
+:- dynamic('$lgt_pp_object_'/11).							% '$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags)
+:- dynamic('$lgt_pp_category_'/6).							% '$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags)
+:- dynamic('$lgt_pp_protocol_'/5).							% '$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags)
 
-:- dynamic('$lgt_pp_module_'/1).					% '$lgt_pp_module_'(Module)
+:- dynamic('$lgt_pp_module_'/1).							% '$lgt_pp_module_'(Module)
 
-:- dynamic('$lgt_pp_uses_'/1).						% '$lgt_pp_uses_'(Obj)
-:- dynamic('$lgt_pp_uses_predicate_'/3).			% '$lgt_pp_uses_predicate_'(Obj, Predicate, Alias)
-:- dynamic('$lgt_pp_uses_non_terminal_'/3).			% '$lgt_pp_uses_non_terminal_'(Obj, NonTerminal, Alias)
-:- dynamic('$lgt_pp_use_module_predicate_'/3).		% '$lgt_pp_use_module_predicate_'(Module, Predicate, Alias)
-:- dynamic('$lgt_pp_use_module_non_terminal_'/3).	% '$lgt_pp_use_module_non_terminal_'(Module, NonTerminal, Alias)
-:- dynamic('$lgt_pp_calls_'/1).						% '$lgt_pp_calls_'(Entity)
-:- dynamic('$lgt_pp_info_'/1).						% '$lgt_pp_info_'(List)
-:- dynamic('$lgt_pp_info_'/2).						% '$lgt_pp_info_'(Functor/Arity, List) or '$lgt_pp_info_'(Functor//Args, List)
+:- dynamic('$lgt_pp_uses_'/1).								% '$lgt_pp_uses_'(Obj)
+:- dynamic('$lgt_pp_uses_predicate_'/3).					% '$lgt_pp_uses_predicate_'(Obj, Predicate, Alias)
+:- dynamic('$lgt_pp_uses_non_terminal_'/3).					% '$lgt_pp_uses_non_terminal_'(Obj, NonTerminal, Alias)
+:- dynamic('$lgt_pp_use_module_predicate_'/3).				% '$lgt_pp_use_module_predicate_'(Module, Predicate, Alias)
+:- dynamic('$lgt_pp_use_module_non_terminal_'/3).			% '$lgt_pp_use_module_non_terminal_'(Module, NonTerminal, Alias)
+:- dynamic('$lgt_pp_calls_'/1).								% '$lgt_pp_calls_'(Entity)
+:- dynamic('$lgt_pp_info_'/1).								% '$lgt_pp_info_'(List)
+:- dynamic('$lgt_pp_info_'/2).								% '$lgt_pp_info_'(Functor/Arity, List) or '$lgt_pp_info_'(Functor//Args, List)
 
-:- dynamic('$lgt_pp_implemented_protocol_'/4).		% '$lgt_pp_implemented_protocol_'(Ptc, Prefix, Dcl, Scope)
-:- dynamic('$lgt_pp_imported_category_'/5).			% '$lgt_pp_imported_category_'(Ctg, Prefix, Dcl, Def, Scope)
-:- dynamic('$lgt_pp_extended_object_'/10).			% '$lgt_pp_extended_object_'(Parent, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)
-:- dynamic('$lgt_pp_instantiated_class_'/10).		% '$lgt_pp_instantiated_class_'(Class, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)
-:- dynamic('$lgt_pp_specialized_class_'/10).		% '$lgt_pp_specialized_class_'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)
-:- dynamic('$lgt_pp_extended_protocol_'/4).			% '$lgt_pp_extended_protocol_'(Ptc, Prefix, Dcl, Scope)
-:- dynamic('$lgt_pp_extended_category_'/5).			% '$lgt_pp_extended_category_'(Ctg, Prefix, Dcl, Def, Scope)
-:- dynamic('$lgt_pp_complemented_object_'/1).		% '$lgt_pp_complemented_object_'(Obj)
+:- dynamic('$lgt_pp_implemented_protocol_'/4).				% '$lgt_pp_implemented_protocol_'(Ptc, Prefix, Dcl, Scope)
+:- dynamic('$lgt_pp_imported_category_'/5).					% '$lgt_pp_imported_category_'(Ctg, Prefix, Dcl, Def, Scope)
+:- dynamic('$lgt_pp_extended_object_'/10).					% '$lgt_pp_extended_object_'(Parent, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)
+:- dynamic('$lgt_pp_instantiated_class_'/10).				% '$lgt_pp_instantiated_class_'(Class, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)
+:- dynamic('$lgt_pp_specialized_class_'/10).				% '$lgt_pp_specialized_class_'(Superclass, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Scope)
+:- dynamic('$lgt_pp_extended_protocol_'/4).					% '$lgt_pp_extended_protocol_'(Ptc, Prefix, Dcl, Scope)
+:- dynamic('$lgt_pp_extended_category_'/5).					% '$lgt_pp_extended_category_'(Ctg, Prefix, Dcl, Def, Scope)
+:- dynamic('$lgt_pp_complemented_object_'/1).				% '$lgt_pp_complemented_object_'(Obj)
 
-:- dynamic('$lgt_pp_file_init_'/1).					% '$lgt_pp_file_init_'(Goal)	
-:- dynamic('$lgt_pp_entity_init_'/3).				% '$lgt_pp_entity_init_'(Type, Entity, Goal)
+:- dynamic('$lgt_pp_file_init_'/1).							% '$lgt_pp_file_init_'(Goal)	
+:- dynamic('$lgt_pp_entity_init_'/3).						% '$lgt_pp_entity_init_'(Type, Entity, Goal)
 
-:- dynamic('$lgt_pp_entity_init_'/1).				% '$lgt_pp_entity_init_'(Goal)
-:- dynamic('$lgt_pp_final_entity_init_'/1).			% '$lgt_pp_final_entity_init_'(Goal)
+:- dynamic('$lgt_pp_entity_init_'/1).						% '$lgt_pp_entity_init_'(Goal)
+:- dynamic('$lgt_pp_final_entity_init_'/1).					% '$lgt_pp_final_entity_init_'(Goal)
 
-:- dynamic('$lgt_pp_redefined_built_in_'/3).		% '$lgt_pp_redefined_built_in_'(Head, ExCtx, THead)
+:- dynamic('$lgt_pp_redefined_built_in_'/3).				% '$lgt_pp_redefined_built_in_'(Head, ExCtx, THead)
 
-:- dynamic('$lgt_pp_directive_'/1).					% '$lgt_pp_directive_'(Dir)
-:- dynamic('$lgt_pp_prolog_term_'/1).				% '$lgt_pp_prolog_term_'(Clause)
-:- dynamic('$lgt_pp_relation_clause_'/1).			% '$lgt_pp_relation_clause_'(Clause)
-:- dynamic('$lgt_pp_entity_clause_'/1).				% '$lgt_pp_entity_clause_'(Clause)
-:- dynamic('$lgt_pp_final_entity_clause_'/1).		% '$lgt_pp_final_entity_clause_'(Clause)
+:- dynamic('$lgt_pp_directive_'/1).							% '$lgt_pp_directive_'(Dir)
+:- dynamic('$lgt_pp_prolog_term_'/1).						% '$lgt_pp_prolog_term_'(Clause)
+:- dynamic('$lgt_pp_relation_clause_'/1).					% '$lgt_pp_relation_clause_'(Clause)
+:- dynamic('$lgt_pp_entity_clause_'/1).						% '$lgt_pp_entity_clause_'(Clause)
+:- dynamic('$lgt_pp_final_entity_clause_'/1).				% '$lgt_pp_final_entity_clause_'(Clause)
 
-:- dynamic('$lgt_pp_defines_predicate_'/2).			% '$lgt_pp_defines_predicate_'(Functor, Arity)
-:- dynamic('$lgt_pp_calls_predicate_'/4).			% '$lgt_pp_calls_predicate_'(Functor, Arity, TFunctor, TArity)
-:- dynamic('$lgt_pp_non_portable_call_'/2).			% '$lgt_pp_non_portable_call_'(Functor, Arity)
-:- dynamic('$lgt_pp_non_portable_function_'/2).		% '$lgt_pp_non_portable_function_'(Functor, Arity)
-:- dynamic('$lgt_pp_missing_dynamic_predicate_'/2).	% '$lgt_pp_missing_dynamic_predicate_'(Functor, Arity)
+:- dynamic('$lgt_pp_defines_predicate_'/2).					% '$lgt_pp_defines_predicate_'(Functor, Arity)
+:- dynamic('$lgt_pp_calls_predicate_'/4).					% '$lgt_pp_calls_predicate_'(Functor, Arity, TFunctor, TArity)
+:- dynamic('$lgt_pp_non_portable_call_'/2).					% '$lgt_pp_non_portable_call_'(Functor, Arity)
+:- dynamic('$lgt_pp_non_portable_function_'/2).				% '$lgt_pp_non_portable_function_'(Functor, Arity)
+:- dynamic('$lgt_pp_missing_dynamic_directive_'/2).			% '$lgt_pp_missing_dynamic_directive_'(Functor, Arity)
+:- dynamic('$lgt_pp_missing_discontiguous_directive_'/2).	% '$lgt_pp_missing_discontiguous_directive_'(Functor, Arity)
+:- dynamic('$lgt_pp_previous_predicate_'/2).				% '$lgt_pp_previous_predicate_'(Functor, Arity)
 
-:- dynamic('$lgt_pp_defines_non_terminal_'/2).		% '$lgt_pp_defines_non_terminal_'(Functor, Arity)
-:- dynamic('$lgt_pp_calls_non_terminal_'/2).		% '$lgt_pp_calls_non_terminal_'(Functor, Arity)
+:- dynamic('$lgt_pp_defines_non_terminal_'/2).				% '$lgt_pp_defines_non_terminal_'(Functor, Arity)
+:- dynamic('$lgt_pp_calls_non_terminal_'/2).				% '$lgt_pp_calls_non_terminal_'(Functor, Arity)
 
-:- dynamic('$lgt_pp_referenced_object_'/1).			% '$lgt_pp_referenced_object_'(Object)
-:- dynamic('$lgt_pp_referenced_protocol_'/1).		% '$lgt_pp_referenced_protocol_'(Protocol)
-:- dynamic('$lgt_pp_referenced_category_'/1).		% '$lgt_pp_referenced_category_'(Category)
+:- dynamic('$lgt_pp_referenced_object_'/1).					% '$lgt_pp_referenced_object_'(Object)
+:- dynamic('$lgt_pp_referenced_protocol_'/1).				% '$lgt_pp_referenced_protocol_'(Protocol)
+:- dynamic('$lgt_pp_referenced_category_'/1).				% '$lgt_pp_referenced_category_'(Category)
 
-:- dynamic('$lgt_pp_global_op_'/3).					% '$lgt_pp_global_op_'(Priority, Specifier, Operator)
-:- dynamic('$lgt_pp_file_op_'/3).					% '$lgt_pp_file_op_'(Priority, Specifier, Operator)
-:- dynamic('$lgt_pp_entity_op_'/3).					% '$lgt_pp_entity_op_'(Priority, Specifier, Operator)
+:- dynamic('$lgt_pp_global_op_'/3).							% '$lgt_pp_global_op_'(Priority, Specifier, Operator)
+:- dynamic('$lgt_pp_file_op_'/3).							% '$lgt_pp_file_op_'(Priority, Specifier, Operator)
+:- dynamic('$lgt_pp_entity_op_'/3).							% '$lgt_pp_entity_op_'(Priority, Specifier, Operator)
 
-:- dynamic('$lgt_pp_warnings_top_argument_'/1).		% '$lgt_pp_warnings_top_argument_'(Term)
-:- dynamic('$lgt_pp_comp_warnings_counter_'/1).		% '$lgt_pp_comp_warnings_counter_'(Counter)
-:- dynamic('$lgt_pp_load_warnings_counter_'/1).		% '$lgt_pp_load_warnings_counter_'(Counter)
-:- dynamic('$lgt_pp_entity_warnings_flag_'/0).		% '$lgt_pp_entity_warnings_flag_'
-:- dynamic('$lgt_pp_load_warnings_flag_'/0).		% '$lgt_pp_load_warnings_flag_'
+:- dynamic('$lgt_pp_warnings_top_argument_'/1).				% '$lgt_pp_warnings_top_argument_'(Term)
+:- dynamic('$lgt_pp_comp_warnings_counter_'/1).				% '$lgt_pp_comp_warnings_counter_'(Counter)
+:- dynamic('$lgt_pp_load_warnings_counter_'/1).				% '$lgt_pp_load_warnings_counter_'(Counter)
+:- dynamic('$lgt_pp_entity_warnings_flag_'/0).				% '$lgt_pp_entity_warnings_flag_'
+:- dynamic('$lgt_pp_load_warnings_flag_'/0).				% '$lgt_pp_load_warnings_flag_'
 
-:- dynamic('$lgt_pp_hook_term_expansion_'/2).		% '$lgt_pp_hook_term_expansion_'(Term, Terms)
-:- dynamic('$lgt_pp_hook_goal_expansion_'/2).		% '$lgt_pp_hook_goal_expansion_'(Goal, EGoal)
+:- dynamic('$lgt_pp_hook_term_expansion_'/2).				% '$lgt_pp_hook_term_expansion_'(Term, Terms)
+:- dynamic('$lgt_pp_hook_goal_expansion_'/2).				% '$lgt_pp_hook_goal_expansion_'(Goal, EGoal)
 
-:- dynamic('$lgt_pp_threaded_'/0).					% '$lgt_pp_threaded_'
-:- dynamic('$lgt_pp_synchronized_'/0).				% '$lgt_pp_synchronized_'
+:- dynamic('$lgt_pp_threaded_'/0).							% '$lgt_pp_threaded_'
+:- dynamic('$lgt_pp_synchronized_'/0).						% '$lgt_pp_synchronized_'
 
-:- dynamic('$lgt_pp_file_encoding_'/2).				% '$lgt_pp_file_encoding_'(LogtalkEncoding, PrologEncoding)
-:- dynamic('$lgt_pp_file_bom_'/1).					% '$lgt_pp_file_bom_'(BOM)
-:- dynamic('$lgt_pp_file_path_'/2).					% '$lgt_pp_file_path_'(File, Path)
+:- dynamic('$lgt_pp_file_encoding_'/2).						% '$lgt_pp_file_encoding_'(LogtalkEncoding, PrologEncoding)
+:- dynamic('$lgt_pp_file_bom_'/1).							% '$lgt_pp_file_bom_'(BOM)
+:- dynamic('$lgt_pp_file_path_'/2).							% '$lgt_pp_file_path_'(File, Path)
 
-:- dynamic('$lgt_pp_file_relation_clause_'/1).		% '$lgt_pp_file_relation_clause_'(Clause)
+:- dynamic('$lgt_pp_file_relation_clause_'/1).				% '$lgt_pp_file_relation_clause_'(Clause)
 
-:- dynamic('$lgt_pp_cc_if_found_'/1).				% '$lgt_pp_cc_if_found_'(Goal)
-:- dynamic('$lgt_pp_cc_skipping_'/0).				% '$lgt_pp_cc_skipping_'
-:- dynamic('$lgt_pp_cc_mode_'/1).					% '$lgt_pp_cc_mode_'(Action)
+:- dynamic('$lgt_pp_cc_if_found_'/1).						% '$lgt_pp_cc_if_found_'(Goal)
+:- dynamic('$lgt_pp_cc_skipping_'/0).						% '$lgt_pp_cc_skipping_'
+:- dynamic('$lgt_pp_cc_mode_'/1).							% '$lgt_pp_cc_mode_'(Action)
 
-:- dynamic('$lgt_pp_term_position_'/1).				% '$lgt_pp_term_position_'(Position)
+:- dynamic('$lgt_pp_term_position_'/1).						% '$lgt_pp_term_position_'(Position)
 
 
 
@@ -6267,7 +6269,9 @@ current_logtalk_flag(version, version(2, 42, 1)).
 	retractall('$lgt_pp_calls_predicate_'(_, _, _, _)),
 	retractall('$lgt_pp_non_portable_call_'(_, _)),
 	retractall('$lgt_pp_non_portable_function_'(_, _)),
-	retractall('$lgt_pp_missing_dynamic_predicate_'(_, _)),
+	retractall('$lgt_pp_missing_dynamic_directive_'(_, _)),
+	retractall('$lgt_pp_missing_discontiguous_directive_'(_, _)),
+	retractall('$lgt_pp_previous_predicate_'(_, _)),
 	retractall('$lgt_pp_defines_non_terminal_'(_, _)),
 	retractall('$lgt_pp_calls_non_terminal_'(_, _)),
 	retractall('$lgt_pp_referenced_object_'(_)),
@@ -11116,15 +11120,30 @@ current_logtalk_flag(version, version(2, 42, 1)).
 	'$lgt_valid_predicate_indicator'(Term, Functor, Arity),
 	!,
 	\+ '$lgt_pp_dynamic_'(Functor, Arity),					% dynamic directive not (yet) found
-	\+ '$lgt_pp_missing_dynamic_predicate_'(Functor, Arity),
-	assertz('$lgt_pp_missing_dynamic_predicate_'(Functor, Arity)).
+	\+ '$lgt_pp_missing_dynamic_directive_'(Functor, Arity),
+	assertz('$lgt_pp_missing_dynamic_directive_'(Functor, Arity)).
 
 '$lgt_check_dynamic_directive'(Head) :-						% clause fact
 	nonvar(Head),
 	functor(Head, Functor, Arity),
 	\+ '$lgt_pp_dynamic_'(Functor, Arity),					% dynamic directive not (yet) found
-	\+ '$lgt_pp_missing_dynamic_predicate_'(Functor, Arity),
-	assertz('$lgt_pp_missing_dynamic_predicate_'(Functor, Arity)).
+	\+ '$lgt_pp_missing_dynamic_directive_'(Functor, Arity),
+	assertz('$lgt_pp_missing_dynamic_directive_'(Functor, Arity)).
+
+
+
+% '$lgt_check_discontiguous_directive'(@predicate_indicator)
+%
+% checks for a dynamic directive for a predicate that is an argument to the
+% database built-in methods
+
+'$lgt_check_discontiguous_directive'(Functor, Arity) :-
+	(	'$lgt_pp_discontiguous_'(Functor, Arity) ->
+		true
+	;	'$lgt_pp_missing_discontiguous_directive_'(Functor, Arity) ->
+		true
+	;	assertz('$lgt_pp_missing_discontiguous_directive_'(Functor, Arity))
+	).
 
 
 
@@ -12492,6 +12511,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 		'$lgt_report_unknown_entities'(Type, Entity)
 	;	'$lgt_report_undefined_predicate_calls'(Type, Entity),
 		'$lgt_report_missing_dynamic_directives'(Type, Entity),
+		'$lgt_report_missing_discontiguous_directives'(Type, Entity),
 		'$lgt_report_misspelt_calls'(Type, Entity),
 		'$lgt_report_non_portable_calls'(Type, Entity),
 		'$lgt_report_non_portable_functions'(Type, Entity),
@@ -12749,10 +12769,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 		)
 	;	true
 	),
-	(	'$lgt_pp_defines_predicate_'(Functor, Arity) ->
-		true
-	;	assertz('$lgt_pp_defines_predicate_'(Functor, Arity))
-	).
+	'$lgt_remember_predicate'(Functor, Arity).
 
 
 
@@ -12784,10 +12801,27 @@ current_logtalk_flag(version, version(2, 42, 1)).
 		)
 	;	true
 	),
+	'$lgt_remember_predicate'(Functor, Arity).
+
+
+% is necessary to remember which predicates are defined in orde to deal with 
+% redefinition of built-in predicates and detect missing predicate directives
+
+'$lgt_remember_predicate'(Functor, Arity) :-
 	(	'$lgt_pp_defines_predicate_'(Functor, Arity) ->
-		true
-	;	assertz('$lgt_pp_defines_predicate_'(Functor, Arity))
-	).
+		% not the first clause for the predicate
+		(	'$lgt_pp_previous_predicate_'(PreviousFunctor, PreviousArity),
+			PreviousFunctor/PreviousArity \== Functor/Arity ->
+			% clauses for the predicate are discontiguous
+			'$lgt_check_discontiguous_directive'(Functor, Arity)
+		;	% more clauses for the same predicate
+			true
+		)
+	;	% first clause for this predicate; remember it
+		asserta('$lgt_pp_defines_predicate_'(Functor, Arity))
+	),
+	retractall('$lgt_pp_previous_predicate_'(_, _)),
+	asserta('$lgt_pp_previous_predicate_'(Functor, Arity)).
 
 
 
@@ -14228,7 +14262,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 
 '$lgt_report_missing_dynamic_directives'(Type, Entity) :-
 	(   '$lgt_compiler_flag'(missing_directives, warning),
-		setof(Pred, '$lgt_missing_dynamic_predicate'(Pred), Preds) ->
+		setof(Pred, '$lgt_missing_dynamic_directive'(Pred), Preds) ->
 		'$lgt_report_warning_in_new_line',
 		'$lgt_inc_compile_warnings_counter',
 		(	Preds = [_] ->
@@ -14250,9 +14284,41 @@ current_logtalk_flag(version, version(2, 42, 1)).
 	).
 
 
-'$lgt_missing_dynamic_predicate'(Functor/Arity) :-
-	'$lgt_pp_missing_dynamic_predicate_'(Functor, Arity),
+'$lgt_missing_dynamic_directive'(Functor/Arity) :-
+	'$lgt_pp_missing_dynamic_directive_'(Functor, Arity),
 	\+ '$lgt_pp_dynamic_'(Functor, Arity).		% check for out-of-place dynamic/1 directive
+
+
+
+% reports possibly missing discontiguous directives
+
+'$lgt_report_missing_discontiguous_directives'(Type, Entity) :-
+	(   '$lgt_compiler_flag'(missing_directives, warning),
+		setof(Pred, '$lgt_missing_discontiguous_directive'(Pred), Preds) ->
+		'$lgt_report_warning_in_new_line',
+		'$lgt_inc_compile_warnings_counter',
+		(	Preds = [_] ->
+			(	('$lgt_pp_value_annotation_'(_, _, _, _); '$lgt_pp_goal_annotation_'(_, _, _, _); \+ '$lgt_pp_module_'(_)) ->
+				write('%         WARNING!  Possibly missing discontiguous/1 directive for the predicate: ')
+			;	write('%         WARNING!  Missing discontiguous/1 directive for the predicate: ')
+			)
+		;	(	('$lgt_pp_value_annotation_'(_, _, _, _); '$lgt_pp_goal_annotation_'(_, _, _, _); \+ '$lgt_pp_module_'(_)) ->
+				write('%         WARNING!  Possibly missing discontiguous/1 directives for the predicates: ')
+			;	write('%         WARNING!  Missing discontiguous/1 directives for the predicates: ')
+			)
+		),
+		'$lgt_writeq_list'(Preds), nl,
+		(	'$lgt_compiler_flag'(report, warnings) ->
+			'$lgt_report_warning_entity_context'(Type, Entity)
+		;	true
+		)
+	;	true
+	).
+
+
+'$lgt_missing_discontiguous_directive'(Functor/Arity) :-
+	'$lgt_pp_missing_discontiguous_directive_'(Functor, Arity),
+	\+ '$lgt_pp_discontiguous_'(Functor, Arity).		% check for out-of-place dynamic/1 directive
 
 
 
