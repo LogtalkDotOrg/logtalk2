@@ -11,7 +11,7 @@
 %
 %  configuration file for ALS Prolog 3.1
 %
-%  last updated: October 23, 2010
+%  last updated: December 21, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -240,6 +240,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_default_flag'(plredef, silent).
 '$lgt_default_flag'(portability, silent).
 '$lgt_default_flag'(underscore_variables, singletons).
+'$lgt_default_flag'(missing_directives, warning).
 % optional features compilation flags:
 '$lgt_default_flag'(complements, deny).
 '$lgt_default_flag'(dynamic_declarations, deny).

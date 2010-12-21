@@ -9199,12 +9199,14 @@ current_logtalk_flag(version, version(2, 42, 1)).
 		true
 	;	'$lgt_compiler_flag'(report, off) ->
 		true
-	;	'$lgt_report_warning_in_new_line',
+	;	'$lgt_compiler_flag'(missing_directives, warning) ->
+		'$lgt_report_warning_in_new_line',
 		'$lgt_inc_compile_warnings_counter',
 		write('%         WARNING!  Missing multifile directive for the predicate: '),
 		writeq(user::Functor/Arity), nl,
 		'$lgt_pp_entity'(Type, Entity, _, _, _),
 		'$lgt_report_warning_full_context'(Type, Entity)
+	;	true
 	),
 	'$lgt_comp_ctx'(Ctx, Head, Sender, user, user, _, _, [], ExCtx, _, []),
 	'$lgt_exec_ctx'(ExCtx, Sender, user, user, [], []).
@@ -9223,12 +9225,14 @@ current_logtalk_flag(version, version(2, 42, 1)).
 		true
 	;	'$lgt_compiler_flag'(report, off) ->
 		true
-	;	'$lgt_report_warning_in_new_line',
+	;	'$lgt_compiler_flag'(missing_directives, warning) ->
+		'$lgt_report_warning_in_new_line',
 		'$lgt_inc_compile_warnings_counter',
 		write('%         WARNING!  Missing multifile directive for the predicate: '),
 		writeq(Other::Functor/Arity), nl,
 		'$lgt_pp_entity'(Type, Entity, _, _, _),
 		'$lgt_report_warning_full_context'(Type, Entity)
+	;	true
 	).
 
 
@@ -9256,12 +9260,14 @@ current_logtalk_flag(version, version(2, 42, 1)).
 			true
 		;	'$lgt_compiler_flag'(report, off) ->
 			true
-		;	'$lgt_report_warning_in_new_line',
+		;	'$lgt_compiler_flag'(missing_directives, warning) ->
+			'$lgt_report_warning_in_new_line',
 			'$lgt_inc_compile_warnings_counter',
 			write('%         WARNING!  Missing multifile directive for the predicate: '),
 			writeq(':'(Module,Functor/Arity)), nl,
 			'$lgt_pp_entity'(Type, Entity, _, _, _),
 			'$lgt_report_warning_full_context'(Type, Entity)
+		;	true
 		),
 		'$lgt_comp_ctx'(Ctx, Head, Sender, user, user, _, _, [], ExCtx, _, []),
 		'$lgt_exec_ctx'(ExCtx, Sender, user, user, [], [])
@@ -14221,7 +14227,8 @@ current_logtalk_flag(version, version(2, 42, 1)).
 % reports possibly missing dynamic directives
 
 '$lgt_report_missing_dynamic_directives'(Type, Entity) :-
-	(   setof(Pred, '$lgt_missing_dynamic_predicate'(Pred), Preds) ->
+	(   '$lgt_compiler_flag'(missing_directives, warning),
+		setof(Pred, '$lgt_missing_dynamic_predicate'(Pred), Preds) ->
 		'$lgt_report_warning_in_new_line',
 		'$lgt_inc_compile_warnings_counter',
 		(	Preds = [_] ->
@@ -15569,6 +15576,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 '$lgt_valid_flag'(plredef).
 '$lgt_valid_flag'(underscore_variables).
 '$lgt_valid_flag'(portability).
+'$lgt_valid_flag'(missing_directives).
 % directories compilation flags:
 '$lgt_valid_flag'(altdirs).
 '$lgt_valid_flag'(tmpdir).
@@ -15651,6 +15659,9 @@ current_logtalk_flag(version, version(2, 42, 1)).
 
 '$lgt_valid_flag_value'(plredef, silent) :- !.
 '$lgt_valid_flag_value'(plredef, warning) :- !.
+
+'$lgt_valid_flag_value'(missing_directives, silent) :- !.
+'$lgt_valid_flag_value'(missing_directives, warning) :- !.
 
 '$lgt_valid_flag_value'(portability, silent) :- !.
 '$lgt_valid_flag_value'(portability, warning) :- !.
@@ -18026,7 +18037,8 @@ current_logtalk_flag(version, version(2, 42, 1)).
 	'$lgt_compiler_flag'(lgtredef, Lgtredef), write(', lgtredef: '), write(Lgtredef),
 	'$lgt_compiler_flag'(plredef, Plredef), write(', plredef: '), write(Plredef), nl,
 	'$lgt_compiler_flag'(portability, Portability), write('  portability: '), write(Portability),
-	'$lgt_compiler_flag'(singletons, Singletons), write(', singletons: '), write(Singletons),
+	'$lgt_compiler_flag'(missing_directives, Missing), write(', missing_directives: '), write(Missing), nl,
+	'$lgt_compiler_flag'(singletons, Singletons), write('  singletons: '), write(Singletons),
 	'$lgt_compiler_flag'(underscore_variables, Underscore), write(', underscore_variables: '), write(Underscore), nl,
 	write('Default documenting compilation flags:'), nl,
 	'$lgt_compiler_flag'(xmldocs, XMLDocs), write('  xmldocs: '), write(XMLDocs),
@@ -18073,6 +18085,8 @@ current_logtalk_flag(version, version(2, 42, 1)).
 	write('  Logtalk built-in predicates redefinition (lgtredef):        '), write(Lgtredef), nl,
 	'$lgt_compiler_flag'(plredef, Plredef),
 	write('  Prolog built-in predicates redefinition (plredef):          '), write(Plredef), nl,
+	'$lgt_compiler_flag'(missing_directives, Missing),
+	write('  Missing predicate directives (missing_directives):          '), write(Missing), nl,
 	'$lgt_compiler_flag'(portability, Portability),
 	write('  Non portable calls (portability):                           '), write(Portability), nl,
 	'$lgt_compiler_flag'(singletons, Singletons),

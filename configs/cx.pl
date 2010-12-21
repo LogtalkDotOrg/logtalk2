@@ -11,7 +11,7 @@
 %
 %  configuration file for CxProlog 0.97.5 or a later version
 %
-%  last updated: December 14, 2010
+%  last updated: December 21, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -186,6 +186,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 '$lgt_default_flag'(plredef, silent).
 '$lgt_default_flag'(portability, silent).
 '$lgt_default_flag'(underscore_variables, dont_care).
+'$lgt_default_flag'(missing_directives, warning).
 % optional features compilation flags:
 '$lgt_default_flag'(complements, deny).
 '$lgt_default_flag'(dynamic_declarations, deny).

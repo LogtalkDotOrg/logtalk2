@@ -11,7 +11,7 @@
 %
 %  configuration file for K-Prolog 5.1.5 and later 5.1.x versions
 %
-%  last updated: October 23, 2010
+%  last updated: December 21, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -174,6 +174,7 @@ retractall(Head) :-
 '$lgt_default_flag'(plredef, silent).
 '$lgt_default_flag'(portability, silent).
 '$lgt_default_flag'(underscore_variables, dont_care).
+'$lgt_default_flag'(missing_directives, warning).
 % optional features compilation flags:
 '$lgt_default_flag'(complements, deny).
 '$lgt_default_flag'(dynamic_declarations, deny).

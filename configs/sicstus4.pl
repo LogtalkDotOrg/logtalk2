@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: December 18, 2010
+%  last updated: December 21, 2010
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -203,6 +203,7 @@ forall(Generate, Test) :-
 '$lgt_default_flag'(plredef, silent).
 '$lgt_default_flag'(portability, silent).
 '$lgt_default_flag'(underscore_variables, singletons).
+'$lgt_default_flag'(missing_directives, warning).
 % optional features compilation flags:
 '$lgt_default_flag'(complements, deny).
 '$lgt_default_flag'(dynamic_declarations, deny).

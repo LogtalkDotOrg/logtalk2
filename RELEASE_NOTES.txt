@@ -18,6 +18,10 @@ RELEASE NOTES
     Added support to the Logtalk compiler for detecting and reporting
     (possibly) missing dynamic/1 predicate directives.
 
+    Added a new lint flag, "missing_directives", with a default value of
+    "warning", to all config files. This flag enables printing of compiler
+    warnings for missing dynamic/1 and multifile/1 predicate directives.
+
     Added support for new meta-predicate template mode indicators: (/) for a
     predicate indicator, [/] for a list of predicate indicators, and [0] for
     a list of goals.

@@ -115,6 +115,7 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 	set_logtalk_flag(unknown, warning),
 	set_logtalk_flag(misspelt, warning),
 	set_logtalk_flag(singletons, warning),
+	set_logtalk_flag(missing_directives, warning),
 	set_logtalk_flag(context_switching_calls, allow)
 )).
 */
