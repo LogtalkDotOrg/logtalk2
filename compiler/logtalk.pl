@@ -3995,6 +3995,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 % '$lgt_metacall_sender'(+callable, +object_identifier, +object_identifier, +object_identifier, +list)
 %
 % performs a meta-call in "sender" at runtime
+
 '$lgt_metacall_sender'(Pred, Sender, This, Self, ExtraVars) :-
 	'$lgt_current_object_'(Sender, Prefix, _, Def, _, _, _, _, DDef, _, _), !,
 	'$lgt_exec_ctx'(ExCtx, Sender, Sender, Self, ExtraVars, _),
@@ -4342,9 +4343,9 @@ current_logtalk_flag(version, version(2, 42, 1)).
 		functor(Pred, Functor, Arity),
 		current_predicate(Functor/Arity)
 	;	current_predicate(Functor/Arity),
-		\+ '$lgt_hidden_functor'(Functor),
 		functor(Pred, Functor, Arity),
-		\+ '$lgt_built_in'(Pred)
+		\+ '$lgt_built_in'(Pred),
+		\+ '$lgt_hidden_functor'(Functor)
 	),
 	(	'$lgt_predicate_property'(Pred, (dynamic)) ->
 		Flags = 2
@@ -4357,11 +4358,9 @@ current_logtalk_flag(version, version(2, 42, 1)).
 
 
 '$lgt_user._def'(Pred, _, Pred) :-
-	(	'$lgt_predicate_property'(Pred, built_in) ->
-		true
-	;	functor(Pred, Functor, Arity),
-		current_predicate(Functor/Arity)
-	).
+	\+ '$lgt_built_in'(Pred),
+	functor(Pred, Functor, Arity),
+	current_predicate(Functor/Arity).
 
 
 '$lgt_user._def'(Pred, _, Pred, user) :-
@@ -9413,7 +9412,7 @@ current_logtalk_flag(version, version(2, 42, 1)).
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
 '$lgt_tr_body'(call(Pred), call(TPred), '$lgt_debugger.goal'(call(Pred), call(DPred), ExCtx), Ctx) :-
-	!,
+	!,		% we must keep the call/1 wrapper in order to preserve cut semantics
 	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 

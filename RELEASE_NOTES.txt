@@ -41,6 +41,12 @@ RELEASE NOTES
     missing references to the "expanding" and "monitoring" built-in protocols
     when compiling modules as objects.
 
+    Reverted the changes in version 2.39.2 that allowed the pseudo-object
+    "user" to virtually contain the definition of all Prolog built-in
+    predicates. This could lead to different results depending on the
+    back-end Prolog compiler, specially when calling meta-predicates in
+    the context of "user".
+
     Corrected a bug in the SWI-Prolog "swihooks.lgt" file that resulted in
     a bogus error message about an invalid Logtalk flag when consulting a
     Prolog file when there is a Logtalk source file with the same name in

@@ -295,3 +295,7 @@ all entities. In addition, this release modifies the role of the "logtalk"
 object (now always interpreted as a prototype) and modifies the interpretation
 of module meta-predicate mode indicator ":" to be equivalent to Logtalk
 meta-predicate mode indicator "::" instead of "0".
+
+Logtalk version 2.42.1 reverts the changes in version 2.39.2 that allowed
+the pseudo-object "user" to virtually contain the definition of all Prolog
+built-in predicates.
