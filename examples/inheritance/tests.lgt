@@ -8,7 +8,7 @@
 		date is 2010/03/16,
 		comment is 'Unit tests for the "inheritance" example.']).
 
-	test(inheritance_1) :-
+	test(inheritance_01) :-
 		parent::current_predicate(public/0),
 		\+ parent::current_predicate(protected/0),
 		\+ parent::current_predicate(private/0),
@@ -16,7 +16,7 @@
 		parent << predicate_property(protected, protected),
 		parent << predicate_property(private, private).
 
-	test(inheritance_2) :-
+	test(inheritance_02) :-
 		prototype1::current_predicate(public/0),
 		\+ prototype1::current_predicate(protected/0),
 		\+ prototype1::current_predicate(private/0),
@@ -24,7 +24,7 @@
 		prototype1 << predicate_property(protected, protected),
 		\+ prototype1 << predicate_property(private, _).
 
-	test(inheritance_3) :-
+	test(inheritance_03) :-
 		\+ prototype2::current_predicate(public/0),
 		\+ prototype2::current_predicate(protected/0),
 		\+ prototype2::current_predicate(private/0),
@@ -32,7 +32,7 @@
 		prototype2 << predicate_property(protected, protected),
 		\+ prototype1 << predicate_property(private, _).
 
-	test(inheritance_4) :-
+	test(inheritance_04) :-
 		\+ prototype3::current_predicate(public/0),
 		\+ prototype3::current_predicate(protected/0),
 		\+ prototype3::current_predicate(private/0),
@@ -40,7 +40,7 @@
 		prototype3 << predicate_property(protected, private),
 		\+ prototype3 << predicate_property(private, _).
 
-	test(inheritance_5) :-
+	test(inheritance_05) :-
 		descendant1::current_predicate(public/0),
 		\+ descendant1::current_predicate(protected/0),
 		\+ descendant1::current_predicate(private/0),
@@ -48,7 +48,7 @@
 		descendant1 << predicate_property(protected, protected),
 		\+ descendant1 << predicate_property(private, _).
 
-	test(inheritance_6) :-
+	test(inheritance_06) :-
 		\+ descendant2::current_predicate(public/0),
 		\+ descendant2::current_predicate(protected/0),
 		\+ descendant2::current_predicate(private/0),
@@ -56,7 +56,7 @@
 		descendant2 << predicate_property(protected, protected),
 		\+ descendant2 << predicate_property(private, _).
 
-	test(inheritance_8) :-
+	test(inheritance_08) :-
 		\+ descendant3::current_predicate(public/0),
 		\+ descendant3::current_predicate(protected/0),
 		\+ descendant3::current_predicate(private/0),
@@ -64,7 +64,7 @@
 		\+ descendant3 << predicate_property(protected, _),
 		\+ descendant3 << predicate_property(private, _).
 
-	test(inheritance_8) :-
+	test(inheritance_08) :-
 		root::current_predicate(public/0),
 		\+ root::current_predicate(protected/0),
 		\+ root::current_predicate(private/0),
@@ -72,7 +72,7 @@
 		root << predicate_property(protected, protected),
 		root << predicate_property(private, private).
 
-	test(inheritance_9) :-
+	test(inheritance_09) :-
 		instance1::current_predicate(public/0),
 		\+ instance1::current_predicate(protected/0),
 		\+ instance1::current_predicate(private/0),

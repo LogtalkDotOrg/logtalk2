@@ -1,11 +1,11 @@
 Name: logtalk
 Summary: Logtalk - Open source object-oriented logic programming language
-Version: 2.42.1
+Version: 2.42.2
 Release: 1
 License: Artistic License 2.0
 Group: Development/Languages
 Packager: Paulo Moura <pmoura@logtalk.org>
-Source: http://logtalk.org/files/lgt2421.tar.bz2
+Source: http://logtalk.org/files/lgt2422.tar.bz2
 BuildArchitectures: noarch
 URL: http://logtalk.org/
 AutoReqProv: no
@@ -13,7 +13,7 @@ AutoReqProv: no
 Logtalk is an object-oriented logic programming language that can use most Prolog implementations as a back-end compiler. As a multi-paradigm language, it includes support for both prototypes and classes, protocols (interfaces), component-based programming through category-based composition, event-driven programming, and high-level multi-threading programming.
 
 %prep
-%setup -q -c lgt2421 -n lgt2421
+%setup -q -c lgt2422 -n lgt2422
 
 %build
 
@@ -28,28 +28,28 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc /usr/local/share/lgt2421/BIBLIOGRAPHY.bib
-%doc /usr/local/share/lgt2421/CUSTOMIZE.txt
-%doc /usr/local/share/lgt2421/INSTALL.txt
-%doc /usr/local/share/lgt2421/LICENSE.txt
-%doc /usr/local/share/lgt2421/QUICK_START.txt
-%doc /usr/local/share/lgt2421/README.txt
-%doc /usr/local/share/lgt2421/RELEASE_NOTES.txt
-%doc /usr/local/share/lgt2421/UPGRADING.txt
-/usr/local/share/lgt2421/VERSION.txt
-/usr/local/share/lgt2421/compiler
-/usr/local/share/lgt2421/configs
-/usr/local/share/lgt2421/contributions
-/usr/local/share/lgt2421/examples
-/usr/local/share/lgt2421/integration
-/usr/local/share/lgt2421/libpaths
-/usr/local/share/lgt2421/library
-%doc /usr/local/share/lgt2421/manuals
-/usr/local/share/lgt2421/man
-/usr/local/share/lgt2421/scripts
-/usr/local/share/lgt2421/settings.lgt
-/usr/local/share/lgt2421/wenv
-/usr/local/share/lgt2421/xml
+%doc /usr/local/share/lgt2422/BIBLIOGRAPHY.bib
+%doc /usr/local/share/lgt2422/CUSTOMIZE.txt
+%doc /usr/local/share/lgt2422/INSTALL.txt
+%doc /usr/local/share/lgt2422/LICENSE.txt
+%doc /usr/local/share/lgt2422/QUICK_START.txt
+%doc /usr/local/share/lgt2422/README.txt
+%doc /usr/local/share/lgt2422/RELEASE_NOTES.txt
+%doc /usr/local/share/lgt2422/UPGRADING.txt
+/usr/local/share/lgt2422/VERSION.txt
+/usr/local/share/lgt2422/compiler
+/usr/local/share/lgt2422/configs
+/usr/local/share/lgt2422/contributions
+/usr/local/share/lgt2422/examples
+/usr/local/share/lgt2422/integration
+/usr/local/share/lgt2422/libpaths
+/usr/local/share/lgt2422/library
+%doc /usr/local/share/lgt2422/manuals
+/usr/local/share/lgt2422/man
+/usr/local/share/lgt2422/scripts
+/usr/local/share/lgt2422/settings.lgt
+/usr/local/share/lgt2422/wenv
+/usr/local/share/lgt2422/xml
 /usr/local/share/logtalk
 /usr/local/bin/logtalk_user_setup
 /usr/local/bin/lgt2pdf
@@ -159,7 +159,7 @@ echo
 if [ -x /usr/bin/update-mime-database ]; then
 	mkdir -p /usr/share/mime/packages
 	rm -f /usr/share/mime/packages/logtalk.xml
-	cp /usr/local/share/lgt2421/scripts/freedesktop/logtalk.xml /usr/share/mime/packages/logtalk.xml
+	cp /usr/local/share/lgt2422/scripts/freedesktop/logtalk.xml /usr/share/mime/packages/logtalk.xml
 	update-mime-database /usr/share/mime
 	echo "Added the Logtalk mime-type to the Shared MIME-info Database."
 	echo

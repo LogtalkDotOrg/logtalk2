@@ -39,7 +39,7 @@
 		date is 2009/12/04,
 		comment is 'Generic sum predicate for testing lambda expressions.']).
 
-	% note that is simple an example of using lambda expressions; Logtalk
+	% note that this is simple an example of using lambda expressions; Logtalk
 	% already includes a fold_left/4 predicate in its library that could
 	% easily be used for performing the same computations
 

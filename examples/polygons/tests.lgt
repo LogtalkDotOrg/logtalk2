@@ -10,7 +10,7 @@
 		date is 2010/03/16,
 		comment is 'Unit tests for the "polygons" example.']).
 
-	test(polygons_1) :-
+	test(polygons_01) :-
 		triangle::new(t, [position-(4, 5)]),
 		square::new(s, [position-(3, 2)]),
 		pentagon::new(p, [position-(7, 1)]),
@@ -18,12 +18,12 @@
 		concentric::add_tuple([t, s]),
 		concentric::add_tuple([p, h]).
 
-	test(polygons_2) :-
+	test(polygons_02) :-
 		findall(Tuple,concentric::tuple(Tuple),Solutions),
 		list::msort(Solutions,SolutionsSorted),
 		SolutionsSorted == [[p,h], [t,s]].
 
-	test(polygons_3) :-
+	test(polygons_03) :-
 		t::position(Xt, Yt), s::position(Xs, Ys), p::position(Xp, Yp), h::position(Xh, Yh),
 		Xh == 7,
 		Yh == 1,
@@ -34,17 +34,17 @@
 		Ys == 5,
 		Yt == 5.
 
-	test(polygons_4) :-
+	test(polygons_04) :-
 		after_event_registry::monitors(Ma),
 		Ma == [concentric].
 
-	test(polygons_5) :-
+	test(polygons_05) :-
 		t::move(3, 3), h::move(8, 4),
 		findall(Tuple,concentric::tuple(Tuple),Solutions),
 		list::msort(Solutions,SolutionsSorted),
 		SolutionsSorted == [[p,h], [t,s]].
 
-	test(polygons_6) :-
+	test(polygons_06) :-
 		t::position(Xt, Yt), s::position(Xs, Ys), p::position(Xp, Yp), h::position(Xh, Yh),
 		Xh == 8,
 		Yh == 4,
@@ -55,18 +55,18 @@
 		Ys == 3,
 		Yt == 3.
 
-	test(polygons_7) :-
+	test(polygons_07) :-
 		after_event_registry::monitors(Ma),
 		Ma == [concentric].
 
-	test(polygons_8) :-
+	test(polygons_08) :-
 		concentric::add_tuple([t, p]),
 		p::move(2, 7),
 		findall(Tuple,concentric::tuple(Tuple),Solutions),
 		list::msort(Solutions,SolutionsSorted),
 		SolutionsSorted == [[p,h], [t,p], [t,s]].
 
-	test(polygons_9) :-
+	test(polygons_09) :-
 		t::position(Xt, Yt), s::position(Xs, Ys), p::position(Xp, Yp), h::position(Xh, Yh),
 		Xh == 2,
 		Yh == 7,

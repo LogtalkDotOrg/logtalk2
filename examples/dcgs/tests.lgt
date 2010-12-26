@@ -10,38 +10,38 @@
 
 	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
 
-	test(dcgs_1) :-
+	test(dcgs_01) :-
 		findall(Result,calculator::parse("1+2-3*4", Result), Solutions),
 		Solutions == [-9].
 
-	test(dcgs_2) :-
+	test(dcgs_02) :-
 		macaddr::valid("00:1e:4a:ef:72:8b").
 
-	test(dcgs_3) :-
+	test(dcgs_03) :-
 		findall(Message, logtalk << phrase(morse::morse(Message), "... --- ..."), Solutions),
 		Solutions == [[sos]].
 
-	test(dcgs_4) :-
+	test(dcgs_04) :-
 		findall(Message, enigma::solve("4 96853 5683 86 4283 346637 9484 968 8664448", Message), Solutions),
 		Solutions == [[i, would, love, to, have, dinner, with, you, tonight]].
 
-	test(dcgs_5) :-
+	test(dcgs_05) :-
     	sentence::parse([the, girl, likes, the, boy], Result),
 		Result == true.
 
-	test(dcgs_6) :-
+	test(dcgs_06) :-
 		sentence::parse([the, girl, scares, the, boy], Result),
 		Result == false.
 
-	test(dcgs_7) :-
+	test(dcgs_07) :-
 		findall(Tree, parsetree::parse([the, girl, likes, the, boy], Tree), Trees),
 		Trees == [s(np(d(the), n(girl)), vp(v(likes), np(d(the), n(boy))))].
 
-	test(dcgs_8) :-
+	test(dcgs_08) :-
 		findall(L, bom::parts(bike, L), Solutions),
 		Solutions == [[frame, crank, pedal, pedal, chain, spokes, rim, hub, spokes, rim, hub]].
 
-	test(dcgs_9) :-
+	test(dcgs_09) :-
 		findall(L,bom::parts(wheel, L), Solutions),
 		Solutions == [[spokes, rim, hub]].
 

@@ -13,34 +13,34 @@
 	:- discontiguous(succeeds/1).
 	:- discontiguous(throws/2).
 
-	succeeds(lambdas_1) :-
+	succeeds(lambdas_01) :-
 		logtalk << call([X,Y]>>(Y is X*X), 5, R),
 		R == 25.
 
-	succeeds(lambdas_2) :-
+	succeeds(lambdas_02) :-
 		logtalk << call([Z]>>(call([X,Y]>>(Y is X*X), 5, R), Z is R*R), T),
 		T == 625.
 
-	succeeds(lambdas_3) :-
+	succeeds(lambdas_03) :-
 		meta::map([X]>>(X>3),[4,5,9]).
 
-	succeeds(lambdas_4) :-
+	succeeds(lambdas_04) :-
 		meta::map([X,Y]>>(X=A-B,Y=B-A), [1-a,2-b,3-c], Zs),
 		Zs == [a-1, b-2, c-3].
 
-	succeeds(lambdas_5) :-
+	succeeds(lambdas_05) :-
 		meta::map([X,B-A]>>(X=A-B), [1-a,2-b,3-c], Zs),
 		Zs == [a-1, b-2, c-3].
 
-	succeeds(lambdas_6) :-
+	succeeds(lambdas_06) :-
 		meta::map([A-B,B-A]>>true, [1-a,2-b,3-c], Zs),
 		Zs == [a-1, b-2, c-3].
 
-	succeeds(lambdas_7) :-
+	succeeds(lambdas_07) :-
 		meta::map([A-B]>>([B-A]>>true), [1-a,2-b,3-c], Zs) ->
 		Zs == [a-1, b-2, c-3].
 
-	succeeds(lambdas_8) :-
+	succeeds(lambdas_08) :-
 		Points = [(1,4),(2,5),(8,3)], meta::map([(X,Y),Z]>>(Z is sqrt(X*X + Y*Y)), Points, Distances),
 		Distances = [Distance1, Distance2, Distance3],
 		Distance1 =~= 4.1231056256176606,
@@ -48,7 +48,7 @@
 		Distance3 =~= 8.5440037453175304,
 		Points == [(1,4),(2,5),(8,3)].
 
-	succeeds(lambdas_9) :-
+	succeeds(lambdas_09) :-
 		Points = [(1,4),(2,5),(8,3)], meta::map([(X,Y)]>>([Z]>>(Z is sqrt(X*X + Y*Y))), Points, Distances),
 		Distances = [Distance1, Distance2, Distance3],
 		Distance1 =~= 4.1231056256176606,

@@ -12,38 +12,38 @@
 
 	:- discontiguous(succeeds/1).
 
-	succeeds(functions_1) :-
+	succeeds(functions_01) :-
 		bisection::find_root(f1, 1.0, 2.3, 1.0e-15, Zero),
 		Zero =~= 2.0.
 
-	succeeds(functions_2) :-
+	succeeds(functions_02) :-
 		newton::find_root(f1, 1.0, 2.3, 1.0e-15, Zero),
 		Zero =~= 2.0.
 
-	succeeds(functions_3) :-
+	succeeds(functions_03) :-
 		muller::find_root(f1, 1.0, 2.3, 1.0e-15, Zero),
 		Zero =~= 2.0.
 
-	succeeds(functions_4) :-
+	succeeds(functions_04) :-
 		bisection::find_root(f2, 1.0, 1.3, 1.0e-15, Zero),
 		Zero =~= 1.25809265664599.
 
-	succeeds(functions_5) :-
+	succeeds(functions_05) :-
 		newton::find_root(f2, 1.0, 1.3, 1.0e-15, Zero),
 		Zero =~= 1.25809265664599.
 
-	succeeds(functions_6) :-
+	succeeds(functions_06) :-
 		muller::find_root(f2, 1.0, 1.3, 1.0e-15, Zero),
 		Zero =~= 1.25809265664599.
 
-	fails(functions_7) :-
+	fails(functions_07) :-
 		bisection::find_root(humps, -1.0, 2.0, 1.0e-15, _).
 
-	succeeds(functions_8) :-
+	succeeds(functions_08) :-
 		muller::find_root(humps, -1.0, 2.0, 1.0e-15, Zero),
 		Zero =~= 1.29954968258.
 
-	throws(functions_9, error(evaluation_error(float_overflow), _)) :-
+	throws(functions_09, error(evaluation_error(float_overflow), _)) :-
 		newton::find_root(humps, -1.0, 2.0, 1.0e-15, _).
 
 	succeeds(functions_10) :-

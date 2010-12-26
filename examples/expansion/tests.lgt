@@ -8,39 +8,39 @@
 		date is 2010/03/16,
 		comment is 'Unit tests for the "expansion" example.']).
 
-	test(expansion_1) :-
+	test(expansion_01) :-
 		exp_public::expand_term(8, Term),
 		Term == eight.
 
-	test(expansion_2) :-
+	test(expansion_02) :-
 		exp_public::expand_goal(write(Term), EGoal),
 		EGoal = write_term(Term, [quoted(true)]).
 
-	test(expansion_3) :-
+	test(expansion_03) :-
 		exp_protected::expand_term(8, Term),
 		Term == 8.
 
-	test(expansion_4) :-
+	test(expansion_04) :-
 		exp_protected::expand_goal(write(Term), EGoal),
 		EGoal = write(Term).
 
-	test(expansion_5) :-
+	test(expansion_05) :-
 		exp_private::expand_term(8, Term),
 		Term == 8.
 
-	test(expansion_6) :-
+	test(expansion_06) :-
 		exp_private::expand_goal(write(Term), EGoal),
 		EGoal = write(Term).
 
-	test(expansion_7) :-
+	test(expansion_07) :-
 		desc_public::test_term_expansion(8, Term),
 		Term == eight.
 
-	test(expansion_8) :-
+	test(expansion_08) :-
 		desc_public::test_goal_expansion(write(Term), EGoal),
 		EGoal = write_term(Term, [quoted(true)]).
 
-	test(expansion_9) :-
+	test(expansion_09) :-
 		desc_protected::test_term_expansion(8, Term),
 		Term == eight.
 
