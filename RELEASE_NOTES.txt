@@ -13,6 +13,12 @@ RELEASE NOTES
 =============
 
 
+2.42.2 - January ??, 2010
+
+    Adds a category implementing named integer counters, "counters", to the
+    library.
+
+
 2.42.1 - December 22, 2010
 
     Added support to the Logtalk compiler for detecting and reporting
