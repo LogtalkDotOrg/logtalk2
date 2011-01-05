@@ -11,7 +11,7 @@ even_integer(I) :-
 	I mod 2 =:= 0.
 
 
-% a simple object defining some predciates to use with library meta-predicates:
+% a simple object defining some predicates to use with library meta-predicates:
 
 :- object(predicates).
 
