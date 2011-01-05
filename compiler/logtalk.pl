@@ -255,6 +255,7 @@
 :- dynamic('$lgt_pp_prolog_term_'/1).						% '$lgt_pp_prolog_term_'(Clause)
 :- dynamic('$lgt_pp_relation_clause_'/1).					% '$lgt_pp_relation_clause_'(Clause)
 :- dynamic('$lgt_pp_entity_clause_'/1).						% '$lgt_pp_entity_clause_'(Clause)
+:- dynamic('$lgt_pp_entity_aux_clause_'/1).					% '$lgt_pp_entity_aux_clause_'(Clause)
 :- dynamic('$lgt_pp_final_entity_clause_'/1).				% '$lgt_pp_final_entity_clause_'(Clause)
 
 :- dynamic('$lgt_pp_defines_predicate_'/2).					% '$lgt_pp_defines_predicate_'(Functor, Arity)
@@ -4270,7 +4271,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 
 '$lgt_logtalk._dcl'(expand_library_path(_, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(loaded_file(_, _), p(p(p)), no, 0).
-'$lgt_logtalk._dcl'(compile_auxiliary_clauses(_), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(compile_clauses(_), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(compile_predicate_heads(_, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(compile_predicate_heads(_, _, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(compile_predicate_heads(_, _, _, _), p(p(p)), no, 0).
@@ -4294,7 +4295,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 
 '$lgt_logtalk._def'(expand_library_path(Library, Path), _, '$lgt_expand_library_path'(Library, Path)).
 '$lgt_logtalk._def'(loaded_file(File, Directory), _, '$lgt_loaded_file_'(File, Directory)).
-'$lgt_logtalk._def'(compile_auxiliary_clauses(Clauses), _, '$lgt_compile_auxiliary_clauses'(Clauses)).
+'$lgt_logtalk._def'(compile_clauses(Clauses), _, '$lgt_compile_clauses'(Clauses)).
 '$lgt_logtalk._def'(compile_predicate_heads(Heads, THeads), _, '$lgt_compile_predicate_heads'(Heads, THeads)).
 '$lgt_logtalk._def'(compile_predicate_heads(Heads, THeads, Ctx), _, '$lgt_compile_predicate_heads'(Heads, THeads, Ctx)).
 '$lgt_logtalk._def'(compile_predicate_heads(Heads, Entity, THeads, Ctx), _, '$lgt_compile_predicate_heads'(Heads, Entity, THeads, Ctx)).
@@ -5704,7 +5705,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 '$lgt_tr_file'(end_of_file, _, _) :-							% module definitions start with an opening module/1-2
 	'$lgt_pp_module_'(Module),									% directive and are assumed to end at the end of a 
 	'$lgt_pp_object_'(Module, _, _, _, _, _, _, _, _, _, _),	% source file; there is no module closing directive
-	'$lgt_comp_ctx_mode'(Ctx, compile(z)),						% set the initial compilation context
+	'$lgt_comp_ctx_mode'(Ctx, compile(regular)),				% set the initial compilation context
 	'$lgt_tr_term'(end_of_file, Ctx),							% for compiling the end_of_file term
 	'$lgt_tr_entity'(object, Module),
 	'$lgt_report_compiled_entity'(module, Module),
@@ -5726,22 +5727,22 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	'$lgt_pp_cc_if_found_'(Goal),
 	throw(directive_missing(endif, if(Goal))).
 
-'$lgt_tr_file'(end_of_file, _, _) :-		% allow for term-expansion
-	'$lgt_comp_ctx_mode'(Ctx, compile(z)),	% set the initial compilation context
-	'$lgt_tr_term'(end_of_file, Ctx),		% for compiling the end_of_file term
+'$lgt_tr_file'(end_of_file, _, _) :-							% allow for term-expansion
+	'$lgt_comp_ctx_mode'(Ctx, compile(regular)),				% set the initial compilation context
+	'$lgt_tr_term'(end_of_file, Ctx),							% for compiling the end_of_file term
 	!.
 
 '$lgt_tr_file'(Term, _, Input) :-
-	'$lgt_pp_cc_skipping_',					% we're performing conditional compilation and skipping terms 
-	\+ '$lgt_lgt_cc_directive'(Term),		% except for conditional compilation directives itself
+	'$lgt_pp_cc_skipping_',										% we're performing conditional compilation and skipping terms 
+	\+ '$lgt_lgt_cc_directive'(Term),							% except for conditional compilation directives itself
 	!,
 	'$lgt_read_term'(Input, Next, [singletons(NextSingletons)]),
 	'$lgt_tr_file'(Next, NextSingletons, Input).
 
 '$lgt_tr_file'(Term, Singletons, Input) :-
 	'$lgt_report_singletons'(Singletons, Term),
-	'$lgt_comp_ctx_mode'(Ctx, compile(z)),	% set the initial compilation context
-	'$lgt_tr_term'(Term, Ctx),				% for compiling the read term
+	'$lgt_comp_ctx_mode'(Ctx, compile(regular)),	% set the initial compilation context
+	'$lgt_tr_term'(Term, Ctx),						% for compiling the read term
 	'$lgt_read_term'(Input, Next, [singletons(NextSingletons)]),
 	'$lgt_tr_file'(Next, NextSingletons, Input).
 
@@ -6264,6 +6265,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	retractall('$lgt_pp_prolog_term_'(_)),
 	retractall('$lgt_pp_relation_clause_'(_)),
 	retractall('$lgt_pp_entity_clause_'(_)),
+	retractall('$lgt_pp_entity_aux_clause_'(_)),
 	retractall('$lgt_pp_final_entity_clause_'(_)),
 	retractall('$lgt_pp_redefined_built_in_'(_, _, _)),
 	retractall('$lgt_pp_defines_predicate_'(_, _)),
@@ -8866,12 +8868,12 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		Error,
 		throw(error(Error, clause(Clause)))),
 	(	'$lgt_compiler_flag'(debug, on) ->
-		(	'$lgt_comp_ctx_mode'(HeadCtx, compile(a)) ->
-			asserta('$lgt_pp_entity_clause_'(DClause))
+		(	'$lgt_comp_ctx_mode'(HeadCtx, compile(aux)) ->
+			assertz('$lgt_pp_entity_aux_clause_'(DClause))
 		;	assertz('$lgt_pp_entity_clause_'(DClause))
 		)
-	;	(	'$lgt_comp_ctx_mode'(HeadCtx, compile(a)) ->
-			asserta('$lgt_pp_entity_clause_'(TClause))
+	;	(	'$lgt_comp_ctx_mode'(HeadCtx, compile(aux)) ->
+			assertz('$lgt_pp_entity_aux_clause_'(TClause))
 		;	assertz('$lgt_pp_entity_clause_'(TClause))
 		)
 	),
@@ -13986,7 +13988,9 @@ current_logtalk_flag(version, version(2, 42, 2)).
 % fixes predicate calls in entity clauses and initialization goals
 
 '$lgt_fix_predicate_calls' :-
-	retract('$lgt_pp_entity_clause_'(Clause)),
+	(	retract('$lgt_pp_entity_clause_'(Clause))
+	;	retract('$lgt_pp_entity_aux_clause_'(Clause))
+	),
 	(	Clause = {Term} ->
 		assertz('$lgt_pp_final_entity_clause_'(Term))
 	;	Clause = (Head:-Body) ->
@@ -14859,32 +14863,29 @@ current_logtalk_flag(version, version(2, 42, 2)).
 
 
 
-% '$lgt_compile_auxiliary_clauses'(@clause)
-% '$lgt_compile_auxiliary_clauses'(@list(clause))
+% '$lgt_compile_clauses'(@clause)
+% '$lgt_compile_clauses'(@list(clause))
 %
 % translates a single predicate clause a list of predicate clauses;
 % used mainly in conjunction with goal_expansion/2 hooks
 
-'$lgt_compile_auxiliary_clauses'(Clauses) :-
-	'$lgt_pp_entity'(_, _, Prefix, _, _),
+'$lgt_compile_clauses'(Clauses) :-
+	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
+		true
+	;	'$lgt_pp_category_'(_, Prefix, _, _, _, _) ->
+		true
+	),												% protocols cannot contain predicate clauses
 	'$lgt_comp_ctx_prefix'(Ctx, Prefix),
-	'$lgt_comp_ctx_mode'(Ctx, compile(a)),			% avoid making a predicate discontiguous
-	'$lgt_reverse'(Clauses, [], ReversedClauses),	% by accident but respect clause order
-	'$lgt_compile_auxiliary_clauses'(ReversedClauses, Ctx).
+	'$lgt_comp_ctx_mode'(Ctx, compile(aux)),		% avoid making a predicate discontiguous by accident
+	'$lgt_compile_clauses'(Clauses, Ctx).
 
 
-'$lgt_compile_auxiliary_clauses'([], _).
+'$lgt_compile_clauses'([], _).
 
-'$lgt_compile_auxiliary_clauses'([Clause| Clauses], Ctx) :-
+'$lgt_compile_clauses'([Clause| Clauses], Ctx) :-
 	!,
 	'$lgt_tr_clause'(Clause, Ctx),
-	'$lgt_compile_auxiliary_clauses'(Clauses, Ctx).
-
-
-'$lgt_reverse'([], Reversed, Reversed).
-
-'$lgt_reverse'([Head| Tail], List, Reversed) :-
-	'$lgt_reverse'(Tail, [Head| List], Reversed).
+	'$lgt_compile_clauses'(Clauses, Ctx).
 
 
 
@@ -15281,9 +15282,9 @@ current_logtalk_flag(version, version(2, 42, 2)).
 
 '$lgt_comp_ctx_exec_ctx'(ctx(_, _, _, _, _, _, _, ExCtx, _, _), ExCtx).
 
-'$lgt_comp_ctx_mode'(ctx(_, _, _, _, _, _, _, _, Mode, _), Mode).		% mode is either "compile" or "runtime"
+'$lgt_comp_ctx_mode'(ctx(_, _, _, _, _, _, _, _, Mode, _), Mode).		% mode is "compile(regular)", "compile(aux)", or "runtime"
 
-'$lgt_comp_ctx_stack'(ctx(_, _, _, _, _, _, _, _, _, Stack), Stack).	% stack of coindiuctive hypothesis (ancestor goals)
+'$lgt_comp_ctx_stack'(ctx(_, _, _, _, _, _, _, _, _, Stack), Stack).	% stack of coinductive hypothesis (ancestor goals)
 
 '$lgt_comp_ctx_stack_new_stack'(ctx(Head, Sender, This, Self, Prefix, MetaVars, MetaCallCtx, _, Mode, _), NewStack, ctx(Head, Sender, This, Self, Prefix, MetaVars, MetaCallCtx, _, Mode, NewStack)).
 

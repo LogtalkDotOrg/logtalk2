@@ -15,8 +15,8 @@ RELEASE NOTES
 
 2.42.2 - January ??, 2010
 
-    Added a compile_auxiliary_clauses/1 public method, inspired by a predicate
-    with a similar name in SWI-Prolog, to the built-in object "logtalk". This
+    Added a compile_clauses/1 public method, inspired by a predicate with
+    a similar name in SWI-Prolog, to the built-in object "logtalk". This
     method is usually called from goal_expansion/2 hooks in order to compile
     auxiliary clauses generated for supporting an expanded goal.
 
