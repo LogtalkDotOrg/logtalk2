@@ -31,6 +31,9 @@ RELEASE NOTES
     Added a category implementing named integer counters, "counters", to the
     library.
 
+    Added a note on the Logtalk text editing support available on the free
+    MacOS X Kod text editor.
+
 
 2.42.1 - December 22, 2010
 
