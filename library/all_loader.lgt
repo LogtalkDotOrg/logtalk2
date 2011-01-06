@@ -1,6 +1,7 @@
 
 :- initialization(
 	logtalk_load([
+		types_loader,
 		dates_loader,
 		events_loader,
 		debugging_loader,
@@ -10,4 +11,6 @@
 		metapredicates_loader,
 		random_loader,
 		statistics_loader,
-		types_loader])).
+		interval_loader
+	])
+).

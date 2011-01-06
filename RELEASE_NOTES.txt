@@ -20,7 +20,11 @@ RELEASE NOTES
     method is usually called from goal_expansion/2 hooks in order to compile
     auxiliary clauses generated for supporting an expanded goal.
 
-    Adds a category implementing named integer counters, "counters", to the
+    Added a protocol, "intervalp", and an object, "interval", declaring and
+    defining basic temporal interval relations to the library (based on James
+    F. Allen Interval Algebra work).
+
+    Added a category implementing named integer counters, "counters", to the
     library.
 
 
