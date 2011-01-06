@@ -11,6 +11,6 @@
 		metapredicates_loader,
 		random_loader,
 		statistics_loader,
-		interval_loader
+		intervals_loader
 	])
 ).
