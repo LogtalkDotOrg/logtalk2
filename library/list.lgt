@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 2.0,
+		version is 2.1,
 		author is 'Paulo Moura',
-		date is 2010/2/16,
+		date is 2011/01/07,
 		comment is 'List predicates.']).
 
 	:- public(as_difflist/2).
@@ -105,7 +105,6 @@
 	member(Element, [Element| _]).
 	member(Element, [_| List]) :-
 		member(Element, List).
-
 
 	memberchk(Element, [Element| _]) :-
 		!.
@@ -242,6 +241,10 @@
 	prefix([Element| Tail], [Element| Tail2]) :-
 		prefix(Tail, Tail2).
 
+	proper_prefix([], [_| _]).
+	proper_prefix([Head| PrefixTail], [Head| ListTail]) :-
+		proper_prefix(PrefixTail, ListTail).
+
 	reverse(List, Reversed) :-
 		reverse(List, [], Reversed, Reversed).
 
@@ -352,6 +355,9 @@
 	suffix(List, List).
 	suffix(List, [_| Tail]) :-
 		suffix(List, Tail).
+
+	proper_suffix(Suffix, [_| Tail]) :-
+		suffix(Suffix, Tail).
 
 	valid(-) :-		% catch variables and lists with unbound tails
 		!,

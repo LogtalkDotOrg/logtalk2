@@ -2,9 +2,9 @@
 :- protocol(listp).
 
 	:- info([
-		version is 1.5,
+		version is 1.6,
 		author is 'Paulo Moura',
-		date is 2010/2/16,
+		date is 2011/01/07,
 		comment is 'List protocol.']).
 
 	:- public(append/2).
@@ -146,6 +146,12 @@
 		[comment is 'Prefix is a prefix of List.',
 		 argnames is ['Prefix', 'List']]).
 
+	:- public(proper_prefix/2).
+	:- mode(proper_prefix(?list, +list), zero_or_more).
+	:- info(proper_prefix/2,
+		[comment is 'Prefix is a proper prefix of List.',
+		 argnames is ['Prefix', 'List']]).
+
 	:- public(reverse/2).
 	:- mode(reverse(+list, ?list), zero_or_one).
 	:- mode(reverse(?list, +list), zero_or_one).
@@ -218,6 +224,12 @@
 	:- mode(suffix(?list, +list), zero_or_more).
 	:- info(suffix/2,
 		[comment is 'Suffix is a suffix of List.',
+		 argnames is ['Suffix', 'List']]).
+
+	:- public(proper_suffix/2).
+	:- mode(proper_suffix(?list, +list), zero_or_more).
+	:- info(proper_suffix/2,
+		[comment is 'Suffix is a proper suffix of List.',
 		 argnames is ['Suffix', 'List']]).
 
 :- end_protocol.

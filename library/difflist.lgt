@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.4,
+		version is 1.5,
 		author is 'Paulo Moura',
-		date is 2009/7/24,
+		date is 2011/01/07,
 		comment is 'Difference list predicates.']).
 
 	:- public(add/3).
@@ -239,6 +239,11 @@
 		List2 = [Head| Tail2],
 		prefix(Tail-Back, Tail2-Back2).
 
+	proper_prefix(Prefix, [_| _]-_) :-
+		unify_with_occurs_check(Prefix, Back1-Back1).
+	proper_prefix([Head| PrefixTail]-Back1, [Head| ListTail]-Back2) :-
+		proper_prefix(PrefixTail-Back1, ListTail-Back2).
+
 	reverse(List-Back, Reversed-Back) :-
 		same_length(List-Back, Reversed-Back),
 		reverse(List-Back, Back-Back, Reversed-Back).
@@ -358,6 +363,9 @@
 		List \== Back,
 		List = [_| Tail],
 		suffix(Suffix-Back, Tail-Back).
+
+	proper_suffix(Suffix, [_| Tail]-Back) :-
+		suffix(Suffix, Tail-Back).
 
 	valid(List) :-
 		nonvar(List),
