@@ -78,7 +78,7 @@
             </dd>
             <dt class="key">mode &ndash; number of solutions:</dt>
             <dd class="value">
-              <code>define_log_file(+atom,+atom) &ndash; zero_or_one</code>
+              <code>define_log_file(+atom,+atom) &ndash; one</code>
             </dd>
           </dl>
         </div>
@@ -98,7 +98,7 @@
             </dd>
             <dt class="key">mode &ndash; number of solutions:</dt>
             <dd class="value">
-              <code>init_log_file(+atom,+atom) &ndash; zero_or_one</code>
+              <code>init_log_file(+atom,+atom) &ndash; one</code>
             </dd>
           </dl>
         </div>
@@ -118,7 +118,7 @@
             </dd>
             <dt class="key">mode &ndash; number of solutions:</dt>
             <dd class="value">
-              <code>log_event(+atom,+nonvar) &ndash; one</code>
+              <code>log_event(+atom,+nonvar) &ndash; zero_or_one</code>
             </dd>
           </dl>
         </div>
@@ -145,7 +145,7 @@
         <div class="section">
           <h3 class="code">enable_logging/1</h3>
           <blockquote>
-            <p class="comment">Enables logging to file with alias Alias.</p>
+            <p class="comment">Enables logging to file with alias Alias. Fails if a log file with alias Alias is not defined.</p>
           </blockquote>
           <dl class="properties">
             <dt class="key">compilation:</dt>
@@ -165,7 +165,7 @@
         <div class="section">
           <h3 class="code">disable_logging/1</h3>
           <blockquote>
-            <p class="comment">Disables logging to file with alias Alias.</p>
+            <p class="comment">Disables logging to file with alias Alias. Fails if a log file with alias Alias is not defined.</p>
           </blockquote>
           <dl class="properties">
             <dt class="key">compilation:</dt>

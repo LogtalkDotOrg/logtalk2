@@ -14,19 +14,19 @@
 		argnames is ['Alias', 'File']]).
 
 	:- public(define_log_file/2).
-	:- mode(define_log_file(+atom, +atom), zero_or_one).
+	:- mode(define_log_file(+atom, +atom), one).
 	:- info(define_log_file/2, [
 		comment is 'Defines a log file with alias Alias and file name File. If the log file already exists, its contents are kept. Logging is enabled by default.',
 		argnames is ['Alias', 'File']]).
 
 	:- public(init_log_file/2).
-	:- mode(init_log_file(+atom, +atom), zero_or_one).
+	:- mode(init_log_file(+atom, +atom), one).
 	:- info(init_log_file/2, [
 		comment is 'Initializes a new log file with alias Alias and file name File. If the log file already exists, its contents are erased. Logging is enabled by default.',
 		argnames is ['Alias', 'File']]).
 
 	:- public(log_event/2).
-	:- mode(log_event(+atom, +nonvar), one).
+	:- mode(log_event(+atom, +nonvar), zero_or_one).
 	:- info(log_event/2, [
 		comment is 'Logs an event Event to a log file with alias Alias. Fails if a log file with alias Alias is not defined.',
 		argnames is ['Alias', 'Event']]).
@@ -40,13 +40,13 @@
 	:- public(enable_logging/1).
 	:- mode(enable_logging(+atom), zero_or_one).
 	:- info(enable_logging/1, [
-		comment is 'Enables logging to file with alias Alias.',
+		comment is 'Enables logging to file with alias Alias. Fails if a log file with alias Alias is not defined.',
 		argnames is ['Alias']]).
 
 	:- public(disable_logging/1).
 	:- mode(disable_logging(+atom), zero_or_one).
 	:- info(disable_logging/1, [
-		comment is 'Disables logging to file with alias Alias.',
+		comment is 'Disables logging to file with alias Alias. Fails if a log file with alias Alias is not defined.',
 		argnames is ['Alias']]).
 
 :- end_protocol.
