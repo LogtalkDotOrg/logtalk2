@@ -11100,7 +11100,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 
 % '$lgt_check_dynamic_directive'(@term)
 %
-% checks for a dynamic directive for a predicate that is an argument to the
+% checks for a dynamic/1 directive for a predicate that is an argument to the
 % database built-in methods
 
 '$lgt_check_dynamic_directive'(Term) :-						% runtime argument
@@ -11143,8 +11143,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 
 % '$lgt_check_discontiguous_directive'(@predicate_indicator)
 %
-% checks for a dynamic directive for a predicate that is an argument to the
-% database built-in methods
+% checks for a discontiguous/1 directive for a predicate
 
 '$lgt_check_discontiguous_directive'(Functor, Arity) :-
 	(	'$lgt_pp_discontiguous_'(Functor, Arity) ->
@@ -12778,7 +12777,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		)
 	;	true
 	),
-	'$lgt_remember_predicate'(Functor, Arity).
+	'$lgt_remember_predicate'(Functor, Arity, Ctx).
 
 
 
@@ -12810,17 +12809,21 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		)
 	;	true
 	),
-	'$lgt_remember_predicate'(Functor, Arity).
+	'$lgt_remember_predicate'(Functor, Arity, Ctx).
 
 
-% is necessary to remember which predicates are defined in orde to deal with 
+% is necessary to remember which predicates are defined in order to deal with 
 % redefinition of built-in predicates and detect missing predicate directives
+%
+% the check for discontiguous predicates is not performed when compiling clauses
+% for auxiliary predicates (using the logtalk::compile_clauses/1 hook predicate)
 
-'$lgt_remember_predicate'(Functor, Arity) :-
+'$lgt_remember_predicate'(Functor, Arity, Ctx) :-
 	(	'$lgt_pp_defines_predicate_'(Functor, Arity) ->
 		% not the first clause for the predicate
 		(	'$lgt_pp_previous_predicate_'(PreviousFunctor, PreviousArity),
-			PreviousFunctor/PreviousArity \== Functor/Arity ->
+			PreviousFunctor/PreviousArity \== Functor/Arity,
+			\+ '$lgt_comp_ctx_mode'(Ctx, compile(aux)) ->
 			% clauses for the predicate are discontiguous
 			'$lgt_check_discontiguous_directive'(Functor, Arity)
 		;	% more clauses for the same predicate
@@ -12829,8 +12832,11 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	;	% first clause for this predicate; remember it
 		asserta('$lgt_pp_defines_predicate_'(Functor, Arity))
 	),
-	retractall('$lgt_pp_previous_predicate_'(_, _)),
-	asserta('$lgt_pp_previous_predicate_'(Functor, Arity)).
+	(	'$lgt_comp_ctx_mode'(Ctx, compile(aux)) ->
+		true
+	;	retractall('$lgt_pp_previous_predicate_'(_, _)),
+		asserta('$lgt_pp_previous_predicate_'(Functor, Arity))
+	).
 
 
 
