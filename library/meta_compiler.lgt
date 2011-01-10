@@ -3,7 +3,7 @@
 	implements(expanding)).
 
 	:- info([
-		version is 0.2,
+		version is 0.3,
 		date is 2011/01/10,
 		author is 'Paulo Moura',
 		comment is 'Compiler for the "meta" object meta-predicates. Generates auxiliary predicates in order to avoid meta-call overheads.']).
@@ -340,6 +340,10 @@
 		!,
 		nonvar(Closure),
 		decompose_closure(Closure, Functor, Arity, Args).
+	decompose_closure({Closure}, {Functor}, Arity, Args) :-
+		!,
+		nonvar(Closure),
+		decompose_closure(Closure, Functor, Arity, Args).
 	decompose_closure(Closure, Functor, Arity, Args) :-
 		callable(Closure),
 		Closure =.. [Functor| Args],
@@ -348,6 +352,9 @@
 		functor(Closure, Functor, Arity).
 
 	extend_closure(Object::Functor, ClosureArgs, ExtraArgs, Object::Goal) :-
+		!,
+		extend_closure(Functor, ClosureArgs, ExtraArgs, Goal).
+	extend_closure({Functor}, ClosureArgs, ExtraArgs, {Goal}) :-
 		!,
 		extend_closure(Functor, ClosureArgs, ExtraArgs, Goal).
 	extend_closure(Functor, ClosureArgs, ExtraArgs, Goal) :-
@@ -410,6 +417,20 @@
 		number_codes(ClosureArity, ClosureArityCodes),
 		atom_codes(ClosureArityAtom, ClosureArityCodes),
 		atom_concat(AuxFunctor9, ClosureArityAtom, AuxFunctor).
+	aux_predicate_functor(MetaFunctor, MetaArity, {ClosureFunctor}, ClosureArity, AuxFunctor) :-
+		!,
+		atom_concat('_aux_', MetaFunctor, AuxFunctor0),
+		atom_concat(AuxFunctor0, '/', AuxFunctor1),
+		number_codes(MetaArity, MetaArityCodes),
+		atom_codes(MetaArityAtom, MetaArityCodes),
+		atom_concat(AuxFunctor1, MetaArityAtom, AuxFunctor2),
+		atom_concat(AuxFunctor2, '+{', AuxFunctor3),
+		atom_concat(AuxFunctor3, ClosureFunctor, AuxFunctor4),
+		atom_concat(AuxFunctor4, '/', AuxFunctor5),
+		number_codes(ClosureArity, ClosureArityCodes),
+		atom_codes(ClosureArityAtom, ClosureArityCodes),
+		atom_concat(AuxFunctor5, ClosureArityAtom, AuxFunctor6),
+		atom_concat(AuxFunctor6, '}', AuxFunctor).
 	aux_predicate_functor(MetaFunctor, MetaArity, ClosureFunctor, ClosureArity, AuxFunctor) :-
 		atom_concat('_aux_', MetaFunctor, AuxFunctor0),
 		atom_concat(AuxFunctor0, '/', AuxFunctor1),
