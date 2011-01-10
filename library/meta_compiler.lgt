@@ -3,8 +3,8 @@
 	implements(expanding)).
 
 	:- info([
-		version is 0.1,
-		date is 2011/01/09,
+		version is 0.2,
+		date is 2011/01/10,
 		author is 'Paulo Moura',
 		comment is 'Compiler for the "meta" object meta-predicates. Generates auxiliary predicates in order to avoid meta-call overheads.']).
 
@@ -22,6 +22,12 @@
 		retractall(generated_predicate(_)).
 
 	term_expansion((:- end_object), [(:- end_object)]) :-
+		retractall(generated_predicate(_)).
+
+	term_expansion((:- end_protocol), [(:- end_protocol)]) :-
+		retractall(generated_predicate(_)).
+
+	term_expansion((:- end_category), [(:- end_category)]) :-
 		retractall(generated_predicate(_)).
 
 	goal_expansion(meta::callable(Term), callable(Term)) :-
@@ -332,6 +338,7 @@
 
 	decompose_closure(Object::Closure, Object::Functor, Arity, Args) :-
 		!,
+		nonvar(Closure),
 		decompose_closure(Closure, Functor, Arity, Args).
 	decompose_closure(Closure, Functor, Arity, Args) :-
 		callable(Closure),
@@ -379,6 +386,30 @@
 	append([Head| Tail], List, [Head| Tail2]) :-
 		append(Tail, List, Tail2).
 
+	aux_predicate_functor(MetaFunctor, MetaArity, Object::ClosureFunctor, ClosureArity, AuxFunctor) :-
+		!,
+		atom_concat('_aux_', MetaFunctor, AuxFunctor0),
+		atom_concat(AuxFunctor0, '/', AuxFunctor1),
+		number_codes(MetaArity, MetaArityCodes),
+		atom_codes(MetaArityAtom, MetaArityCodes),
+		atom_concat(AuxFunctor1, MetaArityAtom, AuxFunctor2),
+		atom_concat(AuxFunctor2, '+', AuxFunctor3),
+		(	atom(Object) ->
+			atom_concat(AuxFunctor3, Object, AuxFunctor4),
+			atom_concat(AuxFunctor4, '.', AuxFunctor7)
+		;	functor(Object, ObjectFunctor, ObjectArity),
+			atom_concat(AuxFunctor3, ObjectFunctor, AuxFunctor4),
+			atom_concat(AuxFunctor4, '.', AuxFunctor5),
+			number_codes(ObjectArity, ObjectArityCodes),
+			atom_codes(ObjectArityAtom, ObjectArityCodes),
+			atom_concat(AuxFunctor5, ObjectArityAtom, AuxFunctor6),
+			atom_concat(AuxFunctor6, '.', AuxFunctor7)
+		),
+		atom_concat(AuxFunctor7, ClosureFunctor, AuxFunctor8),
+		atom_concat(AuxFunctor8, '/', AuxFunctor9),
+		number_codes(ClosureArity, ClosureArityCodes),
+		atom_codes(ClosureArityAtom, ClosureArityCodes),
+		atom_concat(AuxFunctor9, ClosureArityAtom, AuxFunctor).
 	aux_predicate_functor(MetaFunctor, MetaArity, ClosureFunctor, ClosureArity, AuxFunctor) :-
 		atom_concat('_aux_', MetaFunctor, AuxFunctor0),
 		atom_concat(AuxFunctor0, '/', AuxFunctor1),
