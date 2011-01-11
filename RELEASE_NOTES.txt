@@ -40,6 +40,9 @@ RELEASE NOTES
 
     Added predicate transpose/2 to the library object "pairs".
 
+    Added missing syntax coloring of the else/1 conditional compilation
+    directive to the GNU Source-highlight highlighter support.
+
     Added a note on the Logtalk text editing support available on the free
     MacOS X Kod text editor.
 
