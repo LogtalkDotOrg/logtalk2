@@ -43,7 +43,7 @@ RELEASE NOTES
     Added support for using the SyntaxHighlighter package (version 3.0.83 or
     later) by Alex Gorbatchev with Logtalk source code.
 
-    Added missing syntax coloring of the else/1 conditional compilation
+    Added missing syntax coloring of the else/0 conditional compilation
     directive to the GNU Source-highlight highlighter support.
 
     Added a note on the Logtalk text editing support available on the free
