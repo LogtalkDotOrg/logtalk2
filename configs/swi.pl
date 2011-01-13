@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: December 21, 2010
+%  last updated: January 13, 2010
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -66,7 +66,11 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 	!.
 
 '$lgt_predicate_property'(Pred, Prop) :-
-	predicate_property(Pred, Prop).
+	current_prolog_flag(autoload, Value),
+	setup_call_cleanup(
+		set_prolog_flag(autoload, false),
+		predicate_property(Pred, Prop),
+		set_prolog_flag(autoload, Value)).
 
 '$lgt_predicate_property'(thread_sleep(_), built_in).
 
