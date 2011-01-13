@@ -339,9 +339,10 @@
 			assertz(generated_predicate(AuxFunctor/5))
 		).
 
-	decompose_closure({Free}/Parameters>>Goal, _, Functor, Arity, FreeList, GFreeList) :-
+	decompose_closure({Free}/Parameters>>Goal, MetaArity, Functor, Arity, FreeList, GFreeList) :-
 		!,
 		callable(Goal),
+		length(Parameters, MetaArity),
 		gensym('_lambda_', Functor),
 		conjunction_to_list(Free, FreeList, Arity),
 		length(GFreeList, Arity),
@@ -387,9 +388,10 @@
 		append(ClosureArgs, Parameters, GoalArgs),
 		Goal =.. [ClosureFunctor| GoalArgs],
 		logtalk::compile_clauses([(Head :- Goal)]).
-	decompose_closure(Parameters>>Goal, _, Functor, 0, [], []) :-
+	decompose_closure(Parameters>>Goal, MetaArity, Functor, 0, [], []) :-
 		!,
 		callable(Goal),
+		length(Parameters, MetaArity),
 		gensym('_lambda_', Functor),
 		Head =.. [Functor| Parameters],
 		logtalk::compile_clauses([(Head :- Goal)]).
