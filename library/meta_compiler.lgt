@@ -348,6 +348,32 @@
 		append(FreeList, Parameters, Args),
 		Head =.. [Functor| Args],
 		logtalk::compile_clauses([(Head :- Goal)]).
+	decompose_closure({Free}/(Object::Closure), MetaArity, Functor, Arity, FreeList, GFreeList) :-
+		!,
+		callable(Closure),
+		gensym('_lambda_', Functor),
+		conjunction_to_list(Free, FreeList, Arity),
+		length(GFreeList, Arity),
+		length(Parameters, MetaArity),
+		append(FreeList, Parameters, Args),
+		Head =.. [Functor| Args],
+		Closure =.. [ClosureFunctor| ClosureArgs],
+		append(ClosureArgs, Parameters, GoalArgs),
+		Goal =.. [ClosureFunctor| GoalArgs],
+		logtalk::compile_clauses([(Head :- Object::Goal)]).
+	decompose_closure({Free}/{Closure}, MetaArity, Functor, Arity, FreeList, GFreeList) :-
+		!,
+		callable(Closure),
+		gensym('_lambda_', Functor),
+		conjunction_to_list(Free, FreeList, Arity),
+		length(GFreeList, Arity),
+		length(Parameters, MetaArity),
+		append(FreeList, Parameters, Args),
+		Head =.. [Functor| Args],
+		Closure =.. [ClosureFunctor| ClosureArgs],
+		append(ClosureArgs, Parameters, GoalArgs),
+		Goal =.. [ClosureFunctor| GoalArgs],
+		logtalk::compile_clauses([(Head :- {Goal})]).
 	decompose_closure({Free}/Closure, MetaArity, Functor, Arity, FreeList, GFreeList) :-
 		!,
 		callable(Closure),
