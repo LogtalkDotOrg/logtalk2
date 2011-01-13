@@ -3,8 +3,8 @@
 	implements(expanding)).
 
 	:- info([
-		version is 0.4,
-		date is 2011/01/12,
+		version is 0.5,
+		date is 2011/01/13,
 		author is 'Paulo Moura',
 		comment is 'Compiler for the "meta" object meta-predicates. Generates auxiliary predicates in order to avoid meta-call overheads.']).
 
@@ -149,14 +149,14 @@
 		decompose_closure(Closure, 2, Functor, Arity, Args, GArgs),
 		aux_predicate_functor(map, 3, Functor, Arity, AuxFunctor),
 		(	generated_predicate(AuxFunctor/3) ->
-			replace_functor([map_(List1, List2, Args)], map_, AuxFunctor, [ExpandedGoal])
+			replace_functor([map_(List1, Args, List2)], map_, AuxFunctor, [ExpandedGoal])
 		;	extend_closure(Functor, GArgs, [Head1, Head2], Goal),
 			Clauses0 = [
-					map_([], [], _),
-					(map_([Head1| Tail1], [Head2| Tail2], GArgs) :-
-						Goal, map_(Tail1, Tail2, GArgs))
+					map_([], _, []),
+					(map_([Head1| Tail1], GArgs, [Head2| Tail2]) :-
+						Goal, map_(Tail1, GArgs, Tail2))
 				],
-			replace_functor([map_(List1, List2, Args)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
+			replace_functor([map_(List1, Args, List2)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
 			logtalk::compile_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/3))
 		).
@@ -165,14 +165,14 @@
 		decompose_closure(Closure, 3, Functor, Arity, Args, GArgs),
 		aux_predicate_functor(map, 4, Functor, Arity, AuxFunctor),
 		(	generated_predicate(AuxFunctor/4) ->
-			replace_functor([map_(List1, List2, List3, Args)], map_, AuxFunctor, [ExpandedGoal])
+			replace_functor([map_(List1, Args, List2, List3)], map_, AuxFunctor, [ExpandedGoal])
 		;	extend_closure(Functor, GArgs, [Head1, Head2, Head3], Goal),
 			Clauses0 = [
-					map_([], [], [], _),
-					(map_([Head1| Tail1], [Head2| Tail2], [Head3| Tail3], GArgs) :-
-						Goal, map_(Tail1, Tail2, Tail3, GArgs))
+					map_([], _, [], []),
+					(map_([Head1| Tail1], GArgs, [Head2| Tail2], [Head3| Tail3]) :-
+						Goal, map_(Tail1, GArgs, Tail2, Tail3))
 				],
-			replace_functor([map_(List1, List2, List3, Args)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
+			replace_functor([map_(List1, Args, List2, List3)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
 			logtalk::compile_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/4))
 		).
@@ -181,14 +181,14 @@
 		decompose_closure(Closure, 4, Functor, Arity, Args, GArgs),
 		aux_predicate_functor(map, 5, Functor, Arity, AuxFunctor),
 		(	generated_predicate(AuxFunctor/5) ->
-			replace_functor([map_(List1, List2, List3, List4, Args)], map_, AuxFunctor, [ExpandedGoal])
+			replace_functor([map_(List1, Args, List2, List3, List4)], map_, AuxFunctor, [ExpandedGoal])
 		;	extend_closure(Functor, GArgs, [Head1, Head2, Head3, Head4], Goal),
 			Clauses0 = [
-					map_([], [], [], [], _),
-					(map_([Head1| Tail1], [Head2| Tail2], [Head3| Tail3], [Head4| Tail4], GArgs) :-
-						Goal, map_(Tail1, Tail2, Tail3, Tail4, GArgs))
+					map_([], _, [], [], []),
+					(map_([Head1| Tail1], GArgs, [Head2| Tail2], [Head3| Tail3], [Head4| Tail4]) :-
+						Goal, map_(Tail1, GArgs, Tail2, Tail3, Tail4))
 				],
-			replace_functor([map_(List1, List2, List3, List4, Args)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
+			replace_functor([map_(List1, Args, List2, List3, List4)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
 			logtalk::compile_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/5))
 		).
@@ -197,14 +197,14 @@
 		decompose_closure(Closure, 5, Functor, Arity, Args, GArgs),
 		aux_predicate_functor(map, 6, Functor, Arity, AuxFunctor),
 		(	generated_predicate(AuxFunctor/6) ->
-			replace_functor([map_(List1, List2, List3, List4, List5, Args)], map_, AuxFunctor, [ExpandedGoal])
+			replace_functor([map_(List1, Args, List2, List3, List4, List5)], map_, AuxFunctor, [ExpandedGoal])
 		;	extend_closure(Functor, GArgs, [Head1, Head2, Head3, Head4, Head5], Goal),
 			Clauses0 = [
-					map_([], [], [], [], [], _),
-					(map_([Head1| Tail1], [Head2| Tail2], [Head3| Tail3], [Head4| Tail4], [Head5| Tail5], GArgs) :-
-						Goal, map_(Tail1, Tail2, Tail3, Tail4, Tail5, GArgs))
+					map_([], _, [], [], [], []),
+					(map_([Head1| Tail1], GArgs, [Head2| Tail2], [Head3| Tail3], [Head4| Tail4], [Head5| Tail5]) :-
+						Goal, map_(Tail1, GArgs, Tail2, Tail3, Tail4, Tail5))
 				],
-			replace_functor([map_(List1, List2, List3, List4, List5, Args)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
+			replace_functor([map_(List1, Args, List2, List3, List4, List5)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
 			logtalk::compile_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/6))
 		).
@@ -213,14 +213,14 @@
 		decompose_closure(Closure, 6, Functor, Arity, Args, GArgs),
 		aux_predicate_functor(map, 7, Functor, Arity, AuxFunctor),
 		(	generated_predicate(AuxFunctor/7) ->
-			replace_functor([map_(List1, List2, List3, List4, List5, List6, Args)], map_, AuxFunctor, [ExpandedGoal])
+			replace_functor([map_(List1, Args, List2, List3, List4, List5, List6)], map_, AuxFunctor, [ExpandedGoal])
 		;	extend_closure(Functor, GArgs, [Head1, Head2, Head3, Head4, Head5, Head6], Goal),
 			Clauses0 = [
-					map_([], [], [], [], [], [], _),
-					(map_([Head1| Tail1], [Head2| Tail2], [Head3| Tail3], [Head4| Tail4], [Head5| Tail5], [Head6| Tail6], GArgs) :-
-						Goal, map_(Tail1, Tail2, Tail3, Tail4, Tail5, Tail6, GArgs))
+					map_([], _, [], [], [], [], []),
+					(map_([Head1| Tail1], GArgs, [Head2| Tail2], [Head3| Tail3], [Head4| Tail4], [Head5| Tail5], [Head6| Tail6]) :-
+						Goal, map_(Tail1, GArgs, Tail2, Tail3, Tail4, Tail5, Tail6))
 				],
-			replace_functor([map_(List1, List2, List3, List4, List5, List6, Args)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
+			replace_functor([map_(List1, Args, List2, List3, List4, List5, List6)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
 			logtalk::compile_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/7))
 		).
@@ -229,14 +229,14 @@
 		decompose_closure(Closure, 7, Functor, Arity, Args, GArgs),
 		aux_predicate_functor(map, 8, Functor, Arity, AuxFunctor),
 		(	generated_predicate(AuxFunctor/8) ->
-			replace_functor([map_(List1, List2, List3, List4, List5, List6, List7, Args)], map_, AuxFunctor, [ExpandedGoal])
+			replace_functor([map_(List1, Args, List2, List3, List4, List5, List6, List7)], map_, AuxFunctor, [ExpandedGoal])
 		;	extend_closure(Functor, GArgs, [Head1, Head2, Head3, Head4, Head5, Head6, Head7], Goal),
 			Clauses0 = [
-					map_([], [], [], [], [], [], [], _),
-					(map_([Head1| Tail1], [Head2| Tail2], [Head3| Tail3], [Head4| Tail4], [Head5| Tail5], [Head6| Tail6], [Head7| Tail7], GArgs) :-
-						Goal, map_(Tail1, Tail2, Tail3, Tail4, Tail5, Tail6, Tail7, GArgs))
+					map_([], _, [], [], [], [], [], []),
+					(map_([Head1| Tail1], GArgs, [Head2| Tail2], [Head3| Tail3], [Head4| Tail4], [Head5| Tail5], [Head6| Tail6], [Head7| Tail7]) :-
+						Goal, map_(Tail1, GArgs, Tail2, Tail3, Tail4, Tail5, Tail6, Tail7))
 				],
-			replace_functor([map_(List1, List2, List3, List4, List5, List6, List7, Args)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
+			replace_functor([map_(List1, Args, List2, List3, List4, List5, List6, List7)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
 			logtalk::compile_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/8))
 		).
