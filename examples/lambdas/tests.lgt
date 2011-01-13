@@ -74,7 +74,7 @@
 		Ys == [[1], [2]].
 
 	succeeds(lambdas_14) :-
-		meta::map([X,[X]]>>true,Xs,[[1],[2]]),!,         %%%% need to check whether there should be a choicepoint.
+		meta::map([X,[X]]>>true,Xs,[[1],[2]]),
 		Xs == [1, 2].
 
 	succeeds(lambdas_15) :-

@@ -15,6 +15,11 @@ RELEASE NOTES
 
 2.42.2 - January ??, 2010
 
+    Updated the Logtalk compiler in order to allow checking for module
+    predicate properties without requiring importing the predicates into
+    "user" (note, however, that the module must still be loaded prior to
+    the compilation of source files calling the module predicates).
+
     Added a compile_clauses/1 public method, inspired by a predicate with
     a similar name in SWI-Prolog, to the built-in object "logtalk". This
     method is usually called from goal_expansion/2 hooks in order to compile

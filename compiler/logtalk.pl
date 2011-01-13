@@ -10005,8 +10005,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
 		'$lgt_tr_body'(Module::Pred, TPred, DPred, Ctx)
-	;	catch('$lgt_predicate_property'(Pred, imported_from(Module)), _, fail),
-		catch('$lgt_predicate_property'(Pred, meta_predicate(OriginalMeta)), _, fail) ->
+	;	catch('$lgt_predicate_property'(':'(Module, Pred), meta_predicate(OriginalMeta)), _, fail) ->
 		% we're compiling a call to a module meta-predicate:
 		functor(Pred, Functor, Arity),
 		functor(OverridingMeta, Functor, Arity),
@@ -10527,8 +10526,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		true
 	;	% meta-predicates specified in use_module/2 directives
 		'$lgt_pp_use_module_predicate_'(Module, Original, Pred),
-		catch('$lgt_predicate_property'(Original, imported_from(Module)), _, fail),
-		catch('$lgt_predicate_property'(Original, meta_predicate(Meta)), _, fail) ->
+		catch('$lgt_predicate_property'(':'(Module, Original), meta_predicate(Meta)), _, fail) ->
 		true
 	),
 	Pred =.. [_| PredArgs],
@@ -10548,8 +10546,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 
 '$lgt_tr_body'(Alias, ':'(Module, TPred), ':'(Module, DPred), Ctx) :-	% meta-predicates
 	'$lgt_pp_use_module_predicate_'(Module, Pred, Alias),
-	catch('$lgt_predicate_property'(Pred, imported_from(Module)), _, fail),
-	catch('$lgt_predicate_property'(Pred, meta_predicate(OriginalMeta)), _, fail),
+	catch('$lgt_predicate_property'(':'(Module, Pred), meta_predicate(OriginalMeta)), _, fail),
 	functor(Pred, Functor, Arity),
 	functor(OverridingMeta, Functor, Arity),
 	(	'$lgt_pp_meta_predicate_'(':'(Module, OverridingMeta)) ->
@@ -14164,8 +14161,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 
 '$lgt_fix_predicate_calls'(':'(Module, Pred), ':'(Module, TPred), _) :-
 	functor(Pred, Functor, Arity),
-	catch('$lgt_predicate_property'(Pred, imported_from(Module)), _, fail),
-	catch('$lgt_predicate_property'(Pred, meta_predicate(OriginalMeta)), _, fail),
+	catch('$lgt_predicate_property'(':'(Module, Pred), meta_predicate(OriginalMeta)), _, fail),
 	functor(OverridingMeta, Functor, Arity),
 	(	'$lgt_pp_meta_predicate_'(':'(Module, OverridingMeta)) ->
 		% we're overriding the original meta-predicate template:
