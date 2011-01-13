@@ -73,6 +73,7 @@ logtalk_library_path(instvars, examples('instvars/')).
 logtalk_library_path(integration, threads('integration/')).
 logtalk_library_path(integration2d, threads('integration2d/')).
 logtalk_library_path(lambdas, examples('lambdas/')).
+logtalk_library_path(lambdas_compiled, examples('lambdas_compiled/')).
 logtalk_library_path(lo_planner, examples('lo/planner/')).
 logtalk_library_path(lo_travellers, examples('lo/travellers/')).
 logtalk_library_path(logging, examples('logging/')).
@@ -81,6 +82,7 @@ logtalk_library_path(lpa_faults, examples('lpa/faults/')).
 logtalk_library_path(lpa_timetables, examples('lpa/timetables/')).
 logtalk_library_path(metainterpreters, examples('metainterpreters/')).
 logtalk_library_path(metapredicates, examples('metapredicates/')).
+logtalk_library_path(metapredicates_compiled, examples('metapredicates_compiled/')).
 logtalk_library_path(mi, examples('mi/')).
 logtalk_library_path(miscellaneous, examples('miscellaneous/')).
 logtalk_library_path(modules, examples('modules/')).

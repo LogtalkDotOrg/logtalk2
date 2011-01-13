@@ -48,6 +48,10 @@ RELEASE NOTES
 
     Added predicate transpose/2 to the library object "pairs".
 
+    Added two pseudo-examples for testing purposes, "lambdas_compiled" and
+    "metapredicates_compiled", that make use of the new library object
+    "meta_compiler".
+
     Added support for using the SyntaxHighlighter package (version 3.0.83 or
     later) by Alex Gorbatchev with Logtalk source code.
 
