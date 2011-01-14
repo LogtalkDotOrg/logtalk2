@@ -69,9 +69,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.2,
+		version is 1.21,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2010/12/19,
+		date is 2011/01/14,
 		comment is 'Unit tests for the "metapredicates" example.']).
 
 	% This example defines a plain Prolog predicate even_integer/1. As the
@@ -160,11 +160,14 @@
 		Nth == 55.
 
 	test(metapredicates_18) :-
-		company::(company(C1), get_salary(company(C1), S1)),
+		company::company(C1),
+		company::get_salary(company(C1), S1),
 		S1 == 179998.
 
 	test(metapredicates_19) :-
-		company::(company(C1), cut_salary(company(C1), C2), get_salary(C2, S2)),
+		company::company(C1),
+		company::cut_salary(company(C1), C2),
+		company::get_salary(C2, S2),
 		S2 == 89999.
 
 :- end_object.
