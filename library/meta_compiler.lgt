@@ -90,7 +90,7 @@
 			Clauses0 = [
 				findall_member_([], _, _, []),
 				(findall_member_([GHead| GTail], GMember, GArgs, GResult) :-
-					\+ \+ (GHead = GMember, GGoal),
+					\+ (GHead = GMember, GGoal),
 					!,
 	    			findall_member_(GTail, GMember, GArgs, GResult)),
 				(findall_member_([GHead| GTail], GMember, GArgs, [GHead| GResult]) :-
@@ -103,8 +103,8 @@
 
 	goal_expansion(meta::findall_member(Member, List, Test, Result, Tail), ExpandedGoal) :-
 		decompose_closure(Test, 0, Functor, Arity, Args, GArgs),
-		aux_predicate_functor(findall_member_, 4, Functor, Arity, AuxFunctor),
-		(	generated_predicate(AuxFunctor/4) ->
+		aux_predicate_functor(findall_member_, 5, Functor, Arity, AuxFunctor),
+		(	generated_predicate(AuxFunctor/5) ->
 			replace_functor([findall_member_(List, Member, Args, Result, Tail)], findall_member_, AuxFunctor, [ExpandedGoal])
 		;	extend_closure(Functor, GArgs, [], GGoal),
 			Clauses0 = [
@@ -118,7 +118,7 @@
 				],
 			replace_functor([findall_member_(List, Member, Args, Result, Tail)| Clauses0], findall_member_, AuxFunctor, [ExpandedGoal| Clauses]),
 			logtalk::compile_clauses(Clauses),
-			assertz(generated_predicate(AuxFunctor/4))
+			assertz(generated_predicate(AuxFunctor/5))
 		).
 
 	goal_expansion(meta::partition(Closure, List, Included, Excluded), ExpandedGoal) :-
