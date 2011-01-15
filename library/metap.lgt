@@ -2,8 +2,8 @@
 :- protocol(metap).
 
 	:- info([
-		version is 3.4,
-		date is 2010/12/20,
+		version is 4.0,
+		date is 2011/01/15,
 		author is 'Paulo Moura',
 		comment is 'Useful meta-predicates protocol.']).
 
@@ -26,6 +26,20 @@
 	:- info(exclude/3, [
 		comment is 'Returns a list of all list elements that fail to satisfy a predicate.',
 		argnames is ['Closure', 'List', 'Excluded']]).
+
+	:- public(findall_member/4).
+	:- meta_predicate(findall_member(*, *, 0, *)).
+	:- mode(findall_member(@term, +list, @callable, -list), one).
+	:- info(findall_member/4, [
+		comment is 'Finds all members of a list that satisfy a given test.',
+		argnames is ['Member', 'List', 'Test', 'Result']]).
+
+	:- public(findall_member/5).
+	:- meta_predicate(findall_member(*, *, 0, *, *)).
+	:- mode(findall_member(@term, +list, @callable, -list, +list), one).
+	:- info(findall_member/5, [
+		comment is 'Finds all members of a list that satisfy a given test appending the given tail to the result.',
+		argnames is ['Member', 'List', 'Test', 'Result', 'Tail']]).
 
 	:- public(partition/4).
 	:- meta_predicate(partition(1, *, *, *)).

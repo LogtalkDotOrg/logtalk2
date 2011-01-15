@@ -3,8 +3,8 @@
 	implements(metap)).
 
 	:- info([
-		version is 2.7,
-		date is 2010/12/20,
+		version is 3.0,
+		date is 2011/01/15,
 		author is 'Paulo Moura',
 		comment is 'Some useful meta-predicates.']).
 
@@ -58,6 +58,32 @@
 	:- meta_predicate(exclude(1, *, *)).
 	exclude(Closure, List, Excluded) :-
 		exclude_(List, Closure, Excluded).
+
+	:- meta_predicate(findall_member_(*, *, 0, *)).
+	findall_member_([], _, _, []).
+	findall_member_([Head| Tail], Member, Test, Result) :-
+		\+ (Head = Member, call(Test)),
+		!,
+	    findall_member_(Tail, Member, Test, Result).
+	findall_member_([Head| Tail], Member, Test, [Head| Result]) :-
+	    findall_member_(Tail, Member, Test, Result).
+
+	:- meta_predicate(findall_member(*, *, 0, *)).
+	findall_member(Member, List, Test, Result) :-
+		findall_member_(List, Member, Test, Result).
+
+	:- meta_predicate(findall_member_(*, *, 0, *, *)).
+	findall_member_([], _, _, Result, Result).
+	findall_member_([Head| Tail], Member, Test, Result0, Result) :-
+	    \+ (Head = Member, call(Test)),
+	    !,
+	    findall_member_(Tail, Member, Test, Result0, Result).
+	findall_member_([Head| Tail], Member, Test, [Head| Result0], Result) :-
+	    findall_member_(Tail, Member, Test, Result0, Result).
+
+	:- meta_predicate(findall_member(*, *, 0, *, *)).
+	findall_member(Member, List, Test, Result, Tail) :-
+		findall_member_(List, Member, Test, Result, Tail).
 
 	:- meta_predicate(partition_(*, 1, *, *)).
 	partition_([], _, [], []).

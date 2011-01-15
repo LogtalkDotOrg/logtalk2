@@ -28,6 +28,9 @@ RELEASE NOTES
     Updated the SWI-Prolog config file in order to prevent the auto-loading
     of module libraries when querying predicate properties from Logtalk.
 
+    Added predicates findall_member/4-5 to the library object "meta" (based
+    on Richard O'Keefe's draft Prolog library proposal).
+
     Added a library object, "meta_compiler", that can be used as an hook
     object to expand calls to the meta-predicates defined in the library
     object "meta" in order to avoid the meta-call overheads.
