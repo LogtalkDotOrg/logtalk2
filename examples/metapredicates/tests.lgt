@@ -170,4 +170,12 @@
 		company::get_salary(C2, S2),
 		S2 == 89999.
 
+	test(metapredicates_20) :-
+		meta::findall_member(N, [1, 2, 3, 4, 5], (N mod 2 =:= 0), L),
+		L == [2, 4].
+
+	test(metapredicates_21) :-
+		meta::findall_member(N, [1, 2, 3, 4, 5], (N mod 2 =:= 0), L, [6, 8]),
+		L == [2, 4, 6, 8].
+
 :- end_object.
