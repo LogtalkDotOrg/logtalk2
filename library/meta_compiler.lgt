@@ -3,7 +3,7 @@
 	implements(expanding)).
 
 	:- info([
-		version is 0.6,
+		version is 0.7,
 		date is 2011/01/15,
 		author is 'Paulo Moura',
 		comment is 'Compiler for the "meta" object meta-predicates. Generates auxiliary predicates in order to avoid meta-call overheads.']).
@@ -392,6 +392,7 @@
 	decompose_closure({Free}/(Object::Closure), MetaArity, Functor, Arity, FreeList, GFreeList) :-
 		!,
 		callable(Closure),
+		\+ control_construct(Closure),
 		gensym('_lambda_', Functor),
 		conjunction_to_list(Free, FreeList, Arity),
 		length(GFreeList, Arity),
@@ -405,6 +406,7 @@
 	decompose_closure({Free}/{Closure}, MetaArity, Functor, Arity, FreeList, GFreeList) :-
 		!,
 		callable(Closure),
+		\+ control_construct(Closure),
 		gensym('_lambda_', Functor),
 		conjunction_to_list(Free, FreeList, Arity),
 		length(GFreeList, Arity),
@@ -418,6 +420,7 @@
 	decompose_closure({Free}/Closure, MetaArity, Functor, Arity, FreeList, GFreeList) :-
 		!,
 		callable(Closure),
+		\+ control_construct(Closure),
 		gensym('_lambda_', Functor),
 		conjunction_to_list(Free, FreeList, Arity),
 		length(GFreeList, Arity),
@@ -445,6 +448,7 @@
 		decompose_closure(Closure, MetaArity, Functor, Arity, Args, GArgs).
 	decompose_closure(Closure, _, Functor, Arity, Args, GArgs) :-
 		callable(Closure),
+		\+ control_construct(Closure),
 		Closure =.. [Functor| Args],
 		functor(Closure, Functor, Arity),
 		functor(GClosure, Functor, Arity),
@@ -487,6 +491,17 @@
 		replace_functor_body(Goal02, Functor, AuxFunctor, Goal2).
 	replace_functor_body(Goal0, Functor, AuxFunctor, Goal) :-
 		replace_functor_head(Goal0, Functor, AuxFunctor, Goal).
+
+	control_construct(','(_, _)).
+	control_construct(';'(_, _)).
+	control_construct('->'(_, _)).
+	control_construct('\+'(_)).
+	control_construct('^^'(_)).
+	control_construct('::'(_, _)).
+	control_construct('::'(_)).
+	control_construct('/'(_, _)).
+	control_construct('>>'(_, _)).
+	control_construct('<<'(_, _)).
 
 	conjunction_to_list(Conjunction, Terms, N) :-
 		conjunction_to_list(Conjunction, Terms, 1, N).
