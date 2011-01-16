@@ -177,6 +177,10 @@ instvars
 lambdas
 	example of using lambda expressions
 
+lambdas_compiled
+	pseudo-example for testing compilation of calls to library
+	meta-predicates with lambda expressions as meta-arguments
+
 lo
 	examples adapted from the Francis G. McCabe L&O system
 
@@ -193,6 +197,10 @@ lpa
 
 metapredicates
 	example of using meta-predicates in Logtalk objects
+
+metapredicates_compiled
+	pseudo-example for testing compilation of calls to library
+	meta-predicates
 
 metainterpreters
 	some examples of simple meta-interpreters defined as categories 
