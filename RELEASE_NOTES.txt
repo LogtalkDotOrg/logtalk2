@@ -20,6 +20,9 @@ RELEASE NOTES
     "user" (note, however, that the module must still be loaded prior to
     the compilation of source files calling the module predicates).
 
+    Added support for compiling Free/Goal lambda expression calls (by
+    automatically generating an auxiliary predicate).
+
     Added a compile_clauses/1 public method, inspired by a predicate with
     a similar name in SWI-Prolog, to the built-in object "logtalk". This
     method is usually called from goal_expansion/2 hooks in order to compile

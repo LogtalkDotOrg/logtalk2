@@ -301,6 +301,8 @@
 
 :- dynamic('$lgt_pp_term_position_'/1).						% '$lgt_pp_term_position_'(Position)
 
+:- dynamic('$lgt_pp_aux_predicate_counter_'/1).				% '$lgt_pp_aux_predicate_counter_'(Counter)
+
 
 
 
@@ -6281,7 +6283,9 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	retractall('$lgt_pp_referenced_protocol_'(_)),
 	retractall('$lgt_pp_referenced_category_'(_)),
 	retractall('$lgt_pp_threaded_'),
-	retractall('$lgt_pp_synchronized_').
+	retractall('$lgt_pp_synchronized_'),
+	retractall('$lgt_pp_aux_predicate_counter_'(_)),
+	asserta('$lgt_pp_aux_predicate_counter_'(0)).
 
 
 
@@ -9582,10 +9586,24 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	nonvar(Free),
 	nonvar(Goal),
 	!,
-	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-	TPred = '$lgt_lambda'(Free, TGoal),
-	DPred = '$lgt_debugger.goal'(Free/Goal, '$lgt_lambda'(Free, DGoal), ExCtx).
+	(	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
+	 	'$lgt_comp_ctx_meta_vars'(Ctx, []) ->
+		% generate an auxiliary predicate to replace the lambda expression
+		'$lgt_gen_aux_predicate_functor'('_lambda_', Functor),
+		(	Free = {Terms} ->
+			'$lgt_conjunction_to_list'(Terms, Args)
+		;	Args = []
+		),
+		Head =.. [Functor| Args],
+		'$lgt_compile_clauses'([(Head :- Goal)]),
+		'$lgt_tr_body'(Head, TPred, DPred, Ctx)
+	;	% either runtime traslation or the lambda expression appears in the
+		% body of a meta-predicate clause
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+		'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
+		TPred = '$lgt_lambda'(Free, TGoal),
+		DPred = '$lgt_debugger.goal'(Free/Goal, '$lgt_lambda'(Free, DGoal), ExCtx)
+	).
 
 '$lgt_tr_body'(Free/Goal, TPred, DPred, Ctx) :-
 	!,
@@ -10827,6 +10845,21 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		true
 	;	assertz('$lgt_pp_calls_predicate_'(Functor, Arity, STFunctor, TArity))
 	).
+
+
+
+% '$lgt_gen_aux_predicate_functor'(+atom, -atom)
+%
+% generates a new functor for an auxiliary predicate
+% based on a base atom and an entity global counter
+
+'$lgt_gen_aux_predicate_functor'(Base, Functor) :-
+	retract('$lgt_pp_aux_predicate_counter_'(Old)),
+	New is Old + 1,
+	asserta('$lgt_pp_aux_predicate_counter_'(New)),
+	number_codes(New, NewCodes),
+	atom_codes(NewAtom, NewCodes),
+	atom_concat(Base, NewAtom, Functor).
 
 
 
@@ -14649,6 +14682,29 @@ current_logtalk_flag(version, version(2, 42, 2)).
 
 
 
+% converts a conjunction into a list of terms
+
+'$lgt_conjunction_to_list'(Conjunction, Terms) :-
+	'$lgt_conjunction_to_list'(Conjunction, Terms, _).
+
+
+'$lgt_conjunction_to_list'(Conjunction, Terms, N) :-
+	'$lgt_conjunction_to_list'(Conjunction, Terms, 1, N).
+
+
+'$lgt_conjunction_to_list'(Term, [Term], N, N) :-
+	var(Term),
+	!.
+
+'$lgt_conjunction_to_list'((Term, Conjunction), [Term| Terms], N0, N) :-
+	!,
+	N1 is N0 + 1,
+	'$lgt_conjunction_to_list'(Conjunction, Terms, N1, N).
+
+'$lgt_conjunction_to_list'(Term, [Term], N, N).
+
+
+
 % generates and asserts the initialization goal for the entity being compiled
 
 '$lgt_gen_entity_init_goal' :-
@@ -18026,7 +18082,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		functor(Pred, PredFunctor, PredArity),
 		functor(GPred, PredFunctor, PredArity),
 		'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),
-		'$lgt_exec_ctx'(GExCtx, GSender, GObj, GObj, GMetaVars, _),
+		'$lgt_exec_ctx'(GExCtx, GSender, GObj, GObj, GMetaVars, []),
 		call(Def, GPred, GExCtx, GCall, DefCtn),
 		!,	% found the predicate definition; use it only if it's safe
 		'$lgt_safe_static_binding_paths'(GObj, DclCtn, DefCtn),
@@ -18040,8 +18096,8 @@ current_logtalk_flag(version, version(2, 42, 2)).
 			% next we cannot call '$lgt_current_object_'/11 to find the Prefix as Sender may not be
 			% instantiated (e.g. when meta-predicate calls are made within other meta-predicate calls)
 			'$lgt_pp_entity'(_, _, Prefix, _, _),
-			'$lgt_comp_ctx'(Ctx, _, Sender, Sender, Obj, Prefix, [], _, ExCtx, _, _),
-			'$lgt_exec_ctx'(ExCtx, Sender, Sender, Obj, [], _),
+			'$lgt_comp_ctx'(Ctx, _, Sender, Sender, Obj, Prefix, [], _, ExCtx, _, []),
+			'$lgt_exec_ctx'(ExCtx, Sender, Sender, Obj, [], []),
 			'$lgt_tr_static_binding_meta_args'(Args, MArgs, Ctx, TArgs, _),
 			TPred =.. [PredFunctor| TArgs],
 			Obj = GObj, TPred = GPred, Sender = GSender, Call = GCall
