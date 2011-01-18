@@ -3,8 +3,8 @@
 	implements(metap)).
 
 	:- info([
-		version is 3.0,
-		date is 2011/01/15,
+		version is 4.0,
+		date is 2011/01/18,
 		author is 'Paulo Moura',
 		comment is 'Some useful meta-predicates.']).
 
@@ -14,20 +14,6 @@
 	:- alias(metap, fold_right/4, foldr/4).
 	:- alias(metap, scan_left/4, scanl/4).
 	:- alias(metap, scan_right/4, scanr/4).
-
-	:- if(predicate_property(callable(_), built_in)).
-
-		callable(Term) :-
-			{callable(Term)}.
-
-	:- else.
-
-		callable(Term) :-
-			nonvar(Term),
-			functor(Term, Functor, _),
-			atom(Functor).
-
-	:- endif.
 
 	:- meta_predicate(include_(*, 1, *)).
 	include_([], _, []).
@@ -116,13 +102,6 @@
 	:- meta_predicate(partition(3, *, *, *, *, *)).
 	partition(Closure, List, Value, Less, Equal, Greater) :-
 		partition_(List, Closure, Value, Less, Equal, Greater).
-
-	:- meta_predicate(ignore(0)).
-	ignore(Goal) :-
-		(	call(Goal) ->
-			true
-		;	true
-		).
 
 	:- meta_predicate(fold_left_(*, 3, *, *)).
 	fold_left_([], _, Result, Result).

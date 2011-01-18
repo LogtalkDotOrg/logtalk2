@@ -2,16 +2,10 @@
 :- protocol(metap).
 
 	:- info([
-		version is 4.0,
-		date is 2011/01/15,
+		version is 5.0,
+		date is 2011/01/18,
 		author is 'Paulo Moura',
 		comment is 'Useful meta-predicates protocol.']).
-
-	:- public(callable/1).
-	:- mode(callable(@term), zero_or_one).
-	:- info(callable/1, [
-		comment is 'True if the argument can be called as a goal.',
-		argnames is ['Term']]).
 
 	:- public(include/3).
 	:- meta_predicate(include(1, *, *)).
@@ -54,13 +48,6 @@
 	:- info(partition/6, [
 		comment is 'Partitions a list in lists with values less, equal, and greater than a given value using a comparison predicate with the same argument order as compare/3.',
 		argnames is ['Closure', 'List', 'Value', 'Less', 'Equal', 'Greater']]).
-
-	:- public(ignore/1).
-	:- meta_predicate(ignore(0)).
-	:- mode(ignore(@callable), one).
-	:- info(ignore/1, [
-		comment is 'Calls Goal once but always succeeds, even if Goal fails.',
-		argnames is ['Goal']]).
 
 	:- public(fold_left/4).
 	:- meta_predicate(fold_left(3, *, *, *)).

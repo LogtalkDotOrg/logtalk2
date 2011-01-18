@@ -33,11 +33,6 @@
 	term_expansion((:- end_category), [(:- end_category)]) :-
 		retractall(generated_predicate(_)).
 
-	goal_expansion(meta::callable(Term), callable(Term)) :-
-		predicate_property(callable(_), built_in).
-
-	goal_expansion(meta::ignore(Goal), (Goal->true;true)).
-
 	goal_expansion(meta::include(Closure, List, Included), ExpandedGoal) :-
 		decompose_closure(Closure, 1, Functor, Arity, Args, GArgs),
 		aux_predicate_functor(include, 3, Functor, Arity, AuxFunctor),
