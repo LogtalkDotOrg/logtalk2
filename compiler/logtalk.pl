@@ -3823,6 +3823,23 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		throw(error(type_error(callable, Closure), Call, This))
 	).
 
+'$lgt_metacall'(Obj<<Closure, ExtraArgs, _, _, This, _) :-
+	!,
+	(	var(Obj) ->
+		Call =.. [call, Obj<<Closure| ExtraArgs],
+		throw(error(instantiation_error, Call, This))
+	;	var(Closure) ->
+		Call =.. [call, Obj<<Closure| ExtraArgs],
+		throw(error(instantiation_error, Call, This))
+	;	callable(Obj), callable(Closure) ->
+		Closure =.. [Functor| Args],
+		'$lgt_append'(Args, ExtraArgs, FullArgs),
+		Goal =.. [Functor| FullArgs],
+		'$lgt_call_within_context_nv'(Obj, Goal, This)
+	;	Call =.. [call, Obj<<Closure| ExtraArgs],
+		throw(error(type_error(callable, Closure), Call, This))
+	).
+
 '$lgt_metacall'(':'(Module, Closure), ExtraArgs, _, _, This, _) :-
 	!,
 	(	var(Module) ->
