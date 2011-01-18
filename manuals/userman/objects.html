@@ -439,7 +439,7 @@ The following predicates are defined:
 		<dd>Expands a file specification in library notation to a full operating-system path.</dd>
 	<dt><code>loaded_file(File, Directory)</code></dt>
 		<dd>Returns the name of currently loaded source files (with extension) and the source file directories.</dd>
-	<dt><code>compile_clauses(Clauses)</code></dt>
+	<dt><code>compile_aux_clauses(Clauses)</code></dt>
 		<dd>Compiles a list of clauses in the context of the entity under compilation. This method is usually called from <code>goal_expansion/2</code> hooks in order to compile auxiliary clauses generated for supporting an expanded goal. The compilation of the clauses avoids the risk of making the predicate whose clause is being goal-expanded discontiguous by accident.</dd>
 	<dt><code>compile_predicate_heads(Heads, TranslatedHeads)</code></dt>
 		<dd>Compiles a predicate head, a list of predicate heads, or a conjunction of predicate heads in the context of the entity being compiled.</dd>

@@ -54,7 +54,7 @@
 					include_(GTail, GArgs, GRest))
 				],
 			replace_functor([include_(List, Args, Included)| Clauses0], include_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/3))
 		).
 
@@ -77,7 +77,7 @@
 					exclude_(GTail, GArgs, GRest))
 				],
 			replace_functor([exclude_(List, Args, Excluded)| Clauses0], exclude_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/3))
 		).
 
@@ -97,7 +97,7 @@
 	    			findall_member_(GTail, GMember, GArgs, GResult))
 				],
 			replace_functor([findall_member_(List, Member, Args, Result)| Clauses0], findall_member_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/4))
 		).
 
@@ -117,7 +117,7 @@
 					findall_member_(GTail, GMember, GArgs, GResult0, GResult))
 				],
 			replace_functor([findall_member_(List, Member, Args, Result, Tail)| Clauses0], findall_member_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/5))
 		).
 
@@ -139,7 +139,7 @@
 					partition_(GTail, GArgs, GRestIncluded, GRestExcluded))
 				],
 			replace_functor([partition_(List, Args, Included, Excluded)| Clauses0], partition_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/4))
 		).
 
@@ -162,7 +162,7 @@
 					partition_(Xs, Y, GArgs, RLess, REqual, RGreater))
 				],
 			replace_functor([partition_(List, Value, Args, Less, Equal, Greater)| Clauses0], partition_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/6))
 		).
 
@@ -178,7 +178,7 @@
 						GGoal, map_(GTail, GArgs))
 				],
 			replace_functor([map_(List, Args)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/2))
 		).
 
@@ -197,7 +197,7 @@
 						GGoal, map_(GTail1, GArgs, GTail2))
 				],
 			replace_functor([map_(List1, Args, List2)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/3))
 		).
 
@@ -213,7 +213,7 @@
 						GGoal, map_(GTail1, GArgs, GTail2, GTail3))
 				],
 			replace_functor([map_(List1, Args, List2, List3)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/4))
 		).
 
@@ -229,7 +229,7 @@
 						GGoal, map_(GTail1, GArgs, GTail2, GTail3, GTail4))
 				],
 			replace_functor([map_(List1, Args, List2, List3, List4)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/5))
 		).
 
@@ -245,7 +245,7 @@
 						GGoal, map_(GTail1, GArgs, GTail2, GTail3, GTail4, GTail5))
 				],
 			replace_functor([map_(List1, Args, List2, List3, List4, List5)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/6))
 		).
 
@@ -261,7 +261,7 @@
 						GGoal, map_(GTail1, GArgs, GTail2, GTail3, GTail4, GTail5, GTail6))
 				],
 			replace_functor([map_(List1, Args, List2, List3, List4, List5, List6)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/7))
 		).
 
@@ -277,7 +277,7 @@
 						GGoal, map_(GTail1, GArgs, GTail2, GTail3, GTail4, GTail5, GTail6, GTail7))
 				],
 			replace_functor([map_(List1, Args, List2, List3, List4, List5, List6, List7)| Clauses0], map_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/8))
 		).
 
@@ -293,7 +293,7 @@
 						GGoal, fold_left_(GTail, GArgs, GAcc2, GResult))
 				],
 			replace_functor([fold_left_(List, Args, Acc, Result)| Clauses0], fold_left_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/4))
 		).
 
@@ -312,7 +312,7 @@
 						fold_right_(GTail, GArgs, GAcc, GAcc2), GGoal)
 				],
 			replace_functor([fold_right_(List, Args, Acc, Result)| Clauses0], fold_right_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/4))
 		).
 
@@ -331,7 +331,7 @@
 						GGoal, scan_left_(GTail, GArgs, GAcc2, GResults))
 				],
 			replace_functor([scan_left_(List, Args, Acc, Results)| Clauses0], scan_left_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/4))
 		).
 
@@ -350,7 +350,7 @@
 						scan_right_(GTail, GArgs, GAcc, [GAcc2| GResults]), GGoal)
 				],
 			replace_functor([scan_right_(List, Args, Acc, Results)| Clauses0], scan_right_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/4))
 		).
 
@@ -375,7 +375,7 @@
 						map_reduce_(GTail, GMapArgs, GReduceArgs, GAcc2, GResult))
 				],
 			replace_functor([map_reduce_(List, MapArgs, ReduceArgs, Acc, Result)| Clauses0], map_reduce_, AuxFunctor, [ExpandedGoal| Clauses]),
-			logtalk::compile_clauses(Clauses),
+			logtalk::compile_aux_clauses(Clauses),
 			assertz(generated_predicate(AuxFunctor/5))
 		).
 
@@ -388,7 +388,7 @@
 		length(GFreeList, Arity),
 		append(FreeList, Parameters, Args),
 		Head =.. [Functor| Args],
-		logtalk::compile_clauses([(Head :- Goal)]).
+		logtalk::compile_aux_clauses([(Head :- Goal)]).
 	decompose_closure({Free}/(Object::Closure), MetaArity, Functor, Arity, FreeList, GFreeList) :-
 		!,
 		callable(Closure),
@@ -402,7 +402,7 @@
 		append(ClosureArgs, Parameters, GoalArgs),
 		Goal =.. [ClosureFunctor| GoalArgs],
 		\+ control_construct(Goal),
-		logtalk::compile_clauses([(Head :- Object::Goal)]).
+		logtalk::compile_aux_clauses([(Head :- Object::Goal)]).
 	decompose_closure({Free}/{Closure}, MetaArity, Functor, Arity, FreeList, GFreeList) :-
 		!,
 		callable(Closure),
@@ -416,7 +416,7 @@
 		append(ClosureArgs, Parameters, GoalArgs),
 		Goal =.. [ClosureFunctor| GoalArgs],
 		\+ control_construct(Goal),
-		logtalk::compile_clauses([(Head :- {Goal})]).
+		logtalk::compile_aux_clauses([(Head :- {Goal})]).
 	decompose_closure({Free}/Closure, MetaArity, Functor, Arity, FreeList, GFreeList) :-
 		!,
 		callable(Closure),
@@ -430,14 +430,14 @@
 		append(ClosureArgs, Parameters, GoalArgs),
 		Goal =.. [ClosureFunctor| GoalArgs],
 		\+ control_construct(Goal),
-		logtalk::compile_clauses([(Head :- Goal)]).
+		logtalk::compile_aux_clauses([(Head :- Goal)]).
 	decompose_closure(Parameters>>Goal, MetaArity, Functor, 0, [], []) :-
 		!,
 		callable(Goal),
 		length(Parameters, MetaArity),
 		gensym('lambda_', Functor),
 		Head =.. [Functor| Parameters],
-		logtalk::compile_clauses([(Head :- Goal)]).
+		logtalk::compile_aux_clauses([(Head :- Goal)]).
 	decompose_closure(Object::Closure, MetaArity, Object::Functor, Arity, Args, GArgs) :-
 		!,
 		nonvar(Closure),

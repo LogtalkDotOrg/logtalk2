@@ -4273,7 +4273,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 
 '$lgt_logtalk._dcl'(expand_library_path(_, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(loaded_file(_, _), p(p(p)), no, 0).
-'$lgt_logtalk._dcl'(compile_clauses(_), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(compile_aux_clauses(_), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(compile_predicate_heads(_, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(compile_predicate_heads(_, _, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(compile_predicate_heads(_, _, _, _), p(p(p)), no, 0).
@@ -4297,7 +4297,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 
 '$lgt_logtalk._def'(expand_library_path(Library, Path), _, '$lgt_expand_library_path'(Library, Path)).
 '$lgt_logtalk._def'(loaded_file(File, Directory), _, '$lgt_loaded_file_'(File, Directory)).
-'$lgt_logtalk._def'(compile_clauses(Clauses), _, '$lgt_compile_clauses'(Clauses)).
+'$lgt_logtalk._def'(compile_aux_clauses(Clauses), _, '$lgt_compile_aux_clauses'(Clauses)).
 '$lgt_logtalk._def'(compile_predicate_heads(Heads, THeads), _, '$lgt_compile_predicate_heads'(Heads, THeads)).
 '$lgt_logtalk._def'(compile_predicate_heads(Heads, THeads, Ctx), _, '$lgt_compile_predicate_heads'(Heads, THeads, Ctx)).
 '$lgt_logtalk._def'(compile_predicate_heads(Heads, Entity, THeads, Ctx), _, '$lgt_compile_predicate_heads'(Heads, Entity, THeads, Ctx)).
@@ -9595,7 +9595,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		;	Args = []
 		),
 		Head =.. [Functor| Args],
-		'$lgt_compile_clauses'([(Head :- Goal)]),
+		'$lgt_compile_aux_clauses'([(Head :- Goal)]),
 		'$lgt_tr_body'(Head, TPred, DPred, Ctx)
 	;	% either runtime traslation or the lambda expression appears in the
 		% body of a meta-predicate clause
@@ -12846,7 +12846,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 % redefinition of built-in predicates and detect missing predicate directives
 %
 % the check for discontiguous predicates is not performed when compiling clauses
-% for auxiliary predicates (using the logtalk::compile_clauses/1 hook predicate)
+% for auxiliary predicates (using the logtalk::compile_aux_clauses/1 hook predicate)
 
 '$lgt_remember_predicate'(Functor, Arity, Ctx) :-
 	(	'$lgt_pp_defines_predicate_'(Functor, Arity) ->
@@ -14921,13 +14921,13 @@ current_logtalk_flag(version, version(2, 42, 2)).
 
 
 
-% '$lgt_compile_clauses'(@clause)
-% '$lgt_compile_clauses'(@list(clause))
+% '$lgt_compile_aux_clauses'(@clause)
+% '$lgt_compile_aux_clauses'(@list(clause))
 %
 % translates a single predicate clause a list of predicate clauses;
 % used mainly in conjunction with goal_expansion/2 hooks
 
-'$lgt_compile_clauses'(Clauses) :-
+'$lgt_compile_aux_clauses'(Clauses) :-
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
 		true
 	;	'$lgt_pp_category_'(_, Prefix, _, _, _, _) ->
@@ -14935,15 +14935,15 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	),												% protocols cannot contain predicate clauses
 	'$lgt_comp_ctx_prefix'(Ctx, Prefix),
 	'$lgt_comp_ctx_mode'(Ctx, compile(aux)),		% avoid making a predicate discontiguous by accident
-	'$lgt_compile_clauses'(Clauses, Ctx).
+	'$lgt_compile_aux_clauses'(Clauses, Ctx).
 
 
-'$lgt_compile_clauses'([], _).
+'$lgt_compile_aux_clauses'([], _).
 
-'$lgt_compile_clauses'([Clause| Clauses], Ctx) :-
+'$lgt_compile_aux_clauses'([Clause| Clauses], Ctx) :-
 	!,
 	'$lgt_tr_clause'(Clause, Ctx),
-	'$lgt_compile_clauses'(Clauses, Ctx).
+	'$lgt_compile_aux_clauses'(Clauses, Ctx).
 
 
 

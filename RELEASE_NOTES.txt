@@ -23,8 +23,8 @@ RELEASE NOTES
     Added support for compiling Free/Goal lambda expression calls (by
     automatically generating an auxiliary predicate).
 
-    Added a compile_clauses/1 public method, inspired by a predicate with
-    a similar name in SWI-Prolog, to the built-in object "logtalk". This
+    Added a compile_aux_clauses/1 public method, based on a predicate with
+    the same name in SWI-Prolog, to the built-in object "logtalk". This
     method is usually called from goal_expansion/2 hooks in order to compile
     auxiliary clauses generated for supporting an expanded goal.
 
