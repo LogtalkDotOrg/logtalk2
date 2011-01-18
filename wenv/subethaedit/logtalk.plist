@@ -420,6 +420,7 @@
 				<string>[^A-Za-z0-9_](current_char_conversion)\(</string>
 				<!-- Logic and control -->
 				<string>(\\\+)[[:space:]]+</string>
+				<string>[^A-Za-z0-9_](ignore)\(</string>
 				<string>[^A-Za-z0-9_](once)\(</string>
 				<!-- Atomic term processing -->
 				<string>[^A-Za-z0-9_](atom_length)\(</string>

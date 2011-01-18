@@ -78,6 +78,7 @@ threaded_notify()
 true
 fail
 call()
+ignore()
 once()
 catch(, , )
 throw()

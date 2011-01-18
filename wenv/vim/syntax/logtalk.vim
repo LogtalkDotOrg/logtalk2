@@ -2,7 +2,7 @@
 "
 " Language:	Logtalk
 " Maintainer:	Paulo Moura <pmoura@logtalk.org>
-" Last Change:	November 28, 2010
+" Last Change:	January 18, 2011
 
 
 " Quit when a syntax file was already loaded:
@@ -266,6 +266,7 @@ syn match	logtalkKeyword		"\<\(current_\)\?char_conversion\ze("
 " Logic and control
 
 syn match	logtalkOperator		"\\+"
+syn match	logtalkKeyword		"\<ignore\ze("
 syn match	logtalkKeyword		"\<once\ze("
 syn match	logtalkKeyword		"\<repeat\>"
 

@@ -1,11 +1,11 @@
 ;; logtalk.el -- font lock support for Logtalk (http://logtalk.org/)
 
-;; Copyright (C) 2003-2010 Paulo Moura
+;; Copyright (C) 2003-2011 Paulo Moura
 
 ;; Author: Paulo Moura <pmoura@logtalk.org>
 ;; Creation date: November 15, 2003
-;; Last modification date: November 28, 2010
-;; Version: 1.15
+;; Last modification date: January 18, 2011
+;; Version: 1.16
 
 ;; Installation:
 ;;
@@ -26,7 +26,7 @@
 
 ;; setup 
 
-(defvar logtalk-mode-version "1.15"
+(defvar logtalk-mode-version "1.16"
 	"Logtalk mode version number")
 
 (defvar logtalk-mode-hook nil)
@@ -140,7 +140,7 @@
 		;;
 		;; logic and control:
 		;;
-		("\\<\\(once\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
+		("\\<\\(once\\|ignore\\)\\([(]\\)" 1 'logtalk-built-in-predicate-face)
 		("\\\\\\+\\|\\<repeat\\>" 0 'logtalk-built-in-predicate-face)
 		;;
 		;; term testing:

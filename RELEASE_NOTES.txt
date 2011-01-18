@@ -28,6 +28,9 @@ RELEASE NOTES
     method is usually called from goal_expansion/2 hooks in order to compile
     auxiliary clauses generated for supporting an expanded goal.
 
+    Added the meta-predicate ignore/1, implemented by some Prolog compilers
+    as a built-in predicate, as a Logtalk built-in method.
+
     Updated the SWI-Prolog config file in order to prevent the auto-loading
     of module libraries when querying predicate properties from Logtalk.
 

@@ -290,6 +290,7 @@ current_char_conversion
 
 ; Logic and control
 \+
+ignore
 once
 repeat
 

@@ -198,7 +198,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(ca(ll|tch)|throw|once)(?=[(])</string>
+			<string>\b(ca(ll|tch)|ignore|throw|once)(?=[(])</string>
 			<key>name</key>
 			<string>support.function.control.logtalk</string>
 		</dict>

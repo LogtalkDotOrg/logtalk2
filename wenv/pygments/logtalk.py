@@ -15,7 +15,7 @@ class LogtalkLexer(RegexLexer):
     """
     For `Logtalk <http://logtalk.org/>`_ source code.
 
-    :copyright: 2008-2010 by Paulo Moura, Clara Dimene.
+    :copyright: 2008-2011 by Paulo Moura, Clara Dimene.
     :license: BSD, see LICENSE for more details.
     """
 
@@ -115,7 +115,7 @@ class LogtalkLexer(RegexLexer):
             # External call
             (r'[{}]', Keyword),
             # Logic and control
-            (r'\bonce(?=[(])', Keyword),
+            (r'(ignore|once)(?=[(])', Keyword),
             (r'\brepeat\b', Keyword),
             # Sorting
             (r'(key)?sort(?=[(])', Keyword),

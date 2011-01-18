@@ -31,9 +31,9 @@ comment
 	extends(parent)).
 
 	:- info([
-		version is 1.4,
+		version is 1.5,
 		author is 'Paulo Moura',
-		date is 2010/11/28,
+		date is 2011/01/18,
 		comment is 'Sample prototype for testing syntax coloring.']).
 
 	:- threaded.
@@ -318,6 +318,7 @@ comment
 	logic_and_control :-
 		\+ Goal,
 		once(Goal),
+		ignore(Goal),
 		repeat,
 		!.
 

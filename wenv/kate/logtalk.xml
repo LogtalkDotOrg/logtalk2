@@ -101,7 +101,7 @@
 				<DetectChar char = "{" attribute = "Operator" context = "#stay" beginRegion="external" />
 				<DetectChar char = "}" attribute = "Operator" context = "#stay" endRegion="external" />
 				<!-- Logic and control -->
-				<RegExpr String = "\bonce(?=[(])" attribute = "Built-in" context = "#stay" />
+				<RegExpr String = "\b(ignore|once)(?=[(])" attribute = "Built-in" context = "#stay" />
 				<RegExpr String = "\brepeat\b" attribute = "Built-in" context = "#stay" />
 				<!-- Bitwise functors -->
 				<Detect2Chars char = "&gt;" char1 = "&gt;" attribute = "Operator" context = "#stay" />

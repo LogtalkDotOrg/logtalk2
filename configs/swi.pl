@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: January 13, 2010
+%  last updated: January 18, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -120,7 +120,6 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 '$lgt_pl_meta_predicate'(dde_register_service(_, _), dde_register_service(*, 0), predicate).
 '$lgt_pl_meta_predicate'(findall(_, _, _, _), findall(*, 0, *, *), predicate).
 '$lgt_pl_meta_predicate'(freeze(_, _), freeze(*, 0), predicate).
-'$lgt_pl_meta_predicate'(ignore(_), ignore(0), predicate).
 '$lgt_pl_meta_predicate'(not(_), not(0), predicate).
 '$lgt_pl_meta_predicate'(notrace(_), notrace(0), predicate).
 '$lgt_pl_meta_predicate'(on_signal(_, _, _), on_signal(*, *, 0), predicate).

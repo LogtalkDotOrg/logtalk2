@@ -178,6 +178,7 @@
 				<regex>\b((?:current_)?char_conversion)\(</regex>
 				<!-- Logic and control -->
 				<regex>(\\\+)</regex>
+				<regex>\b(ignore)\(</regex>
 				<regex>\b(once)\(</regex>
 				<regex>\b(repeat)[^[(A-Za-z_]]</regex>
 				<!-- Atomic term processing -->

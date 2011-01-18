@@ -9491,6 +9491,11 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
+'$lgt_tr_body'(ignore(Pred), (TPred -> true; true), '$lgt_debugger.goal'(ignore(Pred), (DPred -> true; true), ExCtx), Ctx) :-
+	!,
+	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
+
 '$lgt_tr_body'(catch(Goal, Catcher, Recovery), catch(TGoal, Catcher, TRecovery), '$lgt_debugger.goal'(catch(Goal, Catcher, Recovery), catch(DGoal, Catcher, DRecovery), ExCtx), Ctx) :-
 	!,
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
@@ -12054,6 +12059,10 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	G == !,
 	!.
 '$lgt_simplify_body'(once(G), once(SG)) :-
+	!,
+	'$lgt_simplify_body'(G, SG).
+
+'$lgt_simplify_body'(ignore(G), ignore(SG)) :-
 	!,
 	'$lgt_simplify_body'(G, SG).
 
@@ -14924,7 +14933,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 % '$lgt_compile_aux_clauses'(@clause)
 % '$lgt_compile_aux_clauses'(@list(clause))
 %
-% translates a single predicate clause a list of predicate clauses;
+% translates a single predicate clause a list of auxiliary predicate clauses;
 % used mainly in conjunction with goal_expansion/2 hooks
 
 '$lgt_compile_aux_clauses'(Clauses) :-
@@ -15195,6 +15204,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	arg(1, Meta, Closure),
 	'$lgt_lgt_meta_predicate_call_n_args'(Arity, Meta).
 '$lgt_built_in_method'(once(_), p, once(0), 1) :- !.
+'$lgt_built_in_method'(ignore(_), p, ignore(0), 1) :- !.
 % exception handling methods
 '$lgt_built_in_method'(catch(_, _, _), p, catch(0, *, 0), 1) :- !.
 '$lgt_built_in_method'(throw(_), p, no, 1) :- !.

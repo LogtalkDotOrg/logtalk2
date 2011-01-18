@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: December 21, 2010
+%  last updated: January 18, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -173,7 +173,6 @@ message_hook(clauses_not_together(_), _, _) :-	% YAP discontiguous predicate
 	'$lgt_pl_meta_predicate'(depth_bound_call(_, _), depth_bound_call(0, *), predicate).
 :- endif.
 '$lgt_pl_meta_predicate'(if(_, _, _), if(0, 0, 0), predicate).
-'$lgt_pl_meta_predicate'(ignore(_), ignore(0), predicate).
 '$lgt_pl_meta_predicate'(findall(_, _, _, _), findall(*, 0, *, *), predicate).
 '$lgt_pl_meta_predicate'(freeze(_, _), freeze(*, 0), predicate).
 '$lgt_pl_meta_predicate'(hide_predicate(_), hide_predicate(/), predicate).

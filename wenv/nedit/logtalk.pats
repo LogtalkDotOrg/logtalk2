@@ -2,7 +2,7 @@
 !
 ! Author: Paulo Moura (pmoura at logtalk.org)
 !
-! Last changed in: November 28, 2010
+! Last changed in: January 18, 2011
 !
 !
 ! To install this patterns file:
@@ -60,7 +60,7 @@ nedit.highlightPatterns: Logtalk:1:0{\n\
 	Character input-output:"<nl>":::Subroutine::\n\
 	Byte input-output:"<(get_byte|peek_byte|put_byte)(?=[(])":::Subroutine::\n\
 	Term input-output:"<(read_term|read|write_canonical|write_term|writeq|write|current_op|op|current_char_conversion|char_conversion)(?=[(])":::Subroutine::\n\
-	Logic and control:"<once(?=[(])":::Subroutine::\n\
+	Logic and control:"<(ignore|once)(?=[(])":::Subroutine::\n\
 	Logic and control:"\\\\\\+|<repeat>":::Subroutine::\n\
 	Atomic term processing:"<(atom_length|atom_concat|sub_atom|atom_chars|atom_codes|char_code|number_chars|number_codes)(?=[(])":::Subroutine::\n\
 	Implementation defined hooks:"<(set_prolog_flag|current_prolog_flag|halt)(?=[(])":::Subroutine::\n\

@@ -5,9 +5,9 @@
 <!--	jEdit 4.3 Logtalk syntax file
 
 	written by		Paulo Moura
-	version			1.96
+	version			1.97
 	created on		May 5, 2002
-	last revised	September 14, 2010
+	last revised	January 18, 2011
 
 	To install, copy this file to the "modes" subdirectory in jEdit 
 	directory installation.   Next, check the "catalog" file in the 
@@ -125,7 +125,7 @@
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bhalt\b</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bhalt(?=[(])</SEQ_REGEXP>
 		<!-- Logic and control -->
-		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\bonce(?=[(])</SEQ_REGEXP>
+		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(ignore|once)(?=[(])</SEQ_REGEXP>
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\brepeat\b</SEQ_REGEXP>
 		<!-- Sorting -->
 		<SEQ_REGEXP AT_WORD_START="TRUE" TYPE="KEYWORD2">\b(key)?sort(?=[(])</SEQ_REGEXP>

@@ -90,6 +90,7 @@ goal_expansion
 ground
 halt
 if
+ignore
 implements
 implements_protocol
 imports

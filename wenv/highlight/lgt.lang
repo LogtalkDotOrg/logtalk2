@@ -4,8 +4,8 @@
 #
 #  Author: Paulo Moura
 #    Mail: pmoura@logtalk.org
-#    Date: 2010.09.14
-# Version: 1.9
+#    Date: 2011.01.18
+# Version: 1.10
 # ------------------------------------------
 # This file is a part of highlight, a free source code converter released under the GPL.
 #
@@ -57,7 +57,7 @@ $KEYWORDS(kwc)=regex((logtalk_(compile|l(ibrary_path|oad|oad_context)))(?=[(]), 
 $KEYWORDS(kwc)=regex((clause|retract(all)?)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((a(bolish|ssert(a|z)))(?=[(]), 1)
 # control
-$KEYWORDS(kwc)=regex((call|catch|throw)(?=[(]), 1)
+$KEYWORDS(kwc)=regex((ca(ll|tch)|throw)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((fail|true), 1)
 # all solutions
 $KEYWORDS(kwc)=regex((bagof|setof|findall|forall)(?=[(]), 1)
@@ -101,7 +101,7 @@ $KEYWORDS(kwc)=regex(((?:se|curren)t_prolog_flag)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((halt), 1)
 $KEYWORDS(kwc)=regex((halt)(?=[(]), 1)
 # logic and control
-$KEYWORDS(kwc)=regex((once)(?=[(]), 1)
+$KEYWORDS(kwc)=regex((ignore|once)(?=[(]), 1)
 $KEYWORDS(kwc)=regex((repeat), 1)
 # sorting
 $KEYWORDS(kwc)=regex(((key)?sort)(?=[(]), 1)

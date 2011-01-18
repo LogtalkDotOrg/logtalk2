@@ -4,7 +4,7 @@
  * -----------
  *
  * Author: Paulo Moura (pmoura@logtalk.org)
- * Copyright: (c) 2009-2010 Paulo Moura (http://logtalk.org/)
+ * Copyright: (c) 2009-2011 Paulo Moura (http://logtalk.org/)
  * Release Version: 1.0.8.6
  * Date Started: 2009/10/24
  *
@@ -12,6 +12,8 @@
  *
  * CHANGES
  * -------
+ * 2011/01/18 (1.1.4)
+ *  -  Added syntax coloring of ignore/1
  * 2010/11/28 (1.1.3)
  *  -  Added syntax coloring of conforms_to_protocol/2-3
  * 2010/09/14 (1.1.2)
@@ -134,7 +136,7 @@ $language_data = array(
             // database
             'abolish', 'asserta', 'assertz', 'clause', 'retract', 'retractall',
             // control
-            'call', 'catch', 'once', 'throw',
+            'call', 'catch', 'ignore', 'once', 'throw',
             // all solutions predicates
             'bagof', 'findall', 'forall', 'setof',
             // multi-threading meta-predicates

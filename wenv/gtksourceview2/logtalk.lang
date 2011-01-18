@@ -2,7 +2,7 @@
 <!--
 
  Author: Paulo Moura <pmoura@logtalk.org>
- Copyright (C) 2007-2010 Paulo Moura <pmoura@logtalk.org>
+ Copyright (C) 2007-2011 Paulo Moura <pmoura@logtalk.org>
 
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Library General Public
@@ -239,7 +239,7 @@
 			<keyword>((current_)?op)(?=[(])</keyword>
 			<keyword>((current_)?char_conversion)(?=[(])</keyword>
 			<!-- Logic and control -->
-			<keyword>(call|once)(?=[(])</keyword>
+			<keyword>(ca(ll|tch)|ignore|once|throw)(?=[(])</keyword>
 			<keyword>(true|fail|repeat)(?![-!(^~])</keyword>
 			<!-- Atomic term processing -->
 			<keyword>(atom_(length|c(hars|o(ncat|des))))(?=[(])</keyword>

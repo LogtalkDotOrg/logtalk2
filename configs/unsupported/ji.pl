@@ -11,7 +11,7 @@
 %
 %  configuration file for JIProlog 3.0.2-6 or later versions
 %
-%  last updated: December 21, 2010
+%  last updated: January 18, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -113,9 +113,8 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 % '$lgt_pl_meta_predicate'(?callable, ?atom).
 
-'$lgt_pl_meta_predicate'(ignore(0), predicate).
-'$lgt_pl_meta_predicate'(not(0), predicate).
-'$lgt_pl_meta_predicate'(one(0), predicate).
+'$lgt_pl_meta_predicate'(not(_), not(0), predicate).
+'$lgt_pl_meta_predicate'(one(_), one(0), predicate).
 
 
 

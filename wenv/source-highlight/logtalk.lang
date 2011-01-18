@@ -1,7 +1,7 @@
 # highlighting for Logtalk source files (http://logtalk.org/)
 #
 #	written by Paulo Moura (pmoura@logtalk.org)
-#	last revised on January 11, 2011
+#	last revised on January 18, 2011
 
 comment start "%"
 comment delim "/*" "*/" multiline nested
@@ -55,7 +55,7 @@ keyword =	'\<(after|before)(?=\()',
 			'\<number_(c(har|ode)s)(?=\()',
 			'\<(set|current)_prolog_flag(?=\()',
 			'\<halt(?=\()', '\<(halt)\>',
-			'\<once(?=\()',
+			'\<(ignore|once)(?=\()',
 			'\<((key)?sort)(?=\()',
 			'\<(true|fail|repeat)\>',
 			'\<(e|pi|is|rem|mod)\>'
