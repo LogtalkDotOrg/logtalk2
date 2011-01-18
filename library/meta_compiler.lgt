@@ -3,8 +3,8 @@
 	implements(expanding)).
 
 	:- info([
-		version is 0.7,
-		date is 2011/01/15,
+		version is 0.71,
+		date is 2011/01/17,
 		author is 'Paulo Moura',
 		comment is 'Compiler for the "meta" object meta-predicates. Generates auxiliary predicates in order to avoid meta-call overheads.']).
 
@@ -383,7 +383,7 @@
 		!,
 		callable(Goal),
 		length(Parameters, MetaArity),
-		gensym('_lambda_', Functor),
+		gensym('lambda_', Functor),
 		conjunction_to_list(Free, FreeList, Arity),
 		length(GFreeList, Arity),
 		append(FreeList, Parameters, Args),
@@ -392,8 +392,7 @@
 	decompose_closure({Free}/(Object::Closure), MetaArity, Functor, Arity, FreeList, GFreeList) :-
 		!,
 		callable(Closure),
-		\+ control_construct(Closure),
-		gensym('_lambda_', Functor),
+		gensym('lambda_', Functor),
 		conjunction_to_list(Free, FreeList, Arity),
 		length(GFreeList, Arity),
 		length(Parameters, MetaArity),
@@ -402,12 +401,12 @@
 		Closure =.. [ClosureFunctor| ClosureArgs],
 		append(ClosureArgs, Parameters, GoalArgs),
 		Goal =.. [ClosureFunctor| GoalArgs],
+		\+ control_construct(Goal),
 		logtalk::compile_clauses([(Head :- Object::Goal)]).
 	decompose_closure({Free}/{Closure}, MetaArity, Functor, Arity, FreeList, GFreeList) :-
 		!,
 		callable(Closure),
-		\+ control_construct(Closure),
-		gensym('_lambda_', Functor),
+		gensym('lambda_', Functor),
 		conjunction_to_list(Free, FreeList, Arity),
 		length(GFreeList, Arity),
 		length(Parameters, MetaArity),
@@ -416,12 +415,12 @@
 		Closure =.. [ClosureFunctor| ClosureArgs],
 		append(ClosureArgs, Parameters, GoalArgs),
 		Goal =.. [ClosureFunctor| GoalArgs],
+		\+ control_construct(Goal),
 		logtalk::compile_clauses([(Head :- {Goal})]).
 	decompose_closure({Free}/Closure, MetaArity, Functor, Arity, FreeList, GFreeList) :-
 		!,
 		callable(Closure),
-		\+ control_construct(Closure),
-		gensym('_lambda_', Functor),
+		gensym('lambda_', Functor),
 		conjunction_to_list(Free, FreeList, Arity),
 		length(GFreeList, Arity),
 		length(Parameters, MetaArity),
@@ -430,12 +429,13 @@
 		Closure =.. [ClosureFunctor| ClosureArgs],
 		append(ClosureArgs, Parameters, GoalArgs),
 		Goal =.. [ClosureFunctor| GoalArgs],
+		\+ control_construct(Goal),
 		logtalk::compile_clauses([(Head :- Goal)]).
 	decompose_closure(Parameters>>Goal, MetaArity, Functor, 0, [], []) :-
 		!,
 		callable(Goal),
 		length(Parameters, MetaArity),
-		gensym('_lambda_', Functor),
+		gensym('lambda_', Functor),
 		Head =.. [Functor| Parameters],
 		logtalk::compile_clauses([(Head :- Goal)]).
 	decompose_closure(Object::Closure, MetaArity, Object::Functor, Arity, Args, GArgs) :-
@@ -446,10 +446,13 @@
 		!,
 		nonvar(Closure),
 		decompose_closure(Closure, MetaArity, Functor, Arity, Args, GArgs).
-	decompose_closure(Closure, _, Functor, Arity, Args, GArgs) :-
+	decompose_closure(Closure, MetaArity, Functor, Arity, Args, GArgs) :-
 		callable(Closure),
-		\+ control_construct(Closure),
 		Closure =.. [Functor| Args],
+		length(MetaArity, ExtraArgs),
+		append(Args, ExtraArgs, GoalArgs),
+		Goal =.. [Functor| GoalArgs],
+		\+ control_construct(Goal),
 		functor(Closure, Functor, Arity),
 		functor(GClosure, Functor, Arity),
 		GClosure =.. [Functor| GArgs].
@@ -517,53 +520,50 @@
 
 	aux_predicate_functor(MetaFunctor, MetaArity, Object::ClosureFunctor, ClosureArity, AuxFunctor) :-
 		!,
-		atom_concat('_aux_', MetaFunctor, AuxFunctor0),
-		atom_concat(AuxFunctor0, '/', AuxFunctor1),
+		atom_concat(MetaFunctor, '/', AuxFunctor0),
 		number_codes(MetaArity, MetaArityCodes),
 		atom_codes(MetaArityAtom, MetaArityCodes),
-		atom_concat(AuxFunctor1, MetaArityAtom, AuxFunctor2),
-		atom_concat(AuxFunctor2, '+', AuxFunctor3),
+		atom_concat(AuxFunctor0, MetaArityAtom, AuxFunctor1),
+		atom_concat(AuxFunctor1, '+', AuxFunctor2),
 		(	atom(Object) ->
-			atom_concat(AuxFunctor3, Object, AuxFunctor4),
-			atom_concat(AuxFunctor4, '.', AuxFunctor7)
+			atom_concat(AuxFunctor2, Object, AuxFunctor3),
+			atom_concat(AuxFunctor3, '.', AuxFunctor6)
 		;	functor(Object, ObjectFunctor, ObjectArity),
-			atom_concat(AuxFunctor3, ObjectFunctor, AuxFunctor4),
-			atom_concat(AuxFunctor4, '.', AuxFunctor5),
+			atom_concat(AuxFunctor2, ObjectFunctor, AuxFunctor3),
+			atom_concat(AuxFunctor3, '.', AuxFunctor4),
 			number_codes(ObjectArity, ObjectArityCodes),
 			atom_codes(ObjectArityAtom, ObjectArityCodes),
-			atom_concat(AuxFunctor5, ObjectArityAtom, AuxFunctor6),
-			atom_concat(AuxFunctor6, '.', AuxFunctor7)
+			atom_concat(AuxFunctor4, ObjectArityAtom, AuxFunctor5),
+			atom_concat(AuxFunctor5, '.', AuxFunctor6)
 		),
-		atom_concat(AuxFunctor7, ClosureFunctor, AuxFunctor8),
-		atom_concat(AuxFunctor8, '/', AuxFunctor9),
+		atom_concat(AuxFunctor6, ClosureFunctor, AuxFunctor7),
+		atom_concat(AuxFunctor7, '#', AuxFunctor8),
 		number_codes(ClosureArity, ClosureArityCodes),
 		atom_codes(ClosureArityAtom, ClosureArityCodes),
-		atom_concat(AuxFunctor9, ClosureArityAtom, AuxFunctor).
+		atom_concat(AuxFunctor8, ClosureArityAtom, AuxFunctor).
 	aux_predicate_functor(MetaFunctor, MetaArity, {ClosureFunctor}, ClosureArity, AuxFunctor) :-
 		!,
-		atom_concat('_aux_', MetaFunctor, AuxFunctor0),
-		atom_concat(AuxFunctor0, '/', AuxFunctor1),
+		atom_concat(MetaFunctor, '/', AuxFunctor0),
 		number_codes(MetaArity, MetaArityCodes),
 		atom_codes(MetaArityAtom, MetaArityCodes),
-		atom_concat(AuxFunctor1, MetaArityAtom, AuxFunctor2),
-		atom_concat(AuxFunctor2, '+{', AuxFunctor3),
-		atom_concat(AuxFunctor3, ClosureFunctor, AuxFunctor4),
-		atom_concat(AuxFunctor4, '/', AuxFunctor5),
+		atom_concat(AuxFunctor0, MetaArityAtom, AuxFunctor1),
+		atom_concat(AuxFunctor1, '+{', AuxFunctor2),
+		atom_concat(AuxFunctor2, ClosureFunctor, AuxFunctor3),
+		atom_concat(AuxFunctor3, '#', AuxFunctor4),
 		number_codes(ClosureArity, ClosureArityCodes),
 		atom_codes(ClosureArityAtom, ClosureArityCodes),
-		atom_concat(AuxFunctor5, ClosureArityAtom, AuxFunctor6),
-		atom_concat(AuxFunctor6, '}', AuxFunctor).
+		atom_concat(AuxFunctor4, ClosureArityAtom, AuxFunctor5),
+		atom_concat(AuxFunctor5, '}', AuxFunctor).
 	aux_predicate_functor(MetaFunctor, MetaArity, ClosureFunctor, ClosureArity, AuxFunctor) :-
-		atom_concat('_aux_', MetaFunctor, AuxFunctor0),
-		atom_concat(AuxFunctor0, '/', AuxFunctor1),
+		atom_concat(MetaFunctor, '/', AuxFunctor0),
 		number_codes(MetaArity, MetaArityCodes),
 		atom_codes(MetaArityAtom, MetaArityCodes),
-		atom_concat(AuxFunctor1, MetaArityAtom, AuxFunctor2),
-		atom_concat(AuxFunctor2, '+', AuxFunctor3),
-		atom_concat(AuxFunctor3, ClosureFunctor, AuxFunctor4),
-		atom_concat(AuxFunctor4, '/', AuxFunctor5),
+		atom_concat(AuxFunctor0, MetaArityAtom, AuxFunctor1),
+		atom_concat(AuxFunctor1, '+', AuxFunctor2),
+		atom_concat(AuxFunctor2, ClosureFunctor, AuxFunctor3),
+		atom_concat(AuxFunctor3, '#', AuxFunctor4),
 		number_codes(ClosureArity, ClosureArityCodes),
 		atom_codes(ClosureArityAtom, ClosureArityCodes),
-		atom_concat(AuxFunctor5, ClosureArityAtom, AuxFunctor).
+		atom_concat(AuxFunctor4, ClosureArityAtom, AuxFunctor).
 
 :- end_object.
