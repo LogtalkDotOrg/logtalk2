@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.42.2 - January ??, 2010
+2.42.2 - January 25, 2010
 
     Updated the Logtalk compiler in order to allow checking for module
     predicate properties without requiring importing the predicates into
@@ -24,7 +24,7 @@ RELEASE NOTES
     construct in closure meta-arguments of meta-predicates.
 
     Added support for compiling Free/Goal lambda expression calls (by
-    automatically generating an auxiliary predicate).
+    automatically generating an auxiliary predicate whenever possible).
 
     Added a compile_aux_clauses/1 public method, based on a predicate with
     the same name in SWI-Prolog, to the built-in object "logtalk". This
@@ -39,12 +39,16 @@ RELEASE NOTES
 
     Added predicates findall_member/4-5 to the library object "meta" (based
     on Richard O'Keefe's draft Prolog library proposal). Removed declaration
-    and definition of the meta-predicates callable/1 and ignore/1 from the
-    library entities "metap" and "meta".
+    and definition of the predicates callable/1 and ignore/1 from the library
+    entities "metap" and "meta" (callable/1 is a built-in predicate in all
+    supported Prolog compilers; ignore/1 is now a Logtalk built-in method).
 
     Added a library object, "meta_compiler", that can be used as an hook
     object to expand calls to the meta-predicates defined in the library
-    object "meta" in order to avoid the meta-call overheads.
+    object "meta" in order to avoid the meta-call overheads. On those cases
+    where the meta-predicate call cannot be optimized, the default definition
+    on the "meta" object is used. Using control constructs as meta-arguments
+    is not supported.
 
     Added a protocol, "loggingp", and category and object implementations,
     "logging" and "logger", declaring and defining basic functionality for
@@ -66,14 +70,17 @@ RELEASE NOTES
     "metapredicates_compiled", that make use of the new library object
     "meta_compiler".
 
-    Added support for using the SyntaxHighlighter package (version 3.0.83 or
-    later) by Alex Gorbatchev with Logtalk source code.
+    Added support for using the SyntaxHighlighter package (version 3.0.83
+    or later) by Alex Gorbatchev with Logtalk source code.
 
     Added missing syntax coloring of the else/0 conditional compilation
     directive to the GNU Source-highlight highlighter support.
 
     Added a note on the Logtalk text editing support available on the free
     MacOS X Kod text editor.
+
+    Added syntax coloring support for the new ignore/1 built-in method to
+    all supported text editors and syntax highlighters.
 
 
 2.42.1 - December 22, 2010
