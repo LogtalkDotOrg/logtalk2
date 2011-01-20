@@ -41,6 +41,9 @@ RELEASE NOTES
     to make available the predicate term_variables/2 as an ISO built-in
     predicate.
 
+    Updated the Qu-Prolog integration scripts in order to double the heap size
+    value for compiling the Logtalk compiler/runtime, solving a startup crash.
+
     Added predicates findall_member/4-5 to the library object "meta" (based
     on Richard O'Keefe's draft Prolog library proposal). Removed declaration
     and definition of the predicates callable/1 and ignore/1 from the library
