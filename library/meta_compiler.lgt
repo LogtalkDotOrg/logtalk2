@@ -3,8 +3,8 @@
 	implements(expanding)).
 
 	:- info([
-		version is 0.71,
-		date is 2011/01/17,
+		version is 0.72,
+		date is 2011/01/20,
 		author is 'Paulo Moura',
 		comment is 'Compiler for the "meta" object meta-predicates. Generates auxiliary predicates in order to avoid meta-call overheads.']).
 
@@ -490,16 +490,16 @@
 	replace_functor_body(Goal0, Functor, AuxFunctor, Goal) :-
 		replace_functor_head(Goal0, Functor, AuxFunctor, Goal).
 
-	control_construct(','(_, _)).
-	control_construct(';'(_, _)).
-	control_construct('->'(_, _)).
-	control_construct('\+'(_)).
-	control_construct('^^'(_)).
-	control_construct('::'(_, _)).
-	control_construct('::'(_)).
-	control_construct('/'(_, _)).
-	control_construct('>>'(_, _)).
-	control_construct('<<'(_, _)).
+	control_construct((_ , _)).
+	control_construct((_ ; _)).
+	control_construct((_ -> _)).
+	control_construct(\+ _).
+	control_construct(^^ _).
+	control_construct(_ :: _).
+	control_construct(:: _).
+	control_construct(_ / _).
+	control_construct(_ >> _).
+	control_construct(_ << _).
 
 	conjunction_to_list(Conjunction, Terms, N) :-
 		conjunction_to_list(Conjunction, Terms, 1, N).
