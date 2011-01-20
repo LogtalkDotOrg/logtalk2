@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.12 and later versions
 %
-%  last updated: December 21, 2010
+%  last updated: January 20, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -33,9 +33,11 @@
 
 % '$lgt_iso_predicate'(?callable).
 
-'$lgt_iso_predicate'(_) :-
-	fail.
+'$lgt_iso_predicate'(term_variables(_, _)).
 
+term_variables(Term, Variables) :-
+	collect_vars(Term, Variables).
+	
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

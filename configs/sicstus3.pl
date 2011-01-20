@@ -11,14 +11,15 @@
 %
 %  configuration file for SICStus Prolog 3.8 and later versions
 %
-%  last updated: December 21, 2010
+%  last updated: January 20, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 :- use_module(library(system)).
+:- use_module(library(terms), [term_variables/2]).
 
-:- set_prolog_flag(language, iso). % recomended, but optional
+:- set_prolog_flag(language, iso).						% recomended, but optional
 
 
 :- multifile(message_hook/3).							% SICStus Prolog hook predicate
@@ -43,8 +44,7 @@ message_hook(warning, clauses_not_together(_), _) :-	% SICStus Prolog discontigu
 
 % '$lgt_iso_predicate'(?callable).
 
-'$lgt_iso_predicate'(_) :-
-	fail.
+'$lgt_iso_predicate'(term_variables(_, _)).
 
 
 

@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.2 or later versions
 %
-%  last updated: December 21, 2010
+%  last updated: January 20, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -19,6 +19,7 @@
 :- import datime/1 from standard.
 :- import numbervars/3 from num_vars.
 :- import expand_atom/2 from standard.
+:- import term_variables/2 from swi.
 
 
 
@@ -36,8 +37,7 @@
 
 % '$lgt_iso_predicate'(?callable).
 
-'$lgt_iso_predicate'(_) :-
-	fail.
+'$lgt_iso_predicate'(term_variables(_, _)).
 
 
 
