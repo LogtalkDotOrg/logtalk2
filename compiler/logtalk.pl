@@ -9450,7 +9450,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 '$lgt_tr_body'(CallN, TPred, DPred, Ctx) :-
 	CallN =.. [call, Closure| ExtraArgs],
 	!,
-	'$lgt_check_closure'(Closure),
+	'$lgt_check_closure'(Closure, Ctx),
 	'$lgt_tr_body'('$lgt_callN'(Closure, ExtraArgs), TPred, DPred, Ctx).
 
 '$lgt_tr_body'('$lgt_callN'(Closure, ExtraArgs), _, _, Ctx) :-
@@ -9506,8 +9506,8 @@ current_logtalk_flag(version, version(2, 42, 2)).
 
 % lambda expressions support predicates
 
-'$lgt_tr_body'(Parameters>>Goal, _, _, _) :-
-	'$lgt_check_lambda_expression'(Parameters>>Goal),
+'$lgt_tr_body'(Parameters>>Goal, _, _, Ctx) :-
+	'$lgt_check_lambda_expression'(Parameters>>Goal, Ctx),
 	fail.
 
 '$lgt_tr_body'(Free/Parameters>>Goal, TPred, DPred, Ctx) :-
@@ -9558,8 +9558,8 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	),
 	DPred = '$lgt_debugger.goal'(Parameters>>Goal, TPred, ExCtx).
 
-'$lgt_tr_body'(Free/Goal, _, _, _) :-
-	'$lgt_check_lambda_expression'(Free/Goal),
+'$lgt_tr_body'(Free/Goal, _, _, Ctx) :-
+	'$lgt_check_lambda_expression'(Free/Goal, Ctx),
 	fail.
 
 '$lgt_tr_body'(Free/Goal, TPred, DPred, Ctx) :-
@@ -15456,32 +15456,32 @@ current_logtalk_flag(version, version(2, 42, 2)).
 
 
 
-% '$lgt_check_closure'(@nonvar)
+% '$lgt_check_closure'(@nonvar, @compilation_context)
 %
 % checks that a closure meta-argument is valid
 
-'$lgt_check_closure'(Closure) :-
+'$lgt_check_closure'(Closure, _) :-
 	var(Closure),
 	!.
 
-'$lgt_check_closure'(Closure) :-
+'$lgt_check_closure'(Closure, _) :-
 	\+ callable(Closure),
 	throw(type_error(callable, Closure)).
 
-'$lgt_check_closure'(Free/Goal) :-
-	'$lgt_check_lambda_expression'(Free/Goal),
+'$lgt_check_closure'(Free/Goal, Ctx) :-
+	'$lgt_check_lambda_expression'(Free/Goal, Ctx),
 	!.
 
-'$lgt_check_closure'(Parameters>>Goal) :-
-	'$lgt_check_lambda_expression'(Parameters>>Goal),
+'$lgt_check_closure'(Parameters>>Goal, Ctx) :-
+	'$lgt_check_lambda_expression'(Parameters>>Goal, Ctx),
 	!.
 
-'$lgt_check_closure'({Closure}) :-
+'$lgt_check_closure'({Closure}, _) :-
 	nonvar(Closure),
 	\+ callable(Closure),
 	throw(type_error(callable, Closure)).
 
-'$lgt_check_closure'(Object::Closure) :-
+'$lgt_check_closure'(Object::Closure, _) :-
 	(	nonvar(Object),
 		\+ callable(Object),
 		throw(type_error(object_identifier, Object))
@@ -15490,17 +15490,17 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		throw(type_error(callable, Closure))
 	).
 
-'$lgt_check_closure'(::Closure) :-
+'$lgt_check_closure'(::Closure, _) :-
 	nonvar(Closure),
 	\+ callable(Closure),
 	throw(type_error(callable, Closure)).
 
-'$lgt_check_closure'(^^Closure) :-
+'$lgt_check_closure'(^^Closure, _) :-
 	nonvar(Closure),
 	\+ callable(Closure),
 	throw(type_error(callable, Closure)).
 
-'$lgt_check_closure'(Object<<Closure) :-
+'$lgt_check_closure'(Object<<Closure, _) :-
 	(	nonvar(Object),
 		\+ callable(Object),
 		throw(type_error(object_identifier, Object))
@@ -15509,7 +15509,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		throw(type_error(callable, Closure))
 	).
 
-'$lgt_check_closure'(':'(Module, Closure)) :-
+'$lgt_check_closure'(':'(Module, Closure), _) :-
 	(	nonvar(Module),
 		\+ atom(Module),
 		throw(type_error(module_identifier, Module))
@@ -15518,15 +15518,15 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		throw(type_error(callable, Closure))
 	).
 
-'$lgt_check_closure'(_).
+'$lgt_check_closure'(_, _).
 
 
 
-% '$lgt_check_lambda_expression'(@nonvar)
+% '$lgt_check_lambda_expression'(@nonvar, @compilation_context)
 %
 % checks that a closure meta-argument is valid
 
-'$lgt_check_lambda_expression'(Free/Parameters>>Goal) :-
+'$lgt_check_lambda_expression'(Free/Parameters>>Goal, Ctx) :-
 	!,
 	(	nonvar(Free),
 		\+ (functor(Free, {}, Arity), Arity =< 1),
@@ -15537,14 +15537,15 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	;	nonvar(Goal),
 		\+ callable(Goal),
 		throw(type_error(callable, Goal))
-%	;	nonvar(Free),
-%		nonvar(Parameters),
-%		nonvar(Goal),
-%		'$lgt_check_lambda_expression_unclassified_vars'(Free/Parameters>>Goal),
-%		'$lgt_check_lambda_expression_mixed_up_vars'(Free/Parameters>>Goal)
+	;	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
+		nonvar(Free),
+		nonvar(Parameters),
+		nonvar(Goal),
+		'$lgt_check_lambda_expression_unclassified_vars'(Free/Parameters>>Goal),
+		'$lgt_check_lambda_expression_mixed_up_vars'(Free/Parameters>>Goal)
 	).
 
-'$lgt_check_lambda_expression'(Free/Goal) :-
+'$lgt_check_lambda_expression'(Free/Goal, _) :-
 	(	nonvar(Free),
 		\+ (functor(Free, {}, Arity), Arity =< 1),
 		throw(type_error(curly_bracketed_term, Free))
@@ -15553,28 +15554,39 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		throw(type_error(callable, Goal))
 	).
 
-'$lgt_check_lambda_expression'(Parameters>>Goal) :-
+'$lgt_check_lambda_expression'(Parameters>>Goal, Ctx) :-
 	(	nonvar(Parameters),
 		\+ '$lgt_is_proper_list'(Parameters),
 		throw(type_error(list, Parameters))
 	;	nonvar(Goal),
 		\+ callable(Goal),
 		throw(type_error(callable, Goal))
-%	;	nonvar(Parameters),
-%		nonvar(Goal),
-%		'$lgt_check_lambda_expression_unclassified_vars'(Parameters>>Goal)
+	;	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
+		nonvar(Parameters),
+		nonvar(Goal),
+		'$lgt_check_lambda_expression_unclassified_vars'(Parameters>>Goal)
 	).
 
-'$lgt_check_lambda_expression'(_).
+'$lgt_check_lambda_expression'(_, _).
 
 
 '$lgt_check_lambda_expression_unclassified_vars'(Parameters>>Goal) :-
 	'$lgt_check_lambda_expression_unclassified_vars'(Goal, GoalVars),
 	term_variables(Parameters, ParameterVars),
 	'$lgt_var_subtract'(GoalVars, ParameterVars, UnqualifiedVars),
-	(	UnqualifiedVars == [] ->
-		true
-	;	throw(representation_error(unclassified_lambda_variables))
+	(	UnqualifiedVars \== [],
+		\+ '$lgt_compiler_flag'(report, off) ->
+		'$lgt_report_warning_in_new_line',
+		'$lgt_inc_compile_warnings_counter',
+		write('%         WARNING!  Unclassified variables in lambda expression: '), nl,
+		\+ \+ (
+			numbervars(Parameters>>Goal, 0, _),
+			write('%                       '),
+			write_term(Parameters>>Goal, [quoted(true), ignore_ops(false), numbervars(true)]), nl
+		),
+		'$lgt_pp_entity'(Type, Entity, _, _, _),
+		'$lgt_report_warning_full_context'(Type, Entity)
+	;	true
 	).
 
 
@@ -15605,13 +15617,23 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	).
 
 
-'$lgt_check_lambda_expression_mixed_up_vars'(Free/Parameters>>_) :-
+'$lgt_check_lambda_expression_mixed_up_vars'(Free/Parameters>>Goal) :-
 	term_variables(Free, FreeVars),
 	term_variables(Parameters, ParameterVars),
 	'$lgt_intersection'(FreeVars, ParameterVars, MixedUpVars),
-	(	MixedUpVars == [] ->
-		true
-	;	throw(representation_error(mixed_up_lambda_variables))
+	(	MixedUpVars \== [],
+		\+ '$lgt_compiler_flag'(report, off) ->
+		'$lgt_report_warning_in_new_line',
+		'$lgt_inc_compile_warnings_counter',
+		write('%         WARNING!  Variables in lambda expression have dual role: '), nl,
+		\+ \+ (
+			numbervars(Free/Parameters>>Goal, 0, _),
+			write('%                       '),
+			write_term(Free/Parameters>>Goal, [quoted(true), ignore_ops(false), numbervars(true)]), nl
+		),
+		'$lgt_pp_entity'(Type, Entity, _, _, _),
+		'$lgt_report_warning_full_context'(Type, Entity)
+	;	true
 	).
 
 
@@ -16975,8 +16997,8 @@ current_logtalk_flag(version, version(2, 42, 2)).
 
 % '$lgt_entity_to_xml_term'(+entity)
 %
-% instantiates the parameters in a parametric object to either user-defined names or
-% to '$VAR'(N) terms; at last resort, the parameters are instantiated to the atom '_'
+% instantiates the parameters in a parametric object
+% to either user-defined names or to '$VAR'(N) terms
 
 '$lgt_entity_to_xml_term'(Entity) :-
 	'$lgt_pp_info_'(List),
@@ -16990,12 +17012,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	'$lgt_vars_to_atoms'(Args, Args, Names).
 
 '$lgt_entity_to_xml_term'(Entity) :-
-	catch(numbervars(Entity, 0, _), _, fail),	% some back-end Prolog compilers may not
-	!.											% define this de facto standard predicate
-
-'$lgt_entity_to_xml_term'(Entity) :-
-	Entity =.. [_| Args],
-	'$lgt_vars_to_underscore'(Args).
+	numbervars(Entity, 0, _).
 
 
 

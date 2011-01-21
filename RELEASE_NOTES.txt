@@ -23,6 +23,12 @@ RELEASE NOTES
     Updated the Logtalk compiler in order to check compile-time instantiated
     closure arguments on call/2-N goals for common programming errors.
 
+    Updated the Logtalk compiler in order to generate warnings for lambda
+    expressions with variables that are not declared as either free variables
+    or lambda parameters or with variables that are declared both as free
+    variables and lambda parameters. Thanks to Jan Burse for suggesting
+    these sanity checks.
+
     Updated the Logtalk runtime in order to support using the <</2 control
     construct in closure meta-arguments of meta-predicates.
 
