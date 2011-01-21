@@ -9450,28 +9450,8 @@ current_logtalk_flag(version, version(2, 42, 2)).
 '$lgt_tr_body'(CallN, TPred, DPred, Ctx) :-
 	CallN =.. [call, Closure| ExtraArgs],
 	!,
+	'$lgt_check_closure'(Closure),
 	'$lgt_tr_body'('$lgt_callN'(Closure, ExtraArgs), TPred, DPred, Ctx).
-
-'$lgt_tr_body'('$lgt_callN'(Closure, _), _, _, _) :-
-	nonvar(Closure),
-	\+ callable(Closure),
-	throw(type_error(callable, Closure)).
-
-'$lgt_tr_body'('$lgt_callN'(Closure, ExtraArgs), TPred, DPred, Ctx) :-
-	nonvar(Closure),
-	Closure \= _::_,							% these five special cases
-	Closure \= ::_,								% are already handled by the
-	Closure \= ':'(_, _),						% '$lgt_metacall'/6 predicate
-	Closure \= _>>_,
-	Closure \= _/_,
-	!,
-	(	atom(Closure) ->
-		Pred =.. [Closure| ExtraArgs]
-	;	Closure =.. [Functor| Args],
-		'$lgt_append'(Args, ExtraArgs, FullArgs),
-		Pred =.. [Functor| FullArgs]
-	),
-	'$lgt_tr_body'(Pred, TPred, DPred, Ctx).
 
 '$lgt_tr_body'('$lgt_callN'(Closure, ExtraArgs), _, _, Ctx) :-
 	var(Closure),
@@ -9496,7 +9476,7 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		TPred = '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, Self)
 	;	% we're either compiling a clause for a normal predicate (i.e. MetaVars == [])
 		% or the meta-call should be local as it corresponds to a non meta-argument
-		% or the meta-call is an explicitly qualifed call (::/2, ::/1, :/2) or a lambda expression (>>/2)
+		% or the meta-call is an explicitly qualifed call (::/2, ::/1, :/2) or a lambda expression (>>/2, (/)/2)
 		'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _, _),
 		TPred = '$lgt_metacall'(Closure, ExtraArgs, [], Sender, This, Self)
 	),
@@ -9526,20 +9506,9 @@ current_logtalk_flag(version, version(2, 42, 2)).
 
 % lambda expressions support predicates
 
-'$lgt_tr_body'(_>>Goal, _, _, _) :-
-	nonvar(Goal),
-	\+ callable(Goal),
-	throw(type_error(callable, Goal)).
-
-'$lgt_tr_body'(Free/_>>_, _, _, _) :-
-	nonvar(Free),
-	\+ (functor(Free, {}, Arity), Arity =< 1),
-	throw(type_error(curly_bracketed_term, Free)).
-
-'$lgt_tr_body'(_/Parameters>>_, _, _, _) :-
-	nonvar(Parameters),
-	\+ '$lgt_is_proper_list'(Parameters),
-	throw(type_error(list, Parameters)).
+'$lgt_tr_body'(Parameters>>Goal, _, _, _) :-
+	'$lgt_check_lambda_expression'(Parameters>>Goal),
+	fail.
 
 '$lgt_tr_body'(Free/Parameters>>Goal, TPred, DPred, Ctx) :-
 	nonvar(Parameters),
@@ -9565,11 +9534,6 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	),
 	DPred = '$lgt_debugger.goal'(Free/Parameters>>Goal, TPred, ExCtx).
 
-'$lgt_tr_body'(Parameters>>_, _, _, _) :-
-	nonvar(Parameters),
-	\+ '$lgt_is_proper_list'(Parameters),
-	throw(type_error(list, Parameters)).
-
 '$lgt_tr_body'(Parameters>>Goal, TPred, DPred, Ctx) :-
 	nonvar(Parameters),
 	!,
@@ -9594,15 +9558,9 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	),
 	DPred = '$lgt_debugger.goal'(Parameters>>Goal, TPred, ExCtx).
 
-'$lgt_tr_body'(Free/_, _, _, _) :-
-	nonvar(Free),
-	\+ (functor(Free, {}, Arity), Arity =< 1),
-	throw(type_error(curly_bracketed_term, Free)).
-
-'$lgt_tr_body'(_/Goal, _, _, _) :-
-	nonvar(Goal),
-	\+ callable(Goal),
-	throw(type_error(callable, Goal)).
+'$lgt_tr_body'(Free/Goal, _, _, _) :-
+	'$lgt_check_lambda_expression'(Free/Goal),
+	fail.
 
 '$lgt_tr_body'(Free/Goal, TPred, DPred, Ctx) :-
 	nonvar(Free),
@@ -15495,6 +15453,185 @@ current_logtalk_flag(version, version(2, 42, 2)).
 	;	Ctg = Ref
 	),
 	callable(Ctg).
+
+
+
+% '$lgt_check_closure'(@nonvar)
+%
+% checks that a closure meta-argument is valid
+
+'$lgt_check_closure'(Closure) :-
+	var(Closure),
+	!.
+
+'$lgt_check_closure'(Closure) :-
+	\+ callable(Closure),
+	throw(type_error(callable, Closure)).
+
+'$lgt_check_closure'(Free/Goal) :-
+	'$lgt_check_lambda_expression'(Free/Goal),
+	!.
+
+'$lgt_check_closure'(Parameters>>Goal) :-
+	'$lgt_check_lambda_expression'(Parameters>>Goal),
+	!.
+
+'$lgt_check_closure'({Closure}) :-
+	nonvar(Closure),
+	\+ callable(Closure),
+	throw(type_error(callable, Closure)).
+
+'$lgt_check_closure'(Object::Closure) :-
+	(	nonvar(Object),
+		\+ callable(Object),
+		throw(type_error(object_identifier, Object))
+	;	nonvar(Closure),
+		\+ callable(Closure),
+		throw(type_error(callable, Closure))
+	).
+
+'$lgt_check_closure'(::Closure) :-
+	nonvar(Closure),
+	\+ callable(Closure),
+	throw(type_error(callable, Closure)).
+
+'$lgt_check_closure'(^^Closure) :-
+	nonvar(Closure),
+	\+ callable(Closure),
+	throw(type_error(callable, Closure)).
+
+'$lgt_check_closure'(Object<<Closure) :-
+	(	nonvar(Object),
+		\+ callable(Object),
+		throw(type_error(object_identifier, Object))
+	;	nonvar(Closure),
+		\+ callable(Closure),
+		throw(type_error(callable, Closure))
+	).
+
+'$lgt_check_closure'(':'(Module, Closure)) :-
+	(	nonvar(Module),
+		\+ atom(Module),
+		throw(type_error(module_identifier, Module))
+	;	nonvar(Closure),
+		\+ callable(Closure),
+		throw(type_error(callable, Closure))
+	).
+
+'$lgt_check_closure'(_).
+
+
+
+% '$lgt_check_lambda_expression'(@nonvar)
+%
+% checks that a closure meta-argument is valid
+
+'$lgt_check_lambda_expression'(Free/Parameters>>Goal) :-
+	!,
+	(	nonvar(Free),
+		\+ (functor(Free, {}, Arity), Arity =< 1),
+		throw(type_error(curly_bracketed_term, Free))
+	;	nonvar(Parameters),
+		\+ '$lgt_is_proper_list'(Parameters),
+		throw(type_error(list, Parameters))
+	;	nonvar(Goal),
+		\+ callable(Goal),
+		throw(type_error(callable, Goal))
+%	;	nonvar(Free),
+%		nonvar(Parameters),
+%		nonvar(Goal),
+%		'$lgt_check_lambda_expression_unclassified_vars'(Free/Parameters>>Goal),
+%		'$lgt_check_lambda_expression_mixed_up_vars'(Free/Parameters>>Goal)
+	).
+
+'$lgt_check_lambda_expression'(Free/Goal) :-
+	(	nonvar(Free),
+		\+ (functor(Free, {}, Arity), Arity =< 1),
+		throw(type_error(curly_bracketed_term, Free))
+	;	nonvar(Goal),
+		\+ callable(Goal),
+		throw(type_error(callable, Goal))
+	).
+
+'$lgt_check_lambda_expression'(Parameters>>Goal) :-
+	(	nonvar(Parameters),
+		\+ '$lgt_is_proper_list'(Parameters),
+		throw(type_error(list, Parameters))
+	;	nonvar(Goal),
+		\+ callable(Goal),
+		throw(type_error(callable, Goal))
+%	;	nonvar(Parameters),
+%		nonvar(Goal),
+%		'$lgt_check_lambda_expression_unclassified_vars'(Parameters>>Goal)
+	).
+
+'$lgt_check_lambda_expression'(_).
+
+
+'$lgt_check_lambda_expression_unclassified_vars'(Parameters>>Goal) :-
+	'$lgt_check_lambda_expression_unclassified_vars'(Goal, GoalVars),
+	term_variables(Parameters, ParameterVars),
+	'$lgt_var_subtract'(GoalVars, ParameterVars, UnqualifiedVars),
+	(	UnqualifiedVars == [] ->
+		true
+	;	throw(representation_error(unclassified_lambda_variables))
+	).
+
+
+'$lgt_check_lambda_expression_unclassified_vars'(Parameters>>Goal, UnqualifiedVars) :-
+	!,
+	'$lgt_check_lambda_expression_unclassified_vars'(Goal, GoalVars),
+	term_variables(Parameters, ParameterVars),
+	'$lgt_var_subtract'(GoalVars, ParameterVars, UnqualifiedVars).
+
+'$lgt_check_lambda_expression_unclassified_vars'(Goal, UnqualifiedVars) :-
+	term_variables(Goal, UnqualifiedVars).
+
+
+'$lgt_var_subtract'([], _, []).
+
+'$lgt_var_subtract'([Head| Tail], List, Rest) :-
+	(	'$lgt_var_memberchk'(Head, List) ->
+		'$lgt_var_subtract'(Tail, List, Rest)
+	;	Rest = [Head| Tail2],
+		'$lgt_var_subtract'(Tail, List, Tail2)
+	).
+
+
+'$lgt_var_memberchk'(Element, [Head| Tail]) :-
+	(	Element == Head ->
+		true
+	;	'$lgt_var_memberchk'(Element, Tail)
+	).
+
+
+'$lgt_check_lambda_expression_mixed_up_vars'(Free/Parameters>>_) :-
+	term_variables(Free, FreeVars),
+	term_variables(Parameters, ParameterVars),
+	'$lgt_intersection'(FreeVars, ParameterVars, MixedUpVars),
+	(	MixedUpVars == [] ->
+		true
+	;	throw(representation_error(mixed_up_lambda_variables))
+	).
+
+
+'$lgt_intersection'(_, [], []) :- !.
+
+'$lgt_intersection'([], _, []) :- !.
+
+'$lgt_intersection'([Head1| Tail1], [Head2| Tail2], Intersection) :-
+	compare(Order, Head1, Head2),
+	'$lgt_intersection'(Order, Head1, Tail1, Head2, Tail2, Intersection).
+
+
+'$lgt_intersection'(=, Head,  Tail1, _,     Tail2, [Head| Intersection]) :-
+	'$lgt_intersection'(Tail1, Tail2, Intersection).
+
+'$lgt_intersection'(<, _,     Tail1, Head2, Tail2, Intersection) :-
+	'$lgt_intersection'(Tail1, [Head2| Tail2], Intersection).
+
+'$lgt_intersection'(>, Head1, Tail1, _,     Tail2, Intersection) :-
+	'$lgt_intersection'([Head1|Tail1], Tail2, Intersection).
 
 
 

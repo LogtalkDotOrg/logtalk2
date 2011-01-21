@@ -20,6 +20,9 @@ RELEASE NOTES
     "user" (note, however, that the module must still be loaded prior to
     the compilation of source files calling the module predicates).
 
+    Updated the Logtalk compiler in order to check compile-time instantiated
+    closure arguments on call/2-N goals for common programming errors.
+
     Updated the Logtalk runtime in order to support using the <</2 control
     construct in closure meta-arguments of meta-predicates.
 
