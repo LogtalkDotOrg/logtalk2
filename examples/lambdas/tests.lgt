@@ -3,9 +3,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2010/04/26,
+		date is 2011/01/21,
 		comment is 'Unit tests for the "lambdas" example.']).
 
 	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
@@ -18,7 +18,7 @@
 		R == 25.
 
 	succeeds(lambdas_02) :-
-		logtalk << call([Z]>>(call([X,Y]>>(Y is X*X), 5, R), Z is R*R), T),
+		logtalk << call({X,Y,R}/[Z]>>(call([X,Y]>>(Y is X*X), 5, R), Z is R*R), T),
 		T == 625.
 
 	succeeds(lambdas_03) :-
