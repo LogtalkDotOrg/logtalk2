@@ -14,11 +14,11 @@
 	:- discontiguous(throws/2).
 
 	succeeds(lambdas_01) :-
-		logtalk << call([X,Y]>>(Y is X*X), 5, R),
+		call([X,Y]>>(Y is X*X), 5, R),
 		R == 25.
 
 	succeeds(lambdas_02) :-
-		logtalk << call({X,Y,R}/[Z]>>(call([X,Y]>>(Y is X*X), 5, R), Z is R*R), T),
+		call({X,Y,R}/[Z]>>(call([X,Y]>>(Y is X*X), 5, R), Z is R*R), T),
 		T == 625.
 
 	succeeds(lambdas_03) :-
@@ -86,16 +86,16 @@
 		R == [1000, 124].
 
 	succeeds(lambdas_17) :-
-		logtalk << ([]>>true).
+		[]>>true.
 
 	succeeds(lambdas_18) :-
-		logtalk << ({}/true).
+		{}/true.
 
 	succeeds(lambdas_19) :-
-		logtalk << ({}/[]>>true).
+		{}/[]>>true.
 
 	succeeds(lambdas_20) :-
-		logtalk << ({_}/true).
+		{_}/true.
 
 	throws(lambdas_21, error(representation_error(lambda_parameters), _,_)) :-
 		logtalk << ({X}/[X]>>true).
