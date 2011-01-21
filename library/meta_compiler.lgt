@@ -3,8 +3,8 @@
 	implements(expanding)).
 
 	:- info([
-		version is 0.72,
-		date is 2011/01/20,
+		version is 0.73,
+		date is 2011/01/21,
 		author is 'Paulo Moura',
 		comment is 'Compiler for the "meta" object meta-predicates. Generates auxiliary predicates in order to avoid meta-call overheads.']).
 
@@ -444,7 +444,7 @@
 	decompose_closure(Closure, MetaArity, Functor, Arity, Args, GArgs) :-
 		callable(Closure),
 		Closure =.. [Functor| Args],
-		length(MetaArity, ExtraArgs),
+		length(ExtraArgs, MetaArity),
 		append(Args, ExtraArgs, GoalArgs),
 		Goal =.. [Functor| GoalArgs],
 		\+ control_construct(Goal),
