@@ -26,7 +26,7 @@
 
 		this.regexList = [
 		  // variables
-			{ regex: new RegExp("[A-Z][A-Za-z0-9_]+", 'g'), css: 'variable' },
+			{ regex: new RegExp("[A-Z_][a-zA-Z0-9_]*", 'g'), css: 'variable' },
 			// comments
 			{ regex: new RegExp("\\%.+", 'gm'), css: 'comments' },
 			{ regex: SyntaxHighlighter.regexLib.multiLineCComments, css: 'comments' },
