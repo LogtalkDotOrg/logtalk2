@@ -7322,8 +7322,8 @@ current_logtalk_flag(version, version(2, 42, 2)).
 			;	'$lgt_pp_entity'(Type, Entity, _, _, _),
 				'$lgt_report_warning_in_new_line',
 				'$lgt_inc_compile_warnings_counter',
-				write('%         WARNING!  Ignoring synchronized predicate directive: '),
-				write(Type), write(' already declared as synchronized!'), nl,
+				write('%         WARNING!  Ignoring synchronized predicate directive: '), nl,
+				write('%                       '), write(Type), write(' already declared as synchronized!'), nl,
 				'$lgt_report_warning_full_context'(Type, Entity)
 			)
 		;	'$lgt_flatten_list'(Preds, Preds2),
@@ -12663,7 +12663,8 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		'$lgt_inc_compile_warnings_counter',
 		(	Objs = [_] ->
 			write('%         WARNING!  Reference to unknown object: ')
-		;	write('%         WARNING!  References to unknown objects: ')
+		;	write('%         WARNING!  References to unknown objects: '), nl,
+			write('%                       ')
 		),
 		'$lgt_writeq_list'(Objs), nl,
 		'$lgt_report_warning_entity_context'(Type, Entity)
@@ -12691,7 +12692,8 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		'$lgt_inc_compile_warnings_counter',
 		(	Ptcs = [_] ->
 			write('%         WARNING!  Reference to unknown protocol: ')
-		;	write('%         WARNING!  References to unknown protocols: ')
+		;	write('%         WARNING!  References to unknown protocols: '), nl,
+			write('%                       ')
 		),
 		'$lgt_writeq_list'(Ptcs), nl,
 		'$lgt_report_warning_entity_context'(Type, Entity)
@@ -12718,7 +12720,8 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		'$lgt_inc_compile_warnings_counter',
 		(	Ctgs = [_] ->
 			write('%         WARNING!  Reference to unknown category: ')
-		;	write('%         WARNING!  References to unknown categories: ')
+		;	write('%         WARNING!  References to unknown categories: '), nl,
+			write('%                       ')
 		),
 		'$lgt_writeq_list'(Ctgs), nl,
 		'$lgt_report_warning_entity_context'(Type, Entity)
@@ -14248,7 +14251,8 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		;	(	('$lgt_pp_value_annotation_'(_, _, _, _); '$lgt_pp_goal_annotation_'(_, _, _, _)) ->
 				write('%         WARNING!  These declared static predicates are called but may not be defined: ')
 			;	write('%         WARNING!  These declared static predicates are called but never defined: ')
-			)
+			),
+			nl, write('%                       ')
 		),
 		'$lgt_writeq_list'(Preds), nl,
 		(	'$lgt_compiler_flag'(report, warnings) ->
@@ -14303,7 +14307,8 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		;	(	('$lgt_pp_value_annotation_'(_, _, _, _); '$lgt_pp_goal_annotation_'(_, _, _, _); \+ '$lgt_pp_module_'(_)) ->
 				write('%         WARNING!  Possibly missing dynamic/1 directives for the predicates: ')
 			;	write('%         WARNING!  Missing dynamic/1 directives for the predicates: ')
-			)
+			),
+			nl, write('%                       ')
 		),
 		'$lgt_writeq_list'(Preds), nl,
 		(	'$lgt_compiler_flag'(report, warnings) ->
@@ -14335,7 +14340,8 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		;	(	('$lgt_pp_value_annotation_'(_, _, _, _); '$lgt_pp_goal_annotation_'(_, _, _, _); \+ '$lgt_pp_module_'(_)) ->
 				write('%         WARNING!  Possibly missing discontiguous/1 directives for the predicates: ')
 			;	write('%         WARNING!  Missing discontiguous/1 directives for the predicates: ')
-			)
+			),
+			nl, write('%                       ')
 		),
 		'$lgt_writeq_list'(Preds), nl,
 		(	'$lgt_compiler_flag'(report, warnings) ->
@@ -14372,7 +14378,8 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		;	(	('$lgt_pp_value_annotation_'(_, _, _, _); '$lgt_pp_goal_annotation_'(_, _, _, _)) ->
 				write('%         WARNING!  These predicates are called but may not be defined: ')
 			;	write('%         WARNING!  These predicates are called but never defined: ')
-			)
+			),
+			nl, write('%                       ')
 		),
 		'$lgt_writeq_list'(Preds), nl,
 		(	'$lgt_compiler_flag'(report, warnings) ->
@@ -14413,7 +14420,8 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		'$lgt_inc_compile_warnings_counter',
 		(	Preds = [_] ->
 			write('%         WARNING!  Call to non-standard Prolog built-in predicate: ')
-		;	write('%         WARNING!  Calls to non-standard Prolog built-in predicates: ')
+		;	write('%         WARNING!  Calls to non-standard Prolog built-in predicates: '), nl,
+			write('%                       ')
 		),
 		'$lgt_writeq_list'(Preds), nl,
 		(	'$lgt_compiler_flag'(report, warnings) ->
@@ -14440,7 +14448,8 @@ current_logtalk_flag(version, version(2, 42, 2)).
 		'$lgt_inc_compile_warnings_counter',
 		(	Functions = [_] ->
 			write('%         WARNING!  Call to non-standard Prolog built-in arithmetic function: ')
-		;	write('%         WARNING!  Calls to non-standard Prolog built-in arithmetic functions: ')
+		;	write('%         WARNING!  Calls to non-standard Prolog built-in arithmetic functions: '), nl,
+			write('%                       ')
 		),
 		'$lgt_writeq_list'(Functions), nl,
 		(	'$lgt_compiler_flag'(report, warnings) ->
