@@ -95,3 +95,12 @@ yes
 
 EGoal = write(Term)
 yes
+
+
+% simple tests of hook objects:
+
+?- cooked << (aa, bb, cc).
+yes
+
+?- cooked << (ha, hb, hc).
+yes

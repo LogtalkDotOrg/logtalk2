@@ -86,6 +86,9 @@ RELEASE NOTES
     "metapredicates_compiled", that make use of the new library object
     "meta_compiler".
 
+    Updated the "expansion" example in order to illustrate how to define
+    and combine hook objects.
+
     Added support for using the SyntaxHighlighter package (version 3.0.83
     or later) by Alex Gorbatchev with Logtalk source code.
 

@@ -56,4 +56,10 @@
 		desc_private::test_goal_expansion(write(Term), EGoal),
 		EGoal = write(Term).
 
+	test(expansion_13) :-
+		cooked << (aa, bb, cc).
+
+	test(expansion_14) :-
+		cooked << (ha, hb, hc).
+
 :- end_object.

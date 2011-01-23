@@ -54,7 +54,7 @@
 :- object(exp_protected,
 	imports(protected::number_conversion)).
 
-	% make the predicates term_expansion/2and goal_expansion/2,
+	% make the predicates term_expansion/2 and goal_expansion/2,
 	% defined in the imported category "number_conversion",
 	% protected to this prototype and its descendents
 
@@ -71,7 +71,7 @@
 :- object(exp_private,
 	imports(private::number_conversion)).
 
-	% make the predicates term_expansion/2and goal_expansion/2,
+	% make the predicates term_expansion/2 and goal_expansion/2,
 	% defined in the imported category "number_conversion",
 	% private to this prototype
 
