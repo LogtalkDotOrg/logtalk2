@@ -25,7 +25,7 @@ RELEASE NOTES
 
     Updated the Logtalk compiler in order to generate warnings for lambda
     expressions with variables that are not declared as either free variables
-    or lambda parameters or with variables that are declared both as free
+    or lambda parameters or with variables that are declared as both free
     variables and lambda parameters. Thanks to Jan Burse for suggesting
     these sanity checks.
 
@@ -53,6 +53,9 @@ RELEASE NOTES
     Updated the Qu-Prolog integration scripts in order to double the heap size
     value for compiling the Logtalk compiler/runtime, solving a startup crash.
 
+    Restored the MacOS X command-file for GNU Prolog (moved up from the
+    "scripts/macosx/command_files/unsupported" folder).
+
     Added predicates findall_member/4-5 to the library object "meta" (based
     on Richard O'Keefe's draft Prolog library proposal). Removed declaration
     and definition of the predicates callable/1 and ignore/1 from the library
@@ -64,7 +67,7 @@ RELEASE NOTES
     object "meta" in order to avoid the meta-call overheads. On those cases
     where the meta-predicate call cannot be optimized, the default definition
     on the "meta" object is used. Using control constructs as meta-arguments
-    is not supported.
+    is not (yet) supported. Work in progress.
 
     Added a protocol, "loggingp", and category and object implementations,
     "logging" and "logger", declaring and defining basic functionality for
