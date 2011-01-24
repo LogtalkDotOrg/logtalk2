@@ -109,11 +109,11 @@ Some old Prolog compilers supported some sort of mode directives to improve perf
 <h3 id="predicates_meta">Meta-predicate directive</h3>
 
 <p>
-Some predicates may have arguments that will be called as goals or closures that will be used for constructing a call. To ensure that these calls and closures will be executed in the correct scope (i.e. in the calling context, <em>this</em>, not in the predicate definition context) we need to use the <a title="Consult reference manual" href="../refman/directives/meta_predicate1.html"><code>meta_predicate/1</code></a> directive. For example:
+Some predicates may have arguments that will be called as goals or closures that will be used for constructing a call. To ensure that these calls and closures will be executed in the correct scope (i.e. in the calling context, not in the meta-predicate definition context) we need to use the <a title="Consult reference manual" href="../refman/directives/meta_predicate1.html"><code>meta_predicate/1</code></a> directive. For example:
 </p>
 <pre>:- meta_predicate(findall(*, ::, *)).</pre>
 <p>
-The predicate arguments in this directive have the following meaning:
+The meta-predicate mode arguments in this directive have the following meaning:
 </p>
 <dl>
 	<dt><code>0</code></dt>
@@ -127,7 +127,7 @@ The predicate arguments in this directive have the following meaning:
 	<dt><code>[0]</code></dt>
 		<dd>List of goals.</dd>
 	<dt><code>[/]</code></dt>
-		<dd>List of predicate indicators.</dd>
+		<dd>List of predicate indicators (Functor/Arity).</dd>
 	<dt><code>*</code></dt>
 		<dd>Normal argument.</dd>
 </dl>
@@ -765,7 +765,7 @@ Currently, there is no clean workaround for calling non-standard Prolog built-in
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: January 16, 2011</span>
+		<span>Last updated on: January 18, 2011</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="categories.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="inheritance.html">next</a></span><br/>
