@@ -317,18 +317,18 @@ Consider the following simple example:
 <pre>
 :- object(main).
 
-	:- public(a/1).
-	:- multifile(a/1).
-	a(1).
+    :- public(a/1).
+    :- multifile(a/1).
+    a(1).
 
 :- end_object.
 
 
 :- object(other).
 
-	:- multifile(main::a/1).
-	main::a(2).
-	main::a(3).
+    :- multifile(main::a/1).
+    main::a(2).
+    main::a(3).
 
 :- end_object.
 </pre>
