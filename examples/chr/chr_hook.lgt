@@ -3,9 +3,9 @@
 	implements(expanding)).
 
 	:- info([
-		version is 0.1,
+		version is 0.2,
 		author is 'Paulo Moura',
-		date is 2010/11/09,
+		date is 2011/01/27,
 		comment is 'Hook object for compiling objects and categories containing CHR code.']).
 
 	term_expansion((:- chr_constraint(PIs)), [{(:- chr_constraint(TPIs))}]) :-
@@ -29,23 +29,34 @@
 		),
 		chr_annotations(Annotations).
 
-	chr_annotations([
-		(:- annotation('@'(*,0))),
-		(:- annotation('==>'(0,0))),
-		(:- annotation('<=>'(0,0))),
-		(:- annotation('|'(0,0))),
-		(:- annotation('\\'(0,0))),
-		(:- annotation('#'(0,*))),
-		(:- annotation(pragma(0,*)))
-	]).
-
-	:- if((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == qp; Dialect == swi; Dialect == yap; Dialect == sicstus))).
-		:- multifile(user::portray/1).
-		:- dynamic(user::portray/1).
-		user::portray(THead) :-
-			callable(THead),
-			logtalk::decompile_predicate_head(THead, Entity, _, Head),
-			writeq(Entity::Head).
+	:- if(current_logtalk_flag(prolog_dialect, qp)).
+		chr_annotations([
+			(:- annotation('@'(*,0))),
+			(:- annotation('==>'(0,0))),
+			(:- annotation('<=>'(0,0))),
+			(:- annotation('|'(0,0))),
+			(:- annotation('\\'(0,0))),
+			(:- annotation('#'(0,*))),
+			(:- annotation(pragma(0,*)))
+		]).
+	:- else.
+		chr_annotations([
+			(:- annotation('@'(*,0))),
+			(:- annotation('==>'(0,0))),
+			(:- annotation('<=>'(0,0))),
+			(:- annotation('|'(0,0))),
+			(:- annotation('\\'(0,0))),
+			(:- annotation('#'(0,*))),
+			(:- annotation(pragma(0,*))),
+			(:- initialization({'$chr_initialization', fail; true}))
+		]).
 	:- endif.
+
+	:- multifile(user::portray/1).
+	:- dynamic(user::portray/1).
+	user::portray(THead) :-
+		callable(THead),
+		logtalk::decompile_predicate_head(THead, Entity, _, Head),
+		writeq(Entity::Head).
 
 :- end_object.

@@ -3,9 +3,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.0,
+		version is 1.01,
 		author is 'Paulo Moura',
-		date is 2010/11/09,
+		date is 2011/01/27,
 		comment is 'Unit tests for the "chr" example.']).
 
 	:- if(current_object(dom)).
@@ -47,7 +47,7 @@
 
 	:- if(current_object(leq)).
 	test(chr_leq_1) :-
-		leq::leq(X, Y), leq::leq(Y, Z).
+		leq::leq(_X, Y), leq::leq(Y, _Z).
 	:- endif.
 
 	:- if(current_object(primes)).
