@@ -29,28 +29,15 @@
 		),
 		chr_annotations(Annotations).
 
-	:- if(current_logtalk_flag(prolog_dialect, qp)).
-		chr_annotations([
-			(:- annotation('@'(*,0))),
-			(:- annotation('==>'(0,0))),
-			(:- annotation('<=>'(0,0))),
-			(:- annotation('|'(0,0))),
-			(:- annotation('\\'(0,0))),
-			(:- annotation('#'(0,*))),
-			(:- annotation(pragma(0,*)))
-		]).
-	:- else.
-		chr_annotations([
-			(:- annotation('@'(*,0))),
-			(:- annotation('==>'(0,0))),
-			(:- annotation('<=>'(0,0))),
-			(:- annotation('|'(0,0))),
-			(:- annotation('\\'(0,0))),
-			(:- annotation('#'(0,*))),
-			(:- annotation(pragma(0,*))),
-			(:- initialization({'$chr_initialization', fail; true}))
-		]).
-	:- endif.
+	chr_annotations([
+		(:- annotation('@'(*,0))),
+		(:- annotation('==>'(0,0))),
+		(:- annotation('<=>'(0,0))),
+		(:- annotation('|'(0,0))),
+		(:- annotation('\\'(0,0))),
+		(:- annotation('#'(0,*))),
+		(:- annotation(pragma(0,*)))
+	]).
 
 	:- multifile(user::portray/1).
 	:- dynamic(user::portray/1).
