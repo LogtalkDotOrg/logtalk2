@@ -16601,6 +16601,10 @@ current_logtalk_flag(version, version(2, 42, 3)).
 %
 % removes redundant calls to true/0 and flattens conjunction of goals:
 
+'$lgt_dcg_flatten_conjunctions'(Goal, Goal) :-
+	var(Goal),
+	!.
+
 '$lgt_dcg_flatten_conjunctions'((Goal1 -> Goal2), (SGoal1 -> SGoal2)) :-
 	!,
 	'$lgt_dcg_flatten_conjunctions'(Goal1, SGoal1),
@@ -16609,6 +16613,11 @@ current_logtalk_flag(version, version(2, 42, 3)).
 '$lgt_dcg_flatten_conjunctions'((Goal1; Goal2), (SGoal1; SGoal2)) :-
 	!,
 	'$lgt_dcg_flatten_conjunctions'(Goal1, SGoal1),
+	'$lgt_dcg_flatten_conjunctions'(Goal2, SGoal2).
+
+'$lgt_dcg_flatten_conjunctions'((Goal1, Goal2), (Goal1, SGoal2)) :-
+	var(Goal1),
+	!,
 	'$lgt_dcg_flatten_conjunctions'(Goal2, SGoal2).
 
 '$lgt_dcg_flatten_conjunctions'(((Goal1, Goal2), Goal3), Body) :-
@@ -16648,12 +16657,20 @@ current_logtalk_flag(version, version(2, 42, 3)).
 % folds left unifications; right unifications cannot
 % be folded otherwise we may loose steadfastness
 
+'$lgt_dcg_fold_left_unifications'(Goal, Goal) :-
+	var(Goal),
+	!.
+
 '$lgt_dcg_fold_left_unifications'((Term1 = Term2), Folded) :-
 	!,
 	(	Term1 = Term2 ->
 		Folded = true
 	;	Folded = fail
 	).
+
+'$lgt_dcg_fold_left_unifications'((Goal1, Goal2), (Goal1, Goal2)) :-
+	var(Goal1),
+	!.
 
 '$lgt_dcg_fold_left_unifications'(((Term1 = Term2), Goal), Folded) :-
 	!,
@@ -16671,6 +16688,10 @@ current_logtalk_flag(version, version(2, 42, 3)).
 % folds pairs of consecutive variable unifications (Var1 = Var2, Var2 = Var3)
 % that are generated as a by-product of the compilation of grammar rules
 
+'$lgt_dcg_fold_unification_pairs'(Goal, Goal) :-
+	var(Goal),
+	!.
+
 '$lgt_dcg_fold_unification_pairs'((Goal1 -> Goal2), (SGoal1 -> SGoal2)) :-
 	!,
 	'$lgt_dcg_fold_unification_pairs'(Goal1, SGoal1),
@@ -16679,6 +16700,11 @@ current_logtalk_flag(version, version(2, 42, 3)).
 '$lgt_dcg_fold_unification_pairs'((Goal1; Goal2), (SGoal1; SGoal2)) :-
 	!,
 	'$lgt_dcg_fold_unification_pairs'(Goal1, SGoal1),
+	'$lgt_dcg_fold_unification_pairs'(Goal2, SGoal2).
+
+'$lgt_dcg_fold_unification_pairs'((Goal1, Goal2), (Goal1, SGoal2)) :-
+	var(Goal1),
+	!,
 	'$lgt_dcg_fold_unification_pairs'(Goal2, SGoal2).
 
 '$lgt_dcg_fold_unification_pairs'(('$lgt_gr_pair'(Var1 = Var2a), '$lgt_gr_pair'(Var2b = Var3), Goal), SGoal) :-
@@ -16694,9 +16720,9 @@ current_logtalk_flag(version, version(2, 42, 3)).
 	!,
 	'$lgt_dcg_fold_unification_pairs'(Goal, SGoal).
 
-'$lgt_dcg_fold_unification_pairs'((Goal1, Goal2), (Goal1, Goal3)) :-
+'$lgt_dcg_fold_unification_pairs'((Goal1, Goal2), (Goal1, SGoal2)) :-
 	!,
-	'$lgt_dcg_fold_unification_pairs'(Goal2, Goal3).
+	'$lgt_dcg_fold_unification_pairs'(Goal2, SGoal2).
 
 '$lgt_dcg_fold_unification_pairs'(\+ Goal, \+ SGoal) :-
 	!,
