@@ -36,3 +36,16 @@ yes
 
 String = 'delegate implementation'
 yes
+
+
+% same queries but using the parametric object implementation:
+
+| ?- a_delegator(an_object)::operation(String).
+
+String = 'default implementation'
+yes
+
+| ?- a_delegator(a_delegate)::operation(String).
+
+String = 'delegate implementation'
+yes

@@ -22,6 +22,9 @@ RELEASE NOTES
     control construct should be used instead on this case). Thanks to
     Hibeus for the bug report.
 
+    Extended the "delegates" examples with a sample implementation of a
+    delegator using a parametric object.
+
 
 2.42.2 - January 25, 2011
 

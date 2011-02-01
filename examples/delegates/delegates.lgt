@@ -19,7 +19,7 @@
 
 :- end_category.
 
-% define a simpler delegator object, with a
+% define a simple delegator object, with a
 % method, operation/1, for testing delegation
 
 :- object(a_delegator,
@@ -29,6 +29,24 @@
 
 	operation(String) :-
 		(	::delegate(Delegate), Delegate::current_predicate(thing/1) ->
+			% a delegate is defined that understands the method thing/1
+			Delegate::thing(String)
+		;	% otherwise just use the default implementation
+			String = 'default implementation'
+		).
+
+:- end_object.
+
+% an alternative definition for a simple delegator object
+% is to use a parametric object whose parameter would be
+% instantiated to the delegate object:
+
+:- object(a_delegator(_delegate)).
+
+	:- public(operation/1).
+
+	operation(String) :-
+		(	parameter(1, Delegate), Delegate::current_predicate(thing/1) ->
 			% a delegate is defined that understands the method thing/1
 			Delegate::thing(String)
 		;	% otherwise just use the default implementation
