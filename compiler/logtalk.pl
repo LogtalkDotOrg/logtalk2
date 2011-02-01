@@ -10799,7 +10799,6 @@ current_logtalk_flag(version, version(2, 42, 3)).
 % goal is a call to a dynamic predicate within a category
 
 '$lgt_tr_body'(Pred, TPred, '$lgt_debugger.goal'(Pred, TPred, ExCtx), Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
 	'$lgt_pp_category_'(_, _, _, _, _, _),		% we're compiling a category
 	functor(Pred, Functor, Arity),
 	'$lgt_pp_dynamic_'(Functor, Arity),			% which declares the predicate dynamic
