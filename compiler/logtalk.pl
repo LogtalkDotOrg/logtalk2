@@ -4169,6 +4169,25 @@ current_logtalk_flag(version, version(2, 42, 3)).
 
 
 
+% '$lgt_call_this'(+callable, +execution_context)
+%
+% calls a dynamic predicate in "this" from within a category at runtime
+
+'$lgt_call_this'(Pred, ExCtx) :-
+	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_current_object_'(This, _, _, Def, _, _, _, _, DDef, _, _), !,
+	(	% the object definition may include some initial clauses for the dynamic predicate:
+		call(Def, Pred, ExCtx, TPred) ->
+		call(TPred)
+	;	% or the clauses for the dynamic predicate may be defined only at runtime:
+		call(DDef, Pred, ExCtx, TPred) ->
+		call(TPred)
+	;	% closed-world assumption:
+		fail
+	).
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -10777,14 +10796,16 @@ current_logtalk_flag(version, version(2, 42, 3)).
 	throw(type_error(callable, Pred)).
 
 
-% goal is an invalid call to a dynamic predicate within a category
+% goal is a call to a dynamic predicate within a category
 
-'$lgt_tr_body'(Pred, _, _, Ctx) :-
+'$lgt_tr_body'(Pred, TPred, '$lgt_debugger.goal'(Pred, TPred, ExCtx), Ctx) :-
 	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
 	'$lgt_pp_category_'(_, _, _, _, _, _),		% we're compiling a category
 	functor(Pred, Functor, Arity),
 	'$lgt_pp_dynamic_'(Functor, Arity),			% which declares the predicate dynamic
-	throw(permission_error(define, dynamic_predicate, Functor/Arity)).
+	!,
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	TPred = '$lgt_call_this'(Pred, ExCtx).
 
 
 % goal is a call to a user-defined predicate in sender (i.e. a meta-argument)
@@ -10796,6 +10817,7 @@ current_logtalk_flag(version, version(2, 42, 3)).
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_comp_ctx_sender'(Ctx, Sender),
 	'$lgt_comp_ctx_self'(Ctx, Self),
+	'$lgt_exec_ctx'(ExCtx, Sender, _, Self, _, _),
 	TPred = '$lgt_metacall_this'(Pred, Sender, Sender, Self).
 
 
