@@ -85,18 +85,41 @@ Categories cannot inherit from objects. In addition, categories cannot contain c
     :- dynamic(attribute_/2).
 
     attribute(Attribute, Value) :-
-        ::attribute_(Attribute, Value).
+        ::attribute_(Attribute, Value).          % called in the context of "self"
 
     set_attribute(Attribute, Value) :-
-        ::retractall(attribute_(Attribute, _)),
-        ::assertz(attribute_(Attribute, Value)).
+        ::retractall(attribute_(Attribute, _)),  % retracts clauses in "self"
+        ::assertz(attribute_(Attribute, Value)). % asserts clause in "self"
 
     del_attribute(Attribute, Value) :-
-        ::retract(attribute_(Attribute, Value)).
+        ::retract(attribute_(Attribute, Value)). % retracts clause in "self"
 
 :- end_category.</pre>
 <p>
-Each object importing this category will have its own <code>attribute_/2</code> private, dynamic predicate. The predicates <code>attribute/2</code>, <code>set_attribute/2</code>, and <code>del_attribute/2</code> always access and modify the dynamic predicate contained in the object receiving the corresponding messages.
+Each object importing this category will have its own <code>attribute_/2</code> private, dynamic predicate. The predicates <code>attribute/2</code>, <code>set_attribute/2</code>, and <code>del_attribute/2</code> always access and modify the dynamic predicate contained in the object receiving the corresponding messages (i.e. <em>self</em>). But it's also possible to define predicates that handle dynamic predicates in the context of <em>this</em> instead of <em>self</em>. For example:
+</p>
+<pre>:- category(attributes).
+
+    :- public(attribute/2).
+    :- public(set_attribute/2).
+    :- public(del_attribute/2).
+
+    :- private(attribute_/2).
+    :- dynamic(attribute_/2).
+
+    attribute(Attribute, Value) :-
+        attribute_(Attribute, Value).            % called in the context of "this"
+
+    set_attribute(Attribute, Value) :-
+        retractall(attribute_(Attribute, _)),    % retracts clauses in "this"
+        assertz(attribute_(Attribute, Value)).   % asserts clause in "this"
+
+    del_attribute(Attribute, Value) :-
+        retract(attribute_(Attribute, Value)).   % retracts clause in "this"
+
+:- end_category.</pre>
+<p>
+When defining a category that declares and handles dynamic predicates, working in the context of <em>this</em> ties those dynamic predicates to the object importing the category while working in the context of <em>self</em> allows each object inheriting from the object that imports the category to have its own set of clauses for those dynamic predicates.
 </p>
 
 <h2 id="categories_meta_predicates">Calling built-in meta-predicates within categories</h2>
@@ -370,7 +393,7 @@ Note that access to category parameters is only possible using the <code>paramet
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: February 17, 2010</span>
+		<span>Last updated on: February 1, 2011</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="protocols.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="predicates.html">next</a></span><br/>
