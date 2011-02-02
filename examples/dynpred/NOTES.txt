@@ -12,9 +12,10 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 To load this example and for sample queries, please see the SCRIPT.txt file.
 
 This folder contains examples of using some of the built-in database 
-handling methods. Two hierarchies are provided, one prototype-based, 
-and the other class-based, in order to illustrate the differences 
-between asserting predicates in a class and in a prototype.
+handling methods with object and categories. Two object hierarchies are
+provided, one prototype-based, and the other class-based, in order to
+illustrate the differences between asserting predicates in a class and
+in a prototype:
 
 The following objects are defined:
 
@@ -35,3 +36,7 @@ The following objects are defined:
 		simple prototype used to illustrate how the scope of asserted 
 		predicates depends on the target object (this, self, or a explicit 
 		object)
+
+In addition, the file "categories.lgt" illustrates how to define category
+predicates that handle dynamic predicates in the context of "this" and in
+the context of "self".

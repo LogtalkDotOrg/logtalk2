@@ -1,3 +1,3 @@
 
 :- initialization(
-	logtalk_load([protos, classes, prototype], [dynamic_declarations(allow)])).
+	logtalk_load([protos, classes, prototype, categories], [dynamic_declarations(allow)])).
