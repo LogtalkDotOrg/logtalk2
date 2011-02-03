@@ -259,20 +259,28 @@
 	in_interval_single(Type, ([Min], Max)) :-
 		!,
 		call(Type, Min),
-		call(Type, Max),
+		type_or_inf(Type, Max),
 		Min < Max.
 
 	in_interval_single(Type, (Min, [Max])) :-
 		!,
-		call(Type, Min),
+		type_or_inf(Type, Min),
 		call(Type, Max),
 		Min < Max.
 
 	in_interval_single(Type, (Min, Max)) :-
-		call(Type, Min),
-		call(Type, Max),
+		type_or_inf(Type, Min),
+		type_or_inf(Type, Max),
 		Min < Max,
 		Max - Min > 0.0.
+
+	type_or_inf(_Type, Value) :-
+		(	Value == (+inf)
+		;	Value == (-inf)
+		),
+		!.
+	type_or_inf(Type, Value) :-
+		call(Type, Value).
 
 	in_interval(Type, [Interval|_Rest], Value) :-
 		in_interval(Type, Interval, Value), !.

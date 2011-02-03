@@ -30,6 +30,10 @@ RELEASE NOTES
     Added a partial implementation of the ISO Prolog predicate_property/2
     predicate to the ECLiPSe config file.
 
+    Applied a bug fix to the "flags" contribution made available by its
+    author, Theofrastos Mantadelis. Workaround a compatibility issue with
+    GNU Prolog.
+
     Extended the "delegates" example with a sample implementation of a
     delegator using a parametric object.
 
