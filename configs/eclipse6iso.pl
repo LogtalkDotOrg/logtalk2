@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#141 and later versions
 %
-%  last updated: December 21, 2010
+%  last updated: February 3, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -45,8 +45,10 @@
 
 % '$lgt_iso_predicate'(?callable).
 
-'$lgt_iso_predicate'(_) :-
-	fail.
+'$lgt_iso_predicate'(predicate_property(_, _)).
+
+predicate_property(Predicate, Property) :-
+	'$lgt_predicate_property'(Predicate, Property).
 
 
 :- use_module(library(iso)).

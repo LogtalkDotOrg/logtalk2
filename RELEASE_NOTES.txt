@@ -27,6 +27,9 @@ RELEASE NOTES
     control construct should be used instead on this case). Thanks to
     Nicolas Pelletier for the bug report.
 
+    Added a partial implementation of the ISO Prolog predicate_property/2
+    predicate to the ECLiPSe config file.
+
     Extended the "delegates" example with a sample implementation of a
     delegator using a parametric object.
 
