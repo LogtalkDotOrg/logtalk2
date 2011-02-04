@@ -41,6 +41,8 @@ RELEASE NOTES
     category predicates that handle dynamic predicates in the context of
     "this" and in the context of "self".
 
+    Added a wall_time/1 predicate to the "cc" example.
+
 
 2.42.2 - January 25, 2011
 

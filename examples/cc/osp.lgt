@@ -2,9 +2,9 @@
 :- protocol(osp).
 
 	:- info([
-		version is 1.5,
+		version is 1.6,
 		author is 'Paulo Moura',
-		date is 2010/12/16,
+		date is 2011/02/04,
 		comment is 'Portable operating-system access protocol.']).
 
 	:- public(shell/2).
@@ -113,6 +113,12 @@
 	:- mode(cpu_time(-number), one).
 	:- info(cpu_time/1, [
 		comment is 'System cpu time in seconds.',
+		argnames is ['Time']]).
+
+	:- public(wall_time/1).
+	:- mode(wall_time(-number), one).
+	:- info(wall_time/1, [
+		comment is 'Wall time in seconds.',
 		argnames is ['Time']]).
 
 	:- public(operating_system_type/1).

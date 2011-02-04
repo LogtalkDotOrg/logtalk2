@@ -13,9 +13,9 @@
 	implements(osp)).
 
 	:- info([
-		version is 1.71,
+		version is 1.8,
 		author is 'Paulo Moura',
-		date is 2011/01/14,
+		date is 2011/02/04,
 		comment is 'Simple example of using conditional compilation to implement a portable operating-system interface for selected back-end Prolog compilers.']).
 
 	:- if(current_logtalk_flag(prolog_dialect, swi)).
@@ -74,7 +74,10 @@
 			 convert_time(Time, Year, Month, Day, Hours, Mins, Secs, Milisecs)}.
 
 		cpu_time(Time) :-
-			{Time is cputime}.
+			{statistics(runtime, [Miliseconds| _]), Time is Miliseconds/1000}.
+
+		wall_time(Time) :-
+			{statistics(walltime, [Time, _])}.
 
 		operating_system_type(Type) :-
 			(	current_prolog_flag(windows, true) ->
@@ -148,7 +151,10 @@
 			{datime(datime(Year, Month, Day, Hours, Mins, Secs))}.
 
 		cpu_time(Time) :-
-			{Time is cputime}.
+			{statistics(runtime, [Miliseconds| _]), Time is Miliseconds/1000}.
+
+		wall_time(Time) :-
+			{statistics(walltime, [Time, _])}.
 
 		operating_system_type(Type) :-
 			(	current_prolog_flag(windows, true) ->
@@ -231,6 +237,9 @@
 		cpu_time(Time) :-
 			{cputime(Time)}.
 
+		wall_time(Time) :-
+			{walltime(Time)}.
+
 		operating_system_type(Type) :-
 			(	{xsb_configuration(os_type, windows)} ->
 				Type = windows
@@ -295,8 +304,10 @@
 			{date_time(dt(Year, Month, Day, Hours, Mins, Secs))}.
 
 		cpu_time(Time) :-
-			{cpu_time(Miliseconds),
-			 Time is Miliseconds/1000}.
+			{cpu_time(Miliseconds), Time is Miliseconds/1000}.
+
+		wall_time(Time) :-
+			{real_time(Miliseconds), Time is Miliseconds/1000}.
 
 		operating_system_type(Type) :-
 			(	os_version(windows) ->
@@ -363,6 +374,9 @@
 		cpu_time(Time) :-
 			{cputime(Miliseconds), Time is Miliseconds/1000}.
 
+		wall_time(_) :-
+			throw(not_available(wall_time/1)).
+
 		operating_system_type(Type) :-
 			(	{environ('COMSPEC', _)} ->
 				Type = windows
@@ -428,6 +442,9 @@
 
 		cpu_time(Time) :-
 			{statistics(runtime, [Miliseconds| _]), Time is Miliseconds/1000}.
+
+		wall_time(Time) :-
+			{statistics(walltime, [Time, _])}.
 
 		operating_system_type(Type) :-
 			(	{environ('COMSPEC', _)} ->
@@ -500,6 +517,9 @@
 		cpu_time(Time) :-
 			{cputime(Time)}.
 
+		wall_time(Time) :-
+			{statistics(times, [_, _, Time])}.
+
 		operating_system_type(Type) :-
 			get_flag(hostarch, HostArch),
 			(	(atom_string(i386_nt, HostArch); atom_string(x86_64_nt, HostArch)) ->
@@ -567,8 +587,7 @@
 			{datime(_, Year, Month, Day, Hours, Mins, Secs, _, _)}.
 
 		cpu_time(Time) :-
-			{statistics(runtime, [Miliseconds| _])},
-			Seconds is Miliseconds / 1000.
+			{statistics(runtime, [Miliseconds| _]), Time is Miliseconds / 1000}.
 
 		operating_system_type(_) :-
 			throw(not_available(operating_system_type/1)).
@@ -631,6 +650,9 @@
 
 		cpu_time(Time) :-
 			{Time is cputime}.
+
+		wall_time(_) :-
+			throw(not_available(wall_time/1)).
 
 		operating_system_type(Type) :-
 			os_name(Name),
@@ -726,8 +748,10 @@
 			Month is Month2 + 1.
 
 		cpu_time(Time) :-
-			{statistics(runtime, [Start,_])},
-			Time is Start/1000.
+			{statistics(runtime, [Miliseconds,_]), Time is Miliseconds/1000}.
+
+		wall_time(_) :-
+			throw(not_available(wall_time/1)).
 
 		operating_system_type(unix).
 
