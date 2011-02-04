@@ -589,6 +589,9 @@
 		cpu_time(Time) :-
 			{statistics(runtime, [Miliseconds| _]), Time is Miliseconds / 1000}.
 
+		wall_time(Time) :-
+			{statistics(walltime, [Time, _])}.
+
 		operating_system_type(_) :-
 			throw(not_available(operating_system_type/1)).
 
