@@ -15,4 +15,5 @@ you must first load the appropriated configuration file for
 your Prolog compiler that you will find in the "configs" 
 directory.
 
-The "logtalk.pl" file is formatted using four-space tabs.
+The "logtalk.pl" file is formatted using tabs (with a width
+equivalent to 4 spaces).

@@ -27,6 +27,7 @@ or:
     KDE3:	~/.kde/share/apps/katepart/syntax/
     KDE4:	~/.kde/share/kde4/apps/katepart/syntax/
 
-and restart Kate and KWrite. Logtalk source files (including the programming 
-examples) are usually formatted using four-space tabs; you may set the tab 
-width on the editor preference panel.
+and restart Kate and KWrite. Logtalk source files (including the library
+entities and the programming examples) are formatted using tabs (with a
+width equivalent to 4 spaces); you may set the tab width on the editor
+preference panel.

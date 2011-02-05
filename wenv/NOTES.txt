@@ -20,9 +20,10 @@ Some text editors already include support for Logtalk. If that is the
 case of your favorite editor, you may want to check if the supporting 
 files provided in this directory are newer than the editor ones.
 
-Logtalk source files (including the programming examples) are usually 
-formatted using four-space tabs; it is recommended that you set the tab 
-width on your editor preferences panel.
+Logtalk source files (including the library entities and the programming
+examples) are formatted using tabs (with a width equivalent to 4 spaces);
+it is recommended that you set the tab width on your editor preferences
+panel.
 
 You may notice that support for some text editors, notably for Windows-only 
 editors, is rather poor. Proper syntax highlighting support for Prolog and 

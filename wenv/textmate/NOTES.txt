@@ -42,6 +42,6 @@ LOGTALK_TXT_COMMAND
 	set to the name of the shell script you use to generate the TXT 
 	documentation (e.g. lgt2txt)
 
-Logtalk source files (including the programming examples) are usually 
-formatted using four-space tabs; you may set the tab width on the 
-editor preference panel.
+Logtalk source files (including the library entities and the programming
+examples) are formatted using tabs (with a width equivalent to 4 spaces);
+you may set the tab width on the editor preference panel.
