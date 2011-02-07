@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: January 18, 2011
+%  last updated: February 7, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -117,7 +117,6 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 '$lgt_pl_meta_predicate'(call_cleanup(_, _, _), call_cleanup(0, *, 0), predicate).
 '$lgt_pl_meta_predicate'(call_with_depth_limit(_, _, _), call_with_depth_limit(0, *, *), predicate).
 '$lgt_pl_meta_predicate'(compile_predicates(_), compile_predicates([/]), predicate).
-'$lgt_pl_meta_predicate'(dde_register_service(_, _), dde_register_service(*, 0), predicate).
 '$lgt_pl_meta_predicate'(findall(_, _, _, _), findall(*, 0, *, *), predicate).
 '$lgt_pl_meta_predicate'(freeze(_, _), freeze(*, 0), predicate).
 '$lgt_pl_meta_predicate'(not(_), not(0), predicate).
@@ -125,7 +124,6 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 '$lgt_pl_meta_predicate'(on_signal(_, _, _), on_signal(*, *, 0), predicate).
 '$lgt_pl_meta_predicate'(setup_call_cleanup(_, _, _), setup_call_cleanup(0, 0, 0), predicate).
 '$lgt_pl_meta_predicate'(setup_call_catcher_cleanup(_, _, _, _), setup_call_catcher_cleanup(0, 0, *, 0), predicate).
-'$lgt_pl_meta_predicate'(time(_), time(0), predicate).
 '$lgt_pl_meta_predicate'(thread_initialization(_), thread_initialization(0), predicate).
 '$lgt_pl_meta_predicate'(thread_at_exit(_), thread_at_exit(0), predicate).
 '$lgt_pl_meta_predicate'(thread_create(_, _, _), thread_create(0, *, *), predicate).
@@ -137,7 +135,6 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 :- endif.
 '$lgt_pl_meta_predicate'(with_mutex(_, _), with_mutex(*, 0), predicate).
 '$lgt_pl_meta_predicate'(with_output_to(_, _), with_output_to(*, 0), predicate).
-'$lgt_pl_meta_predicate'(when(_, _), when(*, 0), predicate).
 % workaround problematic meta-predicate declarations:
 '$lgt_pl_meta_predicate'(consult(_), consult(*), predicate).
 '$lgt_pl_meta_predicate'(ensure_loaded(_), ensure_loaded(*), predicate).

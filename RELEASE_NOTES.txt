@@ -30,6 +30,10 @@ RELEASE NOTES
     Added a partial implementation of the ISO Prolog predicate_property/2
     predicate to the ECLiPSe config file.
 
+    Updated the SWI-Prolog config file in order to remove the erroneous
+    declaration of the library meta-predicates dde_register_service/2,
+    time/1, and when/2 as built-in meta-predicates.
+
     Applied a bug fix to the "flags" contribution made available by its
     author, Theofrastos Mantadelis. Workaround a compatibility issue with
     GNU Prolog.
