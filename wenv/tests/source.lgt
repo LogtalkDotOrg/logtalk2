@@ -31,9 +31,9 @@ comment
 	extends(parent)).
 
 	:- info([
-		version is 1.5,
+		version is 1.6,
 		author is 'Paulo Moura',
-		date is 2011/01/18,
+		date is 2011/02/07,
 		comment is 'Sample prototype for testing syntax coloring.']).
 
 	:- threaded.
@@ -156,9 +156,6 @@ comment
 		clause(Head, Body),
 		retract(Clause),
 		retractall(Head).
-
-	meta_call_methods :-
-		call(Goal).
 
 	exception_methods :-
 		catch(Goal, Error, Catcher),
@@ -317,8 +314,11 @@ comment
 
 	logic_and_control :-
 		\+ Goal,
+		call(Goal)
 		once(Goal),
 		ignore(Goal),
+		true,
+		fail,
 		repeat,
 		!.
 

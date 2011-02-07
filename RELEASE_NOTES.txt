@@ -43,6 +43,9 @@ RELEASE NOTES
 
     Added a wall_time/1 predicate to the "cc" example.
 
+    Updated the syntax highlighting test files, adding missing true/0 and
+    fail/0 control constructs.
+
 
 2.42.2 - January 25, 2011
 
