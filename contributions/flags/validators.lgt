@@ -274,7 +274,8 @@
 		Min < Max,
 		Max - Min > 0.0.
 
-	type_or_inf(_Type, Value) :-
+	type_or_inf(Type, Value) :-
+		nonvar(Type),
 		(	Value == (+inf)
 		;	Value == (-inf)
 		),
