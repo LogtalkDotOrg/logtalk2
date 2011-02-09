@@ -4912,9 +4912,10 @@ current_logtalk_flag(version, version(2, 42, 3)).
 '$lgt_debugger.valid_port_option'(@, _, _) :- !.
 '$lgt_debugger.valid_port_option'(b, _, _) :- !.
 '$lgt_debugger.valid_port_option'(a, _, _) :- !.
-'$lgt_debugger.valid_port_option'(q, _, _) :- !.
+'$lgt_debugger.valid_port_option'('Q', _, _) :- !.
+'$lgt_debugger.valid_port_option'(p, _, _) :- !.
 '$lgt_debugger.valid_port_option'(d, _, _) :- !.
-%'$lgt_debugger.valid_port_option'(w, _, _) :- !.
+'$lgt_debugger.valid_port_option'(w, _, _) :- !.
 '$lgt_debugger.valid_port_option'(x, _, _) :- !.
 '$lgt_debugger.valid_port_option'(h, _, _) :- !.
 '$lgt_debugger.valid_port_option'(?, _, _) :- !.
@@ -5024,11 +5025,15 @@ current_logtalk_flag(version, version(2, 42, 3)).
 	retractall('$lgt_debugger.skipping_'),
 	throw(logtalk_debugger_aborted).
 
-'$lgt_debugger.do_port_option'(q, _, _, _, _, _) :-
+'$lgt_debugger.do_port_option'('Q', _, _, _, _, _) :-
 	halt.
 
+'$lgt_debugger.do_port_option'(p, _, Goal, _, _, _) :-
+	write('  Current goal: '), catch(print(Goal), _, write(Goal)), nl,
+	fail.
+
 '$lgt_debugger.do_port_option'(d, _, Goal, _, _, _) :-
-	write('  Current goal: '), write_term(Goal, [quoted(false), ignore_ops(true), numbervars(false)]), nl,
+	write('  Current goal: '), write_term(Goal, [quoted(true), ignore_ops(true), numbervars(false)]), nl,
 	fail.
 
 '$lgt_debugger.do_port_option'(w, _, Goal, _, _, _) :-
@@ -5059,7 +5064,8 @@ current_logtalk_flag(version, version(2, 42, 3)).
 	write('      @ - command (reads and executes a query)'), nl,
 	write('      b - break (suspends execution and starts new interpreter; type end_of_file to terminate)'), nl,
 	write('      a - abort (returns to top level interpreter)'), nl,
-	write('      q - quit (quits Logtalk)'), nl,
+	write('      Q - quit (quits Logtalk)'), nl,
+	write('      p - print (writes current goal using print/1 if available)'), nl,
 	write('      d - display (writes current goal without using operator notation)'), nl,
 	write('      w - write (writes current goal quoting atoms if necessary)'), nl,
 	write('      x - context (prints execution context)'), nl,

@@ -27,6 +27,12 @@ RELEASE NOTES
     control construct should be used instead on this case). Thanks to
     Nicolas Pelletier for the bug report.
 
+    Added a debugger command "p" to the Logtalk built-in debugger. This
+    command prints the current goal using the print/1 predicate when
+    available. Renamed the debugger command "q" to "Q". Corrected a bug
+    where the debugger command "w" would not be recognized. Changed the
+    debugger command "d" to quote terms when necessary.
+
     Added a partial implementation of the ISO Prolog predicate_property/2
     predicate to the ECLiPSe config file.
 
