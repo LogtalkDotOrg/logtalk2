@@ -29,23 +29,23 @@ An application may include plain Prolog files, Prolog modules, and Logtalk objec
 <h2 id="migration_hybrid">Source files with both Prolog code and Logtalk code</h2>
 
 <p>
-Logtalk source files may contain plain Prolog code intermixed with Logtalk code. The Logtalk compiler just copies the plain Prolog code as-is to the generated Prolog file. With Prolog modules, it is assumed that the module code starts with a <code>module/1-2</code> directive and ends at the end of the file. There is no module ending directive which would allowed us define more than one module per file. In fact, most Prolog module systems always define a single module per file. Some of them mandate that the <code>module/1-2</code> directive be the first term on a source file. As such, when the Logtalk compiler finds a <code>module/1-2</code> directive, it assumes that all code that follows until the end of the file belongs to the module.
+Logtalk source files may contain plain Prolog code intermixed with Logtalk code. The Logtalk compiler simply copies the plain Prolog code as-is to the generated Prolog file. With Prolog modules, it is assumed that the module code starts with a <code>module/1-2</code> directive and ends at the end of the file. There is no module ending directive which would allowed us define more than one module per file. In fact, most Prolog module systems always define a single module per file. Some of them mandate that the <code>module/1-2</code> directive be the first term on a source file. As such, when the Logtalk compiler finds a <code>module/1-2</code> directive, it assumes that all code that follows until the end of the file belongs to the module.
 </p>
 
 
 <h2 id="migration_encapsulating">Encapsulating plain Prolog code in objects</h2>
 
 <p>
-Most applications consist of several plain Prolog source files, each one defining a few top predicates and auxiliary predicates that are not meant to be directly called by the user. Encapsulating plain Prolog code in objects allows us to make clear the different roles of each predicate, to hide implementation details, to prevent auxiliary predicates from being called outside the object, and to take advantage of Logtalk advanced code encapsulating and reusing features.
+Most applications consist of several plain Prolog source files, each one defining a few top-level predicates and auxiliary predicates that are not meant to be directly called by the user. Encapsulating plain Prolog code in objects allows us to make clear the different roles of each predicate, to hide implementation details, to prevent auxiliary predicates from being called outside the object, and to take advantage of Logtalk advanced code encapsulating and reusing features.
 </p>
 <p>
-Encapsulating Prolog code using Logtalk objects is easy. First, for each source file, add an opening object directive, <a title="Consult reference manual" href="../refman/directives/object1_5.html"><code>object/1</code></a>, to the beginning of the file and an ending object directive, <a title="Consult reference manual" href="../refman/directives/end_object0.html"><code>end_object/0</code></a>, to end of the file. Choose an object name that reflects the purpose of source file code (this is a good opportunity to reorganize your code if needed). Second, add <a title="Consult reference manual" href="../refman/directives/public1.html">public predicate directives</a> for the top-level predicates that are used directly by the user or called from other source files. Third, we need to be able to call from inside an object a predicate defined in other source file/object. The easiest solution, which has the advantage of not implying any modification to the predicate clauses, is to use the <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directive. If your Prolog compiler supports cross-referencing tools, you may use them to help you make sure that all calls to predicates on other source files/objects are listed in the <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directives. Compiling the resulting objects with the Logtalk <code>missing_directives</code>, <code>misspelt</code>, and <code>portability</code> flags set to <code>warning</code> will help you locate possible issues and calls to predicates defined on other converted source files.
+Encapsulating Prolog code using Logtalk objects is simple. First, for each source file, add an opening object directive, <a title="Consult reference manual" href="../refman/directives/object1_5.html"><code>object/1</code></a>, to the beginning of the file and an ending object directive, <a title="Consult reference manual" href="../refman/directives/end_object0.html"><code>end_object/0</code></a>, to end of the file. Choose an object name that reflects the purpose of source file code (this is a good opportunity to reorganize your code if necessary). Second, add public predicate directives, <a title="Consult reference manual" href="../refman/directives/public1.html"><code>public/1</code></a>, for the top-level predicates that are used directly by the user or called from other source files. Third, we need to be able to call from inside an object a predicate defined in other source file/object. The easiest solution, which has the advantage of not requiring any changes to the predicate definitions, is to use the <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directive. If your Prolog compiler supports cross-referencing tools, you may use them to help you make sure that all calls to predicates on other source files/objects are listed in the <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directives. In alternative, compiling the resulting objects with the Logtalk <code>missing_directives</code>, <code>misspelt</code>, and <code>portability</code> flags set to <code>warning</code> will help you identify calls to predicates defined on other converted source files and possible portability issues.
 </p>
 
 <h3 id="migration_multifile">Prolog multifile predicates</h3>
 
 <p>
-Prolog <em>multifile</em> predicates are used when clauses for the same predicate are spread among several source files. When encapsulating plain Prolog code that uses multifile predicates, is often the case that the clauses of the multifile predicates get spread between different objects and categories but conversion is straight-forward. In the main Logtalk object (or category) where the predicate is declared, add a <code>multifile/1</code> directive. In all other objects (or categories) defining clauses for the multifile predicate, add a <code>multifile/1</code> directive and predicate clauses using the format:
+Prolog <em>multifile</em> predicates are used when clauses for the same predicate are spread among several source files. When encapsulating plain Prolog code that uses multifile predicates, is often the case that the clauses of the multifile predicates get spread between different objects and categories but conversion is straight-forward. In the main Logtalk object (or category) where the predicate is declared, add a <a title="Consult user manual" href="predicates.html#predicates_multifile"><code>multifile/1</code></a> directive. In all other objects (or categories) defining clauses for the multifile predicate, add a <code>multifile/1</code> directive and predicate clauses using the format:
 </p>
 <pre>
 :- multifile(Entity::Functor/Arity).
@@ -54,7 +54,7 @@ Entity::Functor(...) :-
     ...
 </pre>
 <p>
-See the User Manual session on the <a title="Consult user manual" href="predicates.html#predicates_multifile"><code>multifile/1</code></a> predicate directive for more information. An alternative solution is to simply keep the clauses for the multifile predicates as plain Prolog code and define, if needed, a parametric object to encapsulate all predicates working with the multifile predicate clauses. For example, assume the following <code>multifile/1</code> directive:
+See the User Manual session on the <code>multifile/1</code> predicate directive for more information. An alternative solution is to simply keep the clauses for the multifile predicates as plain Prolog code and define, if necessary, a parametric object to encapsulate all predicates working with the multifile predicate clauses. For example, assume the following <code>multifile/1</code> directive:
 </p>
 <pre>
 % city(Name, District, Population, Neighbors)
@@ -74,10 +74,11 @@ We can define a parametric object with <code>city/4</code> as its identifier:
 This solution is preferred when the multifile predicates are used to represent large tables of data. See the section on <a title="Consult user manual" href="objects.html#objects_parametric">parametric objects</a> for more details.
 </p>
 
+
 <h2 id="migration_converting">Converting Prolog modules into objects</h2>
 
 <p>
-Converting Prolog modules into objects allows an application to run on a wider range of Prolog compilers, overcoming module compatibility problems. Not all Prolog compilers support a module system. Among those Prolog compilers which support a module system, the lack of standardization leads to several issues, specially with operators and meta-predicates. In addition, the conversion allows you to take advantage of Logtalk more powerful abstraction and reuse mechanisms such as separation between interface from implementation, inheritance, parametric objects, and categories.
+Converting Prolog modules into objects may allow an application to run on a wider range of Prolog compilers, overcoming module compatibility problems. Some Prolog compilers don't support a module system. Among those Prolog compilers which support a module system, the lack of standardization leads to several issues, specially with operators and meta-predicates. In addition, the conversion allows you to take advantage of Logtalk more powerful abstraction and reuse mechanisms such as separation between interface from implementation, inheritance, parametric objects, and categories.
 </p>
 <p>
 Converting a Prolog module into an object is easy as long as the directives used in the module are supported by Logtalk (see below). Assuming that this is the case, apply the following steps:
@@ -101,7 +102,7 @@ Before converting your modules to objects, you may try to compile them first as 
 <h2 id="migration_compiling">Compiling Prolog modules as objects</h2>
 
 <p>
-An alternative to convert Prolog modules into objects is to just compile the modules as objects. This has the advantage of not implying any code changes or requiring only minor changes that don't prevent still using the code as a Prolog module. However, this is only possible for modules containing only predicates clauses and Logtalk supported directives (see below). Assuming that is the case, you may compile a Prolog module as an object by changing the source file name extension to <code>.lgt</code> and then using the <a title="Consult user manual" href="../userman/programming.html#compiling"><code>logtalk_load/1-2</code></a> and <a title="Consult user manual" href="../userman/programming.html#compiling"><code>logtalk_compile/1-2</code></a> predicates (set the Logtalk <code>portability</code> flag set to <code>warning</code> to help you catch any unnoticed cross-module predicate calls). This allows you to reuse existing module code as objects. However, there are some limitations that you should be aware. These limitations are a consequence of the lack of standardization of Prolog module systems.
+An alternative to convert Prolog modules into objects is to just compile the modules as objects. This has the advantage of requiring little if any code changes that don't prevent still using the code as a Prolog module. However, this is only possible for modules containing only predicates clauses and Logtalk supported directives (see below). Assuming that is the case, you may compile a Prolog module as an object by changing the source file name extension to <code>.lgt</code> and then using the <a title="Consult user manual" href="../userman/programming.html#compiling"><code>logtalk_load/1-2</code></a> and <a title="Consult user manual" href="../userman/programming.html#compiling"><code>logtalk_compile/1-2</code></a> predicates (set the Logtalk <code>portability</code> flag set to <code>warning</code> to help you catch any unnoticed cross-module predicate calls). This allows you to reuse existing module code as objects. However, there are some limitations that you should be aware. These limitations are a consequence of the lack of standardization of Prolog module systems.
 </p>
 
 <h3 id="migration_compatibility">Supported module directives</h3>
@@ -115,28 +116,36 @@ Currently, Logtalk supports the following module directives:
 	<dt><code>module/2</code></dt>
 		<dd>The module name becomes the object name. The exported predicates become public object predicates. The exported grammar rule non-terminals become public grammar rule non-terminals. The exported operators become source-file level operators.</dd>
 	<dt><code>use_module/2</code></dt>
-		<dd>This directive is compiled as a Logtalk <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directive in order to ensure correct compilation of the module predicate clauses. Note that the module specified in the first argument is not automatically loaded by Logtalk (as it would be when compiling the directive using Prolog instead of Logtalk; the programmer may also want the specified module to be compiled as an object). The second argument must be a predicate indicator (<code>Functor/Arity</code>), a grammar rule non-terminal indicator (<code>Functor//Arity</code>), a operator declaration, or a list of predicate indicators, grammar rule non-terminal indicators, and operator declarations. Referenced module meta-predicates working with closures are not supported. If that's the case, use the equivalent meta-predicates found on the Logtalk library.</dd>
+		<dd>This directive is compiled as a Logtalk <a title="Consult reference manual" href="../refman/directives/uses2.html"><code>uses/2</code></a> directive in order to ensure correct compilation of the module predicate clauses. The first argument of this directive must be an atom (the module name). Note that the module is not automatically loaded by Logtalk (as it would be when compiling the directive using Prolog instead of Logtalk; the programmer may also want the specified module to be compiled as an object). The second argument must be a predicate indicator (<code>Functor/Arity</code>), a grammar rule non-terminal indicator (<code>Functor//Arity</code>), a operator declaration, or a list of predicate indicators, grammar rule non-terminal indicators, and operator declarations. Referenced module meta-predicates working with closures are not supported. If that's the case, use the equivalent meta-predicates found on the Logtalk library.</dd>
 	<dt><code>export/1</code></dt>
 		<dd>Exported predicates are compiled as public object predicates. The argument must be a predicate indicator (<code>Functor/Arity</code>), a grammar rule non-terminal indicator (<code>Functor//Arity</code>), a operator declaration, or a list of predicate indicators, grammar rule non-terminal indicators, and operator declarations.</dd>
 	<dt><code>reexport/2</code></dt>
 		<dd>Reexported predicates are compiled as public object predicates. The first argument is the module name. The second argument must be a predicate indicator (<code>Functor/Arity</code>), a grammar rule non-terminal indicator (<code>Functor//Arity</code>), a operator declaration, or a list of predicate indicators, grammar rule non-terminal indicators, and operator declarations.</dd>
 	<dt><code>meta_predicate/1</code></dt>
-		<dd>Module meta-predicates become object meta-predicates. Only predicate arguments marked as <code>:</code> are interpreted as meta-arguments. However, note that Prolog module meta-predicates and Logtalk meta-predicates don't share the same exact semantics; check results carefully.</dd>
+		<dd>Module meta-predicates become object meta-predicates. Only predicate arguments marked as <code>0</code> are interpreted as meta-arguments; meta-predicates accepting closures are not supported (but an alternative may be found on the Logtalk library). In addition, Prolog module meta-predicates and Logtalk meta-predicates don't share the same explicit-qualification calling semantics: in Logtalk, meta-arguments are always called in the context of the <em>sender</em>.</dd>
 </dl>
 <p>
-The first argument of the <code>use_module/2</code> directive must be either an atom (the module name) or a compound term in <em>library notation</em> (e.g. <code>library(clpfd)</code>) as long as the file name is also the module name.
+A common issue when compiling modules as objects is the use of the atoms <code>dynamic</code>, <code>discontiguous</code>, and <code>multifile</code> as operators in directives. For better portability avoid this usage. For example, write:
+</p>
+<pre>:- dynamic([foo/1, bar/2]).</pre>
+<p>
+instead of:
+</p>
+<pre>:- dynamic foo/1, bar/2.</pre>
+<p>
+Another common issue is missing <code>dynamic</code>, <code>discontiguous</code>, and <code>multifile</code> directives. Using the Logtalk compiler option <code>missing_directives</code> allows detection of most missing directives.
 </p>
 <p>
-When compiling modules as objects, you probably don't need event support turned on. Thus, you may want to use the compiler option <code>events(deny)</code> with the Logtalk compiling and loading built-in methods for a small performance gain for the compiled code.
+When compiling modules as objects, you probably don't need event support turned on. You may use the compiler option <code>events(deny)</code> with the Logtalk compiling and loading built-in methods for a small performance gain for the compiled code.
 </p>
 
 <h3 id="migration_limitations">Current limitations and workarounds</h3>
 
 <p>
-Note that <code>reexport/1</code> and <code>use_module/1</code> directives are not directly supported (some Prolog config files provide limited support for compiling these directives). Therefore, these directives must be converted, respectively, into <code>reexport/2</code> and <code>use_module/2</code> directives by finding which predicates exported by the specified modules are reexported or imported into the module containing the directive. Automating the conversion would imply loading the module without re-interpreting it as an object, which might not be what the user intended. Nevertheless, finding the names of the imported predicates is easy. First, comment out the <code>use_module/1</code> directives and compile the file (making sure that the compiler flag <code>misspelt</code> is set to <code>warning</code>). Logtalk will print a warning with a list of predicates that are called but never defined. Second, use these list to replace the <code>reexport/1</code> and <code>use_module/1</code> directives by, respectively, <code>reexport/2</code> and <code>use_module/2</code> directives. You should then be able to compile the modified Prolog module as an object.
+The <code>reexport/1</code> and <code>use_module/1</code> directives are not directly supported (some Prolog config files provide limited support for compiling these directives). Therefore, these directives should be converted, respectively, into <code>reexport/2</code> and <code>use_module/2</code> directives by finding which predicates exported by the specified modules are reexported or imported into the module containing the directive. Automating the conversion would imply loading the module without re-interpreting it as an object, which might not be what the user intended. Nevertheless, finding the names of the imported predicates is easy. First, comment out the <code>use_module/1</code> directives and compile the file (making sure that the compiler flag <code>misspelt</code> is set to <code>warning</code>). Logtalk will print a warning with a list of predicates that are called but never defined. Second, use these list to replace the <code>reexport/1</code> and <code>use_module/1</code> directives by, respectively, <code>reexport/2</code> and <code>use_module/2</code> directives. You should then be able to compile the modified Prolog module as an object.
 </p>
 <p>
-Although Logtalk supports term and goal expansion mechanisms, the semantics are different from similar mechanisms found in some Prolog compilers. In particular, Logtalk does not support defining term and goal expansions clauses in a source file for the source file itself. Logtalk forces a clean separation between expansions clauses and the source files that will be subject to source-to-source expansions by using <a href="../glossary.html#hook"><em>hook objects</em></a>.
+Although Logtalk supports term and goal expansion mechanisms, the semantics are different from similar mechanisms found in some Prolog compilers. In particular, Logtalk does not support defining term and goal expansions clauses in a source file for expanding the source file itself. Logtalk forces a clean separation between expansions clauses and the source files that will be subject to source-to-source expansions by using <a href="../glossary.html#hook"><em>hook objects</em></a>.
 </p>
 <p>
 Changing the extension of a module source file to <code>.lgt</code> in order to be able to compile it as Logtalk source file is not always feasible. An alternative is to create symbolic links or shortcuts for the module files using <code>*.lgt</code> names. In addition, for avoiding conflicts between the Logtalk generated Prolog files and the module files, create the links on a different directory and add a library entry for the directory using the predicate <a title="Consult reference manual" href="../refman/builtins/logtalk_library_path2.html"><code>logtalk_library_path/2</code></a>. For example, on a POSIX operating-system with <code>library/*.pl</code> module source file names, the links can be easily created by running the following bash shell commands:
@@ -206,7 +215,7 @@ As a general rule, the Prolog modules should be loaded (e.g. in the auxiliary Lo
 <p>
 Logtalk supports the declaration of predicate aliases in <code>use_module/2</code> directives used within object and categories. For example, the ECLiPSe IC Constraint Solvers define a <code>::/2</code> variable domain operator that clashes with the Logtalk <code>::/2</code> message sending operator. We can solve the conflict by writing:
 </p>
-<pre>:- use_module(ic, [alldifferent/1, (::)/2:ins/2]).</pre>
+<pre>:- use_module(ic, [(::)/2:ins/2]).</pre>
 <p>
 With this directive, calls to the <code>ins/2</code> predicate alias will be automatically compiled by Logtalk to calls to the <code>::/2</code> predicate in the <code>ic</code> module.
 </p>
@@ -248,7 +257,7 @@ The Logtalk compiler will print a warning if the <code>multifile/1</code> direct
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: January 18, 2011</span>
+		<span>Last updated on: February 11, 2011</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="programming.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>
