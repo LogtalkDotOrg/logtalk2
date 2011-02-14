@@ -20,7 +20,6 @@
 
 	:- public(squares/2).
 
-	:- meta_predicate(clpfd:'#<=>'(*, *)).
 	:- use_module(clpfd, [
 		cumulative/2, disjoint2/1, domain/3, fd_min/2, in/2,
 		(#=)/2, (#>)/2, (#=<)/2, (#>=)/2, (#<=>)/2,

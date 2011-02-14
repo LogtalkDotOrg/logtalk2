@@ -44,6 +44,8 @@ RELEASE NOTES
     author, Theofrastos Mantadelis. Workaround a compatibility issue with
     GNU Prolog.
 
+    Added support for indexicals to the "constraints/sicstus" example.
+
     Extended the "delegates" example with a sample implementation of a
     delegator using a parametric object.
 

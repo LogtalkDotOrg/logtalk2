@@ -17,5 +17,3 @@ the CLP(FD) library distributed with SICStus Prolog 4.x with Logtalk.
 The CLP(FD) library is loaded from the "loader.lgt" auxiliary loader file.
 This library must always be loaded prior to compilation of the individual 
 example files.
-
-Support for indexicals is not yet fully operational.
