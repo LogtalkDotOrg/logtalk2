@@ -16,7 +16,11 @@
 		cars_ix3/2
 	]).
 
-	:- use_module(library(clpfd)).
+	:- use_module(clpfd, [
+		domain/3, element/3, global_cardinality/2, labeling/2,
+		(#=<)/2, (#>=)/2,
+		op(700, xfx, #=<), op(760, yfx, #>=)
+	]).
 
 	/* seems to admit six solutions:
 	[1,2,6,3,5,4,4,5,3,6]

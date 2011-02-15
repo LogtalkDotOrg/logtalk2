@@ -25,3 +25,6 @@ provides support for compilation of indexicals and overrides the meta-
 predicate directives of the CLP(FD) meta-predicates. When using the CLP(FD)
 labeling/2 enumeration predicate, the value/1 and variable/1 options are
 currently not supported.
+
+Within objects and categories, is strongly recommended that you use the
+use_module/2 directive for the CLP(FD) module.

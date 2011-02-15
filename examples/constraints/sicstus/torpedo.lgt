@@ -19,9 +19,9 @@
 	]).
 	:- use_module(clpfd, [
 		disjoint2/1, fdset_parts/4, fdset_subtract/3, global_cardinality/2,
-		in/2, in_set/2, lex_chain/2, list_to_fdset/2,
-		labeling/2,
-		(#=)/2, (#=<)/2, (#<=>)/2, (#\)/2
+		in/2, in_set/2, lex_chain/2, list_to_fdset/2, labeling/2,
+		(#=)/2, (#=<)/2, (#<=>)/2, (#\)/2,
+		op(700, xfx, #=), op(700, xfx, #=<), op(760, yfx, #<=>), op(700, xfx, #\)
 	]).
 
 	torpedo(ID) :-

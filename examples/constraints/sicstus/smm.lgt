@@ -17,7 +17,11 @@
 
 	:- public([smm/2, smm_ix/2]).
 
-	:- use_module(clpfd, [all_different/2, domain/3, labeling/2, (#=)/2, (#>)/2]).
+	:- use_module(clpfd, [
+		all_different/2, domain/3, labeling/2,
+		(#=)/2, (#>)/2,
+		op(700, xfx, #=), op(700, xfx, #>)
+	]).
 
 	smm(Lab, Consistency) :-
 		L = [S,E,N,D,M,O,R,Y],
