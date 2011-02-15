@@ -3,9 +3,9 @@
 	implements(expanding)).
 
 	:- info([
-		version is 0.2,
+		version is 0.3,
 		author is 'Paulo Moura',
-		date is 2011/02/14,
+		date is 2011/02/15,
 		comment is 'Hook object for compiling objects and categories containing CLP(FD) code when using SICStus Prolog.']).
 
 	term_expansion((:- Directive), [(:- Directive)| Annotations]) :-
@@ -28,10 +28,15 @@
 		compile_indexical_head(Head, THead).
 
 	compile_indexical_head(Head, THead) :-
-		logtalk::compile_predicate_heads(Head, CHead),	% remove execution-context argument
+		logtalk::compile_predicate_heads(Head, CHead),
 		CHead =.. [CFunctor| CArgs],
-		copy_args_except_last(CArgs, TArgs),
-		THead =.. [CFunctor| TArgs].
+		copy_args_except_last(CArgs, TArgs),	% remove execution-context argument
+		atom_concat(CFunctor, '+', TFunctor0),
+		functor(Head, _, Arity),
+		number_codes(Arity, ArityCodes),
+		atom_codes(ArityAtom, ArityCodes),
+		atom_concat(TFunctor0, ArityAtom, TFunctor),
+		THead =.. [TFunctor| TArgs].
 
 	copy_args_except_last([_], []) :-
 		!.
@@ -40,6 +45,9 @@
 
 	clpfd_annotations([
 		(:- meta_predicate(clpfd:labeling(*,*))),
+		(:- meta_predicate(clpfd:maximize(0,*))),
+		(:- meta_predicate(clpfd:minimize(0,*))),
+		(:- meta_predicate(clpfd:fd_global(0,*,*))),
 		(:- meta_predicate(clpfd:'#\\'(*))),
 		(:- meta_predicate(clpfd:'#/\\'(*,*))),
 		(:- meta_predicate(clpfd:'#\\'(*,*))),
