@@ -2,9 +2,9 @@
 :- protocol(setp).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2010/9/26,
+		date is 2011/02/16,
 		comment is 'Set protocol.']).
 
 	:- public(delete/3).
@@ -72,6 +72,12 @@
 	:- mode(member(-term, +set), zero_or_more).
 	:- info(member/2,
 		[comment is 'Element is a member of set Set.',
+		 argnames is ['Element', 'Set']]).
+
+	:- public(memberchk/2).
+	:- mode(memberchk(+term, +set), zero_or_one).
+	:- info(memberchk/2,
+		[comment is 'Checks if a term is a member of a set.',
 		 argnames is ['Element', 'Set']]).
 
 	:- public(powerset/2).

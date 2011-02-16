@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.4,
+		version is 1.5,
 		author is 'Richard O''Keefe; adapted to Logtalk by Paulo Moura.',
-		date is 2010/9/26,
+		date is 2011/02/16,
 		comment is 'Set predicates implemented using ordered lists. Uses ==/2 for element comparison and standard term ordering.']).
 
 	delete([], _, []).
@@ -113,6 +113,10 @@
 	member_nonvar(>, Element, [Head| Tail]) :-
     	compare(Order, Element, Head),
     	member_nonvar(Order, Element, Tail).
+
+	memberchk(Element, Set) :-
+		member_nonvar(Element, Set),
+		!.
 
 	new([]).
 
