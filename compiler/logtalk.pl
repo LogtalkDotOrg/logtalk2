@@ -9083,6 +9083,18 @@ current_logtalk_flag(version, version(2, 42, 3)).
 % translates an entity clause head
 
 
+% pre-compiled clause head
+
+'$lgt_tr_head'({Head}, Head, _) :-
+	!,
+	(	var(Head) ->
+		throw(instantiation_error)
+	;	\+ callable(Head) ->
+		throw(type_error(callable, Head))
+	;	true
+	).
+
+
 % definition of dynamic predicates inside categories
 
 '$lgt_tr_head'(Head, _, _) :-
@@ -9093,16 +9105,14 @@ current_logtalk_flag(version, version(2, 42, 3)).
 
 
 % redefinition of Logtalk message sending and remaining control constructs
-% (note that ::/2 can be used in a clause head when defining multifile predicates)
+% (note that ::/2 can be used in a clause head when defining multifile predicates
+% and that {}/1 can be used to represent a pre-compiled clause head)
 
 '$lgt_tr_head'(::_, _, _) :-
 	throw(permission_error(modify, control_construct, (::)/1)).
 
 '$lgt_tr_head'(^^_, _, _) :-
 	throw(permission_error(modify, control_construct, (^^)/1)).
-
-'$lgt_tr_head'({_}, _, _) :-
-	throw(permission_error(modify, control_construct, ({})/1)).
 
 '$lgt_tr_head'(_<<_, _, _) :-
 	throw(permission_error(modify, control_construct, (<<)/2)).
