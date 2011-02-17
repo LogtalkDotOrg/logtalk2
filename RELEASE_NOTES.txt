@@ -54,7 +54,8 @@ RELEASE NOTES
     "set" object.
 
     Added an experimental example of using attributed variables within
-    Logtalk objects and categories.
+    Logtalk objects and categories. Currently requires the use of YAP
+    or SWI-Prolog as the back-end Prolog compiler.
 
     Added support for indexicals to the "constraints/sicstus" example.
 

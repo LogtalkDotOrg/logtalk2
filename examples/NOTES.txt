@@ -68,6 +68,11 @@ assignvars
 	example of using assignable variables in the context of parametric 
 	objects in order to represent object state
 
+attvars
+	experimental example of of using attributed variables within
+	Logtalk objects and categories
+	(requires Logtalk to be run with SWI-Prolog, or YAP)
+
 benchmarks
 	simple benchmarks for helping measuring performance of Logtalk 
 	message sending between Prolog compilers and for comparing 
@@ -91,7 +96,7 @@ cc
 
 chr
 	highly experimental example of CHR integration
-	(requires Logtalk to be run with either Qu-Prolog, SICStus Prolog,
+	(requires Logtalk to be run with Qu-Prolog, SICStus Prolog,
 	SWI-Prolog, or YAP)
 
 classmethods
@@ -104,8 +109,8 @@ classvars
 
 coinduction
 	experimental example of coinductive predicates
-	(requires Logtalk to be run with CxProlog, ECLiPSE,
-	SICStus Prolog, SWI-Prolog, or YAP)
+	(requires Logtalk to be run with CxProlog, ECLiPSE, SICStus Prolog,
+	SWI-Prolog, or YAP)
 
 complements
 	example of using a category to explicitly complement an existing 

@@ -1,0 +1,27 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.42.3
+
+Copyright (c) 1998-2011 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+% start by loading the example and the required library files:
+
+| ?- logtalk_load(attvars(loader)).
+...
+
+
+% simple finite domain reasoner:
+
+| ?- domain::domain(X, [a,b]), X = c.
+no
+
+| ?- domain::domain(X, [a,b]), domain::domain(X, [a,c]).
+X = a
+
+| ?- domain::domain(X,[a,b,c]), domain::domain(X,[a,c]).
+domain(X,[a,c])
