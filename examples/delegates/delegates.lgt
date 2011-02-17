@@ -41,7 +41,7 @@
 % is to use a parametric object whose parameter would be
 % instantiated to the delegate object:
 
-:- object(a_delegator(_delegate)).
+:- object(a_delegator(_Delegate)).
 
 	:- public(operation/1).
 
