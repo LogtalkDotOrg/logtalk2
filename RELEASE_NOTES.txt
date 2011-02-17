@@ -30,6 +30,9 @@ RELEASE NOTES
     control construct should be used instead on this case). Thanks to
     Nicolas Pelletier for the bug report.
 
+    Simplified the compilation of calls in the context of the pseudo-object
+    "user".
+
     Added a debugger command "p" to the Logtalk built-in debugger. This
     command prints the current goal using the print/1 predicate when
     available. Renamed the debugger command "q" to "Q". Corrected a bug

@@ -9083,7 +9083,7 @@ current_logtalk_flag(version, version(2, 42, 3)).
 % translates an entity clause head
 
 
-% pre-compiled clause head
+% pre-compiled clause head (we only check for some basic errors)
 
 '$lgt_tr_head'({Head}, Head, _) :-
 	!,
@@ -9277,8 +9277,7 @@ current_logtalk_flag(version, version(2, 42, 3)).
 		'$lgt_report_warning_full_context'(Type, Entity)
 	;	true
 	),
-	'$lgt_comp_ctx'(Ctx, Head, Sender, user, user, _, _, [], ExCtx, _, []),
-	'$lgt_exec_ctx'(ExCtx, Sender, user, user, [], []).
+	'$lgt_comp_ctx_head'(Ctx, user::Head).
 
 '$lgt_tr_head'(Other::Head, THead, Ctx) :-
 	!,
@@ -9287,7 +9286,7 @@ current_logtalk_flag(version, version(2, 42, 3)).
 	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 	Head =.. [Functor| HeadArgs],
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	'$lgt_comp_ctx_head'(Ctx, Head),
+	'$lgt_comp_ctx_head'(Ctx, Other::Head),
 	'$lgt_append'(HeadArgs, [ExCtx], HeadTArgs),
 	THead =.. [TFunctor| HeadTArgs],
 	(	'$lgt_pp_directive_'(multifile(TFunctor/TArity)) ->
@@ -9338,8 +9337,7 @@ current_logtalk_flag(version, version(2, 42, 3)).
 			'$lgt_report_warning_full_context'(Type, Entity)
 		;	true
 		),
-		'$lgt_comp_ctx'(Ctx, Head, Sender, user, user, _, _, [], ExCtx, _, []),
-		'$lgt_exec_ctx'(ExCtx, Sender, user, user, [], [])
+		'$lgt_comp_ctx_head'(Ctx, ':'(Module, Head))
 	).
 
 
@@ -9375,15 +9373,11 @@ current_logtalk_flag(version, version(2, 42, 3)).
 % translates an entity clause body
 
 
-% calls in the context of the pseudo-object "user":
+% calls in the context of the pseudo-object "user"
 
 '$lgt_tr_body'(Pred, Pred, '$lgt_debugger.goal'(Pred, Pred, ExCtx), Ctx) :-
 	'$lgt_comp_ctx_this'(Ctx, This),
 	This == user,
-	'$lgt_comp_ctx_head'(Ctx, Head),					% make sure that we're
-	nonvar(Head),										% not translating the
-	functor(Head, Functor, Arity),						% body of a "user"
-	\+ '$lgt_pp_directive_'(multifile(Functor/Arity)),	% multifile predicate
 	!,
  	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
@@ -9491,6 +9485,9 @@ current_logtalk_flag(version, version(2, 42, 3)).
 '$lgt_tr_body'('$lgt_callN'(Closure, ExtraArgs), _, _, Ctx) :-
 	var(Closure),
 	'$lgt_comp_ctx'(Ctx, Head, _, _, _, _, MetaVars, _, _, _, _),
+	nonvar(Head),
+	Head \= ':'(_, _),	% ignore multifile
+	Head \= _::_,		% predicates
 	functor(Head, Functor, Arity),
 	functor(Meta, Functor, Arity),
 	'$lgt_pp_meta_predicate_'(Meta),			% if we're compiling a clause for a meta-predicate and
@@ -10566,6 +10563,8 @@ current_logtalk_flag(version, version(2, 42, 3)).
 	Meta =.. [_| MetaArgs],
 	'$lgt_comp_ctx_head'(Ctx, Head),
 	nonvar(Head),
+	Head \= ':'(_, _),	% ignore multifile
+	Head \= _::_,		% predicates
 	functor(Head, HeadFunctor, HeadArity),
 	functor(HeadMeta, HeadFunctor, HeadArity),
 	'$lgt_pp_meta_predicate_'(HeadMeta),
@@ -11729,6 +11728,8 @@ current_logtalk_flag(version, version(2, 42, 3)).
 	nonvar(Pred),
 	'$lgt_comp_ctx_head'(Ctx, Head),
 	nonvar(Head),
+	Head \= ':'(_, _),	% ignore multifile
+	Head \= _::_,		% predicates
 	functor(Pred, Functor, Arity),
 	functor(Head, Functor, Arity),				% "super" call to the predicate being redefined
 	!,
