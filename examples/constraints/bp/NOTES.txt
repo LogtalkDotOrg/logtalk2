@@ -24,4 +24,8 @@ constraint predicates as built-in predicates. The solution is to encapsulate
 calls to these predicates using the {}/1 Logtalk control construct.
 
 When compiling objects and categories making use of B-Prolog Action Rules, the
-object "action_rules_hook" must be used as a hook object.
+object "action_rules_hook" must be used as a hook object. In alternative, you
+can simply add the following directive to objects and categories containing
+action rules:
+
+	:- annotation('=>'(0,0)).
