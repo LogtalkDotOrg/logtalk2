@@ -18,7 +18,8 @@
 		X = Y.
 
 	% Var, ?Domain
-	%	An attributed variable with attribute value Domain has been %	assigned the value Y
+	%	An attributed variable with attribute value Domain has been
+	%	assigned the value Y
 	attr_unify_hook(Domain, Y) :-
 		(	get_attr(Y, domain, Dom2) ->
 			intersection(Domain, Dom2, NewDomain),

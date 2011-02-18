@@ -21,4 +21,9 @@ documentation.
 The "attvars_hook" hook object works by creating a shadow module (with
 the same name as the object) containing the attribute_goals//1 and
 attr_unify_hook/2 hooks that are required by the attributed variables
-implementation. These hooks are compiled as module multifile predicates.
+implementation. These hooks are compiled as module multifile predicates
+in order to avoid spurious compiler warning messages (note that the hook
+clause bodies are compiled within the context of the container object).
+One limitation of this approach is that we cannot use parametric objects
+as the object identifier is used as the name of the shadow module (module
+names must be atoms).
