@@ -4,10 +4,10 @@
 	extends(atom)).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2009/3/6,
-		comment is 'Character predicates.']).
+		date is 2011/02/19,
+		comment is 'Character predicates (most of them assume an ASCII representation).']).
 
 	is_ascii(Char) :-
 		char_code(Char, Code),
@@ -92,6 +92,20 @@
 	is_period('.').
 	is_period('?').
 	is_period('!').
+
+	is_control(Char) :-
+		char_code(Char, Code),
+		Code >= 0,
+		Code =< 31.
+
+	is_newline(Char) :-
+		char_code(Char, 10).
+
+	is_end_of_line(Char) :-
+		(	char_code(Char, 10) ->
+			true
+		;	char_code(Char, 13)
+		).
 
 	parenthesis('(', ')').
 	parenthesis('[', ']').

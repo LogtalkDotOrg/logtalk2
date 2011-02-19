@@ -2,9 +2,9 @@
 :- protocol(characterp).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2008/10/7,
+		date is 2011/02/19,
 		comment is 'Character protocol.']).
 
 	:- public(is_ascii/1).
@@ -101,6 +101,24 @@
 	:- mode(is_period(+char), zero_or_one).
 	:- info(is_period/1, [
 		comment is 'True if the argument is a character that ends a sentence.',
+		argnames is ['Char']]).
+
+	:- public(is_control/1).
+	:- mode(is_control(+char), zero_or_one).
+	:- info(is_control/1, [
+		comment is 'True if the argument is an ASCII control character.',
+		argnames is ['Char']]).
+
+	:- public(is_newline/1).
+	:- mode(is_newline(+char), zero_or_one).
+	:- info(is_newline/1, [
+		comment is 'True if the argument is the ASCII newline character.',
+		argnames is ['Char']]).
+
+	:- public(is_end_of_line/1).
+	:- mode(is_end_of_line(+char), zero_or_one).
+	:- info(is_end_of_line/1, [
+		comment is 'True if the argument is the ASCII end-of-line character (either a carriage return or a line feed).',
 		argnames is ['Char']]).
 
 	:- public(parenthesis/2).
