@@ -23,11 +23,11 @@
           </dd>
           <dt class="key">version:</dt>
           <dd class="value">
-            <code>1.1</code>
+            <code>1.2</code>
           </dd>
           <dt class="key">date:</dt>
           <dd class="value">
-            <code>2008/10/7</code>
+            <code>2011/2/19</code>
           </dd>
         </dl>
         <dl class="properties">
@@ -359,6 +359,66 @@
             <dt class="key">mode &ndash; number of solutions:</dt>
             <dd class="value">
               <code>is_period(+char) &ndash; zero_or_one</code>
+            </dd>
+          </dl>
+        </div>
+        <div class="section">
+          <h3 class="code">is_control/1</h3>
+          <blockquote>
+            <p class="comment">True if the argument is an ASCII control character.</p>
+          </blockquote>
+          <dl class="properties">
+            <dt class="key">compilation:</dt>
+            <dd class="value">
+              <code>static</code>
+            </dd>
+            <dt class="key">template:</dt>
+            <dd class="value">
+              <code>is_control(Char)</code>
+            </dd>
+            <dt class="key">mode &ndash; number of solutions:</dt>
+            <dd class="value">
+              <code>is_control(+char) &ndash; zero_or_one</code>
+            </dd>
+          </dl>
+        </div>
+        <div class="section">
+          <h3 class="code">is_newline/1</h3>
+          <blockquote>
+            <p class="comment">True if the argument is the ASCII newline character.</p>
+          </blockquote>
+          <dl class="properties">
+            <dt class="key">compilation:</dt>
+            <dd class="value">
+              <code>static</code>
+            </dd>
+            <dt class="key">template:</dt>
+            <dd class="value">
+              <code>is_newline(Char)</code>
+            </dd>
+            <dt class="key">mode &ndash; number of solutions:</dt>
+            <dd class="value">
+              <code>is_newline(+char) &ndash; zero_or_one</code>
+            </dd>
+          </dl>
+        </div>
+        <div class="section">
+          <h3 class="code">is_end_of_line/1</h3>
+          <blockquote>
+            <p class="comment">True if the argument is the ASCII end-of-line character (either a carriage return or a line feed).</p>
+          </blockquote>
+          <dl class="properties">
+            <dt class="key">compilation:</dt>
+            <dd class="value">
+              <code>static</code>
+            </dd>
+            <dt class="key">template:</dt>
+            <dd class="value">
+              <code>is_end_of_line(Char)</code>
+            </dd>
+            <dt class="key">mode &ndash; number of solutions:</dt>
+            <dd class="value">
+              <code>is_end_of_line(+char) &ndash; zero_or_one</code>
             </dd>
           </dl>
         </div>

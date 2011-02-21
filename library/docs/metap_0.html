@@ -23,11 +23,11 @@
           </dd>
           <dt class="key">version:</dt>
           <dd class="value">
-            <code>3.4</code>
+            <code>5.0</code>
           </dd>
           <dt class="key">date:</dt>
           <dd class="value">
-            <code>2010/12/20</code>
+            <code>2011/1/18</code>
           </dd>
         </dl>
         <dl class="properties">
@@ -42,26 +42,6 @@
     <div class="predicates">
       <div class="public">
         <h2>Public interface</h2>
-        <div class="section">
-          <h3 class="code">callable/1</h3>
-          <blockquote>
-            <p class="comment">True if the argument can be called as a goal.</p>
-          </blockquote>
-          <dl class="properties">
-            <dt class="key">compilation:</dt>
-            <dd class="value">
-              <code>static</code>
-            </dd>
-            <dt class="key">template:</dt>
-            <dd class="value">
-              <code>callable(Term)</code>
-            </dd>
-            <dt class="key">mode &ndash; number of solutions:</dt>
-            <dd class="value">
-              <code>callable(@term) &ndash; zero_or_one</code>
-            </dd>
-          </dl>
-        </div>
         <div class="section">
           <h3 class="code">include/3</h3>
           <blockquote>
@@ -111,6 +91,54 @@
           </dl>
         </div>
         <div class="section">
+          <h3 class="code">findall_member/4</h3>
+          <blockquote>
+            <p class="comment">Finds all members of a list that satisfy a given test.</p>
+          </blockquote>
+          <dl class="properties">
+            <dt class="key">compilation:</dt>
+            <dd class="value">
+              <code>static</code>
+            </dd>
+            <dt class="key">template:</dt>
+            <dd class="value">
+              <code>findall_member(Member,List,Test,Result)</code>
+            </dd>
+            <dt class="key">meta-predicate template:</dt>
+            <dd class="value">
+              <code>findall_member(*,*,0,*)</code>
+            </dd>
+            <dt class="key">mode &ndash; number of solutions:</dt>
+            <dd class="value">
+              <code>findall_member(@term,+list,@callable,-list) &ndash; one</code>
+            </dd>
+          </dl>
+        </div>
+        <div class="section">
+          <h3 class="code">findall_member/5</h3>
+          <blockquote>
+            <p class="comment">Finds all members of a list that satisfy a given test appending the given tail to the result.</p>
+          </blockquote>
+          <dl class="properties">
+            <dt class="key">compilation:</dt>
+            <dd class="value">
+              <code>static</code>
+            </dd>
+            <dt class="key">template:</dt>
+            <dd class="value">
+              <code>findall_member(Member,List,Test,Result,Tail)</code>
+            </dd>
+            <dt class="key">meta-predicate template:</dt>
+            <dd class="value">
+              <code>findall_member(*,*,0,*,*)</code>
+            </dd>
+            <dt class="key">mode &ndash; number of solutions:</dt>
+            <dd class="value">
+              <code>findall_member(@term,+list,@callable,-list,+list) &ndash; one</code>
+            </dd>
+          </dl>
+        </div>
+        <div class="section">
           <h3 class="code">partition/4</h3>
           <blockquote>
             <p class="comment">Partition a list of elements in two lists using a predicate.</p>
@@ -155,30 +183,6 @@
             <dt class="key">mode &ndash; number of solutions:</dt>
             <dd class="value">
               <code>partition(+callable,+list,@term,-list,-list,-list) &ndash; one</code>
-            </dd>
-          </dl>
-        </div>
-        <div class="section">
-          <h3 class="code">ignore/1</h3>
-          <blockquote>
-            <p class="comment">Calls Goal once but always succeeds, even if Goal fails.</p>
-          </blockquote>
-          <dl class="properties">
-            <dt class="key">compilation:</dt>
-            <dd class="value">
-              <code>static</code>
-            </dd>
-            <dt class="key">template:</dt>
-            <dd class="value">
-              <code>ignore(Goal)</code>
-            </dd>
-            <dt class="key">meta-predicate template:</dt>
-            <dd class="value">
-              <code>ignore(0)</code>
-            </dd>
-            <dt class="key">mode &ndash; number of solutions:</dt>
-            <dd class="value">
-              <code>ignore(@callable) &ndash; one</code>
             </dd>
           </dl>
         </div>
