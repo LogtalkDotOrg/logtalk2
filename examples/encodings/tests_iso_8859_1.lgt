@@ -1,5 +1,5 @@
-
-:- encoding('ISO-8859-1').	% this directive, when present, must be the first term in a source file
+:- encoding('ISO-8859-1').	% this directive, when present, must be the first
+							% term, in the first line, of a source file
 
 
 :- object(tests_iso_8859_1,
