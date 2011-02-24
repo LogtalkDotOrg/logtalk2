@@ -15,6 +15,13 @@ RELEASE NOTES
 
 2.42.4 - March ??, 2011
 
+    Added to the "logtalk" built-in object two sets of utility predicates:
+    decompile_predicate_heads/2-4 and decompile_predicate_indicators/2-4.
+    Marked the decompile_predicate_head/4 and decompile_predicate_indicator/4
+    as deprecated. Changed the utility predicates that compile/decompile
+    predicate heads/indicators to no longer accept conjunctions in the first
+    argument.
+
     Updated the "encodings" example in order to ensure that the there is no
     whitespace before the encoding/1 directive.
 

@@ -3,9 +3,9 @@
 	implements(expanding)).
 
 	:- info([
-		version is 0.2,
+		version is 0.21,
 		author is 'Paulo Moura',
-		date is 2011/01/27,
+		date is 2011/02/24,
 		comment is 'Hook object for compiling objects and categories containing CHR code.']).
 
 	term_expansion((:- chr_constraint(PIs)), [{(:- chr_constraint(TPIs))}]) :-
@@ -43,7 +43,7 @@
 	:- dynamic(user::portray/1).
 	user::portray(THead) :-
 		callable(THead),
-		logtalk::decompile_predicate_head(THead, Entity, _, Head),
+		logtalk::decompile_predicate_heads(THead, Entity, Head),
 		writeq(Entity::Head).
 
 :- end_object.

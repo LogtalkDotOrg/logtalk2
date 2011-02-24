@@ -12,7 +12,7 @@
 %  integration code for YAP 6.0.2 and later versions to improve
 %  usability when using the YAP profilers
 %
-%  last updated: December 19, 2010
+%  last updated: February 24, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -47,7 +47,7 @@ user:prolog_predicate_name(Goal, Label) :-
 	;	Goal = THead
 	),
 	functor(THead, TFunctor, TArity),
-	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
+	'$lgt_decompile_predicate_indicators'(TFunctor/TArity, Entity, Functor/Arity),
 	(	atom(Entity) ->
 		atomic_list_concat([Entity, '::', Functor, '/', Arity], Label)
 	;	functor(Entity, EFunctor, EArity),

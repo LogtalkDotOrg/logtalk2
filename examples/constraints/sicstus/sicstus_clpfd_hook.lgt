@@ -3,9 +3,9 @@
 	implements(expanding)).
 
 	:- info([
-		version is 0.3,
+		version is 0.31,
 		author is 'Paulo Moura',
-		date is 2011/02/15,
+		date is 2011/02/24,
 		comment is 'Hook object for compiling objects and categories containing CLP(FD) code when using SICStus Prolog.']).
 
 	term_expansion((:- Directive), [(:- Directive)| Annotations]) :-
@@ -61,7 +61,7 @@
 	:- dynamic(user::portray/1).
 	user::portray(THead) :-
 		callable(THead),
-		logtalk::decompile_predicate_head(THead, Entity, _, Head),
+		logtalk::decompile_predicate_heads(THead, Entity, Head),
 		writeq(Entity::Head).
 
 :- end_object.

@@ -3,9 +3,9 @@
 	implements(profilerp)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2010/10/20,
+		date is 2011/02/24,
 		comment is 'Simple wrapper for the SICStus Prolog profiler.']).
 
 	load(File) :-
@@ -62,7 +62,7 @@
 		predicate_label(user:TFunctor/TArity, Label).
 	predicate_label(Module:TFunctor/TArity, Label) :-
 		(	Module == user,
-			logtalk::decompile_predicate_indicator(TFunctor/TArity, Entity, _, Functor/Arity) ->
+			logtalk::decompile_predicate_indicators(TFunctor/TArity, Entity, Functor/Arity) ->
 			(	atom(Entity) ->
 				atomic_list_concat([Entity, '::', Functor, '/', Arity], Label)
 			;	functor(Entity, EntityFunctor, EntityArity),
@@ -77,7 +77,7 @@
 		(	setof(
 				Calls-[Functor/Arity,ChoicePoints,Instructions],
 				Type^TFunctor^TArity^(member((user:TFunctor/TArity)-Calls, CallsData), Calls > 0,
-				 logtalk::decompile_predicate_indicator(TFunctor/TArity, Entity, Type, Functor/Arity),
+				 logtalk::decompile_predicate_indicators(TFunctor/TArity, Entity, Type, Functor/Arity),
 				 member((user:TFunctor/TArity)-ChoicePoints, ChoicePointsData),
 				 member((user:TFunctor/TArity)-Instructions, InstructionsData)),
 				Data) ->

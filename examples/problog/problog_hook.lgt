@@ -6,7 +6,7 @@
 
 :- multifile(user:problog_user_ground/1).
 user:problog_user_ground(THead) :-
-	logtalk::decompile_predicate_head(THead, _, _, Head),
+	logtalk::decompile_predicate_heads(THead, Head),
 	ground(Head).
 
 

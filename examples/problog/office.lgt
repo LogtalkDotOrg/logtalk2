@@ -16,8 +16,8 @@
 
 	:- use_module(problog, [above/2, below/2, in_interval/3]).
 
-	width(gaussian(2,1)).
-	length(gaussian(9,3)).
+	(W,gaussian(2,1)) ~ width(W).
+	(L,gaussian(9,3)) ~ length(L).
 	0.8 ~ office_has_window.
 	0.001 ~ corridor_has_window.
 

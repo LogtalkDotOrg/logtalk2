@@ -14,32 +14,32 @@
 
 	% explanation probability (and facts involved)
 	test(problog_graph_1) :-
-		graph::problog_max(path(1,4),Prob,FactsUsed),
+		graph::problog_max(path(1,4), Prob, FactsUsed),
 		FactsUsed == [dir_edge(1,2),dir_edge(2,3),dir_edge(3,4)],
 		Prob =~= 0.432.
 
 	% success probability
 	test(problog_graph_2) :-
-		graph::problog_exact(path(1,4),Prob,Status),
+		graph::problog_exact(path(1,4), Prob, Status),
 		% 8 proofs
 		Prob =~= 0.53864,
 		Status == ok.
 
 	% lower bound using 4 best proofs
 	test(problog_graph_3) :-
-		graph::problog_kbest(path(1,4),4,Prob,Status),
+		graph::problog_kbest(path(1,4),4, Prob, Status),
 		% 4 proofs
 		Prob =~= 0.517344,
 		Status == ok.
 
 	% approximation using monte carlo, to reach 95%-confidence interval width 0.01
 	test(problog_graph_4) :-
-		graph::problog_montecarlo(path(1,4),0.01,Prob),
+		graph::problog_montecarlo(path(1,4), 0.01, Prob),
 		abs(Prob - 0.536475) =< 0.05.
 
 	% upper and lower bound using iterative deepening, final interval width 0.01
 	test(problog_graph_5) :-
-		graph::problog_delta(path(1,4),0.01,Bound_low,Bound_up,Status),
+		graph::problog_delta(path(1,4), 0.01, Bound_low, Bound_up, Status),
 		Bound_low =~= 0.5354096,
 		Bound_up =~= 0.53864,
 		Status == ok.

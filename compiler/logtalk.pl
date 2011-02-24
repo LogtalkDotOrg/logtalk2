@@ -3462,7 +3462,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 % '$lgt_guarded_method_call'(+object_identifier, +callable, +object_identifier, +callable)
 %
-% wraps the method call with the before and after event handler calls
+% wraps the method call with the before and after event handler calls; the "before" event handler
+% may prevent a method from being executed by failing and an "after" event handler may prevent a
+% method from succeeding by failing; however, event handlers cannot modify the method call
 
 '$lgt_guarded_method_call'(Obj, Msg, Sender, Method) :-
 	\+ ('$lgt_before_event_'(Obj, Msg, Sender, _, Before), \+ Before),	% call before event handlers
@@ -4315,8 +4317,15 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_logtalk._dcl'(compile_predicate_heads(_, _, _, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(compile_predicate_indicators(_, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(compile_predicate_indicators(_, _, _), p(p(p)), no, 0).
-'$lgt_logtalk._dcl'(decompile_predicate_indicator(_, _, _, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(decompile_predicate_heads(_, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(decompile_predicate_heads(_, _, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(decompile_predicate_heads(_, _, _, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(decompile_predicate_indicators(_, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(decompile_predicate_indicators(_, _, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(decompile_predicate_indicators(_, _, _, _), p(p(p)), no, 0).
+% deprecated
 '$lgt_logtalk._dcl'(decompile_predicate_head(_, _, _, _), p(p(p)), no, 0).
+'$lgt_logtalk._dcl'(decompile_predicate_indicator(_, _, _, _), p(p(p)), no, 0).
 
 '$lgt_logtalk._dcl'(Pred, Scope, Meta, Flags, logtalk, logtalk) :-
 	'$lgt_logtalk._dcl'(Pred, Scope, Meta, Flags).
@@ -4339,6 +4348,13 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_logtalk._def'(compile_predicate_heads(Heads, Entity, THeads, Ctx), _, '$lgt_compile_predicate_heads'(Heads, Entity, THeads, Ctx)).
 '$lgt_logtalk._def'(compile_predicate_indicators(PIs, TPIs), _, '$lgt_compile_predicate_indicators'(PIs, TPIs)).
 '$lgt_logtalk._def'(compile_predicate_indicators(PIs, Entity, TPIs), _, '$lgt_compile_predicate_indicators'(PIs, Entity, TPIs)).
+'$lgt_logtalk._def'(decompile_predicate_indicators(TPIs, PIs), _, '$lgt_decompile_predicate_indicators'(TPIs, PIs)).
+'$lgt_logtalk._def'(decompile_predicate_indicators(TPIs, Entity, PIs), _, '$lgt_decompile_predicate_indicators'(TPIs, Entity, PIs)).
+'$lgt_logtalk._def'(decompile_predicate_indicators(TPIs, Entity, Type, PIs), _, '$lgt_decompile_predicate_indicators'(TPIs, Entity, Type, PIs)).
+'$lgt_logtalk._def'(decompile_predicate_heads(THeads, Heads), _, '$lgt_decompile_predicate_heads'(THeads, Heads)).
+'$lgt_logtalk._def'(decompile_predicate_heads(THeads, Entity, Heads), _, '$lgt_decompile_predicate_heads'(THeads, Entity, Heads)).
+'$lgt_logtalk._def'(decompile_predicate_heads(THeads, Entity, Type, Heads), _, '$lgt_decompile_predicate_heads'(THeads, Entity, Type, Heads)).
+% deprecated
 '$lgt_logtalk._def'(decompile_predicate_indicator(TPI, Entity, Type, PI), _, '$lgt_decompile_predicate_indicator'(TPI, Entity, Type, PI)).
 '$lgt_logtalk._def'(decompile_predicate_head(THead, Entity, Type, Head), _, '$lgt_decompile_predicate_head'(THead, Entity, Type, Head)).
 
@@ -14952,10 +14968,10 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 
 
-% '$lgt_compile_aux_clauses'(@clause)
 % '$lgt_compile_aux_clauses'(@list(clause))
+% '$lgt_compile_aux_clauses'(@clause)
 %
-% translates a single predicate clause a list of auxiliary predicate clauses;
+% translates a single predicate clause or a list of auxiliary predicate clauses;
 % used mainly in conjunction with goal_expansion/2 hooks
 
 '$lgt_compile_aux_clauses'(Clauses) :-
@@ -14978,14 +14994,14 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 
 
+% '$lgt_compile_predicate_heads'(@list(callable), ?entity_identifier, -list(callable), @term)
 % '$lgt_compile_predicate_heads'(@callable, ?entity_identifier, -callable, @term)
 %
-% translates a single predicate head, a conjunction of predicate heads, or a list of
-% predicate heads; used mainly in config files for processing proprietary directives
-
-'$lgt_compile_predicate_heads'(Head, _, _, _) :-
-	var(Head),
-	throw(instantiation_error).
+% translates a single predicate head, or a list of predicate heads;
+% used mainly in config files for processing proprietary directives
+%
+% the predicate heads are compiled in the context of the specified entity or in the context
+% of the entity being compiled when the entity argument is not instantiated
 
 '$lgt_compile_predicate_heads'(_, Entity, _, _) :-
 	nonvar(Entity),
@@ -15005,15 +15021,14 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_compile_predicate_heads_aux'(Heads, Prefix, THeads, Ctx).
 
 
+'$lgt_compile_predicate_heads_aux'(Heads, _, _, _) :-
+	var(Heads),
+	throw(instantiation_error).
+
 '$lgt_compile_predicate_heads_aux'([], _, [], _) :-
 	!.
 
 '$lgt_compile_predicate_heads_aux'([Head| Heads], Prefix, [THead| THeads], Ctx) :-
-	!,
-	'$lgt_compile_predicate_heads_aux'(Head, Prefix, THead, Ctx),
-	'$lgt_compile_predicate_heads_aux'(Heads, Prefix, THeads, Ctx).
-
-'$lgt_compile_predicate_heads_aux'((Head, Heads), Prefix, (THead, THeads), Ctx) :-
 	!,
 	'$lgt_compile_predicate_heads_aux'(Head, Prefix, THead, Ctx),
 	'$lgt_compile_predicate_heads_aux'(Heads, Prefix, THeads, Ctx).
@@ -15031,29 +15046,63 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 
 
+% '$lgt_compile_predicate_heads'(@list(callable), -list(callable))
+% '$lgt_compile_predicate_heads'(@callable, -callable)
+
 '$lgt_compile_predicate_heads'(Heads, THeads) :-
 	'$lgt_compile_predicate_heads'(Heads, _, THeads, _).
 
 
+
+% '$lgt_compile_predicate_heads'(@list(callable), -list(callable), @term)
+% '$lgt_compile_predicate_heads'(@callable, -callable, @term)
 
 '$lgt_compile_predicate_heads'(Heads, THeads, Ctx) :-
 	'$lgt_compile_predicate_heads'(Heads, _, THeads, Ctx).
 
 
 
-% '$lgt_decompile_predicate_head'(+callable, -callable, -atom, -callable)
+% '$lgt_decompile_predicate_heads'(+list(callable), ?entity_identifier, ?atom, -list(callable))
+% '$lgt_decompile_predicate_heads'(+callable, ?entity_identifier, ?atom, -callable)
 %
-% decompiles the predicate head used for a compiled predicate
+% decompiles the predicate heads used for compiled predicates;
+%
+% all the compiled predicate heads must refer to the same entity 
+% (which must be loaded) in order for this predicate to succeed
 
-'$lgt_decompile_predicate_head'(THead, Entity, Type, Head) :-
+'$lgt_decompile_predicate_heads'(_, Entity, _, _) :-
+	nonvar(Entity),
+	\+ callable(Entity),
+	throw(type_error(entity_identifier, Entity)).
+
+'$lgt_decompile_predicate_heads'(THeads, Entity, Type, Heads) :-
+	'$lgt_decompile_predicate_heads'(THeads, Entity, Type, _, Heads).
+
+
+'$lgt_decompile_predicate_heads'(THeads, _, _, _, _) :-
+	var(THeads),
+	throw(instantiation_error).
+
+'$lgt_decompile_predicate_heads'([], _, _, _, []) :-
+	!.
+
+'$lgt_decompile_predicate_heads'([THead| THeads], Entity, Type, Prefix, [Head| Heads]) :-
+	!,
+	'$lgt_decompile_predicate_heads'(THead, Entity, Type, Prefix, Head),
+	'$lgt_decompile_predicate_heads'(THeads, Entity, Type, Prefix, Heads).
+
+'$lgt_decompile_predicate_heads'(THead, Entity, Type, Prefix, Head) :-
 	callable(THead),
 	functor(THead, TFunctor, TArity),
-	(	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _, _, _, _),
-		Type = object
-	;	'$lgt_current_category_'(Entity, Prefix, _, _, _, _),
-		Type = category
-	;	'$lgt_current_protocol_'(Entity, Prefix, _, _, _),
-		Type = protocol
+	(	var(Prefix) ->
+		(	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _, _, _, _),
+			Type = object
+		;	'$lgt_current_category_'(Entity, Prefix, _, _, _, _),
+			Type = category
+		;	'$lgt_current_protocol_'(Entity, Prefix, _, _, _),
+			Type = protocol
+		)
+	;	true
 	),
 	atom_concat(Prefix, Functor, TFunctor),
 	Arity is TArity - 1,		% subtract execution context argument
@@ -15064,15 +15113,37 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 
 
+% '$lgt_decompile_predicate_heads'(+list(callable), -list(callable))
+% '$lgt_decompile_predicate_heads'(+callable, -callable)
+
+'$lgt_decompile_predicate_heads'(THeads, Heads) :-
+	'$lgt_decompile_predicate_heads'(THeads, _, _, Heads).
+
+
+
+% '$lgt_decompile_predicate_heads'(+list(callable), ?entity_identifier, -list(callable))
+% '$lgt_decompile_predicate_heads'(+callable, ?entity_identifier, -callable)
+
+'$lgt_decompile_predicate_heads'(THeads, Entity, Heads) :-
+	'$lgt_decompile_predicate_heads'(THeads, Entity, _, Heads).
+
+
+
+% deprecated
+
+'$lgt_decompile_predicate_head'(THead, Entity, Type, Head) :-
+	'$lgt_decompile_predicate_heads'(THead, Entity, Type, _, Head).
+
+
+
 % '$lgt_compile_predicate_indicators'(+list(predicate_indicator), ?entity_identifier, -list(predicate_indicator))
 % '$lgt_compile_predicate_indicators'(+predicate_indicator, ?entity_identifier, -predicate_indicator)
 %
-% translates a single predicate indicator, a conjunction of predicate indicators, or a list
-% of predicate indicators; used mainly in config files for processing proprietary directives
-
-'$lgt_compile_predicate_indicators'(PI, _, _) :-
-	var(PI),
-	throw(instantiation_error).
+% translates a single predicate indicator or a list of predicate indicators;
+% used mainly in config files for processing proprietary directives
+%
+% the predicate indicators are compiled in the context of the specified entity or in the context
+% of the entity being compiled when the entity argument is not instantiated
 
 '$lgt_compile_predicate_indicators'(_, Entity, _) :-
 	nonvar(Entity),
@@ -15092,15 +15163,14 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_compile_predicate_indicators_aux'(PIs, Prefix, TPIs).
 
 
+'$lgt_compile_predicate_indicators_aux'(PIs, _, _) :-
+	var(PIs),
+	throw(instantiation_error).
+
 '$lgt_compile_predicate_indicators_aux'([], _, []) :-
 	!.
 
 '$lgt_compile_predicate_indicators_aux'([PI| PIs], Prefix, [TPI| TPIs]) :-
-	!,
-	'$lgt_compile_predicate_indicators_aux'(PI, Prefix, TPI),
-	'$lgt_compile_predicate_indicators_aux'(PIs, Prefix, TPIs).
-
-'$lgt_compile_predicate_indicators_aux'((PI, PIs), Prefix, (TPI, TPIs)) :-
 	!,
 	'$lgt_compile_predicate_indicators_aux'(PI, Prefix, TPI),
 	'$lgt_compile_predicate_indicators_aux'(PIs, Prefix, TPIs).
@@ -15114,6 +15184,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	).
 
 
+
+% '$lgt_compile_predicate_indicators'(+list(predicate_indicator), -list(predicate_indicator))
+% '$lgt_compile_predicate_indicators'(+predicate_indicator, -predicate_indicator)
 
 '$lgt_compile_predicate_indicators'(Heads, THeads) :-
 	'$lgt_compile_predicate_indicators'(Heads, _, THeads).
@@ -15130,22 +15203,73 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 
 
-% '$lgt_decompile_predicate_indicator'(+predicate_indicator, -callable, -atom, -predicate_indicator)
+% '$lgt_decompile_predicate_indicators'(+list(predicate_indicator), ?entity_identifier, ?atom, -list(predicate_indicator))
+% '$lgt_decompile_predicate_indicators'(+predicate_indicator, ?entity_identifier, ?atom, -predicate_indicator)
 %
-% reverses the predicate indicator used for a compiled predicate
+% reverses the predicate indicator used for a compiled predicate or a list of compiled predicates;
+%
+% all the compiled predicate indicators must refer to the same entity
+% (which must be loaded) in order for this predicate to succeed
 
-'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity) :-
-	(	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _, _, _, _),
-		Type = object
-	;	'$lgt_current_category_'(Entity, Prefix, _, _, _, _),
-		Type = category
-	;	'$lgt_current_protocol_'(Entity, Prefix, _, _, _),
-		Type = protocol
+'$lgt_decompile_predicate_indicators'(_, Entity, _, _) :-
+	nonvar(Entity),
+	\+ callable(Entity),
+	throw(type_error(entity_identifier, Entity)).
+
+'$lgt_decompile_predicate_indicators'(TPIs, Entity, Type, PIs) :-
+	'$lgt_decompile_predicate_indicators'(TPIs, Entity, Type, _, PIs).
+
+
+'$lgt_decompile_predicate_indicators'(TPIs, _, _, _, _) :-
+	var(TPIs),
+	throw(instantiation_error).
+
+'$lgt_decompile_predicate_indicators'([], _, _, _, []) :-
+	!.
+
+'$lgt_decompile_predicate_indicators'([TPI| TPIs], Entity, Type, Prefix, [PI| PIs]) :-
+	!,
+	'$lgt_decompile_predicate_indicators'(TPI, Entity, Type, Prefix, PI),
+	'$lgt_decompile_predicate_indicators'(TPIs, Entity, Type, Prefix, PIs).
+
+'$lgt_decompile_predicate_indicators'(TFunctor/TArity, Entity, Type, Prefix, Functor/Arity) :-
+	(	var(Prefix) ->
+		(	'$lgt_current_object_'(Entity, Prefix, _, _, _, _, _, _, _, _, _),
+			Type = object
+		;	'$lgt_current_category_'(Entity, Prefix, _, _, _, _),
+			Type = category
+		;	'$lgt_current_protocol_'(Entity, Prefix, _, _, _),
+			Type = protocol
+		)
+	;	true
 	),
 	atom_concat(Prefix, Functor, TFunctor),
 	Arity is TArity - 1,		% subtract execution context argument
 	Arity >= 0,
 	!.
+
+
+
+% '$lgt_decompile_predicate_indicators'(+list(predicate_indicator), -list(predicate_indicator))
+% '$lgt_decompile_predicate_indicators'(+predicate_indicator, -predicate_indicator)
+
+'$lgt_decompile_predicate_indicators'(TPIs, PIs) :-
+	'$lgt_decompile_predicate_indicators'(TPIs, _, _, PIs).
+
+
+
+% '$lgt_decompile_predicate_indicators'(+list(predicate_indicator), ?entity_identifier, -list(predicate_indicator))
+% '$lgt_decompile_predicate_indicators'(+predicate_indicator, ?entity_identifier, -predicate_indicator)
+
+'$lgt_decompile_predicate_indicators'(TPIs, Entity, PIs) :-
+	'$lgt_decompile_predicate_indicators'(TPIs, Entity, _, PIs).
+
+
+
+% deprecated
+
+'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity) :-
+	'$lgt_decompile_predicate_indicators'(TFunctor/TArity, Entity, Type, Functor/Arity).
 
 
 

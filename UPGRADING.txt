@@ -299,3 +299,9 @@ meta-predicate mode indicator "::" instead of "0".
 Logtalk version 2.42.1 reverts the changes in version 2.39.2 that allowed
 the pseudo-object "user" to virtually contain the definition of all Prolog
 built-in predicates.
+
+Logtalk version 2.42.4 deprecates the "logtalk" built-in object utility
+predicates decompile_predicate_head/4 and decompile_predicate_indicator/4.
+These predicates are replaced by more general versions. In addition, changed
+the utility predicates that compile/decompile predicate heads/indicators to
+no longer accept conjunctions in the first argument.
