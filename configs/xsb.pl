@@ -9,17 +9,15 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for XSB 3.2 or later versions
+%  configuration file for XSB 3.3 or later versions
 %
-%  last updated: January 20, 2011
+%  last updated: February 26, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 :- import datime/1 from standard.
-:- import numbervars/3 from num_vars.
 :- import expand_atom/2 from standard.
-:- import term_variables/2 from swi.
 
 
 
@@ -38,6 +36,9 @@
 % '$lgt_iso_predicate'(?callable).
 
 '$lgt_iso_predicate'(term_variables(_, _)).
+
+term_variables(Term, Variables) :-
+	swi:term_variables(Term, Variables).
 
 
 

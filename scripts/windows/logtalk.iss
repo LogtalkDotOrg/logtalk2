@@ -59,8 +59,8 @@ Name: "prolog\gprolog"; Description: "GNU Prolog integration (version 1.4.0 or l
 Name: "prolog\sicstus"; Description: "SICStus Prolog integration (versions 3.12.x, 4.x)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\swicon"; Description: "SWI-Prolog (console) integration (version 5.8.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\swiwin"; Description: "SWI-Prolog (window) integration (version 5.8.0 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\xsb"; Description: "XSB integration (version 3.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
-Name: "prolog\xsbmt"; Description: "XSB-MT integration (version 3.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\xsb"; Description: "XSB integration (version 3.3 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
+Name: "prolog\xsbmt"; Description: "XSB-MT integration (version 3.3 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 Name: "prolog\yap"; Description: "YAP integration (version 6.0.2 or later)"; Types: full prolog custom; Flags: disablenouninstallwarning
 
 [Tasks]

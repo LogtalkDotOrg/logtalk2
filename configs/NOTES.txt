@@ -285,7 +285,7 @@ SWI Prolog 5.8.0 and later versions
 	to detect unqualified calls to library predicates.
 
 
-XSB 3.2 and later versions
+XSB 3.3 and later versions
 
 	xsb.pl
 
