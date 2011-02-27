@@ -28,6 +28,8 @@ RELEASE NOTES
     Updated the "encodings" example in order to ensure that the there is no
     whitespace before the encoding/1 directive.
 
+    Updated the "attvars" example in order to support XSB.
+
 
 2.42.3 - February 21, 2011
 

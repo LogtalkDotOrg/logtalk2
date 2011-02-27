@@ -14,7 +14,7 @@ file.
 
 This an experimental example of using attributed variables in Logtalk
 objects and categories. It requires the use of a back-end Prolog compiler
-with support for attributed variables. Tested with SWI-Prolog, and YAP.
+with support for attributed variables. Tested with SWI-Prolog, XSB, and YAP.
 The individual example is an adaptation of code found on the SWI-Prolog
 documentation.
 

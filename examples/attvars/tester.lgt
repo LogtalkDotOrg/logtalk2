@@ -1,5 +1,5 @@
 
-:- if((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == swi; Dialect == yap))).
+:- if((current_logtalk_flag(prolog_dialect, Dialect), (Dialect == swi; Dialect == yap; Dialect == xsb))).
 
 	:- initialization((
 		set_logtalk_flag(report, warnings),
