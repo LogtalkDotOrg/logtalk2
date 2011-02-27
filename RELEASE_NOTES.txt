@@ -22,8 +22,9 @@ RELEASE NOTES
     predicate heads/indicators to no longer accept conjunctions in the first
     argument.
 
-    Updated the XSB config file. XSB 3.3 or a later version is now required
-    for compatibility with Logtalk.
+    Updated the XSB config file in order to support the compilation of modules
+    as objects. XSB 3.3 or a later version is now required for compatibility
+    with Logtalk.
 
     Updated the "encodings" example in order to ensure that the there is no
     whitespace before the encoding/1 directive.
