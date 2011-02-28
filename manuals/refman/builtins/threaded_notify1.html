@@ -26,7 +26,7 @@
 <pre>threaded_notify(Term)
 threaded_notify([Term| Terms])</pre>
 <p>
-Sends <code>Term</code> as a notification to any thread suspended waiting for it in order to proceed. The call must be made within the same object (<a class="glossary" title="Go to glossary definition" href="../../glossary.html#this"><em>this</em></a>) containing the calls to the <code>threaded_wait/1</code> predicate waiting for the notification. The argument may also be a list of notifications, <code>[Term| Terms]</code>. In this case, all notifications in the list will be sent to any threads suspended waiting for them in order to proceed.
+Sends <code>Term</code> as a notification to any thread suspended waiting for it in order to proceed. The call must be made within the same object (<a class="glossary" title="Go to glossary definition" href="../../glossary.html#this"><em>this</em></a>) containing the calls to the <a title="Consult reference manual" href="threaded_wait1.html"><code>threaded_wait/1</code></a> predicate waiting for the notification. The argument may also be a list of notifications, <code>[Term| Terms]</code>. In this case, all notifications in the list will be sent to any threads suspended waiting for them in order to proceed.
 </p>
 
 <h4>Template and modes</h4>

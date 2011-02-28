@@ -528,7 +528,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 
 % '$lgt_rewrite_and_recompile_pl_directive'(@callable, -callable)
 
-'$lgt_rewrite_and_recompile_pl_directive'(import(as(from(PI1), Module), PI2), use_module(Module, [as(PI1, PI2)])).
+'$lgt_rewrite_and_recompile_pl_directive'(import(as(from(PI), Module), Functor), use_module(Module, [as(PI, Functor)])).
 '$lgt_rewrite_and_recompile_pl_directive'(import(from(PIs1, Module)), use_module(Module, PIs2)) :-
 	'$lgt_xsb_conjunction_to_list'(PIs1, PIs2).
 '$lgt_rewrite_and_recompile_pl_directive'(local(PIs1), private(PIs2)) :-

@@ -8334,7 +8334,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	),
 	'$lgt_tr_use_module_directive'(Preds, Module, Ctx).
 
-% only accept the as/2 renaming operator (found e.g. on SWI-Prolog and YAP) when compiling
+% only accept the as/2 renaming operator (found e.g. on SWI-Prolog, XSB and YAP) when compiling
 % modules as objects:
 
 '$lgt_tr_use_module_directive'([as(Original, AFunctor)| Preds], Module, Ctx) :-
