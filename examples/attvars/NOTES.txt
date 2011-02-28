@@ -18,12 +18,20 @@ with support for attributed variables. Tested with SWI-Prolog, XSB, and YAP.
 The individual example is an adaptation of code found on the SWI-Prolog
 documentation.
 
-The "attvars_hook" hook object works by creating a shadow module (with
-the same name as the object) containing the attribute_goals//1 and
-attr_unify_hook/2 hooks that are required by the attributed variables
-implementation. These hooks are compiled as module multifile predicates
-in order to avoid spurious compiler warning messages (note that the hook
-clause bodies are compiled within the context of the container object).
-One limitation of this approach is that we cannot use parametric objects
-as the object identifier is used as the name of the shadow module (module
-names must be atoms).
+When using SWI-Prolog or YAP, the "attvars_hook" hook object works by
+creating a shadow module (with the same name as the object) containing
+the attribute_goals//1 and attr_unify_hook/2 hooks that are required by
+the attributed variables implementation. These hooks are compiled as module
+multifile predicates in order to avoid spurious compiler warning messages
+(note that the hook clause bodies are compiled within the context of the
+container object). One limitation of this approach is that we cannot use
+parametric objects as the object identifier is used as the name of the
+shadow module (module names must be atoms).
+
+When using XSB, the "attvars_hook" hook object works by generating the
+install_verify_attribute_handler/4 and install_attribute_portray_hook/3
+XSB directives, invoked using Logtalk-compiled arguments. These directives
+allows the use of common code for SWI-Prolog, XSB, and YAP. A portability
+caveat, however: in XSB, the predicate get_attr/3 throws an exception if
+the first argument is not a variable while SWI-Prolog and XSB simply fail
+in this case.
