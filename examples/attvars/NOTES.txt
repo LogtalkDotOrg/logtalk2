@@ -12,11 +12,11 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 To load this example and for sample queries, please see the SCRIPT.txt
 file.
 
-This an experimental example of using attributed variables in Logtalk
+This an experimental example of using attributed variables within Logtalk
 objects and categories. It requires the use of a back-end Prolog compiler
-with support for attributed variables. Tested with SWI-Prolog, XSB, and YAP.
-The individual example is an adaptation of code found on the SWI-Prolog
-documentation.
+with support for attributed variables. Tested with B-Prolog, SWI-Prolog,
+XSB, and YAP. The individual example is an adaptation of code found on the
+SWI-Prolog documentation.
 
 When using SWI-Prolog or YAP, the "attvars_hook" hook object works by
 creating a shadow module (with the same name as the object) containing
@@ -35,3 +35,5 @@ allows the use of common code for SWI-Prolog, XSB, and YAP. A portability
 caveat, however: in XSB, the predicate get_attr/3 throws an exception if
 the first argument is not a variable while SWI-Prolog and XSB simply fail
 in this case.
+
+When using B-Prolog, the attribute_goals//1 hook grammar rule is discarded.

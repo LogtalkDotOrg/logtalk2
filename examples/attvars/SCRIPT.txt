@@ -22,6 +22,8 @@ no
 
 | ?- domain::domain(X, [a,b]), domain::domain(X, [a,c]).
 X = a
+yes
 
-| ?- domain::domain(X,[a,b,c]), domain::domain(X,[a,c]).
-domain(X,[a,c])
+| ?- domain::domain(X,[a,b,c]), domain::domain(X,[a,c]), get_attr(X, domain, List).
+List = [a, c]
+yes
