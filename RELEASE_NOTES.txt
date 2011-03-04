@@ -22,6 +22,9 @@ RELEASE NOTES
     predicate heads/indicators to no longer accept conjunctions in the first
     argument.
 
+    Added support for preserving the scope information for operators declared
+    using scope directives during compile time.
+
     Updated the XSB config file in order to support the compilation of modules
     as objects. XSB 3.3 or a later version is now required for compatibility
     with Logtalk.

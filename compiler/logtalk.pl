@@ -275,7 +275,7 @@
 
 :- dynamic('$lgt_pp_global_op_'/3).							% '$lgt_pp_global_op_'(Priority, Specifier, Operator)
 :- dynamic('$lgt_pp_file_op_'/3).							% '$lgt_pp_file_op_'(Priority, Specifier, Operator)
-:- dynamic('$lgt_pp_entity_op_'/3).							% '$lgt_pp_entity_op_'(Priority, Specifier, Operator)
+:- dynamic('$lgt_pp_entity_op_'/4).							% '$lgt_pp_entity_op_'(Priority, Specifier, Operator, Scope)
 
 :- dynamic('$lgt_pp_warnings_top_argument_'/1).				% '$lgt_pp_warnings_top_argument_'(Term)
 :- dynamic('$lgt_pp_comp_warnings_counter_'/1).				% '$lgt_pp_comp_warnings_counter_'(Counter)
@@ -6259,7 +6259,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_clean_pp_entity_clauses',
 	retractall('$lgt_pp_global_op_'(_, _, _)),
 	retractall('$lgt_pp_file_op_'(_, _, _)),
-	retractall('$lgt_pp_entity_op_'(_, _, _)),
+	retractall('$lgt_pp_entity_op_'(_, _, _, _)),
 	retractall('$lgt_pp_file_init_'(_)),
 	retractall('$lgt_pp_entity_init_'(_, _, _)),
 	retractall('$lgt_pp_file_encoding_'(_, _)),
@@ -6407,7 +6407,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 % restores current operator table
 
 '$lgt_restore_global_op_table' :-
-	retract('$lgt_pp_entity_op_'(_, Spec, Op)),
+	retract('$lgt_pp_entity_op_'(_, Spec, Op, _)),
 		op(0, Spec, Op),
 	fail.
 
@@ -6445,7 +6445,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 % restores current operator table
 
 '$lgt_restore_file_op_table' :-
-	retract('$lgt_pp_entity_op_'(_, Spec, Op)),
+	retract('$lgt_pp_entity_op_'(_, Spec, Op, _)),
 		op(0, Spec, Op),
 	fail.
 
@@ -6459,20 +6459,20 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 
 
-% '$lgt_assert_entity_operators'(+integer, +operator_specifier, +atom_or_atom_list)
+% '$lgt_assert_entity_operators'(+integer, +operator_specifier, +atom_or_atom_list, +scope)
 %
 % asserts local entity operators
 
-'$lgt_assert_entity_operators'(_, _, []) :-
+'$lgt_assert_entity_operators'(_, _, [], _) :-
 	!.
 
-'$lgt_assert_entity_operators'(Pr, Spec, [Op| Ops]) :-
+'$lgt_assert_entity_operators'(Pr, Spec, [Op| Ops], Scope) :-
 	!,
-	asserta('$lgt_pp_entity_op_'(Pr, Spec, Op)),
-	'$lgt_assert_entity_operators'(Pr, Spec, Ops).
+	asserta('$lgt_pp_entity_op_'(Pr, Spec, Op, Scope)),
+	'$lgt_assert_entity_operators'(Pr, Spec, Ops, Scope).
 
-'$lgt_assert_entity_operators'(Pr, Spec, Op) :-
-	asserta('$lgt_pp_entity_op_'(Pr, Spec, Op)).
+'$lgt_assert_entity_operators'(Pr, Spec, Op, Scope) :-
+	asserta('$lgt_pp_entity_op_'(Pr, Spec, Op, Scope)).
 
 
 
@@ -7207,7 +7207,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_tr_directive'(op, [Priority, Spec, Operators], _) :-
 	'$lgt_check_op_directive_args'(Priority, Spec, Operators),
 	op(Priority, Spec, Operators),
-	'$lgt_assert_entity_operators'(Priority, Spec, Operators).
+	'$lgt_assert_entity_operators'(Priority, Spec, Operators, (local)).
 
 
 % uses/2 entity directive
@@ -7376,23 +7376,17 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 % scope directives
 
-'$lgt_tr_directive'((public), Resources, Ctx) :-
+'$lgt_tr_directive'((public), Resources, _) :-
 	'$lgt_flatten_list'(Resources, ResourcesFlatted),
-	'$lgt_split_operators_and_predicates'(ResourcesFlatted, Preds, Ops),
-	forall('$lgt_member'(Op, Ops), '$lgt_tr_directive'(Op, Ctx)),
-	'$lgt_tr_public_directive'(Preds).
+	'$lgt_tr_public_directive'(ResourcesFlatted).
 
-'$lgt_tr_directive'(protected, Resources, Ctx) :-
+'$lgt_tr_directive'(protected, Resources, _) :-
 	'$lgt_flatten_list'(Resources, ResourcesFlatted),
-	'$lgt_split_operators_and_predicates'(ResourcesFlatted, Preds, Ops),
-	forall('$lgt_member'(Op, Ops), '$lgt_tr_directive'(Op, Ctx)),
-	'$lgt_tr_protected_directive'(Preds).
+	'$lgt_tr_protected_directive'(ResourcesFlatted).
 
-'$lgt_tr_directive'(private, Resources, Ctx) :-
+'$lgt_tr_directive'(private, Resources, _) :-
 	'$lgt_flatten_list'(Resources, ResourcesFlatted),
-	'$lgt_split_operators_and_predicates'(ResourcesFlatted, Preds, Ops),
-	forall('$lgt_member'(Op, Ops), '$lgt_tr_directive'(Op, Ctx)),
-	'$lgt_tr_private_directive'(Preds).
+	'$lgt_tr_private_directive'(ResourcesFlatted).
 
 
 % export/1 module directive
@@ -7592,9 +7586,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_valid_predicate_indicator'(Pred, Functor, Arity),
 	!,
 	(	'$lgt_pp_dynamic_'(Functor, Arity) ->
-		throw(permission_error(modify, predicate_interpretation, Pred))
+		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
 	;	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _) ->
-		throw(permission_error(modify, predicate_interpretation, Pred))
+		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
 	;	functor(Head, Functor, Arity),
 		assertz('$lgt_pp_synchronized_'(Head, Mutex)),
 		'$lgt_tr_synchronized_directive'(Preds, Mutex)
@@ -7604,9 +7598,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_valid_non_terminal_indicator'(Pred, Functor, Arity, ExtArity),
 	!,
 	(	'$lgt_pp_dynamic_'(Functor, ExtArity) ->
-		throw(permission_error(modify, predicate_interpretation, Pred))
+		throw(permission_error(modify, predicate_interpretation, Functor//Arity))
 	;	'$lgt_pp_calls_non_terminal_'(Functor, Arity) ->
-		throw(permission_error(modify, non_terminal_interpretation, Pred))
+		throw(permission_error(modify, non_terminal_interpretation, Functor//Arity))
 	;	functor(Head, Functor, ExtArity),
 		assertz('$lgt_pp_synchronized_'(Head, Mutex)),
 		'$lgt_tr_synchronized_directive'(Preds, Mutex)
@@ -7627,22 +7621,26 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	var(Pred),
 	throw(instantiation_error).
 
-'$lgt_tr_public_directive'([Pred| _]) :-
-	functor(Pred, Functor, Arity),
-	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _),
-	throw(permission_error(modify, predicate_interpretation, Pred)).
+'$lgt_tr_public_directive'([op(Priority, Spec, Operators)| Preds]) :-
+	!,
+	'$lgt_check_op_directive_args'(Priority, Spec, Operators),
+	'$lgt_check_for_duplicated_scope_directives'(op(Priority, Spec, Operators)),
+	'$lgt_assert_entity_operators'(Priority, Spec, Operators, (public)),
+	'$lgt_tr_public_directive'(Preds).
 
 '$lgt_tr_public_directive'([Pred| Preds]) :-
 	'$lgt_valid_predicate_indicator'(Pred, Functor, Arity),
 	!,
-	\+ '$lgt_duplicated_scope_directives'(Pred, Functor, Arity),
+	'$lgt_check_for_directive_after_call'(Functor/Arity),
+	'$lgt_check_for_duplicated_scope_directives'(Functor/Arity),
 	assertz('$lgt_pp_public_'(Functor, Arity)),
 	'$lgt_tr_public_directive'(Preds).
 
 '$lgt_tr_public_directive'([Pred| Preds]) :-
 	'$lgt_valid_non_terminal_indicator'(Pred, Functor, Arity, ExtArity),
 	!,
-	\+ '$lgt_duplicated_scope_directives'(Pred, Functor, ExtArity),
+	'$lgt_check_for_directive_after_call'(Functor/ExtArity),
+	'$lgt_check_for_duplicated_scope_directives'(Functor//Arity+ExtArity),
 	assertz('$lgt_pp_non_terminal_'(Functor, Arity, ExtArity)),
 	assertz('$lgt_pp_public_'(Functor, ExtArity)),
 	'$lgt_tr_public_directive'(Preds).
@@ -7662,22 +7660,26 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	var(Pred),
 	throw(instantiation_error).
 
-'$lgt_tr_protected_directive'([Pred| _]) :-
-	functor(Pred, Functor, Arity),
-	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _),
-	throw(permission_error(modify, predicate_interpretation, Pred)).
+'$lgt_tr_protected_directive'([op(Priority, Spec, Operators)| Preds]) :-
+	!,
+	'$lgt_check_op_directive_args'(Priority, Spec, Operators),
+	'$lgt_check_for_duplicated_scope_directives'(op(Priority, Spec, Operators)),
+	'$lgt_assert_entity_operators'(Priority, Spec, Operators, protected),
+	'$lgt_tr_protected_directive'(Preds).
 
 '$lgt_tr_protected_directive'([Pred| Preds]) :-
 	'$lgt_valid_predicate_indicator'(Pred, Functor, Arity),
 	!,
-	\+ '$lgt_duplicated_scope_directives'(Pred, Functor, Arity),
+	'$lgt_check_for_directive_after_call'(Functor/Arity),
+	'$lgt_check_for_duplicated_scope_directives'(Functor/Arity),
 	assertz('$lgt_pp_protected_'(Functor, Arity)),
 	'$lgt_tr_protected_directive'(Preds).
 
 '$lgt_tr_protected_directive'([Pred| Preds]) :-
 	'$lgt_valid_non_terminal_indicator'(Pred, Functor, Arity, ExtArity),
 	!,
-	\+ '$lgt_duplicated_scope_directives'(Pred, Functor, ExtArity),
+	'$lgt_check_for_directive_after_call'(Functor/ExtArity),
+	'$lgt_check_for_duplicated_scope_directives'(Functor//Arity+ExtArity),
 	assertz('$lgt_pp_non_terminal_'(Functor, Arity, ExtArity)),
 	assertz('$lgt_pp_protected_'(Functor, ExtArity)),
 	'$lgt_tr_protected_directive'(Preds).
@@ -7697,22 +7699,26 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	var(Pred),
 	throw(instantiation_error).
 
-'$lgt_tr_private_directive'([Pred| _]) :-
-	functor(Pred, Functor, Arity),
-	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _),
-	throw(permission_error(modify, predicate_interpretation, Pred)).
+'$lgt_tr_private_directive'([op(Priority, Spec, Operators)| Preds]) :-
+	!,
+	'$lgt_check_op_directive_args'(Priority, Spec, Operators),
+	'$lgt_check_for_duplicated_scope_directives'(op(Priority, Spec, Operators)),
+	'$lgt_assert_entity_operators'(Priority, Spec, Operators, private),
+	'$lgt_tr_private_directive'(Preds).
 
 '$lgt_tr_private_directive'([Pred| Preds]) :-
 	'$lgt_valid_predicate_indicator'(Pred, Functor, Arity),
 	!,
-	\+ '$lgt_duplicated_scope_directives'(Pred, Functor, Arity),
+	'$lgt_check_for_directive_after_call'(Functor/Arity),
+	'$lgt_check_for_duplicated_scope_directives'(Functor/Arity),
 	assertz('$lgt_pp_private_'(Functor, Arity)),
 	'$lgt_tr_private_directive'(Preds).
 
 '$lgt_tr_private_directive'([Pred| Preds]) :-
 	'$lgt_valid_non_terminal_indicator'(Pred, Functor, Arity, ExtArity),
 	!,
-	\+ '$lgt_duplicated_scope_directives'(Pred, Functor, ExtArity),
+	'$lgt_check_for_directive_after_call'(Functor/ExtArity),
+	'$lgt_check_for_duplicated_scope_directives'(Functor//Arity+ExtArity),
 	assertz('$lgt_pp_non_terminal_'(Functor, Arity, ExtArity)),
 	assertz('$lgt_pp_private_'(Functor, ExtArity)),
 	'$lgt_tr_private_directive'(Preds).
@@ -7721,13 +7727,46 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	throw(type_error(predicate_indicator, Pred)).
 
 
+'$lgt_check_for_directive_after_call'(Functor/Arity) :-
+	(	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _) ->
+		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
+	;	true
+	).
 
-'$lgt_duplicated_scope_directives'(Pred, Functor, Arity) :-
-	(	'$lgt_pp_public_'(Functor, Arity)
-	;	'$lgt_pp_protected_'(Functor, Arity)
-	;	'$lgt_pp_private_'(Functor, Arity)
-	),
-	throw(permission_error(modify, predicate_interpretation, Pred)).
+
+'$lgt_check_for_duplicated_scope_directives'(op(_, _, [])) :-
+	!.
+
+'$lgt_check_for_duplicated_scope_directives'(op(Priority, Spec, [Operator| Operators])) :-
+	!,
+	(	'$lgt_pp_entity_op_'(Priority, Spec, Operator, _) ->
+		throw(permission_error(modify, operator_scope, op(Priority, Spec, Operator)))
+	;	'$lgt_check_for_duplicated_scope_directives'(op(Priority, Spec, Operators))
+	).
+
+'$lgt_check_for_duplicated_scope_directives'(op(Priority, Spec, Operator)) :-
+	(	'$lgt_pp_entity_op_'(Priority, Spec, Operator, _) ->
+		throw(permission_error(modify, predicate_scope, op(Priority, Spec, Operator)))
+	;	true
+	).
+
+'$lgt_check_for_duplicated_scope_directives'(Functor/Arity) :-
+	(	(	'$lgt_pp_public_'(Functor, Arity)
+		;	'$lgt_pp_protected_'(Functor, Arity)
+		;	'$lgt_pp_private_'(Functor, Arity)
+		) ->
+		throw(permission_error(modify, predicate_scope, Functor/Arity))
+	;	true
+	).
+
+'$lgt_check_for_duplicated_scope_directives'(Functor//Arity+ExtArity) :-
+	(	(	'$lgt_pp_public_'(Functor, ExtArity)
+		;	'$lgt_pp_protected_'(Functor, ExtArity)
+		;	'$lgt_pp_private_'(Functor, ExtArity)
+		) ->
+		throw(permission_error(modify, non_terminal_scope, Functor//Arity))
+	;	true
+	).
 
 
 
@@ -7790,9 +7829,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	(	functor(Head, Functor, Arity),
 		'$lgt_pp_synchronized_'(Head, _) ->
-		throw(permission_error(modify, predicate_interpretation, Pred))
+		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
 	;	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _) ->
-		throw(permission_error(modify, predicate_interpretation, Pred))
+		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
 	;	assertz('$lgt_pp_dynamic_'(Functor, Arity)),
 		'$lgt_tr_dynamic_directive'(Preds)
 	).
@@ -7822,9 +7861,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	(	functor(Head, Functor, ExtArity),
 		'$lgt_pp_synchronized_'(Head, _) ->
-		throw(permission_error(modify, predicate_interpretation, Pred))
+		throw(permission_error(modify, predicate_interpretation, Functor//Arity))
 	;	'$lgt_pp_calls_non_terminal_'(Functor, Arity) ->
-		throw(permission_error(modify, predicate_interpretation, Pred))
+		throw(permission_error(modify, predicate_interpretation, Functor//Arity))
 	;	assertz('$lgt_pp_dynamic_'(Functor, ExtArity)),
 		'$lgt_tr_dynamic_directive'(Preds)
 	).
@@ -7893,9 +7932,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	(	functor(Head, Functor, Arity),
 		'$lgt_pp_synchronized_'(Head, _) ->
-		throw(permission_error(modify, predicate_interpretation, Pred))
+		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
 	;	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _) ->
-		throw(permission_error(modify, predicate_interpretation, Pred))
+		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
 	;	assertz('$lgt_pp_discontiguous_'(Functor, Arity)),
 		'$lgt_tr_discontiguous_directive'(Preds)
 	).
@@ -7925,9 +7964,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	(	functor(Head, Functor, ExtArity),
 		'$lgt_pp_synchronized_'(Head, _) ->
-		throw(permission_error(modify, predicate_interpretation, Pred))
+		throw(permission_error(modify, predicate_interpretation, Functor//Arity))
 	;	'$lgt_pp_calls_non_terminal_'(Functor, Arity) ->
-		throw(permission_error(modify, predicate_interpretation, Pred))
+		throw(permission_error(modify, predicate_interpretation, Functor//Arity))
 	;	assertz('$lgt_pp_discontiguous_'(Functor, ExtArity)),
 		'$lgt_tr_discontiguous_directive'(Preds)
 	).
@@ -7987,14 +8026,11 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	assertz('$lgt_pp_meta_predicate_'(':'(Module, Pred))),
 	'$lgt_tr_meta_predicate_directive'(Preds).
 
-'$lgt_tr_meta_predicate_directive'([Pred| _]) :-
-	functor(Pred, Functor, Arity),
-	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _),
-	throw(permission_error(modify, predicate_interpretation, Pred)).
-
 '$lgt_tr_meta_predicate_directive'([Pred| Preds]) :-
 	'$lgt_valid_meta_predicate_template'(Pred),
 	!,
+	functor(Pred, Functor, Arity),
+	'$lgt_check_for_directive_after_call'(Functor/Arity),
 	assertz('$lgt_pp_meta_predicate_'(Pred)),
 	'$lgt_tr_meta_predicate_directive'(Preds).
 
@@ -8157,14 +8193,10 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	var(Pred),
 	throw(instantiation_error).
 
-'$lgt_tr_coinductive_directive'([Pred| _], _) :-
-	functor(Pred, Functor, Arity),
-	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _),
-	throw(permission_error(modify, predicate_interpretation, Pred)).
-
 '$lgt_tr_coinductive_directive'([Pred| Preds], Ctx) :-
 	'$lgt_valid_predicate_indicator'(Pred, Functor, Arity),
 	!,
+	'$lgt_check_for_directive_after_call'(Functor/Arity),
 	functor(Head, Functor, Arity),
 	atom_concat('_coinductive_', Functor, CoinductiveFunctor),
 	functor(CoinductiveHead, CoinductiveFunctor, Arity),
@@ -10489,22 +10521,22 @@ current_logtalk_flag(version, version(2, 42, 4)).
 % term input predicates that need to be operator aware
 
 '$lgt_tr_body'(read_term(Stream, Term, Options), '$lgt_iso_read_term'(Stream, Term, Options, Ops), '$lgt_debugger.goal'(read_term(Stream, Term, Options), '$lgt_iso_read_term'(Stream, Term, Options, Ops), ExCtx), Ctx) :-
-	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), Scope^'$lgt_pp_entity_op_'(Pr, Spec, Op, Scope), Ops),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	!.
 
 '$lgt_tr_body'(read_term(Term, Options), '$lgt_iso_read_term'(Term, Options, Ops), '$lgt_debugger.goal'(read_term(Term, Options), '$lgt_iso_read_term'(Term, Options, Ops), ExCtx), Ctx) :-
-	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), Scope^'$lgt_pp_entity_op_'(Pr, Spec, Op, Scope), Ops),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	!.
 
 '$lgt_tr_body'(read(Stream, Term), '$lgt_iso_read'(Stream, Term, Ops), '$lgt_debugger.goal'(read(Stream, Term), '$lgt_iso_read'(Stream, Term, Ops), ExCtx), Ctx) :-
-	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), Scope^'$lgt_pp_entity_op_'(Pr, Spec, Op, Scope), Ops),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	!.
 
 '$lgt_tr_body'(read(Term), '$lgt_iso_read'(Term, Ops), '$lgt_debugger.goal'(read(Term), '$lgt_iso_read'(Term, Ops), ExCtx), Ctx) :-
-	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), Scope^'$lgt_pp_entity_op_'(Pr, Spec, Op, Scope), Ops),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	!.
 
@@ -10513,33 +10545,33 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 '$lgt_tr_body'(write_term(Stream, Term, Options), '$lgt_iso_write_term'(Stream, Term, Options, Ops), '$lgt_debugger.goal'(write_term(Stream, Term, Options), '$lgt_iso_write_term'(Stream, Term, Options, Ops), ExCtx), Ctx) :-
 	('$lgt_member'(ignore_ops(Value), Options) -> Value \== true; true),
-	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), Scope^'$lgt_pp_entity_op_'(Pr, Spec, Op, Scope), Ops),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	!.
 
 '$lgt_tr_body'(write_term(Term, Options), '$lgt_iso_write_term'(Term, Options, Ops), '$lgt_debugger.goal'(write_term(Term, Options), '$lgt_iso_write_term'(Term, Options, Ops), ExCtx), Ctx) :-
 	('$lgt_member'(ignore_ops(Value), Options) -> Value \== true; true),
-	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), Scope^'$lgt_pp_entity_op_'(Pr, Spec, Op, Scope), Ops),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	!.
 
 '$lgt_tr_body'(write(Stream, Term), '$lgt_iso_write'(Stream, Term, Ops), '$lgt_debugger.goal'(write(Stream, Term), '$lgt_iso_write'(Stream, Term, Ops), ExCtx), Ctx) :-
-	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), Scope^'$lgt_pp_entity_op_'(Pr, Spec, Op, Scope), Ops),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	!.
 
 '$lgt_tr_body'(write(Term), '$lgt_iso_write'(Term, Ops), '$lgt_debugger.goal'(write(Term), '$lgt_iso_write'(Term, Ops), ExCtx), Ctx) :-
-	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), Scope^'$lgt_pp_entity_op_'(Pr, Spec, Op, Scope), Ops),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	!.
 
 '$lgt_tr_body'(writeq(Stream, Term), '$lgt_iso_writeq'(Stream, Term, Ops), '$lgt_debugger.goal'(writeq(Stream, Term), '$lgt_iso_writeq'(Stream, Term, Ops), ExCtx), Ctx) :-
-	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), Scope^'$lgt_pp_entity_op_'(Pr, Spec, Op, Scope), Ops),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	!.
 
 '$lgt_tr_body'(writeq(Term), '$lgt_iso_writeq'(Term, Ops), '$lgt_debugger.goal'(writeq(Term), '$lgt_iso_writeq'(Term, Ops), ExCtx), Ctx) :-
-	bagof(op(Pr, Spec, Op), '$lgt_pp_entity_op_'(Pr, Spec, Op), Ops),
+	bagof(op(Pr, Spec, Op), Scope^'$lgt_pp_entity_op_'(Pr, Spec, Op, Scope), Ops),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	!.
 
