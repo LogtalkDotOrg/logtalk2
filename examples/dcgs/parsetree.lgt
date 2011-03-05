@@ -2,10 +2,8 @@
 :- object(parsetree,
 	implements(parsep)).
 
-
 	parse(List, Tree) :-
 		phrase(sentence(Tree), List).
-
 
 	sentence(s(NP,VP)) --> noun_phrase(NP), verb_phrase(VP).
 
@@ -15,7 +13,6 @@
 	verb_phrase(vp(V)) --> verb(V).
 	verb_phrase(vp(V,NP)) --> verb(V), noun_phrase(NP).
 
-
 	determiner(d(the)) --> [the].
 	determiner(d(a)) --> [a].
 
@@ -24,6 +21,5 @@
 
 	verb(v(likes)) --> [likes].
 	verb(v(hates)) --> [hates].
-
 
 :- end_object.

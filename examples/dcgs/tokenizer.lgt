@@ -109,6 +109,6 @@
 		!,
 		Type = uppercase.
 
-	char_type(_, special).	% all others
+	char_type(_, special).		% all others
 
 :- end_object.

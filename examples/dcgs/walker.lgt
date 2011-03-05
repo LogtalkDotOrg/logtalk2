@@ -1,26 +1,20 @@
 
 :- object(walker).
 
-
 	:- info([
 		version is 1.0,
 		date is 2004/4/29,
 		author is 'Paulo Moura',
 		comment is 'Walker movements.']).
 
-
 	:- public(walk/2).
-
 	:- mode(walk(@list, -position), one).
-
 	:- info(walk/2, [
 		comment is 'Parses a sequence of walker moves, returning ending position.',
 		argnames is ['Moves', 'Ending']]).
 
-
 	walk(Moves, Ending) :-
 		phrase(walk(Ending), Moves).
-
 
 	walk(Ending) -->
 		moves((0, 0), Ending).
@@ -38,6 +32,5 @@
 	move((X0, Y0), (X, Y)) --> [sw(S)], {X is X0 - S / sqrt(2), Y is Y0 - S / sqrt(2)}.
 	move((X0, Y0), (X, Y)) --> [ w(S)], {X is X0 - S, Y = Y0}.
 	move((X0, Y0), (X, Y)) --> [nw(S)], {X is X0 - S / sqrt(2), Y is Y0 + S / sqrt(2)}.
-
 
 :- end_object.
