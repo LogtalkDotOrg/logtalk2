@@ -34,6 +34,9 @@ RELEASE NOTES
 
     Updated the "attvars" example in order to support B-Prolog and XSB.
 
+    Updated the "profilers" example with preliminary support for the changes
+    to execution profiling in the forthcoming SICStus Prolog 4.2 version.
+
 
 2.42.3 - February 21, 2011
 

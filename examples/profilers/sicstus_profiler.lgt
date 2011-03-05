@@ -3,26 +3,44 @@
 	implements(profilerp)).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2011/02/24,
+		date is 2011/03/05,
 		comment is 'Simple wrapper for the SICStus Prolog profiler.']).
 
-	load(File) :-
-		current_prolog_flag(compiling, Current),
-		set_prolog_flag(compiling, profiledcode),
-		logtalk_load(File),
-		set_prolog_flag(compiling, Current).
+	:- if((current_logtalk_flag(prolog_version, (4, Minor, _)), Minor >= 2)).
 
-	load(File, Options) :-
-		current_prolog_flag(compiling, Current),
-		set_prolog_flag(compiling, profiledcode),
-		logtalk_load(File, Options),
-		set_prolog_flag(compiling, Current).
+		load(File) :-
+			logtalk_load(File).
 
-	:- meta_predicate(profile(0)).
-	profile(Goal) :-
-		call(Goal).
+		load(File, Options) :-
+			logtalk_load(File, Options).
+
+		:- meta_predicate(profile(0)).
+		profile(Goal) :-
+			current_prolog_flag(profiling, Current),
+			set_prolog_flag(profiling, on),
+			call_cleanup(Goal, set_prolog_flag(profiling, Current)).
+
+	:- else.
+
+		load(File) :-
+			current_prolog_flag(compiling, Current),
+			set_prolog_flag(compiling, profiledcode),
+			logtalk_load(File),
+			set_prolog_flag(compiling, Current).
+
+		load(File, Options) :-
+			current_prolog_flag(compiling, Current),
+			set_prolog_flag(compiling, profiledcode),
+			logtalk_load(File, Options),
+			set_prolog_flag(compiling, Current).
+
+		:- meta_predicate(profile(0)).
+		profile(Goal) :-
+			call(Goal).
+
+	:- endif.
 
 	data :-
 		data(_:_, CallsData, ChoicePointsData, InstructionsData),
