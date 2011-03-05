@@ -12,7 +12,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 -->
 
 
-<!ELEMENT logtalk (entity, relations, predicates, remarks)>
+<!ELEMENT logtalk (entity, relations, predicates, operators, remarks)>
 
 
 <!ELEMENT entity (name, type, compilation, comment?, (parnames|parameters)?, author?, version?, date?, copyright?, license?, info*)>
@@ -120,6 +120,10 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 <!ELEMENT call (#PCDATA)>
 
 <!ELEMENT bindings (#PCDATA)>
+
+<!ELEMENT operators (operator*)>
+
+<!ELEMENT operator (term, scope)>
 
 <!ELEMENT remarks (remark*)>
 

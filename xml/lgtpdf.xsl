@@ -101,6 +101,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
  				<xsl:apply-templates select="logtalk/entity"/>
 				<xsl:apply-templates select="logtalk/relations"/>
 				<xsl:apply-templates select="logtalk/predicates"/>
+				<xsl:apply-templates select="logtalk/operators"/>
 				<xsl:apply-templates select="logtalk/remarks"/>
 				<fo:block id="end"/>
 			</fo:flow>
@@ -665,6 +666,48 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 			</fo:block>
 		</xsl:for-each>
 	</xsl:if>
+
+</xsl:template>
+
+
+<xsl:template match="logtalk/operators">
+
+	<fo:block
+			font-size="14pt" 
+			font-family="sans-serif" 
+			font-weight="bold" 
+			keep-with-next="always"
+			space-before="18pt">
+		Operators
+	</fo:block>
+	<xsl:choose>
+		<xsl:when test="*">
+	       	<fo:block
+					font-size="10pt"
+					font-family="serif" 
+					keep-with-next="always"
+					space-before="4pt">
+	     		local operator declarations:
+	     	</fo:block>
+			<xsl:for-each select="operator">
+				<fo:block
+						font-size="9pt"
+						font-family="monospace"
+						margin-left="10mm">
+					<xsl:value-of select="term"/> (<xsl:value-of select="scope"/>)
+				</fo:block>
+			</xsl:for-each>
+		</xsl:when>
+		<xsl:otherwise>	
+			<fo:block
+					font-size="10pt" 
+					font-family="serif" 
+					font-style="italic"
+					space-before="10pt">
+				(none)
+			</fo:block>
+		</xsl:otherwise>
+	</xsl:choose>
 
 </xsl:template>
 

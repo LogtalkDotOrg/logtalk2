@@ -17025,6 +17025,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_write_xml_entity'(Stream),
 	'$lgt_write_xml_relations'(Stream),
 	'$lgt_write_xml_predicates'(Stream),
+	'$lgt_write_xml_operators'(Stream),
 	'$lgt_write_xml_remarks'(Stream),
 	'$lgt_write_xml_footer'(Stream).
 
@@ -17061,7 +17062,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_xml_header_text'('1.0', Encoding, no, Text),
 	'$lgt_write_xml_open_tag'(Stream, Text, []),
 	(	XMLSpec == dtd ->
-		write(Stream, '<!DOCTYPE logtalk SYSTEM "http://logtalk.org/xml/1.6/logtalk.dtd">'), nl(Stream)
+		write(Stream, '<!DOCTYPE logtalk SYSTEM "http://logtalk.org/xml/2.0/logtalk.dtd">'), nl(Stream)
 	;	true
 	),
 	'$lgt_compiler_flag'(xslfile, XSL),
@@ -17072,7 +17073,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 		'$lgt_write_xml_open_tag'(Stream, logtalk, [])
 	;	'$lgt_write_xml_open_tag'(Stream, logtalk,
 			['xmlns:xsi'-'http://www.w3.org/2001/XMLSchema-instance',
-			 'xsi:noNamespaceSchemaLocation'-'http://logtalk.org/xml/1.6/logtalk.xsd'])
+			 'xsi:noNamespaceSchemaLocation'-'http://logtalk.org/xml/2.0/logtalk.xsd'])
 	).
 
 '$lgt_write_xml_header'(standalone, _, Stream) :-
@@ -17700,6 +17701,34 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_write_xml_cdata_element'(Stream, name, [], Relation),
 	'$lgt_write_xml_cdata_element'(Stream, file, [], File),
 	'$lgt_write_xml_close_tag'(Stream, Tag).
+
+
+
+'$lgt_write_xml_operators'(Stream) :-
+	'$lgt_write_xml_open_tag'(Stream, operators, []),
+	(	('$lgt_pp_entity_op_'(_, _, _, Scope), Scope \= (local)) ->
+		forall(
+			'$lgt_pp_entity_op_'(Priority, Specifier, Operator, (public)),
+			('$lgt_write_xml_open_tag'(Stream, operator, []),
+			 '$lgt_write_xml_cdata_element'(Stream, term, [], op(Priority, Specifier, Operator)),
+			 '$lgt_write_xml_cdata_element'(Stream, scope, [], (public)),
+		 	 '$lgt_write_xml_close_tag'(Stream, operator))),
+		forall(
+			'$lgt_pp_entity_op_'(Priority, Specifier, Operator, protected),
+			('$lgt_write_xml_open_tag'(Stream, operator, []),
+			 '$lgt_write_xml_cdata_element'(Stream, term, [], op(Priority, Specifier, Operator)),
+			 '$lgt_write_xml_cdata_element'(Stream, scope, [], protected),
+		 	 '$lgt_write_xml_close_tag'(Stream, operator))),
+		forall(
+			'$lgt_pp_entity_op_'(Priority, Specifier, Operator, (private)),
+			('$lgt_write_xml_open_tag'(Stream, operator, []),
+			 '$lgt_write_xml_cdata_element'(Stream, term, [], op(Priority, Specifier, Operator)),
+			 '$lgt_write_xml_cdata_element'(Stream, scope, [], (private)),
+		 	 '$lgt_write_xml_close_tag'(Stream, operator)))
+	;	true
+	),
+	'$lgt_write_xml_close_tag'(Stream, operators).
+
 
 
 '$lgt_write_xml_remarks'(Stream) :-

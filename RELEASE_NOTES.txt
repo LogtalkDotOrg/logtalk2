@@ -23,7 +23,9 @@ RELEASE NOTES
     argument.
 
     Added support for preserving the scope information for operators declared
-    using scope directives during compile time.
+    using scope directives during compile time. Added information on entity
+    declared operators to the XML documenting files. Updated the text, PDF,
+    and (X)HTML conversion scripts to print out operator information.
 
     Updated the XSB config file in order to support the compilation of modules
     as objects. XSB 3.3 or a later version is now required for compatibility

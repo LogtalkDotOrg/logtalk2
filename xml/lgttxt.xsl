@@ -62,6 +62,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 	<xsl:apply-templates select="logtalk/entity" />
 	<xsl:apply-templates select="logtalk/relations" />
 	<xsl:apply-templates select="logtalk/predicates" />
+	<xsl:apply-templates select="logtalk/operators" />
 	<xsl:apply-templates select="logtalk/remarks" />
 	<xsl:value-of select="$hr1" />
 </xsl:template>
@@ -247,6 +248,23 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 		</xsl:for-each>
 	</xsl:if>
 	<xsl:value-of select="$nl" />
+</xsl:template>
+
+
+<xsl:template match="logtalk/operators">
+	<xsl:value-of select="$hr2" />
+	<xsl:text>Operators</xsl:text><xsl:value-of select="$nl2" />
+	<xsl:choose>
+		<xsl:when test="operator">
+			<xsl:text>local operator declarations:</xsl:text><xsl:value-of select="$nl" />
+			<xsl:for-each select="operator">
+				<xsl:value-of select="$tab" /><xsl:value-of select="term" /><xsl:text> (</xsl:text><xsl:value-of select="scope" />)<xsl:value-of select="$nl" />
+			</xsl:for-each>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:text>(none)</xsl:text><xsl:value-of select="$nl2" />
+		</xsl:otherwise>
+	</xsl:choose>
 </xsl:template>
 
 

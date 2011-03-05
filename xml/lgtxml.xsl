@@ -59,6 +59,9 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 		<div class="predicates">
 			<xsl:apply-templates select="logtalk/predicates" />
 		</div>
+		<div class="operators">
+			<xsl:apply-templates select="logtalk/operators" />
+		</div>
 		<div class="remarks">
 			<xsl:apply-templates select="logtalk/remarks" />
 		</div>
@@ -288,6 +291,26 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 </xsl:template>
 
 
+<xsl:template match="logtalk/operators">
+	<h2>Operators</h2>
+	<div class="section">
+	<xsl:choose>
+		<xsl:when test="operator">
+			<dl class="properties">
+				<dt class ="key">local operator declarations:</dt>
+				<xsl:for-each select="operator">
+					<dd class="code"><xsl:value-of select="term" /> (<xsl:value-of select="scope" />)</dd>
+				</xsl:for-each>
+			</dl>
+		</xsl:when>
+		<xsl:otherwise>
+			<h3 class="comment">(none)</h3>
+		</xsl:otherwise>
+	</xsl:choose>
+	</div>
+</xsl:template>
+
+
 <xsl:template match="logtalk/remarks">
 	<h2>Remarks</h2>
 	<div class="section">
@@ -296,7 +319,7 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 			<xsl:apply-templates select="remark" />
 		</xsl:when>
 		<xsl:otherwise>
-			<h3 class="code">(none)</h3>
+			<h3 class="comment">(none)</h3>
 		</xsl:otherwise>
 	</xsl:choose>
 	</div>

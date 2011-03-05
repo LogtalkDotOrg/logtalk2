@@ -21,6 +21,7 @@
 			<ref name="entity"/>
 			<ref name="relations"/>
 			<ref name="predicates"/>
+			<ref name="operators"/>
 			<ref name="remarks"/>
 		</element>
 	</define>
@@ -474,6 +475,21 @@
 	<define name="bindings">
 		<element name="bindings">
 			<text/>
+		</element>
+	</define>
+
+	<define name="operators">
+		<element name="operators">
+			<zeroOrMore>
+				<ref name="operator"/>
+			</zeroOrMore>
+		</element>
+	</define>
+
+	<define name="operator">
+		<element name="operator">
+			<ref name="term"/>
+			<ref name="scope"/>
 		</element>
 	</define>
 
