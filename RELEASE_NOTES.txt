@@ -39,6 +39,9 @@ RELEASE NOTES
     Updated the "profilers" example with preliminary support for the changes
     to execution profiling in the forthcoming SICStus Prolog 4.2 version.
 
+    Updated the "expansion" example with more sample code on how to combine
+    term- and goal-expansion definitions from different hooks objects.
+
 
 2.42.3 - February 21, 2011
 

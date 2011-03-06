@@ -99,8 +99,11 @@ yes
 
 % simple tests of hook objects:
 
-?- cooked << (aa, bb, cc).
+| ?- cooked << (aa, bb, cc).
 yes
 
-?- cooked << (ha, hb, hc).
+| ?- cooked << (ha, hb, hc).
+yes
+
+| ?- cooked << p.
 yes

@@ -62,4 +62,7 @@
 	test(expansion_14) :-
 		cooked << (ha, hb, hc).
 
+	test(expansion_14) :-
+		cooked << p.
+
 :- end_object.

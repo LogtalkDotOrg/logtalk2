@@ -7,4 +7,7 @@
 	b.
 	c.
 
+	p :-
+		start.
+
 :- end_object.
