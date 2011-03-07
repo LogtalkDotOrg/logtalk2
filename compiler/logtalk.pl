@@ -7631,7 +7631,6 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_tr_public_directive'([Pred| Preds]) :-
 	'$lgt_valid_predicate_indicator'(Pred, Functor, Arity),
 	!,
-	'$lgt_check_for_directive_after_call'(Functor/Arity),
 	'$lgt_check_for_duplicated_scope_directives'(Functor/Arity),
 	assertz('$lgt_pp_public_'(Functor, Arity)),
 	'$lgt_tr_public_directive'(Preds).
@@ -7639,7 +7638,6 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_tr_public_directive'([Pred| Preds]) :-
 	'$lgt_valid_non_terminal_indicator'(Pred, Functor, Arity, ExtArity),
 	!,
-	'$lgt_check_for_directive_after_call'(Functor/ExtArity),
 	'$lgt_check_for_duplicated_scope_directives'(Functor//Arity+ExtArity),
 	assertz('$lgt_pp_non_terminal_'(Functor, Arity, ExtArity)),
 	assertz('$lgt_pp_public_'(Functor, ExtArity)),
@@ -7670,7 +7668,6 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_tr_protected_directive'([Pred| Preds]) :-
 	'$lgt_valid_predicate_indicator'(Pred, Functor, Arity),
 	!,
-	'$lgt_check_for_directive_after_call'(Functor/Arity),
 	'$lgt_check_for_duplicated_scope_directives'(Functor/Arity),
 	assertz('$lgt_pp_protected_'(Functor, Arity)),
 	'$lgt_tr_protected_directive'(Preds).
@@ -7678,7 +7675,6 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_tr_protected_directive'([Pred| Preds]) :-
 	'$lgt_valid_non_terminal_indicator'(Pred, Functor, Arity, ExtArity),
 	!,
-	'$lgt_check_for_directive_after_call'(Functor/ExtArity),
 	'$lgt_check_for_duplicated_scope_directives'(Functor//Arity+ExtArity),
 	assertz('$lgt_pp_non_terminal_'(Functor, Arity, ExtArity)),
 	assertz('$lgt_pp_protected_'(Functor, ExtArity)),
@@ -7709,7 +7705,6 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_tr_private_directive'([Pred| Preds]) :-
 	'$lgt_valid_predicate_indicator'(Pred, Functor, Arity),
 	!,
-	'$lgt_check_for_directive_after_call'(Functor/Arity),
 	'$lgt_check_for_duplicated_scope_directives'(Functor/Arity),
 	assertz('$lgt_pp_private_'(Functor, Arity)),
 	'$lgt_tr_private_directive'(Preds).
@@ -7717,7 +7712,6 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_tr_private_directive'([Pred| Preds]) :-
 	'$lgt_valid_non_terminal_indicator'(Pred, Functor, Arity, ExtArity),
 	!,
-	'$lgt_check_for_directive_after_call'(Functor/ExtArity),
 	'$lgt_check_for_duplicated_scope_directives'(Functor//Arity+ExtArity),
 	assertz('$lgt_pp_non_terminal_'(Functor, Arity, ExtArity)),
 	assertz('$lgt_pp_private_'(Functor, ExtArity)),
@@ -7726,12 +7720,6 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_tr_private_directive'([Pred| _]) :-
 	throw(type_error(predicate_indicator, Pred)).
 
-
-'$lgt_check_for_directive_after_call'(Functor/Arity) :-
-	(	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _) ->
-		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
-	;	true
-	).
 
 
 '$lgt_check_for_duplicated_scope_directives'(op(_, _, [])) :-
@@ -8039,6 +8027,14 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 
 
+'$lgt_check_for_directive_after_call'(Functor/Arity) :-
+	(	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _) ->
+		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
+	;	true
+	).
+
+
+
 % '$lgt_tr_annotation_directive'(+list)
 %
 % auxiliary predicate for translating annotation/1 directives
@@ -8196,7 +8192,6 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_tr_coinductive_directive'([Pred| Preds], Ctx) :-
 	'$lgt_valid_predicate_indicator'(Pred, Functor, Arity),
 	!,
-	'$lgt_check_for_directive_after_call'(Functor/Arity),
 	functor(Head, Functor, Arity),
 	atom_concat('_coinductive_', Functor, CoinductiveFunctor),
 	functor(CoinductiveHead, CoinductiveFunctor, Arity),
