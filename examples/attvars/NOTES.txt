@@ -15,7 +15,7 @@ file.
 This an experimental example of using attributed variables within Logtalk
 objects and categories. It requires the use of a back-end Prolog compiler
 with support for attributed variables. Tested with B-Prolog, SWI-Prolog,
-XSB, and YAP. The individual example is an adaptation of code found on the
+XSB, and YAP. The individual examples are adaptations of code found on the
 SWI-Prolog documentation.
 
 When using SWI-Prolog or YAP, the "attvars_hook" hook object works by
@@ -24,9 +24,7 @@ the attribute_goals//1 and attr_unify_hook/2 hooks that are required by
 the attributed variables implementation. These hooks are compiled as module
 multifile predicates in order to avoid spurious compiler warning messages
 (note that the hook clause bodies are compiled within the context of the
-container object). One limitation of this approach is that we cannot use
-parametric objects as the object identifier is used as the name of the
-shadow module (module names must be atoms).
+container object).
 
 When using XSB, the "attvars_hook" hook object works by generating the
 install_verify_attribute_handler/4 and install_attribute_portray_hook/3
@@ -37,3 +35,11 @@ the first argument is not a variable while SWI-Prolog and XSB simply fail
 in this case.
 
 When using B-Prolog, the attribute_goals//1 hook grammar rule is discarded.
+
+Known caveats:
+1. Is not possible to use the parameter values in the case of parametric
+objects or parametric categories within the attributed variables hook
+predicates.
+2. Calling the attributed variables built-in predicates (e.g. get_attr/3,
+put_attr/3, and del_attr/2) from outside the object (or category) doesn't
+work.
