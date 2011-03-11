@@ -34,9 +34,7 @@ RELEASE NOTES
     Updated the "encodings" example in order to ensure that the there is no
     whitespace before the encoding/1 directive.
 
-    Updated the "attvars" example in order to support B-Prolog and XSB. Added
-    limited support for using attributed variables within parametric objects
-    and parametric categories.
+    Updated the "attvars" example in order to support B-Prolog and XSB.
 
     Updated the "profilers" example with preliminary support for the changes
     to execution profiling in the forthcoming SICStus Prolog 4.2 version.
