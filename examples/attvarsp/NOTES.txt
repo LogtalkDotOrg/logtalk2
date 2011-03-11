@@ -1,0 +1,26 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.42.4
+
+Copyright (c) 1998-2011 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+To load this example and for sample queries, please see the SCRIPT.txt
+file.
+
+This an experimental example of using attributed variables within Logtalk
+parametric objects and parametric categories. It requires the use of the
+"term-attvar" branch of the development version of SWI-Prolog. The individual
+examples are adaptations of code found on the SWI-Prolog documentation.
+
+The "attvars_hook" hook object works by creating a shadow module (with the
+same name as the functor of the object (or category) identifier containing
+the attribute_goals//1-2 and attr_unify_hook/2-3 hooks that are required by
+the attributed variables implementation. These hooks are compiled as module
+multifile predicates in order to avoid spurious compiler warning messages
+(note that the hook clause bodies are compiled within the context of the
+container object).

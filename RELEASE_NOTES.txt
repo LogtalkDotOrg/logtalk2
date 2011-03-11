@@ -36,6 +36,10 @@ RELEASE NOTES
 
     Updated the "attvars" example in order to support B-Prolog and XSB.
 
+    Added an "attvarsp" experimental example of using attributed variables
+    within Logtalk parametric objects and parametric categories (requires
+    an experimental branch of SWI-Prolog).
+
     Updated the "profilers" example with preliminary support for the changes
     to execution profiling in the forthcoming SICStus Prolog 4.2 version.
 

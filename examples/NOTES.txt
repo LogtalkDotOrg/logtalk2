@@ -73,6 +73,12 @@ attvars
 	Logtalk objects and categories
 	(requires Logtalk to be run with SWI-Prolog, or YAP)
 
+attvarsp
+	experimental example of using attributed variables within
+	Logtalk parametric objects and parametric categories
+	(requires Logtalk to be run with an experimental branch of
+	SWI-Prolog)
+
 benchmarks
 	simple benchmarks for helping measuring performance of Logtalk 
 	message sending between Prolog compilers and for comparing 
