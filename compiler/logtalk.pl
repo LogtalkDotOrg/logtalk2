@@ -14996,9 +14996,8 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 
 % '$lgt_compile_aux_clauses'(@list(clause))
-% '$lgt_compile_aux_clauses'(@clause)
 %
-% translates a single predicate clause or a list of auxiliary predicate clauses;
+% translates a list of auxiliary predicate clauses;
 % used mainly in conjunction with goal_expansion/2 hooks
 
 '$lgt_compile_aux_clauses'(Clauses) :-
