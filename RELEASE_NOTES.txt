@@ -15,7 +15,7 @@ RELEASE NOTES
 
 2.42.4 - March ??, 2011
 
-    Added to the "logtalk" built-in object two sets of utility predicates:
+    Added two sets of utility predicates to the "logtalk" built-in object:
     decompile_predicate_heads/2-4 and decompile_predicate_indicators/2-4.
     Marked the decompile_predicate_head/4 and decompile_predicate_indicator/4
     as deprecated. Changed the utility predicates that compile/decompile
@@ -30,6 +30,11 @@ RELEASE NOTES
     Updated the XSB config file in order to support the compilation of modules
     as objects. XSB 3.3 or a later version is now required for compatibility
     with Logtalk.
+
+    Updated the SWI-Prolog config file in order to provide limited support
+    for the arithmetic_function/1 proprietary directive (arithmetic functions
+    are compile as global instead of as local to the objects or categories
+    defining them).
 
     Updated the "encodings" example in order to ensure that the there is no
     whitespace before the encoding/1 directive.

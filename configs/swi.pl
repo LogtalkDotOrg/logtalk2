@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: February 7, 2011
+%  last updated: March 12, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -555,6 +555,15 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 
 % '$lgt_rewrite_and_copy_pl_directive'(@callable, -callable)
 
+'$lgt_rewrite_and_copy_pl_directive'(arithmetic_function(Functor/Arity), arithmetic_function(Functor/Arity)) :-
+	'$lgt_compile_predicate_indicators'(Functor/Arity, TFunctor/TArity),
+	functor(Term, Functor, TArity),
+	Term =.. [_| Args],
+	TArity2 is TArity + 1,
+	functor(TTerm, TFunctor, TArity2),
+	TTerm =.. [_| TArgs],
+	'$lgt_swi_unify_head_thead_args'(Args, TArgs),
+	'$lgt_compile_aux_clauses'([({Term} :- {TTerm})]).
 '$lgt_rewrite_and_copy_pl_directive'(create_prolog_flag(Key, Value, Options), create_prolog_flag(Key, Value, Options)).
 '$lgt_rewrite_and_copy_pl_directive'(expects_dialect(Dialect), expects_dialect(Dialect)) :-
 	expects_dialect(Dialect).
@@ -601,12 +610,17 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 '$lgt_rewrite_and_recompile_pl_directive'(use_module(File), use_module(Module, Imports)) :-
 	'$lgt_swi_list_of_exports'(File, Module, Imports).
 
+
+'$lgt_swi_unify_head_thead_args'([], [_]).
+'$lgt_swi_unify_head_thead_args'([Arg| Args], [Arg| ExtArgs]) :-
+	'$lgt_swi_unify_head_thead_args'(Args, ExtArgs).
+
+
 '$lgt_swi_list_of_exports'(File, Module, Exports) :-
 	absolute_file_name(File, Path, [file_type(prolog), access(read), file_errors(fail)]),
 	module_property(Module, file(Path)),	% only succeeds for loaded modules
 	module_property(Module, exports(Exports)),
 	!.
-
 '$lgt_swi_list_of_exports'(File, Module, Exports) :-
 	(	absolute_file_name(File, Path, [file_type(prolog), access(read), file_errors(fail)])
 	;	% we may be compiling Prolog module files as Logtalk objects
