@@ -11,19 +11,17 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 % start by loading the example and the required library files:
 
-| ?- logtalk_load(attvars(loader)).
+| ?- logtalk_load(attvarsp(loader)).
 ...
 
 
-% simple finite domain reasoner:
+% simple finite, typed, domain reasoner:
 
-| ?- domain::domain(X, [a,b]), X = c.
-no
+| ?- domain(atom)::domain(X, [a,b]), X = c.
+false.
 
-| ?- domain::domain(X, [a,b]), domain::domain(X, [a,c]).
-X = a
-yes
+| ?- domain(integer)::domain(X, [1,2]), domain(integer)::domain(X, [1,3]).
+X = 1.
 
-| ?- domain::domain(X,[a,b,c]), domain::domain(X,[a,c]), get_attr(X, domain, List).
-List = [a, c]
-yes
+| ?- domain(integer)::domain(X, [1,2,3]), domain(integer)::domain(X, [1,3]).
+domain(X, [1, 3]).

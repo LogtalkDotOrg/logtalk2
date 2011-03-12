@@ -29,7 +29,6 @@ logtalk_library_path(adventure, examples('adventure/')).
 logtalk_library_path(aliases, examples('aliases/')).
 logtalk_library_path(assignvars, examples('assignvars/')).
 logtalk_library_path(attvars, examples('attvars/')).
-logtalk_library_path(attvarsp, examples('attvarsp/')).
 logtalk_library_path(barriers, threads('barriers/')).
 logtalk_library_path(benchmarks, examples('benchmarks/')).
 logtalk_library_path(birds, examples('birds/')).

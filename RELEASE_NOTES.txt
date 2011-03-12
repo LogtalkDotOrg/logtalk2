@@ -39,11 +39,10 @@ RELEASE NOTES
     Updated the "encodings" example in order to ensure that the there is no
     whitespace before the encoding/1 directive.
 
-    Updated the "attvars" example in order to support B-Prolog and XSB.
-
-    Added an "attvarsp" experimental example of using attributed variables
-    within Logtalk parametric objects and parametric categories (requires
-    an experimental branch of SWI-Prolog).
+    Updated the "attvars" example in order to support B-Prolog and XSB. Also
+    added support for using attributed variables within Logtalk parametric
+    objects and parametric categories. Thanks to Jan Wielemaker, Vítor Santos
+    Costa, and Bart Deamon for feedback and implementation suggestions.
 
     Updated the "profilers" example with preliminary support for the changes
     to execution profiling in the forthcoming SICStus Prolog 4.2 version.
