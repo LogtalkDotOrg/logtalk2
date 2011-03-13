@@ -18,9 +18,7 @@ RELEASE NOTES
     Added two sets of utility predicates to the "logtalk" built-in object:
     decompile_predicate_heads/2-4 and decompile_predicate_indicators/2-4.
     Marked the decompile_predicate_head/4 and decompile_predicate_indicator/4
-    as deprecated. Changed the utility predicates that compile/decompile
-    predicate heads/indicators to no longer accept conjunctions in the first
-    argument.
+    as deprecated.
 
     Added support for preserving the scope information for operators declared
     using scope directives during compile time. Added information on entity

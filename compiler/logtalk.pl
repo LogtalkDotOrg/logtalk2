@@ -15023,8 +15023,8 @@ current_logtalk_flag(version, version(2, 42, 4)).
 % '$lgt_compile_predicate_heads'(@list(callable), ?entity_identifier, -list(callable), @term)
 % '$lgt_compile_predicate_heads'(@callable, ?entity_identifier, -callable, @term)
 %
-% translates a single predicate head, or a list of predicate heads;
-% used mainly in config files for processing proprietary directives
+% translates a single predicate head, a conjunction of predicate heads, or a list of
+% predicate heads; used mainly in hook objects for processing proprietary directives
 %
 % the predicate heads are compiled in the context of the specified entity or in the context
 % of the entity being compiled when the entity argument is not instantiated
@@ -15055,6 +15055,11 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!.
 
 '$lgt_compile_predicate_heads_aux'([Head| Heads], Prefix, [THead| THeads], Ctx) :-
+	!,
+	'$lgt_compile_predicate_heads_aux'(Head, Prefix, THead, Ctx),
+	'$lgt_compile_predicate_heads_aux'(Heads, Prefix, THeads, Ctx).
+
+'$lgt_compile_predicate_heads_aux'((Head, Heads), Prefix, (THead, THeads), Ctx) :-
 	!,
 	'$lgt_compile_predicate_heads_aux'(Head, Prefix, THead, Ctx),
 	'$lgt_compile_predicate_heads_aux'(Heads, Prefix, THeads, Ctx).
@@ -15165,8 +15170,8 @@ current_logtalk_flag(version, version(2, 42, 4)).
 % '$lgt_compile_predicate_indicators'(+list(predicate_indicator), ?entity_identifier, -list(predicate_indicator))
 % '$lgt_compile_predicate_indicators'(+predicate_indicator, ?entity_identifier, -predicate_indicator)
 %
-% translates a single predicate indicator or a list of predicate indicators;
-% used mainly in config files for processing proprietary directives
+% translates a single predicate indicator, a conjunction of predicate indicators, or a list
+% of predicate indicators; used mainly in hook objects for processing proprietary directives
 %
 % the predicate indicators are compiled in the context of the specified entity or in the context
 % of the entity being compiled when the entity argument is not instantiated
@@ -15197,6 +15202,11 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!.
 
 '$lgt_compile_predicate_indicators_aux'([PI| PIs], Prefix, [TPI| TPIs]) :-
+	!,
+	'$lgt_compile_predicate_indicators_aux'(PI, Prefix, TPI),
+	'$lgt_compile_predicate_indicators_aux'(PIs, Prefix, TPIs).
+
+'$lgt_compile_predicate_indicators_aux'((PI, PIs), Prefix, (TPI, TPIs)) :-
 	!,
 	'$lgt_compile_predicate_indicators_aux'(PI, Prefix, TPI),
 	'$lgt_compile_predicate_indicators_aux'(PIs, Prefix, TPIs).
