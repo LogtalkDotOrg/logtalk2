@@ -143,7 +143,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 
 % '$lgt_prolog_feature'(?atom, ?atom)
 %
-% back-end Prolog compiler supported features
+% back-end Prolog compiler supported features (that are compatible with Logtalk)
 
 '$lgt_prolog_feature'(prolog_dialect, cx).
 '$lgt_prolog_feature'(prolog_version, (Major, Minor, Patch)) :-
