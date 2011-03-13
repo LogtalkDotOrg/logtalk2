@@ -49,8 +49,4 @@
 		{ var(X), get_attr(X, domain(_), List) },
 		[domain(X, List)].
 
-	:- public(p/2).
-	p(X, As) :-
-		get_attrs(X, As).
-
 :- end_object.
