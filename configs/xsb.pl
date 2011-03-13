@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.3 or later versions
 %
-%  last updated: February 27, 2011
+%  last updated: March 13, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -35,10 +35,8 @@
 
 % '$lgt_iso_predicate'(?callable).
 
-'$lgt_iso_predicate'(term_variables(_, _)).
-
-term_variables(Term, Variables) :-
-	swi:term_variables(Term, Variables).
+'$lgt_iso_predicate'(_) :-
+	fail.
 
 
 
