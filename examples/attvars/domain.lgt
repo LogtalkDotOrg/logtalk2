@@ -21,7 +21,7 @@
 	%	An attributed variable with attribute value Domain has been
 	%	assigned the value Y
 	attr_unify_hook(Domain, Y) :-
-		(	var(Y), get_attr(Y, domain, Dom2) ->
+		(	get_attr(Y, domain, Dom2) ->
 			intersection(Domain, Dom2, NewDomain),
 			(	NewDomain == [] ->
 				fail
@@ -36,7 +36,7 @@
 
 	%	Translate attributes from this module to residual goals
 	attribute_goals(X) -->
-		{ var(X), get_attr(X, domain, List) },
+		{ get_attr(X, domain, List) },
 		[domain(X, List)].
 
 :- end_object.
