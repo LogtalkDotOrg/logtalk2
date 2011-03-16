@@ -33,6 +33,11 @@ allows the use of common code for SWI-Prolog, XSB, and YAP.
 
 When using B-Prolog, the attribute_goals//1 hook grammar rule is discarded.
 
-Caveat: the supported attribute variables built-in predicates (get_attr/3,
+Caveats:
+1. The supported attribute variables built-in predicates (get_attr/3,
 put_attr/3, and del_attr/3) can only be called from within objects (or
 categories).
+2. Calls to the supported attribute variables built-in predicates with a
+second argument not corresponding to the enclosing entity are compiled as
+references to other Logtalk entities. If you need to refer to a Prolog
+module instead, wrap the predicate call using the {}/1 control construct.

@@ -34,15 +34,21 @@
 	:- endif.
 
 	goal_expansion(get_attr(Var, Entity, Value), get_attr(Var, Prefix, Parameters-Value)) :-
-		logtalk_load_context(entity_name, Entity),
-		logtalk_load_context(entity_prefix, Prefix),
-		Entity =.. [_| Parameters].
+		entity_to_prefix_and_parameters(Entity, Prefix, Parameters).
 	goal_expansion(put_attr(Var, Entity, Value), put_attr(Var, Prefix, Parameters-Value)) :-
-		logtalk_load_context(entity_name, Entity),
-		logtalk_load_context(entity_prefix, Prefix),
-		Entity =.. [_| Parameters].
+		entity_to_prefix_and_parameters(Entity, Prefix, Parameters).
 	goal_expansion(del_attr(Var, Entity), del_attr(Var, Prefix)) :-
-		logtalk_load_context(entity_name, Entity),
-		logtalk_load_context(entity_prefix, Prefix).
+		entity_to_prefix_and_parameters(Entity, Prefix, _).
+
+	entity_to_prefix_and_parameters(Entity, Prefix, Parameters) :-
+		callable(Entity),
+		(	logtalk_load_context(entity_name, Entity) ->
+			% reference to entity under compilation
+			logtalk_load_context(entity_prefix, Prefix)
+		;	% reference to other entity; try to avoid expansion loop
+			\+ logtalk::entity_prefix(_, Entity),
+			logtalk::entity_prefix(Entity, Prefix)
+		),
+		Entity =.. [_| Parameters].
 
 :- end_object.
