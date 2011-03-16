@@ -429,7 +429,7 @@ Logtalk defines a built-in object named <code>debugger</code> which implements t
 <h3 id="objects_logtalk">The built-in object <em>logtalk</em></h3>
 
 <p>
-Logtalk defines a built-in object named <code>logtalk</code>, which defines a set of low-level utility predicates. This object implements the built-in protocols <a href="protocols.html#protocols_expanding"><code>expanding</code></a> and <a href="protocols.html#protocols_monitoring"><code>monitoring</code></a>. It also supports the dynamic declaration and definition of predicates (using the dynamic database built-in methods).
+Logtalk defines a built-in object named <code>logtalk</code>, which defines a set of low-level utility predicates (usually used when defining hook objects). This object implements the built-in protocols <a href="protocols.html#protocols_expanding"><code>expanding</code></a> and <a href="protocols.html#protocols_monitoring"><code>monitoring</code></a>. It also supports the dynamic declaration and definition of predicates (using the dynamic database built-in methods).
 </p>
 <p>
 The following predicates are defined:
@@ -443,6 +443,10 @@ The following predicates are defined:
 <dl>
 	<dt><code>compile_aux_clauses(Clauses)</code></dt>
 		<dd>Compiles a list of clauses in the context of the entity under compilation. This method is usually called from <code>goal_expansion/2</code> hooks in order to compile auxiliary clauses generated for supporting an expanded goal. The compilation of the clauses avoids the risk of making the predicate whose clause is being goal-expanded discontiguous by accident.</dd>
+</dl>
+<dl>
+	<dt><code>entity_prefix(Entity, Prefix)</code></dt>
+		<dd>Converts an entity identifier into its internal prefix or an internal prefix into an entity identifier.</dd>
 </dl>
 <dl>
 	<dt><code>compile_predicate_heads(Heads, TranslatedHeads)</code></dt>
@@ -484,13 +488,13 @@ The following predicates are still defined but should be considered <strong>depr
 		<dd>Decompiles a compiled predicate indicator, returning the entity, entity type, and source level predicate indicator. Requires the entity to be currently loaded.</dd>
 </dl>
 <p>
-In order to use these predicates, simply send the corresponding message to the <code>logtalk</code> object. 
+In order to use these predicates, simply send the corresponding message to the <code>logtalk</code> object.
 </p>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: February 24, 2011</span>
+		<span>Last updated on: March 15, 2011</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="messages.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="protocols.html">next</a></span><br/>
