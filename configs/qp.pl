@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.12 and later versions
 %
-%  last updated: January 20, 2011
+%  last updated: March 17, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -526,6 +526,21 @@ term_variables(Term, Variables) :-
 
 '$lgt_copy_term_without_constraints'(Term, Copy) :-
 	copy_term(Term, Copy).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% utility predicates used to construct execution context terms
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+'$lgt_exec_ctx'(c(This, r(Sender, Self, MetaCallCtx, Stack)), Sender, This, Self, MetaCallCtx, Stack).
+
+'$lgt_exec_ctx_this_rest'(c(This, Ctx), This, Ctx).	% inheritance only requires updating "this"
+
+'$lgt_exec_ctx_this'(c(This, _), This).
 
 
 

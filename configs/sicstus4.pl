@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: January 20, 2011
+%  last updated: March 17, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -644,6 +644,21 @@ forall(Generate, Test) :-
 
 '$lgt_copy_term_without_constraints'(Term, Copy) :-
 	copy_term(Term, Copy, _).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% utility predicates used to construct execution context terms
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+'$lgt_exec_ctx'([This, Sender, Self, MetaCallCtx, Stack], Sender, This, Self, MetaCallCtx, Stack).
+
+'$lgt_exec_ctx_this_rest'([This| Ctx], This, Ctx).	% inheritance only requires updating "this"
+
+'$lgt_exec_ctx_this'([This| _], This).
 
 
 

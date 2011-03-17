@@ -3153,7 +3153,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 % phrase/2 built-in method
 
 '$lgt_phrase'(GRBody, Input, ExCtx) :-
-	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_exec_ctx_this'(ExCtx, This),
 	catch(
 		'$lgt_phrase'(GRBody, Input, [], ExCtx),
 		error(Error, phrase(GRBody, Input, []), This),
@@ -3167,24 +3167,24 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 '$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
 	var(GRBody),
-	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_exec_ctx_this'(ExCtx, This),
 	throw(error(instantiation_error, phrase(GRBody, Input, Rest), This)).
 
 '$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
 	\+ callable(GRBody),
-	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_exec_ctx_this'(ExCtx, This),
 	throw(error(type_error(callable, GRBody), phrase(GRBody, Input, Rest), This)).
 
 '$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
 	nonvar(Input),
 	\+ '$lgt_is_list'(Input),
-	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_exec_ctx_this'(ExCtx, This),
 	throw(error(type_error(list, Input), phrase(GRBody, Input, Rest), This)).
 
 '$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
 	nonvar(Rest),
 	\+ '$lgt_is_list'(Rest),
-	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_exec_ctx_this'(ExCtx, This),
 	throw(error(type_error(list, Rest), phrase(GRBody, Input, Rest), This)).
 
 '$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
@@ -3625,11 +3625,11 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 '$lgt_obj_super_call_other'(Super, Pred, ExCtx) :-
 	(	var(Pred) ->
-		'$lgt_exec_ctx'(ExCtx, This, _),
+		'$lgt_exec_ctx_this'(ExCtx, This),
 		throw(error(instantiation_error, ^^Pred, This))
 	;	callable(Pred) ->
 		'$lgt_obj_super_call_other_'(Super, Pred, ExCtx)
-	;	'$lgt_exec_ctx'(ExCtx, This, _),
+	;	'$lgt_exec_ctx_this'(ExCtx, This),
 		throw(error(type_error(callable, Pred), ^^Pred, This))
 	).
 
@@ -4047,7 +4047,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 % but is meta-argument expanded for non-redefined built-in meta-predicates
 
 '$lgt_call_built_in'(Pred, MetaExPred, ExCtx) :-
-	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_exec_ctx_this'(ExCtx, This),
 	'$lgt_current_object_'(This, _, _, Def, _, _, _, _, DDef, _, _),
 	(	call(Def, Pred, ExCtx, TPred) ->
 		% call a static redefinition of a built-in predicate:
@@ -4116,11 +4116,11 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 '$lgt_ctg_call'(Dcl, Pred, ExCtx) :-
 	(	var(Pred) ->
-		'$lgt_exec_ctx'(ExCtx, This, _),
+		'$lgt_exec_ctx_this'(ExCtx, This),
 		throw(error(instantiation_error, ':'(Pred), This))
 	;	callable(Pred) ->
 		'$lgt_ctg_call_'(Dcl, Pred, ExCtx)
-	;	'$lgt_exec_ctx'(ExCtx, This, _),
+	;	'$lgt_exec_ctx_this'(ExCtx, This),
 		throw(error(type_error(callable, Pred), ':'(Pred), This))
 	).
 
@@ -4171,7 +4171,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 % calls a dynamic predicate in "this" from within a category at runtime
 
 '$lgt_call_this'(Pred, ExCtx) :-
-	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_exec_ctx_this'(ExCtx, This),
 	'$lgt_current_object_'(This, _, _, Def, _, _, _, _, DDef, _, _),
 	(	% the object definition may include some initial clauses for the dynamic predicate:
 		call(Def, Pred, ExCtx, TPred) ->
@@ -4211,7 +4211,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 % lookup predicate definitions in any category that complements the given object
 
 '$lgt_complemented_object'(ThisDef, Alias, ExCtx, Call, Ctn) :-
-	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_exec_ctx_this'(ExCtx, This),
 	'$lgt_complemented_object_'(This, _, _, Def, Rnm),
 	(	call(Def, Alias, ExCtx, Call, Ctn)
 	;	% categories can define aliases for complemented object predicates:
@@ -4323,6 +4323,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_logtalk._dcl'(decompile_predicate_head(_, _, _, _), p(p(p)), no, 0).
 '$lgt_logtalk._dcl'(decompile_predicate_indicator(_, _, _, _), p(p(p)), no, 0).
 
+
 '$lgt_logtalk._dcl'(Pred, Scope, Meta, Flags, logtalk, logtalk) :-
 	'$lgt_logtalk._dcl'(Pred, Scope, Meta, Flags).
 
@@ -4355,15 +4356,16 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_logtalk._def'(decompile_predicate_indicator(TPI, Entity, Type, PI), _, '$lgt_decompile_predicate_indicator'(TPI, Entity, Type, PI)).
 '$lgt_logtalk._def'(decompile_predicate_head(THead, Entity, Type, Head), _, '$lgt_decompile_predicate_head'(THead, Entity, Type, Head)).
 
-'$lgt_logtalk._super'(_, _, _, _) :-
-	fail.
-
 
 '$lgt_logtalk._def'(Pred, ExCtx, Call, logtalk) :-
 	'$lgt_logtalk._def'(Pred, ExCtx, Call).
 
 '$lgt_logtalk._def'(Pred, ExCtx, Call, logtalk) :-
 	'$lgt_logtalk._ddef'(Pred, ExCtx, Call).
+
+
+'$lgt_logtalk._super'(_, _, _, _) :-
+	fail.
 
 
 '$lgt_logtalk._alias'(_, Pred, Pred).
@@ -9926,14 +9928,14 @@ current_logtalk_flag(version, version(2, 42, 4)).
 			MTPred = (mutex_unlock(Mutex), '$lgt_thread_get_notifications'(Msg, EntityPrefix), mutex_lock(Mutex))
 		;	% we're compiling a category predicate
 			'$lgt_comp_ctx_this'(Ctx, This),
-			'$lgt_exec_ctx'(ExCtx, This, _),
+			'$lgt_exec_ctx_this'(ExCtx, This),
 			MTPred = ('$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _), mutex_unlock(Mutex), '$lgt_thread_get_notifications'(Msg, Prefix), mutex_lock(Mutex))
 		)
 	;	(	Type == object ->
 			MTPred = '$lgt_thread_get_notifications'(Msg, EntityPrefix)
 		;	% we're compiling a category predicate
 			'$lgt_comp_ctx_this'(Ctx, This),
-			'$lgt_exec_ctx'(ExCtx, This, _),
+			'$lgt_exec_ctx_this'(ExCtx, This),
 			MTPred = ('$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _), '$lgt_thread_get_notifications'(Msg, Prefix))
 		)
 	).
@@ -9952,7 +9954,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 		MTPred = '$lgt_thread_send_notifications'(Msg, EntityPrefix)
 	;	% we're compiling a category predicate
 		'$lgt_comp_ctx_this'(Ctx, This),
-		'$lgt_exec_ctx'(ExCtx, This, _),
+		'$lgt_exec_ctx_this'(ExCtx, This),
 		MTPred = ('$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _), '$lgt_thread_send_notifications'(Msg, Prefix))
 	).
 
@@ -9963,7 +9965,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_exec_ctx_this'(ExCtx, This),
 	'$lgt_tr_msg'(Pred, Obj, TPred, This).
 
 '$lgt_tr_body'(::Pred, TPred, '$lgt_debugger.goal'(::Pred, TPred, ExCtx), Ctx) :-
@@ -9986,7 +9988,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_exec_ctx_this'(ExCtx, This),
 	'$lgt_tr_ctx_call'(Obj, Pred, TPred, This).
 
 
@@ -10101,7 +10103,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, This, _).
+	'$lgt_exec_ctx_this'(ExCtx, This).
 
 '$lgt_tr_body'(predicate_property(Term, Prop), TPred, DPred, Ctx) :-
 	nonvar(Term),
@@ -10119,7 +10121,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, This, _).
+	'$lgt_exec_ctx_this'(ExCtx, This).
 
 
 % database handling built-in predicates
@@ -10145,7 +10147,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_exec_ctx_this'(ExCtx, This),
 	(	'$lgt_runtime_db_pred_ind_chk'(Pred) ->
 		TCond = '$lgt_abolish'(This, Pred, This, p(_))
 	;	'$lgt_compiler_db_pred_ind_chk'(Pred),
@@ -10189,7 +10191,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
 		TCond = asserta(TPred)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
-		'$lgt_exec_ctx'(ExCtx, This, _),
+		'$lgt_exec_ctx_this'(ExCtx, This),
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_asserta'(This, Pred, This, p(_), p)
 		;	'$lgt_compiler_db_clause_chk'(Pred),
@@ -10227,7 +10229,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
 		TCond = assertz(TPred)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
-		'$lgt_exec_ctx'(ExCtx, This, _),
+		'$lgt_exec_ctx_this'(ExCtx, This),
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_assertz'(This, Pred, This, p(_), p)
 		;	'$lgt_compiler_db_clause_chk'(Pred),
@@ -10265,7 +10267,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	(	'$lgt_optimizable_local_db_call'(Head, THead) ->
 		TCond = (clause(THead, TBody), (TBody = ('$lgt_nop'(Body), _) -> true; TBody = Body))
 	;	'$lgt_comp_ctx_this'(Ctx, This),
-		'$lgt_exec_ctx'(ExCtx, This, _),
+		'$lgt_exec_ctx_this'(ExCtx, This),
 		(	'$lgt_runtime_db_clause_chk'((Head :- Body)) ->
 			TCond = '$lgt_clause'(This, Head, Body, This, p(_))
 		;	'$lgt_compiler_db_clause_chk'((Head :- Body)),
@@ -10297,7 +10299,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
 		TCond = retract(TPred)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
-		'$lgt_exec_ctx'(ExCtx, This, _),
+		'$lgt_exec_ctx_this'(ExCtx, This),
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_retract'(This, Pred, This, p(_))
 		;	'$lgt_compiler_db_clause_chk'(Pred),
@@ -10337,7 +10339,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
 		TCond = retractall(TPred)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
-		'$lgt_exec_ctx'(ExCtx, This, _),
+		'$lgt_exec_ctx_this'(ExCtx, This),
 		(	'$lgt_runtime_db_clause_chk'(Pred) ->
 			TCond = '$lgt_retractall'(This, Pred, This, p(_))
 		;	'$lgt_compiler_db_clause_chk'(Pred),
@@ -10353,13 +10355,13 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, This, _).
+	'$lgt_exec_ctx_this'(ExCtx, This).
 
 '$lgt_tr_body'(expand_goal(Goal, EGoal), '$lgt_expand_goal'(This, Goal, EGoal, This, p(_)), '$lgt_debugger.goal'(expand_goal(Goal, EGoal), '$lgt_expand_goal'(This, Goal, EGoal, This, p(_)), ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, This, _).
+	'$lgt_exec_ctx_this'(ExCtx, This).
 
 
 % DCG predicates
@@ -10405,7 +10407,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_exec_ctx_this'(ExCtx, This),
 	'$lgt_tr_msg'(Pred, Obj, TPred, This),
 	DPred = '$lgt_gr_obj_msg'(Obj, NonTerminal, Input, Rest, TPred, This).
 
@@ -10423,7 +10425,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_prefix'(Ctx, Prefix),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_exec_ctx_this'(ExCtx, This),
 	'$lgt_tr_body'(Pred, TPred, DPred0, Ctx),
 	DPred = '$lgt_gr_non_terminal'(NonTerminal, Input, Rest, Prefix, DPred0, This).
 
@@ -10440,7 +10442,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	(	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 		'$lgt_comp_ctx_this'(Ctx, This),
-	 	'$lgt_exec_ctx'(ExCtx, This, _) ->		% check for mismatches between the argument of
+	 	'$lgt_exec_ctx_this'(ExCtx, This) ->		% check for mismatches between the argument of
 		true									% this/1 and the parametric object identifier
 	;	throw(domain_error(object_identifier, This))
 	).
@@ -10465,7 +10467,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_exec_ctx_this'(ExCtx, This),
 	functor(This, _, Arity),
 	(	1 =< Arg, Arg =< Arity ->
 		arg(Arg, This, Value),
@@ -10479,7 +10481,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	'$lgt_exec_ctx'(ExCtx, This, _),
+	'$lgt_exec_ctx_this'(ExCtx, This),
 	functor(Ctg, _, Arity),
 	(	1 =< Arg, Arg =< Arity ->
 		TPred = '$lgt_ctg_parameter'(This, Ctg, Arg, Value),
@@ -13588,9 +13590,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, Rnm, _),
 	'$lgt_pp_relation_clause_'('$lgt_extends_object_'(Obj, Parent, _)),			% necessary for parameter passing
 	'$lgt_pp_extended_object_'(Parent, _, _, PDef, _, _, _, _, _, _),
-	'$lgt_exec_ctx'(PExCtx, Parent, Ctx),
+	'$lgt_exec_ctx_this_rest'(PExCtx, Parent, Ctx),
 	Lookup =.. [PDef, Pred, PExCtx, Call, Ctn],
-	'$lgt_exec_ctx'(OExCtx, Obj, Ctx),
+	'$lgt_exec_ctx_this_rest'(OExCtx, Obj, Ctx),
 	(	'$lgt_pp_predicate_alias_'(Parent, _, _) ->
 		Head =.. [ODef, Alias, OExCtx, Call, Ctn],
 		Rename =.. [Rnm, Parent, Pred, Alias],
@@ -13619,9 +13621,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_pp_object_'(Obj, _, _, _, OSuper, _, _, _, _, Rnm, _),
 	'$lgt_pp_relation_clause_'('$lgt_extends_object_'(Obj, Parent, _)),			% necessary for parameter passing
 	'$lgt_pp_extended_object_'(Parent, _, _, PDef, _, _, _, _, _, _),
-	'$lgt_exec_ctx'(PExCtx, Parent, Ctx),
+	'$lgt_exec_ctx_this_rest'(PExCtx, Parent, Ctx),
 	Lookup =.. [PDef, Pred, PExCtx, Call, Ctn],
-	'$lgt_exec_ctx'(OExCtx, Obj, Ctx),
+	'$lgt_exec_ctx_this_rest'(OExCtx, Obj, Ctx),
 	(	'$lgt_pp_predicate_alias_'(Parent, _, _) ->
 		Head =.. [OSuper, Alias, OExCtx, Call, Ctn],
 		Rename =.. [Rnm, Parent, Pred, Alias],
@@ -13858,9 +13860,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_pp_object_'(Obj, _, _, ODef, _, _, _, _, _, Rnm, _),
 	'$lgt_pp_relation_clause_'('$lgt_instantiates_class_'(Obj, Class, _)),		% necessary for parameter passing
 	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, _, CIDef, _, _, _),
-	'$lgt_exec_ctx'(CExCtx, Class, Ctx),
+	'$lgt_exec_ctx_this_rest'(CExCtx, Class, Ctx),
 	Lookup =.. [CIDef, Pred, CExCtx, Call, Ctn],
-	'$lgt_exec_ctx'(OExCtx, Obj, Ctx),
+	'$lgt_exec_ctx_this_rest'(OExCtx, Obj, Ctx),
 	(	'$lgt_pp_predicate_alias_'(Class, _, _) ->
 		Head =.. [ODef, Alias, OExCtx, Call, Ctn],
 		Rename =.. [Rnm, Class, Pred, Alias],
@@ -13901,7 +13903,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_pp_object_'(Obj, _, _, _, _, _, OIDef, _, _, Rnm, _),
 	'$lgt_pp_relation_clause_'('$lgt_imports_category_'(Obj, Ctg, _)),			% necessary for parameter passing
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
-	'$lgt_exec_ctx'(ExCtx, Obj, _),
+	'$lgt_exec_ctx_this_rest'(ExCtx, Obj, _),
 	Lookup =.. [CDef, Pred, ExCtx, Call, Ctn],
 	(	'$lgt_pp_predicate_alias_'(Ctg, _, _) ->
 		Head =.. [OIDef, Alias, ExCtx, Call, Ctn],
@@ -13915,7 +13917,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_gen_ic_category_idef_clauses' :-
 	(	'$lgt_compiler_flag'(complements, allow) ->
 		'$lgt_pp_object_'(Obj, _, _, _, _, _, OIDef, _, _, _, _),
-		'$lgt_exec_ctx'(ExCtx, Obj, _),
+		'$lgt_exec_ctx_this_rest'(ExCtx, Obj, _),
 		Head =.. [OIDef, Pred, ExCtx, Call, Ctn],
 		Lookup = '$lgt_complemented_object'(OIDef, Pred, ExCtx, Call, Ctn),
 		assertz('$lgt_pp_final_def_'((Head:-Lookup)))
@@ -13928,9 +13930,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_pp_object_'(Class, _, _, _, _, _, CIDef, _, _, Rnm, _),
 	'$lgt_pp_relation_clause_'('$lgt_specializes_class_'(Class, Super, _)),		% necessary for parameter passing
 	'$lgt_pp_specialized_class_'(Super, _, _, _, _, _, SIDef, _, _, _),
-	'$lgt_exec_ctx'(SExCtx, Super, Ctx),
+	'$lgt_exec_ctx_this_rest'(SExCtx, Super, Ctx),
 	Lookup =.. [SIDef, Pred, SExCtx, Call, Ctn],
-	'$lgt_exec_ctx'(CExCtx, Class, Ctx),
+	'$lgt_exec_ctx_this_rest'(CExCtx, Class, Ctx),
 	(	'$lgt_pp_predicate_alias_'(Super, _, _) ->
 		Head =.. [CIDef, Alias, CExCtx, Call, Ctn],
 		Rename =.. [Rnm, Super, Pred, Alias],
@@ -13960,9 +13962,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_pp_object_'(Obj, _, _, _, OSuper, _, _, _, _, Rnm, _),
 	'$lgt_pp_relation_clause_'('$lgt_instantiates_class_'(Obj, Class, _)),		% necessary for parameter passing
 	'$lgt_pp_instantiated_class_'(Class, _, _, _, _, _, CIDef, _, _, _),
-	'$lgt_exec_ctx'(CExCtx, Class, Ctx),
+	'$lgt_exec_ctx_this_rest'(CExCtx, Class, Ctx),
 	Lookup =.. [CIDef, Pred, CExCtx, Call, Ctn],
-	'$lgt_exec_ctx'(OExCtx, Obj, Ctx),
+	'$lgt_exec_ctx_this_rest'(OExCtx, Obj, Ctx),
 	'$lgt_exec_ctx'(OExCtx, _, Obj, Obj, _, _),
 	(	'$lgt_pp_predicate_alias_'(Class, _, _) ->
 		Head =.. [OSuper, Alias, OExCtx, Call, Ctn],
@@ -13979,9 +13981,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_pp_object_'(Class, _, _, _, CSuper, _, _, _, _, Rnm, _),
 	'$lgt_pp_relation_clause_'('$lgt_specializes_class_'(Class, Super, _)),		% necessary for parameter passing
 	'$lgt_pp_specialized_class_'(Super, _, _, _, _, _, SIDef, _, _, _),
-	'$lgt_exec_ctx'(SExCtx, Super, Ctx),
+	'$lgt_exec_ctx_this_rest'(SExCtx, Super, Ctx),
 	Lookup =.. [SIDef, Pred, SExCtx, Call, Ctn],
-	'$lgt_exec_ctx'(CExCtx, Class, Ctx),
+	'$lgt_exec_ctx_this_rest'(CExCtx, Class, Ctx),
 	(	'$lgt_pp_predicate_alias_'(Super, _, _) ->
 		Head =.. [CSuper, Alias, CExCtx, Call, Ctn],
 		Rename =.. [Rnm, Super, Pred, Alias],
@@ -15542,15 +15544,6 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_comp_ctx_stack'(ctx(_, _, _, _, _, _, _, _, _, Stack), Stack).	% stack of coinductive hypothesis (ancestor goals)
 
 '$lgt_comp_ctx_stack_new_stack'(ctx(Head, Sender, This, Self, Prefix, MetaVars, MetaCallCtx, _, Mode, _), NewStack, ctx(Head, Sender, This, Self, Prefix, MetaVars, MetaCallCtx, _, Mode, NewStack)).
-
-
-% utility predicates used to construct execution context terms (represented
-% by a list that optimizes access to "this" in order to improve predicate
-% lookup performance)
-
-'$lgt_exec_ctx'([This, Sender, Self, MetaCallCtx, Stack], Sender, This, Self, MetaCallCtx, Stack).
-
-'$lgt_exec_ctx'([This| Ctx], This, Ctx).	% inheritance only requires updating "this"
 
 
 

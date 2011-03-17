@@ -11,7 +11,7 @@
 %
 %  configuration file for K-Prolog 6.0.4 and later versions
 %
-%  last updated: December 21, 2010
+%  last updated: March 17, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -559,6 +559,21 @@ setup_call_cleanup(_, _, _) :-
 
 '$lgt_copy_term_without_constraints'(Term, Copy) :-
 	copy_term(Term, Copy).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% utility predicates used to construct execution context terms
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+'$lgt_exec_ctx'([This, Sender, Self, MetaCallCtx, Stack], Sender, This, Self, MetaCallCtx, Stack).
+
+'$lgt_exec_ctx_this_rest'([This| Ctx], This, Ctx).	% inheritance only requires updating "this"
+
+'$lgt_exec_ctx_this'([This| _], This).
 
 
 
