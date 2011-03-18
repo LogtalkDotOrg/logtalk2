@@ -2738,8 +2738,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 		Scope = DclScope, Type = (dynamic), Meta = no
 	;	% not a local dynamic predicate; check if dynamic declaration of new predicates is allowed:
 		(DclScope == p; ObjFlags /\ 64 =:= 64) ->
-		functor(Pred, Functor, Arity),
-		functor(DPred, Functor, Arity),
+		'$lgt_term_template'(Pred, DPred),
 		Clause =.. [DDcl, DPred, DclScope],
 		assertz(Clause),
 		Scope = DclScope, Type = (dynamic), Meta = no
@@ -3098,17 +3097,18 @@ current_logtalk_flag(version, version(2, 42, 4)).
 % adds a new database lookup cache entry (when an update goal is not needed)
 
 '$lgt_add_db_lookup_cache_entry'(Obj, Head, Scope, Type, Sender, THead) :-
-	functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
-	functor(Head, HFunctor, HArity), functor(GHead, HFunctor, HArity),
-	functor(THead, TFunctor, TArity), functor(GTHead, TFunctor, TArity),
+	'$lgt_term_template'(Obj, GObj),
+	'$lgt_term_template'(Head, GHead),
+	'$lgt_term_template'(THead, GTHead),
 	GHead =.. [_| Args],
 	GTHead =.. [_| ExtArgs],
 	'$lgt_unify_head_thead_args'(Args, ExtArgs), 
 	(	(Scope = p(p(p)), Type == (dynamic)) ->
 		asserta('$lgt_db_lookup_cache_'(GObj, GHead, _, GTHead, true))
-	;	functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
+	;	'$lgt_term_template'(Sender, GSender),
 		asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GTHead, true))
 	).
+
 
 
 % '$lgt_add_db_lookup_cache_entry'(@object_identifier, @callable, @callable, @callable, +atom, @object_identifier, @callable, +atom, +atom)
@@ -3116,24 +3116,24 @@ current_logtalk_flag(version, version(2, 42, 4)).
 % adds a new database lookup cache entry
 
 '$lgt_add_db_lookup_cache_entry'(Obj, Head, SCtn, Scope, Type, Sender, THead, DDef, NeedsUpdate) :-
-	functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),
-	functor(Head, HFunctor, HArity), functor(GHead, HFunctor, HArity),
-	functor(THead, TFunctor, TArity), functor(GTHead, TFunctor, TArity),
+	'$lgt_term_template'(Obj, GObj),
+	'$lgt_term_template'(Head, GHead),
+	'$lgt_term_template'(THead, GTHead),
 	GHead =.. [_| Args],
 	GTHead =.. [_| ExtArgs],
 	'$lgt_unify_head_thead_args'(Args, ExtArgs),
 	(	NeedsUpdate == true, Sender \= SCtn ->
-		functor(UHead, HFunctor, HArity),
-		functor(UTHead, TFunctor, TArity),
+		'$lgt_term_template'(Head, UHead),
+		'$lgt_term_template'(THead, UTHead),
 		UClause =.. [DDef, UHead, _, UTHead],
 		(	(Scope = p(p(p)), Type == (dynamic)) ->
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, _, GTHead, UClause))
-		;	functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
+		;	'$lgt_term_template'(Sender, GSender),
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GTHead, UClause))
 		)
 	;	(	(Scope = p(p(p)), Type == (dynamic)) ->
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, _, GTHead, true))
-		;	functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),
+		;	'$lgt_term_template'(Sender, GSender),
 			asserta('$lgt_db_lookup_cache_'(GObj, GHead, GSender, GTHead, true))
 		)
 	).
@@ -3334,16 +3334,16 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 '$lgt_send_to_self_nv'(Obj, Pred, Sender) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, _, _),
-	(	call(Dcl, Pred, Scope, Meta, _, SCtn, _) ->										% lookup declaration
-		(	(Scope = p(_); Sender = SCtn) ->											% check scope
-			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
-				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
-				functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
-				'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),							% construct list of the meta-variables
-				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, []),				% that will be called in the "sender"
-				call(Def, GPred, ExCtx, GCall, _) ->									% lookup definition
-				asserta(('$lgt_send_to_self_'(GObj, GPred, GSender) :- !, GCall)),		% cache lookup result
-				GObj = Obj, GPred = Pred, GSender = Sender,								% unify message arguments
+	(	call(Dcl, Pred, Scope, Meta, _, SCtn, _) ->									% lookup declaration
+		(	(Scope = p(_); Sender = SCtn) ->										% check scope
+			(	'$lgt_term_template'(Pred, GPred),									% construct predicate template
+				'$lgt_term_template'(Obj, GObj),									% construct object template
+				'$lgt_term_template'(Sender, GSender),								% construct "sender" template
+				'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),						% construct list of the meta-variables
+				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, []),			% that will be called in the "sender"
+				call(Def, GPred, ExCtx, GCall, _) ->								% lookup definition
+				asserta(('$lgt_send_to_self_'(GObj, GPred, GSender) :- !, GCall)),	% cache lookup result
+				GObj = Obj, GPred = Pred, GSender = Sender,							% unify message arguments
 				call(GCall)
 			;	% closed-world assumption
 				fail
@@ -3399,8 +3399,8 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	(	call(Dcl, Pred, Scope, Meta, _, SCtn, _) ->										% lookup declaration
 		(	Scope = p(p(_)) ->															% check public scope
-			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
-				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
+			(	'$lgt_term_template'(Pred, GPred),										% construct predicate template
+				'$lgt_term_template'(Obj, GObj),										% construct object template
 				'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),							% construct list of the meta-variables
 				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, []),				% that will be called in the "sender"
 				call(Def, GPred, ExCtx, GCall, _) ->									% lookup definition
@@ -3412,9 +3412,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 				fail
 			)
 		;	Sender = SCtn ->															% check scope container
-			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
-				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
-				functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
+			(	'$lgt_term_template'(Pred, GPred),										% construct predicate template
+				'$lgt_term_template'(Obj, GObj),										% construct object template
+				'$lgt_term_template'(Sender, GSender),									% construct "sender" template
 				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _, []),
 				call(Def, GPred, ExCtx, GCall, _) ->									% lookup definition
 				GGCall = '$lgt_guarded_method_call'(GObj, GPred, GSender, GCall),
@@ -3505,8 +3505,8 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	(	call(Dcl, Pred, Scope, Meta, _, SCtn, _) ->										% lookup declaration
 		(	Scope = p(p(_)) ->															% check public scope
-			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
-				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
+			(	'$lgt_term_template'(Pred, GPred),										% construct predicate template
+				'$lgt_term_template'(Obj, GObj),										% construct object template
 				'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),							% construct list of the meta-variables
 				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, GMetaVars, []),				% that will be called in the "sender"
 				call(Def, GPred, ExCtx, GCall, _) ->									% lookup definition
@@ -3517,9 +3517,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 				fail
 			)
 		;	Sender = SCtn ->															% check scope container
-			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),		% construct predicate template
-				functor(Obj, OFunctor, OArity), functor(GObj, OFunctor, OArity),		% construct object template
-				functor(Sender, SFunctor, SArity), functor(GSender, SFunctor, SArity),	% construct "sender" template
+			(	'$lgt_term_template'(Pred, GPred),										% construct predicate template
+				'$lgt_term_template'(Obj, GObj),										% construct object template
+				'$lgt_term_template'(Sender, GSender),									% construct "sender" template
 				'$lgt_exec_ctx'(ExCtx, GSender, GObj, GObj, _, []),
 				call(Def, GPred, ExCtx, GCall, _) ->									% lookup definition
 				asserta(('$lgt_send_to_obj_ne_'(GObj, GPred, GSender) :- !, GCall)),	% cache lookup result
@@ -3576,14 +3576,14 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 '$lgt_obj_super_call_same'(Super, Pred, ExCtx) :-
 	(	'$lgt_exec_ctx'(ExCtx, _, This, Self, _, _),
-		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),				% construct predicate template
-		functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),				% construct "this" template
-		functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),				% construct "self" template
+		'$lgt_term_template'(Pred, GPred),											% construct predicate template
+		'$lgt_term_template'(This, GThis),											% construct "this" template
+		'$lgt_term_template'(Self, GSelf),											% construct "self" template
 		'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _, _),
-		call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->							% lookup definition
-		asserta(('$lgt_obj_super_call_same_'(Super, GPred, GExCtx) :- !, GCall)),		% cache lookup result
-		GPred = Pred, GExCtx = ExCtx,													% unify message arguments
-		call(GCall)																		% call inherited definition
+		call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->						% lookup definition
+		asserta(('$lgt_obj_super_call_same_'(Super, GPred, GExCtx) :- !, GCall)),	% cache lookup result
+		GPred = Pred, GExCtx = ExCtx,												% unify message arguments
+		call(GCall)																	% call inherited definition
 	;	% closed-world assumption
 		fail
 	).
@@ -3607,11 +3607,11 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 '$lgt_ctg_super_call_same'(Ctg, Pred, ExCtx) :-
 	(	'$lgt_current_category_'(Ctg, _, _, Def, _, _),
-		functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),				% construct predicate template
-		call(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->								% lookup definition
-		asserta(('$lgt_ctg_super_call_same_'(Ctg, GPred, GExCtx) :- !, GCall)),			% cache lookup result
-		GPred = Pred, GExCtx = ExCtx,													% unify message arguments
-		call(GCall)																		% call inherited definition
+		'$lgt_term_template'(Pred, GPred),											% construct predicate template
+		call(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->							% lookup definition
+		asserta(('$lgt_ctg_super_call_same_'(Ctg, GPred, GExCtx) :- !, GCall)),		% cache lookup result
+		GPred = Pred, GExCtx = ExCtx,												% unify message arguments
+		call(GCall)																	% call inherited definition
 	;	% closed-world assumption
 		fail
 	).
@@ -3655,9 +3655,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	(	'$lgt_current_object_'(Self, _, Dcl, _, _, _, _, _, _, _, _),
 		call(Dcl, Pred, Scope, _, _, SCtn, _) ->
 		(	(Scope = p(_); This = SCtn) ->													% check scope
-			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),			% construct predicate template
-				functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),			% construct "this" template
-				functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),			% construct "self" template
+			(	'$lgt_term_template'(Pred, GPred),											% construct predicate template
+				'$lgt_term_template'(This, GThis),											% construct "this" template
+				'$lgt_term_template'(Self, GSelf),											% construct "self" template
 				'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _, _),
 				call(Super, GPred, GExCtx, GCall, Ctn), Ctn \= GThis ->						% lookup definition
 				asserta(('$lgt_obj_super_call_other_'(Super, GPred, GExCtx) :- !, GCall)),	% cache lookup result
@@ -3714,7 +3714,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	(	'$lgt_current_category_'(Ctg, _, Dcl, Def, _, _),
 		call(Dcl, Pred, Scope, _, _, _) ->
 		(	Scope = p(_) ->																	% check scope
-			(	functor(Pred, PFunctor, PArity), functor(GPred, PFunctor, PArity),			% construct predicate template
+			(	'$lgt_term_template'(Pred, GPred),											% construct predicate template
 				call(Def, GPred, GExCtx, GCall, Ctn), Ctn \= Ctg ->							% lookup definition
 				asserta(('$lgt_ctg_super_call_other_'(Ctg, GPred, GExCtx) :- !, GCall)),	% cache lookup result
 				GPred = Pred, GExCtx = ExCtx,												% unify message arguments
@@ -4144,17 +4144,17 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _, _),
 	(	'$lgt_current_object_'(This, _, _, _, _, _, _, _, _, Rnm, _),
 		call(Dcl, Alias, _, _, _, _, _) ->
-		(	functor(Alias, PFunctor, PArity), functor(GAlias, PFunctor, PArity),	% construct predicate template
-			functor(This, TFunctor, TArity), functor(GThis, TFunctor, TArity),		% construct "this" template
-			functor(Self, SFunctor, SArity), functor(GSelf, SFunctor, SArity),		% construct "self" template
+		(	'$lgt_term_template'(Alias, GAlias),							% construct predicate template
+			'$lgt_term_template'(This, GThis),								% construct "this" template
+			'$lgt_term_template'(Self, GSelf),								% construct "self" template
 			call(Rnm, Ctg, GPred, GAlias),
 			'$lgt_imports_category_'(GThis, Ctg, _),
 			'$lgt_current_category_'(Ctg, _, _, Def, _, _),
 			'$lgt_exec_ctx'(GExCtx, _, GThis, GSelf, _, _),
 			call(Def, GPred, GExCtx, GCall, _) ->
-			asserta(('$lgt_ctg_call_'(Dcl, GAlias, GExCtx) :- !, GCall)),			% cache lookup result
-			GAlias = Alias, GExCtx = ExCtx,											% unify message arguments
-			call(GCall)																% call inherited definition
+			asserta(('$lgt_ctg_call_'(Dcl, GAlias, GExCtx) :- !, GCall)),	% cache lookup result
+			GAlias = Alias, GExCtx = ExCtx,									% unify message arguments
+			call(GCall)														% call inherited definition
 		;	% closed-world assumption
 			fail
 		)
@@ -5001,8 +5001,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_debugger.nospy'(Functor/Arity).
 
 '$lgt_debugger.do_port_option'(*, _, Goal, _, _, _) :-
-	functor(Goal, Functor, Arity),
-	functor(CGoal, Functor, Arity),
+	'$lgt_term_template'(Goal, CGoal),
 	write('  Enter a context spy point term formatted as (Sender, This, Self, Goal): '),
 	read(Spypoint),
 	Spypoint = (Sender, This, Self, CGoal),
@@ -5010,8 +5009,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	fail.
 
 '$lgt_debugger.do_port_option'(/, _, Goal, _, _, _) :-
-	functor(Goal, Functor, Arity),
-	functor(CGoal, Functor, Arity),
+	'$lgt_term_template'(Goal, CGoal),
 	write('  Enter a context spy point term formatted as (Sender, This, Self, Goal): '),
 	read(Spypoint),
 	Spypoint = (Sender, This, Self, CGoal),
@@ -5816,8 +5814,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 		true
 	;	atom(Obj) ->
 		assertz('$lgt_pp_referenced_object_'(Obj))
-	;	functor(Obj, Functor, Arity),
-		functor(Template, Functor, Arity),
+	;	'$lgt_term_template'(Obj, Template),
 		assertz('$lgt_pp_referenced_object_'(Template))
 	).
 
@@ -6862,8 +6859,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!.
 
 '$lgt_tr_directive'(Dir, Ctx) :-
-	functor(Dir, Functor, Arity),
-	functor(Meta, Functor, Arity),
+	'$lgt_term_template'(Dir, Meta),
 	'$lgt_pl_meta_directive'(Meta),						% defined in the Prolog config files
 	!,
 	(	'$lgt_compiler_flag'(portability, warning),
@@ -9087,8 +9083,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 
 '$lgt_clause_number'(THead, N) :-
-	functor(THead, TFunctor, TArity),
-	functor(Template, TFunctor, TArity), 
+	'$lgt_term_template'(THead, Template), 
 	findall(1, ('$lgt_pp_entity_clause_'(Template); '$lgt_pp_entity_clause_'((Template :- _))), List),
 	'$lgt_length'(List, 1, N).
 
@@ -9185,8 +9180,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 % non-variable meta-argument in clause head of a user-defined meta-predicate
 
 '$lgt_tr_head'(Head, _, _) :-
-	functor(Head, Functor, Arity),
-	functor(Meta, Functor, Arity),
+	'$lgt_term_template'(Head, Meta),
 	'$lgt_pp_meta_predicate_'(Meta),
 	Head =.. [_| Args],
 	Meta =.. [_| MArgs],
@@ -9509,8 +9503,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	nonvar(Head),
 	Head \= ':'(_, _),	% ignore multifile
 	Head \= _::_,		% predicates
-	functor(Head, Functor, Arity),
-	functor(Meta, Functor, Arity),
+	'$lgt_term_template'(Head, Meta),
 	'$lgt_pp_meta_predicate_'(Meta),			% if we're compiling a clause for a meta-predicate and
 	once('$lgt_member_var'(Closure, MetaVars)),	% our closure is a meta-argument then check that the
 	'$lgt_length'(ExtraArgs, 0, NExtraArgs),	% call/N call complies with the meta-predicate declaration
@@ -10058,8 +10051,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 		'$lgt_tr_body'(Module::Pred, TPred, DPred, Ctx)
 	;	catch('$lgt_predicate_property'(':'(Module, Pred), meta_predicate(OriginalMeta)), _, fail) ->
 		% we're compiling a call to a module meta-predicate:
-		functor(Pred, Functor, Arity),
-		functor(OverridingMeta, Functor, Arity),
+		'$lgt_term_template'(Pred, OverridingMeta),
 		(	'$lgt_pp_meta_predicate_'(':'(Module, OverridingMeta)) ->
 			% we're overriding the original meta-predicate template:
 			Meta = OverridingMeta
@@ -10563,8 +10555,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_tr_body'(Pred, _, _, Ctx) :-
 	'$lgt_comp_ctx_meta_vars'(Ctx, MetaVars),
 	MetaVars \= [],
-	(	functor(Pred, Functor, Arity),
-		functor(Meta, Functor, Arity),
+	(	'$lgt_term_template'(Pred, Meta),
 		'$lgt_pp_meta_predicate_'(Meta) ->
 		% user-defined meta-predicate
 		true
@@ -10587,8 +10578,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	nonvar(Head),
 	Head \= ':'(_, _),	% ignore multifile
 	Head \= _::_,		% predicates
-	functor(Head, HeadFunctor, HeadArity),
-	functor(HeadMeta, HeadFunctor, HeadArity),
+	'$lgt_term_template'(Head, HeadMeta),
 	'$lgt_pp_meta_predicate_'(HeadMeta),
 	Head =.. [_| HeadArgs],
 	HeadMeta =.. [_| HeadMetaArgs],
@@ -10601,8 +10591,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_tr_body'(Alias, ':'(Module, TPred), ':'(Module, DPred), Ctx) :-	% meta-predicates
 	'$lgt_pp_use_module_predicate_'(Module, Pred, Alias),
 	catch('$lgt_predicate_property'(':'(Module, Pred), meta_predicate(OriginalMeta)), _, fail),
-	functor(Pred, Functor, Arity),
-	functor(OverridingMeta, Functor, Arity),
+	'$lgt_term_template'(Pred, OverridingMeta),
 	(	'$lgt_pp_meta_predicate_'(':'(Module, OverridingMeta)) ->
 		% we're overriding the original meta-predicate template:
 		Meta = OverridingMeta
@@ -11753,8 +11742,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	nonvar(Head),
 	Head \= ':'(_, _),	% ignore multifile
 	Head \= _::_,		% predicates
-	functor(Pred, Functor, Arity),
-	functor(Head, Functor, Arity),				% "super" call to the predicate being redefined
+	'$lgt_term_template'(Pred, Head),			% "super" call to the predicate being redefined
 	!,
 	(   '$lgt_pp_object_'(_, _, _, _, Super, _, _, _, _, _, _) ->
 		'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _, _),
@@ -11811,8 +11799,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 % in a position corresponding to a meta-argument
 
 '$lgt_pred_meta_vars'(Pred, MetaVars) :-
-	functor(Pred, Functor, Arity),
-	functor(Meta, Functor, Arity),
+	'$lgt_term_template'(Pred, Meta),
 	(	'$lgt_pp_meta_predicate_'(Meta) ->
 		Pred =.. [_| Args],
 		Meta =.. [_| MArgs],
@@ -12156,8 +12143,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 % functor prefixes used in the compiled code clauses
 
 '$lgt_tr_object_identifier'(Obj, Mode) :-
-	functor(Obj, Functor, Arity),
-	functor(GObj, Functor, Arity),
+	'$lgt_term_template'(Obj, GObj),
 	'$lgt_add_referenced_object'(GObj),
 	'$lgt_construct_object_functors'(GObj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm),
 	'$lgt_tr_entity_flags'(object, Mode, Flags),
@@ -12172,8 +12158,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 % functor prefixes used in the compiled code clauses
 
 '$lgt_tr_category_identifier'(Ctg, Mode) :-
-	functor(Ctg, Functor, Arity),
-	functor(GCtg, Functor, Arity),
+	'$lgt_term_template'(Ctg, GCtg),
 	'$lgt_add_referenced_category'(GCtg),
 	'$lgt_construct_category_functors'(GCtg, Prefix, Dcl, Def, Rnm),
 	'$lgt_tr_entity_flags'(category, Mode, Flags),
@@ -12473,8 +12458,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	throw(type_error(object, Obj)).	
 
 '$lgt_tr_complements_category'([Obj| _], Ctg, _, _, _) :-
-	functor(Obj, Functor, Arity),
-	functor(Ctg, Functor, Arity),
+	'$lgt_term_template'(Obj, Ctg),
 	throw(permission_error(complement, self, Obj)).
 
 '$lgt_tr_complements_category'([Obj| Objs], Ctg, Dcl, Def, Rnm) :-
@@ -12931,8 +12915,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 % this is needed in order to allow definitions in ancestors to be found
 
 '$lgt_update_ddef_table'(DDef, Head, THead) :-
-	functor(THead, TFunctor, TArity),
-	functor(GTHead, TFunctor, TArity),
+	'$lgt_term_template'(THead, GTHead),
 	(	clause(GTHead, _) ->
 		true
 	;	DDefClause =.. [DDef, Head, _, _],
@@ -14034,8 +14017,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 		MHead =.. [MFunctor| Args],
 		New =.. [Def, Head, ExCtx, MHead],
 		assertz('$lgt_pp_final_def_'(New)),
-		(	functor(Head, Functor, Arity),
-			functor(Mode, Functor, Arity),
+		(	'$lgt_term_template'(Head, Mode),
 			'$lgt_pp_mode_'(Mode, _),
 			forall('$lgt_pp_mode_'(Mode, Solutions), (Solutions \== zero_or_one, Solutions \== one, Solutions \== zero)) ->
 			assertz('$lgt_pp_final_entity_clause_'((MHead:-mutex_lock(Mutex), setup_call_cleanup(true, THead, mutex_unlock(Mutex)))))
@@ -14057,8 +14039,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 		MHead =.. [MFunctor| Args],
 		New =.. [DDef, Head, ExCtx, MHead],
 		assertz('$lgt_pp_final_ddef_'(New)),
-		(	functor(Head, Functor, Arity),
-			functor(Mode, Functor, Arity),
+		(	'$lgt_term_template'(Head, Mode),
 			'$lgt_pp_mode_'(Mode, _),
 			forall('$lgt_pp_mode_'(Mode, Solutions), (Solutions \== zero_or_one, Solutions \== one, Solutions \== zero)) ->
 			assertz('$lgt_pp_final_entity_clause_'((MHead:-mutex_lock(Mutex), setup_call_cleanup(true, THead, mutex_unlock(Mutex)))))
@@ -14246,17 +14227,16 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_fix_predicate_calls'(':'(Module2, Pred), ':'(Module2, TPred), false).
 
 '$lgt_fix_predicate_calls'(':'(Module, Pred), ':'(Module, TPred), _) :-
-	functor(Pred, Functor, Arity),
+	'$lgt_term_template'(Pred, OverridingMeta),
 	catch('$lgt_predicate_property'(':'(Module, Pred), meta_predicate(OriginalMeta)), _, fail),
-	functor(OverridingMeta, Functor, Arity),
 	(	'$lgt_pp_meta_predicate_'(':'(Module, OverridingMeta)) ->
 		% we're overriding the original meta-predicate template:
 		Meta = OverridingMeta
 	;	Meta = OriginalMeta
 	),
 	!,												% calls to Prolog module meta-predicates
-	Pred =.. [_| Args],
-	Meta =.. [_| MArgs],
+	Pred =.. [Functor| Args],
+	Meta =.. [Functor| MArgs],
 	'$lgt_tr_module_meta_predicate_directives_args'(MArgs, CMArgs),
 	'$lgt_fix_pred_calls_in_margs'(Args, CMArgs, TArgs),
 	TPred =.. [Functor| TArgs].
@@ -15554,6 +15534,20 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_ctg_parameter'(This, Ctg, Arg, Value) :-
 	'$lgt_imports_category_'(This, Ctg, _), !,
 	arg(Arg, Ctg, Value).
+
+
+
+% '$lgt_term_template'(@callable, -callable)
+%
+% constructs a template for a callable term
+
+'$lgt_term_template'(Term, Term) :-
+	atom(Term),
+	!.
+
+'$lgt_term_template'(Term, Template) :-
+	functor(Term, Functor, Arity),
+	functor(Template, Functor, Arity).
 
 
 
@@ -18518,10 +18512,8 @@ current_logtalk_flag(version, version(2, 42, 4)).
 		;	% Type == (dynamic)
 			Obj = DclCtn
 		),
-		functor(Obj, ObjFunctor, ObjArity),
-		functor(GObj, ObjFunctor, ObjArity),
-		functor(Pred, PredFunctor, PredArity),
-		functor(GPred, PredFunctor, PredArity),
+		'$lgt_term_template'(Obj, GObj),
+		'$lgt_term_template'(Pred, GPred),
 		'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),
 		'$lgt_exec_ctx'(GExCtx, GSender, GObj, GObj, GMetaVars, []),
 		call(Def, GPred, GExCtx, GCall, DefCtn),
@@ -18580,8 +18572,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 		'$lgt_current_category_'(Ctg, _, Dcl, Def, _, _),
 		call(Dcl, Pred, _, _, Flags, DclCtn), !,
 		Flags /\ 2 =:= 0,
-		functor(Pred, PredFunctor, PredArity),
-		functor(GPred, PredFunctor, PredArity),
+		'$lgt_term_template'(Pred, GPred),
 		call(Def, GPred, GExCtx, GCall, DefCtn), !,
 		'$lgt_safe_static_binding_paths'(Ctg, DclCtn, DefCtn),
 		assertz('$lgt_ctg_static_binding_cache_'(Ctg, GPred, GExCtx, GCall)),
