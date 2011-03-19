@@ -25,6 +25,8 @@ RELEASE NOTES
     declared operators to the XML documenting files. Updated the text, PDF,
     and (X)HTML conversion scripts to print out operator information.
 
+    Applied several low-level optimizations to the Logtalk compiler/runtime.
+
     Moved the internal predicates that construct and access the predicate
     execution context from the compiler to the Prolog config files in order
     to support fine performance tuning that is Prolog compiler dependent.
