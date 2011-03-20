@@ -40,6 +40,9 @@ RELEASE NOTES
     are compile as global instead of as local to the objects or categories
     defining them).
 
+    Updated the "xml_parser" contribution in order to workaround portability
+    issues with Qu-Prolog and XSB.
+
     Updated the "encodings" example in order to ensure that the there is no
     whitespace before the encoding/1 directive.
 
