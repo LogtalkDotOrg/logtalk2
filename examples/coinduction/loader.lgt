@@ -15,6 +15,7 @@
 			binary,
 			streams,
 			lists,
+			sorting,
 			automata,
 			counter,
 			nested

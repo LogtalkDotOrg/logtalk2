@@ -134,7 +134,7 @@ Y = [1, 2|**] ;
 false.
 
 
-% list non-smembership example:
+% list non-membership example:
 
 | ?- X = [1,2,3], lists::absent(2, X).
 false.
@@ -148,6 +148,21 @@ false.
 
 | ?- X = [1,2,3| X], lists::absent(2, X).
 false.
+
+
+% sorting example:
+
+?- X=[1-2,2-3,1-4|X], sorting::keysort(X, L).
+X = [1-2, 2-3, 1-4|X],
+L = [1-2|_S1], % where
+    _S1 = [1-2|_S1] .
+
+?- X=[1-2,2-3|Y], Y = [1-4|Y], sorting::keysort(X, L).
+X = [1-2, 2-3|_S1], % where
+    _S1 = [1-4|_S1],
+Y = [1-4|_S1],
+L = [1-2|_S2], % where
+    _S2 = [1-4|_S2] .
 
 
 % omega-automaton example:
