@@ -33,8 +33,8 @@
 			))
 		).
 
-    partition([], _, [], []).
-    partition([X| Xs], Pivot, Smalls, Bigs) :-
+	partition([], _, [], []).
+	partition([X| Xs], Pivot, Smalls, Bigs) :-
 		(	X < Pivot ->
 			Smalls = [X| Rest],
 			partition(Xs, Pivot, Rest, Bigs)
@@ -42,8 +42,8 @@
 			partition(Xs, Pivot, Smalls, Rest)
 		).
 
-    quicksort([], Sorted, Sorted).
-    quicksort([Pivot| Rest], Acc, Sorted) :- 
+	quicksort([], Sorted, Sorted).
+	quicksort([Pivot| Rest], Acc, Sorted) :- 
 		partition(Rest, Pivot, Smaller0, Bigger0),
 		quicksort(Smaller0, [Pivot| Bigger], Sorted),
 		quicksort(Bigger0, Acc, Bigger).
