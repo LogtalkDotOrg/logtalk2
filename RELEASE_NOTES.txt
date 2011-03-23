@@ -40,6 +40,9 @@ RELEASE NOTES
     are compile as global instead of as local to the objects or categories
     defining them).
 
+    Updated the YAP config file in order to ignore the style_check/1 directive
+    and to interpret the yap_flag/2 directive as a set_prolog_flag/2 directive.
+
     Updated the "xml_parser" contribution in order to workaround portability
     issues with Qu-Prolog and XSB.
 
