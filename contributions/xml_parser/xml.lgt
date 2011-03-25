@@ -722,8 +722,10 @@
 
 	quote( 0'" ) --> %'
 		"""".
-	quote( 0'' ) -->
-		"'".
+%	quote( 0'' ) -->
+%		"'".
+	quote( QuoteCode ) -->
+		"'", {atom_codes('''', [QuoteCode])}.
 
 	spaces( [], [] ).
 	spaces( [Char|Chars0], Chars1 ) :-
@@ -907,7 +909,9 @@
 	character_entity( "amp", 0'&  ). %'
 	character_entity( "lt", 0'< ). %'
 	character_entity( "gt", 0'> ). %'
-	character_entity( "apos", 0'' ).
+%	character_entity( "apos", 0'' ).
+	character_entity( "apos", QuoteCode ) :-
+		atom_codes('''', [QuoteCode]).
 
 	/* pp( +XMLDocument ) "pretty prints" XMLDocument on the current
 	 * output stream.
