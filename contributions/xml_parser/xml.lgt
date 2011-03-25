@@ -1087,7 +1087,7 @@
 
 	pp_indent( 0 ).
 	pp_indent( s(N) ) :-
-		write( '	' ),
+		write( '\t' ),
 		pp_indent( N ).
 
 	pp_comma :-
@@ -1786,8 +1786,7 @@
 
 	generated_external_id( local ) --> "".
 	generated_external_id( local(Literals) ) --> " [",
-		generated_doctype_literals( Literals ), "
-		]".
+		generated_doctype_literals( Literals ), "\n\t]".
 	generated_external_id( system(URL) ) -->
 		" SYSTEM """,
 		chars( URL ),
@@ -1796,8 +1795,7 @@
 		" SYSTEM """,
 		chars( URL ),
 		""" [",
-		generated_doctype_literals( Literals ), "
-		]".
+		generated_doctype_literals( Literals ), "\n\t]".
 	generated_external_id( public(URN,URL) ) -->
 		" PUBLIC """,
 		chars( URN ),
@@ -1810,12 +1808,11 @@
 		""" """,
 		chars( URL ),
 		""" [",
-		generated_doctype_literals( Literals ), "
-		]".
+		generated_doctype_literals( Literals ), "\n\t]".
 
 	generated_doctype_literals( [] ) --> "".
-	generated_doctype_literals( [dtd_literal(String)|Literals] ) --> "
-		<!", cdata_generation( String ), ">",
+	generated_doctype_literals( [dtd_literal(String)|Literals] ) -->
+		"\n\t<!", cdata_generation( String ), ">",
 		generated_doctype_literals( Literals ).
 
 	/* quoted_string( +Chars ) is a DCG representing Chars, a list of character
@@ -1859,8 +1856,7 @@
 
 	indent( false, _Indent ) --> [].
 	indent( true, Indent ) -->
-		"
-	",	chars( Indent ).
+		"\n",	chars( Indent ).
 
 	/* pcdata_generation( +Chars ) is a DCG representing Chars, a list of character
 	 * codes as legal XML "Parsed character data" (PCDATA) string. Any codes

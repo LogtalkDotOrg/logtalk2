@@ -44,7 +44,7 @@ RELEASE NOTES
     and to interpret the yap_flag/2 directive as a set_prolog_flag/2 directive.
 
     Updated the "xml_parser" contribution in order to workaround portability
-    issues with Qu-Prolog and XSB.
+    issues with Qu-Prolog, SICStus Prolog, and XSB.
 
     Updated the "encodings" example in order to ensure that the there is no
     whitespace before the encoding/1 directive.
