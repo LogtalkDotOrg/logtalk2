@@ -2,16 +2,16 @@
 :- object(msort(_Threads)).
 
 	:- info([
-		version is 1.31,
+		version is 1.32,
 		author is 'Paulo Moura and Paul Crocker',
-		date is 2007/12/27,
+		date is 2011/03/28,
 		comment is 'Multi-threaded implementation of the merge sort algorithm.',
 		parameters is ['Threads'- 'Number of threads to use in sorting. Valid values are 1, 2, 4, 8, etc.']]).
 
 	:- threaded.
 
 	:- public(msort/2).
-	:- mode(msort(+list, -list), one).
+	:- mode(msort(@list(number), -list(number)), one).
 	:- info(msort/2, [
 		comment is 'Sorts a list of terms into ascending order.',
 		argnames is ['List', 'Sorted']]).
