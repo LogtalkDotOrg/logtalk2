@@ -10934,20 +10934,12 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_tr_threaded_call'((TGoal; TGoals), ThreadedCall) :-
 	!,
 	'$lgt_tr_threaded_or_call'((TGoal; TGoals), Queue, MTGoals, Results),
-	ThreadedCall = setup_call_catcher_cleanup(
-						(thread_self(Queue), thread_send_message(Queue, '$lgt_master')),	% necessary for correct thread cancellation
-						(MTGoals, '$lgt_mt_threaded_or_exit'(Results)),						% collect results and terminate slave threads
-						'$lgt_terminated',
-						fail).
+	ThreadedCall = (thread_self(Queue), catch((MTGoals, '$lgt_mt_threaded_or_exit'(Results)), '$lgt_terminated', fail)).
 
 '$lgt_tr_threaded_call'((TGoal, TGoals), ThreadedCall) :-
 	!,
 	'$lgt_tr_threaded_and_call'((TGoal, TGoals), Queue, MTGoals, Results),
-	ThreadedCall = setup_call_catcher_cleanup(
-						(thread_self(Queue), thread_send_message(Queue, '$lgt_master')),	% necessary for correct thread cancellation
-						(MTGoals, '$lgt_mt_threaded_and_exit'(Results)),					% collect results and terminate slave threads
-						'$lgt_terminated',
-						fail).
+	ThreadedCall =(thread_self(Queue), catch((MTGoals, '$lgt_mt_threaded_and_exit'(Results)), '$lgt_terminated', fail)).
 
 '$lgt_tr_threaded_call'(TGoal, (TGoal -> true; fail)).
 
@@ -18293,7 +18285,6 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 '$lgt_mt_threaded_and_exit'(terminate, _, Results) :-
 	'$lgt_mt_threaded_call_cancel'(Results),
-	thread_get_message('$lgt_master'),
 	throw('$lgt_terminated').
 
 % messages can arrive out-of-order; if that's the case we need to keep looking for the
@@ -18304,22 +18295,19 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	(	Error == '$lgt_terminated' ->
 		'$lgt_mt_threaded_and_exit'(Results)
 	;	'$lgt_mt_threaded_call_cancel'(Results),
-		thread_get_message('$lgt_master'),
 		throw(Error)
 	).
 
 '$lgt_mt_threaded_and_exit'(true(TVars), Id, Results) :-
 	'$lgt_mt_threaded_and_add_result'(Results, Id, TVars, Continue),
 	(	Continue == false ->
-		'$lgt_mt_threaded_call_join'(Results),
-		thread_get_message('$lgt_master')
+		'$lgt_mt_threaded_call_join'(Results)
 	;	'$lgt_mt_threaded_and_exit'(Results)
 	).
 
 '$lgt_mt_threaded_and_exit'(false, Id, Results) :-
 	'$lgt_mt_threaded_record_result'(Results, Id, false),
 	'$lgt_mt_threaded_call_cancel'(Results),
-	thread_get_message('$lgt_master'),
 	fail.
 
 
@@ -18367,7 +18355,6 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 '$lgt_mt_threaded_or_exit'(terminate, _, Results) :-
 	'$lgt_mt_threaded_call_cancel'(Results),
-	thread_get_message('$lgt_master'),
 	throw('$lgt_terminated').
 
 % messages can arrive out-of-order; if that's the case we need to keep looking for the
@@ -18378,14 +18365,12 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	(	Error == '$lgt_terminated' ->
 		'$lgt_mt_threaded_or_exit'(Results)
 	;	'$lgt_mt_threaded_call_cancel'(Results),
-		thread_get_message('$lgt_master'),
 		throw(Error)
 	).
 
 '$lgt_mt_threaded_or_exit'(true(TVars), Id, Results) :-
 	'$lgt_mt_threaded_or_exit_unify'(Results, Id, TVars),
-	'$lgt_mt_threaded_call_cancel'(Results),
-	thread_get_message('$lgt_master').
+	'$lgt_mt_threaded_call_cancel'(Results).
 
 '$lgt_mt_threaded_or_exit'(false, Id, Results) :-
 	'$lgt_mt_threaded_or_record_failure'(Results, Id, Continue),
@@ -18393,7 +18378,6 @@ current_logtalk_flag(version, version(2, 42, 4)).
 		'$lgt_mt_threaded_or_exit'(Results)
 	;	% all goals failed
 		'$lgt_mt_threaded_call_join'(Results),
-		thread_get_message('$lgt_master'),
 		fail
 	).
 
@@ -18470,17 +18454,8 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_mt_threaded_call_abort'([]).
 
 '$lgt_mt_threaded_call_abort'([id(Id, _, _)| Ids]) :-
-	catch(thread_signal(Id, '$lgt_mt_abort_thread'(Id)), _, true),
+	catch(thread_signal(Id, thread_send_message(Id, '$lgt_result'(_, terminate))), _, true),
 	'$lgt_mt_threaded_call_abort'(Ids).
-
-
-'$lgt_mt_abort_thread'(Id) :-
-	(	thread_peek_message('$lgt_master') ->
-		% master thread; send it a message to terminate its slave threads:
-		thread_send_message(Id, '$lgt_result'(_, terminate))
-	;	% slave(-only) thread:
-		throw('$lgt_terminated')
-	).
 
 
 

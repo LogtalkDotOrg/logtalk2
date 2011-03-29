@@ -36,7 +36,8 @@ RELEASE NOTES
     term_variables/2 built-in predicate suggested by Timon Van Overveldt.
     This optimization aims to reduce unnecessary copy and unification of
     terms. In addition, replace the use of the setup_call_cleanup/3 built-in
-    predicate with the setup_call_catcher_cleanup/4 built-in predicate.
+    predicate with the catch/3 built-in predicate by simplifying handling of
+    both master and slave threads.
 
     Updated the XSB config file in order to support the compilation of modules
     as objects. Added a definition for the missing setup_call_catcher_cleanup/4
