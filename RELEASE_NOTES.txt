@@ -31,6 +31,13 @@ RELEASE NOTES
     execution context from the compiler to the Prolog config files in order
     to support fine performance tuning that is Prolog compiler dependent.
 
+    Updated the implementation of the threaded/1 multi-threading built-in
+    predicate in order to use a small performance optimization based on the
+    term_variables/2 built-in predicate suggested by Timon Van Overveldt.
+    This optimization aims to reduce unnecessary copy and unification of
+    terms. In addition, replace the use of the setup_call_cleanup/3 built-in
+    predicate with the setup_call_catcher_cleanup/4 built-in predicate.
+
     Updated the XSB config file in order to support the compilation of modules
     as objects. Added a definition for the missing setup_call_catcher_cleanup/4
     built-in predicate. XSB 3.3 (or a later version) is now required for
