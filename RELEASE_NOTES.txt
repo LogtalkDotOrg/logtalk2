@@ -32,8 +32,9 @@ RELEASE NOTES
     to support fine performance tuning that is Prolog compiler dependent.
 
     Updated the XSB config file in order to support the compilation of modules
-    as objects. XSB 3.3 or a later version is now required for compatibility
-    with Logtalk.
+    as objects. Added a definition for the missing setup_call_catcher_cleanup/4
+    built-in predicate. XSB 3.3 (or a later version) is now required for
+    compatibility with Logtalk.
 
     Updated the SWI-Prolog config file in order to provide limited support
     for the arithmetic_function/1 proprietary directive (arithmetic functions

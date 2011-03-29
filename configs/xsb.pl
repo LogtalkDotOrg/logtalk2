@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.3 or later versions
 %
-%  last updated: March 17, 2011
+%  last updated: March 29, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -75,6 +75,13 @@
 setup_call_cleanup(Setup, Call, Cleanup) :-
 	call(Setup),
 	call_cleanup(Call, Cleanup).
+
+
+% setup_call_catcher_cleanup(+callable, +callable, ?term, +callable)
+
+setup_call_catcher_cleanup(Setup, Call, Catcher, Cleanup) :-
+	call(Setup),
+	catch(Call, Catcher, Cleanup).
 
 
 % forall(+callable, +callable) -- built-in
