@@ -58,7 +58,6 @@ cd /opt/local/var/macports/sources/rsync.macports.org/release/ports/lang/logtalk
 sudo mv -f Portfile Portfile.old
 sudo cp $dir/lgt2424/scripts/macosx/Portfile .
 sudo sed -e 's/^version.*/version 2.42.4/' -i '' Portfile
-sudo sed -e "s/md5.*/md5 $md5 \\\/" -i '' Portfile
 sudo sed -e "s/sha1.*/sha1 $sha1 \\\/" -i '' Portfile
 sudo sed -e "s/rmd160.*/rmd160 $rmd160/" -i '' Portfile
 sudo port clean --archive logtalk

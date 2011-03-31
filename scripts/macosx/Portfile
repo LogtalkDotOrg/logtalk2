@@ -22,7 +22,6 @@ homepage		http://logtalk.org/
 master_sites	${homepage}files/
 
 checksums       \
-    md5     6c967d26f394e2d6584978f038ffd8a4 \
     sha1    8cb811c0a6e0c203b274e96edf74d8e56986bdef \
     rmd160  bbf614c0450def4164b185b35d0f4b54c397dd0d
 
