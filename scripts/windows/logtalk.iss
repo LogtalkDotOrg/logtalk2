@@ -373,8 +373,6 @@ begin
       Result := Home + '\bin\swipl.exe'
     else
       Result := 'prolog_compiler_not_installed'
-  else
-    Result := 'prolog_compiler_not_installed';
 end;
 
 function GetSWIConExePath(Param: String): String;
@@ -409,8 +407,6 @@ begin
       Result := Home + '\bin\swipl-win.exe'
     else
       Result := 'prolog_compiler_not_installed'
-  else
-    Result := 'prolog_compiler_not_installed';
 end;
 
 function GetSWIWinExePath(Param: String): String;
