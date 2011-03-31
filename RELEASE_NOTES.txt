@@ -76,6 +76,10 @@ RELEASE NOTES
     remove the calculation of the MD5 checksum, which is being phased out by
     MacPorts.
 
+    Updated the Inno Setup GUI Windows installer script in order to workaround
+    a bug on the SWI-Prolog Windows installers where the uninstall procedure
+    fail to delete the SWI-Prolog keys from the Windows registry.
+
 
 2.42.3 - February 21, 2011
 
