@@ -37,7 +37,7 @@ RELEASE NOTES
     This optimization aims to reduce unnecessary copy and unification of
     terms. In addition, replace the use of the setup_call_cleanup/3 built-in
     predicate with the catch/3 built-in predicate by simplifying handling of
-    both master and slave threads.
+    both master and slave threads, which also improves performance.
 
     Updated the XSB config file in order to support the compilation of modules
     as objects. Added a definition for the missing setup_call_catcher_cleanup/4

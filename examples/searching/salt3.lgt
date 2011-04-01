@@ -24,22 +24,22 @@ Remarks:
 */
 
 
-:- object(salt(_Acumulator, _Measure1, _Measure2),
+:- object(salt(_Accumulator, _Measure1, _Measure2),
 	instantiates(heuristic_state_space)).
 
 	:- info([
-		version is 1.12,
+		version is 1.13,
 		author is 'Paula Marisa Sampaio',
-		date is 2010/11/18,
+		date is 2011/04/01,
 		comment is 'Salt state-space search problem (updated from the original 1.0 version to support heuristics).',
-		parnames is ['Acumulator', 'Measure1', 'Measure2']]).
+		parnames is ['Accumulator', 'Measure1', 'Measure2']]).
 
-	% each state is represented by a compound term with four arguments: (Acumulator, Measure1, Measure2, Step)
+	% each state is represented by a compound term with four arguments: (Accumulator, Measure1, Measure2, Step)
 	initial_state(initial, (0, 0, 0, all_empty)).
 
-	% the intended salt quantity must end up on the acumulator
-	goal_state(acumulator, (Acumulator, _, _, _)) :-
-		parameter(1, Acumulator).
+	% the intended salt quantity must end up on the accumulator
+	goal_state(accumulator, (Accumulator, _, _, _)) :-
+		parameter(1, Accumulator).
 
 	% state transitions:
 
