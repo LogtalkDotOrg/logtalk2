@@ -7577,7 +7577,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_valid_predicate_indicator'(Pred, Functor, Arity),
 	!,
 	(	'$lgt_pp_dynamic_'(Functor, Arity) ->
-		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
+		throw(permission_error(modify, dynamic_predicate, Functor/Arity))
 	;	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _) ->
 		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
 	;	functor(Head, Functor, Arity),
@@ -7589,7 +7589,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_valid_non_terminal_indicator'(Pred, Functor, Arity, ExtArity),
 	!,
 	(	'$lgt_pp_dynamic_'(Functor, ExtArity) ->
-		throw(permission_error(modify, predicate_interpretation, Functor//Arity))
+		throw(permission_error(modify, dynamic_non_terminal, Functor//Arity))
 	;	'$lgt_pp_calls_non_terminal_'(Functor, Arity) ->
 		throw(permission_error(modify, non_terminal_interpretation, Functor//Arity))
 	;	functor(Head, Functor, ExtArity),
@@ -7808,7 +7808,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	(	functor(Head, Functor, Arity),
 		'$lgt_pp_synchronized_'(Head, _) ->
-		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
+		throw(permission_error(modify, synchronized_predicate, Functor/Arity))
 	;	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _) ->
 		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
 	;	assertz('$lgt_pp_dynamic_'(Functor, Arity)),
@@ -7840,7 +7840,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	!,
 	(	functor(Head, Functor, ExtArity),
 		'$lgt_pp_synchronized_'(Head, _) ->
-		throw(permission_error(modify, predicate_interpretation, Functor//Arity))
+		throw(permission_error(modify, synchronized_non_terminal, Functor//Arity))
 	;	'$lgt_pp_calls_non_terminal_'(Functor, Arity) ->
 		throw(permission_error(modify, predicate_interpretation, Functor//Arity))
 	;	assertz('$lgt_pp_dynamic_'(Functor, ExtArity)),
