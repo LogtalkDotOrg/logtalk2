@@ -18283,10 +18283,6 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_mt_threaded_and_exit'(Result, Id, Results).
 
 
-'$lgt_mt_threaded_and_exit'(terminate, _, Results) :-
-	'$lgt_mt_threaded_call_cancel'(Results),
-	throw('$lgt_terminated').
-
 % messages can arrive out-of-order; if that's the case we need to keep looking for the
 % thread result that lead to the termination of the other threads
 
@@ -18294,6 +18290,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_mt_threaded_record_result'(Results, Id, exception(Error)),
 	(	Error == '$lgt_terminated' ->
 		'$lgt_mt_threaded_and_exit'(Results)
+	;	Error == '$lgt_aborted' ->
+		'$lgt_mt_threaded_call_cancel'(Results),
+		throw('$lgt_terminated')
 	;	'$lgt_mt_threaded_call_cancel'(Results),
 		throw(Error)
 	).
@@ -18353,10 +18352,6 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_mt_threaded_or_exit'(Result, Id, Results).
 
 
-'$lgt_mt_threaded_or_exit'(terminate, _, Results) :-
-	'$lgt_mt_threaded_call_cancel'(Results),
-	throw('$lgt_terminated').
-
 % messages can arrive out-of-order; if that's the case we need to keep looking for the
 % thread result that lead to the termination of the other threads
 
@@ -18364,6 +18359,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_mt_threaded_record_result'(Results, Id, exception(Error)),
 	(	Error == '$lgt_terminated' ->
 		'$lgt_mt_threaded_or_exit'(Results)
+	;	Error == '$lgt_aborted' ->
+		'$lgt_mt_threaded_call_cancel'(Results),
+		throw('$lgt_terminated')
 	;	'$lgt_mt_threaded_call_cancel'(Results),
 		throw(Error)
 	).
@@ -18454,7 +18452,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_mt_threaded_call_abort'([]).
 
 '$lgt_mt_threaded_call_abort'([id(Id, _, _)| Ids]) :-
-	catch(thread_signal(Id, thread_send_message(Id, '$lgt_result'(_, terminate))), _, true),
+	catch(thread_signal(Id, throw('$lgt_aborted')), _, true),
 	'$lgt_mt_threaded_call_abort'(Ids).
 
 
