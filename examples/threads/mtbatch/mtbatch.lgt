@@ -2,9 +2,9 @@
 :- object(mtbatch).
 
 	:- info([
-		version is 1.3,
+		version is 1.4,
 		author is 'Paulo Moura',
-		date is 2010/02/01,
+		date is 2011/04/03,
 		comment is 'Multi-threading benchmarks. Supports SWI-Prolog, XSB, and YAP.']).
 
 	:- threaded.
@@ -143,15 +143,19 @@
 			(	Threads is truncate(3**T),
 				put_char('\t'), write(Threads)
 			)), nl,
-		write((21,14,7)),
-		loop::forto(T, 0, 5,
-			(	Threads is truncate(3**T),
-				catch(run(tak(Threads, 21, 14, 7), N, Average), Error, write_error) ->
-				(	var(Error) ->
-					write_average(Average)
-				;	true
-				)
-			)), nl, nl.
+		loop::forto(Z, 7, 11,
+			(	X is 3*Z,
+				Y is 2*Z,
+				write((X, Y, Z)),
+				loop::forto(T, 0, 5,
+					(	Threads is truncate(3**T),
+						catch(run(tak(Threads, X, Y, Z), N, Average), Error, write_error) ->
+						(	var(Error) ->
+							write_average(Average)
+						;	true
+						)
+					)), nl
+			)), nl.
 
 	% fast Fourier transform benchmarks:
 	run(fft, N) :-

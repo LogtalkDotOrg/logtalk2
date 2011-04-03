@@ -85,6 +85,9 @@ RELEASE NOTES
     creation of a very large number of unnecessary choice points. Thanks to
     Timon Van Overveldt for the bug report.
 
+    Updated the "mtbatch" multi-threading example in order to provide expanded
+    benchmarking of the "tak" example.
+
     Updated the MacPorts portfile and the script that updates it in order to
     remove the calculation of the MD5 checksum, which is being phased out by
     MacPorts.
