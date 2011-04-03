@@ -39,6 +39,11 @@ RELEASE NOTES
     predicate with the catch/3 built-in predicate by simplifying handling of
     both master and slave threads, which also improves performance.
 
+    Corrected a bug in the implementation of the threaded/1 multi-threading
+    built-in predicate where failure by the user to specify independent goals
+    when attempting to use independent and-parallelism would result in zombie
+    threads.
+
     More informative exception terms when attempting to declare a synchronized
     predicate as dynamic or a dynamic predicate as synchronized.
 

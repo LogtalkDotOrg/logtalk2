@@ -18298,10 +18298,12 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	).
 
 '$lgt_mt_threaded_and_exit'(true(TVars), Id, Results) :-
-	'$lgt_mt_threaded_and_add_result'(Results, Id, TVars, Continue),
-	(	Continue == false ->
-		'$lgt_mt_threaded_call_join'(Results)
-	;	'$lgt_mt_threaded_and_exit'(Results)
+	(	'$lgt_mt_threaded_and_add_result'(Results, Id, TVars, Continue) ->
+		(	Continue == false ->
+			'$lgt_mt_threaded_call_join'(Results)
+		;	'$lgt_mt_threaded_and_exit'(Results)
+		)
+	;	'$lgt_mt_threaded_and_exit'(false, Id, Results)
 	).
 
 '$lgt_mt_threaded_and_exit'(false, Id, Results) :-
