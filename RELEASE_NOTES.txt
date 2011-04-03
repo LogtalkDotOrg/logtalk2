@@ -80,6 +80,11 @@ RELEASE NOTES
     Updated the "coinduction" example, adding an experimental keysort/2
     coinductive predicate. Thanks to Jan Burse for the suggestion.
 
+    Updated the "tak" multi-threading example where a missing cut would result
+    in quickly exhausting the local stack when using SWI-Prolog due to the
+    creation of a very large number of unnecessary choice points. Thanks to
+    Timon Van Overveldt for the bug report.
+
     Updated the MacPorts portfile and the script that updates it in order to
     remove the calculation of the MD5 checksum, which is being phased out by
     MacPorts.
