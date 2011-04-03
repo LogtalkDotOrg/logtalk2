@@ -18283,12 +18283,11 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_mt_threaded_and_exit'(Result, Id, Results).
 
 
-% messages can arrive out-of-order; if that's the case we need to keep looking for the
-% thread result that lead to the termination of the other threads
-
 '$lgt_mt_threaded_and_exit'(exception(Error), Id, Results) :-
 	'$lgt_mt_threaded_record_result'(Results, Id, exception(Error)),
 	(	Error == '$lgt_terminated' ->
+		% messages can arrive out-of-order; if that's the case we need to keep looking
+		% for the thread result that lead to the termination of the other threads
 		'$lgt_mt_threaded_and_exit'(Results)
 	;	Error == '$lgt_aborted' ->
 		'$lgt_mt_threaded_call_cancel'(Results),
@@ -18303,7 +18302,10 @@ current_logtalk_flag(version, version(2, 42, 4)).
 			'$lgt_mt_threaded_call_join'(Results)
 		;	'$lgt_mt_threaded_and_exit'(Results)
 		)
-	;	'$lgt_mt_threaded_and_exit'(false, Id, Results)
+	;	% adding a successful result can fail if the individual thread goals
+		% are not independent (i.e. they share variables with the same or
+		% partially the same role leading to unification failures)
+		'$lgt_mt_threaded_and_exit'(false, Id, Results)
 	).
 
 '$lgt_mt_threaded_and_exit'(false, Id, Results) :-
@@ -18319,15 +18321,18 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 '$lgt_mt_threaded_and_add_result'([id(Id, TVars, true)| Results], Id, TVars, Continue) :-
 	!,
-	(	var(Continue) ->	% we still don't know if there are any pending results
+	(	var(Continue) ->
+		% we still don't know if there are any pending results
 		'$lgt_mt_threaded_and_continue'(Results, Continue)
 	;	true
 	).
 
 '$lgt_mt_threaded_and_add_result'([id(_, _, Done)| Results], Id, TVars, Continue) :-
 	(	var(Done) ->
-		Continue = true		% we found a thread whose result is still pending
-	;	true				% otherwise continue examining the remaining thread results
+		% we found a thread whose result is still pending
+		Continue = true
+	;	% otherwise continue examining the remaining thread results
+		true
 	),
 	'$lgt_mt_threaded_and_add_result'(Results, Id, TVars, Continue).
 
@@ -18354,12 +18359,11 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	'$lgt_mt_threaded_or_exit'(Result, Id, Results).
 
 
-% messages can arrive out-of-order; if that's the case we need to keep looking for the
-% thread result that lead to the termination of the other threads
-
 '$lgt_mt_threaded_or_exit'(exception(Error), Id, Results) :-
 	'$lgt_mt_threaded_record_result'(Results, Id, exception(Error)),
 	(	Error == '$lgt_terminated' ->
+		% messages can arrive out-of-order; if that's the case we need to keep looking
+		% for the thread result that lead to the termination of the other threads
 		'$lgt_mt_threaded_or_exit'(Results)
 	;	Error == '$lgt_aborted' ->
 		'$lgt_mt_threaded_call_cancel'(Results),
@@ -18406,8 +18410,10 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 '$lgt_mt_threaded_or_record_failure'([id(_, _, Result)| Results], Id, Continue) :-
 	(	var(Result) ->
-		Continue = true		% we found a thread whose result is still pending
-	;	true				% otherwise continue examining the remaining thread results
+		% we found a thread whose result is still pending
+		Continue = true
+	;	% otherwise continue examining the remaining thread results
+		true
 	),
 	'$lgt_mt_threaded_or_record_failure'(Results, Id, Continue).
 
@@ -18467,8 +18473,9 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 '$lgt_mt_threaded_call_join'([id(Id, _, Result)| Results]) :-
 	(	var(Result) ->
-		thread_get_message('$lgt_result'(Id, _))	% don't leak thread results as
-	;	true										% threads may reuse identifiers
+		% don't leak thread results as threads may reuse identifiers
+		thread_get_message('$lgt_result'(Id, _))
+	;	true
 	),
 	catch(thread_join(Id, _), _, true),
 	'$lgt_mt_threaded_call_join'(Results).
