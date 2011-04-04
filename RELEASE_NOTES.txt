@@ -60,6 +60,9 @@ RELEASE NOTES
     Updated the YAP config file in order to ignore the style_check/1 directive
     and to interpret the yap_flag/2 directive as a set_prolog_flag/2 directive.
 
+    Changed the default XSL-FO processor (used to generate the PDF versions of
+    the User and Reference manuals) from XEP to FOP.
+
     Updated the "xml_parser" contribution in order to workaround portability
     issues with Qu-Prolog, SICStus Prolog, and XSB.
 
