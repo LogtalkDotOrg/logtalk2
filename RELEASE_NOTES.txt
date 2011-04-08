@@ -22,6 +22,10 @@ RELEASE NOTES
     of a Logtalk source file when a Prolog file with the same name exists on
     the same lookup directory.
 
+    Updated the SWI-Prolog integration files in order to hide the sources
+    of the Logtalk (::)/2 and (<<)/2 built-in predicates from this compiler
+    debugging tools.
+
 
 2.42.4 - April 4, 2011
 

@@ -27,6 +27,9 @@
 :- op(600,  fy,  :).
 :- op(400, yfx, >>).
 
+:- '$hide'((::)/2).
+:- '$hide'((<<)/2).
+
 :- noprofile((
 	'$lgt_before_event_'/5, '$lgt_after_event_'/5,
 	'$lgt_current_protocol_'/5, '$lgt_current_category_'/6, '$lgt_current_object_'/11,
