@@ -15,6 +15,9 @@ RELEASE NOTES
 
 2.43.0 - May ??, 2011
 
+    Updated the Logtalk compiler in order to save the entity clause locations
+    and make this information available to back-end Prolog compilers.
+
     Updated the SWI-Prolog config file in order to avoid preventing loading
     of a Logtalk source file when a Prolog file with the same name exists on
     the same lookup directory.
