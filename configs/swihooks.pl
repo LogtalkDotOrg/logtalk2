@@ -13,7 +13,7 @@
 %  load Logtalk files using SWI Prolog consult/1, to support edit/1 and
 %  make/0, and to improve usability when using the XPCE profiler
 %
-%  last updated: February 24, 2011
+%  last updated: April 9, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -25,6 +25,7 @@
 user:prolog_load_file(_:Spec, Options) :-
 	\+ '$lgt_member'(must_be_module(true), Options),	% exclude calls to use_module/1-2
 	\+ '$lgt_member'(if(not_loaded), Options),			% exclude calls to ensure_loaded/1
+	\+ absolute_file_name(Spec, [extensions([pl]), access(read), file_errors(fail)], Path),
 	(	atom(Spec) ->
 		expand_file_name(Spec, [SpecExp]),
 		absolute_file_name(SpecExp, [extensions([lgt]), access(read), file_errors(fail)], Path)

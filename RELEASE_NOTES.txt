@@ -15,7 +15,9 @@ RELEASE NOTES
 
 2.43.0 - May ??, 2011
 
-    
+    Updated the SWI-Prolog config file in order to avoid preventing loading
+    of a Logtalk source file when a Prolog file with the same name exists on
+    the same lookup directory.
 
 
 2.42.4 - April 4, 2011
