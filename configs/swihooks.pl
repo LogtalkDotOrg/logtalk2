@@ -56,7 +56,6 @@ user:prolog_load_file(_:Spec, Options) :-
 	'$lgt_swi_filter_compiler_options'(Options, Options2).
 
 
-
 :- multifile(prolog_edit:locate/3).
 
 prolog_edit:locate(Name, source_file(Source), [file(Source)]) :-
@@ -68,7 +67,6 @@ prolog_edit:locate(Name, source_file(Source), [file(Source)]) :-
 	file_name_extension(Plain, 'lgt', Source),
 	exists_file(Source),
 	!.
-
 
 
 :- multifile(user:prolog_predicate_name/2).
@@ -104,3 +102,46 @@ user:prolog_predicate_name(Goal, Label) :-
 	;	functor(Entity, EFunctor, EArity),
 		atomic_list_concat([EFunctor, '/', EArity, '::', Functor, '/', Arity], Label)
 	).
+
+
+:- multifile(prolog_clause:unify_clause/5).
+
+prolog_clause:unify_clause((Head :- Body), (user:THead :- TBody), _, TermPos0, TermPos) :-
+	functor(THead, TFunctor, _),
+	atom_concat('.$', _, TFunctor),
+	'$lgt_decompile_debug_clause'((THead :- TBody), (Head :- Body)),
+	TermPos0 = term_position(From, To, FFrom, FTo, [H, B0]),
+	TermPos = term_position(From, To, FFrom, FTo, [H, B]),
+	B = term_position(0,0,0,0,[0-0,B0]).
+prolog_clause:unify_clause((Head :- Body), user:THead, _, TermPos0, TermPos) :-
+	functor(THead, TFunctor, _),
+	atom_concat('.$', _, TFunctor),
+	'$lgt_decompile_debug_clause'(THead, (Head :- Body)),
+	TermPos0 = term_position(From, To, FFrom, FTo, [H, B0]),
+	TermPos = term_position(From, To, FFrom, FTo, [H, B]),
+	B = term_position(0,0,0,0,[0-0,B0]).
+prolog_clause:unify_clause(Head, user:THead, _, TermPos0, TermPos) :-
+	functor(THead, TFunctor, _),
+	atom_concat('.$', _, TFunctor),
+	'$lgt_decompile_debug_clause'(THead, Head),
+	TermPos0 = term_position(From, To, FFrom, FTo, [H, B0]),
+	TermPos = term_position(From, To, FFrom, FTo, [H, B]),
+	B = term_position(0,0,0,0,[0-0,B0]).
+
+
+:- multifile(prolog_clause:make_varnames/5).
+
+prolog_clause:make_varnames(_, (user:THead :- _), Offsets, Names, Bindings) :-
+	functor(THead, TFunctor, Arity),
+	atom_concat('.$', _, TFunctor), !,
+	N is Arity - 1,
+	memberchk(N=IVar, Offsets),
+	Names1 = ['[Sender, This, Self, MetaVars, CoinductionStack]'=IVar| Names],
+	prolog_clause:make_varnames(xx, xx, Offsets, Names1, Bindings).
+
+
+:- multifile(user:portray/1).
+:- dynamic(user:portray/1).
+
+user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
+	writeq([Sender, This, Self, MetaVars, CoinductionStack]).
