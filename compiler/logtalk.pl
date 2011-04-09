@@ -6663,11 +6663,7 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	(	var(Term) ->
 		throw(error(instantiantion_error, {Term}))
 	;	'$lgt_pp_entity'(_, _, _, _, _) ->
-		(	'$lgt_pp_term_position_'(Line-_),
-			'$lgt_pp_file_path_'(File, Path) ->
-			Location = Path+File+Line
-		;	Location = none
-		),
+		'$lgt_pp_term_location'(Location),
 		% ensure that the relative order of the entity terms is kept
 		assertz('$lgt_pp_entity_clause_'({Term}, Location))
 	;	% non-entity terms
@@ -8972,20 +8968,12 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	(	'$lgt_compiler_flag'(debug, on) ->
 		(	'$lgt_comp_ctx_mode'(HeadCtx, compile(aux)) ->
 			assertz('$lgt_pp_entity_aux_clause_'(DClause))
-		;	(	'$lgt_pp_term_position_'(Line-_),
-				'$lgt_pp_file_path_'(File, Path) ->
-				Location = Path+File+Line
-			;	Location = none
-			),
+		;	'$lgt_pp_term_location'(Location),
 			assertz('$lgt_pp_entity_clause_'(DClause, Location))
 		)
 	;	(	'$lgt_comp_ctx_mode'(HeadCtx, compile(aux)) ->
 			assertz('$lgt_pp_entity_aux_clause_'(TClause))
-		;	(	'$lgt_pp_term_position_'(Line-_),
-				'$lgt_pp_file_path_'(File, Path) ->
-				Location = Path+File+Line
-			;	Location = none
-			),
+		;	'$lgt_pp_term_location'(Location),
 			assertz('$lgt_pp_entity_clause_'(TClause, Location))
 		)
 	),
@@ -12831,6 +12819,20 @@ current_logtalk_flag(version, version(2, 42, 4)).
 	\+ '$lgt_pp_category_'(Ctg, _, _, _, _, _),			% not the category being compiled (self reference)
 	\+ '$lgt_pp_entity_init_'(category, Ctg, _),		% not a category defined in the source file being compiled
 	\+ '$lgt_pp_file_relation_clause_'('$lgt_current_category_'(Ctg, _, _, _, _, _)).
+
+
+
+% '$lgt_pp_term_location'(-compound)
+%
+% returns the location of the last source file term read;
+% returns the atom "none" if the location information is not available
+
+'$lgt_pp_term_location'(Location) :-
+	(	'$lgt_pp_term_position_'(Line-_),
+		'$lgt_pp_file_path_'(File, Path) ->
+		Location = Path+File+Line
+	;	Location = none
+	).
 
 
 
