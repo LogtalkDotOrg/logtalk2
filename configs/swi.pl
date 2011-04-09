@@ -806,6 +806,7 @@ user:goal_expansion(phrase(Rule, Input), '$lgt_phrase'(Rule, Input, ExCtx)) :-
 % '$lgt_write_entity_term_hook'(@stream, @callable, @callable)
 
 '$lgt_write_entity_term_hook'(Stream, Term, Path+Source+Line) :-
+	'$lgt_compiler_flag'(debug, on),
 	atom_concat(Path, Source, File),
 	write_canonical(Stream, '$source_location'(File,Line):Term),
 	write(Stream, '.'),
