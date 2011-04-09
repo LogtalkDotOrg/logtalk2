@@ -113,20 +113,13 @@ prolog_clause:unify_clause((Head :- Body), (user:THead :- TBody), _, TermPos0, T
 	TermPos0 = term_position(From, To, FFrom, FTo, [H, B0]),
 	TermPos = term_position(From, To, FFrom, FTo, [H, B]),
 	B = term_position(0,0,0,0,[0-0,B0]).
-prolog_clause:unify_clause((Head :- Body), user:THead, _, TermPos0, TermPos) :-
+prolog_clause:unify_clause(Head, (user:THead :- TBody), _, TermPos0, TermPos) :-
 	functor(THead, TFunctor, _),
 	atom_concat('.$', _, TFunctor),
-	'$lgt_decompile_debug_clause'(THead, (Head :- Body)),
-	TermPos0 = term_position(From, To, FFrom, FTo, [H, B0]),
+	'$lgt_decompile_debug_clause'((THead :- TBody), Head),
+	TermPos0 = term_position(From, To, FFrom, FTo, [H]),
 	TermPos = term_position(From, To, FFrom, FTo, [H, B]),
-	B = term_position(0,0,0,0,[0-0,B0]).
-prolog_clause:unify_clause(Head, user:THead, _, TermPos0, TermPos) :-
-	functor(THead, TFunctor, _),
-	atom_concat('.$', _, TFunctor),
-	'$lgt_decompile_debug_clause'(THead, Head),
-	TermPos0 = term_position(From, To, FFrom, FTo, [H, B0]),
-	TermPos = term_position(From, To, FFrom, FTo, [H, B]),
-	B = term_position(0,0,0,0,[0-0,B0]).
+	B = term_position(0,0,0,0,[0-0,_]).
 
 
 :- multifile(prolog_clause:make_varnames/5).

@@ -2153,7 +2153,7 @@ current_logtalk_flag(Flag, Value) :-
 current_logtalk_flag(Flag, Value) :-
 	'$lgt_prolog_feature'(Flag, Value).
 
-current_logtalk_flag(version, version(2, 42, 4)).
+current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
@@ -5155,15 +5155,24 @@ current_logtalk_flag(version, version(2, 42, 4)).
 '$lgt_decompile_debug_clause'((_ :- '$lgt_debugger.fact'(Fact, _, _)), Fact).
 
 
+'$lgt_decompile_debug_clause_body'(('$lgt_debugger.goal'(!, true, _), !), !) :-
+	!.
+
 '$lgt_decompile_debug_clause_body'((TGoal1, TGoal2), (Goal1, Goal2)) :-
 	'$lgt_decompile_debug_clause_body'(TGoal1, Goal1),
 	'$lgt_decompile_debug_clause_body'(TGoal2, Goal2).
+
 '$lgt_decompile_debug_clause_body'((TGoal1; TGoal2), (Goal1; Goal2)) :-
 	'$lgt_decompile_debug_clause_body'(TGoal1, Goal1),
 	'$lgt_decompile_debug_clause_body'(TGoal2, Goal2).
+
 '$lgt_decompile_debug_clause_body'((TGoal1 -> TGoal2), (Goal1 -> Goal2)) :-
 	'$lgt_decompile_debug_clause_body'(TGoal1, Goal1),
 	'$lgt_decompile_debug_clause_body'(TGoal2, Goal2).
+
+'$lgt_decompile_debug_clause_body'(Var^TGoal, Var^Goal) :-
+	'$lgt_decompile_debug_clause_body'(TGoal, Goal).
+
 '$lgt_decompile_debug_clause_body'('$lgt_debugger.goal'(Head, _, _), Head).
 
 
@@ -10580,10 +10589,11 @@ current_logtalk_flag(version, version(2, 42, 4)).
 
 % predicates specified in uses/2 directives
 
-'$lgt_tr_body'(Alias, TPred, DPred, Ctx) :-
+'$lgt_tr_body'(Alias, TPred, '$lgt_debugger.goal'(Alias, TPred, ExCtx), Ctx) :-
 	'$lgt_pp_uses_predicate_'(Obj, Pred, Alias),
 	!,
-	'$lgt_tr_body'(Obj::Pred, TPred, DPred, Ctx).
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+	'$lgt_tr_body'(Obj::Pred, TPred, _, Ctx).
 
 
 % call to a meta-predicate from a user-defined meta-predicate:
