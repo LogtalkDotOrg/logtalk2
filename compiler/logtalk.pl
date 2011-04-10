@@ -5158,6 +5158,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_decompile_debug_clause_body'(('$lgt_debugger.goal'(!, true, _), !), !) :-
 	!.
 
+'$lgt_decompile_debug_clause_body'(('$lgt_debugger.goal'(!, true, _), !, TGoal2), (!, Goal2)) :-
+	!,
+	'$lgt_decompile_debug_clause_body'(TGoal2, Goal2).
+
 '$lgt_decompile_debug_clause_body'((TGoal1, TGoal2), (Goal1, Goal2)) :-
 	'$lgt_decompile_debug_clause_body'(TGoal1, Goal1),
 	'$lgt_decompile_debug_clause_body'(TGoal2, Goal2).
