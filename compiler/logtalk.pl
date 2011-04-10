@@ -5154,6 +5154,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_decompile_debug_clause'((_ :- '$lgt_debugger.fact'(Fact, _, _)), Fact).
 
+'$lgt_decompile_debug_clause_body'(A = B, A = B).	% may result from the compilation of grammar rules
 
 '$lgt_decompile_debug_clause_body'(('$lgt_debugger.goal'(!, true, _), !), !) :-
 	!.
