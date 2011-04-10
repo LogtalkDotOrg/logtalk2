@@ -104,27 +104,31 @@ user:prolog_predicate_name(Goal, Label) :-
 	).
 
 
-:- multifile(prolog_clause:unify_clause/5).
+:- multifile(prolog_clause:unify_clause_hook/5).
 
-prolog_clause:unify_clause((Head :- Body), (user:THead :- TBody), _, TermPos0, TermPos) :-
+prolog_clause:unify_clause_hook((Head :- Body), (user:THead :- TBody), _, TermPos0, TermPos) :-
 	functor(THead, TFunctor, _),
 	atom_concat('.$', _, TFunctor),
 	'$lgt_decompile_debug_clause'((THead :- TBody), (Head :- Body)),
 	TermPos0 = term_position(From, To, FFrom, FTo, [H, B0]),
 	TermPos = term_position(From, To, FFrom, FTo, [H, B]),
 	B = term_position(0,0,0,0,[0-0,B0]).
-prolog_clause:unify_clause(Head, (user:THead :- TBody), _, TermPos0, TermPos) :-
+prolog_clause:unify_clause_hook(Head, (user:THead :- TBody), _, TermPos0, TermPos) :-
 	functor(THead, TFunctor, _),
 	atom_concat('.$', _, TFunctor),
 	'$lgt_decompile_debug_clause'((THead :- TBody), Head),
-	TermPos0 = term_position(From, To, FFrom, FTo, [H]),
-	TermPos = term_position(From, To, FFrom, FTo, [H, B]),
-	B = term_position(0,0,0,0,[0-0,_]).
+	(	TermPos0 = term_position(From, To, FFrom, FTo, [H, B0]) ->
+		TermPos = term_position(From, To, FFrom, FTo, [H, B]),
+		B = term_position(0,0,0,0,[0-0,B0])
+	;	TermPos0 = term_position(From, To, FFrom, FTo, [H| B0]),
+		TermPos = term_position(From, To, FFrom, FTo, [H, B]),
+		B = term_position(0,0,0,0,[0-0| B0])	
+	).
 
 
-:- multifile(prolog_clause:make_varnames/5).
+:- multifile(prolog_clause:make_varnames_hook/5).
 
-prolog_clause:make_varnames(_, (user:THead :- _), Offsets, Names, Bindings) :-
+prolog_clause:make_varnames_hook(_, (user:THead :- _), Offsets, Names, Bindings) :-
 	functor(THead, TFunctor, Arity),
 	atom_concat('.$', _, TFunctor), !,
 	N is Arity - 1,
