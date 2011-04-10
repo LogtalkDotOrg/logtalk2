@@ -1,8 +1,6 @@
 
 :- if(current_logtalk_flag(prolog_dialect, ciao)).
 	:- use_module(library(system)).
-:- elif(current_logtalk_flag(prolog_dialect, eclipse)).
-	:- use_module(library(calendar)).
 :- elif(current_logtalk_flag(prolog_dialect, xsb)).
 	:- import(from(/(expand_atom,2), standard)).
 	:- import(from(/(xsb_configuration,2), xsb_configuration)).
@@ -13,9 +11,9 @@
 	implements(osp)).
 
 	:- info([
-		version is 1.8,
+		version is 1.9,
 		author is 'Paulo Moura',
-		date is 2011/02/04,
+		date is 2011/04/10,
 		comment is 'Simple example of using conditional compilation to implement a portable operating-system interface for selected back-end Prolog compilers.']).
 
 	:- if(current_logtalk_flag(prolog_dialect, swi)).
@@ -457,21 +455,17 @@
 
 	:- elif(current_logtalk_flag(prolog_dialect, eclipse)).
 
-		shell(Command, Status) :-	% code copied from the ECLiPSe libraries
+		shell(Command, Status) :-	% for UNIX anyway...
 			{getenv('SHELL', Shell),
-			 concat_string([Shell, ' -c "', Command, '"'], String),
-			 exec(sh, [S], Pid),
-			 printf(S, '%w\nexit\n%b', String),
-			 close(S),
-			 wait(Pid, Status)}.
+			 exec([Shell,'-c',Command], [], Pid),
+			 wait(Pid, Code),
+			 Status is Code >> 8 /\ 255}.
 
 		shell(Command) :-
 			{system(Command)}.
 
 		expand_path(Path, ExpandedPath) :-
-			{atom_string(Path, PathString),
-			 canonical_path_name(PathString, ExpandedPathString),
-			 atom_string(ExpandedPath, ExpandedPathString)}.
+			{canonical_path_name(Path, ExpandedPath)}.	% works with strings and atoms
 
 		make_directory(Directory) :-
 			{mkdir(Directory)}.
@@ -483,7 +477,8 @@
 			{cd(Directory)}.
 
 		working_directory(Directory) :-
-			{getcwd(Directory)}.
+			{getcwd(DirectoryString),
+			 atom_string(Directory, DirectoryString)}.
 
 		directory_exists(Directory) :-
 			{exists(Directory)}.
@@ -504,15 +499,15 @@
 			{rename(Old, New)}.
 
 		environment_variable(Variable, Value) :-
-			{getenv(Variable, Value)}.
+			{getenv(Variable, ValueString),
+			 atom_string(Value, ValueString)}.
 
 		time_stamp(Time) :-
-			{mjd_now(Time)}.
+			{get_flag(unix_time, Time)}.
 
 		date_time(Year, Month, Day, Hours, Mins, Secs, 0) :-
-			{mjd_now(MJD),
-			 mjd_to_date(MJD, '/'('/'(Day, Month), Year)),
-			 mjd_to_time(MJD, ':'(Hours, ':'(Mins, Secs)))}.
+			{get_flag(unix_time, Time),
+			 local_time(Year, Month, Day, Hours, Mins, Secs, _, Time)}.
 
 		cpu_time(Time) :-
 			{cputime(Time)}.

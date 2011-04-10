@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#141 and later versions
 %
-%  last updated: April 9, 2011
+%  last updated: April 10, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -328,9 +328,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % expands a file path to a full path
 
 '$lgt_expand_path'(Path, ExpandedPath) :-
-	atom_string(Path, PathString),
-	canonical_path_name(PathString, ExpandedPathString),
-	atom_string(ExpandedPath, ExpandedPathString).
+	canonical_path_name(Path, ExpandedPath).
 
 
 % '$lgt_file_exists'(+atom)
@@ -354,8 +352,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 % checks if a directory exists
 
 '$lgt_directory_exists'(Directory) :-
-	atom_string(Directory, DirectoryString),
-	canonical_path_name(DirectoryString, Path),
+	canonical_path_name(Directory, Path),
 	exists(Path).
 
 

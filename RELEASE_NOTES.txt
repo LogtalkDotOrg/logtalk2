@@ -18,6 +18,9 @@ RELEASE NOTES
     Updated the Logtalk compiler in order to save the entity clause locations
     and make this information available to back-end Prolog compilers.
 
+    When debugging messages specified in uses/2 directives, the message is now
+    printed implicitly qualified as in the source code written by the user.
+
     Updated the SWI-Prolog config file in order to avoid preventing loading
     of a Logtalk source file when a Prolog file with the same name exists on
     the same lookup directory.
@@ -25,6 +28,12 @@ RELEASE NOTES
     Updated the SWI-Prolog integration files in order to hide the sources
     of the Logtalk (::)/2 and (<<)/2 built-in predicates from this compiler
     debugging tools.
+
+    Updated the ECLiPSe config file, simplifying some of the file handling
+    predicates.
+
+    Updated the "os" example with bug fixes and improvements for ECLiPSe
+    contributed by Joachim Schimpf.
 
 
 2.42.4 - April 4, 2011
