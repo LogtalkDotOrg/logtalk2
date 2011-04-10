@@ -13,7 +13,7 @@
 %  load Logtalk files using SWI Prolog consult/1, to support edit/1 and
 %  make/0, and to improve usability when using the XPCE profiler
 %
-%  last updated: April 9, 2011
+%  last updated: April 10, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -108,21 +108,25 @@ user:prolog_predicate_name(Goal, Label) :-
 
 prolog_clause:unify_clause_hook((Head :- Body), (user:THead :- TBody), _, TermPos0, TermPos) :-
 	functor(THead, TFunctor, _),
-	atom_concat('.$', _, TFunctor),
+	'$lgt_default_flag'(code_prefix, CodePrefix),
+	atom_concat('.', CodePrefix, DebugCodePrefix),
+	atom_concat(DebugCodePrefix, _, TFunctor),
 	'$lgt_decompile_debug_clause'((THead :- TBody), (Head :- Body)),
 	TermPos0 = term_position(From, To, FFrom, FTo, [H, B0]),
 	TermPos = term_position(From, To, FFrom, FTo, [H, B]),
 	B = term_position(0,0,0,0,[0-0,B0]).
 prolog_clause:unify_clause_hook(Head, (user:THead :- TBody), _, TermPos0, TermPos) :-
 	functor(THead, TFunctor, _),
-	atom_concat('.$', _, TFunctor),
+	'$lgt_default_flag'(code_prefix, CodePrefix),
+	atom_concat('.', CodePrefix, DebugCodePrefix),
+	atom_concat(DebugCodePrefix, _, TFunctor),
 	'$lgt_decompile_debug_clause'((THead :- TBody), Head),
 	(	TermPos0 = term_position(From, To, FFrom, FTo, [H, B0]) ->
 		TermPos = term_position(From, To, FFrom, FTo, [H, B]),
 		B = term_position(0,0,0,0,[0-0,B0])
 	;	TermPos0 = term_position(From, To, FFrom, FTo, [H| B0]),
 		TermPos = term_position(From, To, FFrom, FTo, [H, B]),
-		B = term_position(0,0,0,0,[0-0| B0])	
+		B = term_position(0,0,0,0,[0-0| B0])
 	).
 
 
@@ -130,7 +134,9 @@ prolog_clause:unify_clause_hook(Head, (user:THead :- TBody), _, TermPos0, TermPo
 
 prolog_clause:make_varnames_hook(_, (user:THead :- _), Offsets, Names, Bindings) :-
 	functor(THead, TFunctor, Arity),
-	atom_concat('.$', _, TFunctor), !,
+	'$lgt_default_flag'(code_prefix, CodePrefix),
+	atom_concat('.', CodePrefix, DebugCodePrefix),
+	atom_concat(DebugCodePrefix, _, TFunctor),
 	N is Arity - 1,
 	memberchk(N=IVar, Offsets),
 	Names1 = ['[Sender, This, Self, MetaVars, CoinductionStack]'=IVar| Names],
