@@ -15,6 +15,12 @@ RELEASE NOTES
 
 2.43.0 - May ??, 2011
 
+    Simplified the compilation of grammar rules by removing the support for
+    dealing with non-terminal scope and existence errors at the grammar rule
+    level instead of the predicate level. Although this feature could be
+    helpful when debugging grammar rules, it complicated the integration of
+    Logtalk with Prolog-native development tools.
+
     Updated the Logtalk compiler in order to save the entity clause locations
     and make this information available to back-end Prolog compilers.
 
