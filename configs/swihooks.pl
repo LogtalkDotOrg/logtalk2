@@ -106,6 +106,13 @@ user:prolog_predicate_name(Goal, Label) :-
 
 :- multifile(prolog_clause:unify_clause_hook/5).
 
+prolog_clause:unify_clause_hook((NonTerminal --> GRBody), (user:THead :- TBody), Module, TermPos0, TermPos) :-
+	functor(THead, TFunctor, _),
+	'$lgt_default_flag'(code_prefix, CodePrefix),
+	atom_concat('.', CodePrefix, DebugCodePrefix),
+	atom_concat(DebugCodePrefix, _, TFunctor),
+	logtalk::expand_term((NonTerminal --> GRBody), Clause),
+	prolog_clause:unify_clause_hook(Clause, (user:THead :- TBody), Module, TermPos0, TermPos).
 prolog_clause:unify_clause_hook((Head :- Body), (user:THead :- TBody), _, TermPos0, TermPos) :-
 	functor(THead, TFunctor, _),
 	'$lgt_default_flag'(code_prefix, CodePrefix),
@@ -132,6 +139,22 @@ prolog_clause:unify_clause_hook(Head, (user:THead :- TBody), _, TermPos0, TermPo
 
 :- multifile(prolog_clause:make_varnames_hook/5).
 
+prolog_clause:make_varnames_hook((Head --> _), (user:THead :- _), Offsets, Names, Bindings) :-
+	functor(THead, TFunctor, THeadArity),
+	'$lgt_default_flag'(code_prefix, CodePrefix),
+	atom_concat('.', CodePrefix, DebugCodePrefix),
+	atom_concat(DebugCodePrefix, _, TFunctor),
+	N is THeadArity - 1,
+	memberchk(N=EVar, Offsets),
+	Names1 = ['<Sender, This, Self, MetaVars, CoinductionStack>'=EVar| Names],
+	functor(Head, _, HeadArity),
+	In is HeadArity,
+	memberchk(In=IVar, Offsets),
+	Names2 = ['<DCG_list>'=IVar|Names1],
+	Out is HeadArity + 1,
+	memberchk(Out=OVar, Offsets),
+	Names3 = ['<DCG_tail>'=OVar|Names2],
+	prolog_clause:make_varnames(xx, xx, Offsets, Names3, Bindings).
 prolog_clause:make_varnames_hook(_, (user:THead :- _), Offsets, Names, Bindings) :-
 	functor(THead, TFunctor, Arity),
 	'$lgt_default_flag'(code_prefix, CodePrefix),
@@ -139,7 +162,7 @@ prolog_clause:make_varnames_hook(_, (user:THead :- _), Offsets, Names, Bindings)
 	atom_concat(DebugCodePrefix, _, TFunctor),
 	N is Arity - 1,
 	memberchk(N=IVar, Offsets),
-	Names1 = ['[Sender, This, Self, MetaVars, CoinductionStack]'=IVar| Names],
+	Names1 = ['<Sender, This, Self, MetaVars, CoinductionStack>'=IVar| Names],
 	prolog_clause:make_varnames(xx, xx, Offsets, Names1, Bindings).
 
 
@@ -147,4 +170,10 @@ prolog_clause:make_varnames_hook(_, (user:THead :- _), Offsets, Names, Bindings)
 :- dynamic(user:portray/1).
 
 user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
-	writeq([Sender, This, Self, MetaVars, CoinductionStack]).
+	write('<'),
+	writeq(Sender), write(','),
+	writeq(This), write(','),
+	writeq(Self), write(','),
+	writeq(MetaVars), write(','),
+	writeq(CoinductionStack), write(','),
+	write('>').
