@@ -106,27 +106,26 @@ user:prolog_predicate_name(Goal, Label) :-
 
 :- multifile(prolog_clause:unify_clause_hook/5).
 
-prolog_clause:unify_clause_hook((NonTerminal --> GRBody), (user:THead :- TBody), Module, TermPos0, TermPos) :-
+prolog_clause:unify_clause_hook(Clause, (QHead :- TBody), Module, TermPos0, TermPos) :-
+	(	QHead = M:THead ->
+		M == user
+	;	QHead = THead
+	),
 	functor(THead, TFunctor, _),
 	'$lgt_default_flag'(code_prefix, CodePrefix),
 	atom_concat('.', CodePrefix, DebugCodePrefix),
 	atom_concat(DebugCodePrefix, _, TFunctor),
+	'$lgt_swi_prolog_clause:unify_clause_hook'(Clause, (THead :- TBody), Module, TermPos0, TermPos).
+
+'$lgt_swi_prolog_clause:unify_clause_hook'((NonTerminal --> GRBody), (THead :- TBody), Module, TermPos0, TermPos) :-
 	logtalk::expand_term((NonTerminal --> GRBody), Clause),
-	prolog_clause:unify_clause_hook(Clause, (user:THead :- TBody), Module, TermPos0, TermPos).
-prolog_clause:unify_clause_hook((Head :- Body), (user:THead :- TBody), _, TermPos0, TermPos) :-
-	functor(THead, TFunctor, _),
-	'$lgt_default_flag'(code_prefix, CodePrefix),
-	atom_concat('.', CodePrefix, DebugCodePrefix),
-	atom_concat(DebugCodePrefix, _, TFunctor),
+	'$lgt_swi_prolog_clause:unify_clause_hook'(Clause, (THead :- TBody), Module, TermPos0, TermPos).
+'$lgt_swi_prolog_clause:unify_clause_hook'((Head :- Body), (THead :- TBody), _, TermPos0, TermPos) :-
 	'$lgt_decompile_debug_clause'((THead :- TBody), (Head :- Body)),
 	TermPos0 = term_position(From, To, FFrom, FTo, [H, B0]),
 	TermPos = term_position(From, To, FFrom, FTo, [H, B]),
 	B = term_position(0,0,0,0,[0-0,B0]).
-prolog_clause:unify_clause_hook(Head, (user:THead :- TBody), _, TermPos0, TermPos) :-
-	functor(THead, TFunctor, _),
-	'$lgt_default_flag'(code_prefix, CodePrefix),
-	atom_concat('.', CodePrefix, DebugCodePrefix),
-	atom_concat(DebugCodePrefix, _, TFunctor),
+'$lgt_swi_prolog_clause:unify_clause_hook'(Head, (THead :- TBody), _, TermPos0, TermPos) :-
 	'$lgt_decompile_debug_clause'((THead :- TBody), Head),
 	(	TermPos0 = term_position(From, To, FFrom, FTo, [H, B0]) ->
 		TermPos = term_position(From, To, FFrom, FTo, [H, B]),
