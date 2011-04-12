@@ -31,9 +31,12 @@ RELEASE NOTES
     of a Logtalk source file when a Prolog file with the same name exists on
     the same lookup directory.
 
-    Updated the SWI-Prolog integration files in order to hide the sources
+    Updated the SWI-Prolog integration files in order to hide the source code
     of the Logtalk (::)/2 and (<<)/2 built-in predicates from this compiler
     debugging tools.
+
+    Updated the SWI-Prolog hooks file in order to support tracing Logtalk
+    source code using the SWI-Prolog graphical debugger.
 
     Updated the ECLiPSe config file, simplifying some of the file handling
     predicates.
