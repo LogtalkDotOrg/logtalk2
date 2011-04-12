@@ -122,18 +122,12 @@ prolog_clause:unify_clause_hook(Clause, (QHead :- TBody), Module, TermPos0, Term
 	'$lgt_swi_prolog_clause:unify_clause_hook'(Clause, (THead :- TBody), Module, TermPos0, TermPos).
 '$lgt_swi_prolog_clause:unify_clause_hook'((Head :- Body), (THead :- TBody), _, TermPos0, TermPos) :-
 	'$lgt_decompile_debug_clause'((THead :- TBody), (Head :- Body)),
-	TermPos0 = term_position(From, To, FFrom, FTo, [H, B0]),
-	TermPos = term_position(From, To, FFrom, FTo, [H, B]),
-	B = term_position(0,0,0,0,[0-0,B0]).
+	TermPos0 = term_position(From, To, FFrom, FTo, [H, B]),
+	TermPos  = term_position(From, To, FFrom, FTo, [H, term_position(0,0,0,0,[0-0,B])]).
 '$lgt_swi_prolog_clause:unify_clause_hook'(Head, (THead :- TBody), _, TermPos0, TermPos) :-
 	'$lgt_decompile_debug_clause'((THead :- TBody), Head),
-	(	TermPos0 = term_position(From, To, FFrom, FTo, [H, B0]) ->
-		TermPos = term_position(From, To, FFrom, FTo, [H, B]),
-		B = term_position(0,0,0,0,[0-0,B0])
-	;	TermPos0 = term_position(From, To, FFrom, FTo, [H| B0]),
-		TermPos = term_position(From, To, FFrom, FTo, [H, B]),
-		B = term_position(0,0,0,0,[0-0| B0])
-	).
+	TermPos0 = term_position(From, To, FFrom, FTo, P),
+	TermPos  = term_position(From, To, FFrom, FTo, [term_position(From, To, FFrom, FTo, P), term_position(0,0,0,0,[0-0])]).
 
 
 :- multifile(prolog_clause:make_varnames_hook/5).
