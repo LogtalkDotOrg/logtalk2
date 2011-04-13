@@ -11,11 +11,11 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 This directory contains some shell scripts used for Logtalk packaging, 
 installation, and integration with Prolog compilers. Those with extension 
-".sh" are Bourne-compatible shells scripts for MacOS X, Linux, and similar 
-systems. Those with extension ".js" are JScript command-line scripts for 
-Windows; they require WSH 5.6 or later version to be installed and should 
-be run using cscript.exe from a DOS command line shell (you may download 
-WSH 5.6 from http://msdn.microsoft.com/downloads/list/webdev.asp).
+".sh" are bash shells scripts for MacOS X, Linux, and similar systems.
+Those with extension ".js" are JScript command-line scripts for Windows;
+they require WSH 5.6 or later version to be installed and should be run
+using cscript.exe from a DOS command line shell (you may download WSH 5.6
+from http://msdn.microsoft.com/downloads/list/webdev.asp).
 
 build_release.sh
 	helper script for building most of the distribution files of a new 

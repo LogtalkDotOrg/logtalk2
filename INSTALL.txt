@@ -17,11 +17,7 @@ of a set of shell scripts that might be used for Logtalk installation on
 some operating-systems and for easy Logtalk integration with popular Prolog 
 compilers.
 
-Note that the broad compatibility of Logtalk, both with Prolog compilers and 
-operating-systems, together with all the possible user scenarios, means that 
-installation can vary from very simple by running a couple of scripts to the 
-need of patching both Logtalk and Prolog compilers to workaround the lack of 
-strong Prolog standards.
+The POSIX shell scripts assume that "/bin/bash" is available.
 
 
 1. LOGTALK BASIC INSTALLATION

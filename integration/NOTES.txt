@@ -10,7 +10,8 @@ The Perl Foundation. Consult the "LICENSE.txt" file for details.
 
 
 This directory contains Prolog integration shell scripts and corresponding
-auxiliary Prolog files.
+auxiliary Prolog files. The POSIX shell scripts assume that "/bin/bash" is
+available.
 
 On POSIX systems, the Logtalk installers make the following integration 
 scripts available from the command-line (you may need to adjust your 
