@@ -44,6 +44,9 @@ RELEASE NOTES
     Updated the "os" example with bug fixes and improvements for ECLiPSe
     contributed by Joachim Schimpf.
 
+    Correct a bug in some shell scripts where "#/bin/bash" was used instead
+    of "#!/bin/bash". Thanks to Yiorgos Adamopoulos for the bug report.
+
 
 2.42.4 - April 4, 2011
 
