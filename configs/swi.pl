@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: April 9, 2011
+%  last updated: April 13, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -364,10 +364,7 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 % Logtalk source file, given a list of options
 
 '$lgt_load_prolog_code'(File, Source, Options) :-
-	'$lgt_file_extension'(logtalk, Extension),
-	atom_concat(Source, Extension, SourceFile),
-	absolute_file_name(SourceFile, ExpandedSourceFile),
-	load_files(File, [derived_from(ExpandedSourceFile)| Options]).
+	load_files(File, [derived_from(Source)| Options]).
 
 
 % '$lgt_compare_file_mtimes'(?atom, +atom, +atom)
@@ -803,12 +800,71 @@ user:goal_expansion(phrase(Rule, Input), '$lgt_phrase'(Rule, Input, ExCtx)) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_write_entity_term_hook'(@stream, @callable, @callable)
+% '$lgt_write_term_and_source_location'(@stream, @callable, +atom, @callable)
 
-'$lgt_write_entity_term_hook'(Stream, Term, Path+Source+Line) :-
-	'$lgt_compiler_flag'(debug, on),
+'$lgt_write_term_and_source_location'(Stream, '$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags), _, Path+Source+Line) :-
+	!,
+	'$lgt_swi_write_hide_directive'(Stream, Dcl/4),
+	'$lgt_swi_write_hide_directive'(Stream, Dcl/6),
+	'$lgt_swi_write_hide_directive'(Stream, Def/3),
+	'$lgt_swi_write_hide_directive'(Stream, Def/4),
+	'$lgt_swi_write_hide_directive'(Stream, Super/4),
+	'$lgt_swi_write_hide_directive'(Stream, IDcl/6),
+	'$lgt_swi_write_hide_directive'(Stream, IDef/4),
+	'$lgt_swi_write_hide_directive'(Stream, DDcl/2),
+	'$lgt_swi_write_hide_directive'(Stream, DDef/3),
+	'$lgt_swi_write_hide_directive'(Stream, Rnm/3),
+	atom_concat(Path, Source, File),
+	write_canonical(Stream, '$source_location'(File,Line):'$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags)),
+	write(Stream, '.'),
+	nl(Stream).
+
+'$lgt_write_term_and_source_location'(Stream, '$lgt_current_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags), _, Path+Source+Line) :-
+	!,
+	'$lgt_swi_write_hide_directive'(Stream, Dcl/4),
+	'$lgt_swi_write_hide_directive'(Stream, Dcl/5),
+	'$lgt_swi_write_hide_directive'(Stream, Def/3),
+	'$lgt_swi_write_hide_directive'(Stream, Rnm/3),
+	atom_concat(Path, Source, File),
+	write_canonical(Stream, '$source_location'(File,Line):'$lgt_current_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags)),
+	write(Stream, '.'),
+	nl(Stream).
+
+'$lgt_write_term_and_source_location'(Stream, '$lgt_current_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags), _, Path+Source+Line) :-
+	!,
+	'$lgt_swi_write_hide_directive'(Stream, Dcl/4),
+	'$lgt_swi_write_hide_directive'(Stream, Dcl/5),
+	'$lgt_swi_write_hide_directive'(Stream, Rnm/3),
+	atom_concat(Path, Source, File),
+	write_canonical(Stream, '$source_location'(File,Line):'$lgt_current_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags)),
+	write(Stream, '.'),
+	nl(Stream).
+
+'$lgt_write_term_and_source_location'(Stream, (:- Directive), _, _) :-	% to cope with {(:- Directive)} entity terms
+	!,
+	write_canonical(Stream, (:- Directive)),
+	write(Stream, '.'),
+	nl(Stream).
+
+'$lgt_write_term_and_source_location'(Stream, Term, Kind, Path+Source+Line) :-
+	(	Kind == aux ->
+		(	Term = (Head :- _) ->
+			true
+		;	Term \= (:- _),
+			Term = Head
+		),
+		functor(Head, Functor, Arity),
+		'$lgt_swi_write_hide_directive'(Stream, Functor/Arity)
+	;	true
+	),
 	atom_concat(Path, Source, File),
 	write_canonical(Stream, '$source_location'(File,Line):Term),
+	write(Stream, '.'),
+	nl(Stream).
+
+
+'$lgt_swi_write_hide_directive'(Stream, Functor/Arity) :-
+	write_canonical(Stream, (:- '$hide'(user:Functor/Arity))),
 	write(Stream, '.'),
 	nl(Stream).
 

@@ -726,10 +726,12 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% '$lgt_write_entity_term_hook'(@stream, @callable, @callable)
+% '$lgt_write_term_and_source_location'(@stream, @callable, +atom, @callable)
 
-'$lgt_write_entity_term_hook'(_, _, _) :-
-	fail.
+'$lgt_write_term_and_source_location'(Stream, Term, _Kind, _Location) :-
+	write_canonical(Stream, Term),
+	write(Stream, '.'),
+	nl(Stream).
 
 
 

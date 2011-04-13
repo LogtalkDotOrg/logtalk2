@@ -106,37 +106,48 @@ user:prolog_predicate_name(Goal, Label) :-
 
 :- multifile(prolog_clause:unify_clause_hook/5).
 
-prolog_clause:unify_clause_hook(Clause, (QHead :- TBody), Module, TermPos0, TermPos) :-
-	(	QHead = M:THead ->
+prolog_clause:unify_clause_hook(Clause, TClause, Module, TermPos0, TermPos) :-
+	(	TClause = (M:THead :- TBody) ->
 		M == user
-	;	QHead = THead
+	;	TClause = (THead :- TBody) ->
+		true
+	;	TClause = M:THead ->
+		M == user,
+		TBody = true
+	;	TClause = THead,
+		TBody = true
 	),
 	functor(THead, TFunctor, _),
-	'$lgt_default_flag'(code_prefix, CodePrefix),
-	atom_concat('.', CodePrefix, DebugCodePrefix),
-	atom_concat(DebugCodePrefix, _, TFunctor),
+	'$lgt_current_flag_'(code_prefix, CodePrefix),
+	atom_concat(CodePrefix, _, TFunctor),
 	'$lgt_swi_prolog_clause:unify_clause_hook'(Clause, (THead :- TBody), Module, TermPos0, TermPos).
 
 '$lgt_swi_prolog_clause:unify_clause_hook'((NonTerminal --> GRBody), (THead :- TBody), Module, TermPos0, TermPos) :-
 	logtalk::expand_term((NonTerminal --> GRBody), Clause),
 	'$lgt_swi_prolog_clause:unify_clause_hook'(Clause, (THead :- TBody), Module, TermPos0, TermPos).
-'$lgt_swi_prolog_clause:unify_clause_hook'((Head :- Body), (THead :- TBody), _, TermPos0, TermPos) :-
-	'$lgt_decompile_debug_clause'((THead :- TBody), (Head :- Body)),
-	TermPos0 = term_position(From, To, FFrom, FTo, [H, B]),
-	TermPos  = term_position(From, To, FFrom, FTo, [H, term_position(0,0,0,0,[0-0,B])]).
+'$lgt_swi_prolog_clause:unify_clause_hook'((Head :- Body), (THead :- TBody), _, TermPos, TermPos) :-
+	(	'$lgt_decompile_clause'((THead :- TBody), (Head :- Body)) ->
+		true
+	;	writeq((THead :- TBody)), nl
+	).
+%	TermPos0 = term_position(From, To, FFrom, FTo, [H, B0]),
+%	TermPos  = term_position(From, To, FFrom, FTo, [H, term_position(0,0,0,0,[0-0,0-0,0-0,B0])]).
+%	'$lgt_swi_body_term_positions'(Body, TBody, B0, B).
 '$lgt_swi_prolog_clause:unify_clause_hook'(Head, (THead :- TBody), _, TermPos0, TermPos) :-
-	'$lgt_decompile_debug_clause'((THead :- TBody), Head),
+	'$lgt_decompile_clause'((THead :- TBody), Head),
 	TermPos0 = term_position(From, To, FFrom, FTo, P),
-	TermPos  = term_position(From, To, FFrom, FTo, [term_position(From, To, FFrom, FTo, P), term_position(0,0,0,0,[0-0])]).
+	TermPos  = term_position(From, To, FFrom, FTo, [term_position(From, To, FFrom, FTo, P), term_position(0,0,0,0,[0-0,0-0,0-0])]).
+
+
+%'$lgt_swi_body_term_positions'(Body, TBody, B0, B).
 
 
 :- multifile(prolog_clause:make_varnames_hook/5).
 
 prolog_clause:make_varnames_hook((Head --> _), (user:THead :- _), Offsets, Names, Bindings) :-
 	functor(THead, TFunctor, THeadArity),
-	'$lgt_default_flag'(code_prefix, CodePrefix),
-	atom_concat('.', CodePrefix, DebugCodePrefix),
-	atom_concat(DebugCodePrefix, _, TFunctor),
+	'$lgt_current_flag_'(code_prefix, CodePrefix),
+	atom_concat(CodePrefix, _, TFunctor),
 	N is THeadArity - 1,
 	memberchk(N=EVar, Offsets),
 	Names1 = ['<Sender, This, Self, MetaVars, CoinductionStack>'=EVar| Names],
@@ -150,9 +161,8 @@ prolog_clause:make_varnames_hook((Head --> _), (user:THead :- _), Offsets, Names
 	prolog_clause:make_varnames(xx, xx, Offsets, Names3, Bindings).
 prolog_clause:make_varnames_hook(_, (user:THead :- _), Offsets, Names, Bindings) :-
 	functor(THead, TFunctor, Arity),
-	'$lgt_default_flag'(code_prefix, CodePrefix),
-	atom_concat('.', CodePrefix, DebugCodePrefix),
-	atom_concat(DebugCodePrefix, _, TFunctor),
+	'$lgt_current_flag_'(code_prefix, CodePrefix),
+	atom_concat(CodePrefix, _, TFunctor),
 	N is Arity - 1,
 	memberchk(N=IVar, Offsets),
 	Names1 = ['<Sender, This, Self, MetaVars, CoinductionStack>'=IVar| Names],
