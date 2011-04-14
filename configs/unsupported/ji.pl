@@ -11,7 +11,7 @@
 %
 %  configuration file for JIProlog 3.0.2-6 or later versions
 %
-%  last updated: April 13, 2011
+%  last updated: April 14, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -587,7 +587,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  hook predicate for writing compiled entity terms
+%  hooks predicates for writing and assert compiled entity terms
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -598,6 +598,12 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 	write_canonical(Stream, Term),
 	write(Stream, '.'),
 	nl(Stream).
+
+
+% '$lgt_assertz_entity_clause'(@clause, +atom)
+
+'$lgt_assertz_entity_clause'(Clause, _Kind) :-
+	assertz(Clause).
 
 
 

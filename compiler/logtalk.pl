@@ -13221,18 +13221,23 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-% when a protocol is empty, i.e. when it does not contain any predicate declarations, 
-% and does not extend other protocols, we need a catchall clause in order to prevent 
-% predicate existence errors when sending a message to an object implementing (directly 
-% or indirectly) the protocol
+% when a static protocol is empty, i.e. when it does not contain any predicate
+% declarations, and does not extend other protocols, we need a catchall clause
+% in order to prevent predicate existence errors when sending a message to an
+% object implementing (directly or indirectly) the protocol
 
 '$lgt_gen_protocol_catchall_clauses' :-
 	(	'$lgt_pp_dcl_'(_) ->
 		true
 	;	% empty, standalone protocol 
-		'$lgt_pp_protocol_'(_, _, Dcl, _, _),
-		Head =.. [Dcl, _, _, _, _, _],
-		assertz('$lgt_pp_dcl_'((Head:-fail)))
+		'$lgt_pp_protocol_'(_, _, Dcl, _, Flags),
+		(	Flags /\ 2 =:= 2 ->
+			% dynamic protocol
+			true
+		;	% generate a catchall clause for static protocols
+			Head =.. [Dcl, _, _, _, _, _],
+			assertz('$lgt_pp_dcl_'((Head:-fail)))
+		)
 	).
 
 
@@ -13310,18 +13315,23 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-% when a category contains no predicate declarations, does not implement any protocol, 
-% and does not extend other categories, we need a catchall clause in order to prevent 
-% predicate existence errors when sending a message to an object importing (directly or 
-% indirectly) the category
+% when a static category contains no predicate declarations, does not implement any
+% protocol, and does not extend other categories, we need a catchall clause in order
+% to prevent predicate existence errors when sending a message to an object importing
+% (directly or indirectly) the category
 
 '$lgt_gen_category_catchall_dcl_clauses' :-
 	(	'$lgt_pp_dcl_'(_) ->
 		true
 	;	% standalone category with no local or inherited predicate declarations
-		'$lgt_pp_category_'(_, _, Dcl, _, _, _),
-		Head =.. [Dcl, _, _, _, _, _],
-		assertz('$lgt_pp_dcl_'((Head:-fail)))
+		'$lgt_pp_category_'(_, _, Dcl, _, _, Flags),
+		(	Flags /\ 2 =:= 2 ->
+			% dynamic category
+			true
+		;	% generate a catchall clause for static categories
+			Head =.. [Dcl, _, _, _, _, _],
+			assertz('$lgt_pp_dcl_'((Head:-fail)))
+		)
 	).
 
 
@@ -13363,23 +13373,34 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 % the database built-in methods need to check if a local declaration or a local definition 
 % exists for a predicate; in order to avoid predicate existence errors, we need to generate 
-% catchall clauses when there are no local predicate declarations or no local predicate 
-% definitions
+% catchall clauses for static when there are no local predicate declarations or no local
+% predicate definitions
 
 '$lgt_gen_object_catchall_dcl_clauses'(true).
 
 '$lgt_gen_object_catchall_dcl_clauses'(false) :-
-	'$lgt_pp_object_'(_, _, Dcl, _, _, _, _, _, _, _, _),	% generate a catchall clause for
-	Head =.. [Dcl, _, _, _, _],								% objects that do not contain
-	assertz('$lgt_pp_dcl_'((Head:-fail))).					% predicate declarations
+	'$lgt_pp_object_'(_, _, Dcl, _, _, _, _, _, _, _, Flags),
+	(	Flags /\ 2 =:= 2 ->
+		% dynamic object
+		true
+	;	% generate a catchall clause for static objects
+		Head =.. [Dcl, _, _, _, _],			
+		assertz('$lgt_pp_dcl_'((Head:-fail)))
+	).
+
 
 
 '$lgt_gen_object_catchall_def_clauses'(true).
 
 '$lgt_gen_object_catchall_def_clauses'(false) :-
-	'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _),	% generate a catchall clause
-	Head =.. [Def, _, _, _],								% for objects that do not 
-	assertz('$lgt_pp_final_def_'((Head:-fail))).			% contain predicate definitions
+	'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, Flags),
+	(	Flags /\ 2 =:= 2 ->
+		% dynamic object
+		true
+	;	% generate a catchall clause for static objects
+		Head =.. [Def, _, _, _],
+		assertz('$lgt_pp_final_def_'((Head:-fail)))
+	).
 
 
 
@@ -14009,11 +14030,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		MHead =.. [MFunctor| Args],
 		New =.. [Def, Head, ExCtx, MHead],
 		assertz('$lgt_pp_final_def_'(New)),
+		'$lgt_pp_file_path_'(File, Path),
 		(	'$lgt_term_template'(Head, Mode),
 			'$lgt_pp_mode_'(Mode, _),
 			forall('$lgt_pp_mode_'(Mode, Solutions), (Solutions \== zero_or_one, Solutions \== one, Solutions \== zero)) ->
-			assertz('$lgt_pp_final_entity_clause_'((MHead:-mutex_lock(Mutex), setup_call_cleanup(true, THead, mutex_unlock(Mutex))), none))
-		;	assertz('$lgt_pp_final_entity_clause_'((MHead:-with_mutex(Mutex, THead)), none))
+			assertz('$lgt_pp_final_entity_clause_'((MHead:-mutex_lock(Mutex), setup_call_cleanup(true, THead, mutex_unlock(Mutex))), Path+File+1))
+		;	assertz('$lgt_pp_final_entity_clause_'((MHead:-with_mutex(Mutex, THead)), Path+File+1))
 		)
 	;	assertz('$lgt_pp_final_def_'(Old))
 	),
@@ -14031,11 +14053,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		MHead =.. [MFunctor| Args],
 		New =.. [DDef, Head, ExCtx, MHead],
 		assertz('$lgt_pp_final_ddef_'(New)),
+		'$lgt_pp_file_path_'(File, Path),
 		(	'$lgt_term_template'(Head, Mode),
 			'$lgt_pp_mode_'(Mode, _),
 			forall('$lgt_pp_mode_'(Mode, Solutions), (Solutions \== zero_or_one, Solutions \== one, Solutions \== zero)) ->
-			assertz('$lgt_pp_final_entity_clause_'((MHead:-mutex_lock(Mutex), setup_call_cleanup(true, THead, mutex_unlock(Mutex))), none))
-		;	assertz('$lgt_pp_final_entity_clause_'((MHead:-with_mutex(Mutex, THead)), none))
+			assertz('$lgt_pp_final_entity_clause_'((MHead:-mutex_lock(Mutex), setup_call_cleanup(true, THead, mutex_unlock(Mutex))), Path+File+1))
+		;	assertz('$lgt_pp_final_entity_clause_'((MHead:-with_mutex(Mutex, THead)), Path+File+1))
 		)
 	;	assertz('$lgt_pp_final_ddef_'(Old))
 	),
@@ -14783,7 +14806,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_assert_dcl_clauses' :-
 	'$lgt_pp_dcl_'(Clause),
-		assertz(Clause),
+		'$lgt_assertz_entity_clause'(Clause, aux),
 	fail.
 
 '$lgt_assert_dcl_clauses'.
@@ -14792,7 +14815,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_assert_def_clauses' :-
 	'$lgt_pp_final_def_'(Clause),
-		assertz(Clause),
+		'$lgt_assertz_entity_clause'(Clause, aux),
 	fail.
 
 '$lgt_assert_def_clauses'.
@@ -14801,7 +14824,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_assert_ddef_clauses' :-
 	'$lgt_pp_final_ddef_'(Clause),
-		assertz(Clause),
+		'$lgt_assertz_entity_clause'(Clause, aux),
 	fail.
 
 '$lgt_assert_ddef_clauses'.
@@ -14810,7 +14833,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_assert_super_clauses' :-
 	'$lgt_pp_super_'(Clause),
-		assertz(Clause),
+		'$lgt_assertz_entity_clause'(Clause, aux),
 	fail.
 
 '$lgt_assert_super_clauses'.
@@ -14819,7 +14842,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_assert_pred_clauses' :-
 	'$lgt_pp_final_entity_clause_'(Clause, _),
-		assertz(Clause),
+		'$lgt_assertz_entity_clause'(Clause, user),
 	fail.
 
 '$lgt_assert_pred_clauses'.
@@ -14828,7 +14851,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_assert_runtime_clauses' :-
 	'$lgt_pp_relation_clause'(Clause),
-		assertz(Clause),
+		'$lgt_assertz_entity_clause'(Clause, aux),
 	fail.
 
 '$lgt_assert_runtime_clauses'.
@@ -15145,60 +15168,133 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 % '$lgt_decompile_clause'(@clause, -clause)
 %
-% decompiles an entity predicate clause compiled in debug mode;
-% this is the most reliable solution to get the original entity clause
+% decompiles an entity predicate clause
+
+'$lgt_decompile_clause'((THead :- true), (Head :- Body)) :-
+	'$lgt_decompile_clause_in_line_goal'(Body),
+	'$lgt_decompile_predicate_heads'(THead, Head),
+	!.
 
 '$lgt_decompile_clause'((THead :- TBody), (Head :- Body)) :-
 	!,
-	'$lgt_decompile_predicate_heads'(THead, Head),
-	'$lgt_decompile_clause_body'(TBody, Body).
+	'$lgt_decompile_predicate_heads'(THead, Entity, Head),
+	'$lgt_decompile_clause_body'(TBody, Entity, Body).
 
 '$lgt_decompile_clause'((THead :- true), Head) :-
 	!,
 	'$lgt_decompile_predicate_heads'(THead, Head).
 
 
-'$lgt_decompile_clause_body'((TGoal1, TGoal2), (Goal1, Goal2)) :-
+'$lgt_decompile_clause_body'(TGoal2, Entity, (Goal1, Goal2)) :-
+	nonvar(Goal1),
+	'$lgt_decompile_clause_in_line_goal'(Goal1),
 	!,
-	'$lgt_decompile_clause_body'(TGoal1, Goal1),
-	'$lgt_decompile_clause_body'(TGoal2, Goal2).
+	'$lgt_decompile_clause_body'(TGoal2, Entity, Goal2).
 
-'$lgt_decompile_clause_body'((TGoal1; TGoal2), (Goal1; Goal2)) :-
+'$lgt_decompile_clause_body'(TGoal1, Entity, (Goal1, Goal2)) :-
+	nonvar(Goal2),
+	'$lgt_decompile_clause_in_line_goal'(Goal2),
 	!,
-	'$lgt_decompile_clause_body'(TGoal1, Goal1),
-	'$lgt_decompile_clause_body'(TGoal2, Goal2).
+	'$lgt_decompile_clause_body'(TGoal1, Entity, Goal1).
 
-'$lgt_decompile_clause_body'((TGoal1 -> TGoal2), (Goal1 -> Goal2)) :-
+'$lgt_decompile_clause_body'((TGoal1, TGoal2), Entity, (Goal1, Goal2)) :-
 	!,
-	'$lgt_decompile_clause_body'(TGoal1, Goal1),
-	'$lgt_decompile_clause_body'(TGoal2, Goal2).
+	'$lgt_decompile_clause_body'(TGoal1, Entity, Goal1),
+	'$lgt_decompile_clause_body'(TGoal2, Entity, Goal2).
 
-'$lgt_decompile_clause_body'(Var^TGoal, Var^Goal) :-
+'$lgt_decompile_clause_body'((TGoal1; TGoal2), Entity, (Goal1; Goal2)) :-
 	!,
-	'$lgt_decompile_clause_body'(TGoal, Goal).
+	'$lgt_decompile_clause_body'(TGoal1, Entity, Goal1),
+	'$lgt_decompile_clause_body'(TGoal2, Entity, Goal2).
 
-'$lgt_decompile_clause_body'(TGoal, Goal) :-
-	'$lgt_decompile_predicate_heads'(TGoal, Entity, Goal0),
+'$lgt_decompile_clause_body'((TGoal1 -> TGoal2), Entity, (Goal1 -> Goal2)) :-
+	!,
+	'$lgt_decompile_clause_body'(TGoal1, Entity, Goal1),
+	'$lgt_decompile_clause_body'(TGoal2, Entity, Goal2).
+
+'$lgt_decompile_clause_body'(Var^TGoal, Entity, Var^Goal) :-
+	!,
+	'$lgt_decompile_clause_body'(TGoal, Entity, Goal).
+
+'$lgt_decompile_clause_body'(TGoal, _Entity, Goal) :-
+	'$lgt_decompile_predicate_heads'(TGoal, GoalEntity, Goal0),
 	(	Goal = Goal0
-	;	Goal = Entity::Goal0
+	;	Goal = GoalEntity::Goal0
 	),
 	!.
 
-'$lgt_decompile_clause_body'(TGoal, Goal) :-
-	'$lgt_decompile_tclause_clause'(TGoal, Goal),
+'$lgt_decompile_clause_body'(TGoal, Entity, Goal) :-
+	'$lgt_decompile_tclause_clause'(TGoal, Entity, Goal),
 	!.
 
-'$lgt_decompile_clause_body'(Goal, Goal).
+'$lgt_decompile_clause_body'(Goal, _, Goal).
 
 
-'$lgt_decompile_tclause_clause'('$lgt_send_to_obj_ne_nv'(Obj, Msg, _), Obj::Msg).
-'$lgt_decompile_tclause_clause'('$lgt_send_to_obj_ne'(Obj, Msg, _), Obj::Msg).
-'$lgt_decompile_tclause_clause'('$lgt_send_to_obj_ne_'(Obj, Msg, _), Obj::Msg).
-'$lgt_decompile_tclause_clause'('$lgt_send_to_obj_'(Obj, Msg, _), Obj::Msg).
+'$lgt_decompile_clause_in_line_goal'(sender(_)).
+'$lgt_decompile_clause_in_line_goal'(self(_)).
+'$lgt_decompile_clause_in_line_goal'(this(_)).
+'$lgt_decompile_clause_in_line_goal'(parameter(_, _)).
+'$lgt_decompile_clause_in_line_goal'(true).
 
-'$lgt_decompile_tclause_clause'('$lgt_send_to_self'(_, Msg, _), ::Msg).
-'$lgt_decompile_tclause_clause'('$lgt_send_to_self_nv'(_, Msg, _), ::Msg).
-'$lgt_decompile_tclause_clause'('$lgt_send_to_self_'(_, Msg, _), ::Msg).
+
+'$lgt_decompile_tclause_clause'('$lgt_send_to_obj_ne_nv'(Obj, Msg, _), _, Obj::Msg).
+'$lgt_decompile_tclause_clause'('$lgt_send_to_obj_ne'(Obj, Msg, _), _, Obj::Msg).
+'$lgt_decompile_tclause_clause'('$lgt_send_to_obj_ne_'(Obj, Msg, _), _, Obj::Msg).
+'$lgt_decompile_tclause_clause'('$lgt_send_to_obj_'(Obj, Msg, _), _, Obj::Msg).
+
+'$lgt_decompile_tclause_clause'('$lgt_send_to_self'(_, Msg, _), _, ::Msg).
+'$lgt_decompile_tclause_clause'('$lgt_send_to_self_nv'(_, Msg, _), _, ::Msg).
+'$lgt_decompile_tclause_clause'('$lgt_send_to_self_'(_, Msg, _), _, ::Msg).
+
+'$lgt_decompile_tclause_clause'('$lgt_obj_super_call_same'(_, Msg, _), _, ^^Msg).
+'$lgt_decompile_tclause_clause'('$lgt_obj_super_call_same_'(_, Msg, _), _, ^^Msg).
+'$lgt_decompile_tclause_clause'('$lgt_obj_super_call_other'(_, Msg, _), _, ^^Msg).
+'$lgt_decompile_tclause_clause'('$lgt_obj_super_call_other_'(_, Msg, _), _, ^^Msg).
+'$lgt_decompile_tclause_clause'('$lgt_ctg_super_call_same'(_, Msg, _), _, ^^Msg).
+'$lgt_decompile_tclause_clause'('$lgt_ctg_super_call_same_'(_, Msg, _), _, ^^Msg).
+'$lgt_decompile_tclause_clause'('$lgt_ctg_super_call_other'(_, Msg, _), _, ^^Msg).
+'$lgt_decompile_tclause_clause'('$lgt_ctg_super_call_other_'(_, Msg, _), _, ^^Msg).
+
+'$lgt_decompile_tclause_clause'('$lgt_ctg_call_'(_, Msg, _), _, :Msg).
+
+'$lgt_decompile_tclause_clause'(findall(Term, TGoal, List), Entity, findall(Term, Goal, List)) :-
+	'$lgt_decompile_clause_body'(TGoal, Entity, Goal).
+
+'$lgt_decompile_tclause_clause'(asserta(TClause), _, asserta(Clause)) :-
+	'$lgt_decompile_predicate_heads'(TClause, _Entity, Clause).
+'$lgt_decompile_tclause_clause'(assertz(TClause), _, assertz(Clause)) :-
+	'$lgt_decompile_predicate_heads'(TClause, _Entity, Clause).
+'$lgt_decompile_tclause_clause'(retract(TClause), _, retract(Clause)) :-
+	'$lgt_decompile_predicate_heads'(TClause, _Entity, Clause).
+
+'$lgt_decompile_tclause_clause'('$lgt_asserta_fact_chk'(_, Clause, _, _, p), _, asserta(Clause)).
+'$lgt_decompile_tclause_clause'('$lgt_asserta_fact_chk'(_, Clause, _, _, p(p)), _, ::asserta(Clause)).
+'$lgt_decompile_tclause_clause'('$lgt_asserta_fact_chk'(Obj, Clause, _, _, p(p(p))), _, Obj::asserta(Clause)).
+'$lgt_decompile_tclause_clause'('$lgt_asserta_rule_chk'(_, Clause, _, _, p), _, asserta(Clause)).
+'$lgt_decompile_tclause_clause'('$lgt_asserta_rule_chk'(_, Clause, _, _, p(p)), _, ::asserta(Clause)).
+'$lgt_decompile_tclause_clause'('$lgt_asserta_rule_chk'(Obj, Clause, _, _, p(p(p))), _, Obj::asserta(Clause)).
+
+'$lgt_decompile_tclause_clause'('$lgt_assertz_fact_chk'(_, Clause, _, _, p), _, assertz(Clause)).
+'$lgt_decompile_tclause_clause'('$lgt_assertz_fact_chk'(_, Clause, _, _, p(p)), _, ::assertz(Clause)).
+'$lgt_decompile_tclause_clause'('$lgt_assertz_fact_chk'(Obj, Clause, _, _, p(p(p))), _, Obj::assertz(Clause)).
+'$lgt_decompile_tclause_clause'('$lgt_assertz_rule_chk'(_, Clause, _, _, p), _, assertz(Clause)).
+'$lgt_decompile_tclause_clause'('$lgt_assertz_rule_chk'(_, Clause, _, _, p(p)), _, ::assertz(Clause)).
+'$lgt_decompile_tclause_clause'('$lgt_assertz_rule_chk'(Obj, Clause, _, _, p(p(p))), _, Obj::assertz(Clause)).
+
+'$lgt_decompile_tclause_clause'('$lgt_clause_chk'(Obj, Head, Body, _, p(p(p))), _, Obj::clause(Head, Body)).
+'$lgt_decompile_tclause_clause'('$lgt_clause_chk'(_, Head, Body, _, p(_)), _, clause(Head, Body)).
+'$lgt_decompile_tclause_clause'('$lgt_clause_chk'(_, Head, Body, _, p(_)), _, ::clause(Head, Body)).
+
+'$lgt_decompile_tclause_clause'('$lgt_retract_fact_chk'(Obj, Head, _, p(p(p))), _, Obj::retract(Head)).
+'$lgt_decompile_tclause_clause'('$lgt_retract_fact_chk'(_, Head, _, p(_)), _, retract(Head)).
+'$lgt_decompile_tclause_clause'('$lgt_retract_fact_chk'(_, Head, _, p(_)), _, ::retract(Head)).
+'$lgt_decompile_tclause_clause'('$lgt_retract_rule_chk'(Obj, Clause, _, p(p(p))), _, Obj::retract(Clause)).
+'$lgt_decompile_tclause_clause'('$lgt_retract_rule_chk'(_, Clause, _, p(_)), _, retract(Clause)).
+'$lgt_decompile_tclause_clause'('$lgt_retract_rule_chk'(_, Clause, _, p(_)), _, ::retract(Clause)).
+
+'$lgt_decompile_tclause_clause'('$lgt_retractall_chk'(Obj, Head, _, p(p(p))), _, Obj::retractall(Head)).
+'$lgt_decompile_tclause_clause'('$lgt_retractall_chk'(_, Head, _, p(_)), _, retractall(Head)).
+'$lgt_decompile_tclause_clause'('$lgt_retractall_chk'(_, Head, _, p(_)), _, ::retractall(Head)).
 
 
 

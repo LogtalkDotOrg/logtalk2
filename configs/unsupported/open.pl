@@ -11,7 +11,7 @@
 %
 %  configuration file for Open Prolog 1.1b5
 %
-%  last updated: April 13, 2011
+%  last updated: April 14, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -714,7 +714,7 @@ callable(Term) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  hook predicate for writing compiled entity terms
+%  hooks predicates for writing and assert compiled entity terms
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -725,6 +725,12 @@ callable(Term) :-
 	write_canonical(Stream, Term),
 	write(Stream, '.'),
 	nl(Stream).
+
+
+% '$lgt_assertz_entity_clause'(@clause, +atom)
+
+'$lgt_assertz_entity_clause'(Clause, _Kind) :-
+	assertz(Clause).
 
 
 

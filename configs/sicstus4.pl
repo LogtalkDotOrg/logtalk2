@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: April 13, 2011
+%  last updated: April 14, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -664,7 +664,7 @@ forall(Generate, Test) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  hook predicate for writing compiled entity terms
+%  hooks predicates for writing and assert compiled entity terms
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -675,6 +675,12 @@ forall(Generate, Test) :-
 	write_canonical(Stream, Term),
 	write(Stream, '.'),
 	nl(Stream).
+
+
+% '$lgt_assertz_entity_clause'(@clause, +atom)
+
+'$lgt_assertz_entity_clause'(Clause, _Kind) :-
+	assertz(Clause).
 
 
 

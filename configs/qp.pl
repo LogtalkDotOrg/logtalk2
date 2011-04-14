@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.12 and later versions
 %
-%  last updated: April 13, 2011
+%  last updated: April 14, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -546,7 +546,7 @@ term_variables(Term, Variables) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  hook predicate for writing compiled entity terms
+%  hooks predicates for writing and assert compiled entity terms
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -557,6 +557,12 @@ term_variables(Term, Variables) :-
 	write_canonical(Stream, Term),
 	write(Stream, '.'),
 	nl(Stream).
+
+
+% '$lgt_assertz_entity_clause'(@clause, +atom)
+
+'$lgt_assertz_entity_clause'(Clause, _Kind) :-
+	assertz(Clause).
 
 
 

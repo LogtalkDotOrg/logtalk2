@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.3 or later versions
 %
-%  last updated: April 13, 2011
+%  last updated: April 14, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -655,7 +655,7 @@ setup_call_catcher_cleanup(Setup, Call, Catcher, Cleanup) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  hook predicate for writing compiled entity terms
+%  hooks predicates for writing and assert compiled entity terms
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -666,6 +666,12 @@ setup_call_catcher_cleanup(Setup, Call, Catcher, Cleanup) :-
 	write_canonical(Stream, Term),
 	write(Stream, '.'),
 	nl(Stream).
+
+
+% '$lgt_assertz_entity_clause'(@clause, +atom)
+
+'$lgt_assertz_entity_clause'(Clause, _Kind) :-
+	assertz(Clause).
 
 
 

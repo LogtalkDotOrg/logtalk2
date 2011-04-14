@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: April 13, 2011
+%  last updated: April 14, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -795,7 +795,7 @@ user:goal_expansion(phrase(Rule, Input), '$lgt_phrase'(Rule, Input, ExCtx)) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  hook predicate for writing compiled entity terms
+%  hooks predicates for writing and assert compiled entity terms
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -867,6 +867,51 @@ user:goal_expansion(phrase(Rule, Input), '$lgt_phrase'(Rule, Input, ExCtx)) :-
 	write_canonical(Stream, (:- '$hide'(user:Functor/Arity))),
 	write(Stream, '.'),
 	nl(Stream).
+
+
+% '$lgt_assertz_entity_clause'(@clause, +atom)
+
+'$lgt_assertz_entity_clause'('$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags), _) :-
+	!,
+	'$hide'(user:Dcl/4),
+	'$hide'(user:Dcl/6),
+	'$hide'(user:Def/3),
+	'$hide'(user:Def/4),
+	'$hide'(user:Super/4),
+	'$hide'(user:IDcl/6),
+	'$hide'(user:IDef/4),
+	'$hide'(user:DDcl/2),
+	'$hide'(user:DDef/3),
+	'$hide'(user:Rnm/3),
+	assertz('$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags)).
+
+'$lgt_assertz_entity_clause'('$lgt_current_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags), _) :-
+	!,
+	'$hide'(user:Dcl/4),
+	'$hide'(user:Dcl/5),
+	'$hide'(user:Def/3),
+	'$hide'(user:Rnm/3),
+	assertz('$lgt_current_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags)).
+
+'$lgt_assertz_entity_clause'('$lgt_current_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags), _) :-
+	!,
+	'$hide'(user:Dcl/4),
+	'$hide'(user:Dcl/5),
+	'$hide'(user:Rnm/3),
+	assertz('$lgt_current_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags)).
+
+'$lgt_assertz_entity_clause'(Term, Kind) :-
+	(	Kind == aux ->
+		(	Term = (Head :- _) ->
+			true
+		;	Term \= (:- _),
+			Term = Head
+		),
+		functor(Head, Functor, Arity),
+		'$hide'(user:Functor/Arity)
+	;	true
+	),
+	assertz(Term).
 
 
 
