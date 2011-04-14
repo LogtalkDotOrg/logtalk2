@@ -126,7 +126,7 @@ prolog_clause:unify_clause_hook(Clause, TClause, Module, TermPos0, TermPos) :-
 	logtalk::expand_term((NonTerminal --> GRBody), Clause),
 	'$lgt_swi_prolog_clause:unify_clause_hook'(Clause, (THead :- TBody), Module, TermPos0, TermPos).
 '$lgt_swi_prolog_clause:unify_clause_hook'((Head :- Body), (THead :- TBody), _, TermPos, TermPos) :-
-	(	'$lgt_decompile_clause'((THead :- TBody), (Head :- Body)) ->
+	(	'$lgt_swi_unify_clause'((THead :- TBody), (Head :- Body), TermPos, TermPos) ->
 		true
 	;	writeq((THead :- TBody)), nl
 	).
@@ -134,7 +134,7 @@ prolog_clause:unify_clause_hook(Clause, TClause, Module, TermPos0, TermPos) :-
 %	TermPos  = term_position(From, To, FFrom, FTo, [H, term_position(0,0,0,0,[0-0,0-0,0-0,B0])]).
 %	'$lgt_swi_body_term_positions'(Body, TBody, B0, B).
 '$lgt_swi_prolog_clause:unify_clause_hook'(Head, (THead :- TBody), _, TermPos0, TermPos) :-
-	'$lgt_decompile_clause'((THead :- TBody), Head),
+	'$lgt_swi_unify_clause'((THead :- TBody), Head, TermPos, TermPos),
 	TermPos0 = term_position(From, To, FFrom, FTo, P),
 	TermPos  = term_position(From, To, FFrom, FTo, [term_position(From, To, FFrom, FTo, P), term_position(0,0,0,0,[0-0,0-0,0-0])]).
 
@@ -180,3 +180,133 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 	writeq(MetaVars), write(','),
 	writeq(CoinductionStack), write(','),
 	write('>').
+
+
+'$lgt_swi_unify_clause'((THead :- true), (Head :- Body), TermPos0, TermPos) :-
+	'$lgt_swi_unify_clause_in_line_goal'(Body),
+	'$lgt_decompile_predicate_heads'(THead, Head, TermPos0, TermPos),
+	!.
+
+'$lgt_swi_unify_clause'((THead :- TBody), (Head :- Body), TermPos0, TermPos) :-
+	!,
+	'$lgt_decompile_predicate_heads'(THead, Entity, Head),
+	'$lgt_swi_unify_clause_body'(TBody, Entity, Body, TermPos0, TermPos).
+
+'$lgt_swi_unify_clause'((THead :- true), Head, TermPos, TermPos) :-
+	!,
+	'$lgt_decompile_predicate_heads'(THead, Head).
+
+
+'$lgt_swi_unify_clause_body'(TGoal2, Entity, (Goal1, Goal2), TermPos0, TermPos) :-
+	nonvar(Goal1),
+	'$lgt_swi_unify_clause_in_line_goal'(Goal1),
+	!,
+	'$lgt_swi_unify_clause_body'(TGoal2, Entity, Goal2, TermPos0, TermPos).
+
+'$lgt_swi_unify_clause_body'(TGoal1, Entity, (Goal1, Goal2), TermPos0, TermPos) :-
+	nonvar(Goal2),
+	'$lgt_swi_unify_clause_in_line_goal'(Goal2),
+	!,
+	'$lgt_swi_unify_clause_body'(TGoal1, Entity, Goal1, TermPos0, TermPos).
+
+'$lgt_swi_unify_clause_body'((TGoal1, TGoal2), Entity, (Goal1, Goal2), TermPos0, TermPos) :-
+	!,
+	'$lgt_swi_unify_clause_body'(TGoal1, Entity, Goal1, TermPos0, TermPos1),
+	'$lgt_swi_unify_clause_body'(TGoal2, Entity, Goal2, TermPos1, TermPos).
+
+'$lgt_swi_unify_clause_body'((TGoal1; TGoal2), Entity, (Goal1; Goal2), TermPos0, TermPos) :-
+	!,
+	'$lgt_swi_unify_clause_body'(TGoal1, Entity, Goal1, TermPos0, TermPos1),
+	'$lgt_swi_unify_clause_body'(TGoal2, Entity, Goal2, TermPos1, TermPos).
+
+'$lgt_swi_unify_clause_body'((TGoal1 -> TGoal2), Entity, (Goal1 -> Goal2), TermPos0, TermPos) :-
+	!,
+	'$lgt_swi_unify_clause_body'(TGoal1, Entity, Goal1, TermPos0, TermPos1),
+	'$lgt_swi_unify_clause_body'(TGoal2, Entity, Goal2, TermPos1, TermPos).
+
+'$lgt_swi_unify_clause_body'(Var^TGoal, Entity, Var^Goal, TermPos0, TermPos) :-
+	!,
+	'$lgt_swi_unify_clause_body'(TGoal, Entity, Goal, TermPos0, TermPos).
+
+'$lgt_swi_unify_clause_body'(TGoal, _Entity, Goal, TermPos, TermPos) :-
+	'$lgt_decompile_predicate_heads'(TGoal, GoalEntity, Goal0),
+	(	Goal = Goal0
+	;	Goal = GoalEntity::Goal0
+	),
+	!.
+
+'$lgt_swi_unify_clause_body'('$lgt_send_to_obj_ne_nv'(Obj, Msg, _), _, Obj::Msg, TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_send_to_obj_ne'(Obj, Msg, _), _, Obj::Msg, TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_send_to_obj_ne_'(Obj, Msg, _), _, Obj::Msg, TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_send_to_obj_'(Obj, Msg, _), _, Obj::Msg, TermPos, TermPos) :- !.
+
+'$lgt_swi_unify_clause_body'('$lgt_send_to_self'(_, Msg, _), _, ::Msg, TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_send_to_self_nv'(_, Msg, _), _, ::Msg, TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_send_to_self_'(_, Msg, _), _, ::Msg, TermPos, TermPos) :- !.
+
+'$lgt_swi_unify_clause_body'('$lgt_obj_super_call_same'(_, Msg, _), _, ^^Msg, TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_obj_super_call_same_'(_, Msg, _), _, ^^Msg, TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_obj_super_call_other'(_, Msg, _), _, ^^Msg, TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_obj_super_call_other_'(_, Msg, _), _, ^^Msg, TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_ctg_super_call_same'(_, Msg, _), _, ^^Msg, TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_ctg_super_call_same_'(_, Msg, _), _, ^^Msg, TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_ctg_super_call_other'(_, Msg, _), _, ^^Msg, TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_ctg_super_call_other_'(_, Msg, _), _, ^^Msg, TermPos, TermPos) :- !.
+
+'$lgt_swi_unify_clause_body'('$lgt_ctg_call_'(_, Msg, _), _, :Msg, TermPos, TermPos) :- !.
+
+'$lgt_swi_unify_clause_body'(catch(TGoal, Catcher, TRecover), Entity, catch(Goal, Catcher, Recover), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(TGoal, Entity, Goal, TermPos0, TermPos1),
+	'$lgt_swi_unify_clause_body'(TRecover, Entity, Recover, TermPos1, TermPos).
+
+'$lgt_swi_unify_clause_body'(bagof(Term, TGoal, List), Entity, bagof(Term, Goal, List), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(TGoal, Entity, Goal, TermPos0, TermPos).
+'$lgt_swi_unify_clause_body'(setof(Term, TGoal, List), Entity, setof(Term, Goal, List), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(TGoal, Entity, Goal, TermPos0, TermPos).
+'$lgt_swi_unify_clause_body'(findall(Term, TGoal, List), Entity, findall(Term, Goal, List), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(TGoal, Entity, Goal, TermPos0, TermPos).
+
+'$lgt_swi_unify_clause_body'(asserta(TClause), _, asserta(Clause), TermPos, TermPos) :- !,
+	'$lgt_decompile_predicate_heads'(TClause, _Entity, Clause).
+'$lgt_swi_unify_clause_body'(assertz(TClause), _, assertz(Clause), TermPos, TermPos) :- !,
+	'$lgt_decompile_predicate_heads'(TClause, _Entity, Clause, TermPos, TermPos).
+'$lgt_swi_unify_clause_body'(retract(TClause), _, retract(Clause), TermPos, TermPos) :- !,
+	'$lgt_decompile_predicate_heads'(TClause, _Entity, Clause).
+
+'$lgt_swi_unify_clause_body'('$lgt_asserta_fact_chk'(_, Clause, _, _, p), _, asserta(Clause), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_asserta_fact_chk'(_, Clause, _, _, p(p)), _, ::asserta(Clause), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_asserta_fact_chk'(Obj, Clause, _, _, p(p(p))), _, Obj::asserta(Clause), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_asserta_rule_chk'(_, Clause, _, _, p), _, asserta(Clause), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_asserta_rule_chk'(_, Clause, _, _, p(p)), _, ::asserta(Clause), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_asserta_rule_chk'(Obj, Clause, _, _, p(p(p))), _, Obj::asserta(Clause), TermPos, TermPos) :- !.
+
+'$lgt_swi_unify_clause_body'('$lgt_assertz_fact_chk'(_, Clause, _, _, p), _, assertz(Clause), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_assertz_fact_chk'(_, Clause, _, _, p(p)), _, ::assertz(Clause), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_assertz_fact_chk'(Obj, Clause, _, _, p(p(p))), _, Obj::assertz(Clause), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_assertz_rule_chk'(_, Clause, _, _, p), _, assertz(Clause), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_assertz_rule_chk'(_, Clause, _, _, p(p)), _, ::assertz(Clause), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_assertz_rule_chk'(Obj, Clause, _, _, p(p(p))), _, Obj::assertz(Clause), TermPos, TermPos) :- !.
+
+'$lgt_swi_unify_clause_body'('$lgt_clause_chk'(Obj, Head, Body, _, p(p(p))), _, Obj::clause(Head, Body), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_clause_chk'(_, Head, Body, _, p(_)), _, clause(Head, Body), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_clause_chk'(_, Head, Body, _, p(_)), _, ::clause(Head, Body), TermPos, TermPos) :- !.
+
+'$lgt_swi_unify_clause_body'('$lgt_retract_fact_chk'(Obj, Head, _, p(p(p))), _, Obj::retract(Head), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_retract_fact_chk'(_, Head, _, p(_)), _, retract(Head), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_retract_fact_chk'(_, Head, _, p(_)), _, ::retract(Head), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_retract_rule_chk'(Obj, Clause, _, p(p(p))), _, Obj::retract(Clause), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_retract_rule_chk'(_, Clause, _, p(_)), _, retract(Clause), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_retract_rule_chk'(_, Clause, _, p(_)), _, ::retract(Clause), TermPos, TermPos) :- !.
+
+'$lgt_swi_unify_clause_body'('$lgt_retractall_chk'(Obj, Head, _, p(p(p))), _, Obj::retractall(Head), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_retractall_chk'(_, Head, _, p(_)), _, retractall(Head), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_retractall_chk'(_, Head, _, p(_)), _, ::retractall(Head), TermPos, TermPos) :- !.
+
+'$lgt_swi_unify_clause_body'(Goal, _, Goal, TermPos, TermPos).
+
+
+'$lgt_swi_unify_clause_in_line_goal'(sender(_)).
+'$lgt_swi_unify_clause_in_line_goal'(self(_)).
+'$lgt_swi_unify_clause_in_line_goal'(this(_)).
+'$lgt_swi_unify_clause_in_line_goal'(parameter(_, _)).
+'$lgt_swi_unify_clause_in_line_goal'(true).
