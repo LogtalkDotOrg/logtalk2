@@ -28,6 +28,9 @@ RELEASE NOTES
     internal catchall clauses for the predicate declaration and definition
     tables for dynamic entities.
 
+    Updated the Logtalk compiler in order to preclude using multifile
+    predicates for breaking object encapsulation.
+
     When debugging messages specified in uses/2 directives, the message is now
     printed implicitly qualified as in the source code written by the user.
 

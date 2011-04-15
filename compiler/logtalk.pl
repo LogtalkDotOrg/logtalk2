@@ -8116,9 +8116,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	(	Entity == user ->
 		assertz('$lgt_pp_directive_'(multifile(Functor/Arity)))
-	;	'$lgt_construct_entity_prefix'(Entity, _, Prefix),
+	;	functor(Template, Functor, Arity),
+		'$lgt_predicate_property'(Entity, Template, (public), Entity, p(p(p))),
+		'$lgt_predicate_property'(Entity, Template, (multifile), Entity, p(p(p))) ->
+		'$lgt_construct_entity_prefix'(Entity, _, Prefix),
 		'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 		assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity)))
+	;	throw(permission_error(modify, predicate_declaration, Pred))
 	),
 	'$lgt_tr_multifile_directive'(Preds).
 
@@ -8127,9 +8131,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	(	Entity == user ->
 		assertz('$lgt_pp_directive_'(multifile(Functor/ExtArity)))
-	;	'$lgt_construct_entity_prefix'(Entity, _, Prefix),
+	;	functor(Template, Functor, ExtArity),
+		'$lgt_predicate_property'(Entity, Template, (public), Entity, p(p(p))),
+		'$lgt_predicate_property'(Entity, Template, (multifile), Entity, p(p(p))) ->
+		'$lgt_construct_entity_prefix'(Entity, _, Prefix),
 		'$lgt_construct_predicate_indicator'(Prefix, Functor/ExtArity, TFunctor/TArity),
 		assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity)))
+	;	throw(permission_error(modify, non_terminal_declaration, Pred))
 	),
 	'$lgt_tr_multifile_directive'(Preds).
 
