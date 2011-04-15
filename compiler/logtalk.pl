@@ -9312,25 +9312,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	functor(Head, Functor, Arity),
 	'$lgt_construct_entity_prefix'(Other, _, Prefix),
 	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
+	(	'$lgt_pp_directive_'(multifile(TFunctor/TArity)) ->
+		true
+	;	throw(existence_error(multifile_declaration, Other::Head))
+	),
 	functor(THead, TFunctor, TArity),
 	'$lgt_unify_head_thead_args'(Arity, Head, THead),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	arg(TArity, THead, ExCtx),
-	'$lgt_comp_ctx_head'(Ctx, Other::Head),
-	(	'$lgt_pp_directive_'(multifile(TFunctor/TArity)) ->
-		true
-	;	'$lgt_compiler_flag'(report, off) ->
-		true
-	;	'$lgt_compiler_flag'(missing_directives, warning) ->
-		'$lgt_report_warning_in_new_line',
-		'$lgt_inc_compile_warnings_counter',
-		write('%         WARNING!  Missing multifile directive for the predicate: '),
-		writeq(Other::Functor/Arity), nl,
-		'$lgt_pp_entity'(Type, Entity, _, _, _),
-		'$lgt_report_warning_full_context'(Type, Entity)
-	;	true
-	).
-
+	'$lgt_comp_ctx_head'(Ctx, Other::Head).
 
 % translate the head of a clause of a module predicate (which we assume declared multifile)
 

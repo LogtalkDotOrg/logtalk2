@@ -309,7 +309,7 @@ A predicate can be declared <em>multifile</em> by using the <a title="Consult re
 </p>
 <pre>:- multifile(Functor/Arity).</pre>
 <p>
-This allows clauses for a predicate to be defined in several objects or categories. This is a directive that should be used with great care. Support for this directive have been added to Logtalk primarily to support migration of Prolog module code. Spreading clauses for a predicate among several Logtalk entities can be handy in special cases but can also make your code difficult to understand and may pose a safety risk (e.g. by allowing an entity to peek inside other entity, breaking scope rules).
+This allows clauses for a predicate to be defined in several objects or categories. This is a directive that should be used with great care. Support for this directive have been added to Logtalk primarily to support migration of Prolog module code. Spreading clauses for a predicate among several Logtalk entities can be handy in special cases but can also make your code difficult to understand. Logtalk precludes using a multifile predicate for breaking object encapsulation by checking that the object declaring the predicate defines it as both public and multifile. In addition, note that the <code>multifile/1</code> directive is mandatory when defining multifile predicates.
 </p>
 <p>
 Consider the following simple example:
@@ -765,7 +765,7 @@ Currently, there is no clean workaround for calling non-standard Prolog built-in
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: January 18, 2011</span>
+		<span>Last updated on: April 15, 2011</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="categories.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="inheritance.html">next</a></span><br/>

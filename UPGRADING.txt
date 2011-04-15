@@ -305,3 +305,7 @@ predicates decompile_predicate_head/4 and decompile_predicate_indicator/4.
 These predicates are replaced by more general versions. In addition, changed
 the utility predicates that compile/decompile predicate heads/indicators to
 no longer accept conjunctions in the first argument.
+
+Logtalk version 2.43.0 is more strict when checking predicate multifile
+declarations, requiring that the object holding the predicate declaration
+makes it both public and multifile.

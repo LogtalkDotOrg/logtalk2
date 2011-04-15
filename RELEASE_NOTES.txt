@@ -29,7 +29,10 @@ RELEASE NOTES
     tables for dynamic entities.
 
     Updated the Logtalk compiler in order to preclude using multifile
-    predicates for breaking object encapsulation.
+    predicates for breaking object encapsulation. In addition, defining
+    clauses for a multifile Entity::Functor/Arity without a corresponding
+    multifile/1 directive will now result in a compilation error instead
+    of simply a warning.
 
     When debugging messages specified in uses/2 directives, the message is now
     printed implicitly qualified as in the source code written by the user.
