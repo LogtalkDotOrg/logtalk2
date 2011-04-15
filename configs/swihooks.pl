@@ -104,6 +104,22 @@ user:prolog_predicate_name(Goal, Label) :-
 	).
 
 
+:- multifile(prolog:term_compiled/2).
+
+prolog:term_compiled(Entity::Head, QHead) :-
+	(	callable(Entity), callable(Head) ->
+		'$lgt_compile_predicate_heads'(Head, Entity, THead, _),
+		QHead = user:THead
+	;	callable(QHead) ->
+		(	QHead = Module:THead ->
+			Module == user
+		;	QHead = THead
+		),
+		'$lgt_decompile_predicate_heads'(THead, Entity, Head)
+	;	fail
+	).
+
+
 :- multifile(prolog_clause:unify_clause_hook/5).
 
 prolog_clause:unify_clause_hook(Clause, TClause, Module, TermPos0, TermPos) :-
@@ -132,14 +148,10 @@ prolog_clause:unify_clause_hook(Clause, TClause, Module, TermPos0, TermPos) :-
 	).
 %	TermPos0 = term_position(From, To, FFrom, FTo, [H, B0]),
 %	TermPos  = term_position(From, To, FFrom, FTo, [H, term_position(0,0,0,0,[0-0,0-0,0-0,B0])]).
-%	'$lgt_swi_body_term_positions'(Body, TBody, B0, B).
 '$lgt_swi_prolog_clause:unify_clause_hook'(Head, (THead :- TBody), _, TermPos0, TermPos) :-
 	'$lgt_swi_unify_clause'((THead :- TBody), Head, TermPos, TermPos),
 	TermPos0 = term_position(From, To, FFrom, FTo, P),
 	TermPos  = term_position(From, To, FFrom, FTo, [term_position(From, To, FFrom, FTo, P), term_position(0,0,0,0,[0-0,0-0,0-0])]).
-
-
-%'$lgt_swi_body_term_positions'(Body, TBody, B0, B).
 
 
 :- multifile(prolog_clause:make_varnames_hook/5).
@@ -266,12 +278,18 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 '$lgt_swi_unify_clause_body'(findall(Term, TGoal, List), Entity, findall(Term, Goal, List), TermPos0, TermPos) :- !,
 	'$lgt_swi_unify_clause_body'(TGoal, Entity, Goal, TermPos0, TermPos).
 
-'$lgt_swi_unify_clause_body'(asserta(TClause), _, asserta(Clause), TermPos, TermPos) :- !,
-	'$lgt_decompile_predicate_heads'(TClause, _Entity, Clause).
-'$lgt_swi_unify_clause_body'(assertz(TClause), _, assertz(Clause), TermPos, TermPos) :- !,
-	'$lgt_decompile_predicate_heads'(TClause, _Entity, Clause, TermPos, TermPos).
-'$lgt_swi_unify_clause_body'(retract(TClause), _, retract(Clause), TermPos, TermPos) :- !,
-	'$lgt_decompile_predicate_heads'(TClause, _Entity, Clause).
+'$lgt_swi_unify_clause_body'(abolish(TPI), Entity, abolish(PI), TermPos, TermPos) :-
+	'$lgt_decompile_predicate_indicators'(TPI, Entity, PI), !.
+'$lgt_swi_unify_clause_body'(asserta(TClause), Entity, asserta(Clause), TermPos, TermPos) :-
+	'$lgt_decompile_predicate_heads'(TClause, Entity, Clause), !.
+'$lgt_swi_unify_clause_body'(assertz(TClause), Entity, assertz(Clause), TermPos, TermPos) :-
+	'$lgt_decompile_predicate_heads'(TClause, Entity, Clause, TermPos, TermPos), !.
+'$lgt_swi_unify_clause_body'(retract(TClause), Entity, retract(Clause), TermPos, TermPos) :-
+	'$lgt_decompile_predicate_heads'(TClause, Entity, Clause), !.
+
+'$lgt_swi_unify_clause_body'('$lgt_abolish_chk'(Obj, PI, _, p(p(p))), _, Obj::abolish(PI), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_abolish_chk'(_, PI, _, p(_)), _, abolish(PI), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_abolish_chk'(_, PI, _, p(_)), _, ::abolish(PI), TermPos, TermPos) :- !.
 
 '$lgt_swi_unify_clause_body'('$lgt_asserta_fact_chk'(_, Clause, _, _, p), _, asserta(Clause), TermPos, TermPos) :- !.
 '$lgt_swi_unify_clause_body'('$lgt_asserta_fact_chk'(_, Clause, _, _, p(p)), _, ::asserta(Clause), TermPos, TermPos) :- !.
