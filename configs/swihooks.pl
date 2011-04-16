@@ -103,6 +103,14 @@ user:prolog_predicate_name(Goal, Label) :-
 		atomic_list_concat([EFunctor, '/', EArity, '::', Functor, '/', Arity], Label)
 	).
 
+/*
+:- multifile(user:prolog_trace_interception/4).
+:- dynamic(user:prolog_trace_interception/4).
+
+user:prolog_trace_interception(unify, Frame, _, continue) :-
+	prolog_frame_attribute(Frame, goal, Goal),
+	user:prolog_predicate_name(user:Goal, _), !.
+*/
 
 :- multifile(prolog:term_compiled/2).
 
@@ -268,14 +276,24 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 '$lgt_swi_unify_clause_body'('$lgt_ctg_call_'(_, Msg, _), _, :Msg, TermPos, TermPos) :- !.
 
 '$lgt_swi_unify_clause_body'(call(TGoal), Entity, call(Goal), TermPos0, TermPos) :- !,
-	'$lgt_swi_unify_clause_body'(TGoal, Entity, Goal, TermPos0, TermPos1).
-'$lgt_swi_unify_clause_body'(TGoal -> true; fail), Entity, once(Goal), TermPos0, TermPos) :- !,
-	'$lgt_swi_unify_clause_body'(TGoal, Entity, Goal, TermPos0, TermPos1).
-'$lgt_swi_unify_clause_body'(TGoal -> true; true), Entity, ignore(Goal), TermPos0, TermPos) :- !,
-	'$lgt_swi_unify_clause_body'(TGoal, Entity, Goal, TermPos0, TermPos1).
+	'$lgt_swi_unify_clause_body'(TGoal, Entity, Goal, TermPos0, TermPos).
+'$lgt_swi_unify_clause_body'((TGoal -> true; fail), Entity, once(Goal), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(TGoal, Entity, Goal, TermPos0, TermPos).
+'$lgt_swi_unify_clause_body'((TGoal -> true; true), Entity, ignore(Goal), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(TGoal, Entity, Goal, TermPos0, TermPos).
 '$lgt_swi_unify_clause_body'(catch(TGoal, Catcher, TRecover), Entity, catch(Goal, Catcher, Recover), TermPos0, TermPos) :- !,
 	'$lgt_swi_unify_clause_body'(TGoal, Entity, Goal, TermPos0, TermPos1),
 	'$lgt_swi_unify_clause_body'(TRecover, Entity, Recover, TermPos1, TermPos).
+
+'$lgt_swi_unify_clause_body'('$lgt_metacall'(Closure, ExtraArgs, _, _, _, _), _, CallN, TermPos, TermPos) :- !,
+	length(ExtraArgs, N),
+	Arity is N + 1,
+	functor(CallN, call, Arity),
+	arg(1, CallN, Closure),
+	'$lgt_swi_call_n_args'(ExtraArgs, 2, CallN).
+'$lgt_swi_unify_clause_body'('$lgt_metacall'(Goal, _, _, _, _), _, Goal, TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_metacall_this'(Goal, _, _, _), _, Goal, TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'('$lgt_metacall_sender'(Goal, _, _, _, _), _, Goal, TermPos, TermPos) :- !.
 
 '$lgt_swi_unify_clause_body'(bagof(Term, TGoal, List), Entity, bagof(Term, Goal, List), TermPos0, TermPos) :- !,
 	'$lgt_swi_unify_clause_body'(TGoal, Entity, Goal, TermPos0, TermPos).
@@ -284,13 +302,13 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 '$lgt_swi_unify_clause_body'(findall(Term, TGoal, List), Entity, findall(Term, Goal, List), TermPos0, TermPos) :- !,
 	'$lgt_swi_unify_clause_body'(TGoal, Entity, Goal, TermPos0, TermPos).
 
-'$lgt_swi_unify_clause_body'(abolish(TPI), Entity, _, abolish(PI), TermPos, TermPos) :-
+'$lgt_swi_unify_clause_body'(abolish(TPI), Entity, abolish(PI), TermPos, TermPos) :-
 	'$lgt_decompile_predicate_indicators'(TPI, Entity, PI), !.
-'$lgt_swi_unify_clause_body'(asserta(TClause), Entity, _, asserta(Clause), TermPos, TermPos) :-
+'$lgt_swi_unify_clause_body'(asserta(TClause), Entity, asserta(Clause), TermPos, TermPos) :-
 	'$lgt_decompile_predicate_heads'(TClause, Entity, Clause), !.
-'$lgt_swi_unify_clause_body'(assertz(TClause), Entity, _, assertz(Clause), TermPos, TermPos) :-
+'$lgt_swi_unify_clause_body'(assertz(TClause), Entity, assertz(Clause), TermPos, TermPos) :-
 	'$lgt_decompile_predicate_heads'(TClause, Entity, Clause, TermPos, TermPos), !.
-'$lgt_swi_unify_clause_body'(retract(TClause), Entity, _, retract(Clause), TermPos, TermPos) :-
+'$lgt_swi_unify_clause_body'(retract(TClause), Entity, retract(Clause), TermPos, TermPos) :-
 	'$lgt_decompile_predicate_heads'(TClause, Entity, Clause), !.
 
 '$lgt_swi_unify_clause_body'('$lgt_expand_term'(Obj, Term, Clause, _, p(p(p))), _, Obj::expand_term(Term, Clause), TermPos, TermPos) :- !.
@@ -345,3 +363,51 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 '$lgt_swi_unify_clause_in_line_goal'(this(_)).
 '$lgt_swi_unify_clause_in_line_goal'(parameter(_, _)).
 '$lgt_swi_unify_clause_in_line_goal'(true).
+
+
+'$lgt_swi_call_n_args'([], _, _).
+'$lgt_swi_call_n_args'([Arg| Args], N, CallN) :-
+	arg(N, CallN, Arg),
+	N2 is N + 1,
+	'$lgt_swi_call_n_args'(Args, N2, CallN).
+
+
+% the following directives are necessary when using the SWI-Prolog
+% graphical tracer as predicates whose name start with a $ have by
+% default a "notrace" property
+:- '$set_predicate_attribute'('$lgt_send_to_self_nv'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_send_to_self'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_send_to_self_'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_send_to_obj'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_send_to_obj_'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_send_to_obj_nv'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_send_to_obj_ne_nv'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_send_to_obj_ne'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_send_to_obj_ne_'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_obj_super_call_same'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_obj_super_call_same_'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_obj_super_call_other'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_obj_super_call_other_'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_ctg_super_call_same'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_ctg_super_call_same_'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_ctg_super_call_other'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_ctg_super_call_other_'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_ctg_call'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_ctg_call_'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_metacall'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_metacall'/6, trace, 1).
+:- '$set_predicate_attribute'('$lgt_metacall_this'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_metacall_sender'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_expand_term'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_expand_goal'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_phrase'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_phrase'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_abolish_chk'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_asserta_fact_chk'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_asserta_rule_chk'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_assertz_fact_chk'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_assertz_rule_chk'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_clause_chk'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_retract_fact_chk'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_retract_rule_chk'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_retractall_chk'/4, trace, 1).
