@@ -22,7 +22,7 @@ RELEASE NOTES
     Logtalk with Prolog-native development tools.
 
     Updated the Logtalk compiler in order to save the entity clause locations
-    and make this information available to back-end Prolog compilers.
+    and make this information available to the back-end Prolog compilers.
 
     Updated the Logtalk compilers in order to avoid generating unnecessary
     internal catchall clauses for the predicate declaration and definition
