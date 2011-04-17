@@ -89,6 +89,41 @@ user:prolog_predicate_name(user:'$lgt_ctg_super_call_same'(_, _, _), '^^/2 (not 
 user:prolog_predicate_name(user:'$lgt_ctg_super_call_other'(_, _, _), '^^/2 (not cached; from ctg; diff pred)') :- !.
 user:prolog_predicate_name(user:'$lgt_ctg_call'(_, _, _), ':/1 (not cached)') :- !.
 
+user:prolog_predicate_name(user:'$lgt_metacall'(_, _, _, _, _, _), 'call/N') :- !.
+user:prolog_predicate_name(user:'$lgt_metacall'(_, _, _, _, _), 'call/N') :- !.
+user:prolog_predicate_name(user:'$lgt_metacall_this'(_, _, _, _), 'call/N') :- !.
+user:prolog_predicate_name(user:'$lgt_metacall_sender'(_, _, _, _, _), 'call/N') :- !.
+
+user:prolog_predicate_name(user:'$lgt_expand_term'(_, _, _, _, _), 'expand_term/2') :- !.
+user:prolog_predicate_name(user:'$lgt_expand_goal'(_, _, _, _, _), 'expand_goal/2') :- !.
+
+user:prolog_predicate_name(user:'$lgt_phrase'(_, _, _), 'phrase/2') :- !.
+user:prolog_predicate_name(user:'$lgt_phrase'(_, _, _, _), 'phrase/3') :- !.
+
+user:prolog_predicate_name(user:'$lgt_abolish_chk'(_, _, _, _), 'abolish/1') :- !.
+user:prolog_predicate_name(user:'$lgt_asserta_fact_chk'(_, _, _, _, _), 'asserta/1') :- !.
+user:prolog_predicate_name(user:'$lgt_asserta_rule_chk'(_, _, _, _, _), 'asserta/1') :- !.
+user:prolog_predicate_name(user:'$lgt_assertz_fact_chk'(_, _, _, _, _), 'assertz/1') :- !.
+user:prolog_predicate_name(user:'$lgt_assertz_rule_chk'(_, _, _, _, _), 'assertz/1') :- !.
+user:prolog_predicate_name(user:'$lgt_clause_chk'(_, _, _, _, _), 'clause/2') :- !.
+user:prolog_predicate_name(user:'$lgt_retract_fact_chk'(_, _, _, _), 'retract/1') :- !.
+user:prolog_predicate_name(user:'$lgt_retract_rule_chk'(_, _, _, _), 'retract/1') :- !.
+user:prolog_predicate_name(user:'$lgt_retractall_chk'(_, _, _, _), 'retractall/1') :- !.
+
+user:prolog_predicate_name(user:'$lgt_iso_read_term'(_, _, _, _), 'read_term/3') :- !.
+user:prolog_predicate_name(user:'$lgt_iso_read_term'(_, _, _), 'read_term/2') :- !.
+user:prolog_predicate_name(user:'$lgt_iso_read'(_, _, _), 'read/2') :- !.
+user:prolog_predicate_name(user:'$lgt_iso_read'(_, _), 'read/1') :- !.
+
+user:prolog_predicate_name(user:'$lgt_iso_write_term'(_, _, _, _), 'write_term/3') :- !.
+user:prolog_predicate_name(user:'$lgt_iso_write_term'(_, _, _), 'write_term/2') :- !.
+user:prolog_predicate_name(user:'$lgt_iso_write'(_, _, _), 'write/2') :- !.
+user:prolog_predicate_name(user:'$lgt_iso_write'(_, _), 'write/1') :- !.
+user:prolog_predicate_name(user:'$lgt_iso_writeq'(_, _, _), 'writeq/2') :- !.
+user:prolog_predicate_name(user:'$lgt_iso_writeq'(_, _), 'writeq/1') :- !.
+
+user:prolog_predicate_name(user:'$lgt_ctg_parameter'(_, _, _, _), 'parameter/2') :- !.
+
 user:prolog_predicate_name(Goal, Label) :-
 	Goal \= _::_,
 	(	Goal = Module:THead ->
