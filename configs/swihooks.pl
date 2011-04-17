@@ -344,7 +344,7 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 '$lgt_swi_unify_clause_body'(writeq(Term), _, '$lgt_iso_writeq'(Term, _), TermPos, TermPos) :- !.
 
 '$lgt_swi_unify_clause_body'(parameter(Arg, Value), _, '$lgt_ctg_parameter'(_, _, Arg, Value), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(parameter(_, _), _, true, TermPos0, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(parameter(_, _), _, true, TermPos, TermPos) :- !.
 '$lgt_swi_unify_clause_body'(sender(_), _, true, TermPos, TermPos) :- !.
 '$lgt_swi_unify_clause_body'(self(_), _, true, TermPos, TermPos) :- !.
 '$lgt_swi_unify_clause_body'(this(_), _, true, TermPos, TermPos) :- !.
