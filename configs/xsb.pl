@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.3 or later versions
 %
-%  last updated: April 14, 2011
+%  last updated: April 17, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -162,7 +162,7 @@ setup_call_catcher_cleanup(Setup, Call, Catcher, Cleanup) :-
 '$lgt_prolog_feature'(prolog_dialect, xsb).
 '$lgt_prolog_feature'(prolog_version, (Major, Minor, Patch)) :-
 	current_prolog_flag(version_data, xsb(Major, Minor, Patch, _)).
-'$lgt_prolog_feature'(prolog_compatible_version, @>=((3,2,0))).
+'$lgt_prolog_feature'(prolog_compatible_version, @>=((3,3,0))).
 
 '$lgt_prolog_feature'(break_predicate, supported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).
@@ -222,6 +222,7 @@ setup_call_catcher_cleanup(Setup, Call, Catcher, Cleanup) :-
 '$lgt_default_flag'(reload, always).
 '$lgt_default_flag'(startup_message, flags(compact)).
 '$lgt_default_flag'(code_prefix, '$').
+'$lgt_default_flag'(optimize, on).
 '$lgt_default_flag'(debug, off).
 
 

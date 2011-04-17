@@ -11,7 +11,7 @@
 %
 %  configuration file for SWI Prolog 5.8.0 and later versions
 %
-%  last updated: April 14, 2011
+%  last updated: April 17, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -240,6 +240,7 @@ message_hook(discontiguous(_), _, _) :-		% SWI-Prolog discontiguous predicate
 '$lgt_default_flag'(reload, always).
 '$lgt_default_flag'(startup_message, flags(compact)).
 '$lgt_default_flag'(code_prefix, '$').
+'$lgt_default_flag'(optimize, on).
 '$lgt_default_flag'(debug, off).
 
 

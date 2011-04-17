@@ -11,7 +11,7 @@
 %
 %  configuration file for CxProlog 0.97.5 or a later version
 %
-%  last updated: April 14, 2011
+%  last updated: April 17, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -207,6 +207,7 @@ setup_call_cleanup(Setup, Call, Cleanup) :-
 '$lgt_default_flag'(reload, always).
 '$lgt_default_flag'(startup_message, flags(compact)).
 '$lgt_default_flag'(code_prefix, '$').
+'$lgt_default_flag'(optimize, on).
 '$lgt_default_flag'(debug, off).
 
 

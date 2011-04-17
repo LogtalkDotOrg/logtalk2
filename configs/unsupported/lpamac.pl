@@ -11,7 +11,7 @@
 %
 %  configuration file for LPA MacProlog32 1.25
 %
-%  last updated: April 14, 2011
+%  last updated: April 17, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -319,6 +319,7 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 '$lgt_default_flag'(reload, always).
 '$lgt_default_flag'(startup_message, flags(compact)).
 '$lgt_default_flag'(code_prefix, '$').
+'$lgt_default_flag'(optimize, on).
 '$lgt_default_flag'(debug, off).
 
 

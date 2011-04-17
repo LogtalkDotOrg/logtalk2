@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.12 and later versions
 %
-%  last updated: April 14, 2011
+%  last updated: April 17, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -184,6 +184,7 @@ term_variables(Term, Variables) :-
 '$lgt_default_flag'(reload, always).
 '$lgt_default_flag'(startup_message, flags(compact)).
 '$lgt_default_flag'(code_prefix, '$').
+'$lgt_default_flag'(optimize, on).
 '$lgt_default_flag'(debug, off).
 
 

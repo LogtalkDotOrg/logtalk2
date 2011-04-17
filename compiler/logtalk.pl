@@ -9027,7 +9027,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_tr_head'(Head, THead, HeadCtx),
 	'$lgt_comp_ctx_meta_vars'(BodyCtx, MetaVars),
 	'$lgt_tr_body'(Body, TBody, DBody, BodyCtx),
-	'$lgt_simplify_body'(TBody, SBody),
+	(	'$lgt_compiler_flag'(optimize, on) ->
+		'$lgt_simplify_body'(TBody, SBody)
+	;	SBody = TBody
+	),
 	'$lgt_comp_ctx_exec_ctx'(HeadCtx, ExCtx).
 
 '$lgt_tr_clause'((Head:-Body), TClause, (THead:-'$lgt_debugger.head'(Head, N, ExCtx),DBody), HeadCtx, BodyCtx) :-
@@ -9037,10 +9040,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_tr_head'(Head, THead, HeadCtx),
 	'$lgt_comp_ctx_meta_vars'(BodyCtx, MetaVars),
 	'$lgt_tr_body'(Body, TBody, DBody, BodyCtx),
-	'$lgt_simplify_body'(TBody, SBody),
-	(	SBody == true ->
-		TClause = THead
-	;	TClause = (THead:-SBody)
+	(	'$lgt_compiler_flag'(optimize, on) ->
+		'$lgt_simplify_body'(TBody, SBody),
+		(	SBody == true ->
+			TClause = THead
+		;	TClause = (THead:-SBody)
+		)
+	;	TClause = (THead:-TBody)
 	),
 	'$lgt_comp_ctx_exec_ctx'(HeadCtx, ExCtx),
 	'$lgt_clause_number'(THead, N).
@@ -16160,6 +16166,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_valid_flag'(reload).
 '$lgt_valid_flag'(hook).
 '$lgt_valid_flag'(code_prefix).
+'$lgt_valid_flag'(optimize).
 '$lgt_valid_flag'(debug).
 '$lgt_valid_flag'(startup_message).
 '$lgt_valid_flag'(clean).
@@ -16252,6 +16259,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_valid_flag_value'(code_prefix, Prefix) :-
 	atom(Prefix).
+
+'$lgt_valid_flag_value'(optimize, on) :- !.
+'$lgt_valid_flag_value'(optimize, off) :- !.
 
 '$lgt_valid_flag_value'(debug, on) :- !.
 '$lgt_valid_flag_value'(debug, off) :- !.
@@ -16501,7 +16511,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_dcg_rule'(Rule, Clause) :-
 	'$lgt_dcg_rule'(Rule, S0, S, Expansion),
-	'$lgt_dcg_simplify'(Expansion, S0, S, Clause).
+	(	'$lgt_compiler_flag'(optimize, on) ->
+		'$lgt_dcg_simplify'(Expansion, S0, S, Clause)
+	;	Clause = Expansion
+	).
 
 
 '$lgt_dcg_rule'((RHead --> _), _, _, _) :-
@@ -18601,7 +18614,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	Hook = '(none defined)'
 	),
 	write(', hook: '), write(Hook), nl,
-	'$lgt_compiler_flag'(debug, Debug), write('  debug: '), writeq(Debug),
+	'$lgt_compiler_flag'(optimize, Optimize), write('  optimize: '), writeq(Optimize),
+	'$lgt_compiler_flag'(debug, Debug), write(', debug: '), writeq(Debug),
 	'$lgt_compiler_flag'(clean, Clean), write(', clean: '), writeq(Clean),
 	'$lgt_compiler_flag'(smart_compilation, Smart), write(', smart_compilation: '), write(Smart),
 	'$lgt_compiler_flag'(reload, Reload), write(', reload: '), write(Reload), nl,
@@ -18664,6 +18678,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	write('  Compilation report (report):                                '), write(Report), nl,
 	'$lgt_compiler_flag'(code_prefix, Code),
 	write('  Compiled code functors prefix (code_prefix):                '), writeq(Code), nl,
+	'$lgt_compiler_flag'(optimize, Optimize),
+	write('  Optimize compiled code (optimize):                          '), writeq(Optimize), nl,
 	'$lgt_compiler_flag'(debug, Debug),
 	write('  Compile entities in debug mode (debug):                     '), writeq(Debug), nl,
 	'$lgt_compiler_flag'(reload, Reload),
