@@ -44,6 +44,11 @@ RELEASE NOTES
     When debugging messages specified in uses/2 directives, the message is now
     printed implicitly qualified as in the source code written by the user.
 
+    Changed the internal predicates used in the implementation of the built-in
+    multi-threading predicates in order to facilitate the integration with
+    high-level debugging tools that require decompilation of the generated
+    Prolog code.
+
     Updated the SWI-Prolog config file in order to avoid preventing loading
     of a Logtalk source file when a Prolog file with the same name exists on
     the same lookup directory.

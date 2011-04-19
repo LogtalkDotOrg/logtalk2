@@ -384,10 +384,68 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 '$lgt_swi_unify_clause_body'(self(_), _, true, TermPos, TermPos) :- !.
 '$lgt_swi_unify_clause_body'(this(_), _, true, TermPos, TermPos) :- !.
 
+'$lgt_swi_unify_clause_body'(threaded(Goals), Entity, '$lgt_threaded_or'(_, MTGoals, _), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_threaded_goals'(Goals, Entity, MTGoals, TermPos0, TermPos).
+'$lgt_swi_unify_clause_body'(threaded(Goals), Entity, '$lgt_threaded_and'(_, MTGoals, _), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_threaded_goals'(Goals, Entity, MTGoals, TermPos0, TermPos).
+'$lgt_swi_unify_clause_body'(threaded(Goal), Entity, (TGoal -> true; fail), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+
+'$lgt_swi_unify_clause_body'(threaded_ignore(Goal), Entity, '$lgt_threaded_ignore'(TGoal), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+
+'$lgt_swi_unify_clause_body'(threaded_call(Goal), Entity, '$lgt_threaded_call'(TGoal, _, _), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+'$lgt_swi_unify_clause_body'(threaded_call(Goal), Entity, '$lgt_threaded_call'(_, TGoal, _, _), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+
+'$lgt_swi_unify_clause_body'(threaded_once(Goal), Entity, '$lgt_threaded_once'(TGoal, _, _), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+'$lgt_swi_unify_clause_body'(threaded_once(Goal), Entity, '$lgt_threaded_once'(_, TGoal, _, _), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+
+'$lgt_swi_unify_clause_body'(threaded_call(Goal, Tag), Entity, '$lgt_threaded_call_tagged'(TGoal, _, _, Tag), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+'$lgt_swi_unify_clause_body'(threaded_call(Goal, Tag), Entity, '$lgt_threaded_call_tagged'(_, TGoal, _, _, Tag), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+
+'$lgt_swi_unify_clause_body'(threaded_once(Goal, Tag), Entity, '$lgt_threaded_once_tagged'(TGoal, _, _, Tag), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+'$lgt_swi_unify_clause_body'(threaded_once(Goal, Tag), Entity, '$lgt_threaded_once_tagged'(_, TGoal, _, _, Tag), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+
+'$lgt_swi_unify_clause_body'(threaded_peek(Goal), Entity, '$lgt_threaded_peek'(TGoal, _, _, _), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+'$lgt_swi_unify_clause_body'(threaded_peek(Goal), Entity, '$lgt_threaded_peek'(_, TGoal, _, _, _), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+
+'$lgt_swi_unify_clause_body'(threaded_peek(Goal, Tag), Entity, '$lgt_threaded_peek_tagged'(TGoal, _, _, _, Tag), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+'$lgt_swi_unify_clause_body'(threaded_peek(Goal, Tag), Entity, '$lgt_threaded_peek_tagged'(_, TGoal, _, _, _, Tag), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+
+'$lgt_swi_unify_clause_body'(threaded_exit(Goal), Entity, '$lgt_threaded_exit'(TGoal, _, _, _), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+'$lgt_swi_unify_clause_body'(threaded_exit(Goal), Entity, '$lgt_threaded_exit'(_, TGoal, _, _, _), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+
+'$lgt_swi_unify_clause_body'(threaded_exit(Goal, Tag), Entity, '$lgt_threaded_exit_tagged'(TGoal, _, _, _, Tag), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+'$lgt_swi_unify_clause_body'(threaded_exit(Goal, Tag), Entity, '$lgt_threaded_exit_tagged'(_, TGoal, _, _, _, Tag), TermPos0, TermPos) :- !,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+
+'$lgt_swi_unify_clause_body'(threaded_wait(Msg), _, '$lgt_threaded_wait_synch_ctg'(_, Msg, _), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(threaded_wait(Msg), _, '$lgt_threaded_wait_synch'(_, Msg, _), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(threaded_wait(Msg), _, '$lgt_threaded_wait_ctg'(Msg, _), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(threaded_wait(Msg), _, '$lgt_threaded_wait'(Msg, _), TermPos, TermPos) :- !.
+
+'$lgt_swi_unify_clause_body'(threaded_notify(Msg), _, '$lgt_threaded_notify_ctg'(Msg, _), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(threaded_notify(Msg), _, '$lgt_threaded_notify'(Msg, _), TermPos, TermPos) :- !.
+
 '$lgt_swi_unify_clause_body'(Goal, _, Goal, TermPos, TermPos) :-	% built-in predicates
 	!.
 
-'$lgt_swi_unify_clause_body'(Goal, _, TGoal, TermPos, TermPos) :-
+'$lgt_swi_unify_clause_body'(Goal, _, TGoal, TermPos, TermPos) :-	% object and category user predicates
 	'$lgt_decompile_predicate_heads'(TGoal, GoalEntity, Goal0),
 	(	Goal = Goal0
 	;	Goal = GoalEntity::Goal0
@@ -395,6 +453,21 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 	!.
 
 '$lgt_swi_unify_clause_body'(_, _, _, TermPos, TermPos).			% just in case...
+
+
+'$lgt_swi_unify_threaded_goals'((Goal1, Goal2), Entity, (TGoal1, TGoal2), TermPos0, TermPos) :-
+	!,
+	'$lgt_swi_unify_threaded_goal'(Goal1, Entity, TGoal1, TermPos0, TermPos1),
+	'$lgt_swi_unify_threaded_goals'(Goal2, Entity, TGoal2, TermPos1, TermPos).
+'$lgt_swi_unify_threaded_goals'((Goal1; Goal2), Entity, (TGoal1; TGoal2), TermPos0, TermPos) :-
+	!,
+	'$lgt_swi_unify_threaded_goal'(Goal1, Entity, TGoal1, TermPos0, TermPos1),
+	'$lgt_swi_unify_threaded_goals'(Goal2, Entity, TGoal2, TermPos1, TermPos).
+'$lgt_swi_unify_threaded_goals'(Goal, Entity, TGoal, TermPos0, TermPos) :-
+	'$lgt_swi_unify_threaded_goal'(Goal, Entity, TGoal, TermPos0, TermPos).
+
+'$lgt_swi_unify_threaded_goal'(Goal, Entity, '$lgt_threaded_goal'(TGoal, _, _, _), TermPos0, TermPos) :-
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
 
 
 '$lgt_swi_call_n_args'([], _, _).

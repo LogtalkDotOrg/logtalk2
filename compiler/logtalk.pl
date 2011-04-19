@@ -1473,8 +1473,7 @@ threaded_call(Goal, Tag) :-
 
 threaded_call(Goal, Tag) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
-	'$lgt_new_threaded_tag'(Tag),
-	catch('$lgt_mt_dispatch_goal'(call, Prefix, Goal, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
+	catch('$lgt_threaded_call_tagged'(Prefix, Goal, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_call(@callable)
@@ -1493,7 +1492,7 @@ threaded_call(Goal) :-
 
 threaded_call(Goal) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
-	catch('$lgt_mt_dispatch_goal'(call, Prefix, Goal, user, user, []), Error, '$lgt_runtime_error_handler'(Error)).
+	catch('$lgt_threaded_call'(Prefix, Goal, user, user), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_once(@callable, -nonvar)
@@ -1516,8 +1515,7 @@ threaded_once(Goal, Tag) :-
 
 threaded_once(Goal, Tag) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
-	'$lgt_new_threaded_tag'(Tag),
-	catch('$lgt_mt_dispatch_goal'(once, Prefix, Goal, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
+	catch('$lgt_threaded_once_tagged'(Prefix, Goal, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_once(@callable)
@@ -1536,7 +1534,7 @@ threaded_once(Goal) :-
 
 threaded_once(Goal) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
-	catch('$lgt_mt_dispatch_goal'(once, Prefix, Goal, user, user, []), Error, '$lgt_runtime_error_handler'(Error)).
+	catch('$lgt_threaded_once'(Prefix, Goal, user, user), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_ignore(@callable)
@@ -1554,8 +1552,7 @@ threaded_ignore(Goal) :-
 	throw(error(type_error(callable, Goal), threaded_ignore(Goal))).
 
 threaded_ignore(Goal) :-
-	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
-	catch('$lgt_mt_dispatch_goal'(ignore, Prefix, Goal, user, user, _), Error, '$lgt_runtime_error_handler'(Error)).
+	catch('$lgt_threaded_ignore'(Goal), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_exit(+callable, +nonvar)
@@ -1578,7 +1575,7 @@ threaded_exit(Goal, Tag) :-
 
 threaded_exit(Goal, Tag) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
-	catch('$lgt_mt_get_reply'(Prefix, Goal, user, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
+	catch('$lgt_threaded_exit_tagged'(Prefix, Goal, user, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_exit(+callable)
@@ -1597,7 +1594,7 @@ threaded_exit(Goal) :-
 
 threaded_exit(Goal) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
-	catch('$lgt_mt_get_reply'(Prefix, Goal, user, user, user, []), Error, '$lgt_runtime_error_handler'(Error)).
+	catch('$lgt_threaded_exit'(Prefix, Goal, user, user, user), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_peek(+callable, +nonvar)
@@ -1620,7 +1617,7 @@ threaded_peek(Goal, Tag) :-
 
 threaded_peek(Goal, Tag) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
-	catch('$lgt_mt_peek_reply'(Prefix, Goal, user, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
+	catch('$lgt_threaded_peek_tagged'(Prefix, Goal, user, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_peek(+callable)
@@ -1639,7 +1636,7 @@ threaded_peek(Goal) :-
 
 threaded_peek(Goal) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
-	catch('$lgt_mt_peek_reply'(Prefix, Goal, user, user, user, []), Error, '$lgt_runtime_error_handler'(Error)).
+	catch('$lgt_threaded_peek'(Prefix, Goal, user, user, user), Error, '$lgt_runtime_error_handler'(Error)).
 
 
 % threaded_wait(?nonvar)
@@ -1650,7 +1647,7 @@ threaded_wait(Message) :-
 
 threaded_wait(Message) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
-	'$lgt_thread_get_notifications'(Message, Prefix).
+	'$lgt_threaded_wait'(Message, Prefix).
 
 
 % threaded_notify(@term)
@@ -1665,7 +1662,7 @@ threaded_notify(Message) :-
 
 threaded_notify(Message) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
-	'$lgt_thread_send_notifications'(Message, Prefix).
+	'$lgt_threaded_notify'(Message, Prefix).
 
 
 
@@ -9720,10 +9717,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(call, Prefix, TGoal, This, Self, Tag)),
-		MDGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(call, Prefix, DGoal, This, Self, Tag))
-	;	MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(call, TGoal, This, Self, Tag)),
-		MDGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(call, DGoal, This, Self, Tag))
+		MTGoal = '$lgt_threaded_call_tagged'(Prefix, TGoal, This, Self, Tag),
+		MDGoal = '$lgt_threaded_call_tagged'(Prefix, DGoal, This, Self, Tag)
+	;	% compiling a category
+		MTGoal = '$lgt_threaded_call_tagged'(TGoal, This, Self, Tag),
+		MDGoal = '$lgt_threaded_call_tagged'(DGoal, This, Self, Tag)
 	),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _, _).
 
@@ -9743,10 +9741,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_dispatch_goal'(call, Prefix, TGoal, This, Self, []),
-		MDGoal = '$lgt_mt_dispatch_goal'(call, Prefix, DGoal, This, Self, [])
-	;	MTGoal = '$lgt_mt_dispatch_goal'(call, TGoal, This, Self, []),
-		MDGoal = '$lgt_mt_dispatch_goal'(call, DGoal, This, Self, [])
+		MTGoal = '$lgt_threaded_call'(Prefix, TGoal, This, Self),
+		MDGoal = '$lgt_threaded_call'(Prefix, DGoal, This, Self)
+	;	% compiling a category
+		MTGoal = '$lgt_threaded_call'(TGoal, This, Self),
+		MDGoal = '$lgt_threaded_call'(DGoal, This, Self)
 	),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _, _).
 
@@ -9770,10 +9769,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(once, Prefix, TGoal, This, Self, Tag)),
-		MDGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(once, Prefix, DGoal, This, Self, Tag))
-	;	MTGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(once, TGoal, This, Self, Tag)),
-		MDGoal = ('$lgt_new_threaded_tag'(Tag), '$lgt_mt_dispatch_goal'(once, DGoal, This, Self, Tag))
+		MTGoal = '$lgt_threaded_once_tagged'(Prefix, TGoal, This, Self, Tag),
+		MDGoal = '$lgt_threaded_once_tagged'(Prefix, DGoal, This, Self, Tag)
+	;	% compiling a category
+		MTGoal = '$lgt_threaded_once_tagged'(TGoal, This, Self, Tag),
+		MDGoal = '$lgt_threaded_once_tagged'(DGoal, This, Self, Tag)
 	),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _, _).
 
@@ -9793,10 +9793,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_dispatch_goal'(once, Prefix, TGoal, This, Self, []),
-		MDGoal = '$lgt_mt_dispatch_goal'(once, Prefix, DGoal, This, Self, [])
-	;	MTGoal = '$lgt_mt_dispatch_goal'(once, TGoal, This, Self, []),
-		MDGoal = '$lgt_mt_dispatch_goal'(once, DGoal, This, Self, [])
+		MTGoal = '$lgt_threaded_once'(Prefix, TGoal, This, Self),
+		MDGoal = '$lgt_threaded_once'(Prefix, DGoal, This, Self)
+	;	% compiling a category
+		MTGoal = '$lgt_threaded_once'(TGoal, This, Self),
+		MDGoal = '$lgt_threaded_once'(DGoal, This, Self)
 	),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _, _).
 
@@ -9813,15 +9814,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_body'(threaded_ignore(Goal), MTGoal, '$lgt_debugger.goal'(threaded_ignore(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
-	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
-	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_dispatch_goal'(ignore, Prefix, TGoal, This, Self, _),
-		MDGoal = '$lgt_mt_dispatch_goal'(ignore, Prefix, DGoal, This, Self, _)
-	;	MTGoal = '$lgt_mt_dispatch_goal'(ignore, TGoal, This, Self, _),
-		MDGoal = '$lgt_mt_dispatch_goal'(ignore, DGoal, This, Self, _)
-	),
-	'$lgt_exec_ctx'(ExCtx, _, This, Self, _, _).
+	MTGoal = '$lgt_threaded_ignore'(TGoal),
+	MDGoal = '$lgt_threaded_ignore'(DGoal),
+	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
 
 '$lgt_tr_body'(threaded_exit(_, _), _, _, _) :-
@@ -9839,10 +9835,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_get_reply'(Prefix, TGoal, Sender, This, Self, Tag),
-		MDGoal = '$lgt_mt_get_reply'(Prefix, DGoal, Sender, This, Self, Tag)
-	;	MTGoal = '$lgt_mt_get_reply'(TGoal, Sender, This, Self, Tag),
-		MDGoal = '$lgt_mt_get_reply'(DGoal, Sender, This, Self, Tag)
+		MTGoal = '$lgt_threaded_exit_tagged'(Prefix, TGoal, Sender, This, Self, Tag),
+		MDGoal = '$lgt_threaded_exit_tagged'(Prefix, DGoal, Sender, This, Self, Tag)
+	;	% compiling a category
+		MTGoal = '$lgt_threaded_exit_tagged'(TGoal, Sender, This, Self, Tag),
+		MDGoal = '$lgt_threaded_exit_tagged'(DGoal, Sender, This, Self, Tag)
 	),
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _, _).
 
@@ -9862,10 +9859,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_get_reply'(Prefix, TGoal, Sender, This, Self, []),
-		MDGoal = '$lgt_mt_get_reply'(Prefix, DGoal, Sender, This, Self, [])
-	;	MTGoal = '$lgt_mt_get_reply'(TGoal, Sender, This, Self, []),
-		MDGoal = '$lgt_mt_get_reply'(DGoal, Sender, This, Self, [])
+		MTGoal = '$lgt_threaded_exit'(Prefix, TGoal, Sender, This, Self),
+		MDGoal = '$lgt_threaded_exit'(Prefix, DGoal, Sender, This, Self)
+	;	% compiling a category
+		MTGoal = '$lgt_threaded_exit'(TGoal, Sender, This, Self),
+		MDGoal = '$lgt_threaded_exit'(DGoal, Sender, This, Self)
 	),
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _, _).
 
@@ -9885,10 +9883,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, Sender, This, Self, Tag),
-		MDGoal = '$lgt_mt_peek_reply'(Prefix, DGoal, Sender, This, Self, Tag)
-	;	MTGoal = '$lgt_mt_peek_reply'(TGoal, Sender, This, Self, Tag),
-		MDGoal = '$lgt_mt_peek_reply'(DGoal, Sender, This, Self, Tag)
+		MTGoal = '$lgt_threaded_peek_tagged'(Prefix, TGoal, Sender, This, Self, Tag),
+		MDGoal = '$lgt_threaded_peek_tagged'(Prefix, DGoal, Sender, This, Self, Tag)
+	;	% compiling a category
+		MTGoal = '$lgt_threaded_peek_tagged'(TGoal, Sender, This, Self, Tag),
+		MDGoal = '$lgt_threaded_peek_tagged'(DGoal, Sender, This, Self, Tag)
 	),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _, _).
 
@@ -9908,10 +9907,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
-		MTGoal = '$lgt_mt_peek_reply'(Prefix, TGoal, Sender, This, Self, []),
-		MDGoal = '$lgt_mt_peek_reply'(Prefix, DGoal, Sender, This, Self, [])
-	;	MTGoal = '$lgt_mt_peek_reply'(TGoal, Sender, This, Self, []),
-		MDGoal = '$lgt_mt_peek_reply'(DGoal, Sender, This, Self, [])
+		MTGoal = '$lgt_threaded_peek'(Prefix, TGoal, Sender, This, Self),
+		MDGoal = '$lgt_threaded_peek'(Prefix, DGoal, Sender, This, Self)
+	;	% compiling a category
+		MTGoal = '$lgt_threaded_peek'(TGoal, Sender, This, Self),
+		MDGoal = '$lgt_threaded_peek'(DGoal, Sender, This, Self)
 	),
 	'$lgt_exec_ctx'(ExCtx, _, This, Self, _, _).
 
@@ -9923,22 +9923,22 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_body'(threaded_wait(Msg), MTPred, '$lgt_debugger.goal'(threaded_wait(Msg), MTPred, ExCtx), Ctx) :-
 	!,
-	'$lgt_pp_entity'(Type, _, EntityPrefix, _, _),
-	'$lgt_comp_ctx'(Ctx, Head, _, _, _, EntityPrefix, _, _, ExCtx, _, _),
+	'$lgt_pp_entity'(Type, _, Prefix, _, _),
+	'$lgt_comp_ctx'(Ctx, Head, _, _, _, Prefix, _, _, ExCtx, _, _),
 	(	'$lgt_pp_synchronized_'(Head, Mutex) ->
 		(	Type == object ->
-			MTPred = (mutex_unlock(Mutex), '$lgt_thread_get_notifications'(Msg, EntityPrefix), mutex_lock(Mutex))
+			MTPred = '$lgt_threaded_wait_synch'(Mutex, Msg, Prefix)
 		;	% we're compiling a category predicate
 			'$lgt_comp_ctx_this'(Ctx, This),
 			'$lgt_exec_ctx_this'(ExCtx, This),
-			MTPred = ('$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _), mutex_unlock(Mutex), '$lgt_thread_get_notifications'(Msg, Prefix), mutex_lock(Mutex))
+			MTPred = '$lgt_threaded_wait_synch_ctg'(Mutex, Msg, This)
 		)
 	;	(	Type == object ->
-			MTPred = '$lgt_thread_get_notifications'(Msg, EntityPrefix)
+			MTPred = '$lgt_threaded_wait'(Msg, Prefix)
 		;	% we're compiling a category predicate
 			'$lgt_comp_ctx_this'(Ctx, This),
 			'$lgt_exec_ctx_this'(ExCtx, This),
-			MTPred = ('$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _), '$lgt_thread_get_notifications'(Msg, Prefix))
+			MTPred = '$lgt_threaded_wait_ctg'(Msg, This)
 		)
 	).
 
@@ -9950,14 +9950,14 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_body'(threaded_notify(Msg), MTPred, '$lgt_debugger.goal'(threaded_notify(Msg), MTPred, ExCtx), Ctx) :-
 	!,
-	'$lgt_pp_entity'(Type, _, EntityPrefix, _, _),
-	'$lgt_comp_ctx'(Ctx, _, _, _, _, EntityPrefix, _, _, ExCtx, _, _),
+	'$lgt_pp_entity'(Type, _, Prefix, _, _),
+	'$lgt_comp_ctx'(Ctx, _, _, _, _, Prefix, _, _, ExCtx, _, _),
 	(	Type == object ->
-		MTPred = '$lgt_thread_send_notifications'(Msg, EntityPrefix)
+		MTPred = '$lgt_threaded_notify'(Msg, Prefix)
 	;	% we're compiling a category predicate
 		'$lgt_comp_ctx_this'(Ctx, This),
 		'$lgt_exec_ctx_this'(ExCtx, This),
-		MTPred = ('$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _), '$lgt_thread_send_notifications'(Msg, Prefix))
+		MTPred = '$lgt_threaded_notify_ctg'(Msg, This)
 	).
 
 
@@ -10900,86 +10900,35 @@ current_logtalk_flag(version, version(2, 43, 0)).
 %
 % translates the argument of a call to the built-in predicate threaded/1
 
-'$lgt_tr_threaded_call'((TGoal; TGoals), ThreadedCall) :-
+'$lgt_tr_threaded_call'((TGoal; TGoals), '$lgt_threaded_or'(Queue, MTGoals, Results)) :-
 	!,
-	'$lgt_tr_threaded_or_call'((TGoal; TGoals), Queue, MTGoals, Results),
-	ThreadedCall = (thread_self(Queue), catch((MTGoals, '$lgt_mt_threaded_or_exit'(Results)), '$lgt_terminated', fail)).
+	'$lgt_tr_threaded_or_call'((TGoal; TGoals), Queue, MTGoals, Results).
 
-'$lgt_tr_threaded_call'((TGoal, TGoals), ThreadedCall) :-
+'$lgt_tr_threaded_call'((TGoal, TGoals), '$lgt_threaded_and'(Queue, MTGoals, Results)) :-
 	!,
-	'$lgt_tr_threaded_and_call'((TGoal, TGoals), Queue, MTGoals, Results),
-	ThreadedCall =(thread_self(Queue), catch((MTGoals, '$lgt_mt_threaded_and_exit'(Results)), '$lgt_terminated', fail)).
+	'$lgt_tr_threaded_and_call'((TGoal, TGoals), Queue, MTGoals, Results).
 
 '$lgt_tr_threaded_call'(TGoal, (TGoal -> true; fail)).
 
 
 '$lgt_tr_threaded_or_call'((TGoal; TGoals), Queue, (MTGoal, MTGoals), [Result| Results]) :-
 	!,
-	'$lgt_tr_threaded_individual_goal'(TGoal, Queue, MTGoal, Result),
+	'$lgt_tr_threaded_goal'(TGoal, Queue, MTGoal, Result),
 	'$lgt_tr_threaded_or_call'(TGoals, Queue, MTGoals, Results).
 
 '$lgt_tr_threaded_or_call'(TGoal, Queue, MTGoal, [Result]) :-
-	'$lgt_tr_threaded_individual_goal'(TGoal, Queue, MTGoal, Result).
+	'$lgt_tr_threaded_goal'(TGoal, Queue, MTGoal, Result).
 
 
 '$lgt_tr_threaded_and_call'((TGoal, TGoals), Queue, (MTGoal, MTGoals), [Result| Results]) :-
 	!,
-	'$lgt_tr_threaded_individual_goal'(TGoal, Queue, MTGoal, Result),
+	'$lgt_tr_threaded_goal'(TGoal, Queue, MTGoal, Result),
 	'$lgt_tr_threaded_and_call'(TGoals, Queue, MTGoals, Results).
 
 '$lgt_tr_threaded_and_call'(TGoal, Queue, MTGoal, [Result]) :-
-	'$lgt_tr_threaded_individual_goal'(TGoal, Queue, MTGoal, Result).
+	'$lgt_tr_threaded_goal'(TGoal, Queue, MTGoal, Result).
 
-
-'$lgt_tr_threaded_individual_goal'(TGoal, Queue, MTGoal, id(Id, TVars, _)) :-
-	MTGoal = (
-		term_variables(TGoal, TVars),
-		thread_create('$lgt_mt_threaded_call'(TGoal, TVars, Queue), Id, [at_exit('$lgt_mt_exit_handler'(Id, Queue))])
-	).
-
-
-
-% '$lgt_thread_get_notifications'(@term, @object_identifier)
-%
-% translates the notification argument of a built-in predicate threaded_wait/1 call
-
-'$lgt_thread_get_notifications'(Msg, Prefix) :-
-	var(Msg),
-	!,
-	thread_get_message(Prefix, '$lgt_notification'(Msg)).
-
-'$lgt_thread_get_notifications'([], _) :-
-	!.
-
-'$lgt_thread_get_notifications'([Msg| Msgs], Prefix) :-
-	!,
-	thread_get_message(Prefix, '$lgt_notification'(Msg)),
-	'$lgt_thread_get_notifications'(Msgs, Prefix).
-
-'$lgt_thread_get_notifications'(Msg, Prefix) :-
-	thread_get_message(Prefix, '$lgt_notification'(Msg)).
-
-
-
-% '$lgt_thread_send_notifications'(@term, @object_identifier)
-%
-% translates the notification argument of a built-in predicate threaded_notify/1 call
-
-'$lgt_thread_send_notifications'(Msg, Prefix) :-
-	var(Msg),
-	!,
-	thread_send_message(Prefix, '$lgt_notification'(Msg)).
-
-'$lgt_thread_send_notifications'([], _) :-
-	!.
-
-'$lgt_thread_send_notifications'([Msg| Msgs], Prefix) :-
-	!,
-	thread_send_message(Prefix, '$lgt_notification'(Msg)),
-	'$lgt_thread_send_notifications'(Msgs, Prefix).
-
-'$lgt_thread_send_notifications'(Msg, Prefix) :-
-	thread_send_message(Prefix, '$lgt_notification'(Msg)).
+'$lgt_tr_threaded_goal'(TGoal, Queue, '$lgt_threaded_goal'(TGoal, TVars, Queue, Id), id(Id, TVars, _)).
 
 
 
@@ -14172,6 +14121,22 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_fix_predicate_calls'(Test, TTest, Annotation).
 
 '$lgt_fix_predicate_calls'(setof(Term, Pred, List), setof(Term, TPred, List), Annotation) :-
+	!,
+	'$lgt_fix_predicate_calls'(Pred, TPred, Annotation).
+
+'$lgt_fix_predicate_calls'('$lgt_threaded_or'(Queue, MTGoals, Results), '$lgt_threaded_or'(Queue, TMTGoals, Results), Annotation) :-
+	!,
+	'$lgt_fix_predicate_calls'(MTGoals, TMTGoals, Annotation).
+
+'$lgt_fix_predicate_calls'('$lgt_threaded_and'(Queue, MTGoals, Results), '$lgt_threaded_and'(Queue, TMTGoals, Results), Annotation) :-
+	!,
+	'$lgt_fix_predicate_calls'(MTGoals, TMTGoals, Annotation).
+
+'$lgt_fix_predicate_calls'('$lgt_threaded_goal'(Pred, TVars, Queue, Id), '$lgt_threaded_goal'(TPred, TVars, Queue, Id), Annotation) :-
+	!,
+	'$lgt_fix_predicate_calls'(Pred, TPred, Annotation).
+
+'$lgt_fix_predicate_calls'('$lgt_threaded_ignore'(Pred), '$lgt_threaded_ignore'(TPred), Annotation) :-
 	!,
 	'$lgt_fix_predicate_calls'(Pred, TPred, Annotation).
 
@@ -18025,34 +17990,155 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-% '$lgt_mt_dispatch_goal'(+atom, @callable, +object_identifier, +object_identifier, @nonvar)
-%
-% creates a thread for proving a goal (this predicate is called from within categories)
+% '$lgt_threaded_wait_synch_ctg'(+mutex_identifier, @term, @object_identifier)
 
-'$lgt_mt_dispatch_goal'(Option, Goal, This, Self, Tag) :-
-	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _, _, _, _),
-	'$lgt_mt_dispatch_goal'(Option, Queue, Goal, This, Self, Tag).
+'$lgt_threaded_wait_synch_ctg'(Mutex, Msg, This) :-
+	'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _),
+	mutex_unlock(Mutex),
+	'$lgt_threaded_wait'(Msg, Prefix),
+	mutex_lock(Mutex).
 
 
 
-% '$lgt_mt_dispatch_goal'(+atom, +message_queue, @callable, +object_identifier, +object_identifier, @nonvar)
-%
-% creates a thread for proving a goal (this predicate is called from within objects)
+% '$lgt_threaded_wait_synch'(+mutex_identifier, @term, +entity_prefix)
 
-'$lgt_mt_dispatch_goal'(ignore, _, Goal, _, _, _) :-
+'$lgt_threaded_wait_synch'(Mutex, Msg, Prefix) :-
+	mutex_unlock(Mutex),
+	'$lgt_threaded_wait'(Msg, Prefix),
+	mutex_lock(Mutex).
+
+
+
+% '$lgt_threaded_wait_ctg'(@term, @object_identifier)
+
+'$lgt_threaded_wait_ctg'(Msg, This) :-
+	'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _),
+	'$lgt_threaded_wait'(Msg, Prefix).
+
+
+
+% '$lgt_threaded_wait'(@term, +entity_prefix)
+
+'$lgt_threaded_wait'(Msg, Prefix) :-
+	var(Msg),
+	!,
+	thread_get_message(Prefix, '$lgt_notification'(Msg)).
+
+'$lgt_threaded_wait'([], _) :-
+	!.
+
+'$lgt_threaded_wait'([Msg| Msgs], Prefix) :-
+	!,
+	thread_get_message(Prefix, '$lgt_notification'(Msg)),
+	'$lgt_threaded_wait'(Msgs, Prefix).
+
+'$lgt_threaded_wait'(Msg, Prefix) :-
+	thread_get_message(Prefix, '$lgt_notification'(Msg)).
+
+
+
+% '$lgt_threaded_notify'(@term, @object_identifier)
+
+'$lgt_threaded_notify_ctg'(Msg, This) :-
+	'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _),
+	'$lgt_threaded_notify'(Msg, Prefix).
+
+
+
+% '$lgt_threaded_notify'(@term, +entity_prefix)
+
+'$lgt_threaded_notify'(Msg, Prefix) :-
+	var(Msg),
+	!,
+	thread_send_message(Prefix, '$lgt_notification'(Msg)).
+
+'$lgt_threaded_notify'([], _) :-
+	!.
+
+'$lgt_threaded_notify'([Msg| Msgs], Prefix) :-
+	!,
+	thread_send_message(Prefix, '$lgt_notification'(Msg)),
+	'$lgt_threaded_notify'(Msgs, Prefix).
+
+'$lgt_threaded_notify'(Msg, Prefix) :-
+	thread_send_message(Prefix, '$lgt_notification'(Msg)).
+
+
+
+% '$lgt_threaded_ignore'(@callable)
+
+'$lgt_threaded_ignore'(Goal) :-
 	thread_create(catch(Goal, _, true), _, [detached(true)]).
 
-'$lgt_mt_dispatch_goal'(call, Queue, Goal, This, Self, Tag) :-
+
+
+% '$lgt_threaded_call'(@callable, +object_identifier, +object_identifier)
+
+'$lgt_threaded_call'(Goal, This, Self) :-
+	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _, _, _, _),
+	'$lgt_threaded_call'(Queue, Goal, This, Self).
+
+
+
+% '$lgt_threaded_call'(+message_queue_identifier, @callable, +object_identifier, +object_identifier)
+
+'$lgt_threaded_call'(Queue, Goal, This, Self) :-
+	thread_create('$lgt_mt_non_det_goal'(Queue, Goal, This, Self, []), Id, []),
+	thread_send_message(Queue, '$lgt_thread_id'(call, Goal, This, Self, [], Id)).
+
+
+
+% '$lgt_threaded_once'(@callable, +object_identifier, +object_identifier)
+
+'$lgt_threaded_once'(Goal, This, Self) :-
+	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _, _, _, _),
+	'$lgt_threaded_once'(Queue, Goal, This, Self).
+
+
+
+% '$lgt_threaded_once'(+message_queue_identifier, @callable, +object_identifier, +object_identifier)
+
+'$lgt_threaded_once'(Queue, Goal, This, Self) :-
+	thread_create('$lgt_mt_det_goal'(Queue, Goal, This, Self, []), Id, []),
+	thread_send_message(Queue, '$lgt_thread_id'(once, Goal, This, Self, [], Id)).
+
+
+
+% '$lgt_threaded_call_tagged'(@callable, +object_identifier, +object_identifier, -nonvar)
+
+'$lgt_threaded_call_tagged'(Goal, This, Self, Tag) :-
+	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _, _, _, _),
+	'$lgt_threaded_call_tagged'(Queue, Goal, This, Self, Tag).
+
+
+
+% '$lgt_threaded_call_tagged'(+message_queue_identifier, @callable, +object_identifier, +object_identifier, -nonvar)
+
+'$lgt_threaded_call_tagged'(Queue, Goal, This, Self, Tag) :-
+	'$lgt_new_threaded_tag'(Tag),
 	thread_create('$lgt_mt_non_det_goal'(Queue, Goal, This, Self, Tag), Id, []),
 	thread_send_message(Queue, '$lgt_thread_id'(call, Goal, This, Self, Tag, Id)).
 
-'$lgt_mt_dispatch_goal'(once, Queue, Goal, This, Self, Tag) :-
+
+
+% '$lgt_threaded_once_tagged'(@callable, +object_identifier, +object_identifier, -nonvar)
+
+'$lgt_threaded_once_tagged'(Goal, This, Self, Tag) :-
+	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _, _, _, _),
+	'$lgt_threaded_once_tagged'(Queue, Goal, This, Self, Tag).
+
+
+
+% '$lgt_threaded_once_tagged'(+message_queue_identifier, @callable, +object_identifier, +object_identifier, -nonvar)
+
+'$lgt_threaded_once_tagged'(Queue, Goal, This, Self, Tag) :-
+	'$lgt_new_threaded_tag'(Tag),
 	thread_create('$lgt_mt_det_goal'(Queue, Goal, This, Self, Tag), Id, []),
 	thread_send_message(Queue, '$lgt_thread_id'(once, Goal, This, Self, Tag, Id)).
 
 
 
-% '$lgt_mt_det_goal'(+atom, +callable, +object_identifier, +object_identifier, @nonvar)
+% '$lgt_mt_det_goal'(+message_queue_identifier, +callable, +object_identifier, +object_identifier, @nonvar)
 %
 % processes a deterministic message received by an object's message queue
 
@@ -18092,21 +18178,32 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-% '$lgt_mt_peek_reply'(+callable, +object_identifier, +object_identifier, +object_identifier, @nonvar)
-%
-% peeks a reply to a goal sent to the senders object message queue (this predicate is called from within categories)
+% '$lgt_threaded_peek'(+callable, +object_identifier, +object_identifier, +object_identifier)
 
-'$lgt_mt_peek_reply'(Goal, Sender, This, Self, Tag) :-
+'$lgt_threaded_peek'(Goal, Sender, This, Self) :-
 	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _, _, _, _),
-	'$lgt_mt_peek_reply'(Queue, Goal, Sender, This, Self, Tag).
+	'$lgt_threaded_peek'(Queue, Goal, Sender, This, Self, []).
 
 
 
-% '$lgt_mt_peek_reply'(+atom, +callable, +object_identifier, +object_identifier, +object_identifier, @nonvar)
-%
-% peeks a reply to a goal sent to the senders object message queue
+% '$lgt_threaded_peek'(+atom, +callable, +object_identifier, +object_identifier, +object_identifier)
 
-'$lgt_mt_peek_reply'(Queue, Goal, Sender, This, Self, Tag) :-
+'$lgt_threaded_peek'(Queue, Goal, _, This, Self) :-
+	thread_peek_message(Queue, '$lgt_reply'(Goal, This, Self, [], _, _)).
+
+
+
+% '$lgt_threaded_peek_tagged'(+callable, +object_identifier, +object_identifier, +object_identifier, @nonvar)
+
+'$lgt_threaded_peek_tagged'(Goal, Sender, This, Self, Tag) :-
+	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _, _, _, _),
+	'$lgt_threaded_peek_tagged'(Queue, Goal, Sender, This, Self, Tag).
+
+
+
+% '$lgt_threaded_peek_tagged'(+atom, +callable, +object_identifier, +object_identifier, +object_identifier, @nonvar)
+
+'$lgt_threaded_peek_tagged'(Queue, Goal, Sender, This, Self, Tag) :-
 	(	var(Tag) ->
 		throw(error(instantiation_error, This::threaded_peek(Goal, Tag), Sender))	
 	;	thread_peek_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, _, _))
@@ -18114,46 +18211,89 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-% '$lgt_mt_get_reply'(+callable, +object_identifier, +object_identifier, +object_identifier, @nonvar)
-%
-% gets a reply to a goal sent to the senders object message queue (this predicate is called from within categories)
+% '$lgt_threaded_exit'(+callable, +object_identifier, +object_identifier, +object_identifier)
 
-'$lgt_mt_get_reply'(Goal, Sender, This, Self, Tag) :-
+'$lgt_threaded_exit'(Goal, Sender, This, Self) :-
 	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _, _, _, _),
-	'$lgt_mt_get_reply'(Queue, Goal, Sender, This, Self, Tag).
+	'$lgt_threaded_exit'(Queue, Goal, Sender, This, Self).
 
 
 
-% '$lgt_mt_get_reply'(+atom, +callable, +object_identifier, +object_identifier, +object_identifier, @nonvar)
-%
-% gets a reply to a goal sent to the senders object message queue
+% '$lgt_threaded_exit'(+message_queue_identifier, +callable, +object_identifier, +object_identifier, +object_identifier)
 
-'$lgt_mt_get_reply'(Queue, Goal, Sender, This, Self, Tag) :-
+'$lgt_threaded_exit'(Queue, Goal, Sender, This, Self) :-
+	(	% first check if there is a thread running for proving the goal before proceeding:
+		thread_peek_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, [], Id)) ->
+		% answering thread exists; go ahead and retrieve the solution(s):
+		thread_get_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, [], Id)),
+		(	Type == once ->
+			setup_call_cleanup(
+				true,
+				'$lgt_mt_det_reply'(Queue, Goal, This, Self, [], Id),
+				thread_join(Id, _))
+		;   setup_call_cleanup(
+				true,
+				'$lgt_mt_non_det_reply'(Queue, Goal, This, Self, [], Id),
+				((	thread_property(Id, status(running)) ->
+					% thread still running, suspended waiting for a request to an alternative proof; tell it to exit
+					catch(thread_send_message(Id, '$lgt_exit'), _, true)
+				 ;	true
+				 ),
+				 thread_join(Id, _))
+			)
+		)
+	;	% answering thread don't exist; generate an exception (failing is not an option as it could simply mean goal failure)
+		throw(error(existence_error(goal_thread, Goal), This::threaded_exit(Goal), Sender))
+	).
+
+
+
+% '$lgt_threaded_exit_tagged'(+callable, +object_identifier, +object_identifier, +object_identifier, @nonvar)
+
+'$lgt_threaded_exit_tagged'(Goal, Sender, This, Self, Tag) :-
 	(	var(Tag) ->
 		throw(error(instantiation_error, This::threaded_exit(Goal, Tag), Sender))	
-	;	(	% first check if there is a thread running for proving the goal before proceeding:
-			thread_peek_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)) ->
-			% answering thread exists; go ahead and retrieve the solution(s):
-			thread_get_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)),
-			(	Type == once ->
-				setup_call_cleanup(
-					true,
-					'$lgt_mt_det_reply'(Queue, Goal, This, Self, Tag, Id),
-					thread_join(Id, _))
-			;   setup_call_cleanup(
-					true,
-					'$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Tag, Id),
-					((	thread_property(Id, status(running)) ->					% if the thread is still running, it's suspended waiting
-						catch(thread_send_message(Id, '$lgt_exit'), _, true)	% for a request to an alternative proof; tell it to exit
-					 ;	true
-					 ),
-					 thread_join(Id, _))
-				)
-			)
-		;	% answering thread does not exists; generate an exception (failing is not an option as it could simply mean goal failure)
-			throw(error(existence_error(goal_thread, Goal), This::threaded_exit(Goal, Tag), Sender))
-		)
+	;	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _, _, _, _),
+		'$lgt_threaded_exit_tag_cheked'(Queue, Goal, Sender, This, Self, Tag)
 	).
+
+
+
+% '$lgt_threaded_exit_tagged'(+message_queue_identifier, +callable, +object_identifier, +object_identifier, +object_identifier, @nonvar)
+
+'$lgt_threaded_exit_tagged'(Queue, Goal, Sender, This, Self, Tag) :-
+	(	var(Tag) ->
+		throw(error(instantiation_error, This::threaded_exit(Goal, Tag), Sender))	
+	;	'$lgt_threaded_exit_tag_cheked'(Queue, Goal, Sender, This, Self, Tag)
+	).
+
+
+
+'$lgt_threaded_exit_tag_cheked'(Queue, Goal, Sender, This, Self, Tag) :-
+	(	% first check if there is a thread running for proving the goal before proceeding:
+		thread_peek_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)) ->
+		% answering thread exists; go ahead and retrieve the solution(s):
+		thread_get_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)),
+		(	Type == once ->
+			setup_call_cleanup(
+				true,
+				'$lgt_mt_det_reply'(Queue, Goal, This, Self, Tag, Id),
+				thread_join(Id, _))
+		;   setup_call_cleanup(
+				true,
+				'$lgt_mt_non_det_reply'(Queue, Goal, This, Self, Tag, Id),
+				((	thread_property(Id, status(running)) ->
+					% thread still running, suspended waiting for a request to an alternative proof; tell it to exit
+					catch(thread_send_message(Id, '$lgt_exit'), _, true)
+				 ;	true
+				 ),
+				 thread_join(Id, _))
+			)
+		)
+	;	% answering thread don't exist; generate an exception (failing is not an option as it could simply mean goal failure)
+		throw(error(existence_error(goal_thread, Goal), This::threaded_exit(Goal, Tag), Sender))
+	).
+
 
 
 % return the solution found:
@@ -18186,7 +18326,37 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-% '$lgt_mt_threaded_call'(+callable, +message_queue_identifier)
+% '$lgt_threaded_or'(-var, +callable, +list)
+%
+% implements the threaded/1 built-in predicate when the argument is a disjunction
+
+'$lgt_threaded_or'(Queue, MTGoals, Results) :-
+	thread_self(Queue),
+	catch((MTGoals, '$lgt_mt_threaded_or_exit'(Results)), '$lgt_terminated', fail).
+
+
+
+% '$lgt_threaded_and'(-var, +callable, +list)
+%
+% implements the threaded/1 built-in predicate when the argument is a conjunction
+
+'$lgt_threaded_and'(Queue, MTGoals, Results) :-
+	thread_self(Queue),
+	catch((MTGoals, '$lgt_mt_threaded_and_exit'(Results)), '$lgt_terminated', fail).
+
+
+
+% '$lgt_threaded_goal'(+callable, -list(var), +message_queue_identifier, -thread_identifier)
+%
+% implements the call to an individual goal in the threaded/1 built-in predicate
+
+'$lgt_threaded_goal'(TGoal, TVars, Queue, Id) :-
+	term_variables(TGoal, TVars),
+	thread_create('$lgt_mt_threaded_call'(TGoal, TVars, Queue), Id, [at_exit('$lgt_mt_exit_handler'(Id, Queue))]).
+
+
+
+% '$lgt_mt_threaded_call'(+callable, +list(var), +message_queue_identifier)
 %
 % proves an individual goal from a threaded/1 predicate call and
 % sends the result back to the message queue associated to the call
@@ -18476,7 +18646,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		'$lgt_pred_meta_vars'(GPred, Meta, GMetaVars),
 		'$lgt_exec_ctx'(GExCtx, GSender, GObj, GObj, GMetaVars, []),
 		call(Def, GPred, GExCtx, GCall, DefCtn),
-		!,	% found the predicate definition; use it only if it's safe
+		!,
+		% found the predicate definition; use it only if it's safe
 		'$lgt_safe_static_binding_paths'(GObj, DclCtn, DefCtn),
 		(	Meta == no ->
 			% cache only normal predicates
@@ -18728,18 +18899,20 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_load_settings_file' :-
 	'$lgt_current_directory'(Current),
-	(	'$lgt_startup_directory'(Startup),		% first lookup for a
-		'$lgt_change_directory'(Startup),		% settings file in the
-		'$lgt_file_exists'('settings.lgt') ->	% startup directory
+	(	% first lookup for a settings file in the startup directory
+		'$lgt_startup_directory'(Startup),
+		'$lgt_change_directory'(Startup),
+		'$lgt_file_exists'('settings.lgt') ->
 		catch((
 			logtalk_load(settings, [altdirs(off), report(off), smart_compilation(off), clean(on)]),
 			assertz('$lgt_settings_file_loaded_'(Startup))),
 			_,
 			true
 		)
-	;	'$lgt_user_directory'(User),			% if not found, lookup for
-		'$lgt_change_directory'(User),			% a settings file in the
-		'$lgt_file_exists'('settings.lgt') ->	% Logtalk user folder
+	;	% if not found, lookup for a settings file in the Logtalk user folder
+		'$lgt_user_directory'(User),			
+		'$lgt_change_directory'(User),
+		'$lgt_file_exists'('settings.lgt') ->
 		catch((
 			logtalk_load(settings, [altdirs(off), report(off), smart_compilation(off), clean(on)]),
 			assertz('$lgt_settings_file_loaded_'(User))),
