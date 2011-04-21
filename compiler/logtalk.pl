@@ -255,8 +255,9 @@
 :- dynamic('$lgt_pp_prolog_term_'/2).						% '$lgt_pp_prolog_term_'(Clause, Location)
 :- dynamic('$lgt_pp_relation_clause_'/1).					% '$lgt_pp_relation_clause_'(Clause)
 :- dynamic('$lgt_pp_entity_clause_'/2).						% '$lgt_pp_entity_clause_'(Clause, Location)
-:- dynamic('$lgt_pp_entity_aux_clause_'/1).					% '$lgt_pp_entity_aux_clause_'(Clause)
 :- dynamic('$lgt_pp_final_entity_clause_'/2).				% '$lgt_pp_final_entity_clause_'(Clause, Location)
+:- dynamic('$lgt_pp_entity_aux_clause_'/1).					% '$lgt_pp_entity_aux_clause_'(Clause)
+:- dynamic('$lgt_pp_final_entity_aux_clause_'/1).			% '$lgt_pp_final_entity_aux_clause_'(Clause)
 
 :- dynamic('$lgt_pp_defines_predicate_'/2).					% '$lgt_pp_defines_predicate_'(Functor, Arity)
 :- dynamic('$lgt_pp_calls_predicate_'/4).					% '$lgt_pp_calls_predicate_'(Functor, Arity, TFunctor, TArity)
@@ -6333,8 +6334,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	retractall('$lgt_pp_prolog_term_'(_, _)),
 	retractall('$lgt_pp_relation_clause_'(_)),
 	retractall('$lgt_pp_entity_clause_'(_, _)),
-	retractall('$lgt_pp_entity_aux_clause_'(_)),
 	retractall('$lgt_pp_final_entity_clause_'(_, _)),
+	retractall('$lgt_pp_entity_aux_clause_'(_)),
+	retractall('$lgt_pp_final_entity_aux_clause_'(_)),
 	retractall('$lgt_pp_redefined_built_in_'(_, _, _)),
 	retractall('$lgt_pp_defines_predicate_'(_, _)),
 	retractall('$lgt_pp_calls_predicate_'(_, _, _, _)),
@@ -10838,7 +10840,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 	(	'$lgt_pp_synchronized_'(Pred, _),
 		\+ functor(Head, Functor, Arity) ->			% not a recursive call
-		atom_concat(TFunctor, '_sync', STFunctor)
+		atom_concat(TFunctor, '__sync', STFunctor)
 	;	STFunctor = TFunctor
 	),
 	functor(TPred, STFunctor, TArity),
@@ -13979,16 +13981,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	Old =.. [Def, Head, ExCtx, THead],
 	(	'$lgt_pp_synchronized_'(Head, Mutex) ->
 		THead =.. [TFunctor| Args],
-		atom_concat(TFunctor, '_sync', MFunctor),
+		atom_concat(TFunctor, '__sync', MFunctor),
 		MHead =.. [MFunctor| Args],
 		New =.. [Def, Head, ExCtx, MHead],
 		assertz('$lgt_pp_final_def_'(New)),
-		'$lgt_pp_file_path_'(File, Path),
 		(	'$lgt_term_template'(Head, Mode),
 			'$lgt_pp_mode_'(Mode, _),
 			forall('$lgt_pp_mode_'(Mode, Solutions), (Solutions \== zero_or_one, Solutions \== one, Solutions \== zero)) ->
-			assertz('$lgt_pp_final_entity_clause_'((MHead:-mutex_lock(Mutex), setup_call_cleanup(true, THead, mutex_unlock(Mutex))), Path+File+1))
-		;	assertz('$lgt_pp_final_entity_clause_'((MHead:-with_mutex(Mutex, THead)), Path+File+1))
+			assertz('$lgt_pp_entity_aux_clause_'((MHead:-setup_call_cleanup(mutex_lock(Mutex), THead, mutex_unlock(Mutex)))))
+		;	assertz('$lgt_pp_entity_aux_clause_'((MHead:-with_mutex(Mutex, THead))))
 		)
 	;	assertz('$lgt_pp_final_def_'(Old))
 	),
@@ -14002,16 +14003,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	Old =.. [DDef, Head, ExCtx, THead],
 	(	'$lgt_pp_synchronized_'(Head, Mutex) ->
 		THead =.. [TFunctor| Args],
-		atom_concat(TFunctor, '_sync', MFunctor),
+		atom_concat(TFunctor, '__sync', MFunctor),
 		MHead =.. [MFunctor| Args],
 		New =.. [DDef, Head, ExCtx, MHead],
 		assertz('$lgt_pp_final_ddef_'(New)),
-		'$lgt_pp_file_path_'(File, Path),
 		(	'$lgt_term_template'(Head, Mode),
 			'$lgt_pp_mode_'(Mode, _),
 			forall('$lgt_pp_mode_'(Mode, Solutions), (Solutions \== zero_or_one, Solutions \== one, Solutions \== zero)) ->
-			assertz('$lgt_pp_final_entity_clause_'((MHead:-mutex_lock(Mutex), setup_call_cleanup(true, THead, mutex_unlock(Mutex))), Path+File+1))
-		;	assertz('$lgt_pp_final_entity_clause_'((MHead:-with_mutex(Mutex, THead)), Path+File+1))
+			assertz('$lgt_pp_entity_aux_clause_'((MHead:-setup_call_cleanup(mutex_lock(Mutex), THead, mutex_unlock(Mutex)))))
+		;	assertz('$lgt_pp_entity_aux_clause_'((MHead:-with_mutex(Mutex, THead))))
 		)
 	;	assertz('$lgt_pp_final_ddef_'(Old))
 	),
@@ -14026,11 +14026,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % fixes predicate calls in entity clauses and initialization goals
 
 '$lgt_fix_predicate_calls' :-
-	(	retract('$lgt_pp_entity_clause_'(Clause, Location))
-	;	'$lgt_pp_file_path_'(File, Path),
-		Location = Path+File+1,
-		retract('$lgt_pp_entity_aux_clause_'(Clause))
-	),
+	retract('$lgt_pp_entity_clause_'(Clause, Location)),
 	(	Clause = {Term} ->
 		assertz('$lgt_pp_final_entity_clause_'(Term, Location))
 	;	Clause = (Head:-Body) ->
@@ -14046,6 +14042,26 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		'$lgt_pp_goal_annotation_'(FClause, Functor, FBody1, FBody2),
 		assertz('$lgt_pp_final_entity_clause_'(FClause, Location))
 	;	assertz('$lgt_pp_final_entity_clause_'(Clause, Location))
+	),
+	fail.
+
+'$lgt_fix_predicate_calls' :-
+	retract('$lgt_pp_entity_aux_clause_'(Clause)),
+	(	Clause = {Term} ->
+		assertz('$lgt_pp_final_entity_aux_clause_'(Term))
+	;	Clause = (Head:-Body) ->
+		'$lgt_fix_predicate_calls'(Body, FBody, false),
+		assertz('$lgt_pp_final_entity_aux_clause_'((Head:-FBody)))
+	;	'$lgt_pp_value_annotation_'(Clause, Functor, Value, Body) ->
+		'$lgt_fix_predicate_calls'(Body, FBody, true),
+		'$lgt_pp_value_annotation_'(FClause, Functor, Value, FBody),
+		assertz('$lgt_pp_final_entity_aux_clause_'(FClause))
+	;	'$lgt_pp_goal_annotation_'(Clause, Functor, Body1, Body2) ->
+		'$lgt_fix_predicate_calls'(Body1, FBody1, true),
+		'$lgt_fix_predicate_calls'(Body2, FBody2, true),
+		'$lgt_pp_goal_annotation_'(FClause, Functor, FBody1, FBody2),
+		assertz('$lgt_pp_final_entity_aux_clause_'(FClause))
+	;	assertz('$lgt_pp_final_entity_aux_clause_'(Clause))
 	),
 	fail.
 
@@ -14542,7 +14558,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_write_ddef_clauses'(Stream),
 	'$lgt_write_super_clauses'(Stream),
 	'$lgt_write_alias_clauses'(Stream),
-	'$lgt_write_pred_clauses'(Stream).
+	'$lgt_write_entity_clauses'(Stream),
+	'$lgt_write_entity_aux_clauses'(Stream).
 
 
 
@@ -14608,12 +14625,22 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-'$lgt_write_pred_clauses'(Stream) :-
+'$lgt_write_entity_clauses'(Stream) :-
 	'$lgt_pp_final_entity_clause_'(Clause, Location),
 	'$lgt_write_term_and_source_location'(Stream, Clause, user, Location),
 	fail.
 
-'$lgt_write_pred_clauses'(_).
+'$lgt_write_entity_clauses'(_).
+
+
+
+'$lgt_write_entity_aux_clauses'(Stream) :-
+	'$lgt_pp_file_path_'(File, Path),
+	'$lgt_pp_final_entity_aux_clause_'(Clause),
+	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
+	fail.
+
+'$lgt_write_entity_aux_clauses'(_).
 
 
 
