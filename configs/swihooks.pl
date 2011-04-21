@@ -468,13 +468,26 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 '$lgt_swi_unify_clause_body'(threaded_notify(Msg), _, '$lgt_threaded_notify_ctg'(Msg, _), TermPos, TermPos) :- !.
 '$lgt_swi_unify_clause_body'(threaded_notify(Msg), _, '$lgt_threaded_notify'(Msg, _), TermPos, TermPos) :- !.
 
+'$lgt_swi_unify_clause_body'(Goal, Entity, with_mutex(_, TGoal), TermPos0, TermPos) :-
+	\+ functor(Goal, with_mutex, 2),								% synchronized predicates
+	!,
+	writeq('HERE'-Goal-TGoal), nl,
+	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
+
 '$lgt_swi_unify_clause_body'(Goal, _, Goal, TermPos, TermPos) :-	% built-in predicates
 	!.
 
 '$lgt_swi_unify_clause_body'(Goal, _, TGoal, TermPos, TermPos) :-	% object and category user predicates
 	'$lgt_decompile_predicate_heads'(TGoal, GoalEntity, Goal0),
-	(	Goal = Goal0
-	;	Goal = GoalEntity::Goal0
+	(	functor(Goal0, Functor0, _),
+		atom_concat(Functor1, '__sync', Functor0) ->
+		% synchronized predicate
+		Goal0 =.. [Functor0| Args],
+		Goal1 =.. [Functor1| Args]
+	;	Goal1 = Goal0
+	),
+	(	Goal = Goal1
+	;	Goal = GoalEntity::Goal1
 	),
 	!.
 
