@@ -124,6 +124,32 @@ user:prolog_predicate_name(user:'$lgt_iso_writeq'(_, _), 'writeq/1') :- !.
 
 user:prolog_predicate_name(user:'$lgt_ctg_parameter'(_, _, _, _), 'parameter/2') :- !.
 
+user:prolog_predicate_name(user:'$lgt_threaded_or'(_, _, _), 'threaded/1') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_and'(_, _, _), 'threaded/1') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_ignore'(_), 'threaded_ignore/1') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_call'(_, _, _), 'threaded_call/1') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_call'(_, _, _, _), 'threaded_call/1') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_once'(_, _, _), 'threaded_once/1') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_once'(_, _, _, _), 'threaded_once/1') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_call_tagged'(_, _, _, _), 'threaded_call/2') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_call_tagged'(_, _, _, _, _), 'threaded_call/2') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_once_tagged'(_, _, _, _), 'threaded_once/2') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_once_tagged'(_, _, _, _, _), 'threaded_once/2') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_peek'(_, _, _, _), 'threaded_peek/1') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_peek'(_, _, _, _, _), 'threaded_peek/1') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_peek_tagged'(_, _, _, _, _), 'threaded_peek/2') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_peek_tagged'(_, _, _, _, _, _), 'threaded_peek/2') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_exit'(_, _, _, _), 'threaded_exit/1') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_exit'(_, _, _, _, _), 'threaded_exit/1') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_exit_tagged'(_, _, _, _, _), 'threaded_exit/2') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_exit_tagged'(_, _, _, _, _, _), 'threaded_exit/2') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_wait_synch_ctg'(_, _, _), 'threaded_wait/1') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_wait_synch'(_, _, _), 'threaded_wait/1') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_wait_ctg'(_, _), 'threaded_wait/1') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_wait'(_, _), 'threaded_wait/1') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_notify_ctg'(_, _), 'threaded_notify/1') :- !.
+user:prolog_predicate_name(user:'$lgt_threaded_notify'(_, _), 'threaded_notify/1') :- !.
+
 user:prolog_predicate_name(Goal, Label) :-
 	Goal \= _::_,
 	(	Goal = Module:THead ->
@@ -499,14 +525,17 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 :- '$set_predicate_attribute'('$lgt_ctg_super_call_other_'/3, trace, 1).
 :- '$set_predicate_attribute'('$lgt_ctg_call'/3, trace, 1).
 :- '$set_predicate_attribute'('$lgt_ctg_call_'/3, trace, 1).
+
 :- '$set_predicate_attribute'('$lgt_metacall'/5, trace, 1).
 :- '$set_predicate_attribute'('$lgt_metacall'/6, trace, 1).
 :- '$set_predicate_attribute'('$lgt_metacall_this'/4, trace, 1).
 :- '$set_predicate_attribute'('$lgt_metacall_sender'/5, trace, 1).
+
 :- '$set_predicate_attribute'('$lgt_expand_term'/5, trace, 1).
 :- '$set_predicate_attribute'('$lgt_expand_goal'/5, trace, 1).
 :- '$set_predicate_attribute'('$lgt_phrase'/3, trace, 1).
 :- '$set_predicate_attribute'('$lgt_phrase'/4, trace, 1).
+
 :- '$set_predicate_attribute'('$lgt_abolish_chk'/4, trace, 1).
 :- '$set_predicate_attribute'('$lgt_asserta_fact_chk'/5, trace, 1).
 :- '$set_predicate_attribute'('$lgt_asserta_rule_chk'/5, trace, 1).
@@ -516,3 +545,42 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 :- '$set_predicate_attribute'('$lgt_retract_fact_chk'/4, trace, 1).
 :- '$set_predicate_attribute'('$lgt_retract_rule_chk'/4, trace, 1).
 :- '$set_predicate_attribute'('$lgt_retractall_chk'/4, trace, 1).
+
+:- '$set_predicate_attribute'('$lgt_iso_read_term'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_iso_read_term'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_iso_read'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_iso_read'/2, trace, 1).
+:- '$set_predicate_attribute'('$lgt_iso_write_term'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_iso_write_term'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_iso_write'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_iso_write'/2, trace, 1).
+:- '$set_predicate_attribute'('$lgt_iso_writeq'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_iso_writeq'/2, trace, 1).
+
+:- '$set_predicate_attribute'('$lgt_ctg_parameter'/4, trace, 1).
+
+:- '$set_predicate_attribute'('$lgt_threaded_or'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_and'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_ignore'/1, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_call'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_call'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_once'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_once'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_call_tagged'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_call_tagged'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_once_tagged'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_once_tagged'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_peek'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_peek'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_peek_tagged'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_peek_tagged'/6, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_exit'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_exit'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_exit_tagged'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_exit_tagged'/6, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_wait_synch_ctg'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_wait_synch'/3, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_wait_ctg'/2, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_wait'/2, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_notify_ctg'/2, trace, 1).
+:- '$set_predicate_attribute'('$lgt_threaded_notify'/2, trace, 1).

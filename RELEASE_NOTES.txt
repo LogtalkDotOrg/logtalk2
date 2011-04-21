@@ -56,7 +56,10 @@ RELEASE NOTES
 
     Updated the SWI-Prolog config file in order to avoid preventing loading
     of a Logtalk source file when a Prolog file with the same name exists on
-    the same lookup directory.
+    the same lookup directory. In addition, add source location information
+    to the generated Prolog files resulting from the compilation of Logtalk
+    source files. This location information is necessary for supporting some
+    of the SWI-Prolog development tools.
 
     Updated the SWI-Prolog integration files in order to hide the source code
     of the Logtalk (::)/2 and (<<)/2 built-in predicates from this compiler
@@ -68,7 +71,7 @@ RELEASE NOTES
     Updated the ECLiPSe config file, simplifying some of the file handling
     predicates.
 
-    Updated the "os" example with bug fixes and improvements for ECLiPSe
+    Updated the "cc" example with bug fixes and improvements for ECLiPSe
     contributed by Joachim Schimpf.
 
     Correct a bug in some shell scripts where "#/bin/bash" was used instead
