@@ -10409,7 +10409,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	(	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 		'$lgt_comp_ctx_this'(Ctx, This),
-	 	'$lgt_exec_ctx_this'(ExCtx, This) ->		% check for mismatches between the argument of
+	 	'$lgt_exec_ctx_this'(ExCtx, This) ->	% check for mismatches between the argument of
 		true									% this/1 and the parametric object identifier
 	;	throw(domain_error(object_identifier, This))
 	).
@@ -10841,7 +10841,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		atom_concat(TFunctor, '_sync', STFunctor)
 	;	STFunctor = TFunctor
 	),
-	functor(TPred, TFunctor, TArity),
+	functor(TPred, STFunctor, TArity),
 	'$lgt_unify_head_thead_args'(Arity, Pred, TPred),
 	arg(TArity, TPred, ExCtx),
 	(	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _) ->
@@ -13852,7 +13852,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_object_'(Obj, _, _, _, _, _, OIDef, _, _, Rnm, _),
 	'$lgt_pp_relation_clause_'('$lgt_imports_category_'(Obj, Ctg, _)),			% necessary for parameter passing
 	'$lgt_pp_imported_category_'(Ctg, _, _, CDef, _),
-	'$lgt_exec_ctx_this_rest'(ExCtx, Obj, _),
+	'$lgt_exec_ctx_this'(ExCtx, Obj),
 	Lookup =.. [CDef, Pred, ExCtx, Call, Ctn],
 	(	'$lgt_pp_predicate_alias_'(Ctg, _, _) ->
 		Head =.. [OIDef, Alias, ExCtx, Call, Ctn],
@@ -13866,7 +13866,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_gen_ic_category_idef_clauses' :-
 	(	'$lgt_compiler_flag'(complements, allow) ->
 		'$lgt_pp_object_'(Obj, _, _, _, _, _, OIDef, _, _, _, _),
-		'$lgt_exec_ctx_this_rest'(ExCtx, Obj, _),
+		'$lgt_exec_ctx_this'(ExCtx, Obj),
 		Head =.. [OIDef, Pred, ExCtx, Call, Ctn],
 		Lookup = '$lgt_complemented_object'(OIDef, Pred, ExCtx, Call, Ctn),
 		assertz('$lgt_pp_final_def_'((Head:-Lookup)))

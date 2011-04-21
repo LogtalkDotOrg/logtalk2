@@ -49,6 +49,11 @@ RELEASE NOTES
     high-level debugging tools that require decompilation of the generated
     Prolog code.
 
+    Corrected a bug introduced in Logtalk 2.42.4 on the compilation of entity
+    predicates that call synchronized predicates. This bug resulted in calls
+    being made instead to the non-synchronized forms of the predicates, which
+    would manifest in random failures of thread goals.
+
     Updated the SWI-Prolog config file in order to avoid preventing loading
     of a Logtalk source file when a Prolog file with the same name exists on
     the same lookup directory.
