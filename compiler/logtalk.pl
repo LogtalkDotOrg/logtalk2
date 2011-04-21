@@ -14778,7 +14778,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_assert_def_clauses',
 	'$lgt_assert_ddef_clauses',
 	'$lgt_assert_super_clauses',
-	'$lgt_assert_pred_clauses',
+	'$lgt_assert_entity_clauses',
+	'$lgt_assert_entity_aux_clauses',
 	'$lgt_assert_runtime_clauses',
 	'$lgt_assert_init_goal'.
 
@@ -14836,12 +14837,21 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-'$lgt_assert_pred_clauses' :-
+'$lgt_assert_entity_clauses' :-
 	'$lgt_pp_final_entity_clause_'(Clause, _),
 		'$lgt_assertz_entity_clause'(Clause, user),
 	fail.
 
-'$lgt_assert_pred_clauses'.
+'$lgt_assert_entity_clauses'.
+
+
+
+'$lgt_assert_entity_aux_clauses' :-
+	'$lgt_pp_final_entity_aux_clause_'(Clause),
+		'$lgt_assertz_entity_clause'(Clause, aux),
+	fail.
+
+'$lgt_assert_entity_aux_clauses'.
 
 
 
