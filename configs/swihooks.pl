@@ -25,7 +25,7 @@
 user:prolog_load_file(_:Spec, Options) :-
 	\+ '$lgt_member'(must_be_module(true), Options),	% exclude calls to use_module/1-2
 	\+ '$lgt_member'(if(not_loaded), Options),			% exclude calls to ensure_loaded/1
-	\+ absolute_file_name(Spec, [extensions([pl]), access(read), file_errors(fail)], Path),
+	\+ absolute_file_name(Spec, [extensions([pl]), access(read), file_errors(fail)], _),
 	(	atom(Spec) ->
 		expand_file_name(Spec, [SpecExp]),
 		absolute_file_name(SpecExp, [extensions([lgt]), access(read), file_errors(fail)], Path)
@@ -60,12 +60,26 @@ user:prolog_load_file(_:Spec, Options) :-
 
 prolog_edit:locate(Name, source_file(Source), [file(Source)]) :-
 	atom(Name),
+	file_name_extension(Name, 'pl', PrologFile),
 	source_file(Path),
-	file_base_name(Path, File),
-	file_name_extension(Name, 'pl', File),
-	file_name_extension(Plain, _, Path),
-	file_name_extension(Plain, 'lgt', Source),
-	exists_file(Source),
+	file_base_name(Path, PrologFile),
+	'$derived_source'(Path, Source, _),
+	file_base_name(Source, LogtalkFile),
+	file_name_extension(Name, 'lgt', LogtalkFile),
+	!.
+
+prolog_edit:locate(Spec, source_file(Source), [file(Source)]) :-
+	compound(Spec),
+	Spec =.. [Library, Name],
+	atom(Name),
+	file_name_extension(Name, 'pl', PrologFile),
+	source_file(Path),
+	file_base_name(Path, PrologFile),
+	'$derived_source'(Path, Source, _),
+	file_base_name(Source, LogtalkFile),
+	file_name_extension(Name, 'lgt', LogtalkFile),
+	'$lgt_expand_library_path'(Library, LibraryPath),
+	atom_concat(LibraryPath, LogtalkFile, Source),
 	!.
 
 
