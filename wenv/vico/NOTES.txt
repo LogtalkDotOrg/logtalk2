@@ -1,0 +1,14 @@
+================================================================
+Logtalk - Open source object-oriented logic programming language
+Release 2.43.0
+
+Copyright (c) 1998-2011 Paulo Moura.        All Rights Reserved.
+Logtalk is free software.  You can redistribute it and/or modify
+it under the terms of the "Artistic License 2.0" as published by 
+The Perl Foundation. Consult the "LICENSE.txt" file for details.
+================================================================
+
+
+The Vico MacOS X text editor (http://www.vicoapp.com/) supports
+the TextMate 1.x text editor language bundles; for details, see
+the ../textmate folder.
