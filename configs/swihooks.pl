@@ -13,7 +13,7 @@
 %  load Logtalk files using SWI Prolog consult/1, to support edit/1 and
 %  make/0, and to improve usability when using the XPCE profiler
 %
-%  last updated: April 17, 2011
+%  last updated: April 28, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -178,14 +178,17 @@ user:prolog_predicate_name(Goal, Label) :-
 		atomic_list_concat([EFunctor, '/', EArity, '::', Functor, '/', Arity], Label)
 	).
 
-/*
+
 :- multifile(user:prolog_trace_interception/4).
 :- dynamic(user:prolog_trace_interception/4).
 
 user:prolog_trace_interception(unify, Frame, _, continue) :-
 	prolog_frame_attribute(Frame, goal, Goal),
-	user:prolog_predicate_name(user:Goal, _), !.
-*/
+	(	predicate_property(Goal, nodebug)
+	;	predicate_property(Goal, foreign)
+	),
+	!.
+
 
 :- multifile(prolog:term_compiled/2).
 
