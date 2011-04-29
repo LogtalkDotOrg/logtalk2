@@ -104,8 +104,8 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 */
 
 
-%  To compile all your source files for debugging uncomment the following
-%  lines:
+%  To compile all your source files for debugging using the Logtalk built-in
+%  debugger uncomment the following lines:
 
 /*
 :- initialization((
@@ -116,7 +116,28 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 	set_logtalk_flag(misspelt, warning),
 	set_logtalk_flag(singletons, warning),
 	set_logtalk_flag(missing_directives, warning),
-	set_logtalk_flag(context_switching_calls, allow)
+	set_logtalk_flag(context_switching_calls, allow),
+	set_logtalk_flag(optimize, off).
+)).
+*/
+
+
+%  To compile all your source files for debugging using the SWI-Prolog
+%  graphical tracer uncomment the following lines:
+
+/*
+:- initialization((
+	set_logtalk_flag(debug, off),
+	set_logtalk_flag(smart_compilation, off),
+	set_logtalk_flag(reload, always),
+	set_logtalk_flag(unknown, warning),
+	set_logtalk_flag(misspelt, warning),
+	set_logtalk_flag(singletons, warning),
+	set_logtalk_flag(missing_directives, warning),
+	set_logtalk_flag(context_switching_calls, allow),
+	set_logtalk_flag(code_prefix, '.'),
+	set_logtalk_flag(optimize, off),
+	set_prolog_flag(optimise, off).
 )).
 */
 
@@ -165,11 +186,12 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 */
 
 
-%  To maximize performance by turning off relevant optional features
-%  uncomment the following lines:
+%  To maximize performance by turning on all optimizations and by turning
+%  off relevant optional features uncomment the following lines:
 
 /*
 :- initialization((
+	set_logtalk_flag(optimize, on),
 	set_logtalk_flag(events, deny),
 	set_logtalk_flag(complements, deny),
 	set_logtalk_flag(dynamic_declarations, deny)
