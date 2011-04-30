@@ -25,7 +25,7 @@
 
 <pre>{Goal}</pre>
 <p>
-Calls external Prolog code. Can be used to bypass the Logtalk compiler. The argument is called within the context of the pseudo-object <a class="glossary" title="Go to glossary definition" href="../../userman/objects.html#objects_user">user</a>. It is also possible to use <code>{Closure}</code> as the first argument of <code>call/2-N</code> calls. In this case, <code>Closure</code> will be extended with the remaining arguments of the <code>call/2-N</code> call in order to construct a goal that will be called within the context of <code>user</code>.
+This control construct allows the programmer to bypass the Prolog compiler. Can be used e.g. for calling external Prolog code. The argument is called within the context of the pseudo-object <a class="glossary" title="Go to glossary definition" href="../../userman/objects.html#objects_user">user</a>. It is also possible to use <code>{Closure}</code> as the first argument of <code>call/2-N</code> calls. In this case, <code>Closure</code> will be extended with the remaining arguments of the <code>call/2-N</code> call in order to construct a goal that will be called within the context of <code>user</code>.
 </p>
 <p>
 This control construct may also be used in place of an object identifier when sending a message. In this case, the result of proving its argument is used as an object identifier in the message sending call.
@@ -47,12 +47,18 @@ This control construct may also be used in place of an object identifier when se
 <h4>Examples</h4>
 
 <pre>N1/D1 &lt; N2/D2 :-
-    {N1*D2 &lt; N2*D1}.</pre>
+    {N1*D2 &lt; N2*D1}.
+
+call_in_user(F, X, Y, Z) :-
+    call({F}, X, Y, Z).
+
+| ?- {circle(Id, Radius, Color)}::area(Area).
+</pre>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: December 19, 2009</span>
+		<span>Last updated on: April 30, 2011</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="../index.html#constructs">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="../index.html#constructs">next</a></span><br/>
