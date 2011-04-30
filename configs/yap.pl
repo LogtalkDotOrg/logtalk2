@@ -11,7 +11,7 @@
 %
 %  configuration file for YAP Prolog 6.0.2 and later versions
 %
-%  last updated: April 17, 2011
+%  last updated: April 30, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -62,6 +62,7 @@
 		dynamic('$lgt_pp_load_warnings_counter_'/1), hide_predicate('$lgt_pp_load_warnings_counter_'/1),
 		dynamic('$lgt_pp_entity_warnings_flag_'/0), hide_predicate('$lgt_pp_entity_warnings_flag_'/0),
 		dynamic('$lgt_pp_load_warnings_flag_'/0), hide_predicate('$lgt_pp_load_warnings_flag_'/0),
+		dynamic('$lgt_pp_aux_predicate_counter_'/1), hide_predicate('$lgt_pp_aux_predicate_counter_'/1),
 		dynamic('$lgt_hook_term_expansion_'/2), hide_predicate('$lgt_hook_term_expansion_'/2),
 		dynamic('$lgt_hook_goal_expansion_'/2), hide_predicate('$lgt_hook_goal_expansion_'/2),
 		dynamic('$lgt_threaded_tag_counter_'/1), hide_predicate('$lgt_threaded_tag_counter_'/1),
