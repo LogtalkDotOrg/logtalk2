@@ -799,14 +799,7 @@ create_protocol(Ptc, Rels, Dirs) :-
 % abolish_object(@object_identifier)
 
 abolish_object(Obj) :-
-	var(Obj),
-	throw(error(instantiation_error, abolish_object(Obj))).
-
-abolish_object(Obj) :-
-	\+ callable(Obj),
-	throw(error(type_error(object_identifier, Obj), abolish_object(Obj))).
-
-abolish_object(Obj) :-
+	'$lgt_must_be'(object_identifier, Obj, abolish_object(Obj)),
 	(	'$lgt_current_object_'(Obj, _, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags) ->
 		(	Flags /\ 2 =:= 2 ->
 			'$lgt_abolish_entity_predicates'(Def),
@@ -840,14 +833,7 @@ abolish_object(Obj) :-
 % abolish_category(@category_identifier)
 
 abolish_category(Ctg) :-
-	var(Ctg),
-	throw(error(instantiation_error, abolish_category(Ctg))).
-
-abolish_category(Ctg) :-
-	\+ callable(Ctg),
-	throw(error(type_error(category_identifier, Ctg), abolish_category(Ctg))).
-
-abolish_category(Ctg) :-
+	'$lgt_must_be'(category_identifier, Ctg, abolish_category(Ctg)),
 	(	'$lgt_current_category_'(Ctg, _, Dcl, Def, Rnm, Flags) ->
 		(	Flags /\ 2 =:= 2 ->
 			'$lgt_abolish_entity_predicates'(Def),
@@ -871,14 +857,7 @@ abolish_category(Ctg) :-
 % abolish_protocol(@protocol_identifier)
 
 abolish_protocol(Ptc) :-
-	var(Ptc),
-	throw(error(instantiation_error, abolish_protocol(Ptc))).
-
-abolish_protocol(Ptc) :-
-	\+ atom(Ptc),
-	throw(error(type_error(protocol_identifier, Ptc), abolish_protocol(Ptc))).
-
-abolish_protocol(Ptc) :-
+	'$lgt_must_be'(protocol_identifier, Ptc, abolish_protocol(Ptc)),
 	(	'$lgt_current_protocol_'(Ptc, _, Dcl, Rnm, Flags) ->
 		(	Flags /\ 2 =:= 2 ->
 			abolish(Dcl/4),
@@ -1442,14 +1421,7 @@ threaded(Goals) :-
 	throw(error(resource_error(threads), threaded(Goals))).
 
 threaded(Goals) :-
-	var(Goals),
-	throw(error(instantiation_error, threaded(Goals))).
-
-threaded(Goals) :-
-	\+ callable(Goals),
-	throw(error(type_error(callable, Goals), threaded(Goals))).
-
-threaded(Goals) :-
+	'$lgt_must_be'(callable, Goals, threaded(Goals)),
 	'$lgt_tr_threaded_call'(Goals, MTGoals),
 	catch(MTGoals, Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -1461,18 +1433,8 @@ threaded_call(Goal, Tag) :-
 	throw(error(resource_error(threads), threaded_call(Goal, Tag))).
 
 threaded_call(Goal, Tag) :-
-	nonvar(Tag),
-	throw(error(type_error(variable, Tag), threaded_call(Goal, Tag))).
-
-threaded_call(Goal, Tag) :-
-	var(Goal),
-	throw(error(instantiation_error, threaded_call(Goal, Tag))).
-
-threaded_call(Goal, Tag) :-
-	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), threaded_call(Goal, Tag))).
-
-threaded_call(Goal, Tag) :-
+	'$lgt_must_be'(callable, Goal, threaded_call(Goal, Tag)),
+	'$lgt_must_be'(variable, Tag, threaded_call(Goal, Tag)),
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
 	catch('$lgt_threaded_call_tagged'(Prefix, Goal, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -1484,14 +1446,7 @@ threaded_call(Goal) :-
 	throw(error(resource_error(threads), threaded_call(Goal))).
 
 threaded_call(Goal) :-
-	var(Goal),
-	throw(error(instantiation_error, threaded_call(Goal))).
-
-threaded_call(Goal) :-
-	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), threaded_call(Goal))).
-
-threaded_call(Goal) :-
+	'$lgt_must_be'(callable, Goal, threaded_call(Goal)),
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
 	catch('$lgt_threaded_call'(Prefix, Goal, user, user), Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -1503,18 +1458,8 @@ threaded_once(Goal, Tag) :-
 	throw(error(resource_error(threads), threaded_once(Goal, Tag))).
 
 threaded_once(Goal, Tag) :-
-	nonvar(Tag),
-	throw(error(type_error(variable, Tag), threaded_once(Goal, Tag))).
-
-threaded_once(Goal, Tag) :-
-	var(Goal),
-	throw(error(instantiation_error, threaded_once(Goal, Tag))).
-
-threaded_once(Goal, Tag) :-
-	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), threaded_once(Goal, Tag))).
-
-threaded_once(Goal, Tag) :-
+	'$lgt_must_be'(callable, Goal, threaded_once(Goal, Tag)),
+	'$lgt_must_be'(variable, Tag, threaded_once(Goal, Tag)),
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
 	catch('$lgt_threaded_once_tagged'(Prefix, Goal, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -1526,14 +1471,7 @@ threaded_once(Goal) :-
 	throw(error(resource_error(threads), threaded_once(Goal))).
 
 threaded_once(Goal) :-
-	var(Goal),
-	throw(error(instantiation_error, threaded_once(Goal))).
-
-threaded_once(Goal) :-
-	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), threaded_once(Goal))).
-
-threaded_once(Goal) :-
+	'$lgt_must_be'(callable, Goal, threaded_once(Goal)),
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
 	catch('$lgt_threaded_once'(Prefix, Goal, user, user), Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -1545,14 +1483,7 @@ threaded_ignore(Goal) :-
 	throw(error(resource_error(threads), threaded_ignore(Goal))).
 
 threaded_ignore(Goal) :-
-	var(Goal),
-	throw(error(instantiation_error, threaded_ignore(Goal))).
-
-threaded_ignore(Goal) :-
-	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), threaded_ignore(Goal))).
-
-threaded_ignore(Goal) :-
+	'$lgt_must_be'(callable, Goal, threaded_ignore(Goal)),
 	catch('$lgt_threaded_ignore'(Goal), Error, '$lgt_runtime_error_handler'(Error)).
 
 
@@ -1563,18 +1494,8 @@ threaded_exit(Goal, Tag) :-
 	throw(error(resource_error(threads), threaded_exit(Goal, Tag))).
 
 threaded_exit(Goal, Tag) :-
-	var(Tag),
-	throw(error(instantiation_error, threaded_exit(Goal, Tag))).
-
-threaded_exit(Goal, Tag) :-
-	var(Goal),
-	throw(error(instantiation_error, threaded_exit(Goal, Tag))).
-
-threaded_exit(Goal, Tag) :-
-	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), threaded_exit(Goal, Tag))).
-
-threaded_exit(Goal, Tag) :-
+	'$lgt_must_be'(callable, Goal, threaded_exit(Goal, Tag)),
+	'$lgt_must_be'(nonvar, Tag, threaded_exit(Goal, Tag)),
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
 	catch('$lgt_threaded_exit_tagged'(Prefix, Goal, user, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -1586,14 +1507,7 @@ threaded_exit(Goal) :-
 	throw(error(resource_error(threads), threaded_exit(Goal))).
 
 threaded_exit(Goal) :-
-	var(Goal),
-	throw(error(instantiation_error, threaded_exit(Goal))).
-
-threaded_exit(Goal) :-
-	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), threaded_exit(Goal))).
-
-threaded_exit(Goal) :-
+	'$lgt_must_be'(callable, Goal, threaded_exit(Goal)),
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
 	catch('$lgt_threaded_exit'(Prefix, Goal, user, user, user), Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -1605,18 +1519,8 @@ threaded_peek(Goal, Tag) :-
 	throw(error(resource_error(threads), threaded_peek(Goal, Tag))).
 
 threaded_peek(Goal, Tag) :-
-	var(Tag),
-	throw(error(instantiation_error, threaded_peek(Goal, Tag))).
-
-threaded_peek(Goal, Tag) :-
-	var(Goal),
-	throw(error(instantiation_error, threaded_peek(Goal, Tag))).
-
-threaded_peek(Goal, Tag) :-
-	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), threaded_peek(Goal, Tag))).
-
-threaded_peek(Goal, Tag) :-
+	'$lgt_must_be'(callable, Goal, threaded_peek(Goal, Tag)),
+	'$lgt_must_be'(nonvar, Tag, threaded_peek(Goal, Tag)),
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
 	catch('$lgt_threaded_peek_tagged'(Prefix, Goal, user, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -1628,14 +1532,7 @@ threaded_peek(Goal) :-
 	throw(error(resource_error(threads), threaded_peek(Goal))).
 
 threaded_peek(Goal) :-
-	var(Goal),
-	throw(error(instantiation_error, threaded_peek(Goal))).
-
-threaded_peek(Goal) :-
-	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), threaded_peek(Goal))).
-
-threaded_peek(Goal) :-
+	'$lgt_must_be'(callable, Goal, threaded_peek(Goal)),
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
 	catch('$lgt_threaded_peek'(Prefix, Goal, user, user, user), Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -5811,8 +5708,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_file'(Term, Singletons, Input) :-
 	'$lgt_report_singletons'(Singletons, Term),
-	'$lgt_comp_ctx_mode'(Ctx, compile(regular)),	% set the initial compilation context
-	'$lgt_tr_term'(Term, Ctx),						% for compiling the read term
+	'$lgt_comp_ctx_mode'(Ctx, compile(regular)),				% set the initial compilation context
+	'$lgt_tr_term'(Term, Ctx),									% for compiling the read term
 	'$lgt_read_term'(Input, Next, [singletons(NextSingletons)]),
 	'$lgt_tr_file'(Next, NextSingletons, Input).
 
@@ -6944,12 +6841,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_file_directive'(initialization(Goal), _) :-
 	!,
-	(	var(Goal) ->
-		throw(instantiation_error)
-	;	callable(Goal) ->
-		assertz('$lgt_pp_file_init_'(Goal))
-	;	throw(type_error(callable, Goal))
-	).
+	'$lgt_must_be'(callable, Goal),
+	assertz('$lgt_pp_file_init_'(Goal)).
 
 '$lgt_tr_file_directive'(op(Priority, Spec, Operators), _) :-
 	!,
@@ -7096,15 +6989,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	'$lgt_tr_directive'(module, [Module, []], Ctx).		% empty export list
 
-'$lgt_tr_directive'(module, [Module, ExportList], _) :-
-	(var(Module); var(ExportList)),
-	throw(instantiation_error).
-
-'$lgt_tr_directive'(module, [Module, _], _) :-
-	\+ atom(Module),
-	throw(type_error(atom, Module)).
-
 '$lgt_tr_directive'(module, [Module, Exports], Ctx) :-
+	'$lgt_must_be'(atom, Module),
+	'$lgt_must_be'(list, Exports),
 	assertz('$lgt_pp_module_'(Module)),					% remeber we are compiling a module
 	'$lgt_report_compiling_entity'(module, Module),
 	'$lgt_tr_object_identifier'(Module, static),		% assume static module/object
@@ -7177,15 +7064,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 % initialization/1 entity directive
 
-'$lgt_tr_directive'(initialization, [Goal], _) :-
-	var(Goal),
-	throw(instantiation_error).
-
-'$lgt_tr_directive'(initialization, [Goal], _) :-
-	\+ callable(Goal),
-	throw(type_error(callable, Goal)).
-
 '$lgt_tr_directive'(initialization, [Goal], Ctx) :-
+	'$lgt_must_be'(callable, Goal),
 	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
 	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx, _, _),
 	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, [], _),		% MetaVars = [] as we're compiling a local call
@@ -7206,20 +7086,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 % uses/2 entity directive
 
-'$lgt_tr_directive'(uses, [Obj, Resources], _) :-
-	(var(Obj); var(Resources)),
-	throw(instantiation_error).
-
-'$lgt_tr_directive'(uses, [Obj, _], _) :-
-	\+ callable(Obj),
-	throw(type_error(object_identifier, Obj)).
-
-'$lgt_tr_directive'(uses, [_, Resources], _) :-
-	\+ '$lgt_is_proper_list'(Resources),
-	throw(type_error(list, Resources)).
-
 '$lgt_tr_directive'(uses, [Obj, Resources], Ctx) :-
 	!,
+	'$lgt_must_be'(object_identifier, Obj),
+	'$lgt_must_be'(list, Resources),
 	'$lgt_add_referenced_object'(Obj),
 	assertz('$lgt_pp_uses_'(Obj)),
 	'$lgt_split_operators_and_predicates'(Resources, Preds, Ops),
@@ -7230,14 +7100,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % uses/1 entity directive
 
 '$lgt_tr_directive'(uses, [Obj], _) :-
-	var(Obj),
-	throw(instantiation_error).
-
-'$lgt_tr_directive'(uses, [Obj], _) :-
-	\+ callable(Obj),
-	throw(type_error(object_identifier, Obj)).
-
-'$lgt_tr_directive'(uses, [Obj], _) :-
+	'$lgt_must_be'(object_identifier, Obj),
 	'$lgt_add_referenced_object'(Obj),
 	assertz('$lgt_pp_uses_'(Obj)).
 
@@ -7252,11 +7115,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	\+ callable(Module),
 	throw(type_error(atom, Module)).
 
-'$lgt_tr_directive'(use_module, [_, Imports], _) :-
-	\+ '$lgt_is_proper_list'(Imports),
-	throw(type_error(list, Imports)).
-
 '$lgt_tr_directive'(use_module, [Module, Imports], Ctx) :-
+	'$lgt_must_be'(list, Imports),
 	atom(Module),	% fail if using library notation in order to use the config files to find the module name
 	'$lgt_split_operators_and_predicates'(Imports, Preds, Ops),
 	forall('$lgt_member'(Op, Ops), '$lgt_tr_directive'(Op, Ctx)),
@@ -7535,15 +7395,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_calls_directive'([]).
 
-'$lgt_tr_calls_directive'([Ptc| _]) :-
-	var(Ptc),
-	throw(instantiation_error).
-
-'$lgt_tr_calls_directive'([Ptc| _]) :-
-	\+ atom(Ptc),
-	throw(type_error(protocol_identifier, Ptc)).
-
 '$lgt_tr_calls_directive'([Ptc| Ptcs]) :-
+	'$lgt_must_be'(protocol_identifier, Ptc),
 	'$lgt_add_referenced_protocol'(Ptc),
 	assertz('$lgt_pp_calls_'(Ptc)),
 	'$lgt_tr_calls_directive'(Ptcs).
@@ -8655,10 +8508,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_valid_entity_info_key_value'(comment, Comment) :-
 	!,
-	(	atom(Comment) ->
-		true
-	;	throw(type_error(atom, Comment))
-	).
+	'$lgt_must_be'(atom, Comment).
 
 '$lgt_valid_entity_info_key_value'(date, Date) :-
 	!,
@@ -8691,23 +8541,18 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_valid_entity_info_key_value'(parnames, Parnames) :-
 	!,
-	(	'$lgt_is_proper_list'(Parnames) ->
-		(	'$lgt_member'(Name, Parnames), \+ atom(Name) ->
-			throw(type_error(atom, Name))
-		;	(	'$lgt_pp_entity'(_, Entity, _, _, _), \+ \+ Entity =.. [_| Parnames] ->
-			 	true
-			;	throw(length_error(parnames_list, Parnames))
-			)
+	'$lgt_must_be'(list, Parnames),
+	(	'$lgt_member'(Name, Parnames), \+ atom(Name) ->
+		throw(type_error(atom, Name))
+	;	(	'$lgt_pp_entity'(_, Entity, _, _, _), \+ \+ Entity =.. [_| Parnames] ->
+		 	true
+		;	throw(length_error(parnames_list, Parnames))
 		)
-	;	throw(type_error(list, Parnames))
 	).
 
 '$lgt_valid_entity_info_key_value'(version, Version) :-
 	!,
-	(	atomic(Version) ->
-		true
-	;	throw(type_error(atomic, Version))
-	).
+	'$lgt_must_be'(atomic, Version).
 
 '$lgt_valid_entity_info_key_value'(copyright, Copyright) :-
 	!,
@@ -8769,75 +8614,60 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_pred_info_key_value'(allocation, Allocation, _, _) :-
 	!,
-	(	atom(Allocation) ->
-		(	'$lgt_valid_predicate_allocation'(Allocation) ->
-			true
-		;	throw(domain_error(allocation, Allocation))
-		)
-	;	throw(type_error(atom, Allocation))
+	'$lgt_must_be'(atom, Allocation),
+	(	'$lgt_valid_predicate_allocation'(Allocation) ->
+		true
+	;	throw(domain_error(allocation, Allocation))
 	).
 
 '$lgt_tr_pred_info_key_value'(arguments, Arguments, Functor, Arity) :-
 	!,
-	(	'$lgt_is_proper_list'(Arguments) ->
-		(	'$lgt_member'(Argument, Arguments), \+ '$lgt_valid_predicate_argument'(Argument) ->
-			throw(type_error(argument, Argument))
-		;	(	functor(Pred, Functor, Arity), Pred =.. [_| Arguments] ->
-			 	true
-			; 	throw(length_error(arguments_list, Arguments))
-			)
+	'$lgt_must_be'(list, Arguments),
+	(	'$lgt_member'(Argument, Arguments), \+ '$lgt_valid_predicate_argument'(Argument) ->
+		throw(type_error(argument, Argument))
+	;	(	functor(Pred, Functor, Arity), Pred =.. [_| Arguments] ->
+		 	true
+		; 	throw(length_error(arguments_list, Arguments))
 		)
-	;	throw(type_error(list, Arguments))
 	).
 
 '$lgt_tr_pred_info_key_value'(argnames, Argnames, Functor, Arity) :-
 	!,
-	(	'$lgt_is_proper_list'(Argnames) ->
-		(	'$lgt_member'(Name, Argnames), \+ atom(Name) ->
-			throw(type_error(atom, Name))
-		;	(	functor(Pred, Functor, Arity), Pred =.. [_| Argnames] ->
-			 	true
-			 ;	throw(length_error(argnames_list, Argnames))
-			)
+	'$lgt_must_be'(list, Argnames),
+	(	'$lgt_member'(Name, Argnames), \+ atom(Name) ->
+		throw(type_error(atom, Name))
+	;	(	functor(Pred, Functor, Arity), Pred =.. [_| Argnames] ->
+		 	true
+		 ;	throw(length_error(argnames_list, Argnames))
 		)
-	;	throw(type_error(list, Argnames))
 	).
 
 '$lgt_tr_pred_info_key_value'(comment, Comment, _, _) :-
 	!,
-	(	atom(Comment) ->
-		true
-	;	throw(type_error(atom, Comment))
-	).
+	'$lgt_must_be'(atom, Comment).
 
 '$lgt_tr_pred_info_key_value'(exceptions, Exceptions, _, _) :-
 	!,
-	(	'$lgt_is_proper_list'(Exceptions) ->
-		(	'$lgt_member'(Exception, Exceptions), \+ '$lgt_valid_predicate_exception'(Exception) ->
-			throw(type_error(exception, Exception))
-		;	true
-		)
-	;	throw(type_error(list, Exceptions))
+	'$lgt_must_be'(list, Exceptions),
+	(	'$lgt_member'(Exception, Exceptions), \+ '$lgt_valid_predicate_exception'(Exception) ->
+		throw(type_error(exception, Exception))
+	;	true
 	).
 
 '$lgt_tr_pred_info_key_value'(examples, Examples, Functor, Arity) :-
 	!,
-	(	'$lgt_is_proper_list'(Examples) ->
-		(	'$lgt_member'(Example, Examples), \+ '$lgt_valid_predicate_call_example'(Example, Functor, Arity) ->
-			throw(type_error(example, Example))
-		;	true
-		)
-	;	throw(type_error(list, Examples))
+	'$lgt_must_be'(list, Examples),
+	(	'$lgt_member'(Example, Examples), \+ '$lgt_valid_predicate_call_example'(Example, Functor, Arity) ->
+		throw(type_error(example, Example))
+	;	true
 	).
 
 '$lgt_tr_pred_info_key_value'(redefinition, Redefinition, _, _) :-
 	!,
-	(	atom(Redefinition) ->
-		(	'$lgt_valid_predicate_redefinition'(Redefinition) ->
-			true
-		;	throw(domain_error(redefinition, Redefinition))
-		)
-	;	throw(type_error(atom, Redefinition))
+	'$lgt_must_be'(atom, Redefinition),
+	(	'$lgt_valid_predicate_redefinition'(Redefinition) ->
+		true
+	;	throw(domain_error(redefinition, Redefinition))
 	).
 
 '$lgt_tr_pred_info_key_value'(_, _, _, _).
@@ -9107,12 +8937,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_head'({Head}, Head, _) :-
 	!,
-	(	var(Head) ->
-		throw(instantiation_error)
-	;	\+ callable(Head) ->
-		throw(type_error(callable, Head))
-	;	true
-	).
+	'$lgt_must_be'(callable, Head).
 
 
 % definition of dynamic predicates inside categories
@@ -9318,36 +9143,29 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_head'(':'(Module, Head), THead, Ctx) :-
 	'$lgt_pl_built_in'(':'(_, _)),
 	!,
-	(	var(Module) ->
-		throw(instantiation_error)
-	;	var(Head) ->
-		throw(instantiation_error)
-	;	\+ atom(Module) ->
-		throw(type_error(atom, Module))
-	;	\+ callable(Head) ->
-		throw(type_error(callable, Head))
-	;	functor(Head, Functor, Arity),
-		(	Module == user ->
-			THead = Head
-		;	THead = ':'(Module, Head)
-		),
-		(	Module == user, '$lgt_pp_directive_'(multifile(Functor/Arity)) ->
-			true
-		;	'$lgt_pp_directive_'(multifile(':'(Module, Functor/Arity))) ->
-			true
-		;	'$lgt_compiler_flag'(report, off) ->
-			true
-		;	'$lgt_compiler_flag'(missing_directives, warning) ->
-			'$lgt_report_warning_in_new_line',
-			'$lgt_inc_compile_warnings_counter',
-			write('%         WARNING!  Missing multifile directive for the predicate: '),
-			writeq(':'(Module,Functor/Arity)), nl,
-			'$lgt_pp_entity'(Type, Entity, _, _, _),
-			'$lgt_report_warning_full_context'(Type, Entity)
-		;	true
-		),
-		'$lgt_comp_ctx_head'(Ctx, ':'(Module, Head))
-	).
+	'$lgt_must_be'(atom, Module),
+	'$lgt_must_be'(callable, Head),
+	functor(Head, Functor, Arity),
+	(	Module == user ->
+		THead = Head
+	;	THead = ':'(Module, Head)
+	),
+	(	Module == user, '$lgt_pp_directive_'(multifile(Functor/Arity)) ->
+		true
+	;	'$lgt_pp_directive_'(multifile(':'(Module, Functor/Arity))) ->
+		true
+	;	'$lgt_compiler_flag'(report, off) ->
+		true
+	;	'$lgt_compiler_flag'(missing_directives, warning) ->
+		'$lgt_report_warning_in_new_line',
+		'$lgt_inc_compile_warnings_counter',
+		write('%         WARNING!  Missing multifile directive for the predicate: '),
+		writeq(':'(Module,Functor/Arity)), nl,
+		'$lgt_pp_entity'(Type, Entity, _, _, _),
+		'$lgt_report_warning_full_context'(Type, Entity)
+	;	true
+	),
+	'$lgt_comp_ctx_head'(Ctx, ':'(Module, Head)).
 
 
 % translate the head of a clause of a user defined predicate
@@ -10139,7 +9957,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_exec_ctx_this'(ExCtx, This),
 	(	'$lgt_runtime_db_pred_ind_chk'(Pred) ->
 		TCond = '$lgt_abolish'(This, Pred, This, p(_))
-	;	'$lgt_compiler_db_pred_ind_chk'(Pred),
+	;	'$lgt_must_be'(predicate_indicator, Pred),
 		TCond = '$lgt_abolish_chk'(This, Pred, This, p(_))
 	),
 	DCond = '$lgt_debugger.goal'(abolish(Pred), TCond, ExCtx).
@@ -11204,31 +11022,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-% '$lgt_compiler_db_pred_ind_chk'(@nonvar)
-%
-% throws an error if the argument is invalid
-
-'$lgt_compiler_db_pred_ind_chk'(Term) :-
-	Term \= (_/_),
-	throw(type_error(predicate_indicator, Term)).
-
-'$lgt_compiler_db_pred_ind_chk'(Functor/_) :-
-	\+ atom(Functor),
-	throw(type_error(atom, Functor)).
-
-'$lgt_compiler_db_pred_ind_chk'(_/Arity) :-
-	\+ integer(Arity),
-	throw(type_error(integer, Arity)).
-
-'$lgt_compiler_db_pred_ind_chk'(_/Arity) :-
-	integer(Arity),
-	Arity < 0,
-	throw(domain_error(not_less_than_zero, Arity)).
-
-'$lgt_compiler_db_pred_ind_chk'(_).
-
-
-
 % '$lgt_check_non_portable_functions'(@term)
 %
 % checks an arithmetic expression for calls to non-standard Prolog functions
@@ -11377,7 +11170,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	(	'$lgt_runtime_db_pred_ind_chk'(Pred) ->
 		TPred = '$lgt_abolish'(Obj, Pred, This, p(p(p)))
-	;	'$lgt_compiler_db_pred_ind_chk'(Pred),
+	;	'$lgt_must_be'(predicate_indicator, Pred),
 		TPred = '$lgt_abolish_chk'(Obj, Pred, This, p(p(p)))
 	).
 
@@ -11539,7 +11332,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	(	'$lgt_runtime_db_pred_ind_chk'(Pred) ->
 		TPred = '$lgt_abolish'(Self, Pred, This, p(_))
-	;	'$lgt_compiler_db_pred_ind_chk'(Pred),
+	;	'$lgt_must_be'(predicate_indicator, Pred),
 		TPred = '$lgt_abolish_chk'(Self, Pred, This, p(_))
 	).
 
@@ -16615,11 +16408,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 %
 % translates a grammar goal non-terminal:
 
-'$lgt_dcg_non_terminal'(NonTerminal, _, _, _) :-
-	\+ callable(NonTerminal),
-	throw(type_error(callable, NonTerminal)).
-
 '$lgt_dcg_non_terminal'(NonTerminal, S0, S, Goal) :-
+	'$lgt_must_be'(callable, NonTerminal),
 	NonTerminal =.. NonTerminalUniv,
 	'$lgt_append'(NonTerminalUniv, [S0, S], GoalUniv),
 	Goal =.. GoalUniv.
@@ -16630,11 +16420,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 %
 % translates a list of terminals:
 
-'$lgt_dcg_terminals'(Terminals, _, _, _) :-
-	\+ '$lgt_is_proper_list'(Terminals),
-	throw(type_error(list, Terminals)).
-
 '$lgt_dcg_terminals'(Terminals, S0, S, S0 = List) :-
+	'$lgt_must_be'(list, Terminals),
 	'$lgt_append'(Terminals, S, List).
 
 
@@ -18735,6 +18522,104 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % static-binding entities but this is not currently checked
 
 '$lgt_safe_static_binding_paths'(_, _, _).
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  Utility error-checking predicates
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+'$lgt_must_be'(variable, Term) :-
+	(	var(Term) ->
+		true
+	;	throw(type_error(variable, Term))
+	).
+
+'$lgt_must_be'(nonvar, Term) :-
+	(	nonvar(Term) ->
+		true
+	;	throw(instantiation_error)
+	).
+
+'$lgt_must_be'(atom, Term) :-
+	(	var(Term) ->
+		throw(instantiation_error)
+	;	atom(Term) ->
+		true
+	;	throw(type_error(atom, Term))
+	).
+
+'$lgt_must_be'(atomic, Term) :-
+	(	var(Term) ->
+		throw(instantiation_error)
+	;	atomic(Term) ->
+		true
+	;	throw(type_error(atomic, Term))
+	).
+
+'$lgt_must_be'(callable, Term) :-
+	(	var(Term) ->
+		throw(instantiation_error)
+	;	callable(Term) ->
+		true
+	;	throw(type_error(callable, Term))
+	).
+
+'$lgt_must_be'(list, Term) :-
+	(	var(Term) ->
+		throw(instantiation_error)
+	;	'$lgt_is_proper_list'(Term) ->
+		true
+	;	throw(type_error(list, Term))
+	).
+
+'$lgt_must_be'(object_identifier, Term) :-
+	(	var(Term) ->
+		throw(instantiation_error)
+	;	callable(Term) ->
+		true
+	;	throw(type_error(object_identifier, Term))
+	).
+
+'$lgt_must_be'(protocol_identifier, Term) :-
+	(	var(Term) ->
+		throw(instantiation_error)
+	;	atom(Term) ->
+		true
+	;	throw(type_error(protocol_identifier, Term))
+	).
+
+'$lgt_must_be'(category_identifier, Term) :-
+	(	var(Term) ->
+		throw(instantiation_error)
+	;	callable(Term) ->
+		true
+	;	throw(type_error(category_identifier, Term))
+	).
+
+'$lgt_must_be'(predicate_indicator, Term) :-
+	(	var(Term) ->
+		throw(instantiation_error)
+	;	Term \= _/_,
+		throw(type_error(predicate_indicator, Term))
+	;	Term = Functor/Arity,
+		'$lgt_must_be'(atom, Functor),
+		'$lgt_must_be'(integer, Arity),
+		(	Arity < 0,
+			throw(domain_error(not_less_than_zero, Arity))
+		;	true
+		)
+	).
+
+
+
+'$lgt_must_be'(Type, Term, Context) :-
+	catch('$lgt_must_be'(Type, Term), Error, throw(error(Error, Context))).
 
 
 
