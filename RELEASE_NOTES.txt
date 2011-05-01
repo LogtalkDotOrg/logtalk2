@@ -31,7 +31,7 @@ RELEASE NOTES
     Updated the Logtalk compiler in order to save the entity clause locations
     and make this information available to the back-end Prolog compilers.
 
-    Updated the Logtalk compilers in order to avoid generating unnecessary
+    Updated the Logtalk compiler in order to avoid generating unnecessary
     internal catchall clauses for the predicate declaration and definition
     tables for dynamic entities.
 
@@ -40,6 +40,9 @@ RELEASE NOTES
     clauses for a multifile Entity::Functor/Arity without a corresponding
     multifile/1 directive will now result in a compilation error instead
     of simply a warning.
+
+    Removed the Logtalk compiler restriction that forced discontiguous/1
+    and dynamic/1 directives to precede calls to the declared predicates.
 
     When debugging messages specified in uses/2 directives, the message is now
     printed implicitly qualified as in the source code written by the user.

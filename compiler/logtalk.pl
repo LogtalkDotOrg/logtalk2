@@ -7812,8 +7812,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	(	functor(Head, Functor, Arity),
 		'$lgt_pp_synchronized_'(Head, _) ->
 		throw(permission_error(modify, synchronized_predicate, Functor/Arity))
-	;	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _) ->
-		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
 	;	assertz('$lgt_pp_dynamic_'(Functor, Arity)),
 		'$lgt_tr_dynamic_directive'(Preds)
 	).
@@ -7912,14 +7910,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_discontiguous_directive'([Pred| Preds]) :-
 	'$lgt_valid_predicate_indicator'(Pred, Functor, Arity),
 	!,
-	(	functor(Head, Functor, Arity),
-		'$lgt_pp_synchronized_'(Head, _) ->
-		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
-	;	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _) ->
-		throw(permission_error(modify, predicate_interpretation, Functor/Arity))
-	;	assertz('$lgt_pp_discontiguous_'(Functor, Arity)),
-		'$lgt_tr_discontiguous_directive'(Preds)
-	).
+	assertz('$lgt_pp_discontiguous_'(Functor, Arity)),
+	'$lgt_tr_discontiguous_directive'(Preds).
 
 '$lgt_tr_discontiguous_directive'([Entity::Pred| Preds]) :-
 	'$lgt_valid_non_terminal_indicator'(Pred, Functor, _, ExtArity),
@@ -7942,16 +7934,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_tr_discontiguous_directive'(Preds).
 
 '$lgt_tr_discontiguous_directive'([Pred| Preds]) :-
-	'$lgt_valid_non_terminal_indicator'(Pred, Functor, Arity, ExtArity),
+	'$lgt_valid_non_terminal_indicator'(Pred, Functor, _, ExtArity),
 	!,
-	(	functor(Head, Functor, ExtArity),
-		'$lgt_pp_synchronized_'(Head, _) ->
-		throw(permission_error(modify, predicate_interpretation, Functor//Arity))
-	;	'$lgt_pp_calls_non_terminal_'(Functor, Arity) ->
-		throw(permission_error(modify, predicate_interpretation, Functor//Arity))
-	;	assertz('$lgt_pp_discontiguous_'(Functor, ExtArity)),
-		'$lgt_tr_discontiguous_directive'(Preds)
-	).
+	assertz('$lgt_pp_discontiguous_'(Functor, ExtArity)),
+	'$lgt_tr_discontiguous_directive'(Preds).
 
 '$lgt_tr_discontiguous_directive'([Pred| _]) :-
 	throw(type_error(predicate_indicator, Pred)).
