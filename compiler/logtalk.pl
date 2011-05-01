@@ -474,11 +474,7 @@ Obj<<Goal :-
 % current_object(?object_identifier)
 
 current_object(Obj) :-
-	nonvar(Obj),
-	\+ callable(Obj),
-	throw(error(type_error(object_identifier, Obj), current_object(Obj))).
-
-current_object(Obj) :-
+	'$lgt_must_be'(var_or_object_identifier, Obj, current_object(Obj)),
 	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _).
 
 
@@ -486,11 +482,7 @@ current_object(Obj) :-
 % current_protocol(?protocol_identifier)
 
 current_protocol(Ptc) :-
-	nonvar(Ptc),
-	\+ atom(Ptc),
-	throw(error(type_error(protocol_identifier, Ptc), current_protocol(Ptc))).
-
-current_protocol(Ptc) :-
+	'$lgt_must_be'(var_or_protocol_identifier, Ptc, current_protocol(Ptc)),
 	'$lgt_current_protocol_'(Ptc, _, _, _, _).
 
 
@@ -498,11 +490,7 @@ current_protocol(Ptc) :-
 % current_category(?category_identifier)
 
 current_category(Ctg) :-
-	nonvar(Ctg),
-	\+ callable(Ctg),
-	throw(error(type_error(category_identifier, Ctg), current_category(Ctg))).
-
-current_category(Ctg) :-
+	'$lgt_must_be'(var_or_category_identifier, Ctg, current_category(Ctg)),
 	'$lgt_current_category_'(Ctg, _, _, _, _, _).
 
 
@@ -866,23 +854,9 @@ implements_protocol(ObjOrCtg, Ptc) :-
 % implements_protocol(?category_identifier, ?protocol_identifier, ?atom)
 
 implements_protocol(ObjOrCtg, Ptc, Scope) :-
-	nonvar(ObjOrCtg),
-	\+ callable(ObjOrCtg),
-	throw(error(type_error(object_identifier, ObjOrCtg), implements_protocol(ObjOrCtg, Ptc, Scope))).
-
-implements_protocol(ObjOrCtg, Ptc, Scope) :-
-	nonvar(Ptc),
-	\+ atom(Ptc),
-	throw(error(type_error(protocol_identifier, Ptc), implements_protocol(ObjOrCtg, Ptc, Scope))).
-
-implements_protocol(ObjOrCtg, Ptc, Scope) :-
-	nonvar(Scope),
-	Scope \== (public),
-	Scope \== protected,
-	Scope \== private,
-	throw(error(type_error(scope, Scope), implements_protocol(ObjOrCtg, Ptc, Scope))).
-
-implements_protocol(ObjOrCtg, Ptc, Scope) :-
+	'$lgt_must_be'(var_or_object_identifier, ObjOrCtg, implements_protocol(ObjOrCtg, Ptc, Scope)),
+	'$lgt_must_be'(var_or_protocol_identifier, Ptc, implements_protocol(ObjOrCtg, Ptc, Scope)),
+	'$lgt_must_be'(var_or_scope, Scope, implements_protocol(ObjOrCtg, Ptc, Scope)),
 	'$lgt_implements_protocol_'(ObjOrCtg, Ptc, Scope).
 
 
@@ -900,23 +874,9 @@ imports_category(Obj, Ctg) :-
 % imports_category(?object_identifier, ?category_identifier, ?atom)
 
 imports_category(Obj, Ctg, Scope) :-
-	nonvar(Obj),
-	\+ callable(Obj),
-	throw(error(type_error(object_identifier, Obj), imports_category(Obj, Ctg, Scope))).
-
-imports_category(Obj, Ctg, Scope) :-
-	nonvar(Ctg),
-	\+ callable(Ctg),
-	throw(error(type_error(category_identifier, Ctg), imports_category(Obj, Ctg, Scope))).
-
-imports_category(Obj, Ctg, Scope) :-
-	nonvar(Scope),
-	Scope \== (public),
-	Scope \== protected,
-	Scope \== private,
-	throw(error(type_error(scope, Scope), imports_category(Obj, Ctg, Scope))).
-
-imports_category(Obj, Ctg, Scope) :-
+	'$lgt_must_be'(var_or_object_identifier, Obj, imports_category(Obj, Ctg, Scope)),
+	'$lgt_must_be'(var_or_category_identifier, Ctg, imports_category(Obj, Ctg, Scope)),
+	'$lgt_must_be'(var_or_scope, Scope, imports_category(Obj, Ctg, Scope)),
 	'$lgt_imports_category_'(Obj, Ctg, Scope).
 
 
@@ -934,23 +894,9 @@ instantiates_class(Obj, Class) :-
 % instantiates_class(?object_identifier, ?object_identifier, ?atom)
 
 instantiates_class(Obj, Class, Scope) :-
-	nonvar(Obj),
-	\+ callable(Obj),
-	throw(error(type_error(object_identifier, Obj), instantiates_class(Obj, Class, Scope))).
-
-instantiates_class(Obj, Class, Scope) :-
-	nonvar(Class),
-	\+ callable(Class),
-	throw(error(type_error(object_identifier, Class), instantiates_class(Obj, Class, Scope))).
-
-instantiates_class(Obj, Class, Scope) :-
-	nonvar(Scope),
-	Scope \== (public),
-	Scope \== protected,
-	Scope \== private,
-	throw(error(type_error(scope, Scope), instantiates_class(Obj, Class, Scope))).
-
-instantiates_class(Obj, Class, Scope) :-
+	'$lgt_must_be'(var_or_object_identifier, Obj, instantiates_class(Obj, Class, Scope)),
+	'$lgt_must_be'(var_or_object_identifier, Class, instantiates_class(Obj, Class, Scope)),
+	'$lgt_must_be'(var_or_scope, Scope, instantiates_class(Obj, Class, Scope)),
 	'$lgt_instantiates_class_'(Obj, Class, Scope).
 
 
@@ -968,23 +914,9 @@ specializes_class(Class, Superclass) :-
 % specializes_class(?object_identifier, ?object_identifier, ?atom)
 
 specializes_class(Class, Superclass, Scope) :-
-	nonvar(Class),
-	\+ callable(Class),
-	throw(error(type_error(object_identifier, Class), specializes_class(Class, Superclass, Scope))).
-
-specializes_class(Class, Superclass, Scope) :-
-	nonvar(Superclass),
-	\+ callable(Superclass),
-	throw(error(type_error(object_identifier, Superclass), specializes_class(Class, Superclass, Scope))).
-
-specializes_class(Class, Superclass, Scope) :-
-	nonvar(Scope),
-	Scope \== (public),
-	Scope \== protected,
-	Scope \== private,
-	throw(error(type_error(scope, Scope), specializes_class(Class, Superclass, Scope))).
-
-specializes_class(Class, Superclass, Scope) :-
+	'$lgt_must_be'(var_or_object_identifier, Class, specializes_class(Class, Superclass, Scope)),
+	'$lgt_must_be'(var_or_object_identifier, Superclass, specializes_class(Class, Superclass, Scope)),
+	'$lgt_must_be'(var_or_scope, Scope, specializes_class(Class, Superclass, Scope)),
 	'$lgt_specializes_class_'(Class, Superclass, Scope).
 
 
@@ -1002,23 +934,9 @@ extends_category(Ctg1, Ctg2) :-
 % extends_category(?category_identifier, ?category_identifier, ?atom)
 
 extends_category(Ctg1, Ctg2, Scope) :-
-	nonvar(Ctg1),
-	\+ callable(Ctg1),
-	throw(error(type_error(category_identifier, Ctg1), extends_category(Ctg1, Ctg2, Scope))).
-
-extends_category(Ctg1, Ctg2, Scope) :-
-	nonvar(Ctg2),
-	\+ callable(Ctg2),
-	throw(error(type_error(category_identifier, Ctg2), extends_category(Ctg1, Ctg2, Scope))).
-
-extends_category(Ctg1, Ctg2, Scope) :-
-	nonvar(Scope),
-	Scope \== (public),
-	Scope \== protected,
-	Scope \== private,
-	throw(error(type_error(scope, Scope), extends_category(Ctg1, Ctg2, Scope))).
-
-extends_category(Ctg1, Ctg2, Scope) :-
+	'$lgt_must_be'(var_or_category_identifier, Ctg1, extends_category(Ctg1, Ctg2, Scope)),
+	'$lgt_must_be'(var_or_category_identifier, Ctg2, extends_category(Ctg1, Ctg2, Scope)),
+	'$lgt_must_be'(var_or_scope, Scope, extends_category(Ctg1, Ctg2, Scope)),
 	'$lgt_extends_category_'(Ctg1, Ctg2, Scope).
 
 
@@ -1036,23 +954,9 @@ extends_protocol(Ptc1, Ptc2) :-
 % extends_protocol(?protocol_identifier, ?protocol_identifier, ?atom)
 
 extends_protocol(Ptc1, Ptc2, Scope) :-
-	nonvar(Ptc1),
-	\+ atom(Ptc1),
-	throw(error(type_error(protocol_identifier, Ptc1), extends_protocol(Ptc1, Ptc2, Scope))).
-
-extends_protocol(Ptc1, Ptc2, Scope) :-
-	nonvar(Ptc2),
-	\+ atom(Ptc2),
-	throw(error(type_error(protocol_identifier, Ptc2), extends_protocol(Ptc1, Ptc2, Scope))).
-
-extends_protocol(Ptc1, Ptc2, Scope) :-
-	nonvar(Scope),
-	Scope \== (public),
-	Scope \== protected,
-	Scope \== private,
-	throw(error(type_error(scope, Scope), extends_protocol(Ptc1, Ptc2, Scope))).
-
-extends_protocol(Ptc1, Ptc2, Scope) :-
+	'$lgt_must_be'(var_or_protocol_identifier, Ptc1, extends_protocol(Ptc1, Ptc2, Scope)),
+	'$lgt_must_be'(var_or_protocol_identifier, Ptc2, extends_protocol(Ptc1, Ptc2, Scope)),
+	'$lgt_must_be'(var_or_scope, Scope, extends_protocol(Ptc1, Ptc2, Scope)),
 	'$lgt_extends_protocol_'(Ptc1, Ptc2, Scope).
 
 
@@ -1070,23 +974,9 @@ extends_object(Prototype, Parent) :-
 % extends_object(?object_identifier, ?object_identifier, ?atom)
 
 extends_object(Prototype, Parent, Scope) :-
-	nonvar(Prototype),
-	\+ callable(Prototype),
-	throw(error(type_error(object_identifier, Prototype), extends_object(Prototype, Parent, Scope))).
-
-extends_object(Prototype, Parent, Scope) :-
-	nonvar(Parent),
-	\+ callable(Parent),
-	throw(error(type_error(object_identifier, Parent), extends_object(Prototype, Parent, Scope))).
-
-extends_object(Prototype, Parent, Scope) :-
-	nonvar(Scope),
-	Scope \== (public),
-	Scope \== protected,
-	Scope \== private,
-	throw(error(type_error(scope, Scope), extends_object(Prototype, Parent, Scope))).
-
-extends_object(Prototype, Parent, Scope) :-
+	'$lgt_must_be'(var_or_object_identifier, Prototype, extends_object(Prototype, Parent, Scope)),
+	'$lgt_must_be'(var_or_object_identifier, Parent, extends_object(Prototype, Parent, Scope)),
+	'$lgt_must_be'(var_or_scope, Scope, extends_object(Prototype, Parent, Scope)),
 	'$lgt_extends_object_'(Prototype, Parent, Scope).
 
 
@@ -1094,16 +984,8 @@ extends_object(Prototype, Parent, Scope) :-
 % complements_object(?category_identifier, ?object_identifier)
 
 complements_object(Category, Object) :-
-	nonvar(Category),
-	\+ callable(Category),
-	throw(error(type_error(category_identifier, Category), complements_object(Category, Object))).
-
-complements_object(Category, Object) :-
-	nonvar(Object),
-	\+ callable(Object),
-	throw(error(type_error(object_identifier, Object), complements_object(Category, Object))).
-
-complements_object(Category, Object) :-
+	'$lgt_must_be'(var_or_category_identifier, Category, complements_object(Category, Object)),
+	'$lgt_must_be'(var_or_object_identifier, Object, complements_object(Category, Object)),
 	'$lgt_complemented_object_'(Object, Category, _, _, _).
 
 
@@ -1123,23 +1005,13 @@ conforms_to_protocol(ObjOrCtg, Protocol) :-
 % conforms_to_protocol(?category_identifier, ?protocol_identifier, ?atom)
 
 conforms_to_protocol(ObjOrCtg, Protocol, Scope) :-
-	nonvar(Prototype),
-	\+ callable(Prototype),
-	throw(error(type_error(object_identifier, Prototype), conforms_to_protocol(ObjOrCtg, Protocol, Scope))).
+	'$lgt_must_be'(var_or_object_identifier, ObjOrCtg, conforms_to_protocol(ObjOrCtg, Protocol, Scope)),
+	'$lgt_must_be'(var_or_protocol_identifier, Protocol, conforms_to_protocol(ObjOrCtg, Protocol, Scope)),
+	'$lgt_must_be'(var_or_scope, Scope, conforms_to_protocol(ObjOrCtg, Protocol, Scope)),
+	'$lgt_conforms_to_protocol'(ObjOrCtg, Protocol, Scope).
 
-conforms_to_protocol(ObjOrCtg, Protocol, Scope) :-
-	nonvar(Parent),
-	\+ callable(Parent),
-	throw(error(type_error(object_identifier, Parent), conforms_to_protocol(ObjOrCtg, Protocol, Scope))).
 
-conforms_to_protocol(ObjOrCtg, Protocol, Scope) :-
-	nonvar(Scope),
-	Scope \== (public),
-	Scope \== protected,
-	Scope \== private,
-	throw(error(type_error(scope, Scope), conforms_to_protocol(ObjOrCtg, Protocol, Scope))).
-
-conforms_to_protocol(Object, Protocol, Scope) :-
+'$lgt_conforms_to_protocol'(Object, Protocol, Scope) :-
 	'$lgt_current_object_'(Object, _, _, _, _, _, _, _, _, _, _),
 	(	\+ '$lgt_instantiates_class_'(Object, _, _),
 		\+ '$lgt_specializes_class_'(Object, _, _) ->
@@ -1147,7 +1019,7 @@ conforms_to_protocol(Object, Protocol, Scope) :-
 	;	'$lgt_instance_conforms_to_protocol'(Object, Protocol, Scope)
 	).
 
-conforms_to_protocol(Category, Protocol, Scope) :-
+'$lgt_conforms_to_protocol'(Category, Protocol, Scope) :-
 	'$lgt_current_category_'(Category, _, _, _, _, _),
 	'$lgt_category_conforms_to_protocol'(Category, Protocol, Scope).
 
@@ -18446,102 +18318,136 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-'$lgt_must_be'(variable, Term) :-
+'$lgt_must_be'(variable, Term, Goal) :-
 	(	var(Term) ->
 		true
-	;	throw(type_error(variable, Term))
+	;	throw(error(type_error(variable, Term), Goal))
 	).
 
-'$lgt_must_be'(nonvar, Term) :-
+'$lgt_must_be'(nonvar, Term, Goal) :-
 	(	nonvar(Term) ->
 		true
-	;	throw(instantiation_error)
+	;	throw(error(instantiation_error, Goal))
 	).
 
-'$lgt_must_be'(atom, Term) :-
+'$lgt_must_be'(atom, Term, Goal) :-
 	(	var(Term) ->
-		throw(instantiation_error)
+		throw(error(instantiation_error, Goal))
 	;	atom(Term) ->
 		true
-	;	throw(type_error(atom, Term))
+	;	throw(error(type_error(atom, Term), Goal))
 	).
 
-'$lgt_must_be'(atomic, Term) :-
+'$lgt_must_be'(atomic, Term, Goal) :-
 	(	var(Term) ->
-		throw(instantiation_error)
+		throw(error(instantiation_error, Goal))
 	;	atomic(Term) ->
 		true
-	;	throw(type_error(atomic, Term))
+	;	throw(error(type_error(atomic, Term), Goal))
 	).
 
-'$lgt_must_be'(callable, Term) :-
+'$lgt_must_be'(callable, Term, Goal) :-
 	(	var(Term) ->
-		throw(instantiation_error)
+		throw(error(instantiation_error, Goal))
 	;	callable(Term) ->
 		true
-	;	throw(type_error(callable, Term))
+	;	throw(error(type_error(callable, Term), Goal))
 	).
 
-'$lgt_must_be'(list, Term) :-
+'$lgt_must_be'(list, Term, Goal) :-
 	(	var(Term) ->
-		throw(instantiation_error)
+		throw(error(instantiation_error, Goal))
 	;	'$lgt_is_proper_list'(Term) ->
 		true
-	;	throw(type_error(list, Term))
+	;	throw(error(type_error(list, Term), Goal))
 	).
 
-'$lgt_must_be'(object_identifier, Term) :-
+'$lgt_must_be'(object_identifier, Term, Goal) :-
 	(	var(Term) ->
-		throw(instantiation_error)
+		throw(error(instantiation_error, Goal))
 	;	callable(Term) ->
 		true
-	;	throw(type_error(object_identifier, Term))
+	;	throw(error(type_error(object_identifier, Term), Goal))
 	).
 
-'$lgt_must_be'(protocol_identifier, Term) :-
+'$lgt_must_be'(var_or_object_identifier, Term, Goal) :-
 	(	var(Term) ->
-		throw(instantiation_error)
+		true
+	;	callable(Term) ->
+		true
+	;	throw(error(type_error(object_identifier, Term), Goal))
+	).
+
+'$lgt_must_be'(protocol_identifier, Term, Goal) :-
+	(	var(Term) ->
+		throw(error(instantiation_error, Goal))
 	;	atom(Term) ->
 		true
-	;	throw(type_error(protocol_identifier, Term))
+	;	throw(error(type_error(protocol_identifier, Term), Goal))
 	).
 
-'$lgt_must_be'(category_identifier, Term) :-
+'$lgt_must_be'(var_or_protocol_identifier, Term, Goal) :-
 	(	var(Term) ->
-		throw(instantiation_error)
+		true
+	;	atom(Term) ->
+		true
+	;	throw(error(type_error(protocol_identifier, Term), Goal))
+	).
+
+'$lgt_must_be'(category_identifier, Term, Goal) :-
+	(	var(Term) ->
+		throw(error(instantiation_error, Goal))
 	;	callable(Term) ->
 		true
-	;	throw(type_error(category_identifier, Term))
+	;	throw(error(type_error(category_identifier, Term), Goal))
 	).
 
-'$lgt_must_be'(predicate_indicator, Term) :-
+'$lgt_must_be'(var_or_category_identifier, Term, Goal) :-
 	(	var(Term) ->
-		throw(instantiation_error)
+		throw(error(instantiation_error, Goal))
+	;	callable(Term) ->
+		true
+	;	throw(error(type_error(category_identifier, Term), Goal))
+	).
+
+'$lgt_must_be'(predicate_indicator, Term, Goal) :-
+	(	var(Term) ->
+		throw(error(instantiation_error, Goal))
 	;	Term \= _/_,
-		throw(type_error(predicate_indicator, Term))
+		throw(error(type_error(predicate_indicator, Term), Goal))
 	;	Term = Functor/Arity,
 		'$lgt_must_be'(atom, Functor),
 		'$lgt_must_be'(integer, Arity),
 		(	Arity < 0,
-			throw(domain_error(not_less_than_zero, Arity))
+			throw(error(domain_error(not_less_than_zero, Arity), Goal))
 		;	true
 		)
 	).
 
-'$lgt_must_be'(scope, Term) :-
+'$lgt_must_be'(scope, Term, Goal) :-
 	(	var(Term) ->
-		throw(instantiation_error)
+		throw(error(instantiation_error, Goal))
 	;	Scope \== (public),
 		Scope \== protected,
 		Scope \== private ->
-		throw(type_error(scope, Scope))
+		throw(error(type_error(scope, Scope), Goal))
+	;	true
+	).
+
+'$lgt_must_be'(var_or_scope, Term, Goal) :-
+	(	var(Term) ->
+		true
+	;	Scope \== (public),
+		Scope \== protected,
+		Scope \== private ->
+		throw(error(type_error(scope, Scope), Goal))
 	;	true
 	).
 
 
 
-'$lgt_must_be'(Type, Term, Goal) :-
-	catch('$lgt_must_be'(Type, Term), Error, throw(error(Error, Goal))).
+'$lgt_must_be'(Type, Term) :-
+	catch('$lgt_must_be'(Type, Term, _), error(Error, _), throw(Error)).
 
 
 
