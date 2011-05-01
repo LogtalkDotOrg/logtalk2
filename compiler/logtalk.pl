@@ -611,10 +611,6 @@ protocol_property(Ptc, Prop) :-
 % create_object(?object_identifier, +list, +list, +list)
 
 create_object(Obj, Rels, Dirs, Clauses) :-
-	(var(Rels); var(Dirs); var(Clauses)),
-	throw(error(instantiation_error, create_object(Obj, Rels, Dirs, Clauses))).
-
-create_object(Obj, Rels, Dirs, Clauses) :-
 	nonvar(Obj),
 	(	\+ callable(Obj),
 		throw(error(type_error(object_identifier, Obj), create_object(Obj, Rels, Dirs, Clauses)))
@@ -627,18 +623,9 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
-	\+ '$lgt_is_proper_list'(Rels),
-	throw(error(type_error(list, Rels), create_object(Obj, Rels, Dirs, Clauses))).
-
-create_object(Obj, Rels, Dirs, Clauses) :-
-	\+ '$lgt_is_proper_list'(Dirs),
-	throw(error(type_error(list, Dirs), create_object(Obj, Rels, Dirs, Clauses))).
-
-create_object(Obj, Rels, Dirs, Clauses) :-
-	\+ '$lgt_is_proper_list'(Clauses),
-	throw(error(type_error(list, Clauses), create_object(Obj, Rels, Dirs, Clauses))).
-
-create_object(Obj, Rels, Dirs, Clauses) :-
+	'$lgt_must_be'(list, Rels, create_object(Obj, Rels, Dirs, Clauses)),
+	'$lgt_must_be'(list, Dirs, create_object(Obj, Rels, Dirs, Clauses)),
+	'$lgt_must_be'(list, Clauses, create_object(Obj, Rels, Dirs, Clauses)),
 	catch(
 		'$lgt_create_object'(Obj, Rels, Dirs, Clauses),
 		Error,
@@ -669,10 +656,6 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 % create_category(?category_identifier, +list, +list, +list)
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
-	(var(Rels); var(Dirs); var(Clauses)),
-	throw(error(instantiation_error, create_category(Ctg, Rels, Dirs, Clauses))).
-
-create_category(Ctg, Rels, Dirs, Clauses) :-
 	nonvar(Ctg),
 	(	\+ callable(Ctg),
 		throw(error(type_error(category_identifier, Ctg), create_category(Ctg, Rels, Dirs, Clauses)))
@@ -685,18 +668,9 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
-	\+ '$lgt_is_proper_list'(Rels),
-	throw(error(type_error(list, Rels), create_category(Ctg, Rels, Dirs, Clauses))).
-
-create_category(Ctg, Rels, Dirs, Clauses) :-
-	\+ '$lgt_is_proper_list'(Dirs),
-	throw(error(type_error(list, Dirs), create_category(Ctg, Rels, Dirs, Clauses))).
-
-create_category(Ctg, Rels, Dirs, Clauses) :-
-	\+ '$lgt_is_proper_list'(Clauses),
-	throw(error(type_error(list, Clauses), create_category(Ctg, Rels, Dirs, Clauses))).
-
-create_category(Ctg, Rels, Dirs, Clauses) :-
+	'$lgt_must_be'(list, Rels, create_category(Ctg, Rels, Dirs, Clauses)),
+	'$lgt_must_be'(list, Dirs, create_category(Ctg, Rels, Dirs, Clauses)),
+	'$lgt_must_be'(list, Clauses, create_category(Ctg, Rels, Dirs, Clauses)),
 	catch(
 		'$lgt_create_category'(Ctg, Rels, Dirs, Clauses),
 		Error,
@@ -727,10 +701,6 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 % create_protocol(?protocol_identifier, +list, +list)
 
 create_protocol(Ptc, Rels, Dirs) :-
-	(var(Rels); var(Dirs)),
-	throw(error(instantiation_error, create_protocol(Ptc, Rels, Dirs))).
-
-create_protocol(Ptc, Rels, Dirs) :-
 	nonvar(Ptc),
 	(	\+ atom(Ptc),
 		throw(error(type_error(protocol_identifier, Ptc), create_protocol(Ptc, Rels, Dirs)))
@@ -743,14 +713,8 @@ create_protocol(Ptc, Rels, Dirs) :-
 	).
 
 create_protocol(Ptc, Rels, Dirs) :-
-	\+ '$lgt_is_proper_list'(Rels),
-	throw(error(type_error(list, Rels), create_protocol(Ptc, Rels, Dirs))).
-
-create_protocol(Ptc, Rels, Dirs) :-
-	\+ '$lgt_is_proper_list'(Dirs),
-	throw(error(type_error(list, Dirs), create_protocol(Ptc, Rels, Dirs))).
-
-create_protocol(Ptc, Rels, Dirs) :-
+	'$lgt_must_be'(list, Rels, create_protocol(Ptc, Rels, Dirs)),
+	'$lgt_must_be'(list, Dirs, create_protocol(Ptc, Rels, Dirs)),
 	catch(
 		'$lgt_create_protocol'(Ptc, Rels, Dirs),
 		Error,
@@ -2341,33 +2305,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 %
 % abolish/1 built-in method
 
-'$lgt_abolish'(Obj, Pred, Sender, _) :-
-	var(Pred),
-	throw(error(instantiation_error, Obj::abolish(Pred), Sender)).
-
-'$lgt_abolish'(Obj, Pred, Sender, _) :-
-	Pred \= _/_,
-	throw(error(type_error(predicate_indicator, Pred), Obj::abolish(predicate), Sender)).
-
-'$lgt_abolish'(Obj, Functor/Arity, Sender, _) :-
-	(var(Functor); var(Arity)),
-	throw(error(instantiation_error, Obj::abolish(Functor/Arity), Sender)).
-
-'$lgt_abolish'(Obj, Functor/Arity, Sender, _) :-
-	\+ atom(Functor),
-	throw(error(type_error(atom, Functor), Obj::abolish(Functor/Arity), Sender)).
-
-'$lgt_abolish'(Obj, Functor/Arity, Sender, _) :-
-	\+ integer(Arity),
-	throw(error(type_error(integer, Arity), Obj::abolish(Functor/Arity), Sender)).
-
-'$lgt_abolish'(Obj, Functor/Arity, Sender, _) :-
-	integer(Arity),
-	Arity < 0,
-	throw(error(domain_error(not_less_than_zero, Arity), Obj::abolish(Functor/Arity), Sender)).
-
-'$lgt_abolish'(Obj, Functor/Arity, Sender, Scope) :-
-	'$lgt_abolish_chk'(Obj, Functor/Arity, Sender, Scope).
+'$lgt_abolish'(Obj, Pred, Sender, Scope) :-
+	'$lgt_must_be'(predicate_indicator, Pred, Obj::abolish(Pred), Sender),
+	'$lgt_abolish_chk'(Obj, Pred, Sender, Scope).
 
 
 '$lgt_abolish_chk'(Obj, Functor/Arity, Sender, Scope) :-
@@ -2926,15 +2866,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 %
 % retractall/1 built-in method
 
-'$lgt_retractall'(Obj, Head, Sender, _) :-
-	var(Head),
-	throw(error(instantiation_error, Obj::retractall(Head), Sender)).
-
-'$lgt_retractall'(Obj, Head, Sender, _) :-
-	\+ callable(Head),
-	throw(error(type_error(callable, Head), Obj::retractall(Head), Sender)).
-
 '$lgt_retractall'(Obj, Head, Sender, Scope) :-
+	'$lgt_must_be'(callable, Head, Obj::retractall(Head), Sender),
 	'$lgt_retractall_chk'(Obj, Head, Sender, Scope).
 
 
@@ -3215,12 +3148,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % known at compile time
 
 '$lgt_send_to_self'(Obj, Pred, Sender) :-
-	(	var(Pred) ->
-		throw(error(instantiation_error, ::Pred, Sender))
-	;	callable(Pred) ->
-		'$lgt_send_to_self_'(Obj, Pred, Sender)
-	;	throw(error(type_error(callable, Pred), ::Pred, Sender))
-	).
+	'$lgt_must_be'(callable, Pred, ::Pred, Sender),
+	'$lgt_send_to_self_'(Obj, Pred, Sender).
 
 
 
@@ -3275,14 +3204,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % are not known at compile time
 
 '$lgt_send_to_obj'(Obj, Pred, Sender) :-
-	(	var(Obj) ->
-		throw(error(instantiation_error, Obj::Pred, Sender))
-	;	var(Pred) ->
-		throw(error(instantiation_error, Obj::Pred, Sender))
-	;	callable(Pred) ->
-		'$lgt_send_to_obj_'(Obj, Pred, Sender)
-	;	throw(error(type_error(callable, Pred), Obj::Pred, Sender))
-	).
+	'$lgt_must_be'(object_identifier, Obj, Obj::Pred, Sender),
+	'$lgt_must_be'(callable, Pred, Obj::Pred, Sender),
+	'$lgt_send_to_obj_'(Obj, Pred, Sender).
 
 
 
@@ -3381,14 +3305,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % are not known at compile time
 
 '$lgt_send_to_obj_ne'(Obj, Pred, Sender) :-
-	(	var(Obj) ->
-		throw(error(instantiation_error, Obj::Pred, Sender))
-	;	var(Pred) ->
-		throw(error(instantiation_error, Obj::Pred, Sender))
-	;	callable(Pred) ->
-		'$lgt_send_to_obj_ne_'(Obj, Pred, Sender)
-	;	throw(error(type_error(callable, Pred), Obj::Pred, Sender))
-	).
+	'$lgt_must_be'(object_identifier, Obj, Obj::Pred, Sender),
+	'$lgt_must_be'(callable, Pred, Obj::Pred, Sender),
+	'$lgt_send_to_obj_ne_'(Obj, Pred, Sender).
 
 
 
@@ -3974,16 +3893,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % debugging and for writing unit tests
 
 '$lgt_call_within_context'(Obj, Goal, This) :-
-	(	var(Obj) ->
-		throw(error(instantiation_error, Obj<<Goal, This))
-	;	var(Goal) ->
-		throw(error(instantiation_error, Obj<<Goal, This))
-	;	\+ callable(Obj) ->
-		throw(error(type_error(object_identifier, Obj), Obj<<Goal, This))
-	;	\+ callable(Goal) ->
-		throw(error(type_error(callable, Goal), Obj<<Goal, This))
-	;	'$lgt_call_within_context_nv'(Obj, Goal, This)
-	).
+	'$lgt_must_be'(object_identifier, Obj, Obj<<Goal, This),
+	'$lgt_must_be'(callable, Goal, Obj<<Goal, This),
+	'$lgt_call_within_context_nv'(Obj, Goal, This).
 
 
 
@@ -18616,10 +18528,25 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		)
 	).
 
+'$lgt_must_be'(scope, Term) :-
+	(	var(Term) ->
+		throw(instantiation_error)
+	;	Scope \== (public),
+		Scope \== protected,
+		Scope \== private ->
+		throw(type_error(scope, Scope))
+	;	true
+	).
 
 
-'$lgt_must_be'(Type, Term, Context) :-
-	catch('$lgt_must_be'(Type, Term), Error, throw(error(Error, Context))).
+
+'$lgt_must_be'(Type, Term, Goal) :-
+	catch('$lgt_must_be'(Type, Term), Error, throw(error(Error, Goal))).
+
+
+
+'$lgt_must_be'(Type, Term, Goal, Sender) :-
+	catch('$lgt_must_be'(Type, Term), Error, throw(error(Error, Goal, Sender))).
 
 
 
