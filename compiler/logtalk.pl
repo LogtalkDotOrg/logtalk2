@@ -18470,7 +18470,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	(	var(Continue) ->
 		% we still don't know if there are any pending results
-		'$lgt_mt_threaded_and_continue'(Results, Continue)
+		'$lgt_mt_threaded_continue'(Results, Continue)
 	;	true
 	).
 
@@ -18482,17 +18482,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		true
 	),
 	'$lgt_mt_threaded_and_add_result'(Results, Id, TVars, Continue).
-
-
-'$lgt_mt_threaded_and_continue'([], false).
-
-'$lgt_mt_threaded_and_continue'([id(_, _, Done)| Results], Continue) :-
-	(	var(Done) ->
-		% we found a thread whose result is still pending
-		Continue = true
-	;	% otherwise continue looking for a thread with a still pending result
-		'$lgt_mt_threaded_and_continue'(Results, Continue)
-	).
 
 
 
@@ -18551,12 +18540,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_mt_threaded_or_record_failure'([id(Id, _, false)| Results], Id, Continue) :-
 	!,
 	(	var(Continue) ->	% we still don't know if there are any pending results
-		'$lgt_mt_threaded_or_continue'(Results, Continue)
+		'$lgt_mt_threaded_continue'(Results, Continue)
 	;	true
 	).
 
-'$lgt_mt_threaded_or_record_failure'([id(_, _, Result)| Results], Id, Continue) :-
-	(	var(Result) ->
+'$lgt_mt_threaded_or_record_failure'([id(_, _, Done)| Results], Id, Continue) :-
+	(	var(Done) ->
 		% we found a thread whose result is still pending
 		Continue = true
 	;	% otherwise continue examining the remaining thread results
@@ -18565,14 +18554,19 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_mt_threaded_or_record_failure'(Results, Id, Continue).
 
 
-'$lgt_mt_threaded_or_continue'([], false).
 
-'$lgt_mt_threaded_or_continue'([id(_, _, Result)| Results], Continue) :-
-	(	var(Result) ->
+% '$lgt_mt_threaded_continue'(+list, -atom)
+%
+% checks if there are results still pending for a threaded/1 call:
+
+'$lgt_mt_threaded_continue'([], false).
+
+'$lgt_mt_threaded_continue'([id(_, _, Done)| Results], Continue) :-
+	(	var(Done) ->
 		% we found a thread whose result is still pending
 		Continue = true
 	;	% otherwise continue looking for a thread with a still pending result
-		'$lgt_mt_threaded_or_continue'(Results, Continue)
+		'$lgt_mt_threaded_continue'(Results, Continue)
 	).
 
 
