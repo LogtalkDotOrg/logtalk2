@@ -1100,103 +1100,46 @@ conforms_to_protocol(ObjOrCtg, Protocol, Scope) :-
 % current_event(?event, ?object_identifier, ?callable, ?object_identifier, ?object_identifier)
 
 current_event(Event, Obj, Msg, Sender, Monitor) :-
-	nonvar(Event),
-	Event \== before,
-	Event \== after,
-	throw(error(type_error(event, Event), current_event(Event, Obj, Msg, Sender, Monitor))).
-
-current_event(Event, Obj, Msg, Sender, Monitor) :-
-	nonvar(Obj),
-	\+ callable(Obj),
-	throw(error(type_error(object_identifier, Obj), current_event(Event, Obj, Msg, Sender, Monitor))).
-
-current_event(Event, Obj, Msg, Sender, Monitor) :-
-	nonvar(Msg),
-	\+ callable(Msg),
-	throw(error(type_error(callable, Msg), current_event(Event, Obj, Msg, Sender, Monitor))).
-
-current_event(Event, Obj, Msg, Sender, Monitor) :-
-	nonvar(Sender),
-	\+ callable(Sender),
-	throw(error(type_error(object_identifier, Sender), current_event(Event, Obj, Msg, Sender, Monitor))).
-
-current_event(Event, Obj, Msg, Sender, Monitor) :-
-	nonvar(Monitor),
-	\+ callable(Monitor),
-	throw(error(type_error(object_identifier, Monitor), current_event(Event, Obj, Msg, Sender, Monitor))).
-
-current_event(before, Obj, Msg, Sender, Monitor) :-
-	'$lgt_before_event_'(Obj, Msg, Sender, Monitor, _).
-
-current_event(after, Obj, Msg, Sender, Monitor) :-
-	'$lgt_after_event_'(Obj, Msg, Sender, Monitor, _).
+	'$lgt_must_be'(var_or_event, Event, current_event(Event, Obj, Msg, Sender, Monitor)),
+	'$lgt_must_be'(var_or_object_identifier, Obj, current_event(Event, Obj, Msg, Sender, Monitor)),
+	'$lgt_must_be'(var_or_callable, Msg, current_event(Event, Obj, Msg, Sender, Monitor)),
+	'$lgt_must_be'(var_or_object_identifier, Sender, current_event(Event, Obj, Msg, Sender, Monitor)),
+	'$lgt_must_be'(var_or_object_identifier, Monitor, current_event(Event, Obj, Msg, Sender, Monitor)),
+	(	'$lgt_before_event_'(Obj, Msg, Sender, Monitor, _)
+	;	'$lgt_after_event_'(Obj, Msg, Sender, Monitor, _)
+	).
 
 
 
 %define_events(@event, @object_identifier, @callable, @object_identifier, +object_identifier)
 
 define_events(Event, Obj, Msg, Sender, Monitor) :-
-	nonvar(Event),
-	Event \== before,
-	Event \== after,
-	throw(error(type_error(event, Event), define_events(Event, Obj, Msg, Sender, Monitor))).
-
-define_events(Event, Obj, Msg, Sender, Monitor) :-
-	nonvar(Obj),
-	\+ callable(Obj),
-	throw(error(type_error(object_identifier, Obj), define_events(Event, Obj, Msg, Sender, Monitor))).
-
-define_events(Event, Obj, Msg, Sender, Monitor) :-
-	nonvar(Msg),
-	\+ callable(Msg),
-	throw(error(type_error(callable, Msg), define_events(Event, Obj, Msg, Sender, Monitor))).
-
-define_events(Event, Obj, Msg, Sender, Monitor) :-
-	nonvar(Sender),
-	\+ callable(Sender),
-	throw(error(type_error(object_identifier, Sender), define_events(Event, Obj, Msg, Sender, Monitor))).
-
-define_events(Event, Obj, Msg, Sender, Monitor) :-
-	var(Monitor),
-	throw(error(instantiation_error, define_events(Event, Obj, Msg, Sender, Monitor))).
-
-define_events(Event, Obj, Msg, Sender, Monitor) :-
-	nonvar(Monitor),
-	\+ callable(Monitor),
-	throw(error(type_error(object_identifier, Monitor), define_events(Event, Obj, Msg, Sender, Monitor))).
-
-define_events(Event, Obj, Msg, Sender, Monitor) :-
-	\+ '$lgt_current_object_'(Monitor, _, _, _, _, _, _, _, _, _, _),
-	throw(error(existence_error(object, Monitor), define_events(Event, Obj, Msg, Sender, Monitor))).
-
-define_events(Event, Obj, Msg, Sender, Monitor) :-
-	var(Event),
-	!,
-	'$lgt_current_object_'(Monitor, _, _, Def, _, _, _, _, _, _, _),
-	'$lgt_exec_ctx'(ExCtx, Monitor, Monitor, Monitor, [], _),
-	(	call(Def, before(Obj, Msg, Sender), ExCtx, BCall, _) ->
-		(	call(Def, after(Obj, Msg, Sender), ExCtx, ACall, _) ->
-			retractall('$lgt_before_event_'(Obj, Msg, Sender, Monitor, _)),
-			assertz('$lgt_before_event_'(Obj, Msg, Sender, Monitor, BCall)),
-			retractall('$lgt_after_event_'(Obj, Msg, Sender, Monitor, _)),
-			assertz('$lgt_after_event_'(Obj, Msg, Sender, Monitor, ACall))
-		;	throw(error(existence_error(procedure, after/3), define_events(Event, Obj, Msg, Sender, Monitor)))
+	'$lgt_must_be'(var_or_event, Event, define_events(Event, Obj, Msg, Sender, Monitor)),
+	'$lgt_must_be'(var_or_object_identifier, Obj, define_events(Event, Obj, Msg, Sender, Monitor)),
+	'$lgt_must_be'(var_or_callable, Msg, define_events(Event, Obj, Msg, Sender, Monitor)),
+	'$lgt_must_be'(var_or_object_identifier, Sender, define_events(Event, Obj, Msg, Sender, Monitor)),
+	'$lgt_must_be'(object_identifier, Monitor, define_events(Event, Obj, Msg, Sender, Monitor)),
+	(	'$lgt_current_object_'(Monitor, _, _, Def, _, _, _, _, _, _, _) ->
+		'$lgt_exec_ctx'(ExCtx, Monitor, Monitor, Monitor, [], _),
+		(	var(Event) ->
+			'$lgt_define_events'(before, Obj, Msg, Sender, Monitor, Def, ExCtx),
+			'$lgt_define_events'(after, Obj, Msg, Sender, Monitor, Def, ExCtx)
+		;	Event == before ->
+			'$lgt_define_events'(before, Obj, Msg, Sender, Monitor, Def, ExCtx)
+		;	'$lgt_define_events'(after, Obj, Msg, Sender, Monitor, Def, ExCtx)
 		)
-	;	throw(error(existence_error(procedure, before/3), define_events(Event, Obj, Msg, Sender, Monitor)))
+	;	throw(error(existence_error(object, Monitor), define_events(Event, Obj, Msg, Sender, Monitor)))
 	).
 
-define_events(before, Obj, Msg, Sender, Monitor) :-
-	'$lgt_current_object_'(Monitor, _, _, Def, _, _, _, _, _, _, _),
-	'$lgt_exec_ctx'(ExCtx, Monitor, Monitor, Monitor, [], _),
+
+'$lgt_define_events'(before, Obj, Msg, Sender, Monitor, Def, ExCtx) :-
 	(	call(Def, before(Obj, Msg, Sender), ExCtx, Call, _) ->
 		retractall('$lgt_before_event_'(Obj, Msg, Sender, Monitor, _)),
 		assertz('$lgt_before_event_'(Obj, Msg, Sender, Monitor, Call))
 	;	throw(error(existence_error(procedure, before/3), define_events(before, Obj, Msg, Sender, Monitor)))
 	).
 
-define_events(after, Obj, Msg, Sender, Monitor) :-
-	'$lgt_current_object_'(Monitor, _, _, Def, _, _, _, _, _, _, _),
-	'$lgt_exec_ctx'(ExCtx, Monitor, Monitor, Monitor, [], _),
+'$lgt_define_events'(after, Obj, Msg, Sender, Monitor, Def, ExCtx) :-
 	(	call(Def, after(Obj, Msg, Sender), ExCtx, Call, _) ->
 		retractall('$lgt_after_event_'(Obj, Msg, Sender, Monitor, _)),
 		assertz('$lgt_after_event_'(Obj, Msg, Sender, Monitor, Call))
@@ -1208,42 +1151,18 @@ define_events(after, Obj, Msg, Sender, Monitor) :-
 % abolish_events(@event, @object_identifier, @callable, @object_identifier, @object_identifier)
 
 abolish_events(Event, Obj, Msg, Sender, Monitor) :-
-	nonvar(Event),
-	Event \== before,
-	Event \== after,
-	throw(error(type_error(event, Event), abolish_events(Event, Obj, Msg, Sender, Monitor))).
-
-abolish_events(Event, Obj, Msg, Sender, Monitor) :-
-	nonvar(Obj),
-	\+ callable(Obj),
-	throw(error(type_error(object_identifier, Obj), abolish_events(Event, Obj, Msg, Sender, Monitor))).
-
-abolish_events(Event, Obj, Msg, Sender, Monitor) :-
-	nonvar(Msg),
-	\+ callable(Msg),
-	throw(error(type_error(callable, Msg), abolish_events(Event, Obj, Msg, Sender, Monitor))).
-
-abolish_events(Event, Obj, Msg, Sender, Monitor) :-
-	nonvar(Sender),
-	\+ callable(Sender),
-	throw(error(type_error(object_identifier, Sender), abolish_events(Event, Obj, Msg, Sender, Monitor))).
-
-abolish_events(Event, Obj, Msg, Sender, Monitor) :-
-	nonvar(Monitor),
-	\+ callable(Monitor),
-	throw(error(type_error(object_identifier, Monitor), abolish_events(Event, Obj, Msg, Sender, Monitor))).
-
-abolish_events(Event, Obj, Msg, Sender, Monitor) :-
-	var(Event),
-	!,
-	retractall('$lgt_before_event_'(Obj, Msg, Sender, Monitor, _)),
-	retractall('$lgt_after_event_'(Obj, Msg, Sender, Monitor, _)).
-
-abolish_events(before, Obj, Msg, Sender, Monitor) :-
-	retractall('$lgt_before_event_'(Obj, Msg, Sender, Monitor, _)).
-
-abolish_events(after, Obj, Msg, Sender, Monitor) :-
-	retractall('$lgt_after_event_'(Obj, Msg, Sender, Monitor, _)).
+	'$lgt_must_be'(var_or_event, Event, abolish_events(Event, Obj, Msg, Sender, Monitor)),
+	'$lgt_must_be'(var_or_object_identifier, Obj, abolish_events(Event, Obj, Msg, Sender, Monitor)),
+	'$lgt_must_be'(var_or_callable, Msg, abolish_events(Event, Obj, Msg, Sender, Monitor)),
+	'$lgt_must_be'(var_or_object_identifier, Sender, abolish_events(Event, Obj, Msg, Sender, Monitor)),
+	'$lgt_must_be'(var_or_object_identifier, Monitor, abolish_events(Event, Obj, Msg, Sender, Monitor)),
+	(	var(Event) ->
+		retractall('$lgt_before_event_'(Obj, Msg, Sender, Monitor, _)),
+		retractall('$lgt_after_event_'(Obj, Msg, Sender, Monitor, _))
+	;	Event == before ->
+		retractall('$lgt_before_event_'(Obj, Msg, Sender, Monitor, _))
+	;	retractall('$lgt_after_event_'(Obj, Msg, Sender, Monitor, _))
+	).
 
 
 
@@ -18354,6 +18273,14 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	throw(error(type_error(callable, Term), Goal))
 	).
 
+'$lgt_must_be'(var_or_callable, Term, Goal) :-
+	(	var(Term) ->
+		true
+	;	callable(Term) ->
+		true
+	;	throw(error(type_error(callable, Term), Goal))
+	).
+
 '$lgt_must_be'(list, Term, Goal) :-
 	(	var(Term) ->
 		throw(error(instantiation_error, Goal))
@@ -18404,7 +18331,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_must_be'(var_or_category_identifier, Term, Goal) :-
 	(	var(Term) ->
-		throw(error(instantiation_error, Goal))
+		true
 	;	callable(Term) ->
 		true
 	;	throw(error(type_error(category_identifier, Term), Goal))
@@ -18444,6 +18371,14 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	true
 	).
 
+'$lgt_must_be'(var_or_event, Term, Goal) :-
+	(	var(Term) ->
+		true
+	;	Term \== before,
+		Term \== after ->
+		throw(error(type_error(event, Term), Goal))
+	;	true
+	).
 
 
 '$lgt_must_be'(Type, Term) :-
@@ -18452,7 +18387,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 '$lgt_must_be'(Type, Term, Goal, Sender) :-
-	catch('$lgt_must_be'(Type, Term), Error, throw(error(Error, Goal, Sender))).
+	catch('$lgt_must_be'(Type, Term, _), error(Error, _), throw(error(Error, Goal, Sender))).
 
 
 
