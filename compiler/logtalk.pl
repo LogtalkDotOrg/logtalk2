@@ -498,16 +498,8 @@ current_category(Ctg) :-
 % object_property(?object_identifier, ?object_property)
 
 object_property(Obj, Prop) :-
-	nonvar(Obj),
-	\+ callable(Obj),
-	throw(error(type_error(object_identifier, Obj), object_property(Obj, Prop))).
-
-object_property(Obj, Prop) :-
-	nonvar(Prop),
-	\+ '$lgt_valid_object_property'(Prop),
-	throw(error(domain_error(object_property, Prop), object_property(Obj, Prop))).
-
-object_property(Obj, Prop) :-
+	'$lgt_must_be'(var_or_object_identifier, Obj, object_property(Obj, Prop)),
+	'$lgt_must_be'(var_or_object_property, Prop, object_property(Obj, Prop)),
 	'$lgt_current_object_'(Obj, _, Dcl, _, _, _, _, DDcl, _, _, Flags),
 	(	'$lgt_object_flags'(Prop, Flags)
 	;	'$lgt_entity_property_'(Obj, Internal),
@@ -537,16 +529,8 @@ object_property(Obj, Prop) :-
 % category_property(?category_identifier, ?category_property)
 
 category_property(Ctg, Prop) :-
-	nonvar(Ctg),
-	\+ callable(Ctg),
-	throw(error(type_error(category_identifier, Ctg), category_property(Ctg, Prop))).
-
-category_property(Ctg, Prop) :-
-	nonvar(Prop),
-	\+ '$lgt_valid_category_property'(Prop),
-	throw(error(domain_error(category_property, Prop), category_property(Ctg, Prop))).
-
-category_property(Ctg, Prop) :-
+	'$lgt_must_be'(var_or_category_identifier, Ctg, category_property(Ctg, Prop)),
+	'$lgt_must_be'(var_or_category_property, Prop, category_property(Ctg, Prop)),
 	'$lgt_current_category_'(Ctg, _, Dcl, _, _, Flags),
 	(	'$lgt_category_flags'(Prop, Flags)
 	;	'$lgt_entity_property_'(Ctg, Internal),
@@ -568,16 +552,8 @@ category_property(Ctg, Prop) :-
 % protocol_property(?protocol_identifier, ?protocol_property)
 
 protocol_property(Ptc, Prop) :-
-	nonvar(Ptc),
-	\+ atom(Ptc),
-	throw(error(type_error(protocol_identifier, Ptc), protocol_property(Ptc, Prop))).
-
-protocol_property(Ptc, Prop) :-
-	nonvar(Prop),
-	\+ '$lgt_valid_protocol_property'(Prop),
-	throw(error(domain_error(protocol_property, Prop), protocol_property(Ptc, Prop))).
-
-protocol_property(Ptc, Prop) :-
+	'$lgt_must_be'(var_or_protocol_identifier, Ptc, protocol_property(Ptc, Prop)),
+	'$lgt_must_be'(var_or_protocol_property, Prop, protocol_property(Ptc, Prop)),
 	'$lgt_current_protocol_'(Ptc, _, Dcl, _, Flags),
 	(	'$lgt_protocol_flags'(Prop, Flags)
 	;	'$lgt_entity_property_'(Ptc, Internal),
@@ -1189,7 +1165,7 @@ threaded_call(Goal, Tag) :-
 
 threaded_call(Goal, Tag) :-
 	'$lgt_must_be'(callable, Goal, threaded_call(Goal, Tag)),
-	'$lgt_must_be'(variable, Tag, threaded_call(Goal, Tag)),
+	'$lgt_must_be'(var, Tag, threaded_call(Goal, Tag)),
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
 	catch('$lgt_threaded_call_tagged'(Prefix, Goal, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -1214,7 +1190,7 @@ threaded_once(Goal, Tag) :-
 
 threaded_once(Goal, Tag) :-
 	'$lgt_must_be'(callable, Goal, threaded_once(Goal, Tag)),
-	'$lgt_must_be'(variable, Tag, threaded_once(Goal, Tag)),
+	'$lgt_must_be'(var, Tag, threaded_once(Goal, Tag)),
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
 	catch('$lgt_threaded_once_tagged'(Prefix, Goal, user, user, Tag), Error, '$lgt_runtime_error_handler'(Error)).
 
@@ -6549,7 +6525,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_file_directive'(op(Priority, Spec, Operators), _) :-
 	!,
-	'$lgt_check_op_directive_args'(Priority, Spec, Operators),
+	'$lgt_must_be'(operator_specification, op(Priority, Spec, Operators)),
 	op(Priority, Spec, Operators),							% op/3 directives must be used during entity compilation
 	'$lgt_pp_term_location'(Location),
 	assertz('$lgt_pp_prolog_term_'((:- op(Priority, Spec, Operators)), Location)),
@@ -6782,7 +6758,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % op/3 entity directive (operators are local to entities)
 
 '$lgt_tr_directive'(op, [Priority, Spec, Operators], _) :-
-	'$lgt_check_op_directive_args'(Priority, Spec, Operators),
+	'$lgt_must_be'(operator_specification, op(Priority, Spec, Operators)),
 	op(Priority, Spec, Operators),
 	'$lgt_assert_entity_operators'(Priority, Spec, Operators, (local)).
 
@@ -7173,7 +7149,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_public_directive'([op(Priority, Spec, Operators)| Preds]) :-
 	!,
-	'$lgt_check_op_directive_args'(Priority, Spec, Operators),
+	'$lgt_must_be'(operator_specification, op(Priority, Spec, Operators)),
 	'$lgt_check_for_duplicated_scope_directives'(op(Priority, Spec, Operators)),
 	'$lgt_assert_entity_operators'(Priority, Spec, Operators, (public)),
 	'$lgt_tr_public_directive'(Preds).
@@ -7210,7 +7186,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_protected_directive'([op(Priority, Spec, Operators)| Preds]) :-
 	!,
-	'$lgt_check_op_directive_args'(Priority, Spec, Operators),
+	'$lgt_must_be'(operator_specification, op(Priority, Spec, Operators)),
 	'$lgt_check_for_duplicated_scope_directives'(op(Priority, Spec, Operators)),
 	'$lgt_assert_entity_operators'(Priority, Spec, Operators, protected),
 	'$lgt_tr_protected_directive'(Preds).
@@ -7247,7 +7223,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_private_directive'([op(Priority, Spec, Operators)| Preds]) :-
 	!,
-	'$lgt_check_op_directive_args'(Priority, Spec, Operators),
+	'$lgt_must_be'(operator_specification, op(Priority, Spec, Operators)),
 	'$lgt_check_for_duplicated_scope_directives'(op(Priority, Spec, Operators)),
 	'$lgt_assert_entity_operators'(Priority, Spec, Operators, private),
 	'$lgt_tr_private_directive'(Preds).
@@ -9194,11 +9170,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads)).
 
-'$lgt_tr_body'(threaded(Goals), _, _, _) :-
-	nonvar(Goals),
-	\+ callable(Goals),
-	throw(type_error(callable, Goals)).
-
 '$lgt_tr_body'(threaded(Goals), MTGoals, '$lgt_debugger.goal'(threaded(Goals), MDGoals, ExCtx), Ctx) :-
 	!,
 	'$lgt_tr_body'(Goals, TGoals, DGoals, Ctx),
@@ -9212,17 +9183,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads)).
 
-'$lgt_tr_body'(threaded_call(_, Tag), _, _, _) :-
-	nonvar(Tag),
-	throw(type_error(variable, Tag)).
-
-'$lgt_tr_body'(threaded_call(Goal, _), _, _, _) :-
-	nonvar(Goal),
-	\+ callable(Goal),
-	throw(type_error(callable, Goal)).
-
 '$lgt_tr_body'(threaded_call(Goal, Tag), MTGoal, '$lgt_debugger.goal'(threaded_call(Goal, Tag), MDGoal, ExCtx), Ctx) :-
 	!,
+	'$lgt_must_be'(var, Tag),
 	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
@@ -9239,11 +9202,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	\+ '$lgt_pp_threaded_',
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads)).
-
-'$lgt_tr_body'(threaded_call(Goal), _, _, _) :-
-	nonvar(Goal),
-	\+ callable(Goal),
-	throw(type_error(callable, Goal)).
 
 '$lgt_tr_body'(threaded_call(Goal), MTGoal, '$lgt_debugger.goal'(threaded_call(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
@@ -9264,17 +9222,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads)).
 
-'$lgt_tr_body'(threaded_once(_, Tag), _, _, _) :-
-	nonvar(Tag),
-	throw(type_error(variable, Tag)).
-
-'$lgt_tr_body'(threaded_once(Goal, _), _, _, _) :-
-	nonvar(Goal),
-	\+ callable(Goal),
-	throw(type_error(callable, Goal)).
-
 '$lgt_tr_body'(threaded_once(Goal, Tag), MTGoal, '$lgt_debugger.goal'(threaded_once(Goal, Tag), MDGoal, ExCtx), Ctx) :-
 	!,
+	'$lgt_must_be'(var, Tag),
 	'$lgt_comp_ctx'(Ctx, _, _, This, Self, _, _, _, ExCtx, _, _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_pp_object_'(_, Prefix, _, _, _, _, _, _, _, _, _) ->
@@ -9291,11 +9241,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	\+ '$lgt_pp_threaded_',
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads)).
-
-'$lgt_tr_body'(threaded_once(Goal), _, _, _) :-
-	nonvar(Goal),
-	\+ callable(Goal),
-	throw(type_error(callable, Goal)).
 
 '$lgt_tr_body'(threaded_once(Goal), MTGoal, '$lgt_debugger.goal'(threaded_once(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
@@ -9316,11 +9261,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads)).
 
-'$lgt_tr_body'(threaded_ignore(Goal), _, _, _) :-
-	nonvar(Goal),
-	\+ callable(Goal),
-	throw(type_error(callable, Goal)).
-
 '$lgt_tr_body'(threaded_ignore(Goal), MTGoal, '$lgt_debugger.goal'(threaded_ignore(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
@@ -9333,11 +9273,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	\+ '$lgt_pp_threaded_',
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads)).
-
-'$lgt_tr_body'(threaded_exit(Goal, _), _, _, _) :-
-	nonvar(Goal),
-	\+ callable(Goal),
-	throw(type_error(callable, Goal)).
 
 '$lgt_tr_body'(threaded_exit(Goal, Tag), MTGoal, '$lgt_debugger.goal'(threaded_exit(Goal, Tag), MDGoal, ExCtx), Ctx) :-
 	!,
@@ -9358,11 +9293,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads)).
 
-'$lgt_tr_body'(threaded_exit(Goal), _, _, _) :-
-	nonvar(Goal),
-	\+ callable(Goal),
-	throw(type_error(callable, Goal)).
-
 '$lgt_tr_body'(threaded_exit(Goal), MTGoal, '$lgt_debugger.goal'(threaded_exit(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _, _),
@@ -9382,11 +9312,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads)).
 
-'$lgt_tr_body'(threaded_peek(Goal, _), _, _, _) :-
-	nonvar(Goal),
-	\+ callable(Goal),
-	throw(type_error(callable, Goal)).
-
 '$lgt_tr_body'(threaded_peek(Goal, Tag), MTGoal, '$lgt_debugger.goal'(threaded_peek(Goal, Tag), MDGoal, ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, _, _, _, ExCtx, _, _),
@@ -9405,11 +9330,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	\+ '$lgt_pp_threaded_',
 	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
 	throw(resource_error(threads)).
-
-'$lgt_tr_body'(threaded_peek(Goal), _, _, _) :-
-	nonvar(Goal),
-	\+ callable(Goal),
-	throw(type_error(callable, Goal)).
 
 '$lgt_tr_body'(threaded_peek(Goal), MTGoal, '$lgt_debugger.goal'(threaded_peek(Goal), MDGoal, ExCtx), Ctx) :-
 	!,
@@ -15368,80 +15288,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-% '$lgt_check_op_directive_args'(@term, @term, @term)
-%
-% checks that the arguments of a op/3 directive are valid
-
-'$lgt_check_op_directive_args'(Priority, _, _) :-
-	var(Priority),
-	throw(instantiation_error).
-
-'$lgt_check_op_directive_args'(_, Spec, _) :-
-	var(Spec),
-	throw(instantiation_error).
-
-'$lgt_check_op_directive_args'(_, _, Operators) :-
-	var(Operators),
-	throw(instantiation_error).
-
-'$lgt_check_op_directive_args'(Priority, _, _) :-
-	\+ integer(Priority),
-	throw(type_error(integer, Priority)).
-
-'$lgt_check_op_directive_args'(Priority, _, _) :-
-	(Priority < 0; Priority > 1200),
-	throw(domain_error(operator_priority, Priority)).
-
-'$lgt_check_op_directive_args'(_, Spec, _) :-
-	\+ atom(Spec),
-	throw(type_error(atom, Spec)).
-
-'$lgt_check_op_directive_args'(_, Spec, _) :-
-	Spec \== fx,
-	Spec \== fy,
-	Spec \== xfx,
-	Spec \== xfy,
-	Spec \== yfx,
-	Spec \== xf,
-	Spec \== yf,
-	throw(domain_error(operator_specifier, Spec)).
-
-'$lgt_check_op_directive_args'(_, _, ',') :-
-	throw(permission_error(modify, operator, ',')).
-
-'$lgt_check_op_directive_args'(_, _, Operators) :-
-	\+ atom(Operators),
-	\+ '$lgt_is_proper_list'(Operators),
-	throw(type_error(list, Operators)).
-
-'$lgt_check_op_directive_args'(_, _, Operators) :-
-	'$lgt_check_op_directive_operator_names'(Operators).
-
-
-'$lgt_check_op_directive_operator_names'(Operator) :-
-	var(Operator),
-	throw(instantiation_error).
-
-'$lgt_check_op_directive_operator_names'(',') :-
-	throw(permission_error(modify, operator, ',')).
-
-'$lgt_check_op_directive_operator_names'(Operator) :-
-	atom(Operator),
-	!.
-
-'$lgt_check_op_directive_operator_names'([]) :-
-	!.
-
-'$lgt_check_op_directive_operator_names'([Operator| Operators]) :-
-	!,
-	'$lgt_check_op_directive_operator_names'(Operator),
-	'$lgt_check_op_directive_operator_names'(Operators).
-
-'$lgt_check_op_directive_operator_names'(Operator) :-
-	throw(type_error(atom, Operator)).
-
-
-
 % '$lgt_same_op_class'(?atom, ?atom)
 
 '$lgt_same_op_class'(fx, fx).
@@ -16009,64 +15855,14 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	var(RHead),
 	throw(instantiation_error).
 
-'$lgt_dcg_rule'((_, Terminals --> _), _, _, _) :-
-	var(Terminals),
-	throw(instantiation_error).
-
-'$lgt_dcg_rule'((Entity::_ --> _), _, _, _) :-
-	var(Entity),
-	throw(instantiation_error).
-
-'$lgt_dcg_rule'((Entity::_, _ --> _), _, _, _) :-
-	var(Entity),
-	throw(instantiation_error).
-
-'$lgt_dcg_rule'((':'(Module, _) --> _), _, _, _) :-
-	var(Module),
-	throw(instantiation_error).
-
-'$lgt_dcg_rule'(((':'(Module, _), _) --> _), _, _, _) :-
-	var(Module),
-	throw(instantiation_error).
-
-'$lgt_dcg_rule'((_::Pred --> _), _, _, _) :-
-	var(Pred),
-	throw(instantiation_error).
-
-'$lgt_dcg_rule'((_::Pred, _ --> _), _, _, _) :-
-	var(Pred),
-	throw(instantiation_error).
-
-'$lgt_dcg_rule'((':'(_, Pred) --> _), _, _, _) :-
-	var(Pred),
-	throw(instantiation_error).
-
-'$lgt_dcg_rule'(((':'(_, Pred), _) --> _), _, _, _) :-
-	var(Pred),
-	throw(instantiation_error).
-
-'$lgt_dcg_rule'((Entity::_ --> _), _, _, _) :-
-	\+ callable(Entity),
-	throw(type_error(entity_identifier, Entity)).
-
-'$lgt_dcg_rule'((Entity::_, _ --> _), _, _, _) :-
-	\+ callable(Entity),
-	throw(type_error(entity_identifier, Entity)).
-
-'$lgt_dcg_rule'((':'(Module, _) --> _), _, _, _) :-
-	\+ atom(Module),
-	throw(type_error(atom, Module)).
-
-'$lgt_dcg_rule'(((':'(Module, _), _) --> _), _, _, _) :-
-	\+ atom(Module),
-	throw(type_error(atom, Module)).
-
 '$lgt_dcg_rule'((Entity::NonTerminal, Terminals --> GRBody), S0, S, (Entity::Head :- Body)) :-
 	!,
+	'$lgt_must_be'(object_identifier, Entity),
 	'$lgt_dcg_rule'((NonTerminal, Terminals --> GRBody), S0, S, (Head :- Body)).
 
 '$lgt_dcg_rule'((':'(Module, NonTerminal), Terminals --> GRBody), S0, S, (':'(Module, Head) :- Body)) :-
 	!,
+	'$lgt_must_be'(atom, Module),
 	'$lgt_dcg_rule'((NonTerminal, Terminals --> GRBody), S0, S, (Head :- Body)).
 
 '$lgt_dcg_rule'((NonTerminal, Terminals --> GRBody), S0, S, (Head :- Body)) :-
@@ -16083,10 +15879,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_dcg_rule'((Entity::NonTerminal --> GRBody), S0, S, (Entity::Head :- Body)) :-
 	!,
+	'$lgt_must_be'(object_identifier, Entity),
 	'$lgt_dcg_rule'((NonTerminal --> GRBody), S0, S, (Head :- Body)).
 
 '$lgt_dcg_rule'((':'(Module, NonTerminal) --> GRBody), S0, S, (':'(Module, Head) :- Body)) :-
 	!,
+	'$lgt_must_be'(atom, Module),
 	'$lgt_dcg_rule'((NonTerminal --> GRBody), S0, S, (Head :- Body)).
 
 '$lgt_dcg_rule'((call(_) --> _), _, _, _) :-
@@ -16246,13 +16044,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	'$lgt_dcg_body'(GRBody, S0, _, Goal).
 
-'$lgt_dcg_body'(call(Closure), _, _, _) :-
-	nonvar(Closure),
-	\+ callable(Closure),
-	throw(type_error(callable, Closure)).
-
 '$lgt_dcg_body'(call(Closure), S0, S, call(Closure, S0, S)) :-
-	!.
+	!,
+	'$lgt_must_be'(var_or_callable, Closure).
 
 '$lgt_dcg_body'([], S0, S, '$lgt_gr_pair'(S0 = S)) :-
 	!.
@@ -18237,7 +18031,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-'$lgt_must_be'(variable, Term, Goal) :-
+% '$lgt_must_be'(+atom, @term, @callable)
+
+'$lgt_must_be'(var, Term, Goal) :-
 	(	var(Term) ->
 		true
 	;	throw(error(type_error(variable, Term), Goal))
@@ -18351,6 +18147,20 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		)
 	).
 
+'$lgt_must_be'(var_or_predicate_indicator, Term, Goal) :-
+	(	var(Term) ->
+		true
+	;	Term \= _/_,
+		throw(error(type_error(predicate_indicator, Term), Goal))
+	;	Term = Functor/Arity,
+		'$lgt_must_be'(atom, Functor),
+		'$lgt_must_be'(integer, Arity),
+		(	Arity < 0,
+			throw(error(domain_error(not_less_than_zero, Arity), Goal))
+		;	true
+		)
+	).
+
 '$lgt_must_be'(scope, Term, Goal) :-
 	(	var(Term) ->
 		throw(error(instantiation_error, Goal))
@@ -18380,11 +18190,98 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	true
 	).
 
+'$lgt_must_be'(operator_specification, Term, Goal) :-
+	(	var(Term) ->
+		throw(error(instantiation_error, Goal))
+	;	Term = op(Priority, Spec, Operators) ->
+		'$lgt_must_be'(operator_priority, Priority, Goal),
+		'$lgt_must_be'(operator_specifier, Spec, Goal),
+		'$lgt_must_be'(operator_names, Operators, Goal)
+	;	throw(error(type_error(operator_specification, Term), Goal))
+	).
+
+'$lgt_must_be'(operator_priority, Priority, Goal) :-
+	(	var(Priority) ->
+		throw(error(instantiation_error, Goal))
+	;	\+ integer(Priority),
+		throw(error(type_error(integer, Priority), Goal))
+	;	(Priority < 0; Priority > 1200) ->
+		throw(error(domain_error(operator_priority, Priority), Goal))
+	;	true
+	).
+
+'$lgt_must_be'(operator_specifier, Term, Goal) :-
+	(	var(Term) ->
+		throw(error(instantiation_error, Goal))
+	;	\+ atom(Term) ->
+		throw(error(type_error(atom, Term), Goal))
+	;	Term \== fx,
+		Term \== fy,
+		Term \== xfx,
+		Term \== xfy,
+		Term \== yfx,
+		Term \== xf,
+		Term \== yf ->
+		throw(error(domain_error(operator_specifier, Term), Goal))
+	;	true
+	).
+
+'$lgt_must_be'(operator_names, Term, Goal) :-
+	(	var(Term) ->
+		throw(error(instantiation_error, Goal))
+	;	Term == (',') ->
+		throw(error(permission_error(modify, operator, ','), Goal))
+	;	atom(Term) ->
+		true
+	;	\+ '$lgt_is_proper_list'(Term) ->
+		throw(type_error(list, Term))
+	;	\+ ('$lgt_member'(Operator, Term), \+ '$lgt_must_be'(operator_name, Operator, Goal))
+	).
+
+'$lgt_must_be'(operator_name, Term, Goal) :-
+	(	var(Term) ->
+		throw(error(instantiation_error, Goal))
+	;	Term == (',') ->
+		throw(error(permission_error(modify, operator, ','), Goal))
+	;	atom(Term) ->
+		true
+	;	throw(error(type_error(atom, Term), Goal))
+	).
+
+'$lgt_must_be'(var_or_object_property, Term, Goal) :-
+	(	var(Term) ->
+		true
+	;	'$lgt_valid_object_property'(Term) ->
+		true
+	;	throw(error(domain_error(object_property, Term), Goal))
+	).
+
+'$lgt_must_be'(var_or_category_property, Term, Goal) :-
+	(	var(Term) ->
+		true
+	;	'$lgt_valid_category_property'(Term) ->
+		true
+	;	throw(error(domain_error(category_property, Term), Goal))
+	).
+
+'$lgt_must_be'(var_or_protocol_property, Term, Goal) :-
+	(	var(Term) ->
+		true
+	;	'$lgt_valid_protocol_property'(Term) ->
+		true
+	;	throw(error(domain_error(protocol_property, Term), Goal))
+	).
+
+
+
+% '$lgt_must_be'(+atom, @term)
 
 '$lgt_must_be'(Type, Term) :-
 	catch('$lgt_must_be'(Type, Term, _), error(Error, _), throw(Error)).
 
 
+
+% '$lgt_must_be'(+atom, @term, @callable, @object_identifier)
 
 '$lgt_must_be'(Type, Term, Goal, Sender) :-
 	catch('$lgt_must_be'(Type, Term, _), error(Error, _), throw(error(Error, Goal, Sender))).
