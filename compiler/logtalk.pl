@@ -2133,33 +2133,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % asserta/1 built-in method
 
 '$lgt_asserta'(Obj, Clause, Sender, _, _) :-
-	var(Clause),
-	throw(error(instantiation_error, Obj::asserta(Clause), Sender)).
-
-'$lgt_asserta'(Obj, Clause, Sender, _, _) :-
+	nonvar(Clause),
 	'$lgt_db_lookup_cache_'(Obj, Clause, Sender, TClause, _),
 	!,
 	asserta(TClause).
 
-'$lgt_asserta'(Obj, (Head:-Body), Sender, _, _) :-
-	var(Head),
-	throw(error(instantiation_error, Obj::asserta((Head:-Body)), Sender)).
-
-'$lgt_asserta'(Obj, (Head:-Body), Sender, _, _) :-
-	\+ callable(Head),
-	throw(error(type_error(callable, Head), Obj::asserta((Head:-Body)), Sender)).
-
-'$lgt_asserta'(Obj, (Head:-Body), Sender, _, _) :-
-	nonvar(Body),
-	\+ callable(Body),
-	throw(error(type_error(callable, Body), Obj::asserta((Head:-Body)), Sender)).
-
-'$lgt_asserta'(Obj, Clause, Sender, _, _) :-
-	Clause \= (_ :- _),
-	\+ callable(Clause),
-	throw(error(type_error(callable, Clause), Obj::asserta(Clause), Sender)).
-
 '$lgt_asserta'(Obj, Clause, Sender, TestScope, DclScope) :-
+	'$lgt_must_be'(clause, Clause, Obj::asserta(Clause), Sender),
 	(	Clause = (Head :- Body) ->
 		(	Body == true ->
 			'$lgt_asserta_fact_chk'(Obj, Head, Sender, TestScope, DclScope)
@@ -2234,33 +2214,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % assertz/1 built-in method
 
 '$lgt_assertz'(Obj, Clause, Sender, _, _) :-
-	var(Clause),
-	throw(error(instantiation_error, Obj::assertz(Clause), Sender)).
-
-'$lgt_assertz'(Obj, Clause, Sender, _, _) :-
+	nonvar(Clause),
 	'$lgt_db_lookup_cache_'(Obj, Clause, Sender, TClause, _),
 	!,
 	assertz(TClause).
 
-'$lgt_assertz'(Obj, (Head:-Body), Sender, _, _) :-
-	var(Head),
-	throw(error(instantiation_error, Obj::assertz((Head:-Body)), Sender)).
-
-'$lgt_assertz'(Obj, (Head:-Body), Sender, _, _) :-
-	\+ callable(Head),
-	throw(error(type_error(callable, Head), Obj::assertz((Head:-Body)), Sender)).
-
-'$lgt_assertz'(Obj, (Head:-Body), Sender, _, _) :-
-	nonvar(Body),
-	\+ callable(Body),
-	throw(error(type_error(callable, Body), Obj::assertz((Head:-Body)), Sender)).
-
-'$lgt_assertz'(Obj, Clause, Sender, _, _) :-
-	Clause \= (_ :- _),
-	\+ callable(Clause),
-	throw(error(type_error(callable, Clause), Obj::assertz(Clause), Sender)).
-
 '$lgt_assertz'(Obj, Clause, Sender, TestScope, DclScope) :-
+	'$lgt_must_be'(clause, Clause, Obj::assertz(Clause), Sender),
 	(	Clause = (Head :- Body) ->
 		(	Body == true ->
 			'$lgt_assertz_fact_chk'(Obj, Head, Sender, TestScope, DclScope)
@@ -2765,11 +2725,18 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % phrase/2 built-in method
 
 '$lgt_phrase'(GRBody, Input, ExCtx) :-
-	'$lgt_exec_ctx_this'(ExCtx, This),
-	catch(
-		'$lgt_phrase'(GRBody, Input, [], ExCtx),
-		error(Error, phrase(GRBody, Input, []), This),
-		throw(error(Error, phrase(GRBody, Input), This))).
+	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _, _),
+	'$lgt_must_be'(callable, GRBody, phrase(GRBody, Input), This),
+	'$lgt_must_be'(list_or_partial_list, Input, phrase(GRBody, Input), This),
+	'$lgt_dcg_body'(GRBody, S0, S, Pred),
+	'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _),
+	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, ExCtx, runtime, _),
+	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
+	Input = S0, [] = S,
+	(	'$lgt_debugger.debugging_', '$lgt_debugging_entity_'(This) ->
+		call(DPred)
+	;	call(TPred)
+	).
 
 
 
@@ -2778,30 +2745,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % phrase/3 built-in method
 
 '$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
-	var(GRBody),
-	'$lgt_exec_ctx_this'(ExCtx, This),
-	throw(error(instantiation_error, phrase(GRBody, Input, Rest), This)).
-
-'$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
-	\+ callable(GRBody),
-	'$lgt_exec_ctx_this'(ExCtx, This),
-	throw(error(type_error(callable, GRBody), phrase(GRBody, Input, Rest), This)).
-
-'$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
-	nonvar(Input),
-	\+ '$lgt_is_list_or_partial_list'(Input),
-	'$lgt_exec_ctx_this'(ExCtx, This),
-	throw(error(type_error(list, Input), phrase(GRBody, Input, Rest), This)).
-
-'$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
-	nonvar(Rest),
-	\+ '$lgt_is_list_or_partial_list'(Rest),
-	'$lgt_exec_ctx_this'(ExCtx, This),
-	throw(error(type_error(list, Rest), phrase(GRBody, Input, Rest), This)).
-
-'$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
-	'$lgt_dcg_body'(GRBody, S0, S, Pred),
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _, _),
+	'$lgt_must_be'(callable, GRBody, phrase(GRBody, Input, Rest), This),
+	'$lgt_must_be'(list_or_partial_list, Input, phrase(GRBody, Input, Rest), This),
+	'$lgt_must_be'(list_or_partial_list, Rest, phrase(GRBody, Input, Rest), This),
+	'$lgt_dcg_body'(GRBody, S0, S, Pred),
 	'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _),
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, ExCtx, runtime, _),
 	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
@@ -18064,6 +18012,17 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_must_be'(callable, Term, Goal) :-
 	(	var(Term) ->
 		throw(error(instantiation_error, Goal))
+	;	callable(Term) ->
+		true
+	;	throw(error(type_error(callable, Term), Goal))
+	).
+
+'$lgt_must_be'(clause, Term, Goal) :-
+	(	var(Term) ->
+		throw(error(instantiation_error, Goal))
+	;	Term = (Head :- Body) ->
+		'$lgt_must_be'(callable, Head, Goal),
+		'$lgt_must_be'(callable, Body, Goal)
 	;	callable(Term) ->
 		true
 	;	throw(error(type_error(callable, Term), Goal))
