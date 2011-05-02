@@ -228,11 +228,11 @@ setup_call_cleanup(_, _, _) :-
 	'$lgt_member_var'(V, T).
 
 
-'$lgt_is_list'(List) :-
+'$lgt_is_list_or_partial_list'(List) :-
     list_or_partial_list(List).
 
 
-'$lgt_is_proper_list'(List) :-
+'$lgt_is_list'(List) :-
     list(List).
 
 

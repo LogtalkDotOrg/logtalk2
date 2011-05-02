@@ -11,7 +11,7 @@
 %
 %  configuration file for Qu-Prolog 8.12 and later versions
 %
-%  last updated: April 17, 2011
+%  last updated: May 2, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -208,17 +208,20 @@ term_variables(Term, Variables) :-
 	member_eq(Term, List).
 
 
-'$lgt_is_list'([]) :-
-    !.
+'$lgt_is_list_or_partial_list'(Var) :-
+    var(Var),
+	!.
+'$lgt_is_list_or_partial_list'([]).
+'$lgt_is_list_or_partial_list'([_| Tail]) :-
+    '$lgt_is_list_or_partial_list'(Tail).
+
+
+'$lgt_is_list'(-) :-
+	!,
+	fail.
+'$lgt_is_list'([]).
 '$lgt_is_list'([_| Tail]) :-
     '$lgt_is_list'(Tail).
-
-
-'$lgt_is_proper_list'(List) :-
-    List == [], !.
-'$lgt_is_proper_list'([_| Tail]) :-
-    nonvar(Tail),
-    '$lgt_is_proper_list'(Tail).
 
 
 

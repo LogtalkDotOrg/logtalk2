@@ -57,6 +57,10 @@ RELEASE NOTES
     being made instead to the non-synchronized forms of the predicates, which
     would manifest in random failures of thread goals.
 
+    For all config files, renamed the predicate '$lgt_is_proper_list'/1 to
+    '$lgt_is_list'/1 and and replaced the old '$lgt_is_list'/1 predicate by
+    a new '$lgt_is_list_or_partial_list'/1 predicate.
+
     Updated the SWI-Prolog config file in order to avoid preventing loading
     of a Logtalk source file when a Prolog file with the same name exists on
     the same lookup directory. In addition, add source location information

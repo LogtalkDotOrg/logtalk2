@@ -11,7 +11,7 @@
 %
 %  configuration file for XSB 3.3 or later versions
 %
-%  last updated: April 17, 2011
+%  last updated: May 2, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -250,17 +250,20 @@ setup_call_catcher_cleanup(Setup, Call, Catcher, Cleanup) :-
 	'$lgt_member_var'(V, T).
 
 
-'$lgt_is_list'([]) :-
-    !.
+'$lgt_is_list_or_partial_list'(Var) :-
+    var(Var),
+	!.
+'$lgt_is_list_or_partial_list'([]).
+'$lgt_is_list_or_partial_list'([_| Tail]) :-
+    '$lgt_is_list_or_partial_list'(Tail).
+
+
+'$lgt_is_list'(-) :-
+	!,
+	fail.
+'$lgt_is_list'([]).
 '$lgt_is_list'([_| Tail]) :-
     '$lgt_is_list'(Tail).
-
-
-'$lgt_is_proper_list'(List) :-
-    List == [], !.
-'$lgt_is_proper_list'([_| Tail]) :-
-    nonvar(Tail),
-    '$lgt_is_proper_list'(Tail).
 
 
 

@@ -11,7 +11,7 @@
 %
 %  configuration file for Ciao Prolog 1.10#8
 %
-%  last updated: April 17, 2011
+%  last updated: May 2, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -339,17 +339,20 @@ call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
 	'$lgt_member_var'(V, T).
 
 
-'$lgt_is_list'([]) :-
-    !.
+'$lgt_is_list_or_partial_list'(Var) :-
+    var(Var),
+	!.
+'$lgt_is_list_or_partial_list'([]).
+'$lgt_is_list_or_partial_list'([_| Tail]) :-
+    '$lgt_is_list_or_partial_list'(Tail).
+
+
+'$lgt_is_list'(-) :-
+	!,
+	fail.
+'$lgt_is_list'([]).
 '$lgt_is_list'([_| Tail]) :-
     '$lgt_is_list'(Tail).
-
-
-'$lgt_is_proper_list'(List) :-
-    List == [], !.
-'$lgt_is_proper_list'([_| Tail]) :-
-    nonvar(Tail),
-    '$lgt_is_proper_list'(Tail).
 
 
 

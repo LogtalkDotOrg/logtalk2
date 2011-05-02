@@ -1544,7 +1544,7 @@ logtalk_compile(Files, Flags) :-
 	throw(instantiation_error).
 
 '$lgt_check_compiler_flags'(Options) :-
-	\+ '$lgt_is_proper_list'(Options),
+	\+ '$lgt_is_list'(Options),
 	throw(type_error(list, Options)).
 
 '$lgt_check_compiler_flags'(Options) :-
@@ -2789,13 +2789,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
 	nonvar(Input),
-	\+ '$lgt_is_list'(Input),
+	\+ '$lgt_is_list_or_partial_list'(Input),
 	'$lgt_exec_ctx_this'(ExCtx, This),
 	throw(error(type_error(list, Input), phrase(GRBody, Input, Rest), This)).
 
 '$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
 	nonvar(Rest),
-	\+ '$lgt_is_list'(Rest),
+	\+ '$lgt_is_list_or_partial_list'(Rest),
 	'$lgt_exec_ctx_this'(ExCtx, This),
 	throw(error(type_error(list, Rest), phrase(GRBody, Input, Rest), This)).
 
@@ -4346,7 +4346,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_debugger.valid_leash_value'(Ports, Ports) :-
 	nonvar(Ports),
-	'$lgt_is_proper_list'(Ports),
+	'$lgt_is_list'(Ports),
 	'$lgt_debugger.valid_leash_ports'(Ports).
 
 
@@ -8147,7 +8147,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	throw(instantiation_error). 
 
 '$lgt_valid_entity_info_list'(List) :-
-	\+ '$lgt_is_proper_list'(List),
+	\+ '$lgt_is_list'(List),
 	throw(type_error(list, List)).
 
 '$lgt_valid_entity_info_list'([]).
@@ -8207,7 +8207,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_valid_entity_info_key_value'(parameters, Parameters) :-
 	!,
-	(	'$lgt_is_proper_list'(Parameters) ->
+	(	'$lgt_is_list'(Parameters) ->
 		(	'$lgt_member'(Parameter, Parameters), \+ '$lgt_valid_entity_parameter'(Parameter) ->
 			throw(type_error(parameter, Parameter))
 		;	(	'$lgt_pp_entity'(_, Entity, _, _, _), \+ \+ Entity =.. [_| Parameters] ->
@@ -8260,7 +8260,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	throw(instantiation_error). 
 
 '$lgt_tr_pred_info_list'(List, _, _) :-
-	\+ '$lgt_is_proper_list'(List),
+	\+ '$lgt_is_list'(List),
 	throw(type_error(list, List)).
 
 '$lgt_tr_pred_info_list'([], _, _).
@@ -15163,7 +15163,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		\+ (functor(Free, {}, Arity), Arity =< 1),
 		throw(type_error(curly_bracketed_term, Free))
 	;	nonvar(Parameters),
-		\+ '$lgt_is_proper_list'(Parameters),
+		\+ '$lgt_is_list'(Parameters),
 		throw(type_error(list, Parameters))
 	;	nonvar(Goal),
 		\+ callable(Goal),
@@ -15187,7 +15187,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_check_lambda_expression'(Parameters>>Goal, Ctx) :-
 	(	nonvar(Parameters),
-		\+ '$lgt_is_proper_list'(Parameters),
+		\+ '$lgt_is_list'(Parameters),
 		throw(type_error(list, Parameters))
 	;	nonvar(Goal),
 		\+ callable(Goal),
@@ -18080,7 +18080,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_must_be'(list, Term, Goal) :-
 	(	var(Term) ->
 		throw(error(instantiation_error, Goal))
-	;	'$lgt_is_proper_list'(Term) ->
+	;	'$lgt_is_list'(Term) ->
+		true
+	;	throw(error(type_error(list, Term), Goal))
+	).
+
+'$lgt_must_be'(list_or_partial_list, Term, Goal) :-
+	(	var(Term) ->
+		true
+	;	'$lgt_is_list_or_partial_list'(Term) ->
 		true
 	;	throw(error(type_error(list, Term), Goal))
 	).
@@ -18233,7 +18241,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		throw(error(permission_error(modify, operator, ','), Goal))
 	;	atom(Term) ->
 		true
-	;	\+ '$lgt_is_proper_list'(Term) ->
+	;	\+ '$lgt_is_list'(Term) ->
 		throw(type_error(list, Term))
 	;	\+ ('$lgt_member'(Operator, Term), \+ '$lgt_must_be'(operator_name, Operator, Goal))
 	).
