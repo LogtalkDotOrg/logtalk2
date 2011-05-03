@@ -114,15 +114,15 @@ user:prolog_predicate_name(user:'$lgt_expand_goal'(_, _, _, _, _), 'expand_goal/
 user:prolog_predicate_name(user:'$lgt_phrase'(_, _, _), 'phrase/2') :- !.
 user:prolog_predicate_name(user:'$lgt_phrase'(_, _, _, _), 'phrase/3') :- !.
 
-user:prolog_predicate_name(user:'$lgt_abolish_chk'(_, _, _, _), 'abolish/1') :- !.
-user:prolog_predicate_name(user:'$lgt_asserta_fact_chk'(_, _, _, _, _), 'asserta/1') :- !.
-user:prolog_predicate_name(user:'$lgt_asserta_rule_chk'(_, _, _, _, _), 'asserta/1') :- !.
-user:prolog_predicate_name(user:'$lgt_assertz_fact_chk'(_, _, _, _, _), 'assertz/1') :- !.
-user:prolog_predicate_name(user:'$lgt_assertz_rule_chk'(_, _, _, _, _), 'assertz/1') :- !.
-user:prolog_predicate_name(user:'$lgt_clause_chk'(_, _, _, _, _), 'clause/2') :- !.
-user:prolog_predicate_name(user:'$lgt_retract_fact_chk'(_, _, _, _), 'retract/1') :- !.
-user:prolog_predicate_name(user:'$lgt_retract_rule_chk'(_, _, _, _), 'retract/1') :- !.
-user:prolog_predicate_name(user:'$lgt_retractall_chk'(_, _, _, _), 'retractall/1') :- !.
+user:prolog_predicate_name(user:'$lgt_abolish_checked'(_, _, _, _), 'abolish/1') :- !.
+user:prolog_predicate_name(user:'$lgt_asserta_fact_checked'(_, _, _, _, _), 'asserta/1') :- !.
+user:prolog_predicate_name(user:'$lgt_asserta_rule_checked'(_, _, _, _, _), 'asserta/1') :- !.
+user:prolog_predicate_name(user:'$lgt_assertz_fact_checked'(_, _, _, _, _), 'assertz/1') :- !.
+user:prolog_predicate_name(user:'$lgt_assertz_rule_checked'(_, _, _, _, _), 'assertz/1') :- !.
+user:prolog_predicate_name(user:'$lgt_clause_checked'(_, _, _, _, _), 'clause/2') :- !.
+user:prolog_predicate_name(user:'$lgt_retract_fact_checked'(_, _, _, _), 'retract/1') :- !.
+user:prolog_predicate_name(user:'$lgt_retract_rule_checked'(_, _, _, _), 'retract/1') :- !.
+user:prolog_predicate_name(user:'$lgt_retractall_checked'(_, _, _, _), 'retractall/1') :- !.
 
 user:prolog_predicate_name(user:'$lgt_iso_read_term'(_, _, _, _), 'read_term/3') :- !.
 user:prolog_predicate_name(user:'$lgt_iso_read_term'(_, _, _), 'read_term/2') :- !.
@@ -376,38 +376,38 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 '$lgt_swi_unify_clause_body'(phrase(GRBody, Input), _, '$lgt_phrase'(GRBody, Input, _), TermPos, TermPos) :- !.
 '$lgt_swi_unify_clause_body'(phrase(GRBody, Input, Rest), _, '$lgt_phrase'(GRBody, Input, Rest, _), TermPos, TermPos) :- !.
 
-'$lgt_swi_unify_clause_body'(Obj::abolish(PI), _, '$lgt_abolish_chk'(Obj, PI, _, p(p(p))), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(abolish(PI), _, '$lgt_abolish_chk'(_, PI, _, p(_)), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(::abolish(PI), _, '$lgt_abolish_chk'(_, PI, _, p(_)), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(Obj::abolish(PI), _, '$lgt_abolish_checked'(Obj, PI, _, p(p(p))), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(abolish(PI), _, '$lgt_abolish_checked'(_, PI, _, p(_)), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(::abolish(PI), _, '$lgt_abolish_checked'(_, PI, _, p(_)), TermPos, TermPos) :- !.
 
-'$lgt_swi_unify_clause_body'(asserta(Clause), _, '$lgt_asserta_fact_chk'(_, Clause, _, _, p), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(::asserta(Clause), _, '$lgt_asserta_fact_chk'(_, Clause, _, _, p(p)), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(Obj::asserta(Clause), _, '$lgt_asserta_fact_chk'(Obj, Clause, _, _, p(p(p))), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(asserta(Clause), _, '$lgt_asserta_rule_chk'(_, Clause, _, _, p), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(::asserta(Clause), _, '$lgt_asserta_rule_chk'(_, Clause, _, _, p(p)), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(Obj::asserta(Clause), _, '$lgt_asserta_rule_chk'(Obj, Clause, _, _, p(p(p))), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(asserta(Clause), _, '$lgt_asserta_fact_checked'(_, Clause, _, _, p), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(::asserta(Clause), _, '$lgt_asserta_fact_checked'(_, Clause, _, _, p(p)), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(Obj::asserta(Clause), _, '$lgt_asserta_fact_checked'(Obj, Clause, _, _, p(p(p))), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(asserta(Clause), _, '$lgt_asserta_rule_checked'(_, Clause, _, _, p), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(::asserta(Clause), _, '$lgt_asserta_rule_checked'(_, Clause, _, _, p(p)), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(Obj::asserta(Clause), _, '$lgt_asserta_rule_checked'(Obj, Clause, _, _, p(p(p))), TermPos, TermPos) :- !.
 
-'$lgt_swi_unify_clause_body'(assertz(Clause), _, '$lgt_assertz_fact_chk'(_, Clause, _, _, p), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(::assertz(Clause), _, '$lgt_assertz_fact_chk'(_, Clause, _, _, p(p)), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(Obj::assertz(Clause), _, '$lgt_assertz_fact_chk'(Obj, Clause, _, _, p(p(p))), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(assertz(Clause), _, '$lgt_assertz_rule_chk'(_, Clause, _, _, p), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(::assertz(Clause), _, '$lgt_assertz_rule_chk'(_, Clause, _, _, p(p)), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(Obj::assertz(Clause), _, '$lgt_assertz_rule_chk'(Obj, Clause, _, _, p(p(p))), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(assertz(Clause), _, '$lgt_assertz_fact_checked'(_, Clause, _, _, p), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(::assertz(Clause), _, '$lgt_assertz_fact_checked'(_, Clause, _, _, p(p)), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(Obj::assertz(Clause), _, '$lgt_assertz_fact_checked'(Obj, Clause, _, _, p(p(p))), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(assertz(Clause), _, '$lgt_assertz_rule_checked'(_, Clause, _, _, p), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(::assertz(Clause), _, '$lgt_assertz_rule_checked'(_, Clause, _, _, p(p)), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(Obj::assertz(Clause), _, '$lgt_assertz_rule_checked'(Obj, Clause, _, _, p(p(p))), TermPos, TermPos) :- !.
 
-'$lgt_swi_unify_clause_body'(Obj::clause(Head, Body), _, '$lgt_clause_chk'(Obj, Head, Body, _, p(p(p))), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(clause(Head, Body), _, '$lgt_clause_chk'(_, Head, Body, _, p(_)), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(::clause(Head, Body), _, '$lgt_clause_chk'(_, Head, Body, _, p(_)), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(Obj::clause(Head, Body), _, '$lgt_clause_checked'(Obj, Head, Body, _, p(p(p))), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(clause(Head, Body), _, '$lgt_clause_checked'(_, Head, Body, _, p(_)), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(::clause(Head, Body), _, '$lgt_clause_checked'(_, Head, Body, _, p(_)), TermPos, TermPos) :- !.
 
-'$lgt_swi_unify_clause_body'(Obj::retract(Head), _, '$lgt_retract_fact_chk'(Obj, Head, _, p(p(p))), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(retract(Head), _, '$lgt_retract_fact_chk'(_, Head, _, p(_)), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(::retract(Head), _, '$lgt_retract_fact_chk'(_, Head, _, p(_)), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(Obj::retract(Clause), _, '$lgt_retract_rule_chk'(Obj, Clause, _, p(p(p))), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(retract(Clause), _, '$lgt_retract_rule_chk'(_, Clause, _, p(_)), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(::retract(Clause), _, '$lgt_retract_rule_chk'(_, Clause, _, p(_)), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(Obj::retract(Head), _, '$lgt_retract_fact_checked'(Obj, Head, _, p(p(p))), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(retract(Head), _, '$lgt_retract_fact_checked'(_, Head, _, p(_)), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(::retract(Head), _, '$lgt_retract_fact_checked'(_, Head, _, p(_)), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(Obj::retract(Clause), _, '$lgt_retract_rule_checked'(Obj, Clause, _, p(p(p))), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(retract(Clause), _, '$lgt_retract_rule_checked'(_, Clause, _, p(_)), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(::retract(Clause), _, '$lgt_retract_rule_checked'(_, Clause, _, p(_)), TermPos, TermPos) :- !.
 
-'$lgt_swi_unify_clause_body'(Obj::retractall(Head), _, '$lgt_retractall_chk'(Obj, Head, _, p(p(p))), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(retractall(Head), _, '$lgt_retractall_chk'(_, Head, _, p(_)), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(::retractall(Head), _, '$lgt_retractall_chk'(_, Head, _, p(_)), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(Obj::retractall(Head), _, '$lgt_retractall_checked'(Obj, Head, _, p(p(p))), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(retractall(Head), _, '$lgt_retractall_checked'(_, Head, _, p(_)), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(::retractall(Head), _, '$lgt_retractall_checked'(_, Head, _, p(_)), TermPos, TermPos) :- !.
 
 '$lgt_swi_unify_clause_body'(read_term(Stream, Term, Options), _, '$lgt_iso_read_term'(Stream, Term, Options, _), TermPos, TermPos) :- !.
 '$lgt_swi_unify_clause_body'(read_term(Term, Options), _, '$lgt_iso_read_term'(Term, Options, _), TermPos, TermPos) :- !.

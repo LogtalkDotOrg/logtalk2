@@ -2074,10 +2074,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_abolish'(Obj, Pred, Sender, Scope) :-
 	'$lgt_must_be'(predicate_indicator, Pred, Obj::abolish(Pred), Sender),
-	'$lgt_abolish_chk'(Obj, Pred, Sender, Scope).
+	'$lgt_abolish_checked'(Obj, Pred, Sender, Scope).
 
 
-'$lgt_abolish_chk'(Obj, Functor/Arity, Sender, Scope) :-
+'$lgt_abolish_checked'(Obj, Functor/Arity, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, _, _, _, _, DDcl, DDef, _, _),
 	!,
 	functor(Pred, Functor, Arity),
@@ -2123,7 +2123,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		throw(error(existence_error(predicate_declaration, Pred), Obj::abolish(Functor/Arity), Sender))
 	).
 
-'$lgt_abolish_chk'(Obj, Functor/Arity, Sender, _) :-
+'$lgt_abolish_checked'(Obj, Functor/Arity, Sender, _) :-
 	throw(error(existence_error(object, Obj), Obj::abolish(Functor/Arity), Sender)).
 
 
@@ -2142,14 +2142,14 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_must_be'(clause, Clause, Obj::asserta(Clause), Sender),
 	(	Clause = (Head :- Body) ->
 		(	Body == true ->
-			'$lgt_asserta_fact_chk'(Obj, Head, Sender, TestScope, DclScope)
-		;	'$lgt_asserta_rule_chk'(Obj, Clause, Sender, TestScope, DclScope)
+			'$lgt_asserta_fact_checked'(Obj, Head, Sender, TestScope, DclScope)
+		;	'$lgt_asserta_rule_checked'(Obj, Clause, Sender, TestScope, DclScope)
 		)
-	;	'$lgt_asserta_fact_chk'(Obj, Clause, Sender, TestScope, DclScope)
+	;	'$lgt_asserta_fact_checked'(Obj, Clause, Sender, TestScope, DclScope)
 	).
 
 
-'$lgt_asserta_rule_chk'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
+'$lgt_asserta_rule_checked'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	!,
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, DDef, Flags, Head, Scope, Type, Meta, SCtn, DclScope, Obj::asserta((Head:-Body)), Sender),
@@ -2173,16 +2173,16 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		throw(error(permission_error(modify, static_predicate, Head), Obj::asserta((Head:-Body)), Sender))
 	).
 
-'$lgt_asserta_rule_chk'(Obj, (Head:-Body), Sender, _, _) :-
+'$lgt_asserta_rule_checked'(Obj, (Head:-Body), Sender, _, _) :-
 	throw(error(existence_error(object, Obj), Obj::asserta((Head:-Body)), Sender)).
 
 
-'$lgt_asserta_fact_chk'(Obj, Head, Sender, _, _) :-
+'$lgt_asserta_fact_checked'(Obj, Head, Sender, _, _) :-
 	'$lgt_db_lookup_cache_'(Obj, Head, Sender, THead, _),
 	!,
 	asserta(THead).
 
-'$lgt_asserta_fact_chk'(Obj, Head, Sender, TestScope, DclScope) :-
+'$lgt_asserta_fact_checked'(Obj, Head, Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	!,
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, DDef, Flags, Head, Scope, Type, _, SCtn, DclScope, Obj::asserta(Head), Sender),
@@ -2204,7 +2204,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		throw(error(permission_error(modify, static_predicate, Head), Obj::asserta(Head), Sender))
 	).
 
-'$lgt_asserta_fact_chk'(Obj, Head, Sender, _, _) :-
+'$lgt_asserta_fact_checked'(Obj, Head, Sender, _, _) :-
 	throw(error(existence_error(object, Obj), Obj::asserta(Head), Sender)).
 
 
@@ -2223,14 +2223,14 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_must_be'(clause, Clause, Obj::assertz(Clause), Sender),
 	(	Clause = (Head :- Body) ->
 		(	Body == true ->
-			'$lgt_assertz_fact_chk'(Obj, Head, Sender, TestScope, DclScope)
-		;	'$lgt_assertz_rule_chk'(Obj, Clause, Sender, TestScope, DclScope)
+			'$lgt_assertz_fact_checked'(Obj, Head, Sender, TestScope, DclScope)
+		;	'$lgt_assertz_rule_checked'(Obj, Clause, Sender, TestScope, DclScope)
 		)
-	;	'$lgt_assertz_fact_chk'(Obj, Clause, Sender, TestScope, DclScope)
+	;	'$lgt_assertz_fact_checked'(Obj, Clause, Sender, TestScope, DclScope)
 	).
 
 
-'$lgt_assertz_rule_chk'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
+'$lgt_assertz_rule_checked'(Obj, (Head:-Body), Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	!,
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, DDef, Flags, Head, Scope, Type, Meta, SCtn, DclScope, Obj::assertz((Head:-Body)), Sender),
@@ -2254,16 +2254,16 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		throw(error(permission_error(modify, static_predicate, Head), Obj::assertz((Head:-Body)), Sender))
 	).
 
-'$lgt_assertz_rule_chk'(Obj, (Head:-Body), Sender, _, _) :-
+'$lgt_assertz_rule_checked'(Obj, (Head:-Body), Sender, _, _) :-
 	throw(error(existence_error(object, Obj), Obj::assertz((Head:-Body)), Sender)).
 
 
-'$lgt_assertz_fact_chk'(Obj, Head, Sender, _, _) :-
+'$lgt_assertz_fact_checked'(Obj, Head, Sender, _, _) :-
 	'$lgt_db_lookup_cache_'(Obj, Head, Sender, THead, _),
 	!,
 	assertz(THead).
 
-'$lgt_assertz_fact_chk'(Obj, Head, Sender, TestScope, DclScope) :-
+'$lgt_assertz_fact_checked'(Obj, Head, Sender, TestScope, DclScope) :-
 	'$lgt_current_object_'(Obj, Prefix, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	!,
 	'$lgt_assert_pred_dcl'(Dcl, DDcl, DDef, Flags, Head, Scope, Type, _, SCtn, DclScope, Obj::assertz(Head), Sender),
@@ -2285,7 +2285,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		throw(error(permission_error(modify, static_predicate, Head), Obj::assertz(Head), Sender))
 	).
 
-'$lgt_assertz_fact_chk'(Obj, Head, Sender, _, _) :-
+'$lgt_assertz_fact_checked'(Obj, Head, Sender, _, _) :-
 	throw(error(existence_error(object, Obj), Obj::assertz(Head), Sender)).
 
 
@@ -2349,24 +2349,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 %
 % clause/2 built-in method
 
-'$lgt_clause'(Obj, Head, Body, Sender, _) :-
-	var(Head),
-	throw(error(instantiation_error, Obj::clause(Head, Body), Sender)).
-
-'$lgt_clause'(Obj, Head, Body, Sender, _) :-
-	\+ callable(Head),
-	throw(error(type_error(callable, Head), Obj::clause(Head, Body), Sender)).
-
-'$lgt_clause'(Obj, Head, Body, Sender, _) :-
-	nonvar(Body),
-	\+ callable(Body),
-	throw(error(type_error(callable, Body), Obj::clause(Head, Body), Sender)).
-
 '$lgt_clause'(Obj, Head, Body, Sender, Scope) :-
-	'$lgt_clause_chk'(Obj, Head, Body, Sender, Scope).
+	'$lgt_must_be'(clause_or_partial_clause, (Head:-Body), Obj::clause(Head, Body), Sender),
+	'$lgt_clause_checked'(Obj, Head, Body, Sender, Scope).
 
 
-'$lgt_clause_chk'(Obj, Head, Body, Sender, _) :-
+'$lgt_clause_checked'(Obj, Head, Body, Sender, _) :-
 	'$lgt_db_lookup_cache_'(Obj, Head, Sender, THead, _),
 	!,
 	clause(THead, TBody),
@@ -2377,7 +2365,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	TBody = Body								% facts compiled in normal mode
 	).
 
-'$lgt_clause_chk'(Obj, Head, Body, Sender, Scope) :-
+'$lgt_clause_checked'(Obj, Head, Body, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjFlags),
 	!,
 	(	call(Dcl, Head, PScope, _, PredFlags, SCtn, _) ->
@@ -2415,7 +2403,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		)
 	).
 
-'$lgt_clause_chk'(Obj, Head, Body, Sender, _) :-
+'$lgt_clause_checked'(Obj, Head, Body, Sender, _) :-
 	throw(error(existence_error(object, Obj), Obj::clause(Head, Body), Sender)).
 
 
@@ -2424,36 +2412,20 @@ current_logtalk_flag(version, version(2, 43, 0)).
 %
 % retract/1 built-in method
 
-'$lgt_retract'(Obj, Clause, Sender, _) :-
-	var(Clause),
-	throw(error(instantiation_error, Obj::retract(Clause), Sender)).
-
-'$lgt_retract'(Obj, (Head:-Body), Sender, _) :-
-	var(Head),
-	throw(error(instantiation_error, Obj::retract((Head:-Body)), Sender)).
-
-'$lgt_retract'(Obj, (Head:-Body), Sender, _) :-
-	\+ callable(Head),
-	throw(error(type_error(callable, Head), Obj::retract((Head:-Body)), Sender)).
-
-'$lgt_retract'(Obj, (Head:-Body), Sender, _) :-
-	nonvar(Body),
-	\+ callable(Body),
-	throw(error(type_error(callable, Body), Obj::retract((Head:-Body)), Sender)).
-
 '$lgt_retract'(Obj, Clause, Sender, Scope) :-
+	'$lgt_must_be'(clause_or_partial_clause, Clause, Obj::retract(Clause), Sender),
 	(	Clause = (Head :- Body) ->
 		(	var(Body) ->
-			'$lgt_retract_var_body_chk'(Obj, Clause, Sender, Scope)
+			'$lgt_retract_var_body_checked'(Obj, Clause, Sender, Scope)
 		;	Body == true ->
-			'$lgt_retract_fact_chk'(Obj, Head, Sender, Scope)
-		;	'$lgt_retract_rule_chk'(Obj, Clause, Sender, Scope)
+			'$lgt_retract_fact_checked'(Obj, Head, Sender, Scope)
+		;	'$lgt_retract_rule_checked'(Obj, Clause, Sender, Scope)
 		)
-	;	'$lgt_retract_fact_chk'(Obj, Clause, Sender, Scope)
+	;	'$lgt_retract_fact_checked'(Obj, Clause, Sender, Scope)
 	).
 
 
-'$lgt_retract_var_body_chk'(Obj, (Head:-Body), Sender, Scope) :-
+'$lgt_retract_var_body_checked'(Obj, (Head:-Body), Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjFlags),
 	!,
 	(	call(Dcl, Head, PScope, _, PredFlags, SCtn, _) ->
@@ -2500,11 +2472,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		)
 	).
 
-'$lgt_retract_var_body_chk'(Obj, (Head:-Body), Sender, _) :-
+'$lgt_retract_var_body_checked'(Obj, (Head:-Body), Sender, _) :-
 	throw(error(existence_error(object, Obj), Obj::retract((Head:-Body)), Sender)).
 
 
-'$lgt_retract_rule_chk'(Obj, (Head:-Body), Sender, Scope) :-
+'$lgt_retract_rule_checked'(Obj, (Head:-Body), Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjFlags),
 	!,
 	(	call(Dcl, Head, PScope, _, PredFlags, SCtn, _) ->
@@ -2533,17 +2505,17 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		)
 	).
 
-'$lgt_retract_rule_chk'(Obj, (Head:-Body), Sender, _) :-
+'$lgt_retract_rule_checked'(Obj, (Head:-Body), Sender, _) :-
 	throw(error(existence_error(object, Obj), Obj::retract((Head:-Body)), Sender)).
 
 
-'$lgt_retract_fact_chk'(Obj, Head, Sender, _) :-
+'$lgt_retract_fact_checked'(Obj, Head, Sender, _) :-
 	'$lgt_db_lookup_cache_'(Obj, Head, Sender, THead, UClause),
 	!,
 	retract(THead),
 	'$lgt_update_ddef_table_opt'(UClause).
 
-'$lgt_retract_fact_chk'(Obj, Head, Sender, Scope) :-
+'$lgt_retract_fact_checked'(Obj, Head, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjFlags),
 	!,
 	(	call(Dcl, Head, PScope, _, PredFlags, SCtn, _) ->
@@ -2584,7 +2556,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		)
 	).
 
-'$lgt_retract_fact_chk'(Obj, Head, Sender, _) :-
+'$lgt_retract_fact_checked'(Obj, Head, Sender, _) :-
 	throw(error(existence_error(object, Obj), Obj::retract(Head), Sender)).
 
 
@@ -2595,16 +2567,16 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_retractall'(Obj, Head, Sender, Scope) :-
 	'$lgt_must_be'(callable, Head, Obj::retractall(Head), Sender),
-	'$lgt_retractall_chk'(Obj, Head, Sender, Scope).
+	'$lgt_retractall_checked'(Obj, Head, Sender, Scope).
 
 
-'$lgt_retractall_chk'(Obj, Head, Sender, _) :-
+'$lgt_retractall_checked'(Obj, Head, Sender, _) :-
 	'$lgt_db_lookup_cache_'(Obj, Head, Sender, THead, UClause),
 	!,
 	retractall(THead),
 	'$lgt_update_ddef_table_opt'(UClause).
 
-'$lgt_retractall_chk'(Obj, Head, Sender, Scope) :-
+'$lgt_retractall_checked'(Obj, Head, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, DDef, _, ObjFlags),
 	!,
 	(	call(Dcl, Head, PScope, _, PredFlags, SCtn, _) ->
@@ -2643,7 +2615,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		)
 	).
 
-'$lgt_retractall_chk'(Obj, Head, Sender, _) :-
+'$lgt_retractall_checked'(Obj, Head, Sender, _) :-
 	throw(error(existence_error(object, Obj), Obj::retractall(Head), Sender)).
 
 
@@ -6246,15 +6218,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 % conditional compilation directives
 
-'$lgt_tr_directive'(if(Goal), _) :-
-	var(Goal),
-	throw(error(instantiantion_error, directive(if(Goal)))).
-
-'$lgt_tr_directive'(if(Goal), _) :-
-	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), directive(if(Goal)))).
-
 '$lgt_tr_directive'(if(Goal), Ctx) :-
+	'$lgt_must_be'(callable, Goal, directive(if(Goal))),
 	'$lgt_comp_ctx_mode'(Ctx, compile(_)),		% only expand goals when compiling a source file
 	'$lgt_tr_expand_goal'(Goal, EGoal),
 	!,
@@ -6292,18 +6257,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	).
 
 '$lgt_tr_directive'(elif(Goal), _) :-
-	var(Goal),
-	throw(error(instantiantion_error, directive(elif(Goal)))).
-
-'$lgt_tr_directive'(elif(Goal), _) :-
-	\+ callable(Goal),
-	throw(error(type_error(callable, Goal), directive(elif(Goal)))).
-
-'$lgt_tr_directive'(elif(Goal), _) :-
 	\+ '$lgt_pp_cc_if_found_'(_),
 	throw(error(unmatched_directive, directive(elif(Goal)))).
 
 '$lgt_tr_directive'(elif(Goal), Ctx) :-
+	'$lgt_must_be'(callable, Goal, directive(elif(Goal))),
 	'$lgt_comp_ctx_mode'(Ctx, compile(_)),			% only expand goals when compiling a source file
 	'$lgt_tr_expand_goal'(Goal, EGoal),
 	!,
@@ -6734,17 +6692,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 % use_module/2 module directive
 
-'$lgt_tr_directive'(use_module, [Module, _], _) :-
-	var(Module),
-	throw(instantiation_error).
-
-'$lgt_tr_directive'(use_module, [Module, _], _) :-
-	\+ callable(Module),
-	throw(type_error(atom, Module)).
-
 '$lgt_tr_directive'(use_module, [Module, Imports], Ctx) :-
+	'$lgt_must_be'(atom, Module),
 	'$lgt_must_be'(list, Imports),
-	atom(Module),	% fail if using library notation in order to use the config files to find the module name
 	'$lgt_split_operators_and_predicates'(Imports, Preds, Ops),
 	forall('$lgt_member'(Op, Ops), '$lgt_tr_directive'(Op, Ctx)),
 	(	'$lgt_pp_module_'(_) ->
@@ -6757,31 +6707,17 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 % reexport/2 module directive
 
-'$lgt_tr_directive'(reexport, [Module, _], _) :-
-	var(Module),
-	throw(instantiation_error).
-
-'$lgt_tr_directive'(reexport, [Module, _], _) :-
-	\+ callable(Module),
-	throw(type_error(atom, Module)).
-
 '$lgt_tr_directive'(reexport, [Module, Exports], Ctx) :-
 	% we must be compiling a module as an object
 	'$lgt_pp_module_'(_),
-	% fail if using library notation in order to use the config files to find the module name
-	atom(Module),
 	% we're compiling a module as an object; assume referenced modules are also compiled as objects
-	(	atom(Module) ->
-		Name = Module
-	;	% assume library notation and that the file name is also the module name
-		arg(1, Module, Name),
-		atom(Name)
-	),
+	'$lgt_must_be'(atom, Module),
+	'$lgt_must_be'(list, Exports),
 	'$lgt_split_operators_and_predicates'(Exports, Preds, Ops),
 	forall(
 		'$lgt_member'(Op, Ops),
 		'$lgt_tr_file_directive'(Op, Ctx)),
-	'$lgt_tr_reexport_directive'(Preds, Name, Ctx).
+	'$lgt_tr_reexport_directive'(Preds, Module, Ctx).
 
 
 % calls/1 entity directive
@@ -9526,10 +9462,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	'$lgt_exec_ctx_this'(ExCtx, This),
-	(	'$lgt_runtime_db_pred_ind_chk'(Pred) ->
+	(	'$lgt_runtime_db_pred_ind_checked'(Pred) ->
 		TCond = '$lgt_abolish'(This, Pred, This, p(_))
 	;	'$lgt_must_be'(predicate_indicator, Pred),
-		TCond = '$lgt_abolish_chk'(This, Pred, This, p(_))
+		TCond = '$lgt_abolish_checked'(This, Pred, This, p(_))
 	),
 	DCond = '$lgt_debugger.goal'(abolish(Pred), TCond, ExCtx).
 
@@ -9570,15 +9506,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		TCond = asserta(TPred)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
 		'$lgt_exec_ctx_this'(ExCtx, This),
-		(	'$lgt_runtime_db_clause_chk'(Pred) ->
+		(	'$lgt_runtime_db_clause_checked'(Pred) ->
 			TCond = '$lgt_asserta'(This, Pred, This, p(_), p)
-		;	'$lgt_compiler_db_clause_chk'(Pred),
+		;	'$lgt_compiler_db_clause_checked'(Pred),
 			(	Pred = (Head :- Body) ->
 				(	Body == true ->
-					TCond = '$lgt_asserta_fact_chk'(This, Head, This, p(_), p)
-				;	TCond = '$lgt_asserta_rule_chk'(This, Pred, This, p(_), p)
+					TCond = '$lgt_asserta_fact_checked'(This, Head, This, p(_), p)
+				;	TCond = '$lgt_asserta_rule_checked'(This, Pred, This, p(_), p)
 				)
-			;	TCond = '$lgt_asserta_fact_chk'(This, Pred, This, p(_), p)
+			;	TCond = '$lgt_asserta_fact_checked'(This, Pred, This, p(_), p)
 			)
 		)
 	),
@@ -9608,15 +9544,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		TCond = assertz(TPred)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
 		'$lgt_exec_ctx_this'(ExCtx, This),
-		(	'$lgt_runtime_db_clause_chk'(Pred) ->
+		(	'$lgt_runtime_db_clause_checked'(Pred) ->
 			TCond = '$lgt_assertz'(This, Pred, This, p(_), p)
-		;	'$lgt_compiler_db_clause_chk'(Pred),
+		;	'$lgt_compiler_db_clause_checked'(Pred),
 			(	Pred = (Head :- Body) ->
 				(	Body == true ->
-					TCond = '$lgt_assertz_fact_chk'(This, Head, This, p(_), p)
-				;	TCond = '$lgt_assertz_rule_chk'(This, Pred, This, p(_), p)
+					TCond = '$lgt_assertz_fact_checked'(This, Head, This, p(_), p)
+				;	TCond = '$lgt_assertz_rule_checked'(This, Pred, This, p(_), p)
 				)
-			;	TCond = '$lgt_assertz_fact_chk'(This, Pred, This, p(_), p)
+			;	TCond = '$lgt_assertz_fact_checked'(This, Pred, This, p(_), p)
 			)
 		)
 	),
@@ -9646,10 +9582,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		TCond = (clause(THead, TBody), (TBody = ('$lgt_nop'(Body), _) -> true; TBody = Body))
 	;	'$lgt_comp_ctx_this'(Ctx, This),
 		'$lgt_exec_ctx_this'(ExCtx, This),
-		(	'$lgt_runtime_db_clause_chk'((Head :- Body)) ->
+		(	'$lgt_runtime_db_clause_checked'((Head :- Body)) ->
 			TCond = '$lgt_clause'(This, Head, Body, This, p(_))
-		;	'$lgt_compiler_db_clause_chk'((Head :- Body)),
-			TCond = '$lgt_clause_chk'(This, Head, Body, This, p(_))
+		;	'$lgt_compiler_db_clause_checked'((Head :- Body)),
+			TCond = '$lgt_clause_checked'(This, Head, Body, This, p(_))
 		)
 	),
 	DCond = '$lgt_debugger.goal'(clause(Head, Body), TCond, ExCtx).
@@ -9678,17 +9614,17 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		TCond = retract(TPred)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
 		'$lgt_exec_ctx_this'(ExCtx, This),
-		(	'$lgt_runtime_db_clause_chk'(Pred) ->
+		(	'$lgt_runtime_db_clause_checked'(Pred) ->
 			TCond = '$lgt_retract'(This, Pred, This, p(_))
-		;	'$lgt_compiler_db_clause_chk'(Pred),
+		;	'$lgt_compiler_db_clause_checked'(Pred),
 			(	Pred = (Head :- Body) ->
 				(	var(Body) ->
-					'$lgt_retract_var_body_chk'(This, Pred, This, p(_))
+					'$lgt_retract_var_body_checked'(This, Pred, This, p(_))
 				;	Body == true ->
-					TCond = '$lgt_retract_fact_chk'(This, Head, This, p(_))
-				;	TCond = '$lgt_retract_rule_chk'(This, Pred, This, p(_))
+					TCond = '$lgt_retract_fact_checked'(This, Head, This, p(_))
+				;	TCond = '$lgt_retract_rule_checked'(This, Pred, This, p(_))
 				)
-			;	TCond = '$lgt_retract_fact_chk'(This, Pred, This, p(_))
+			;	TCond = '$lgt_retract_fact_checked'(This, Pred, This, p(_))
 			)
 		)
 	),
@@ -9718,10 +9654,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		TCond = retractall(TPred)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
 		'$lgt_exec_ctx_this'(ExCtx, This),
-		(	'$lgt_runtime_db_clause_chk'(Pred) ->
+		(	'$lgt_runtime_db_clause_checked'(Pred) ->
 			TCond = '$lgt_retractall'(This, Pred, This, p(_))
-		;	'$lgt_compiler_db_clause_chk'(Pred),
-			TCond = '$lgt_retractall_chk'(This, Pred, This, p(_))
+		;	'$lgt_compiler_db_clause_checked'(Pred),
+			TCond = '$lgt_retractall_checked'(This, Pred, This, p(_))
 		)
 	),
 	DCond = '$lgt_debugger.goal'(retractall(Pred), TCond, ExCtx).
@@ -10538,57 +10474,57 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-% '$lgt_runtime_db_clause_chk'(@term)
+% '$lgt_runtime_db_clause_checked'(@term)
 %
 % true if the argument forces runtime validity check
 
-'$lgt_runtime_db_clause_chk'(Pred) :-
+'$lgt_runtime_db_clause_checked'(Pred) :-
 	var(Pred),
 	!.
 
-'$lgt_runtime_db_clause_chk'((Head :- _)) :-
+'$lgt_runtime_db_clause_checked'((Head :- _)) :-
 	var(Head),
 	!.
 
-'$lgt_runtime_db_clause_chk'((_ :- Body)) :-
+'$lgt_runtime_db_clause_checked'((_ :- Body)) :-
 	var(Body).
 
 
 
-% '$lgt_compiler_db_clause_chk'(@nonvar)
+% '$lgt_compiler_db_clause_checked'(@nonvar)
 %
 % throws an error if the argument is invalid
 
-'$lgt_compiler_db_clause_chk'((Head :- _)) :-
+'$lgt_compiler_db_clause_checked'((Head :- _)) :-
 	\+ callable(Head),
 	throw(type_error(callable, Head)).
 
-'$lgt_compiler_db_clause_chk'((_ :- Body)) :-
+'$lgt_compiler_db_clause_checked'((_ :- Body)) :-
 	nonvar(Body),
 	\+ callable(Body),
 	throw(type_error(callable, Body)).
 
-'$lgt_compiler_db_clause_chk'(Clause) :-
+'$lgt_compiler_db_clause_checked'(Clause) :-
 	\+ callable(Clause),
 	throw(type_error(callable, Clause)).
 
-'$lgt_compiler_db_clause_chk'(_).
+'$lgt_compiler_db_clause_checked'(_).
 
 
 
-% '$lgt_runtime_db_pred_ind_chk'(@term)
+% '$lgt_runtime_db_pred_ind_checked'(@term)
 %
 % true if the argument forces runtime validity check
 
-'$lgt_runtime_db_pred_ind_chk'(Pred) :-
+'$lgt_runtime_db_pred_ind_checked'(Pred) :-
 	var(Pred),
 	!.
 
-'$lgt_runtime_db_pred_ind_chk'(Functor/_) :-
+'$lgt_runtime_db_pred_ind_checked'(Functor/_) :-
 	var(Functor),
 	!.
 
-'$lgt_runtime_db_pred_ind_chk'(_/Arity) :-
+'$lgt_runtime_db_pred_ind_checked'(_/Arity) :-
 	var(Arity).
 
 
@@ -10739,74 +10675,74 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_msg'(abolish(Pred), Obj, TPred, This) :-
 	!,
-	(	'$lgt_runtime_db_pred_ind_chk'(Pred) ->
+	(	'$lgt_runtime_db_pred_ind_checked'(Pred) ->
 		TPred = '$lgt_abolish'(Obj, Pred, This, p(p(p)))
 	;	'$lgt_must_be'(predicate_indicator, Pred),
-		TPred = '$lgt_abolish_chk'(Obj, Pred, This, p(p(p)))
+		TPred = '$lgt_abolish_checked'(Obj, Pred, This, p(p(p)))
 	).
 
-'$lgt_tr_msg'(assert(Pred), Obj, TPred, This) :-
+'$lgt_tr_msg'(assert(Clause), Obj, TPred, This) :-
 	!,
-	'$lgt_tr_msg'(assertz(Pred), Obj, TPred, This).
+	'$lgt_tr_msg'(assertz(Clause), Obj, TPred, This).
 
-'$lgt_tr_msg'(asserta(Pred), Obj, TPred, This) :-
+'$lgt_tr_msg'(asserta(Clause), Obj, TPred, This) :-
 	!,
-	(	'$lgt_runtime_db_clause_chk'(Pred) ->
-		TPred = '$lgt_asserta'(Obj, Pred, This, p(p(_)), p(p(p)))
-	;	'$lgt_compiler_db_clause_chk'(Pred),
-		(	Pred = (Head :- Body) ->
+	(	'$lgt_runtime_db_clause_checked'(Clause) ->
+		TPred = '$lgt_asserta'(Obj, Clause, This, p(p(_)), p(p(p)))
+	;	'$lgt_compiler_db_clause_checked'(Clause),
+		(	Clause = (Head :- Body) ->
 			(	Body == true ->
-				TPred = '$lgt_asserta_fact_chk'(Obj, Head, This, p(p(_)), p(p(p)))
-			;	TPred = '$lgt_asserta_rule_chk'(Obj, Pred, This, p(p(_)), p(p(p)))
+				TPred = '$lgt_asserta_fact_checked'(Obj, Head, This, p(p(_)), p(p(p)))
+			;	TPred = '$lgt_asserta_rule_checked'(Obj, Clause, This, p(p(_)), p(p(p)))
 			)
-		;	TPred = '$lgt_asserta_fact_chk'(Obj, Pred, This, p(p(_)), p(p(p)))
+		;	TPred = '$lgt_asserta_fact_checked'(Obj, Clause, This, p(p(_)), p(p(p)))
 		)
 	).
 
-'$lgt_tr_msg'(assertz(Pred), Obj, TPred, This) :-
+'$lgt_tr_msg'(assertz(Clause), Obj, TPred, This) :-
 	!,
-	(	'$lgt_runtime_db_clause_chk'(Pred) ->
-		TPred = '$lgt_assertz'(Obj, Pred, This, p(p(_)), p(p(p)))
-	;	'$lgt_compiler_db_clause_chk'(Pred),
-		(	Pred = (Head :- Body) ->
+	(	'$lgt_runtime_db_clause_checked'(Clause) ->
+		TPred = '$lgt_assertz'(Obj, Clause, This, p(p(_)), p(p(p)))
+	;	'$lgt_compiler_db_clause_checked'(Clause),
+		(	Clause = (Head :- Body) ->
 			(	Body == true ->
-				TPred = '$lgt_assertz_fact_chk'(Obj, Head, This, p(p(_)), p(p(p)))
-			;	TPred = '$lgt_assertz_rule_chk'(Obj, Pred, This, p(p(_)), p(p(p)))
+				TPred = '$lgt_assertz_fact_checked'(Obj, Head, This, p(p(_)), p(p(p)))
+			;	TPred = '$lgt_assertz_rule_checked'(Obj, Clause, This, p(p(_)), p(p(p)))
 			)
-		;	TPred = '$lgt_assertz_fact_chk'(Obj, Pred, This, p(p(_)), p(p(p)))
+		;	TPred = '$lgt_assertz_fact_checked'(Obj, Clause, This, p(p(_)), p(p(p)))
 		)
 	).
 
 '$lgt_tr_msg'(clause(Head, Body), Obj, TPred, This) :-
 	!,
-	(	'$lgt_runtime_db_clause_chk'((Head :- Body)) ->
+	(	'$lgt_runtime_db_clause_checked'((Head :- Body)) ->
 		TPred = '$lgt_clause'(Obj, Head, Body, This, p(p(p)))
-	;	'$lgt_compiler_db_clause_chk'((Head :- Body)),
-		TPred = '$lgt_clause_chk'(Obj, Head, Body, This, p(p(p)))
+	;	'$lgt_compiler_db_clause_checked'((Head :- Body)),
+		TPred = '$lgt_clause_checked'(Obj, Head, Body, This, p(p(p)))
 	).
 
-'$lgt_tr_msg'(retract(Pred), Obj, TPred, This) :-
+'$lgt_tr_msg'(retract(Clause), Obj, TPred, This) :-
 	!,
-	(	'$lgt_runtime_db_clause_chk'(Pred) ->
-		TPred = '$lgt_retract'(Obj, Pred, This, p(p(p)))
-	;	'$lgt_compiler_db_clause_chk'(Pred),
-		(	Pred = (Head :- Body) ->
+	(	'$lgt_runtime_db_clause_checked'(Clause) ->
+		TPred = '$lgt_retract'(Obj, Clause, This, p(p(p)))
+	;	'$lgt_compiler_db_clause_checked'(Clause),
+		(	Clause = (Head :- Body) ->
 			(	var(Body) ->
-				'$lgt_retract_var_body_chk'(Obj, Pred, This, p(p(p)))
+				'$lgt_retract_var_body_checked'(Obj, Clause, This, p(p(p)))
 			;	Body == true ->
-				TPred = '$lgt_retract_fact_chk'(Obj, Head, This, p(p(p)))
-			;	TPred = '$lgt_retract_rule_chk'(Obj, Pred, This, p(p(p)))
+				TPred = '$lgt_retract_fact_checked'(Obj, Head, This, p(p(p)))
+			;	TPred = '$lgt_retract_rule_checked'(Obj, Clause, This, p(p(p)))
 			)
-		;	TPred = '$lgt_retract_fact_chk'(Obj, Pred, This, p(p(p)))
+		;	TPred = '$lgt_retract_fact_checked'(Obj, Clause, This, p(p(p)))
 		)
 	).
 
-'$lgt_tr_msg'(retractall(Pred), Obj, TPred, This) :-
+'$lgt_tr_msg'(retractall(Head), Obj, TPred, This) :-
 	!,
-	(	'$lgt_runtime_db_clause_chk'(Pred) ->
-		TPred = '$lgt_retractall'(Obj, Pred, This, p(p(p)))
-	;	'$lgt_compiler_db_clause_chk'(Pred),
-		TPred = '$lgt_retractall_chk'(Obj, Pred, This, p(p(p)))
+	(	'$lgt_runtime_db_clause_checked'(Head) ->
+		TPred = '$lgt_retractall'(Obj, Head, This, p(p(p)))
+	;	'$lgt_compiler_db_clause_checked'(Head),
+		TPred = '$lgt_retractall_checked'(Obj, Head, This, p(p(p)))
 	).
 
 
@@ -10901,74 +10837,74 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_self_msg'(abolish(Pred), TPred, This, Self) :-
 	!,
-	(	'$lgt_runtime_db_pred_ind_chk'(Pred) ->
+	(	'$lgt_runtime_db_pred_ind_checked'(Pred) ->
 		TPred = '$lgt_abolish'(Self, Pred, This, p(_))
 	;	'$lgt_must_be'(predicate_indicator, Pred),
-		TPred = '$lgt_abolish_chk'(Self, Pred, This, p(_))
+		TPred = '$lgt_abolish_checked'(Self, Pred, This, p(_))
 	).
 
-'$lgt_tr_self_msg'(assert(Pred), TPred, This, Self) :-
+'$lgt_tr_self_msg'(assert(Clause), TPred, This, Self) :-
 	!,
-	'$lgt_tr_self_msg'(assertz(Pred), TPred, This, Self).
+	'$lgt_tr_self_msg'(assertz(Clause), TPred, This, Self).
 
-'$lgt_tr_self_msg'(asserta(Pred), TPred, This, Self) :-
+'$lgt_tr_self_msg'(asserta(Clause), TPred, This, Self) :-
 	!,
-	(	'$lgt_runtime_db_clause_chk'(Pred) ->
-		TPred = '$lgt_asserta'(Self, Pred, This, p(_), p(p))
-	;	'$lgt_compiler_db_clause_chk'(Pred),
-		(	Pred = (Head :- Body) ->
+	(	'$lgt_runtime_db_clause_checked'(Clause) ->
+		TPred = '$lgt_asserta'(Self, Clause, This, p(_), p(p))
+	;	'$lgt_compiler_db_clause_checked'(Clause),
+		(	Clause = (Head :- Body) ->
 			(	Body == true ->
-				TPred = '$lgt_asserta_fact_chk'(Self, Head, This, p(_), p(p))
-			;	TPred = '$lgt_asserta_rule_chk'(Self, Pred, This, p(_), p(p))
+				TPred = '$lgt_asserta_fact_checked'(Self, Head, This, p(_), p(p))
+			;	TPred = '$lgt_asserta_rule_checked'(Self, Clause, This, p(_), p(p))
 			)
-		;	TPred = '$lgt_asserta_fact_chk'(Self, Pred, This, p(_), p(p))
+		;	TPred = '$lgt_asserta_fact_checked'(Self, Clause, This, p(_), p(p))
 		)
 	).
 
-'$lgt_tr_self_msg'(assertz(Pred), TPred, This, Self) :-
+'$lgt_tr_self_msg'(assertz(Clause), TPred, This, Self) :-
 	!,
-	(	'$lgt_runtime_db_clause_chk'(Pred) ->
-		TPred = '$lgt_assertz'(Self, Pred, This, p(_), p(p))
-	;	'$lgt_compiler_db_clause_chk'(Pred),
-		(	Pred = (Head :- Body) ->
+	(	'$lgt_runtime_db_clause_checked'(Clause) ->
+		TPred = '$lgt_assertz'(Self, Clause, This, p(_), p(p))
+	;	'$lgt_compiler_db_clause_checked'(Clause),
+		(	Clause = (Head :- Body) ->
 			(	Body == true ->
-				TPred = '$lgt_assertz_fact_chk'(Self, Head, This, p(_), p(p))
-			;	TPred = '$lgt_assertz_rule_chk'(Self, Pred, This, p(_), p(p))
+				TPred = '$lgt_assertz_fact_checked'(Self, Head, This, p(_), p(p))
+			;	TPred = '$lgt_assertz_rule_checked'(Self, Clause, This, p(_), p(p))
 			)
-		;	TPred = '$lgt_assertz_fact_chk'(Self, Pred, This, p(_), p(p))
+		;	TPred = '$lgt_assertz_fact_checked'(Self, Clause, This, p(_), p(p))
 		)
 	).
 
 '$lgt_tr_self_msg'(clause(Head, Body), TPred, This, Self) :-
 	!,
-	(	'$lgt_runtime_db_clause_chk'((Head :- Body)) ->
+	(	'$lgt_runtime_db_clause_checked'((Head :- Body)) ->
 		TPred = '$lgt_clause'(Self, Head, Body, This, p(_))
-	;	'$lgt_compiler_db_clause_chk'((Head :- Body)),
-		TPred = '$lgt_clause_chk'(Self, Head, Body, This, p(_))
+	;	'$lgt_compiler_db_clause_checked'((Head :- Body)),
+		TPred = '$lgt_clause_checked'(Self, Head, Body, This, p(_))
 	).
 
-'$lgt_tr_self_msg'(retract(Pred), TPred, This, Self) :-
+'$lgt_tr_self_msg'(retract(Clause), TPred, This, Self) :-
 	!,
-	(	'$lgt_runtime_db_clause_chk'(Pred) ->
-		TPred = '$lgt_retract'(Self, Pred, This, p(_))
-	;	'$lgt_compiler_db_clause_chk'(Pred),
-		(	Pred = (Head :- Body) ->
+	(	'$lgt_runtime_db_clause_checked'(Clause) ->
+		TPred = '$lgt_retract'(Self, Clause, This, p(_))
+	;	'$lgt_compiler_db_clause_checked'(Clause),
+		(	Clause = (Head :- Body) ->
 			(	var(Body) ->
-				'$lgt_retract_var_body_chk'(Self, Pred, This, p(_))
+				'$lgt_retract_var_body_checked'(Self, Clause, This, p(_))
 			;	Body == true ->
-				TPred = '$lgt_retract_fact_chk'(Self, Head, This, p(_))
-			;	TPred = '$lgt_retract_rule_chk'(Self, Pred, This, p(_))
+				TPred = '$lgt_retract_fact_checked'(Self, Head, This, p(_))
+			;	TPred = '$lgt_retract_rule_checked'(Self, Clause, This, p(_))
 			)
-		;	TPred = '$lgt_retract_fact_chk'(Self, Pred, This, p(_))
+		;	TPred = '$lgt_retract_fact_checked'(Self, Clause, This, p(_))
 		)
 	).
 
-'$lgt_tr_self_msg'(retractall(Pred), TPred, This, Self) :-
+'$lgt_tr_self_msg'(retractall(Head), TPred, This, Self) :-
 	!,
-	(	'$lgt_runtime_db_clause_chk'(Pred) ->
-		TPred = '$lgt_retractall'(Self, Pred, This, p(_))
-	;	'$lgt_compiler_db_clause_chk'(Pred),
-		TPred = '$lgt_retractall_chk'(Self, Pred, This, p(_))
+	(	'$lgt_runtime_db_clause_checked'(Head) ->
+		TPred = '$lgt_retractall'(Self, Head, This, p(_))
+	;	'$lgt_compiler_db_clause_checked'(Head),
+		TPred = '$lgt_retractall_checked'(Self, Head, This, p(_))
 	).
 
 
@@ -14134,82 +14070,65 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_assert_init_goal'.
 
 
-
 '$lgt_assert_directives' :-
 	'$lgt_pp_directive_'(dynamic(Functor/Arity)),
 		functor(Pred, Functor, Arity),
 		asserta(Pred),
 		retract(Pred),
 	fail.
-
 '$lgt_assert_directives' :-
 	'$lgt_pp_directive_'(op(Pr, Spec, Ops)),
 		op(Pr, Spec, Ops),
 	fail.
-	
 '$lgt_assert_directives'.
-
 
 
 '$lgt_assert_dcl_clauses' :-
 	'$lgt_pp_dcl_'(Clause),
 		'$lgt_assertz_entity_clause'(Clause, aux),
 	fail.
-
 '$lgt_assert_dcl_clauses'.
-
 
 
 '$lgt_assert_def_clauses' :-
 	'$lgt_pp_final_def_'(Clause),
 		'$lgt_assertz_entity_clause'(Clause, aux),
 	fail.
-
 '$lgt_assert_def_clauses'.
-
 
 
 '$lgt_assert_ddef_clauses' :-
 	'$lgt_pp_final_ddef_'(Clause),
 		'$lgt_assertz_entity_clause'(Clause, aux),
 	fail.
-
 '$lgt_assert_ddef_clauses'.
-
 
 
 '$lgt_assert_super_clauses' :-
 	'$lgt_pp_super_'(Clause),
 		'$lgt_assertz_entity_clause'(Clause, aux),
 	fail.
-
 '$lgt_assert_super_clauses'.
-
 
 
 '$lgt_assert_entity_clauses' :-
 	'$lgt_pp_final_entity_clause_'(Clause, _),
 		'$lgt_assertz_entity_clause'(Clause, user),
 	fail.
-
 '$lgt_assert_entity_clauses'.
-
 
 
 '$lgt_assert_entity_aux_clauses' :-
 	'$lgt_pp_final_entity_aux_clause_'(Clause),
 		'$lgt_assertz_entity_clause'(Clause, aux),
 	fail.
-
 '$lgt_assert_entity_aux_clauses'.
-
 
 
 '$lgt_assert_runtime_clauses' :-
 	'$lgt_pp_relation_clause'(Clause),
 		'$lgt_assertz_entity_clause'(Clause, aux),
 	fail.
-
 '$lgt_assert_runtime_clauses'.
 
 
@@ -18023,6 +17942,17 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	Term = (Head :- Body) ->
 		'$lgt_must_be'(callable, Head, Goal),
 		'$lgt_must_be'(callable, Body, Goal)
+	;	callable(Term) ->
+		true
+	;	throw(error(type_error(callable, Term), Goal))
+	).
+
+'$lgt_must_be'(clause_or_partial_clause, Term, Goal) :-
+	(	var(Term) ->
+		throw(error(instantiation_error, Goal))
+	;	Term = (Head :- Body) ->
+		'$lgt_must_be'(callable, Head, Goal),
+		'$lgt_must_be'(var_or_callable, Body, Goal)
 	;	callable(Term) ->
 		true
 	;	throw(error(type_error(callable, Term), Goal))
