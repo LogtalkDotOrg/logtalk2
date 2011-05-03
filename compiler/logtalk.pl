@@ -388,19 +388,19 @@ Obj<<Goal :-
 	;	'$lgt_complemented_object_'(Obj, _, _, _, _)
 	),
 	\+ '$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
-	throw(error(existence_error(object, Obj), _, _)).
+	throw(error(existence_error(object, Obj), logtalk(_, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/5), _)) :-
 	atom_concat(Prefix, '_dcl', TFunctor),
 	'$lgt_reverse_entity_prefix'(Prefix, CtgOrPtc),
 	(	'$lgt_implements_protocol_'(_, CtgOrPtc, _), \+ '$lgt_current_protocol_'(CtgOrPtc, _, _, _, _),
-		throw(error(existence_error(protocol, CtgOrPtc), _, _))
+		throw(error(existence_error(protocol, CtgOrPtc), logtalk(_, _)))
 	;	'$lgt_extends_protocol_'(_, CtgOrPtc, _), \+ '$lgt_current_protocol_'(CtgOrPtc, _, _, _, _),
-		throw(error(existence_error(protocol, CtgOrPtc), _, _))
+		throw(error(existence_error(protocol, CtgOrPtc), logtalk(_, _)))
 	;	'$lgt_imports_category_'(_, CtgOrPtc, _), \+ '$lgt_current_category_'(CtgOrPtc, _, _, _, _, _),
-		throw(error(existence_error(category, CtgOrPtc), _, _))
+		throw(error(existence_error(category, CtgOrPtc), logtalk(_, _)))
 	;	'$lgt_extends_category_'(_, CtgOrPtc, _), \+ '$lgt_current_category_'(CtgOrPtc, _, _, _, _, _),
-		throw(error(existence_error(category, CtgOrPtc), _, _))
+		throw(error(existence_error(category, CtgOrPtc), logtalk(_, _)))
 	).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), context(':'(_, TFunctor2/TArity2), _))) :-
@@ -438,11 +438,11 @@ Obj<<Goal :-
 	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
 	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
 
-'$lgt_runtime_error_handler'(error(Variable, _, Sender)) :-
+'$lgt_runtime_error_handler'(error(Variable, _)) :-
 	var(Variable),
-	throw(error(instantiation_error, throw(_), Sender)).
+	throw(error(instantiation_error, logtalk(throw(_), _))).
 
-'$lgt_runtime_error_handler'(error(Error, Object::Goal, user)) :-
+'$lgt_runtime_error_handler'(error(Error, logtalk(Object::Goal, user))) :-
 	Object == user,
 	throw(error(Error, Goal)).
 
@@ -474,7 +474,7 @@ Obj<<Goal :-
 % current_object(?object_identifier)
 
 current_object(Obj) :-
-	'$lgt_must_be'(var_or_object_identifier, Obj, current_object(Obj)),
+	'$lgt_must_be'(var_or_object_identifier, Obj, logtalk(current_object(Obj), _)),
 	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _).
 
 
@@ -482,7 +482,7 @@ current_object(Obj) :-
 % current_protocol(?protocol_identifier)
 
 current_protocol(Ptc) :-
-	'$lgt_must_be'(var_or_protocol_identifier, Ptc, current_protocol(Ptc)),
+	'$lgt_must_be'(var_or_protocol_identifier, Ptc, logtalk(current_protocol(Ptc), _)),
 	'$lgt_current_protocol_'(Ptc, _, _, _, _).
 
 
@@ -490,7 +490,7 @@ current_protocol(Ptc) :-
 % current_category(?category_identifier)
 
 current_category(Ctg) :-
-	'$lgt_must_be'(var_or_category_identifier, Ctg, current_category(Ctg)),
+	'$lgt_must_be'(var_or_category_identifier, Ctg, logtalk(current_category(Ctg), _)),
 	'$lgt_current_category_'(Ctg, _, _, _, _, _).
 
 
@@ -498,8 +498,8 @@ current_category(Ctg) :-
 % object_property(?object_identifier, ?object_property)
 
 object_property(Obj, Prop) :-
-	'$lgt_must_be'(var_or_object_identifier, Obj, object_property(Obj, Prop)),
-	'$lgt_must_be'(var_or_object_property, Prop, object_property(Obj, Prop)),
+	'$lgt_must_be'(var_or_object_identifier, Obj, logtalk(object_property(Obj, Prop), _)),
+	'$lgt_must_be'(var_or_object_property, Prop, logtalk(object_property(Obj, Prop), _)),
 	'$lgt_current_object_'(Obj, _, Dcl, _, _, _, _, DDcl, _, _, Flags),
 	(	'$lgt_object_flags'(Prop, Flags)
 	;	'$lgt_entity_property_'(Obj, Internal),
@@ -529,8 +529,8 @@ object_property(Obj, Prop) :-
 % category_property(?category_identifier, ?category_property)
 
 category_property(Ctg, Prop) :-
-	'$lgt_must_be'(var_or_category_identifier, Ctg, category_property(Ctg, Prop)),
-	'$lgt_must_be'(var_or_category_property, Prop, category_property(Ctg, Prop)),
+	'$lgt_must_be'(var_or_category_identifier, Ctg, logtalk(category_property(Ctg, Prop), _)),
+	'$lgt_must_be'(var_or_category_property, Prop, logtalk(category_property(Ctg, Prop), _)),
 	'$lgt_current_category_'(Ctg, _, Dcl, _, _, Flags),
 	(	'$lgt_category_flags'(Prop, Flags)
 	;	'$lgt_entity_property_'(Ctg, Internal),
@@ -552,8 +552,8 @@ category_property(Ctg, Prop) :-
 % protocol_property(?protocol_identifier, ?protocol_property)
 
 protocol_property(Ptc, Prop) :-
-	'$lgt_must_be'(var_or_protocol_identifier, Ptc, protocol_property(Ptc, Prop)),
-	'$lgt_must_be'(var_or_protocol_property, Prop, protocol_property(Ptc, Prop)),
+	'$lgt_must_be'(var_or_protocol_identifier, Ptc, logtalk(protocol_property(Ptc, Prop), _)),
+	'$lgt_must_be'(var_or_protocol_property, Prop, logtalk(protocol_property(Ptc, Prop), _)),
 	'$lgt_current_protocol_'(Ptc, _, Dcl, _, Flags),
 	(	'$lgt_protocol_flags'(Prop, Flags)
 	;	'$lgt_entity_property_'(Ptc, Internal),
@@ -577,23 +577,23 @@ protocol_property(Ptc, Prop) :-
 create_object(Obj, Rels, Dirs, Clauses) :-
 	nonvar(Obj),
 	(	\+ callable(Obj),
-		throw(error(type_error(object_identifier, Obj), create_object(Obj, Rels, Dirs, Clauses)))
+		throw(error(type_error(object_identifier, Obj), logtalk(create_object(Obj, Rels, Dirs, Clauses), _)))
 	;	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
-		throw(error(permission_error(modify, object, Obj), create_object(Obj, Rels, Dirs, Clauses)))
+		throw(error(permission_error(modify, object, Obj), logtalk(create_object(Obj, Rels, Dirs, Clauses), _)))
 	;	'$lgt_current_category_'(Obj, _, _, _, _, _),
-		throw(error(permission_error(modify, category, Obj), create_object(Obj, Rels, Dirs, Clauses)))
+		throw(error(permission_error(modify, category, Obj), logtalk(create_object(Obj, Rels, Dirs, Clauses), _)))
 	;	'$lgt_current_protocol_'(Obj, _, _, _, _),
-		throw(error(permission_error(modify, protocol, Obj), create_object(Obj, Rels, Dirs, Clauses)))
+		throw(error(permission_error(modify, protocol, Obj), logtalk(create_object(Obj, Rels, Dirs, Clauses), _)))
 	).
 
 create_object(Obj, Rels, Dirs, Clauses) :-
-	'$lgt_must_be'(list, Rels, create_object(Obj, Rels, Dirs, Clauses)),
-	'$lgt_must_be'(list, Dirs, create_object(Obj, Rels, Dirs, Clauses)),
-	'$lgt_must_be'(list, Clauses, create_object(Obj, Rels, Dirs, Clauses)),
+	'$lgt_must_be'(list, Rels, logtalk(create_object(Obj, Rels, Dirs, Clauses), _)),
+	'$lgt_must_be'(list, Dirs, logtalk(create_object(Obj, Rels, Dirs, Clauses), _)),
+	'$lgt_must_be'(list, Clauses, logtalk(create_object(Obj, Rels, Dirs, Clauses), _)),
 	catch(
 		'$lgt_create_object'(Obj, Rels, Dirs, Clauses),
 		Error,
-		('$lgt_clean_pp_clauses', throw(error(Error, create_object(Obj, Rels, Dirs, Clauses))))).
+		('$lgt_clean_pp_clauses', throw(error(Error, logtalk(create_object(Obj, Rels, Dirs, Clauses), _))))).
 
 
 '$lgt_create_object'(Obj, Rels, Dirs, Clauses) :-
@@ -622,23 +622,23 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 create_category(Ctg, Rels, Dirs, Clauses) :-
 	nonvar(Ctg),
 	(	\+ callable(Ctg),
-		throw(error(type_error(category_identifier, Ctg), create_category(Ctg, Rels, Dirs, Clauses)))
+		throw(error(type_error(category_identifier, Ctg), logtalk(create_category(Ctg, Rels, Dirs, Clauses), _)))
 	;	'$lgt_current_category_'(Ctg, _, _, _, _, _),
-		throw(error(permission_error(modify, category, Ctg), create_category(Ctg, Rels, Dirs, Clauses)))
+		throw(error(permission_error(modify, category, Ctg), logtalk(create_category(Ctg, Rels, Dirs, Clauses), _)))
 	;	'$lgt_current_object_'(Ctg, _, _, _, _, _, _, _, _, _, _),
-		throw(error(permission_error(modify, object, Ctg), create_category(Ctg, Rels, Dirs, Clauses)))
+		throw(error(permission_error(modify, object, Ctg), logtalk(create_category(Ctg, Rels, Dirs, Clauses), _)))
 	;	'$lgt_current_protocol_'(Ctg, _, _, _, _),
-		throw(error(permission_error(modify, protocol, Ctg), create_category(Ctg, Rels, Dirs, Clauses)))
+		throw(error(permission_error(modify, protocol, Ctg), logtalk(create_category(Ctg, Rels, Dirs, Clauses), _)))
 	).
 
 create_category(Ctg, Rels, Dirs, Clauses) :-
-	'$lgt_must_be'(list, Rels, create_category(Ctg, Rels, Dirs, Clauses)),
-	'$lgt_must_be'(list, Dirs, create_category(Ctg, Rels, Dirs, Clauses)),
-	'$lgt_must_be'(list, Clauses, create_category(Ctg, Rels, Dirs, Clauses)),
+	'$lgt_must_be'(list, Rels, logtalk(create_category(Ctg, Rels, Dirs, Clauses), _)),
+	'$lgt_must_be'(list, Dirs, logtalk(create_category(Ctg, Rels, Dirs, Clauses), _)),
+	'$lgt_must_be'(list, Clauses, logtalk(create_category(Ctg, Rels, Dirs, Clauses), _)),
 	catch(
 		'$lgt_create_category'(Ctg, Rels, Dirs, Clauses),
 		Error,
-		('$lgt_clean_pp_clauses', throw(error(Error, create_category(Ctg, Rels, Dirs, Clauses))))).
+		('$lgt_clean_pp_clauses', throw(error(Error, logtalk(create_category(Ctg, Rels, Dirs, Clauses), _))))).
 
 
 '$lgt_create_category'(Ctg, Rels, Dirs, Clauses) :-
@@ -667,22 +667,22 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 create_protocol(Ptc, Rels, Dirs) :-
 	nonvar(Ptc),
 	(	\+ atom(Ptc),
-		throw(error(type_error(protocol_identifier, Ptc), create_protocol(Ptc, Rels, Dirs)))
+		throw(error(type_error(protocol_identifier, Ptc), logtalk(create_protocol(Ptc, Rels, Dirs), _)))
 	;	'$lgt_current_protocol_'(Ptc, _, _, _, _),
-		throw(error(permission_error(modify, protocol, Ptc), create_protocol(Ptc, Rels, Dirs)))
+		throw(error(permission_error(modify, protocol, Ptc), logtalk(create_protocol(Ptc, Rels, Dirs), _)))
 	;	'$lgt_current_object_'(Ptc, _, _, _, _, _, _, _, _, _, _),
-		throw(error(permission_error(modify, object, Ptc), create_protocol(Ptc, Rels, Dirs)))
+		throw(error(permission_error(modify, object, Ptc), logtalk(create_protocol(Ptc, Rels, Dirs), _)))
 	;	'$lgt_current_category_'(Ptc, _, _, _, _, _),
-		throw(error(permission_error(modify, category, Ptc), create_protocol(Ptc, Rels, Dirs)))
+		throw(error(permission_error(modify, category, Ptc), logtalk(create_protocol(Ptc, Rels, Dirs), _)))
 	).
 
 create_protocol(Ptc, Rels, Dirs) :-
-	'$lgt_must_be'(list, Rels, create_protocol(Ptc, Rels, Dirs)),
-	'$lgt_must_be'(list, Dirs, create_protocol(Ptc, Rels, Dirs)),
+	'$lgt_must_be'(list, Rels, logtalk(create_protocol(Ptc, Rels, Dirs), _)),
+	'$lgt_must_be'(list, Dirs, logtalk(create_protocol(Ptc, Rels, Dirs), _)),
 	catch(
 		'$lgt_create_protocol'(Ptc, Rels, Dirs),
 		Error,
-		('$lgt_clean_pp_clauses', throw(error(Error, create_protocol(Ptc, Rels, Dirs))))).
+		('$lgt_clean_pp_clauses', throw(error(Error, logtalk(create_protocol(Ptc, Rels, Dirs), _))))).
 
 
 '$lgt_create_protocol'(Ptc, Rels, Dirs) :-
@@ -727,7 +727,7 @@ create_protocol(Ptc, Rels, Dirs) :-
 % abolish_object(@object_identifier)
 
 abolish_object(Obj) :-
-	'$lgt_must_be'(object_identifier, Obj, abolish_object(Obj)),
+	'$lgt_must_be'(object_identifier, Obj, logtalk(abolish_object(Obj), _)),
 	(	'$lgt_current_object_'(Obj, _, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags) ->
 		(	Flags /\ 2 =:= 2 ->
 			'$lgt_abolish_entity_predicates'(Def),
@@ -751,9 +751,9 @@ abolish_object(Obj) :-
 			retractall('$lgt_imports_category_'(Obj, _, _)),
 			retractall('$lgt_debugging_entity_'(Obj)),
 			'$lgt_clean_lookup_caches'
-		;	throw(error(permission_error(modify, static_object, Obj), abolish_object(Obj)))
+		;	throw(error(permission_error(modify, static_object, Obj), logtalk(abolish_object(Obj), _)))
 		)
-	;	throw(error(existence_error(object, Obj), abolish_object(Obj)))
+	;	throw(error(existence_error(object, Obj), logtalk(abolish_object(Obj), _)))
 	).
 
 
@@ -761,7 +761,7 @@ abolish_object(Obj) :-
 % abolish_category(@category_identifier)
 
 abolish_category(Ctg) :-
-	'$lgt_must_be'(category_identifier, Ctg, abolish_category(Ctg)),
+	'$lgt_must_be'(category_identifier, Ctg, logtalk(abolish_category(Ctg), _)),
 	(	'$lgt_current_category_'(Ctg, _, Dcl, Def, Rnm, Flags) ->
 		(	Flags /\ 2 =:= 2 ->
 			'$lgt_abolish_entity_predicates'(Def),
@@ -775,9 +775,9 @@ abolish_category(Ctg) :-
 			retractall('$lgt_implements_protocol_'(Ctg, _, _)),
 			retractall('$lgt_debugging_entity_'(Ctg)),
 			'$lgt_clean_lookup_caches'
-		;	throw(error(permission_error(modify, static_category, Ctg), abolish_category(Ctg)))
+		;	throw(error(permission_error(modify, static_category, Ctg), logtalk(abolish_category(Ctg), _)))
 		)
-	;	throw(error(existence_error(category, Ctg), abolish_category(Ctg)))
+	;	throw(error(existence_error(category, Ctg), logtalk(abolish_category(Ctg), _)))
 	).
 
 
@@ -785,7 +785,7 @@ abolish_category(Ctg) :-
 % abolish_protocol(@protocol_identifier)
 
 abolish_protocol(Ptc) :-
-	'$lgt_must_be'(protocol_identifier, Ptc, abolish_protocol(Ptc)),
+	'$lgt_must_be'(protocol_identifier, Ptc, logtalk(abolish_protocol(Ptc), _)),
 	(	'$lgt_current_protocol_'(Ptc, _, Dcl, Rnm, Flags) ->
 		(	Flags /\ 2 =:= 2 ->
 			abolish(Dcl/4),
@@ -796,9 +796,9 @@ abolish_protocol(Ptc) :-
 			retractall('$lgt_extends_protocol_'(Ptc, _, _)),
 			retractall('$lgt_debugging_entity_'(Ptc)),
 			'$lgt_clean_lookup_caches'
-		;	throw(error(permission_error(modify, static_protocol, Ptc), abolish_protocol(Ptc)))
+		;	throw(error(permission_error(modify, static_protocol, Ptc), logtalk(abolish_protocol(Ptc), _)))
 		)
-	;	throw(error(existence_error(protocol, Ptc), abolish_protocol(Ptc)))
+	;	throw(error(existence_error(protocol, Ptc), logtalk(abolish_protocol(Ptc), _)))
 	).
 
 
@@ -819,10 +819,9 @@ abolish_protocol(Ptc) :-
 % implements_protocol(?category_identifier, ?protocol_identifier)
 
 implements_protocol(ObjOrCtg, Ptc) :-
-	catch(
-		implements_protocol(ObjOrCtg, Ptc, _),
-		error(Error, _),
-		throw(error(Error, implements_protocol(ObjOrCtg, Ptc)))).
+	'$lgt_must_be'(var_or_object_identifier, ObjOrCtg, logtalk(implements_protocol(ObjOrCtg, Ptc), _)),
+	'$lgt_must_be'(var_or_protocol_identifier, Ptc, logtalk(implements_protocol(ObjOrCtg, Ptc), _)),
+	'$lgt_implements_protocol_'(ObjOrCtg, Ptc, _).
 
 
 
@@ -830,9 +829,9 @@ implements_protocol(ObjOrCtg, Ptc) :-
 % implements_protocol(?category_identifier, ?protocol_identifier, ?atom)
 
 implements_protocol(ObjOrCtg, Ptc, Scope) :-
-	'$lgt_must_be'(var_or_object_identifier, ObjOrCtg, implements_protocol(ObjOrCtg, Ptc, Scope)),
-	'$lgt_must_be'(var_or_protocol_identifier, Ptc, implements_protocol(ObjOrCtg, Ptc, Scope)),
-	'$lgt_must_be'(var_or_scope, Scope, implements_protocol(ObjOrCtg, Ptc, Scope)),
+	'$lgt_must_be'(var_or_object_identifier, ObjOrCtg, logtalk(implements_protocol(ObjOrCtg, Ptc, Scope), _)),
+	'$lgt_must_be'(var_or_protocol_identifier, Ptc, logtalk(implements_protocol(ObjOrCtg, Ptc, Scope), _)),
+	'$lgt_must_be'(var_or_scope, Scope, logtalk(implements_protocol(ObjOrCtg, Ptc, Scope), _)),
 	'$lgt_implements_protocol_'(ObjOrCtg, Ptc, Scope).
 
 
@@ -840,19 +839,18 @@ implements_protocol(ObjOrCtg, Ptc, Scope) :-
 % imports_category(?object_identifier, ?category_identifier)
 
 imports_category(Obj, Ctg) :-
-	catch(
-		imports_category(Obj, Ctg, _),
-		error(Error, _),
-		throw(error(Error, imports_category(Obj, Ctg)))).
+	'$lgt_must_be'(var_or_object_identifier, Obj, logtalk(imports_category(Obj, Ctg), _)),
+	'$lgt_must_be'(var_or_category_identifier, Ctg, logtalk(imports_category(Obj, Ctg), _)),
+	'$lgt_imports_category_'(Obj, Ctg, _).
 
 
 
 % imports_category(?object_identifier, ?category_identifier, ?atom)
 
 imports_category(Obj, Ctg, Scope) :-
-	'$lgt_must_be'(var_or_object_identifier, Obj, imports_category(Obj, Ctg, Scope)),
-	'$lgt_must_be'(var_or_category_identifier, Ctg, imports_category(Obj, Ctg, Scope)),
-	'$lgt_must_be'(var_or_scope, Scope, imports_category(Obj, Ctg, Scope)),
+	'$lgt_must_be'(var_or_object_identifier, Obj, logtalk(imports_category(Obj, Ctg, Scope), _)),
+	'$lgt_must_be'(var_or_category_identifier, Ctg, logtalk(imports_category(Obj, Ctg, Scope), _)),
+	'$lgt_must_be'(var_or_scope, Scope, logtalk(imports_category(Obj, Ctg, Scope), _)),
 	'$lgt_imports_category_'(Obj, Ctg, Scope).
 
 
@@ -860,19 +858,18 @@ imports_category(Obj, Ctg, Scope) :-
 % instantiates_class(?object_identifier, ?object_identifier)
 
 instantiates_class(Obj, Class) :-
-	catch(
-		instantiates_class(Obj, Class, _),
-		error(Error, _),
-		throw(error(Error, instantiates_class(Obj, Class)))).
+	'$lgt_must_be'(var_or_object_identifier, Obj, logtalk(instantiates_class(Obj, Class), _)),
+	'$lgt_must_be'(var_or_object_identifier, Class, logtalk(instantiates_class(Obj, Class), _)),
+	'$lgt_instantiates_class_'(Obj, Class, _).
 
 
 
 % instantiates_class(?object_identifier, ?object_identifier, ?atom)
 
 instantiates_class(Obj, Class, Scope) :-
-	'$lgt_must_be'(var_or_object_identifier, Obj, instantiates_class(Obj, Class, Scope)),
-	'$lgt_must_be'(var_or_object_identifier, Class, instantiates_class(Obj, Class, Scope)),
-	'$lgt_must_be'(var_or_scope, Scope, instantiates_class(Obj, Class, Scope)),
+	'$lgt_must_be'(var_or_object_identifier, Obj, logtalk(instantiates_class(Obj, Class, Scope), _)),
+	'$lgt_must_be'(var_or_object_identifier, Class, logtalk(instantiates_class(Obj, Class, Scope), _)),
+	'$lgt_must_be'(var_or_scope, Scope, logtalk(instantiates_class(Obj, Class, Scope), _)),
 	'$lgt_instantiates_class_'(Obj, Class, Scope).
 
 
@@ -880,19 +877,18 @@ instantiates_class(Obj, Class, Scope) :-
 % specializes_class(?object_identifier, ?object_identifier)
 
 specializes_class(Class, Superclass) :-
-	catch(
-		specializes_class(Class, Superclass, _),
-		error(Error, _),
-		throw(error(Error, specializes_class(Class, Superclass)))).
+	'$lgt_must_be'(var_or_object_identifier, Class, logtalk(specializes_class(Class, Superclass), _)),
+	'$lgt_must_be'(var_or_object_identifier, Superclass, logtalk(specializes_class(Class, Superclass), _)),
+	'$lgt_specializes_class_'(Class, Superclass, _).
 
 
 
 % specializes_class(?object_identifier, ?object_identifier, ?atom)
 
 specializes_class(Class, Superclass, Scope) :-
-	'$lgt_must_be'(var_or_object_identifier, Class, specializes_class(Class, Superclass, Scope)),
-	'$lgt_must_be'(var_or_object_identifier, Superclass, specializes_class(Class, Superclass, Scope)),
-	'$lgt_must_be'(var_or_scope, Scope, specializes_class(Class, Superclass, Scope)),
+	'$lgt_must_be'(var_or_object_identifier, Class, logtalk(specializes_class(Class, Superclass, Scope), _)),
+	'$lgt_must_be'(var_or_object_identifier, Superclass, logtalk(specializes_class(Class, Superclass, Scope), _)),
+	'$lgt_must_be'(var_or_scope, Scope, logtalk(specializes_class(Class, Superclass, Scope), _)),
 	'$lgt_specializes_class_'(Class, Superclass, Scope).
 
 
@@ -900,19 +896,18 @@ specializes_class(Class, Superclass, Scope) :-
 % extends_category(?category_identifier, ?category_identifier)
 
 extends_category(Ctg1, Ctg2) :-
-	catch(
-		extends_category(Ctg1, Ctg2, _),
-		error(Error, _),
-		throw(error(Error, extends_category(Ctg1, Ctg2)))).
+	'$lgt_must_be'(var_or_category_identifier, Ctg1, logtalk(extends_category(Ctg1, Ctg2), _)),
+	'$lgt_must_be'(var_or_category_identifier, Ctg2, logtalk(extends_category(Ctg1, Ctg2), _)),
+	'$lgt_extends_category_'(Ctg1, Ctg2, _).
 
 
 
 % extends_category(?category_identifier, ?category_identifier, ?atom)
 
 extends_category(Ctg1, Ctg2, Scope) :-
-	'$lgt_must_be'(var_or_category_identifier, Ctg1, extends_category(Ctg1, Ctg2, Scope)),
-	'$lgt_must_be'(var_or_category_identifier, Ctg2, extends_category(Ctg1, Ctg2, Scope)),
-	'$lgt_must_be'(var_or_scope, Scope, extends_category(Ctg1, Ctg2, Scope)),
+	'$lgt_must_be'(var_or_category_identifier, Ctg1, logtalk(extends_category(Ctg1, Ctg2, Scope), _)),
+	'$lgt_must_be'(var_or_category_identifier, Ctg2, logtalk(extends_category(Ctg1, Ctg2, Scope), _)),
+	'$lgt_must_be'(var_or_scope, Scope, logtalk(extends_category(Ctg1, Ctg2, Scope), _)),
 	'$lgt_extends_category_'(Ctg1, Ctg2, Scope).
 
 
@@ -920,19 +915,18 @@ extends_category(Ctg1, Ctg2, Scope) :-
 % extends_protocol(?protocol_identifier, ?protocol_identifier)
 
 extends_protocol(Ptc1, Ptc2) :-
-	catch(
-		extends_protocol(Ptc1, Ptc2, _),
-		error(Error, _),
-		throw(error(Error, extends_protocol(Ptc1, Ptc2)))).
+	'$lgt_must_be'(var_or_protocol_identifier, Ptc1, logtalk(extends_protocol(Ptc1, Ptc2), _)),
+	'$lgt_must_be'(var_or_protocol_identifier, Ptc2, logtalk(extends_protocol(Ptc1, Ptc2), _)),
+	'$lgt_extends_protocol_'(Ptc1, Ptc2, _).
 
 
 
 % extends_protocol(?protocol_identifier, ?protocol_identifier, ?atom)
 
 extends_protocol(Ptc1, Ptc2, Scope) :-
-	'$lgt_must_be'(var_or_protocol_identifier, Ptc1, extends_protocol(Ptc1, Ptc2, Scope)),
-	'$lgt_must_be'(var_or_protocol_identifier, Ptc2, extends_protocol(Ptc1, Ptc2, Scope)),
-	'$lgt_must_be'(var_or_scope, Scope, extends_protocol(Ptc1, Ptc2, Scope)),
+	'$lgt_must_be'(var_or_protocol_identifier, Ptc1, logtalk(extends_protocol(Ptc1, Ptc2, Scope), _)),
+	'$lgt_must_be'(var_or_protocol_identifier, Ptc2, logtalk(extends_protocol(Ptc1, Ptc2, Scope), _)),
+	'$lgt_must_be'(var_or_scope, Scope, logtalk(extends_protocol(Ptc1, Ptc2, Scope), _)),
 	'$lgt_extends_protocol_'(Ptc1, Ptc2, Scope).
 
 
@@ -940,19 +934,18 @@ extends_protocol(Ptc1, Ptc2, Scope) :-
 % extends_object(?object_identifier, ?object_identifier)
 
 extends_object(Prototype, Parent) :-
-	catch(
-		extends_object(Prototype, Parent, _),
-		error(Error, _),
-		throw(error(Error, extends_object(Prototype, Parent)))).
+	'$lgt_must_be'(var_or_object_identifier, Prototype, logtalk(extends_object(Prototype, Parent), _)),
+	'$lgt_must_be'(var_or_object_identifier, Parent, logtalk(extends_object(Prototype, Parent), _)),
+	'$lgt_extends_object_'(Prototype, Parent, _).
 
 
 
 % extends_object(?object_identifier, ?object_identifier, ?atom)
 
 extends_object(Prototype, Parent, Scope) :-
-	'$lgt_must_be'(var_or_object_identifier, Prototype, extends_object(Prototype, Parent, Scope)),
-	'$lgt_must_be'(var_or_object_identifier, Parent, extends_object(Prototype, Parent, Scope)),
-	'$lgt_must_be'(var_or_scope, Scope, extends_object(Prototype, Parent, Scope)),
+	'$lgt_must_be'(var_or_object_identifier, Prototype, logtalk(extends_object(Prototype, Parent, Scope), _)),
+	'$lgt_must_be'(var_or_object_identifier, Parent, logtalk(extends_object(Prototype, Parent, Scope), _)),
+	'$lgt_must_be'(var_or_scope, Scope, logtalk(extends_object(Prototype, Parent, Scope), _)),
 	'$lgt_extends_object_'(Prototype, Parent, Scope).
 
 
@@ -960,8 +953,8 @@ extends_object(Prototype, Parent, Scope) :-
 % complements_object(?category_identifier, ?object_identifier)
 
 complements_object(Category, Object) :-
-	'$lgt_must_be'(var_or_category_identifier, Category, complements_object(Category, Object)),
-	'$lgt_must_be'(var_or_object_identifier, Object, complements_object(Category, Object)),
+	'$lgt_must_be'(var_or_category_identifier, Category, logtalk(complements_object(Category, Object), _)),
+	'$lgt_must_be'(var_or_object_identifier, Object, logtalk(complements_object(Category, Object), _)),
 	'$lgt_complemented_object_'(Object, Category, _, _, _).
 
 
@@ -970,10 +963,9 @@ complements_object(Category, Object) :-
 % conforms_to_protocol(?category_identifier, ?protocol_identifier)
 
 conforms_to_protocol(ObjOrCtg, Protocol) :-
-	catch(
-		conforms_to_protocol(ObjOrCtg, Protocol, _),
-		error(Error, _),
-		throw(error(Error, conforms_to_protocol(ObjOrCtg, Protocol)))).
+	'$lgt_must_be'(var_or_object_identifier, ObjOrCtg, logtalk(conforms_to_protocol(ObjOrCtg, Protocol), _)),
+	'$lgt_must_be'(var_or_protocol_identifier, Protocol, logtalk(conforms_to_protocol(ObjOrCtg, Protocol), _)),
+	'$lgt_conforms_to_protocol'(ObjOrCtg, Protocol, _).
 
 
 
@@ -981,9 +973,9 @@ conforms_to_protocol(ObjOrCtg, Protocol) :-
 % conforms_to_protocol(?category_identifier, ?protocol_identifier, ?atom)
 
 conforms_to_protocol(ObjOrCtg, Protocol, Scope) :-
-	'$lgt_must_be'(var_or_object_identifier, ObjOrCtg, conforms_to_protocol(ObjOrCtg, Protocol, Scope)),
-	'$lgt_must_be'(var_or_protocol_identifier, Protocol, conforms_to_protocol(ObjOrCtg, Protocol, Scope)),
-	'$lgt_must_be'(var_or_scope, Scope, conforms_to_protocol(ObjOrCtg, Protocol, Scope)),
+	'$lgt_must_be'(var_or_object_identifier, ObjOrCtg, logtalk(conforms_to_protocol(ObjOrCtg, Protocol, Scope), _)),
+	'$lgt_must_be'(var_or_protocol_identifier, Protocol, logtalk(conforms_to_protocol(ObjOrCtg, Protocol, Scope), _)),
+	'$lgt_must_be'(var_or_scope, Scope, logtalk(conforms_to_protocol(ObjOrCtg, Protocol, Scope), _)),
 	'$lgt_conforms_to_protocol'(ObjOrCtg, Protocol, Scope).
 
 
@@ -1076,11 +1068,11 @@ conforms_to_protocol(ObjOrCtg, Protocol, Scope) :-
 % current_event(?event, ?object_identifier, ?callable, ?object_identifier, ?object_identifier)
 
 current_event(Event, Obj, Msg, Sender, Monitor) :-
-	'$lgt_must_be'(var_or_event, Event, current_event(Event, Obj, Msg, Sender, Monitor)),
-	'$lgt_must_be'(var_or_object_identifier, Obj, current_event(Event, Obj, Msg, Sender, Monitor)),
-	'$lgt_must_be'(var_or_callable, Msg, current_event(Event, Obj, Msg, Sender, Monitor)),
-	'$lgt_must_be'(var_or_object_identifier, Sender, current_event(Event, Obj, Msg, Sender, Monitor)),
-	'$lgt_must_be'(var_or_object_identifier, Monitor, current_event(Event, Obj, Msg, Sender, Monitor)),
+	'$lgt_must_be'(var_or_event, Event, logtalk(current_event(Event, Obj, Msg, Sender, Monitor), _)),
+	'$lgt_must_be'(var_or_object_identifier, Obj, logtalk(current_event(Event, Obj, Msg, Sender, Monitor), _)),
+	'$lgt_must_be'(var_or_callable, Msg, logtalk(current_event(Event, Obj, Msg, Sender, Monitor), _)),
+	'$lgt_must_be'(var_or_object_identifier, Sender, logtalk(current_event(Event, Obj, Msg, Sender, Monitor), _)),
+	'$lgt_must_be'(var_or_object_identifier, Monitor, logtalk(current_event(Event, Obj, Msg, Sender, Monitor), _)),
 	(	'$lgt_before_event_'(Obj, Msg, Sender, Monitor, _)
 	;	'$lgt_after_event_'(Obj, Msg, Sender, Monitor, _)
 	).
@@ -1090,11 +1082,11 @@ current_event(Event, Obj, Msg, Sender, Monitor) :-
 %define_events(@event, @object_identifier, @callable, @object_identifier, +object_identifier)
 
 define_events(Event, Obj, Msg, Sender, Monitor) :-
-	'$lgt_must_be'(var_or_event, Event, define_events(Event, Obj, Msg, Sender, Monitor)),
-	'$lgt_must_be'(var_or_object_identifier, Obj, define_events(Event, Obj, Msg, Sender, Monitor)),
-	'$lgt_must_be'(var_or_callable, Msg, define_events(Event, Obj, Msg, Sender, Monitor)),
-	'$lgt_must_be'(var_or_object_identifier, Sender, define_events(Event, Obj, Msg, Sender, Monitor)),
-	'$lgt_must_be'(object_identifier, Monitor, define_events(Event, Obj, Msg, Sender, Monitor)),
+	'$lgt_must_be'(var_or_event, Event, logtalk(define_events(Event, Obj, Msg, Sender, Monitor), _)),
+	'$lgt_must_be'(var_or_object_identifier, Obj, logtalk(define_events(Event, Obj, Msg, Sender, Monitor), _)),
+	'$lgt_must_be'(var_or_callable, Msg, logtalk(define_events(Event, Obj, Msg, Sender, Monitor), _)),
+	'$lgt_must_be'(var_or_object_identifier, Sender, logtalk(define_events(Event, Obj, Msg, Sender, Monitor), _)),
+	'$lgt_must_be'(object_identifier, Monitor, logtalk(define_events(Event, Obj, Msg, Sender, Monitor), _)),
 	(	'$lgt_current_object_'(Monitor, _, _, Def, _, _, _, _, _, _, _) ->
 		'$lgt_exec_ctx'(ExCtx, Monitor, Monitor, Monitor, [], _),
 		(	var(Event) ->
@@ -1104,7 +1096,7 @@ define_events(Event, Obj, Msg, Sender, Monitor) :-
 			'$lgt_define_events'(before, Obj, Msg, Sender, Monitor, Def, ExCtx)
 		;	'$lgt_define_events'(after, Obj, Msg, Sender, Monitor, Def, ExCtx)
 		)
-	;	throw(error(existence_error(object, Monitor), define_events(Event, Obj, Msg, Sender, Monitor)))
+	;	throw(error(existence_error(object, Monitor), logtalk(define_events(Event, Obj, Msg, Sender, Monitor), _)))
 	).
 
 
@@ -1112,14 +1104,14 @@ define_events(Event, Obj, Msg, Sender, Monitor) :-
 	(	call(Def, before(Obj, Msg, Sender), ExCtx, Call, _) ->
 		retractall('$lgt_before_event_'(Obj, Msg, Sender, Monitor, _)),
 		assertz('$lgt_before_event_'(Obj, Msg, Sender, Monitor, Call))
-	;	throw(error(existence_error(procedure, before/3), define_events(before, Obj, Msg, Sender, Monitor)))
+	;	throw(error(existence_error(procedure, before/3), logtalk(define_events(before, Obj, Msg, Sender, Monitor), _)))
 	).
 
 '$lgt_define_events'(after, Obj, Msg, Sender, Monitor, Def, ExCtx) :-
 	(	call(Def, after(Obj, Msg, Sender), ExCtx, Call, _) ->
 		retractall('$lgt_after_event_'(Obj, Msg, Sender, Monitor, _)),
 		assertz('$lgt_after_event_'(Obj, Msg, Sender, Monitor, Call))
-	;	throw(error(existence_error(procedure, after/3), define_events(after, Obj, Msg, Sender, Monitor)))
+	;	throw(error(existence_error(procedure, after/3), logtalk(define_events(after, Obj, Msg, Sender, Monitor), _)))
 	).
 
 
@@ -1127,11 +1119,11 @@ define_events(Event, Obj, Msg, Sender, Monitor) :-
 % abolish_events(@event, @object_identifier, @callable, @object_identifier, @object_identifier)
 
 abolish_events(Event, Obj, Msg, Sender, Monitor) :-
-	'$lgt_must_be'(var_or_event, Event, abolish_events(Event, Obj, Msg, Sender, Monitor)),
-	'$lgt_must_be'(var_or_object_identifier, Obj, abolish_events(Event, Obj, Msg, Sender, Monitor)),
-	'$lgt_must_be'(var_or_callable, Msg, abolish_events(Event, Obj, Msg, Sender, Monitor)),
-	'$lgt_must_be'(var_or_object_identifier, Sender, abolish_events(Event, Obj, Msg, Sender, Monitor)),
-	'$lgt_must_be'(var_or_object_identifier, Monitor, abolish_events(Event, Obj, Msg, Sender, Monitor)),
+	'$lgt_must_be'(var_or_event, Event, logtalk(abolish_events(Event, Obj, Msg, Sender, Monitor), _)),
+	'$lgt_must_be'(var_or_object_identifier, Obj, logtalk(abolish_events(Event, Obj, Msg, Sender, Monitor), _)),
+	'$lgt_must_be'(var_or_callable, Msg, logtalk(abolish_events(Event, Obj, Msg, Sender, Monitor), _)),
+	'$lgt_must_be'(var_or_object_identifier, Sender, logtalk(abolish_events(Event, Obj, Msg, Sender, Monitor), _)),
+	'$lgt_must_be'(var_or_object_identifier, Monitor, logtalk(abolish_events(Event, Obj, Msg, Sender, Monitor), _)),
 	(	var(Event) ->
 		retractall('$lgt_before_event_'(Obj, Msg, Sender, Monitor, _)),
 		retractall('$lgt_after_event_'(Obj, Msg, Sender, Monitor, _))
@@ -1149,7 +1141,7 @@ abolish_events(Event, Obj, Msg, Sender, Monitor) :-
 
 threaded(Goals) :-
 	\+ '$lgt_compiler_flag'(threads, supported),
-	throw(error(resource_error(threads), threaded(Goals))).
+	throw(error(resource_error(threads), logtalk(threaded(Goals), _))).
 
 threaded(Goals) :-
 	'$lgt_must_be'(callable, Goals, threaded(Goals)),
@@ -1161,7 +1153,7 @@ threaded(Goals) :-
 
 threaded_call(Goal, Tag) :-
 	\+ '$lgt_compiler_flag'(threads, supported),
-	throw(error(resource_error(threads), threaded_call(Goal, Tag))).
+	throw(error(resource_error(threads), logtalk(threaded_call(Goal, Tag), _))).
 
 threaded_call(Goal, Tag) :-
 	'$lgt_must_be'(callable, Goal, threaded_call(Goal, Tag)),
@@ -1174,7 +1166,7 @@ threaded_call(Goal, Tag) :-
 
 threaded_call(Goal) :-
 	\+ '$lgt_compiler_flag'(threads, supported),
-	throw(error(resource_error(threads), threaded_call(Goal))).
+	throw(error(resource_error(threads), logtalk(threaded_call(Goal), _))).
 
 threaded_call(Goal) :-
 	'$lgt_must_be'(callable, Goal, threaded_call(Goal)),
@@ -1186,7 +1178,7 @@ threaded_call(Goal) :-
 
 threaded_once(Goal, Tag) :-
 	\+ '$lgt_compiler_flag'(threads, supported),
-	throw(error(resource_error(threads), threaded_once(Goal, Tag))).
+	throw(error(resource_error(threads), logtalk(threaded_once(Goal, Tag), _))).
 
 threaded_once(Goal, Tag) :-
 	'$lgt_must_be'(callable, Goal, threaded_once(Goal, Tag)),
@@ -1199,7 +1191,7 @@ threaded_once(Goal, Tag) :-
 
 threaded_once(Goal) :-
 	\+ '$lgt_compiler_flag'(threads, supported),
-	throw(error(resource_error(threads), threaded_once(Goal))).
+	throw(error(resource_error(threads), logtalk(threaded_once(Goal), _))).
 
 threaded_once(Goal) :-
 	'$lgt_must_be'(callable, Goal, threaded_once(Goal)),
@@ -1211,7 +1203,7 @@ threaded_once(Goal) :-
 
 threaded_ignore(Goal) :-
 	\+ '$lgt_compiler_flag'(threads, supported),
-	throw(error(resource_error(threads), threaded_ignore(Goal))).
+	throw(error(resource_error(threads), logtalk(threaded_ignore(Goal), _))).
 
 threaded_ignore(Goal) :-
 	'$lgt_must_be'(callable, Goal, threaded_ignore(Goal)),
@@ -1222,7 +1214,7 @@ threaded_ignore(Goal) :-
 
 threaded_exit(Goal, Tag) :-
 	\+ '$lgt_compiler_flag'(threads, supported),
-	throw(error(resource_error(threads), threaded_exit(Goal, Tag))).
+	throw(error(resource_error(threads), logtalk(threaded_exit(Goal, Tag), _))).
 
 threaded_exit(Goal, Tag) :-
 	'$lgt_must_be'(callable, Goal, threaded_exit(Goal, Tag)),
@@ -1235,7 +1227,7 @@ threaded_exit(Goal, Tag) :-
 
 threaded_exit(Goal) :-
 	\+ '$lgt_compiler_flag'(threads, supported),
-	throw(error(resource_error(threads), threaded_exit(Goal))).
+	throw(error(resource_error(threads), logtalk(threaded_exit(Goal), _))).
 
 threaded_exit(Goal) :-
 	'$lgt_must_be'(callable, Goal, threaded_exit(Goal)),
@@ -1247,7 +1239,7 @@ threaded_exit(Goal) :-
 
 threaded_peek(Goal, Tag) :-
 	\+ '$lgt_compiler_flag'(threads, supported),
-	throw(error(resource_error(threads), threaded_peek(Goal, Tag))).
+	throw(error(resource_error(threads), logtalk(threaded_peek(Goal, Tag), _))).
 
 threaded_peek(Goal, Tag) :-
 	'$lgt_must_be'(callable, Goal, threaded_peek(Goal, Tag)),
@@ -1260,7 +1252,7 @@ threaded_peek(Goal, Tag) :-
 
 threaded_peek(Goal) :-
 	\+ '$lgt_compiler_flag'(threads, supported),
-	throw(error(resource_error(threads), threaded_peek(Goal))).
+	throw(error(resource_error(threads), logtalk(threaded_peek(Goal), _))).
 
 threaded_peek(Goal) :-
 	'$lgt_must_be'(callable, Goal, threaded_peek(Goal)),
@@ -1272,7 +1264,7 @@ threaded_peek(Goal) :-
 
 threaded_wait(Message) :-
 	\+ '$lgt_compiler_flag'(threads, supported),
-	throw(error(resource_error(threads), threaded_wait(Message))).
+	throw(error(resource_error(threads), logtalk(threaded_wait(Message), _))).
 
 threaded_wait(Message) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
@@ -1283,11 +1275,11 @@ threaded_wait(Message) :-
 
 threaded_notify(Message) :-
 	var(Message),
-	throw(error(instantiation_error, threaded_notify(Message))).
+	throw(error(instantiation_error, logtalk(threaded_notify(Message), _))).
 
 threaded_notify(Message) :-
 	\+ '$lgt_compiler_flag'(threads, supported),
-	throw(error(resource_error(threads), threaded_notify(Message))).
+	throw(error(resource_error(threads), logtalk(threaded_notify(Message), _))).
 
 threaded_notify(Message) :-
 	'$lgt_current_object_'(user, Prefix, _, _, _, _, _, _, _, _, _),
@@ -1340,7 +1332,7 @@ logtalk_compile(Files) :-
 	catch(
 		logtalk_compile(Files, []),
 		error(Error, _),
-		throw(error(Error, logtalk_compile(Files)))).
+		throw(error(Error, logtalk(logtalk_compile(Files), _)))).
 
 
 
@@ -1361,7 +1353,7 @@ logtalk_compile(Files, Flags) :-
 		('$lgt_clear_compiler_flags',
 		 '$lgt_clean_pp_clauses',
 		 '$lgt_reset_warnings_counter',
-		 throw(error(Error, logtalk_compile(Files, Flags))))).
+		 throw(error(Error, logtalk(logtalk_compile(Files, Flags), _))))).
 
 
 
@@ -1660,7 +1652,7 @@ logtalk_load(Files) :-
 	catch(
 		logtalk_load(Files, []),
 		error(Error, _),
-		throw(error(Error, logtalk_load(Files)))).
+		throw(error(Error, logtalk(logtalk_load(Files), _)))).
 
 
 
@@ -1681,7 +1673,7 @@ logtalk_load(Files, Flags) :-
 		('$lgt_clear_compiler_flags',
 		 '$lgt_clean_pp_clauses',
 		 '$lgt_reset_warnings_counter',
-		 throw(error(Error, logtalk_load(Files, Flags))))).
+		 throw(error(Error, logtalk(logtalk_load(Files, Flags), _))))).
 
 
 
@@ -1762,12 +1754,12 @@ set_logtalk_flag(Flag, Value) :-
 current_logtalk_flag(Flag, Value) :-
 	nonvar(Flag),
 	\+ atom(Flag),
-	throw(error(type_error(atom, Flag), current_logtalk_flag(Flag, Value))).
+	throw(error(type_error(atom, Flag), logtalk(current_logtalk_flag(Flag, Value), _))).
 
 current_logtalk_flag(Flag, Value) :-
 	atom(Flag),
 	\+ '$lgt_valid_flag'(Flag),
-	throw(error(domain_error(logtalk_flag, Flag), current_logtalk_flag(Flag, Value))).
+	throw(error(domain_error(logtalk_flag, Flag), logtalk(current_logtalk_flag(Flag, Value), _))).
 
 current_logtalk_flag(Flag, Value) :-
 	'$lgt_current_flag_'(Flag, Value).
@@ -1802,7 +1794,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_obj_exists'(Obj, Pred, Sender) :-
 	(	'$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _) ->
 		true
-	;	throw(error(existence_error(object, Obj), Obj::Pred, Sender))
+	;	throw(error(existence_error(object, Obj), logtalk(Obj::Pred, Sender)))
 	).
 
 
@@ -1814,21 +1806,21 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_current_predicate'(Obj, Pred, Sender, _) :-
 	nonvar(Pred),
 	Pred \= _/_,
-	throw(error(type_error(predicate_indicator, Pred), Obj::current_predicate(Pred), Sender)).
+	throw(error(type_error(predicate_indicator, Pred), logtalk(Obj::current_predicate(Pred), Sender))).
 
 '$lgt_current_predicate'(Obj, Functor/Arity, Sender, _) :-
 	nonvar(Functor),
 	\+ atom(Functor),
-	throw(error(type_error(predicate_indicator, Functor/Arity), Obj::current_predicate(Functor/Arity), Sender)).
+	throw(error(type_error(predicate_indicator, Functor/Arity), logtalk(Obj::current_predicate(Functor/Arity), Sender))).
 
 '$lgt_current_predicate'(Obj, Functor/Arity, Sender, _) :-
 	nonvar(Arity),
 	\+ (integer(Arity), Arity >= 0),
-	throw(error(type_error(predicate_indicator, Functor/Arity), Obj::current_predicate(Functor/Arity), Sender)).
+	throw(error(type_error(predicate_indicator, Functor/Arity), logtalk(Obj::current_predicate(Functor/Arity), Sender))).
 
 '$lgt_current_predicate'(Obj, Functor/Arity, Sender, _) :-
 	\+ '$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
-	throw(error(existence_error(object, Obj), Obj::current_predicate(Functor/Arity), Sender)).
+	throw(error(existence_error(object, Obj), logtalk(Obj::current_predicate(Functor/Arity), Sender))).
 
 '$lgt_current_predicate'(Obj, Functor/Arity, Sender, Scope) :-
 	nonvar(Functor),
@@ -1866,20 +1858,20 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, _) :-
 	var(Pred),
-	throw(error(instantiation_error, Obj::predicate_property(Pred, Prop), Sender)).
+	throw(error(instantiation_error, logtalk(Obj::predicate_property(Pred, Prop), Sender))).
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, _) :-
 	nonvar(Prop),
 	\+ '$lgt_valid_predicate_property'(Prop),
-	throw(error(domain_error(predicate_property, Prop), Obj::predicate_property(Pred, Prop), Sender)).
+	throw(error(domain_error(predicate_property, Prop), logtalk(Obj::predicate_property(Pred, Prop), Sender))).
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, _) :-
 	\+ callable(Pred),
-	throw(error(type_error(callable, Pred), Obj::predicate_property(Pred, Prop), Sender)).
+	throw(error(type_error(callable, Pred), logtalk(Obj::predicate_property(Pred, Prop), Sender))).
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, _) :-
 	\+ '$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _),
-	throw(error(existence_error(object, Obj), Obj::predicate_property(Pred, Prop), Sender)).
+	throw(error(existence_error(object, Obj), logtalk(Obj::predicate_property(Pred, Prop), Sender))).
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, Scope) :-
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, Rnm, _),
@@ -2073,7 +2065,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % abolish/1 built-in method
 
 '$lgt_abolish'(Obj, Pred, Sender, Scope) :-
-	'$lgt_must_be'(predicate_indicator, Pred, Obj::abolish(Pred), Sender),
+	'$lgt_must_be'(predicate_indicator, Pred, logtalk(Obj::abolish(Pred), Sender)),
 	'$lgt_abolish_checked'(Obj, Pred, Sender, Scope).
 
 
@@ -2099,15 +2091,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 					;	true
 					)
 				;	% static predicate declaration:
-					throw(error(permission_error(modify, predicate_declaration, Pred), Obj::abolish(Functor/Arity), Sender))
+					throw(error(permission_error(modify, predicate_declaration, Pred), logtalk(Obj::abolish(Functor/Arity), Sender)))
 				)
 			;	% predicate is static:
-				throw(error(permission_error(modify, static_predicate, Pred), Obj::abolish(Functor/Arity), Sender))
+				throw(error(permission_error(modify, static_predicate, Pred), logtalk(Obj::abolish(Functor/Arity), Sender)))
 			)
 		;	% predicate is not within the scope of the sender:
 			(	PScope == p ->
-				throw(error(permission_error(modify, private_predicate, Pred), Obj::abolish(Functor/Arity), Sender))
-			;	throw(error(permission_error(modify, protected_predicate, Pred), Obj::abolish(Functor/Arity), Sender))
+				throw(error(permission_error(modify, private_predicate, Pred), logtalk(Obj::abolish(Functor/Arity), Sender)))
+			;	throw(error(permission_error(modify, protected_predicate, Pred), logtalk(Obj::abolish(Functor/Arity), Sender)))
 			)
 		)
 	;	functor(DDefClause, DDef, 3),
@@ -2120,11 +2112,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		retractall(DDefClause),
 		'$lgt_clean_lookup_caches'(Pred)
 	;	% no predicate declaration:
-		throw(error(existence_error(predicate_declaration, Pred), Obj::abolish(Functor/Arity), Sender))
+		throw(error(existence_error(predicate_declaration, Pred), logtalk(Obj::abolish(Functor/Arity), Sender)))
 	).
 
 '$lgt_abolish_checked'(Obj, Functor/Arity, Sender, _) :-
-	throw(error(existence_error(object, Obj), Obj::abolish(Functor/Arity), Sender)).
+	throw(error(existence_error(object, Obj), logtalk(Obj::abolish(Functor/Arity), Sender))).
 
 
 
@@ -2139,7 +2131,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	asserta(TClause).
 
 '$lgt_asserta'(Obj, Clause, Sender, TestScope, DclScope) :-
-	'$lgt_must_be'(clause, Clause, Obj::asserta(Clause), Sender),
+	'$lgt_must_be'(clause, Clause, logtalk(Obj::asserta(Clause), Sender)),
 	(	Clause = (Head :- Body) ->
 		(	Body == true ->
 			'$lgt_asserta_fact_checked'(Obj, Head, Sender, TestScope, DclScope)
@@ -2165,12 +2157,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			)
 		;	% predicate is not within the scope of the sender:
 			(	Scope == p ->
-				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta((Head:-Body)), Sender))
-			;	throw(error(permission_error(modify, protected_predicate, Head), Obj::asserta((Head:-Body)), Sender))
+				throw(error(permission_error(modify, private_predicate, Head), logtalk(Obj::asserta((Head:-Body)), Sender)))
+			;	throw(error(permission_error(modify, protected_predicate, Head), logtalk(Obj::asserta((Head:-Body)), Sender)))
 			)
 		)
 	;	% predicate is static:
-		throw(error(permission_error(modify, static_predicate, Head), Obj::asserta((Head:-Body)), Sender))
+		throw(error(permission_error(modify, static_predicate, Head), logtalk(Obj::asserta((Head:-Body)), Sender)))
 	).
 
 '$lgt_asserta_rule_checked'(Obj, (Head:-Body), Sender, _, _) :-
@@ -2196,16 +2188,16 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			)
 		;	% predicate is not within the scope of the sender:
 			(	Scope == p ->
-				throw(error(permission_error(modify, private_predicate, Head), Obj::asserta(Head), Sender))
-			;	throw(error(permission_error(modify, protected_predicate, Head), Obj::asserta(Head), Sender))
+				throw(error(permission_error(modify, private_predicate, Head), logtalk(Obj::asserta(Head), Sender)))
+			;	throw(error(permission_error(modify, protected_predicate, Head), logtalk(Obj::asserta(Head), Sender)))
 			)
 		)
 	;	% predicate is static:
-		throw(error(permission_error(modify, static_predicate, Head), Obj::asserta(Head), Sender))
+		throw(error(permission_error(modify, static_predicate, Head), logtalk(Obj::asserta(Head), Sender)))
 	).
 
 '$lgt_asserta_fact_checked'(Obj, Head, Sender, _, _) :-
-	throw(error(existence_error(object, Obj), Obj::asserta(Head), Sender)).
+	throw(error(existence_error(object, Obj), logtalk(Obj::asserta(Head), Sender))).
 
 
 
@@ -2220,7 +2212,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	assertz(TClause).
 
 '$lgt_assertz'(Obj, Clause, Sender, TestScope, DclScope) :-
-	'$lgt_must_be'(clause, Clause, Obj::assertz(Clause), Sender),
+	'$lgt_must_be'(clause, Clause, logtalk(Obj::assertz(Clause), Sender)),
 	(	Clause = (Head :- Body) ->
 		(	Body == true ->
 			'$lgt_assertz_fact_checked'(Obj, Head, Sender, TestScope, DclScope)
@@ -2246,12 +2238,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			)
 		;	% predicate is not within the scope of the sender:
 			(	Scope == p ->
-				throw(error(permission_error(modify, private_predicate, Head), Obj::assertz((Head:-Body)), Sender))
-			;	throw(error(permission_error(modify, protected_predicate, Head), Obj::assertz((Head:-Body)), Sender))
+				throw(error(permission_error(modify, private_predicate, Head), logtalk(Obj::assertz((Head:-Body)), Sender)))
+			;	throw(error(permission_error(modify, protected_predicate, Head), logtalk(Obj::assertz((Head:-Body)), Sender)))
 			)
 		)
 	;	% predicate is static:
-		throw(error(permission_error(modify, static_predicate, Head), Obj::assertz((Head:-Body)), Sender))
+		throw(error(permission_error(modify, static_predicate, Head), logtalk(Obj::assertz((Head:-Body)), Sender)))
 	).
 
 '$lgt_assertz_rule_checked'(Obj, (Head:-Body), Sender, _, _) :-
@@ -2277,16 +2269,16 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			)
 		;	% predicate is not within the scope of the sender:
 			(	Scope == p ->
-				throw(error(permission_error(modify, private_predicate, Head), Obj::assertz(Head), Sender))
-			;	throw(error(permission_error(modify, protected_predicate, Head), Obj::assertz(Head), Sender))
+				throw(error(permission_error(modify, private_predicate, Head), logtalk(Obj::assertz(Head), Sender)))
+			;	throw(error(permission_error(modify, protected_predicate, Head), logtalk(Obj::assertz(Head), Sender)))
 			)
 		)
 	;	% predicate is static:
-		throw(error(permission_error(modify, static_predicate, Head), Obj::assertz(Head), Sender))
+		throw(error(permission_error(modify, static_predicate, Head), logtalk(Obj::assertz(Head), Sender)))
 	).
 
 '$lgt_assertz_fact_checked'(Obj, Head, Sender, _, _) :-
-	throw(error(existence_error(object, Obj), Obj::assertz(Head), Sender)).
+	throw(error(existence_error(object, Obj), logtalk(Obj::assertz(Head), Sender))).
 
 
 
@@ -2312,7 +2304,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		assertz(Clause),
 		Scope = DclScope, Type = (dynamic), Meta = no
 	;	% object doesn't allow dynamic declaration of new predicates:
-		throw(error(permission_error(create, predicate_declaration, Pred), Goal, Sender))
+		throw(error(permission_error(create, predicate_declaration, Pred), logtalk(Goal, Sender)))
 	).
 
 
@@ -2350,7 +2342,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % clause/2 built-in method
 
 '$lgt_clause'(Obj, Head, Body, Sender, Scope) :-
-	'$lgt_must_be'(clause_or_partial_clause, (Head:-Body), Obj::clause(Head, Body), Sender),
+	'$lgt_must_be'(clause_or_partial_clause, (Head:-Body), logtalk(Obj::clause(Head, Body), Sender)),
 	'$lgt_clause_checked'(Obj, Head, Body, Sender, Scope).
 
 
@@ -2382,12 +2374,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				)
 			;	% predicate is not within the scope of the sender:
 				(	PScope == p ->
-					throw(error(permission_error(access, private_predicate, Head), Obj::clause(Head, Body), Sender))
-				;	throw(error(permission_error(access, protected_predicate, Head), Obj::clause(Head, Body), Sender))
+					throw(error(permission_error(access, private_predicate, Head), logtalk(Obj::clause(Head, Body), Sender)))
+				;	throw(error(permission_error(access, protected_predicate, Head), logtalk(Obj::clause(Head, Body), Sender)))
 				)
 			)
 		;	% predicate is static:
-			throw(error(permission_error(access, static_predicate, Head), Obj::clause(Head, Body), Sender))
+			throw(error(permission_error(access, static_predicate, Head), logtalk(Obj::clause(Head, Body), Sender)))
 		)
 	;	% local dynamic predicate with no scope declaration:
 		(	Obj = Sender,
@@ -2399,12 +2391,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				Body = true
 			;	TBody = Body
 			)
-		;	throw(error(existence_error(predicate_declaration, Head), Obj::clause(Head, Body), Sender))
+		;	throw(error(existence_error(predicate_declaration, Head), logtalk(Obj::clause(Head, Body), Sender)))
 		)
 	).
 
 '$lgt_clause_checked'(Obj, Head, Body, Sender, _) :-
-	throw(error(existence_error(object, Obj), Obj::clause(Head, Body), Sender)).
+	throw(error(existence_error(object, Obj), logtalk(Obj::clause(Head, Body), Sender))).
 
 
 
@@ -2413,7 +2405,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % retract/1 built-in method
 
 '$lgt_retract'(Obj, Clause, Sender, Scope) :-
-	'$lgt_must_be'(clause_or_partial_clause, Clause, Obj::retract(Clause), Sender),
+	'$lgt_must_be'(clause_or_partial_clause, Clause, logtalk(Obj::retract(Clause), Sender)),
 	(	Clause = (Head :- Body) ->
 		(	var(Body) ->
 			'$lgt_retract_var_body_checked'(Obj, Clause, Sender, Scope)
@@ -2451,12 +2443,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				)
 			;	% predicate is not within the scope of the sender:
 				(	PScope == p ->
-					throw(error(permission_error(modify, private_predicate, Head), Obj::retract((Head:-Body)), Sender))
-				;	throw(error(permission_error(modify, protected_predicate, Head), Obj::retract((Head:-Body)), Sender))
+					throw(error(permission_error(modify, private_predicate, Head), logtalk(Obj::retract((Head:-Body)), Sender)))
+				;	throw(error(permission_error(modify, protected_predicate, Head), logtalk(Obj::retract((Head:-Body)), Sender)))
 				)
 			)
 		;	% predicate is static:
-			throw(error(permission_error(modify, static_predicate, Head), Obj::retract((Head:-Body)), Sender))
+			throw(error(permission_error(modify, static_predicate, Head), logtalk(Obj::retract((Head:-Body)), Sender)))
 		)
 	;	% local dynamic predicate with no scope declaration:
 		(	Obj = Sender,
@@ -2468,12 +2460,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				Body = true
 			;	TBody = Body
 			)
-		;	throw(error(existence_error(predicate_declaration, Head), Obj::retract((Head:-Body)), Sender))
+		;	throw(error(existence_error(predicate_declaration, Head), logtalk(Obj::retract((Head:-Body)), Sender)))
 		)
 	).
 
 '$lgt_retract_var_body_checked'(Obj, (Head:-Body), Sender, _) :-
-	throw(error(existence_error(object, Obj), Obj::retract((Head:-Body)), Sender)).
+	throw(error(existence_error(object, Obj), logtalk(Obj::retract((Head:-Body)), Sender))).
 
 
 '$lgt_retract_rule_checked'(Obj, (Head:-Body), Sender, Scope) :-
@@ -2490,23 +2482,23 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				)
 			;	% predicate is not within the scope of the sender:
 				(	PScope == p ->
-					throw(error(permission_error(modify, private_predicate, Head), Obj::retract((Head:-Body)), Sender))
-				;	throw(error(permission_error(modify, protected_predicate, Head), Obj::retract((Head:-Body)), Sender))
+					throw(error(permission_error(modify, private_predicate, Head), logtalk(Obj::retract((Head:-Body)), Sender)))
+				;	throw(error(permission_error(modify, protected_predicate, Head), logtalk(Obj::retract((Head:-Body)), Sender)))
 				)
 			)
 		;	% predicate is static:
-			throw(error(permission_error(modify, static_predicate, Head), Obj::retract((Head:-Body)), Sender))
+			throw(error(permission_error(modify, static_predicate, Head), logtalk(Obj::retract((Head:-Body)), Sender)))
 		)
 	;	% local dynamic predicate with no scope declaration:
 		(	Obj = Sender,
 			call(DDef, Head, _, THead) ->
 			retract((THead :- ('$lgt_nop'(Body), _)))
-		;	throw(error(existence_error(predicate_declaration, Head), Obj::retract((Head:-Body)), Sender))
+		;	throw(error(existence_error(predicate_declaration, Head), logtalk(Obj::retract((Head:-Body)), Sender)))
 		)
 	).
 
 '$lgt_retract_rule_checked'(Obj, (Head:-Body), Sender, _) :-
-	throw(error(existence_error(object, Obj), Obj::retract((Head:-Body)), Sender)).
+	throw(error(existence_error(object, Obj), logtalk(Obj::retract((Head:-Body)), Sender))).
 
 
 '$lgt_retract_fact_checked'(Obj, Head, Sender, _) :-
@@ -2538,12 +2530,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				)
 			;	% predicate is not within the scope of the sender:
 				(	PScope == p ->
-					throw(error(permission_error(modify, private_predicate, Head), Obj::retract(Head), Sender))
-				;	throw(error(permission_error(modify, protected_predicate, Head), Obj::retract(Head), Sender))
+					throw(error(permission_error(modify, private_predicate, Head), logtalk(Obj::retract(Head), Sender)))
+				;	throw(error(permission_error(modify, protected_predicate, Head), logtalk(Obj::retract(Head), Sender)))
 				)
 			)
 		;	% predicate is static:
-			throw(error(permission_error(modify, static_predicate, Head), Obj::retract(Head), Sender))
+			throw(error(permission_error(modify, static_predicate, Head), logtalk(Obj::retract(Head), Sender)))
 		)
 	;	% local dynamic predicate with no scope declaration:
 		(	call(DDef, Head, _, THead) ->
@@ -2552,12 +2544,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, p, (dynamic), Sender, THead),
 				retract(THead)
 			)
-		;	throw(error(existence_error(predicate_declaration, Head), Obj::retract(Head), Sender))
+		;	throw(error(existence_error(predicate_declaration, Head), logtalk(Obj::retract(Head), Sender)))
 		)
 	).
 
 '$lgt_retract_fact_checked'(Obj, Head, Sender, _) :-
-	throw(error(existence_error(object, Obj), Obj::retract(Head), Sender)).
+	throw(error(existence_error(object, Obj), logtalk(Obj::retract(Head), Sender))).
 
 
 
@@ -2566,7 +2558,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % retractall/1 built-in method
 
 '$lgt_retractall'(Obj, Head, Sender, Scope) :-
-	'$lgt_must_be'(callable, Head, Obj::retractall(Head), Sender),
+	'$lgt_must_be'(callable, Head, logtalk(Obj::retractall(Head), Sender)),
 	'$lgt_retractall_checked'(Obj, Head, Sender, Scope).
 
 
@@ -2596,12 +2588,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				)
 			;	% predicate is not within the scope of the sender:
 				(	PScope == p ->
-					throw(error(permission_error(modify, private_predicate, Head), Obj::retractall(Head), Sender))
-				;	throw(error(permission_error(modify, protected_predicate, Head), Obj::retractall(Head), Sender))
+					throw(error(permission_error(modify, private_predicate, Head), logtalk(Obj::retractall(Head), Sender)))
+				;	throw(error(permission_error(modify, protected_predicate, Head), logtalk(Obj::retractall(Head), Sender)))
 				)
 			)
 		;	% predicate is static:
-			throw(error(permission_error(modify, static_predicate, Head), Obj::retractall(Head), Sender))
+			throw(error(permission_error(modify, static_predicate, Head), logtalk(Obj::retractall(Head), Sender)))
 		)
 	;	% local dynamic predicate with no scope declaration:
 		(	Obj = Sender,
@@ -2611,12 +2603,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, p, (dynamic), Sender, THead)
 			),
 			retractall(THead)
-		;	throw(error(existence_error(predicate_declaration, Head), Obj::retractall(Head), Sender))
+		;	throw(error(existence_error(predicate_declaration, Head), logtalk(Obj::retractall(Head), Sender)))
 		)
 	).
 
 '$lgt_retractall_checked'(Obj, Head, Sender, _) :-
-	throw(error(existence_error(object, Obj), Obj::retractall(Head), Sender)).
+	throw(error(existence_error(object, Obj), logtalk(Obj::retractall(Head), Sender))).
 
 
 
@@ -2698,8 +2690,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_phrase'(GRBody, Input, ExCtx) :-
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _, _),
-	'$lgt_must_be'(callable, GRBody, phrase(GRBody, Input), This),
-	'$lgt_must_be'(list_or_partial_list, Input, phrase(GRBody, Input), This),
+	'$lgt_must_be'(callable, GRBody, logtalk(phrase(GRBody, Input), This)),
+	'$lgt_must_be'(list_or_partial_list, Input, logtalk(phrase(GRBody, Input), This)),
 	'$lgt_dcg_body'(GRBody, S0, S, Pred),
 	'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _),
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, ExCtx, runtime, _),
@@ -2718,9 +2710,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_phrase'(GRBody, Input, Rest, ExCtx) :-
 	'$lgt_exec_ctx'(ExCtx, Sender, This, Self, _, _),
-	'$lgt_must_be'(callable, GRBody, phrase(GRBody, Input, Rest), This),
-	'$lgt_must_be'(list_or_partial_list, Input, phrase(GRBody, Input, Rest), This),
-	'$lgt_must_be'(list_or_partial_list, Rest, phrase(GRBody, Input, Rest), This),
+	'$lgt_must_be'(callable, GRBody, logtalk(phrase(GRBody, Input, Rest), This)),
+	'$lgt_must_be'(list_or_partial_list, Input, logtalk(phrase(GRBody, Input, Rest), This)),
+	'$lgt_must_be'(list_or_partial_list, Rest, logtalk(phrase(GRBody, Input, Rest), This)),
 	'$lgt_dcg_body'(GRBody, S0, S, Pred),
 	'$lgt_current_object_'(This, Prefix, _, _, _, _, _, _, _, _, _),
 	'$lgt_comp_ctx'(Ctx, _, Sender, This, Self, Prefix, [], _, ExCtx, runtime, _),
@@ -2835,7 +2827,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % known at compile time
 
 '$lgt_send_to_self'(Obj, Pred, Sender) :-
-	'$lgt_must_be'(callable, Pred, ::Pred, Sender),
+	'$lgt_must_be'(callable, Pred, logtalk(::Pred, Sender)),
 	'$lgt_send_to_self_'(Obj, Pred, Sender).
 
 
@@ -2872,15 +2864,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				fail
 			)
 		;	% message is not within the scope of the sender:
-			throw(error(permission_error(access, private_predicate, Pred), ::Pred, Sender))
+			throw(error(permission_error(access, private_predicate, Pred), logtalk(::Pred, Sender)))
 		)
 	;	% no predicate declaration, check if it's a private built-in method or a Prolog built-in meta-predicate:
 		('$lgt_built_in_method'(Pred, _, _, _); '$lgt_pl_meta_predicate'(Pred, _, _)) ->
-		throw(error(permission_error(access, private_predicate, Pred), ::Pred, Sender))
+		throw(error(permission_error(access, private_predicate, Pred), logtalk(::Pred, Sender)))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
-	;	throw(error(existence_error(predicate_declaration, Pred), ::Pred, Sender))
+	;	throw(error(existence_error(predicate_declaration, Pred), logtalk(::Pred, Sender)))
 	).
 
 
@@ -2891,8 +2883,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % are not known at compile time
 
 '$lgt_send_to_obj'(Obj, Pred, Sender) :-
-	'$lgt_must_be'(object_identifier, Obj, Obj::Pred, Sender),
-	'$lgt_must_be'(callable, Pred, Obj::Pred, Sender),
+	'$lgt_must_be'(object_identifier, Obj, logtalk(Obj::Pred, Sender)),
+	'$lgt_must_be'(callable, Pred, logtalk(Obj::Pred, Sender)),
 	'$lgt_send_to_obj_'(Obj, Pred, Sender).
 
 
@@ -2944,22 +2936,22 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			)
 		;	% message is not within the scope of the sender:
 			(	Scope == p ->
-				throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
-			;	throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))
+				throw(error(permission_error(access, private_predicate, Pred), logtalk(Obj::Pred, Sender)))
+			;	throw(error(permission_error(access, protected_predicate, Pred), logtalk(Obj::Pred, Sender)))
 			)
 		)
 	;	% no predicate declaration, check if it's a private built-in method or a Prolog built-in meta-predicate:
 		('$lgt_built_in_method'(Pred, _, _, _); '$lgt_pl_meta_predicate'(Pred, _, _)) ->
-		throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
+		throw(error(permission_error(access, private_predicate, Pred), logtalk(Obj::Pred, Sender)))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
-	;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))
+	;	throw(error(existence_error(predicate_declaration, Pred), logtalk(Obj::Pred, Sender)))
 	).
 
 '$lgt_send_to_obj_nv'({Proxy}, Pred, Sender) :-
 	!,
-	catch(Proxy, error(Error, _), throw(error(Error, {Proxy}::Pred, Sender))),
+	catch(Proxy, error(Error, _), throw(error(Error, logtalk({Proxy}::Pred, Sender)))),
 	'$lgt_send_to_obj_'(Proxy, Pred, Sender).
 
 '$lgt_send_to_obj_nv'(Obj, Pred, _) :-		% allow Obj::Pred to be used as a shortcut
@@ -2969,7 +2961,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	':'(Obj, Pred).
 
 '$lgt_send_to_obj_nv'(Obj, Pred, Sender) :-
-	throw(error(existence_error(object, Obj), Obj::Pred, Sender)).
+	throw(error(existence_error(object, Obj), logtalk(Obj::Pred, Sender))).
 
 
 
@@ -2992,8 +2984,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % are not known at compile time
 
 '$lgt_send_to_obj_ne'(Obj, Pred, Sender) :-
-	'$lgt_must_be'(object_identifier, Obj, Obj::Pred, Sender),
-	'$lgt_must_be'(callable, Pred, Obj::Pred, Sender),
+	'$lgt_must_be'(object_identifier, Obj, logtalk(Obj::Pred, Sender)),
+	'$lgt_must_be'(callable, Pred, logtalk(Obj::Pred, Sender)),
 	'$lgt_send_to_obj_ne_'(Obj, Pred, Sender).
 
 
@@ -3043,22 +3035,22 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			)
 		;	% message is not within the scope of the sender:
 			(	Scope == p ->
-				throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
-			;	throw(error(permission_error(access, protected_predicate, Pred), Obj::Pred, Sender))
+				throw(error(permission_error(access, private_predicate, Pred), logtalk(Obj::Pred, Sender)))
+			;	throw(error(permission_error(access, protected_predicate, Pred), logtalk(Obj::Pred, Sender)))
 			)
 		)
 	;	% no predicate declaration, check if it's a private built-in method or a Prolog built-in meta-predicate:
 		('$lgt_built_in_method'(Pred, _, _, _); '$lgt_pl_meta_predicate'(Pred, _, _)) ->
-		throw(error(permission_error(access, private_predicate, Pred), Obj::Pred, Sender))
+		throw(error(permission_error(access, private_predicate, Pred), logtalk(Obj::Pred, Sender)))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
-	;	throw(error(existence_error(predicate_declaration, Pred), Obj::Pred, Sender))
+	;	throw(error(existence_error(predicate_declaration, Pred), logtalk(Obj::Pred, Sender)))
 	).
 
 '$lgt_send_to_obj_ne_nv'({Proxy}, Pred, Sender) :-
 	!,
-	catch(Proxy, error(Error, _), throw(error(Error, {Proxy}::Pred, Sender))),
+	catch(Proxy, error(Error, _), throw(error(Error, logtalk({Proxy}::Pred, Sender)))),
 	'$lgt_send_to_obj_ne_'(Proxy, Pred, Sender).
 
 '$lgt_send_to_obj_ne_nv'(Obj, Pred, _) :-	% allow Obj::Pred to be used as a shortcut
@@ -3068,7 +3060,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	':'(Obj, Pred).
 
 '$lgt_send_to_obj_ne_nv'(Obj, Pred, Sender) :-
-	throw(error(existence_error(object, Obj), Obj::Pred, Sender)).
+	throw(error(existence_error(object, Obj), logtalk(Obj::Pred, Sender))).
 
 
 
@@ -3139,11 +3131,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_obj_super_call_other'(Super, Pred, ExCtx) :-
 	(	var(Pred) ->
 		'$lgt_exec_ctx_this'(ExCtx, This),
-		throw(error(instantiation_error, ^^Pred, This))
+		throw(error(instantiation_error, logtalk(^^Pred, This)))
 	;	callable(Pred) ->
 		'$lgt_obj_super_call_other_'(Super, Pred, ExCtx)
 	;	'$lgt_exec_ctx_this'(ExCtx, This),
-		throw(error(type_error(callable, Pred), ^^Pred, This))
+		throw(error(type_error(callable, Pred), logtalk(^^Pred, This)))
 	).
 
 
@@ -3180,15 +3172,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				fail
 			)
 		;	% predicate is not within the scope of the sender:
-			throw(error(permission_error(access, private_predicate, Pred), ^^Pred, This))
+			throw(error(permission_error(access, private_predicate, Pred), logtalk(^^Pred, This)))
 		)
 	;	% no predicate declaration, check if it's a private built-in method or a Prolog built-in meta-predicate:
 		('$lgt_built_in_method'(Pred, _, _, _); '$lgt_pl_meta_predicate'(Pred, _, _)) ->
-		throw(error(permission_error(access, private_predicate, Pred), ^^Pred, This))
+		throw(error(permission_error(access, private_predicate, Pred), logtalk(^^Pred, This)))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
-	;	throw(error(existence_error(predicate_declaration, Pred), ^^Pred, This))
+	;	throw(error(existence_error(predicate_declaration, Pred), logtalk(^^Pred, This)))
 	).
 
 
@@ -3200,10 +3192,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_ctg_super_call_other'(Ctg, Pred, ExCtx) :-
 	(	var(Pred) ->
-		throw(error(instantiation_error, ^^Pred, Ctg))
+		throw(error(instantiation_error, logtalk(^^Pred, Ctg)))
 	;	callable(Pred) ->
 		'$lgt_ctg_super_call_other_'(Ctg, Pred, ExCtx)
-	;	throw(error(type_error(callable, Pred), ^^Pred, Ctg))
+	;	throw(error(type_error(callable, Pred), logtalk(^^Pred, Ctg)))
 	).
 
 
@@ -3236,15 +3228,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				fail
 			)
 		;	% predicate is not within the scope of the sender:
-			throw(error(permission_error(access, private_predicate, Pred), ^^Pred, Ctg))
+			throw(error(permission_error(access, private_predicate, Pred), logtalk(^^Pred, Ctg)))
 		)
 	;	% no predicate declaration, check if it's a private built-in method or a Prolog built-in meta-predicate:
 		('$lgt_built_in_method'(Pred, _, _, _); '$lgt_pl_meta_predicate'(Pred, _, _)) ->
-		throw(error(permission_error(access, private_predicate, Pred), ^^Pred, Ctg))
+		throw(error(permission_error(access, private_predicate, Pred), logtalk(^^Pred, Ctg)))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
-	;	throw(error(existence_error(predicate_declaration, Pred), ^^Pred, Ctg))
+	;	throw(error(existence_error(predicate_declaration, Pred), logtalk(^^Pred, Ctg)))
 	).
 
 
@@ -3278,8 +3270,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	var(Closure),
 	Call =.. [call, Closure| ExtraArgs],
 	(	atom(MetaCallCtx) ->
-		throw(error(instantiation_error, This::Call, This))
-	;	throw(error(instantiation_error, Sender::Call, This))
+		throw(error(instantiation_error, logtalk(This::Call, This)))
+	;	throw(error(instantiation_error, logtalk(Sender::Call, This)))
 	).
 
 '$lgt_metacall'({Closure}, ExtraArgs, _, _, This, _) :-		% pre-compiled closures or calls
@@ -3294,33 +3286,33 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		call(Goal)
 	;	var(Closure) ->
 		Call =.. [call, {Closure}| ExtraArgs],
-		throw(error(instantiation_error, Call, This))
+		throw(error(instantiation_error, logtalk(Call, This)))
 	;	Call =.. [call, {Closure}| ExtraArgs],
-		throw(error(type_error(callable, Closure), Call, This))
+		throw(error(type_error(callable, Closure), logtalk(Call, This)))
 	).
 
 '$lgt_metacall'(::Closure, ExtraArgs, _, _, This, Self) :-
 	!,
 	(	var(Closure) ->
 		Call =.. [call, ::Closure| ExtraArgs],
-		throw(error(instantiation_error, Call, This))
+		throw(error(instantiation_error, logtalk(Call, This)))
 	;	callable(Closure) ->
 		Closure =.. [Functor| Args],
 		'$lgt_append'(Args, ExtraArgs, FullArgs),
 		Goal =.. [Functor| FullArgs],
 		'$lgt_send_to_self_'(Self, Goal, This)
 	;	Call =.. [call, ::Closure| ExtraArgs],
-		throw(error(type_error(callable, Closure), Call, This))
+		throw(error(type_error(callable, Closure), logtalk(Call, This)))
 	).
 
 '$lgt_metacall'(Obj::Closure, ExtraArgs, _, _, This, _) :-
 	!,
 	(	var(Obj) ->
 		Call =.. [call, Obj::Closure| ExtraArgs],
-		throw(error(instantiation_error, Call, This))
+		throw(error(instantiation_error, logtalk(Call, This)))
 	;	var(Closure) ->
 		Call =.. [call, Obj::Closure| ExtraArgs],
-		throw(error(instantiation_error, Call, This))
+		throw(error(instantiation_error, logtalk(Call, This)))
 	;	callable(Obj), callable(Closure) ->
 		Closure =.. [Functor| Args],
 		'$lgt_append'(Args, ExtraArgs, FullArgs),
@@ -3330,34 +3322,34 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		;	'$lgt_send_to_obj_ne_'(Obj, Goal, This)
 		)
 	;	Call =.. [call, Obj::Closure| ExtraArgs],
-		throw(error(type_error(callable, Closure), Call, This))
+		throw(error(type_error(callable, Closure), logtalk(Call, This)))
 	).
 
 '$lgt_metacall'(Obj<<Closure, ExtraArgs, _, _, This, _) :-
 	!,
 	(	var(Obj) ->
 		Call =.. [call, Obj<<Closure| ExtraArgs],
-		throw(error(instantiation_error, Call, This))
+		throw(error(instantiation_error, logtalk(Call, This)))
 	;	var(Closure) ->
 		Call =.. [call, Obj<<Closure| ExtraArgs],
-		throw(error(instantiation_error, Call, This))
+		throw(error(instantiation_error, logtalk(Call, This)))
 	;	callable(Obj), callable(Closure) ->
 		Closure =.. [Functor| Args],
 		'$lgt_append'(Args, ExtraArgs, FullArgs),
 		Goal =.. [Functor| FullArgs],
 		'$lgt_call_within_context_nv'(Obj, Goal, This)
 	;	Call =.. [call, Obj<<Closure| ExtraArgs],
-		throw(error(type_error(callable, Closure), Call, This))
+		throw(error(type_error(callable, Closure), logtalk(Call, This)))
 	).
 
 '$lgt_metacall'(':'(Module, Closure), ExtraArgs, _, _, This, _) :-
 	!,
 	(	var(Module) ->
 		Call =.. [call, ':'(Module, Closure)| ExtraArgs],
-		throw(error(instantiation_error, Call, This))
+		throw(error(instantiation_error, logtalk(Call, This)))
 	;	var(Closure) ->
 		Call =.. [call, ':'(Module, Closure)| ExtraArgs],
-		throw(error(instantiation_error, Call, This))
+		throw(error(instantiation_error, logtalk(Call, This)))
 	;	atom(Module) ->
 		(	callable(Closure) ->
 			Closure =.. [Functor| Args],
@@ -3365,20 +3357,20 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			Goal =.. [Functor| FullArgs],
 			':'(Module, Goal)
 		;	Call =.. [call, ':'(Module, Closure)| ExtraArgs],
-			throw(error(type_error(callable, Closure), Call, This))
+			throw(error(type_error(callable, Closure), logtalk(Call, This)))
 		)
 	;	Call =.. [call, ':'(Module, Closure)| ExtraArgs],
-		throw(error(type_error(atom, Module), Call, This))
+		throw(error(type_error(atom, Module), logtalk(Call, This)))
 	).
 
 '$lgt_metacall'(Free/Closure, ExtraArgs, LambdaMetaCallCtx, Sender, This, Self) :-
 	!,
 	(	var(Free) ->
-	 	throw(error(instantiation_error, Free/Closure, This))
+	 	throw(error(instantiation_error, logtalk(Free/Closure, This)))
 	;	\+ (functor(Free, {}, Arity), Arity =< 1) ->
-		throw(error(type_error(curly_bracketed_term, Free), Free/Closure, This))
+		throw(error(type_error(curly_bracketed_term, Free), logtalk(Free/Closure, This)))
 	;	var(Closure) ->
-	 	throw(error(instantiation_error, Free/Closure, This))
+	 	throw(error(instantiation_error, logtalk(Free/Closure, This)))
 	;	'$lgt_reduce_lambda_metacall_ctx'(LambdaMetaCallCtx, Free/Closure, MetaCallCtx),
 		'$lgt_copy_term_without_constraints'(Free/Closure+MetaCallCtx, Free/ClosureCopy+MetaCallCtxCopy),
 		'$lgt_metacall'(ClosureCopy, ExtraArgs, MetaCallCtxCopy, Sender, This, Self)
@@ -3387,35 +3379,35 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_metacall'(Free/Parameters>>Closure, ExtraArgs, LambdaMetaCallCtx, Sender, This, Self) :-
 	!,
 	(	var(Free) ->
-	 	throw(error(instantiation_error, Free/Parameters>>Closure, This))
+	 	throw(error(instantiation_error, logtalk(Free/Parameters>>Closure, This)))
 	;	\+ (functor(Free, {}, Arity), Arity =< 1) ->
-		throw(error(type_error(curly_bracketed_term, Free), Free/Parameters>>Closure, This))
+		throw(error(type_error(curly_bracketed_term, Free), logtalk(Free/Parameters>>Closure, This)))
 	;	var(Closure) ->
-	 	throw(error(instantiation_error, Free/Parameters>>Closure, This))
+	 	throw(error(instantiation_error, logtalk(Free/Parameters>>Closure, This)))
 	;	'$lgt_reduce_lambda_metacall_ctx'(LambdaMetaCallCtx, Free/Parameters>>Closure, MetaCallCtx),
 		'$lgt_copy_term_without_constraints'(Free/Parameters>>Closure+MetaCallCtx, Free/ParametersCopy>>ClosureCopy+MetaCallCtxCopy),
 		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest, Free/Parameters>>Closure, This) ->
 		'$lgt_metacall'(ClosureCopy, Rest, MetaCallCtxCopy, Sender, This, Self)
-	;	throw(error(representation_error(lambda_parameters), Free/Parameters>>Closure, This))
+	;	throw(error(representation_error(lambda_parameters), logtalk(Free/Parameters>>Closure, This)))
 	).
 
 '$lgt_metacall'(Parameters>>Closure, ExtraArgs, LambdaMetaCallCtx, Sender, This, Self) :-
 	!,
 	(	var(Closure) ->
-	 	throw(error(instantiation_error, Parameters>>Closure, This))
+	 	throw(error(instantiation_error, logtalk(Parameters>>Closure, This)))
 	;	'$lgt_reduce_lambda_metacall_ctx'(LambdaMetaCallCtx, Parameters>>Closure, MetaCallCtx),
 		'$lgt_copy_term_without_constraints'(Parameters>>Closure+MetaCallCtx, ParametersCopy>>ClosureCopy+MetaCallCtxCopy),
 		'$lgt_unify_lambda_parameters'(ParametersCopy, ExtraArgs, Rest, Parameters>>Closure, This) ->
 		'$lgt_metacall'(ClosureCopy, Rest, MetaCallCtxCopy, Sender, This, Self)
-	;	throw(error(representation_error(lambda_parameters), Parameters>>Closure, This))
+	;	throw(error(representation_error(lambda_parameters), logtalk(Parameters>>Closure, This)))
 	).
 
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, _) :-
 	\+ callable(Closure),
 	Call =.. [call, Closure| ExtraArgs],
 	(	atom(MetaCallCtx) ->
-		throw(error(type_error(callable, Closure), This::Call, This))
-	;	throw(error(type_error(callable, Closure), Sender::Call, This))
+		throw(error(type_error(callable, Closure), logtalk(This::Call, This)))
+	;	throw(error(type_error(callable, Closure), logtalk(Sender::Call, This)))
 	).
 
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
@@ -3433,7 +3425,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_unify_lambda_parameters'(-, _, _, Lambda, This) :-	% catch variables and lists with unbound tails 
 	(Lambda = _/Parameters>>_; Lambda = Parameters>>_),
-	throw(error(type_error(list, Parameters), Lambda, This)).
+	throw(error(type_error(list, Parameters), logtalk(Lambda, This))).
 
 '$lgt_unify_lambda_parameters'([], Vars, Vars, _, _).
 
@@ -3468,15 +3460,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_metacall'(Goal, MetaCallCtx, Sender, This, _) :-
 	var(Goal),
 	(	atom(MetaCallCtx) ->
-		throw(error(instantiation_error, call(This::Goal), This))
-	;	throw(error(instantiation_error, call(Sender::Goal), This))
+		throw(error(instantiation_error, logtalk(call(This::Goal), This)))
+	;	throw(error(instantiation_error, logtalk(call(Sender::Goal), This)))
 	).
 
 '$lgt_metacall'(Goal, MetaCallCtx, Sender, This, _) :-
 	\+ callable(Goal),
 	(	atom(MetaCallCtx) ->
-		throw(error(type_error(callable, Goal), call(This::Goal), This))
-	;	throw(error(type_error(callable, Goal), call(Sender::Goal), This))
+		throw(error(type_error(callable, Goal), logtalk(call(This::Goal), This)))
+	;	throw(error(type_error(callable, Goal), logtalk(call(Sender::Goal), This)))
 	).
 
 '$lgt_metacall'({Goal}, _, _, _, _) :-						% pre-compiled meta-calls or calls
@@ -3517,7 +3509,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		)
 	;	% of course, the meta-call may happen to be an unfortunate mistake:
 		functor(Pred, Functor, Arity),
-		throw(error(existence_error(procedure, Functor/Arity), call(Pred), This))
+		throw(error(existence_error(procedure, Functor/Arity), logtalk(call(Pred), This)))
 	).
 
 
@@ -3544,7 +3536,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		)
 	;	% of course, the meta-call may happen to be an unfortunate mistake:
 		functor(Pred, Functor, Arity),
-		throw(error(existence_error(procedure, Functor/Arity), call(Pred), Sender))
+		throw(error(existence_error(procedure, Functor/Arity), logtalk(call(Pred), Sender)))
 	).
 
 
@@ -3580,8 +3572,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % debugging and for writing unit tests
 
 '$lgt_call_within_context'(Obj, Goal, This) :-
-	'$lgt_must_be'(object_identifier, Obj, Obj<<Goal, This),
-	'$lgt_must_be'(callable, Goal, Obj<<Goal, This),
+	'$lgt_must_be'(object_identifier, Obj, logtalk(Obj<<Goal, This)),
+	'$lgt_must_be'(callable, Goal, logtalk(Obj<<Goal, This)),
 	'$lgt_call_within_context_nv'(Obj, Goal, This).
 
 
@@ -3603,15 +3595,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				call(TGoal)
 			;	% in the worst case we need to compile the goal:
 				'$lgt_comp_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _, ExCtx, runtime, _),
-				catch('$lgt_tr_body'(Goal, TGoal, DGoal, Ctx), Error, throw(error(Error, Obj<<Goal, This))),
+				catch('$lgt_tr_body'(Goal, TGoal, DGoal, Ctx), Error, throw(error(Error, logtalk(Obj<<Goal, This)))),
 				(	'$lgt_debugger.debugging_', '$lgt_debugging_entity_'(Obj) ->
 					call(DGoal)
 				;	call(TGoal)
 				)
 			)
-		;	throw(error(permission_error(access, predicate, Goal), Obj<<Goal, This))
+		;	throw(error(permission_error(access, predicate, Goal), logtalk(Obj<<Goal, This)))
 		)
-	;	throw(error(existence_error(object, Obj), Obj<<Goal, This))
+	;	throw(error(existence_error(object, Obj), logtalk(Obj<<Goal, This)))
 	).
 
 
@@ -3623,11 +3615,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_ctg_call'(Dcl, Pred, ExCtx) :-
 	(	var(Pred) ->
 		'$lgt_exec_ctx_this'(ExCtx, This),
-		throw(error(instantiation_error, ':'(Pred), This))
+		throw(error(instantiation_error, logtalk(':'(Pred), This)))
 	;	callable(Pred) ->
 		'$lgt_ctg_call_'(Dcl, Pred, ExCtx)
 	;	'$lgt_exec_ctx_this'(ExCtx, This),
-		throw(error(type_error(callable, Pred), ':'(Pred), This))
+		throw(error(type_error(callable, Pred), logtalk(':'(Pred), This)))
 	).
 
 
@@ -3667,7 +3659,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Alias) ->
 		call(Alias)
-	;	throw(error(existence_error(predicate_declaration, Alias), ':'(Alias), This))
+	;	throw(error(existence_error(predicate_declaration, Alias), logtalk(':'(Alias), This)))
 	).
 
 
@@ -6409,17 +6401,20 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % translates file-level directives, i.e. directives that are not encapsulated in a Logtalk entity
 % error-checking is delegated in most cases to the back-end Prolog compiler
 
-'$lgt_tr_file_directive'(encoding(_), _) :-					% the encoding/1 directive is already processed 
+'$lgt_tr_file_directive'(encoding(_), _) :-
+	% the encoding/1 directive is already processed
 	!.
 
 '$lgt_tr_file_directive'(ensure_loaded(File), _) :-
+	% assume that ensure_loaded/1 is also a built-in predicate
 	!,
-	ensure_loaded(File),									% assume that ensure_loaded/1 is also a built-in predicate
+	ensure_loaded(File),
 	'$lgt_pp_term_location'(Location),
 	assertz('$lgt_pp_prolog_term_'((:- ensure_loaded(File)), Location)).
 
 '$lgt_tr_file_directive'(initialization(Goal), Ctx) :-
-	'$lgt_comp_ctx_mode'(Ctx, compile(_)),					% only expand goals when compiling a source file
+	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
+	% only expand goals when compiling a source file
 	'$lgt_tr_expand_goal'(Goal, EGoal),
 	!,
 	'$lgt_tr_file_directive'(initialization(EGoal), Ctx).
@@ -6432,7 +6427,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_file_directive'(op(Priority, Spec, Operators), _) :-
 	!,
 	'$lgt_must_be'(operator_specification, op(Priority, Spec, Operators)),
-	op(Priority, Spec, Operators),							% op/3 directives must be used during entity compilation
+	% op/3 directives must be used during entity compilation
+	op(Priority, Spec, Operators),
 	'$lgt_pp_term_location'(Location),
 	assertz('$lgt_pp_prolog_term_'((:- op(Priority, Spec, Operators)), Location)),
 	(   atom(Operators) ->
@@ -6443,7 +6439,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_file_directive'(set_logtalk_flag(Flag, Value), _) :-
 	!,
 	Option =.. [Flag, Value],
-	'$lgt_set_compiler_flags'([Option]).					% local scope (restricted to the source file being compiled)
+	% local scope (restricted to the source file being compiled)
+	'$lgt_set_compiler_flags'([Option]).
 
 '$lgt_tr_file_directive'(set_prolog_flag(Flag, Value), _) :-
 	!,
@@ -6453,7 +6450,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_file_directive'(Dir, _) :-
 	'$lgt_pp_term_location'(Location),
-	assertz('$lgt_pp_prolog_term_'((:- Dir), Location)).	% directive will be copied to the generated Prolog file
+	% directive will be copied to the generated Prolog file
+	assertz('$lgt_pp_prolog_term_'((:- Dir), Location)).
 
 
 
@@ -6484,7 +6482,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_report_compiling_entity'(object, Obj),
 	'$lgt_add_entity_file_properties'(start, Obj),
 	'$lgt_save_file_op_table',
-	'$lgt_tr_object_identifier'(Obj, static),			% assume static object
+	% assume static object
+	'$lgt_tr_object_identifier'(Obj, static),
 	'$lgt_tr_object_relations'(Rels, Obj).
 
 '$lgt_tr_directive'(end_object, [], _) :-
@@ -6519,7 +6518,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_report_compiling_entity'(protocol, Ptc),
 	'$lgt_add_entity_file_properties'(start, Ptc),
 	'$lgt_save_file_op_table',
-	'$lgt_tr_protocol_identifier'(Ptc, static),			% assume static protocol
+	% assume static protocol
+	'$lgt_tr_protocol_identifier'(Ptc, static),
 	'$lgt_tr_protocol_relations'(Rels, Ptc).
 
 '$lgt_tr_directive'(end_protocol, [], _) :-
@@ -6555,7 +6555,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_report_compiling_entity'(category, Ctg),
 	'$lgt_add_entity_file_properties'(start, Ctg),
 	'$lgt_save_file_op_table',
-	'$lgt_tr_category_identifier'(Ctg, static),			% assume static category
+	% assume static category
+	'$lgt_tr_category_identifier'(Ctg, static),
 	'$lgt_tr_category_relations'(Rels, Ctg).
 
 '$lgt_tr_directive'(end_category, [], _) :-
@@ -6577,14 +6578,17 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_directive'(module, [Module, Exports], Ctx) :-
 	'$lgt_must_be'(atom, Module),
 	'$lgt_must_be'(list, Exports),
-	assertz('$lgt_pp_module_'(Module)),					% remeber we are compiling a module
+	% remember we are compiling a module
+	assertz('$lgt_pp_module_'(Module)),
 	'$lgt_report_compiling_entity'(module, Module),
-	'$lgt_tr_object_identifier'(Module, static),		% assume static module/object
+	% assume static module/object
+	'$lgt_tr_object_identifier'(Module, static),
 	'$lgt_split_operators_and_predicates'(Exports, Preds, Ops),
 	forall(
 		'$lgt_member'(Op, Ops),
 		'$lgt_tr_file_directive'(Op, Ctx)),
-	'$lgt_tr_directive'((public), Preds, Ctx),			% make the export list public predicates
+	% make the export list public predicates
+	'$lgt_tr_directive'((public), Preds, Ctx),
 	'$lgt_save_file_op_table'.
 
 
@@ -6652,8 +6656,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_directive'(initialization, [Goal], Ctx) :-
 	'$lgt_must_be'(callable, Goal),
 	'$lgt_pp_entity'(_, Entity, Prefix, _, _),
+	% MetaVars = [] as we're compiling a local call
 	'$lgt_comp_ctx'(Ctx, _, Entity, Entity, Entity, Prefix, [], _, ExCtx, _, _),
-	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, [], _),		% MetaVars = [] as we're compiling a local call
+	'$lgt_exec_ctx'(ExCtx, Entity, Entity, Entity, [], _),
 	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	(	'$lgt_compiler_flag'(debug, on) ->
 		assertz('$lgt_pp_entity_init_'(DGoal))
@@ -8861,9 +8866,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
-'$lgt_tr_body'(call(Pred), call(TPred), '$lgt_debugger.goal'(call(Pred), call(DPred), ExCtx), Ctx) :-
+'$lgt_tr_body'(call(Goal), call(TGoal), '$lgt_debugger.goal'(call(Goal), call(DGoal), ExCtx), Ctx) :-
 	!,		% we must keep the call/1 wrapper in order to preserve cut semantics
-	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
 '$lgt_tr_body'(CallN, TPred, DPred, Ctx) :-
@@ -8904,14 +8909,14 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	CallN =.. [call, Closure| ExtraArgs],
 	DPred = '$lgt_debugger.goal'(CallN, TPred, ExCtx).
 
-'$lgt_tr_body'(once(Pred), (TPred -> true; fail), '$lgt_debugger.goal'(once(Pred), (DPred -> true; fail), ExCtx), Ctx) :-
+'$lgt_tr_body'(once(Goal), (TGoal -> true; fail), '$lgt_debugger.goal'(once(Goal), (DGoal -> true; fail), ExCtx), Ctx) :-
 	!,
-	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
-'$lgt_tr_body'(ignore(Pred), (TPred -> true; true), '$lgt_debugger.goal'(ignore(Pred), (DPred -> true; true), ExCtx), Ctx) :-
+'$lgt_tr_body'(ignore(Goal), (TGoal -> true; true), '$lgt_debugger.goal'(ignore(Goal), (DGoal -> true; true), ExCtx), Ctx) :-
 	!,
-	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
 '$lgt_tr_body'(catch(Goal, Catcher, Recovery), catch(TGoal, Catcher, TRecovery), '$lgt_debugger.goal'(catch(Goal, Catcher, Recovery), catch(DGoal, Catcher, DRecovery), ExCtx), Ctx) :-
@@ -9025,14 +9030,14 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 % built-in meta-predicates
 
-'$lgt_tr_body'(bagof(Term, Pred, List), bagof(Term, TPred, List), '$lgt_debugger.goal'(bagof(Term, Pred, List), bagof(Term, DPred, List), ExCtx), Ctx) :-
+'$lgt_tr_body'(bagof(Term, Goal, List), bagof(Term, TGoal, List), '$lgt_debugger.goal'(bagof(Term, Goal, List), bagof(Term, DGoal, List), ExCtx), Ctx) :-
 	!,
-	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
-'$lgt_tr_body'(findall(Term, Pred, List), findall(Term, TPred, List), '$lgt_debugger.goal'(findall(Term, Pred, List), findall(Term, DPred, List), ExCtx), Ctx) :-
+'$lgt_tr_body'(findall(Term, Goal, List), findall(Term, TGoal, List), '$lgt_debugger.goal'(findall(Term, Goal, List), findall(Term, DGoal, List), ExCtx), Ctx) :-
 	!,
-	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
 '$lgt_tr_body'(forall(Gen, Test), \+ (TGen, \+ TTest), '$lgt_debugger.goal'(forall(Gen, Test), \+ (DGen, \+ DTest), ExCtx), Ctx) :-
@@ -9041,9 +9046,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_tr_body'(Test, TTest, DTest, Ctx),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
-'$lgt_tr_body'(setof(Term, Pred, List), setof(Term, TPred, List), '$lgt_debugger.goal'(setof(Term, Pred, List), setof(Term, DPred, List), ExCtx), Ctx) :-
+'$lgt_tr_body'(setof(Term, Goal, List), setof(Term, TGoal, List), '$lgt_debugger.goal'(setof(Term, Goal, List), setof(Term, DGoal, List), ExCtx), Ctx) :-
 	!,
-	'$lgt_tr_body'(Pred, TPred, DPred, Ctx),
+	'$lgt_tr_body'(Goal, TGoal, DGoal, Ctx),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx).
 
 
@@ -9404,7 +9409,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_body'(current_predicate(Term), TPred, DPred, Ctx) :-
 	nonvar(Term),
 	Term = ':'(Module, Pred),
-	'$lgt_pl_built_in'(':'(_, _)),						% back-end Prolog compiler supports modules
+	'$lgt_pl_built_in'(':'(_, _)),
+	% back-end Prolog compiler supports modules
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
@@ -9422,7 +9428,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_body'(predicate_property(Term, Prop), TPred, DPred, Ctx) :-
 	nonvar(Term),
 	Term = ':'(Module, Pred),
-	'$lgt_pl_built_in'(':'(_, _)),						% back-end Prolog compiler supports modules
+	'$lgt_pl_built_in'(':'(_, _)),
+	% back-end Prolog compiler supports modules
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
@@ -9448,7 +9455,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_body'(abolish(Term), TCond, DCond, Ctx) :-
 	nonvar(Term),
 	Term = ':'(Module, Pred),
-	'$lgt_pl_built_in'(':'(_, _)),						% back-end Prolog compiler supports modules
+	'$lgt_pl_built_in'(':'(_, _)),
+	% back-end Prolog compiler supports modules
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
@@ -9469,104 +9477,107 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	),
 	DCond = '$lgt_debugger.goal'(abolish(Pred), TCond, ExCtx).
 
-'$lgt_tr_body'(assert(Term), _, _, Ctx) :-
+'$lgt_tr_body'(assert(Clause), _, _, Ctx) :-
 	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
-	'$lgt_check_dynamic_directive'(Term),
+	'$lgt_check_dynamic_directive'(Clause),
 	fail.
 
-'$lgt_tr_body'(assert(Term), TCond, DCond, Ctx) :-
+'$lgt_tr_body'(assert(Clause), TCond, DCond, Ctx) :-
 	!,
 	(	'$lgt_pp_non_portable_call_'(assert, 1) ->
 		true
 	;	assertz('$lgt_pp_non_portable_call_'(assert, 1))
 	),
-	'$lgt_tr_body'(assertz(Term), TCond, DCond, Ctx).
+	'$lgt_tr_body'(assertz(Clause), TCond, DCond, Ctx).
 
-'$lgt_tr_body'(asserta(Term), _, _, Ctx) :-
+'$lgt_tr_body'(asserta(Clause), _, _, Ctx) :-
 	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
-	'$lgt_check_dynamic_directive'(Term),
+	'$lgt_check_dynamic_directive'(Clause),
 	fail.
 
-'$lgt_tr_body'(asserta(Term), TCond, DCond, Ctx) :-
-	nonvar(Term),
-	Term = ':'(Module, Pred),
-	'$lgt_pl_built_in'(':'(_, _)),						% back-end Prolog compiler supports modules
+'$lgt_tr_body'(asserta(QClause), TCond, DCond, Ctx) :-
+	nonvar(QClause),
+	QClause = ':'(Module, Clause),
+	'$lgt_pl_built_in'(':'(_, _)),
+	% back-end Prolog compiler supports modules
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
-		'$lgt_tr_body'(Module::asserta(Pred), TCond, DCond, Ctx)
+		'$lgt_tr_body'(Module::asserta(Clause), TCond, DCond, Ctx)
 	;	% we're using modules together with objects
-		'$lgt_tr_body'(':'(Module, asserta(Pred)), TCond, DCond, Ctx)
+		'$lgt_tr_body'(':'(Module, asserta(Clause)), TCond, DCond, Ctx)
 	).
 
-'$lgt_tr_body'(asserta(Pred), TCond, DCond, Ctx) :-
+'$lgt_tr_body'(asserta(Clause), TCond, DCond, Ctx) :-
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
-		TCond = asserta(TPred)
+	(	'$lgt_optimizable_local_db_call'(Clause, TClause) ->
+		TCond = asserta(TClause)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
 		'$lgt_exec_ctx_this'(ExCtx, This),
-		(	'$lgt_runtime_db_clause_checked'(Pred) ->
-			TCond = '$lgt_asserta'(This, Pred, This, p(_), p)
-		;	'$lgt_compiler_db_clause_checked'(Pred),
-			(	Pred = (Head :- Body) ->
+		(	'$lgt_runtime_db_clause_checked'(Clause) ->
+			TCond = '$lgt_asserta'(This, Clause, This, p(_), p)
+		;	'$lgt_compiler_db_clause_checked'(Clause),
+			(	Clause = (Head :- Body) ->
 				(	Body == true ->
 					TCond = '$lgt_asserta_fact_checked'(This, Head, This, p(_), p)
-				;	TCond = '$lgt_asserta_rule_checked'(This, Pred, This, p(_), p)
+				;	TCond = '$lgt_asserta_rule_checked'(This, Clause, This, p(_), p)
 				)
-			;	TCond = '$lgt_asserta_fact_checked'(This, Pred, This, p(_), p)
+			;	TCond = '$lgt_asserta_fact_checked'(This, Clause, This, p(_), p)
 			)
 		)
 	),
-	DCond = '$lgt_debugger.goal'(asserta(Pred), TCond, ExCtx).
+	DCond = '$lgt_debugger.goal'(asserta(Clause), TCond, ExCtx).
 
-'$lgt_tr_body'(assertz(Term), _, _, Ctx) :-
+'$lgt_tr_body'(assertz(Clause), _, _, Ctx) :-
 	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
-	'$lgt_check_dynamic_directive'(Term),
+	'$lgt_check_dynamic_directive'(Clause),
 	fail.
 
-'$lgt_tr_body'(assertz(Term), TCond, DCond, Ctx) :-
-	nonvar(Term),
-	Term = ':'(Module, Pred),
-	'$lgt_pl_built_in'(':'(_, _)),						% back-end Prolog compiler supports modules
+'$lgt_tr_body'(assertz(QClause), TCond, DCond, Ctx) :-
+	nonvar(QClause),
+	QClause = ':'(Module, Clause),
+	'$lgt_pl_built_in'(':'(_, _)),
+	% back-end Prolog compiler supports modules
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
-		'$lgt_tr_body'(Module::assertz(Pred), TCond, DCond, Ctx)
+		'$lgt_tr_body'(Module::assertz(Clause), TCond, DCond, Ctx)
 	;	% we're using modules together with objects
-		'$lgt_tr_body'(':'(Module, assertz(Pred)), TCond, DCond, Ctx)
+		'$lgt_tr_body'(':'(Module, assertz(Clause)), TCond, DCond, Ctx)
 	).
 
-'$lgt_tr_body'(assertz(Pred), TCond, DCond, Ctx) :-
+'$lgt_tr_body'(assertz(Clause), TCond, DCond, Ctx) :-
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
-		TCond = assertz(TPred)
+	(	'$lgt_optimizable_local_db_call'(Clause, TClause) ->
+		TCond = assertz(TClause)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
 		'$lgt_exec_ctx_this'(ExCtx, This),
-		(	'$lgt_runtime_db_clause_checked'(Pred) ->
-			TCond = '$lgt_assertz'(This, Pred, This, p(_), p)
-		;	'$lgt_compiler_db_clause_checked'(Pred),
-			(	Pred = (Head :- Body) ->
+		(	'$lgt_runtime_db_clause_checked'(Clause) ->
+			TCond = '$lgt_assertz'(This, Clause, This, p(_), p)
+		;	'$lgt_compiler_db_clause_checked'(Clause),
+			(	Clause = (Head :- Body) ->
 				(	Body == true ->
 					TCond = '$lgt_assertz_fact_checked'(This, Head, This, p(_), p)
-				;	TCond = '$lgt_assertz_rule_checked'(This, Pred, This, p(_), p)
+				;	TCond = '$lgt_assertz_rule_checked'(This, Clause, This, p(_), p)
 				)
-			;	TCond = '$lgt_assertz_fact_checked'(This, Pred, This, p(_), p)
+			;	TCond = '$lgt_assertz_fact_checked'(This, Clause, This, p(_), p)
 			)
 		)
 	),
-	DCond = '$lgt_debugger.goal'(assertz(Pred), TCond, ExCtx).
+	DCond = '$lgt_debugger.goal'(assertz(Clause), TCond, ExCtx).
 
-'$lgt_tr_body'(clause(Term, _), _, _, Ctx) :-
+'$lgt_tr_body'(clause(Head, _), _, _, Ctx) :-
 	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
-	'$lgt_check_dynamic_directive'(Term),
+	'$lgt_check_dynamic_directive'(Head),
 	fail.
 
-'$lgt_tr_body'(clause(Term, Body), TCond, DCond, Ctx) :-
-	nonvar(Term),
-	Term = ':'(Module, Head),
-	'$lgt_pl_built_in'(':'(_, _)),						% back-end Prolog compiler supports modules
+'$lgt_tr_body'(clause(QHead, Body), TCond, DCond, Ctx) :-
+	nonvar(QHead),
+	QHead = ':'(Module, Head),
+	'$lgt_pl_built_in'(':'(_, _)),
+	% back-end Prolog compiler supports modules
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
@@ -9590,82 +9601,84 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	),
 	DCond = '$lgt_debugger.goal'(clause(Head, Body), TCond, ExCtx).
 
-'$lgt_tr_body'(retract(Term), _, _, Ctx) :-
+'$lgt_tr_body'(retract(Clause), _, _, Ctx) :-
 	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
-	'$lgt_check_dynamic_directive'(Term),
+	'$lgt_check_dynamic_directive'(Clause),
 	fail.
 
-'$lgt_tr_body'(retract(Term), TCond, DCond, Ctx) :-
-	nonvar(Term),
-	Term = ':'(Module, Pred),
-	'$lgt_pl_built_in'(':'(_, _)),						% back-end Prolog compiler supports modules
+'$lgt_tr_body'(retract(QClause), TCond, DCond, Ctx) :-
+	nonvar(QClause),
+	QClause = ':'(Module, Clause),
+	'$lgt_pl_built_in'(':'(_, _)),
+	% back-end Prolog compiler supports modules
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
-		'$lgt_tr_body'(Module::retract(Pred), TCond, DCond, Ctx)
+		'$lgt_tr_body'(Module::retract(Clause), TCond, DCond, Ctx)
 	;	% we're using modules together with objects
-		'$lgt_tr_body'(':'(Module, retract(Pred)), TCond, DCond, Ctx)
+		'$lgt_tr_body'(':'(Module, retract(Clause)), TCond, DCond, Ctx)
 	).
 
-'$lgt_tr_body'(retract(Pred), TCond, DCond, Ctx) :-
+'$lgt_tr_body'(retract(Clause), TCond, DCond, Ctx) :-
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
-		TCond = retract(TPred)
+	(	'$lgt_optimizable_local_db_call'(Clause, TClause) ->
+		TCond = retract(TClause)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
 		'$lgt_exec_ctx_this'(ExCtx, This),
-		(	'$lgt_runtime_db_clause_checked'(Pred) ->
-			TCond = '$lgt_retract'(This, Pred, This, p(_))
-		;	'$lgt_compiler_db_clause_checked'(Pred),
-			(	Pred = (Head :- Body) ->
+		(	'$lgt_runtime_db_clause_checked'(Clause) ->
+			TCond = '$lgt_retract'(This, Clause, This, p(_))
+		;	'$lgt_compiler_db_clause_checked'(Clause),
+			(	Clause = (Head :- Body) ->
 				(	var(Body) ->
-					'$lgt_retract_var_body_checked'(This, Pred, This, p(_))
+					'$lgt_retract_var_body_checked'(This, Clause, This, p(_))
 				;	Body == true ->
 					TCond = '$lgt_retract_fact_checked'(This, Head, This, p(_))
-				;	TCond = '$lgt_retract_rule_checked'(This, Pred, This, p(_))
+				;	TCond = '$lgt_retract_rule_checked'(This, Clause, This, p(_))
 				)
-			;	TCond = '$lgt_retract_fact_checked'(This, Pred, This, p(_))
+			;	TCond = '$lgt_retract_fact_checked'(This, Clause, This, p(_))
 			)
 		)
 	),
-	DCond = '$lgt_debugger.goal'(retract(Pred), TCond, ExCtx).
+	DCond = '$lgt_debugger.goal'(retract(Clause), TCond, ExCtx).
 
-'$lgt_tr_body'(retractall(Term), _, _, Ctx) :-
+'$lgt_tr_body'(retractall(Head), _, _, Ctx) :-
 	'$lgt_comp_ctx_mode'(Ctx, compile(_)),
-	'$lgt_check_dynamic_directive'(Term),
+	'$lgt_check_dynamic_directive'(Head),
 	fail.
 
-'$lgt_tr_body'(retractall(Term), TCond, DCond, Ctx) :-
-	nonvar(Term),
-	Term = ':'(Module, Pred),
-	'$lgt_pl_built_in'(':'(_, _)),						% back-end Prolog compiler supports modules
+'$lgt_tr_body'(retractall(QHead), TCond, DCond, Ctx) :-
+	nonvar(QHead),
+	QHead = ':'(Module, Head),
+	'$lgt_pl_built_in'(':'(_, _)),
+	% back-end Prolog compiler supports modules
 	!,
 	(	'$lgt_pp_module_'(_) ->
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
-		'$lgt_tr_body'(Module::retractall(Pred), TCond, DCond, Ctx)
+		'$lgt_tr_body'(Module::retractall(Head), TCond, DCond, Ctx)
 	;	% we're using modules together with objects
-		'$lgt_tr_body'(':'(Module, retractall(Pred)), TCond, DCond, Ctx)
+		'$lgt_tr_body'(':'(Module, retractall(Head)), TCond, DCond, Ctx)
 	).
 
-'$lgt_tr_body'(retractall(Pred), TCond, DCond, Ctx) :-
+'$lgt_tr_body'(retractall(Head), TCond, DCond, Ctx) :-
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-	(	'$lgt_optimizable_local_db_call'(Pred, TPred) ->
-		TCond = retractall(TPred)
+	(	'$lgt_optimizable_local_db_call'(Head, THead) ->
+		TCond = retractall(THead)
 	;	'$lgt_comp_ctx_this'(Ctx, This),
 		'$lgt_exec_ctx_this'(ExCtx, This),
-		(	'$lgt_runtime_db_clause_checked'(Pred) ->
-			TCond = '$lgt_retractall'(This, Pred, This, p(_))
-		;	'$lgt_compiler_db_clause_checked'(Pred),
-			TCond = '$lgt_retractall_checked'(This, Pred, This, p(_))
+		(	'$lgt_runtime_db_clause_checked'(Head) ->
+			TCond = '$lgt_retractall'(This, Head, This, p(_))
+		;	'$lgt_compiler_db_clause_checked'(Head),
+			TCond = '$lgt_retractall_checked'(This, Head, This, p(_))
 		)
 	),
-	DCond = '$lgt_debugger.goal'(retractall(Pred), TCond, ExCtx).
+	DCond = '$lgt_debugger.goal'(retractall(Head), TCond, ExCtx).
 
 
 % term and goal expansion predicates
 
-'$lgt_tr_body'(expand_term(Term, Clause), '$lgt_expand_term'(This, Term, Clause, This, p(_)), '$lgt_debugger.goal'(expand_term(Term, Clause), '$lgt_expand_term'(This, Term, Clause, This, p(_)), ExCtx), Ctx) :-
+'$lgt_tr_body'(expand_term(Term, Expansion), '$lgt_expand_term'(This, Term, Expansion, This, p(_)), '$lgt_debugger.goal'(expand_term(Term, Expansion), '$lgt_expand_term'(This, Term, Expansion, This, p(_)), ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
@@ -10748,7 +10761,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 % term and goal expansion predicates
 
-'$lgt_tr_msg'(expand_term(Term, Clause), Obj, '$lgt_expand_term'(Obj, Term, Clause, This, p(p(p))), This) :-
+'$lgt_tr_msg'(expand_term(Term, Expansion), Obj, '$lgt_expand_term'(Obj, Term, Expansion, This, p(p(p))), This) :-
 	!.
 
 '$lgt_tr_msg'(expand_goal(Goal, EGoal), Obj, '$lgt_expand_goal'(Obj, Goal, EGoal, This, p(p(p))), This) :-
@@ -10910,7 +10923,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 % term and goal expansion predicates
 
-'$lgt_tr_self_msg'(expand_term(Term, Clause), '$lgt_expand_term'(Self, Term, Clause, This, p(_)), This, Self) :-
+'$lgt_tr_self_msg'(expand_term(Term, Expansion), '$lgt_expand_term'(Self, Term, Expansion, This, p(_)), This, Self) :-
 	!.
 
 '$lgt_tr_self_msg'(expand_goal(Goal, EGoal), '$lgt_expand_goal'(Self, Goal, EGoal, This, p(_)), This, Self) :-
@@ -13848,15 +13861,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_write_entity_aux_clauses'(Stream).
 
 
-
 '$lgt_write_dcl_clauses'(Stream) :-
 	'$lgt_pp_file_path_'(File, Path),
 	'$lgt_pp_dcl_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
-
 '$lgt_write_dcl_clauses'(_).
-
 
 
 '$lgt_write_def_clauses'(Stream) :-
@@ -13864,9 +13874,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_final_def_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
-
 '$lgt_write_def_clauses'(_).
-
 
 
 '$lgt_write_ddef_clauses'(Stream) :-
@@ -13874,9 +13882,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_final_ddef_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
-
 '$lgt_write_ddef_clauses'(_).
-
 
 
 '$lgt_write_super_clauses'(Stream) :-
@@ -13884,9 +13890,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_super_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
-
 '$lgt_write_super_clauses'(_).
-
 
 
 '$lgt_write_alias_clauses'(Stream) :-
@@ -13903,21 +13907,17 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	Clause =.. [Rnm, Entity, Pred, Alias],
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
-
 '$lgt_write_alias_clauses'(Stream, Rnm) :-
 	'$lgt_pp_file_path_'(File, Path),
 	Catchall =.. [Rnm, _, Pred, Pred],
 	'$lgt_write_term_and_source_location'(Stream, Catchall, aux, Path+File+1).
 
 
-
 '$lgt_write_entity_clauses'(Stream) :-
 	'$lgt_pp_final_entity_clause_'(Clause, Location),
 	'$lgt_write_term_and_source_location'(Stream, Clause, user, Location),
 	fail.
-
 '$lgt_write_entity_clauses'(_).
-
 
 
 '$lgt_write_entity_aux_clauses'(Stream) :-
@@ -13925,7 +13925,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_final_entity_aux_clause_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
-
 '$lgt_write_entity_aux_clauses'(_).
 
 
@@ -17379,7 +17378,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_threaded_peek_tagged'(Queue, Goal, Sender, This, Self, Tag) :-
 	(	var(Tag) ->
-		throw(error(instantiation_error, This::threaded_peek(Goal, Tag), Sender))	
+		throw(error(instantiation_error, logtalk(This::threaded_peek(Goal, Tag), Sender)))	
 	;	thread_peek_message(Queue, '$lgt_reply'(Goal, This, Self, Tag, _, _))
 	).
 
@@ -17417,7 +17416,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			)
 		)
 	;	% answering thread don't exist; generate an exception (failing is not an option as it could simply mean goal failure)
-		throw(error(existence_error(goal_thread, Goal), This::threaded_exit(Goal), Sender))
+		throw(error(existence_error(goal_thread, Goal), logtalk(This::threaded_exit(Goal), Sender)))
 	).
 
 
@@ -17426,7 +17425,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_threaded_exit_tagged'(Goal, Sender, This, Self, Tag) :-
 	(	var(Tag) ->
-		throw(error(instantiation_error, This::threaded_exit(Goal, Tag), Sender))	
+		throw(error(instantiation_error, logtalk(This::threaded_exit(Goal, Tag), Sender)))	
 	;	'$lgt_current_object_'(This, Queue, _, _, _, _, _, _, _, _, _),
 		'$lgt_threaded_exit_tag_cheked'(Queue, Goal, Sender, This, Self, Tag)
 	).
@@ -17437,7 +17436,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_threaded_exit_tagged'(Queue, Goal, Sender, This, Self, Tag) :-
 	(	var(Tag) ->
-		throw(error(instantiation_error, This::threaded_exit(Goal, Tag), Sender))	
+		throw(error(instantiation_error, logtalk(This::threaded_exit(Goal, Tag), Sender)))	
 	;	'$lgt_threaded_exit_tag_cheked'(Queue, Goal, Sender, This, Self, Tag)
 	).
 
@@ -17465,7 +17464,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			)
 		)
 	;	% answering thread don't exist; generate an exception (failing is not an option as it could simply mean goal failure)
-		throw(error(existence_error(goal_thread, Goal), This::threaded_exit(Goal, Tag), Sender))
+		throw(error(existence_error(goal_thread, Goal), logtalk(This::threaded_exit(Goal, Tag), Sender)))
 	).
 
 
@@ -17900,218 +17899,218 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 % '$lgt_must_be'(+atom, @term, @callable)
 
-'$lgt_must_be'(var, Term, Goal) :-
+'$lgt_must_be'(var, Term, Context) :-
 	(	var(Term) ->
 		true
-	;	throw(error(type_error(variable, Term), Goal))
+	;	throw(error(type_error(variable, Term), Context))
 	).
 
-'$lgt_must_be'(nonvar, Term, Goal) :-
+'$lgt_must_be'(nonvar, Term, Context) :-
 	(	nonvar(Term) ->
 		true
-	;	throw(error(instantiation_error, Goal))
+	;	throw(error(instantiation_error, Context))
 	).
 
-'$lgt_must_be'(atom, Term, Goal) :-
+'$lgt_must_be'(atom, Term, Context) :-
 	(	var(Term) ->
-		throw(error(instantiation_error, Goal))
+		throw(error(instantiation_error, Context))
 	;	atom(Term) ->
 		true
-	;	throw(error(type_error(atom, Term), Goal))
+	;	throw(error(type_error(atom, Term), Context))
 	).
 
-'$lgt_must_be'(atomic, Term, Goal) :-
+'$lgt_must_be'(atomic, Term, Context) :-
 	(	var(Term) ->
-		throw(error(instantiation_error, Goal))
+		throw(error(instantiation_error, Context))
 	;	atomic(Term) ->
 		true
-	;	throw(error(type_error(atomic, Term), Goal))
+	;	throw(error(type_error(atomic, Term), Context))
 	).
 
-'$lgt_must_be'(callable, Term, Goal) :-
+'$lgt_must_be'(callable, Term, Context) :-
 	(	var(Term) ->
-		throw(error(instantiation_error, Goal))
+		throw(error(instantiation_error, Context))
 	;	callable(Term) ->
 		true
-	;	throw(error(type_error(callable, Term), Goal))
+	;	throw(error(type_error(callable, Term), Context))
 	).
 
-'$lgt_must_be'(clause, Term, Goal) :-
+'$lgt_must_be'(clause, Term, Context) :-
 	(	var(Term) ->
-		throw(error(instantiation_error, Goal))
+		throw(error(instantiation_error, Context))
 	;	Term = (Head :- Body) ->
-		'$lgt_must_be'(callable, Head, Goal),
-		'$lgt_must_be'(callable, Body, Goal)
+		'$lgt_must_be'(callable, Head, Context),
+		'$lgt_must_be'(callable, Body, Context)
 	;	callable(Term) ->
 		true
-	;	throw(error(type_error(callable, Term), Goal))
+	;	throw(error(type_error(callable, Term), Context))
 	).
 
-'$lgt_must_be'(clause_or_partial_clause, Term, Goal) :-
+'$lgt_must_be'(clause_or_partial_clause, Term, Context) :-
 	(	var(Term) ->
-		throw(error(instantiation_error, Goal))
+		throw(error(instantiation_error, Context))
 	;	Term = (Head :- Body) ->
-		'$lgt_must_be'(callable, Head, Goal),
-		'$lgt_must_be'(var_or_callable, Body, Goal)
+		'$lgt_must_be'(callable, Head, Context),
+		'$lgt_must_be'(var_or_callable, Body, Context)
 	;	callable(Term) ->
 		true
-	;	throw(error(type_error(callable, Term), Goal))
+	;	throw(error(type_error(callable, Term), Context))
 	).
 
-'$lgt_must_be'(var_or_callable, Term, Goal) :-
+'$lgt_must_be'(var_or_callable, Term, Context) :-
 	(	var(Term) ->
 		true
 	;	callable(Term) ->
 		true
-	;	throw(error(type_error(callable, Term), Goal))
+	;	throw(error(type_error(callable, Term), Context))
 	).
 
-'$lgt_must_be'(list, Term, Goal) :-
+'$lgt_must_be'(list, Term, Context) :-
 	(	var(Term) ->
-		throw(error(instantiation_error, Goal))
+		throw(error(instantiation_error, Context))
 	;	'$lgt_is_list'(Term) ->
 		true
-	;	throw(error(type_error(list, Term), Goal))
+	;	throw(error(type_error(list, Term), Context))
 	).
 
-'$lgt_must_be'(list_or_partial_list, Term, Goal) :-
+'$lgt_must_be'(list_or_partial_list, Term, Context) :-
 	(	var(Term) ->
 		true
 	;	'$lgt_is_list_or_partial_list'(Term) ->
 		true
-	;	throw(error(type_error(list, Term), Goal))
+	;	throw(error(type_error(list, Term), Context))
 	).
 
-'$lgt_must_be'(object_identifier, Term, Goal) :-
+'$lgt_must_be'(object_identifier, Term, Context) :-
 	(	var(Term) ->
-		throw(error(instantiation_error, Goal))
+		throw(error(instantiation_error, Context))
 	;	callable(Term) ->
 		true
-	;	throw(error(type_error(object_identifier, Term), Goal))
+	;	throw(error(type_error(object_identifier, Term), Context))
 	).
 
-'$lgt_must_be'(var_or_object_identifier, Term, Goal) :-
+'$lgt_must_be'(var_or_object_identifier, Term, Context) :-
 	(	var(Term) ->
 		true
 	;	callable(Term) ->
 		true
-	;	throw(error(type_error(object_identifier, Term), Goal))
+	;	throw(error(type_error(object_identifier, Term), Context))
 	).
 
-'$lgt_must_be'(protocol_identifier, Term, Goal) :-
+'$lgt_must_be'(protocol_identifier, Term, Context) :-
 	(	var(Term) ->
-		throw(error(instantiation_error, Goal))
+		throw(error(instantiation_error, Context))
 	;	atom(Term) ->
 		true
-	;	throw(error(type_error(protocol_identifier, Term), Goal))
+	;	throw(error(type_error(protocol_identifier, Term), Context))
 	).
 
-'$lgt_must_be'(var_or_protocol_identifier, Term, Goal) :-
+'$lgt_must_be'(var_or_protocol_identifier, Term, Context) :-
 	(	var(Term) ->
 		true
 	;	atom(Term) ->
 		true
-	;	throw(error(type_error(protocol_identifier, Term), Goal))
+	;	throw(error(type_error(protocol_identifier, Term), Context))
 	).
 
-'$lgt_must_be'(category_identifier, Term, Goal) :-
+'$lgt_must_be'(category_identifier, Term, Context) :-
 	(	var(Term) ->
-		throw(error(instantiation_error, Goal))
+		throw(error(instantiation_error, Context))
 	;	callable(Term) ->
 		true
-	;	throw(error(type_error(category_identifier, Term), Goal))
+	;	throw(error(type_error(category_identifier, Term), Context))
 	).
 
-'$lgt_must_be'(var_or_category_identifier, Term, Goal) :-
+'$lgt_must_be'(var_or_category_identifier, Term, Context) :-
 	(	var(Term) ->
 		true
 	;	callable(Term) ->
 		true
-	;	throw(error(type_error(category_identifier, Term), Goal))
+	;	throw(error(type_error(category_identifier, Term), Context))
 	).
 
-'$lgt_must_be'(predicate_indicator, Term, Goal) :-
+'$lgt_must_be'(predicate_indicator, Term, Context) :-
 	(	var(Term) ->
-		throw(error(instantiation_error, Goal))
+		throw(error(instantiation_error, Context))
 	;	Term \= _/_,
-		throw(error(type_error(predicate_indicator, Term), Goal))
+		throw(error(type_error(predicate_indicator, Term), Context))
 	;	Term = Functor/Arity,
 		'$lgt_must_be'(atom, Functor),
 		'$lgt_must_be'(integer, Arity),
 		(	Arity < 0,
-			throw(error(domain_error(not_less_than_zero, Arity), Goal))
+			throw(error(domain_error(not_less_than_zero, Arity), Context))
 		;	true
 		)
 	).
 
-'$lgt_must_be'(var_or_predicate_indicator, Term, Goal) :-
+'$lgt_must_be'(var_or_predicate_indicator, Term, Context) :-
 	(	var(Term) ->
 		true
 	;	Term \= _/_,
-		throw(error(type_error(predicate_indicator, Term), Goal))
+		throw(error(type_error(predicate_indicator, Term), Context))
 	;	Term = Functor/Arity,
 		'$lgt_must_be'(atom, Functor),
 		'$lgt_must_be'(integer, Arity),
 		(	Arity < 0,
-			throw(error(domain_error(not_less_than_zero, Arity), Goal))
+			throw(error(domain_error(not_less_than_zero, Arity), Context))
 		;	true
 		)
 	).
 
-'$lgt_must_be'(scope, Term, Goal) :-
+'$lgt_must_be'(scope, Term, Context) :-
 	(	var(Term) ->
-		throw(error(instantiation_error, Goal))
+		throw(error(instantiation_error, Context))
 	;	Scope \== (public),
 		Scope \== protected,
 		Scope \== private ->
-		throw(error(type_error(scope, Scope), Goal))
+		throw(error(type_error(scope, Scope), Context))
 	;	true
 	).
 
-'$lgt_must_be'(var_or_scope, Term, Goal) :-
+'$lgt_must_be'(var_or_scope, Term, Context) :-
 	(	var(Term) ->
 		true
 	;	Scope \== (public),
 		Scope \== protected,
 		Scope \== private ->
-		throw(error(type_error(scope, Scope), Goal))
+		throw(error(type_error(scope, Scope), Context))
 	;	true
 	).
 
-'$lgt_must_be'(var_or_event, Term, Goal) :-
+'$lgt_must_be'(var_or_event, Term, Context) :-
 	(	var(Term) ->
 		true
 	;	Term \== before,
 		Term \== after ->
-		throw(error(type_error(event, Term), Goal))
+		throw(error(type_error(event, Term), Context))
 	;	true
 	).
 
-'$lgt_must_be'(operator_specification, Term, Goal) :-
+'$lgt_must_be'(operator_specification, Term, Context) :-
 	(	var(Term) ->
-		throw(error(instantiation_error, Goal))
+		throw(error(instantiation_error, Context))
 	;	Term = op(Priority, Spec, Operators) ->
-		'$lgt_must_be'(operator_priority, Priority, Goal),
-		'$lgt_must_be'(operator_specifier, Spec, Goal),
-		'$lgt_must_be'(operator_names, Operators, Goal)
-	;	throw(error(type_error(operator_specification, Term), Goal))
+		'$lgt_must_be'(operator_priority, Priority, Context),
+		'$lgt_must_be'(operator_specifier, Spec, Context),
+		'$lgt_must_be'(operator_names, Operators, Context)
+	;	throw(error(type_error(operator_specification, Term), Context))
 	).
 
-'$lgt_must_be'(operator_priority, Priority, Goal) :-
+'$lgt_must_be'(operator_priority, Priority, Context) :-
 	(	var(Priority) ->
-		throw(error(instantiation_error, Goal))
+		throw(error(instantiation_error, Context))
 	;	\+ integer(Priority),
-		throw(error(type_error(integer, Priority), Goal))
+		throw(error(type_error(integer, Priority), Context))
 	;	(Priority < 0; Priority > 1200) ->
-		throw(error(domain_error(operator_priority, Priority), Goal))
+		throw(error(domain_error(operator_priority, Priority), Context))
 	;	true
 	).
 
-'$lgt_must_be'(operator_specifier, Term, Goal) :-
+'$lgt_must_be'(operator_specifier, Term, Context) :-
 	(	var(Term) ->
-		throw(error(instantiation_error, Goal))
+		throw(error(instantiation_error, Context))
 	;	\+ atom(Term) ->
-		throw(error(type_error(atom, Term), Goal))
+		throw(error(type_error(atom, Term), Context))
 	;	Term \== fx,
 		Term \== fy,
 		Term \== xfx,
@@ -18119,54 +18118,54 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		Term \== yfx,
 		Term \== xf,
 		Term \== yf ->
-		throw(error(domain_error(operator_specifier, Term), Goal))
+		throw(error(domain_error(operator_specifier, Term), Context))
 	;	true
 	).
 
-'$lgt_must_be'(operator_names, Term, Goal) :-
+'$lgt_must_be'(operator_names, Term, Context) :-
 	(	var(Term) ->
-		throw(error(instantiation_error, Goal))
+		throw(error(instantiation_error, Context))
 	;	Term == (',') ->
-		throw(error(permission_error(modify, operator, ','), Goal))
+		throw(error(permission_error(modify, operator, ','), Context))
 	;	atom(Term) ->
 		true
 	;	\+ '$lgt_is_list'(Term) ->
 		throw(type_error(list, Term))
-	;	\+ ('$lgt_member'(Operator, Term), \+ '$lgt_must_be'(operator_name, Operator, Goal))
+	;	\+ ('$lgt_member'(Operator, Term), \+ '$lgt_must_be'(operator_name, Operator, Context))
 	).
 
-'$lgt_must_be'(operator_name, Term, Goal) :-
+'$lgt_must_be'(operator_name, Term, Context) :-
 	(	var(Term) ->
-		throw(error(instantiation_error, Goal))
+		throw(error(instantiation_error, Context))
 	;	Term == (',') ->
-		throw(error(permission_error(modify, operator, ','), Goal))
+		throw(error(permission_error(modify, operator, ','), Context))
 	;	atom(Term) ->
 		true
-	;	throw(error(type_error(atom, Term), Goal))
+	;	throw(error(type_error(atom, Term), Context))
 	).
 
-'$lgt_must_be'(var_or_object_property, Term, Goal) :-
+'$lgt_must_be'(var_or_object_property, Term, Context) :-
 	(	var(Term) ->
 		true
 	;	'$lgt_valid_object_property'(Term) ->
 		true
-	;	throw(error(domain_error(object_property, Term), Goal))
+	;	throw(error(domain_error(object_property, Term), Context))
 	).
 
-'$lgt_must_be'(var_or_category_property, Term, Goal) :-
+'$lgt_must_be'(var_or_category_property, Term, Context) :-
 	(	var(Term) ->
 		true
 	;	'$lgt_valid_category_property'(Term) ->
 		true
-	;	throw(error(domain_error(category_property, Term), Goal))
+	;	throw(error(domain_error(category_property, Term), Context))
 	).
 
-'$lgt_must_be'(var_or_protocol_property, Term, Goal) :-
+'$lgt_must_be'(var_or_protocol_property, Term, Context) :-
 	(	var(Term) ->
 		true
 	;	'$lgt_valid_protocol_property'(Term) ->
 		true
-	;	throw(error(domain_error(protocol_property, Term), Goal))
+	;	throw(error(domain_error(protocol_property, Term), Context))
 	).
 
 
@@ -18175,13 +18174,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_must_be'(Type, Term) :-
 	catch('$lgt_must_be'(Type, Term, _), error(Error, _), throw(Error)).
-
-
-
-% '$lgt_must_be'(+atom, @term, @callable, @object_identifier)
-
-'$lgt_must_be'(Type, Term, Goal, Sender) :-
-	catch('$lgt_must_be'(Type, Term, _), error(Error, _), throw(error(Error, Goal, Sender))).
 
 
 
