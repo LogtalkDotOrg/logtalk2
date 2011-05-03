@@ -308,4 +308,5 @@ no longer accept conjunctions in the first argument.
 
 Logtalk version 2.43.0 is more strict when checking predicate multifile
 declarations, requiring that the object holding the predicate declaration
-makes it both public and multifile.
+makes it both public and multifile. In addtion, Logtalk generated exception
+terms now use the format error(Error, logtalk(Goal, Sender)).
