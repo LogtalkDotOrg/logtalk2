@@ -566,15 +566,15 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 :- '$set_predicate_attribute'('$lgt_phrase'/3, trace, 1).
 :- '$set_predicate_attribute'('$lgt_phrase'/4, trace, 1).
 
-:- '$set_predicate_attribute'('$lgt_abolish_checked'(/4, trace, 1).
-:- '$set_predicate_attribute'('$lgt_asserta_fact_checked'(/5, trace, 1).
-:- '$set_predicate_attribute'('$lgt_asserta_rule_checked'(/5, trace, 1).
-:- '$set_predicate_attribute'('$lgt_assertz_fact_checked'(/5, trace, 1).
-:- '$set_predicate_attribute'('$lgt_assertz_rule_checked'(/5, trace, 1).
-:- '$set_predicate_attribute'('$lgt_clause_checked'(/5, trace, 1).
-:- '$set_predicate_attribute'('$lgt_retract_fact_checked'(/4, trace, 1).
-:- '$set_predicate_attribute'('$lgt_retract_rule_checked'(/4, trace, 1).
-:- '$set_predicate_attribute'('$lgt_retractall_checked'(/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_abolish_checked'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_asserta_fact_checked'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_asserta_rule_checked'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_assertz_fact_checked'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_assertz_rule_checked'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_clause_checked'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_retract_fact_checked'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_retract_rule_checked'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_retractall_checked'/4, trace, 1).
 
 :- '$set_predicate_attribute'('$lgt_iso_read_term'/4, trace, 1).
 :- '$set_predicate_attribute'('$lgt_iso_read_term'/3, trace, 1).
