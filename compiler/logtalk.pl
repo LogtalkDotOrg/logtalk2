@@ -1725,7 +1725,7 @@ logtalk_load_context(stream, Stream) :-
 % sets a Logtalk flag
 
 set_logtalk_flag(Flag, Value) :-
-	catch('$lgt_check_compiler_flag'(Flag, Value), Error, throw(error(Error, set_logtalk_flag(Flag, Value)))),
+	catch('$lgt_check_compiler_flag'(Flag, Value), Error, throw(error(Error, logtalk(set_logtalk_flag(Flag, Value), _)))),
 	retractall('$lgt_current_flag_'(Flag, _)),
 	assertz('$lgt_current_flag_'(Flag, Value)),
 	(	Flag == debug, Value == on ->
@@ -18053,7 +18053,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		true
 	;	'$lgt_valid_object_property'(Term) ->
 		true
-	;	throw(error(domain_error(object_property, Term), Context))
+	;	callable(Term) ->
+		throw(error(domain_error(object_property, Term), Context))
+	;	throw(error(type_error(callable, Term), Context))
 	).
 
 '$lgt_must_be'(var_or_category_property, Term, Context) :-
@@ -18061,7 +18063,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		true
 	;	'$lgt_valid_category_property'(Term) ->
 		true
-	;	throw(error(domain_error(category_property, Term), Context))
+	;	callable(Term) ->
+		throw(error(domain_error(category_property, Term), Context))
+	;	throw(error(type_error(callable, Term), Context))
 	).
 
 '$lgt_must_be'(var_or_protocol_property, Term, Context) :-
@@ -18069,7 +18073,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		true
 	;	'$lgt_valid_protocol_property'(Term) ->
 		true
-	;	throw(error(domain_error(protocol_property, Term), Context))
+	;	callable(Term) ->
+		throw(error(domain_error(protocol_property, Term), Context))
+	;	throw(error(type_error(callable, Term), Context))
 	).
 
 

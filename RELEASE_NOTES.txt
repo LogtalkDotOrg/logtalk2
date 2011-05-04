@@ -62,6 +62,10 @@ RELEASE NOTES
     being made instead to the non-synchronized forms of the predicates, which
     would manifest in random failures of thread goals.
 
+    Refined error checking for the built-in predicates category_property/2,
+    object_property/2, and protocol_property/2, throwing a type_error/2 when
+    the second argument is neither a variable or a callable term.
+
     For all config files, renamed the predicate '$lgt_is_proper_list'/1 to
     '$lgt_is_list'/1 and and replaced the old '$lgt_is_list'/1 predicate by
     a new '$lgt_is_list_or_partial_list'/1 predicate.
