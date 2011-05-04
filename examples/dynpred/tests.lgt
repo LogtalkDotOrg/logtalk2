@@ -3,9 +3,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 2.0,
+		version is 2.1,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2011/02/02,
+		date is 2011/05/04,
 		comment is 'Unit tests for the "dynpred" example.']).
 
 	:- discontiguous(succeeds/1).
@@ -26,7 +26,7 @@
 		findall(Value, descendant::p(Value), Solutions),
 		Solutions == [root].
 
-	throws(dynpred_4, error(existence_error(_,_),_,_)) :-
+	throws(dynpred_4, error(existence_error(predicate_declaration,p1/1), logtalk(_,_))) :-
 		class::p1(_).
 
 	succeeds(dynpred_5) :-
@@ -36,7 +36,7 @@
 	succeeds(dynpred_6) :-
 		class::assertz(p2(class)).
 
-	throws(dynpred_7, error(existence_error(_,_),_,_)) :-
+	throws(dynpred_7, error(existence_error(predicate_declaration,p2/1), logtalk(_,_))) :-
 		class::p2(_).
 
 	succeeds(dynpred_8) :-

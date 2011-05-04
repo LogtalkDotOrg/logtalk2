@@ -3,9 +3,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2011/01/21,
+		date is 2011/05/04,
 		comment is 'Unit tests for the "lambdas" example.']).
 
 	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
@@ -97,13 +97,13 @@
 	succeeds(lambdas_20) :-
 		{_}/true.
 
-	throws(lambdas_21, error(representation_error(lambda_parameters), _,_)) :-
+	throws(lambdas_21, error(representation_error(lambda_parameters), logtalk(_,_))) :-
 		logtalk << ({X}/[X]>>true).
 
-	throws(lambdas_22, error(representation_error(lambda_parameters), _,_)) :-
+	throws(lambdas_22, error(representation_error(lambda_parameters), logtalk(_,_))) :-
 		meta::map({X}/[X]>>char_code(X), [a,b,c], _).
 
-	throws(lambdas_23, error(representation_error(lambda_parameters), _,_)) :-
+	throws(lambdas_23, error(representation_error(lambda_parameters), logtalk(_,_))) :-
 		meta::map([X,_,_]>>char_code(X), [a,b,c], _).
 
 	succeeds(lambdas_24) :-

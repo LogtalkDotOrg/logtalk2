@@ -3,12 +3,12 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2010/03/16,
+		date is 2011/05/04,
 		comment is 'Unit tests for the "shapes_ch" example.']).
 
-	throws(ch_1, error(existence_error(_,_),_,_)) :-
+	throws(ch_1, error(existence_error(predicate_declaration,nsides/1), logtalk(_,_))) :-
 		square::nsides(_).
 
 	% don't use message broadcasting syntax in order to workaround a XSB parser bug

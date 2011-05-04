@@ -2376,13 +2376,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 					)
 				)
 			;	% predicate is not within the scope of the sender:
+				functor(Head, Functor, Arity),
 				(	PScope == p ->
-					throw(error(permission_error(access, private_predicate, Head), logtalk(Obj::clause(Head, Body), Sender)))
-				;	throw(error(permission_error(access, protected_predicate, Head), logtalk(Obj::clause(Head, Body), Sender)))
+					throw(error(permission_error(access, private_predicate, Functor/Arity), logtalk(Obj::clause(Head, Body), Sender)))
+				;	throw(error(permission_error(access, protected_predicate, Functor/Arity), logtalk(Obj::clause(Head, Body), Sender)))
 				)
 			)
 		;	% predicate is static:
-			throw(error(permission_error(access, static_predicate, Head), logtalk(Obj::clause(Head, Body), Sender)))
+			functor(Head, Functor, Arity),
+			throw(error(permission_error(access, static_predicate, Functor/Arity), logtalk(Obj::clause(Head, Body), Sender)))
 		)
 	;	% local dynamic predicate with no scope declaration:
 		(	Obj = Sender,
@@ -2872,11 +2874,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				fail
 			)
 		;	% message is not within the scope of the sender:
-			throw(error(permission_error(access, private_predicate, Pred), logtalk(::Pred, Sender)))
+			functor(Pred, Functor, Arity),
+			throw(error(permission_error(access, private_predicate, Functor/Arity), logtalk(::Pred, Sender)))
 		)
 	;	% no predicate declaration, check if it's a private built-in method or a Prolog built-in meta-predicate:
 		('$lgt_built_in_method'(Pred, _, _, _); '$lgt_pl_meta_predicate'(Pred, _, _)) ->
-		throw(error(permission_error(access, private_predicate, Pred), logtalk(::Pred, Sender)))
+		functor(Pred, Functor, Arity),
+		throw(error(permission_error(access, private_predicate, Functor/Arity), logtalk(::Pred, Sender)))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
@@ -2944,14 +2948,16 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				fail
 			)
 		;	% message is not within the scope of the sender:
+			functor(Pred, Functor, Arity),
 			(	Scope == p ->
-				throw(error(permission_error(access, private_predicate, Pred), logtalk(Obj::Pred, Sender)))
-			;	throw(error(permission_error(access, protected_predicate, Pred), logtalk(Obj::Pred, Sender)))
+				throw(error(permission_error(access, private_predicate, Functor/Arity), logtalk(Obj::Pred, Sender)))
+			;	throw(error(permission_error(access, protected_predicate, Functor/Arity), logtalk(Obj::Pred, Sender)))
 			)
 		)
 	;	% no predicate declaration, check if it's a private built-in method or a Prolog built-in meta-predicate:
 		('$lgt_built_in_method'(Pred, _, _, _); '$lgt_pl_meta_predicate'(Pred, _, _)) ->
-		throw(error(permission_error(access, private_predicate, Pred), logtalk(Obj::Pred, Sender)))
+		functor(Pred, Functor, Arity),
+		throw(error(permission_error(access, private_predicate, Functor/Arity), logtalk(Obj::Pred, Sender)))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
@@ -3044,14 +3050,16 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				fail
 			)
 		;	% message is not within the scope of the sender:
+			functor(Pred, Functor, Arity),
 			(	Scope == p ->
-				throw(error(permission_error(access, private_predicate, Pred), logtalk(Obj::Pred, Sender)))
-			;	throw(error(permission_error(access, protected_predicate, Pred), logtalk(Obj::Pred, Sender)))
+				throw(error(permission_error(access, private_predicate, Functor/Arity), logtalk(Obj::Pred, Sender)))
+			;	throw(error(permission_error(access, protected_predicate, Functor/Arity), logtalk(Obj::Pred, Sender)))
 			)
 		)
 	;	% no predicate declaration, check if it's a private built-in method or a Prolog built-in meta-predicate:
 		('$lgt_built_in_method'(Pred, _, _, _); '$lgt_pl_meta_predicate'(Pred, _, _)) ->
-		throw(error(permission_error(access, private_predicate, Pred), logtalk(Obj::Pred, Sender)))
+		functor(Pred, Functor, Arity),
+		throw(error(permission_error(access, private_predicate, Functor/Arity), logtalk(Obj::Pred, Sender)))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
@@ -3183,11 +3191,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				fail
 			)
 		;	% predicate is not within the scope of the sender:
-			throw(error(permission_error(access, private_predicate, Pred), logtalk(^^Pred, This)))
+			functor(Pred, Functor, Arity),
+			throw(error(permission_error(access, private_predicate, Functor/Arity), logtalk(^^Pred, This)))
 		)
 	;	% no predicate declaration, check if it's a private built-in method or a Prolog built-in meta-predicate:
 		('$lgt_built_in_method'(Pred, _, _, _); '$lgt_pl_meta_predicate'(Pred, _, _)) ->
-		throw(error(permission_error(access, private_predicate, Pred), logtalk(^^Pred, This)))
+		functor(Pred, Functor, Arity),
+		throw(error(permission_error(access, private_predicate, Functor/Arity), logtalk(^^Pred, This)))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
@@ -3240,11 +3250,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				fail
 			)
 		;	% predicate is not within the scope of the sender:
-			throw(error(permission_error(access, private_predicate, Pred), logtalk(^^Pred, Ctg)))
+			functor(Pred, Functor, Arity),
+			throw(error(permission_error(access, private_predicate, Functor/Arity), logtalk(^^Pred, Ctg)))
 		)
 	;	% no predicate declaration, check if it's a private built-in method or a Prolog built-in meta-predicate:
 		('$lgt_built_in_method'(Pred, _, _, _); '$lgt_pl_meta_predicate'(Pred, _, _)) ->
-		throw(error(permission_error(access, private_predicate, Pred), logtalk(^^Pred, Ctg)))
+		functor(Pred, Functor, Arity),
+		throw(error(permission_error(access, private_predicate, Functor/Arity), logtalk(^^Pred, Ctg)))
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)

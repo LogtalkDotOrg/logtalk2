@@ -3,12 +3,12 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2010/04/25,
+		date is 2011/05/04,
 		comment is 'Unit tests for the "hooks" example.']).
 
-	throws(hooks_1, error(permission_error(private_predicate, item/1), object::item(_), This)) :-
+	throws(hooks_1, error(permission_error(access, private_predicate, item/1), logtalk(object::item(_), This))) :-
 		this(This),
 		object::item(_).
 
