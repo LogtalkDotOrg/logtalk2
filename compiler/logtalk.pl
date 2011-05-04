@@ -355,14 +355,14 @@ Obj<<Goal :-
 
 '$lgt_runtime_error_handler'(error(existence_error(goal_thread, '$lgt_send_to_obj_ne_nv'(Self, Goal, Sender)), _, _)) :-
 	(	Self == user ->
-		throw(error(existence_error(goal_thread, Goal), Sender))
-	;	throw(error(existence_error(goal_thread, Self::Goal), Sender))
+		throw(error(existence_error(goal_thread, Goal), logtalk(Goal, Sender)))
+	;	throw(error(existence_error(goal_thread, Self::Goal), logtalk(Self::Goal, Sender)))
 	).
 
 '$lgt_runtime_error_handler'(error(existence_error(goal_thread, '$lgt_send_to_obj_nv'(Self, Goal, Sender)), _, _)) :-
 	(	Self == user ->
-		throw(error(existence_error(goal_thread, Goal), Sender))
-	;	throw(error(existence_error(goal_thread, Self::Goal), Sender))
+		throw(error(existence_error(goal_thread, Goal), logtalk(Goal, Sender)))
+	;	throw(error(existence_error(goal_thread, Self::Goal), logtalk(Self::Goal, Sender)))
 	).
 
 '$lgt_runtime_error_handler'(error(existence_error(goal_thread, TGoal), _, Sender)) :-
@@ -373,8 +373,8 @@ Obj<<Goal :-
 	arg(TArity, TGoal, ExCtx),
 	'$lgt_exec_ctx'(ExCtx, _, _, Self, _, _),
 	(	Self == user ->
-		throw(error(existence_error(goal_thread, Goal), Sender))
-	;	throw(error(existence_error(goal_thread, Self::Goal), Sender))
+		throw(error(existence_error(goal_thread, Goal), logtalk(Goal, Sender)))
+	;	throw(error(existence_error(goal_thread, Self::Goal), logtalk(Self::Goal, Sender)))
 	).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/6), _)) :-
@@ -410,33 +410,35 @@ Obj<<Goal :-
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), context(TFunctor2/TArity2, _))) :-	% SWI-Prolog
 	'$lgt_decompile_predicate_indicator'(TFunctor1/TArity1, Entity, Type, Functor1/Arity1),
 	'$lgt_decompile_predicate_indicator'(TFunctor2/TArity2, Entity, Type, Functor2/Arity2),
-	throw(error(existence_error(procedure, Functor1/Arity1), context(Type, Entity, Functor2/Arity2))).
+	functor(Goal2, Functor2, Arity2),
+	throw(error(existence_error(procedure, Functor1/Arity1), logtalk(Entity::Goal2, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), TFunctor2/TArity2)) :-				% GNU Prolog and B-Prolog
 	'$lgt_decompile_predicate_indicator'(TFunctor1/TArity1, Entity, Type, Functor1/Arity1),
 	'$lgt_decompile_predicate_indicator'(TFunctor2/TArity2, Entity, Type, Functor2/Arity2),
-	throw(error(existence_error(procedure, Functor1/Arity1), context(Type, Entity, Functor2/Arity2))).
+	functor(Goal2, Functor2, Arity2),
+	throw(error(existence_error(procedure, Functor1/Arity1), logtalk(Entity::Goal2, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ModTFunctor/TArity), _)) :-								% Ciao
 	atom_concat('user:', TFunctor, ModTFunctor),
-	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
-	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
+	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
+	throw(error(existence_error(procedure, Functor/Arity), logtalk(Entity::_, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/TArity), _)) :-									% K-Prolog and YAP 5.1 or later
-	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
-	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
+	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
+	throw(error(existence_error(procedure, Functor/Arity), logtalk(Entity::_, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ':'(_, TFunctor/TArity)), _)) :-							% SICStus Prolog 4.x
-	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
-	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
+	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
+	throw(error(existence_error(procedure, Functor/Arity), logtalk(Entity::_, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(_, _, procedure, ':'(_, TFunctor/TArity), _), _)) :-					% Quintus, SICStus Prolog 3.x
-	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
-	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
+	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
+	throw(error(existence_error(procedure, Functor/Arity), logtalk(Entity::_, _))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ':'(_, TFunctor/TArity)), _, _)) :-						% XSB
-	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
-	throw(error(existence_error(procedure, Functor/Arity), context(Type, Entity, _))).
+	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
+	throw(error(existence_error(procedure, Functor/Arity), logtalk(Entity::_, _))).
 
 '$lgt_runtime_error_handler'(error(Variable, _)) :-
 	var(Variable),
@@ -449,8 +451,9 @@ Obj<<Goal :-
 '$lgt_runtime_error_handler'(error(Error, Context)) :-																	% SWI-Prolog
 	nonvar(Context),
 	Context = context(TFunctor/TArity, _),
-	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, Type, Functor/Arity),
-	throw(error(Error, context(Type, Entity, Functor/Arity))).
+	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
+	functor(Goal, Functor, Arity),
+	throw(error(Error, logtalk(Entity::Goal, _))).
 
 '$lgt_runtime_error_handler'(logtalk_debugger_aborted) :-
 	!,
