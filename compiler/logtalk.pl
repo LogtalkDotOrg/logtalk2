@@ -2112,7 +2112,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		retractall(DDefClause),
 		'$lgt_clean_lookup_caches'(Pred)
 	;	% no predicate declaration:
-		throw(error(existence_error(predicate_declaration, Pred), logtalk(Obj::abolish(Functor/Arity), Sender)))
+		throw(error(existence_error(predicate_declaration, Functor/Arity), logtalk(Obj::abolish(Functor/Arity), Sender)))
 	).
 
 '$lgt_abolish_checked'(Obj, Functor/Arity, Sender, _) :-
@@ -2394,7 +2394,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				Body = true
 			;	TBody = Body
 			)
-		;	throw(error(existence_error(predicate_declaration, Head), logtalk(Obj::clause(Head, Body), Sender)))
+		;	functor(Head, Functor, Arity),
+			throw(error(existence_error(predicate_declaration, Functor/Arity), logtalk(Obj::clause(Head, Body), Sender)))
 		)
 	).
 
@@ -2463,7 +2464,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 				Body = true
 			;	TBody = Body
 			)
-		;	throw(error(existence_error(predicate_declaration, Head), logtalk(Obj::retract((Head:-Body)), Sender)))
+		;	functor(Head, Functor, Arity),
+			throw(error(existence_error(predicate_declaration, Functor/Arity), logtalk(Obj::retract((Head:-Body)), Sender)))
 		)
 	).
 
@@ -2496,7 +2498,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		(	Obj = Sender,
 			call(DDef, Head, _, THead) ->
 			retract((THead :- ('$lgt_nop'(Body), _)))
-		;	throw(error(existence_error(predicate_declaration, Head), logtalk(Obj::retract((Head:-Body)), Sender)))
+		;	functor(Head, Functor, Arity),
+			throw(error(existence_error(predicate_declaration, Functor/Arity), logtalk(Obj::retract((Head:-Body)), Sender)))
 		)
 	).
 
@@ -2547,7 +2550,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, p, (dynamic), Sender, THead),
 				retract(THead)
 			)
-		;	throw(error(existence_error(predicate_declaration, Head), logtalk(Obj::retract(Head), Sender)))
+		;	functor(Head, Functor, Arity),
+			throw(error(existence_error(predicate_declaration, Functor/Arity), logtalk(Obj::retract(Head), Sender)))
 		)
 	).
 
@@ -2606,7 +2610,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			;	'$lgt_add_db_lookup_cache_entry'(Obj, Head, p, (dynamic), Sender, THead)
 			),
 			retractall(THead)
-		;	throw(error(existence_error(predicate_declaration, Head), logtalk(Obj::retractall(Head), Sender)))
+		;	functor(Head, Functor, Arity),
+			throw(error(existence_error(predicate_declaration, Functor/Arity), logtalk(Obj::retractall(Head), Sender)))
 		)
 	).
 
@@ -2875,7 +2880,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
-	;	throw(error(existence_error(predicate_declaration, Pred), logtalk(::Pred, Sender)))
+	;	functor(Pred, Functor, Arity),
+		throw(error(existence_error(predicate_declaration, Functor/Arity), logtalk(::Pred, Sender)))
 	).
 
 
@@ -2949,7 +2955,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
-	;	throw(error(existence_error(predicate_declaration, Pred), logtalk(Obj::Pred, Sender)))
+	;	functor(Pred, Functor, Arity),
+		throw(error(existence_error(predicate_declaration, Functor/Arity), logtalk(Obj::Pred, Sender)))
 	).
 
 '$lgt_send_to_obj_nv'({Proxy}, Pred, Sender) :-
@@ -3048,7 +3055,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
-	;	throw(error(existence_error(predicate_declaration, Pred), logtalk(Obj::Pred, Sender)))
+	;	functor(Pred, Functor, Arity),
+		throw(error(existence_error(predicate_declaration, Functor/Arity), logtalk(Obj::Pred, Sender)))
 	).
 
 '$lgt_send_to_obj_ne_nv'({Proxy}, Pred, Sender) :-
@@ -3183,7 +3191,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
-	;	throw(error(existence_error(predicate_declaration, Pred), logtalk(^^Pred, This)))
+	;	functor(Pred, Functor, Arity),
+		throw(error(existence_error(predicate_declaration, Functor/Arity), logtalk(^^Pred, This)))
 	).
 
 
@@ -3239,7 +3248,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Pred) ->
 		call(Pred)
-	;	throw(error(existence_error(predicate_declaration, Pred), logtalk(^^Pred, Ctg)))
+	;	functor(Pred, Functor, Arity),
+		throw(error(existence_error(predicate_declaration, Functor/Arity), logtalk(^^Pred, Ctg)))
 	).
 
 
@@ -3662,7 +3672,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	% no predicate declaration, check if it's a built-in predicate:
 		'$lgt_built_in'(Alias) ->
 		call(Alias)
-	;	throw(error(existence_error(predicate_declaration, Alias), logtalk(':'(Alias), This)))
+	;	functor(Alias, Functor, Arity),
+		throw(error(existence_error(predicate_declaration, Functor/Arity), logtalk(':'(Alias), This)))
 	).
 
 
