@@ -3,9 +3,9 @@
 	implements(expanding)).		% built-in protocol for term and goal expansion methods
 
 	:- info([
-		version is 1.2,
+		version is 1.3,
 		author is 'Paulo Moura',
-		date is 2010/07/06,
+		date is 2011/05/04,
 		comment is 'A simple unit test framework.']).
 
 	:- uses(list, [member/2]).
@@ -129,14 +129,12 @@
 			passed_test(Test)
 		;	failed_test(Test)
 		).
-
 	run_test(fails(Test)) :-
 		(	catch(\+ ::test(Test, _), _, fail) ->
 			passed_test(Test)
 		;	failed_test(Test)
 		).
-
-	run_test(throws(Test)) :-
+	run_test(throws(Test, Error)) :-
 		(	catch(::test(Test, Error), Ball, ((subsumes(Error, Ball) -> passed_test(Test); failed_test(Test)), Throw = true)) ->
 			(	var(Throw) ->
 				failed_test(Test)
@@ -189,26 +187,27 @@
 		),
 		!.
 
+	% unit test idiom test/2
 	term_expansion((test(Test, Outcome) :- Goal), [(test(Test, Outcome) :- Goal)]) :-
 		(	Outcome == true ->
 			assertz(test_(succeeds(Test)))
 		;	Outcome == fail ->
 			assertz(test_(fails(Test)))
 		;	nonvar(Outcome) ->
-			assertz(test_(throws(Test)))
+			assertz(test_(throws(Test, Outcome)))
 		).
 
+	% unit test idiom test/1
 	term_expansion((test(Test) :- Goal), [(test(Test, true) :- Goal)]) :-
 		assertz(test_(succeeds(Test))).
 
+	% unit test idiom succeeds/1 + fails/1 + throws/2
 	term_expansion((succeeds(Test) :- Goal), [(test(Test, true) :- Goal)]) :-
 		assertz(test_(succeeds(Test))).
-
 	term_expansion((fails(Test) :- Goal), [(test(Test, fail) :- Goal)]) :-
 		assertz(test_(fails(Test))).
-
 	term_expansion((throws(Test, Error) :- Goal), [(test(Test, Error) :- Goal)]) :-
-		assertz(test_(throws(Test))).
+		assertz(test_(throws(Test, Error))).
 
 	term_expansion((:- end_object), [(run_tests :- ::run_tests(Tests)), (:- end_object)]) :-
 		findall(Test, retract(test_(Test)), Tests).

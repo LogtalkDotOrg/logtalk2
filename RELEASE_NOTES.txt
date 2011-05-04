@@ -84,6 +84,10 @@ RELEASE NOTES
     Updated the ECLiPSe config file, simplifying some of the file handling
     predicates.
 
+    Corrected a bug in the library support for unit tests, "lgtunit", where
+    testing for exceptions will accept any exception term as conforming to
+    the unit test specifications.
+
     Updated the "cc" example with bug fixes and improvements for ECLiPSe
     contributed by Joachim Schimpf.
 
