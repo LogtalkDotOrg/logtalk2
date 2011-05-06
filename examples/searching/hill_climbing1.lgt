@@ -21,9 +21,9 @@
 		findall(
 			(Estimate, Cost, Next),
 			(Space::next_state(State, Next, Cost),
-             \+ Space::member_path(Next, [State| Path]),
-             Space::heuristic(Next, Guess),
-             Estimate is Guess + Cost),
+			 \+ Space::member_path(Next, [State| Path]),
+			 Space::heuristic(Next, Guess),
+			 Estimate is Guess + Cost),
 			States),
 		sort(States, SortedStates),
 		member((_, Cost2, Next2), SortedStates),
