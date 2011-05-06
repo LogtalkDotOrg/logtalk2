@@ -9340,7 +9340,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 % calling category predicates directly
 
-'$lgt_tr_body'(':'(Pred), TPred, '$lgt_debugger.goal'(':'(Pred), TPred, ExCtx), Ctx) :-
+'$lgt_tr_body'(:Pred, TPred, '$lgt_debugger.goal'(:Pred, TPred, ExCtx), Ctx) :-
 	'$lgt_comp_ctx_mode'(Ctx, runtime),
 	'$lgt_comp_ctx_this'(Ctx, This),
 	'$lgt_current_object_'(This, _, Dcl, _, _, IDcl, _, _, _, _, _),
@@ -9352,7 +9352,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	TPred = '$lgt_ctg_call'(IDcl, Pred, ExCtx)
 	).
 
-'$lgt_tr_body'(':'(Pred), TPred, '$lgt_debugger.goal'(':'(Pred), TPred, ExCtx), Ctx) :-
+'$lgt_tr_body'(:Pred, TPred, '$lgt_debugger.goal'(:Pred, TPred, ExCtx), Ctx) :-
 	var(Pred),
 	'$lgt_pp_object_'(_, _, Dcl, _, _, IDcl, _, _, _, _, _),
 	!,
@@ -9363,15 +9363,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	TPred = '$lgt_ctg_call'(IDcl, Pred, ExCtx)
 	).
 
-'$lgt_tr_body'(':'(Pred), _, _, _) :-
+'$lgt_tr_body'(:Pred, _, _, _) :-
 	\+ callable(Pred),
 	throw(type_error(callable, Pred)).
 
-'$lgt_tr_body'(':'(Pred), _, _, _) :-
+'$lgt_tr_body'(:Pred, _, _, _) :-
 	\+ '$lgt_pp_imported_category_'(_, _, _, _, _),
 	throw(existence_error(procedure, Pred)).
 
-'$lgt_tr_body'(':'(Alias), TPred, '$lgt_debugger.goal'(':'(Alias), TPred, ExCtx), Ctx) :-
+'$lgt_tr_body'(:Alias, TPred, '$lgt_debugger.goal'(:Alias, TPred, ExCtx), Ctx) :-
 	!,
 	'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
 	(	% ensure that all imported categories are "static binding" entities
@@ -15757,7 +15757,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 %
 % translates a grammar rule message to an object into a predicate message:
 
-'$lgt_dcg_self_msg'(Var, S0, S, phrase(::Var, S0, S), phrase(::Var, S0, S)) :-
+'$lgt_dcg_self_msg'(Var, S0, S, phrase(::Var, S0, S)) :-
 	var(Var),
 	!.
 
@@ -15784,6 +15784,19 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
+% '$lgt_dcg_ctg_call'(@dcgbody, @var, @var, -body)
+%
+% translates a direct call to a grammar rule in an imported category:
+
+'$lgt_dcg_ctg_call'(Var, S0, S, phrase(:Var, S0, S)) :-
+	var(Var),
+	!.
+
+'$lgt_dcg_ctg_call'(NonTerminal, S0, S, :Pred) :-
+	'$lgt_dcg_non_terminal'(NonTerminal, S0, S, Pred).
+
+
+
 % '$lgt_dcg_body'(@dcgbody, @var, @var, -body)
 %
 % translates a grammar rule body into a Prolog clause body:
@@ -15792,13 +15805,17 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	var(Var),
 	!.
 
+'$lgt_dcg_body'(Obj::RGoal, S0, S, CGoal) :-
+	!,
+	'$lgt_dcg_msg'(RGoal, Obj, S0, S, CGoal).
+
 '$lgt_dcg_body'(::RGoal, S0, S, CGoal) :-
 	!,
 	'$lgt_dcg_self_msg'(RGoal, S0, S, CGoal).
 
-'$lgt_dcg_body'(Obj::RGoal, S0, S, CGoal) :-
+'$lgt_dcg_body'(:RGoal, S0, S, CGoal) :-
 	!,
-	'$lgt_dcg_msg'(RGoal, Obj, S0, S, CGoal).
+	'$lgt_dcg_ctg_call'(RGoal, S0, S, CGoal).
 
 '$lgt_dcg_body'(':'(Module, RGoal), S0, S, ':'(Module, phrase(RGoal, S0, S))) :-
 	!.

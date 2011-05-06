@@ -49,6 +49,8 @@ RELEASE NOTES
     Removed the Logtalk compiler restriction that forced discontiguous/1
     and dynamic/1 directives to precede calls to the declared predicates.
 
+    Allow the use of the :/1 control construct on the body of grammar rules.
+
     When debugging messages specified in uses/2 directives, the message is now
     printed implicitly qualified as in the source code written by the user.
 
