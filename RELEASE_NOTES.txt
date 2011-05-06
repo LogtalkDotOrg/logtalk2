@@ -90,6 +90,11 @@ RELEASE NOTES
     Updated the ECLiPSe config file, simplifying some of the file handling
     predicates.
 
+    Updated the GNU Prolog config file setting the "strict_iso" flag to "off"
+    in order to avoid the annoying incompatibility of the predicate_property/2
+    predicate with the de facto standard of taking a callable term as first
+    argument.
+
     Corrected a bug in the library support for unit tests, "lgtunit", where
     testing for exceptions will accept any exception term as conforming to
     the unit test specifications.

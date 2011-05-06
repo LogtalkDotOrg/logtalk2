@@ -11,13 +11,13 @@
 %
 %  configuration file for GNU Prolog 1.4.0 (and later versions)
 %
-%  last updated: April 17, 2011
+%  last updated: May 6, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 :- built_in.
-:- set_prolog_flag(strict_iso, on).
+:- set_prolog_flag(strict_iso, off).
 
 
 
@@ -53,12 +53,10 @@
 % '$lgt_predicate_property'(+callable, ?predicate_property)
 
 '$lgt_predicate_property'(Pred, Prop) :-
-	functor(Pred, Functor, Arity),
-	predicate_property(Functor/Arity, Prop).
+	predicate_property(Pred, Prop).
 
 '$lgt_predicate_property'(Pred, built_in) :-
-	functor(Pred, Functor, Arity),
-	predicate_property(Functor/Arity, built_in_fd).
+	predicate_property(Pred, built_in_fd).
 
 
 
