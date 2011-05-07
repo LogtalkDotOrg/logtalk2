@@ -6,7 +6,7 @@
 
 <head>
 	<meta http-equiv="content-type" content="application/xml+xhtml; charset=utf-8" />
-	<title>Logtalk built-in non-terminal: call//1</title>
+	<title>Logtalk built-in non-terminal: call//1-N</title>
 	<link rel="stylesheet" href="../../screen.css" type="text/css" media="screen"/>
 	<link rel="stylesheet" href="../../print.css" type="text/css" media="print"/>
 </head>
@@ -14,16 +14,19 @@
 <body>
 
 <div class="top-left">Logtalk reference manual</div> 
-<div class="top-right">Built-in non-terminal: call//1</div>
+<div class="top-right">Built-in non-terminal: call//1-N</div>
 <div class="bottom-left"><span class="page"/></div> 
 <div class="bottom-right"><span class="page"/></div>
-<div class="navtop"><a href="../../index.html">Contents</a> &gt; <a href="../index.html">Reference Manual</a> &gt; <a href="../index.html#methods">Built-in Methods</a> &gt; call//1</div>
+<div class="navtop"><a href="../../index.html">Contents</a> &gt; <a href="../index.html">Reference Manual</a> &gt; <a href="../index.html#methods">Built-in Methods</a> &gt; call//1-N</div>
 
-<h2 id="methods_call1" class="codenp">call//1</h2>
+<h2 id="methods_call1" class="codenp">call//1-N</h2>
 
 <h4>Description</h4>
 
-<pre>call(Closure)</pre>
+<pre>call(Closure)
+call(Closure, Arg1, ...)
+call(Object::Closure, Arg1, ...)
+call(::Closure, Arg1, ...)</pre>
 <p>
 This non-terminal takes a closure and is processed by appending the input list of tokens and the list of remaining tokens to the arguments of the closure. This built-in non-terminal is interpreted as a private non-terminal and thus cannot be used as a message to an object. When using a back-end Prolog compiler supporting a module system, calls in the format <code>call(Module:Closure)</code> may also be used. By using as argument a lambda expression, this built-in non-terminal provides controlled access to the input list of tokens and to the list of the remaining tokens processed by the grammar rule containing the call.
 </p>
@@ -31,6 +34,8 @@ This non-terminal takes a closure and is processed by appending the input list o
 <h4>Template and modes</h4>
 
 <pre>call(+callable)
+call(+callable, ?term)
+call(+callable, ?term, ?term)
 ...</pre>
 
 <h4>Errors</h4>
@@ -56,7 +61,7 @@ This non-terminal takes a closure and is processed by appending the input list o
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: May 23, 2010</span>
+		<span>Last updated on: May 7, 2011</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="../index.html#methods">previous</a> | <a href="../../glossary.html">glossary</a> | <a href="phrase2.html">next</a></span><br/>

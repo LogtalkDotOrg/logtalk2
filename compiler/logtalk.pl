@@ -15866,9 +15866,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	'$lgt_dcg_body'(GRBody, S0, _, Goal).
 
-'$lgt_dcg_body'(call(Closure), S0, S, call(Closure, S0, S)) :-
+'$lgt_dcg_body'(GRBody, S0, S, Goal) :-
+	functor(GRBody, call, _),
 	!,
-	'$lgt_must_be'(var_or_callable, Closure).
+	GRBody =.. [call, Closure| Args],
+	'$lgt_must_be'(var_or_callable, Closure),
+	'$lgt_append'(Args, [S0, S], FullArgs),
+	Goal =.. [call, Closure| FullArgs].
 
 '$lgt_dcg_body'([], S0, S, '$lgt_gr_pair'(S0 = S)) :-
 	!.
