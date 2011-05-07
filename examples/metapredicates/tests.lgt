@@ -69,16 +69,16 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.21,
+		version is 1.22,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2011/01/14,
+		date is 2011/05/06,
 		comment is 'Unit tests for the "metapredicates" example.']).
 
 	% This example defines a plain Prolog predicate even_integer/1. As the
 	% definition is in the pseudo-object "user", moving the call to another object
 	% switches the calling context to that object, so even_integer/1 is no longer
-	% found.  To solve, copy the definition of even_integer/1 and sum_squares/3 are
-	% copied the testing object from "predicates.lgt".
+	% found. In order to solve this issue, the definition of even_integer/1 and
+	% sum_squares/3 predicates are copied the testing object from "predicates.lgt".
 
 	% some simple predicates to use with library meta-predicates (e.g. fold_left/4
 	% and partition/4) compiled as plain Prolog code and thus defined in the "user"
