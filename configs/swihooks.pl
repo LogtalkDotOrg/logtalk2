@@ -556,9 +556,9 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 :- '$set_predicate_attribute'('$lgt_ctg_call'/3, trace, 1).
 :- '$set_predicate_attribute'('$lgt_ctg_call_'/3, trace, 1).
 
-:- '$set_predicate_attribute'('$lgt_metacall'/5, trace, 1).
 :- '$set_predicate_attribute'('$lgt_metacall'/6, trace, 1).
-:- '$set_predicate_attribute'('$lgt_metacall_this'/4, trace, 1).
+:- '$set_predicate_attribute'('$lgt_metacall'/7, trace, 1).
+:- '$set_predicate_attribute'('$lgt_metacall_this'/5, trace, 1).
 :- '$set_predicate_attribute'('$lgt_metacall_sender'/5, trace, 1).
 
 :- '$set_predicate_attribute'('$lgt_expand_term'/5, trace, 1).
