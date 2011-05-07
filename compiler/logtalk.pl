@@ -7508,8 +7508,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_meta_non_terminal_directive'([Entity::NonTerminal| NonTerminals]) :-
 	'$lgt_valid_meta_predicate_template'(NonTerminal),
 	!,
-	NonTerminal =.. [Functor| Args],
-	'$lgt_append'(Args, [*, *], FullArgs),
+	NonTerminal =.. [Functor, Arg1| Args],
+	Arg2 is Arg1 + 2,
+	'$lgt_append'([Arg2| Args], [*, *], FullArgs),
 	Pred =.. [Functor| FullArgs],
 	assertz('$lgt_pp_meta_predicate_'(Entity::Pred)),
 	'$lgt_tr_meta_non_terminal_directive'(NonTerminals).
@@ -7517,8 +7518,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_meta_non_terminal_directive'([':'(Module, NonTerminal)| NonTerminals]) :-
 	'$lgt_valid_meta_predicate_template'(NonTerminal),
 	!,
-	NonTerminal =.. [Functor| Args],
-	'$lgt_append'(Args, [*, *], FullArgs),
+	NonTerminal =.. [Functor, Arg1| Args],
+	Arg2 is Arg1 + 2,
+	'$lgt_append'([Arg2| Args], [*, *], FullArgs),
 	Pred =.. [Functor| FullArgs],
 	assertz('$lgt_pp_meta_predicate_'(':'(Module, Pred))),
 	'$lgt_tr_meta_non_terminal_directive'(NonTerminals).
@@ -7529,8 +7531,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	functor(NonTerminal, Functor, Arity),
 	ExtArity is Arity + 2,
 	'$lgt_check_for_directive_after_call'(Functor/ExtArity),
-	NonTerminal =.. [Functor| Args],
-	'$lgt_append'(Args, [*, *], FullArgs),
+	NonTerminal =.. [Functor, Arg1| Args],
+	Arg2 is Arg1 + 2,
+	'$lgt_append'([Arg2| Args], [*, *], FullArgs),
 	Pred =.. [Functor| FullArgs],
 	assertz('$lgt_pp_meta_predicate_'(Pred)),
 	'$lgt_tr_meta_non_terminal_directive'(NonTerminals).
