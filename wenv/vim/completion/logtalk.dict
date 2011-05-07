@@ -107,6 +107,7 @@ logtalk_library_path
 logtalk_load
 logtalk_load_context
 meta_predicate
+meta_non_terminal
 mod
 mode
 multifile

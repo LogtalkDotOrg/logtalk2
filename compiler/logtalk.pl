@@ -6892,6 +6892,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	),
 	'$lgt_tr_meta_predicate_directive'(Preds3).
 
+'$lgt_tr_directive'((meta_non_terminal), Preds, _) :-
+	'$lgt_flatten_list'(Preds, Preds2),
+	'$lgt_tr_meta_non_terminal_directive'(Preds2).
+
 
 '$lgt_tr_directive'(annotation, Annotations, _) :-
 	'$lgt_flatten_list'(Annotations, Annotations2),
@@ -7460,6 +7464,79 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_meta_predicate_directive'([Pred| _]) :-
 	throw(type_error(meta_predicate_template, Pred)).
+
+
+
+% '$lgt_tr_meta_non_terminal_directive'(+list)
+%
+% auxiliary predicate for translating meta_non_terminal/1 directives
+
+'$lgt_tr_meta_non_terminal_directive'([]).
+
+'$lgt_tr_meta_non_terminal_directive'([NonTerminal| _]) :-
+	var(NonTerminal),
+	throw(instantiation_error).
+
+'$lgt_tr_meta_non_terminal_directive'([NonTerminal| _]) :-
+	\+ callable(NonTerminal),
+	throw(type_error(callable, NonTerminal)).
+
+'$lgt_tr_meta_non_terminal_directive'([Entity::_| _]) :-
+	var(Entity),
+	throw(instantiation_error).
+
+'$lgt_tr_meta_non_terminal_directive'([':'(Module, _)| _]) :-
+	var(Module),
+	throw(instantiation_error).
+
+'$lgt_tr_meta_non_terminal_directive'([_::NonTerminal| _]) :-
+	var(NonTerminal),
+	throw(instantiation_error).
+
+'$lgt_tr_meta_non_terminal_directive'([':'(_, NonTerminal)| _]) :-
+	var(NonTerminal),
+	throw(instantiation_error).
+
+'$lgt_tr_meta_non_terminal_directive'([Entity::_| _]) :-
+	\+ callable(Entity),
+	throw(type_error(entity_identifier, Entity)).
+
+'$lgt_tr_meta_non_terminal_directive'([':'(Module, _)| _]) :-
+	\+ atom(Module),
+	throw(type_error(atom, Module)).
+
+'$lgt_tr_meta_non_terminal_directive'([Entity::NonTerminal| NonTerminals]) :-
+	'$lgt_valid_meta_predicate_template'(NonTerminal),
+	!,
+	NonTerminal =.. [Functor| Args],
+	'$lgt_append'(Args, [*, *], FullArgs),
+	Pred =.. [Functor| FullArgs],
+	assertz('$lgt_pp_meta_predicate_'(Entity::Pred)),
+	'$lgt_tr_meta_non_terminal_directive'(NonTerminals).
+
+'$lgt_tr_meta_non_terminal_directive'([':'(Module, NonTerminal)| NonTerminals]) :-
+	'$lgt_valid_meta_predicate_template'(NonTerminal),
+	!,
+	NonTerminal =.. [Functor| Args],
+	'$lgt_append'(Args, [*, *], FullArgs),
+	Pred =.. [Functor| FullArgs],
+	assertz('$lgt_pp_meta_predicate_'(':'(Module, Pred))),
+	'$lgt_tr_meta_non_terminal_directive'(NonTerminals).
+
+'$lgt_tr_meta_non_terminal_directive'([NonTerminal| NonTerminals]) :-
+	'$lgt_valid_meta_predicate_template'(NonTerminal),
+	!,
+	functor(NonTerminal, Functor, Arity),
+	ExtArity is Arity + 2,
+	'$lgt_check_for_directive_after_call'(Functor/ExtArity),
+	NonTerminal =.. [Functor| Args],
+	'$lgt_append'(Args, [*, *], FullArgs),
+	Pred =.. [Functor| FullArgs],
+	assertz('$lgt_pp_meta_predicate_'(Pred)),
+	'$lgt_tr_meta_non_terminal_directive'(NonTerminals).
+
+'$lgt_tr_meta_non_terminal_directive'([NonTerminal| _]) :-
+	throw(type_error(meta_non_terminal_template, NonTerminal)).
 
 
 
@@ -14687,6 +14764,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_lgt_predicate_directive'(metapredicate, N) :-		% deprecated Logtalk directive
 	N >= 1.
 '$lgt_lgt_predicate_directive'((meta_predicate), N) :-	% Logtalk directive
+	N >= 1.
+'$lgt_lgt_predicate_directive'((meta_non_terminal), N) :-
 	N >= 1.
 '$lgt_lgt_predicate_directive'((discontiguous), N) :-
 	N >= 1.

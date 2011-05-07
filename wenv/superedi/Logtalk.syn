@@ -113,6 +113,7 @@ public
 protected
 private
 meta_predicate
+meta_non_terminal
 op
 calls
 uses

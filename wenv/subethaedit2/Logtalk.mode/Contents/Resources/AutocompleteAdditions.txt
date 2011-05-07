@@ -46,6 +46,7 @@ dynamic(/).
 dynamic.
 discontiguous(/).
 meta_predicate().
+meta_non_terminal().
 op(, , ).
 initialization().
 encoding().

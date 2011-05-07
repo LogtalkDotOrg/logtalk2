@@ -126,7 +126,7 @@
 			<keyword>(dynamic)(?=[(])</keyword>			
 			<keyword>(dynamic)(?=[.])</keyword>			
 			<keyword>(discontiguous)(?=[(])</keyword>			
-			<keyword>(m(eta_predicate|ultifile))(?=[(])</keyword>			
+			<keyword>(m(eta_(non_terminal|predicate)|ultifile))(?=[(])</keyword>			
 			<keyword>(op)(?=[(])</keyword>			
 			<keyword>(c(alls|oinductive))(?=[(])</keyword>			
 			<keyword>(use(s|_module))(?=[(])</keyword>			

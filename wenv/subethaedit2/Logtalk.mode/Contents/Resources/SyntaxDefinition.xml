@@ -234,7 +234,7 @@
 				<regex>:-\s(e(?:lse|ndif))\.</regex>
 				<regex>:-\s(discontiguous)\(</regex>
 				<regex>:-\s(p(?:ublic|r(?:otected|ivate)))\(</regex>
-				<regex>:-\s(m(?:eta_predicate|ultifile))\(</regex>
+				<regex>:-\s(m(?:eta_(?:non_terminal|predicate)|ultifile))\(</regex>
 				<regex>:-\s(op)\(</regex>
 				<regex>:-\s(c(?:alls|oinductive))\(</regex>
 				<regex>:-\s(use(?:s|_module))\(</regex>

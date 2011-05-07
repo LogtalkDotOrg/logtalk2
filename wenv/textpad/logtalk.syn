@@ -1,7 +1,7 @@
 ; TextPad syntax definitions for Logtalk (http://logtalk.org/)
 ; 
 ; Author: 			Paulo Moura
-; Last changed in: 	October 25, 2009
+; Last changed in: 	May 07, 2011
 ;
 ; Tags used and sugested colors:
 ;   Keywords 1	message sending operators	blue
@@ -108,6 +108,7 @@ initialization
 info
 mode
 meta_predicate
+meta_non_terminal
 multifile
 coinductive
 public

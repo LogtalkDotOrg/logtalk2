@@ -31,9 +31,9 @@ comment
 	extends(parent)).
 
 	:- info([
-		version is 1.6,
+		version is 1.7,
 		author is 'Paulo Moura',
-		date is 2011/02/07,
+		date is 2011/05/07,
 		comment is 'Sample prototype for testing syntax coloring.']).
 
 	:- threaded.
@@ -69,6 +69,9 @@ comment
 	:- info(position/2, [
 		comment is 'Predicate brief description.',
 		arguments is ['Arg1'-'Arg1 description', 'Arg2'-'Arg2 description']]).
+
+	:- public(nt//2).
+	:- meta_non_terminal(nt(1, *)).
 
 	:- protected(bbb/2).
 	:- synchronized(bbb/2).

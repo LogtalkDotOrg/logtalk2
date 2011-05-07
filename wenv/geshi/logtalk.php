@@ -12,6 +12,8 @@
  *
  * CHANGES
  * -------
+ * 2011/01/18 (1.1.5)
+ *  -  Added syntax coloring of meta_non_terminal/1
  * 2011/01/18 (1.1.4)
  *  -  Added syntax coloring of ignore/1
  * 2010/11/28 (1.1.3)
@@ -87,7 +89,7 @@ $language_data = array(
             // entity directives
             'calls', 'initialization', 'op', 'uses',
             // predicate directives
-            'alias', 'coinductive', 'discontiguous', 'dynamic', 'mode', 'info', 'meta_predicate', 'multifile', 'synchronized',
+            'alias', 'coinductive', 'discontiguous', 'dynamic', 'mode', 'info', 'meta_predicate', 'meta_non_terminal', 'multifile', 'synchronized',
             // module directives
             'export', 'module', 'reexport', 'use_module'
             ),

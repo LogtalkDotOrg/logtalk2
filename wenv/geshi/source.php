@@ -87,6 +87,9 @@ comment
 		comment is 'Predicate brief description.',
 		arguments is ['Arg1'-'Arg1 description', 'Arg2'-'Arg2 description']]).
 
+	:- public(nt//2).
+	:- meta_non_terminal(nt(1, *)).
+
 	:- protected(bbb/2).
 	:- synchronized(bbb/2).
 	:- mode(bbb(+integer, -float), one).
