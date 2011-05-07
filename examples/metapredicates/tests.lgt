@@ -65,13 +65,54 @@
 
 
 
+:- category(ctg).
+
+	:- private(cp1/2).
+	cp1(F, L) :-
+		FX =.. [F, X],
+		findall(X, FX, L).
+
+	:- private(cp2/2).
+	cp2(_, L) :-
+		findall(X, a(X), L).
+
+	a(1).
+	a(2).
+	a(3).
+
+:- end_category.
+
+
+:- object(obj,
+	imports(ctg)).
+
+	:- public(op1d/1).
+	op1d(L) :-
+		:cp1(a, L).
+
+	:- public(op2d/1).
+	op2d(L) :-
+		:cp2(a, L).
+
+	:- public(op1s/1).
+	op1s(L) :-
+		::cp1(a, L).
+
+	:- public(op2s/1).
+	op2s(L) :-
+		::cp2(a, L).
+
+:- end_object.
+
+
+
 :- object(tests,
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.22,
+		version is 1.3,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2011/05/06,
+		date is 2011/05/07,
 		comment is 'Unit tests for the "metapredicates" example.']).
 
 	% This example defines a plain Prolog predicate even_integer/1. As the
@@ -177,5 +218,15 @@
 	test(metapredicates_21) :-
 		meta::findall_member(N, [1, 2, 3, 4, 5], (N mod 2 =:= 0), L, [6, 8]),
 		L == [2, 4, 6, 8].
+
+	test(metapredicates_22) :-
+		obj::op1d(L1d),
+		L1d == [1, 2, 3],
+		obj::op1s(L1s),
+		L1s == [1, 2, 3],
+		obj::op2d(L2d),
+		L2d == [1, 2, 3],
+		obj::op2s(L2s),
+		L2s == [1, 2, 3].
 
 :- end_object.

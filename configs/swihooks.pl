@@ -103,9 +103,9 @@ user:prolog_predicate_name(user:'$lgt_ctg_super_call_same'(_, _, _), '^^/2 (not 
 user:prolog_predicate_name(user:'$lgt_ctg_super_call_other'(_, _, _), '^^/2 (not cached; from ctg; diff pred)') :- !.
 user:prolog_predicate_name(user:'$lgt_ctg_call'(_, _, _), ':/1 (not cached)') :- !.
 
+user:prolog_predicate_name(user:'$lgt_metacall'(_, _, _, _, _, _, _), 'call/N') :- !.
 user:prolog_predicate_name(user:'$lgt_metacall'(_, _, _, _, _, _), 'call/N') :- !.
-user:prolog_predicate_name(user:'$lgt_metacall'(_, _, _, _, _), 'call/N') :- !.
-user:prolog_predicate_name(user:'$lgt_metacall_this'(_, _, _, _), 'call/N') :- !.
+user:prolog_predicate_name(user:'$lgt_metacall_this'(_, _, _, _, _), 'call/N') :- !.
 user:prolog_predicate_name(user:'$lgt_metacall_sender'(_, _, _, _, _), 'call/N') :- !.
 
 user:prolog_predicate_name(user:'$lgt_expand_term'(_, _, _, _, _), 'expand_term/2') :- !.
@@ -338,15 +338,15 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos1),
 	'$lgt_swi_unify_clause_body'(Recover, Entity, TRecover, TermPos1, TermPos).
 
-'$lgt_swi_unify_clause_body'(CallN, _, '$lgt_metacall'(Closure, ExtraArgs, _, _, _, _), TermPos, TermPos) :- !,
+'$lgt_swi_unify_clause_body'(CallN, _, '$lgt_metacall'(Closure, ExtraArgs, _, _, _, _, _), TermPos, TermPos) :- !,
 	functor(CallN, call, Arity),
 	!,
 	length(ExtraArgs, N),
 	Arity is N + 1,
 	arg(1, CallN, Closure),
 	'$lgt_swi_call_n_args'(ExtraArgs, 2, CallN).
-'$lgt_swi_unify_clause_body'(Goal, _, '$lgt_metacall'(Goal, _, _, _, _), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(Goal, _, '$lgt_metacall_this'(Goal, _, _, _), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(Goal, _, '$lgt_metacall'(Goal, _, _, _, _, _), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(Goal, _, '$lgt_metacall_this'(Goal, _, _, _, _), TermPos, TermPos) :- !.
 '$lgt_swi_unify_clause_body'(Goal, _, '$lgt_metacall_sender'(Goal, _, _, _, _), TermPos, TermPos) :- !.
 
 '$lgt_swi_unify_clause_body'(bagof(Term, Goal, List), Entity, bagof(Term, TGoal, List), TermPos0, TermPos) :- !,

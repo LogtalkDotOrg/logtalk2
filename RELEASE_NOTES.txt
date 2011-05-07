@@ -64,6 +64,10 @@ RELEASE NOTES
     being made instead to the non-synchronized forms of the predicates, which
     would manifest in random failures of thread goals.
 
+    Corrected a long standing bug where a runtime-compiled meta-call within
+    a category would be compiled as a call to a predicate of the object
+    importing the category instead as a call to a local category predicate.
+
     Refined error checking for the built-in predicates category_property/2,
     object_property/2, and protocol_property/2, throwing a type_error/2 when
     the second argument is neither a variable or a callable term.
