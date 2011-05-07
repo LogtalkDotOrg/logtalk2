@@ -411,34 +411,39 @@ Obj<<Goal :-
 	'$lgt_decompile_predicate_indicator'(TFunctor1/TArity1, Entity, Type, Functor1/Arity1),
 	'$lgt_decompile_predicate_indicator'(TFunctor2/TArity2, Entity, Type, Functor2/Arity2),
 	functor(Goal2, Functor2, Arity2),
-	throw(error(existence_error(procedure, Functor1/Arity1), logtalk(Entity::Goal2, _))).
+	throw(error(existence_error(procedure, Functor1/Arity1), logtalk(Goal2, Entity))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor1/TArity1), TFunctor2/TArity2)) :-				% GNU Prolog and B-Prolog
 	'$lgt_decompile_predicate_indicator'(TFunctor1/TArity1, Entity, Type, Functor1/Arity1),
 	'$lgt_decompile_predicate_indicator'(TFunctor2/TArity2, Entity, Type, Functor2/Arity2),
 	functor(Goal2, Functor2, Arity2),
-	throw(error(existence_error(procedure, Functor1/Arity1), logtalk(Entity::Goal2, _))).
+	throw(error(existence_error(procedure, Functor1/Arity1), logtalk(Goal2, Entity))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ModTFunctor/TArity), _)) :-								% Ciao
 	atom_concat('user:', TFunctor, ModTFunctor),
 	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
-	throw(error(existence_error(procedure, Functor/Arity), logtalk(Entity::_, _))).
+	functor(Goal, Functor, Arity),
+	throw(error(existence_error(procedure, Functor/Arity), logtalk(Goal, Entity))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, TFunctor/TArity), _)) :-									% K-Prolog and YAP 5.1 or later
 	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
-	throw(error(existence_error(procedure, Functor/Arity), logtalk(Entity::_, _))).
+	functor(Goal, Functor, Arity),
+	throw(error(existence_error(procedure, Functor/Arity), logtalk(Goal, Entity))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ':'(_, TFunctor/TArity)), _)) :-							% SICStus Prolog 4.x
 	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
-	throw(error(existence_error(procedure, Functor/Arity), logtalk(Entity::_, _))).
+	functor(Goal, Functor, Arity),
+	throw(error(existence_error(procedure, Functor/Arity), logtalk(Goal, Entity))).
 
 '$lgt_runtime_error_handler'(error(existence_error(_, _, procedure, ':'(_, TFunctor/TArity), _), _)) :-					% Quintus, SICStus Prolog 3.x
 	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
-	throw(error(existence_error(procedure, Functor/Arity), logtalk(Entity::_, _))).
+	functor(Goal, Functor, Arity),
+	throw(error(existence_error(procedure, Functor/Arity), logtalk(Goal, Entity))).
 
 '$lgt_runtime_error_handler'(error(existence_error(procedure, ':'(_, TFunctor/TArity)), _, _)) :-						% XSB
 	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
-	throw(error(existence_error(procedure, Functor/Arity), logtalk(Entity::_, _))).
+	functor(Goal, Functor, Arity),
+	throw(error(existence_error(procedure, Functor/Arity), logtalk(Goal, Entity))).
 
 '$lgt_runtime_error_handler'(error(Variable, _)) :-
 	var(Variable),
@@ -453,7 +458,7 @@ Obj<<Goal :-
 	Context = context(TFunctor/TArity, _),
 	'$lgt_decompile_predicate_indicator'(TFunctor/TArity, Entity, _, Functor/Arity),
 	functor(Goal, Functor, Arity),
-	throw(error(Error, logtalk(Entity::Goal, _))).
+	throw(error(Error, logtalk(Goal, Entity))).
 
 '$lgt_runtime_error_handler'(logtalk_debugger_aborted) :-
 	!,
@@ -3291,13 +3296,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 %
 % performs a meta-call constructed from a closure and a list of additional arguments
 
-'$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, _) :-
+'$lgt_metacall'(Closure, ExtraArgs, _, _, This, _) :-
 	var(Closure),
 	Call =.. [call, Closure| ExtraArgs],
-	(	atom(MetaCallCtx) ->
-		throw(error(instantiation_error, logtalk(This::Call, This)))
-	;	throw(error(instantiation_error, logtalk(Sender::Call, This)))
-	).
+	throw(error(instantiation_error, logtalk(Call, This))).
 
 '$lgt_metacall'({Closure}, ExtraArgs, _, _, This, _) :-		% pre-compiled closures or calls
 	!,														% in "user" (compiler bypass)
@@ -3427,13 +3429,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	throw(error(representation_error(lambda_parameters), logtalk(Parameters>>Closure, This)))
 	).
 
-'$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, _) :-
+'$lgt_metacall'(Closure, ExtraArgs, _, _, This, _) :-
 	\+ callable(Closure),
 	Call =.. [call, Closure| ExtraArgs],
-	(	atom(MetaCallCtx) ->
-		throw(error(type_error(callable, Closure), logtalk(This::Call, This)))
-	;	throw(error(type_error(callable, Closure), logtalk(Sender::Call, This)))
-	).
+	throw(error(type_error(callable, Closure), logtalk(Call, This))).
 
 '$lgt_metacall'(Closure, ExtraArgs, MetaCallCtx, Sender, This, Self) :-
 	(	atom(Closure) ->
@@ -3482,19 +3481,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 %
 % performs a meta-call at runtime
 
-'$lgt_metacall'(Goal, MetaCallCtx, Sender, This, _) :-
+'$lgt_metacall'(Goal, _, _, This, _) :-
 	var(Goal),
-	(	atom(MetaCallCtx) ->
-		throw(error(instantiation_error, logtalk(call(This::Goal), This)))
-	;	throw(error(instantiation_error, logtalk(call(Sender::Goal), This)))
-	).
+	throw(error(instantiation_error, logtalk(call(Goal), This))).
 
-'$lgt_metacall'(Goal, MetaCallCtx, Sender, This, _) :-
+'$lgt_metacall'(Goal, _, _, This, _) :-
 	\+ callable(Goal),
-	(	atom(MetaCallCtx) ->
-		throw(error(type_error(callable, Goal), logtalk(call(This::Goal), This)))
-	;	throw(error(type_error(callable, Goal), logtalk(call(Sender::Goal), This)))
-	).
+	throw(error(type_error(callable, Goal), logtalk(call(Goal), This))).
 
 '$lgt_metacall'({Goal}, _, _, _, _) :-						% pre-compiled meta-calls or calls
 	!,														% in "user" (compiler bypass)
@@ -3640,11 +3633,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_ctg_call'(Dcl, Pred, ExCtx) :-
 	(	var(Pred) ->
 		'$lgt_exec_ctx_this'(ExCtx, This),
-		throw(error(instantiation_error, logtalk(':'(Pred), This)))
+		throw(error(instantiation_error, logtalk(:Pred, This)))
 	;	callable(Pred) ->
 		'$lgt_ctg_call_'(Dcl, Pred, ExCtx)
 	;	'$lgt_exec_ctx_this'(ExCtx, This),
-		throw(error(type_error(callable, Pred), logtalk(':'(Pred), This)))
+		throw(error(type_error(callable, Pred), logtalk(:Pred, This)))
 	).
 
 
@@ -3685,7 +3678,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		'$lgt_built_in'(Alias) ->
 		call(Alias)
 	;	functor(Alias, Functor, Arity),
-		throw(error(existence_error(predicate_declaration, Functor/Arity), logtalk(':'(Alias), This)))
+		throw(error(existence_error(predicate_declaration, Functor/Arity), logtalk(:Alias, This)))
 	).
 
 

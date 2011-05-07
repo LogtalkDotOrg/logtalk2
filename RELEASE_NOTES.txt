@@ -16,9 +16,9 @@ RELEASE NOTES
 2.43.0 - May ??, 2011
 
     Changed error reporting by the Logtalk compiler and runtime. All exception
-    terms now use, whenever possible, the error(Error, logtalk(Goal, Sender))
+    terms now use, whenever possible, the error(Error, logtalk(Goal, Entity))
     format. Changed the internal error checking to use, whenever practical,
-    the '$lgt_must_be'/2-3 new predicates.
+    the new '$lgt_must_be'/2-3 predicates.
 
     Added an "optimize" flag, whose default value is "on". This flag allows
     the user to turn off existing optimizations for e.g. debugging tasks (the
