@@ -17378,7 +17378,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		thread_peek_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, [], Id)) ->
 		% answering thread exists; go ahead and retrieve the solution(s):
 		thread_get_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, [], Id)),
-		(	Type == once ->
+		(	Type == (once) ->
 			setup_call_cleanup(
 				true,
 				'$lgt_mt_det_reply'(Queue, Goal, This, Self, [], Id),
@@ -17426,7 +17426,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		thread_peek_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)) ->
 		% answering thread exists; go ahead and retrieve the solution(s):
 		thread_get_message(Queue, '$lgt_thread_id'(Type, Goal, This, Self, Tag, Id)),
-		(	Type == once ->
+		(	Type == (once) ->
 			setup_call_cleanup(
 				true,
 				'$lgt_mt_det_reply'(Queue, Goal, This, Self, Tag, Id),
