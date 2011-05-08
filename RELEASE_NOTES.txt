@@ -95,7 +95,8 @@ RELEASE NOTES
     predicate with library notation and with the Logtalk "altdirs" flag on.
 
     Updated the ECLiPSe config file, simplifying some of the file handling
-    predicates.
+    predicates and making use of the recently implemented call/N built-in
+    control constructs when available.
 
     Updated the GNU Prolog config file setting the "strict_iso" flag to "off"
     in order to avoid the annoying incompatibility of the predicate_property/2

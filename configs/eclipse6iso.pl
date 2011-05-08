@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#141 and later versions
 %
-%  last updated: May 2, 2011
+%  last updated: May 8, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -120,38 +120,42 @@ forall(Generate, Test) :-
 
 % call/2-9
 
-:- export call/2.	% avoid conflict with obsolete built-in predicate
-call(F, A) :-
-	Call =.. [F, A],
-	call(Call).
+:- if((get_flag(version_as_list, Version), Version @< [6,1,59])).
 
-call(F, A1, A2) :-
-	Call =.. [F, A1, A2],
-	call(Call).
+	:- export call/2.	% avoid conflict with obsolete built-in predicate
+	call(F, A) :-
+		Call =.. [F, A],
+		call(Call).
 
-call(F, A1, A2, A3) :-
-	Call =.. [F, A1, A2, A3],
-	call(Call).
+	call(F, A1, A2) :-
+		Call =.. [F, A1, A2],
+		call(Call).
 
-call(F, A1, A2, A3, A4) :-
-	Call =.. [F, A1, A2, A3, A4],
-	call(Call).
+	call(F, A1, A2, A3) :-
+		Call =.. [F, A1, A2, A3],
+		call(Call).
 
-call(F, A1, A2, A3, A4, A5) :-
-	Call =.. [F, A1, A2, A3, A4, A5],
-	call(Call).
+	call(F, A1, A2, A3, A4) :-
+		Call =.. [F, A1, A2, A3, A4],
+		call(Call).
 
-call(F, A1, A2, A3, A4, A5, A6) :-
-	Call =.. [F, A1, A2, A3, A4, A5, A6],
-	call(Call).
+	call(F, A1, A2, A3, A4, A5) :-
+		Call =.. [F, A1, A2, A3, A4, A5],
+		call(Call).
 
-call(F, A1, A2, A3, A4, A5, A6, A7) :-
-	Call =.. [F, A1, A2, A3, A4, A5, A6, A7],
-	call(Call).
+	call(F, A1, A2, A3, A4, A5, A6) :-
+		Call =.. [F, A1, A2, A3, A4, A5, A6],
+		call(Call).
 
-call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
-	Call =.. [F, A1, A2, A3, A4, A5, A6, A7, A8],
-	call(Call).
+	call(F, A1, A2, A3, A4, A5, A6, A7) :-
+		Call =.. [F, A1, A2, A3, A4, A5, A6, A7],
+		call(Call).
+
+	call(F, A1, A2, A3, A4, A5, A6, A7, A8) :-
+		Call =.. [F, A1, A2, A3, A4, A5, A6, A7, A8],
+		call(Call).
+
+:- endif.
 
 
 
