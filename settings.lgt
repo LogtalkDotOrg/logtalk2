@@ -117,7 +117,7 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 	set_logtalk_flag(singletons, warning),
 	set_logtalk_flag(missing_directives, warning),
 	set_logtalk_flag(context_switching_calls, allow),
-	set_logtalk_flag(optimize, off).
+	set_logtalk_flag(optimize, off)
 )).
 */
 
@@ -137,7 +137,7 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 	set_logtalk_flag(context_switching_calls, allow),
 	set_logtalk_flag(code_prefix, '.'),
 	set_logtalk_flag(optimize, off),
-	set_prolog_flag(optimise, off).
+	set_prolog_flag(optimise, off)
 )).
 */
 
