@@ -108,7 +108,9 @@ RELEASE NOTES
     the unit test specifications.
 
     Updated the "cc" example with bug fixes and improvements for ECLiPSe
-    contributed by Joachim Schimpf.
+    contributed by Joachim Schimpf and with a bug fix for the SWI-Prolog
+    implementation of the expand_path/2 predicate (resulting from recent
+    changes to the SWI-Prolog absolute_file_name/3 built-in predicate).
 
     Correct a bug in some shell scripts where "#/bin/bash" was used instead
     of "#!/bin/bash". Thanks to Yiorgos Adamopoulos for the bug report.
