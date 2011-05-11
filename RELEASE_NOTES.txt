@@ -71,6 +71,10 @@ RELEASE NOTES
     a category would be compiled as a call to a predicate of the object
     importing the category instead as a call to a local category predicate.
 
+    Corrected a bug in setting the correct execution context when calling
+    a meta-argument that requires a runtime compilation in the context of
+    "sender".
+
     Refined error checking for the built-in predicates category_property/2,
     object_property/2, and protocol_property/2, throwing a type_error/2 when
     the second argument is neither a variable or a callable term.

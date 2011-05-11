@@ -13,7 +13,7 @@
 %  load Logtalk files using SWI Prolog consult/1, to support edit/1 and
 %  make/0, and to improve usability when using the XPCE profiler
 %
-%  last updated: April 28, 2011
+%  last updated: May 11, 2011
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -106,7 +106,7 @@ user:prolog_predicate_name(user:'$lgt_ctg_call'(_, _, _), ':/1 (not cached)') :-
 user:prolog_predicate_name(user:'$lgt_metacall'(_, _, _, _, _, _, _), 'call/N') :- !.
 user:prolog_predicate_name(user:'$lgt_metacall'(_, _, _, _, _, _), 'call/N') :- !.
 user:prolog_predicate_name(user:'$lgt_metacall_this'(_, _, _, _, _), 'call/N') :- !.
-user:prolog_predicate_name(user:'$lgt_metacall_sender'(_, _, _, _, _), 'call/N') :- !.
+user:prolog_predicate_name(user:'$lgt_metacall_sender'(_, _, _), 'call/N') :- !.
 
 user:prolog_predicate_name(user:'$lgt_expand_term'(_, _, _, _, _), 'expand_term/2') :- !.
 user:prolog_predicate_name(user:'$lgt_expand_goal'(_, _, _, _, _), 'expand_goal/2') :- !.
@@ -347,7 +347,7 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 	'$lgt_swi_call_n_args'(ExtraArgs, 2, CallN).
 '$lgt_swi_unify_clause_body'(Goal, _, '$lgt_metacall'(Goal, _, _, _, _, _), TermPos, TermPos) :- !.
 '$lgt_swi_unify_clause_body'(Goal, _, '$lgt_metacall_this'(Goal, _, _, _, _), TermPos, TermPos) :- !.
-'$lgt_swi_unify_clause_body'(Goal, _, '$lgt_metacall_sender'(Goal, _, _, _, _), TermPos, TermPos) :- !.
+'$lgt_swi_unify_clause_body'(Goal, _, '$lgt_metacall_sender'(Goal, _, _), TermPos, TermPos) :- !.
 
 '$lgt_swi_unify_clause_body'(bagof(Term, Goal, List), Entity, bagof(Term, TGoal, List), TermPos0, TermPos) :- !,
 	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
@@ -559,7 +559,7 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 :- '$set_predicate_attribute'('$lgt_metacall'/6, trace, 1).
 :- '$set_predicate_attribute'('$lgt_metacall'/7, trace, 1).
 :- '$set_predicate_attribute'('$lgt_metacall_this'/5, trace, 1).
-:- '$set_predicate_attribute'('$lgt_metacall_sender'/5, trace, 1).
+:- '$set_predicate_attribute'('$lgt_metacall_sender'/3, trace, 1).
 
 :- '$set_predicate_attribute'('$lgt_expand_term'/5, trace, 1).
 :- '$set_predicate_attribute'('$lgt_expand_goal'/5, trace, 1).
