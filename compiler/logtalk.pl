@@ -530,6 +530,32 @@ object_property(Obj, Prop) :-
 				Predicates)
 		),
 		Prop = public(Predicates)
+	;	(	Flags /\ 64 =:= 64 ->
+			findall(
+				Functor/Arity,
+				((call(Dcl, Predicate, p(p), _, _); call(DDcl, Predicate, p(p))),
+				 functor(Predicate, Functor, Arity)),
+				Predicates)
+		;	findall(
+				Functor/Arity,
+				(call(Dcl, Predicate, p(p), _, _),
+				 functor(Predicate, Functor, Arity)),
+				Predicates)
+		),
+		Prop = protected(Predicates)
+	;	(	Flags /\ 64 =:= 64 ->
+			findall(
+				Functor/Arity,
+				((call(Dcl, Predicate, p, _, _); call(DDcl, Predicate, p)),
+				 functor(Predicate, Functor, Arity)),
+				Predicates)
+		;	findall(
+				Functor/Arity,
+				(call(Dcl, Predicate, p, _, _),
+				 functor(Predicate, Functor, Arity)),
+				Predicates)
+		),
+		Prop = private(Predicates)
 	).
 
 
@@ -553,6 +579,16 @@ category_property(Ctg, Prop) :-
 			(call(Dcl, Predicate, p(p(p)), _, _, Ctg), functor(Predicate, Functor, Arity)),
 			Predicates),
 		Prop = public(Predicates)
+	;	findall(
+			Functor/Arity,
+			(call(Dcl, Predicate, p(p), _, _, Ctg), functor(Predicate, Functor, Arity)),
+			Predicates),
+		Prop = protected(Predicates)
+	;	findall(
+			Functor/Arity,
+			(call(Dcl, Predicate, p, _, _, Ctg), functor(Predicate, Functor, Arity)),
+			Predicates),
+		Prop = private(Predicates)
 	).
 
 
@@ -576,6 +612,16 @@ protocol_property(Ptc, Prop) :-
 			(call(Dcl, Predicate, p(p(p)), _, _, Ptc), functor(Predicate, Functor, Arity)),
 			Predicates),
 		Prop = public(Predicates)
+	;	findall(
+			Functor/Arity,
+			(call(Dcl, Predicate, p(p), _, _, Ptc), functor(Predicate, Functor, Arity)),
+			Predicates),
+		Prop = protected(Predicates)
+	;	findall(
+			Functor/Arity,
+			(call(Dcl, Predicate, p, _, _, Ptc), functor(Predicate, Functor, Arity)),
+			Predicates),
+		Prop = private(Predicates)
 	).
 
 
