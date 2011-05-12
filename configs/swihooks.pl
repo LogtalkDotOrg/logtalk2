@@ -488,7 +488,6 @@ user:portray(c(This, r(Sender, Self, MetaVars, CoinductionStack))) :-
 '$lgt_swi_unify_clause_body'(Goal, Entity, with_mutex(_, TGoal), TermPos0, TermPos) :-
 	\+ functor(Goal, with_mutex, 2),								% synchronized predicates
 	!,
-	writeq('HERE'-Goal-TGoal), nl,
 	'$lgt_swi_unify_clause_body'(Goal, Entity, TGoal, TermPos0, TermPos).
 
 '$lgt_swi_unify_clause_body'(Goal, _, Goal, TermPos, TermPos) :-	% built-in predicates
