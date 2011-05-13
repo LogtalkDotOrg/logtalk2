@@ -7217,7 +7217,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	'$lgt_check_for_duplicated_scope_directives'(Functor/Arity),
 	assertz('$lgt_pp_public_'(Functor, Arity)),
-	'$lgt_add_predicate_dcl_line_property'(Functor/Arity),
+	'$lgt_add_predicate_scope_line_property'(Functor/Arity),
 	'$lgt_tr_public_directive'(Preds).
 
 '$lgt_tr_public_directive'([Pred| Preds]) :-
@@ -7226,7 +7226,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_check_for_duplicated_scope_directives'(Functor//Arity+ExtArity),
 	assertz('$lgt_pp_non_terminal_'(Functor, Arity, ExtArity)),
 	assertz('$lgt_pp_public_'(Functor, ExtArity)),
-	'$lgt_add_predicate_dcl_line_property'(Functor/ExtArity),
+	'$lgt_add_predicate_scope_line_property'(Functor/ExtArity),
 	'$lgt_tr_public_directive'(Preds).
 
 '$lgt_tr_public_directive'([Pred| _]) :-
@@ -7256,7 +7256,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	'$lgt_check_for_duplicated_scope_directives'(Functor/Arity),
 	assertz('$lgt_pp_protected_'(Functor, Arity)),
-	'$lgt_add_predicate_dcl_line_property'(Functor/Arity),
+	'$lgt_add_predicate_scope_line_property'(Functor/Arity),
 	'$lgt_tr_protected_directive'(Preds).
 
 '$lgt_tr_protected_directive'([Pred| Preds]) :-
@@ -7265,7 +7265,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_check_for_duplicated_scope_directives'(Functor//Arity+ExtArity),
 	assertz('$lgt_pp_non_terminal_'(Functor, Arity, ExtArity)),
 	assertz('$lgt_pp_protected_'(Functor, ExtArity)),
-	'$lgt_add_predicate_dcl_line_property'(Functor/ExtArity),
+	'$lgt_add_predicate_scope_line_property'(Functor/ExtArity),
 	'$lgt_tr_protected_directive'(Preds).
 
 '$lgt_tr_protected_directive'([Pred| _]) :-
@@ -7295,7 +7295,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	'$lgt_check_for_duplicated_scope_directives'(Functor/Arity),
 	assertz('$lgt_pp_private_'(Functor, Arity)),
-	'$lgt_add_predicate_dcl_line_property'(Functor/Arity),
+	'$lgt_add_predicate_scope_line_property'(Functor/Arity),
 	'$lgt_tr_private_directive'(Preds).
 
 '$lgt_tr_private_directive'([Pred| Preds]) :-
@@ -7303,7 +7303,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	'$lgt_check_for_duplicated_scope_directives'(Functor//Arity+ExtArity),
 	assertz('$lgt_pp_non_terminal_'(Functor, Arity, ExtArity)),
-	'$lgt_add_predicate_dcl_line_property'(Functor/ExtArity),
+	'$lgt_add_predicate_scope_line_property'(Functor/ExtArity),
 	assertz('$lgt_pp_private_'(Functor, ExtArity)),
 	'$lgt_tr_private_directive'(Preds).
 
@@ -7343,6 +7343,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		;	'$lgt_pp_private_'(Functor, ExtArity)
 		) ->
 		throw(permission_error(modify, non_terminal_scope, Functor//Arity))
+	;	true
+	).
+
+
+
+'$lgt_add_predicate_scope_line_property'(Functor/Arity) :-
+	(	'$lgt_pp_term_position_'(DclLine-_) ->
+		'$lgt_pp_entity'(_, Entity, _, _, _),
+		assertz('$lgt_predicate_property_'(Entity, Functor/Arity, lines(DclLine,-1)))
 	;	true
 	).
 
@@ -8620,7 +8629,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	),
 	'$lgt_comp_ctx_exec_ctx'(HeadCtx, ExCtx),
 	'$lgt_clause_number'(THead, N),
-	'$lgt_add_predicate_def_line_property'(N, Head).
+	'$lgt_add_predicate_first_clause_line_property'(N, Head).
 
 '$lgt_tr_clause'(Fact, _, _, _, _) :-
 	\+ callable(Fact),
@@ -8670,7 +8679,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_tr_head'(Fact, TFact, HeadCtx),
 	'$lgt_comp_ctx_exec_ctx'(HeadCtx, ExCtx),
 	'$lgt_clause_number'(TFact, N),
-	'$lgt_add_predicate_def_line_property'(N, Fact).
+	'$lgt_add_predicate_first_clause_line_property'(N, Fact).
 
 
 '$lgt_clause_number'(THead, N) :-
@@ -8679,17 +8688,14 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_length'(List, 1, N).
 
 
+'$lgt_length'([], Length, Length).
 
-'$lgt_add_predicate_dcl_line_property'(Functor/Arity) :-
-	(	'$lgt_pp_term_position_'(DclLine-_) ->
-		'$lgt_pp_entity'(_, Entity, _, _, _),
-		assertz('$lgt_predicate_property_'(Entity, Functor/Arity, lines(DclLine,-1)))
-	;	true
-	).
+'$lgt_length'([_| Tail], Length0, Length) :-
+	Length1 is Length0 + 1,
+	'$lgt_length'(Tail, Length1, Length).
 
 
-
-'$lgt_add_predicate_def_line_property'(1, Head) :-
+'$lgt_add_predicate_first_clause_line_property'(1, Head) :-
 	!,
 	(	'$lgt_pp_term_position_'(DefLine-_) ->
 		functor(Head, Functor, Arity),
@@ -8701,13 +8707,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	true
 	).
 
-'$lgt_add_predicate_def_line_property'(_, _).
-
-
-'$lgt_length'([], Length, Length).
-'$lgt_length'([_| Tail], Length0, Length) :-
-	Length1 is Length0 + 1,
-	'$lgt_length'(Tail, Length1, Length).
+'$lgt_add_predicate_first_clause_line_property'(_, _).
 
 
 
@@ -15420,8 +15420,12 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_valid_object_property'(dynamic_declarations).		% object supports dynamic declaration of new predicates
 '$lgt_valid_object_property'(events).					% messages sent from the object using the ::/2 control construct generate events
 '$lgt_valid_object_property'(complements).				% object can be complemented by categories
-'$lgt_valid_object_property'(public(_)).				% list of predicate indicators
+'$lgt_valid_object_property'(public(_)).				% list of predicate indicators of public predicates declared in the object
+'$lgt_valid_object_property'(protected(_)).				% list of predicate indicators of protected predicates declared in the object
+'$lgt_valid_object_property'(private(_)).				% list of predicate indicators of private predicates declared in the object
 '$lgt_valid_object_property'(parameter_names(_)).		% list of atoms
+'$lgt_valid_object_property'(declares(_, _)).			% list of declaration properties for a predicate declared in the object
+'$lgt_valid_object_property'(defines(_, _)).			% list of definition properties for a predicate defined in the object
 
 
 
@@ -15433,7 +15437,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_valid_protocol_property'(file(_, _)).				% source file name plus file directory
 '$lgt_valid_protocol_property'(lines(_, _)).			% start and end lines in a source file
 '$lgt_valid_protocol_property'(public(_)).				% list of predicate indicators
+'$lgt_valid_protocol_property'(protected(_)).			% list of predicate indicators of protected predicates declared in the protocol
+'$lgt_valid_protocol_property'(private(_)).				% list of predicate indicators of private predicates declared in the protocol
 '$lgt_valid_protocol_property'(parameter_names(_)).		% list of atoms
+'$lgt_valid_protocol_property'(declares(_, _)).			% list of declaration properties for a predicate declared in the protocol
+'$lgt_valid_protocol_property'(defines(_, _)).			% list of definition properties for a predicate defined in the protocol
 
 
 
@@ -15447,7 +15455,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_valid_category_property'(lines(_, _)).			% start and end lines in a source file
 '$lgt_valid_category_property'(events).					% messages sent from the category using the ::/2 control construct generate events
 '$lgt_valid_category_property'(public(_)).				% list of predicate indicators
+'$lgt_valid_category_property'(protected(_)).			% list of predicate indicators of protected predicates declared in the category
+'$lgt_valid_category_property'(private(_)).				% list of predicate indicators of private predicates declared in the category
 '$lgt_valid_category_property'(parameter_names(_)).		% list of atoms
+'$lgt_valid_category_property'(declares(_, _)).			% list of declaration properties for a predicate declared in the category
+'$lgt_valid_category_property'(defines(_, _)).			% list of definition properties for a predicate defined in the category
 
 
 
