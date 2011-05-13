@@ -82,6 +82,9 @@
 
 :- multifile('$lgt_entity_property_'/2).			% '$lgt_entity_property_'(Entity, Property)
 :- dynamic('$lgt_entity_property_'/2).
+
+:- multifile('$lgt_predicate_property_'/3).			% '$lgt_predicate_property_'(Entity, Functor/Arity, Property)
+:- dynamic('$lgt_predicate_property_'/3).
 	
 :- multifile('$lgt_implements_protocol_'/3).		% '$lgt_implements_protocol_'(ObjOrCtg, Ptc, Scope)
 :- dynamic('$lgt_implements_protocol_'/3).
@@ -508,7 +511,7 @@ current_category(Ctg) :-
 object_property(Obj, Prop) :-
 	'$lgt_must_be'(var_or_object_identifier, Obj, logtalk(object_property(Obj, Prop), _)),
 	'$lgt_must_be'(var_or_object_property, Prop, logtalk(object_property(Obj, Prop), _)),
-	'$lgt_current_object_'(Obj, _, Dcl, _, _, _, _, DDcl, _, _, Flags),
+	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, DDcl, DDef, _, Flags),
 	(	'$lgt_object_flags'(Prop, Flags)
 	;	'$lgt_entity_property_'(Obj, Internal),
 		(	Internal = file(Base, Start, End, Path) ->
@@ -556,6 +559,8 @@ object_property(Obj, Prop) :-
 				Predicates)
 		),
 		Prop = private(Predicates)
+	;	'$lgt_entity_property_declares'(object, Obj, Dcl, DDcl, Prop)
+	;	'$lgt_entity_property_defines'(object, Obj, Def, DDef, Prop)
 	).
 
 
@@ -565,7 +570,7 @@ object_property(Obj, Prop) :-
 category_property(Ctg, Prop) :-
 	'$lgt_must_be'(var_or_category_identifier, Ctg, logtalk(category_property(Ctg, Prop), _)),
 	'$lgt_must_be'(var_or_category_property, Prop, logtalk(category_property(Ctg, Prop), _)),
-	'$lgt_current_category_'(Ctg, _, Dcl, _, _, Flags),
+	'$lgt_current_category_'(Ctg, _, Dcl, Def, _, Flags),
 	(	'$lgt_category_flags'(Prop, Flags)
 	;	'$lgt_entity_property_'(Ctg, Internal),
 		(	Internal = file(Base, Start, End, Path) ->
@@ -589,6 +594,8 @@ category_property(Ctg, Prop) :-
 			(call(Dcl, Predicate, p, _, _, Ctg), functor(Predicate, Functor, Arity)),
 			Predicates),
 		Prop = private(Predicates)
+	;	'$lgt_entity_property_declares'(category, Ctg, Dcl, _, Prop)
+	;	'$lgt_entity_property_defines'(category, Ctg, Def, _, Prop)
 	).
 
 
@@ -622,7 +629,80 @@ protocol_property(Ptc, Prop) :-
 			(call(Dcl, Predicate, p, _, _, Ptc), functor(Predicate, Functor, Arity)),
 			Predicates),
 		Prop = private(Predicates)
+	;	'$lgt_entity_property_declares'(protocol, Ptc, Dcl, _, Prop)
 	).
+
+
+
+'$lgt_entity_property_declares'(Kind, Entity, Dcl, DDcl, declares(Functor/Arity, [Scope| Properties])) :-
+	'$lgt_predicate_declaration'(Kind, Entity, Dcl, DDcl, Predicate, Scope0, Meta, Flags),
+	'$lgt_scope'(Scope, Scope0),
+	functor(Predicate, Functor, Arity),
+	(	Meta == no ->
+		Properties0 = []
+	;	Properties0 = [meta_predicate(Meta)]
+	),
+	(	Flags /\ 2 =:= 2 ->
+		Properties1 = [(dynamic)| Properties0]
+	;	Properties1 = [static| Properties0]
+	),
+	(	Flags /\ 32 =:= 32 ->
+		Properties2 = [(coinductive)| Properties1]
+	;	Properties2 = Properties1
+	),
+	(	Flags /\ 16 =:= 16 ->
+		Properties3 = [(multifile)| Properties2]
+	;	Properties3 = Properties2
+	),
+	(	Flags /\ 8 =:= 8 ->
+		Arity2 is Arity - 2,
+		Properties4 = [non_terminal(Functor//Arity2)| Properties3]
+	;	Properties4 = Properties3
+	),
+	(	Flags /\ 4 =:= 4 ->
+		Properties5 = [synchronized| Properties4]
+	;	Properties5 = Properties4
+	),
+	(	'$lgt_predicate_property_'(Entity, Functor/Arity, lines(Line,_)),
+	 	Line =\= -1 ->
+		Properties = [line(Line)| Properties5]
+	;	Properties = Properties5
+	).
+
+
+'$lgt_predicate_declaration'(object, _, Dcl, DDcl, Predicate, Scope, Meta, Flags) :-
+	(	call(Dcl, Predicate, Scope, Meta, Flags)
+	;	catch(call(DDcl, Predicate, Scope), _, fail)
+	).
+
+'$lgt_predicate_declaration'(protocol, Ptc, Dcl, _, Predicate, Scope, Meta, Flags) :-
+	call(Dcl, Predicate, Scope, Meta, Flags, Ptc).
+
+'$lgt_predicate_declaration'(category, Ctg, Dcl, _, Predicate, Scope, Meta, Flags) :-
+	call(Dcl, Predicate, Scope, Meta, Flags, Ctg).
+
+
+
+'$lgt_entity_property_defines'(Kind, Entity, Def, DDef, defines(Functor/Arity, Properties)) :-
+	'$lgt_predicate_definition'(Kind, Entity, Def, DDef, Predicate),
+	functor(Predicate, Functor, Arity),
+	(	'$lgt_predicate_property_'(Entity, Functor/Arity, lines(_,Line)),
+	 	Line =\= -1 ->
+		Properties = [line(Line)]
+	;	Properties = []
+	).
+
+
+'$lgt_predicate_definition'(object, _, Def, DDef, Predicate) :-
+	(	call(Def, Predicate, _, _)
+	;	call(DDef, Predicate, _, _)
+	).
+
+'$lgt_predicate_definition'(protocol, Ptc, Def, _, Predicate) :-
+	call(Def, Predicate, _, _, Ptc).
+
+'$lgt_predicate_definition'(category, Ctg, Def, _, Predicate) :-
+	call(Def, Predicate, _, _, Ctg).
 
 
 
@@ -798,6 +878,7 @@ abolish_object(Obj) :-
 			abolish(Rnm/3),
 			retractall('$lgt_current_object_'(Obj, _, _, _, _, _, _, _, _, _, _)),
 			retractall('$lgt_entity_property_'(Obj, _)),
+			retractall('$lgt_predicate_property_'(Obj, _, _)),
 			retractall('$lgt_extends_object_'(Obj, _, _)),
 			retractall('$lgt_instantiates_class_'(Obj, _, _)),
 			retractall('$lgt_specializes_class_'(Obj, _, _)),
@@ -825,6 +906,7 @@ abolish_category(Ctg) :-
 			abolish(Rnm/3),
 			retractall('$lgt_current_category_'(Ctg, _, _, _, _, _)),
 			retractall('$lgt_entity_property_'(Ctg, _)),
+			retractall('$lgt_predicate_property_'(Ctg, _, _)),
 			retractall('$lgt_extends_category_'(Ctg, _, _)),
 			retractall('$lgt_implements_protocol_'(Ctg, _, _)),
 			retractall('$lgt_debugging_entity_'(Ctg)),
@@ -847,6 +929,7 @@ abolish_protocol(Ptc) :-
 			abolish(Rnm/3),
 			retractall('$lgt_current_protocol_'(Ptc, _, _, _, _)),
 			retractall('$lgt_entity_property_'(Ptc, _)),
+			retractall('$lgt_predicate_property_'(Ptc, _, _)),
 			retractall('$lgt_extends_protocol_'(Ptc, _, _)),
 			retractall('$lgt_debugging_entity_'(Ptc)),
 			'$lgt_clean_lookup_caches'
@@ -4933,6 +5016,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	retractall('$lgt_current_protocol_'(Entity, _, _, _, _)),
 	retractall('$lgt_current_category_'(Entity, _, _, _, _, _)),
 	retractall('$lgt_entity_property_'(Entity, _)),
+	retractall('$lgt_predicate_property_'(Entity, _, _)),
 	retractall('$lgt_implements_protocol_'(Entity, _, _)),
 	retractall('$lgt_imports_category_'(Entity, _, _)),
 	retractall('$lgt_instantiates_class_'(Entity, _, _)),
@@ -7133,6 +7217,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	'$lgt_check_for_duplicated_scope_directives'(Functor/Arity),
 	assertz('$lgt_pp_public_'(Functor, Arity)),
+	'$lgt_add_predicate_dcl_line_property'(Functor/Arity),
 	'$lgt_tr_public_directive'(Preds).
 
 '$lgt_tr_public_directive'([Pred| Preds]) :-
@@ -7141,6 +7226,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_check_for_duplicated_scope_directives'(Functor//Arity+ExtArity),
 	assertz('$lgt_pp_non_terminal_'(Functor, Arity, ExtArity)),
 	assertz('$lgt_pp_public_'(Functor, ExtArity)),
+	'$lgt_add_predicate_dcl_line_property'(Functor/ExtArity),
 	'$lgt_tr_public_directive'(Preds).
 
 '$lgt_tr_public_directive'([Pred| _]) :-
@@ -7170,6 +7256,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	'$lgt_check_for_duplicated_scope_directives'(Functor/Arity),
 	assertz('$lgt_pp_protected_'(Functor, Arity)),
+	'$lgt_add_predicate_dcl_line_property'(Functor/Arity),
 	'$lgt_tr_protected_directive'(Preds).
 
 '$lgt_tr_protected_directive'([Pred| Preds]) :-
@@ -7178,6 +7265,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_check_for_duplicated_scope_directives'(Functor//Arity+ExtArity),
 	assertz('$lgt_pp_non_terminal_'(Functor, Arity, ExtArity)),
 	assertz('$lgt_pp_protected_'(Functor, ExtArity)),
+	'$lgt_add_predicate_dcl_line_property'(Functor/ExtArity),
 	'$lgt_tr_protected_directive'(Preds).
 
 '$lgt_tr_protected_directive'([Pred| _]) :-
@@ -7207,6 +7295,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	'$lgt_check_for_duplicated_scope_directives'(Functor/Arity),
 	assertz('$lgt_pp_private_'(Functor, Arity)),
+	'$lgt_add_predicate_dcl_line_property'(Functor/Arity),
 	'$lgt_tr_private_directive'(Preds).
 
 '$lgt_tr_private_directive'([Pred| Preds]) :-
@@ -7214,6 +7303,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	'$lgt_check_for_duplicated_scope_directives'(Functor//Arity+ExtArity),
 	assertz('$lgt_pp_non_terminal_'(Functor, Arity, ExtArity)),
+	'$lgt_add_predicate_dcl_line_property'(Functor/ExtArity),
 	assertz('$lgt_pp_private_'(Functor, ExtArity)),
 	'$lgt_tr_private_directive'(Preds).
 
@@ -8529,7 +8619,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	TClause = (THead:-TBody)
 	),
 	'$lgt_comp_ctx_exec_ctx'(HeadCtx, ExCtx),
-	'$lgt_clause_number'(THead, N).
+	'$lgt_clause_number'(THead, N),
+	'$lgt_add_predicate_def_line_property'(N, Head).
 
 '$lgt_tr_clause'(Fact, _, _, _, _) :-
 	\+ callable(Fact),
@@ -8578,13 +8669,40 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_clause'(Fact, TFact, (TFact:-'$lgt_debugger.fact'(Fact, N, ExCtx)), HeadCtx, _) :-
 	'$lgt_tr_head'(Fact, TFact, HeadCtx),
 	'$lgt_comp_ctx_exec_ctx'(HeadCtx, ExCtx),
-	'$lgt_clause_number'(TFact, N).
+	'$lgt_clause_number'(TFact, N),
+	'$lgt_add_predicate_def_line_property'(N, Fact).
 
 
 '$lgt_clause_number'(THead, N) :-
 	'$lgt_term_template'(THead, Template), 
 	findall(1, ('$lgt_pp_entity_clause_'(Template, _); '$lgt_pp_entity_clause_'((Template :- _), _)), List),
 	'$lgt_length'(List, 1, N).
+
+
+
+'$lgt_add_predicate_dcl_line_property'(Functor/Arity) :-
+	(	'$lgt_pp_term_position_'(DclLine-_) ->
+		'$lgt_pp_entity'(_, Entity, _, _, _),
+		assertz('$lgt_predicate_property_'(Entity, Functor/Arity, lines(DclLine,-1)))
+	;	true
+	).
+
+
+
+'$lgt_add_predicate_def_line_property'(1, Head) :-
+	!,
+	(	'$lgt_pp_term_position_'(DefLine-_) ->
+		functor(Head, Functor, Arity),
+		'$lgt_pp_entity'(_, Entity, _, _, _),
+		(	retract('$lgt_predicate_property_'(Entity, Functor/Arity, lines(DclLine,_))) ->
+			assertz('$lgt_predicate_property_'(Entity, Functor/Arity, lines(DclLine,DefLine)))
+		;	assertz('$lgt_predicate_property_'(Entity, Functor/Arity, lines(-1,DefLine)))
+		)
+	;	true
+	).
+
+'$lgt_add_predicate_def_line_property'(_, _).
+
 
 '$lgt_length'([], Length, Length).
 '$lgt_length'([_| Tail], Length0, Length) :-
@@ -13946,6 +14064,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_write_runtime_clauses'(Stream, '$lgt_current_category_'/6),
 	'$lgt_write_runtime_clauses'(Stream, '$lgt_current_object_'/11),
 	'$lgt_write_runtime_clauses'(Stream, '$lgt_entity_property_'/2),
+	'$lgt_write_runtime_clauses'(Stream, '$lgt_predicate_property_'/3),
 	'$lgt_write_runtime_clauses'(Stream, '$lgt_implements_protocol_'/3),
 	'$lgt_write_runtime_clauses'(Stream, '$lgt_imports_category_'/3),
 	'$lgt_write_runtime_clauses'(Stream, '$lgt_instantiates_class_'/3),
