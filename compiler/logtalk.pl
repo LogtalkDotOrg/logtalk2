@@ -8690,13 +8690,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 '$lgt_clause_number'(THead, N) :-
-	(	'$lgt_compiler_flag'(debug, on) ->
-		'$lgt_term_template'(THead, Template), 
-		findall(1, ('$lgt_pp_entity_clause_'(Template, _); '$lgt_pp_entity_clause_'((Template :- _), _)), List),
-		'$lgt_length'(List, 1, N)
-	;	% avoid a costly computation if we're not compiling in debug mode
-		N = -1
-	).
+	'$lgt_term_template'(THead, Template), 
+	findall(1, ('$lgt_pp_entity_clause_'(Template, _); '$lgt_pp_entity_clause_'((Template :- _), _)), List),
+	'$lgt_length'(List, 1, N).
 
 
 '$lgt_length'([], Length, Length).
@@ -8728,7 +8724,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_defines_predicate_'(Functor, Arity, TFunctor, TArity),
 	functor(THead, TFunctor, TArity),
 	findall(1, ('$lgt_pp_entity_clause_'(THead, _); '$lgt_pp_entity_clause_'((THead :- _), _)), List),
-	'$lgt_length'(List, 1, N),
+	'$lgt_length'(List, 0, N),
 	once(retract('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,DefLine,_))))),
 	assertz('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,DefLine,N)))),
 	fail.
