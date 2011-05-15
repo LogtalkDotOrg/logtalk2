@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 2.1,
+		version is 2.2,
 		author is 'Paulo Moura',
-		date is 2011/01/07,
+		date is 2011/05/14,
 		comment is 'List predicates.']).
 
 	:- public(as_difflist/2).
@@ -287,6 +287,15 @@
 	selectchk(Elem, List, Remaining) :-
 		select(Elem, List, Rest) ->
 		Remaining = Rest.
+
+	select(Old, [Old| Tail], New, [New| Tail]).
+	select(Old, [Head| OldTail], New, [Head| NewTail]) :-
+		select(Old, OldTail, New, NewTail).
+
+	selectchk(Old, [Old| Tail], New, [New| Tail]) :-
+		!.
+	selectchk(Old, [Head| OldTail], New, [Head| NewTail]) :-
+		selectchk(Old, OldTail, New, NewTail).
 
 	:- if(predicate_property(sort(_, _), built_in)).
 

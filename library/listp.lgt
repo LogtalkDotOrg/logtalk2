@@ -2,9 +2,9 @@
 :- protocol(listp).
 
 	:- info([
-		version is 1.6,
+		version is 1.7,
 		author is 'Paulo Moura',
-		date is 2011/01/07,
+		date is 2011/05/14,
 		comment is 'List protocol.']).
 
 	:- public(append/2).
@@ -177,17 +177,28 @@
 		 argnames is ['List1', 'List2', 'Length']]).
 
 	:- public(select/3).
-	:- mode(select(?term, +list, ?list), zero_or_more).
-	:- mode(select(?term, ?list, +list), zero_or_more).
+	:- mode(select(?term, ?list, ?list), zero_or_more).
 	:- info(select/3,
 		[comment is 'Selects an element from a list, returning the list of remaining elements.',
 		 argnames is ['Element', 'List', 'Remaining']]).
 
 	:- public(selectchk/3).
-	:- mode(selectchk(+term, +list, ?list), zero_or_one).
+	:- mode(selectchk(?term, ?list, ?list), zero_or_one).
 	:- info(selectchk/3,
 		[comment is 'Checks that an element can be selected from a list, returning the list of remaining elements.',
 		 argnames is ['Element', 'List', 'Remaining']]).
+
+	:- public(select/4).
+	:- mode(select(?term, ?list, ?term, ?list), zero_or_more).
+	:- info(select/4,
+		[comment is 'Selects an element from a list, replacing it by a new element and returning the resulting list.',
+		 argnames is ['Old', 'OldList', 'New', 'NewList']]).
+
+	:- public(selectchk/4).
+	:- mode(selectchk(?term, ?list, ?term, ?list), zero_or_one).
+	:- info(selectchk/4,
+		[comment is 'Checks that an element from a list can be replaced by a new element, returning the resulting list.',
+		 argnames is ['Old', 'OldList', 'New', 'NewList']]).
 
 	:- public(sort/2).
 	:- mode(sort(+list, -list), one).

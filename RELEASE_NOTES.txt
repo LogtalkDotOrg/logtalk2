@@ -114,8 +114,11 @@ RELEASE NOTES
     predicate with the de facto standard of taking a callable term as first
     argument.
 
+    Added predicates select/4 and selectchk/4 to the library entities "listp",
+    "list", and "difflist".
+
     Corrected a bug in the library support for unit tests, "lgtunit", where
-    testing for exceptions will accept any exception term as conforming to
+    testing for exceptions would accept any exception term as conforming to
     the unit test specifications.
 
     Updated the "cc" example with bug fixes and improvements for ECLiPSe

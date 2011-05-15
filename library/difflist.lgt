@@ -4,9 +4,9 @@
 	extends(compound)).
 
 	:- info([
-		version is 1.5,
+		version is 1.6,
 		author is 'Paulo Moura',
-		date is 2011/01/07,
+		date is 2011/05/14,
 		comment is 'Difference list predicates.']).
 
 	:- public(add/3).
@@ -310,6 +310,21 @@
 	selectchk(Elem, List-Back, Remaining-Back) :-
 		select(Elem, List-Back, Rest-Back) ->
 		unify_with_occurs_check(Remaining, Rest).
+
+	select(Old, OldList-Back, New, NewList-Back) :-
+		OldList \== Back,
+		OldList = [Old| Tail],
+		NewList = [New| Tail].
+	select(Old, OldList-Back, New, NewList-Back) :-
+		OldList \== Back,
+		OldList = [Head| OldTail],
+		NewList \== Back,
+		NewList = [Head| NewTail],
+		select(Old, OldTail-Back, New, NewTail-Back).
+
+	selectchk(Old, OldList-Back, New, NewList0-Back) :-
+		select(Old, OldList-Back, New, NewList-Back) ->
+		unify_with_occurs_check(NewList0, NewList).
 
 	sort(Difflist, Sorted) :-
 		as_list(Difflist, List),
