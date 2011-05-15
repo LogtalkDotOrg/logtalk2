@@ -262,7 +262,7 @@
 :- dynamic('$lgt_pp_entity_aux_clause_'/1).					% '$lgt_pp_entity_aux_clause_'(Clause)
 :- dynamic('$lgt_pp_final_entity_aux_clause_'/1).			% '$lgt_pp_final_entity_aux_clause_'(Clause)
 
-:- dynamic('$lgt_pp_defines_predicate_'/2).					% '$lgt_pp_defines_predicate_'(Functor, Arity)
+:- dynamic('$lgt_pp_defines_predicate_'/4).					% '$lgt_pp_defines_predicate_'(Functor, Arity, TFunctor, TArity)
 :- dynamic('$lgt_pp_calls_predicate_'/4).					% '$lgt_pp_calls_predicate_'(Functor, Arity, TFunctor, TArity)
 :- dynamic('$lgt_pp_non_portable_call_'/2).					% '$lgt_pp_non_portable_call_'(Functor, Arity)
 :- dynamic('$lgt_pp_non_portable_function_'/2).				% '$lgt_pp_non_portable_function_'(Functor, Arity)
@@ -663,7 +663,7 @@ protocol_property(Ptc, Prop) :-
 		Properties5 = [synchronized| Properties4]
 	;	Properties5 = Properties4
 	),
-	(	'$lgt_predicate_property_'(Entity, Functor/Arity, lines(Line,_)),
+	(	'$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(Line,_,_)),
 	 	Line =\= -1 ->
 		Properties = [line(Line)| Properties5]
 	;	Properties = Properties5
@@ -686,9 +686,11 @@ protocol_property(Ptc, Prop) :-
 '$lgt_entity_property_defines'(Kind, Entity, Def, DDef, defines(Functor/Arity, Properties)) :-
 	'$lgt_predicate_definition'(Kind, Entity, Def, DDef, Predicate),
 	functor(Predicate, Functor, Arity),
-	(	'$lgt_predicate_property_'(Entity, Functor/Arity, lines(_,Line)),
-	 	Line =\= -1 ->
-		Properties = [line(Line)]
+	(	'$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(_,Line,N)) ->
+	 	(	Line =\= -1 ->
+			Properties = [line(Line), clauses(N)]
+		;	Properties = [clauses(N)]
+		)
 	;	Properties = []
 	).
 
@@ -5991,7 +5993,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	retractall('$lgt_pp_entity_aux_clause_'(_)),
 	retractall('$lgt_pp_final_entity_aux_clause_'(_)),
 	retractall('$lgt_pp_redefined_built_in_'(_, _, _)),
-	retractall('$lgt_pp_defines_predicate_'(_, _)),
+	retractall('$lgt_pp_defines_predicate_'(_, _, _, _)),
 	retractall('$lgt_pp_calls_predicate_'(_, _, _, _)),
 	retractall('$lgt_pp_non_portable_call_'(_, _)),
 	retractall('$lgt_pp_non_portable_function_'(_, _)),
@@ -6539,7 +6541,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_directive'(Dir, Ctx) :-
 	'$lgt_pp_module_'(_),								% we're compiling a module as an object
-	(	functor(Dir, Functor, Arity), '$lgt_pp_defines_predicate_'(Functor, Arity)
+	(	functor(Dir, Functor, Arity), '$lgt_pp_defines_predicate_'(Functor, Arity, _, _)
 	;	'$lgt_pp_uses_predicate_'(_, _, Dir)			% directive is a query for a locally defined predicate
  	;	'$lgt_pp_use_module_predicate_'(_, _, Dir)		% or a predicate referenced in a use_module/2 directive
 	),
@@ -6654,6 +6656,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_directive'(end_object, [], _) :-
 	(	'$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _) ->
 		'$lgt_add_entity_file_properties'(end, Obj),
+		'$lgt_add_entity_predicate_properties'(Obj),
 		'$lgt_tr_entity'(object, Obj),
 		'$lgt_restore_file_op_table',
 		'$lgt_report_compiled_entity'(object, Obj)
@@ -6727,6 +6730,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_directive'(end_category, [], _) :-
 	(	'$lgt_pp_category_'(Ctg, _, _, _, _, _) ->
 		'$lgt_add_entity_file_properties'(end, Ctg),
+		'$lgt_add_entity_predicate_properties'(Ctg),
 		'$lgt_tr_entity'(category, Ctg),
 		'$lgt_restore_file_op_table',
 		'$lgt_report_compiled_entity'(category, Ctg)
@@ -7351,7 +7355,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_add_predicate_scope_line_property'(Functor/Arity) :-
 	(	'$lgt_pp_term_position_'(DclLine-_) ->
 		'$lgt_pp_entity'(_, Entity, _, _, _),
-		assertz('$lgt_predicate_property_'(Entity, Functor/Arity, lines(DclLine,-1)))
+		assertz('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,-1,0))))
 	;	true
 	).
 
@@ -8683,9 +8687,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 '$lgt_clause_number'(THead, N) :-
-	'$lgt_term_template'(THead, Template), 
-	findall(1, ('$lgt_pp_entity_clause_'(Template, _); '$lgt_pp_entity_clause_'((Template :- _), _)), List),
-	'$lgt_length'(List, 1, N).
+	(	'$lgt_compiler_flag'(debug, on) ->
+		'$lgt_term_template'(THead, Template), 
+		findall(1, ('$lgt_pp_entity_clause_'(Template, _); '$lgt_pp_entity_clause_'((Template :- _), _)), List),
+		'$lgt_length'(List, 1, N)
+	;	% avoid a costly computation if we're not compiling in debug mode
+		N = -1
+	).
 
 
 '$lgt_length'([], Length, Length).
@@ -8700,14 +8708,27 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	(	'$lgt_pp_term_position_'(DefLine-_) ->
 		functor(Head, Functor, Arity),
 		'$lgt_pp_entity'(_, Entity, _, _, _),
-		(	retract('$lgt_predicate_property_'(Entity, Functor/Arity, lines(DclLine,_))) ->
-			assertz('$lgt_predicate_property_'(Entity, Functor/Arity, lines(DclLine,DefLine)))
-		;	assertz('$lgt_predicate_property_'(Entity, Functor/Arity, lines(-1,DefLine)))
+		(	retract('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,_,_)))) ->
+			assertz('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,DefLine, _))))
+		;	assertz('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(-1,DefLine, _))))
 		)
 	;	true
 	).
 
 '$lgt_add_predicate_first_clause_line_property'(_, _).
+
+
+
+'$lgt_add_entity_predicate_properties'(Entity) :-
+	'$lgt_pp_defines_predicate_'(Functor, Arity, TFunctor, TArity),
+	functor(THead, TFunctor, TArity),
+	findall(1, ('$lgt_pp_entity_clause_'(THead, _); '$lgt_pp_entity_clause_'((THead :- _), _)), List),
+	'$lgt_length'(List, 1, N),
+	once(retract('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,DefLine,_))))),
+	assertz('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,DefLine,N)))),
+	fail.
+
+'$lgt_add_entity_predicate_properties'(_).
 
 
 
@@ -10281,7 +10302,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	functor(Pred, Functor, Arity),
 	(	'$lgt_comp_ctx_mode'(Ctx, runtime) ->
 		true
-	;	\+ '$lgt_pp_defines_predicate_'(Functor, Arity),
+	;	\+ '$lgt_pp_defines_predicate_'(Functor, Arity, _, _),
 		\+ '$lgt_pp_public_'(Functor, Arity),			% not a redefined
 		\+ '$lgt_pp_protected_'(Functor, Arity),		% built-in... unless
 		\+ '$lgt_pp_private_'(Functor, Arity),			% the redefinition is
@@ -10321,7 +10342,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	(	'$lgt_comp_ctx_mode'(Ctx, runtime) ->
 		TPred = Pred
 	;	functor(Pred, Functor, Arity),
-		\+ '$lgt_pp_defines_predicate_'(Functor, Arity),
+		\+ '$lgt_pp_defines_predicate_'(Functor, Arity, _, _),
 		\+ '$lgt_pp_public_'(Functor, Arity),			% not a redefined
 		\+ '$lgt_pp_protected_'(Functor, Arity),		% built-in... unless
 		\+ '$lgt_pp_private_'(Functor, Arity),			% the redefinition is
@@ -12256,7 +12277,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % for auxiliary predicates (using the logtalk::compile_aux_clauses/1 hook predicate)
 
 '$lgt_remember_predicate'(Functor, Arity, Ctx) :-
-	(	'$lgt_pp_defines_predicate_'(Functor, Arity) ->
+	(	'$lgt_pp_defines_predicate_'(Functor, Arity, _, _) ->
 		% not the first clause for the predicate
 		(	'$lgt_pp_previous_predicate_'(PreviousFunctor, PreviousArity),
 			PreviousFunctor/PreviousArity \== Functor/Arity,
@@ -12267,7 +12288,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			true
 		)
 	;	% first clause for this predicate; remember it
-		asserta('$lgt_pp_defines_predicate_'(Functor, Arity))
+		'$lgt_comp_ctx_prefix'(Ctx, Prefix),
+		'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
+		asserta('$lgt_pp_defines_predicate_'(Functor, Arity, TFunctor, TArity))
 	),
 	(	'$lgt_comp_ctx_mode'(Ctx, compile(aux)) ->
 		true
@@ -12527,7 +12550,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_entity'(object, _, Prefix, _, _),
 	'$lgt_comp_ctx_prefix'(Ctx, Prefix),
 	'$lgt_pp_dynamic_'(Functor, Arity),
-	\+ '$lgt_pp_defines_predicate_'(Functor, Arity),
+	\+ '$lgt_pp_defines_predicate_'(Functor, Arity, _, _),
 	functor(Head, Functor, Arity),
 	(	\+ '$lgt_pp_public_'(Functor, Arity),
 		\+ '$lgt_pp_protected_'(Functor, Arity),
@@ -12545,7 +12568,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_entity'(_, _, Prefix, _, _),
 	'$lgt_comp_ctx_prefix'(Ctx, Prefix),
 	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _),
-	\+ '$lgt_pp_defines_predicate_'(Functor, Arity),
+	\+ '$lgt_pp_defines_predicate_'(Functor, Arity, _, _),
 	once((	'$lgt_pp_public_'(Functor, Arity)
 		 ;	'$lgt_pp_protected_'(Functor, Arity)
 		 ;	'$lgt_pp_private_'(Functor, Arity)
@@ -13737,23 +13760,23 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_undefined_predicate_call'(Functor/Arity, TFunctor/TArity) :-
 	'$lgt_pp_calls_predicate_'(Functor, Arity, TFunctor, TArity),
-	\+ '$lgt_pp_defines_predicate_'(Functor, Arity),		% predicate not defined in object/category and
-	\+ '$lgt_pp_dynamic_'(Functor, Arity),					% predicate not declared dynamic in in object/category
-	Arity2 is Arity - 2,									% (only return predicates that are not the expansion 
-	\+ '$lgt_pp_calls_non_terminal_'(Functor, Arity2),		% of grammar rules; see second clause)
-	once((	'$lgt_pp_public_'(Functor, Arity)				% but there is a scope directive for the predicate
+	\+ '$lgt_pp_defines_predicate_'(Functor, Arity, _, _),		% predicate not defined in object/category and
+	\+ '$lgt_pp_dynamic_'(Functor, Arity),						% predicate not declared dynamic in in object/category
+	Arity2 is Arity - 2,										% (only return predicates that are not the expansion 
+	\+ '$lgt_pp_calls_non_terminal_'(Functor, Arity2),			% of grammar rules; see second clause)
+	once((	'$lgt_pp_public_'(Functor, Arity)					% but there is a scope directive for the predicate
 		;	'$lgt_pp_protected_'(Functor, Arity)
 		;	'$lgt_pp_private_'(Functor, Arity)
 	)).
 
 '$lgt_undefined_predicate_call'(Functor//Arity, TFunctor/TArity) :-
 	'$lgt_pp_calls_non_terminal_'(Functor, Arity),
-	\+ '$lgt_pp_defines_non_terminal_'(Functor, Arity),		% non-terminal not defined in object/category and
+	\+ '$lgt_pp_defines_non_terminal_'(Functor, Arity),			% non-terminal not defined in object/category and
 	ExtArity is Arity + 2,
-	\+ '$lgt_pp_defines_predicate_'(Functor, ExtArity),		% no corresponding predicate is defined
-	\+ '$lgt_pp_dynamic_'(Functor, ExtArity),				% no dynamic directive for the corresponding predicate 
-	once((	'$lgt_pp_public_'(Functor, ExtArity)			% but there is a scope directive for the non-terminal 
-		;	'$lgt_pp_protected_'(Functor, ExtArity)			% or the corresponding predicate 
+	\+ '$lgt_pp_defines_predicate_'(Functor, ExtArity, _, _),	% no corresponding predicate is defined
+	\+ '$lgt_pp_dynamic_'(Functor, ExtArity),					% no dynamic directive for the corresponding predicate 
+	once((	'$lgt_pp_public_'(Functor, ExtArity)				% but there is a scope directive for the non-terminal 
+		;	'$lgt_pp_protected_'(Functor, ExtArity)				% or the corresponding predicate 
 		;	'$lgt_pp_private_'(Functor, ExtArity)
 	)),
 	'$lgt_pp_calls_predicate_'(Functor, ExtArity, TFunctor, TArity).
@@ -13860,7 +13883,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_misspelt_call'(Functor/Arity) :-
 	'$lgt_pp_calls_predicate_'(Functor, Arity, _, _),
-	\+ '$lgt_pp_defines_predicate_'(Functor, Arity),
+	\+ '$lgt_pp_defines_predicate_'(Functor, Arity, _, _),
 	\+ '$lgt_pp_dynamic_'(Functor, Arity),
 	\+ '$lgt_pp_public_'(Functor, Arity),
 	\+ '$lgt_pp_protected_'(Functor, Arity),
@@ -13872,7 +13895,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_calls_non_terminal_'(Functor, Arity),
 	\+ '$lgt_pp_defines_non_terminal_'(Functor, Arity),
 	ExtArity is Arity + 2,
-	\+ '$lgt_pp_defines_predicate_'(Functor, ExtArity),
+	\+ '$lgt_pp_defines_predicate_'(Functor, ExtArity, _, _),
 	\+ '$lgt_pp_dynamic_'(Functor, ExtArity),
 	\+ '$lgt_pp_public_'(Functor, ExtArity),
 	\+ '$lgt_pp_protected_'(Functor, ExtArity),
@@ -13902,7 +13925,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_non_portable_call'(Functor/Arity) :-
 	'$lgt_pp_non_portable_call_'(Functor, Arity),
-	\+ '$lgt_pp_defines_predicate_'(Functor, Arity),
+	\+ '$lgt_pp_defines_predicate_'(Functor, Arity, _, _),
 	functor(Pred, Functor, Arity),
 	\+ '$lgt_pp_redefined_built_in_'(Pred, _, _).
 
@@ -14082,7 +14105,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	(	\+ \+ '$lgt_pp_file_relation_clause_'(Clause) ->
 		write_canonical(Stream, (:- multifile(Functor/Arity))), write(Stream, '.'), nl(Stream),
 		write_canonical(Stream, (:- dynamic(Functor/Arity))), write(Stream, '.'), nl(Stream),
-			'$lgt_pp_file_path_'(File, Path),
+		'$lgt_pp_file_path_'(File, Path),
 		(	'$lgt_pp_file_relation_clause_'(Clause),
 			'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 			fail
