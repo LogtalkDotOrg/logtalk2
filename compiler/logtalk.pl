@@ -5517,7 +5517,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % adds entity properties related to the entity source file
 
 '$lgt_add_entity_file_properties'(start, Entity) :-
-	(	'$lgt_pp_file_path_'(File, Path) ->
+	(	'$lgt_compiler_flag'(source_data, on),
+		'$lgt_pp_file_path_'(File, Path) ->
 		(	'$lgt_pp_term_position_'((Start - _)) ->
 			assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, Start, _, Path))))
 		;	assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, -1, _, Path))))
@@ -5526,7 +5527,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	).
 
 '$lgt_add_entity_file_properties'(end, Entity) :-
-	(	'$lgt_pp_file_path_'(File, Path) ->
+	(	'$lgt_compiler_flag'(source_data, on),
+		'$lgt_pp_file_path_'(File, Path) ->
 		(	'$lgt_pp_term_position_'((_ - End)) ->
 			retract('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, Start, _, Path)))),
 			assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, Start, End, Path))))
@@ -7353,7 +7355,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 '$lgt_add_predicate_scope_line_property'(Functor/Arity) :-
-	(	'$lgt_pp_term_position_'(DclLine-_) ->
+	(	'$lgt_compiler_flag'(source_data, on),
+		'$lgt_pp_term_position_'(DclLine-_) ->
 		'$lgt_pp_entity'(_, Entity, _, _, _),
 		assertz('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,-1,0))))
 	;	true
@@ -8705,7 +8708,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_add_predicate_first_clause_line_property'(1, Head) :-
 	!,
-	(	'$lgt_pp_term_position_'(DefLine-_) ->
+	(	'$lgt_compiler_flag'(source_data, on),
+		'$lgt_pp_term_position_'(DefLine-_) ->
 		functor(Head, Functor, Arity),
 		'$lgt_pp_entity'(_, Entity, _, _, _),
 		(	retract('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,_,_)))) ->
@@ -8720,6 +8724,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 '$lgt_add_entity_predicate_properties'(Entity) :-
+	'$lgt_compiler_flag'(source_data, on),
 	'$lgt_pp_defines_predicate_'(Functor, Arity, TFunctor, TArity),
 	functor(THead, TFunctor, TArity),
 	findall(1, ('$lgt_pp_entity_clause_'(THead, _); '$lgt_pp_entity_clause_'((THead :- _), _)), List),
@@ -13987,8 +13992,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % writes any Prolog clauses that appear before an entity opening directive
 
 '$lgt_write_prolog_terms'(Stream) :-
+	'$lgt_compiler_flag'(source_data, on),
 	'$lgt_pp_prolog_term_'(Term, Location),
 	'$lgt_write_term_and_source_location'(Stream, Term, user, Location),
+	fail.
+
+'$lgt_write_prolog_terms'(Stream) :-
+	'$lgt_compiler_flag'(source_data, off),
+	'$lgt_pp_prolog_term_'(Term, _),
+	write_canonical(Stream, Term), write(Stream, '.'), nl(Stream),
 	fail.
 
 '$lgt_write_prolog_terms'(_).
@@ -14010,33 +14022,57 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 '$lgt_write_dcl_clauses'(Stream) :-
+	'$lgt_compiler_flag'(source_data, on),
 	'$lgt_pp_file_path_'(File, Path),
 	'$lgt_pp_dcl_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
+	fail.
+'$lgt_write_dcl_clauses'(Stream) :-
+	'$lgt_compiler_flag'(source_data, off),
+	'$lgt_pp_dcl_'(Clause),
+	write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
 	fail.
 '$lgt_write_dcl_clauses'(_).
 
 
 '$lgt_write_def_clauses'(Stream) :-
+	'$lgt_compiler_flag'(source_data, on),
 	'$lgt_pp_file_path_'(File, Path),
 	'$lgt_pp_final_def_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
+	fail.
+'$lgt_write_def_clauses'(Stream) :-
+	'$lgt_compiler_flag'(source_data, off),
+	'$lgt_pp_final_def_'(Clause),
+	write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
 	fail.
 '$lgt_write_def_clauses'(_).
 
 
 '$lgt_write_ddef_clauses'(Stream) :-
+	'$lgt_compiler_flag'(source_data, on),
 	'$lgt_pp_file_path_'(File, Path),
 	'$lgt_pp_final_ddef_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
+	fail.
+'$lgt_write_ddef_clauses'(Stream) :-
+	'$lgt_compiler_flag'(source_data, off),
+	'$lgt_pp_final_ddef_'(Clause),
+	write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
 	fail.
 '$lgt_write_ddef_clauses'(_).
 
 
 '$lgt_write_super_clauses'(Stream) :-
+	'$lgt_compiler_flag'(source_data, on),
 	'$lgt_pp_file_path_'(File, Path),
 	'$lgt_pp_super_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
+	fail.
+'$lgt_write_super_clauses'(Stream) :-
+	'$lgt_compiler_flag'(source_data, off),
+	'$lgt_pp_super_'(Clause),
+	write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
 	fail.
 '$lgt_write_super_clauses'(_).
 
@@ -14050,28 +14086,50 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 '$lgt_write_alias_clauses'(Stream, Rnm) :-
+	'$lgt_compiler_flag'(source_data, on),
 	'$lgt_pp_file_path_'(File, Path),
 	'$lgt_pp_predicate_alias_'(Entity, Pred, Alias),
 	Clause =.. [Rnm, Entity, Pred, Alias],
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
 '$lgt_write_alias_clauses'(Stream, Rnm) :-
-	'$lgt_pp_file_path_'(File, Path),
+	'$lgt_compiler_flag'(source_data, off),
+	'$lgt_pp_predicate_alias_'(Entity, Pred, Alias),
+	Clause =.. [Rnm, Entity, Pred, Alias],
+	write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
+	fail.
+'$lgt_write_alias_clauses'(Stream, Rnm) :-
 	Catchall =.. [Rnm, _, Pred, Pred],
-	'$lgt_write_term_and_source_location'(Stream, Catchall, aux, Path+File+1).
+	(	'$lgt_compiler_flag'(source_data, on) ->
+		'$lgt_pp_file_path_'(File, Path),
+		'$lgt_write_term_and_source_location'(Stream, Catchall, aux, Path+File+1)
+	;	write_canonical(Stream, Catchall), write(Stream, '.'), nl(Stream)
+	).
 
 
 '$lgt_write_entity_clauses'(Stream) :-
+	'$lgt_compiler_flag'(source_data, on),
 	'$lgt_pp_final_entity_clause_'(Clause, Location),
 	'$lgt_write_term_and_source_location'(Stream, Clause, user, Location),
+	fail.
+'$lgt_write_entity_clauses'(Stream) :-
+	'$lgt_compiler_flag'(source_data, off),
+	'$lgt_pp_final_entity_clause_'(Clause, _),
+	write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
 	fail.
 '$lgt_write_entity_clauses'(_).
 
 
 '$lgt_write_entity_aux_clauses'(Stream) :-
+	'$lgt_compiler_flag'(source_data, on),
 	'$lgt_pp_file_path_'(File, Path),
 	'$lgt_pp_final_entity_aux_clause_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
+	fail.
+'$lgt_write_entity_aux_clauses'(Stream) :-
+	'$lgt_compiler_flag'(source_data, off),
+	'$lgt_pp_final_entity_aux_clause_'(Clause),
+	write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
 	fail.
 '$lgt_write_entity_aux_clauses'(_).
 
@@ -14105,11 +14163,18 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	(	\+ \+ '$lgt_pp_file_relation_clause_'(Clause) ->
 		write_canonical(Stream, (:- multifile(Functor/Arity))), write(Stream, '.'), nl(Stream),
 		write_canonical(Stream, (:- dynamic(Functor/Arity))), write(Stream, '.'), nl(Stream),
-		'$lgt_pp_file_path_'(File, Path),
-		(	'$lgt_pp_file_relation_clause_'(Clause),
-			'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
-			fail
-		;	true
+		(	'$lgt_compiler_flag'(source_data, on) ->
+			'$lgt_pp_file_path_'(File, Path),
+			(	'$lgt_pp_file_relation_clause_'(Clause),
+				'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
+				fail
+			;	true
+			)
+		;	(	'$lgt_pp_file_relation_clause_'(Clause),
+				write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
+				fail
+			;	true
+			)
 		)
 	;	true
 	).
@@ -15523,6 +15588,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_valid_flag'(debug).
 '$lgt_valid_flag'(startup_message).
 '$lgt_valid_flag'(clean).
+'$lgt_valid_flag'(source_data).
 % read-only compilation flags:
 '$lgt_valid_flag'(version).
 % back-end Prolog features:
@@ -15615,6 +15681,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_valid_flag_value'(optimize, on) :- !.
 '$lgt_valid_flag_value'(optimize, off) :- !.
+
+'$lgt_valid_flag_value'(source_data, on) :- !.
+'$lgt_valid_flag_value'(source_data, off) :- !.
 
 '$lgt_valid_flag_value'(debug, on) :- !.
 '$lgt_valid_flag_value'(debug, off) :- !.
@@ -18445,8 +18514,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	),
 	write(', hook: '), write(Hook), nl,
 	'$lgt_compiler_flag'(optimize, Optimize), write('  optimize: '), writeq(Optimize),
-	'$lgt_compiler_flag'(debug, Debug), write(', debug: '), writeq(Debug),
-	'$lgt_compiler_flag'(clean, Clean), write(', clean: '), writeq(Clean),
+	'$lgt_compiler_flag'(source_data, SourceData), write(', source_data: '), writeq(SourceData),
+	'$lgt_compiler_flag'(debug, Debug), write(', debug: '), writeq(Debug), nl,
+	'$lgt_compiler_flag'(clean, Clean), write('  clean: '), writeq(Clean),
 	'$lgt_compiler_flag'(smart_compilation, Smart), write(', smart_compilation: '), write(Smart),
 	'$lgt_compiler_flag'(reload, Reload), write(', reload: '), write(Reload), nl,
 	write('Read-only compilation flags (back-end Prolog compiler features):'), nl,
@@ -18510,6 +18580,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	write('  Compiled code functors prefix (code_prefix):                '), writeq(Code), nl,
 	'$lgt_compiler_flag'(optimize, Optimize),
 	write('  Optimize compiled code (optimize):                          '), writeq(Optimize), nl,
+	'$lgt_compiler_flag'(source_data, SourceData),
+	write('  Keep data on source files and line numbers (source_data):   '), writeq(SourceData), nl,
 	'$lgt_compiler_flag'(debug, Debug),
 	write('  Compile entities in debug mode (debug):                     '), writeq(Debug), nl,
 	'$lgt_compiler_flag'(reload, Reload),
