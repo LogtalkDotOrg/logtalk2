@@ -561,7 +561,7 @@ object_property(Obj, Prop) :-
 		Prop = private(Predicates)
 	;	'$lgt_entity_property_declares'(object, Obj, Dcl, DDcl, Prop)
 	;	'$lgt_entity_property_defines'(object, Obj, Def, DDef, Prop)
-	;	'$lgt_entity_property_external'(Obj, Prop)
+	;	'$lgt_entity_property_includes'(Obj, Prop)
 	).
 
 
@@ -597,7 +597,7 @@ category_property(Ctg, Prop) :-
 		Prop = private(Predicates)
 	;	'$lgt_entity_property_declares'(category, Ctg, Dcl, _, Prop)
 	;	'$lgt_entity_property_defines'(category, Ctg, Def, _, Prop)
-	;	'$lgt_entity_property_external'(Ctg, Prop)
+	;	'$lgt_entity_property_includes'(Ctg, Prop)
 	).
 
 
@@ -710,7 +710,7 @@ protocol_property(Ptc, Prop) :-
 
 
 
-'$lgt_entity_property_external'(Entity, external(Functor/Arity, From, Properties)) :-
+'$lgt_entity_property_includes'(Entity, includes(Functor/Arity, From, Properties)) :-
 	'$lgt_predicate_property_'(Entity, Functor/Arity, line_clauses_from(Line, N, From)),
 	(	Line =\= -1 ->
 		Properties = [line(Line), clauses(N)]

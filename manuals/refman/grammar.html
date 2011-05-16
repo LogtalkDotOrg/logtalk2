@@ -906,6 +906,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dd>"<code>private(</code>" predicate_indicator_list "<code>)</code>" |</dd>
 			<dd>"<code>declares(</code>" predicate_indicator "<code>,</code>" predicate_declaration_property_list "<code>)</code>" |</dd>
 			<dd>"<code>defines(</code>" predicate_indicator "<code>,</code>" predicate_definition_property_list "<code>)</code>" |</dd>
+			<dd>"<code>includes(</code>" predicate_indicator "<code>,</code>" object_identifier | category_identifier "<code>,</code>" predicate_definition_property_list "<code>)</code>" |</dd>
 			<dd>"<code>parameter_names(</code>" <em>list of atoms</em> "<code>)</code>"</dd>
 	</dl>
 	<dl id="grammar_object_property">
@@ -926,6 +927,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dd>"<code>private(</code>" predicate_indicator_list "<code>)</code>" |</dd>
 			<dd>"<code>declares(</code>" predicate_indicator "<code>,</code>" predicate_declaration_property_list "<code>)</code>" |</dd>
 			<dd>"<code>defines(</code>" predicate_indicator "<code>,</code>" predicate_definition_property_list "<code>)</code>" |</dd>
+			<dd>"<code>includes(</code>" predicate_indicator "<code>,</code>" object_identifier | category_identifier "<code>,</code>" predicate_definition_property_list "<code>)</code>" |</dd>
 			<dd>"<code>parameter_names(</code>" <em>list of atoms</em> "<code>)</code>"</dd>
 	</dl>
 	<dl id="grammar_protocol_property">
@@ -999,7 +1001,7 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: May 13, 2011</span>
+		<span>Last updated on: May 16, 2011</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="index.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>
