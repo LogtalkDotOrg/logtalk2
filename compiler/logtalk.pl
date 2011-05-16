@@ -561,6 +561,7 @@ object_property(Obj, Prop) :-
 		Prop = private(Predicates)
 	;	'$lgt_entity_property_declares'(object, Obj, Dcl, DDcl, Prop)
 	;	'$lgt_entity_property_defines'(object, Obj, Def, DDef, Prop)
+	;	'$lgt_entity_property_external'(Obj, Prop)
 	).
 
 
@@ -596,6 +597,7 @@ category_property(Ctg, Prop) :-
 		Prop = private(Predicates)
 	;	'$lgt_entity_property_declares'(category, Ctg, Dcl, _, Prop)
 	;	'$lgt_entity_property_defines'(category, Ctg, Def, _, Prop)
+	;	'$lgt_entity_property_external'(Ctg, Prop)
 	).
 
 
@@ -705,6 +707,15 @@ protocol_property(Ptc, Prop) :-
 
 '$lgt_predicate_definition'(category, Ctg, Def, _, Predicate) :-
 	call(Def, Predicate, _, _, Ctg).
+
+
+
+'$lgt_entity_property_external'(Entity, external(Functor/Arity, From, Properties)) :-
+	'$lgt_predicate_property_'(Entity, Functor/Arity, line_clauses_from(Line, N, From)),
+	(	Line =\= -1 ->
+		Properties = [line(Line), clauses(N)]
+	;	Properties = [clauses(N)]
+	).
 
 
 
@@ -8702,21 +8713,34 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_length'(Tail, Length1, Length).
 
 
-'$lgt_add_predicate_first_clause_line_property'(1, Head) :-
+'$lgt_add_predicate_first_clause_line_property'(1, QHead) :-
 	!,
 	(	'$lgt_compiler_flag'(source_data, on),
 		'$lgt_pp_term_position_'(DefLine-_) ->
-		functor(Head, Functor, Arity),
 		'$lgt_pp_entity'(_, Entity, _, _, _),
-		(	retract('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,_,_)))) ->
-			assertz('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,DefLine, _))))
-		;	assertz('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(-1,DefLine, _))))
+		(	QHead = Other::Head ->
+			functor(Head, Functor, Arity),
+			assertz('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Other, Functor/Arity, line_clauses_from(DefLine,1,Entity))))
+		;	QHead = Head,
+			functor(Head, Functor, Arity),
+			(	retract('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,_,_)))) ->
+				assertz('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,DefLine, _))))
+			;	assertz('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(-1,DefLine, _))))
+			)
 		)
 	;	true
 	).
 
-'$lgt_add_predicate_first_clause_line_property'(_, _).
+'$lgt_add_predicate_first_clause_line_property'(N, Other::Head) :-
+	!,
+	(	'$lgt_compiler_flag'(source_data, on) ->
+		functor(Head, Functor, Arity),
+		retract('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Other, Functor/Arity, line_clauses_from(DefLine,_,Entity)))),
+		assertz('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Other, Functor/Arity, line_clauses_from(DefLine,N,Entity))))
+	;	true
+	).
 
+'$lgt_add_predicate_first_clause_line_property'(_, _).
 
 
 '$lgt_add_entity_predicate_properties'(Entity) :-
