@@ -7723,8 +7723,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	(	Entity == user ->
 		assertz('$lgt_pp_directive_'(multifile(Functor/Arity)))
 	;	functor(Template, Functor, Arity),
-		'$lgt_predicate_property'(Entity, Template, (public), Entity, p(p(p))),
-		'$lgt_predicate_property'(Entity, Template, (multifile), Entity, p(p(p))) ->
+		'$lgt_predicate_property'(Entity, Template, Scope, Entity, _), '$lgt_scope'(Scope, _),
+		'$lgt_predicate_property'(Entity, Template, (multifile), Entity, _) ->
 		'$lgt_construct_entity_prefix'(Entity, _, Prefix),
 		'$lgt_construct_predicate_indicator'(Prefix, Functor/Arity, TFunctor/TArity),
 		assertz('$lgt_pp_directive_'(multifile(TFunctor/TArity)))
