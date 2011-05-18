@@ -11,7 +11,7 @@
 %
 %  configuration file for SICStus Prolog 4.0.3 and later versions
 %
-%  last updated: May 15, 2011
+%  last updated: May 18, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -332,7 +332,8 @@ forall(Generate, Test) :-
 % makes a new directory; succeeds if the directory already exists
 
 '$lgt_make_directory'(Directory) :-
-	absolute_file_name(Directory, Path),
+	current_directory(Current),
+	absolute_file_name(Directory, Path, [relative_to(Current)]),
 	(	directory_exists(Path) ->
 		true
 	;	make_directory(Path)

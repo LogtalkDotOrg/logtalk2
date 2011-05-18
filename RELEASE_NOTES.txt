@@ -128,6 +128,10 @@ RELEASE NOTES
     predicate with the de facto standard of taking a callable term as first
     argument.
 
+    Updated the SICStus Prolog 4 config file in order to workaround some of
+    the incompatible changes to absolute_file_name/2 and open/3-4 introduced
+    on version 4.1.0.
+
     Added predicates select/4 and selectchk/4 to the library entities "listp",
     "list", and "difflist".
 
