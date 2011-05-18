@@ -536,13 +536,13 @@ begin
     InstalledVersion := 0
   else
     InstalledVersion := -1;
-  if IsAdminLoggedOn and (InstalledVersion >= 0) and (InstalledVersion < 2420) then
+  if IsAdminLoggedOn and (InstalledVersion >= 0) and (InstalledVersion < 2430) then
   begin
-    Warning := 'You have an older version of Logtalk installed whose configuration files are incompatible with this new version.'
+    Warning := 'Your Logtalk user directory is outdated!'
                + Chr(13) + Chr(13)
                + 'You must updade your Logtalk user folder by performing a full installation.'
                + Chr(13) + Chr(13)
-               + 'All aditional Logtalk users on your computer must also use this installer to update their Logtalk user  folders.';
+               + 'All aditional Logtalk users on your computer must also use this installer to update their Logtalk user folders.';
     WarningPage := CreateOutputMsgPage(wpWelcome, 'Warning', 'Logtalk user folder update required.', Warning)
   end;
   if IsAdminLoggedOn and NoBackEndPrologCompilerInstalled then
