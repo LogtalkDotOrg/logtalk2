@@ -23,11 +23,11 @@
           </dd>
           <dt class="key">version:</dt>
           <dd class="value">
-            <code>1.6</code>
+            <code>1.7</code>
           </dd>
           <dt class="key">date:</dt>
           <dd class="value">
-            <code>2011/1/7</code>
+            <code>2011/5/14</code>
           </dd>
         </dl>
         <dl class="properties">
@@ -620,10 +620,7 @@
             </dd>
             <dt class="key">mode &ndash; number of solutions:</dt>
             <dd class="value">
-              <code>select(?term,+list,?list) &ndash; zero_or_more</code>
-            </dd>
-            <dd class="value">
-              <code>select(?term,?list,+list) &ndash; zero_or_more</code>
+              <code>select(?term,?list,?list) &ndash; zero_or_more</code>
             </dd>
           </dl>
         </div>
@@ -643,7 +640,47 @@
             </dd>
             <dt class="key">mode &ndash; number of solutions:</dt>
             <dd class="value">
-              <code>selectchk(+term,+list,?list) &ndash; zero_or_one</code>
+              <code>selectchk(?term,?list,?list) &ndash; zero_or_one</code>
+            </dd>
+          </dl>
+        </div>
+        <div class="section">
+          <h3 class="code">select/4</h3>
+          <blockquote>
+            <p class="comment">Selects an element from a list, replacing it by a new element and returning the resulting list.</p>
+          </blockquote>
+          <dl class="properties">
+            <dt class="key">compilation:</dt>
+            <dd class="value">
+              <code>static</code>
+            </dd>
+            <dt class="key">template:</dt>
+            <dd class="value">
+              <code>select(Old,OldList,New,NewList)</code>
+            </dd>
+            <dt class="key">mode &ndash; number of solutions:</dt>
+            <dd class="value">
+              <code>select(?term,?list,?term,?list) &ndash; zero_or_more</code>
+            </dd>
+          </dl>
+        </div>
+        <div class="section">
+          <h3 class="code">selectchk/4</h3>
+          <blockquote>
+            <p class="comment">Checks that an element from a list can be replaced by a new element, returning the resulting list.</p>
+          </blockquote>
+          <dl class="properties">
+            <dt class="key">compilation:</dt>
+            <dd class="value">
+              <code>static</code>
+            </dd>
+            <dt class="key">template:</dt>
+            <dd class="value">
+              <code>selectchk(Old,OldList,New,NewList)</code>
+            </dd>
+            <dt class="key">mode &ndash; number of solutions:</dt>
+            <dd class="value">
+              <code>selectchk(?term,?list,?term,?list) &ndash; zero_or_one</code>
             </dd>
           </dl>
         </div>
@@ -805,10 +842,16 @@
         </div>
       </div>
     </div>
+    <div class="operators">
+      <h2>Operators</h2>
+      <div class="section">
+        <h3 class="comment">(none)</h3>
+      </div>
+    </div>
     <div class="remarks">
       <h2>Remarks</h2>
       <div class="section">
-        <h3 class="code">(none)</h3>
+        <h3 class="comment">(none)</h3>
       </div>
     </div>
   </body>
