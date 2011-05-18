@@ -2,15 +2,15 @@
 :- object(reverse).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2004/2/16,
+		date is 2011/05/18,
 		comment is 'Reads and writes a simple table of facts from and to files for testing operator handling code.']).
 
 	:- op(500, xfx, next).				% local object operators, not visible outside this object
 	:- op(500, xfx, previous).
 
-	:- initialization(reverse_file).
+	:- public(reverse_file/0).
 
 	reverse_file :-
 		open('next.txt', read, RStream),

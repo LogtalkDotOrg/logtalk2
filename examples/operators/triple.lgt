@@ -2,9 +2,9 @@
 :- object(triple).
 
 	:- info([
-		version is 1.1,
+		version is 1.2,
 		author is 'Paulo Moura',
-		date is 2010/11/01,
+		date is 2011/05/18,
 		comment is 'Read and asserts a simple table of facts from a file for testing operator handling code.']).
 
 	:- public(triple/2).
@@ -12,12 +12,10 @@
 
 	:- op(500, xfx, triple).
 
-	:- initialization((
-		retractall(triple(_, _)),	% for avoiding unit test failures when reloading
-		read_from_file				% load the data from the "triple.txt" text file
-	)).
+	:- public(read_from_file/0).
 
 	read_from_file :-
+		retractall(triple(_, _)),
 		open('triple.txt', read, Stream),
 		read(Stream, Term),
 		process(Stream, Term).

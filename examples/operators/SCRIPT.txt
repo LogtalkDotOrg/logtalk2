@@ -40,6 +40,10 @@ yes
 
 % operators also affect inputing of terms, enabling this example to work:
 
+| ?- triple::read_from_file.
+
+yes
+
 | ?- triple::triple(I, J).
 
 I = 1
@@ -54,8 +58,13 @@ J = 9
 yes
 
 
-% check the file "previous.txt" generated from the file "next.txt" by the object "reverse"
-% by opening the files on a text editor
+% local operators are used when reading terms (check the file "previous.txt"
+% generated from the file "next.txt" by the object "reverse" by opening the
+% files on a text editor):
+
+| ?- reverse::reverse_file.
+
+yes
 
 
 % the "edge" operator on the "local.lgt" source file is not globally visible:

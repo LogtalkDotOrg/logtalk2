@@ -13,6 +13,7 @@
 		Solutions == [1-2, 2-4, 3-6].
 
 	test(operators_2) :-
+		triple::read_from_file,
 		findall(I-J, triple::triple(I, J), Solutions),
 		Solutions == [1-3, 2-6, 3-9].
 
