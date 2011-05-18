@@ -9,6 +9,8 @@
 %  it under the terms of the "Artistic License 2.0" as published by 
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
+%  last updated: May 18, 2011
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -56,7 +58,7 @@
 	'$lgt_db_lookup_cache_'/7,
 	'$lgt_hook_term_expansion_'/2, '$lgt_hook_goal_expansion_'/2,
 	'$lgt_threaded_tag_counter_'/1,
-	'$lgt_metacall'/5, '$lgt_metacall'/6
+	'$lgt_metacall'/6, '$lgt_metacall'/7
 )).
 
 % the following index/1 directives may or may not improve performance
