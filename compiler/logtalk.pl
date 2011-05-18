@@ -6557,6 +6557,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	(	functor(Dir, Functor, Arity), '$lgt_pp_defines_predicate_'(Functor, Arity, _, _)
 	;	'$lgt_pp_uses_predicate_'(_, _, Dir)			% directive is a query for a locally defined predicate
  	;	'$lgt_pp_use_module_predicate_'(_, _, Dir)		% or a predicate referenced in a use_module/2 directive
+	;	'$lgt_built_in'(Dir)							% or a built-in predicate
 	),
 	!,													% translate query as an initialization goal
 	(	'$lgt_compiler_flag'(portability, warning),
