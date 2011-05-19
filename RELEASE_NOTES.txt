@@ -147,6 +147,9 @@ RELEASE NOTES
     Correct a bug in some shell scripts where "#/bin/bash" was used instead
     of "#!/bin/bash". Thanks to Yiorgos Adamopoulos for the bug report.
 
+    Corrected some bugs on the tab triggers for the Gedit Logtalk snippets
+    that prevented their use.
+
 
 2.42.4 - April 4, 2011
 

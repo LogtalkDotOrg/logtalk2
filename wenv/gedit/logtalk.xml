@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <snippets language="logtalk">
-  <snippet>
+  <snippet id="Prototype">
     <text><![CDATA[
 :- object(${1:Object}).
 
@@ -17,7 +17,7 @@ $0
     <tag>object</tag>
     <description>Prototype</description>
   </snippet>
-  <snippet>
+  <snippet id="Prototype with parent">
     <text><![CDATA[
 :- object(${1:Prototype},
 	extends(${2:Parent})).
@@ -33,9 +33,9 @@ $0
 :- end_object.
 ]]></text>
     <description>Prototype with parent</description>
-    <tag>object</tag>
+    <tag>objecte</tag>
   </snippet>
-  <snippet>
+  <snippet id="Prototype with protocol">
     <text><![CDATA[
 :- object(${1:Prototype},
 	implements(${2:Protocol})).
@@ -51,9 +51,9 @@ $0
 :- end_object.
 ]]></text>
     <description>Prototype with protocol</description>
-    <tag>object</tag>
+    <tag>objectp</tag>
   </snippet>
-  <snippet>
+  <snippet id="Prototype with category">
     <text><![CDATA[
 :- object(${1:Prototype},
 	imports(${2:Category})).
@@ -68,10 +68,10 @@ $0
 
 :- end_object.
 ]]></text>
-    <tag>object</tag>
+    <tag>objectc</tag>
     <description>Prototype with category</description>
   </snippet>
-  <snippet>
+  <snippet id="Prototype with all">
     <text><![CDATA[
 :- object(${1:Prototype},
 	implements(${2:Protocol}),
@@ -88,10 +88,10 @@ $0
 
 :- end_object.
 ]]></text>
-    <tag>object</tag>
+    <tag>objecta</tag>
     <description>Prototype with all</description>
   </snippet>
-  <snippet>
+  <snippet id="Class">
     <text><![CDATA[
 :- object(${1:Class},
 	specializes(${2:Superclass})).
@@ -109,7 +109,7 @@ $0
     <tag>class</tag>
     <description>Class</description>
   </snippet>
-  <snippet>
+  <snippet id="Class with protocol">
     <text><![CDATA[
 :- object(${1:Class},
 	implements(${2:Protocol}),
@@ -125,10 +125,10 @@ $0
 
 :- end_object.
 ]]></text>
-    <tag>class</tag>
+    <tag>classp</tag>
     <description>Class with protocol</description>
   </snippet>
-  <snippet>
+  <snippet id="Class with category">
     <text><![CDATA[
 :- object(${1:Class},
 	imports(${2:Category}),
@@ -144,10 +144,10 @@ $0
 
 :- end_object.
 ]]></text>
-    <tag>class</tag>
+    <tag>classc</tag>
     <description>Class with category</description>
   </snippet>
-  <snippet>
+  <snippet id="Class with metaclass">
     <text><![CDATA[
 :- object(${1:Class},
 	instantiates(${2:Metaclass}),
@@ -163,10 +163,10 @@ $0
 
 :- end_object.
 ]]></text>
-    <tag>class</tag>
+    <tag>classm</tag>
     <description>Class with metaclass</description>
   </snippet>
-  <snippet>
+  <snippet id="Class with all">
     <text><![CDATA[
 :- object(${1:Class},
 	implements(${2:Protocol}),
@@ -184,10 +184,10 @@ $0
 
 :- end_object.
 ]]></text>
-    <tag>class</tag>
+    <tag>classa</tag>
     <description>Class with all</description>
   </snippet>
-  <snippet>
+  <snippet id="Instance">
     <text><![CDATA[
 :- object(${1:Instance},
 	instantiates(${2:Class})).
@@ -205,7 +205,7 @@ $0
     <tag>instance</tag>
     <description>Instance</description>
   </snippet>
-  <snippet>
+  <snippet id="Instance with protocol">
     <text><![CDATA[
 :- object(${1:Instance},
 	implements(${2:Protocol}),
@@ -221,10 +221,10 @@ $0
 
 :- end_object.
 ]]></text>
-    <tag>instance</tag>
+    <tag>instancep</tag>
     <description>Instance with protocol</description>
   </snippet>
-  <snippet>
+  <snippet id="Instance with category">
     <text><![CDATA[
 :- object(${1:Instance},
 	imports(${2:Category}),
@@ -240,10 +240,10 @@ $0
 
 :- end_object.
 ]]></text>
-    <tag>instance</tag>
+    <tag>instancec</tag>
     <description>Instance with category</description>
   </snippet>
-  <snippet>
+  <snippet id="Instance with all">
     <text><![CDATA[
 :- object(${1:Instance},
 	implements(${2:Protocol}),
@@ -260,10 +260,10 @@ $0
 
 :- end_object.
 ]]></text>
-    <tag>instance</tag>
+    <tag>instancea</tag>
     <description>Instance with all</description>
   </snippet>
-  <snippet>
+  <snippet id="Category">
     <text><![CDATA[
 :- category(${1:Category}).
 
@@ -280,7 +280,7 @@ $0
     <tag>category</tag>
     <description>Category</description>
   </snippet>
-  <snippet>
+  <snippet id="Category with protocol">
     <text><![CDATA[
 :- category(${1:Category},
 	implements(${2:Protocol})).
@@ -295,10 +295,28 @@ $0
 
 :- end_category.
 ]]></text>
-    <tag>category</tag>
+    <tag>categoryp</tag>
     <description>Category with protocol</description>
   </snippet>
-  <snippet>
+  <snippet id="Extended category">
+    <text><![CDATA[
+:- category(${1:Extended},
+	extends(${2:Minimal})).
+
+	:- info([
+		version is 1.0,
+		author is '$(whoami)',
+		date is $(date +%Y/%m/%d),
+		comment is '${3:Description}']).
+
+$0
+
+:- end_category.
+]]></text>
+    <tag>categorye</tag>
+    <description>Extended category</description>
+  </snippet>
+  <snippet id="Protocol">
     <text><![CDATA[
 :- protocol(${1:Protocol}).
 
@@ -315,7 +333,7 @@ $0
     <tag>protocol</tag>
     <description>Protocol</description>
   </snippet>
-  <snippet>
+  <snippet id="Extended protocol">
     <text><![CDATA[
 :- protocol(${1:Extended},
 	extends(${2:Minimal})).
@@ -330,10 +348,10 @@ $0
 
 :- end_protocol.
 ]]></text>
-    <tag>protocol</tag>
+    <tag>protocole</tag>
     <description>Extended protocol</description>
   </snippet>
-  <snippet>
+  <snippet id="Public predicate">
     <text><![CDATA[	:- public(${1:Functor}/${2:Arity}).
 	:- mode(${1:Functor}(${3:Arguments}), ${4:Solutions}).
 	:- info(${1:Functor}/${2:Arity}, [
@@ -344,17 +362,17 @@ $0]]></text>
     <tag>public</tag>
     <description>Public predicate</description>
   </snippet>
-  <snippet>
+  <snippet id="Public predicate (no arguments)">
     <text><![CDATA[	:- public(${1:Functor}/0).
 	:- mode(${1:Functor}, ${2:Solutions}).
 	:- info(${1:Functor}/0, [
 		comment is '${3:Description}']).
 
 $0]]></text>
-    <tag>public</tag>
-    <description>Public protocol (no arguments)</description>
+    <tag>publicz</tag>
+    <description>Public predicate (no arguments)</description>
   </snippet>
-  <snippet>
+  <snippet id="Protected predicate">
     <text><![CDATA[	:- protected(${1:Functor}/${2:Arity}).
 	:- mode(${1:Functor}(${3:Arguments}), ${4:Solutions}).
 	:- info(${1:Functor}/${2:Arity}, [
@@ -365,7 +383,7 @@ $0]]></text>
     <tag>protected</tag>
     <description>Protected predicate</description>
   </snippet>
-  <snippet>
+  <snippet id="Protected predicate (no arguments)">
     <text><![CDATA[	:- protected(${1:Functor}/${2:Arity}).
 	:- mode(${1:Functor}(${3:Arguments}), ${4:Solutions}).
 	:- info(${1:Functor}/${2:Arity}, [
@@ -373,10 +391,10 @@ $0]]></text>
 		arguments is ['$6'-'$7']]).
 
 $0]]></text>
-    <tag>protected</tag>
+    <tag>protectedz</tag>
     <description>Protected predicate (no arguments)</description>
   </snippet>
-  <snippet>
+  <snippet id="Private predicate">
     <text><![CDATA[	:- private(${1:Functor}/${2:Arity}).
 	:- mode(${1:Functor}(${3:Arguments}), ${4:Solutions}).
 	:- info(${1:Functor}/${2:Arity}, [
@@ -387,14 +405,14 @@ $0]]></text>
     <tag>private</tag>
     <description>Private predicate</description>
   </snippet>
-  <snippet>
+  <snippet id="Private predicate (no arguments)">
     <text><![CDATA[	:- private(${1:Functor}/0).
 	:- mode(${1:Functor}, ${2:Solutions}).
 	:- info(${1:Functor}/0, [
 		comment is '${3:Description}']).
 
 $0]]></text>
-    <tag>private</tag>
+    <tag>privatez</tag>
     <description>Private predicate (no arguments)</description>
   </snippet>
 </snippets>
