@@ -1,11 +1,12 @@
 #!/bin/sh
 
 # [Gedit Tool]
-# Comment=Generate (X)HTML documentation for the current Logtalk source file
-# Input=document
 # Name=Logtalk: generate (X)HTML documentation
-# Applicability=titled
+# Comment=Generate (X)HTML documentation for the current Logtalk source file
+# Shortcut=
+# Input=document
 # Output=output-panel
+# Applicability=titled
 # Languages=Logtalk
 
 cd "$GEDIT_CURRENT_DOCUMENT_DIR"

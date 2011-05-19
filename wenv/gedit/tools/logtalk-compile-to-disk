@@ -1,11 +1,12 @@
 #!/bin/sh
 
 # [Gedit Tool]
-# Comment=Compile the current Logtalk source file
-# Input=document
 # Name=Logtalk: compile to disk
-# Applicability=titled
+# Comment=Compile the current Logtalk source file
+# Shortcut=
+# Input=document
 # Output=output-panel
+# Applicability=titled
 
 cd "$GEDIT_CURRENT_DOCUMENT_DIR"
 FILE=`basename "$GEDIT_CURRENT_DOCUMENT_NAME" .lgt`
