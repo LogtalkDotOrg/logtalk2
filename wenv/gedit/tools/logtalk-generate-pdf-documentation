@@ -6,7 +6,8 @@
 # Shortcut=
 # Input=nothing
 # Output=output-panel
-# Applicability=all
+# Applicability=titled
+# Save-files=nothing
 # Languages=Logtalk
 
 cd "$GEDIT_CURRENT_DOCUMENT_DIR"

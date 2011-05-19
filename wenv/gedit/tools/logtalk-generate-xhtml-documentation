@@ -4,9 +4,10 @@
 # Name=Logtalk: generate (X)HTML documentation
 # Comment=Generate (X)HTML documentation for the current Logtalk source file
 # Shortcut=
-# Input=document
+# Input=nothing
 # Output=output-panel
 # Applicability=titled
+# Save-files=nothing
 # Languages=Logtalk
 
 cd "$GEDIT_CURRENT_DOCUMENT_DIR"
