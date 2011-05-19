@@ -6,8 +6,10 @@
 # Name=Logtalk: generate (X)HTML documentation
 # Applicability=titled
 # Output=output-panel
+# Languages=Logtalk
 
 cd "$GEDIT_CURRENT_DOCUMENT_DIR"
 FILE=`basename "$GEDIT_CURRENT_DOCUMENT_NAME" .lgt`
 yaplgt -g "logtalk_compile($FILE), halt."
+cd xml_docs
 lgt2html

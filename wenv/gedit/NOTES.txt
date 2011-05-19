@@ -21,7 +21,7 @@ For syntax coloring support see the "../gtksourceview2" folder.
 
 To install the snippets support, copy the file "logtalk.xml" to 
 the following system-wide directory:
-	
+
 	${prefix}/share/gedit-2/plugins/snippets
 
 The ${prefix} can be e.g. "/usr", "/usr/local", or "/opt", depending 
@@ -35,7 +35,7 @@ location on your home directory:
 
 To install the tools support, copy the files in the "tools" directory
 to the following system-wide directory:
-	
+
 	${prefix}/share/gedit-2/plugins/tools
 
 The ${prefix} can be e.g. "/usr", "/usr/local", or "/opt", depending 
