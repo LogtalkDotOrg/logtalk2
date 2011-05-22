@@ -2,7 +2,7 @@
 
 # [Gedit Tool]
 # Name=Logtalk: compile to disk
-# Comment=Compile the current Logtalk source file
+# Comment=Compile the current Logtalk source file to disk
 # Shortcut=
 # Input=nothing
 # Output=output-panel
