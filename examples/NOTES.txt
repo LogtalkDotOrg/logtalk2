@@ -34,7 +34,8 @@ files to fully understand them. However, note that some examples purpose
 is to illustrate general principles rather than being adequate, efficient 
 solutions for deployment code.
 
-All examples are formatted using tabs (with a width equivalent to 4 spaces).
+All examples are formatted using tabs (the recommended setting is a tab
+width equivalent to 4 spaces).
 
 By default, compiling an example generates a XML documenting file for 
 each compiled entity (object, category, or protocol). See the "xml" 

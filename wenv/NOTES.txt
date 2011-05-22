@@ -21,8 +21,8 @@ case of your favorite editor, you may want to check if the supporting
 files provided in this directory are newer than the editor ones.
 
 Logtalk source files (including the library entities and the programming
-examples) are formatted using tabs (with a width equivalent to 4 spaces);
-it is recommended that you set the tab width on your editor preferences
+examples) are formatted using tabs (the recommended setting is a tab width
+equivalent to 4 spaces); you may set the tab width on the editor preference
 panel.
 
 You may notice that support for some text editors, notably for Windows-only 

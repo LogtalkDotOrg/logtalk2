@@ -34,8 +34,9 @@ Next, rebuild the lexer mappings by typing:
 	% python _mapping.py
 
 Logtalk source files (including the library entities and the programming
-examples) are formatted using tabs (with a width equivalent to 4 spaces).
-This can be specified by using the "whitespace" filter option "tabsize":
+examples) are formatted using tabs (the recommended setting is a tab width
+equivalent to 4 spaces). This can be specified by using the "whitespace"
+filter option "tabsize":
 
 	$ pygmentize -F whitespace:tabs=True,tabsize=4 -O full,style=friendly -o source.html source.lgt
 

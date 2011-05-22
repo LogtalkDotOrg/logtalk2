@@ -73,8 +73,8 @@ instructions.
 
 See the user manual for a description of the source files organization 
 and for using instructions (to read the user manual open the file 
-"manuals/index.html" with a web browser). Most files are formatted 
-using tabs (with a width equivalent to 4 spaces).
+"manuals/index.html" with a web browser). Most files are formatted using
+tabs (the recommended setting is a tab width equivalent to 4 spaces).
 
 
 6. CUSTOMIZATION

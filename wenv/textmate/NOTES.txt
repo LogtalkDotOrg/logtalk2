@@ -43,5 +43,6 @@ LOGTALK_TXT_COMMAND
 	documentation (e.g. lgt2txt)
 
 Logtalk source files (including the library entities and the programming
-examples) are formatted using tabs (with a width equivalent to 4 spaces);
-you may set the tab width on the editor preference panel.
+examples) are formatted using tabs (the recommended setting is a tab width
+equivalent to 4 spaces); you may set the tab width on the editor preference
+panel.

@@ -28,8 +28,9 @@ Note: The Crimson installation directory is usually:
 	C:\Program Files\Crimson Editor
 
 Logtalk source files (including the library entities and the programming
-examples) are formatted using tabs (with a width equivalent to 4 spaces);
-you may set the tab width on the editor preference panel.
+examples) are formatted using tabs (the recommended setting is a tab width
+equivalent to 4 spaces); you may set the tab width on the editor preference
+panel.
 
 
 THESE SYNTAX COLORING SUPPORT FILES ARE UNDER DEVELOPMENT.
