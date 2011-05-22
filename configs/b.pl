@@ -9,9 +9,9 @@
 %  The Perl Foundation. Consult the "LICENSE.txt" file for details.
 %
 %
-%  configuration file for B-Prolog 7.4 and later versions
+%  configuration file for B-Prolog 7.5 and later versions
 %
-%  last updated: May 15, 2011
+%  last updated: May 22, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -52,7 +52,6 @@
 
 % '$lgt_predicate_property'(+callable, ?predicate_property)
 
-'$lgt_predicate_property'(callable(_), built_in) :- !.
 '$lgt_predicate_property'(and(_,_,_), built_in) :- !.
 '$lgt_predicate_property'(equiv(_,_,_), built_in) :- !.
 '$lgt_predicate_property'(or(_,_,_), built_in) :- !.
@@ -165,9 +164,9 @@
 % back-end Prolog compiler supported features (that are compatible with Logtalk)
 
 '$lgt_prolog_feature'(prolog_dialect, b).
-'$lgt_prolog_feature'(prolog_version, _) :-
-	fail.
-'$lgt_prolog_feature'(prolog_compatible_version, @>=((7,4,0))).
+'$lgt_prolog_feature'(prolog_version, (Major, Minor, Patch)) :-
+	current_prolog_flag(version_data, bp(Major, Minor, Patch, _)).
+'$lgt_prolog_feature'(prolog_compatible_version, @>=((7,5,0))).
 
 '$lgt_prolog_feature'(break_predicate, unsupported).
 '$lgt_prolog_feature'(encoding_directive, unsupported).

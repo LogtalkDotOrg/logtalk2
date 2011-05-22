@@ -46,11 +46,11 @@ template config file
 	you can write a better definition.
 
 
-B-Prolog 7.4 and later versions
+B-Prolog 7.5 and later versions
 
 	b.pl
 
-	For B-Prolog 7.4 and later versions. Don't forget to use the chdir/1 
+	For B-Prolog 7.5 and later versions. Don't forget to use the chdir/1 
 	predicate to set the working directory before loading the library or 
 	an example. Note that this configuration file redefines the B-Prolog 
 	::/2 finite-domain built-in predicate (you may use the alternative 
