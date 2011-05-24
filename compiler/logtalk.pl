@@ -636,58 +636,54 @@ protocol_property(Ptc, Prop) :-
 
 
 
-'$lgt_entity_property_declares'(Kind, Entity, Dcl, DDcl, declares(Functor/Arity, [Scope| Properties])) :-
-	'$lgt_predicate_declaration'(Kind, Entity, Dcl, DDcl, Predicate, Scope0, Meta, Flags),
+'$lgt_entity_property_declares'(Kind, Entity, Dcl, DDcl, declares(Functor/Arity, Properties)) :-
+	(	Kind == object ->
+		(	call(Dcl, Predicate, Scope0, Meta, Flags)
+		;	catch(call(DDcl, Predicate, Scope0), _, fail)
+		)
+	;	Kind == protocol ->
+		call(Dcl, Predicate, Scope0, Meta, Flags, Entity)
+	;	%Kind == category ->
+		call(Dcl, Predicate, Scope0, Meta, Flags, Entity)
+	),
 	'$lgt_scope'(Scope, Scope0),
 	functor(Predicate, Functor, Arity),
-	(	Meta == no ->
-		Properties0 = []
-	;	Properties0 = [meta_predicate(Meta)]
+	(	'$lgt_predicate_property_'(Entity, Functor/Arity, info(Info)) ->
+		Properties0 = [info(Info)]
+	;	Properties0 = []
 	),
-	(	Flags /\ 2 =:= 2 ->
-		Properties1 = [(dynamic)| Properties0]
-	;	Properties1 = [static| Properties0]
-	),
-	(	Flags /\ 32 =:= 32 ->
-		Properties2 = [(coinductive)| Properties1]
+	findall(mode(Mode, Solutions), '$lgt_predicate_property_'(Entity, Functor/Arity, mode(Mode, Solutions)), Modes),
+	'$lgt_append'(Modes, Properties0, Properties1),
+	(	'$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(Line,_,_)),
+	 	Line =\= -1 ->
+		Properties2 = [line(Line)| Properties1]
 	;	Properties2 = Properties1
 	),
-	(	Flags /\ 16 =:= 16 ->
-		Properties3 = [(multifile)| Properties2]
+	(	Flags /\ 32 =:= 32 ->
+		Properties3 = [(coinductive)| Properties2]
 	;	Properties3 = Properties2
+	),
+	(	Flags /\ 14 =:= 16 ->
+		Properties4 = [(multifile)| Properties3]
+	;	Properties4 = Properties3
 	),
 	(	Flags /\ 8 =:= 8 ->
 		Arity2 is Arity - 2,
-		Properties4 = [non_terminal(Functor//Arity2)| Properties3]
-	;	Properties4 = Properties3
-	),
-	(	Flags /\ 4 =:= 4 ->
-		Properties5 = [synchronized| Properties4]
+		Properties5 = [non_terminal(Functor//Arity2)| Properties4]
 	;	Properties5 = Properties4
 	),
-	(	'$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(Line,_,_)),
-	 	Line =\= -1 ->
-		Properties6 = [line(Line)| Properties5]
+	(	Flags /\ 4 =:= 4 ->
+		Properties6 = [synchronized| Properties5]
 	;	Properties6 = Properties5
 	),
-	findall(mode(Mode, Solutions), '$lgt_predicate_property_'(Entity, Functor/Arity, mode(Mode, Solutions)), Modes),
-	'$lgt_append'(Properties6, Modes, Properties7),
-	(	'$lgt_predicate_property_'(Entity, Functor/Arity, info(Info)) ->
-		'$lgt_append'(Properties7, Info, Properties)
-	;	Properties = Properties7
+	(	Meta == no ->
+		Properties7 = Properties6
+	;	Properties7 = [meta_predicate(Meta)| Properties6]
+	),
+	(	Flags /\ 2 =:= 2 ->
+		Properties = [Scope, (dynamic)| Properties7]
+	;	Properties = [Scope, static| Properties7]
 	).
-
-
-'$lgt_predicate_declaration'(object, _, Dcl, DDcl, Predicate, Scope, Meta, Flags) :-
-	(	call(Dcl, Predicate, Scope, Meta, Flags)
-	;	catch(call(DDcl, Predicate, Scope), _, fail)
-	).
-
-'$lgt_predicate_declaration'(protocol, Ptc, Dcl, _, Predicate, Scope, Meta, Flags) :-
-	call(Dcl, Predicate, Scope, Meta, Flags, Ptc).
-
-'$lgt_predicate_declaration'(category, Ctg, Dcl, _, Predicate, Scope, Meta, Flags) :-
-	call(Dcl, Predicate, Scope, Meta, Flags, Ctg).
 
 
 
@@ -5529,11 +5525,11 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-% '$lgt_add_entity_file_properties'(@atom, @entity_identifier)
+% '$lgt_add_entity_properties'(@atom, @entity_identifier)
 %
 % adds entity properties related to the entity source file
 
-'$lgt_add_entity_file_properties'(start, Entity) :-
+'$lgt_add_entity_properties'(start, Entity) :-
 	(	'$lgt_compiler_flag'(source_data, on),
 		'$lgt_pp_file_path_'(File, Path) ->
 		(	'$lgt_pp_term_position_'((Start - _)) ->
@@ -5543,15 +5539,22 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	true
 	).
 
-'$lgt_add_entity_file_properties'(end, Entity) :-
-	(	'$lgt_compiler_flag'(source_data, on),
-		'$lgt_pp_file_path_'(File, Path) ->
-		(	'$lgt_pp_term_position_'((_ - End)) ->
-			retract('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, Start, _, Path)))),
-			assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, Start, End, Path))))
-		;	retract('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, Start, _, Path)))),
-			assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, Start, -1, Path))))
-		), !
+'$lgt_add_entity_properties'(end, Entity) :-
+	(	'$lgt_compiler_flag'(source_data, on) ->
+		(	'$lgt_pp_file_path_'(File, Path) ->
+			(	'$lgt_pp_term_position_'((_ - End)) ->
+				retract('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, Start, _, Path)))),
+				assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, Start, End, Path))))
+			;	retract('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, Start, _, Path)))),
+				assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, file(File, Start, -1, Path))))
+			), !
+		;	true
+		),
+		(	'$lgt_pp_info_'(Info0) ->
+			'$lgt_convert_info_items'(Info0, Info),
+			assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, info(Info))))
+		;	true
+		)
 	;	true
 	).
 
@@ -6667,7 +6670,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_directive'(object, [Obj| Rels], _) :-
 	'$lgt_report_compiling_entity'(object, Obj),
-	'$lgt_add_entity_file_properties'(start, Obj),
+	'$lgt_add_entity_properties'(start, Obj),
 	'$lgt_save_file_op_table',
 	% assume static object
 	'$lgt_tr_object_identifier'(Obj, static),
@@ -6675,7 +6678,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_directive'(end_object, [], _) :-
 	(	'$lgt_pp_object_'(Obj, _, _, _, _, _, _, _, _, _, _) ->
-		'$lgt_add_entity_file_properties'(end, Obj),
+		'$lgt_add_entity_properties'(end, Obj),
 		'$lgt_add_entity_predicate_properties'(Obj),
 		'$lgt_tr_entity'(object, Obj),
 		'$lgt_restore_file_op_table',
@@ -6704,7 +6707,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_directive'(protocol, [Ptc| Rels], _) :-
 	'$lgt_report_compiling_entity'(protocol, Ptc),
-	'$lgt_add_entity_file_properties'(start, Ptc),
+	'$lgt_add_entity_properties'(start, Ptc),
 	'$lgt_save_file_op_table',
 	% assume static protocol
 	'$lgt_tr_protocol_identifier'(Ptc, static),
@@ -6712,7 +6715,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_directive'(end_protocol, [], _) :-
 	(   '$lgt_pp_protocol_'(Ptc, _, _, _, _) ->
-		'$lgt_add_entity_file_properties'(end, Ptc),
+		'$lgt_add_entity_properties'(end, Ptc),
 		'$lgt_add_entity_predicate_properties'(Ptc),
 		'$lgt_tr_entity'(protocol, Ptc),
 		'$lgt_restore_file_op_table',
@@ -6742,7 +6745,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_directive'(category, [Ctg| Rels], _) :-
 	'$lgt_report_compiling_entity'(category, Ctg),
-	'$lgt_add_entity_file_properties'(start, Ctg),
+	'$lgt_add_entity_properties'(start, Ctg),
 	'$lgt_save_file_op_table',
 	% assume static category
 	'$lgt_tr_category_identifier'(Ctg, static),
@@ -6750,7 +6753,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_directive'(end_category, [], _) :-
 	(	'$lgt_pp_category_'(Ctg, _, _, _, _, _) ->
-		'$lgt_add_entity_file_properties'(end, Ctg),
+		'$lgt_add_entity_properties'(end, Ctg),
 		'$lgt_add_entity_predicate_properties'(Ctg),
 		'$lgt_tr_entity'(category, Ctg),
 		'$lgt_restore_file_op_table',
@@ -6931,19 +6934,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			'$lgt_append'(Previous, List, Info)
 		;	Info = List
 		),
-		assertz('$lgt_pp_info_'(Info)),
-		'$lgt_pp_entity'(_, Entity, _, _, _),
-		(	compound(Entity) ->
-			(	'$lgt_member'(parnames is Names, Info) ->
-				true
-			;	'$lgt_member'(parameters is Parameters, Info) ->
-				findall(Name, '$lgt_member'(Name - _, Parameters), Names)
-			;	Entity =.. [_| Names],
-				'$lgt_vars_to_underscore'(Names)
-			),
-			assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, parameter_names(Names))))
-		;	true
-		)
+		assertz('$lgt_pp_info_'(Info))
 	;	throw(type_error(entity_info_list, List))
 	).
 
@@ -15573,9 +15564,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_valid_object_property'(public(_)).				% list of predicate indicators of public predicates declared in the object
 '$lgt_valid_object_property'(protected(_)).				% list of predicate indicators of protected predicates declared in the object
 '$lgt_valid_object_property'(private(_)).				% list of predicate indicators of private predicates declared in the object
-'$lgt_valid_object_property'(parameter_names(_)).		% list of atoms
 '$lgt_valid_object_property'(declares(_, _)).			% list of declaration properties for a predicate declared in the object
 '$lgt_valid_object_property'(defines(_, _)).			% list of definition properties for a predicate defined in the object
+'$lgt_valid_object_property'(info(_)).					% list of pairs with user-defined object documentation
 
 
 
@@ -15589,9 +15580,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_valid_protocol_property'(public(_)).				% list of predicate indicators
 '$lgt_valid_protocol_property'(protected(_)).			% list of predicate indicators of protected predicates declared in the protocol
 '$lgt_valid_protocol_property'(private(_)).				% list of predicate indicators of private predicates declared in the protocol
-'$lgt_valid_protocol_property'(parameter_names(_)).		% list of atoms
 '$lgt_valid_protocol_property'(declares(_, _)).			% list of declaration properties for a predicate declared in the protocol
 '$lgt_valid_protocol_property'(defines(_, _)).			% list of definition properties for a predicate defined in the protocol
+'$lgt_valid_protocol_property'(info(_)).				% list of pairs with user-defined protocol documentation
 
 
 
@@ -15607,9 +15598,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_valid_category_property'(public(_)).				% list of predicate indicators
 '$lgt_valid_category_property'(protected(_)).			% list of predicate indicators of protected predicates declared in the category
 '$lgt_valid_category_property'(private(_)).				% list of predicate indicators of private predicates declared in the category
-'$lgt_valid_category_property'(parameter_names(_)).		% list of atoms
 '$lgt_valid_category_property'(declares(_, _)).			% list of declaration properties for a predicate declared in the category
 '$lgt_valid_category_property'(defines(_, _)).			% list of definition properties for a predicate defined in the category
+'$lgt_valid_category_property'(info(_)).				% list of pairs with user-defined category documentation
 
 
 

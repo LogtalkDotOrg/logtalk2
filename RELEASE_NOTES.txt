@@ -29,10 +29,11 @@ RELEASE NOTES
 
     Added a "source_data" flag, whose default value is "on". With this flag
     set to "on", Logtalk will keep the information represented using mode/2
-    and info/2 directives plus source location data (including source file
+    and info/1-2 directives plus source location data (including source file
     names and line numbers), useful both for debugging and for integration
     with development tools. This flag can be turned off in order to generate
-    more compact code.
+    more compact code. The object and category parameter_names/1 property is
+    removed in order to avoid redundancy.
 
     Implemented protected/1 and private/1 properties for objects, protocols,
     and categories. Together with the public/1 property, these properties

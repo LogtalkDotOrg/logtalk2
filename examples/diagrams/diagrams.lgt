@@ -2,9 +2,9 @@
 :- object(diagram).
 
 	:- info([
-		version is 1.0,
+		version is 1.1,
 		author is 'Paulo Moura',
-		date is 2010/11/29,
+		date is 2011/05/24,
 		comment is 'Generates entity diagram DOT files for source files and libraries.']).
 
 	:- public(rlibrary/2).
@@ -278,26 +278,26 @@
 		arrow(ObjectName, ProtocolName, implements),
 		fail.
 	output_object_relations(Instance, _) :-
-		print_name(object, Instance, InstanceName),
 		instantiates_class(Instance, Class),
+		print_name(object, Instance, InstanceName),
 		print_name(object, Class, ClassName),
 		arrow(InstanceName, ClassName, instantiates),
 		fail.
 	output_object_relations(Class, _) :-
-		print_name(object, Class, ClassName),
 		specializes_class(Class, SuperClass),
+		print_name(object, Class, ClassName),
 		print_name(object, SuperClass, SuperClassName),
 		arrow(ClassName, SuperClassName, specializes),
 		fail.
 	output_object_relations(Prototype, _) :-
-		print_name(object, Prototype, PrototypeName),
 		extends_object(Prototype, Parent),
+		print_name(object, Prototype, PrototypeName),
 		print_name(object, Parent, ParentName),
 		arrow(PrototypeName, ParentName, extends),
 		fail.
 	output_object_relations(Object, _) :-
-		print_name(object, Object, ObjectName),
 		imports_category(Object, Category),
+		print_name(object, Object, ObjectName),
 		print_name(category, Category, CategoryName),
 		arrow(ObjectName, CategoryName, imports),
 		fail.
@@ -377,7 +377,10 @@
 	print_name(object, Object, ObjectName) :-
 		(	atom(Object) ->
 			ObjectName = Object
-		;	object_property(Object, parameter_names(Names)),
+		;	(	object_property(Object, info(Info)) ->
+				parameter_names(Object, Info, Names)
+			;	parameter_names(Object, [], Names)
+			),
 			Object =.. [Functor| _],
 			ObjectName =.. [Functor| Names]
 		).
@@ -385,10 +388,30 @@
 	print_name(category, Category, CategoryName) :-
 		(	atom(Category) ->
 			CategoryName = Category
-		;	object_property(Category, parameter_names(Names)),
+		;	(	category_property(Category, info(Info)) ->
+				parameter_names(Category, Info, Names)
+			;	parameter_names(Category, [], Names)
+			),
 			Category =.. [Functor| _],
 			CategoryName =.. [Functor| Names]
 		).
+
+	parameter_names(Entity, Info, Names) :-
+		(	list::member(parnames(Names), Info) ->
+			true
+		;	list::member(parameters(Parameters), Info) ->
+			pairs::keys(Parameters, Names)
+		;	Entity =.. [_| Names],
+			variables_to_underscore(Names)
+		).
+
+	variables_to_underscore([]).
+	variables_to_underscore([Arg| Args]) :-
+		(	var(Arg) ->
+			Arg = '_'
+		;	true
+		),
+		variables_to_underscore(Args).
 
 	merge_options(UserOptions, Options) :-
 		% by default, print library paths:
