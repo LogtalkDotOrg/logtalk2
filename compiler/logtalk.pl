@@ -2026,6 +2026,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_current_object_'(Obj, _, Dcl, Def, _, _, _, _, _, Rnm, _),
 	call(Dcl, Pred, PScope, Meta, Flags, SCtn, TCtn),
 	!,
+	functor(Pred, Functor, Arity),
 	(	\+ \+ PScope = Scope ->
 		true
 	;	Sender = SCtn
@@ -2039,7 +2040,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	Prop = declared_in(TCtn)
 	;	Meta \== no,
 		Meta =.. [_| MetaArgs],			% Pred can be an alias
-		functor(Pred, Functor, _),
 		Meta2 =.. [Functor| MetaArgs],
 		Prop = meta_predicate(Meta2)
 	;	Flags /\ 32 =:= 32,
@@ -2047,9 +2047,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	Flags /\ 16 =:= 16,
 		Prop = (multifile)
 	;	Flags /\ 8 =:= 8,
-		functor(Pred, Functor, Arity2),
-		Arity is Arity2 - 2,
-		Prop = non_terminal(Functor//Arity)
+		NTArity is Arity - 2,
+		Prop = non_terminal(Functor//NTArity)
 	;	Flags /\ 4 =:= 4,
 		Prop = synchronized
 	;	once((	'$lgt_current_object_'(TCtn, _, TCtnDcl, _, _, _, _, _, _, _, _)
@@ -2061,6 +2060,10 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		Prop = alias_of(Original)
 	;	once(call(Def, Pred, _, _, DCtn)),
 		Prop = defined_in(DCtn)
+	;	'$lgt_predicate_property_'(TCtn, Functor/Arity, info(Info)),
+		Prop = info(Info)
+	;	'$lgt_predicate_property_'(TCtn, Functor/Arity, mode(Mode, Solutions)),
+		Prop = mode(Mode, Solutions)
 	).
 
 '$lgt_predicate_property'(Obj, Pred, Prop, Sender, Scope) :-
@@ -15545,6 +15548,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_valid_predicate_property'((multifile)).			% clauses for the predicate can be defined within multiple entities
 '$lgt_valid_predicate_property'(non_terminal(_)).		% predicate version of a non-terminal
 '$lgt_valid_predicate_property'(synchronized).			% calls to the predicate are synchronized
+'$lgt_valid_predicate_property'(mode(_, _)).			% mode/2 predicate information
+'$lgt_valid_predicate_property'(info(_)).				% info/2 predicate information
 
 
 

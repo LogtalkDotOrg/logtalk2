@@ -13,7 +13,7 @@ RELEASE NOTES
 =============
 
 
-2.43.0 - May ??, 2011
+2.43.0 - June ??, 2011
 
     Changed error reporting by the Logtalk compiler and runtime. All exception
     terms now use, whenever possible, the error(Error, logtalk(Goal, Entity))
@@ -96,7 +96,8 @@ RELEASE NOTES
 
     Refined error checking for the built-in predicates category_property/2,
     object_property/2, and protocol_property/2, throwing a type_error/2 when
-    the second argument is neither a variable or a callable term.
+    the second argument is neither a variable or a callable term. Added an
+    info/1 entity property.
 
     When compiling a module as an object, warn instead of throwing an error
     when compiling a call to a built-in predicate used as a query.

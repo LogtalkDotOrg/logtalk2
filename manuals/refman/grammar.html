@@ -960,7 +960,9 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dd>"<code>synchronized</code>" |</dd>
 			<dd>"<code>meta_predicate(</code>" meta_predicate_template "<code>)</code>" |</dd>
 			<dd>"<code>non_terminal(</code>" non_terminal_indicator "<code>)</code>" |</dd>
-			<dd>"<code>line(</code>" <em>integer</em> "<code>)</code>"</dd>
+			<dd>"<code>line(</code>" <em>integer</em> "<code>)</code>" |</dd>
+			<dd>"<code>mode(</code>" predicate_mode_term | non_terminal_mode_term "<code>,</code>" number_of_solutions "<code>)</code>" |</dd>
+			<dd>"<code>info(</code>" <em>list</em> "<code>)</code>"</dd>
 	</dl>
 
 	<dl>
@@ -994,13 +996,15 @@ The Logtalk grammar is here described using Backus-Naur Form syntax. Non-termina
 			<dd>"<code>defined_in(</code>" object_identifier | category_identifier "<code>)</code>" |</dd>
 			<dd>"<code>meta_predicate(</code>" meta_predicate_template "<code>)</code>" |</dd>
 			<dd>"<code>alias_of(</code>" callable "<code>)</code>" |</dd>
-			<dd>"<code>non_terminal(</code>" non_terminal_indicator "<code>)</code>"</dd>
+			<dd>"<code>non_terminal(</code>" non_terminal_indicator "<code>)</code>" |</dd>
+			<dd>"<code>mode(</code>" predicate_mode_term | non_terminal_mode_term "<code>,</code>" number_of_solutions "<code>)</code>" |</dd>
+			<dd>"<code>info(</code>" <em>list</em> "<code>)</code>"</dd>
 	</dl>
 
 <div class="footer">
 	<div class="copyright">
 		<span>Copyright &copy; <a href="mailto:pmoura@logtalk.org">Paulo Moura</a> &mdash; <a href="http://logtalk.org">Logtalk.org</a></span><br/>	
-		<span>Last updated on: May 24, 2011</span>
+		<span>Last updated on: May 25, 2011</span>
 	</div>
 	<div class="navbottom">
 		<span><a href="index.html">previous</a> | <a href="../glossary.html">glossary</a> | <a href="index.html">next</a></span><br/>

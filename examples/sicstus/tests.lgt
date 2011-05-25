@@ -3,9 +3,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.1,
+		version is 1.11,
 		author is 'Parker Jones and Paulo Moura',
-		date is 2010/05/01,
+		date is 2011/05/25,
 		comment is 'Unit tests for the "sicstus" example.']).
 
 	:- uses(lgtunit, [op(700, xfx, '=~='), '=~='/2]).
@@ -47,6 +47,6 @@
 	test(sicstus_9) :-
 		findall(Prop, square(_)::predicate_property(side(_), Prop), Props),
 		list::msort(Props,PropsSorted),
-		PropsSorted = [logtalk, public, static, declared_in(square(_)), defined_in(square(_))].
+		PropsSorted = [logtalk, public, static, declared_in(square(_)), defined_in(square(_))| _].
 
 :- end_object.
