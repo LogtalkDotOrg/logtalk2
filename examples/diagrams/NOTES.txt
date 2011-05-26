@@ -21,7 +21,7 @@ These files can be easily converted into a printable format such as PDF
 or Postscript. For example, using the dot command-line executable we can
 simply type:
 
-	dot -Tpdf diagram.dot > diagram.pdf 
+	dot -Tpdf diagram.dot > diagram.pdf
 
 When generating diagrams for libraries, is possible to split a diagram with
 several disconnected entity graphs using the ccomps command-line executable.

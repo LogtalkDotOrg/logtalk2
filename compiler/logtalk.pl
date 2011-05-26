@@ -290,6 +290,7 @@
 :- dynamic('$lgt_pp_hook_term_expansion_'/2).				% '$lgt_pp_hook_term_expansion_'(Term, Terms)
 :- dynamic('$lgt_pp_hook_goal_expansion_'/2).				% '$lgt_pp_hook_goal_expansion_'(Goal, EGoal)
 
+:- dynamic('$lgt_pp_dynamic_'/0).							% '$lgt_pp_dynamic_'
 :- dynamic('$lgt_pp_threaded_'/0).							% '$lgt_pp_threaded_'
 :- dynamic('$lgt_pp_synchronized_'/0).						% '$lgt_pp_synchronized_'
 
@@ -319,7 +320,7 @@
 
 
 Obj::Pred :-
-	catch('$lgt_tr_msg'(Pred, Obj, Call, user), Error, '$lgt_runtime_error_handler'(error(Error, Obj::Pred, user))),
+	catch('$lgt_tr_msg'(Pred, Obj, Call, user), Error, '$lgt_runtime_error_handler'(error(Error, logtalk(Obj::Pred, user)))),
 	(	'$lgt_debugger.debugging_', '$lgt_debugging_entity_'(Obj) ->
 		'$lgt_debugger.reset_invocation_number',
 		'$lgt_exec_ctx'(ExCtx, user, user, Obj, [], []),
@@ -330,7 +331,7 @@ Obj::Pred :-
 
 
 Obj<<Goal :-
-	catch('$lgt_tr_ctx_call'(Obj, Goal, Call, user), Error, '$lgt_runtime_error_handler'(error(Error, Obj<<Goal, user))),
+	catch('$lgt_tr_ctx_call'(Obj, Goal, Call, user), Error, '$lgt_runtime_error_handler'(error(Error, logtalk(Obj<<Goal, user)))),
 	(	'$lgt_debugger.debugging_', '$lgt_debugging_entity_'(Obj) ->
 		'$lgt_debugger.reset_invocation_number',
 		'$lgt_exec_ctx'(ExCtx, user, user, Obj, [], []),
@@ -559,7 +560,7 @@ object_property(Obj, Prop) :-
 				Predicates)
 		),
 		Prop = private(Predicates)
-	;	'$lgt_entity_property_declares'(object, Obj, Dcl, DDcl, Prop)
+	;	'$lgt_entity_property_declares'(object, Obj, Dcl, DDcl, Flags, Prop)
 	;	'$lgt_entity_property_defines'(object, Obj, Def, DDef, Prop)
 	;	'$lgt_entity_property_includes'(Obj, Prop)
 	).
@@ -595,7 +596,7 @@ category_property(Ctg, Prop) :-
 			(call(Dcl, Predicate, p, _, _, Ctg), functor(Predicate, Functor, Arity)),
 			Predicates),
 		Prop = private(Predicates)
-	;	'$lgt_entity_property_declares'(category, Ctg, Dcl, _, Prop)
+	;	'$lgt_entity_property_declares'(category, Ctg, Dcl, _, Flags, Prop)
 	;	'$lgt_entity_property_defines'(category, Ctg, Def, _, Prop)
 	;	'$lgt_entity_property_includes'(Ctg, Prop)
 	).
@@ -631,15 +632,18 @@ protocol_property(Ptc, Prop) :-
 			(call(Dcl, Predicate, p, _, _, Ptc), functor(Predicate, Functor, Arity)),
 			Predicates),
 		Prop = private(Predicates)
-	;	'$lgt_entity_property_declares'(protocol, Ptc, Dcl, _, Prop)
+	;	'$lgt_entity_property_declares'(protocol, Ptc, Dcl, _, Flags, Prop)
 	).
 
 
 
-'$lgt_entity_property_declares'(Kind, Entity, Dcl, DDcl, declares(Functor/Arity, Properties)) :-
+'$lgt_entity_property_declares'(Kind, Entity, Dcl, DDcl, EntityFlags, declares(Functor/Arity, Properties)) :-
 	(	Kind == object ->
 		(	call(Dcl, Predicate, Scope0, Meta, Flags)
-		;	catch(call(DDcl, Predicate, Scope0), _, fail)
+		;	'$lgt_object_flags'(dynamic_declarations, EntityFlags),
+			call(DDcl, Predicate, Scope0),
+			Meta = no,
+			Flags = 2
 		)
 	;	Kind == protocol ->
 		call(Dcl, Predicate, Scope0, Meta, Flags, Entity)
@@ -751,11 +755,11 @@ create_object(Obj, Rels, Dirs, Clauses) :-
 	;	true
 	),
 	'$lgt_clean_pp_clauses',
-	'$lgt_tr_object_identifier'(Obj, (dynamic)),
+	'$lgt_tr_object_identifier'(Obj),
 	'$lgt_tr_object_relations'(Rels, Obj),
-	'$lgt_comp_ctx_mode'(Ctx, runtime),	% set the initial compilation context for compiling
-	'$lgt_tr_directives'(Dirs, Ctx),	% the object directives and clauses
-	'$lgt_tr_terms'(Clauses, Ctx),		% the list of clauses may also include grammar rules
+	'$lgt_comp_ctx_mode'(Ctx, runtime),				% set the initial compilation context for compiling
+	'$lgt_tr_directives'([(dynamic)| Dirs], Ctx),	% the object directives and clauses
+	'$lgt_tr_terms'(Clauses, Ctx),					% the list of clauses may also include grammar rules
 	'$lgt_gen_local_def_clauses',
 	'$lgt_fix_synchronized_predicates',
 	'$lgt_fix_predicate_calls',
@@ -796,11 +800,11 @@ create_category(Ctg, Rels, Dirs, Clauses) :-
 	;	true
 	),
 	'$lgt_clean_pp_clauses',
-	'$lgt_tr_category_identifier'(Ctg, (dynamic)),
+	'$lgt_tr_category_identifier'(Ctg),
 	'$lgt_tr_category_relations'(Rels, Ctg),
-	'$lgt_comp_ctx_mode'(Ctx, runtime),	% set the initial compilation context for compiling
-	'$lgt_tr_directives'(Dirs, Ctx),	% the category directives and clauses
-	'$lgt_tr_terms'(Clauses, Ctx),		% the list of clauses may also include grammar rules
+	'$lgt_comp_ctx_mode'(Ctx, runtime),				% set the initial compilation context for compiling
+	'$lgt_tr_directives'([(dynamic)| Dirs], Ctx),	% the category directives and clauses
+	'$lgt_tr_terms'(Clauses, Ctx),					% the list of clauses may also include grammar rules
 	'$lgt_gen_local_def_clauses',
 	'$lgt_fix_synchronized_predicates',
 	'$lgt_fix_predicate_calls',
@@ -840,10 +844,10 @@ create_protocol(Ptc, Rels, Dirs) :-
 	;	true
 	),
 	'$lgt_clean_pp_clauses',
-	'$lgt_tr_protocol_identifier'(Ptc, (dynamic)),
+	'$lgt_tr_protocol_identifier'(Ptc),
 	'$lgt_tr_protocol_relations'(Rels, Ptc),
-	'$lgt_comp_ctx_mode'(Ctx, runtime),	% set the initial compilation context
-	'$lgt_tr_directives'(Dirs, Ctx),	% for compiling the protocol directives
+	'$lgt_comp_ctx_mode'(Ctx, runtime),				% set the initial compilation context
+	'$lgt_tr_directives'([(dynamic)| Dirs], Ctx),	% for compiling the protocol directives
 	'$lgt_gen_protocol_clauses',
 	'$lgt_gen_protocol_directives',
 	'$lgt_assert_tr_entity',
@@ -5857,7 +5861,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_category_flags'(events, Flags) :-
 	Flags /\ 16 =:= 16.
 '$lgt_category_flags'(synchronized, Flags) :-
-	Flags /\ 2 =:= 2.
+	Flags /\ 4 =:= 4.
 '$lgt_category_flags'((dynamic), Flags) :-
 	Flags /\ 2 =:= 2.
 '$lgt_category_flags'(static, Flags) :-
@@ -5867,18 +5871,18 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-% '$lgt_tr_entity_flags'(+atom, +atom, -integer)
+% '$lgt_tr_entity_flags'(+atom, -integer)
 %
 % defines the entity flags value when creating a new entity
 
-'$lgt_tr_entity_flags'(protocol, Mode, Flags) :-
-	(	Mode == (dynamic) ->
+'$lgt_tr_entity_flags'(protocol, Flags) :-
+	(	'$lgt_pp_dynamic_' ->
 		Dynamic = 2						% 0b00000010
 	;	Dynamic = 0
 	),
 	Flags is Dynamic.
 
-'$lgt_tr_entity_flags'(category, Mode, Flags) :-
+'$lgt_tr_entity_flags'(category, Flags) :-
 	(	'$lgt_compiler_flag'(events, allow) ->
 		Events = 16						% 0b0001000
 	;	Events = 0
@@ -5887,13 +5891,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		Synchronized = 4				% 0b00000100
 	;	Synchronized = 0
 	),
-	(	Mode == (dynamic) ->
+	(	'$lgt_pp_dynamic_' ->
 		Dynamic = 2						% 0b00000010
 	;	Dynamic = 0
 	),
 	Flags is Events + Synchronized + Dynamic.
 
-'$lgt_tr_entity_flags'(object, Mode, Flags) :-
+'$lgt_tr_entity_flags'(object, Flags) :-
 	(	'$lgt_compiler_flag'(context_switching_calls, allow) ->
 		ContextSwitchingCalls = 128		% 0b10000000
 	;	ContextSwitchingCalls = 0
@@ -5918,7 +5922,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		Synchronized = 4				% 0b00000100
 	;	Synchronized = 0
 	),
-	(	Mode == (dynamic) ->
+	(	'$lgt_pp_dynamic_' ->
 		Dynamic = 2						% 0b00000010
 	;	Dynamic = 0
 	),
@@ -6030,6 +6034,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	retractall('$lgt_pp_referenced_object_'(_)),
 	retractall('$lgt_pp_referenced_protocol_'(_)),
 	retractall('$lgt_pp_referenced_category_'(_)),
+	retractall('$lgt_pp_dynamic_'),
 	retractall('$lgt_pp_threaded_'),
 	retractall('$lgt_pp_synchronized_'),
 	retractall('$lgt_pp_aux_predicate_counter_'(_)),
@@ -6171,24 +6176,24 @@ current_logtalk_flag(version, version(2, 43, 0)).
 % provides deterministic access to some common used data on the entity being compiled
 
 '$lgt_pp_entity'(object, Entity, Prefix, Dcl, Mode) :-
-	'$lgt_pp_object_'(Entity, Prefix, Dcl, _, _, _, _, _, _, _, Flags),
-	(	Flags /\ 2 =:= 2 ->
+	'$lgt_pp_object_'(Entity, Prefix, Dcl, _, _, _, _, _, _, _, _),
+	(	'$lgt_pp_dynamic_' ->
 		Mode = (dynamic)
 	;	Mode = static
 	),
 	!.
 
 '$lgt_pp_entity'(category, Entity, Prefix, Dcl, Mode) :-
-	'$lgt_pp_category_'(Entity, Prefix, Dcl, _, _, Flags),
-	(	Flags /\ 2 =:= 2 ->
+	'$lgt_pp_category_'(Entity, Prefix, Dcl, _, _, _),
+	(	'$lgt_pp_dynamic_' ->
 		Mode = (dynamic)
 	;	Mode = static
 	),
 	!.
 
 '$lgt_pp_entity'(protocol, Entity, Prefix, Dcl, Mode) :-
-	'$lgt_pp_protocol_'(Entity, Prefix, Dcl, _, Flags),
-	(	Flags /\ 2 =:= 2 ->
+	'$lgt_pp_protocol_'(Entity, Prefix, Dcl, _, _),
+	(	'$lgt_pp_dynamic_' ->
 		Mode = (dynamic)
 	;	Mode = static
 	),
@@ -6208,11 +6213,14 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_relation_clause_'(Clause).
 
 '$lgt_pp_relation_clause'(Clause) :-
-	(	'$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags) ->
+	(	'$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, _) ->
+		'$lgt_tr_entity_flags'(object, Flags),
 		Clause = '$lgt_current_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags)
-	;	'$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags) ->
+	;	'$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, _) ->
+		'$lgt_tr_entity_flags'(protocol, Flags),
 		Clause = '$lgt_current_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags)
-	;	'$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags),
+	;	'$lgt_pp_category_'(Ctg, Prefix, Dcl, Def, Rnm, _),
+		'$lgt_tr_entity_flags'(category, Flags),
 		Clause = '$lgt_current_category_'(Ctg, Prefix, Dcl, Def, Rnm, Flags)
 	).
 
@@ -6676,7 +6684,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_add_entity_properties'(start, Obj),
 	'$lgt_save_file_op_table',
 	% assume static object
-	'$lgt_tr_object_identifier'(Obj, static),
+	'$lgt_tr_object_identifier'(Obj),
 	'$lgt_tr_object_relations'(Rels, Obj).
 
 '$lgt_tr_directive'(end_object, [], _) :-
@@ -6713,7 +6721,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_add_entity_properties'(start, Ptc),
 	'$lgt_save_file_op_table',
 	% assume static protocol
-	'$lgt_tr_protocol_identifier'(Ptc, static),
+	'$lgt_tr_protocol_identifier'(Ptc),
 	'$lgt_tr_protocol_relations'(Rels, Ptc).
 
 '$lgt_tr_directive'(end_protocol, [], _) :-
@@ -6751,7 +6759,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_add_entity_properties'(start, Ctg),
 	'$lgt_save_file_op_table',
 	% assume static category
-	'$lgt_tr_category_identifier'(Ctg, static),
+	'$lgt_tr_category_identifier'(Ctg),
 	'$lgt_tr_category_relations'(Rels, Ctg).
 
 '$lgt_tr_directive'(end_category, [], _) :-
@@ -6778,7 +6786,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	assertz('$lgt_pp_module_'(Module)),
 	'$lgt_report_compiling_entity'(module, Module),
 	% assume static module/object
-	'$lgt_tr_object_identifier'(Module, static),
+	'$lgt_tr_object_identifier'(Module),
 	'$lgt_split_operators_and_predicates'(Exports, Preds, Ops),
 	forall(
 		'$lgt_member'(Op, Ops),
@@ -6834,6 +6842,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 '$lgt_tr_directive'((dynamic), [], _) :-
 	!,
+	assertz('$lgt_pp_dynamic_'),
 	% update entity compilation mode to "dynamic":
 	(   retract('$lgt_pp_object_'(Obj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags0)) ->
 		Flags is Flags0 \/ 2,
@@ -11658,45 +11667,45 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-% '$lgt_tr_object_identifier'(+object_identifier, +atom)
+% '$lgt_tr_object_identifier'(+object_identifier)
 %
 % from the object identifier construct the set of 
 % functor prefixes used in the compiled code clauses
 
-'$lgt_tr_object_identifier'(Obj, Mode) :-
+'$lgt_tr_object_identifier'(Obj) :-
 	'$lgt_entity_template'(Obj, GObj),
 	'$lgt_add_referenced_object'(GObj),
 	'$lgt_construct_object_functors'(GObj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm),
-	'$lgt_tr_entity_flags'(object, Mode, Flags),
+	'$lgt_tr_entity_flags'(object, Flags),
 	assertz('$lgt_pp_object_'(GObj, Prefix, Dcl, Def, Super, IDcl, IDef, DDcl, DDef, Rnm, Flags)),
 	asserta('$lgt_pp_predicate_mutex_counter_'(0)).
 
 
 
-% '$lgt_tr_category_identifier'(+category_identifier, +atom)
+% '$lgt_tr_category_identifier'(+category_identifier)
 %
 % from the category identifier construct the set of 
 % functor prefixes used in the compiled code clauses
 
-'$lgt_tr_category_identifier'(Ctg, Mode) :-
+'$lgt_tr_category_identifier'(Ctg) :-
 	'$lgt_entity_template'(Ctg, GCtg),
 	'$lgt_add_referenced_category'(GCtg),
 	'$lgt_construct_category_functors'(GCtg, Prefix, Dcl, Def, Rnm),
-	'$lgt_tr_entity_flags'(category, Mode, Flags),
+	'$lgt_tr_entity_flags'(category, Flags),
 	assertz('$lgt_pp_category_'(GCtg, Prefix, Dcl, Def, Rnm, Flags)),
 	asserta('$lgt_pp_predicate_mutex_counter_'(0)).
 
 
 
-% '$lgt_tr_protocol_identifier'(+protocol_identifier, +atom)
+% '$lgt_tr_protocol_identifier'(+protocol_identifier)
 %
 % from the protocol identifier construct the set of  
 % functor prefixes used in the compiled code clauses
 
-'$lgt_tr_protocol_identifier'(Ptc, Mode) :-
+'$lgt_tr_protocol_identifier'(Ptc) :-
 	'$lgt_add_referenced_protocol'(Ptc),
 	'$lgt_construct_protocol_functors'(Ptc, Prefix, Dcl, Rnm),
-	'$lgt_tr_entity_flags'(protocol, Mode, Flags),
+	'$lgt_tr_entity_flags'(protocol, Flags),
 	assertz('$lgt_pp_protocol_'(Ptc, Prefix, Dcl, Rnm, Flags)),
 	% necessary in order to be able to save synchronized predicate properties:
 	asserta('$lgt_pp_predicate_mutex_counter_'(0)). 
@@ -12441,7 +12450,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 '$lgt_gen_protocol_directives' :-
-	(	'$lgt_pp_protocol_'(_, Prefix, Dcl, Rnm, Flags), Flags /\ 2 =:= 2 ->
+	(	'$lgt_pp_protocol_'(_, Prefix, Dcl, Rnm, _),
+		'$lgt_pp_dynamic_' ->
 		assertz('$lgt_pp_directive_'(dynamic(Prefix/2))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/4))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/5))),
@@ -12452,7 +12462,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 '$lgt_gen_object_dynamic_directives' :-
-	(	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, Flags),	Flags /\ 2 =:= 2 ->
+	(	'$lgt_pp_object_'(_, _, _, _, _, _, _, _, _, _, _),
+		'$lgt_pp_dynamic_' ->
 		'$lgt_gen_dynamic_object_dynamic_directives'
 	;	'$lgt_gen_static_object_dynamic_directives'
 	).
@@ -12518,7 +12529,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 '$lgt_gen_category_dynamic_directives' :-
-	(	'$lgt_pp_category_'(_, Prefix, Dcl, Def, Rnm, Flags), Flags /\ 2 =:= 2 ->
+	(	'$lgt_pp_category_'(_, Prefix, Dcl, Def, Rnm, _),
+		'$lgt_pp_dynamic_' ->
 		assertz('$lgt_pp_directive_'(dynamic(Prefix/3))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/4))),
 		assertz('$lgt_pp_directive_'(dynamic(Dcl/5))),
@@ -12693,8 +12705,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	(	'$lgt_pp_dcl_'(_) ->
 		true
 	;	% empty, standalone protocol 
-		'$lgt_pp_protocol_'(_, _, Dcl, _, Flags),
-		(	Flags /\ 2 =:= 2 ->
+		'$lgt_pp_protocol_'(_, _, Dcl, _, _),
+		(	'$lgt_pp_dynamic_' ->
 			% dynamic protocol
 			true
 		;	% generate a catchall clause for static protocols
@@ -12787,8 +12799,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	(	'$lgt_pp_dcl_'(_) ->
 		true
 	;	% standalone category with no local or inherited predicate declarations
-		'$lgt_pp_category_'(_, _, Dcl, _, _, Flags),
-		(	Flags /\ 2 =:= 2 ->
+		'$lgt_pp_category_'(_, _, Dcl, _, _, _),
+		(	'$lgt_pp_dynamic_' ->
 			% dynamic category
 			true
 		;	% generate a catchall clause for static categories
@@ -12842,8 +12854,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_gen_object_catchall_dcl_clauses'(true).
 
 '$lgt_gen_object_catchall_dcl_clauses'(false) :-
-	'$lgt_pp_object_'(_, _, Dcl, _, _, _, _, _, _, _, Flags),
-	(	Flags /\ 2 =:= 2 ->
+	'$lgt_pp_object_'(_, _, Dcl, _, _, _, _, _, _, _, _),
+	(	'$lgt_pp_dynamic_' ->
 		% dynamic object
 		true
 	;	% generate a catchall clause for static objects
@@ -12856,8 +12868,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_gen_object_catchall_def_clauses'(true).
 
 '$lgt_gen_object_catchall_def_clauses'(false) :-
-	'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, Flags),
-	(	Flags /\ 2 =:= 2 ->
+	'$lgt_pp_object_'(_, _, _, Def, _, _, _, _, _, _, _),
+	(	'$lgt_pp_dynamic_' ->
 		% dynamic object
 		true
 	;	% generate a catchall clause for static objects
@@ -18223,6 +18235,22 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	atom(Term) ->
 		true
 	;	throw(error(type_error(atom, Term), Context))
+	).
+
+'$lgt_must_be'(integer, Term, Context) :-
+	(	var(Term) ->
+		throw(error(instantiation_error, Context))
+	;	integer(Term) ->
+		true
+	;	throw(error(type_error(integer, Term), Context))
+	).
+
+'$lgt_must_be'(float, Term, Context) :-
+	(	var(Term) ->
+		throw(error(instantiation_error, Context))
+	;	float(Term) ->
+		true
+	;	throw(error(type_error(float, Term), Context))
 	).
 
 '$lgt_must_be'(atomic, Term, Context) :-

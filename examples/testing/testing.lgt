@@ -12,18 +12,18 @@
 %	:- initialization(::run('bios_tests.txt', write)).
 %	:- initialization(::run('results.txt', write)).
 
-	throws(ctx1, error(instantiation_error, _, _)) :-
+	throws(ctx1, error(instantiation_error, _)) :-
 		_ << goal.
-	throws(ctx2, error(instantiation_error, _, _)) :-
+	throws(ctx2, error(instantiation_error, _)) :-
 		object << _.
-	throws(ctx3, error(type_error(object_identifier, 3), _, _)) :-
+	throws(ctx3, error(type_error(object_identifier, 3), _)) :-
 		{3 << goal}.
-	throws(ctx4, error(type_error(callable, 3), _, _)) :-
+	throws(ctx4, error(type_error(callable, 3), _)) :-
 		{object << 3}.
 	throws(ctx5, error(existence_error(procedure, goal/0), _)) :-
 		this(This),
-		This << goal.
-	throws(ctx6, error(existence_error(object, xpto), _, _)) :-
+		{This << goal}.
+	throws(ctx6, error(existence_error(object, xpto), _)) :-
 		xpto << goal.
 
 	succeeds(ctx7) :-
@@ -184,6 +184,7 @@
 		Solutions==[1-2,2-4,3-6].
 
 	test(operators_2) :-
+		triple::read_from_file,
 		findall(I-J, triple::triple(I, J), Solutions),
 		Solutions==[1-3,2-6,3-9].
 

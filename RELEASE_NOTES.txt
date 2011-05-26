@@ -90,6 +90,10 @@ RELEASE NOTES
     a category would be compiled as a call to a predicate of the object
     importing the category instead as a call to a local category predicate.
 
+    Corrected a long standing bug where entity flag values set locally using
+    the set_logtalk_flag/2 directive would fail to be saved into the entity
+    compiled code.
+
     Corrected a bug in setting the correct execution context when calling
     a meta-argument that requires a runtime compilation in the context of
     "sender".
