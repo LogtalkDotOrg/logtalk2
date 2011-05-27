@@ -11,7 +11,7 @@
 %
 %  configuration file for ECLiPSe 6.0#141 and later versions
 %
-%  last updated: May 18, 2011
+%  last updated: May 27, 2011
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -53,7 +53,10 @@ predicate_property(Predicate, Property) :-
 
 :- use_module(library(iso)).
 :- import abolish/1 from iso.
-:- local syntax_option(not(iso_restrictions)).
+
+:- if((get_flag(version_as_list, Version), Version @>= [6,1,69])).
+	:- local syntax_option(not(iso_restrictions)).
+:- endif.
 
 
 
