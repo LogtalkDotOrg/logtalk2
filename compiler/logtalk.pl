@@ -667,7 +667,7 @@ protocol_property(Ptc, Prop) :-
 		Properties3 = [(coinductive)| Properties2]
 	;	Properties3 = Properties2
 	),
-	(	Flags /\ 14 =:= 16 ->
+	(	Flags /\ 16 =:= 16 ->
 		Properties4 = [(multifile)| Properties3]
 	;	Properties4 = Properties3
 	),
@@ -3774,16 +3774,16 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			'$lgt_exec_ctx'(ExCtx, Obj, Obj, Obj, [], _),
 			(	% in the most common case we're calling a user defined static predicate:
 				call(Def, Goal, ExCtx, TGoal) ->
-				call(TGoal)
+				catch(TGoal, Error, '$lgt_runtime_error_handler'(error(Error, logtalk(Obj<<Goal, This))))
 				% or a user defined dynamic predicate:
 			;	call(DDef, Goal, ExCtx, TGoal) ->
-				call(TGoal)
+				catch(TGoal, Error, '$lgt_runtime_error_handler'(error(Error, logtalk(Obj<<Goal, This))))
 			;	% in the worst case we need to compile the goal:
 				'$lgt_comp_ctx'(Ctx, _, Obj, Obj, Obj, Prefix, [], _, ExCtx, runtime, _),
 				catch('$lgt_tr_body'(Goal, TGoal, DGoal, Ctx), Error, throw(error(Error, logtalk(Obj<<Goal, This)))),
 				(	'$lgt_debugger.debugging_', '$lgt_debugging_entity_'(Obj) ->
-					call(DGoal)
-				;	call(TGoal)
+					catch(DGoal, Error, throw(error(Error, logtalk(Obj<<Goal, This))))
+				;	catch(TGoal, Error, '$lgt_runtime_error_handler'(error(Error, logtalk(Obj<<Goal, This))))
 				)
 			)
 		;	throw(error(permission_error(access, predicate, Goal), logtalk(Obj<<Goal, This)))
