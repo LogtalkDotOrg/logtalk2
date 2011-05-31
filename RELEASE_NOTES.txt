@@ -46,6 +46,9 @@ RELEASE NOTES
     clauses/1, the number of clauses for the predicate. Implemented uses/3 and
     use_module/3 properties.
 
+    Added a predicate property, redefined_from/1, allowing querying about the
+    object or category that contains a predicate definition that is redefined.
+
     Implemented compiler support for the meta_non_terminal/1 directive and the
     call//N built-in non-terminal.
 

@@ -2060,10 +2060,15 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			;	'$lgt_current_protocol_'(TCtn, _, TCtnDcl, _, _)
 		)),
 		\+ call(TCtnDcl, Pred, _, _, _),
-		'$lgt_find_original_pred'(Obj, Rnm, Pred, Original),
+		'$lgt_find_original_predicate'(Obj, Rnm, Pred, Original),
 		Prop = alias_of(Original)
-	;	once(call(Def, Pred, _, _, DCtn)),
-		Prop = defined_in(DCtn)
+	;	(	call(Def, Pred, _, _, DCtn) ->
+			(	Prop = defined_in(DCtn)
+			;	'$lgt_find_overridden_predicate'(DCtn, Pred, Super),
+				Prop = redefined_from(Super)
+			)
+		;	true
+		)
 	;	'$lgt_predicate_property_'(TCtn, Functor/Arity, info(Info)),
 		Prop = info(Info)
 	;	'$lgt_predicate_property_'(TCtn, Functor/Arity, mode(Mode, Solutions)),
@@ -2162,57 +2167,75 @@ current_logtalk_flag(version, version(2, 43, 0)).
 
 
 
-% '$lgt_find_original_pred'(+object_identifier, +atom, +callable, -callable)
+% '$lgt_find_original_predicate'(+object_identifier, +atom, +callable, -callable)
 %
 % finds the predicate pointed by an alias
 
-'$lgt_find_original_pred'(Obj, Rnm, Alias, Pred) :-
-	'$lgt_find_original_pred'(Obj, Rnm, Alias, Pred, _).
+'$lgt_find_original_predicate'(Obj, Rnm, Alias, Pred) :-
+	'$lgt_find_original_predicate'(Obj, Rnm, Alias, Pred, _).
 
 
-'$lgt_find_original_pred'(_, Rnm, Alias, Pred, _) :-
+'$lgt_find_original_predicate'(_, Rnm, Alias, Pred, _) :-
 	once(call(Rnm, _, Pred, Alias)),
 	Pred \= Alias,
 	!.
 
-'$lgt_find_original_pred'(Obj, _, Alias, Pred, _) :-
+'$lgt_find_original_predicate'(Obj, _, Alias, Pred, _) :-
 	'$lgt_implements_protocol_'(Obj, Ptc, _),
 	'$lgt_current_protocol_'(Ptc, _, _, Rnm, _),
-	'$lgt_find_original_pred'(Ptc, Rnm, Alias, Pred, _).
+	'$lgt_find_original_predicate'(Ptc, Rnm, Alias, Pred, _).
 
-'$lgt_find_original_pred'(Ptc1, _, Alias, Pred, _) :-
+'$lgt_find_original_predicate'(Ptc1, _, Alias, Pred, _) :-
 	'$lgt_extends_protocol_'(Ptc1, Ptc2, _),
 	'$lgt_current_protocol_'(Ptc2, _, _, Rnm, _),
-	'$lgt_find_original_pred'(Ptc2, Rnm, Alias, Pred, _).
+	'$lgt_find_original_predicate'(Ptc2, Rnm, Alias, Pred, _).
 
-'$lgt_find_original_pred'(Ctg1, _, Alias, Pred, _) :-
+'$lgt_find_original_predicate'(Ctg1, _, Alias, Pred, _) :-
 	'$lgt_extends_category_'(Ctg1, Ctg2, _),
 	'$lgt_current_category_'(Ctg2, _, _, _, Rnm, _),
-	'$lgt_find_original_pred'(Ctg2, Rnm, Alias, Pred, _).
+	'$lgt_find_original_predicate'(Ctg2, Rnm, Alias, Pred, _).
 
-'$lgt_find_original_pred'(Obj, _, Alias, Pred, _) :-
+'$lgt_find_original_predicate'(Obj, _, Alias, Pred, _) :-
 	'$lgt_imports_category_'(Obj, Ctg, _),
 	'$lgt_current_category_'(Ctg, _, _, _, Rnm, _),
-	'$lgt_find_original_pred'(Ctg, Rnm, Alias, Pred, _).
+	'$lgt_find_original_predicate'(Ctg, Rnm, Alias, Pred, _).
 
-'$lgt_find_original_pred'(Obj, _, Alias, Pred, prototype) :-
+'$lgt_find_original_predicate'(Obj, _, Alias, Pred, prototype) :-
 	'$lgt_extends_object_'(Obj, Parent, _),
 	'$lgt_current_object_'(Parent, _, _, _, _, _, _, _, _, Rnm, _),
-	'$lgt_find_original_pred'(Parent, Rnm, Alias, Pred, prototype).
+	'$lgt_find_original_predicate'(Parent, Rnm, Alias, Pred, prototype).
 
-'$lgt_find_original_pred'(Instance, _, Alias, Pred, instance) :-
+'$lgt_find_original_predicate'(Instance, _, Alias, Pred, instance) :-
 	'$lgt_instantiates_class_'(Instance, Class, _),
 	'$lgt_current_object_'(Class, _, _, _, _, _, _, _, _, Rnm, _),
-	'$lgt_find_original_pred'(Class, Rnm, Alias, Pred, superclass).
+	'$lgt_find_original_predicate'(Class, Rnm, Alias, Pred, superclass).
 
-'$lgt_find_original_pred'(Class, _, Alias, Pred, superclass) :-
+'$lgt_find_original_predicate'(Class, _, Alias, Pred, superclass) :-
 	'$lgt_specializes_class_'(Class, Superclass, _),
 	'$lgt_current_object_'(Superclass, _, _, _, _, _, _, _, _, Rnm, _),
-	'$lgt_find_original_pred'(Superclass, Rnm, Alias, Pred, superclass).
+	'$lgt_find_original_predicate'(Superclass, Rnm, Alias, Pred, superclass).
 
-'$lgt_find_original_pred'(Obj, _, Alias, Pred, _) :-
+'$lgt_find_original_predicate'(Obj, _, Alias, Pred, _) :-
 	'$lgt_complemented_object_'(Obj, Ctg, _, _, Rnm),
-	'$lgt_find_original_pred'(Ctg, Rnm, Alias, Pred, _).
+	'$lgt_find_original_predicate'(Ctg, Rnm, Alias, Pred, _).
+
+
+
+% '$lgt_find_overridden_predicate'(+entity_identifier, +callable, -entity_identifier)
+%
+% finds the entity containing the overridden predicate definition
+
+'$lgt_find_overridden_predicate'(Obj, Pred, DefCtn) :-
+	'$lgt_current_object_'(Obj, _, _, _, Super, _, _, _, _, _, _),
+	call(Super, Pred, _, _, DefCtn),
+	DefCtn \= Obj,
+	!.
+
+'$lgt_find_overridden_predicate'(Ctg, Pred, DefCtn) :-
+	'$lgt_current_category_'(Ctg, _, _, Def, _, _),
+	call(Def, Pred, _, _, DefCtn),
+	DefCtn \= Ctg,
+	!.
 
 
 
@@ -15576,6 +15599,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_valid_predicate_property'(prolog).				% predicate is defined in Prolog
 '$lgt_valid_predicate_property'(declared_in(_)).		% entity containing the predicate scope directive
 '$lgt_valid_predicate_property'(defined_in(_)).			% object or category containing the predicate definition
+'$lgt_valid_predicate_property'(redefined_from(_)).		% object or category containing the overridden predicate definition
 '$lgt_valid_predicate_property'(meta_predicate(_)).		% meta-predicate template
 '$lgt_valid_predicate_property'(built_in).				% built-in predicate
 '$lgt_valid_predicate_property'(alias_of(_)).			% predicate is an alias of another predicate
