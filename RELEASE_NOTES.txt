@@ -28,12 +28,12 @@ RELEASE NOTES
     expansion of grammar rules).
 
     Added a "source_data" flag, whose default value is "on". With this flag
-    set to "on", Logtalk will keep the information represented using mode/2
-    and info/1-2 directives plus source location data (including source file
-    names and line numbers), useful both for debugging and for integration
-    with development tools. This flag can be turned off in order to generate
-    more compact code. The object and category parameter_names/1 property is
-    removed in order to avoid redundancy.
+    set to "on", Logtalk will keep the information represented using mode/2,
+    info/1-2, uses/2, and use_module/2 directives plus source location data
+    (including source file names and line numbers), useful both for debugging
+    and for integration with development tools. This flag can be turned off
+    in order to generate more compact code. The parameter_names/1 object and
+    category property is removed in order to avoid redundancy.
 
     Implemented protected/1 and private/1 properties for objects, protocols,
     and categories. Together with the public/1 property, these properties
@@ -43,7 +43,8 @@ RELEASE NOTES
     within an entity. Declaration properties include line/1, the line number
     of the predicate scope directive. Definition properties include line/1,
     the line number of the head of the first clause for the predicate, and
-    clauses/1, the number of clauses for the predicate.
+    clauses/1, the number of clauses for the predicate. Implemented uses/3 and
+    use_module/3 properties.
 
     Implemented compiler support for the meta_non_terminal/1 directive and the
     call//N built-in non-terminal.

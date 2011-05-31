@@ -5557,6 +5557,28 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			), !
 		;	true
 		),
+		(	'$lgt_pp_uses_predicate_'(Object, Original, Alias),
+			functor(Original, OriginalFunctor, OriginalArity),
+			functor(Alias, AliasFunctor, AliasArity),
+			assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, uses(Object, OriginalFunctor/OriginalArity, AliasFunctor/AliasArity)))),
+			fail
+		;	'$lgt_pp_uses_non_terminal_'(Object, Original, Alias),
+			functor(Original, OriginalFunctor, OriginalArity),
+			functor(Alias, AliasFunctor, AliasArity),
+			assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, uses(Object, OriginalFunctor//OriginalArity, AliasFunctor//AliasArity)))),
+			fail
+		;	'$lgt_pp_use_module_predicate_'(Module, Original, Alias),
+			functor(Original, OriginalFunctor, OriginalArity),
+			functor(Alias, AliasFunctor, AliasArity),
+			assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, use_module(Module, OriginalFunctor/OriginalArity, AliasFunctor/AliasArity)))),
+			fail
+		;	'$lgt_pp_use_module_non_terminal_'(Module, Original, Alias),
+			functor(Original, OriginalFunctor, OriginalArity),
+			functor(Alias, AliasFunctor, AliasArity),
+			assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, use_module(Module, OriginalFunctor//OriginalArity, AliasFunctor//AliasArity)))),
+			fail
+		;	true
+		),
 		(	'$lgt_pp_info_'(Info0) ->
 			'$lgt_convert_info_items'(Info0, Info),
 			assertz('$lgt_pp_relation_clause_'('$lgt_entity_property_'(Entity, info(Info))))
