@@ -15604,7 +15604,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_valid_object_property'(protected(_)).				% list of predicate indicators of protected predicates declared in the object
 '$lgt_valid_object_property'(private(_)).				% list of predicate indicators of private predicates declared in the object
 '$lgt_valid_object_property'(declares(_, _)).			% list of declaration properties for a predicate declared in the object
-'$lgt_valid_object_property'(defines(_, _)).			% list of definition properties for a predicate defined in the object
+'$lgt_valid_object_property'(defines(_, _)).			% list of definition properties for a predicate locally defined in the object
+'$lgt_valid_object_property'(includes(_, _, _)).		% list of definition properties for a multifile predicate defined in contributing entities
 '$lgt_valid_object_property'(info(_)).					% list of pairs with user-defined object documentation
 
 
@@ -15620,7 +15621,6 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_valid_protocol_property'(protected(_)).			% list of predicate indicators of protected predicates declared in the protocol
 '$lgt_valid_protocol_property'(private(_)).				% list of predicate indicators of private predicates declared in the protocol
 '$lgt_valid_protocol_property'(declares(_, _)).			% list of declaration properties for a predicate declared in the protocol
-'$lgt_valid_protocol_property'(defines(_, _)).			% list of definition properties for a predicate defined in the protocol
 '$lgt_valid_protocol_property'(info(_)).				% list of pairs with user-defined protocol documentation
 
 
@@ -15639,6 +15639,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_valid_category_property'(private(_)).				% list of predicate indicators of private predicates declared in the category
 '$lgt_valid_category_property'(declares(_, _)).			% list of declaration properties for a predicate declared in the category
 '$lgt_valid_category_property'(defines(_, _)).			% list of definition properties for a predicate defined in the category
+'$lgt_valid_category_property'(includes(_, _, _)).		% list of definition properties for a multifile predicate defined in contributing entities
 '$lgt_valid_category_property'(info(_)).				% list of pairs with user-defined category documentation
 
 
