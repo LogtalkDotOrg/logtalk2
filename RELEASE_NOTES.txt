@@ -110,6 +110,9 @@ RELEASE NOTES
     When compiling a module as an object, warn instead of throwing an error
     when compiling a call to a built-in predicate used as a query.
 
+    Attempting to load a settings file containing syntax errors will now
+    print a warning instead of failing silently.
+
     For all config files, renamed the predicate '$lgt_is_proper_list'/1 to
     '$lgt_is_list'/1 and and replaced the old '$lgt_is_list'/1 predicate by
     a new '$lgt_is_list_or_partial_list'/1 predicate.

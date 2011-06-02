@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Logtalk - Open source object-oriented logic programming language
-%  Release 2.39.1
+%  Release 2.43.0
 %  
 %  Copyright (c) 1998-2011 Paulo Moura.        All Rights Reserved.
 %  Logtalk is free software.  You can redistribute it and/or modify
@@ -24,17 +24,18 @@
 %  from the project directory. Note that, for setting Logtalk flag values,
 %  you must use the set_logtalk_flag/2 predicate (wrapped in a directive
 %  initialization/1) as the scope of the set_logtalk_flag/2 directive is
-%  always local to an entity or to a source file.
+%  always local to the entity or the source file containing it.
 %
 %  If you use more than one back-end Prolog compiler and want to use
 %  different settings per compiler you will need to use the Logtalk 
 %  conditional compilation directives and the "prolog_dialect" compiler
 %  flag. See the User and Reference Manuals for details.
 %
-%  Logtalk compiles and loads settings files silently, ignoring any errors.
-%  Be sure to debug and test your settings files as normal Logtalk source
-%  files before using them (you may use the logtalk_compile/1-2 built-in
-%  predicates to compile the settings files without loading them).
+%  Logtalk compiles and loads settings files silently but a warning will
+%  be printed if syntax errors are found. Be sure to debug and test your
+%  settings files as regular Logtalk source files before using them (you
+%  may use the logtalk_compile/1-2 built-in predicates to compile the
+%  settings files without loading them).
 %
 %  Logtalk looks for a settings file first in the startup directory, If not
 %  found, Logtalk looks for a settings file in the Logtalk user directory.
@@ -47,6 +48,16 @@
 %  "configs/NOTES.txt" file for compatibility details.
 
 
+%  To load the "help" example at startup, which provides basic on-line help
+%  for Logtalk, uncomment the following lines:
+
+/*
+:- initialization(
+	logtalk_load(help(loader), [report(off)])
+).
+*/
+
+
 %  To define a "library" path for your projects, edit and uncomment the
 %  following lines (the library path must end with a slash character):
 
@@ -56,6 +67,19 @@
 
 logtalk_library_path(my_project, '$HOME/my_project/').
 logtalk_library_path(my_project_examples, my_project('examples/')).
+*/
+
+
+%  To define a common directory for Logtalk compiler generated temporary
+%  files and for Logtalk automatically generated documentation files for
+%  compiled entities, edit and uncomment the following lines (the library
+%  paths must end with a slash character):
+
+/*
+:- initialization((
+	set_logtalk_flag(tmpdir, '$HOME/logtalk/.lgt_tmp/'),
+	set_logtalk_flag(xmldir, '$HOME/logtalk/xml_docs/'),
+)).
 */
 
 
@@ -84,8 +108,8 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 */
 
 
-%  To compile all your source files for debugging uncomment the following
-%  lines:
+%  To compile all your source files for debugging using the Logtalk built-in
+%  debugger uncomment the following lines:
 
 /*
 :- initialization((
@@ -95,7 +119,31 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 	set_logtalk_flag(unknown, warning),
 	set_logtalk_flag(misspelt, warning),
 	set_logtalk_flag(singletons, warning),
-	set_logtalk_flag(context_switching_calls, allow)
+	set_logtalk_flag(missing_directives, warning),
+	set_logtalk_flag(context_switching_calls, allow),
+	set_logtalk_flag(optimize, off),
+	set_logtalk_flag(source_data, on)
+)).
+*/
+
+
+%  To compile all your source files for debugging using the SWI-Prolog
+%  graphical tracer uncomment the following lines:
+
+/*
+:- initialization((
+	set_logtalk_flag(debug, off),
+	set_logtalk_flag(smart_compilation, off),
+	set_logtalk_flag(reload, always),
+	set_logtalk_flag(unknown, warning),
+	set_logtalk_flag(misspelt, warning),
+	set_logtalk_flag(singletons, warning),
+	set_logtalk_flag(missing_directives, warning),
+	set_logtalk_flag(context_switching_calls, allow),
+	set_logtalk_flag(code_prefix, '.'),
+	set_logtalk_flag(optimize, off),
+	set_logtalk_flag(source_data, on),
+	set_prolog_flag(optimise, off)
 )).
 */
 
@@ -144,11 +192,13 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 */
 
 
-%  To maximize performance by turning off relevant optional features
-%  uncomment the following lines:
+%  To maximize performance by turning on all optimizations and by turning
+%  off relevant optional features uncomment the following lines:
 
 /*
 :- initialization((
+	set_logtalk_flag(optimize, on),
+	set_logtalk_flag(source_data, off),
 	set_logtalk_flag(events, deny),
 	set_logtalk_flag(complements, deny),
 	set_logtalk_flag(dynamic_declarations, deny)

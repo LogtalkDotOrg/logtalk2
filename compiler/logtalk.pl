@@ -181,6 +181,7 @@
 % flag for recording loading of settings file
 
 :- dynamic('$lgt_settings_file_loaded_'/1).			% '$lgt_settings_file_loaded_'(Path)
+:- dynamic('$lgt_settings_file_load_error_'/1).		% '$lgt_settings_file_load_error_'(Path)
 
 
 
@@ -18772,7 +18773,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			logtalk_load(settings, [altdirs(off), report(off), smart_compilation(off), clean(on)]),
 			assertz('$lgt_settings_file_loaded_'(Startup))),
 			_,
-			true
+			assertz('$lgt_settings_file_load_error_'(Startup))
 		)
 	;	% if not found, lookup for a settings file in the Logtalk user folder
 		'$lgt_user_directory'(User),
@@ -18782,7 +18783,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 			logtalk_load(settings, [altdirs(off), report(off), smart_compilation(off), clean(on)]),
 			assertz('$lgt_settings_file_loaded_'(User))),
 			_,
-			true
+			assertz('$lgt_settings_file_load_error_'(User))
 		)
 	;	true
 	),
@@ -18802,6 +18803,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		true
 	;	'$lgt_settings_file_loaded_'(Path) ->
 		write('Loaded settings file found on directory '), write(Path), write('.'), nl, nl
+	;	'$lgt_settings_file_load_error_'(Path) ->
+		write('Errors found while loading settings file from directory '), write(Path), write('.'), nl, nl
 	;	write('No settings file found or unable to load settings files due to limitations'), nl,
 		write('of the back-end Prolog compiler.'), nl, nl
 	).

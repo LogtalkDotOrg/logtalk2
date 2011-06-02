@@ -31,10 +31,11 @@
 %  conditional compilation directives and the "prolog_dialect" compiler
 %  flag. See the User and Reference Manuals for details.
 %
-%  Logtalk compiles and loads settings files silently, ignoring any errors.
-%  Be sure to debug and test your settings files as normal Logtalk source
-%  files before using them (you may use the logtalk_compile/1-2 built-in
-%  predicates to compile the settings files without loading them).
+%  Logtalk compiles and loads settings files silently but a warning will
+%  be printed if syntax errors are found. Be sure to debug and test your
+%  settings files as regular Logtalk source files before using them (you
+%  may use the logtalk_compile/1-2 built-in predicates to compile the
+%  settings files without loading them).
 %
 %  Logtalk looks for a settings file first in the startup directory, If not
 %  found, Logtalk looks for a settings file in the Logtalk user directory.
