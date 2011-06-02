@@ -178,7 +178,7 @@
 :- dynamic('$lgt_threaded_tag_counter_'/1).			% '$lgt_threaded_tag_counter_'(Tag)
 
 
-% flag for recording loading of settings file
+% flags for recording loading of settings file
 
 :- dynamic('$lgt_settings_file_loaded_'/1).			% '$lgt_settings_file_loaded_'(Path)
 :- dynamic('$lgt_settings_file_load_error_'/1).		% '$lgt_settings_file_load_error_'(Path)
@@ -1755,19 +1755,24 @@ logtalk_compile(Files, Flags) :-
 
 '$lgt_set_compiler_flags'(Flags) :-
 	'$lgt_assert_compiler_flags'(Flags),
-	(	'$lgt_pp_file_compiler_flag_'(debug, on) ->							% debug flag on requires the
-		retractall('$lgt_pp_file_compiler_flag_'(smart_compilation, _)),	% smart_compilation flag to
-		asserta('$lgt_pp_file_compiler_flag_'(smart_compilation, off)),		% be off and
-		retractall('$lgt_pp_file_compiler_flag_'(reload, _)),				% the reload flag to be set
-		asserta('$lgt_pp_file_compiler_flag_'(reload, always))				% to always
+	(	'$lgt_pp_file_compiler_flag_'(debug, on) ->
+		% debug flag on requires the smart_compilation flag off and the reload flag set to always
+		retractall('$lgt_pp_file_compiler_flag_'(smart_compilation, _)),
+		asserta('$lgt_pp_file_compiler_flag_'(smart_compilation, off)),
+		retractall('$lgt_pp_file_compiler_flag_'(reload, _)),
+		asserta('$lgt_pp_file_compiler_flag_'(reload, always))
 	;	true
 	),
-	(	'$lgt_pp_file_compiler_flag_'(hook, Obj) ->							% pre-compile hooks in order
-		(	Obj == user ->													% to speed up entity compilation
+	(	'$lgt_pp_file_compiler_flag_'(hook, Entity) ->
+		% pre-compile hooks in order to speed up entity compilation
+		(	Entity == user ->
 			TermExpansionGoal = term_expansion(Term, Terms),
 			GoalExpansionGoal = goal_expansion(Goal, EGoal)
-		;	'$lgt_tr_msg'(term_expansion(Term, Terms), Obj, TermExpansionGoal, user),
-			'$lgt_tr_msg'(goal_expansion(Goal, EGoal), Obj, GoalExpansionGoal, user)
+		;	catch(current_module(Entity), _, fail), \+ current_object(Entity) ->
+			TermExpansionGoal = ':'(Entity, term_expansion(Term, Terms)),
+			GoalExpansionGoal = ':'(Entity, goal_expansion(Goal, EGoal))
+		;	'$lgt_tr_msg'(term_expansion(Term, Terms), Entity, TermExpansionGoal, user),
+			'$lgt_tr_msg'(goal_expansion(Goal, EGoal), Entity, GoalExpansionGoal, user)
 		),
 		assertz(('$lgt_pp_hook_term_expansion_'(Term, Terms) :- catch(TermExpansionGoal, _, fail))),
 		assertz(('$lgt_pp_hook_goal_expansion_'(Goal, EGoal) :- catch(GoalExpansionGoal, _, fail)))
