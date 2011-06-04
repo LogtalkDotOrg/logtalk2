@@ -9753,8 +9753,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		)
 	;	% we're compiling a call to a module predicate
 		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
-		TPred = ':'(Module, Pred),
-		DPred = '$lgt_debugger.goal'(':'(Module, Pred), ':'(Module, Pred), ExCtx)
+		TPred = {':'(Module, Pred)},
+		DPred = '$lgt_debugger.goal'(':'(Module, Pred), TPred, ExCtx)
 	).
 
 
@@ -9770,7 +9770,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
 		'$lgt_tr_body'(Module::current_predicate(Pred), TPred, DPred, Ctx)
 	;	% we're using modules together with objects
-		'$lgt_tr_body'(':'(Module, current_predicate(Pred)), TPred, DPred, Ctx)
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+		TPred = {current_predicate(':'(Module, Pred))},
+		DPred = '$lgt_debugger.goal'(current_predicate(':'(Module, Pred)), TPred, ExCtx)
 	).
 
 '$lgt_tr_body'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, p(_)), '$lgt_debugger.goal'(current_predicate(Pred), '$lgt_current_predicate'(This, Pred, This, p(_)), ExCtx), Ctx) :-
@@ -9789,7 +9791,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
 		'$lgt_tr_body'(Module::predicate_property(Pred, Prop), TPred, DPred, Ctx)
 	;	% we're using modules together with objects
-		'$lgt_tr_body'(':'(Module, predicate_property(Pred, Prop)), TPred, DPred, Ctx)
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+		TPred = {predicate_property(':'(Module, Pred), Prop)},
+		DPred = '$lgt_debugger.goal'(predicate_property(':'(Module, Pred), Prop), TPred, ExCtx)
 	).
 
 '$lgt_tr_body'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, p(_)), '$lgt_debugger.goal'(predicate_property(Pred, Prop), '$lgt_predicate_property'(This, Pred, Prop, This, p(_)), ExCtx), Ctx) :-
@@ -9816,7 +9820,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
 		'$lgt_tr_body'(Module::abolish(Pred), TCond, DCond, Ctx)
 	;	% we're using modules together with objects
-		'$lgt_tr_body'(':'(Module, abolish(Pred)), TCond, DCond, Ctx)
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+		TCond = {abolish(':'(Module, Pred))},
+		DCond = '$lgt_debugger.goal'(abolish(':'(Module, Pred)), TCond, ExCtx)
 	).
 
 '$lgt_tr_body'(abolish(Pred), TCond, DCond, Ctx) :-
@@ -9859,7 +9865,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
 		'$lgt_tr_body'(Module::asserta(Clause), TCond, DCond, Ctx)
 	;	% we're using modules together with objects
-		'$lgt_tr_body'(':'(Module, asserta(Clause)), TCond, DCond, Ctx)
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+		TCond = {asserta(':'(Module, Clause))},
+		DCond = '$lgt_debugger.goal'(asserta(':'(Module, Clause)), TCond, ExCtx)
 	).
 
 '$lgt_tr_body'(asserta(Clause), TCond, DCond, Ctx) :-
@@ -9898,7 +9906,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
 		'$lgt_tr_body'(Module::assertz(Clause), TCond, DCond, Ctx)
 	;	% we're using modules together with objects
-		'$lgt_tr_body'(':'(Module, assertz(Clause)), TCond, DCond, Ctx)
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+		TCond = {assertz(':'(Module, Clause))},
+		DCond = '$lgt_debugger.goal'(assertz(':'(Module, Clause)), TCond, ExCtx)
 	).
 
 '$lgt_tr_body'(assertz(Clause), TCond, DCond, Ctx) :-
@@ -9937,7 +9947,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
 		'$lgt_tr_body'(Module::clause(Head, Body), TCond, DCond, Ctx)
 	;	% we're using modules together with objects
-		'$lgt_tr_body'(':'(Module, clause(Head, Body)), TCond, DCond, Ctx)
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+		TCond = {clause(':'(Module, Head), Body)},
+		DCond = '$lgt_debugger.goal'(clause(':'(Module, Head), Body), TCond, ExCtx)
 	).
 
 '$lgt_tr_body'(clause(Head, Body), TCond, DCond, Ctx) :-
@@ -9970,7 +9982,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
 		'$lgt_tr_body'(Module::retract(Clause), TCond, DCond, Ctx)
 	;	% we're using modules together with objects
-		'$lgt_tr_body'(':'(Module, retract(Clause)), TCond, DCond, Ctx)
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+		TCond = {retract(':'(Module, Clause))},
+		DCond = '$lgt_debugger.goal'(retract(':'(Module, Clause)), TCond, ExCtx)
 	).
 
 '$lgt_tr_body'(retract(Clause), TCond, DCond, Ctx) :-
@@ -10011,7 +10025,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		% we're compiling a module as an object; assume referenced modules are also compiled as objects
 		'$lgt_tr_body'(Module::retractall(Head), TCond, DCond, Ctx)
 	;	% we're using modules together with objects
-		'$lgt_tr_body'(':'(Module, retractall(Head)), TCond, DCond, Ctx)
+		'$lgt_comp_ctx_exec_ctx'(Ctx, ExCtx),
+		TCond = {retractall(':'(Module, Head))},
+		DCond = '$lgt_debugger.goal'(retractall(':'(Module, Head)), TCond, ExCtx)
 	).
 
 '$lgt_tr_body'(retractall(Head), TCond, DCond, Ctx) :-
@@ -13662,7 +13678,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	var(Pred),
 	!.
 
-'$lgt_fix_predicate_calls'({Pred}, {Pred}, _) :-
+'$lgt_fix_predicate_calls'({Pred}, Pred, _) :-
 	!.
 
 '$lgt_fix_predicate_calls'((Pred1, Pred2), (TPred1, TPred2), Annotation) :-
@@ -13791,9 +13807,9 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	!,
 	Pred =.. [Functor| Args],
 	Meta =.. [Functor| MArgs],
-	'$lgt_fix_pred_calls_in_margs'(Args, MArgs, TArgs),
+	'$lgt_fix_pred_calls_in_meta_args'(Args, MArgs, TArgs),
 	TPred =.. [Functor| TArgs].
-
+/*
 '$lgt_fix_predicate_calls'(':'(Module, Pred), ':'(Module, Pred), _) :-
 	var(Pred),
 	!.
@@ -13814,26 +13830,26 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	Pred =.. [Functor| Args],
 	Meta =.. [Functor| MArgs],
 	'$lgt_tr_module_meta_predicate_directives_args'(MArgs, CMArgs),
-	'$lgt_fix_pred_calls_in_margs'(Args, CMArgs, TArgs),
+	'$lgt_fix_pred_calls_in_meta_args'(Args, CMArgs, TArgs),
 	TPred =.. [Functor| TArgs].
 
 '$lgt_fix_predicate_calls'(':'(Module, Pred), ':'(Module, TPred), _) :-
 	!,
 	'$lgt_fix_predicate_calls'(Pred, TPred, false).
-
+*/
 '$lgt_fix_predicate_calls'(Pred, Pred, _).
 
 
 
-% '$lgt_fix_pred_calls_in_margs'(@list, @list, -list)
+% '$lgt_fix_pred_calls_in_meta_args'(@list, @list, -list)
 %
-% fixes predicate calls in non-standard meta-predicate arguments
+% fixes predicate calls in non-standard meta-arguments
 
-'$lgt_fix_pred_calls_in_margs'([], [], []).
+'$lgt_fix_pred_calls_in_meta_args'([], [], []).
 
-'$lgt_fix_pred_calls_in_margs'([Arg| Args], [MArg| MArgs], [TArg| TArgs]) :-
+'$lgt_fix_pred_calls_in_meta_args'([Arg| Args], [MArg| MArgs], [TArg| TArgs]) :-
 	'$lgt_fix_pred_calls_ins_in_marg'(MArg, Arg, TArg),
-	'$lgt_fix_pred_calls_in_margs'(Args, MArgs, TArgs).
+	'$lgt_fix_pred_calls_in_meta_args'(Args, MArgs, TArgs).
 
 
 '$lgt_fix_pred_calls_ins_in_marg'(0, Arg, TArg) :-

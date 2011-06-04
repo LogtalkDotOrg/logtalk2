@@ -122,6 +122,10 @@ RELEASE NOTES
     Fixed a compilation performance issue with objects and categories
     containing a large number of clauses for the same predicate.
 
+    Improved portability of calls from within objects and categories of calls
+    to Prolog database and reflection built-in predicates whenever the first
+    argument is an explicit module-qualified term.
+
     For all config files, renamed the predicate '$lgt_is_proper_list'/1 to
     '$lgt_is_list'/1 and and replaced the old '$lgt_is_list'/1 predicate by
     a new '$lgt_is_list_or_partial_list'/1 predicate.
