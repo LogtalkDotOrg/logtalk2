@@ -125,7 +125,8 @@ logtalk_library_path(my_project_examples, my_project('examples/')).
 
 
 %  To compile all your source files for debugging using the SWI-Prolog
-%  graphical tracer uncomment the following lines:
+%  graphical tracer (versions >= 5.10.5 stable or >= 5.11.20 devel)
+%  uncomment the following lines:
 
 /*
 :- initialization((

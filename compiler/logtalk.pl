@@ -13886,7 +13886,8 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_undefined_predicate_call'(Functor/Arity, TFunctor/TArity) :-
 	'$lgt_pp_calls_predicate_'(Functor, Arity, TFunctor, TArity),
 	\+ '$lgt_pp_defines_predicate_'(Functor, Arity, _, _),		% predicate not defined in object/category and
-	\+ '$lgt_pp_dynamic_'(Functor, Arity),						% predicate not declared dynamic in in object/category
+	\+ '$lgt_pp_dynamic_'(Functor, Arity),						% predicate not declared dynamic in object/category
+	\+ '$lgt_pp_multifile_'(Functor, Arity),					% predicate not declared multifile in object/category
 	Arity2 is Arity - 2,										% (only return predicates that are not the expansion
 	\+ '$lgt_pp_calls_non_terminal_'(Functor, Arity2),			% of grammar rules; see second clause)
 	once((	'$lgt_pp_public_'(Functor, Arity)					% but there is a scope directive for the predicate
@@ -13900,6 +13901,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	ExtArity is Arity + 2,
 	\+ '$lgt_pp_defines_predicate_'(Functor, ExtArity, _, _),	% no corresponding predicate is defined
 	\+ '$lgt_pp_dynamic_'(Functor, ExtArity),					% no dynamic directive for the corresponding predicate
+	\+ '$lgt_pp_multifile_'(Functor, ExtArity),					% predicate not declared multifile in object/category
 	once((	'$lgt_pp_public_'(Functor, ExtArity)				% but there is a scope directive for the non-terminal
 		;	'$lgt_pp_protected_'(Functor, ExtArity)				% or the corresponding predicate
 		;	'$lgt_pp_private_'(Functor, ExtArity)

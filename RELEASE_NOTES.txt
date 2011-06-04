@@ -116,6 +116,9 @@ RELEASE NOTES
     Allow using a Prolog module as an hook object. The module must be loaded
     and its identifier must be different from any object identifier.
 
+    Changed reporting of declared but not defined static predicates to exclude
+    multifile predicates.
+
     For all config files, renamed the predicate '$lgt_is_proper_list'/1 to
     '$lgt_is_list'/1 and and replaced the old '$lgt_is_list'/1 predicate by
     a new '$lgt_is_list_or_partial_list'/1 predicate.
