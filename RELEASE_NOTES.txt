@@ -119,6 +119,9 @@ RELEASE NOTES
     Changed reporting of declared but not defined static predicates to exclude
     multifile predicates.
 
+    Fixed a compilation performance issue with objects and categories
+    containing a large number of clauses for the same predicate.
+
     For all config files, renamed the predicate '$lgt_is_proper_list'/1 to
     '$lgt_is_list'/1 and and replaced the old '$lgt_is_list'/1 predicate by
     a new '$lgt_is_list_or_partial_list'/1 predicate.

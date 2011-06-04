@@ -263,6 +263,8 @@
 :- dynamic('$lgt_pp_entity_aux_clause_'/1).					% '$lgt_pp_entity_aux_clause_'(Clause)
 :- dynamic('$lgt_pp_final_entity_aux_clause_'/1).			% '$lgt_pp_final_entity_aux_clause_'(Clause)
 
+:- dynamic('$lgt_pp_clause_number_'/3).						% '$lgt_pp_clause_number_'(Functor, Arity, Number)
+
 :- dynamic('$lgt_pp_defines_predicate_'/4).					% '$lgt_pp_defines_predicate_'(Functor, Arity, TFunctor, TArity)
 :- dynamic('$lgt_pp_calls_predicate_'/4).					% '$lgt_pp_calls_predicate_'(Functor, Arity, TFunctor, TArity)
 :- dynamic('$lgt_pp_non_portable_call_'/2).					% '$lgt_pp_non_portable_call_'(Functor, Arity)
@@ -6073,6 +6075,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	retractall('$lgt_pp_final_entity_clause_'(_, _)),
 	retractall('$lgt_pp_entity_aux_clause_'(_)),
 	retractall('$lgt_pp_final_entity_aux_clause_'(_)),
+	retractall('$lgt_pp_clause_number_'(_,_,_)),
 	retractall('$lgt_pp_redefined_built_in_'(_, _, _)),
 	retractall('$lgt_pp_defines_predicate_'(_, _, _, _)),
 	retractall('$lgt_pp_calls_predicate_'(_, _, _, _)),
@@ -8709,7 +8712,7 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	;	TClause = (THead:-TBody)
 	),
 	'$lgt_comp_ctx_exec_ctx'(HeadCtx, ExCtx),
-	'$lgt_clause_number'(THead, N),
+	'$lgt_clause_number'(Head, N),
 	'$lgt_add_predicate_first_clause_line_property'(N, Head).
 
 '$lgt_tr_clause'(Fact, _, _, _, _) :-
@@ -8759,21 +8762,17 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_tr_clause'(Fact, TFact, (TFact:-'$lgt_debugger.fact'(Fact, N, ExCtx)), HeadCtx, _) :-
 	'$lgt_tr_head'(Fact, TFact, HeadCtx),
 	'$lgt_comp_ctx_exec_ctx'(HeadCtx, ExCtx),
-	'$lgt_clause_number'(TFact, N),
+	'$lgt_clause_number'(Fact, N),
 	'$lgt_add_predicate_first_clause_line_property'(N, Fact).
 
 
-'$lgt_clause_number'(THead, N) :-
-	'$lgt_term_template'(THead, Template),
-	findall(1, ('$lgt_pp_entity_clause_'(Template, _); '$lgt_pp_entity_clause_'((Template :- _), _)), List),
-	'$lgt_length'(List, 1, N).
-
-
-'$lgt_length'([], Length, Length).
-
-'$lgt_length'([_| Tail], Length0, Length) :-
-	Length1 is Length0 + 1,
-	'$lgt_length'(Tail, Length1, Length).
+'$lgt_clause_number'(Head, N) :-
+	functor(Head, Functor, Arity),
+	(	retract('$lgt_pp_clause_number_'(Functor, Arity, N0)) ->
+		N is N0 + 1
+	;	N = 1
+	),
+	assertz('$lgt_pp_clause_number_'(Functor, Arity, N)).
 
 
 '$lgt_add_predicate_first_clause_line_property'(1, QHead) :-
@@ -8806,32 +8805,29 @@ current_logtalk_flag(version, version(2, 43, 0)).
 '$lgt_add_predicate_first_clause_line_property'(_, _).
 
 
+'$lgt_add_entity_predicate_properties'(_) :-
+	'$lgt_compiler_flag'(source_data, off),
+	!.
+
 '$lgt_add_entity_predicate_properties'(Entity) :-
-	'$lgt_compiler_flag'(source_data, on),
-	'$lgt_pp_defines_predicate_'(Functor, Arity, TFunctor, TArity),
-	functor(THead, TFunctor, TArity),
-	findall(1, ('$lgt_pp_entity_clause_'(THead, _); '$lgt_pp_entity_clause_'((THead :- _), _)), List),
-	'$lgt_length'(List, 0, N),
+	'$lgt_pp_clause_number_'(Functor, Arity, N),
 	once(retract('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,DefLine,_))))),
 	assertz('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, lines_clauses(DclLine,DefLine,N)))),
 	fail.
 
 '$lgt_add_entity_predicate_properties'(Entity) :-
-	'$lgt_compiler_flag'(source_data, on),
 	'$lgt_pp_mode_'(Mode, Solutions),
 	functor(Mode, Functor, Arity),
 	assertz('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, mode(Mode, Solutions)))),
 	fail.
 
 '$lgt_add_entity_predicate_properties'(Entity) :-
-	'$lgt_compiler_flag'(source_data, on),
 	'$lgt_pp_info_'(Functor/Arity, Info0),
 	'$lgt_convert_info_items'(Info0, Info),
 	assertz('$lgt_pp_relation_clause_'('$lgt_predicate_property_'(Entity, Functor/Arity, info(Info)))),
 	fail.
 
 '$lgt_add_entity_predicate_properties'(Entity) :-
-	'$lgt_compiler_flag'(source_data, on),
 	'$lgt_pp_info_'(Functor//Arity, Info0),
 	'$lgt_convert_info_items'(Info0, Info),
 	ExtArity is Arity + 2,
@@ -10533,6 +10529,16 @@ current_logtalk_flag(version, version(2, 43, 0)).
 		true
 	;	assertz('$lgt_pp_calls_predicate_'(Functor, Arity, STFunctor, TArity))
 	).
+
+
+
+% '$lgt_length'(+list, +integer, -integer)
+
+'$lgt_length'([], Length, Length).
+
+'$lgt_length'([_| Tail], Length0, Length) :-
+	Length1 is Length0 + 1,
+	'$lgt_length'(Tail, Length1, Length).
 
 
 
@@ -14149,11 +14155,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_dcl_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
+
 '$lgt_write_dcl_clauses'(Stream) :-
 	'$lgt_compiler_flag'(source_data, off),
 	'$lgt_pp_dcl_'(Clause),
 	write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
 	fail.
+
 '$lgt_write_dcl_clauses'(_).
 
 
@@ -14163,11 +14171,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_final_def_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
+
 '$lgt_write_def_clauses'(Stream) :-
 	'$lgt_compiler_flag'(source_data, off),
 	'$lgt_pp_final_def_'(Clause),
 	write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
 	fail.
+
 '$lgt_write_def_clauses'(_).
 
 
@@ -14177,11 +14187,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_final_ddef_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
+
 '$lgt_write_ddef_clauses'(Stream) :-
 	'$lgt_compiler_flag'(source_data, off),
 	'$lgt_pp_final_ddef_'(Clause),
 	write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
 	fail.
+
 '$lgt_write_ddef_clauses'(_).
 
 
@@ -14191,11 +14203,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_super_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
+
 '$lgt_write_super_clauses'(Stream) :-
 	'$lgt_compiler_flag'(source_data, off),
 	'$lgt_pp_super_'(Clause),
 	write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
 	fail.
+
 '$lgt_write_super_clauses'(_).
 
 
@@ -14214,12 +14228,14 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	Clause =.. [Rnm, Entity, Pred, Alias],
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
+
 '$lgt_write_alias_clauses'(Stream, Rnm) :-
 	'$lgt_compiler_flag'(source_data, off),
 	'$lgt_pp_predicate_alias_'(Entity, Pred, Alias),
 	Clause =.. [Rnm, Entity, Pred, Alias],
 	write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
 	fail.
+
 '$lgt_write_alias_clauses'(Stream, Rnm) :-
 	Catchall =.. [Rnm, _, Pred, Pred],
 	(	'$lgt_compiler_flag'(source_data, on) ->
@@ -14234,11 +14250,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_final_entity_clause_'(Clause, Location),
 	'$lgt_write_term_and_source_location'(Stream, Clause, user, Location),
 	fail.
+
 '$lgt_write_entity_clauses'(Stream) :-
 	'$lgt_compiler_flag'(source_data, off),
 	'$lgt_pp_final_entity_clause_'(Clause, _),
 	write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
 	fail.
+
 '$lgt_write_entity_clauses'(_).
 
 
@@ -14248,11 +14266,13 @@ current_logtalk_flag(version, version(2, 43, 0)).
 	'$lgt_pp_final_entity_aux_clause_'(Clause),
 	'$lgt_write_term_and_source_location'(Stream, Clause, aux, Path+File+1),
 	fail.
+
 '$lgt_write_entity_aux_clauses'(Stream) :-
 	'$lgt_compiler_flag'(source_data, off),
 	'$lgt_pp_final_entity_aux_clause_'(Clause),
 	write_canonical(Stream, Clause), write(Stream, '.'), nl(Stream),
 	fail.
+
 '$lgt_write_entity_aux_clauses'(_).
 
 
